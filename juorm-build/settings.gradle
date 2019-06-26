@@ -1,0 +1,3 @@
+rootProject.name = 'juorm-build'
+includeFlat 'juorm-api'
+includeFlat 'juorm-jdbc'
