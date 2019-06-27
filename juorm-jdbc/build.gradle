@@ -3,4 +3,6 @@ dependencies {
     compile project(":juorm-api")
 
     compile group: 'cn.featherfly', name: 'featherfly-common', version: '1.7.0'
+    compile group: 'org.springframework', name: 'spring-jdbc', version: '5.1.8.RELEASE'
+    
 }

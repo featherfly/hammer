@@ -1,13 +1,15 @@
 package cn.featherfly.juorm.sql.dml.builder;
 
 import cn.featherfly.juorm.dml.builder.Builder;
+import cn.featherfly.juorm.operator.AggregateFunction;
+import cn.featherfly.juorm.sql.dialect.Dialect;
 import cn.featherfly.juorm.sql.dml.builder.basic.SqlSelectBasicBuilder;
 
 /**
  * <p>
  * abstract sql Select builder
  * </p>
- * 
+ *
  * @author zhongj
  */
 public abstract class AbstractSqlSelectBuilder implements Builder {
@@ -17,62 +19,59 @@ public abstract class AbstractSqlSelectBuilder implements Builder {
     protected SqlConditionGroup conditionBuilder;
 
     /**
-     * @param conditionBuilder
-     *            conditionBuilder
+     * @param dialect          dialect
+     * @param conditionBuilder conditionBuilder
      */
-    public AbstractSqlSelectBuilder(SqlConditionGroup conditionBuilder) {
-        this(null, null, conditionBuilder);
+    public AbstractSqlSelectBuilder(Dialect dialect, SqlConditionGroup conditionBuilder) {
+        this(dialect, null, null, conditionBuilder);
     }
 
     /**
-     * @param tableName
-     *            tableName
-     * @param conditionBuilder
-     *            conditionBuilder
+     * @param dialect          dialect
+     * @param tableName        tableName
+     * @param conditionBuilder conditionBuilder
      */
-    public AbstractSqlSelectBuilder(String tableName, SqlConditionGroup conditionBuilder) {
-        this(tableName, null, conditionBuilder);
+    public AbstractSqlSelectBuilder(Dialect dialect, String tableName, SqlConditionGroup conditionBuilder) {
+        this(dialect, tableName, null, conditionBuilder);
     }
 
     /**
-     * @param tableName
-     *            tableName
-     * @param alias
-     *            alias
-     * @param conditionBuilder
-     *            conditionBuilder
+     * @param dialect          dialect
+     * @param tableName        tableName
+     * @param alias            alias
+     * @param conditionBuilder conditionBuilder
      */
-    public AbstractSqlSelectBuilder(String tableName, String alias, SqlConditionGroup conditionBuilder) {
+    public AbstractSqlSelectBuilder(Dialect dialect, String tableName, String alias,
+            SqlConditionGroup conditionBuilder) {
         this.conditionBuilder = conditionBuilder;
-        this.selectBuilder = new SqlSelectBasicBuilder(tableName, alias);
+        selectBuilder = new SqlSelectBasicBuilder(dialect, tableName, alias);
     }
 
-    protected void addSelectColumn(String column) {
-        selectBuilder.addSelectColumn(column);
+    protected void addSelectColumn(String column, AggregateFunction function) {
+        selectBuilder.addSelectColumn(column, function);
     }
 
     /**
-     * 返回alias
-     * 
-     * @return alias
+     * 返回tableAlias
+     *
+     * @return tableAlias
      */
-    public String getAlias() {
-        return selectBuilder.getAlias();
+    public String getTableAlias() {
+        return selectBuilder.getTableAlias();
     }
 
     /**
      * 设置alias
-     * 
-     * @param alias
-     *            alias
+     *
+     * @param tableAlias tableAlias
      */
-    public void setAlias(String alias) {
-        selectBuilder.setAlias(alias);
+    public void setTableAlias(String tableAlias) {
+        selectBuilder.setTableAlias(tableAlias);
     }
 
     /**
      * 返回tableName
-     * 
+     *
      * @return tableName
      */
     public String getTableName() {
@@ -81,9 +80,8 @@ public abstract class AbstractSqlSelectBuilder implements Builder {
 
     /**
      * 设置tableName
-     * 
-     * @param tableName
-     *            tableName
+     *
+     * @param tableName tableName
      */
     public void setTableName(String tableName) {
         selectBuilder.setTableName(tableName);
@@ -91,7 +89,7 @@ public abstract class AbstractSqlSelectBuilder implements Builder {
 
     /**
      * 返回buildWithFrom
-     * 
+     *
      * @return buildWithFrom
      */
     public boolean isBuildWithFrom() {
@@ -100,9 +98,8 @@ public abstract class AbstractSqlSelectBuilder implements Builder {
 
     /**
      * 设置buildWithFrom
-     * 
-     * @param buildWithFrom
-     *            buildWithFrom
+     *
+     * @param buildWithFrom buildWithFrom
      */
     public void setBuildWithFrom(boolean buildWithFrom) {
         selectBuilder.setBuildWithFrom(buildWithFrom);

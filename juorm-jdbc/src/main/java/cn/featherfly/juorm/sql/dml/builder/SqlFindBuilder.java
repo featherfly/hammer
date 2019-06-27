@@ -5,39 +5,45 @@ import java.util.Collection;
 import cn.featherfly.common.lang.LangUtils;
 import cn.featherfly.juorm.dml.builder.ConditionBuilder;
 import cn.featherfly.juorm.dml.builder.FindBuilder;
+import cn.featherfly.juorm.operator.AggregateFunction;
+import cn.featherfly.juorm.sql.dialect.Dialect;
 
 /**
  * <p>
  * sql find builder
  * </p>
- * 
+ *
  * @author zhongj
  */
 public class SqlFindBuilder extends AbstractSqlSelectBuilder implements FindBuilder {
 
     /**
+     * @param dialect          dialect
      * @param conditionBuilder conditionBuilder
      */
-    public SqlFindBuilder(SqlConditionGroup conditionBuilder) {
-        this(null, null, conditionBuilder);
+    public SqlFindBuilder(Dialect dialect, SqlConditionGroup conditionBuilder) {
+        this(dialect, null, null, conditionBuilder);
     }
+
     /**
-     * @param tableName tableName
+     * @param dialect          dialect
+     * @param tableName        tableName
      * @param conditionBuilder conditionBuilder
      */
-    public SqlFindBuilder(String tableName, SqlConditionGroup conditionBuilder) {
-        this(tableName, null, conditionBuilder);
+    public SqlFindBuilder(Dialect dialect, String tableName, SqlConditionGroup conditionBuilder) {
+        this(dialect, tableName, null, conditionBuilder);
     }
-    
+
     /**
-     * @param tableName tableName
-     * @param alias alias
+     * @param dialect          dialect
+     * @param tableName        tableName
+     * @param alias            alias
      * @param conditionBuilder conditionBuilder
      */
-    public SqlFindBuilder(String tableName, String alias, SqlConditionGroup conditionBuilder) {
-        super(tableName, alias, conditionBuilder);
+    public SqlFindBuilder(Dialect dialect, String tableName, String alias, SqlConditionGroup conditionBuilder) {
+        super(dialect, tableName, alias, conditionBuilder);
     }
-    
+
     /**
      * {@inheritDoc}
      */
@@ -50,14 +56,18 @@ public class SqlFindBuilder extends AbstractSqlSelectBuilder implements FindBuil
         }
         return this;
     }
-    
+
+    public FindBuilder with(String propertyName, AggregateFunction aggregateFunction) {
+        addSelectColumn(propertyName, aggregateFunction);
+        return this;
+    }
+
     /**
      * {@inheritDoc}
      */
     @Override
     public FindBuilder with(String propertyName) {
-        addSelectColumn(propertyName);
-        return this;
+        return with(propertyName, null);
     }
 
     /**
@@ -72,7 +82,7 @@ public class SqlFindBuilder extends AbstractSqlSelectBuilder implements FindBuil
         }
         return this;
     }
-    
+
     /**
      * {@inheritDoc}
      */

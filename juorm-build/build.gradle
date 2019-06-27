@@ -3,17 +3,6 @@ allprojects {
     apply from: '../juorm-build/java_base.gradle'   
     apply from: '../juorm-build/maven_push.gradle'
         
-    sourceCompatibility = 1.8
-    targetCompatibility = 1.8  
-    
-    repositories {
-	mavenLocal()
-	maven {
-		url  "http://maven.aliyun.com/nexus/content/groups/public/"
-	}
-	mavenCentral()
-    }
-
     dependencies {
 		compile group: 'org.slf4j', name: 'slf4j-api', version: '1.7.26'
 		compile group: 'org.apache.commons', name: 'commons-lang3', version: '3.9'

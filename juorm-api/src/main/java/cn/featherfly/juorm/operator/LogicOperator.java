@@ -9,12 +9,12 @@ package cn.featherfly.juorm.operator;
  * @author zhongj
  */
 public enum LogicOperator {
-	/**
-	 * and
-	 */
-	AND,
-	/**
-	 * or
-	 */
-	OR;
+    /**
+     * and
+     */
+    AND,
+    /**
+     * or
+     */
+    OR;
 }
