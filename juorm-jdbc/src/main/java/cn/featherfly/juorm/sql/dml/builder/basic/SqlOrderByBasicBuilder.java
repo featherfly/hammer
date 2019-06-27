@@ -3,8 +3,11 @@ package cn.featherfly.juorm.sql.dml.builder.basic;
 import java.util.ArrayList;
 import java.util.List;
 
+import cn.featherfly.common.constant.Chars;
 import cn.featherfly.juorm.dml.builder.Builder;
-import cn.featherfly.juorm.operator.OrderOperator;
+import cn.featherfly.juorm.operator.SortOperator;
+import cn.featherfly.juorm.sql.dialect.Dialect;
+import cn.featherfly.juorm.sql.model.ColumnElement;
 
 /**
  * <p>
@@ -15,156 +18,234 @@ import cn.featherfly.juorm.operator.OrderOperator;
  */
 public class SqlOrderByBasicBuilder implements Builder {
 
-	/**
-	 */
-	public SqlOrderByBasicBuilder() {
-	}
+    private Dialect dialect;
 
-	/*
-	 * 排序参数
-	 */
-	private List<Order> orderParams = new ArrayList<Order>();
-	
-	/**
-	 * add  property to asc list 
-	 * @param names sort property name
-	 * @return this
-	 */
-	public SqlOrderByBasicBuilder addAsc(String...names) {
-		if (names != null) {
-			for (String name : names) {
-				addOrderBy(name, OrderOperator.ASC);
-			}
-		}
-		return this;
-	}
+    /**
+     * @param dialect dialect
+     */
+    public SqlOrderByBasicBuilder(Dialect dialect) {
+        this.dialect = dialect;
+    }
 
-	/**
-     * add property to desc list 
+    /*
+     * 排序参数
+     */
+    private List<Order> orderParams = new ArrayList<>();
+
+    /**
+     * add property to asc list
+     *
      * @param names sort property name
      * @return this
      */
-	public SqlOrderByBasicBuilder addDesc(String...names) {
-		if (names != null) {
-			for (String name : names) {
-				addOrderBy(name, OrderOperator.DESC);
-			}
-		}
-		return this;
-	}
+    public SqlOrderByBasicBuilder addOrder(String name, String tableAlias, SortOperator operator) {
+        addOrderBy(name, tableAlias, operator);
+        return this;
+    }
 
-	/**
-	 * clear all sort properties
-	 * @return this
-	 */
-	public SqlOrderByBasicBuilder clear() {
-		orderParams.clear();
-		return this;
-	}
+    /**
+     * add property to asc list
+     *
+     * @param name       sort column name
+     * @param tableAlias table alias
+     * @return this
+     */
+    public SqlOrderByBasicBuilder addAsc(String name, String tableAlias) {
+        return addOrder(name, tableAlias, SortOperator.ASC);
+    }
 
-	/**
-	 * {@inheritDoc}
-	 */
-	@Override
+    /**
+     * add property to desc list
+     *
+     * @param name       sort column name
+     * @param tableAlias table alias
+     * @return this
+     */
+    public SqlOrderByBasicBuilder addDesc(String name, String tableAlias) {
+        return addOrder(name, tableAlias, SortOperator.DESC);
+    }
+
+    /**
+     * add property to asc list
+     *
+     * @param name sort column name
+     * @return this
+     */
+    public SqlOrderByBasicBuilder addAsc(String name) {
+        return addAsc(name, null);
+    }
+
+    /**
+     * add property to desc list
+     *
+     * @param name sort column name
+     * @return this
+     */
+    public SqlOrderByBasicBuilder addDesc(String name) {
+        return addDesc(name, null);
+    }
+
+    // /**
+    // * add property to asc list
+    // *
+    // * @param names sort property name
+    // * @return this
+    // */
+    // public SqlOrderByBasicBuilder addAsc(String... names) {
+    // if (names != null) {
+    // for (String name : names) {
+    // addOrder(name, null, OrderOperator.ASC);
+    // }
+    // }
+    // return this;
+    // }
+    //
+    // /**
+    // * add property to desc list
+    // *
+    // * @param names sort property name
+    // * @return this
+    // */
+    // public SqlOrderByBasicBuilder addDesc(String... names) {
+    // if (names != null) {
+    // for (String name : names) {
+    // addOrder(name, null, OrderOperator.DESC);
+    // }
+    // }
+    // return this;
+    // }
+
+    /**
+     * clear all sort properties
+     *
+     * @return this
+     */
+    public SqlOrderByBasicBuilder clear() {
+        orderParams.clear();
+        return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
     public String build() {
-		StringBuilder sb = new StringBuilder();
-		if (orderParams.size() > 0) {
-			sb.append(" ORDER BY");
-		}
-		for (Order orderParam : orderParams) {
-			sb.append(orderParam).append(",");
-		}
-		if (orderParams.size() > 0) {
-			sb.deleteCharAt(sb.length() - 1);
-		}
-		return sb.toString();
-	}
+        StringBuilder sb = new StringBuilder();
+        if (orderParams.size() > 0) {
+            sb.append(Chars.SPACE).append(dialect.getKeywords().orderBy());
+        }
+        for (Order orderParam : orderParams) {
+            sb.append(orderParam).append(Chars.COMMA);
+        }
+        if (orderParams.size() > 0) {
+            sb.deleteCharAt(sb.length() - 1);
+        }
+        return sb.toString();
+    }
 
-	/**
-	 * {@inheritDoc}
-	 */
-	@Override
-	public String toString() {
-		return this.getClass().getName() + " : " + build();
-	}
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public String toString() {
+        return this.getClass().getName() + " : " + build();
+    }
 
-	// ********************************************************************
-	//	private method
-	// ********************************************************************
+    // ********************************************************************
+    // private method
+    // ********************************************************************
 
-	private void addOrderBy(String propertyName, OrderOperator orderOperator) {
-		Order orderParam = null;
-		if (orderParams.isEmpty()) {
-		    orderParam = new Order(orderOperator);
-		    orderParams.add(orderParam);
-		} else {
-			orderParam = orderParams.get(orderParams.size() - 1);
+    private void addOrderBy(String columnName, String tableAlias, SortOperator orderOperator) {
+        Order orderParam = null;
+        if (orderParams.isEmpty()) {
+            orderParam = new Order(dialect, orderOperator);
+            orderParams.add(orderParam);
+        } else {
+            orderParam = orderParams.get(orderParams.size() - 1);
             if (!orderParam.isOrderOperator(orderOperator)) {
-                orderParam = new Order(orderOperator);
+                orderParam = new Order(dialect, orderOperator);
                 orderParams.add(orderParam);
             }
-		}
-		orderParam.addParam(propertyName);
-	}
+        }
+        orderParam.addParam(new ColumnElement(dialect, columnName, tableAlias));
+    }
 
-	// ********************************************************************
-	//	内部类
-	// ********************************************************************
+    // ********************************************************************
+    // 内部类
+    // ********************************************************************
 
-	/**
-	 * <p>
-	 * 排序参数辅助对象
-	 * </p>
-	 *
-	 * @author zhongj
-	 */
-	public static class Order {
+    /**
+     * <p>
+     * 排序参数辅助对象
+     * </p>
+     *
+     * @author zhongj
+     */
+    public static class Order {
 
-		/**
-		 * @param orderOperator orderOperator
-		 */
-		public Order(OrderOperator orderOperator) {
-			this.orderOperator = orderOperator;
-		}
+        /**
+         * @param dialect      dialect
+         * @param sortOperator sortOperator
+         * @param tableAlias   tableAlias
+         */
+        public Order(Dialect dialect, SortOperator sortOperator) {
+            sortOrerator = sortOperator;
+            this.dialect = dialect;
+        }
 
-		private OrderOperator orderOperator;
+        private SortOperator sortOrerator;
 
-		private List<String> params = new ArrayList<String>();
+        private Dialect dialect;
 
-		/**
-		 * <p>
-		 * 添加排序参数
-		 * </p>
-		 * @param param 排序参数
-		 */
-		public void addParam(String param) {
-			params.add(param);
-		}
+        private List<ColumnElement> params = new ArrayList<>();
 
-		/**
-		 * 返回是否是传入的操作
-		 * @param orderOperator orderOperator
-		 * @return 是否是传入的操作
-		 */
-		public boolean isOrderOperator(OrderOperator orderOperator) {
-			return this.orderOperator == orderOperator;
-		}
+        /**
+         * <p>
+         * 添加排序参数
+         * </p>
+         *
+         * @param param 排序参数
+         */
+        public void addParam(String param) {
+            params.add(new ColumnElement(dialect, param));
+        }
 
-		/**
-		 * {@inheritDoc}
-		 */
-		@Override
-		public String toString() {
-			StringBuilder sb = new StringBuilder();
-			for (String param : params) {
-				sb.append(" ").append(param).append(",");
-			}
-			if (params.size() > 0) {
-				sb.deleteCharAt(sb.length() - 1);
-				sb.append(" ").append(orderOperator.toString());
-			}
-			return sb.toString();
-		}
-	}
+        /**
+         * <p>
+         * 添加排序参数
+         * </p>
+         *
+         * @param param 排序参数
+         */
+        public void addParam(ColumnElement param) {
+            params.add(param);
+        }
+
+        /**
+         * 返回是否是传入的操作
+         *
+         * @param orderOperator orderOperator
+         * @return 是否是传入的操作
+         */
+        public boolean isOrderOperator(SortOperator orderOperator) {
+            return sortOrerator == orderOperator;
+        }
+
+        /**
+         * {@inheritDoc}
+         */
+        @Override
+        public String toString() {
+            StringBuilder sb = new StringBuilder();
+            for (ColumnElement column : params) {
+                sb.append(Chars.SPACE).append(column.toSql()).append(Chars.COMMA);
+            }
+            if (params.size() > 0) {
+                sb.deleteCharAt(sb.length() - 1);
+                sb.append(Chars.SPACE).append(dialect.getKeyword(sortOrerator));
+            }
+            return sb.toString();
+        }
+    }
 
 }

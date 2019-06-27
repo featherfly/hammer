@@ -3,52 +3,67 @@ package cn.featherfly.juorm.sql.dml.builder;
 import java.util.Collection;
 
 import cn.featherfly.common.lang.LangUtils;
+import cn.featherfly.juorm.operator.AggregateFunction;
+import cn.featherfly.juorm.sql.dialect.Dialect;
 
 /**
  * <p>
  * sql find builder
  * </p>
- * 
+ *
  * @author zhongj
  */
 public class SqlSelectBuilder extends AbstractSqlSelectBuilder implements SelectBuilder {
 
     /**
+     * @param dialect          dialect
      * @param conditionBuilder conditionBuilder
      */
-    public SqlSelectBuilder(SqlConditionGroup conditionBuilder) {
-        this(null, null, conditionBuilder);
+    public SqlSelectBuilder(Dialect dialect, SqlConditionGroup conditionBuilder) {
+        this(dialect, null, null, conditionBuilder);
     }
+
     /**
-     * @param tableName tableName
+     * @param dialect          dialect
+     * @param tableName        tableName
      * @param conditionBuilder conditionBuilder
      */
-    public SqlSelectBuilder(String tableName, SqlConditionGroup conditionBuilder) {
-        this(tableName, null, conditionBuilder);
+    public SqlSelectBuilder(Dialect dialect, String tableName, SqlConditionGroup conditionBuilder) {
+        this(dialect, tableName, null, conditionBuilder);
     }
-    
+
     /**
-     * @param tableName tableName
-     * @param alias alias
+     * @param dialect          dialect
+     * @param tableName        tableName
+     * @param alias            alias
      * @param conditionBuilder conditionBuilder
      */
-    public SqlSelectBuilder(String tableName, String alias, SqlConditionGroup conditionBuilder) {
-        super(tableName, alias, conditionBuilder);
+    public SqlSelectBuilder(Dialect dialect, String tableName, String alias, SqlConditionGroup conditionBuilder) {
+        super(dialect, tableName, alias, conditionBuilder);
     }
-    
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public SelectBuilder select(String columnName, AggregateFunction aggregateFunction) {
+        addSelectColumn(columnName, aggregateFunction);
+        return this;
+    }
+
     /**
      * {@inheritDoc}
      */
     @Override
     public SelectBuilder select(String columnName) {
-        addSelectColumn(columnName);
-        return this;
+        return select(columnName, null);
     }
+
     /**
      * {@inheritDoc}
      */
     @Override
-    public SelectBuilder select(String...columnNames) {
+    public SelectBuilder select(String... columnNames) {
         if (LangUtils.isNotEmpty(columnNames)) {
             for (String columnName : columnNames) {
                 select(columnName);
@@ -56,6 +71,7 @@ public class SqlSelectBuilder extends AbstractSqlSelectBuilder implements Select
         }
         return this;
     }
+
     /**
      * {@inheritDoc}
      */
@@ -68,7 +84,7 @@ public class SqlSelectBuilder extends AbstractSqlSelectBuilder implements Select
         }
         return this;
     }
-    
+
     /**
      * {@inheritDoc}
      */
@@ -76,13 +92,16 @@ public class SqlSelectBuilder extends AbstractSqlSelectBuilder implements Select
     public SqlConditionBuilder from(String tableName) {
         return from(tableName, null);
     }
+
     /**
      * {@inheritDoc}
      */
     @Override
     public SqlConditionBuilder from(String tableName, String alias) {
         setTableName(tableName);
-        setAlias(alias);
+        setTableAlias(alias);
+        conditionBuilder.setQueryAlias(alias);
         return conditionBuilder;
     }
+
 }
