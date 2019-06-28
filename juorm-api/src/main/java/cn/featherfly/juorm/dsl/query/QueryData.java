@@ -10,7 +10,7 @@ import java.util.Collection;
  *
  * @author zhongj
  */
-public interface QueryData extends QueryListExecutor, ConditionLimit {
+public interface QueryData extends QueryListExecutor, QueryConditionLimit {
     /**
      * <p>
      * 添加select的列
@@ -51,5 +51,5 @@ public interface QueryData extends QueryListExecutor, ConditionLimit {
      *
      * @return QueryCondition
      */
-    ConditionGroupExpression where();
+    QueryConditionGroupExpression where();
 }

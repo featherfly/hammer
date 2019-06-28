@@ -1,6 +1,6 @@
 /**
  * <p>
- * dsl query
+ * dsl for query
  * </p>
  *
  * @author zhongj

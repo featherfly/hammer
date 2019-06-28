@@ -3,11 +3,11 @@ package cn.featherfly.juorm.dsl.query;
 
 /**
  * <p>
- * dsl for query executor
+ * dsl for query list executor
  * </p>
  *
  * @author zhongj
  */
-public interface QueryExecutor extends QuerySingleExecutor, QueryListExecutor {
+public interface QueryExecutor extends QueryListExecutor, QuerySingleExecutor {
 
 }

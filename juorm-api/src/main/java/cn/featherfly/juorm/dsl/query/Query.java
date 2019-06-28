@@ -1,6 +1,8 @@
 
 package cn.featherfly.juorm.dsl.query;
 
+import cn.featherfly.juorm.dsl.Repository;
+
 /**
  * <p>
  * dsl for query
@@ -9,5 +11,5 @@ package cn.featherfly.juorm.dsl.query;
  * @author zhongj
  */
 public interface Query {
-    QueryData find(Data repository);
+    QueryData find(Repository entity);
 }

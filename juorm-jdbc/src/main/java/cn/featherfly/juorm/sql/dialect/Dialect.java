@@ -9,7 +9,7 @@ import cn.featherfly.juorm.operator.AggregateFunction;
 import cn.featherfly.juorm.operator.Function;
 import cn.featherfly.juorm.operator.LogicOperator;
 import cn.featherfly.juorm.operator.SortOperator;
-import cn.featherfly.juorm.sql.model.Table;
+import cn.featherfly.juorm.sql.model.TableElement;
 
 /**
  * <p>
@@ -212,7 +212,7 @@ public interface Dialect {
      * @param table table
      * @return sql
      */
-    default String buildTableSql(Table table) {
+    default String buildTableSql(TableElement table) {
         return buildTableSql(table.getName(), table.getAlias());
     }
 
@@ -349,6 +349,10 @@ public interface Dialect {
             return dialect.getKeyword(Keywords.DELETE);
         }
 
+        public String deleteFrom() {
+            return delete() + Chars.SPACE + from();
+        }
+
         public String insert() {
             return dialect.getKeyword(Keywords.INSERT);
         }
@@ -363,6 +367,25 @@ public interface Dialect {
 
         public String join() {
             return dialect.getKeyword(Keywords.JOIN);
+        }
+
+        public String join(Join join) {
+            switch (join) {
+                case INNER_JOIN:
+                    return join();
+                case LEFT_JOIN:
+                    return left() + Chars.SPACE + join();
+                case RIGHT_JOIN:
+                    return right() + Chars.SPACE + join();
+                case FULL_JOIN:
+                    return full() + Chars.SPACE + join();
+                default:
+                    return join();
+            }
+        }
+
+        public String on() {
+            return dialect.getKeyword(Keywords.ON);
         }
 
         public String inner() {

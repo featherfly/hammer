@@ -3,7 +3,7 @@ package cn.featherfly.juorm.dsl.query;
 
 /**
  * <p>
- * dsl for query
+ * query target property
  * </p>
  *
  * @author zhongj

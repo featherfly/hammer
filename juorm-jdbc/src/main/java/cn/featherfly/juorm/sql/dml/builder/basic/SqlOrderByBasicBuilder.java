@@ -4,9 +4,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 import cn.featherfly.common.constant.Chars;
-import cn.featherfly.juorm.dml.builder.Builder;
 import cn.featherfly.juorm.operator.SortOperator;
 import cn.featherfly.juorm.sql.dialect.Dialect;
+import cn.featherfly.juorm.sql.dml.builder.SqlBuilder;
 import cn.featherfly.juorm.sql.model.ColumnElement;
 
 /**
@@ -16,7 +16,7 @@ import cn.featherfly.juorm.sql.model.ColumnElement;
  *
  * @author zhongj
  */
-public class SqlOrderByBasicBuilder implements Builder {
+public class SqlOrderByBasicBuilder implements SqlBuilder {
 
     private Dialect dialect;
 

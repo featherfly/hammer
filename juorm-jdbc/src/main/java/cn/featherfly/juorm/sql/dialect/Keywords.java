@@ -19,6 +19,7 @@ public enum Keywords {
     SET,
     DELETE,
     JOIN,
+    ON,
     INNER,
     LEFT,
     RIGHT,

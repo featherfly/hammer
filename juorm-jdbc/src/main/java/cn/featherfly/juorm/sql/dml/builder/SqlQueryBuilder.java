@@ -6,11 +6,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
-import cn.featherfly.common.lang.CollectionUtils;
 import cn.featherfly.common.lang.StringUtils;
-import cn.featherfly.common.structure.page.Pagination;
-import cn.featherfly.juorm.PaginationWrapper;
-import cn.featherfly.juorm.dml.builder.BuilderException;
 import cn.featherfly.juorm.dml.builder.ConditionBuildUtils;
 import cn.featherfly.juorm.dml.builder.FindBuilder;
 import cn.featherfly.juorm.operator.AggregateFunction;
@@ -59,15 +55,16 @@ public class SqlQueryBuilder implements QueryBuilder, cn.featherfly.juorm.dml.bu
         }
         ConditionBuildUtils.appendCondition(result, sortBuilder.build());
 
-        if (pagination != null) {
-            if (dialect == null) {
-                throw new BuilderException("需要分页时，dialect不能为空");
-            }
-            PaginationWrapper<Object> pw = new PaginationWrapper<>(pagination);
-            return dialect.getPaginationSql(result.toString(), pw.getStart(), pw.getLimit()).trim();
-        } else {
-            return result.toString().trim();
-        }
+        //        if (pagination != null) {
+        //            if (dialect == null) {
+        //                throw new BuilderException("需要分页时，dialect不能为空");
+        //            }
+        //            PaginationWrapper<Object> pw = new PaginationWrapper<>(pagination);
+        //            return dialect.getPaginationSql(result.toString(), pw.getStart(), pw.getLimit()).trim();
+        //        } else {
+        //            return result.toString().trim();
+        //        }
+        return result.toString().trim();
     }
 
     /**
@@ -91,15 +88,15 @@ public class SqlQueryBuilder implements QueryBuilder, cn.featherfly.juorm.dml.bu
                 result.add(Array.get(param, i));
             }
         }
-        if (pagination != null) {
-            if (dialect == null) {
-                throw new BuilderException("需要分页时，dialect不能为空");
-            }
-            PaginationWrapper<Object> pw = new PaginationWrapper<>(pagination);
-            Object[] params = dialect.getPaginationSqlParameter(result.toArray(), pw.getStart(), pw.getLimit());
-            result.clear();
-            CollectionUtils.addAll(result, params);
-        }
+        //        if (pagination != null) {
+        //            if (dialect == null) {
+        //                throw new BuilderException("需要分页时，dialect不能为空");
+        //            }
+        //            PaginationWrapper<Object> pw = new PaginationWrapper<>(pagination);
+        //            Object[] params = dialect.getPaginationSqlParameter(result.toArray(), pw.getStart(), pw.getLimit());
+        //            result.clear();
+        //            CollectionUtils.addAll(result, params);
+        //        }
         return result;
     }
 
@@ -135,7 +132,7 @@ public class SqlQueryBuilder implements QueryBuilder, cn.featherfly.juorm.dml.bu
      */
     @Override
     public SelectBuilder select(String columnName, AggregateFunction aggregateFunction) {
-        return getSelectBuilder().select(columnName, aggregateFunction);
+        return selectBuilder().select(columnName, aggregateFunction);
     }
 
     /**
@@ -143,7 +140,7 @@ public class SqlQueryBuilder implements QueryBuilder, cn.featherfly.juorm.dml.bu
      */
     @Override
     public SelectBuilder select(String columnName) {
-        return getSelectBuilder().select(columnName);
+        return selectBuilder().select(columnName);
     }
 
     /**
@@ -151,7 +148,7 @@ public class SqlQueryBuilder implements QueryBuilder, cn.featherfly.juorm.dml.bu
      */
     @Override
     public SelectBuilder select(String... columnNames) {
-        return getSelectBuilder().select(columnNames);
+        return selectBuilder().select(columnNames);
     }
 
     /**
@@ -159,7 +156,7 @@ public class SqlQueryBuilder implements QueryBuilder, cn.featherfly.juorm.dml.bu
      */
     @Override
     public SelectBuilder select(Collection<String> columnNames) {
-        return getSelectBuilder().select(columnNames);
+        return selectBuilder().select(columnNames);
     }
 
     /**
@@ -177,7 +174,7 @@ public class SqlQueryBuilder implements QueryBuilder, cn.featherfly.juorm.dml.bu
     public SqlConditionBuilder from(String tableName, String alias) {
         conditionGroup.setQueryAlias(alias);
         sortBuilder.setTableAlias(alias);
-        return getSelectBuilder().from(tableName, alias);
+        return selectBuilder().from(tableName, alias);
     }
 
     // ********************************************************************
@@ -186,7 +183,7 @@ public class SqlQueryBuilder implements QueryBuilder, cn.featherfly.juorm.dml.bu
 
     private Dialect dialect;
 
-    private Pagination pagination;
+    //    private Pagination pagination;
 
     /**
      * 返回dialect
@@ -207,29 +204,11 @@ public class SqlQueryBuilder implements QueryBuilder, cn.featherfly.juorm.dml.bu
     }
 
     /**
-     * 返回pagination
-     *
-     * @return pagination
-     */
-    public Pagination getPagination() {
-        return pagination;
-    }
-
-    /**
-     * 设置pagination
-     *
-     * @param pagination pagination
-     */
-    public void setPagination(Pagination pagination) {
-        this.pagination = pagination;
-    }
-
-    /**
      * 返回selectBuilder
      *
      * @return selectBuilder
      */
-    private SqlSelectBuilder getSelectBuilder() {
+    private SqlSelectBuilder selectBuilder() {
         if (selectBuilder == null) {
             selectBuilder = new SqlSelectBuilder(dialect, conditionGroup);
         }

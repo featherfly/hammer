@@ -10,28 +10,28 @@ import cn.featherfly.juorm.sql.dialect.Dialect;
  *
  * @author zhongj
  */
-public class ColumnElement extends AbstractSqlElement {
+public class TableElement extends AbstractSqlElement {
 
-    protected String name;
+    private String name;
 
-    protected String tableAlias;
+    private String alias;
 
     /**
      * @param dialect dialect
      * @param name    name
      */
-    public ColumnElement(Dialect dialect, String name) {
+    public TableElement(Dialect dialect, String name) {
         this(dialect, name, null);
     }
 
     /**
-     * @param name       name
-     * @param tableAlias tableAlias
+     * @param name  name
+     * @param alias alias
      */
-    public ColumnElement(Dialect dialect, String name, String tableAlias) {
+    public TableElement(Dialect dialect, String name, String alias) {
         super(dialect);
         this.name = name;
-        this.tableAlias = tableAlias;
+        this.alias = alias;
     }
 
     /**
@@ -57,17 +57,17 @@ public class ColumnElement extends AbstractSqlElement {
      *
      * @return tableAlias
      */
-    public String getTableAlias() {
-        return tableAlias;
+    public String getAlias() {
+        return alias;
     }
 
     /**
      * 设置tableAlias
      *
-     * @param tableAlias tableAlias
+     * @param alias tableAlias
      */
-    public void setTableAlias(String tableAlias) {
-        this.tableAlias = tableAlias;
+    public void setAlias(String alias) {
+        this.alias = alias;
     }
 
     /**
@@ -75,6 +75,6 @@ public class ColumnElement extends AbstractSqlElement {
      */
     @Override
     public String toSql() {
-        return dialect.buildColumnSql(getName(), getTableAlias());
+        return dialect.buildTableSql(name, alias);
     }
 }
