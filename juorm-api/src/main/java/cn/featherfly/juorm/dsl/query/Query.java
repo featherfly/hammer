@@ -11,5 +11,5 @@ import cn.featherfly.juorm.dsl.Repository;
  * @author zhongj
  */
 public interface Query {
-    QueryData find(Repository entity);
+    QueryEntity find(Repository repository);
 }

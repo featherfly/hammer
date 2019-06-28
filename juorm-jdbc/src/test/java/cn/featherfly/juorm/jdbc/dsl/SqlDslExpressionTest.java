@@ -1,5 +1,5 @@
 
-package cn.featherfly.juorm.sql.jdbc.dsl;
+package cn.featherfly.juorm.jdbc.dsl;
 
 import static org.testng.Assert.assertEquals;
 
@@ -27,7 +27,7 @@ import cn.featherfly.juorm.sql.dialect.Dialects;
  *
  * @author 钟冀
  */
-public class SqlConditionGroupExpressionTest {
+public class SqlDslExpressionTest {
 
     Jdbc jdbc = new Jdbc(null, Dialects.MYSQL);
     QueryBuilder sub = null;

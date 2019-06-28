@@ -1,4 +1,5 @@
 dependencies {
 	compile group: 'cn.featherfly', name: 'featherfly-common', version: '1.6.3'
 	//compile group: 'cn.featherfly', name: 'featherfly-db', version: '1.4.9'
+	compile group: 'org.hibernate.javax.persistence', name: 'hibernate-jpa-2.1-api', version: '1.0.2.Final'
 }

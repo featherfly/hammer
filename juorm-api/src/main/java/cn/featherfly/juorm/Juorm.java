@@ -1,9 +1,12 @@
 
 package cn.featherfly.juorm;
 
+import java.util.List;
+
 import cn.featherfly.juorm.dsl.execute.Delete;
+import cn.featherfly.juorm.dsl.execute.ExecutableExecutableUpdate;
 import cn.featherfly.juorm.dsl.execute.Update;
-import cn.featherfly.juorm.dsl.query.QueryData;
+import cn.featherfly.juorm.dsl.query.QueryEntity;
 
 /**
  * <p>
@@ -13,6 +16,22 @@ import cn.featherfly.juorm.dsl.query.QueryData;
  * @author zhongj
  */
 public interface Juorm {
+
+    enum IgnorePolicy {
+        /**
+         * not ignore
+         */
+        NONE,
+        /**
+         * ignore null
+         */
+        NULL,
+        /**
+         * ignore null and empty (String Array Collection Map size = 0)
+         */
+        EMPTY
+    }
+
     /**
      * save entity
      *
@@ -23,7 +42,18 @@ public interface Juorm {
     <E> int save(E entity);
 
     /**
-     * update entity, update all values
+     * batch save entity list
+     *
+     * @param <E>      generic type
+     * @param entities entity list to save
+     * @return effect data row num
+     */
+    <E> int save(List<E> entities);
+
+    /**
+     * update entity, update all values. equal invoke method
+     * {@link #update(Object, IgnorePolicy)} with params (entity,
+     * IgnorePolicy.NONE)
      *
      * @param <E>    generic type
      * @param entity entity to update
@@ -32,13 +62,58 @@ public interface Juorm {
     <E> int update(E entity);
 
     /**
-     * merge entity, update values ignore null or empty(string, list, map) value
+     * update all values for each entity in entity list. equal invoke method
+     * {@link #update(List<Object>, IgnorePolicy)} with params (entity,
+     * IgnorePolicy.NONE)
+     *
+     * @param <E>      generic type
+     * @param entities entity list to update
+     * @return effect data row num
+     */
+    <E> int update(List<E> entities);
+
+    /**
+     * update entity, update values with ignorePolicy
+     *
+     * @param <E>          generic type
+     * @param entity       entity to update
+     * @param ignorePolicy ignore value to update policy
+     * @return effect data row num
+     */
+    <E> int update(E entity, IgnorePolicy ignorePolicy);
+
+    /**
+     * update values with ignorePolicy for each entity in entity list.
+     *
+     * @param <E>          generic type
+     * @param entities     entity list to update
+     * @param ignorePolicy ignore value to update policy
+     * @return effect data row num
+     */
+    <E> int update(List<E> entities, IgnorePolicy ignorePolicy);
+
+    /**
+     * update values ignore null or empty(string, array, collectoin, map) value.
+     * equal invoke method {@link #update(Object, IgnorePolicy)} with params
+     * (entity, IgnorePolicy.EMPTY)
      *
      * @param <E>    generic type
      * @param entity entity to merge
      * @return effect data row num
      */
     <E> int merge(E entity);
+
+    /**
+     * update values ignore null or empty(string, array, collectoin, map) value
+     * for each entity in entity list. equal invoke method
+     * {@link #update(Object, IgnorePolicy)} with params (entity,
+     * IgnorePolicy.EMPTY)
+     *
+     * @param <E>      generic type
+     * @param entities entity list to merge
+     * @return effect data row num
+     */
+    <E> int merge(List<E> entities);
 
     /**
      * delete entity
@@ -50,13 +125,22 @@ public interface Juorm {
     <E> int delete(E entity);
 
     /**
+     * delete each entity in entity list
+     *
+     * @param <E>      generic type
+     * @param entities entity list to delete
+     * @return effect data row num
+     */
+    <E> int delete(List<E> entities);
+
+    /**
      * create QueryData for entityType
      *
      * @param <E>        generic type
      * @param entityType query for entityType
      * @return
      */
-    <E> QueryData query(Class<E> entityType);
+    <E> QueryEntity query(Class<E> entityType);
 
     /**
      * create update for entityType
@@ -65,7 +149,7 @@ public interface Juorm {
      * @param entityType update for entityType
      * @return
      */
-    <E> Update update(Class<E> entityType);
+    <E, U extends ExecutableExecutableUpdate<U>> Update<U> update(Class<E> entityType);
 
     /**
      * create delete for entityType

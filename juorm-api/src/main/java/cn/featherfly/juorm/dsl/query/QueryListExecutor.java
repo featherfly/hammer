@@ -3,7 +3,7 @@ package cn.featherfly.juorm.dsl.query;
 
 import java.util.List;
 
-import cn.featherfly.juorm.orm.RowMapper;
+import cn.featherfly.juorm.mapping.RowMapper;
 
 /**
  * <p>

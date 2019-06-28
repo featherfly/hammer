@@ -14,6 +14,8 @@ import cn.featherfly.juorm.JuormException;
  */
 public class JuormJdbcException extends JuormException {
 
+    private static final long serialVersionUID = 6788081346324738442L;
+
     /**
      *
      */

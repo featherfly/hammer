@@ -1,9 +1,13 @@
 
 package cn.featherfly.juorm;
 
+import java.util.List;
+
+import cn.featherfly.juorm.Juorm.IgnorePolicy;
 import cn.featherfly.juorm.dsl.execute.Delete;
+import cn.featherfly.juorm.dsl.execute.ExecutableExecutableUpdate;
 import cn.featherfly.juorm.dsl.execute.Update;
-import cn.featherfly.juorm.dsl.query.QueryData;
+import cn.featherfly.juorm.dsl.query.QueryEntity;
 
 /**
  * <p>
@@ -17,38 +21,96 @@ public interface GenericJuorm<E> {
     /**
      * save entity
      *
-     * @param <E>    generic type
      * @param entity entity to save
      * @return effect data row num
      */
     int save(E entity);
 
     /**
-     * update entity, update all values
+     * save entities
      *
-     * @param <E>    generic type
+     * @param <E>      generic type
+     * @param entities entity list to save
+     * @return effect data row num
+     */
+    int save(List<E> entities);
+
+    /**
+     * update entity, update all values. equal invoke method
+     * {@link #update(Object, IgnorePolicy)} with params (entity,
+     * IgnorePolicy.NONE)
+     *
      * @param entity entity to update
      * @return effect data row num
      */
     int update(E entity);
 
     /**
+     * update all values for each entity in entity list. equal invoke method
+     * {@link #update(List<Object>, IgnorePolicy)} with params (entity,
+     * IgnorePolicy.NONE)
+     *
+     * @param entities entity list to update
+     * @return effect data row num
+     */
+    int update(List<E> entities);
+
+    /**
+     * /** merge entity, update values ignore null or empty(string, array,
+     * collectoin, map) value. equal invoke method
+     * {@link #update(Object, IgnorePolicy)} with params (entity,
+     * IgnorePolicy.EMPTY)
+     *
+     * @param <E>          generic type
+     * @param entity       entity to update
+     * @param ignorePolicy ignore value to update policy
+     * @return effect data row num
+     */
+    int update(E entity, IgnorePolicy ignorePolicy);
+
+    /**
+     * update values with ignorePolicy for each entity in entity list.
+     *
+     * @param entities     entity list to update
+     * @param ignorePolicy ignore value to update policy
+     * @return effect data row num
+     */
+    int update(List<E> entities, IgnorePolicy ignorePolicy);
+
+    /**
      * merge entity, update values ignore null or empty(string, list, map) value
      *
-     * @param <E>    generic type
      * @param entity entity to merge
      * @return effect data row num
      */
     int merge(E entity);
 
     /**
+     * update values ignore null or empty(string, array, collectoin, map) value
+     * for each entity in entity list. equal invoke method
+     * {@link #update(Object, IgnorePolicy)} with params (entity,
+     * IgnorePolicy.EMPTY)
+     *
+     * @param entities entity list to merge
+     * @return effect data row num
+     */
+    int merge(List<E> entities);
+
+    /**
      * delete entity
      *
-     * @param <E>    generic type
      * @param entity entity to delete
      * @return effect data row num
      */
     int delete(E entity);
+
+    /**
+     * delete each entity in entity list
+     *
+     * @param entities entity list to delete
+     * @return effect data row num
+     */
+    int delete(List<E> entities);
 
     /**
      * create QueryData for entityType
@@ -57,7 +119,7 @@ public interface GenericJuorm<E> {
      * @param entityType query for entityType
      * @return
      */
-    QueryData query();
+    QueryEntity query();
 
     /**
      * create update for entityType
@@ -65,7 +127,7 @@ public interface GenericJuorm<E> {
      * @param entityType update for entityType
      * @return
      */
-    Update update();
+    <U extends ExecutableExecutableUpdate<U>> Update<U> update();
 
     /**
      * create delete for entityType

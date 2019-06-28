@@ -10,7 +10,7 @@ import java.util.Collection;
  *
  * @author zhongj
  */
-public interface QueryData extends QueryListExecutor, QueryConditionLimit {
+public interface QueryEntity extends QueryListExecutor, QueryConditionLimit {
     /**
      * <p>
      * 添加select的列
