@@ -2,8 +2,8 @@
 package cn.featherfly.juorm.sql.dml.builder.basic;
 
 import cn.featherfly.common.constant.Chars;
+import cn.featherfly.juorm.jdbc.dsl.execute.SqlBuilder;
 import cn.featherfly.juorm.sql.dialect.Dialect;
-import cn.featherfly.juorm.sql.dml.builder.SqlBuilder;
 
 /**
  * <p>

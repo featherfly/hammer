@@ -12,6 +12,8 @@ import cn.featherfly.juorm.sql.dialect.Dialect;
  */
 public class UpdateColumnElement extends ParamedColumnElement {
 
+    protected SetType setType;
+
     /**
      * @param dialect dialect
      * @param name    name
@@ -28,7 +30,22 @@ public class UpdateColumnElement extends ParamedColumnElement {
      * @param tableAlias tableAlias
      */
     public UpdateColumnElement(Dialect dialect, String name, Object param, String tableAlias) {
+        this(dialect, name, param, tableAlias, null);
+    }
+
+    /**
+     * @param dialect    dialect
+     * @param name       name
+     * @param param      param
+     * @param tableAlias tableAlias
+     */
+    public UpdateColumnElement(Dialect dialect, String name, Object param, String tableAlias, SetType setType) {
         super(dialect, name, param, tableAlias);
+        if (setType == null) {
+            this.setType = SetType.SET;
+        } else {
+            this.setType = setType;
+        }
     }
 
     /**
@@ -36,6 +53,15 @@ public class UpdateColumnElement extends ParamedColumnElement {
      */
     @Override
     public String toSql() {
-        return dialect.buildColumnSql(getName(), getTableAlias()) + " = ?";
+        String columnName = dialect.buildColumnSql(getName(), getTableAlias());
+        if (setType == SetType.SET) {
+            return columnName + " = ?";
+        } else {
+            return columnName + " = " + columnName + " + ?";
+        }
+    }
+
+    public enum SetType {
+        SET, INCR
     }
 }

@@ -1,6 +1,6 @@
-package cn.featherfly.juorm.sql.dml.builder;
+package cn.featherfly.juorm.jdbc.dsl.execute;
 
-import cn.featherfly.juorm.dml.builder.SortBuilder;
+import cn.featherfly.juorm.expression.SortExpression;
 import cn.featherfly.juorm.sql.dialect.Dialect;
 import cn.featherfly.juorm.sql.dml.builder.basic.SqlOrderByBasicBuilder;
 
@@ -11,17 +11,17 @@ import cn.featherfly.juorm.sql.dml.builder.basic.SqlOrderByBasicBuilder;
  *
  * @author zhongj
  */
-public class SqlSortBuilder implements SortBuilder {
+public class SqlSortExpressionBuilder implements SortExpression<SqlSortExpressionBuilder>, SqlBuilder {
 
     private SqlOrderByBasicBuilder orderByBuilder;
 
     private String tableAlias;
 
-    public SqlSortBuilder(Dialect dialect) {
+    public SqlSortExpressionBuilder(Dialect dialect) {
         this(dialect, null);
     }
 
-    public SqlSortBuilder(Dialect dialect, String tableAlias) {
+    public SqlSortExpressionBuilder(Dialect dialect, String tableAlias) {
         orderByBuilder = new SqlOrderByBasicBuilder(dialect);
         this.tableAlias = tableAlias;
     }
@@ -30,7 +30,7 @@ public class SqlSortBuilder implements SortBuilder {
      * {@inheritDoc}
      */
     @Override
-    public SortBuilder asc(String... names) {
+    public SqlSortExpressionBuilder asc(String... names) {
         for (String name : names) {
             orderByBuilder.addAsc(name, tableAlias);
         }
@@ -41,7 +41,7 @@ public class SqlSortBuilder implements SortBuilder {
      * {@inheritDoc}
      */
     @Override
-    public SortBuilder desc(String... names) {
+    public SqlSortExpressionBuilder desc(String... names) {
         for (String name : names) {
             orderByBuilder.addDesc(name, tableAlias);
         }

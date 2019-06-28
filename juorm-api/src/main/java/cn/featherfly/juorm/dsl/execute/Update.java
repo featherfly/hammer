@@ -10,7 +10,7 @@ package cn.featherfly.juorm.dsl.execute;
  */
 public interface Update<U extends ExecutableUpdate<U>> {
 
-    U set(String property, Object value);
+    U set(String name, Object value);
 
-    <N extends Number> U increase(String property, N value);
+    <N extends Number> U increase(String name, N value);
 }

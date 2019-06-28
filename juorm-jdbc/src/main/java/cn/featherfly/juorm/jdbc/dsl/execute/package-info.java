@@ -1,6 +1,6 @@
 /**
  * <p>
- * dsl execute impl
+ * dsl execute impl. SqlUpdater, SqlDeleter
  * </p>
  *
  * @author zhongj

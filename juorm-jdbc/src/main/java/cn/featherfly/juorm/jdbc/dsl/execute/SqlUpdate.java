@@ -1,5 +1,5 @@
 
-package cn.featherfly.juorm.jdbc.dsl.update;
+package cn.featherfly.juorm.jdbc.dsl.execute;
 
 import cn.featherfly.juorm.dsl.execute.Update;
 

@@ -1,11 +1,10 @@
 
-package cn.featherfly.juorm.jdbc.dsl.delete;
+package cn.featherfly.juorm.jdbc.dsl.execute;
 
 import cn.featherfly.juorm.dsl.Repository;
 import cn.featherfly.juorm.dsl.execute.ConditionGroupExpression;
 import cn.featherfly.juorm.dsl.execute.Delete;
 import cn.featherfly.juorm.jdbc.Jdbc;
-import cn.featherfly.juorm.jdbc.dsl.execute.SqlConditionGroupExpression;
 
 /**
  * <p>
@@ -40,6 +39,6 @@ public class SqlDelete implements Delete {
      */
     @Override
     public ConditionGroupExpression where() {
-        return new SqlConditionGroupExpression(jdbc);
+        return new SqlDeleteExpression(jdbc, tableName);
     }
 }

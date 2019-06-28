@@ -7,7 +7,7 @@ package cn.featherfly.juorm.expression;
  *
  * @author zhongj
  */
-public interface SortExpression extends Expression {
+public interface SortExpression<S extends SortExpression<S>> extends Expression {
     /**
      * <p>
      * 添加升序条件
@@ -16,7 +16,7 @@ public interface SortExpression extends Expression {
      * @param names 名称
      * @return this
      */
-    SortExpression asc(String... names);
+    S asc(String... names);
 
     /**
      * <p>
@@ -26,6 +26,6 @@ public interface SortExpression extends Expression {
      * @param names 名称
      * @return this
      */
-    SortExpression desc(String... names);
+    S desc(String... names);
 
 }

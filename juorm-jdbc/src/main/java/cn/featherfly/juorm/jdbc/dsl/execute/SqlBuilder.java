@@ -1,5 +1,5 @@
 
-package cn.featherfly.juorm.sql.dml.builder;
+package cn.featherfly.juorm.jdbc.dsl.execute;
 
 import cn.featherfly.juorm.dml.builder.Builder;
 

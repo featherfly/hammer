@@ -8,8 +8,8 @@ package cn.featherfly.juorm.expression;
  *
  * @author zhongj
  */
-public interface LogicGroupSortExpression<C extends ConditionGroupExpression<C, L>, L extends LogicGroupSortExpression<C, L, S>, S extends SortExpression>
-        extends LogicGroupExpression<C, L> {
+public interface LogicGroupSortExpression<C extends ConditionGroupExpression<C, L>,
+        L extends LogicGroupSortExpression<C, L, S>, S extends SortExpression<S>> extends LogicGroupExpression<C, L> {
 
     /**
      * 结束当前条件逻辑组并返回上一级逻辑组

@@ -6,11 +6,12 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import cn.featherfly.common.constant.Chars;
+import cn.featherfly.juorm.jdbc.dsl.execute.SqlBuilder;
 import cn.featherfly.juorm.sql.dialect.Dialect;
 import cn.featherfly.juorm.sql.dialect.Dialect.Keyworld;
-import cn.featherfly.juorm.sql.dml.builder.SqlBuilder;
 import cn.featherfly.juorm.sql.model.ParamedColumnElement;
 import cn.featherfly.juorm.sql.model.UpdateColumnElement;
+import cn.featherfly.juorm.sql.model.UpdateColumnElement.SetType;
 
 /**
  * <p>
@@ -29,10 +30,6 @@ public class SqlUpdateSetBasicBuilder implements SqlBuilder {
 
     private Dialect dialect;
 
-    public SqlUpdateSetBasicBuilder(Dialect dialect) {
-        this(dialect, null);
-    }
-
     public SqlUpdateSetBasicBuilder(Dialect dialect, String tableName) {
         this(dialect, tableName, null);
     }
@@ -45,6 +42,11 @@ public class SqlUpdateSetBasicBuilder implements SqlBuilder {
 
     public SqlUpdateSetBasicBuilder setValue(String columnName, Object value) {
         params.add(new UpdateColumnElement(dialect, columnName, value, alias));
+        return this;
+    }
+
+    public SqlUpdateSetBasicBuilder setValue(String columnName, Object value, SetType setType) {
+        params.add(new UpdateColumnElement(dialect, columnName, value, alias, setType));
         return this;
     }
 

@@ -1,5 +1,5 @@
 
-package cn.featherfly.juorm.jdbc.dsl.delete;
+package cn.featherfly.juorm.jdbc.dsl.execute;
 
 import cn.featherfly.juorm.dsl.Repository;
 import cn.featherfly.juorm.dsl.execute.Deleter;
