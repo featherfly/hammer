@@ -2,23 +2,27 @@
 package cn.featherfly.juorm;
 
 import cn.featherfly.juorm.dsl.execute.Delete;
+import cn.featherfly.juorm.dsl.execute.ExecutableExecutableUpdate;
 import cn.featherfly.juorm.dsl.execute.Update;
-import cn.featherfly.juorm.dsl.query.QueryData;
+import cn.featherfly.juorm.dsl.query.QueryEntity;
 
 /**
  * <p>
  * GenericJuorm
  * </p>
  *
- * @param <E> generic entity type
+ * @param <E>
+ *            generic entity type
  * @author zhongj
  */
 public interface GenericJuorm<E> {
     /**
      * save entity
      *
-     * @param <E>    generic type
-     * @param entity entity to save
+     * @param <E>
+     *            generic type
+     * @param entity
+     *            entity to save
      * @return effect data row num
      */
     int save(E entity);
@@ -26,8 +30,10 @@ public interface GenericJuorm<E> {
     /**
      * update entity, update all values
      *
-     * @param <E>    generic type
-     * @param entity entity to update
+     * @param <E>
+     *            generic type
+     * @param entity
+     *            entity to update
      * @return effect data row num
      */
     int update(E entity);
@@ -35,8 +41,10 @@ public interface GenericJuorm<E> {
     /**
      * merge entity, update values ignore null or empty(string, list, map) value
      *
-     * @param <E>    generic type
-     * @param entity entity to merge
+     * @param <E>
+     *            generic type
+     * @param entity
+     *            entity to merge
      * @return effect data row num
      */
     int merge(E entity);
@@ -44,8 +52,10 @@ public interface GenericJuorm<E> {
     /**
      * delete entity
      *
-     * @param <E>    generic type
-     * @param entity entity to delete
+     * @param <E>
+     *            generic type
+     * @param entity
+     *            entity to delete
      * @return effect data row num
      */
     int delete(E entity);
@@ -53,25 +63,30 @@ public interface GenericJuorm<E> {
     /**
      * create QueryData for entityType
      *
-     * @param <E>        generic type
-     * @param entityType query for entityType
+     * @param <E>
+     *            generic type
+     * @param entityType
+     *            query for entityType
      * @return
      */
-    QueryData query();
+    QueryEntity query();
 
     /**
      * create update for entityType
      *
-     * @param entityType update for entityType
+     * @param entityType
+     *            update for entityType
      * @return
      */
-    Update update();
+    <U extends ExecutableExecutableUpdate<U>> Update<U> update();
 
     /**
      * create delete for entityType
      *
-     * @param <E>        generic type
-     * @param entityType update for entityType
+     * @param <E>
+     *            generic type
+     * @param entityType
+     *            update for entityType
      * @return
      */
     Delete delete();

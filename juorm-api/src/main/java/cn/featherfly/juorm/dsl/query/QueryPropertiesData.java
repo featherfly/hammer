@@ -8,5 +8,5 @@ package cn.featherfly.juorm.dsl.query;
  *
  * @author zhongj
  */
-public interface QueryPropertiesData extends QueryData, QueryValueExecutor {
+public interface QueryPropertiesData extends QueryEntity, QueryValueExecutor {
 }
