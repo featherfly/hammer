@@ -8,7 +8,8 @@ package cn.featherfly.juorm.dsl.execute;
  *
  * @author zhongj
  */
-public interface ExecutableUpdate<U extends ExecutableUpdate<U>> extends Update<U>, Executor {
+public interface ExecutableExecutableUpdate<U extends ExecutableExecutableUpdate<U>>
+        extends Update<U>, Executor {
 
     /**
      * <p>
@@ -17,5 +18,5 @@ public interface ExecutableUpdate<U extends ExecutableUpdate<U>> extends Update<
      *
      * @return QueryCondition
      */
-    ConditionGroupExpression where();
+    ExecutableConditionGroupExpression where();
 }

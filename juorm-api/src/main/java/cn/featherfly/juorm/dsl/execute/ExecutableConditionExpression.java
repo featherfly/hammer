@@ -10,6 +10,6 @@ import cn.featherfly.juorm.expression.ConditionsExpression;
  *
  * @author zhongj
  */
-public interface ConditionExpression extends ConditionsExpression<ConditionExpression, ConditionLogic> {
-    //
+public interface ExecutableConditionExpression extends
+        ConditionsExpression<ExecutableConditionExpression, ExecutableConditionLogicExpression> {
 }

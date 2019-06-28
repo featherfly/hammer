@@ -1,4 +1,4 @@
-package cn.featherfly.juorm.jdbc.dsl.execute;
+package cn.featherfly.juorm.sql.dml;
 
 import cn.featherfly.juorm.expression.SortExpression;
 import cn.featherfly.juorm.sql.dialect.Dialect;
@@ -11,7 +11,8 @@ import cn.featherfly.juorm.sql.dml.builder.basic.SqlOrderByBasicBuilder;
  *
  * @author zhongj
  */
-public class SqlSortExpressionBuilder implements SortExpression<SqlSortExpressionBuilder>, SqlBuilder {
+public class SqlSortExpressionBuilder
+        implements SortExpression<SqlSortExpressionBuilder>, SqlBuilder {
 
     private SqlOrderByBasicBuilder orderByBuilder;
 
@@ -76,9 +77,18 @@ public class SqlSortExpressionBuilder implements SortExpression<SqlSortExpressio
     /**
      * 设置tableAlias
      *
-     * @param tableAlias tableAlias
+     * @param tableAlias
+     *            tableAlias
      */
     public void setTableAlias(String tableAlias) {
         this.tableAlias = tableAlias;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public String expression() {
+        return build();
     }
 }

@@ -15,7 +15,7 @@ import cn.featherfly.juorm.sql.dml.builder.basic.SqlUpdateSetBasicBuilder;
  *
  * @author zhongj
  */
-public class SqlUpdateExpression extends SqlConditionGroupExpressionBuilder {
+public class SqlUpdateExpression extends SqlConditionGroupExpression {
 
     private SqlUpdateSetBasicBuilder builder;
 

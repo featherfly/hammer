@@ -4,9 +4,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 import cn.featherfly.common.constant.Chars;
-import cn.featherfly.juorm.jdbc.dsl.execute.SqlBuilder;
 import cn.featherfly.juorm.sql.dialect.Dialect;
 import cn.featherfly.juorm.sql.dialect.Join;
+import cn.featherfly.juorm.sql.dml.SqlBuilder;
 import cn.featherfly.juorm.sql.model.SelectColumnElement;
 
 /**

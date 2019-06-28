@@ -16,5 +16,5 @@ public interface LogicGroupExpression<C extends ConditionGroupExpression<C, L>, 
      *
      * @return parent LogicBuilder
      */
-    L parent();
+    L endGroup();
 }

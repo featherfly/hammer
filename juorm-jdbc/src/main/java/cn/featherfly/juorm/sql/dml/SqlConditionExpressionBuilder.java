@@ -1,5 +1,5 @@
 
-package cn.featherfly.juorm.jdbc.dsl.execute;
+package cn.featherfly.juorm.sql.dml;
 
 import cn.featherfly.juorm.dml.builder.BuilderException;
 import cn.featherfly.juorm.expression.ParamedExpression;
@@ -14,33 +14,45 @@ import cn.featherfly.juorm.sql.model.ConditionColumnElement;
  *
  * @author zhongj
  */
-public class SqlConditionExpressionBuilder implements ParamedExpression, SqlBuilder {
+public class SqlConditionExpressionBuilder
+        implements ParamedExpression, SqlBuilder {
 
     private ConditionColumnElement conditionColumnElement;
 
     /**
-     * @param dialect       dialect
-     * @param name          名称
-     * @param value         值
-     * @param queryOperator 查询运算符（查询类型）
+     * @param dialect
+     *            dialect
+     * @param name
+     *            名称
+     * @param value
+     *            值
+     * @param queryOperator
+     *            查询运算符（查询类型）
      */
-    SqlConditionExpressionBuilder(Dialect dialect, String name, Object value, QueryOperator queryOperator) {
+    SqlConditionExpressionBuilder(Dialect dialect, String name, Object value,
+            QueryOperator queryOperator) {
         this(dialect, name, value, queryOperator, null);
     }
 
     /**
-     * @param dialect       dialect
-     * @param name          名称
-     * @param queryAlias    查询别名
-     * @param value         值
-     * @param queryOperator 查询运算符（查询类型）
+     * @param dialect
+     *            dialect
+     * @param name
+     *            名称
+     * @param queryAlias
+     *            查询别名
+     * @param value
+     *            值
+     * @param queryOperator
+     *            查询运算符（查询类型）
      */
-    SqlConditionExpressionBuilder(Dialect dialect, String name, Object value, QueryOperator queryOperator,
-            String queryAlias) {
+    SqlConditionExpressionBuilder(Dialect dialect, String name, Object value,
+            QueryOperator queryOperator, String queryAlias) {
         if (queryOperator == null) {
             throw new BuilderException("#query.operator.null");
         }
-        conditionColumnElement = new ConditionColumnElement(dialect, name, value, queryOperator, queryAlias);
+        conditionColumnElement = new ConditionColumnElement(dialect, name,
+                value, queryOperator, queryAlias);
     }
 
     /**
@@ -73,6 +85,14 @@ public class SqlConditionExpressionBuilder implements ParamedExpression, SqlBuil
      */
     @Override
     public String toString() {
+        return build();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public String expression() {
         return build();
     }
 }

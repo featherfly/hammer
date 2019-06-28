@@ -7,10 +7,10 @@ import java.util.List;
 import cn.featherfly.common.constant.Chars;
 import cn.featherfly.common.lang.AssertIllegalArgument;
 import cn.featherfly.common.lang.LangUtils;
-import cn.featherfly.juorm.jdbc.dsl.execute.SqlBuilder;
 import cn.featherfly.juorm.operator.AggregateFunction;
 import cn.featherfly.juorm.sql.dialect.Dialect;
 import cn.featherfly.juorm.sql.dialect.Dialect.Keyworld;
+import cn.featherfly.juorm.sql.dml.SqlBuilder;
 import cn.featherfly.juorm.sql.model.SelectColumnElement;
 
 /**

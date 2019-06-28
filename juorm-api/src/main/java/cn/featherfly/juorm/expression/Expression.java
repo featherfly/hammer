@@ -9,4 +9,6 @@ package cn.featherfly.juorm.expression;
  * @author zhongj
  */
 public interface Expression {
+
+    String expression();
 }

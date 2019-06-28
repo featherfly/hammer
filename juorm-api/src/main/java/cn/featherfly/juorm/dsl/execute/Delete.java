@@ -17,5 +17,5 @@ public interface Delete {
      *
      * @return QueryCondition
      */
-    ConditionGroupExpression where();
+    ExecutableConditionGroupExpression where();
 }

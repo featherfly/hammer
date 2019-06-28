@@ -12,7 +12,7 @@ import cn.featherfly.juorm.sql.dml.builder.basic.SqlDeleteFromBasicBuilder;
  *
  * @author zhongj
  */
-public class SqlDeleteExpression extends SqlConditionGroupExpressionBuilder {
+public class SqlDeleteExpression extends SqlConditionGroupExpression {
 
     private SqlDeleteFromBasicBuilder builder;
 

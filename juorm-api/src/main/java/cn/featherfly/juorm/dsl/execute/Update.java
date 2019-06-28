@@ -8,7 +8,7 @@ package cn.featherfly.juorm.dsl.execute;
  *
  * @author zhongj
  */
-public interface Update<U extends ExecutableUpdate<U>> {
+public interface Update<U extends ExecutableExecutableUpdate<U>> {
 
     U set(String name, Object value);
 

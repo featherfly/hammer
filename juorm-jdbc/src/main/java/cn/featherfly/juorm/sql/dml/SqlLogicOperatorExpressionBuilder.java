@@ -1,5 +1,5 @@
 
-package cn.featherfly.juorm.jdbc.dsl.execute;
+package cn.featherfly.juorm.sql.dml;
 
 import cn.featherfly.juorm.expression.LogicOperatorExpression;
 import cn.featherfly.juorm.operator.LogicOperator;
@@ -11,10 +11,12 @@ import cn.featherfly.juorm.operator.LogicOperator;
  *
  * @author zhongj
  */
-public class SqlLogicOperatorExpressionBuilder extends LogicOperatorExpression implements SqlBuilder {
+public class SqlLogicOperatorExpressionBuilder extends LogicOperatorExpression
+        implements SqlBuilder {
 
     /**
-     * @param logicOperator 逻辑运算符
+     * @param logicOperator
+     *            逻辑运算符
      */
     public SqlLogicOperatorExpressionBuilder(LogicOperator logicOperator) {
         super(logicOperator);
@@ -33,6 +35,14 @@ public class SqlLogicOperatorExpressionBuilder extends LogicOperatorExpression i
      */
     @Override
     public String toString() {
+        return build();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public String expression() {
         return build();
     }
 }

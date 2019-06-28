@@ -6,9 +6,9 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import cn.featherfly.common.constant.Chars;
-import cn.featherfly.juorm.jdbc.dsl.execute.SqlBuilder;
 import cn.featherfly.juorm.sql.dialect.Dialect;
 import cn.featherfly.juorm.sql.dialect.Dialect.Keyworld;
+import cn.featherfly.juorm.sql.dml.SqlBuilder;
 import cn.featherfly.juorm.sql.model.ParamedColumnElement;
 import cn.featherfly.juorm.sql.model.UpdateColumnElement;
 import cn.featherfly.juorm.sql.model.UpdateColumnElement.SetType;
