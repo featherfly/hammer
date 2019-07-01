@@ -1,6 +1,10 @@
 
 package cn.featherfly.juorm.jdbc;
 
+import javax.sql.DataSource;
+
+import org.springframework.dao.DataAccessException;
+import org.springframework.jdbc.core.ConnectionCallback;
 import org.springframework.jdbc.core.JdbcTemplate;
 
 import cn.featherfly.juorm.sql.dialect.Dialect;
@@ -33,6 +37,13 @@ public class Jdbc {
         super();
         this.jdbcTemplate = jdbcTemplate;
         this.dialect = dialect;
+    }
+
+    /**
+     * @return DataSource
+     */
+    public DataSource getDataSource() {
+        return jdbcTemplate.getDataSource();
     }
 
     /**
@@ -69,5 +80,16 @@ public class Jdbc {
      */
     public void setDialect(Dialect dialect) {
         this.dialect = dialect;
+    }
+
+    /**
+     * @param <T>
+     * @param action
+     * @return
+     * @throws DataAccessException
+     * @see org.springframework.jdbc.core.JdbcTemplate#execute(org.springframework.jdbc.core.ConnectionCallback)
+     */
+    public <T> T execute(ConnectionCallback<T> action) throws DataAccessException {
+        return jdbcTemplate.execute(action);
     }
 }

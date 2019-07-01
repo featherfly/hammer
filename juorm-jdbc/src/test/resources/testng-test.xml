@@ -8,6 +8,12 @@
                         
         </classes>
     </test>
+    <test name="dsl test">
+        <parameter name="test-name" value="Builder Test" />
+        <classes>
+            <class name="cn.featherfly.juorm.jdbc.sql.SqlDslExpressionTest" />
+        </classes>
+    </test>
     
     <test name="model test">
         <parameter name="test-name" value="Model Test" />

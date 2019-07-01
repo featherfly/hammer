@@ -5,4 +5,4 @@
  * 
  * @author zhongj
  */
-package cn.featherfly.juorm.orm;
+package cn.featherfly.juorm.mapping;

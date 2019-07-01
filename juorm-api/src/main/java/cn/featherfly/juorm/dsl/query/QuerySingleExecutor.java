@@ -1,7 +1,7 @@
 
 package cn.featherfly.juorm.dsl.query;
 
-import cn.featherfly.juorm.orm.RowMapper;
+import cn.featherfly.juorm.mapping.RowMapper;
 
 /**
  * <p>
