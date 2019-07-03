@@ -2,8 +2,8 @@
 package cn.featherfly.juorm.jdbc.dsl.execute;
 
 import cn.featherfly.juorm.dsl.Repository;
-import cn.featherfly.juorm.dsl.execute.Delete;
 import cn.featherfly.juorm.dsl.execute.ExecutableConditionGroupExpression;
+import cn.featherfly.juorm.expression.execute.Delete;
 import cn.featherfly.juorm.jdbc.Jdbc;
 
 /**

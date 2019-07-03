@@ -9,6 +9,6 @@ package cn.featherfly.juorm.dsl.query;
  * @author zhongj
  */
 public interface QueryConditionGroupExpression extends
-        cn.featherfly.juorm.expression.ConditionGroupExpression<QueryConditionGroupExpression, QueryConditionGroupLogic> {
+        cn.featherfly.juorm.expression.condition.ConditionGroupExpression<QueryConditionGroupExpression, QueryConditionGroupLogicExpression> {
 
 }

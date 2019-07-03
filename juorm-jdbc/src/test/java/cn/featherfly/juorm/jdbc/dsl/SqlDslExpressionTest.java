@@ -50,12 +50,14 @@ public class SqlDslExpressionTest {
     public void testSqlConditionGroupExpressionBuilder() {
         SqlConditionGroupExpression builder = new SqlConditionGroupExpression(
                 new Jdbc(null, Dialects.MYSQL));
-        builder.eq("name", name).and().eq("pwd", pwd).and().group().eq("sex", sex).or().gt("age", age);
+        builder.eq("name", name).and().eq("pwd", pwd).and().group()
+                .eq("sex", sex).or().gt("age", age);
 
         System.out.println(builder.build());
         System.out.println(builder.getParams());
 
-        assertEquals("`name` = ? AND `pwd` = ? AND ( `sex` = ? OR `age` > ? )", builder.build());
+        assertEquals("`name` = ? AND `pwd` = ? AND ( `sex` = ? OR `age` > ? )",
+                builder.build());
         assertEquals(params, builder.getParams());
 
     }
@@ -63,12 +65,15 @@ public class SqlDslExpressionTest {
     @Test
     public void testSqlDeleteExpression() {
         SqlDeleteExpression del = new SqlDeleteExpression(jdbc, "user");
-        del.eq("name", name).and().eq("pwd", pwd).and().group().eq("sex", sex).or().gt("age", age);
+        del.eq("name", name).and().eq("pwd", pwd).and().group().eq("sex", sex)
+                .or().gt("age", age);
 
         System.out.println(del.build());
         System.out.println(del.getParams());
 
-        assertEquals("DELETE FROM `user` WHERE `name` = ? AND `pwd` = ? AND ( `sex` = ? OR `age` > ? )", del.build());
+        assertEquals(
+                "DELETE FROM `user` WHERE `name` = ? AND `pwd` = ? AND ( `sex` = ? OR `age` > ? )",
+                del.build());
         assertEquals(params, del.getParams());
 
     }
@@ -82,13 +87,28 @@ public class SqlDslExpressionTest {
         params.add(sex);
         SqlUpdater updater = new SqlUpdater(jdbc);
         SqlConditionGroupExpression e = (SqlConditionGroupExpression) updater
-                .update(new SimpleRepository("user")).set("name", name).set("pwd", pwd).increase("age", age).where()
-                .eq("sex", sex);
+                .update(new SimpleRepository("user")).set("name", name)
+                .set("pwd", pwd).increase("age", age).where().eq("sex", sex);
 
         System.out.println(e);
         System.out.println(e.getParams());
 
-        assertEquals("UPDATE `user` SET `name` = ?, `pwd` = ?, `age` = `age` + ? WHERE `sex` = ?", e.toString());
+        assertEquals(
+                "UPDATE `user` SET `name` = ?, `pwd` = ?, `age` = `age` + ? WHERE `sex` = ?",
+                e.toString());
+        assertEquals(params, e.getParams());
+
+        e = (SqlConditionGroupExpression) updater
+                .update(new SimpleRepository("user")).property("name").set(name)
+                .property("pwd").set(pwd).propertyNumber("age").increase(age)
+                .where().eq("sex", sex);
+
+        System.out.println(e);
+        System.out.println(e.getParams());
+
+        assertEquals(
+                "UPDATE `user` SET `name` = ?, `pwd` = ?, `age` = `age` + ? WHERE `sex` = ?",
+                e.toString());
         assertEquals(params, e.getParams());
 
     }

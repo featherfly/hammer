@@ -46,19 +46,20 @@ public class Jdbc {
         return jdbcTemplate.getDataSource();
     }
 
-    /**
-     * 返回jdbcTemplate
-     *
-     * @return jdbcTemplate
-     */
-    public JdbcTemplate getJdbcTemplate() {
-        return jdbcTemplate;
-    }
+    // /**
+    // * 返回jdbcTemplate
+    // *
+    // * @return jdbcTemplate
+    // */
+    // public JdbcTemplate getJdbcTemplate() {
+    // return jdbcTemplate;
+    // }
 
     /**
      * 设置jdbcTemplate
      *
-     * @param jdbcTemplate jdbcTemplate
+     * @param jdbcTemplate
+     *            jdbcTemplate
      */
     public void setJdbcTemplate(JdbcTemplate jdbcTemplate) {
         this.jdbcTemplate = jdbcTemplate;
@@ -76,10 +77,23 @@ public class Jdbc {
     /**
      * 设置dialect
      *
-     * @param dialect dialect
+     * @param dialect
+     *            dialect
      */
     public void setDialect(Dialect dialect) {
         this.dialect = dialect;
+    }
+
+    /**
+     * @param sql
+     * @param args
+     * @return
+     * @throws DataAccessException
+     * @see org.springframework.jdbc.core.JdbcTemplate#update(java.lang.String,
+     *      java.lang.Object[])
+     */
+    public int update(String sql, Object... args) throws DataAccessException {
+        return jdbcTemplate.update(sql, args);
     }
 
     /**
@@ -89,7 +103,8 @@ public class Jdbc {
      * @throws DataAccessException
      * @see org.springframework.jdbc.core.JdbcTemplate#execute(org.springframework.jdbc.core.ConnectionCallback)
      */
-    public <T> T execute(ConnectionCallback<T> action) throws DataAccessException {
+    public <T> T execute(ConnectionCallback<T> action)
+            throws DataAccessException {
         return jdbcTemplate.execute(action);
     }
 }

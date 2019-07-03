@@ -55,7 +55,7 @@ public class SqlConditionGroupExpression extends
      */
     @Override
     public int execute() {
-        return jdbc.getJdbcTemplate().update(build(), getParams());
+        return jdbc.update(build(), getParams());
     }
 
     // ********************************************************************

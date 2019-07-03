@@ -3,7 +3,11 @@ package cn.featherfly.juorm.jdbc.dsl.execute;
 
 import cn.featherfly.juorm.dsl.Repository;
 import cn.featherfly.juorm.dsl.execute.ExecutableConditionGroupExpression;
-import cn.featherfly.juorm.dsl.execute.ExecutableExecutableUpdate;
+import cn.featherfly.juorm.expression.execute.IExecutableUpdate;
+import cn.featherfly.juorm.expression.execute.property.SimpleUpdateNumberValue;
+import cn.featherfly.juorm.expression.execute.property.SimpleUpdateValue;
+import cn.featherfly.juorm.expression.execute.property.UpdateNumberValue;
+import cn.featherfly.juorm.expression.execute.property.UpdateValue;
 import cn.featherfly.juorm.jdbc.Jdbc;
 import cn.featherfly.juorm.sql.dml.builder.basic.SqlUpdateSetBasicBuilder;
 import cn.featherfly.juorm.sql.model.UpdateColumnElement.SetType;
@@ -16,7 +20,7 @@ import cn.featherfly.juorm.sql.model.UpdateColumnElement.SetType;
  * @author zhongj
  */
 public class SqlExecutableUpdate
-        implements SqlUpdate, ExecutableExecutableUpdate<SqlExecutableUpdate> {
+        implements SqlUpdate, IExecutableUpdate<SqlExecutableUpdate> {
 
     private String tableName;
 
@@ -66,6 +70,26 @@ public class SqlExecutableUpdate
     /**
      * {@inheritDoc}
      */
+    @SuppressWarnings("unchecked")
+    @Override
+    public <V extends UpdateValue<SqlExecutableUpdate, Object>> V property(
+            String name) {
+        return (V) new SimpleUpdateValue<>(this, name);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @SuppressWarnings("unchecked")
+    @Override
+    public <V extends UpdateNumberValue<SqlExecutableUpdate, Number>> V propertyNumber(
+            String name) {
+        return (V) new SimpleUpdateNumberValue<>(this, name);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public ExecutableConditionGroupExpression where() {
         return new SqlUpdateExpression(jdbc, tableName, builder);
@@ -78,4 +102,5 @@ public class SqlExecutableUpdate
     public int execute() {
         return new SqlUpdateExpression(jdbc, tableName, builder).execute();
     }
+
 }

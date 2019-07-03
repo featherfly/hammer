@@ -1,7 +1,7 @@
 
 package cn.featherfly.juorm.jdbc.dsl.execute;
 
-import cn.featherfly.juorm.dsl.execute.Update;
+import cn.featherfly.juorm.expression.execute.IUpdate;
 
 /**
  * <p>
@@ -10,6 +10,6 @@ import cn.featherfly.juorm.dsl.execute.Update;
  *
  * @author zhongj
  */
-public interface SqlUpdate extends Update<SqlExecutableUpdate> {
+public interface SqlUpdate extends IUpdate<SqlExecutableUpdate> {
 
 }

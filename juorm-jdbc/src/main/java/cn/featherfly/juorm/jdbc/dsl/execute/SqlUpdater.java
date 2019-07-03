@@ -28,4 +28,12 @@ public class SqlUpdater implements Updater<SqlUpdate> {
     public SqlUpdate update(Repository repository) {
         return new SqlExecutableUpdate(repository, jdbc);
     }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public SqlUpdate update(String repository) {
+        return new SqlExecutableUpdate(repository, jdbc);
+    }
 }

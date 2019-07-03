@@ -2,7 +2,7 @@
 package cn.featherfly.juorm.jdbc.dsl.execute;
 
 import cn.featherfly.juorm.dsl.Repository;
-import cn.featherfly.juorm.dsl.execute.Deleter;
+import cn.featherfly.juorm.expression.execute.Deleter;
 import cn.featherfly.juorm.jdbc.Jdbc;
 
 /**
@@ -27,6 +27,14 @@ public class SqlDeleter implements Deleter<SqlDelete> {
      */
     @Override
     public SqlDelete delete(Repository repository) {
+        return new SqlDelete(repository, jdbc);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public SqlDelete delete(String repository) {
         return new SqlDelete(repository, jdbc);
     }
 }

@@ -1,6 +1,6 @@
 package cn.featherfly.juorm.sql.dml;
 
-import cn.featherfly.juorm.expression.SortExpression;
+import cn.featherfly.juorm.expression.condition.SortExpression;
 import cn.featherfly.juorm.sql.dialect.Dialect;
 import cn.featherfly.juorm.sql.dml.builder.basic.SqlOrderByBasicBuilder;
 

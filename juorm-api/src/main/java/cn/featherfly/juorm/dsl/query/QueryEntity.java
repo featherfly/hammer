@@ -3,6 +3,9 @@ package cn.featherfly.juorm.dsl.query;
 
 import java.util.Collection;
 
+import cn.featherfly.juorm.expression.condition.ConditionGroupExpression;
+import cn.featherfly.juorm.expression.condition.LogicGroupExpression;
+
 /**
  * <p>
  * dsl for query data
@@ -10,7 +13,10 @@ import java.util.Collection;
  *
  * @author zhongj
  */
-public interface QueryEntity extends QueryListExecutor, QueryConditionLimit {
+public interface QueryEntity<Q extends QueryEntityProperties<Q, C, L>,
+        C extends ConditionGroupExpression<C, L>,
+        L extends LogicGroupExpression<C, L>>
+        extends QueryListExecutor, QueryConditionLimit {
     /**
      * <p>
      * 添加select的列
@@ -20,7 +26,7 @@ public interface QueryEntity extends QueryListExecutor, QueryConditionLimit {
      *            propertyName
      * @return FindBuilder
      */
-    QueryPropertiesData property(String propertyName);
+    Q property(String propertyName);
 
     /**
      * <p>
@@ -31,7 +37,7 @@ public interface QueryEntity extends QueryListExecutor, QueryConditionLimit {
      *            propertyNames
      * @return FindBuilder
      */
-    QueryPropertiesData property(String... propertyNames);
+    Q property(String... propertyNames);
 
     /**
      * <p>
@@ -42,7 +48,7 @@ public interface QueryEntity extends QueryListExecutor, QueryConditionLimit {
      *            propertyNames
      * @return FindBuilder
      */
-    QueryPropertiesData property(Collection<String> propertyNames);
+    Q property(Collection<String> propertyNames);
 
     /**
      * <p>
@@ -51,5 +57,5 @@ public interface QueryEntity extends QueryListExecutor, QueryConditionLimit {
      *
      * @return QueryCondition
      */
-    QueryConditionGroupExpression where();
+    C where();
 }

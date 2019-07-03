@@ -1,7 +1,7 @@
 
 package cn.featherfly.juorm.dml;
 
-import cn.featherfly.juorm.dsl.ConditionGroupExpression;
+import cn.featherfly.juorm.expression.ConditionGroupExpression;
 
 /**
  * <p>

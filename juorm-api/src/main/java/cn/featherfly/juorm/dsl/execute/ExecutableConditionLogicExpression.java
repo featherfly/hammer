@@ -1,7 +1,8 @@
 
 package cn.featherfly.juorm.dsl.execute;
 
-import cn.featherfly.juorm.dsl.ConditionLogicExpression;
+import cn.featherfly.juorm.expression.ConditionLogicExpression;
+import cn.featherfly.juorm.expression.execute.Executor;
 
 /**
  * <p>

@@ -8,9 +8,7 @@ package cn.featherfly.juorm.dsl.execute;
  *
  * @author zhongj
  */
-public interface Update<U extends ExecutableExecutableUpdate<U>> {
+public interface Update<U extends ExecutableUpdate<U>> extends
+        cn.featherfly.juorm.expression.execute.Update<U, ExecutableConditionGroupExpression, ExecutableConditionGroupLogicExpression> {
 
-    U set(String name, Object value);
-
-    <N extends Number> U increase(String name, N value);
 }
