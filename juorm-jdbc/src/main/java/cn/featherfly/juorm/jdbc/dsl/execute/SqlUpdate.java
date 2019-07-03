@@ -10,6 +10,6 @@ import cn.featherfly.juorm.dsl.execute.Update;
  *
  * @author zhongj
  */
-public interface SqlUpdate extends Update<SqlExecutableUpdate> {
+public interface SqlUpdate extends Update {
 
 }

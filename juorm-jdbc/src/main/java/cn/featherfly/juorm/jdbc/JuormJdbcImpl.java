@@ -5,7 +5,6 @@ import java.util.List;
 
 import cn.featherfly.juorm.Juorm;
 import cn.featherfly.juorm.dsl.execute.Delete;
-import cn.featherfly.juorm.dsl.execute.ExecutableExecutableUpdate;
 import cn.featherfly.juorm.dsl.execute.Update;
 import cn.featherfly.juorm.dsl.query.QueryEntity;
 
@@ -130,7 +129,7 @@ public class JuormJdbcImpl implements Juorm {
      * {@inheritDoc}
      */
     @Override
-    public <E, U extends ExecutableExecutableUpdate<U>> Update<U> update(Class<E> entityType) {
+    public <E> Update update(Class<E> entityType) {
         // YUFEI_TODO Auto-generated method stub
         return null;
     }

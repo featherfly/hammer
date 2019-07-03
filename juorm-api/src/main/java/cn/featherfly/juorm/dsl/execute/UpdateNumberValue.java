@@ -1,6 +1,8 @@
 
 package cn.featherfly.juorm.dsl.execute;
 
+import cn.featherfly.juorm.expression.execute.UpdateNumberValueExpression;
+
 /**
  * <p>
  * update number value
@@ -8,7 +10,6 @@ package cn.featherfly.juorm.dsl.execute;
  *
  * @author zhongj
  */
-public interface UpdateNumberValue<T extends Number> extends UpdateValue<T> {
-
-    UpdateNumberValue<T> increase(T value);
+public interface UpdateNumberValue extends
+        UpdateNumberValueExpression<ExecutableUpdate, ExecutableConditionGroupExpression, ExecutableConditionGroupLogicExpression, Number, UpdateValue, UpdateNumberValue> {
 }

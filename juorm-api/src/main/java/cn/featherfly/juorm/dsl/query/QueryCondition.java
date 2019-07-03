@@ -8,6 +8,6 @@ package cn.featherfly.juorm.dsl.query;
  *
  * @author zhongj
  */
-public interface QueryCondition extends QueryConditionExpression, QueryConditionLogic {
+public interface QueryCondition extends QueryConditionExpression, QueryConditionLogicExpression {
 
 }

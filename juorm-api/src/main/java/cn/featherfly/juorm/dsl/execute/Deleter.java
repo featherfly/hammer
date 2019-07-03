@@ -1,21 +1,15 @@
 
 package cn.featherfly.juorm.dsl.execute;
 
-import cn.featherfly.juorm.dsl.Repository;
+import cn.featherfly.juorm.expression.execute.DeleterExpression;
 
 /**
  * <p>
- * Updator
+ * Deleter
  * </p>
  *
  * @author zhongj
  */
-public interface Deleter<D extends Delete> {
-    /**
-     * start delete dsl for repository
-     * 
-     * @param repository repository
-     * @return Delete
-     */
-    D delete(Repository repository);
+public interface Deleter
+        extends DeleterExpression<Delete, ExecutableConditionGroupExpression, ExecutableConditionGroupLogicExpression> {
 }

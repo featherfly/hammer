@@ -1,7 +1,7 @@
 
 package cn.featherfly.juorm.sql.dml;
 
-import cn.featherfly.juorm.expression.LogicOperatorExpression;
+import cn.featherfly.juorm.expression.condition.LogicOperatorExpression;
 import cn.featherfly.juorm.operator.LogicOperator;
 
 /**

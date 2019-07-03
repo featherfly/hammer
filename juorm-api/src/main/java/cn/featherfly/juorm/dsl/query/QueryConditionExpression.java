@@ -1,7 +1,7 @@
 
 package cn.featherfly.juorm.dsl.query;
 
-import cn.featherfly.juorm.expression.ConditionsExpression;
+import cn.featherfly.juorm.expression.ConditionExpression;
 
 /**
  * <p>
@@ -10,5 +10,6 @@ import cn.featherfly.juorm.expression.ConditionsExpression;
  *
  * @author zhongj
  */
-public interface QueryConditionExpression extends ConditionsExpression<QueryConditionExpression, QueryConditionLogic> {
+public interface QueryConditionExpression
+        extends ConditionExpression<QueryConditionExpression, QueryConditionLogicExpression> {
 }

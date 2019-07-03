@@ -1,6 +1,8 @@
 
 package cn.featherfly.juorm.dsl.execute;
 
+import cn.featherfly.juorm.expression.execute.UpdateValueExpression;
+
 /**
  * <p>
  * update value
@@ -8,7 +10,6 @@ package cn.featherfly.juorm.dsl.execute;
  *
  * @author zhongj
  */
-public interface UpdateValue<T> {
-
-    UpdateValue<T> set(T value);
+public interface UpdateValue extends
+        UpdateValueExpression<ExecutableUpdate, ExecutableConditionGroupExpression, ExecutableConditionGroupLogicExpression, Object, UpdateValue, UpdateNumberValue> {
 }

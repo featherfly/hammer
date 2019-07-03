@@ -1,7 +1,7 @@
 
 package cn.featherfly.juorm.dsl.query;
 
-import cn.featherfly.juorm.dsl.Repository;
+import cn.featherfly.juorm.expression.query.QueryExpression;
 
 /**
  * <p>
@@ -10,6 +10,6 @@ import cn.featherfly.juorm.dsl.Repository;
  *
  * @author zhongj
  */
-public interface Query {
-    QueryEntity find(Repository repository);
+public interface Query extends
+        QueryExpression<QueryEntity, QueryEntityProperties, QueryConditionGroupExpression, QueryConditionGroupLogicExpression> {
 }

@@ -15,37 +15,29 @@ import cn.featherfly.juorm.sql.dml.AbstractSqlConditionGroupExpression;
  */
 public class SqlConditionGroupExpression extends
         AbstractSqlConditionGroupExpression<ExecutableConditionGroupExpression, ExecutableConditionGroupLogicExpression>
-        implements ExecutableConditionGroupExpression,
-        ExecutableConditionGroupLogicExpression {
+        implements ExecutableConditionGroupExpression, ExecutableConditionGroupLogicExpression {
 
     /**
-     * @param dialect
-     *            dialect
+     * @param dialect dialect
      */
     public SqlConditionGroupExpression(Jdbc jdbc) {
         this(jdbc, null);
     }
 
     /**
-     * @param dialect
-     *            dialect
-     * @param queryAlias
-     *            queryAlias
+     * @param dialect    dialect
+     * @param queryAlias queryAlias
      */
     public SqlConditionGroupExpression(Jdbc jdbc, String queryAlias) {
         this(jdbc, null, queryAlias);
     }
 
     /**
-     * @param dialect
-     *            dialect
-     * @param parent
-     *            parent group
-     * @param queryAlias
-     *            queryAlias
+     * @param dialect    dialect
+     * @param parent     parent group
+     * @param queryAlias queryAlias
      */
-    SqlConditionGroupExpression(Jdbc jdbc,
-            ExecutableConditionGroupLogicExpression parent, String queryAlias) {
+    SqlConditionGroupExpression(Jdbc jdbc, ExecutableConditionGroupLogicExpression parent, String queryAlias) {
         super(jdbc.getDialect(), parent, queryAlias);
         this.jdbc = jdbc;
     }
@@ -55,7 +47,7 @@ public class SqlConditionGroupExpression extends
      */
     @Override
     public int execute() {
-        return jdbc.getJdbcTemplate().update(build(), getParams());
+        return jdbc.update(build(), getParams());
     }
 
     // ********************************************************************
@@ -68,8 +60,8 @@ public class SqlConditionGroupExpression extends
      * {@inheritDoc}
      */
     @Override
-    protected ExecutableConditionGroupExpression createGroup(
-            ExecutableConditionGroupLogicExpression parent, String queryAlias) {
+    protected ExecutableConditionGroupExpression createGroup(ExecutableConditionGroupLogicExpression parent,
+            String queryAlias) {
         return new SqlConditionGroupExpression(jdbc, parent, queryAlias);
     }
 }

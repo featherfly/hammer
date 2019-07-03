@@ -1,9 +1,13 @@
 
 package cn.featherfly.juorm.jdbc.dsl.execute;
 
-import cn.featherfly.juorm.dsl.Repository;
 import cn.featherfly.juorm.dsl.execute.ExecutableConditionGroupExpression;
-import cn.featherfly.juorm.dsl.execute.ExecutableExecutableUpdate;
+import cn.featherfly.juorm.dsl.execute.ExecutableUpdate;
+import cn.featherfly.juorm.dsl.execute.SimpleUpdateNumberValue;
+import cn.featherfly.juorm.dsl.execute.SimpleUpdateValue;
+import cn.featherfly.juorm.dsl.execute.UpdateNumberValue;
+import cn.featherfly.juorm.dsl.execute.UpdateValue;
+import cn.featherfly.juorm.expression.Repository;
 import cn.featherfly.juorm.jdbc.Jdbc;
 import cn.featherfly.juorm.sql.dml.builder.basic.SqlUpdateSetBasicBuilder;
 import cn.featherfly.juorm.sql.model.UpdateColumnElement.SetType;
@@ -15,8 +19,7 @@ import cn.featherfly.juorm.sql.model.UpdateColumnElement.SetType;
  *
  * @author zhongj
  */
-public class SqlExecutableUpdate
-        implements SqlUpdate, ExecutableExecutableUpdate<SqlExecutableUpdate> {
+public class SqlExecutableUpdate implements SqlUpdate, ExecutableUpdate {
 
     private String tableName;
 
@@ -25,10 +28,8 @@ public class SqlExecutableUpdate
     private SqlUpdateSetBasicBuilder builder;
 
     /**
-     * @param tableName
-     *            tableName
-     * @param jdbc
-     *            jdbc
+     * @param tableName tableName
+     * @param jdbc      jdbc
      */
     public SqlExecutableUpdate(String tableName, Jdbc jdbc) {
         this.tableName = tableName;
@@ -57,10 +58,25 @@ public class SqlExecutableUpdate
      * {@inheritDoc}
      */
     @Override
-    public <N extends Number> SqlExecutableUpdate increase(String name,
-            N value) {
+    public <N extends Number> SqlExecutableUpdate increase(String name, N value) {
         builder.setValue(name, value, SetType.INCR);
         return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public UpdateValue property(String name) {
+        return new SimpleUpdateValue(name, this);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public UpdateNumberValue propertyNumber(String name) {
+        return new SimpleUpdateNumberValue(name, this);
     }
 
     /**
@@ -78,4 +94,5 @@ public class SqlExecutableUpdate
     public int execute() {
         return new SqlUpdateExpression(jdbc, tableName, builder).execute();
     }
+
 }

@@ -1,11 +1,11 @@
 
 package cn.featherfly.juorm.dml.builder.sql;
 
-import cn.featherfly.juorm.dsl.Repository;
-import cn.featherfly.juorm.dsl.SimpleRepository;
 import cn.featherfly.juorm.dsl.execute.Deleter;
 import cn.featherfly.juorm.dsl.execute.Updater;
 import cn.featherfly.juorm.dsl.query.Query;
+import cn.featherfly.juorm.expression.Repository;
+import cn.featherfly.juorm.expression.SimpleRepository;
 
 /**
  * <p>
@@ -37,6 +37,12 @@ public class DslTest {
 
         query.find(data).property("name").where().eq("", 1).and().lt("age", 18).and().group().gt("score", 80)
                 .limit(11, 10).list(DslTest.class);
+
+        query.find(data).property("name").where().property("").eq(1).and().property("age").lt(18).and().group()
+                .property("score").gt(80).limit(11, 10).list(DslTest.class);
+
+        query.find(data).property("name").where().propertyString("name").eq("yufei").and().propertyNumber("age").lt(18)
+                .and().group().propertyNumber("score").gt(80).limit(11, 10).list(DslTest.class);
     }
 
     public void testUpdate() {
@@ -53,6 +59,16 @@ public class DslTest {
                 .execute();
 
         updater.update(r).set("name", "yufei").where().eq("user_id", 18).execute();
+
+    }
+
+    public void testPropertyUpdate() {
+        Updater updater = null;
+
+        Repository u = new SimpleRepository("user");
+
+        updater.update(u).property("name").set("yufei").property("pwd").set("123456").propertyNumber("score")
+                .increase(10).execute();
 
     }
 

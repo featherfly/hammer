@@ -2,7 +2,7 @@
 package cn.featherfly.juorm.sql.dml;
 
 import cn.featherfly.juorm.dml.builder.BuilderException;
-import cn.featherfly.juorm.expression.ParamedExpression;
+import cn.featherfly.juorm.expression.condition.ParamedExpression;
 import cn.featherfly.juorm.operator.QueryOperator;
 import cn.featherfly.juorm.sql.dialect.Dialect;
 import cn.featherfly.juorm.sql.model.ConditionColumnElement;

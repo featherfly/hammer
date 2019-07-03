@@ -1,7 +1,7 @@
 
 package cn.featherfly.juorm.dsl.execute;
 
-import cn.featherfly.juorm.dsl.ConditionGroupExpression;
+import cn.featherfly.juorm.expression.ConditionGroupExpression;
 
 /**
  * <p>
@@ -10,7 +10,6 @@ import cn.featherfly.juorm.dsl.ConditionGroupExpression;
  *
  * @author zhongj
  */
-public interface ExecutableConditionGroupExpression extends
-        ConditionGroupExpression<ExecutableConditionGroupExpression, ExecutableConditionGroupLogicExpression> {
-
+public interface ExecutableConditionGroupExpression
+        extends ConditionGroupExpression<ExecutableConditionGroupExpression, ExecutableConditionGroupLogicExpression> {
 }
