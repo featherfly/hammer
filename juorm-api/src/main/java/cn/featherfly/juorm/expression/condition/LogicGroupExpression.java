@@ -8,7 +8,7 @@ package cn.featherfly.juorm.expression.condition;
  *
  * @author zhongj
  */
-public interface LogicGroupExpression<C extends ConditionGroupExpression<C, L>, L extends LogicGroupExpression<C, L>>
+public interface LogicGroupExpression<C extends ConditionsGroupExpression<C, L>, L extends LogicGroupExpression<C, L>>
         extends LogicExpression<C, L> {
 
     /**

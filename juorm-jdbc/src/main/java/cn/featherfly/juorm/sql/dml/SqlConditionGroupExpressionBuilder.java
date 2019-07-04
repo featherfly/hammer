@@ -14,38 +14,30 @@ import cn.featherfly.juorm.sql.dialect.Dialect;
  */
 public class SqlConditionGroupExpressionBuilder extends
         AbstractSqlConditionGroupExpression<BuildableConditionGroupExpression, BuildableConditionGroupLogicExpression>
-        implements BuildableConditionGroupExpression,
-        BuildableConditionGroupLogicExpression {
+        implements BuildableConditionGroupExpression, BuildableConditionGroupLogicExpression {
 
     /**
-     * @param dialect
-     *            dialect
+     * @param dialect dialect
      */
     public SqlConditionGroupExpressionBuilder(Dialect dialect) {
         this(dialect, null);
     }
 
     /**
-     * @param dialect
-     *            dialect
-     * @param queryAlias
-     *            queryAlias
+     * @param dialect    dialect
+     * @param queryAlias queryAlias
      */
-    public SqlConditionGroupExpressionBuilder(Dialect dialect,
-            String queryAlias) {
+    public SqlConditionGroupExpressionBuilder(Dialect dialect, String queryAlias) {
         this(dialect, null, queryAlias);
     }
 
     /**
-     * @param dialect
-     *            dialect
-     * @param parent
-     *            parent group
-     * @param queryAlias
-     *            queryAlias
+     * @param dialect    dialect
+     * @param parent     parent group
+     * @param queryAlias queryAlias
      */
-    SqlConditionGroupExpressionBuilder(Dialect dialect,
-            BuildableConditionGroupLogicExpression parent, String queryAlias) {
+    SqlConditionGroupExpressionBuilder(Dialect dialect, BuildableConditionGroupLogicExpression parent,
+            String queryAlias) {
         super(dialect, parent, queryAlias);
     }
 
@@ -53,10 +45,9 @@ public class SqlConditionGroupExpressionBuilder extends
      * {@inheritDoc}
      */
     @Override
-    protected BuildableConditionGroupExpression createGroup(
-            BuildableConditionGroupLogicExpression parent, String queryAlias) {
-        return new SqlConditionGroupExpressionBuilder(dialect, parent,
-                queryAlias);
+    protected BuildableConditionGroupExpression createGroup(BuildableConditionGroupLogicExpression parent,
+            String queryAlias) {
+        return new SqlConditionGroupExpressionBuilder(dialect, parent, queryAlias);
     }
 
     // ********************************************************************

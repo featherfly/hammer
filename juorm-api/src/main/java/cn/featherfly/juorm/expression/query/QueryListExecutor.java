@@ -16,8 +16,7 @@ public interface QueryListExecutor {
     /**
      * query for list
      *
-     * @param type
-     *            wrapper type
+     * @param type wrapper type
      * @return list
      */
     <E> List<E> list(Class<E> type);
@@ -25,9 +24,8 @@ public interface QueryListExecutor {
     /**
      * query for list
      *
-     * @param rowMapper
-     *            rowMapper
+     * @param rowMapper rowMapper
      * @return list
      */
-    <E, D> List<E> list(RowMapper<E, D> rowMapper);
+    <E> List<E> list(RowMapper<E> rowMapper);
 }

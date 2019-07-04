@@ -1,6 +1,8 @@
 
 package cn.featherfly.juorm.dsl.query;
 
+import cn.featherfly.juorm.expression.ConditionGroupExpression;
+
 /**
  * <p>
  * QueryConditionGroupExpression
@@ -8,7 +10,7 @@ package cn.featherfly.juorm.dsl.query;
  *
  * @author zhongj
  */
-public interface QueryConditionGroupExpression extends
-        cn.featherfly.juorm.expression.condition.ConditionGroupExpression<QueryConditionGroupExpression, QueryConditionGroupLogicExpression> {
+public interface QueryConditionGroupExpression
+        extends ConditionGroupExpression<QueryConditionGroupExpression, QueryConditionGroupLogicExpression> {
 
 }

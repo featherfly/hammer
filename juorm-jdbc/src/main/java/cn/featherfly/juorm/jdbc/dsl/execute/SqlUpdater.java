@@ -1,8 +1,8 @@
 
 package cn.featherfly.juorm.jdbc.dsl.execute;
 
-import cn.featherfly.juorm.dsl.Repository;
 import cn.featherfly.juorm.dsl.execute.Updater;
+import cn.featherfly.juorm.expression.Repository;
 import cn.featherfly.juorm.jdbc.Jdbc;
 
 /**
@@ -12,7 +12,7 @@ import cn.featherfly.juorm.jdbc.Jdbc;
  *
  * @author zhongj
  */
-public class SqlUpdater implements Updater<SqlUpdate> {
+public class SqlUpdater implements Updater {
     private Jdbc jdbc;
 
     /**

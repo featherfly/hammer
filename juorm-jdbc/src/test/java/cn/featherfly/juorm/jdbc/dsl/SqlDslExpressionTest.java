@@ -10,7 +10,7 @@ import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
 
 import cn.featherfly.juorm.dml.builder.QueryBuilder;
-import cn.featherfly.juorm.dsl.SimpleRepository;
+import cn.featherfly.juorm.expression.SimpleRepository;
 import cn.featherfly.juorm.jdbc.Jdbc;
 import cn.featherfly.juorm.jdbc.dsl.execute.SqlConditionGroupExpression;
 import cn.featherfly.juorm.jdbc.dsl.execute.SqlDeleteExpression;

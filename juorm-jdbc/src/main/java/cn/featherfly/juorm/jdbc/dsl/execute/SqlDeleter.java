@@ -1,8 +1,8 @@
 
 package cn.featherfly.juorm.jdbc.dsl.execute;
 
-import cn.featherfly.juorm.dsl.Repository;
-import cn.featherfly.juorm.expression.execute.Deleter;
+import cn.featherfly.juorm.dsl.execute.Deleter;
+import cn.featherfly.juorm.expression.Repository;
 import cn.featherfly.juorm.jdbc.Jdbc;
 
 /**
@@ -12,7 +12,7 @@ import cn.featherfly.juorm.jdbc.Jdbc;
  *
  * @author zhongj
  */
-public class SqlDeleter implements Deleter<SqlDelete> {
+public class SqlDeleter implements Deleter {
 
     private Jdbc jdbc;
 

@@ -9,18 +9,18 @@ import cn.featherfly.common.exception.LocalizedException;
  * <p>
  * Juorm base Exception
  * </p>
- * 
+ *
  * @author zhongj
  */
-public abstract class JuormException extends LocalizedException {
+public class JuormException extends LocalizedException {
 
     /**
-     * 
+     *
      */
     private static final long serialVersionUID = -9019711912180497707L;
 
     /**
-     * 
+     *
      */
     public JuormException() {
         super();

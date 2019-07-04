@@ -2,7 +2,7 @@
 package cn.featherfly.juorm.dsl.query;
 
 import cn.featherfly.juorm.dml.builder.SortBuilder;
-import cn.featherfly.juorm.expression.condition.LogicGroupExpression;
+import cn.featherfly.juorm.expression.ConditionGroupLogicExpression;
 import cn.featherfly.juorm.expression.query.QueryConditionLimit;
 import cn.featherfly.juorm.expression.query.QueryExecutor;
 import cn.featherfly.juorm.expression.query.QueryValueExecutor;
@@ -14,9 +14,8 @@ import cn.featherfly.juorm.expression.query.QueryValueExecutor;
  *
  * @author zhongj
  */
-public interface QueryConditionGroupLogicExpression
-        extends QueryConditionLimit, QueryExecutor, QueryValueExecutor,
-        LogicGroupExpression<QueryConditionGroupExpression, QueryConditionGroupLogicExpression> {
+public interface QueryConditionGroupLogicExpression extends QueryConditionLimit, QueryExecutor, QueryValueExecutor,
+        ConditionGroupLogicExpression<QueryConditionGroupExpression, QueryConditionGroupLogicExpression> {
 
     /**
      * 结束当前条件并进入排序器

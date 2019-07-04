@@ -11,6 +11,6 @@ import cn.featherfly.juorm.expression.execute.Executor;
  *
  * @author zhongj
  */
-public interface ExecutableConditionLogicExpression extends Executor,
-        ConditionLogicExpression<ExecutableConditionExpression, ExecutableConditionLogicExpression> {
+public interface ExecutableConditionLogicExpression
+        extends Executor, ConditionLogicExpression<ExecutableConditionExpression, ExecutableConditionLogicExpression> {
 }

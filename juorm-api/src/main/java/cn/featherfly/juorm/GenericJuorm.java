@@ -4,10 +4,9 @@ package cn.featherfly.juorm;
 import java.util.List;
 
 import cn.featherfly.juorm.Juorm.IgnorePolicy;
-import cn.featherfly.juorm.expression.execute.Delete;
-import cn.featherfly.juorm.expression.execute.IExecutableUpdate;
-import cn.featherfly.juorm.expression.execute.IUpdate;
-import cn.featherfly.juorm.expression.query.QueryEntity;
+import cn.featherfly.juorm.dsl.execute.Delete;
+import cn.featherfly.juorm.dsl.execute.Update;
+import cn.featherfly.juorm.dsl.query.QueryEntity;
 
 /**
  * <p>
@@ -127,7 +126,7 @@ public interface GenericJuorm<E> {
      * @param entityType update for entityType
      * @return
      */
-    <U extends IExecutableUpdate<U>> IUpdate<U> update();
+    Update update();
 
     /**
      * create delete for entityType

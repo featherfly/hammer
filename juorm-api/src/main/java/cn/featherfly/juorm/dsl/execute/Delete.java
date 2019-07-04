@@ -1,6 +1,8 @@
 
 package cn.featherfly.juorm.dsl.execute;
 
+import cn.featherfly.juorm.expression.execute.DeleteExpression;
+
 /**
  * <p>
  * Delete
@@ -8,7 +10,7 @@ package cn.featherfly.juorm.dsl.execute;
  *
  * @author zhongj
  */
-public interface Delete extends
-        cn.featherfly.juorm.expression.execute.Delete<ExecutableConditionGroupExpression, ExecutableConditionGroupLogicExpression> {
+public interface Delete
+        extends DeleteExpression<ExecutableConditionGroupExpression, ExecutableConditionGroupLogicExpression> {
 
 }

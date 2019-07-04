@@ -1,6 +1,8 @@
 
 package cn.featherfly.juorm.dsl.execute;
 
+import cn.featherfly.juorm.expression.execute.UpdateExpression;
+
 /**
  * <p>
  * Update
@@ -8,7 +10,7 @@ package cn.featherfly.juorm.dsl.execute;
  *
  * @author zhongj
  */
-public interface Update<U extends ExecutableUpdate<U>> extends
-        cn.featherfly.juorm.expression.execute.Update<U, ExecutableConditionGroupExpression, ExecutableConditionGroupLogicExpression> {
+public interface Update extends PropertyUpdate,
+        UpdateExpression<ExecutableUpdate, ExecutableConditionGroupExpression, ExecutableConditionGroupLogicExpression, UpdateValue, UpdateNumberValue> {
 
 }
