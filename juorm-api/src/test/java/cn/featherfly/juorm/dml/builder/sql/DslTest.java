@@ -41,8 +41,9 @@ public class DslTest {
         query.find(data).property("name").where().property("").eq(1).and().property("age").lt(18).and().group()
                 .property("score").gt(80).limit(11, 10).list(DslTest.class);
 
-        query.find(data).property("name").where().propertyString("name").eq("yufei").and().propertyNumber("age").lt(18)
-                .and().group().propertyNumber("score").gt(80).limit(11, 10).list(DslTest.class);
+        query.find(data).where().eq("", 1).and().lt("age", 18).and().group().gt("score", 80).sort().asc("name").limit(2)
+                .list(DslTest.class);
+
     }
 
     public void testUpdate() {
