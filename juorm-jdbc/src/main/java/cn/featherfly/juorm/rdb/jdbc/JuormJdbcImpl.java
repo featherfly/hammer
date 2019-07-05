@@ -11,10 +11,12 @@ import javax.validation.ConstraintViolation;
 import javax.validation.Validator;
 
 import cn.featherfly.common.lang.LangUtils;
+import cn.featherfly.common.lang.StringUtils;
 import cn.featherfly.juorm.Juorm;
 import cn.featherfly.juorm.dsl.execute.Delete;
 import cn.featherfly.juorm.dsl.execute.Update;
 import cn.featherfly.juorm.dsl.query.QueryEntity;
+import cn.featherfly.juorm.expression.SimpleRepository;
 import cn.featherfly.juorm.rdb.jdbc.dsl.execute.SqlDeleter;
 import cn.featherfly.juorm.rdb.jdbc.dsl.execute.SqlUpdater;
 import cn.featherfly.juorm.rdb.jdbc.dsl.query.SqlQuery;
@@ -242,7 +244,8 @@ public class JuormJdbcImpl implements Juorm {
     public <E> QueryEntity query(Class<E> entityType) {
         SqlQuery query = new SqlQuery(jdbc);
         ClassMapping<E> mapping = mappingFactory.getClassMapping(entityType);
-        return query.find(mapping.getTableName());
+        return query.find(new SimpleRepository(mapping.getTableName(),
+                StringUtils.substring(mapping.getTableName(), 0, 1).toLowerCase()));
     }
 
     /**
