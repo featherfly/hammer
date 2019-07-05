@@ -1,7 +1,6 @@
 
 package cn.featherfly.juorm.dsl.query;
 
-import cn.featherfly.juorm.dml.builder.SortBuilder;
 import cn.featherfly.juorm.expression.ConditionGroupLogicExpression;
 import cn.featherfly.juorm.expression.query.QueryConditionLimit;
 import cn.featherfly.juorm.expression.query.QueryExecutor;
@@ -22,5 +21,5 @@ public interface QueryConditionGroupLogicExpression extends QueryConditionLimit,
      *
      * @return SortBuilder
      */
-    SortBuilder sort();
+    QuerySortExpression sort();
 }

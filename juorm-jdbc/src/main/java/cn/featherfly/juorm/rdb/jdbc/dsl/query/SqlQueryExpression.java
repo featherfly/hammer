@@ -72,7 +72,8 @@ public class SqlQueryExpression extends SqlQueryConditionGroupExpression {
         }
         String condition = super.build();
         if (LangUtils.isNotEmpty(condition)) {
-            result = result + Chars.SPACE + jdbc.getDialect().getKeywords().where() + Chars.SPACE + condition;
+            //            result = result + Chars.SPACE + jdbc.getDialect().getKeywords().where() + Chars.SPACE + condition;
+            result = result + Chars.SPACE + condition;
         }
         return result;
     }
