@@ -2,6 +2,7 @@ package cn.featherfly.juorm.rdb.jdbc.mapping;
 
 import java.util.Collection;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
@@ -56,7 +57,7 @@ public class ClassMapping<T> {
      *
      * @return 所有属性映射
      */
-    public Collection<PropertyMapping> getPrivaryKeyPropertyMappings() {
+    public List<PropertyMapping> getPrivaryKeyPropertyMappings() {
         return propertyMappings.values().stream().filter(p -> p.isPrimaryKey()).collect(Collectors.toList());
     }
 

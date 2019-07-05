@@ -3,13 +3,16 @@ package cn.featherfly.juorm.rdb.jdbc;
 
 import org.apache.commons.dbcp.BasicDataSource;
 import org.apache.log4j.xml.DOMConfigurator;
-import org.testng.annotations.BeforeClass;
+import org.testng.annotations.BeforeTest;
 
 import cn.featherfly.common.db.metadata.DatabaseMetadata;
 import cn.featherfly.common.db.metadata.DatabaseMetadataManager;
 import cn.featherfly.common.lang.ClassLoaderUtils;
-import cn.featherfly.juorm.rdb.Constants;
+import cn.featherfly.common.lang.RandomUtils;
+import cn.featherfly.juorm.mapping.ClassNameJpaConversion;
+import cn.featherfly.juorm.mapping.ClassNameUnderlineConversion;
 import cn.featherfly.juorm.rdb.jdbc.mapping.MappingFactory;
+import cn.featherfly.juorm.rdb.jdbc.vo.Role;
 import cn.featherfly.juorm.rdb.sql.dialect.Dialects;
 
 /**
@@ -25,11 +28,9 @@ public class JdbcTestBase {
 
     MappingFactory factory;
 
-    @BeforeClass
+    @BeforeTest
     public void beforeClass() {
         DOMConfigurator.configure(ClassLoaderUtils.getResource("log4j.xml", JdbcTestBase.class));
-        System.out.println("11112222");
-        Constants.LOGGER.debug("test logger");
         BasicDataSource dataSource = new BasicDataSource();
         dataSource.setUrl("jdbc:mysql://127.0.0.1:3306/juorm_jdbc");
         dataSource.setDriverClassName("com.mysql.jdbc.Driver");
@@ -41,5 +42,14 @@ public class JdbcTestBase {
         DatabaseMetadata metadata = DatabaseMetadataManager.getDefaultManager().create(dataSource);
 
         factory = new MappingFactory(metadata, Dialects.MYSQL);
+        factory.getClassNameConversions().add(new ClassNameJpaConversion());
+        factory.getClassNameConversions().add(new ClassNameUnderlineConversion());
+    }
+
+    Role role() {
+        Role r = new Role();
+        r.setName("n_" + RandomUtils.getRandomInt(100));
+        r.setDescp("descp_" + RandomUtils.getRandomInt(100));
+        return r;
     }
 }

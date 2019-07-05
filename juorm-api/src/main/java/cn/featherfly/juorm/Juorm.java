@@ -1,6 +1,7 @@
 
 package cn.featherfly.juorm;
 
+import java.io.Serializable;
 import java.util.List;
 
 import cn.featherfly.juorm.dsl.execute.Delete;
@@ -131,6 +132,25 @@ public interface Juorm {
      * @return effect data row num
      */
     <E> int delete(List<E> entities);
+
+    /**
+     * get entity by id.
+     *
+     * @param <E>
+     * @param id   entity id
+     * @param type entity type
+     * @return entity
+     */
+    <E> E get(Serializable id, Class<E> type);
+
+    /**
+     * get entity by id.
+     *
+     * @param <E>
+     * @param entity entity with id value
+     * @return entity
+     */
+    <E> E get(E entity);
 
     /**
      * create QueryData for entityType

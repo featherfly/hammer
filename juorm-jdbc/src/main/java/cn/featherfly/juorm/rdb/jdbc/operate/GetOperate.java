@@ -8,6 +8,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import cn.featherfly.common.bean.BeanUtils;
+import cn.featherfly.common.lang.LangUtils;
 import cn.featherfly.juorm.rdb.jdbc.Jdbc;
 import cn.featherfly.juorm.rdb.jdbc.JuormJdbcException;
 import cn.featherfly.juorm.rdb.jdbc.mapping.ClassMapping;
@@ -46,6 +47,8 @@ public class GetOperate<T> extends AbstractQueryOperate<T> {
         super(jdbc, classMapping, dataBase);
     }
 
+    private List<PropertyMapping> pkPms;
+
     /**
      * <p>
      * 返回对象的id值.如果传入对象为空或没有主键标示属性，则返回空.
@@ -58,7 +61,15 @@ public class GetOperate<T> extends AbstractQueryOperate<T> {
         if (entity == null) {
             return null;
         }
-        return (Serializable) BeanUtils.getProperty(entity, pkPms.get(0).getPropertyName());
+        if (pkPms.size() == 1) {
+            return (Serializable) BeanUtils.getProperty(entity, pkPms.get(0).getPropertyName());
+        } else if (pkPms.size() > 1) {
+            logger.debug("multy id defined in entity {}", entity.getClass().getName());
+            return null;
+        } else {
+            logger.debug("no id defined in entity {}", entity.getClass().getName());
+            return null;
+        }
     }
 
     /**
@@ -116,36 +127,42 @@ public class GetOperate<T> extends AbstractQueryOperate<T> {
         //		return t;
     }
 
-    //	/**
-    //	 * {@inheritDoc}
-    //	 */
-    //	@Override
-    //	protected void initSql() {
-    //		StringBuilder getSql = new StringBuilder();
-    //		getSql.append(getSelectSql())
-    //			.append(" where ");
-    //		int columnNum = 0;
-    //		for (PropertyMapping pm : classMapping.getPropertyMappings()) {
-    //			if (pm.isPrimaryKey()) {
-    //				if (columnNum > 0) {
-    //					getSql.append("and ");
-    //				}
-    //				getSql.append(pm.getColumnName())
-    //					.append(" = ? ");
-    //				columnNum++;
-    //				propertyPositions.put(columnNum, pm.getFinalPropertyName());
-    //				// 设置主键值
-    //				pkPm = pm;
-    //			}
-    //		}
-    //		this.sql = getSql.toString();
-    //		LOGGER.debug("sql: {}" , this.sql);
-    //	}
+    /**
+     * <p>
+     * 返回指定ID的对象.
+     * </p>
+     *
+     * @param entity 包含id值得entity对象，支持复合主键
+     * @return 指定ids的对象
+     */
+    public T get(final T entity) {
+        if (entity == null) {
+            throw new JuormJdbcException("#get.id.null");
+        }
+        List<Serializable> ids = getIds(entity);
+        if (LangUtils.isEmpty(ids)) {
+            throw new JuormJdbcException("#get.id.null");
+        }
+        return jdbc.execute(conn -> {
+            PreparedStatement prep = conn.prepareStatement(sql);
+            setParameter(prep, ids);
+            ResultSet res = prep.executeQuery();
+            int index = 0;
+            T t = null;
+            while (res.next()) {
+                t = mapRow(res, index);
+            }
+            prep.close();
+            return t;
+        });
+    }
+
     /**
      * {@inheritDoc}
      */
     @Override
     protected String initCondition() {
+        pkPms = new ArrayList<>();
         StringBuilder condition = new StringBuilder();
         int columnNum = 0;
         for (PropertyMapping pm : classMapping.getPropertyMappings()) {
@@ -163,7 +180,4 @@ public class GetOperate<T> extends AbstractQueryOperate<T> {
         logger.debug("condition -> " + condition.toString());
         return condition.toString();
     }
-
-    private List<PropertyMapping> pkPms = new ArrayList<>();
-
 }

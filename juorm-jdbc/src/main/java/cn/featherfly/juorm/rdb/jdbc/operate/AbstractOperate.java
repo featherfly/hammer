@@ -8,13 +8,13 @@ import java.util.Map;
 import java.util.Map.Entry;
 
 import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import cn.featherfly.common.bean.BeanUtils;
 import cn.featherfly.common.db.JdbcUtils;
 import cn.featherfly.common.db.metadata.DatabaseMetadata;
 import cn.featherfly.common.db.metadata.DatabaseMetadataManager;
 import cn.featherfly.common.lang.LangUtils;
+import cn.featherfly.juorm.rdb.Constants;
 import cn.featherfly.juorm.rdb.jdbc.Jdbc;
 import cn.featherfly.juorm.rdb.jdbc.mapping.ClassMapping;
 
@@ -33,7 +33,7 @@ public abstract class AbstractOperate<T> {
     /**
      * logger
      */
-    protected final Logger logger = LoggerFactory.getLogger(this.getClass());
+    protected final Logger logger = Constants.LOGGER;
 
     /**
      * sql 语句
@@ -126,8 +126,23 @@ public abstract class AbstractOperate<T> {
      * @param id   主键
      */
     protected void setParameter(PreparedStatement prep, Serializable id) {
-        // TODO 还不支持复合主键
         JdbcUtils.setParameter(prep, 1, id);
+    }
+
+    /**
+     * <p>
+     * 设置预编译参数
+     * </p>
+     *
+     * @param prep 执行SQL的PreparedStatementWrapper
+     * @param id   主键
+     */
+    protected void setParameter(PreparedStatement prep, java.util.List<Serializable> ids) {
+        int i = 0;
+        for (Serializable id : ids) {
+            i++;
+            JdbcUtils.setParameter(prep, i, id);
+        }
     }
 
     /**
