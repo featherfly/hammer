@@ -11,10 +11,13 @@ import javax.validation.ConstraintViolation;
 import javax.validation.Validator;
 
 import cn.featherfly.common.lang.LangUtils;
+import cn.featherfly.common.lang.StringUtils;
+import cn.featherfly.common.structure.page.PaginationResults;
 import cn.featherfly.juorm.Juorm;
 import cn.featherfly.juorm.dsl.execute.Delete;
 import cn.featherfly.juorm.dsl.execute.Update;
 import cn.featherfly.juorm.dsl.query.QueryEntity;
+import cn.featherfly.juorm.expression.SimpleRepository;
 import cn.featherfly.juorm.rdb.jdbc.dsl.execute.SqlDeleter;
 import cn.featherfly.juorm.rdb.jdbc.dsl.execute.SqlUpdater;
 import cn.featherfly.juorm.rdb.jdbc.dsl.query.SqlQuery;
@@ -65,7 +68,8 @@ public class JuormJdbcImpl implements Juorm {
         InsertOperate<E> insert = (InsertOperate<E>) insertOperates.get(entity);
         if (insert == null) {
             @SuppressWarnings("unchecked")
-            ClassMapping<E> mapping = (ClassMapping<E>) mappingFactory.getClassMapping(entity.getClass());
+            ClassMapping<E> mapping = (ClassMapping<E>) mappingFactory
+                    .getClassMapping(entity.getClass());
             insert = new InsertOperate<>(jdbc, mapping);
             insertOperates.put(entity.getClass(), insert);
         }
@@ -100,7 +104,8 @@ public class JuormJdbcImpl implements Juorm {
         UpdateOperate<E> update = (UpdateOperate<E>) updateOperates.get(entity);
         if (update == null) {
             @SuppressWarnings("unchecked")
-            ClassMapping<E> mapping = (ClassMapping<E>) mappingFactory.getClassMapping(entity.getClass());
+            ClassMapping<E> mapping = (ClassMapping<E>) mappingFactory
+                    .getClassMapping(entity.getClass());
             update = new UpdateOperate<>(jdbc, mapping);
             updateOperates.put(entity.getClass(), update);
         }
@@ -128,15 +133,15 @@ public class JuormJdbcImpl implements Juorm {
     @Override
     public <E> int update(E entity, IgnorePolicy ignorePolicy) {
         switch (ignorePolicy) {
-            case EMPTY:
-                // TODO 添加实现
-                return 0;
-            case NULL:
-                // TODO 添加实现
-                return 0;
+        case EMPTY:
+            // TODO 添加实现
+            return 0;
+        case NULL:
+            // TODO 添加实现
+            return 0;
 
-            default:
-                return update(entity);
+        default:
+            return update(entity);
         }
     }
 
@@ -188,7 +193,8 @@ public class JuormJdbcImpl implements Juorm {
         DeleteOperate<E> delete = (DeleteOperate<E>) deleteOperates.get(entity);
         if (delete == null) {
             @SuppressWarnings("unchecked")
-            ClassMapping<E> mapping = (ClassMapping<E>) mappingFactory.getClassMapping(entity.getClass());
+            ClassMapping<E> mapping = (ClassMapping<E>) mappingFactory
+                    .getClassMapping(entity.getClass());
             delete = new DeleteOperate<>(jdbc, mapping);
             deleteOperates.put(entity.getClass(), delete);
         }
@@ -242,7 +248,9 @@ public class JuormJdbcImpl implements Juorm {
     public <E> QueryEntity query(Class<E> entityType) {
         SqlQuery query = new SqlQuery(jdbc);
         ClassMapping<E> mapping = mappingFactory.getClassMapping(entityType);
-        return query.find(mapping.getTableName());
+        return query.find(new SimpleRepository(mapping.getTableName(),
+                StringUtils.substring(mapping.getTableName(), 0, 1)
+                        .toLowerCase()));
     }
 
     /**
@@ -271,7 +279,8 @@ public class JuormJdbcImpl implements Juorm {
             if (LangUtils.isNotEmpty(cons)) {
                 StringBuilder errorMessage = new StringBuilder();
                 for (ConstraintViolation<E> constraintViolation : cons) {
-                    errorMessage.append(constraintViolation.getMessage()).append(",");
+                    errorMessage.append(constraintViolation.getMessage())
+                            .append(",");
                 }
                 throw new JuormJdbcException(errorMessage.toString());
             }
@@ -282,10 +291,70 @@ public class JuormJdbcImpl implements Juorm {
         @SuppressWarnings("unchecked")
         GetOperate<E> get = (GetOperate<E>) getOperates.get(entityType);
         if (get == null) {
-            ClassMapping<E> mapping = mappingFactory.getClassMapping(entityType);
+            ClassMapping<E> mapping = mappingFactory
+                    .getClassMapping(entityType);
             get = new GetOperate<>(jdbc, mapping);
             getOperates.put(entityType.getClass(), get);
         }
         return get;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public <E> List<E> list(String sqlId, Class<E> entityType,
+            Map<String, Object> params) {
+        // YUFEI_TODO Auto-generated method stub
+        return null;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public <E> List<E> list(String sqlId, Class<E> entityType,
+            Map<String, Object> params, boolean paging) {
+        // YUFEI_TODO Auto-generated method stub
+        return null;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public <E> List<E> list(String sqlId, Class<E> entityType, Object params) {
+        // YUFEI_TODO Auto-generated method stub
+        return null;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public <E> List<E> list(String sqlId, Class<E> entityType, Object params,
+            boolean paging) {
+        // YUFEI_TODO Auto-generated method stub
+        return null;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public <E> PaginationResults<E> pagination(String sqlId,
+            Class<E> entityType, Object params) {
+        // YUFEI_TODO Auto-generated method stub
+        return null;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public <E> PaginationResults<E> pagination(String sqlId,
+            Class<E> entityType, Map<String, Object> params) {
+        // YUFEI_TODO Auto-generated method stub
+        return null;
     }
 }

@@ -1,0 +1,37 @@
+select: "select * from shop"
+role:
+  type: LIST
+  query: select * from role
+  count: null
+permission:
+  type: PAGINATION
+  query: select * from permission
+user:
+  type: PAGE
+  query: "select * from user
+  <@where>
+    <@and if= name??>
+        name = :name
+    </@and>
+    <@and if= age??>
+        age = :age
+    </@and>
+    <@and if=sex??>
+        sex = :name
+    </@and>
+    <@and if=mobile??>
+        name = :name
+    </@and>
+    <@or if= name??>
+        name = :name
+    </@or>
+    <@or if= age??>
+        age = :age
+    </@or>
+    <@or if=sex??>
+        sex = :name
+    </@or>
+    <@or if=mobile??>
+        name = :name
+    </@or>
+</@where>"
