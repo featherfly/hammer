@@ -2,15 +2,9 @@
 package cn.featherfly.juorm.rdb.jdbc.operate;
 
 import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.Statement;
 
-import cn.featherfly.common.bean.BeanUtils;
-import cn.featherfly.common.db.JdbcUtils;
 import cn.featherfly.juorm.rdb.jdbc.Jdbc;
-import cn.featherfly.juorm.rdb.jdbc.JuormJdbcException;
 import cn.featherfly.juorm.rdb.jdbc.mapping.ClassMapping;
-import cn.featherfly.juorm.rdb.jdbc.mapping.PropertyMapping;
 
 /**
  * <p>
@@ -56,46 +50,10 @@ public abstract class AbstractExecuteOperate<T> extends AbstractOperate<T> {
     public int execute(final T entity) {
         return jdbc.execute(con -> {
             PreparedStatement prep = null;
-            if (generatedKey) {
-                prep = con.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
-            } else {
-                prep = con.prepareStatement(sql);
-            }
+            prep = con.prepareStatement(sql);
             setParameter(prep, entity);
             logger.debug("execute sql: {}", sql);
             int result = prep.executeUpdate();
-            if (generatedKey) {
-                PropertyMapping pm = null;
-                int i = 0;
-                for (PropertyMapping propertyMapping : classMapping.getPropertyMappings()) {
-                    if (propertyMapping.isPrimaryKey()) {
-                        pm = propertyMapping;
-                        i++;
-                    }
-                }
-                // TODO 这里加入复合主键支持
-                if (i > 1) {
-                    throw new JuormJdbcException("#generate.multi.pk");
-                    //						throw new SimpleORMException("出现多个自动生成的键值，" +
-                    //								"目前不支持多个自动生成的键值，" +
-                    //								"你可以选择关闭自动生成键值setGeneratedKey(false)");
-                }
-                ResultSet res = prep.getGeneratedKeys();
-                StringBuilder msg = null;
-                if (logger.isDebugEnabled()) {
-                    msg = new StringBuilder("自动生成的键值 : ");
-                }
-                if (res.next()) {
-                    Object value = JdbcUtils.getResultSetValue(res, 1, pm.getPropertyType());
-                    if (logger.isDebugEnabled()) {
-                        msg.append(" ").append(value).append(", ");
-                    }
-                    BeanUtils.setProperty(entity, pm.getPropertyName(), value);
-                }
-                if (logger.isDebugEnabled()) {
-                    logger.debug(msg.toString());
-                }
-            }
             prep.close();
             return result;
         });
@@ -105,19 +63,4 @@ public abstract class AbstractExecuteOperate<T> extends AbstractOperate<T> {
     //	property
     // ********************************************************************
 
-    private boolean generatedKey;
-
-    /**
-     * @return 返回generatedKey
-     */
-    public boolean isGeneratedKey() {
-        return generatedKey;
-    }
-
-    /**
-     * @param generatedKey 设置generatedKey
-     */
-    public void setGeneratedKey(boolean generatedKey) {
-        this.generatedKey = generatedKey;
-    }
 }

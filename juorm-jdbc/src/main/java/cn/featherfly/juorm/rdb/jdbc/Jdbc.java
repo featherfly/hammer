@@ -7,6 +7,7 @@ import java.util.List;
 import javax.sql.DataSource;
 
 import org.springframework.dao.DataAccessException;
+import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.ConnectionCallback;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
@@ -111,61 +112,51 @@ public class Jdbc {
     }
 
     /**
-     * @param <T>
-     * @param sql
-     * @param args
-     * @param rowMapper
-     * @return
-     * @throws DataAccessException
-     * @see org.springframework.jdbc.core.JdbcTemplate#query(java.lang.String,
-     *      java.lang.Object[], org.springframework.jdbc.core.RowMapper)
+     * @param <T>       generic type
+     * @param sql       sql
+     * @param args      args
+     * @param rowMapper rowMapper
+     * @return elementType object list
      */
     public <T> List<T> query(String sql, Object[] args, RowMapper<T> rowMapper) {
+        Constants.LOGGER.debug("sql -> {}, args -> {}", sql, args);
         return jdbcTemplate.query(sql, args, rowMapper);
     }
 
     /**
-     * @param <T>
-     * @param sql
-     * @param args
-     * @param elementType
-     * @return
-     * @throws DataAccessException
-     * @see org.springframework.jdbc.core.JdbcTemplate#queryForList(java.lang.String,
-     *      java.lang.Object[], java.lang.Class)
+     * @param <T>         generic type
+     * @param sql         sql
+     * @param args        args
+     * @param elementType return object type
+     * @return elementType object list
      */
     public <T> List<T> queryList(String sql, Object[] args, Class<T> elementType) {
-        Constants.LOGGER.debug("queryList sql -> {}, args -> {}", sql, args);
-        System.out.println(sql);
-        return jdbcTemplate.queryForList(sql, args, elementType);
+        Constants.LOGGER.debug("sql -> {}, args -> {}", sql, args);
+        return jdbcTemplate.query(sql, args, new BeanPropertyRowMapper<>(elementType));
     }
 
     /**
-     * @param <T>
-     * @param sql
-     * @param args
-     * @param rowMapper
-     * @return
-     * @throws DataAccessException
-     * @see org.springframework.jdbc.core.JdbcTemplate#queryForObject(java.lang.String,
-     *      java.lang.Object[], org.springframework.jdbc.core.RowMapper)
+     * @param <T>       generic type
+     * @param sql       sql
+     * @param args      args
+     * @param rowMapper rowMapper
+     * @return single elementType object
      */
     public <T> T querySingle(String sql, Object[] args, RowMapper<T> rowMapper) {
+        Constants.LOGGER.debug("sql -> {}, args -> {}", sql, args);
         return jdbcTemplate.queryForObject(sql, args, rowMapper);
     }
 
     /**
-     * @param <T>
-     * @param sql
-     * @param args
-     * @param requiredType
-     * @return
-     * @throws DataAccessException
-     * @see org.springframework.jdbc.core.JdbcTemplate#queryForObject(java.lang.String,
-     *      java.lang.Object[], java.lang.Class)
+     * @param <T>         generic type
+     * @param sql         sql
+     * @param args        args
+     * @param elementType return object type
+     * @return single elementType object
      */
-    public <T> T querySingle(String sql, Object[] args, Class<T> requiredType) {
-        return jdbcTemplate.queryForObject(sql, args, requiredType);
+    public <T> T querySingle(String sql, Object[] args, Class<T> elementType) {
+        Constants.LOGGER.debug("sql -> {}, args -> {}", sql, args);
+        return jdbcTemplate.queryForObject(sql, args, new BeanPropertyRowMapper<>(elementType));
     }
 
     public Integer queryInt(String sql, Object[] args) {
@@ -181,7 +172,6 @@ public class Jdbc {
     }
 
     public Double queryDouble(String sql, Object[] args) {
-
         return queryValue(sql, args, Double.class);
     }
 

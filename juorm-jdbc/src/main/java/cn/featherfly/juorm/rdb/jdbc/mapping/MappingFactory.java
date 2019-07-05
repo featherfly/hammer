@@ -142,6 +142,7 @@ public class MappingFactory {
         if (tm == null) {
             throw new JuormJdbcException("#talbe.not.exists", new Object[] { tableName });
         }
+
         for (ColumnMetadata cmd : tm.getColumns()) {
             mappingFromColumnMetadata(bd, tableMapping, cmd, logInfo);
         }
@@ -156,23 +157,27 @@ public class MappingFactory {
 
     private boolean mappingWithJpa(BeanProperty<?> beanProperty, Map<String, PropertyMapping> tableMapping,
             StringBuilder logInfo) {
+        boolean hasPk = beanProperty.hasAnnotation(Id.class);
+
         PropertyMapping mapping = new PropertyMapping();
         String columnName = getMappingColumnName(beanProperty);
-        mapping.setColumnName(columnName.toUpperCase());
+        if (LangUtils.isNotEmpty(columnName)) {
+            mapping.setColumnName(columnName.toUpperCase());
 
-        columnName = dialect.convertTableOrColumnName(columnName);
-        mapping.setColumnName(columnName);
-        mapping.setPropertyName(beanProperty.getName());
-        mapping.setPropertyType(beanProperty.getType());
+            columnName = dialect.convertTableOrColumnName(columnName);
+            mapping.setColumnName(columnName);
+            mapping.setPropertyName(beanProperty.getName());
+            mapping.setPropertyType(beanProperty.getType());
 
-        boolean hasPk = beanProperty.hasAnnotation(Id.class);
-        mapping.setPrimaryKey(hasPk);
-        tableMapping.put(mapping.getColumnName(), mapping);
+            mapping.setPrimaryKey(hasPk);
+            tableMapping.put(mapping.getColumnName(), mapping);
 
-        if (Constants.LOGGER.isDebugEnabled()) {
-            logInfo.append(String.format("%s###\t%s -> %s", SystemPropertyUtils.getLineSeparator(),
-                    mapping.getPropertyName(), mapping.getColumnName()));
+            if (Constants.LOGGER.isDebugEnabled()) {
+                logInfo.append(String.format("%s###\t%s -> %s", SystemPropertyUtils.getLineSeparator(),
+                        mapping.getPropertyName(), mapping.getColumnName()));
+            }
         }
+
         return hasPk;
     }
 
@@ -211,7 +216,7 @@ public class MappingFactory {
                 return tableName;
             }
         }
-        return type.getSimpleName();
+        return tableName;
     }
 
     private String getMappingColumnName(BeanProperty<?> type) {
@@ -222,7 +227,7 @@ public class MappingFactory {
                 return columnName;
             }
         }
-        return type.getName();
+        return columnName;
     }
 
 }

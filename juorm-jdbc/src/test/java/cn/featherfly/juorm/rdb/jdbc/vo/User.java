@@ -1,6 +1,7 @@
 
 package cn.featherfly.juorm.rdb.jdbc.vo;
 
+import javax.persistence.Column;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
@@ -19,7 +20,8 @@ public class User {
 
     private String username;
 
-    private String password;
+    @Column(name = "password")
+    private String pwd;
 
     private String mobileNo;
 
@@ -27,7 +29,7 @@ public class User {
 
     /**
      * 返回id
-     * 
+     *
      * @return id
      */
     public Integer getId() {
@@ -36,7 +38,7 @@ public class User {
 
     /**
      * 设置id
-     * 
+     *
      * @param id id
      */
     public void setId(Integer id) {
@@ -45,7 +47,7 @@ public class User {
 
     /**
      * 返回username
-     * 
+     *
      * @return username
      */
     public String getUsername() {
@@ -54,7 +56,7 @@ public class User {
 
     /**
      * 设置username
-     * 
+     *
      * @param username username
      */
     public void setUsername(String username) {
@@ -62,26 +64,26 @@ public class User {
     }
 
     /**
-     * 返回password
-     * 
-     * @return password
+     * 返回pwd
+     *
+     * @return pwd
      */
-    public String getPassword() {
-        return password;
+    public String getPwd() {
+        return pwd;
     }
 
     /**
-     * 设置password
-     * 
-     * @param password password
+     * 设置pwd
+     *
+     * @param pwd pwd
      */
-    public void setPassword(String password) {
-        this.password = password;
+    public void setPwd(String pwd) {
+        this.pwd = pwd;
     }
 
     /**
      * 返回mobileNo
-     * 
+     *
      * @return mobileNo
      */
     public String getMobileNo() {
@@ -90,7 +92,7 @@ public class User {
 
     /**
      * 设置mobileNo
-     * 
+     *
      * @param mobileNo mobileNo
      */
     public void setMobileNo(String mobileNo) {
@@ -99,7 +101,7 @@ public class User {
 
     /**
      * 返回age
-     * 
+     *
      * @return age
      */
     public Integer getAge() {
@@ -108,10 +110,19 @@ public class User {
 
     /**
      * 设置age
-     * 
+     *
      * @param age age
      */
     public void setAge(Integer age) {
         this.age = age;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public String toString() {
+        return "User [id=" + id + ", username=" + username + ", pwd=" + pwd + ", mobileNo=" + mobileNo + ", age=" + age
+                + "]";
     }
 }

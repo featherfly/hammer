@@ -23,7 +23,7 @@ public class Role {
 
     /**
      * 返回id
-     * 
+     *
      * @return id
      */
     public Integer getId() {
@@ -32,7 +32,7 @@ public class Role {
 
     /**
      * 设置id
-     * 
+     *
      * @param id id
      */
     public void setId(Integer id) {
@@ -41,7 +41,7 @@ public class Role {
 
     /**
      * 返回name
-     * 
+     *
      * @return name
      */
     public String getName() {
@@ -50,7 +50,7 @@ public class Role {
 
     /**
      * 设置name
-     * 
+     *
      * @param name name
      */
     public void setName(String name) {
@@ -59,7 +59,7 @@ public class Role {
 
     /**
      * 返回descp
-     * 
+     *
      * @return descp
      */
     public String getDescp() {
@@ -68,11 +68,19 @@ public class Role {
 
     /**
      * 设置descp
-     * 
+     *
      * @param descp descp
      */
     public void setDescp(String descp) {
         this.descp = descp;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public String toString() {
+        return "Role [id=" + id + ", name=" + name + ", descp=" + descp + "]";
     }
 
 }
