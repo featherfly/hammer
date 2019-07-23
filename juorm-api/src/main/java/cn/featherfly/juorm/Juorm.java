@@ -3,7 +3,9 @@ package cn.featherfly.juorm;
 
 import java.io.Serializable;
 import java.util.List;
+import java.util.Map;
 
+import cn.featherfly.common.structure.page.PaginationResults;
 import cn.featherfly.juorm.dsl.execute.Delete;
 import cn.featherfly.juorm.dsl.execute.Update;
 import cn.featherfly.juorm.dsl.query.QueryEntity;
@@ -35,8 +37,10 @@ public interface Juorm {
     /**
      * save entity
      *
-     * @param <E>    generic type
-     * @param entity entity to save
+     * @param <E>
+     *            generic type
+     * @param entity
+     *            entity to save
      * @return effect data row num
      */
     <E> int save(E entity);
@@ -44,8 +48,10 @@ public interface Juorm {
     /**
      * batch save entity list
      *
-     * @param <E>      generic type
-     * @param entities entity list to save
+     * @param <E>
+     *            generic type
+     * @param entities
+     *            entity list to save
      * @return effect data row num
      */
     <E> int save(List<E> entities);
@@ -55,8 +61,10 @@ public interface Juorm {
      * {@link #update(Object, IgnorePolicy)} with params (entity,
      * IgnorePolicy.NONE)
      *
-     * @param <E>    generic type
-     * @param entity entity to update
+     * @param <E>
+     *            generic type
+     * @param entity
+     *            entity to update
      * @return effect data row num
      */
     <E> int update(E entity);
@@ -66,8 +74,10 @@ public interface Juorm {
      * {@link #update(List<Object>, IgnorePolicy)} with params (entity,
      * IgnorePolicy.NONE)
      *
-     * @param <E>      generic type
-     * @param entities entity list to update
+     * @param <E>
+     *            generic type
+     * @param entities
+     *            entity list to update
      * @return effect data row num
      */
     <E> int update(List<E> entities);
@@ -75,9 +85,12 @@ public interface Juorm {
     /**
      * update entity, update values with ignorePolicy
      *
-     * @param <E>          generic type
-     * @param entity       entity to update
-     * @param ignorePolicy ignore value to update policy
+     * @param <E>
+     *            generic type
+     * @param entity
+     *            entity to update
+     * @param ignorePolicy
+     *            ignore value to update policy
      * @return effect data row num
      */
     <E> int update(E entity, IgnorePolicy ignorePolicy);
@@ -85,9 +98,12 @@ public interface Juorm {
     /**
      * update values with ignorePolicy for each entity in entity list.
      *
-     * @param <E>          generic type
-     * @param entities     entity list to update
-     * @param ignorePolicy ignore value to update policy
+     * @param <E>
+     *            generic type
+     * @param entities
+     *            entity list to update
+     * @param ignorePolicy
+     *            ignore value to update policy
      * @return effect data row num
      */
     <E> int update(List<E> entities, IgnorePolicy ignorePolicy);
@@ -97,8 +113,10 @@ public interface Juorm {
      * equal invoke method {@link #update(Object, IgnorePolicy)} with params
      * (entity, IgnorePolicy.EMPTY)
      *
-     * @param <E>    generic type
-     * @param entity entity to merge
+     * @param <E>
+     *            generic type
+     * @param entity
+     *            entity to merge
      * @return effect data row num
      */
     <E> int merge(E entity);
@@ -109,8 +127,10 @@ public interface Juorm {
      * {@link #update(Object, IgnorePolicy)} with params (entity,
      * IgnorePolicy.EMPTY)
      *
-     * @param <E>      generic type
-     * @param entities entity list to merge
+     * @param <E>
+     *            generic type
+     * @param entities
+     *            entity list to merge
      * @return effect data row num
      */
     <E> int merge(List<E> entities);
@@ -118,8 +138,10 @@ public interface Juorm {
     /**
      * delete entity
      *
-     * @param <E>    generic type
-     * @param entity entity to delete
+     * @param <E>
+     *            generic type
+     * @param entity
+     *            entity to delete
      * @return effect data row num
      */
     <E> int delete(E entity);
@@ -127,8 +149,10 @@ public interface Juorm {
     /**
      * delete each entity in entity list
      *
-     * @param <E>      generic type
-     * @param entities entity list to delete
+     * @param <E>
+     *            generic type
+     * @param entities
+     *            entity list to delete
      * @return effect data row num
      */
     <E> int delete(List<E> entities);
@@ -137,8 +161,10 @@ public interface Juorm {
      * get entity by id.
      *
      * @param <E>
-     * @param id   entity id
-     * @param type entity type
+     * @param id
+     *            entity id
+     * @param type
+     *            entity type
      * @return entity
      */
     <E> E get(Serializable id, Class<E> type);
@@ -147,7 +173,8 @@ public interface Juorm {
      * get entity by id.
      *
      * @param <E>
-     * @param entity entity with id value
+     * @param entity
+     *            entity with id value
      * @return entity
      */
     <E> E get(E entity);
@@ -155,8 +182,10 @@ public interface Juorm {
     /**
      * create QueryData for entityType
      *
-     * @param <E>        generic type
-     * @param entityType query for entityType
+     * @param <E>
+     *            generic type
+     * @param entityType
+     *            query for entityType
      * @return
      */
     <E> QueryEntity query(Class<E> entityType);
@@ -164,8 +193,10 @@ public interface Juorm {
     /**
      * create update for entityType
      *
-     * @param <E>        generic type
-     * @param entityType update for entityType
+     * @param <E>
+     *            generic type
+     * @param entityType
+     *            update for entityType
      * @return
      */
     <E> Update update(Class<E> entityType);
@@ -173,10 +204,116 @@ public interface Juorm {
     /**
      * create delete for entityType
      *
-     * @param <E>        generic type
-     * @param entityType update for entityType
+     * @param <E>
+     *            generic type
+     * @param entityType
+     *            update for entityType
      * @return
      */
     <E> Delete delete(Class<E> entityType);
 
+    /**
+     * <p>
+     * query list, use sql where sql in template find with sqlId
+     * </p>
+     * 
+     * @param <E>
+     * @param sqlId
+     *            sqlId
+     * @param entityType
+     *            entityType
+     * @param params
+     *            params
+     * @return list
+     */
+    <E> List<E> list(String sqlId, Class<E> entityType,
+            Map<String, Object> params);
+
+    /**
+     * <p>
+     * query list, use sql where sql in template find with sqlId
+     * </p>
+     * 
+     * @param <E>
+     * @param sqlId
+     *            sqlId
+     * @param entityType
+     *            entityType
+     * @param params
+     *            params
+     * @param paging
+     *            ispaging
+     * @return list
+     */
+    <E> List<E> list(String sqlId, Class<E> entityType,
+            Map<String, Object> params, boolean paging);
+
+    /**
+     * <p>
+     * query list, use sql where sql in template find with sqlId
+     * </p>
+     * 
+     * @param <E>
+     * @param sqlId
+     *            sqlId
+     * @param entityType
+     *            entityType
+     * @param params
+     *            params
+     * @return list
+     */
+    <E> List<E> list(String sqlId, Class<E> entityType, Object params);
+
+    /**
+     * <p>
+     * query list, use sql where sql in template find with sqlId
+     * </p>
+     * 
+     * @param <E>
+     * @param sqlId
+     *            sqlId
+     * @param entityType
+     *            entityType
+     * @param params
+     *            params
+     * @param paging
+     *            ispaging
+     * @return list
+     */
+    <E> List<E> list(String sqlId, Class<E> entityType, Object params,
+            boolean paging);
+
+    /**
+     * <p>
+     * query list, use sql where sql in template find with sqlId
+     * </p>
+     * 
+     * @param <E>
+     * @param sqlId
+     *            sqlId
+     * @param entityType
+     *            entityType
+     * @param params
+     *            params
+     * @return list
+     */
+    <E> PaginationResults<E> pagination(String sqlId, Class<E> entityType,
+            Object params);
+
+    /**
+     * <p>
+     * query list, use sql where sql in template find with sqlId
+     * </p>
+     * 
+     * @param <E>
+     * @param sqlId
+     *            sqlId
+     * @param entityType
+     *            entityType
+     * @param params
+     *            params
+     * @return list
+     */
+    <E> PaginationResults<E> pagination(String sqlId, Class<E> entityType,
+            Map<String, Object> params);
 }
