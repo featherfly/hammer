@@ -26,11 +26,11 @@ import freemarker.template.TemplateScalarModel;
  * 
  * @author zhongj
  */
-public abstract class SqlKeyworldTemplateDirectiveModel
+public abstract class LogicTemplateDirectiveModel
         implements TemplateDirectiveModel {
 
     private static final Pattern CONDITION_PATTERN = Pattern.compile(
-            "(\\w+) *(([=><])|(<>)|(!=)|( in )) *\\?",
+            "(\\w+) *(([=><])|(<>)|(!=)|( in )|( is )) *\\?",
             Pattern.CASE_INSENSITIVE);
 
     private static final String PARAM_NAME_IF = "if";
@@ -41,7 +41,7 @@ public abstract class SqlKeyworldTemplateDirectiveModel
 
     /**
      */
-    public SqlKeyworldTemplateDirectiveModel(
+    public LogicTemplateDirectiveModel(
             ConditionParamsManager conditionParamsManager) {
         this.conditionParamsManager = conditionParamsManager;
     }
@@ -54,8 +54,7 @@ public abstract class SqlKeyworldTemplateDirectiveModel
             @SuppressWarnings("rawtypes") Map params, TemplateModel[] loopVars,
             TemplateDirectiveBody body) throws TemplateException, IOException {
 
-        boolean ifParam = false;
-        boolean countParamSet = false;
+        Boolean ifParam = null;
         String nameParam = null;
 
         @SuppressWarnings("unchecked")
@@ -71,7 +70,6 @@ public abstract class SqlKeyworldTemplateDirectiveModel
                             + "\" parameter " + "must be a boolean.");
                 }
                 ifParam = ((TemplateBooleanModel) paramValue).getAsBoolean();
-                countParamSet = true;
             } else if (paramName.equals(PARAM_NAME_NAME)) {
                 if (!(paramValue instanceof TemplateScalarModel)) {
                     throw new TemplateModelException("The \"" + PARAM_NAME_NAME
@@ -83,20 +81,36 @@ public abstract class SqlKeyworldTemplateDirectiveModel
                         "Unsupported parameter: " + paramName);
             }
         }
-        if (!countParamSet) {
-            throw new TemplateModelException("The required \"" + PARAM_NAME_IF
-                    + "\" paramter" + "is missing.");
-        }
 
         // ---------------------------------------------------------------------
         // Do the actual directive execution:
 
         Writer out = env.getOut();
         if (body != null) {
-            if (ifParam) {
+            // System.out.println("ifParam: " + ifParam + " amount: "
+            // + conditionParamsManager.getAmount());
+            if (ifParam == null) {
+                boolean needAppendLogicWorld = conditionParamsManager
+                        .isNeedAppendLogicWorld();
+                conditionParamsManager.startGroup();
+                StringWriter stringWriter = new StringWriter();
+                body.render(stringWriter);
+                String condition = stringWriter.toString().trim();
+                if (condition.length() > 0) {
+                    String result = "";
+                    if (needAppendLogicWorld) {
+                        result = " " + getLogicWorld() + " ( " + condition
+                                + " ) ";
+                    } else {
+                        result = " ( " + condition + " ) ";
+                    }
+                    out.write(result);
+                }
+                conditionParamsManager.endGroup();
+            } else if (ifParam) {
                 String name = nameParam;
-                if (conditionParamsManager.getAmount() > 0) {
-                    out.write(" " + getKeyworld() + " ");
+                if (conditionParamsManager.isNeedAppendLogicWorld()) {
+                    out.write(" " + getLogicWorld() + " ");
                 }
                 StringWriter stringWriter = new StringWriter();
                 body.render(stringWriter);
@@ -129,6 +143,6 @@ public abstract class SqlKeyworldTemplateDirectiveModel
         System.out.println(StringUtils.substringBefore("aabbcc", "="));
     }
 
-    protected abstract String getKeyworld();
+    protected abstract String getLogicWorld();
 
 }
