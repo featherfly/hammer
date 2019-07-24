@@ -1,11 +1,35 @@
 select * from user
 <@where>
-    <@and if= name??>
-        name = ?
+    <@and if= age??>
+        age = ?
+    </@and>
+    <@and>
+        <@and if= name??>
+            name = ?
+        </@and>
+        <@and if= age??>
+            age = ?
+        </@and>
+        <@or>
+            <@and if= name??>
+                name = ?
+            </@and>
+            <@or if= age??>
+                age = ?
+            </@or>
+        </@or>
     </@and>
     <@and if= age??>
         age = ?
     </@and>
+    <@or>
+        <@and if= name??>
+            name = ?
+        </@and>
+        <@or if= age??>
+            age = ?
+        </@or>
+    </@or>
     <@and if=sex??>
         sex = ?
     </@and>
@@ -26,6 +50,7 @@ select * from user
     </@or>
 </@where>
 
+<#--
 select * from role
 <@where>
     <@and if= name??>
@@ -47,3 +72,4 @@ select * from role
         mobile in ?
     </@and>
 </@where>
+-->

@@ -17,9 +17,14 @@ public class ConditionParamsManager {
 
     private Map<Integer, String> paramValuesMap = new HashMap<>();
 
+    private ConditionGroup rootGroup = new ConditionGroup();
+
+    private ConditionGroup currentGroup = rootGroup;
+
     public void addParam(String paramName) {
         paramValuesMap.put(amount, paramName);
         amount++;
+        currentGroup.addCondition();
     }
 
     public int getAmount() {
@@ -34,4 +39,23 @@ public class ConditionParamsManager {
     public Map<Integer, String> getParamValuesMap() {
         return paramValuesMap;
     }
+
+    public void startGroup() {
+        ConditionGroup group = new ConditionGroup();
+        currentGroup.addChild(group);
+        currentGroup = group;
+    }
+
+    public void endGroup() {
+        currentGroup = currentGroup.getParent();
+    }
+
+    public boolean isNeedAppendLogicWorld() {
+        if (currentGroup == rootGroup) {
+            return amount > 0;
+        } else {
+        }
+        return currentGroup.getAmount() > 0 && amount > 0;
+    }
+
 }

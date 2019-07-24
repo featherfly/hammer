@@ -9,7 +9,7 @@ package cn.featherfly.juorm.rdb.sqltpl.freemarker;
  * @author zhongj
  */
 public class OrTemplateDirectiveModel
-        extends SqlKeyworldTemplateDirectiveModel {
+        extends LogicTemplateDirectiveModel {
 
     /**
      * @param conditionParamsManager
@@ -23,7 +23,7 @@ public class OrTemplateDirectiveModel
      * {@inheritDoc}
      */
     @Override
-    protected String getKeyworld() {
+    protected String getLogicWorld() {
         return "or";
     }
 
