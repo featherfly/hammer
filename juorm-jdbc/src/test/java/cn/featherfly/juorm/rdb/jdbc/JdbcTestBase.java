@@ -37,7 +37,7 @@ public class JdbcTestBase {
         dataSource.setUsername("root");
         dataSource.setPassword("123456");
 
-        jdbc = new Jdbc(dataSource, Dialects.MYSQL);
+        jdbc = new SpringJdbcTemplateImpl(dataSource, Dialects.MYSQL);
 
         DatabaseMetadata metadata = DatabaseMetadataManager.getDefaultManager().create(dataSource);
 

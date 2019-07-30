@@ -1,5 +1,5 @@
 
-package cn.featherfly.juorm.rdb.sqltpl.freemarker;
+package cn.featherfly.juorm.rdb.tpl.freemarker;
 
 import java.io.IOException;
 import java.io.StringWriter;

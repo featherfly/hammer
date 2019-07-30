@@ -1,7 +1,9 @@
-select * from user
-<@where>
-    <@and if= age??>
+select * from user<@where>
+    <@and if = age??>
         age = ?
+    </@and>
+    <@and if= minAge?? && maxAge?? name="minAge,maxAge">
+            age between ? and ?
     </@and>
     <@and>
         <@and if= name??>
@@ -11,12 +13,12 @@ select * from user
             age = ?
         </@and>
         <@or>
-            <@and if= name??>
-                name = ?
+            <@and if= minAge?? name="minAge">
+                age > ?
             </@and>
-            <@or if= age??>
-                age = ?
-            </@or>
+            <@and if= maxAge?? name="maxAge">
+                age < ?
+            </@and>
         </@or>
     </@and>
     <@and if= age??>

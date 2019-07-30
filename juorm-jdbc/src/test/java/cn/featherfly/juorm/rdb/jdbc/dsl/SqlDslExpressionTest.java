@@ -12,6 +12,7 @@ import org.testng.annotations.Test;
 import cn.featherfly.juorm.dml.builder.QueryBuilder;
 import cn.featherfly.juorm.expression.SimpleRepository;
 import cn.featherfly.juorm.rdb.jdbc.Jdbc;
+import cn.featherfly.juorm.rdb.jdbc.SpringJdbcTemplateImpl;
 import cn.featherfly.juorm.rdb.jdbc.dsl.execute.SqlConditionGroupExpression;
 import cn.featherfly.juorm.rdb.jdbc.dsl.execute.SqlDeleteExpression;
 import cn.featherfly.juorm.rdb.jdbc.dsl.execute.SqlUpdater;
@@ -29,7 +30,7 @@ import cn.featherfly.juorm.rdb.sql.dialect.Dialects;
  */
 public class SqlDslExpressionTest {
 
-    Jdbc jdbc = new Jdbc(null, Dialects.MYSQL);
+    Jdbc jdbc = new SpringJdbcTemplateImpl(null, Dialects.MYSQL);
     QueryBuilder sub = null;
     List<Object> params = new ArrayList<>();
 
@@ -49,7 +50,7 @@ public class SqlDslExpressionTest {
     @Test
     public void testSqlConditionGroupExpressionBuilder() {
         SqlConditionGroupExpression builder = new SqlConditionGroupExpression(
-                new Jdbc(null, Dialects.MYSQL));
+                new SpringJdbcTemplateImpl(null, Dialects.MYSQL));
         builder.eq("name", name).and().eq("pwd", pwd).and().group()
                 .eq("sex", sex).or().gt("age", age);
 

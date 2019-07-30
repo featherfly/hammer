@@ -11,6 +11,7 @@ import org.testng.annotations.Test;
 
 import cn.featherfly.juorm.dml.builder.QueryBuilder;
 import cn.featherfly.juorm.rdb.jdbc.Jdbc;
+import cn.featherfly.juorm.rdb.jdbc.SpringJdbcTemplateImpl;
 import cn.featherfly.juorm.rdb.sql.dialect.Dialects;
 import cn.featherfly.juorm.rdb.sql.dml.SqlConditionGroupExpressionBuilder;
 
@@ -22,7 +23,7 @@ import cn.featherfly.juorm.rdb.sql.dml.SqlConditionGroupExpressionBuilder;
  * @author zhongj
  */
 public class SqlConditionGroupExpressionBuilderTest {
-    Jdbc jdbc = new Jdbc(null, Dialects.MYSQL);
+    Jdbc jdbc = new SpringJdbcTemplateImpl(null, Dialects.MYSQL);
     QueryBuilder sub = null;
     List<Object> params = new ArrayList<>();
 
