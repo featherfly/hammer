@@ -2,7 +2,6 @@ select: "select * from shop"
 role:
   type: LIST
   query: select * from role
-  count: null
 permission:
   type: PAGINATION
   query: select * from permission

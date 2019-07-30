@@ -7,16 +7,16 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import cn.featherfly.common.constant.Chars;
+import cn.featherfly.common.db.SqlUtils;
 import cn.featherfly.common.lang.ArrayUtils;
 import cn.featherfly.common.lang.DateUtils;
 import cn.featherfly.common.lang.LangUtils;
-import cn.featherfly.juorm.rdb.sql.SqlUtils;
 
 /**
  * <p>
  * Oracle数据库方言实现类.
  * </p>
- * 
+ *
  * @author zhongj
  */
 public class OracleDialect extends AbstractDialect {

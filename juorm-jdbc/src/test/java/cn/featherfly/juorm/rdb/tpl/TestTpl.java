@@ -1,5 +1,5 @@
 
-package cn.featherfly.juorm.rdb.jdbc.tpl;
+package cn.featherfly.juorm.rdb.tpl;
 
 import java.io.File;
 import java.io.IOException;
@@ -17,13 +17,13 @@ import com.fasterxml.jackson.dataformat.yaml.YAMLFactory;
 
 import cn.featherfly.common.lang.ClassLoaderUtils;
 import cn.featherfly.common.lang.LangUtils;
-import cn.featherfly.juorm.rdb.sqltpl.SqlExecute;
-import cn.featherfly.juorm.rdb.sqltpl.SqlExecute.Type;
-import cn.featherfly.juorm.rdb.sqltpl.SqlExecuteConfig;
-import cn.featherfly.juorm.rdb.sqltpl.freemarker.AndTemplateDirectiveModel;
-import cn.featherfly.juorm.rdb.sqltpl.freemarker.ConditionParamsManager;
-import cn.featherfly.juorm.rdb.sqltpl.freemarker.OrTemplateDirectiveModel;
-import cn.featherfly.juorm.rdb.sqltpl.freemarker.WhereTemplateDirectiveModel;
+import cn.featherfly.juorm.rdb.tpl.freemarker.AndTemplateDirectiveModel;
+import cn.featherfly.juorm.rdb.tpl.freemarker.ConditionParamsManager;
+import cn.featherfly.juorm.rdb.tpl.freemarker.OrTemplateDirectiveModel;
+import cn.featherfly.juorm.rdb.tpl.freemarker.WhereTemplateDirectiveModel;
+import cn.featherfly.juorm.tpl.TplExecuteConfig;
+import cn.featherfly.juorm.tpl.TplExecuteConfig.Type;
+import cn.featherfly.juorm.tpl.TplExecuteConfigs;
 import freemarker.template.Configuration;
 import freemarker.template.Template;
 import freemarker.template.TemplateException;
@@ -38,8 +38,8 @@ import freemarker.template.TemplateExceptionHandler;
  */
 public class TestTpl {
 
-    public static SqlExecute createConfig(String table) {
-        SqlExecute config = new SqlExecute();
+    public static TplExecuteConfig createConfig(String table) {
+        TplExecuteConfig config = new TplExecuteConfig();
         config.setQuery("select * from " + table);
         return config;
     }
@@ -49,23 +49,23 @@ public class TestTpl {
         YAMLFactory yamlFactory = new YAMLFactory();
         ObjectMapper mapper = new ObjectMapper(yamlFactory);
         mapper.enable(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES);
-        SqlExecuteConfig configs = new SqlExecuteConfig();
+        TplExecuteConfigs configs = new TplExecuteConfigs();
         configs.put("user", createConfig("user"));
         configs.put("role", createConfig("role"));
         configs.put("permission", createConfig("permission"));
         configs.put("select", "select * from shop");
-        String yaml = mapper.writerFor(SqlExecuteConfig.class).writeValueAsString(configs);
+        String yaml = mapper.writerFor(TplExecuteConfigs.class).writeValueAsString(configs);
         System.out.println(yaml);
 
-        configs = mapper.readerFor(SqlExecuteConfig.class)
-                .readValue(ClassLoaderUtils.getResourceAsStream("user.yaml", SqlExecuteConfig.class));
+        configs = mapper.readerFor(TplExecuteConfigs.class)
+                .readValue(ClassLoaderUtils.getResourceAsStream("user.yaml", TplExecuteConfigs.class));
 
         System.out.println(configs);
 
-        SqlExecuteConfig newConfigs = new SqlExecuteConfig();
+        TplExecuteConfigs newConfigs = new TplExecuteConfigs();
         configs.forEach((k, v) -> {
             System.out.println("key " + k + " value " + v.getClass() + " " + v);
-            SqlExecute config = new SqlExecute();
+            TplExecuteConfig config = new TplExecuteConfig();
             if (v instanceof String) {
                 config.setQuery(v.toString());
             } else {
@@ -108,6 +108,8 @@ public class TestTpl {
 
         root.put("name", "yufei");
         root.put("age", 18);
+        root.put("minAge", 12);
+        root.put("maxAge", 30);
         root.put("mobile", "1325824");
         root.put("sex", null);
 
@@ -118,8 +120,49 @@ public class TestTpl {
         Writer out = new OutputStreamWriter(System.out);
         StringWriter writer = new StringWriter();
         temp.process(root, writer);
+        System.out.println(writer.toString());
         System.out.println(writer.toString().replaceAll("\\n", ""));
 
-        System.err.println(manager.getParamValuesMap());
+        System.err.println(manager.getParamNames());
+    }
+
+    @Test
+    void template2() throws IOException, TemplateException {
+        System.out.println(ClassLoaderUtils.getResource("templates", TestTpl.class));
+
+        Configuration cfg = new Configuration(Configuration.VERSION_2_3_28);
+
+        cfg.setDirectoryForTemplateLoading(
+                new File(ClassLoaderUtils.getResource("templates", TestTpl.class).getFile()));
+
+        cfg.setDefaultEncoding("UTF-8");
+
+        cfg.setTemplateExceptionHandler(TemplateExceptionHandler.RETHROW_HANDLER);
+
+        /* Create a data-model */
+        ConditionParamsManager manager = new ConditionParamsManager();
+        Map<String, Object> root = new HashMap<>();
+        root.put("where", new WhereTemplateDirectiveModel());
+        root.put("and", new AndTemplateDirectiveModel(manager));
+        root.put("or", new OrTemplateDirectiveModel(manager));
+
+        root.put("name", "yufei");
+        root.put("age", 18);
+        root.put("minAge", 12);
+        root.put("maxAge", 30);
+        root.put("mobile", "1325824");
+        root.put("sex", null);
+
+        /* Get the template (uses cache internally) */
+        Template temp = cfg.getTemplate("sql2.ftl");
+
+        /* Merge data-model with template */
+        Writer out = new OutputStreamWriter(System.out);
+        StringWriter writer = new StringWriter();
+        temp.process(root, writer);
+        System.out.println(writer.toString());
+        System.out.println(writer.toString().replaceAll("\\n", ""));
+
+        System.err.println(manager.getParamNames());
     }
 }

@@ -1,5 +1,5 @@
 
-package cn.featherfly.juorm.rdb.sqltpl.freemarker;
+package cn.featherfly.juorm.rdb.tpl.freemarker;
 
 import java.io.IOException;
 import java.io.StringWriter;
@@ -10,6 +10,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import cn.featherfly.common.lang.StringUtils;
+import cn.featherfly.juorm.rdb.jdbc.JuormJdbcException;
 import freemarker.core.Environment;
 import freemarker.template.TemplateBooleanModel;
 import freemarker.template.TemplateDirectiveBody;
@@ -28,7 +29,15 @@ import freemarker.template.TemplateScalarModel;
  */
 public abstract class LogicTemplateDirectiveModel implements TemplateDirectiveModel {
 
-    private static final Pattern CONDITION_PATTERN = Pattern.compile("(\\w+) *(([=><])|(<>)|(!=)|( in )|( is )) *\\?",
+    private static final String BETWEEN = "between";
+
+    // (\w+) *([=><]|<>|!=|>=|<=| in | is ) *(:\w+|\?)
+    //    private static final Pattern CONDITION_PATTERN = Pattern
+    //            .compile("(\\w+) *([=><]|<>|!=|>=|<=| in | is ) *(:\\w+|\\?)", Pattern.CASE_INSENSITIVE);
+
+    //(\w+) *(([=><]|<>|!=|>=|<=| in | is ) *(:\w+|\?)|(between) +(:\w+|\?) *(and) *(:\w+|\?))
+    private static final Pattern CONDITION_PATTERN = Pattern.compile(
+            "(\\w+) *(([=><]|<>|!=|>=|<=| in | is ) *(:\\w+|\\?)|(between) +(:\\w+|\\?) *(and) *(:\\w+|\\?))",
             Pattern.CASE_INSENSITIVE);
 
     private static final String PARAM_NAME_IF = "if";
@@ -38,6 +47,7 @@ public abstract class LogicTemplateDirectiveModel implements TemplateDirectiveMo
     private ConditionParamsManager conditionParamsManager;
 
     /**
+     * @param conditionParamsManager conditionParamsManager
      */
     public LogicTemplateDirectiveModel(ConditionParamsManager conditionParamsManager) {
         this.conditionParamsManager = conditionParamsManager;
@@ -109,28 +119,58 @@ public abstract class LogicTemplateDirectiveModel implements TemplateDirectiveMo
 
                 String condition = stringWriter.toString().trim();
                 if (StringUtils.isBlank(nameParam) && condition.length() > 0) {
-                    name = StringUtils.substringBefore(condition, "=");
-                    Matcher m = CONDITION_PATTERN.matcher(condition);
+                    Matcher m = null;
+                    m = CONDITION_PATTERN.matcher(condition);
                     if (!m.matches()) {
                         throw new IllegalArgumentException(
                                 "[" + condition + "] " + "查询条件无法获取条件名称，请直接在指令上设置参数名称<@and name=\"paramName\">");
                     }
-                    name = m.group(1);
-                    if (StringUtils.isBlank(name)) {
-                        throw new IllegalArgumentException(
-                                "[" + condition + "] " + "查询条件无法获取条件名称，请直接在指令上设置参数名称<@and name=\"paramName\">");
+
+                    String paramType = null;
+                    boolean betweenAnd = false;
+                    if (BETWEEN.equalsIgnoreCase(m.group(5))) {
+                        paramType = m.group(6);
+                        betweenAnd = true;
+                    } else {
+                        paramType = m.group(4);
                     }
 
+                    if ("?".equals(paramType)) {
+                        if (conditionParamsManager.getParamNamed() != null
+                                && conditionParamsManager.getParamNamed() == true) {
+                            throw new JuormJdbcException("不能name = ? 和 name = :name混合一起用");
+                        }
+                        conditionParamsManager.setParamNamed(false);
+
+                        name = m.group(1);
+                        if (StringUtils.isBlank(name) || betweenAnd) {
+                            throw new IllegalArgumentException("[" + condition + "] "
+                                    + "查询条件无法获取条件名称，请直接在指令上设置参数名称<@and name=\"paramName\">或者<@and name=\"paramName1,paramName2\">");
+                        }
+                    } else if (paramType.startsWith(":")) {
+                        if (conditionParamsManager.getParamNamed() != null
+                                && conditionParamsManager.getParamNamed() == false) {
+                            throw new JuormJdbcException("不能name = ? 和 name = :name混合一起用");
+                        }
+                        conditionParamsManager.setParamNamed(true);
+                        name = paramType.substring(1);
+                        if (betweenAnd) {
+                            name = name + "," + m.group(8).substring(1);
+                        }
+                    }
                 }
-                conditionParamsManager.addParam(name.trim());
+
+                if (name.contains(",")) {
+                    for (String n : name.split(",")) {
+                        conditionParamsManager.addParam(n.trim());
+                    }
+                } else {
+                    conditionParamsManager.addParam(name.trim());
+                }
                 out.write(condition);
                 // body.render(out);
             }
         }
-    }
-
-    public static void main(String[] args) {
-        System.out.println(StringUtils.substringBefore("aabbcc", "="));
     }
 
     protected abstract String getLogicWorld();
