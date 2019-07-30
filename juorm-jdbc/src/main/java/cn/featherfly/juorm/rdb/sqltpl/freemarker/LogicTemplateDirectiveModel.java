@@ -23,14 +23,12 @@ import freemarker.template.TemplateScalarModel;
  * <p>
  * WhereTemplateDirectiveModel
  * </p>
- * 
+ *
  * @author zhongj
  */
-public abstract class LogicTemplateDirectiveModel
-        implements TemplateDirectiveModel {
+public abstract class LogicTemplateDirectiveModel implements TemplateDirectiveModel {
 
-    private static final Pattern CONDITION_PATTERN = Pattern.compile(
-            "(\\w+) *(([=><])|(<>)|(!=)|( in )|( is )) *\\?",
+    private static final Pattern CONDITION_PATTERN = Pattern.compile("(\\w+) *(([=><])|(<>)|(!=)|( in )|( is )) *\\?",
             Pattern.CASE_INSENSITIVE);
 
     private static final String PARAM_NAME_IF = "if";
@@ -41,8 +39,7 @@ public abstract class LogicTemplateDirectiveModel
 
     /**
      */
-    public LogicTemplateDirectiveModel(
-            ConditionParamsManager conditionParamsManager) {
+    public LogicTemplateDirectiveModel(ConditionParamsManager conditionParamsManager) {
         this.conditionParamsManager = conditionParamsManager;
     }
 
@@ -50,8 +47,7 @@ public abstract class LogicTemplateDirectiveModel
      * {@inheritDoc}
      */
     @Override
-    public void execute(Environment env,
-            @SuppressWarnings("rawtypes") Map params, TemplateModel[] loopVars,
+    public void execute(Environment env, @SuppressWarnings("rawtypes") Map params, TemplateModel[] loopVars,
             TemplateDirectiveBody body) throws TemplateException, IOException {
 
         Boolean ifParam = null;
@@ -66,19 +62,17 @@ public abstract class LogicTemplateDirectiveModel
 
             if (paramName.equals(PARAM_NAME_IF)) {
                 if (!(paramValue instanceof TemplateBooleanModel)) {
-                    throw new TemplateModelException("The \"" + PARAM_NAME_IF
-                            + "\" parameter " + "must be a boolean.");
+                    throw new TemplateModelException("The \"" + PARAM_NAME_IF + "\" parameter " + "must be a boolean.");
                 }
                 ifParam = ((TemplateBooleanModel) paramValue).getAsBoolean();
             } else if (paramName.equals(PARAM_NAME_NAME)) {
                 if (!(paramValue instanceof TemplateScalarModel)) {
-                    throw new TemplateModelException("The \"" + PARAM_NAME_NAME
-                            + "\" parameter " + "must be a String.");
+                    throw new TemplateModelException(
+                            "The \"" + PARAM_NAME_NAME + "\" parameter " + "must be a String.");
                 }
                 nameParam = ((TemplateScalarModel) paramValue).getAsString();
             } else {
-                throw new TemplateModelException(
-                        "Unsupported parameter: " + paramName);
+                throw new TemplateModelException("Unsupported parameter: " + paramName);
             }
         }
 
@@ -90,8 +84,7 @@ public abstract class LogicTemplateDirectiveModel
             // System.out.println("ifParam: " + ifParam + " amount: "
             // + conditionParamsManager.getAmount());
             if (ifParam == null) {
-                boolean needAppendLogicWorld = conditionParamsManager
-                        .isNeedAppendLogicWorld();
+                boolean needAppendLogicWorld = conditionParamsManager.isNeedAppendLogicWorld();
                 conditionParamsManager.startGroup();
                 StringWriter stringWriter = new StringWriter();
                 body.render(stringWriter);
@@ -99,10 +92,9 @@ public abstract class LogicTemplateDirectiveModel
                 if (condition.length() > 0) {
                     String result = "";
                     if (needAppendLogicWorld) {
-                        result = " " + getLogicWorld() + " ( " + condition
-                                + " ) ";
+                        result = " " + getLogicWorld() + " ( " + condition + " )";
                     } else {
-                        result = " ( " + condition + " ) ";
+                        result = " ( " + condition + " )";
                     }
                     out.write(result);
                 }
@@ -120,15 +112,13 @@ public abstract class LogicTemplateDirectiveModel
                     name = StringUtils.substringBefore(condition, "=");
                     Matcher m = CONDITION_PATTERN.matcher(condition);
                     if (!m.matches()) {
-                        throw new IllegalArgumentException("[" + condition
-                                + "] "
-                                + "查询条件无法获取条件名称，请直接在指令上设置参数名称<@and name=\"paramName\">");
+                        throw new IllegalArgumentException(
+                                "[" + condition + "] " + "查询条件无法获取条件名称，请直接在指令上设置参数名称<@and name=\"paramName\">");
                     }
                     name = m.group(1);
                     if (StringUtils.isBlank(name)) {
-                        throw new IllegalArgumentException("[" + condition
-                                + "] "
-                                + "查询条件无法获取条件名称，请直接在指令上设置参数名称<@and name=\"paramName\">");
+                        throw new IllegalArgumentException(
+                                "[" + condition + "] " + "查询条件无法获取条件名称，请直接在指令上设置参数名称<@and name=\"paramName\">");
                     }
 
                 }

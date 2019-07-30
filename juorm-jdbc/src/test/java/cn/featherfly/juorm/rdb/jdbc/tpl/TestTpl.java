@@ -4,6 +4,7 @@ package cn.featherfly.juorm.rdb.jdbc.tpl;
 import java.io.File;
 import java.io.IOException;
 import java.io.OutputStreamWriter;
+import java.io.StringWriter;
 import java.io.Writer;
 import java.util.HashMap;
 import java.util.Map;
@@ -32,7 +33,7 @@ import freemarker.template.TemplateExceptionHandler;
  * <p>
  * TestFreemarker
  * </p>
- * 
+ *
  * @author zhongj
  */
 public class TestTpl {
@@ -53,13 +54,11 @@ public class TestTpl {
         configs.put("role", createConfig("role"));
         configs.put("permission", createConfig("permission"));
         configs.put("select", "select * from shop");
-        String yaml = mapper.writerFor(SqlExecuteConfig.class)
-                .writeValueAsString(configs);
+        String yaml = mapper.writerFor(SqlExecuteConfig.class).writeValueAsString(configs);
         System.out.println(yaml);
 
         configs = mapper.readerFor(SqlExecuteConfig.class)
-                .readValue(ClassLoaderUtils.getResourceAsStream("user.yaml",
-                        SqlExecuteConfig.class));
+                .readValue(ClassLoaderUtils.getResourceAsStream("user.yaml", SqlExecuteConfig.class));
 
         System.out.println(configs);
 
@@ -89,18 +88,16 @@ public class TestTpl {
 
     @Test
     void template() throws IOException, TemplateException {
-        System.out.println(
-                ClassLoaderUtils.getResource("templates", TestTpl.class));
+        System.out.println(ClassLoaderUtils.getResource("templates", TestTpl.class));
 
         Configuration cfg = new Configuration(Configuration.VERSION_2_3_28);
 
-        cfg.setDirectoryForTemplateLoading(new File(ClassLoaderUtils
-                .getResource("templates", TestTpl.class).getFile()));
+        cfg.setDirectoryForTemplateLoading(
+                new File(ClassLoaderUtils.getResource("templates", TestTpl.class).getFile()));
 
         cfg.setDefaultEncoding("UTF-8");
 
-        cfg.setTemplateExceptionHandler(
-                TemplateExceptionHandler.RETHROW_HANDLER);
+        cfg.setTemplateExceptionHandler(TemplateExceptionHandler.RETHROW_HANDLER);
 
         /* Create a data-model */
         ConditionParamsManager manager = new ConditionParamsManager();
@@ -119,7 +116,9 @@ public class TestTpl {
 
         /* Merge data-model with template */
         Writer out = new OutputStreamWriter(System.out);
-        temp.process(root, out);
+        StringWriter writer = new StringWriter();
+        temp.process(root, writer);
+        System.out.println(writer.toString().replaceAll("\\n", ""));
 
         System.err.println(manager.getParamValuesMap());
     }
