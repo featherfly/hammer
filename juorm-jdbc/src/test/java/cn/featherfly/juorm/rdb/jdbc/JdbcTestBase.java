@@ -24,9 +24,9 @@ import cn.featherfly.juorm.rdb.sql.dialect.Dialects;
  */
 public class JdbcTestBase {
 
-    Jdbc jdbc;
+    protected Jdbc jdbc;
 
-    MappingFactory factory;
+    protected MappingFactory factory;
 
     @BeforeTest
     public void beforeClass() {

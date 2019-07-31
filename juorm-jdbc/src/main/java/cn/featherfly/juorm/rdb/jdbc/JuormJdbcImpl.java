@@ -70,7 +70,7 @@ public class JuormJdbcImpl implements Juorm {
     public JuormJdbcImpl(Jdbc jdbc, MappingFactory mappingFactory, TplConfigFactory configFactory) {
         this.jdbc = jdbc;
         this.mappingFactory = mappingFactory;
-        sqlTplExecutor = new SqlTplExecutor(configFactory, jdbc);
+        sqlTplExecutor = new SqlTplExecutor(configFactory, jdbc, mappingFactory);
     }
 
     /**

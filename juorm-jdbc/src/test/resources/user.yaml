@@ -1,4 +1,4 @@
-select: "select * from shop"
+select: "select * from shop where name = :name"
 role:
   type: LIST
   query: select * from role
