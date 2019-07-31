@@ -24,6 +24,7 @@ import cn.featherfly.common.lang.ClassLoaderUtils;
 import cn.featherfly.common.lang.LangUtils;
 import cn.featherfly.common.lang.StringUtils;
 import cn.featherfly.common.lang.UriUtils;
+import cn.featherfly.constant.ConstantPool;
 import cn.featherfly.juorm.JuormException;
 import cn.featherfly.juorm.tpl.TplExecuteConfig.Type;
 
@@ -69,6 +70,8 @@ public class TplConfigFactoryImpl implements TplConfigFactory {
         this.prefix = prefix;
         this.suffix = suffix;
 
+        devMode = ConstantPool.getDefault().getConstantParameter().isDevMode();
+
         initConfigs();
     }
 
@@ -105,15 +108,6 @@ public class TplConfigFactoryImpl implements TplConfigFactory {
      */
     public boolean isDevMode() {
         return devMode;
-    }
-
-    /**
-     * 设置devMode
-     *
-     * @param devMode devMode
-     */
-    public void setDevMode(boolean devMode) {
-        this.devMode = devMode;
     }
 
     /**

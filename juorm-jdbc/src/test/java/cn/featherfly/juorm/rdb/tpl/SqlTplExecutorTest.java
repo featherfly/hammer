@@ -6,12 +6,14 @@ import static org.testng.Assert.assertTrue;
 
 import java.util.List;
 
+import org.testng.annotations.BeforeClass;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
 import cn.featherfly.common.structure.HashChainMap;
 import cn.featherfly.common.structure.page.PaginationResults;
 import cn.featherfly.common.structure.page.SimplePagination;
+import cn.featherfly.constant.ConstantConfigurator;
 import cn.featherfly.juorm.rdb.jdbc.JdbcTestBase;
 import cn.featherfly.juorm.rdb.jdbc.vo.Role;
 import cn.featherfly.juorm.rdb.jdbc.vo.User;
@@ -33,6 +35,11 @@ public class SqlTplExecutorTest extends JdbcTestBase {
     String username1 = "yufei";
     String username2 = "featherfly";
     String password = "123";
+
+    @BeforeClass
+    void init() {
+        ConstantConfigurator.config();
+    }
 
     @BeforeMethod
     void setup() {
