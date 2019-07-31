@@ -3,9 +3,7 @@ package cn.featherfly.juorm.rdb.tpl;
 
 import java.io.File;
 import java.io.IOException;
-import java.io.OutputStreamWriter;
 import java.io.StringWriter;
-import java.io.Writer;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -119,7 +117,7 @@ public class TestTpl {
         Template temp = cfg.getTemplate("sql.ftl");
 
         /* Merge data-model with template */
-        Writer out = new OutputStreamWriter(System.out);
+        //        Writer out = new OutputStreamWriter(System.out);
         StringWriter writer = new StringWriter();
         temp.process(root, writer);
         System.out.println(writer.toString());
@@ -159,7 +157,7 @@ public class TestTpl {
         Template temp = cfg.getTemplate("sql2.ftl");
 
         /* Merge data-model with template */
-        Writer out = new OutputStreamWriter(System.out);
+        //        Writer out = new OutputStreamWriter(System.out);
         StringWriter writer = new StringWriter();
         temp.process(root, writer);
         System.out.println(writer.toString());
