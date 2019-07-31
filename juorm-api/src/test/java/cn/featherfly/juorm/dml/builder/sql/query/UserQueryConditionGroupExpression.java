@@ -36,7 +36,7 @@ public class UserQueryConditionGroupExpression
      */
     @Override
     public UserQueryConditionGroupExpression co(String name, String value) {
-        // YUFEI_TODO Auto-generated method stub
+
         return null;
     }
 
@@ -45,7 +45,7 @@ public class UserQueryConditionGroupExpression
      */
     @Override
     public String expression() {
-        // YUFEI_TODO Auto-generated method stub
+
         return null;
     }
 
@@ -54,7 +54,7 @@ public class UserQueryConditionGroupExpression
      */
     @Override
     public UserQueryConditionGroupExpression ew(String name, String value) {
-        // YUFEI_TODO Auto-generated method stub
+
         return null;
     }
 
@@ -63,7 +63,7 @@ public class UserQueryConditionGroupExpression
      */
     @Override
     public UserQueryConditionGroupExpression eq(String name, Object value) {
-        // YUFEI_TODO Auto-generated method stub
+
         return null;
     }
 
@@ -72,7 +72,7 @@ public class UserQueryConditionGroupExpression
      */
     @Override
     public <N extends Number> UserQueryConditionGroupExpression ge(String name, Number value) {
-        // YUFEI_TODO Auto-generated method stub
+
         return null;
     }
 
@@ -81,7 +81,7 @@ public class UserQueryConditionGroupExpression
      */
     @Override
     public <D extends Date> UserQueryConditionGroupExpression ge(String name, D value) {
-        // YUFEI_TODO Auto-generated method stub
+
         return null;
     }
 
@@ -90,7 +90,7 @@ public class UserQueryConditionGroupExpression
      */
     @Override
     public UserQueryConditionGroupExpression ge(String name, LocalTime value) {
-        // YUFEI_TODO Auto-generated method stub
+
         return null;
     }
 
@@ -99,7 +99,7 @@ public class UserQueryConditionGroupExpression
      */
     @Override
     public UserQueryConditionGroupExpression ge(String name, LocalDate value) {
-        // YUFEI_TODO Auto-generated method stub
+
         return null;
     }
 
@@ -108,7 +108,7 @@ public class UserQueryConditionGroupExpression
      */
     @Override
     public UserQueryConditionGroupExpression ge(String name, LocalDateTime value) {
-        // YUFEI_TODO Auto-generated method stub
+
         return null;
     }
 
@@ -117,7 +117,7 @@ public class UserQueryConditionGroupExpression
      */
     @Override
     public UserQueryConditionGroupExpression ge(String name, String value) {
-        // YUFEI_TODO Auto-generated method stub
+
         return null;
     }
 
@@ -126,7 +126,7 @@ public class UserQueryConditionGroupExpression
      */
     @Override
     public <N extends Number> UserQueryConditionGroupExpression gt(String name, Number value) {
-        // YUFEI_TODO Auto-generated method stub
+
         return null;
     }
 
@@ -135,7 +135,7 @@ public class UserQueryConditionGroupExpression
      */
     @Override
     public <D extends Date> UserQueryConditionGroupExpression gt(String name, D value) {
-        // YUFEI_TODO Auto-generated method stub
+
         return null;
     }
 
@@ -144,7 +144,7 @@ public class UserQueryConditionGroupExpression
      */
     @Override
     public UserQueryConditionGroupExpression gt(String name, LocalTime value) {
-        // YUFEI_TODO Auto-generated method stub
+
         return null;
     }
 
@@ -153,7 +153,7 @@ public class UserQueryConditionGroupExpression
      */
     @Override
     public UserQueryConditionGroupExpression gt(String name, LocalDate value) {
-        // YUFEI_TODO Auto-generated method stub
+
         return null;
     }
 
@@ -162,7 +162,7 @@ public class UserQueryConditionGroupExpression
      */
     @Override
     public UserQueryConditionGroupExpression gt(String name, LocalDateTime value) {
-        // YUFEI_TODO Auto-generated method stub
+
         return null;
     }
 
@@ -171,7 +171,7 @@ public class UserQueryConditionGroupExpression
      */
     @Override
     public UserQueryConditionGroupExpression gt(String name, String value) {
-        // YUFEI_TODO Auto-generated method stub
+
         return null;
     }
 
@@ -180,7 +180,7 @@ public class UserQueryConditionGroupExpression
      */
     @Override
     public UserQueryConditionGroupExpression in(String name, Object value) {
-        // YUFEI_TODO Auto-generated method stub
+
         return null;
     }
 
@@ -189,7 +189,7 @@ public class UserQueryConditionGroupExpression
      */
     @Override
     public UserQueryConditionGroupExpression inn(String name) {
-        // YUFEI_TODO Auto-generated method stub
+
         return null;
     }
 
@@ -198,7 +198,7 @@ public class UserQueryConditionGroupExpression
      */
     @Override
     public UserQueryConditionGroupExpression isn(String name) {
-        // YUFEI_TODO Auto-generated method stub
+
         return null;
     }
 
@@ -207,7 +207,7 @@ public class UserQueryConditionGroupExpression
      */
     @Override
     public <N extends Number> UserQueryConditionGroupExpression le(String name, Number value) {
-        // YUFEI_TODO Auto-generated method stub
+
         return null;
     }
 
@@ -216,7 +216,7 @@ public class UserQueryConditionGroupExpression
      */
     @Override
     public <D extends Date> UserQueryConditionGroupExpression le(String name, D value) {
-        // YUFEI_TODO Auto-generated method stub
+
         return null;
     }
 
@@ -225,7 +225,7 @@ public class UserQueryConditionGroupExpression
      */
     @Override
     public UserQueryConditionGroupExpression le(String name, LocalTime value) {
-        // YUFEI_TODO Auto-generated method stub
+
         return null;
     }
 
@@ -234,7 +234,7 @@ public class UserQueryConditionGroupExpression
      */
     @Override
     public UserQueryConditionGroupExpression le(String name, LocalDate value) {
-        // YUFEI_TODO Auto-generated method stub
+
         return null;
     }
 
@@ -243,7 +243,7 @@ public class UserQueryConditionGroupExpression
      */
     @Override
     public UserQueryConditionGroupExpression le(String name, LocalDateTime value) {
-        // YUFEI_TODO Auto-generated method stub
+
         return null;
     }
 
@@ -252,7 +252,7 @@ public class UserQueryConditionGroupExpression
      */
     @Override
     public UserQueryConditionGroupExpression le(String name, String value) {
-        // YUFEI_TODO Auto-generated method stub
+
         return null;
     }
 
@@ -261,7 +261,7 @@ public class UserQueryConditionGroupExpression
      */
     @Override
     public <N extends Number> UserQueryConditionGroupExpression lt(String name, Number value) {
-        // YUFEI_TODO Auto-generated method stub
+
         return null;
     }
 
@@ -270,7 +270,7 @@ public class UserQueryConditionGroupExpression
      */
     @Override
     public <D extends Date> UserQueryConditionGroupExpression lt(String name, D value) {
-        // YUFEI_TODO Auto-generated method stub
+
         return null;
     }
 
@@ -279,7 +279,7 @@ public class UserQueryConditionGroupExpression
      */
     @Override
     public UserQueryConditionGroupExpression lt(String name, LocalTime value) {
-        // YUFEI_TODO Auto-generated method stub
+
         return null;
     }
 
@@ -288,7 +288,7 @@ public class UserQueryConditionGroupExpression
      */
     @Override
     public UserQueryConditionGroupExpression lt(String name, LocalDate value) {
-        // YUFEI_TODO Auto-generated method stub
+
         return null;
     }
 
@@ -297,7 +297,7 @@ public class UserQueryConditionGroupExpression
      */
     @Override
     public UserQueryConditionGroupExpression lt(String name, LocalDateTime value) {
-        // YUFEI_TODO Auto-generated method stub
+
         return null;
     }
 
@@ -306,7 +306,7 @@ public class UserQueryConditionGroupExpression
      */
     @Override
     public UserQueryConditionGroupExpression lt(String name, String value) {
-        // YUFEI_TODO Auto-generated method stub
+
         return null;
     }
 
@@ -315,7 +315,7 @@ public class UserQueryConditionGroupExpression
      */
     @Override
     public UserQueryConditionGroupExpression ne(String name, Object value) {
-        // YUFEI_TODO Auto-generated method stub
+
         return null;
     }
 
@@ -324,7 +324,7 @@ public class UserQueryConditionGroupExpression
      */
     @Override
     public UserQueryConditionGroupExpression nin(String name, Object value) {
-        // YUFEI_TODO Auto-generated method stub
+
         return null;
     }
 
@@ -333,7 +333,7 @@ public class UserQueryConditionGroupExpression
      */
     @Override
     public UserQueryConditionGroupExpression sw(String name, String value) {
-        // YUFEI_TODO Auto-generated method stub
+
         return null;
     }
 
@@ -342,7 +342,7 @@ public class UserQueryConditionGroupExpression
      */
     @Override
     public UserQueryConditionGroupExpression endGroup() {
-        // YUFEI_TODO Auto-generated method stub
+
         return null;
     }
 
@@ -351,7 +351,7 @@ public class UserQueryConditionGroupExpression
      */
     @Override
     public UserQueryConditionGroupExpression and() {
-        // YUFEI_TODO Auto-generated method stub
+
         return null;
     }
 
@@ -360,7 +360,7 @@ public class UserQueryConditionGroupExpression
      */
     @Override
     public UserQueryConditionGroupExpression or() {
-        // YUFEI_TODO Auto-generated method stub
+
         return null;
     }
 
@@ -370,7 +370,7 @@ public class UserQueryConditionGroupExpression
     @Override
     public ObjectExpression<UserQueryConditionGroupExpression, UserQueryConditionGroupExpression> property(
             String name) {
-        // YUFEI_TODO Auto-generated method stub
+
         return null;
     }
 
@@ -380,7 +380,7 @@ public class UserQueryConditionGroupExpression
     @Override
     public StringExpression<UserQueryConditionGroupExpression, UserQueryConditionGroupExpression> propertyString(
             String name) {
-        // YUFEI_TODO Auto-generated method stub
+
         return null;
     }
 
@@ -390,7 +390,7 @@ public class UserQueryConditionGroupExpression
     @Override
     public NumberExpression<UserQueryConditionGroupExpression, UserQueryConditionGroupExpression> propertyNumber(
             String name) {
-        // YUFEI_TODO Auto-generated method stub
+
         return null;
     }
 
@@ -400,7 +400,7 @@ public class UserQueryConditionGroupExpression
     @Override
     public DateExpression<UserQueryConditionGroupExpression, UserQueryConditionGroupExpression> propertyDate(
             String name) {
-        // YUFEI_TODO Auto-generated method stub
+
         return null;
     }
 
@@ -410,7 +410,7 @@ public class UserQueryConditionGroupExpression
     @Override
     public EnumExpression<UserQueryConditionGroupExpression, UserQueryConditionGroupExpression> propertyEnum(
             String name) {
-        // YUFEI_TODO Auto-generated method stub
+
         return null;
     }
 
@@ -419,7 +419,7 @@ public class UserQueryConditionGroupExpression
      */
     @Override
     public UserQueryConditionGroupExpression group() {
-        // YUFEI_TODO Auto-generated method stub
+
         return null;
     }
 
