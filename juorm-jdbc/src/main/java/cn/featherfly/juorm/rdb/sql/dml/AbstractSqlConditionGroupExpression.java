@@ -22,7 +22,11 @@ import cn.featherfly.juorm.expression.condition.property.DateExpression;
 import cn.featherfly.juorm.expression.condition.property.EnumExpression;
 import cn.featherfly.juorm.expression.condition.property.NumberExpression;
 import cn.featherfly.juorm.expression.condition.property.ObjectExpression;
+import cn.featherfly.juorm.expression.condition.property.SimpleDateExpression;
+import cn.featherfly.juorm.expression.condition.property.SimpleEnumExpression;
+import cn.featherfly.juorm.expression.condition.property.SimpleNumberExpression;
 import cn.featherfly.juorm.expression.condition.property.SimpleObjectExpression;
+import cn.featherfly.juorm.expression.condition.property.SimpleStringExpression;
 import cn.featherfly.juorm.expression.condition.property.StringExpression;
 import cn.featherfly.juorm.operator.LogicOperator;
 import cn.featherfly.juorm.operator.QueryOperator;
@@ -562,8 +566,7 @@ public abstract class AbstractSqlConditionGroupExpression<C extends ConditionGro
      */
     @Override
     public StringExpression<C, L> propertyString(String name) {
-        // YUFEI_TODO Auto-generated method stub
-        return null;
+        return new SimpleStringExpression<>(name, this);
     }
 
     /**
@@ -571,8 +574,7 @@ public abstract class AbstractSqlConditionGroupExpression<C extends ConditionGro
      */
     @Override
     public NumberExpression<C, L> propertyNumber(String name) {
-        // YUFEI_TODO Auto-generated method stub
-        return null;
+        return new SimpleNumberExpression<>(name, this);
     }
 
     /**
@@ -580,8 +582,7 @@ public abstract class AbstractSqlConditionGroupExpression<C extends ConditionGro
      */
     @Override
     public DateExpression<C, L> propertyDate(String name) {
-        // YUFEI_TODO Auto-generated method stub
-        return null;
+        return new SimpleDateExpression<>(name, this);
     }
 
     /**
@@ -589,8 +590,7 @@ public abstract class AbstractSqlConditionGroupExpression<C extends ConditionGro
      */
     @Override
     public EnumExpression<C, L> propertyEnum(String name) {
-        // YUFEI_TODO Auto-generated method stub
-        return null;
+        return new SimpleEnumExpression<>(name, this);
     }
 
 }

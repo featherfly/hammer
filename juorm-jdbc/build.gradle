@@ -3,11 +3,12 @@ dependencies {
     compile project(":juorm-api")
 
     compile group: 'cn.featherfly', name: 'featherfly-common', version: '1.7.1'
-    compile group: 'cn.featherfly', name: 'featherfly-db', version: '1.4.9'
+    compile group: 'cn.featherfly', name: 'featherfly-db', version: '1.5.0'
     compile group: 'org.springframework', name: 'spring-jdbc', version: '5.1.8.RELEASE'
     compile group: 'org.hibernate.javax.persistence', name: 'hibernate-jpa-2.1-api', version: '1.0.2.Final'
     compile group: 'org.hibernate.validator', name: 'hibernate-validator', version: '6.0.17.Final'
     compile group: 'org.freemarker', name: 'freemarker', version: '2.3.28'
+    compile group: 'com.fasterxml.jackson.core', name: 'jackson-databind', version: '2.9.9.2'
     compile group: 'com.fasterxml.jackson.dataformat', name: 'jackson-dataformat-yaml', version: '2.9.9'
     compile group: 'com.speedment.common', name: 'tuple', version: '3.1.16'
     
