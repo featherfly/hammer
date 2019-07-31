@@ -17,13 +17,13 @@ import cn.featherfly.common.lang.LangUtils;
  *
  * @author zhongj
  */
-public class MySqlDialect extends AbstractDialect {
+public class MySQLDialect extends AbstractDialect {
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(MySqlDialect.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(MySQLDialect.class);
 
     /**
      */
-    MySqlDialect() {
+    MySQLDialect() {
     }
 
     /**

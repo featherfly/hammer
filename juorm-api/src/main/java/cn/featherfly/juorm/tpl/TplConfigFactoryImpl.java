@@ -2,8 +2,10 @@
 package cn.featherfly.juorm.tpl;
 
 import java.io.IOException;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -38,7 +40,7 @@ public class TplConfigFactoryImpl implements TplConfigFactory {
 
     public static final String DEFAULT_SUFFIX = ".yaml.tpl";
 
-    public static final String DEFAULT_PREFIX = "/";
+    public static final String DEFAULT_PREFIX = "";
 
     private ObjectMapper mapper;
 
@@ -77,7 +79,19 @@ public class TplConfigFactoryImpl implements TplConfigFactory {
         try {
             Resource[] resources = resourcePatternResolver.getResources(packageSearchPath);
             for (Resource resource : resources) {
-                readConfig(FileUtils.getPathInJar(resource.getURL()));
+                if (FileUtils.isResourceInJar(resource.getURL())) {
+                    readConfig(FileUtils.getPathInJar(resource.getURL()));
+                } else {
+                    String path = resource.getURL().getPath();
+                    Enumeration<URL> enums = ClassLoader.getSystemResources("");
+                    while (enums.hasMoreElements()) {
+                        String rootPath = enums.nextElement().getPath();
+                        if (path.startsWith(rootPath)) {
+                            path = StringUtils.substring(path, rootPath.length());
+                        }
+                    }
+                    readConfig(path);
+                }
             }
         } catch (IOException e) {
             throw new JuormException("使用路径" + packageSearchPath + "扫描tpl配置文件时I/O异常", e);
@@ -143,10 +157,10 @@ public class TplConfigFactoryImpl implements TplConfigFactory {
         final String name = StringUtils.substringAfterLast(finalFilePath, "/");
         final String directory = StringUtils.substringBeforeLast(finalFilePath, "/");
         try {
-            TplExecuteConfigs configs = mapper.readerFor(TplExecuteConfigs.class)
-                    .readValue(ClassLoaderUtils.getResourceAsStream(filePath, TplConfigFactoryImpl.class));
+            TplExecuteConfigs tplExecuteConfigs = mapper.readerFor(TplExecuteConfigs.class)
+                    .readValue(ClassLoaderUtils.getResourceAsStream(finalFilePath, TplConfigFactoryImpl.class));
             TplExecuteConfigs newConfigs = new TplExecuteConfigs();
-            configs.forEach((k, v) -> {
+            tplExecuteConfigs.forEach((k, v) -> {
                 TplExecuteConfig config = new TplExecuteConfig();
                 if (v instanceof String) {
                     config.setQuery(v.toString());
@@ -170,7 +184,7 @@ public class TplConfigFactoryImpl implements TplConfigFactory {
                 //                System.out.println(config);
                 newConfigs.put(k, config);
             });
-            configs.put(filePath, newConfigs);
+            configs.put(finalFilePath, newConfigs);
             return newConfigs;
         } catch (IOException e) {
             throw new JuormException("读取" + filePath + "异常", e);
@@ -183,13 +197,17 @@ public class TplConfigFactoryImpl implements TplConfigFactory {
         if (!result.startsWith("/")) {
             result = prefix + result;
         }
-        return result + suffix;
+        if (!result.endsWith(suffix)) {
+            result = result + suffix;
+        }
+        if (result.startsWith("/")) {
+            result = result.substring(1);
+        }
+        return result;
     }
 
     private String[] getFilePathAndSqlId(String sqlId) {
-        String[] result = new String[2];
-        result[0] = StringUtils.substringBefore(sqlId, ".");
-        result[1] = StringUtils.substringAfter(sqlId, ".");
+        String[] result = sqlId.split("@");
         return result;
     }
 

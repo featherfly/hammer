@@ -46,6 +46,8 @@ public class TestTpl {
 
     @Test
     void config() throws IOException {
+        System.out.println(ClassLoaderUtils.getResource("user.yaml", TplExecuteConfigs.class));
+
         YAMLFactory yamlFactory = new YAMLFactory();
         ObjectMapper mapper = new ObjectMapper(yamlFactory);
         mapper.enable(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES);

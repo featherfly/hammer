@@ -35,9 +35,9 @@ public abstract class LogicTemplateDirectiveModel implements TemplateDirectiveMo
     //    private static final Pattern CONDITION_PATTERN = Pattern
     //            .compile("(\\w+) *([=><]|<>|!=|>=|<=| in | is ) *(:\\w+|\\?)", Pattern.CASE_INSENSITIVE);
 
-    //(\w+) *(([=><]|<>|!=|>=|<=| in | is ) *(:\w+|\?)|(between) +(:\w+|\?) *(and) *(:\w+|\?))
+    //(\w+) *(([=><]|<>|!=|>=|<=| like | in | is ) *(:\w+|\?)|(between) +(:\w+|\?) *(and) *(:\w+|\?))
     private static final Pattern CONDITION_PATTERN = Pattern.compile(
-            "(\\w+) *(([=><]|<>|!=|>=|<=| in | is ) *(:\\w+|\\?)|(between) +(:\\w+|\\?) *(and) *(:\\w+|\\?))",
+            "(\\w+) *(([=><]|<>|!=|>=|<=|!>|!<| like | in | is ) *(:\\w+|\\?)|(between) +(:\\w+|\\?) *(and) *(:\\w+|\\?))",
             Pattern.CASE_INSENSITIVE);
 
     private static final String PARAM_NAME_IF = "if";
@@ -111,9 +111,10 @@ public abstract class LogicTemplateDirectiveModel implements TemplateDirectiveMo
                 conditionParamsManager.endGroup();
             } else if (ifParam) {
                 String name = nameParam;
-                if (conditionParamsManager.isNeedAppendLogicWorld()) {
-                    out.write(" " + getLogicWorld() + " ");
-                }
+                boolean needAppendLogicWorld = conditionParamsManager.isNeedAppendLogicWorld();
+                //                if (conditionParamsManager.isNeedAppendLogicWorld()) {
+                //                    out.write(" " + getLogicWorld() + " ");
+                //                }
                 StringWriter stringWriter = new StringWriter();
                 body.render(stringWriter);
 
@@ -166,6 +167,9 @@ public abstract class LogicTemplateDirectiveModel implements TemplateDirectiveMo
                     }
                 } else {
                     conditionParamsManager.addParam(name.trim());
+                }
+                if (needAppendLogicWorld) {
+                    condition = " " + getLogicWorld() + " " + condition;
                 }
                 out.write(condition);
                 // body.render(out);
