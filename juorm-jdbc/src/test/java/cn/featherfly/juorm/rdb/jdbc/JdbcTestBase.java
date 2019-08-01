@@ -11,6 +11,8 @@ import cn.featherfly.common.lang.ClassLoaderUtils;
 import cn.featherfly.common.lang.RandomUtils;
 import cn.featherfly.juorm.mapping.ClassNameJpaConversion;
 import cn.featherfly.juorm.mapping.ClassNameUnderlineConversion;
+import cn.featherfly.juorm.mapping.PropertyNameJpaConversion;
+import cn.featherfly.juorm.mapping.PropertyNameUnderlineConversion;
 import cn.featherfly.juorm.rdb.jdbc.mapping.MappingFactory;
 import cn.featherfly.juorm.rdb.jdbc.vo.Role;
 import cn.featherfly.juorm.rdb.sql.dialect.Dialects;
@@ -44,6 +46,9 @@ public class JdbcTestBase {
         factory = new MappingFactory(metadata, Dialects.MYSQL);
         factory.getClassNameConversions().add(new ClassNameJpaConversion());
         factory.getClassNameConversions().add(new ClassNameUnderlineConversion());
+
+        factory.getPropertyNameConversions().add(new PropertyNameJpaConversion());
+        factory.getPropertyNameConversions().add(new PropertyNameUnderlineConversion());
     }
 
     Role role() {

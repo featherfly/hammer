@@ -7,10 +7,9 @@ import java.util.Map;
 
 import javax.sql.DataSource;
 
-import org.springframework.dao.DataAccessException;
 import org.springframework.jdbc.core.ConnectionCallback;
-import org.springframework.jdbc.core.RowMapper;
 
+import cn.featherfly.juorm.mapping.RowMapper;
 import cn.featherfly.juorm.rdb.sql.dialect.Dialect;
 
 /**
@@ -38,7 +37,6 @@ public interface Jdbc {
      * @param sql
      * @param args
      * @return
-     * @throws DataAccessException
      * @see org.springframework.jdbc.core.JdbcTemplate#update(java.lang.String,
      *      java.lang.Object[])
      */
@@ -48,7 +46,6 @@ public interface Jdbc {
      * @param <T>
      * @param action
      * @return
-     * @throws DataAccessException
      * @see org.springframework.jdbc.core.JdbcTemplate#execute(org.springframework.jdbc.core.ConnectionCallback)
      */
     <T> T execute(ConnectionCallback<T> action);

@@ -17,6 +17,7 @@ import cn.featherfly.constant.ConstantConfigurator;
 import cn.featherfly.juorm.rdb.jdbc.JdbcTestBase;
 import cn.featherfly.juorm.rdb.jdbc.vo.Role;
 import cn.featherfly.juorm.rdb.jdbc.vo.User;
+import cn.featherfly.juorm.rdb.jdbc.vo.UserInfo;
 import cn.featherfly.juorm.tpl.TplConfigFactoryImpl;
 
 /**
@@ -170,5 +171,23 @@ public class SqlTplExecutorTest extends JdbcTestBase {
         List<Role> roles2 = executor.list("tpl/role@selectByName", Role.class,
                 new HashChainMap<String, Object>().putChain("name", null));
         assertTrue(roles2.size() > roles.size());
+    }
+
+    @Test
+    void testUserInfoList() {
+        List<UserInfo> uis = executor.list("tpl/user_info@select", UserInfo.class, new HashChainMap<String, Object>());
+        assertTrue(uis.size() > 0);
+        uis.forEach(ui -> {
+            System.out.println(ui);
+        });
+    }
+
+    @Test
+    void testUserInfoList2() {
+        List<UserInfo> uis = executor.list("tpl/user_info@select2", UserInfo.class, new HashChainMap<String, Object>());
+        assertTrue(uis.size() > 0);
+        uis.forEach(ui -> {
+            System.out.println(ui);
+        });
     }
 }

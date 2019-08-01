@@ -9,6 +9,7 @@ package cn.featherfly.juorm.mapping;
  * @param <D> 需要包装的数据集
  * @author zhongj
  */
+@FunctionalInterface
 public interface RowMapper<E> {
     /**
      * <p>

@@ -71,24 +71,24 @@ public class SqlTplExecutor implements TplExecutor {
     }
 
     private Tuple3<String, TplExecuteConfig, ConditionParamsManager> getQueryExecution(String sqlFullId,
-            Map<String, Object> params) {
+            Map<String, Object> params, Class<?> resultType) {
         TplExecuteConfig config = configFactory.getConfig(sqlFullId);
-        Tuple2<String, ConditionParamsManager> tuple2 = getExecution(sqlFullId, config.getQuery(), params);
+        Tuple2<String, ConditionParamsManager> tuple2 = getExecution(sqlFullId, config.getQuery(), params, resultType);
         Constants.LOGGER.debug("sqlFullId -> {} \nexecuteQuerySql -> {} \nqueryTemplate -> {}", sqlFullId,
                 tuple2.get0(), config.getQuery());
         return Tuples.of(tuple2.get0(), config, tuple2.get1());
     }
 
     private Tuple2<String, ConditionParamsManager> getCountExecution(String sqlFullId, Map<String, Object> params,
-            TplExecuteConfig config) {
-        Tuple2<String, ConditionParamsManager> result = getExecution(sqlFullId, config.getCount(), params);
+            TplExecuteConfig config, Class<?> resultType) {
+        Tuple2<String, ConditionParamsManager> result = getExecution(sqlFullId, config.getCount(), params, resultType);
         Constants.LOGGER.debug("sqlFullId -> {}  \nexecuteCountSql -> {}  \ncountTemplate -> {}", sqlFullId,
                 result.get0(), config.getCount());
         return result;
     }
 
     private Tuple2<String, ConditionParamsManager> getExecution(String templateName, String sql,
-            Map<String, Object> params) {
+            Map<String, Object> params, Class<?> resultType) {
         // TODO 把sqlid配置加入template include， 到时候进行include操作
         ConditionParamsManager manager = new ConditionParamsManager();
         Map<String, Object> root = new HashMap<>();
@@ -96,9 +96,9 @@ public class SqlTplExecutor implements TplExecutor {
         root.put("where", new WhereTemplateDirectiveModel());
         root.put("and", new AndTemplateDirectiveModel(manager));
         root.put("or", new OrTemplateDirectiveModel(manager));
-        root.put("columns", new PropertiesMappingDirectiveModel(mappingFactory));
-        root.put("properties", new PropertiesMappingDirectiveModel("repository", mappingFactory));
-        root.put("prop", new PropertiesMappingDirectiveModel("repo", mappingFactory));
+        root.put("columns", new PropertiesMappingDirectiveModel(mappingFactory, resultType));
+        root.put("properties", new PropertiesMappingDirectiveModel("repository", mappingFactory, resultType));
+        root.put("prop", new PropertiesMappingDirectiveModel("repo", mappingFactory, resultType));
         try {
             StringWriter stringWriter = new StringWriter();
             Template template = new Template(templateName, sql, cfg);
@@ -116,7 +116,8 @@ public class SqlTplExecutor implements TplExecutor {
      */
     @Override
     public <E> E single(String sqlFullId, Class<E> entityType, Map<String, Object> params) {
-        Tuple3<String, TplExecuteConfig, ConditionParamsManager> tuple3 = getQueryExecution(sqlFullId, params);
+        Tuple3<String, TplExecuteConfig, ConditionParamsManager> tuple3 = getQueryExecution(sqlFullId, params,
+                entityType);
         if (tuple3.get2().getParamNamed() == null || tuple3.get2().getParamNamed()) {
             return jdbc.querySingle(tuple3.get0(), getEffectiveParams(params, tuple3.get2()), entityType);
         } else {
@@ -129,7 +130,8 @@ public class SqlTplExecutor implements TplExecutor {
      */
     @Override
     public <E> List<E> list(String sqlFullId, Class<E> entityType, Map<String, Object> params) {
-        Tuple3<String, TplExecuteConfig, ConditionParamsManager> tuple3 = getQueryExecution(sqlFullId, params);
+        Tuple3<String, TplExecuteConfig, ConditionParamsManager> tuple3 = getQueryExecution(sqlFullId, params,
+                entityType);
         if (tuple3.get2().getParamNamed() == null || tuple3.get2().getParamNamed()) {
             return jdbc.queryList(tuple3.get0(), getEffectiveParams(params, tuple3.get2()), entityType);
         } else {
@@ -173,7 +175,8 @@ public class SqlTplExecutor implements TplExecutor {
             countSql = SqlUtils.convertSelectToCount(listTuple.get1());
             manager = listTuple.get3();
         } else {
-            Tuple2<String, ConditionParamsManager> countTuple = getCountExecution(sqlFullId, params, config);
+            Tuple2<String, ConditionParamsManager> countTuple = getCountExecution(sqlFullId, params, config,
+                    entityType);
             countSql = countTuple.get0();
             manager = countTuple.get1();
         }
@@ -198,7 +201,8 @@ public class SqlTplExecutor implements TplExecutor {
 
     private <E> Tuple4<List<E>, String, TplExecuteConfig, ConditionParamsManager> findList(String sqlFullId,
             Class<E> entityType, Map<String, Object> params, int offset, int limit) {
-        Tuple3<String, TplExecuteConfig, ConditionParamsManager> tuple3 = getQueryExecution(sqlFullId, params);
+        Tuple3<String, TplExecuteConfig, ConditionParamsManager> tuple3 = getQueryExecution(sqlFullId, params,
+                entityType);
         List<E> list = null;
         String sql = tuple3.get0();
         ConditionParamsManager manager = tuple3.get2();
