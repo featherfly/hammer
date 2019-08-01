@@ -13,7 +13,6 @@ import cn.featherfly.juorm.dsl.query.QuerySortExpression;
 import cn.featherfly.juorm.expression.query.QueryExecutor;
 import cn.featherfly.juorm.mapping.RowMapper;
 import cn.featherfly.juorm.rdb.jdbc.Jdbc;
-import cn.featherfly.juorm.rdb.jdbc.SqlResultSet;
 import cn.featherfly.juorm.rdb.sql.dml.AbstractSqlConditionGroupExpression;
 import cn.featherfly.juorm.rdb.sql.dml.builder.SqlSortBuilder;
 
@@ -146,9 +145,7 @@ public class SqlQueryConditionGroupExpression
             sql = dialect.getPaginationSql(sql, limit.getOffset(), limit.getLimit());
             params = dialect.getPaginationSqlParameter(params, limit.getOffset(), limit.getLimit());
         }
-        return jdbc.query(sql, params, (rs, rowNum) -> {
-            return rowMapper.mapRow(new SqlResultSet(rs), rowNum);
-        });
+        return jdbc.query(sql, params, rowMapper);
     }
 
     /**
@@ -164,9 +161,7 @@ public class SqlQueryConditionGroupExpression
      */
     @Override
     public <E> E single(RowMapper<E> rowMapper) {
-        return jdbc.querySingle(getRoot().expression(), getRoot().getParams().toArray(), (rs, rowNum) -> {
-            return rowMapper.mapRow(new SqlResultSet(rs), rowNum);
-        });
+        return jdbc.querySingle(getRoot().expression(), getRoot().getParams().toArray(), rowMapper);
     }
 
     /**

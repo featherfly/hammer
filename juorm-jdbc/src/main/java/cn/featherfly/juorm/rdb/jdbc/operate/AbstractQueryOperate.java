@@ -8,6 +8,7 @@ import cn.featherfly.common.db.JdbcUtils;
 import cn.featherfly.common.lang.LangUtils;
 import cn.featherfly.juorm.rdb.jdbc.Jdbc;
 import cn.featherfly.juorm.rdb.jdbc.mapping.ClassMapping;
+import cn.featherfly.juorm.rdb.jdbc.mapping.ClassMappingUtils;
 import cn.featherfly.juorm.rdb.jdbc.mapping.PropertyMapping;
 
 /**
@@ -96,19 +97,7 @@ public abstract class AbstractQueryOperate<T> extends AbstractOperate<T> {
     }
 
     private void initSelectSql() {
-        StringBuilder selectSql = new StringBuilder();
-        selectSql.append("select ");
-        int columnNum = 0;
-        for (PropertyMapping propertyMapping : classMapping.getPropertyMappings()) {
-            selectSql.append(propertyMapping.getColumnName()).append(" as ").append(propertyMapping.getPropertyName())
-                    .append(",");
-            columnNum++;
-        }
-        if (columnNum > 0) {
-            selectSql.deleteCharAt(selectSql.length() - 1);
-        }
-        selectSql.append(" from ").append(classMapping.getTableName());
-        this.selectSql = selectSql.toString();
+        this.selectSql = ClassMappingUtils.getSelectSql(classMapping, jdbc.getDialect());
     }
 
     // ********************************************************************

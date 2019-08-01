@@ -8,12 +8,11 @@ import java.util.Map;
 import javax.sql.DataSource;
 
 import org.springframework.dao.EmptyResultDataAccessException;
-import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.ConnectionCallback;
 import org.springframework.jdbc.core.JdbcTemplate;
-import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 
+import cn.featherfly.juorm.mapping.RowMapper;
 import cn.featherfly.juorm.rdb.Constants;
 import cn.featherfly.juorm.rdb.sql.dialect.Dialect;
 
@@ -81,7 +80,9 @@ public class SpringJdbcTemplateImpl implements Jdbc {
     @Override
     public <T> List<T> query(String sql, Object[] args, RowMapper<T> rowMapper) {
         Constants.LOGGER.debug("sql -> {}, args -> {}", sql, args);
-        return jdbcTemplate.query(sql, args, rowMapper);
+        return jdbcTemplate.query(sql, args, (rs, rowNum) -> {
+            return rowMapper.mapRow(new SqlResultSet(rs), rowNum);
+        });
     }
 
     /**
@@ -138,7 +139,8 @@ public class SpringJdbcTemplateImpl implements Jdbc {
     @Override
     public <T> List<T> queryList(String sql, Map<String, Object> args, Class<T> elementType) {
         Constants.LOGGER.debug("sql -> {}, args -> {}", sql, args);
-        return namedParameterJdbcTemplate.query(sql, args, new BeanPropertyRowMapper<>(elementType));
+
+        return namedParameterJdbcTemplate.query(sql, args, new NestedBeanPropertyRowMapper<>(elementType));
     }
 
     /**
@@ -147,7 +149,7 @@ public class SpringJdbcTemplateImpl implements Jdbc {
     @Override
     public <T> List<T> queryList(String sql, Object[] args, Class<T> elementType) {
         Constants.LOGGER.debug("sql -> {}, args -> {}", sql, args);
-        return jdbcTemplate.query(sql, args, new BeanPropertyRowMapper<>(elementType));
+        return jdbcTemplate.query(sql, args, new NestedBeanPropertyRowMapper<>(elementType));
     }
 
     /**
@@ -173,7 +175,7 @@ public class SpringJdbcTemplateImpl implements Jdbc {
     public <T> T querySingle(String sql, Map<String, Object> args, Class<T> elementType) {
         Constants.LOGGER.debug("sql -> {}, args -> {} , type -> {}", sql, args, elementType.getName());
         try {
-            return namedParameterJdbcTemplate.queryForObject(sql, args, new BeanPropertyRowMapper<>(elementType));
+            return namedParameterJdbcTemplate.queryForObject(sql, args, new NestedBeanPropertyRowMapper<>(elementType));
         } catch (EmptyResultDataAccessException e) {
             return null;
         }
@@ -186,7 +188,9 @@ public class SpringJdbcTemplateImpl implements Jdbc {
     public <T> T querySingle(String sql, Map<String, Object> args, RowMapper<T> rowMapper) {
         Constants.LOGGER.debug("sql -> {}, args -> {}", sql, args);
         try {
-            return namedParameterJdbcTemplate.queryForObject(sql, args, rowMapper);
+            return namedParameterJdbcTemplate.queryForObject(sql, args, (rs, rowNum) -> {
+                return rowMapper.mapRow(new SqlResultSet(rs), rowNum);
+            });
         } catch (EmptyResultDataAccessException e) {
             return null;
         }
@@ -198,7 +202,7 @@ public class SpringJdbcTemplateImpl implements Jdbc {
     @Override
     public <T> T querySingle(String sql, Object[] args, Class<T> elementType) {
         Constants.LOGGER.debug("sql -> {}, args -> {} , type -> {}", sql, args, elementType.getName());
-        return jdbcTemplate.queryForObject(sql, args, new BeanPropertyRowMapper<>(elementType));
+        return jdbcTemplate.queryForObject(sql, args, new NestedBeanPropertyRowMapper<>(elementType));
     }
 
     /**
@@ -207,7 +211,9 @@ public class SpringJdbcTemplateImpl implements Jdbc {
     @Override
     public <T> T querySingle(String sql, Object[] args, RowMapper<T> rowMapper) {
         Constants.LOGGER.debug("sql -> {}, args -> {}", sql, args);
-        return jdbcTemplate.queryForObject(sql, args, rowMapper);
+        return jdbcTemplate.queryForObject(sql, args, (rs, rowNum) -> {
+            return rowMapper.mapRow(new SqlResultSet(rs), rowNum);
+        });
     }
 
     /**

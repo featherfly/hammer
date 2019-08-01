@@ -8,6 +8,9 @@ import java.util.Set;
 
 import cn.featherfly.common.db.metadata.TableMetadata;
 import cn.featherfly.common.lang.LangUtils;
+import cn.featherfly.common.lang.WordUtils;
+import cn.featherfly.juorm.rdb.jdbc.mapping.ClassMapping;
+import cn.featherfly.juorm.rdb.jdbc.mapping.ClassMappingUtils;
 import cn.featherfly.juorm.rdb.jdbc.mapping.MappingFactory;
 import freemarker.core.Environment;
 import freemarker.template.TemplateDirectiveBody;
@@ -30,24 +33,32 @@ public class PropertiesMappingDirectiveModel implements TemplateDirectiveModel {
 
     private static final String PARAM_NAME_ALIAS = "alias";
 
+    private static final String PARAM_NAME_MAPPING = "mapping";
+
     private MappingFactory mappingFactory;
+
+    private Class<?> resultType;
 
     private String paramName;
 
     /**
-     * @param mappingFactory
+     * @param mappingFactory mappingFactory
+     * @param resultType     resultType
      */
-    public PropertiesMappingDirectiveModel(MappingFactory mappingFactory) {
-        this(DEFAULT_PARAM_NAME_NAME, mappingFactory);
+    public PropertiesMappingDirectiveModel(MappingFactory mappingFactory, Class<?> resultType) {
+        this(DEFAULT_PARAM_NAME_NAME, mappingFactory, resultType);
     }
 
     /**
-     * @param mappingFactory
+     * @param paramName      paramName
+     * @param mappingFactory mappingFactory
+     * @param resultType     resultType
      */
-    public PropertiesMappingDirectiveModel(String paramName, MappingFactory mappingFactory) {
+    public PropertiesMappingDirectiveModel(String paramName, MappingFactory mappingFactory, Class<?> resultType) {
         super();
         this.mappingFactory = mappingFactory;
         this.paramName = paramName;
+        this.resultType = resultType;
     }
 
     /**
@@ -58,6 +69,7 @@ public class PropertiesMappingDirectiveModel implements TemplateDirectiveModel {
             TemplateDirectiveBody body) throws TemplateException, IOException {
         String nameParam = null;
         String aliasParam = null;
+        Class<?> mappingType = null;
 
         @SuppressWarnings("unchecked")
         Set<Map.Entry<String, Object>> entrySet = params.entrySet();
@@ -76,13 +88,31 @@ public class PropertiesMappingDirectiveModel implements TemplateDirectiveModel {
                             "The \"" + PARAM_NAME_ALIAS + "\" parameter " + "must be a String.");
                 }
                 aliasParam = ((TemplateScalarModel) paramValue).getAsString();
+            } else if (paramName.equals(PARAM_NAME_MAPPING)) {
+                if (!(paramValue instanceof TemplateScalarModel)) {
+                    throw new TemplateModelException(
+                            "The \"" + PARAM_NAME_MAPPING + "\" parameter " + "must be a String.");
+                }
+                String mappingClassName = ((TemplateScalarModel) paramValue).getAsString();
+                try {
+                    mappingType = Class.forName(mappingClassName);
+                } catch (ClassNotFoundException e) {
+                    throw new TemplateModelException("The \"" + PARAM_NAME_MAPPING + "\" parameter " + mappingClassName
+                            + " exception -> " + e.getMessage());
+                }
             } else {
                 throw new TemplateModelException("Unsupported parameter: " + paramName);
             }
         }
 
-        if (LangUtils.isEmpty(nameParam)) {
-            throw new TemplateModelException("The \"" + paramName + "\" parameter " + "can not be null.");
+        if (mappingType == null) {
+            mappingType = resultType;
+        }
+        ClassMapping<?> classMapping = mappingFactory.getClassMapping(mappingType);
+
+        if (LangUtils.isEmpty(nameParam) && classMapping == null) {
+            throw new TemplateModelException(
+                    "The \"" + paramName + "\" parameter " + "can not be null when result type is not mapped");
         }
 
         // ---------------------------------------------------------------------
@@ -92,17 +122,24 @@ public class PropertiesMappingDirectiveModel implements TemplateDirectiveModel {
         final boolean aliasIsEmpty = LangUtils.isEmpty(aliasParam);
         final String alias = aliasParam;
         final StringBuilder result = new StringBuilder();
-        TableMetadata tableMetadata = mappingFactory.getMetadata().getTable(nameParam.toUpperCase());
-        tableMetadata.getColumns().forEach(column -> {
-            if (aliasIsEmpty) {
-                result.append(" " + column.getName() + ",");
-            } else {
-                result.append(" " + alias + "." + column.getName() + ",");
+
+        if (classMapping == null) {
+            TableMetadata tableMetadata = mappingFactory.getMetadata().getTable(nameParam.toUpperCase());
+            tableMetadata.getColumns().forEach(column -> {
+                String propName = WordUtils.parseToUpperFirst(column.getName(), '_');
+                if (aliasIsEmpty) {
+                    result.append(" " + column.getName() + " as " + propName + ",");
+                } else {
+                    result.append(" " + alias + "." + column.getName() + " as " + propName + ",");
+                }
+            });
+            if (result.length() > 0) {
+                result.deleteCharAt(result.length() - 1);
             }
-        });
-        if (result.length() > 0) {
-            result.deleteCharAt(result.length() - 1);
+            out.write(result.toString());
+        } else {
+            out.write(ClassMappingUtils.getSelectColumnsSql(classMapping, alias, mappingFactory.getDialect()));
         }
-        out.write(result.toString());
+
     }
 }

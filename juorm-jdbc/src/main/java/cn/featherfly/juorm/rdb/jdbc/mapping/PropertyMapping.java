@@ -1,5 +1,9 @@
 package cn.featherfly.juorm.rdb.jdbc.mapping;
 
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.Map;
+
 /**
  * <p>
  * 属性与列的映射对象
@@ -24,6 +28,18 @@ public class PropertyMapping {
     private Class<?> propertyType;
 
     private boolean primaryKey;
+
+    //    private String propertyPath;
+
+    private Map<String, PropertyMapping> propertyMappings = new HashMap<>(0);
+
+    private PropertyMapping parent;
+
+    PropertyMapping add(PropertyMapping propertyMapping) {
+        propertyMapping.parent = this;
+        propertyMappings.put(propertyMapping.getColumnName(), propertyMapping);
+        return this;
+    }
 
     /**
      * @return 返回propertyType
@@ -79,5 +95,41 @@ public class PropertyMapping {
      */
     public void setColumnName(String columnName) {
         this.columnName = columnName.toUpperCase();
+    }
+
+    //    /**
+    //     * 返回propertyPath
+    //     *
+    //     * @return propertyPath
+    //     */
+    //    public String getPropertyPath() {
+    //        return propertyPath;
+    //    }
+    //
+    //    /**
+    //     * 设置propertyPath
+    //     *
+    //     * @param propertyPath propertyPath
+    //     */
+    //    public void setPropertyPath(String propertyPath) {
+    //        this.propertyPath = propertyPath;
+    //    }
+
+    /**
+     * 返回parent
+     *
+     * @return parent
+     */
+    public PropertyMapping getParent() {
+        return parent;
+    }
+
+    /**
+     * 返回PropertyMappings
+     *
+     * @return PropertyMappings
+     */
+    public Collection<PropertyMapping> getPropertyMappings() {
+        return propertyMappings.values();
     }
 }
