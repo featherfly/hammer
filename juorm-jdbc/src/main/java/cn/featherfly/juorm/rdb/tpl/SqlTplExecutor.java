@@ -8,6 +8,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
+import javax.annotation.Nonnull;
+
 import com.speedment.common.tuple.Tuple2;
 import com.speedment.common.tuple.Tuple3;
 import com.speedment.common.tuple.Tuple4;
@@ -57,7 +59,8 @@ public class SqlTplExecutor implements TplExecutor {
     /**
      * @param configFactory
      */
-    public SqlTplExecutor(TplConfigFactory configFactory, Jdbc jdbc, MappingFactory mappingFactory) {
+    public SqlTplExecutor(@Nonnull TplConfigFactory configFactory, @Nonnull Jdbc jdbc,
+            @Nonnull MappingFactory mappingFactory) {
         super();
         this.configFactory = configFactory;
         this.jdbc = jdbc;

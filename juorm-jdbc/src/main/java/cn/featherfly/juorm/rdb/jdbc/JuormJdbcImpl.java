@@ -8,7 +8,10 @@ import java.util.Map;
 import java.util.Set;
 
 import javax.validation.ConstraintViolation;
+import javax.validation.Validation;
 import javax.validation.Validator;
+
+import org.hibernate.validator.HibernateValidator;
 
 import cn.featherfly.common.lang.LangUtils;
 import cn.featherfly.common.lang.StringUtils;
@@ -68,8 +71,21 @@ public class JuormJdbcImpl implements Juorm {
      * @param configFactory
      */
     public JuormJdbcImpl(Jdbc jdbc, MappingFactory mappingFactory, TplConfigFactory configFactory) {
+        this(jdbc, mappingFactory, configFactory, Validation.byProvider(HibernateValidator.class).configure()
+                .failFast(false).buildValidatorFactory().getValidator());
+    }
+
+    /**
+     * @param jdbc
+     * @param mappingFactory
+     * @param configFactory
+     * @param validator
+     */
+    public JuormJdbcImpl(Jdbc jdbc, MappingFactory mappingFactory, TplConfigFactory configFactory,
+            Validator validator) {
         this.jdbc = jdbc;
         this.mappingFactory = mappingFactory;
+        this.validator = validator;
         sqlTplExecutor = new SqlTplExecutor(configFactory, jdbc, mappingFactory);
     }
 

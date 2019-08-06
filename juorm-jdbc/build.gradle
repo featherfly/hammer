@@ -11,6 +11,8 @@ dependencies {
     compile group: 'com.fasterxml.jackson.core', name: 'jackson-databind', version: '2.9.9.2'
     compile group: 'com.fasterxml.jackson.dataformat', name: 'jackson-dataformat-yaml', version: '2.9.9'
     compile group: 'com.speedment.common', name: 'tuple', version: '3.1.16'
+    compile group: 'com.google.code.findbugs', name: 'jsr305', version: '3.0.2'
+    
     
     testCompile group: 'commons-dbcp', name: 'commons-dbcp', version: '1.4'
 

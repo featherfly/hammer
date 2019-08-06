@@ -77,7 +77,7 @@ public class PropertiesMappingDirectiveModel implements TemplateDirectiveModel {
         for (Map.Entry<String, Object> ent : entrySet) {
             String paramName = ent.getKey();
             TemplateModel paramValue = (TemplateModel) ent.getValue();
-            if (paramName.equals(paramName)) {
+            if (paramName.equals(this.paramName)) {
                 if (!(paramValue instanceof TemplateScalarModel)) {
                     throw new TemplateModelException("The \"" + paramName + "\" parameter " + "must be a String.");
                 }

@@ -31,6 +31,7 @@ import org.springframework.util.StringUtils;
 
 import cn.featherfly.common.bean.BeanDescriptor;
 import cn.featherfly.common.bean.BeanProperty;
+import cn.featherfly.common.lang.AssertIllegalArgument;
 
 /**
  * {@link RowMapper} implementation that converts a row into a new instance of
@@ -221,6 +222,7 @@ public class NestedBeanPropertyRowMapper<T> implements RowMapper<T> {
      * @param mappedClass the mapped class
      */
     protected void initialize(Class<T> mappedClass) {
+        AssertIllegalArgument.isNotNull(mappedClass, "mappedClass");
         this.mappedClass = mappedClass;
         this.mappedFields = new HashMap<>();
         this.mappedProperties = new HashSet<>();
