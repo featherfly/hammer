@@ -50,12 +50,12 @@ public class TestTpl {
         ObjectMapper mapper = new ObjectMapper(yamlFactory);
         mapper.enable(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES);
         TplExecuteConfigs configs = new TplExecuteConfigs();
-        configs.put("user", createConfig("user"));
-        configs.put("role", createConfig("role"));
-        configs.put("permission", createConfig("permission"));
-        configs.put("select", "select * from shop");
-        String yaml = mapper.writerFor(TplExecuteConfigs.class).writeValueAsString(configs);
-        System.out.println(yaml);
+        //        configs.put("user", createConfig("user"));
+        //        configs.put("role", createConfig("role"));
+        //        configs.put("permission", createConfig("permission"));
+        //        configs.put("select", "select * from shop");
+        //        String yaml = mapper.writerFor(TplExecuteConfigs.class).writeValueAsString(configs);
+        //        System.out.println(yaml);
 
         configs = mapper.readerFor(TplExecuteConfigs.class)
                 .readValue(ClassLoaderUtils.getResourceAsStream("user.yaml", TplExecuteConfigs.class));
@@ -71,6 +71,7 @@ public class TestTpl {
             } else {
                 @SuppressWarnings("unchecked")
                 Map<String, Object> map = (Map<String, Object>) v;
+                System.err.println(map);
                 if (LangUtils.isNotEmpty(map.get("query"))) {
                     config.setQuery(map.get("query").toString());
                 }

@@ -21,7 +21,7 @@ public interface TplExecutor {
      * query single, use sql in template find with sqlId
      * </p>
      *
-     * @param <E>
+     * @param <E>        entity type
      * @param sqlFullId  sql full id
      * @param entityType entityType
      * @param params     params
@@ -47,7 +47,7 @@ public interface TplExecutor {
      * query list, use sql in template find with sqlId
      * </p>
      *
-     * @param <E>
+     * @param <E>        entity type
      * @param sqlFullId  sql full id
      * @param entityType entityType
      * @param params     params
@@ -60,7 +60,7 @@ public interface TplExecutor {
      * query list, use sql in template find with sqlId
      * </p>
      *
-     * @param <E>
+     * @param <E>        entity type
      * @param sqlFullId  sql full id
      * @param entityType entityType
      * @param params     params
@@ -75,7 +75,7 @@ public interface TplExecutor {
      * query list, use sql in template find with sqlId
      * </p>
      *
-     * @param <E>
+     * @param <E>        entity type
      * @param sqlFullId  sql full id
      * @param entityType entityType
      * @param params     params
@@ -129,7 +129,7 @@ public interface TplExecutor {
      * query list, use sql in template find with sqlId
      * </p>
      *
-     * @param <E>
+     * @param <E>        entity type
      * @param sqlFullId  sql full id
      * @param entityType entityType
      * @param params     params
@@ -145,7 +145,7 @@ public interface TplExecutor {
      * query list, use sql in template find with sqlId
      * </p>
      *
-     * @param <E>
+     * @param <E>        entity type
      * @param sqlFullId  sql full id
      * @param entityType entityType
      * @param params     params

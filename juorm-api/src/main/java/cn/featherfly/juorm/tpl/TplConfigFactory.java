@@ -12,6 +12,8 @@ import java.util.Collection;
  */
 public interface TplConfigFactory {
 
+    String IdSign = "@";
+
     /**
      * getConfigs
      *
