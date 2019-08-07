@@ -16,6 +16,7 @@ public interface QueryListExecutor {
     /**
      * query for list
      *
+     * @param <E>  wrapper type
      * @param type wrapper type
      * @return list
      */
@@ -23,7 +24,8 @@ public interface QueryListExecutor {
 
     /**
      * query for list
-     *
+     * 
+     * @param <E>       wrapper type
      * @param rowMapper rowMapper
      * @return list
      */

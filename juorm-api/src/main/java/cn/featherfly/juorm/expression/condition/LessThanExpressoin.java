@@ -18,22 +18,20 @@ public interface LessThanExpressoin<C extends ConditionExpression, L extends Log
 
     /**
      * 小于
-     *
-     * @param name
-     *            参数名称
-     * @param value
-     *            参数值
+     * 
+     * @param <N>   number type
+     * @param name  参数名称
+     * @param value 参数值
      * @return LogicExpression
      */
     <N extends Number> L lt(String name, Number value);
 
     /**
      * 小于
-     *
-     * @param name
-     *            参数名称
-     * @param value
-     *            参数值
+     * 
+     * @param <D>   date type
+     * @param name  参数名称
+     * @param value 参数值
      * @return LogicExpression
      */
     <D extends Date> L lt(String name, D value);
@@ -41,10 +39,8 @@ public interface LessThanExpressoin<C extends ConditionExpression, L extends Log
     /**
      * 小于
      *
-     * @param name
-     *            参数名称
-     * @param value
-     *            参数值
+     * @param name  参数名称
+     * @param value 参数值
      * @return LogicExpression
      */
     L lt(String name, LocalTime value);
@@ -52,10 +48,8 @@ public interface LessThanExpressoin<C extends ConditionExpression, L extends Log
     /**
      * 小于
      *
-     * @param name
-     *            参数名称
-     * @param value
-     *            参数值
+     * @param name  参数名称
+     * @param value 参数值
      * @return LogicExpression
      */
     L lt(String name, LocalDate value);
@@ -63,10 +57,8 @@ public interface LessThanExpressoin<C extends ConditionExpression, L extends Log
     /**
      * 小于
      *
-     * @param name
-     *            参数名称
-     * @param value
-     *            参数值
+     * @param name  参数名称
+     * @param value 参数值
      * @return LogicExpression
      */
     L lt(String name, LocalDateTime value);
@@ -74,10 +66,8 @@ public interface LessThanExpressoin<C extends ConditionExpression, L extends Log
     /**
      * 小于
      *
-     * @param name
-     *            参数名称
-     * @param value
-     *            参数值
+     * @param name  参数名称
+     * @param value 参数值
      * @return LogicExpression
      */
     L lt(String name, String value);

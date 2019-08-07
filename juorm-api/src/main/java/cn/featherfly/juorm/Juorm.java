@@ -64,7 +64,7 @@ public interface Juorm extends TplExecutor {
 
     /**
      * update all values for each entity in entity list. equal invoke method
-     * {@link #update(List<Object>, IgnorePolicy)} with params (entity,
+     * {@link #update(List, IgnorePolicy)} with params (entity,
      * IgnorePolicy.NONE)
      *
      * @param <E>      generic type
@@ -137,7 +137,7 @@ public interface Juorm extends TplExecutor {
     /**
      * get entity by id.
      *
-     * @param <E>
+     * @param <E>  entity type
      * @param id   entity id
      * @param type entity type
      * @return entity
@@ -147,7 +147,7 @@ public interface Juorm extends TplExecutor {
     /**
      * get entity by id.
      *
-     * @param <E>
+     * @param <E>    entity generic type
      * @param entity entity with id value
      * @return entity
      */
@@ -156,27 +156,27 @@ public interface Juorm extends TplExecutor {
     /**
      * create QueryData for entityType
      *
-     * @param <E>        generic type
+     * @param <E>        entity generic type
      * @param entityType query for entityType
-     * @return
+     * @return QueryEntity
      */
     <E> QueryEntity query(Class<E> entityType);
 
     /**
      * create update for entityType
      *
-     * @param <E>        generic type
+     * @param <E>        entity generic type
      * @param entityType update for entityType
-     * @return
+     * @return Update
      */
     <E> Update update(Class<E> entityType);
 
     /**
      * create delete for entityType
      *
-     * @param <E>        generic type
+     * @param <E>        entity generic type
      * @param entityType update for entityType
-     * @return
+     * @return Delete
      */
     <E> Delete delete(Class<E> entityType);
 }

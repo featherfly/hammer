@@ -6,7 +6,6 @@ package cn.featherfly.juorm.mapping;
  * </p>
  *
  * @param <E> 要映射的具体类
- * @param <D> 需要包装的数据集
  * @author zhongj
  */
 @FunctionalInterface

@@ -24,7 +24,8 @@ public interface SetUpdateExpression<U extends SetExecutableUpdateExpression<U, 
 
     /**
      * increase value for property
-     *
+     * 
+     * @param <N>   number type
      * @param name  property name
      * @param value property value
      * @return Update

@@ -19,8 +19,8 @@ public class SimpleStringExpression<C extends ConditionsExpression<C, L>, L exte
     private ConditionsExpression<C, L> expression;
 
     /**
-     * @param name
-     * @param expression
+     * @param name       name
+     * @param expression expression
      */
     public SimpleStringExpression(String name, ConditionsExpression<C, L> expression) {
         super();
