@@ -10,6 +10,9 @@ import java.util.stream.Collectors;
 
 import javax.annotation.Nonnull;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import com.speedment.common.tuple.Tuple2;
 import com.speedment.common.tuple.Tuple3;
 import com.speedment.common.tuple.Tuple4;
@@ -48,6 +51,8 @@ import freemarker.template.TemplateExceptionHandler;
  */
 public class SqlTplExecutor implements TplExecutor {
 
+    protected final Logger logger = LoggerFactory.getLogger(this.getClass());
+
     private TplConfigFactory configFactory;
 
     private Configuration cfg;
@@ -67,10 +72,18 @@ public class SqlTplExecutor implements TplExecutor {
         this.mappingFactory = mappingFactory;
 
         cfg = new Configuration(Configuration.VERSION_2_3_28);
-        cfg.setTemplateLoader(new StringTemplateLoader());
         cfg.setDefaultEncoding("UTF-8");
-
         cfg.setTemplateExceptionHandler(TemplateExceptionHandler.RETHROW_HANDLER);
+
+        StringTemplateLoader templateLoader = new StringTemplateLoader();
+        configFactory.getAllConfigs().forEach(configs -> {
+            configs.values().forEach(c -> {
+                TplExecuteConfig config = (TplExecuteConfig) c;
+                logger.debug("put template name: {}", config.getTplPath());
+                templateLoader.putTemplate(config.getTplPath(), config.getQuery());
+            });
+        });
+        cfg.setTemplateLoader(templateLoader);
     }
 
     private Tuple3<String, TplExecuteConfig, ConditionParamsManager> getQueryExecution(String sqlFullId,
@@ -84,7 +97,8 @@ public class SqlTplExecutor implements TplExecutor {
 
     private Tuple2<String, ConditionParamsManager> getCountExecution(String sqlFullId, Map<String, Object> params,
             TplExecuteConfig config, Class<?> resultType) {
-        Tuple2<String, ConditionParamsManager> result = getExecution(sqlFullId, config.getCount(), params, resultType);
+        Tuple2<String, ConditionParamsManager> result = getExecution(sqlFullId + ".count", config.getCount(), params,
+                resultType);
         Constants.LOGGER.debug("sqlFullId -> {}  \nexecuteCountSql -> {}  \ncountTemplate -> {}", sqlFullId,
                 result.get0(), config.getCount());
         return result;
@@ -92,16 +106,12 @@ public class SqlTplExecutor implements TplExecutor {
 
     private Tuple2<String, ConditionParamsManager> getExecution(String templateName, String sql,
             Map<String, Object> params, Class<?> resultType) {
+        logger.debug("execute template name : {}", templateName);
         // TODO 把sqlid配置加入template include， 到时候进行include操作
         ConditionParamsManager manager = new ConditionParamsManager();
         Map<String, Object> root = new HashMap<>();
         root.putAll(params);
-        root.put("where", new WhereTemplateDirectiveModel());
-        root.put("and", new AndTemplateDirectiveModel(manager));
-        root.put("or", new OrTemplateDirectiveModel(manager));
-        root.put("columns", new PropertiesMappingDirectiveModel(mappingFactory, resultType));
-        root.put("properties", new PropertiesMappingDirectiveModel("repository", mappingFactory, resultType));
-        root.put("prop", new PropertiesMappingDirectiveModel("repo", mappingFactory, resultType));
+        setTag(manager, root, resultType);
         try {
             StringWriter stringWriter = new StringWriter();
             Template template = new Template(templateName, sql, cfg);
@@ -112,6 +122,23 @@ public class SqlTplExecutor implements TplExecutor {
         } catch (IOException | TemplateException e) {
             throw new JuormJdbcException(e);
         }
+    }
+
+    /**
+     * setTag
+     *
+     * @param manager
+     * @param root
+     * @param resultType
+     */
+    private Map<String, Object> setTag(ConditionParamsManager manager, Map<String, Object> root, Class<?> resultType) {
+        root.put("where", new WhereTemplateDirectiveModel());
+        root.put("and", new AndTemplateDirectiveModel(manager));
+        root.put("or", new OrTemplateDirectiveModel(manager));
+        root.put("columns", new PropertiesMappingDirectiveModel(mappingFactory, resultType));
+        root.put("properties", new PropertiesMappingDirectiveModel("repository", mappingFactory, resultType));
+        root.put("prop", new PropertiesMappingDirectiveModel("repo", mappingFactory, resultType));
+        return root;
     }
 
     /**

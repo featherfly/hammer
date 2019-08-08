@@ -183,4 +183,15 @@ public class SqlTplExecutorTest extends JdbcTestBase {
             System.out.println(ui);
         });
     }
+
+    @Test
+    void testWithTemplate() {
+        PaginationResults<Role> uis = executor.pagination("tpl/role@selectWithTemplate", Role.class,
+                new HashChainMap<String, Object>(), 0, 10);
+        assertTrue(uis.getResultSize() > 0);
+        System.out.println("result size:" + uis.getResultSize());
+        uis.getPageResults().forEach(ui -> {
+            System.out.println(ui);
+        });
+    }
 }

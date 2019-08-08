@@ -28,6 +28,8 @@ public class TplExecuteConfig {
 
     private String executeId;
 
+    private String tplPath;
+
     /**
      * 返回query
      *
@@ -155,11 +157,29 @@ public class TplExecuteConfig {
     }
 
     /**
+     * 返回tplPath
+     * 
+     * @return tplPath
+     */
+    public String getTplPath() {
+        return tplPath;
+    }
+
+    /**
+     * 设置tplPath
+     * 
+     * @param tplPath tplPath
+     */
+    public void setTplPath(String tplPath) {
+        this.tplPath = tplPath;
+    }
+
+    /**
      * {@inheritDoc}
      */
     @Override
     public String toString() {
         return "TplExecuteConfig [name=" + name + ", directory=" + directory + ", type=" + type + ", query=" + query
-                + ", count=" + count + ", export=" + export + ", executeId=" + executeId + "]";
+                + ", count=" + count + ", export=" + export + ", executeId=" + executeId + ", tplPath=" + tplPath + "]";
     }
 }

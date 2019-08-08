@@ -93,6 +93,7 @@ public class TplConfigFactoryImpl implements TplConfigFactory {
                             path = StringUtils.substring(path, rootPath.length());
                         }
                     }
+                    logger.debug("init read config : {}", path);
                     readConfig(path);
                 }
             }
@@ -154,6 +155,8 @@ public class TplConfigFactoryImpl implements TplConfigFactory {
             TplExecuteConfigs tplExecuteConfigs = mapper.readerFor(TplExecuteConfigs.class)
                     .readValue(ClassLoaderUtils.getResourceAsStream(finalFilePath, TplConfigFactoryImpl.class));
             TplExecuteConfigs newConfigs = new TplExecuteConfigs();
+            newConfigs.setFilePath(finalFilePath);
+            newConfigs.setName(org.apache.commons.lang3.StringUtils.removeEnd(finalFilePath, suffix));
             tplExecuteConfigs.forEach((k, v) -> {
                 TplExecuteConfig config = new TplExecuteConfig();
                 if (v instanceof String) {
@@ -171,6 +174,7 @@ public class TplConfigFactoryImpl implements TplConfigFactory {
                         config.setType(Type.valueOf(map.get("type").toString()));
                     }
                 }
+                config.setTplPath(newConfigs.getName() + IdSign + k);
                 config.setExecuteId(k);
                 config.setName(name);
                 config.setDirectory(directory);
@@ -201,7 +205,7 @@ public class TplConfigFactoryImpl implements TplConfigFactory {
     }
 
     private String[] getFilePathAndSqlId(String sqlId) {
-        String[] result = sqlId.split("@");
+        String[] result = sqlId.split(IdSign);
         return result;
     }
 
