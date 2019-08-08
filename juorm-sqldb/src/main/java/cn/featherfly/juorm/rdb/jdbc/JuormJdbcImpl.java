@@ -73,6 +73,7 @@ public class JuormJdbcImpl implements Juorm {
      * @param configFactory
      */
     public JuormJdbcImpl(Jdbc jdbc, MappingFactory mappingFactory, TplConfigFactory configFactory) {
+        //        this(jdbc, mappingFactory, configFactory, Validation.buildDefaultValidatorFactory().getValidator());
         this(jdbc, mappingFactory, configFactory, Validation.byProvider(HibernateValidator.class).configure()
                 .failFast(false).buildValidatorFactory().getValidator());
     }

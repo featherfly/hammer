@@ -43,6 +43,7 @@ import cn.featherfly.juorm.rdb.sql.dialect.Dialect;
  * MapperFactory
  * </p>
  *
+ * @TODO 加入 @Transient 支持
  * @author zhongj
  */
 public class MappingFactory {
@@ -171,6 +172,11 @@ public class MappingFactory {
             }
         }
         if (!findPk) {
+            findPk = tm.getColumns().stream().anyMatch(c -> {
+                return c.isPrimaryKey();
+            });
+        }
+        if (!findPk) {
             throw new JuormJdbcException("#id.map.not.exists", new Object[] { type.getName() });
         }
 
@@ -282,6 +288,13 @@ public class MappingFactory {
 
     private <T> void mappingFromColumnMetadata(BeanDescriptor<T> bd, Map<String, PropertyMapping> tableMapping,
             ColumnMetadata cmd, StringBuilder logInfo) {
+        PropertyMapping propertyMapping = tableMapping.get(cmd.getName());
+        if (propertyMapping != null) {
+            Constants.LOGGER.debug(
+                    "column [{}] is primary key and set PropertyMapping property name [{}] to primary key to true",
+                    cmd.getName(), propertyMapping.getPropertyName());
+            propertyMapping.setPrimaryKey(cmd.isPrimaryKey());
+        }
         Set<String> nameSet = new HashSet<>();
         tableMapping.forEach((k, v) -> {
             if (LangUtils.isNotEmpty(k)) {

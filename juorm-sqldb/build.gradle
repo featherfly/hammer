@@ -5,8 +5,11 @@ dependencies {
     compile group: 'cn.featherfly', name: 'featherfly-common', version: '1.7.1'
     compile group: 'cn.featherfly', name: 'featherfly-db', version: '1.5.0'
     compile group: 'org.springframework', name: 'spring-jdbc', version: '5.1.8.RELEASE'
+    //compile group: 'javax.el', name: 'javax.el-api', version: '3.0.0'
+    compile group: 'org.glassfish', name: 'javax.el', version: '3.0.0'    
     compile group: 'org.hibernate.javax.persistence', name: 'hibernate-jpa-2.1-api', version: '1.0.2.Final'
-    compile group: 'org.hibernate.validator', name: 'hibernate-validator', version: '6.0.17.Final'
+    //compile group: 'org.hibernate.validator', name: 'hibernate-validator', version: '6.0.17.Final'
+    compile group: 'org.hibernate', name: 'hibernate-validator', version: '5.4.3.Final'
     compile group: 'org.freemarker', name: 'freemarker', version: '2.3.28'
     compile group: 'com.fasterxml.jackson.core', name: 'jackson-databind', version: '2.9.9.2'
     compile group: 'com.fasterxml.jackson.dataformat', name: 'jackson-dataformat-yaml', version: '2.9.9'
@@ -15,6 +18,9 @@ dependencies {
     
     
     testCompile group: 'commons-dbcp', name: 'commons-dbcp', version: '1.4'
+    //testCompile group: 'org.apache.tomcat', name: 'tomcat-juli', version: '9.0.22'
+    
+    
 
     testCompile 'mysql:mysql-connector-java:5.1.35'
 }
