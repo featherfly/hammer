@@ -19,8 +19,8 @@ public class SimpleEnumExpression<C extends ConditionsExpression<C, L>, L extend
     private ConditionsExpression<C, L> expression;
 
     /**
-     * @param name
-     * @param expression
+     * @param name       name
+     * @param expression expression
      */
     public SimpleEnumExpression(String name, ConditionsExpression<C, L> expression) {
         super();

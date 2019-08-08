@@ -14,6 +14,7 @@ public interface QuerySingleExecutor {
     /**
      * query for single
      *
+     * @param <E>  wrapper type
      * @param type wrapper type
      * @return object
      */
@@ -21,7 +22,8 @@ public interface QuerySingleExecutor {
 
     /**
      * query for single
-     *
+     * 
+     * @param <E>       wrapper type
      * @param rowMapper rowMapper
      * @return object
      */
