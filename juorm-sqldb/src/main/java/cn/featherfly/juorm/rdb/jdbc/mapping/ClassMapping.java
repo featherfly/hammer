@@ -11,7 +11,8 @@ import java.util.stream.Collectors;
  * 类映射
  * </p>
  *
- * @param <T> 类型
+ * @param <T>
+ *            类型
  * @author zhongj
  * @since 1.0
  * @version 1.0
@@ -19,8 +20,10 @@ import java.util.stream.Collectors;
 public class ClassMapping<T> {
 
     /**
-     * @param type      类型
-     * @param tableName 表名
+     * @param type
+     *            类型
+     * @param tableName
+     *            表名
      */
     public ClassMapping(Class<T> type, String tableName) {
         this.type = type;
@@ -32,11 +35,30 @@ public class ClassMapping<T> {
      * 返回指定属性名称的属性映射. 没有找到返回null.
      * </p>
      *
-     * @param propertyName 属性名称
+     * @param propertyName
+     *            属性名称
      * @return 属性映射对象
      */
     public PropertyMapping getPropertyMapping(String propertyName) {
         return propertyMappings.get(propertyName);
+    }
+
+    /**
+     * <p>
+     * 通过持久化字段（数据库字段）的名称返回指定属性映射. 没有找到返回null.
+     * </p>
+     *
+     * @param persitField
+     *            持久化字段（数据库字段）
+     * @return 属性映射对象
+     */
+    public PropertyMapping getPropertyMappingByPersitField(String persitField) {
+        for (PropertyMapping pm : propertyMappings.values()) {
+            if (pm.getColumnName().equals(persitField)) {
+                return pm;
+            }
+        }
+        return null;
     }
 
     /**
@@ -58,7 +80,8 @@ public class ClassMapping<T> {
      * @return 所有属性映射
      */
     public List<PropertyMapping> getPrivaryKeyPropertyMappings() {
-        return propertyMappings.values().stream().filter(p -> p.isPrimaryKey()).collect(Collectors.toList());
+        return propertyMappings.values().stream().filter(p -> p.isPrimaryKey())
+                .collect(Collectors.toList());
     }
 
     // ********************************************************************
@@ -66,7 +89,8 @@ public class ClassMapping<T> {
     // ********************************************************************
 
     void addPropertyMapping(PropertyMapping propertyMapping) {
-        propertyMappings.put(propertyMapping.getPropertyName(), propertyMapping);
+        propertyMappings.put(propertyMapping.getPropertyName(),
+                propertyMapping);
     }
 
     void addPropertyMappings(Collection<PropertyMapping> propertyMappings) {
