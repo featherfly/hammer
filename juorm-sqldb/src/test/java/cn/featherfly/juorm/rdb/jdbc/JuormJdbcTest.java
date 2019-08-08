@@ -7,10 +7,13 @@ import static org.testng.Assert.assertTrue;
 
 import java.util.List;
 
+import javax.el.ExpressionFactory;
+
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
 
 import cn.featherfly.common.lang.RandomUtils;
+import cn.featherfly.juorm.rdb.jdbc.vo.Article;
 import cn.featherfly.juorm.rdb.jdbc.vo.Role;
 import cn.featherfly.juorm.rdb.jdbc.vo.User;
 import cn.featherfly.juorm.rdb.jdbc.vo.UserRole;
@@ -36,6 +39,16 @@ public class JuormJdbcTest extends JdbcTestBase {
         Role r = role();
         juormJdbc.save(r);
         assertNotNull(r.getId());
+    }
+
+    @Test
+    public void testSave2() {
+        ExpressionFactory.newInstance();
+        Article a = new Article();
+        a.setTitle("title_" + RandomUtils.getRandomInt(100));
+        a.setTitle("content_" + RandomUtils.getRandomInt(1000));
+        juormJdbc.save(a);
+        assertNotNull(a.getId());
     }
 
     @Test

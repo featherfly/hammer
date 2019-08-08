@@ -1,6 +1,7 @@
 
 package cn.featherfly.juorm.mapping;
 
+import javax.persistence.Entity;
 import javax.persistence.Table;
 
 import cn.featherfly.common.bean.BeanDescriptor;
@@ -23,6 +24,10 @@ public class ClassNameJpaConversion implements ClassNameConversion {
         Table table = bd.getAnnotation(Table.class);
         if (table != null) {
             return table.name();
+        }
+        Entity entity = bd.getAnnotation(Entity.class);
+        if (entity != null) {
+            return entity.name();
         }
         return null;
     }
