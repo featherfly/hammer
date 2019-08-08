@@ -37,8 +37,8 @@ INSERT INTO `role` VALUES ('20', 'n_34', 'descp_18');
 DROP TABLE IF EXISTS `user`;
 CREATE TABLE `user` (
   `ID` int(10) unsigned NOT NULL AUTO_INCREMENT COMMENT '主键ID，由于此表数据不用上传，所以直接使用自动递增',
-  `USERNAME` varchar(20) DEFAULT NULL COMMENT '用户名，登陆系统用，单一数据库保证唯一',
-  `PASSWORD` varchar(36) DEFAULT NULL COMMENT '密码，保存加密后的密码',
+  `USERNAME` varchar(255) DEFAULT NULL COMMENT '用户名，登陆系统用，单一数据库保证唯一',
+  `PASSWORD` varchar(255) DEFAULT NULL COMMENT '密码，保存加密后的密码',
   `MOBILE_NO` varchar(11) DEFAULT NULL COMMENT '手机号码',
   `AGE` int(11) DEFAULT NULL,
   PRIMARY KEY (`ID`),

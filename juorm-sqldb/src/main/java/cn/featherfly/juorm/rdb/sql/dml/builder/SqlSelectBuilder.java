@@ -1,6 +1,7 @@
 package cn.featherfly.juorm.rdb.sql.dml.builder;
 
 import java.util.Collection;
+import java.util.Map;
 
 import cn.featherfly.common.lang.LangUtils;
 import cn.featherfly.juorm.operator.AggregateFunction;
@@ -55,15 +56,43 @@ public class SqlSelectBuilder extends AbstractSqlSelectBuilder implements Select
      * {@inheritDoc}
      */
     @Override
-    public SelectBuilder select(String columnName) {
-        return select(columnName, null);
+    public SelectBuilder select(String columnName, AggregateFunction aggregateFunction, String asName) {
+        addSelectColumn(columnName, aggregateFunction, asName);
+        return this;
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public SelectBuilder select(String... columnNames) {
+    public SelectBuilder select(Map<String, String> columnNames) {
+        addSelectColumn(columnNames);
+        return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public SelectBuilder select(String columnName) {
+        addSelectColumn(columnName, null, null);
+        return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public SelectBuilder select(String columnName, String asName) {
+        addSelectColumn(columnName, asName);
+        return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public SelectBuilder select(String[] columnNames) {
         if (LangUtils.isNotEmpty(columnNames)) {
             for (String columnName : columnNames) {
                 select(columnName);
@@ -103,5 +132,4 @@ public class SqlSelectBuilder extends AbstractSqlSelectBuilder implements Select
         conditionBuilder.setQueryAlias(alias);
         return conditionBuilder;
     }
-
 }

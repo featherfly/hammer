@@ -13,18 +13,15 @@ import cn.featherfly.juorm.expression.ConditionGroupLogicExpression;
  *
  * @author zhongj
  */
-public interface QueryEntityExpression<
-        Q extends QueryEntityPropertiesExpression<Q, C, L>,
-        C extends ConditionGroupExpression<C, L>,
-        L extends ConditionGroupLogicExpression<C, L>>
+public interface QueryEntityExpression<Q extends QueryEntityPropertiesExpression<Q, C, L>,
+        C extends ConditionGroupExpression<C, L>, L extends ConditionGroupLogicExpression<C, L>>
         extends QueryListExecutor, QueryConditionLimit {
     /**
      * <p>
      * 添加select的列
      * </p>
      *
-     * @param propertyName
-     *            propertyName
+     * @param propertyName propertyName
      * @return QueryEntityPropertiesExpression
      */
     Q property(String propertyName);
@@ -34,8 +31,7 @@ public interface QueryEntityExpression<
      * 批量添加select的列
      * </p>
      *
-     * @param propertyNames
-     *            propertyNames
+     * @param propertyNames propertyNames
      * @return QueryEntityPropertiesExpression
      */
     Q property(String... propertyNames);
@@ -45,8 +41,7 @@ public interface QueryEntityExpression<
      * 批量添加select的列
      * </p>
      *
-     * @param propertyNames
-     *            propertyNames
+     * @param propertyNames propertyNames
      * @return QueryEntityPropertiesExpression
      */
     Q property(Collection<String> propertyNames);

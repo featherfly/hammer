@@ -5,21 +5,19 @@ import java.util.Collection;
 
 /**
  * <p>
- * find target builder
- * 查找目标构造器
+ * find target builder 查找目标构造器
  * </p>
  *
  * @author zhongj
  */
 public interface FindBuilder extends Builder {
-   
+
     /**
      * <p>
      * 添加select的列
      * </p>
-     * 
-     * @param propertyName
-     *            propertyName
+     *
+     * @param propertyName propertyName
      * @return FindBuilder
      */
     FindBuilder with(String propertyName);
@@ -28,9 +26,8 @@ public interface FindBuilder extends Builder {
      * <p>
      * 批量添加select的列
      * </p>
-     * 
-     * @param propertyNames
-     *            propertyNames
+     *
+     * @param propertyNames propertyNames
      * @return FindBuilder
      */
     FindBuilder with(String... propertyNames);
@@ -39,9 +36,8 @@ public interface FindBuilder extends Builder {
      * <p>
      * 批量添加select的列
      * </p>
-     * 
-     * @param propertyNames
-     *            propertyNames
+     *
+     * @param propertyNames propertyNames
      * @return FindBuilder
      */
     FindBuilder with(Collection<String> propertyNames);
@@ -50,7 +46,7 @@ public interface FindBuilder extends Builder {
      * <p>
      * 进入条件表达式
      * </p>
-     * 
+     *
      * @return ConditionBuilder
      */
     ConditionBuilder where();

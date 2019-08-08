@@ -13,10 +13,6 @@ import cn.featherfly.juorm.dml.builder.ConditionBuilder;
 import cn.featherfly.juorm.dml.builder.QueryBuilder;
 import cn.featherfly.juorm.dml.builder.SortBuilder;
 import cn.featherfly.juorm.rdb.sql.dialect.Dialects;
-import cn.featherfly.juorm.rdb.sql.dml.builder.SqlConditionGroup;
-import cn.featherfly.juorm.rdb.sql.dml.builder.SqlFindBuilder;
-import cn.featherfly.juorm.rdb.sql.dml.builder.SqlQueryBuilder;
-import cn.featherfly.juorm.rdb.sql.dml.builder.SqlSortBuilder;
 
 /**
  * <p>
@@ -28,6 +24,7 @@ import cn.featherfly.juorm.rdb.sql.dml.builder.SqlSortBuilder;
  *
  * @author 钟冀
  */
+@Test(groups = { "dml-test" })
 public class ConditionBuilderTest {
 
     cn.featherfly.juorm.dml.builder.QueryBuilder builder = null;
@@ -78,8 +75,8 @@ public class ConditionBuilderTest {
         assertEquals(params, ((SqlQueryBuilder) builder2).getParams());
 
         builder2 = new SqlQueryBuilder(Dialects.MYSQL);
-        builder2.select("name", "pwd", "age", "sex").from("user", "u2").where().eq("name", name).and().eq("pwd", pwd)
-                .and().group().eq("sex", sex).or().gt("age", age).sort().asc("age", "sex").desc("name");
+        builder2.select(new String[] { "name", "pwd", "age", "sex" }).from("user", "u2").where().eq("name", name).and()
+                .eq("pwd", pwd).and().group().eq("sex", sex).or().gt("age", age).sort().asc("age", "sex").desc("name");
         System.out.println(builder2.build());
         System.out.println(((SqlQueryBuilder) builder2).getParams());
         assertEquals(

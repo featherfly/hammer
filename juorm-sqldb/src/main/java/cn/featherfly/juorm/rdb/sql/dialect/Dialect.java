@@ -262,7 +262,7 @@ public interface Dialect {
      * @return sql
      */
     default String buildTableSql(String tableName, String tableAlias) {
-        String result = convertTableOrColumnName(tableName);
+        String result = wrapName(convertTableOrColumnName(tableName));
         if (LangUtils.isNotEmpty(tableAlias)) {
             result = result + " " + tableAlias;
         }

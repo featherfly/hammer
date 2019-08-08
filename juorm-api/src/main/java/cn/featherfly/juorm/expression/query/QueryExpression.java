@@ -30,4 +30,12 @@ public interface QueryExpression<Q extends QueryEntityExpression<QP, C, L>,
      * @return QueryEntity
      */
     Q find(String repository);
+
+    /**
+     * find reposit type
+     *
+     * @param repositType repositType
+     * @return QueryEntity
+     */
+    Q find(Class<?> repositType);
 }

@@ -9,6 +9,8 @@ import cn.featherfly.juorm.dsl.execute.UpdateNumberValue;
 import cn.featherfly.juorm.dsl.execute.UpdateValue;
 import cn.featherfly.juorm.expression.Repository;
 import cn.featherfly.juorm.rdb.jdbc.Jdbc;
+import cn.featherfly.juorm.rdb.jdbc.mapping.ClassMapping;
+import cn.featherfly.juorm.rdb.jdbc.mapping.ClassMappingUtils;
 import cn.featherfly.juorm.rdb.sql.dml.builder.basic.SqlUpdateSetBasicBuilder;
 import cn.featherfly.juorm.rdb.sql.model.UpdateColumnElement.SetType;
 
@@ -21,18 +23,17 @@ import cn.featherfly.juorm.rdb.sql.model.UpdateColumnElement.SetType;
  */
 public class SqlExecutableUpdate implements SqlUpdate, ExecutableUpdate {
 
-    private String tableName;
-
     private Jdbc jdbc;
 
     private SqlUpdateSetBasicBuilder builder;
+
+    private ClassMapping<?> classMapping;
 
     /**
      * @param tableName tableName
      * @param jdbc      jdbc
      */
     public SqlExecutableUpdate(String tableName, Jdbc jdbc) {
-        this.tableName = tableName;
         this.jdbc = jdbc;
         builder = new SqlUpdateSetBasicBuilder(jdbc.getDialect(), tableName);
     }
@@ -46,11 +47,21 @@ public class SqlExecutableUpdate implements SqlUpdate, ExecutableUpdate {
     }
 
     /**
+     * @param classMapping
+     * @param jdbc
+     */
+    public SqlExecutableUpdate(ClassMapping<?> classMapping, Jdbc jdbc) {
+        this.classMapping = classMapping;
+        this.jdbc = jdbc;
+        builder = new SqlUpdateSetBasicBuilder(jdbc.getDialect(), classMapping.getTableName());
+    }
+
+    /**
      * {@inheritDoc}
      */
     @Override
     public SqlExecutableUpdate set(String name, Object value) {
-        builder.setValue(name, value);
+        builder.setValue(ClassMappingUtils.getColumnName(name, classMapping), value);
         return this;
     }
 
@@ -59,7 +70,7 @@ public class SqlExecutableUpdate implements SqlUpdate, ExecutableUpdate {
      */
     @Override
     public <N extends Number> SqlExecutableUpdate increase(String name, N value) {
-        builder.setValue(name, value, SetType.INCR);
+        builder.setValue(ClassMappingUtils.getColumnName(name, classMapping), value, SetType.INCR);
         return this;
     }
 
@@ -68,7 +79,7 @@ public class SqlExecutableUpdate implements SqlUpdate, ExecutableUpdate {
      */
     @Override
     public UpdateValue property(String name) {
-        return new SimpleUpdateValue(name, this);
+        return new SimpleUpdateValue(ClassMappingUtils.getColumnName(name, classMapping), this);
     }
 
     /**
@@ -76,7 +87,7 @@ public class SqlExecutableUpdate implements SqlUpdate, ExecutableUpdate {
      */
     @Override
     public UpdateNumberValue propertyNumber(String name) {
-        return new SimpleUpdateNumberValue(name, this);
+        return new SimpleUpdateNumberValue(ClassMappingUtils.getColumnName(name, classMapping), this);
     }
 
     /**
@@ -84,7 +95,7 @@ public class SqlExecutableUpdate implements SqlUpdate, ExecutableUpdate {
      */
     @Override
     public ExecutableConditionGroupExpression where() {
-        return new SqlUpdateExpression(jdbc, tableName, builder);
+        return new SqlUpdateExpression(jdbc, builder, classMapping);
     }
 
     /**
@@ -92,7 +103,7 @@ public class SqlExecutableUpdate implements SqlUpdate, ExecutableUpdate {
      */
     @Override
     public int execute() {
-        return new SqlUpdateExpression(jdbc, tableName, builder).execute();
+        return new SqlUpdateExpression(jdbc, builder, classMapping).execute();
     }
 
 }

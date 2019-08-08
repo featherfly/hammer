@@ -6,6 +6,7 @@ import cn.featherfly.common.lang.LangUtils;
 import cn.featherfly.juorm.dsl.query.QueryConditionGroupExpression;
 import cn.featherfly.juorm.dsl.query.QueryConditionGroupLogicExpression;
 import cn.featherfly.juorm.rdb.jdbc.Jdbc;
+import cn.featherfly.juorm.rdb.jdbc.mapping.ClassMapping;
 import cn.featherfly.juorm.rdb.sql.dml.builder.basic.SqlSelectBasicBuilder;
 
 /**
@@ -21,10 +22,20 @@ public class SqlQueryExpression extends SqlQueryConditionGroupExpression {
 
     /**
      * @param jdbc
-     * @param tableName
+     * @param selectBuilder
      */
-    public SqlQueryExpression(Jdbc jdbc, String tableName, SqlSelectBasicBuilder selectBuilder) {
+    public SqlQueryExpression(Jdbc jdbc, SqlSelectBasicBuilder selectBuilder) {
         super(jdbc, selectBuilder.getTableAlias());
+        this.selectBuilder = selectBuilder;
+    }
+
+    /**
+     * @param jdbc
+     * @param classMapping
+     * @param selectBuilder
+     */
+    public SqlQueryExpression(Jdbc jdbc, ClassMapping<?> classMapping, SqlSelectBasicBuilder selectBuilder) {
+        super(jdbc, selectBuilder.getTableAlias(), classMapping);
         this.selectBuilder = selectBuilder;
     }
 
@@ -32,9 +43,11 @@ public class SqlQueryExpression extends SqlQueryConditionGroupExpression {
      * @param jdbc
      * @param parent
      * @param queryAlias
+     * @param classMapping
      */
-    SqlQueryExpression(Jdbc jdbc, QueryConditionGroupLogicExpression parent, String queryAlias) {
-        super(jdbc, parent, queryAlias);
+    SqlQueryExpression(Jdbc jdbc, QueryConditionGroupLogicExpression parent, String queryAlias,
+            ClassMapping<?> classMapping) {
+        super(jdbc, parent, queryAlias, classMapping);
     }
 
     /**
@@ -58,7 +71,7 @@ public class SqlQueryExpression extends SqlQueryConditionGroupExpression {
     @Override
     protected QueryConditionGroupExpression createGroup(QueryConditionGroupLogicExpression parent, String queryAlias) {
         selectBuilder.setTableAlias(queryAlias);
-        return new SqlQueryExpression(jdbc, parent, queryAlias);
+        return new SqlQueryExpression(jdbc, parent, queryAlias, classMapping);
     }
 
     /**

@@ -6,6 +6,7 @@ import java.util.List;
 
 import cn.featherfly.common.constant.Chars;
 import cn.featherfly.juorm.rdb.jdbc.Jdbc;
+import cn.featherfly.juorm.rdb.jdbc.mapping.ClassMapping;
 import cn.featherfly.juorm.rdb.sql.dml.builder.basic.SqlUpdateSetBasicBuilder;
 
 /**
@@ -21,10 +22,20 @@ public class SqlUpdateExpression extends SqlConditionGroupExpression {
 
     /**
      * @param jdbc
+     * @param builder
      */
-    public SqlUpdateExpression(Jdbc jdbc, String tableName, SqlUpdateSetBasicBuilder builde) {
-        super(jdbc);
-        builder = builde;
+    public SqlUpdateExpression(Jdbc jdbc, SqlUpdateSetBasicBuilder builder) {
+        this(jdbc, builder, null);
+    }
+
+    /**
+     * @param jdbc
+     * @param builder
+     * @param classMapping
+     */
+    public SqlUpdateExpression(Jdbc jdbc, SqlUpdateSetBasicBuilder builder, ClassMapping<?> classMapping) {
+        super(jdbc, null, classMapping);
+        this.builder = builder;
     }
 
     /**

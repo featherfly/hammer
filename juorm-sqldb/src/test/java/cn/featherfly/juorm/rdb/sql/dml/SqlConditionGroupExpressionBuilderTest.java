@@ -10,10 +10,8 @@ import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
 
 import cn.featherfly.juorm.dml.builder.QueryBuilder;
-import cn.featherfly.juorm.rdb.jdbc.Jdbc;
-import cn.featherfly.juorm.rdb.jdbc.SpringJdbcTemplateImpl;
+import cn.featherfly.juorm.rdb.jdbc.JdbcTestBase;
 import cn.featherfly.juorm.rdb.sql.dialect.Dialects;
-import cn.featherfly.juorm.rdb.sql.dml.SqlConditionGroupExpressionBuilder;
 
 /**
  * <p>
@@ -22,8 +20,8 @@ import cn.featherfly.juorm.rdb.sql.dml.SqlConditionGroupExpressionBuilder;
  * 
  * @author zhongj
  */
-public class SqlConditionGroupExpressionBuilderTest {
-    Jdbc jdbc = new SpringJdbcTemplateImpl(null, Dialects.MYSQL);
+@Test(groups = { "dml-test" })
+public class SqlConditionGroupExpressionBuilderTest extends JdbcTestBase {
     QueryBuilder sub = null;
     List<Object> params = new ArrayList<>();
 

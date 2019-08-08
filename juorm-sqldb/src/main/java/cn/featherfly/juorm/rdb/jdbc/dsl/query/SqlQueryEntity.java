@@ -20,22 +20,19 @@ public interface SqlQueryEntity extends QueryEntity {
      * 添加select的列
      * </p>
      *
-     * @param columnName
-     *            propertyName
+     * @param columnName propertyName
      * @return QueryEntityPropertiesExpression
      */
-    QueryEntityProperties property(String columnName, String asName);
+    QueryEntityProperties propertyAlias(String columnName, String asName);
 
     /**
      * <p>
      * 批量添加select的列
      * </p>
      *
-     * @param columnNameMap
-     *            key is columnName, value is asName
-     * 
+     * @param columnNameMap key is columnName, value is asName
      * @return QueryEntityPropertiesExpression
      */
-    QueryEntityProperties property(Map<String, String> columnNameMap);
+    QueryEntityProperties propertyAlias(Map<String, String> columnNameMap);
 
 }

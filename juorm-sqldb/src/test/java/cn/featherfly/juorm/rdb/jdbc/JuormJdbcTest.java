@@ -7,8 +7,6 @@ import static org.testng.Assert.assertTrue;
 
 import java.util.List;
 
-import javax.el.ExpressionFactory;
-
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
 
@@ -43,10 +41,9 @@ public class JuormJdbcTest extends JdbcTestBase {
 
     @Test
     public void testSave2() {
-        ExpressionFactory.newInstance();
         Article a = new Article();
         a.setTitle("title_" + RandomUtils.getRandomInt(100));
-        a.setTitle("content_" + RandomUtils.getRandomInt(1000));
+        a.setContent("content_" + RandomUtils.getRandomInt(1000));
         juormJdbc.save(a);
         assertNotNull(a.getId());
     }
@@ -117,7 +114,11 @@ public class JuormJdbcTest extends JdbcTestBase {
         userRole.setRoleId(11);
         userRole.setUserId(11);
 
-        juormJdbc.save(userRole);
+        UserRole ur = juormJdbc.query(UserRole.class).where().eq("role_id", 11).and().eq("user_id", 11)
+                .single(UserRole.class);
+        if (ur == null) {
+            juormJdbc.save(userRole);
+        }
 
         juormJdbc.delete(userRole);
     }

@@ -2,23 +2,25 @@
 package cn.featherfly.juorm.rdb.jdbc.dsl;
 
 import static org.testng.Assert.assertEquals;
+import static org.testng.Assert.assertTrue;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.sql.DataSource;
-
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
 
+import cn.featherfly.common.lang.UUIDGenerator;
 import cn.featherfly.juorm.dml.builder.QueryBuilder;
 import cn.featherfly.juorm.expression.SimpleRepository;
-import cn.featherfly.juorm.rdb.jdbc.Jdbc;
-import cn.featherfly.juorm.rdb.jdbc.SpringJdbcTemplateImpl;
+import cn.featherfly.juorm.rdb.jdbc.JdbcTestBase;
+import cn.featherfly.juorm.rdb.jdbc.JuormJdbcImpl;
 import cn.featherfly.juorm.rdb.jdbc.dsl.execute.SqlConditionGroupExpression;
 import cn.featherfly.juorm.rdb.jdbc.dsl.execute.SqlDeleteExpression;
+import cn.featherfly.juorm.rdb.jdbc.dsl.execute.SqlDeleter;
 import cn.featherfly.juorm.rdb.jdbc.dsl.execute.SqlUpdater;
-import cn.featherfly.juorm.rdb.sql.dialect.Dialects;
+import cn.featherfly.juorm.rdb.jdbc.vo.User;
+import cn.featherfly.juorm.rdb.sql.dml.builder.basic.SqlDeleteFromBasicBuilder;
 
 /**
  * <p>
@@ -30,12 +32,10 @@ import cn.featherfly.juorm.rdb.sql.dialect.Dialects;
  *
  * @author 钟冀
  */
-public class SqlDslExpressionTest {
+public class SqlDslExpressionTest extends JdbcTestBase {
 
-    Jdbc jdbc = new SpringJdbcTemplateImpl(null, Dialects.MYSQL);
     QueryBuilder sub = null;
     List<Object> params = new ArrayList<>();
-    DataSource dataSource;
 
     String name = "yufei";
     String pwd = "123";
@@ -52,8 +52,7 @@ public class SqlDslExpressionTest {
 
     @Test
     public void testSqlConditionGroupExpressionBuilder() {
-        SqlConditionGroupExpression builder = new SqlConditionGroupExpression(
-                new SpringJdbcTemplateImpl(dataSource, Dialects.MYSQL));
+        SqlConditionGroupExpression builder = new SqlConditionGroupExpression(jdbc);
         builder.eq("name", name).and().eq("pwd", pwd).and().group().eq("sex", sex).or().gt("age", age);
 
         System.out.println(builder.build());
@@ -66,7 +65,8 @@ public class SqlDslExpressionTest {
 
     @Test
     public void testSqlDeleteExpression() {
-        SqlDeleteExpression del = new SqlDeleteExpression(jdbc, "user");
+        SqlDeleteExpression del = new SqlDeleteExpression(jdbc,
+                new SqlDeleteFromBasicBuilder(jdbc.getDialect(), "user"));
         del.eq("name", name).and().eq("pwd", pwd).and().group().eq("sex", sex).or().gt("age", age);
 
         System.out.println(del.build());
@@ -75,6 +75,28 @@ public class SqlDslExpressionTest {
         assertEquals("DELETE FROM `user` WHERE `name` = ? AND `pwd` = ? AND ( `sex` = ? OR `age` > ? )", del.build());
         assertEquals(params, del.getParams());
 
+    }
+
+    @Test
+    public void testSqlTypeDeleteExpression() {
+        JuormJdbcImpl juorm = new JuormJdbcImpl(jdbc, factory);
+        int size = 10;
+        for (int i = 0; i < size; i++) {
+            User u = new User();
+            u.setUsername("name_delete_" + UUIDGenerator.generateUUID22Letters());
+            juorm.save(u);
+        }
+        SqlDeleter sqlDeleter = new SqlDeleter(jdbc, factory);
+        int no = sqlDeleter.delete(User.class).where().sw("username", "name_delete_").execute();
+        assertTrue(no == size);
+
+        for (int i = 0; i < size; i++) {
+            User u = new User();
+            u.setPwd("pwd_delete_" + UUIDGenerator.generateUUID22Letters());
+            juorm.save(u);
+        }
+        no = sqlDeleter.delete(User.class).where().sw("pwd", "pwd_delete_").execute();
+        assertTrue(no == size);
     }
 
     @Test
@@ -103,6 +125,19 @@ public class SqlDslExpressionTest {
         assertEquals("UPDATE `user` SET `name` = ?, `pwd` = ?, `age` = `age` + ? WHERE `sex` = ?", e.toString());
         assertEquals(params, e.getParams());
 
+    }
+
+    @Test
+    public void testSqlTypeUpdateExpression() {
+        SqlUpdater sqlUpdater = new SqlUpdater(jdbc, factory);
+
+        int no = sqlUpdater.update(User.class).property("password").set("111111").where().property("id").eq("3")
+                .execute();
+        assertTrue(no == 1);
+
+        no = sqlUpdater.update(User.class).property("pwd").set("222222").where().in("id", new Integer[] { 4, 5 })
+                .execute();
+        assertTrue(no == 2);
     }
 
 }

@@ -3,6 +3,7 @@ package cn.featherfly.juorm.rdb.sql.dml;
 
 import cn.featherfly.juorm.dml.BuildableConditionGroupExpression;
 import cn.featherfly.juorm.dml.BuildableConditionGroupLogicExpression;
+import cn.featherfly.juorm.rdb.jdbc.mapping.ClassMapping;
 import cn.featherfly.juorm.rdb.sql.dialect.Dialect;
 
 /**
@@ -28,17 +29,27 @@ public class SqlConditionGroupExpressionBuilder extends
      * @param queryAlias queryAlias
      */
     public SqlConditionGroupExpressionBuilder(Dialect dialect, String queryAlias) {
-        this(dialect, null, queryAlias);
+        this(dialect, queryAlias, null);
     }
 
     /**
-     * @param dialect    dialect
-     * @param parent     parent group
-     * @param queryAlias queryAlias
+     * @param dialect      dialect
+     * @param queryAlias   queryAlias
+     * @param classMapping classMapping
+     */
+    public SqlConditionGroupExpressionBuilder(Dialect dialect, String queryAlias, ClassMapping<?> classMapping) {
+        this(dialect, null, queryAlias, classMapping);
+    }
+
+    /**
+     * @param dialect      dialect
+     * @param parent       parent group
+     * @param queryAlias   queryAlias
+     * @param classMapping classMapping
      */
     SqlConditionGroupExpressionBuilder(Dialect dialect, BuildableConditionGroupLogicExpression parent,
-            String queryAlias) {
-        super(dialect, parent, queryAlias);
+            String queryAlias, ClassMapping<?> classMapping) {
+        super(dialect, parent, queryAlias, classMapping);
     }
 
     /**
@@ -47,7 +58,7 @@ public class SqlConditionGroupExpressionBuilder extends
     @Override
     protected BuildableConditionGroupExpression createGroup(BuildableConditionGroupLogicExpression parent,
             String queryAlias) {
-        return new SqlConditionGroupExpressionBuilder(dialect, parent, queryAlias);
+        return new SqlConditionGroupExpressionBuilder(dialect, parent, queryAlias, classMapping);
     }
 
     // ********************************************************************

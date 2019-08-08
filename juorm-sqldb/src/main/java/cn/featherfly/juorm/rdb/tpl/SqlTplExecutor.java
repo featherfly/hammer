@@ -30,11 +30,13 @@ import cn.featherfly.juorm.rdb.jdbc.JuormJdbcException;
 import cn.featherfly.juorm.rdb.jdbc.mapping.MappingFactory;
 import cn.featherfly.juorm.rdb.tpl.freemarker.AndTemplateDirectiveModel;
 import cn.featherfly.juorm.rdb.tpl.freemarker.ConditionParamsManager;
+import cn.featherfly.juorm.rdb.tpl.freemarker.IncludeModel;
 import cn.featherfly.juorm.rdb.tpl.freemarker.OrTemplateDirectiveModel;
 import cn.featherfly.juorm.rdb.tpl.freemarker.PropertiesMappingDirectiveModel;
 import cn.featherfly.juorm.rdb.tpl.freemarker.WhereTemplateDirectiveModel;
 import cn.featherfly.juorm.tpl.TplConfigFactory;
 import cn.featherfly.juorm.tpl.TplExecuteConfig;
+import cn.featherfly.juorm.tpl.TplExecuteId;
 import cn.featherfly.juorm.tpl.TplExecutor;
 import freemarker.cache.StringTemplateLoader;
 import freemarker.template.Configuration;
@@ -137,6 +139,8 @@ public class SqlTplExecutor implements TplExecutor {
         root.put("columns", new PropertiesMappingDirectiveModel(mappingFactory, resultType));
         root.put("properties", new PropertiesMappingDirectiveModel("repository", mappingFactory, resultType));
         root.put("prop", new PropertiesMappingDirectiveModel("repo", mappingFactory, resultType));
+        root.put("tpl", new IncludeModel());
+        root.put("sql", new IncludeModel());
         return root;
     }
 
@@ -260,6 +264,57 @@ public class SqlTplExecutor implements TplExecutor {
                 return e.getValue();
             }));
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public <E> E single(TplExecuteId tplExecuteId, Class<E> entityType, Map<String, Object> params) {
+        return single(tplExecuteId.getId(), entityType, params);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public <E> List<E> list(TplExecuteId tplExecuteId, Class<E> entityType, Map<String, Object> params) {
+        return list(tplExecuteId.getId(), entityType, params);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public <E> List<E> list(TplExecuteId tplExecuteId, Class<E> entityType, Map<String, Object> params, int offset,
+            int limit) {
+        return list(tplExecuteId.getId(), entityType, params, offset, limit);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public <E> List<E> list(TplExecuteId tplExecuteId, Class<E> entityType, Map<String, Object> params, Page page) {
+        return list(tplExecuteId.getId(), entityType, params, page);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public <E> PaginationResults<E> pagination(TplExecuteId tplExecuteId, Class<E> entityType,
+            Map<String, Object> params, int offset, int limit) {
+        return pagination(tplExecuteId.getId(), entityType, params, offset, limit);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public <E> PaginationResults<E> pagination(TplExecuteId tplExecuteId, Class<E> entityType,
+            Map<String, Object> params, Page page) {
+        return pagination(tplExecuteId.getId(), entityType, params, page);
     }
 
 }

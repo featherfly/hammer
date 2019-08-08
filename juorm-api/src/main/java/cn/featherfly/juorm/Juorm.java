@@ -117,7 +117,7 @@ public interface Juorm extends TplExecutor {
     <E> int merge(List<E> entities);
 
     /**
-     * delete entity
+     * delete entity by id
      *
      * @param <E>    generic type
      * @param entity entity to delete

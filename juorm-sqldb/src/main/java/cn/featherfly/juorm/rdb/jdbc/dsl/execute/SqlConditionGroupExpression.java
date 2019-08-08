@@ -4,6 +4,7 @@ package cn.featherfly.juorm.rdb.jdbc.dsl.execute;
 import cn.featherfly.juorm.dsl.execute.ExecutableConditionGroupExpression;
 import cn.featherfly.juorm.dsl.execute.ExecutableConditionGroupLogicExpression;
 import cn.featherfly.juorm.rdb.jdbc.Jdbc;
+import cn.featherfly.juorm.rdb.jdbc.mapping.ClassMapping;
 import cn.featherfly.juorm.rdb.sql.dml.AbstractSqlConditionGroupExpression;
 
 /**
@@ -29,16 +30,27 @@ public class SqlConditionGroupExpression extends
      * @param queryAlias queryAlias
      */
     public SqlConditionGroupExpression(Jdbc jdbc, String queryAlias) {
-        this(jdbc, null, queryAlias);
+        this(jdbc, queryAlias, null);
     }
 
     /**
-     * @param dialect    dialect
-     * @param parent     parent group
-     * @param queryAlias queryAlias
+     * @param dialect      dialect
+     * @param queryAlias   queryAlias
+     * @param classMapping classMapping
      */
-    SqlConditionGroupExpression(Jdbc jdbc, ExecutableConditionGroupLogicExpression parent, String queryAlias) {
-        super(jdbc.getDialect(), parent, queryAlias);
+    public SqlConditionGroupExpression(Jdbc jdbc, String queryAlias, ClassMapping<?> classMapping) {
+        this(jdbc, null, queryAlias, classMapping);
+    }
+
+    /**
+     * @param dialect      dialect
+     * @param parent       parent group
+     * @param queryAlias   queryAlias
+     * @param classMapping classMapping
+     */
+    SqlConditionGroupExpression(Jdbc jdbc, ExecutableConditionGroupLogicExpression parent, String queryAlias,
+            ClassMapping<?> classMapping) {
+        super(jdbc.getDialect(), parent, queryAlias, classMapping);
         this.jdbc = jdbc;
     }
 
@@ -62,6 +74,6 @@ public class SqlConditionGroupExpression extends
     @Override
     protected ExecutableConditionGroupExpression createGroup(ExecutableConditionGroupLogicExpression parent,
             String queryAlias) {
-        return new SqlConditionGroupExpression(jdbc, parent, queryAlias);
+        return new SqlConditionGroupExpression(jdbc, parent, queryAlias, classMapping);
     }
 }
