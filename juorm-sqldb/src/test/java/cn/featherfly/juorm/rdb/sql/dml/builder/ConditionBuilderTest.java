@@ -13,10 +13,6 @@ import cn.featherfly.juorm.dml.builder.ConditionBuilder;
 import cn.featherfly.juorm.dml.builder.QueryBuilder;
 import cn.featherfly.juorm.dml.builder.SortBuilder;
 import cn.featherfly.juorm.rdb.sql.dialect.Dialects;
-import cn.featherfly.juorm.rdb.sql.dml.builder.SqlConditionGroup;
-import cn.featherfly.juorm.rdb.sql.dml.builder.SqlFindBuilder;
-import cn.featherfly.juorm.rdb.sql.dml.builder.SqlQueryBuilder;
-import cn.featherfly.juorm.rdb.sql.dml.builder.SqlSortBuilder;
 
 /**
  * <p>
@@ -28,6 +24,7 @@ import cn.featherfly.juorm.rdb.sql.dml.builder.SqlSortBuilder;
  *
  * @author 钟冀
  */
+@Test(groups = { "dml-test" })
 public class ConditionBuilderTest {
 
     cn.featherfly.juorm.dml.builder.QueryBuilder builder = null;
@@ -50,11 +47,14 @@ public class ConditionBuilderTest {
     @Test
     public void testSqlQueryBuilderFind() {
         builder = new SqlQueryBuilder(Dialects.MYSQL);
-        builder.find("user", "u").where().eq("name", name).and().eq("pwd", pwd).and().group().eq("sex", sex).or()
-                .gt("age", age).sort().asc("age", "sex").desc("name");
+        builder.find("user", "u").where().eq("name", name).and().eq("pwd", pwd)
+                .and().group().eq("sex", sex).or().gt("age", age).sort()
+                .asc("age", "sex").desc("name");
         builder = new SqlQueryBuilder(Dialects.MYSQL);
-        builder.find("user", "u").with("name", "pwd", "age", "sex").where().eq("name", name).and().eq("pwd", pwd).and()
-                .group().eq("sex", sex).or().gt("age", age).sort().asc("age", "sex").desc("name");
+        builder.find("user", "u").with("name", "pwd", "age", "sex").where()
+                .eq("name", name).and().eq("pwd", pwd).and().group()
+                .eq("sex", sex).or().gt("age", age).sort().asc("age", "sex")
+                .desc("name");
 
         System.out.println(builder.build());
         System.out.println(((SqlQueryBuilder) builder).getParams());
@@ -67,9 +67,11 @@ public class ConditionBuilderTest {
     @Test
     void testtestSqlQueryBuilderSelect() {
         //
-        cn.featherfly.juorm.rdb.sql.dml.builder.QueryBuilder builder2 = new SqlQueryBuilder(Dialects.MYSQL);
-        builder2.from("user", "u").where().eq("name", name).and().eq("pwd", pwd).and().group().eq("sex", sex).or()
-                .gt("age", 18).sort().asc("age", "sex").desc("name");
+        cn.featherfly.juorm.rdb.sql.dml.builder.QueryBuilder builder2 = new SqlQueryBuilder(
+                Dialects.MYSQL);
+        builder2.from("user", "u").where().eq("name", name).and().eq("pwd", pwd)
+                .and().group().eq("sex", sex).or().gt("age", 18).sort()
+                .asc("age", "sex").desc("name");
         System.out.println(builder2.build());
         System.out.println(((SqlQueryBuilder) builder2).getParams());
         assertEquals(
@@ -78,8 +80,10 @@ public class ConditionBuilderTest {
         assertEquals(params, ((SqlQueryBuilder) builder2).getParams());
 
         builder2 = new SqlQueryBuilder(Dialects.MYSQL);
-        builder2.select("name", "pwd", "age", "sex").from("user", "u2").where().eq("name", name).and().eq("pwd", pwd)
-                .and().group().eq("sex", sex).or().gt("age", age).sort().asc("age", "sex").desc("name");
+        builder2.select("name", "pwd", "age", "sex").from("user", "u2").where()
+                .eq("name", name).and().eq("pwd", pwd).and().group()
+                .eq("sex", sex).or().gt("age", age).sort().asc("age", "sex")
+                .desc("name");
         System.out.println(builder2.build());
         System.out.println(((SqlQueryBuilder) builder2).getParams());
         assertEquals(
@@ -92,10 +96,12 @@ public class ConditionBuilderTest {
     @Test
     void testSelectConditionBuilder() {
         ConditionBuilder cb = new SqlConditionGroup(Dialects.MYSQL, null);
-        cb.eq("name", name).and().eq("pwd", pwd).and().group().eq("sex", sex).or().gt("age", age);
+        cb.eq("name", name).and().eq("pwd", pwd).and().group().eq("sex", sex)
+                .or().gt("age", age);
         System.out.println(cb.build());
         System.out.println(((SqlConditionGroup) cb).getParamValues());
-        assertEquals("`name` = ? AND `pwd` = ? AND ( `sex` = ? OR `age` > ? )", cb.build());
+        assertEquals("`name` = ? AND `pwd` = ? AND ( `sex` = ? OR `age` > ? )",
+                cb.build());
 
         assertEquals(params, cb.getParamValue());
 
@@ -107,13 +113,15 @@ public class ConditionBuilderTest {
         SortBuilder sortBuilder = new SqlSortBuilder(Dialects.MYSQL);
         sortBuilder.desc("dddesc").asc("zzz", "xxx");
         System.out.println(sortBuilder.build());
-        assertEquals(" ORDER BY `dddesc` DESC, `zzz`, `xxx` ASC", sortBuilder.build());
+        assertEquals(" ORDER BY `dddesc` DESC, `zzz`, `xxx` ASC",
+                sortBuilder.build());
 
     }
 
     @Test
     void testSqlFindBuilder() {
-        SqlFindBuilder findBuilder = new SqlFindBuilder(Dialects.MYSQL, "user", null);
+        SqlFindBuilder findBuilder = new SqlFindBuilder(Dialects.MYSQL, "user",
+                null);
         System.out.println(findBuilder.build());
         assertEquals("SELECT * FROM `user`", findBuilder.build());
 

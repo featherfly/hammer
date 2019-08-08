@@ -1,4 +1,4 @@
-package cn.featherfly.juorm.rdb.sql.dml.builder.basic;
+package cn.featherfly.juorm.rdb.sql.dml.builder;
 
 import java.util.ArrayList;
 import java.util.Collection;

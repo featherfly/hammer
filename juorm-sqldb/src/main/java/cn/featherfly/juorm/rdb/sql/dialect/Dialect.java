@@ -38,9 +38,12 @@ public interface Dialect {
      * 转换普通sql为带分页的sql
      * </p>
      *
-     * @param sql   带转换的sql
-     * @param start 起始数
-     * @param limit 数量
+     * @param sql
+     *            带转换的sql
+     * @param start
+     *            起始数
+     * @param limit
+     *            数量
      * @return 返回转换好的分页sql
      */
     String getPaginationSql(String sql, int start, int limit);
@@ -50,9 +53,12 @@ public interface Dialect {
      * 返回分页参数的数组
      * </p>
      *
-     * @param params 参数数组
-     * @param start  起始数
-     * @param limit  数量
+     * @param params
+     *            参数数组
+     * @param start
+     *            起始数
+     * @param limit
+     *            数量
      * @return 分页参数的数组
      */
     Object[] getPaginationSqlParameter(Object[] params, int start, int limit);
@@ -62,12 +68,16 @@ public interface Dialect {
      * 返回分页参数的MAP
      * </p>
      *
-     * @param params 参数MAP
-     * @param start  起始数
-     * @param limit  数量
+     * @param params
+     *            参数MAP
+     * @param start
+     *            起始数
+     * @param limit
+     *            数量
      * @return 分页参数的MAP
      */
-    Map<String, Object> getPaginationSqlParameter(Map<String, Object> params, int start, int limit);
+    Map<String, Object> getPaginationSqlParameter(Map<String, Object> params,
+            int start, int limit);
 
     /**
      * <p>
@@ -75,9 +85,12 @@ public interface Dialect {
      * :username
      * </p>
      *
-     * @param sql   带转换的sql
-     * @param start 起始数
-     * @param limit 数量
+     * @param sql
+     *            带转换的sql
+     * @param start
+     *            起始数
+     * @param limit
+     *            数量
      * @return 返回转换好的分页sql
      */
     String getParamNamedPaginationSql(String sql, int start, int limit);
@@ -87,8 +100,10 @@ public interface Dialect {
      * 转换为SQL语句中使用的字符串
      * </p>
      *
-     * @param value   值
-     * @param sqlType sql类型
+     * @param value
+     *            值
+     * @param sqlType
+     *            sql类型
      */
     String valueToSql(Object value, int sqlType);
 
@@ -97,7 +112,8 @@ public interface Dialect {
      * 包装名称，避免关键字问题
      * </p>
      *
-     * @param name 名称（列明，表名等）
+     * @param name
+     *            名称（列明，表名等）
      * @return 包装后的名称
      */
     String wrapName(String name);
@@ -107,7 +123,8 @@ public interface Dialect {
      * 返回设值外检检查SQL语句
      * </p>
      *
-     * @param check 是否检查外检
+     * @param check
+     *            是否检查外检
      * @return 设值外检检查SQL语句
      */
     String getFkCheck(boolean check);
@@ -123,7 +140,8 @@ public interface Dialect {
     /**
      * get converted keywords
      *
-     * @param keywords sql keywords
+     * @param keywords
+     *            sql keywords
      * @return sql key words
      */
     default Keyworld getKeywords() {
@@ -133,7 +151,8 @@ public interface Dialect {
     /**
      * get converted keywords
      *
-     * @param keywords sql keywords
+     * @param keywords
+     *            sql keywords
      * @return sql key words
      */
     default String getKeyword(SortOperator keywords) {
@@ -147,7 +166,8 @@ public interface Dialect {
     /**
      * get converted keywords
      *
-     * @param keywords sql keywords
+     * @param keywords
+     *            sql keywords
      * @return sql key words
      */
     default String getKeyword(LogicOperator keywords) {
@@ -161,7 +181,8 @@ public interface Dialect {
     /**
      * get converted keywords
      *
-     * @param keywords sql keywords
+     * @param keywords
+     *            sql keywords
      * @return sql key words
      */
     default String getKeyword(Keywords keywords) {
@@ -175,7 +196,8 @@ public interface Dialect {
     /**
      * get converted aggregate function
      *
-     * @param function aggregate function
+     * @param function
+     *            aggregate function
      * @return sql aggregate function
      */
     default String getFunction(Function function) {
@@ -189,8 +211,10 @@ public interface Dialect {
     /**
      * convert column or table name if necessary
      *
-     * @param tableOrColumnName column or table name
-     * @param aggregateFunction aggregateFunction
+     * @param tableOrColumnName
+     *            column or table name
+     * @param aggregateFunction
+     *            aggregateFunction
      * @return sql
      */
     default String convertTableOrColumnName(String tableOrColumnName) {
@@ -209,7 +233,8 @@ public interface Dialect {
     /**
      * build sql for table
      *
-     * @param table table
+     * @param table
+     *            table
      * @return sql
      */
     default String buildTableSql(TableElement table) {
@@ -219,7 +244,8 @@ public interface Dialect {
     /**
      * build sql for table
      *
-     * @param tableName tableName
+     * @param tableName
+     *            tableName
      * @return sql
      */
     default String buildTableSql(String tableName) {
@@ -229,12 +255,14 @@ public interface Dialect {
     /**
      * build sql for table with tableAlias
      *
-     * @param tableName  tableName
-     * @param tableAlias tableAlias
+     * @param tableName
+     *            tableName
+     * @param tableAlias
+     *            tableAlias
      * @return sql
      */
     default String buildTableSql(String tableName, String tableAlias) {
-        String result = convertTableOrColumnName(tableName);
+        String result = wrapName(convertTableOrColumnName(tableName));
         if (LangUtils.isNotEmpty(tableAlias)) {
             result = result + " " + tableAlias;
         }
@@ -244,8 +272,10 @@ public interface Dialect {
     /**
      * build sql for column with aggregate function
      *
-     * @param columnName        columnName
-     * @param aggregateFunction aggregateFunction
+     * @param columnName
+     *            columnName
+     * @param aggregateFunction
+     *            aggregateFunction
      * @return sql
      */
     default String buildColumnSql(String columnName, Function function) {
@@ -255,61 +285,113 @@ public interface Dialect {
     /**
      * build sql for column with aggregate function
      *
-     * @param columnName        columnName
-     * @param aggregateFunction aggregateFunction
+     * @param columnName
+     *            columnName
+     * @param aggregateFunction
+     *            aggregateFunction
      * @return sql
      */
-    default String buildColumnSql(String columnName, AggregateFunction aggregateFunction) {
+    default String buildColumnSql(String columnName,
+            AggregateFunction aggregateFunction) {
         return buildColumnSql(columnName, null, aggregateFunction);
     }
 
     /**
      * build sql for column with aggregate function
      *
-     * @param columnName columnName
-     * @param tableAlias tableAlias
+     * @param columnName
+     *            columnName
+     * @param tableAlias
+     *            tableAlias
      * @return sql
      */
     default String buildColumnSql(String columnName, String tableAlias) {
-        return buildColumnSql(columnName, tableAlias, null);
+        return buildColumnSql(columnName, tableAlias, null, null);
+    }
+
+    /**
+     * build sql for column with aggregate function
+     *
+     * @param columnName
+     *            columnName
+     * @param tableAlias
+     *            tableAlias
+     * @param asName
+     *            asName
+     * @return sql
+     */
+    default String buildColumnSql(String columnName, String tableAlias,
+            String asName) {
+        return buildColumnSql(columnName, tableAlias, null, asName);
     }
 
     /**
      * build sql for column with tableAlias and aggregate function
      *
-     * @param columnName        columnName
-     * @param tableAlias        tableAlias
-     * @param aggregateFunction aggregateFunction
+     * @param columnName
+     *            columnName
+     * @param tableAlias
+     *            tableAlias
+     * @param aggregateFunction
+     *            aggregateFunction
      * @return sql
      */
-    default String buildColumnSql(String columnName, String tableAlias, AggregateFunction aggregateFunction) {
-        String column = convertTableOrColumnName(columnName);
+    default String buildColumnSql(String columnName, String tableAlias,
+            AggregateFunction aggregateFunction) {
+        return buildColumnSql(columnName, tableAlias, aggregateFunction, null);
+    }
+
+    /**
+     * build sql for column with tableAlias and aggregate function
+     *
+     * @param columnName
+     *            columnName
+     * @param tableAlias
+     *            tableAlias
+     * @param aggregateFunction
+     *            aggregateFunction
+     * @param asName
+     *            asName
+     * @return sql
+     */
+    default String buildColumnSql(String columnName, String tableAlias,
+            AggregateFunction aggregateFunction, String asName) {
+        String column = wrapName(convertTableOrColumnName(columnName));
         if (LangUtils.isNotEmpty(tableAlias)) {
             column = tableAlias + Chars.DOT + column;
         }
-        if (aggregateFunction == null) {
-            return column;
-        } else {
+        if (aggregateFunction != null) {
             switch (aggregateFunction) {
-                case DISTINCT:
-                    return getFunction(aggregateFunction) + Chars.SPACE + column;
-                default:
-                    return getFunction(aggregateFunction) + Chars.PAREN_L + column + Chars.PAREN_R;
+            case DISTINCT:
+                column = getFunction(aggregateFunction) + Chars.SPACE + column;
+                break;
+            default:
+                column = getFunction(aggregateFunction) + Chars.PAREN_L + column
+                        + Chars.PAREN_R;
             }
         }
+        if (LangUtils.isNotEmpty(asName)) {
+            column = column + Chars.SPACE + wrapName(asName);
+        }
+        return column;
     }
 
     /**
      * build sql for column with tableAlias and aggregate function
      *
-     * @param columnName columnName
-     * @param tableAlias tableAlias
-     * @param function   function
+     * @param columnName
+     *            columnName
+     * @param tableAlias
+     *            tableAlias
+     * @param function
+     *            function
      * @return sql
      */
-    default String buildColumnSql(String columnName, String tableAlias, Function function) {
+    default String buildColumnSql(String columnName, String tableAlias,
+            Function function) {
         if (function instanceof AggregateFunction) {
-            return buildColumnSql(columnName, tableAlias, (AggregateFunction) function);
+            return buildColumnSql(columnName, tableAlias,
+                    (AggregateFunction) function);
         }
         // TODO 后续添加其他实现
         throw new BuilderException("只实现了 AggregateFunction");
@@ -371,16 +453,16 @@ public interface Dialect {
 
         public String join(Join join) {
             switch (join) {
-                case INNER_JOIN:
-                    return join();
-                case LEFT_JOIN:
-                    return left() + Chars.SPACE + join();
-                case RIGHT_JOIN:
-                    return right() + Chars.SPACE + join();
-                case FULL_JOIN:
-                    return full() + Chars.SPACE + join();
-                default:
-                    return join();
+            case INNER_JOIN:
+                return join();
+            case LEFT_JOIN:
+                return left() + Chars.SPACE + join();
+            case RIGHT_JOIN:
+                return right() + Chars.SPACE + join();
+            case FULL_JOIN:
+                return full() + Chars.SPACE + join();
+            default:
+                return join();
             }
         }
 

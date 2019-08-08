@@ -19,7 +19,8 @@ import cn.featherfly.common.lang.LangUtils;
  */
 public class MySQLDialect extends AbstractDialect {
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(MySQLDialect.class);
+    private static final Logger LOGGER = LoggerFactory
+            .getLogger(MySQLDialect.class);
 
     /**
      */
@@ -42,7 +43,8 @@ public class MySQLDialect extends AbstractDialect {
         return getPaginationSql(sql, start, true);
     }
 
-    private String getPaginationSql(String sql, int start, boolean isParamNamed) {
+    private String getPaginationSql(String sql, int start,
+            boolean isParamNamed) {
         sql = sql.trim();
         boolean isForUpdate = false;
         if (isForUpdate(sql)) {
@@ -50,13 +52,16 @@ public class MySQLDialect extends AbstractDialect {
             isForUpdate = true;
         }
         final int sqlLengthOffset = 50;
-        StringBuilder pagingSelect = new StringBuilder(sql.length() + sqlLengthOffset);
+        StringBuilder pagingSelect = new StringBuilder(
+                sql.length() + sqlLengthOffset);
         pagingSelect.append(sql);
         if (isParamNamed) {
             if (start > 0) {
-                pagingSelect.append(String.format(" LIMIT :%s,:%s", START_PARAM_NAME, LIMIT_PARAM_NAME));
+                pagingSelect.append(String.format(" LIMIT :%s,:%s",
+                        START_PARAM_NAME, LIMIT_PARAM_NAME));
             } else {
-                pagingSelect.append(String.format(" LIMIT :%s", LIMIT_PARAM_NAME));
+                pagingSelect
+                        .append(String.format(" LIMIT :%s", LIMIT_PARAM_NAME));
             }
         } else {
             if (start > 0) {
@@ -83,31 +88,34 @@ public class MySQLDialect extends AbstractDialect {
             sqlPart.append("null");
         } else {
             switch (sqlType) {
-                case Types.BIGINT:
-                case Types.BIT:
-                case Types.BOOLEAN:
-                case Types.DECIMAL:
-                case Types.DOUBLE:
-                case Types.FLOAT:
-                case Types.INTEGER:
-                case Types.NULL:
-                case Types.NUMERIC:
-                case Types.TINYINT:
-                    sqlPart.append(value);
+            case Types.BIGINT:
+            case Types.BIT:
+            case Types.BOOLEAN:
+            case Types.DECIMAL:
+            case Types.DOUBLE:
+            case Types.FLOAT:
+            case Types.INTEGER:
+            case Types.NULL:
+            case Types.NUMERIC:
+            case Types.TINYINT:
+                sqlPart.append(value);
+                break;
+            case Types.DATE:
+            case Types.TIME:
+            case Types.TIMESTAMP:
+                if (value instanceof Date) {
+                    sqlPart.append("'").append(DateUtils.formart((Date) value,
+                            "yyyy-MM-dd HH:mm:ss")).append("'");
+                } else {
+                    sqlPart.append("'").append(value).append("'");
                     break;
-                case Types.DATE:
-                case Types.TIME:
-                case Types.TIMESTAMP:
-                    if (value instanceof Date) {
-                        sqlPart.append("'").append(DateUtils.formart((Date) value, "yyyy-MM-dd HH:mm:ss")).append("'");
-                    } else {
-                        sqlPart.append("'").append(value).append("'");
-                        break;
-                    }
-                    break;
-                default:
-                    sqlPart.append("'").append(SqlUtils.transferStringForSql(value.toString())).append("'");
-                    break;
+                }
+                break;
+            default:
+                sqlPart.append("'")
+                        .append(SqlUtils.transferStringForSql(value.toString()))
+                        .append("'");
+                break;
             }
         }
         return sqlPart.toString();
@@ -132,21 +140,14 @@ public class MySQLDialect extends AbstractDialect {
         return "SET FOREIGN_KEY_CHECKS=" + (check ? 1 : 0);
     }
 
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public String convertTableOrColumnName(String tableOrColumnName) {
-        if (LangUtils.isEmpty(tableOrColumnName)) {
-            return tableOrColumnName;
-        }
-        // String result = columnOrTableName;
-        // if (isTableAndColumnNameUppercase()) {
-        // result = result.toUpperCase();
-        // } else {
-        // result = result.toLowerCase();
-        // }
-
-        return "`" + super.convertTableOrColumnName(tableOrColumnName) + "`";
-    }
+    // /**
+    // * {@inheritDoc}
+    // */
+    // @Override
+    // public String convertTableOrColumnName(String tableOrColumnName) {
+    // if (LangUtils.isEmpty(tableOrColumnName)) {
+    // return tableOrColumnName;
+    // }
+    // return "`" + super.convertTableOrColumnName(tableOrColumnName) + "`";
+    // }
 }

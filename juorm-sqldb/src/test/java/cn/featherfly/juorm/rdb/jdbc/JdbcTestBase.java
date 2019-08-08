@@ -3,7 +3,7 @@ package cn.featherfly.juorm.rdb.jdbc;
 
 import org.apache.commons.dbcp.BasicDataSource;
 import org.apache.log4j.xml.DOMConfigurator;
-import org.testng.annotations.BeforeTest;
+import org.testng.annotations.BeforeClass;
 
 import cn.featherfly.common.db.metadata.DatabaseMetadata;
 import cn.featherfly.common.db.metadata.DatabaseMetadataManager;
@@ -27,9 +27,10 @@ public class JdbcTestBase {
 
     protected MappingFactory factory;
 
-    @BeforeTest
+    @BeforeClass
     public void beforeClass() {
-        DOMConfigurator.configure(ClassLoaderUtils.getResource("log4j.xml", JdbcTestBase.class));
+        DOMConfigurator.configure(
+                ClassLoaderUtils.getResource("log4j.xml", JdbcTestBase.class));
         BasicDataSource dataSource = new BasicDataSource();
         dataSource.setUrl("jdbc:mysql://127.0.0.1:3306/juorm_jdbc");
         dataSource.setDriverClassName("com.mysql.jdbc.Driver");
@@ -38,13 +39,17 @@ public class JdbcTestBase {
 
         jdbc = new SpringJdbcTemplateImpl(dataSource, Dialects.MYSQL);
 
-        DatabaseMetadata metadata = DatabaseMetadataManager.getDefaultManager().create(dataSource);
+        DatabaseMetadata metadata = DatabaseMetadataManager.getDefaultManager()
+                .create(dataSource);
 
         factory = new MappingFactory(metadata, Dialects.MYSQL);
-        //        factory.getClassNameConversions().add(new ClassNameJpaConversion());
-        //        factory.getClassNameConversions().add(new ClassNameUnderlineConversion());
-        //        factory.getPropertyNameConversions().add(new PropertyNameJpaConversion());
-        //        factory.getPropertyNameConversions().add(new PropertyNameUnderlineConversion());
+        // factory.getClassNameConversions().add(new ClassNameJpaConversion());
+        // factory.getClassNameConversions().add(new
+        // ClassNameUnderlineConversion());
+        // factory.getPropertyNameConversions().add(new
+        // PropertyNameJpaConversion());
+        // factory.getPropertyNameConversions().add(new
+        // PropertyNameUnderlineConversion());
 
         ConstantConfigurator.config();
     }

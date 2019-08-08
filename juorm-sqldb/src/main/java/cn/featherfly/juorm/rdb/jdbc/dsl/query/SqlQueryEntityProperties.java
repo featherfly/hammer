@@ -4,6 +4,7 @@ package cn.featherfly.juorm.rdb.jdbc.dsl.query;
 import java.math.BigDecimal;
 import java.util.Collection;
 import java.util.List;
+import java.util.Map;
 
 import cn.featherfly.common.structure.page.Page;
 import cn.featherfly.juorm.dsl.query.QueryConditionGroupExpression;
@@ -20,7 +21,8 @@ import cn.featherfly.juorm.rdb.sql.dml.builder.basic.SqlSelectBasicBuilder;
  *
  * @author zhongj
  */
-public class SqlQueryEntityProperties implements SqlQueryEntity, QueryEntityProperties {
+public class SqlQueryEntityProperties
+        implements SqlQueryEntity, QueryEntityProperties {
 
     private String tableName;
 
@@ -40,11 +42,13 @@ public class SqlQueryEntityProperties implements SqlQueryEntity, QueryEntityProp
      * @param tableName
      * @param jdbc
      */
-    public SqlQueryEntityProperties(String tableName, Jdbc jdbc, String tableAlias) {
+    public SqlQueryEntityProperties(String tableName, Jdbc jdbc,
+            String tableAlias) {
         super();
         this.tableName = tableName;
         this.jdbc = jdbc;
-        selectBuilder = new SqlSelectBasicBuilder(jdbc.getDialect(), tableName, tableAlias);
+        selectBuilder = new SqlSelectBasicBuilder(jdbc.getDialect(), tableName,
+                tableAlias);
     }
 
     /**
@@ -78,6 +82,26 @@ public class SqlQueryEntityProperties implements SqlQueryEntity, QueryEntityProp
      * {@inheritDoc}
      */
     @Override
+    public QueryEntityProperties property(String columnName, String asName) {
+        selectBuilder.addSelectColumn(columnName, asName);
+        return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public QueryEntityProperties property(Map<String, String> columnNameMap) {
+        columnNameMap.forEach((k, v) -> {
+            property(k, v);
+        });
+        return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
     public QueryConditionGroupExpression where() {
         return new SqlQueryExpression(jdbc, tableName, selectBuilder);
     }
@@ -87,7 +111,8 @@ public class SqlQueryEntityProperties implements SqlQueryEntity, QueryEntityProp
      */
     @Override
     public <E> List<E> list(Class<E> type) {
-        return new SqlQueryExpression(jdbc, tableName, selectBuilder).list(type);
+        return new SqlQueryExpression(jdbc, tableName, selectBuilder)
+                .list(type);
     }
 
     /**
@@ -95,7 +120,8 @@ public class SqlQueryEntityProperties implements SqlQueryEntity, QueryEntityProp
      */
     @Override
     public <E> List<E> list(RowMapper<E> rowMapper) {
-        return new SqlQueryExpression(jdbc, tableName, selectBuilder).list(rowMapper);
+        return new SqlQueryExpression(jdbc, tableName, selectBuilder)
+                .list(rowMapper);
     }
 
     /**
@@ -103,7 +129,8 @@ public class SqlQueryEntityProperties implements SqlQueryEntity, QueryEntityProp
      */
     @Override
     public QueryExecutor limit(Integer limit) {
-        return new SqlQueryExpression(jdbc, tableName, selectBuilder).limit(limit);
+        return new SqlQueryExpression(jdbc, tableName, selectBuilder)
+                .limit(limit);
     }
 
     /**
@@ -111,7 +138,8 @@ public class SqlQueryEntityProperties implements SqlQueryEntity, QueryEntityProp
      */
     @Override
     public QueryExecutor limit(Integer offset, Integer limit) {
-        return new SqlQueryExpression(jdbc, tableName, selectBuilder).limit(offset, limit);
+        return new SqlQueryExpression(jdbc, tableName, selectBuilder)
+                .limit(offset, limit);
     }
 
     /**
@@ -119,7 +147,8 @@ public class SqlQueryEntityProperties implements SqlQueryEntity, QueryEntityProp
      */
     @Override
     public QueryExecutor limit(Page page) {
-        return new SqlQueryExpression(jdbc, tableName, selectBuilder).limit(page);
+        return new SqlQueryExpression(jdbc, tableName, selectBuilder)
+                .limit(page);
     }
 
     /**
@@ -159,7 +188,7 @@ public class SqlQueryEntityProperties implements SqlQueryEntity, QueryEntityProp
      */
     @Override
     public <N extends Number> N number(Class<N> type) {
-        return new SqlQueryExpression(jdbc, tableName, selectBuilder).number(type);
+        return new SqlQueryExpression(jdbc, tableName, selectBuilder)
+                .number(type);
     }
-
 }
