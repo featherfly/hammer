@@ -30,6 +30,7 @@ import cn.featherfly.juorm.rdb.jdbc.mapping.MappingFactory;
 import cn.featherfly.juorm.rdb.jdbc.operate.DeleteOperate;
 import cn.featherfly.juorm.rdb.jdbc.operate.GetOperate;
 import cn.featherfly.juorm.rdb.jdbc.operate.InsertOperate;
+import cn.featherfly.juorm.rdb.jdbc.operate.MergeOperate;
 import cn.featherfly.juorm.rdb.jdbc.operate.UpdateOperate;
 import cn.featherfly.juorm.rdb.tpl.SqlTplExecutor;
 import cn.featherfly.juorm.tpl.TplConfigFactory;
@@ -56,6 +57,7 @@ public class JuormJdbcImpl implements Juorm {
     private Map<Class<?>, UpdateOperate<?>> updateOperates = new HashMap<>();
     private Map<Class<?>, GetOperate<?>> getOperates = new HashMap<>();
     private Map<Class<?>, DeleteOperate<?>> deleteOperates = new HashMap<>();
+    private Map<Class<?>, MergeOperate<?>> mergeOperates = new HashMap<>();
 
     /**
      * @param jdbc
@@ -114,7 +116,7 @@ public class JuormJdbcImpl implements Juorm {
      */
     @Override
     public <E> int save(List<E> entities) {
-        // YUFEI_TODO 后续加入InsertBatchOperate优化为sql批量插入
+        // TODO 后续加入InsertBatchOperate优化为sql批量插入
         int size = 0;
         if (LangUtils.isNotEmpty(entities)) {
             for (E e : entities) {
@@ -165,12 +167,9 @@ public class JuormJdbcImpl implements Juorm {
     public <E> int update(E entity, IgnorePolicy ignorePolicy) {
         switch (ignorePolicy) {
             case EMPTY:
-                // FIXME 添加实现
-                return 0;
+                return merge(entity);
             case NULL:
-                // FIXME 添加实现
-                return 0;
-
+                return merge(entity, true);
             default:
                 return update(entity);
         }
@@ -190,12 +189,28 @@ public class JuormJdbcImpl implements Juorm {
         return size;
     }
 
+    private <E> int merge(E entity, boolean onlyNull) {
+        if (entity == null) {
+            return 0;
+        }
+        @SuppressWarnings("unchecked")
+        MergeOperate<E> update = (MergeOperate<E>) mergeOperates.get(entity);
+        if (update == null) {
+            @SuppressWarnings("unchecked")
+            ClassMapping<E> mapping = (ClassMapping<E>) mappingFactory.getClassMapping(entity.getClass());
+            update = new MergeOperate<>(jdbc, mapping);
+            mergeOperates.put(entity.getClass(), update);
+        }
+        validate(entity);
+        return update.execute(entity, onlyNull);
+    }
+
     /**
      * {@inheritDoc}
      */
     @Override
     public <E> int merge(E entity) {
-        return update(entity, IgnorePolicy.EMPTY);
+        return merge(entity, false);
     }
 
     /**
@@ -236,7 +251,7 @@ public class JuormJdbcImpl implements Juorm {
      */
     @Override
     public <E> int delete(List<E> entities) {
-        // YUFEI_TODO 后续加入DeleteBatchOperate优化为sql批量删除
+        // TODO 后续加入DeleteBatchOperate优化为sql批量删除
         int size = 0;
         if (LangUtils.isNotEmpty(entities)) {
             for (E e : entities) {
