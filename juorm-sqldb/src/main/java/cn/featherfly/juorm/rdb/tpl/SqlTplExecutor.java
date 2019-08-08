@@ -107,7 +107,6 @@ public class SqlTplExecutor implements TplExecutor {
     private Tuple2<String, ConditionParamsManager> getExecution(String templateName, String sql,
             Map<String, Object> params, Class<?> resultType) {
         logger.debug("execute template name : {}", templateName);
-        // TODO 把sqlid配置加入template include， 到时候进行include操作
         ConditionParamsManager manager = new ConditionParamsManager();
         Map<String, Object> root = new HashMap<>();
         root.putAll(params);

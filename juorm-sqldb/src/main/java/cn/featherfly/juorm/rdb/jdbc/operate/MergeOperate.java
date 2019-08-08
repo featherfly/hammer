@@ -7,6 +7,7 @@ import java.util.Map.Entry;
 
 import cn.featherfly.common.bean.BeanUtils;
 import cn.featherfly.common.db.JdbcUtils;
+import cn.featherfly.common.lang.LangUtils;
 import cn.featherfly.juorm.rdb.jdbc.Jdbc;
 import cn.featherfly.juorm.rdb.jdbc.mapping.ClassMapping;
 import cn.featherfly.juorm.rdb.jdbc.mapping.PropertyMapping;
@@ -51,10 +52,10 @@ public class MergeOperate<T> extends AbstractOperate<T> {
      * @param entity 对象
      * @return 操作影响的数据行数
      */
-    public int execute(final T entity) {
+    public int execute(final T entity, boolean onlyNull) {
         return jdbc.execute(conn -> {
             Map<Integer, String> propertyPositions = new HashMap<>();
-            String sql = getDynamicSql(entity, propertyPositions);
+            String sql = getDynamicSql(entity, propertyPositions, onlyNull);
             logger.debug("execute sql: {}", sql);
             PreparedStatement prep = conn.prepareStatement(sql);
             for (Entry<Integer, String> propertyPosition : propertyPositions.entrySet()) {
@@ -67,14 +68,20 @@ public class MergeOperate<T> extends AbstractOperate<T> {
         });
     }
 
-    private String getDynamicSql(T entity, Map<Integer, String> propertyPositions) {
+    private String getDynamicSql(T entity, Map<Integer, String> propertyPositions, boolean onlyNull) {
         StringBuilder updateSql = new StringBuilder();
         updateSql.append("update ").append(classMapping.getTableName()).append(" set ");
         int columnNum = 0;
         for (PropertyMapping pm : classMapping.getPropertyMappings()) {
-            // 如果未空忽略
-            if (BeanUtils.getProperty(entity, pm.getPropertyName()) == null) {
-                continue;
+            // 如果为空忽略 ignore when null
+            if (onlyNull) {
+                if (BeanUtils.getProperty(entity, pm.getPropertyName()) == null) {
+                    continue;
+                }
+            } else {
+                if (LangUtils.isEmpty(BeanUtils.getProperty(entity, pm.getPropertyName()))) {
+                    continue;
+                }
             }
             updateSql.append(pm.getColumnName()).append(" = ? ,");
             columnNum++;
