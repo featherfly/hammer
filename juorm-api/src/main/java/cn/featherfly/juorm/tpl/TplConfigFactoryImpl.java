@@ -98,6 +98,7 @@ public class TplConfigFactoryImpl implements TplConfigFactory {
                 }
             }
         } catch (IOException e) {
+            // TODO 使用exceptioncode
             throw new JuormException("使用路径" + packageSearchPath + "扫描tpl配置文件时I/O异常", e);
         }
     }
@@ -185,7 +186,8 @@ public class TplConfigFactoryImpl implements TplConfigFactory {
             configs.put(finalFilePath, newConfigs);
             return newConfigs;
         } catch (IOException e) {
-            throw new JuormException("读取" + filePath + "异常", e);
+            // TODO 使用exceptioncode
+            throw new JuormException("exception when read config file " + filePath, e);
         }
 
     }
@@ -239,10 +241,12 @@ public class TplConfigFactoryImpl implements TplConfigFactory {
         String sId = result[1];
         TplExecuteConfigs configs = getConfigs(filePath);
         if (configs == null) {
+            // TODO 使用exceptioncode
             throw new JuormException("file " + filePath + " not find");
         }
         TplExecuteConfig config = configs.getConfig(sId);
         if (config == null) {
+            // TODO 使用exceptioncode
             throw new JuormException("sqlId " + sId + " not find in " + filePath);
         }
         return config;
