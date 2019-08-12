@@ -104,13 +104,39 @@ public class ClassMappingUtils {
      * @return columnName
      */
     public static String getColumnName(String name, ClassMapping<?> classMapping) {
-        if (classMapping != null) {
-            PropertyMapping pm = classMapping.getPropertyMapping(name);
-            if (pm != null) {
-                return pm.getColumnName();
+        if (classMapping != null && LangUtils.isNotEmpty(name)) {
+            if (name.contains(".")) {
+                String[] names = name.split("\\.");
+                return getNestedColumnName(names, classMapping);
+            } else {
+                return getSimpleColumnName(name, classMapping);
             }
         }
         return name;
+    }
+
+    private static String getSimpleColumnName(String name, ClassMapping<?> classMapping) {
+        PropertyMapping pm = classMapping.getPropertyMapping(name);
+        if (pm != null) {
+            return pm.getColumnName();
+        }
+        return name;
+    }
+
+    private static String getNestedColumnName(String[] names, ClassMapping<?> classMapping) {
+        PropertyMapping pm = null;
+        for (String n : names) {
+            if (pm == null) {
+                pm = classMapping.getPropertyMapping(n);
+            } else {
+                pm = pm.getPropertyMapping(n);
+            }
+        }
+        if (pm != null) {
+            return pm.getColumnName();
+        } else {
+            return null;
+        }
     }
 
     /**

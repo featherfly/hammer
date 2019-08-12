@@ -19,7 +19,9 @@ import cn.featherfly.juorm.rdb.jdbc.dsl.execute.SqlConditionGroupExpression;
 import cn.featherfly.juorm.rdb.jdbc.dsl.execute.SqlDeleteExpression;
 import cn.featherfly.juorm.rdb.jdbc.dsl.execute.SqlDeleter;
 import cn.featherfly.juorm.rdb.jdbc.dsl.execute.SqlUpdater;
+import cn.featherfly.juorm.rdb.jdbc.vo.DistrictDivision;
 import cn.featherfly.juorm.rdb.jdbc.vo.User;
+import cn.featherfly.juorm.rdb.jdbc.vo.UserInfo;
 import cn.featherfly.juorm.rdb.sql.dml.builder.basic.SqlDeleteFromBasicBuilder;
 
 /**
@@ -78,7 +80,7 @@ public class SqlDslExpressionTest extends JdbcTestBase {
     }
 
     @Test
-    public void testSqlTypeDeleteExpression() {
+    public void testSqlTypeDelete() {
         JuormJdbcImpl juorm = new JuormJdbcImpl(jdbc, factory);
         int size = 10;
         for (int i = 0; i < size; i++) {
@@ -97,6 +99,34 @@ public class SqlDslExpressionTest extends JdbcTestBase {
         }
         no = sqlDeleter.delete(User.class).where().sw("pwd", "pwd_delete_").execute();
         assertTrue(no == size);
+    }
+
+    @Test
+    public void testSqlTypeDelete2() {
+        JuormJdbcImpl juorm = new JuormJdbcImpl(jdbc, factory);
+        int size = 10;
+        int userId = 10;
+        for (int i = 0; i < size; i++) {
+            UserInfo u = new UserInfo();
+            u.setUser(new User(userId));
+            juorm.save(u);
+        }
+        SqlDeleter sqlDeleter = new SqlDeleter(jdbc, factory);
+        int no = sqlDeleter.delete(UserInfo.class).where().eq("user.id", userId).execute();
+        assertEquals(no, size);
+
+        String province = "黑龙江";
+        for (int i = 0; i < size; i++) {
+            UserInfo u = new UserInfo();
+            u.setUser(new User(1));
+            DistrictDivision division = new DistrictDivision();
+            division.setProvince(province);
+            division.setCity("哈尔冰");
+            u.setDivision(division);
+            juorm.save(u);
+        }
+        no = sqlDeleter.delete(UserInfo.class).where().eq("division.province", province).execute();
+        assertEquals(no, size);
     }
 
     @Test
@@ -138,6 +168,25 @@ public class SqlDslExpressionTest extends JdbcTestBase {
         no = sqlUpdater.update(User.class).property("pwd").set("222222").where().in("id", new Integer[] { 4, 5 })
                 .execute();
         assertTrue(no == 2);
+    }
+
+    @Test
+    public void testSqlTypeUpdateExpression2() {
+        SqlUpdater sqlUpdater = new SqlUpdater(jdbc, factory);
+
+        int no = sqlUpdater.update(UserInfo.class).property("province").set("四川1").where().property("id").eq(1)
+                .execute();
+        assertTrue(no == 1);
+
+        no = sqlUpdater.update(UserInfo.class).property("division.province").set("四川").where().property("id").eq(1)
+                .execute();
+        assertTrue(no == 1);
+
+        no = sqlUpdater.update(UserInfo.class).property("user_id").set(3).where().eq("id", 2).execute();
+        assertTrue(no == 1);
+
+        no = sqlUpdater.update(UserInfo.class).property("user.id").set(2).where().eq("id", 2).execute();
+        assertTrue(no == 1);
     }
 
 }

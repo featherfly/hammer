@@ -106,7 +106,7 @@ public class UserInfo {
 
     /**
      * 返回division
-     * 
+     *
      * @return division
      */
     public DistrictDivision getDivision() {
@@ -115,7 +115,7 @@ public class UserInfo {
 
     /**
      * 设置division
-     * 
+     *
      * @param division division
      */
     public void setDivision(DistrictDivision division) {
@@ -127,7 +127,7 @@ public class UserInfo {
      */
     @Override
     public String toString() {
-        return "UserInfo [id=" + id + ", name=" + name + ", descp=" + descp + ", user=" + user + ", districtDivision="
+        return "UserInfo [id=" + id + ", name=" + name + ", descp=" + descp + ", user=" + user + ", division="
                 + division + "]";
     }
 }

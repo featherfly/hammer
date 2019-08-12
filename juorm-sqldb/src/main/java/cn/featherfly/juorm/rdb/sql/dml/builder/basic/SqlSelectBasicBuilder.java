@@ -8,6 +8,8 @@ import cn.featherfly.common.constant.Chars;
 import cn.featherfly.common.lang.AssertIllegalArgument;
 import cn.featherfly.common.lang.LangUtils;
 import cn.featherfly.juorm.operator.AggregateFunction;
+import cn.featherfly.juorm.rdb.jdbc.mapping.ClassMapping;
+import cn.featherfly.juorm.rdb.jdbc.mapping.ClassMappingUtils;
 import cn.featherfly.juorm.rdb.sql.dialect.Dialect;
 import cn.featherfly.juorm.rdb.sql.dialect.Dialect.Keyworld;
 import cn.featherfly.juorm.rdb.sql.dml.SqlBuilder;
@@ -32,11 +34,13 @@ public class SqlSelectBasicBuilder implements SqlBuilder {
 
     protected Dialect dialect;
 
+    protected ClassMapping<?> classMapping;
+
     /**
      * @param dialect dialect
      */
     public SqlSelectBasicBuilder(Dialect dialect) {
-        this(dialect, null);
+        this(dialect, null, null);
     }
 
     /**
@@ -45,6 +49,15 @@ public class SqlSelectBasicBuilder implements SqlBuilder {
      */
     public SqlSelectBasicBuilder(Dialect dialect, String tableName) {
         this(dialect, tableName, null);
+    }
+
+    /**
+     * @param dialect      dialect
+     * @param classMapping classMapping
+     */
+    public SqlSelectBasicBuilder(Dialect dialect, ClassMapping<?> classMapping) {
+        this(dialect, classMapping.getTableName(), null);
+        this.classMapping = classMapping;
     }
 
     /**
@@ -194,10 +207,15 @@ public class SqlSelectBasicBuilder implements SqlBuilder {
         Keyworld keyworld = dialect.getKeywords();
         select.append(keyworld.select());
         if (columns.isEmpty()) {
-            if (LangUtils.isEmpty(tableAlias)) {
-                select.append(Chars.SPACE).append(Chars.STAR);
+            if (classMapping == null) {
+                if (LangUtils.isEmpty(tableAlias)) {
+                    select.append(Chars.SPACE).append(Chars.STAR);
+                } else {
+                    select.append(Chars.SPACE).append(tableAlias).append(Chars.DOT).append(Chars.STAR);
+                }
             } else {
-                select.append(Chars.SPACE).append(tableAlias).append(Chars.DOT).append(Chars.STAR);
+                select.append(Chars.SPACE)
+                        .append(ClassMappingUtils.getSelectColumnsSql(classMapping, tableAlias, dialect));
             }
         } else {
             for (SelectColumnElement column : columns) {

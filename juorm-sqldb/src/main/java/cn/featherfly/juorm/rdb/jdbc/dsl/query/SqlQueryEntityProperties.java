@@ -46,7 +46,7 @@ public class SqlQueryEntityProperties implements SqlQueryEntity, QueryEntityProp
     public SqlQueryEntityProperties(ClassMapping<?> classMapping, Jdbc jdbc) {
         this.jdbc = jdbc;
         this.classMapping = classMapping;
-        selectBuilder = new SqlSelectBasicBuilder(jdbc.getDialect(), classMapping.getTableName(), null);
+        selectBuilder = new SqlSelectBasicBuilder(jdbc.getDialect(), classMapping);
     }
 
     /**

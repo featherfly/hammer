@@ -28,6 +28,19 @@ public class User {
     private Integer age;
 
     /**
+     */
+    public User() {
+    }
+
+    /**
+     * @param id
+     */
+    public User(Integer id) {
+        super();
+        this.id = id;
+    }
+
+    /**
      * 返回id
      *
      * @return id
