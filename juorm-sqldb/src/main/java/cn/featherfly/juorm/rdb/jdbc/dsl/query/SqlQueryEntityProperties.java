@@ -23,7 +23,8 @@ import cn.featherfly.juorm.rdb.sql.dml.builder.basic.SqlSelectBasicBuilder;
  *
  * @author zhongj
  */
-public class SqlQueryEntityProperties implements SqlQueryEntity, QueryEntityProperties {
+public class SqlQueryEntityProperties
+        implements SqlQueryEntity, QueryEntityProperties {
 
     private Jdbc jdbc;
 
@@ -46,17 +47,20 @@ public class SqlQueryEntityProperties implements SqlQueryEntity, QueryEntityProp
     public SqlQueryEntityProperties(ClassMapping<?> classMapping, Jdbc jdbc) {
         this.jdbc = jdbc;
         this.classMapping = classMapping;
-        selectBuilder = new SqlSelectBasicBuilder(jdbc.getDialect(), classMapping);
+        selectBuilder = new SqlSelectBasicBuilder(jdbc.getDialect(),
+                classMapping);
     }
 
     /**
      * @param tableName
      * @param jdbc
      */
-    public SqlQueryEntityProperties(String tableName, Jdbc jdbc, String tableAlias) {
+    public SqlQueryEntityProperties(String tableName, Jdbc jdbc,
+            String tableAlias) {
         super();
         this.jdbc = jdbc;
-        selectBuilder = new SqlSelectBasicBuilder(jdbc.getDialect(), tableName, tableAlias);
+        selectBuilder = new SqlSelectBasicBuilder(jdbc.getDialect(), tableName,
+                tableAlias);
     }
 
     /**
@@ -64,7 +68,8 @@ public class SqlQueryEntityProperties implements SqlQueryEntity, QueryEntityProp
      */
     @Override
     public QueryEntityProperties property(String propertyName) {
-        selectBuilder.addSelectColumn(ClassMappingUtils.getColumnName(propertyName, classMapping));
+        selectBuilder.addSelectColumn(
+                ClassMappingUtils.getColumnName(propertyName, classMapping));
         return this;
     }
 
@@ -73,7 +78,8 @@ public class SqlQueryEntityProperties implements SqlQueryEntity, QueryEntityProp
      */
     @Override
     public QueryEntityProperties property(String... propertyNames) {
-        selectBuilder.addSelectColumns(ClassMappingUtils.getColumnNames(classMapping, propertyNames));
+        selectBuilder.addSelectColumns(
+                ClassMappingUtils.getColumnNames(classMapping, propertyNames));
         return this;
     }
 
@@ -82,7 +88,8 @@ public class SqlQueryEntityProperties implements SqlQueryEntity, QueryEntityProp
      */
     @Override
     public QueryEntityProperties property(Collection<String> propertyNames) {
-        selectBuilder.addSelectColumns(ClassMappingUtils.getColumnNames(classMapping, propertyNames));
+        selectBuilder.addSelectColumns(
+                ClassMappingUtils.getColumnNames(classMapping, propertyNames));
         return this;
     }
 
@@ -90,8 +97,11 @@ public class SqlQueryEntityProperties implements SqlQueryEntity, QueryEntityProp
      * {@inheritDoc}
      */
     @Override
-    public QueryEntityProperties propertyAlias(String columnName, String alias) {
-        selectBuilder.addSelectColumn(ClassMappingUtils.getColumnName(columnName, classMapping), alias);
+    public QueryEntityProperties propertyAlias(String columnName,
+            String alias) {
+        selectBuilder.addSelectColumn(
+                ClassMappingUtils.getColumnName(columnName, classMapping),
+                alias);
         return this;
     }
 
@@ -99,7 +109,8 @@ public class SqlQueryEntityProperties implements SqlQueryEntity, QueryEntityProp
      * {@inheritDoc}
      */
     @Override
-    public QueryEntityProperties propertyAlias(Map<String, String> columnNameMap) {
+    public QueryEntityProperties propertyAlias(
+            Map<String, String> columnNameMap) {
         columnNameMap.forEach((k, v) -> {
             propertyAlias(k, v);
         });
@@ -118,8 +129,17 @@ public class SqlQueryEntityProperties implements SqlQueryEntity, QueryEntityProp
      * {@inheritDoc}
      */
     @Override
+    public List<Map<String, Object>> list() {
+        return new SqlQueryExpression(jdbc, classMapping, selectBuilder).list();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
     public <E> List<E> list(Class<E> type) {
-        return new SqlQueryExpression(jdbc, classMapping, selectBuilder).list(type);
+        return new SqlQueryExpression(jdbc, classMapping, selectBuilder)
+                .list(type);
     }
 
     /**
@@ -127,7 +147,8 @@ public class SqlQueryEntityProperties implements SqlQueryEntity, QueryEntityProp
      */
     @Override
     public <E> List<E> list(RowMapper<E> rowMapper) {
-        return new SqlQueryExpression(jdbc, classMapping, selectBuilder).list(rowMapper);
+        return new SqlQueryExpression(jdbc, classMapping, selectBuilder)
+                .list(rowMapper);
     }
 
     /**
@@ -135,7 +156,8 @@ public class SqlQueryEntityProperties implements SqlQueryEntity, QueryEntityProp
      */
     @Override
     public QueryExecutor limit(Integer limit) {
-        return new SqlQueryExpression(jdbc, classMapping, selectBuilder).limit(limit);
+        return new SqlQueryExpression(jdbc, classMapping, selectBuilder)
+                .limit(limit);
     }
 
     /**
@@ -143,7 +165,8 @@ public class SqlQueryEntityProperties implements SqlQueryEntity, QueryEntityProp
      */
     @Override
     public QueryExecutor limit(Integer offset, Integer limit) {
-        return new SqlQueryExpression(jdbc, classMapping, selectBuilder).limit(offset, limit);
+        return new SqlQueryExpression(jdbc, classMapping, selectBuilder)
+                .limit(offset, limit);
     }
 
     /**
@@ -151,7 +174,8 @@ public class SqlQueryEntityProperties implements SqlQueryEntity, QueryEntityProp
      */
     @Override
     public QueryExecutor limit(Page page) {
-        return new SqlQueryExpression(jdbc, classMapping, selectBuilder).limit(page);
+        return new SqlQueryExpression(jdbc, classMapping, selectBuilder)
+                .limit(page);
     }
 
     /**
@@ -159,7 +183,8 @@ public class SqlQueryEntityProperties implements SqlQueryEntity, QueryEntityProp
      */
     @Override
     public String string() {
-        return new SqlQueryExpression(jdbc, classMapping, selectBuilder).string();
+        return new SqlQueryExpression(jdbc, classMapping, selectBuilder)
+                .string();
     }
 
     /**
@@ -167,7 +192,8 @@ public class SqlQueryEntityProperties implements SqlQueryEntity, QueryEntityProp
      */
     @Override
     public Integer integer() {
-        return new SqlQueryExpression(jdbc, classMapping, selectBuilder).integer();
+        return new SqlQueryExpression(jdbc, classMapping, selectBuilder)
+                .integer();
     }
 
     /**
@@ -175,7 +201,8 @@ public class SqlQueryEntityProperties implements SqlQueryEntity, QueryEntityProp
      */
     @Override
     public Long longInt() {
-        return new SqlQueryExpression(jdbc, classMapping, selectBuilder).longInt();
+        return new SqlQueryExpression(jdbc, classMapping, selectBuilder)
+                .longInt();
     }
 
     /**
@@ -183,7 +210,8 @@ public class SqlQueryEntityProperties implements SqlQueryEntity, QueryEntityProp
      */
     @Override
     public BigDecimal decimal() {
-        return new SqlQueryExpression(jdbc, classMapping, selectBuilder).decimal();
+        return new SqlQueryExpression(jdbc, classMapping, selectBuilder)
+                .decimal();
     }
 
     /**
@@ -191,6 +219,7 @@ public class SqlQueryEntityProperties implements SqlQueryEntity, QueryEntityProp
      */
     @Override
     public <N extends Number> N number(Class<N> type) {
-        return new SqlQueryExpression(jdbc, classMapping, selectBuilder).number(type);
+        return new SqlQueryExpression(jdbc, classMapping, selectBuilder)
+                .number(type);
     }
 }
