@@ -1,5 +1,5 @@
 
-package cn.featherfly.juorm.rdb.jdbc.dsl.query;
+package cn.featherfly.juorm.rdb.jdbc.dsl.type;
 
 import cn.featherfly.juorm.dsl.query.QueryConditionGroupExpression;
 import cn.featherfly.juorm.dsl.query.QueryConditionGroupLogicExpression;

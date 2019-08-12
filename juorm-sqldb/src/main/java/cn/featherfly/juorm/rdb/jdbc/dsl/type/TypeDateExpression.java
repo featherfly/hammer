@@ -1,21 +1,23 @@
 
-package cn.featherfly.juorm.rdb.jdbc.dsl.query;
+package cn.featherfly.juorm.rdb.jdbc.dsl.type;
+
+import java.util.Date;
 
 import cn.featherfly.juorm.dsl.query.QueryConditionGroupExpression;
 import cn.featherfly.juorm.dsl.query.QueryConditionGroupLogicExpression;
-import cn.featherfly.juorm.expression.condition.property.ObjectExpression;
+import cn.featherfly.juorm.expression.condition.property.DateExpression;
 
 /**
  * <p>
- * TypeObjectExpression
+ * SimpleObjectExpression
  * </p>
  *
  * @author zhongj
  */
-public class TypeObjectExpression<E,
+public class TypeDateExpression<E,
         Q extends TypeQueryConditionGroupExpression<E, Q>> {
 
-    private ObjectExpression<QueryConditionGroupExpression, QueryConditionGroupLogicExpression> expression;
+    private DateExpression<QueryConditionGroupExpression, QueryConditionGroupLogicExpression> expression;
 
     private Q typeExpression;
 
@@ -23,77 +25,101 @@ public class TypeObjectExpression<E,
      * @param name
      * @param expression
      */
-    public TypeObjectExpression(
-            ObjectExpression<QueryConditionGroupExpression, QueryConditionGroupLogicExpression> expression,
+    public TypeDateExpression(
+            DateExpression<QueryConditionGroupExpression, QueryConditionGroupLogicExpression> expression,
             Q typeExpression) {
         super();
         this.expression = expression;
         this.typeExpression = typeExpression;
     }
 
-    public Q eq(Object value) {
+    /**
+     * {@inheritDoc}
+     */
+
+    public Q eq(Date value) {
         expression.eq(value);
         return typeExpression;
     }
 
-    public Q ne(Object value) {
+    /**
+     * {@inheritDoc}
+     */
+
+    public Q ne(Date value) {
         expression.ne(value);
         return typeExpression;
     }
 
-    public Q in(Object value) {
+    /**
+     * {@inheritDoc}
+     */
+
+    public Q in(Date value) {
         expression.in(value);
         return typeExpression;
     }
 
-    public Q nin(Object value) {
+    /**
+     * {@inheritDoc}
+     */
+
+    public Q nin(Date value) {
         expression.nin(value);
         return typeExpression;
     }
 
-    public Q le(Object value) {
+    /**
+     * {@inheritDoc}
+     */
+
+    public Q le(Date value) {
         expression.le(value);
         return typeExpression;
     }
 
-    public Q lt(Object value) {
+    /**
+     * {@inheritDoc}
+     */
+
+    public Q lt(Date value) {
         expression.lt(value);
         return typeExpression;
     }
 
-    public Q ge(Object value) {
+    /**
+     * {@inheritDoc}
+     */
+
+    public Q ge(Date value) {
         expression.ge(value);
         return typeExpression;
     }
 
-    public Q gt(Object value) {
+    /**
+     * {@inheritDoc}
+     */
+
+    public Q gt(Date value) {
         expression.gt(value);
         return typeExpression;
     }
 
-    public Q sw(String value) {
-        expression.sw(value);
-        return typeExpression;
-    }
-
-    public Q co(String value) {
-        expression.co(value);
-        return typeExpression;
-    }
-
-    public Q ew(String value) {
-        expression.ew(value);
-        return typeExpression;
-    }
+    /**
+     * {@inheritDoc}
+     */
 
     public Q isn() {
         expression.isn();
         return typeExpression;
     }
 
+    /**
+     * {@inheritDoc}
+     */
+
     public Q inn() {
         expression.inn();
         return typeExpression;
     }
-
 }

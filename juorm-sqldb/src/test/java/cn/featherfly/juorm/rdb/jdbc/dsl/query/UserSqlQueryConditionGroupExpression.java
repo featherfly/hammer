@@ -1,6 +1,8 @@
 
 package cn.featherfly.juorm.rdb.jdbc.dsl.query;
 
+import cn.featherfly.juorm.rdb.jdbc.dsl.type.TypeQueryConditionGroupExpression;
+import cn.featherfly.juorm.rdb.jdbc.dsl.type.TypeStringExpression;
 import cn.featherfly.juorm.rdb.jdbc.vo.User;
 
 /**

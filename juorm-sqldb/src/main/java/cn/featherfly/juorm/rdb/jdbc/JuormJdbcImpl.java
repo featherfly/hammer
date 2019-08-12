@@ -33,6 +33,7 @@ import cn.featherfly.juorm.rdb.jdbc.operate.UpdateOperate;
 import cn.featherfly.juorm.rdb.tpl.SqlTplExecutor;
 import cn.featherfly.juorm.tpl.TplConfigFactory;
 import cn.featherfly.juorm.tpl.TplConfigFactoryImpl;
+import cn.featherfly.juorm.tpl.TplExecuteId;
 
 /**
  * <p>
@@ -386,4 +387,56 @@ public class JuormJdbcImpl implements Juorm {
             Page page) {
         return sqlTplExecutor.pagination(sqlFullId, entityType, params, page);
     }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public <E> E single(TplExecuteId tplExecuteId, Class<E> entityType, Map<String, Object> params) {
+        return sqlTplExecutor.single(tplExecuteId, entityType, params);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public <E> List<E> list(TplExecuteId tplExecuteId, Class<E> entityType, Map<String, Object> params) {
+        return sqlTplExecutor.list(tplExecuteId, entityType, params);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public <E> List<E> list(TplExecuteId tplExecuteId, Class<E> entityType, Map<String, Object> params, int offset,
+            int limit) {
+        return sqlTplExecutor.list(tplExecuteId, entityType, params, offset, limit);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public <E> List<E> list(TplExecuteId tplExecuteId, Class<E> entityType, Map<String, Object> params, Page page) {
+        return sqlTplExecutor.list(tplExecuteId, entityType, params, page);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public <E> PaginationResults<E> pagination(TplExecuteId tplExecuteId, Class<E> entityType,
+            Map<String, Object> params, int offset, int limit) {
+        return sqlTplExecutor.pagination(tplExecuteId, entityType, params, offset, limit);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public <E> PaginationResults<E> pagination(TplExecuteId tplExecuteId, Class<E> entityType,
+            Map<String, Object> params, Page page) {
+        return sqlTplExecutor.pagination(tplExecuteId, entityType, params, page);
+    }
+
 }

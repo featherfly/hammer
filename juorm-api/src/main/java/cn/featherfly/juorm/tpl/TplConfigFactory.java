@@ -32,8 +32,8 @@ public interface TplConfigFactory {
     /**
      * getConfigs
      *
-     * @param sqlId sqlId
+     * @param executeId executeId
      * @return TplExecuteConfig
      */
-    TplExecuteConfig getConfig(String sqlId);
+    TplExecuteConfig getConfig(String executeId);
 }

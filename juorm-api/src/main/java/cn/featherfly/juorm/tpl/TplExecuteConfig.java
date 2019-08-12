@@ -24,8 +24,6 @@ public class TplExecuteConfig {
 
     private String count;
 
-    private boolean export;
-
     private String executeId;
 
     private String tplPath;
@@ -121,24 +119,6 @@ public class TplExecuteConfig {
     }
 
     /**
-     * 返回export
-     *
-     * @return export
-     */
-    public boolean isExport() {
-        return export;
-    }
-
-    /**
-     * 设置export
-     *
-     * @param export export
-     */
-    public void setExport(boolean export) {
-        this.export = export;
-    }
-
-    /**
      * 返回executeId
      *
      * @return executeId
@@ -158,7 +138,7 @@ public class TplExecuteConfig {
 
     /**
      * 返回tplPath
-     * 
+     *
      * @return tplPath
      */
     public String getTplPath() {
@@ -167,7 +147,7 @@ public class TplExecuteConfig {
 
     /**
      * 设置tplPath
-     * 
+     *
      * @param tplPath tplPath
      */
     public void setTplPath(String tplPath) {
@@ -180,6 +160,6 @@ public class TplExecuteConfig {
     @Override
     public String toString() {
         return "TplExecuteConfig [name=" + name + ", directory=" + directory + ", type=" + type + ", query=" + query
-                + ", count=" + count + ", export=" + export + ", executeId=" + executeId + ", tplPath=" + tplPath + "]";
+                + ", count=" + count + ", executeId=" + executeId + ", tplPath=" + tplPath + "]";
     }
 }

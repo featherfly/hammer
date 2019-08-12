@@ -1,5 +1,5 @@
 
-package cn.featherfly.juorm.rdb.jdbc.dsl.query;
+package cn.featherfly.juorm.rdb.jdbc.dsl.type;
 
 import java.util.List;
 

@@ -12,3 +12,14 @@ roleFromTemplate: "from role <@where>
     name like :name
 </@and>
 </@where>"
+selectWithTemplate2:
+  query: "select <@prop/> <@tpl id='roleFromTemplate2'/>"
+  count: "select count(*) <@sql id='roleFromTemplate2'/>"
+roleFromTemplate2: "from role <@where>
+<@and if = name??>
+    name like :name
+</@and>
+</@where>"
+selectWithTemplate3:
+  query: "select <@prop/> <@tpl id='roleFromTemplate2' file='tpl/role_common'/>"
+  count: "select count(*) <@sql id='roleFromTemplate2' file='tpl/role_common'/>"

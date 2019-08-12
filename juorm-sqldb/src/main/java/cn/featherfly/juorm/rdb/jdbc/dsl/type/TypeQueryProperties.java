@@ -1,6 +1,7 @@
 
-package cn.featherfly.juorm.rdb.jdbc.dsl.query;
+package cn.featherfly.juorm.rdb.jdbc.dsl.type;
 
+import cn.featherfly.juorm.rdb.jdbc.dsl.query.SqlQueryEntityProperties;
 import cn.featherfly.juorm.rdb.jdbc.mapping.MappingFactory;
 
 /**

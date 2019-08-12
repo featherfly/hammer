@@ -18,139 +18,226 @@ public interface TplExecutor {
 
     /**
      * <p>
-     * query single, use sql in template find with sqlId
+     * query single, user query str in template find with strId
      * </p>
      *
-     * @param <E>        entity type
-     * @param sqlFullId  sql full id
-     * @param entityType entityType
-     * @param params     params
+     * @param <E>          entity type
+     * @param tplExecuteId tpl execute id
+     * @param entityType   entityType
+     * @param params       params
      * @return list
      */
-    <E> E single(String sqlFullId, Class<E> entityType, Map<String, Object> params);
+    <E> E single(String tplExecuteId, Class<E> entityType, Map<String, Object> params);
+
+    /**
+     * <p>
+     * query single, user query str in template find with strId
+     * </p>
+     *
+     * @param <E>          entity type
+     * @param tplExecuteId tpl execute id
+     * @param entityType   entityType
+     * @param params       params
+     * @return list
+     */
+    <E> E single(TplExecuteId tplExecuteId, Class<E> entityType, Map<String, Object> params);
 
     //    /**
     //     * <p>
-    //     * query single, use sql in template find with sqlId
+    //     * query single, user query str in template find with strId
     //     * </p>
     //     *
     //     * @param <E>
-    //     * @param sqlId      sqlId
+    //     * @param strId      strId
     //     * @param entityType entityType
     //     * @param params     params
     //     * @return list
     //     */
-    //    <E> E single(String sqlId, Class<E> entityType, Object params);
+    //    <E> E single(String strId, Class<E> entityType, Object params);
 
     /**
      * <p>
-     * query list, use sql in template find with sqlId
+     * query list, user query str in template find with strId
      * </p>
      *
-     * @param <E>        entity type
-     * @param sqlFullId  sql full id
-     * @param entityType entityType
-     * @param params     params
+     * @param <E>          entity type
+     * @param tplExecuteId tpl execute id
+     * @param entityType   entityType
+     * @param params       params
      * @return list
      */
-    <E> List<E> list(String sqlFullId, Class<E> entityType, Map<String, Object> params);
+    <E> List<E> list(String tplExecuteId, Class<E> entityType, Map<String, Object> params);
 
     /**
      * <p>
-     * query list, use sql in template find with sqlId
+     * query list, user query str in template find with strId
      * </p>
      *
-     * @param <E>        entity type
-     * @param sqlFullId  sql full id
-     * @param entityType entityType
-     * @param params     params
-     * @param offset     paging start with offset
-     * @param limit      paging end with limit
+     * @param <E>          entity type
+     * @param tplExecuteId tpl execute id
+     * @param entityType   entityType
+     * @param params       params
      * @return list
      */
-    <E> List<E> list(String sqlFullId, Class<E> entityType, Map<String, Object> params, int offset, int limit);
+    <E> List<E> list(TplExecuteId tplExecuteId, Class<E> entityType, Map<String, Object> params);
 
     /**
      * <p>
-     * query list, use sql in template find with sqlId
+     * query list, user query str in template find with strId
      * </p>
      *
-     * @param <E>        entity type
-     * @param sqlFullId  sql full id
-     * @param entityType entityType
-     * @param params     params
-     * @param page       page
+     * @param <E>          entity type
+     * @param tplExecuteId tpl execute id
+     * @param entityType   entityType
+     * @param params       params
+     * @param offset       paging start with offset
+     * @param limit        paging end with limit
      * @return list
      */
-    <E> List<E> list(String sqlFullId, Class<E> entityType, Map<String, Object> params, Page page);
+    <E> List<E> list(String tplExecuteId, Class<E> entityType, Map<String, Object> params, int offset, int limit);
+
+    /**
+     * <p>
+     * query list, user query str in template find with strId
+     * </p>
+     *
+     * @param <E>          entity type
+     * @param tplExecuteId tpl execute id
+     * @param entityType   entityType
+     * @param params       params
+     * @param offset       paging start with offset
+     * @param limit        paging end with limit
+     * @return list
+     */
+    <E> List<E> list(TplExecuteId tplExecuteId, Class<E> entityType, Map<String, Object> params, int offset, int limit);
+
+    /**
+     * <p>
+     * query list, user query str in template find with strId
+     * </p>
+     *
+     * @param <E>          entity type
+     * @param tplExecuteId tpl execute id
+     * @param entityType   entityType
+     * @param params       params
+     * @param page         page
+     * @return list
+     */
+    <E> List<E> list(String tplExecuteId, Class<E> entityType, Map<String, Object> params, Page page);
+
+    /**
+     * <p>
+     * query list, user query str in template find with strId
+     * </p>
+     *
+     * @param <E>          entity type
+     * @param tplExecuteId tpl execute id
+     * @param entityType   entityType
+     * @param params       params
+     * @param page         page
+     * @return list
+     */
+    <E> List<E> list(TplExecuteId tplExecuteId, Class<E> entityType, Map<String, Object> params, Page page);
 
     //    /**
     //     * <p>
-    //     * query list, use sql in template find with sqlId
+    //     * query list, user query str in template find with strId
     //     * </p>
     //     *
     //     * @param <E>
-    //     * @param sqlId      sqlId
+    //     * @param strId      strId
     //     * @param entityType entityType
     //     * @param params     params
     //     * @return list
     //     */
-    //    <E> List<E> list(String sqlId, Class<E> entityType, Object params);
+    //    <E> List<E> list(String strId, Class<E> entityType, Object params);
     //
     //    /**
     //     * <p>
-    //     * query list, use sql in template find with sqlId
+    //     * query list, user query str in template find with strId
     //     * </p>
     //     *
     //     * @param <E>
-    //     * @param sqlId      sqlId
+    //     * @param strId      strId
     //     * @param entityType entityType
     //     * @param params     params
     //     * @param paging     ispaging
     //     * @return list
     //     */
-    //    <E> List<E> list(String sqlId, Class<E> entityType, Object params, boolean paging);
+    //    <E> List<E> list(String strId, Class<E> entityType, Object params, boolean paging);
 
     //    /**
     //     * <p>
-    //     * query list, use sql in template find with sqlId
+    //     * query list, user query str in template find with strId
     //     * </p>
     //     *
     //     * @param <E>
-    //     * @param sqlId      sqlId
+    //     * @param strId      strId
     //     * @param entityType entityType
     //     * @param params     params
     //     * @return list
     //     */
-    //    <E> PaginationResults<E> pagination(String sqlId, Class<E> entityType, Object params);
+    //    <E> PaginationResults<E> pagination(String strId, Class<E> entityType, Object params);
 
     /**
      * <p>
-     * query list, use sql in template find with sqlId
+     * query list, user query str in template find with strId
      * </p>
      *
-     * @param <E>        entity type
-     * @param sqlFullId  sql full id
-     * @param entityType entityType
-     * @param params     params
-     * @param offset     paging start with offset
-     * @param limit      paging end with limit
+     * @param <E>          entity type
+     * @param tplExecuteId tpl execute id
+     * @param entityType   entityType
+     * @param params       params
+     * @param offset       paging start with offset
+     * @param limit        paging end with limit
      * @return list
      */
-    <E> PaginationResults<E> pagination(String sqlFullId, Class<E> entityType, Map<String, Object> params, int offset,
-            int limit);
+    <E> PaginationResults<E> pagination(String tplExecuteId, Class<E> entityType, Map<String, Object> params,
+            int offset, int limit);
 
     /**
      * <p>
-     * query list, use sql in template find with sqlId
+     * query list, user query str in template find with strId
      * </p>
      *
-     * @param <E>        entity type
-     * @param sqlFullId  sql full id
-     * @param entityType entityType
-     * @param params     params
-     * @param page       page
+     * @param <E>          entity type
+     * @param tplExecuteId tpl execute id
+     * @param entityType   entityType
+     * @param params       params
+     * @param offset       paging start with offset
+     * @param limit        paging end with limit
      * @return list
      */
-    <E> PaginationResults<E> pagination(String sqlFullId, Class<E> entityType, Map<String, Object> params, Page page);
+    <E> PaginationResults<E> pagination(TplExecuteId tplExecuteId, Class<E> entityType, Map<String, Object> params,
+            int offset, int limit);
+
+    /**
+     * <p>
+     * query list, user query str in template find with strId
+     * </p>
+     *
+     * @param <E>          entity type
+     * @param tplExecuteId tpl execute id
+     * @param entityType   entityType
+     * @param params       params
+     * @param page         page
+     * @return list
+     */
+    <E> PaginationResults<E> pagination(String tplExecuteId, Class<E> entityType, Map<String, Object> params,
+            Page page);
+
+    /**
+     * <p>
+     * query list, user query str in template find with strId
+     * </p>
+     *
+     * @param <E>          entity type
+     * @param tplExecuteId tpl execute id
+     * @param entityType   entityType
+     * @param params       params
+     * @param page         page
+     * @return list
+     */
+    <E> PaginationResults<E> pagination(TplExecuteId tplExecuteId, Class<E> entityType, Map<String, Object> params,
+            Page page);
 }
