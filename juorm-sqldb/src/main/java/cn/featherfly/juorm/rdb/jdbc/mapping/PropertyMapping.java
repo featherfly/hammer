@@ -132,4 +132,33 @@ public class PropertyMapping {
     public Collection<PropertyMapping> getPropertyMappings() {
         return propertyMappings.values();
     }
+
+    /**
+     * <p>
+     * 返回指定属性名称的属性映射. 没有找到返回null.
+     * </p>
+     *
+     * @param propertyName 属性名称
+     * @return 属性映射对象
+     */
+    public PropertyMapping getPropertyMapping(String propertyName) {
+        for (PropertyMapping pm : propertyMappings.values()) {
+            if (pm.getPropertyName().equals(propertyName)) {
+                return pm;
+            }
+        }
+        return null;
+    }
+
+    /**
+     * <p>
+     * 通过持久化字段（数据库字段）的名称返回指定属性映射. 没有找到返回null.
+     * </p>
+     *
+     * @param persitField 持久化字段（数据库字段）
+     * @return PropertyMapping
+     */
+    public PropertyMapping getPropertyMappingByPersitField(String persitField) {
+        return propertyMappings.get(persitField);
+    }
 }

@@ -1,12 +1,15 @@
 
 package cn.featherfly.juorm.rdb.jdbc.dsl;
 
+import java.util.List;
+
 import org.testng.annotations.Test;
 
 import cn.featherfly.juorm.expression.SimpleRepository;
 import cn.featherfly.juorm.rdb.jdbc.JdbcTestBase;
 import cn.featherfly.juorm.rdb.jdbc.dsl.query.SqlQuery;
 import cn.featherfly.juorm.rdb.jdbc.vo.User;
+import cn.featherfly.juorm.rdb.jdbc.vo.UserInfo;
 
 /**
  * <p>
@@ -53,5 +56,16 @@ public class SqlQueryTest extends JdbcTestBase {
         SqlQuery query = new SqlQuery(jdbc, factory);
         query.find(User.class).property("username", "pwd", "age").where().eq("username", "yufei").and()
                 .eq("pwd", "123456").and().group().gt("age", 18).and().lt("age", 60).list(User.class);
+    }
+
+    @Test
+    void testMapping2() {
+        SqlQuery query = new SqlQuery(jdbc, factory);
+        List<UserInfo> list;
+        list = query.find(UserInfo.class).where().eq("user.id", 1).list(UserInfo.class);
+        System.err.println(list);
+
+        list = query.find(UserInfo.class).where().eq("division.province", "四川").list(UserInfo.class);
+        System.err.println(list);
     }
 }

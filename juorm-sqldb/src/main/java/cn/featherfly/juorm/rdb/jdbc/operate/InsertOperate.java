@@ -7,6 +7,7 @@ import java.util.List;
 
 import cn.featherfly.common.bean.BeanUtils;
 import cn.featherfly.common.db.JdbcUtils;
+import cn.featherfly.common.lang.LangUtils;
 import cn.featherfly.juorm.rdb.jdbc.Jdbc;
 import cn.featherfly.juorm.rdb.jdbc.mapping.ClassMapping;
 import cn.featherfly.juorm.rdb.jdbc.mapping.PropertyMapping;
@@ -99,9 +100,17 @@ public class InsertOperate<T> extends AbstractExecuteOperate<T> {
         insertSql.append("insert into ").append(classMapping.getTableName()).append(" ( ");
         int columnNum = 0;
         for (PropertyMapping pm : classMapping.getPropertyMappings()) {
-            insertSql.append(pm.getColumnName()).append(",");
-            columnNum++;
-            propertyPositions.put(columnNum, pm.getPropertyName());
+            if (LangUtils.isEmpty(pm.getPropertyMappings())) {
+                insertSql.append(pm.getColumnName()).append(",");
+                columnNum++;
+                propertyPositions.put(columnNum, pm.getPropertyName());
+            } else {
+                for (PropertyMapping pm2 : pm.getPropertyMappings()) {
+                    insertSql.append(pm2.getColumnName()).append(",");
+                    columnNum++;
+                    propertyPositions.put(columnNum, pm.getPropertyName() + "." + pm2.getPropertyName());
+                }
+            }
         }
         if (columnNum > 0) {
             insertSql.deleteCharAt(insertSql.length() - 1);
