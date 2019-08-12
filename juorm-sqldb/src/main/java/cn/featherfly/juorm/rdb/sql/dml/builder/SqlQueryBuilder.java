@@ -5,6 +5,7 @@ import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
+import java.util.Map;
 
 import cn.featherfly.common.lang.StringUtils;
 import cn.featherfly.juorm.dml.builder.ConditionBuildUtils;
@@ -147,7 +148,31 @@ public class SqlQueryBuilder implements QueryBuilder, cn.featherfly.juorm.dml.bu
      * {@inheritDoc}
      */
     @Override
-    public SelectBuilder select(String... columnNames) {
+    public SelectBuilder select(String columnName, String asName) {
+        return selectBuilder().select(columnName, asName);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public SelectBuilder select(String columnName, AggregateFunction aggregateFunction, String asName) {
+        return selectBuilder().select(columnName, aggregateFunction, asName);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public SelectBuilder select(Map<String, String> columnNames) {
+        return selectBuilder().select(columnNames);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public SelectBuilder select(String[] columnNames) {
         return selectBuilder().select(columnNames);
     }
 
@@ -214,5 +239,4 @@ public class SqlQueryBuilder implements QueryBuilder, cn.featherfly.juorm.dml.bu
         }
         return selectBuilder;
     }
-
 }

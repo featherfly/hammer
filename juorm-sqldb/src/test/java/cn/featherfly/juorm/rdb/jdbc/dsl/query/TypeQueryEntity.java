@@ -16,8 +16,7 @@ import cn.featherfly.juorm.rdb.jdbc.mapping.MappingFactory;
  *
  * @author zhongj
  */
-public abstract class TypeQueryEntity<E,
-        C extends TypeQueryConditionGroupExpression<E, C>,
+public abstract class TypeQueryEntity<E, C extends TypeQueryConditionGroupExpression<E, C>,
         Q extends TypeQueryEntity<E, C, Q>> {
 
     protected Class<E> type;
@@ -30,8 +29,7 @@ public abstract class TypeQueryEntity<E,
 
     /**
      */
-    public TypeQueryEntity(SqlQueryEntityProperties queryEntityProperties,
-            MappingFactory mappingFactory) {
+    public TypeQueryEntity(SqlQueryEntityProperties queryEntityProperties, MappingFactory mappingFactory) {
         type = ClassUtils.getSuperClassGenricType(this.getClass());
         this.queryEntityProperties = queryEntityProperties;
         mappping = mappingFactory.getClassMapping(type);
@@ -39,9 +37,7 @@ public abstract class TypeQueryEntity<E,
 
     public C where() {
         setProperties();
-        return createCondition(
-                (SqlQueryConditionGroupExpression) queryEntityProperties
-                        .where());
+        return createCondition((SqlQueryConditionGroupExpression) queryEntityProperties.where());
     }
 
     public List<E> list() {
@@ -51,14 +47,12 @@ public abstract class TypeQueryEntity<E,
 
     public TypeQueryExecutor<E> limit(Integer limit) {
         setProperties();
-        return new TypeQueryExecutor<>(type,
-                queryEntityProperties.limit(limit));
+        return new TypeQueryExecutor<>(type, queryEntityProperties.limit(limit));
     }
 
     public TypeQueryExecutor<E> limit(Integer offset, Integer limit) {
         setProperties();
-        return new TypeQueryExecutor<>(type,
-                queryEntityProperties.limit(offset, limit));
+        return new TypeQueryExecutor<>(type, queryEntityProperties.limit(offset, limit));
     }
 
     public TypeQueryExecutor<E> limit(Page page) {
@@ -69,11 +63,9 @@ public abstract class TypeQueryEntity<E,
     private void setProperties() {
         if (!setProperty) {
             System.out.println(ClassMappingUtils.getSelectColumns(mappping));
-            queryEntityProperties
-                    .property(ClassMappingUtils.getSelectColumns(mappping));
+            queryEntityProperties.propertyAlias(ClassMappingUtils.getSelectColumns(mappping));
         }
     }
 
-    protected abstract C createCondition(
-            SqlQueryConditionGroupExpression queryConditionGroupExpression);
+    protected abstract C createCondition(SqlQueryConditionGroupExpression queryConditionGroupExpression);
 }

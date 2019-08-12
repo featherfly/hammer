@@ -275,6 +275,7 @@ public class SpringJdbcTemplateImpl implements Jdbc {
      */
     @Override
     public int update(String sql, Object... args) {
+        Constants.LOGGER.debug("sql -> {}, args -> {}", sql, args);
         return jdbcTemplate.update(sql, args);
     }
 }

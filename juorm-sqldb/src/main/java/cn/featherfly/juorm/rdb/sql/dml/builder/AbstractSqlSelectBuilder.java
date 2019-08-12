@@ -1,5 +1,7 @@
 package cn.featherfly.juorm.rdb.sql.dml.builder;
 
+import java.util.Map;
+
 import cn.featherfly.juorm.dml.builder.Builder;
 import cn.featherfly.juorm.operator.AggregateFunction;
 import cn.featherfly.juorm.rdb.sql.dialect.Dialect;
@@ -47,8 +49,46 @@ public abstract class AbstractSqlSelectBuilder implements Builder {
         selectBuilder = new SqlSelectBasicBuilder(dialect, tableName, alias);
     }
 
-    protected void addSelectColumn(String column, AggregateFunction function) {
-        selectBuilder.addSelectColumn(column, function);
+    /**
+     * addSelectColumn
+     * 
+     * @param columnName
+     * @param function
+     */
+    protected void addSelectColumn(String columnName, AggregateFunction function) {
+        selectBuilder.addSelectColumn(columnName, function);
+    }
+
+    /**
+     * addSelectColumn
+     * 
+     * @param columnName
+     * @param asName
+     */
+    protected void addSelectColumn(String columnName, String asName) {
+        selectBuilder.addSelectColumn(columnName, asName);
+    }
+
+    /**
+     * addSelectColumn
+     * 
+     * @param columnNames
+     * @param function
+     * @param asName
+     */
+    protected void addSelectColumn(String columnNames, AggregateFunction function, String asName) {
+        selectBuilder.addSelectColumn(columnNames, function, asName);
+    }
+
+    /**
+     * addSelectColumn
+     * 
+     * @param columnNames
+     */
+    protected void addSelectColumn(Map<String, String> columnNames) {
+        columnNames.forEach((columnName, asName) -> {
+            selectBuilder.addSelectColumn(columnName, asName);
+        });
     }
 
     /**

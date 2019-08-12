@@ -64,8 +64,9 @@ public class GetOperate<T> extends AbstractQueryOperate<T> {
         if (pkPms.size() == 1) {
             return (Serializable) BeanUtils.getProperty(entity, pkPms.get(0).getPropertyName());
         } else if (pkPms.size() > 1) {
-            logger.debug("multy id defined in entity {}", entity.getClass().getName());
-            return null;
+            //            logger.debug("multy id defined in entity {}", entity.getClass().getName());
+            throw new JuormJdbcException("multy id defined in entity [" + entity.getClass().getName()
+                    + "], you can invoke getIds(entity) method instead");
         } else {
             logger.debug("no id defined in entity {}", entity.getClass().getName());
             return null;

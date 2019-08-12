@@ -14,14 +14,12 @@ import javax.validation.Validator;
 import org.hibernate.validator.HibernateValidator;
 
 import cn.featherfly.common.lang.LangUtils;
-import cn.featherfly.common.lang.StringUtils;
 import cn.featherfly.common.structure.page.Page;
 import cn.featherfly.common.structure.page.PaginationResults;
 import cn.featherfly.juorm.Juorm;
 import cn.featherfly.juorm.dsl.execute.Delete;
 import cn.featherfly.juorm.dsl.execute.Update;
 import cn.featherfly.juorm.dsl.query.QueryEntity;
-import cn.featherfly.juorm.expression.SimpleRepository;
 import cn.featherfly.juorm.rdb.jdbc.dsl.execute.SqlDeleter;
 import cn.featherfly.juorm.rdb.jdbc.dsl.execute.SqlUpdater;
 import cn.featherfly.juorm.rdb.jdbc.dsl.query.SqlQuery;
@@ -72,14 +70,11 @@ public class JuormJdbcImpl implements Juorm {
      * @param mappingFactory
      * @param configFactory
      */
-    public JuormJdbcImpl(Jdbc jdbc, MappingFactory mappingFactory,
-            TplConfigFactory configFactory) {
+    public JuormJdbcImpl(Jdbc jdbc, MappingFactory mappingFactory, TplConfigFactory configFactory) {
         // this(jdbc, mappingFactory, configFactory,
         // Validation.buildDefaultValidatorFactory().getValidator());
-        this(jdbc, mappingFactory, configFactory,
-                Validation.byProvider(HibernateValidator.class).configure()
-                        .failFast(false).buildValidatorFactory()
-                        .getValidator());
+        this(jdbc, mappingFactory, configFactory, Validation.byProvider(HibernateValidator.class).configure()
+                .failFast(false).buildValidatorFactory().getValidator());
     }
 
     /**
@@ -88,13 +83,12 @@ public class JuormJdbcImpl implements Juorm {
      * @param configFactory
      * @param validator
      */
-    public JuormJdbcImpl(Jdbc jdbc, MappingFactory mappingFactory,
-            TplConfigFactory configFactory, Validator validator) {
+    public JuormJdbcImpl(Jdbc jdbc, MappingFactory mappingFactory, TplConfigFactory configFactory,
+            Validator validator) {
         this.jdbc = jdbc;
         this.mappingFactory = mappingFactory;
         this.validator = validator;
-        sqlTplExecutor = new SqlTplExecutor(configFactory, jdbc,
-                mappingFactory);
+        sqlTplExecutor = new SqlTplExecutor(configFactory, jdbc, mappingFactory);
     }
 
     /**
@@ -109,8 +103,7 @@ public class JuormJdbcImpl implements Juorm {
         InsertOperate<E> insert = (InsertOperate<E>) insertOperates.get(entity);
         if (insert == null) {
             @SuppressWarnings("unchecked")
-            ClassMapping<E> mapping = (ClassMapping<E>) mappingFactory
-                    .getClassMapping(entity.getClass());
+            ClassMapping<E> mapping = (ClassMapping<E>) mappingFactory.getClassMapping(entity.getClass());
             insert = new InsertOperate<>(jdbc, mapping);
             insertOperates.put(entity.getClass(), insert);
         }
@@ -145,8 +138,7 @@ public class JuormJdbcImpl implements Juorm {
         UpdateOperate<E> update = (UpdateOperate<E>) updateOperates.get(entity);
         if (update == null) {
             @SuppressWarnings("unchecked")
-            ClassMapping<E> mapping = (ClassMapping<E>) mappingFactory
-                    .getClassMapping(entity.getClass());
+            ClassMapping<E> mapping = (ClassMapping<E>) mappingFactory.getClassMapping(entity.getClass());
             update = new UpdateOperate<>(jdbc, mapping);
             updateOperates.put(entity.getClass(), update);
         }
@@ -174,12 +166,12 @@ public class JuormJdbcImpl implements Juorm {
     @Override
     public <E> int update(E entity, IgnorePolicy ignorePolicy) {
         switch (ignorePolicy) {
-        case EMPTY:
-            return merge(entity);
-        case NULL:
-            return merge(entity, true);
-        default:
-            return update(entity);
+            case EMPTY:
+                return merge(entity);
+            case NULL:
+                return merge(entity, true);
+            default:
+                return update(entity);
         }
     }
 
@@ -205,8 +197,7 @@ public class JuormJdbcImpl implements Juorm {
         MergeOperate<E> update = (MergeOperate<E>) mergeOperates.get(entity);
         if (update == null) {
             @SuppressWarnings("unchecked")
-            ClassMapping<E> mapping = (ClassMapping<E>) mappingFactory
-                    .getClassMapping(entity.getClass());
+            ClassMapping<E> mapping = (ClassMapping<E>) mappingFactory.getClassMapping(entity.getClass());
             update = new MergeOperate<>(jdbc, mapping);
             mergeOperates.put(entity.getClass(), update);
         }
@@ -248,8 +239,7 @@ public class JuormJdbcImpl implements Juorm {
         DeleteOperate<E> delete = (DeleteOperate<E>) deleteOperates.get(entity);
         if (delete == null) {
             @SuppressWarnings("unchecked")
-            ClassMapping<E> mapping = (ClassMapping<E>) mappingFactory
-                    .getClassMapping(entity.getClass());
+            ClassMapping<E> mapping = (ClassMapping<E>) mappingFactory.getClassMapping(entity.getClass());
             delete = new DeleteOperate<>(jdbc, mapping);
             deleteOperates.put(entity.getClass(), delete);
         }
@@ -301,12 +291,8 @@ public class JuormJdbcImpl implements Juorm {
      */
     @Override
     public <E> QueryEntity query(Class<E> entityType) {
-        SqlQuery query = new SqlQuery(jdbc);
-        ClassMapping<E> mapping = mappingFactory.getClassMapping(entityType);
-        // TODO 后续把mapping传递下去，可以直接使用属性和字段都能进行操作，并且做一定的验证操作，验证属性（字段）存在与否
-        return query.find(new SimpleRepository(mapping.getTableName(),
-                StringUtils.substring(mapping.getTableName(), 0, 1)
-                        .toLowerCase()));
+        SqlQuery query = new SqlQuery(jdbc, mappingFactory);
+        return query.find(entityType);
     }
 
     /**
@@ -314,9 +300,8 @@ public class JuormJdbcImpl implements Juorm {
      */
     @Override
     public <E> Update update(Class<E> entityType) {
-        SqlUpdater updater = new SqlUpdater(jdbc);
-        ClassMapping<E> mapping = mappingFactory.getClassMapping(entityType);
-        return updater.update(mapping.getTableName());
+        SqlUpdater updater = new SqlUpdater(jdbc, mappingFactory);
+        return updater.update(entityType);
     }
 
     /**
@@ -324,9 +309,8 @@ public class JuormJdbcImpl implements Juorm {
      */
     @Override
     public <E> Delete delete(Class<E> entityType) {
-        SqlDeleter deleter = new SqlDeleter(jdbc);
-        ClassMapping<E> mapping = mappingFactory.getClassMapping(entityType);
-        return deleter.delete(mapping.getTableName());
+        SqlDeleter deleter = new SqlDeleter(jdbc, mappingFactory);
+        return deleter.delete(entityType);
     }
 
     private <E> void validate(E entity) {
@@ -335,8 +319,7 @@ public class JuormJdbcImpl implements Juorm {
             if (LangUtils.isNotEmpty(cons)) {
                 StringBuilder errorMessage = new StringBuilder();
                 for (ConstraintViolation<E> constraintViolation : cons) {
-                    errorMessage.append(constraintViolation.getMessage())
-                            .append(",");
+                    errorMessage.append(constraintViolation.getMessage()).append(",");
                 }
                 throw new JuormJdbcException(errorMessage.toString());
             }
@@ -347,8 +330,7 @@ public class JuormJdbcImpl implements Juorm {
         @SuppressWarnings("unchecked")
         GetOperate<E> get = (GetOperate<E>) getOperates.get(entityType);
         if (get == null) {
-            ClassMapping<E> mapping = mappingFactory
-                    .getClassMapping(entityType);
+            ClassMapping<E> mapping = mappingFactory.getClassMapping(entityType);
             get = new GetOperate<>(jdbc, mapping);
             getOperates.put(entityType.getClass(), get);
         }
@@ -359,8 +341,7 @@ public class JuormJdbcImpl implements Juorm {
      * {@inheritDoc}
      */
     @Override
-    public <E> E single(String sqlFullId, Class<E> entityType,
-            Map<String, Object> params) {
+    public <E> E single(String sqlFullId, Class<E> entityType, Map<String, Object> params) {
         return sqlTplExecutor.single(sqlFullId, entityType, params);
     }
 
@@ -368,8 +349,7 @@ public class JuormJdbcImpl implements Juorm {
      * {@inheritDoc}
      */
     @Override
-    public <E> List<E> list(String sqlFullId, Class<E> entityType,
-            Map<String, Object> params) {
+    public <E> List<E> list(String sqlFullId, Class<E> entityType, Map<String, Object> params) {
         return sqlTplExecutor.list(sqlFullId, entityType, params);
     }
 
@@ -377,18 +357,15 @@ public class JuormJdbcImpl implements Juorm {
      * {@inheritDoc}
      */
     @Override
-    public <E> List<E> list(String sqlFullId, Class<E> entityType,
-            Map<String, Object> params, int offset, int limit) {
-        return sqlTplExecutor.list(sqlFullId, entityType, params, offset,
-                limit);
+    public <E> List<E> list(String sqlFullId, Class<E> entityType, Map<String, Object> params, int offset, int limit) {
+        return sqlTplExecutor.list(sqlFullId, entityType, params, offset, limit);
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public <E> List<E> list(String sqlFullId, Class<E> entityType,
-            Map<String, Object> params, Page page) {
+    public <E> List<E> list(String sqlFullId, Class<E> entityType, Map<String, Object> params, Page page) {
         return sqlTplExecutor.list(sqlFullId, entityType, params, page);
     }
 
@@ -396,19 +373,17 @@ public class JuormJdbcImpl implements Juorm {
      * {@inheritDoc}
      */
     @Override
-    public <E> PaginationResults<E> pagination(String sqlFullId,
-            Class<E> entityType, Map<String, Object> params, int offset,
-            int limit) {
-        return sqlTplExecutor.pagination(sqlFullId, entityType, params, offset,
-                limit);
+    public <E> PaginationResults<E> pagination(String sqlFullId, Class<E> entityType, Map<String, Object> params,
+            int offset, int limit) {
+        return sqlTplExecutor.pagination(sqlFullId, entityType, params, offset, limit);
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public <E> PaginationResults<E> pagination(String sqlFullId,
-            Class<E> entityType, Map<String, Object> params, Page page) {
+    public <E> PaginationResults<E> pagination(String sqlFullId, Class<E> entityType, Map<String, Object> params,
+            Page page) {
         return sqlTplExecutor.pagination(sqlFullId, entityType, params, page);
     }
 }

@@ -11,16 +11,14 @@ import cn.featherfly.juorm.rdb.jdbc.vo.User;
  *
  * @author zhongj
  */
-public class UserSqlQueryProperties extends
-        TypeQueryProperties<User, UserSqlQueryConditionGroupExpression, UserSqlQueryProperties> {
+public class UserSqlQueryProperties
+        extends TypeQueryProperties<User, UserSqlQueryConditionGroupExpression, UserSqlQueryProperties> {
 
     /**
      * @param queryEntityProperties
      * @param mappingFactory
      */
-    public UserSqlQueryProperties(
-            SqlQueryEntityProperties queryEntityProperties,
-            MappingFactory mappingFactory) {
+    public UserSqlQueryProperties(SqlQueryEntityProperties queryEntityProperties, MappingFactory mappingFactory) {
         super(queryEntityProperties, mappingFactory);
     }
 
@@ -40,7 +38,6 @@ public class UserSqlQueryProperties extends
     @Override
     protected UserSqlQueryConditionGroupExpression createCondition(
             SqlQueryConditionGroupExpression queryConditionGroupExpression) {
-        return new UserSqlQueryConditionGroupExpression(
-                queryConditionGroupExpression);
+        return new UserSqlQueryConditionGroupExpression(queryConditionGroupExpression);
     }
 }

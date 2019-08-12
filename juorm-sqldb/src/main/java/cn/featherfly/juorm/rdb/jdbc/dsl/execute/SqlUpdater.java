@@ -1,9 +1,12 @@
 
 package cn.featherfly.juorm.rdb.jdbc.dsl.execute;
 
+import cn.featherfly.juorm.JuormException;
+import cn.featherfly.juorm.dsl.execute.Update;
 import cn.featherfly.juorm.dsl.execute.Updater;
 import cn.featherfly.juorm.expression.Repository;
 import cn.featherfly.juorm.rdb.jdbc.Jdbc;
+import cn.featherfly.juorm.rdb.jdbc.mapping.MappingFactory;
 
 /**
  * <p>
@@ -13,12 +16,26 @@ import cn.featherfly.juorm.rdb.jdbc.Jdbc;
  * @author zhongj
  */
 public class SqlUpdater implements Updater {
+
     private Jdbc jdbc;
 
+    private MappingFactory mappingFactory;
+
     /**
+     * @param jdbc
      */
     public SqlUpdater(Jdbc jdbc) {
         this.jdbc = jdbc;
+    }
+
+    /**
+     * @param jdbc
+     * @param mappingFactory
+     */
+    public SqlUpdater(Jdbc jdbc, MappingFactory mappingFactory) {
+        super();
+        this.jdbc = jdbc;
+        this.mappingFactory = mappingFactory;
     }
 
     /**
@@ -35,5 +52,16 @@ public class SqlUpdater implements Updater {
     @Override
     public SqlUpdate update(String repository) {
         return new SqlExecutableUpdate(repository, jdbc);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public Update update(Class<?> repositType) {
+        if (mappingFactory == null) {
+            throw new JuormException("mappingFactory is null");
+        }
+        return new SqlExecutableUpdate(mappingFactory.getClassMapping(repositType), jdbc);
     }
 }

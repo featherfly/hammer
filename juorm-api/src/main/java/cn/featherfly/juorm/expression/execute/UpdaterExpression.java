@@ -17,7 +17,7 @@ public interface UpdaterExpression<U extends UpdateExpression<EU, C, L, V, VN>,
         L extends ConditionGroupLogicExpression<C, L>, V extends UpdateValueExpression<EU, C, L, Object, V, VN>,
         VN extends UpdateNumberValueExpression<EU, C, L, Number, V, VN>> {
     /**
-     * start update dsl for repository
+     * start update dsl for the repository
      *
      * @param repository repository
      * @return Delete
@@ -25,10 +25,18 @@ public interface UpdaterExpression<U extends UpdateExpression<EU, C, L, V, VN>,
     U update(Repository repository);
 
     /**
-     * start update dsl for repository
+     * start update dsl for the repository
      *
      * @param repository repository
      * @return Delete
      */
     U update(String repository);
+
+    /**
+     * start update dsl for the reposited type
+     *
+     * @param repositType repositType
+     * @return Delete
+     */
+    U update(Class<?> repositType);
 }
