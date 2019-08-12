@@ -51,64 +51,149 @@ public interface Jdbc {
     <T> T execute(ConnectionCallback<T> action);
 
     /**
-     * @param <T>       generic type
-     * @param sql       sql
-     * @param args      args
-     * @param rowMapper rowMapper
+     * @param sql
+     *            sql
+     * @param args
+     *            args
+     * @return map list
+     */
+    List<Map<String, Object>> query(String sql, Object[] args);
+
+    /**
+     * @param sql
+     *            sql
+     * @param args
+     *            args
+     * @return map list
+     */
+    List<Map<String, Object>> query(String sql, Map<String, Object> args);
+
+    /**
+     * @param <T>
+     *            generic type
+     * @param sql
+     *            sql
+     * @param args
+     *            args
+     * @param rowMapper
+     *            rowMapper
      * @return elementType object list
      */
     <T> List<T> query(String sql, Object[] args, RowMapper<T> rowMapper);
 
     /**
-     * @param <T>         generic type
-     * @param sql         sql
-     * @param args        args
-     * @param elementType return object type
+     * @param <T>
+     *            generic type
+     * @param sql
+     *            sql
+     * @param args
+     *            args
+     * @param elementType
+     *            return object type
      * @return elementType object list
      */
-    <T> List<T> queryList(String sql, Object[] args, Class<T> elementType);
+    <T> List<T> query(String sql, Object[] args, Class<T> elementType);
 
     /**
-     * @param <T>         generic type
-     * @param sql         sql
-     * @param args        args
-     * @param elementType return object type
+     * @param <T>
+     *            generic type
+     * @param sql
+     *            sql
+     * @param args
+     *            args
+     * @param rowMapper
+     *            rowMapper
      * @return elementType object list
      */
-    <T> List<T> queryList(String sql, Map<String, Object> args, Class<T> elementType);
+    <T> List<T> query(String sql, Map<String, Object> args,
+            RowMapper<T> rowMapper);
 
     /**
-     * @param <T>       generic type
-     * @param sql       sql
-     * @param args      args
-     * @param rowMapper rowMapper
+     * @param <T>
+     *            generic type
+     * @param sql
+     *            sql
+     * @param args
+     *            args
+     * @param elementType
+     *            return object type
+     * @return elementType object list
+     */
+    <T> List<T> query(String sql, Map<String, Object> args,
+            Class<T> elementType);
+
+    /**
+     * @param sql
+     *            sql
+     * @param args
+     *            args
+     * @param rowMapper
+     *            rowMapper
+     * @return map
+     */
+    Map<String, Object> querySingle(String sql, Map<String, Object> args);
+
+    /**
+     * @param sql
+     *            sql
+     * @param args
+     *            args
+     * @param rowMapper
+     *            rowMapper
+     * @return map
+     */
+    Map<String, Object> querySingle(String sql, Object[] args);
+
+    /**
+     * @param <T>
+     *            generic type
+     * @param sql
+     *            sql
+     * @param args
+     *            args
+     * @param rowMapper
+     *            rowMapper
      * @return single elementType object
      */
     <T> T querySingle(String sql, Object[] args, RowMapper<T> rowMapper);
 
     /**
-     * @param <T>       generic type
-     * @param sql       sql
-     * @param args      args
-     * @param rowMapper rowMapper
+     * @param <T>
+     *            generic type
+     * @param sql
+     *            sql
+     * @param args
+     *            args
+     * @param rowMapper
+     *            rowMapper
      * @return single elementType object
      */
-    <T> T querySingle(String sql, Map<String, Object> args, RowMapper<T> rowMapper);
+    <T> T querySingle(String sql, Map<String, Object> args,
+            RowMapper<T> rowMapper);
 
     /**
-     * @param <T>         generic type
-     * @param sql         sql
-     * @param args        args
-     * @param elementType return object type
+     * @param <T>
+     *            generic type
+     * @param sql
+     *            sql
+     * @param args
+     *            args
+     * @param elementType
+     *            return object type
      * @return elementType object list
      */
-    <T> T querySingle(String sql, Map<String, Object> args, Class<T> elementType);
+    <T> T querySingle(String sql, Map<String, Object> args,
+            Class<T> elementType);
 
     /**
-     * @param <T>         generic type
-     * @param sql         sql
-     * @param args        args
-     * @param elementType return object type
+     * @param <T>
+     *            generic type
+     * @param sql
+     *            sql
+     * @param args
+     *            args
+     * @param elementType
+     *            return object type
      * @return single elementType object
      */
     <T> T querySingle(String sql, Object[] args, Class<T> elementType);
