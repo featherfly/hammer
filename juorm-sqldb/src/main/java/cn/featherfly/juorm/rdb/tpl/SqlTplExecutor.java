@@ -137,7 +137,7 @@ public class SqlTplExecutor implements TplExecutor {
         root.put("and", new AndTemplateDirectiveModel(manager));
         root.put("or", new OrTemplateDirectiveModel(manager));
         root.put("columns", new PropertiesMappingDirectiveModel(mappingFactory, resultType));
-        root.put("properties", new PropertiesMappingDirectiveModel("repository", mappingFactory, resultType));
+        //        root.put("properties", new PropertiesMappingDirectiveModel("repository", mappingFactory, resultType));
         root.put("prop", new PropertiesMappingDirectiveModel("repo", mappingFactory, resultType));
         root.put("tpl", new IncludeModel());
         root.put("sql", new IncludeModel());

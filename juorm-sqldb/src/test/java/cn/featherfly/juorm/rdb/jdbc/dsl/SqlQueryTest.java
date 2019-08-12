@@ -1,7 +1,7 @@
 
 package cn.featherfly.juorm.rdb.jdbc.dsl;
 
-import java.util.List;
+import static org.testng.Assert.assertEquals;
 
 import org.testng.annotations.Test;
 
@@ -59,13 +59,16 @@ public class SqlQueryTest extends JdbcTestBase {
     }
 
     @Test
-    void testMapping2() {
+    void testNestedMapping() {
         SqlQuery query = new SqlQuery(jdbc, factory);
-        List<UserInfo> list;
-        list = query.find(UserInfo.class).where().eq("user.id", 1).list(UserInfo.class);
-        System.err.println(list);
+        Integer userId = 1;
+        UserInfo userInfo = query.find(UserInfo.class).where().eq("user.id", userId).single(UserInfo.class);
+        assertEquals(userInfo.getUser().getId(), userId);
+        System.out.println(userInfo);
 
-        list = query.find(UserInfo.class).where().eq("division.province", "四川").list(UserInfo.class);
-        System.err.println(list);
+        String province = "四川";
+        userInfo = query.find(UserInfo.class).where().eq("division.province", province).single(UserInfo.class);
+        assertEquals(userInfo.getDivision().getProvince(), province);
+        System.out.println(userInfo);
     }
 }
