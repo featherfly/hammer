@@ -11,8 +11,8 @@ import java.util.Locale;
 import java.util.Map;
 import java.util.Set;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.BeanWrapper;
 import org.springframework.beans.NotWritablePropertyException;
@@ -71,7 +71,7 @@ import cn.featherfly.common.lang.AssertIllegalArgument;
 public class NestedBeanPropertyRowMapper<T> implements RowMapper<T> {
 
     /** Logger available to subclasses. */
-    protected final Log logger = LogFactory.getLog(getClass());
+    protected final Logger logger = LoggerFactory.getLogger(getClass());
 
     /** The class we are mapping to. */
     @Nullable
@@ -317,14 +317,18 @@ public class NestedBeanPropertyRowMapper<T> implements RowMapper<T> {
                         @SuppressWarnings("rawtypes")
                         BeanProperty bp = bd.getChildBeanProperty(fieldOriginal);
                         if (bp != null) {
+                            if (rowNumber == 0) {
+                                logger.debug("Mapping column '{} as {}' to property '{}' of type '{}'",
+                                        rsmd.getColumnName(index), column, fieldOriginal, bp.getType().getName());
+                            }
                             value = JdbcUtils.getResultSetValue(rs, index, bp.getType());
                             bd.setProperty(mappedObject, fieldOriginal, value);
                         }
                     } else {
                         value = getColumnValue(rs, index, pd);
-                        if (rowNumber == 0 && logger.isDebugEnabled()) {
-                            logger.debug("Mapping column '" + column + "' to property '" + pd.getName() + "' of type '"
-                                    + ClassUtils.getQualifiedName(pd.getPropertyType()) + "'");
+                        if (rowNumber == 0) {
+                            logger.debug("Mapping column '{}' to property '{}' of type '{}'", column, pd.getName(),
+                                    ClassUtils.getQualifiedName(pd.getPropertyType()));
                         }
                         try {
                             bw.setPropertyValue(pd.getName(), value);
