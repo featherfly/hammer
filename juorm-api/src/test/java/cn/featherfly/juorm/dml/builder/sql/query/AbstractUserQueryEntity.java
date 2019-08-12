@@ -4,6 +4,7 @@ package cn.featherfly.juorm.dml.builder.sql.query;
 import java.math.BigDecimal;
 import java.util.Collection;
 import java.util.List;
+import java.util.Map;
 
 import cn.featherfly.common.structure.page.Page;
 import cn.featherfly.juorm.expression.query.QueryEntityPropertiesExpression;
@@ -17,7 +18,8 @@ import cn.featherfly.juorm.mapping.RowMapper;
  *
  * @author zhongj
  */
-public class AbstractUserQueryEntity<Q extends AbstractUserQueryEntity<Q>> implements
+public class AbstractUserQueryEntity<Q extends AbstractUserQueryEntity<Q>>
+        implements
         QueryEntityPropertiesExpression<Q, UserQueryConditionGroupExpression, UserQueryConditionGroupExpression> {
 
     /**
@@ -143,6 +145,15 @@ public class AbstractUserQueryEntity<Q extends AbstractUserQueryEntity<Q>> imple
     @Override
     public <N extends Number> N number(Class<N> type) {
 
+        return null;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public List<Map<String, Object>> list() {
+        // YUFEI_TODO Auto-generated method stub
         return null;
     }
 
