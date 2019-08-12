@@ -53,10 +53,10 @@ public class ClassMappingUtils {
             if (LangUtils.isEmpty(propertyMapping.getPropertyMappings())) {
                 if (StringUtils.isNotBlank(alias)) {
                     selectSql.append(alias).append(".").append(dialect.wrapName(propertyMapping.getColumnName()))
-                            .append(" ").append(propertyMapping.getPropertyName()).append(",");
+                            .append(" ").append(dialect.wrapName(propertyMapping.getPropertyName())).append(",");
                 } else {
                     selectSql.append(dialect.wrapName(propertyMapping.getColumnName())).append(" ")
-                            .append(propertyMapping.getPropertyName()).append(",");
+                            .append(dialect.wrapName(propertyMapping.getPropertyName())).append(",");
                 }
                 columnNum++;
             } else {

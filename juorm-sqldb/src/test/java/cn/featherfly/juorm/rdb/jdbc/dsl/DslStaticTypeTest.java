@@ -24,7 +24,7 @@ public class DslStaticTypeTest extends JdbcTestBase {
     @Test
     public void testQuery() {
         SqlQuery sqlQuery = new SqlQuery(jdbc);
-        UserSqlQuery userQuery = new UserSqlQuery(sqlQuery, factory);
+        UserSqlQuery userQuery = new UserSqlQuery(sqlQuery, mappingFactory);
         // userQuery.find().properties().name().pwd().limit(1)
         // .single(UserQuery.class);
 

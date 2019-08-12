@@ -44,12 +44,16 @@ public class SqlDslExpressionTest extends JdbcTestBase {
     String sex = "m";
     Integer age = 18;
 
+    JuormJdbcImpl juorm;
+
     @BeforeClass
     public void init() {
         params.add(name);
         params.add(pwd);
         params.add(sex);
         params.add(age);
+
+        juorm = new JuormJdbcImpl(jdbc, mappingFactory, configFactory);
     }
 
     @Test
@@ -60,7 +64,8 @@ public class SqlDslExpressionTest extends JdbcTestBase {
         System.out.println(builder.build());
         System.out.println(builder.getParams());
 
-        assertEquals("`name` = ? AND `pwd` = ? AND ( `sex` = ? OR `age` > ? )", builder.build());
+        assertEquals("`name` = ? AND `pwd` = ? AND ( `sex` = ? OR `age` > ? )".replaceAll("`",
+                jdbc.getDialect().getWrapSign()), builder.build());
         assertEquals(params, builder.getParams());
 
     }
@@ -74,21 +79,21 @@ public class SqlDslExpressionTest extends JdbcTestBase {
         System.out.println(del.build());
         System.out.println(del.getParams());
 
-        assertEquals("DELETE FROM `user` WHERE `name` = ? AND `pwd` = ? AND ( `sex` = ? OR `age` > ? )", del.build());
+        assertEquals("DELETE FROM `user` WHERE `name` = ? AND `pwd` = ? AND ( `sex` = ? OR `age` > ? )".replaceAll("`",
+                jdbc.getDialect().getWrapSign()), del.build());
         assertEquals(params, del.getParams());
 
     }
 
     @Test
     public void testSqlTypeDelete() {
-        JuormJdbcImpl juorm = new JuormJdbcImpl(jdbc, factory);
         int size = 10;
         for (int i = 0; i < size; i++) {
             User u = new User();
             u.setUsername("name_delete_" + UUIDGenerator.generateUUID22Letters());
             juorm.save(u);
         }
-        SqlDeleter sqlDeleter = new SqlDeleter(jdbc, factory);
+        SqlDeleter sqlDeleter = new SqlDeleter(jdbc, mappingFactory);
         int no = sqlDeleter.delete(User.class).where().sw("username", "name_delete_").execute();
         assertTrue(no == size);
 
@@ -103,7 +108,6 @@ public class SqlDslExpressionTest extends JdbcTestBase {
 
     @Test
     public void testSqlTypeDelete2() {
-        JuormJdbcImpl juorm = new JuormJdbcImpl(jdbc, factory);
         int size = 10;
         int userId = 10;
         for (int i = 0; i < size; i++) {
@@ -111,7 +115,7 @@ public class SqlDslExpressionTest extends JdbcTestBase {
             u.setUser(new User(userId));
             juorm.save(u);
         }
-        SqlDeleter sqlDeleter = new SqlDeleter(jdbc, factory);
+        SqlDeleter sqlDeleter = new SqlDeleter(jdbc, mappingFactory);
         int no = sqlDeleter.delete(UserInfo.class).where().eq("user.id", userId).execute();
         assertEquals(no, size);
 
@@ -143,7 +147,9 @@ public class SqlDslExpressionTest extends JdbcTestBase {
         System.out.println(e);
         System.out.println(e.getParams());
 
-        assertEquals("UPDATE `user` SET `name` = ?, `pwd` = ?, `age` = `age` + ? WHERE `sex` = ?", e.toString());
+        String sql = "UPDATE `user` SET `name` = ?, `pwd` = ?, `age` = `age` + ? WHERE `sex` = ?";
+
+        assertEquals(sql.replaceAll("`", jdbc.getDialect().getWrapSign()), e.toString());
         assertEquals(params, e.getParams());
 
         e = (SqlConditionGroupExpression) updater.update(new SimpleRepository("user")).property("name").set(name)
@@ -152,16 +158,17 @@ public class SqlDslExpressionTest extends JdbcTestBase {
         System.out.println(e);
         System.out.println(e.getParams());
 
-        assertEquals("UPDATE `user` SET `name` = ?, `pwd` = ?, `age` = `age` + ? WHERE `sex` = ?", e.toString());
+        assertEquals("UPDATE `user` SET `name` = ?, `pwd` = ?, `age` = `age` + ? WHERE `sex` = ?".replaceAll("`",
+                jdbc.getDialect().getWrapSign()), e.toString());
         assertEquals(params, e.getParams());
 
     }
 
     @Test
     public void testSqlTypeUpdateExpression() {
-        SqlUpdater sqlUpdater = new SqlUpdater(jdbc, factory);
+        SqlUpdater sqlUpdater = new SqlUpdater(jdbc, mappingFactory);
 
-        int no = sqlUpdater.update(User.class).property("password").set("111111").where().property("id").eq("3")
+        int no = sqlUpdater.update(User.class).property("password").set("a11111").where().property("id").eq(3)
                 .execute();
         assertTrue(no == 1);
 
@@ -172,7 +179,7 @@ public class SqlDslExpressionTest extends JdbcTestBase {
 
     @Test
     public void testSqlTypeUpdateExpression2() {
-        SqlUpdater sqlUpdater = new SqlUpdater(jdbc, factory);
+        SqlUpdater sqlUpdater = new SqlUpdater(jdbc, mappingFactory);
 
         int no = sqlUpdater.update(UserInfo.class).property("province").set("四川1").where().property("id").eq(1)
                 .execute();

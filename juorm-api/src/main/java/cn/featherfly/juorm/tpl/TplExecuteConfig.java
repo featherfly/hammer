@@ -14,9 +14,11 @@ public class TplExecuteConfig {
         LIST, PAGE, PAGINATION, EXECUTE
     }
 
-    private String name;
+    private String fileName;
 
-    private String directory;
+    private String fileDirectory;
+
+    private String name;
 
     private Type type = Type.LIST;
 
@@ -26,7 +28,7 @@ public class TplExecuteConfig {
 
     private String executeId;
 
-    private String tplPath;
+    private String tplName;
 
     /**
      * 返回query
@@ -87,6 +89,24 @@ public class TplExecuteConfig {
      *
      * @return name
      */
+    public String getFileName() {
+        return fileName;
+    }
+
+    /**
+     * 设置name
+     *
+     * @param name name
+     */
+    public void setFileName(String name) {
+        fileName = name;
+    }
+
+    /**
+     * 返回name
+     *
+     * @return name
+     */
     public String getName() {
         return name;
     }
@@ -105,8 +125,8 @@ public class TplExecuteConfig {
      *
      * @return directory
      */
-    public String getDirectory() {
-        return directory;
+    public String getFileDirectory() {
+        return fileDirectory;
     }
 
     /**
@@ -114,8 +134,8 @@ public class TplExecuteConfig {
      *
      * @param directory directory
      */
-    public void setDirectory(String directory) {
-        this.directory = directory;
+    public void setFileDirectory(String directory) {
+        fileDirectory = directory;
     }
 
     /**
@@ -141,8 +161,8 @@ public class TplExecuteConfig {
      *
      * @return tplPath
      */
-    public String getTplPath() {
-        return tplPath;
+    public String getTplName() {
+        return tplName;
     }
 
     /**
@@ -150,8 +170,8 @@ public class TplExecuteConfig {
      *
      * @param tplPath tplPath
      */
-    public void setTplPath(String tplPath) {
-        this.tplPath = tplPath;
+    public void setTplName(String tplPath) {
+        tplName = tplPath;
     }
 
     /**
@@ -159,7 +179,8 @@ public class TplExecuteConfig {
      */
     @Override
     public String toString() {
-        return "TplExecuteConfig [name=" + name + ", directory=" + directory + ", type=" + type + ", query=" + query
-                + ", count=" + count + ", executeId=" + executeId + ", tplPath=" + tplPath + "]";
+        return "TplExecuteConfig [fileName=" + fileName + ", fileDirectory=" + fileDirectory + ", name=" + name
+                + ", type=" + type + ", query=" + query + ", count=" + count + ", executeId=" + executeId + ", tplName="
+                + tplName + "]";
     }
 }

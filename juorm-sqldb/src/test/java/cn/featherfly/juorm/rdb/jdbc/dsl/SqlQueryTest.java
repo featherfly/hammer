@@ -53,14 +53,14 @@ public class SqlQueryTest extends JdbcTestBase {
 
     @Test
     void testMapping() {
-        SqlQuery query = new SqlQuery(jdbc, factory);
+        SqlQuery query = new SqlQuery(jdbc, mappingFactory);
         query.find(User.class).property("username", "pwd", "age").where().eq("username", "yufei").and()
                 .eq("pwd", "123456").and().group().gt("age", 18).and().lt("age", 60).list(User.class);
     }
 
     @Test
     void testNestedMapping() {
-        SqlQuery query = new SqlQuery(jdbc, factory);
+        SqlQuery query = new SqlQuery(jdbc, mappingFactory);
         Integer userId = 1;
         UserInfo userInfo = query.find(UserInfo.class).where().eq("user.id", userId).single(UserInfo.class);
         assertEquals(userInfo.getUser().getId(), userId);

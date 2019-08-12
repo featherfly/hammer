@@ -7,7 +7,9 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Enumeration;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Map;
+import java.util.Set;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -43,6 +45,8 @@ public class TplConfigFactoryImpl implements TplConfigFactory {
 
     public static final String DEFAULT_PREFIX = "";
 
+    private static final String MULTI_SAME_EXECUTEID = "!" + ID_SIGN + "!";
+
     private ObjectMapper mapper;
 
     private boolean devMode;
@@ -52,6 +56,8 @@ public class TplConfigFactoryImpl implements TplConfigFactory {
     private String prefix = DEFAULT_PREFIX;
 
     private Map<String, TplExecuteConfigs> configs = new HashMap<>();
+
+    private Map<String, String> executIdFileMap = new HashMap<>();
 
     private ResourcePatternResolver resourcePatternResolver;
 
@@ -91,6 +97,7 @@ public class TplConfigFactoryImpl implements TplConfigFactory {
                         String rootPath = enums.nextElement().getPath();
                         if (path.startsWith(rootPath)) {
                             path = StringUtils.substring(path, rootPath.length());
+                            break;
                         }
                     }
                     logger.debug("init read config : {}", path);
@@ -122,15 +129,6 @@ public class TplConfigFactoryImpl implements TplConfigFactory {
     }
 
     /**
-     * 设置suffix
-     *
-     * @param suffix suffix
-     */
-    public void setSuffix(String suffix) {
-        this.suffix = suffix;
-    }
-
-    /**
      * 返回prefix
      *
      * @return prefix
@@ -139,25 +137,18 @@ public class TplConfigFactoryImpl implements TplConfigFactory {
         return prefix;
     }
 
-    /**
-     * 设置prefix
-     *
-     * @param prefix prefix
-     */
-    public void setPrefix(String prefix) {
-        this.prefix = prefix;
-    }
-
     private TplExecuteConfigs readConfig(final String filePath) {
         String finalFilePath = toFinalFilePath(filePath);
-        final String name = StringUtils.substringAfterLast(finalFilePath, "/");
-        final String directory = StringUtils.substringBeforeLast(finalFilePath, "/");
+        final String fileName = StringUtils.substringAfterLast(finalFilePath, "/");
+        final String fileDirectory = StringUtils.substringBeforeLast(finalFilePath, "/");
+        final String name = StringUtils.substringBeforeLast(finalFilePath, suffix);
         try {
             TplExecuteConfigs tplExecuteConfigs = mapper.readerFor(TplExecuteConfigs.class)
                     .readValue(ClassLoaderUtils.getResourceAsStream(finalFilePath, TplConfigFactoryImpl.class));
             TplExecuteConfigs newConfigs = new TplExecuteConfigs();
             newConfigs.setFilePath(finalFilePath);
             newConfigs.setName(org.apache.commons.lang3.StringUtils.removeEnd(finalFilePath, suffix));
+            Set<String> executeIds = new HashSet<>();
             tplExecuteConfigs.forEach((k, v) -> {
                 TplExecuteConfig config = new TplExecuteConfig();
                 if (v instanceof String) {
@@ -175,39 +166,51 @@ public class TplConfigFactoryImpl implements TplConfigFactory {
                         config.setType(Type.valueOf(map.get("type").toString()));
                     }
                 }
-                config.setTplPath(newConfigs.getName() + IdSign + k);
+                if (k.contains(ID_SIGN)) {
+                    throw new JuormException("invalidate character [" + ID_SIGN + "] in executeId [" + k + "]");
+                }
+                if (executeIds.contains(k)) {
+                    throw new JuormException("duplicated executeId [" + k + "] in [" + finalFilePath + "]");
+                }
+                executeIds.add(k);
+
+                config.setTplName(newConfigs.getName() + ID_SIGN + k);
                 config.setExecuteId(k);
                 config.setName(name);
-                config.setDirectory(directory);
-                logger.debug("filePath -> {} , finalFilePath -> {} ,  config -> {}", filePath, finalFilePath, config);
+                config.setFileName(fileName);
+                config.setFileDirectory(fileDirectory);
+                logger.debug("filePath -> {} , finalFilePath -> {} ,  {} -> {}", filePath, finalFilePath, k, config);
                 //                System.out.println(config);
                 newConfigs.put(k, config);
+                if (executIdFileMap.containsKey(config.getExecuteId())
+                        && !executIdFileMap.get(config.getExecuteId()).equals(finalFilePath)) {
+                    executIdFileMap.put(config.getExecuteId(), MULTI_SAME_EXECUTEID);
+                } else {
+                    executIdFileMap.put(config.getExecuteId(), finalFilePath);
+                }
             });
+            logger.debug("filePath -> {} , finalFilePath -> {} ,  configs -> {}", filePath, finalFilePath, newConfigs);
             configs.put(finalFilePath, newConfigs);
             return newConfigs;
         } catch (IOException e) {
             // TODO 使用exceptioncode
-            throw new JuormException("exception when read config file " + filePath, e);
+            throw new JuormException("exception when read config file " + finalFilePath + " with argu " + filePath, e);
         }
 
     }
 
     private String toFinalFilePath(String filePath) {
         String result = filePath;
-        if (!result.startsWith("/")) {
-            result = prefix + result;
-        }
+        // 表示传入不是文件地址字符串，不是完整的地址
         if (!result.endsWith(suffix)) {
             result = result + suffix;
+            if (!result.startsWith("/")) {
+                result = prefix + result;
+            }
         }
         if (result.startsWith("/")) {
             result = result.substring(1);
         }
-        return result;
-    }
-
-    private String[] getFilePathAndSqlId(String sqlId) {
-        String[] result = sqlId.split(IdSign);
         return result;
     }
 
@@ -235,20 +238,51 @@ public class TplConfigFactoryImpl implements TplConfigFactory {
      * {@inheritDoc}
      */
     @Override
-    public TplExecuteConfig getConfig(String sqlId) {
-        String[] result = getFilePathAndSqlId(sqlId);
-        String filePath = result[0];
-        String sId = result[1];
+    public TplExecuteConfig getConfig(String executeId) {
+        executeId = StringUtils.substringBeforeLast(executeId, COUNT_SUFFIX);
+        String[] result = getFilePathAndexecuteId(executeId);
+        String filePath = null;
+        String eId = null;
+        if (result.length == 1) {
+            filePath = getFilePath(executeId);
+            eId = executeId;
+        } else {
+            filePath = result[0];
+            eId = result[1];
+        }
         TplExecuteConfigs configs = getConfigs(filePath);
         if (configs == null) {
             // TODO 使用exceptioncode
             throw new JuormException("file " + filePath + " not find");
         }
-        TplExecuteConfig config = configs.getConfig(sId);
+        TplExecuteConfig config = configs.getConfig(eId);
         if (config == null) {
             // TODO 使用exceptioncode
-            throw new JuormException("sqlId " + sId + " not find in " + filePath);
+            throw new JuormException("executeId " + eId + " not find in " + filePath);
         }
         return config;
+    }
+
+    private String[] getFilePathAndexecuteId(String executeId) {
+        String[] result = executeId.split(ID_SIGN);
+        return result;
+    }
+
+    private String getFilePath(String executeId) {
+        String file = executIdFileMap.get(executeId);
+        if (MULTI_SAME_EXECUTEID.equals(file)) {
+            // TODO 使用exceptioncode
+            throw new JuormException("duplicated executeId[" + executeId
+                    + "], you will use full executeId like dir/file" + ID_SIGN + executeId);
+        }
+        return file;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public TplExecuteConfig getConfig(TplExecuteId executeId) {
+        return getConfig(executeId.getId());
     }
 }

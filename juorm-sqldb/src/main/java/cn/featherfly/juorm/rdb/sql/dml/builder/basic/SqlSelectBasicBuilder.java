@@ -5,13 +5,13 @@ import java.util.Collection;
 import java.util.List;
 
 import cn.featherfly.common.constant.Chars;
+import cn.featherfly.common.db.dialect.Dialect.Keyworld;
 import cn.featherfly.common.lang.AssertIllegalArgument;
 import cn.featherfly.common.lang.LangUtils;
 import cn.featherfly.juorm.operator.AggregateFunction;
 import cn.featherfly.juorm.rdb.jdbc.mapping.ClassMapping;
 import cn.featherfly.juorm.rdb.jdbc.mapping.ClassMappingUtils;
 import cn.featherfly.juorm.rdb.sql.dialect.Dialect;
-import cn.featherfly.juorm.rdb.sql.dialect.Dialect.Keyworld;
 import cn.featherfly.juorm.rdb.sql.dml.SqlBuilder;
 import cn.featherfly.juorm.rdb.sql.model.SelectColumnElement;
 

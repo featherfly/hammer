@@ -9,7 +9,7 @@
         </layout>
     </appender>
 
-    <logger name="cn.featherfly.juorm.rdb" additivity="false">
+    <logger name="cn.featherfly.juorm" additivity="false">
         <level value="debug"/>
         <appender-ref ref="console"/>
     </logger>
