@@ -28,9 +28,9 @@ public class JdbcTestBase {
     protected MappingFactory factory;
 
     @BeforeClass
-    public void beforeClass() {
-        DOMConfigurator.configure(
-                ClassLoaderUtils.getResource("log4j.xml", JdbcTestBase.class));
+    public void beforeClassMySql() {
+        DOMConfigurator.configure(ClassLoaderUtils.getResource("log4j.xml", JdbcTestBase.class));
+
         BasicDataSource dataSource = new BasicDataSource();
         dataSource.setUrl("jdbc:mysql://127.0.0.1:3306/juorm_jdbc");
         dataSource.setDriverClassName("com.mysql.jdbc.Driver");
@@ -38,11 +38,37 @@ public class JdbcTestBase {
         dataSource.setPassword("123456");
 
         jdbc = new SpringJdbcTemplateImpl(dataSource, Dialects.MYSQL);
-
-        DatabaseMetadata metadata = DatabaseMetadataManager.getDefaultManager()
-                .create(dataSource);
+        DatabaseMetadata metadata = DatabaseMetadataManager.getDefaultManager().create(dataSource);
 
         factory = new MappingFactory(metadata, Dialects.MYSQL);
+
+        // factory.getClassNameConversions().add(new ClassNameJpaConversion());
+        // factory.getClassNameConversions().add(new
+        // ClassNameUnderlineConversion());
+        // factory.getPropertyNameConversions().add(new
+        // PropertyNameJpaConversion());
+        // factory.getPropertyNameConversions().add(new
+        // PropertyNameUnderlineConversion());
+
+        ConstantConfigurator.config();
+    }
+
+    //    @BeforeClass
+    public void beforeClassPostgresql() {
+        DOMConfigurator.configure(ClassLoaderUtils.getResource("log4j.xml", JdbcTestBase.class));
+        BasicDataSource dataSource = new BasicDataSource();
+        dataSource.setUrl("jdbc:postgresql://localhost:5432/juorm_jdbc");
+        dataSource.setDriverClassName("org.postgresql.Driver");
+        dataSource.setUsername("postgres");
+        dataSource.setPassword("123456");
+
+        //        PostgreSQLDialect postgreSQLDialect = Dialects.POSTGRESQL;
+        //        postgreSQLDialect.setTableAndColumnNameUppercase(false);
+        //        jdbc = new SpringJdbcTemplateImpl(dataSource, postgreSQLDialect);
+        jdbc = new SpringJdbcTemplateImpl(dataSource, Dialects.POSTGRESQL);
+        DatabaseMetadata metadata = DatabaseMetadataManager.getDefaultManager().create(dataSource, "juorm_jdbc");
+
+        factory = new MappingFactory(metadata, Dialects.POSTGRESQL);
         // factory.getClassNameConversions().add(new ClassNameJpaConversion());
         // factory.getClassNameConversions().add(new
         // ClassNameUnderlineConversion());

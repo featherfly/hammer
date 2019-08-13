@@ -3,6 +3,7 @@ package cn.featherfly.juorm.rdb.jdbc.operate;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.Statement;
+import java.util.ArrayList;
 import java.util.List;
 
 import cn.featherfly.common.bean.BeanUtils;
@@ -97,29 +98,41 @@ public class InsertOperate<T> extends AbstractExecuteOperate<T> {
     @Override
     public void initSql() {
         StringBuilder insertSql = new StringBuilder();
-        insertSql.append("insert into ").append(classMapping.getTableName()).append(" ( ");
-        int columnNum = 0;
+        insertSql.append("insert into ").append(jdbc.getDialect().wrapName(classMapping.getTableName())).append(" ( ");
+        List<PropertyMapping> pms = new ArrayList<>();
         for (PropertyMapping pm : classMapping.getPropertyMappings()) {
             if (LangUtils.isEmpty(pm.getPropertyMappings())) {
-                insertSql.append(pm.getColumnName()).append(",");
-                columnNum++;
-                propertyPositions.put(columnNum, pm.getPropertyName());
+                insertSql.append(jdbc.getDialect().wrapName(pm.getColumnName())).append(",");
+                pms.add(pm);
+                //                propertyPositions.put(pms.size(), pm.getPropertyName());
             } else {
                 for (PropertyMapping pm2 : pm.getPropertyMappings()) {
-                    insertSql.append(pm2.getColumnName()).append(",");
-                    columnNum++;
-                    propertyPositions.put(columnNum, pm.getPropertyName() + "." + pm2.getPropertyName());
+                    insertSql.append(jdbc.getDialect().wrapName(pm2.getColumnName())).append(",");
+                    pms.add(pm2);
+                    //                    propertyPositions.put(pms.size(), pm.getPropertyName() + "." + pm2.getPropertyName());
                 }
             }
         }
-        if (columnNum > 0) {
+        if (pms.size() > 0) {
             insertSql.deleteCharAt(insertSql.length() - 1);
         }
         insertSql.append(" ) values( ");
-        for (int i = 0; i < columnNum; i++) {
-            insertSql.append("?").append(",");
+        int paramNum = 0;
+        for (int i = 0; i < pms.size(); i++) {
+            PropertyMapping pm = pms.get(i);
+            if (pm.isPrimaryKey() && pm.getDefaultValue() != null && !"null".equalsIgnoreCase(pm.getDefaultValue())) {
+                insertSql.append(pm.getDefaultValue()).append(",");
+            } else {
+                paramNum++;
+                insertSql.append("?").append(",");
+                if (pm.getParent() == null) {
+                    propertyPositions.put(paramNum, pm.getPropertyName());
+                } else {
+                    propertyPositions.put(paramNum, pm.getParent().getPropertyName() + "." + pm.getPropertyName());
+                }
+            }
         }
-        if (columnNum > 0) {
+        if (pms.size() > 0) {
             insertSql.deleteCharAt(insertSql.length() - 1);
         }
         insertSql.append(" )");

@@ -10,9 +10,9 @@ package cn.featherfly.juorm.rdb.sql.dialect;
  */
 public interface Dialects {
 
-    Dialect MYSQL = new MySQLDialect();
+    MySQLDialect MYSQL = new MySQLDialect();
 
-    Dialect ORACLE = new OracleDialect();
+    OracleDialect ORACLE = new OracleDialect();
 
-    Dialect POSTGRESQL = new PostgreSQLDialect();
+    PostgreSQLDialect POSTGRESQL = new PostgreSQLDialect();
 }

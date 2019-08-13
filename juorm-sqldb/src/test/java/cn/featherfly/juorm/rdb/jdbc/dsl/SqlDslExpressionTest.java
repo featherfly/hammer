@@ -60,7 +60,8 @@ public class SqlDslExpressionTest extends JdbcTestBase {
         System.out.println(builder.build());
         System.out.println(builder.getParams());
 
-        assertEquals("`name` = ? AND `pwd` = ? AND ( `sex` = ? OR `age` > ? )", builder.build());
+        assertEquals("`name` = ? AND `pwd` = ? AND ( `sex` = ? OR `age` > ? )".replaceAll("`",
+                jdbc.getDialect().getWrapSign()), builder.build());
         assertEquals(params, builder.getParams());
 
     }
@@ -74,7 +75,8 @@ public class SqlDslExpressionTest extends JdbcTestBase {
         System.out.println(del.build());
         System.out.println(del.getParams());
 
-        assertEquals("DELETE FROM `user` WHERE `name` = ? AND `pwd` = ? AND ( `sex` = ? OR `age` > ? )", del.build());
+        assertEquals("DELETE FROM `user` WHERE `name` = ? AND `pwd` = ? AND ( `sex` = ? OR `age` > ? )".replaceAll("`",
+                jdbc.getDialect().getWrapSign()), del.build());
         assertEquals(params, del.getParams());
 
     }
@@ -143,7 +145,9 @@ public class SqlDslExpressionTest extends JdbcTestBase {
         System.out.println(e);
         System.out.println(e.getParams());
 
-        assertEquals("UPDATE `user` SET `name` = ?, `pwd` = ?, `age` = `age` + ? WHERE `sex` = ?", e.toString());
+        String sql = "UPDATE `user` SET `name` = ?, `pwd` = ?, `age` = `age` + ? WHERE `sex` = ?";
+
+        assertEquals(sql.replaceAll("`", jdbc.getDialect().getWrapSign()), e.toString());
         assertEquals(params, e.getParams());
 
         e = (SqlConditionGroupExpression) updater.update(new SimpleRepository("user")).property("name").set(name)
@@ -152,7 +156,8 @@ public class SqlDslExpressionTest extends JdbcTestBase {
         System.out.println(e);
         System.out.println(e.getParams());
 
-        assertEquals("UPDATE `user` SET `name` = ?, `pwd` = ?, `age` = `age` + ? WHERE `sex` = ?", e.toString());
+        assertEquals("UPDATE `user` SET `name` = ?, `pwd` = ?, `age` = `age` + ? WHERE `sex` = ?".replaceAll("`",
+                jdbc.getDialect().getWrapSign()), e.toString());
         assertEquals(params, e.getParams());
 
     }
@@ -161,7 +166,7 @@ public class SqlDslExpressionTest extends JdbcTestBase {
     public void testSqlTypeUpdateExpression() {
         SqlUpdater sqlUpdater = new SqlUpdater(jdbc, factory);
 
-        int no = sqlUpdater.update(User.class).property("password").set("111111").where().property("id").eq("3")
+        int no = sqlUpdater.update(User.class).property("password").set("a11111").where().property("id").eq(3)
                 .execute();
         assertTrue(no == 1);
 

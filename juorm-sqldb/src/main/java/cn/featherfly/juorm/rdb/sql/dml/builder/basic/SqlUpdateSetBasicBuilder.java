@@ -6,8 +6,8 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import cn.featherfly.common.constant.Chars;
+import cn.featherfly.common.db.dialect.Dialect.Keyworld;
 import cn.featherfly.juorm.rdb.sql.dialect.Dialect;
-import cn.featherfly.juorm.rdb.sql.dialect.Dialect.Keyworld;
 import cn.featherfly.juorm.rdb.sql.dml.SqlBuilder;
 import cn.featherfly.juorm.rdb.sql.model.ParamedColumnElement;
 import cn.featherfly.juorm.rdb.sql.model.UpdateColumnElement;

@@ -29,6 +29,8 @@ public class PropertyMapping {
 
     private boolean primaryKey;
 
+    private String defaultValue;
+
     //    private String propertyPath;
 
     private Map<String, PropertyMapping> propertyMappings = new HashMap<>(0);
@@ -94,7 +96,7 @@ public class PropertyMapping {
      * @param columnName 设置columnName
      */
     public void setColumnName(String columnName) {
-        this.columnName = columnName.toUpperCase();
+        this.columnName = columnName;
     }
 
     //    /**
@@ -114,6 +116,24 @@ public class PropertyMapping {
     //    public void setPropertyPath(String propertyPath) {
     //        this.propertyPath = propertyPath;
     //    }
+
+    /**
+     * 返回defaultValue
+     *
+     * @return defaultValue
+     */
+    public String getDefaultValue() {
+        return defaultValue;
+    }
+
+    /**
+     * 设置defaultValue
+     *
+     * @param defaultValue defaultValue
+     */
+    public void setDefaultValue(String defaultValue) {
+        this.defaultValue = defaultValue;
+    }
 
     /**
      * 返回parent
