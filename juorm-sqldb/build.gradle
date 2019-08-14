@@ -1,5 +1,6 @@
 dependencies {
     compile project(":juorm-api")
+    compile project(":juorm-core")
 
     compile group: 'cn.featherfly', name: 'featherfly-common', version: '1.7.1'
     compile group: 'cn.featherfly', name: 'featherfly-db', version: '1.5.2'

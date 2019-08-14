@@ -1,0 +1,10 @@
+dependencies {
+    compile project(":juorm-api")
+    
+	//compile group: 'cn.featherfly', name: 'featherfly-db', version: '1.4.9'
+    compile group: 'cn.featherfly', name: 'featherfly-constant-core', version: '1.4.3'
+	compile group: 'org.hibernate.javax.persistence', name: 'hibernate-jpa-2.1-api', version: '1.0.2.Final'
+	compile group: 'com.fasterxml.jackson.core', name: 'jackson-databind', version: '2.9.9.2'
+	compile group: 'com.fasterxml.jackson.dataformat', name: 'jackson-dataformat-yaml', version: '2.9.9'
+	compile group: 'org.javassist', name: 'javassist', version: '3.25.0-GA'
+}

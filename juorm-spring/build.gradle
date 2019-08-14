@@ -1,0 +1,6 @@
+dependencies {
+	//compile group: 'cn.featherfly', name: 'featherfly-db', version: '1.4.9'
+    compile project(":juorm-core")
+    
+    compile 'org.springframework:spring-context:5.1.8.RELEASE'
+}
