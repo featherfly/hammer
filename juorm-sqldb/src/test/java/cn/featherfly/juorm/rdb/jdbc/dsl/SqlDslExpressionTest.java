@@ -44,12 +44,16 @@ public class SqlDslExpressionTest extends JdbcTestBase {
     String sex = "m";
     Integer age = 18;
 
+    JuormJdbcImpl juorm;
+
     @BeforeClass
     public void init() {
         params.add(name);
         params.add(pwd);
         params.add(sex);
         params.add(age);
+
+        juorm = new JuormJdbcImpl(jdbc, mappingFactory, configFactory);
     }
 
     @Test
@@ -83,14 +87,13 @@ public class SqlDslExpressionTest extends JdbcTestBase {
 
     @Test
     public void testSqlTypeDelete() {
-        JuormJdbcImpl juorm = new JuormJdbcImpl(jdbc, factory);
         int size = 10;
         for (int i = 0; i < size; i++) {
             User u = new User();
             u.setUsername("name_delete_" + UUIDGenerator.generateUUID22Letters());
             juorm.save(u);
         }
-        SqlDeleter sqlDeleter = new SqlDeleter(jdbc, factory);
+        SqlDeleter sqlDeleter = new SqlDeleter(jdbc, mappingFactory);
         int no = sqlDeleter.delete(User.class).where().sw("username", "name_delete_").execute();
         assertTrue(no == size);
 
@@ -105,7 +108,6 @@ public class SqlDslExpressionTest extends JdbcTestBase {
 
     @Test
     public void testSqlTypeDelete2() {
-        JuormJdbcImpl juorm = new JuormJdbcImpl(jdbc, factory);
         int size = 10;
         int userId = 10;
         for (int i = 0; i < size; i++) {
@@ -113,7 +115,7 @@ public class SqlDslExpressionTest extends JdbcTestBase {
             u.setUser(new User(userId));
             juorm.save(u);
         }
-        SqlDeleter sqlDeleter = new SqlDeleter(jdbc, factory);
+        SqlDeleter sqlDeleter = new SqlDeleter(jdbc, mappingFactory);
         int no = sqlDeleter.delete(UserInfo.class).where().eq("user.id", userId).execute();
         assertEquals(no, size);
 
@@ -164,7 +166,7 @@ public class SqlDslExpressionTest extends JdbcTestBase {
 
     @Test
     public void testSqlTypeUpdateExpression() {
-        SqlUpdater sqlUpdater = new SqlUpdater(jdbc, factory);
+        SqlUpdater sqlUpdater = new SqlUpdater(jdbc, mappingFactory);
 
         int no = sqlUpdater.update(User.class).property("password").set("a11111").where().property("id").eq(3)
                 .execute();
@@ -177,7 +179,7 @@ public class SqlDslExpressionTest extends JdbcTestBase {
 
     @Test
     public void testSqlTypeUpdateExpression2() {
-        SqlUpdater sqlUpdater = new SqlUpdater(jdbc, factory);
+        SqlUpdater sqlUpdater = new SqlUpdater(jdbc, mappingFactory);
 
         int no = sqlUpdater.update(UserInfo.class).property("province").set("四川1").where().property("id").eq(1)
                 .execute();

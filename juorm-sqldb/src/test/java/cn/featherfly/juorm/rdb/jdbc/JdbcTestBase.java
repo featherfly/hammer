@@ -13,6 +13,8 @@ import cn.featherfly.constant.ConstantConfigurator;
 import cn.featherfly.juorm.rdb.jdbc.mapping.MappingFactory;
 import cn.featherfly.juorm.rdb.jdbc.vo.Role;
 import cn.featherfly.juorm.rdb.sql.dialect.Dialects;
+import cn.featherfly.juorm.tpl.TplConfigFactory;
+import cn.featherfly.juorm.tpl.TplConfigFactoryImpl;
 
 /**
  * <p>
@@ -25,11 +27,15 @@ public class JdbcTestBase {
 
     protected Jdbc jdbc;
 
-    protected MappingFactory factory;
+    protected MappingFactory mappingFactory;
+
+    protected TplConfigFactory configFactory;
 
     @BeforeClass
     public void beforeClassMySql() {
         DOMConfigurator.configure(ClassLoaderUtils.getResource("log4j.xml", JdbcTestBase.class));
+
+        ConstantConfigurator.config();
 
         BasicDataSource dataSource = new BasicDataSource();
         dataSource.setUrl("jdbc:mysql://127.0.0.1:3306/juorm_jdbc");
@@ -40,7 +46,7 @@ public class JdbcTestBase {
         jdbc = new SpringJdbcTemplateImpl(dataSource, Dialects.MYSQL);
         DatabaseMetadata metadata = DatabaseMetadataManager.getDefaultManager().create(dataSource);
 
-        factory = new MappingFactory(metadata, Dialects.MYSQL);
+        mappingFactory = new MappingFactory(metadata, Dialects.MYSQL);
 
         // factory.getClassNameConversions().add(new ClassNameJpaConversion());
         // factory.getClassNameConversions().add(new
@@ -50,12 +56,14 @@ public class JdbcTestBase {
         // factory.getPropertyNameConversions().add(new
         // PropertyNameUnderlineConversion());
 
-        ConstantConfigurator.config();
+        configFactory = new TplConfigFactoryImpl("tpl/");
     }
 
     //    @BeforeClass
     public void beforeClassPostgresql() {
         DOMConfigurator.configure(ClassLoaderUtils.getResource("log4j.xml", JdbcTestBase.class));
+        ConstantConfigurator.config();
+
         BasicDataSource dataSource = new BasicDataSource();
         dataSource.setUrl("jdbc:postgresql://localhost:5432/juorm_jdbc");
         dataSource.setDriverClassName("org.postgresql.Driver");
@@ -68,16 +76,9 @@ public class JdbcTestBase {
         jdbc = new SpringJdbcTemplateImpl(dataSource, Dialects.POSTGRESQL);
         DatabaseMetadata metadata = DatabaseMetadataManager.getDefaultManager().create(dataSource, "juorm_jdbc");
 
-        factory = new MappingFactory(metadata, Dialects.POSTGRESQL);
-        // factory.getClassNameConversions().add(new ClassNameJpaConversion());
-        // factory.getClassNameConversions().add(new
-        // ClassNameUnderlineConversion());
-        // factory.getPropertyNameConversions().add(new
-        // PropertyNameJpaConversion());
-        // factory.getPropertyNameConversions().add(new
-        // PropertyNameUnderlineConversion());
+        mappingFactory = new MappingFactory(metadata, Dialects.POSTGRESQL);
 
-        ConstantConfigurator.config();
+        configFactory = new TplConfigFactoryImpl("tpl/");
     }
 
     Role role() {

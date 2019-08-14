@@ -29,7 +29,7 @@ public class JuormJdbcTest extends JdbcTestBase {
 
     @BeforeClass
     void before() {
-        juormJdbc = new JuormJdbcImpl(jdbc, factory);
+        juormJdbc = new JuormJdbcImpl(jdbc, mappingFactory, configFactory);
     }
 
     @Test

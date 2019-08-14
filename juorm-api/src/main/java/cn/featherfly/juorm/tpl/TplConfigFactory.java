@@ -12,7 +12,8 @@ import java.util.Collection;
  */
 public interface TplConfigFactory {
 
-    String IdSign = "@";
+    String ID_SIGN = "@";
+    String COUNT_SUFFIX = ".count";
 
     /**
      * getConfigs
@@ -36,4 +37,12 @@ public interface TplConfigFactory {
      * @return TplExecuteConfig
      */
     TplExecuteConfig getConfig(String executeId);
+
+    /**
+     * getConfigs
+     *
+     * @param executeId executeId
+     * @return TplExecuteConfig
+     */
+    TplExecuteConfig getConfig(TplExecuteId executeId);
 }

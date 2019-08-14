@@ -26,7 +26,7 @@ public class OperatorTest extends JdbcTestBase {
     @Test
     public void testInsert() {
         InsertOperate<Role> operate = new InsertOperate<>(jdbc,
-                factory.getClassMapping(Role.class));
+                mappingFactory.getClassMapping(Role.class));
         Role r = role();
         operate.execute(r);
         assertNotNull(r.getId());
@@ -39,7 +39,7 @@ public class OperatorTest extends JdbcTestBase {
     @Test
     public void testInsertMultyKey() {
         InsertOperate<UserRole> operate = new InsertOperate<>(jdbc,
-                factory.getClassMapping(UserRole.class));
+                mappingFactory.getClassMapping(UserRole.class));
         UserRole ur = new UserRole();
         ur.setUserId(11);
         ur.setRoleId(11);
@@ -50,7 +50,7 @@ public class OperatorTest extends JdbcTestBase {
     @Test
     public void testUpdate() {
         UpdateOperate<Role> operate = new UpdateOperate<>(jdbc,
-                factory.getClassMapping(Role.class));
+                mappingFactory.getClassMapping(Role.class));
         Role r = new Role();
         r.setId(2);
         r.setName("n_c" + RandomUtils.getRandomInt(100));
@@ -61,7 +61,7 @@ public class OperatorTest extends JdbcTestBase {
     @Test
     public void testUpdateMulityPrimaryKey() {
         UpdateOperate<UserRole> operate = new UpdateOperate<>(jdbc,
-                factory.getClassMapping(UserRole.class));
+                mappingFactory.getClassMapping(UserRole.class));
         UserRole userRole = new UserRole();
         userRole.setRoleId(2);
         userRole.setUserId(2);
@@ -72,7 +72,7 @@ public class OperatorTest extends JdbcTestBase {
     @Test
     public void testGet() {
         GetOperate<Role> operate = new GetOperate<>(jdbc,
-                factory.getClassMapping(Role.class));
+                mappingFactory.getClassMapping(Role.class));
         Integer id = 4;
         Role role = operate.get(id);
         assertEquals(role.getId(), id);
@@ -83,7 +83,7 @@ public class OperatorTest extends JdbcTestBase {
     @Test
     public void testGetMulityPrimaryKey() {
         GetOperate<UserRole> operate = new GetOperate<>(jdbc,
-                factory.getClassMapping(UserRole.class));
+                mappingFactory.getClassMapping(UserRole.class));
         UserRole userRole = new UserRole();
         Integer roleId = 2;
         Integer userId = 2;
@@ -101,7 +101,7 @@ public class OperatorTest extends JdbcTestBase {
     @Test
     public void testDelete() {
         DeleteOperate<Role> operate = new DeleteOperate<>(jdbc,
-                factory.getClassMapping(Role.class));
+                mappingFactory.getClassMapping(Role.class));
         Role r = new Role();
         r.setId(1);
         operate.execute(r);
@@ -110,7 +110,7 @@ public class OperatorTest extends JdbcTestBase {
     @Test
     public void testDeleteMulityPrimaryKey() {
         DeleteOperate<UserRole> operate = new DeleteOperate<>(jdbc,
-                factory.getClassMapping(UserRole.class));
+                mappingFactory.getClassMapping(UserRole.class));
         UserRole userRole = new UserRole();
         userRole.setRoleId(11);
         userRole.setUserId(11);

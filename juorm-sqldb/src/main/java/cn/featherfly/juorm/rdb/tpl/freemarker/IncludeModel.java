@@ -4,8 +4,10 @@ import java.io.IOException;
 import java.util.Map;
 
 import cn.featherfly.common.lang.LangUtils;
-import cn.featherfly.common.lang.StringUtils;
 import cn.featherfly.juorm.tpl.TplConfigFactory;
+import cn.featherfly.juorm.tpl.TplExecuteConfig;
+import cn.featherfly.juorm.tpl.TplExecuteId;
+import cn.featherfly.juorm.tpl.TplExecuteIdImpl;
 import freemarker.core.Environment;
 import freemarker.template.TemplateDirectiveBody;
 import freemarker.template.TemplateDirectiveModel;
@@ -20,11 +22,14 @@ public class IncludeModel implements TemplateDirectiveModel {
 
     private static final String ID_PARAM = "id";
 
+    private TplConfigFactory tplConfigFactory;
+
     /**
      * @param configFactory
      */
-    public IncludeModel() {
+    public IncludeModel(TplConfigFactory tplConfigFactory) {
         super();
+        this.tplConfigFactory = tplConfigFactory;
     }
 
     /**
@@ -39,10 +44,11 @@ public class IncludeModel implements TemplateDirectiveModel {
         @SuppressWarnings("unchecked")
         String file = getFile(params);
         if (LangUtils.isNotEmpty(file)) {
-            includeTemplateName = file + TplConfigFactory.IdSign + id;
+            includeTemplateName = file + TplConfigFactory.ID_SIGN + id;
         } else {
-            includeTemplateName = StringUtils.substringBefore(environment.getCurrentNamespace().getTemplate().getName(),
-                    TplConfigFactory.IdSign) + TplConfigFactory.IdSign + id;
+            TplExecuteId executeId = new TplExecuteIdImpl(environment.getCurrentNamespace().getTemplate().getName());
+            TplExecuteConfig config = tplConfigFactory.getConfig(executeId);
+            includeTemplateName = config.getName() + TplConfigFactory.ID_SIGN + id;
         }
         environment.include(environment.getTemplateForInclusion(includeTemplateName, null, true));
     }

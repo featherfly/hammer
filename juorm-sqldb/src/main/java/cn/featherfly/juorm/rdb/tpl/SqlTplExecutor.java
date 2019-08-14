@@ -82,8 +82,8 @@ public class SqlTplExecutor implements TplExecutor {
         configFactory.getAllConfigs().forEach(configs -> {
             configs.values().forEach(c -> {
                 TplExecuteConfig config = (TplExecuteConfig) c;
-                logger.debug("put template name: {}", config.getTplPath());
-                templateLoader.putTemplate(config.getTplPath(), config.getQuery());
+                logger.debug("put template name: {}", config.getTplName());
+                templateLoader.putTemplate(config.getTplName(), config.getQuery());
             });
         });
         cfg.setTemplateLoader(templateLoader);
@@ -101,8 +101,8 @@ public class SqlTplExecutor implements TplExecutor {
 
     private Tuple2<String, ConditionParamsManager> getCountExecution(String tplExecuteId, Map<String, Object> params,
             TplExecuteConfig config, Class<?> resultType) {
-        Tuple2<String, ConditionParamsManager> result = getExecution(tplExecuteId + ".count", config.getCount(), params,
-                resultType);
+        Tuple2<String, ConditionParamsManager> result = getExecution(tplExecuteId + TplConfigFactory.COUNT_SUFFIX,
+                config.getCount(), params, resultType);
         Constants.LOGGER.debug("tplExecuteId -> {}  \nexecuteCountSql -> {}  \ncountTemplate -> {}", tplExecuteId,
                 result.get0(), config.getCount());
         return result;
@@ -144,8 +144,8 @@ public class SqlTplExecutor implements TplExecutor {
         // PropertiesMappingDirectiveModel("repository", mappingFactory,
         // resultType));
         root.put("prop", new PropertiesMappingDirectiveModel("repo", mappingFactory, resultType));
-        root.put("tpl", new IncludeModel());
-        root.put("sql", new IncludeModel());
+        root.put("tpl", new IncludeModel(configFactory));
+        root.put("sql", new IncludeModel(configFactory));
         root.put("wrap", new WrapTemplateDirectiveModel(jdbc.getDialect()));
         return root;
     }

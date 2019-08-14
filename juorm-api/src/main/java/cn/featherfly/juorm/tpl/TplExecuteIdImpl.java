@@ -1,6 +1,8 @@
 
 package cn.featherfly.juorm.tpl;
 
+import cn.featherfly.juorm.JuormException;
+
 /**
  * <p>
  * TplExecuteIdImpl
@@ -18,6 +20,20 @@ public class TplExecuteIdImpl implements TplExecuteId {
     private String namespace;
 
     /**
+     * @param executeId
+     */
+    public TplExecuteIdImpl(String executeId) {
+        super();
+        String[] args = executeId.split(TplConfigFactory.ID_SIGN);
+        if (args.length != 2) {
+            throw new JuormException("executeId[" + executeId + "] format error, format must be namespace"
+                    + TplConfigFactory.ID_SIGN + "name");
+        }
+        namespace = args[0];
+        name = args[1];
+    }
+
+    /**
      * @param name
      * @param namespace
      */
@@ -32,7 +48,7 @@ public class TplExecuteIdImpl implements TplExecuteId {
      */
     @Override
     public String getId() {
-        return namespace + TplConfigFactory.IdSign + name;
+        return namespace + TplConfigFactory.ID_SIGN + name;
     }
 
     /**
@@ -51,4 +67,11 @@ public class TplExecuteIdImpl implements TplExecuteId {
         return name;
     }
 
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public String toString() {
+        return "TplExecuteIdImpl [name=" + name + ", namespace=" + namespace + "]";
+    }
 }
