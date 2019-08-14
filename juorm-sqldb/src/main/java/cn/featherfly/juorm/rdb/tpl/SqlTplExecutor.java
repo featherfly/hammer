@@ -3,6 +3,7 @@ package cn.featherfly.juorm.rdb.tpl;
 
 import java.io.IOException;
 import java.io.StringWriter;
+import java.math.BigDecimal;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -475,5 +476,67 @@ public class SqlTplExecutor implements TplExecutor {
     public <E> PaginationResults<E> pagination(TplExecuteId tplExecuteId, Class<E> entityType,
             Map<String, Object> params, Page page) {
         return pagination(tplExecuteId.getId(), entityType, params, page);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public <E> E value(String tplExecuteId, Class<E> valueType, Map<String, Object> params) {
+        Tuple3<String, TplExecuteConfig, ConditionParamsManager> tuple3 = getQueryExecution(tplExecuteId, params,
+                valueType);
+        if (tuple3.get2().getParamNamed() == null || tuple3.get2().getParamNamed()) {
+            return jdbc.queryValue(tuple3.get0(), getEffectiveParams(params, tuple3.get2()), valueType);
+        } else {
+            return jdbc.queryValue(tuple3.get0(), tuple3.get2().getParamNames().toArray(), valueType);
+        }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public <N extends Number> N number(String tplExecuteId, Class<N> numberType, Map<String, Object> params) {
+        return value(tplExecuteId, numberType, params);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public Integer intValue(String tplExecuteId, Map<String, Object> params) {
+        return number(tplExecuteId, Integer.class, params);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public Long longValue(String tplExecuteId, Map<String, Object> params) {
+        return number(tplExecuteId, Long.class, params);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public BigDecimal bigDecimalValue(String tplExecuteId, Map<String, Object> params) {
+        return number(tplExecuteId, BigDecimal.class, params);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public Double doubleValue(String tplExecuteId, Map<String, Object> params) {
+        return number(tplExecuteId, Double.class, params);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public String stringValue(String tplExecuteId, Map<String, Object> params) {
+        return value(tplExecuteId, String.class, params);
     }
 }

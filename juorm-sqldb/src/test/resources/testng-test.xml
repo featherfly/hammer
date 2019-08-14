@@ -32,4 +32,13 @@
             <class name="cn.featherfly.juorm.rdb.jdbc.OperatorTest" />
         </classes>
     </test>
+    
+    <test name="mapper test">
+        <parameter name="test-name" value="mapper Test" />
+        <classes>
+            <class name="cn.featherfly.juorm.rdb.tpl.SqlTplDynamicExecutorTest" />
+            <class name="cn.featherfly.juorm.rdb.tpl.SqlTplDynamicExecutorTest2" />
+            <class name="cn.featherfly.juorm.rdb.tpl.SqlTplDynamicExecutorTest3" />
+        </classes>
+    </test>
 </suite>

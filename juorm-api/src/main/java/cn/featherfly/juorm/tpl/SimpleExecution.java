@@ -7,9 +7,6 @@ import cn.featherfly.common.lang.AssertIllegalArgument;
  * <p>
  * 简单查询
  * </p>
- * <p>
- * copyright cdthgk 2010-2020, all rights reserved.
- * </p>
  *
  * @author zhongj
  */
