@@ -3,4 +3,11 @@ dependencies {
     compile project(":juorm-core")
     
     compile 'org.springframework:spring-context:5.1.8.RELEASE'
+    
+    testCompile project(":juorm-sqldb")
+    
+    testCompile group: 'commons-dbcp', name: 'commons-dbcp', version: '1.4'
+    testCompile 'org.springframework:spring-test:5.1.8.RELEASE'
+    testCompile 'mysql:mysql-connector-java:5.1.48'    
+    testCompile group: 'org.postgresql', name: 'postgresql', version: '42.2.6'
 }
