@@ -61,6 +61,7 @@ INSERT INTO `user` VALUES ('9', 'featherfly20', '654321', '20765432120', '20');
 INSERT INTO `user` VALUES ('10', 'featherfly30', '654321', '30765432130', '30');
 INSERT INTO `user` VALUES ('11', 'featherfly40', '654321', '40765432140', '40');
 INSERT INTO `user` VALUES ('12', 'featherfly50', '654321', '50765432150', '50');
+INSERT INTO `user` VALUES ('13', 'featherfly10-2', '654321', '10765432112', '10');
 
 -- ----------------------------
 -- Table structure for user_role

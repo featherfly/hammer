@@ -44,6 +44,29 @@ public class SqlTplExecutorTest extends JdbcTestBase {
     }
 
     @Test
+    void testNumberValue() {
+        Integer avg = executor.intValue("selectAvg", new HashChainMap<String, Object>());
+        System.out.println("avg(age) = " + avg);
+        assertTrue(avg > 20);
+
+        avg = executor.intValue("selectAvg2", new HashChainMap<String, Object>().putChain("age", 40));
+        System.out.println("avg(age) = " + avg);
+        assertTrue(avg > 40);
+
+    }
+
+    @Test
+    void testStringValue() {
+        String str = executor.stringValue("selectString", new HashChainMap<String, Object>());
+        System.out.println("selectString = " + str);
+        assertEquals(str, "yufei");
+
+        str = executor.stringValue("selectString2", new HashChainMap<String, Object>().putChain("id", 2));
+        System.out.println("selectString = " + str);
+        assertEquals(str, "featherfly");
+    }
+
+    @Test
     void testSingle() {
         String username = "yufei";
         String password = "123456";
@@ -59,6 +82,12 @@ public class SqlTplExecutorTest extends JdbcTestBase {
         assertEquals(u2.getPwd(), password);
 
         u2 = executor.single("selectByUsernameAndPassword", User.class,
+                new HashChainMap<String, Object>().putChain("username", username).putChain("password", password));
+
+        assertEquals(u2.getUsername(), username);
+        assertEquals(u2.getPwd(), password);
+
+        u2 = executor.single("/tpl/user@selectByUsernameAndPassword", User.class,
                 new HashChainMap<String, Object>().putChain("username", username).putChain("password", password));
 
         assertEquals(u2.getUsername(), username);
@@ -227,7 +256,8 @@ public class SqlTplExecutorTest extends JdbcTestBase {
 
     @Test
     void testMap() {
-        Map<String, Object> uis = executor.single("user_info@selectById", new HashChainMap<String, Object>());
+        Map<String, Object> uis = executor.single("user_info@selectById",
+                new HashChainMap<String, Object>().putChain("id", 1));
         assertEquals(uis.get("id").toString(), "1");
         System.out.println(uis);
     }

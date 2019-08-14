@@ -2,6 +2,7 @@
 package cn.featherfly.juorm.rdb.jdbc;
 
 import java.io.Serializable;
+import java.math.BigDecimal;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -71,14 +72,11 @@ public class JuormJdbcImpl implements Juorm {
      * @param mappingFactory
      * @param configFactory
      */
-    public JuormJdbcImpl(Jdbc jdbc, MappingFactory mappingFactory,
-            TplConfigFactory configFactory) {
+    public JuormJdbcImpl(Jdbc jdbc, MappingFactory mappingFactory, TplConfigFactory configFactory) {
         // this(jdbc, mappingFactory, configFactory,
         // Validation.buildDefaultValidatorFactory().getValidator());
-        this(jdbc, mappingFactory, configFactory,
-                Validation.byProvider(HibernateValidator.class).configure()
-                        .failFast(false).buildValidatorFactory()
-                        .getValidator());
+        this(jdbc, mappingFactory, configFactory, Validation.byProvider(HibernateValidator.class).configure()
+                .failFast(false).buildValidatorFactory().getValidator());
     }
 
     /**
@@ -87,13 +85,12 @@ public class JuormJdbcImpl implements Juorm {
      * @param configFactory
      * @param validator
      */
-    public JuormJdbcImpl(Jdbc jdbc, MappingFactory mappingFactory,
-            TplConfigFactory configFactory, Validator validator) {
+    public JuormJdbcImpl(Jdbc jdbc, MappingFactory mappingFactory, TplConfigFactory configFactory,
+            Validator validator) {
         this.jdbc = jdbc;
         this.mappingFactory = mappingFactory;
         this.validator = validator;
-        sqlTplExecutor = new SqlTplExecutor(configFactory, jdbc,
-                mappingFactory);
+        sqlTplExecutor = new SqlTplExecutor(configFactory, jdbc, mappingFactory);
     }
 
     /**
@@ -108,8 +105,7 @@ public class JuormJdbcImpl implements Juorm {
         InsertOperate<E> insert = (InsertOperate<E>) insertOperates.get(entity);
         if (insert == null) {
             @SuppressWarnings("unchecked")
-            ClassMapping<E> mapping = (ClassMapping<E>) mappingFactory
-                    .getClassMapping(entity.getClass());
+            ClassMapping<E> mapping = (ClassMapping<E>) mappingFactory.getClassMapping(entity.getClass());
             insert = new InsertOperate<>(jdbc, mapping);
             insertOperates.put(entity.getClass(), insert);
         }
@@ -144,8 +140,7 @@ public class JuormJdbcImpl implements Juorm {
         UpdateOperate<E> update = (UpdateOperate<E>) updateOperates.get(entity);
         if (update == null) {
             @SuppressWarnings("unchecked")
-            ClassMapping<E> mapping = (ClassMapping<E>) mappingFactory
-                    .getClassMapping(entity.getClass());
+            ClassMapping<E> mapping = (ClassMapping<E>) mappingFactory.getClassMapping(entity.getClass());
             update = new UpdateOperate<>(jdbc, mapping);
             updateOperates.put(entity.getClass(), update);
         }
@@ -173,12 +168,12 @@ public class JuormJdbcImpl implements Juorm {
     @Override
     public <E> int update(E entity, IgnorePolicy ignorePolicy) {
         switch (ignorePolicy) {
-        case EMPTY:
-            return merge(entity);
-        case NULL:
-            return merge(entity, true);
-        default:
-            return update(entity);
+            case EMPTY:
+                return merge(entity);
+            case NULL:
+                return merge(entity, true);
+            default:
+                return update(entity);
         }
     }
 
@@ -204,8 +199,7 @@ public class JuormJdbcImpl implements Juorm {
         MergeOperate<E> update = (MergeOperate<E>) mergeOperates.get(entity);
         if (update == null) {
             @SuppressWarnings("unchecked")
-            ClassMapping<E> mapping = (ClassMapping<E>) mappingFactory
-                    .getClassMapping(entity.getClass());
+            ClassMapping<E> mapping = (ClassMapping<E>) mappingFactory.getClassMapping(entity.getClass());
             update = new MergeOperate<>(jdbc, mapping);
             mergeOperates.put(entity.getClass(), update);
         }
@@ -247,8 +241,7 @@ public class JuormJdbcImpl implements Juorm {
         DeleteOperate<E> delete = (DeleteOperate<E>) deleteOperates.get(entity);
         if (delete == null) {
             @SuppressWarnings("unchecked")
-            ClassMapping<E> mapping = (ClassMapping<E>) mappingFactory
-                    .getClassMapping(entity.getClass());
+            ClassMapping<E> mapping = (ClassMapping<E>) mappingFactory.getClassMapping(entity.getClass());
             delete = new DeleteOperate<>(jdbc, mapping);
             deleteOperates.put(entity.getClass(), delete);
         }
@@ -328,8 +321,7 @@ public class JuormJdbcImpl implements Juorm {
             if (LangUtils.isNotEmpty(cons)) {
                 StringBuilder errorMessage = new StringBuilder();
                 for (ConstraintViolation<E> constraintViolation : cons) {
-                    errorMessage.append(constraintViolation.getMessage())
-                            .append(",");
+                    errorMessage.append(constraintViolation.getMessage()).append(",");
                 }
                 throw new JuormJdbcException(errorMessage.toString());
             }
@@ -340,8 +332,7 @@ public class JuormJdbcImpl implements Juorm {
         @SuppressWarnings("unchecked")
         GetOperate<E> get = (GetOperate<E>) getOperates.get(entityType);
         if (get == null) {
-            ClassMapping<E> mapping = mappingFactory
-                    .getClassMapping(entityType);
+            ClassMapping<E> mapping = mappingFactory.getClassMapping(entityType);
             get = new GetOperate<>(jdbc, mapping);
             getOperates.put(entityType.getClass(), get);
         }
@@ -352,65 +343,7 @@ public class JuormJdbcImpl implements Juorm {
      * {@inheritDoc}
      */
     @Override
-    public <E> E single(String sqlFullId, Class<E> entityType,
-            Map<String, Object> params) {
-        return sqlTplExecutor.single(sqlFullId, entityType, params);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public <E> List<E> list(String sqlFullId, Class<E> entityType,
-            Map<String, Object> params) {
-        return sqlTplExecutor.list(sqlFullId, entityType, params);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public <E> List<E> list(String sqlFullId, Class<E> entityType,
-            Map<String, Object> params, int offset, int limit) {
-        return sqlTplExecutor.list(sqlFullId, entityType, params, offset,
-                limit);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public <E> List<E> list(String sqlFullId, Class<E> entityType,
-            Map<String, Object> params, Page page) {
-        return sqlTplExecutor.list(sqlFullId, entityType, params, page);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public <E> PaginationResults<E> pagination(String sqlFullId,
-            Class<E> entityType, Map<String, Object> params, int offset,
-            int limit) {
-        return sqlTplExecutor.pagination(sqlFullId, entityType, params, offset,
-                limit);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public <E> PaginationResults<E> pagination(String sqlFullId,
-            Class<E> entityType, Map<String, Object> params, Page page) {
-        return sqlTplExecutor.pagination(sqlFullId, entityType, params, page);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public <E> E single(TplExecuteId tplExecuteId, Class<E> entityType,
-            Map<String, Object> params) {
+    public <E> E single(String tplExecuteId, Class<E> entityType, Map<String, Object> params) {
         return sqlTplExecutor.single(tplExecuteId, entityType, params);
     }
 
@@ -418,8 +351,7 @@ public class JuormJdbcImpl implements Juorm {
      * {@inheritDoc}
      */
     @Override
-    public <E> List<E> list(TplExecuteId tplExecuteId, Class<E> entityType,
-            Map<String, Object> params) {
+    public <E> List<E> list(String tplExecuteId, Class<E> entityType, Map<String, Object> params) {
         return sqlTplExecutor.list(tplExecuteId, entityType, params);
     }
 
@@ -427,18 +359,16 @@ public class JuormJdbcImpl implements Juorm {
      * {@inheritDoc}
      */
     @Override
-    public <E> List<E> list(TplExecuteId tplExecuteId, Class<E> entityType,
-            Map<String, Object> params, int offset, int limit) {
-        return sqlTplExecutor.list(tplExecuteId, entityType, params, offset,
-                limit);
+    public <E> List<E> list(String tplExecuteId, Class<E> entityType, Map<String, Object> params, int offset,
+            int limit) {
+        return sqlTplExecutor.list(tplExecuteId, entityType, params, offset, limit);
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public <E> List<E> list(TplExecuteId tplExecuteId, Class<E> entityType,
-            Map<String, Object> params, Page page) {
+    public <E> List<E> list(String tplExecuteId, Class<E> entityType, Map<String, Object> params, Page page) {
         return sqlTplExecutor.list(tplExecuteId, entityType, params, page);
     }
 
@@ -446,29 +376,76 @@ public class JuormJdbcImpl implements Juorm {
      * {@inheritDoc}
      */
     @Override
-    public <E> PaginationResults<E> pagination(TplExecuteId tplExecuteId,
-            Class<E> entityType, Map<String, Object> params, int offset,
+    public <E> PaginationResults<E> pagination(String tplExecuteId, Class<E> entityType, Map<String, Object> params,
+            int offset, int limit) {
+        return sqlTplExecutor.pagination(tplExecuteId, entityType, params, offset, limit);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public <E> PaginationResults<E> pagination(String tplExecuteId, Class<E> entityType, Map<String, Object> params,
+            Page page) {
+        return sqlTplExecutor.pagination(tplExecuteId, entityType, params, page);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public <E> E single(TplExecuteId tplExecuteId, Class<E> entityType, Map<String, Object> params) {
+        return sqlTplExecutor.single(tplExecuteId, entityType, params);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public <E> List<E> list(TplExecuteId tplExecuteId, Class<E> entityType, Map<String, Object> params) {
+        return sqlTplExecutor.list(tplExecuteId, entityType, params);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public <E> List<E> list(TplExecuteId tplExecuteId, Class<E> entityType, Map<String, Object> params, int offset,
             int limit) {
-        return sqlTplExecutor.pagination(tplExecuteId, entityType, params,
-                offset, limit);
+        return sqlTplExecutor.list(tplExecuteId, entityType, params, offset, limit);
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public <E> PaginationResults<E> pagination(TplExecuteId tplExecuteId,
-            Class<E> entityType, Map<String, Object> params, Page page) {
-        return sqlTplExecutor.pagination(tplExecuteId, entityType, params,
-                page);
+    public <E> List<E> list(TplExecuteId tplExecuteId, Class<E> entityType, Map<String, Object> params, Page page) {
+        return sqlTplExecutor.list(tplExecuteId, entityType, params, page);
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public Map<String, Object> single(String tplExecuteId,
-            Map<String, Object> params) {
+    public <E> PaginationResults<E> pagination(TplExecuteId tplExecuteId, Class<E> entityType,
+            Map<String, Object> params, int offset, int limit) {
+        return sqlTplExecutor.pagination(tplExecuteId, entityType, params, offset, limit);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public <E> PaginationResults<E> pagination(TplExecuteId tplExecuteId, Class<E> entityType,
+            Map<String, Object> params, Page page) {
+        return sqlTplExecutor.pagination(tplExecuteId, entityType, params, page);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public Map<String, Object> single(String tplExecuteId, Map<String, Object> params) {
         return sqlTplExecutor.single(tplExecuteId, params);
     }
 
@@ -476,8 +453,7 @@ public class JuormJdbcImpl implements Juorm {
      * {@inheritDoc}
      */
     @Override
-    public Map<String, Object> single(TplExecuteId tplExecuteId,
-            Map<String, Object> params) {
+    public Map<String, Object> single(TplExecuteId tplExecuteId, Map<String, Object> params) {
         return sqlTplExecutor.single(tplExecuteId, params);
     }
 
@@ -485,8 +461,7 @@ public class JuormJdbcImpl implements Juorm {
      * {@inheritDoc}
      */
     @Override
-    public List<Map<String, Object>> list(String tplExecuteId,
-            Map<String, Object> params) {
+    public List<Map<String, Object>> list(String tplExecuteId, Map<String, Object> params) {
         return sqlTplExecutor.list(tplExecuteId, params);
     }
 
@@ -494,8 +469,7 @@ public class JuormJdbcImpl implements Juorm {
      * {@inheritDoc}
      */
     @Override
-    public List<Map<String, Object>> list(TplExecuteId tplExecuteId,
-            Map<String, Object> params) {
+    public List<Map<String, Object>> list(TplExecuteId tplExecuteId, Map<String, Object> params) {
         return sqlTplExecutor.list(tplExecuteId, params);
     }
 
@@ -503,8 +477,7 @@ public class JuormJdbcImpl implements Juorm {
      * {@inheritDoc}
      */
     @Override
-    public List<Map<String, Object>> list(String tplExecuteId,
-            Map<String, Object> params, int offset, int limit) {
+    public List<Map<String, Object>> list(String tplExecuteId, Map<String, Object> params, int offset, int limit) {
         return sqlTplExecutor.list(tplExecuteId, params, offset, limit);
     }
 
@@ -512,8 +485,8 @@ public class JuormJdbcImpl implements Juorm {
      * {@inheritDoc}
      */
     @Override
-    public List<Map<String, Object>> list(TplExecuteId tplExecuteId,
-            Map<String, Object> params, int offset, int limit) {
+    public List<Map<String, Object>> list(TplExecuteId tplExecuteId, Map<String, Object> params, int offset,
+            int limit) {
         return sqlTplExecutor.list(tplExecuteId, params, offset, limit);
     }
 
@@ -521,8 +494,7 @@ public class JuormJdbcImpl implements Juorm {
      * {@inheritDoc}
      */
     @Override
-    public List<Map<String, Object>> list(String tplExecuteId,
-            Map<String, Object> params, Page page) {
+    public List<Map<String, Object>> list(String tplExecuteId, Map<String, Object> params, Page page) {
         return sqlTplExecutor.list(tplExecuteId, params, page);
     }
 
@@ -530,8 +502,7 @@ public class JuormJdbcImpl implements Juorm {
      * {@inheritDoc}
      */
     @Override
-    public List<Map<String, Object>> list(TplExecuteId tplExecuteId,
-            Map<String, Object> params, Page page) {
+    public List<Map<String, Object>> list(TplExecuteId tplExecuteId, Map<String, Object> params, Page page) {
         return sqlTplExecutor.list(tplExecuteId, params, page);
     }
 
@@ -539,9 +510,8 @@ public class JuormJdbcImpl implements Juorm {
      * {@inheritDoc}
      */
     @Override
-    public PaginationResults<Map<String, Object>> pagination(
-            String tplExecuteId, Map<String, Object> params, int offset,
-            int limit) {
+    public PaginationResults<Map<String, Object>> pagination(String tplExecuteId, Map<String, Object> params,
+            int offset, int limit) {
         return sqlTplExecutor.pagination(tplExecuteId, params, offset, limit);
     }
 
@@ -549,9 +519,8 @@ public class JuormJdbcImpl implements Juorm {
      * {@inheritDoc}
      */
     @Override
-    public PaginationResults<Map<String, Object>> pagination(
-            TplExecuteId tplExecuteId, Map<String, Object> params, int offset,
-            int limit) {
+    public PaginationResults<Map<String, Object>> pagination(TplExecuteId tplExecuteId, Map<String, Object> params,
+            int offset, int limit) {
         return sqlTplExecutor.pagination(tplExecuteId, params, offset, limit);
     }
 
@@ -559,8 +528,8 @@ public class JuormJdbcImpl implements Juorm {
      * {@inheritDoc}
      */
     @Override
-    public PaginationResults<Map<String, Object>> pagination(
-            String tplExecuteId, Map<String, Object> params, Page page) {
+    public PaginationResults<Map<String, Object>> pagination(String tplExecuteId, Map<String, Object> params,
+            Page page) {
         return sqlTplExecutor.pagination(tplExecuteId, params, page);
     }
 
@@ -568,9 +537,64 @@ public class JuormJdbcImpl implements Juorm {
      * {@inheritDoc}
      */
     @Override
-    public PaginationResults<Map<String, Object>> pagination(
-            TplExecuteId tplExecuteId, Map<String, Object> params, Page page) {
+    public PaginationResults<Map<String, Object>> pagination(TplExecuteId tplExecuteId, Map<String, Object> params,
+            Page page) {
         return sqlTplExecutor.pagination(tplExecuteId, params, page);
     }
 
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public <E> E value(String tplExecuteId, Class<E> valueType, Map<String, Object> params) {
+        return sqlTplExecutor.value(tplExecuteId, valueType, params);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public <N extends Number> N number(String tplExecuteId, Class<N> numberType, Map<String, Object> params) {
+        return sqlTplExecutor.number(tplExecuteId, numberType, params);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public Integer intValue(String tplExecuteId, Map<String, Object> params) {
+        return sqlTplExecutor.intValue(tplExecuteId, params);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public Long longValue(String tplExecuteId, Map<String, Object> params) {
+        return sqlTplExecutor.longValue(tplExecuteId, params);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public BigDecimal bigDecimalValue(String tplExecuteId, Map<String, Object> params) {
+        return sqlTplExecutor.bigDecimalValue(tplExecuteId, params);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public Double doubleValue(String tplExecuteId, Map<String, Object> params) {
+        return sqlTplExecutor.doubleValue(tplExecuteId, params);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public String stringValue(String tplExecuteId, Map<String, Object> params) {
+        return sqlTplExecutor.stringValue(tplExecuteId, params);
+    }
 }

@@ -1,6 +1,7 @@
 
 package cn.featherfly.juorm;
 
+import java.io.Serializable;
 import java.util.List;
 
 import cn.featherfly.juorm.Juorm.IgnorePolicy;
@@ -17,6 +18,7 @@ import cn.featherfly.juorm.dsl.query.QueryEntity;
  * @author zhongj
  */
 public interface GenericJuorm<E> {
+
     /**
      * save entity
      *
@@ -108,6 +110,14 @@ public interface GenericJuorm<E> {
      * @return effect data row num
      */
     int delete(List<E> entities);
+
+    /**
+     * get entity by id.
+     *
+     * @param id entity id
+     * @return entity
+     */
+    E get(Serializable id);
 
     /**
      * create QueryData for entityType
