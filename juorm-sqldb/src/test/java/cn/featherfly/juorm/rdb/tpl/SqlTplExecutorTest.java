@@ -157,7 +157,7 @@ public class SqlTplExecutorTest extends JdbcTestBase {
         users = executor.list(
                 "user@selectConditions", User.class, new HashChainMap<String, Object>().putChain("minAge", minAge)
                         .putChain("maxAge", maxAge).putChain("username", username1 + "%"),
-                new SimplePagination<>(start, limit));
+                new SimplePagination(start, limit));
         final int size = users.size();
         users.forEach(u -> {
             assertTrue(u.getAge() >= minAge);
@@ -179,7 +179,7 @@ public class SqlTplExecutorTest extends JdbcTestBase {
         userPaginationResults = executor.pagination(
                 "user@selectConditions", User.class, new HashChainMap<String, Object>().putChain("minAge", minAge)
                         .putChain("maxAge", maxAge).putChain("username", username1 + "%"),
-                new SimplePagination<>(start, limit));
+                new SimplePagination(start, limit));
         final int size = userPaginationResults.getResultSize();
         assertTrue(userPaginationResults.getTotal() == 4);
         userPaginationResults.getPageResults().forEach(u -> {
