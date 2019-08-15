@@ -9,7 +9,7 @@ import cn.featherfly.juorm.expression.query.QueryExecutor;
  * <p>
  * TypeQueryExecutor
  * </p>
- * 
+ *
  * @author zhongj
  */
 public class TypeQueryExecutor<E> {
@@ -31,8 +31,6 @@ public class TypeQueryExecutor<E> {
     /**
      * query for list
      *
-     * @param rowMapper
-     *            rowMapper
      * @return list
      */
     public List<E> list() {

@@ -43,7 +43,6 @@ public class SqlResultSet implements cn.featherfly.juorm.mapping.ResultSet {
     /**
      * @param columnIndex
      * @return
-     * @throws SQLException
      * @see java.sql.ResultSet#getString(int)
      */
     @Override
@@ -58,7 +57,6 @@ public class SqlResultSet implements cn.featherfly.juorm.mapping.ResultSet {
     /**
      * @param columnIndex
      * @return
-     * @throws SQLException
      * @see java.sql.ResultSet#getByte(int)
      */
     @Override
@@ -73,7 +71,6 @@ public class SqlResultSet implements cn.featherfly.juorm.mapping.ResultSet {
     /**
      * @param columnIndex
      * @return
-     * @throws SQLException
      * @see java.sql.ResultSet#getInt(int)
      */
     @Override
@@ -88,7 +85,6 @@ public class SqlResultSet implements cn.featherfly.juorm.mapping.ResultSet {
     /**
      * @param columnIndex
      * @return
-     * @throws SQLException
      * @see java.sql.ResultSet#getLong(int)
      */
     @Override
@@ -103,7 +99,6 @@ public class SqlResultSet implements cn.featherfly.juorm.mapping.ResultSet {
     /**
      * @param columnIndex
      * @return
-     * @throws SQLException
      * @see java.sql.ResultSet#getFloat(int)
      */
     @Override
@@ -118,7 +113,6 @@ public class SqlResultSet implements cn.featherfly.juorm.mapping.ResultSet {
     /**
      * @param columnIndex
      * @return
-     * @throws SQLException
      * @see java.sql.ResultSet#getDouble(int)
      */
     @Override
@@ -133,7 +127,6 @@ public class SqlResultSet implements cn.featherfly.juorm.mapping.ResultSet {
     /**
      * @param columnIndex
      * @return
-     * @throws SQLException
      * @see java.sql.ResultSet#getBytes(int)
      */
     @Override
@@ -148,7 +141,6 @@ public class SqlResultSet implements cn.featherfly.juorm.mapping.ResultSet {
     /**
      * @param columnIndex
      * @return
-     * @throws SQLException
      * @see java.sql.ResultSet#getDate(int)
      */
     @Override
@@ -163,7 +155,6 @@ public class SqlResultSet implements cn.featherfly.juorm.mapping.ResultSet {
     /**
      * @param columnLabel
      * @return
-     * @throws SQLException
      * @see java.sql.ResultSet#getString(java.lang.String)
      */
     @Override
@@ -178,7 +169,6 @@ public class SqlResultSet implements cn.featherfly.juorm.mapping.ResultSet {
     /**
      * @param columnLabel
      * @return
-     * @throws SQLException
      * @see java.sql.ResultSet#getByte(java.lang.String)
      */
     @Override
@@ -193,7 +183,6 @@ public class SqlResultSet implements cn.featherfly.juorm.mapping.ResultSet {
     /**
      * @param columnLabel
      * @return
-     * @throws SQLException
      * @see java.sql.ResultSet#getInt(java.lang.String)
      */
     @Override
@@ -208,7 +197,6 @@ public class SqlResultSet implements cn.featherfly.juorm.mapping.ResultSet {
     /**
      * @param columnLabel
      * @return
-     * @throws SQLException
      * @see java.sql.ResultSet#getLong(java.lang.String)
      */
     @Override
@@ -223,7 +211,6 @@ public class SqlResultSet implements cn.featherfly.juorm.mapping.ResultSet {
     /**
      * @param columnLabel
      * @return
-     * @throws SQLException
      * @see java.sql.ResultSet#getFloat(java.lang.String)
      */
     @Override
@@ -238,7 +225,6 @@ public class SqlResultSet implements cn.featherfly.juorm.mapping.ResultSet {
     /**
      * @param columnLabel
      * @return
-     * @throws SQLException
      * @see java.sql.ResultSet#getDouble(java.lang.String)
      */
     @Override
@@ -253,7 +239,6 @@ public class SqlResultSet implements cn.featherfly.juorm.mapping.ResultSet {
     /**
      * @param columnLabel
      * @return
-     * @throws SQLException
      * @see java.sql.ResultSet#getBytes(java.lang.String)
      */
     @Override
@@ -268,7 +253,6 @@ public class SqlResultSet implements cn.featherfly.juorm.mapping.ResultSet {
     /**
      * @param columnLabel
      * @return
-     * @throws SQLException
      * @see java.sql.ResultSet#getDate(java.lang.String)
      */
     @Override
@@ -283,7 +267,6 @@ public class SqlResultSet implements cn.featherfly.juorm.mapping.ResultSet {
     /**
      * @param columnIndex
      * @return
-     * @throws SQLException
      * @see java.sql.ResultSet#getObject(int)
      */
     @Override
@@ -298,7 +281,6 @@ public class SqlResultSet implements cn.featherfly.juorm.mapping.ResultSet {
     /**
      * @param columnLabel
      * @return
-     * @throws SQLException
      * @see java.sql.ResultSet#getObject(java.lang.String)
      */
     @Override
@@ -313,7 +295,6 @@ public class SqlResultSet implements cn.featherfly.juorm.mapping.ResultSet {
     /**
      * @param columnIndex
      * @return
-     * @throws SQLException
      * @see java.sql.ResultSet#getBigDecimal(int)
      */
     @Override
@@ -328,7 +309,6 @@ public class SqlResultSet implements cn.featherfly.juorm.mapping.ResultSet {
     /**
      * @param columnLabel
      * @return
-     * @throws SQLException
      * @see java.sql.ResultSet#getBigDecimal(java.lang.String)
      */
     @Override
@@ -345,7 +325,6 @@ public class SqlResultSet implements cn.featherfly.juorm.mapping.ResultSet {
      * @param columnIndex
      * @param type
      * @return
-     * @throws SQLException
      * @see java.sql.ResultSet#getObject(int, java.lang.Class)
      */
     @Override
@@ -362,7 +341,6 @@ public class SqlResultSet implements cn.featherfly.juorm.mapping.ResultSet {
      * @param columnLabel
      * @param type
      * @return
-     * @throws SQLException
      * @see java.sql.ResultSet#getObject(java.lang.String, java.lang.Class)
      */
     @Override

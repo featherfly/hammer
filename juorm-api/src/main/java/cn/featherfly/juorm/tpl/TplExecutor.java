@@ -282,7 +282,6 @@ public interface TplExecutor {
      * query list, use query str in template find with executeId
      * </p>
      *
-     * @param <E>          entity type
      * @param tplExecuteId tpl execute id
      * @param params       params
      * @param page         page
@@ -295,7 +294,6 @@ public interface TplExecutor {
      * query list, use query str in template find with executeId
      * </p>
      *
-     * @param <E>          entity type
      * @param tplExecuteId tpl execute id
      * @param params       params
      * @param page         page
@@ -393,7 +391,6 @@ public interface TplExecutor {
      * query list, use query str in template find with executeId
      * </p>
      *
-     * @param <E>          entity type
      * @param tplExecuteId tpl execute id
      * @param params       params
      * @param page         page
@@ -406,7 +403,6 @@ public interface TplExecutor {
      * query list, use query str in template find with executeId
      * </p>
      *
-     * @param <E>          entity type
      * @param tplExecuteId tpl execute id
      * @param params       params
      * @param page         page

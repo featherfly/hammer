@@ -42,7 +42,7 @@ public class SpringJdbcTemplateImpl implements Jdbc {
     }
 
     /**
-     * @param jdbcTemplate
+     * @param dataSource
      * @param dialect
      */
     public SpringJdbcTemplateImpl(DataSource dataSource, Dialect dialect) {
@@ -81,8 +81,7 @@ public class SpringJdbcTemplateImpl implements Jdbc {
     @Override
     public List<Map<String, Object>> query(String sql, Object[] args) {
         // FIXME 需要优化ArrayUtils.toString(args)在不需要debug时不调用，加入一个logger工具来实现
-        Constants.LOGGER.debug("sql -> {}, args -> {}", sql,
-                ArrayUtils.toString(args));
+        Constants.LOGGER.debug("sql -> {}, args -> {}", sql, ArrayUtils.toString(args));
         return jdbcTemplate.queryForList(sql, args);
     }
 
@@ -90,8 +89,7 @@ public class SpringJdbcTemplateImpl implements Jdbc {
      * {@inheritDoc}
      */
     @Override
-    public List<Map<String, Object>> query(String sql,
-            Map<String, Object> args) {
+    public List<Map<String, Object>> query(String sql, Map<String, Object> args) {
         Constants.LOGGER.debug("sql -> {}, args -> {}", sql, args);
         return namedParameterJdbcTemplate.queryForList(sql, args);
     }
@@ -100,8 +98,7 @@ public class SpringJdbcTemplateImpl implements Jdbc {
      * {@inheritDoc}
      */
     @Override
-    public <T> List<T> query(String sql, Map<String, Object> args,
-            RowMapper<T> rowMapper) {
+    public <T> List<T> query(String sql, Map<String, Object> args, RowMapper<T> rowMapper) {
         Constants.LOGGER.debug("sql -> {}, args -> {}", sql, args);
         return namedParameterJdbcTemplate.query(sql, args, (rs, rowNum) -> {
             return rowMapper.mapRow(new SqlResultSet(rs), rowNum);
@@ -112,11 +109,9 @@ public class SpringJdbcTemplateImpl implements Jdbc {
      * {@inheritDoc}
      */
     @Override
-    public <T> List<T> query(String sql, Object[] args,
-            RowMapper<T> rowMapper) {
+    public <T> List<T> query(String sql, Object[] args, RowMapper<T> rowMapper) {
         // FIXME 需要优化ArrayUtils.toString(args)在不需要debug时不调用，加入一个logger工具来实现
-        Constants.LOGGER.debug("sql -> {}, args -> {}", sql,
-                ArrayUtils.toString(args));
+        Constants.LOGGER.debug("sql -> {}, args -> {}", sql, ArrayUtils.toString(args));
         return jdbcTemplate.query(sql, args, (rs, rowNum) -> {
             return rowMapper.mapRow(new SqlResultSet(rs), rowNum);
         });
@@ -126,12 +121,10 @@ public class SpringJdbcTemplateImpl implements Jdbc {
      * {@inheritDoc}
      */
     @Override
-    public <T> List<T> query(String sql, Map<String, Object> args,
-            Class<T> elementType) {
+    public <T> List<T> query(String sql, Map<String, Object> args, Class<T> elementType) {
         Constants.LOGGER.debug("sql -> {}, args -> {}", sql, args);
 
-        return namedParameterJdbcTemplate.query(sql, args,
-                new NestedBeanPropertyRowMapper<>(elementType));
+        return namedParameterJdbcTemplate.query(sql, args, new NestedBeanPropertyRowMapper<>(elementType));
     }
 
     /**
@@ -140,16 +133,14 @@ public class SpringJdbcTemplateImpl implements Jdbc {
     @Override
     public <T> List<T> query(String sql, Object[] args, Class<T> elementType) {
         Constants.LOGGER.debug("sql -> {}, args -> {}", sql, args);
-        return jdbcTemplate.query(sql, args,
-                new NestedBeanPropertyRowMapper<>(elementType));
+        return jdbcTemplate.query(sql, args, new NestedBeanPropertyRowMapper<>(elementType));
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public Map<String, Object> querySingle(String sql,
-            Map<String, Object> args) {
+    public Map<String, Object> querySingle(String sql, Map<String, Object> args) {
         Constants.LOGGER.debug("sql -> {}, args -> {}", sql, args);
         try {
             return namedParameterJdbcTemplate.queryForMap(sql, args);
@@ -164,8 +155,7 @@ public class SpringJdbcTemplateImpl implements Jdbc {
     @Override
     public Map<String, Object> querySingle(String sql, Object[] args) {
         // FIXME 需要优化ArrayUtils.toString(args)在不需要debug时不调用，加入一个logger工具来实现
-        Constants.LOGGER.debug("sql -> {}, args -> {}", sql,
-                ArrayUtils.toString(args));
+        Constants.LOGGER.debug("sql -> {}, args -> {}", sql, ArrayUtils.toString(args));
         try {
             return jdbcTemplate.queryForMap(sql, args);
         } catch (EmptyResultDataAccessException e) {
@@ -177,13 +167,10 @@ public class SpringJdbcTemplateImpl implements Jdbc {
      * {@inheritDoc}
      */
     @Override
-    public <T> T querySingle(String sql, Map<String, Object> args,
-            Class<T> elementType) {
-        Constants.LOGGER.debug("sql -> {}, args -> {} , type -> {}", sql, args,
-                elementType.getName());
+    public <T> T querySingle(String sql, Map<String, Object> args, Class<T> elementType) {
+        Constants.LOGGER.debug("sql -> {}, args -> {} , type -> {}", sql, args, elementType.getName());
         try {
-            return namedParameterJdbcTemplate.queryForObject(sql, args,
-                    new NestedBeanPropertyRowMapper<>(elementType));
+            return namedParameterJdbcTemplate.queryForObject(sql, args, new NestedBeanPropertyRowMapper<>(elementType));
         } catch (EmptyResultDataAccessException e) {
             return null;
         }
@@ -193,14 +180,12 @@ public class SpringJdbcTemplateImpl implements Jdbc {
      * {@inheritDoc}
      */
     @Override
-    public <T> T querySingle(String sql, Map<String, Object> args,
-            RowMapper<T> rowMapper) {
+    public <T> T querySingle(String sql, Map<String, Object> args, RowMapper<T> rowMapper) {
         Constants.LOGGER.debug("sql -> {}, args -> {}", sql, args);
         try {
-            return namedParameterJdbcTemplate.queryForObject(sql, args,
-                    (rs, rowNum) -> {
-                        return rowMapper.mapRow(new SqlResultSet(rs), rowNum);
-                    });
+            return namedParameterJdbcTemplate.queryForObject(sql, args, (rs, rowNum) -> {
+                return rowMapper.mapRow(new SqlResultSet(rs), rowNum);
+            });
         } catch (EmptyResultDataAccessException e) {
             return null;
         }
@@ -212,21 +197,18 @@ public class SpringJdbcTemplateImpl implements Jdbc {
     @Override
     public <T> T querySingle(String sql, Object[] args, Class<T> elementType) {
         // FIXME 需要优化ArrayUtils.toString(args)在不需要debug时不调用，加入一个logger工具来实现
-        Constants.LOGGER.debug("sql -> {}, args -> {} , type -> {}", sql,
-                ArrayUtils.toString(args), elementType.getName());
-        return jdbcTemplate.queryForObject(sql, args,
-                new NestedBeanPropertyRowMapper<>(elementType));
+        Constants.LOGGER.debug("sql -> {}, args -> {} , type -> {}", sql, ArrayUtils.toString(args),
+                elementType.getName());
+        return jdbcTemplate.queryForObject(sql, args, new NestedBeanPropertyRowMapper<>(elementType));
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public <T> T querySingle(String sql, Object[] args,
-            RowMapper<T> rowMapper) {
+    public <T> T querySingle(String sql, Object[] args, RowMapper<T> rowMapper) {
         // FIXME 需要优化ArrayUtils.toString(args)在不需要debug时不调用，加入一个logger工具来实现
-        Constants.LOGGER.debug("sql -> {}, args -> {}", sql,
-                ArrayUtils.toString(args));
+        Constants.LOGGER.debug("sql -> {}, args -> {}", sql, ArrayUtils.toString(args));
         return jdbcTemplate.queryForObject(sql, args, (rs, rowNum) -> {
             return rowMapper.mapRow(new SqlResultSet(rs), rowNum);
         });
@@ -316,10 +298,8 @@ public class SpringJdbcTemplateImpl implements Jdbc {
      * {@inheritDoc}
      */
     @Override
-    public <T> T queryValue(String sql, Map<String, Object> args,
-            Class<T> valueType) {
-        Constants.LOGGER.debug("sql -> {}, args -> {}, type -> {}", sql, args,
-                valueType.getName());
+    public <T> T queryValue(String sql, Map<String, Object> args, Class<T> valueType) {
+        Constants.LOGGER.debug("sql -> {}, args -> {}, type -> {}", sql, args, valueType.getName());
         return namedParameterJdbcTemplate.queryForObject(sql, args, valueType);
     }
 
@@ -329,16 +309,15 @@ public class SpringJdbcTemplateImpl implements Jdbc {
     @Override
     public <T> T queryValue(String sql, Object[] args, Class<T> valueType) {
         // FIXME 需要优化ArrayUtils.toString(args)在不需要debug时不调用，加入一个logger工具来实现
-        Constants.LOGGER.debug("sql -> {}, args -> {}, type -> {}", sql,
-                ArrayUtils.toString(args), valueType.getName());
+        Constants.LOGGER.debug("sql -> {}, args -> {}, type -> {}", sql, ArrayUtils.toString(args),
+                valueType.getName());
         return jdbcTemplate.queryForObject(sql, args, valueType);
     }
 
     /**
      * 设置dataSource
      *
-     * @param dataSource
-     *            dataSource
+     * @param dataSource dataSource
      */
     public void setDataSource(DataSource dataSource) {
         this.dataSource = dataSource;
@@ -349,8 +328,7 @@ public class SpringJdbcTemplateImpl implements Jdbc {
     /**
      * 设置dialect
      *
-     * @param dialect
-     *            dialect
+     * @param dialect dialect
      */
     public void setDialect(Dialect dialect) {
         this.dialect = dialect;

@@ -208,7 +208,7 @@ public class SqlSelectBasicBuilder implements SqlBuilder {
         }
 
         if (buildWithFrom) {
-            AssertIllegalArgument.isNotEmpty(tableName, "buildWithFrom=true时，tableName不能为空");
+            AssertIllegalArgument.isNotEmpty(tableName, "tableName when buildWithFrom=true");
             select.append(" ").append(keyworld.from()).append(" ").append(dialect.buildTableSql(tableName, tableAlias));
         }
         return select.toString();

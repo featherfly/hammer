@@ -37,10 +37,9 @@ public class BasedGenericJuormTplExecutor<E> implements GenericJuorm<E> {
     }
 
     /**
-     * @param <E>
      * @param entity
      * @return
-     * @see cn.featherfly.juorm.rdb.jdbc.JuormJdbcImpl#save(java.lang.Object)
+     * @see cn.featherfly.juorm.Juorm#save(java.lang.Object)
      */
     @Override
     public int save(E entity) {
@@ -48,10 +47,9 @@ public class BasedGenericJuormTplExecutor<E> implements GenericJuorm<E> {
     }
 
     /**
-     * @param <E>
      * @param entities
      * @return
-     * @see cn.featherfly.juorm.rdb.jdbc.JuormJdbcImpl#save(java.util.List)
+     * @see cn.featherfly.juorm.Juorm#save(java.util.List)
      */
     @Override
     public int save(List<E> entities) {
@@ -59,10 +57,9 @@ public class BasedGenericJuormTplExecutor<E> implements GenericJuorm<E> {
     }
 
     /**
-     * @param <E>
      * @param entity
      * @return
-     * @see cn.featherfly.juorm.rdb.jdbc.JuormJdbcImpl#update(java.lang.Object)
+     * @see cn.featherfly.juorm.Juorm#update(java.lang.Object)
      */
     @Override
     public int update(E entity) {
@@ -70,10 +67,9 @@ public class BasedGenericJuormTplExecutor<E> implements GenericJuorm<E> {
     }
 
     /**
-     * @param <E>
      * @param entities
      * @return
-     * @see cn.featherfly.juorm.rdb.jdbc.JuormJdbcImpl#update(java.util.List)
+     * @see cn.featherfly.juorm.Juorm#update(java.util.List)
      */
     @Override
     public int update(List<E> entities) {
@@ -81,11 +77,10 @@ public class BasedGenericJuormTplExecutor<E> implements GenericJuorm<E> {
     }
 
     /**
-     * @param <E>
      * @param entity
      * @param ignorePolicy
      * @return
-     * @see cn.featherfly.juorm.rdb.jdbc.JuormJdbcImpl#update(java.lang.Object,
+     * @see cn.featherfly.juorm.Juorm#update(java.lang.Object,
      *      cn.featherfly.juorm.Juorm.IgnorePolicy)
      */
     @Override
@@ -94,11 +89,10 @@ public class BasedGenericJuormTplExecutor<E> implements GenericJuorm<E> {
     }
 
     /**
-     * @param <E>
      * @param entities
      * @param ignorePolicy
      * @return
-     * @see cn.featherfly.juorm.rdb.jdbc.JuormJdbcImpl#update(java.util.List,
+     * @see cn.featherfly.juorm.Juorm#update(java.util.List,
      *      cn.featherfly.juorm.Juorm.IgnorePolicy)
      */
     @Override
@@ -107,10 +101,9 @@ public class BasedGenericJuormTplExecutor<E> implements GenericJuorm<E> {
     }
 
     /**
-     * @param <E>
      * @param entity
      * @return
-     * @see cn.featherfly.juorm.rdb.jdbc.JuormJdbcImpl#merge(java.lang.Object)
+     * @see cn.featherfly.juorm.Juorm#merge(java.lang.Object)
      */
     @Override
     public int merge(E entity) {
@@ -118,10 +111,9 @@ public class BasedGenericJuormTplExecutor<E> implements GenericJuorm<E> {
     }
 
     /**
-     * @param <E>
      * @param entities
      * @return
-     * @see cn.featherfly.juorm.rdb.jdbc.JuormJdbcImpl#merge(java.util.List)
+     * @see cn.featherfly.juorm.Juorm#merge(java.util.List)
      */
     @Override
     public int merge(List<E> entities) {
@@ -129,10 +121,9 @@ public class BasedGenericJuormTplExecutor<E> implements GenericJuorm<E> {
     }
 
     /**
-     * @param <E>
      * @param entity
      * @return
-     * @see cn.featherfly.juorm.rdb.jdbc.JuormJdbcImpl#delete(java.lang.Object)
+     * @see cn.featherfly.juorm.Juorm#delete(java.lang.Object)
      */
     @Override
     public int delete(E entity) {
@@ -140,10 +131,9 @@ public class BasedGenericJuormTplExecutor<E> implements GenericJuorm<E> {
     }
 
     /**
-     * @param <E>
      * @param entities
      * @return
-     * @see cn.featherfly.juorm.rdb.jdbc.JuormJdbcImpl#delete(java.util.List)
+     * @see cn.featherfly.juorm.Juorm#delete(java.util.List)
      */
     @Override
     public int delete(List<E> entities) {
@@ -151,12 +141,9 @@ public class BasedGenericJuormTplExecutor<E> implements GenericJuorm<E> {
     }
 
     /**
-     * @param <E>
      * @param id
-     * @param type
      * @return
-     * @see cn.featherfly.juorm.rdb.jdbc.JuormJdbcImpl#get(java.io.Serializable,
-     *      java.lang.Class)
+     * @see cn.featherfly.juorm.Juorm#get(java.io.Serializable, java.lang.Class)
      */
     @Override
     public E get(Serializable id) {

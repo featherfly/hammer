@@ -115,7 +115,7 @@ public class SqlTplDynamicExecutorTest2 extends JdbcTestBase {
     @Test
     void testMapperPage() {
         int limit = 1;
-        Page page = new SimplePagination<>(0, limit);
+        Page page = new SimplePagination(0, limit);
 
         List<User> list = userMapper.selectByAge2(10, 0, limit);
         System.out.println(list.size());
@@ -141,7 +141,7 @@ public class SqlTplDynamicExecutorTest2 extends JdbcTestBase {
     @Test
     void testMapperPageMap() {
         int limit = 1;
-        Page page = new SimplePagination<>(0, limit);
+        Page page = new SimplePagination(0, limit);
 
         List<Map<String, Object>> list = userMapper.select2(page);
         System.out.println(list.size());

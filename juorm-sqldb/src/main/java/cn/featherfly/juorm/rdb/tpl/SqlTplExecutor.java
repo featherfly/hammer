@@ -24,7 +24,7 @@ import cn.featherfly.common.lang.LangUtils;
 import cn.featherfly.common.structure.page.Limit;
 import cn.featherfly.common.structure.page.Page;
 import cn.featherfly.common.structure.page.PaginationResults;
-import cn.featherfly.common.structure.page.SimplePagination;
+import cn.featherfly.common.structure.page.SimplePaginationResults;
 import cn.featherfly.juorm.rdb.Constants;
 import cn.featherfly.juorm.rdb.jdbc.Jdbc;
 import cn.featherfly.juorm.rdb.jdbc.JuormJdbcException;
@@ -279,7 +279,7 @@ public class SqlTplExecutor implements TplExecutor {
     @Override
     public PaginationResults<Map<String, Object>> pagination(String tplExecuteId, Map<String, Object> params,
             int offset, int limit) {
-        SimplePagination<Map<String, Object>> pagination = new SimplePagination<>(offset, limit);
+        SimplePaginationResults<Map<String, Object>> pagination = new SimplePaginationResults<>(offset, limit);
 
         Tuple4<List<Map<String, Object>>, String, TplExecuteConfig, ConditionParamsManager> listTuple = findList(
                 tplExecuteId, params, offset, limit);
@@ -339,7 +339,7 @@ public class SqlTplExecutor implements TplExecutor {
     @Override
     public <E> PaginationResults<E> pagination(String tplExecuteId, Class<E> entityType, Map<String, Object> params,
             int offset, int limit) {
-        SimplePagination<E> pagination = new SimplePagination<>(offset, limit);
+        SimplePaginationResults<E> pagination = new SimplePaginationResults<>(offset, limit);
 
         Tuple4<List<E>, String, TplExecuteConfig, ConditionParamsManager> listTuple = findList(tplExecuteId, entityType,
                 params, offset, limit);

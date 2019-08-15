@@ -12,16 +12,15 @@ import cn.featherfly.juorm.expression.condition.property.EnumExpression;
  *
  * @author zhongj
  */
-public class TypeEnumExpression<E,
-        Q extends TypeQueryConditionGroupExpression<E, Q>> {
+public class TypeEnumExpression<E, Q extends TypeQueryConditionGroupExpression<E, Q>> {
 
     private EnumExpression<QueryConditionGroupExpression, QueryConditionGroupLogicExpression> expression;
 
     private Q typeExpression;
 
     /**
-     * @param name
      * @param expression
+     * @param typeExpression
      */
     public TypeEnumExpression(
             EnumExpression<QueryConditionGroupExpression, QueryConditionGroupLogicExpression> expression,

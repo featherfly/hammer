@@ -19,14 +19,14 @@ public class SqlConditionGroupExpression extends
         implements ExecutableConditionGroupExpression, ExecutableConditionGroupLogicExpression {
 
     /**
-     * @param dialect dialect
+     * @param jdbc jdbc
      */
     public SqlConditionGroupExpression(Jdbc jdbc) {
         this(jdbc, null);
     }
 
     /**
-     * @param dialect    dialect
+     * @param jdbc       jdbc
      * @param queryAlias queryAlias
      */
     public SqlConditionGroupExpression(Jdbc jdbc, String queryAlias) {
@@ -34,7 +34,7 @@ public class SqlConditionGroupExpression extends
     }
 
     /**
-     * @param dialect      dialect
+     * @param jdbc         jdbc
      * @param queryAlias   queryAlias
      * @param classMapping classMapping
      */
@@ -43,7 +43,7 @@ public class SqlConditionGroupExpression extends
     }
 
     /**
-     * @param dialect      dialect
+     * @param jdbc         jdbc
      * @param parent       parent group
      * @param queryAlias   queryAlias
      * @param classMapping classMapping
