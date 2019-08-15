@@ -21,7 +21,7 @@ public class SimpleExecution implements Execution {
      * @param params  params
      */
     public SimpleExecution(String execute, Object... params) {
-        AssertIllegalArgument.isNotEmpty(execute, "execute string不能为空");
+        AssertIllegalArgument.isNotEmpty(execute, "execute string");
         this.execute = execute;
         this.params = params;
     }
