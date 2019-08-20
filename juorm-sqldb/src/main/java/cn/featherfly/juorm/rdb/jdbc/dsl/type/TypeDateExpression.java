@@ -14,16 +14,15 @@ import cn.featherfly.juorm.expression.condition.property.DateExpression;
  *
  * @author zhongj
  */
-public class TypeDateExpression<E,
-        Q extends TypeQueryConditionGroupExpression<E, Q>> {
+public class TypeDateExpression<E, Q extends TypeQueryConditionGroupExpression<E, Q>> {
 
     private DateExpression<QueryConditionGroupExpression, QueryConditionGroupLogicExpression> expression;
 
     private Q typeExpression;
 
     /**
-     * @param name
      * @param expression
+     * @param typeExpression
      */
     public TypeDateExpression(
             DateExpression<QueryConditionGroupExpression, QueryConditionGroupLogicExpression> expression,

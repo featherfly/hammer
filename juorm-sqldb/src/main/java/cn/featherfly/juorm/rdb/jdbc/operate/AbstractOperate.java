@@ -69,10 +69,9 @@ public abstract class AbstractOperate<T> {
     /**
      * 使用给定数据源以及给定对象生成其相应的操作.
      *
-     * @param type           类
-     * @param jdbcTemplate   jdbcTemplate
-     * @param mappingFactory mappingFactory
-     * @param dataBase       具体库
+     * @param jdbc         jdbc
+     * @param classMapping classMapping
+     * @param dataBase     具体库
      */
     public AbstractOperate(Jdbc jdbc, ClassMapping<T> classMapping, String dataBase) {
         if (LangUtils.isEmpty(dataBase)) {
@@ -135,7 +134,7 @@ public abstract class AbstractOperate<T> {
      * </p>
      *
      * @param prep 执行SQL的PreparedStatementWrapper
-     * @param id   主键
+     * @param ids  主键列表
      */
     protected void setParameter(PreparedStatement prep, java.util.List<Serializable> ids) {
         int i = 0;

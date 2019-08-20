@@ -25,7 +25,7 @@ public class IncludeModel implements TemplateDirectiveModel {
     private TplConfigFactory tplConfigFactory;
 
     /**
-     * @param configFactory
+     * @param tplConfigFactory
      */
     public IncludeModel(TplConfigFactory tplConfigFactory) {
         super();

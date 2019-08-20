@@ -29,7 +29,7 @@ public class UpdateOperate<T> extends AbstractExecuteOperate<T> {
     /**
      * 使用给定数据源以及给定对象生成更新操作.
      *
-     * @param type         jdbc
+     * @param jdbc         jdbc
      * @param classMapping classMapping
      * @param dataBase     具体库
      */

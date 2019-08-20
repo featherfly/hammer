@@ -73,8 +73,8 @@ public interface Dialect extends cn.featherfly.common.db.dialect.Dialect {
     /**
      * build sql for column with aggregate function
      *
-     * @param columnName        columnName
-     * @param aggregateFunction aggregateFunction
+     * @param columnName columnName
+     * @param function   function
      * @return sql
      */
     default String buildColumnSql(String columnName, Function function) {

@@ -12,16 +12,15 @@ import cn.featherfly.juorm.expression.condition.property.NumberExpression;
  *
  * @author zhongj
  */
-public class TypeNumberExpression<E,
-        Q extends TypeQueryConditionGroupExpression<E, Q>> {
+public class TypeNumberExpression<E, Q extends TypeQueryConditionGroupExpression<E, Q>> {
 
     private NumberExpression<QueryConditionGroupExpression, QueryConditionGroupLogicExpression> expression;
 
     private Q typeExpression;
 
     /**
-     * @param name
      * @param expression
+     * @param typeExpression
      */
     public TypeNumberExpression(
             NumberExpression<QueryConditionGroupExpression, QueryConditionGroupLogicExpression> expression,

@@ -6,7 +6,6 @@ import java.util.List;
 import cn.featherfly.common.lang.ClassUtils;
 import cn.featherfly.common.structure.page.Page;
 import cn.featherfly.juorm.rdb.jdbc.dsl.query.SqlQueryConditionGroupExpression;
-import cn.featherfly.juorm.rdb.jdbc.vo.User;
 
 /**
  * <p>
@@ -15,8 +14,7 @@ import cn.featherfly.juorm.rdb.jdbc.vo.User;
  *
  * @author zhongj
  */
-public abstract class TypeQueryConditionGroupExpression<E,
-        Q extends TypeQueryConditionGroupExpression<E, Q>> {
+public abstract class TypeQueryConditionGroupExpression<E, Q extends TypeQueryConditionGroupExpression<E, Q>> {
 
     private Q parent;
 
@@ -28,9 +26,7 @@ public abstract class TypeQueryConditionGroupExpression<E,
      * @param queryConditionGroupExpression
      * @param parent
      */
-    public TypeQueryConditionGroupExpression(
-            SqlQueryConditionGroupExpression queryConditionGroupExpression,
-            Q parent) {
+    public TypeQueryConditionGroupExpression(SqlQueryConditionGroupExpression queryConditionGroupExpression, Q parent) {
         super();
         this.type = ClassUtils.getSuperClassGenricType(this.getClass());
         this.queryConditionGroupExpression = queryConditionGroupExpression;
@@ -78,28 +74,23 @@ public abstract class TypeQueryConditionGroupExpression<E,
         return queryConditionGroupExpression.single(type);
     }
 
-    public TypeQueryExecutor<User> limit(Integer limit) {
-        return new TypeQueryExecutor<>(User.class,
-                queryConditionGroupExpression.limit(limit));
+    public TypeQueryExecutor<E> limit(Integer limit) {
+        return new TypeQueryExecutor<>(type, queryConditionGroupExpression.limit(limit));
     }
 
     /**
      * {@inheritDoc}
      */
-    public TypeQueryExecutor<User> limit(Integer offset, Integer limit) {
-        return new TypeQueryExecutor<>(User.class,
-                queryConditionGroupExpression.limit(offset, limit));
+    public TypeQueryExecutor<E> limit(Integer offset, Integer limit) {
+        return new TypeQueryExecutor<>(type, queryConditionGroupExpression.limit(offset, limit));
     }
 
     /**
      * {@inheritDoc}
      */
-    public TypeQueryExecutor<User> limit(Page page) {
-        return new TypeQueryExecutor<>(User.class,
-                queryConditionGroupExpression.limit(page));
+    public TypeQueryExecutor<E> limit(Page page) {
+        return new TypeQueryExecutor<>(type, queryConditionGroupExpression.limit(page));
     }
 
-    protected abstract Q createChild(
-            SqlQueryConditionGroupExpression queryConditionGroupExpression,
-            Q parent);
+    protected abstract Q createChild(SqlQueryConditionGroupExpression queryConditionGroupExpression, Q parent);
 }

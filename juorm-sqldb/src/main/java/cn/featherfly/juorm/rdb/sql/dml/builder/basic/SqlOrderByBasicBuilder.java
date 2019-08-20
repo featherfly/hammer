@@ -35,7 +35,9 @@ public class SqlOrderByBasicBuilder implements SqlBuilder {
     /**
      * add property to asc list
      *
-     * @param names sort property name
+     * @param name       sort property name
+     * @param tableAlias tableAlias
+     * @param operator   SortOperator
      * @return this
      */
     public SqlOrderByBasicBuilder addOrder(String name, String tableAlias, SortOperator operator) {
@@ -186,7 +188,6 @@ public class SqlOrderByBasicBuilder implements SqlBuilder {
         /**
          * @param dialect      dialect
          * @param sortOperator sortOperator
-         * @param tableAlias   tableAlias
          */
         public Order(Dialect dialect, SortOperator sortOperator) {
             sortOrerator = sortOperator;

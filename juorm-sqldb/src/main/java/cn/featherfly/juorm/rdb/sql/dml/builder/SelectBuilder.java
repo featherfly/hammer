@@ -56,7 +56,6 @@ public interface SelectBuilder extends Builder {
      *
      * @param columnName        columnName
      * @param aggregateFunction aggregateFunction
-     * @param asName            asName
      * @return SelectBuilder
      */
     SelectBuilder select(String columnName, AggregateFunction aggregateFunction);
@@ -96,7 +95,7 @@ public interface SelectBuilder extends Builder {
      * 进入条件表达式
      * </p>
      *
-     * @param target tableName
+     * @param tableName tableName
      * @return ConditionBuilder
      */
     SqlConditionBuilder from(String tableName);
@@ -106,7 +105,7 @@ public interface SelectBuilder extends Builder {
      * 进入条件表达式
      * </p>
      *
-     * @param target     tableName
+     * @param tableName  tableName
      * @param tableAlias tableAlias
      * @return ConditionBuilder
      */
