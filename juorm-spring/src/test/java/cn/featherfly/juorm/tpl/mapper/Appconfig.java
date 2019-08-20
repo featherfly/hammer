@@ -42,16 +42,18 @@ public class Appconfig {
     protected TplConfigFactory configFactory;
 
     @Bean
-    public TplDynamicExecutorSpringRegistor tplDynamicExecutorSpringRegistor() {
+    public DynamicTplExecutorSpringRegistor tplDynamicExecutorSpringRegistor() {
         Set<String> packages = new HashSet<>();
         packages.add("cn.featherfly");
-        TplDynamicExecutorSpringRegistor registor = new TplDynamicExecutorSpringRegistor(packages, "juorm");
+        DynamicTplExecutorScanSpringRegistor registor = new DynamicTplExecutorScanSpringRegistor(
+                packages, "juorm");
         return registor;
     }
 
     @Bean
     public JuormJdbcImpl juorm() {
-        DOMConfigurator.configure(ClassLoaderUtils.getResource("log4j.xml", JdbcTestBase.class));
+        DOMConfigurator.configure(
+                ClassLoaderUtils.getResource("log4j.xml", JdbcTestBase.class));
 
         ConstantConfigurator.config();
 
@@ -62,13 +64,15 @@ public class Appconfig {
         dataSource.setPassword("123456");
 
         jdbc = new SpringJdbcTemplateImpl(dataSource, Dialects.MYSQL);
-        DatabaseMetadata metadata = DatabaseMetadataManager.getDefaultManager().create(dataSource);
+        DatabaseMetadata metadata = DatabaseMetadataManager.getDefaultManager()
+                .create(dataSource);
 
         mappingFactory = new MappingFactory(metadata, Dialects.MYSQL);
 
         configFactory = new TplConfigFactoryImpl("tpl/");
 
-        JuormJdbcImpl juorm = new JuormJdbcImpl(jdbc, mappingFactory, configFactory);
+        JuormJdbcImpl juorm = new JuormJdbcImpl(jdbc, mappingFactory,
+                configFactory);
         return juorm;
     }
 }
