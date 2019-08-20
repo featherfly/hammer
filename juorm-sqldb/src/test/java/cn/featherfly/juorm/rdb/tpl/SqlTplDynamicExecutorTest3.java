@@ -33,7 +33,8 @@ public class SqlTplDynamicExecutorTest3 extends JdbcTestBase {
 
     @BeforeClass
     void setup() {
-        TplDynamicExecutorFactory mapperFactory = TplDynamicExecutorFactory.getInstance();
+        TplDynamicExecutorFactory mapperFactory = TplDynamicExecutorFactory
+                .getInstance();
         Juorm juorm = new JuormJdbcImpl(jdbc, mappingFactory, configFactory);
         userMapper = mapperFactory.newInstance(UserMapper3.class, juorm);
     }
@@ -85,6 +86,21 @@ public class SqlTplDynamicExecutorTest3 extends JdbcTestBase {
 
         String password = "123456";
         u = userMapper.selectByUsernameAndPassword(username, password);
+        System.out.println(u);
+        assertEquals(u.getUsername(), username);
+        assertEquals(u.getPwd(), password);
+
+        u = userMapper.getByUsernameAndPassword(username, password);
+        System.out.println(u);
+        assertEquals(u.getUsername(), username);
+        assertEquals(u.getPwd(), password);
+
+        u = userMapper.getByUsernameAndPassword2(username, password);
+        System.out.println(u);
+        assertEquals(u.getUsername(), username);
+        assertEquals(u.getPwd(), password);
+
+        u = userMapper.getByUsernameAndPassword3(username, password);
         System.out.println(u);
         assertEquals(u.getUsername(), username);
         assertEquals(u.getPwd(), password);
@@ -157,7 +173,8 @@ public class SqlTplDynamicExecutorTest3 extends JdbcTestBase {
         System.out.println(list);
         assertEquals(list.size(), limit);
 
-        PaginationResults<Map<String, Object>> us = userMapper.select2Page(page);
+        PaginationResults<Map<String, Object>> us = userMapper
+                .select2Page(page);
         System.out.println(us.getResultSize());
         System.out.println(us.getPageResults());
 
