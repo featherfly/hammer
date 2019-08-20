@@ -1,7 +1,7 @@
 allprojects {
     apply plugin: 'java'
     apply from: rootDir.getAbsolutePath() +  '/java_base.gradle'   
-    apply from: rootDir.getAbsolutePath() +  '/java_base.gradle'   
+    apply from: rootDir.getAbsolutePath() +  '/maven_push.gradle'   
     //apply from: '../juorm-build/java_base.gradle'   
     //apply from: '../juorm-build/maven_push.gradle'
         
