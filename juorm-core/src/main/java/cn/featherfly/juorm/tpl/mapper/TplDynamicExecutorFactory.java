@@ -75,8 +75,10 @@ public class TplDynamicExecutorFactory {
         return INSTANCE;
     }
 
-    public String create(Class<?> type) throws NotFoundException, CannotCompileException {
-        String dynamicClassName = type.getPackage().getName() + "._" + type.getSimpleName() + "DynamicImpl";
+    public String create(Class<?> type)
+            throws NotFoundException, CannotCompileException {
+        String dynamicClassName = type.getPackage().getName() + "._"
+                + type.getSimpleName() + "DynamicImpl";
         if (!types.contains(type)) {
             String globalNamespace = getNamespace(type);
             String juormFieldName = "juorm";
@@ -87,20 +89,22 @@ public class TplDynamicExecutorFactory {
             dynamicImplClass.addInterface(pool.getCtClass(type.getName()));
             String constructorBody = null;
             if (ClassUtils.isParent(Juorm.class, type)) {
-                dynamicImplClass.setSuperclass(pool.getCtClass(BasedJuormTplExecutor.class.getName()));
+                dynamicImplClass.setSuperclass(
+                        pool.getCtClass(BasedJuormTplExecutor.class.getName()));
                 constructorBody = "{super($1);}";
                 juormFieldName = "super." + juormFieldName;
             } else if (ClassUtils.isParent(GenericJuorm.class, type)) {
                 String typeName = null;
-                // TODO 这里要获取泛型参数
                 for (Type implType : type.getGenericInterfaces()) {
                     ParameterizedType parameterizedType = (ParameterizedType) implType;
                     if (parameterizedType.getRawType() == GenericJuorm.class) {
-                        typeName = parameterizedType.getActualTypeArguments()[0].getTypeName();
+                        typeName = parameterizedType.getActualTypeArguments()[0]
+                                .getTypeName();
                         break;
                     }
                 }
-                dynamicImplClass.setSuperclass(pool.getCtClass(BasedGenericJuormTplExecutor.class.getName()));
+                dynamicImplClass.setSuperclass(pool.getCtClass(
+                        BasedGenericJuormTplExecutor.class.getName()));
                 constructorBody = "{super($1, " + typeName + ".class);}";
                 juormFieldName = "super." + juormFieldName;
             } else {
@@ -108,18 +112,22 @@ public class TplDynamicExecutorFactory {
             }
 
             // 加入juorm
-            CtField nameField = new CtField(pool.getCtClass(Juorm.class.getName()), "juorm", dynamicImplClass);
+            CtField nameField = new CtField(
+                    pool.getCtClass(Juorm.class.getName()), "juorm",
+                    dynamicImplClass);
             nameField.setModifiers(Modifier.PRIVATE);
             dynamicImplClass.addField(nameField);
 
             CtConstructor constraConstructor = new CtConstructor(
-                    new CtClass[] { pool.getCtClass(Juorm.class.getName()) }, dynamicImplClass);
+                    new CtClass[] { pool.getCtClass(Juorm.class.getName()) },
+                    dynamicImplClass);
             constraConstructor.setModifiers(Modifier.PUBLIC);
             constraConstructor.setBody(constructorBody);
             dynamicImplClass.addConstructor(constraConstructor);
-            System.err.println(constraConstructor);
+            // System.err.println(constraConstructor);
 
-            addImplMethods(type, globalNamespace, pool, dynamicImplClass, juormFieldName);
+            addImplMethods(type, globalNamespace, pool, dynamicImplClass,
+                    juormFieldName);
 
             dynamicImplClass.toClass();
             dynamicImplClass.detach();
@@ -131,10 +139,12 @@ public class TplDynamicExecutorFactory {
     /*
      * add implements methods
      */
-    private void addImplMethods(Class<?> type, String globalNamespace, ClassPool pool, CtClass dynamicImplClass,
-            String juormFieldName) throws NotFoundException, CannotCompileException {
+    private void addImplMethods(Class<?> type, String globalNamespace,
+            ClassPool pool, CtClass dynamicImplClass, String juormFieldName)
+            throws NotFoundException, CannotCompileException {
         for (Method method : type.getDeclaredMethods()) {
-            CtClass[] ctParamTypes = new CtClass[method.getParameterTypes().length];
+            CtClass[] ctParamTypes = new CtClass[method
+                    .getParameterTypes().length];
             String namespace = getNamespace(method, globalNamespace);
             String name = getName(method);
             TplExecuteId executeId = new TplExecuteIdImpl(name, namespace);
@@ -144,72 +154,97 @@ public class TplDynamicExecutorFactory {
             int offsetParamPosition = -1;
             int limitParamPosition = -1;
             for (Parameter parameter : method.getParameters()) {
-                ctParamTypes[i] = pool.getCtClass(parameter.getType().getName());
+                ctParamTypes[i] = pool
+                        .getCtClass(parameter.getType().getName());
                 i++;
                 TplParamType paramType = getParamType(parameter);
                 switch (paramType) {
-                    case QUERY:
-                        setParams += ".putChain(\"" + getParamName(parameter) + "\", $" + i + ")";
-                        break;
-                    case PAGE:
-                        pageParamPosition = i;
-                        break;
-                    case PAGE_OFFSET:
-                        offsetParamPosition = i;
-                        break;
-                    case PAGE_LIMIT:
-                        limitParamPosition = i;
-                        break;
+                case QUERY:
+                    setParams += ".putChain(\"" + getParamName(parameter)
+                            + "\", $" + i + ")";
+                    break;
+                case PAGE:
+                    pageParamPosition = i;
+                    break;
+                case PAGE_OFFSET:
+                    offsetParamPosition = i;
+                    break;
+                case PAGE_LIMIT:
+                    limitParamPosition = i;
+                    break;
                 }
             }
             if (pageParamPosition > 0) {
                 setParams += ", $" + pageParamPosition;
             } else if (limitParamPosition > 0) {
                 if (offsetParamPosition > 0) {
-                    setParams += ", $" + offsetParamPosition + ", $" + limitParamPosition;
+                    setParams += ", $" + offsetParamPosition + ", $"
+                            + limitParamPosition;
                 } else {
                     setParams += ", 0, $" + limitParamPosition;
                 }
             }
 
-            CtMethod ctMethod = new CtMethod(pool.getCtClass(method.getReturnType().getTypeName()), method.getName(),
-                    ctParamTypes, dynamicImplClass);
+            CtMethod ctMethod = new CtMethod(
+                    pool.getCtClass(method.getReturnType().getTypeName()),
+                    method.getName(), ctParamTypes, dynamicImplClass);
             String body = null;
             if (ClassUtils.isParent(List.class, method.getReturnType())) {
                 String returnTypeName = method.getReturnType().getName();
                 returnTypeName = getReturnTypeName(method, returnTypeName);
-                if (ClassUtils.isParent(Map.class, ClassUtils.forName(returnTypeName))) {
-                    body = String.format("{return %s.list(\"%s\", new %s()%s);}", juormFieldName, executeId.getId(),
+                if (ClassUtils.isParent(Map.class,
+                        ClassUtils.forName(returnTypeName))) {
+                    body = String.format(
+                            "{return %s.list(\"%s\", new %s()%s);}",
+                            juormFieldName, executeId.getId(),
                             HashChainMap.class.getName(), setParams);
                 } else {
-                    body = String.format("{return %s.list(\"%s\", %s.class, new %s()%s);}", juormFieldName,
-                            executeId.getId(), returnTypeName, HashChainMap.class.getName(), setParams);
+                    body = String.format(
+                            "{return %s.list(\"%s\", %s.class, new %s()%s);}",
+                            juormFieldName, executeId.getId(), returnTypeName,
+                            HashChainMap.class.getName(), setParams);
                 }
-            } else if (ClassUtils.isParent(PaginationResults.class, method.getReturnType())) {
+            } else if (ClassUtils.isParent(PaginationResults.class,
+                    method.getReturnType())) {
                 String returnTypeName = method.getReturnType().getName();
                 returnTypeName = getReturnTypeName(method, returnTypeName);
-                if (ClassUtils.isParent(Map.class, ClassUtils.forName(returnTypeName))) {
-                    body = String.format("{return %s.pagination(\"%s\", new %s()%s);}", juormFieldName,
-                            executeId.getId(), HashChainMap.class.getName(), setParams);
+                if (ClassUtils.isParent(Map.class,
+                        ClassUtils.forName(returnTypeName))) {
+                    body = String.format(
+                            "{return %s.pagination(\"%s\", new %s()%s);}",
+                            juormFieldName, executeId.getId(),
+                            HashChainMap.class.getName(), setParams);
                 } else {
-                    body = String.format("{return %s.pagination(\"%s\", %s.class, new %s()%s);}", juormFieldName,
-                            executeId.getId(), returnTypeName, HashChainMap.class.getName(), setParams);
+                    body = String.format(
+                            "{return %s.pagination(\"%s\", %s.class, new %s()%s);}",
+                            juormFieldName, executeId.getId(), returnTypeName,
+                            HashChainMap.class.getName(), setParams);
                 }
-            } else if (ClassUtils.isParent(Number.class, method.getReturnType())) {
-                body = String.format("{return (%3$s) %s.number(\"%s\", %s.class, new %s()%s);}", juormFieldName,
-                        executeId.getId(), method.getReturnType().getName(), HashChainMap.class.getName(), setParams);
+            } else if (ClassUtils.isParent(Number.class,
+                    method.getReturnType())) {
+                body = String.format(
+                        "{return (%3$s) %s.number(\"%s\", %s.class, new %s()%s);}",
+                        juormFieldName, executeId.getId(),
+                        method.getReturnType().getName(),
+                        HashChainMap.class.getName(), setParams);
             } else if (String.class == method.getReturnType()) {
-                body = String.format("{return  %s.stringValue(\"%s\", new %s()%s);}", juormFieldName, executeId.getId(),
+                body = String.format(
+                        "{return  %s.stringValue(\"%s\", new %s()%s);}",
+                        juormFieldName, executeId.getId(),
                         HashChainMap.class.getName(), setParams);
             } else if (ClassUtils.isParent(Map.class, method.getReturnType())) {
-                body = String.format("{return  %s.single(\"%s\", new %s()%s);}", juormFieldName, executeId.getId(),
+                body = String.format("{return  %s.single(\"%s\", new %s()%s);}",
+                        juormFieldName, executeId.getId(),
                         HashChainMap.class.getName(), setParams);
             } else {
-                body = String.format("{return (%3$s)  %s.single(\"%s\", %s.class, new %s()%s);}", juormFieldName,
-                        executeId.getId(), method.getReturnType().getName(), HashChainMap.class.getName(), setParams);
+                body = String.format(
+                        "{return (%3$s)  %s.single(\"%s\", %s.class, new %s()%s);}",
+                        juormFieldName, executeId.getId(),
+                        method.getReturnType().getName(),
+                        HashChainMap.class.getName(), setParams);
             }
-            System.err.println(ctMethod);
-            System.err.println(body);
+            // System.err.println(ctMethod);
+            // System.err.println(body);
             logger.debug("method {} -> {}", method.getName(), body);
             ctMethod.setBody(body);
             dynamicImplClass.addMethod(ctMethod);
@@ -225,8 +260,10 @@ public class TplDynamicExecutorFactory {
      */
     private String getReturnTypeName(Method method, String returnTypeName) {
         if (method.getGenericReturnType() instanceof ParameterizedType) {
-            ParameterizedType parameterizedType = (ParameterizedType) method.getGenericReturnType();
-            Type objectType = getRawType(parameterizedType.getActualTypeArguments()[0]);
+            ParameterizedType parameterizedType = (ParameterizedType) method
+                    .getGenericReturnType();
+            Type objectType = getRawType(
+                    parameterizedType.getActualTypeArguments()[0]);
             returnTypeName = objectType.getTypeName();
         }
         return returnTypeName;
@@ -254,7 +291,8 @@ public class TplDynamicExecutorFactory {
     @SuppressWarnings("unchecked")
     public <E> E instance(Class<E> type, Juorm juorm) {
         try {
-            return (E) ClassUtils.forName(create(type)).getConstructor(Juorm.class).newInstance(juorm);
+            return (E) ClassUtils.forName(create(type))
+                    .getConstructor(Juorm.class).newInstance(juorm);
         } catch (Exception e) {
             throw new JuormException(e);
         }
@@ -262,7 +300,8 @@ public class TplDynamicExecutorFactory {
 
     private String getNamespace(Class<?> type) {
         TplExecution tplExecution = type.getAnnotation(TplExecution.class);
-        if (tplExecution != null && LangUtils.isNotEmpty(tplExecution.namesapce())) {
+        if (tplExecution != null
+                && LangUtils.isNotEmpty(tplExecution.namesapce())) {
             return tplExecution.namesapce();
         } else {
             return type.getSimpleName();
@@ -271,7 +310,8 @@ public class TplDynamicExecutorFactory {
 
     private String getNamespace(Method method, String namespace) {
         TplExecution tplExecution = method.getAnnotation(TplExecution.class);
-        if (tplExecution != null && LangUtils.isNotEmpty(tplExecution.namesapce())) {
+        if (tplExecution != null
+                && LangUtils.isNotEmpty(tplExecution.namesapce())) {
             return tplExecution.namesapce();
         } else {
             return namespace;
