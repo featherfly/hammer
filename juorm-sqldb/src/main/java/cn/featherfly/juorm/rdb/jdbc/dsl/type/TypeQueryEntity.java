@@ -9,7 +9,7 @@ import cn.featherfly.juorm.rdb.jdbc.dsl.query.SqlQueryConditionGroupExpression;
 import cn.featherfly.juorm.rdb.jdbc.dsl.query.SqlQueryEntityProperties;
 import cn.featherfly.juorm.rdb.jdbc.mapping.ClassMapping;
 import cn.featherfly.juorm.rdb.jdbc.mapping.ClassMappingUtils;
-import cn.featherfly.juorm.rdb.jdbc.mapping.MappingFactory;
+import cn.featherfly.juorm.rdb.jdbc.mapping.JdbcMappingFactory;
 
 /**
  * <p>
@@ -31,7 +31,7 @@ public abstract class TypeQueryEntity<E, C extends TypeQueryConditionGroupExpres
 
     /**
      */
-    public TypeQueryEntity(SqlQueryEntityProperties queryEntityProperties, MappingFactory mappingFactory) {
+    public TypeQueryEntity(SqlQueryEntityProperties queryEntityProperties, JdbcMappingFactory mappingFactory) {
         type = ClassUtils.getSuperClassGenricType(this.getClass());
         this.queryEntityProperties = queryEntityProperties;
         mappping = mappingFactory.getClassMapping(type);

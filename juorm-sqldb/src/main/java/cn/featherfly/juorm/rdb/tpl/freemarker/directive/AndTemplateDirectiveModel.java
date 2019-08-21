@@ -1,5 +1,8 @@
 
-package cn.featherfly.juorm.rdb.tpl.freemarker;
+package cn.featherfly.juorm.rdb.tpl.freemarker.directive;
+
+import cn.featherfly.juorm.tpl.directive.AndTemplateDirective;
+import cn.featherfly.juorm.tpl.supports.ConditionParamsManager;
 
 /**
  * <p>
@@ -8,8 +11,8 @@ package cn.featherfly.juorm.rdb.tpl.freemarker;
  * 
  * @author zhongj
  */
-public class AndTemplateDirectiveModel
-        extends LogicTemplateDirectiveModel {
+public class AndTemplateDirectiveModel extends LogicTemplateDirectiveModel
+        implements AndTemplateDirective {
 
     /**
      * @param conditionParamsManager

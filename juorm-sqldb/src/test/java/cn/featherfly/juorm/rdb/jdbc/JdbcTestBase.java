@@ -10,7 +10,7 @@ import cn.featherfly.common.db.metadata.DatabaseMetadataManager;
 import cn.featherfly.common.lang.ClassLoaderUtils;
 import cn.featherfly.common.lang.RandomUtils;
 import cn.featherfly.constant.ConstantConfigurator;
-import cn.featherfly.juorm.rdb.jdbc.mapping.MappingFactory;
+import cn.featherfly.juorm.rdb.jdbc.mapping.JdbcMappingFactory;
 import cn.featherfly.juorm.rdb.jdbc.vo.Role;
 import cn.featherfly.juorm.rdb.sql.dialect.Dialects;
 import cn.featherfly.juorm.tpl.TplConfigFactory;
@@ -27,7 +27,7 @@ public class JdbcTestBase {
 
     protected Jdbc jdbc;
 
-    protected MappingFactory mappingFactory;
+    protected JdbcMappingFactory mappingFactory;
 
     protected TplConfigFactory configFactory;
 
@@ -46,7 +46,7 @@ public class JdbcTestBase {
         jdbc = new SpringJdbcTemplateImpl(dataSource, Dialects.MYSQL);
         DatabaseMetadata metadata = DatabaseMetadataManager.getDefaultManager().create(dataSource);
 
-        mappingFactory = new MappingFactory(metadata, Dialects.MYSQL);
+        mappingFactory = new JdbcMappingFactory(metadata, Dialects.MYSQL);
 
         // factory.getClassNameConversions().add(new ClassNameJpaConversion());
         // factory.getClassNameConversions().add(new
@@ -76,7 +76,7 @@ public class JdbcTestBase {
         jdbc = new SpringJdbcTemplateImpl(dataSource, Dialects.POSTGRESQL);
         DatabaseMetadata metadata = DatabaseMetadataManager.getDefaultManager().create(dataSource, "juorm_jdbc");
 
-        mappingFactory = new MappingFactory(metadata, Dialects.POSTGRESQL);
+        mappingFactory = new JdbcMappingFactory(metadata, Dialects.POSTGRESQL);
 
         configFactory = new TplConfigFactoryImpl("tpl/");
     }

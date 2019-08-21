@@ -15,12 +15,12 @@ import com.fasterxml.jackson.dataformat.yaml.YAMLFactory;
 
 import cn.featherfly.common.lang.ClassLoaderUtils;
 import cn.featherfly.common.lang.LangUtils;
-import cn.featherfly.juorm.rdb.tpl.freemarker.AndTemplateDirectiveModel;
-import cn.featherfly.juorm.rdb.tpl.freemarker.ConditionParamsManager;
-import cn.featherfly.juorm.rdb.tpl.freemarker.OrTemplateDirectiveModel;
-import cn.featherfly.juorm.rdb.tpl.freemarker.WhereTemplateDirectiveModel;
+import cn.featherfly.juorm.rdb.tpl.freemarker.directive.AndTemplateDirectiveModel;
+import cn.featherfly.juorm.rdb.tpl.freemarker.directive.OrTemplateDirectiveModel;
+import cn.featherfly.juorm.rdb.tpl.freemarker.directive.WhereTemplateDirectiveModel;
 import cn.featherfly.juorm.tpl.TplExecuteConfig;
 import cn.featherfly.juorm.tpl.TplExecuteConfig.Type;
+import cn.featherfly.juorm.tpl.supports.ConditionParamsManager;
 import cn.featherfly.juorm.tpl.TplExecuteConfigs;
 import freemarker.template.Configuration;
 import freemarker.template.Template;

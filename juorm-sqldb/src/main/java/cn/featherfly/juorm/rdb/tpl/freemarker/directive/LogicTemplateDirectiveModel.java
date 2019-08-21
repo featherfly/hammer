@@ -1,5 +1,5 @@
 
-package cn.featherfly.juorm.rdb.tpl.freemarker;
+package cn.featherfly.juorm.rdb.tpl.freemarker.directive;
 
 import java.io.IOException;
 import java.io.StringWriter;
@@ -9,8 +9,8 @@ import java.util.Set;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import cn.featherfly.common.lang.StringUtils;
 import cn.featherfly.juorm.rdb.jdbc.JuormJdbcException;
+import cn.featherfly.juorm.tpl.supports.ConditionParamsManager;
 import freemarker.core.Environment;
 import freemarker.template.TemplateBooleanModel;
 import freemarker.template.TemplateDirectiveBody;
@@ -27,15 +27,18 @@ import freemarker.template.TemplateScalarModel;
  *
  * @author zhongj
  */
-public abstract class LogicTemplateDirectiveModel implements TemplateDirectiveModel {
+public abstract class LogicTemplateDirectiveModel
+        implements TemplateDirectiveModel {
 
     private static final String BETWEEN = "between";
 
     // (\w+) *([=><]|<>|!=|>=|<=| in | is ) *(:\w+|\?)
-    //    private static final Pattern CONDITION_PATTERN = Pattern
-    //            .compile("(\\w+) *([=><]|<>|!=|>=|<=| in | is ) *(:\\w+|\\?)", Pattern.CASE_INSENSITIVE);
+    // private static final Pattern CONDITION_PATTERN = Pattern
+    // .compile("(\\w+) *([=><]|<>|!=|>=|<=| in | is ) *(:\\w+|\\?)",
+    // Pattern.CASE_INSENSITIVE);
 
-    //(\w+) *(([=><]|<>|!=|>=|<=| like | in | is ) *(:\w+|\?)|(between) +(:\w+|\?) *(and) *(:\w+|\?))
+    // (\w+) *(([=><]|<>|!=|>=|<=| like | in | is ) *(:\w+|\?)|(between)
+    // +(:\w+|\?) *(and) *(:\w+|\?))
     private static final Pattern CONDITION_PATTERN = Pattern.compile(
             "(\\w+) *(([=><]|<>|!=|>=|<=|!>|!<| like | in | is ) *(:\\w+|\\?)|(between) +(:\\w+|\\?) *(and) *(:\\w+|\\?))",
             Pattern.CASE_INSENSITIVE);
@@ -47,9 +50,11 @@ public abstract class LogicTemplateDirectiveModel implements TemplateDirectiveMo
     private ConditionParamsManager conditionParamsManager;
 
     /**
-     * @param conditionParamsManager conditionParamsManager
+     * @param conditionParamsManager
+     *            conditionParamsManager
      */
-    public LogicTemplateDirectiveModel(ConditionParamsManager conditionParamsManager) {
+    public LogicTemplateDirectiveModel(
+            ConditionParamsManager conditionParamsManager) {
         this.conditionParamsManager = conditionParamsManager;
     }
 
@@ -57,7 +62,8 @@ public abstract class LogicTemplateDirectiveModel implements TemplateDirectiveMo
      * {@inheritDoc}
      */
     @Override
-    public void execute(Environment env, @SuppressWarnings("rawtypes") Map params, TemplateModel[] loopVars,
+    public void execute(Environment env,
+            @SuppressWarnings("rawtypes") Map params, TemplateModel[] loopVars,
             TemplateDirectiveBody body) throws TemplateException, IOException {
 
         Boolean ifParam = null;
@@ -72,17 +78,19 @@ public abstract class LogicTemplateDirectiveModel implements TemplateDirectiveMo
 
             if (paramName.equals(PARAM_NAME_IF)) {
                 if (!(paramValue instanceof TemplateBooleanModel)) {
-                    throw new TemplateModelException("The \"" + PARAM_NAME_IF + "\" parameter " + "must be a boolean.");
+                    throw new TemplateModelException("The \"" + PARAM_NAME_IF
+                            + "\" parameter " + "must be a boolean.");
                 }
                 ifParam = ((TemplateBooleanModel) paramValue).getAsBoolean();
             } else if (paramName.equals(PARAM_NAME_NAME)) {
                 if (!(paramValue instanceof TemplateScalarModel)) {
-                    throw new TemplateModelException(
-                            "The \"" + PARAM_NAME_NAME + "\" parameter " + "must be a String.");
+                    throw new TemplateModelException("The \"" + PARAM_NAME_NAME
+                            + "\" parameter " + "must be a String.");
                 }
                 nameParam = ((TemplateScalarModel) paramValue).getAsString();
             } else {
-                throw new TemplateModelException("Unsupported parameter: " + paramName);
+                throw new TemplateModelException(
+                        "Unsupported parameter: " + paramName);
             }
         }
 
@@ -94,7 +102,8 @@ public abstract class LogicTemplateDirectiveModel implements TemplateDirectiveMo
             // System.out.println("ifParam: " + ifParam + " amount: "
             // + conditionParamsManager.getAmount());
             if (ifParam == null) {
-                boolean needAppendLogicWorld = conditionParamsManager.isNeedAppendLogicWorld();
+                boolean needAppendLogicWorld = conditionParamsManager
+                        .isNeedAppendLogicWorld();
                 conditionParamsManager.startGroup();
                 StringWriter stringWriter = new StringWriter();
                 body.render(stringWriter);
@@ -102,7 +111,8 @@ public abstract class LogicTemplateDirectiveModel implements TemplateDirectiveMo
                 if (condition.length() > 0) {
                     String result = "";
                     if (needAppendLogicWorld) {
-                        result = " " + getLogicWorld() + " ( " + condition + " )";
+                        result = " " + getLogicWorld() + " ( " + condition
+                                + " )";
                     } else {
                         result = " ( " + condition + " )";
                     }
@@ -111,20 +121,23 @@ public abstract class LogicTemplateDirectiveModel implements TemplateDirectiveMo
                 conditionParamsManager.endGroup();
             } else if (ifParam) {
                 String name = nameParam;
-                boolean needAppendLogicWorld = conditionParamsManager.isNeedAppendLogicWorld();
-                //                if (conditionParamsManager.isNeedAppendLogicWorld()) {
-                //                    out.write(" " + getLogicWorld() + " ");
-                //                }
+                boolean needAppendLogicWorld = conditionParamsManager
+                        .isNeedAppendLogicWorld();
+                // if (conditionParamsManager.isNeedAppendLogicWorld()) {
+                // out.write(" " + getLogicWorld() + " ");
+                // }
                 StringWriter stringWriter = new StringWriter();
                 body.render(stringWriter);
 
                 String condition = stringWriter.toString().trim();
-                if (StringUtils.isBlank(nameParam) && condition.length() > 0) {
+                if (org.apache.commons.lang3.StringUtils.isBlank(nameParam)
+                        && condition.length() > 0) {
                     Matcher m = null;
                     m = CONDITION_PATTERN.matcher(condition);
                     if (!m.matches()) {
-                        throw new IllegalArgumentException(
-                                "[" + condition + "] " + "查询条件无法获取条件名称，请直接在指令上设置参数名称<@and name=\"paramName\">");
+                        throw new IllegalArgumentException("[" + condition
+                                + "] "
+                                + "查询条件无法获取条件名称，请直接在指令上设置参数名称<@and name=\"paramName\">");
                     }
 
                     String paramType = null;
@@ -138,20 +151,26 @@ public abstract class LogicTemplateDirectiveModel implements TemplateDirectiveMo
 
                     if ("?".equals(paramType)) {
                         if (conditionParamsManager.getParamNamed() != null
-                                && conditionParamsManager.getParamNamed() == true) {
-                            throw new JuormJdbcException("不能name = ? 和 name = :name混合一起用");
+                                && conditionParamsManager
+                                        .getParamNamed() == true) {
+                            throw new JuormJdbcException(
+                                    "不能name = ? 和 name = :name混合一起用");
                         }
                         conditionParamsManager.setParamNamed(false);
 
                         name = m.group(1);
-                        if (StringUtils.isBlank(name) || betweenAnd) {
-                            throw new IllegalArgumentException("[" + condition + "] "
+                        if (org.apache.commons.lang3.StringUtils.isBlank(name)
+                                || betweenAnd) {
+                            throw new IllegalArgumentException("[" + condition
+                                    + "] "
                                     + "查询条件无法获取条件名称，请直接在指令上设置参数名称<@and name=\"paramName\">或者<@and name=\"paramName1,paramName2\">");
                         }
                     } else if (paramType.startsWith(":")) {
                         if (conditionParamsManager.getParamNamed() != null
-                                && conditionParamsManager.getParamNamed() == false) {
-                            throw new JuormJdbcException("不能name = ? 和 name = :name混合一起用");
+                                && conditionParamsManager
+                                        .getParamNamed() == false) {
+                            throw new JuormJdbcException(
+                                    "不能name = ? 和 name = :name混合一起用");
                         }
                         conditionParamsManager.setParamNamed(true);
                         name = paramType.substring(1);

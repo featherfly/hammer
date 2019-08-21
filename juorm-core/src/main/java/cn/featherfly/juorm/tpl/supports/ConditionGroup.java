@@ -1,5 +1,5 @@
 
-package cn.featherfly.juorm.rdb.tpl.freemarker;
+package cn.featherfly.juorm.tpl.supports;
 
 import java.util.ArrayList;
 import java.util.List;

@@ -2,6 +2,7 @@
 0.1.1 
     1.升级依赖，解决版本导致出错问题
     2.tpl mapper interface加入default method支持
+    3.tpl加入wrap模板方法 ${tpl_wrap("user")}
     
 2019-8-20
 0.1.0 发布

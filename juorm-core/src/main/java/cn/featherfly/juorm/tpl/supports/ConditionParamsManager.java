@@ -1,5 +1,5 @@
 
-package cn.featherfly.juorm.rdb.tpl.freemarker;
+package cn.featherfly.juorm.tpl.supports;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -82,7 +82,8 @@ public class ConditionParamsManager {
     /**
      * 设置paramNamed
      *
-     * @param paramNamed paramNamed
+     * @param paramNamed
+     *            paramNamed
      */
     public void setParamNamed(Boolean paramNamed) {
         this.paramNamed = paramNamed;

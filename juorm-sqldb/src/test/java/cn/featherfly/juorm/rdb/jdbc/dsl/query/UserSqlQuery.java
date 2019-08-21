@@ -1,7 +1,7 @@
 
 package cn.featherfly.juorm.rdb.jdbc.dsl.query;
 
-import cn.featherfly.juorm.rdb.jdbc.mapping.MappingFactory;
+import cn.featherfly.juorm.rdb.jdbc.mapping.JdbcMappingFactory;
 
 /**
  * <p>
@@ -14,13 +14,13 @@ public class UserSqlQuery {
 
     private SqlQuery query;
 
-    private MappingFactory mappingFactory;
+    private JdbcMappingFactory mappingFactory;
 
     /**
      * @param query
      * @param mappingFactory
      */
-    public UserSqlQuery(SqlQuery query, MappingFactory mappingFactory) {
+    public UserSqlQuery(SqlQuery query, JdbcMappingFactory mappingFactory) {
         super();
         this.query = query;
         this.mappingFactory = mappingFactory;

@@ -2,7 +2,7 @@
 package cn.featherfly.juorm.rdb.jdbc.dsl.type;
 
 import cn.featherfly.juorm.rdb.jdbc.dsl.query.SqlQueryEntityProperties;
-import cn.featherfly.juorm.rdb.jdbc.mapping.MappingFactory;
+import cn.featherfly.juorm.rdb.jdbc.mapping.JdbcMappingFactory;
 
 /**
  * <p>
@@ -20,7 +20,7 @@ public abstract class TypeQueryProperties<E, C extends TypeQueryConditionGroupEx
      * @param queryEntityProperties
      * @param mappingFactory
      */
-    public TypeQueryProperties(SqlQueryEntityProperties queryEntityProperties, MappingFactory mappingFactory) {
+    public TypeQueryProperties(SqlQueryEntityProperties queryEntityProperties, JdbcMappingFactory mappingFactory) {
         super(queryEntityProperties, mappingFactory);
         this.queryEntityProperties = queryEntityProperties;
     }

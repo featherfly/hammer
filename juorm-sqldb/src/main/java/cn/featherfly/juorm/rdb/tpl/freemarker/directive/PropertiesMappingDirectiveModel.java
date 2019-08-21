@@ -1,5 +1,5 @@
 
-package cn.featherfly.juorm.rdb.tpl.freemarker;
+package cn.featherfly.juorm.rdb.tpl.freemarker.directive;
 
 import java.io.IOException;
 import java.io.Writer;
@@ -11,7 +11,8 @@ import cn.featherfly.common.lang.LangUtils;
 import cn.featherfly.common.lang.WordUtils;
 import cn.featherfly.juorm.rdb.jdbc.mapping.ClassMapping;
 import cn.featherfly.juorm.rdb.jdbc.mapping.ClassMappingUtils;
-import cn.featherfly.juorm.rdb.jdbc.mapping.MappingFactory;
+import cn.featherfly.juorm.rdb.jdbc.mapping.JdbcMappingFactory;
+import cn.featherfly.juorm.tpl.directive.PropertiesMappingDirective;
 import freemarker.core.Environment;
 import freemarker.template.TemplateDirectiveBody;
 import freemarker.template.TemplateDirectiveModel;
@@ -27,19 +28,10 @@ import freemarker.template.TemplateScalarModel;
  *
  * @author zhongj
  */
-public class PropertiesMappingDirectiveModel implements TemplateDirectiveModel {
+public class PropertiesMappingDirectiveModel extends PropertiesMappingDirective
+        implements TemplateDirectiveModel {
 
-    private static final String DEFAULT_PARAM_NAME_NAME = "table";
-
-    private static final String PARAM_NAME_ALIAS = "alias";
-
-    private static final String PARAM_NAME_MAPPING = "mapping";
-
-    private MappingFactory mappingFactory;
-
-    private Class<?> resultType;
-
-    private String paramName;
+    private JdbcMappingFactory mappingFactory;
 
     /**
      * @param mappingFactory
@@ -47,7 +39,7 @@ public class PropertiesMappingDirectiveModel implements TemplateDirectiveModel {
      * @param resultType
      *            resultType
      */
-    public PropertiesMappingDirectiveModel(MappingFactory mappingFactory,
+    public PropertiesMappingDirectiveModel(JdbcMappingFactory mappingFactory,
             Class<?> resultType) {
         this(DEFAULT_PARAM_NAME_NAME, mappingFactory, resultType);
     }
@@ -61,11 +53,10 @@ public class PropertiesMappingDirectiveModel implements TemplateDirectiveModel {
      *            resultType
      */
     public PropertiesMappingDirectiveModel(String paramName,
-            MappingFactory mappingFactory, Class<?> resultType) {
-        super();
+            JdbcMappingFactory mappingFactory, Class<?> resultType) {
+        super(paramName, mappingFactory, resultType);
+        // FIXME 这里暂时还没有把接口抽出来，暂时只定义了一个接口符号，后续来改
         this.mappingFactory = mappingFactory;
-        this.paramName = paramName;
-        this.resultType = resultType;
     }
 
     /**

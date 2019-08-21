@@ -29,6 +29,7 @@ import cn.featherfly.juorm.JuormException;
 import cn.featherfly.juorm.mapping.ClassNameConversion;
 import cn.featherfly.juorm.mapping.ClassNameJpaConversion;
 import cn.featherfly.juorm.mapping.ClassNameUnderlineConversion;
+import cn.featherfly.juorm.mapping.MappingFactory;
 import cn.featherfly.juorm.mapping.PropertyNameConversion;
 import cn.featherfly.juorm.mapping.PropertyNameJpaConversion;
 import cn.featherfly.juorm.mapping.PropertyNameUnderlineConversion;
@@ -43,7 +44,7 @@ import cn.featherfly.juorm.rdb.sql.dialect.Dialect;
  *
  * @author zhongj
  */
-public class MappingFactory {
+public class JdbcMappingFactory implements MappingFactory {
 
     private final Map<Class<?>, ClassMapping<?>> mappedTypes = new HashMap<>();
 
@@ -56,10 +57,12 @@ public class MappingFactory {
     private List<PropertyNameConversion> propertyNameConversions = new ArrayList<>();
 
     /**
-     * @param metadata DatabaseMetadata
-     * @param dialect  dialect
+     * @param metadata
+     *            DatabaseMetadata
+     * @param dialect
+     *            dialect
      */
-    public MappingFactory(DatabaseMetadata metadata, Dialect dialect) {
+    public JdbcMappingFactory(DatabaseMetadata metadata, Dialect dialect) {
         super();
         this.metadata = metadata;
         this.dialect = dialect;
@@ -71,12 +74,17 @@ public class MappingFactory {
     }
 
     /**
-     * @param metadata                DatabaseMetadata
-     * @param dialect                 dialect
-     * @param classNameConversions    classNameConversions
-     * @param propertyNameConversions propertyNameConversions
+     * @param metadata
+     *            DatabaseMetadata
+     * @param dialect
+     *            dialect
+     * @param classNameConversions
+     *            classNameConversions
+     * @param propertyNameConversions
+     *            propertyNameConversions
      */
-    public MappingFactory(DatabaseMetadata metadata, Dialect dialect, List<ClassNameConversion> classNameConversions,
+    public JdbcMappingFactory(DatabaseMetadata metadata, Dialect dialect,
+            List<ClassNameConversion> classNameConversions,
             List<PropertyNameConversion> propertyNameConversions) {
         super();
         this.metadata = metadata;
@@ -98,9 +106,11 @@ public class MappingFactory {
     /**
      * 设置classNameConversions
      *
-     * @param classNameConversions classNameConversions
+     * @param classNameConversions
+     *            classNameConversions
      */
-    public void setClassNameConversions(List<ClassNameConversion> classNameConversions) {
+    public void setClassNameConversions(
+            List<ClassNameConversion> classNameConversions) {
         this.classNameConversions = classNameConversions;
     }
 
@@ -116,9 +126,11 @@ public class MappingFactory {
     /**
      * 设置propertyNameConversions
      *
-     * @param propertyNameConversions propertyNameConversions
+     * @param propertyNameConversions
+     *            propertyNameConversions
      */
-    public void setPropertyNameConversions(List<PropertyNameConversion> propertyNameConversions) {
+    public void setPropertyNameConversions(
+            List<PropertyNameConversion> propertyNameConversions) {
         this.propertyNameConversions = propertyNameConversions;
     }
 
@@ -151,17 +163,20 @@ public class MappingFactory {
         tableName = dialect.convertTableOrColumnName(tableName);
 
         if (Constants.LOGGER.isDebugEnabled()) {
-            logInfo.append(
-                    String.format("###%s类%s映射到表%s", SystemPropertyUtils.getLineSeparator(), type.getName(), tableName));
+            logInfo.append(String.format("###%s类%s映射到表%s",
+                    SystemPropertyUtils.getLineSeparator(), type.getName(),
+                    tableName));
         }
 
         TableMetadata tm = metadata.getTable(tableName);
         if (tm == null) {
-            throw new JuormJdbcException("#talbe.not.exists", new Object[] { tableName });
+            throw new JuormJdbcException("#talbe.not.exists",
+                    new Object[] { tableName });
         }
 
         Collection<BeanProperty<?>> bps = bd
-                .findBeanPropertys(new BeanPropertyAnnotationMatcher(Logic.OR, Column.class, Id.class, Embedded.class));
+                .findBeanPropertys(new BeanPropertyAnnotationMatcher(Logic.OR,
+                        Column.class, Id.class, Embedded.class));
         boolean findPk = false;
         for (BeanProperty<?> beanProperty : bps) {
             if (mappingWithJpa(beanProperty, tableMapping, logInfo, tm)) {
@@ -169,7 +184,8 @@ public class MappingFactory {
             }
         }
         if (!findPk) {
-            throw new JuormJdbcException("#id.map.not.exists", new Object[] { type.getName() });
+            throw new JuormJdbcException("#id.map.not.exists",
+                    new Object[] { type.getName() });
         }
 
         for (ColumnMetadata cmd : tm.getColumns()) {
@@ -184,8 +200,9 @@ public class MappingFactory {
         return classMapping;
     }
 
-    private boolean mappingWithJpa(BeanProperty<?> beanProperty, Map<String, PropertyMapping> tableMapping,
-            StringBuilder logInfo, TableMetadata tableMetadata) {
+    private boolean mappingWithJpa(BeanProperty<?> beanProperty,
+            Map<String, PropertyMapping> tableMapping, StringBuilder logInfo,
+            TableMetadata tableMetadata) {
         boolean hasPk = beanProperty.hasAnnotation(Id.class);
         PropertyMapping mapping = new PropertyMapping();
 
@@ -197,32 +214,38 @@ public class MappingFactory {
             String columnName = getMappingColumnName(beanProperty);
             if (LangUtils.isNotEmpty(columnName)) {
                 columnName = dialect.convertTableOrColumnName(columnName);
-                ManyToOne manyToOne = beanProperty.getAnnotation(ManyToOne.class);
+                ManyToOne manyToOne = beanProperty
+                        .getAnnotation(ManyToOne.class);
                 OneToOne oneToOne = beanProperty.getAnnotation(OneToOne.class);
                 mapping.setPropertyName(beanProperty.getName());
                 mapping.setPropertyType(beanProperty.getType());
                 mapping.setPrimaryKey(hasPk);
                 if (manyToOne != null || oneToOne != null) {
                     mapping.setColumnName(columnName);
-                    mappingFk(mapping, beanProperty, columnName, hasPk, logInfo);
+                    mappingFk(mapping, beanProperty, columnName, hasPk,
+                            logInfo);
                 } else {
                     mapping.setColumnName(columnName);
                 }
                 tableMapping.put(mapping.getColumnName(), mapping);
                 if (Constants.LOGGER.isDebugEnabled()) {
-                    logInfo.append(String.format("%s###\t%s -> %s", SystemPropertyUtils.getLineSeparator(),
-                            mapping.getPropertyName(), mapping.getColumnName()));
+                    logInfo.append(String.format("%s###\t%s -> %s",
+                            SystemPropertyUtils.getLineSeparator(),
+                            mapping.getPropertyName(),
+                            mapping.getColumnName()));
                 }
             }
         }
         return hasPk;
     }
 
-    private void mappinEmbedded(PropertyMapping mapping, BeanProperty<?> beanProperty, StringBuilder logInfo,
+    private void mappinEmbedded(PropertyMapping mapping,
+            BeanProperty<?> beanProperty, StringBuilder logInfo,
             TableMetadata tableMetadata) {
         mapping.setPropertyName(beanProperty.getName());
         mapping.setPropertyType(beanProperty.getType());
-        BeanDescriptor<?> bd = BeanDescriptor.getBeanDescriptor(beanProperty.getType());
+        BeanDescriptor<?> bd = BeanDescriptor
+                .getBeanDescriptor(beanProperty.getType());
         // Collection<BeanProperty<?>> bps = bd.findBeanPropertys(new
         // BeanPropertyAnnotationMatcher(Column.class));
         Collection<BeanProperty<?>> bps = bd.getBeanProperties();
@@ -236,33 +259,44 @@ public class MappingFactory {
 
             if (bp.getAnnotation(Column.class) != null) {
                 if (Constants.LOGGER.isDebugEnabled()) {
-                    logInfo.append(String.format("%s###\t%s -> %s", SystemPropertyUtils.getLineSeparator(),
-                            mapping.getPropertyName() + "." + columnMpping.getPropertyName(),
+                    logInfo.append(String.format("%s###\t%s -> %s",
+                            SystemPropertyUtils.getLineSeparator(),
+                            mapping.getPropertyName() + "."
+                                    + columnMpping.getPropertyName(),
                             columnMpping.getColumnName()));
                 }
                 mapping.add(columnMpping);
             } else {
-                ColumnMetadata columnMetadata = tableMetadata.getColumn(columnName);
+                ColumnMetadata columnMetadata = tableMetadata
+                        .getColumn(columnName);
                 if (columnMetadata != null) {
                     mapping.add(columnMpping);
                     if (Constants.LOGGER.isDebugEnabled()) {
-                        logInfo.append(String.format("%s###\t%s -> %s", SystemPropertyUtils.getLineSeparator(),
-                                columnMpping.getPropertyName(), columnMpping.getColumnName()));
+                        logInfo.append(String.format("%s###\t%s -> %s",
+                                SystemPropertyUtils.getLineSeparator(),
+                                columnMpping.getPropertyName(),
+                                columnMpping.getColumnName()));
                     }
                 } else if (Constants.LOGGER.isDebugEnabled()) {
-                    logInfo.append(String.format("%s\t没有属性 -> %s [列%s的隐式映射]", SystemPropertyUtils.getLineSeparator(),
-                            mapping.getPropertyName() + "." + bp.getName(), columnName));
+                    logInfo.append(String.format("%s\t没有属性 -> %s [列%s的隐式映射]",
+                            SystemPropertyUtils.getLineSeparator(),
+                            mapping.getPropertyName() + "." + bp.getName(),
+                            columnName));
                 }
             }
         }
     }
 
-    private void mappingFk(PropertyMapping mapping, BeanProperty<?> beanProperty, String columnName, boolean hasPk,
+    private void mappingFk(PropertyMapping mapping,
+            BeanProperty<?> beanProperty, String columnName, boolean hasPk,
             StringBuilder logInfo) {
-        BeanDescriptor<?> bd = BeanDescriptor.getBeanDescriptor(beanProperty.getType());
-        Collection<BeanProperty<?>> bps = bd.findBeanPropertys(new BeanPropertyAnnotationMatcher(Id.class));
+        BeanDescriptor<?> bd = BeanDescriptor
+                .getBeanDescriptor(beanProperty.getType());
+        Collection<BeanProperty<?>> bps = bd
+                .findBeanPropertys(new BeanPropertyAnnotationMatcher(Id.class));
         if (LangUtils.isEmpty(bps)) {
-            throw new JuormException(beanProperty.getType().getName() + " no property annotated with @Id");
+            throw new JuormException(beanProperty.getType().getName()
+                    + " no property annotated with @Id");
         }
         for (BeanProperty<?> bp : bps) {
             PropertyMapping columnMpping = new PropertyMapping();
@@ -273,16 +307,19 @@ public class MappingFactory {
             // + "." + bp.getName()));
             columnMpping.setPrimaryKey(hasPk);
             if (Constants.LOGGER.isDebugEnabled()) {
-                logInfo.append(String.format("%s###\t%s -> %s", SystemPropertyUtils.getLineSeparator(),
-                        mapping.getPropertyName() + "." + columnMpping.getPropertyName(),
+                logInfo.append(String.format("%s###\t%s -> %s",
+                        SystemPropertyUtils.getLineSeparator(),
+                        mapping.getPropertyName() + "."
+                                + columnMpping.getPropertyName(),
                         columnMpping.getColumnName()));
             }
             mapping.add(columnMpping);
         }
     }
 
-    private <T> void mappingFromColumnMetadata(BeanDescriptor<T> bd, Map<String, PropertyMapping> tableMapping,
-            ColumnMetadata cmd, StringBuilder logInfo) {
+    private <T> void mappingFromColumnMetadata(BeanDescriptor<T> bd,
+            Map<String, PropertyMapping> tableMapping, ColumnMetadata cmd,
+            StringBuilder logInfo) {
         Map<String, PropertyMapping> nameSet = new HashMap<>();
         tableMapping.forEach((k, v) -> {
             if (LangUtils.isNotEmpty(k)) {
@@ -299,23 +336,29 @@ public class MappingFactory {
             // 转换下划线，并使用驼峰
             // String columnName = cmd.getName().toLowerCase();
             String columnName = cmd.getName().toLowerCase();
-            String propertyName = WordUtils.parseToUpperFirst(columnName, Chars.UNDER_LINE.charAt(0));
-            BeanProperty<?> beanProperty = bd.findBeanProperty(new BeanPropertyNameRegexMatcher(propertyName));
+            String propertyName = WordUtils.parseToUpperFirst(columnName,
+                    Chars.UNDER_LINE.charAt(0));
+            BeanProperty<?> beanProperty = bd.findBeanProperty(
+                    new BeanPropertyNameRegexMatcher(propertyName));
             if (beanProperty != null) {
                 PropertyMapping mapping = new PropertyMapping();
                 mapping.setPropertyType(beanProperty.getType());
-                mapping.setColumnName(dialect.convertTableOrColumnName(columnName));
+                mapping.setColumnName(
+                        dialect.convertTableOrColumnName(columnName));
                 mapping.setPropertyName(propertyName);
                 mapping.setPrimaryKey(cmd.isPrimaryKey());
                 mapping.setDefaultValue(cmd.getDefaultValue());
                 tableMapping.put(mapping.getColumnName(), mapping);
                 if (Constants.LOGGER.isDebugEnabled()) {
-                    logInfo.append(String.format("%s###\t%s -> %s", SystemPropertyUtils.getLineSeparator(),
-                            mapping.getPropertyName(), mapping.getColumnName()));
+                    logInfo.append(String.format("%s###\t%s -> %s",
+                            SystemPropertyUtils.getLineSeparator(),
+                            mapping.getPropertyName(),
+                            mapping.getColumnName()));
                 }
             } else {
                 if (Constants.LOGGER.isDebugEnabled()) {
-                    logInfo.append(String.format("%s\t没有属性 -> %s [列%s的隐式映射]", SystemPropertyUtils.getLineSeparator(),
+                    logInfo.append(String.format("%s\t没有属性 -> %s [列%s的隐式映射]",
+                            SystemPropertyUtils.getLineSeparator(),
                             propertyName, cmd.getName()));
                 }
             }
