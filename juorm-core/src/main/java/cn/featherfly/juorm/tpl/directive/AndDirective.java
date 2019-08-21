@@ -3,11 +3,11 @@ package cn.featherfly.juorm.tpl.directive;
 
 /**
  * <p>
- * WhereDirective
+ * AndDirective
  * </p>
  *
  * @author zhongj
  */
-public interface WhereDirective extends TemplateDirective {
+public interface AndDirective extends LogicDirective {
 
 }

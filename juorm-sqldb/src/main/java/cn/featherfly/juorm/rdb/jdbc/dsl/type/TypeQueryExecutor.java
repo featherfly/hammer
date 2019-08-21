@@ -12,7 +12,7 @@ import cn.featherfly.juorm.expression.query.QueryExecutor;
  *
  * @author zhongj
  */
-public class TypeQueryExecutor<E> {
+public class TypeQueryExecutor<E> implements cn.featherfly.juorm.expression.query.TypeQueryExecutor<E> {
 
     private Class<E> type;
 
@@ -33,6 +33,7 @@ public class TypeQueryExecutor<E> {
      *
      * @return list
      */
+    @Override
     public List<E> list() {
         return queryExecutor.list(type);
     }
@@ -42,6 +43,7 @@ public class TypeQueryExecutor<E> {
      *
      * @return object
      */
+    @Override
     public E single() {
         return queryExecutor.single(type);
     }
