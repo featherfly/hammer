@@ -143,6 +143,9 @@ public class TplDynamicExecutorFactory {
             ClassPool pool, CtClass dynamicImplClass, String juormFieldName)
             throws NotFoundException, CannotCompileException {
         for (Method method : type.getDeclaredMethods()) {
+            if (method.isDefault()) {
+                continue;
+            }
             CtClass[] ctParamTypes = new CtClass[method
                     .getParameterTypes().length];
             String namespace = getNamespace(method, globalNamespace);
