@@ -2,7 +2,7 @@
 package cn.featherfly.juorm.rdb.jdbc.dsl.query;
 
 import cn.featherfly.juorm.rdb.jdbc.dsl.type.TypeQueryProperties;
-import cn.featherfly.juorm.rdb.jdbc.mapping.MappingFactory;
+import cn.featherfly.juorm.rdb.jdbc.mapping.JdbcMappingFactory;
 import cn.featherfly.juorm.rdb.jdbc.vo.User;
 
 /**
@@ -19,7 +19,7 @@ public class UserSqlQueryProperties
      * @param queryEntityProperties
      * @param mappingFactory
      */
-    public UserSqlQueryProperties(SqlQueryEntityProperties queryEntityProperties, MappingFactory mappingFactory) {
+    public UserSqlQueryProperties(SqlQueryEntityProperties queryEntityProperties, JdbcMappingFactory mappingFactory) {
         super(queryEntityProperties, mappingFactory);
     }
 

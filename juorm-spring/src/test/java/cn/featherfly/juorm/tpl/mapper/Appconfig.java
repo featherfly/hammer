@@ -17,7 +17,7 @@ import cn.featherfly.juorm.rdb.jdbc.Jdbc;
 import cn.featherfly.juorm.rdb.jdbc.JdbcTestBase;
 import cn.featherfly.juorm.rdb.jdbc.JuormJdbcImpl;
 import cn.featherfly.juorm.rdb.jdbc.SpringJdbcTemplateImpl;
-import cn.featherfly.juorm.rdb.jdbc.mapping.MappingFactory;
+import cn.featherfly.juorm.rdb.jdbc.mapping.JdbcMappingFactory;
 import cn.featherfly.juorm.rdb.sql.dialect.Dialects;
 import cn.featherfly.juorm.tpl.TplConfigFactory;
 import cn.featherfly.juorm.tpl.TplConfigFactoryImpl;
@@ -37,7 +37,7 @@ public class Appconfig {
 
     protected Jdbc jdbc;
 
-    protected MappingFactory mappingFactory;
+    protected JdbcMappingFactory mappingFactory;
 
     protected TplConfigFactory configFactory;
 
@@ -67,7 +67,7 @@ public class Appconfig {
         DatabaseMetadata metadata = DatabaseMetadataManager.getDefaultManager()
                 .create(dataSource);
 
-        mappingFactory = new MappingFactory(metadata, Dialects.MYSQL);
+        mappingFactory = new JdbcMappingFactory(metadata, Dialects.MYSQL);
 
         configFactory = new TplConfigFactoryImpl("tpl/");
 

@@ -6,7 +6,7 @@ import cn.featherfly.juorm.dsl.execute.Update;
 import cn.featherfly.juorm.dsl.execute.Updater;
 import cn.featherfly.juorm.expression.Repository;
 import cn.featherfly.juorm.rdb.jdbc.Jdbc;
-import cn.featherfly.juorm.rdb.jdbc.mapping.MappingFactory;
+import cn.featherfly.juorm.rdb.jdbc.mapping.JdbcMappingFactory;
 
 /**
  * <p>
@@ -19,7 +19,7 @@ public class SqlUpdater implements Updater {
 
     private Jdbc jdbc;
 
-    private MappingFactory mappingFactory;
+    private JdbcMappingFactory mappingFactory;
 
     /**
      * @param jdbc
@@ -32,7 +32,7 @@ public class SqlUpdater implements Updater {
      * @param jdbc
      * @param mappingFactory
      */
-    public SqlUpdater(Jdbc jdbc, MappingFactory mappingFactory) {
+    public SqlUpdater(Jdbc jdbc, JdbcMappingFactory mappingFactory) {
         super();
         this.jdbc = jdbc;
         this.mappingFactory = mappingFactory;

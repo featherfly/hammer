@@ -1,8 +1,6 @@
 
 package cn.featherfly.juorm.rdb.tpl;
 
-import java.io.IOException;
-import java.io.StringWriter;
 import java.math.BigDecimal;
 import java.util.HashMap;
 import java.util.List;
@@ -27,24 +25,15 @@ import cn.featherfly.common.structure.page.PaginationResults;
 import cn.featherfly.common.structure.page.SimplePaginationResults;
 import cn.featherfly.juorm.rdb.Constants;
 import cn.featherfly.juorm.rdb.jdbc.Jdbc;
-import cn.featherfly.juorm.rdb.jdbc.JuormJdbcException;
-import cn.featherfly.juorm.rdb.jdbc.mapping.MappingFactory;
-import cn.featherfly.juorm.rdb.tpl.freemarker.AndTemplateDirectiveModel;
-import cn.featherfly.juorm.rdb.tpl.freemarker.ConditionParamsManager;
-import cn.featherfly.juorm.rdb.tpl.freemarker.IncludeModel;
-import cn.featherfly.juorm.rdb.tpl.freemarker.OrTemplateDirectiveModel;
-import cn.featherfly.juorm.rdb.tpl.freemarker.PropertiesMappingDirectiveModel;
-import cn.featherfly.juorm.rdb.tpl.freemarker.WhereTemplateDirectiveModel;
-import cn.featherfly.juorm.rdb.tpl.freemarker.WrapTemplateDirectiveModel;
+import cn.featherfly.juorm.rdb.jdbc.mapping.JdbcMappingFactory;
+import cn.featherfly.juorm.rdb.tpl.freemarker.JdbcFreemarkerTemplateEnv;
+import cn.featherfly.juorm.tpl.TemplateEnv;
+import cn.featherfly.juorm.tpl.TemplateProcessor;
 import cn.featherfly.juorm.tpl.TplConfigFactory;
 import cn.featherfly.juorm.tpl.TplExecuteConfig;
 import cn.featherfly.juorm.tpl.TplExecuteId;
 import cn.featherfly.juorm.tpl.TplExecutor;
-import freemarker.cache.StringTemplateLoader;
-import freemarker.template.Configuration;
-import freemarker.template.Template;
-import freemarker.template.TemplateException;
-import freemarker.template.TemplateExceptionHandler;
+import cn.featherfly.juorm.tpl.supports.ConditionParamsManager;
 
 /**
  * <p>
@@ -59,108 +48,95 @@ public class SqlTplExecutor implements TplExecutor {
 
     private TplConfigFactory configFactory;
 
-    private Configuration cfg;
-
     private Jdbc jdbc;
 
-    private MappingFactory mappingFactory;
+    private JdbcMappingFactory mappingFactory;
+
+    @SuppressWarnings("rawtypes")
+    private TemplateProcessor templateProcessor;
 
     /**
      * @param configFactory
      */
-    public SqlTplExecutor(@Nonnull TplConfigFactory configFactory, @Nonnull Jdbc jdbc,
-            @Nonnull MappingFactory mappingFactory) {
+    public SqlTplExecutor(@Nonnull TplConfigFactory configFactory,
+            @SuppressWarnings("rawtypes") @Nonnull TemplateProcessor templateProcessor,
+            @Nonnull Jdbc jdbc, @Nonnull JdbcMappingFactory mappingFactory) {
         super();
         this.configFactory = configFactory;
         this.jdbc = jdbc;
         this.mappingFactory = mappingFactory;
-
-        cfg = new Configuration(Configuration.VERSION_2_3_28);
-        cfg.setDefaultEncoding("UTF-8");
-        cfg.setTemplateExceptionHandler(TemplateExceptionHandler.RETHROW_HANDLER);
-
-        StringTemplateLoader templateLoader = new StringTemplateLoader();
-        configFactory.getAllConfigs().forEach(configs -> {
-            configs.values().forEach(c -> {
-                TplExecuteConfig config = (TplExecuteConfig) c;
-                logger.debug("put template name: {}", config.getTplName());
-                templateLoader.putTemplate(config.getTplName(), config.getQuery());
-            });
-        });
-        cfg.setTemplateLoader(templateLoader);
+        this.templateProcessor = templateProcessor;
     }
 
-    private Tuple3<String, TplExecuteConfig, ConditionParamsManager> getQueryExecution(String tplExecuteId,
-            Map<String, Object> params, Class<?> resultType) {
+    private Tuple3<String, TplExecuteConfig, ConditionParamsManager> getQueryExecution(
+            String tplExecuteId, Map<String, Object> params,
+            Class<?> resultType) {
         TplExecuteConfig config = configFactory.getConfig(tplExecuteId);
-        Tuple2<String, ConditionParamsManager> tuple2 = getExecution(tplExecuteId, config.getQuery(), params,
-                resultType);
-        Constants.LOGGER.debug("tplExecuteId -> {} \nexecuteQuerySql -> {} \nqueryTemplate -> {}", tplExecuteId,
-                tuple2.get0(), config.getQuery());
+        Tuple2<String, ConditionParamsManager> tuple2 = getExecution(
+                tplExecuteId, config.getQuery(), params, resultType);
+        Constants.LOGGER.debug(
+                "tplExecuteId -> {} \nexecuteQuerySql -> {} \nqueryTemplate -> {}",
+                tplExecuteId, tuple2.get0(), config.getQuery());
         return Tuples.of(tuple2.get0(), config, tuple2.get1());
     }
 
-    private Tuple2<String, ConditionParamsManager> getCountExecution(String tplExecuteId, Map<String, Object> params,
+    private Tuple2<String, ConditionParamsManager> getCountExecution(
+            String tplExecuteId, Map<String, Object> params,
             TplExecuteConfig config, Class<?> resultType) {
-        Tuple2<String, ConditionParamsManager> result = getExecution(tplExecuteId + TplConfigFactory.COUNT_SUFFIX,
-                config.getCount(), params, resultType);
-        Constants.LOGGER.debug("tplExecuteId -> {}  \nexecuteCountSql -> {}  \ncountTemplate -> {}", tplExecuteId,
-                result.get0(), config.getCount());
+        Tuple2<String, ConditionParamsManager> result = getExecution(
+                tplExecuteId + TplConfigFactory.COUNT_SUFFIX, config.getCount(),
+                params, resultType);
+        Constants.LOGGER.debug(
+                "tplExecuteId -> {}  \nexecuteCountSql -> {}  \ncountTemplate -> {}",
+                tplExecuteId, result.get0(), config.getCount());
         return result;
     }
 
-    private Tuple2<String, ConditionParamsManager> getExecution(String templateName, String sql,
-            Map<String, Object> params, Class<?> resultType) {
+    private Tuple2<String, ConditionParamsManager> getExecution(
+            String templateName, String sql, Map<String, Object> params,
+            Class<?> resultType) {
         logger.debug("execute template name : {}", templateName);
         ConditionParamsManager manager = new ConditionParamsManager();
         Map<String, Object> root = new HashMap<>();
         root.putAll(params);
-        setTag(manager, root, resultType);
-        try {
-            StringWriter stringWriter = new StringWriter();
-            Template template = new Template(templateName, sql, cfg);
-            template.process(root, stringWriter);
-            String result = stringWriter.toString();
-            return Tuples.of(result, manager);
-            // return new SimpleExecution(stringWriter.toString(),
-            // manager.getParamValues().toArray());
-        } catch (IOException | TemplateException e) {
-            throw new JuormJdbcException(e);
-        }
+
+        @SuppressWarnings("rawtypes")
+        TemplateEnv templateEnvFacotry = createTemplateEnvFacotry(manager,
+                resultType);
+        @SuppressWarnings("unchecked")
+        String result = templateProcessor.process(templateName, sql, params,
+                templateEnvFacotry);
+        return Tuples.of(result, manager);
     }
 
-    /**
-     * setTag
-     *
-     * @param manager
-     * @param root
-     * @param resultType
-     */
-    private Map<String, Object> setTag(ConditionParamsManager manager, Map<String, Object> root, Class<?> resultType) {
-        root.put("where", new WhereTemplateDirectiveModel());
-        root.put("and", new AndTemplateDirectiveModel(manager));
-        root.put("or", new OrTemplateDirectiveModel(manager));
-        root.put("columns", new PropertiesMappingDirectiveModel("table", mappingFactory, resultType));
-        // root.put("properties", new
-        // PropertiesMappingDirectiveModel("repository", mappingFactory,
-        // resultType));
-        root.put("prop", new PropertiesMappingDirectiveModel("repo", mappingFactory, resultType));
-        root.put("tpl", new IncludeModel(configFactory));
-        root.put("sql", new IncludeModel(configFactory));
-        root.put("wrap", new WrapTemplateDirectiveModel(jdbc.getDialect()));
-        return root;
+    // TODO 此方法后续要抽出到外面来做，这样就可以配置具体的TemplateEnv
+    @SuppressWarnings("rawtypes")
+    private TemplateEnv createTemplateEnvFacotry(ConditionParamsManager manager,
+            Class<?> resultType) {
+        JdbcFreemarkerTemplateEnv env = new JdbcFreemarkerTemplateEnv();
+        env.setConfigFactory(configFactory);
+        env.setDialect(jdbc.getDialect());
+        env.setManager(manager);
+        env.setMappingFactory(mappingFactory);
+        env.setResultType(resultType);
+        return env;
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public Map<String, Object> single(String tplExecuteId, Map<String, Object> params) {
-        Tuple3<String, TplExecuteConfig, ConditionParamsManager> tuple3 = getQueryExecution(tplExecuteId, params, null);
-        if (tuple3.get2().getParamNamed() == null || tuple3.get2().getParamNamed()) {
-            return jdbc.querySingle(tuple3.get0(), getEffectiveParams(params, tuple3.get2()));
+    public Map<String, Object> single(String tplExecuteId,
+            Map<String, Object> params) {
+        Tuple3<String, TplExecuteConfig, ConditionParamsManager> tuple3 = getQueryExecution(
+                tplExecuteId, params, null);
+        if (tuple3.get2().getParamNamed() == null
+                || tuple3.get2().getParamNamed()) {
+            return jdbc.querySingle(tuple3.get0(),
+                    getEffectiveParams(params, tuple3.get2()));
         } else {
-            return jdbc.querySingle(tuple3.get0(), tuple3.get2().getParamNames().toArray());
+            return jdbc.querySingle(tuple3.get0(),
+                    tuple3.get2().getParamNames().toArray());
         }
     }
 
@@ -168,7 +144,8 @@ public class SqlTplExecutor implements TplExecutor {
      * {@inheritDoc}
      */
     @Override
-    public Map<String, Object> single(TplExecuteId tplExecuteId, Map<String, Object> params) {
+    public Map<String, Object> single(TplExecuteId tplExecuteId,
+            Map<String, Object> params) {
         return single(tplExecuteId.getId(), params);
     }
 
@@ -176,13 +153,17 @@ public class SqlTplExecutor implements TplExecutor {
      * {@inheritDoc}
      */
     @Override
-    public <E> E single(String tplExecuteId, Class<E> entityType, Map<String, Object> params) {
-        Tuple3<String, TplExecuteConfig, ConditionParamsManager> tuple3 = getQueryExecution(tplExecuteId, params,
-                entityType);
-        if (tuple3.get2().getParamNamed() == null || tuple3.get2().getParamNamed()) {
-            return jdbc.querySingle(tuple3.get0(), getEffectiveParams(params, tuple3.get2()), entityType);
+    public <E> E single(String tplExecuteId, Class<E> entityType,
+            Map<String, Object> params) {
+        Tuple3<String, TplExecuteConfig, ConditionParamsManager> tuple3 = getQueryExecution(
+                tplExecuteId, params, entityType);
+        if (tuple3.get2().getParamNamed() == null
+                || tuple3.get2().getParamNamed()) {
+            return jdbc.querySingle(tuple3.get0(),
+                    getEffectiveParams(params, tuple3.get2()), entityType);
         } else {
-            return jdbc.querySingle(tuple3.get0(), tuple3.get2().getParamNames().toArray(), entityType);
+            return jdbc.querySingle(tuple3.get0(),
+                    tuple3.get2().getParamNames().toArray(), entityType);
         }
     }
 
@@ -190,12 +171,17 @@ public class SqlTplExecutor implements TplExecutor {
      * {@inheritDoc}
      */
     @Override
-    public List<Map<String, Object>> list(String tplExecuteId, Map<String, Object> params) {
-        Tuple3<String, TplExecuteConfig, ConditionParamsManager> tuple3 = getQueryExecution(tplExecuteId, params, null);
-        if (tuple3.get2().getParamNamed() == null || tuple3.get2().getParamNamed()) {
-            return jdbc.query(tuple3.get0(), getEffectiveParams(params, tuple3.get2()));
+    public List<Map<String, Object>> list(String tplExecuteId,
+            Map<String, Object> params) {
+        Tuple3<String, TplExecuteConfig, ConditionParamsManager> tuple3 = getQueryExecution(
+                tplExecuteId, params, null);
+        if (tuple3.get2().getParamNamed() == null
+                || tuple3.get2().getParamNamed()) {
+            return jdbc.query(tuple3.get0(),
+                    getEffectiveParams(params, tuple3.get2()));
         } else {
-            return jdbc.query(tuple3.get0(), tuple3.get2().getParamNames().toArray());
+            return jdbc.query(tuple3.get0(),
+                    tuple3.get2().getParamNames().toArray());
         }
     }
 
@@ -203,7 +189,8 @@ public class SqlTplExecutor implements TplExecutor {
      * {@inheritDoc}
      */
     @Override
-    public List<Map<String, Object>> list(TplExecuteId tplExecuteId, Map<String, Object> params) {
+    public List<Map<String, Object>> list(TplExecuteId tplExecuteId,
+            Map<String, Object> params) {
         return list(tplExecuteId.getId(), params);
     }
 
@@ -211,13 +198,17 @@ public class SqlTplExecutor implements TplExecutor {
      * {@inheritDoc}
      */
     @Override
-    public <E> List<E> list(String tplExecuteId, Class<E> entityType, Map<String, Object> params) {
-        Tuple3<String, TplExecuteConfig, ConditionParamsManager> tuple3 = getQueryExecution(tplExecuteId, params,
-                entityType);
-        if (tuple3.get2().getParamNamed() == null || tuple3.get2().getParamNamed()) {
-            return jdbc.query(tuple3.get0(), getEffectiveParams(params, tuple3.get2()), entityType);
+    public <E> List<E> list(String tplExecuteId, Class<E> entityType,
+            Map<String, Object> params) {
+        Tuple3<String, TplExecuteConfig, ConditionParamsManager> tuple3 = getQueryExecution(
+                tplExecuteId, params, entityType);
+        if (tuple3.get2().getParamNamed() == null
+                || tuple3.get2().getParamNamed()) {
+            return jdbc.query(tuple3.get0(),
+                    getEffectiveParams(params, tuple3.get2()), entityType);
         } else {
-            return jdbc.query(tuple3.get0(), tuple3.get2().getParamNames().toArray(), entityType);
+            return jdbc.query(tuple3.get0(),
+                    tuple3.get2().getParamNames().toArray(), entityType);
         }
     }
 
@@ -225,7 +216,8 @@ public class SqlTplExecutor implements TplExecutor {
      * {@inheritDoc}
      */
     @Override
-    public List<Map<String, Object>> list(String tplExecuteId, Map<String, Object> params, int offset, int limit) {
+    public List<Map<String, Object>> list(String tplExecuteId,
+            Map<String, Object> params, int offset, int limit) {
         return findList(tplExecuteId, params, offset, limit).get0();
     }
 
@@ -233,8 +225,8 @@ public class SqlTplExecutor implements TplExecutor {
      * {@inheritDoc}
      */
     @Override
-    public List<Map<String, Object>> list(TplExecuteId tplExecuteId, Map<String, Object> params, int offset,
-            int limit) {
+    public List<Map<String, Object>> list(TplExecuteId tplExecuteId,
+            Map<String, Object> params, int offset, int limit) {
         return list(tplExecuteId.getId(), params, offset, limit);
     }
 
@@ -242,8 +234,8 @@ public class SqlTplExecutor implements TplExecutor {
      * {@inheritDoc}
      */
     @Override
-    public <E> List<E> list(String tplExecuteId, Class<E> entityType, Map<String, Object> params, int offset,
-            int limit) {
+    public <E> List<E> list(String tplExecuteId, Class<E> entityType,
+            Map<String, Object> params, int offset, int limit) {
         return findList(tplExecuteId, entityType, params, offset, limit).get0();
     }
 
@@ -251,7 +243,8 @@ public class SqlTplExecutor implements TplExecutor {
      * {@inheritDoc}
      */
     @Override
-    public List<Map<String, Object>> list(String tplExecuteId, Map<String, Object> params, Page page) {
+    public List<Map<String, Object>> list(String tplExecuteId,
+            Map<String, Object> params, Page page) {
         Limit limit = new Limit(page);
         return list(tplExecuteId, params, limit.getOffset(), limit.getLimit());
     }
@@ -260,7 +253,8 @@ public class SqlTplExecutor implements TplExecutor {
      * {@inheritDoc}
      */
     @Override
-    public List<Map<String, Object>> list(TplExecuteId tplExecuteId, Map<String, Object> params, Page page) {
+    public List<Map<String, Object>> list(TplExecuteId tplExecuteId,
+            Map<String, Object> params, Page page) {
         return list(tplExecuteId.getId(), params, page);
     }
 
@@ -268,18 +262,22 @@ public class SqlTplExecutor implements TplExecutor {
      * {@inheritDoc}
      */
     @Override
-    public <E> List<E> list(String tplExecuteId, Class<E> entityType, Map<String, Object> params, Page page) {
+    public <E> List<E> list(String tplExecuteId, Class<E> entityType,
+            Map<String, Object> params, Page page) {
         Limit limit = new Limit(page);
-        return list(tplExecuteId, entityType, params, limit.getOffset(), limit.getLimit());
+        return list(tplExecuteId, entityType, params, limit.getOffset(),
+                limit.getLimit());
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public PaginationResults<Map<String, Object>> pagination(String tplExecuteId, Map<String, Object> params,
-            int offset, int limit) {
-        SimplePaginationResults<Map<String, Object>> pagination = new SimplePaginationResults<>(offset, limit);
+    public PaginationResults<Map<String, Object>> pagination(
+            String tplExecuteId, Map<String, Object> params, int offset,
+            int limit) {
+        SimplePaginationResults<Map<String, Object>> pagination = new SimplePaginationResults<>(
+                offset, limit);
 
         Tuple4<List<Map<String, Object>>, String, TplExecuteConfig, ConditionParamsManager> listTuple = findList(
                 tplExecuteId, params, offset, limit);
@@ -292,15 +290,18 @@ public class SqlTplExecutor implements TplExecutor {
             countSql = SqlUtils.convertSelectToCount(listTuple.get1());
             manager = listTuple.get3();
         } else {
-            Tuple2<String, ConditionParamsManager> countTuple = getCountExecution(tplExecuteId, params, config, null);
+            Tuple2<String, ConditionParamsManager> countTuple = getCountExecution(
+                    tplExecuteId, params, config, null);
             countSql = countTuple.get0();
             manager = countTuple.get1();
         }
         // 默认使用namedParameter
         if (manager.getParamNamed() == null || manager.getParamNamed()) {
-            pagination.setTotal(jdbc.queryInt(countSql, getEffectiveParams(params, manager)));
+            pagination.setTotal(jdbc.queryInt(countSql,
+                    getEffectiveParams(params, manager)));
         } else {
-            pagination.setTotal(jdbc.queryInt(countSql, manager.getParamNames().toArray()));
+            pagination.setTotal(
+                    jdbc.queryInt(countSql, manager.getParamNames().toArray()));
         }
         return pagination;
     }
@@ -309,8 +310,9 @@ public class SqlTplExecutor implements TplExecutor {
      * {@inheritDoc}
      */
     @Override
-    public PaginationResults<Map<String, Object>> pagination(TplExecuteId tplExecuteId, Map<String, Object> params,
-            int offset, int limit) {
+    public PaginationResults<Map<String, Object>> pagination(
+            TplExecuteId tplExecuteId, Map<String, Object> params, int offset,
+            int limit) {
         return pagination(tplExecuteId.getId(), params, offset, limit);
     }
 
@@ -318,18 +320,19 @@ public class SqlTplExecutor implements TplExecutor {
      * {@inheritDoc}
      */
     @Override
-    public PaginationResults<Map<String, Object>> pagination(String tplExecuteId, Map<String, Object> params,
-            Page page) {
+    public PaginationResults<Map<String, Object>> pagination(
+            String tplExecuteId, Map<String, Object> params, Page page) {
         Limit limit = new Limit(page);
-        return pagination(tplExecuteId, params, limit.getOffset(), limit.getLimit());
+        return pagination(tplExecuteId, params, limit.getOffset(),
+                limit.getLimit());
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public PaginationResults<Map<String, Object>> pagination(TplExecuteId tplExecuteId, Map<String, Object> params,
-            Page page) {
+    public PaginationResults<Map<String, Object>> pagination(
+            TplExecuteId tplExecuteId, Map<String, Object> params, Page page) {
         return pagination(tplExecuteId.getId(), params, page);
     }
 
@@ -337,12 +340,14 @@ public class SqlTplExecutor implements TplExecutor {
      * {@inheritDoc}
      */
     @Override
-    public <E> PaginationResults<E> pagination(String tplExecuteId, Class<E> entityType, Map<String, Object> params,
-            int offset, int limit) {
-        SimplePaginationResults<E> pagination = new SimplePaginationResults<>(offset, limit);
+    public <E> PaginationResults<E> pagination(String tplExecuteId,
+            Class<E> entityType, Map<String, Object> params, int offset,
+            int limit) {
+        SimplePaginationResults<E> pagination = new SimplePaginationResults<>(
+                offset, limit);
 
-        Tuple4<List<E>, String, TplExecuteConfig, ConditionParamsManager> listTuple = findList(tplExecuteId, entityType,
-                params, offset, limit);
+        Tuple4<List<E>, String, TplExecuteConfig, ConditionParamsManager> listTuple = findList(
+                tplExecuteId, entityType, params, offset, limit);
         pagination.setPageResults(listTuple.get0());
 
         String countSql = null;
@@ -352,16 +357,18 @@ public class SqlTplExecutor implements TplExecutor {
             countSql = SqlUtils.convertSelectToCount(listTuple.get1());
             manager = listTuple.get3();
         } else {
-            Tuple2<String, ConditionParamsManager> countTuple = getCountExecution(tplExecuteId, params, config,
-                    entityType);
+            Tuple2<String, ConditionParamsManager> countTuple = getCountExecution(
+                    tplExecuteId, params, config, entityType);
             countSql = countTuple.get0();
             manager = countTuple.get1();
         }
         // 默认使用namedParameter
         if (manager.getParamNamed() == null || manager.getParamNamed()) {
-            pagination.setTotal(jdbc.queryInt(countSql, getEffectiveParams(params, manager)));
+            pagination.setTotal(jdbc.queryInt(countSql,
+                    getEffectiveParams(params, manager)));
         } else {
-            pagination.setTotal(jdbc.queryInt(countSql, manager.getParamNames().toArray()));
+            pagination.setTotal(
+                    jdbc.queryInt(countSql, manager.getParamNames().toArray()));
         }
         return pagination;
     }
@@ -370,50 +377,67 @@ public class SqlTplExecutor implements TplExecutor {
      * {@inheritDoc}
      */
     @Override
-    public <E> PaginationResults<E> pagination(String tplExecuteId, Class<E> entityType, Map<String, Object> params,
-            Page page) {
+    public <E> PaginationResults<E> pagination(String tplExecuteId,
+            Class<E> entityType, Map<String, Object> params, Page page) {
         Limit limit = new Limit(page);
-        return pagination(tplExecuteId, entityType, params, limit.getOffset(), limit.getLimit());
+        return pagination(tplExecuteId, entityType, params, limit.getOffset(),
+                limit.getLimit());
     }
 
     private Tuple4<List<Map<String, Object>>, String, TplExecuteConfig, ConditionParamsManager> findList(
-            String tplExecuteId, Map<String, Object> params, int offset, int limit) {
-        Tuple3<String, TplExecuteConfig, ConditionParamsManager> tuple3 = getQueryExecution(tplExecuteId, params, null);
+            String tplExecuteId, Map<String, Object> params, int offset,
+            int limit) {
+        Tuple3<String, TplExecuteConfig, ConditionParamsManager> tuple3 = getQueryExecution(
+                tplExecuteId, params, null);
         List<Map<String, Object>> list = null;
         String sql = tuple3.get0();
         ConditionParamsManager manager = tuple3.get2();
         // 默认使用namedParameter
         if (manager.getParamNamed() == null || manager.getParamNamed()) {
-            list = jdbc.query(jdbc.getDialect().getParamNamedPaginationSql(sql, offset, limit),
-                    jdbc.getDialect().getPaginationSqlParameter(getEffectiveParams(params, manager), offset, limit));
+            list = jdbc.query(
+                    jdbc.getDialect().getParamNamedPaginationSql(sql, offset,
+                            limit),
+                    jdbc.getDialect().getPaginationSqlParameter(
+                            getEffectiveParams(params, manager), offset,
+                            limit));
         } else {
-            list = jdbc.query(jdbc.getDialect().getPaginationSql(sql, offset, limit),
-                    jdbc.getDialect().getPaginationSqlParameter(manager.getParamNames().toArray(), offset, limit));
+            list = jdbc.query(
+                    jdbc.getDialect().getPaginationSql(sql, offset, limit),
+                    jdbc.getDialect().getPaginationSqlParameter(
+                            manager.getParamNames().toArray(), offset, limit));
         }
         return Tuples.of(list, sql, tuple3.get1(), manager);
     }
 
-    private <E> Tuple4<List<E>, String, TplExecuteConfig, ConditionParamsManager> findList(String tplExecuteId,
-            Class<E> entityType, Map<String, Object> params, int offset, int limit) {
-        Tuple3<String, TplExecuteConfig, ConditionParamsManager> tuple3 = getQueryExecution(tplExecuteId, params,
-                entityType);
+    private <
+            E> Tuple4<List<E>, String, TplExecuteConfig, ConditionParamsManager> findList(
+                    String tplExecuteId, Class<E> entityType,
+                    Map<String, Object> params, int offset, int limit) {
+        Tuple3<String, TplExecuteConfig, ConditionParamsManager> tuple3 = getQueryExecution(
+                tplExecuteId, params, entityType);
         List<E> list = null;
         String sql = tuple3.get0();
         ConditionParamsManager manager = tuple3.get2();
         // 默认使用namedParameter
         if (manager.getParamNamed() == null || manager.getParamNamed()) {
-            list = jdbc.query(jdbc.getDialect().getParamNamedPaginationSql(sql, offset, limit),
-                    jdbc.getDialect().getPaginationSqlParameter(getEffectiveParams(params, manager), offset, limit),
+            list = jdbc.query(
+                    jdbc.getDialect().getParamNamedPaginationSql(sql, offset,
+                            limit),
+                    jdbc.getDialect().getPaginationSqlParameter(
+                            getEffectiveParams(params, manager), offset, limit),
                     entityType);
         } else {
-            list = jdbc.query(jdbc.getDialect().getPaginationSql(sql, offset, limit),
-                    jdbc.getDialect().getPaginationSqlParameter(manager.getParamNames().toArray(), offset, limit),
+            list = jdbc.query(
+                    jdbc.getDialect().getPaginationSql(sql, offset, limit),
+                    jdbc.getDialect().getPaginationSqlParameter(
+                            manager.getParamNames().toArray(), offset, limit),
                     entityType);
         }
         return Tuples.of(list, sql, tuple3.get1(), manager);
     }
 
-    private Map<String, Object> getEffectiveParams(Map<String, Object> params, ConditionParamsManager manager) {
+    private Map<String, Object> getEffectiveParams(Map<String, Object> params,
+            ConditionParamsManager manager) {
         if (manager.getAmount() == 0) {
             return params;
         } else {
@@ -431,7 +455,8 @@ public class SqlTplExecutor implements TplExecutor {
      * {@inheritDoc}
      */
     @Override
-    public <E> E single(TplExecuteId tplExecuteId, Class<E> entityType, Map<String, Object> params) {
+    public <E> E single(TplExecuteId tplExecuteId, Class<E> entityType,
+            Map<String, Object> params) {
         return single(tplExecuteId.getId(), entityType, params);
     }
 
@@ -439,7 +464,8 @@ public class SqlTplExecutor implements TplExecutor {
      * {@inheritDoc}
      */
     @Override
-    public <E> List<E> list(TplExecuteId tplExecuteId, Class<E> entityType, Map<String, Object> params) {
+    public <E> List<E> list(TplExecuteId tplExecuteId, Class<E> entityType,
+            Map<String, Object> params) {
         return list(tplExecuteId.getId(), entityType, params);
     }
 
@@ -447,8 +473,8 @@ public class SqlTplExecutor implements TplExecutor {
      * {@inheritDoc}
      */
     @Override
-    public <E> List<E> list(TplExecuteId tplExecuteId, Class<E> entityType, Map<String, Object> params, int offset,
-            int limit) {
+    public <E> List<E> list(TplExecuteId tplExecuteId, Class<E> entityType,
+            Map<String, Object> params, int offset, int limit) {
         return list(tplExecuteId.getId(), entityType, params, offset, limit);
     }
 
@@ -456,7 +482,8 @@ public class SqlTplExecutor implements TplExecutor {
      * {@inheritDoc}
      */
     @Override
-    public <E> List<E> list(TplExecuteId tplExecuteId, Class<E> entityType, Map<String, Object> params, Page page) {
+    public <E> List<E> list(TplExecuteId tplExecuteId, Class<E> entityType,
+            Map<String, Object> params, Page page) {
         return list(tplExecuteId.getId(), entityType, params, page);
     }
 
@@ -464,17 +491,19 @@ public class SqlTplExecutor implements TplExecutor {
      * {@inheritDoc}
      */
     @Override
-    public <E> PaginationResults<E> pagination(TplExecuteId tplExecuteId, Class<E> entityType,
-            Map<String, Object> params, int offset, int limit) {
-        return pagination(tplExecuteId.getId(), entityType, params, offset, limit);
+    public <E> PaginationResults<E> pagination(TplExecuteId tplExecuteId,
+            Class<E> entityType, Map<String, Object> params, int offset,
+            int limit) {
+        return pagination(tplExecuteId.getId(), entityType, params, offset,
+                limit);
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public <E> PaginationResults<E> pagination(TplExecuteId tplExecuteId, Class<E> entityType,
-            Map<String, Object> params, Page page) {
+    public <E> PaginationResults<E> pagination(TplExecuteId tplExecuteId,
+            Class<E> entityType, Map<String, Object> params, Page page) {
         return pagination(tplExecuteId.getId(), entityType, params, page);
     }
 
@@ -482,13 +511,17 @@ public class SqlTplExecutor implements TplExecutor {
      * {@inheritDoc}
      */
     @Override
-    public <E> E value(String tplExecuteId, Class<E> valueType, Map<String, Object> params) {
-        Tuple3<String, TplExecuteConfig, ConditionParamsManager> tuple3 = getQueryExecution(tplExecuteId, params,
-                valueType);
-        if (tuple3.get2().getParamNamed() == null || tuple3.get2().getParamNamed()) {
-            return jdbc.queryValue(tuple3.get0(), getEffectiveParams(params, tuple3.get2()), valueType);
+    public <E> E value(String tplExecuteId, Class<E> valueType,
+            Map<String, Object> params) {
+        Tuple3<String, TplExecuteConfig, ConditionParamsManager> tuple3 = getQueryExecution(
+                tplExecuteId, params, valueType);
+        if (tuple3.get2().getParamNamed() == null
+                || tuple3.get2().getParamNamed()) {
+            return jdbc.queryValue(tuple3.get0(),
+                    getEffectiveParams(params, tuple3.get2()), valueType);
         } else {
-            return jdbc.queryValue(tuple3.get0(), tuple3.get2().getParamNames().toArray(), valueType);
+            return jdbc.queryValue(tuple3.get0(),
+                    tuple3.get2().getParamNames().toArray(), valueType);
         }
     }
 
@@ -496,7 +529,8 @@ public class SqlTplExecutor implements TplExecutor {
      * {@inheritDoc}
      */
     @Override
-    public <N extends Number> N number(String tplExecuteId, Class<N> numberType, Map<String, Object> params) {
+    public <N extends Number> N number(String tplExecuteId, Class<N> numberType,
+            Map<String, Object> params) {
         return value(tplExecuteId, numberType, params);
     }
 
@@ -520,7 +554,8 @@ public class SqlTplExecutor implements TplExecutor {
      * {@inheritDoc}
      */
     @Override
-    public BigDecimal bigDecimalValue(String tplExecuteId, Map<String, Object> params) {
+    public BigDecimal bigDecimalValue(String tplExecuteId,
+            Map<String, Object> params) {
         return number(tplExecuteId, BigDecimal.class, params);
     }
 

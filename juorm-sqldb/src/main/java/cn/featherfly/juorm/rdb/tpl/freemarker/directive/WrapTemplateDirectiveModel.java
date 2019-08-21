@@ -1,11 +1,12 @@
 
-package cn.featherfly.juorm.rdb.tpl.freemarker;
+package cn.featherfly.juorm.rdb.tpl.freemarker.directive;
 
 import java.io.IOException;
 import java.io.Writer;
 import java.util.Map;
 
 import cn.featherfly.juorm.rdb.sql.dialect.Dialect;
+import cn.featherfly.juorm.tpl.directive.WrapDirective;
 import freemarker.core.Environment;
 import freemarker.template.TemplateDirectiveBody;
 import freemarker.template.TemplateDirectiveModel;
@@ -21,9 +22,8 @@ import freemarker.template.TemplateScalarModel;
  *
  * @author zhongj
  */
-public class WrapTemplateDirectiveModel implements TemplateDirectiveModel {
-
-    private static final String PARAM_NAME_VALUE = "value";
+public class WrapTemplateDirectiveModel extends WrapDirective
+        implements TemplateDirectiveModel {
 
     private Dialect dialect;
 
@@ -39,7 +39,8 @@ public class WrapTemplateDirectiveModel implements TemplateDirectiveModel {
      * {@inheritDoc}
      */
     @Override
-    public void execute(Environment env, @SuppressWarnings("rawtypes") Map params, TemplateModel[] loopVars,
+    public void execute(Environment env,
+            @SuppressWarnings("rawtypes") Map params, TemplateModel[] loopVars,
             TemplateDirectiveBody body) throws TemplateException, IOException {
         @SuppressWarnings("unchecked")
         String value = getValue(params);
@@ -47,14 +48,17 @@ public class WrapTemplateDirectiveModel implements TemplateDirectiveModel {
         out.write(dialect.wrapName(value));
     }
 
-    private String getValue(Map<String, TemplateModel> params) throws TemplateModelException {
+    private String getValue(Map<String, TemplateModel> params)
+            throws TemplateModelException {
         String value;
         TemplateModel paramValue = params.get(PARAM_NAME_VALUE);
         if (paramValue == null) {
-            throw new TemplateModelException("The \"" + PARAM_NAME_VALUE + "\" parameter " + "can not be null.");
+            throw new TemplateModelException("The \"" + PARAM_NAME_VALUE
+                    + "\" parameter " + "can not be null.");
         }
         if (!(paramValue instanceof TemplateScalarModel)) {
-            throw new TemplateModelException("The \"" + PARAM_NAME_VALUE + "\" parameter " + "must be a String.");
+            throw new TemplateModelException("The \"" + PARAM_NAME_VALUE
+                    + "\" parameter " + "must be a String.");
         }
         value = ((TemplateScalarModel) paramValue).getAsString();
         return value;

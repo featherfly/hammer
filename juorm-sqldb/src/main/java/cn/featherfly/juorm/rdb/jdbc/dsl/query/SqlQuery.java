@@ -6,7 +6,7 @@ import cn.featherfly.juorm.dsl.query.Query;
 import cn.featherfly.juorm.dsl.query.QueryEntity;
 import cn.featherfly.juorm.expression.Repository;
 import cn.featherfly.juorm.rdb.jdbc.Jdbc;
-import cn.featherfly.juorm.rdb.jdbc.mapping.MappingFactory;
+import cn.featherfly.juorm.rdb.jdbc.mapping.JdbcMappingFactory;
 
 /**
  * <p>
@@ -19,7 +19,7 @@ public class SqlQuery implements Query {
 
     private Jdbc jdbc;
 
-    private MappingFactory mappingFactory;
+    private JdbcMappingFactory mappingFactory;
 
     /**
      * @param jdbc jdbc
@@ -33,7 +33,7 @@ public class SqlQuery implements Query {
      * @param jdbc
      * @param mappingFactory
      */
-    public SqlQuery(Jdbc jdbc, MappingFactory mappingFactory) {
+    public SqlQuery(Jdbc jdbc, JdbcMappingFactory mappingFactory) {
         super();
         this.jdbc = jdbc;
         this.mappingFactory = mappingFactory;

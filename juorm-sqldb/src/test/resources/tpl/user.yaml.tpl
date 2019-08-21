@@ -1,7 +1,7 @@
 selectByUsername: >
     select <@columns table='user'/> from <@wrap value='user'/> where username = :username    
 selectByUsername2: >
-    select <@columns table='user'/> from <@wrap value='user'/> where username = :username    
+    select <@columns table='user'/> from ${tpl_wrap("user")}  where username = :username    
 selectByUsernameAndPassword: >
     select username, password pwd from <@wrap value="user"/> where username = :username and password = :password
 selectUser: select username, password pwd from user

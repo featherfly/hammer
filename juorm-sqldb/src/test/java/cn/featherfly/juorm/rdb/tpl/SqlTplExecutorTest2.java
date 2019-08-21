@@ -6,6 +6,7 @@ import org.testng.annotations.Test;
 
 import cn.featherfly.juorm.JuormException;
 import cn.featherfly.juorm.rdb.jdbc.JdbcTestBase;
+import cn.featherfly.juorm.tpl.FreemarkerTemplateProcessor;
 import cn.featherfly.juorm.tpl.TplConfigFactoryImpl;
 
 /**
@@ -26,6 +27,8 @@ public class SqlTplExecutorTest2 extends JdbcTestBase {
     @Test(expectedExceptions = JuormException.class)
     void testInvalidateChar() {
         TplConfigFactoryImpl configFactory = new TplConfigFactoryImpl("tpl2/");
-        executor = new SqlTplExecutor(configFactory, jdbc, mappingFactory);
+        executor = new SqlTplExecutor(configFactory,
+                new FreemarkerTemplateProcessor(configFactory), jdbc,
+                mappingFactory);
     }
 }

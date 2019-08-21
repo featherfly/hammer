@@ -1,11 +1,12 @@
 
-package cn.featherfly.juorm.rdb.tpl.freemarker;
+package cn.featherfly.juorm.rdb.tpl.freemarker.directive;
 
 import java.io.IOException;
 import java.io.StringWriter;
 import java.io.Writer;
 import java.util.Map;
 
+import cn.featherfly.juorm.tpl.directive.WhereDirective;
 import freemarker.core.Environment;
 import freemarker.template.TemplateDirectiveBody;
 import freemarker.template.TemplateDirectiveModel;
@@ -19,7 +20,8 @@ import freemarker.template.TemplateModel;
  * 
  * @author zhongj
  */
-public class WhereTemplateDirectiveModel implements TemplateDirectiveModel {
+public class WhereTemplateDirectiveModel extends WhereDirective
+        implements TemplateDirectiveModel {
 
     /**
      * {@inheritDoc}

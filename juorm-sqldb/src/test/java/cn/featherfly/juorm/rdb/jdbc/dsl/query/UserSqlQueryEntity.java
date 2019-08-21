@@ -2,7 +2,7 @@
 package cn.featherfly.juorm.rdb.jdbc.dsl.query;
 
 import cn.featherfly.juorm.rdb.jdbc.dsl.type.TypeQueryEntity;
-import cn.featherfly.juorm.rdb.jdbc.mapping.MappingFactory;
+import cn.featherfly.juorm.rdb.jdbc.mapping.JdbcMappingFactory;
 import cn.featherfly.juorm.rdb.jdbc.vo.User;
 
 /**
@@ -15,7 +15,7 @@ import cn.featherfly.juorm.rdb.jdbc.vo.User;
 public class UserSqlQueryEntity extends
         TypeQueryEntity<User, UserSqlQueryConditionGroupExpression, UserSqlQueryEntity> {
 
-    private MappingFactory mappingFactory;
+    private JdbcMappingFactory mappingFactory;
 
     SqlQueryEntityProperties queryEntityProperties;
 
@@ -23,7 +23,7 @@ public class UserSqlQueryEntity extends
      * @param queryEntityProperties
      */
     public UserSqlQueryEntity(SqlQueryEntityProperties queryEntityProperties,
-            MappingFactory mappingFactory) {
+            JdbcMappingFactory mappingFactory) {
         super(queryEntityProperties, mappingFactory);
         this.mappingFactory = mappingFactory;
         this.queryEntityProperties = queryEntityProperties;
