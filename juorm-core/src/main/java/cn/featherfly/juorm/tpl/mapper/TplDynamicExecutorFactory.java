@@ -146,6 +146,7 @@ public class TplDynamicExecutorFactory {
             if (method.isDefault()) {
                 continue;
             }
+            // TODO 注解annotation要代理到实现类
             CtClass[] ctParamTypes = new CtClass[method
                     .getParameterTypes().length];
             String namespace = getNamespace(method, globalNamespace);
