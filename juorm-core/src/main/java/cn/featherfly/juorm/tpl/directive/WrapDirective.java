@@ -8,8 +8,7 @@ package cn.featherfly.juorm.tpl.directive;
  *
  * @author zhongj
  */
-public abstract class WrapDirective implements TemplateDirective {
+public interface WrapDirective extends TemplateDirective {
 
-    protected static final String PARAM_NAME_VALUE = "value";
-
+    String PARAM_NAME_VALUE = "value";
 }

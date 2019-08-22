@@ -1,7 +1,7 @@
 
 package cn.featherfly.juorm.rdb.tpl.freemarker.directive;
 
-import cn.featherfly.juorm.tpl.directive.AndTemplateDirective;
+import cn.featherfly.juorm.tpl.directive.AndDirective;
 import cn.featherfly.juorm.tpl.supports.ConditionParamsManager;
 
 /**
@@ -12,7 +12,7 @@ import cn.featherfly.juorm.tpl.supports.ConditionParamsManager;
  * @author zhongj
  */
 public class AndTemplateDirectiveModel extends LogicTemplateDirectiveModel
-        implements AndTemplateDirective {
+        implements AndDirective {
 
     /**
      * @param conditionParamsManager

@@ -22,7 +22,7 @@ import freemarker.template.TemplateMethodModelEx;
  * <p>
  * JdbcFreemarkerTemplateEnv
  * </p>
- * 
+ *
  * @author zhongj
  */
 public class JdbcFreemarkerTemplateEnv extends FreemarkerTemplateEnv {
@@ -44,7 +44,7 @@ public class JdbcFreemarkerTemplateEnv extends FreemarkerTemplateEnv {
 
     /**
      * get configFactory
-     * 
+     *
      * @return configFactory
      */
     public TplConfigFactory getConfigFactory() {
@@ -53,9 +53,8 @@ public class JdbcFreemarkerTemplateEnv extends FreemarkerTemplateEnv {
 
     /**
      * set configFactory
-     * 
-     * @param configFactory
-     *            configFactory
+     *
+     * @param configFactory configFactory
      */
     public void setConfigFactory(TplConfigFactory configFactory) {
         this.configFactory = configFactory;
@@ -63,9 +62,8 @@ public class JdbcFreemarkerTemplateEnv extends FreemarkerTemplateEnv {
 
     /**
      * set mappingFactory
-     * 
-     * @param mappingFactory
-     *            mappingFactory
+     *
+     * @param mappingFactory mappingFactory
      */
     public void setMappingFactory(JdbcMappingFactory mappingFactory) {
         this.mappingFactory = mappingFactory;
@@ -73,7 +71,7 @@ public class JdbcFreemarkerTemplateEnv extends FreemarkerTemplateEnv {
 
     /**
      * get manager
-     * 
+     *
      * @return manager
      */
     public ConditionParamsManager getManager() {
@@ -82,9 +80,8 @@ public class JdbcFreemarkerTemplateEnv extends FreemarkerTemplateEnv {
 
     /**
      * set manager
-     * 
-     * @param manager
-     *            manager
+     *
+     * @param manager manager
      */
     public void setManager(ConditionParamsManager manager) {
         this.manager = manager;
@@ -92,7 +89,7 @@ public class JdbcFreemarkerTemplateEnv extends FreemarkerTemplateEnv {
 
     /**
      * get resultType
-     * 
+     *
      * @return resultType
      */
     public Class<?> getResultType() {
@@ -101,9 +98,8 @@ public class JdbcFreemarkerTemplateEnv extends FreemarkerTemplateEnv {
 
     /**
      * set resultType
-     * 
-     * @param resultType
-     *            resultType
+     *
+     * @param resultType resultType
      */
     public void setResultType(Class<?> resultType) {
         this.resultType = resultType;
@@ -111,7 +107,7 @@ public class JdbcFreemarkerTemplateEnv extends FreemarkerTemplateEnv {
 
     /**
      * get mappingFactory
-     * 
+     *
      * @return mappingFactory
      */
     public JdbcMappingFactory getMappingFactory() {
@@ -120,7 +116,7 @@ public class JdbcFreemarkerTemplateEnv extends FreemarkerTemplateEnv {
 
     /**
      * get dialect
-     * 
+     *
      * @return dialect
      */
     public Dialect getDialect() {
@@ -129,9 +125,8 @@ public class JdbcFreemarkerTemplateEnv extends FreemarkerTemplateEnv {
 
     /**
      * set dialect
-     * 
-     * @param dialect
-     *            dialect
+     *
+     * @param dialect dialect
      */
     public void setDialect(Dialect dialect) {
         this.dialect = dialect;
@@ -146,16 +141,12 @@ public class JdbcFreemarkerTemplateEnv extends FreemarkerTemplateEnv {
         directives.addWhereDirective(new WhereTemplateDirectiveModel());
         directives.addAndDirective(new AndTemplateDirectiveModel(manager));
         directives.addOrDirective(new OrTemplateDirectiveModel(manager));
-        directives.addPropertiesDirective(new PropertiesMappingDirectiveModel(
-                "repo", mappingFactory, resultType));
-        directives.addTemplateIncludeDirective(
-                new IncludeDirectiveModel(configFactory));
+        directives.addPropertiesDirective(new PropertiesMappingDirectiveModel(mappingFactory, resultType));
+        directives.addTemplateIncludeDirective(new IncludeDirectiveModel(configFactory));
         directives.addWrapDirective(new WrapTemplateDirectiveModel(dialect));
 
-        directives.addDirective("sql",
-                new IncludeDirectiveModel(configFactory));
-        directives.addDirective("columns", new PropertiesMappingDirectiveModel(
-                "table", mappingFactory, resultType));
+        directives.addDirective("sql", new IncludeDirectiveModel(configFactory));
+        directives.addDirective("columns", new PropertiesMappingDirectiveModel("table", mappingFactory, resultType));
         return directives;
     }
 

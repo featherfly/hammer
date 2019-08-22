@@ -12,7 +12,7 @@ import cn.featherfly.juorm.mapping.MappingFactory;
  */
 public abstract class PropertiesMappingDirective implements TemplateDirective {
 
-    protected static final String DEFAULT_PARAM_NAME_NAME = "table";
+    protected static final String DEFAULT_PARAM_NAME_NAME = "repo";
 
     protected static final String PARAM_NAME_ALIAS = "alias";
 
@@ -25,26 +25,19 @@ public abstract class PropertiesMappingDirective implements TemplateDirective {
     protected String paramName;
 
     /**
-     * @param mappingFactory
-     *            mappingFactory
-     * @param resultType
-     *            resultType
+     * @param mappingFactory mappingFactory
+     * @param resultType     resultType
      */
-    public PropertiesMappingDirective(MappingFactory mappingFactory,
-            Class<?> resultType) {
+    public PropertiesMappingDirective(MappingFactory mappingFactory, Class<?> resultType) {
         this(DEFAULT_PARAM_NAME_NAME, mappingFactory, resultType);
     }
 
     /**
-     * @param paramName
-     *            paramName
-     * @param mappingFactory
-     *            mappingFactory
-     * @param resultType
-     *            resultType
+     * @param paramName      paramName
+     * @param mappingFactory mappingFactory
+     * @param resultType     resultType
      */
-    public PropertiesMappingDirective(String paramName,
-            MappingFactory mappingFactory, Class<?> resultType) {
+    public PropertiesMappingDirective(String paramName, MappingFactory mappingFactory, Class<?> resultType) {
         super();
         this.mappingFactory = mappingFactory;
         this.paramName = paramName;

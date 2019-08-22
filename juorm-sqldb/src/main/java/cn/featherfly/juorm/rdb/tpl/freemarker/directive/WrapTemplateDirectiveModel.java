@@ -22,8 +22,7 @@ import freemarker.template.TemplateScalarModel;
  *
  * @author zhongj
  */
-public class WrapTemplateDirectiveModel extends WrapDirective
-        implements TemplateDirectiveModel {
+public class WrapTemplateDirectiveModel implements TemplateDirectiveModel, WrapDirective {
 
     private Dialect dialect;
 
@@ -39,8 +38,7 @@ public class WrapTemplateDirectiveModel extends WrapDirective
      * {@inheritDoc}
      */
     @Override
-    public void execute(Environment env,
-            @SuppressWarnings("rawtypes") Map params, TemplateModel[] loopVars,
+    public void execute(Environment env, @SuppressWarnings("rawtypes") Map params, TemplateModel[] loopVars,
             TemplateDirectiveBody body) throws TemplateException, IOException {
         @SuppressWarnings("unchecked")
         String value = getValue(params);
@@ -48,17 +46,14 @@ public class WrapTemplateDirectiveModel extends WrapDirective
         out.write(dialect.wrapName(value));
     }
 
-    private String getValue(Map<String, TemplateModel> params)
-            throws TemplateModelException {
+    private String getValue(Map<String, TemplateModel> params) throws TemplateModelException {
         String value;
         TemplateModel paramValue = params.get(PARAM_NAME_VALUE);
         if (paramValue == null) {
-            throw new TemplateModelException("The \"" + PARAM_NAME_VALUE
-                    + "\" parameter " + "can not be null.");
+            throw new TemplateModelException("The \"" + PARAM_NAME_VALUE + "\" parameter " + "can not be null.");
         }
         if (!(paramValue instanceof TemplateScalarModel)) {
-            throw new TemplateModelException("The \"" + PARAM_NAME_VALUE
-                    + "\" parameter " + "must be a String.");
+            throw new TemplateModelException("The \"" + PARAM_NAME_VALUE + "\" parameter " + "must be a String.");
         }
         value = ((TemplateScalarModel) paramValue).getAsString();
         return value;

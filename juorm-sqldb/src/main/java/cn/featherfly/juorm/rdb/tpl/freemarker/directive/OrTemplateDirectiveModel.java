@@ -1,7 +1,7 @@
 
 package cn.featherfly.juorm.rdb.tpl.freemarker.directive;
 
-import cn.featherfly.juorm.tpl.directive.OrTemplateDirective;
+import cn.featherfly.juorm.tpl.directive.OrDirective;
 import cn.featherfly.juorm.tpl.supports.ConditionParamsManager;
 
 /**
@@ -12,7 +12,7 @@ import cn.featherfly.juorm.tpl.supports.ConditionParamsManager;
  * @author zhongj
  */
 public class OrTemplateDirectiveModel extends LogicTemplateDirectiveModel
-        implements OrTemplateDirective {
+        implements OrDirective {
 
     /**
      * @param conditionParamsManager

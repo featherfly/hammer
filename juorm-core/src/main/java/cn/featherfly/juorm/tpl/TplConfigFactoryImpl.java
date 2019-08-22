@@ -2,6 +2,7 @@
 package cn.featherfly.juorm.tpl;
 
 import java.io.IOException;
+import java.io.InputStream;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -24,7 +25,6 @@ import com.fasterxml.jackson.dataformat.yaml.YAMLFactory;
 import cn.featherfly.common.io.FileUtils;
 import cn.featherfly.common.lang.ClassLoaderUtils;
 import cn.featherfly.common.lang.LangUtils;
-import cn.featherfly.common.lang.StringUtils;
 import cn.featherfly.common.lang.UriUtils;
 import cn.featherfly.constant.ConstantPool;
 import cn.featherfly.juorm.JuormException;
@@ -96,7 +96,7 @@ public class TplConfigFactoryImpl implements TplConfigFactory {
                     while (enums.hasMoreElements()) {
                         String rootPath = enums.nextElement().getPath();
                         if (path.startsWith(rootPath)) {
-                            path = StringUtils.substring(path, rootPath.length());
+                            path = org.apache.commons.lang3.StringUtils.substring(path, rootPath.length());
                             break;
                         }
                     }
@@ -137,14 +137,22 @@ public class TplConfigFactoryImpl implements TplConfigFactory {
         return prefix;
     }
 
+    public static void main(String[] args) {
+        System.out.println(ClassLoaderUtils.getResourceAsStream("aaaa", TplConfigFactoryImpl.class));
+
+    }
+
     private TplExecuteConfigs readConfig(final String filePath) {
         String finalFilePath = toFinalFilePath(filePath);
-        final String fileName = StringUtils.substringAfterLast(finalFilePath, "/");
-        final String fileDirectory = StringUtils.substringBeforeLast(finalFilePath, "/");
-        final String name = StringUtils.substringBeforeLast(finalFilePath, suffix);
+        final String fileName = org.apache.commons.lang3.StringUtils.substringAfterLast(finalFilePath, "/");
+        final String fileDirectory = org.apache.commons.lang3.StringUtils.substringBeforeLast(finalFilePath, "/");
+        final String name = org.apache.commons.lang3.StringUtils.substringBeforeLast(finalFilePath, suffix);
         try {
-            TplExecuteConfigs tplExecuteConfigs = mapper.readerFor(TplExecuteConfigs.class)
-                    .readValue(ClassLoaderUtils.getResourceAsStream(finalFilePath, TplConfigFactoryImpl.class));
+            InputStream in = ClassLoaderUtils.getResourceAsStream(finalFilePath, TplConfigFactoryImpl.class);
+            if (in == null) {
+                throw new JuormException("can not read config from " + finalFilePath + " it may be does not exist");
+            }
+            TplExecuteConfigs tplExecuteConfigs = mapper.readerFor(TplExecuteConfigs.class).readValue(in);
             TplExecuteConfigs newConfigs = new TplExecuteConfigs();
             newConfigs.setFilePath(finalFilePath);
             newConfigs.setName(org.apache.commons.lang3.StringUtils.removeEnd(finalFilePath, suffix));
@@ -239,7 +247,7 @@ public class TplConfigFactoryImpl implements TplConfigFactory {
      */
     @Override
     public TplExecuteConfig getConfig(String executeId) {
-        executeId = StringUtils.substringBeforeLast(executeId, COUNT_SUFFIX);
+        executeId = org.apache.commons.lang3.StringUtils.substringBeforeLast(executeId, COUNT_SUFFIX);
         String[] result = getFilePathAndexecuteId(executeId);
         String filePath = null;
         String eId = null;

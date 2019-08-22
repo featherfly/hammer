@@ -10,5 +10,6 @@ dependencies {
     testCompile group: 'commons-dbcp', name: 'commons-dbcp', version: '1.4'
     testCompile 'org.springframework:spring-test:5.1.8.RELEASE'
     testCompile 'mysql:mysql-connector-java:5.1.48'    
+    testCompile 'net.sf.ehcache:ehcache:2.10.6'    
     testCompile group: 'org.postgresql', name: 'postgresql', version: '42.2.6'
 }
