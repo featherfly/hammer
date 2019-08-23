@@ -199,7 +199,11 @@ public class SpringJdbcTemplateImpl implements Jdbc {
         // FIXME 需要优化ArrayUtils.toString(args)在不需要debug时不调用，加入一个logger工具来实现
         Constants.LOGGER.debug("sql -> {}, args -> {} , type -> {}", sql, ArrayUtils.toString(args),
                 elementType.getName());
-        return jdbcTemplate.queryForObject(sql, args, new NestedBeanPropertyRowMapper<>(elementType));
+        try {
+            return jdbcTemplate.queryForObject(sql, args, new NestedBeanPropertyRowMapper<>(elementType));
+        } catch (EmptyResultDataAccessException e) {
+            return null;
+        }
     }
 
     /**
@@ -209,9 +213,13 @@ public class SpringJdbcTemplateImpl implements Jdbc {
     public <T> T querySingle(String sql, Object[] args, RowMapper<T> rowMapper) {
         // FIXME 需要优化ArrayUtils.toString(args)在不需要debug时不调用，加入一个logger工具来实现
         Constants.LOGGER.debug("sql -> {}, args -> {}", sql, ArrayUtils.toString(args));
-        return jdbcTemplate.queryForObject(sql, args, (rs, rowNum) -> {
-            return rowMapper.mapRow(new SqlResultSet(rs), rowNum);
-        });
+        try {
+            return jdbcTemplate.queryForObject(sql, args, (rs, rowNum) -> {
+                return rowMapper.mapRow(new SqlResultSet(rs), rowNum);
+            });
+        } catch (EmptyResultDataAccessException e) {
+            return null;
+        }
     }
 
     /**
