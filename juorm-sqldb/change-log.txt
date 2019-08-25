@@ -1,6 +1,6 @@
 2019-
 0.1.2
-    1.
+    1.加入SqlDbConfigurator，可以从配置直接获取可运行的JuormJdbcImpl
     
 2019-8-21
 0.1.1 
