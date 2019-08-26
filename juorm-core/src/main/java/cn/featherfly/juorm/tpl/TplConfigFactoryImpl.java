@@ -28,6 +28,7 @@ import cn.featherfly.common.lang.LangUtils;
 import cn.featherfly.common.lang.UriUtils;
 import cn.featherfly.constant.ConstantPool;
 import cn.featherfly.juorm.JuormException;
+import cn.featherfly.juorm.config.JuormConstant;
 import cn.featherfly.juorm.tpl.TplExecuteConfig.Type;
 
 /**
@@ -41,19 +42,15 @@ public class TplConfigFactoryImpl implements TplConfigFactory {
 
     protected final Logger logger = LoggerFactory.getLogger(this.getClass());
 
-    public static final String DEFAULT_SUFFIX = ".yaml.tpl";
-
-    public static final String DEFAULT_PREFIX = "";
-
     private static final String MULTI_SAME_EXECUTEID = "!" + ID_SIGN + "!";
 
     private ObjectMapper mapper;
 
     private boolean devMode;
 
-    private String suffix = DEFAULT_SUFFIX;
+    private String suffix;
 
-    private String prefix = DEFAULT_PREFIX;
+    private String prefix;
 
     private Map<String, TplExecuteConfigs> configs = new HashMap<>();
 
@@ -62,19 +59,27 @@ public class TplConfigFactoryImpl implements TplConfigFactory {
     private ResourcePatternResolver resourcePatternResolver;
 
     public TplConfigFactoryImpl() {
-        this(DEFAULT_PREFIX);
+        this(JuormConstant.DEFAULT_PREFIX);
     }
 
     public TplConfigFactoryImpl(String prefix) {
-        this(prefix, DEFAULT_SUFFIX);
+        this(prefix, JuormConstant.DEFAULT_SUFFIX);
     }
 
     public TplConfigFactoryImpl(String prefix, String suffix) {
         mapper = new ObjectMapper(new YAMLFactory());
         mapper.enable(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES);
 
-        this.prefix = prefix;
-        this.suffix = suffix;
+        if (LangUtils.isEmpty(prefix)) {
+            this.prefix = JuormConstant.DEFAULT_PREFIX;
+        } else {
+            this.prefix = prefix;
+        }
+        if (LangUtils.isEmpty(suffix)) {
+            this.suffix = JuormConstant.DEFAULT_SUFFIX;
+        } else {
+            this.suffix = suffix;
+        }
 
         devMode = ConstantPool.getDefault().getConstantParameter().isDevMode();
 

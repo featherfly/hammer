@@ -27,8 +27,7 @@ public class SqlTplExecutorTest2 extends JdbcTestBase {
     @Test(expectedExceptions = JuormException.class)
     void testInvalidateChar() {
         TplConfigFactoryImpl configFactory = new TplConfigFactoryImpl("tpl2/");
-        executor = new SqlTplExecutor(configFactory,
-                new FreemarkerTemplateProcessor(configFactory), jdbc,
+        executor = new SqlTplExecutor(configFactory, new FreemarkerTemplateProcessor(configFactory), jdbc,
                 mappingFactory);
     }
 }
