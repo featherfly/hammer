@@ -1,6 +1,7 @@
-2019-
+2019-9-3
 0.1.2
     1.加入SqlDbConfigurator，可以从配置直接获取可运行的JuormJdbcImpl
+    2.Jdbc接口去掉spring依赖
     
 2019-8-21
 0.1.1 

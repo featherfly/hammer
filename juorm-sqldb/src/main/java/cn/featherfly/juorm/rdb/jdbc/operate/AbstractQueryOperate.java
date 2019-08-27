@@ -7,6 +7,7 @@ import cn.featherfly.common.bean.BeanUtils;
 import cn.featherfly.common.db.JdbcUtils;
 import cn.featherfly.common.lang.LangUtils;
 import cn.featherfly.juorm.rdb.jdbc.Jdbc;
+import cn.featherfly.juorm.rdb.jdbc.SqlResultSet;
 import cn.featherfly.juorm.rdb.jdbc.mapping.ClassMapping;
 import cn.featherfly.juorm.rdb.jdbc.mapping.ClassMappingUtils;
 import cn.featherfly.juorm.rdb.jdbc.mapping.PropertyMapping;
@@ -42,6 +43,32 @@ public abstract class AbstractQueryOperate<T> extends AbstractOperate<T> {
      */
     public AbstractQueryOperate(Jdbc jdbc, ClassMapping<T> classMapping, String dataBase) {
         super(jdbc, classMapping, dataBase);
+    }
+
+    /**
+     * <p>
+     * 每条记录映射为对象.
+     * </p>
+     *
+     * @param rs        结果集
+     * @param rowNumber 行数
+     * @return 映射后的对象
+     */
+    protected T mapRow(cn.featherfly.juorm.mapping.ResultSet rs, int rowNumber) {
+        @SuppressWarnings("unchecked")
+        T mappedObject = (T) BeanUtils.instantiateClass(classMapping.getType());
+        int index = 1;
+        for (PropertyMapping propertyMapping : classMapping.getPropertyMappings()) {
+            Object value = getColumnValue(rs, index, propertyMapping.getPropertyType());
+            if (logger.isDebugEnabled() && rowNumber == 0) {
+                logger.debug("Mapping column '{}' to property '{}' of type {}",
+                        new Object[] { propertyMapping.getColumnName(), propertyMapping.getPropertyName(),
+                                propertyMapping.getPropertyType() });
+            }
+            BeanUtils.setProperty(mappedObject, propertyMapping.getPropertyName(), value);
+            index++;
+        }
+        return mappedObject;
     }
 
     /**
@@ -94,6 +121,10 @@ public abstract class AbstractQueryOperate<T> extends AbstractOperate<T> {
 
     private Object getColumnValue(ResultSet rs, int index, Class<?> propertyType) {
         return JdbcUtils.getResultSetValue(rs, index, propertyType);
+    }
+
+    private Object getColumnValue(cn.featherfly.juorm.mapping.ResultSet rs, int index, Class<?> propertyType) {
+        return JdbcUtils.getResultSetValue(((SqlResultSet) rs).getResultSet(), index, propertyType);
     }
 
     private void initSelectSql() {

@@ -1,12 +1,9 @@
 package cn.featherfly.juorm.rdb.jdbc.operate;
 
-import java.sql.PreparedStatement;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Map.Entry;
 
 import cn.featherfly.common.bean.BeanUtils;
-import cn.featherfly.common.db.JdbcUtils;
 import cn.featherfly.common.lang.LangUtils;
 import cn.featherfly.juorm.rdb.jdbc.Jdbc;
 import cn.featherfly.juorm.rdb.jdbc.mapping.ClassMapping;
@@ -53,19 +50,22 @@ public class MergeOperate<T> extends AbstractOperate<T> {
      * @return 操作影响的数据行数
      */
     public int execute(final T entity, boolean onlyNull) {
-        return jdbc.execute(conn -> {
-            Map<Integer, String> propertyPositions = new HashMap<>();
-            String sql = getDynamicSql(entity, propertyPositions, onlyNull);
-            logger.debug("execute sql: {}", sql);
-            PreparedStatement prep = conn.prepareStatement(sql);
-            for (Entry<Integer, String> propertyPosition : propertyPositions.entrySet()) {
-                JdbcUtils.setParameter(prep, propertyPosition.getKey(),
-                        BeanUtils.getProperty(entity, propertyPosition.getValue()));
-            }
-            int result = prep.executeUpdate();
-            prep.close();
-            return result;
-        });
+        Map<Integer, String> propertyPositions = new HashMap<>();
+        String sql = getDynamicSql(entity, propertyPositions, onlyNull);
+        return jdbc.update(sql, getParameters(entity, propertyPositions));
+        //        return jdbc.execute(conn -> {
+        //            Map<Integer, String> propertyPositions = new HashMap<>();
+        //            String sql = getDynamicSql(entity, propertyPositions, onlyNull);
+        //            logger.debug("execute sql: {}", sql);
+        //            PreparedStatement prep = conn.prepareStatement(sql);
+        //            for (Entry<Integer, String> propertyPosition : propertyPositions.entrySet()) {
+        //                JdbcUtils.setParameter(prep, propertyPosition.getKey(),
+        //                        BeanUtils.getProperty(entity, propertyPosition.getValue()));
+        //            }
+        //            int result = prep.executeUpdate();
+        //            prep.close();
+        //            return result;
+        //        });
     }
 
     private String getDynamicSql(T entity, Map<Integer, String> propertyPositions, boolean onlyNull) {

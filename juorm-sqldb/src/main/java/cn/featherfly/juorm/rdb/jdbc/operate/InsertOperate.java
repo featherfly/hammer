@@ -58,7 +58,6 @@ public class InsertOperate<T> extends AbstractExecuteOperate<T> {
     public int execute(final T entity) {
         return jdbc.execute(con -> {
             List<PropertyMapping> pks = classMapping.getPrivaryKeyPropertyMappings();
-
             PreparedStatement prep = null;
             if (pks.size() == 1) {
                 prep = con.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
