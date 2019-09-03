@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<application>
+	<constants class="cn.featherfly.constant.configuration.ConstantParameter">
+		<constant name="basePackeges" value="cn.featherfly,org.yufei"/>
+		<constant name="devMode" value="true"/>
+<!-- 		<constant name="configFiles" value="ApplicationConstant.xml"/> -->
+	</constants>
+</application>

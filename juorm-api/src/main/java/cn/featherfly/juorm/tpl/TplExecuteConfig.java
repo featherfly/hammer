@@ -14,9 +14,11 @@ public class TplExecuteConfig {
         LIST, PAGE, PAGINATION, EXECUTE
     }
 
-    private String name;
+    private String fileName;
 
-    private String directory;
+    private String fileDirectory;
+
+    private String name;
 
     private Type type = Type.LIST;
 
@@ -24,9 +26,9 @@ public class TplExecuteConfig {
 
     private String count;
 
-    private boolean export;
-
     private String executeId;
+
+    private String tplName;
 
     /**
      * 返回query
@@ -87,6 +89,24 @@ public class TplExecuteConfig {
      *
      * @return name
      */
+    public String getFileName() {
+        return fileName;
+    }
+
+    /**
+     * 设置name
+     *
+     * @param name name
+     */
+    public void setFileName(String name) {
+        fileName = name;
+    }
+
+    /**
+     * 返回name
+     *
+     * @return name
+     */
     public String getName() {
         return name;
     }
@@ -105,8 +125,8 @@ public class TplExecuteConfig {
      *
      * @return directory
      */
-    public String getDirectory() {
-        return directory;
+    public String getFileDirectory() {
+        return fileDirectory;
     }
 
     /**
@@ -114,26 +134,8 @@ public class TplExecuteConfig {
      *
      * @param directory directory
      */
-    public void setDirectory(String directory) {
-        this.directory = directory;
-    }
-
-    /**
-     * 返回export
-     *
-     * @return export
-     */
-    public boolean isExport() {
-        return export;
-    }
-
-    /**
-     * 设置export
-     *
-     * @param export export
-     */
-    public void setExport(boolean export) {
-        this.export = export;
+    public void setFileDirectory(String directory) {
+        fileDirectory = directory;
     }
 
     /**
@@ -155,11 +157,30 @@ public class TplExecuteConfig {
     }
 
     /**
+     * 返回tplPath
+     *
+     * @return tplPath
+     */
+    public String getTplName() {
+        return tplName;
+    }
+
+    /**
+     * 设置tplPath
+     *
+     * @param tplPath tplPath
+     */
+    public void setTplName(String tplPath) {
+        tplName = tplPath;
+    }
+
+    /**
      * {@inheritDoc}
      */
     @Override
     public String toString() {
-        return "TplExecuteConfig [name=" + name + ", directory=" + directory + ", type=" + type + ", query=" + query
-                + ", count=" + count + ", export=" + export + ", executeId=" + executeId + "]";
+        return "TplExecuteConfig [fileName=" + fileName + ", fileDirectory=" + fileDirectory + ", name=" + name
+                + ", type=" + type + ", query=" + query + ", count=" + count + ", executeId=" + executeId + ", tplName="
+                + tplName + "]";
     }
 }

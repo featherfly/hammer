@@ -2,6 +2,7 @@
 package cn.featherfly.juorm.expression.query;
 
 import java.util.List;
+import java.util.Map;
 
 import cn.featherfly.juorm.mapping.RowMapper;
 
@@ -16,6 +17,14 @@ public interface QueryListExecutor {
     /**
      * query for list
      *
+     * @return list
+     */
+    List<Map<String, Object>> list();
+
+    /**
+     * query for list
+     *
+     * @param <E>  wrapper type
      * @param type wrapper type
      * @return list
      */
@@ -24,6 +33,7 @@ public interface QueryListExecutor {
     /**
      * query for list
      *
+     * @param <E>       wrapper type
      * @param rowMapper rowMapper
      * @return list
      */

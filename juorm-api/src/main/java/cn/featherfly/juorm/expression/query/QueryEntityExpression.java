@@ -22,7 +22,7 @@ public interface QueryEntityExpression<Q extends QueryEntityPropertiesExpression
      * </p>
      *
      * @param propertyName propertyName
-     * @return FindBuilder
+     * @return QueryEntityPropertiesExpression
      */
     Q property(String propertyName);
 
@@ -32,7 +32,7 @@ public interface QueryEntityExpression<Q extends QueryEntityPropertiesExpression
      * </p>
      *
      * @param propertyNames propertyNames
-     * @return FindBuilder
+     * @return QueryEntityPropertiesExpression
      */
     Q property(String... propertyNames);
 
@@ -42,7 +42,7 @@ public interface QueryEntityExpression<Q extends QueryEntityPropertiesExpression
      * </p>
      *
      * @param propertyNames propertyNames
-     * @return FindBuilder
+     * @return QueryEntityPropertiesExpression
      */
     Q property(Collection<String> propertyNames);
 

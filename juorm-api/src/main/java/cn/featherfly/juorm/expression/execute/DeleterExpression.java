@@ -30,4 +30,12 @@ public interface DeleterExpression<D extends DeleteExpression<C, L>, C extends C
      * @return Delete
      */
     D delete(Repository repository);
+
+    /**
+     * start delete dsl for the reposited type
+     *
+     * @param repositType repositType
+     * @return Delete
+     */
+    D delete(Class<?> repositType);
 }

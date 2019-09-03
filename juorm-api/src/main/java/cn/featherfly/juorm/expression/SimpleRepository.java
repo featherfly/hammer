@@ -21,7 +21,7 @@ public class SimpleRepository implements Repository {
     }
 
     /**
-     * @param name
+     * @param name name
      */
     public SimpleRepository(String name) {
         super();
@@ -29,7 +29,8 @@ public class SimpleRepository implements Repository {
     }
 
     /**
-     * @param name
+     * @param name  name
+     * @param alias alias
      */
     public SimpleRepository(String name, String alias) {
         super();

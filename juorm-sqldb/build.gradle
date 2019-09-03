@@ -1,0 +1,26 @@
+dependencies {
+    compile project(":juorm-api")
+    compile project(":juorm-core")
+
+    compile group: 'cn.featherfly', name: 'featherfly-db', version: '1.5.3'
+    compile group: 'org.springframework', name: 'spring-jdbc', version: '5.1.8.RELEASE'
+    compile group: 'org.glassfish', name: 'javax.el', version: '3.0.0'        
+    compile group: 'org.hibernate.javax.persistence', name: 'hibernate-jpa-2.1-api', version: '1.0.2.Final'
+    compile group: 'org.hibernate.validator', name: 'hibernate-validator', version: '6.0.17.Final'
+    //compile group: 'org.freemarker', name: 'freemarker', version: '2.3.28'
+    compile group: 'com.fasterxml.jackson.core', name: 'jackson-databind', version: '2.9.9.3'
+    compile group: 'com.fasterxml.jackson.dataformat', name: 'jackson-dataformat-yaml', version: '2.9.9'
+    compile group: 'com.speedment.common', name: 'tuple', version: '3.1.16'
+    compile group: 'com.google.code.findbugs', name: 'jsr305', version: '3.0.2'
+
+    
+    
+    testCompile 'org.springframework:spring-test:5.1.8.RELEASE'
+    testCompile group: 'commons-dbcp', name: 'commons-dbcp', version: '1.4'
+    //testCompile group: 'org.apache.tomcat', name: 'tomcat-juli', version: '9.0.22'
+    testCompile 'net.sf.ehcache:ehcache:2.10.6'
+    testCompile 'mysql:mysql-connector-java:5.1.48'
+    //testCompile group: 'mysql', name: 'mysql-connector-java', version: '8.0.17'    
+    testCompile group: 'org.postgresql', name: 'postgresql', version: '42.2.6'
+    
+}

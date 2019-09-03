@@ -1,6 +1,7 @@
 
 package cn.featherfly.juorm;
 
+import java.io.Serializable;
 import java.util.List;
 
 import cn.featherfly.juorm.Juorm.IgnorePolicy;
@@ -17,6 +18,7 @@ import cn.featherfly.juorm.dsl.query.QueryEntity;
  * @author zhongj
  */
 public interface GenericJuorm<E> {
+
     /**
      * save entity
      *
@@ -28,7 +30,6 @@ public interface GenericJuorm<E> {
     /**
      * save entities
      *
-     * @param <E>      generic type
      * @param entities entity list to save
      * @return effect data row num
      */
@@ -46,7 +47,7 @@ public interface GenericJuorm<E> {
 
     /**
      * update all values for each entity in entity list. equal invoke method
-     * {@link #update(List<Object>, IgnorePolicy)} with params (entity,
+     * {@link #update(List, IgnorePolicy)} with params (entity,
      * IgnorePolicy.NONE)
      *
      * @param entities entity list to update
@@ -60,7 +61,6 @@ public interface GenericJuorm<E> {
      * {@link #update(Object, IgnorePolicy)} with params (entity,
      * IgnorePolicy.EMPTY)
      *
-     * @param <E>          generic type
      * @param entity       entity to update
      * @param ignorePolicy ignore value to update policy
      * @return effect data row num
@@ -112,28 +112,31 @@ public interface GenericJuorm<E> {
     int delete(List<E> entities);
 
     /**
+     * get entity by id.
+     *
+     * @param id entity id
+     * @return entity
+     */
+    E get(Serializable id);
+
+    /**
      * create QueryData for entityType
      *
-     * @param <E>        generic type
-     * @param entityType query for entityType
-     * @return
+     * @return QueryEntity
      */
     QueryEntity query();
 
     /**
      * create update for entityType
      *
-     * @param entityType update for entityType
-     * @return
+     * @return Update
      */
     Update update();
 
     /**
      * create delete for entityType
      *
-     * @param <E>        generic type
-     * @param entityType update for entityType
-     * @return
+     * @return Delete
      */
     Delete delete();
 
