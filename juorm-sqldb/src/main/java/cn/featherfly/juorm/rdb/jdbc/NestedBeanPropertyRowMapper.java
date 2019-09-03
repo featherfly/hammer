@@ -305,7 +305,7 @@ public class NestedBeanPropertyRowMapper<T> implements RowMapper<T> {
             boolean nestedProperty = false;
             if (field.contains(".")) {
                 nestedProperty = true;
-                field = cn.featherfly.common.lang.StringUtils.substringBefore(field, ".");
+                field = org.apache.commons.lang3.StringUtils.substringBefore(field, ".");
             }
             PropertyDescriptor pd = this.mappedFields != null ? this.mappedFields.get(field) : null;
             if (pd != null) {
@@ -415,6 +415,7 @@ public class NestedBeanPropertyRowMapper<T> implements RowMapper<T> {
      * the mapped class specified only once).
      *
      * @param mappedClass the class that each row should be mapped to
+     * @return new instance
      */
     public static <T> NestedBeanPropertyRowMapper<T> newInstance(Class<T> mappedClass) {
         return new NestedBeanPropertyRowMapper<>(mappedClass);

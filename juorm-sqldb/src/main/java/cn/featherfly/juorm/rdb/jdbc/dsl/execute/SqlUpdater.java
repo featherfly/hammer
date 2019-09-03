@@ -12,6 +12,7 @@ import cn.featherfly.juorm.rdb.jdbc.mapping.JdbcMappingFactory;
  * <p>
  * SqlUpdater
  * </p>
+ * .
  *
  * @author zhongj
  */
@@ -22,15 +23,19 @@ public class SqlUpdater implements Updater {
     private JdbcMappingFactory mappingFactory;
 
     /**
-     * @param jdbc
+     * Instantiates a new sql updater.
+     *
+     * @param jdbc the jdbc
      */
     public SqlUpdater(Jdbc jdbc) {
         this.jdbc = jdbc;
     }
 
     /**
-     * @param jdbc
-     * @param mappingFactory
+     * Instantiates a new sql updater.
+     *
+     * @param jdbc           the jdbc
+     * @param mappingFactory the mapping factory
      */
     public SqlUpdater(Jdbc jdbc, JdbcMappingFactory mappingFactory) {
         super();

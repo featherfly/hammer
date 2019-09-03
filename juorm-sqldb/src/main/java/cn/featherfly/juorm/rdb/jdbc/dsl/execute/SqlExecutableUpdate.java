@@ -18,6 +18,7 @@ import cn.featherfly.juorm.rdb.sql.model.UpdateColumnElement.SetType;
  * <p>
  * SqlExecutableUpdate
  * </p>
+ * .
  *
  * @author zhongj
  */
@@ -30,6 +31,8 @@ public class SqlExecutableUpdate implements SqlUpdate, ExecutableUpdate {
     private ClassMapping<?> classMapping;
 
     /**
+     * Instantiates a new sql executable update.
+     *
      * @param tableName tableName
      * @param jdbc      jdbc
      */
@@ -39,16 +42,20 @@ public class SqlExecutableUpdate implements SqlUpdate, ExecutableUpdate {
     }
 
     /**
-     * @param repository
-     * @param jdbc
+     * Instantiates a new sql executable update.
+     *
+     * @param repository the repository
+     * @param jdbc       the jdbc
      */
     public SqlExecutableUpdate(Repository repository, Jdbc jdbc) {
         this(repository.name(), jdbc);
     }
 
     /**
-     * @param classMapping
-     * @param jdbc
+     * Instantiates a new sql executable update.
+     *
+     * @param classMapping the class mapping
+     * @param jdbc         the jdbc
      */
     public SqlExecutableUpdate(ClassMapping<?> classMapping, Jdbc jdbc) {
         this.classMapping = classMapping;

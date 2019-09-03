@@ -4,6 +4,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import cn.featherfly.common.bean.BeanUtils;
+import cn.featherfly.common.db.metadata.DatabaseMetadata;
 import cn.featherfly.common.lang.LangUtils;
 import cn.featherfly.juorm.rdb.jdbc.Jdbc;
 import cn.featherfly.juorm.rdb.jdbc.mapping.ClassMapping;
@@ -42,11 +43,21 @@ public class MergeOperate<T> extends AbstractOperate<T> {
     }
 
     /**
+     * @param jdbc
+     * @param classMapping
+     * @param databaseMetadata
+     */
+    public MergeOperate(Jdbc jdbc, ClassMapping<T> classMapping, DatabaseMetadata databaseMetadata) {
+        super(jdbc, classMapping, databaseMetadata);
+    }
+
+    /**
      * <p>
      * 合并操作，将传入对象的非空字段更新进数据库（忽略null）.
      * </p>
      *
-     * @param entity 对象
+     * @param entity   对象
+     * @param onlyNull only null
      * @return 操作影响的数据行数
      */
     public int execute(final T entity, boolean onlyNull) {

@@ -9,20 +9,27 @@ import cn.featherfly.juorm.expression.condition.property.DateExpression;
 
 /**
  * <p>
- * SimpleObjectExpression
+ * TypeDateExpression
  * </p>
+ * .
  *
  * @author zhongj
+ * @param <E> the element type
+ * @param <Q> the generic type
  */
 public class TypeDateExpression<E, Q extends TypeQueryConditionGroupExpression<E, Q>> {
 
+    /** The expression. */
     private DateExpression<QueryConditionGroupExpression, QueryConditionGroupLogicExpression> expression;
 
+    /** The type expression. */
     private Q typeExpression;
 
     /**
-     * @param expression
-     * @param typeExpression
+     * Instantiates a new type date expression.
+     *
+     * @param expression     the expression
+     * @param typeExpression the type expression
      */
     public TypeDateExpression(
             DateExpression<QueryConditionGroupExpression, QueryConditionGroupLogicExpression> expression,
@@ -33,90 +40,108 @@ public class TypeDateExpression<E, Q extends TypeQueryConditionGroupExpression<E
     }
 
     /**
-     * {@inheritDoc}
+     * Eq.
+     *
+     * @param value the value
+     * @return the q
      */
-
     public Q eq(Date value) {
         expression.eq(value);
         return typeExpression;
     }
 
     /**
-     * {@inheritDoc}
+     * Ne.
+     *
+     * @param value the value
+     * @return the q
      */
-
     public Q ne(Date value) {
         expression.ne(value);
         return typeExpression;
     }
 
     /**
-     * {@inheritDoc}
+     * In.
+     *
+     * @param value the value
+     * @return the q
      */
-
     public Q in(Date value) {
         expression.in(value);
         return typeExpression;
     }
 
     /**
-     * {@inheritDoc}
+     * Nin.
+     *
+     * @param value the value
+     * @return the q
      */
-
     public Q nin(Date value) {
         expression.nin(value);
         return typeExpression;
     }
 
     /**
-     * {@inheritDoc}
+     * Le.
+     *
+     * @param value the value
+     * @return the q
      */
-
     public Q le(Date value) {
         expression.le(value);
         return typeExpression;
     }
 
     /**
-     * {@inheritDoc}
+     * Lt.
+     *
+     * @param value the value
+     * @return the q
      */
-
     public Q lt(Date value) {
         expression.lt(value);
         return typeExpression;
     }
 
     /**
-     * {@inheritDoc}
+     * Ge.
+     *
+     * @param value the value
+     * @return the q
      */
-
     public Q ge(Date value) {
         expression.ge(value);
         return typeExpression;
     }
 
     /**
-     * {@inheritDoc}
+     * Gt.
+     *
+     * @param value the value
+     * @return the q
      */
-
     public Q gt(Date value) {
         expression.gt(value);
         return typeExpression;
     }
 
     /**
-     * {@inheritDoc}
+     * Isn.
+     *
+     * @return the q
      */
-
     public Q isn() {
         expression.isn();
         return typeExpression;
     }
 
     /**
-     * {@inheritDoc}
+     * Inn.
+     *
+     * @return the q
      */
-
     public Q inn() {
         expression.inn();
         return typeExpression;

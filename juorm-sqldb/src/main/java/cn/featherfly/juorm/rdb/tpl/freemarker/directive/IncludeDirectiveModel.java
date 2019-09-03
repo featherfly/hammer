@@ -17,11 +17,15 @@ import freemarker.template.TemplateModel;
 import freemarker.template.TemplateModelException;
 import freemarker.template.TemplateScalarModel;
 
-public class IncludeDirectiveModel extends IncludeDirective
-        implements TemplateDirectiveModel {
+/**
+ * The Class IncludeDirectiveModel.
+ */
+public class IncludeDirectiveModel extends IncludeDirective implements TemplateDirectiveModel {
 
     /**
-     * @param tplConfigFactory
+     * Instantiates a new include directive model.
+     *
+     * @param tplConfigFactory the tpl config factory
      */
     public IncludeDirectiveModel(TplConfigFactory tplConfigFactory) {
         super(tplConfigFactory);
@@ -31,8 +35,7 @@ public class IncludeDirectiveModel extends IncludeDirective
      * {@inheritDoc}
      */
     @Override
-    public void execute(Environment environment,
-            @SuppressWarnings("rawtypes") Map params, TemplateModel[] loopVars,
+    public void execute(Environment environment, @SuppressWarnings("rawtypes") Map params, TemplateModel[] loopVars,
             TemplateDirectiveBody body) throws TemplateException, IOException {
         String includeTemplateName = null;
         @SuppressWarnings("unchecked")
@@ -42,40 +45,46 @@ public class IncludeDirectiveModel extends IncludeDirective
         if (LangUtils.isNotEmpty(file)) {
             includeTemplateName = file + TplConfigFactory.ID_SIGN + id;
         } else {
-            TplExecuteId executeId = new TplExecuteIdImpl(
-                    environment.getCurrentNamespace().getTemplate().getName());
+            TplExecuteId executeId = new TplExecuteIdImpl(environment.getCurrentNamespace().getTemplate().getName());
             TplExecuteConfig config = tplConfigFactory.getConfig(executeId);
-            includeTemplateName = config.getName() + TplConfigFactory.ID_SIGN
-                    + id;
+            includeTemplateName = config.getName() + TplConfigFactory.ID_SIGN + id;
         }
-        environment.include(environment
-                .getTemplateForInclusion(includeTemplateName, null, true));
+        environment.include(environment.getTemplateForInclusion(includeTemplateName, null, true));
     }
 
-    private String getId(Map<String, TemplateModel> params)
-            throws TemplateModelException {
+    /**
+     * Gets the id.
+     *
+     * @param params the params
+     * @return the id
+     * @throws TemplateModelException the template model exception
+     */
+    private String getId(Map<String, TemplateModel> params) throws TemplateModelException {
         String id;
         TemplateModel paramValue = params.get(ID_PARAM);
         if (paramValue == null) {
-            throw new TemplateModelException(
-                    "The \"" + ID_PARAM + "\" parameter " + "can not be null.");
+            throw new TemplateModelException("The \"" + ID_PARAM + "\" parameter " + "can not be null.");
         }
         if (!(paramValue instanceof TemplateScalarModel)) {
-            throw new TemplateModelException("The \"" + ID_PARAM
-                    + "\" parameter " + "must be a String.");
+            throw new TemplateModelException("The \"" + ID_PARAM + "\" parameter " + "must be a String.");
         }
         id = ((TemplateScalarModel) paramValue).getAsString();
         return id;
     }
 
-    private String getFile(Map<String, TemplateModel> params)
-            throws TemplateModelException {
+    /**
+     * Gets the file.
+     *
+     * @param params the params
+     * @return the file
+     * @throws TemplateModelException the template model exception
+     */
+    private String getFile(Map<String, TemplateModel> params) throws TemplateModelException {
         String file = null;
         TemplateModel paramValue = params.get(FILE_PARAM);
         if (paramValue != null) {
             if (!(paramValue instanceof TemplateScalarModel)) {
-                throw new TemplateModelException("The \"" + FILE_PARAM
-                        + "\" parameter " + "must be a String.");
+                throw new TemplateModelException("The \"" + FILE_PARAM + "\" parameter " + "must be a String.");
             }
             file = ((TemplateScalarModel) paramValue).getAsString();
         }

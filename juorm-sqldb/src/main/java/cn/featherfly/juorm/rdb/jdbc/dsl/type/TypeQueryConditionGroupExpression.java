@@ -23,8 +23,8 @@ public abstract class TypeQueryConditionGroupExpression<E, Q extends TypeQueryCo
     protected SqlQueryConditionGroupExpression queryConditionGroupExpression;
 
     /**
-     * @param queryConditionGroupExpression
-     * @param parent
+     * @param queryConditionGroupExpression queryConditionGroupExpression
+     * @param parent                        parent
      */
     public TypeQueryConditionGroupExpression(SqlQueryConditionGroupExpression queryConditionGroupExpression, Q parent) {
         super();

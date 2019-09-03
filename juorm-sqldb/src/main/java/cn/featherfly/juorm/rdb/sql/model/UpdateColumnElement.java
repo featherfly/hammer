@@ -38,6 +38,7 @@ public class UpdateColumnElement extends ParamedColumnElement {
      * @param name       name
      * @param param      param
      * @param tableAlias tableAlias
+     * @param setType    setType
      */
     public UpdateColumnElement(Dialect dialect, String name, Object param, String tableAlias, SetType setType) {
         super(dialect, name, param, tableAlias);

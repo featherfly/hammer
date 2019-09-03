@@ -13,6 +13,7 @@ import cn.featherfly.juorm.rdb.sql.dml.builder.basic.SqlSelectBasicBuilder;
  * <p>
  * SqlDeleteExpression
  * </p>
+ * .
  *
  * @author zhongj
  */
@@ -21,8 +22,10 @@ public class SqlQueryExpression extends SqlQueryConditionGroupExpression {
     private SqlSelectBasicBuilder selectBuilder;
 
     /**
-     * @param jdbc
-     * @param selectBuilder
+     * Instantiates a new sql query expression.
+     *
+     * @param jdbc          the jdbc
+     * @param selectBuilder the select builder
      */
     public SqlQueryExpression(Jdbc jdbc, SqlSelectBasicBuilder selectBuilder) {
         super(jdbc, selectBuilder.getTableAlias());
@@ -30,9 +33,11 @@ public class SqlQueryExpression extends SqlQueryConditionGroupExpression {
     }
 
     /**
-     * @param jdbc
-     * @param classMapping
-     * @param selectBuilder
+     * Instantiates a new sql query expression.
+     *
+     * @param jdbc          the jdbc
+     * @param classMapping  the class mapping
+     * @param selectBuilder the select builder
      */
     public SqlQueryExpression(Jdbc jdbc, ClassMapping<?> classMapping, SqlSelectBasicBuilder selectBuilder) {
         super(jdbc, selectBuilder.getTableAlias(), classMapping);
@@ -51,15 +56,19 @@ public class SqlQueryExpression extends SqlQueryConditionGroupExpression {
     }
 
     /**
-     * @param jdbc
-     * @param queryAlias
+     * Instantiates a new sql query expression.
+     *
+     * @param jdbc       the jdbc
+     * @param queryAlias the query alias
      */
     public SqlQueryExpression(Jdbc jdbc, String queryAlias) {
         super(jdbc, queryAlias);
     }
 
     /**
-     * @param jdbc
+     * Instantiates a new sql query expression.
+     *
+     * @param jdbc jdbc
      */
     public SqlQueryExpression(Jdbc jdbc) {
         super(jdbc);

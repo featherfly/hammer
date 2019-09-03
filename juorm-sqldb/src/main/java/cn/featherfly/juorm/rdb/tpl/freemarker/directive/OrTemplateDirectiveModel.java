@@ -6,19 +6,17 @@ import cn.featherfly.juorm.tpl.supports.ConditionParamsManager;
 
 /**
  * <p>
- * WhereTemplateDirectiveModel
+ * OrTemplateDirectiveModel
  * </p>
- * 
+ *
  * @author zhongj
  */
-public class OrTemplateDirectiveModel extends LogicTemplateDirectiveModel
-        implements OrDirective {
+public class OrTemplateDirectiveModel extends LogicTemplateDirectiveModel implements OrDirective {
 
     /**
-     * @param conditionParamsManager
+     * @param conditionParamsManager conditionParamsManager
      */
-    public OrTemplateDirectiveModel(
-            ConditionParamsManager conditionParamsManager) {
+    public OrTemplateDirectiveModel(ConditionParamsManager conditionParamsManager) {
         super(conditionParamsManager);
     }
 

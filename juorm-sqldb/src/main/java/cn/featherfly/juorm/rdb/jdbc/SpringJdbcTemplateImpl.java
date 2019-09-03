@@ -41,8 +41,8 @@ public class SpringJdbcTemplateImpl implements Jdbc {
     }
 
     /**
-     * @param dataSource
-     * @param dialect
+     * @param dataSource dataSource
+     * @param dialect    dialect
      */
     public SpringJdbcTemplateImpl(DataSource dataSource, Dialect dialect) {
         super();

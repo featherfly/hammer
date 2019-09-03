@@ -129,6 +129,7 @@ public class SqlSelectBasicBuilder implements SqlBuilder {
      *
      * @param column            column
      * @param aggregateFunction aggregateFunction
+     * @param asName            alias name
      * @return this
      */
     public SqlSelectBasicBuilder addSelectColumn(String column, AggregateFunction aggregateFunction, String asName) {
@@ -151,6 +152,7 @@ public class SqlSelectBasicBuilder implements SqlBuilder {
      * add column
      *
      * @param column column
+     * @param asName alias name
      * @return this
      */
     public SqlSelectBasicBuilder addSelectColumn(String column, String asName) {

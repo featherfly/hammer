@@ -6,19 +6,20 @@ import cn.featherfly.juorm.tpl.supports.ConditionParamsManager;
 
 /**
  * <p>
- * WhereTemplateDirectiveModel
+ * AndTemplateDirectiveModel
  * </p>
- * 
+ * .
+ *
  * @author zhongj
  */
-public class AndTemplateDirectiveModel extends LogicTemplateDirectiveModel
-        implements AndDirective {
+public class AndTemplateDirectiveModel extends LogicTemplateDirectiveModel implements AndDirective {
 
     /**
-     * @param conditionParamsManager
+     * Instantiates a new and template directive model.
+     *
+     * @param conditionParamsManager the condition params manager
      */
-    public AndTemplateDirectiveModel(
-            ConditionParamsManager conditionParamsManager) {
+    public AndTemplateDirectiveModel(ConditionParamsManager conditionParamsManager) {
         super(conditionParamsManager);
     }
 

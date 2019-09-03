@@ -1,5 +1,6 @@
 package cn.featherfly.juorm.rdb.jdbc.operate;
 
+import cn.featherfly.common.db.metadata.DatabaseMetadata;
 import cn.featherfly.juorm.rdb.jdbc.Jdbc;
 import cn.featherfly.juorm.rdb.jdbc.mapping.ClassMapping;
 import cn.featherfly.juorm.rdb.jdbc.mapping.PropertyMapping;
@@ -34,6 +35,15 @@ public class DeleteOperate<T> extends AbstractExecuteOperate<T> {
      */
     public DeleteOperate(Jdbc jdbc, ClassMapping<T> classMapping, String dataBase) {
         super(jdbc, classMapping, dataBase);
+    }
+
+    /**
+     * @param jdbc
+     * @param classMapping
+     * @param databaseMetadata
+     */
+    public DeleteOperate(Jdbc jdbc, ClassMapping<T> classMapping, DatabaseMetadata databaseMetadata) {
+        super(jdbc, classMapping, databaseMetadata);
     }
 
     /**
