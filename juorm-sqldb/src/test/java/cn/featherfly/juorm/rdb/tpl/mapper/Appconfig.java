@@ -1,5 +1,5 @@
 
-package cn.featherfly.juorm.tpl.mapper;
+package cn.featherfly.juorm.rdb.tpl.mapper;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -21,6 +21,8 @@ import cn.featherfly.juorm.rdb.jdbc.mapping.JdbcMappingFactory;
 import cn.featherfly.juorm.rdb.sql.dialect.Dialects;
 import cn.featherfly.juorm.tpl.TplConfigFactory;
 import cn.featherfly.juorm.tpl.TplConfigFactoryImpl;
+import cn.featherfly.juorm.tpl.mapper.DynamicTplExecutorScanSpringRegistor;
+import cn.featherfly.juorm.tpl.mapper.DynamicTplExecutorSpringRegistor;
 
 /**
  * <p>

@@ -41,4 +41,11 @@
             <class name="cn.featherfly.juorm.rdb.tpl.SqlTplDynamicExecutorTest3" />
         </classes>
     </test>
+    
+    <test name="mapper spring register test">
+        <parameter name="test-name" value="mapper spring register test" />
+        <classes>
+            <class name="cn.featherfly.juorm.rdb.tpl.mapper.TplDynamicExecutorSpringRegistorTest" />
+        </classes>
+    </test>
 </suite>

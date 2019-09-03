@@ -1,5 +1,4 @@
 rootProject.name = 'juorm-build'
 includeFlat 'juorm-api'
 includeFlat 'juorm-core'
-includeFlat 'juorm-spring'
 includeFlat 'juorm-sqldb'
