@@ -12,7 +12,6 @@ public interface TypeQuerySingleExecutor<E> {
     /**
      * query for single
      *
-     * @param type wrapper type
      * @return object
      */
     E single();

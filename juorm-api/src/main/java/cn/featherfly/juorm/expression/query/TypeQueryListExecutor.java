@@ -15,7 +15,6 @@ public interface TypeQueryListExecutor<E> {
     /**
      * query for list
      *
-     * @param type wrapper type
      * @return list
      */
     List<E> list();
