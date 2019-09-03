@@ -4,6 +4,7 @@ package cn.featherfly.juorm.rdb.jdbc;
 import org.apache.commons.dbcp.BasicDataSource;
 import org.apache.log4j.xml.DOMConfigurator;
 import org.testng.annotations.BeforeClass;
+import org.testng.annotations.BeforeSuite;
 
 import cn.featherfly.common.db.metadata.DatabaseMetadata;
 import cn.featherfly.common.db.metadata.DatabaseMetadataManager;
@@ -31,11 +32,15 @@ public class JdbcTestBase {
 
     protected TplConfigFactory configFactory;
 
-    @BeforeClass
-    public void beforeClassMySql() {
+    @BeforeSuite
+    public void init() {
         DOMConfigurator.configure(ClassLoaderUtils.getResource("log4j.xml", JdbcTestBase.class));
 
         ConstantConfigurator.config();
+    }
+
+    @BeforeClass
+    public void beforeClassMySql() {
 
         BasicDataSource dataSource = new BasicDataSource();
         dataSource.setUrl("jdbc:mysql://127.0.0.1:3306/juorm_jdbc");

@@ -1,5 +1,5 @@
 
-package cn.featherfly.juorm.tpl.mapper;
+package cn.featherfly.juorm.rdb.tpl.mapper;
 
 import org.springframework.cache.annotation.Cacheable;
 
