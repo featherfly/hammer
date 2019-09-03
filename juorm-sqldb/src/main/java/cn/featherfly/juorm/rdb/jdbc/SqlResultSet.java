@@ -394,4 +394,12 @@ public class SqlResultSet implements cn.featherfly.juorm.mapping.ResultSet {
         }
     }
 
+    /**
+     * 返回ResultSet
+     *
+     * @return ResultSet
+     */
+    public ResultSet getResultSet() {
+        return proxy;
+    }
 }

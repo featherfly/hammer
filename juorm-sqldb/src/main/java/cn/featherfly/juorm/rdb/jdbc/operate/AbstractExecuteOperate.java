@@ -1,8 +1,6 @@
 
 package cn.featherfly.juorm.rdb.jdbc.operate;
 
-import java.sql.PreparedStatement;
-
 import cn.featherfly.juorm.rdb.jdbc.Jdbc;
 import cn.featherfly.juorm.rdb.jdbc.mapping.ClassMapping;
 
@@ -48,15 +46,16 @@ public abstract class AbstractExecuteOperate<T> extends AbstractOperate<T> {
      * @return 操作影响的数据行数
      */
     public int execute(final T entity) {
-        return jdbc.execute(con -> {
-            PreparedStatement prep = null;
-            prep = con.prepareStatement(sql);
-            setParameter(prep, entity);
-            logger.debug("execute sql: {}", sql);
-            int result = prep.executeUpdate();
-            prep.close();
-            return result;
-        });
+        return jdbc.update(sql, getParameters(entity));
+        //        return jdbc.execute(con -> {
+        //            PreparedStatement prep = null;
+        //            prep = con.prepareStatement(sql);
+        //            setParameter(prep, entity);
+        //            logger.debug("execute sql: {}", sql);
+        //            int result = prep.executeUpdate();
+        //            prep.close();
+        //            return result;
+        //        });
     }
 
     // ********************************************************************

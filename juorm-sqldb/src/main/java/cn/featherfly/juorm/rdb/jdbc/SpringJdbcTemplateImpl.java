@@ -8,7 +8,6 @@ import java.util.Map;
 import javax.sql.DataSource;
 
 import org.springframework.dao.EmptyResultDataAccessException;
-import org.springframework.jdbc.core.ConnectionCallback;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 
@@ -56,7 +55,8 @@ public class SpringJdbcTemplateImpl implements Jdbc {
      */
     @Override
     public <T> T execute(ConnectionCallback<T> action) {
-        return jdbcTemplate.execute(action);
+        return jdbcTemplate
+                .execute((org.springframework.jdbc.core.ConnectionCallback<T>) con -> action.doInConnection(con));
     }
 
     /**

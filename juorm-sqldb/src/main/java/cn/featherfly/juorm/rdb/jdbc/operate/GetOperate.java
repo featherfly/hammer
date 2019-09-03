@@ -1,14 +1,13 @@
 package cn.featherfly.juorm.rdb.jdbc.operate;
 
 import java.io.Serializable;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
 import cn.featherfly.common.bean.BeanUtils;
 import cn.featherfly.common.lang.LangUtils;
+import cn.featherfly.juorm.mapping.RowMapper;
 import cn.featherfly.juorm.rdb.jdbc.Jdbc;
 import cn.featherfly.juorm.rdb.jdbc.JuormJdbcException;
 import cn.featherfly.juorm.rdb.jdbc.mapping.ClassMapping;
@@ -101,31 +100,19 @@ public class GetOperate<T> extends AbstractQueryOperate<T> {
         if (id == null) {
             throw new JuormJdbcException("#get.id.null");
         }
-        return jdbc.execute(conn -> {
-            PreparedStatement prep = conn.prepareStatement(sql);
-            setParameter(prep, id);
-            ResultSet res = prep.executeQuery();
-            int index = 0;
-            T t = null;
-            while (res.next()) {
-                t = mapRow(res, index);
-            }
-            prep.close();
-            return t;
-        });
-
-        //		ConnectionWrapper conn = JdbcUtils.getConnectionWrapper(dataSource);
-        //		PreparedStatementWrapper prep =	conn.prepareStatement(sql);
-        //		setParameter(prep, id);
-        //		ResultSetWrapper res = prep.executeQuery();
-        //		int index = 0;
-        //		T t = null;
-        //		while (res.next()) {
-        //			t = mapRow(res, index);
-        //		}
-        //		prep.close();
-        //		conn.close();
-        //		return t;
+        return jdbc.querySingle(sql, new Object[] { id }, (RowMapper<T>) (res, rowNum) -> mapRow(res, rowNum));
+        //        return jdbc.execute(conn -> {
+        //            PreparedStatement prep = conn.prepareStatement(sql);
+        //            setParameter(prep, id);
+        //            ResultSet res = prep.executeQuery();
+        //            int index = 0;
+        //            T t = null;
+        //            while (res.next()) {
+        //                t = mapRow(res, index);
+        //            }
+        //            prep.close();
+        //            return t;
+        //        });
     }
 
     /**
@@ -144,18 +131,19 @@ public class GetOperate<T> extends AbstractQueryOperate<T> {
         if (LangUtils.isEmpty(ids)) {
             throw new JuormJdbcException("#get.id.null");
         }
-        return jdbc.execute(conn -> {
-            PreparedStatement prep = conn.prepareStatement(sql);
-            setParameter(prep, ids);
-            ResultSet res = prep.executeQuery();
-            int index = 0;
-            T t = null;
-            while (res.next()) {
-                t = mapRow(res, index);
-            }
-            prep.close();
-            return t;
-        });
+        return jdbc.querySingle(sql, ids.toArray(), (RowMapper<T>) (res, rowNum) -> mapRow(res, rowNum));
+        //        return jdbc.execute(conn -> {
+        //            PreparedStatement prep = conn.prepareStatement(sql);
+        //            setParameter(prep, ids);
+        //            ResultSet res = prep.executeQuery();
+        //            int index = 0;
+        //            T t = null;
+        //            while (res.next()) {
+        //                t = mapRow(res, index);
+        //            }
+        //            prep.close();
+        //            return t;
+        //        });
     }
 
     /**

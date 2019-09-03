@@ -107,6 +107,10 @@ public abstract class AbstractOperate<T> {
     }
 
     public Object[] getParameters(T entity) {
+        return getParameters(entity, propertyPositions);
+    }
+
+    protected Object[] getParameters(T entity, Map<Integer, String> propertyPositions) {
         Object[] params = new Object[propertyPositions.size()];
         int i = 0;
         for (Entry<Integer, String> propertyPosition : propertyPositions.entrySet()) {
