@@ -24,6 +24,7 @@ public abstract class GenericJuormJdbcImpl<E> implements GenericJuorm<E> {
     private JuormJdbcImpl juorm;
 
     /**
+     * @param juorm juorm
      */
     public GenericJuormJdbcImpl(JuormJdbcImpl juorm) {
         this.juorm = juorm;

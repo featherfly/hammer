@@ -30,8 +30,8 @@ public class SqlQuery implements Query {
     }
 
     /**
-     * @param jdbc
-     * @param mappingFactory
+     * @param jdbc           jdbc
+     * @param mappingFactory mappingFactory
      */
     public SqlQuery(Jdbc jdbc, JdbcMappingFactory mappingFactory) {
         super();

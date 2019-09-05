@@ -63,17 +63,19 @@ public abstract class AbstractSqlConditionGroupExpression<C extends ConditionGro
     }
 
     /**
-     * @param dialect    dialect
-     * @param queryAlias queryAlias
+     * @param dialect      dialect
+     * @param queryAlias   queryAlias
+     * @param classMapping classMapping
      */
     public AbstractSqlConditionGroupExpression(Dialect dialect, String queryAlias, ClassMapping<?> classMapping) {
         this(dialect, null, queryAlias, classMapping);
     }
 
     /**
-     * @param dialect    dialect
-     * @param parent     parent group
-     * @param queryAlias queryAlias
+     * @param dialect      dialect
+     * @param parent       parent group
+     * @param queryAlias   queryAlias
+     * @param classMapping classMapping
      */
     protected AbstractSqlConditionGroupExpression(Dialect dialect, L parent, String queryAlias,
             ClassMapping<?> classMapping) {

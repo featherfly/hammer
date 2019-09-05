@@ -12,7 +12,7 @@ public class WrapMethodModel implements TemplateMethodModelEx, WrapMethod {
     private Dialect dialect;
 
     /**
-     * @param dialect
+     * @param dialect dialect
      */
     public WrapMethodModel(Dialect dialect) {
         super();
@@ -23,11 +23,9 @@ public class WrapMethodModel implements TemplateMethodModelEx, WrapMethod {
      * {@inheritDoc}
      */
     @Override
-    public Object exec(@SuppressWarnings("rawtypes") List arguments)
-            throws TemplateModelException {
+    public Object exec(@SuppressWarnings("rawtypes") List arguments) throws TemplateModelException {
         if (arguments.size() != 1) {
-            throw new TemplateModelException(
-                    "Wrong arguments, only one argument allow");
+            throw new TemplateModelException("Wrong arguments, only one argument allow");
         }
         return dialect.wrapName(arguments.get(0).toString());
     }

@@ -51,9 +51,9 @@ public abstract class AbstractSqlSelectBuilder implements Builder {
 
     /**
      * addSelectColumn
-     * 
-     * @param columnName
-     * @param function
+     *
+     * @param columnName columnName
+     * @param function   function
      */
     protected void addSelectColumn(String columnName, AggregateFunction function) {
         selectBuilder.addSelectColumn(columnName, function);
@@ -61,9 +61,9 @@ public abstract class AbstractSqlSelectBuilder implements Builder {
 
     /**
      * addSelectColumn
-     * 
-     * @param columnName
-     * @param asName
+     *
+     * @param columnName columnName
+     * @param asName     asName
      */
     protected void addSelectColumn(String columnName, String asName) {
         selectBuilder.addSelectColumn(columnName, asName);
@@ -71,10 +71,10 @@ public abstract class AbstractSqlSelectBuilder implements Builder {
 
     /**
      * addSelectColumn
-     * 
-     * @param columnNames
-     * @param function
-     * @param asName
+     *
+     * @param columnNames columnNames
+     * @param function    function
+     * @param asName      asName
      */
     protected void addSelectColumn(String columnNames, AggregateFunction function, String asName) {
         selectBuilder.addSelectColumn(columnNames, function, asName);
@@ -82,8 +82,8 @@ public abstract class AbstractSqlSelectBuilder implements Builder {
 
     /**
      * addSelectColumn
-     * 
-     * @param columnNames
+     *
+     * @param columnNames columnNames
      */
     protected void addSelectColumn(Map<String, String> columnNames) {
         columnNames.forEach((columnName, asName) -> {

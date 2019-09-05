@@ -13,8 +13,8 @@ import cn.featherfly.juorm.dml.DmlElement;
 public interface SqlElement extends DmlElement {
     /**
      * toSql
-     * 
-     * @return
+     *
+     * @return sql
      */
     String toSql();
 

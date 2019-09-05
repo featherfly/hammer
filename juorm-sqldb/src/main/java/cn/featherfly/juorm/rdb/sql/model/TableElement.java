@@ -25,8 +25,9 @@ public class TableElement extends AbstractSqlElement {
     }
 
     /**
-     * @param name  name
-     * @param alias alias
+     * @param dialect dialect
+     * @param name    name
+     * @param alias   alias
      */
     public TableElement(Dialect dialect, String name, String alias) {
         super(dialect);

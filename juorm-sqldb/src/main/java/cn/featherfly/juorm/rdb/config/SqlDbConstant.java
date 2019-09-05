@@ -16,15 +16,15 @@ import cn.featherfly.juorm.rdb.sql.dialect.Dialects;
 
 /**
  * <p>
- * JuormJdbcConstant
+ * SqlDbConstant
  * </p>
  * <p>
  * 2019-08-26
  * </p>
- * FIXME 这里还是有一些问题，依赖设置时，被依赖项不会更新
- * 
+ *
  * @author zhongj
  */
+// FIXME 这里还是有一些问题，依赖设置时，被依赖项不会更新
 @ConstantClass(value = "JuormSqlDb初始化配置")
 public class SqlDbConstant extends JuormConstant {
 

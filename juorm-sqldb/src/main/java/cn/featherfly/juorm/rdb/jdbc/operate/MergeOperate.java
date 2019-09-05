@@ -46,7 +46,8 @@ public class MergeOperate<T> extends AbstractOperate<T> {
      * 合并操作，将传入对象的非空字段更新进数据库（忽略null）.
      * </p>
      *
-     * @param entity 对象
+     * @param entity   对象
+     * @param onlyNull only null
      * @return 操作影响的数据行数
      */
     public int execute(final T entity, boolean onlyNull) {

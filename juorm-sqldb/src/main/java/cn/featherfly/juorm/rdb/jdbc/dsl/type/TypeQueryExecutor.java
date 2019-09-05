@@ -19,8 +19,10 @@ public class TypeQueryExecutor<E> implements cn.featherfly.juorm.expression.quer
     private QueryExecutor queryExecutor;
 
     /**
-     * @param type
-     * @param queryExecutor
+     * Instantiates a new type query executor.
+     *
+     * @param type          the type
+     * @param queryExecutor the query executor
      */
     public TypeQueryExecutor(Class<E> type, QueryExecutor queryExecutor) {
         super();

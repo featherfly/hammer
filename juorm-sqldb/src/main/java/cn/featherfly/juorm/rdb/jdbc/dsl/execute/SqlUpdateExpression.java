@@ -13,6 +13,7 @@ import cn.featherfly.juorm.rdb.sql.dml.builder.basic.SqlUpdateSetBasicBuilder;
  * <p>
  * SqlDeleteExpression
  * </p>
+ * .
  *
  * @author zhongj
  */
@@ -21,17 +22,21 @@ public class SqlUpdateExpression extends SqlConditionGroupExpression {
     private SqlUpdateSetBasicBuilder builder;
 
     /**
-     * @param jdbc
-     * @param builder
+     * Instantiates a new sql update expression.
+     *
+     * @param jdbc    the jdbc
+     * @param builder the builder
      */
     public SqlUpdateExpression(Jdbc jdbc, SqlUpdateSetBasicBuilder builder) {
         this(jdbc, builder, null);
     }
 
     /**
-     * @param jdbc
-     * @param builder
-     * @param classMapping
+     * Instantiates a new sql update expression.
+     *
+     * @param jdbc         the jdbc
+     * @param builder      the builder
+     * @param classMapping the class mapping
      */
     public SqlUpdateExpression(Jdbc jdbc, SqlUpdateSetBasicBuilder builder, ClassMapping<?> classMapping) {
         super(jdbc, null, classMapping);
