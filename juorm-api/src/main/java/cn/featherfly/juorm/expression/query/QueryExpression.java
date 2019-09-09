@@ -23,6 +23,14 @@ public interface QueryExpression<Q extends QueryEntityExpression<QP, C, L>,
      */
     Q find(Repository repository);
 
+    //    /**
+    //     * find repository
+    //     *
+    //     * @param repository repository
+    //     * @return QueryEntity
+    //     */
+    //    <T, R> Q find(SerializableFunction<T, R> repository);
+
     /**
      * find repository
      *

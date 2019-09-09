@@ -1,6 +1,8 @@
 
 package cn.featherfly.juorm.rdb.jdbc.dsl.execute;
 
+import cn.featherfly.common.lang.LambdaUtils;
+import cn.featherfly.common.lang.function.SerializableFunction;
 import cn.featherfly.juorm.dsl.execute.ExecutableConditionGroupExpression;
 import cn.featherfly.juorm.dsl.execute.ExecutableUpdate;
 import cn.featherfly.juorm.dsl.execute.SimpleUpdateNumberValue;
@@ -85,6 +87,22 @@ public class SqlExecutableUpdate implements SqlUpdate, ExecutableUpdate {
      * {@inheritDoc}
      */
     @Override
+    public <T, R> ExecutableUpdate set(SerializableFunction<T, R> name, Object value) {
+        return set(LambdaUtils.getLambdaPropertyName(name), value);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public <T, R, N extends Number> ExecutableUpdate increase(SerializableFunction<T, R> name, N value) {
+        return increase(LambdaUtils.getLambdaPropertyName(name), value);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
     public UpdateValue property(String name) {
         return new SimpleUpdateValue(ClassMappingUtils.getColumnName(name, classMapping), this);
     }
@@ -95,6 +113,22 @@ public class SqlExecutableUpdate implements SqlUpdate, ExecutableUpdate {
     @Override
     public UpdateNumberValue propertyNumber(String name) {
         return new SimpleUpdateNumberValue(ClassMappingUtils.getColumnName(name, classMapping), this);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public <T, R> UpdateValue property(SerializableFunction<T, R> name) {
+        return property(LambdaUtils.getLambdaPropertyName(name));
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public <T, R> UpdateNumberValue propertyNumber(SerializableFunction<T, R> name) {
+        return propertyNumber(LambdaUtils.getLambdaPropertyName(name));
     }
 
     /**

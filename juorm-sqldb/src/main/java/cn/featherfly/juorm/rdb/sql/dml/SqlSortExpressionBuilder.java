@@ -1,5 +1,10 @@
 package cn.featherfly.juorm.rdb.sql.dml;
 
+import java.util.Arrays;
+import java.util.List;
+
+import cn.featherfly.common.lang.LambdaUtils;
+import cn.featherfly.common.lang.function.SerializableFunction;
 import cn.featherfly.juorm.expression.condition.SortExpression;
 import cn.featherfly.juorm.rdb.sql.dialect.Dialect;
 import cn.featherfly.juorm.rdb.sql.dml.builder.basic.SqlOrderByBasicBuilder;
@@ -11,8 +16,7 @@ import cn.featherfly.juorm.rdb.sql.dml.builder.basic.SqlOrderByBasicBuilder;
  *
  * @author zhongj
  */
-public class SqlSortExpressionBuilder
-        implements SortExpression<SqlSortExpressionBuilder>, SqlBuilder {
+public class SqlSortExpressionBuilder implements SortExpression<SqlSortExpressionBuilder>, SqlBuilder {
 
     private SqlOrderByBasicBuilder orderByBuilder;
 
@@ -42,11 +46,69 @@ public class SqlSortExpressionBuilder
      * {@inheritDoc}
      */
     @Override
+    public SqlSortExpressionBuilder asc(List<String> names) {
+        for (String name : names) {
+            orderByBuilder.addAsc(name, tableAlias);
+        }
+        return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public <T, R> SqlSortExpressionBuilder asc(SerializableFunction<T, R> name) {
+        return asc(LambdaUtils.getLambdaPropertyName(name));
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public <T, R> SqlSortExpressionBuilder asc(@SuppressWarnings("unchecked") SerializableFunction<T, R>... names) {
+        String[] nameArray = Arrays.stream(names).map(LambdaUtils::getLambdaPropertyName)
+                .toArray(value -> new String[value]);
+        return asc(nameArray);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
     public SqlSortExpressionBuilder desc(String... names) {
         for (String name : names) {
             orderByBuilder.addDesc(name, tableAlias);
         }
         return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public SqlSortExpressionBuilder desc(List<String> names) {
+        for (String name : names) {
+            orderByBuilder.addDesc(name, tableAlias);
+        }
+        return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public <T, R> SqlSortExpressionBuilder desc(SerializableFunction<T, R> name) {
+        return desc(LambdaUtils.getLambdaPropertyName(name));
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public <T, R> SqlSortExpressionBuilder desc(@SuppressWarnings("unchecked") SerializableFunction<T, R>... names) {
+        String[] nameArray = Arrays.stream(names).map(LambdaUtils::getLambdaPropertyName)
+                .toArray(value -> new String[value]);
+        return desc(nameArray);
     }
 
     /**
@@ -77,8 +139,7 @@ public class SqlSortExpressionBuilder
     /**
      * 设置tableAlias
      *
-     * @param tableAlias
-     *            tableAlias
+     * @param tableAlias tableAlias
      */
     public void setTableAlias(String tableAlias) {
         this.tableAlias = tableAlias;
