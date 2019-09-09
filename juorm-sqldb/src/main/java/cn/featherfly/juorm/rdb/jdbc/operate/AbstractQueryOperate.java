@@ -5,6 +5,7 @@ import java.sql.ResultSet;
 
 import cn.featherfly.common.bean.BeanUtils;
 import cn.featherfly.common.db.JdbcUtils;
+import cn.featherfly.common.db.metadata.DatabaseMetadata;
 import cn.featherfly.common.lang.LangUtils;
 import cn.featherfly.juorm.rdb.jdbc.Jdbc;
 import cn.featherfly.juorm.rdb.jdbc.SqlResultSet;
@@ -43,6 +44,15 @@ public abstract class AbstractQueryOperate<T> extends AbstractOperate<T> {
      */
     public AbstractQueryOperate(Jdbc jdbc, ClassMapping<T> classMapping, String dataBase) {
         super(jdbc, classMapping, dataBase);
+    }
+
+    /**
+     * @param jdbc
+     * @param classMapping
+     * @param databaseMetadata
+     */
+    public AbstractQueryOperate(Jdbc jdbc, ClassMapping<T> classMapping, DatabaseMetadata databaseMetadata) {
+        super(jdbc, classMapping, databaseMetadata);
     }
 
     /**

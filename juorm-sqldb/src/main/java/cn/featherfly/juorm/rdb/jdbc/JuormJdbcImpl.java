@@ -129,7 +129,7 @@ public class JuormJdbcImpl implements Juorm {
         if (insert == null) {
             @SuppressWarnings("unchecked")
             ClassMapping<E> mapping = (ClassMapping<E>) mappingFactory.getClassMapping(entity.getClass());
-            insert = new InsertOperate<>(jdbc, mapping);
+            insert = new InsertOperate<>(jdbc, mapping, mappingFactory.getMetadata());
             insertOperates.put(entity.getClass(), insert);
         }
         validate(entity);
@@ -164,7 +164,7 @@ public class JuormJdbcImpl implements Juorm {
         if (update == null) {
             @SuppressWarnings("unchecked")
             ClassMapping<E> mapping = (ClassMapping<E>) mappingFactory.getClassMapping(entity.getClass());
-            update = new UpdateOperate<>(jdbc, mapping);
+            update = new UpdateOperate<>(jdbc, mapping, mappingFactory.getMetadata());
             updateOperates.put(entity.getClass(), update);
         }
         validate(entity);
@@ -223,7 +223,7 @@ public class JuormJdbcImpl implements Juorm {
         if (update == null) {
             @SuppressWarnings("unchecked")
             ClassMapping<E> mapping = (ClassMapping<E>) mappingFactory.getClassMapping(entity.getClass());
-            update = new MergeOperate<>(jdbc, mapping);
+            update = new MergeOperate<>(jdbc, mapping, mappingFactory.getMetadata());
             mergeOperates.put(entity.getClass(), update);
         }
         validate(entity);
@@ -265,7 +265,7 @@ public class JuormJdbcImpl implements Juorm {
         if (delete == null) {
             @SuppressWarnings("unchecked")
             ClassMapping<E> mapping = (ClassMapping<E>) mappingFactory.getClassMapping(entity.getClass());
-            delete = new DeleteOperate<>(jdbc, mapping);
+            delete = new DeleteOperate<>(jdbc, mapping, mappingFactory.getMetadata());
             deleteOperates.put(entity.getClass(), delete);
         }
         return delete.execute(entity);
@@ -363,7 +363,7 @@ public class JuormJdbcImpl implements Juorm {
         GetOperate<E> get = (GetOperate<E>) getOperates.get(entityType);
         if (get == null) {
             ClassMapping<E> mapping = mappingFactory.getClassMapping(entityType);
-            get = new GetOperate<>(jdbc, mapping);
+            get = new GetOperate<>(jdbc, mapping, mappingFactory.getMetadata());
             getOperates.put(entityType.getClass(), get);
         }
         return get;

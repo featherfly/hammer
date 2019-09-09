@@ -4,6 +4,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import cn.featherfly.common.bean.BeanUtils;
+import cn.featherfly.common.db.metadata.DatabaseMetadata;
 import cn.featherfly.common.lang.LangUtils;
 import cn.featherfly.juorm.rdb.jdbc.Jdbc;
 import cn.featherfly.juorm.rdb.jdbc.mapping.ClassMapping;
@@ -39,6 +40,15 @@ public class MergeOperate<T> extends AbstractOperate<T> {
      */
     public MergeOperate(Jdbc jdbc, ClassMapping<T> classMapping, String dataBase) {
         super(jdbc, classMapping, dataBase);
+    }
+
+    /**
+     * @param jdbc
+     * @param classMapping
+     * @param databaseMetadata
+     */
+    public MergeOperate(Jdbc jdbc, ClassMapping<T> classMapping, DatabaseMetadata databaseMetadata) {
+        super(jdbc, classMapping, databaseMetadata);
     }
 
     /**
