@@ -1,6 +1,7 @@
 
 package cn.featherfly.juorm.expression.execute;
 
+import cn.featherfly.common.lang.function.SerializableFunction;
 import cn.featherfly.juorm.expression.ConditionGroupExpression;
 import cn.featherfly.juorm.expression.ConditionGroupLogicExpression;
 
@@ -19,4 +20,8 @@ public interface PropertyUpdateExpression<U extends PropertyExecutableUpdateExpr
     V property(String name);
 
     VN propertyNumber(String name);
+
+    <T, R> V property(SerializableFunction<T, R> name);
+
+    <T, R> VN propertyNumber(SerializableFunction<T, R> name);
 }

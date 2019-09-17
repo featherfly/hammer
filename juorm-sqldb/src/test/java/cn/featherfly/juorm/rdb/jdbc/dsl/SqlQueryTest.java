@@ -51,11 +51,19 @@ public class SqlQueryTest extends JdbcTestBase {
                 .list(User.class);
     }
 
+    @SuppressWarnings("unchecked")
     @Test
     void testMapping() {
         SqlQuery query = new SqlQuery(jdbc, mappingFactory);
         query.find(User.class).property("username", "pwd", "age").where().eq("username", "yufei").and()
                 .eq("pwd", "123456").and().group().gt("age", 18).and().lt("age", 60).list(User.class);
+
+        query.find(User.class).property(User::getUsername, User::getPwd, User::getAge).where().eq("username", "yufei")
+                .and().eq("pwd", "123456").and().group().gt("age", 18).and().lt("age", 60).list(User.class);
+
+        query.find(User.class).property(User::getUsername, User::getPwd, User::getAge).where().eq("username", "yufei")
+                .and().eq(User::getPwd, "123456").and().group().gt(User::getAge, 18).and().lt(User::getAge, 60)
+                .list(User.class);
     }
 
     @Test

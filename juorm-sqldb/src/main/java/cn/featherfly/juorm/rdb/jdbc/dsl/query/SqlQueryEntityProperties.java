@@ -2,10 +2,14 @@
 package cn.featherfly.juorm.rdb.jdbc.dsl.query;
 
 import java.math.BigDecimal;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
+import cn.featherfly.common.lang.LambdaUtils;
+import cn.featherfly.common.lang.function.SerializableFunction;
 import cn.featherfly.common.structure.page.Page;
 import cn.featherfly.juorm.dsl.query.QueryConditionGroupExpression;
 import cn.featherfly.juorm.dsl.query.QueryEntityProperties;
@@ -201,5 +205,23 @@ public class SqlQueryEntityProperties implements SqlQueryEntity, QueryEntityProp
     @Override
     public <N extends Number> N number(Class<N> type) {
         return new SqlQueryExpression(jdbc, classMapping, selectBuilder).number(type);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public <T, R> QueryEntityProperties property(
+            @SuppressWarnings("unchecked") SerializableFunction<T, R>... propertyNames) {
+        return property(
+                Arrays.stream(propertyNames).map(LambdaUtils::getLambdaPropertyName).collect(Collectors.toList()));
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public <T, R> QueryEntityProperties property(SerializableFunction<T, R> propertyName) {
+        return property(LambdaUtils.getLambdaPropertyName(propertyName));
     }
 }
