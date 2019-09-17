@@ -3,11 +3,11 @@ package cn.featherfly.juorm.rdb.jdbc.dsl.type;
 
 import cn.featherfly.juorm.dsl.query.QueryConditionGroupExpression;
 import cn.featherfly.juorm.dsl.query.QueryConditionGroupLogicExpression;
-import cn.featherfly.juorm.expression.condition.property.NumberExpression;
+import cn.featherfly.juorm.expression.condition.property.EnumExpression;
 
 /**
  * <p>
- * TypeNumberExpression
+ * TypeEnumExpression
  * </p>
  * .
  *
@@ -15,22 +15,22 @@ import cn.featherfly.juorm.expression.condition.property.NumberExpression;
  * @param <E> the element type
  * @param <Q> the generic type
  */
-public class TypeNumberExpression<E, Q extends TypeQueryConditionGroupExpression<E, Q>> {
+public class StaticTypeEnumExpression<E, Q extends StaticTypeQueryConditionGroupExpression<E, Q>> {
 
     /** The expression. */
-    private NumberExpression<QueryConditionGroupExpression, QueryConditionGroupLogicExpression> expression;
+    private EnumExpression<QueryConditionGroupExpression, QueryConditionGroupLogicExpression> expression;
 
     /** The type expression. */
     private Q typeExpression;
 
     /**
-     * Instantiates a new type number expression.
+     * Instantiates a new type enum expression.
      *
      * @param expression     the expression
      * @param typeExpression the type expression
      */
-    public TypeNumberExpression(
-            NumberExpression<QueryConditionGroupExpression, QueryConditionGroupLogicExpression> expression,
+    public StaticTypeEnumExpression(
+            EnumExpression<QueryConditionGroupExpression, QueryConditionGroupLogicExpression> expression,
             Q typeExpression) {
         super();
         this.expression = expression;
@@ -43,7 +43,7 @@ public class TypeNumberExpression<E, Q extends TypeQueryConditionGroupExpression
      * @param value the value
      * @return the q
      */
-    public Q eq(Number value) {
+    public Q eq(Enum<?> value) {
         expression.eq(value);
         return typeExpression;
     }
@@ -54,7 +54,7 @@ public class TypeNumberExpression<E, Q extends TypeQueryConditionGroupExpression
      * @param value the value
      * @return the q
      */
-    public Q ne(Number value) {
+    public Q ne(Enum<?> value) {
         expression.ne(value);
         return typeExpression;
     }
@@ -65,7 +65,7 @@ public class TypeNumberExpression<E, Q extends TypeQueryConditionGroupExpression
      * @param value the value
      * @return the q
      */
-    public Q in(Number value) {
+    public Q in(Enum<?> value) {
         expression.in(value);
         return typeExpression;
     }
@@ -76,52 +76,8 @@ public class TypeNumberExpression<E, Q extends TypeQueryConditionGroupExpression
      * @param value the value
      * @return the q
      */
-    public Q nin(Number value) {
+    public Q nin(Enum<?> value) {
         expression.nin(value);
-        return typeExpression;
-    }
-
-    /**
-     * Le.
-     *
-     * @param value the value
-     * @return the q
-     */
-    public Q le(Number value) {
-        expression.le(value);
-        return typeExpression;
-    }
-
-    /**
-     * Lt.
-     *
-     * @param value the value
-     * @return the q
-     */
-    public Q lt(Number value) {
-        expression.lt(value);
-        return typeExpression;
-    }
-
-    /**
-     * Ge.
-     *
-     * @param value the value
-     * @return the q
-     */
-    public Q ge(Number value) {
-        expression.ge(value);
-        return typeExpression;
-    }
-
-    /**
-     * Gt.
-     *
-     * @param value the value
-     * @return the q
-     */
-    public Q gt(Number value) {
-        expression.gt(value);
         return typeExpression;
     }
 

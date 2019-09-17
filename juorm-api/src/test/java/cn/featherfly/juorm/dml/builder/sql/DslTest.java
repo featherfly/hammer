@@ -44,6 +44,27 @@ public class DslTest {
         query.find(data).where().eq("", 1).and().lt("age", 18).and().group().gt("score", 80).sort().asc("name").limit(2)
                 .list(DslTest.class);
 
+        query.find(DslTest.class).list();
+        query.find(DslTest.class).limit(10).list();
+        query.find(DslTest.class).limit(1).single();
+        //        query.find(DslTest.class).property("name").number(Integer.class);
+        //        query.find(DslTest.class).property("name").integer();
+        //        query.find(DslTest.class).property("sum(price)").decimal();
+        //        query.find(DslTest.class).property("count(*)").where().lt("age", 18).longInt();
+
+        query.find(DslTest.class).property("name").where().eq("", 1).and().lt("age", 18).and().group().gt("score", 80)
+                .limit(11, 10).list();
+
+        query.find(DslTest.class).where().eq("", 1).and().lt("age", 18).and().group().gt("score", 80).single();
+
+        query.find(DslTest.class).property("name").where().eq("", 1).and().lt("age", 18).and().group().gt("score", 80)
+                .limit(11, 10).list();
+
+        query.find(DslTest.class).property("name").where().property("").eq(1).and().property("age").lt(18).and().group()
+                .property("score").gt(80).limit(11, 10).list();
+
+        query.find(DslTest.class).where().eq("", 1).and().lt("age", 18).and().group().gt("score", 80).sort().asc("name")
+                .limit(2).list();
     }
 
     public void testUpdate() {

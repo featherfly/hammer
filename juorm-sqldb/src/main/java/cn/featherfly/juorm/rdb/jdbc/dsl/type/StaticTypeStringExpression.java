@@ -1,15 +1,13 @@
 
 package cn.featherfly.juorm.rdb.jdbc.dsl.type;
 
-import java.util.Date;
-
 import cn.featherfly.juorm.dsl.query.QueryConditionGroupExpression;
 import cn.featherfly.juorm.dsl.query.QueryConditionGroupLogicExpression;
-import cn.featherfly.juorm.expression.condition.property.DateExpression;
+import cn.featherfly.juorm.expression.condition.property.StringExpression;
 
 /**
  * <p>
- * TypeDateExpression
+ * SimpleObjectExpression
  * </p>
  * .
  *
@@ -17,22 +15,22 @@ import cn.featherfly.juorm.expression.condition.property.DateExpression;
  * @param <E> the element type
  * @param <Q> the generic type
  */
-public class TypeDateExpression<E, Q extends TypeQueryConditionGroupExpression<E, Q>> {
+public class StaticTypeStringExpression<E, Q extends StaticTypeQueryConditionGroupExpression<E, Q>> {
 
     /** The expression. */
-    private DateExpression<QueryConditionGroupExpression, QueryConditionGroupLogicExpression> expression;
+    private StringExpression<QueryConditionGroupExpression, QueryConditionGroupLogicExpression> expression;
 
     /** The type expression. */
     private Q typeExpression;
 
     /**
-     * Instantiates a new type date expression.
+     * Instantiates a new type string expression.
      *
      * @param expression     the expression
      * @param typeExpression the type expression
      */
-    public TypeDateExpression(
-            DateExpression<QueryConditionGroupExpression, QueryConditionGroupLogicExpression> expression,
+    public StaticTypeStringExpression(
+            StringExpression<QueryConditionGroupExpression, QueryConditionGroupLogicExpression> expression,
             Q typeExpression) {
         super();
         this.expression = expression;
@@ -45,7 +43,7 @@ public class TypeDateExpression<E, Q extends TypeQueryConditionGroupExpression<E
      * @param value the value
      * @return the q
      */
-    public Q eq(Date value) {
+    public Q eq(String value) {
         expression.eq(value);
         return typeExpression;
     }
@@ -56,7 +54,7 @@ public class TypeDateExpression<E, Q extends TypeQueryConditionGroupExpression<E
      * @param value the value
      * @return the q
      */
-    public Q ne(Date value) {
+    public Q ne(String value) {
         expression.ne(value);
         return typeExpression;
     }
@@ -67,7 +65,7 @@ public class TypeDateExpression<E, Q extends TypeQueryConditionGroupExpression<E
      * @param value the value
      * @return the q
      */
-    public Q in(Date value) {
+    public Q in(String value) {
         expression.in(value);
         return typeExpression;
     }
@@ -78,7 +76,7 @@ public class TypeDateExpression<E, Q extends TypeQueryConditionGroupExpression<E
      * @param value the value
      * @return the q
      */
-    public Q nin(Date value) {
+    public Q nin(String value) {
         expression.nin(value);
         return typeExpression;
     }
@@ -89,7 +87,7 @@ public class TypeDateExpression<E, Q extends TypeQueryConditionGroupExpression<E
      * @param value the value
      * @return the q
      */
-    public Q le(Date value) {
+    public Q le(String value) {
         expression.le(value);
         return typeExpression;
     }
@@ -100,7 +98,7 @@ public class TypeDateExpression<E, Q extends TypeQueryConditionGroupExpression<E
      * @param value the value
      * @return the q
      */
-    public Q lt(Date value) {
+    public Q lt(String value) {
         expression.lt(value);
         return typeExpression;
     }
@@ -111,7 +109,7 @@ public class TypeDateExpression<E, Q extends TypeQueryConditionGroupExpression<E
      * @param value the value
      * @return the q
      */
-    public Q ge(Date value) {
+    public Q ge(String value) {
         expression.ge(value);
         return typeExpression;
     }
@@ -122,8 +120,41 @@ public class TypeDateExpression<E, Q extends TypeQueryConditionGroupExpression<E
      * @param value the value
      * @return the q
      */
-    public Q gt(Date value) {
+    public Q gt(String value) {
         expression.gt(value);
+        return typeExpression;
+    }
+
+    /**
+     * Sw.
+     *
+     * @param value the value
+     * @return the q
+     */
+    public Q sw(String value) {
+        expression.sw(value);
+        return typeExpression;
+    }
+
+    /**
+     * Co.
+     *
+     * @param value the value
+     * @return the q
+     */
+    public Q co(String value) {
+        expression.co(value);
+        return typeExpression;
+    }
+
+    /**
+     * Ew.
+     *
+     * @param value the value
+     * @return the q
+     */
+    public Q ew(String value) {
+        expression.ew(value);
         return typeExpression;
     }
 

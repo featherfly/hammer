@@ -7,6 +7,7 @@ import java.util.List;
 import cn.featherfly.juorm.dsl.execute.Delete;
 import cn.featherfly.juorm.dsl.execute.Update;
 import cn.featherfly.juorm.dsl.query.QueryEntity;
+import cn.featherfly.juorm.dsl.query.TypeQueryEntity;
 import cn.featherfly.juorm.tpl.TplExecutor;
 
 /**
@@ -154,13 +155,21 @@ public interface Juorm extends TplExecutor {
     <E> E get(E entity);
 
     /**
-     * create QueryData for entityType
+     * create QueryEntity for repository
+     *
+     * @param repository repository name
+     * @return QueryEntity
+     */
+    QueryEntity query(String repository);
+
+    /**
+     * create QueryEntity for entityType
      *
      * @param <E>        entity generic type
      * @param entityType query for entityType
      * @return QueryEntity
      */
-    <E> QueryEntity query(Class<E> entityType);
+    <E> TypeQueryEntity query(Class<E> entityType);
 
     /**
      * create update for entityType

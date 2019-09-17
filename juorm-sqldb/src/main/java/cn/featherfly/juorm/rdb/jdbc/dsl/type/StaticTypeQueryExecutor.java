@@ -12,7 +12,7 @@ import cn.featherfly.juorm.expression.query.QueryExecutor;
  *
  * @author zhongj
  */
-public class TypeQueryExecutor<E> implements cn.featherfly.juorm.expression.query.TypeQueryExecutor<E> {
+public class StaticTypeQueryExecutor<E> implements cn.featherfly.juorm.expression.query.GenericTypeQueryExecutor<E> {
 
     private Class<E> type;
 
@@ -24,7 +24,7 @@ public class TypeQueryExecutor<E> implements cn.featherfly.juorm.expression.quer
      * @param type          the type
      * @param queryExecutor the query executor
      */
-    public TypeQueryExecutor(Class<E> type, QueryExecutor queryExecutor) {
+    public StaticTypeQueryExecutor(Class<E> type, QueryExecutor queryExecutor) {
         super();
         this.type = type;
         this.queryExecutor = queryExecutor;

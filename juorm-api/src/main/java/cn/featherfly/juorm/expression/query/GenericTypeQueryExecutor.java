@@ -8,6 +8,6 @@ package cn.featherfly.juorm.expression.query;
  *
  * @author zhongj
  */
-public interface TypeQueryExecutor extends TypeQueryListExecutor, TypeQuerySingleExecutor {
+public interface GenericTypeQueryExecutor<E> extends GenericTypeQueryListExecutor<E>, GenericTypeQuerySingleExecutor<E> {
 
 }

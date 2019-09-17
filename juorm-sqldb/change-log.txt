@@ -1,4 +1,8 @@
 2019
+0.1.4
+    1.find(Class type)后只能执行single()和list(),映射对象为find时传入的对象
+    
+2019-9-17
 0.1.3
     1.加入SQLiteDialect
     2.加入SerializableFunction支持

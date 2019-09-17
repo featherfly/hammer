@@ -22,8 +22,8 @@ import cn.featherfly.juorm.rdb.jdbc.mapping.JdbcMappingFactory;
  * @param <C> the generic type
  * @param <Q> the generic type
  */
-public abstract class TypeQueryEntity<E, C extends TypeQueryConditionGroupExpression<E, C>,
-        Q extends TypeQueryEntity<E, C, Q>> {
+public abstract class StaticTypeQueryEntity<E, C extends StaticTypeQueryConditionGroupExpression<E, C>,
+        Q extends StaticTypeQueryEntity<E, C, Q>> {
 
     /** The type. */
     protected Class<E> type;
@@ -43,7 +43,7 @@ public abstract class TypeQueryEntity<E, C extends TypeQueryConditionGroupExpres
      * @param queryEntityProperties the query entity properties
      * @param mappingFactory        the mapping factory
      */
-    public TypeQueryEntity(SqlQueryEntityProperties queryEntityProperties, JdbcMappingFactory mappingFactory) {
+    public StaticTypeQueryEntity(SqlQueryEntityProperties queryEntityProperties, JdbcMappingFactory mappingFactory) {
         type = ClassUtils.getSuperClassGenricType(this.getClass());
         this.queryEntityProperties = queryEntityProperties;
         mappping = mappingFactory.getClassMapping(type);
@@ -75,9 +75,9 @@ public abstract class TypeQueryEntity<E, C extends TypeQueryConditionGroupExpres
      * @param limit the limit
      * @return the type query executor
      */
-    public TypeQueryExecutor<E> limit(Integer limit) {
+    public StaticTypeQueryExecutor<E> limit(Integer limit) {
         setProperties();
-        return new TypeQueryExecutor<>(type, queryEntityProperties.limit(limit));
+        return new StaticTypeQueryExecutor<>(type, queryEntityProperties.limit(limit));
     }
 
     /**
@@ -87,9 +87,9 @@ public abstract class TypeQueryEntity<E, C extends TypeQueryConditionGroupExpres
      * @param limit  the limit
      * @return the type query executor
      */
-    public TypeQueryExecutor<E> limit(Integer offset, Integer limit) {
+    public StaticTypeQueryExecutor<E> limit(Integer offset, Integer limit) {
         setProperties();
-        return new TypeQueryExecutor<>(type, queryEntityProperties.limit(offset, limit));
+        return new StaticTypeQueryExecutor<>(type, queryEntityProperties.limit(offset, limit));
     }
 
     /**
@@ -98,9 +98,9 @@ public abstract class TypeQueryEntity<E, C extends TypeQueryConditionGroupExpres
      * @param page the page
      * @return the type query executor
      */
-    public TypeQueryExecutor<E> limit(Page page) {
+    public StaticTypeQueryExecutor<E> limit(Page page) {
         setProperties();
-        return new TypeQueryExecutor<>(type, queryEntityProperties.limit(page));
+        return new StaticTypeQueryExecutor<>(type, queryEntityProperties.limit(page));
     }
 
     /**

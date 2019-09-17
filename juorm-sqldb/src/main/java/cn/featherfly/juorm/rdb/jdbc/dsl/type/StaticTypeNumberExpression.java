@@ -3,11 +3,11 @@ package cn.featherfly.juorm.rdb.jdbc.dsl.type;
 
 import cn.featherfly.juorm.dsl.query.QueryConditionGroupExpression;
 import cn.featherfly.juorm.dsl.query.QueryConditionGroupLogicExpression;
-import cn.featherfly.juorm.expression.condition.property.StringExpression;
+import cn.featherfly.juorm.expression.condition.property.NumberExpression;
 
 /**
  * <p>
- * SimpleObjectExpression
+ * TypeNumberExpression
  * </p>
  * .
  *
@@ -15,22 +15,22 @@ import cn.featherfly.juorm.expression.condition.property.StringExpression;
  * @param <E> the element type
  * @param <Q> the generic type
  */
-public class TypeStringExpression<E, Q extends TypeQueryConditionGroupExpression<E, Q>> {
+public class StaticTypeNumberExpression<E, Q extends StaticTypeQueryConditionGroupExpression<E, Q>> {
 
     /** The expression. */
-    private StringExpression<QueryConditionGroupExpression, QueryConditionGroupLogicExpression> expression;
+    private NumberExpression<QueryConditionGroupExpression, QueryConditionGroupLogicExpression> expression;
 
     /** The type expression. */
     private Q typeExpression;
 
     /**
-     * Instantiates a new type string expression.
+     * Instantiates a new type number expression.
      *
      * @param expression     the expression
      * @param typeExpression the type expression
      */
-    public TypeStringExpression(
-            StringExpression<QueryConditionGroupExpression, QueryConditionGroupLogicExpression> expression,
+    public StaticTypeNumberExpression(
+            NumberExpression<QueryConditionGroupExpression, QueryConditionGroupLogicExpression> expression,
             Q typeExpression) {
         super();
         this.expression = expression;
@@ -43,7 +43,7 @@ public class TypeStringExpression<E, Q extends TypeQueryConditionGroupExpression
      * @param value the value
      * @return the q
      */
-    public Q eq(String value) {
+    public Q eq(Number value) {
         expression.eq(value);
         return typeExpression;
     }
@@ -54,7 +54,7 @@ public class TypeStringExpression<E, Q extends TypeQueryConditionGroupExpression
      * @param value the value
      * @return the q
      */
-    public Q ne(String value) {
+    public Q ne(Number value) {
         expression.ne(value);
         return typeExpression;
     }
@@ -65,7 +65,7 @@ public class TypeStringExpression<E, Q extends TypeQueryConditionGroupExpression
      * @param value the value
      * @return the q
      */
-    public Q in(String value) {
+    public Q in(Number value) {
         expression.in(value);
         return typeExpression;
     }
@@ -76,7 +76,7 @@ public class TypeStringExpression<E, Q extends TypeQueryConditionGroupExpression
      * @param value the value
      * @return the q
      */
-    public Q nin(String value) {
+    public Q nin(Number value) {
         expression.nin(value);
         return typeExpression;
     }
@@ -87,7 +87,7 @@ public class TypeStringExpression<E, Q extends TypeQueryConditionGroupExpression
      * @param value the value
      * @return the q
      */
-    public Q le(String value) {
+    public Q le(Number value) {
         expression.le(value);
         return typeExpression;
     }
@@ -98,7 +98,7 @@ public class TypeStringExpression<E, Q extends TypeQueryConditionGroupExpression
      * @param value the value
      * @return the q
      */
-    public Q lt(String value) {
+    public Q lt(Number value) {
         expression.lt(value);
         return typeExpression;
     }
@@ -109,7 +109,7 @@ public class TypeStringExpression<E, Q extends TypeQueryConditionGroupExpression
      * @param value the value
      * @return the q
      */
-    public Q ge(String value) {
+    public Q ge(Number value) {
         expression.ge(value);
         return typeExpression;
     }
@@ -120,41 +120,8 @@ public class TypeStringExpression<E, Q extends TypeQueryConditionGroupExpression
      * @param value the value
      * @return the q
      */
-    public Q gt(String value) {
+    public Q gt(Number value) {
         expression.gt(value);
-        return typeExpression;
-    }
-
-    /**
-     * Sw.
-     *
-     * @param value the value
-     * @return the q
-     */
-    public Q sw(String value) {
-        expression.sw(value);
-        return typeExpression;
-    }
-
-    /**
-     * Co.
-     *
-     * @param value the value
-     * @return the q
-     */
-    public Q co(String value) {
-        expression.co(value);
-        return typeExpression;
-    }
-
-    /**
-     * Ew.
-     *
-     * @param value the value
-     * @return the q
-     */
-    public Q ew(String value) {
-        expression.ew(value);
         return typeExpression;
     }
 

@@ -14,7 +14,7 @@ import cn.featherfly.juorm.rdb.jdbc.dsl.query.SqlQueryConditionGroupExpression;
  *
  * @author zhongj
  */
-public abstract class TypeQueryConditionGroupExpression<E, Q extends TypeQueryConditionGroupExpression<E, Q>> {
+public abstract class StaticTypeQueryConditionGroupExpression<E, Q extends StaticTypeQueryConditionGroupExpression<E, Q>> {
 
     private Q parent;
 
@@ -26,7 +26,7 @@ public abstract class TypeQueryConditionGroupExpression<E, Q extends TypeQueryCo
      * @param queryConditionGroupExpression queryConditionGroupExpression
      * @param parent                        parent
      */
-    public TypeQueryConditionGroupExpression(SqlQueryConditionGroupExpression queryConditionGroupExpression, Q parent) {
+    public StaticTypeQueryConditionGroupExpression(SqlQueryConditionGroupExpression queryConditionGroupExpression, Q parent) {
         super();
         this.type = ClassUtils.getSuperClassGenricType(this.getClass());
         this.queryConditionGroupExpression = queryConditionGroupExpression;
@@ -74,22 +74,22 @@ public abstract class TypeQueryConditionGroupExpression<E, Q extends TypeQueryCo
         return queryConditionGroupExpression.single(type);
     }
 
-    public TypeQueryExecutor<E> limit(Integer limit) {
-        return new TypeQueryExecutor<>(type, queryConditionGroupExpression.limit(limit));
+    public StaticTypeQueryExecutor<E> limit(Integer limit) {
+        return new StaticTypeQueryExecutor<>(type, queryConditionGroupExpression.limit(limit));
     }
 
     /**
      * {@inheritDoc}
      */
-    public TypeQueryExecutor<E> limit(Integer offset, Integer limit) {
-        return new TypeQueryExecutor<>(type, queryConditionGroupExpression.limit(offset, limit));
+    public StaticTypeQueryExecutor<E> limit(Integer offset, Integer limit) {
+        return new StaticTypeQueryExecutor<>(type, queryConditionGroupExpression.limit(offset, limit));
     }
 
     /**
      * {@inheritDoc}
      */
-    public TypeQueryExecutor<E> limit(Page page) {
-        return new TypeQueryExecutor<>(type, queryConditionGroupExpression.limit(page));
+    public StaticTypeQueryExecutor<E> limit(Page page) {
+        return new StaticTypeQueryExecutor<>(type, queryConditionGroupExpression.limit(page));
     }
 
     protected abstract Q createChild(SqlQueryConditionGroupExpression queryConditionGroupExpression, Q parent);

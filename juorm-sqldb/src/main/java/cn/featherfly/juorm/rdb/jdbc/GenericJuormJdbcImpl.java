@@ -8,7 +8,7 @@ import cn.featherfly.juorm.GenericJuorm;
 import cn.featherfly.juorm.Juorm.IgnorePolicy;
 import cn.featherfly.juorm.dsl.execute.Delete;
 import cn.featherfly.juorm.dsl.execute.Update;
-import cn.featherfly.juorm.dsl.query.QueryEntity;
+import cn.featherfly.juorm.dsl.query.TypeQueryEntity;
 
 /**
  * <p>
@@ -115,7 +115,7 @@ public abstract class GenericJuormJdbcImpl<E> implements GenericJuorm<E> {
      * {@inheritDoc}
      */
     @Override
-    public QueryEntity query() {
+    public TypeQueryEntity query() {
         return juorm.query(type);
     }
 

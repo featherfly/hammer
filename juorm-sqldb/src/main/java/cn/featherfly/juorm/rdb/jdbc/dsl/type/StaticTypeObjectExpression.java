@@ -15,7 +15,7 @@ import cn.featherfly.juorm.expression.condition.property.ObjectExpression;
  * @param <E> the element type
  * @param <Q> the generic type
  */
-public class TypeObjectExpression<E, Q extends TypeQueryConditionGroupExpression<E, Q>> {
+public class StaticTypeObjectExpression<E, Q extends StaticTypeQueryConditionGroupExpression<E, Q>> {
 
     /** The expression. */
     private ObjectExpression<QueryConditionGroupExpression, QueryConditionGroupLogicExpression> expression;
@@ -29,7 +29,7 @@ public class TypeObjectExpression<E, Q extends TypeQueryConditionGroupExpression
      * @param expression     the expression
      * @param typeExpression the type expression
      */
-    public TypeObjectExpression(
+    public StaticTypeObjectExpression(
             ObjectExpression<QueryConditionGroupExpression, QueryConditionGroupLogicExpression> expression,
             Q typeExpression) {
         super();

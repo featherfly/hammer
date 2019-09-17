@@ -1,7 +1,7 @@
 
 package cn.featherfly.juorm.rdb.jdbc.dsl.query;
 
-import cn.featherfly.juorm.rdb.jdbc.dsl.type.TypeQueryEntity;
+import cn.featherfly.juorm.rdb.jdbc.dsl.type.StaticTypeQueryEntity;
 import cn.featherfly.juorm.rdb.jdbc.mapping.JdbcMappingFactory;
 import cn.featherfly.juorm.rdb.jdbc.vo.User;
 
@@ -13,7 +13,7 @@ import cn.featherfly.juorm.rdb.jdbc.vo.User;
  * @author zhongj
  */
 public class UserSqlQueryEntity extends
-        TypeQueryEntity<User, UserSqlQueryConditionGroupExpression, UserSqlQueryEntity> {
+        StaticTypeQueryEntity<User, UserSqlQueryConditionGroupExpression, UserSqlQueryEntity> {
 
     private JdbcMappingFactory mappingFactory;
 

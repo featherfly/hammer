@@ -114,8 +114,7 @@ public class JuormJdbcTest extends JdbcTestBase {
         userRole.setRoleId(11);
         userRole.setUserId(11);
 
-        UserRole ur = juormJdbc.query(UserRole.class).where().eq("role_id", 11).and().eq("user_id", 11)
-                .single(UserRole.class);
+        UserRole ur = juormJdbc.query(UserRole.class).where().eq("role_id", 11).and().eq("user_id", 11).single();
         if (ur == null) {
             juormJdbc.save(userRole);
         }
@@ -170,28 +169,28 @@ public class JuormJdbcTest extends JdbcTestBase {
 
     @Test
     public void testQuery() {
-        List<Role> roles = juormJdbc.query(Role.class).where().gt("id", 5).and().le("id", 10).list(Role.class);
+        List<Role> roles = juormJdbc.query(Role.class).where().gt("id", 5).and().le("id", 10).list();
         for (Role role : roles) {
             System.out.println(role);
             assertTrue(role.getId() > 5 && role.getId() <= 10);
         }
 
         Integer id = 10;
-        Role r = juormJdbc.query(Role.class).where().eq("id", id).single(Role.class);
+        Role r = juormJdbc.query(Role.class).where().eq("id", id).single();
         System.out.println(r);
         assertEquals(r.getId(), id);
     }
 
     @Test
     public void testQueryLimit() {
-        List<Role> roles = juormJdbc.query(Role.class).where().gt("id", 5).and().le("id", 10).limit(2).list(Role.class);
+        List<Role> roles = juormJdbc.query(Role.class).where().gt("id", 5).and().le("id", 10).limit(2).list();
         assertTrue(roles.size() == 2);
         for (Role role : roles) {
             System.out.println(role);
             assertTrue(role.getId() > 5 && role.getId() <= 10);
         }
 
-        roles = juormJdbc.query(Role.class).where().gt("id", 5).and().le("id", 10).limit(2, 3).list(Role.class);
+        roles = juormJdbc.query(Role.class).where().gt("id", 5).and().le("id", 10).limit(2, 3).list();
         assertTrue(roles.size() == 3);
         for (Role role : roles) {
             System.out.println(role);
@@ -199,7 +198,7 @@ public class JuormJdbcTest extends JdbcTestBase {
         }
 
         roles = juormJdbc.query(Role.class).where().eq("id", 4).or().group().gt("id", 5).and().le("id", 10).limit(2, 3)
-                .list(Role.class);
+                .list();
         assertTrue(roles.size() == 3);
         for (Role role : roles) {
             System.out.println(role);
@@ -209,7 +208,7 @@ public class JuormJdbcTest extends JdbcTestBase {
     @Test
     public void testQueryLimit2() {
         List<Role> roles = juormJdbc.query(Role.class).where().eq("id", 4).or().group().gt("id", 5).and().le("id", 10)
-                .limit(2, 3).list(Role.class);
+                .limit(2, 3).list();
         assertTrue(roles.size() == 3);
         for (Role role : roles) {
             System.out.println(role);
@@ -219,7 +218,7 @@ public class JuormJdbcTest extends JdbcTestBase {
     @Test
     public void testQuerySort() {
         List<Role> roles = juormJdbc.query(Role.class).where().eq("id", 4).or().group().gt("id", 5).and().le("id", 10)
-                .sort().asc("id").desc("name").list(Role.class);
+                .sort().asc("id").desc("name").list();
         for (Role role : roles) {
             System.out.println(role);
         }
