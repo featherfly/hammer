@@ -31,6 +31,7 @@ public class SqlQueryBuilder implements QueryBuilder, cn.featherfly.juorm.dml.bu
     private SqlSelectBuilder selectBuilder;
 
     /**
+     * @param dialect dialect
      */
     public SqlQueryBuilder(Dialect dialect) {
         this.dialect = dialect;

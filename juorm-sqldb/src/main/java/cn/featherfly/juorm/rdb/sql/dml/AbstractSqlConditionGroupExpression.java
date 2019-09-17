@@ -10,8 +10,10 @@ import java.util.Collection;
 import java.util.Date;
 import java.util.List;
 
+import cn.featherfly.common.lang.LambdaUtils;
 import cn.featherfly.common.lang.LangUtils;
 import cn.featherfly.common.lang.StringUtils;
+import cn.featherfly.common.lang.function.SerializableFunction;
 import cn.featherfly.juorm.dml.builder.BuilderException;
 import cn.featherfly.juorm.dml.builder.ConditionBuildUtils;
 import cn.featherfly.juorm.expression.ConditionGroupExpression;
@@ -63,17 +65,19 @@ public abstract class AbstractSqlConditionGroupExpression<C extends ConditionGro
     }
 
     /**
-     * @param dialect    dialect
-     * @param queryAlias queryAlias
+     * @param dialect      dialect
+     * @param queryAlias   queryAlias
+     * @param classMapping classMapping
      */
     public AbstractSqlConditionGroupExpression(Dialect dialect, String queryAlias, ClassMapping<?> classMapping) {
         this(dialect, null, queryAlias, classMapping);
     }
 
     /**
-     * @param dialect    dialect
-     * @param parent     parent group
-     * @param queryAlias queryAlias
+     * @param dialect      dialect
+     * @param parent       parent group
+     * @param queryAlias   queryAlias
+     * @param classMapping classMapping
      */
     protected AbstractSqlConditionGroupExpression(Dialect dialect, L parent, String queryAlias,
             ClassMapping<?> classMapping) {
@@ -572,6 +576,314 @@ public abstract class AbstractSqlConditionGroupExpression<C extends ConditionGro
     @Override
     public EnumExpression<C, L> propertyEnum(String name) {
         return new SimpleEnumExpression<>(ClassMappingUtils.getColumnName(name, classMapping), this);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public <T, R> L co(SerializableFunction<T, R> name, String value) {
+        return co(getPropertyName(name), value);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public <T, R> L ew(SerializableFunction<T, R> name, String value) {
+        return ew(getPropertyName(name), value);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public <T, R> L eq(SerializableFunction<T, R> name, Object value) {
+        return eq(getPropertyName(name), value);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public <T, R, N extends Number> L ge(SerializableFunction<T, R> name, Number value) {
+        return ge(getPropertyName(name), value);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public <T, R, D extends Date> L ge(SerializableFunction<T, R> name, D value) {
+        return ge(getPropertyName(name), value);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public <T, R> L ge(SerializableFunction<T, R> name, LocalTime value) {
+        return ge(getPropertyName(name), value);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public <T, R> L ge(SerializableFunction<T, R> name, LocalDate value) {
+        return ge(getPropertyName(name), value);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public <T, R> L ge(SerializableFunction<T, R> name, LocalDateTime value) {
+        return ge(getPropertyName(name), value);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public <T, R> L ge(SerializableFunction<T, R> name, String value) {
+        return ge(getPropertyName(name), value);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public <T, R, N extends Number> L gt(SerializableFunction<T, R> name, Number value) {
+        return gt(getPropertyName(name), value);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public <T, R, D extends Date> L gt(SerializableFunction<T, R> name, D value) {
+        return gt(getPropertyName(name), value);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public <T, R> L gt(SerializableFunction<T, R> name, LocalTime value) {
+        return gt(getPropertyName(name), value);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public <T, R> L gt(SerializableFunction<T, R> name, LocalDate value) {
+        return gt(getPropertyName(name), value);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public <T, R> L gt(SerializableFunction<T, R> name, LocalDateTime value) {
+        return gt(getPropertyName(name), value);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public <T, R> L gt(SerializableFunction<T, R> name, String value) {
+        return gt(getPropertyName(name), value);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public <T, R> L in(SerializableFunction<T, R> name, Object value) {
+        return in(getPropertyName(name), value);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public <T, R> L inn(SerializableFunction<T, R> name) {
+        return inn(getPropertyName(name));
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public <T, R> L isn(SerializableFunction<T, R> name) {
+        return isn(getPropertyName(name));
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public <T, R, N extends Number> L le(SerializableFunction<T, R> name, Number value) {
+        return le(getPropertyName(name), value);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public <T, R, D extends Date> L le(SerializableFunction<T, R> name, D value) {
+        return le(getPropertyName(name), value);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public <T, R> L le(SerializableFunction<T, R> name, LocalTime value) {
+        return le(getPropertyName(name), value);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public <T, R> L le(SerializableFunction<T, R> name, LocalDate value) {
+        return le(getPropertyName(name), value);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public <T, R> L le(SerializableFunction<T, R> name, LocalDateTime value) {
+        return le(getPropertyName(name), value);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public <T, R> L le(SerializableFunction<T, R> name, String value) {
+        return le(getPropertyName(name), value);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public <T, R, N extends Number> L lt(SerializableFunction<T, R> name, Number value) {
+        return lt(getPropertyName(name), value);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public <T, R, D extends Date> L lt(SerializableFunction<T, R> name, D value) {
+        return lt(getPropertyName(name), value);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public <T, R> L lt(SerializableFunction<T, R> name, LocalTime value) {
+        return lt(getPropertyName(name), value);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public <T, R> L lt(SerializableFunction<T, R> name, LocalDate value) {
+        return lt(getPropertyName(name), value);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public <T, R> L lt(SerializableFunction<T, R> name, LocalDateTime value) {
+        return lt(getPropertyName(name), value);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public <T, R> L lt(SerializableFunction<T, R> name, String value) {
+        return lt(getPropertyName(name), value);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public <T, R> L ne(SerializableFunction<T, R> name, Object value) {
+        return ne(getPropertyName(name), value);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public <T, R> L nin(SerializableFunction<T, R> name, Object value) {
+        return nin(getPropertyName(name), value);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public <T, R> L sw(SerializableFunction<T, R> name, String value) {
+        return sw(getPropertyName(name), value);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public <T, R> ObjectExpression<C, L> property(SerializableFunction<T, R> name) {
+        return property(getPropertyName(name));
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public <T, R> StringExpression<C, L> propertyString(SerializableFunction<T, R> name) {
+        return propertyString(getPropertyName(name));
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public <T, R> NumberExpression<C, L> propertyNumber(SerializableFunction<T, R> name) {
+        return propertyNumber(getPropertyName(name));
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public <T, R> DateExpression<C, L> propertyDate(SerializableFunction<T, R> name) {
+        return propertyDate(getPropertyName(name));
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public <T, R> EnumExpression<C, L> propertyEnum(SerializableFunction<T, R> name) {
+        return propertyEnum(getPropertyName(name));
+    }
+
+    protected <T, R> String getPropertyName(SerializableFunction<T, R> name) {
+        return LambdaUtils.getLambdaPropertyName(name);
     }
 
     // ********************************************************************

@@ -1,9 +1,11 @@
 
 package cn.featherfly.juorm.rdb.jdbc;
 
+import java.io.File;
+import java.net.URL;
+
 import org.apache.commons.dbcp.BasicDataSource;
 import org.apache.log4j.xml.DOMConfigurator;
-import org.testng.annotations.BeforeClass;
 import org.testng.annotations.BeforeSuite;
 
 import cn.featherfly.common.db.metadata.DatabaseMetadata;
@@ -26,21 +28,21 @@ import cn.featherfly.juorm.tpl.TplConfigFactoryImpl;
  */
 public class JdbcTestBase {
 
-    protected Jdbc jdbc;
+    protected static Jdbc jdbc;
 
-    protected JdbcMappingFactory mappingFactory;
+    protected static JdbcMappingFactory mappingFactory;
 
-    protected TplConfigFactory configFactory;
+    protected static TplConfigFactory configFactory;
 
     @BeforeSuite
     public void init() {
         DOMConfigurator.configure(ClassLoaderUtils.getResource("log4j.xml", JdbcTestBase.class));
 
-        ConstantConfigurator.config();
     }
 
-    @BeforeClass
+    @BeforeSuite(groups = "mysql")
     public void beforeClassMySql() {
+        ConstantConfigurator.config();
 
         BasicDataSource dataSource = new BasicDataSource();
         dataSource.setUrl("jdbc:mysql://127.0.0.1:3306/juorm_jdbc");
@@ -64,8 +66,10 @@ public class JdbcTestBase {
         configFactory = new TplConfigFactoryImpl("tpl/");
     }
 
-    //    @BeforeClass
+    //    @BeforeSuite(groups = "postgresql")
     public void beforeClassPostgresql() {
+        ConstantConfigurator.config("constant.postgresql.yaml");
+
         DOMConfigurator.configure(ClassLoaderUtils.getResource("log4j.xml", JdbcTestBase.class));
         ConstantConfigurator.config();
 
@@ -82,6 +86,34 @@ public class JdbcTestBase {
         DatabaseMetadata metadata = DatabaseMetadataManager.getDefaultManager().create(dataSource, "juorm_jdbc");
 
         mappingFactory = new JdbcMappingFactory(metadata, Dialects.POSTGRESQL);
+
+        configFactory = new TplConfigFactoryImpl("tpl/");
+    }
+
+    //    @BeforeSuite(groups = "sqlite")
+    public void beforeClassSQLite() {
+        ConstantConfigurator.config("constant.sqlite.yaml");
+
+        URL url = ClassLoaderUtils.getResource("juorm.sqlite3", this.getClass());
+        System.out.println(url);
+        BasicDataSource dataSource = new BasicDataSource();
+        dataSource.setDriverClassName("org.sqlite.JDBC");
+        dataSource.setUrl("jdbc:sqlite:" + new File(url.getPath()));
+        //        dataSource.setUsername("root");
+        //        dataSource.setPassword("123456");
+
+        jdbc = new SpringJdbcTemplateImpl(dataSource, Dialects.SQLITE);
+        DatabaseMetadata metadata = DatabaseMetadataManager.getDefaultManager().create(dataSource, "main");
+
+        mappingFactory = new JdbcMappingFactory(metadata, Dialects.SQLITE);
+
+        // factory.getClassNameConversions().add(new ClassNameJpaConversion());
+        // factory.getClassNameConversions().add(new
+        // ClassNameUnderlineConversion());
+        // factory.getPropertyNameConversions().add(new
+        // PropertyNameJpaConversion());
+        // factory.getPropertyNameConversions().add(new
+        // PropertyNameUnderlineConversion());
 
         configFactory = new TplConfigFactoryImpl("tpl/");
     }

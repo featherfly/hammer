@@ -63,7 +63,7 @@ public abstract class AbstractOperate<T> {
      * @param classMapping classMapping
      */
     public AbstractOperate(Jdbc jdbc, ClassMapping<T> classMapping) {
-        this(jdbc, classMapping, null);
+        this(jdbc, classMapping, "");
     }
 
     /**
@@ -81,6 +81,20 @@ public abstract class AbstractOperate<T> {
         }
         this.jdbc = jdbc;
         this.classMapping = classMapping;
+        initSql();
+    }
+
+    /**
+     * 使用给定数据源以及给定对象生成其相应的操作.
+     *
+     * @param jdbc             jdbc
+     * @param classMapping     classMapping
+     * @param databaseMetadata databaseMetadata
+     */
+    public AbstractOperate(Jdbc jdbc, ClassMapping<T> classMapping, DatabaseMetadata databaseMetadata) {
+        this.jdbc = jdbc;
+        this.classMapping = classMapping;
+        this.meta = databaseMetadata;
         initSql();
     }
 

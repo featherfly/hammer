@@ -131,9 +131,33 @@ public class JuormJdbcTest extends JdbcTestBase {
 
     @Test
     public void testUpdater() {
-        juormJdbc.update(Role.class).set("name", "updater_" + RandomUtils.getRandomInt(90)).property("descp")
-                .set("updater_d_" + RandomUtils.getRandomInt(50)).where().eq("id", 4).execute();
+        int id = 4;
+        String newName = "updater_" + RandomUtils.getRandomInt(90);
+        String newDescp = "updater_d_" + RandomUtils.getRandomInt(50);
+        juormJdbc.update(Role.class).set("name", newName).property("descp").set(newDescp).where().eq("id", id)
+                .execute();
+        Role role = juormJdbc.get(id, Role.class);
+        System.err.println(newName + "\t\t" + newDescp);
+        assertEquals(role.getName(), newName);
+        assertEquals(role.getDescp(), newDescp);
 
+        newName = "updater_" + RandomUtils.getRandomInt(90);
+        newDescp = "updater_d_" + RandomUtils.getRandomInt(50);
+        System.err.println(newName + "\t\t" + newDescp);
+        juormJdbc.update(Role.class).set(Role::getName, newName).property(Role::getDescp).set(newDescp).where()
+                .eq("id", id).execute();
+        role = juormJdbc.get(id, Role.class);
+        assertEquals(role.getName(), newName);
+        assertEquals(role.getDescp(), newDescp);
+
+        newName = "updater_" + RandomUtils.getRandomInt(90);
+        newDescp = "updater_d_" + RandomUtils.getRandomInt(50);
+        System.err.println(newName + "\t\t" + newDescp);
+        juormJdbc.update(Role.class).set(Role::getName, newName).property(Role::getDescp).set(newDescp).where()
+                .eq(Role::getId, id).execute();
+        role = juormJdbc.get(id, Role.class);
+        assertEquals(role.getName(), newName);
+        assertEquals(role.getDescp(), newDescp);
     }
 
     @Test

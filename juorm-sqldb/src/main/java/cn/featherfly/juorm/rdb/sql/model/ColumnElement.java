@@ -25,6 +25,7 @@ public class ColumnElement extends AbstractSqlElement {
     }
 
     /**
+     * @param dialect    dialect
      * @param name       name
      * @param tableAlias tableAlias
      */

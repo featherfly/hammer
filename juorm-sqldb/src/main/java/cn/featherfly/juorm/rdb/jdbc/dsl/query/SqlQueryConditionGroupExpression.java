@@ -2,11 +2,14 @@
 package cn.featherfly.juorm.rdb.jdbc.dsl.query;
 
 import java.math.BigDecimal;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 
 import cn.featherfly.common.constant.Chars;
+import cn.featherfly.common.lang.LambdaUtils;
 import cn.featherfly.common.lang.LangUtils;
+import cn.featherfly.common.lang.function.SerializableFunction;
 import cn.featherfly.common.structure.page.Limit;
 import cn.featherfly.common.structure.page.Page;
 import cn.featherfly.juorm.dsl.query.QueryConditionGroupExpression;
@@ -281,9 +284,66 @@ public class SqlQueryConditionGroupExpression
      * {@inheritDoc}
      */
     @Override
+    public QuerySortExpression asc(List<String> names) {
+        ((SqlQueryConditionGroupExpression) getRoot()).sortBuilder
+                .asc(ClassMappingUtils.getColumnNames(classMapping, names));
+        return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public <T, R> QuerySortExpression asc(SerializableFunction<T, R> name) {
+        return asc(getPropertyName(name));
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public <T, R> QuerySortExpression asc(@SuppressWarnings("unchecked") SerializableFunction<T, R>... names) {
+        String[] nameArray = Arrays.stream(names).map(LambdaUtils::getLambdaPropertyName)
+                .toArray(value -> new String[value]);
+        return asc(nameArray);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
     public QuerySortExpression desc(String... names) {
         ((SqlQueryConditionGroupExpression) getRoot()).sortBuilder
                 .desc(ClassMappingUtils.getColumnNames(classMapping, names));
         return this;
     }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public QuerySortExpression desc(List<String> names) {
+        ((SqlQueryConditionGroupExpression) getRoot()).sortBuilder
+                .desc(ClassMappingUtils.getColumnNames(classMapping, names));
+        return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public <T, R> QuerySortExpression desc(SerializableFunction<T, R> name) {
+        return desc(getPropertyName(name));
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public <T, R> QuerySortExpression desc(@SuppressWarnings("unchecked") SerializableFunction<T, R>... names) {
+        String[] nameArray = Arrays.stream(names).map(LambdaUtils::getLambdaPropertyName)
+                .toArray(value -> new String[value]);
+        return desc(nameArray);
+    }
+
 }

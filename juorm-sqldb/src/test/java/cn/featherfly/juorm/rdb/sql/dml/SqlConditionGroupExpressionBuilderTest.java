@@ -17,7 +17,7 @@ import cn.featherfly.juorm.rdb.sql.dialect.Dialects;
  * <p>
  * SqlConditionGroupExpressionBuilderTest
  * </p>
- * 
+ *
  * @author zhongj
  */
 @Test(groups = { "dml-test" })
@@ -31,7 +31,7 @@ public class SqlConditionGroupExpressionBuilderTest extends JdbcTestBase {
     Integer age = 18;
 
     @BeforeClass
-    public void init() {
+    public void init2() {
         params.add(name);
         params.add(pwd);
         params.add(sex);
@@ -40,16 +40,13 @@ public class SqlConditionGroupExpressionBuilderTest extends JdbcTestBase {
 
     @Test
     public void testSqlConditionGroupExpressionBuilder() {
-        SqlConditionGroupExpressionBuilder builder = new SqlConditionGroupExpressionBuilder(
-                Dialects.MYSQL);
-        builder.eq("name", name).and().eq("pwd", pwd).and().group()
-                .eq("sex", sex).or().gt("age", age);
+        SqlConditionGroupExpressionBuilder builder = new SqlConditionGroupExpressionBuilder(Dialects.MYSQL);
+        builder.eq("name", name).and().eq("pwd", pwd).and().group().eq("sex", sex).or().gt("age", age);
 
         System.out.println(builder.build());
         System.out.println(builder.getParams());
 
-        assertEquals("`name` = ? AND `pwd` = ? AND ( `sex` = ? OR `age` > ? )",
-                builder.build());
+        assertEquals("`name` = ? AND `pwd` = ? AND ( `sex` = ? OR `age` > ? )", builder.build());
         assertEquals(params, builder.getParams());
 
     }

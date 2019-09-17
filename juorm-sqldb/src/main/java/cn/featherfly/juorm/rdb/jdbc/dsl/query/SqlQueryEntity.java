@@ -21,6 +21,7 @@ public interface SqlQueryEntity extends QueryEntity {
      * </p>
      *
      * @param columnName propertyName
+     * @param asName     alias name
      * @return QueryEntityPropertiesExpression
      */
     QueryEntityProperties propertyAlias(String columnName, String asName);

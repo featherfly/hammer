@@ -41,9 +41,7 @@ public class SqlResultSet implements cn.featherfly.juorm.mapping.ResultSet {
     }
 
     /**
-     * @param columnIndex
-     * @return
-     * @see java.sql.ResultSet#getString(int)
+     * {@inheritDoc}
      */
     @Override
     public String getString(int columnIndex) {
@@ -55,9 +53,7 @@ public class SqlResultSet implements cn.featherfly.juorm.mapping.ResultSet {
     }
 
     /**
-     * @param columnIndex
-     * @return
-     * @see java.sql.ResultSet#getByte(int)
+     * {@inheritDoc}
      */
     @Override
     public byte getByte(int columnIndex) {
@@ -69,9 +65,7 @@ public class SqlResultSet implements cn.featherfly.juorm.mapping.ResultSet {
     }
 
     /**
-     * @param columnIndex
-     * @return
-     * @see java.sql.ResultSet#getInt(int)
+     * {@inheritDoc}
      */
     @Override
     public int getInt(int columnIndex) {
@@ -83,9 +77,7 @@ public class SqlResultSet implements cn.featherfly.juorm.mapping.ResultSet {
     }
 
     /**
-     * @param columnIndex
-     * @return
-     * @see java.sql.ResultSet#getLong(int)
+     * {@inheritDoc}
      */
     @Override
     public long getLong(int columnIndex) {
@@ -97,9 +89,7 @@ public class SqlResultSet implements cn.featherfly.juorm.mapping.ResultSet {
     }
 
     /**
-     * @param columnIndex
-     * @return
-     * @see java.sql.ResultSet#getFloat(int)
+     * {@inheritDoc}
      */
     @Override
     public float getFloat(int columnIndex) {
@@ -111,9 +101,7 @@ public class SqlResultSet implements cn.featherfly.juorm.mapping.ResultSet {
     }
 
     /**
-     * @param columnIndex
-     * @return
-     * @see java.sql.ResultSet#getDouble(int)
+     * {@inheritDoc}
      */
     @Override
     public double getDouble(int columnIndex) {
@@ -125,9 +113,7 @@ public class SqlResultSet implements cn.featherfly.juorm.mapping.ResultSet {
     }
 
     /**
-     * @param columnIndex
-     * @return
-     * @see java.sql.ResultSet#getBytes(int)
+     * {@inheritDoc}
      */
     @Override
     public byte[] getBytes(int columnIndex) {
@@ -139,9 +125,7 @@ public class SqlResultSet implements cn.featherfly.juorm.mapping.ResultSet {
     }
 
     /**
-     * @param columnIndex
-     * @return
-     * @see java.sql.ResultSet#getDate(int)
+     * {@inheritDoc}
      */
     @Override
     public Date getDate(int columnIndex) {
@@ -153,9 +137,7 @@ public class SqlResultSet implements cn.featherfly.juorm.mapping.ResultSet {
     }
 
     /**
-     * @param columnLabel
-     * @return
-     * @see java.sql.ResultSet#getString(java.lang.String)
+     * {@inheritDoc}
      */
     @Override
     public String getString(String columnLabel) {
@@ -167,9 +149,7 @@ public class SqlResultSet implements cn.featherfly.juorm.mapping.ResultSet {
     }
 
     /**
-     * @param columnLabel
-     * @return
-     * @see java.sql.ResultSet#getByte(java.lang.String)
+     * {@inheritDoc}
      */
     @Override
     public byte getByte(String columnLabel) {
@@ -181,9 +161,7 @@ public class SqlResultSet implements cn.featherfly.juorm.mapping.ResultSet {
     }
 
     /**
-     * @param columnLabel
-     * @return
-     * @see java.sql.ResultSet#getInt(java.lang.String)
+     * {@inheritDoc}
      */
     @Override
     public int getInt(String columnLabel) {
@@ -195,9 +173,7 @@ public class SqlResultSet implements cn.featherfly.juorm.mapping.ResultSet {
     }
 
     /**
-     * @param columnLabel
-     * @return
-     * @see java.sql.ResultSet#getLong(java.lang.String)
+     * {@inheritDoc}
      */
     @Override
     public long getLong(String columnLabel) {
@@ -209,9 +185,7 @@ public class SqlResultSet implements cn.featherfly.juorm.mapping.ResultSet {
     }
 
     /**
-     * @param columnLabel
-     * @return
-     * @see java.sql.ResultSet#getFloat(java.lang.String)
+     * {@inheritDoc}
      */
     @Override
     public float getFloat(String columnLabel) {
@@ -223,9 +197,7 @@ public class SqlResultSet implements cn.featherfly.juorm.mapping.ResultSet {
     }
 
     /**
-     * @param columnLabel
-     * @return
-     * @see java.sql.ResultSet#getDouble(java.lang.String)
+     * {@inheritDoc}
      */
     @Override
     public double getDouble(String columnLabel) {
@@ -237,9 +209,7 @@ public class SqlResultSet implements cn.featherfly.juorm.mapping.ResultSet {
     }
 
     /**
-     * @param columnLabel
-     * @return
-     * @see java.sql.ResultSet#getBytes(java.lang.String)
+     * {@inheritDoc}
      */
     @Override
     public byte[] getBytes(String columnLabel) {
@@ -251,9 +221,7 @@ public class SqlResultSet implements cn.featherfly.juorm.mapping.ResultSet {
     }
 
     /**
-     * @param columnLabel
-     * @return
-     * @see java.sql.ResultSet#getDate(java.lang.String)
+     * {@inheritDoc}
      */
     @Override
     public Date getDate(String columnLabel) {
@@ -265,9 +233,7 @@ public class SqlResultSet implements cn.featherfly.juorm.mapping.ResultSet {
     }
 
     /**
-     * @param columnIndex
-     * @return
-     * @see java.sql.ResultSet#getObject(int)
+     * {@inheritDoc}
      */
     @Override
     public Object getObject(int columnIndex) {
@@ -279,9 +245,7 @@ public class SqlResultSet implements cn.featherfly.juorm.mapping.ResultSet {
     }
 
     /**
-     * @param columnLabel
-     * @return
-     * @see java.sql.ResultSet#getObject(java.lang.String)
+     * {@inheritDoc}
      */
     @Override
     public Object getObject(String columnLabel) {
@@ -293,9 +257,7 @@ public class SqlResultSet implements cn.featherfly.juorm.mapping.ResultSet {
     }
 
     /**
-     * @param columnIndex
-     * @return
-     * @see java.sql.ResultSet#getBigDecimal(int)
+     * {@inheritDoc}
      */
     @Override
     public BigDecimal getBigDecimal(int columnIndex) {
@@ -307,9 +269,7 @@ public class SqlResultSet implements cn.featherfly.juorm.mapping.ResultSet {
     }
 
     /**
-     * @param columnLabel
-     * @return
-     * @see java.sql.ResultSet#getBigDecimal(java.lang.String)
+     * {@inheritDoc}
      */
     @Override
     public BigDecimal getBigDecimal(String columnLabel) {
@@ -321,11 +281,7 @@ public class SqlResultSet implements cn.featherfly.juorm.mapping.ResultSet {
     }
 
     /**
-     * @param <T>
-     * @param columnIndex
-     * @param type
-     * @return
-     * @see java.sql.ResultSet#getObject(int, java.lang.Class)
+     * {@inheritDoc}
      */
     @Override
     public <T> T getObject(int columnIndex, Class<T> type) {
@@ -337,11 +293,7 @@ public class SqlResultSet implements cn.featherfly.juorm.mapping.ResultSet {
     }
 
     /**
-     * @param <T>
-     * @param columnLabel
-     * @param type
-     * @return
-     * @see java.sql.ResultSet#getObject(java.lang.String, java.lang.Class)
+     * {@inheritDoc}
      */
     @Override
     public <T> T getObject(String columnLabel, Class<T> type) {

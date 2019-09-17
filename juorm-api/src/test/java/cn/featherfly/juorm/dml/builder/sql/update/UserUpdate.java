@@ -1,6 +1,7 @@
 
 package cn.featherfly.juorm.dml.builder.sql.update;
 
+import cn.featherfly.common.lang.function.SerializableFunction;
 import cn.featherfly.juorm.dml.builder.sql.query.UserQueryConditionGroupExpression;
 import cn.featherfly.juorm.expression.execute.SetExecutableUpdateExpression;
 
@@ -92,6 +93,42 @@ public class UserUpdate implements UserPropertiesUpdate,
     @Override
     public UserUpdateNumberValue age() {
 
+        return null;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public <T, R> UserUpdateValue property(SerializableFunction<T, R> name) {
+        // YUFEI_TODO Auto-generated method stub
+        return null;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public <T, R> UserUpdateNumberValue propertyNumber(SerializableFunction<T, R> name) {
+        // YUFEI_TODO Auto-generated method stub
+        return null;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public <T, R> UserUpdate set(SerializableFunction<T, R> name, Object value) {
+        // YUFEI_TODO Auto-generated method stub
+        return null;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public <T, R, N extends Number> UserUpdate increase(SerializableFunction<T, R> name, N value) {
+        // YUFEI_TODO Auto-generated method stub
         return null;
     }
 

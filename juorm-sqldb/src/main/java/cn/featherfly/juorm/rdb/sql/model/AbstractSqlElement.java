@@ -15,7 +15,7 @@ public abstract class AbstractSqlElement implements SqlElement {
     protected Dialect dialect;
 
     /**
-     * @param dialect
+     * @param dialect dialect
      */
     public AbstractSqlElement(Dialect dialect) {
         super();

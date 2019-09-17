@@ -17,7 +17,7 @@ import freemarker.template.TemplateScalarModel;
 
 /**
  * <p>
- * WhereTemplateDirectiveModel
+ * WrapTemplateDirectiveModel
  * </p>
  *
  * @author zhongj
@@ -27,7 +27,7 @@ public class WrapTemplateDirectiveModel implements TemplateDirectiveModel, WrapD
     private Dialect dialect;
 
     /**
-     * @param dialect
+     * @param dialect dialect
      */
     public WrapTemplateDirectiveModel(Dialect dialect) {
         super();

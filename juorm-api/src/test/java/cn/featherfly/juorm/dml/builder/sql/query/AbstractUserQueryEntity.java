@@ -6,6 +6,7 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 
+import cn.featherfly.common.lang.function.SerializableFunction;
 import cn.featherfly.common.structure.page.Page;
 import cn.featherfly.juorm.expression.query.QueryEntityPropertiesExpression;
 import cn.featherfly.juorm.expression.query.QueryExecutor;
@@ -18,8 +19,7 @@ import cn.featherfly.juorm.mapping.RowMapper;
  *
  * @author zhongj
  */
-public class AbstractUserQueryEntity<Q extends AbstractUserQueryEntity<Q>>
-        implements
+public class AbstractUserQueryEntity<Q extends AbstractUserQueryEntity<Q>> implements
         QueryEntityPropertiesExpression<Q, UserQueryConditionGroupExpression, UserQueryConditionGroupExpression> {
 
     /**
@@ -153,6 +153,24 @@ public class AbstractUserQueryEntity<Q extends AbstractUserQueryEntity<Q>>
      */
     @Override
     public List<Map<String, Object>> list() {
+        // YUFEI_TODO Auto-generated method stub
+        return null;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public <T, R> Q property(SerializableFunction<T, R>... propertyNames) {
+        // YUFEI_TODO Auto-generated method stub
+        return null;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public <T, R> Q property(SerializableFunction<T, R> propertyName) {
         // YUFEI_TODO Auto-generated method stub
         return null;
     }

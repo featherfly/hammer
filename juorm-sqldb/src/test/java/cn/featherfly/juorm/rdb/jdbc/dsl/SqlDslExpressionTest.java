@@ -47,7 +47,7 @@ public class SqlDslExpressionTest extends JdbcTestBase {
     JuormJdbcImpl juorm;
 
     @BeforeClass
-    public void init() {
+    public void init2() {
         params.add(name);
         params.add(pwd);
         params.add(sex);

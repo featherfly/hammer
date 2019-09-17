@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import cn.featherfly.common.bean.BeanUtils;
+import cn.featherfly.common.db.metadata.DatabaseMetadata;
 import cn.featherfly.common.lang.LangUtils;
 import cn.featherfly.juorm.mapping.RowMapper;
 import cn.featherfly.juorm.rdb.jdbc.Jdbc;
@@ -44,6 +45,15 @@ public class GetOperate<T> extends AbstractQueryOperate<T> {
      */
     public GetOperate(Jdbc jdbc, ClassMapping<T> classMapping, String dataBase) {
         super(jdbc, classMapping, dataBase);
+    }
+
+    /**
+     * @param jdbc
+     * @param classMapping
+     * @param databaseMetadata
+     */
+    public GetOperate(Jdbc jdbc, ClassMapping<T> classMapping, DatabaseMetadata databaseMetadata) {
+        super(jdbc, classMapping, databaseMetadata);
     }
 
     private List<PropertyMapping> pkPms;

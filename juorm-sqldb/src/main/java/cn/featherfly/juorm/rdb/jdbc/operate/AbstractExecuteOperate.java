@@ -1,6 +1,7 @@
 
 package cn.featherfly.juorm.rdb.jdbc.operate;
 
+import cn.featherfly.common.db.metadata.DatabaseMetadata;
 import cn.featherfly.juorm.rdb.jdbc.Jdbc;
 import cn.featherfly.juorm.rdb.jdbc.mapping.ClassMapping;
 
@@ -35,6 +36,15 @@ public abstract class AbstractExecuteOperate<T> extends AbstractOperate<T> {
      */
     public AbstractExecuteOperate(Jdbc jdbc, ClassMapping<T> classMapping, String dataBase) {
         super(jdbc, classMapping, dataBase);
+    }
+
+    /**
+     * @param jdbc
+     * @param classMapping
+     * @param databaseMetadata
+     */
+    public AbstractExecuteOperate(Jdbc jdbc, ClassMapping<T> classMapping, DatabaseMetadata databaseMetadata) {
+        super(jdbc, classMapping, databaseMetadata);
     }
 
     /**

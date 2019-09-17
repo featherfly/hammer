@@ -12,6 +12,7 @@ import cn.featherfly.juorm.rdb.sql.dml.builder.basic.SqlDeleteFromBasicBuilder;
  * <p>
  * SqlDelete
  * </p>
+ * .
  *
  * @author zhongj
  */
@@ -24,8 +25,10 @@ public class SqlDelete implements Delete {
     private Jdbc jdbc;
 
     /**
-     * @param tableName
-     * @param jdbc
+     * Instantiates a new sql delete.
+     *
+     * @param tableName the table name
+     * @param jdbc      the jdbc
      */
     public SqlDelete(String tableName, Jdbc jdbc) {
         this.tableName = tableName;
@@ -33,8 +36,10 @@ public class SqlDelete implements Delete {
     }
 
     /**
-     * @param classMapping
-     * @param jdbc
+     * Instantiates a new sql delete.
+     *
+     * @param classMapping the class mapping
+     * @param jdbc         the jdbc
      */
     public SqlDelete(ClassMapping<?> classMapping, Jdbc jdbc) {
         this.jdbc = jdbc;
@@ -43,7 +48,10 @@ public class SqlDelete implements Delete {
     }
 
     /**
-     * @param repository
+     * Instantiates a new sql delete.
+     *
+     * @param repository repository
+     * @param jdbc       jdbc
      */
     public SqlDelete(Repository repository, Jdbc jdbc) {
         this(repository.name(), jdbc);
