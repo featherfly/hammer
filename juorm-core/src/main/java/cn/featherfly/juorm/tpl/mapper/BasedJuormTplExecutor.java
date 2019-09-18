@@ -12,8 +12,10 @@ import cn.featherfly.juorm.Juorm;
 import cn.featherfly.juorm.dsl.execute.Delete;
 import cn.featherfly.juorm.dsl.execute.Update;
 import cn.featherfly.juorm.dsl.query.QueryEntity;
+import cn.featherfly.juorm.dsl.query.TypeQueryEntity;
 import cn.featherfly.juorm.tpl.TplExecuteId;
 
+// TODO: Auto-generated Javadoc
 /**
  * <p>
  * JuormBaseMapper
@@ -21,24 +23,30 @@ import cn.featherfly.juorm.tpl.TplExecuteId;
  * <p>
  * 2019-08-14
  * </p>
+ * .
  *
  * @author zhongj
  */
 public class BasedJuormTplExecutor implements Juorm {
 
+    /** The juorm. */
     protected Juorm juorm;
 
     /**
-     * @param juorm
+     * Instantiates a new based juorm tpl executor.
+     *
+     * @param juorm the juorm
      */
     public BasedJuormTplExecutor(Juorm juorm) {
         this.juorm = juorm;
     }
 
     /**
-     * @param <E>
-     * @param entity
-     * @return
+     * Save.
+     *
+     * @param <E>    the element type
+     * @param entity the entity
+     * @return the int
      * @see cn.featherfly.juorm.Juorm#save(java.lang.Object)
      */
     @Override
@@ -47,9 +55,11 @@ public class BasedJuormTplExecutor implements Juorm {
     }
 
     /**
-     * @param <E>
-     * @param entities
-     * @return
+     * Save.
+     *
+     * @param <E>      the element type
+     * @param entities the entities
+     * @return the int
      * @see cn.featherfly.juorm.Juorm#save(java.util.List)
      */
     @Override
@@ -58,9 +68,11 @@ public class BasedJuormTplExecutor implements Juorm {
     }
 
     /**
-     * @param <E>
-     * @param entity
-     * @return
+     * Update.
+     *
+     * @param <E>    the element type
+     * @param entity the entity
+     * @return the int
      * @see cn.featherfly.juorm.Juorm#update(java.lang.Object)
      */
     @Override
@@ -69,9 +81,11 @@ public class BasedJuormTplExecutor implements Juorm {
     }
 
     /**
-     * @param <E>
-     * @param entities
-     * @return
+     * Update.
+     *
+     * @param <E>      the element type
+     * @param entities the entities
+     * @return the int
      * @see cn.featherfly.juorm.Juorm#update(java.util.List)
      */
     @Override
@@ -80,10 +94,12 @@ public class BasedJuormTplExecutor implements Juorm {
     }
 
     /**
-     * @param <E>
-     * @param entity
-     * @param ignorePolicy
-     * @return
+     * Update.
+     *
+     * @param <E>          the element type
+     * @param entity       the entity
+     * @param ignorePolicy the ignore policy
+     * @return the int
      * @see cn.featherfly.juorm.Juorm#update(java.lang.Object,
      *      cn.featherfly.juorm.Juorm.IgnorePolicy)
      */
@@ -93,10 +109,12 @@ public class BasedJuormTplExecutor implements Juorm {
     }
 
     /**
-     * @param <E>
-     * @param entities
-     * @param ignorePolicy
-     * @return
+     * Update.
+     *
+     * @param <E>          the element type
+     * @param entities     the entities
+     * @param ignorePolicy the ignore policy
+     * @return the int
      * @see cn.featherfly.juorm.Juorm#update(java.util.List,
      *      cn.featherfly.juorm.Juorm.IgnorePolicy)
      */
@@ -106,9 +124,11 @@ public class BasedJuormTplExecutor implements Juorm {
     }
 
     /**
-     * @param <E>
-     * @param entity
-     * @return
+     * Merge.
+     *
+     * @param <E>    the element type
+     * @param entity the entity
+     * @return the int
      * @see cn.featherfly.juorm.Juorm#merge(java.lang.Object)
      */
     @Override
@@ -117,9 +137,11 @@ public class BasedJuormTplExecutor implements Juorm {
     }
 
     /**
-     * @param <E>
-     * @param entities
-     * @return
+     * Merge.
+     *
+     * @param <E>      the element type
+     * @param entities the entities
+     * @return the int
      * @see cn.featherfly.juorm.Juorm#merge(java.util.List)
      */
     @Override
@@ -128,9 +150,11 @@ public class BasedJuormTplExecutor implements Juorm {
     }
 
     /**
-     * @param <E>
-     * @param entity
-     * @return
+     * Delete.
+     *
+     * @param <E>    the element type
+     * @param entity the entity
+     * @return the int
      * @see cn.featherfly.juorm.Juorm#delete(java.lang.Object)
      */
     @Override
@@ -139,9 +163,11 @@ public class BasedJuormTplExecutor implements Juorm {
     }
 
     /**
-     * @param <E>
-     * @param entities
-     * @return
+     * Delete.
+     *
+     * @param <E>      the element type
+     * @param entities the entities
+     * @return the int
      * @see cn.featherfly.juorm.Juorm#delete(java.util.List)
      */
     @Override
@@ -150,10 +176,12 @@ public class BasedJuormTplExecutor implements Juorm {
     }
 
     /**
-     * @param <E>
-     * @param id
-     * @param type
-     * @return
+     * Gets the.
+     *
+     * @param <E>  the element type
+     * @param id   the id
+     * @param type the type
+     * @return the e
      * @see cn.featherfly.juorm.Juorm#get(java.io.Serializable, java.lang.Class)
      */
     @Override
@@ -162,9 +190,11 @@ public class BasedJuormTplExecutor implements Juorm {
     }
 
     /**
-     * @param <E>
-     * @param entity
-     * @return
+     * Gets the.
+     *
+     * @param <E>    the element type
+     * @param entity the entity
+     * @return the e
      * @see cn.featherfly.juorm.Juorm#get(java.lang.Object)
      */
     @Override
@@ -173,20 +203,27 @@ public class BasedJuormTplExecutor implements Juorm {
     }
 
     /**
-     * @param <E>
-     * @param entityType
-     * @return
-     * @see cn.featherfly.juorm.Juorm#query(java.lang.Class)
+     * {@inheritDoc}
      */
     @Override
-    public <E> QueryEntity query(Class<E> entityType) {
+    public QueryEntity query(String repository) {
+        return juorm.query(repository);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public <E> TypeQueryEntity query(Class<E> entityType) {
         return juorm.query(entityType);
     }
 
     /**
-     * @param <E>
-     * @param entityType
-     * @return
+     * Update.
+     *
+     * @param <E>        the element type
+     * @param entityType the entity type
+     * @return the update
      * @see cn.featherfly.juorm.Juorm#update(java.lang.Class)
      */
     @Override
@@ -195,9 +232,11 @@ public class BasedJuormTplExecutor implements Juorm {
     }
 
     /**
-     * @param <E>
-     * @param entityType
-     * @return
+     * Delete.
+     *
+     * @param <E>        the element type
+     * @param entityType the entity type
+     * @return the delete
      * @see cn.featherfly.juorm.Juorm#delete(java.lang.Class)
      */
     @Override
@@ -206,11 +245,13 @@ public class BasedJuormTplExecutor implements Juorm {
     }
 
     /**
-     * @param <E>
-     * @param tplExecuteId
-     * @param entityType
-     * @param params
-     * @return
+     * Single.
+     *
+     * @param <E>          the element type
+     * @param tplExecuteId the tpl execute id
+     * @param entityType   the entity type
+     * @param params       the params
+     * @return the e
      * @see cn.featherfly.juorm.Juorm#single(java.lang.String, java.lang.Class,
      *      java.util.Map)
      */
@@ -220,11 +261,13 @@ public class BasedJuormTplExecutor implements Juorm {
     }
 
     /**
-     * @param <E>
-     * @param tplExecuteId
-     * @param entityType
-     * @param params
-     * @return
+     * List.
+     *
+     * @param <E>          the element type
+     * @param tplExecuteId the tpl execute id
+     * @param entityType   the entity type
+     * @param params       the params
+     * @return the list
      * @see cn.featherfly.juorm.Juorm#list(java.lang.String, java.lang.Class,
      *      java.util.Map)
      */
@@ -234,13 +277,15 @@ public class BasedJuormTplExecutor implements Juorm {
     }
 
     /**
-     * @param <E>
-     * @param tplExecuteId
-     * @param entityType
-     * @param params
-     * @param offset
-     * @param limit
-     * @return
+     * List.
+     *
+     * @param <E>          the element type
+     * @param tplExecuteId the tpl execute id
+     * @param entityType   the entity type
+     * @param params       the params
+     * @param offset       the offset
+     * @param limit        the limit
+     * @return the list
      * @see cn.featherfly.juorm.Juorm#list(java.lang.String, java.lang.Class,
      *      java.util.Map, int, int)
      */
@@ -251,12 +296,14 @@ public class BasedJuormTplExecutor implements Juorm {
     }
 
     /**
-     * @param <E>
-     * @param tplExecuteId
-     * @param entityType
-     * @param params
-     * @param page
-     * @return
+     * List.
+     *
+     * @param <E>          the element type
+     * @param tplExecuteId the tpl execute id
+     * @param entityType   the entity type
+     * @param params       the params
+     * @param page         the page
+     * @return the list
      * @see cn.featherfly.juorm.Juorm#list(java.lang.String, java.lang.Class,
      *      java.util.Map, cn.featherfly.common.structure.page.Page)
      */
@@ -266,13 +313,15 @@ public class BasedJuormTplExecutor implements Juorm {
     }
 
     /**
-     * @param <E>
-     * @param tplExecuteId
-     * @param entityType
-     * @param params
-     * @param offset
-     * @param limit
-     * @return
+     * Pagination.
+     *
+     * @param <E>          the element type
+     * @param tplExecuteId the tpl execute id
+     * @param entityType   the entity type
+     * @param params       the params
+     * @param offset       the offset
+     * @param limit        the limit
+     * @return the pagination results
      * @see cn.featherfly.juorm.Juorm#pagination(java.lang.String,
      *      java.lang.Class, java.util.Map, int, int)
      */
@@ -283,12 +332,14 @@ public class BasedJuormTplExecutor implements Juorm {
     }
 
     /**
-     * @param <E>
-     * @param tplExecuteId
-     * @param entityType
-     * @param params
-     * @param page
-     * @return
+     * Pagination.
+     *
+     * @param <E>          the element type
+     * @param tplExecuteId the tpl execute id
+     * @param entityType   the entity type
+     * @param params       the params
+     * @param page         the page
+     * @return the pagination results
      * @see cn.featherfly.juorm.Juorm#pagination(java.lang.String,
      *      java.lang.Class, java.util.Map,
      *      cn.featherfly.common.structure.page.Page)
@@ -300,11 +351,13 @@ public class BasedJuormTplExecutor implements Juorm {
     }
 
     /**
-     * @param <E>
-     * @param tplExecuteId
-     * @param entityType
-     * @param params
-     * @return
+     * Single.
+     *
+     * @param <E>          the element type
+     * @param tplExecuteId the tpl execute id
+     * @param entityType   the entity type
+     * @param params       the params
+     * @return the e
      * @see cn.featherfly.juorm.Juorm#single(cn.featherfly.juorm.tpl.TplExecuteId,
      *      java.lang.Class, java.util.Map)
      */
@@ -314,11 +367,13 @@ public class BasedJuormTplExecutor implements Juorm {
     }
 
     /**
-     * @param <E>
-     * @param tplExecuteId
-     * @param entityType
-     * @param params
-     * @return
+     * List.
+     *
+     * @param <E>          the element type
+     * @param tplExecuteId the tpl execute id
+     * @param entityType   the entity type
+     * @param params       the params
+     * @return the list
      * @see cn.featherfly.juorm.Juorm#list(cn.featherfly.juorm.tpl.TplExecuteId,
      *      java.lang.Class, java.util.Map)
      */
@@ -328,13 +383,15 @@ public class BasedJuormTplExecutor implements Juorm {
     }
 
     /**
-     * @param <E>
-     * @param tplExecuteId
-     * @param entityType
-     * @param params
-     * @param offset
-     * @param limit
-     * @return
+     * List.
+     *
+     * @param <E>          the element type
+     * @param tplExecuteId the tpl execute id
+     * @param entityType   the entity type
+     * @param params       the params
+     * @param offset       the offset
+     * @param limit        the limit
+     * @return the list
      * @see cn.featherfly.juorm.Juorm#list(cn.featherfly.juorm.tpl.TplExecuteId,
      *      java.lang.Class, java.util.Map, int, int)
      */
@@ -345,12 +402,14 @@ public class BasedJuormTplExecutor implements Juorm {
     }
 
     /**
-     * @param <E>
-     * @param tplExecuteId
-     * @param entityType
-     * @param params
-     * @param page
-     * @return
+     * List.
+     *
+     * @param <E>          the element type
+     * @param tplExecuteId the tpl execute id
+     * @param entityType   the entity type
+     * @param params       the params
+     * @param page         the page
+     * @return the list
      * @see cn.featherfly.juorm.Juorm#list(cn.featherfly.juorm.tpl.TplExecuteId,
      *      java.lang.Class, java.util.Map,
      *      cn.featherfly.common.structure.page.Page)
@@ -361,13 +420,15 @@ public class BasedJuormTplExecutor implements Juorm {
     }
 
     /**
-     * @param <E>
-     * @param tplExecuteId
-     * @param entityType
-     * @param params
-     * @param offset
-     * @param limit
-     * @return
+     * Pagination.
+     *
+     * @param <E>          the element type
+     * @param tplExecuteId the tpl execute id
+     * @param entityType   the entity type
+     * @param params       the params
+     * @param offset       the offset
+     * @param limit        the limit
+     * @return the pagination results
      * @see cn.featherfly.juorm.Juorm#pagination(cn.featherfly.juorm.tpl.TplExecuteId,
      *      java.lang.Class, java.util.Map, int, int)
      */
@@ -378,12 +439,14 @@ public class BasedJuormTplExecutor implements Juorm {
     }
 
     /**
-     * @param <E>
-     * @param tplExecuteId
-     * @param entityType
-     * @param params
-     * @param page
-     * @return
+     * Pagination.
+     *
+     * @param <E>          the element type
+     * @param tplExecuteId the tpl execute id
+     * @param entityType   the entity type
+     * @param params       the params
+     * @param page         the page
+     * @return the pagination results
      * @see cn.featherfly.juorm.Juorm#pagination(cn.featherfly.juorm.tpl.TplExecuteId,
      *      java.lang.Class, java.util.Map,
      *      cn.featherfly.common.structure.page.Page)
@@ -395,9 +458,11 @@ public class BasedJuormTplExecutor implements Juorm {
     }
 
     /**
-     * @param tplExecuteId
-     * @param params
-     * @return
+     * Single.
+     *
+     * @param tplExecuteId the tpl execute id
+     * @param params       the params
+     * @return the map
      * @see cn.featherfly.juorm.Juorm#single(java.lang.String, java.util.Map)
      */
     @Override
@@ -406,9 +471,11 @@ public class BasedJuormTplExecutor implements Juorm {
     }
 
     /**
-     * @param tplExecuteId
-     * @param params
-     * @return
+     * Single.
+     *
+     * @param tplExecuteId the tpl execute id
+     * @param params       the params
+     * @return the map
      * @see cn.featherfly.juorm.Juorm#single(cn.featherfly.juorm.tpl.TplExecuteId,
      *      java.util.Map)
      */
@@ -418,9 +485,11 @@ public class BasedJuormTplExecutor implements Juorm {
     }
 
     /**
-     * @param tplExecuteId
-     * @param params
-     * @return
+     * List.
+     *
+     * @param tplExecuteId the tpl execute id
+     * @param params       the params
+     * @return the list
      * @see cn.featherfly.juorm.Juorm#list(java.lang.String, java.util.Map)
      */
     @Override
@@ -429,9 +498,11 @@ public class BasedJuormTplExecutor implements Juorm {
     }
 
     /**
-     * @param tplExecuteId
-     * @param params
-     * @return
+     * List.
+     *
+     * @param tplExecuteId the tpl execute id
+     * @param params       the params
+     * @return the list
      * @see cn.featherfly.juorm.Juorm#list(cn.featherfly.juorm.tpl.TplExecuteId,
      *      java.util.Map)
      */
@@ -441,11 +512,13 @@ public class BasedJuormTplExecutor implements Juorm {
     }
 
     /**
-     * @param tplExecuteId
-     * @param params
-     * @param offset
-     * @param limit
-     * @return
+     * List.
+     *
+     * @param tplExecuteId the tpl execute id
+     * @param params       the params
+     * @param offset       the offset
+     * @param limit        the limit
+     * @return the list
      * @see cn.featherfly.juorm.Juorm#list(java.lang.String, java.util.Map, int,
      *      int)
      */
@@ -455,11 +528,13 @@ public class BasedJuormTplExecutor implements Juorm {
     }
 
     /**
-     * @param tplExecuteId
-     * @param params
-     * @param offset
-     * @param limit
-     * @return
+     * List.
+     *
+     * @param tplExecuteId the tpl execute id
+     * @param params       the params
+     * @param offset       the offset
+     * @param limit        the limit
+     * @return the list
      * @see cn.featherfly.juorm.Juorm#list(cn.featherfly.juorm.tpl.TplExecuteId,
      *      java.util.Map, int, int)
      */
@@ -470,10 +545,12 @@ public class BasedJuormTplExecutor implements Juorm {
     }
 
     /**
-     * @param tplExecuteId
-     * @param params
-     * @param page
-     * @return
+     * List.
+     *
+     * @param tplExecuteId the tpl execute id
+     * @param params       the params
+     * @param page         the page
+     * @return the list
      * @see cn.featherfly.juorm.Juorm#list(java.lang.String, java.util.Map,
      *      cn.featherfly.common.structure.page.Page)
      */
@@ -483,10 +560,12 @@ public class BasedJuormTplExecutor implements Juorm {
     }
 
     /**
-     * @param tplExecuteId
-     * @param params
-     * @param page
-     * @return
+     * List.
+     *
+     * @param tplExecuteId the tpl execute id
+     * @param params       the params
+     * @param page         the page
+     * @return the list
      * @see cn.featherfly.juorm.Juorm#list(cn.featherfly.juorm.tpl.TplExecuteId,
      *      java.util.Map, cn.featherfly.common.structure.page.Page)
      */
@@ -496,11 +575,13 @@ public class BasedJuormTplExecutor implements Juorm {
     }
 
     /**
-     * @param tplExecuteId
-     * @param params
-     * @param offset
-     * @param limit
-     * @return
+     * Pagination.
+     *
+     * @param tplExecuteId the tpl execute id
+     * @param params       the params
+     * @param offset       the offset
+     * @param limit        the limit
+     * @return the pagination results
      * @see cn.featherfly.juorm.Juorm#pagination(java.lang.String,
      *      java.util.Map, int, int)
      */
@@ -511,11 +592,13 @@ public class BasedJuormTplExecutor implements Juorm {
     }
 
     /**
-     * @param tplExecuteId
-     * @param params
-     * @param offset
-     * @param limit
-     * @return
+     * Pagination.
+     *
+     * @param tplExecuteId the tpl execute id
+     * @param params       the params
+     * @param offset       the offset
+     * @param limit        the limit
+     * @return the pagination results
      * @see cn.featherfly.juorm.Juorm#pagination(cn.featherfly.juorm.tpl.TplExecuteId,
      *      java.util.Map, int, int)
      */
@@ -526,10 +609,12 @@ public class BasedJuormTplExecutor implements Juorm {
     }
 
     /**
-     * @param tplExecuteId
-     * @param params
-     * @param page
-     * @return
+     * Pagination.
+     *
+     * @param tplExecuteId the tpl execute id
+     * @param params       the params
+     * @param page         the page
+     * @return the pagination results
      * @see cn.featherfly.juorm.Juorm#pagination(java.lang.String,
      *      java.util.Map, cn.featherfly.common.structure.page.Page)
      */
@@ -540,10 +625,12 @@ public class BasedJuormTplExecutor implements Juorm {
     }
 
     /**
-     * @param tplExecuteId
-     * @param params
-     * @param page
-     * @return
+     * Pagination.
+     *
+     * @param tplExecuteId the tpl execute id
+     * @param params       the params
+     * @param page         the page
+     * @return the pagination results
      * @see cn.featherfly.juorm.Juorm#pagination(cn.featherfly.juorm.tpl.TplExecuteId,
      *      java.util.Map, cn.featherfly.common.structure.page.Page)
      */
@@ -554,11 +641,13 @@ public class BasedJuormTplExecutor implements Juorm {
     }
 
     /**
-     * @param <E>
-     * @param tplExecuteId
-     * @param valueType
-     * @param params
-     * @return
+     * Value.
+     *
+     * @param <E>          the element type
+     * @param tplExecuteId the tpl execute id
+     * @param valueType    the value type
+     * @param params       the params
+     * @return the e
      * @see cn.featherfly.juorm.Juorm#value(java.lang.String, java.lang.Class,
      *      java.util.Map)
      */
@@ -568,11 +657,13 @@ public class BasedJuormTplExecutor implements Juorm {
     }
 
     /**
-     * @param <N>
-     * @param tplExecuteId
-     * @param numberType
-     * @param params
-     * @return
+     * Number.
+     *
+     * @param <N>          the number type
+     * @param tplExecuteId the tpl execute id
+     * @param numberType   the number type
+     * @param params       the params
+     * @return the n
      * @see cn.featherfly.juorm.Juorm#number(java.lang.String, java.lang.Class,
      *      java.util.Map)
      */
@@ -582,9 +673,11 @@ public class BasedJuormTplExecutor implements Juorm {
     }
 
     /**
-     * @param tplExecuteId
-     * @param params
-     * @return
+     * Int value.
+     *
+     * @param tplExecuteId the tpl execute id
+     * @param params       the params
+     * @return the integer
      * @see cn.featherfly.juorm.Juorm#intValue(java.lang.String, java.util.Map)
      */
     @Override
@@ -593,9 +686,11 @@ public class BasedJuormTplExecutor implements Juorm {
     }
 
     /**
-     * @param tplExecuteId
-     * @param params
-     * @return
+     * Long value.
+     *
+     * @param tplExecuteId the tpl execute id
+     * @param params       the params
+     * @return the long
      * @see cn.featherfly.juorm.Juorm#longValue(java.lang.String, java.util.Map)
      */
     @Override
@@ -604,9 +699,11 @@ public class BasedJuormTplExecutor implements Juorm {
     }
 
     /**
-     * @param tplExecuteId
-     * @param params
-     * @return
+     * Big decimal value.
+     *
+     * @param tplExecuteId the tpl execute id
+     * @param params       the params
+     * @return the big decimal
      * @see cn.featherfly.juorm.Juorm#bigDecimalValue(java.lang.String,
      *      java.util.Map)
      */
@@ -616,9 +713,11 @@ public class BasedJuormTplExecutor implements Juorm {
     }
 
     /**
-     * @param tplExecuteId
-     * @param params
-     * @return
+     * Double value.
+     *
+     * @param tplExecuteId the tpl execute id
+     * @param params       the params
+     * @return the double
      * @see cn.featherfly.juorm.Juorm#doubleValue(java.lang.String,
      *      java.util.Map)
      */
@@ -628,9 +727,11 @@ public class BasedJuormTplExecutor implements Juorm {
     }
 
     /**
-     * @param tplExecuteId
-     * @param params
-     * @return
+     * String value.
+     *
+     * @param tplExecuteId the tpl execute id
+     * @param params       the params
+     * @return the string
      * @see cn.featherfly.juorm.Juorm#stringValue(java.lang.String,
      *      java.util.Map)
      */

@@ -56,26 +56,25 @@ public class SqlQueryTest extends JdbcTestBase {
     void testMapping() {
         SqlQuery query = new SqlQuery(jdbc, mappingFactory);
         query.find(User.class).property("username", "pwd", "age").where().eq("username", "yufei").and()
-                .eq("pwd", "123456").and().group().gt("age", 18).and().lt("age", 60).list(User.class);
+                .eq("pwd", "123456").and().group().gt("age", 18).and().lt("age", 60).list();
 
         query.find(User.class).property(User::getUsername, User::getPwd, User::getAge).where().eq("username", "yufei")
-                .and().eq("pwd", "123456").and().group().gt("age", 18).and().lt("age", 60).list(User.class);
+                .and().eq("pwd", "123456").and().group().gt("age", 18).and().lt("age", 60).list();
 
         query.find(User.class).property(User::getUsername, User::getPwd, User::getAge).where().eq("username", "yufei")
-                .and().eq(User::getPwd, "123456").and().group().gt(User::getAge, 18).and().lt(User::getAge, 60)
-                .list(User.class);
+                .and().eq(User::getPwd, "123456").and().group().gt(User::getAge, 18).and().lt(User::getAge, 60).list();
     }
 
     @Test
     void testNestedMapping() {
         SqlQuery query = new SqlQuery(jdbc, mappingFactory);
         Integer userId = 1;
-        UserInfo userInfo = query.find(UserInfo.class).where().eq("user.id", userId).single(UserInfo.class);
+        UserInfo userInfo = query.find(UserInfo.class).where().eq("user.id", userId).single();
         assertEquals(userInfo.getUser().getId(), userId);
         System.out.println(userInfo);
 
         String province = "四川";
-        userInfo = query.find(UserInfo.class).where().eq("division.province", province).single(UserInfo.class);
+        userInfo = query.find(UserInfo.class).where().eq("division.province", province).single();
         assertEquals(userInfo.getDivision().getProvince(), province);
         System.out.println(userInfo);
     }

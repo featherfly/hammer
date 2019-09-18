@@ -10,12 +10,12 @@ import java.util.List;
  *
  * @author zhongj
  */
-public interface TypeQueryListExecutor {
+public interface GenericTypeQueryListExecutor<E> {
 
     /**
      * query for list
      *
      * @return list
      */
-    <E> List<E> list();
+    List<E> list();
 }

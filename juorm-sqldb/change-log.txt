@@ -1,6 +1,6 @@
 2019
-0.2.0
-    TODO 1.find(Class type)后的条件在执行时使用TypeExecutor，只能返回find时传入的对象
+0.1.4
+    1.find(Class type)后只能执行single()和list(),映射对象为find时传入的对象
     
 2019-9-17
 0.1.3

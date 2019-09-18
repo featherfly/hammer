@@ -1,15 +1,13 @@
 
 package cn.featherfly.juorm.rdb.jdbc.dsl.type;
 
-import java.util.Date;
-
 import cn.featherfly.juorm.dsl.query.QueryConditionGroupExpression;
 import cn.featherfly.juorm.dsl.query.QueryConditionGroupLogicExpression;
-import cn.featherfly.juorm.expression.condition.property.DateExpression;
+import cn.featherfly.juorm.expression.condition.property.EnumExpression;
 
 /**
  * <p>
- * TypeDateExpression
+ * TypeEnumExpression
  * </p>
  * .
  *
@@ -17,22 +15,22 @@ import cn.featherfly.juorm.expression.condition.property.DateExpression;
  * @param <E> the element type
  * @param <Q> the generic type
  */
-public class TypeDateExpression<E, Q extends TypeQueryConditionGroupExpression<E, Q>> {
+public class StaticTypeEnumExpression<E, Q extends StaticTypeQueryConditionGroupExpression<E, Q>> {
 
     /** The expression. */
-    private DateExpression<QueryConditionGroupExpression, QueryConditionGroupLogicExpression> expression;
+    private EnumExpression<QueryConditionGroupExpression, QueryConditionGroupLogicExpression> expression;
 
     /** The type expression. */
     private Q typeExpression;
 
     /**
-     * Instantiates a new type date expression.
+     * Instantiates a new type enum expression.
      *
      * @param expression     the expression
      * @param typeExpression the type expression
      */
-    public TypeDateExpression(
-            DateExpression<QueryConditionGroupExpression, QueryConditionGroupLogicExpression> expression,
+    public StaticTypeEnumExpression(
+            EnumExpression<QueryConditionGroupExpression, QueryConditionGroupLogicExpression> expression,
             Q typeExpression) {
         super();
         this.expression = expression;
@@ -45,7 +43,7 @@ public class TypeDateExpression<E, Q extends TypeQueryConditionGroupExpression<E
      * @param value the value
      * @return the q
      */
-    public Q eq(Date value) {
+    public Q eq(Enum<?> value) {
         expression.eq(value);
         return typeExpression;
     }
@@ -56,7 +54,7 @@ public class TypeDateExpression<E, Q extends TypeQueryConditionGroupExpression<E
      * @param value the value
      * @return the q
      */
-    public Q ne(Date value) {
+    public Q ne(Enum<?> value) {
         expression.ne(value);
         return typeExpression;
     }
@@ -67,7 +65,7 @@ public class TypeDateExpression<E, Q extends TypeQueryConditionGroupExpression<E
      * @param value the value
      * @return the q
      */
-    public Q in(Date value) {
+    public Q in(Enum<?> value) {
         expression.in(value);
         return typeExpression;
     }
@@ -78,52 +76,8 @@ public class TypeDateExpression<E, Q extends TypeQueryConditionGroupExpression<E
      * @param value the value
      * @return the q
      */
-    public Q nin(Date value) {
+    public Q nin(Enum<?> value) {
         expression.nin(value);
-        return typeExpression;
-    }
-
-    /**
-     * Le.
-     *
-     * @param value the value
-     * @return the q
-     */
-    public Q le(Date value) {
-        expression.le(value);
-        return typeExpression;
-    }
-
-    /**
-     * Lt.
-     *
-     * @param value the value
-     * @return the q
-     */
-    public Q lt(Date value) {
-        expression.lt(value);
-        return typeExpression;
-    }
-
-    /**
-     * Ge.
-     *
-     * @param value the value
-     * @return the q
-     */
-    public Q ge(Date value) {
-        expression.ge(value);
-        return typeExpression;
-    }
-
-    /**
-     * Gt.
-     *
-     * @param value the value
-     * @return the q
-     */
-    public Q gt(Date value) {
-        expression.gt(value);
         return typeExpression;
     }
 

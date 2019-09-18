@@ -26,11 +26,9 @@ import cn.featherfly.juorm.tpl.annotation.TplParamType;
 public interface UserMapper3 extends GenericJuorm<User> {
     User selectByUsername(@TplParam("username") String username);
 
-    Map<String, Object> selectByUsername2(
-            @TplParam("username") String username);
+    Map<String, Object> selectByUsername2(@TplParam("username") String username);
 
-    User selectByUsernameAndPassword(@TplParam("username") String username,
-            @TplParam("password") String pwd);
+    User selectByUsernameAndPassword(@TplParam("username") String username, @TplParam("password") String pwd);
 
     Integer selectAvg();
 
@@ -39,8 +37,7 @@ public interface UserMapper3 extends GenericJuorm<User> {
     List<User> selectByAge2(@TplParam("age") Integer age);
 
     @TplExecution
-    List<User> selectByAge2(@TplParam("age") Integer age,
-            @TplParam(type = TplParamType.PAGE_OFFSET) int offset,
+    List<User> selectByAge2(@TplParam("age") Integer age, @TplParam(type = TplParamType.PAGE_OFFSET) int offset,
             @TplParam(type = TplParamType.PAGE_LIMIT) int limit);
 
     @TplExecution
@@ -48,12 +45,10 @@ public interface UserMapper3 extends GenericJuorm<User> {
 
     @TplExecution(name = "selectByAge2")
     PaginationResults<User> selectByAge2Page(@TplParam("age") Integer age,
-            @TplParam(type = TplParamType.PAGE_OFFSET) int offset,
-            @TplParam(type = TplParamType.PAGE_LIMIT) int limit);
+            @TplParam(type = TplParamType.PAGE_OFFSET) int offset, @TplParam(type = TplParamType.PAGE_LIMIT) int limit);
 
     @TplExecution(name = "selectByAge2")
-    PaginationResults<User> selectByAge2Page(@TplParam("age") Integer age,
-            Page page);
+    PaginationResults<User> selectByAge2Page(@TplParam("age") Integer age, Page page);
 
     List<User> selectById(@TplParam("id") Integer id);
 
@@ -65,16 +60,14 @@ public interface UserMapper3 extends GenericJuorm<User> {
     List<Map<String, Object>> select2();
 
     @TplExecution(namesapce = "user_info", name = "select2")
-    List<Map<String, Object>> select2(
-            @TplParam(type = TplParamType.PAGE_OFFSET) int offset,
+    List<Map<String, Object>> select2(@TplParam(type = TplParamType.PAGE_OFFSET) int offset,
             @TplParam(type = TplParamType.PAGE_LIMIT) int limit);
 
     @TplExecution(namesapce = "user_info", name = "select2")
     List<Map<String, Object>> select2(Page page);
 
     @TplExecution(namesapce = "user_info", name = "select2")
-    PaginationResults<Map<String, Object>> select2Page(
-            @TplParam(type = TplParamType.PAGE_OFFSET) int offset,
+    PaginationResults<Map<String, Object>> select2Page(@TplParam(type = TplParamType.PAGE_OFFSET) int offset,
             @TplParam(type = TplParamType.PAGE_LIMIT) int limit);
 
     @TplExecution(namesapce = "user_info", name = "select2")
@@ -84,17 +77,14 @@ public interface UserMapper3 extends GenericJuorm<User> {
     List<Map<String, Object>> selectById2(@TplParam("id") Integer id);
 
     default User getByUsernameAndPassword(String username, String pwd) {
-        return query().where().eq("username", username).and().eq("pwd", pwd)
-                .single(User.class);
+        return query().where().eq("username", username).and().eq("pwd", pwd).single();
     }
 
     default User getByUsernameAndPassword2(String username, String pwd) {
-        return query().where().eq("username", username).and()
-                .eq("password", pwd).single(User.class);
+        return query().where().eq("username", username).and().eq("password", pwd).single();
     }
 
     default User getByUsernameAndPassword3(String username, String pwd) {
-        return query().where().property("username").eq(username).and()
-                .property("pwd").eq(pwd).single(User.class);
+        return query().where().property("username").eq(username).and().property("pwd").eq(pwd).single();
     }
 }

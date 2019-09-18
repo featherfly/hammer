@@ -26,6 +26,6 @@ public interface UserInfoMapper extends Juorm {
     UserInfo selectById(@TplParam("id") Integer id);
 
     default User getByUsernameAndPassword(String username, String pwd) {
-        return query(User.class).where().eq("username", username).and().eq("pwd", pwd).single(User.class);
+        return query(User.class).where().eq("username", username).and().eq("pwd", pwd).single();
     }
 }

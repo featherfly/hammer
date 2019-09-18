@@ -3,7 +3,7 @@ package cn.featherfly.juorm.rdb.jdbc.dsl.query;
 
 import cn.featherfly.juorm.JuormException;
 import cn.featherfly.juorm.dsl.query.Query;
-import cn.featherfly.juorm.dsl.query.QueryEntity;
+import cn.featherfly.juorm.dsl.query.TypeQueryEntity;
 import cn.featherfly.juorm.expression.Repository;
 import cn.featherfly.juorm.rdb.jdbc.Jdbc;
 import cn.featherfly.juorm.rdb.jdbc.mapping.JdbcMappingFactory;
@@ -62,10 +62,10 @@ public class SqlQuery implements Query {
      * {@inheritDoc}
      */
     @Override
-    public QueryEntity find(Class<?> repositType) {
+    public TypeQueryEntity find(Class<?> repositType) {
         if (mappingFactory == null) {
             throw new JuormException("mappingFactory is null");
         }
-        return new SqlQueryEntityProperties(mappingFactory.getClassMapping(repositType), jdbc);
+        return new TypeSqlQueryEntityProperties(mappingFactory.getClassMapping(repositType), jdbc);
     }
 }

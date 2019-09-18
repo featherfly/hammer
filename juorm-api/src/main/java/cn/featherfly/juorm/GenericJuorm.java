@@ -7,7 +7,7 @@ import java.util.List;
 import cn.featherfly.juorm.Juorm.IgnorePolicy;
 import cn.featherfly.juorm.dsl.execute.Delete;
 import cn.featherfly.juorm.dsl.execute.Update;
-import cn.featherfly.juorm.dsl.query.QueryEntity;
+import cn.featherfly.juorm.dsl.query.TypeQueryEntity;
 
 /**
  * <p>
@@ -124,7 +124,7 @@ public interface GenericJuorm<E> {
      *
      * @return QueryEntity
      */
-    QueryEntity query();
+    TypeQueryEntity query();
 
     /**
      * create update for entityType

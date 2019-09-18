@@ -15,8 +15,8 @@ import cn.featherfly.juorm.rdb.jdbc.mapping.JdbcMappingFactory;
  * @param <C> the generic type
  * @param <Q> the generic type
  */
-public abstract class TypeQueryProperties<E, C extends TypeQueryConditionGroupExpression<E, C>,
-        Q extends TypeQueryProperties<E, C, Q>> extends TypeQueryEntity<E, C, Q> {
+public abstract class StaticTypeQueryProperties<E, C extends StaticTypeQueryConditionGroupExpression<E, C>,
+        Q extends StaticTypeQueryProperties<E, C, Q>> extends StaticTypeQueryEntity<E, C, Q> {
 
     /** The query entity properties. */
     private SqlQueryEntityProperties queryEntityProperties;
@@ -27,7 +27,7 @@ public abstract class TypeQueryProperties<E, C extends TypeQueryConditionGroupEx
      * @param queryEntityProperties the query entity properties
      * @param mappingFactory        the mapping factory
      */
-    public TypeQueryProperties(SqlQueryEntityProperties queryEntityProperties, JdbcMappingFactory mappingFactory) {
+    public StaticTypeQueryProperties(SqlQueryEntityProperties queryEntityProperties, JdbcMappingFactory mappingFactory) {
         super(queryEntityProperties, mappingFactory);
         this.queryEntityProperties = queryEntityProperties;
     }
