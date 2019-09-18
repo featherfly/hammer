@@ -14,7 +14,9 @@ import cn.featherfly.juorm.expression.Repository;
  */
 public interface QueryExpression<Q extends QueryEntityExpression<QP, C, L>,
         QP extends QueryEntityPropertiesExpression<QP, C, L>, C extends ConditionGroupExpression<C, L>,
-        L extends ConditionGroupLogicExpression<C, L>> {
+        L extends ConditionGroupLogicExpression<C, L>, TQ extends TypeQueryEntityExpression<TQP, TC, TL>,
+        TQP extends TypeQueryEntityPropertiesExpression<TQP, TC, TL>, TC extends ConditionGroupExpression<TC, TL>,
+        TL extends ConditionGroupLogicExpression<TC, TL>> {
     /**
      * find repository
      *
@@ -45,5 +47,5 @@ public interface QueryExpression<Q extends QueryEntityExpression<QP, C, L>,
      * @param repositType repositType
      * @return QueryEntity
      */
-    Q find(Class<?> repositType);
+    TQ find(Class<?> repositType);
 }

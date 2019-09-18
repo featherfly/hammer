@@ -1,4 +1,8 @@
-2019
+2019-9-18
+0.1.4
+    1.find(Class type)后的条件在执行时使用TypeExecutor，只能返回find时传入的对象
+    
+2019-9-17
 0.1.3
     1.加入SQLiteDialect
     2.加入SerializableFunction支持

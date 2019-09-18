@@ -8,11 +8,11 @@ package cn.featherfly.juorm.expression.query;
  *
  * @author zhongj
  */
-public interface TypeQuerySingleExecutor {
+public interface GenericTypeQuerySingleExecutor<E> {
     /**
      * query for single
      *
      * @return object
      */
-    <E> E single();
+    E single();
 }

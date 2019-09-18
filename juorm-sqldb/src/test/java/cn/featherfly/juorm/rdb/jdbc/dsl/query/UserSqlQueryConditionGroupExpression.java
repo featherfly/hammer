@@ -1,8 +1,8 @@
 
 package cn.featherfly.juorm.rdb.jdbc.dsl.query;
 
-import cn.featherfly.juorm.rdb.jdbc.dsl.type.TypeQueryConditionGroupExpression;
-import cn.featherfly.juorm.rdb.jdbc.dsl.type.TypeStringExpression;
+import cn.featherfly.juorm.rdb.jdbc.dsl.type.StaticTypeQueryConditionGroupExpression;
+import cn.featherfly.juorm.rdb.jdbc.dsl.type.StaticTypeStringExpression;
 import cn.featherfly.juorm.rdb.jdbc.vo.User;
 
 /**
@@ -13,7 +13,7 @@ import cn.featherfly.juorm.rdb.jdbc.vo.User;
  * @author zhongj
  */
 public class UserSqlQueryConditionGroupExpression extends
-        TypeQueryConditionGroupExpression<User, UserSqlQueryConditionGroupExpression> {
+        StaticTypeQueryConditionGroupExpression<User, UserSqlQueryConditionGroupExpression> {
 
     /**
      * @param queryConditionGroupExpression
@@ -32,8 +32,8 @@ public class UserSqlQueryConditionGroupExpression extends
         super(queryConditionGroupExpression, parent);
     }
 
-    public TypeStringExpression<User, UserSqlQueryConditionGroupExpression> username() {
-        return new TypeStringExpression<>(
+    public StaticTypeStringExpression<User, UserSqlQueryConditionGroupExpression> username() {
+        return new StaticTypeStringExpression<>(
                 queryConditionGroupExpression.propertyString("username"), this);
 
     }
@@ -43,8 +43,8 @@ public class UserSqlQueryConditionGroupExpression extends
     // return queryConditionGroupExpression.propertyNumber("age");
     // }
 
-    public TypeStringExpression<User, UserSqlQueryConditionGroupExpression> pwd() {
-        return new TypeStringExpression<>(
+    public StaticTypeStringExpression<User, UserSqlQueryConditionGroupExpression> pwd() {
+        return new StaticTypeStringExpression<>(
                 queryConditionGroupExpression.propertyString("password"), this);
     }
 
