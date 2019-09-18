@@ -36,8 +36,8 @@ public class TypeSqlQueryConditionGroupExpression extends
     private Limit limit;
 
     /**
-     * @param jdbc       jdbc
-     * @param queryAlias queryAlias
+     * @param jdbc         jdbc
+     * @param classMapping classMapping
      */
     public TypeSqlQueryConditionGroupExpression(Jdbc jdbc, ClassMapping<?> classMapping) {
         this(jdbc, null, classMapping);
