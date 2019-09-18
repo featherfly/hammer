@@ -52,6 +52,22 @@ public class DslTest {
         //        query.find(DslTest.class).property("sum(price)").decimal();
         //        query.find(DslTest.class).property("count(*)").where().lt("age", 18).longInt();
 
+        query.find("user").with("user_info").on("user_id").fetch().with("role").on("id", "user_role", "role_id")
+                .fetch();
+        query.find("user").with("user_info").on("user_id").with("role").on("id", "user_role", "role_id").fetch();
+
+        query.find("user").with("user_info").on("user_id").where();
+        query.find("user").with("user_info").on("user_id").fetch().where();
+        query.find("user").with("user_info").on("user_id").with("user_role").on("user_id", "id").with("role")
+                .on("id", "user_role", "role_id").fetch();
+
+        query.find("user").with("user_info").on("user_id").property("name").fetch();
+
+        query.find("user").with("user_info").on("user_id").property("name").with("user_role").on("user_id", "id")
+                .with("role").on("id", "user_role", "role_id").fetch();
+
+        //        query.find("user").with("user_role").on("user_id").with("role").on("id", "user_role", "role_id").fetch()
+
         query.find(DslTest.class).property("name").where().eq("", 1).and().lt("age", 18).and().group().gt("score", 80)
                 .limit(11, 10).list();
 

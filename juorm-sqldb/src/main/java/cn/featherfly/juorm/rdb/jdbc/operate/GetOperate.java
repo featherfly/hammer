@@ -8,11 +8,11 @@ import java.util.stream.Collectors;
 import cn.featherfly.common.bean.BeanUtils;
 import cn.featherfly.common.db.metadata.DatabaseMetadata;
 import cn.featherfly.common.lang.LangUtils;
+import cn.featherfly.juorm.mapping.ClassMapping;
+import cn.featherfly.juorm.mapping.PropertyMapping;
 import cn.featherfly.juorm.mapping.RowMapper;
 import cn.featherfly.juorm.rdb.jdbc.Jdbc;
 import cn.featherfly.juorm.rdb.jdbc.JuormJdbcException;
-import cn.featherfly.juorm.rdb.jdbc.mapping.ClassMapping;
-import cn.featherfly.juorm.rdb.jdbc.mapping.PropertyMapping;
 
 /**
  * <p>
@@ -169,7 +169,7 @@ public class GetOperate<T> extends AbstractQueryOperate<T> {
                 if (columnNum > 0) {
                     condition.append("and ");
                 }
-                condition.append(pm.getColumnName()).append(" = ? ");
+                condition.append(pm.getRepositoryFiledName()).append(" = ? ");
                 columnNum++;
                 propertyPositions.put(columnNum, pm.getPropertyName());
                 // 设置主键值

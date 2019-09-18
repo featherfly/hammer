@@ -1,13 +1,9 @@
 package cn.featherfly.juorm.rdb.sql.dml.builder.basic;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import cn.featherfly.common.constant.Chars;
 import cn.featherfly.common.db.dialect.Join;
 import cn.featherfly.juorm.rdb.sql.dialect.Dialect;
 import cn.featherfly.juorm.rdb.sql.dml.SqlBuilder;
-import cn.featherfly.juorm.rdb.sql.model.SelectColumnElement;
 
 /**
  * <p>
@@ -27,8 +23,6 @@ public class SqlJoinOnBasicBuilder implements SqlBuilder {
     protected String conditionTableAlias;
 
     protected String conditionColumn;
-
-    protected List<SelectColumnElement> columns = new ArrayList<>(0);
 
     protected Dialect dialect;
 

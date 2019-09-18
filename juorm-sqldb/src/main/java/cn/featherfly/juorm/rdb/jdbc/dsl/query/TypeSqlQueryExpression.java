@@ -4,8 +4,8 @@ package cn.featherfly.juorm.rdb.jdbc.dsl.query;
 import cn.featherfly.common.constant.Chars;
 import cn.featherfly.common.lang.LangUtils;
 import cn.featherfly.juorm.dsl.query.TypeQueryConditionGroupLogicExpression;
+import cn.featherfly.juorm.mapping.ClassMapping;
 import cn.featherfly.juorm.rdb.jdbc.Jdbc;
-import cn.featherfly.juorm.rdb.jdbc.mapping.ClassMapping;
 import cn.featherfly.juorm.rdb.sql.dml.builder.basic.SqlSelectBasicBuilder;
 
 /**

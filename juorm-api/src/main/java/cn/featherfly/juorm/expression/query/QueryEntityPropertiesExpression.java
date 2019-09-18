@@ -11,7 +11,9 @@ import cn.featherfly.juorm.expression.ConditionGroupLogicExpression;
  *
  * @author zhongj
  */
-public interface QueryEntityPropertiesExpression<Q extends QueryEntityPropertiesExpression<Q, C, L>,
-        C extends ConditionGroupExpression<C, L>, L extends ConditionGroupLogicExpression<C, L>>
-        extends QueryEntityExpression<Q, C, L>, QueryValueExecutor {
+public interface QueryEntityPropertiesExpression<Q extends QueryEntityPropertiesExpression<Q, QW, QWO, QWE, C, L>,
+        QW extends QueryWithExpression<QW, QWO, QWE, C, L>, QWO extends QueryWithOnExpression<QW, QWO, QWE, C, L>,
+        QWE extends QueryWithEntityExpression<QW, QWO, QWE, C, L>, C extends ConditionGroupExpression<C, L>,
+        L extends ConditionGroupLogicExpression<C, L>>
+        extends QueryEntityExpression<Q, QW, QWO, QWE, C, L>, QueryValueExecutor {
 }

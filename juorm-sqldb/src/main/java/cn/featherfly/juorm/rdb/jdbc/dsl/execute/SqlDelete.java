@@ -4,8 +4,8 @@ package cn.featherfly.juorm.rdb.jdbc.dsl.execute;
 import cn.featherfly.juorm.dsl.execute.Delete;
 import cn.featherfly.juorm.dsl.execute.ExecutableConditionGroupExpression;
 import cn.featherfly.juorm.expression.Repository;
+import cn.featherfly.juorm.mapping.ClassMapping;
 import cn.featherfly.juorm.rdb.jdbc.Jdbc;
-import cn.featherfly.juorm.rdb.jdbc.mapping.ClassMapping;
 import cn.featherfly.juorm.rdb.sql.dml.builder.basic.SqlDeleteFromBasicBuilder;
 
 /**
@@ -44,7 +44,7 @@ public class SqlDelete implements Delete {
     public SqlDelete(ClassMapping<?> classMapping, Jdbc jdbc) {
         this.jdbc = jdbc;
         this.classMapping = classMapping;
-        tableName = classMapping.getTableName();
+        tableName = classMapping.getRepositoryName();
     }
 
     /**

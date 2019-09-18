@@ -6,6 +6,7 @@ import java.util.Collection;
 import cn.featherfly.common.lang.function.SerializableFunction;
 import cn.featherfly.juorm.expression.ConditionGroupExpression;
 import cn.featherfly.juorm.expression.ConditionGroupLogicExpression;
+import cn.featherfly.juorm.expression.WhereExpression;
 
 /**
  * <p>
@@ -14,12 +15,30 @@ import cn.featherfly.juorm.expression.ConditionGroupLogicExpression;
  *
  * @author zhongj
  */
-public interface QueryEntityExpression<Q extends QueryEntityPropertiesExpression<Q, C, L>,
-        C extends ConditionGroupExpression<C, L>, L extends ConditionGroupLogicExpression<C, L>>
-        extends QueryListExecutor, QueryConditionLimit {
+public interface QueryEntityExpression<Q extends QueryEntityPropertiesExpression<Q, QW, QWO, QWE, C, L>,
+        QW extends QueryWithExpression<QW, QWO, QWE, C, L>, QWO extends QueryWithOnExpression<QW, QWO, QWE, C, L>,
+        QWE extends QueryWithEntityExpression<QW, QWO, QWE, C, L>, C extends ConditionGroupExpression<C, L>,
+        L extends ConditionGroupLogicExpression<C, L>>
+        extends WhereExpression<C, L>, QueryWithExpression<QW, QWO, QWE, C, L>, QueryListExecutor, QueryConditionLimit {
+    /**
+     * 设置id
+     *
+     * @param propertyName
+     * @return
+     */
+    Q id(String propertyName);
+
+    /**
+     * 设置id
+     *
+     * @param propertyName
+     * @return
+     */
+    <T, R> Q id(SerializableFunction<T, R> propertyName);
+
     /**
      * <p>
-     * 添加select的列
+     * 添加查询出来的属性
      * </p>
      *
      * @param propertyName propertyName
@@ -29,7 +48,7 @@ public interface QueryEntityExpression<Q extends QueryEntityPropertiesExpression
 
     /**
      * <p>
-     * 批量添加select的列
+     * 添加查询出来的属性
      * </p>
      *
      * @param propertyNames propertyNames
@@ -39,7 +58,7 @@ public interface QueryEntityExpression<Q extends QueryEntityPropertiesExpression
 
     /**
      * <p>
-     * 添加select的列
+     * 添加查询出来的属性
      * </p>
      *
      * @param propertyName propertyName
@@ -49,7 +68,7 @@ public interface QueryEntityExpression<Q extends QueryEntityPropertiesExpression
 
     /**
      * <p>
-     * 批量添加select的列
+     * 添加查询出来的属性
      * </p>
      *
      * @param propertyNames propertyNames
@@ -59,20 +78,11 @@ public interface QueryEntityExpression<Q extends QueryEntityPropertiesExpression
 
     /**
      * <p>
-     * 批量添加select的列
+     * 添加查询出来的属性
      * </p>
      *
      * @param propertyNames propertyNames
      * @return QueryEntityPropertiesExpression
      */
     Q property(Collection<String> propertyNames);
-
-    /**
-     * <p>
-     * 进入条件表达式
-     * </p>
-     *
-     * @return QueryCondition
-     */
-    C where();
 }

@@ -7,11 +7,11 @@ import cn.featherfly.common.bean.BeanUtils;
 import cn.featherfly.common.db.JdbcUtils;
 import cn.featherfly.common.db.metadata.DatabaseMetadata;
 import cn.featherfly.common.lang.LangUtils;
+import cn.featherfly.juorm.mapping.ClassMapping;
+import cn.featherfly.juorm.mapping.PropertyMapping;
 import cn.featherfly.juorm.rdb.jdbc.Jdbc;
 import cn.featherfly.juorm.rdb.jdbc.SqlResultSet;
-import cn.featherfly.juorm.rdb.jdbc.mapping.ClassMapping;
 import cn.featherfly.juorm.rdb.jdbc.mapping.ClassMappingUtils;
-import cn.featherfly.juorm.rdb.jdbc.mapping.PropertyMapping;
 
 /**
  * <p>
@@ -72,7 +72,7 @@ public abstract class AbstractQueryOperate<T> extends AbstractOperate<T> {
             Object value = getColumnValue(rs, index, propertyMapping.getPropertyType());
             if (logger.isDebugEnabled() && rowNumber == 0) {
                 logger.debug("Mapping column '{}' to property '{}' of type {}",
-                        new Object[] { propertyMapping.getColumnName(), propertyMapping.getPropertyName(),
+                        new Object[] { propertyMapping.getRepositoryFiledName(), propertyMapping.getPropertyName(),
                                 propertyMapping.getPropertyType() });
             }
             BeanUtils.setProperty(mappedObject, propertyMapping.getPropertyName(), value);
@@ -98,7 +98,7 @@ public abstract class AbstractQueryOperate<T> extends AbstractOperate<T> {
             Object value = getColumnValue(rs, index, propertyMapping.getPropertyType());
             if (logger.isDebugEnabled() && rowNumber == 0) {
                 logger.debug("Mapping column '{}' to property '{}' of type {}",
-                        new Object[] { propertyMapping.getColumnName(), propertyMapping.getPropertyName(),
+                        new Object[] { propertyMapping.getRepositoryFiledName(), propertyMapping.getPropertyName(),
                                 propertyMapping.getPropertyType() });
             }
             BeanUtils.setProperty(mappedObject, propertyMapping.getPropertyName(), value);

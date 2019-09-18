@@ -6,6 +6,7 @@ import java.util.Collection;
 import cn.featherfly.common.lang.function.SerializableFunction;
 import cn.featherfly.juorm.expression.ConditionGroupExpression;
 import cn.featherfly.juorm.expression.ConditionGroupLogicExpression;
+import cn.featherfly.juorm.expression.WhereExpression;
 
 /**
  * <p>
@@ -14,9 +15,28 @@ import cn.featherfly.juorm.expression.ConditionGroupLogicExpression;
  *
  * @author zhongj
  */
-public interface TypeQueryEntityExpression<Q extends TypeQueryEntityPropertiesExpression<Q, C, L>,
-        C extends ConditionGroupExpression<C, L>, L extends ConditionGroupLogicExpression<C, L>>
-        extends TypeQueryListExecutor, TypeQueryConditionLimit {
+public interface TypeQueryEntityExpression<Q extends TypeQueryEntityPropertiesExpression<Q, QW, QWO, QWE, C, L>,
+        QW extends TypeQueryWithExpression<QW, QWO, QWE, C, L>,
+        QWO extends TypeQueryWithOnExpression<QW, QWO, QWE, C, L>,
+        QWE extends TypeQueryWithEntityExpression<QW, QWO, QWE, C, L>, C extends ConditionGroupExpression<C, L>,
+        L extends ConditionGroupLogicExpression<C, L>> extends WhereExpression<C, L>,
+        TypeQueryWithExpression<QW, QWO, QWE, C, L>, TypeQueryListExecutor, TypeQueryConditionLimit {
+    /**
+     * 设置id
+     *
+     * @param propertyName
+     * @return
+     */
+    Q id(String propertyName);
+
+    /**
+     * 设置id
+     *
+     * @param propertyName
+     * @return
+     */
+    <T, R> Q id(SerializableFunction<T, R> propertyName);
+
     /**
      * <p>
      * 添加select的列
@@ -66,13 +86,4 @@ public interface TypeQueryEntityExpression<Q extends TypeQueryEntityPropertiesEx
      * @return QueryEntityPropertiesExpression
      */
     Q property(Collection<String> propertyNames);
-
-    /**
-     * <p>
-     * 进入条件表达式
-     * </p>
-     *
-     * @return QueryCondition
-     */
-    C where();
 }

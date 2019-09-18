@@ -1,9 +1,9 @@
 package cn.featherfly.juorm.rdb.jdbc.operate;
 
 import cn.featherfly.common.db.metadata.DatabaseMetadata;
+import cn.featherfly.juorm.mapping.ClassMapping;
+import cn.featherfly.juorm.mapping.PropertyMapping;
 import cn.featherfly.juorm.rdb.jdbc.Jdbc;
-import cn.featherfly.juorm.rdb.jdbc.mapping.ClassMapping;
-import cn.featherfly.juorm.rdb.jdbc.mapping.PropertyMapping;
 
 /**
  * <p>
@@ -64,14 +64,14 @@ public class DeleteOperate<T> extends AbstractExecuteOperate<T> {
         //        sql = deleteCondition.expression();
         //        logger.debug("sql: {}", sql);
         StringBuilder deleteSql = new StringBuilder();
-        deleteSql.append("delete from ").append(classMapping.getTableName()).append(" where ");
+        deleteSql.append("delete from ").append(classMapping.getRepositoryName()).append(" where ");
         int columnNum = 0;
         for (PropertyMapping pm : classMapping.getPropertyMappings()) {
             if (pm.isPrimaryKey()) {
                 if (columnNum > 0) {
                     deleteSql.append("and ");
                 }
-                deleteSql.append(pm.getColumnName()).append(" = ? ");
+                deleteSql.append(pm.getRepositoryFiledName()).append(" = ? ");
                 columnNum++;
                 propertyPositions.put(columnNum, pm.getPropertyName());
             }

@@ -9,14 +9,17 @@ import java.util.Map;
 import java.util.stream.Collectors;
 
 import cn.featherfly.common.lang.LambdaUtils;
+import cn.featherfly.common.lang.StringUtils;
 import cn.featherfly.common.lang.function.SerializableFunction;
 import cn.featherfly.common.structure.page.Page;
+import cn.featherfly.juorm.dml.AliasManager;
 import cn.featherfly.juorm.dsl.query.QueryConditionGroupExpression;
 import cn.featherfly.juorm.dsl.query.QueryEntityProperties;
 import cn.featherfly.juorm.expression.query.QueryExecutor;
+import cn.featherfly.juorm.mapping.ClassMapping;
+import cn.featherfly.juorm.mapping.MappingFactory;
 import cn.featherfly.juorm.mapping.RowMapper;
 import cn.featherfly.juorm.rdb.jdbc.Jdbc;
-import cn.featherfly.juorm.rdb.jdbc.mapping.ClassMapping;
 import cn.featherfly.juorm.rdb.jdbc.mapping.ClassMappingUtils;
 import cn.featherfly.juorm.rdb.sql.dml.builder.basic.SqlSelectBasicBuilder;
 
@@ -29,40 +32,78 @@ import cn.featherfly.juorm.rdb.sql.dml.builder.basic.SqlSelectBasicBuilder;
  */
 public class SqlQueryEntityProperties implements SqlQueryEntity, QueryEntityProperties {
 
-    private Jdbc jdbc;
+    private static final String DEFAULT_ID_NAME = "id";
 
-    private SqlSelectBasicBuilder selectBuilder;
+    protected Jdbc jdbc;
 
-    private ClassMapping<?> classMapping;
+    protected String idName;
+
+    protected SqlSelectBasicBuilder selectBuilder;
+
+    protected ClassMapping<?> classMapping;
+
+    protected MappingFactory factory;
+
+    protected AliasManager aliasManager;
+
+    protected String tableAlias;
 
     /**
-     * @param tableName tableName
-     * @param jdbc      jdbc
+     * @param jdbc         jdbc
+     * @param tableName    tableName
+     * @param factory      MappingFactory
+     * @param aliasManager aliasManager
      */
-    public SqlQueryEntityProperties(String tableName, Jdbc jdbc) {
-        this(tableName, jdbc, null);
+    public SqlQueryEntityProperties(Jdbc jdbc, String tableName, MappingFactory factory, AliasManager aliasManager) {
+        this(jdbc, tableName, aliasManager.put(tableName), factory, aliasManager);
     }
 
     /**
-     * @param classMapping classMapping
      * @param jdbc         jdbc
+     * @param classMapping classMapping
+     * @param factory      MappingFactory
+     * @param aliasManager aliasManager
      */
-    public SqlQueryEntityProperties(ClassMapping<?> classMapping, Jdbc jdbc) {
+    public SqlQueryEntityProperties(Jdbc jdbc, ClassMapping<?> classMapping, MappingFactory factory,
+            AliasManager aliasManager) {
         this.jdbc = jdbc;
         this.classMapping = classMapping;
-        selectBuilder = new SqlSelectBasicBuilder(jdbc.getDialect(), classMapping);
+        this.factory = factory;
+        this.aliasManager = aliasManager;
+        tableAlias = aliasManager.getAlias(classMapping.getRepositoryName());
+        selectBuilder = new SqlSelectBasicBuilder(jdbc.getDialect(), classMapping, tableAlias);
     }
 
     /**
-     * @param tableName  tableName
-     * @param jdbc       jdbc
-     * @param tableAlias tableAlias
+     * @param tableName    tableName
+     * @param jdbc         jdbc
+     * @param tableAlias   tableAlias
+     * @param factory      MappingFactory
+     * @param aliasManager aliasManager
      */
-    public SqlQueryEntityProperties(String tableName, Jdbc jdbc, String tableAlias) {
+    public SqlQueryEntityProperties(Jdbc jdbc, String tableName, String tableAlias, MappingFactory factory,
+            AliasManager aliasManager) {
         super();
         this.jdbc = jdbc;
+        this.factory = factory;
+        this.aliasManager = aliasManager;
+        if (tableAlias == null) {
+            tableAlias = aliasManager.put(tableName);
+        }
+        this.tableAlias = tableAlias;
         selectBuilder = new SqlSelectBasicBuilder(jdbc.getDialect(), tableName, tableAlias);
     }
+
+    //    private SqlQueryEntityProperties(SqlQueryEntityProperties parent, Jdbc jdbc, ClassMapping<?> classMapping,
+    //            String tableName, String tableAlias) {
+    //        this.jdbc = jdbc;
+    //        this.classMapping = classMapping;
+    //        if (classMapping != null) {
+    //            selectBuilder = new SqlSelectBasicBuilder(jdbc.getDialect(), classMapping);
+    //        } else {
+    //            selectBuilder = new SqlSelectBasicBuilder(jdbc.getDialect(), tableName, tableAlias);
+    //        }
+    //    }
 
     /**
      * {@inheritDoc}
@@ -88,6 +129,34 @@ public class SqlQueryEntityProperties implements SqlQueryEntity, QueryEntityProp
     @Override
     public QueryEntityProperties property(Collection<String> propertyNames) {
         selectBuilder.addSelectColumns(ClassMappingUtils.getColumnNames(classMapping, propertyNames));
+        return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public <T, R> QueryEntityProperties property(
+            @SuppressWarnings("unchecked") SerializableFunction<T, R>... propertyNames) {
+        return property(
+                Arrays.stream(propertyNames).map(LambdaUtils::getLambdaPropertyName).collect(Collectors.toList()));
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public <T, R> QueryEntityProperties property(SerializableFunction<T, R> propertyName) {
+        return property(LambdaUtils.getLambdaPropertyName(propertyName));
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public <T, R> QueryEntityProperties propertyAlias(SerializableFunction<T, R> propertyName, String alias) {
+        selectBuilder.addSelectColumn(
+                ClassMappingUtils.getColumnName(LambdaUtils.getLambdaPropertyName(propertyName), classMapping), alias);
         return this;
     }
 
@@ -211,17 +280,47 @@ public class SqlQueryEntityProperties implements SqlQueryEntity, QueryEntityProp
      * {@inheritDoc}
      */
     @Override
-    public <T, R> QueryEntityProperties property(
-            @SuppressWarnings("unchecked") SerializableFunction<T, R>... propertyNames) {
-        return property(
-                Arrays.stream(propertyNames).map(LambdaUtils::getLambdaPropertyName).collect(Collectors.toList()));
+    public QueryEntityProperties id(String propertyName) {
+        idName = propertyName;
+        return this;
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public <T, R> QueryEntityProperties property(SerializableFunction<T, R> propertyName) {
-        return property(LambdaUtils.getLambdaPropertyName(propertyName));
+    public <T, R> QueryEntityProperties id(SerializableFunction<T, R> propertyName) {
+        return id(LambdaUtils.getLambdaPropertyName(propertyName));
+    }
+
+    private String getIdName() {
+        return StringUtils.pickFirst(idName, DEFAULT_ID_NAME);
+    }
+
+    /**
+     * 返回selectBuilder
+     *
+     * @return selectBuilder
+     */
+    SqlSelectBasicBuilder getSelectBuilder() {
+        return selectBuilder;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public SqlQueryWithOn with(String repositoryName) {
+        return new SqlQueryWith(this, aliasManager, factory, selectBuilder.getTableAlias(), getIdName(), repositoryName,
+                aliasManager.put(repositoryName));
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public <T> SqlQueryWithOn with(Class<T> repositoryType) {
+        return new SqlQueryWith(this, aliasManager, factory, selectBuilder.getTableAlias(), getIdName(),
+                repositoryType);
     }
 }

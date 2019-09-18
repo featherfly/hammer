@@ -20,7 +20,7 @@ public interface FindBuilder extends Builder {
      * @param propertyName propertyName
      * @return FindBuilder
      */
-    FindBuilder with(String propertyName);
+    FindBuilder property(String propertyName);
 
     /**
      * <p>
@@ -30,7 +30,7 @@ public interface FindBuilder extends Builder {
      * @param propertyNames propertyNames
      * @return FindBuilder
      */
-    FindBuilder with(String... propertyNames);
+    FindBuilder property(String... propertyNames);
 
     /**
      * <p>
@@ -40,7 +40,7 @@ public interface FindBuilder extends Builder {
      * @param propertyNames propertyNames
      * @return FindBuilder
      */
-    FindBuilder with(Collection<String> propertyNames);
+    FindBuilder property(Collection<String> propertyNames);
 
     /**
      * <p>

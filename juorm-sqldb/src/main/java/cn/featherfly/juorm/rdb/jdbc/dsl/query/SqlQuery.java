@@ -1,9 +1,10 @@
 
 package cn.featherfly.juorm.rdb.jdbc.dsl.query;
 
+import cn.featherfly.common.lang.LangUtils;
 import cn.featherfly.juorm.JuormException;
+import cn.featherfly.juorm.dml.AliasManager;
 import cn.featherfly.juorm.dsl.query.Query;
-import cn.featherfly.juorm.dsl.query.TypeQueryEntity;
 import cn.featherfly.juorm.expression.Repository;
 import cn.featherfly.juorm.rdb.jdbc.Jdbc;
 import cn.featherfly.juorm.rdb.jdbc.mapping.JdbcMappingFactory;
@@ -47,7 +48,14 @@ public class SqlQuery implements Query {
         if (repository == null) {
             return null;
         }
-        return new SqlQueryEntityProperties(repository.name(), jdbc, repository.alias());
+        AliasManager aliasManager = new AliasManager();
+        String alias = repository.alias();
+        if (LangUtils.isNotEmpty(alias)) {
+            aliasManager.put(repository.name(), alias);
+        } else {
+            alias = aliasManager.put(repository.name());
+        }
+        return new SqlQueryEntityProperties(jdbc, repository.name(), alias, mappingFactory, aliasManager);
     }
 
     /**
@@ -55,17 +63,18 @@ public class SqlQuery implements Query {
      */
     @Override
     public SqlQueryEntityProperties find(String tableName) {
-        return new SqlQueryEntityProperties(tableName, jdbc);
+        return new SqlQueryEntityProperties(jdbc, tableName, mappingFactory, new AliasManager());
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public TypeQueryEntity find(Class<?> repositType) {
+    public TypeSqlQueryEntityProperties find(Class<?> repositType) {
         if (mappingFactory == null) {
             throw new JuormException("mappingFactory is null");
         }
-        return new TypeSqlQueryEntityProperties(mappingFactory.getClassMapping(repositType), jdbc);
+        return new TypeSqlQueryEntityProperties(jdbc, mappingFactory.getClassMapping(repositType), mappingFactory,
+                new AliasManager());
     }
 }
