@@ -60,7 +60,15 @@ public class SqlQueryTest extends JdbcTestBase {
 
         query.find(User.class).property(User::getUsername, User::getPwd, User::getAge).where().eq("username", "yufei")
                 .and().eq("pwd", "123456").and().group().gt("age", 18).and().lt("age", 60).list();
-
+        /*
+         * query.find(User.class).with(UserInfo.class, UserInfo::getUser)
+         * query.find(UserInfo.class).with(UserInfo::getUser, User.class)
+         * query.find(UserInfo.class).with(UserInfo::getUser)
+         * query.find("user").with("user_info").on("user_id",
+         * "id").with("user_role").on("user_id", "id").with("role",
+         * "user_role").on("id", "role_id")
+         * query.find("user_info").with("user_id", "user")
+         */
         query.find(User.class).property(User::getUsername, User::getPwd, User::getAge).where().eq("username", "yufei")
                 .and().eq(User::getPwd, "123456").and().group().gt(User::getAge, 18).and().lt(User::getAge, 60).list();
     }
