@@ -22,6 +22,19 @@ public class Role {
     private String descp;
 
     /**
+     */
+    public Role() {
+    }
+
+    /**
+     * @param id
+     */
+    public Role(Integer id) {
+        super();
+        this.id = id;
+    }
+
+    /**
      * 返回id
      *
      * @return id
@@ -33,7 +46,8 @@ public class Role {
     /**
      * 设置id
      *
-     * @param id id
+     * @param id
+     *            id
      */
     public void setId(Integer id) {
         this.id = id;
@@ -51,7 +65,8 @@ public class Role {
     /**
      * 设置name
      *
-     * @param name name
+     * @param name
+     *            name
      */
     public void setName(String name) {
         this.name = name;
@@ -69,7 +84,8 @@ public class Role {
     /**
      * 设置descp
      *
-     * @param descp descp
+     * @param descp
+     *            descp
      */
     public void setDescp(String descp) {
         this.descp = descp;

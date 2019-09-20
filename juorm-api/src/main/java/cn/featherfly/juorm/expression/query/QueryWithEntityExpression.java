@@ -29,7 +29,7 @@ public interface QueryWithEntityExpression<QW extends QueryWithExpression<QW, QW
      * @param propertyName propertyName
      * @return QueryWithEntityExpression
      */
-    QWE property(String propertyName);
+    QWE fetch(String propertyName);
 
     /**
      * <p>
@@ -39,7 +39,7 @@ public interface QueryWithEntityExpression<QW extends QueryWithExpression<QW, QW
      * @param propertyNames propertyNames
      * @return QueryWithEntityExpression
      */
-    QWE property(String... propertyNames);
+    QWE fetch(String... propertyNames);
 
     /**
      * <p>
@@ -49,7 +49,7 @@ public interface QueryWithEntityExpression<QW extends QueryWithExpression<QW, QW
      * @param propertyName propertyName
      * @return QueryWithEntityExpression
      */
-    <T, R> QWE property(SerializableFunction<T, R> propertyName);
+    <T, R> QWE fetch(SerializableFunction<T, R> propertyName);
 
     /**
      * <p>
@@ -59,7 +59,7 @@ public interface QueryWithEntityExpression<QW extends QueryWithExpression<QW, QW
      * @param propertyNames propertyNames
      * @return QueryWithEntityExpression
      */
-    <T, R> QWE property(@SuppressWarnings("unchecked") SerializableFunction<T, R>... propertyNames);
+    <T, R> QWE fetch(@SuppressWarnings("unchecked") SerializableFunction<T, R>... propertyNames);
 
     /**
      * <p>
@@ -69,7 +69,7 @@ public interface QueryWithEntityExpression<QW extends QueryWithExpression<QW, QW
      * @param propertyNames propertyNames
      * @return QueryWithEntityExpression
      */
-    QWE property(Collection<String> propertyNames);
+    QWE fetch(Collection<String> propertyNames);
 
     /**
      * 添加查询出来的所有属性

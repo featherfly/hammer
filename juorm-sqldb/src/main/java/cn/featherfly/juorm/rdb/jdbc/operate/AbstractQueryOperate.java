@@ -4,6 +4,7 @@ package cn.featherfly.juorm.rdb.jdbc.operate;
 import java.sql.ResultSet;
 
 import cn.featherfly.common.bean.BeanUtils;
+import cn.featherfly.common.constant.Chars;
 import cn.featherfly.common.db.JdbcUtils;
 import cn.featherfly.common.db.metadata.DatabaseMetadata;
 import cn.featherfly.common.lang.LangUtils;
@@ -18,7 +19,8 @@ import cn.featherfly.juorm.rdb.jdbc.mapping.ClassMappingUtils;
  * 数据库操作的抽象类
  * </p>
  *
- * @param <T> 对象类型
+ * @param <T>
+ *            对象类型
  * @author zhongj
  * @since 1.0
  * @version 1.0
@@ -28,8 +30,10 @@ public abstract class AbstractQueryOperate<T> extends AbstractOperate<T> {
     /**
      * 使用给定数据源以及给定对象生成其相应的操作.
      *
-     * @param jdbc         jdbc
-     * @param classMapping classMapping
+     * @param jdbc
+     *            jdbc
+     * @param classMapping
+     *            classMapping
      */
     public AbstractQueryOperate(Jdbc jdbc, ClassMapping<T> classMapping) {
         super(jdbc, classMapping);
@@ -38,11 +42,15 @@ public abstract class AbstractQueryOperate<T> extends AbstractOperate<T> {
     /**
      * 使用给定数据源以及给定对象生成其相应的操作.
      *
-     * @param jdbc         jdbc
-     * @param classMapping classMapping
-     * @param dataBase     具体库
+     * @param jdbc
+     *            jdbc
+     * @param classMapping
+     *            classMapping
+     * @param dataBase
+     *            具体库
      */
-    public AbstractQueryOperate(Jdbc jdbc, ClassMapping<T> classMapping, String dataBase) {
+    public AbstractQueryOperate(Jdbc jdbc, ClassMapping<T> classMapping,
+            String dataBase) {
         super(jdbc, classMapping, dataBase);
     }
 
@@ -51,7 +59,8 @@ public abstract class AbstractQueryOperate<T> extends AbstractOperate<T> {
      * @param classMapping
      * @param databaseMetadata
      */
-    public AbstractQueryOperate(Jdbc jdbc, ClassMapping<T> classMapping, DatabaseMetadata databaseMetadata) {
+    public AbstractQueryOperate(Jdbc jdbc, ClassMapping<T> classMapping,
+            DatabaseMetadata databaseMetadata) {
         super(jdbc, classMapping, databaseMetadata);
     }
 
@@ -60,25 +69,49 @@ public abstract class AbstractQueryOperate<T> extends AbstractOperate<T> {
      * 每条记录映射为对象.
      * </p>
      *
-     * @param rs        结果集
-     * @param rowNumber 行数
+     * @param rs
+     *            结果集
+     * @param rowNumber
+     *            行数
      * @return 映射后的对象
      */
-    protected T mapRow(cn.featherfly.juorm.mapping.ResultSet rs, int rowNumber) {
+    protected T mapRow(cn.featherfly.juorm.mapping.ResultSet rs,
+            int rowNumber) {
         @SuppressWarnings("unchecked")
         T mappedObject = (T) BeanUtils.instantiateClass(classMapping.getType());
         int index = 1;
-        for (PropertyMapping propertyMapping : classMapping.getPropertyMappings()) {
-            Object value = getColumnValue(rs, index, propertyMapping.getPropertyType());
-            if (logger.isDebugEnabled() && rowNumber == 0) {
-                logger.debug("Mapping column '{}' to property '{}' of type {}",
-                        new Object[] { propertyMapping.getRepositoryFiledName(), propertyMapping.getPropertyName(),
-                                propertyMapping.getPropertyType() });
+        for (PropertyMapping propertyMapping : classMapping
+                .getPropertyMappings()) {
+            if (propertyMapping.getPropertyMappings().isEmpty()) {
+                Object value = getColumnValue(rs, index,
+                        propertyMapping.getPropertyType());
+                index = setProperty(rowNumber, mappedObject, index,
+                        propertyMapping, value);
+            } else {
+                for (PropertyMapping subPropertyMapping : propertyMapping
+                        .getPropertyMappings()) {
+                    Object value = getColumnValue(rs, index,
+                            subPropertyMapping.getPropertyType());
+                    index = setProperty(rowNumber, mappedObject, index,
+                            subPropertyMapping, value);
+                }
             }
-            BeanUtils.setProperty(mappedObject, propertyMapping.getPropertyName(), value);
-            index++;
         }
         return mappedObject;
+    }
+
+    private int setProperty(int rowNumber, T mappedObject, int index,
+            PropertyMapping propertyMapping, Object value) {
+        String propertyName = ClassMappingUtils
+                .getPropertyAliasName(propertyMapping);
+        if (logger.isDebugEnabled() && rowNumber == 0) {
+            logger.debug("Mapping column '{}' to property '{}' of type {}",
+                    new Object[] { propertyMapping.getRepositoryFieldName(),
+                            propertyName, propertyMapping.getPropertyType() });
+        }
+        BeanUtils.setProperty(mappedObject, propertyName, value);
+        index++;
+        return index;
     }
 
     /**
@@ -86,22 +119,28 @@ public abstract class AbstractQueryOperate<T> extends AbstractOperate<T> {
      * 每条记录映射为对象.
      * </p>
      *
-     * @param rs        结果集
-     * @param rowNumber 行数
+     * @param rs
+     *            结果集
+     * @param rowNumber
+     *            行数
      * @return 映射后的对象
      */
     protected T mapRow(ResultSet rs, int rowNumber) {
         @SuppressWarnings("unchecked")
         T mappedObject = (T) BeanUtils.instantiateClass(classMapping.getType());
         int index = 1;
-        for (PropertyMapping propertyMapping : classMapping.getPropertyMappings()) {
-            Object value = getColumnValue(rs, index, propertyMapping.getPropertyType());
+        for (PropertyMapping propertyMapping : classMapping
+                .getPropertyMappings()) {
+            Object value = getColumnValue(rs, index,
+                    propertyMapping.getPropertyType());
             if (logger.isDebugEnabled() && rowNumber == 0) {
                 logger.debug("Mapping column '{}' to property '{}' of type {}",
-                        new Object[] { propertyMapping.getRepositoryFiledName(), propertyMapping.getPropertyName(),
+                        new Object[] { propertyMapping.getRepositoryFieldName(),
+                                propertyMapping.getPropertyName(),
                                 propertyMapping.getPropertyType() });
             }
-            BeanUtils.setProperty(mappedObject, propertyMapping.getPropertyName(), value);
+            BeanUtils.setProperty(mappedObject,
+                    propertyMapping.getPropertyName(), value);
             index++;
         }
         return mappedObject;
@@ -117,7 +156,9 @@ public abstract class AbstractQueryOperate<T> extends AbstractOperate<T> {
         getSql.append(getSelectSql());
         String condition = initCondition();
         if (LangUtils.isNotEmpty(condition)) {
-            getSql.append(" where ").append(condition);
+            getSql.append(Chars.SPACE)
+                    .append(jdbc.getDialect().getKeywords().where())
+                    .append(Chars.SPACE).append(condition);
         }
         sql = getSql.toString();
         logger.debug("sql: {}", sql);
@@ -129,16 +170,20 @@ public abstract class AbstractQueryOperate<T> extends AbstractOperate<T> {
     //
     // ********************************************************************
 
-    private Object getColumnValue(ResultSet rs, int index, Class<?> propertyType) {
+    private Object getColumnValue(ResultSet rs, int index,
+            Class<?> propertyType) {
         return JdbcUtils.getResultSetValue(rs, index, propertyType);
     }
 
-    private Object getColumnValue(cn.featherfly.juorm.mapping.ResultSet rs, int index, Class<?> propertyType) {
-        return JdbcUtils.getResultSetValue(((SqlResultSet) rs).getResultSet(), index, propertyType);
+    private Object getColumnValue(cn.featherfly.juorm.mapping.ResultSet rs,
+            int index, Class<?> propertyType) {
+        return JdbcUtils.getResultSetValue(((SqlResultSet) rs).getResultSet(),
+                index, propertyType);
     }
 
     private void initSelectSql() {
-        this.selectSql = ClassMappingUtils.getSelectSql(classMapping, jdbc.getDialect());
+        this.selectSql = ClassMappingUtils.getSelectSql(classMapping,
+                jdbc.getDialect());
     }
 
     // ********************************************************************

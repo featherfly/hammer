@@ -1,24 +1,19 @@
 
 package cn.featherfly.juorm.rdb.jdbc.dsl.query;
 
-import java.util.Arrays;
-import java.util.Collection;
 import java.util.List;
-import java.util.Map;
-import java.util.stream.Collectors;
 
-import cn.featherfly.common.lang.LambdaUtils;
+import cn.featherfly.common.lang.LangUtils;
 import cn.featherfly.common.lang.function.SerializableFunction;
 import cn.featherfly.common.structure.page.Page;
 import cn.featherfly.juorm.dml.AliasManager;
 import cn.featherfly.juorm.dsl.query.TypeQueryConditionGroupExpression;
 import cn.featherfly.juorm.dsl.query.TypeQueryWith;
 import cn.featherfly.juorm.dsl.query.TypeQueryWithEntity;
-import cn.featherfly.juorm.dsl.query.TypeQueryWithOn;
 import cn.featherfly.juorm.expression.query.TypeQueryExecutor;
 import cn.featherfly.juorm.mapping.ClassMapping;
 import cn.featherfly.juorm.mapping.MappingFactory;
-import cn.featherfly.juorm.rdb.jdbc.mapping.ClassMappingUtils;
+import cn.featherfly.juorm.rdb.jdbc.JuormJdbcException;
 import cn.featherfly.juorm.rdb.sql.dml.builder.basic.SqlSelectJoinOnBasicBuilder;
 
 /**
@@ -28,119 +23,91 @@ import cn.featherfly.juorm.rdb.sql.dml.builder.basic.SqlSelectJoinOnBasicBuilder
  *
  * @author zhongj
  */
-public class TypeSqlQueryWith implements TypeQueryWith, TypeQueryWithOn, TypeQueryWithEntity {
+public class TypeSqlQueryWith implements TypeQueryWith, TypeQueryWithEntity {
 
-    private TypeSqlQueryEntityProperties sqlQueryEntityProperties;
+    protected TypeSqlQueryEntityProperties sqlQueryEntityProperties;
 
-    private AliasManager aliasManager;
+    protected String conditionTableAlias;
 
-    private String selectTableAlis;
+    protected String conditionTableColumn;
 
-    private String selectTableColumn;
+    protected String joinTableAlias;
 
-    private String joinTableName;
+    protected String joinTableColumn;
 
-    private String joinTableAlias;
+    protected SqlSelectJoinOnBasicBuilder selectJoinOnBasicBuilder;
 
-    private SqlSelectJoinOnBasicBuilder selectJoinOnBasicBuilder;
+    protected MappingFactory factory;
 
-    private MappingFactory factory;
+    protected ClassMapping<?> conditionTypeClassMapping;
 
-    private ClassMapping<?> classMapping;
+    protected ClassMapping<?> joinTypeClassMapping;
+
+    protected String fetchProperty;
+
+    protected String fetchPropertyAlias;
 
     /**
+     * 
      * @param sqlQueryEntityProperties
      * @param aliasManager
      * @param factory
-     * @param selectTableAlis
-     * @param selectTableColumn
-     * @param joinTableName
-     * @param joinTableAlias
+     * @param conditionTypeClassMapping
+     * @param conditionTableAlias
+     * @param conditionTableColumn
+     * @param joinTypeClassMapping
+     * @param joinTableColumn
      */
-    public TypeSqlQueryWith(TypeSqlQueryEntityProperties sqlQueryEntityProperties, AliasManager aliasManager,
-            MappingFactory factory, String selectTableAlis, String selectTableColumn, String joinTableName,
-            String joinTableAlias) {
-        super();
-        this.sqlQueryEntityProperties = sqlQueryEntityProperties;
-        this.aliasManager = aliasManager;
-        this.factory = factory;
-        this.selectTableAlis = selectTableAlis;
-        this.selectTableColumn = selectTableColumn;
-        this.joinTableName = joinTableName;
-        this.joinTableAlias = joinTableAlias;
+    public TypeSqlQueryWith(
+            TypeSqlQueryEntityProperties sqlQueryEntityProperties,
+            AliasManager aliasManager, MappingFactory factory,
+            ClassMapping<?> conditionTypeClassMapping,
+            String conditionTableAlias, String conditionTableColumn,
+            ClassMapping<?> joinTypeClassMapping, String joinTableColumn) {
+        this(sqlQueryEntityProperties, aliasManager, factory,
+                conditionTypeClassMapping, conditionTableAlias,
+                conditionTableColumn, joinTypeClassMapping, joinTableColumn,
+                null);
     }
 
     /**
+     * 
      * @param sqlQueryEntityProperties
      * @param aliasManager
      * @param factory
-     * @param selectTableAlis
-     * @param selectTableColumn
-     * @param joinType
+     * @param conditionTypeClassMapping
+     * @param conditionTableAlias
+     * @param conditionTableColumn
+     * @param joinTypeClassMapping
+     * @param joinTableColumn
+     * @param fetchProperty
      */
-    public TypeSqlQueryWith(TypeSqlQueryEntityProperties sqlQueryEntityProperties, AliasManager aliasManager,
-            MappingFactory factory, String selectTableAlis, String selectTableColumn, Class<?> joinType) {
+    public TypeSqlQueryWith(
+            TypeSqlQueryEntityProperties sqlQueryEntityProperties,
+            AliasManager aliasManager, MappingFactory factory,
+            ClassMapping<?> conditionTypeClassMapping,
+            String conditionTableAlias, String conditionTableColumn,
+            ClassMapping<?> joinTypeClassMapping, String joinTableColumn,
+            String fetchProperty) {
         super();
         this.sqlQueryEntityProperties = sqlQueryEntityProperties;
-        this.aliasManager = aliasManager;
         this.factory = factory;
-        this.selectTableAlis = selectTableAlis;
-        this.selectTableColumn = selectTableColumn;
-        classMapping = factory.getClassMapping(joinType);
-        joinTableName = classMapping.getRepositoryName();
-        joinTableAlias = aliasManager.put(classMapping.getRepositoryName());
+        this.conditionTypeClassMapping = conditionTypeClassMapping;
+        this.conditionTableAlias = conditionTableAlias;
+        this.conditionTableColumn = conditionTableColumn;
+        joinTableAlias = aliasManager
+                .put(joinTypeClassMapping.getRepositoryName());
+        this.joinTableColumn = joinTableColumn;
+        this.joinTypeClassMapping = joinTypeClassMapping;
+        this.fetchProperty = fetchProperty;
+        fetchPropertyAlias = joinTableAlias;
+        on();
     }
 
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public TypeQueryWithOn with(String repositoryName) {
-        return new TypeSqlQueryWith(sqlQueryEntityProperties, aliasManager, factory, selectTableAlis, selectTableColumn,
-                repositoryName, aliasManager.put(repositoryName));
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public <T> TypeQueryWithOn with(Class<T> repositoryType) {
-        return new TypeSqlQueryWith(sqlQueryEntityProperties, aliasManager, factory, selectTableAlis, selectTableColumn,
-                repositoryType);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public TypeQueryWithEntity on(String propertyName) {
-        return on2(propertyName, selectTableAlis, selectTableColumn);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public TypeQueryWithEntity on(String propertyName, String findRepositoryPropertyName) {
-        return on2(propertyName, selectTableAlis, findRepositoryPropertyName);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public TypeQueryWithEntity on(String propertyName, String repositoryName, String repositoryPropertyName) {
-        return on2(propertyName, aliasManager.getAlias(repositoryName), repositoryPropertyName);
-    }
-
-    private TypeQueryWithEntity on2(String columnName, String tableAlias, String tableColumn) {
-        if (classMapping == null) {
-            selectJoinOnBasicBuilder = sqlQueryEntityProperties.getSelectBuilder().join(tableAlias, tableColumn,
-                    joinTableName, joinTableAlias, columnName);
-        } else {
-            selectJoinOnBasicBuilder = sqlQueryEntityProperties.getSelectBuilder().join(tableAlias, tableColumn,
-                    classMapping, joinTableAlias, columnName);
-        }
+    private TypeQueryWithEntity on() {
+        selectJoinOnBasicBuilder = sqlQueryEntityProperties.getSelectBuilder()
+                .join(conditionTableAlias, conditionTableColumn,
+                        joinTypeClassMapping, joinTableAlias, joinTableColumn);
         return this;
     }
 
@@ -148,96 +115,31 @@ public class TypeSqlQueryWith implements TypeQueryWith, TypeQueryWithOn, TypeQue
      * {@inheritDoc}
      */
     @Override
-    public TypeQueryWithEntity property(String propertyName) {
-        selectJoinOnBasicBuilder.addSelectColumn(propertyName);
-        return this;
+    public <T, R> TypeQueryWithEntity with(
+            SerializableFunction<T, R> propertyName) {
+        return sqlQueryEntityProperties.with(propertyName);
     }
 
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public TypeQueryWithEntity property(String... propertyNames) {
-        selectJoinOnBasicBuilder.addSelectColumns(propertyNames);
-        return this;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public <T, R> TypeQueryWithEntity property(
-            @SuppressWarnings("unchecked") SerializableFunction<T, R>... propertyNames) {
-        return property(
-                Arrays.stream(propertyNames).map(LambdaUtils::getLambdaPropertyName).collect(Collectors.toList()));
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public <T, R> TypeQueryWithEntity property(SerializableFunction<T, R> propertyName) {
-        return property(LambdaUtils.getLambdaPropertyName(propertyName));
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public TypeQueryWithEntity property(Collection<String> propertyNames) {
-        selectJoinOnBasicBuilder.addSelectColumns(propertyNames);
-        return this;
-    }
-
-    /**
-     * <p>
-     * 添加select的列
-     * </p>
-     *
-     * @param columnName propertyName
-     * @param asName     alias name
-     * @return QueryEntityPropertiesExpression
-     */
-    public <T, R> TypeQueryWithEntity propertyAlias(SerializableFunction<T, R> propertyName, String alias) {
-        return propertyAlias(LambdaUtils.getLambdaPropertyName(propertyName), alias);
-    }
-
-    /**
-     * <p>
-     * 添加select的列
-     * </p>
-     *
-     * @param columnName propertyName
-     * @param asName     alias name
-     * @return QueryEntityPropertiesExpression
-     */
-    public TypeQueryWithEntity propertyAlias(String columnName, String alias) {
-        selectJoinOnBasicBuilder.addSelectColumn(ClassMappingUtils.getColumnName(columnName, classMapping), alias);
-        return this;
-    }
-
-    /**
-     * <p>
-     * 添加select的列
-     * </p>
-     *
-     * @param columnName propertyName
-     * @param asName     alias name
-     * @return QueryEntityPropertiesExpression
-     */
-    public TypeQueryWithEntity propertyAlias(Map<String, String> columnNameMap) {
-        columnNameMap.forEach((k, v) -> {
-            propertyAlias(k, v);
-        });
-        return this;
-    }
+    // /**
+    // * {@inheritDoc}
+    // */
+    // @Override
+    // public <T, R> TypeQueryWithEntity with(
+    // SerializableFunction<T, R> propertyName, int index) {
+    // return sqlQueryEntityProperties.with(propertyName, index);
+    // }
 
     /**
      * {@inheritDoc}
      */
     @Override
     public TypeQueryWith fetch() {
-        selectJoinOnBasicBuilder.fetch();
+        if (LangUtils.isEmpty(fetchProperty)) {
+            // TODO 后续细化描述
+            throw new JuormJdbcException(
+                    "can not fetch because there is no relation for find type");
+        }
+        selectJoinOnBasicBuilder.fetch(fetchProperty, fetchPropertyAlias);
         return this;
     }
 

@@ -53,7 +53,7 @@ public class UserQueryWithEntity implements QueryWithEntityExpression<
      * {@inheritDoc}
      */
     @Override
-    public UserQueryWithEntity property(String propertyName) {
+    public UserQueryWithEntity fetch(String propertyName) {
         // YUFEI_TODO Auto-generated method stub
         return null;
     }
@@ -62,7 +62,7 @@ public class UserQueryWithEntity implements QueryWithEntityExpression<
      * {@inheritDoc}
      */
     @Override
-    public UserQueryWithEntity property(String... propertyNames) {
+    public UserQueryWithEntity fetch(String... propertyNames) {
         // YUFEI_TODO Auto-generated method stub
         return null;
     }
@@ -71,7 +71,7 @@ public class UserQueryWithEntity implements QueryWithEntityExpression<
      * {@inheritDoc}
      */
     @Override
-    public <T, R> UserQueryWithEntity property(SerializableFunction<T, R> propertyName) {
+    public <T, R> UserQueryWithEntity fetch(SerializableFunction<T, R> propertyName) {
         // YUFEI_TODO Auto-generated method stub
         return null;
     }
@@ -80,7 +80,7 @@ public class UserQueryWithEntity implements QueryWithEntityExpression<
      * {@inheritDoc}
      */
     @Override
-    public <T, R> UserQueryWithEntity property(SerializableFunction<T, R>... propertyNames) {
+    public <T, R> UserQueryWithEntity fetch(SerializableFunction<T, R>... propertyNames) {
         // YUFEI_TODO Auto-generated method stub
         return null;
     }
@@ -89,7 +89,7 @@ public class UserQueryWithEntity implements QueryWithEntityExpression<
      * {@inheritDoc}
      */
     @Override
-    public UserQueryWithEntity property(Collection<String> propertyNames) {
+    public UserQueryWithEntity fetch(Collection<String> propertyNames) {
         // YUFEI_TODO Auto-generated method stub
         return null;
     }

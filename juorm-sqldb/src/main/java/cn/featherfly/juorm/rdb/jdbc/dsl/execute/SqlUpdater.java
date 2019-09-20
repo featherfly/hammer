@@ -1,11 +1,11 @@
 
 package cn.featherfly.juorm.rdb.jdbc.dsl.execute;
 
-import cn.featherfly.juorm.JuormException;
 import cn.featherfly.juorm.dsl.execute.Update;
 import cn.featherfly.juorm.dsl.execute.Updater;
 import cn.featherfly.juorm.expression.Repository;
 import cn.featherfly.juorm.rdb.jdbc.Jdbc;
+import cn.featherfly.juorm.rdb.jdbc.JuormJdbcException;
 import cn.featherfly.juorm.rdb.jdbc.mapping.JdbcMappingFactory;
 
 /**
@@ -25,7 +25,8 @@ public class SqlUpdater implements Updater {
     /**
      * Instantiates a new sql updater.
      *
-     * @param jdbc the jdbc
+     * @param jdbc
+     *            the jdbc
      */
     public SqlUpdater(Jdbc jdbc) {
         this.jdbc = jdbc;
@@ -34,8 +35,10 @@ public class SqlUpdater implements Updater {
     /**
      * Instantiates a new sql updater.
      *
-     * @param jdbc           the jdbc
-     * @param mappingFactory the mapping factory
+     * @param jdbc
+     *            the jdbc
+     * @param mappingFactory
+     *            the mapping factory
      */
     public SqlUpdater(Jdbc jdbc, JdbcMappingFactory mappingFactory) {
         super();
@@ -65,8 +68,9 @@ public class SqlUpdater implements Updater {
     @Override
     public Update update(Class<?> repositType) {
         if (mappingFactory == null) {
-            throw new JuormException("mappingFactory is null");
+            throw new JuormJdbcException("mappingFactory is null");
         }
-        return new SqlExecutableUpdate(mappingFactory.getClassMapping(repositType), jdbc);
+        return new SqlExecutableUpdate(
+                mappingFactory.getClassMapping(repositType), jdbc);
     }
 }

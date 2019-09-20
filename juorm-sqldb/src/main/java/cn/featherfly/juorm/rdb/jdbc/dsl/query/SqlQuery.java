@@ -2,11 +2,11 @@
 package cn.featherfly.juorm.rdb.jdbc.dsl.query;
 
 import cn.featherfly.common.lang.LangUtils;
-import cn.featherfly.juorm.JuormException;
 import cn.featherfly.juorm.dml.AliasManager;
 import cn.featherfly.juorm.dsl.query.Query;
 import cn.featherfly.juorm.expression.Repository;
 import cn.featherfly.juorm.rdb.jdbc.Jdbc;
+import cn.featherfly.juorm.rdb.jdbc.JuormJdbcException;
 import cn.featherfly.juorm.rdb.jdbc.mapping.JdbcMappingFactory;
 
 /**
@@ -23,7 +23,8 @@ public class SqlQuery implements Query {
     private JdbcMappingFactory mappingFactory;
 
     /**
-     * @param jdbc jdbc
+     * @param jdbc
+     *            jdbc
      */
     public SqlQuery(Jdbc jdbc) {
         super();
@@ -31,8 +32,10 @@ public class SqlQuery implements Query {
     }
 
     /**
-     * @param jdbc           jdbc
-     * @param mappingFactory mappingFactory
+     * @param jdbc
+     *            jdbc
+     * @param mappingFactory
+     *            mappingFactory
      */
     public SqlQuery(Jdbc jdbc, JdbcMappingFactory mappingFactory) {
         super();
@@ -55,7 +58,8 @@ public class SqlQuery implements Query {
         } else {
             alias = aliasManager.put(repository.name());
         }
-        return new SqlQueryEntityProperties(jdbc, repository.name(), alias, mappingFactory, aliasManager);
+        return new SqlQueryEntityProperties(jdbc, repository.name(), alias,
+                mappingFactory, aliasManager);
     }
 
     /**
@@ -63,7 +67,8 @@ public class SqlQuery implements Query {
      */
     @Override
     public SqlQueryEntityProperties find(String tableName) {
-        return new SqlQueryEntityProperties(jdbc, tableName, mappingFactory, new AliasManager());
+        return new SqlQueryEntityProperties(jdbc, tableName, mappingFactory,
+                new AliasManager());
     }
 
     /**
@@ -72,9 +77,10 @@ public class SqlQuery implements Query {
     @Override
     public TypeSqlQueryEntityProperties find(Class<?> repositType) {
         if (mappingFactory == null) {
-            throw new JuormException("mappingFactory is null");
+            throw new JuormJdbcException("mappingFactory is null");
         }
-        return new TypeSqlQueryEntityProperties(jdbc, mappingFactory.getClassMapping(repositType), mappingFactory,
+        return new TypeSqlQueryEntityProperties(jdbc,
+                mappingFactory.getClassMapping(repositType), mappingFactory,
                 new AliasManager());
     }
 }

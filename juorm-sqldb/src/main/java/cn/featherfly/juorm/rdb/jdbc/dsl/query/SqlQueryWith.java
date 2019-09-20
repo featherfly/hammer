@@ -147,8 +147,16 @@ public class SqlQueryWith implements QueryWith, SqlQueryWithOn, SqlQueryWithEnti
      * {@inheritDoc}
      */
     @Override
-    public SqlQueryWithEntity property(String propertyName) {
-        selectJoinOnBasicBuilder.addSelectColumn(propertyName);
+    public <T, R> SqlQueryWithEntity fetch(SerializableFunction<T, R> propertyName) {
+        return fetch(LambdaUtils.getLambdaPropertyName(propertyName));
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public SqlQueryWithEntity fetch(String propertyName) {
+        selectJoinOnBasicBuilder.addSelectColumn(ClassMappingUtils.getColumnName(propertyName, classMapping));
         return this;
     }
 
@@ -156,8 +164,8 @@ public class SqlQueryWith implements QueryWith, SqlQueryWithOn, SqlQueryWithEnti
      * {@inheritDoc}
      */
     @Override
-    public SqlQueryWithEntity property(String... propertyNames) {
-        selectJoinOnBasicBuilder.addSelectColumns(propertyNames);
+    public SqlQueryWithEntity fetch(String... propertyNames) {
+        selectJoinOnBasicBuilder.addSelectColumns(ClassMappingUtils.getColumnNames(classMapping, propertyNames));
         return this;
     }
 
@@ -165,26 +173,16 @@ public class SqlQueryWith implements QueryWith, SqlQueryWithOn, SqlQueryWithEnti
      * {@inheritDoc}
      */
     @Override
-    public <T,
-            R> SqlQueryWithEntity property(@SuppressWarnings("unchecked") SerializableFunction<T, R>... propertyNames) {
-        return property(
-                Arrays.stream(propertyNames).map(LambdaUtils::getLambdaPropertyName).collect(Collectors.toList()));
+    public <T, R> SqlQueryWithEntity fetch(@SuppressWarnings("unchecked") SerializableFunction<T, R>... propertyNames) {
+        return fetch(Arrays.stream(propertyNames).map(LambdaUtils::getLambdaPropertyName).collect(Collectors.toList()));
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public <T, R> SqlQueryWithEntity property(SerializableFunction<T, R> propertyName) {
-        return property(LambdaUtils.getLambdaPropertyName(propertyName));
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public SqlQueryWithEntity property(Collection<String> propertyNames) {
-        selectJoinOnBasicBuilder.addSelectColumns(propertyNames);
+    public SqlQueryWithEntity fetch(Collection<String> propertyNames) {
+        selectJoinOnBasicBuilder.addSelectColumns(ClassMappingUtils.getColumnNames(classMapping, propertyNames));
         return this;
     }
 
@@ -198,8 +196,8 @@ public class SqlQueryWith implements QueryWith, SqlQueryWithOn, SqlQueryWithEnti
      * @return QueryEntityPropertiesExpression
      */
     @Override
-    public <T, R> SqlQueryWithEntity propertyAlias(SerializableFunction<T, R> propertyName, String alias) {
-        return propertyAlias(LambdaUtils.getLambdaPropertyName(propertyName), alias);
+    public <T, R> SqlQueryWithEntity fetchAlias(SerializableFunction<T, R> propertyName, String alias) {
+        return fetchAlias(LambdaUtils.getLambdaPropertyName(propertyName), alias);
     }
 
     /**
@@ -212,7 +210,7 @@ public class SqlQueryWith implements QueryWith, SqlQueryWithOn, SqlQueryWithEnti
      * @return QueryEntityPropertiesExpression
      */
     @Override
-    public SqlQueryWithEntity propertyAlias(String columnName, String alias) {
+    public SqlQueryWithEntity fetchAlias(String columnName, String alias) {
         selectJoinOnBasicBuilder.addSelectColumn(ClassMappingUtils.getColumnName(columnName, classMapping), alias);
         return this;
     }
@@ -227,9 +225,9 @@ public class SqlQueryWith implements QueryWith, SqlQueryWithOn, SqlQueryWithEnti
      * @return QueryEntityPropertiesExpression
      */
     @Override
-    public SqlQueryWithEntity propertyAlias(Map<String, String> columnNameMap) {
+    public SqlQueryWithEntity fetchAlias(Map<String, String> columnNameMap) {
         columnNameMap.forEach((k, v) -> {
-            propertyAlias(k, v);
+            fetchAlias(k, v);
         });
         return this;
     }

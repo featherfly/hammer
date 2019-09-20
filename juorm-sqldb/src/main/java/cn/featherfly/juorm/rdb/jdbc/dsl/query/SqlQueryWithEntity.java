@@ -23,7 +23,7 @@ public interface SqlQueryWithEntity extends QueryWithEntity {
      * @param asName     alias name
      * @return QueryWithEntity
      */
-    <T, R> QueryWithEntity propertyAlias(SerializableFunction<T, R> propertyName, String alias);
+    <T, R> QueryWithEntity fetchAlias(SerializableFunction<T, R> columnName, String alias);
 
     /**
      * <p>
@@ -34,7 +34,7 @@ public interface SqlQueryWithEntity extends QueryWithEntity {
      * @param asName     alias name
      * @return QueryWithEntity
      */
-    QueryWithEntity propertyAlias(String columnName, String asName);
+    QueryWithEntity fetchAlias(String columnName, String asName);
 
     /**
      * <p>
@@ -44,5 +44,5 @@ public interface SqlQueryWithEntity extends QueryWithEntity {
      * @param columnNameMap key is columnName, value is asName
      * @return QueryWithEntity
      */
-    QueryWithEntity propertyAlias(Map<String, String> columnNameMap);
+    QueryWithEntity fetchAlias(Map<String, String> columnNameMap);
 }
