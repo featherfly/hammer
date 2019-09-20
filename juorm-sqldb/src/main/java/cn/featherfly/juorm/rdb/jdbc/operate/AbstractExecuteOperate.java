@@ -2,8 +2,8 @@
 package cn.featherfly.juorm.rdb.jdbc.operate;
 
 import cn.featherfly.common.db.metadata.DatabaseMetadata;
+import cn.featherfly.juorm.mapping.ClassMapping;
 import cn.featherfly.juorm.rdb.jdbc.Jdbc;
-import cn.featherfly.juorm.rdb.jdbc.mapping.ClassMapping;
 
 /**
  * <p>

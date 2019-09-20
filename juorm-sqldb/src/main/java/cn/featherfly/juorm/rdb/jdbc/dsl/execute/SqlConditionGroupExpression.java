@@ -3,8 +3,8 @@ package cn.featherfly.juorm.rdb.jdbc.dsl.execute;
 
 import cn.featherfly.juorm.dsl.execute.ExecutableConditionGroupExpression;
 import cn.featherfly.juorm.dsl.execute.ExecutableConditionGroupLogicExpression;
+import cn.featherfly.juorm.mapping.ClassMapping;
 import cn.featherfly.juorm.rdb.jdbc.Jdbc;
-import cn.featherfly.juorm.rdb.jdbc.mapping.ClassMapping;
 import cn.featherfly.juorm.rdb.sql.dml.AbstractSqlConditionGroupExpression;
 
 /**

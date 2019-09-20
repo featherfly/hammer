@@ -1,4 +1,4 @@
-package cn.featherfly.juorm.rdb.jdbc.mapping;
+package cn.featherfly.juorm.mapping;
 
 import java.util.Collection;
 import java.util.HashMap;
@@ -10,8 +10,8 @@ import java.util.Map;
  * </p>
  *
  * @author zhongj
- * @since 1.0
- * @version 1.0
+ * @since 0.1.0
+ * @version 0.1.0
  */
 public class PropertyMapping {
 
@@ -23,7 +23,7 @@ public class PropertyMapping {
 
     private String propertyName;
 
-    private String columnName;
+    private String repositoryFiledName;
 
     private Class<?> propertyType;
 
@@ -37,9 +37,15 @@ public class PropertyMapping {
 
     private PropertyMapping parent;
 
-    PropertyMapping add(PropertyMapping propertyMapping) {
+    /**
+     * add nested property mapping
+     *
+     * @param propertyMapping propertyMapping
+     * @return this
+     */
+    public PropertyMapping add(PropertyMapping propertyMapping) {
         propertyMapping.parent = this;
-        propertyMappings.put(propertyMapping.getColumnName(), propertyMapping);
+        propertyMappings.put(propertyMapping.getRepositoryFiledName(), propertyMapping);
         return this;
     }
 
@@ -86,17 +92,17 @@ public class PropertyMapping {
     }
 
     /**
-     * @return 返回columnName
+     * @return 返回repositoryFiledName
      */
-    public String getColumnName() {
-        return columnName;
+    public String getRepositoryFiledName() {
+        return repositoryFiledName;
     }
 
     /**
-     * @param columnName 设置columnName
+     * @param repositoryFiledName 设置repositoryFiledName
      */
-    public void setColumnName(String columnName) {
-        this.columnName = columnName;
+    public void setRepositoryFiledName(String repositoryFiledName) {
+        this.repositoryFiledName = repositoryFiledName;
     }
 
     //    /**
@@ -175,10 +181,10 @@ public class PropertyMapping {
      * 通过持久化字段（数据库字段）的名称返回指定属性映射. 没有找到返回null.
      * </p>
      *
-     * @param persitField 持久化字段（数据库字段）
+     * @param repositoryFiledName 持久化字段（数据库字段）
      * @return PropertyMapping
      */
-    public PropertyMapping getPropertyMappingByPersitField(String persitField) {
-        return propertyMappings.get(persitField);
+    public PropertyMapping getPropertyMappingByPersitField(String repositoryFiledName) {
+        return propertyMappings.get(repositoryFiledName);
     }
 }

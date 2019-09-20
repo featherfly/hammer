@@ -12,6 +12,8 @@ import cn.featherfly.common.bean.BeanDescriptor;
  * </p>
  *
  * @author zhongj
+ * @since 0.1.0
+ * @version 0.1.0
  */
 public class ClassNameJpaConversion implements ClassNameConversion {
 

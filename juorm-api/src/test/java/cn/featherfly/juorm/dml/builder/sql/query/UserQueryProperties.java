@@ -8,7 +8,8 @@ package cn.featherfly.juorm.dml.builder.sql.query;
  *
  * @author zhongj
  */
-public class UserQueryProperties extends AbstractUserQueryEntity<UserQueryProperties> {
+public class UserQueryProperties
+        extends AbstractUserQueryEntity<UserQueryProperties, UserQueryWith, UserQueryWithOn, UserQueryWithEntity> {
 
     public UserQueryProperties name() {
         return null;

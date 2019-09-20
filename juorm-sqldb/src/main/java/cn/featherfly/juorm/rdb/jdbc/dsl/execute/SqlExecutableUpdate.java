@@ -10,8 +10,8 @@ import cn.featherfly.juorm.dsl.execute.SimpleUpdateValue;
 import cn.featherfly.juorm.dsl.execute.UpdateNumberValue;
 import cn.featherfly.juorm.dsl.execute.UpdateValue;
 import cn.featherfly.juorm.expression.Repository;
+import cn.featherfly.juorm.mapping.ClassMapping;
 import cn.featherfly.juorm.rdb.jdbc.Jdbc;
-import cn.featherfly.juorm.rdb.jdbc.mapping.ClassMapping;
 import cn.featherfly.juorm.rdb.jdbc.mapping.ClassMappingUtils;
 import cn.featherfly.juorm.rdb.sql.dml.builder.basic.SqlUpdateSetBasicBuilder;
 import cn.featherfly.juorm.rdb.sql.model.UpdateColumnElement.SetType;
@@ -62,7 +62,7 @@ public class SqlExecutableUpdate implements SqlUpdate, ExecutableUpdate {
     public SqlExecutableUpdate(ClassMapping<?> classMapping, Jdbc jdbc) {
         this.classMapping = classMapping;
         this.jdbc = jdbc;
-        builder = new SqlUpdateSetBasicBuilder(jdbc.getDialect(), classMapping.getTableName());
+        builder = new SqlUpdateSetBasicBuilder(jdbc.getDialect(), classMapping.getRepositoryName());
     }
 
     /**

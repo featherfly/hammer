@@ -12,11 +12,17 @@ import cn.featherfly.juorm.expression.Repository;
  *
  * @author zhongj
  */
-public interface QueryExpression<Q extends QueryEntityExpression<QP, C, L>,
-        QP extends QueryEntityPropertiesExpression<QP, C, L>, C extends ConditionGroupExpression<C, L>,
-        L extends ConditionGroupLogicExpression<C, L>, TQ extends TypeQueryEntityExpression<TQP, TC, TL>,
-        TQP extends TypeQueryEntityPropertiesExpression<TQP, TC, TL>, TC extends ConditionGroupExpression<TC, TL>,
-        TL extends ConditionGroupLogicExpression<TC, TL>> {
+public interface QueryExpression<Q extends QueryEntityExpression<QP, QW, QWO, QWE, C, L>,
+        QP extends QueryEntityPropertiesExpression<QP, QW, QWO, QWE, C, L>,
+        QW extends QueryWithExpression<QW, QWO, QWE, C, L>, QWO extends QueryWithOnExpression<QW, QWO, QWE, C, L>,
+        QWE extends QueryWithEntityExpression<QW, QWO, QWE, C, L>, C extends ConditionGroupExpression<C, L>,
+        L extends ConditionGroupLogicExpression<C, L>,
+        TQ extends TypeQueryEntityExpression<TQP, TQW, TQWO, TQWE, TC, TL>,
+        TQP extends TypeQueryEntityPropertiesExpression<TQP, TQW, TQWO, TQWE, TC, TL>,
+        TQW extends TypeQueryWithExpression<TQW, TQWO, TQWE, TC, TL>,
+        TQWO extends TypeQueryWithOnExpression<TQW, TQWO, TQWE, TC, TL>,
+        TQWE extends TypeQueryWithEntityExpression<TQW, TQWO, TQWE, TC, TL>,
+        TC extends ConditionGroupExpression<TC, TL>, TL extends ConditionGroupLogicExpression<TC, TL>> {
     /**
      * find repository
      *

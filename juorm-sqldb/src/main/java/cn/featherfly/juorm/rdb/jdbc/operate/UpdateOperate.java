@@ -1,9 +1,9 @@
 package cn.featherfly.juorm.rdb.jdbc.operate;
 
 import cn.featherfly.common.db.metadata.DatabaseMetadata;
+import cn.featherfly.juorm.mapping.ClassMapping;
+import cn.featherfly.juorm.mapping.PropertyMapping;
 import cn.featherfly.juorm.rdb.jdbc.Jdbc;
-import cn.featherfly.juorm.rdb.jdbc.mapping.ClassMapping;
-import cn.featherfly.juorm.rdb.jdbc.mapping.PropertyMapping;
 
 /**
  * <p>
@@ -53,10 +53,10 @@ public class UpdateOperate<T> extends AbstractExecuteOperate<T> {
     @Override
     public void initSql() {
         StringBuilder updateSql = new StringBuilder();
-        updateSql.append("update ").append(classMapping.getTableName()).append(" set ");
+        updateSql.append("update ").append(classMapping.getRepositoryName()).append(" set ");
         int columnNum = 0;
         for (PropertyMapping pm : classMapping.getPropertyMappings()) {
-            updateSql.append(pm.getColumnName()).append(" = ? ,");
+            updateSql.append(pm.getRepositoryFiledName()).append(" = ? ,");
             columnNum++;
             propertyPositions.put(columnNum, pm.getPropertyName());
         }
@@ -70,7 +70,7 @@ public class UpdateOperate<T> extends AbstractExecuteOperate<T> {
                 if (pkNum > 0) {
                     updateSql.append("and ");
                 }
-                updateSql.append(pm.getColumnName()).append(" = ? ");
+                updateSql.append(pm.getRepositoryFiledName()).append(" = ? ");
                 pkNum++;
                 propertyPositions.put(columnNum + pkNum, pm.getPropertyName());
             }

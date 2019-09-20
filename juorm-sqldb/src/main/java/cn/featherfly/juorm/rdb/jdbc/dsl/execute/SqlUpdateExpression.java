@@ -5,8 +5,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import cn.featherfly.common.constant.Chars;
+import cn.featherfly.juorm.mapping.ClassMapping;
 import cn.featherfly.juorm.rdb.jdbc.Jdbc;
-import cn.featherfly.juorm.rdb.jdbc.mapping.ClassMapping;
 import cn.featherfly.juorm.rdb.sql.dml.builder.basic.SqlUpdateSetBasicBuilder;
 
 /**

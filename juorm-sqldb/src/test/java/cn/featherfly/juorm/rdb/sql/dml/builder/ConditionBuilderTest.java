@@ -50,7 +50,7 @@ public class ConditionBuilderTest {
         builder.find("user", "u").where().eq("name", name).and().eq("pwd", pwd).and().group().eq("sex", sex).or()
                 .gt("age", age).sort().asc("age", "sex").desc("name");
         builder = new SqlQueryBuilder(Dialects.MYSQL);
-        builder.find("user", "u").with("name", "pwd", "age", "sex").where().eq("name", name).and().eq("pwd", pwd).and()
+        builder.find("user", "u").property("name", "pwd", "age", "sex").where().eq("name", name).and().eq("pwd", pwd).and()
                 .group().eq("sex", sex).or().gt("age", age).sort().asc("age", "sex").desc("name");
 
         System.out.println(builder.build());

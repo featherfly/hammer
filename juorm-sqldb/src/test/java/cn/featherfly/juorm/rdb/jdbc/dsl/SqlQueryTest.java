@@ -8,6 +8,7 @@ import org.testng.annotations.Test;
 import cn.featherfly.juorm.expression.SimpleRepository;
 import cn.featherfly.juorm.rdb.jdbc.JdbcTestBase;
 import cn.featherfly.juorm.rdb.jdbc.dsl.query.SqlQuery;
+import cn.featherfly.juorm.rdb.jdbc.vo.Tree;
 import cn.featherfly.juorm.rdb.jdbc.vo.User;
 import cn.featherfly.juorm.rdb.jdbc.vo.UserInfo;
 
@@ -85,5 +86,48 @@ public class SqlQueryTest extends JdbcTestBase {
         userInfo = query.find(UserInfo.class).where().eq("division.province", province).single();
         assertEquals(userInfo.getDivision().getProvince(), province);
         System.out.println(userInfo);
+    }
+
+    @Test
+    void testJoin() {
+        SqlQuery query = new SqlQuery(jdbc, mappingFactory);
+
+        query.find("user").property("username", "password", "age").with("user_info").on("user_id").list();
+
+        query.find("user").property("username", "password", "age").with("user_info").on("user_id").property("name")
+                .list();
+
+        query.find("user").property("username", "password", "age").with("user_info").on("user_id").fetch().list();
+
+        query.find("user").property("username", "password", "age").with("user_info").on("user_id").property("name")
+                .list();
+
+        query.find("user").property("username", "password", "age").with("user_info").on("user_id").property("name")
+                .fetch().list();
+
+        query.find("user").property("username", "password", "age").with("user_info").on("user_id").property("name")
+                .property("descp").list();
+
+        query.find("user").property("username", "password", "age").with("user_role").on("user_id").with("role")
+                .on("id", "user_role", "role_id").fetch().list();
+
+        query.find("user").property("username", "password", "age").with(UserInfo.class).on("user_id").list();
+
+        query.find("user").property("username", "password", "age").with(UserInfo.class).on("user_id").fetch().list();
+
+        query.find("tree").with("tree").on("parent_id").list();
+
+        query.find("tree").with("tree").on("parent_id").with("tree").on("parent_id").list();
+
+        query.find(Tree.class).with(Tree.class).on("parent_id").with(Tree.class).on("parent_id").list();
+
+        query.find("user_info").with("user").on("id", "user_id").propertyAlias("password", "pwd").fetch().list();
+    }
+
+    @Test
+    void testJoin2() {
+        SqlQuery query = new SqlQuery(jdbc, mappingFactory);
+
+        query.find(Tree.class).with(Tree.class).on("parent_id").with(Tree.class).on("parent_id").list();
     }
 }

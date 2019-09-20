@@ -1,0 +1,80 @@
+
+package cn.featherfly.juorm.expression.query;
+
+import java.util.Collection;
+
+import cn.featherfly.common.lang.function.SerializableFunction;
+import cn.featherfly.juorm.expression.ConditionGroupExpression;
+import cn.featherfly.juorm.expression.ConditionGroupLogicExpression;
+import cn.featherfly.juorm.expression.WhereExpression;
+
+/**
+ * <p>
+ * dsl for query data
+ * </p>
+ *
+ * @author zhongj
+ */
+public interface TypeQueryWithEntityExpression<QW extends TypeQueryWithExpression<QW, QWO, QWE, C, L>,
+        QWO extends TypeQueryWithOnExpression<QW, QWO, QWE, C, L>,
+        QWE extends TypeQueryWithEntityExpression<QW, QWO, QWE, C, L>, C extends ConditionGroupExpression<C, L>,
+        L extends ConditionGroupLogicExpression<C, L>>
+        extends WhereExpression<C, L>, TypeQueryWithExpression<QW, QWO, QWE, C, L> {
+
+    /**
+     * <p>
+     * 添加查询出来的属性
+     * </p>
+     *
+     * @param propertyName propertyName
+     * @return QueryWithEntityExpression
+     */
+    QWE property(String propertyName);
+
+    /**
+     * <p>
+     * 添加查询出来的属性
+     * </p>
+     *
+     * @param propertyNames propertyNames
+     * @return QueryWithEntityExpression
+     */
+    QWE property(String... propertyNames);
+
+    /**
+     * <p>
+     * 添加查询出来的属性
+     * </p>
+     *
+     * @param propertyName propertyName
+     * @return QueryWithEntityExpression
+     */
+    <T, R> QWE property(SerializableFunction<T, R> propertyName);
+
+    /**
+     * <p>
+     * 添加查询出来的属性
+     * </p>
+     *
+     * @param propertyNames propertyNames
+     * @return QueryWithEntityExpression
+     */
+    <T, R> QWE property(@SuppressWarnings("unchecked") SerializableFunction<T, R>... propertyNames);
+
+    /**
+     * <p>
+     * 添加查询出来的属性
+     * </p>
+     *
+     * @param propertyNames propertyNames
+     * @return QueryWithEntityExpression
+     */
+    QWE property(Collection<String> propertyNames);
+
+    /**
+     * 添加查询出来的所有属性
+     *
+     * @return QueryWithExpression
+     */
+    QW fetch();
+}

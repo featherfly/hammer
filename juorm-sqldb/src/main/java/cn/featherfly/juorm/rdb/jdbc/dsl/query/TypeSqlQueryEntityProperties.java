@@ -1,21 +1,17 @@
 
 package cn.featherfly.juorm.rdb.jdbc.dsl.query;
 
-import java.util.Arrays;
-import java.util.Collection;
 import java.util.List;
-import java.util.Map;
-import java.util.stream.Collectors;
 
-import cn.featherfly.common.lang.LambdaUtils;
-import cn.featherfly.common.lang.function.SerializableFunction;
 import cn.featherfly.common.structure.page.Page;
+import cn.featherfly.juorm.dml.AliasManager;
 import cn.featherfly.juorm.dsl.query.TypeQueryConditionGroupExpression;
 import cn.featherfly.juorm.dsl.query.TypeQueryEntityProperties;
+import cn.featherfly.juorm.dsl.query.TypeQueryWithOn;
 import cn.featherfly.juorm.expression.query.TypeQueryExecutor;
+import cn.featherfly.juorm.mapping.ClassMapping;
+import cn.featherfly.juorm.mapping.MappingFactory;
 import cn.featherfly.juorm.rdb.jdbc.Jdbc;
-import cn.featherfly.juorm.rdb.jdbc.mapping.ClassMapping;
-import cn.featherfly.juorm.rdb.jdbc.mapping.ClassMappingUtils;
 import cn.featherfly.juorm.rdb.sql.dml.builder.basic.SqlSelectBasicBuilder;
 
 /**
@@ -25,88 +21,17 @@ import cn.featherfly.juorm.rdb.sql.dml.builder.basic.SqlSelectBasicBuilder;
  *
  * @author zhongj
  */
-public class TypeSqlQueryEntityProperties implements TypeSqlQueryEntity, TypeQueryEntityProperties {
-
-    private Jdbc jdbc;
-
-    private SqlSelectBasicBuilder selectBuilder;
-
-    private ClassMapping<?> classMapping;
+public class TypeSqlQueryEntityProperties extends AbstractSqlQueryEntityProperties<TypeSqlQueryEntityProperties>
+        implements TypeSqlQueryEntity, TypeQueryEntityProperties {
 
     /**
-     * @param tableName tableName
-     * @param jdbc      jdbc
-     */
-    public TypeSqlQueryEntityProperties(String tableName, Jdbc jdbc) {
-        this(tableName, jdbc, null);
-    }
-
-    /**
-     * @param classMapping classMapping
      * @param jdbc         jdbc
+     * @param classMapping classMapping
+     * @param aliasManager aliasManager
      */
-    public TypeSqlQueryEntityProperties(ClassMapping<?> classMapping, Jdbc jdbc) {
-        this.jdbc = jdbc;
-        this.classMapping = classMapping;
-        selectBuilder = new SqlSelectBasicBuilder(jdbc.getDialect(), classMapping);
-    }
-
-    /**
-     * @param tableName  tableName
-     * @param jdbc       jdbc
-     * @param tableAlias tableAlias
-     */
-    public TypeSqlQueryEntityProperties(String tableName, Jdbc jdbc, String tableAlias) {
-        super();
-        this.jdbc = jdbc;
-        selectBuilder = new SqlSelectBasicBuilder(jdbc.getDialect(), tableName, tableAlias);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public TypeQueryEntityProperties property(String propertyName) {
-        selectBuilder.addSelectColumn(ClassMappingUtils.getColumnName(propertyName, classMapping));
-        return this;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public TypeQueryEntityProperties property(String... propertyNames) {
-        selectBuilder.addSelectColumns(ClassMappingUtils.getColumnNames(classMapping, propertyNames));
-        return this;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public TypeQueryEntityProperties property(Collection<String> propertyNames) {
-        selectBuilder.addSelectColumns(ClassMappingUtils.getColumnNames(classMapping, propertyNames));
-        return this;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public TypeQueryEntityProperties propertyAlias(String columnName, String alias) {
-        selectBuilder.addSelectColumn(ClassMappingUtils.getColumnName(columnName, classMapping), alias);
-        return this;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public TypeQueryEntityProperties propertyAlias(Map<String, String> columnNameMap) {
-        columnNameMap.forEach((k, v) -> {
-            propertyAlias(k, v);
-        });
-        return this;
+    public TypeSqlQueryEntityProperties(Jdbc jdbc, ClassMapping<?> classMapping, MappingFactory factory,
+            AliasManager aliasManager) {
+        super(jdbc, classMapping, factory, aliasManager);
     }
 
     /**
@@ -153,17 +78,27 @@ public class TypeSqlQueryEntityProperties implements TypeSqlQueryEntity, TypeQue
      * {@inheritDoc}
      */
     @Override
-    public <T, R> TypeQueryEntityProperties property(
-            @SuppressWarnings("unchecked") SerializableFunction<T, R>... propertyNames) {
-        return property(
-                Arrays.stream(propertyNames).map(LambdaUtils::getLambdaPropertyName).collect(Collectors.toList()));
+    public TypeQueryWithOn with(String repositoryName) {
+        return new TypeSqlQueryWith(this, aliasManager, factory, selectBuilder.getTableAlias(), getIdName(),
+                repositoryName, aliasManager.put(repositoryName));
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public <T, R> TypeQueryEntityProperties property(SerializableFunction<T, R> propertyName) {
-        return property(LambdaUtils.getLambdaPropertyName(propertyName));
+    public <T> TypeQueryWithOn with(Class<T> repositoryType) {
+        return new TypeSqlQueryWith(this, aliasManager, factory, selectBuilder.getTableAlias(), getIdName(),
+                repositoryType);
+    }
+
+    /**
+     * 返回selectBuilder
+     *
+     * @return selectBuilder
+     */
+    @Override
+    SqlSelectBasicBuilder getSelectBuilder() {
+        return selectBuilder;
     }
 }

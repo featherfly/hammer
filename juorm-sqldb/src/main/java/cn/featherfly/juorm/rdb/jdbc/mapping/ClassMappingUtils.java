@@ -9,6 +9,8 @@ import java.util.Map;
 
 import cn.featherfly.common.lang.LangUtils;
 import cn.featherfly.common.lang.StringUtils;
+import cn.featherfly.juorm.mapping.ClassMapping;
+import cn.featherfly.juorm.mapping.PropertyMapping;
 import cn.featherfly.juorm.rdb.sql.dialect.Dialect;
 
 /**
@@ -42,7 +44,7 @@ public class ClassMappingUtils {
         StringBuilder selectSql = new StringBuilder();
         selectSql.append("select ");
         selectSql.append(getSelectColumnsSql(classMapping, alias, dialect));
-        selectSql.append(" from ").append(classMapping.getTableName());
+        selectSql.append(" from ").append(classMapping.getRepositoryName());
         return selectSql.toString();
     }
 
@@ -52,32 +54,34 @@ public class ClassMappingUtils {
         for (PropertyMapping propertyMapping : classMapping.getPropertyMappings()) {
             if (LangUtils.isEmpty(propertyMapping.getPropertyMappings())) {
                 if (StringUtils.isNotBlank(alias)) {
-                    selectSql.append(alias).append(".").append(dialect.wrapName(propertyMapping.getColumnName()))
-                            .append(" ").append(dialect.wrapName(propertyMapping.getPropertyName())).append(",");
+                    selectSql.append(alias).append(".")
+                            .append(dialect.wrapName(propertyMapping.getRepositoryFiledName())).append(" ")
+                            .append(dialect.wrapName(propertyMapping.getPropertyName())).append(", ");
                 } else {
-                    selectSql.append(dialect.wrapName(propertyMapping.getColumnName())).append(" ")
-                            .append(dialect.wrapName(propertyMapping.getPropertyName())).append(",");
+                    selectSql.append(dialect.wrapName(propertyMapping.getRepositoryFiledName())).append(" ")
+                            .append(dialect.wrapName(propertyMapping.getPropertyName())).append(", ");
                 }
                 columnNum++;
             } else {
                 for (PropertyMapping pm : propertyMapping.getPropertyMappings()) {
                     if (StringUtils.isNotBlank(alias)) {
-                        selectSql.append(alias).append(".").append(dialect.wrapName(pm.getColumnName())).append(" ")
+                        selectSql.append(alias).append(".").append(dialect.wrapName(pm.getRepositoryFiledName()))
+                                .append(" ")
                                 .append(dialect
                                         .wrapName(propertyMapping.getPropertyName() + "." + pm.getPropertyName()))
-                                .append(",");
+                                .append(", ");
                     } else {
-                        selectSql.append(dialect.wrapName(pm.getColumnName())).append(" ")
+                        selectSql.append(dialect.wrapName(pm.getRepositoryFiledName())).append(" ")
                                 .append(dialect
                                         .wrapName(propertyMapping.getPropertyName() + "." + pm.getPropertyName()))
-                                .append(",");
+                                .append(", ");
                     }
                     columnNum++;
                 }
             }
         }
         if (columnNum > 0) {
-            selectSql.deleteCharAt(selectSql.length() - 1);
+            selectSql.delete(selectSql.length() - 2, selectSql.length());
         }
         return selectSql.toString();
     }
@@ -86,10 +90,11 @@ public class ClassMappingUtils {
         Map<String, String> columns = new HashMap<>();
         for (PropertyMapping propertyMapping : classMapping.getPropertyMappings()) {
             if (LangUtils.isEmpty(propertyMapping.getPropertyMappings())) {
-                columns.put(propertyMapping.getColumnName(), propertyMapping.getPropertyName());
+                columns.put(propertyMapping.getRepositoryFiledName(), propertyMapping.getPropertyName());
             } else {
                 for (PropertyMapping pm : propertyMapping.getPropertyMappings()) {
-                    columns.put(pm.getColumnName(), propertyMapping.getPropertyName() + "." + pm.getPropertyName());
+                    columns.put(pm.getRepositoryFiledName(),
+                            propertyMapping.getPropertyName() + "." + pm.getPropertyName());
                 }
             }
         }
@@ -118,7 +123,7 @@ public class ClassMappingUtils {
     private static String getSimpleColumnName(String name, ClassMapping<?> classMapping) {
         PropertyMapping pm = classMapping.getPropertyMapping(name);
         if (pm != null) {
-            return pm.getColumnName();
+            return pm.getRepositoryFiledName();
         }
         return name;
     }
@@ -133,7 +138,7 @@ public class ClassMappingUtils {
             }
         }
         if (pm != null) {
-            return pm.getColumnName();
+            return pm.getRepositoryFiledName();
         } else {
             return null;
         }

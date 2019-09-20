@@ -48,10 +48,10 @@ public class SqlFindBuilder extends AbstractSqlSelectBuilder implements FindBuil
      * {@inheritDoc}
      */
     @Override
-    public FindBuilder with(String... propertyNames) {
+    public FindBuilder property(String... propertyNames) {
         if (LangUtils.isNotEmpty(propertyNames)) {
             for (String p : propertyNames) {
-                with(p);
+                property(p);
             }
         }
         return this;
@@ -66,7 +66,7 @@ public class SqlFindBuilder extends AbstractSqlSelectBuilder implements FindBuil
      * {@inheritDoc}
      */
     @Override
-    public FindBuilder with(String propertyName) {
+    public FindBuilder property(String propertyName) {
         return with(propertyName, null);
     }
 
@@ -74,10 +74,10 @@ public class SqlFindBuilder extends AbstractSqlSelectBuilder implements FindBuil
      * {@inheritDoc}
      */
     @Override
-    public FindBuilder with(Collection<String> propertyNames) {
+    public FindBuilder property(Collection<String> propertyNames) {
         if (LangUtils.isNotEmpty(propertyNames)) {
             for (String p : propertyNames) {
-                with(p);
+                property(p);
             }
         }
         return this;
