@@ -100,6 +100,7 @@ public class SqlSelectBasicBuilder implements SqlBuilder {
      */
     public void setTableAlias(String tableAlias) {
         this.tableAlias = tableAlias;
+        defaultSelectColumnsBasicBuilder.setTableAlias(tableAlias);
     }
 
     /**

@@ -2,15 +2,9 @@
 package cn.featherfly.juorm.rdb.jdbc.dsl.query;
 
 import java.math.BigDecimal;
-import java.util.Arrays;
-import java.util.Collection;
 import java.util.List;
 import java.util.Map;
-import java.util.stream.Collectors;
 
-import cn.featherfly.common.lang.LambdaUtils;
-import cn.featherfly.common.lang.StringUtils;
-import cn.featherfly.common.lang.function.SerializableFunction;
 import cn.featherfly.common.structure.page.Page;
 import cn.featherfly.juorm.dml.AliasManager;
 import cn.featherfly.juorm.dsl.query.QueryConditionGroupExpression;
@@ -20,8 +14,6 @@ import cn.featherfly.juorm.mapping.ClassMapping;
 import cn.featherfly.juorm.mapping.MappingFactory;
 import cn.featherfly.juorm.mapping.RowMapper;
 import cn.featherfly.juorm.rdb.jdbc.Jdbc;
-import cn.featherfly.juorm.rdb.jdbc.mapping.ClassMappingUtils;
-import cn.featherfly.juorm.rdb.sql.dml.builder.basic.SqlSelectBasicBuilder;
 
 /**
  * <p>
@@ -30,23 +22,8 @@ import cn.featherfly.juorm.rdb.sql.dml.builder.basic.SqlSelectBasicBuilder;
  *
  * @author zhongj
  */
-public class SqlQueryEntityProperties implements SqlQueryEntity, QueryEntityProperties {
-
-    private static final String DEFAULT_ID_NAME = "id";
-
-    protected Jdbc jdbc;
-
-    protected String idName;
-
-    protected SqlSelectBasicBuilder selectBuilder;
-
-    protected ClassMapping<?> classMapping;
-
-    protected MappingFactory factory;
-
-    protected AliasManager aliasManager;
-
-    protected String tableAlias;
+public class SqlQueryEntityProperties extends AbstractSqlQueryEntityProperties<SqlQueryEntityProperties>
+        implements SqlQueryEntity, QueryEntityProperties {
 
     /**
      * @param jdbc         jdbc
@@ -66,12 +43,7 @@ public class SqlQueryEntityProperties implements SqlQueryEntity, QueryEntityProp
      */
     public SqlQueryEntityProperties(Jdbc jdbc, ClassMapping<?> classMapping, MappingFactory factory,
             AliasManager aliasManager) {
-        this.jdbc = jdbc;
-        this.classMapping = classMapping;
-        this.factory = factory;
-        this.aliasManager = aliasManager;
-        tableAlias = aliasManager.getAlias(classMapping.getRepositoryName());
-        selectBuilder = new SqlSelectBasicBuilder(jdbc.getDialect(), classMapping, tableAlias);
+        super(jdbc, classMapping, factory, aliasManager);
     }
 
     /**
@@ -83,101 +55,7 @@ public class SqlQueryEntityProperties implements SqlQueryEntity, QueryEntityProp
      */
     public SqlQueryEntityProperties(Jdbc jdbc, String tableName, String tableAlias, MappingFactory factory,
             AliasManager aliasManager) {
-        super();
-        this.jdbc = jdbc;
-        this.factory = factory;
-        this.aliasManager = aliasManager;
-        if (tableAlias == null) {
-            tableAlias = aliasManager.put(tableName);
-        }
-        this.tableAlias = tableAlias;
-        selectBuilder = new SqlSelectBasicBuilder(jdbc.getDialect(), tableName, tableAlias);
-    }
-
-    //    private SqlQueryEntityProperties(SqlQueryEntityProperties parent, Jdbc jdbc, ClassMapping<?> classMapping,
-    //            String tableName, String tableAlias) {
-    //        this.jdbc = jdbc;
-    //        this.classMapping = classMapping;
-    //        if (classMapping != null) {
-    //            selectBuilder = new SqlSelectBasicBuilder(jdbc.getDialect(), classMapping);
-    //        } else {
-    //            selectBuilder = new SqlSelectBasicBuilder(jdbc.getDialect(), tableName, tableAlias);
-    //        }
-    //    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public QueryEntityProperties property(String propertyName) {
-        selectBuilder.addSelectColumn(ClassMappingUtils.getColumnName(propertyName, classMapping));
-        return this;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public QueryEntityProperties property(String... propertyNames) {
-        selectBuilder.addSelectColumns(ClassMappingUtils.getColumnNames(classMapping, propertyNames));
-        return this;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public QueryEntityProperties property(Collection<String> propertyNames) {
-        selectBuilder.addSelectColumns(ClassMappingUtils.getColumnNames(classMapping, propertyNames));
-        return this;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public <T, R> QueryEntityProperties property(
-            @SuppressWarnings("unchecked") SerializableFunction<T, R>... propertyNames) {
-        return property(
-                Arrays.stream(propertyNames).map(LambdaUtils::getLambdaPropertyName).collect(Collectors.toList()));
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public <T, R> QueryEntityProperties property(SerializableFunction<T, R> propertyName) {
-        return property(LambdaUtils.getLambdaPropertyName(propertyName));
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public <T, R> QueryEntityProperties propertyAlias(SerializableFunction<T, R> propertyName, String alias) {
-        selectBuilder.addSelectColumn(
-                ClassMappingUtils.getColumnName(LambdaUtils.getLambdaPropertyName(propertyName), classMapping), alias);
-        return this;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public QueryEntityProperties propertyAlias(String columnName, String alias) {
-        selectBuilder.addSelectColumn(ClassMappingUtils.getColumnName(columnName, classMapping), alias);
-        return this;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public QueryEntityProperties propertyAlias(Map<String, String> columnNameMap) {
-        columnNameMap.forEach((k, v) -> {
-            propertyAlias(k, v);
-        });
-        return this;
+        super(jdbc, tableName, tableAlias, factory, aliasManager);
     }
 
     /**
@@ -274,36 +152,6 @@ public class SqlQueryEntityProperties implements SqlQueryEntity, QueryEntityProp
     @Override
     public <N extends Number> N number(Class<N> type) {
         return new SqlQueryExpression(jdbc, classMapping, selectBuilder).number(type);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public QueryEntityProperties id(String propertyName) {
-        idName = propertyName;
-        return this;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public <T, R> QueryEntityProperties id(SerializableFunction<T, R> propertyName) {
-        return id(LambdaUtils.getLambdaPropertyName(propertyName));
-    }
-
-    private String getIdName() {
-        return StringUtils.pickFirst(idName, DEFAULT_ID_NAME);
-    }
-
-    /**
-     * 返回selectBuilder
-     *
-     * @return selectBuilder
-     */
-    SqlSelectBasicBuilder getSelectBuilder() {
-        return selectBuilder;
     }
 
     /**

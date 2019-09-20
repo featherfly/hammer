@@ -107,11 +107,8 @@ public abstract class AbstractSqlQueryEntityProperties<E extends AbstractSqlQuer
         return property(LambdaUtils.getLambdaPropertyName(propertyName));
     }
 
-    @SuppressWarnings("unchecked")
     public <T, R> E propertyAlias(SerializableFunction<T, R> propertyName, String alias) {
-        selectBuilder.addSelectColumn(
-                ClassMappingUtils.getColumnName(LambdaUtils.getLambdaPropertyName(propertyName), classMapping), alias);
-        return (E) this;
+        return propertyAlias(LambdaUtils.getLambdaPropertyName(propertyName), alias);
     }
 
     @SuppressWarnings("unchecked")
@@ -130,7 +127,7 @@ public abstract class AbstractSqlQueryEntityProperties<E extends AbstractSqlQuer
 
     @SuppressWarnings("unchecked")
     public E id(String propertyName) {
-        idName = propertyName;
+        idName = ClassMappingUtils.getColumnName(propertyName, classMapping);
         return (E) this;
     }
 

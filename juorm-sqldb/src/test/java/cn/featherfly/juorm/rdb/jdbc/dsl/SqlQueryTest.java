@@ -94,19 +94,17 @@ public class SqlQueryTest extends JdbcTestBase {
 
         query.find("user").property("username", "password", "age").with("user_info").on("user_id").list();
 
-        query.find("user").property("username", "password", "age").with("user_info").on("user_id").property("name")
-                .list();
+        query.find("user").property("username", "password", "age").with("user_info").on("user_id").fetch("name").list();
 
         query.find("user").property("username", "password", "age").with("user_info").on("user_id").fetch().list();
 
-        query.find("user").property("username", "password", "age").with("user_info").on("user_id").property("name")
+        query.find("user").property("username", "password", "age").with("user_info").on("user_id").fetch("name").list();
+
+        query.find("user").property("username", "password", "age").with("user_info").on("user_id").fetch("name").fetch()
                 .list();
 
-        query.find("user").property("username", "password", "age").with("user_info").on("user_id").property("name")
-                .fetch().list();
-
-        query.find("user").property("username", "password", "age").with("user_info").on("user_id").property("name")
-                .property("descp").list();
+        query.find("user").property("username", "password", "age").with("user_info").on("user_id").fetch("name")
+                .fetch("descp").list();
 
         query.find("user").property("username", "password", "age").with("user_role").on("user_id").with("role")
                 .on("id", "user_role", "role_id").fetch().list();
@@ -121,13 +119,15 @@ public class SqlQueryTest extends JdbcTestBase {
 
         query.find(Tree.class).with(Tree.class).on("parent_id").with(Tree.class).on("parent_id").list();
 
-        query.find("user_info").with("user").on("id", "user_id").propertyAlias("password", "pwd").fetch().list();
+        query.find("user_info").with("user").on("id", "user_id").fetchAlias("password", "pwd").fetch().list();
     }
 
     @Test
     void testJoin2() {
         SqlQuery query = new SqlQuery(jdbc, mappingFactory);
-
-        query.find(Tree.class).with(Tree.class).on("parent_id").with(Tree.class).on("parent_id").list();
+        //query.find(User.class).with(UserRole.class)
+        //query.find(User.class).with(UserRole2::getUser).with(UserRole2::getRole).where();
+        //query.find(UserInfo.class).with("user");
+        //        query.find(UserInfo.class).with(UserInfo::getUser).on(propertyName);
     }
 }

@@ -3,6 +3,8 @@ package cn.featherfly.juorm.rdb.jdbc.dsl.query;
 
 import java.util.List;
 
+import cn.featherfly.common.lang.LambdaUtils;
+import cn.featherfly.common.lang.function.SerializableFunction;
 import cn.featherfly.common.structure.page.Page;
 import cn.featherfly.juorm.dml.AliasManager;
 import cn.featherfly.juorm.dsl.query.TypeQueryConditionGroupExpression;
@@ -12,6 +14,7 @@ import cn.featherfly.juorm.expression.query.TypeQueryExecutor;
 import cn.featherfly.juorm.mapping.ClassMapping;
 import cn.featherfly.juorm.mapping.MappingFactory;
 import cn.featherfly.juorm.rdb.jdbc.Jdbc;
+import cn.featherfly.juorm.rdb.jdbc.mapping.ClassMappingUtils;
 import cn.featherfly.juorm.rdb.sql.dml.builder.basic.SqlSelectBasicBuilder;
 
 /**
@@ -78,9 +81,17 @@ public class TypeSqlQueryEntityProperties extends AbstractSqlQueryEntityProperti
      * {@inheritDoc}
      */
     @Override
-    public TypeQueryWithOn with(String repositoryName) {
+    public <T, R> TypeQueryWithOn with(SerializableFunction<T, R> propertyName) {
+        return with(LambdaUtils.getLambdaPropertyName(propertyName));
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public TypeQueryWithOn with(String propertyName) {
         return new TypeSqlQueryWith(this, aliasManager, factory, selectBuilder.getTableAlias(), getIdName(),
-                repositoryName, aliasManager.put(repositoryName));
+                ClassMappingUtils.getColumnName(propertyName, classMapping), aliasManager.put(propertyName));
     }
 
     /**

@@ -61,9 +61,9 @@ public class DslTest {
         query.find("user").with("user_info").on("user_id").with("user_role").on("user_id", "id").with("role")
                 .on("id", "user_role", "role_id").fetch();
 
-        query.find("user").with("user_info").on("user_id").property("name").fetch();
+        query.find("user").with("user_info").on("user_id").fetch("name").fetch();
 
-        query.find("user").with("user_info").on("user_id").property("name").with("user_role").on("user_id", "id")
+        query.find("user").with("user_info").on("user_id").fetch("name").with("user_role").on("user_id", "id")
                 .with("role").on("id", "user_role", "role_id").fetch();
 
         //        query.find("user").with("user_role").on("user_id").with("role").on("id", "user_role", "role_id").fetch()

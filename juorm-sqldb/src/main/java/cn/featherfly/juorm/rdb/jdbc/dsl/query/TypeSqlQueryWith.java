@@ -95,9 +95,17 @@ public class TypeSqlQueryWith implements TypeQueryWith, TypeQueryWithOn, TypeQue
      * {@inheritDoc}
      */
     @Override
+    public <T, R> TypeQueryWithOn with(SerializableFunction<T, R> propertyName) {
+        return with(LambdaUtils.getLambdaPropertyName(propertyName));
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
     public TypeQueryWithOn with(String repositoryName) {
         return new TypeSqlQueryWith(sqlQueryEntityProperties, aliasManager, factory, selectTableAlis, selectTableColumn,
-                repositoryName, aliasManager.put(repositoryName));
+                ClassMappingUtils.getColumnName(repositoryName, classMapping), aliasManager.put(repositoryName));
     }
 
     /**
@@ -148,7 +156,7 @@ public class TypeSqlQueryWith implements TypeQueryWith, TypeQueryWithOn, TypeQue
      * {@inheritDoc}
      */
     @Override
-    public TypeQueryWithEntity property(String propertyName) {
+    public TypeQueryWithEntity fetch(String propertyName) {
         selectJoinOnBasicBuilder.addSelectColumn(propertyName);
         return this;
     }
@@ -157,7 +165,7 @@ public class TypeSqlQueryWith implements TypeQueryWith, TypeQueryWithOn, TypeQue
      * {@inheritDoc}
      */
     @Override
-    public TypeQueryWithEntity property(String... propertyNames) {
+    public TypeQueryWithEntity fetch(String... propertyNames) {
         selectJoinOnBasicBuilder.addSelectColumns(propertyNames);
         return this;
     }
@@ -166,25 +174,24 @@ public class TypeSqlQueryWith implements TypeQueryWith, TypeQueryWithOn, TypeQue
      * {@inheritDoc}
      */
     @Override
-    public <T, R> TypeQueryWithEntity property(
-            @SuppressWarnings("unchecked") SerializableFunction<T, R>... propertyNames) {
-        return property(
-                Arrays.stream(propertyNames).map(LambdaUtils::getLambdaPropertyName).collect(Collectors.toList()));
+    public <T,
+            R> TypeQueryWithEntity fetch(@SuppressWarnings("unchecked") SerializableFunction<T, R>... propertyNames) {
+        return fetch(Arrays.stream(propertyNames).map(LambdaUtils::getLambdaPropertyName).collect(Collectors.toList()));
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public <T, R> TypeQueryWithEntity property(SerializableFunction<T, R> propertyName) {
-        return property(LambdaUtils.getLambdaPropertyName(propertyName));
+    public <T, R> TypeQueryWithEntity fetch(SerializableFunction<T, R> propertyName) {
+        return fetch(LambdaUtils.getLambdaPropertyName(propertyName));
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public TypeQueryWithEntity property(Collection<String> propertyNames) {
+    public TypeQueryWithEntity fetch(Collection<String> propertyNames) {
         selectJoinOnBasicBuilder.addSelectColumns(propertyNames);
         return this;
     }
@@ -280,5 +287,4 @@ public class TypeSqlQueryWith implements TypeQueryWith, TypeQueryWithOn, TypeQue
     public TypeQueryExecutor limit(Page page) {
         return sqlQueryEntityProperties.limit(page);
     }
-
 }
