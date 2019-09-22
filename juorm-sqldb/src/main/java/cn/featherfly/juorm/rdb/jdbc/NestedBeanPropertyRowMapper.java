@@ -66,7 +66,8 @@ import cn.featherfly.common.lang.AssertIllegalArgument;
  * @author Thomas Risberg
  * @author Juergen Hoeller
  * @since 2.5
- * @param <T> the result type
+ * @param <T>
+ *            the result type
  */
 public class NestedBeanPropertyRowMapper<T> implements RowMapper<T> {
 
@@ -85,7 +86,8 @@ public class NestedBeanPropertyRowMapper<T> implements RowMapper<T> {
 
     /** ConversionService for binding JDBC values to bean properties. */
     @Nullable
-    private ConversionService conversionService = DefaultConversionService.getSharedInstance();
+    private ConversionService conversionService = DefaultConversionService
+            .getSharedInstance();
 
     /** Map of the fields we provide mapping for. */
     @Nullable
@@ -111,7 +113,8 @@ public class NestedBeanPropertyRowMapper<T> implements RowMapper<T> {
      * Consider using the {@link #newInstance} factory method instead, which
      * allows for specifying the mapped type once only.
      *
-     * @param mappedClass the class that each row should be mapped to
+     * @param mappedClass
+     *            the class that each row should be mapped to
      */
     public NestedBeanPropertyRowMapper(Class<T> mappedClass) {
         initialize(mappedClass);
@@ -120,12 +123,14 @@ public class NestedBeanPropertyRowMapper<T> implements RowMapper<T> {
     /**
      * Create a new {@code BeanPropertyRowMapper}.
      *
-     * @param mappedClass         the class that each row should be mapped to
-     * @param checkFullyPopulated whether we're strictly validating that all
-     *                            bean properties have been mapped from
-     *                            corresponding database fields
+     * @param mappedClass
+     *            the class that each row should be mapped to
+     * @param checkFullyPopulated
+     *            whether we're strictly validating that all bean properties
+     *            have been mapped from corresponding database fields
      */
-    public NestedBeanPropertyRowMapper(Class<T> mappedClass, boolean checkFullyPopulated) {
+    public NestedBeanPropertyRowMapper(Class<T> mappedClass,
+            boolean checkFullyPopulated) {
         initialize(mappedClass);
         this.checkFullyPopulated = checkFullyPopulated;
     }
@@ -138,8 +143,11 @@ public class NestedBeanPropertyRowMapper<T> implements RowMapper<T> {
             initialize(mappedClass);
         } else {
             if (this.mappedClass != mappedClass) {
-                throw new InvalidDataAccessApiUsageException("The mapped class can not be reassigned to map to "
-                        + mappedClass + " since it is already providing mapping for " + this.mappedClass);
+                throw new InvalidDataAccessApiUsageException(
+                        "The mapped class can not be reassigned to map to "
+                                + mappedClass
+                                + " since it is already providing mapping for "
+                                + this.mappedClass);
             }
         }
     }
@@ -178,7 +186,8 @@ public class NestedBeanPropertyRowMapper<T> implements RowMapper<T> {
      * Default is {@code false}, throwing an exception when nulls are mapped to
      * Java primitives.
      */
-    public void setPrimitivesDefaultedForNullValue(boolean primitivesDefaultedForNullValue) {
+    public void setPrimitivesDefaultedForNullValue(
+            boolean primitivesDefaultedForNullValue) {
         this.primitivesDefaultedForNullValue = primitivesDefaultedForNullValue;
     }
 
@@ -201,7 +210,8 @@ public class NestedBeanPropertyRowMapper<T> implements RowMapper<T> {
      * @since 4.3
      * @see #initBeanWrapper(BeanWrapper)
      */
-    public void setConversionService(@Nullable ConversionService conversionService) {
+    public void setConversionService(
+            @Nullable ConversionService conversionService) {
         this.conversionService = conversionService;
     }
 
@@ -219,14 +229,16 @@ public class NestedBeanPropertyRowMapper<T> implements RowMapper<T> {
     /**
      * Initialize the mapping meta-data for the given class.
      *
-     * @param mappedClass the mapped class
+     * @param mappedClass
+     *            the mapped class
      */
     protected void initialize(Class<T> mappedClass) {
         AssertIllegalArgument.isNotNull(mappedClass, "mappedClass");
         this.mappedClass = mappedClass;
         this.mappedFields = new HashMap<>();
         this.mappedProperties = new HashSet<>();
-        PropertyDescriptor[] pds = BeanUtils.getPropertyDescriptors(mappedClass);
+        PropertyDescriptor[] pds = BeanUtils
+                .getPropertyDescriptors(mappedClass);
         for (PropertyDescriptor pd : pds) {
             if (pd.getWriteMethod() != null) {
                 this.mappedFields.put(lowerCaseName(pd.getName()), pd);
@@ -244,7 +256,8 @@ public class NestedBeanPropertyRowMapper<T> implements RowMapper<T> {
      * upper case letters are converted to lower case with a preceding
      * underscore.
      *
-     * @param name the original name
+     * @param name
+     *            the original name
      * @return the converted name
      * @since 4.2
      * @see #lowerCaseName
@@ -271,7 +284,8 @@ public class NestedBeanPropertyRowMapper<T> implements RowMapper<T> {
      * Convert the given name to lower case. By default, conversions will happen
      * within the US locale.
      *
-     * @param name the original name
+     * @param name
+     *            the original name
      * @return the converted name
      * @since 4.2
      */
@@ -288,58 +302,81 @@ public class NestedBeanPropertyRowMapper<T> implements RowMapper<T> {
      */
     @Override
     public T mapRow(ResultSet rs, int rowNumber) throws SQLException {
-        Assert.state(this.mappedClass != null, "Mapped class was not specified");
+        Assert.state(this.mappedClass != null,
+                "Mapped class was not specified");
         T mappedObject = BeanUtils.instantiateClass(this.mappedClass);
-        BeanWrapper bw = PropertyAccessorFactory.forBeanPropertyAccess(mappedObject);
+        BeanWrapper bw = PropertyAccessorFactory
+                .forBeanPropertyAccess(mappedObject);
         initBeanWrapper(bw);
 
         ResultSetMetaData rsmd = rs.getMetaData();
         int columnCount = rsmd.getColumnCount();
-        Set<String> populatedProperties = isCheckFullyPopulated() ? new HashSet<>() : null;
+        Set<String> populatedProperties = isCheckFullyPopulated()
+                ? new HashSet<>()
+                : null;
 
         for (int index = 1; index <= columnCount; index++) {
             String column = JdbcUtils.lookupColumnName(rsmd, index);
             String field = lowerCaseName(StringUtils.delete(column, " "));
-            String fieldOriginal = field;
 
             boolean nestedProperty = false;
             if (field.contains(".")) {
                 nestedProperty = true;
-                field = org.apache.commons.lang3.StringUtils.substringBefore(field, ".");
+                field = org.apache.commons.lang3.StringUtils
+                        .substringBefore(field, ".");
             }
-            PropertyDescriptor pd = this.mappedFields != null ? this.mappedFields.get(field) : null;
+            PropertyDescriptor pd = this.mappedFields != null
+                    ? this.mappedFields.get(field)
+                    : null;
             if (pd != null) {
                 try {
                     Object value = null;
                     if (nestedProperty) {
                         // 嵌套设值，所以直接使用SQL查询出来列的别名
-                        BeanDescriptor<T> bd = BeanDescriptor.getBeanDescriptor(mappedClass);
+                        BeanDescriptor<T> bd = BeanDescriptor
+                                .getBeanDescriptor(mappedClass);
                         @SuppressWarnings("rawtypes")
-                        BeanProperty bp = bd.getChildBeanProperty(fieldOriginal);
+
+                        BeanProperty bp = bd.getChildBeanProperty(column);
                         if (bp != null) {
                             if (rowNumber == 0) {
-                                logger.debug("Mapping column '{} as {}' to property '{}' of type '{}'",
-                                        rsmd.getColumnName(index), column, fieldOriginal, bp.getType().getName());
+                                logger.debug(
+                                        "Mapping column '{} as {}' to property '{}' of type '{}'",
+                                        rsmd.getColumnName(index), column,
+                                        column, bp.getType().getName());
                             }
-                            value = JdbcUtils.getResultSetValue(rs, index, bp.getType());
-                            bd.setProperty(mappedObject, fieldOriginal, value);
+                            value = JdbcUtils.getResultSetValue(rs, index,
+                                    bp.getType());
+                            bd.setProperty(mappedObject, column, value);
                         }
                     } else {
                         value = getColumnValue(rs, index, pd);
                         if (rowNumber == 0) {
-                            logger.debug("Mapping column '{}' to property '{}' of type '{}'", column, pd.getName(),
-                                    ClassUtils.getQualifiedName(pd.getPropertyType()));
+                            logger.debug(
+                                    "Mapping column '{}' to property '{}' of type '{}'",
+                                    column, pd.getName(),
+                                    ClassUtils.getQualifiedName(
+                                            pd.getPropertyType()));
                         }
                         try {
                             bw.setPropertyValue(pd.getName(), value);
                         } catch (TypeMismatchException ex) {
-                            if (value == null && this.primitivesDefaultedForNullValue) {
+                            if (value == null
+                                    && this.primitivesDefaultedForNullValue) {
                                 if (logger.isDebugEnabled()) {
-                                    logger.debug("Intercepted TypeMismatchException for row " + rowNumber
-                                            + " and column '" + column + "' with null value when setting property '"
-                                            + pd.getName() + "' of type '"
-                                            + ClassUtils.getQualifiedName(pd.getPropertyType()) + "' on object: "
-                                            + mappedObject, ex);
+                                    logger.debug(
+                                            "Intercepted TypeMismatchException for row "
+                                                    + rowNumber
+                                                    + " and column '" + column
+                                                    + "' with null value when setting property '"
+                                                    + pd.getName()
+                                                    + "' of type '"
+                                                    + ClassUtils
+                                                            .getQualifiedName(pd
+                                                                    .getPropertyType())
+                                                    + "' on object: "
+                                                    + mappedObject,
+                                            ex);
                                 }
                             } else {
                                 throw ex;
@@ -351,20 +388,26 @@ public class NestedBeanPropertyRowMapper<T> implements RowMapper<T> {
                     }
                 } catch (NotWritablePropertyException ex) {
                     throw new DataRetrievalFailureException(
-                            "Unable to map column '" + column + "' to property '" + pd.getName() + "'", ex);
+                            "Unable to map column '" + column
+                                    + "' to property '" + pd.getName() + "'",
+                            ex);
                 }
             } else {
                 // No PropertyDescriptor found
                 if (rowNumber == 0 && logger.isDebugEnabled()) {
-                    logger.debug("No property found for column '" + column + "' mapped to field '" + field + "'");
+                    logger.debug("No property found for column '" + column
+                            + "' mapped to field '" + field + "'");
                 }
             }
         }
 
-        if (populatedProperties != null && !populatedProperties.equals(this.mappedProperties)) {
+        if (populatedProperties != null
+                && !populatedProperties.equals(this.mappedProperties)) {
             throw new InvalidDataAccessApiUsageException(
-                    "Given ResultSet does not contain all fields " + "necessary to populate object of class ["
-                            + this.mappedClass.getName() + "]: " + this.mappedProperties);
+                    "Given ResultSet does not contain all fields "
+                            + "necessary to populate object of class ["
+                            + this.mappedClass.getName() + "]: "
+                            + this.mappedProperties);
         }
 
         return mappedObject;
@@ -377,7 +420,8 @@ public class NestedBeanPropertyRowMapper<T> implements RowMapper<T> {
      * The default implementation applies the configured
      * {@link ConversionService}, if any. Can be overridden in subclasses.
      *
-     * @param bw the BeanWrapper to initialize
+     * @param bw
+     *            the BeanWrapper to initialize
      * @see #getConversionService()
      * @see BeanWrapper#setConversionService
      */
@@ -396,17 +440,21 @@ public class NestedBeanPropertyRowMapper<T> implements RowMapper<T> {
      * Subclasses may override this to check specific value types upfront, or to
      * post-process values return from {@code getResultSetValue}.
      *
-     * @param rs    is the ResultSet holding the data
-     * @param index is the column index
-     * @param pd    the bean property that each result object is expected to
-     *              match
+     * @param rs
+     *            is the ResultSet holding the data
+     * @param index
+     *            is the column index
+     * @param pd
+     *            the bean property that each result object is expected to match
      * @return the Object value
-     * @throws SQLException in case of extraction failure
+     * @throws SQLException
+     *             in case of extraction failure
      * @see org.springframework.jdbc.support.JdbcUtils#getResultSetValue(java.sql.ResultSet,
      *      int, Class)
      */
     @Nullable
-    protected Object getColumnValue(ResultSet rs, int index, PropertyDescriptor pd) throws SQLException {
+    protected Object getColumnValue(ResultSet rs, int index,
+            PropertyDescriptor pd) throws SQLException {
         return JdbcUtils.getResultSetValue(rs, index, pd.getPropertyType());
     }
 
@@ -414,10 +462,12 @@ public class NestedBeanPropertyRowMapper<T> implements RowMapper<T> {
      * Static factory method to create a new {@code BeanPropertyRowMapper} (with
      * the mapped class specified only once).
      *
-     * @param mappedClass the class that each row should be mapped to
+     * @param mappedClass
+     *            the class that each row should be mapped to
      * @return new instance
      */
-    public static <T> NestedBeanPropertyRowMapper<T> newInstance(Class<T> mappedClass) {
+    public static <T> NestedBeanPropertyRowMapper<T> newInstance(
+            Class<T> mappedClass) {
         return new NestedBeanPropertyRowMapper<>(mappedClass);
     }
 

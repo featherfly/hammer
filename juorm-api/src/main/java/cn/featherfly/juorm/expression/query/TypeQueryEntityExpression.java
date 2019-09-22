@@ -15,12 +15,14 @@ import cn.featherfly.juorm.expression.WhereExpression;
  *
  * @author zhongj
  */
-public interface TypeQueryEntityExpression<Q extends TypeQueryEntityPropertiesExpression<Q, QW, QWO, QWE, C, L>,
-        QW extends TypeQueryWithExpression<QW, QWO, QWE, C, L>,
-        QWO extends TypeQueryWithOnExpression<QW, QWO, QWE, C, L>,
-        QWE extends TypeQueryWithEntityExpression<QW, QWO, QWE, C, L>, C extends ConditionGroupExpression<C, L>,
-        L extends ConditionGroupLogicExpression<C, L>> extends WhereExpression<C, L>,
-        TypeQueryWithExpression<QW, QWO, QWE, C, L>, TypeQueryListExecutor, TypeQueryConditionLimit {
+public interface TypeQueryEntityExpression<
+        Q extends TypeQueryEntityPropertiesExpression<Q, QW, QWE, C, L>,
+        QW extends TypeQueryWithExpression<QW, QWE, C, L>,
+        QWE extends TypeQueryWithEntityExpression<QW, QWE, C, L>,
+        C extends ConditionGroupExpression<C, L>,
+        L extends ConditionGroupLogicExpression<C, L>>
+        extends WhereExpression<C, L>, TypeQueryWithExpression<QW, QWE, C, L>,
+        TypeQueryListExecutor, TypeQueryConditionLimit {
     /**
      * 设置id
      *
@@ -42,7 +44,8 @@ public interface TypeQueryEntityExpression<Q extends TypeQueryEntityPropertiesEx
      * 添加select的列
      * </p>
      *
-     * @param propertyName propertyName
+     * @param propertyName
+     *            propertyName
      * @return QueryEntityPropertiesExpression
      */
     Q property(String propertyName);
@@ -52,7 +55,8 @@ public interface TypeQueryEntityExpression<Q extends TypeQueryEntityPropertiesEx
      * 批量添加select的列
      * </p>
      *
-     * @param propertyNames propertyNames
+     * @param propertyNames
+     *            propertyNames
      * @return QueryEntityPropertiesExpression
      */
     Q property(String... propertyNames);
@@ -62,7 +66,8 @@ public interface TypeQueryEntityExpression<Q extends TypeQueryEntityPropertiesEx
      * 添加select的列
      * </p>
      *
-     * @param propertyName propertyName
+     * @param propertyName
+     *            propertyName
      * @return QueryEntityPropertiesExpression
      */
     <T, R> Q property(SerializableFunction<T, R> propertyName);
@@ -72,17 +77,20 @@ public interface TypeQueryEntityExpression<Q extends TypeQueryEntityPropertiesEx
      * 批量添加select的列
      * </p>
      *
-     * @param propertyNames propertyNames
+     * @param propertyNames
+     *            propertyNames
      * @return QueryEntityPropertiesExpression
      */
-    <T, R> Q property(@SuppressWarnings("unchecked") SerializableFunction<T, R>... propertyNames);
+    <T, R> Q property(
+            @SuppressWarnings("unchecked") SerializableFunction<T, R>... propertyNames);
 
     /**
      * <p>
      * 批量添加select的列
      * </p>
      *
-     * @param propertyNames propertyNames
+     * @param propertyNames
+     *            propertyNames
      * @return QueryEntityPropertiesExpression
      */
     Q property(Collection<String> propertyNames);

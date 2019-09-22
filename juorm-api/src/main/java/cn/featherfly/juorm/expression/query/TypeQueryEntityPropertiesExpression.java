@@ -12,9 +12,10 @@ import cn.featherfly.juorm.expression.ConditionGroupLogicExpression;
  * @author zhongj
  */
 public interface TypeQueryEntityPropertiesExpression<
-        Q extends TypeQueryEntityPropertiesExpression<Q, QW, QWO, QWE, C, L>,
-        QW extends TypeQueryWithExpression<QW, QWO, QWE, C, L>,
-        QWO extends TypeQueryWithOnExpression<QW, QWO, QWE, C, L>,
-        QWE extends TypeQueryWithEntityExpression<QW, QWO, QWE, C, L>, C extends ConditionGroupExpression<C, L>,
-        L extends ConditionGroupLogicExpression<C, L>> extends TypeQueryEntityExpression<Q, QW, QWO, QWE, C, L> {
+        Q extends TypeQueryEntityPropertiesExpression<Q, QW, QWE, C, L>,
+        QW extends TypeQueryWithExpression<QW, QWE, C, L>,
+        QWE extends TypeQueryWithEntityExpression<QW, QWE, C, L>,
+        C extends ConditionGroupExpression<C, L>,
+        L extends ConditionGroupLogicExpression<C, L>>
+        extends TypeQueryEntityExpression<Q, QW, QWE, C, L> {
 }

@@ -11,5 +11,5 @@ import cn.featherfly.juorm.expression.query.TypeQueryEntityPropertiesExpression;
  * @author zhongj
  */
 public interface TypeQueryEntityProperties extends
-        TypeQueryEntityPropertiesExpression<TypeQueryEntityProperties, TypeQueryWith, TypeQueryWithOn, TypeQueryWithEntity, TypeQueryConditionGroupExpression, TypeQueryConditionGroupLogicExpression> {
+        TypeQueryEntityPropertiesExpression<TypeQueryEntityProperties, TypeQueryWith, TypeQueryWithEntity, TypeQueryConditionGroupExpression, TypeQueryConditionGroupLogicExpression> {
 }

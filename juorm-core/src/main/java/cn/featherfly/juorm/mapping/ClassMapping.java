@@ -62,7 +62,7 @@ public class ClassMapping<T> {
      */
     public PropertyMapping getPropertyMappingByPersitField(String persitField) {
         for (PropertyMapping pm : propertyMappings.values()) {
-            if (pm.getRepositoryFiledName().equals(persitField)) {
+            if (pm.getRepositoryFieldName().equals(persitField)) {
                 return pm;
             }
         }

@@ -13,7 +13,7 @@ import javax.persistence.Table;
  *
  * @author zhongj
  */
-@Table
+@Table(name = "user_role")
 public class UserRole2 {
 
     @Id
@@ -40,7 +40,8 @@ public class UserRole2 {
     /**
      * 设置user
      * 
-     * @param user user
+     * @param user
+     *            user
      */
     public void setUser(User user) {
         this.user = user;
@@ -58,7 +59,8 @@ public class UserRole2 {
     /**
      * 设置role
      * 
-     * @param role role
+     * @param role
+     *            role
      */
     public void setRole(Role role) {
         this.role = role;
@@ -76,7 +78,8 @@ public class UserRole2 {
     /**
      * 设置descp
      * 
-     * @param descp descp
+     * @param descp
+     *            descp
      */
     public void setDescp(String descp) {
         this.descp = descp;
@@ -87,7 +90,8 @@ public class UserRole2 {
      */
     @Override
     public String toString() {
-        return "UserRole2 [user=" + user + ", role=" + role + ", descp=" + descp + "]";
+        return "UserRole2 [user=" + user + ", role=" + role + ", descp=" + descp
+                + "]";
     }
 
 }
