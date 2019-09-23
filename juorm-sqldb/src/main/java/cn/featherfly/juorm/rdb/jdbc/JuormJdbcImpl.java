@@ -141,6 +141,21 @@ public class JuormJdbcImpl implements Juorm {
      * {@inheritDoc}
      */
     @Override
+    public <E> int save(@SuppressWarnings("unchecked") E... entities) {
+        // TODO 后续加入InsertBatchOperate优化为sql批量插入
+        int size = 0;
+        if (LangUtils.isNotEmpty(entities)) {
+            for (E e : entities) {
+                size += save(e);
+            }
+        }
+        return size;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
     public <E> int save(List<E> entities) {
         // TODO 后续加入InsertBatchOperate优化为sql批量插入
         int size = 0;
@@ -170,6 +185,20 @@ public class JuormJdbcImpl implements Juorm {
         }
         validate(entity);
         return update.execute(entity);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public <E> int update(@SuppressWarnings("unchecked") E... entities) {
+        int size = 0;
+        if (LangUtils.isNotEmpty(entities)) {
+            for (E e : entities) {
+                size += update(e);
+            }
+        }
+        return size;
     }
 
     /**
@@ -243,6 +272,20 @@ public class JuormJdbcImpl implements Juorm {
      * {@inheritDoc}
      */
     @Override
+    public <E> int merge(@SuppressWarnings("unchecked") E... entities) {
+        int size = 0;
+        if (LangUtils.isNotEmpty(entities)) {
+            for (E e : entities) {
+                size += merge(e);
+            }
+        }
+        return size;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
     public <E> int merge(List<E> entities) {
         int size = 0;
         if (LangUtils.isNotEmpty(entities)) {
@@ -270,6 +313,21 @@ public class JuormJdbcImpl implements Juorm {
             deleteOperates.put(entity.getClass(), delete);
         }
         return delete.execute(entity);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public <E> int delete(@SuppressWarnings("unchecked") E... entities) {
+        int size = 0;
+        // TODO 后续加入DeleteBatchOperate优化为sql批量删除
+        if (LangUtils.isNotEmpty(entities)) {
+            for (E e : entities) {
+                size += delete(e);
+            }
+        }
+        return size;
     }
 
     /**
@@ -637,4 +695,5 @@ public class JuormJdbcImpl implements Juorm {
     public String stringValue(String tplExecuteId, Map<String, Object> params) {
         return sqlTplExecutor.stringValue(tplExecuteId, params);
     }
+
 }

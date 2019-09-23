@@ -30,6 +30,14 @@ public interface GenericJuorm<E> {
     /**
      * save entities
      *
+     * @param entities entity array to save
+     * @return effect data row num
+     */
+    int save(@SuppressWarnings("unchecked") E... entities);
+
+    /**
+     * save entities
+     *
      * @param entities entity list to save
      * @return effect data row num
      */
@@ -44,6 +52,16 @@ public interface GenericJuorm<E> {
      * @return effect data row num
      */
     int update(E entity);
+
+    /**
+     * update all values for each entity in entity array. equal invoke method
+     * {@link #update(List, IgnorePolicy)} with params (entity,
+     * IgnorePolicy.NONE)
+     *
+     * @param entities entity array to update
+     * @return effect data row num
+     */
+    int update(@SuppressWarnings("unchecked") E... entities);
 
     /**
      * update all values for each entity in entity list. equal invoke method
@@ -86,6 +104,17 @@ public interface GenericJuorm<E> {
 
     /**
      * update values ignore null or empty(string, array, collectoin, map) value
+     * for each entity in entity array. equal invoke method
+     * {@link #update(Object, IgnorePolicy)} with params (entity,
+     * IgnorePolicy.EMPTY)
+     *
+     * @param entities entity array to merge
+     * @return effect data row num
+     */
+    int merge(@SuppressWarnings("unchecked") E... entities);
+
+    /**
+     * update values ignore null or empty(string, array, collectoin, map) value
      * for each entity in entity list. equal invoke method
      * {@link #update(Object, IgnorePolicy)} with params (entity,
      * IgnorePolicy.EMPTY)
@@ -102,6 +131,14 @@ public interface GenericJuorm<E> {
      * @return effect data row num
      */
     int delete(E entity);
+
+    /**
+     * delete each entity in entity list
+     *
+     * @param entities entity array to delete
+     * @return effect data row num
+     */
+    int delete(@SuppressWarnings("unchecked") E... entities);
 
     /**
      * delete each entity in entity list

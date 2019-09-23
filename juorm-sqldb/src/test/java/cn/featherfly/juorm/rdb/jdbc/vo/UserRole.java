@@ -21,6 +21,8 @@ public class UserRole {
 
     private String descp;
 
+    private String descp2;
+
     /**
      * 返回userId
      *
@@ -76,11 +78,29 @@ public class UserRole {
     }
 
     /**
+     * 返回descp2
+     * 
+     * @return descp2
+     */
+    public String getDescp2() {
+        return descp2;
+    }
+
+    /**
+     * 设置descp2
+     * 
+     * @param descp2 descp2
+     */
+    public void setDescp2(String descp2) {
+        this.descp2 = descp2;
+    }
+
+    /**
      * {@inheritDoc}
      */
     @Override
     public String toString() {
-        return "UserRole [userId=" + userId + ", roleId=" + roleId + ", descp=" + descp + "]";
+        return "UserRole [userId=" + userId + ", roleId=" + roleId + ", descp=" + descp + ", descp2=" + descp2 + "]";
     }
 
 }

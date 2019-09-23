@@ -109,15 +109,6 @@ public class UserUpdate implements UserPropertiesUpdate,
      * {@inheritDoc}
      */
     @Override
-    public <T, R> UserUpdateNumberValue propertyNumber(SerializableFunction<T, R> name) {
-        // YUFEI_TODO Auto-generated method stub
-        return null;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
     public <T, R> UserUpdate set(SerializableFunction<T, R> name, Object value) {
         // YUFEI_TODO Auto-generated method stub
         return null;
@@ -127,7 +118,16 @@ public class UserUpdate implements UserPropertiesUpdate,
      * {@inheritDoc}
      */
     @Override
-    public <T, R, N extends Number> UserUpdate increase(SerializableFunction<T, R> name, N value) {
+    public <T, R extends Number> UserUpdateNumberValue propertyNumber(SerializableFunction<T, R> name) {
+        // YUFEI_TODO Auto-generated method stub
+        return null;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public <T, R extends Number, N extends Number> UserUpdate increase(SerializableFunction<T, R> name, N value) {
         // YUFEI_TODO Auto-generated method stub
         return null;
     }

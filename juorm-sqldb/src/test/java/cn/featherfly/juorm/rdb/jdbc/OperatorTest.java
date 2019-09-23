@@ -3,6 +3,7 @@ package cn.featherfly.juorm.rdb.jdbc;
 
 import static org.testng.Assert.assertEquals;
 import static org.testng.Assert.assertNotNull;
+import static org.testng.Assert.assertNull;
 
 import org.testng.annotations.Test;
 
@@ -25,59 +26,107 @@ public class OperatorTest extends JdbcTestBase {
 
     @Test
     public void testInsert() {
-        InsertOperate<Role> operate = new InsertOperate<>(jdbc, mappingFactory.getClassMapping(Role.class),
+        InsertOperate<Role> insert = new InsertOperate<>(jdbc, mappingFactory.getClassMapping(Role.class),
                 mappingFactory.getMetadata());
+        DeleteOperate<Role> delete = new DeleteOperate<>(jdbc, mappingFactory.getClassMapping(Role.class),
+                mappingFactory.getMetadata());
+        GetOperate<Role> get = new GetOperate<>(jdbc, mappingFactory.getClassMapping(Role.class),
+                mappingFactory.getMetadata());
+
         Role r = role();
-        operate.execute(r);
+        insert.execute(r);
         assertNotNull(r.getId());
+        delete.execute(r);
+        Role role = get.get(r);
+        assertNull(role);
 
         r = role();
-        operate.execute(r);
+        insert.execute(r);
         assertNotNull(r.getId());
+        delete.execute(r);
+        role = get.get(r);
+        assertNull(role);
     }
 
     @Test
     public void testInsertMultyKey() {
-        InsertOperate<UserRole> operate = new InsertOperate<>(jdbc, mappingFactory.getClassMapping(UserRole.class),
+        InsertOperate<UserRole> insert = new InsertOperate<>(jdbc, mappingFactory.getClassMapping(UserRole.class),
+                mappingFactory.getMetadata());
+        DeleteOperate<UserRole> delete = new DeleteOperate<>(jdbc, mappingFactory.getClassMapping(UserRole.class),
+                mappingFactory.getMetadata());
+        GetOperate<UserRole> get = new GetOperate<>(jdbc, mappingFactory.getClassMapping(UserRole.class),
                 mappingFactory.getMetadata());
         UserRole ur = new UserRole();
-        ur.setUserId(11);
-        ur.setRoleId(11);
-        ur.setDescp("descp1111");
-        operate.execute(ur);
+        ur.setUserId(123);
+        ur.setRoleId(321);
+        ur.setDescp("descp_123_321");
+        insert.execute(ur);
+
+        UserRole userRole = get.get(ur);
+        assertNotNull(userRole);
+        assertNull(userRole.getDescp2());
+        assertEquals(userRole.getUserId(), ur.getUserId());
+        assertEquals(userRole.getRoleId(), ur.getRoleId());
+        assertEquals(userRole.getDescp(), ur.getDescp());
+
+        delete.execute(userRole);
+
+        userRole = get.get(ur);
+        assertNull(userRole);
     }
 
     @Test
     public void testUpdate() {
-        UpdateOperate<Role> operate = new UpdateOperate<>(jdbc, mappingFactory.getClassMapping(Role.class),
+        UpdateOperate<Role> update = new UpdateOperate<>(jdbc, mappingFactory.getClassMapping(Role.class),
+                mappingFactory.getMetadata());
+        GetOperate<Role> get = new GetOperate<>(jdbc, mappingFactory.getClassMapping(Role.class),
                 mappingFactory.getMetadata());
         Role r = new Role();
-        r.setId(2);
-        r.setName("n_c" + RandomUtils.getRandomInt(100));
-        r.setDescp("d_c" + RandomUtils.getRandomInt(100));
-        operate.execute(r);
+        r.setId(10);
+        r.setName("name_update_" + RandomUtils.getRandomInt(99));
+        r.setDescp("descp_update_" + RandomUtils.getRandomInt(99));
+        update.execute(r);
+
+        Role role = get.get(r);
+        assertNotNull(role);
+        assertEquals(role.getId(), r.getId());
+        assertEquals(role.getName(), r.getName());
+        assertEquals(role.getDescp(), r.getDescp());
     }
 
     @Test
     public void testUpdateMulityPrimaryKey() {
-        UpdateOperate<UserRole> operate = new UpdateOperate<>(jdbc, mappingFactory.getClassMapping(UserRole.class),
+        UpdateOperate<UserRole> update = new UpdateOperate<>(jdbc, mappingFactory.getClassMapping(UserRole.class),
                 mappingFactory.getMetadata());
+        GetOperate<UserRole> get = new GetOperate<>(jdbc, mappingFactory.getClassMapping(UserRole.class),
+                mappingFactory.getMetadata());
+
         UserRole userRole = new UserRole();
-        userRole.setRoleId(2);
-        userRole.setUserId(2);
-        userRole.setDescp("descp_c" + RandomUtils.getRandomInt(99));
-        operate.execute(userRole);
+        userRole.setRoleId(3);
+        userRole.setUserId(3);
+        userRole.setDescp("descp_update_" + RandomUtils.getRandomInt(99));
+        userRole.setDescp2("descp2_update_" + RandomUtils.getRandomInt(99));
+        update.execute(userRole);
+
+        UserRole ur = get.get(userRole);
+
+        assertEquals(ur.getUserId(), userRole.getUserId());
+        assertEquals(ur.getRoleId(), userRole.getRoleId());
+        assertEquals(ur.getDescp(), userRole.getDescp());
+        assertEquals(ur.getDescp2(), userRole.getDescp2());
     }
 
     @Test
     public void testGet() {
         GetOperate<Role> operate = new GetOperate<>(jdbc, mappingFactory.getClassMapping(Role.class),
                 mappingFactory.getMetadata());
-        Integer id = 4;
+        Integer id = 1;
         Role role = operate.get(id);
         assertEquals(role.getId(), id);
         assertNotNull(role.getName());
-        System.out.println(role);
+        assertNotNull(role.getDescp());
+        assertEquals(role.getName(), "n_1");
+        assertEquals(role.getDescp(), "descp_1");
     }
 
     @Test
@@ -95,26 +144,45 @@ public class OperatorTest extends JdbcTestBase {
         assertEquals(ur.getUserId(), userRole.getUserId());
         assertEquals(ur.getUserId(), userRole.getRoleId());
         assertNotNull(ur.getDescp());
-        System.out.println(ur);
     }
 
     @Test
     public void testDelete() {
-        DeleteOperate<Role> operate = new DeleteOperate<>(jdbc, mappingFactory.getClassMapping(Role.class),
+        DeleteOperate<Role> delete = new DeleteOperate<>(jdbc, mappingFactory.getClassMapping(Role.class),
+                mappingFactory.getMetadata());
+        InsertOperate<Role> insert = new InsertOperate<>(jdbc, mappingFactory.getClassMapping(Role.class),
+                mappingFactory.getMetadata());
+        GetOperate<Role> get = new GetOperate<>(jdbc, mappingFactory.getClassMapping(Role.class),
                 mappingFactory.getMetadata());
         Role r = new Role();
-        r.setId(1);
-        operate.execute(r);
+        insert.execute(r);
+        assertNotNull(r.getId());
+        delete.execute(r);
+
+        Role role = get.get(r);
+        assertNull(role);
     }
 
     @Test
     public void testDeleteMulityPrimaryKey() {
-        DeleteOperate<UserRole> operate = new DeleteOperate<>(jdbc, mappingFactory.getClassMapping(UserRole.class),
+        DeleteOperate<UserRole> delete = new DeleteOperate<>(jdbc, mappingFactory.getClassMapping(UserRole.class),
+                mappingFactory.getMetadata());
+        InsertOperate<UserRole> insert = new InsertOperate<>(jdbc, mappingFactory.getClassMapping(UserRole.class),
+                mappingFactory.getMetadata());
+        GetOperate<UserRole> get = new GetOperate<>(jdbc, mappingFactory.getClassMapping(UserRole.class),
                 mappingFactory.getMetadata());
         UserRole userRole = new UserRole();
-        userRole.setRoleId(11);
-        userRole.setUserId(11);
-        operate.execute(userRole);
+        userRole.setRoleId(111);
+        userRole.setUserId(111);
+
+        UserRole ur = get.get(userRole);
+        if (ur == null) {
+            insert.execute(userRole);
+        }
+        delete.execute(userRole);
+
+        ur = get.get(userRole);
+        assertNull(ur);
     }
 
 }
