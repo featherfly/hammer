@@ -27,22 +27,18 @@ import cn.featherfly.juorm.rdb.jdbc.JuormJdbcException;
  *
  * @author zhongj
  */
-public class TypeSqlQueryEntityProperties
-        extends AbstractSqlQueryEntityProperties<TypeSqlQueryEntityProperties>
+public class TypeSqlQueryEntityProperties extends AbstractSqlQueryEntityProperties<TypeSqlQueryEntityProperties>
         implements TypeSqlQueryEntity, TypeQueryEntityProperties {
 
     private List<TypeSqlQueryWith> typeSqlQueryWiths = new ArrayList<>();
 
     /**
-     * @param jdbc
-     *            jdbc
-     * @param classMapping
-     *            classMapping
-     * @param aliasManager
-     *            aliasManager
+     * @param jdbc         jdbc
+     * @param classMapping classMapping
+     * @param aliasManager aliasManager
      */
-    public TypeSqlQueryEntityProperties(Jdbc jdbc, ClassMapping<?> classMapping,
-            MappingFactory factory, AliasManager aliasManager) {
+    public TypeSqlQueryEntityProperties(Jdbc jdbc, ClassMapping<?> classMapping, MappingFactory factory,
+            AliasManager aliasManager) {
         super(jdbc, classMapping, factory, aliasManager);
     }
 
@@ -59,8 +55,7 @@ public class TypeSqlQueryEntityProperties
      */
     @Override
     public <E> List<E> list() {
-        return new TypeSqlQueryExpression(jdbc, classMapping, selectBuilder)
-                .list();
+        return new TypeSqlQueryExpression(jdbc, classMapping, selectBuilder).list();
     }
 
     /**
@@ -68,8 +63,7 @@ public class TypeSqlQueryEntityProperties
      */
     @Override
     public TypeQueryExecutor limit(Integer limit) {
-        return new TypeSqlQueryExpression(jdbc, classMapping, selectBuilder)
-                .limit(limit);
+        return new TypeSqlQueryExpression(jdbc, classMapping, selectBuilder).limit(limit);
     }
 
     /**
@@ -77,8 +71,7 @@ public class TypeSqlQueryEntityProperties
      */
     @Override
     public TypeQueryExecutor limit(Integer offset, Integer limit) {
-        return new TypeSqlQueryExpression(jdbc, classMapping, selectBuilder)
-                .limit(offset, limit);
+        return new TypeSqlQueryExpression(jdbc, classMapping, selectBuilder).limit(offset, limit);
     }
 
     /**
@@ -86,82 +79,69 @@ public class TypeSqlQueryEntityProperties
      */
     @Override
     public TypeQueryExecutor limit(Page page) {
-        return new TypeSqlQueryExpression(jdbc, classMapping, selectBuilder)
-                .limit(page);
+        return new TypeSqlQueryExpression(jdbc, classMapping, selectBuilder).limit(page);
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public <T, R> TypeQueryWithEntity with(
-            SerializableFunction<T, R> propertyName) {
+    public <T, R> TypeQueryWithEntity with(SerializableFunction<T, R> propertyName) {
         SerializedLambdaInfo joinInfo = LambdaUtils.getLambdaInfo(propertyName);
-        TypeSqlQueryWith typeSqlQueryWith = with(classMapping,
-                selectBuilder.getTableAlias(), joinInfo);
+        TypeSqlQueryWith typeSqlQueryWith = with(classMapping, selectBuilder.getTableAlias(), joinInfo);
         if (typeSqlQueryWith != null) {
             return typeSqlQueryWith;
         }
 
         for (TypeSqlQueryWith with : typeSqlQueryWiths) {
             if (classMapping != with.joinTypeClassMapping) {
-                typeSqlQueryWith = with(with.joinTypeClassMapping,
-                        with.joinTableAlias, joinInfo);
+                typeSqlQueryWith = with(with.joinTypeClassMapping, with.joinTableAlias, joinInfo);
                 if (typeSqlQueryWith != null) {
                     return typeSqlQueryWith;
                 }
             }
             if (classMapping != with.conditionTypeClassMapping) {
-                typeSqlQueryWith = with(with.conditionTypeClassMapping,
-                        with.conditionTableAlias, joinInfo);
+                typeSqlQueryWith = with(with.conditionTypeClassMapping, with.conditionTableAlias, joinInfo);
                 if (typeSqlQueryWith != null) {
                     return typeSqlQueryWith;
                 }
             }
         }
-        throw new JuormJdbcException(
-                "there is no relation find for lambda property -> "
-                        + joinInfo.getMethodInstanceClassName() + "."
-                        + joinInfo.getMethodName());
+        throw new JuormJdbcException("there is no relation find for lambda property -> "
+                + joinInfo.getMethodInstanceClassName() + "." + joinInfo.getMethodName());
     }
 
-    // public <T, R> TypeQueryWithEntity with(
-    // SerializableFunction<T, R> propertyName, int index) {
-    // if (index > typeSqlQueryWiths.size()) {
-    // throw new JuormJdbcException("index > with size");
-    // }
-    // SerializedLambdaInfo joinInfo = LambdaUtils.getLambdaInfo(propertyName);
-    // TypeSqlQueryWith with = typeSqlQueryWiths.get(index - 1);
-    // return with(with.joinTypeClassMapping, with.joinTableAlias, joinInfo);
-    // }
+    public <T, R> TypeQueryWithEntity with(SerializableFunction<T, R> propertyName, int index) {
+        if (index <= 0) {
+            throw new JuormJdbcException("index must > 0");
+        }
+        if (index > typeSqlQueryWiths.size()) {
+            throw new JuormJdbcException("index must < invoke with method times");
+        }
+        SerializedLambdaInfo joinInfo = LambdaUtils.getLambdaInfo(propertyName);
+        TypeSqlQueryWith with = typeSqlQueryWiths.get(index - 1);
+        return with(with.joinTypeClassMapping, with.joinTableAlias, joinInfo);
+    }
 
-    private TypeSqlQueryWith with(ClassMapping<?> cm, String tableAlias,
-            SerializedLambdaInfo joinInfo) {
-        String name = LambdaUtils
-                .getLambdaPropertyName(joinInfo.getSerializedLambda());
-        if (cm.getType().getName()
-                .equals(joinInfo.getMethodInstanceClassName())) {
+    private TypeSqlQueryWith with(ClassMapping<?> cm, String tableAlias, SerializedLambdaInfo joinInfo) {
+        String name = LambdaUtils.getLambdaPropertyName(joinInfo.getSerializedLambda());
+        if (cm.getType().getName().equals(joinInfo.getMethodInstanceClassName())) {
             // 表示是查找对象的属性，可以连表查询，也可以查询返回到查询对象的指定属性上
-            ClassMapping<?> joinClassMapping = factory
-                    .getClassMapping(joinInfo.getMethod().getReturnType());
+            ClassMapping<?> joinClassMapping = factory.getClassMapping(joinInfo.getMethod().getReturnType());
             PropertyMapping pm = cm.getPropertyMapping(name);
-            TypeSqlQueryWith typeSqlQueryWith = new TypeSqlQueryWith(this,
-                    aliasManager, factory, cm, tableAlias,
+            TypeSqlQueryWith typeSqlQueryWith = new TypeSqlQueryWith(this, aliasManager, factory, cm, tableAlias,
                     pm.getRepositoryFieldName(), joinClassMapping,
-                    getPkMapping(joinClassMapping).getRepositoryFieldName(),
-                    name);
+                    getPkMapping(joinClassMapping).getRepositoryFieldName(), name);
             typeSqlQueryWiths.add(typeSqlQueryWith);
             return typeSqlQueryWith;
-        } else if (ClassUtils.isParent(cm.getType(),
-                joinInfo.getMethod().getReturnType())) {
+        } else if (ClassUtils.isParent(cm.getType(), joinInfo.getMethod().getReturnType())) {
             // 表示是查找对象是with对象的属性，可以进行连表查询，但是不能返回到查询对象上，因为没有指明返回对象属性
-            ClassMapping<?> joinClassMapping = factory.getClassMapping(
-                    ClassUtils.forName(joinInfo.getMethodInstanceClassName()));
+            ClassMapping<?> joinClassMapping = factory
+                    .getClassMapping(ClassUtils.forName(joinInfo.getMethodInstanceClassName()));
             PropertyMapping pm = joinClassMapping.getPropertyMapping(name);
 
-            TypeSqlQueryWith typeSqlQueryWith = new TypeSqlQueryWith(this,
-                    aliasManager, factory, cm, tableAlias, getIdName(),
-                    joinClassMapping, pm.getRepositoryFieldName());
+            TypeSqlQueryWith typeSqlQueryWith = new TypeSqlQueryWith(this, aliasManager, factory, cm, tableAlias,
+                    getIdName(), joinClassMapping, pm.getRepositoryFieldName());
             typeSqlQueryWiths.add(typeSqlQueryWith);
             return typeSqlQueryWith;
         } else {
@@ -179,13 +159,11 @@ public class TypeSqlQueryEntityProperties
 
     private PropertyMapping getPkMapping(ClassMapping<?> classMapping) {
         if (classMapping.getPrivaryKeyPropertyMappings().size() > 1) {
-            throw new JuormJdbcException(String.format(
-                    "there is more than one privary key property in type(%s)",
+            throw new JuormJdbcException(String.format("there is more than one privary key property in type(%s)",
                     classMapping.getType().getName()));
         } else if (classMapping.getPrivaryKeyPropertyMappings().size() == 0) {
-            throw new JuormJdbcException(String.format(
-                    "there is no privary key property in type(%s)",
-                    classMapping.getType().getName()));
+            throw new JuormJdbcException(
+                    String.format("there is no privary key property in type(%s)", classMapping.getType().getName()));
         }
         return classMapping.getPrivaryKeyPropertyMappings().get(0);
     }

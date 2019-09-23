@@ -12,22 +12,10 @@ import cn.featherfly.juorm.expression.WhereExpression;
  *
  * @author zhongj
  */
-public interface TypeQueryWithEntityExpression<
-        QW extends TypeQueryWithExpression<QW, QWE, C, L>,
-        QWE extends TypeQueryWithEntityExpression<QW, QWE, C, L>,
-        C extends ConditionGroupExpression<C, L>,
+public interface TypeQueryWithEntityExpression<QW extends TypeQueryWithExpression<QW, QWE, C, L>,
+        QWE extends TypeQueryWithEntityExpression<QW, QWE, C, L>, C extends ConditionGroupExpression<C, L>,
         L extends ConditionGroupLogicExpression<C, L>>
         extends WhereExpression<C, L>, TypeQueryWithExpression<QW, QWE, C, L> {
-    // /**
-    // * with
-    // *
-    // * @param propertyName
-    // * with type object property name
-    // * @param annotherWithPropertyName
-    // * with type object property name2
-    // * @return TypeQueryWithOnExpression
-    // */
-    // <T, R> QWE with(SerializableFunction<T, R> propertyName, int index);
 
     /**
      * 添加查询出来的所有属性

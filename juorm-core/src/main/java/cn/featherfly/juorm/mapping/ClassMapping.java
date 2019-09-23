@@ -111,4 +111,13 @@ public class ClassMapping<T> {
     public Class<?> getType() {
         return type;
     }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public String toString() {
+        return "ClassMapping [repositoryName=" + repositoryName + ", type=" + type + ", propertyMappings="
+                + propertyMappings + "]";
+    }
 }
