@@ -4,6 +4,9 @@ package cn.featherfly.juorm.rdb.jdbc.dsl;
 import static org.testng.Assert.assertEquals;
 import static org.testng.Assert.assertNotNull;
 import static org.testng.Assert.assertNull;
+import static org.testng.Assert.assertTrue;
+
+import java.util.List;
 
 import org.testng.annotations.Test;
 
@@ -11,6 +14,7 @@ import cn.featherfly.juorm.expression.SimpleRepository;
 import cn.featherfly.juorm.rdb.jdbc.JdbcTestBase;
 import cn.featherfly.juorm.rdb.jdbc.JuormJdbcException;
 import cn.featherfly.juorm.rdb.jdbc.dsl.query.SqlQuery;
+import cn.featherfly.juorm.rdb.jdbc.vo.Tree2;
 import cn.featherfly.juorm.rdb.jdbc.vo.User;
 import cn.featherfly.juorm.rdb.jdbc.vo.UserInfo;
 import cn.featherfly.juorm.rdb.jdbc.vo.UserRole2;
@@ -120,15 +124,16 @@ public class SqlQueryTest extends JdbcTestBase {
 
         query.find("user").property("username", "password", "age").with(UserInfo.class).on("user_id").fetch().list();
 
-        // query.find("tree").with("tree").on("parent_id").list();
-        //
-        // query.find("tree").with("tree").on("parent_id").with("tree")
-        // .on("parent_id").list();
+        query.find("tree").with("tree").on("parent_id").list();
 
-        // query.find(Tree.class).with(Tree::getParentId).with(Tree.class)
-        // .on("parent_id").list();
+        query.find("tree").with("tree").on("parent_id").with("tree").on("parent_id").list();
 
         query.find("user_info").with("user").on("id", "user_id").fetchAlias("password", "pwd").fetch().list();
+    }
+
+    @Test
+    void testJoin2() {
+        SqlQuery query = new SqlQuery(jdbc, mappingFactory);
 
         UserInfo userInfo = query.find(UserInfo.class).with(UserInfo::getUser).where().eq(UserInfo::getId, 1).single();
         System.err.println(userInfo);
@@ -136,18 +141,50 @@ public class SqlQueryTest extends JdbcTestBase {
         userInfo = query.find(UserInfo.class).with(UserInfo::getUser).fetch().where().eq(UserInfo::getId, 1).single();
         assertNotNull(userInfo.getUser().getUsername());
         System.err.println(userInfo);
+
+        query.find(UserInfo.class).with(UserInfo::getUser).with(UserRole2::getUser).with(UserRole2::getRole).list();
+
+        query.find(Tree2.class).with(Tree2::getParent).list();
+
+        query.find(Tree2.class).with(Tree2::getParent).with(Tree2::getParent, 1).list();
     }
 
     @Test
-    void testJoin2() {
+    void testJoin3() {
         SqlQuery query = new SqlQuery(jdbc, mappingFactory);
 
-        // query.find(User.class).with(UserRole2::getUser).list();
-        //
-        // query.find(Role.class).with(UserRole2::getRole).with(UserRole2::getUser)
-        // .list();
+        List<Tree2> list1 = query.find(Tree2.class).list();
+        list1.forEach(v -> {
+            System.err.println(v);
+        });
 
-        query.find(UserInfo.class).with(UserInfo::getUser).with(UserRole2::getUser).with(UserRole2::getRole).list();
+        List<Tree2> list2 = query.find(Tree2.class).with(Tree2::getParent).list();
+        list2.forEach(v -> {
+            assertNotNull(v.getParent().getId());
+            System.err.println(v);
+        });
+
+        list2 = query.find(Tree2.class).with(Tree2::getParent).with(Tree2::getParent).list();
+        list2.forEach(v -> {
+            assertNotNull(v.getParent().getId());
+            System.err.println(v);
+        });
+
+        List<Tree2> list3 = query.find(Tree2.class).with(Tree2::getParent).fetch().list();
+        list3.forEach(v -> {
+            assertNotNull(v.getParent().getId());
+            assertNotNull(v.getParent().getName());
+            System.err.println(v);
+        });
+
+        list3 = query.find(Tree2.class).with(Tree2::getParent).fetch().with(Tree2::getParent, 1).fetch().list();
+        list3.forEach(v -> {
+            assertNotNull(v.getParent().getId());
+            assertNotNull(v.getParent().getName());
+            System.err.println(v);
+        });
+
+        assertTrue(list1.size() > list2.size());
 
         // query.find(UserInfo.class).with(UserRole2::getUser).list();
 
@@ -163,4 +200,12 @@ public class SqlQueryTest extends JdbcTestBase {
         SqlQuery query = new SqlQuery(jdbc, mappingFactory);
         query.find(UserInfo.class).with(UserRole2::getUser).list();
     }
+
+    //    @Test
+    //    void test1111() {
+    //        ClassMapping<?> classMapping = mappingFactory.getClassMapping(Tree2.class);
+    //        System.err.println(ClassMappingUtils.getSelectColumnsSql(classMapping, "t0", Dialects.MYSQL, mappingFactory,
+    //                new HashChainMap<String, String>().putChain("parent", "t1")));
+    //
+    //    }
 }

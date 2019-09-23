@@ -48,7 +48,6 @@ public class TypeSqlQueryWith implements TypeQueryWith, TypeQueryWithEntity {
     protected String fetchPropertyAlias;
 
     /**
-     * 
      * @param sqlQueryEntityProperties
      * @param aliasManager
      * @param factory
@@ -58,20 +57,14 @@ public class TypeSqlQueryWith implements TypeQueryWith, TypeQueryWithEntity {
      * @param joinTypeClassMapping
      * @param joinTableColumn
      */
-    public TypeSqlQueryWith(
-            TypeSqlQueryEntityProperties sqlQueryEntityProperties,
-            AliasManager aliasManager, MappingFactory factory,
-            ClassMapping<?> conditionTypeClassMapping,
-            String conditionTableAlias, String conditionTableColumn,
-            ClassMapping<?> joinTypeClassMapping, String joinTableColumn) {
-        this(sqlQueryEntityProperties, aliasManager, factory,
-                conditionTypeClassMapping, conditionTableAlias,
-                conditionTableColumn, joinTypeClassMapping, joinTableColumn,
-                null);
+    public TypeSqlQueryWith(TypeSqlQueryEntityProperties sqlQueryEntityProperties, AliasManager aliasManager,
+            MappingFactory factory, ClassMapping<?> conditionTypeClassMapping, String conditionTableAlias,
+            String conditionTableColumn, ClassMapping<?> joinTypeClassMapping, String joinTableColumn) {
+        this(sqlQueryEntityProperties, aliasManager, factory, conditionTypeClassMapping, conditionTableAlias,
+                conditionTableColumn, joinTypeClassMapping, joinTableColumn, null);
     }
 
     /**
-     * 
      * @param sqlQueryEntityProperties
      * @param aliasManager
      * @param factory
@@ -82,12 +75,9 @@ public class TypeSqlQueryWith implements TypeQueryWith, TypeQueryWithEntity {
      * @param joinTableColumn
      * @param fetchProperty
      */
-    public TypeSqlQueryWith(
-            TypeSqlQueryEntityProperties sqlQueryEntityProperties,
-            AliasManager aliasManager, MappingFactory factory,
-            ClassMapping<?> conditionTypeClassMapping,
-            String conditionTableAlias, String conditionTableColumn,
-            ClassMapping<?> joinTypeClassMapping, String joinTableColumn,
+    public TypeSqlQueryWith(TypeSqlQueryEntityProperties sqlQueryEntityProperties, AliasManager aliasManager,
+            MappingFactory factory, ClassMapping<?> conditionTypeClassMapping, String conditionTableAlias,
+            String conditionTableColumn, ClassMapping<?> joinTypeClassMapping, String joinTableColumn,
             String fetchProperty) {
         super();
         this.sqlQueryEntityProperties = sqlQueryEntityProperties;
@@ -95,8 +85,7 @@ public class TypeSqlQueryWith implements TypeQueryWith, TypeQueryWithEntity {
         this.conditionTypeClassMapping = conditionTypeClassMapping;
         this.conditionTableAlias = conditionTableAlias;
         this.conditionTableColumn = conditionTableColumn;
-        joinTableAlias = aliasManager
-                .put(joinTypeClassMapping.getRepositoryName());
+        joinTableAlias = aliasManager.put(joinTypeClassMapping.getRepositoryName());
         this.joinTableColumn = joinTableColumn;
         this.joinTypeClassMapping = joinTypeClassMapping;
         this.fetchProperty = fetchProperty;
@@ -105,9 +94,8 @@ public class TypeSqlQueryWith implements TypeQueryWith, TypeQueryWithEntity {
     }
 
     private TypeQueryWithEntity on() {
-        selectJoinOnBasicBuilder = sqlQueryEntityProperties.getSelectBuilder()
-                .join(conditionTableAlias, conditionTableColumn,
-                        joinTypeClassMapping, joinTableAlias, joinTableColumn);
+        selectJoinOnBasicBuilder = sqlQueryEntityProperties.getSelectBuilder().join(conditionTableAlias,
+                conditionTableColumn, joinTypeClassMapping, joinTableAlias, joinTableColumn);
         return this;
     }
 
@@ -115,19 +103,17 @@ public class TypeSqlQueryWith implements TypeQueryWith, TypeQueryWithEntity {
      * {@inheritDoc}
      */
     @Override
-    public <T, R> TypeQueryWithEntity with(
-            SerializableFunction<T, R> propertyName) {
+    public <T, R> TypeQueryWithEntity with(SerializableFunction<T, R> propertyName) {
         return sqlQueryEntityProperties.with(propertyName);
     }
 
-    // /**
-    // * {@inheritDoc}
-    // */
-    // @Override
-    // public <T, R> TypeQueryWithEntity with(
-    // SerializableFunction<T, R> propertyName, int index) {
-    // return sqlQueryEntityProperties.with(propertyName, index);
-    // }
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public <T, R> TypeQueryWithEntity with(SerializableFunction<T, R> propertyName, int index) {
+        return sqlQueryEntityProperties.with(propertyName, index);
+    }
 
     /**
      * {@inheritDoc}
@@ -136,8 +122,7 @@ public class TypeSqlQueryWith implements TypeQueryWith, TypeQueryWithEntity {
     public TypeQueryWith fetch() {
         if (LangUtils.isEmpty(fetchProperty)) {
             // TODO 后续细化描述
-            throw new JuormJdbcException(
-                    "can not fetch because there is no relation for find type");
+            throw new JuormJdbcException("can not fetch because there is no relation for find type");
         }
         selectJoinOnBasicBuilder.fetch(fetchProperty, fetchPropertyAlias);
         return this;
