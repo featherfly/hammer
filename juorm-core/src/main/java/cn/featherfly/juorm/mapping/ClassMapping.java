@@ -27,19 +27,6 @@ public class ClassMapping<T> {
         this.repositoryName = repositoryName;
     }
 
-    //    /**
-    //     * @param type            类型
-    //     * @param repositoryName  存储名
-    //     * @param repositoryAlias 存储别名
-    //     */
-    //    public ClassMapping(Class<T> type, String repositoryName, String repositoryAlias) {
-    //        this.type = type;
-    //        this.repositoryName = repositoryName;
-    //        if (LangUtils.isEmpty(repositoryAlias)) {
-    //            this.repositoryAlias = AliasManager.generateAlias(repositoryName);
-    //        }
-    //    }
-
     /**
      * <p>
      * 返回指定属性名称的属性映射. 没有找到返回null.
@@ -109,8 +96,6 @@ public class ClassMapping<T> {
 
     private String repositoryName;
 
-    private String repositoryAlias;
-
     private Class<?> type;
 
     /**
@@ -126,14 +111,4 @@ public class ClassMapping<T> {
     public Class<?> getType() {
         return type;
     }
-
-    //    /**
-    //     * 返回repositoryAlias
-    //     *
-    //     * @return repositoryAlias
-    //     */
-    //    public String getRepositoryAlias() {
-    //        return repositoryAlias;
-    //    }
-
 }
