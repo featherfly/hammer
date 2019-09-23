@@ -37,93 +37,15 @@ public class BasedGenericJuormTplExecutor<E> implements GenericJuorm<E> {
     }
 
     /**
-     * @param entity
-     * @return
-     * @see cn.featherfly.juorm.Juorm#save(java.lang.Object)
+     * {@inheritDoc}
      */
     @Override
-    public int save(E entity) {
-        return juorm.save(entity);
+    public Delete delete() {
+        return juorm.delete(type);
     }
 
     /**
-     * @param entities
-     * @return
-     * @see cn.featherfly.juorm.Juorm#save(java.util.List)
-     */
-    @Override
-    public int save(List<E> entities) {
-        return juorm.save(entities);
-    }
-
-    /**
-     * @param entity
-     * @return
-     * @see cn.featherfly.juorm.Juorm#update(java.lang.Object)
-     */
-    @Override
-    public int update(E entity) {
-        return juorm.update(entity);
-    }
-
-    /**
-     * @param entities
-     * @return
-     * @see cn.featherfly.juorm.Juorm#update(java.util.List)
-     */
-    @Override
-    public int update(List<E> entities) {
-        return juorm.update(entities);
-    }
-
-    /**
-     * @param entity
-     * @param ignorePolicy
-     * @return
-     * @see cn.featherfly.juorm.Juorm#update(java.lang.Object,
-     *      cn.featherfly.juorm.Juorm.IgnorePolicy)
-     */
-    @Override
-    public int update(E entity, IgnorePolicy ignorePolicy) {
-        return juorm.update(entity, ignorePolicy);
-    }
-
-    /**
-     * @param entities
-     * @param ignorePolicy
-     * @return
-     * @see cn.featherfly.juorm.Juorm#update(java.util.List,
-     *      cn.featherfly.juorm.Juorm.IgnorePolicy)
-     */
-    @Override
-    public int update(List<E> entities, IgnorePolicy ignorePolicy) {
-        return juorm.update(entities, ignorePolicy);
-    }
-
-    /**
-     * @param entity
-     * @return
-     * @see cn.featherfly.juorm.Juorm#merge(java.lang.Object)
-     */
-    @Override
-    public int merge(E entity) {
-        return juorm.merge(entity);
-    }
-
-    /**
-     * @param entities
-     * @return
-     * @see cn.featherfly.juorm.Juorm#merge(java.util.List)
-     */
-    @Override
-    public int merge(List<E> entities) {
-        return juorm.merge(entities);
-    }
-
-    /**
-     * @param entity
-     * @return
-     * @see cn.featherfly.juorm.Juorm#delete(java.lang.Object)
+     * {@inheritDoc}
      */
     @Override
     public int delete(E entity) {
@@ -131,9 +53,15 @@ public class BasedGenericJuormTplExecutor<E> implements GenericJuorm<E> {
     }
 
     /**
-     * @param entities
-     * @return
-     * @see cn.featherfly.juorm.Juorm#delete(java.util.List)
+     * {@inheritDoc}
+     */
+    @Override
+    public int delete(@SuppressWarnings("unchecked") E... entities) {
+        return juorm.delete(entities);
+    }
+
+    /**
+     * {@inheritDoc}
      */
     @Override
     public int delete(List<E> entities) {
@@ -141,13 +69,35 @@ public class BasedGenericJuormTplExecutor<E> implements GenericJuorm<E> {
     }
 
     /**
-     * @param id
-     * @return
-     * @see cn.featherfly.juorm.Juorm#get(java.io.Serializable, java.lang.Class)
+     * {@inheritDoc}
      */
     @Override
     public E get(Serializable id) {
         return juorm.get(id, type);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public int merge(E entity) {
+        return juorm.merge(entity);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public int merge(@SuppressWarnings("unchecked") E... entities) {
+        return juorm.merge(entities);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public int merge(List<E> entities) {
+        return juorm.merge(entities);
     }
 
     /**
@@ -162,6 +112,30 @@ public class BasedGenericJuormTplExecutor<E> implements GenericJuorm<E> {
      * {@inheritDoc}
      */
     @Override
+    public int save(E entity) {
+        return juorm.save(entity);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public int save(@SuppressWarnings("unchecked") E... entities) {
+        return juorm.save(entities);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public int save(List<E> entities) {
+        return juorm.save(entities);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
     public Update update() {
         return juorm.update(type);
     }
@@ -170,7 +144,40 @@ public class BasedGenericJuormTplExecutor<E> implements GenericJuorm<E> {
      * {@inheritDoc}
      */
     @Override
-    public Delete delete() {
-        return juorm.delete(type);
+    public int update(E entity) {
+        return juorm.update(entity);
     }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public int update(@SuppressWarnings("unchecked") E... entities) {
+        return juorm.update(entities);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public int update(E entity, IgnorePolicy ignorePolicy) {
+        return juorm.update(entity, ignorePolicy);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public int update(List<E> entities) {
+        return juorm.update(entities);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public int update(List<E> entities, IgnorePolicy ignorePolicy) {
+        return juorm.update(entities, ignorePolicy);
+    }
+
 }

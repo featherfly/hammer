@@ -27,10 +27,29 @@ public class UserRole2 {
     private Role role;
 
     private String descp;
+    private String descp2;
+
+    /**
+     * 返回descp2
+     * 
+     * @return descp2
+     */
+    public String getDescp2() {
+        return descp2;
+    }
+
+    /**
+     * 设置descp2
+     * 
+     * @param descp2 descp2
+     */
+    public void setDescp2(String descp2) {
+        this.descp2 = descp2;
+    }
 
     /**
      * 返回user
-     * 
+     *
      * @return user
      */
     public User getUser() {
@@ -39,9 +58,8 @@ public class UserRole2 {
 
     /**
      * 设置user
-     * 
-     * @param user
-     *            user
+     *
+     * @param user user
      */
     public void setUser(User user) {
         this.user = user;
@@ -49,7 +67,7 @@ public class UserRole2 {
 
     /**
      * 返回role
-     * 
+     *
      * @return role
      */
     public Role getRole() {
@@ -58,9 +76,8 @@ public class UserRole2 {
 
     /**
      * 设置role
-     * 
-     * @param role
-     *            role
+     *
+     * @param role role
      */
     public void setRole(Role role) {
         this.role = role;
@@ -68,7 +85,7 @@ public class UserRole2 {
 
     /**
      * 返回descp
-     * 
+     *
      * @return descp
      */
     public String getDescp() {
@@ -77,9 +94,8 @@ public class UserRole2 {
 
     /**
      * 设置descp
-     * 
-     * @param descp
-     *            descp
+     *
+     * @param descp descp
      */
     public void setDescp(String descp) {
         this.descp = descp;
@@ -90,8 +106,7 @@ public class UserRole2 {
      */
     @Override
     public String toString() {
-        return "UserRole2 [user=" + user + ", role=" + role + ", descp=" + descp
-                + "]";
+        return "UserRole2 [user=" + user + ", role=" + role + ", descp=" + descp + ", descp2=" + descp2 + "]";
     }
 
 }

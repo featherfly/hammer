@@ -20,6 +20,23 @@ public class DistrictDivision {
     private String district;
 
     /**
+     */
+    public DistrictDivision() {
+    }
+
+    /**
+     * @param province
+     * @param city
+     * @param district
+     */
+    public DistrictDivision(String province, String city, String district) {
+        super();
+        this.city = city;
+        this.province = province;
+        this.district = district;
+    }
+
+    /**
      * 返回city
      *
      * @return city

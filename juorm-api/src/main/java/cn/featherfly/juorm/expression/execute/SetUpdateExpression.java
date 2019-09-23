@@ -50,5 +50,5 @@ public interface SetUpdateExpression<U extends SetExecutableUpdateExpression<U, 
      * @param value property value
      * @return Update
      */
-    <T, R, N extends Number> U increase(SerializableFunction<T, R> name, N value);
+    <T, R extends Number, N extends Number> U increase(SerializableFunction<T, R> name, N value);
 }
