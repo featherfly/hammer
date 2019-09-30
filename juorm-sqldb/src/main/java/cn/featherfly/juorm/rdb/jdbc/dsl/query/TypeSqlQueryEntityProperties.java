@@ -111,6 +111,10 @@ public class TypeSqlQueryEntityProperties extends AbstractSqlQueryEntityProperti
                 + joinInfo.getMethodInstanceClassName() + "." + joinInfo.getMethodName());
     }
 
+    /**
+     * {@inheritDoc}
+     */
+    @Override
     public <T, R> TypeQueryWithEntity with(SerializableFunction<T, R> propertyName, int index) {
         if (index <= 0) {
             throw new JuormJdbcException("index must > 0");

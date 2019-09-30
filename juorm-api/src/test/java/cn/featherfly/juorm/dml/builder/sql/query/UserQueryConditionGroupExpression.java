@@ -751,8 +751,8 @@ public class UserQueryConditionGroupExpression
      * {@inheritDoc}
      */
     @Override
-    public <T, R> StringExpression<UserQueryConditionGroupExpression, UserQueryConditionGroupExpression> propertyString(
-            SerializableFunction<T, R> name) {
+    public <T> StringExpression<UserQueryConditionGroupExpression, UserQueryConditionGroupExpression> propertyString(
+            SerializableFunction<T, String> name) {
         // YUFEI_TODO Auto-generated method stub
         return null;
     }
@@ -761,8 +761,9 @@ public class UserQueryConditionGroupExpression
      * {@inheritDoc}
      */
     @Override
-    public <T, R> NumberExpression<UserQueryConditionGroupExpression, UserQueryConditionGroupExpression> propertyNumber(
-            SerializableFunction<T, R> name) {
+    public <T,
+            R extends Number> NumberExpression<UserQueryConditionGroupExpression, UserQueryConditionGroupExpression> propertyNumber(
+                    SerializableFunction<T, R> name) {
         // YUFEI_TODO Auto-generated method stub
         return null;
     }
@@ -771,8 +772,9 @@ public class UserQueryConditionGroupExpression
      * {@inheritDoc}
      */
     @Override
-    public <T, R> DateExpression<UserQueryConditionGroupExpression, UserQueryConditionGroupExpression> propertyDate(
-            SerializableFunction<T, R> name) {
+    public <T,
+            R extends Date> DateExpression<UserQueryConditionGroupExpression, UserQueryConditionGroupExpression> propertyDate(
+                    SerializableFunction<T, R> name) {
         // YUFEI_TODO Auto-generated method stub
         return null;
     }
@@ -781,8 +783,9 @@ public class UserQueryConditionGroupExpression
      * {@inheritDoc}
      */
     @Override
-    public <T, R> EnumExpression<UserQueryConditionGroupExpression, UserQueryConditionGroupExpression> propertyEnum(
-            SerializableFunction<T, R> name) {
+    public <T,
+            R extends Enum<?>> EnumExpression<UserQueryConditionGroupExpression, UserQueryConditionGroupExpression> propertyEnum(
+                    SerializableFunction<T, R> name) {
         // YUFEI_TODO Auto-generated method stub
         return null;
     }
