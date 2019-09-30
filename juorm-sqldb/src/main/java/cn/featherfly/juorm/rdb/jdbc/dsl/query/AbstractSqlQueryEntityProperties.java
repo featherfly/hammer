@@ -8,10 +8,12 @@ import java.util.stream.Collectors;
 
 import com.speedment.common.tuple.Tuple2;
 
+import cn.featherfly.common.db.metadata.DatabaseMetadata;
+import cn.featherfly.common.db.metadata.TableMetadata;
 import cn.featherfly.common.lang.LambdaUtils;
 import cn.featherfly.common.lang.LangUtils;
-import cn.featherfly.common.lang.StringUtils;
 import cn.featherfly.common.lang.function.SerializableFunction;
+import cn.featherfly.juorm.JuormException;
 import cn.featherfly.juorm.dml.AliasManager;
 import cn.featherfly.juorm.mapping.ClassMapping;
 import cn.featherfly.juorm.mapping.MappingFactory;
@@ -26,10 +28,7 @@ import cn.featherfly.juorm.rdb.sql.dml.builder.basic.SqlSelectBasicBuilder;
  *
  * @author zhongj
  */
-public abstract class AbstractSqlQueryEntityProperties<
-        E extends AbstractSqlQueryEntityProperties<E>> {
-
-    private static final String DEFAULT_ID_NAME = "id";
+public abstract class AbstractSqlQueryEntityProperties<E extends AbstractSqlQueryEntityProperties<E>> {
 
     protected Jdbc jdbc;
 
@@ -43,48 +42,38 @@ public abstract class AbstractSqlQueryEntityProperties<
 
     protected AliasManager aliasManager;
 
-    protected String tableAlias;
-
     /**
-     * @param jdbc
-     *            jdbc
-     * @param classMapping
-     *            classMapping
-     * @param factory
-     *            MappingFactory
-     * @param aliasManager
-     *            aliasManager
+     * @param jdbc         jdbc
+     * @param classMapping classMapping
+     * @param factory      MappingFactory
+     * @param aliasManager aliasManager
      */
-    public AbstractSqlQueryEntityProperties(Jdbc jdbc,
-            ClassMapping<?> classMapping, MappingFactory factory,
+    public AbstractSqlQueryEntityProperties(Jdbc jdbc, ClassMapping<?> classMapping, MappingFactory factory,
             AliasManager aliasManager) {
         this.jdbc = jdbc;
         this.classMapping = classMapping;
         this.factory = factory;
         this.aliasManager = aliasManager;
-        tableAlias = aliasManager.getAlias(classMapping.getRepositoryName());
+        String tableAlias = aliasManager.getAlias(classMapping.getRepositoryName());
         if (tableAlias == null) {
             tableAlias = aliasManager.put(classMapping.getRepositoryName());
         }
-        selectBuilder = new SqlSelectBasicBuilder(jdbc.getDialect(),
-                classMapping, tableAlias, factory);
+        if (classMapping.getPrivaryKeyPropertyMappings().size() == 1) {
+            idName = classMapping.getPrivaryKeyPropertyMappings().get(0).getRepositoryFieldName();
+        }
+        selectBuilder = new SqlSelectBasicBuilder(jdbc.getDialect(), classMapping, tableAlias, factory);
     }
 
     /**
-     * @param tableName
-     *            tableName
-     * @param jdbc
-     *            jdbc
-     * @param tableAlias
-     *            tableAlias
-     * @param factory
-     *            MappingFactory
-     * @param aliasManager
-     *            aliasManager
+     * @param jdbc             jdbc
+     * @param databaseMetadata databaseMetadata
+     * @param tableName        tableName
+     * @param tableAlias       tableAlias
+     * @param factory          MappingFactory
+     * @param aliasManager     aliasManager
      */
-    public AbstractSqlQueryEntityProperties(Jdbc jdbc, String tableName,
-            String tableAlias, MappingFactory factory,
-            AliasManager aliasManager) {
+    public AbstractSqlQueryEntityProperties(Jdbc jdbc, DatabaseMetadata databaseMetadata, String tableName,
+            String tableAlias, MappingFactory factory, AliasManager aliasManager) {
         super();
         this.jdbc = jdbc;
         this.factory = factory;
@@ -92,20 +81,21 @@ public abstract class AbstractSqlQueryEntityProperties<
         if (tableAlias == null) {
             tableAlias = aliasManager.put(tableName);
         }
-        this.tableAlias = tableAlias;
-        selectBuilder = new SqlSelectBasicBuilder(jdbc.getDialect(), tableName,
-                tableAlias);
+        TableMetadata tableMetadata = databaseMetadata.getTable(tableName);
+        if (tableMetadata.getPrimaryColumns().size() == 1) {
+            idName = tableMetadata.getPrimaryColumns().get(0).getName();
+        }
+        selectBuilder = new SqlSelectBasicBuilder(jdbc.getDialect(), tableName, tableAlias);
     }
 
     @SuppressWarnings("unchecked")
     public E property(String propertyName) {
-        Tuple2<String, String> columnAndProperty = ClassMappingUtils
-                .getColumnAndPropertyName(propertyName, classMapping);
+        Tuple2<String, String> columnAndProperty = ClassMappingUtils.getColumnAndPropertyName(propertyName,
+                classMapping);
         if (LangUtils.isEmpty(columnAndProperty.get1())) {
             selectBuilder.addSelectColumn(columnAndProperty.get0());
         } else {
-            selectBuilder.addSelectColumn(columnAndProperty.get0(),
-                    columnAndProperty.get1());
+            selectBuilder.addSelectColumn(columnAndProperty.get0(), columnAndProperty.get1());
         }
         return (E) this;
     }
@@ -126,28 +116,22 @@ public abstract class AbstractSqlQueryEntityProperties<
         return (E) this;
     }
 
-    public <T, R> E property(
-            @SuppressWarnings("unchecked") SerializableFunction<T, R>... propertyNames) {
-        return property(Arrays.stream(propertyNames)
-                .map(LambdaUtils::getLambdaPropertyName)
-                .collect(Collectors.toList()));
+    public <T, R> E property(@SuppressWarnings("unchecked") SerializableFunction<T, R>... propertyNames) {
+        return property(
+                Arrays.stream(propertyNames).map(LambdaUtils::getLambdaPropertyName).collect(Collectors.toList()));
     }
 
     public <T, R> E property(SerializableFunction<T, R> propertyName) {
         return property(LambdaUtils.getLambdaPropertyName(propertyName));
     }
 
-    public <T, R> E propertyAlias(SerializableFunction<T, R> propertyName,
-            String alias) {
-        return propertyAlias(LambdaUtils.getLambdaPropertyName(propertyName),
-                alias);
+    public <T, R> E propertyAlias(SerializableFunction<T, R> propertyName, String alias) {
+        return propertyAlias(LambdaUtils.getLambdaPropertyName(propertyName), alias);
     }
 
     @SuppressWarnings("unchecked")
     public E propertyAlias(String columnName, String alias) {
-        selectBuilder.addSelectColumn(
-                ClassMappingUtils.getColumnName(columnName, classMapping),
-                alias);
+        selectBuilder.addSelectColumn(ClassMappingUtils.getColumnName(columnName, classMapping), alias);
         return (E) this;
     }
 
@@ -170,7 +154,10 @@ public abstract class AbstractSqlQueryEntityProperties<
     }
 
     protected String getIdName() {
-        return StringUtils.pickFirst(idName, DEFAULT_ID_NAME);
+        if (LangUtils.isEmpty(idName)) {
+            throw new JuormException("privary key column name is null");
+        }
+        return idName;
     }
 
     /**

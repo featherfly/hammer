@@ -185,11 +185,12 @@ public class SqlTplExecutorTest extends JdbcTestBase {
         final int size = userPaginationResults.getResultSize();
         assertTrue(userPaginationResults.getTotal() == 4);
         userPaginationResults.getPageResults().forEach(u -> {
+            System.err.println(u);
             assertTrue(u.getAge() >= minAge);
             assertTrue(u.getAge() <= maxAge);
             assertTrue(u.getUsername().startsWith(username1));
-            assertTrue(size == 3);
         });
+        assertTrue(size == 3);
     }
 
     @Test

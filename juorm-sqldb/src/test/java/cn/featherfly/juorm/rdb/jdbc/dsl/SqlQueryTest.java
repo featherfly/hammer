@@ -7,6 +7,7 @@ import static org.testng.Assert.assertNull;
 import static org.testng.Assert.assertTrue;
 
 import java.util.List;
+import java.util.Map;
 
 import org.testng.annotations.Test;
 
@@ -30,7 +31,7 @@ public class SqlQueryTest extends JdbcTestBase {
 
     @Test
     void test1() {
-        SqlQuery query = new SqlQuery(jdbc);
+        SqlQuery query = new SqlQuery(jdbc, metadata);
         query.find("user").list(User.class);
         query.find("user").property("username", "password", "age").list(User.class);
         query.find("user").property("username", "password", "age").where().eq("username", "yufei").and()
@@ -39,21 +40,21 @@ public class SqlQueryTest extends JdbcTestBase {
 
     @Test
     void test2() {
-        SqlQuery query = new SqlQuery(jdbc);
+        SqlQuery query = new SqlQuery(jdbc, metadata);
         query.find("user").property("username", "password", "age").where().eq("username", "yufei").and()
                 .eq("password", "123456").and().group().gt("age", 18).and().lt("age", 60).list(User.class);
     }
 
     @Test
     void test3() {
-        SqlQuery query = new SqlQuery(jdbc);
+        SqlQuery query = new SqlQuery(jdbc, metadata);
         query.find(new SimpleRepository("user", "u")).where().eq("username", "yufei").and().eq("password", "123456")
                 .and().group().gt("age", 18).and().lt("age", 60).list(User.class);
     }
 
     @Test
     void test4() {
-        SqlQuery query = new SqlQuery(jdbc);
+        SqlQuery query = new SqlQuery(jdbc, metadata);
         query.find(new SimpleRepository("user", "u")).property("username", "password", "age").where()
                 .eq("username", "yufei").and().eq("password", "123456").and().group().gt("age", 18).and().lt("age", 60)
                 .list(User.class);
@@ -66,6 +67,9 @@ public class SqlQueryTest extends JdbcTestBase {
 
         query.find(User.class).where().eq("username", "yufei").and().eq("pwd", "123456").and().group().gt("age", 18)
                 .and().lt("age", 60).list();
+
+        query.find(User.class).where().eq("username", "yufei").and().eq("pwd", "123456").and().group().gt("age", 18)
+                .and().property("age").lt(60).list();
 
         query.find(User.class).property("username", "pwd", "age").where().eq("username", "yufei").and()
                 .eq("pwd", "123456").and().group().gt("age", 18).and().lt("age", 60).list();
@@ -129,6 +133,28 @@ public class SqlQueryTest extends JdbcTestBase {
         query.find("tree").with("tree").on("parent_id").with("tree").on("parent_id").list();
 
         query.find("user_info").with("user").on("id", "user_id").fetchAlias("password", "pwd").fetch().list();
+    }
+
+    @Test
+    void testJoinCondition() {
+        SqlQuery query = new SqlQuery(jdbc, mappingFactory);
+
+        List<Map<String, Object>> list = query.find("user").property("username", "password", "age").with("user_info")
+                .on("user_id").where().eq("user_info", "name", "羽飞").list();
+        assertEquals(list.size(), 1);
+
+        list = query.find("user").property("username", "password", "age").with("user_info").on("user_id").where()
+                .eq(1, "name", "羽飞").list();
+        assertEquals(list.size(), 1);
+
+        list = query.find("user").property("username", "password", "age").with("user_info").on("user_id").where()
+                .property("user_info", "name").eq("羽飞").list();
+        assertEquals(list.size(), 1);
+
+        list = query.find("user").property("username", "password", "age").with("user_info").on("user_id").where()
+                .property(1, "name").eq("羽飞").list();
+        assertEquals(list.size(), 1);
+
     }
 
     @Test

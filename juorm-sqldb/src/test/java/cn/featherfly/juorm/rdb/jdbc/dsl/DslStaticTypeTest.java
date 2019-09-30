@@ -23,7 +23,7 @@ public class DslStaticTypeTest extends JdbcTestBase {
 
     @Test
     public void testQuery() {
-        SqlQuery sqlQuery = new SqlQuery(jdbc);
+        SqlQuery sqlQuery = new SqlQuery(jdbc, metadata);
         UserSqlQuery userQuery = new UserSqlQuery(sqlQuery, mappingFactory);
         // userQuery.find().properties().name().pwd().limit(1)
         // .single(UserQuery.class);
@@ -31,8 +31,7 @@ public class DslStaticTypeTest extends JdbcTestBase {
         p(userQuery.find().properties().username().pwd().limit(1).single());
 
         p(userQuery.find().limit(1).single());
-        p(userQuery.find().where().username().eq("yufei").and().pwd()
-                .eq("123456").single());
+        p(userQuery.find().where().username().eq("yufei").and().pwd().eq("123456").single());
 
     }
 

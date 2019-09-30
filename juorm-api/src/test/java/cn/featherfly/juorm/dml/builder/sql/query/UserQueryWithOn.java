@@ -10,9 +10,8 @@ import cn.featherfly.juorm.expression.query.QueryWithOnExpression;
  *
  * @author zhongj
  */
-public class UserQueryWithOn implements QueryWithOnExpression<
-
-        UserQueryWith, UserQueryWithOn, UserQueryWithEntity, UserQueryConditionGroupExpression, UserQueryConditionGroupExpression> {
+public class UserQueryWithOn implements
+        QueryWithOnExpression<UserQueryWith, UserQueryWithOn, UserQueryWithEntity, UserQueryConditionGroupExpression, UserQueryConditionGroupExpression> {
 
     /**
      * {@inheritDoc}

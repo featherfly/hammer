@@ -5,6 +5,7 @@ import java.math.BigDecimal;
 import java.util.List;
 import java.util.Map;
 
+import cn.featherfly.common.db.metadata.DatabaseMetadata;
 import cn.featherfly.common.structure.page.Page;
 import cn.featherfly.juorm.dml.AliasManager;
 import cn.featherfly.juorm.dsl.query.QueryConditionGroupExpression;
@@ -31,8 +32,9 @@ public class SqlQueryEntityProperties extends AbstractSqlQueryEntityProperties<S
      * @param factory      MappingFactory
      * @param aliasManager aliasManager
      */
-    public SqlQueryEntityProperties(Jdbc jdbc, String tableName, MappingFactory factory, AliasManager aliasManager) {
-        this(jdbc, tableName, aliasManager.put(tableName), factory, aliasManager);
+    public SqlQueryEntityProperties(Jdbc jdbc, DatabaseMetadata databaseMetadata, String tableName,
+            MappingFactory factory, AliasManager aliasManager) {
+        this(jdbc, databaseMetadata, tableName, aliasManager.put(tableName), factory, aliasManager);
     }
 
     /**
@@ -47,15 +49,16 @@ public class SqlQueryEntityProperties extends AbstractSqlQueryEntityProperties<S
     }
 
     /**
-     * @param tableName    tableName
-     * @param jdbc         jdbc
-     * @param tableAlias   tableAlias
-     * @param factory      MappingFactory
-     * @param aliasManager aliasManager
+     * @param jdbc             jdbc
+     * @param databaseMetadata databaseMetadata
+     * @param tableName        tableName
+     * @param tableAlias       tableAlias
+     * @param factory          MappingFactory
+     * @param aliasManager     aliasManager
      */
-    public SqlQueryEntityProperties(Jdbc jdbc, String tableName, String tableAlias, MappingFactory factory,
-            AliasManager aliasManager) {
-        super(jdbc, tableName, tableAlias, factory, aliasManager);
+    public SqlQueryEntityProperties(Jdbc jdbc, DatabaseMetadata databaseMetadata, String tableName, String tableAlias,
+            MappingFactory factory, AliasManager aliasManager) {
+        super(jdbc, databaseMetadata, tableName, tableAlias, factory, aliasManager);
     }
 
     /**

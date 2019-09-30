@@ -1,9 +1,12 @@
 
 package cn.featherfly.juorm.dml;
 
+import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.concurrent.ConcurrentHashMap;
+
+import cn.featherfly.juorm.JuormException;
 
 /**
  * <p>
@@ -17,7 +20,7 @@ import java.util.concurrent.ConcurrentHashMap;
  */
 public class AliasManager {
 
-    private Map<String, String> nameAlias = new ConcurrentHashMap<>(0);
+    private Map<String, String> nameAlias = new LinkedHashMap<>();
 
     private Map<String, Integer> nameAliasSize = new ConcurrentHashMap<>(0);
 
@@ -52,6 +55,20 @@ public class AliasManager {
 
     public String getName(String alias) {
         return nameAlias.get(alias);
+    }
+
+    public String getAlias(int index) {
+        if (index > nameAlias.size()) {
+            throw new JuormException(index + " > name alias size " + nameAlias.size());
+        }
+        int size = 0;
+        for (Entry<String, String> entry : nameAlias.entrySet()) {
+            if (size == index) {
+                return entry.getKey();
+            }
+            size++;
+        }
+        return null;
     }
 
     public String getAlias(String name) {

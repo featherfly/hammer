@@ -34,6 +34,8 @@ public class JdbcTestBase {
 
     protected static TplConfigFactory configFactory;
 
+    protected static DatabaseMetadata metadata;
+
     @BeforeSuite
     public void init() {
         DOMConfigurator.configure(ClassLoaderUtils.getResource("log4j.xml", JdbcTestBase.class));
@@ -51,7 +53,7 @@ public class JdbcTestBase {
         dataSource.setPassword("123456");
 
         jdbc = new SpringJdbcTemplateImpl(dataSource, Dialects.MYSQL);
-        DatabaseMetadata metadata = DatabaseMetadataManager.getDefaultManager().create(dataSource);
+        metadata = DatabaseMetadataManager.getDefaultManager().create(dataSource);
 
         mappingFactory = new JdbcMappingFactory(metadata, Dialects.MYSQL);
 
@@ -83,7 +85,7 @@ public class JdbcTestBase {
         //        postgreSQLDialect.setTableAndColumnNameUppercase(false);
         //        jdbc = new SpringJdbcTemplateImpl(dataSource, postgreSQLDialect);
         jdbc = new SpringJdbcTemplateImpl(dataSource, Dialects.POSTGRESQL);
-        DatabaseMetadata metadata = DatabaseMetadataManager.getDefaultManager().create(dataSource, "juorm_jdbc");
+        metadata = DatabaseMetadataManager.getDefaultManager().create(dataSource, "juorm_jdbc");
 
         mappingFactory = new JdbcMappingFactory(metadata, Dialects.POSTGRESQL);
 
@@ -103,7 +105,7 @@ public class JdbcTestBase {
         //        dataSource.setPassword("123456");
 
         jdbc = new SpringJdbcTemplateImpl(dataSource, Dialects.SQLITE);
-        DatabaseMetadata metadata = DatabaseMetadataManager.getDefaultManager().create(dataSource, "main");
+        metadata = DatabaseMetadataManager.getDefaultManager().create(dataSource, "main");
 
         mappingFactory = new JdbcMappingFactory(metadata, Dialects.SQLITE);
 

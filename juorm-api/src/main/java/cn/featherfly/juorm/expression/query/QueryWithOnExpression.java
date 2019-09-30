@@ -1,8 +1,8 @@
 
 package cn.featherfly.juorm.expression.query;
 
-import cn.featherfly.juorm.expression.ConditionGroupExpression;
-import cn.featherfly.juorm.expression.ConditionGroupLogicExpression;
+import cn.featherfly.juorm.expression.RepositoryConditionGroupLogicExpression;
+import cn.featherfly.juorm.expression.condition.RepositoryConditionsGroupExpression;
 
 /**
  * <p>
@@ -13,8 +13,8 @@ import cn.featherfly.juorm.expression.ConditionGroupLogicExpression;
  */
 public interface QueryWithOnExpression<QW extends QueryWithExpression<QW, QWO, QWE, C, L>,
         QWO extends QueryWithOnExpression<QW, QWO, QWE, C, L>,
-        QWE extends QueryWithEntityExpression<QW, QWO, QWE, C, L>, C extends ConditionGroupExpression<C, L>,
-        L extends ConditionGroupLogicExpression<C, L>> {
+        QWE extends QueryWithEntityExpression<QW, QWO, QWE, C, L>, C extends RepositoryConditionsGroupExpression<C, L>,
+        L extends RepositoryConditionGroupLogicExpression<C, L>> {
     /**
      * on
      *

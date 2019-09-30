@@ -11,8 +11,8 @@ import cn.featherfly.common.lang.LambdaUtils;
 import cn.featherfly.common.lang.function.SerializableFunction;
 import cn.featherfly.common.structure.page.Page;
 import cn.featherfly.juorm.dml.AliasManager;
-import cn.featherfly.juorm.dsl.query.QueryConditionGroupExpression;
 import cn.featherfly.juorm.dsl.query.QueryWith;
+import cn.featherfly.juorm.dsl.query.RepositoryQueryConditionGroupExpression;
 import cn.featherfly.juorm.expression.query.QueryExecutor;
 import cn.featherfly.juorm.mapping.ClassMapping;
 import cn.featherfly.juorm.mapping.MappingFactory;
@@ -245,8 +245,10 @@ public class SqlQueryWith implements QueryWith, SqlQueryWithOn, SqlQueryWithEnti
      * {@inheritDoc}
      */
     @Override
-    public QueryConditionGroupExpression where() {
-        return sqlQueryEntityProperties.where();
+    public RepositoryQueryConditionGroupExpression where() {
+        //        return sqlQueryEntityProperties.where();
+        return new RepositorySqlQueryExpression(sqlQueryEntityProperties.jdbc, aliasManager, classMapping,
+                sqlQueryEntityProperties.selectBuilder);
     }
 
     /**

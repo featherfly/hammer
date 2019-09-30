@@ -12,15 +12,16 @@ import cn.featherfly.common.lang.LangUtils;
 import cn.featherfly.common.lang.function.SerializableFunction;
 import cn.featherfly.common.structure.page.Limit;
 import cn.featherfly.common.structure.page.Page;
-import cn.featherfly.juorm.dsl.query.QueryConditionGroupExpression;
-import cn.featherfly.juorm.dsl.query.QueryConditionGroupLogicExpression;
+import cn.featherfly.juorm.dml.AliasManager;
 import cn.featherfly.juorm.dsl.query.QuerySortExpression;
+import cn.featherfly.juorm.dsl.query.RepositoryQueryConditionGroupExpression;
+import cn.featherfly.juorm.dsl.query.RepositoryQueryConditionGroupLogicExpression;
 import cn.featherfly.juorm.expression.query.QueryExecutor;
 import cn.featherfly.juorm.mapping.ClassMapping;
 import cn.featherfly.juorm.mapping.RowMapper;
 import cn.featherfly.juorm.rdb.jdbc.Jdbc;
 import cn.featherfly.juorm.rdb.jdbc.mapping.ClassMappingUtils;
-import cn.featherfly.juorm.rdb.sql.dml.AbstractSqlConditionGroupExpression;
+import cn.featherfly.juorm.rdb.sql.dml.AbstractRepositorySqlConditionGroupExpression;
 import cn.featherfly.juorm.rdb.sql.dml.builder.SqlSortBuilder;
 
 /**
@@ -30,47 +31,54 @@ import cn.featherfly.juorm.rdb.sql.dml.builder.SqlSortBuilder;
  *
  * @author zhongj
  */
-public class SqlQueryConditionGroupExpression
-        extends AbstractSqlConditionGroupExpression<QueryConditionGroupExpression, QueryConditionGroupLogicExpression>
-        implements QueryConditionGroupExpression, QueryConditionGroupLogicExpression, QuerySortExpression {
+public class RepositorySqlQueryConditionGroupExpression extends
+        AbstractRepositorySqlConditionGroupExpression<RepositoryQueryConditionGroupExpression, RepositoryQueryConditionGroupLogicExpression>
+        implements RepositoryQueryConditionGroupExpression, RepositoryQueryConditionGroupLogicExpression,
+        QuerySortExpression {
 
     private SqlSortBuilder sortBuilder = new SqlSortBuilder(dialect);
 
     private Limit limit;
 
     /**
-     * @param jdbc jdbc
+     * @param jdbc         jdbc
+     * @param aliasManager aliasManager
      */
-    public SqlQueryConditionGroupExpression(Jdbc jdbc) {
-        this(jdbc, null);
-    }
-
-    /**
-     * @param jdbc       jdbc
-     * @param queryAlias queryAlias
-     */
-    public SqlQueryConditionGroupExpression(Jdbc jdbc, String queryAlias) {
-        this(jdbc, queryAlias, null);
+    public RepositorySqlQueryConditionGroupExpression(Jdbc jdbc, AliasManager aliasManager) {
+        this(jdbc, aliasManager, null);
     }
 
     /**
      * @param jdbc         jdbc
+     * @param aliasManager aliasManager
+     * @param aliasManager aliasManager
+     * @param queryAlias   queryAlias
+     */
+    public RepositorySqlQueryConditionGroupExpression(Jdbc jdbc, AliasManager aliasManager, String queryAlias) {
+        this(jdbc, aliasManager, queryAlias, null);
+    }
+
+    /**
+     * @param jdbc         jdbc
+     * @param aliasManager aliasManager
      * @param queryAlias   queryAlias
      * @param classMapping classMapping
      */
-    public SqlQueryConditionGroupExpression(Jdbc jdbc, String queryAlias, ClassMapping<?> classMapping) {
-        this(jdbc, null, queryAlias, classMapping);
+    public RepositorySqlQueryConditionGroupExpression(Jdbc jdbc, AliasManager aliasManager, String queryAlias,
+            ClassMapping<?> classMapping) {
+        this(jdbc, aliasManager, null, queryAlias, classMapping);
     }
 
     /**
      * @param jdbc         jdbc
+     * @param aliasManager aliasManager
      * @param parent       parent group
      * @param queryAlias   queryAlias
      * @param classMapping classMapping
      */
-    SqlQueryConditionGroupExpression(Jdbc jdbc, QueryConditionGroupLogicExpression parent, String queryAlias,
-            ClassMapping<?> classMapping) {
-        super(jdbc.getDialect(), parent, queryAlias, classMapping);
+    RepositorySqlQueryConditionGroupExpression(Jdbc jdbc, AliasManager aliasManager,
+            RepositoryQueryConditionGroupLogicExpression parent, String queryAlias, ClassMapping<?> classMapping) {
+        super(jdbc.getDialect(), aliasManager, parent, queryAlias, classMapping);
         this.jdbc = jdbc;
     }
 
@@ -84,8 +92,9 @@ public class SqlQueryConditionGroupExpression
      * {@inheritDoc}
      */
     @Override
-    protected QueryConditionGroupExpression createGroup(QueryConditionGroupLogicExpression parent, String queryAlias) {
-        return new SqlQueryConditionGroupExpression(jdbc, parent, queryAlias, classMapping);
+    protected RepositoryQueryConditionGroupExpression createGroup(RepositoryQueryConditionGroupLogicExpression parent,
+            String queryAlias) {
+        return new RepositorySqlQueryConditionGroupExpression(jdbc, aliasManager, parent, queryAlias, classMapping);
     }
 
     /**
@@ -275,7 +284,7 @@ public class SqlQueryConditionGroupExpression
      */
     @Override
     public QuerySortExpression asc(String... names) {
-        ((SqlQueryConditionGroupExpression) getRoot()).sortBuilder
+        ((RepositorySqlQueryConditionGroupExpression) getRoot()).sortBuilder
                 .asc(ClassMappingUtils.getColumnNames(classMapping, names));
         return this;
     }
@@ -285,7 +294,7 @@ public class SqlQueryConditionGroupExpression
      */
     @Override
     public QuerySortExpression asc(List<String> names) {
-        ((SqlQueryConditionGroupExpression) getRoot()).sortBuilder
+        ((RepositorySqlQueryConditionGroupExpression) getRoot()).sortBuilder
                 .asc(ClassMappingUtils.getColumnNames(classMapping, names));
         return this;
     }
@@ -313,7 +322,7 @@ public class SqlQueryConditionGroupExpression
      */
     @Override
     public QuerySortExpression desc(String... names) {
-        ((SqlQueryConditionGroupExpression) getRoot()).sortBuilder
+        ((RepositorySqlQueryConditionGroupExpression) getRoot()).sortBuilder
                 .desc(ClassMappingUtils.getColumnNames(classMapping, names));
         return this;
     }
@@ -323,7 +332,7 @@ public class SqlQueryConditionGroupExpression
      */
     @Override
     public QuerySortExpression desc(List<String> names) {
-        ((SqlQueryConditionGroupExpression) getRoot()).sortBuilder
+        ((RepositorySqlQueryConditionGroupExpression) getRoot()).sortBuilder
                 .desc(ClassMappingUtils.getColumnNames(classMapping, names));
         return this;
     }

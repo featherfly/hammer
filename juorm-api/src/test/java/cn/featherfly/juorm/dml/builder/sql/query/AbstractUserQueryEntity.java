@@ -27,7 +27,7 @@ public class AbstractUserQueryEntity<Q extends AbstractUserQueryEntity<Q, QW, QW
         QWO extends QueryWithOnExpression<QW, QWO, QWE, UserQueryConditionGroupExpression, UserQueryConditionGroupExpression>,
         QWE extends QueryWithEntityExpression<QW, QWO, QWE, UserQueryConditionGroupExpression, UserQueryConditionGroupExpression>>
         implements
-        QueryEntityPropertiesExpression<Q, QW, QWO, QWE, UserQueryConditionGroupExpression, UserQueryConditionGroupExpression> {
+        QueryEntityPropertiesExpression<Q, QW, QWO, QWE, UserQueryConditionGroupExpression, UserQueryConditionGroupExpression, UserQueryConditionGroupExpression, UserQueryConditionGroupExpression> {
 
     /**
      * {@inheritDoc}

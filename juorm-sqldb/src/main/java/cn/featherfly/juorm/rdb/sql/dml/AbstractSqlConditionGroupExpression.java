@@ -854,7 +854,7 @@ public abstract class AbstractSqlConditionGroupExpression<C extends ConditionGro
      * {@inheritDoc}
      */
     @Override
-    public <T, R> StringExpression<C, L> propertyString(SerializableFunction<T, R> name) {
+    public <T> StringExpression<C, L> propertyString(SerializableFunction<T, String> name) {
         return propertyString(getPropertyName(name));
     }
 
@@ -862,7 +862,7 @@ public abstract class AbstractSqlConditionGroupExpression<C extends ConditionGro
      * {@inheritDoc}
      */
     @Override
-    public <T, R> NumberExpression<C, L> propertyNumber(SerializableFunction<T, R> name) {
+    public <T, R extends Number> NumberExpression<C, L> propertyNumber(SerializableFunction<T, R> name) {
         return propertyNumber(getPropertyName(name));
     }
 
@@ -870,7 +870,7 @@ public abstract class AbstractSqlConditionGroupExpression<C extends ConditionGro
      * {@inheritDoc}
      */
     @Override
-    public <T, R> DateExpression<C, L> propertyDate(SerializableFunction<T, R> name) {
+    public <T, R extends Date> DateExpression<C, L> propertyDate(SerializableFunction<T, R> name) {
         return propertyDate(getPropertyName(name));
     }
 
@@ -878,7 +878,7 @@ public abstract class AbstractSqlConditionGroupExpression<C extends ConditionGro
      * {@inheritDoc}
      */
     @Override
-    public <T, R> EnumExpression<C, L> propertyEnum(SerializableFunction<T, R> name) {
+    public <T, R extends Enum<?>> EnumExpression<C, L> propertyEnum(SerializableFunction<T, R> name) {
         return propertyEnum(getPropertyName(name));
     }
 

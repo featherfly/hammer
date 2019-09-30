@@ -6,7 +6,9 @@ import java.util.Collection;
 import cn.featherfly.common.lang.function.SerializableFunction;
 import cn.featherfly.juorm.expression.ConditionGroupExpression;
 import cn.featherfly.juorm.expression.ConditionGroupLogicExpression;
+import cn.featherfly.juorm.expression.RepositoryConditionGroupLogicExpression;
 import cn.featherfly.juorm.expression.WhereExpression;
+import cn.featherfly.juorm.expression.condition.RepositoryConditionsGroupExpression;
 
 /**
  * <p>
@@ -15,11 +17,12 @@ import cn.featherfly.juorm.expression.WhereExpression;
  *
  * @author zhongj
  */
-public interface QueryEntityExpression<Q extends QueryEntityPropertiesExpression<Q, QW, QWO, QWE, C, L>,
-        QW extends QueryWithExpression<QW, QWO, QWE, C, L>, QWO extends QueryWithOnExpression<QW, QWO, QWE, C, L>,
-        QWE extends QueryWithEntityExpression<QW, QWO, QWE, C, L>, C extends ConditionGroupExpression<C, L>,
-        L extends ConditionGroupLogicExpression<C, L>>
-        extends WhereExpression<C, L>, QueryWithExpression<QW, QWO, QWE, C, L>, QueryListExecutor, QueryConditionLimit {
+public interface QueryEntityExpression<Q extends QueryEntityPropertiesExpression<Q, QW, QWO, QWE, C, L, RC, RL>,
+        QW extends QueryWithExpression<QW, QWO, QWE, RC, RL>, QWO extends QueryWithOnExpression<QW, QWO, QWE, RC, RL>,
+        QWE extends QueryWithEntityExpression<QW, QWO, QWE, RC, RL>, C extends ConditionGroupExpression<C, L>,
+        L extends ConditionGroupLogicExpression<C, L>, RC extends RepositoryConditionsGroupExpression<RC, RL>,
+        RL extends RepositoryConditionGroupLogicExpression<RC, RL>>
+        extends WhereExpression<C, L>, QueryListExecutor, QueryConditionLimit {
     /**
      * 设置id
      *
@@ -85,4 +88,20 @@ public interface QueryEntityExpression<Q extends QueryEntityPropertiesExpression
      * @return QueryEntityPropertiesExpression
      */
     Q property(Collection<String> propertyNames);
+
+    /**
+     * with
+     *
+     * @param repositoryName with repository name
+     * @return QueryWithExpression
+     */
+    QWO with(String repositoryName);
+
+    /**
+     * with
+     *
+     * @param repositoryType with repository type
+     * @return QueryWithExpression
+     */
+    <T> QWO with(Class<T> repositoryType);
 }

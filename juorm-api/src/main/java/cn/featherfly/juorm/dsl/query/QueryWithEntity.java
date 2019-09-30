@@ -11,5 +11,5 @@ import cn.featherfly.juorm.expression.query.QueryWithEntityExpression;
  * @author zhongj
  */
 public interface QueryWithEntity extends
-        QueryWithEntityExpression<QueryWith, QueryWithOn, QueryWithEntity, QueryConditionGroupExpression, QueryConditionGroupLogicExpression> {
+        QueryWithEntityExpression<QueryWith, QueryWithOn, QueryWithEntity, RepositoryQueryConditionGroupExpression, RepositoryQueryConditionGroupLogicExpression> {
 }
