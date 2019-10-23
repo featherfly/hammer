@@ -1,9 +1,9 @@
 
 package cn.featherfly.juorm.expression.query;
 
-import cn.featherfly.juorm.expression.ConditionGroupExpression;
-import cn.featherfly.juorm.expression.ConditionGroupLogicExpression;
-import cn.featherfly.juorm.expression.WhereExpression;
+import cn.featherfly.juorm.expression.RepositoryConditionGroupLogicExpression;
+import cn.featherfly.juorm.expression.RepositoryWhereExpression;
+import cn.featherfly.juorm.expression.condition.RepositoryConditionsGroupExpression;
 
 /**
  * <p>
@@ -14,9 +14,9 @@ import cn.featherfly.juorm.expression.WhereExpression;
  */
 public interface QueryWithExpression<QW extends QueryWithExpression<QW, QWO, QWE, C, L>,
         QWO extends QueryWithOnExpression<QW, QWO, QWE, C, L>,
-        QWE extends QueryWithEntityExpression<QW, QWO, QWE, C, L>, C extends ConditionGroupExpression<C, L>,
-        L extends ConditionGroupLogicExpression<C, L>>
-        extends WhereExpression<C, L>, QueryListExecutor, QueryConditionLimit {
+        QWE extends QueryWithEntityExpression<QW, QWO, QWE, C, L>, C extends RepositoryConditionsGroupExpression<C, L>,
+        L extends RepositoryConditionGroupLogicExpression<C, L>>
+        extends RepositoryWhereExpression<C, L>, QueryListExecutor, QueryConditionLimit {
     /**
      * with
      *

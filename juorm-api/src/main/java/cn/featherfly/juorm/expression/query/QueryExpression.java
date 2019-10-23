@@ -4,6 +4,8 @@ package cn.featherfly.juorm.expression.query;
 import cn.featherfly.juorm.expression.ConditionGroupExpression;
 import cn.featherfly.juorm.expression.ConditionGroupLogicExpression;
 import cn.featherfly.juorm.expression.Repository;
+import cn.featherfly.juorm.expression.RepositoryConditionGroupLogicExpression;
+import cn.featherfly.juorm.expression.condition.RepositoryConditionsGroupExpression;
 
 /**
  * <p>
@@ -12,25 +14,21 @@ import cn.featherfly.juorm.expression.Repository;
  *
  * @author zhongj
  */
-public interface QueryExpression<
-        Q extends QueryEntityExpression<QP, QW, QWO, QWE, C, L>,
-        QP extends QueryEntityPropertiesExpression<QP, QW, QWO, QWE, C, L>,
-        QW extends QueryWithExpression<QW, QWO, QWE, C, L>,
-        QWO extends QueryWithOnExpression<QW, QWO, QWE, C, L>,
-        QWE extends QueryWithEntityExpression<QW, QWO, QWE, C, L>,
-        C extends ConditionGroupExpression<C, L>,
-        L extends ConditionGroupLogicExpression<C, L>,
+public interface QueryExpression<Q extends QueryEntityExpression<QP, QW, QWO, QWE, C, L, RC, RL>,
+        QP extends QueryEntityPropertiesExpression<QP, QW, QWO, QWE, C, L, RC, RL>,
+        QW extends QueryWithExpression<QW, QWO, QWE, RC, RL>, QWO extends QueryWithOnExpression<QW, QWO, QWE, RC, RL>,
+        QWE extends QueryWithEntityExpression<QW, QWO, QWE, RC, RL>, C extends ConditionGroupExpression<C, L>,
+        L extends ConditionGroupLogicExpression<C, L>, RC extends RepositoryConditionsGroupExpression<RC, RL>,
+        RL extends RepositoryConditionGroupLogicExpression<RC, RL>,
         TQ extends TypeQueryEntityExpression<TQP, TQW, TQWE, TC, TL>,
         TQP extends TypeQueryEntityPropertiesExpression<TQP, TQW, TQWE, TC, TL>,
         TQW extends TypeQueryWithExpression<TQW, TQWE, TC, TL>,
-        TQWE extends TypeQueryWithEntityExpression<TQW, TQWE, TC, TL>,
-        TC extends ConditionGroupExpression<TC, TL>,
+        TQWE extends TypeQueryWithEntityExpression<TQW, TQWE, TC, TL>, TC extends ConditionGroupExpression<TC, TL>,
         TL extends ConditionGroupLogicExpression<TC, TL>> {
     /**
      * find repository
      *
-     * @param repository
-     *            repository
+     * @param repository repository
      * @return QueryEntity
      */
     Q find(Repository repository);
@@ -46,8 +44,7 @@ public interface QueryExpression<
     /**
      * find repository
      *
-     * @param repository
-     *            repository
+     * @param repository repository
      * @return QueryEntity
      */
     Q find(String repository);
@@ -55,8 +52,7 @@ public interface QueryExpression<
     /**
      * find reposit type
      *
-     * @param repositType
-     *            repositType
+     * @param repositType repositType
      * @return QueryEntity
      */
     TQ find(Class<?> repositType);

@@ -7,8 +7,8 @@ import java.time.LocalTime;
 import java.util.Date;
 
 import cn.featherfly.common.lang.function.SerializableFunction;
-import cn.featherfly.juorm.expression.ConditionGroupExpression;
-import cn.featherfly.juorm.expression.ConditionGroupLogicExpression;
+import cn.featherfly.juorm.expression.RepositoryConditionGroupLogicExpression;
+import cn.featherfly.juorm.expression.condition.RepositoryConditionsGroupExpression;
 import cn.featherfly.juorm.expression.condition.property.DateExpression;
 import cn.featherfly.juorm.expression.condition.property.EnumExpression;
 import cn.featherfly.juorm.expression.condition.property.NumberExpression;
@@ -22,9 +22,9 @@ import cn.featherfly.juorm.expression.condition.property.StringExpression;
  *
  * @author zhongj
  */
-public class UserQueryConditionGroupExpression
-        implements ConditionGroupExpression<UserQueryConditionGroupExpression, UserQueryConditionGroupExpression>,
-        ConditionGroupLogicExpression<UserQueryConditionGroupExpression, UserQueryConditionGroupExpression> {
+public class UserQueryConditionGroupExpression implements
+        RepositoryConditionsGroupExpression<UserQueryConditionGroupExpression, UserQueryConditionGroupExpression>,
+        RepositoryConditionGroupLogicExpression<UserQueryConditionGroupExpression, UserQueryConditionGroupExpression> {
 
     /**
      *
@@ -786,6 +786,353 @@ public class UserQueryConditionGroupExpression
     public <T,
             R extends Enum<?>> EnumExpression<UserQueryConditionGroupExpression, UserQueryConditionGroupExpression> propertyEnum(
                     SerializableFunction<T, R> name) {
+        // YUFEI_TODO Auto-generated method stub
+        return null;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public UserQueryConditionGroupExpression co(String repository, String name, String value) {
+        // YUFEI_TODO Auto-generated method stub
+        return null;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public UserQueryConditionGroupExpression ew(String repository, String name, String value) {
+        // YUFEI_TODO Auto-generated method stub
+        return null;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public UserQueryConditionGroupExpression eq(String repository, String name, Object value) {
+        // YUFEI_TODO Auto-generated method stub
+        return null;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public <N extends Number> UserQueryConditionGroupExpression ge(String repository, String name, Number value) {
+        // YUFEI_TODO Auto-generated method stub
+        return null;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public <D extends Date> UserQueryConditionGroupExpression ge(String repository, String name, D value) {
+        // YUFEI_TODO Auto-generated method stub
+        return null;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public UserQueryConditionGroupExpression ge(String repository, String name, LocalTime value) {
+        // YUFEI_TODO Auto-generated method stub
+        return null;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public UserQueryConditionGroupExpression ge(String repository, String name, LocalDate value) {
+        // YUFEI_TODO Auto-generated method stub
+        return null;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public UserQueryConditionGroupExpression ge(String repository, String name, LocalDateTime value) {
+        // YUFEI_TODO Auto-generated method stub
+        return null;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public UserQueryConditionGroupExpression ge(String repository, String name, String value) {
+        // YUFEI_TODO Auto-generated method stub
+        return null;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public <N extends Number> UserQueryConditionGroupExpression gt(String repository, String name, Number value) {
+        // YUFEI_TODO Auto-generated method stub
+        return null;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public <D extends Date> UserQueryConditionGroupExpression gt(String repository, String name, D value) {
+        // YUFEI_TODO Auto-generated method stub
+        return null;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public UserQueryConditionGroupExpression gt(String repository, String name, LocalTime value) {
+        // YUFEI_TODO Auto-generated method stub
+        return null;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public UserQueryConditionGroupExpression gt(String repository, String name, LocalDate value) {
+        // YUFEI_TODO Auto-generated method stub
+        return null;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public UserQueryConditionGroupExpression gt(String repository, String name, LocalDateTime value) {
+        // YUFEI_TODO Auto-generated method stub
+        return null;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public UserQueryConditionGroupExpression gt(String repository, String name, String value) {
+        // YUFEI_TODO Auto-generated method stub
+        return null;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public UserQueryConditionGroupExpression in(String repository, String name, Object value) {
+        // YUFEI_TODO Auto-generated method stub
+        return null;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public UserQueryConditionGroupExpression inn(String repository, String name) {
+        // YUFEI_TODO Auto-generated method stub
+        return null;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public UserQueryConditionGroupExpression isn(String repository, String name) {
+        // YUFEI_TODO Auto-generated method stub
+        return null;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public <N extends Number> UserQueryConditionGroupExpression le(String repository, String name, Number value) {
+        // YUFEI_TODO Auto-generated method stub
+        return null;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public <D extends Date> UserQueryConditionGroupExpression le(String repository, String name, D value) {
+        // YUFEI_TODO Auto-generated method stub
+        return null;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public UserQueryConditionGroupExpression le(String repository, String name, LocalTime value) {
+        // YUFEI_TODO Auto-generated method stub
+        return null;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public UserQueryConditionGroupExpression le(String repository, String name, LocalDate value) {
+        // YUFEI_TODO Auto-generated method stub
+        return null;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public UserQueryConditionGroupExpression le(String repository, String name, LocalDateTime value) {
+        // YUFEI_TODO Auto-generated method stub
+        return null;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public UserQueryConditionGroupExpression le(String repository, String name, String value) {
+        // YUFEI_TODO Auto-generated method stub
+        return null;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public <N extends Number> UserQueryConditionGroupExpression lt(String repository, String name, Number value) {
+        // YUFEI_TODO Auto-generated method stub
+        return null;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public <D extends Date> UserQueryConditionGroupExpression lt(String repository, String name, D value) {
+        // YUFEI_TODO Auto-generated method stub
+        return null;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public UserQueryConditionGroupExpression lt(String repository, String name, LocalTime value) {
+        // YUFEI_TODO Auto-generated method stub
+        return null;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public UserQueryConditionGroupExpression lt(String repository, String name, LocalDate value) {
+        // YUFEI_TODO Auto-generated method stub
+        return null;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public UserQueryConditionGroupExpression lt(String repository, String name, LocalDateTime value) {
+        // YUFEI_TODO Auto-generated method stub
+        return null;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public UserQueryConditionGroupExpression lt(String repository, String name, String value) {
+        // YUFEI_TODO Auto-generated method stub
+        return null;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public UserQueryConditionGroupExpression ne(String repository, String name, Object value) {
+        // YUFEI_TODO Auto-generated method stub
+        return null;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public UserQueryConditionGroupExpression nin(String repository, String name, Object value) {
+        // YUFEI_TODO Auto-generated method stub
+        return null;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public UserQueryConditionGroupExpression sw(String repository, String name, String value) {
+        // YUFEI_TODO Auto-generated method stub
+        return null;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public ObjectExpression<UserQueryConditionGroupExpression, UserQueryConditionGroupExpression> property(
+            String repository, String name) {
+        // YUFEI_TODO Auto-generated method stub
+        return null;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public StringExpression<UserQueryConditionGroupExpression, UserQueryConditionGroupExpression> propertyString(
+            String repository, String name) {
+        // YUFEI_TODO Auto-generated method stub
+        return null;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public NumberExpression<UserQueryConditionGroupExpression, UserQueryConditionGroupExpression> propertyNumber(
+            String repository, String name) {
+        // YUFEI_TODO Auto-generated method stub
+        return null;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public DateExpression<UserQueryConditionGroupExpression, UserQueryConditionGroupExpression> propertyDate(
+            String repository, String name) {
+        // YUFEI_TODO Auto-generated method stub
+        return null;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public EnumExpression<UserQueryConditionGroupExpression, UserQueryConditionGroupExpression> propertyEnum(
+            String repository, String name) {
         // YUFEI_TODO Auto-generated method stub
         return null;
     }
