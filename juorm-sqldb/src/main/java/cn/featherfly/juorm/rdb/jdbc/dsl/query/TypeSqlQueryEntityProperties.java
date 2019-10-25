@@ -30,7 +30,7 @@ import cn.featherfly.juorm.rdb.jdbc.JuormJdbcException;
 public class TypeSqlQueryEntityProperties extends AbstractSqlQueryEntityProperties<TypeSqlQueryEntityProperties>
         implements TypeSqlQueryEntity, TypeQueryEntityProperties {
 
-    private List<TypeSqlQueryWith> typeSqlQueryWiths = new ArrayList<>();
+    List<TypeSqlQueryWith> typeSqlQueryWiths = new ArrayList<>();
 
     /**
      * @param jdbc         jdbc

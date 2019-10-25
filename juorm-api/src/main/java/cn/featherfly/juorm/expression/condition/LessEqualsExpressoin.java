@@ -26,7 +26,7 @@ public interface LessEqualsExpressoin<C extends ConditionExpression, L extends L
      * @param value 参数值
      * @return LogicExpression
      */
-    <N extends Number> L le(String name, Number value);
+    <N extends Number> L le(String name, N value);
 
     /**
      * 小于等于
@@ -36,7 +36,7 @@ public interface LessEqualsExpressoin<C extends ConditionExpression, L extends L
      * @param value 参数值
      * @return LogicExpression
      */
-    <T, R, N extends Number> L le(SerializableFunction<T, R> name, Number value);
+    <T, R, N extends Number> L le(SerializableFunction<T, R> name, N value);
 
     /**
      * 小于等于

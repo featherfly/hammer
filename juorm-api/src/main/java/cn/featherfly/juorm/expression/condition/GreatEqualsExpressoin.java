@@ -26,7 +26,7 @@ public interface GreatEqualsExpressoin<C extends ConditionExpression, L extends 
      * @param value 参数值
      * @return LogicExpression
      */
-    <N extends Number> L ge(String name, Number value);
+    <N extends Number> L ge(String name, N value);
 
     /**
      * 大于等于
@@ -36,7 +36,7 @@ public interface GreatEqualsExpressoin<C extends ConditionExpression, L extends 
      * @param value 参数值
      * @return LogicExpression
      */
-    <T, R, N extends Number> L ge(SerializableFunction<T, R> name, Number value);
+    <T, R, N extends Number> L ge(SerializableFunction<T, R> name, N value);
 
     /**
      * 大于等于

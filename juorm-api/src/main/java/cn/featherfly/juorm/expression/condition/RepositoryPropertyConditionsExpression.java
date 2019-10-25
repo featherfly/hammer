@@ -27,6 +27,16 @@ public interface RepositoryPropertyConditionsExpression<C extends RepositoryCond
 
     EnumExpression<C, L> propertyEnum(String repository, String name);
 
+    <T> ObjectExpression<C, L> property(Class<T> repository, String name);
+
+    <T> StringExpression<C, L> propertyString(Class<T> repository, String name);
+
+    <T> NumberExpression<C, L> propertyNumber(Class<T> repository, String name);
+
+    <T> DateExpression<C, L> propertyDate(Class<T> repository, String name);
+
+    <T> EnumExpression<C, L> propertyEnum(Class<T> repository, String name);
+
     ObjectExpression<C, L> property(int repositoryIndex, String name);
 
     StringExpression<C, L> propertyString(int repositoryIndex, String name);

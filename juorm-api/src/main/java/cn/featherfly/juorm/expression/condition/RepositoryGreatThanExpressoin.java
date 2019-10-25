@@ -26,7 +26,7 @@ public interface RepositoryGreatThanExpressoin<C extends ConditionExpression, L 
      * @return LogicExpression
      */
 
-    <N extends Number> L gt(String repository, String name, Number value);
+    <N extends Number> L gt(String repository, String name, N value);
 
     /**
      * 大于
@@ -81,7 +81,6 @@ public interface RepositoryGreatThanExpressoin<C extends ConditionExpression, L 
      * @param value      参数值
      * @return LogicExpression
      */
-
     L gt(String repository, String name, String value);
 
     /**
@@ -93,8 +92,70 @@ public interface RepositoryGreatThanExpressoin<C extends ConditionExpression, L 
      * @param value           参数值
      * @return LogicExpression
      */
+    <N extends Number, T> L gt(Class<T> repository, String name, N value);
 
-    <N extends Number> L gt(int repositoryIndex, String name, Number value);
+    /**
+     * 大于
+     *
+     * @param <D>             date type
+     * @param repositoryIndex repository index
+     * @param name            参数名称
+     * @param value           参数值
+     * @return LogicExpression
+     */
+    <D extends Date, T> L gt(Class<T> repository, String name, D value);
+
+    /**
+     * 大于
+     *
+     * @param repositoryIndex repository index
+     * @param name            参数名称
+     * @param value           参数值
+     * @return LogicExpression
+     */
+    <T> L gt(Class<T> repository, String name, LocalTime value);
+
+    /**
+     * 大于
+     *
+     * @param repositoryIndex repository index
+     * @param name            参数名称
+     * @param value           参数值
+     * @return LogicExpression
+     */
+    <T> L gt(Class<T> repository, String name, LocalDate value);
+
+    /**
+     * 大于
+     *
+     * @param repositoryIndex repository index
+     * @param name            参数名称
+     * @param value           参数值
+     * @return LogicExpression
+     */
+    <T> L gt(Class<T> repository, String name, LocalDateTime value);
+
+    /**
+     * 大于
+     *
+     * @param repositoryIndex repository index
+     * @param name            参数名称
+     * @param value           参数值
+     * @return LogicExpression
+     */
+    <T> L gt(Class<T> repository, String name, String value);
+
+    /**
+     * 大于
+     *
+     * @param <N>             number type
+     * @param repositoryIndex repository index
+     * @param name            参数名称
+     * @param value           参数值
+     * @return LogicExpression
+     */
+
+    <N extends Number> L gt(int repositoryIndex, String name, N value);
 
     /**
      * 大于

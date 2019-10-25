@@ -24,6 +24,16 @@ public interface RepositoryEqualsExpression<C extends ConditionExpression, L ext
     /**
      * 等于
      *
+     * @param repository 存储库
+     * @param name       参数名称
+     * @param value      参数值
+     * @return LogicExpression
+     */
+    <T> L eq(Class<T> repository, String name, Object value);
+
+    /**
+     * 等于
+     *
      * @param repositoryIndex repository index
      * @param name            参数名称
      * @param value           参数值

@@ -24,6 +24,16 @@ public interface RepositoryContainsExpression<C extends ConditionExpression, L e
     /**
      * 包含value
      *
+     * @param repository repository
+     * @param name       参数名称
+     * @param value      参数值
+     * @return LogicExpression
+     */
+    <T> L co(Class<T> repository, String name, String value);
+
+    /**
+     * 包含value
+     *
      * @param repositoryIndex repository index
      * @param name            参数名称
      * @param value           参数值

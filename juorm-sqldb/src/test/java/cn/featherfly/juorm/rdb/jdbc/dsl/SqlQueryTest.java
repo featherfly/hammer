@@ -178,13 +178,24 @@ public class SqlQueryTest extends JdbcTestBase {
     void testJoinCondition2() {
         SqlQuery query = new SqlQuery(jdbc, mappingFactory);
         Integer id = 1;
+        Integer uid = 1;
         //        UserInfo userInfo = query.find(UserInfo.class).with(UserInfo::getUser).where().eq(UserInfo::getId, id).single();
         //        assertEquals(userInfo.getId(), id);
 
         User user = null;
+
+        user = query.find(User.class).with(UserInfo::getUser).where().eq(User::getId, uid).single();
+        assertEquals(user.getId(), uid);
+
         user = query.find(User.class).with(UserInfo::getUser).where().eq(UserInfo::getId, id).single();
-        user = query.find(User.class).with(UserInfo::getUser).where().eq(1, "id", id).single();
-        user = query.find(User.class).with(UserInfo::getUser).where().eq("user_info", "id", id).single();
+        assertEquals(user.getId(), uid);
+
+        user = query.find(User.class).with(UserInfo::getUser).where().property(UserInfo::getId).eq(id).single();
+        assertEquals(user.getId(), uid);
+
+        //        user = query.find(User.class).with(UserInfo::getUser).where().eq(1, "id", id).single();
+        //        user = query.find(User.class).with(UserInfo::getUser).where().eq("user_info", "id", id).single();
+        //        user = query.find(User.class).with(UserInfo::getUser).where().eq(UserInfo.class, "id", id).single();
     }
 
     @Test
