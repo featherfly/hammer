@@ -154,7 +154,6 @@ public class SqlQueryTest extends JdbcTestBase {
         list = query.find("user").property("username", "password", "age").with("user_info").on("user_id").where()
                 .property(1, "name").eq("羽飞").list();
         assertEquals(list.size(), 1);
-
     }
 
     @Test
@@ -173,6 +172,19 @@ public class SqlQueryTest extends JdbcTestBase {
         query.find(Tree2.class).with(Tree2::getParent).list();
 
         query.find(Tree2.class).with(Tree2::getParent).with(Tree2::getParent, 1).list();
+    }
+
+    @Test
+    void testJoinCondition2() {
+        SqlQuery query = new SqlQuery(jdbc, mappingFactory);
+        Integer id = 1;
+        //        UserInfo userInfo = query.find(UserInfo.class).with(UserInfo::getUser).where().eq(UserInfo::getId, id).single();
+        //        assertEquals(userInfo.getId(), id);
+
+        User user = null;
+        user = query.find(User.class).with(UserInfo::getUser).where().eq(UserInfo::getId, id).single();
+        user = query.find(User.class).with(UserInfo::getUser).where().eq(1, "id", id).single();
+        user = query.find(User.class).with(UserInfo::getUser).where().eq("user_info", "id", id).single();
     }
 
     @Test

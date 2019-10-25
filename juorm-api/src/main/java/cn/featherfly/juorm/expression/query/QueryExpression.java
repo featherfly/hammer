@@ -20,11 +20,12 @@ public interface QueryExpression<Q extends QueryEntityExpression<QP, QW, QWO, QW
         QWE extends QueryWithEntityExpression<QW, QWO, QWE, RC, RL>, C extends ConditionGroupExpression<C, L>,
         L extends ConditionGroupLogicExpression<C, L>, RC extends RepositoryConditionsGroupExpression<RC, RL>,
         RL extends RepositoryConditionGroupLogicExpression<RC, RL>,
-        TQ extends TypeQueryEntityExpression<TQP, TQW, TQWE, TC, TL>,
-        TQP extends TypeQueryEntityPropertiesExpression<TQP, TQW, TQWE, TC, TL>,
-        TQW extends TypeQueryWithExpression<TQW, TQWE, TC, TL>,
-        TQWE extends TypeQueryWithEntityExpression<TQW, TQWE, TC, TL>, TC extends ConditionGroupExpression<TC, TL>,
-        TL extends ConditionGroupLogicExpression<TC, TL>> {
+        TQ extends TypeQueryEntityExpression<TQP, TQW, TQWE, TC, TL, RTC, RTL>,
+        TQP extends TypeQueryEntityPropertiesExpression<TQP, TQW, TQWE, TC, TL, RTC, RTL>,
+        TQW extends TypeQueryWithExpression<TQW, TQWE, RTC, RTL>,
+        TQWE extends TypeQueryWithEntityExpression<TQW, TQWE, RTC, RTL>, TC extends ConditionGroupExpression<TC, TL>,
+        TL extends ConditionGroupLogicExpression<TC, TL>, RTC extends RepositoryConditionsGroupExpression<RTC, RTL>,
+        RTL extends RepositoryConditionGroupLogicExpression<RTC, RTL>> {
     /**
      * find repository
      *

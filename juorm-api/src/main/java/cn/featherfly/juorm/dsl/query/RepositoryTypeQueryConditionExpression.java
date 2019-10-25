@@ -10,6 +10,6 @@ import cn.featherfly.juorm.expression.ConditionExpression;
  *
  * @author zhongj
  */
-public interface RepositoryQueryConditionExpression
-        extends ConditionExpression<RepositoryQueryConditionExpression, RepositoryQueryConditionLogicExpression> {
+public interface RepositoryTypeQueryConditionExpression extends
+        ConditionExpression<RepositoryTypeQueryConditionExpression, RepositoryTypeQueryConditionLogicExpression> {
 }

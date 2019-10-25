@@ -18,15 +18,14 @@ import cn.featherfly.juorm.mapping.RowMapper;
  *
  * @author zhongj
  */
-public class UserQueryWithEntity implements QueryWithEntityExpression<
-
-        UserQueryWith, UserQueryWithOn, UserQueryWithEntity, UserQueryConditionGroupExpression, UserQueryConditionGroupExpression> {
+public class UserQueryWithEntity implements
+        QueryWithEntityExpression<UserQueryWith, UserQueryWithOn, UserQueryWithEntity, UserQueryRepositoryConditionGroupExpression, UserQueryRepositoryConditionGroupExpression> {
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public UserQueryConditionGroupExpression where() {
+    public UserQueryRepositoryConditionGroupExpression where() {
         // YUFEI_TODO Auto-generated method stub
         return null;
     }

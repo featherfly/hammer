@@ -7,7 +7,7 @@ import cn.featherfly.common.lang.LangUtils;
 import cn.featherfly.common.lang.function.SerializableFunction;
 import cn.featherfly.common.structure.page.Page;
 import cn.featherfly.juorm.dml.AliasManager;
-import cn.featherfly.juorm.dsl.query.TypeQueryConditionGroupExpression;
+import cn.featherfly.juorm.dsl.query.RepositoryTypeQueryConditionGroupExpression;
 import cn.featherfly.juorm.dsl.query.TypeQueryWith;
 import cn.featherfly.juorm.dsl.query.TypeQueryWithEntity;
 import cn.featherfly.juorm.expression.query.TypeQueryExecutor;
@@ -132,8 +132,10 @@ public class TypeSqlQueryWith implements TypeQueryWith, TypeQueryWithEntity {
      * {@inheritDoc}
      */
     @Override
-    public TypeQueryConditionGroupExpression where() {
-        return sqlQueryEntityProperties.where();
+    public RepositoryTypeQueryConditionGroupExpression where() {
+        return new RepositoryTypeSqlQueryExpression(sqlQueryEntityProperties.jdbc,
+                sqlQueryEntityProperties.aliasManager, sqlQueryEntityProperties.classMapping,
+                sqlQueryEntityProperties.selectBuilder);
     }
 
     /**
