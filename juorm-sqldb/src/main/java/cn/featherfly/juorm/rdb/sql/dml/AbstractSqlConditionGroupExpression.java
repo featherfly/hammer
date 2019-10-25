@@ -114,7 +114,7 @@ public abstract class AbstractSqlConditionGroupExpression<C extends ConditionGro
      * {@inheritDoc}
      */
     @Override
-    public <N extends Number> L ge(String name, Number value) {
+    public <N extends Number> L ge(String name, N value) {
         return (L) addCondition(new SqlConditionExpressionBuilder(dialect,
                 ClassMappingUtils.getColumnName(name, classMapping), value, QueryOperator.GE, queryAlias));
     }
@@ -168,7 +168,7 @@ public abstract class AbstractSqlConditionGroupExpression<C extends ConditionGro
      * {@inheritDoc}
      */
     @Override
-    public <N extends Number> L gt(String name, Number value) {
+    public <N extends Number> L gt(String name, N value) {
         return (L) addCondition(new SqlConditionExpressionBuilder(dialect,
                 ClassMappingUtils.getColumnName(name, classMapping), value, QueryOperator.GT, queryAlias));
     }
@@ -249,7 +249,7 @@ public abstract class AbstractSqlConditionGroupExpression<C extends ConditionGro
      * {@inheritDoc}
      */
     @Override
-    public <N extends Number> L le(String name, Number value) {
+    public <N extends Number> L le(String name, N value) {
         return (L) addCondition(new SqlConditionExpressionBuilder(dialect,
                 ClassMappingUtils.getColumnName(name, classMapping), value, QueryOperator.LE, queryAlias));
     }
@@ -303,7 +303,7 @@ public abstract class AbstractSqlConditionGroupExpression<C extends ConditionGro
      * {@inheritDoc}
      */
     @Override
-    public <N extends Number> L lt(String name, Number value) {
+    public <N extends Number> L lt(String name, N value) {
         return (L) addCondition(new SqlConditionExpressionBuilder(dialect,
                 ClassMappingUtils.getColumnName(name, classMapping), value, QueryOperator.LT, queryAlias));
     }
@@ -500,7 +500,7 @@ public abstract class AbstractSqlConditionGroupExpression<C extends ConditionGro
      * {@inheritDoc}
      */
     @Override
-    public <T, R, N extends Number> L ge(SerializableFunction<T, R> name, Number value) {
+    public <T, R, N extends Number> L ge(SerializableFunction<T, R> name, N value) {
         return ge(getPropertyName(name), value);
     }
 
@@ -548,7 +548,7 @@ public abstract class AbstractSqlConditionGroupExpression<C extends ConditionGro
      * {@inheritDoc}
      */
     @Override
-    public <T, R, N extends Number> L gt(SerializableFunction<T, R> name, Number value) {
+    public <T, R, N extends Number> L gt(SerializableFunction<T, R> name, N value) {
         return gt(getPropertyName(name), value);
     }
 
@@ -620,7 +620,7 @@ public abstract class AbstractSqlConditionGroupExpression<C extends ConditionGro
      * {@inheritDoc}
      */
     @Override
-    public <T, R, N extends Number> L le(SerializableFunction<T, R> name, Number value) {
+    public <T, R, N extends Number> L le(SerializableFunction<T, R> name, N value) {
         return le(getPropertyName(name), value);
     }
 
@@ -668,7 +668,7 @@ public abstract class AbstractSqlConditionGroupExpression<C extends ConditionGro
      * {@inheritDoc}
      */
     @Override
-    public <T, R, N extends Number> L lt(SerializableFunction<T, R> name, Number value) {
+    public <T, R, N extends Number> L lt(SerializableFunction<T, R> name, N value) {
         return lt(getPropertyName(name), value);
     }
 

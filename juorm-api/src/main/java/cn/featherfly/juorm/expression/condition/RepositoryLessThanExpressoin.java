@@ -25,7 +25,7 @@ public interface RepositoryLessThanExpressoin<C extends ConditionExpression, L e
      * @param value      参数值
      * @return LogicExpression
      */
-    <N extends Number> L lt(String repository, String name, Number value);
+    <N extends Number> L lt(String repository, String name, N value);
 
     /**
      * 小于
@@ -87,7 +87,69 @@ public interface RepositoryLessThanExpressoin<C extends ConditionExpression, L e
      * @param value           参数值
      * @return LogicExpression
      */
-    <N extends Number> L lt(int repositoryIndex, String name, Number value);
+    <N extends Number, T> L lt(Class<T> repository, String name, N value);
+
+    /**
+     * 小于
+     *
+     * @param <D>             date type
+     * @param repositoryIndex repository index
+     * @param name            参数名称
+     * @param value           参数值
+     * @return LogicExpression
+     */
+    <D extends Date, T> L lt(Class<T> repository, String name, D value);
+
+    /**
+     * 小于
+     *
+     * @param repositoryIndex repository index
+     * @param name            参数名称
+     * @param value           参数值
+     * @return LogicExpression
+     */
+    <T> L lt(Class<T> repository, String name, LocalTime value);
+
+    /**
+     * 小于
+     *
+     * @param repositoryIndex repository index
+     * @param name            参数名称
+     * @param value           参数值
+     * @return LogicExpression
+     */
+    <T> L lt(Class<T> repository, String name, LocalDate value);
+
+    /**
+     * 小于
+     *
+     * @param repositoryIndex repository index
+     * @param name            参数名称
+     * @param value           参数值
+     * @return LogicExpression
+     */
+    <T> L lt(Class<T> repository, String name, LocalDateTime value);
+
+    /**
+     * 小于
+     *
+     * @param repositoryIndex repository index
+     * @param name            参数名称
+     * @param value           参数值
+     * @return LogicExpression
+     */
+    <T> L lt(Class<T> repository, String name, String value);
+
+    /**
+     * 小于
+     *
+     * @param <N>             number type
+     * @param repositoryIndex repository index
+     * @param name            参数名称
+     * @param value           参数值
+     * @return LogicExpression
+     */
+    <N extends Number> L lt(int repositoryIndex, String name, N value);
 
     /**
      * 小于

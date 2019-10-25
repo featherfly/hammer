@@ -22,7 +22,16 @@ public interface RepositoryIsNotNullExpression<C extends ConditionExpression, L 
 
     /**
      * is not null
-     * 
+     *
+     * @param repository repository
+     * @param name       参数名称
+     * @return LogicExpression
+     */
+    <T> L inn(Class<T> repository, String name);
+
+    /**
+     * is not null
+     *
      * @param repositoryIndex repository index
      * @param name            参数名称
      * @return LogicExpression

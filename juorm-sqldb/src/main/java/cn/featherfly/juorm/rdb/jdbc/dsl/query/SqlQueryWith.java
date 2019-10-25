@@ -247,7 +247,7 @@ public class SqlQueryWith implements QueryWith, SqlQueryWithOn, SqlQueryWithEnti
     @Override
     public RepositoryQueryConditionGroupExpression where() {
         //        return sqlQueryEntityProperties.where();
-        return new RepositorySqlQueryExpression(sqlQueryEntityProperties.jdbc, aliasManager, classMapping,
+        return new RepositorySqlQueryExpression(sqlQueryEntityProperties.jdbc, factory, aliasManager, classMapping,
                 sqlQueryEntityProperties.selectBuilder);
     }
 

@@ -16,6 +16,7 @@ import cn.featherfly.juorm.dsl.query.RepositoryTypeQueryConditionGroupLogicExpre
 import cn.featherfly.juorm.dsl.query.TypeQuerySortExpression;
 import cn.featherfly.juorm.expression.query.TypeQueryExecutor;
 import cn.featherfly.juorm.mapping.ClassMapping;
+import cn.featherfly.juorm.mapping.MappingFactory;
 import cn.featherfly.juorm.rdb.jdbc.Jdbc;
 import cn.featherfly.juorm.rdb.jdbc.mapping.ClassMappingUtils;
 import cn.featherfly.juorm.rdb.sql.dml.AbstractRepositorySqlConditionGroupExpression;
@@ -39,35 +40,38 @@ public class RepositoryTypeSqlQueryConditionGroupExpression extends
 
     /**
      * @param jdbc         jdbc
+     * @param factory      MappingFactory
      * @param aliasManager aliasManager
      * @param classMapping classMapping
      */
-    public RepositoryTypeSqlQueryConditionGroupExpression(Jdbc jdbc, AliasManager aliasManager,
+    public RepositoryTypeSqlQueryConditionGroupExpression(Jdbc jdbc, MappingFactory factory, AliasManager aliasManager,
             ClassMapping<?> classMapping) {
-        this(jdbc, aliasManager, null, classMapping);
+        this(jdbc, factory, aliasManager, null, classMapping);
     }
 
     /**
      * @param jdbc         jdbc
+     * @param factory      MappingFactory
      * @param aliasManager aliasManager
      * @param queryAlias   queryAlias
      * @param classMapping classMapping
      */
-    public RepositoryTypeSqlQueryConditionGroupExpression(Jdbc jdbc, AliasManager aliasManager, String queryAlias,
-            ClassMapping<?> classMapping) {
-        this(jdbc, aliasManager, null, queryAlias, classMapping);
+    public RepositoryTypeSqlQueryConditionGroupExpression(Jdbc jdbc, MappingFactory factory, AliasManager aliasManager,
+            String queryAlias, ClassMapping<?> classMapping) {
+        this(jdbc, factory, aliasManager, null, queryAlias, classMapping);
     }
 
     /**
      * @param dialect      dialect
+     * @param factory      MappingFactory
      * @param aliasManager aliasManager
      * @param parent       parent group
      * @param queryAlias   queryAlias
      * @param classMapping classMapping
      */
-    RepositoryTypeSqlQueryConditionGroupExpression(Jdbc jdbc, AliasManager aliasManager,
+    RepositoryTypeSqlQueryConditionGroupExpression(Jdbc jdbc, MappingFactory factory, AliasManager aliasManager,
             RepositoryTypeQueryConditionGroupLogicExpression parent, String queryAlias, ClassMapping<?> classMapping) {
-        super(jdbc.getDialect(), aliasManager, parent, queryAlias, classMapping);
+        super(jdbc.getDialect(), factory, aliasManager, parent, queryAlias, classMapping);
         this.jdbc = jdbc;
     }
 
@@ -83,7 +87,8 @@ public class RepositoryTypeSqlQueryConditionGroupExpression extends
     @Override
     protected RepositoryTypeQueryConditionGroupExpression createGroup(
             RepositoryTypeQueryConditionGroupLogicExpression parent, String queryAlias) {
-        return new RepositoryTypeSqlQueryConditionGroupExpression(jdbc, aliasManager, parent, queryAlias, classMapping);
+        return new RepositoryTypeSqlQueryConditionGroupExpression(jdbc, factory, aliasManager, parent, queryAlias,
+                classMapping);
     }
 
     /**

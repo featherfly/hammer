@@ -25,7 +25,7 @@ public interface RepositoryGreatEqualsExpressoin<C extends ConditionExpression, 
      * @param value           参数值
      * @return LogicExpression
      */
-    <N extends Number> L ge(String repository, String name, Number value);
+    <N extends Number> L ge(String repository, String name, N value);
 
     /**
      * 大于等于
@@ -87,7 +87,69 @@ public interface RepositoryGreatEqualsExpressoin<C extends ConditionExpression, 
      * @param value           参数值
      * @return LogicExpression
      */
-    <N extends Number> L ge(int repositoryIndex, String name, Number value);
+    <N extends Number, T> L ge(Class<T> repository, String name, N value);
+
+    /**
+     * 大于等于
+     *
+     * @param <D>             date type
+     * @param repositoryIndex repository index
+     * @param name            参数名称
+     * @param value           参数值
+     * @return LogicExpression
+     */
+    <D extends Date, T> L ge(Class<T> repository, String name, D value);
+
+    /**
+     * 大于等于
+     *
+     * @param repositoryIndex repository index
+     * @param name            参数名称
+     * @param value           参数值
+     * @return LogicExpression
+     */
+    <T> L ge(Class<T> repository, String name, LocalTime value);
+
+    /**
+     * 大于等于
+     *
+     * @param repositoryIndex repository index
+     * @param name            参数名称
+     * @param value           参数值
+     * @return LogicExpression
+     */
+    <T> L ge(Class<T> repository, String name, LocalDate value);
+
+    /**
+     * 大于等于
+     *
+     * @param repositoryIndex repository index
+     * @param name            参数名称
+     * @param value           参数值
+     * @return LogicExpression
+     */
+    <T> L ge(Class<T> repository, String name, LocalDateTime value);
+
+    /**
+     * 大于等于
+     *
+     * @param repositoryIndex repository index
+     * @param name            参数名称
+     * @param value           参数值
+     * @return LogicExpression
+     */
+    <T> L ge(Class<T> repository, String name, String value);
+
+    /**
+     * 大于等于
+     *
+     * @param <N>             number type
+     * @param repositoryIndex repository index
+     * @param name            参数名称
+     * @param value           参数值
+     * @return LogicExpression
+     */
+    <N extends Number> L ge(int repositoryIndex, String name, N value);
 
     /**
      * 大于等于

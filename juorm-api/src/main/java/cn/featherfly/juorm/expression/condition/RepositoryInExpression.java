@@ -24,6 +24,16 @@ public interface RepositoryInExpression<C extends ConditionExpression, L extends
     /**
      * 包含指定，sql中的in
      *
+     * @param repository 存储库
+     * @param name       参数名称
+     * @param value      参数值
+     * @return LogicExpression
+     */
+    <T> L in(Class<T> repository, String name, Object value);
+
+    /**
+     * 包含指定，sql中的in
+     *
      * @param repositoryIndex repository index
      * @param name            参数名称
      * @param value           参数值

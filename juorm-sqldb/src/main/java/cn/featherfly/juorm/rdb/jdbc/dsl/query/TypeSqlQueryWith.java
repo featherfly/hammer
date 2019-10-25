@@ -133,7 +133,7 @@ public class TypeSqlQueryWith implements TypeQueryWith, TypeQueryWithEntity {
      */
     @Override
     public RepositoryTypeQueryConditionGroupExpression where() {
-        return new RepositoryTypeSqlQueryExpression(sqlQueryEntityProperties.jdbc,
+        return new RepositoryTypeSqlQueryExpression(sqlQueryEntityProperties.jdbc, factory,
                 sqlQueryEntityProperties.aliasManager, sqlQueryEntityProperties.classMapping,
                 sqlQueryEntityProperties.selectBuilder);
     }

@@ -26,7 +26,7 @@ public interface GreatThanExpressoin<C extends ConditionExpression, L extends Lo
      * @param value 参数值
      * @return LogicExpression
      */
-    <N extends Number> L gt(String name, Number value);
+    <N extends Number> L gt(String name, N value);
 
     /**
      * 大于
@@ -36,7 +36,7 @@ public interface GreatThanExpressoin<C extends ConditionExpression, L extends Lo
      * @param value 参数值
      * @return LogicExpression
      */
-    <T, R, N extends Number> L gt(SerializableFunction<T, R> name, Number value);
+    <T, R, N extends Number> L gt(SerializableFunction<T, R> name, N value);
 
     /**
      * 大于

@@ -72,7 +72,7 @@ public class UserQueryConditionGroupExpression
      * {@inheritDoc}
      */
     @Override
-    public <N extends Number> UserQueryConditionGroupExpression ge(String name, Number value) {
+    public <N extends Number> UserQueryConditionGroupExpression ge(String name, N value) {
 
         return null;
     }
@@ -126,7 +126,7 @@ public class UserQueryConditionGroupExpression
      * {@inheritDoc}
      */
     @Override
-    public <N extends Number> UserQueryConditionGroupExpression gt(String name, Number value) {
+    public <N extends Number> UserQueryConditionGroupExpression gt(String name, N value) {
 
         return null;
     }
@@ -207,7 +207,7 @@ public class UserQueryConditionGroupExpression
      * {@inheritDoc}
      */
     @Override
-    public <N extends Number> UserQueryConditionGroupExpression le(String name, Number value) {
+    public <N extends Number> UserQueryConditionGroupExpression le(String name, N value) {
 
         return null;
     }
@@ -261,7 +261,7 @@ public class UserQueryConditionGroupExpression
      * {@inheritDoc}
      */
     @Override
-    public <N extends Number> UserQueryConditionGroupExpression lt(String name, Number value) {
+    public <N extends Number> UserQueryConditionGroupExpression lt(String name, N value) {
 
         return null;
     }
@@ -467,8 +467,7 @@ public class UserQueryConditionGroupExpression
      * {@inheritDoc}
      */
     @Override
-    public <T, R, N extends Number> UserQueryConditionGroupExpression ge(SerializableFunction<T, R> name,
-            Number value) {
+    public <T, R, N extends Number> UserQueryConditionGroupExpression ge(SerializableFunction<T, R> name, N value) {
         // YUFEI_TODO Auto-generated method stub
         return null;
     }
@@ -522,8 +521,7 @@ public class UserQueryConditionGroupExpression
      * {@inheritDoc}
      */
     @Override
-    public <T, R, N extends Number> UserQueryConditionGroupExpression gt(SerializableFunction<T, R> name,
-            Number value) {
+    public <T, R, N extends Number> UserQueryConditionGroupExpression gt(SerializableFunction<T, R> name, N value) {
         // YUFEI_TODO Auto-generated method stub
         return null;
     }
@@ -604,8 +602,7 @@ public class UserQueryConditionGroupExpression
      * {@inheritDoc}
      */
     @Override
-    public <T, R, N extends Number> UserQueryConditionGroupExpression le(SerializableFunction<T, R> name,
-            Number value) {
+    public <T, R, N extends Number> UserQueryConditionGroupExpression le(SerializableFunction<T, R> name, N value) {
         // YUFEI_TODO Auto-generated method stub
         return null;
     }
@@ -659,8 +656,7 @@ public class UserQueryConditionGroupExpression
      * {@inheritDoc}
      */
     @Override
-    public <T, R, N extends Number> UserQueryConditionGroupExpression lt(SerializableFunction<T, R> name,
-            Number value) {
+    public <T, R, N extends Number> UserQueryConditionGroupExpression lt(SerializableFunction<T, R> name, N value) {
         // YUFEI_TODO Auto-generated method stub
         return null;
     }
