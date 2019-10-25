@@ -8,7 +8,7 @@ import cn.featherfly.juorm.expression.query.QueryValueExecutor;
 
 /**
  * <p>
- * QueryConditionGroupLogic
+ * RepositoryQueryConditionGroupLogic
  * </p>
  *
  * @author zhongj

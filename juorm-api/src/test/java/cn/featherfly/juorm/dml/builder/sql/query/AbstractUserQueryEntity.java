@@ -23,11 +23,11 @@ import cn.featherfly.juorm.mapping.RowMapper;
  * @author zhongj
  */
 public class AbstractUserQueryEntity<Q extends AbstractUserQueryEntity<Q, QW, QWO, QWE>,
-        QW extends QueryWithExpression<QW, QWO, QWE, UserQueryConditionGroupExpression, UserQueryConditionGroupExpression>,
-        QWO extends QueryWithOnExpression<QW, QWO, QWE, UserQueryConditionGroupExpression, UserQueryConditionGroupExpression>,
-        QWE extends QueryWithEntityExpression<QW, QWO, QWE, UserQueryConditionGroupExpression, UserQueryConditionGroupExpression>>
+        QW extends QueryWithExpression<QW, QWO, QWE, UserQueryRepositoryConditionGroupExpression, UserQueryRepositoryConditionGroupExpression>,
+        QWO extends QueryWithOnExpression<QW, QWO, QWE, UserQueryRepositoryConditionGroupExpression, UserQueryRepositoryConditionGroupExpression>,
+        QWE extends QueryWithEntityExpression<QW, QWO, QWE, UserQueryRepositoryConditionGroupExpression, UserQueryRepositoryConditionGroupExpression>>
         implements
-        QueryEntityPropertiesExpression<Q, QW, QWO, QWE, UserQueryConditionGroupExpression, UserQueryConditionGroupExpression, UserQueryConditionGroupExpression, UserQueryConditionGroupExpression> {
+        QueryEntityPropertiesExpression<Q, QW, QWO, QWE, UserQueryConditionGroupExpression, UserQueryConditionGroupExpression, UserQueryRepositoryConditionGroupExpression, UserQueryRepositoryConditionGroupExpression> {
 
     /**
      * {@inheritDoc}

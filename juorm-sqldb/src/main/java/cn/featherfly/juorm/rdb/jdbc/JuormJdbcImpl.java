@@ -94,8 +94,7 @@ public class JuormJdbcImpl implements Juorm {
      */
     public JuormJdbcImpl(Jdbc jdbc, JdbcMappingFactory mappingFactory, TplConfigFactory configFactory,
             @SuppressWarnings("rawtypes") TemplateProcessor templateProcessor) {
-        // this(jdbc, mappingFactory, configFactory,
-        // Validation.buildDefaultValidatorFactory().getValidator());
+        // this(jdbc, mappingFactory, configFactory, Validation.buildDefaultValidatorFactory().getValidator());
         this(jdbc, mappingFactory, configFactory, templateProcessor, Validation.byProvider(HibernateValidator.class)
                 .configure().failFast(false).buildValidatorFactory().getValidator());
     }

@@ -10,7 +10,7 @@ import cn.featherfly.juorm.expression.condition.RepositoryConditionsGroupExpress
  *
  * @author zhongj
  */
-public interface RepositoryQueryConditionGroupExpression extends
-        RepositoryConditionsGroupExpression<RepositoryQueryConditionGroupExpression, RepositoryQueryConditionGroupLogicExpression> {
+public interface RepositoryTypeQueryConditionGroupExpression extends
+        RepositoryConditionsGroupExpression<RepositoryTypeQueryConditionGroupExpression, RepositoryTypeQueryConditionGroupLogicExpression> {
 
 }
