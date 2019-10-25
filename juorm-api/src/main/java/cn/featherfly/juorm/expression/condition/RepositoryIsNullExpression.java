@@ -3,10 +3,13 @@ package cn.featherfly.juorm.expression.condition;
 
 /**
  * <p>
- * IsNullExpression
+ * RepositoryIsNullExpression
  * </p>
+ * .
  *
  * @author zhongj
+ * @param <C> the generic type
+ * @param <L> the generic type
  */
 public interface RepositoryIsNullExpression<C extends ConditionExpression, L extends LogicExpression<C, L>>
         extends IsNullExpression<C, L> {
@@ -23,6 +26,7 @@ public interface RepositoryIsNullExpression<C extends ConditionExpression, L ext
     /**
      * is null.
      *
+     * @param <T>        the generic type
      * @param repository repository
      * @param name       参数名称
      * @return LogicExpression

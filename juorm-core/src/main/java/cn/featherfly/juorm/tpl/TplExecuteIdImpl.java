@@ -20,7 +20,7 @@ public class TplExecuteIdImpl implements TplExecuteId {
     private String namespace;
 
     /**
-     * @param executeId
+     * @param executeId executeId
      */
     public TplExecuteIdImpl(String executeId) {
         super();
@@ -34,8 +34,8 @@ public class TplExecuteIdImpl implements TplExecuteId {
     }
 
     /**
-     * @param name
-     * @param namespace
+     * @param name      name
+     * @param namespace namespace
      */
     public TplExecuteIdImpl(String name, String namespace) {
         super();

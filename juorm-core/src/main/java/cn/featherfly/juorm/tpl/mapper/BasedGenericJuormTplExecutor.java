@@ -28,8 +28,8 @@ public class BasedGenericJuormTplExecutor<E> implements GenericJuorm<E> {
     private Class<E> type;
 
     /**
-     * @param juorm
-     * @param type
+     * @param juorm juorm
+     * @param type  type
      */
     public BasedGenericJuormTplExecutor(Juorm juorm, Class<E> type) {
         this.juorm = juorm;

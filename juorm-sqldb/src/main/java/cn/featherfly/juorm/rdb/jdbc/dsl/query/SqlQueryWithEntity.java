@@ -14,16 +14,20 @@ import cn.featherfly.juorm.dsl.query.QueryWithEntity;
  * @author zhongj
  */
 public interface SqlQueryWithEntity extends QueryWithEntity {
+
     /**
      * <p>
      * 添加select的列
      * </p>
+     * .
      *
+     * @param <T>        the generic type
+     * @param <R>        the generic type
      * @param columnName propertyName
-     * @param asName     alias name
+     * @param aliasName  alias name
      * @return QueryWithEntity
      */
-    <T, R> QueryWithEntity fetchAlias(SerializableFunction<T, R> columnName, String alias);
+    <T, R> QueryWithEntity fetchAlias(SerializableFunction<T, R> columnName, String aliasName);
 
     /**
      * <p>

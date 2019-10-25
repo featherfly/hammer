@@ -39,9 +39,11 @@ public abstract class AbstractExecuteOperate<T> extends AbstractOperate<T> {
     }
 
     /**
-     * @param jdbc
-     * @param classMapping
-     * @param databaseMetadata
+     * 使用给定数据源以及给定对象生成其相应的操作.
+     *
+     * @param jdbc             the jdbc
+     * @param classMapping     the class mapping
+     * @param databaseMetadata the database metadata
      */
     public AbstractExecuteOperate(Jdbc jdbc, ClassMapping<T> classMapping, DatabaseMetadata databaseMetadata) {
         super(jdbc, classMapping, databaseMetadata);

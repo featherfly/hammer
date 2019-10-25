@@ -27,10 +27,13 @@ public class SqlQueryEntityProperties extends AbstractSqlQueryEntityProperties<S
         implements SqlQueryEntity, QueryEntityProperties {
 
     /**
-     * @param jdbc         jdbc
-     * @param tableName    tableName
-     * @param factory      MappingFactory
-     * @param aliasManager aliasManager
+     * Instantiates a new sql query entity properties.
+     *
+     * @param jdbc             jdbc
+     * @param databaseMetadata the database metadata
+     * @param tableName        tableName
+     * @param factory          MappingFactory
+     * @param aliasManager     aliasManager
      */
     public SqlQueryEntityProperties(Jdbc jdbc, DatabaseMetadata databaseMetadata, String tableName,
             MappingFactory factory, AliasManager aliasManager) {

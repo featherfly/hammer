@@ -34,10 +34,8 @@ public abstract class AbstractSqlConditionExpression<L> implements SqlBuilder, P
     }
 
     /**
-     * @param dialect      dialect
-     * @param parent       parent group
-     * @param queryAlias   queryAlias
-     * @param classMapping classMapping
+     * @param dialect dialect
+     * @param parent  parent group
      */
     protected AbstractSqlConditionExpression(Dialect dialect, L parent) {
         this.dialect = dialect;

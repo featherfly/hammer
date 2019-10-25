@@ -186,7 +186,7 @@ public class ClassMappingUtils {
      *
      * @param name         property name or column name
      * @param classMapping classMapping
-     * @return Tuple<columnName,propertyName>
+     * @return Tuple&lt;columnName, propertyName&gt;
      */
     public static Tuple2<String, String> getColumnAndPropertyName(String name, ClassMapping<?> classMapping) {
         PropertyMapping propertyMapping = null;
