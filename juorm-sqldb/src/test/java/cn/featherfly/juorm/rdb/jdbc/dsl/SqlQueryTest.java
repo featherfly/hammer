@@ -177,25 +177,27 @@ public class SqlQueryTest extends JdbcTestBase {
     @Test
     void testJoinCondition2() {
         SqlQuery query = new SqlQuery(jdbc, mappingFactory);
-        Integer id = 1;
-        Integer uid = 1;
-        //        UserInfo userInfo = query.find(UserInfo.class).with(UserInfo::getUser).where().eq(UserInfo::getId, id).single();
-        //        assertEquals(userInfo.getId(), id);
-
+        Integer userInfoId = 1;
+        Integer userId = 1;
         User user = null;
 
-        user = query.find(User.class).with(UserInfo::getUser).where().eq(User::getId, uid).single();
-        assertEquals(user.getId(), uid);
+        user = query.find(User.class).with(UserInfo::getUser).where().eq(1, "id", userInfoId).single();
+        assertEquals(user.getId(), userId);
 
-        user = query.find(User.class).with(UserInfo::getUser).where().eq(UserInfo::getId, id).single();
-        assertEquals(user.getId(), uid);
+        user = query.find(User.class).with(UserInfo::getUser).where().eq("user_info", "id", userInfoId).single();
+        assertEquals(user.getId(), userId);
 
-        user = query.find(User.class).with(UserInfo::getUser).where().property(UserInfo::getId).eq(id).single();
-        assertEquals(user.getId(), uid);
+        user = query.find(User.class).with(UserInfo::getUser).where().eq(UserInfo.class, "id", userInfoId).single();
+        assertEquals(user.getId(), userId);
 
-        //        user = query.find(User.class).with(UserInfo::getUser).where().eq(1, "id", id).single();
-        //        user = query.find(User.class).with(UserInfo::getUser).where().eq("user_info", "id", id).single();
-        //        user = query.find(User.class).with(UserInfo::getUser).where().eq(UserInfo.class, "id", id).single();
+        user = query.find(User.class).with(UserInfo::getUser).where().eq(User::getId, userId).single();
+        assertEquals(user.getId(), userId);
+
+        user = query.find(User.class).with(UserInfo::getUser).where().eq(UserInfo::getId, userInfoId).single();
+        assertEquals(user.getId(), userId);
+
+        user = query.find(User.class).with(UserInfo::getUser).where().property(UserInfo::getId).eq(userInfoId).single();
+        assertEquals(user.getId(), userId);
     }
 
     @Test
