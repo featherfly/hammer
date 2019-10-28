@@ -10,6 +10,9 @@ import cn.featherfly.common.lang.function.SerializableFunction;
 import cn.featherfly.common.structure.page.Page;
 import cn.featherfly.juorm.expression.query.QueryEntityPropertiesExpression;
 import cn.featherfly.juorm.expression.query.QueryExecutor;
+import cn.featherfly.juorm.expression.query.QueryWithEntityExpression;
+import cn.featherfly.juorm.expression.query.QueryWithExpression;
+import cn.featherfly.juorm.expression.query.QueryWithOnExpression;
 import cn.featherfly.juorm.mapping.RowMapper;
 
 /**
@@ -19,8 +22,12 @@ import cn.featherfly.juorm.mapping.RowMapper;
  *
  * @author zhongj
  */
-public class AbstractUserQueryEntity<Q extends AbstractUserQueryEntity<Q>> implements
-        QueryEntityPropertiesExpression<Q, UserQueryConditionGroupExpression, UserQueryConditionGroupExpression> {
+public class AbstractUserQueryEntity<Q extends AbstractUserQueryEntity<Q, QW, QWO, QWE>,
+        QW extends QueryWithExpression<QW, QWO, QWE, UserQueryRepositoryConditionGroupExpression, UserQueryRepositoryConditionGroupExpression>,
+        QWO extends QueryWithOnExpression<QW, QWO, QWE, UserQueryRepositoryConditionGroupExpression, UserQueryRepositoryConditionGroupExpression>,
+        QWE extends QueryWithEntityExpression<QW, QWO, QWE, UserQueryRepositoryConditionGroupExpression, UserQueryRepositoryConditionGroupExpression>>
+        implements
+        QueryEntityPropertiesExpression<Q, QW, QWO, QWE, UserQueryConditionGroupExpression, UserQueryConditionGroupExpression, UserQueryRepositoryConditionGroupExpression, UserQueryRepositoryConditionGroupExpression> {
 
     /**
      * {@inheritDoc}
@@ -171,6 +178,42 @@ public class AbstractUserQueryEntity<Q extends AbstractUserQueryEntity<Q>> imple
      */
     @Override
     public <T, R> Q property(SerializableFunction<T, R> propertyName) {
+        // YUFEI_TODO Auto-generated method stub
+        return null;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public QWO with(String repositoryName) {
+        // YUFEI_TODO Auto-generated method stub
+        return null;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public Q id(String propertyName) {
+        // YUFEI_TODO Auto-generated method stub
+        return null;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public <T, R> Q id(SerializableFunction<T, R> propertyName) {
+        // YUFEI_TODO Auto-generated method stub
+        return null;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public <T> QWO with(Class<T> repositoryType) {
         // YUFEI_TODO Auto-generated method stub
         return null;
     }

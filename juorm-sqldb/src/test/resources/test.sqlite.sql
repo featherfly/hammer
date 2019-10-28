@@ -8,18 +8,18 @@ CREATE TABLE "role" (
 -- ----------------------------
 -- Records of role
 -- ----------------------------
-INSERT INTO `role` VALUES ('4', 'updater_82', 'updater_d_1');
-INSERT INTO `role` VALUES ('5', 'n_7', 'descp_4');
+INSERT INTO `role` VALUES ('1', 'n_1', 'descp_1');
+INSERT INTO `role` VALUES ('2', 'n_2', 'descp_2');
+INSERT INTO `role` VALUES ('3', 'n_3', 'descp_3');
+INSERT INTO `role` VALUES ('4', 'n_4', 'descp_4');
+INSERT INTO `role` VALUES ('5', 'n_5', 'descp_5');
 INSERT INTO `role` VALUES ('6', 'n_11', 'descp_64');
-INSERT INTO `role` VALUES ('7', 'n_98', 'descp_79');
-INSERT INTO `role` VALUES ('8', 'n_21', 'descp_5');
-INSERT INTO `role` VALUES ('9', 'n_96', 'descp_98');
+INSERT INTO `role` VALUES ('7', 'name_98', 'descp_79');
+INSERT INTO `role` VALUES ('8', 'name_21', 'descp_5');
+INSERT INTO `role` VALUES ('9', 'name_96', 'descp_98');
 INSERT INTO `role` VALUES ('10', 'n_96', 'descp_29');
 INSERT INTO `role` VALUES ('11', 'n_42', 'descp_54');
 INSERT INTO `role` VALUES ('12', 'n_12', 'descp_65');
-INSERT INTO `role` VALUES ('18', 'n_13', 'descp_52');
-INSERT INTO `role` VALUES ('19', 'n_80', 'descp_99');
-INSERT INTO `role` VALUES ('20', 'n_34', 'descp_18');
 
 -- ----------------------------
 -- Table structure for user
@@ -66,14 +66,16 @@ CREATE TABLE `user_role` (
 -- ----------------------------
 -- Records of user_role
 -- ----------------------------
-INSERT INTO `user_role` VALUES ('1', '2', null);
-INSERT INTO `user_role` VALUES ('2', '2', 'desc_cc66');
-INSERT INTO `user_role` VALUES ('51', '218', 'descp401');
-INSERT INTO `user_role` VALUES ('215', '890', 'descp446');
-INSERT INTO `user_role` VALUES ('522', '367', 'descp866');
-INSERT INTO `user_role` VALUES ('760', '263', 'descp848');
-INSERT INTO `user_role` VALUES ('769', '248', 'descp489');
-INSERT INTO `user_role` VALUES ('920', '122', 'descp581');
+INSERT INTO `user_role` VALUES ('1', '2', null, null);
+INSERT INTO `user_role` VALUES ('2', '2', 'descp','descp2');
+INSERT INTO `user_role` VALUES ('3', '3', 'descp401', null);
+INSERT INTO `user_role` VALUES ('4', '4', 'descp446', 'descp2_update_37');
+INSERT INTO `user_role` VALUES ('5', '5', 'descp866', null);
+INSERT INTO `user_role` VALUES ('6', '6', 'descp848', null);
+INSERT INTO `user_role` VALUES ('7', '7', 'descp489', null);
+INSERT INTO `user_role` VALUES ('8', '8', 'descp581', null);
+INSERT INTO `user_role` VALUES ('9', '10', 'descp581', null);
+INSERT INTO `user_role` VALUES ('10', '10', 'descp581', null);
 
 
 -- ----------------------------
@@ -103,3 +105,17 @@ CREATE TABLE `cms_article` (
   `title` text(255) DEFAULT NULL,
   `content` text(255) DEFAULT NULL
 );
+
+DROP TABLE IF EXISTS `tree`;
+CREATE TABLE `tree` (
+  `id` INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
+  `parent_id` INTEGER DEFAULT NULL,
+  `name` text(255) DEFAULT NULL
+);
+
+INSERT INTO `tree`(`id`, `parent_id`, `name`) VALUES (1, NULL, 'node_1');
+INSERT INTO `tree`(`id`, `parent_id`, `name`) VALUES (2, 1, 'node_21');
+INSERT INTO `tree`(`id`, `parent_id`, `name`) VALUES (3, 1, 'node_22');
+INSERT INTO `tree`(`id`, `parent_id`, `name`) VALUES (4, 2, 'node_211');
+INSERT INTO `tree`(`id`, `parent_id`, `name`) VALUES (5, 2, 'node_212');
+INSERT INTO `tree`(`id`, `parent_id`, `name`) VALUES (6, 5, 'node_2121');

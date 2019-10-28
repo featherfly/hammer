@@ -21,5 +21,6 @@ roleFromTemplate2: "from role <@where>
 </@and>
 </@where>"
 selectWithTemplate3:
-  query: "select <@prop/> <@tpl id='roleFromTemplate2' file='tpl/role_common'/>"
+  query: >
+    select <@prop alias="_r"/> <@tpl id='roleFromTemplate2' file='tpl/role_common'/>
   count: "select count(*) <@sql id='roleFromTemplate2' file='tpl/role_common'/>"

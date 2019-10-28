@@ -1,7 +1,8 @@
-package cn.featherfly.juorm.rdb.jdbc.mapping;
+package cn.featherfly.juorm.mapping;
 
-import java.util.Collection;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -10,8 +11,18 @@ import java.util.Map;
  * </p>
  *
  * @author zhongj
- * @since 1.0
- * @version 1.0
+ * @since 0.1.0
+ * @version 0.1.0
+ */
+/**
+ * <p>
+ * PropertyMapping
+ * </p>
+ * <p>
+ * 2019-09-23
+ * </p>
+ *
+ * @author zhongj
  */
 public class PropertyMapping {
 
@@ -23,7 +34,7 @@ public class PropertyMapping {
 
     private String propertyName;
 
-    private String columnName;
+    private String repositoryFieldName;
 
     private Class<?> propertyType;
 
@@ -31,15 +42,19 @@ public class PropertyMapping {
 
     private String defaultValue;
 
-    //    private String propertyPath;
-
     private Map<String, PropertyMapping> propertyMappings = new HashMap<>(0);
 
     private PropertyMapping parent;
 
-    PropertyMapping add(PropertyMapping propertyMapping) {
+    /**
+     * add nested property mapping
+     *
+     * @param propertyMapping propertyMapping
+     * @return this
+     */
+    public PropertyMapping add(PropertyMapping propertyMapping) {
         propertyMapping.parent = this;
-        propertyMappings.put(propertyMapping.getColumnName(), propertyMapping);
+        propertyMappings.put(propertyMapping.getRepositoryFieldName(), propertyMapping);
         return this;
     }
 
@@ -86,36 +101,18 @@ public class PropertyMapping {
     }
 
     /**
-     * @return 返回columnName
+     * @return 返回repositoryFiledName
      */
-    public String getColumnName() {
-        return columnName;
+    public String getRepositoryFieldName() {
+        return repositoryFieldName;
     }
 
     /**
-     * @param columnName 设置columnName
+     * @param repositoryFieldName 设置repositoryFieldName
      */
-    public void setColumnName(String columnName) {
-        this.columnName = columnName;
+    public void setRepositoryFieldName(String repositoryFieldName) {
+        this.repositoryFieldName = repositoryFieldName;
     }
-
-    //    /**
-    //     * 返回propertyPath
-    //     *
-    //     * @return propertyPath
-    //     */
-    //    public String getPropertyPath() {
-    //        return propertyPath;
-    //    }
-    //
-    //    /**
-    //     * 设置propertyPath
-    //     *
-    //     * @param propertyPath propertyPath
-    //     */
-    //    public void setPropertyPath(String propertyPath) {
-    //        this.propertyPath = propertyPath;
-    //    }
 
     /**
      * 返回defaultValue
@@ -149,8 +146,8 @@ public class PropertyMapping {
      *
      * @return PropertyMappings
      */
-    public Collection<PropertyMapping> getPropertyMappings() {
-        return propertyMappings.values();
+    public List<PropertyMapping> getPropertyMappings() {
+        return new ArrayList<>(propertyMappings.values());
     }
 
     /**
@@ -175,10 +172,20 @@ public class PropertyMapping {
      * 通过持久化字段（数据库字段）的名称返回指定属性映射. 没有找到返回null.
      * </p>
      *
-     * @param persitField 持久化字段（数据库字段）
+     * @param repositoryFiledName 持久化字段（数据库字段）
      * @return PropertyMapping
      */
-    public PropertyMapping getPropertyMappingByPersitField(String persitField) {
-        return propertyMappings.get(persitField);
+    public PropertyMapping getPropertyMappingByPersitField(String repositoryFiledName) {
+        return propertyMappings.get(repositoryFiledName);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public String toString() {
+        return "PropertyMapping [propertyName=" + propertyName + ", repositoryFieldName=" + repositoryFieldName
+                + ", propertyType=" + propertyType + ", primaryKey=" + primaryKey + ", defaultValue=" + defaultValue
+                + ", propertyMappings=" + propertyMappings + ", parent=" + parent + "]";
     }
 }

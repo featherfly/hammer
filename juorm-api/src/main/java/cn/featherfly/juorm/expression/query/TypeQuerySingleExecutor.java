@@ -9,9 +9,11 @@ package cn.featherfly.juorm.expression.query;
  * @author zhongj
  */
 public interface TypeQuerySingleExecutor {
+
     /**
-     * query for single
+     * query for single.
      *
+     * @param <E> the element type
      * @return object
      */
     <E> E single();

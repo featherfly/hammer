@@ -6,21 +6,56 @@ import java.util.Collection;
 import cn.featherfly.common.lang.function.SerializableFunction;
 import cn.featherfly.juorm.expression.ConditionGroupExpression;
 import cn.featherfly.juorm.expression.ConditionGroupLogicExpression;
+import cn.featherfly.juorm.expression.RepositoryConditionGroupLogicExpression;
+import cn.featherfly.juorm.expression.WhereExpression;
+import cn.featherfly.juorm.expression.condition.RepositoryConditionsGroupExpression;
 
 /**
  * <p>
- * dsl for query data
+ * QueryEntityExpression
  * </p>
+ * .
  *
  * @author zhongj
+ * @param <Q>   the generic type
+ * @param <QW>  the generic type
+ * @param <QWO> the generic type
+ * @param <QWE> the generic type
+ * @param <C>   the generic type
+ * @param <L>   the generic type
+ * @param <RC>  the generic type
+ * @param <RL>  the generic type
  */
-public interface QueryEntityExpression<Q extends QueryEntityPropertiesExpression<Q, C, L>,
-        C extends ConditionGroupExpression<C, L>, L extends ConditionGroupLogicExpression<C, L>>
-        extends QueryListExecutor, QueryConditionLimit {
+public interface QueryEntityExpression<Q extends QueryEntityPropertiesExpression<Q, QW, QWO, QWE, C, L, RC, RL>,
+        QW extends QueryWithExpression<QW, QWO, QWE, RC, RL>, QWO extends QueryWithOnExpression<QW, QWO, QWE, RC, RL>,
+        QWE extends QueryWithEntityExpression<QW, QWO, QWE, RC, RL>, C extends ConditionGroupExpression<C, L>,
+        L extends ConditionGroupLogicExpression<C, L>, RC extends RepositoryConditionsGroupExpression<RC, RL>,
+        RL extends RepositoryConditionGroupLogicExpression<RC, RL>>
+        extends WhereExpression<C, L>, QueryListExecutor, QueryConditionLimit {
+
+    /**
+     * 设置id.
+     *
+     * @param propertyName the property name
+     * @return the q
+     */
+    Q id(String propertyName);
+
+    /**
+     * 设置id.
+     *
+     * @param <T>          the generic type
+     * @param <R>          the generic type
+     * @param propertyName the property name
+     * @return the q
+     */
+    <T, R> Q id(SerializableFunction<T, R> propertyName);
+
     /**
      * <p>
-     * 添加select的列
+     * 添加查询出来的属性
      * </p>
+     * .
      *
      * @param propertyName propertyName
      * @return QueryEntityPropertiesExpression
@@ -29,8 +64,9 @@ public interface QueryEntityExpression<Q extends QueryEntityPropertiesExpression
 
     /**
      * <p>
-     * 批量添加select的列
+     * 添加查询出来的属性
      * </p>
+     * .
      *
      * @param propertyNames propertyNames
      * @return QueryEntityPropertiesExpression
@@ -39,9 +75,12 @@ public interface QueryEntityExpression<Q extends QueryEntityPropertiesExpression
 
     /**
      * <p>
-     * 添加select的列
+     * 添加查询出来的属性
      * </p>
+     * .
      *
+     * @param <T>          the generic type
+     * @param <R>          the generic type
      * @param propertyName propertyName
      * @return QueryEntityPropertiesExpression
      */
@@ -49,9 +88,12 @@ public interface QueryEntityExpression<Q extends QueryEntityPropertiesExpression
 
     /**
      * <p>
-     * 批量添加select的列
+     * 添加查询出来的属性
      * </p>
+     * .
      *
+     * @param <T>           the generic type
+     * @param <R>           the generic type
      * @param propertyNames propertyNames
      * @return QueryEntityPropertiesExpression
      */
@@ -59,8 +101,9 @@ public interface QueryEntityExpression<Q extends QueryEntityPropertiesExpression
 
     /**
      * <p>
-     * 批量添加select的列
+     * 添加查询出来的属性
      * </p>
+     * .
      *
      * @param propertyNames propertyNames
      * @return QueryEntityPropertiesExpression
@@ -68,11 +111,19 @@ public interface QueryEntityExpression<Q extends QueryEntityPropertiesExpression
     Q property(Collection<String> propertyNames);
 
     /**
-     * <p>
-     * 进入条件表达式
-     * </p>
+     * with.
      *
-     * @return QueryCondition
+     * @param repositoryName with repository name
+     * @return QueryWithExpression
      */
-    C where();
+    QWO with(String repositoryName);
+
+    /**
+     * with.
+     *
+     * @param <T>            the generic type
+     * @param repositoryType with repository type
+     * @return QueryWithExpression
+     */
+    <T> QWO with(Class<T> repositoryType);
 }

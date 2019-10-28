@@ -7,12 +7,13 @@ import java.util.ArrayList;
 import java.util.List;
 
 import cn.featherfly.common.bean.BeanUtils;
+import cn.featherfly.common.constant.Chars;
 import cn.featherfly.common.db.JdbcUtils;
 import cn.featherfly.common.db.metadata.DatabaseMetadata;
 import cn.featherfly.common.lang.LangUtils;
+import cn.featherfly.juorm.mapping.ClassMapping;
+import cn.featherfly.juorm.mapping.PropertyMapping;
 import cn.featherfly.juorm.rdb.jdbc.Jdbc;
-import cn.featherfly.juorm.rdb.jdbc.mapping.ClassMapping;
-import cn.featherfly.juorm.rdb.jdbc.mapping.PropertyMapping;
 
 /**
  * <p>
@@ -27,7 +28,7 @@ import cn.featherfly.juorm.rdb.jdbc.mapping.PropertyMapping;
 public class InsertOperate<T> extends AbstractExecuteOperate<T> {
 
     /**
-     * 使用给定数据源以及给定对象生成更新操作.
+     * 使用给定数据源以及给定对象生成插入操作.
      *
      * @param jdbc         jdbc
      * @param classMapping classMapping
@@ -37,7 +38,7 @@ public class InsertOperate<T> extends AbstractExecuteOperate<T> {
     }
 
     /**
-     * 使用给定数据源以及给定对象生成更新操作.
+     * 使用给定数据源以及给定对象生成插入操作.
      *
      * @param jdbc         jdbc
      * @param classMapping classMapping
@@ -48,9 +49,11 @@ public class InsertOperate<T> extends AbstractExecuteOperate<T> {
     }
 
     /**
-     * @param jdbc
-     * @param classMapping
-     * @param databaseMetadata
+     * 使用给定数据源以及给定对象生成插入操作.
+     *
+     * @param jdbc             the jdbc
+     * @param classMapping     the class mapping
+     * @param databaseMetadata the database metadata
      */
     public InsertOperate(Jdbc jdbc, ClassMapping<T> classMapping, DatabaseMetadata databaseMetadata) {
         super(jdbc, classMapping, databaseMetadata);
@@ -107,25 +110,28 @@ public class InsertOperate<T> extends AbstractExecuteOperate<T> {
     @Override
     public void initSql() {
         StringBuilder insertSql = new StringBuilder();
-        insertSql.append("insert into ").append(jdbc.getDialect().wrapName(classMapping.getTableName())).append(" ( ");
+        insertSql.append(jdbc.getDialect().getKeywords().insert()).append(Chars.SPACE)
+                .append(jdbc.getDialect().getKeywords().into()).append(Chars.SPACE)
+                .append(jdbc.getDialect().wrapName(classMapping.getRepositoryName())).append(" ( ");
         List<PropertyMapping> pms = new ArrayList<>();
         for (PropertyMapping pm : classMapping.getPropertyMappings()) {
             if (LangUtils.isEmpty(pm.getPropertyMappings())) {
-                insertSql.append(jdbc.getDialect().wrapName(pm.getColumnName())).append(",");
+                insertSql.append(jdbc.getDialect().wrapName(pm.getRepositoryFieldName())).append(",");
                 pms.add(pm);
-                //                propertyPositions.put(pms.size(), pm.getPropertyName());
+                // propertyPositions.put(pms.size(), pm.getPropertyName());
             } else {
                 for (PropertyMapping pm2 : pm.getPropertyMappings()) {
-                    insertSql.append(jdbc.getDialect().wrapName(pm2.getColumnName())).append(",");
+                    insertSql.append(jdbc.getDialect().wrapName(pm2.getRepositoryFieldName())).append(",");
                     pms.add(pm2);
-                    //                    propertyPositions.put(pms.size(), pm.getPropertyName() + "." + pm2.getPropertyName());
+                    // propertyPositions.put(pms.size(), pm.getPropertyName() +
+                    // "." + pm2.getPropertyName());
                 }
             }
         }
         if (pms.size() > 0) {
             insertSql.deleteCharAt(insertSql.length() - 1);
         }
-        insertSql.append(" ) values( ");
+        insertSql.append(" ) ").append(jdbc.getDialect().getKeywords().values()).append(" ( ");
         int paramNum = 0;
         for (int i = 0; i < pms.size(); i++) {
             PropertyMapping pm = pms.get(i);

@@ -22,33 +22,29 @@ import freemarker.template.TemplateMethodModelEx;
  * <p>
  * FreemarkerTemplateProxy
  * </p>
- * 
+ *
  * @author zhongj
  */
-public class FreemarkerTemplateProcessor implements
-        TemplateProcessor<TemplateDirectiveModel, TemplateMethodModelEx> {
+public class FreemarkerTemplateProcessor implements TemplateProcessor<TemplateDirectiveModel, TemplateMethodModelEx> {
 
     protected final Logger logger = LoggerFactory.getLogger(this.getClass());
 
     private Configuration cfg;
 
     /**
-     * 
-     * @param configFactory
+     * @param configFactory TplConfigFactory
      */
     public FreemarkerTemplateProcessor(TplConfigFactory configFactory) {
         cfg = new Configuration(Configuration.VERSION_2_3_28);
         cfg.setDefaultEncoding("UTF-8");
-        cfg.setTemplateExceptionHandler(
-                TemplateExceptionHandler.RETHROW_HANDLER);
+        cfg.setTemplateExceptionHandler(TemplateExceptionHandler.RETHROW_HANDLER);
 
         StringTemplateLoader templateLoader = new StringTemplateLoader();
         configFactory.getAllConfigs().forEach(configs -> {
             configs.values().forEach(c -> {
                 TplExecuteConfig config = (TplExecuteConfig) c;
                 logger.debug("put template name: {}", config.getTplName());
-                templateLoader.putTemplate(config.getTplName(),
-                        config.getQuery());
+                templateLoader.putTemplate(config.getTplName(), config.getQuery());
             });
         });
         cfg.setTemplateLoader(templateLoader);
@@ -58,20 +54,17 @@ public class FreemarkerTemplateProcessor implements
      * {@inheritDoc}
      */
     @Override
-    public String process(String templateName, String sourceCode,
-            Map<String, Object> params,
+    public String process(String templateName, String sourceCode, Map<String, Object> params,
             TemplateEnv<TemplateDirectiveModel, TemplateMethodModelEx> templateFacotry) {
         logger.debug("execute template name : {}", templateName);
         Map<String, Object> root = new HashMap<>();
         root.putAll(params);
-        templateFacotry.createDirectives().getDirectiveMapAfterCheck()
-                .forEach((k, v) -> {
-                    root.put(k, v);
-                });
-        templateFacotry.createMethods().getMethodeMapAfterCheck()
-                .forEach((k, v) -> {
-                    root.put(k, v);
-                });
+        templateFacotry.createDirectives().getDirectiveMapAfterCheck().forEach((k, v) -> {
+            root.put(k, v);
+        });
+        templateFacotry.createMethods().getMethodeMapAfterCheck().forEach((k, v) -> {
+            root.put(k, v);
+        });
         try {
             StringWriter stringWriter = new StringWriter();
             Template template = new Template(templateName, sourceCode, cfg);

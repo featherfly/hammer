@@ -5,9 +5,9 @@ import java.util.List;
 
 import cn.featherfly.common.lang.ClassUtils;
 import cn.featherfly.common.structure.page.Page;
+import cn.featherfly.juorm.mapping.ClassMapping;
 import cn.featherfly.juorm.rdb.jdbc.dsl.query.SqlQueryConditionGroupExpression;
 import cn.featherfly.juorm.rdb.jdbc.dsl.query.SqlQueryEntityProperties;
-import cn.featherfly.juorm.rdb.jdbc.mapping.ClassMapping;
 import cn.featherfly.juorm.rdb.jdbc.mapping.ClassMappingUtils;
 import cn.featherfly.juorm.rdb.jdbc.mapping.JdbcMappingFactory;
 

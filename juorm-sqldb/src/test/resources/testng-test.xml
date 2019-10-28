@@ -29,6 +29,7 @@
         <classes>
             <class name="cn.featherfly.juorm.rdb.tpl.SqlTplExecutorTest" />
             <class name="cn.featherfly.juorm.rdb.jdbc.JuormJdbcTest" />
+            <class name="cn.featherfly.juorm.rdb.jdbc.JuormJdbcTest2" />
             <class name="cn.featherfly.juorm.rdb.jdbc.OperatorTest" />
         </classes>
     </test>

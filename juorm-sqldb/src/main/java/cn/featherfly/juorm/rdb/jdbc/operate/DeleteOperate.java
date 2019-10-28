@@ -1,9 +1,11 @@
 package cn.featherfly.juorm.rdb.jdbc.operate;
 
+import cn.featherfly.common.constant.Chars;
 import cn.featherfly.common.db.metadata.DatabaseMetadata;
+import cn.featherfly.common.lang.LangUtils;
+import cn.featherfly.juorm.mapping.ClassMapping;
+import cn.featherfly.juorm.mapping.PropertyMapping;
 import cn.featherfly.juorm.rdb.jdbc.Jdbc;
-import cn.featherfly.juorm.rdb.jdbc.mapping.ClassMapping;
-import cn.featherfly.juorm.rdb.jdbc.mapping.PropertyMapping;
 
 /**
  * <p>
@@ -38,9 +40,11 @@ public class DeleteOperate<T> extends AbstractExecuteOperate<T> {
     }
 
     /**
-     * @param jdbc
-     * @param classMapping
-     * @param databaseMetadata
+     * 使用给定数据源以及给定对象生成删除操作.
+     *
+     * @param jdbc             the jdbc
+     * @param classMapping     the class mapping
+     * @param databaseMetadata the database metadata
      */
     public DeleteOperate(Jdbc jdbc, ClassMapping<T> classMapping, DatabaseMetadata databaseMetadata) {
         super(jdbc, classMapping, databaseMetadata);
@@ -51,33 +55,40 @@ public class DeleteOperate<T> extends AbstractExecuteOperate<T> {
      */
     @Override
     public void initSql() {
-        //        SqlDeleter sqlDeleter = new SqlDeleter(jdbc);
-        //        int columnNum = 0;
-        //        ExecutableConditionGroupExpression deleteCondition = sqlDeleter.delete(classMapping.getTableName()).where();
-        //        for (PropertyMapping pm : classMapping.getPropertyMappings()) {
-        //            if (pm.isPrimaryKey()) {
-        //                deleteCondition.eq(pm.getColumnName(), "1").and();
-        //                columnNum++;
-        //                propertyPositions.put(columnNum, pm.getPropertyName());
-        //            }
-        //        }
-        //        sql = deleteCondition.expression();
-        //        logger.debug("sql: {}", sql);
         StringBuilder deleteSql = new StringBuilder();
-        deleteSql.append("delete from ").append(classMapping.getTableName()).append(" where ");
+        deleteSql.append(jdbc.getDialect().getKeywords().delete()).append(Chars.SPACE)
+                .append(jdbc.getDialect().getKeywords().from()).append(Chars.SPACE)
+                .append(jdbc.getDialect().wrapName(classMapping.getRepositoryName())).append(Chars.SPACE)
+                .append(jdbc.getDialect().getKeywords().where()).append(Chars.SPACE);
         int columnNum = 0;
-        for (PropertyMapping pm : classMapping.getPropertyMappings()) {
-            if (pm.isPrimaryKey()) {
-                if (columnNum > 0) {
-                    deleteSql.append("and ");
+        for (PropertyMapping propertyMapping : classMapping.getPropertyMappings()) {
+            if (LangUtils.isEmpty(propertyMapping.getPropertyMappings())) {
+                if (propertyMapping.isPrimaryKey()) {
+                    if (columnNum > 0) {
+                        deleteSql.append(jdbc.getDialect().getKeywords().and()).append(Chars.SPACE);
+                    }
+                    deleteSql.append(jdbc.getDialect().wrapName(propertyMapping.getRepositoryFieldName()))
+                            .append(" = ? ");
+                    columnNum++;
+                    propertyPositions.put(columnNum, propertyMapping.getPropertyName());
                 }
-                deleteSql.append(pm.getColumnName()).append(" = ? ");
-                columnNum++;
-                propertyPositions.put(columnNum, pm.getPropertyName());
+            } else {
+                for (PropertyMapping subPropertyMapping : propertyMapping.getPropertyMappings()) {
+                    if (subPropertyMapping.isPrimaryKey()) {
+                        if (columnNum > 0) {
+                            deleteSql.append(jdbc.getDialect().getKeywords().and()).append(Chars.SPACE);
+                        }
+                        deleteSql.append(jdbc.getDialect().wrapName(subPropertyMapping.getRepositoryFieldName()))
+                                .append(" = ? ");
+                        columnNum++;
+                        propertyPositions.put(columnNum,
+                                propertyMapping.getPropertyName() + "." + subPropertyMapping.getPropertyName());
+                    }
+                }
             }
         }
+
         sql = deleteSql.toString();
         logger.debug("sql: {}", sql);
-
     }
 }

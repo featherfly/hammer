@@ -16,9 +16,9 @@ import cn.featherfly.juorm.dsl.query.QueryConditionGroupExpression;
 import cn.featherfly.juorm.dsl.query.QueryConditionGroupLogicExpression;
 import cn.featherfly.juorm.dsl.query.QuerySortExpression;
 import cn.featherfly.juorm.expression.query.QueryExecutor;
+import cn.featherfly.juorm.mapping.ClassMapping;
 import cn.featherfly.juorm.mapping.RowMapper;
 import cn.featherfly.juorm.rdb.jdbc.Jdbc;
-import cn.featherfly.juorm.rdb.jdbc.mapping.ClassMapping;
 import cn.featherfly.juorm.rdb.jdbc.mapping.ClassMappingUtils;
 import cn.featherfly.juorm.rdb.sql.dml.AbstractSqlConditionGroupExpression;
 import cn.featherfly.juorm.rdb.sql.dml.builder.SqlSortBuilder;
@@ -63,7 +63,7 @@ public class SqlQueryConditionGroupExpression
     }
 
     /**
-     * @param dialect      dialect
+     * @param jdbc         jdbc
      * @param parent       parent group
      * @param queryAlias   queryAlias
      * @param classMapping classMapping
@@ -345,5 +345,4 @@ public class SqlQueryConditionGroupExpression
                 .toArray(value -> new String[value]);
         return desc(nameArray);
     }
-
 }

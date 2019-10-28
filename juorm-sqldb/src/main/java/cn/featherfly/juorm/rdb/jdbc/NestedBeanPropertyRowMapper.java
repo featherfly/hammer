@@ -132,6 +132,8 @@ public class NestedBeanPropertyRowMapper<T> implements RowMapper<T> {
 
     /**
      * Set the class that each row should be mapped to.
+     *
+     * @param mappedClass the new mapped class
      */
     public void setMappedClass(Class<T> mappedClass) {
         if (this.mappedClass == null) {
@@ -146,6 +148,8 @@ public class NestedBeanPropertyRowMapper<T> implements RowMapper<T> {
 
     /**
      * Get the class that we are mapping to.
+     *
+     * @return the mapped class
      */
     @Nullable
     public final Class<T> getMappedClass() {
@@ -158,6 +162,8 @@ public class NestedBeanPropertyRowMapper<T> implements RowMapper<T> {
      * <p>
      * Default is {@code false}, accepting unpopulated properties in the target
      * bean.
+     *
+     * @param checkFullyPopulated the new check fully populated
      */
     public void setCheckFullyPopulated(boolean checkFullyPopulated) {
         this.checkFullyPopulated = checkFullyPopulated;
@@ -166,6 +172,8 @@ public class NestedBeanPropertyRowMapper<T> implements RowMapper<T> {
     /**
      * Return whether we're strictly validating that all bean properties have
      * been mapped from corresponding database fields.
+     *
+     * @return true, if is check fully populated
      */
     public boolean isCheckFullyPopulated() {
         return this.checkFullyPopulated;
@@ -177,6 +185,9 @@ public class NestedBeanPropertyRowMapper<T> implements RowMapper<T> {
      * <p>
      * Default is {@code false}, throwing an exception when nulls are mapped to
      * Java primitives.
+     *
+     * @param primitivesDefaultedForNullValue the new primitives defaulted for
+     *                                        null value
      */
     public void setPrimitivesDefaultedForNullValue(boolean primitivesDefaultedForNullValue) {
         this.primitivesDefaultedForNullValue = primitivesDefaultedForNullValue;
@@ -185,6 +196,8 @@ public class NestedBeanPropertyRowMapper<T> implements RowMapper<T> {
     /**
      * Return whether we're defaulting Java primitives in the case of mapping a
      * null value from corresponding database fields.
+     *
+     * @return true, if is primitives defaulted for null value
      */
     public boolean isPrimitivesDefaultedForNullValue() {
         return this.primitivesDefaultedForNullValue;
@@ -198,8 +211,9 @@ public class NestedBeanPropertyRowMapper<T> implements RowMapper<T> {
      * provides support for {@code java.time} conversion and other special
      * types.
      *
-     * @since 4.3
+     * @param conversionService the new conversion service
      * @see #initBeanWrapper(BeanWrapper)
+     * @since 4.3
      */
     public void setConversionService(@Nullable ConversionService conversionService) {
         this.conversionService = conversionService;
@@ -209,6 +223,7 @@ public class NestedBeanPropertyRowMapper<T> implements RowMapper<T> {
      * Return a {@link ConversionService} for binding JDBC values to bean
      * properties, or {@code null} if none.
      *
+     * @return the conversion service
      * @since 4.3
      */
     @Nullable
@@ -300,7 +315,6 @@ public class NestedBeanPropertyRowMapper<T> implements RowMapper<T> {
         for (int index = 1; index <= columnCount; index++) {
             String column = JdbcUtils.lookupColumnName(rsmd, index);
             String field = lowerCaseName(StringUtils.delete(column, " "));
-            String fieldOriginal = field;
 
             boolean nestedProperty = false;
             if (field.contains(".")) {
@@ -315,14 +329,15 @@ public class NestedBeanPropertyRowMapper<T> implements RowMapper<T> {
                         // 嵌套设值，所以直接使用SQL查询出来列的别名
                         BeanDescriptor<T> bd = BeanDescriptor.getBeanDescriptor(mappedClass);
                         @SuppressWarnings("rawtypes")
-                        BeanProperty bp = bd.getChildBeanProperty(fieldOriginal);
+
+                        BeanProperty bp = bd.getChildBeanProperty(column);
                         if (bp != null) {
                             if (rowNumber == 0) {
                                 logger.debug("Mapping column '{} as {}' to property '{}' of type '{}'",
-                                        rsmd.getColumnName(index), column, fieldOriginal, bp.getType().getName());
+                                        rsmd.getColumnName(index), column, column, bp.getType().getName());
                             }
                             value = JdbcUtils.getResultSetValue(rs, index, bp.getType());
-                            bd.setProperty(mappedObject, fieldOriginal, value);
+                            bd.setProperty(mappedObject, column, value);
                         }
                     } else {
                         value = getColumnValue(rs, index, pd);
@@ -414,6 +429,7 @@ public class NestedBeanPropertyRowMapper<T> implements RowMapper<T> {
      * Static factory method to create a new {@code BeanPropertyRowMapper} (with
      * the mapped class specified only once).
      *
+     * @param <T>         the generic type
      * @param mappedClass the class that each row should be mapped to
      * @return new instance
      */

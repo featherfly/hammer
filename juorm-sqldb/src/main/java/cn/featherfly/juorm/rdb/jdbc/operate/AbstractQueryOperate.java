@@ -4,14 +4,15 @@ package cn.featherfly.juorm.rdb.jdbc.operate;
 import java.sql.ResultSet;
 
 import cn.featherfly.common.bean.BeanUtils;
+import cn.featherfly.common.constant.Chars;
 import cn.featherfly.common.db.JdbcUtils;
 import cn.featherfly.common.db.metadata.DatabaseMetadata;
 import cn.featherfly.common.lang.LangUtils;
+import cn.featherfly.juorm.mapping.ClassMapping;
+import cn.featherfly.juorm.mapping.PropertyMapping;
 import cn.featherfly.juorm.rdb.jdbc.Jdbc;
 import cn.featherfly.juorm.rdb.jdbc.SqlResultSet;
-import cn.featherfly.juorm.rdb.jdbc.mapping.ClassMapping;
 import cn.featherfly.juorm.rdb.jdbc.mapping.ClassMappingUtils;
-import cn.featherfly.juorm.rdb.jdbc.mapping.PropertyMapping;
 
 /**
  * <p>
@@ -47,9 +48,11 @@ public abstract class AbstractQueryOperate<T> extends AbstractOperate<T> {
     }
 
     /**
-     * @param jdbc
-     * @param classMapping
-     * @param databaseMetadata
+     * 使用给定数据源以及给定对象生成其相应的操作.
+     *
+     * @param jdbc             the jdbc
+     * @param classMapping     the class mapping
+     * @param databaseMetadata the database metadata
      */
     public AbstractQueryOperate(Jdbc jdbc, ClassMapping<T> classMapping, DatabaseMetadata databaseMetadata) {
         super(jdbc, classMapping, databaseMetadata);
@@ -69,16 +72,28 @@ public abstract class AbstractQueryOperate<T> extends AbstractOperate<T> {
         T mappedObject = (T) BeanUtils.instantiateClass(classMapping.getType());
         int index = 1;
         for (PropertyMapping propertyMapping : classMapping.getPropertyMappings()) {
-            Object value = getColumnValue(rs, index, propertyMapping.getPropertyType());
-            if (logger.isDebugEnabled() && rowNumber == 0) {
-                logger.debug("Mapping column '{}' to property '{}' of type {}",
-                        new Object[] { propertyMapping.getColumnName(), propertyMapping.getPropertyName(),
-                                propertyMapping.getPropertyType() });
+            if (propertyMapping.getPropertyMappings().isEmpty()) {
+                Object value = getColumnValue(rs, index, propertyMapping.getPropertyType());
+                index = setProperty(rowNumber, mappedObject, index, propertyMapping, value);
+            } else {
+                for (PropertyMapping subPropertyMapping : propertyMapping.getPropertyMappings()) {
+                    Object value = getColumnValue(rs, index, subPropertyMapping.getPropertyType());
+                    index = setProperty(rowNumber, mappedObject, index, subPropertyMapping, value);
+                }
             }
-            BeanUtils.setProperty(mappedObject, propertyMapping.getPropertyName(), value);
-            index++;
         }
         return mappedObject;
+    }
+
+    private int setProperty(int rowNumber, T mappedObject, int index, PropertyMapping propertyMapping, Object value) {
+        String propertyName = ClassMappingUtils.getPropertyAliasName(propertyMapping);
+        if (logger.isDebugEnabled() && rowNumber == 0) {
+            logger.debug("Mapping column '{}' to property '{}' of type {}", new Object[] {
+                    propertyMapping.getRepositoryFieldName(), propertyName, propertyMapping.getPropertyType() });
+        }
+        BeanUtils.setProperty(mappedObject, propertyName, value);
+        index++;
+        return index;
     }
 
     /**
@@ -98,7 +113,7 @@ public abstract class AbstractQueryOperate<T> extends AbstractOperate<T> {
             Object value = getColumnValue(rs, index, propertyMapping.getPropertyType());
             if (logger.isDebugEnabled() && rowNumber == 0) {
                 logger.debug("Mapping column '{}' to property '{}' of type {}",
-                        new Object[] { propertyMapping.getColumnName(), propertyMapping.getPropertyName(),
+                        new Object[] { propertyMapping.getRepositoryFieldName(), propertyMapping.getPropertyName(),
                                 propertyMapping.getPropertyType() });
             }
             BeanUtils.setProperty(mappedObject, propertyMapping.getPropertyName(), value);
@@ -117,7 +132,8 @@ public abstract class AbstractQueryOperate<T> extends AbstractOperate<T> {
         getSql.append(getSelectSql());
         String condition = initCondition();
         if (LangUtils.isNotEmpty(condition)) {
-            getSql.append(" where ").append(condition);
+            getSql.append(Chars.SPACE).append(jdbc.getDialect().getKeywords().where()).append(Chars.SPACE)
+                    .append(condition);
         }
         sql = getSql.toString();
         logger.debug("sql: {}", sql);

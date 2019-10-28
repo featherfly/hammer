@@ -9,7 +9,7 @@ import java.util.Set;
 import cn.featherfly.common.db.metadata.TableMetadata;
 import cn.featherfly.common.lang.LangUtils;
 import cn.featherfly.common.lang.WordUtils;
-import cn.featherfly.juorm.rdb.jdbc.mapping.ClassMapping;
+import cn.featherfly.juorm.mapping.ClassMapping;
 import cn.featherfly.juorm.rdb.jdbc.mapping.ClassMappingUtils;
 import cn.featherfly.juorm.rdb.jdbc.mapping.JdbcMappingFactory;
 import cn.featherfly.juorm.tpl.directive.PropertiesMappingDirective;

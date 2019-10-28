@@ -1,14 +1,18 @@
 package cn.featherfly.juorm.rdb.jdbc.operate;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import cn.featherfly.common.bean.BeanUtils;
+import cn.featherfly.common.constant.Chars;
 import cn.featherfly.common.db.metadata.DatabaseMetadata;
 import cn.featherfly.common.lang.LangUtils;
+import cn.featherfly.juorm.mapping.ClassMapping;
+import cn.featherfly.juorm.mapping.PropertyMapping;
 import cn.featherfly.juorm.rdb.jdbc.Jdbc;
-import cn.featherfly.juorm.rdb.jdbc.mapping.ClassMapping;
-import cn.featherfly.juorm.rdb.jdbc.mapping.PropertyMapping;
+import cn.featherfly.juorm.rdb.jdbc.mapping.ClassMappingUtils;
 
 /**
  * <p>
@@ -43,9 +47,11 @@ public class MergeOperate<T> extends AbstractOperate<T> {
     }
 
     /**
-     * @param jdbc
-     * @param classMapping
-     * @param databaseMetadata
+     * 使用给定数据源以及给定对象生成更新操作.
+     *
+     * @param jdbc             the jdbc
+     * @param classMapping     the class mapping
+     * @param databaseMetadata the database metadata
      */
     public MergeOperate(Jdbc jdbc, ClassMapping<T> classMapping, DatabaseMetadata databaseMetadata) {
         super(jdbc, classMapping, databaseMetadata);
@@ -64,57 +70,71 @@ public class MergeOperate<T> extends AbstractOperate<T> {
         Map<Integer, String> propertyPositions = new HashMap<>();
         String sql = getDynamicSql(entity, propertyPositions, onlyNull);
         return jdbc.update(sql, getParameters(entity, propertyPositions));
-        //        return jdbc.execute(conn -> {
-        //            Map<Integer, String> propertyPositions = new HashMap<>();
-        //            String sql = getDynamicSql(entity, propertyPositions, onlyNull);
-        //            logger.debug("execute sql: {}", sql);
-        //            PreparedStatement prep = conn.prepareStatement(sql);
-        //            for (Entry<Integer, String> propertyPosition : propertyPositions.entrySet()) {
-        //                JdbcUtils.setParameter(prep, propertyPosition.getKey(),
-        //                        BeanUtils.getProperty(entity, propertyPosition.getValue()));
-        //            }
-        //            int result = prep.executeUpdate();
-        //            prep.close();
-        //            return result;
-        //        });
     }
 
     private String getDynamicSql(T entity, Map<Integer, String> propertyPositions, boolean onlyNull) {
         StringBuilder updateSql = new StringBuilder();
-        updateSql.append("update ").append(classMapping.getTableName()).append(" set ");
+        updateSql.append(jdbc.getDialect().getKeywords().update()).append(Chars.SPACE)
+                .append(jdbc.getDialect().wrapName(classMapping.getRepositoryName())).append(Chars.SPACE)
+                .append(jdbc.getDialect().getKeywords().set()).append(Chars.SPACE);
         int columnNum = 0;
-        for (PropertyMapping pm : classMapping.getPropertyMappings()) {
-            // 如果为空忽略 ignore when null
-            if (onlyNull) {
-                if (BeanUtils.getProperty(entity, pm.getPropertyName()) == null) {
+        List<PropertyMapping> pkms = new ArrayList<>();
+        for (PropertyMapping propertyMapping : classMapping.getPropertyMappings()) {
+            if (propertyMapping.getPropertyMappings().isEmpty()) {
+                // 如果为空忽略 ignore when null
+                if (checkNullOrEmpty(entity, propertyMapping, onlyNull)) {
                     continue;
+                }
+                if (propertyMapping.isPrimaryKey()) {
+                    pkms.add(propertyMapping);
+                } else {
+                    columnNum = set(entity, propertyMapping, updateSql, propertyPositions, columnNum);
                 }
             } else {
-                if (LangUtils.isEmpty(BeanUtils.getProperty(entity, pm.getPropertyName()))) {
-                    continue;
+                for (PropertyMapping subPropertyMapping : propertyMapping.getPropertyMappings()) {
+                    if (checkNullOrEmpty(entity, subPropertyMapping, onlyNull)) {
+                        continue;
+                    }
+                    if (subPropertyMapping.isPrimaryKey()) {
+                        pkms.add(subPropertyMapping);
+                    } else {
+                        columnNum = set(entity, subPropertyMapping, updateSql, propertyPositions, columnNum);
+                    }
                 }
             }
-            updateSql.append(pm.getColumnName()).append(" = ? ,");
-            columnNum++;
-            propertyPositions.put(columnNum, pm.getPropertyName());
         }
         if (columnNum > 0) {
             updateSql.deleteCharAt(updateSql.length() - 1);
         }
         int pkNum = 0;
-        updateSql.append("where ");
-        for (PropertyMapping pm : classMapping.getPropertyMappings()) {
-            if (pm.isPrimaryKey()) {
-                if (pkNum > 0) {
-                    updateSql.append("and ");
-                }
-                updateSql.append(pm.getColumnName()).append(" = ? ");
-                pkNum++;
-                propertyPositions.put(columnNum + pkNum, pm.getPropertyName());
+        updateSql.append(jdbc.getDialect().getKeywords().where()).append(Chars.SPACE);
+        for (PropertyMapping pm : pkms) {
+            if (pkNum > 0) {
+                updateSql.append(jdbc.getDialect().getKeywords().and()).append(Chars.SPACE);
             }
+            updateSql.append(jdbc.getDialect().wrapName(pm.getRepositoryFieldName())).append(" = ? ");
+            pkNum++;
+            propertyPositions.put(columnNum + pkNum, ClassMappingUtils.getPropertyAliasName(pm));
         }
         sql = updateSql.toString();
         return updateSql.toString();
+    }
+
+    private boolean checkNullOrEmpty(T entity, PropertyMapping propertyMapping, boolean onlyNull) {
+        String pn = ClassMappingUtils.getPropertyAliasName(propertyMapping);
+        if (onlyNull) {
+            return BeanUtils.getProperty(entity, pn) == null;
+        } else {
+            return LangUtils.isEmpty(BeanUtils.getProperty(entity, pn));
+        }
+    }
+
+    private int set(T entity, PropertyMapping propertyMapping, StringBuilder updateSql,
+            Map<Integer, String> propertyPositions, int columnNum) {
+        updateSql.append(jdbc.getDialect().wrapName(propertyMapping.getRepositoryFieldName())).append(" = ? ,");
+        columnNum++;
+        propertyPositions.put(columnNum, ClassMappingUtils.getPropertyAliasName(propertyMapping));
+        return columnNum;
     }
 
     /**
