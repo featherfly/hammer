@@ -12,14 +12,17 @@ import cn.featherfly.common.lang.function.SerializableFunction;
  * <p>
  * LessEqualsExpressoin
  * </p>
+ * .
  *
  * @author zhongj
+ * @param <C> the generic type
+ * @param <L> the generic type
  */
 public interface LessEqualsExpressoin<C extends ConditionExpression, L extends LogicExpression<C, L>>
         extends ConditionExpression {
 
     /**
-     * 小于等于
+     * 小于等于.
      *
      * @param <N>   number type
      * @param name  参数名称
@@ -29,8 +32,10 @@ public interface LessEqualsExpressoin<C extends ConditionExpression, L extends L
     <N extends Number> L le(String name, N value);
 
     /**
-     * 小于等于
+     * 小于等于.
      *
+     * @param <T>   the generic type
+     * @param <R>   the generic type
      * @param <N>   number type
      * @param name  参数名称
      * @param value 参数值
@@ -39,7 +44,7 @@ public interface LessEqualsExpressoin<C extends ConditionExpression, L extends L
     <T, R, N extends Number> L le(SerializableFunction<T, R> name, N value);
 
     /**
-     * 小于等于
+     * 小于等于.
      *
      * @param <D>   date type
      * @param name  参数名称
@@ -49,8 +54,10 @@ public interface LessEqualsExpressoin<C extends ConditionExpression, L extends L
     <D extends Date> L le(String name, D value);
 
     /**
-     * 小于等于
+     * 小于等于.
      *
+     * @param <T>   the generic type
+     * @param <R>   the generic type
      * @param <D>   date type
      * @param name  参数名称
      * @param value 参数值
@@ -59,7 +66,7 @@ public interface LessEqualsExpressoin<C extends ConditionExpression, L extends L
     <T, R, D extends Date> L le(SerializableFunction<T, R> name, D value);
 
     /**
-     * 小于等于
+     * 小于等于.
      *
      * @param name  参数名称
      * @param value 参数值
@@ -68,8 +75,10 @@ public interface LessEqualsExpressoin<C extends ConditionExpression, L extends L
     L le(String name, LocalTime value);
 
     /**
-     * 小于等于
+     * 小于等于.
      *
+     * @param <T>   the generic type
+     * @param <R>   the generic type
      * @param name  参数名称
      * @param value 参数值
      * @return LogicExpression
@@ -77,7 +86,7 @@ public interface LessEqualsExpressoin<C extends ConditionExpression, L extends L
     <T, R> L le(SerializableFunction<T, R> name, LocalTime value);
 
     /**
-     * 小于等于
+     * 小于等于.
      *
      * @param name  参数名称
      * @param value 参数值
@@ -86,8 +95,10 @@ public interface LessEqualsExpressoin<C extends ConditionExpression, L extends L
     L le(String name, LocalDate value);
 
     /**
-     * 小于等于
+     * 小于等于.
      *
+     * @param <T>   the generic type
+     * @param <R>   the generic type
      * @param name  参数名称
      * @param value 参数值
      * @return LogicExpression
@@ -95,7 +106,7 @@ public interface LessEqualsExpressoin<C extends ConditionExpression, L extends L
     <T, R> L le(SerializableFunction<T, R> name, LocalDate value);
 
     /**
-     * 小于等于
+     * 小于等于.
      *
      * @param name  参数名称
      * @param value 参数值
@@ -104,8 +115,10 @@ public interface LessEqualsExpressoin<C extends ConditionExpression, L extends L
     L le(String name, LocalDateTime value);
 
     /**
-     * 小于等于
+     * 小于等于.
      *
+     * @param <T>   the generic type
+     * @param <R>   the generic type
      * @param name  参数名称
      * @param value 参数值
      * @return LogicExpression
@@ -113,7 +126,7 @@ public interface LessEqualsExpressoin<C extends ConditionExpression, L extends L
     <T, R> L le(SerializableFunction<T, R> name, LocalDateTime value);
 
     /**
-     * 小于等于
+     * 小于等于.
      *
      * @param name  参数名称
      * @param value 参数值
@@ -122,8 +135,10 @@ public interface LessEqualsExpressoin<C extends ConditionExpression, L extends L
     L le(String name, String value);
 
     /**
-     * 小于等于
+     * 小于等于.
      *
+     * @param <T>   the generic type
+     * @param <R>   the generic type
      * @param name  参数名称
      * @param value 参数值
      * @return LogicExpression

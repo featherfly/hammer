@@ -3,11 +3,10 @@ package cn.featherfly.juorm.tpl.directive;
 import cn.featherfly.juorm.tpl.TplConfigFactory;
 
 /**
- * 
  * <p>
  * IncludeDirective
  * </p>
- * 
+ *
  * @author zhongj
  */
 public abstract class IncludeDirective implements TemplateDirective {
@@ -19,7 +18,7 @@ public abstract class IncludeDirective implements TemplateDirective {
     protected TplConfigFactory tplConfigFactory;
 
     /**
-     * @param tplConfigFactory
+     * @param tplConfigFactory tplConfigFactory
      */
     public IncludeDirective(TplConfigFactory tplConfigFactory) {
         super();

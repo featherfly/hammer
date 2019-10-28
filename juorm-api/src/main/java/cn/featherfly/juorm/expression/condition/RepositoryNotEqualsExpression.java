@@ -1,12 +1,16 @@
 
 package cn.featherfly.juorm.expression.condition;
 
+// TODO: Auto-generated Javadoc
 /**
  * <p>
- * NotEqualsExpressoin
+ * RepositoryNotEqualsExpression
  * </p>
+ * .
  *
  * @author zhongj
+ * @param <C> the generic type
+ * @param <L> the generic type
  */
 public interface RepositoryNotEqualsExpression<C extends ConditionExpression, L extends LogicExpression<C, L>>
         extends NotEqualsExpression<C, L> {
@@ -24,6 +28,7 @@ public interface RepositoryNotEqualsExpression<C extends ConditionExpression, L 
     /**
      * not equals.不等于
      *
+     * @param <T>        the generic type
      * @param repository 存储库
      * @param name       参数名称
      * @param value      参数值

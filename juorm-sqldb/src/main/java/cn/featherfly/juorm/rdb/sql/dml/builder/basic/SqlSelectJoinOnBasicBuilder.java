@@ -22,8 +22,10 @@ public class SqlSelectJoinOnBasicBuilder implements SqlBuilder {
     private boolean fetched;
 
     /**
-     * @param selectBuilder
-     * @param joinSelectColumnsBuilder
+     * Instantiates a new sql select join on basic builder.
+     *
+     * @param selectBuilder            the select builder
+     * @param joinSelectColumnsBuilder the join select columns builder
      */
     public SqlSelectJoinOnBasicBuilder(SqlSelectBasicBuilder selectBuilder,
             SqlSelectColumnsBasicBuilder joinSelectColumnsBuilder) {
@@ -35,14 +37,11 @@ public class SqlSelectJoinOnBasicBuilder implements SqlBuilder {
     /**
      * add column
      *
-     * @param column
-     *            column
-     * @param aggregateFunction
-     *            aggregateFunction
+     * @param column            column
+     * @param aggregateFunction aggregateFunction
      * @return this
      */
-    public SqlSelectJoinOnBasicBuilder addSelectColumn(String column,
-            AggregateFunction aggregateFunction) {
+    public SqlSelectJoinOnBasicBuilder addSelectColumn(String column, AggregateFunction aggregateFunction) {
         joinSelectColumnsBuilder.addSelectColumn(column, aggregateFunction);
         addJoinSelectColumnsBuilder();
         return this;
@@ -51,18 +50,14 @@ public class SqlSelectJoinOnBasicBuilder implements SqlBuilder {
     /**
      * add column
      *
-     * @param column
-     *            column
-     * @param aggregateFunction
-     *            aggregateFunction
-     * @param asName
-     *            alias name
+     * @param column            column
+     * @param aggregateFunction aggregateFunction
+     * @param asName            alias name
      * @return this
      */
-    public SqlSelectJoinOnBasicBuilder addSelectColumn(String column,
-            AggregateFunction aggregateFunction, String asName) {
-        joinSelectColumnsBuilder.addSelectColumn(column, aggregateFunction,
-                asName);
+    public SqlSelectJoinOnBasicBuilder addSelectColumn(String column, AggregateFunction aggregateFunction,
+            String asName) {
+        joinSelectColumnsBuilder.addSelectColumn(column, aggregateFunction, asName);
         addJoinSelectColumnsBuilder();
         return this;
     }
@@ -70,8 +65,7 @@ public class SqlSelectJoinOnBasicBuilder implements SqlBuilder {
     /**
      * add column
      *
-     * @param column
-     *            column
+     * @param column column
      * @return this
      */
     public SqlSelectJoinOnBasicBuilder addSelectColumn(String column) {
@@ -83,14 +77,11 @@ public class SqlSelectJoinOnBasicBuilder implements SqlBuilder {
     /**
      * add column
      *
-     * @param column
-     *            column
-     * @param asName
-     *            asName
+     * @param column column
+     * @param asName asName
      * @return this
      */
-    public SqlSelectJoinOnBasicBuilder addSelectColumn(String column,
-            String asName) {
+    public SqlSelectJoinOnBasicBuilder addSelectColumn(String column, String asName) {
         joinSelectColumnsBuilder.addSelectColumn(column, asName);
         addJoinSelectColumnsBuilder();
         return this;
@@ -99,8 +90,7 @@ public class SqlSelectJoinOnBasicBuilder implements SqlBuilder {
     /**
      * addColumns
      *
-     * @param columns
-     *            columns
+     * @param columns columns
      * @return this
      */
     public SqlSelectJoinOnBasicBuilder addSelectColumns(String... columns) {
@@ -112,12 +102,10 @@ public class SqlSelectJoinOnBasicBuilder implements SqlBuilder {
     /**
      * addColumns
      *
-     * @param columns
-     *            columns
+     * @param columns columns
      * @return this
      */
-    public SqlSelectJoinOnBasicBuilder addSelectColumns(
-            Collection<String> columns) {
+    public SqlSelectJoinOnBasicBuilder addSelectColumns(Collection<String> columns) {
         joinSelectColumnsBuilder.addSelectColumns(columns);
         addJoinSelectColumnsBuilder();
         return this;
@@ -132,8 +120,7 @@ public class SqlSelectJoinOnBasicBuilder implements SqlBuilder {
         return endJoin();
     }
 
-    public SqlSelectBasicBuilder fetch(String fetchProperty,
-            String fetchPropertyAlias) {
+    public SqlSelectBasicBuilder fetch(String fetchProperty, String fetchPropertyAlias) {
         if (!fetched) {
             selectBuilder.addSelectProperty(fetchProperty, fetchPropertyAlias);
             fetched = true;
@@ -143,8 +130,7 @@ public class SqlSelectJoinOnBasicBuilder implements SqlBuilder {
 
     private void addJoinSelectColumnsBuilder() {
         if (!fetched) {
-            selectBuilder
-                    .addJoinSelectColumnsBasicBuilder(joinSelectColumnsBuilder);
+            selectBuilder.addJoinSelectColumnsBasicBuilder(joinSelectColumnsBuilder);
             fetched = true;
         }
     }

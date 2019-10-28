@@ -48,13 +48,15 @@ public class SqlQueryWith implements QueryWith, SqlQueryWithOn, SqlQueryWithEnti
     private ClassMapping<?> classMapping;
 
     /**
-     * @param sqlQueryEntityProperties
-     * @param aliasManager
-     * @param factory
-     * @param selectTableAlis
-     * @param selectTableColumn
-     * @param joinTableName
-     * @param joinTableAlias
+     * Instantiates a new sql query with.
+     *
+     * @param sqlQueryEntityProperties the sql query entity properties
+     * @param aliasManager             the alias manager
+     * @param factory                  the factory
+     * @param selectTableAlis          the select table alis
+     * @param selectTableColumn        the select table column
+     * @param joinTableName            the join table name
+     * @param joinTableAlias           the join table alias
      */
     public SqlQueryWith(SqlQueryEntityProperties sqlQueryEntityProperties, AliasManager aliasManager,
             MappingFactory factory, String selectTableAlis, String selectTableColumn, String joinTableName,
@@ -70,12 +72,14 @@ public class SqlQueryWith implements QueryWith, SqlQueryWithOn, SqlQueryWithEnti
     }
 
     /**
-     * @param sqlQueryEntityProperties
-     * @param aliasManager
-     * @param factory
-     * @param selectTableAlis
-     * @param selectTableColumn
-     * @param joinType
+     * Instantiates a new sql query with.
+     *
+     * @param sqlQueryEntityProperties the sql query entity properties
+     * @param aliasManager             the alias manager
+     * @param factory                  the factory
+     * @param selectTableAlis          the select table alis
+     * @param selectTableColumn        the select table column
+     * @param joinType                 the join type
      */
     public SqlQueryWith(SqlQueryEntityProperties sqlQueryEntityProperties, AliasManager aliasManager,
             MappingFactory factory, String selectTableAlis, String selectTableColumn, Class<?> joinType) {
@@ -191,13 +195,13 @@ public class SqlQueryWith implements QueryWith, SqlQueryWithOn, SqlQueryWithEnti
      * 添加select的列
      * </p>
      *
-     * @param columnName propertyName
-     * @param asName     alias name
+     * @param propertyName propertyName
+     * @param aliasName    alias name
      * @return QueryEntityPropertiesExpression
      */
     @Override
-    public <T, R> SqlQueryWithEntity fetchAlias(SerializableFunction<T, R> propertyName, String alias) {
-        return fetchAlias(LambdaUtils.getLambdaPropertyName(propertyName), alias);
+    public <T, R> SqlQueryWithEntity fetchAlias(SerializableFunction<T, R> propertyName, String aliasName) {
+        return fetchAlias(LambdaUtils.getLambdaPropertyName(propertyName), aliasName);
     }
 
     /**
@@ -206,12 +210,12 @@ public class SqlQueryWith implements QueryWith, SqlQueryWithOn, SqlQueryWithEnti
      * </p>
      *
      * @param columnName propertyName
-     * @param asName     alias name
+     * @param aliasName  alias name
      * @return QueryEntityPropertiesExpression
      */
     @Override
-    public SqlQueryWithEntity fetchAlias(String columnName, String alias) {
-        selectJoinOnBasicBuilder.addSelectColumn(ClassMappingUtils.getColumnName(columnName, classMapping), alias);
+    public SqlQueryWithEntity fetchAlias(String columnName, String aliasName) {
+        selectJoinOnBasicBuilder.addSelectColumn(ClassMappingUtils.getColumnName(columnName, classMapping), aliasName);
         return this;
     }
 
@@ -220,8 +224,7 @@ public class SqlQueryWith implements QueryWith, SqlQueryWithOn, SqlQueryWithEnti
      * 添加select的列
      * </p>
      *
-     * @param columnName propertyName
-     * @param asName     alias name
+     * @param columnNameMap columnNameMap
      * @return QueryEntityPropertiesExpression
      */
     @Override

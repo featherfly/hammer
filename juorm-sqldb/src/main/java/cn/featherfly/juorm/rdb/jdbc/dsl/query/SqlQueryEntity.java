@@ -15,16 +15,20 @@ import cn.featherfly.juorm.dsl.query.QueryEntityProperties;
  * @author zhongj
  */
 public interface SqlQueryEntity extends QueryEntity {
+
     /**
      * <p>
      * 添加select的列
      * </p>
+     * .
      *
-     * @param columnName propertyName
-     * @param asName     alias name
+     * @param <T>          the generic type
+     * @param <R>          the generic type
+     * @param propertyName propertyName
+     * @param aliasName    alias name
      * @return QueryEntityPropertiesExpression
      */
-    <T, R> QueryEntityProperties propertyAlias(SerializableFunction<T, R> propertyName, String alias);
+    <T, R> QueryEntityProperties propertyAlias(SerializableFunction<T, R> propertyName, String aliasName);
 
     /**
      * <p>
@@ -32,10 +36,10 @@ public interface SqlQueryEntity extends QueryEntity {
      * </p>
      *
      * @param columnName propertyName
-     * @param asName     alias name
+     * @param aliasName  alias name
      * @return QueryEntityPropertiesExpression
      */
-    QueryEntityProperties propertyAlias(String columnName, String asName);
+    QueryEntityProperties propertyAlias(String columnName, String aliasName);
 
     /**
      * <p>

@@ -33,8 +33,11 @@ public class TypeSqlQueryEntityProperties extends AbstractSqlQueryEntityProperti
     List<TypeSqlQueryWith> typeSqlQueryWiths = new ArrayList<>();
 
     /**
+     * Instantiates a new type sql query entity properties.
+     *
      * @param jdbc         jdbc
      * @param classMapping classMapping
+     * @param factory      the factory
      * @param aliasManager aliasManager
      */
     public TypeSqlQueryEntityProperties(Jdbc jdbc, ClassMapping<?> classMapping, MappingFactory factory,

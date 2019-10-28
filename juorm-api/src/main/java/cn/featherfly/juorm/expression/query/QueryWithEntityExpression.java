@@ -8,12 +8,19 @@ import cn.featherfly.juorm.expression.RepositoryConditionGroupLogicExpression;
 import cn.featherfly.juorm.expression.RepositoryWhereExpression;
 import cn.featherfly.juorm.expression.condition.RepositoryConditionsGroupExpression;
 
+// TODO: Auto-generated Javadoc
 /**
  * <p>
- * dsl for query data
+ * QueryWithEntityExpression
  * </p>
+ * .
  *
  * @author zhongj
+ * @param <QW>  the generic type
+ * @param <QWO> the generic type
+ * @param <QWE> the generic type
+ * @param <C>   the generic type
+ * @param <L>   the generic type
  */
 public interface QueryWithEntityExpression<QW extends QueryWithExpression<QW, QWO, QWE, C, L>,
         QWO extends QueryWithOnExpression<QW, QWO, QWE, C, L>,
@@ -25,6 +32,7 @@ public interface QueryWithEntityExpression<QW extends QueryWithExpression<QW, QW
      * <p>
      * 添加查询出来的属性
      * </p>
+     * .
      *
      * @param propertyName propertyName
      * @return QueryWithEntityExpression
@@ -35,6 +43,7 @@ public interface QueryWithEntityExpression<QW extends QueryWithExpression<QW, QW
      * <p>
      * 添加查询出来的属性
      * </p>
+     * .
      *
      * @param propertyNames propertyNames
      * @return QueryWithEntityExpression
@@ -45,7 +54,10 @@ public interface QueryWithEntityExpression<QW extends QueryWithExpression<QW, QW
      * <p>
      * 添加查询出来的属性
      * </p>
+     * .
      *
+     * @param <T>          the generic type
+     * @param <R>          the generic type
      * @param propertyName propertyName
      * @return QueryWithEntityExpression
      */
@@ -55,7 +67,10 @@ public interface QueryWithEntityExpression<QW extends QueryWithExpression<QW, QW
      * <p>
      * 添加查询出来的属性
      * </p>
+     * .
      *
+     * @param <T>           the generic type
+     * @param <R>           the generic type
      * @param propertyNames propertyNames
      * @return QueryWithEntityExpression
      */
@@ -65,6 +80,7 @@ public interface QueryWithEntityExpression<QW extends QueryWithExpression<QW, QW
      * <p>
      * 添加查询出来的属性
      * </p>
+     * .
      *
      * @param propertyNames propertyNames
      * @return QueryWithEntityExpression
@@ -72,7 +88,7 @@ public interface QueryWithEntityExpression<QW extends QueryWithExpression<QW, QW
     QWE fetch(Collection<String> propertyNames);
 
     /**
-     * 添加查询出来的所有属性
+     * 添加查询出来的所有属性.
      *
      * @return QueryWithExpression
      */

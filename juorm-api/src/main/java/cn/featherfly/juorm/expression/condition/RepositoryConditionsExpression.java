@@ -3,7 +3,7 @@ package cn.featherfly.juorm.expression.condition;
 
 /**
  * <p>
- * condition expression
+ * repository condition expression
  * </p>
  *
  * @author zhongj

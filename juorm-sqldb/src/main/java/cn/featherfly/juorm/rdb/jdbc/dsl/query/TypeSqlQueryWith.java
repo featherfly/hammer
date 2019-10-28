@@ -48,14 +48,16 @@ public class TypeSqlQueryWith implements TypeQueryWith, TypeQueryWithEntity {
     protected String fetchPropertyAlias;
 
     /**
-     * @param sqlQueryEntityProperties
-     * @param aliasManager
-     * @param factory
-     * @param conditionTypeClassMapping
-     * @param conditionTableAlias
-     * @param conditionTableColumn
-     * @param joinTypeClassMapping
-     * @param joinTableColumn
+     * Instantiates a new type sql query with.
+     *
+     * @param sqlQueryEntityProperties  the sql query entity properties
+     * @param aliasManager              the alias manager
+     * @param factory                   the factory
+     * @param conditionTypeClassMapping the condition type class mapping
+     * @param conditionTableAlias       the condition table alias
+     * @param conditionTableColumn      the condition table column
+     * @param joinTypeClassMapping      the join type class mapping
+     * @param joinTableColumn           the join table column
      */
     public TypeSqlQueryWith(TypeSqlQueryEntityProperties sqlQueryEntityProperties, AliasManager aliasManager,
             MappingFactory factory, ClassMapping<?> conditionTypeClassMapping, String conditionTableAlias,
@@ -65,15 +67,17 @@ public class TypeSqlQueryWith implements TypeQueryWith, TypeQueryWithEntity {
     }
 
     /**
-     * @param sqlQueryEntityProperties
-     * @param aliasManager
-     * @param factory
-     * @param conditionTypeClassMapping
-     * @param conditionTableAlias
-     * @param conditionTableColumn
-     * @param joinTypeClassMapping
-     * @param joinTableColumn
-     * @param fetchProperty
+     * Instantiates a new type sql query with.
+     *
+     * @param sqlQueryEntityProperties  the sql query entity properties
+     * @param aliasManager              the alias manager
+     * @param factory                   the factory
+     * @param conditionTypeClassMapping the condition type class mapping
+     * @param conditionTableAlias       the condition table alias
+     * @param conditionTableColumn      the condition table column
+     * @param joinTypeClassMapping      the join type class mapping
+     * @param joinTableColumn           the join table column
+     * @param fetchProperty             the fetch property
      */
     public TypeSqlQueryWith(TypeSqlQueryEntityProperties sqlQueryEntityProperties, AliasManager aliasManager,
             MappingFactory factory, ClassMapping<?> conditionTypeClassMapping, String conditionTableAlias,
