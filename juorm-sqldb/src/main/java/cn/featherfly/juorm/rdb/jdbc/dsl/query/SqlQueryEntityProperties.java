@@ -2,23 +2,19 @@
 package cn.featherfly.juorm.rdb.jdbc.dsl.query;
 
 import java.math.BigDecimal;
-import java.util.Arrays;
-import java.util.Collection;
 import java.util.List;
 import java.util.Map;
-import java.util.stream.Collectors;
 
-import cn.featherfly.common.lang.LambdaUtils;
-import cn.featherfly.common.lang.function.SerializableFunction;
+import cn.featherfly.common.db.metadata.DatabaseMetadata;
 import cn.featherfly.common.structure.page.Page;
+import cn.featherfly.juorm.dml.AliasManager;
 import cn.featherfly.juorm.dsl.query.QueryConditionGroupExpression;
 import cn.featherfly.juorm.dsl.query.QueryEntityProperties;
 import cn.featherfly.juorm.expression.query.QueryExecutor;
+import cn.featherfly.juorm.mapping.ClassMapping;
+import cn.featherfly.juorm.mapping.MappingFactory;
 import cn.featherfly.juorm.mapping.RowMapper;
 import cn.featherfly.juorm.rdb.jdbc.Jdbc;
-import cn.featherfly.juorm.rdb.jdbc.mapping.ClassMapping;
-import cn.featherfly.juorm.rdb.jdbc.mapping.ClassMappingUtils;
-import cn.featherfly.juorm.rdb.sql.dml.builder.basic.SqlSelectBasicBuilder;
 
 /**
  * <p>
@@ -27,88 +23,45 @@ import cn.featherfly.juorm.rdb.sql.dml.builder.basic.SqlSelectBasicBuilder;
  *
  * @author zhongj
  */
-public class SqlQueryEntityProperties implements SqlQueryEntity, QueryEntityProperties {
-
-    private Jdbc jdbc;
-
-    private SqlSelectBasicBuilder selectBuilder;
-
-    private ClassMapping<?> classMapping;
+public class SqlQueryEntityProperties extends AbstractSqlQueryEntityProperties<SqlQueryEntityProperties>
+        implements SqlQueryEntity, QueryEntityProperties {
 
     /**
-     * @param tableName tableName
-     * @param jdbc      jdbc
+     * Instantiates a new sql query entity properties.
+     *
+     * @param jdbc             jdbc
+     * @param databaseMetadata the database metadata
+     * @param tableName        tableName
+     * @param factory          MappingFactory
+     * @param aliasManager     aliasManager
      */
-    public SqlQueryEntityProperties(String tableName, Jdbc jdbc) {
-        this(tableName, jdbc, null);
+    public SqlQueryEntityProperties(Jdbc jdbc, DatabaseMetadata databaseMetadata, String tableName,
+            MappingFactory factory, AliasManager aliasManager) {
+        this(jdbc, databaseMetadata, tableName, aliasManager.put(tableName), factory, aliasManager);
     }
 
     /**
-     * @param classMapping classMapping
      * @param jdbc         jdbc
+     * @param classMapping classMapping
+     * @param factory      MappingFactory
+     * @param aliasManager aliasManager
      */
-    public SqlQueryEntityProperties(ClassMapping<?> classMapping, Jdbc jdbc) {
-        this.jdbc = jdbc;
-        this.classMapping = classMapping;
-        selectBuilder = new SqlSelectBasicBuilder(jdbc.getDialect(), classMapping);
+    public SqlQueryEntityProperties(Jdbc jdbc, ClassMapping<?> classMapping, MappingFactory factory,
+            AliasManager aliasManager) {
+        super(jdbc, classMapping, factory, aliasManager);
     }
 
     /**
-     * @param tableName  tableName
-     * @param jdbc       jdbc
-     * @param tableAlias tableAlias
+     * @param jdbc             jdbc
+     * @param databaseMetadata databaseMetadata
+     * @param tableName        tableName
+     * @param tableAlias       tableAlias
+     * @param factory          MappingFactory
+     * @param aliasManager     aliasManager
      */
-    public SqlQueryEntityProperties(String tableName, Jdbc jdbc, String tableAlias) {
-        super();
-        this.jdbc = jdbc;
-        selectBuilder = new SqlSelectBasicBuilder(jdbc.getDialect(), tableName, tableAlias);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public QueryEntityProperties property(String propertyName) {
-        selectBuilder.addSelectColumn(ClassMappingUtils.getColumnName(propertyName, classMapping));
-        return this;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public QueryEntityProperties property(String... propertyNames) {
-        selectBuilder.addSelectColumns(ClassMappingUtils.getColumnNames(classMapping, propertyNames));
-        return this;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public QueryEntityProperties property(Collection<String> propertyNames) {
-        selectBuilder.addSelectColumns(ClassMappingUtils.getColumnNames(classMapping, propertyNames));
-        return this;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public QueryEntityProperties propertyAlias(String columnName, String alias) {
-        selectBuilder.addSelectColumn(ClassMappingUtils.getColumnName(columnName, classMapping), alias);
-        return this;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public QueryEntityProperties propertyAlias(Map<String, String> columnNameMap) {
-        columnNameMap.forEach((k, v) -> {
-            propertyAlias(k, v);
-        });
-        return this;
+    public SqlQueryEntityProperties(Jdbc jdbc, DatabaseMetadata databaseMetadata, String tableName, String tableAlias,
+            MappingFactory factory, AliasManager aliasManager) {
+        super(jdbc, databaseMetadata, tableName, tableAlias, factory, aliasManager);
     }
 
     /**
@@ -211,17 +164,17 @@ public class SqlQueryEntityProperties implements SqlQueryEntity, QueryEntityProp
      * {@inheritDoc}
      */
     @Override
-    public <T, R> QueryEntityProperties property(
-            @SuppressWarnings("unchecked") SerializableFunction<T, R>... propertyNames) {
-        return property(
-                Arrays.stream(propertyNames).map(LambdaUtils::getLambdaPropertyName).collect(Collectors.toList()));
+    public SqlQueryWithOn with(String repositoryName) {
+        return new SqlQueryWith(this, aliasManager, factory, selectBuilder.getTableAlias(), getIdName(), repositoryName,
+                aliasManager.put(repositoryName));
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public <T, R> QueryEntityProperties property(SerializableFunction<T, R> propertyName) {
-        return property(LambdaUtils.getLambdaPropertyName(propertyName));
+    public <T> SqlQueryWithOn with(Class<T> repositoryType) {
+        return new SqlQueryWith(this, aliasManager, factory, selectBuilder.getTableAlias(), getIdName(),
+                repositoryType);
     }
 }

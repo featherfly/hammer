@@ -15,6 +15,7 @@ import cn.featherfly.juorm.rdb.sql.dml.builder.basic.SqlDeleteFromBasicBuilder;
 import cn.featherfly.juorm.rdb.sql.dml.builder.basic.SqlJoinOnBasicBuilder;
 import cn.featherfly.juorm.rdb.sql.dml.builder.basic.SqlOrderByBasicBuilder;
 import cn.featherfly.juorm.rdb.sql.dml.builder.basic.SqlSelectBasicBuilder;
+import cn.featherfly.juorm.rdb.sql.dml.builder.basic.SqlSelectColumnsBasicBuilder;
 import cn.featherfly.juorm.rdb.sql.dml.builder.basic.SqlUpdateSetBasicBuilder;
 
 /**
@@ -31,6 +32,19 @@ public class BasicBuilderTest {
     String pwd = "2222";
     String sex = "male";
     Integer age = 18;
+
+    @Test
+    void testSqlSelectColumnsBasicBuilder() {
+        SqlSelectColumnsBasicBuilder builder = new SqlSelectColumnsBasicBuilder(Dialects.MYSQL, "u");
+        builder.addSelectColumns("username", "mobile", "age", "sex");
+        System.out.println(builder.build());
+        assertEquals("u.`username`, u.`mobile`, u.`age`, u.`sex`", builder.build());
+
+        builder = new SqlSelectColumnsBasicBuilder(Dialects.MYSQL);
+        builder.addSelectColumns("username", "mobile", "age", "sex");
+        System.out.println(builder.build());
+        assertEquals("`username`, `mobile`, `age`, `sex`", builder.build());
+    }
 
     @Test
     void testSqlSelectBasicBuilder() {
@@ -61,6 +75,40 @@ public class BasicBuilderTest {
         builder.addSelectColumn("user_id", AggregateFunction.COUNT);
         System.out.println(builder.build());
         assertEquals("SELECT COUNT(`user_id`) FROM `user`", builder.build());
+    }
+
+    @Test
+    void testSqlSelectBasicBuilder2() {
+        String sql = null;
+        SqlSelectBasicBuilder builder = new SqlSelectBasicBuilder(Dialects.MYSQL, "user", "u");
+        builder.addSelectColumns("username", "mobile", "age", "sex").join("id", "user_info", "ui", "user_id");
+        System.out.println(builder.build());
+        assertEquals(
+                "SELECT u.`username`, u.`mobile`, u.`age`, u.`sex` FROM `user` u JOIN `user_info` ui ON ui.`user_id` = u.`id`",
+                builder.build());
+
+        builder = new SqlSelectBasicBuilder(Dialects.MYSQL, "user", "u");
+        builder.addSelectColumns("username", "mobile", "age", "sex").join("id", "user_info", "ui", "user_id")
+                .addSelectColumns("name", "passport");
+        System.out.println(builder.build());
+        assertEquals(
+                "SELECT u.`username`, u.`mobile`, u.`age`, u.`sex`, ui.`name`, ui.`passport` FROM `user` u JOIN `user_info` ui ON ui.`user_id` = u.`id`",
+                builder.build());
+
+        builder = new SqlSelectBasicBuilder(Dialects.MYSQL, "user", "u");
+        sql = builder.addSelectColumns("username", "mobile", "age", "sex").join("id", "user_info", "ui", "user_id")
+                .fetch().build();
+        System.out.println(sql);
+        assertEquals(
+                "SELECT u.`username`, u.`mobile`, u.`age`, u.`sex`, ui.* FROM `user` u JOIN `user_info` ui ON ui.`user_id` = u.`id`",
+                sql);
+
+        builder = new SqlSelectBasicBuilder(Dialects.MYSQL, "user", "u");
+        sql = builder.addSelectColumns("username", "mobile", "age", "sex").join("id", "user_info", "ui", "user_id")
+                .addSelectColumns("name", "passport").endJoin().join("id", "user_role", "ur", "user_id").endJoin()
+                .join("ur", "role_id", "role", "r", "id").build();
+        System.out.println(sql);
+
     }
 
     @Test

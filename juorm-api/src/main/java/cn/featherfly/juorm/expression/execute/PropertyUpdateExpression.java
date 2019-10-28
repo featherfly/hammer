@@ -23,5 +23,5 @@ public interface PropertyUpdateExpression<U extends PropertyExecutableUpdateExpr
 
     <T, R> V property(SerializableFunction<T, R> name);
 
-    <T, R> VN propertyNumber(SerializableFunction<T, R> name);
+    <T, R extends Number> VN propertyNumber(SerializableFunction<T, R> name);
 }

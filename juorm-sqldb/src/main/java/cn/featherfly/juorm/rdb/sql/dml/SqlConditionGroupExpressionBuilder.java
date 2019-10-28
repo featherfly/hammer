@@ -3,7 +3,7 @@ package cn.featherfly.juorm.rdb.sql.dml;
 
 import cn.featherfly.juorm.dml.BuildableConditionGroupExpression;
 import cn.featherfly.juorm.dml.BuildableConditionGroupLogicExpression;
-import cn.featherfly.juorm.rdb.jdbc.mapping.ClassMapping;
+import cn.featherfly.juorm.mapping.ClassMapping;
 import cn.featherfly.juorm.rdb.sql.dialect.Dialect;
 
 /**

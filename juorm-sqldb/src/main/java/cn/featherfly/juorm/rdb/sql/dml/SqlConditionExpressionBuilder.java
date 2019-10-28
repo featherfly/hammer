@@ -14,45 +14,33 @@ import cn.featherfly.juorm.rdb.sql.model.ConditionColumnElement;
  *
  * @author zhongj
  */
-public class SqlConditionExpressionBuilder
-        implements ParamedExpression, SqlBuilder {
+public class SqlConditionExpressionBuilder implements ParamedExpression, SqlBuilder {
 
     private ConditionColumnElement conditionColumnElement;
 
     /**
-     * @param dialect
-     *            dialect
-     * @param name
-     *            名称
-     * @param value
-     *            值
-     * @param queryOperator
-     *            查询运算符（查询类型）
+     * @param dialect       dialect
+     * @param name          名称
+     * @param value         值
+     * @param queryOperator 查询运算符（查询类型）
      */
-    SqlConditionExpressionBuilder(Dialect dialect, String name, Object value,
-            QueryOperator queryOperator) {
+    public SqlConditionExpressionBuilder(Dialect dialect, String name, Object value, QueryOperator queryOperator) {
         this(dialect, name, value, queryOperator, null);
     }
 
     /**
-     * @param dialect
-     *            dialect
-     * @param name
-     *            名称
-     * @param queryAlias
-     *            查询别名
-     * @param value
-     *            值
-     * @param queryOperator
-     *            查询运算符（查询类型）
+     * @param dialect       dialect
+     * @param name          名称
+     * @param queryAlias    查询别名
+     * @param value         值
+     * @param queryOperator 查询运算符（查询类型）
      */
-    SqlConditionExpressionBuilder(Dialect dialect, String name, Object value,
-            QueryOperator queryOperator, String queryAlias) {
+    public SqlConditionExpressionBuilder(Dialect dialect, String name, Object value, QueryOperator queryOperator,
+            String queryAlias) {
         if (queryOperator == null) {
             throw new BuilderException("#query.operator.null");
         }
-        conditionColumnElement = new ConditionColumnElement(dialect, name,
-                value, queryOperator, queryAlias);
+        conditionColumnElement = new ConditionColumnElement(dialect, name, value, queryOperator, queryAlias);
     }
 
     /**

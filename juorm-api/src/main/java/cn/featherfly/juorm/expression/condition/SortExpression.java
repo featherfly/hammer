@@ -8,14 +8,18 @@ import cn.featherfly.common.lang.function.SerializableFunction;
  * <p>
  * 排序构建接口
  * </p>
+ * .
  *
  * @author zhongj
+ * @param <S> the generic type
  */
 public interface SortExpression<S extends SortExpression<S>> extends Expression {
+
     /**
      * <p>
      * 添加升序条件
      * </p>
+     * .
      *
      * @param names 名称
      * @return this
@@ -26,6 +30,7 @@ public interface SortExpression<S extends SortExpression<S>> extends Expression 
      * <p>
      * 添加升序条件
      * </p>
+     * .
      *
      * @param names 名称
      * @return this
@@ -36,7 +41,10 @@ public interface SortExpression<S extends SortExpression<S>> extends Expression 
      * <p>
      * 添加升序条件
      * </p>
+     * .
      *
+     * @param <T>  the generic type
+     * @param <R>  the generic type
      * @param name 名称
      * @return this
      */
@@ -46,7 +54,10 @@ public interface SortExpression<S extends SortExpression<S>> extends Expression 
      * <p>
      * 添加升序条件
      * </p>
+     * .
      *
+     * @param <T>   the generic type
+     * @param <R>   the generic type
      * @param names 名称
      * @return this
      */
@@ -56,6 +67,7 @@ public interface SortExpression<S extends SortExpression<S>> extends Expression 
      * <p>
      * 添加降序条件
      * </p>
+     * .
      *
      * @param names 名称
      * @return this
@@ -66,6 +78,7 @@ public interface SortExpression<S extends SortExpression<S>> extends Expression 
      * <p>
      * 添加降序条件
      * </p>
+     * .
      *
      * @param names 名称
      * @return this
@@ -76,7 +89,10 @@ public interface SortExpression<S extends SortExpression<S>> extends Expression 
      * <p>
      * 添加降序条件
      * </p>
+     * .
      *
+     * @param <T>  the generic type
+     * @param <R>  the generic type
      * @param name 名称
      * @return this
      */
@@ -86,7 +102,10 @@ public interface SortExpression<S extends SortExpression<S>> extends Expression 
      * <p>
      * 添加降序条件
      * </p>
+     * .
      *
+     * @param <T>   the generic type
+     * @param <R>   the generic type
      * @param names 名称
      * @return this
      */

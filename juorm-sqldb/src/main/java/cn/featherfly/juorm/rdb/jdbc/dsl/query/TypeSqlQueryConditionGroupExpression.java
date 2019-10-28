@@ -14,8 +14,8 @@ import cn.featherfly.juorm.dsl.query.TypeQueryConditionGroupExpression;
 import cn.featherfly.juorm.dsl.query.TypeQueryConditionGroupLogicExpression;
 import cn.featherfly.juorm.dsl.query.TypeQuerySortExpression;
 import cn.featherfly.juorm.expression.query.TypeQueryExecutor;
+import cn.featherfly.juorm.mapping.ClassMapping;
 import cn.featherfly.juorm.rdb.jdbc.Jdbc;
-import cn.featherfly.juorm.rdb.jdbc.mapping.ClassMapping;
 import cn.featherfly.juorm.rdb.jdbc.mapping.ClassMappingUtils;
 import cn.featherfly.juorm.rdb.sql.dml.AbstractSqlConditionGroupExpression;
 import cn.featherfly.juorm.rdb.sql.dml.builder.SqlSortBuilder;
@@ -36,8 +36,8 @@ public class TypeSqlQueryConditionGroupExpression extends
     private Limit limit;
 
     /**
-     * @param jdbc       jdbc
-     * @param queryAlias queryAlias
+     * @param jdbc         jdbc
+     * @param classMapping classMapping
      */
     public TypeSqlQueryConditionGroupExpression(Jdbc jdbc, ClassMapping<?> classMapping) {
         this(jdbc, null, classMapping);

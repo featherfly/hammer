@@ -11,6 +11,8 @@ import cn.featherfly.common.bean.BeanProperty;
  * </p>
  *
  * @author zhongj
+ * @since 0.1.0
+ * @version 0.1.0
  */
 public class PropertyNameJpaConversion implements PropertyNameConversion {
 
@@ -32,7 +34,7 @@ public class PropertyNameJpaConversion implements PropertyNameConversion {
             //                if (bp == null) {
             //                    throw new JuormException(type.getType().getName() + " no property annotated with @Id");
             //                }
-            //                return 
+            //                return
             //            }
         }
         return null;

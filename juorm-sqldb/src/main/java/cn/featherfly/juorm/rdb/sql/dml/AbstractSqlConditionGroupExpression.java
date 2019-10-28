@@ -1,24 +1,14 @@
 
 package cn.featherfly.juorm.rdb.sql.dml;
 
-import java.lang.reflect.Array;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
-import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Date;
-import java.util.List;
 
-import cn.featherfly.common.lang.LambdaUtils;
-import cn.featherfly.common.lang.LangUtils;
-import cn.featherfly.common.lang.StringUtils;
 import cn.featherfly.common.lang.function.SerializableFunction;
-import cn.featherfly.juorm.dml.builder.BuilderException;
-import cn.featherfly.juorm.dml.builder.ConditionBuildUtils;
 import cn.featherfly.juorm.expression.ConditionGroupExpression;
 import cn.featherfly.juorm.expression.ConditionGroupLogicExpression;
-import cn.featherfly.juorm.expression.condition.Expression;
 import cn.featherfly.juorm.expression.condition.ParamedExpression;
 import cn.featherfly.juorm.expression.condition.property.DateExpression;
 import cn.featherfly.juorm.expression.condition.property.EnumExpression;
@@ -30,12 +20,11 @@ import cn.featherfly.juorm.expression.condition.property.SimpleNumberExpression;
 import cn.featherfly.juorm.expression.condition.property.SimpleObjectExpression;
 import cn.featherfly.juorm.expression.condition.property.SimpleStringExpression;
 import cn.featherfly.juorm.expression.condition.property.StringExpression;
+import cn.featherfly.juorm.mapping.ClassMapping;
 import cn.featherfly.juorm.operator.LogicOperator;
 import cn.featherfly.juorm.operator.QueryOperator;
-import cn.featherfly.juorm.rdb.jdbc.mapping.ClassMapping;
 import cn.featherfly.juorm.rdb.jdbc.mapping.ClassMappingUtils;
 import cn.featherfly.juorm.rdb.sql.dialect.Dialect;
-import cn.featherfly.juorm.rdb.sql.dml.builder.SqlLogicExpression;
 
 /**
  * <p>
@@ -46,7 +35,7 @@ import cn.featherfly.juorm.rdb.sql.dml.builder.SqlLogicExpression;
  */
 @SuppressWarnings("unchecked")
 public abstract class AbstractSqlConditionGroupExpression<C extends ConditionGroupExpression<C, L>,
-        L extends ConditionGroupLogicExpression<C, L>>
+        L extends ConditionGroupLogicExpression<C, L>> extends AbstractSqlConditionExpression<L>
         implements ConditionGroupExpression<C, L>, ConditionGroupLogicExpression<C, L>, SqlBuilder, ParamedExpression {
 
     /**
@@ -81,104 +70,9 @@ public abstract class AbstractSqlConditionGroupExpression<C extends ConditionGro
      */
     protected AbstractSqlConditionGroupExpression(Dialect dialect, L parent, String queryAlias,
             ClassMapping<?> classMapping) {
-        this.dialect = dialect;
-        this.parent = parent;
+        super(dialect, parent);
         this.queryAlias = queryAlias;
         this.classMapping = classMapping;
-        i = System.currentTimeMillis();
-    }
-
-    public long i;
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public String build() {
-        StringBuilder result = new StringBuilder();
-        if (conditions.size() > 0) {
-            Expression last = conditions.get(conditions.size() - 1);
-            if (last instanceof SqlLogicExpression) {
-                throw new BuilderException(((SqlLogicExpression) last).getLogicOperator() + " 后没有跟条件表达式");
-            }
-        }
-
-        List<String> availableConditions = new ArrayList<>();
-        List<Expression> availableExpressions = new ArrayList<>();
-        for (Expression expression : conditions) {
-            // String condition = expression.build();
-            String condition = expression.expression();
-            if (StringUtils.isNotBlank(condition)) {
-                availableConditions.add(condition);
-                availableExpressions.add(expression);
-            } else {
-                if (availableExpressions.size() > 0) {
-                    Expression pre = availableExpressions.get(availableExpressions.size() - 1);
-                    if (pre instanceof SqlLogicExpression) {
-                        availableExpressions.remove(availableExpressions.size() - 1);
-                        availableConditions.remove(availableConditions.size() - 1);
-                    }
-                }
-            }
-        }
-
-        if (availableExpressions.size() > 0) {
-            if (availableExpressions.get(0) instanceof SqlLogicExpression) {
-                availableExpressions.remove(0);
-                availableConditions.remove(0);
-            }
-            if (availableExpressions.get(availableExpressions.size() - 1) instanceof SqlLogicExpression) {
-                availableExpressions.remove(availableExpressions.size() - 1);
-                availableConditions.remove(availableConditions.size() - 1);
-            }
-        }
-
-        for (String condition : availableConditions) {
-            ConditionBuildUtils.appendCondition(result, condition);
-        }
-        if (result.length() > 0 && parent != null) {
-            return " ( " + result.toString() + " ) ";
-        } else {
-            return result.toString();
-        }
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public String expression() {
-        return build();
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public Object getParam() {
-        return getParams();
-    }
-
-    public List<Object> getParams() {
-        List<Object> params = new ArrayList<>();
-        for (Expression condition : conditions) {
-            if (condition instanceof ParamedExpression) {
-                Object param = ((ParamedExpression) condition).getParam();
-                if (LangUtils.isNotEmpty(param)) {
-                    if (param instanceof Collection) {
-                        params.addAll((Collection<?>) param);
-                    } else if (param.getClass().isArray()) {
-                        int length = Array.getLength(param);
-                        for (int i = 0; i < length; i++) {
-                            params.add(Array.get(param, i));
-                        }
-                    } else {
-                        params.add(param);
-                    }
-                }
-            }
-        }
-        return params;
     }
 
     /**
@@ -220,7 +114,7 @@ public abstract class AbstractSqlConditionGroupExpression<C extends ConditionGro
      * {@inheritDoc}
      */
     @Override
-    public <N extends Number> L ge(String name, Number value) {
+    public <N extends Number> L ge(String name, N value) {
         return (L) addCondition(new SqlConditionExpressionBuilder(dialect,
                 ClassMappingUtils.getColumnName(name, classMapping), value, QueryOperator.GE, queryAlias));
     }
@@ -274,7 +168,7 @@ public abstract class AbstractSqlConditionGroupExpression<C extends ConditionGro
      * {@inheritDoc}
      */
     @Override
-    public <N extends Number> L gt(String name, Number value) {
+    public <N extends Number> L gt(String name, N value) {
         return (L) addCondition(new SqlConditionExpressionBuilder(dialect,
                 ClassMappingUtils.getColumnName(name, classMapping), value, QueryOperator.GT, queryAlias));
     }
@@ -355,7 +249,7 @@ public abstract class AbstractSqlConditionGroupExpression<C extends ConditionGro
      * {@inheritDoc}
      */
     @Override
-    public <N extends Number> L le(String name, Number value) {
+    public <N extends Number> L le(String name, N value) {
         return (L) addCondition(new SqlConditionExpressionBuilder(dialect,
                 ClassMappingUtils.getColumnName(name, classMapping), value, QueryOperator.LE, queryAlias));
     }
@@ -409,7 +303,7 @@ public abstract class AbstractSqlConditionGroupExpression<C extends ConditionGro
      * {@inheritDoc}
      */
     @Override
-    public <N extends Number> L lt(String name, Number value) {
+    public <N extends Number> L lt(String name, N value) {
         return (L) addCondition(new SqlConditionExpressionBuilder(dialect,
                 ClassMappingUtils.getColumnName(name, classMapping), value, QueryOperator.LT, queryAlias));
     }
@@ -606,7 +500,7 @@ public abstract class AbstractSqlConditionGroupExpression<C extends ConditionGro
      * {@inheritDoc}
      */
     @Override
-    public <T, R, N extends Number> L ge(SerializableFunction<T, R> name, Number value) {
+    public <T, R, N extends Number> L ge(SerializableFunction<T, R> name, N value) {
         return ge(getPropertyName(name), value);
     }
 
@@ -654,7 +548,7 @@ public abstract class AbstractSqlConditionGroupExpression<C extends ConditionGro
      * {@inheritDoc}
      */
     @Override
-    public <T, R, N extends Number> L gt(SerializableFunction<T, R> name, Number value) {
+    public <T, R, N extends Number> L gt(SerializableFunction<T, R> name, N value) {
         return gt(getPropertyName(name), value);
     }
 
@@ -726,7 +620,7 @@ public abstract class AbstractSqlConditionGroupExpression<C extends ConditionGro
      * {@inheritDoc}
      */
     @Override
-    public <T, R, N extends Number> L le(SerializableFunction<T, R> name, Number value) {
+    public <T, R, N extends Number> L le(SerializableFunction<T, R> name, N value) {
         return le(getPropertyName(name), value);
     }
 
@@ -774,7 +668,7 @@ public abstract class AbstractSqlConditionGroupExpression<C extends ConditionGro
      * {@inheritDoc}
      */
     @Override
-    public <T, R, N extends Number> L lt(SerializableFunction<T, R> name, Number value) {
+    public <T, R, N extends Number> L lt(SerializableFunction<T, R> name, N value) {
         return lt(getPropertyName(name), value);
     }
 
@@ -854,7 +748,7 @@ public abstract class AbstractSqlConditionGroupExpression<C extends ConditionGro
      * {@inheritDoc}
      */
     @Override
-    public <T, R> StringExpression<C, L> propertyString(SerializableFunction<T, R> name) {
+    public <T> StringExpression<C, L> propertyString(SerializableFunction<T, String> name) {
         return propertyString(getPropertyName(name));
     }
 
@@ -862,7 +756,7 @@ public abstract class AbstractSqlConditionGroupExpression<C extends ConditionGro
      * {@inheritDoc}
      */
     @Override
-    public <T, R> NumberExpression<C, L> propertyNumber(SerializableFunction<T, R> name) {
+    public <T, R extends Number> NumberExpression<C, L> propertyNumber(SerializableFunction<T, R> name) {
         return propertyNumber(getPropertyName(name));
     }
 
@@ -870,7 +764,7 @@ public abstract class AbstractSqlConditionGroupExpression<C extends ConditionGro
      * {@inheritDoc}
      */
     @Override
-    public <T, R> DateExpression<C, L> propertyDate(SerializableFunction<T, R> name) {
+    public <T, R extends Date> DateExpression<C, L> propertyDate(SerializableFunction<T, R> name) {
         return propertyDate(getPropertyName(name));
     }
 
@@ -878,28 +772,13 @@ public abstract class AbstractSqlConditionGroupExpression<C extends ConditionGro
      * {@inheritDoc}
      */
     @Override
-    public <T, R> EnumExpression<C, L> propertyEnum(SerializableFunction<T, R> name) {
+    public <T, R extends Enum<?>> EnumExpression<C, L> propertyEnum(SerializableFunction<T, R> name) {
         return propertyEnum(getPropertyName(name));
-    }
-
-    protected <T, R> String getPropertyName(SerializableFunction<T, R> name) {
-        return LambdaUtils.getLambdaPropertyName(name);
     }
 
     // ********************************************************************
     // private method
     // ********************************************************************
-
-    private Object addCondition(Expression condition) {
-        if (previousCondition != null) {
-            if (previousCondition.getClass().isInstance(condition)) {
-                throw new BuilderException("语法错误，连续相同类型的表达式：" + condition.getClass().getName());
-            }
-        }
-        previousCondition = condition;
-        conditions.add(condition);
-        return this;
-    }
 
     // ********************************************************************
     // property
@@ -907,32 +786,7 @@ public abstract class AbstractSqlConditionGroupExpression<C extends ConditionGro
 
     protected ClassMapping<?> classMapping;
 
-    private List<Expression> conditions = new ArrayList<>();
-
-    protected Dialect dialect;
-
-    protected L parent;
-
-    private Expression previousCondition;
-
     private String queryAlias;
-
-    /*
-     * 忽略空值
-     */
-    private boolean ignoreEmpty = true;
-
-    public boolean isIgnoreEmpty() {
-        return ignoreEmpty;
-    }
-
-    public void setIgnoreEmpty(boolean ignoreEmpty) {
-        this.ignoreEmpty = ignoreEmpty;
-    }
-
-    public List<Expression> getConditions() {
-        return conditions;
-    }
 
     /**
      * 返回queryAlias

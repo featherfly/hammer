@@ -1,10 +1,10 @@
 
 package cn.featherfly.juorm.rdb.jdbc.dsl.execute;
 
-import cn.featherfly.juorm.JuormException;
 import cn.featherfly.juorm.dsl.execute.Deleter;
 import cn.featherfly.juorm.expression.Repository;
 import cn.featherfly.juorm.rdb.jdbc.Jdbc;
+import cn.featherfly.juorm.rdb.jdbc.JuormJdbcException;
 import cn.featherfly.juorm.rdb.jdbc.mapping.JdbcMappingFactory;
 
 /**
@@ -21,15 +21,18 @@ public class SqlDeleter implements Deleter {
     private JdbcMappingFactory mappingFactory;
 
     /**
-     * @param jdbc jdbc
+     * @param jdbc
+     *            jdbc
      */
     public SqlDeleter(Jdbc jdbc) {
         this.jdbc = jdbc;
     }
 
     /**
-     * @param jdbc           jdbc
-     * @param mappingFactory mappingFactory
+     * @param jdbc
+     *            jdbc
+     * @param mappingFactory
+     *            mappingFactory
      */
     public SqlDeleter(Jdbc jdbc, JdbcMappingFactory mappingFactory) {
         this.jdbc = jdbc;
@@ -58,7 +61,7 @@ public class SqlDeleter implements Deleter {
     @Override
     public SqlDelete delete(Class<?> repositType) {
         if (mappingFactory == null) {
-            throw new JuormException("mappingFactory is null");
+            throw new JuormJdbcException("mappingFactory is null");
         }
         return new SqlDelete(mappingFactory.getClassMapping(repositType), jdbc);
     }

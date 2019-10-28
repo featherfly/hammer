@@ -11,5 +11,5 @@ import cn.featherfly.juorm.expression.query.QueryExpression;
  * @author zhongj
  */
 public interface Query extends
-        QueryExpression<QueryEntity, QueryEntityProperties, QueryConditionGroupExpression, QueryConditionGroupLogicExpression, TypeQueryEntity, TypeQueryEntityProperties, TypeQueryConditionGroupExpression, TypeQueryConditionGroupLogicExpression> {
+        QueryExpression<QueryEntity, QueryEntityProperties, QueryWith, QueryWithOn, QueryWithEntity, QueryConditionGroupExpression, QueryConditionGroupLogicExpression, RepositoryQueryConditionGroupExpression, RepositoryQueryConditionGroupLogicExpression, TypeQueryEntity, TypeQueryEntityProperties, TypeQueryWith, TypeQueryWithEntity, TypeQueryConditionGroupExpression, TypeQueryConditionGroupLogicExpression, RepositoryTypeQueryConditionGroupExpression, RepositoryTypeQueryConditionGroupLogicExpression> {
 }

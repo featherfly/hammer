@@ -8,11 +8,12 @@ import java.util.stream.Collectors;
 import cn.featherfly.common.bean.BeanUtils;
 import cn.featherfly.common.db.metadata.DatabaseMetadata;
 import cn.featherfly.common.lang.LangUtils;
+import cn.featherfly.juorm.mapping.ClassMapping;
+import cn.featherfly.juorm.mapping.PropertyMapping;
 import cn.featherfly.juorm.mapping.RowMapper;
 import cn.featherfly.juorm.rdb.jdbc.Jdbc;
 import cn.featherfly.juorm.rdb.jdbc.JuormJdbcException;
-import cn.featherfly.juorm.rdb.jdbc.mapping.ClassMapping;
-import cn.featherfly.juorm.rdb.jdbc.mapping.PropertyMapping;
+import cn.featherfly.juorm.rdb.jdbc.mapping.ClassMappingUtils;
 
 /**
  * <p>
@@ -48,9 +49,11 @@ public class GetOperate<T> extends AbstractQueryOperate<T> {
     }
 
     /**
-     * @param jdbc
-     * @param classMapping
-     * @param databaseMetadata
+     * 使用给定数据源以及给定对象生成读取操作.
+     *
+     * @param jdbc             the jdbc
+     * @param classMapping     the class mapping
+     * @param databaseMetadata the database metadata
      */
     public GetOperate(Jdbc jdbc, ClassMapping<T> classMapping, DatabaseMetadata databaseMetadata) {
         super(jdbc, classMapping, databaseMetadata);
@@ -73,7 +76,6 @@ public class GetOperate<T> extends AbstractQueryOperate<T> {
         if (pkPms.size() == 1) {
             return (Serializable) BeanUtils.getProperty(entity, pkPms.get(0).getPropertyName());
         } else if (pkPms.size() > 1) {
-            //            logger.debug("multy id defined in entity {}", entity.getClass().getName());
             throw new JuormJdbcException("multy id defined in entity [" + entity.getClass().getName()
                     + "], you can invoke getIds(entity) method instead");
         } else {
@@ -94,7 +96,8 @@ public class GetOperate<T> extends AbstractQueryOperate<T> {
         if (entity == null) {
             return null;
         }
-        return pkPms.stream().map(p -> (Serializable) BeanUtils.getProperty(entity, p.getPropertyName()))
+        return pkPms.stream()
+                .map(p -> (Serializable) BeanUtils.getProperty(entity, ClassMappingUtils.getPropertyAliasName(p)))
                 .collect(Collectors.toList());
     }
 
@@ -111,18 +114,6 @@ public class GetOperate<T> extends AbstractQueryOperate<T> {
             throw new JuormJdbcException("#get.id.null");
         }
         return jdbc.querySingle(sql, new Object[] { id }, (RowMapper<T>) (res, rowNum) -> mapRow(res, rowNum));
-        //        return jdbc.execute(conn -> {
-        //            PreparedStatement prep = conn.prepareStatement(sql);
-        //            setParameter(prep, id);
-        //            ResultSet res = prep.executeQuery();
-        //            int index = 0;
-        //            T t = null;
-        //            while (res.next()) {
-        //                t = mapRow(res, index);
-        //            }
-        //            prep.close();
-        //            return t;
-        //        });
     }
 
     /**
@@ -142,18 +133,6 @@ public class GetOperate<T> extends AbstractQueryOperate<T> {
             throw new JuormJdbcException("#get.id.null");
         }
         return jdbc.querySingle(sql, ids.toArray(), (RowMapper<T>) (res, rowNum) -> mapRow(res, rowNum));
-        //        return jdbc.execute(conn -> {
-        //            PreparedStatement prep = conn.prepareStatement(sql);
-        //            setParameter(prep, ids);
-        //            ResultSet res = prep.executeQuery();
-        //            int index = 0;
-        //            T t = null;
-        //            while (res.next()) {
-        //                t = mapRow(res, index);
-        //            }
-        //            prep.close();
-        //            return t;
-        //        });
     }
 
     /**
@@ -164,19 +143,40 @@ public class GetOperate<T> extends AbstractQueryOperate<T> {
         pkPms = new ArrayList<>();
         StringBuilder condition = new StringBuilder();
         int columnNum = 0;
-        for (PropertyMapping pm : classMapping.getPropertyMappings()) {
-            if (pm.isPrimaryKey()) {
-                if (columnNum > 0) {
-                    condition.append("and ");
+        for (PropertyMapping propertyMapping : classMapping.getPropertyMappings()) {
+            if (propertyMapping.getPropertyMappings().isEmpty()) {
+                columnNum = setPk(condition, columnNum, propertyMapping);
+            } else {
+                for (PropertyMapping subPropertyMapping : propertyMapping.getPropertyMappings()) {
+                    columnNum = setPk(condition, columnNum, subPropertyMapping);
                 }
-                condition.append(pm.getColumnName()).append(" = ? ");
-                columnNum++;
-                propertyPositions.put(columnNum, pm.getPropertyName());
-                // 设置主键值
-                pkPms.add(pm);
             }
         }
         logger.debug("condition -> " + condition.toString());
         return condition.toString();
+    }
+
+    /**
+     * <p>
+     * 方法的说明
+     * </p>
+     *
+     * @param condition
+     * @param columnNum
+     * @param pm
+     * @return
+     */
+    private int setPk(StringBuilder condition, int columnNum, PropertyMapping pm) {
+        if (pm.isPrimaryKey()) {
+            if (columnNum > 0) {
+                condition.append("and ");
+            }
+            condition.append(jdbc.getDialect().wrapName(pm.getRepositoryFieldName())).append(" = ? ");
+            columnNum++;
+            propertyPositions.put(columnNum, ClassMappingUtils.getPropertyAliasName(pm));
+            // 设置主键值
+            pkPms.add(pm);
+        }
+        return columnNum;
     }
 }

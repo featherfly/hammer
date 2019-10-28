@@ -3,6 +3,7 @@ package cn.featherfly.juorm.expression.execute;
 
 import cn.featherfly.juorm.expression.ConditionGroupExpression;
 import cn.featherfly.juorm.expression.ConditionGroupLogicExpression;
+import cn.featherfly.juorm.expression.WhereExpression;
 
 /**
  * <p>
@@ -15,14 +16,6 @@ public interface PropertyExecutableUpdateExpression<U extends PropertyExecutable
         C extends ConditionGroupExpression<C, L>, L extends ConditionGroupLogicExpression<C, L>,
         V extends UpdateValueExpression<U, C, L, Object, V, VN>,
         VN extends UpdateNumberValueExpression<U, C, L, Number, V, VN>>
-        extends PropertyUpdateExpression<U, C, L, V, VN>, Executor {
+        extends WhereExpression<C, L>, PropertyUpdateExpression<U, C, L, V, VN>, Executor {
 
-    /**
-     * <p>
-     * 进入条件表达式
-     * </p>
-     *
-     * @return QueryCondition
-     */
-    C where();
 }
