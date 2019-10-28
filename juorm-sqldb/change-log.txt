@@ -1,4 +1,4 @@
-2019
+2019-10-28
 0.2.0
     1.ClassMapping移动到core模块
     2.Query加入with() on() property()用于联合查询
