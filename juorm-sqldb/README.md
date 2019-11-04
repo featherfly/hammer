@@ -2,7 +2,7 @@
 
 ## JUORM-SQLDB
 
-`JUORM-SQLDB` 是基于jdbc实现对关系型数据库的数据操作。
+`JUORM-SQLDB` 是基于jdbc实现对关系型数据库进行数据操作的框架。
 
 ## 快速入门
 
@@ -19,6 +19,8 @@
 ```
 compile group: 'cn.featherfly.juorm', name: 'juorm-sqldb', version: '0.2.0'
 ```
+
+#### 操作代码概览
 
 通过使用jurom api操作的代码概览：
 
@@ -59,7 +61,7 @@ int result = juorm.delete(User.class).where().in("id", new Integer[] { r.getId()
 List<User> users = query.find("user").where().eq("username", "yufei").and().eq("password", "123456").and().group().gt("age", 18).and().lt("age", 60).list(User.class)
 List<Role> roles = juorm.query(Role.class).where().gt("id", 5).and().le("id", 10).list()
 
-// 模板DML查询数据
+// 模板SQL查询数据
 int avg = juorm.intValue("selectAvg2", new HashChainMap<String, Object>().putChain("age", 40));
 String str = juorm.stringValue("selectString", new HashChainMap<String, Object>());
 User u = juorm.single("user@selectByUsername", User.class,
@@ -70,7 +72,7 @@ PaginationResults<User> userPaginationResults = executor.pagination("user@select
                 new HashChainMap<String, Object>(), start, limit);
 ```
 
-通过使用mapper操作的代码概览（类似mybatis）：
+通过使用mapper操作的代码概览（类似mybatis的mapper）：
 
 ```java
 // 类似于mybatis，直接执行模板中的sql
@@ -134,6 +136,7 @@ public interface UserMapper {
 // 除了可以使用模板sql进行查询外，可以继承Juorm或者GenericJuorm进行api操作,需要使用jdk8的default method
 @TplExecution(namesapce = "user")
 public interface UserMapper3 extends GenericJuorm<User> {
+	// 这里的query方法就是GenericJuorm接口定义的方法
 	default User getByUsernameAndPassword(String username, String pwd) {
         return query().where().eq("username", username).and().eq("pwd", pwd).single();
     }
@@ -157,9 +160,23 @@ public interface UserMapper3 extends GenericJuorm<User> {
     - [**`JuormJdbcImpl配置`**](#JuormJdbcImpl配置)
     - [**`Mapper配置`**](#Mapper配置)
     - [**`Spring集成`**](#Spring集成)
-- [**`通过主键获取对象`**](#通过主键获取对象)
-    - [**`单一主键`**](#单一主键获取对象)
-    - [**`复合主键`**](#复合主键获取对象)
+- [**`对象映射基础操作`**](#对象映射基础操作)
+	- [**`数据对象映射配置`**](#数据对象映射配置)
+    - [**`主键查询对象（主键查询对象）`**](#主键查询对象（主键查询对象）)
+    - [**`保存对象（数据插入）`**](#保存对象（数据插入）)
+    - [**`更新对象（数据更新）`**](#更新对象（数据更新）)
+    - [**`删除对象（数据删除）`**](#删除对象（数据删除）)
+- [**`DSL模式操作数据`**](#DSL模式操作数据)
+	- [**`DSL模式更新数据`**](#DSL模式更新数据)
+    - [**`DSL模式删除数据`**](#DSL模式删除数据)
+    - [**`DSL模式查询数据`**](#DSL模式查询数据)
+- [**`模板SQL查询`**](#模板SQL查询)
+    - [**`模板SQL唯一值查询`**](#模板SQL唯一值查询)
+    - [**`模板SQL唯一记录查询`**](#模板SQL唯一记录查询)
+    - [**`模板SQL列表查询`**](#模板SQL列表查询)
+    - [**`模板SQL分页查询`**](#模板SQL分页查询)
+- [**``**](#)
+    - [**``**](#)
 
 ## 基础配置
 
@@ -240,13 +257,6 @@ UserMapper userMapper = mapperFactory.newInstance(UserMapper.class, juorm);
 ```java
 @Configuration
 public class Appconfig {
-
-    private Jdbc jdbc;
-
-    private JdbcMappingFactory mappingFactory;
-
-    private TplConfigFactory configFactory;
-
 	// 动态注册Mapper，类似mybatis,在packages里指定包扫描路径
     @Bean
     public DynamicTplExecutorSpringRegistor tplDynamicExecutorSpringRegistor() {
@@ -259,6 +269,7 @@ public class Appconfig {
 
     @Bean
     public JuormJdbcImpl juorm(DataSource dataSource) {
+    	// dataSource通过xml配置，可以根据需求动态更换dataSource实现
         DOMConfigurator.configure(ClassLoaderUtils.getResource("log4j.xml", JdbcTestBase.class));
         ConstantConfigurator.config();
         Jdbc jdbc = new SpringJdbcTemplateImpl(dataSource, Dialects.MYSQL);
@@ -271,15 +282,497 @@ public class Appconfig {
     }
 }
 ```
+xml配置dataSource
+```xml
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:p="http://www.springframework.org/schema/p"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans
+		http://www.springframework.org/schema/beans/spring-beans.xsd
+		http://www.springframework.org/schema/context
+        http://www.springframework.org/schema/context/spring-context.xsd">
+	<context:component-scan
+		base-package="cn.featherfly.juorm" />
+	<cache:annotation-driven proxy-target-class="true"/>
+	<bean id="dataSource" class="org.apache.commons.dbcp.BasicDataSource">
+	   <property name="url" value="jdbc:mysql://127.0.0.1:3306/juorm_jdbc"/>
+	   <property name="driverClassName" value="com.mysql.jdbc.Driver"/>
+	   <property name="username" value="root"/>
+	   <property name="password" value="123456"/>
+	</bean>
+</beans>
+
+```
 
 **使用Mapper**
 
 ```java
 @Service
 public class UserService {
-
     @Resource
     UserMapper userMapper;
-
 }
+```
+
+## 对象映射基础操作
+
+### 数据对象映射配置
+
+使用JPA标准注解进行对象映射，不支持级联更新和懒加载级别的级联查询。
+注解`@Table`或者`@Entity`标注的类，会被视为数据映射对象。如果没有指定name属性，则使用类名称进行映射，名称包含多个大写开头的单词被映射为下划线连接的全小写名称，如UserInfo映射为user_info。
+注解`@Id`标注的属性映射为数据库主键列。
+注解`@Column`标注的属性强制映射一个数据库列，如果不指定name，则使用属性名进行映射。
+注解`@ManyToOne`或者`@OneToOne`标注的属性与JPA一致，只是没有支持级联更新和懒加载级联查询。
+注解`@Embedded`标注的属性与JPA中一致。
+**没有被标注的属性使用隐式映射，使用数据库列反向映射到实体对象，如果是下划线连接的单词，会被转换为驼峰形式，如列名parent_id映射为属性名parentId**
+
+**后续文档使用的对象定义**
+
+```java
+@Table
+public class User {
+    @Id
+    private Integer id;
+    private String username;
+    @Column(name = "password")
+    private String pwd;
+    private String mobileNo;
+    private Integer age;
+    // 省略get set
+}
+
+@Table
+public class Role {
+    @Id
+    private Integer id;
+    private String name;
+    private String descp;
+    // 省略get set
+}
+
+@Table
+public class UserInfo {
+    @Id
+    private Integer id;
+    private String name;
+    private String descp;
+    @ManyToOne
+    //@OneToOne
+    @Column(name = "user_id")
+    private User user;
+    @Embedded
+    private DistrictDivision division;
+    // 省略get set
+}
+
+@Table
+public class UserRole {
+    @Id
+    private Integer userId;
+    @Id
+    private Integer roleId;
+    private String descp;
+    private String descp2;
+}
+
+@Table(name = "user_role")
+public class UserRole2 {
+    @Id
+    @ManyToOne
+    @Column(name = "user_id")
+    private User user;
+    @Id
+    @ManyToOne
+    @Column(name = "role_id")
+    private Role role;
+    private String descp;
+    private String descp2;
+}
+
+@Entity(name = "cms_article")
+public class Article {
+    @Id
+    private Integer id;
+    private String title;
+    private String content;
+}
+public class DistrictDivision {
+    @Column
+    private String city;
+    private String province;
+    private String district;
+}
+```
+
+### 主键查询对象（主键查询对象）
+
+`juorm.get(entity)`
+`juorm.get(Serializable id, Class<E> type)`
+
+
+#### 单一主键查询
+
+```java
+Role role = juorm.get(id, Role.class);
+UserInfo ui = juorm.get(id, UserInfo.class);
+```
+
+#### 复合主键查询
+
+```java
+UserRole userRole = new UserRole();
+Integer roleId = 2;
+Integer userId = 2;
+userRole.setRoleId(roleId);
+userRole.setUserId(userId);
+UserRole ur = juorm.get(userRole);
+
+UserRole2 userRole = new UserRole2();
+Integer roleId = 2;
+Integer userId = 2;
+userRole.setRole(new Role(roleId));
+userRole.setUser(new User(userId));
+UserRole2 ur = juorm.get(userRole);
+```
+
+### 保存对象（数据插入）
+
+`juorm.save(entity)`
+`juorm.save(entity...array)`
+`juorm.save(List<Entity>)`
+
+#### 单一主键保存
+
+单一主键支持数据库自增长，保存是可以不设置主键，默认配置保存后会把数据库生成的主键设置会主键对应的属性
+
+```java
+Role role = new Role();
+// 设置role属性
+int result = juorm.save(role);
+// 返回保存数据影响的行数
+
+UserInfo ui = new UserInfo();
+ui.setUser(new User(1));
+ui.setDescp("descp_" + RandomUtils.getRandomInt(100));
+ui.setName("name_" + RandomUtils.getRandomInt(100));
+ui.setDivision(new DistrictDivision("四川", "成都", "高新"));
+juorm.save(ui);
+```
+
+#### 复合主键保存
+
+复合主键只能手动设置值
+
+```java
+UserRole userRole = new UserRole();
+Integer roleId = 2;
+Integer userId = 2;
+userRole.setRoleId(roleId);
+userRole.setUserId(userId);
+// 设置userRole属性
+juorm.save(userRole);
+
+UserRole2 userRole2 = new UserRole2();
+Integer roleId = 2;
+Integer userId = 2;
+userRole2.setRole(new Role(roleId));
+userRole2.setUser(new User(userId));
+// 设置userRole2属性
+juorm.save(userRole);
+```
+
+### 更新对象（数据更新）
+
+`juorm.update(entity, IgnorePolicy)` 使用指定策略更新对象
+`juorm.update(List<Entity>, IgnorePolicy)` 使用指定策略更新对象列表
+**下面三个等于update(entity, IgnorePolicy.NONE), 如果传入对象有null或者空字符串，会被更新到数据库**
+`juorm.update(entity)`
+`juorm.update(entity...array)`
+`juorm.update(List<Entity>)`
+**下面三个等于update(entity, IgnorePolicy.EMPTY), 忽略传入对象的null或者空字符串，不会更新null和空字符串到数据库**
+`juorm.merge(entity)` 
+`juorm.merge(entity...array)` 
+`juorm.merge(List<Entity>)`
+
+#### 单一主键更新
+
+```java
+Role r = new Role();
+r.setId(1);
+r.setName("name");
+r.setDescp("descp");
+juorm.update(r);
+
+UserInfo ui = new UserInfo();
+ui.setId(1);
+ui.setUser(new User(1));
+ui.setDescp("descp_" + RandomUtils.getRandomInt(100));
+ui.setName("name_" + RandomUtils.getRandomInt(100));
+ui.setDivision(new DistrictDivision("四川", "成都", "高新"));
+juorm.update(ui);
+
+Role r2 = new Role();
+r2.setId(r.getId());
+r2.setName("merge_name" + RandomUtils.getRandomInt(100));
+juorm.merge(r2);
+
+UserInfo ui2 = new UserInfo();
+ui2.setId(2);
+ui2.setDescp("descp_" + RandomUtils.getRandomInt(100));
+juorm.merge(ui2);
+```
+
+#### 复合主键更新
+
+```java
+UserRole userRole = new UserRole();
+userRole.setRoleId(3);
+userRole.setUserId(3);
+userRole.setDescp("descp_update_1");
+userRole.setDescp2("descp2_update_1");
+juorm.update(userRole);
+
+UserRole2 userRole2 = new UserRole2();
+userRole2.setRole(new Role(3));
+userRole2.setUser(new User(3));
+userRole2.setDescp("descp_update_2");
+userRole2.setDescp2("descp2_update_2");
+juorm.update(userRole2);
+
+UserRole ur = new UserRole();
+ur.setRoleId(4);
+ur.setUserId(4);
+ur.setDescp("descp_update_" + RandomUtils.getRandomInt(99));
+juorm.merge(ur);
+```
+
+### 删除对象（数据删除）
+
+`juorm.delete(entity)`
+`juorm.delete(entity...array)`
+`juorm.delete(List<Entity>)`
+
+#### 单一主键删除
+
+```java
+Role r = new Role();
+r.setId(1);
+int result = juorm.delete(r);
+// 返回删除数据影响的行数
+// juorm.delete(entity array), juorm.delete(entity list)
+```
+
+#### 复合主键删除
+
+```java
+UserRole userRole = new UserRole();
+userRole.setRoleId(111);
+userRole.setUserId(111);
+juorm.delete(userRole);
+
+UserRole2 userRole2 = new UserRole2();
+userRole2.setRole(new Role(111));
+userRole2.setUser(new User(111));
+juorm.delete2(userRole);
+
+```
+
+## DSL模式操作数据
+
+### DSL模式更新数据
+
+#### 数据更新
+
+```java
+juorm.update(Role.class).set("name", newName).property("descp").set(newDescp).where().eq("id", id).execute();
+juorm.update(Role.class).set(Role::getName, newName).property(Role::getDescp).set(newDescp).where().eq(Role::getId, id).execute();
+```
+
+#### 数据自增长更新
+
+```java
+juorm.update(User.class).increase("age", 1).where().eq("id", id).execute();
+juorm.update(User.class).increase(User::getAge, 1).where().eq(User::getId, id).execute();
+
+juorm.update(User.class).propertyNumber("age").increase(1).where().eq("id", id).execute();
+juorm.update(User.class).propertyNumber(User::getAge).increase(1).where().eq(User::getId, id).execute();
+```
+
+### DSL模式删除数据
+
+```java
+juorm.delete(Role.class).where().eq("id", id).execute();
+juorm.delete(Role.class).where().eq(Role::getId, id).execute();
+
+juorm.delete(Role.class).where().in("id", new Integer[] { id1, id2 }).or().eq("id", id3)
+            .or().ge("id", id4).execute();
+juorm.delete(Role.class).where().in(Role::getId, new Integer[] { id1, id2 }).or().eq(Role::getId, id3)
+            .or().ge(Role::getId, id4).execute();
+```
+
+### DSL模式查询数据
+`juorm.query(Class)` 返回映射传入对象的条件表达式
+`juorm.query(String)` 返回条件表达式，在最后执行查询操作时进行数据映射
+
+
+#### 查询单一对象
+`single` 查询唯一值
+
+```java
+Role r = juorm.query(Role.class).where().eq("id", id).single();
+```
+
+#### 查询列表
+`list` 查询列表
+
+```java
+List<Role> roles = juorm.query(Role.class).where().gt("id", 5).and().le("id", 10).list();
+```
+
+#### 查询分页列表
+`limit` 设置分页参数
+
+```java
+List<Role> roles = juorm.query(Role.class).where().gt("id", 5).and().le("id", 10).limit(2).list();
+roles = juorm.query(Role.class).where().gt("id", 5).and().le("id", 10).limit(2, 3).list();
+```
+
+#### 查询排序列表
+`sort` 调用后进入排序表达式
+`asc` 对传入属性进行升序
+`desc` 对传入属性进行降序
+
+```java
+List<Role> roles = juorm.query(Role.class).where().eq("id", 4).or().group().gt("id", 5).and().le("id", 10)                .sort().asc("id").desc("name").list();
+```
+
+## 模板SQL查询
+
+模板配置文件使用yaml格式，属性名就是对应的sql模板id,属性值就是需要使用的sql模板。
+内置实现使用的模板引擎是freemarker。
+
+
+**后续文档使用的sql模板定义**
+**user.yaml.tpl**
+```yaml
+selectByUsername: >
+    select <@columns table='user'/> from <@wrap value='user'/> where username = :username    
+selectByUsername2: >
+    select <@columns table='user'/> from ${tpl_wrap("user")}  where username = :username    
+selectByUsernameAndPassword: >
+    select username, password pwd from <@wrap value="user"/> where username = :username and password = :password
+selectUser: select username, password pwd from user
+selectByAge: "select <@prop/> from user where age = :age"
+selectByAge2: >
+    select <@prop/> from user where age = :age
+selectConditions: "select id, username, password pwd, mobile_no, age from user<@where>
+<@and if=username??>
+    username like :username
+</@and>
+<@and if=password??>
+    password like :password
+</@and>
+<@and if=mobileNo??>
+    mobile_no like :mobileNo
+</@and>
+<@and if=minAge??>
+    age >= :minAge
+</@and>
+<@and if=maxAge??>
+    age <= :maxAge
+</@and>
+</@where>"
+selectAvg: "select avg(age) from user"
+selectString: "select username from user where id = 1"
+selectAvg2: "select avg(age) from user where age > :age"
+selectString2: "select username from user where id = :id"
+selectById: "select <@prop/> from user where id = :id"
+```
+
+**role.yaml.tpl**
+```yaml
+selectByName: "select <@prop repo='role'/> from role
+<@where>
+    <@and if = name??>
+        name like :name
+    </@and>
+</@where>"
+selectWithTemplate:
+  query: "select <@prop/> <#include '/tpl/role@roleFromTemplate'>"
+  count: "select count(*) <#include '/tpl/role@roleFromTemplate'>"
+roleFromTemplate: "from role <@where>
+<@and if = name??>
+    name like :name
+</@and>
+</@where>"
+selectWithTemplate2:
+  query: "select <@prop/> <@tpl id='roleFromTemplate2'/>"
+  count: "select count(*) <@sql id='roleFromTemplate2'/>"
+roleFromTemplate2: "from role <@where>
+<@and if = name??>
+    name like :name
+</@and>
+</@where>"
+selectWithTemplate3:
+  query: >
+    select <@prop alias="_r"/> <@tpl id='roleFromTemplate2' file='tpl/role_common'/>
+    count: "select count(*) <@sql id='roleFromTemplate2' file='tpl/role_common'/>"
+```
+
+### 模板SQL唯一值查询
+`juorm.value`
+`juorm.number`
+`juorm.intValue`
+`juorm.longValue`
+`juorm.bigDecimalValue`
+`juorm.doubleValue`
+`juorm.stringValue`
+
+```java
+Integer avg = juorm.intValue("selectAvg", new HashChainMap<String, Object>());
+Integer avg = juorm.intValue("selectAvg2", new HashChainMap<String, Object>().putChain("age", 40));
+
+String str = juorm.stringValue("selectString", new HashChainMap<String, Object>());
+String str = juorm.stringValue("selectString2", new HashChainMap<String, Object>().putChain("id", 2));
+```
+
+
+### 模板SQL唯一记录查询
+`juorm.single`
+
+```java
+User u1 = juorm.single("user@selectByUsername", User.class, new HashChainMap<String, Object>().putChain("username", username));
+User u2 = juorm.single("user@selectByUsernameAndPassword", User.class, new HashChainMap<String, Object>().putChain("username", username).putChain("password", password));
+```
+
+### 模板SQL列表查询
+`juorm.list`
+
+```java
+List<User> users = executor.list("user@selectUser", User.class, new HashChainMap<String, Object>());
+List<User> users = executor.list("user@selectByAge", User.class, new HashChainMap<String, Object>().putChain("age", 5));
+List<User> users = executor.list("user@selectConditions", User.class, new HashChainMap<String, Object>());
+List<User> users = executor.list("user@selectConditions", User.class, new HashChainMap<String, Object>().putChain("minAge", minAge).putChain("maxAge", maxAge).putChain("username", username1 + "%"));
+List<User> users = executor.list("user@selectConditions", User.class, new HashChainMap<String, Object>().putChain("minAge", minAge).putChain("maxAge", maxAge).putChain("username", username2 + "%"));
+```
+
+### 模板SQL分页查询
+
+#### 基础分页
+`juorm.list`
+
+```java
+List<User> users = executor.list("user@selectConditions", User.class, new HashChainMap<String, Object>(), start, limit);
+List<User> users = executor.list("user@selectConditions", User.class, new HashChainMap<String, Object>().putChain("minAge", minAge).putChain("maxAge", maxAge).putChain("username", username1 + "%"),new SimplePagination(start, limit));
+```
+
+#### 包装分页
+`juorm.pagination`
+
+##### 使用自动构建统计sql
+```java
+PaginationResults<User> userPaginationResults = executor.pagination("user@selectConditions", User.class, new HashChainMap<String, Object>(), start, limit);
+PaginationResults<User> userPaginationResults = executor.pagination("user@selectConditions", User.class, new HashChainMap<String, Object>().putChain("minAge", minAge).putChain("maxAge", maxAge).putChain("username", username1 + "%"), new SimplePagination(start, limit));
 ```
