@@ -7,13 +7,13 @@
 
 ## 框架概述
 
-» 对象记录映射(object recored mapping)： 支持基于对象的数据记录映射（类似hibernate,但不支持级联操作）
-» DSL模式操作：支持基于DSL模式的API进行更新,删除,查询数据操作（类似QueryDSL）
-» 模板DML查询：支持基于模板的DML拼接进行查询操作，可以使用复杂查询更直观（类似mybatis）
+* 对象记录映射(object recored mapping)： 支持基于对象的数据记录映射（类似hibernate,但不支持级联操作）
+* DSL模式操作：支持基于DSL模式的API进行更新,删除,查询数据操作（类似QueryDSL）
+* 模板DML查询：支持基于模板的DML拼接进行查询操作，可以使复杂查询更直观（类似mybatis）
 
 
 ## 支持的数据存储
 
-* 关系型数据库(基于jdbc) [**`juorm-sqldb`**](./juorm-sqldb/README.md)
-* mongodb 后续实现
-* elasitcserach 后续实现
+* 关系型数据库(基于jdbc) [**`juorm-sqldb的文档`**](./juorm-sqldb/README.md)
+* mongodb 后续实现...
+* elasitcserach 后续实现...
