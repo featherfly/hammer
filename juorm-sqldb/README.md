@@ -574,7 +574,7 @@ juorm.delete(userRole);
 UserRole2 userRole2 = new UserRole2();
 userRole2.setRole(new Role(111));
 userRole2.setUser(new User(111));
-juorm.delete2(userRole);
+juorm.delete(userRole2);
 
 ```
 
