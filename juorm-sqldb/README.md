@@ -152,7 +152,6 @@ public interface UserMapper3 extends GenericJuorm<User> {
 // 外部调用就可以直接使用Juorm或者GenericJuorm里定义的方法, UserMapper3 userMapper; userMapper.save(user);
 ```
 
-
 ## 目录
 
 - [**`基础配置`**](#基础配置)
@@ -162,10 +161,10 @@ public interface UserMapper3 extends GenericJuorm<User> {
     - [**`Spring集成`**](#Spring集成)
 - [**`对象映射基础操作`**](#对象映射基础操作)
 	- [**`数据对象映射配置`**](#数据对象映射配置)
-    - [**`主键查询对象（主键查询对象）`**](#主键查询对象（主键查询对象）)
-    - [**`保存对象（数据插入）`**](#保存对象（数据插入）)
-    - [**`更新对象（数据更新）`**](#更新对象（数据更新）)
-    - [**`删除对象（数据删除）`**](#删除对象（数据删除）)
+    - [**`主键查询对象`**](#主键查询对象)
+    - [**`保存对象`**](#保存对象)
+    - [**`更新对象`**](#更新对象)
+    - [**`删除对象`**](#删除对象)
 - [**`DSL模式操作数据`**](#DSL模式操作数据)
 	- [**`DSL模式更新数据`**](#DSL模式更新数据)
     - [**`DSL模式删除数据`**](#DSL模式删除数据)
@@ -175,8 +174,8 @@ public interface UserMapper3 extends GenericJuorm<User> {
     - [**`模板SQL唯一记录查询`**](#模板SQL唯一记录查询)
     - [**`模板SQL列表查询`**](#模板SQL列表查询)
     - [**`模板SQL分页查询`**](#模板SQL分页查询)
-- [**``**](#)
-    - [**``**](#)
+- [**`使用Mapper`**](#使用Mapper)
+    - [**`Mapper的定义方式`**](#Mapper的定义方式)
 
 ## 基础配置
 
@@ -406,7 +405,7 @@ public class DistrictDivision {
 }
 ```
 
-### 主键查询对象（主键查询对象）
+### 主键查询对象
 
 `juorm.get(entity)`
 `juorm.get(Serializable id, Class<E> type)`
@@ -437,7 +436,7 @@ userRole.setUser(new User(userId));
 UserRole2 ur = juorm.get(userRole);
 ```
 
-### 保存对象（数据插入）
+### 保存对象
 
 `juorm.save(entity)`
 `juorm.save(entity...array)`
@@ -483,7 +482,7 @@ userRole2.setUser(new User(userId));
 juorm.save(userRole);
 ```
 
-### 更新对象（数据更新）
+### 更新对象
 
 `juorm.update(entity, IgnorePolicy)` 使用指定策略更新对象
 `juorm.update(List<Entity>, IgnorePolicy)` 使用指定策略更新对象列表
@@ -548,7 +547,7 @@ ur.setDescp("descp_update_" + RandomUtils.getRandomInt(99));
 juorm.merge(ur);
 ```
 
-### 删除对象（数据删除）
+### 删除对象
 
 `juorm.delete(entity)`
 `juorm.delete(entity...array)`
@@ -718,7 +717,17 @@ roleFromTemplate2: "from role <@where>
 selectWithTemplate3:
   query: >
     select <@prop alias="_r"/> <@tpl id='roleFromTemplate2' file='tpl/role_common'/>
-    count: "select count(*) <@sql id='roleFromTemplate2' file='tpl/role_common'/>"
+  count: >
+    select count(*) <@sql id='roleFromTemplate2' file='tpl/role_common'/>
+```
+
+**role_common.yaml.tpl**
+```yaml
+roleFromTemplate2: "FROM role _r <@where>
+<@and if = name??>
+    name like :name
+</@and>
+</@where>"
 ```
 
 ### 模板SQL唯一值查询
@@ -772,7 +781,91 @@ List<User> users = executor.list("user@selectConditions", User.class, new HashCh
 `juorm.pagination`
 
 ##### 使用自动构建统计sql
+
+基于查询sql自动转换统计sql,sql转换测试不可能覆盖所有的复查查询，当自动转换有错误时，请使用手动声明统计sql
+
 ```java
 PaginationResults<User> userPaginationResults = executor.pagination("user@selectConditions", User.class, new HashChainMap<String, Object>(), start, limit);
 PaginationResults<User> userPaginationResults = executor.pagination("user@selectConditions", User.class, new HashChainMap<String, Object>().putChain("minAge", minAge).putChain("maxAge", maxAge).putChain("username", username1 + "%"), new SimplePagination(start, limit));
 ```
+
+##### 手动声明统计sql
+
+yaml配置文件中的sql模板,默认情况下只需要直接把sql模板跟在sqlid后面就行了,当需要手动设置统计sql时，就需要明确声明
+
+```yaml
+sqlid:
+  query: select sql
+  count: count sql
+```
+
+查询sql对应的统计sql这两条sql的查询条件都是一样的，所以如果把条件写在两个模板中，每次改动都要改动两个地方，容易造成错误，可以直接使用模板引擎的include机制或者juorm自定义的include机制来引入查询条件部分
+**不建议使用模板自带include机制，因为模板引擎可以更换，而且也没有juorm内置引入实现更契合**
+
+###### juorm提供的include机制
+`<@tpl id='roleFromTemplate2'/>`和`<@sql id='roleFromTemplate2'/>`是同一个实现不同的别名
+`id` 表示sqlid
+`file` 表示yaml模板文件,如果是同一个文件中，可以省略此配置
+```yaml
+selectWithTemplate2:
+  query: "select <@prop/> <@tpl id='roleFromTemplate2'/>"
+  count: "select count(*) <@sql id='roleFromTemplate2'/>"
+roleFromTemplate2: "from role <@where>
+<@and if = name??>
+    name like :name
+</@and>
+</@where>"
+selectWithTemplate3:
+  query: >
+    select <@prop alias="_r"/> <@tpl id='roleFromTemplate2' file='tpl/role_common'/>
+  count: "select count(*) <@sql id='roleFromTemplate2' file='tpl/role_common'/>"
+```
+
+###### freemarker的include机制
+`<#include '/tpl/role@roleFromTemplate'>` /tpl/role代表yaml模板文件，roleFromTemplate代表文件中的sqlid
+```yaml
+selectWithTemplate:
+  query: "select <@prop/> <#include '/tpl/role@roleFromTemplate'>"
+  count: "select count(*) <#include '/tpl/role@roleFromTemplate'>"
+roleFromTemplate: "from role <@where>
+<@and if = name??>
+    name like :name
+</@and>
+</@where>"
+```
+
+```java
+PaginationResults<Role> uis = executor.pagination("role@selectWithTemplate", Role.class, new HashChainMap<String, Object>(), 0, 10);
+PaginationResults<Role> uis = executor.pagination("role@selectWithTemplate2", Role.class, new HashChainMap<String, Object>(), 0, 10);
+PaginationResults<Role> uis = executor.pagination("role@selectWithTemplate3", Role.class, new HashChainMap<String, Object>(), 0, 10);
+```
+
+## 使用Mapper
+
+### Mapper的定义方式
+
+Mapper就是定义指定操作方法的接口类，juorm有三种Mapper的定义方式
+
+1. 直接定义一个接口，使用@TplExecution标注，外部使用此mapper时，只提供此接口定义的方法
+```java
+@TplExecution(namesapce = "user")
+public interface UserMapper {
+	// methods
+}
+```
+2. 直接定义一个接口，使用@TplExecution标注，继承Juorm接口，外部使用此mapper时，除了提供此接口定义的方法，还能使用Juorm内定义的方法，方法内部也可以使用default method调用Juorm接口内的方法实现一些基础功能
+```java
+@TplExecution(namesapce = "user")
+public interface UserMapper2 extends Juorm {
+	// methods
+}
+```
+3. 直接定义一个接口，使用@TplExecution标注，继承GenericJuorm接口，外部使用此mapper时，除了提供此接口定义的方法，还能使用GenericJuorm内定义的方法，方法内部也可以使用default method调用Juorm接口内的方法实现一些基础功能
+```java
+@TplExecution(namesapce = "user")
+public interface UserMapper3 extends GenericJuorm<User> {
+	// methods
+}
+```
+
+**如果需要定义一个实体对象的Mapper，建议使用继承GenericJuorm接口的方式，这样此mapper就能把对应实体的基础操作都提供了**
