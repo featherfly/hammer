@@ -421,7 +421,7 @@ public class JuormJdbcTest extends JdbcTestBase {
         Role r3 = role();
         Role r4 = role();
         juorm.save(r, r2, r3, r4);
-        juorm.delete(Role.class).where().in("id", new Integer[] { r.getId(), r2.getId() }).or().eq("id", r3.getId())
+        juorm.delete(Role.class).where().in(Role::getId, new Integer[] { r.getId(), r2.getId() }).or().eq("id", r3.getId())
                 .or().ge("id", r4.getId()).execute();
 
         r = juorm.get(r);
