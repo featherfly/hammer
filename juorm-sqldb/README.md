@@ -589,6 +589,27 @@ juorm.delete(userRole2);
 
 ### DSL模式更新数据
 
+**条件查询方法**  
+`where` 开启where条件表达式  
+`and` and  
+`or` or  
+`eq` 等于 =  
+`ne` 不等于 !=  
+`lt` 小于 <  
+`le` 小于等于 <=
+`gt` 大于 >  
+`ge` 大于等于 >=  
+`sw` 字符串开始于 like 'value%'  
+`ed` 字符串结束于 like '%value'  
+`co` 包含字符串 like '%value%'  
+`in` in  
+`nin` not in  
+`isn` is null  
+`inn` is not null  
+`group` 开启一个条件分组，相当于(  
+`endGroup` 结束一个条件分组，相当于)  
+`sort` 开启排序表达式
+
 #### 数据更新
 
 ```java
