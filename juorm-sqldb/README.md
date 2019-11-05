@@ -608,7 +608,8 @@ juorm.delete(userRole2);
 `inn` is not null  
 `group` 开启一个条件分组，相当于(  
 `endGroup` 结束一个条件分组，相当于)  
-`sort` 开启排序表达式
+`sort` 开启排序表达式  
+`limit` 设置分页参数  
 
 #### 数据更新
 
