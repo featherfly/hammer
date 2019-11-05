@@ -187,7 +187,7 @@ public interface UserMapper3 extends GenericJuorm<User> {
 basePackeges: cn.featherfly
 devMode: true
 ```
-`basePackeges` 需要扫描constant配置的包路径，多个包使用逗号（,）隔开，如(cn.fetherfly,com.github)。如果你的项目没有使用constant配置，直接使用cn.featherfly就行了。
+`basePackeges` 需要扫描constant配置的包路径，多个包使用逗号（,）隔开，如(cn.fetherfly,com.github)。如果你的项目没有使用constant配置，直接使用cn.featherfly就行了。\
 `devMode` 开发模式，为true时，sql模板会在每次获取时都重新从文件读取，生产环境请设置为false，或者删除此配置，默认值就是false
 
 **java中初始化配置**
@@ -232,6 +232,7 @@ Juorm juorm = new JuormJdbcImpl(jdbc, mappingFactory, configFactory);
 文档中使用Mapper这个名词是因为Mybatis使用此名词，这样会让有Mybatis经验的读者更容易理解。
 
 **定义Mapper**
+
 ```java
 @TplExecution(namesapce = "user")
 public interface UserMapper {
@@ -319,12 +320,12 @@ public class UserService {
 
 ### 数据对象映射配置
 
-使用JPA标准注解进行对象映射，不支持级联更新和懒加载级别的级联查询。
-注解`@Table`或者`@Entity`标注的类，会被视为数据映射对象。如果没有指定name属性，则使用类名称进行映射，名称包含多个大写开头的单词被映射为下划线连接的全小写名称，如UserInfo映射为user_info。
-注解`@Id`标注的属性映射为数据库主键列。
-注解`@Column`标注的属性强制映射一个数据库列，如果不指定name，则使用属性名进行映射。
+使用JPA标准注解进行对象映射，不支持级联更新和懒加载级别的级联查询。\
+注解`@Table`或者`@Entity`标注的类，会被视为数据映射对象。如果没有指定name属性，则使用类名称进行映射，名称包含多个大写开头的单词被映射为下划线连接的全小写名称，如UserInfo映射为user_info。\
+注解`@Id`标注的属性映射为数据库主键列。\
+注解`@Column`标注的属性强制映射一个数据库列，如果不指定name，则使用属性名进行映射。\
 注解`@ManyToOne`或者`@OneToOne`标注的属性与JPA一致，只是没有支持级联更新和懒加载级联查询。
-注解`@Embedded`标注的属性与JPA中一致。
+注解`@Embedded`标注的属性与JPA中一致。\
 **没有被标注的属性使用隐式映射，使用数据库列反向映射到实体对象，如果是下划线连接的单词，会被转换为驼峰形式，如列名parent_id映射为属性名parentId**
 
 **后续文档使用的对象定义**
@@ -407,7 +408,7 @@ public class DistrictDivision {
 
 ### 主键查询对象
 
-`juorm.get(entity)`
+`juorm.get(entity)`  
 `juorm.get(Serializable id, Class<E> type)`
 
 
@@ -438,8 +439,8 @@ UserRole2 ur = juorm.get(userRole);
 
 ### 保存对象
 
-`juorm.save(entity)`
-`juorm.save(entity...array)`
+`juorm.save(entity)`  
+`juorm.save(entity...array)`  
 `juorm.save(List<Entity>)`
 
 #### 单一主键保存
@@ -484,16 +485,16 @@ juorm.save(userRole);
 
 ### 更新对象
 
-`juorm.update(entity, IgnorePolicy)` 使用指定策略更新对象
-`juorm.update(List<Entity>, IgnorePolicy)` 使用指定策略更新对象列表
-**下面三个等于update(entity, IgnorePolicy.NONE), 如果传入对象有null或者空字符串，会被更新到数据库**
-`juorm.update(entity)`
-`juorm.update(entity...array)`
-`juorm.update(List<Entity>)`
-**下面三个等于update(entity, IgnorePolicy.EMPTY), 忽略传入对象的null或者空字符串，不会更新null和空字符串到数据库**
-`juorm.merge(entity)` 
-`juorm.merge(entity...array)` 
-`juorm.merge(List<Entity>)`
+`juorm.update(entity, IgnorePolicy)` 使用指定策略更新对象  
+`juorm.update(List<Entity>, IgnorePolicy)` 使用指定策略更新对象列表  
+**下面三个等于update(entity, IgnorePolicy.NONE), 如果传入对象有null或者空字符串，会被更新到数据库**  
+`juorm.update(entity)`  
+`juorm.update(entity...array)`  
+`juorm.update(List<Entity>)`  
+**下面三个等于update(entity, IgnorePolicy.EMPTY), 忽略传入对象的null或者空字符串，不会更新null和空字符串到数据库**  
+`juorm.merge(entity)`  
+`juorm.merge(entity...array)`  
+`juorm.merge(List<Entity>)` 
 
 #### 单一主键更新
 
@@ -549,9 +550,9 @@ juorm.merge(ur);
 
 ### 删除对象
 
-`juorm.delete(entity)`
-`juorm.delete(entity...array)`
-`juorm.delete(List<Entity>)`
+`juorm.delete(entity)`  
+`juorm.delete(entity...array)`  
+`juorm.delete(List<Entity>)`  
 
 #### 单一主键删除
 
@@ -612,7 +613,7 @@ juorm.delete(Role.class).where().in(Role::getId, new Integer[] { id1, id2 }).or(
 ```
 
 ### DSL模式查询数据
-`juorm.query(Class)` 返回映射传入对象的条件表达式
+`juorm.query(Class)` 返回映射传入对象的条件表达式  
 `juorm.query(String)` 返回条件表达式，在最后执行查询操作时进行数据映射
 
 
@@ -639,12 +640,12 @@ roles = juorm.query(Role.class).where().gt("id", 5).and().le("id", 10).limit(2, 
 ```
 
 #### 查询排序列表
-`sort` 调用后进入排序表达式
-`asc` 对传入属性进行升序
+`sort` 调用后进入排序表达式  
+`asc` 对传入属性进行升序  
 `desc` 对传入属性进行降序
 
 ```java
-List<Role> roles = juorm.query(Role.class).where().eq("id", 4).or().group().gt("id", 5).and().le("id", 10)                .sort().asc("id").desc("name").list();
+List<Role> roles = juorm.query(Role.class).where().eq("id", 4).or().group().gt("id", 5).and().le("id", 10).sort().asc("id").desc("name").list();
 ```
 
 ## 模板SQL查询
@@ -652,92 +653,37 @@ List<Role> roles = juorm.query(Role.class).where().eq("id", 4).or().group().gt("
 模板配置文件使用yaml格式，属性名就是对应的sql模板id,属性值就是需要使用的sql模板。
 内置实现使用的模板引擎是freemarker。
 
-
-**后续文档使用的sql模板定义**
-**user.yaml.tpl**
 ```yaml
-selectByUsername: >
-    select <@columns table='user'/> from <@wrap value='user'/> where username = :username    
-selectByUsername2: >
-    select <@columns table='user'/> from ${tpl_wrap("user")}  where username = :username    
-selectByUsernameAndPassword: >
-    select username, password pwd from <@wrap value="user"/> where username = :username and password = :password
-selectUser: select username, password pwd from user
-selectByAge: "select <@prop/> from user where age = :age"
-selectByAge2: >
-    select <@prop/> from user where age = :age
-selectConditions: "select id, username, password pwd, mobile_no, age from user<@where>
-<@and if=username??>
-    username like :username
-</@and>
-<@and if=password??>
-    password like :password
-</@and>
-<@and if=mobileNo??>
-    mobile_no like :mobileNo
-</@and>
-<@and if=minAge??>
-    age >= :minAge
-</@and>
-<@and if=maxAge??>
-    age <= :maxAge
-</@and>
-</@where>"
-selectAvg: "select avg(age) from user"
-selectString: "select username from user where id = 1"
-selectAvg2: "select avg(age) from user where age > :age"
-selectString2: "select username from user where id = :id"
-selectById: "select <@prop/> from user where id = :id"
+select: "select <@prop/> from user_info"
+select2: "select id,user_id as `user.id`, name, descp
+, province `division.province`, city `division.city`, district `division.district`
+ from user_info"
 ```
 
-**role.yaml.tpl**
-```yaml
-selectByName: "select <@prop repo='role'/> from role
-<@where>
-    <@and if = name??>
-        name like :name
-    </@and>
-</@where>"
-selectWithTemplate:
-  query: "select <@prop/> <#include '/tpl/role@roleFromTemplate'>"
-  count: "select count(*) <#include '/tpl/role@roleFromTemplate'>"
-roleFromTemplate: "from role <@where>
-<@and if = name??>
-    name like :name
-</@and>
-</@where>"
-selectWithTemplate2:
-  query: "select <@prop/> <@tpl id='roleFromTemplate2'/>"
-  count: "select count(*) <@sql id='roleFromTemplate2'/>"
-roleFromTemplate2: "from role <@where>
-<@and if = name??>
-    name like :name
-</@and>
-</@where>"
-selectWithTemplate3:
-  query: >
-    select <@prop alias="_r"/> <@tpl id='roleFromTemplate2' file='tpl/role_common'/>
-  count: >
-    select count(*) <@sql id='roleFromTemplate2' file='tpl/role_common'/>
-```
+API调用传入的tplExecuteId字符串格式为filePath@sqlId  
+例：`juorm.single("user@selectByUsername", User.class, new HashChainMap<String, Object>().putChain("username", username))`  
+如果sqlId为全局唯一，也可以直接使用sqlId  
+例：`juorm.intValue("selectAvg", new HashChainMap<String, Object>())`  
+**如果同样的sqlId出现在不同的文件中，调用时没有使用filePath@sqlId进行调用，就会抛出异常，因为程序不知道调用的是哪一个**
 
-**role_common.yaml.tpl**
-```yaml
-roleFromTemplate2: "FROM role _r <@where>
-<@and if = name??>
-    name like :name
-</@and>
-</@where>"
-```
+
+后续文档使用的sql模板定义
+
+[**`user.yaml.tpl`**](./src/test/resources/tpl/user.yaml.tpl)
+
+[**`role.yaml.tpl`**](./src/test/resources/tpl/role.yaml.tpl)
+
+[**`role_common.yaml.tpl`**](./src/test/resources/tpl/user.yaml.tpl)
+
 
 ### 模板SQL唯一值查询
-`juorm.value`
-`juorm.number`
-`juorm.intValue`
-`juorm.longValue`
-`juorm.bigDecimalValue`
-`juorm.doubleValue`
-`juorm.stringValue`
+`juorm.value`  
+`juorm.number`  
+`juorm.intValue`  
+`juorm.longValue`  
+`juorm.bigDecimalValue`  
+`juorm.doubleValue`  
+`juorm.stringValue`  
 
 ```java
 Integer avg = juorm.intValue("selectAvg", new HashChainMap<String, Object>());
@@ -803,9 +749,9 @@ sqlid:
 **不建议使用模板自带include机制，因为模板引擎可以更换，而且也没有juorm内置引入实现更契合**
 
 ###### juorm提供的include机制
-`<@tpl id='roleFromTemplate2'/>`和`<@sql id='roleFromTemplate2'/>`是同一个实现不同的别名
-`id` 表示sqlid
-`file` 表示yaml模板文件,如果是同一个文件中，可以省略此配置
+`<@tpl id='roleFromTemplate2'/>`和`<@sql id='roleFromTemplate2'/>`是同一个实现不同的别名  
+`id` 表示sqlid  
+`file` 表示yaml模板文件,如果是同一个文件中，可以省略此配置  
 ```yaml
 selectWithTemplate2:
   query: "select <@prop/> <@tpl id='roleFromTemplate2'/>"
