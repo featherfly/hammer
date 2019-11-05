@@ -174,6 +174,12 @@ public interface UserMapper3 extends GenericJuorm<User> {
     - [**`模板SQL唯一记录查询`**](#模板SQL唯一记录查询)
     - [**`模板SQL列表查询`**](#模板SQL列表查询)
     - [**`模板SQL分页查询`**](#模板SQL分页查询)
+- [**`模板动态SQL`**](#模板动态SQL)
+    - [**`where支持`**](#where支持)
+    - [**`and和or支持`**](#and和or支持)
+    - [**`columns支持`**](#columns支持)
+    - [**`sql关键字支持`**](#sql关键字支持)
+    - [**`include支持`**](#include支持)
 - [**`使用Mapper`**](#使用Mapper)
     - [**`Mapper的定义方式`**](#Mapper的定义方式)
 
@@ -737,20 +743,229 @@ PaginationResults<User> userPaginationResults = executor.pagination("user@select
 
 ##### 手动声明统计sql
 
-yaml配置文件中的sql模板,默认情况下只需要直接把sql模板跟在sqlid后面就行了,当需要手动设置统计sql时，就需要明确声明
+yaml配置文件中的sql模板,默认情况下只需要直接把sql模板跟在sqlId后面就行了,当需要手动设置统计sql时，就需要明确声明
 
 ```yaml
-sqlid:
+sqlId:
   query: select sql
   count: count sql
 ```
 
 查询sql对应的统计sql这两条sql的查询条件都是一样的，所以如果把条件写在两个模板中，每次改动都要改动两个地方，容易造成错误，可以直接使用模板引擎的include机制或者juorm自定义的include机制来引入查询条件部分
-**不建议使用模板自带include机制，因为模板引擎可以更换，而且也没有juorm内置引入实现更契合**
 
-###### juorm提供的include机制
+具体内容可以进入此章节[**`include支持`**](#include支持)
+
+```java
+PaginationResults<Role> uis = executor.pagination("role@selectWithTemplate", Role.class, new HashChainMap<String, Object>(), 0, 10);
+PaginationResults<Role> uis = executor.pagination("role@selectWithTemplate2", Role.class, new HashChainMap<String, Object>(), 0, 10);
+PaginationResults<Role> uis = executor.pagination("role@selectWithTemplate3", Role.class, new HashChainMap<String, Object>(), 0, 10);
+```
+
+## 模板动态SQL
+
+因为使用的模板引擎，所有在sql拼接中，对应的模板引擎支持的功能基本都能使用，不过由于我们只是用来动态拼接SQL,所以为其定制化了一些专用于此的标签和函数。默认使用freemarker，定制的功能也是freemarker的扩展。
+
+### where支持
+
+当<@where><\/@where>中的内容不是空字符串时，会自动加入where关键字,相反则输出空字符串
+
+```sql
+select id, username, password pwd, mobile_no, age from user<@where>
+<@and if=username??>
+    username like :username
+</@and>
+<@and if=password??>
+    password like :password
+</@and>
+<@and if=mobileNo??>
+    mobile_no like :mobileNo
+</@and>
+<@and if=minAge??>
+    age >= :minAge
+</@and>
+<@and if=maxAge??>
+    age <= :maxAge
+</@and>
+</@where>
+```
+
+### and和or支持
+
+`and`和`or`标签的属性是一致的，只是代表含义不同，如果其内容是查询条件，则当if为true时，则会自动追加and(or)。如果内容是一个分组时（小括号包裹的条件表达式），逻辑等同于where（不需要设置属性），只是自动加入的关键字是and(or)。**此标签会自动判断是否需要加入and(or)关键字，不需要人工判断，当成加强版的if标签用就行了**  
+`if` 传入布尔值，表示是否需要标签内的内容，当内容是一个分组时，不需要指定  
+`name` 字符串，表示当前标签内查询条件的参数名称，此属性大部分时候可以省略，只有无法从内容中获取确切的参数名时，才需要指定
+
+**基于命名占位符**
+```sql
+select * from user<@where>
+    <@and if= age??>
+        age = :age
+    </@and>
+    <@and>
+        <@and if= name??>
+            name = :name
+        </@and>
+        <@and if= age??>
+            age = :age
+        </@and>
+        <@or>
+            <@and if= minAge??>
+                age > :minAge
+            </@and>
+            <@and if= maxAge??>
+                age < :maxAge
+            </@and>
+        </@or>
+        <@and if= minAge??>
+            age between :minAge and :maxAge 
+        </@and>
+    </@and>
+    <@and if= age??>
+        age = :age
+    </@and>
+    <@or>
+        <@and if= name??>
+            name = :name
+        </@and>
+        <@or if= age??>
+            age = :age
+        </@or>
+    </@or>
+    <@and if=sex??>
+        sex = :sex
+    </@and>
+    <@and if=mobile??>
+        name = :mobile
+    </@and>
+    <@or if= name??>
+        name = :name
+    </@or>
+    <@or if= age??>
+        age = :age
+    </@or>
+    <@or if=sex??>
+        sex = :sex
+    </@or>
+    <@or if=mobile??>
+        mobile = :mobile
+    </@or>
+</@where>
+```
+
+**基于问号占位符**
+```sql
+select * from user<@where>
+    <@and if = age??>
+        age = ?
+    </@and>
+    <@and if= minAge?? && maxAge?? name="minAge,maxAge">
+            age between ? and ?
+    </@and>
+    <@and>
+        <@and if= name??>
+            name = ?
+        </@and>
+        <@and if= age??>
+            age = ?
+        </@and>
+        <@or>
+            <@and if= minAge?? name="minAge">
+                age > ?
+            </@and>
+            <@and if= maxAge?? name="maxAge">
+                age < ?
+            </@and>
+        </@or>
+    </@and>
+    <@and if= age??>
+        age = ?
+    </@and>
+    <@or>
+        <@and if= name??>
+            name = ?
+        </@and>
+        <@or if= age??>
+            age = ?
+        </@or>
+    </@or>
+    <@and if=sex??>
+        sex = ?
+    </@and>
+    <@and if=mobile??>
+        name = ?
+    </@and>
+    <@or if= name??>
+        name = ?
+    </@or>
+    <@or if= age??>
+        age = ?
+    </@or>
+    <@or if=sex??>
+        sex = ?
+    </@or>
+    <@or if=mobile??>
+        mobile = ?
+    </@or>
+</@where>
+```
+
+### columns支持
+
+同一个实现默认注册了两个标签名，推荐使用<@prop>，因为这是标准名称，<@columns>只是为了在这里更应景而已。  
+`<@columns>`  
+&ensp;&ensp;`table` 查询的表名   
+`<@prop>`  
+&ensp;&ensp;`repo` 查询的表名   
+**共有属性**  
+&ensp;&ensp;`alias` 查询表名的别名  
+<!-- 
+&ensp;&ensp;`mapping` 查询结果需要映射的类型（className），一般不需要设置，因为外部调用时会传入需要返回的对象
+-->
+
+```yaml
+selectByUsername: >
+    select <@columns table='user'/> from <@wrap value='user'/> where username = :username    
+selectByAge: "select <@prop/> from user where age = :age"
+selectById: "select <@prop repo='user_info'/> from user_info where id = :id"
+selectWithTemplate3:
+  query: >
+    select <@prop alias="_r"/> <@tpl id='roleFromTemplate2' file='tpl/role_common'/>
+  count: "select count(*) <@sql id='roleFromTemplate2' file='tpl/role_common'/>"
+```
+
+**如果调用返回的映射对象是已经使用@Entity或者@Table标注的实体对象，则只需要`<@prop/>`或者`<@columns/>`就行了，标签实现会根据对象映射信息生成正确的内容  
+如果调用返回的映射对象不是已经使用@Entity或者@Table标注的实体对象，则需要加入属性`<@columns table='user'/>或者<@prop repo='user_info'/>`**
+
+### sql关键字支持
+
+如果你的某一个列名或者表名是数据库的关键字，在写SQL时就要使用数据库特定的符号把其括起来  
+mysql使用 \`\`，例：\`user\`  
+postgresql使用 "", 例: "user"  
+所以提供了一个专门用来包装SQL关键字的标签和函数，其输出的格式通过指定的Dialect决定
+
+**标签实现**
+```yaml
+selectByUsernameAndPassword: >
+    select username, password pwd from <@wrap value="user"/> where username = :username and password = :password
+```
+
+**函数实现**
+```yaml
+selectByUsernameAndPassword: >
+    select username, password pwd from ${tpl_wrap("user")} where username = :username and password = :password    
+```
+
+### include支持
+
+前面已经说了，使用模板引擎，所以模板引擎有的功能都能使用，include也是一样。  
+**不建议使用模板自带include机制，因为自定义的include实现更方便**
+
+#### 自定义include实现
+
+同一个实现默认注册了两个标签名，推荐使用<@tpl>，因为这是标准名称，<@sql>只是为了在这里更应景而已。
+
 `<@tpl id='roleFromTemplate2'/>`和`<@sql id='roleFromTemplate2'/>`是同一个实现不同的别名  
-`id` 表示sqlid  
+`id` 表示sqlId  
 `file` 表示yaml模板文件,如果是同一个文件中，可以省略此配置  
 ```yaml
 selectWithTemplate2:
@@ -767,8 +982,8 @@ selectWithTemplate3:
   count: "select count(*) <@sql id='roleFromTemplate2' file='tpl/role_common'/>"
 ```
 
-###### freemarker的include机制
-`<#include '/tpl/role@roleFromTemplate'>` /tpl/role代表yaml模板文件，roleFromTemplate代表文件中的sqlid
+##### freemarker的include机制
+`<#include '/tpl/role@roleFromTemplate'>` /tpl/role代表yaml模板文件，roleFromTemplate代表文件中的sqlId
 ```yaml
 selectWithTemplate:
   query: "select <@prop/> <#include '/tpl/role@roleFromTemplate'>"
@@ -778,12 +993,6 @@ roleFromTemplate: "from role <@where>
     name like :name
 </@and>
 </@where>"
-```
-
-```java
-PaginationResults<Role> uis = executor.pagination("role@selectWithTemplate", Role.class, new HashChainMap<String, Object>(), 0, 10);
-PaginationResults<Role> uis = executor.pagination("role@selectWithTemplate2", Role.class, new HashChainMap<String, Object>(), 0, 10);
-PaginationResults<Role> uis = executor.pagination("role@selectWithTemplate3", Role.class, new HashChainMap<String, Object>(), 0, 10);
 ```
 
 ## 使用Mapper
