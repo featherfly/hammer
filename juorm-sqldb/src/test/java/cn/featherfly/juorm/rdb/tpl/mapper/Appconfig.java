@@ -4,7 +4,8 @@ package cn.featherfly.juorm.rdb.tpl.mapper;
 import java.util.HashSet;
 import java.util.Set;
 
-import org.apache.commons.dbcp.BasicDataSource;
+import javax.sql.DataSource;
+
 import org.apache.log4j.xml.DOMConfigurator;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -37,38 +38,33 @@ import cn.featherfly.juorm.tpl.mapper.DynamicTplExecutorSpringRegistor;
 @Configuration
 public class Appconfig {
 
-    protected Jdbc jdbc;
-
-    protected JdbcMappingFactory mappingFactory;
-
-    protected TplConfigFactory configFactory;
-
     @Bean
     public DynamicTplExecutorSpringRegistor tplDynamicExecutorSpringRegistor() {
         Set<String> packages = new HashSet<>();
         packages.add("cn.featherfly");
+        //packages.add("你需要扫描的包路径");
         DynamicTplExecutorScanSpringRegistor registor = new DynamicTplExecutorScanSpringRegistor(packages, "juorm");
         return registor;
     }
 
     @Bean
-    public JuormJdbcImpl juorm() {
+    public JuormJdbcImpl juorm(DataSource dataSource) {
         DOMConfigurator.configure(ClassLoaderUtils.getResource("log4j.xml", JdbcTestBase.class));
 
         ConstantConfigurator.config();
 
-        BasicDataSource dataSource = new BasicDataSource();
-        dataSource.setUrl("jdbc:mysql://127.0.0.1:3306/juorm_jdbc");
-        dataSource.setDriverClassName("com.mysql.jdbc.Driver");
-        dataSource.setUsername("root");
-        dataSource.setPassword("123456");
+        //        BasicDataSource dataSource = new BasicDataSource();
+        //        dataSource.setUrl("jdbc:mysql://127.0.0.1:3306/juorm_jdbc");
+        //        dataSource.setDriverClassName("com.mysql.jdbc.Driver");
+        //        dataSource.setUsername("root");
+        //        dataSource.setPassword("123456");
 
-        jdbc = new SpringJdbcTemplateImpl(dataSource, Dialects.MYSQL);
+        Jdbc jdbc = new SpringJdbcTemplateImpl(dataSource, Dialects.MYSQL);
         DatabaseMetadata metadata = DatabaseMetadataManager.getDefaultManager().create(dataSource);
 
-        mappingFactory = new JdbcMappingFactory(metadata, Dialects.MYSQL);
+        JdbcMappingFactory mappingFactory = new JdbcMappingFactory(metadata, Dialects.MYSQL);
 
-        configFactory = new TplConfigFactoryImpl("tpl/");
+        TplConfigFactory configFactory = new TplConfigFactoryImpl("tpl/");
 
         JuormJdbcImpl juorm = new JuormJdbcImpl(jdbc, mappingFactory, configFactory);
         return juorm;

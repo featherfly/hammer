@@ -8,6 +8,7 @@ import java.util.Map;
 
 import cn.featherfly.common.lang.function.SerializableFunction;
 import cn.featherfly.common.structure.page.Page;
+import cn.featherfly.juorm.dsl.query.QuerySortExpression;
 import cn.featherfly.juorm.expression.query.QueryEntityPropertiesExpression;
 import cn.featherfly.juorm.expression.query.QueryExecutor;
 import cn.featherfly.juorm.expression.query.QueryWithEntityExpression;
@@ -22,7 +23,8 @@ import cn.featherfly.juorm.mapping.RowMapper;
  *
  * @author zhongj
  */
-public class AbstractUserQueryEntity<Q extends AbstractUserQueryEntity<Q, QW, QWO, QWE>,
+public class AbstractUserQueryEntity<
+        Q extends AbstractUserQueryEntity<Q, QW, QWO, QWE>,
         QW extends QueryWithExpression<QW, QWO, QWE, UserQueryRepositoryConditionGroupExpression, UserQueryRepositoryConditionGroupExpression>,
         QWO extends QueryWithOnExpression<QW, QWO, QWE, UserQueryRepositoryConditionGroupExpression, UserQueryRepositoryConditionGroupExpression>,
         QWE extends QueryWithEntityExpression<QW, QWO, QWE, UserQueryRepositoryConditionGroupExpression, UserQueryRepositoryConditionGroupExpression>>
@@ -214,6 +216,15 @@ public class AbstractUserQueryEntity<Q extends AbstractUserQueryEntity<Q, QW, QW
      */
     @Override
     public <T> QWO with(Class<T> repositoryType) {
+        // YUFEI_TODO Auto-generated method stub
+        return null;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public QuerySortExpression sort() {
         // YUFEI_TODO Auto-generated method stub
         return null;
     }

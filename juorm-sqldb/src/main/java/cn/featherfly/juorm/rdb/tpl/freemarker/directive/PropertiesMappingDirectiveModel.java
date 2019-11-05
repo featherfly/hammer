@@ -28,32 +28,24 @@ import freemarker.template.TemplateScalarModel;
  *
  * @author zhongj
  */
-public class PropertiesMappingDirectiveModel extends PropertiesMappingDirective
-        implements TemplateDirectiveModel {
+public class PropertiesMappingDirectiveModel extends PropertiesMappingDirective implements TemplateDirectiveModel {
 
     private JdbcMappingFactory mappingFactory;
 
     /**
-     * @param mappingFactory
-     *            mappingFactory
-     * @param resultType
-     *            resultType
+     * @param mappingFactory mappingFactory
+     * @param resultType     resultType
      */
-    public PropertiesMappingDirectiveModel(JdbcMappingFactory mappingFactory,
-            Class<?> resultType) {
+    public PropertiesMappingDirectiveModel(JdbcMappingFactory mappingFactory, Class<?> resultType) {
         this(DEFAULT_PARAM_NAME_NAME, mappingFactory, resultType);
     }
 
     /**
-     * @param paramName
-     *            paramName
-     * @param mappingFactory
-     *            mappingFactory
-     * @param resultType
-     *            resultType
+     * @param paramName      paramName
+     * @param mappingFactory mappingFactory
+     * @param resultType     resultType
      */
-    public PropertiesMappingDirectiveModel(String paramName,
-            JdbcMappingFactory mappingFactory, Class<?> resultType) {
+    public PropertiesMappingDirectiveModel(String paramName, JdbcMappingFactory mappingFactory, Class<?> resultType) {
         super(paramName, mappingFactory, resultType);
         // FIXME 这里暂时还没有把接口抽出来，暂时只定义了一个接口符号，后续来改
         this.mappingFactory = mappingFactory;
@@ -63,8 +55,7 @@ public class PropertiesMappingDirectiveModel extends PropertiesMappingDirective
      * {@inheritDoc}
      */
     @Override
-    public void execute(Environment env,
-            @SuppressWarnings("rawtypes") Map params, TemplateModel[] loopVars,
+    public void execute(Environment env, @SuppressWarnings("rawtypes") Map params, TemplateModel[] loopVars,
             TemplateDirectiveBody body) throws TemplateException, IOException {
         String nameParam = null;
         String aliasParam = null;
@@ -78,35 +69,29 @@ public class PropertiesMappingDirectiveModel extends PropertiesMappingDirective
             TemplateModel paramValue = (TemplateModel) ent.getValue();
             if (paramName.equals(this.paramName)) {
                 if (!(paramValue instanceof TemplateScalarModel)) {
-                    throw new TemplateModelException("The \"" + paramName
-                            + "\" parameter " + "must be a String.");
+                    throw new TemplateModelException("The \"" + paramName + "\" parameter " + "must be a String.");
                 }
                 nameParam = ((TemplateScalarModel) paramValue).getAsString();
             } else if (paramName.equals(PARAM_NAME_ALIAS)) {
                 if (!(paramValue instanceof TemplateScalarModel)) {
-                    throw new TemplateModelException("The \"" + PARAM_NAME_ALIAS
-                            + "\" parameter " + "must be a String.");
+                    throw new TemplateModelException(
+                            "The \"" + PARAM_NAME_ALIAS + "\" parameter " + "must be a String.");
                 }
                 aliasParam = ((TemplateScalarModel) paramValue).getAsString();
             } else if (paramName.equals(PARAM_NAME_MAPPING)) {
                 if (!(paramValue instanceof TemplateScalarModel)) {
                     throw new TemplateModelException(
-                            "The \"" + PARAM_NAME_MAPPING + "\" parameter "
-                                    + "must be a String.");
+                            "The \"" + PARAM_NAME_MAPPING + "\" parameter " + "must be a String.");
                 }
-                String mappingClassName = ((TemplateScalarModel) paramValue)
-                        .getAsString();
+                String mappingClassName = ((TemplateScalarModel) paramValue).getAsString();
                 try {
                     mappingType = Class.forName(mappingClassName);
                 } catch (ClassNotFoundException e) {
-                    throw new TemplateModelException(
-                            "The \"" + PARAM_NAME_MAPPING + "\" parameter "
-                                    + mappingClassName + " exception -> "
-                                    + e.getMessage());
+                    throw new TemplateModelException("The \"" + PARAM_NAME_MAPPING + "\" parameter " + mappingClassName
+                            + " exception -> " + e.getMessage());
                 }
             } else {
-                throw new TemplateModelException(
-                        "Unsupported parameter: " + paramName);
+                throw new TemplateModelException("Unsupported parameter: " + paramName);
             }
         }
 
@@ -117,9 +102,8 @@ public class PropertiesMappingDirectiveModel extends PropertiesMappingDirective
         ClassMapping<?> classMapping = null;
         if (mappingType == null) {
             if (LangUtils.isEmpty(nameParam)) {
-                throw new TemplateModelException("The \"" + paramName
-                        + "\" parameter "
-                        + "can not be null when result type is not mapped");
+                throw new TemplateModelException(
+                        "The \"" + paramName + "\" parameter " + "can not be null when result type is not mapped");
             }
         } else {
             classMapping = mappingFactory.getClassMapping(mappingType);
@@ -134,17 +118,13 @@ public class PropertiesMappingDirectiveModel extends PropertiesMappingDirective
         final StringBuilder result = new StringBuilder();
 
         if (classMapping == null) {
-            TableMetadata tableMetadata = mappingFactory.getMetadata()
-                    .getTable(nameParam.toUpperCase());
+            TableMetadata tableMetadata = mappingFactory.getMetadata().getTable(nameParam.toUpperCase());
             tableMetadata.getColumns().forEach(column -> {
-                String propName = WordUtils.parseToUpperFirst(column.getName(),
-                        '_');
+                String propName = WordUtils.parseToUpperFirst(column.getName(), '_');
                 if (aliasIsEmpty) {
-                    result.append(
-                            " " + column.getName() + " as " + propName + ",");
+                    result.append(" " + column.getName() + " as " + propName + ",");
                 } else {
-                    result.append(" " + alias + "." + column.getName() + " as "
-                            + propName + ",");
+                    result.append(" " + alias + "." + column.getName() + " as " + propName + ",");
                 }
             });
             if (result.length() > 0) {
@@ -152,8 +132,7 @@ public class PropertiesMappingDirectiveModel extends PropertiesMappingDirective
             }
             out.write(result.toString());
         } else {
-            out.write(ClassMappingUtils.getSelectColumnsSql(classMapping, alias,
-                    mappingFactory.getDialect()));
+            out.write(ClassMappingUtils.getSelectColumnsSql(classMapping, alias, mappingFactory.getDialect()));
         }
 
     }

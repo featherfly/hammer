@@ -4,6 +4,7 @@ package cn.featherfly.juorm.expression.query;
 import java.util.Collection;
 
 import cn.featherfly.common.lang.function.SerializableFunction;
+import cn.featherfly.juorm.dsl.query.QuerySortExpression;
 import cn.featherfly.juorm.expression.ConditionGroupExpression;
 import cn.featherfly.juorm.expression.ConditionGroupLogicExpression;
 import cn.featherfly.juorm.expression.RepositoryConditionGroupLogicExpression;
@@ -17,26 +18,39 @@ import cn.featherfly.juorm.expression.condition.RepositoryConditionsGroupExpress
  * .
  *
  * @author zhongj
- * @param <Q>   the generic type
- * @param <QW>  the generic type
- * @param <QWO> the generic type
- * @param <QWE> the generic type
- * @param <C>   the generic type
- * @param <L>   the generic type
- * @param <RC>  the generic type
- * @param <RL>  the generic type
+ * @param <Q>
+ *            the generic type
+ * @param <QW>
+ *            the generic type
+ * @param <QWO>
+ *            the generic type
+ * @param <QWE>
+ *            the generic type
+ * @param <C>
+ *            the generic type
+ * @param <L>
+ *            the generic type
+ * @param <RC>
+ *            the generic type
+ * @param <RL>
+ *            the generic type
  */
-public interface QueryEntityExpression<Q extends QueryEntityPropertiesExpression<Q, QW, QWO, QWE, C, L, RC, RL>,
-        QW extends QueryWithExpression<QW, QWO, QWE, RC, RL>, QWO extends QueryWithOnExpression<QW, QWO, QWE, RC, RL>,
-        QWE extends QueryWithEntityExpression<QW, QWO, QWE, RC, RL>, C extends ConditionGroupExpression<C, L>,
-        L extends ConditionGroupLogicExpression<C, L>, RC extends RepositoryConditionsGroupExpression<RC, RL>,
+public interface QueryEntityExpression<
+        Q extends QueryEntityPropertiesExpression<Q, QW, QWO, QWE, C, L, RC, RL>,
+        QW extends QueryWithExpression<QW, QWO, QWE, RC, RL>,
+        QWO extends QueryWithOnExpression<QW, QWO, QWE, RC, RL>,
+        QWE extends QueryWithEntityExpression<QW, QWO, QWE, RC, RL>,
+        C extends ConditionGroupExpression<C, L>,
+        L extends ConditionGroupLogicExpression<C, L>,
+        RC extends RepositoryConditionsGroupExpression<RC, RL>,
         RL extends RepositoryConditionGroupLogicExpression<RC, RL>>
         extends WhereExpression<C, L>, QueryListExecutor, QueryConditionLimit {
 
     /**
      * 设置id.
      *
-     * @param propertyName the property name
+     * @param propertyName
+     *            the property name
      * @return the q
      */
     Q id(String propertyName);
@@ -44,9 +58,12 @@ public interface QueryEntityExpression<Q extends QueryEntityPropertiesExpression
     /**
      * 设置id.
      *
-     * @param <T>          the generic type
-     * @param <R>          the generic type
-     * @param propertyName the property name
+     * @param <T>
+     *            the generic type
+     * @param <R>
+     *            the generic type
+     * @param propertyName
+     *            the property name
      * @return the q
      */
     <T, R> Q id(SerializableFunction<T, R> propertyName);
@@ -57,7 +74,8 @@ public interface QueryEntityExpression<Q extends QueryEntityPropertiesExpression
      * </p>
      * .
      *
-     * @param propertyName propertyName
+     * @param propertyName
+     *            propertyName
      * @return QueryEntityPropertiesExpression
      */
     Q property(String propertyName);
@@ -68,7 +86,8 @@ public interface QueryEntityExpression<Q extends QueryEntityPropertiesExpression
      * </p>
      * .
      *
-     * @param propertyNames propertyNames
+     * @param propertyNames
+     *            propertyNames
      * @return QueryEntityPropertiesExpression
      */
     Q property(String... propertyNames);
@@ -79,9 +98,12 @@ public interface QueryEntityExpression<Q extends QueryEntityPropertiesExpression
      * </p>
      * .
      *
-     * @param <T>          the generic type
-     * @param <R>          the generic type
-     * @param propertyName propertyName
+     * @param <T>
+     *            the generic type
+     * @param <R>
+     *            the generic type
+     * @param propertyName
+     *            propertyName
      * @return QueryEntityPropertiesExpression
      */
     <T, R> Q property(SerializableFunction<T, R> propertyName);
@@ -92,12 +114,16 @@ public interface QueryEntityExpression<Q extends QueryEntityPropertiesExpression
      * </p>
      * .
      *
-     * @param <T>           the generic type
-     * @param <R>           the generic type
-     * @param propertyNames propertyNames
+     * @param <T>
+     *            the generic type
+     * @param <R>
+     *            the generic type
+     * @param propertyNames
+     *            propertyNames
      * @return QueryEntityPropertiesExpression
      */
-    <T, R> Q property(@SuppressWarnings("unchecked") SerializableFunction<T, R>... propertyNames);
+    <T, R> Q property(
+            @SuppressWarnings("unchecked") SerializableFunction<T, R>... propertyNames);
 
     /**
      * <p>
@@ -105,7 +131,8 @@ public interface QueryEntityExpression<Q extends QueryEntityPropertiesExpression
      * </p>
      * .
      *
-     * @param propertyNames propertyNames
+     * @param propertyNames
+     *            propertyNames
      * @return QueryEntityPropertiesExpression
      */
     Q property(Collection<String> propertyNames);
@@ -113,7 +140,8 @@ public interface QueryEntityExpression<Q extends QueryEntityPropertiesExpression
     /**
      * with.
      *
-     * @param repositoryName with repository name
+     * @param repositoryName
+     *            with repository name
      * @return QueryWithExpression
      */
     QWO with(String repositoryName);
@@ -121,9 +149,18 @@ public interface QueryEntityExpression<Q extends QueryEntityPropertiesExpression
     /**
      * with.
      *
-     * @param <T>            the generic type
-     * @param repositoryType with repository type
+     * @param <T>
+     *            the generic type
+     * @param repositoryType
+     *            with repository type
      * @return QueryWithExpression
      */
     <T> QWO with(Class<T> repositoryType);
+
+    /**
+     * 结束当前条件并进入排序器
+     *
+     * @return SortBuilder
+     */
+    QuerySortExpression sort();
 }
