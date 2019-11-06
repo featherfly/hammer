@@ -1012,7 +1012,7 @@ public interface UserMapper3 extends GenericJuorm<User> {
 &nbsp;&nbsp;`name`  sqlId
 
 `@TplParam` 标注在方法参数中，用于映射方法参数和查询参数  
-&nbsp;&nbsp;`value`  查询参数名称，如果是java8以上，并且**编译时开启了调试信息**，可以不使用此注解来映射查询参数名称  
+&nbsp;&nbsp;`value`  查询参数名称，如果是java8以上，并且**java编译代码的时候开启-parameters选项**，可以不使用此注解来映射查询参数名称  
 &nbsp;&nbsp;`type`  查询参数类型，枚举类型  
 
 ### Mapper方法sqlId的查找逻辑
