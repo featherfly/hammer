@@ -7,16 +7,19 @@ import java.util.List;
 import java.util.Map;
 
 import cn.featherfly.common.constant.Chars;
+import cn.featherfly.common.db.SqlUtils;
 import cn.featherfly.common.lang.LambdaUtils;
 import cn.featherfly.common.lang.LangUtils;
 import cn.featherfly.common.lang.function.SerializableFunction;
 import cn.featherfly.common.structure.page.Limit;
 import cn.featherfly.common.structure.page.Page;
+import cn.featherfly.common.structure.page.PaginationResults;
+import cn.featherfly.common.structure.page.SimplePaginationResults;
 import cn.featherfly.juorm.dml.AliasManager;
 import cn.featherfly.juorm.dsl.query.QuerySortExpression;
 import cn.featherfly.juorm.dsl.query.RepositoryQueryConditionGroupExpression;
 import cn.featherfly.juorm.dsl.query.RepositoryQueryConditionGroupLogicExpression;
-import cn.featherfly.juorm.expression.query.QueryExecutor;
+import cn.featherfly.juorm.expression.query.QueryLimitExecutor;
 import cn.featherfly.juorm.mapping.ClassMapping;
 import cn.featherfly.juorm.mapping.MappingFactory;
 import cn.featherfly.juorm.mapping.RowMapper;
@@ -135,7 +138,7 @@ public class RepositorySqlQueryConditionGroupExpression extends
      * {@inheritDoc}
      */
     @Override
-    public QueryExecutor limit(Integer limit) {
+    public QueryLimitExecutor limit(Integer limit) {
         return limit(0, limit);
     }
 
@@ -143,7 +146,7 @@ public class RepositorySqlQueryConditionGroupExpression extends
      * {@inheritDoc}
      */
     @Override
-    public QueryExecutor limit(Integer offset, Integer limit) {
+    public QueryLimitExecutor limit(Integer offset, Integer limit) {
         return limit(new Limit(offset, limit));
     }
 
@@ -151,11 +154,11 @@ public class RepositorySqlQueryConditionGroupExpression extends
      * {@inheritDoc}
      */
     @Override
-    public QueryExecutor limit(Page page) {
+    public QueryLimitExecutor limit(Page page) {
         return limit(new Limit(page));
     }
 
-    private QueryExecutor limit(Limit limit) {
+    private QueryLimitExecutor limit(Limit limit) {
         this.limit = limit;
         return this;
     }
@@ -200,6 +203,76 @@ public class RepositorySqlQueryConditionGroupExpression extends
             params = dialect.getPaginationSqlParameter(params, limit.getOffset(), limit.getLimit());
         }
         return jdbc.query(sql, params, rowMapper);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public PaginationResults<Map<String, Object>> pagination() {
+        String sql = getRoot().expression();
+        String countSql = SqlUtils.convertSelectToCount(sql);
+        Object[] params = getRoot().getParams().toArray();
+        SimplePaginationResults<Map<String, Object>> pagination = new SimplePaginationResults<>(limit);
+        if (limit != null) {
+            List<Map<String, Object>> list = jdbc.query(
+                    dialect.getPaginationSql(sql, limit.getOffset(), limit.getLimit()),
+                    dialect.getPaginationSqlParameter(params, limit.getOffset(), limit.getLimit()));
+            pagination.setPageResults(list);
+            int total = jdbc.queryInt(countSql, params);
+            pagination.setTotal(total);
+        } else {
+            List<Map<String, Object>> list = jdbc.query(sql, params);
+            pagination.setPageResults(list);
+            pagination.setTotal(list.size());
+        }
+        return pagination;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public <E> PaginationResults<E> pagination(Class<E> type) {
+        String sql = getRoot().expression();
+        String countSql = SqlUtils.convertSelectToCount(sql);
+        Object[] params = getRoot().getParams().toArray();
+        SimplePaginationResults<E> pagination = new SimplePaginationResults<>(limit);
+        if (limit != null) {
+            List<E> list = jdbc.query(dialect.getPaginationSql(sql, limit.getOffset(), limit.getLimit()),
+                    dialect.getPaginationSqlParameter(params, limit.getOffset(), limit.getLimit()), type);
+            pagination.setPageResults(list);
+            int total = jdbc.queryInt(countSql, params);
+            pagination.setTotal(total);
+        } else {
+            List<E> list = jdbc.query(sql, params, type);
+            pagination.setPageResults(list);
+            pagination.setTotal(list.size());
+        }
+        return pagination;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public <E> PaginationResults<E> pagination(RowMapper<E> rowMapper) {
+        String sql = getRoot().expression();
+        String countSql = SqlUtils.convertSelectToCount(sql);
+        Object[] params = getRoot().getParams().toArray();
+        SimplePaginationResults<E> pagination = new SimplePaginationResults<>(limit);
+        if (limit != null) {
+            List<E> list = jdbc.query(dialect.getPaginationSql(sql, limit.getOffset(), limit.getLimit()),
+                    dialect.getPaginationSqlParameter(params, limit.getOffset(), limit.getLimit()), rowMapper);
+            pagination.setPageResults(list);
+            int total = jdbc.queryInt(countSql, params);
+            pagination.setTotal(total);
+        } else {
+            List<E> list = jdbc.query(sql, params, rowMapper);
+            pagination.setPageResults(list);
+            pagination.setTotal(list.size());
+        }
+        return pagination;
     }
 
     /**

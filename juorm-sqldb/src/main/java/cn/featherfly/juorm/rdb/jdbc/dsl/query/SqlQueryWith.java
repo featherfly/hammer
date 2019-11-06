@@ -13,7 +13,7 @@ import cn.featherfly.common.structure.page.Page;
 import cn.featherfly.juorm.dml.AliasManager;
 import cn.featherfly.juorm.dsl.query.QueryWith;
 import cn.featherfly.juorm.dsl.query.RepositoryQueryConditionGroupExpression;
-import cn.featherfly.juorm.expression.query.QueryExecutor;
+import cn.featherfly.juorm.expression.query.QueryLimitExecutor;
 import cn.featherfly.juorm.mapping.ClassMapping;
 import cn.featherfly.juorm.mapping.MappingFactory;
 import cn.featherfly.juorm.mapping.RowMapper;
@@ -282,7 +282,7 @@ public class SqlQueryWith implements QueryWith, SqlQueryWithOn, SqlQueryWithEnti
      * {@inheritDoc}
      */
     @Override
-    public QueryExecutor limit(Integer limit) {
+    public QueryLimitExecutor limit(Integer limit) {
         return sqlQueryEntityProperties.limit(limit);
     }
 
@@ -290,7 +290,7 @@ public class SqlQueryWith implements QueryWith, SqlQueryWithOn, SqlQueryWithEnti
      * {@inheritDoc}
      */
     @Override
-    public QueryExecutor limit(Integer offset, Integer limit) {
+    public QueryLimitExecutor limit(Integer offset, Integer limit) {
         return sqlQueryEntityProperties.limit(offset, limit);
     }
 
@@ -298,7 +298,7 @@ public class SqlQueryWith implements QueryWith, SqlQueryWithOn, SqlQueryWithEnti
      * {@inheritDoc}
      */
     @Override
-    public QueryExecutor limit(Page page) {
+    public QueryLimitExecutor limit(Page page) {
         return sqlQueryEntityProperties.limit(page);
     }
 

@@ -11,7 +11,7 @@ import cn.featherfly.juorm.dml.AliasManager;
 import cn.featherfly.juorm.dsl.query.QueryConditionGroupExpression;
 import cn.featherfly.juorm.dsl.query.QueryEntityProperties;
 import cn.featherfly.juorm.dsl.query.QuerySortExpression;
-import cn.featherfly.juorm.expression.query.QueryExecutor;
+import cn.featherfly.juorm.expression.query.QueryLimitExecutor;
 import cn.featherfly.juorm.mapping.ClassMapping;
 import cn.featherfly.juorm.mapping.MappingFactory;
 import cn.featherfly.juorm.mapping.RowMapper;
@@ -24,66 +24,45 @@ import cn.featherfly.juorm.rdb.jdbc.Jdbc;
  *
  * @author zhongj
  */
-public class SqlQueryEntityProperties
-        extends AbstractSqlQueryEntityProperties<SqlQueryEntityProperties>
+public class SqlQueryEntityProperties extends AbstractSqlQueryEntityProperties<SqlQueryEntityProperties>
         implements SqlQueryEntity, QueryEntityProperties {
 
     /**
      * Instantiates a new sql query entity properties.
      *
-     * @param jdbc
-     *            jdbc
-     * @param databaseMetadata
-     *            the database metadata
-     * @param tableName
-     *            tableName
-     * @param factory
-     *            MappingFactory
-     * @param aliasManager
-     *            aliasManager
+     * @param jdbc             jdbc
+     * @param databaseMetadata the database metadata
+     * @param tableName        tableName
+     * @param factory          MappingFactory
+     * @param aliasManager     aliasManager
      */
-    public SqlQueryEntityProperties(Jdbc jdbc,
-            DatabaseMetadata databaseMetadata, String tableName,
+    public SqlQueryEntityProperties(Jdbc jdbc, DatabaseMetadata databaseMetadata, String tableName,
             MappingFactory factory, AliasManager aliasManager) {
-        this(jdbc, databaseMetadata, tableName, aliasManager.put(tableName),
-                factory, aliasManager);
+        this(jdbc, databaseMetadata, tableName, aliasManager.put(tableName), factory, aliasManager);
     }
 
     /**
-     * @param jdbc
-     *            jdbc
-     * @param classMapping
-     *            classMapping
-     * @param factory
-     *            MappingFactory
-     * @param aliasManager
-     *            aliasManager
+     * @param jdbc         jdbc
+     * @param classMapping classMapping
+     * @param factory      MappingFactory
+     * @param aliasManager aliasManager
      */
-    public SqlQueryEntityProperties(Jdbc jdbc, ClassMapping<?> classMapping,
-            MappingFactory factory, AliasManager aliasManager) {
+    public SqlQueryEntityProperties(Jdbc jdbc, ClassMapping<?> classMapping, MappingFactory factory,
+            AliasManager aliasManager) {
         super(jdbc, classMapping, factory, aliasManager);
     }
 
     /**
-     * @param jdbc
-     *            jdbc
-     * @param databaseMetadata
-     *            databaseMetadata
-     * @param tableName
-     *            tableName
-     * @param tableAlias
-     *            tableAlias
-     * @param factory
-     *            MappingFactory
-     * @param aliasManager
-     *            aliasManager
+     * @param jdbc             jdbc
+     * @param databaseMetadata databaseMetadata
+     * @param tableName        tableName
+     * @param tableAlias       tableAlias
+     * @param factory          MappingFactory
+     * @param aliasManager     aliasManager
      */
-    public SqlQueryEntityProperties(Jdbc jdbc,
-            DatabaseMetadata databaseMetadata, String tableName,
-            String tableAlias, MappingFactory factory,
-            AliasManager aliasManager) {
-        super(jdbc, databaseMetadata, tableName, tableAlias, factory,
-                aliasManager);
+    public SqlQueryEntityProperties(Jdbc jdbc, DatabaseMetadata databaseMetadata, String tableName, String tableAlias,
+            MappingFactory factory, AliasManager aliasManager) {
+        super(jdbc, databaseMetadata, tableName, tableAlias, factory, aliasManager);
     }
 
     /**
@@ -107,8 +86,7 @@ public class SqlQueryEntityProperties
      */
     @Override
     public <E> List<E> list(Class<E> type) {
-        return new SqlQueryExpression(jdbc, classMapping, selectBuilder)
-                .list(type);
+        return new SqlQueryExpression(jdbc, classMapping, selectBuilder).list(type);
     }
 
     /**
@@ -116,35 +94,31 @@ public class SqlQueryEntityProperties
      */
     @Override
     public <E> List<E> list(RowMapper<E> rowMapper) {
-        return new SqlQueryExpression(jdbc, classMapping, selectBuilder)
-                .list(rowMapper);
+        return new SqlQueryExpression(jdbc, classMapping, selectBuilder).list(rowMapper);
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public QueryExecutor limit(Integer limit) {
-        return new SqlQueryExpression(jdbc, classMapping, selectBuilder)
-                .limit(limit);
+    public QueryLimitExecutor limit(Integer limit) {
+        return new SqlQueryExpression(jdbc, classMapping, selectBuilder).limit(limit);
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public QueryExecutor limit(Integer offset, Integer limit) {
-        return new SqlQueryExpression(jdbc, classMapping, selectBuilder)
-                .limit(offset, limit);
+    public QueryLimitExecutor limit(Integer offset, Integer limit) {
+        return new SqlQueryExpression(jdbc, classMapping, selectBuilder).limit(offset, limit);
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public QueryExecutor limit(Page page) {
-        return new SqlQueryExpression(jdbc, classMapping, selectBuilder)
-                .limit(page);
+    public QueryLimitExecutor limit(Page page) {
+        return new SqlQueryExpression(jdbc, classMapping, selectBuilder).limit(page);
     }
 
     /**
@@ -152,8 +126,7 @@ public class SqlQueryEntityProperties
      */
     @Override
     public String string() {
-        return new SqlQueryExpression(jdbc, classMapping, selectBuilder)
-                .string();
+        return new SqlQueryExpression(jdbc, classMapping, selectBuilder).string();
     }
 
     /**
@@ -161,8 +134,7 @@ public class SqlQueryEntityProperties
      */
     @Override
     public Integer integer() {
-        return new SqlQueryExpression(jdbc, classMapping, selectBuilder)
-                .integer();
+        return new SqlQueryExpression(jdbc, classMapping, selectBuilder).integer();
     }
 
     /**
@@ -170,8 +142,7 @@ public class SqlQueryEntityProperties
      */
     @Override
     public Long longInt() {
-        return new SqlQueryExpression(jdbc, classMapping, selectBuilder)
-                .longInt();
+        return new SqlQueryExpression(jdbc, classMapping, selectBuilder).longInt();
     }
 
     /**
@@ -179,8 +150,7 @@ public class SqlQueryEntityProperties
      */
     @Override
     public BigDecimal decimal() {
-        return new SqlQueryExpression(jdbc, classMapping, selectBuilder)
-                .decimal();
+        return new SqlQueryExpression(jdbc, classMapping, selectBuilder).decimal();
     }
 
     /**
@@ -188,8 +158,7 @@ public class SqlQueryEntityProperties
      */
     @Override
     public <N extends Number> N number(Class<N> type) {
-        return new SqlQueryExpression(jdbc, classMapping, selectBuilder)
-                .number(type);
+        return new SqlQueryExpression(jdbc, classMapping, selectBuilder).number(type);
     }
 
     /**
@@ -197,8 +166,7 @@ public class SqlQueryEntityProperties
      */
     @Override
     public SqlQueryWithOn with(String repositoryName) {
-        return new SqlQueryWith(this, aliasManager, factory,
-                selectBuilder.getTableAlias(), getIdName(), repositoryName,
+        return new SqlQueryWith(this, aliasManager, factory, selectBuilder.getTableAlias(), getIdName(), repositoryName,
                 aliasManager.put(repositoryName));
     }
 
@@ -207,8 +175,8 @@ public class SqlQueryEntityProperties
      */
     @Override
     public <T> SqlQueryWithOn with(Class<T> repositoryType) {
-        return new SqlQueryWith(this, aliasManager, factory,
-                selectBuilder.getTableAlias(), getIdName(), repositoryType);
+        return new SqlQueryWith(this, aliasManager, factory, selectBuilder.getTableAlias(), getIdName(),
+                repositoryType);
     }
 
     /**
