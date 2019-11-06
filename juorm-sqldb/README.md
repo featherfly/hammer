@@ -76,7 +76,7 @@ PaginationResults<User> userPaginationResults = executor.pagination("user@select
 
 ```java
 // 类似于mybatis，直接执行模板中的sql
-@TplExecution(namesapce = "user")
+@TplExecution(namespace = "user")
 public interface UserMapper {
 	User selectByUsername(@TplParam("username") String username);
 
@@ -110,31 +110,31 @@ public interface UserMapper {
 
     String selectString2(@TplParam("id") Integer id);
 
-    @TplExecution(namesapce = "user_info")
+    @TplExecution(namespace = "user_info")
 	List<Map<String, Object>> select2();
 
-    @TplExecution(namesapce = "user_info", name = "select2")
+    @TplExecution(namespace = "user_info", name = "select2")
     List<Map<String, Object>> select2(@TplParam(type = TplParamType.PAGE_OFFSET) int offset,
             @TplParam(type = TplParamType.PAGE_LIMIT) int limit);
 
-    @TplExecution(namesapce = "user_info", name = "select2")
+    @TplExecution(namespace = "user_info", name = "select2")
     List<Map<String, Object>> select2(Page page);
 
-    @TplExecution(namesapce = "user_info", name = "select2")
+    @TplExecution(namespace = "user_info", name = "select2")
     PaginationResults<Map<String, Object>> select2Page(@TplParam(type = TplParamType.PAGE_OFFSET) int offset,
             @TplParam(type = TplParamType.PAGE_LIMIT) int limit);
 
-    @TplExecution(namesapce = "user_info", name = "select2")
+    @TplExecution(namespace = "user_info", name = "select2")
     PaginationResults<Map<String, Object>> select2Page(Page page);
 
-    @TplExecution(namesapce = "user_info", name = "selectById")
+    @TplExecution(namespace = "user_info", name = "selectById")
     List<Map<String, Object>> selectById2(@TplParam("id") Integer id);
 }
 ```
 
 ```java
 // 除了可以使用模板sql进行查询外，可以继承Juorm或者GenericJuorm进行api操作,需要使用jdk8的default method
-@TplExecution(namesapce = "user")
+@TplExecution(namespace = "user")
 public interface UserMapper3 extends GenericJuorm<User> {
 	// 这里的query方法就是GenericJuorm接口定义的方法
 	default User getByUsernameAndPassword(String username, String pwd) {
@@ -240,7 +240,7 @@ Juorm juorm = new JuormJdbcImpl(jdbc, mappingFactory, configFactory);
 **定义Mapper**
 
 ```java
-@TplExecution(namesapce = "user")
+@TplExecution(namespace = "user")
 public interface UserMapper {
 	User selectByUsername(@TplParam("username") String username);
     // 根据需要定义更多方法
@@ -1023,21 +1023,21 @@ Mapper就是定义指定操作方法的接口类，juorm有三种Mapper的定义
 
 1. 直接定义一个接口，使用@TplExecution标注，外部使用此mapper时，只提供此接口定义的方法
 ```java
-@TplExecution(namesapce = "user")
+@TplExecution(namespace = "user")
 public interface UserMapper {
 	// methods
 }
 ```
 2. 直接定义一个接口，使用@TplExecution标注，继承Juorm接口，外部使用此mapper时，除了提供此接口定义的方法，还能使用Juorm内定义的方法，方法内部也可以使用default method调用Juorm接口内的方法实现一些基础功能
 ```java
-@TplExecution(namesapce = "user")
+@TplExecution(namespace = "user")
 public interface UserMapper2 extends Juorm {
 	// methods
 }
 ```
 3. 直接定义一个接口，使用@TplExecution标注，继承GenericJuorm接口，外部使用此mapper时，除了提供此接口定义的方法，还能使用GenericJuorm内定义的方法，方法内部也可以使用default method调用Juorm接口内的方法实现一些基础功能
 ```java
-@TplExecution(namesapce = "user")
+@TplExecution(namespace = "user")
 public interface UserMapper3 extends GenericJuorm<User> {
 	// methods
 }
