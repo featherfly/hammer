@@ -19,7 +19,7 @@ import cn.featherfly.juorm.tpl.annotation.TplParam;
  *
  * @author zhongj
  */
-@TplExecution(namesapce = "user_info")
+@TplExecution(namespace = "user_info")
 public interface UserInfoMapper extends Juorm {
 
     @Cacheable(key = "'userInfo:id:'+ #id", value = "userInfoCache")

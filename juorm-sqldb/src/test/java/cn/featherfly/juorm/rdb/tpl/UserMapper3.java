@@ -22,7 +22,7 @@ import cn.featherfly.juorm.tpl.annotation.TplParamType;
  *
  * @author zhongj
  */
-@TplExecution(namesapce = "user")
+@TplExecution(namespace = "user")
 public interface UserMapper3 extends GenericJuorm<User> {
     User selectByUsername(@TplParam("username") String username);
 
@@ -56,24 +56,24 @@ public interface UserMapper3 extends GenericJuorm<User> {
 
     String selectString2(@TplParam("id") Integer id);
 
-    @TplExecution(namesapce = "user_info")
+    @TplExecution(namespace = "user_info")
     List<Map<String, Object>> select2();
 
-    @TplExecution(namesapce = "user_info", name = "select2")
+    @TplExecution(namespace = "user_info", name = "select2")
     List<Map<String, Object>> select2(@TplParam(type = TplParamType.PAGE_OFFSET) int offset,
             @TplParam(type = TplParamType.PAGE_LIMIT) int limit);
 
-    @TplExecution(namesapce = "user_info", name = "select2")
+    @TplExecution(namespace = "user_info", name = "select2")
     List<Map<String, Object>> select2(Page page);
 
-    @TplExecution(namesapce = "user_info", name = "select2")
+    @TplExecution(namespace = "user_info", name = "select2")
     PaginationResults<Map<String, Object>> select2Page(@TplParam(type = TplParamType.PAGE_OFFSET) int offset,
             @TplParam(type = TplParamType.PAGE_LIMIT) int limit);
 
-    @TplExecution(namesapce = "user_info", name = "select2")
+    @TplExecution(namespace = "user_info", name = "select2")
     PaginationResults<Map<String, Object>> select2Page(Page page);
 
-    @TplExecution(namesapce = "user_info", name = "selectById")
+    @TplExecution(namespace = "user_info", name = "selectById")
     List<Map<String, Object>> selectById2(@TplParam("id") Integer id);
 
     default User getByUsernameAndPassword(String username, String pwd) {
@@ -86,5 +86,15 @@ public interface UserMapper3 extends GenericJuorm<User> {
 
     default User getByUsernameAndPassword3(String username, String pwd) {
         return query().where().property("username").eq(username).and().property("pwd").eq(pwd).single();
+    }
+
+    default int updatePasswordByUsername(String username, String pwd) {
+        //return update().set("password", pwd).where().eq("username", username).execute();
+        return update().set(User::getPwd, pwd).where().eq(User::getUsername, username).execute();
+    }
+
+    default int deleteByUsername(String username) {
+        //return delete().where().eq("username", username);
+        return delete().where().eq(User::getUsername, username).execute();
     }
 }

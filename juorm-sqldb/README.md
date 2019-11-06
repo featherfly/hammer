@@ -76,11 +76,9 @@ PaginationResults<User> userPaginationResults = executor.pagination("user@select
 
 ```java
 // 类似于mybatis，直接执行模板中的sql
-@TplExecution(namesapce = "user")
+@TplExecution(namespace = "user")
 public interface UserMapper {
 	User selectByUsername(@TplParam("username") String username);
-
-    Map<String, Object> selectByUsername2(@TplParam("username") String username);
 
     User selectByUsernameAndPassword(@TplParam("username") String username, @TplParam("password") String pwd);
 
@@ -88,65 +86,24 @@ public interface UserMapper {
 
     String selectString();
 
-    List<User> selectByAge2(@TplParam("age") Integer age);
-
-    @TplExecution
-    List<User> selectByAge2(@TplParam("age") Integer age, @TplParam(type = TplParamType.PAGE_OFFSET) int offset,
-            @TplParam(type = TplParamType.PAGE_LIMIT) int limit);
-
-    @TplExecution
-    List<User> selectByAge2(@TplParam("age") Integer age, Page page);
-
-    @TplExecution(name = "selectByAge2")
-    PaginationResults<User> selectByAge2Page(@TplParam("age") Integer age,
-            @TplParam(type = TplParamType.PAGE_OFFSET) int offset, @TplParam(type = TplParamType.PAGE_LIMIT) int limit);
-
-    @TplExecution(name = "selectByAge2")
-    PaginationResults<User> selectByAge2Page(@TplParam("age") Integer age, Page page);
-
-    List<User> selectById(@TplParam("id") Integer id);
-
-    Integer selectAvg2(@TplParam("age") Integer age);
-
-    String selectString2(@TplParam("id") Integer id);
-
-    @TplExecution(namesapce = "user_info")
+    @TplExecution(namespace = "user_info")
 	List<Map<String, Object>> select2();
 
-    @TplExecution(namesapce = "user_info", name = "select2")
-    List<Map<String, Object>> select2(@TplParam(type = TplParamType.PAGE_OFFSET) int offset,
-            @TplParam(type = TplParamType.PAGE_LIMIT) int limit);
-
-    @TplExecution(namesapce = "user_info", name = "select2")
+    @TplExecution(namespace = "user_info", name = "select2")
     List<Map<String, Object>> select2(Page page);
-
-    @TplExecution(namesapce = "user_info", name = "select2")
-    PaginationResults<Map<String, Object>> select2Page(@TplParam(type = TplParamType.PAGE_OFFSET) int offset,
-            @TplParam(type = TplParamType.PAGE_LIMIT) int limit);
-
-    @TplExecution(namesapce = "user_info", name = "select2")
+    
+    @TplExecution(namespace = "user_info", name = "select2")
     PaginationResults<Map<String, Object>> select2Page(Page page);
-
-    @TplExecution(namesapce = "user_info", name = "selectById")
-    List<Map<String, Object>> selectById2(@TplParam("id") Integer id);
 }
 ```
 
 ```java
 // 除了可以使用模板sql进行查询外，可以继承Juorm或者GenericJuorm进行api操作,需要使用jdk8的default method
-@TplExecution(namesapce = "user")
+@TplExecution(namespace = "user")
 public interface UserMapper3 extends GenericJuorm<User> {
-	// 这里的query方法就是GenericJuorm接口定义的方法
-	default User getByUsernameAndPassword(String username, String pwd) {
-        return query().where().eq("username", username).and().eq("pwd", pwd).single();
-    }
-
+	// 这里的query方法就是GenericJuorm接口定义的方法	
     default User getByUsernameAndPassword2(String username, String pwd) {
         return query().where().eq("username", username).and().eq("password", pwd).single();
-    }
-
-    default User getByUsernameAndPassword3(String username, String pwd) {
-        return query().where().property("username").eq(username).and().property("pwd").eq(pwd).single();
     }
 }
 // 外部调用就可以直接使用Juorm或者GenericJuorm里定义的方法, UserMapper3 userMapper; userMapper.save(user);
@@ -180,8 +137,11 @@ public interface UserMapper3 extends GenericJuorm<User> {
     - [**`columns支持`**](#columns支持)
     - [**`sql关键字支持`**](#sql关键字支持)
     - [**`include支持`**](#include支持)
-- [**`使用Mapper`**](#使用Mapper)
-    - [**`Mapper的定义方式`**](#Mapper的定义方式)
+- [**`Mapper详解`**](#Mapper详解)
+    - [**`Mapper中注解的含义`**](#Mapper中注解的含义)
+    - [**`Mapper方法sqlId的查找逻辑`**](#Mapper方法sqlId的查找逻辑)
+    - [**`Mapper方法与juorm模板API的对应关系`**](#Mapper方法与juorm模板API的对应关系)
+    - [**`Mapper中实现模板查询以外的操作`**](#Mapper中实现模板查询以外的操作)
 
 ## 基础配置
 
@@ -240,7 +200,7 @@ Juorm juorm = new JuormJdbcImpl(jdbc, mappingFactory, configFactory);
 **定义Mapper**
 
 ```java
-@TplExecution(namesapce = "user")
+@TplExecution(namespace = "user")
 public interface UserMapper {
 	User selectByUsername(@TplParam("username") String username);
     // 根据需要定义更多方法
@@ -258,7 +218,7 @@ UserMapper userMapper = mapperFactory.newInstance(UserMapper.class, juorm);
 
 ### Spring集成
 
-**配置Mapper**
+#### 配置Mapper
 
 ```java
 @Configuration
@@ -312,7 +272,7 @@ xml配置dataSource
 
 ```
 
-**使用Mapper**
+#### 使用Mapper
 
 ```java
 @Service
@@ -334,7 +294,7 @@ public class UserService {
 注解`@Embedded`标注的属性与JPA中一致。  
 **没有被标注的属性使用隐式映射，使用数据库列反向映射到实体对象，如果是下划线连接的单词，会被转换为驼峰形式，如列名parent_id映射为属性名parentId**
 
-**后续文档使用的对象定义**
+*后续文档使用的对象定义*
 
 ```java
 @Table
@@ -589,7 +549,7 @@ juorm.delete(userRole2);
 
 ### DSL模式更新数据
 
-**条件查询方法**  
+*条件查询方法*  
 `where` 开启where条件表达式  
 `and` and  
 `or` or  
@@ -695,21 +655,21 @@ API调用传入的tplExecuteId字符串格式为filePath@sqlId
 
 后续文档使用的sql模板定义
 
-[**`user.yaml.tpl`**](./src/test/resources/tpl/user.yaml.tpl)
+[*`user.yaml.tpl`*](./src/test/resources/tpl/user.yaml.tpl)
 
-[**`role.yaml.tpl`**](./src/test/resources/tpl/role.yaml.tpl)
+[*`role.yaml.tpl`*](./src/test/resources/tpl/role.yaml.tpl)
 
-[**`role_common.yaml.tpl`**](./src/test/resources/tpl/user.yaml.tpl)
+[*`role_common.yaml.tpl`*](./src/test/resources/tpl/user.yaml.tpl)
 
 
 ### 模板SQL唯一值查询
-`juorm.value`  
-`juorm.number`  
-`juorm.intValue`  
-`juorm.longValue`  
-`juorm.bigDecimalValue`  
-`juorm.doubleValue`  
-`juorm.stringValue`  
+`value`  
+`number`  
+`intValue`  
+`longValue`  
+`bigDecimalValue`  
+`doubleValue`  
+`stringValue`  
 
 ```java
 Integer avg = juorm.intValue("selectAvg", new HashChainMap<String, Object>());
@@ -721,7 +681,7 @@ String str = juorm.stringValue("selectString2", new HashChainMap<String, Object>
 
 
 ### 模板SQL唯一记录查询
-`juorm.single`
+`single`
 
 ```java
 User u1 = juorm.single("user@selectByUsername", User.class, new HashChainMap<String, Object>().putChain("username", username));
@@ -729,7 +689,7 @@ User u2 = juorm.single("user@selectByUsernameAndPassword", User.class, new HashC
 ```
 
 ### 模板SQL列表查询
-`juorm.list`
+`list`
 
 ```java
 List<User> users = executor.list("user@selectUser", User.class, new HashChainMap<String, Object>());
@@ -742,7 +702,7 @@ List<User> users = executor.list("user@selectConditions", User.class, new HashCh
 ### 模板SQL分页查询
 
 #### 基础分页
-`juorm.list`
+`list`
 
 ```java
 List<User> users = executor.list("user@selectConditions", User.class, new HashChainMap<String, Object>(), start, limit);
@@ -750,7 +710,7 @@ List<User> users = executor.list("user@selectConditions", User.class, new HashCh
 ```
 
 #### 包装分页
-`juorm.pagination`
+`pagination`
 
 ##### 使用自动构建统计sql
 
@@ -815,7 +775,7 @@ select id, username, password pwd, mobile_no, age from user<@where>
 `if` 传入布尔值，表示是否需要标签内的内容，当内容是一个分组时，不需要指定  
 `name` 字符串，表示当前标签内查询条件的参数名称，此属性大部分时候可以省略，只有无法从内容中获取确切的参数名时，才需要指定
 
-**基于命名占位符**
+*基于命名占位符*
 ```sql
 select * from user<@where>
     <@and if= age??>
@@ -872,7 +832,7 @@ select * from user<@where>
 </@where>
 ```
 
-**基于问号占位符**
+*基于问号占位符*
 ```sql
 select * from user<@where>
     <@and if = age??>
@@ -963,13 +923,13 @@ mysql使用 \`\`，例：\`user\`
 postgresql使用 "", 例: "user"  
 所以提供了一个专门用来包装SQL关键字的标签和函数，其输出的格式通过指定的Dialect决定
 
-**标签实现**
+*标签实现*
 ```yaml
 selectByUsernameAndPassword: >
     select username, password pwd from <@wrap value="user"/> where username = :username and password = :password
 ```
 
-**函数实现**
+*函数实现*
 ```yaml
 selectByUsernameAndPassword: >
     select username, password pwd from ${tpl_wrap("user")} where username = :username and password = :password    
@@ -1015,7 +975,7 @@ roleFromTemplate: "from role <@where>
 </@where>"
 ```
 
-## 使用Mapper
+## Mapper详解
 
 ### Mapper的定义方式
 
@@ -1023,24 +983,189 @@ Mapper就是定义指定操作方法的接口类，juorm有三种Mapper的定义
 
 1. 直接定义一个接口，使用@TplExecution标注，外部使用此mapper时，只提供此接口定义的方法
 ```java
-@TplExecution(namesapce = "user")
+@TplExecution(namespace = "user")
 public interface UserMapper {
 	// methods
 }
 ```
 2. 直接定义一个接口，使用@TplExecution标注，继承Juorm接口，外部使用此mapper时，除了提供此接口定义的方法，还能使用Juorm内定义的方法，方法内部也可以使用default method调用Juorm接口内的方法实现一些基础功能
 ```java
-@TplExecution(namesapce = "user")
+@TplExecution(namespace = "user")
 public interface UserMapper2 extends Juorm {
 	// methods
 }
 ```
 3. 直接定义一个接口，使用@TplExecution标注，继承GenericJuorm接口，外部使用此mapper时，除了提供此接口定义的方法，还能使用GenericJuorm内定义的方法，方法内部也可以使用default method调用Juorm接口内的方法实现一些基础功能
 ```java
-@TplExecution(namesapce = "user")
+@TplExecution(namespace = "user")
 public interface UserMapper3 extends GenericJuorm<User> {
 	// methods
 }
 ```
 
 **如果需要定义一个实体对象的Mapper，建议使用继承GenericJuorm接口的方式，这样此mapper就能把对应实体的基础操作都提供了**
+
+### Mapper中注解的含义
+
+`@TplExecution` 可以标注在类或者方法上  
+&nbsp;&nbsp;`namespace`  模板文件的路径  
+&nbsp;&nbsp;`name`  sqlId
+
+`@TplParam` 标注在方法参数中，用于映射方法参数和查询参数  
+&nbsp;&nbsp;`value`  查询参数名称，如果是java8以上，并且**编译时开启了调试信息**，可以不使用此注解来映射查询参数名称  
+&nbsp;&nbsp;`type`  查询参数类型，枚举类型  
+
+### Mapper方法sqlId的查找逻辑
+
+标注在类（接口）上的`@TplExecution`的`namespace`的值将作为内部所有方法的缺省默认值，
+方法没有标注`@TplExecution`时，使用方法名作为`@TplExecution`的`name`值，如果某一些方法需要使用不同于类标注的`namespace`的值，可以在方法上标注`@TplExecution`，并指定`namespace`的值
+
+*参考示例代码*
+
+```java
+@TplExecution(namespace = "user")
+public interface UserMapper {
+
+    User selectByUsername(@TplParam("username") String username);
+
+    Map<String, Object> selectByUsername2(@TplParam("username") String username);
+
+    User selectByUsernameAndPassword(@TplParam("username") String username, @TplParam("password") String pwd);
+
+    Integer selectAvg();
+
+    String selectString();
+
+    List<User> selectByAge2(@TplParam("age") Integer age);
+
+    @TplExecution
+    List<User> selectByAge2(@TplParam("age") Integer age, @TplParam(type = TplParamType.PAGE_OFFSET) int offset,
+            @TplParam(type = TplParamType.PAGE_LIMIT) int limit);
+
+    @TplExecution
+    List<User> selectByAge2(@TplParam("age") Integer age, Page page);
+
+    @TplExecution(name = "selectByAge2")
+    PaginationResults<User> selectByAge2Page(@TplParam("age") Integer age,
+            @TplParam(type = TplParamType.PAGE_OFFSET) int offset, @TplParam(type = TplParamType.PAGE_LIMIT) int limit);
+
+    @TplExecution(name = "selectByAge2")
+    PaginationResults<User> selectByAge2Page(@TplParam("age") Integer age, Page page);
+
+    List<User> selectById(@TplParam("id") Integer id);
+
+    Integer selectAvg2(@TplParam("age") Integer age);
+
+    String selectString2(@TplParam("id") Integer id);
+
+    @TplExecution(namespace = "user_info")
+    List<Map<String, Object>> select2();
+
+    @TplExecution(namespace = "user_info", name = "select2")
+    List<Map<String, Object>> select2(@TplParam(type = TplParamType.PAGE_OFFSET) int offset,
+            @TplParam(type = TplParamType.PAGE_LIMIT) int limit);
+
+    @TplExecution(namespace = "user_info", name = "select2")
+    List<Map<String, Object>> select2(Page page);
+
+    @TplExecution(namespace = "user_info", name = "select2")
+    PaginationResults<Map<String, Object>> select2Page(@TplParam(type = TplParamType.PAGE_OFFSET) int offset,
+            @TplParam(type = TplParamType.PAGE_LIMIT) int limit);
+
+    @TplExecution(namespace = "user_info", name = "select2")
+    PaginationResults<Map<String, Object>> select2Page(Page page);
+
+    @TplExecution(namespace = "user_info", name = "selectById")
+    List<Map<String, Object>> selectById2(@TplParam("id") Integer id);
+}
+```
+
+### Mapper方法与juorm模板API的对应关系
+
+对应原则基本都是按照方法调用的返回对象为依据，除了小部分特殊情况，下面章节为一一介绍。
+
+#### [**`模板SQL唯一值查询`**](#模板SQL唯一值查询)章节介绍的API对应的Mapper调用
+
+```java
+Integer selectAvg();
+
+String selectString();
+
+Integer selectAvg2(@TplParam("age") Integer age);
+
+String selectString2(@TplParam("id") Integer id);
+```
+
+#### [**`模板SQL唯一记录查询`**](#模板SQL唯一记录查询)章节介绍的API对应的Mapper调用
+
+```java
+User selectByUsername(@TplParam("username") String username);
+
+Map<String, Object> selectByUsername2(@TplParam("username") String username);
+
+User selectByUsernameAndPassword(@TplParam("username") String username, @TplParam("password") String pwd);
+```
+
+#### [**`模板SQL列表查询`**](#模板SQL列表查询)章节介绍的API对应的Mapper调用
+
+```java
+List<User> selectByAge2(@TplParam("age") Integer age);
+
+List<User> selectById(@TplParam("id") Integer id);
+
+@TplExecution(namespace = "user_info")
+List<Map<String, Object>> select2();
+```
+
+#### [**`模板SQL分页查询`**](#模板SQL分页查询)章节介绍的API对应的Mapper调用
+
+分页查询可以返回List和PaginationResults，并且需要在查询参数之外还要传入分页参数，
+可以使用Page对象，也可以使用int, int传入，当使用int,int传入时需要使用`@TplParam`标注并设置`type`的类型确定limit和offset。
+
+```java
+@TplExecution
+List<User> selectByAge2(@TplParam("age") Integer age, Page page);
+
+@TplExecution(name = "selectByAge2")
+PaginationResults<User> selectByAge2Page(@TplParam("age") Integer age,
+        @TplParam(type = TplParamType.PAGE_OFFSET) int offset, @TplParam(type = TplParamType.PAGE_LIMIT) int limit);
+
+@TplExecution(name = "selectByAge2")
+PaginationResults<User> selectByAge2Page(@TplParam("age") Integer age, Page page);
+```
+
+### Mapper中实现模板查询以外的操作
+
+定义接口继承自Juorm或者GenericJuorm，然后定义default method，在其内部就可以使用已有的方法进行逻辑编写了。**需要java8的default method**。  
+通过此方式，我们可以把一种实体类型的数据库操作写在一个Mapper文件中，通过继承的接口已经获得了实体的基本增删改查方法，其他简单的查询（更新，删除）也可以用DSL API实现，只有复杂的查询，才需要在模板中写sql。
+
+```java
+@TplExecution(namespace = "user")
+public interface UserMapper3 extends GenericJuorm<User> {
+
+    User selectByUsername(@TplParam("username") String username);
+    // methods ....
+
+	default User getByUsernameAndPassword(String username, String pwd) {
+        return query().where().eq("username", username).and().eq("pwd", pwd).single();
+    }
+
+    default User getByUsernameAndPassword2(String username, String pwd) {
+        return query().where().eq("username", username).and().eq("password", pwd).single();
+    }
+
+    default User getByUsernameAndPassword3(String username, String pwd) {
+        return query().where().property("username").eq(username).and().property("pwd").eq(pwd).single();
+    }
+
+     default int updatePasswordByUsername(String username, String pwd) {
+        //return update().set("password", pwd).where().eq("username", username).execute();
+        return update().set(User::getPwd, pwd).where().eq(User::getUsername, username).execute();
+    }
+
+    default int deleteByUsername(String username) {
+        //return delete().where().eq("username", username);
+        return delete().where().eq(User::getUsername, username).execute();
+    }
+}
+```
