@@ -20,7 +20,7 @@ import java.lang.annotation.Target;
 @Retention(RetentionPolicy.RUNTIME)
 public @interface TplExecution {
 
-    String namesapce() default "";
+    String namespace() default "";
 
     String name() default "";
 }

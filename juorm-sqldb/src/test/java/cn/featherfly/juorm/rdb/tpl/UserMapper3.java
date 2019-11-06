@@ -87,4 +87,14 @@ public interface UserMapper3 extends GenericJuorm<User> {
     default User getByUsernameAndPassword3(String username, String pwd) {
         return query().where().property("username").eq(username).and().property("pwd").eq(pwd).single();
     }
+
+    default int updatePasswordByUsername(String username, String pwd) {
+        //return update().set("password", pwd).where().eq("username", username).execute();
+        return update().set(User::getPwd, pwd).where().eq(User::getUsername, username).execute();
+    }
+
+    default int deleteByUsername(String username) {
+        //return delete().where().eq("username", username);
+        return delete().where().eq(User::getUsername, username).execute();
+    }
 }

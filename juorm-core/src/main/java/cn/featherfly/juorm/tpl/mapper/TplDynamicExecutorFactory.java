@@ -263,8 +263,8 @@ public class TplDynamicExecutorFactory {
 
     private String getNamespace(Class<?> type) {
         TplExecution tplExecution = type.getAnnotation(TplExecution.class);
-        if (tplExecution != null && LangUtils.isNotEmpty(tplExecution.namesapce())) {
-            return tplExecution.namesapce();
+        if (tplExecution != null && LangUtils.isNotEmpty(tplExecution.namespace())) {
+            return tplExecution.namespace();
         } else {
             return type.getSimpleName();
         }
@@ -272,8 +272,8 @@ public class TplDynamicExecutorFactory {
 
     private String getNamespace(Method method, String namespace) {
         TplExecution tplExecution = method.getAnnotation(TplExecution.class);
-        if (tplExecution != null && LangUtils.isNotEmpty(tplExecution.namesapce())) {
-            return tplExecution.namesapce();
+        if (tplExecution != null && LangUtils.isNotEmpty(tplExecution.namespace())) {
+            return tplExecution.namespace();
         } else {
             return namespace;
         }
