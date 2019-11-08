@@ -17,7 +17,7 @@ public interface QueryConditionLimit {
      * @param limit limit rows
      * @return QueryExecutor
      */
-    QueryExecutor limit(Integer limit);
+    QueryLimitExecutor limit(Integer limit);
 
     /**
      * limit
@@ -26,7 +26,7 @@ public interface QueryConditionLimit {
      * @param limit  limit rows
      * @return QueryExecutor
      */
-    QueryExecutor limit(Integer offset, Integer limit);
+    QueryLimitExecutor limit(Integer offset, Integer limit);
 
     /**
      * limit
@@ -34,5 +34,5 @@ public interface QueryConditionLimit {
      * @param page params for pagination
      * @return QueryExecutor
      */
-    QueryExecutor limit(Page page);
+    QueryLimitExecutor limit(Page page);
 }

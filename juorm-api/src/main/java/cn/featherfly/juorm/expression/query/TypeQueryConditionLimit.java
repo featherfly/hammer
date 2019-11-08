@@ -17,7 +17,7 @@ public interface TypeQueryConditionLimit {
      * @param limit limit rows
      * @return TypeQueryExecutor
      */
-    TypeQueryExecutor limit(Integer limit);
+    TypeQueryLimitExecutor limit(Integer limit);
 
     /**
      * limit
@@ -26,7 +26,7 @@ public interface TypeQueryConditionLimit {
      * @param limit  limit rows
      * @return TypeQueryExecutor
      */
-    TypeQueryExecutor limit(Integer offset, Integer limit);
+    TypeQueryLimitExecutor limit(Integer offset, Integer limit);
 
     /**
      * limit
@@ -34,5 +34,5 @@ public interface TypeQueryConditionLimit {
      * @param page params for pagination
      * @return TypeQueryExecutor
      */
-    TypeQueryExecutor limit(Page page);
+    TypeQueryLimitExecutor limit(Page page);
 }

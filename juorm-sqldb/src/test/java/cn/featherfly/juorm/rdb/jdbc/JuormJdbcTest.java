@@ -12,6 +12,7 @@ import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
 
 import cn.featherfly.common.lang.RandomUtils;
+import cn.featherfly.common.structure.page.PaginationResults;
 import cn.featherfly.juorm.Juorm;
 import cn.featherfly.juorm.rdb.jdbc.vo.Article;
 import cn.featherfly.juorm.rdb.jdbc.vo.DistrictDivision;
@@ -421,8 +422,8 @@ public class JuormJdbcTest extends JdbcTestBase {
         Role r3 = role();
         Role r4 = role();
         juorm.save(r, r2, r3, r4);
-        juorm.delete(Role.class).where().in(Role::getId, new Integer[] { r.getId(), r2.getId() }).or().eq("id", r3.getId())
-                .or().ge("id", r4.getId()).execute();
+        juorm.delete(Role.class).where().in(Role::getId, new Integer[] { r.getId(), r2.getId() }).or()
+                .eq("id", r3.getId()).or().ge("id", r4.getId()).execute();
 
         r = juorm.get(r);
         r2 = juorm.get(r2);
@@ -531,10 +532,15 @@ public class JuormJdbcTest extends JdbcTestBase {
     public void testQueryLimit2() {
         List<Role> roles = juorm.query(Role.class).where().eq("id", 4).or().group().gt("id", 5).and().le("id", 10)
                 .limit(2, 3).list();
+
         assertTrue(roles.size() == 3);
         for (Role role : roles) {
             System.out.println(role);
         }
+
+        PaginationResults<Role> rolePage = juorm.query(Role.class).where().le(Role::getId, 10).limit(2, 3).pagination();
+        assertTrue(rolePage.getTotal() == 10);
+        assertTrue(rolePage.getPageResults().size() == 3);
     }
 
     @Test

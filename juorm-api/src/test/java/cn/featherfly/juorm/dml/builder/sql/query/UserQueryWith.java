@@ -5,7 +5,7 @@ import java.util.List;
 import java.util.Map;
 
 import cn.featherfly.common.structure.page.Page;
-import cn.featherfly.juorm.expression.query.QueryExecutor;
+import cn.featherfly.juorm.expression.query.QueryLimitExecutor;
 import cn.featherfly.juorm.expression.query.QueryWithExpression;
 import cn.featherfly.juorm.mapping.RowMapper;
 
@@ -68,7 +68,7 @@ public class UserQueryWith implements
      * {@inheritDoc}
      */
     @Override
-    public QueryExecutor limit(Integer limit) {
+    public QueryLimitExecutor limit(Integer limit) {
         // YUFEI_TODO Auto-generated method stub
         return null;
     }
@@ -77,7 +77,7 @@ public class UserQueryWith implements
      * {@inheritDoc}
      */
     @Override
-    public QueryExecutor limit(Integer offset, Integer limit) {
+    public QueryLimitExecutor limit(Integer offset, Integer limit) {
         // YUFEI_TODO Auto-generated method stub
         return null;
     }
@@ -86,7 +86,7 @@ public class UserQueryWith implements
      * {@inheritDoc}
      */
     @Override
-    public QueryExecutor limit(Page page) {
+    public QueryLimitExecutor limit(Page page) {
         // YUFEI_TODO Auto-generated method stub
         return null;
     }

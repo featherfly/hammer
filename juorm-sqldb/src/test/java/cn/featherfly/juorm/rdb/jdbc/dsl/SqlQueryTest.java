@@ -11,10 +11,12 @@ import java.util.Map;
 
 import org.testng.annotations.Test;
 
+import cn.featherfly.common.structure.page.PaginationResults;
 import cn.featherfly.juorm.expression.SimpleRepository;
 import cn.featherfly.juorm.rdb.jdbc.JdbcTestBase;
 import cn.featherfly.juorm.rdb.jdbc.JuormJdbcException;
 import cn.featherfly.juorm.rdb.jdbc.dsl.query.SqlQuery;
+import cn.featherfly.juorm.rdb.jdbc.vo.Role;
 import cn.featherfly.juorm.rdb.jdbc.vo.Tree2;
 import cn.featherfly.juorm.rdb.jdbc.vo.User;
 import cn.featherfly.juorm.rdb.jdbc.vo.UserInfo;
@@ -72,6 +74,39 @@ public class SqlQueryTest extends JdbcTestBase {
         query.find(new SimpleRepository("user", "u")).property("username", "password", "age").where()
                 .eq("username", "yufei").and().eq("password", "123456").and().group().gt("age", 18).and().lt("age", 60)
                 .list(User.class);
+    }
+
+    @Test
+    void testLimit() {
+        SqlQuery query = new SqlQuery(jdbc, metadata);
+        int pageSize = 3;
+        Integer total = 10;
+        List<Role> roleList = query.find(new SimpleRepository("role")).where().le("id", total).limit(2, pageSize)
+                .list(Role.class);
+        assertEquals(roleList.size(), pageSize);
+
+        List<Map<String, Object>> roleList2 = query.find(new SimpleRepository("role")).where().le("id", total)
+                .limit(2, pageSize).list();
+        assertEquals(roleList2.size(), pageSize);
+
+        List<Integer> roleList3 = query.find(new SimpleRepository("role")).where().le("id", total).limit(2, pageSize)
+                .list((res, rowNum) -> res.getInt("id"));
+        assertEquals(roleList3.size(), pageSize);
+
+        PaginationResults<Role> rolePage = query.find(new SimpleRepository("role")).where().le("id", total)
+                .limit(2, pageSize).pagination(Role.class);
+        assertEquals(rolePage.getTotal(), total);
+        assertEquals(rolePage.getPageResults().size(), pageSize);
+
+        PaginationResults<Map<String, Object>> rolePage2 = query.find(new SimpleRepository("role")).where()
+                .le("id", total).limit(2, pageSize).pagination();
+        assertEquals(rolePage2.getTotal(), total);
+        assertEquals(rolePage2.getPageResults().size(), pageSize);
+
+        PaginationResults<Integer> rolePage3 = query.find(new SimpleRepository("role")).where().le("id", total)
+                .limit(2, pageSize).pagination((res, rowNum) -> res.getInt("id"));
+        assertEquals(rolePage3.getTotal(), total);
+        assertEquals(rolePage3.getPageResults().size(), pageSize);
     }
 
     @SuppressWarnings("unchecked")
