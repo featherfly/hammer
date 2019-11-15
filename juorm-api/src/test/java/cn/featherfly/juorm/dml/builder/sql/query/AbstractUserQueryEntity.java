@@ -10,7 +10,7 @@ import cn.featherfly.common.lang.function.SerializableFunction;
 import cn.featherfly.common.structure.page.Page;
 import cn.featherfly.juorm.dsl.query.QuerySortExpression;
 import cn.featherfly.juorm.expression.query.QueryEntityPropertiesExpression;
-import cn.featherfly.juorm.expression.query.QueryExecutor;
+import cn.featherfly.juorm.expression.query.QueryLimitExecutor;
 import cn.featherfly.juorm.expression.query.QueryWithEntityExpression;
 import cn.featherfly.juorm.expression.query.QueryWithExpression;
 import cn.featherfly.juorm.expression.query.QueryWithOnExpression;
@@ -23,8 +23,7 @@ import cn.featherfly.juorm.mapping.RowMapper;
  *
  * @author zhongj
  */
-public class AbstractUserQueryEntity<
-        Q extends AbstractUserQueryEntity<Q, QW, QWO, QWE>,
+public class AbstractUserQueryEntity<Q extends AbstractUserQueryEntity<Q, QW, QWO, QWE>,
         QW extends QueryWithExpression<QW, QWO, QWE, UserQueryRepositoryConditionGroupExpression, UserQueryRepositoryConditionGroupExpression>,
         QWO extends QueryWithOnExpression<QW, QWO, QWE, UserQueryRepositoryConditionGroupExpression, UserQueryRepositoryConditionGroupExpression>,
         QWE extends QueryWithEntityExpression<QW, QWO, QWE, UserQueryRepositoryConditionGroupExpression, UserQueryRepositoryConditionGroupExpression>>
@@ -89,7 +88,7 @@ public class AbstractUserQueryEntity<
      * {@inheritDoc}
      */
     @Override
-    public QueryExecutor limit(Integer limit) {
+    public QueryLimitExecutor limit(Integer limit) {
 
         return null;
     }
@@ -98,7 +97,7 @@ public class AbstractUserQueryEntity<
      * {@inheritDoc}
      */
     @Override
-    public QueryExecutor limit(Integer offset, Integer limit) {
+    public QueryLimitExecutor limit(Integer offset, Integer limit) {
 
         return null;
     }
@@ -107,7 +106,7 @@ public class AbstractUserQueryEntity<
      * {@inheritDoc}
      */
     @Override
-    public QueryExecutor limit(Page page) {
+    public QueryLimitExecutor limit(Page page) {
 
         return null;
     }

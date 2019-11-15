@@ -5,15 +5,18 @@ import java.util.Arrays;
 import java.util.List;
 
 import cn.featherfly.common.constant.Chars;
+import cn.featherfly.common.db.SqlUtils;
 import cn.featherfly.common.lang.LambdaUtils;
 import cn.featherfly.common.lang.LangUtils;
 import cn.featherfly.common.lang.function.SerializableFunction;
 import cn.featherfly.common.structure.page.Limit;
 import cn.featherfly.common.structure.page.Page;
+import cn.featherfly.common.structure.page.PaginationResults;
+import cn.featherfly.common.structure.page.SimplePaginationResults;
 import cn.featherfly.juorm.dsl.query.TypeQueryConditionGroupExpression;
 import cn.featherfly.juorm.dsl.query.TypeQueryConditionGroupLogicExpression;
 import cn.featherfly.juorm.dsl.query.TypeQuerySortExpression;
-import cn.featherfly.juorm.expression.query.TypeQueryExecutor;
+import cn.featherfly.juorm.expression.query.TypeQueryLimitExecutor;
 import cn.featherfly.juorm.mapping.ClassMapping;
 import cn.featherfly.juorm.rdb.jdbc.Jdbc;
 import cn.featherfly.juorm.rdb.jdbc.mapping.ClassMappingUtils;
@@ -100,7 +103,7 @@ public class TypeSqlQueryConditionGroupExpression extends
      * {@inheritDoc}
      */
     @Override
-    public TypeQueryExecutor limit(Integer limit) {
+    public TypeQueryLimitExecutor limit(Integer limit) {
         return limit(0, limit);
     }
 
@@ -108,7 +111,7 @@ public class TypeSqlQueryConditionGroupExpression extends
      * {@inheritDoc}
      */
     @Override
-    public TypeQueryExecutor limit(Integer offset, Integer limit) {
+    public TypeQueryLimitExecutor limit(Integer offset, Integer limit) {
         return limit(new Limit(offset, limit));
     }
 
@@ -116,11 +119,11 @@ public class TypeSqlQueryConditionGroupExpression extends
      * {@inheritDoc}
      */
     @Override
-    public TypeQueryExecutor limit(Page page) {
+    public TypeQueryLimitExecutor limit(Page page) {
         return limit(new Limit(page));
     }
 
-    private TypeQueryExecutor limit(Limit limit) {
+    private TypeQueryLimitExecutor limit(Limit limit) {
         this.limit = limit;
         return this;
     }
@@ -138,6 +141,32 @@ public class TypeSqlQueryConditionGroupExpression extends
             params = dialect.getPaginationSqlParameter(params, limit.getOffset(), limit.getLimit());
         }
         return (List<E>) jdbc.query(sql, params, classMapping.getType());
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public <E> PaginationResults<E> pagination() {
+        String sql = getRoot().expression();
+        String countSql = SqlUtils.convertSelectToCount(sql);
+        Object[] params = getRoot().getParams().toArray();
+        SimplePaginationResults<E> pagination = new SimplePaginationResults<>(limit);
+        if (limit != null) {
+            @SuppressWarnings("unchecked")
+            List<E> list = (List<E>) jdbc.query(dialect.getPaginationSql(sql, limit.getOffset(), limit.getLimit()),
+                    dialect.getPaginationSqlParameter(params, limit.getOffset(), limit.getLimit()),
+                    classMapping.getType());
+            pagination.setPageResults(list);
+            int total = jdbc.queryInt(countSql, params);
+            pagination.setTotal(total);
+        } else {
+            @SuppressWarnings("unchecked")
+            List<E> list = (List<E>) jdbc.query(sql, params, classMapping.getType());
+            pagination.setPageResults(list);
+            pagination.setTotal(list.size());
+        }
+        return pagination;
     }
 
     /**
@@ -238,5 +267,4 @@ public class TypeSqlQueryConditionGroupExpression extends
                 .toArray(value -> new String[value]);
         return desc(nameArray);
     }
-
 }

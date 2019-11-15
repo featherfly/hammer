@@ -360,7 +360,7 @@ public interface TplExecutor {
 
     /**
      * <p>
-     * query list, use query str in template find with executeId
+     * query page, use query str in template find with executeId
      * </p>
      *
      * @param tplExecuteId tpl execute id
@@ -374,7 +374,7 @@ public interface TplExecutor {
 
     /**
      * <p>
-     * query list, use query str in template find with executeId
+     * query page, use query str in template find with executeId
      * </p>
      *
      * @param tplExecuteId tpl execute id
@@ -388,7 +388,7 @@ public interface TplExecutor {
 
     /**
      * <p>
-     * query list, use query str in template find with executeId
+     * query page, use query str in template find with executeId
      * </p>
      *
      * @param tplExecuteId tpl execute id
@@ -400,7 +400,7 @@ public interface TplExecutor {
 
     /**
      * <p>
-     * query list, use query str in template find with executeId
+     * query page, use query str in template find with executeId
      * </p>
      *
      * @param tplExecuteId tpl execute id
@@ -412,7 +412,7 @@ public interface TplExecutor {
 
     /**
      * <p>
-     * query list, use query str in template find with executeId
+     * query page, use query str in template find with executeId
      * </p>
      *
      * @param <E>          entity type
@@ -428,7 +428,7 @@ public interface TplExecutor {
 
     /**
      * <p>
-     * query list, use query str in template find with executeId
+     * query page, use query str in template find with executeId
      * </p>
      *
      * @param <E>          entity type
@@ -444,7 +444,7 @@ public interface TplExecutor {
 
     /**
      * <p>
-     * query list, use query str in template find with executeId
+     * query page, use query str in template find with executeId
      * </p>
      *
      * @param <E>          entity type
@@ -459,7 +459,7 @@ public interface TplExecutor {
 
     /**
      * <p>
-     * query list, use query str in template find with executeId
+     * query page, use query str in template find with executeId
      * </p>
      *
      * @param <E>          entity type

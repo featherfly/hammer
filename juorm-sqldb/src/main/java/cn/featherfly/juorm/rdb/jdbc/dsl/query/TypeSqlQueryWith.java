@@ -10,7 +10,7 @@ import cn.featherfly.juorm.dml.AliasManager;
 import cn.featherfly.juorm.dsl.query.RepositoryTypeQueryConditionGroupExpression;
 import cn.featherfly.juorm.dsl.query.TypeQueryWith;
 import cn.featherfly.juorm.dsl.query.TypeQueryWithEntity;
-import cn.featherfly.juorm.expression.query.TypeQueryExecutor;
+import cn.featherfly.juorm.expression.query.TypeQueryLimitExecutor;
 import cn.featherfly.juorm.mapping.ClassMapping;
 import cn.featherfly.juorm.mapping.MappingFactory;
 import cn.featherfly.juorm.rdb.jdbc.JuormJdbcException;
@@ -154,7 +154,7 @@ public class TypeSqlQueryWith implements TypeQueryWith, TypeQueryWithEntity {
      * {@inheritDoc}
      */
     @Override
-    public TypeQueryExecutor limit(Integer limit) {
+    public TypeQueryLimitExecutor limit(Integer limit) {
         return sqlQueryEntityProperties.limit(limit);
     }
 
@@ -162,7 +162,7 @@ public class TypeSqlQueryWith implements TypeQueryWith, TypeQueryWithEntity {
      * {@inheritDoc}
      */
     @Override
-    public TypeQueryExecutor limit(Integer offset, Integer limit) {
+    public TypeQueryLimitExecutor limit(Integer offset, Integer limit) {
         return sqlQueryEntityProperties.limit(offset, limit);
     }
 
@@ -170,7 +170,7 @@ public class TypeSqlQueryWith implements TypeQueryWith, TypeQueryWithEntity {
      * {@inheritDoc}
      */
     @Override
-    public TypeQueryExecutor limit(Page page) {
+    public TypeQueryLimitExecutor limit(Page page) {
         return sqlQueryEntityProperties.limit(page);
     }
 
