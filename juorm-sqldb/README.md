@@ -62,8 +62,8 @@ List<User> users = query.find("user").where().eq("username", "yufei").and().eq("
 List<Role> roles = juorm.query(Role.class).where().gt("id", 5).and().le("id", 10).list()
 
 // 模板SQL查询数据
-int avg = juorm.intValue("selectAvg2", new HashChainMap<String, Object>().putChain("age", 40));
-String str = juorm.stringValue("selectString", new HashChainMap<String, Object>());
+int avg = juorm.numberInt("selectAvg2", new HashChainMap<String, Object>().putChain("age", 40));
+String str = juorm.string("selectString", new HashChainMap<String, Object>());
 User u = juorm.single("user@selectByUsername", User.class,
                 new HashChainMap<String, Object>().putChain("username", username));
 List<User> users = juorm.list("user@selectConditions", User.class, new HashChainMap<String, Object>()
@@ -649,7 +649,7 @@ select2: "select id,user_id as `user.id`, name, descp
 API调用传入的tplExecuteId字符串格式为filePath@sqlId  
 例：`juorm.single("user@selectByUsername", User.class, new HashChainMap<String, Object>().putChain("username", username))`  
 如果sqlId为全局唯一，也可以直接使用sqlId  
-例：`juorm.intValue("selectAvg", new HashChainMap<String, Object>())`  
+例：`juorm.numberInt("selectAvg", new HashChainMap<String, Object>())`  
 **如果同样的sqlId出现在不同的文件中，调用时没有使用filePath@sqlId进行调用，就会抛出异常，因为程序不知道调用的是哪一个**
 
 
@@ -665,18 +665,18 @@ API调用传入的tplExecuteId字符串格式为filePath@sqlId
 ### 模板SQL唯一值查询
 `value`  
 `number`  
-`intValue`  
-`longValue`  
-`bigDecimalValue`  
-`doubleValue`  
-`stringValue`  
+`numberInt`  
+`numberLong`  
+`numberBigDecimal`  
+`numberDouble`  
+`string`  
 
 ```java
-Integer avg = juorm.intValue("selectAvg", new HashChainMap<String, Object>());
-Integer avg = juorm.intValue("selectAvg2", new HashChainMap<String, Object>().putChain("age", 40));
+Integer avg = juorm.numberInt("selectAvg", new HashChainMap<String, Object>());
+Integer avg = juorm.numberInt("selectAvg2", new HashChainMap<String, Object>().putChain("age", 40));
 
-String str = juorm.stringValue("selectString", new HashChainMap<String, Object>());
-String str = juorm.stringValue("selectString2", new HashChainMap<String, Object>().putChain("id", 2));
+String str = juorm.string("selectString", new HashChainMap<String, Object>());
+String str = juorm.string("selectString2", new HashChainMap<String, Object>().putChain("id", 2));
 ```
 
 
