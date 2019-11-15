@@ -201,7 +201,7 @@ public class TplDynamicExecutorFactory {
                 body = String.format("{return (%3$s) %s.number(\"%s\", %s.class, new %s()%s);}", juormFieldName,
                         executeId.getId(), method.getReturnType().getName(), HashChainMap.class.getName(), setParams);
             } else if (String.class == method.getReturnType()) {
-                body = String.format("{return  %s.stringValue(\"%s\", new %s()%s);}", juormFieldName, executeId.getId(),
+                body = String.format("{return  %s.string(\"%s\", new %s()%s);}", juormFieldName, executeId.getId(),
                         HashChainMap.class.getName(), setParams);
             } else if (ClassUtils.isParent(Map.class, method.getReturnType())) {
                 body = String.format("{return  %s.single(\"%s\", new %s()%s);}", juormFieldName, executeId.getId(),

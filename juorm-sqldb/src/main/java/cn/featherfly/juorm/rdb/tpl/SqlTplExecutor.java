@@ -469,7 +469,7 @@ public class SqlTplExecutor implements TplExecutor {
      * {@inheritDoc}
      */
     @Override
-    public Integer intValue(String tplExecuteId, Map<String, Object> params) {
+    public Integer numberInt(String tplExecuteId, Map<String, Object> params) {
         return number(tplExecuteId, Integer.class, params);
     }
 
@@ -477,7 +477,7 @@ public class SqlTplExecutor implements TplExecutor {
      * {@inheritDoc}
      */
     @Override
-    public Long longValue(String tplExecuteId, Map<String, Object> params) {
+    public Long numberLong(String tplExecuteId, Map<String, Object> params) {
         return number(tplExecuteId, Long.class, params);
     }
 
@@ -485,7 +485,7 @@ public class SqlTplExecutor implements TplExecutor {
      * {@inheritDoc}
      */
     @Override
-    public BigDecimal bigDecimalValue(String tplExecuteId, Map<String, Object> params) {
+    public BigDecimal numberBigDecimal(String tplExecuteId, Map<String, Object> params) {
         return number(tplExecuteId, BigDecimal.class, params);
     }
 
@@ -493,7 +493,7 @@ public class SqlTplExecutor implements TplExecutor {
      * {@inheritDoc}
      */
     @Override
-    public Double doubleValue(String tplExecuteId, Map<String, Object> params) {
+    public Double numberDouble(String tplExecuteId, Map<String, Object> params) {
         return number(tplExecuteId, Double.class, params);
     }
 
@@ -501,7 +501,7 @@ public class SqlTplExecutor implements TplExecutor {
      * {@inheritDoc}
      */
     @Override
-    public String stringValue(String tplExecuteId, Map<String, Object> params) {
+    public String string(String tplExecuteId, Map<String, Object> params) {
         return value(tplExecuteId, String.class, params);
     }
 }

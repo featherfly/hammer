@@ -44,8 +44,8 @@ public class BasedJuormTplExecutor implements Juorm {
      * {@inheritDoc}
      */
     @Override
-    public BigDecimal bigDecimalValue(String tplExecuteId, Map<String, Object> params) {
-        return juorm.bigDecimalValue(tplExecuteId, params);
+    public BigDecimal numberBigDecimal(String tplExecuteId, Map<String, Object> params) {
+        return juorm.numberBigDecimal(tplExecuteId, params);
     }
 
     /**
@@ -84,8 +84,8 @@ public class BasedJuormTplExecutor implements Juorm {
      * {@inheritDoc}
      */
     @Override
-    public Double doubleValue(String tplExecuteId, Map<String, Object> params) {
-        return juorm.doubleValue(tplExecuteId, params);
+    public Double numberDouble(String tplExecuteId, Map<String, Object> params) {
+        return juorm.numberDouble(tplExecuteId, params);
     }
 
     /**
@@ -108,8 +108,8 @@ public class BasedJuormTplExecutor implements Juorm {
      * {@inheritDoc}
      */
     @Override
-    public Integer intValue(String tplExecuteId, Map<String, Object> params) {
-        return juorm.intValue(tplExecuteId, params);
+    public Integer numberInt(String tplExecuteId, Map<String, Object> params) {
+        return juorm.numberInt(tplExecuteId, params);
     }
 
     /**
@@ -215,8 +215,8 @@ public class BasedJuormTplExecutor implements Juorm {
      * {@inheritDoc}
      */
     @Override
-    public Long longValue(String tplExecuteId, Map<String, Object> params) {
-        return juorm.longValue(tplExecuteId, params);
+    public Long numberLong(String tplExecuteId, Map<String, Object> params) {
+        return juorm.numberLong(tplExecuteId, params);
     }
 
     /**
@@ -399,8 +399,8 @@ public class BasedJuormTplExecutor implements Juorm {
      * {@inheritDoc}
      */
     @Override
-    public String stringValue(String tplExecuteId, Map<String, Object> params) {
-        return juorm.stringValue(tplExecuteId, params);
+    public String string(String tplExecuteId, Map<String, Object> params) {
+        return juorm.string(tplExecuteId, params);
     }
 
     /**
