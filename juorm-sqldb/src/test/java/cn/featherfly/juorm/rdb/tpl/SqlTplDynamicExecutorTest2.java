@@ -50,11 +50,11 @@ public class SqlTplDynamicExecutorTest2 extends JdbcTestBase {
         System.out.println("selectString = " + str);
         assertEquals(str, "featherfly");
 
-        str = userMapper.stringValue("selectString", new HashMap<>());
+        str = userMapper.string("selectString", new HashMap<>());
         System.out.println("selectString = " + str);
         assertEquals(str, "yufei");
 
-        str = userMapper.stringValue("selectString2", new HashChainMap<String, Object>().putChain("id", 2));
+        str = userMapper.string("selectString2", new HashChainMap<String, Object>().putChain("id", 2));
         System.out.println("selectString = " + str);
         assertEquals(str, "featherfly");
 

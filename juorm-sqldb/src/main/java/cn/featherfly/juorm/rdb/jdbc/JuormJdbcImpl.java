@@ -659,40 +659,40 @@ public class JuormJdbcImpl implements Juorm {
      * {@inheritDoc}
      */
     @Override
-    public Integer intValue(String tplExecuteId, Map<String, Object> params) {
-        return sqlTplExecutor.intValue(tplExecuteId, params);
+    public Integer numberInt(String tplExecuteId, Map<String, Object> params) {
+        return sqlTplExecutor.numberInt(tplExecuteId, params);
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public Long longValue(String tplExecuteId, Map<String, Object> params) {
-        return sqlTplExecutor.longValue(tplExecuteId, params);
+    public Long numberLong(String tplExecuteId, Map<String, Object> params) {
+        return sqlTplExecutor.numberLong(tplExecuteId, params);
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public BigDecimal bigDecimalValue(String tplExecuteId, Map<String, Object> params) {
-        return sqlTplExecutor.bigDecimalValue(tplExecuteId, params);
+    public BigDecimal numberBigDecimal(String tplExecuteId, Map<String, Object> params) {
+        return sqlTplExecutor.numberBigDecimal(tplExecuteId, params);
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public Double doubleValue(String tplExecuteId, Map<String, Object> params) {
-        return sqlTplExecutor.doubleValue(tplExecuteId, params);
+    public Double numberDouble(String tplExecuteId, Map<String, Object> params) {
+        return sqlTplExecutor.numberDouble(tplExecuteId, params);
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public String stringValue(String tplExecuteId, Map<String, Object> params) {
-        return sqlTplExecutor.stringValue(tplExecuteId, params);
+    public String string(String tplExecuteId, Map<String, Object> params) {
+        return sqlTplExecutor.string(tplExecuteId, params);
     }
 
 }
