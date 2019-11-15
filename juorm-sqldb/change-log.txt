@@ -1,4 +1,8 @@
 2019-11-15
+0.2.2
+    1.Juorm api 方法名称变更
+
+2019-11-15
 0.2.1
     1.QueryEntityExpression加入sort()
     2.加入QueryLimitExecutor和TypeQueryLimitExecutor，调用limit后的表达式可以使用pagination方法返回分页包装对象

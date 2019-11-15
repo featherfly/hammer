@@ -47,11 +47,11 @@ public class SqlTplExecutorTest extends JdbcTestBase {
 
     @Test
     void testNumberValue() {
-        Integer avg = executor.intValue("selectAvg", new HashChainMap<String, Object>());
+        Integer avg = executor.numberInt("selectAvg", new HashChainMap<String, Object>());
         System.out.println("avg(age) = " + avg);
         assertTrue(avg > 20);
 
-        avg = executor.intValue("selectAvg2", new HashChainMap<String, Object>().putChain("age", 40));
+        avg = executor.numberInt("selectAvg2", new HashChainMap<String, Object>().putChain("age", 40));
         System.out.println("avg(age) = " + avg);
         assertTrue(avg > 40);
 
@@ -59,11 +59,11 @@ public class SqlTplExecutorTest extends JdbcTestBase {
 
     @Test
     void testStringValue() {
-        String str = executor.stringValue("selectString", new HashChainMap<String, Object>());
+        String str = executor.string("selectString", new HashChainMap<String, Object>());
         System.out.println("selectString = " + str);
         assertEquals(str, "yufei");
 
-        str = executor.stringValue("selectString2", new HashChainMap<String, Object>().putChain("id", 2));
+        str = executor.string("selectString2", new HashChainMap<String, Object>().putChain("id", 2));
         System.out.println("selectString = " + str);
         assertEquals(str, "featherfly");
     }
