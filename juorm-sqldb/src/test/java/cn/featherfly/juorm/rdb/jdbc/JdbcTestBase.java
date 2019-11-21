@@ -8,6 +8,8 @@ import java.net.URL;
 import org.apache.commons.dbcp.BasicDataSource;
 import org.apache.log4j.xml.DOMConfigurator;
 import org.testng.annotations.BeforeSuite;
+import org.testng.annotations.Optional;
+import org.testng.annotations.Parameters;
 
 import cn.featherfly.common.db.SqlExecutor;
 import cn.featherfly.common.db.metadata.DatabaseMetadata;
@@ -30,6 +32,14 @@ import cn.featherfly.juorm.tpl.TplConfigFactoryImpl;
  */
 public class JdbcTestBase {
 
+    private static final String CONFIG_FILE_PATTERN = "constant.%s.yaml";
+
+    public static String configFile = "";
+
+    //    public static final String CONFIG_FILE = "constant.mysql.yaml";
+    //    public static final String CONFIG_FILE = "constant.postgresql.yaml";
+    //    public static final String CONFIG_FILE = "constant.sqlite.yaml";
+
     protected static Jdbc jdbc;
 
     protected static JdbcMappingFactory mappingFactory;
@@ -39,14 +49,34 @@ public class JdbcTestBase {
     protected static DatabaseMetadata metadata;
 
     @BeforeSuite
-    public void init() {
+    @Parameters({ "dataBase" })
+    public void init(@Optional("mysql") String dataBase) throws IOException {
         DOMConfigurator.configure(ClassLoaderUtils.getResource("log4j.xml", JdbcTestBase.class));
-
+        initDataBase(dataBase);
     }
 
-    @BeforeSuite(groups = "mysql")
-    public void beforeClassMySql() throws IOException {
-        ConstantConfigurator.config();
+    public void initDataBase(String dataBase) throws IOException {
+        configFile = String.format(CONFIG_FILE_PATTERN, dataBase);
+        switch (dataBase) {
+            case "mysql":
+                initMysql();
+                break;
+            case "postgresql":
+                initPostgresql();
+                break;
+            case "sqlite":
+                initSQLite();
+                break;
+            default:
+                initMysql();
+                configFile = String.format(CONFIG_FILE_PATTERN, "mysql");
+                break;
+        }
+    }
+
+    //    @BeforeSuite(groups = "mysql", dependsOnMethods = "init")
+    public void initMysql() throws IOException {
+        ConstantConfigurator.config("constant.mysql.yaml");
 
         BasicDataSource dataSource = new BasicDataSource();
         dataSource.setUrl("jdbc:mysql://127.0.0.1:3306/juorm_jdbc");
@@ -75,12 +105,10 @@ public class JdbcTestBase {
 
     }
 
-    //    @BeforeSuite(groups = "postgresql")
-    public void beforeClassPostgresql() {
+    //    @BeforeSuite(groups = "postgresql", dependsOnMethods = "init")
+    public void initPostgresql() {
+        //        ConstantConfigurator.config(CONFIG_FILE);
         ConstantConfigurator.config("constant.postgresql.yaml");
-
-        DOMConfigurator.configure(ClassLoaderUtils.getResource("log4j.xml", JdbcTestBase.class));
-        ConstantConfigurator.config();
 
         BasicDataSource dataSource = new BasicDataSource();
         dataSource.setUrl("jdbc:postgresql://localhost:5432/juorm_jdbc");
@@ -99,8 +127,9 @@ public class JdbcTestBase {
         configFactory = new TplConfigFactoryImpl("tpl/");
     }
 
-    //    @BeforeSuite(groups = "sqlite")
-    public void beforeClassSQLite() {
+    //    @BeforeSuite(groups = "sqlite", dependsOnMethods = "init")
+    public void initSQLite() {
+        //        ConstantConfigurator.config(CONFIG_FILE);
         ConstantConfigurator.config("constant.sqlite.yaml");
 
         URL url = ClassLoaderUtils.getResource("juorm.sqlite3", this.getClass());

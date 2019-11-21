@@ -51,7 +51,7 @@ public class Appconfig {
     public JuormJdbcImpl juorm(DataSource dataSource) {
         DOMConfigurator.configure(ClassLoaderUtils.getResource("log4j.xml", JdbcTestBase.class));
 
-        ConstantConfigurator.config();
+        ConstantConfigurator.config(JdbcTestBase.configFile);
 
         //        BasicDataSource dataSource = new BasicDataSource();
         //        dataSource.setUrl("jdbc:mysql://127.0.0.1:3306/juorm_jdbc");
