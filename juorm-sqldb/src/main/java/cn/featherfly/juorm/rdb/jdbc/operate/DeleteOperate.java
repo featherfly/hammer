@@ -1,5 +1,8 @@
 package cn.featherfly.juorm.rdb.jdbc.operate;
 
+import java.io.Serializable;
+import java.sql.PreparedStatement;
+
 import cn.featherfly.common.constant.Chars;
 import cn.featherfly.common.db.metadata.DatabaseMetadata;
 import cn.featherfly.common.lang.LangUtils;
@@ -48,6 +51,26 @@ public class DeleteOperate<T> extends AbstractExecuteOperate<T> {
      */
     public DeleteOperate(Jdbc jdbc, ClassMapping<T> classMapping, DatabaseMetadata databaseMetadata) {
         super(jdbc, classMapping, databaseMetadata);
+    }
+
+    /**
+     * <p>
+     * 删除指定id
+     * </p>
+     *
+     * @param entity 对象
+     * @return 操作影响的数据行数
+     */
+    public int delete(Serializable id) {
+        return jdbc.execute(con -> {
+            PreparedStatement prep = null;
+            prep = con.prepareStatement(sql);
+            setParameter(prep, id);
+            logger.debug("execute sql: {}", sql);
+            int result = prep.executeUpdate();
+            prep.close();
+            return result;
+        });
     }
 
     /**

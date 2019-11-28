@@ -72,6 +72,38 @@ public class BasedGenericJuormTplExecutor<E> implements GenericJuorm<E> {
      * {@inheritDoc}
      */
     @Override
+    public int delete(Serializable id) {
+        return juorm.delete(id, type);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public int deleteIds(Serializable... ids) {
+        int result = 0;
+        for (Serializable id : ids) {
+            result += delete(id);
+        }
+        return result;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public int deleteIds(List<Serializable> ids) {
+        int result = 0;
+        for (Serializable id : ids) {
+            result += delete(id);
+        }
+        return result;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
     public E get(Serializable id) {
         return juorm.get(id, type);
     }
@@ -179,5 +211,4 @@ public class BasedGenericJuormTplExecutor<E> implements GenericJuorm<E> {
     public int update(List<E> entities, IgnorePolicy ignorePolicy) {
         return juorm.update(entities, ignorePolicy);
     }
-
 }
