@@ -58,7 +58,7 @@ public class DeleteOperate<T> extends AbstractExecuteOperate<T> {
      * 删除指定id
      * </p>
      *
-     * @param entity 对象
+     * @param id id
      * @return 操作影响的数据行数
      */
     public int delete(Serializable id) {
