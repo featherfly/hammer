@@ -131,7 +131,7 @@ public class TypeSqlQueryEntityProperties extends AbstractSqlQueryEntityProperti
     }
 
     private TypeSqlQueryWith with(ClassMapping<?> cm, String tableAlias, SerializedLambdaInfo joinInfo) {
-        String name = LambdaUtils.getLambdaPropertyName(joinInfo.getSerializedLambda());
+        String name = joinInfo.getPropertyName();
         if (cm.getType().getName().equals(joinInfo.getMethodInstanceClassName())) {
             // 表示是查找对象的属性，可以连表查询，也可以查询返回到查询对象的指定属性上
             ClassMapping<?> joinClassMapping = factory.getClassMapping(joinInfo.getMethod().getReturnType());

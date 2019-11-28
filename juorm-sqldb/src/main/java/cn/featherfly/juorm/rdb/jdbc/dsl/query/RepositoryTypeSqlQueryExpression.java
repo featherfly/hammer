@@ -1,7 +1,6 @@
 
 package cn.featherfly.juorm.rdb.jdbc.dsl.query;
 
-import java.lang.invoke.SerializedLambda;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
@@ -455,9 +454,8 @@ public class RepositoryTypeSqlQueryExpression extends RepositoryTypeSqlQueryCond
     }
 
     private <T, R> Tuple2<String, String> getTableAliasAndColumnName(SerializableFunction<T, R> name) {
-        SerializedLambda serializedLambda = LambdaUtils.getSerializedLambda(name);
-        SerializedLambdaInfo joinInfo = LambdaUtils.getLambdaInfo(serializedLambda);
-        String propertyName = LambdaUtils.getLambdaPropertyName(serializedLambda);
+        SerializedLambdaInfo joinInfo = LambdaUtils.getLambdaInfo(name);
+        String propertyName = joinInfo.getPropertyName();
         String tableName = factory.getClassMapping(ClassUtils.forName(joinInfo.getMethodInstanceClassName()))
                 .getRepositoryName();
         return Tuples.of(tableName, ClassMappingUtils.getColumnName(propertyName, classMapping));
