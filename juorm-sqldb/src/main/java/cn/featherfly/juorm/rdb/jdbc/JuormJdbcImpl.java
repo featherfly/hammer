@@ -125,7 +125,7 @@ public class JuormJdbcImpl implements Juorm {
             return 0;
         }
         @SuppressWarnings("unchecked")
-        InsertOperate<E> insert = (InsertOperate<E>) insertOperates.get(entity);
+        InsertOperate<E> insert = (InsertOperate<E>) insertOperates.get(entity.getClass());
         if (insert == null) {
             @SuppressWarnings("unchecked")
             ClassMapping<E> mapping = (ClassMapping<E>) mappingFactory.getClassMapping(entity.getClass());
@@ -175,7 +175,7 @@ public class JuormJdbcImpl implements Juorm {
             return 0;
         }
         @SuppressWarnings("unchecked")
-        UpdateOperate<E> update = (UpdateOperate<E>) updateOperates.get(entity);
+        UpdateOperate<E> update = (UpdateOperate<E>) updateOperates.get(entity.getClass());
         if (update == null) {
             @SuppressWarnings("unchecked")
             ClassMapping<E> mapping = (ClassMapping<E>) mappingFactory.getClassMapping(entity.getClass());
@@ -248,7 +248,7 @@ public class JuormJdbcImpl implements Juorm {
             return 0;
         }
         @SuppressWarnings("unchecked")
-        MergeOperate<E> update = (MergeOperate<E>) mergeOperates.get(entity);
+        MergeOperate<E> update = (MergeOperate<E>) mergeOperates.get(entity.getClass());
         if (update == null) {
             @SuppressWarnings("unchecked")
             ClassMapping<E> mapping = (ClassMapping<E>) mappingFactory.getClassMapping(entity.getClass());
@@ -299,12 +299,30 @@ public class JuormJdbcImpl implements Juorm {
      * {@inheritDoc}
      */
     @Override
+    public <E> int delete(Serializable id, Class<E> entityType) {
+        if (id == null || entityType == null) {
+            return 0;
+        }
+        @SuppressWarnings("unchecked")
+        DeleteOperate<E> delete = (DeleteOperate<E>) deleteOperates.get(entityType);
+        if (delete == null) {
+            ClassMapping<E> mapping = mappingFactory.getClassMapping(entityType);
+            delete = new DeleteOperate<>(jdbc, mapping, mappingFactory.getMetadata());
+            deleteOperates.put(entityType, delete);
+        }
+        return delete.delete(id);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
     public <E> int delete(E entity) {
         if (entity == null) {
             return 0;
         }
         @SuppressWarnings("unchecked")
-        DeleteOperate<E> delete = (DeleteOperate<E>) deleteOperates.get(entity);
+        DeleteOperate<E> delete = (DeleteOperate<E>) deleteOperates.get(entity.getClass());
         if (delete == null) {
             @SuppressWarnings("unchecked")
             ClassMapping<E> mapping = (ClassMapping<E>) mappingFactory.getClassMapping(entity.getClass());
@@ -694,5 +712,4 @@ public class JuormJdbcImpl implements Juorm {
     public String string(String tplExecuteId, Map<String, Object> params) {
         return sqlTplExecutor.string(tplExecuteId, params);
     }
-
 }
