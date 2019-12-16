@@ -79,7 +79,7 @@ public class JdbcTestBase {
         ConstantConfigurator.config("constant.mysql.yaml");
 
         BasicDataSource dataSource = new BasicDataSource();
-        dataSource.setUrl("jdbc:mysql://127.0.0.1:3306/juorm_jdbc");
+        dataSource.setUrl("jdbc:mysql://127.0.0.1:3306/juorm_jdbc?useUnicode=true&characterEncoding=UTF-8");
         dataSource.setDriverClassName("com.mysql.jdbc.Driver");
         dataSource.setUsername("root");
         dataSource.setPassword("123456");
