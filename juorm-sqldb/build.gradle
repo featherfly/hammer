@@ -15,7 +15,8 @@ dependencies {
 
     
     
-    testCompile 'org.springframework:spring-test:5.1.8.RELEASE'
+    //testCompile 'org.springframework:spring-test:5.1.8.RELEASE'
+    compile group: 'mysql', name: 'mysql-connector-java', version: '8.0.18'    
     testCompile group: 'commons-dbcp', name: 'commons-dbcp', version: '1.4'
     //testCompile group: 'org.apache.tomcat', name: 'tomcat-juli', version: '9.0.22'
     testCompile 'net.sf.ehcache:ehcache:2.10.6'
