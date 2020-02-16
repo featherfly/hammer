@@ -17,7 +17,13 @@ public class JuormJdbcTest2 extends JuormJdbcTest {
     @Override
     @BeforeClass
     void before() {
-        juorm = SqlDbConfigurator.getDefault().getJuorm();
+        juorm = SqlDbConfigurator.getDefault("juorm.yaml").getJuorm();
+    }
+
+    @Override
+    @BeforeClass
+    public void initMysql() {
+
     }
 
 }

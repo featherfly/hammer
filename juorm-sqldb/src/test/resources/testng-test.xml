@@ -1,52 +1,69 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<suite name="Test-class Suite" parallel="tests" thread-count="2">
-    <test name="dml builder test">
-        <parameter name="test-name" value="Builder Test" />
-        <classes>
-            <class name="cn.featherfly.juorm.rdb.sql.dml.builder.BasicBuilderTest" />
-            <class name="cn.featherfly.juorm.rdb.sql.dml.builder.ConditionBuilderTest" />
-            <class name="cn.featherfly.juorm.rdb.sql.dml.SqlConditionGroupExpressionBuilderTest" />
-        </classes>
-    </test>
-    <test name="dsl test">
-        <parameter name="test-name" value="Builder Test" />
-        <classes>
-            <class name="cn.featherfly.juorm.rdb.jdbc.dsl.SqlDslExpressionTest" />
-            <class name="cn.featherfly.juorm.rdb.jdbc.dsl.DslStaticTypeTest" />
-            <class name="cn.featherfly.juorm.rdb.jdbc.dsl.SqlQueryTest" />
-        </classes>
-    </test>
-    
-    <test name="model test">
-        <parameter name="test-name" value="Model Test" />
-        <classes>
-            <class name="cn.featherfly.juorm.rdb.sql.model.ConditionColumnElementTest" />
-        </classes>
-    </test>
-    
-    <test name="orm test">
-        <parameter name="test-name" value="orm Test" />
-        <classes>
-            <class name="cn.featherfly.juorm.rdb.tpl.SqlTplExecutorTest" />
-            <class name="cn.featherfly.juorm.rdb.jdbc.JuormJdbcTest" />
-            <class name="cn.featherfly.juorm.rdb.jdbc.JuormJdbcTest2" />
-            <class name="cn.featherfly.juorm.rdb.jdbc.OperatorTest" />
-        </classes>
-    </test>
-    
-    <test name="mapper test">
-        <parameter name="test-name" value="mapper Test" />
-        <classes>
-            <class name="cn.featherfly.juorm.rdb.tpl.SqlTplDynamicExecutorTest" />
-            <class name="cn.featherfly.juorm.rdb.tpl.SqlTplDynamicExecutorTest2" />
-            <class name="cn.featherfly.juorm.rdb.tpl.SqlTplDynamicExecutorTest3" />
-        </classes>
-    </test>
-    
-    <test name="mapper spring register test">
-        <parameter name="test-name" value="mapper spring register test" />
-        <classes>
-            <class name="cn.featherfly.juorm.rdb.tpl.mapper.TplDynamicExecutorSpringRegistorTest" />
-        </classes>
-    </test>
+<!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd">
+<suite name="JUORM SQLDB Test Suite" parallel="tests"
+	thread-count="1">
+	<parameter name="dataBase" value="mysql" />
+	<!-- <parameter name="dataBase" value="sqllite" /> -->
+	<!-- <parameter name="dataBase" value="postgresql" /> -->
+	<test name="dml builder test">
+		<packages>
+			<package name="cn.featherfly.juorm.rdb.sql.dml.*" />
+		</packages>
+		<!-- <classes> -->
+		<!-- <class name="cn.featherfly.juorm.rdb.sql.dml.builder.BasicBuilderTest" 
+			/> -->
+		<!-- <class name="cn.featherfly.juorm.rdb.sql.dml.builder.ConditionBuilderTest" 
+			/> -->
+		<!-- <class name="cn.featherfly.juorm.rdb.sql.dml.SqlConditionGroupExpressionBuilderTest" 
+			/> -->
+		<!-- </classes> -->
+	</test>
+	<test name="dsl test">
+		<packages>
+			<package name="cn.featherfly.juorm.rdb.jdbc.dsl.*" />
+		</packages>
+		<!-- <classes> -->
+		<!-- <class name="cn.featherfly.juorm.rdb.jdbc.dsl.SqlDslExpressionTest" 
+			/> -->
+		<!-- <class name="cn.featherfly.juorm.rdb.jdbc.dsl.DslStaticTypeTest" /> -->
+		<!-- <class name="cn.featherfly.juorm.rdb.jdbc.dsl.SqlQueryTest" /> -->
+		<!-- </classes> -->
+	</test>
+
+	<test name="model test">
+		<classes>
+			<class
+				name="cn.featherfly.juorm.rdb.sql.model.ConditionColumnElementTest" />
+		</classes>
+	</test>
+
+	<test name="orm test">
+		<classes>
+			<class name="cn.featherfly.juorm.rdb.jdbc.JuormJdbcTest" />
+<!-- 			<class name="cn.featherfly.juorm.rdb.jdbc.JuormJdbcTest2" /> -->
+			<class name="cn.featherfly.juorm.rdb.jdbc.OperatorTest" />
+			<class name="cn.featherfly.juorm.rdb.tpl.SqlTplExecutorTest" />
+		</classes>
+	</test>
+
+	<test name="mapper test">
+	   <packages>
+            <package name="cn.featherfly.juorm.rdb.tpl.*" />
+        </packages>
+<!-- 		<classes> -->
+<!-- 			<class -->
+<!-- 				name="cn.featherfly.juorm.rdb.tpl.SqlTplDynamicExecutorTest" /> -->
+<!-- 			<class -->
+<!-- 				name="cn.featherfly.juorm.rdb.tpl.SqlTplDynamicExecutorTest2" /> -->
+<!-- 			<class -->
+<!-- 				name="cn.featherfly.juorm.rdb.tpl.SqlTplDynamicExecutorTest3" /> -->
+<!-- 		</classes> -->
+	</test>
+
+<!-- 	<test name="mapper spring register test"> -->
+<!-- 		<classes> -->
+<!-- 			<class -->
+<!-- 				name="cn.featherfly.juorm.rdb.tpl.mapper.TplDynamicExecutorSpringRegistorTest" /> -->
+<!-- 		</classes> -->
+<!-- 	</test> -->
 </suite>

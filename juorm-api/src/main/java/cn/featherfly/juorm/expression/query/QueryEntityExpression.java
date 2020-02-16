@@ -10,6 +10,7 @@ import cn.featherfly.juorm.expression.ConditionGroupLogicExpression;
 import cn.featherfly.juorm.expression.RepositoryConditionGroupLogicExpression;
 import cn.featherfly.juorm.expression.WhereExpression;
 import cn.featherfly.juorm.expression.condition.RepositoryConditionsGroupExpression;
+import cn.featherfly.juorm.operator.AggregateFunction;
 
 /**
  * <p>
@@ -44,7 +45,8 @@ public interface QueryEntityExpression<
         L extends ConditionGroupLogicExpression<C, L>,
         RC extends RepositoryConditionsGroupExpression<RC, RL>,
         RL extends RepositoryConditionGroupLogicExpression<RC, RL>>
-        extends WhereExpression<C, L>, QueryListExecutor, QueryConditionLimit {
+        extends WhereExpression<C, L>, QueryListExecutor, QueryConditionLimit,
+        QueryCountExecutor {
 
     /**
      * 设置id.
@@ -86,6 +88,20 @@ public interface QueryEntityExpression<
      * </p>
      * .
      *
+     * @param propertyName
+     *            propertyName
+     * @param aggregateFunction
+     *            aggregateFunction
+     * @return QueryEntityPropertiesExpression
+     */
+    Q property(String propertyName, AggregateFunction aggregateFunction);
+
+    /**
+     * <p>
+     * 添加查询出来的属性
+     * </p>
+     * .
+     *
      * @param propertyNames
      *            propertyNames
      * @return QueryEntityPropertiesExpression
@@ -96,7 +112,6 @@ public interface QueryEntityExpression<
      * <p>
      * 添加查询出来的属性
      * </p>
-     * .
      *
      * @param <T>
      *            the generic type
@@ -107,6 +122,25 @@ public interface QueryEntityExpression<
      * @return QueryEntityPropertiesExpression
      */
     <T, R> Q property(SerializableFunction<T, R> propertyName);
+
+    /**
+     * <p>
+     * 添加查询出来的属性
+     * </p>
+     * .
+     * 
+     * @param <T>
+     *            the generic type
+     * @param <R>
+     *            the generic type
+     * @param propertyName
+     *            propertyName
+     * @param aggregateFunction
+     *            aggregateFunction
+     * @return QueryEntityPropertiesExpression
+     */
+    <T, R> Q property(SerializableFunction<T, R> propertyName,
+            AggregateFunction aggregateFunction);
 
     /**
      * <p>

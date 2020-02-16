@@ -149,6 +149,30 @@ public interface GenericJuorm<E> {
     int delete(List<E> entities);
 
     /**
+     * delete entity
+     *
+     * @param id entity id
+     * @return effect data row num
+     */
+    int delete(Serializable id);
+
+    /**
+     * delete each entity in entity id array
+     *
+     * @param ids entity id array
+     * @return effect data row num
+     */
+    int deleteIds(Serializable... ids);
+
+    /**
+     * delete each entity in entity id list
+     *
+     * @param ids entity id list
+     * @return effect data row num
+     */
+    int deleteIds(List<Serializable> ids);
+
+    /**
      * get entity by id.
      *
      * @param id entity id

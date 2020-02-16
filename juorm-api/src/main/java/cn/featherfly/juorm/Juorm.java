@@ -159,6 +159,16 @@ public interface Juorm extends TplExecutor {
     <E> int delete(E entity);
 
     /**
+     * delete entity by id
+     *
+     * @param <E>        generic type
+     * @param id         entity id
+     * @param entityType entity type
+     * @return effect data row num
+     */
+    <E> int delete(Serializable id, Class<E> entityType);
+
+    /**
      * delete each entity in entity list
      *
      * @param <E>      generic type

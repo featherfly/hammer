@@ -48,6 +48,14 @@ public class JuormJdbcTest extends JdbcTestBase {
         assertEquals(role.getName(), "n_1");
         assertEquals(role.getDescp(), "descp_1");
         System.out.println(role);
+
+        role = juorm.get(new Role(id));
+        assertEquals(role.getId(), id);
+        assertNotNull(role.getName());
+        assertNotNull(role.getDescp());
+        assertEquals(role.getName(), "n_1");
+        assertEquals(role.getDescp(), "descp_1");
+        System.out.println(role);
     }
 
     @Test
@@ -383,6 +391,15 @@ public class JuormJdbcTest extends JdbcTestBase {
 
         Role role = juorm.get(r);
         assertNull(role);
+
+        Role r2 = role();
+        juorm.save(r2);
+        assertNotNull(r2.getId());
+
+        juorm.delete(r2.getId(), r2.getClass());
+
+        Role role2 = juorm.get(r2);
+        assertNull(role2);
     }
 
     @Test

@@ -60,6 +60,14 @@ public class BasedJuormTplExecutor implements Juorm {
      * {@inheritDoc}
      */
     @Override
+    public <E> int delete(Serializable id, Class<E> entityType) {
+        return juorm.delete(id, entityType);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
     public <E> int delete(E entity) {
         return juorm.delete(entity);
     }

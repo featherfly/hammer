@@ -6,6 +6,7 @@ import cn.featherfly.common.lang.LangUtils;
 import cn.featherfly.juorm.dsl.query.QueryConditionGroupExpression;
 import cn.featherfly.juorm.dsl.query.QueryConditionGroupLogicExpression;
 import cn.featherfly.juorm.mapping.ClassMapping;
+import cn.featherfly.juorm.operator.AggregateFunction;
 import cn.featherfly.juorm.rdb.jdbc.Jdbc;
 import cn.featherfly.juorm.rdb.sql.dml.builder.basic.SqlSelectBasicBuilder;
 
@@ -24,8 +25,10 @@ public class SqlQueryExpression extends SqlQueryConditionGroupExpression {
     /**
      * Instantiates a new sql query expression.
      *
-     * @param jdbc          the jdbc
-     * @param selectBuilder the select builder
+     * @param jdbc
+     *            the jdbc
+     * @param selectBuilder
+     *            the select builder
      */
     public SqlQueryExpression(Jdbc jdbc, SqlSelectBasicBuilder selectBuilder) {
         super(jdbc, selectBuilder.getTableAlias());
@@ -35,11 +38,15 @@ public class SqlQueryExpression extends SqlQueryConditionGroupExpression {
     /**
      * Instantiates a new sql query expression.
      *
-     * @param jdbc          the jdbc
-     * @param classMapping  the class mapping
-     * @param selectBuilder the select builder
+     * @param jdbc
+     *            the jdbc
+     * @param classMapping
+     *            the class mapping
+     * @param selectBuilder
+     *            the select builder
      */
-    public SqlQueryExpression(Jdbc jdbc, ClassMapping<?> classMapping, SqlSelectBasicBuilder selectBuilder) {
+    public SqlQueryExpression(Jdbc jdbc, ClassMapping<?> classMapping,
+            SqlSelectBasicBuilder selectBuilder) {
         super(jdbc, selectBuilder.getTableAlias(), classMapping);
         this.selectBuilder = selectBuilder;
     }
@@ -50,16 +57,18 @@ public class SqlQueryExpression extends SqlQueryConditionGroupExpression {
      * @param queryAlias
      * @param classMapping
      */
-    SqlQueryExpression(Jdbc jdbc, QueryConditionGroupLogicExpression parent, String queryAlias,
-            ClassMapping<?> classMapping) {
+    SqlQueryExpression(Jdbc jdbc, QueryConditionGroupLogicExpression parent,
+            String queryAlias, ClassMapping<?> classMapping) {
         super(jdbc, parent, queryAlias, classMapping);
     }
 
     /**
      * Instantiates a new sql query expression.
      *
-     * @param jdbc       the jdbc
-     * @param queryAlias the query alias
+     * @param jdbc
+     *            the jdbc
+     * @param queryAlias
+     *            the query alias
      */
     public SqlQueryExpression(Jdbc jdbc, String queryAlias) {
         super(jdbc, queryAlias);
@@ -68,7 +77,8 @@ public class SqlQueryExpression extends SqlQueryConditionGroupExpression {
     /**
      * Instantiates a new sql query expression.
      *
-     * @param jdbc jdbc
+     * @param jdbc
+     *            jdbc
      */
     public SqlQueryExpression(Jdbc jdbc) {
         super(jdbc);
@@ -78,9 +88,20 @@ public class SqlQueryExpression extends SqlQueryConditionGroupExpression {
      * {@inheritDoc}
      */
     @Override
-    protected QueryConditionGroupExpression createGroup(QueryConditionGroupLogicExpression parent, String queryAlias) {
+    protected QueryConditionGroupExpression createGroup(
+            QueryConditionGroupLogicExpression parent, String queryAlias) {
         selectBuilder.setTableAlias(queryAlias);
         return new SqlQueryExpression(jdbc, parent, queryAlias, classMapping);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public Long count() {
+        // TODO count 方法
+        selectBuilder.addSelectColumn(Chars.STAR, AggregateFunction.COUNT);
+        return longInt();
     }
 
     /**
@@ -94,7 +115,9 @@ public class SqlQueryExpression extends SqlQueryConditionGroupExpression {
         }
         String condition = super.build();
         if (LangUtils.isNotEmpty(condition)) {
-            //            result = result + Chars.SPACE + jdbc.getDialect().getKeywords().where() + Chars.SPACE + condition;
+            // result = result + Chars.SPACE +
+            // jdbc.getDialect().getKeywords().where() + Chars.SPACE +
+            // condition;
             result = result + Chars.SPACE + condition;
         }
         return result;

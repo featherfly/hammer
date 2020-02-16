@@ -43,8 +43,10 @@ public interface QueryValueExecutor {
     /**
      * query for number
      *
-     * @param <N>  number type
-     * @param type number type
+     * @param <N>
+     *            number type
+     * @param type
+     *            number type
      * @return num
      */
     <N extends Number> N number(Class<N> type);

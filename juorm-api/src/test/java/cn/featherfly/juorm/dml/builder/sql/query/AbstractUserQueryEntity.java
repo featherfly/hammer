@@ -15,6 +15,7 @@ import cn.featherfly.juorm.expression.query.QueryWithEntityExpression;
 import cn.featherfly.juorm.expression.query.QueryWithExpression;
 import cn.featherfly.juorm.expression.query.QueryWithOnExpression;
 import cn.featherfly.juorm.mapping.RowMapper;
+import cn.featherfly.juorm.operator.AggregateFunction;
 
 /**
  * <p>
@@ -23,7 +24,8 @@ import cn.featherfly.juorm.mapping.RowMapper;
  *
  * @author zhongj
  */
-public class AbstractUserQueryEntity<Q extends AbstractUserQueryEntity<Q, QW, QWO, QWE>,
+public class AbstractUserQueryEntity<
+        Q extends AbstractUserQueryEntity<Q, QW, QWO, QWE>,
         QW extends QueryWithExpression<QW, QWO, QWE, UserQueryRepositoryConditionGroupExpression, UserQueryRepositoryConditionGroupExpression>,
         QWO extends QueryWithOnExpression<QW, QWO, QWE, UserQueryRepositoryConditionGroupExpression, UserQueryRepositoryConditionGroupExpression>,
         QWE extends QueryWithEntityExpression<QW, QWO, QWE, UserQueryRepositoryConditionGroupExpression, UserQueryRepositoryConditionGroupExpression>>
@@ -224,6 +226,35 @@ public class AbstractUserQueryEntity<Q extends AbstractUserQueryEntity<Q, QW, QW
      */
     @Override
     public QuerySortExpression sort() {
+        // YUFEI_TODO Auto-generated method stub
+        return null;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public Long count() {
+        // YUFEI_TODO Auto-generated method stub
+        return 0l;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public Q property(String propertyName,
+            AggregateFunction aggregateFunction) {
+        // YUFEI_TODO Auto-generated method stub
+        return null;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public <T, R> Q property(SerializableFunction<T, R> propertyName,
+            AggregateFunction aggregateFunction) {
         // YUFEI_TODO Auto-generated method stub
         return null;
     }
