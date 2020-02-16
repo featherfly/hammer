@@ -2,6 +2,7 @@
 package cn.featherfly.juorm.dsl.query;
 
 import cn.featherfly.juorm.expression.ConditionLogicExpression;
+import cn.featherfly.juorm.expression.query.QueryCountExecutor;
 import cn.featherfly.juorm.expression.query.TypeQueryConditionLimit;
 import cn.featherfly.juorm.expression.query.TypeQueryExecutor;
 
@@ -12,7 +13,8 @@ import cn.featherfly.juorm.expression.query.TypeQueryExecutor;
  *
  * @author zhongj
  */
-public interface TypeQueryConditionLogicExpression extends TypeQueryConditionLimit, TypeQueryExecutor,
+public interface TypeQueryConditionLogicExpression
+        extends TypeQueryConditionLimit, TypeQueryExecutor, QueryCountExecutor,
         ConditionLogicExpression<TypeQueryConditionExpression, TypeQueryConditionLogicExpression> {
 
     /**

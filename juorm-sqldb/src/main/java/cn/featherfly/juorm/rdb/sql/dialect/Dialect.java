@@ -21,7 +21,8 @@ public interface Dialect extends cn.featherfly.common.db.dialect.Dialect {
     /**
      * get converted keywords
      *
-     * @param keywords sql keywords
+     * @param keywords
+     *            sql keywords
      * @return sql key words
      */
     default String getKeyword(SortOperator keywords) {
@@ -35,7 +36,8 @@ public interface Dialect extends cn.featherfly.common.db.dialect.Dialect {
     /**
      * get converted keywords
      *
-     * @param keywords sql keywords
+     * @param keywords
+     *            sql keywords
      * @return sql key words
      */
     default String getKeyword(LogicOperator keywords) {
@@ -49,7 +51,8 @@ public interface Dialect extends cn.featherfly.common.db.dialect.Dialect {
     /**
      * get converted aggregate function
      *
-     * @param function aggregate function
+     * @param function
+     *            aggregate function
      * @return sql aggregate function
      */
     default String getFunction(Function function) {
@@ -63,7 +66,8 @@ public interface Dialect extends cn.featherfly.common.db.dialect.Dialect {
     /**
      * build sql for table
      *
-     * @param table table
+     * @param table
+     *            table
      * @return sql
      */
     default String buildTableSql(TableElement table) {
@@ -73,8 +77,10 @@ public interface Dialect extends cn.featherfly.common.db.dialect.Dialect {
     /**
      * build sql for column with aggregate function
      *
-     * @param columnName columnName
-     * @param function   function
+     * @param columnName
+     *            columnName
+     * @param function
+     *            function
      * @return sql
      */
     default String buildColumnSql(String columnName, Function function) {
@@ -84,19 +90,24 @@ public interface Dialect extends cn.featherfly.common.db.dialect.Dialect {
     /**
      * build sql for column with aggregate function
      *
-     * @param columnName        columnName
-     * @param aggregateFunction aggregateFunction
+     * @param columnName
+     *            columnName
+     * @param aggregateFunction
+     *            aggregateFunction
      * @return sql
      */
-    default String buildColumnSql(String columnName, AggregateFunction aggregateFunction) {
+    default String buildColumnSql(String columnName,
+            AggregateFunction aggregateFunction) {
         return buildColumnSql(columnName, null, aggregateFunction);
     }
 
     /**
      * build sql for column with aggregate function
      *
-     * @param columnName columnName
-     * @param tableAlias tableAlias
+     * @param columnName
+     *            columnName
+     * @param tableAlias
+     *            tableAlias
      * @return sql
      */
     default String buildColumnSql(String columnName, String tableAlias) {
@@ -106,49 +117,66 @@ public interface Dialect extends cn.featherfly.common.db.dialect.Dialect {
     /**
      * build sql for column with aggregate function
      *
-     * @param columnName columnName
-     * @param tableAlias tableAlias
-     * @param asName     asName
+     * @param columnName
+     *            columnName
+     * @param tableAlias
+     *            tableAlias
+     * @param asName
+     *            asName
      * @return sql
      */
-    default String buildColumnSql(String columnName, String tableAlias, String asName) {
+    default String buildColumnSql(String columnName, String tableAlias,
+            String asName) {
         return buildColumnSql(columnName, tableAlias, null, asName);
     }
 
     /**
      * build sql for column with tableAlias and aggregate function
      *
-     * @param columnName        columnName
-     * @param tableAlias        tableAlias
-     * @param aggregateFunction aggregateFunction
+     * @param columnName
+     *            columnName
+     * @param tableAlias
+     *            tableAlias
+     * @param aggregateFunction
+     *            aggregateFunction
      * @return sql
      */
-    default String buildColumnSql(String columnName, String tableAlias, AggregateFunction aggregateFunction) {
+    default String buildColumnSql(String columnName, String tableAlias,
+            AggregateFunction aggregateFunction) {
         return buildColumnSql(columnName, tableAlias, aggregateFunction, null);
     }
 
     /**
      * build sql for column with tableAlias and aggregate function
      *
-     * @param columnName        columnName
-     * @param tableAlias        tableAlias
-     * @param aggregateFunction aggregateFunction
-     * @param asName            asName
+     * @param columnName
+     *            columnName
+     * @param tableAlias
+     *            tableAlias
+     * @param aggregateFunction
+     *            aggregateFunction
+     * @param asName
+     *            asName
      * @return sql
      */
-    default String buildColumnSql(String columnName, String tableAlias, AggregateFunction aggregateFunction,
-            String asName) {
-        String column = wrapName(convertTableOrColumnName(columnName));
-        if (LangUtils.isNotEmpty(tableAlias)) {
+    default String buildColumnSql(String columnName, String tableAlias,
+            AggregateFunction aggregateFunction, String asName) {
+        String column = columnName;
+        if (!Chars.STAR.equals(columnName)) {
+            column = wrapName(convertTableOrColumnName(columnName));
+        }
+        if (LangUtils.isNotEmpty(tableAlias)
+                && !Chars.STAR.equals(columnName)) {
             column = tableAlias + Chars.DOT + column;
         }
         if (aggregateFunction != null) {
             switch (aggregateFunction) {
-                case DISTINCT:
-                    column = getFunction(aggregateFunction) + Chars.SPACE + column;
-                    break;
-                default:
-                    column = getFunction(aggregateFunction) + Chars.PAREN_L + column + Chars.PAREN_R;
+            case DISTINCT:
+                column = getFunction(aggregateFunction) + Chars.SPACE + column;
+                break;
+            default:
+                column = getFunction(aggregateFunction) + Chars.PAREN_L + column
+                        + Chars.PAREN_R;
             }
         }
         if (LangUtils.isNotEmpty(asName)) {
@@ -160,14 +188,19 @@ public interface Dialect extends cn.featherfly.common.db.dialect.Dialect {
     /**
      * build sql for column with tableAlias and aggregate function
      *
-     * @param columnName columnName
-     * @param tableAlias tableAlias
-     * @param function   function
+     * @param columnName
+     *            columnName
+     * @param tableAlias
+     *            tableAlias
+     * @param function
+     *            function
      * @return sql
      */
-    default String buildColumnSql(String columnName, String tableAlias, Function function) {
+    default String buildColumnSql(String columnName, String tableAlias,
+            Function function) {
         if (function instanceof AggregateFunction) {
-            return buildColumnSql(columnName, tableAlias, (AggregateFunction) function);
+            return buildColumnSql(columnName, tableAlias,
+                    (AggregateFunction) function);
         }
         // TODO 后续添加其他实现
         throw new BuilderException("只实现了 AggregateFunction");
