@@ -15,9 +15,13 @@ import cn.featherfly.juorm.expression.condition.RepositoryConditionsGroupExpress
  */
 public interface QueryEntityPropertiesExpression<
         Q extends QueryEntityPropertiesExpression<Q, QW, QWO, QWE, C, L, RC, RL>,
-        QW extends QueryWithExpression<QW, QWO, QWE, RC, RL>, QWO extends QueryWithOnExpression<QW, QWO, QWE, RC, RL>,
-        QWE extends QueryWithEntityExpression<QW, QWO, QWE, RC, RL>, C extends ConditionGroupExpression<C, L>,
-        L extends ConditionGroupLogicExpression<C, L>, RC extends RepositoryConditionsGroupExpression<RC, RL>,
+        QW extends QueryWithExpression<QW, QWO, QWE, RC, RL>,
+        QWO extends QueryWithOnExpression<QW, QWO, QWE, RC, RL>,
+        QWE extends QueryWithEntityExpression<QW, QWO, QWE, RC, RL>,
+        C extends ConditionGroupExpression<C, L>,
+        L extends ConditionGroupLogicExpression<C, L>,
+        RC extends RepositoryConditionsGroupExpression<RC, RL>,
         RL extends RepositoryConditionGroupLogicExpression<RC, RL>>
-        extends QueryEntityExpression<Q, QW, QWO, QWE, C, L, RC, RL>, QueryValueExecutor {
+        extends QueryEntityExpression<Q, QW, QWO, QWE, C, L, RC, RL>,
+        QueryValueExecutor, QueryCountExecutor {
 }
