@@ -1,10 +1,10 @@
-2020-
+2020-2-17
 0.2.6
     1.加入count方法,
-        query.find(data).count();
-        query.find(data).where().lt("age", 18).count();
+        query.find(repo).count();
+        query.find(repo).where().lt("age", 18).count();
     2.加入property(String,AggregateFunction)方法
-        query.find(data).property("price", AggregateFunction.SUM);
+        query.find(repo).property("price", AggregateFunction.SUM);
 
 2019-12-03
 0.2.5
