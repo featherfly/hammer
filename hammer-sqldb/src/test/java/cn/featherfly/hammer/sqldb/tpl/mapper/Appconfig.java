@@ -48,7 +48,8 @@ public class Appconfig {
     public SqldbHammerImpl hammer(DataSource dataSource) {
         DOMConfigurator.configure(ClassLoaderUtils.getResource("log4j.xml", JdbcTestBase.class));
 
-        ConstantConfigurator.config(JdbcTestBase.configFile);
+        //        ConstantConfigurator.config(JdbcTestBase.configFile);
+        ConstantConfigurator.config();
 
         //        BasicDataSource dataSource = new BasicDataSource();
         //        dataSource.setUrl("jdbc:mysql://127.0.0.1:3306/hammer_jdbc");

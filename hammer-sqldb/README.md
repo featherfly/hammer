@@ -1,8 +1,8 @@
 ***
 
-## hammer-SQLDB
+## hammer-sqldb
 
-`hammer-SQLDB` 是基于jdbc实现对关系型数据库进行数据操作的框架。
+`hammer-sqldb` 是基于jdbc实现对关系型数据库进行数据操作的框架。
 
 ## 快速入门
 
@@ -21,6 +21,8 @@ compile group: 'cn.featherfly.hammer', name: 'hammer-sqldb', version: '0.3.0'
 ```
 
 #### 操作代码概览
+
+通过快速预览各种实际代码对hammer有一个大致的了解
 
 通过使用hammer api操作的代码概览：
 
@@ -43,20 +45,25 @@ int result = hammer.delete(u);
 
 // DSL模式更新数据
 int result = hammer.update(User.class).set("name", newName).property("descp").set(newDescp).where().eq("id", id).execute();
+int result = hammer.update(User.class).set(User::getName, newName).property(User::getDescp).set(newDescp).where().eq(User::getId, id).execute();
 
-// DSL模式更新数据自增长
+// DSL模式更新自增长数据
 int result = hammer.update(User.class).increase("age", 1).where().eq("id", id).execute();
+int result = hammer.update(User.class).increase(User::getAge, 1).where().eq(User::getId, id).execute();
 
 // DSL模式删除数据
-int result = hammer.delete(User.class).where().in("id", new Integer[] { r.getId(), r2.getId() }).or().eq("id", r3.getId()).or().ge("id", r4.getId()).execute();
+int result = hammer.delete(Role.class).where().in("id", new Integer[] { r.getId(), r2.getId() }).or().eq("id", r3.getId()).or().ge("id", r4.getId()).execute();
+int result = hammer.delete(Role.class).where().eq(Role::getId, r3.getId()).execute();
 
 // DSL模式查询数据
-List<User> users = query.find("user").where().eq("username", "yufei").and().eq("password", "123456").and().group().gt("age", 18).and().lt("age", 60).list(User.class)
+User user = hammer.query("user").where().eq("username", username).and().eq("password", password).single()
+User user = hammer.query(User.class).where().eq(User::getUsername, username).and().eq(User::getPassword, password).single()
+List<User> users = query.find("user").where().eq("username", username).and().eq("password", password).and().group().gt("age", 18).and().lt("age", 60).list(User.class)
 List<Role> roles = hammer.query(Role.class).where().gt("id", 5).and().le("id", 10).list()
 
 // 模板SQL查询数据
+String str = hammer.string("selectString", new HashMap<String, Object>());
 int avg = hammer.numberInt("selectAvg2", new HashChainMap<String, Object>().putChain("age", 40));
-String str = hammer.string("selectString", new HashChainMap<String, Object>());
 User u = hammer.single("user@selectByUsername", User.class,
                 new HashChainMap<String, Object>().putChain("username", username));
 List<User> users = hammer.list("user@selectConditions", User.class, new HashChainMap<String, Object>()
@@ -70,8 +77,8 @@ PaginationResults<User> userPaginationResults = executor.pagination("user@select
 ```java
 // 类似于mybatis，直接执行模板中的sql
 @Mapper(namespace = "user")
-public interface UserMapper {
-	User selectByUsername(@TplParam("username") String username);
+public interface UserMapper {   
+    User selectByUsername(@TplParam("username") String username);
 
     User selectByUsernameAndPassword(@TplParam("username") String username, @TplParam("password") String pwd);
 
@@ -91,15 +98,15 @@ public interface UserMapper {
 ```
 
 ```java
-// 除了可以使用模板sql进行查询外，可以继承hammer或者Generichammer进行api操作,需要使用jdk8的default method
+// 除了可以使用模板sql进行查询外，可以继承hammer或者GenericHammer进行api操作,需要使用jdk8的default method
 @Mapper(namespace = "user")
-public interface UserMapper3 extends Generichammer<User> {
-	// 这里的query方法就是Generichammer接口定义的方法	
+public interface UserMapper3 extends GenericHammer<User> {
+	// 这里的query方法就是GenericHammer接口定义的方法	
     default User getByUsernameAndPassword2(String username, String pwd) {
         return query().where().eq("username", username).and().eq("password", pwd).single();
     }
 }
-// 外部调用也可以直接使用hammer或者Generichammer里定义的方法
+// 外部调用也可以直接使用hammer或者GenericHammer里定义的方法
 public class UserService {
     UserMapper3 userMapper; 
     public void regist(User user) {
@@ -152,34 +159,30 @@ public class UserService {
 
 ### 最基础的配置文件
 
-**在resources目录下加入constant.yaml文件（默认是从classpath根目录读取）**
-
-```yaml
-basePackeges: cn.featherfly
-devMode: true
-```
-`basePackeges` 需要扫描constant配置的包路径，多个包使用逗号（,）隔开，如(cn.fetherfly,com.github)。如果你的项目没有使用constant配置，直接使用cn.featherfly就行了。\
-`devMode` 开发模式，为true时，sql模板会在每次获取时都重新从文件读取，生产环境请设置为false，或者删除此配置，默认值就是false
-
 **java中初始化配置**
 ```java
 import cn.featherfly.constant.ConstantConfigurator;
 //默认使用constant.yaml，如果你要使用其他名字，请使用config(fileName)传入文件名
 ConstantConfigurator.config();
+// ConstantConfigurator.config("your_file_name.yaml");
 ```
+
+hammer-sqldb不需要任何配置文件就能直接运行，所有配置都有默认值，所以下面这里加入文件不是必须的，不过鉴于开发要频繁修改sql模板文件，所有开启devMode更省事，devMode下会热加载sql模板文件的内容   
+`需要注意的是：ConstantConfigurator.config()的调用是必须的`
+
+**在resources目录下加入constant.yaml文件（默认是从classpath根目录读取）**
+
+```yaml
+devMode: true
+```
+<!--`basePackeges` 需要扫描constant配置的包路径，多个包使用逗号（,）隔开，如(cn.fetherfly,com.github)。如果你的项目没有使用constant配置，直接使用cn.featherfly就行了。)   --> 
+`devMode` 开发模式，为true时，sql模板会在每次获取时都重新从文件读取，生产环境请设置为false，或者删除此配置，默认值就是false
+
 
 ### SqlDbHammerImpl配置
 ```java
-import cn.featherfly.constant.ConstantConfigurator;
-import cn.featherfly.common.db.metadata.DatabaseMetadata;
-import cn.featherfly.common.db.metadata.DatabaseMetadataManager;
-import cn.featherfly.hammer.rdb.jdbc.mapping.JdbcMappingFactory;
-import cn.featherfly.hammer.rdb.sql.dialect.Dialects;
-import cn.featherfly.hammer.tpl.TplConfigFactory;
-import cn.featherfly.hammer.tpl.TplConfigFactoryImpl;
-
 ConstantConfigurator.config();
-BasicDataSource dataSource = new BasicDataSource();
+DataSource dataSource = new BasicDataSource();
 dataSource.setUrl("jdbc:mysql://127.0.0.1:3306/hammer_jdbc");
 dataSource.setDriverClassName("com.mysql.jdbc.Driver");
 dataSource.setUsername("root");
@@ -191,8 +194,8 @@ DatabaseMetadata metadata = DatabaseMetadataManager.getDefaultManager().create(d
 //Jdbc jdbc = new SpringJdbcTemplateImpl(dataSource, Dialects.POSTGRESQL);
 //DatabaseMetadata metadata = DatabaseMetadataManager.getDefaultManager().create(dataSource, "hammer_jdbc");
 // 使用PostgreSQL和Oracle时需要在create时传入数据库名称
-
 JdbcMappingFactory mappingFactory = new JdbcMappingFactory(metadata, Dialects.MYSQL);
+// 这里的tpl/表示开始查找sql模板文件的根目录
 TplConfigFactory configFactory = new TplConfigFactoryImpl("tpl/");
 hammer hammer = new hammerJdbcImpl(jdbc, mappingFactory, configFactory);
 // 然后使用hammer进行数据操作
@@ -200,12 +203,12 @@ hammer hammer = new hammerJdbcImpl(jdbc, mappingFactory, configFactory);
 
 ### Mapper配置
 
-文档中使用Mapper这个名词是因为Mybatis使用此名词，这样会让有Mybatis经验的读者更容易理解。
+使用Mapper这个单词是因为Mybatis使用此单词，这样会让有Mybatis经验的读者更容易理解。
 
 **定义Mapper**
 
 ```java
-@TplExecution(namespace = "user")
+@Mapper(namespace = "user")
 public interface UserMapper {
 	User selectByUsername(@TplParam("username") String username);
     // 根据需要定义更多方法
@@ -216,7 +219,7 @@ public interface UserMapper {
 
 ```java
 TplDynamicExecutorFactory mapperFactory = TplDynamicExecutorFactory.getInstance();
-hammer hammer = new hammerJdbcImpl(jdbc, mappingFactory, configFactory);
+Hammer hammer = new SqldbHammerImpl(jdbc, mappingFactory, configFactory);
 UserMapper userMapper = mapperFactory.newInstance(UserMapper.class, hammer);
 // 然后使用userMapper进行数据操作
 ```
@@ -232,23 +235,25 @@ public class Appconfig {
     @Bean
     public DynamicTplExecutorSpringRegistor tplDynamicExecutorSpringRegistor() {
         Set<String> packages = new HashSet<>();
-        packages.add("cn.featherfly");
-        //packages.add("你需要扫描的包路径");
+        packages.add("你需要扫描的包路径");
+        // 例如 packages.add("cn.featherfly");
         DynamicTplExecutorScanSpringRegistor registor = new DynamicTplExecutorScanSpringRegistor(packages, "hammer");
+        // 这里的"hammer"是你注册到spring的SqldbHammerImpl的name
         return registor;
     }
 
     @Bean
-    public hammerJdbcImpl hammer(DataSource dataSource) {
-    	// dataSource通过xml配置，可以根据需求动态更换dataSource实现
+    public SqldbHammerImpl hammer(DataSource dataSource) {
+    	// 我这里的dataSource通过xml配置，主要方便在各种datasource实现之间切换
+        // 配置你自己的日志框架
         DOMConfigurator.configure(ClassLoaderUtils.getResource("log4j.xml", JdbcTestBase.class));
-        ConstantConfigurator.config();
+        ConstantConfigurator.config(); //这条语句不能少
         Jdbc jdbc = new SpringJdbcTemplateImpl(dataSource, Dialects.MYSQL);
         DatabaseMetadata metadata = DatabaseMetadataManager.getDefaultManager().create(dataSource);
         JdbcMappingFactory mappingFactory = new JdbcMappingFactory(metadata, Dialects.MYSQL);
-        // tpl/代表sql模板从classpath查找的根目录
+        // tpl/代表sql模板从classpath查找的根目录，如果调用无参构造函数，则从classpath目录开始查找
         TplConfigFactory configFactory = new TplConfigFactoryImpl("tpl/");
-        hammerJdbcImpl hammer = new hammerJdbcImpl(jdbc, mappingFactory, configFactory);
+        SqlDbHammerImpl hammer = new SqlDbHammerImpl(jdbc, mappingFactory, configFactory);
         return hammer;
     }
 }
@@ -993,22 +998,22 @@ public interface UserMapper {
 	// methods
 }
 ```
-2. 定义一个接口，使用@Mapper标注，继承hammer接口，外部使用此mapper时，除了提供此接口定义的方法，还能使用hammer内定义的方法，方法内部也可以使用default method调用hammer接口内的方法实现一些基础功能
+2. 定义一个接口，使用@Mapper标注，继承hammer接口，外部使用此mapper时，除了提供此接口定义的方法，还能使用Hammer内定义的方法，方法内部也可以使用default method调用Hammer接口内的方法实现一些基础功能
 ```java
 @Mapper(namespace = "user")
-public interface UserMapper2 extends hammer {
+public interface UserMapper2 extends Hammer {
 	// methods
 }
 ```
-3. 定义一个接口，使用@Mapper标注，继承Generichammer接口，外部使用此mapper时，除了提供此接口定义的方法，还能使用Generichammer内定义的方法，方法内部也可以使用default method调用hammer接口内的方法实现一些基础功能
+3. 定义一个接口，使用@Mapper标注，继承GenericHammer接口，外部使用此mapper时，除了提供此接口定义的方法，还能使用GenericHammer内定义的方法，方法内部也可以使用default method调用hammer接口内的方法实现一些基础功能
 ```java
 @Mapper(namespace = "user")
-public interface UserMapper3 extends Generichammer<User> {
+public interface UserMapper3 extends GenericHammer<User> {
 	// methods
 }
 ```
 
-**如果需要定义一个实体对象的Mapper，建议使用继承Generichammer接口的方式，这样此mapper就能把对应实体的基础操作都提供了**
+**如果需要定义一个实体对象的Mapper，建议使用继承GenericHammer接口的方式，这样此mapper就能把对应实体的基础操作都提供了**
 
 ### Mapper中注解的含义
 
@@ -1016,7 +1021,7 @@ public interface UserMapper3 extends Generichammer<User> {
 &nbsp;&nbsp;`namespace`  模板文件的路径，如果为空，则使用类型的名称class.getSimpleName()
 
 `@TplExecution` 只能标注在方法上  
-&nbsp;&nbsp;`namespace`  模板文件的路径，如果为空，使用Mapper的namespace进行查找
+&nbsp;&nbsp;`namespace`  模板文件的路径，如果为空，使用Mapper的namespace进行查找    
 &nbsp;&nbsp;`name`  sqlId，如果为空，则使用方法名作为sqlId进行查找
 
 `@TplParam` 标注在方法参数中，用于映射方法参数和查询参数  
@@ -1127,7 +1132,7 @@ List<Map<String, Object>> select2();
 
 #### [**`模板SQL分页查询`**](#模板SQL分页查询)章节介绍的API对应的Mapper调用
 
-分页查询可以返回List和PaginationResults，并且需要在查询参数之外还要传入分页参数，
+分页查询可以返回List和PaginationResults，需要在查询参数之外还要传入分页参数，
 可以使用Page对象，也可以使用int, int传入，当使用int,int传入时需要使用`@TplParam`标注并设置`type`的类型确定limit和offset。
 
 ```java
@@ -1144,12 +1149,12 @@ PaginationResults<User> selectByAge2Page(@TplParam("age") Integer age, Page page
 
 ### Mapper中实现模板查询以外的操作
 
-定义接口继承自hammer或者Generichammer，然后定义default method，在其内部就可以使用已有的方法进行逻辑编写了。**需要java8的default method**。  
+定义接口继承自hammer或者GenericHammer，然后定义default method，在其内部就可以使用已有的方法进行逻辑编写了。**需要java8的default method**。  
 通过此方式，我们可以把一种实体类型的数据库操作写在一个Mapper文件中，通过继承的接口已经获得了实体的基本增删改查方法，其他简单的查询（更新，删除）也可以用DSL API实现，只有复杂的查询，才需要在模板中写sql。
 
 ```java
-@TplExecution(namespace = "user")
-public interface UserMapper3 extends Generichammer<User> {
+@Mapper(namespace = "user")
+public interface UserMapper3 extends GenericHammer<User> {
 
     User selectByUsername(@TplParam("username") String username);
     // methods ....

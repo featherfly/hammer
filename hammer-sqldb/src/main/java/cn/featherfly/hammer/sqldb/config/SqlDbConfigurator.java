@@ -20,6 +20,8 @@ import cn.featherfly.hammer.tpl.TplConfigFactoryImpl;
  */
 public class SqlDbConfigurator implements Configurator {
 
+    public static final String DEFAULT_FILE_NAME = "hammer.yaml";
+
     private static SqlDbConfigurator DEFAULT;
 
     private SqldbHammerImpl sqldbHammer;
@@ -35,7 +37,7 @@ public class SqlDbConfigurator implements Configurator {
      * @return default Configuration
      */
     public static SqlDbConfigurator getDefault() {
-        return getDefault(ConstantConfigurator.DEFAULT_FILE);
+        return getDefault(DEFAULT_FILE_NAME);
     }
 
     /**
@@ -61,13 +63,13 @@ public class SqlDbConfigurator implements Configurator {
                     }
 
                     @SuppressWarnings("rawtypes")
-                    SqlDbTemplateEngine processor = constant.getTemplateEngine();
-                    if (processor == null) {
-                        processor = new SqldbFreemarkerTemplateEngine(factory);
+                    SqlDbTemplateEngine templateEngine = constant.getTemplateEngine();
+                    if (templateEngine == null) {
+                        templateEngine = new SqldbFreemarkerTemplateEngine(factory);
                     }
 
                     configuration.sqldbHammer = new SqldbHammerImpl(constant.getJdbc(), constant.getMappingFactory(),
-                            factory, processor);
+                            factory, templateEngine);
                     configuration.constant = constant;
                     DEFAULT = configuration;
                 }
