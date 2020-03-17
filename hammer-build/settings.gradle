@@ -1,0 +1,4 @@
+rootProject.name = 'hammer-build'
+includeFlat 'hammer-api'
+includeFlat 'hammer-core'
+includeFlat 'hammer-sqldb'
