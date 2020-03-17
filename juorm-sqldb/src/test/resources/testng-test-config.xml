@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd">
-<suite name="JUORM SQLDB Test Suite" parallel="tests"
+<suite name="Hammer SQLDB Test Suite" parallel="tests"
 	thread-count="3">
 	<parameter name="dataBase" value="mysql" />
 	<test name="orm test with read config file">
 		<classes>
-			<class name="cn.featherfly.juorm.rdb.jdbc.JuormJdbcTest2" />
+			<class name="cn.featherfly.hammer.sqldb.jdbc.HammerJdbcTest2" />
 		</classes>
 	</test>
 </suite>

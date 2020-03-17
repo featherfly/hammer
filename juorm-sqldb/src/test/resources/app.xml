@@ -14,11 +14,11 @@
 		http://www.springframework.org/schema/cache
 		http://www.springframework.org/schema/cache/spring-cache.xsd">
 	<context:component-scan
-		base-package="cn.featherfly.juorm" />
+		base-package="cn.featherfly.hammer" />
 	<cache:annotation-driven proxy-target-class="true"/>
 	
 	<bean id="dataSource" class="org.apache.commons.dbcp.BasicDataSource">
-	   <property name="url" value="jdbc:mysql://127.0.0.1:3306/juorm_jdbc"/>
+	   <property name="url" value="jdbc:mysql://127.0.0.1:3306/hammer_jdbc"/>
 	   <property name="driverClassName" value="com.mysql.jdbc.Driver"/>
 	   <property name="username" value="root"/>
 	   <property name="password" value="123456"/>

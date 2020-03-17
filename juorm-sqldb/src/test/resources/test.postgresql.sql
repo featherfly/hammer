@@ -1,6 +1,6 @@
-drop database juorm_jdbc;
-create database juorm_jdbc;
-\c juorm_jdbc;
+drop database hammer_jdbc;
+create database hammer_jdbc;
+\c hammer_jdbc;
 
 CREATE SEQUENCE globl_id_seq START 1;
 
