@@ -53,7 +53,7 @@ public class DynamicTplExecutorSpringRegistor implements BeanDefinitionRegistryP
     public DynamicTplExecutorSpringRegistor(Set<MetadataReader> metadataReaders, String hammerReference) {
         super();
         this.metadataReaders = metadataReaders;
-        hammerReference = hammerReference;
+        this.hammerReference = hammerReference;
     }
 
     /**

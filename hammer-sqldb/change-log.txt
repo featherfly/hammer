@@ -1,6 +1,7 @@
 2020-3-17
 0.3.0
-    1.加入Mapper注解，相当于以前TplExecution标注类的功能，移除TplExecution标注类的功能，现在只能标注方法
+    1.项目整体重命名（模块名，包名）为正式名称hammer
+    2.加入Mapper注解，相当于以前TplExecution标注类的功能，移除TplExecution标注类的功能，现在只能标注方法
     
     
 2020-2-17
