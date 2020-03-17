@@ -9,9 +9,9 @@ import cn.featherfly.juorm.tpl.TplExecuteConfig;
 import cn.featherfly.juorm.tpl.TplExecuteId;
 import cn.featherfly.juorm.tpl.TplExecuteIdImpl;
 import cn.featherfly.juorm.tpl.directive.IncludeDirective;
+import cn.featherfly.juorm.tpl.freemarker.FreemarkerDirective;
 import freemarker.core.Environment;
 import freemarker.template.TemplateDirectiveBody;
-import freemarker.template.TemplateDirectiveModel;
 import freemarker.template.TemplateException;
 import freemarker.template.TemplateModel;
 import freemarker.template.TemplateModelException;
@@ -20,7 +20,7 @@ import freemarker.template.TemplateScalarModel;
 /**
  * The Class IncludeDirectiveModel.
  */
-public class IncludeDirectiveModel extends IncludeDirective implements TemplateDirectiveModel {
+public class IncludeDirectiveModel extends IncludeDirective implements FreemarkerDirective {
 
     /**
      * Instantiates a new include directive model.

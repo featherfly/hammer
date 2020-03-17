@@ -3,11 +3,11 @@ package cn.featherfly.juorm.rdb.tpl.freemarker.method;
 import java.util.List;
 
 import cn.featherfly.juorm.rdb.sql.dialect.Dialect;
+import cn.featherfly.juorm.tpl.freemarker.FreemarkerMethod;
 import cn.featherfly.juorm.tpl.method.WrapMethod;
-import freemarker.template.TemplateMethodModelEx;
 import freemarker.template.TemplateModelException;
 
-public class WrapMethodModel implements TemplateMethodModelEx, WrapMethod {
+public class WrapMethodModel implements FreemarkerMethod, WrapMethod {
 
     private Dialect dialect;
 

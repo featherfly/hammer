@@ -26,13 +26,12 @@ import cn.featherfly.common.structure.page.SimplePaginationResults;
 import cn.featherfly.juorm.rdb.Constants;
 import cn.featherfly.juorm.rdb.jdbc.Jdbc;
 import cn.featherfly.juorm.rdb.jdbc.mapping.JdbcMappingFactory;
-import cn.featherfly.juorm.rdb.tpl.freemarker.JdbcFreemarkerTemplateEnv;
-import cn.featherfly.juorm.tpl.TemplateEnv;
-import cn.featherfly.juorm.tpl.TemplateProcessor;
 import cn.featherfly.juorm.tpl.TplConfigFactory;
 import cn.featherfly.juorm.tpl.TplExecuteConfig;
 import cn.featherfly.juorm.tpl.TplExecuteId;
 import cn.featherfly.juorm.tpl.TplExecutor;
+import cn.featherfly.juorm.tpl.directive.TemplateDirective;
+import cn.featherfly.juorm.tpl.method.TemplateMethod;
 import cn.featherfly.juorm.tpl.supports.ConditionParamsManager;
 
 /**
@@ -52,8 +51,7 @@ public class SqlTplExecutor implements TplExecutor {
 
     private JdbcMappingFactory mappingFactory;
 
-    @SuppressWarnings("rawtypes")
-    private TemplateProcessor templateProcessor;
+    private SqlDbTemplateEngine<TemplateDirective, TemplateMethod> templateEngine;
 
     /**
      * @param configFactory     configFactory
@@ -61,14 +59,15 @@ public class SqlTplExecutor implements TplExecutor {
      * @param jdbc              jdbc
      * @param mappingFactory    mappingFactory
      */
+    @SuppressWarnings("unchecked")
     public SqlTplExecutor(@Nonnull TplConfigFactory configFactory,
-            @SuppressWarnings("rawtypes") @Nonnull TemplateProcessor templateProcessor, @Nonnull Jdbc jdbc,
+            @SuppressWarnings("rawtypes") @Nonnull SqlDbTemplateEngine templateEngine, @Nonnull Jdbc jdbc,
             @Nonnull JdbcMappingFactory mappingFactory) {
         super();
         this.configFactory = configFactory;
         this.jdbc = jdbc;
         this.mappingFactory = mappingFactory;
-        this.templateProcessor = templateProcessor;
+        this.templateEngine = templateEngine;
     }
 
     private Tuple3<String, TplExecuteConfig, ConditionParamsManager> getQueryExecution(String tplExecuteId,
@@ -97,17 +96,15 @@ public class SqlTplExecutor implements TplExecutor {
         Map<String, Object> root = new HashMap<>();
         root.putAll(params);
 
-        @SuppressWarnings("rawtypes")
-        TemplateEnv templateEnvFacotry = createTemplateEnvFacotry(manager, resultType);
-        @SuppressWarnings("unchecked")
-        String result = templateProcessor.process(templateName, sql, params, templateEnvFacotry);
+        SqlDbTemplateProcessEnv<TemplateDirective, TemplateMethod> templateProcessEnv = createTemplateProcessEnv(
+                manager, resultType);
+        String result = templateEngine.process(templateName, sql, params, templateProcessEnv);
         return Tuples.of(result, manager);
     }
 
-    // TODO 此方法后续要抽出到外面来做，这样就可以配置具体的TemplateEnv
-    @SuppressWarnings("rawtypes")
-    private TemplateEnv createTemplateEnvFacotry(ConditionParamsManager manager, Class<?> resultType) {
-        JdbcFreemarkerTemplateEnv env = new JdbcFreemarkerTemplateEnv();
+    private SqlDbTemplateProcessEnv<TemplateDirective, TemplateMethod> createTemplateProcessEnv(
+            ConditionParamsManager manager, Class<?> resultType) {
+        SqlDbTemplateProcessEnv<TemplateDirective, TemplateMethod> env = templateEngine.createTemplateProcessEnv();
         env.setConfigFactory(configFactory);
         env.setDialect(jdbc.getDialect());
         env.setManager(manager);

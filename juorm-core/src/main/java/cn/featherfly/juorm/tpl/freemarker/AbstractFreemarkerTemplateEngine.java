@@ -10,26 +10,26 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import cn.featherfly.juorm.JuormException;
-import cn.featherfly.juorm.tpl.TemplateEnv;
-import cn.featherfly.juorm.tpl.TemplateProcessor;
+import cn.featherfly.juorm.tpl.TemplateEngine;
+import cn.featherfly.juorm.tpl.TemplateProcessEnv;
 import cn.featherfly.juorm.tpl.TplConfigFactory;
 import cn.featherfly.juorm.tpl.TplExecuteConfig;
 import freemarker.cache.StringTemplateLoader;
 import freemarker.template.Configuration;
 import freemarker.template.Template;
-import freemarker.template.TemplateDirectiveModel;
 import freemarker.template.TemplateException;
 import freemarker.template.TemplateExceptionHandler;
-import freemarker.template.TemplateMethodModelEx;
 
 /**
  * <p>
- * FreemarkerTemplateProxy
+ * AbstractFreemarkerTemplateEngine
  * </p>
  *
  * @author zhongj
  */
-public class FreemarkerTemplateProcessor implements TemplateProcessor<TemplateDirectiveModel, TemplateMethodModelEx> {
+public abstract class AbstractFreemarkerTemplateEngine<
+        T extends TemplateProcessEnv<FreemarkerDirective, FreemarkerMethod>>
+        implements TemplateEngine<T, FreemarkerDirective, FreemarkerMethod> {
 
     protected final Logger logger = LoggerFactory.getLogger(this.getClass());
 
@@ -38,7 +38,7 @@ public class FreemarkerTemplateProcessor implements TemplateProcessor<TemplateDi
     /**
      * @param configFactory TplConfigFactory
      */
-    public FreemarkerTemplateProcessor(TplConfigFactory configFactory) {
+    public AbstractFreemarkerTemplateEngine(TplConfigFactory configFactory) {
         cfg = new Configuration(Configuration.VERSION_2_3_28);
         cfg.setDefaultEncoding("UTF-8");
         cfg.setTemplateExceptionHandler(TemplateExceptionHandler.RETHROW_HANDLER);
@@ -59,14 +59,14 @@ public class FreemarkerTemplateProcessor implements TemplateProcessor<TemplateDi
      */
     @Override
     public String process(String templateName, String sourceCode, Map<String, Object> params,
-            TemplateEnv<TemplateDirectiveModel, TemplateMethodModelEx> templateFacotry) {
+            TemplateProcessEnv<FreemarkerDirective, FreemarkerMethod> templateProcessEnv) {
         logger.debug("execute template name : {}", templateName);
         Map<String, Object> root = new HashMap<>();
         root.putAll(params);
-        templateFacotry.createDirectives().getDirectiveMapAfterCheck().forEach((k, v) -> {
+        templateProcessEnv.createDirectives().getDirectiveMapAfterCheck().forEach((k, v) -> {
             root.put(k, v);
         });
-        templateFacotry.createMethods().getMethodeMapAfterCheck().forEach((k, v) -> {
+        templateProcessEnv.createMethods().getMethodeMapAfterCheck().forEach((k, v) -> {
             root.put(k, v);
         });
         try {

@@ -13,9 +13,9 @@ import cn.featherfly.juorm.mapping.ClassMapping;
 import cn.featherfly.juorm.rdb.jdbc.mapping.ClassMappingUtils;
 import cn.featherfly.juorm.rdb.jdbc.mapping.JdbcMappingFactory;
 import cn.featherfly.juorm.tpl.directive.PropertiesMappingDirective;
+import cn.featherfly.juorm.tpl.freemarker.FreemarkerDirective;
 import freemarker.core.Environment;
 import freemarker.template.TemplateDirectiveBody;
-import freemarker.template.TemplateDirectiveModel;
 import freemarker.template.TemplateException;
 import freemarker.template.TemplateModel;
 import freemarker.template.TemplateModelException;
@@ -28,7 +28,7 @@ import freemarker.template.TemplateScalarModel;
  *
  * @author zhongj
  */
-public class PropertiesMappingDirectiveModel extends PropertiesMappingDirective implements TemplateDirectiveModel {
+public class PropertiesMappingDirectiveModel extends PropertiesMappingDirective implements FreemarkerDirective {
 
     private JdbcMappingFactory mappingFactory;
 

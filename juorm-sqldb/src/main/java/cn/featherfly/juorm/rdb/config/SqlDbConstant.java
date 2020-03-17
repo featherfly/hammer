@@ -13,6 +13,7 @@ import cn.featherfly.juorm.rdb.jdbc.SpringJdbcTemplateImpl;
 import cn.featherfly.juorm.rdb.jdbc.mapping.JdbcMappingFactory;
 import cn.featherfly.juorm.rdb.sql.dialect.Dialect;
 import cn.featherfly.juorm.rdb.sql.dialect.Dialects;
+import cn.featherfly.juorm.rdb.tpl.SqlDbTemplateEngine;
 
 /**
  * <p>
@@ -41,6 +42,9 @@ public class SqlDbConstant extends JuormConstant {
     private JdbcMappingFactory mappingFactory;
     @Constant("jdbc operator")
     private Jdbc jdbc;
+    @Constant(value = "template processor")
+    @SuppressWarnings("rawtypes")
+    private SqlDbTemplateEngine templateEngine;
 
     /**
      * 返回dialect
@@ -81,6 +85,23 @@ public class SqlDbConstant extends JuormConstant {
             }
         }
         return mappingFactory;
+    }
+
+    /**
+     * 返回templateEngine
+     *
+     * @return templateEngine
+     */
+    @SuppressWarnings("rawtypes")
+    public SqlDbTemplateEngine getTemplateEngine() {
+        //        if (templateProcessor == null) {
+        //            synchronized (this) {
+        //                if (templateProcessor == null && getTplConfigFactory() != null) {
+        //                    templateProcessor = new FreemarkerTemplateProcessor(getTplConfigFactory());
+        //                }
+        //            }
+        //        }
+        return templateEngine;
     }
 
     /**

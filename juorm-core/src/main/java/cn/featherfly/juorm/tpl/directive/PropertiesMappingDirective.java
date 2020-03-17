@@ -43,4 +43,22 @@ public abstract class PropertiesMappingDirective implements TemplateDirective {
         this.paramName = paramName;
         this.resultType = resultType;
     }
+
+    /**
+     * 返回paramName
+     * 
+     * @return paramName
+     */
+    public String getParamName() {
+        return paramName;
+    }
+
+    /**
+     * 设置paramName
+     * 
+     * @param paramName paramName
+     */
+    public void setParamName(String paramName) {
+        this.paramName = paramName;
+    }
 }

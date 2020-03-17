@@ -18,8 +18,8 @@ import cn.featherfly.juorm.rdb.jdbc.JdbcTestBase;
 import cn.featherfly.juorm.rdb.jdbc.vo.Role;
 import cn.featherfly.juorm.rdb.jdbc.vo.User;
 import cn.featherfly.juorm.rdb.jdbc.vo.UserInfo;
+import cn.featherfly.juorm.rdb.tpl.freemarker.SqldbFreemarkerTemplateEngine;
 import cn.featherfly.juorm.tpl.TplConfigFactoryImpl;
-import cn.featherfly.juorm.tpl.freemarker.FreemarkerTemplateProcessor;
 
 /**
  * <p>
@@ -41,7 +41,7 @@ public class SqlTplExecutorTest extends JdbcTestBase {
     @BeforeMethod
     void setup() {
         TplConfigFactoryImpl configFactory = new TplConfigFactoryImpl("tpl/");
-        executor = new SqlTplExecutor(configFactory, new FreemarkerTemplateProcessor(configFactory), jdbc,
+        executor = new SqlTplExecutor(configFactory, new SqldbFreemarkerTemplateEngine(configFactory), jdbc,
                 mappingFactory);
     }
 

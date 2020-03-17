@@ -32,12 +32,12 @@ import cn.featherfly.juorm.rdb.jdbc.operate.GetOperate;
 import cn.featherfly.juorm.rdb.jdbc.operate.InsertOperate;
 import cn.featherfly.juorm.rdb.jdbc.operate.MergeOperate;
 import cn.featherfly.juorm.rdb.jdbc.operate.UpdateOperate;
+import cn.featherfly.juorm.rdb.tpl.SqlDbTemplateEngine;
 import cn.featherfly.juorm.rdb.tpl.SqlTplExecutor;
-import cn.featherfly.juorm.tpl.TemplateProcessor;
+import cn.featherfly.juorm.rdb.tpl.freemarker.SqldbFreemarkerTemplateEngine;
 import cn.featherfly.juorm.tpl.TplConfigFactory;
 import cn.featherfly.juorm.tpl.TplConfigFactoryImpl;
 import cn.featherfly.juorm.tpl.TplExecuteId;
-import cn.featherfly.juorm.tpl.freemarker.FreemarkerTemplateProcessor;
 
 /**
  * <p>
@@ -81,39 +81,39 @@ public class JuormJdbcImpl implements Juorm {
      * @param configFactory  the config factory
      */
     public JuormJdbcImpl(Jdbc jdbc, JdbcMappingFactory mappingFactory, TplConfigFactory configFactory) {
-        this(jdbc, mappingFactory, configFactory, new FreemarkerTemplateProcessor(configFactory));
+        this(jdbc, mappingFactory, configFactory, new SqldbFreemarkerTemplateEngine(configFactory));
     }
 
     /**
      * Instantiates a new juorm jdbc impl.
      *
-     * @param jdbc              the jdbc
-     * @param mappingFactory    the mapping factory
-     * @param configFactory     the config factory
-     * @param templateProcessor the template processor
+     * @param jdbc           the jdbc
+     * @param mappingFactory the mapping factory
+     * @param configFactory  the config factory
+     * @param templateEngine the template engine
      */
     public JuormJdbcImpl(Jdbc jdbc, JdbcMappingFactory mappingFactory, TplConfigFactory configFactory,
-            @SuppressWarnings("rawtypes") TemplateProcessor templateProcessor) {
+            @SuppressWarnings("rawtypes") SqlDbTemplateEngine templateEngine) {
         // this(jdbc, mappingFactory, configFactory, Validation.buildDefaultValidatorFactory().getValidator());
-        this(jdbc, mappingFactory, configFactory, templateProcessor, Validation.byProvider(HibernateValidator.class)
+        this(jdbc, mappingFactory, configFactory, templateEngine, Validation.byProvider(HibernateValidator.class)
                 .configure().failFast(false).buildValidatorFactory().getValidator());
     }
 
     /**
      * Instantiates a new juorm jdbc impl.
      *
-     * @param jdbc              the jdbc
-     * @param mappingFactory    the mapping factory
-     * @param configFactory     the config factory
-     * @param templateProcessor the template processor
-     * @param validator         the validator
+     * @param jdbc           the jdbc
+     * @param mappingFactory the mapping factory
+     * @param configFactory  the config factory
+     * @param templateEngine the template processor
+     * @param validator      the validator
      */
     public JuormJdbcImpl(Jdbc jdbc, JdbcMappingFactory mappingFactory, TplConfigFactory configFactory,
-            @SuppressWarnings("rawtypes") TemplateProcessor templateProcessor, Validator validator) {
+            @SuppressWarnings("rawtypes") SqlDbTemplateEngine templateEngine, Validator validator) {
         this.jdbc = jdbc;
         this.mappingFactory = mappingFactory;
         this.validator = validator;
-        sqlTplExecutor = new SqlTplExecutor(configFactory, templateProcessor, jdbc, mappingFactory);
+        sqlTplExecutor = new SqlTplExecutor(configFactory, templateEngine, jdbc, mappingFactory);
     }
 
     /**

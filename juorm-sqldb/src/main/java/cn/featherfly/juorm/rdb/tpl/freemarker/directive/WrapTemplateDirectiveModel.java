@@ -7,9 +7,9 @@ import java.util.Map;
 
 import cn.featherfly.juorm.rdb.sql.dialect.Dialect;
 import cn.featherfly.juorm.tpl.directive.WrapDirective;
+import cn.featherfly.juorm.tpl.freemarker.FreemarkerDirective;
 import freemarker.core.Environment;
 import freemarker.template.TemplateDirectiveBody;
-import freemarker.template.TemplateDirectiveModel;
 import freemarker.template.TemplateException;
 import freemarker.template.TemplateModel;
 import freemarker.template.TemplateModelException;
@@ -22,7 +22,7 @@ import freemarker.template.TemplateScalarModel;
  *
  * @author zhongj
  */
-public class WrapTemplateDirectiveModel implements TemplateDirectiveModel, WrapDirective {
+public class WrapTemplateDirectiveModel implements FreemarkerDirective, WrapDirective {
 
     private Dialect dialect;
 

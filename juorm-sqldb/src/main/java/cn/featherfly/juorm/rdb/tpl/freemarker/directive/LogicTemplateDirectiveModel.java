@@ -11,11 +11,11 @@ import java.util.regex.Pattern;
 
 import cn.featherfly.juorm.rdb.jdbc.JuormJdbcException;
 import cn.featherfly.juorm.tpl.directive.LogicDirective;
+import cn.featherfly.juorm.tpl.freemarker.FreemarkerDirective;
 import cn.featherfly.juorm.tpl.supports.ConditionParamsManager;
 import freemarker.core.Environment;
 import freemarker.template.TemplateBooleanModel;
 import freemarker.template.TemplateDirectiveBody;
-import freemarker.template.TemplateDirectiveModel;
 import freemarker.template.TemplateException;
 import freemarker.template.TemplateModel;
 import freemarker.template.TemplateModelException;
@@ -28,7 +28,7 @@ import freemarker.template.TemplateScalarModel;
  *
  * @author zhongj
  */
-public abstract class LogicTemplateDirectiveModel implements TemplateDirectiveModel, LogicDirective {
+public abstract class LogicTemplateDirectiveModel implements FreemarkerDirective, LogicDirective {
 
     private static final String BETWEEN = "between";
 

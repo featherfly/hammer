@@ -7,9 +7,9 @@ import java.io.Writer;
 import java.util.Map;
 
 import cn.featherfly.juorm.tpl.directive.WhereDirective;
+import cn.featherfly.juorm.tpl.freemarker.FreemarkerDirective;
 import freemarker.core.Environment;
 import freemarker.template.TemplateDirectiveBody;
-import freemarker.template.TemplateDirectiveModel;
 import freemarker.template.TemplateException;
 import freemarker.template.TemplateModel;
 
@@ -20,7 +20,7 @@ import freemarker.template.TemplateModel;
  *
  * @author zhongj
  */
-public class WhereTemplateDirectiveModel implements TemplateDirectiveModel, WhereDirective {
+public class WhereTemplateDirectiveModel implements FreemarkerDirective, WhereDirective {
 
     /**
      * {@inheritDoc}

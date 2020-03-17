@@ -2,7 +2,6 @@
 package cn.featherfly.juorm.config;
 
 import cn.featherfly.constant.annotation.Constant;
-import cn.featherfly.juorm.tpl.TemplateProcessor;
 import cn.featherfly.juorm.tpl.TplConfigFactory;
 
 /**
@@ -30,10 +29,6 @@ public abstract class JuormConstant {
     @Constant(value = "TplConfig file factory")
     private TplConfigFactory tplConfigFactory;
 
-    @Constant(value = "template processor")
-    @SuppressWarnings("rawtypes")
-    private TemplateProcessor templateProcessor;
-
     /**
      * 返回tplConfigFactory
      *
@@ -48,23 +43,6 @@ public abstract class JuormConstant {
         //            }
         //        }
         return tplConfigFactory;
-    }
-
-    /**
-     * 返回templateProcessor
-     *
-     * @return templateProcessor
-     */
-    @SuppressWarnings("rawtypes")
-    public TemplateProcessor getTemplateProcessor() {
-        //        if (templateProcessor == null) {
-        //            synchronized (this) {
-        //                if (templateProcessor == null && getTplConfigFactory() != null) {
-        //                    templateProcessor = new FreemarkerTemplateProcessor(getTplConfigFactory());
-        //                }
-        //            }
-        //        }
-        return templateProcessor;
     }
 
     /**

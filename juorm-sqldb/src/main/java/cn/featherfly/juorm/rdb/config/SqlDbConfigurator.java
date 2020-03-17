@@ -6,10 +6,10 @@ import cn.featherfly.constant.ConstantPool;
 import cn.featherfly.juorm.Juorm;
 import cn.featherfly.juorm.config.Configurator;
 import cn.featherfly.juorm.rdb.jdbc.JuormJdbcImpl;
-import cn.featherfly.juorm.tpl.TemplateProcessor;
+import cn.featherfly.juorm.rdb.tpl.SqlDbTemplateEngine;
+import cn.featherfly.juorm.rdb.tpl.freemarker.SqldbFreemarkerTemplateEngine;
 import cn.featherfly.juorm.tpl.TplConfigFactory;
 import cn.featherfly.juorm.tpl.TplConfigFactoryImpl;
-import cn.featherfly.juorm.tpl.freemarker.FreemarkerTemplateProcessor;
 
 /**
  * <p>
@@ -64,9 +64,9 @@ public class SqlDbConfigurator implements Configurator {
                     }
 
                     @SuppressWarnings("rawtypes")
-                    TemplateProcessor processor = constant.getTemplateProcessor();
+                    SqlDbTemplateEngine processor = constant.getTemplateEngine();
                     if (processor == null) {
-                        processor = new FreemarkerTemplateProcessor(factory);
+                        processor = new SqldbFreemarkerTemplateEngine(factory);
                     }
 
                     configuration.juormJdbc = new JuormJdbcImpl(constant.getJdbc(), constant.getMappingFactory(),
