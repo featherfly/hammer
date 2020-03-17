@@ -12,9 +12,6 @@ import cn.featherfly.juorm.JuormException;
  * <p>
  * AliasManager
  * </p>
- * <p>
- * 2019-09-19
- * </p>
  *
  * @author zhongj
  */

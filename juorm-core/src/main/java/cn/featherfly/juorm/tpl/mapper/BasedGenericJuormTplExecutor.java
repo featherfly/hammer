@@ -15,9 +15,6 @@ import cn.featherfly.juorm.dsl.query.TypeQueryEntity;
  * <p>
  * UserMapperImpl
  * </p>
- * <p>
- * 2019-08-14
- * </p>
  *
  * @author zhongj
  */

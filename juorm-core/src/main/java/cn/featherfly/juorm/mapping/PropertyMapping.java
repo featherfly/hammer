@@ -18,9 +18,6 @@ import java.util.Map;
  * <p>
  * PropertyMapping
  * </p>
- * <p>
- * 2019-09-23
- * </p>
  *
  * @author zhongj
  */

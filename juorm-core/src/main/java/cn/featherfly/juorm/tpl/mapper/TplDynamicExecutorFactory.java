@@ -24,6 +24,7 @@ import cn.featherfly.juorm.Juorm;
 import cn.featherfly.juorm.JuormException;
 import cn.featherfly.juorm.tpl.TplExecuteId;
 import cn.featherfly.juorm.tpl.TplExecuteIdImpl;
+import cn.featherfly.juorm.tpl.annotation.Mapper;
 import cn.featherfly.juorm.tpl.annotation.TplExecution;
 import cn.featherfly.juorm.tpl.annotation.TplParam;
 import cn.featherfly.juorm.tpl.annotation.TplParamType;
@@ -40,9 +41,6 @@ import javassist.NotFoundException;
 /**
  * <p>
  * TplMapperFactory
- * </p>
- * <p>
- * 2019-08-14
  * </p>
  *
  * @author zhongj
@@ -262,9 +260,9 @@ public class TplDynamicExecutorFactory {
     }
 
     private String getNamespace(Class<?> type) {
-        TplExecution tplExecution = type.getAnnotation(TplExecution.class);
-        if (tplExecution != null && LangUtils.isNotEmpty(tplExecution.namespace())) {
-            return tplExecution.namespace();
+        Mapper mapper = type.getAnnotation(Mapper.class);
+        if (mapper != null && LangUtils.isNotEmpty(mapper.namespace())) {
+            return mapper.namespace();
         } else {
             return type.getSimpleName();
         }

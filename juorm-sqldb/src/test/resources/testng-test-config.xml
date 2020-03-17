@@ -5,7 +5,7 @@
 	<parameter name="dataBase" value="mysql" />
 	<test name="orm test with read config file">
 		<classes>
-			<class name="cn.featherfly.juorm.rdb.jdbc.JuormJdbcTest2" />
+			<class name="cn.featherfly.juorm.sqldb.jdbc.JuormJdbcTest2" />
 		</classes>
 	</test>
 </suite>

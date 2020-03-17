@@ -19,11 +19,7 @@ import cn.featherfly.juorm.tpl.TplExecuteId;
  * <p>
  * JuormBaseMapper
  * </p>
- * <p>
- * 2019-08-14
- * </p>
- * .
- *
+ * 
  * @author zhongj
  */
 public class BasedJuormTplExecutor implements Juorm {

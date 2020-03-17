@@ -10,13 +10,10 @@ import java.lang.annotation.Target;
  * <p>
  * TplExecution
  * </p>
- * <p>
- * 2019-08-14
- * </p>
  *
  * @author zhongj
  */
-@Target({ ElementType.TYPE, ElementType.METHOD })
+@Target({ ElementType.METHOD })
 @Retention(RetentionPolicy.RUNTIME)
 public @interface TplExecution {
 

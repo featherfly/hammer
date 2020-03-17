@@ -8,9 +8,6 @@ import cn.featherfly.juorm.tpl.TplConfigFactory;
  * <p>
  * JuormConstant
  * </p>
- * <p>
- * 2019-08-26
- * </p>
  *
  * @author zhongj
  */

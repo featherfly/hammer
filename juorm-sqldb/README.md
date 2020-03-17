@@ -25,15 +25,8 @@ compile group: 'cn.featherfly.juorm', name: 'juorm-sqldb', version: '0.2.0'
 通过使用jurom api操作的代码概览：
 
 ```java
-BasicDataSource dataSource = new BasicDataSource();
-dataSource.setUrl("jdbc:mysql://127.0.0.1:3306/juorm_jdbc");
-dataSource.setDriverClassName("com.mysql.jdbc.Driver");
-dataSource.setUsername("root");
-dataSource.setPassword("123456");
-Jdbc jdbc = new SpringJdbcTemplateImpl(dataSource, Dialects.MYSQL);
-DatabaseMetadata metadata = DatabaseMetadataManager.getDefaultManager().create(dataSource);
-JdbcMappingFactory mappingFactory = new JdbcMappingFactory(metadata, Dialects.MYSQL);
-TplConfigFactory configFactory = new TplConfigFactoryImpl("tpl/");
+
+// 示例用，具体配置看JuormJdbcImpl配置章节
 Juorm juorm = new JuormJdbcImpl(jdbc, mappingFactory, configFactory);
 
 // 通过主键获取
@@ -76,7 +69,7 @@ PaginationResults<User> userPaginationResults = executor.pagination("user@select
 
 ```java
 // 类似于mybatis，直接执行模板中的sql
-@TplExecution(namespace = "user")
+@Mapper(namespace = "user")
 public interface UserMapper {
 	User selectByUsername(@TplParam("username") String username);
 
@@ -99,14 +92,26 @@ public interface UserMapper {
 
 ```java
 // 除了可以使用模板sql进行查询外，可以继承Juorm或者GenericJuorm进行api操作,需要使用jdk8的default method
-@TplExecution(namespace = "user")
+@Mapper(namespace = "user")
 public interface UserMapper3 extends GenericJuorm<User> {
 	// 这里的query方法就是GenericJuorm接口定义的方法	
     default User getByUsernameAndPassword2(String username, String pwd) {
         return query().where().eq("username", username).and().eq("password", pwd).single();
     }
 }
-// 外部调用就可以直接使用Juorm或者GenericJuorm里定义的方法, UserMapper3 userMapper; userMapper.save(user);
+// 外部调用也可以直接使用Juorm或者GenericJuorm里定义的方法
+public class UserService {
+    UserMapper3 userMapper; 
+    public void regist(User user) {
+        // ....
+        // 其他业务代码
+        if (userMapper.getByUsernameAndPassword2(user.getUsername(), user.getPassword()) == null) {
+            userMapper.save(user);
+        } else {
+            // 用户已经存在异常处理
+        }
+    }
+}
 ```
 
 ## 目录
@@ -981,23 +986,23 @@ roleFromTemplate: "from role <@where>
 
 Mapper就是定义指定操作方法的接口类，juorm有三种Mapper的定义方式
 
-1. 直接定义一个接口，使用@TplExecution标注，外部使用此mapper时，只提供此接口定义的方法
+1. 定义一个接口，使用@Mapper标注，外部使用此mapper时，只提供此接口定义的方法
 ```java
-@TplExecution(namespace = "user")
+@Mapper(namespace = "user")
 public interface UserMapper {
 	// methods
 }
 ```
-2. 直接定义一个接口，使用@TplExecution标注，继承Juorm接口，外部使用此mapper时，除了提供此接口定义的方法，还能使用Juorm内定义的方法，方法内部也可以使用default method调用Juorm接口内的方法实现一些基础功能
+2. 定义一个接口，使用@Mapper标注，继承Juorm接口，外部使用此mapper时，除了提供此接口定义的方法，还能使用Juorm内定义的方法，方法内部也可以使用default method调用Juorm接口内的方法实现一些基础功能
 ```java
-@TplExecution(namespace = "user")
+@Mapper(namespace = "user")
 public interface UserMapper2 extends Juorm {
 	// methods
 }
 ```
-3. 直接定义一个接口，使用@TplExecution标注，继承GenericJuorm接口，外部使用此mapper时，除了提供此接口定义的方法，还能使用GenericJuorm内定义的方法，方法内部也可以使用default method调用Juorm接口内的方法实现一些基础功能
+3. 定义一个接口，使用@Mapper标注，继承GenericJuorm接口，外部使用此mapper时，除了提供此接口定义的方法，还能使用GenericJuorm内定义的方法，方法内部也可以使用default method调用Juorm接口内的方法实现一些基础功能
 ```java
-@TplExecution(namespace = "user")
+@Mapper(namespace = "user")
 public interface UserMapper3 extends GenericJuorm<User> {
 	// methods
 }
@@ -1007,9 +1012,12 @@ public interface UserMapper3 extends GenericJuorm<User> {
 
 ### Mapper中注解的含义
 
-`@TplExecution` 可以标注在类或者方法上  
-&nbsp;&nbsp;`namespace`  模板文件的路径  
-&nbsp;&nbsp;`name`  sqlId
+`@Mapper` 只能标注在类上  
+&nbsp;&nbsp;`namespace`  模板文件的路径，如果为空，则使用类型的名称class.getSimpleName()
+
+`@TplExecution` 只能标注在方法上  
+&nbsp;&nbsp;`namespace`  模板文件的路径，如果为空，使用Mapper的namespace进行查找
+&nbsp;&nbsp;`name`  sqlId，如果为空，则使用方法名作为sqlId进行查找
 
 `@TplParam` 标注在方法参数中，用于映射方法参数和查询参数  
 &nbsp;&nbsp;`value`  查询参数名称，如果是java8以上，并且**java编译代码的时候开启-parameters选项**，可以不使用此注解来映射查询参数名称  
@@ -1017,13 +1025,13 @@ public interface UserMapper3 extends GenericJuorm<User> {
 
 ### Mapper方法sqlId的查找逻辑
 
-标注在类（接口）上的`@TplExecution`的`namespace`的值将作为内部所有方法的缺省默认值，
+标注在类（接口）上的`@Mapper`的`namespace`的值将作为内部所有方法的缺省默认值，
 方法没有标注`@TplExecution`时，使用方法名作为`@TplExecution`的`name`值，如果某一些方法需要使用不同于类标注的`namespace`的值，可以在方法上标注`@TplExecution`，并指定`namespace`的值
 
 *参考示例代码*
 
 ```java
-@TplExecution(namespace = "user")
+@Mapper(namespace = "user")
 public interface UserMapper {
 
     User selectByUsername(@TplParam("username") String username);
