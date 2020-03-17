@@ -20,7 +20,7 @@ public class SqldbFreemarkerTemplateEngine
         implements SqlDbTemplateEngine<FreemarkerDirective, FreemarkerMethod> {
 
     /**
-     * @param configFactory
+     * @param configFactory configFactory
      */
     public SqldbFreemarkerTemplateEngine(TplConfigFactory configFactory) {
         super(configFactory);

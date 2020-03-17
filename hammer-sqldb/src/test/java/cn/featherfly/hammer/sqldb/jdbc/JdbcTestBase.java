@@ -76,7 +76,8 @@ public class JdbcTestBase {
 
     //    @BeforeSuite(groups = "mysql", dependsOnMethods = "init")
     public void initMysql() throws IOException {
-        ConstantConfigurator.config("constant.mysql.yaml");
+        ConstantConfigurator.config();
+        //        ConstantConfigurator.config("constant.mysql.yaml");
 
         BasicDataSource dataSource = new BasicDataSource();
         dataSource.setUrl("jdbc:mysql://127.0.0.1:3306/hammer_jdbc?useUnicode=true&characterEncoding=UTF-8");

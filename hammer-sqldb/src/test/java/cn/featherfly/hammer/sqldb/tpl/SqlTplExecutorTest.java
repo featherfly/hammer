@@ -18,7 +18,6 @@ import cn.featherfly.hammer.sqldb.jdbc.JdbcTestBase;
 import cn.featherfly.hammer.sqldb.jdbc.vo.Role;
 import cn.featherfly.hammer.sqldb.jdbc.vo.User;
 import cn.featherfly.hammer.sqldb.jdbc.vo.UserInfo;
-import cn.featherfly.hammer.sqldb.tpl.SqlTplExecutor;
 import cn.featherfly.hammer.sqldb.tpl.freemarker.SqldbFreemarkerTemplateEngine;
 import cn.featherfly.hammer.tpl.TplConfigFactoryImpl;
 
@@ -284,5 +283,15 @@ public class SqlTplExecutorTest extends JdbcTestBase {
     void testDuplicateExceptionMulitiFile() {
         // 配置会读取最下面的同名executeId
         executor.list("select", UserInfo.class, new HashChainMap<String, Object>());
+    }
+
+    @Test
+    void testDeepDir() {
+        executor.list("dir/user_info@select", UserInfo.class, new HashChainMap<String, Object>());
+    }
+
+    @Test
+    void testDeepDir2() {
+        executor.list("selectDir", UserInfo.class, new HashChainMap<String, Object>());
     }
 }

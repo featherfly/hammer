@@ -163,49 +163,49 @@ public abstract class SqlDbTemplateProcessEnv<D extends TemplateDirective, M ext
     /**
      * createWhereDirective
      *
-     * @return
+     * @return WhereDirective
      */
     protected abstract D createWhereDirective();
 
     /**
      * createAndDirective
      *
-     * @return
+     * @return AndDirective
      */
     protected abstract D createAndDirective();
 
     /**
      * createOrDirective
      *
-     * @return
+     * @return OrDirective
      */
     protected abstract D createOrDirective();
 
     /**
      * createPropertiesDirective
      *
-     * @return
+     * @return PropertiesDirective
      */
     protected abstract D createPropertiesDirective();
 
     /**
      * createTemplateIncludeDirective
      *
-     * @return
+     * @return IncludeDirective
      */
     protected abstract D createIncludeDirective();
 
     /**
      * createWrapDirective
      *
-     * @return
+     * @return WrapDirective
      */
     protected abstract D createWrapDirective();
 
     /**
      * createWrapMethode
      *
-     * @return
+     * @return WrapMethode
      */
     protected abstract M createWrapMethode();
 }

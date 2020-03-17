@@ -1,8 +1,8 @@
 ***
 
-## JUORM-SQLDB
+## hammer-sqldb
 
-`JUORM-SQLDB` 是基于jdbc实现对关系型数据库进行数据操作的框架。
+`hammer-sqldb` 是基于jdbc实现对关系型数据库进行数据操作的框架。
 
 ## 快速入门
 
@@ -10,56 +10,63 @@
 
 ```xml
 <dependency>
-    <groupId>cn.featherfly.juorm</groupId>
-    <artifactId>juorm-sqldb</artifactId>
-    <version>0.2.0</version>
+    <groupId>cn.featherfly.hammer</groupId>
+    <artifactId>hammer-sqldb</artifactId>
+    <version>0.3.0</version>
 </dependency>
 ```
 `Gradle` 配置：
 ```
-compile group: 'cn.featherfly.juorm', name: 'juorm-sqldb', version: '0.2.0'
+compile group: 'cn.featherfly.hammer', name: 'hammer-sqldb', version: '0.3.0'
 ```
 
 #### 操作代码概览
 
-通过使用jurom api操作的代码概览：
+通过快速预览各种实际代码对hammer有一个大致的了解
+
+通过使用hammer api操作的代码概览：
 
 ```java
 
-// 示例用，具体配置看JuormJdbcImpl配置章节
-Juorm juorm = new JuormJdbcImpl(jdbc, mappingFactory, configFactory);
+// 示例用，具体配置看SqlDbHammerImpl配置章节
+Hammer hammer = new SqldbHammerJdbcImpl(jdbc, mappingFactory, configFactory);
 
 // 通过主键获取
-User u = juorm.get(id, User.class);
+User u = hammer.get(id, User.class);
 
 // 插入数据
-int result = juorm.save(u);
+int result = hammer.save(u);
 
 // 更新数据
-int result = juorm.update(u);// 或者 juorm.merge(u); // update和merge区别在后面具体介绍的章节中有说明
+int result = hammer.update(u);// 或者 hammer.merge(u); // update和merge区别在后面具体介绍的章节中有说明
 
 // 删除数据
-int result = juorm.delete(u);
+int result = hammer.delete(u);
 
 // DSL模式更新数据
-int result = juorm.update(User.class).set("name", newName).property("descp").set(newDescp).where().eq("id", id).execute();
+int result = hammer.update(User.class).set("name", newName).property("descp").set(newDescp).where().eq("id", id).execute();
+int result = hammer.update(User.class).set(User::getName, newName).property(User::getDescp).set(newDescp).where().eq(User::getId, id).execute();
 
-// DSL模式更新数据自增长
-int result = juorm.update(User.class).increase("age", 1).where().eq("id", id).execute();
+// DSL模式更新自增长数据
+int result = hammer.update(User.class).increase("age", 1).where().eq("id", id).execute();
+int result = hammer.update(User.class).increase(User::getAge, 1).where().eq(User::getId, id).execute();
 
 // DSL模式删除数据
-int result = juorm.delete(User.class).where().in("id", new Integer[] { r.getId(), r2.getId() }).or().eq("id", r3.getId()).or().ge("id", r4.getId()).execute();
+int result = hammer.delete(Role.class).where().in("id", new Integer[] { r.getId(), r2.getId() }).or().eq("id", r3.getId()).or().ge("id", r4.getId()).execute();
+int result = hammer.delete(Role.class).where().eq(Role::getId, r3.getId()).execute();
 
 // DSL模式查询数据
-List<User> users = query.find("user").where().eq("username", "yufei").and().eq("password", "123456").and().group().gt("age", 18).and().lt("age", 60).list(User.class)
-List<Role> roles = juorm.query(Role.class).where().gt("id", 5).and().le("id", 10).list()
+User user = hammer.query("user").where().eq("username", username).and().eq("password", password).single()
+User user = hammer.query(User.class).where().eq(User::getUsername, username).and().eq(User::getPassword, password).single()
+List<User> users = query.find("user").where().eq("username", username).and().eq("password", password).and().group().gt("age", 18).and().lt("age", 60).list(User.class)
+List<Role> roles = hammer.query(Role.class).where().gt("id", 5).and().le("id", 10).list()
 
 // 模板SQL查询数据
-int avg = juorm.numberInt("selectAvg2", new HashChainMap<String, Object>().putChain("age", 40));
-String str = juorm.string("selectString", new HashChainMap<String, Object>());
-User u = juorm.single("user@selectByUsername", User.class,
+String str = hammer.string("selectString", new HashMap<String, Object>());
+int avg = hammer.numberInt("selectAvg2", new HashChainMap<String, Object>().putChain("age", 40));
+User u = hammer.single("user@selectByUsername", User.class,
                 new HashChainMap<String, Object>().putChain("username", username));
-List<User> users = juorm.list("user@selectConditions", User.class, new HashChainMap<String, Object>()
+List<User> users = hammer.list("user@selectConditions", User.class, new HashChainMap<String, Object>()
                 .putChain("minAge", minAge).putChain("maxAge", maxAge).putChain("username", username2 + "%"));
 PaginationResults<User> userPaginationResults = executor.pagination("user@selectConditions", User.class,
                 new HashChainMap<String, Object>(), start, limit);
@@ -70,8 +77,8 @@ PaginationResults<User> userPaginationResults = executor.pagination("user@select
 ```java
 // 类似于mybatis，直接执行模板中的sql
 @Mapper(namespace = "user")
-public interface UserMapper {
-	User selectByUsername(@TplParam("username") String username);
+public interface UserMapper {   
+    User selectByUsername(@TplParam("username") String username);
 
     User selectByUsernameAndPassword(@TplParam("username") String username, @TplParam("password") String pwd);
 
@@ -91,15 +98,15 @@ public interface UserMapper {
 ```
 
 ```java
-// 除了可以使用模板sql进行查询外，可以继承Juorm或者GenericJuorm进行api操作,需要使用jdk8的default method
+// 除了可以使用模板sql进行查询外，可以继承hammer或者GenericHammer进行api操作,需要使用jdk8的default method
 @Mapper(namespace = "user")
-public interface UserMapper3 extends GenericJuorm<User> {
-	// 这里的query方法就是GenericJuorm接口定义的方法	
+public interface UserMapper3 extends GenericHammer<User> {
+	// 这里的query方法就是GenericHammer接口定义的方法	
     default User getByUsernameAndPassword2(String username, String pwd) {
         return query().where().eq("username", username).and().eq("password", pwd).single();
     }
 }
-// 外部调用也可以直接使用Juorm或者GenericJuorm里定义的方法
+// 外部调用也可以直接使用hammer或者GenericHammer里定义的方法
 public class UserService {
     UserMapper3 userMapper; 
     public void regist(User user) {
@@ -118,7 +125,7 @@ public class UserService {
 
 - [**`基础配置`**](#基础配置)
 	- [**`最基础的配置文件`**](#最基础的配置文件)
-    - [**`JuormJdbcImpl配置`**](#JuormJdbcImpl配置)
+    - [**`SqlDbHammerImpl配置`**](#SqlDbHammerImpl配置)
     - [**`Mapper配置`**](#Mapper配置)
     - [**`Spring集成`**](#Spring集成)
 - [**`对象映射基础操作`**](#对象映射基础操作)
@@ -145,42 +152,38 @@ public class UserService {
 - [**`Mapper详解`**](#Mapper详解)
     - [**`Mapper中注解的含义`**](#Mapper中注解的含义)
     - [**`Mapper方法sqlId的查找逻辑`**](#Mapper方法sqlId的查找逻辑)
-    - [**`Mapper方法与juorm模板API的对应关系`**](#Mapper方法与juorm模板API的对应关系)
+    - [**`Mapper方法与hammer模板API的对应关系`**](#Mapper方法与hammer模板API的对应关系)
     - [**`Mapper中实现模板查询以外的操作`**](#Mapper中实现模板查询以外的操作)
 
 ## 基础配置
 
 ### 最基础的配置文件
 
-**在resources目录下加入constant.yaml文件（默认是从classpath根目录读取）**
-
-```yaml
-basePackeges: cn.featherfly
-devMode: true
-```
-`basePackeges` 需要扫描constant配置的包路径，多个包使用逗号（,）隔开，如(cn.fetherfly,com.github)。如果你的项目没有使用constant配置，直接使用cn.featherfly就行了。\
-`devMode` 开发模式，为true时，sql模板会在每次获取时都重新从文件读取，生产环境请设置为false，或者删除此配置，默认值就是false
-
 **java中初始化配置**
 ```java
 import cn.featherfly.constant.ConstantConfigurator;
 //默认使用constant.yaml，如果你要使用其他名字，请使用config(fileName)传入文件名
 ConstantConfigurator.config();
+// ConstantConfigurator.config("your_file_name.yaml");
 ```
 
-### JuormJdbcImpl配置
-```java
-import cn.featherfly.constant.ConstantConfigurator;
-import cn.featherfly.common.db.metadata.DatabaseMetadata;
-import cn.featherfly.common.db.metadata.DatabaseMetadataManager;
-import cn.featherfly.juorm.rdb.jdbc.mapping.JdbcMappingFactory;
-import cn.featherfly.juorm.rdb.sql.dialect.Dialects;
-import cn.featherfly.juorm.tpl.TplConfigFactory;
-import cn.featherfly.juorm.tpl.TplConfigFactoryImpl;
+hammer-sqldb不需要任何配置文件就能直接运行，所有配置都有默认值，所以下面这里加入文件不是必须的，不过鉴于开发要频繁修改sql模板文件，所有开启devMode更省事，devMode下会热加载sql模板文件的内容   
+`需要注意的是：ConstantConfigurator.config()的调用是必须的`
 
+**在resources目录下加入constant.yaml文件（默认是从classpath根目录读取）**
+
+```yaml
+devMode: true
+```
+<!--`basePackeges` 需要扫描constant配置的包路径，多个包使用逗号（,）隔开，如(cn.fetherfly,com.github)。如果你的项目没有使用constant配置，直接使用cn.featherfly就行了。)   --> 
+`devMode` 开发模式，为true时，sql模板会在每次获取时都重新从文件读取，生产环境请设置为false，或者删除此配置，默认值就是false
+
+
+### SqlDbHammerImpl配置
+```java
 ConstantConfigurator.config();
-BasicDataSource dataSource = new BasicDataSource();
-dataSource.setUrl("jdbc:mysql://127.0.0.1:3306/juorm_jdbc");
+DataSource dataSource = new BasicDataSource();
+dataSource.setUrl("jdbc:mysql://127.0.0.1:3306/hammer_jdbc");
 dataSource.setDriverClassName("com.mysql.jdbc.Driver");
 dataSource.setUsername("root");
 dataSource.setPassword("123456");
@@ -189,23 +192,23 @@ Jdbc jdbc = new SpringJdbcTemplateImpl(dataSource, Dialects.MYSQL);
 DatabaseMetadata metadata = DatabaseMetadataManager.getDefaultManager().create(dataSource);
 
 //Jdbc jdbc = new SpringJdbcTemplateImpl(dataSource, Dialects.POSTGRESQL);
-//DatabaseMetadata metadata = DatabaseMetadataManager.getDefaultManager().create(dataSource, "juorm_jdbc");
+//DatabaseMetadata metadata = DatabaseMetadataManager.getDefaultManager().create(dataSource, "hammer_jdbc");
 // 使用PostgreSQL和Oracle时需要在create时传入数据库名称
-
 JdbcMappingFactory mappingFactory = new JdbcMappingFactory(metadata, Dialects.MYSQL);
+// 这里的tpl/表示开始查找sql模板文件的根目录
 TplConfigFactory configFactory = new TplConfigFactoryImpl("tpl/");
-Juorm juorm = new JuormJdbcImpl(jdbc, mappingFactory, configFactory);
-// 然后使用juorm进行数据操作
+hammer hammer = new hammerJdbcImpl(jdbc, mappingFactory, configFactory);
+// 然后使用hammer进行数据操作
 ```
 
 ### Mapper配置
 
-文档中使用Mapper这个名词是因为Mybatis使用此名词，这样会让有Mybatis经验的读者更容易理解。
+使用Mapper这个单词是因为Mybatis使用此单词，这样会让有Mybatis经验的读者更容易理解。
 
 **定义Mapper**
 
 ```java
-@TplExecution(namespace = "user")
+@Mapper(namespace = "user")
 public interface UserMapper {
 	User selectByUsername(@TplParam("username") String username);
     // 根据需要定义更多方法
@@ -216,8 +219,8 @@ public interface UserMapper {
 
 ```java
 TplDynamicExecutorFactory mapperFactory = TplDynamicExecutorFactory.getInstance();
-Juorm juorm = new JuormJdbcImpl(jdbc, mappingFactory, configFactory);
-UserMapper userMapper = mapperFactory.newInstance(UserMapper.class, juorm);
+Hammer hammer = new SqldbHammerImpl(jdbc, mappingFactory, configFactory);
+UserMapper userMapper = mapperFactory.newInstance(UserMapper.class, hammer);
 // 然后使用userMapper进行数据操作
 ```
 
@@ -232,24 +235,26 @@ public class Appconfig {
     @Bean
     public DynamicTplExecutorSpringRegistor tplDynamicExecutorSpringRegistor() {
         Set<String> packages = new HashSet<>();
-        packages.add("cn.featherfly");
-        //packages.add("你需要扫描的包路径");
-        DynamicTplExecutorScanSpringRegistor registor = new DynamicTplExecutorScanSpringRegistor(packages, "juorm");
+        packages.add("你需要扫描的包路径");
+        // 例如 packages.add("cn.featherfly");
+        DynamicTplExecutorScanSpringRegistor registor = new DynamicTplExecutorScanSpringRegistor(packages, "hammer");
+        // 这里的"hammer"是你注册到spring的SqldbHammerImpl的name
         return registor;
     }
 
     @Bean
-    public JuormJdbcImpl juorm(DataSource dataSource) {
-    	// dataSource通过xml配置，可以根据需求动态更换dataSource实现
+    public SqldbHammerImpl hammer(DataSource dataSource) {
+    	// 我这里的dataSource通过xml配置，主要方便在各种datasource实现之间切换
+        // 配置你自己的日志框架
         DOMConfigurator.configure(ClassLoaderUtils.getResource("log4j.xml", JdbcTestBase.class));
-        ConstantConfigurator.config();
+        ConstantConfigurator.config(); //这条语句不能少
         Jdbc jdbc = new SpringJdbcTemplateImpl(dataSource, Dialects.MYSQL);
         DatabaseMetadata metadata = DatabaseMetadataManager.getDefaultManager().create(dataSource);
         JdbcMappingFactory mappingFactory = new JdbcMappingFactory(metadata, Dialects.MYSQL);
-        // tpl/代表sql模板从classpath查找的根目录
+        // tpl/代表sql模板从classpath查找的根目录，如果调用无参构造函数，则从classpath目录开始查找
         TplConfigFactory configFactory = new TplConfigFactoryImpl("tpl/");
-        JuormJdbcImpl juorm = new JuormJdbcImpl(jdbc, mappingFactory, configFactory);
-        return juorm;
+        SqlDbHammerImpl hammer = new SqlDbHammerImpl(jdbc, mappingFactory, configFactory);
+        return hammer;
     }
 }
 ```
@@ -265,10 +270,10 @@ xml配置dataSource
 		http://www.springframework.org/schema/context
         http://www.springframework.org/schema/context/spring-context.xsd">
 	<context:component-scan
-		base-package="cn.featherfly.juorm" />
+		base-package="cn.featherfly.hammer" />
 	<cache:annotation-driven proxy-target-class="true"/>
 	<bean id="dataSource" class="org.apache.commons.dbcp.BasicDataSource">
-	   <property name="url" value="jdbc:mysql://127.0.0.1:3306/juorm_jdbc"/>
+	   <property name="url" value="jdbc:mysql://127.0.0.1:3306/hammer_jdbc"/>
 	   <property name="driverClassName" value="com.mysql.jdbc.Driver"/>
 	   <property name="username" value="root"/>
 	   <property name="password" value="123456"/>
@@ -379,15 +384,15 @@ public class DistrictDivision {
 
 ### 主键查询对象
 
-`juorm.get(entity)`  
-`juorm.get(Serializable id, Class<E> type)`
+`hammer.get(entity)`  
+`hammer.get(Serializable id, Class<E> type)`
 
 
 #### 单一主键查询
 
 ```java
-Role role = juorm.get(id, Role.class);
-UserInfo ui = juorm.get(id, UserInfo.class);
+Role role = hammer.get(id, Role.class);
+UserInfo ui = hammer.get(id, UserInfo.class);
 ```
 
 #### 复合主键查询
@@ -398,21 +403,21 @@ Integer roleId = 2;
 Integer userId = 2;
 userRole.setRoleId(roleId);
 userRole.setUserId(userId);
-UserRole ur = juorm.get(userRole);
+UserRole ur = hammer.get(userRole);
 
 UserRole2 userRole = new UserRole2();
 Integer roleId = 2;
 Integer userId = 2;
 userRole.setRole(new Role(roleId));
 userRole.setUser(new User(userId));
-UserRole2 ur = juorm.get(userRole);
+UserRole2 ur = hammer.get(userRole);
 ```
 
 ### 保存对象
 
-`juorm.save(entity)`  
-`juorm.save(entity...array)`  
-`juorm.save(List<Entity>)`
+`hammer.save(entity)`  
+`hammer.save(entity...array)`  
+`hammer.save(List<Entity>)`
 
 #### 单一主键保存
 
@@ -421,7 +426,7 @@ UserRole2 ur = juorm.get(userRole);
 ```java
 Role role = new Role();
 // 设置role属性
-int result = juorm.save(role);
+int result = hammer.save(role);
 // 返回保存数据影响的行数
 
 UserInfo ui = new UserInfo();
@@ -429,7 +434,7 @@ ui.setUser(new User(1));
 ui.setDescp("descp_" + RandomUtils.getRandomInt(100));
 ui.setName("name_" + RandomUtils.getRandomInt(100));
 ui.setDivision(new DistrictDivision("四川", "成都", "高新"));
-juorm.save(ui);
+hammer.save(ui);
 ```
 
 #### 复合主键保存
@@ -443,7 +448,7 @@ Integer userId = 2;
 userRole.setRoleId(roleId);
 userRole.setUserId(userId);
 // 设置userRole属性
-juorm.save(userRole);
+hammer.save(userRole);
 
 UserRole2 userRole2 = new UserRole2();
 Integer roleId = 2;
@@ -451,21 +456,21 @@ Integer userId = 2;
 userRole2.setRole(new Role(roleId));
 userRole2.setUser(new User(userId));
 // 设置userRole2属性
-juorm.save(userRole);
+hammer.save(userRole);
 ```
 
 ### 更新对象
 
-`juorm.update(entity, IgnorePolicy)` 使用指定策略更新对象  
-`juorm.update(List<Entity>, IgnorePolicy)` 使用指定策略更新对象列表  
+`hammer.update(entity, IgnorePolicy)` 使用指定策略更新对象  
+`hammer.update(List<Entity>, IgnorePolicy)` 使用指定策略更新对象列表  
 **下面三个等于update(entity, IgnorePolicy.NONE), 如果传入对象有null或者空字符串，会被更新到数据库**  
-`juorm.update(entity)`  
-`juorm.update(entity...array)`  
-`juorm.update(List<Entity>)`  
+`hammer.update(entity)`  
+`hammer.update(entity...array)`  
+`hammer.update(List<Entity>)`  
 **下面三个等于update(entity, IgnorePolicy.EMPTY), 忽略传入对象的null或者空字符串，不会更新null和空字符串到数据库**  
-`juorm.merge(entity)`  
-`juorm.merge(entity...array)`  
-`juorm.merge(List<Entity>)` 
+`hammer.merge(entity)`  
+`hammer.merge(entity...array)`  
+`hammer.merge(List<Entity>)` 
 
 #### 单一主键更新
 
@@ -474,7 +479,7 @@ Role r = new Role();
 r.setId(1);
 r.setName("name");
 r.setDescp("descp");
-juorm.update(r);
+hammer.update(r);
 
 UserInfo ui = new UserInfo();
 ui.setId(1);
@@ -482,17 +487,17 @@ ui.setUser(new User(1));
 ui.setDescp("descp_" + RandomUtils.getRandomInt(100));
 ui.setName("name_" + RandomUtils.getRandomInt(100));
 ui.setDivision(new DistrictDivision("四川", "成都", "高新"));
-juorm.update(ui);
+hammer.update(ui);
 
 Role r2 = new Role();
 r2.setId(r.getId());
 r2.setName("merge_name" + RandomUtils.getRandomInt(100));
-juorm.merge(r2);
+hammer.merge(r2);
 
 UserInfo ui2 = new UserInfo();
 ui2.setId(2);
 ui2.setDescp("descp_" + RandomUtils.getRandomInt(100));
-juorm.merge(ui2);
+hammer.merge(ui2);
 ```
 
 #### 复合主键更新
@@ -503,36 +508,36 @@ userRole.setRoleId(3);
 userRole.setUserId(3);
 userRole.setDescp("descp_update_1");
 userRole.setDescp2("descp2_update_1");
-juorm.update(userRole);
+hammer.update(userRole);
 
 UserRole2 userRole2 = new UserRole2();
 userRole2.setRole(new Role(3));
 userRole2.setUser(new User(3));
 userRole2.setDescp("descp_update_2");
 userRole2.setDescp2("descp2_update_2");
-juorm.update(userRole2);
+hammer.update(userRole2);
 
 UserRole ur = new UserRole();
 ur.setRoleId(4);
 ur.setUserId(4);
 ur.setDescp("descp_update_" + RandomUtils.getRandomInt(99));
-juorm.merge(ur);
+hammer.merge(ur);
 ```
 
 ### 删除对象
 
-`juorm.delete(entity)`  
-`juorm.delete(entity...array)`  
-`juorm.delete(List<Entity>)`  
+`hammer.delete(entity)`  
+`hammer.delete(entity...array)`  
+`hammer.delete(List<Entity>)`  
 
 #### 单一主键删除
 
 ```java
 Role r = new Role();
 r.setId(1);
-int result = juorm.delete(r);
+int result = hammer.delete(r);
 // 返回删除数据影响的行数
-// juorm.delete(entity array), juorm.delete(entity list)
+// hammer.delete(entity array), hammer.delete(entity list)
 ```
 
 #### 复合主键删除
@@ -541,12 +546,12 @@ int result = juorm.delete(r);
 UserRole userRole = new UserRole();
 userRole.setRoleId(111);
 userRole.setUserId(111);
-juorm.delete(userRole);
+hammer.delete(userRole);
 
 UserRole2 userRole2 = new UserRole2();
 userRole2.setRole(new Role(111));
 userRole2.setUser(new User(111));
-juorm.delete(userRole2);
+hammer.delete(userRole2);
 
 ```
 
@@ -577,57 +582,57 @@ juorm.delete(userRole2);
 #### 数据更新
 
 ```java
-juorm.update(Role.class).set("name", newName).property("descp").set(newDescp).where().eq("id", id).execute();
-juorm.update(Role.class).set(Role::getName, newName).property(Role::getDescp).set(newDescp).where().eq(Role::getId, id).execute();
+hammer.update(Role.class).set("name", newName).property("descp").set(newDescp).where().eq("id", id).execute();
+hammer.update(Role.class).set(Role::getName, newName).property(Role::getDescp).set(newDescp).where().eq(Role::getId, id).execute();
 ```
 
 #### 数据自增长更新
 
 ```java
-juorm.update(User.class).increase("age", 1).where().eq("id", id).execute();
-juorm.update(User.class).increase(User::getAge, 1).where().eq(User::getId, id).execute();
+hammer.update(User.class).increase("age", 1).where().eq("id", id).execute();
+hammer.update(User.class).increase(User::getAge, 1).where().eq(User::getId, id).execute();
 
-juorm.update(User.class).propertyNumber("age").increase(1).where().eq("id", id).execute();
-juorm.update(User.class).propertyNumber(User::getAge).increase(1).where().eq(User::getId, id).execute();
+hammer.update(User.class).propertyNumber("age").increase(1).where().eq("id", id).execute();
+hammer.update(User.class).propertyNumber(User::getAge).increase(1).where().eq(User::getId, id).execute();
 ```
 
 ### DSL模式删除数据
 
 ```java
-juorm.delete(Role.class).where().eq("id", id).execute();
-juorm.delete(Role.class).where().eq(Role::getId, id).execute();
+hammer.delete(Role.class).where().eq("id", id).execute();
+hammer.delete(Role.class).where().eq(Role::getId, id).execute();
 
-juorm.delete(Role.class).where().in("id", new Integer[] { id1, id2 }).or().eq("id", id3)
+hammer.delete(Role.class).where().in("id", new Integer[] { id1, id2 }).or().eq("id", id3)
             .or().ge("id", id4).execute();
-juorm.delete(Role.class).where().in(Role::getId, new Integer[] { id1, id2 }).or().eq(Role::getId, id3)
+hammer.delete(Role.class).where().in(Role::getId, new Integer[] { id1, id2 }).or().eq(Role::getId, id3)
             .or().ge(Role::getId, id4).execute();
 ```
 
 ### DSL模式查询数据
-`juorm.query(Class)` 返回映射传入对象的条件表达式  
-`juorm.query(String)` 返回条件表达式，在最后执行查询操作时进行数据映射
+`hammer.query(Class)` 返回映射传入对象的条件表达式  
+`hammer.query(String)` 返回条件表达式，在最后执行查询操作时进行数据映射
 
 
 #### 查询单一对象
 `single` 查询唯一值
 
 ```java
-Role r = juorm.query(Role.class).where().eq("id", id).single();
+Role r = hammer.query(Role.class).where().eq("id", id).single();
 ```
 
 #### 查询列表
 `list` 查询列表
 
 ```java
-List<Role> roles = juorm.query(Role.class).where().gt("id", 5).and().le("id", 10).list();
+List<Role> roles = hammer.query(Role.class).where().gt("id", 5).and().le("id", 10).list();
 ```
 
 #### 查询分页列表
 `limit` 设置分页参数
 
 ```java
-List<Role> roles = juorm.query(Role.class).where().gt("id", 5).and().le("id", 10).limit(2).list();
-roles = juorm.query(Role.class).where().gt("id", 5).and().le("id", 10).limit(2, 3).list();
+List<Role> roles = hammer.query(Role.class).where().gt("id", 5).and().le("id", 10).limit(2).list();
+roles = hammer.query(Role.class).where().gt("id", 5).and().le("id", 10).limit(2, 3).list();
 ```
 
 #### 查询排序列表
@@ -636,7 +641,7 @@ roles = juorm.query(Role.class).where().gt("id", 5).and().le("id", 10).limit(2, 
 `desc` 对传入属性进行降序
 
 ```java
-List<Role> roles = juorm.query(Role.class).where().eq("id", 4).or().group().gt("id", 5).and().le("id", 10).sort().asc("id").desc("name").list();
+List<Role> roles = hammer.query(Role.class).where().eq("id", 4).or().group().gt("id", 5).and().le("id", 10).sort().asc("id").desc("name").list();
 ```
 
 ## 模板SQL查询
@@ -652,9 +657,9 @@ select2: "select id,user_id as `user.id`, name, descp
 ```
 
 API调用传入的tplExecuteId字符串格式为filePath@sqlId  
-例：`juorm.single("user@selectByUsername", User.class, new HashChainMap<String, Object>().putChain("username", username))`  
+例：`hammer.single("user@selectByUsername", User.class, new HashChainMap<String, Object>().putChain("username", username))`  
 如果sqlId为全局唯一，也可以直接使用sqlId  
-例：`juorm.numberInt("selectAvg", new HashChainMap<String, Object>())`  
+例：`hammer.numberInt("selectAvg", new HashChainMap<String, Object>())`  
 **如果同样的sqlId出现在不同的文件中，调用时没有使用filePath@sqlId进行调用，就会抛出异常，因为程序不知道调用的是哪一个**
 
 
@@ -677,11 +682,11 @@ API调用传入的tplExecuteId字符串格式为filePath@sqlId
 `string`  
 
 ```java
-Integer avg = juorm.numberInt("selectAvg", new HashChainMap<String, Object>());
-Integer avg = juorm.numberInt("selectAvg2", new HashChainMap<String, Object>().putChain("age", 40));
+Integer avg = hammer.numberInt("selectAvg", new HashChainMap<String, Object>());
+Integer avg = hammer.numberInt("selectAvg2", new HashChainMap<String, Object>().putChain("age", 40));
 
-String str = juorm.string("selectString", new HashChainMap<String, Object>());
-String str = juorm.string("selectString2", new HashChainMap<String, Object>().putChain("id", 2));
+String str = hammer.string("selectString", new HashChainMap<String, Object>());
+String str = hammer.string("selectString2", new HashChainMap<String, Object>().putChain("id", 2));
 ```
 
 
@@ -689,8 +694,8 @@ String str = juorm.string("selectString2", new HashChainMap<String, Object>().pu
 `single`
 
 ```java
-User u1 = juorm.single("user@selectByUsername", User.class, new HashChainMap<String, Object>().putChain("username", username));
-User u2 = juorm.single("user@selectByUsernameAndPassword", User.class, new HashChainMap<String, Object>().putChain("username", username).putChain("password", password));
+User u1 = hammer.single("user@selectByUsername", User.class, new HashChainMap<String, Object>().putChain("username", username));
+User u2 = hammer.single("user@selectByUsernameAndPassword", User.class, new HashChainMap<String, Object>().putChain("username", username).putChain("password", password));
 ```
 
 ### 模板SQL列表查询
@@ -736,7 +741,7 @@ sqlId:
   count: count sql
 ```
 
-查询sql对应的统计sql这两条sql的查询条件都是一样的，所以如果把条件写在两个模板中，每次改动都要改动两个地方，容易造成错误，可以直接使用模板引擎的include机制或者juorm自定义的include机制来引入查询条件部分
+查询sql对应的统计sql这两条sql的查询条件都是一样的，所以如果把条件写在两个模板中，每次改动都要改动两个地方，容易造成错误，可以直接使用模板引擎的include机制或者hammer自定义的include机制来引入查询条件部分
 
 具体内容可以进入此章节[**`include支持`**](#include支持)
 
@@ -984,7 +989,7 @@ roleFromTemplate: "from role <@where>
 
 ### Mapper的定义方式
 
-Mapper就是定义指定操作方法的接口类，juorm有三种Mapper的定义方式
+Mapper就是定义指定操作方法的接口类，hammer有三种Mapper的定义方式
 
 1. 定义一个接口，使用@Mapper标注，外部使用此mapper时，只提供此接口定义的方法
 ```java
@@ -993,22 +998,22 @@ public interface UserMapper {
 	// methods
 }
 ```
-2. 定义一个接口，使用@Mapper标注，继承Juorm接口，外部使用此mapper时，除了提供此接口定义的方法，还能使用Juorm内定义的方法，方法内部也可以使用default method调用Juorm接口内的方法实现一些基础功能
+2. 定义一个接口，使用@Mapper标注，继承hammer接口，外部使用此mapper时，除了提供此接口定义的方法，还能使用Hammer内定义的方法，方法内部也可以使用default method调用Hammer接口内的方法实现一些基础功能
 ```java
 @Mapper(namespace = "user")
-public interface UserMapper2 extends Juorm {
+public interface UserMapper2 extends Hammer {
 	// methods
 }
 ```
-3. 定义一个接口，使用@Mapper标注，继承GenericJuorm接口，外部使用此mapper时，除了提供此接口定义的方法，还能使用GenericJuorm内定义的方法，方法内部也可以使用default method调用Juorm接口内的方法实现一些基础功能
+3. 定义一个接口，使用@Mapper标注，继承GenericHammer接口，外部使用此mapper时，除了提供此接口定义的方法，还能使用GenericHammer内定义的方法，方法内部也可以使用default method调用hammer接口内的方法实现一些基础功能
 ```java
 @Mapper(namespace = "user")
-public interface UserMapper3 extends GenericJuorm<User> {
+public interface UserMapper3 extends GenericHammer<User> {
 	// methods
 }
 ```
 
-**如果需要定义一个实体对象的Mapper，建议使用继承GenericJuorm接口的方式，这样此mapper就能把对应实体的基础操作都提供了**
+**如果需要定义一个实体对象的Mapper，建议使用继承GenericHammer接口的方式，这样此mapper就能把对应实体的基础操作都提供了**
 
 ### Mapper中注解的含义
 
@@ -1016,7 +1021,7 @@ public interface UserMapper3 extends GenericJuorm<User> {
 &nbsp;&nbsp;`namespace`  模板文件的路径，如果为空，则使用类型的名称class.getSimpleName()
 
 `@TplExecution` 只能标注在方法上  
-&nbsp;&nbsp;`namespace`  模板文件的路径，如果为空，使用Mapper的namespace进行查找
+&nbsp;&nbsp;`namespace`  模板文件的路径，如果为空，使用Mapper的namespace进行查找    
 &nbsp;&nbsp;`name`  sqlId，如果为空，则使用方法名作为sqlId进行查找
 
 `@TplParam` 标注在方法参数中，用于映射方法参数和查询参数  
@@ -1088,7 +1093,7 @@ public interface UserMapper {
 }
 ```
 
-### Mapper方法与juorm模板API的对应关系
+### Mapper方法与hammer模板API的对应关系
 
 对应原则基本都是按照方法调用的返回对象为依据，除了小部分特殊情况，下面章节为一一介绍。
 
@@ -1127,7 +1132,7 @@ List<Map<String, Object>> select2();
 
 #### [**`模板SQL分页查询`**](#模板SQL分页查询)章节介绍的API对应的Mapper调用
 
-分页查询可以返回List和PaginationResults，并且需要在查询参数之外还要传入分页参数，
+分页查询可以返回List和PaginationResults，需要在查询参数之外还要传入分页参数，
 可以使用Page对象，也可以使用int, int传入，当使用int,int传入时需要使用`@TplParam`标注并设置`type`的类型确定limit和offset。
 
 ```java
@@ -1144,12 +1149,12 @@ PaginationResults<User> selectByAge2Page(@TplParam("age") Integer age, Page page
 
 ### Mapper中实现模板查询以外的操作
 
-定义接口继承自Juorm或者GenericJuorm，然后定义default method，在其内部就可以使用已有的方法进行逻辑编写了。**需要java8的default method**。  
+定义接口继承自hammer或者GenericHammer，然后定义default method，在其内部就可以使用已有的方法进行逻辑编写了。**需要java8的default method**。  
 通过此方式，我们可以把一种实体类型的数据库操作写在一个Mapper文件中，通过继承的接口已经获得了实体的基本增删改查方法，其他简单的查询（更新，删除）也可以用DSL API实现，只有复杂的查询，才需要在模板中写sql。
 
 ```java
-@TplExecution(namespace = "user")
-public interface UserMapper3 extends GenericJuorm<User> {
+@Mapper(namespace = "user")
+public interface UserMapper3 extends GenericHammer<User> {
 
     User selectByUsername(@TplParam("username") String username);
     // methods ....

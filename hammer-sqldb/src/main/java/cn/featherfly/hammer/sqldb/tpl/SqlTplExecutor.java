@@ -54,10 +54,10 @@ public class SqlTplExecutor implements TplExecutor {
     private SqlDbTemplateEngine<TemplateDirective, TemplateMethod> templateEngine;
 
     /**
-     * @param configFactory     configFactory
-     * @param templateProcessor templateProcessor
-     * @param jdbc              jdbc
-     * @param mappingFactory    mappingFactory
+     * @param configFactory  configFactory
+     * @param templateEngine templateEngine
+     * @param jdbc           jdbc
+     * @param mappingFactory mappingFactory
      */
     @SuppressWarnings("unchecked")
     public SqlTplExecutor(@Nonnull TplConfigFactory configFactory,
