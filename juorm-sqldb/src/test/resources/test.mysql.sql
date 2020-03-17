@@ -1,6 +1,6 @@
-drop database juorm_jdbc;
-create database juorm_jdbc;
-use juorm_jdbc;
+drop database hammer_jdbc;
+create database hammer_jdbc;
+use hammer_jdbc;
 
 SET FOREIGN_KEY_CHECKS=0;
 

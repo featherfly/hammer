@@ -1,9 +1,0 @@
-cn.featherfly.juorm.rdb.config.SqlDbConstant:
-  dataSource: >
-    yaml:org.apache.commons.dbcp.BasicDataSource#{
-      url : jdbc:mysql://127.0.0.1:3306/juorm_jdbc
-      driverClassName : com.mysql.jdbc.Driver
-      username : root
-      password : 123456
-    }
-  tplConfigPrefix: tpl/

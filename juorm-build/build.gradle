@@ -2,8 +2,6 @@ allprojects {
     apply plugin: 'java'
     apply from: rootDir.getAbsolutePath() +  '/java_base.gradle'   
     apply from: rootDir.getAbsolutePath() +  '/maven_push.gradle'   
-    //apply from: '../juorm-build/java_base.gradle'   
-    //apply from: '../juorm-build/maven_push.gradle'
         
     dependencies {
 		compile group: 'org.slf4j', name: 'slf4j-api', version: '1.7.29'
