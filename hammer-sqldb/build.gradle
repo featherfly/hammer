@@ -1,6 +1,6 @@
 dependencies {
-    compile project(":juorm-api")
-    compile project(":juorm-core")
+    compile project(":hammer-api")
+    compile project(":hammer-core")
 
     compile group: 'cn.featherfly', name: 'featherfly-db', version: '1.5.6'
     compile group: 'org.springframework', name: 'spring-jdbc', version: '5.2.1.RELEASE'

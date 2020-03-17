@@ -1,5 +1,5 @@
 dependencies {
-    compile project(":juorm-api")
+    compile project(":hammer-api")
     
     compile group: 'cn.featherfly.common', name: 'common-spring', version: '0.2.1'
     compile group: 'cn.featherfly.constant', name: 'constant-core', version: '1.6.2'
