@@ -1,5 +1,5 @@
 
-package cn.featherfly.juorm.tpl;
+package cn.featherfly.juorm.tpl.freemarker;
 
 import java.io.IOException;
 import java.io.StringWriter;
@@ -10,6 +10,10 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import cn.featherfly.juorm.JuormException;
+import cn.featherfly.juorm.tpl.TemplateEnv;
+import cn.featherfly.juorm.tpl.TemplateProcessor;
+import cn.featherfly.juorm.tpl.TplConfigFactory;
+import cn.featherfly.juorm.tpl.TplExecuteConfig;
 import freemarker.cache.StringTemplateLoader;
 import freemarker.template.Configuration;
 import freemarker.template.Template;

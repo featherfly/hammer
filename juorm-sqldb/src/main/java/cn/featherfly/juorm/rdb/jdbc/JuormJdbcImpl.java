@@ -33,11 +33,11 @@ import cn.featherfly.juorm.rdb.jdbc.operate.InsertOperate;
 import cn.featherfly.juorm.rdb.jdbc.operate.MergeOperate;
 import cn.featherfly.juorm.rdb.jdbc.operate.UpdateOperate;
 import cn.featherfly.juorm.rdb.tpl.SqlTplExecutor;
-import cn.featherfly.juorm.tpl.FreemarkerTemplateProcessor;
 import cn.featherfly.juorm.tpl.TemplateProcessor;
 import cn.featherfly.juorm.tpl.TplConfigFactory;
 import cn.featherfly.juorm.tpl.TplConfigFactoryImpl;
 import cn.featherfly.juorm.tpl.TplExecuteId;
+import cn.featherfly.juorm.tpl.freemarker.FreemarkerTemplateProcessor;
 
 /**
  * <p>

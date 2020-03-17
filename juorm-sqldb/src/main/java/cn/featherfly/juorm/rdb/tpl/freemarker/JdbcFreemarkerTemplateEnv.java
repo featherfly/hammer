@@ -10,10 +10,10 @@ import cn.featherfly.juorm.rdb.tpl.freemarker.directive.PropertiesMappingDirecti
 import cn.featherfly.juorm.rdb.tpl.freemarker.directive.WhereTemplateDirectiveModel;
 import cn.featherfly.juorm.rdb.tpl.freemarker.directive.WrapTemplateDirectiveModel;
 import cn.featherfly.juorm.rdb.tpl.freemarker.method.WrapMethodModel;
-import cn.featherfly.juorm.tpl.FreemarkerTemplateEnv;
 import cn.featherfly.juorm.tpl.TemplateDirectives;
 import cn.featherfly.juorm.tpl.TemplateMethods;
 import cn.featherfly.juorm.tpl.TplConfigFactory;
+import cn.featherfly.juorm.tpl.freemarker.FreemarkerTemplateEnv;
 import cn.featherfly.juorm.tpl.supports.ConditionParamsManager;
 import freemarker.template.TemplateDirectiveModel;
 import freemarker.template.TemplateMethodModelEx;

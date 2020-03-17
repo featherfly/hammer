@@ -18,8 +18,8 @@ import cn.featherfly.juorm.rdb.jdbc.JdbcTestBase;
 import cn.featherfly.juorm.rdb.jdbc.vo.Role;
 import cn.featherfly.juorm.rdb.jdbc.vo.User;
 import cn.featherfly.juorm.rdb.jdbc.vo.UserInfo;
-import cn.featherfly.juorm.tpl.FreemarkerTemplateProcessor;
 import cn.featherfly.juorm.tpl.TplConfigFactoryImpl;
+import cn.featherfly.juorm.tpl.freemarker.FreemarkerTemplateProcessor;
 
 /**
  * <p>

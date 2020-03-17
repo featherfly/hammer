@@ -6,8 +6,8 @@ import org.testng.annotations.Test;
 
 import cn.featherfly.juorm.JuormException;
 import cn.featherfly.juorm.rdb.jdbc.JdbcTestBase;
-import cn.featherfly.juorm.tpl.FreemarkerTemplateProcessor;
 import cn.featherfly.juorm.tpl.TplConfigFactoryImpl;
+import cn.featherfly.juorm.tpl.freemarker.FreemarkerTemplateProcessor;
 
 /**
  * <p>

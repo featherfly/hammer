@@ -6,10 +6,10 @@ import cn.featherfly.constant.ConstantPool;
 import cn.featherfly.juorm.Juorm;
 import cn.featherfly.juorm.config.Configurator;
 import cn.featherfly.juorm.rdb.jdbc.JuormJdbcImpl;
-import cn.featherfly.juorm.tpl.FreemarkerTemplateProcessor;
 import cn.featherfly.juorm.tpl.TemplateProcessor;
 import cn.featherfly.juorm.tpl.TplConfigFactory;
 import cn.featherfly.juorm.tpl.TplConfigFactoryImpl;
+import cn.featherfly.juorm.tpl.freemarker.FreemarkerTemplateProcessor;
 
 /**
  * <p>
