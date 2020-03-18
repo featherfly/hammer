@@ -48,6 +48,14 @@ public class BasedTplHammer implements Hammer {
      * {@inheritDoc}
      */
     @Override
+    public <E> Delete delete(String repository) {
+        return hammer.delete(repository);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
     public <E> Delete delete(Class<E> entityType) {
         return hammer.delete(entityType);
     }
@@ -411,6 +419,14 @@ public class BasedTplHammer implements Hammer {
      * {@inheritDoc}
      */
     @Override
+    public <E> Update update(String repository) {
+        return hammer.update(repository);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
     public <E> Update update(Class<E> entityType) {
         return hammer.update(entityType);
     }
@@ -462,5 +478,4 @@ public class BasedTplHammer implements Hammer {
     public <E> E value(String tplExecuteId, Class<E> valueType, Map<String, Object> params) {
         return hammer.value(tplExecuteId, valueType, params);
     }
-
 }
