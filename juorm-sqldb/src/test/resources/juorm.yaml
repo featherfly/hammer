@@ -1,3 +1,0 @@
-basePackeges: cn.featherfly
-devMode: true
-configFiles: constant-juorm-sqldb.yaml

@@ -1,0 +1,3 @@
+#basePackeges: cn.featherfly
+devMode: true
+configFiles: constant-hammer-sqldb.yaml
