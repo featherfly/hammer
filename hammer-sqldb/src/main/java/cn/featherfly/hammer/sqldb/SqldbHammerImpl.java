@@ -419,6 +419,24 @@ public class SqldbHammerImpl implements Hammer {
      * {@inheritDoc}
      */
     @Override
+    public <E> Update update(String repository) {
+        SqlUpdater updater = new SqlUpdater(jdbc, mappingFactory);
+        return updater.update(repository);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public <E> Delete delete(String repository) {
+        SqlDeleter deleter = new SqlDeleter(jdbc, mappingFactory);
+        return deleter.delete(repository);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
     public <E> Delete delete(Class<E> entityType) {
         SqlDeleter deleter = new SqlDeleter(jdbc, mappingFactory);
         return deleter.delete(entityType);
@@ -713,4 +731,5 @@ public class SqldbHammerImpl implements Hammer {
     public String string(String tplExecuteId, Map<String, Object> params) {
         return sqlTplExecutor.string(tplExecuteId, params);
     }
+
 }

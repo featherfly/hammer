@@ -73,6 +73,14 @@ public class TplDynamicExecutorFactory {
         return INSTANCE;
     }
 
+    /**
+     * create mapper interface implemented class
+     *
+     * @param type configuration interface class
+     * @return implemented class name
+     * @throws NotFoundException
+     * @throws CannotCompileException
+     */
     public String create(Class<?> type) throws NotFoundException, CannotCompileException {
         String dynamicClassName = type.getPackage().getName() + "._" + type.getSimpleName() + "DynamicImpl";
         if (!types.contains(type)) {
@@ -217,11 +225,41 @@ public class TplDynamicExecutorFactory {
     }
 
     /**
-     * getReturnTypeName
+     * always return a new instance
      *
-     * @param method
-     * @return
+     * @param <E>
+     * @param type   mapper interface type
+     * @param hammer hammer instance
+     * @return new instance
      */
+    @SuppressWarnings("unchecked")
+    public <E> E newInstance(Class<E> type, Hammer hammer) {
+        try {
+            return (E) ClassUtils.forName(create(type)).getConstructor(Hammer.class).newInstance(hammer);
+        } catch (Exception e) {
+            throw new HammerException(e);
+        }
+    }
+
+    /**
+     * return a singleton instance, every type only new one instance
+     *
+     * @param <E>
+     * @param type   mapper interface type
+     * @param hammer hammer instance
+     * @return instance
+     */
+    @SuppressWarnings("unchecked")
+    public <E> E instance(Class<E> type, Hammer hammer) {
+        E e = null;
+        e = (E) typeInstances.get(type);
+        if (e == null) {
+            e = newInstance(type, hammer);
+            typeInstances.put(type, e);
+        }
+        return e;
+    }
+
     private String getReturnTypeName(Method method) {
         if (method.getGenericReturnType() instanceof ParameterizedType) {
             ParameterizedType parameterizedType = (ParameterizedType) method.getGenericReturnType();
@@ -229,34 +267,6 @@ public class TplDynamicExecutorFactory {
             return objectType.getTypeName();
         }
         return method.getName();
-    }
-
-    public <E> E newInstance(Class<E> type, Hammer hammer) {
-        return newInstance(type, hammer, true);
-    }
-
-    @SuppressWarnings("unchecked")
-    public <E> E newInstance(Class<E> type, Hammer hammer, boolean cache) {
-        E e = null;
-        if (cache) {
-            e = (E) typeInstances.get(type);
-            if (e == null) {
-                e = instance(type, hammer);
-                typeInstances.put(type, e);
-            }
-            return e;
-        } else {
-            return instance(type, hammer);
-        }
-    }
-
-    @SuppressWarnings("unchecked")
-    public <E> E instance(Class<E> type, Hammer hammer) {
-        try {
-            return (E) ClassUtils.forName(create(type)).getConstructor(Hammer.class).newInstance(hammer);
-        } catch (Exception e) {
-            throw new HammerException(e);
-        }
     }
 
     private String getNamespace(Class<?> type) {

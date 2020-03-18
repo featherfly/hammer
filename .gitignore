@@ -2,6 +2,7 @@
 **/build
 **/.gradle
 **/.settings
+**/.sts4-cache
 .classpath
 .project
 juorm-sqldb-velocity/

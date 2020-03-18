@@ -223,6 +223,14 @@ public interface Hammer extends TplExecutor {
     <E> TypeQueryEntity query(Class<E> entityType);
 
     /**
+     * create update for repository
+     *
+     * @param repository repository name
+     * @return Update
+     */
+    <E> Update update(String repository);
+
+    /**
      * create update for entityType
      *
      * @param <E>        entity generic type
@@ -230,6 +238,14 @@ public interface Hammer extends TplExecutor {
      * @return Update
      */
     <E> Update update(Class<E> entityType);
+
+    /**
+     * create delete for repository
+     *
+     * @param repository repository name
+     * @return Delete
+     */
+    <E> Delete delete(String repository);
 
     /**
      * create delete for entityType
