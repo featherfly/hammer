@@ -29,10 +29,6 @@ import cn.featherfly.common.lang.UriUtils;
 import cn.featherfly.constant.ConstantPool;
 import cn.featherfly.hammer.HammerException;
 import cn.featherfly.hammer.config.HammerConstant;
-import cn.featherfly.hammer.tpl.TplConfigFactory;
-import cn.featherfly.hammer.tpl.TplExecuteConfig;
-import cn.featherfly.hammer.tpl.TplExecuteConfigs;
-import cn.featherfly.hammer.tpl.TplExecuteId;
 import cn.featherfly.hammer.tpl.TplExecuteConfig.Type;
 
 /**

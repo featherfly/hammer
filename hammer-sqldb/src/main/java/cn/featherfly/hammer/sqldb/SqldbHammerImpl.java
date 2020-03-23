@@ -732,4 +732,13 @@ public class SqldbHammerImpl implements Hammer {
         return sqlTplExecutor.string(tplExecuteId, params);
     }
 
+    /**
+     * getJdbc
+     *
+     * @return
+     */
+    public Jdbc getJdbc() {
+        return jdbc;
+    }
+
 }
