@@ -2,8 +2,6 @@
 package cn.featherfly.hammer.tpl;
 
 import cn.featherfly.hammer.HammerException;
-import cn.featherfly.hammer.tpl.TplConfigFactory;
-import cn.featherfly.hammer.tpl.TplExecuteId;
 
 /**
  * <p>
