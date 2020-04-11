@@ -478,4 +478,93 @@ public class BasedTplHammer implements Hammer {
     public <E> E value(String tplExecuteId, Class<E> valueType, Map<String, Object> params) {
         return hammer.value(tplExecuteId, valueType, params);
     }
+
+    /**
+     * @param <E>
+     * @param tplExecuteId
+     * @param valueType
+     * @param params
+     * @return
+     * @see cn.featherfly.hammer.tpl.TplExecutor#value(cn.featherfly.hammer.tpl.TplExecuteId,
+     *      java.lang.Class, java.util.Map)
+     */
+    @Override
+    public <E> E value(TplExecuteId tplExecuteId, Class<E> valueType, Map<String, Object> params) {
+        return hammer.value(tplExecuteId, valueType, params);
+    }
+
+    /**
+     * @param <N>
+     * @param tplExecuteId
+     * @param numberType
+     * @param params
+     * @return
+     * @see cn.featherfly.hammer.tpl.TplExecutor#number(cn.featherfly.hammer.tpl.TplExecuteId,
+     *      java.lang.Class, java.util.Map)
+     */
+    @Override
+    public <N extends Number> N number(TplExecuteId tplExecuteId, Class<N> numberType, Map<String, Object> params) {
+        return hammer.number(tplExecuteId, numberType, params);
+    }
+
+    /**
+     * @param tplExecuteId
+     * @param params
+     * @return
+     * @see cn.featherfly.hammer.tpl.TplExecutor#numberInt(cn.featherfly.hammer.tpl.TplExecuteId,
+     *      java.util.Map)
+     */
+    @Override
+    public Integer numberInt(TplExecuteId tplExecuteId, Map<String, Object> params) {
+        return hammer.numberInt(tplExecuteId, params);
+    }
+
+    /**
+     * @param tplExecuteId
+     * @param params
+     * @return
+     * @see cn.featherfly.hammer.tpl.TplExecutor#numberLong(cn.featherfly.hammer.tpl.TplExecuteId,
+     *      java.util.Map)
+     */
+    @Override
+    public Long numberLong(TplExecuteId tplExecuteId, Map<String, Object> params) {
+        return hammer.numberLong(tplExecuteId, params);
+    }
+
+    /**
+     * @param tplExecuteId
+     * @param params
+     * @return
+     * @see cn.featherfly.hammer.tpl.TplExecutor#numberBigDecimal(cn.featherfly.hammer.tpl.TplExecuteId,
+     *      java.util.Map)
+     */
+    @Override
+    public BigDecimal numberBigDecimal(TplExecuteId tplExecuteId, Map<String, Object> params) {
+        return hammer.numberBigDecimal(tplExecuteId, params);
+    }
+
+    /**
+     * @param tplExecuteId
+     * @param params
+     * @return
+     * @see cn.featherfly.hammer.tpl.TplExecutor#numberDouble(cn.featherfly.hammer.tpl.TplExecuteId,
+     *      java.util.Map)
+     */
+    @Override
+    public Double numberDouble(TplExecuteId tplExecuteId, Map<String, Object> params) {
+        return hammer.numberDouble(tplExecuteId, params);
+    }
+
+    /**
+     * @param tplExecuteId
+     * @param params
+     * @return
+     * @see cn.featherfly.hammer.tpl.TplExecutor#string(cn.featherfly.hammer.tpl.TplExecuteId,
+     *      java.util.Map)
+     */
+    @Override
+    public String string(TplExecuteId tplExecuteId, Map<String, Object> params) {
+        return hammer.string(tplExecuteId, params);
+    }
+
 }

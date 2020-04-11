@@ -2,7 +2,6 @@
 package cn.featherfly.hammer.tpl;
 
 import cn.featherfly.common.lang.AssertIllegalArgument;
-import cn.featherfly.hammer.tpl.Execution;
 
 /**
  * <p>
