@@ -1,22 +1,21 @@
 allprojects {
-    apply plugin: 'java'
     apply from: rootDir.getAbsolutePath() +  '/java_base.gradle'   
     apply from: rootDir.getAbsolutePath() +  '/maven_push.gradle'   
         
     dependencies {
-		compile group: 'org.slf4j', name: 'slf4j-api', version: '1.7.30'
-		compile group: 'cn.featherfly.common', name: 'common-core', version: '1.8.0'		
+		api group: 'org.slf4j', name: 'slf4j-api', version: '1.7.30'
+		api group: 'cn.featherfly.common', name: 'common-core', version: '1.8.0'		
 	    
-	    testCompile 'org.testng:testng:6.14.3'
-        testCompile 'org.slf4j:slf4j-log4j12:1.7.29'
-        testCompile 'log4j:log4j:1.2.17'
+        testImplementation group: 'org.testng', name: 'testng', version: '7.1.0'
+        testImplementation group: 'com.google.inject', name: 'guice', version: '4.2.3'
+        testImplementation 'org.slf4j:slf4j-log4j12:1.7.30'
+        testImplementation 'log4j:log4j:1.2.17'
 	}
 }
 	
 dependencies {
-	compile 'org.slf4j:slf4j-log4j12:1.6.1'
-    compile 'log4j:log4j:1.2.17'
-    compile group: 'org.thymeleaf', name: 'thymeleaf', version: '3.0.11.RELEASE'
-    compile group: 'com.fasterxml.jackson.dataformat', name: 'jackson-dataformat-yaml', version: '2.9.9'
-    
+	implementation 'org.slf4j:slf4j-log4j12:1.7.30'
+    implementation 'log4j:log4j:1.2.17'
+    //implementation group: 'org.thymeleaf', name: 'thymeleaf', version: '3.0.11.RELEASE'
+    //implementation group: 'com.fasterxml.jackson.dataformat', name: 'jackson-dataformat-yaml', version: '2.9.9'
 }

@@ -1,27 +1,20 @@
 dependencies {
-    compile project(":hammer-api")
-    compile project(":hammer-core")
+    api project(":hammer-api")
+    api project(":hammer-core")
 
-    compile group: 'cn.featherfly', name: 'featherfly-db', version: '1.5.6'
-    compile group: 'org.springframework', name: 'spring-jdbc', version: '5.2.1.RELEASE'
-    compile group: 'org.glassfish', name: 'javax.el', version: '3.0.0'
-    compile group: 'org.hibernate.validator', name: 'hibernate-validator', version: '6.0.18.Final'
-    //compile group: 'org.freemarker', name: 'freemarker', version: '2.3.28'
-    //compile group: 'org.hibernate.javax.persistence', name: 'hibernate-jpa-2.1-api', version: '1.0.2.Final'
-    //compile group: 'com.fasterxml.jackson.core', name: 'jackson-databind', version: '2.9.10.1'
-    //compile group: 'com.fasterxml.jackson.dataformat', name: 'jackson-dataformat-yaml', version: '2.9.10'
-    compile group: 'com.speedment.common', name: 'tuple', version: '3.1.16'
-    compile group: 'com.google.code.findbugs', name: 'jsr305', version: '3.0.2'
+    api group: 'cn.featherfly', name: 'featherfly-db', version: '1.5.6'
+    api group: 'org.springframework', name: 'spring-jdbc', version: '5.2.1.RELEASE'
+    api group: 'org.glassfish', name: 'javax.el', version: '3.0.0'
+    api group: 'org.hibernate.validator', name: 'hibernate-validator', version: '6.0.18.Final'
+    api group: 'com.speedment.common', name: 'tuple', version: '3.1.16'
+    implementation group: 'com.google.code.findbugs', name: 'jsr305', version: '3.0.2'
 
-    
-    
-    //testCompile group: 'mysql', name: 'mysql-connector-java', version: '8.0.18'    
-    testCompile 'mysql:mysql-connector-java:5.1.48'
-    testCompile 'org.springframework:spring-test:5.2.1.RELEASE'
-    testCompile group: 'commons-dbcp', name: 'commons-dbcp', version: '1.4'
-    //testCompile group: 'org.apache.tomcat', name: 'tomcat-juli', version: '9.0.22'
-    testCompile 'net.sf.ehcache:ehcache:2.10.6'
-    testCompile group: 'org.postgresql', name: 'postgresql', version: '42.2.6'
-    testCompile group: 'org.xerial', name: 'sqlite-jdbc', version: '3.28.0'
-    
+    //testImplementation group: 'mysql', name: 'mysql-connector-java', version: '8.0.18'    
+    testImplementation 'mysql:mysql-connector-java:5.1.48'
+    testImplementation 'org.springframework:spring-test:5.2.1.RELEASE'
+    testImplementation group: 'commons-dbcp', name: 'commons-dbcp', version: '1.4'
+    //testImplementation group: 'org.apache.tomcat', name: 'tomcat-juli', version: '9.0.22'
+    testImplementation 'net.sf.ehcache:ehcache:2.10.6'
+    testImplementation group: 'org.postgresql', name: 'postgresql', version: '42.2.6'
+    testImplementation group: 'org.xerial', name: 'sqlite-jdbc', version: '3.28.0'
 }
