@@ -1,3 +1,7 @@
+2020-4-11
+0.3.2
+    1.修正依赖BUG
+    
 2020-3-18
 0.3.1
     1.Hammer加入update(String),delete(String)方法
