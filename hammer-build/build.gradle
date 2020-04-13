@@ -1,7 +1,7 @@
 allprojects {
     apply from: rootDir.getAbsolutePath() +  '/java_base.gradle'   
     apply from: rootDir.getAbsolutePath() +  '/maven_push.gradle'   
-        
+
     dependencies {
         api group: 'org.slf4j', name: 'slf4j-api', version: '1.7.30'
         api group: 'cn.featherfly.common', name: 'common-core', version: '1.8.0'		
