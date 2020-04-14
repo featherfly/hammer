@@ -21,7 +21,7 @@ public class TplExecuteIdMapperImpl implements TplExecuteId {
     /**
      * @param name       name
      * @param namespace  namespace
-     * @param execution  execution
+     * @param mapper     mapper
      * @param isTemplate isTemplate
      */
     public TplExecuteIdMapperImpl(String name, String namespace, Class<?> mapper, boolean isTemplate) {

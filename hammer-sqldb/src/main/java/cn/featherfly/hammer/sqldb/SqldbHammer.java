@@ -13,9 +13,9 @@ import cn.featherfly.hammer.sqldb.jdbc.Jdbc;
  */
 public interface SqldbHammer extends Hammer {
     /**
-     * get Jdbc
+     * getJdbc
      *
-     * @return jdbc
+     * @return Jdbc
      */
     Jdbc getJdbc();
 }
