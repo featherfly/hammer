@@ -78,21 +78,21 @@ PaginationResults<User> userPaginationResults = executor.pagination("user@select
 // 类似于mybatis，直接执行模板中的sql
 @Mapper(namespace = "user")
 public interface UserMapper {   
-    User selectByUsername(@TplParam("username") String username);
+    User selectByUsername(@Param("username") String username);
 
-    User selectByUsernameAndPassword(@TplParam("username") String username, @TplParam("password") String pwd);
+    User selectByUsernameAndPassword(@Param("username") String username, @Param("password") String pwd);
 
     Integer selectAvg();
 
     String selectString();
 
-    @TplExecution(namespace = "user_info")
+    @Template(namespace = "user_info")
 	List<Map<String, Object>> select2();
 
-    @TplExecution(namespace = "user_info", name = "select2")
+    @Template(namespace = "user_info", name = "select2")
     List<Map<String, Object>> select2(Page page);
     
-    @TplExecution(namespace = "user_info", name = "select2")
+    @Template(namespace = "user_info", name = "select2")
     PaginationResults<Map<String, Object>> select2Page(Page page);
 }
 ```
@@ -210,7 +210,7 @@ hammer hammer = new hammerJdbcImpl(jdbc, mappingFactory, configFactory);
 ```java
 @Mapper(namespace = "user")
 public interface UserMapper {
-	User selectByUsername(@TplParam("username") String username);
+	User selectByUsername(@Param("username") String username);
     // 根据需要定义更多方法
 }
 ```
@@ -1020,18 +1020,18 @@ public interface UserMapper3 extends GenericHammer<User> {
 `@Mapper` 只能标注在类上  
 &nbsp;&nbsp;`namespace`  模板文件的路径，如果为空，则使用类型的名称class.getSimpleName()
 
-`@TplExecution` 只能标注在方法上  
+`@Template` 只能标注在方法上  
 &nbsp;&nbsp;`namespace`  模板文件的路径，如果为空，使用Mapper的namespace进行查找    
 &nbsp;&nbsp;`name`  sqlId，如果为空，则使用方法名作为sqlId进行查找
 
-`@TplParam` 标注在方法参数中，用于映射方法参数和查询参数  
+`@Param` 标注在方法参数中，用于映射方法参数和查询参数  
 &nbsp;&nbsp;`value`  查询参数名称，如果是java8以上，并且**java编译代码的时候开启-parameters选项**，可以不使用此注解来映射查询参数名称  
 &nbsp;&nbsp;`type`  查询参数类型，枚举类型  
 
 ### Mapper方法sqlId的查找逻辑
 
 标注在类（接口）上的`@Mapper`的`namespace`的值将作为内部所有方法的缺省默认值，
-方法没有标注`@TplExecution`时，使用方法名作为`@TplExecution`的`name`值，如果某一些方法需要使用不同于类标注的`namespace`的值，可以在方法上标注`@TplExecution`，并指定`namespace`的值
+方法没有标注`@Template`时，使用方法名作为`@Template`的`name`值，如果某一些方法需要使用不同于类标注的`namespace`的值，可以在方法上标注`@Template`，并指定`namespace`的值
 
 *参考示例代码*
 
@@ -1039,57 +1039,57 @@ public interface UserMapper3 extends GenericHammer<User> {
 @Mapper(namespace = "user")
 public interface UserMapper {
 
-    User selectByUsername(@TplParam("username") String username);
+    User selectByUsername(@Param("username") String username);
 
-    Map<String, Object> selectByUsername2(@TplParam("username") String username);
+    Map<String, Object> selectByUsername2(@Param("username") String username);
 
-    User selectByUsernameAndPassword(@TplParam("username") String username, @TplParam("password") String pwd);
+    User selectByUsernameAndPassword(@Param("username") String username, @Param("password") String pwd);
 
     Integer selectAvg();
 
     String selectString();
 
-    List<User> selectByAge2(@TplParam("age") Integer age);
+    List<User> selectByAge2(@Param("age") Integer age);
 
-    @TplExecution
-    List<User> selectByAge2(@TplParam("age") Integer age, @TplParam(type = TplParamType.PAGE_OFFSET) int offset,
-            @TplParam(type = TplParamType.PAGE_LIMIT) int limit);
+    @Template
+    List<User> selectByAge2(@Param("age") Integer age, @Param(type = ParamType.PAGE_OFFSET) int offset,
+            @Param(type = ParamType.PAGE_LIMIT) int limit);
 
-    @TplExecution
-    List<User> selectByAge2(@TplParam("age") Integer age, Page page);
+    @Template
+    List<User> selectByAge2(@Param("age") Integer age, Page page);
 
-    @TplExecution(name = "selectByAge2")
-    PaginationResults<User> selectByAge2Page(@TplParam("age") Integer age,
-            @TplParam(type = TplParamType.PAGE_OFFSET) int offset, @TplParam(type = TplParamType.PAGE_LIMIT) int limit);
+    @Template(name = "selectByAge2")
+    PaginationResults<User> selectByAge2Page(@Param("age") Integer age,
+            @Param(type = ParamType.PAGE_OFFSET) int offset, @Param(type = ParamType.PAGE_LIMIT) int limit);
 
-    @TplExecution(name = "selectByAge2")
-    PaginationResults<User> selectByAge2Page(@TplParam("age") Integer age, Page page);
+    @Template(name = "selectByAge2")
+    PaginationResults<User> selectByAge2Page(@Param("age") Integer age, Page page);
 
-    List<User> selectById(@TplParam("id") Integer id);
+    List<User> selectById(@Param("id") Integer id);
 
-    Integer selectAvg2(@TplParam("age") Integer age);
+    Integer selectAvg2(@Param("age") Integer age);
 
-    String selectString2(@TplParam("id") Integer id);
+    String selectString2(@Param("id") Integer id);
 
-    @TplExecution(namespace = "user_info")
+    @Template(namespace = "user_info")
     List<Map<String, Object>> select2();
 
-    @TplExecution(namespace = "user_info", name = "select2")
-    List<Map<String, Object>> select2(@TplParam(type = TplParamType.PAGE_OFFSET) int offset,
-            @TplParam(type = TplParamType.PAGE_LIMIT) int limit);
+    @Template(namespace = "user_info", name = "select2")
+    List<Map<String, Object>> select2(@Param(type = ParamType.PAGE_OFFSET) int offset,
+            @Param(type = ParamType.PAGE_LIMIT) int limit);
 
-    @TplExecution(namespace = "user_info", name = "select2")
+    @Template(namespace = "user_info", name = "select2")
     List<Map<String, Object>> select2(Page page);
 
-    @TplExecution(namespace = "user_info", name = "select2")
-    PaginationResults<Map<String, Object>> select2Page(@TplParam(type = TplParamType.PAGE_OFFSET) int offset,
-            @TplParam(type = TplParamType.PAGE_LIMIT) int limit);
+    @Template(namespace = "user_info", name = "select2")
+    PaginationResults<Map<String, Object>> select2Page(@Param(type = ParamType.PAGE_OFFSET) int offset,
+            @Param(type = ParamType.PAGE_LIMIT) int limit);
 
-    @TplExecution(namespace = "user_info", name = "select2")
+    @Template(namespace = "user_info", name = "select2")
     PaginationResults<Map<String, Object>> select2Page(Page page);
 
-    @TplExecution(namespace = "user_info", name = "selectById")
-    List<Map<String, Object>> selectById2(@TplParam("id") Integer id);
+    @Template(namespace = "user_info", name = "selectById")
+    List<Map<String, Object>> selectById2(@Param("id") Integer id);
 }
 ```
 
@@ -1104,47 +1104,47 @@ Integer selectAvg();
 
 String selectString();
 
-Integer selectAvg2(@TplParam("age") Integer age);
+Integer selectAvg2(@Param("age") Integer age);
 
-String selectString2(@TplParam("id") Integer id);
+String selectString2(@Param("id") Integer id);
 ```
 
 #### [**`模板SQL唯一记录查询`**](#模板SQL唯一记录查询)章节介绍的API对应的Mapper调用
 
 ```java
-User selectByUsername(@TplParam("username") String username);
+User selectByUsername(@Param("username") String username);
 
-Map<String, Object> selectByUsername2(@TplParam("username") String username);
+Map<String, Object> selectByUsername2(@Param("username") String username);
 
-User selectByUsernameAndPassword(@TplParam("username") String username, @TplParam("password") String pwd);
+User selectByUsernameAndPassword(@Param("username") String username, @Param("password") String pwd);
 ```
 
 #### [**`模板SQL列表查询`**](#模板SQL列表查询)章节介绍的API对应的Mapper调用
 
 ```java
-List<User> selectByAge2(@TplParam("age") Integer age);
+List<User> selectByAge2(@Param("age") Integer age);
 
-List<User> selectById(@TplParam("id") Integer id);
+List<User> selectById(@Param("id") Integer id);
 
-@TplExecution(namespace = "user_info")
+@Template(namespace = "user_info")
 List<Map<String, Object>> select2();
 ```
 
 #### [**`模板SQL分页查询`**](#模板SQL分页查询)章节介绍的API对应的Mapper调用
 
 分页查询可以返回List和PaginationResults，需要在查询参数之外还要传入分页参数，
-可以使用Page对象，也可以使用int, int传入，当使用int,int传入时需要使用`@TplParam`标注并设置`type`的类型确定limit和offset。
+可以使用Page对象，也可以使用int, int传入，当使用int,int传入时需要使用`@Param`标注并设置`type`的类型确定limit和offset。
 
 ```java
-@TplExecution
-List<User> selectByAge2(@TplParam("age") Integer age, Page page);
+@Template
+List<User> selectByAge2(@Param("age") Integer age, Page page);
 
-@TplExecution(name = "selectByAge2")
-PaginationResults<User> selectByAge2Page(@TplParam("age") Integer age,
-        @TplParam(type = TplParamType.PAGE_OFFSET) int offset, @TplParam(type = TplParamType.PAGE_LIMIT) int limit);
+@Template(name = "selectByAge2")
+PaginationResults<User> selectByAge2Page(@Param("age") Integer age,
+        @Param(type = ParamType.PAGE_OFFSET) int offset, @Param(type = ParamType.PAGE_LIMIT) int limit);
 
-@TplExecution(name = "selectByAge2")
-PaginationResults<User> selectByAge2Page(@TplParam("age") Integer age, Page page);
+@Template(name = "selectByAge2")
+PaginationResults<User> selectByAge2Page(@Param("age") Integer age, Page page);
 ```
 
 ### Mapper中实现模板查询以外的操作
@@ -1156,7 +1156,7 @@ PaginationResults<User> selectByAge2Page(@TplParam("age") Integer age, Page page
 @Mapper(namespace = "user")
 public interface UserMapper3 extends GenericHammer<User> {
 
-    User selectByUsername(@TplParam("username") String username);
+    User selectByUsername(@Param("username") String username);
     // methods ....
 
 	default User getByUsernameAndPassword(String username, String pwd) {

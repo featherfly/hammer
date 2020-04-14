@@ -8,7 +8,7 @@ import cn.featherfly.hammer.tpl.TplConfigFactory;
 import cn.featherfly.hammer.tpl.TplException;
 import cn.featherfly.hammer.tpl.TplExecuteConfig;
 import cn.featherfly.hammer.tpl.TplExecuteId;
-import cn.featherfly.hammer.tpl.TplExecuteIdImpl;
+import cn.featherfly.hammer.tpl.TplExecuteIdFileImpl;
 import cn.featherfly.hammer.tpl.directive.IncludeDirective;
 import cn.featherfly.hammer.tpl.freemarker.FreemarkerDirective;
 import freemarker.core.Environment;
@@ -46,7 +46,7 @@ public class IncludeDirectiveModel extends IncludeDirective implements Freemarke
         if (LangUtils.isNotEmpty(file)) {
             includeTemplateName = file + TplConfigFactory.ID_SIGN + id;
         } else {
-            TplExecuteId executeId = new TplExecuteIdImpl(environment.getCurrentNamespace().getTemplate().getName());
+            TplExecuteId executeId = new TplExecuteIdFileImpl(environment.getCurrentNamespace().getTemplate().getName());
             TplExecuteConfig config = tplConfigFactory.getConfig(executeId);
             includeTemplateName = config.getName() + TplConfigFactory.ID_SIGN + id;
         }
