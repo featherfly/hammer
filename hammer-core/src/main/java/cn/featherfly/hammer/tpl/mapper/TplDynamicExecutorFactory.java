@@ -22,12 +22,12 @@ import cn.featherfly.common.structure.page.PaginationResults;
 import cn.featherfly.hammer.GenericHammer;
 import cn.featherfly.hammer.Hammer;
 import cn.featherfly.hammer.HammerException;
-import cn.featherfly.hammer.tpl.TplExecuteId;
-import cn.featherfly.hammer.tpl.TplExecuteIdImpl;
+import cn.featherfly.hammer.tpl.TplExecuteIdFileImpl;
+import cn.featherfly.hammer.tpl.TplExecuteIdMapperImpl;
 import cn.featherfly.hammer.tpl.annotation.Mapper;
-import cn.featherfly.hammer.tpl.annotation.TplExecution;
-import cn.featherfly.hammer.tpl.annotation.TplParam;
-import cn.featherfly.hammer.tpl.annotation.TplParamType;
+import cn.featherfly.hammer.tpl.annotation.Param;
+import cn.featherfly.hammer.tpl.annotation.ParamType;
+import cn.featherfly.hammer.tpl.annotation.Template;
 import javassist.CannotCompileException;
 import javassist.ClassClassPath;
 import javassist.ClassPool;
@@ -144,9 +144,23 @@ public class TplDynamicExecutorFactory {
             }
             // TODO 注解annotation要代理到实现类
             CtClass[] ctParamTypes = new CtClass[method.getParameterTypes().length];
+
             String namespace = getNamespace(method, globalNamespace);
             String name = getName(method);
-            TplExecuteId executeId = new TplExecuteIdImpl(name, namespace);
+            String executeId = "";
+            //            TplExecuteId executeId = null;
+            Boolean isTemplate = getIsTemplate(method);
+            if (isTemplate != null) {
+                //                executeId = new TplExecuteIdMapperImpl(name, namespace, type, isTemplate);
+                executeId = String.format("new %s(\"%s\", \"%s\", %s.class, %s)",
+                        TplExecuteIdMapperImpl.class.getName(), name, namespace, type.getName(), isTemplate);
+
+            } else {
+                //                executeId = new TplExecuteIdFileImpl(name, namespace);
+                executeId = String.format("new %s(\"%s\", \"%s\")", TplExecuteIdFileImpl.class.getName(), name,
+                        namespace, type.getName(), isTemplate);
+            }
+
             int i = 0;
             String setParams = "";
             int pageParamPosition = -1;
@@ -155,7 +169,7 @@ public class TplDynamicExecutorFactory {
             for (Parameter parameter : method.getParameters()) {
                 ctParamTypes[i] = pool.getCtClass(parameter.getType().getName());
                 i++;
-                TplParamType paramType = getParamType(parameter);
+                ParamType paramType = getParamType(parameter);
                 switch (paramType) {
                     case QUERY:
                         setParams += ".putChain(\"" + getParamName(parameter) + "\", $" + i + ")";
@@ -188,33 +202,33 @@ public class TplDynamicExecutorFactory {
             if (ClassUtils.isParent(List.class, method.getReturnType())) {
                 String returnTypeName = getReturnTypeName(method);
                 if (ClassUtils.isParent(Map.class, ClassUtils.forName(returnTypeName))) {
-                    body = String.format("{return %s.list(\"%s\", new %s()%s);}", hammerFieldName, executeId.getId(),
+                    body = String.format("{return %s.list(%s, new %s()%s);}", hammerFieldName, executeId,
                             HashChainMap.class.getName(), setParams);
                 } else {
-                    body = String.format("{return %s.list(\"%s\", %s.class, new %s()%s);}", hammerFieldName,
-                            executeId.getId(), returnTypeName, HashChainMap.class.getName(), setParams);
+                    body = String.format("{return %s.list(%s, %s.class, new %s()%s);}", hammerFieldName, executeId,
+                            returnTypeName, HashChainMap.class.getName(), setParams);
                 }
             } else if (ClassUtils.isParent(PaginationResults.class, method.getReturnType())) {
                 String returnTypeName = getReturnTypeName(method);
                 if (ClassUtils.isParent(Map.class, ClassUtils.forName(returnTypeName))) {
-                    body = String.format("{return %s.pagination(\"%s\", new %s()%s);}", hammerFieldName,
-                            executeId.getId(), HashChainMap.class.getName(), setParams);
+                    body = String.format("{return %s.pagination(%s, new %s()%s);}", hammerFieldName, executeId,
+                            HashChainMap.class.getName(), setParams);
                 } else {
-                    body = String.format("{return %s.pagination(\"%s\", %s.class, new %s()%s);}", hammerFieldName,
-                            executeId.getId(), returnTypeName, HashChainMap.class.getName(), setParams);
+                    body = String.format("{return %s.pagination(%s, %s.class, new %s()%s);}", hammerFieldName,
+                            executeId, returnTypeName, HashChainMap.class.getName(), setParams);
                 }
             } else if (ClassUtils.isParent(Number.class, method.getReturnType())) {
-                body = String.format("{return (%3$s) %s.number(\"%s\", %s.class, new %s()%s);}", hammerFieldName,
-                        executeId.getId(), method.getReturnType().getName(), HashChainMap.class.getName(), setParams);
+                body = String.format("{return (%3$s) %s.number(%s, %s.class, new %s()%s);}", hammerFieldName, executeId,
+                        method.getReturnType().getName(), HashChainMap.class.getName(), setParams);
             } else if (String.class == method.getReturnType()) {
-                body = String.format("{return  %s.string(\"%s\", new %s()%s);}", hammerFieldName, executeId.getId(),
+                body = String.format("{return  %s.string(%s, new %s()%s);}", hammerFieldName, executeId,
                         HashChainMap.class.getName(), setParams);
             } else if (ClassUtils.isParent(Map.class, method.getReturnType())) {
-                body = String.format("{return  %s.single(\"%s\", new %s()%s);}", hammerFieldName, executeId.getId(),
+                body = String.format("{return  %s.single(%s, new %s()%s);}", hammerFieldName, executeId,
                         HashChainMap.class.getName(), setParams);
             } else {
-                body = String.format("{return (%3$s)  %s.single(\"%s\", %s.class, new %s()%s);}", hammerFieldName,
-                        executeId.getId(), method.getReturnType().getName(), HashChainMap.class.getName(), setParams);
+                body = String.format("{return (%3$s)  %s.single(%s, %s.class, new %s()%s);}", hammerFieldName,
+                        executeId, method.getReturnType().getName(), HashChainMap.class.getName(), setParams);
             }
             // System.err.println(ctMethod);
             // System.err.println(body);
@@ -279,7 +293,7 @@ public class TplDynamicExecutorFactory {
     }
 
     private String getNamespace(Method method, String namespace) {
-        TplExecution tplExecution = method.getAnnotation(TplExecution.class);
+        Template tplExecution = method.getAnnotation(Template.class);
         if (tplExecution != null && LangUtils.isNotEmpty(tplExecution.namespace())) {
             return tplExecution.namespace();
         } else {
@@ -287,8 +301,16 @@ public class TplDynamicExecutorFactory {
         }
     }
 
+    private Boolean getIsTemplate(Method method) {
+        Template template = method.getAnnotation(Template.class);
+        if (template != null && LangUtils.isNotEmpty(template.value())) {
+            return template.isTemplate();
+        }
+        return null;
+    }
+
     private String getName(Method method) {
-        TplExecution tplExecution = method.getAnnotation(TplExecution.class);
+        Template tplExecution = method.getAnnotation(Template.class);
         if (tplExecution != null && LangUtils.isNotEmpty(tplExecution.name())) {
             return tplExecution.name();
         } else {
@@ -297,22 +319,24 @@ public class TplDynamicExecutorFactory {
     }
 
     private String getParamName(Parameter parameter) {
-        TplParam tplParam = parameter.getAnnotation(TplParam.class);
-        if (tplParam != null && LangUtils.isNotEmpty(tplParam.value())) {
+        Param tplParam = parameter.getAnnotation(Param.class);
+        if (tplParam != null && LangUtils.isNotEmpty(tplParam.name())) {
+            return tplParam.name();
+        } else if (tplParam != null && LangUtils.isNotEmpty(tplParam.value())) {
             return tplParam.value();
         } else {
             return parameter.getName();
         }
     }
 
-    private TplParamType getParamType(Parameter parameter) {
-        TplParam tplParam = parameter.getAnnotation(TplParam.class);
+    private ParamType getParamType(Parameter parameter) {
+        Param tplParam = parameter.getAnnotation(Param.class);
         if (tplParam != null) {
             return tplParam.type();
         } else if (ClassUtils.isParent(Page.class, parameter.getType())) {
-            return TplParamType.PAGE;
+            return ParamType.PAGE;
         } else {
-            return TplParamType.QUERY;
+            return ParamType.QUERY;
         }
     }
 }

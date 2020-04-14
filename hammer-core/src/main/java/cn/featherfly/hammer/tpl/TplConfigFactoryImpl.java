@@ -3,6 +3,7 @@ package cn.featherfly.hammer.tpl;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.lang.reflect.Method;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -17,19 +18,25 @@ import org.slf4j.LoggerFactory;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.support.PathMatchingResourcePatternResolver;
 import org.springframework.core.io.support.ResourcePatternResolver;
+import org.springframework.core.type.classreading.MetadataReader;
 
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.dataformat.yaml.YAMLFactory;
 
+import cn.featherfly.common.io.ClassPathScanningProvider;
 import cn.featherfly.common.io.FileUtils;
 import cn.featherfly.common.lang.ClassLoaderUtils;
+import cn.featherfly.common.lang.ClassUtils;
 import cn.featherfly.common.lang.LangUtils;
 import cn.featherfly.common.lang.UriUtils;
+import cn.featherfly.common.lang.matcher.MethodAnnotationMatcher;
 import cn.featherfly.constant.ConstantPool;
 import cn.featherfly.hammer.HammerException;
 import cn.featherfly.hammer.config.HammerConstant;
 import cn.featherfly.hammer.tpl.TplExecuteConfig.Type;
+import cn.featherfly.hammer.tpl.annotation.Mapper;
+import cn.featherfly.hammer.tpl.annotation.Template;
 
 /**
  * <p>
@@ -58,15 +65,53 @@ public class TplConfigFactoryImpl implements TplConfigFactory {
 
     private ResourcePatternResolver resourcePatternResolver;
 
+    private ClassPathScanningProvider classPathScanningProvider;
+
+    private Set<String> basePackages = new HashSet<>();
+
+    /**
+     *
+     */
     public TplConfigFactoryImpl() {
         this(HammerConstant.DEFAULT_PREFIX);
     }
 
+    /**
+     * @param basePackages basePackages
+     */
+    public TplConfigFactoryImpl(Set<String> basePackages) {
+        this(HammerConstant.DEFAULT_PREFIX, basePackages);
+    }
+
+    /**
+     * @param prefix prefix
+     */
     public TplConfigFactoryImpl(String prefix) {
         this(prefix, HammerConstant.DEFAULT_SUFFIX);
     }
 
+    /**
+     * @param prefix       prefix
+     * @param basePackages basePackages
+     */
+    public TplConfigFactoryImpl(String prefix, Set<String> basePackages) {
+        this(prefix, HammerConstant.DEFAULT_SUFFIX, basePackages);
+    }
+
+    /**
+     * @param prefix prefix
+     * @param suffix suffix
+     */
     public TplConfigFactoryImpl(String prefix, String suffix) {
+        this(prefix, suffix, null);
+    }
+
+    /**
+     * @param prefix       prefix
+     * @param suffix       suffix
+     * @param basePackages basePackages
+     */
+    public TplConfigFactoryImpl(String prefix, String suffix, Set<String> basePackages) {
         mapper = new ObjectMapper(new YAMLFactory());
         mapper.enable(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES);
 
@@ -81,9 +126,93 @@ public class TplConfigFactoryImpl implements TplConfigFactory {
             this.suffix = suffix;
         }
 
+        this.basePackages = basePackages == null ? new HashSet<>() : basePackages;
+
         devMode = ConstantPool.getDefault().getConstantParameter().isDevMode();
 
+        // 读取模板文件
         initConfigs();
+
+        // 读取mapper类
+        resolverMapper();
+    }
+
+    private void resolverMapper() {
+        if (LangUtils.isEmpty(basePackages)) {
+            return;
+        }
+        if (classPathScanningProvider == null) {
+            classPathScanningProvider = new ClassPathScanningProvider();
+        }
+        for (String basePackage : basePackages) {
+            Set<MetadataReader> metadataReaders = classPathScanningProvider.findMetadata(basePackage);
+            for (MetadataReader metadataReader : metadataReaders) {
+                if (metadataReader.getAnnotationMetadata().hasAnnotatedMethods(Template.class.getName())) {
+                    readConfig(ClassUtils.forName(metadataReader.getClassMetadata().getClassName()));
+                }
+            }
+        }
+    }
+
+    //    private TplExecuteConfigs readConfig(TplExecuteId tplExecuteId) {
+    //        if (tplExecuteId instanceof TplExecuteIdFileImpl) {
+    //            return readConfig(tplExecuteId.getId());
+    //        } else if (tplExecuteId instanceof TplExecuteIdMapperImpl) {
+    //            return readConfig(((TplExecuteIdMapperImpl) tplExecuteId).getMapper());
+    //        } else {
+    //            throw new HammerException("Unsupported TplExecuteId type -> " + tplExecuteId.getClass().getName());
+    //        }
+    //    }
+
+    private String getNamespace(Class<?> type) {
+        Mapper mapper = type.getAnnotation(Mapper.class);
+        return mapper == null || LangUtils.isEmpty(mapper.namespace()) ? type.getName() : mapper.namespace();
+    }
+
+    private TplExecuteConfigs readConfig(Class<?> type) {
+        Collection<Method> methods = ClassUtils.findMethods(type, new MethodAnnotationMatcher(Template.class));
+        String globalNamespace = getNamespace(type);
+        TplExecuteConfigs newConfigs = new TplExecuteConfigs();
+        newConfigs.setName(globalNamespace);
+        newConfigs.setFilePath(ClassUtils.packageToDir(type.getName()));
+        String fileDirectory = ClassUtils.packageToDir(type);
+        Set<String> executeIds = new HashSet<>();
+        for (Method method : methods) {
+            Template template = method.getAnnotation(Template.class);
+            if (LangUtils.isEmpty(template.value())) {
+                continue;
+            }
+            String name = LangUtils.isEmpty(template.name()) ? method.getName() : template.name();
+            String namespace = LangUtils.isEmpty(template.namespace()) ? globalNamespace : template.namespace();
+            checkName(executeIds, name, namespace);
+            TplExecuteConfig config = new TplExecuteConfig();
+            config.setQuery(template.value());
+            config.setTplName(namespace + ID_SIGN + name);
+            config.setExecuteId(name);
+            config.setName(type.getSimpleName());
+            config.setFileName(type.getSimpleName() + ".class");
+            config.setFileDirectory(fileDirectory);
+            logger.debug("type -> {} , namespace -> {} ,  {} -> {}", type.getName(), namespace, name, config);
+            newConfigs.put(name, config);
+            if (executIdFileMap.containsKey(config.getExecuteId())
+                    && !executIdFileMap.get(config.getExecuteId()).equals(newConfigs.getName())) {
+                executIdFileMap.put(config.getExecuteId(), MULTI_SAME_EXECUTEID);
+            } else {
+                executIdFileMap.put(config.getExecuteId(), newConfigs.getName());
+            }
+        }
+        logger.debug("type -> {} , namespace -> {} ,  configs -> {}", type.getName(), globalNamespace, newConfigs);
+        configs.put(newConfigs.getName(), newConfigs);
+        return newConfigs;
+    }
+
+    private void checkName(Set<String> executeIds, String name, String namespace) {
+        if (name.contains(ID_SIGN)) {
+            throw new HammerException("invalidate character [" + ID_SIGN + "] in executeId [" + name + "]");
+        }
+        if (executeIds.contains(name)) {
+            throw new HammerException("duplicated executeId [" + name + "] in [" + namespace + "]");
+        }
     }
 
     private void initConfigs() {
@@ -113,38 +242,6 @@ public class TplConfigFactoryImpl implements TplConfigFactory {
             // TODO 使用exceptioncode
             throw new HammerException("使用路径" + packageSearchPath + "扫描tpl配置文件时I/O异常", e);
         }
-    }
-
-    /**
-     * 返回devMode
-     *
-     * @return devMode
-     */
-    public boolean isDevMode() {
-        return devMode;
-    }
-
-    /**
-     * 返回suffix
-     *
-     * @return suffix
-     */
-    public String getSuffix() {
-        return suffix;
-    }
-
-    /**
-     * 返回prefix
-     *
-     * @return prefix
-     */
-    public String getPrefix() {
-        return prefix;
-    }
-
-    public static void main(String[] args) {
-        System.out.println(ClassLoaderUtils.getResourceAsStream("aaaa", TplConfigFactoryImpl.class));
-
     }
 
     private TplExecuteConfigs readConfig(final String filePath) {
@@ -179,12 +276,7 @@ public class TplConfigFactoryImpl implements TplConfigFactory {
                         config.setType(Type.valueOf(map.get("type").toString()));
                     }
                 }
-                if (k.contains(ID_SIGN)) {
-                    throw new HammerException("invalidate character [" + ID_SIGN + "] in executeId [" + k + "]");
-                }
-                if (executeIds.contains(k)) {
-                    throw new HammerException("duplicated executeId [" + k + "] in [" + finalFilePath + "]");
-                }
+                checkName(executeIds, k, finalFilePath);
                 executeIds.add(k);
 
                 config.setTplName(newConfigs.getName() + ID_SIGN + k);
@@ -209,7 +301,6 @@ public class TplConfigFactoryImpl implements TplConfigFactory {
             // TODO 使用exceptioncode
             throw new HammerException("exception when read config file " + finalFilePath + " with argu " + filePath, e);
         }
-
     }
 
     private String toFinalFilePath(String filePath) {
@@ -244,6 +335,41 @@ public class TplConfigFactoryImpl implements TplConfigFactory {
             return readConfig(filePath);
         } else {
             return configs.get(toFinalFilePath(filePath));
+        }
+    }
+
+    private TplExecuteConfigs getConfigs(Class<?> type) {
+        if (devMode) {
+            return readConfig(type);
+        } else {
+            return configs.get(getNamespace(type));
+        }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public TplExecuteConfig getConfig(TplExecuteId executeId) {
+        if (executeId instanceof TplExecuteIdMapperImpl) {
+            TplExecuteConfigs configs = getConfigs(((TplExecuteIdMapperImpl) executeId).getMapper());
+            if (configs == null) {
+                // TODO 使用exceptioncode
+                throw new HammerException(
+                        "configs with type->" + ((TplExecuteIdMapperImpl) executeId).getMapper().getName()
+                                + ",namespace->" + executeId.getNamespace() + "  not find");
+            }
+            TplExecuteConfig config = configs.getConfig(executeId.getName());
+            if (config == null) {
+                // TODO 使用exceptioncode
+                throw new HammerException("executeId " + executeId.getName() + " not find with type->"
+                        + executeId.getNamespace() + ",namespace->" + executeId.getNamespace());
+            }
+            return config;
+        } else if (executeId instanceof TplExecuteIdFileImpl) {
+            return getConfig(executeId.getId());
+        } else {
+            throw new HammerException("Unsupported TplExecuteId type -> " + executeId.getClass().getName());
         }
     }
 
@@ -292,10 +418,29 @@ public class TplConfigFactoryImpl implements TplConfigFactory {
     }
 
     /**
-     * {@inheritDoc}
+     * 返回devMode
+     *
+     * @return devMode
      */
-    @Override
-    public TplExecuteConfig getConfig(TplExecuteId executeId) {
-        return getConfig(executeId.getId());
+    public boolean isDevMode() {
+        return devMode;
+    }
+
+    /**
+     * 返回suffix
+     *
+     * @return suffix
+     */
+    public String getSuffix() {
+        return suffix;
+    }
+
+    /**
+     * 返回prefix
+     *
+     * @return prefix
+     */
+    public String getPrefix() {
+        return prefix;
     }
 }

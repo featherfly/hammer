@@ -1,3 +1,11 @@
+2020-4-15
+0.3.3
+    1.重命名@TplExecution为@Template,@TplParam为@Param，@TplParamType为ParamType
+    2.@Template加入value()，用于直接在注解上使用模板（如sqldb模块的sql模板）,加入isTemplate()用于在执行value()时是否使用模板引擎
+                用于value()是一个不可变的字符串就可以禁用其使用模板引擎，可以提高一丢丢的性能-_-，默认是开启的，当前版本未实现禁用模板引擎
+    3.@Param加入name(),而value()作为name()的快捷别名，name()优先级高于value()
+    4.加入SqldbHammer接口
+    
 2020-4-11
 0.3.2
     1.修正依赖BUG

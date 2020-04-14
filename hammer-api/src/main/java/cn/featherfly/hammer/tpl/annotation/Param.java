@@ -8,17 +8,33 @@ import java.lang.annotation.Target;
 
 /**
  * <p>
- * TplExecution
+ * Param
  * </p>
  *
  * @author zhongj
  */
 @Target({ ElementType.PARAMETER })
 @Retention(RetentionPolicy.RUNTIME)
-public @interface TplParam {
-
+public @interface Param {
+    /**
+     * param name alias. priority is lower than name.
+     *
+     * @return param name
+     */
     String value() default "";
 
-    TplParamType type() default TplParamType.QUERY;
+    /**
+     * param name
+     *
+     * @return param name
+     */
+    String name() default "";
+
+    /**
+     * param type
+     *
+     * @return param type
+     */
+    ParamType type() default ParamType.QUERY;
 
 }
