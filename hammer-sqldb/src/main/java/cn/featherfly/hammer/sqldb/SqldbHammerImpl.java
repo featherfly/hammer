@@ -17,7 +17,6 @@ import org.hibernate.validator.HibernateValidator;
 import cn.featherfly.common.lang.LangUtils;
 import cn.featherfly.common.structure.page.Page;
 import cn.featherfly.common.structure.page.PaginationResults;
-import cn.featherfly.hammer.Hammer;
 import cn.featherfly.hammer.dsl.execute.Delete;
 import cn.featherfly.hammer.dsl.execute.Update;
 import cn.featherfly.hammer.dsl.query.QueryEntity;
@@ -48,7 +47,7 @@ import cn.featherfly.hammer.tpl.TplExecuteId;
  *
  * @author zhongj
  */
-public class SqldbHammerImpl implements Hammer {
+public class SqldbHammerImpl implements SqldbHammer {
 
     private Jdbc jdbc;
 
@@ -733,10 +732,9 @@ public class SqldbHammerImpl implements Hammer {
     }
 
     /**
-     * getJdbc
-     *
-     * @return
+     * {@inheritDoc}
      */
+    @Override
     public Jdbc getJdbc() {
         return jdbc;
     }
