@@ -735,8 +735,63 @@ public class SqldbHammerImpl implements SqldbHammer {
      * {@inheritDoc}
      */
     @Override
+    public <E> E value(TplExecuteId tplExecuteId, Class<E> valueType, Map<String, Object> params) {
+        return sqlTplExecutor.value(tplExecuteId, valueType, params);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public <N extends Number> N number(TplExecuteId tplExecuteId, Class<N> numberType, Map<String, Object> params) {
+        return sqlTplExecutor.number(tplExecuteId, numberType, params);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public Integer numberInt(TplExecuteId tplExecuteId, Map<String, Object> params) {
+        return sqlTplExecutor.numberInt(tplExecuteId, params);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public Long numberLong(TplExecuteId tplExecuteId, Map<String, Object> params) {
+        return sqlTplExecutor.numberLong(tplExecuteId, params);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public BigDecimal numberBigDecimal(TplExecuteId tplExecuteId, Map<String, Object> params) {
+        return sqlTplExecutor.numberBigDecimal(tplExecuteId, params);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public Double numberDouble(TplExecuteId tplExecuteId, Map<String, Object> params) {
+        return sqlTplExecutor.numberDouble(tplExecuteId, params);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public String string(TplExecuteId tplExecuteId, Map<String, Object> params) {
+        return sqlTplExecutor.string(tplExecuteId, params);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
     public Jdbc getJdbc() {
         return jdbc;
     }
-
 }

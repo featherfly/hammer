@@ -1,16 +1,16 @@
 
 package cn.featherfly.hammer.tpl;
 
-import cn.featherfly.hammer.HammerException;
+import cn.featherfly.common.lang.LangUtils;
 
 /**
  * <p>
- * TplExecuteIdImpl
+ * TplExecuteIdFileImpl
  * </p>
  *
  * @author zhongj
  */
-public class TplExecuteIdImpl implements TplExecuteId {
+public class TplExecuteIdFileImpl implements TplExecuteId {
 
     private String name;
 
@@ -19,22 +19,24 @@ public class TplExecuteIdImpl implements TplExecuteId {
     /**
      * @param executeId executeId
      */
-    public TplExecuteIdImpl(String executeId) {
+    public TplExecuteIdFileImpl(String executeId) {
         super();
         String[] args = executeId.split(TplConfigFactory.ID_SIGN);
-        if (args.length != 2) {
-            throw new HammerException("executeId[" + executeId + "] format error, format must be namespace"
-                    + TplConfigFactory.ID_SIGN + "name");
+        if (args.length == 2) {
+            namespace = args[0];
+            name = args[1];
+            //            throw new HammerException("executeId[" + executeId + "] format error, format must be namespace"
+            //                    + TplConfigFactory.ID_SIGN + "name");
+        } else {
+            name = executeId;
         }
-        namespace = args[0];
-        name = args[1];
     }
 
     /**
      * @param name      name
      * @param namespace namespace
      */
-    public TplExecuteIdImpl(String name, String namespace) {
+    public TplExecuteIdFileImpl(String name, String namespace) {
         super();
         this.name = name;
         this.namespace = namespace;
@@ -45,7 +47,7 @@ public class TplExecuteIdImpl implements TplExecuteId {
      */
     @Override
     public String getId() {
-        return namespace + TplConfigFactory.ID_SIGN + name;
+        return LangUtils.isEmpty(namespace) ? name : namespace + TplConfigFactory.ID_SIGN + name;
     }
 
     /**

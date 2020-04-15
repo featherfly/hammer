@@ -3,12 +3,14 @@ package cn.featherfly.hammer.tpl.annotation;
 
 /**
  * <p>
- * TplParamType
+ * ParamType
  * </p>
  *
  * @author zhongj
  */
-public enum TplParamType {
-
-    QUERY, PAGE, PAGE_OFFSET, PAGE_LIMIT
+public enum ParamType {
+    QUERY,
+    PAGE,
+    PAGE_OFFSET,
+    PAGE_LIMIT
 }
