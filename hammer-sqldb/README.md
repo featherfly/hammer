@@ -1023,7 +1023,8 @@ public interface UserMapper3 extends GenericHammer<User> {
 `@Template` 只能标注在方法上  
 - `namespace` 模板文件的路径，如果为空，使用Mapper的namespace进行查找
 - `name`      sqlId，如果为空，则使用方法名作为sqlId进行查找
-- `template`  sql template，如果不为空，则直接使用此模板执行，然后使用namespace和name注册进模板管理中
+- `template`  sql template，如果不为空，则直接使用此模板执行，用法和在模板文件中定义的完全一样，模板管理器会使用namespace和name注册，前提是在使用TplConfigFactory时给定了basePackges进行类扫描注册
+> 在@Template中定义template直接写sql模板其实是为了jdk13，jdk14中出现的文本块（目前还是预览版，不是正式版），目前把复杂sql模板放在@Template中一点都不方便，也就适合放简单sql, 但是简单sql我个人更倾向于直接使用query dsl
 
 `@Param` 标注在方法参数中，用于映射方法参数和查询参数  
 - `value`  查询参数名称，如果是java8以上，并且**java编译代码的时候开启-parameters选项**，可以不使用此注解来映射查询参数名称

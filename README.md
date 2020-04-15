@@ -13,6 +13,6 @@
 
 ## 支持的数据存储
 
-- [√] 关系型数据库(基于 jdbc) [**`hammer-sqldb的文档`**](./hammer-sqldb/README.md)
+- [x] 关系型数据库(基于 jdbc) [**`hammer-sqldb的文档`**](./hammer-sqldb/README.md)
 - [ ] mongodb 敬请期待....
 - [ ] elasitcserach 敬请期待....
