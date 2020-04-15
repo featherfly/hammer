@@ -1018,15 +1018,17 @@ public interface UserMapper3 extends GenericHammer<User> {
 ### Mapper中注解的含义
 
 `@Mapper` 只能标注在类上  
-&nbsp;&nbsp;`namespace`  模板文件的路径，如果为空，则使用类型的名称class.getSimpleName()
+- `namespace`  模板文件的路径，如果为空，则使用类型的名称class.getSimpleName()
 
 `@Template` 只能标注在方法上  
-&nbsp;&nbsp;`namespace`  模板文件的路径，如果为空，使用Mapper的namespace进行查找    
-&nbsp;&nbsp;`name`  sqlId，如果为空，则使用方法名作为sqlId进行查找
+- `namespace` 模板文件的路径，如果为空，使用Mapper的namespace进行查找
+- `name`      sqlId，如果为空，则使用方法名作为sqlId进行查找
+- `template`  sql template，如果不为空，则直接使用此模板执行，用法和在模板文件中定义的完全一样，模板管理器会使用namespace和name注册，前提是在使用TplConfigFactory时给定了basePackges进行类扫描注册
+> 在@Template中定义template直接写sql模板其实是为了jdk13，jdk14中出现的文本块（目前还是预览版，不是正式版），目前把复杂sql模板放在@Template中一点都不方便，也就适合放简单sql, 但是简单sql我个人更倾向于直接使用query dsl
 
 `@Param` 标注在方法参数中，用于映射方法参数和查询参数  
-&nbsp;&nbsp;`value`  查询参数名称，如果是java8以上，并且**java编译代码的时候开启-parameters选项**，可以不使用此注解来映射查询参数名称  
-&nbsp;&nbsp;`type`  查询参数类型，枚举类型  
+- `value`  查询参数名称，如果是java8以上，并且**java编译代码的时候开启-parameters选项**，可以不使用此注解来映射查询参数名称
+- `type`   查询参数类型，枚举类型
 
 ### Mapper方法sqlId的查找逻辑
 
@@ -1090,6 +1092,38 @@ public interface UserMapper {
 
     @Template(namespace = "user_info", name = "selectById")
     List<Map<String, Object>> selectById2(@Param("id") Integer id);
+}
+
+@Mapper(namespace = "role")
+public interface RoleMapper {
+
+    @Template("select <@prop repo='role'/> from role")
+    List<Role> list();
+
+    @Template("select <@prop repo='role'/> from role")
+    List<Role> list(Page page);
+
+    @Template("select <@prop repo='role'/> from role")
+    List<Role> list(@Param(type = ParamType.PAGE_OFFSET) int offset, @Param(type = ParamType.PAGE_LIMIT) int limit);
+
+    @Template("select <@prop repo='role'/> from role")
+    PaginationResults<Role> page(Page page);
+
+    @Template("select <@prop repo='role'/> from role")
+    PaginationResults<Role> page(@Param(type = ParamType.PAGE_OFFSET) int offset,
+            @Param(type = ParamType.PAGE_LIMIT) int limit);
+
+    @Template("select <@prop repo='role'/> from role <@where><@and if = name??>name like :name</@and></@where>")
+    List<Role> selectByName2(@Param("name") String name);
+
+    @Template("select <@prop repo='role'/> from role <@where><@and if = name??>name like ?</@and></@where>")
+    List<Role> selectByName3(@Param("name") String name);
+
+    @Template
+    List<Role> selectByName(@Param("name") String name);
+
+    @Template("select <@prop alias=\"_r\"/> <@tpl id='roleFromTemplate2' file='tpl/role_common'/>")
+    List<Role> selectWithTemplate(@Param("name") String name);
 }
 ```
 
