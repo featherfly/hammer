@@ -48,7 +48,7 @@ public class BasedTplHammer implements Hammer {
      * {@inheritDoc}
      */
     @Override
-    public <E> Delete delete(String repository) {
+    public Delete delete(String repository) {
         return hammer.delete(repository);
     }
 
@@ -419,7 +419,7 @@ public class BasedTplHammer implements Hammer {
      * {@inheritDoc}
      */
     @Override
-    public <E> Update update(String repository) {
+    public Update update(String repository) {
         return hammer.update(repository);
     }
 
@@ -480,13 +480,7 @@ public class BasedTplHammer implements Hammer {
     }
 
     /**
-     * @param <E>
-     * @param tplExecuteId
-     * @param valueType
-     * @param params
-     * @return
-     * @see cn.featherfly.hammer.tpl.TplExecutor#value(cn.featherfly.hammer.tpl.TplExecuteId,
-     *      java.lang.Class, java.util.Map)
+     * {@inheritDoc}
      */
     @Override
     public <E> E value(TplExecuteId tplExecuteId, Class<E> valueType, Map<String, Object> params) {
@@ -494,13 +488,7 @@ public class BasedTplHammer implements Hammer {
     }
 
     /**
-     * @param <N>
-     * @param tplExecuteId
-     * @param numberType
-     * @param params
-     * @return
-     * @see cn.featherfly.hammer.tpl.TplExecutor#number(cn.featherfly.hammer.tpl.TplExecuteId,
-     *      java.lang.Class, java.util.Map)
+     * {@inheritDoc}
      */
     @Override
     public <N extends Number> N number(TplExecuteId tplExecuteId, Class<N> numberType, Map<String, Object> params) {
@@ -508,11 +496,7 @@ public class BasedTplHammer implements Hammer {
     }
 
     /**
-     * @param tplExecuteId
-     * @param params
-     * @return
-     * @see cn.featherfly.hammer.tpl.TplExecutor#numberInt(cn.featherfly.hammer.tpl.TplExecuteId,
-     *      java.util.Map)
+     * {@inheritDoc}
      */
     @Override
     public Integer numberInt(TplExecuteId tplExecuteId, Map<String, Object> params) {
@@ -520,11 +504,7 @@ public class BasedTplHammer implements Hammer {
     }
 
     /**
-     * @param tplExecuteId
-     * @param params
-     * @return
-     * @see cn.featherfly.hammer.tpl.TplExecutor#numberLong(cn.featherfly.hammer.tpl.TplExecuteId,
-     *      java.util.Map)
+     * {@inheritDoc}
      */
     @Override
     public Long numberLong(TplExecuteId tplExecuteId, Map<String, Object> params) {
@@ -532,11 +512,7 @@ public class BasedTplHammer implements Hammer {
     }
 
     /**
-     * @param tplExecuteId
-     * @param params
-     * @return
-     * @see cn.featherfly.hammer.tpl.TplExecutor#numberBigDecimal(cn.featherfly.hammer.tpl.TplExecuteId,
-     *      java.util.Map)
+     * {@inheritDoc}
      */
     @Override
     public BigDecimal numberBigDecimal(TplExecuteId tplExecuteId, Map<String, Object> params) {
@@ -544,11 +520,7 @@ public class BasedTplHammer implements Hammer {
     }
 
     /**
-     * @param tplExecuteId
-     * @param params
-     * @return
-     * @see cn.featherfly.hammer.tpl.TplExecutor#numberDouble(cn.featherfly.hammer.tpl.TplExecuteId,
-     *      java.util.Map)
+     * {@inheritDoc}
      */
     @Override
     public Double numberDouble(TplExecuteId tplExecuteId, Map<String, Object> params) {
@@ -556,11 +528,7 @@ public class BasedTplHammer implements Hammer {
     }
 
     /**
-     * @param tplExecuteId
-     * @param params
-     * @return
-     * @see cn.featherfly.hammer.tpl.TplExecutor#string(cn.featherfly.hammer.tpl.TplExecuteId,
-     *      java.util.Map)
+     * {@inheritDoc}
      */
     @Override
     public String string(TplExecuteId tplExecuteId, Map<String, Object> params) {
