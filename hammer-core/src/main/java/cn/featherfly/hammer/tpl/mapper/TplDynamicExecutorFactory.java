@@ -78,8 +78,8 @@ public class TplDynamicExecutorFactory {
      *
      * @param type configuration interface class
      * @return implemented class name
-     * @throws NotFoundException
-     * @throws CannotCompileException
+     * @throws NotFoundException      NotFoundException
+     * @throws CannotCompileException CannotCompileException
      */
     public String create(Class<?> type) throws NotFoundException, CannotCompileException {
         String dynamicClassName = type.getPackage().getName() + "._" + type.getSimpleName() + "DynamicImpl";
@@ -241,7 +241,7 @@ public class TplDynamicExecutorFactory {
     /**
      * always return a new instance
      *
-     * @param <E>
+     * @param <E>    generic type
      * @param type   mapper interface type
      * @param hammer hammer instance
      * @return new instance
@@ -258,7 +258,7 @@ public class TplDynamicExecutorFactory {
     /**
      * return a singleton instance, every type only new one instance
      *
-     * @param <E>
+     * @param <E>    generic type
      * @param type   mapper interface type
      * @param hammer hammer instance
      * @return instance

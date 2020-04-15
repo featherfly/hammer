@@ -13,9 +13,9 @@ public final class ConditionParamsManagerHolder {
     private static final ThreadLocal<ConditionParamsManager> HOLDER = new ThreadLocal<>();
 
     /**
-     * <p>
-     * 标记写
-     * </p>
+     * hold manager
+     *
+     * @param manager manager
      */
     public static void hold(ConditionParamsManager manager) {
         HOLDER.set(manager);
@@ -23,7 +23,7 @@ public final class ConditionParamsManagerHolder {
 
     /**
      * <p>
-     * 重置标记
+     * reset
      * </p>
      */
     public static void reset() {

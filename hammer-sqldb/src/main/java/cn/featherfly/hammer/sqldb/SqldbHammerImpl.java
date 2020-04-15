@@ -418,7 +418,7 @@ public class SqldbHammerImpl implements SqldbHammer {
      * {@inheritDoc}
      */
     @Override
-    public <E> Update update(String repository) {
+    public Update update(String repository) {
         SqlUpdater updater = new SqlUpdater(jdbc, mappingFactory);
         return updater.update(repository);
     }
@@ -427,7 +427,7 @@ public class SqldbHammerImpl implements SqldbHammer {
      * {@inheritDoc}
      */
     @Override
-    public <E> Delete delete(String repository) {
+    public Delete delete(String repository) {
         SqlDeleter deleter = new SqlDeleter(jdbc, mappingFactory);
         return deleter.delete(repository);
     }
