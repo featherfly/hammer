@@ -12,12 +12,12 @@
 <dependency>
     <groupId>cn.featherfly.hammer</groupId>
     <artifactId>hammer-sqldb</artifactId>
-    <version>0.3.0</version>
+    <version>LATEST</version>
 </dependency>
 ```
 `Gradle` 配置：
 ```
-compile group: 'cn.featherfly.hammer', name: 'hammer-sqldb', version: '0.3.0'
+compile group: 'cn.featherfly.hammer', name: 'hammer-sqldb', version: '+'
 ```
 
 #### 操作代码概览
