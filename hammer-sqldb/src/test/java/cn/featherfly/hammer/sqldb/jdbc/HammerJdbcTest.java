@@ -482,6 +482,18 @@ public class HammerJdbcTest extends JdbcTestBase {
         assertEquals(role.getDescp(), newDescp);
     }
 
+    //    @Test
+    //    public void testUpdater2() {
+    //        User user = new User();
+    //        user.setAge(10);
+    //        user.setUsername(RandomUtils.getRandomString(10));
+    //        user.setPwd(RandomUtils.getRandomString(6));
+    //        user.setMobileNo(RandomUtils.getRandomString(11, CharType.NUMBER_CASE));
+    //        hammer.save(user);
+    //        hammer.update(User.class).propertyNumber(User::getAge).increase(2).where().eq(User::getId, user.getId()).and()
+    //                .ge("age - 1", 10).execute();
+    //    }
+
     @Test
     public void testUpdaterIncrease() {
         Integer id = 1;
