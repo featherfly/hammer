@@ -1,12 +1,12 @@
 select: "select * from shop where name = :name"
 role:
-  type: LIST
+  type: QUERY
   query: select * from role
 permission:
-  type: PAGINATION
+  type: QUERY
   query: select * from permission
 user:
-  type: PAGE
+  type: QUERY
   query: "select * from user
   <@where>
     <@and if= name??>

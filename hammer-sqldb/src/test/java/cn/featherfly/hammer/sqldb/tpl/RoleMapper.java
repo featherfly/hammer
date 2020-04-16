@@ -5,6 +5,7 @@ import java.util.List;
 
 import cn.featherfly.common.structure.page.Page;
 import cn.featherfly.common.structure.page.PaginationResults;
+import cn.featherfly.hammer.GenericHammer;
 import cn.featherfly.hammer.sqldb.jdbc.vo.Role;
 import cn.featherfly.hammer.tpl.annotation.Mapper;
 import cn.featherfly.hammer.tpl.annotation.Param;
@@ -19,7 +20,7 @@ import cn.featherfly.hammer.tpl.annotation.Template;
  * @author zhongj
  */
 @Mapper(namespace = "role")
-public interface RoleMapper {
+public interface RoleMapper extends GenericHammer<Role> {
 
     @Template("select <@prop repo='role'/> from role")
     List<Role> list();
@@ -48,4 +49,25 @@ public interface RoleMapper {
 
     @Template("select <@prop alias=\"_r\"/> <@tpl id='roleFromTemplate2' file='tpl/role_common'/>")
     List<Role> selectWithTemplate(@Param("name") String name);
+
+    @Template("insert into role(name, descp) values(:name, :descp)")
+    int insertRole(@Param("name") String name, @Param("descp") String descp);
+
+    @Template("update role set descp = :descp where name = :name")
+    int updateRoleByName(@Param("name") String name, @Param("descp") String descp);
+
+    @Template("delete from role where name = :name")
+    int deleteRoleByName(@Param("name") String name);
+
+    @Template("select <@prop repo='role'/> from role where name = :name")
+    Role getByName(@Param("name") String name);
+
+    //    @Template(value = "select count(*) from role", type = TplType.QUERY)
+    //    int countRole();
+
+    @Template("select count(*) from role")
+    Integer countRole2();
+
+    @Template("select count(*) from role")
+    long countRole3();
 }

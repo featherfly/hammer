@@ -24,6 +24,7 @@ import cn.featherfly.hammer.Hammer;
 import cn.featherfly.hammer.HammerException;
 import cn.featherfly.hammer.tpl.TplExecuteIdFileImpl;
 import cn.featherfly.hammer.tpl.TplExecuteIdMapperImpl;
+import cn.featherfly.hammer.tpl.TplType;
 import cn.featherfly.hammer.tpl.annotation.Mapper;
 import cn.featherfly.hammer.tpl.annotation.Param;
 import cn.featherfly.hammer.tpl.annotation.ParamType;
@@ -147,6 +148,7 @@ public class TplDynamicExecutorFactory {
 
             String namespace = getNamespace(method, globalNamespace);
             String name = getName(method);
+            TplType tplType = getType(method);
             String executeId = "";
             //            TplExecuteId executeId = null;
             Boolean isTemplate = getIsTemplate(method);
@@ -171,7 +173,7 @@ public class TplDynamicExecutorFactory {
                 i++;
                 ParamType paramType = getParamType(parameter);
                 switch (paramType) {
-                    case QUERY:
+                    case COMMON:
                         setParams += ".putChain(\"" + getParamName(parameter) + "\", $" + i + ")";
                         break;
                     case PAGE:
@@ -199,7 +201,14 @@ public class TplDynamicExecutorFactory {
                     ctParamTypes, dynamicImplClass);
 
             String body = null;
-            if (ClassUtils.isParent(List.class, method.getReturnType())) {
+            if (method.getReturnType() == void.class) {
+                body = String.format("{%s.execute(%s, new %s()%s);}", hammerFieldName, executeId,
+                        HashChainMap.class.getName(), setParams);
+            } else if (method.getReturnType() == Integer.TYPE
+                    && (tplType == TplType.AUTO || tplType == TplType.EXECUTE)) {
+                body = String.format("{return %s.execute(%s, new %s()%s);}", hammerFieldName, executeId,
+                        HashChainMap.class.getName(), setParams);
+            } else if (ClassUtils.isParent(List.class, method.getReturnType())) {
                 String returnTypeName = getReturnTypeName(method);
                 if (ClassUtils.isParent(Map.class, ClassUtils.forName(returnTypeName))) {
                     body = String.format("{return %s.list(%s, new %s()%s);}", hammerFieldName, executeId,
@@ -220,6 +229,17 @@ public class TplDynamicExecutorFactory {
             } else if (ClassUtils.isParent(Number.class, method.getReturnType())) {
                 body = String.format("{return (%3$s) %s.number(%s, %s.class, new %s()%s);}", hammerFieldName, executeId,
                         method.getReturnType().getName(), HashChainMap.class.getName(), setParams);
+            } else if (method.getReturnType().isPrimitive()) {
+                if (method.getReturnType() == Integer.TYPE || method.getReturnType() == Long.TYPE
+                        || method.getReturnType() == Long.TYPE) {
+                    body = String.format("{return %s.%sValue(%s, new %s()%s);}", hammerFieldName,
+                            method.getReturnType().getName(), executeId, HashChainMap.class.getName(), setParams,
+                            method.getReturnType().getName());
+                } else {
+                    // TODO 使用exception code
+                    throw new HammerException("unsupport query return type with primitive type "
+                            + method.getReturnType() + ", you can use wrapper type instead");
+                }
             } else if (String.class == method.getReturnType()) {
                 body = String.format("{return  %s.string(%s, new %s()%s);}", hammerFieldName, executeId,
                         HashChainMap.class.getName(), setParams);
@@ -230,8 +250,6 @@ public class TplDynamicExecutorFactory {
                 body = String.format("{return (%3$s)  %s.single(%s, %s.class, new %s()%s);}", hammerFieldName,
                         executeId, method.getReturnType().getName(), HashChainMap.class.getName(), setParams);
             }
-            // System.err.println(ctMethod);
-            // System.err.println(body);
             logger.debug("method {} -> {}", method.getName(), body);
             ctMethod.setBody(body);
             dynamicImplClass.addMethod(ctMethod);
@@ -309,6 +327,15 @@ public class TplDynamicExecutorFactory {
         return null;
     }
 
+    private TplType getType(Method method) {
+        Template template = method.getAnnotation(Template.class);
+        if (template != null && LangUtils.isNotEmpty(template.name())) {
+            return template.type();
+        } else {
+            return TplType.AUTO;
+        }
+    }
+
     private String getName(Method method) {
         Template tplExecution = method.getAnnotation(Template.class);
         if (tplExecution != null && LangUtils.isNotEmpty(tplExecution.name())) {
@@ -336,7 +363,29 @@ public class TplDynamicExecutorFactory {
         } else if (ClassUtils.isParent(Page.class, parameter.getType())) {
             return ParamType.PAGE;
         } else {
-            return ParamType.QUERY;
+            return ParamType.COMMON;
         }
     }
+
+    //    private Class<?> getWrapType(Class<?> type) {
+    //        if (!type.isPrimitive()) {
+    //            return type;
+    //        }
+    //        if (type == Integer.TYPE) {
+    //            return Integer.class;
+    //        } else if (type == Long.TYPE) {
+    //            return Long.class;
+    //        } else if (type == Float.TYPE) {
+    //            return Float.class;
+    //        } else if (type == Double.TYPE) {
+    //            return Double.class;
+    //        } else if (type == Byte.TYPE) {
+    //            return Byte.class;
+    //        } else if (type == Boolean.TYPE) {
+    //            return Boolean.class;
+    //        } else if (type == Character.TYPE) {
+    //            return Character.class;
+    //        }
+    //        return type;
+    //    }
 }

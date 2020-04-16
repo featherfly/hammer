@@ -9,7 +9,7 @@ package cn.featherfly.hammer.tpl.annotation;
  * @author zhongj
  */
 public enum ParamType {
-    QUERY,
+    COMMON,
     PAGE,
     PAGE_OFFSET,
     PAGE_LIMIT
