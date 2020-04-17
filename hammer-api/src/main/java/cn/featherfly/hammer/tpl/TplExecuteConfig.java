@@ -10,17 +10,13 @@ package cn.featherfly.hammer.tpl;
  */
 public class TplExecuteConfig {
 
-    public enum Type {
-        LIST, PAGE, PAGINATION, EXECUTE
-    }
-
     private String fileName;
 
     private String fileDirectory;
 
     private String name;
 
-    private Type type = Type.LIST;
+    private TplType type = TplType.AUTO;
 
     private String query;
 
@@ -71,7 +67,7 @@ public class TplExecuteConfig {
      *
      * @return type
      */
-    public Type getType() {
+    public TplType getType() {
         return type;
     }
 
@@ -80,7 +76,7 @@ public class TplExecuteConfig {
      *
      * @param type type
      */
-    public void setType(Type type) {
+    public void setType(TplType type) {
         this.type = type;
     }
 

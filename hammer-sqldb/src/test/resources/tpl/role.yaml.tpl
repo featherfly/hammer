@@ -24,3 +24,13 @@ selectWithTemplate3:
   query: >
     select <@prop alias="_r"/> <@tpl id='roleFromTemplate2' file='tpl/role_common'/>
   count: "select count(*) <@sql id='roleFromTemplate2' file='tpl/role_common'/>"
+insertRole: >
+  insert into role(name, descp) values(:name, :descp)
+updateRoleByName: >
+  update role set descp = :descp where name = :name
+deleteRoleByName: >
+  delete from role where name = :name
+getByName: >
+  select <@prop repo='role'/> from role where name = :name
+countRole: >
+  select count(*) from role

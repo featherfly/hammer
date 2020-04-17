@@ -12,12 +12,12 @@
 <dependency>
     <groupId>cn.featherfly.hammer</groupId>
     <artifactId>hammer-sqldb</artifactId>
-    <version>0.3.0</version>
+    <version>LATEST</version>
 </dependency>
 ```
 `Gradle` 配置：
 ```
-compile group: 'cn.featherfly.hammer', name: 'hammer-sqldb', version: '0.3.0'
+compile group: 'cn.featherfly.hammer', name: 'hammer-sqldb', version: '+'
 ```
 
 #### 操作代码概览
@@ -138,7 +138,8 @@ public class UserService {
 	- [**`DSL模式更新数据`**](#DSL模式更新数据)
     - [**`DSL模式删除数据`**](#DSL模式删除数据)
     - [**`DSL模式查询数据`**](#DSL模式查询数据)
-- [**`模板SQL查询`**](#模板SQL查询)
+- [**`模板SQL执行`**](#模板SQL执行)
+    - [**`模板数据操作SQL执行`**](#模板数据操作SQL执行)
     - [**`模板SQL唯一值查询`**](#模板SQL唯一值查询)
     - [**`模板SQL唯一记录查询`**](#模板SQL唯一记录查询)
     - [**`模板SQL列表查询`**](#模板SQL列表查询)
@@ -154,6 +155,9 @@ public class UserService {
     - [**`Mapper方法sqlId的查找逻辑`**](#Mapper方法sqlId的查找逻辑)
     - [**`Mapper方法与hammer模板API的对应关系`**](#Mapper方法与hammer模板API的对应关系)
     - [**`Mapper中实现模板查询以外的操作`**](#Mapper中实现模板查询以外的操作)
+
+
+> 本文档中所有的代码都是从单元测试中复制粘贴出来的，如果你有什么不清楚，可以直接下载代码并打开单元测试的代码查看具体的使用方法
 
 ## 基础配置
 
@@ -203,7 +207,7 @@ hammer hammer = new hammerJdbcImpl(jdbc, mappingFactory, configFactory);
 
 ### Mapper配置
 
-使用Mapper这个单词是因为Mybatis使用此单词，这样会让有Mybatis经验的读者更容易理解。
+>使用Mapper这个单词是因为Mybatis使用此单词，这样会让有Mybatis经验的读者更容易理解。
 
 **定义Mapper**
 
@@ -644,7 +648,7 @@ roles = hammer.query(Role.class).where().gt("id", 5).and().le("id", 10).limit(2,
 List<Role> roles = hammer.query(Role.class).where().eq("id", 4).or().group().gt("id", 5).and().le("id", 10).sort().asc("id").desc("name").list();
 ```
 
-## 模板SQL查询
+## 模板SQL执行
 
 模板配置文件使用yaml格式，属性名就是对应的sql模板id,属性值就是需要使用的sql模板。
 内置实现使用的模板引擎是freemarker。
@@ -660,7 +664,7 @@ API调用传入的tplExecuteId字符串格式为filePath@sqlId
 例：`hammer.single("user@selectByUsername", User.class, new HashChainMap<String, Object>().putChain("username", username))`  
 如果sqlId为全局唯一，也可以直接使用sqlId  
 例：`hammer.numberInt("selectAvg", new HashChainMap<String, Object>())`  
-**如果同样的sqlId出现在不同的文件中，调用时没有使用filePath@sqlId进行调用，就会抛出异常，因为程序不知道调用的是哪一个**
+>如果同样的sqlId出现在不同的文件中，调用时没有使用filePath@sqlId进行调用，就会抛出异常，因为程序不知道调用的是哪一个
 
 
 后续文档使用的sql模板定义
@@ -671,15 +675,32 @@ API调用传入的tplExecuteId字符串格式为filePath@sqlId
 
 [*`role_common.yaml.tpl`*](./src/test/resources/tpl/user.yaml.tpl)
 
+### 模板数据操作SQL执行
+| 方法 | 说明 |
+| :-----| :---- |
+| `execute`         | 执行数据操作（即执行insert,update,delete等操作）| 
+
+```java
+int i = executor.execute("insertRole", new HashChainMap<String, Object>().putChain("name", name).putChain("descp", descp));
+
+int i = executor.execute("updateRoleByName", new HashChainMap<String, Object>().putChain("name", name).putChain("descp", descp));
+
+int i = executor.execute("deleteRoleByName", new HashChainMap<String, Object>().putChain("name", name));
+```
 
 ### 模板SQL唯一值查询
-`value`  
-`number`  
-`numberInt`  
-`numberLong`  
-`numberBigDecimal`  
-`numberDouble`  
-`string`  
+| 方法 | 说明 |
+| :-----| :---- |
+| `value`           | 查询返回唯一值 | 
+| `intValue`        | 查询返回int | 
+| `longValue`       | 查询返回long | 
+| `doubleValue`     | 查询返回double | 
+| `number`          | 查询返回number对象 | 
+| `numberInt`       | 查询返回Integer | 
+| `numberLong`      | 查询返回Long | 
+| `numberDouble`    | 查询返回Double | 
+| `numberBigDecimal`| 查询返回BigDecimal | 
+| `string`          | 查询返回String | 
 
 ```java
 Integer avg = hammer.numberInt("selectAvg", new HashChainMap<String, Object>());
@@ -691,7 +712,10 @@ String str = hammer.string("selectString2", new HashChainMap<String, Object>().p
 
 
 ### 模板SQL唯一记录查询
-`single`
+| 方法 | 说明 |
+| :-----| :---- |
+| `single`           | 查询返回唯一对象 | 
+
 
 ```java
 User u1 = hammer.single("user@selectByUsername", User.class, new HashChainMap<String, Object>().putChain("username", username));
@@ -699,7 +723,10 @@ User u2 = hammer.single("user@selectByUsernameAndPassword", User.class, new Hash
 ```
 
 ### 模板SQL列表查询
-`list`
+| 方法 | 说明 |
+| :-----| :---- |
+| `list`           | 查询返回列表 | 
+
 
 ```java
 List<User> users = executor.list("user@selectUser", User.class, new HashChainMap<String, Object>());
@@ -712,7 +739,10 @@ List<User> users = executor.list("user@selectConditions", User.class, new HashCh
 ### 模板SQL分页查询
 
 #### 基础分页
-`list`
+| 方法 | 说明 |
+| :-----| :---- |
+| `list`           | 查询返回分页列表 | 
+
 
 ```java
 List<User> users = executor.list("user@selectConditions", User.class, new HashChainMap<String, Object>(), start, limit);
@@ -720,18 +750,24 @@ List<User> users = executor.list("user@selectConditions", User.class, new HashCh
 ```
 
 #### 包装分页
-`pagination`
+| 方法 | 说明 |
+| :-----| :---- |
+| `pagination`      | 查询返回分页列表包装对象 | 
+
 
 ##### 使用自动构建统计sql
 
-基于查询sql自动转换统计sql,sql转换测试不可能覆盖所有的复查查询，当自动转换有错误时，请使用手动声明统计sql
+基于查询sql自动转换统计sql
 
 ```java
 PaginationResults<User> userPaginationResults = executor.pagination("user@selectConditions", User.class, new HashChainMap<String, Object>(), start, limit);
 PaginationResults<User> userPaginationResults = executor.pagination("user@selectConditions", User.class, new HashChainMap<String, Object>().putChain("minAge", minAge).putChain("maxAge", maxAge).putChain("username", username1 + "%"), new SimplePagination(start, limit));
 ```
 
+>sql转换功能做的测试不可能覆盖所有的复查查询，当你的查询足够复杂并且自动转换不能正常工作时，请使用手动声明统计sql
+
 ##### 手动声明统计sql
+
 
 yaml配置文件中的sql模板,默认情况下只需要直接把sql模板跟在sqlId后面就行了,当需要手动设置统计sql时，就需要明确声明
 
@@ -754,6 +790,7 @@ PaginationResults<Role> uis = executor.pagination("role@selectWithTemplate3", Ro
 ## 模板动态SQL
 
 因为使用的模板引擎，所有在sql拼接中，对应的模板引擎支持的功能基本都能使用，不过由于我们只是用来动态拼接SQL,所以为其定制化了一些专用于此的标签和函数。默认使用freemarker，定制的功能也是freemarker的扩展。
+
 
 ### where支持
 
@@ -1024,6 +1061,7 @@ public interface UserMapper3 extends GenericHammer<User> {
 - `namespace` 模板文件的路径，如果为空，使用Mapper的namespace进行查找
 - `name`      sqlId，如果为空，则使用方法名作为sqlId进行查找
 - `template`  sql template，如果不为空，则直接使用此模板执行，用法和在模板文件中定义的完全一样，模板管理器会使用namespace和name注册，前提是在使用TplConfigFactory时给定了basePackges进行类扫描注册
+- `type`  sql template type，默认值AUTO，枚举AUTO,QUERY,EXECUTE
 > 在@Template中定义template直接写sql模板其实是为了jdk13，jdk14中出现的文本块（目前还是预览版，不是正式版），目前把复杂sql模板放在@Template中一点都不方便，也就适合放简单sql, 但是简单sql我个人更倾向于直接使用query dsl
 
 `@Param` 标注在方法参数中，用于映射方法参数和查询参数  
@@ -1124,12 +1162,51 @@ public interface RoleMapper {
 
     @Template("select <@prop alias=\"_r\"/> <@tpl id='roleFromTemplate2' file='tpl/role_common'/>")
     List<Role> selectWithTemplate(@Param("name") String name);
+
+    @Template("insert into role(name, descp) values(:name, :descp)")
+    int insertRole(@Param("name") String name, @Param("descp") String descp);
+
+    @Template("update role set descp = :descp where name = :name")
+    int updateRoleByName(@Param("name") String name, @Param("descp") String descp);
+
+    @Template("delete from role where name = :name")
+    int deleteRoleByName(@Param("name") String name);
+
+    @Template("select <@prop repo='role'/> from role where name = :name")
+    Role getByName(@Param("name") String name);
+
+    @Template(value = "select count(*) from role", type = TplType.QUERY)
+    int countRole();
+
+    @Template("select count(*) from role")
+    Integer countRole2();
+
+    @Template("select count(*) from role")
+    long countRole3();
 }
 ```
 
 ### Mapper方法与hammer模板API的对应关系
 
 对应原则基本都是按照方法调用的返回对象为依据，除了小部分特殊情况，下面章节为一一介绍。
+
+#### [**`模板数据操作SQL执行`**](#模板数据操作SQL执行)章节介绍的API对应的Mapper调用
+
+>Mapper中int xxx(ar1, ar2.. arn)， void yyy(ar1, ar2...arn) \
+>当返回值是void时，执行execute（即执行insert,update,delete等操作）\
+>当返回值是int并且type参数是AUTO或者EXECUTE时，执行execute（即执行insert,update,delete等操作）\
+>如果要执行一个查询返回一个int值，可以加上type=QUERY或者使用包装类型Integer作为返回值
+
+```java
+@Template("insert into role(name, descp) values(:name, :descp)")
+int insertRole(@Param("name") String name, @Param("descp") String descp);
+
+@Template("update role set descp = :descp where name = :name")
+int updateRoleByName(@Param("name") String name, @Param("descp") String descp);
+
+@Template("delete from role where name = :name")
+int deleteRoleByName(@Param("name") String name);
+```
 
 #### [**`模板SQL唯一值查询`**](#模板SQL唯一值查询)章节介绍的API对应的Mapper调用
 
@@ -1141,6 +1218,15 @@ String selectString();
 Integer selectAvg2(@Param("age") Integer age);
 
 String selectString2(@Param("id") Integer id);
+
+@Template(value = "select count(*) from role", type = TplType.QUERY)
+int countRole();
+
+@Template("select count(*) from role")
+Integer countRole2();
+
+@Template("select count(*) from role")
+long countRole3();
 ```
 
 #### [**`模板SQL唯一记录查询`**](#模板SQL唯一记录查询)章节介绍的API对应的Mapper调用

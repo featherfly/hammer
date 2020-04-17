@@ -228,7 +228,7 @@ public interface Hammer extends TplExecutor {
      * @param repository repository name
      * @return Update
      */
-    <E> Update update(String repository);
+    Update update(String repository);
 
     /**
      * create update for entityType
@@ -245,7 +245,7 @@ public interface Hammer extends TplExecutor {
      * @param repository repository name
      * @return Delete
      */
-    <E> Delete delete(String repository);
+    Delete delete(String repository);
 
     /**
      * create delete for entityType

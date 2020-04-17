@@ -418,7 +418,7 @@ public class SqldbHammerImpl implements SqldbHammer {
      * {@inheritDoc}
      */
     @Override
-    public <E> Update update(String repository) {
+    public Update update(String repository) {
         SqlUpdater updater = new SqlUpdater(jdbc, mappingFactory);
         return updater.update(repository);
     }
@@ -427,7 +427,7 @@ public class SqldbHammerImpl implements SqldbHammer {
      * {@inheritDoc}
      */
     @Override
-    public <E> Delete delete(String repository) {
+    public Delete delete(String repository) {
         SqlDeleter deleter = new SqlDeleter(jdbc, mappingFactory);
         return deleter.delete(repository);
     }
@@ -751,6 +751,54 @@ public class SqldbHammerImpl implements SqldbHammer {
      * {@inheritDoc}
      */
     @Override
+    public int intValue(String tplExecuteId, Map<String, Object> params) {
+        return sqlTplExecutor.intValue(tplExecuteId, params);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public int intValue(TplExecuteId tplExecuteId, Map<String, Object> params) {
+        return sqlTplExecutor.intValue(tplExecuteId, params);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public long longValue(String tplExecuteId, Map<String, Object> params) {
+        return sqlTplExecutor.longValue(tplExecuteId, params);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public long longValue(TplExecuteId tplExecuteId, Map<String, Object> params) {
+        return sqlTplExecutor.longValue(tplExecuteId, params);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public double doubleValue(String tplExecuteId, Map<String, Object> params) {
+        return sqlTplExecutor.doubleValue(tplExecuteId, params);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public double doubleValue(TplExecuteId tplExecuteId, Map<String, Object> params) {
+        return sqlTplExecutor.doubleValue(tplExecuteId, params);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
     public Integer numberInt(TplExecuteId tplExecuteId, Map<String, Object> params) {
         return sqlTplExecutor.numberInt(tplExecuteId, params);
     }
@@ -785,6 +833,22 @@ public class SqldbHammerImpl implements SqldbHammer {
     @Override
     public String string(TplExecuteId tplExecuteId, Map<String, Object> params) {
         return sqlTplExecutor.string(tplExecuteId, params);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public int execute(String tplExecuteId, Map<String, Object> params) {
+        return sqlTplExecutor.execute(tplExecuteId, params);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public int execute(TplExecuteId tplExecuteId, Map<String, Object> params) {
+        return sqlTplExecutor.execute(tplExecuteId, params);
     }
 
     /**

@@ -35,6 +35,6 @@ public @interface Param {
      *
      * @return param type
      */
-    ParamType type() default ParamType.QUERY;
+    ParamType type() default ParamType.COMMON;
 
 }

@@ -350,4 +350,13 @@ public class SpringJdbcTemplateImpl implements Jdbc {
         Constants.LOGGER.debug("sql -> {}, args -> {}", sql, args);
         return jdbcTemplate.update(sql, args);
     }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public int update(String sql, Map<String, Object> args) {
+        Constants.LOGGER.debug("sql -> {}, args -> {}", sql, args);
+        return namedParameterJdbcTemplate.update(sql, args);
+    }
 }

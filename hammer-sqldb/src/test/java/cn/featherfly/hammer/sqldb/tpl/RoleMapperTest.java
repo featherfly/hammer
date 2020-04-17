@@ -11,6 +11,7 @@ import java.util.Set;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
 
+import cn.featherfly.common.lang.RandomUtils;
 import cn.featherfly.common.structure.page.PaginationResults;
 import cn.featherfly.common.structure.page.SimplePagination;
 import cn.featherfly.hammer.Hammer;
@@ -89,5 +90,43 @@ public class RoleMapperTest extends JdbcTestBase {
         for (Role role : list) {
             assertTrue(role.getName().startsWith("descp"));
         }
+    }
+
+    @Test
+    void testInsertUpdateDelete() {
+        String name = "name_insert_" + RandomUtils.getRandomString(6);
+        String descp = "descp_" + RandomUtils.getRandomString(6);
+        int i = roleMapper.insertRole(name, descp);
+        assertTrue(i == 1);
+
+        Role role = roleMapper.getByName(name);
+        assertEquals(role.getName(), name);
+        assertEquals(role.getDescp(), descp);
+
+        descp = "descp_" + RandomUtils.getRandomString(6);
+        i = roleMapper.updateRoleByName(name, descp);
+        assertTrue(i == 1);
+
+        role = roleMapper.getByName(name);
+        assertEquals(role.getName(), name);
+        assertEquals(role.getDescp(), descp);
+
+        i = roleMapper.deleteRoleByName(name);
+        assertTrue(i == 1);
+
+        role = roleMapper.getByName(name);
+        assertEquals(role, null);
+    }
+
+    @Test
+    void testQueryValue() {
+        int count = roleMapper.countRole();
+        assertTrue(count > 1);
+
+        Integer count2 = roleMapper.countRole2();
+        assertTrue(count2 > 1);
+
+        long count3 = roleMapper.countRole3();
+        assertTrue(count3 > 1);
     }
 }

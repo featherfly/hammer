@@ -1,3 +1,17 @@
+2020-4-18
+0.4.1
+    1.修复获取type时判断用错参数的bug
+    2.更新文档
+    
+2020-4-17
+0.4.0
+    1.为模板执行加入execute，可以使用模板sql进行insert,update,delete操作
+    2.@Template加入type参数，默认值AUTO
+    2.Mapper中int xxx(ar1, ar2.. arn)， void yyy(ar1, ar2...arn)
+                    当返回值是void时，执行execute（即执行insert,update,delete等操作）
+                    当返回值是int并且type参数是AUTO或者EXECUTE时，执行execute（即执行insert,update,delete等操作）
+                    如果要执行一个查询返回一个int值，可以加上type=QUERY或者使用包装类型Integer作为返回值
+    
 2020-4-15
 0.3.3
     1.重命名@TplExecution为@Template,@TplParam为@Param，@TplParamType为ParamType
@@ -5,10 +19,6 @@
                 用于value()是一个不可变的字符串就可以禁用其使用模板引擎，可以提高一丢丢的性能-_-，默认是开启的，当前版本未实现禁用模板引擎
     3.@Param加入name(),而value()作为name()的快捷别名，name()优先级高于value()
     4.加入SqldbHammer接口
-    
-2020-4-11
-0.3.3
-    1.加入SqldbHammer接口
     
 2020-4-11
 0.3.2
