@@ -44,6 +44,15 @@ public interface Jdbc {
     int update(String sql, Object... args);
 
     /**
+     * Update.
+     *
+     * @param sql  the sql
+     * @param args the args
+     * @return the int
+     */
+    int update(String sql, Map<String, Object> args);
+
+    /**
      * Execute.
      *
      * @param <T>    the generic type

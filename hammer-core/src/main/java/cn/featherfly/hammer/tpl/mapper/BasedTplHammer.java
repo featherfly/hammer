@@ -535,4 +535,68 @@ public class BasedTplHammer implements Hammer {
         return hammer.string(tplExecuteId, params);
     }
 
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public int execute(String tplExecuteId, Map<String, Object> params) {
+        return hammer.execute(tplExecuteId, params);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public int execute(TplExecuteId tplExecuteId, Map<String, Object> params) {
+        return hammer.execute(tplExecuteId, params);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public int intValue(String tplExecuteId, Map<String, Object> params) {
+        return hammer.intValue(tplExecuteId, params);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public int intValue(TplExecuteId tplExecuteId, Map<String, Object> params) {
+        return hammer.intValue(tplExecuteId, params);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public long longValue(String tplExecuteId, Map<String, Object> params) {
+        return hammer.longValue(tplExecuteId, params);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public long longValue(TplExecuteId tplExecuteId, Map<String, Object> params) {
+        return hammer.longValue(tplExecuteId, params);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public double doubleValue(String tplExecuteId, Map<String, Object> params) {
+        return hammer.doubleValue(tplExecuteId, params);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public double doubleValue(TplExecuteId tplExecuteId, Map<String, Object> params) {
+        return hammer.doubleValue(tplExecuteId, params);
+    }
+
 }

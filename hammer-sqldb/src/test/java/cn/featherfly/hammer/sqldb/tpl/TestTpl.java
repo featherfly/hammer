@@ -20,7 +20,7 @@ import cn.featherfly.hammer.sqldb.tpl.freemarker.directive.OrTemplateDirectiveMo
 import cn.featherfly.hammer.sqldb.tpl.freemarker.directive.WhereTemplateDirectiveModel;
 import cn.featherfly.hammer.tpl.TplExecuteConfig;
 import cn.featherfly.hammer.tpl.TplExecuteConfigs;
-import cn.featherfly.hammer.tpl.TplExecuteConfig.Type;
+import cn.featherfly.hammer.tpl.TplType;
 import cn.featherfly.hammer.tpl.supports.ConditionParamsManager;
 import freemarker.template.Configuration;
 import freemarker.template.Template;
@@ -79,7 +79,7 @@ public class TestTpl {
                     config.setCount(map.get("count").toString());
                 }
                 if (LangUtils.isNotEmpty(map.get("type"))) {
-                    config.setType(Type.valueOf(map.get("type").toString()));
+                    config.setType(TplType.valueOf(map.get("type").toString()));
                 }
             }
             System.out.println(config);

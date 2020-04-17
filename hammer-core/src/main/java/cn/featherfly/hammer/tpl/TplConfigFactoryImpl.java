@@ -34,7 +34,6 @@ import cn.featherfly.common.lang.matcher.MethodAnnotationMatcher;
 import cn.featherfly.constant.ConstantPool;
 import cn.featherfly.hammer.HammerException;
 import cn.featherfly.hammer.config.HammerConstant;
-import cn.featherfly.hammer.tpl.TplExecuteConfig.Type;
 import cn.featherfly.hammer.tpl.annotation.Mapper;
 import cn.featherfly.hammer.tpl.annotation.Template;
 
@@ -273,7 +272,7 @@ public class TplConfigFactoryImpl implements TplConfigFactory {
                         config.setCount(map.get("count").toString());
                     }
                     if (LangUtils.isNotEmpty(map.get("type"))) {
-                        config.setType(Type.valueOf(map.get("type").toString()));
+                        config.setType(TplType.valueOf(map.get("type").toString()));
                     }
                 }
                 checkName(executeIds, k, finalFilePath);

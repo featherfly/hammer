@@ -16,6 +16,93 @@ import cn.featherfly.common.structure.page.PaginationResults;
  * @author zhongj
  */
 public interface TplExecutor {
+    /**
+     * <p>
+     * execute.
+     * </p>
+     *
+     * @param tplExecuteId tpl execute id
+     * @param params       params
+     * @return executed success size
+     */
+    int execute(String tplExecuteId, Map<String, Object> params);
+
+    /**
+     * <p>
+     * execute.
+     * </p>
+     *
+     * @param tplExecuteId tpl execute id
+     * @param params       params
+     * @return executed success size
+     */
+    int execute(TplExecuteId tplExecuteId, Map<String, Object> params);
+
+    /**
+     * <p>
+     * query int value, use query str in template find with executeId
+     * </p>
+     *
+     * @param tplExecuteId tpl execute id
+     * @param params       params
+     * @return int
+     */
+    int intValue(String tplExecuteId, Map<String, Object> params);
+
+    /**
+     * <p>
+     * query int value, use query str in template find with executeId
+     * </p>
+     *
+     * @param tplExecuteId tpl execute id
+     * @param params       params
+     * @return int
+     */
+    int intValue(TplExecuteId tplExecuteId, Map<String, Object> params);
+
+    /**
+     * <p>
+     * query long value, use query str in template find with executeId
+     * </p>
+     *
+     * @param tplExecuteId tpl execute id
+     * @param params       params
+     * @return long
+     */
+    long longValue(String tplExecuteId, Map<String, Object> params);
+
+    /**
+     * <p>
+     * query long value, use query str in template find with executeId
+     * </p>
+     *
+     * @param tplExecuteId tpl execute id
+     * @param params       params
+     * @return long
+     */
+    long longValue(TplExecuteId tplExecuteId, Map<String, Object> params);
+
+    /**
+     * <p>
+     * query double value, use query str in template find with executeId
+     * </p>
+     *
+     * @param tplExecuteId tpl execute id
+     * @param params       params
+     * @return double
+     */
+    double doubleValue(String tplExecuteId, Map<String, Object> params);
+
+    /**
+     * <p>
+     * query double value, use query str in template find with executeId
+     * </p>
+     *
+     * @param tplExecuteId tpl execute id
+     * @param params       params
+     * @return double
+     */
+    double doubleValue(TplExecuteId tplExecuteId, Map<String, Object> params);
 
     /**
      * <p>
