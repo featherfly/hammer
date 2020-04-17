@@ -7,6 +7,7 @@ import cn.featherfly.common.structure.page.Page;
 import cn.featherfly.common.structure.page.PaginationResults;
 import cn.featherfly.hammer.GenericHammer;
 import cn.featherfly.hammer.sqldb.jdbc.vo.Role;
+import cn.featherfly.hammer.tpl.TplType;
 import cn.featherfly.hammer.tpl.annotation.Mapper;
 import cn.featherfly.hammer.tpl.annotation.Param;
 import cn.featherfly.hammer.tpl.annotation.ParamType;
@@ -62,8 +63,8 @@ public interface RoleMapper extends GenericHammer<Role> {
     @Template("select <@prop repo='role'/> from role where name = :name")
     Role getByName(@Param("name") String name);
 
-    //    @Template(value = "select count(*) from role", type = TplType.QUERY)
-    //    int countRole();
+    @Template(value = "select count(*) from role", type = TplType.QUERY)
+    int countRole();
 
     @Template("select count(*) from role")
     Integer countRole2();

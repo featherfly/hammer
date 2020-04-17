@@ -120,8 +120,8 @@ public class RoleMapperTest extends JdbcTestBase {
 
     @Test
     void testQueryValue() {
-        //        int count = roleMapper.countRole();
-        //        assertTrue(count > 1);
+        int count = roleMapper.countRole();
+        assertTrue(count > 1);
 
         Integer count2 = roleMapper.countRole2();
         assertTrue(count2 > 1);

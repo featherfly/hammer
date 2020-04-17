@@ -329,7 +329,7 @@ public class TplDynamicExecutorFactory {
 
     private TplType getType(Method method) {
         Template template = method.getAnnotation(Template.class);
-        if (template != null && LangUtils.isNotEmpty(template.name())) {
+        if (template != null && LangUtils.isNotEmpty(template.type())) {
             return template.type();
         } else {
             return TplType.AUTO;
