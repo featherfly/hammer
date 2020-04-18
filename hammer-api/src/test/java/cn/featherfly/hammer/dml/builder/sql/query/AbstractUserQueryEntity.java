@@ -7,6 +7,7 @@ import java.util.List;
 import java.util.Map;
 
 import cn.featherfly.common.lang.function.SerializableFunction;
+import cn.featherfly.common.repository.operate.AggregateFunction;
 import cn.featherfly.common.structure.page.Page;
 import cn.featherfly.hammer.dsl.query.QuerySortExpression;
 import cn.featherfly.hammer.expression.query.QueryEntityPropertiesExpression;
@@ -15,7 +16,6 @@ import cn.featherfly.hammer.expression.query.QueryWithEntityExpression;
 import cn.featherfly.hammer.expression.query.QueryWithExpression;
 import cn.featherfly.hammer.expression.query.QueryWithOnExpression;
 import cn.featherfly.hammer.mapping.RowMapper;
-import cn.featherfly.hammer.operator.AggregateFunction;
 
 /**
  * <p>
@@ -24,8 +24,7 @@ import cn.featherfly.hammer.operator.AggregateFunction;
  *
  * @author zhongj
  */
-public class AbstractUserQueryEntity<
-        Q extends AbstractUserQueryEntity<Q, QW, QWO, QWE>,
+public class AbstractUserQueryEntity<Q extends AbstractUserQueryEntity<Q, QW, QWO, QWE>,
         QW extends QueryWithExpression<QW, QWO, QWE, UserQueryRepositoryConditionGroupExpression, UserQueryRepositoryConditionGroupExpression>,
         QWO extends QueryWithOnExpression<QW, QWO, QWE, UserQueryRepositoryConditionGroupExpression, UserQueryRepositoryConditionGroupExpression>,
         QWE extends QueryWithEntityExpression<QW, QWO, QWE, UserQueryRepositoryConditionGroupExpression, UserQueryRepositoryConditionGroupExpression>>
@@ -243,8 +242,7 @@ public class AbstractUserQueryEntity<
      * {@inheritDoc}
      */
     @Override
-    public Q property(String propertyName,
-            AggregateFunction aggregateFunction) {
+    public Q property(String propertyName, AggregateFunction aggregateFunction) {
         // YUFEI_TODO Auto-generated method stub
         return null;
     }
@@ -253,8 +251,7 @@ public class AbstractUserQueryEntity<
      * {@inheritDoc}
      */
     @Override
-    public <T, R> Q property(SerializableFunction<T, R> propertyName,
-            AggregateFunction aggregateFunction) {
+    public <T, R> Q property(SerializableFunction<T, R> propertyName, AggregateFunction aggregateFunction) {
         // YUFEI_TODO Auto-generated method stub
         return null;
     }

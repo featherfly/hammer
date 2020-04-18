@@ -2,11 +2,12 @@ dependencies {
     api project(":hammer-api")
     api project(":hammer-core")
 
-    api group: 'cn.featherfly', name: 'featherfly-db', version: '1.5.6'
+    //api group: 'cn.featherfly', name: 'featherfly-db', version: '1.5.6'
+    api group: 'cn.featherfly.common', name: 'common-db', version: '0.1.0'
     api group: 'org.springframework', name: 'spring-jdbc', version: '5.2.1.RELEASE'
     api group: 'org.glassfish', name: 'javax.el', version: '3.0.0'
     api group: 'org.hibernate.validator', name: 'hibernate-validator', version: '6.0.18.Final'
-    api group: 'com.speedment.common', name: 'tuple', version: '3.1.16'
+    api group: 'com.speedment.common', name: 'tuple', version: '3.2.9'
     implementation group: 'com.google.code.findbugs', name: 'jsr305', version: '3.0.2'
 
     //testImplementation group: 'mysql', name: 'mysql-connector-java', version: '8.0.18'    

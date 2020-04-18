@@ -1,8 +1,8 @@
 
 package cn.featherfly.hammer.sqldb.tpl;
 
-import cn.featherfly.hammer.sqldb.jdbc.mapping.JdbcMappingFactory;
-import cn.featherfly.hammer.sqldb.sql.dialect.Dialect;
+import cn.featherfly.common.db.mapping.JdbcMappingFactory;
+import cn.featherfly.common.db.dialect.Dialect;
 import cn.featherfly.hammer.tpl.TemplateDirectives;
 import cn.featherfly.hammer.tpl.TemplateMethods;
 import cn.featherfly.hammer.tpl.TemplateProcessEnv;

@@ -2,7 +2,7 @@
 package cn.featherfly.hammer.sqldb.jdbc.operate;
 
 import cn.featherfly.common.db.metadata.DatabaseMetadata;
-import cn.featherfly.hammer.mapping.ClassMapping;
+import cn.featherfly.common.repository.mapping.ClassMapping;
 import cn.featherfly.hammer.sqldb.jdbc.Jdbc;
 
 /**

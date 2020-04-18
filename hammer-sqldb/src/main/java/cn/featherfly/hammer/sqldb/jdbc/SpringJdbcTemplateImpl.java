@@ -14,7 +14,7 @@ import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import cn.featherfly.common.lang.ArrayUtils;
 import cn.featherfly.hammer.mapping.RowMapper;
 import cn.featherfly.hammer.sqldb.Constants;
-import cn.featherfly.hammer.sqldb.sql.dialect.Dialect;
+import cn.featherfly.common.db.dialect.Dialect;
 
 /**
  * <p>

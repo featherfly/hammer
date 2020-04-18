@@ -3,8 +3,8 @@ package cn.featherfly.hammer.sqldb.sql.dml;
 
 import cn.featherfly.hammer.dml.BuildableConditionGroupExpression;
 import cn.featherfly.hammer.dml.BuildableConditionGroupLogicExpression;
-import cn.featherfly.hammer.mapping.ClassMapping;
-import cn.featherfly.hammer.sqldb.sql.dialect.Dialect;
+import cn.featherfly.common.repository.mapping.ClassMapping;
+import cn.featherfly.common.db.dialect.Dialect;
 
 /**
  * <p>

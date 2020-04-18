@@ -6,12 +6,12 @@ import java.io.Writer;
 import java.util.Map;
 import java.util.Set;
 
+import cn.featherfly.common.db.mapping.ClassMappingUtils;
+import cn.featherfly.common.db.mapping.JdbcMappingFactory;
 import cn.featherfly.common.db.metadata.TableMetadata;
 import cn.featherfly.common.lang.LangUtils;
 import cn.featherfly.common.lang.WordUtils;
-import cn.featherfly.hammer.mapping.ClassMapping;
-import cn.featherfly.hammer.sqldb.jdbc.mapping.ClassMappingUtils;
-import cn.featherfly.hammer.sqldb.jdbc.mapping.JdbcMappingFactory;
+import cn.featherfly.common.repository.mapping.ClassMapping;
 import cn.featherfly.hammer.tpl.TplException;
 import cn.featherfly.hammer.tpl.directive.PropertiesMappingDirective;
 import cn.featherfly.hammer.tpl.freemarker.FreemarkerDirective;

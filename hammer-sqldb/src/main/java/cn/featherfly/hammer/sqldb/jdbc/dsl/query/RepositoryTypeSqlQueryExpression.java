@@ -10,12 +10,17 @@ import com.speedment.common.tuple.Tuple2;
 import com.speedment.common.tuple.Tuples;
 
 import cn.featherfly.common.constant.Chars;
+import cn.featherfly.common.db.builder.dml.basic.SqlSelectBasicBuilder;
+import cn.featherfly.common.db.mapping.ClassMappingUtils;
 import cn.featherfly.common.lang.ClassUtils;
 import cn.featherfly.common.lang.LambdaUtils;
 import cn.featherfly.common.lang.LambdaUtils.SerializedLambdaInfo;
 import cn.featherfly.common.lang.LangUtils;
 import cn.featherfly.common.lang.function.SerializableFunction;
-import cn.featherfly.hammer.dml.AliasManager;
+import cn.featherfly.common.repository.mapping.ClassMapping;
+import cn.featherfly.common.repository.mapping.MappingFactory;
+import cn.featherfly.common.repository.operate.QueryOperator;
+import cn.featherfly.common.repository.builder.AliasManager;
 import cn.featherfly.hammer.dsl.query.RepositoryTypeQueryConditionGroupExpression;
 import cn.featherfly.hammer.dsl.query.RepositoryTypeQueryConditionGroupLogicExpression;
 import cn.featherfly.hammer.expression.condition.property.DateExpression;
@@ -28,13 +33,8 @@ import cn.featherfly.hammer.expression.condition.property.RepositorySimpleNumber
 import cn.featherfly.hammer.expression.condition.property.RepositorySimpleObjectExpression;
 import cn.featherfly.hammer.expression.condition.property.RepositorySimpleStringExpression;
 import cn.featherfly.hammer.expression.condition.property.StringExpression;
-import cn.featherfly.hammer.mapping.ClassMapping;
-import cn.featherfly.hammer.mapping.MappingFactory;
-import cn.featherfly.hammer.operator.QueryOperator;
 import cn.featherfly.hammer.sqldb.jdbc.Jdbc;
-import cn.featherfly.hammer.sqldb.jdbc.mapping.ClassMappingUtils;
 import cn.featherfly.hammer.sqldb.sql.dml.SqlConditionExpressionBuilder;
-import cn.featherfly.hammer.sqldb.sql.dml.builder.basic.SqlSelectBasicBuilder;
 
 /**
  * <p>

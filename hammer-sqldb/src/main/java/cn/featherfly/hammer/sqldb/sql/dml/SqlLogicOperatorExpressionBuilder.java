@@ -1,8 +1,9 @@
 
 package cn.featherfly.hammer.sqldb.sql.dml;
 
+import cn.featherfly.common.db.builder.SqlBuilder;
+import cn.featherfly.common.repository.operate.LogicOperator;
 import cn.featherfly.hammer.expression.condition.LogicOperatorExpression;
-import cn.featherfly.hammer.operator.LogicOperator;
 
 /**
  * <p>
@@ -11,12 +12,10 @@ import cn.featherfly.hammer.operator.LogicOperator;
  *
  * @author zhongj
  */
-public class SqlLogicOperatorExpressionBuilder extends LogicOperatorExpression
-        implements SqlBuilder {
+public class SqlLogicOperatorExpressionBuilder extends LogicOperatorExpression implements SqlBuilder {
 
     /**
-     * @param logicOperator
-     *            逻辑运算符
+     * @param logicOperator 逻辑运算符
      */
     public SqlLogicOperatorExpressionBuilder(LogicOperator logicOperator) {
         super(logicOperator);

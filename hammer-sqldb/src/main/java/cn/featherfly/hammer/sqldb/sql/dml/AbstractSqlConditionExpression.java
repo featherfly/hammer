@@ -6,16 +6,17 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
+import cn.featherfly.common.db.builder.ConditionBuildUtils;
+import cn.featherfly.common.db.builder.SqlBuilder;
+import cn.featherfly.common.db.builder.dml.SqlLogicExpression;
+import cn.featherfly.common.db.dialect.Dialect;
 import cn.featherfly.common.lang.LambdaUtils;
 import cn.featherfly.common.lang.LangUtils;
 import cn.featherfly.common.lang.StringUtils;
 import cn.featherfly.common.lang.function.SerializableFunction;
-import cn.featherfly.hammer.dml.builder.BuilderException;
-import cn.featherfly.hammer.dml.builder.ConditionBuildUtils;
+import cn.featherfly.common.repository.builder.BuilderException;
 import cn.featherfly.hammer.expression.condition.Expression;
 import cn.featherfly.hammer.expression.condition.ParamedExpression;
-import cn.featherfly.hammer.sqldb.sql.dialect.Dialect;
-import cn.featherfly.hammer.sqldb.sql.dml.builder.SqlLogicExpression;
 
 /**
  * <p>

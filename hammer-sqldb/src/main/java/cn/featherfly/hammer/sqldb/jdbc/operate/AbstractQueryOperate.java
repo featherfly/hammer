@@ -6,13 +6,13 @@ import java.sql.ResultSet;
 import cn.featherfly.common.bean.BeanUtils;
 import cn.featherfly.common.constant.Chars;
 import cn.featherfly.common.db.JdbcUtils;
+import cn.featherfly.common.db.mapping.ClassMappingUtils;
 import cn.featherfly.common.db.metadata.DatabaseMetadata;
 import cn.featherfly.common.lang.LangUtils;
-import cn.featherfly.hammer.mapping.ClassMapping;
-import cn.featherfly.hammer.mapping.PropertyMapping;
+import cn.featherfly.common.repository.mapping.ClassMapping;
+import cn.featherfly.common.repository.mapping.PropertyMapping;
 import cn.featherfly.hammer.sqldb.jdbc.Jdbc;
 import cn.featherfly.hammer.sqldb.jdbc.SqlResultSet;
-import cn.featherfly.hammer.sqldb.jdbc.mapping.ClassMappingUtils;
 
 /**
  * <p>

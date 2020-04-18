@@ -30,13 +30,6 @@
 		<!-- </classes> -->
 	</test>
 
-	<test name="model test">
-		<classes>
-			<class
-				name="cn.featherfly.hammer.sqldb.sql.model.ConditionColumnElementTest" />
-		</classes>
-	</test>
-
 	<test name="orm test">
 		<classes>
 			<class name="cn.featherfly.hammer.sqldb.jdbc.HammerJdbcTest" />

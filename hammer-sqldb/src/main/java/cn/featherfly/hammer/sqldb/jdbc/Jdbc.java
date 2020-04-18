@@ -8,7 +8,7 @@ import java.util.Map;
 import javax.sql.DataSource;
 
 import cn.featherfly.hammer.mapping.RowMapper;
-import cn.featherfly.hammer.sqldb.sql.dialect.Dialect;
+import cn.featherfly.common.db.dialect.Dialect;
 
 /**
  * <p>

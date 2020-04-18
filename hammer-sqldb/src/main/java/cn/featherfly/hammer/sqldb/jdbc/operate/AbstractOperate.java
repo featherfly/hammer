@@ -14,7 +14,7 @@ import cn.featherfly.common.db.JdbcUtils;
 import cn.featherfly.common.db.metadata.DatabaseMetadata;
 import cn.featherfly.common.db.metadata.DatabaseMetadataManager;
 import cn.featherfly.common.lang.LangUtils;
-import cn.featherfly.hammer.mapping.ClassMapping;
+import cn.featherfly.common.repository.mapping.ClassMapping;
 import cn.featherfly.hammer.sqldb.Constants;
 import cn.featherfly.hammer.sqldb.jdbc.Jdbc;
 

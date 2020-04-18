@@ -6,7 +6,12 @@ import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.Date;
 
+import cn.featherfly.common.db.builder.SqlBuilder;
+import cn.featherfly.common.db.mapping.ClassMappingUtils;
 import cn.featherfly.common.lang.function.SerializableFunction;
+import cn.featherfly.common.repository.mapping.ClassMapping;
+import cn.featherfly.common.repository.operate.LogicOperator;
+import cn.featherfly.common.repository.operate.QueryOperator;
 import cn.featherfly.hammer.expression.ConditionGroupExpression;
 import cn.featherfly.hammer.expression.ConditionGroupLogicExpression;
 import cn.featherfly.hammer.expression.condition.ParamedExpression;
@@ -20,11 +25,7 @@ import cn.featherfly.hammer.expression.condition.property.SimpleNumberExpression
 import cn.featherfly.hammer.expression.condition.property.SimpleObjectExpression;
 import cn.featherfly.hammer.expression.condition.property.SimpleStringExpression;
 import cn.featherfly.hammer.expression.condition.property.StringExpression;
-import cn.featherfly.hammer.mapping.ClassMapping;
-import cn.featherfly.hammer.operator.LogicOperator;
-import cn.featherfly.hammer.operator.QueryOperator;
-import cn.featherfly.hammer.sqldb.jdbc.mapping.ClassMappingUtils;
-import cn.featherfly.hammer.sqldb.sql.dialect.Dialect;
+import cn.featherfly.common.db.dialect.Dialect;
 
 /**
  * <p>
