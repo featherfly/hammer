@@ -1,12 +1,16 @@
 
 package cn.featherfly.hammer.sqldb.sql.model;
 
+import static org.testng.Assert.assertEquals;
+
+import java.util.List;
+
 import org.testng.annotations.Test;
 
 import cn.featherfly.common.lang.ArrayUtils;
 import cn.featherfly.hammer.operator.QueryOperator;
+import cn.featherfly.hammer.sqldb.sql.dialect.Dialect;
 import cn.featherfly.hammer.sqldb.sql.dialect.Dialects;
-import cn.featherfly.hammer.sqldb.sql.model.ConditionColumnElement;
 
 /**
  * <p>
@@ -22,63 +26,417 @@ public class ConditionColumnElementTest {
         System.out.println(c.getParam());
     }
 
+    @SuppressWarnings("unchecked")
     @Test
-    void test() {
-        ConditionColumnElement c = new ConditionColumnElement(Dialects.MYSQL, "username", "yufei", QueryOperator.EQ);
+    void testMySql() {
+        Dialect dialect = Dialects.MYSQL;
+        String username = "yufei";
+        Integer age = 18;
+        ConditionColumnElement c = new ConditionColumnElement(dialect, "username", username, QueryOperator.EQ);
         print(c);
-        c = new ConditionColumnElement(Dialects.MYSQL, "username", "yufei", QueryOperator.EQ, "u");
+        assertEquals(c.toSql(), "`username` = ?");
+        assertEquals(c.getParam(), username);
+
+        c = new ConditionColumnElement(dialect, "username", "yufei", QueryOperator.EQ, "u");
+        assertEquals(c.toSql(), "u.`username` = ?");
+        assertEquals(c.getParam(), username);
         print(c);
-        c = new ConditionColumnElement(Dialects.MYSQL, "age", 18, QueryOperator.LT);
+
+        c = new ConditionColumnElement(dialect, "age", age, QueryOperator.LT);
         print(c);
-        c = new ConditionColumnElement(Dialects.MYSQL, "age", 18, QueryOperator.LT, "u");
+        assertEquals(c.toSql(), "`age` < ?");
+        assertEquals(c.getParam(), age);
+
+        c = new ConditionColumnElement(dialect, "age", age, QueryOperator.LT, "u");
         print(c);
-        c = new ConditionColumnElement(Dialects.MYSQL, "age", 19, QueryOperator.LE);
+        assertEquals(c.toSql(), "u.`age` < ?");
+        assertEquals(c.getParam(), age);
+
+        age = 19;
+        c = new ConditionColumnElement(dialect, "age", age, QueryOperator.LE);
         print(c);
-        c = new ConditionColumnElement(Dialects.MYSQL, "age", 19, QueryOperator.LE, "u");
+        assertEquals(c.toSql(), "`age` <= ?");
+        assertEquals(c.getParam(), age);
+
+        c = new ConditionColumnElement(dialect, "age", age, QueryOperator.LE, "u");
         print(c);
-        c = new ConditionColumnElement(Dialects.MYSQL, "age", 17, QueryOperator.GE);
+        assertEquals(c.toSql(), "u.`age` <= ?");
+        assertEquals(c.getParam(), age);
+
+        age = 17;
+        c = new ConditionColumnElement(dialect, "age", age, QueryOperator.GE);
         print(c);
-        c = new ConditionColumnElement(Dialects.MYSQL, "age", 17, QueryOperator.GE, "u");
+        assertEquals(c.toSql(), "`age` >= ?");
+        assertEquals(c.getParam(), age);
+        c = new ConditionColumnElement(dialect, "age", age, QueryOperator.GE, "u");
         print(c);
-        c = new ConditionColumnElement(Dialects.MYSQL, "age", 16, QueryOperator.GT);
+        assertEquals(c.toSql(), "u.`age` >= ?");
+        assertEquals(c.getParam(), age);
+
+        age = 16;
+        c = new ConditionColumnElement(dialect, "age", age, QueryOperator.GT);
         print(c);
-        c = new ConditionColumnElement(Dialects.MYSQL, "age", 16, QueryOperator.GT, "u");
+        assertEquals(c.toSql(), "`age` > ?");
+        assertEquals(c.getParam(), age);
+        c = new ConditionColumnElement(dialect, "age", age, QueryOperator.GT, "u");
         print(c);
-        c = new ConditionColumnElement(Dialects.MYSQL, "age", 15, QueryOperator.NE);
+        assertEquals(c.toSql(), "u.`age` > ?");
+        assertEquals(c.getParam(), age);
+
+        age = 15;
+        c = new ConditionColumnElement(dialect, "age", age, QueryOperator.NE);
         print(c);
-        c = new ConditionColumnElement(Dialects.MYSQL, "age", 15, QueryOperator.NE, "u");
+        assertEquals(c.toSql(), "`age` != ?");
+        assertEquals(c.getParam(), age);
+        c = new ConditionColumnElement(dialect, "age", age, QueryOperator.NE, "u");
         print(c);
-        c = new ConditionColumnElement(Dialects.MYSQL, "name", "yi", QueryOperator.CO);
+        assertEquals(c.toSql(), "u.`age` != ?");
+        assertEquals(c.getParam(), age);
+
+        String name = "yi";
+        c = new ConditionColumnElement(dialect, "name", name, QueryOperator.CO);
         print(c);
-        c = new ConditionColumnElement(Dialects.MYSQL, "name", "yi", QueryOperator.CO, "u");
+        assertEquals(c.toSql(), "`name` LIKE ?");
+        assertEquals(c.getParam(), "%" + name + "%");
+        c = new ConditionColumnElement(dialect, "name", name, QueryOperator.CO, "u");
         print(c);
-        c = new ConditionColumnElement(Dialects.MYSQL, "name", "fea", QueryOperator.SW);
+        assertEquals(c.toSql(), "u.`name` LIKE ?");
+        assertEquals(c.getParam(), "%" + name + "%");
+
+        name = "fea";
+        c = new ConditionColumnElement(dialect, "name", name, QueryOperator.SW);
         print(c);
-        c = new ConditionColumnElement(Dialects.MYSQL, "name", "fea", QueryOperator.SW, "u");
+        assertEquals(c.toSql(), "`name` LIKE ?");
+        assertEquals(c.getParam(), name + "%");
+        c = new ConditionColumnElement(dialect, "name", name, QueryOperator.SW, "u");
         print(c);
-        c = new ConditionColumnElement(Dialects.MYSQL, "name", "fly", QueryOperator.EW);
+        assertEquals(c.toSql(), "u.`name` LIKE ?");
+        assertEquals(c.getParam(), name + "%");
+
+        name = "fly";
+        c = new ConditionColumnElement(dialect, "name", name, QueryOperator.EW);
         print(c);
-        c = new ConditionColumnElement(Dialects.MYSQL, "name", "fly", QueryOperator.EW, "u");
+        assertEquals(c.toSql(), "`name` LIKE ?");
+        assertEquals(c.getParam(), "%" + name);
+        c = new ConditionColumnElement(dialect, "name", name, QueryOperator.EW, "u");
         print(c);
-        c = new ConditionColumnElement(Dialects.MYSQL, "mobile", "132", QueryOperator.ISN);
+        assertEquals(c.toSql(), "u.`name` LIKE ?");
+        assertEquals(c.getParam(), "%" + name);
+
+        String mobile = "132";
+        c = new ConditionColumnElement(dialect, "mobile", mobile, QueryOperator.ISN);
         print(c);
-        c = new ConditionColumnElement(Dialects.MYSQL, "mobile", "132", QueryOperator.ISN, "u");
+        assertEquals(c.toSql(), "`mobile` IS NULL");
+        assertEquals(c.getParam(), mobile);
+        c = new ConditionColumnElement(dialect, "mobile", mobile, QueryOperator.ISN, "u");
         print(c);
-        c = new ConditionColumnElement(Dialects.MYSQL, "mobile", "189", QueryOperator.INN);
+        assertEquals(c.toSql(), "u.`mobile` IS NULL");
+        assertEquals(c.getParam(), mobile);
+
+        mobile = "189";
+        c = new ConditionColumnElement(dialect, "mobile", mobile, QueryOperator.INN);
         print(c);
-        c = new ConditionColumnElement(Dialects.MYSQL, "mobile", "189", QueryOperator.INN, "u");
+        assertEquals(c.toSql(), "`mobile` IS NOT NULL");
+        assertEquals(c.getParam(), mobile);
+        c = new ConditionColumnElement(dialect, "mobile", mobile, QueryOperator.INN, "u");
         print(c);
-        c = new ConditionColumnElement(Dialects.MYSQL, "tag", ArrayUtils.toList(new String[] { "a", "b" }),
-                QueryOperator.IN);
+        assertEquals(c.toSql(), "u.`mobile` IS NOT NULL");
+        assertEquals(c.getParam(), mobile);
+
+        Object[] tags = new Object[] { "a", "b" };
+        c = new ConditionColumnElement(dialect, "tag", ArrayUtils.toList(tags), QueryOperator.IN);
         print(c);
-        c = new ConditionColumnElement(Dialects.MYSQL, "tag", ArrayUtils.toList(new String[] { "a", "b" }),
-                QueryOperator.IN, "u");
+        assertEquals(c.toSql(), "`tag` IN (?,?)");
+        assertEquals(((List<Object>) c.getParam()).toArray(), tags);
+        c = new ConditionColumnElement(dialect, "tag", ArrayUtils.toList(tags), QueryOperator.IN, "u");
         print(c);
-        c = new ConditionColumnElement(Dialects.MYSQL, "tag", ArrayUtils.toList(new String[] { "c", "d" }),
-                QueryOperator.NIN);
+        assertEquals(c.toSql(), "u.`tag` IN (?,?)");
+        assertEquals(((List<Object>) c.getParam()).toArray(), tags);
+
+        tags = new Object[] { "c", "d" };
+        c = new ConditionColumnElement(dialect, "tag", ArrayUtils.toList(tags), QueryOperator.NIN);
         print(c);
-        c = new ConditionColumnElement(Dialects.MYSQL, "tag", ArrayUtils.toList(new String[] { "c", "d" }),
-                QueryOperator.NIN, "u");
+        assertEquals(c.toSql(), "`tag` NOT IN (?,?)");
+        assertEquals(((List<Object>) c.getParam()).toArray(), tags);
+        c = new ConditionColumnElement(dialect, "tag", ArrayUtils.toList(tags), QueryOperator.NIN, "u");
         print(c);
+        assertEquals(c.toSql(), "u.`tag` NOT IN (?,?)");
+        assertEquals(((List<Object>) c.getParam()).toArray(), tags);
+    }
+
+    @SuppressWarnings("unchecked")
+    @Test
+    void testPostgresql() {
+        Dialect dialect = Dialects.POSTGRESQL;
+        String username = "yufei";
+        Integer age = 18;
+        ConditionColumnElement c = new ConditionColumnElement(dialect, "username", username, QueryOperator.EQ);
+        print(c);
+        assertEquals(c.toSql(), "\"username\" = ?");
+        assertEquals(c.getParam(), username);
+
+        c = new ConditionColumnElement(dialect, "username", "yufei", QueryOperator.EQ, "u");
+        assertEquals(c.toSql(), "u.\"username\" = ?");
+        assertEquals(c.getParam(), username);
+        print(c);
+
+        c = new ConditionColumnElement(dialect, "age", age, QueryOperator.LT);
+        print(c);
+        assertEquals(c.toSql(), "\"age\" < ?");
+        assertEquals(c.getParam(), age);
+
+        c = new ConditionColumnElement(dialect, "age", age, QueryOperator.LT, "u");
+        print(c);
+        assertEquals(c.toSql(), "u.\"age\" < ?");
+        assertEquals(c.getParam(), age);
+
+        age = 19;
+        c = new ConditionColumnElement(dialect, "age", age, QueryOperator.LE);
+        print(c);
+        assertEquals(c.toSql(), "\"age\" <= ?");
+        assertEquals(c.getParam(), age);
+
+        c = new ConditionColumnElement(dialect, "age", age, QueryOperator.LE, "u");
+        print(c);
+        assertEquals(c.toSql(), "u.\"age\" <= ?");
+        assertEquals(c.getParam(), age);
+
+        age = 17;
+        c = new ConditionColumnElement(dialect, "age", age, QueryOperator.GE);
+        print(c);
+        assertEquals(c.toSql(), "\"age\" >= ?");
+        assertEquals(c.getParam(), age);
+        c = new ConditionColumnElement(dialect, "age", age, QueryOperator.GE, "u");
+        print(c);
+        assertEquals(c.toSql(), "u.\"age\" >= ?");
+        assertEquals(c.getParam(), age);
+
+        age = 16;
+        c = new ConditionColumnElement(dialect, "age", age, QueryOperator.GT);
+        print(c);
+        assertEquals(c.toSql(), "\"age\" > ?");
+        assertEquals(c.getParam(), age);
+        c = new ConditionColumnElement(dialect, "age", age, QueryOperator.GT, "u");
+        print(c);
+        assertEquals(c.toSql(), "u.\"age\" > ?");
+        assertEquals(c.getParam(), age);
+
+        age = 15;
+        c = new ConditionColumnElement(dialect, "age", age, QueryOperator.NE);
+        print(c);
+        assertEquals(c.toSql(), "\"age\" != ?");
+        assertEquals(c.getParam(), age);
+        c = new ConditionColumnElement(dialect, "age", age, QueryOperator.NE, "u");
+        print(c);
+        assertEquals(c.toSql(), "u.\"age\" != ?");
+        assertEquals(c.getParam(), age);
+
+        String name = "yi";
+        c = new ConditionColumnElement(dialect, "name", name, QueryOperator.CO);
+        print(c);
+        assertEquals(c.toSql(), "\"name\" LIKE ?");
+        assertEquals(c.getParam(), "%" + name + "%");
+        c = new ConditionColumnElement(dialect, "name", name, QueryOperator.CO, "u");
+        print(c);
+        assertEquals(c.toSql(), "u.\"name\" LIKE ?");
+        assertEquals(c.getParam(), "%" + name + "%");
+
+        name = "fea";
+        c = new ConditionColumnElement(dialect, "name", name, QueryOperator.SW);
+        print(c);
+        assertEquals(c.toSql(), "\"name\" LIKE ?");
+        assertEquals(c.getParam(), name + "%");
+        c = new ConditionColumnElement(dialect, "name", name, QueryOperator.SW, "u");
+        print(c);
+        assertEquals(c.toSql(), "u.\"name\" LIKE ?");
+        assertEquals(c.getParam(), name + "%");
+
+        name = "fly";
+        c = new ConditionColumnElement(dialect, "name", name, QueryOperator.EW);
+        print(c);
+        assertEquals(c.toSql(), "\"name\" LIKE ?");
+        assertEquals(c.getParam(), "%" + name);
+        c = new ConditionColumnElement(dialect, "name", name, QueryOperator.EW, "u");
+        print(c);
+        assertEquals(c.toSql(), "u.\"name\" LIKE ?");
+        assertEquals(c.getParam(), "%" + name);
+
+        String mobile = "132";
+        c = new ConditionColumnElement(dialect, "mobile", mobile, QueryOperator.ISN);
+        print(c);
+        assertEquals(c.toSql(), "\"mobile\" IS NULL");
+        assertEquals(c.getParam(), mobile);
+        c = new ConditionColumnElement(dialect, "mobile", mobile, QueryOperator.ISN, "u");
+        print(c);
+        assertEquals(c.toSql(), "u.\"mobile\" IS NULL");
+        assertEquals(c.getParam(), mobile);
+
+        mobile = "189";
+        c = new ConditionColumnElement(dialect, "mobile", mobile, QueryOperator.INN);
+        print(c);
+        assertEquals(c.toSql(), "\"mobile\" IS NOT NULL");
+        assertEquals(c.getParam(), mobile);
+        c = new ConditionColumnElement(dialect, "mobile", mobile, QueryOperator.INN, "u");
+        print(c);
+        assertEquals(c.toSql(), "u.\"mobile\" IS NOT NULL");
+        assertEquals(c.getParam(), mobile);
+
+        Object[] tags = new Object[] { "a", "b" };
+        c = new ConditionColumnElement(dialect, "tag", ArrayUtils.toList(tags), QueryOperator.IN);
+        print(c);
+        assertEquals(c.toSql(), "\"tag\" IN (?,?)");
+        assertEquals(((List<Object>) c.getParam()).toArray(), tags);
+        c = new ConditionColumnElement(dialect, "tag", ArrayUtils.toList(tags), QueryOperator.IN, "u");
+        print(c);
+        assertEquals(c.toSql(), "u.\"tag\" IN (?,?)");
+        assertEquals(((List<Object>) c.getParam()).toArray(), tags);
+
+        tags = new Object[] { "c", "d" };
+        c = new ConditionColumnElement(dialect, "tag", ArrayUtils.toList(tags), QueryOperator.NIN);
+        print(c);
+        assertEquals(c.toSql(), "\"tag\" NOT IN (?,?)");
+        assertEquals(((List<Object>) c.getParam()).toArray(), tags);
+        c = new ConditionColumnElement(dialect, "tag", ArrayUtils.toList(tags), QueryOperator.NIN, "u");
+        print(c);
+        assertEquals(c.toSql(), "u.\"tag\" NOT IN (?,?)");
+        assertEquals(((List<Object>) c.getParam()).toArray(), tags);
+    }
+
+    @SuppressWarnings("unchecked")
+    @Test
+    void testOracle() {
+        Dialect dialect = Dialects.ORACLE;
+        String username = "yufei";
+        Integer age = 18;
+        ConditionColumnElement c = new ConditionColumnElement(dialect, "username", username, QueryOperator.EQ);
+        print(c);
+        assertEquals(c.toSql(), "'username' = ?");
+        assertEquals(c.getParam(), username);
+
+        c = new ConditionColumnElement(dialect, "username", "yufei", QueryOperator.EQ, "u");
+        assertEquals(c.toSql(), "u.'username' = ?");
+        assertEquals(c.getParam(), username);
+        print(c);
+
+        c = new ConditionColumnElement(dialect, "age", age, QueryOperator.LT);
+        print(c);
+        assertEquals(c.toSql(), "'age' < ?");
+        assertEquals(c.getParam(), age);
+
+        c = new ConditionColumnElement(dialect, "age", age, QueryOperator.LT, "u");
+        print(c);
+        assertEquals(c.toSql(), "u.'age' < ?");
+        assertEquals(c.getParam(), age);
+
+        age = 19;
+        c = new ConditionColumnElement(dialect, "age", age, QueryOperator.LE);
+        print(c);
+        assertEquals(c.toSql(), "'age' <= ?");
+        assertEquals(c.getParam(), age);
+
+        c = new ConditionColumnElement(dialect, "age", age, QueryOperator.LE, "u");
+        print(c);
+        assertEquals(c.toSql(), "u.'age' <= ?");
+        assertEquals(c.getParam(), age);
+
+        age = 17;
+        c = new ConditionColumnElement(dialect, "age", age, QueryOperator.GE);
+        print(c);
+        assertEquals(c.toSql(), "'age' >= ?");
+        assertEquals(c.getParam(), age);
+        c = new ConditionColumnElement(dialect, "age", age, QueryOperator.GE, "u");
+        print(c);
+        assertEquals(c.toSql(), "u.'age' >= ?");
+        assertEquals(c.getParam(), age);
+
+        age = 16;
+        c = new ConditionColumnElement(dialect, "age", age, QueryOperator.GT);
+        print(c);
+        assertEquals(c.toSql(), "'age' > ?");
+        assertEquals(c.getParam(), age);
+        c = new ConditionColumnElement(dialect, "age", age, QueryOperator.GT, "u");
+        print(c);
+        assertEquals(c.toSql(), "u.'age' > ?");
+        assertEquals(c.getParam(), age);
+
+        age = 15;
+        c = new ConditionColumnElement(dialect, "age", age, QueryOperator.NE);
+        print(c);
+        assertEquals(c.toSql(), "'age' != ?");
+        assertEquals(c.getParam(), age);
+        c = new ConditionColumnElement(dialect, "age", age, QueryOperator.NE, "u");
+        print(c);
+        assertEquals(c.toSql(), "u.'age' != ?");
+        assertEquals(c.getParam(), age);
+
+        String name = "yi";
+        c = new ConditionColumnElement(dialect, "name", name, QueryOperator.CO);
+        print(c);
+        assertEquals(c.toSql(), "'name' LIKE ?");
+        assertEquals(c.getParam(), "%" + name + "%");
+        c = new ConditionColumnElement(dialect, "name", name, QueryOperator.CO, "u");
+        print(c);
+        assertEquals(c.toSql(), "u.'name' LIKE ?");
+        assertEquals(c.getParam(), "%" + name + "%");
+
+        name = "fea";
+        c = new ConditionColumnElement(dialect, "name", name, QueryOperator.SW);
+        print(c);
+        assertEquals(c.toSql(), "'name' LIKE ?");
+        assertEquals(c.getParam(), name + "%");
+        c = new ConditionColumnElement(dialect, "name", name, QueryOperator.SW, "u");
+        print(c);
+        assertEquals(c.toSql(), "u.'name' LIKE ?");
+        assertEquals(c.getParam(), name + "%");
+
+        name = "fly";
+        c = new ConditionColumnElement(dialect, "name", name, QueryOperator.EW);
+        print(c);
+        assertEquals(c.toSql(), "'name' LIKE ?");
+        assertEquals(c.getParam(), "%" + name);
+        c = new ConditionColumnElement(dialect, "name", name, QueryOperator.EW, "u");
+        print(c);
+        assertEquals(c.toSql(), "u.'name' LIKE ?");
+        assertEquals(c.getParam(), "%" + name);
+
+        String mobile = "132";
+        c = new ConditionColumnElement(dialect, "mobile", mobile, QueryOperator.ISN);
+        print(c);
+        assertEquals(c.toSql(), "'mobile' IS NULL");
+        assertEquals(c.getParam(), mobile);
+        c = new ConditionColumnElement(dialect, "mobile", mobile, QueryOperator.ISN, "u");
+        print(c);
+        assertEquals(c.toSql(), "u.'mobile' IS NULL");
+        assertEquals(c.getParam(), mobile);
+
+        mobile = "189";
+        c = new ConditionColumnElement(dialect, "mobile", mobile, QueryOperator.INN);
+        print(c);
+        assertEquals(c.toSql(), "'mobile' IS NOT NULL");
+        assertEquals(c.getParam(), mobile);
+        c = new ConditionColumnElement(dialect, "mobile", mobile, QueryOperator.INN, "u");
+        print(c);
+        assertEquals(c.toSql(), "u.'mobile' IS NOT NULL");
+        assertEquals(c.getParam(), mobile);
+
+        Object[] tags = new Object[] { "a", "b" };
+        c = new ConditionColumnElement(dialect, "tag", ArrayUtils.toList(tags), QueryOperator.IN);
+        print(c);
+        assertEquals(c.toSql(), "'tag' IN (?,?)");
+        assertEquals(((List<Object>) c.getParam()).toArray(), tags);
+        c = new ConditionColumnElement(dialect, "tag", ArrayUtils.toList(tags), QueryOperator.IN, "u");
+        print(c);
+        assertEquals(c.toSql(), "u.'tag' IN (?,?)");
+        assertEquals(((List<Object>) c.getParam()).toArray(), tags);
+
+        tags = new Object[] { "c", "d" };
+        c = new ConditionColumnElement(dialect, "tag", ArrayUtils.toList(tags), QueryOperator.NIN);
+        print(c);
+        assertEquals(c.toSql(), "'tag' NOT IN (?,?)");
+        assertEquals(((List<Object>) c.getParam()).toArray(), tags);
+        c = new ConditionColumnElement(dialect, "tag", ArrayUtils.toList(tags), QueryOperator.NIN, "u");
+        print(c);
+        assertEquals(c.toSql(), "u.'tag' NOT IN (?,?)");
+        assertEquals(((List<Object>) c.getParam()).toArray(), tags);
     }
 }
