@@ -25,7 +25,7 @@ import cn.featherfly.hammer.dsl.query.QuerySortExpression;
 import cn.featherfly.hammer.dsl.query.RepositoryQueryConditionGroupExpression;
 import cn.featherfly.hammer.dsl.query.RepositoryQueryConditionGroupLogicExpression;
 import cn.featherfly.hammer.expression.query.QueryLimitExecutor;
-import cn.featherfly.hammer.mapping.RowMapper;
+import cn.featherfly.common.repository.mapping.RowMapper;
 import cn.featherfly.hammer.sqldb.jdbc.Jdbc;
 import cn.featherfly.hammer.sqldb.sql.dml.AbstractRepositorySqlConditionGroupExpression;
 

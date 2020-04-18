@@ -3,8 +3,8 @@ package cn.featherfly.hammer.expression.query;
 
 import java.util.Map;
 
+import cn.featherfly.common.repository.mapping.RowMapper;
 import cn.featherfly.common.structure.page.PaginationResults;
-import cn.featherfly.hammer.mapping.RowMapper;
 
 /**
  * <p>

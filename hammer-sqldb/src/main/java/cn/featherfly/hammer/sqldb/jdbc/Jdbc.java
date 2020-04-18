@@ -7,7 +7,7 @@ import java.util.Map;
 
 import javax.sql.DataSource;
 
-import cn.featherfly.hammer.mapping.RowMapper;
+import cn.featherfly.common.repository.mapping.RowMapper;
 import cn.featherfly.common.db.dialect.Dialect;
 
 /**

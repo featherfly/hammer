@@ -3,7 +3,6 @@ package cn.featherfly.hammer.sqldb.jdbc;
 
 import java.io.File;
 import java.io.IOException;
-import java.net.URL;
 
 import org.apache.commons.dbcp.BasicDataSource;
 import org.apache.log4j.xml.DOMConfigurator;
@@ -12,14 +11,15 @@ import org.testng.annotations.Optional;
 import org.testng.annotations.Parameters;
 
 import cn.featherfly.common.db.SqlExecutor;
+import cn.featherfly.common.db.dialect.Dialects;
+import cn.featherfly.common.db.mapping.JdbcMappingFactory;
 import cn.featherfly.common.db.metadata.DatabaseMetadata;
 import cn.featherfly.common.db.metadata.DatabaseMetadataManager;
 import cn.featherfly.common.lang.ClassLoaderUtils;
 import cn.featherfly.common.lang.RandomUtils;
+import cn.featherfly.common.lang.UriUtils;
 import cn.featherfly.constant.ConstantConfigurator;
-import cn.featherfly.common.db.mapping.JdbcMappingFactory;
 import cn.featherfly.hammer.sqldb.jdbc.vo.Role;
-import cn.featherfly.common.db.dialect.Dialects;
 import cn.featherfly.hammer.tpl.TplConfigFactory;
 import cn.featherfly.hammer.tpl.TplConfigFactoryImpl;
 
@@ -107,7 +107,7 @@ public class JdbcTestBase {
     }
 
     //    @BeforeSuite(groups = "postgresql", dependsOnMethods = "init")
-    public void initPostgresql() {
+    public void initPostgresql() throws IOException {
         //        ConstantConfigurator.config(CONFIG_FILE);
         ConstantConfigurator.config("constant.postgresql.yaml");
 
@@ -120,6 +120,12 @@ public class JdbcTestBase {
         //        PostgreSQLDialect postgreSQLDialect = Dialects.POSTGRESQL;
         //        postgreSQLDialect.setTableAndColumnNameUppercase(false);
         //        jdbc = new SpringJdbcTemplateImpl(dataSource, postgreSQLDialect);
+
+        // 初始化数据库
+        SqlExecutor sqlExecutor = new SqlExecutor(dataSource);
+        sqlExecutor
+                .execute(new File(ClassLoaderUtils.getResource("test.postgresql.sql", JdbcTestBase.class).getFile()));
+
         jdbc = new SpringJdbcTemplateImpl(dataSource, Dialects.POSTGRESQL);
         metadata = DatabaseMetadataManager.getDefaultManager().create(dataSource, "hammer_jdbc");
 
@@ -129,30 +135,27 @@ public class JdbcTestBase {
     }
 
     //    @BeforeSuite(groups = "sqlite", dependsOnMethods = "init")
-    public void initSQLite() {
+    public void initSQLite() throws IOException {
         //        ConstantConfigurator.config(CONFIG_FILE);
         ConstantConfigurator.config("constant.sqlite.yaml");
 
-        URL url = ClassLoaderUtils.getResource("hammer.sqlite3", this.getClass());
-        System.out.println(url);
+        String path = new File(UriUtils.linkUri(this.getClass().getResource("/").getFile(), "hammer.sqlite3.db"))
+                .getPath();
+        System.out.println(path);
         BasicDataSource dataSource = new BasicDataSource();
         dataSource.setDriverClassName("org.sqlite.JDBC");
-        dataSource.setUrl("jdbc:sqlite:" + new File(url.getPath()));
+        dataSource.setUrl("jdbc:sqlite:" + path);
         //        dataSource.setUsername("root");
         //        dataSource.setPassword("123456");
+
+        // 初始化数据库
+        SqlExecutor sqlExecutor = new SqlExecutor(dataSource);
+        sqlExecutor.execute(new File(ClassLoaderUtils.getResource("test.sqlite.sql", JdbcTestBase.class).getFile()));
 
         jdbc = new SpringJdbcTemplateImpl(dataSource, Dialects.SQLITE);
         metadata = DatabaseMetadataManager.getDefaultManager().create(dataSource, "main");
 
         mappingFactory = new JdbcMappingFactory(metadata, Dialects.SQLITE);
-
-        // factory.getClassNameConversions().add(new ClassNameJpaConversion());
-        // factory.getClassNameConversions().add(new
-        // ClassNameUnderlineConversion());
-        // factory.getPropertyNameConversions().add(new
-        // PropertyNameJpaConversion());
-        // factory.getPropertyNameConversions().add(new
-        // PropertyNameUnderlineConversion());
 
         configFactory = new TplConfigFactoryImpl("tpl/");
     }

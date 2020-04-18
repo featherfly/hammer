@@ -197,10 +197,10 @@ public class SqlTplExecutorTest extends JdbcTestBase {
     @Test
     void testRoleList() {
         List<Role> roles = executor.list("role@selectByName", Role.class,
-                new HashChainMap<String, Object>().putChain("name", "n\\_%"));
+                new HashChainMap<String, Object>().putChain("name", "name%"));
         assertTrue(roles.size() > 0);
         roles.forEach(r -> {
-            assertTrue(r.getName().startsWith("n_"));
+            assertTrue(r.getName().startsWith("name"));
         });
         List<Role> roles2 = executor.list("role@selectByName", Role.class,
                 new HashChainMap<String, Object>().putChain("name", null));

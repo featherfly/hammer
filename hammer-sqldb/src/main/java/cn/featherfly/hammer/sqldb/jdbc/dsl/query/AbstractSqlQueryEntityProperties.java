@@ -11,15 +11,15 @@ import com.speedment.common.tuple.Tuple2;
 import cn.featherfly.common.db.builder.dml.basic.SqlSelectBasicBuilder;
 import cn.featherfly.common.db.mapping.ClassMappingUtils;
 import cn.featherfly.common.db.metadata.DatabaseMetadata;
-import cn.featherfly.common.db.metadata.TableMetadata;
+import cn.featherfly.common.db.metadata.Table;
 import cn.featherfly.common.lang.LambdaUtils;
 import cn.featherfly.common.lang.LangUtils;
 import cn.featherfly.common.lang.function.SerializableFunction;
+import cn.featherfly.common.repository.builder.AliasManager;
 import cn.featherfly.common.repository.mapping.ClassMapping;
 import cn.featherfly.common.repository.mapping.MappingFactory;
 import cn.featherfly.common.repository.operate.AggregateFunction;
 import cn.featherfly.hammer.HammerException;
-import cn.featherfly.common.repository.builder.AliasManager;
 import cn.featherfly.hammer.sqldb.jdbc.Jdbc;
 
 /**
@@ -82,7 +82,7 @@ public abstract class AbstractSqlQueryEntityProperties<E extends AbstractSqlQuer
         if (tableAlias == null) {
             tableAlias = aliasManager.put(tableName);
         }
-        TableMetadata tableMetadata = databaseMetadata.getTable(tableName);
+        Table tableMetadata = databaseMetadata.getTable(tableName);
         if (tableMetadata.getPrimaryColumns().size() == 1) {
             idName = tableMetadata.getPrimaryColumns().get(0).getName();
         }

@@ -7,6 +7,7 @@ import java.util.List;
 import java.util.Map;
 
 import cn.featherfly.common.lang.function.SerializableFunction;
+import cn.featherfly.common.repository.mapping.RowMapper;
 import cn.featherfly.common.repository.operate.AggregateFunction;
 import cn.featherfly.common.structure.page.Page;
 import cn.featherfly.hammer.dsl.query.QuerySortExpression;
@@ -15,7 +16,6 @@ import cn.featherfly.hammer.expression.query.QueryLimitExecutor;
 import cn.featherfly.hammer.expression.query.QueryWithEntityExpression;
 import cn.featherfly.hammer.expression.query.QueryWithExpression;
 import cn.featherfly.hammer.expression.query.QueryWithOnExpression;
-import cn.featherfly.hammer.mapping.RowMapper;
 
 /**
  * <p>
