@@ -1,11 +1,12 @@
 
 package cn.featherfly.hammer.sqldb.sql.dml;
 
-import cn.featherfly.hammer.dml.builder.BuilderException;
+import cn.featherfly.common.db.builder.SqlBuilder;
+import cn.featherfly.common.db.builder.model.ConditionColumnElement;
+import cn.featherfly.common.repository.builder.BuilderException;
+import cn.featherfly.common.repository.operate.QueryOperator;
 import cn.featherfly.hammer.expression.condition.ParamedExpression;
-import cn.featherfly.hammer.operator.QueryOperator;
-import cn.featherfly.hammer.sqldb.sql.dialect.Dialect;
-import cn.featherfly.hammer.sqldb.sql.model.ConditionColumnElement;
+import cn.featherfly.common.db.dialect.Dialect;
 
 /**
  * <p>

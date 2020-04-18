@@ -17,9 +17,9 @@ import cn.featherfly.common.db.metadata.DatabaseMetadataManager;
 import cn.featherfly.common.lang.ClassLoaderUtils;
 import cn.featherfly.common.lang.RandomUtils;
 import cn.featherfly.constant.ConstantConfigurator;
-import cn.featherfly.hammer.sqldb.jdbc.mapping.JdbcMappingFactory;
+import cn.featherfly.common.db.mapping.JdbcMappingFactory;
 import cn.featherfly.hammer.sqldb.jdbc.vo.Role;
-import cn.featherfly.hammer.sqldb.sql.dialect.Dialects;
+import cn.featherfly.common.db.dialect.Dialects;
 import cn.featherfly.hammer.tpl.TplConfigFactory;
 import cn.featherfly.hammer.tpl.TplConfigFactoryImpl;
 

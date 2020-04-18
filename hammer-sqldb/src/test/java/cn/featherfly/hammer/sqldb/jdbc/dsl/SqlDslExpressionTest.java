@@ -10,8 +10,8 @@ import java.util.List;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
 
+import cn.featherfly.common.db.builder.dml.basic.SqlDeleteFromBasicBuilder;
 import cn.featherfly.common.lang.UUIDGenerator;
-import cn.featherfly.hammer.dml.builder.QueryBuilder;
 import cn.featherfly.hammer.expression.SimpleRepository;
 import cn.featherfly.hammer.sqldb.SqldbHammerImpl;
 import cn.featherfly.hammer.sqldb.jdbc.JdbcTestBase;
@@ -22,7 +22,6 @@ import cn.featherfly.hammer.sqldb.jdbc.dsl.execute.SqlUpdater;
 import cn.featherfly.hammer.sqldb.jdbc.vo.DistrictDivision;
 import cn.featherfly.hammer.sqldb.jdbc.vo.User;
 import cn.featherfly.hammer.sqldb.jdbc.vo.UserInfo;
-import cn.featherfly.hammer.sqldb.sql.dml.builder.basic.SqlDeleteFromBasicBuilder;
 
 /**
  * <p>
@@ -36,7 +35,6 @@ import cn.featherfly.hammer.sqldb.sql.dml.builder.basic.SqlDeleteFromBasicBuilde
  */
 public class SqlDslExpressionTest extends JdbcTestBase {
 
-    QueryBuilder sub = null;
     List<Object> params = new ArrayList<>();
 
     String name = "yufei";

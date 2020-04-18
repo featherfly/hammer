@@ -2,7 +2,7 @@
 package cn.featherfly.hammer.sqldb.jdbc.dsl.type;
 
 import cn.featherfly.hammer.sqldb.jdbc.dsl.query.SqlQueryEntityProperties;
-import cn.featherfly.hammer.sqldb.jdbc.mapping.JdbcMappingFactory;
+import cn.featherfly.common.db.mapping.JdbcMappingFactory;
 
 /**
  * <p>

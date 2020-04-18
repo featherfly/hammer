@@ -10,9 +10,9 @@ import cn.featherfly.constant.annotation.ConstantClass;
 import cn.featherfly.hammer.config.HammerConstant;
 import cn.featherfly.hammer.sqldb.jdbc.Jdbc;
 import cn.featherfly.hammer.sqldb.jdbc.SpringJdbcTemplateImpl;
-import cn.featherfly.hammer.sqldb.jdbc.mapping.JdbcMappingFactory;
-import cn.featherfly.hammer.sqldb.sql.dialect.Dialect;
-import cn.featherfly.hammer.sqldb.sql.dialect.Dialects;
+import cn.featherfly.common.db.mapping.JdbcMappingFactory;
+import cn.featherfly.common.db.dialect.Dialect;
+import cn.featherfly.common.db.dialect.Dialects;
 import cn.featherfly.hammer.sqldb.tpl.SqlDbTemplateEngine;
 
 /**

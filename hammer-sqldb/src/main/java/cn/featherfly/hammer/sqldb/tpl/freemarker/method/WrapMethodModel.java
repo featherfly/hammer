@@ -2,7 +2,7 @@ package cn.featherfly.hammer.sqldb.tpl.freemarker.method;
 
 import java.util.List;
 
-import cn.featherfly.hammer.sqldb.sql.dialect.Dialect;
+import cn.featherfly.common.db.dialect.Dialect;
 import cn.featherfly.hammer.tpl.TplException;
 import cn.featherfly.hammer.tpl.freemarker.FreemarkerMethod;
 import cn.featherfly.hammer.tpl.method.WrapMethod;
