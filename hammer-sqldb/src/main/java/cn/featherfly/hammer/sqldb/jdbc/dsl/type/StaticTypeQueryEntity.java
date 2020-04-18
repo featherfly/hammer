@@ -3,13 +3,13 @@ package cn.featherfly.hammer.sqldb.jdbc.dsl.type;
 
 import java.util.List;
 
+import cn.featherfly.common.db.mapping.ClassMappingUtils;
+import cn.featherfly.common.db.mapping.JdbcMappingFactory;
 import cn.featherfly.common.lang.ClassUtils;
+import cn.featherfly.common.repository.mapping.ClassMapping;
 import cn.featherfly.common.structure.page.Page;
-import cn.featherfly.hammer.mapping.ClassMapping;
 import cn.featherfly.hammer.sqldb.jdbc.dsl.query.SqlQueryConditionGroupExpression;
 import cn.featherfly.hammer.sqldb.jdbc.dsl.query.SqlQueryEntityProperties;
-import cn.featherfly.hammer.sqldb.jdbc.mapping.ClassMappingUtils;
-import cn.featherfly.hammer.sqldb.jdbc.mapping.JdbcMappingFactory;
 
 /**
  * <p>

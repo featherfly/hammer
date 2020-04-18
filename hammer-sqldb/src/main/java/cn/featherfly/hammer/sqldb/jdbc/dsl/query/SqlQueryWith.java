@@ -7,18 +7,18 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
+import cn.featherfly.common.db.builder.dml.basic.SqlSelectJoinOnBasicBuilder;
+import cn.featherfly.common.db.mapping.ClassMappingUtils;
 import cn.featherfly.common.lang.LambdaUtils;
 import cn.featherfly.common.lang.function.SerializableFunction;
+import cn.featherfly.common.repository.builder.AliasManager;
+import cn.featherfly.common.repository.mapping.ClassMapping;
+import cn.featherfly.common.repository.mapping.MappingFactory;
 import cn.featherfly.common.structure.page.Page;
-import cn.featherfly.hammer.dml.AliasManager;
 import cn.featherfly.hammer.dsl.query.QueryWith;
 import cn.featherfly.hammer.dsl.query.RepositoryQueryConditionGroupExpression;
 import cn.featherfly.hammer.expression.query.QueryLimitExecutor;
-import cn.featherfly.hammer.mapping.ClassMapping;
-import cn.featherfly.hammer.mapping.MappingFactory;
-import cn.featherfly.hammer.mapping.RowMapper;
-import cn.featherfly.hammer.sqldb.jdbc.mapping.ClassMappingUtils;
-import cn.featherfly.hammer.sqldb.sql.dml.builder.basic.SqlSelectJoinOnBasicBuilder;
+import cn.featherfly.common.repository.mapping.RowMapper;
 
 /**
  * <p>

@@ -3,11 +3,12 @@ package cn.featherfly.hammer.sqldb.sql.dml;
 import java.util.Arrays;
 import java.util.List;
 
+import cn.featherfly.common.db.builder.SqlBuilder;
+import cn.featherfly.common.db.builder.dml.basic.SqlOrderByBasicBuilder;
 import cn.featherfly.common.lang.LambdaUtils;
 import cn.featherfly.common.lang.function.SerializableFunction;
 import cn.featherfly.hammer.expression.condition.SortExpression;
-import cn.featherfly.hammer.sqldb.sql.dialect.Dialect;
-import cn.featherfly.hammer.sqldb.sql.dml.builder.basic.SqlOrderByBasicBuilder;
+import cn.featherfly.common.db.dialect.Dialect;
 
 /**
  * <p>

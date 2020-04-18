@@ -1,8 +1,12 @@
 
 package cn.featherfly.hammer.sqldb.jdbc.dsl.execute;
 
+import cn.featherfly.common.db.builder.dml.basic.SqlUpdateSetBasicBuilder;
+import cn.featherfly.common.db.builder.model.UpdateColumnElement.SetType;
+import cn.featherfly.common.db.mapping.ClassMappingUtils;
 import cn.featherfly.common.lang.LambdaUtils;
 import cn.featherfly.common.lang.function.SerializableFunction;
+import cn.featherfly.common.repository.mapping.ClassMapping;
 import cn.featherfly.hammer.dsl.execute.ExecutableConditionGroupExpression;
 import cn.featherfly.hammer.dsl.execute.ExecutableUpdate;
 import cn.featherfly.hammer.dsl.execute.SimpleUpdateNumberValue;
@@ -10,11 +14,7 @@ import cn.featherfly.hammer.dsl.execute.SimpleUpdateValue;
 import cn.featherfly.hammer.dsl.execute.UpdateNumberValue;
 import cn.featherfly.hammer.dsl.execute.UpdateValue;
 import cn.featherfly.hammer.expression.Repository;
-import cn.featherfly.hammer.mapping.ClassMapping;
 import cn.featherfly.hammer.sqldb.jdbc.Jdbc;
-import cn.featherfly.hammer.sqldb.jdbc.mapping.ClassMappingUtils;
-import cn.featherfly.hammer.sqldb.sql.dml.builder.basic.SqlUpdateSetBasicBuilder;
-import cn.featherfly.hammer.sqldb.sql.model.UpdateColumnElement.SetType;
 
 /**
  * <p>

@@ -6,24 +6,24 @@ import java.util.List;
 
 import cn.featherfly.common.constant.Chars;
 import cn.featherfly.common.db.SqlUtils;
+import cn.featherfly.common.db.builder.dml.SqlSortBuilder;
+import cn.featherfly.common.db.mapping.ClassMappingUtils;
 import cn.featherfly.common.lang.LambdaUtils;
 import cn.featherfly.common.lang.LangUtils;
 import cn.featherfly.common.lang.function.SerializableFunction;
+import cn.featherfly.common.repository.mapping.ClassMapping;
+import cn.featherfly.common.repository.mapping.MappingFactory;
 import cn.featherfly.common.structure.page.Limit;
 import cn.featherfly.common.structure.page.Page;
 import cn.featherfly.common.structure.page.PaginationResults;
 import cn.featherfly.common.structure.page.SimplePaginationResults;
-import cn.featherfly.hammer.dml.AliasManager;
+import cn.featherfly.common.repository.builder.AliasManager;
 import cn.featherfly.hammer.dsl.query.RepositoryTypeQueryConditionGroupExpression;
 import cn.featherfly.hammer.dsl.query.RepositoryTypeQueryConditionGroupLogicExpression;
 import cn.featherfly.hammer.dsl.query.TypeQuerySortExpression;
 import cn.featherfly.hammer.expression.query.TypeQueryLimitExecutor;
-import cn.featherfly.hammer.mapping.ClassMapping;
-import cn.featherfly.hammer.mapping.MappingFactory;
 import cn.featherfly.hammer.sqldb.jdbc.Jdbc;
-import cn.featherfly.hammer.sqldb.jdbc.mapping.ClassMappingUtils;
 import cn.featherfly.hammer.sqldb.sql.dml.AbstractRepositorySqlConditionGroupExpression;
-import cn.featherfly.hammer.sqldb.sql.dml.builder.SqlSortBuilder;
 
 /**
  * <p>

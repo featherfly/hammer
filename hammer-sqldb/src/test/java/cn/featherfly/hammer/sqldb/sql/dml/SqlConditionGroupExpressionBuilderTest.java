@@ -9,10 +9,8 @@ import java.util.List;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
 
-import cn.featherfly.hammer.dml.builder.QueryBuilder;
+import cn.featherfly.common.db.dialect.Dialects;
 import cn.featherfly.hammer.sqldb.jdbc.JdbcTestBase;
-import cn.featherfly.hammer.sqldb.sql.dialect.Dialects;
-import cn.featherfly.hammer.sqldb.sql.dml.SqlConditionGroupExpressionBuilder;
 
 /**
  * <p>
@@ -23,7 +21,6 @@ import cn.featherfly.hammer.sqldb.sql.dml.SqlConditionGroupExpressionBuilder;
  */
 @Test(groups = { "dml-test" })
 public class SqlConditionGroupExpressionBuilderTest extends JdbcTestBase {
-    QueryBuilder sub = null;
     List<Object> params = new ArrayList<>();
 
     String name = "yufei";

@@ -3,7 +3,7 @@ package cn.featherfly.hammer.expression.query;
 
 import java.util.Map;
 
-import cn.featherfly.hammer.mapping.RowMapper;
+import cn.featherfly.common.repository.mapping.RowMapper;
 
 /**
  * <p>
@@ -23,21 +23,17 @@ public interface QuerySingleExecutor {
     /**
      * query for single
      *
-     * @param <E>
-     *            wrapper type
-     * @param type
-     *            wrapper type
+     * @param <E>  wrapper type
+     * @param type wrapper type
      * @return object
      */
     <E> E single(Class<E> type);
 
     /**
      * query for single
-     * 
-     * @param <E>
-     *            wrapper type
-     * @param rowMapper
-     *            rowMapper
+     *
+     * @param <E>       wrapper type
+     * @param rowMapper rowMapper
      * @return object
      */
     <E> E single(RowMapper<E> rowMapper);

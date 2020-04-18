@@ -5,7 +5,7 @@ import cn.featherfly.hammer.dsl.execute.Deleter;
 import cn.featherfly.hammer.expression.Repository;
 import cn.featherfly.hammer.sqldb.SqldbHammerException;
 import cn.featherfly.hammer.sqldb.jdbc.Jdbc;
-import cn.featherfly.hammer.sqldb.jdbc.mapping.JdbcMappingFactory;
+import cn.featherfly.common.db.mapping.JdbcMappingFactory;
 
 /**
  * <p>

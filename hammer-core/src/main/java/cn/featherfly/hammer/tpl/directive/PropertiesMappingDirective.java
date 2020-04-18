@@ -1,7 +1,7 @@
 
 package cn.featherfly.hammer.tpl.directive;
 
-import cn.featherfly.hammer.mapping.MappingFactory;
+import cn.featherfly.common.repository.mapping.MappingFactory;
 
 /**
  * <p>
@@ -46,7 +46,7 @@ public abstract class PropertiesMappingDirective implements TemplateDirective {
 
     /**
      * 返回paramName
-     * 
+     *
      * @return paramName
      */
     public String getParamName() {
@@ -55,7 +55,7 @@ public abstract class PropertiesMappingDirective implements TemplateDirective {
 
     /**
      * 设置paramName
-     * 
+     *
      * @param paramName paramName
      */
     public void setParamName(String paramName) {

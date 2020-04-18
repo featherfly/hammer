@@ -4,7 +4,7 @@ package cn.featherfly.hammer.sqldb.jdbc.dsl.query;
 import cn.featherfly.hammer.sqldb.jdbc.dsl.query.SqlQueryConditionGroupExpression;
 import cn.featherfly.hammer.sqldb.jdbc.dsl.query.SqlQueryEntityProperties;
 import cn.featherfly.hammer.sqldb.jdbc.dsl.type.StaticTypeQueryEntity;
-import cn.featherfly.hammer.sqldb.jdbc.mapping.JdbcMappingFactory;
+import cn.featherfly.common.db.mapping.JdbcMappingFactory;
 import cn.featherfly.hammer.sqldb.jdbc.vo.User;
 
 /**

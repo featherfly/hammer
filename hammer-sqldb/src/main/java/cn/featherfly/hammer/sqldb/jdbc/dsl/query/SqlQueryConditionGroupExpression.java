@@ -8,10 +8,13 @@ import java.util.Map;
 
 import cn.featherfly.common.constant.Chars;
 import cn.featherfly.common.db.SqlUtils;
+import cn.featherfly.common.db.builder.dml.SqlSortBuilder;
+import cn.featherfly.common.db.mapping.ClassMappingUtils;
 import cn.featherfly.common.exception.UnsupportedException;
 import cn.featherfly.common.lang.LambdaUtils;
 import cn.featherfly.common.lang.LangUtils;
 import cn.featherfly.common.lang.function.SerializableFunction;
+import cn.featherfly.common.repository.mapping.ClassMapping;
 import cn.featherfly.common.structure.page.Limit;
 import cn.featherfly.common.structure.page.Page;
 import cn.featherfly.common.structure.page.PaginationResults;
@@ -20,12 +23,9 @@ import cn.featherfly.hammer.dsl.query.QueryConditionGroupExpression;
 import cn.featherfly.hammer.dsl.query.QueryConditionGroupLogicExpression;
 import cn.featherfly.hammer.dsl.query.QuerySortExpression;
 import cn.featherfly.hammer.expression.query.QueryLimitExecutor;
-import cn.featherfly.hammer.mapping.ClassMapping;
-import cn.featherfly.hammer.mapping.RowMapper;
+import cn.featherfly.common.repository.mapping.RowMapper;
 import cn.featherfly.hammer.sqldb.jdbc.Jdbc;
-import cn.featherfly.hammer.sqldb.jdbc.mapping.ClassMappingUtils;
 import cn.featherfly.hammer.sqldb.sql.dml.AbstractSqlConditionGroupExpression;
-import cn.featherfly.hammer.sqldb.sql.dml.builder.SqlSortBuilder;
 
 /**
  * <p>
@@ -34,58 +34,45 @@ import cn.featherfly.hammer.sqldb.sql.dml.builder.SqlSortBuilder;
  *
  * @author zhongj
  */
-public class SqlQueryConditionGroupExpression extends
-        AbstractSqlConditionGroupExpression<QueryConditionGroupExpression, QueryConditionGroupLogicExpression>
-        implements QueryConditionGroupExpression,
-        QueryConditionGroupLogicExpression, QuerySortExpression {
+public class SqlQueryConditionGroupExpression
+        extends AbstractSqlConditionGroupExpression<QueryConditionGroupExpression, QueryConditionGroupLogicExpression>
+        implements QueryConditionGroupExpression, QueryConditionGroupLogicExpression, QuerySortExpression {
 
     private SqlSortBuilder sortBuilder = new SqlSortBuilder(dialect);
 
     private Limit limit;
 
     /**
-     * @param jdbc
-     *            jdbc
+     * @param jdbc jdbc
      */
     public SqlQueryConditionGroupExpression(Jdbc jdbc) {
         this(jdbc, null);
     }
 
     /**
-     * @param jdbc
-     *            jdbc
-     * @param queryAlias
-     *            queryAlias
+     * @param jdbc       jdbc
+     * @param queryAlias queryAlias
      */
     public SqlQueryConditionGroupExpression(Jdbc jdbc, String queryAlias) {
         this(jdbc, queryAlias, null);
     }
 
     /**
-     * @param jdbc
-     *            jdbc
-     * @param queryAlias
-     *            queryAlias
-     * @param classMapping
-     *            classMapping
+     * @param jdbc         jdbc
+     * @param queryAlias   queryAlias
+     * @param classMapping classMapping
      */
-    public SqlQueryConditionGroupExpression(Jdbc jdbc, String queryAlias,
-            ClassMapping<?> classMapping) {
+    public SqlQueryConditionGroupExpression(Jdbc jdbc, String queryAlias, ClassMapping<?> classMapping) {
         this(jdbc, null, queryAlias, classMapping);
     }
 
     /**
-     * @param jdbc
-     *            jdbc
-     * @param parent
-     *            parent group
-     * @param queryAlias
-     *            queryAlias
-     * @param classMapping
-     *            classMapping
+     * @param jdbc         jdbc
+     * @param parent       parent group
+     * @param queryAlias   queryAlias
+     * @param classMapping classMapping
      */
-    SqlQueryConditionGroupExpression(Jdbc jdbc,
-            QueryConditionGroupLogicExpression parent, String queryAlias,
+    SqlQueryConditionGroupExpression(Jdbc jdbc, QueryConditionGroupLogicExpression parent, String queryAlias,
             ClassMapping<?> classMapping) {
         super(jdbc.getDialect(), parent, queryAlias, classMapping);
         this.jdbc = jdbc;
@@ -101,10 +88,8 @@ public class SqlQueryConditionGroupExpression extends
      * {@inheritDoc}
      */
     @Override
-    protected QueryConditionGroupExpression createGroup(
-            QueryConditionGroupLogicExpression parent, String queryAlias) {
-        return new SqlQueryConditionGroupExpression(jdbc, parent, queryAlias,
-                classMapping);
+    protected QueryConditionGroupExpression createGroup(QueryConditionGroupLogicExpression parent, String queryAlias) {
+        return new SqlQueryConditionGroupExpression(jdbc, parent, queryAlias, classMapping);
     }
 
     /**
@@ -115,8 +100,7 @@ public class SqlQueryConditionGroupExpression extends
         String condition = super.build();
         if (parent == null) {
             if (LangUtils.isNotEmpty(condition)) {
-                return dialect.getKeywords().where() + Chars.SPACE
-                        + super.build() + Chars.SPACE + sortBuilder.build();
+                return dialect.getKeywords().where() + Chars.SPACE + super.build() + Chars.SPACE + sortBuilder.build();
             } else {
                 return super.build() + Chars.SPACE + sortBuilder.build();
             }
@@ -172,10 +156,8 @@ public class SqlQueryConditionGroupExpression extends
         String sql = getRoot().expression();
         Object[] params = getRoot().getParams().toArray();
         if (limit != null) {
-            sql = dialect.getPaginationSql(sql, limit.getOffset(),
-                    limit.getLimit());
-            params = dialect.getPaginationSqlParameter(params,
-                    limit.getOffset(), limit.getLimit());
+            sql = dialect.getPaginationSql(sql, limit.getOffset(), limit.getLimit());
+            params = dialect.getPaginationSqlParameter(params, limit.getOffset(), limit.getLimit());
         }
         return jdbc.query(sql, params);
     }
@@ -188,10 +170,8 @@ public class SqlQueryConditionGroupExpression extends
         String sql = getRoot().expression();
         Object[] params = getRoot().getParams().toArray();
         if (limit != null) {
-            sql = dialect.getPaginationSql(sql, limit.getOffset(),
-                    limit.getLimit());
-            params = dialect.getPaginationSqlParameter(params,
-                    limit.getOffset(), limit.getLimit());
+            sql = dialect.getPaginationSql(sql, limit.getOffset(), limit.getLimit());
+            params = dialect.getPaginationSqlParameter(params, limit.getOffset(), limit.getLimit());
         }
         return jdbc.query(sql, params, type);
     }
@@ -204,10 +184,8 @@ public class SqlQueryConditionGroupExpression extends
         String sql = getRoot().expression();
         Object[] params = getRoot().getParams().toArray();
         if (limit != null) {
-            sql = dialect.getPaginationSql(sql, limit.getOffset(),
-                    limit.getLimit());
-            params = dialect.getPaginationSqlParameter(params,
-                    limit.getOffset(), limit.getLimit());
+            sql = dialect.getPaginationSql(sql, limit.getOffset(), limit.getLimit());
+            params = dialect.getPaginationSqlParameter(params, limit.getOffset(), limit.getLimit());
         }
         return jdbc.query(sql, params, rowMapper);
     }
@@ -220,14 +198,11 @@ public class SqlQueryConditionGroupExpression extends
         String sql = getRoot().expression();
         String countSql = SqlUtils.convertSelectToCount(sql);
         Object[] params = getRoot().getParams().toArray();
-        SimplePaginationResults<Map<String, Object>> pagination = new SimplePaginationResults<>(
-                limit);
+        SimplePaginationResults<Map<String, Object>> pagination = new SimplePaginationResults<>(limit);
         if (limit != null) {
             List<Map<String, Object>> list = jdbc.query(
-                    dialect.getPaginationSql(sql, limit.getOffset(),
-                            limit.getLimit()),
-                    dialect.getPaginationSqlParameter(params, limit.getOffset(),
-                            limit.getLimit()));
+                    dialect.getPaginationSql(sql, limit.getOffset(), limit.getLimit()),
+                    dialect.getPaginationSqlParameter(params, limit.getOffset(), limit.getLimit()));
             pagination.setPageResults(list);
             int total = jdbc.queryInt(countSql, params);
             pagination.setTotal(total);
@@ -247,15 +222,10 @@ public class SqlQueryConditionGroupExpression extends
         String sql = getRoot().expression();
         String countSql = SqlUtils.convertSelectToCount(sql);
         Object[] params = getRoot().getParams().toArray();
-        SimplePaginationResults<E> pagination = new SimplePaginationResults<>(
-                limit);
+        SimplePaginationResults<E> pagination = new SimplePaginationResults<>(limit);
         if (limit != null) {
-            List<E> list = jdbc.query(
-                    dialect.getPaginationSql(sql, limit.getOffset(),
-                            limit.getLimit()),
-                    dialect.getPaginationSqlParameter(params, limit.getOffset(),
-                            limit.getLimit()),
-                    type);
+            List<E> list = jdbc.query(dialect.getPaginationSql(sql, limit.getOffset(), limit.getLimit()),
+                    dialect.getPaginationSqlParameter(params, limit.getOffset(), limit.getLimit()), type);
             pagination.setPageResults(list);
             int total = jdbc.queryInt(countSql, params);
             pagination.setTotal(total);
@@ -275,15 +245,10 @@ public class SqlQueryConditionGroupExpression extends
         String sql = getRoot().expression();
         String countSql = SqlUtils.convertSelectToCount(sql);
         Object[] params = getRoot().getParams().toArray();
-        SimplePaginationResults<E> pagination = new SimplePaginationResults<>(
-                limit);
+        SimplePaginationResults<E> pagination = new SimplePaginationResults<>(limit);
         if (limit != null) {
-            List<E> list = jdbc.query(
-                    dialect.getPaginationSql(sql, limit.getOffset(),
-                            limit.getLimit()),
-                    dialect.getPaginationSqlParameter(params, limit.getOffset(),
-                            limit.getLimit()),
-                    rowMapper);
+            List<E> list = jdbc.query(dialect.getPaginationSql(sql, limit.getOffset(), limit.getLimit()),
+                    dialect.getPaginationSqlParameter(params, limit.getOffset(), limit.getLimit()), rowMapper);
             pagination.setPageResults(list);
             int total = jdbc.queryInt(countSql, params);
             pagination.setTotal(total);
@@ -303,10 +268,8 @@ public class SqlQueryConditionGroupExpression extends
         String sql = getRoot().expression();
         Object[] params = getRoot().getParams().toArray();
         if (limit != null) {
-            sql = dialect.getPaginationSql(sql, limit.getOffset(),
-                    limit.getLimit());
-            params = dialect.getPaginationSqlParameter(params,
-                    limit.getOffset(), limit.getLimit());
+            sql = dialect.getPaginationSql(sql, limit.getOffset(), limit.getLimit());
+            params = dialect.getPaginationSqlParameter(params, limit.getOffset(), limit.getLimit());
         }
         return jdbc.querySingle(sql, params);
     }
@@ -319,10 +282,8 @@ public class SqlQueryConditionGroupExpression extends
         String sql = getRoot().expression();
         Object[] params = getRoot().getParams().toArray();
         if (limit != null) {
-            sql = dialect.getPaginationSql(sql, limit.getOffset(),
-                    limit.getLimit());
-            params = dialect.getPaginationSqlParameter(params,
-                    limit.getOffset(), limit.getLimit());
+            sql = dialect.getPaginationSql(sql, limit.getOffset(), limit.getLimit());
+            params = dialect.getPaginationSqlParameter(params, limit.getOffset(), limit.getLimit());
         }
         return jdbc.querySingle(sql, params, type);
     }
@@ -332,8 +293,7 @@ public class SqlQueryConditionGroupExpression extends
      */
     @Override
     public <E> E single(RowMapper<E> rowMapper) {
-        return jdbc.querySingle(getRoot().expression(),
-                getRoot().getParams().toArray(), rowMapper);
+        return jdbc.querySingle(getRoot().expression(), getRoot().getParams().toArray(), rowMapper);
     }
 
     /**
@@ -341,8 +301,7 @@ public class SqlQueryConditionGroupExpression extends
      */
     @Override
     public String string() {
-        return jdbc.queryString(getRoot().expression(),
-                getRoot().getParams().toArray());
+        return jdbc.queryString(getRoot().expression(), getRoot().getParams().toArray());
     }
 
     /**
@@ -350,8 +309,7 @@ public class SqlQueryConditionGroupExpression extends
      */
     @Override
     public Integer integer() {
-        return jdbc.queryInt(getRoot().expression(),
-                getRoot().getParams().toArray());
+        return jdbc.queryInt(getRoot().expression(), getRoot().getParams().toArray());
     }
 
     /**
@@ -359,8 +317,7 @@ public class SqlQueryConditionGroupExpression extends
      */
     @Override
     public Long longInt() {
-        return jdbc.queryLong(getRoot().expression(),
-                getRoot().getParams().toArray());
+        return jdbc.queryLong(getRoot().expression(), getRoot().getParams().toArray());
     }
 
     /**
@@ -368,8 +325,7 @@ public class SqlQueryConditionGroupExpression extends
      */
     @Override
     public BigDecimal decimal() {
-        return jdbc.queryBigDecimal(getRoot().expression(),
-                getRoot().getParams().toArray());
+        return jdbc.queryBigDecimal(getRoot().expression(), getRoot().getParams().toArray());
     }
 
     /**
@@ -377,8 +333,7 @@ public class SqlQueryConditionGroupExpression extends
      */
     @Override
     public <N extends Number> N number(Class<N> type) {
-        return jdbc.queryValue(getRoot().expression(),
-                getRoot().getParams().toArray(), type);
+        return jdbc.queryValue(getRoot().expression(), getRoot().getParams().toArray(), type);
     }
 
     /**
@@ -429,10 +384,8 @@ public class SqlQueryConditionGroupExpression extends
      * {@inheritDoc}
      */
     @Override
-    public <T, R> QuerySortExpression asc(
-            @SuppressWarnings("unchecked") SerializableFunction<T, R>... names) {
-        String[] nameArray = Arrays.stream(names)
-                .map(LambdaUtils::getLambdaPropertyName)
+    public <T, R> QuerySortExpression asc(@SuppressWarnings("unchecked") SerializableFunction<T, R>... names) {
+        String[] nameArray = Arrays.stream(names).map(LambdaUtils::getLambdaPropertyName)
                 .toArray(value -> new String[value]);
         return asc(nameArray);
     }
@@ -469,10 +422,8 @@ public class SqlQueryConditionGroupExpression extends
      * {@inheritDoc}
      */
     @Override
-    public <T, R> QuerySortExpression desc(
-            @SuppressWarnings("unchecked") SerializableFunction<T, R>... names) {
-        String[] nameArray = Arrays.stream(names)
-                .map(LambdaUtils::getLambdaPropertyName)
+    public <T, R> QuerySortExpression desc(@SuppressWarnings("unchecked") SerializableFunction<T, R>... names) {
+        String[] nameArray = Arrays.stream(names).map(LambdaUtils::getLambdaPropertyName)
                 .toArray(value -> new String[value]);
         return desc(nameArray);
     }
