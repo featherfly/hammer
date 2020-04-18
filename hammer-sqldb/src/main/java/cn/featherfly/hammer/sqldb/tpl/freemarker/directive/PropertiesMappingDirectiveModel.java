@@ -8,7 +8,7 @@ import java.util.Set;
 
 import cn.featherfly.common.db.mapping.ClassMappingUtils;
 import cn.featherfly.common.db.mapping.JdbcMappingFactory;
-import cn.featherfly.common.db.metadata.TableMetadata;
+import cn.featherfly.common.db.metadata.Table;
 import cn.featherfly.common.lang.LangUtils;
 import cn.featherfly.common.lang.WordUtils;
 import cn.featherfly.common.repository.mapping.ClassMapping;
@@ -116,7 +116,7 @@ public class PropertiesMappingDirectiveModel extends PropertiesMappingDirective 
         final StringBuilder result = new StringBuilder();
 
         if (classMapping == null) {
-            TableMetadata tableMetadata = mappingFactory.getMetadata().getTable(nameParam.toUpperCase());
+            Table tableMetadata = mappingFactory.getMetadata().getTable(nameParam.toUpperCase());
             tableMetadata.getColumns().forEach(column -> {
                 String propName = WordUtils.parseToUpperFirst(column.getName(), '_');
                 if (aliasIsEmpty) {

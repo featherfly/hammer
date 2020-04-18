@@ -18,7 +18,7 @@ import cn.featherfly.common.structure.page.Page;
 import cn.featherfly.hammer.dsl.query.QueryWith;
 import cn.featherfly.hammer.dsl.query.RepositoryQueryConditionGroupExpression;
 import cn.featherfly.hammer.expression.query.QueryLimitExecutor;
-import cn.featherfly.hammer.mapping.RowMapper;
+import cn.featherfly.common.repository.mapping.RowMapper;
 
 /**
  * <p>

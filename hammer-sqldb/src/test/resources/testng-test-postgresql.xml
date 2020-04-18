@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd">
+<suite name="Hammer SQLDB Test Suite With Postgresql" parallel="tests"
+	thread-count="1">
+    <parameter name="dataBase" value="postgresql" />
+    <suite-files>
+       <suite-file path="testng-test.xml"/>
+    </suite-files>
+</suite>

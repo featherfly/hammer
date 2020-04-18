@@ -3,10 +3,11 @@ package cn.featherfly.hammer.sqldb.sql.dml;
 
 import cn.featherfly.common.db.builder.SqlBuilder;
 import cn.featherfly.common.db.builder.model.ConditionColumnElement;
+import cn.featherfly.common.db.dialect.Dialect;
 import cn.featherfly.common.repository.builder.BuilderException;
+import cn.featherfly.common.repository.builder.BuilderExceptionCode;
 import cn.featherfly.common.repository.operate.QueryOperator;
 import cn.featherfly.hammer.expression.condition.ParamedExpression;
-import cn.featherfly.common.db.dialect.Dialect;
 
 /**
  * <p>
@@ -39,7 +40,7 @@ public class SqlConditionExpressionBuilder implements ParamedExpression, SqlBuil
     public SqlConditionExpressionBuilder(Dialect dialect, String name, Object value, QueryOperator queryOperator,
             String queryAlias) {
         if (queryOperator == null) {
-            throw new BuilderException("#query.operator.null");
+            throw new BuilderException(BuilderExceptionCode.createQueryOperatorNullCode());
         }
         conditionColumnElement = new ConditionColumnElement(dialect, name, value, queryOperator, queryAlias);
     }

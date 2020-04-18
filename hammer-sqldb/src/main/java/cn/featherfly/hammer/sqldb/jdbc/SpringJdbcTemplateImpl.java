@@ -11,10 +11,11 @@ import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 
-import cn.featherfly.common.lang.ArrayUtils;
-import cn.featherfly.hammer.mapping.RowMapper;
-import cn.featherfly.hammer.sqldb.Constants;
 import cn.featherfly.common.db.dialect.Dialect;
+import cn.featherfly.common.db.mapping.SqlResultSet;
+import cn.featherfly.common.lang.ArrayUtils;
+import cn.featherfly.common.repository.mapping.RowMapper;
+import cn.featherfly.hammer.sqldb.Constants;
 
 /**
  * <p>

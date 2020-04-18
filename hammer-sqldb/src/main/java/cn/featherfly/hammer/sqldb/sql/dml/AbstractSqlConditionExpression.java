@@ -6,7 +6,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
-import cn.featherfly.common.db.builder.ConditionBuildUtils;
+import cn.featherfly.common.db.builder.BuilderUtils;
 import cn.featherfly.common.db.builder.SqlBuilder;
 import cn.featherfly.common.db.builder.dml.SqlLogicExpression;
 import cn.featherfly.common.db.dialect.Dialect;
@@ -15,6 +15,7 @@ import cn.featherfly.common.lang.LangUtils;
 import cn.featherfly.common.lang.StringUtils;
 import cn.featherfly.common.lang.function.SerializableFunction;
 import cn.featherfly.common.repository.builder.BuilderException;
+import cn.featherfly.common.repository.builder.BuilderExceptionCode;
 import cn.featherfly.hammer.expression.condition.Expression;
 import cn.featherfly.hammer.expression.condition.ParamedExpression;
 
@@ -52,7 +53,9 @@ public abstract class AbstractSqlConditionExpression<L> implements SqlBuilder, P
         if (conditions.size() > 0) {
             Expression last = conditions.get(conditions.size() - 1);
             if (last instanceof SqlLogicExpression) {
-                throw new BuilderException(((SqlLogicExpression) last).getLogicOperator() + " 后没有跟条件表达式");
+                //                throw new BuilderException(((SqlLogicExpression) last).getLogicOperator() + " 后没有跟条件表达式");
+                throw new BuilderException(BuilderExceptionCode
+                        .createNoConditionBehindCode(((SqlLogicExpression) last).getLogicOperator().name()));
             }
         }
 
@@ -87,7 +90,7 @@ public abstract class AbstractSqlConditionExpression<L> implements SqlBuilder, P
         }
 
         for (String condition : availableConditions) {
-            ConditionBuildUtils.appendCondition(result, condition);
+            BuilderUtils.link(result, condition);
         }
         if (result.length() > 0 && parent != null) {
             return " ( " + result.toString() + " ) ";
@@ -153,7 +156,8 @@ public abstract class AbstractSqlConditionExpression<L> implements SqlBuilder, P
     protected Object addCondition(Expression condition) {
         if (previousCondition != null) {
             if (previousCondition.getClass().isInstance(condition)) {
-                throw new BuilderException("语法错误，连续相同类型的表达式：" + condition.getClass().getName());
+                throw new BuilderException(
+                        BuilderExceptionCode.createNextToSameConditionCode(condition.getClass().getName()));
             }
         }
         previousCondition = condition;
