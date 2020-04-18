@@ -1,4 +1,9 @@
 2020-4-18
+0.4.2
+    1.重构项目，把builder，mapping移动到common-model-repository和common-db
+                    抽象模型在common-model-repository模块,sqldb的实现在common-db模块
+    
+2020-4-18
 0.4.1
     1.修复获取type时判断用错参数的bug
     2.更新文档

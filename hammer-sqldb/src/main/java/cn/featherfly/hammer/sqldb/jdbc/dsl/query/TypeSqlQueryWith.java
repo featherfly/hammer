@@ -3,18 +3,18 @@ package cn.featherfly.hammer.sqldb.jdbc.dsl.query;
 
 import java.util.List;
 
+import cn.featherfly.common.db.builder.dml.basic.SqlSelectJoinOnBasicBuilder;
 import cn.featherfly.common.lang.LangUtils;
 import cn.featherfly.common.lang.function.SerializableFunction;
+import cn.featherfly.common.repository.builder.AliasManager;
+import cn.featherfly.common.repository.mapping.ClassMapping;
+import cn.featherfly.common.repository.mapping.MappingFactory;
 import cn.featherfly.common.structure.page.Page;
-import cn.featherfly.hammer.dml.AliasManager;
 import cn.featherfly.hammer.dsl.query.RepositoryTypeQueryConditionGroupExpression;
 import cn.featherfly.hammer.dsl.query.TypeQueryWith;
 import cn.featherfly.hammer.dsl.query.TypeQueryWithEntity;
 import cn.featherfly.hammer.expression.query.TypeQueryLimitExecutor;
-import cn.featherfly.hammer.mapping.ClassMapping;
-import cn.featherfly.hammer.mapping.MappingFactory;
 import cn.featherfly.hammer.sqldb.SqldbHammerException;
-import cn.featherfly.hammer.sqldb.sql.dml.builder.basic.SqlSelectJoinOnBasicBuilder;
 
 /**
  * <p>

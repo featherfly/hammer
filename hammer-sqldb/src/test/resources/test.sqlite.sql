@@ -60,6 +60,7 @@ CREATE TABLE `user_role` (
   `user_id` INTEGER NOT NULL,
   `role_id` INTEGER NOT NULL,
   `descp` text(255) DEFAULT NULL,
+  `descp2` text(255) DEFAULT NULL,
   PRIMARY KEY (`user_id`,`role_id`)
 );
 

@@ -2,8 +2,8 @@
 <!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd">
 <suite name="Hammer SQLDB Test Suite" parallel="tests"
 	thread-count="1">
-	<parameter name="dataBase" value="mysql" />
-	<!-- <parameter name="dataBase" value="sqllite" /> -->
+<!-- 	<parameter name="dataBase" value="mysql" /> -->
+<!-- 	<parameter name="dataBase" value="sqlite" /> -->
 	<!-- <parameter name="dataBase" value="postgresql" /> -->
 	<test name="dml builder test">
 		<packages>
@@ -28,13 +28,6 @@
 		<!-- <class name="cn.featherfly.hammer.sqldb.jdbc.dsl.DslStaticTypeTest" /> -->
 		<!-- <class name="cn.featherfly.hammer.sqldb.jdbc.dsl.SqlQueryTest" /> -->
 		<!-- </classes> -->
-	</test>
-
-	<test name="model test">
-		<classes>
-			<class
-				name="cn.featherfly.hammer.sqldb.sql.model.ConditionColumnElementTest" />
-		</classes>
 	</test>
 
 	<test name="orm test">

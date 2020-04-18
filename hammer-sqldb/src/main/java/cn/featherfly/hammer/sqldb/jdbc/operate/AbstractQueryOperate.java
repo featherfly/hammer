@@ -6,13 +6,13 @@ import java.sql.ResultSet;
 import cn.featherfly.common.bean.BeanUtils;
 import cn.featherfly.common.constant.Chars;
 import cn.featherfly.common.db.JdbcUtils;
+import cn.featherfly.common.db.mapping.ClassMappingUtils;
+import cn.featherfly.common.db.mapping.SqlResultSet;
 import cn.featherfly.common.db.metadata.DatabaseMetadata;
 import cn.featherfly.common.lang.LangUtils;
-import cn.featherfly.hammer.mapping.ClassMapping;
-import cn.featherfly.hammer.mapping.PropertyMapping;
+import cn.featherfly.common.repository.mapping.ClassMapping;
+import cn.featherfly.common.repository.mapping.PropertyMapping;
 import cn.featherfly.hammer.sqldb.jdbc.Jdbc;
-import cn.featherfly.hammer.sqldb.jdbc.SqlResultSet;
-import cn.featherfly.hammer.sqldb.jdbc.mapping.ClassMappingUtils;
 
 /**
  * <p>
@@ -67,7 +67,7 @@ public abstract class AbstractQueryOperate<T> extends AbstractOperate<T> {
      * @param rowNumber 行数
      * @return 映射后的对象
      */
-    protected T mapRow(cn.featherfly.hammer.mapping.ResultSet rs, int rowNumber) {
+    protected T mapRow(cn.featherfly.common.repository.mapping.ResultSet rs, int rowNumber) {
         @SuppressWarnings("unchecked")
         T mappedObject = (T) BeanUtils.instantiateClass(classMapping.getType());
         int index = 1;
@@ -149,7 +149,8 @@ public abstract class AbstractQueryOperate<T> extends AbstractOperate<T> {
         return JdbcUtils.getResultSetValue(rs, index, propertyType);
     }
 
-    private Object getColumnValue(cn.featherfly.hammer.mapping.ResultSet rs, int index, Class<?> propertyType) {
+    private Object getColumnValue(cn.featherfly.common.repository.mapping.ResultSet rs, int index,
+            Class<?> propertyType) {
         return JdbcUtils.getResultSetValue(((SqlResultSet) rs).getResultSet(), index, propertyType);
     }
 

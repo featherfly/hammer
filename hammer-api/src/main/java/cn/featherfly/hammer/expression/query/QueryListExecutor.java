@@ -4,7 +4,7 @@ package cn.featherfly.hammer.expression.query;
 import java.util.List;
 import java.util.Map;
 
-import cn.featherfly.hammer.mapping.RowMapper;
+import cn.featherfly.common.repository.mapping.RowMapper;
 
 /**
  * <p>
