@@ -3,14 +3,16 @@ package cn.featherfly.hammer.sqldb.jdbc.operate;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.Statement;
-import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
+
+import com.speedment.common.tuple.Tuple2;
 
 import cn.featherfly.common.bean.BeanUtils;
-import cn.featherfly.common.constant.Chars;
 import cn.featherfly.common.db.JdbcUtils;
+import cn.featherfly.common.db.mapping.ClassMappingUtils;
 import cn.featherfly.common.db.metadata.DatabaseMetadata;
-import cn.featherfly.common.lang.LangUtils;
+import cn.featherfly.common.lang.ArrayUtils;
 import cn.featherfly.common.repository.mapping.ClassMapping;
 import cn.featherfly.common.repository.mapping.PropertyMapping;
 import cn.featherfly.hammer.sqldb.jdbc.Jdbc;
@@ -19,11 +21,12 @@ import cn.featherfly.hammer.sqldb.jdbc.Jdbc;
  * <p>
  * 插入操作
  * </p>
+ * .
  *
- * @param <T> 对象类型
  * @author zhongj
- * @since 1.0
  * @version 1.0
+ * @param <T> 对象类型
+ * @since 1.0
  */
 public class InsertOperate<T> extends AbstractExecuteOperate<T> {
 
@@ -60,8 +63,89 @@ public class InsertOperate<T> extends AbstractExecuteOperate<T> {
     }
 
     /**
+     * insert batch.
+     *
+     * @param entities the entities
+     * @return insert success amount
+     */
+    public int executeBatch(final T[] entities) {
+        return executeBatch(ArrayUtils.toList(entities));
+    }
+
+    /**
+     * insert batch.
+     *
+     * @param entities the entities
+     * @return insert success amount
+     */
+    public int executeBatch(final List<T> entities) {
+        return executeBatch(entities, true);
+    }
+
+    /**
+     * insert batch.
+     *
+     * @param entities          entity list
+     * @param autoSetGenerateId 自动设置自动生成的id值
+     * @return 操作影响的数据行数
+     */
+    public int executeBatch(final List<T> entities, boolean autoSetGenerateId) {
+        if (jdbc.getDialect().isInsertBatch()) {
+            return jdbc.execute(con -> {
+                Tuple2<String, Map<Integer, String>> tuple = ClassMappingUtils
+                        .getInsertBatchSqlAndParamPositions(entities.size(), classMapping, jdbc.getDialect());
+                String sql = tuple.get0();
+                List<PropertyMapping> pks = classMapping.getPrivaryKeyPropertyMappings();
+                PreparedStatement prep = null;
+                if (pks.size() == 1 && autoSetGenerateId) {
+                    prep = con.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
+                } else {
+                    prep = con.prepareStatement(sql);
+                }
+                int index = 0;
+                for (T entity : entities) {
+                    setParameter(prep, entity, index);
+                    index++;
+                }
+
+                logger.debug("execute sql: {}", sql);
+                int result = prep.executeUpdate();
+
+                if (pks.size() == 1 && autoSetGenerateId) {
+                    PropertyMapping pm = pks.get(0);
+                    ResultSet res = prep.getGeneratedKeys();
+                    StringBuilder msg = null;
+                    if (logger.isDebugEnabled()) {
+                        msg = new StringBuilder("自动生成的键值 : ");
+                    }
+                    index = 0;
+                    while (res.next()) {
+                        Object value = JdbcUtils.getResultSetValue(res, 1, pm.getPropertyType());
+                        if (logger.isDebugEnabled()) {
+                            msg.append(" ").append(value).append(", ");
+                        }
+                        BeanUtils.setProperty(entities.get(index), pm.getPropertyName(), value);
+                        index++;
+                    }
+                    if (logger.isDebugEnabled()) {
+                        logger.debug(msg.toString());
+                    }
+                }
+                prep.close();
+                return result;
+            });
+        } else {
+            int size = 0;
+            for (T entity : entities) {
+                size += execute(entity);
+            }
+            return size;
+        }
+    }
+
+    /**
      * <p>
-     * 执行操作. 操作的类型由具体子类构造的不同SQL来区分.
+     * insert
      * </p>
      *
      * @param entity 对象
@@ -109,49 +193,10 @@ public class InsertOperate<T> extends AbstractExecuteOperate<T> {
      */
     @Override
     public void initSql() {
-        StringBuilder insertSql = new StringBuilder();
-        insertSql.append(jdbc.getDialect().getKeywords().insert()).append(Chars.SPACE)
-                .append(jdbc.getDialect().getKeywords().into()).append(Chars.SPACE)
-                .append(jdbc.getDialect().wrapName(classMapping.getRepositoryName())).append(" ( ");
-        List<PropertyMapping> pms = new ArrayList<>();
-        for (PropertyMapping pm : classMapping.getPropertyMappings()) {
-            if (LangUtils.isEmpty(pm.getPropertyMappings())) {
-                insertSql.append(jdbc.getDialect().wrapName(pm.getRepositoryFieldName())).append(",");
-                pms.add(pm);
-                // propertyPositions.put(pms.size(), pm.getPropertyName());
-            } else {
-                for (PropertyMapping pm2 : pm.getPropertyMappings()) {
-                    insertSql.append(jdbc.getDialect().wrapName(pm2.getRepositoryFieldName())).append(",");
-                    pms.add(pm2);
-                    // propertyPositions.put(pms.size(), pm.getPropertyName() +
-                    // "." + pm2.getPropertyName());
-                }
-            }
-        }
-        if (pms.size() > 0) {
-            insertSql.deleteCharAt(insertSql.length() - 1);
-        }
-        insertSql.append(" ) ").append(jdbc.getDialect().getKeywords().values()).append(" ( ");
-        int paramNum = 0;
-        for (int i = 0; i < pms.size(); i++) {
-            PropertyMapping pm = pms.get(i);
-            if (pm.isPrimaryKey() && pm.getDefaultValue() != null && !"null".equalsIgnoreCase(pm.getDefaultValue())) {
-                insertSql.append(pm.getDefaultValue()).append(",");
-            } else {
-                paramNum++;
-                insertSql.append("?").append(",");
-                if (pm.getParent() == null) {
-                    propertyPositions.put(paramNum, pm.getPropertyName());
-                } else {
-                    propertyPositions.put(paramNum, pm.getParent().getPropertyName() + "." + pm.getPropertyName());
-                }
-            }
-        }
-        if (pms.size() > 0) {
-            insertSql.deleteCharAt(insertSql.length() - 1);
-        }
-        insertSql.append(" )");
-        sql = insertSql.toString();
+        Tuple2<String, Map<Integer, String>> tuple = ClassMappingUtils.getInsertSqlAndParamPositions(classMapping,
+                jdbc.getDialect());
+        sql = tuple.get0();
+        propertyPositions.putAll(tuple.get1());
         logger.debug("sql: {}", sql);
     }
 }

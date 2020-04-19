@@ -15,6 +15,7 @@ import javax.validation.Validator;
 import org.hibernate.validator.HibernateValidator;
 
 import cn.featherfly.common.db.mapping.JdbcMappingFactory;
+import cn.featherfly.common.lang.ArrayUtils;
 import cn.featherfly.common.lang.LangUtils;
 import cn.featherfly.common.repository.mapping.ClassMapping;
 import cn.featherfly.common.structure.page.Page;
@@ -124,14 +125,7 @@ public class SqldbHammerImpl implements SqldbHammer {
         if (entity == null) {
             return 0;
         }
-        @SuppressWarnings("unchecked")
-        InsertOperate<E> insert = (InsertOperate<E>) insertOperates.get(entity.getClass());
-        if (insert == null) {
-            @SuppressWarnings("unchecked")
-            ClassMapping<E> mapping = (ClassMapping<E>) mappingFactory.getClassMapping(entity.getClass());
-            insert = new InsertOperate<>(jdbc, mapping, mappingFactory.getMetadata());
-            insertOperates.put(entity.getClass(), insert);
-        }
+        InsertOperate<E> insert = getInsert(entity);
         validate(entity);
         return insert.execute(entity);
     }
@@ -141,14 +135,7 @@ public class SqldbHammerImpl implements SqldbHammer {
      */
     @Override
     public <E> int save(@SuppressWarnings("unchecked") E... entities) {
-        // TODO 后续加入InsertBatchOperate优化为sql批量插入
-        int size = 0;
-        if (LangUtils.isNotEmpty(entities)) {
-            for (E e : entities) {
-                size += save(e);
-            }
-        }
-        return size;
+        return save(ArrayUtils.toList(entities));
     }
 
     /**
@@ -156,14 +143,36 @@ public class SqldbHammerImpl implements SqldbHammer {
      */
     @Override
     public <E> int save(List<E> entities) {
-        // TODO 后续加入InsertBatchOperate优化为sql批量插入
-        int size = 0;
-        if (LangUtils.isNotEmpty(entities)) {
-            for (E e : entities) {
-                size += save(e);
+        InsertOperate<E> insert = null;
+        if (jdbc.getDialect().isInsertBatch() && jdbc.getDialect().isAutoGenerateKeyBatch()) {
+            for (E entity : entities) {
+                if (insert == null) {
+                    insert = getInsert(entity);
+                }
+                validate(entity);
             }
+            return insert.executeBatch(entities);
+        } else {
+            int size = 0;
+            if (LangUtils.isNotEmpty(entities)) {
+                for (E e : entities) {
+                    size += save(e);
+                }
+            }
+            return size;
         }
-        return size;
+    }
+
+    private <E> InsertOperate<E> getInsert(E entity) {
+        @SuppressWarnings("unchecked")
+        InsertOperate<E> insert = (InsertOperate<E>) insertOperates.get(entity.getClass());
+        if (insert == null) {
+            @SuppressWarnings("unchecked")
+            ClassMapping<E> mapping = (ClassMapping<E>) mappingFactory.getClassMapping(entity.getClass());
+            insert = new InsertOperate<>(jdbc, mapping, mappingFactory.getMetadata());
+            insertOperates.put(entity.getClass(), insert);
+        }
+        return insert;
     }
 
     /**

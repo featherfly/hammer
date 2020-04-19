@@ -3,8 +3,8 @@ dependencies {
     api project(":hammer-core")
 
     //api group: 'cn.featherfly', name: 'featherfly-db', version: '1.5.6'
-    api group: 'cn.featherfly.common', name: 'common-db', version: '0.1.0'
-    api group: 'org.springframework', name: 'spring-jdbc', version: '5.2.1.RELEASE'
+    api group: 'cn.featherfly.common', name: 'common-db', version: '0.1.2'
+    api group: 'org.springframework', name: 'spring-jdbc', version: '5.2.5.RELEASE'
     api group: 'org.glassfish', name: 'javax.el', version: '3.0.0'
     api group: 'org.hibernate.validator', name: 'hibernate-validator', version: '6.0.18.Final'
     api group: 'com.speedment.common', name: 'tuple', version: '3.2.9'
@@ -17,5 +17,7 @@ dependencies {
     //testImplementation group: 'org.apache.tomcat', name: 'tomcat-juli', version: '9.0.22'
     testImplementation 'net.sf.ehcache:ehcache:2.10.6'
     testImplementation group: 'org.postgresql', name: 'postgresql', version: '42.2.6'
-    testImplementation group: 'org.xerial', name: 'sqlite-jdbc', version: '3.28.0'
+    //testImplementation group: 'org.xerial', name: 'sqlite-jdbc', version: '3.28.0'
+    testImplementation group: 'org.xerial', name: 'sqlite-jdbc', version: '3.30.1'
+    
 }

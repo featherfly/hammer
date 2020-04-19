@@ -2,12 +2,13 @@ package cn.featherfly.hammer.sqldb.jdbc.operate;
 
 import java.io.Serializable;
 import java.sql.PreparedStatement;
+import java.util.Map;
 
-import cn.featherfly.common.constant.Chars;
+import com.speedment.common.tuple.Tuple2;
+
+import cn.featherfly.common.db.mapping.ClassMappingUtils;
 import cn.featherfly.common.db.metadata.DatabaseMetadata;
-import cn.featherfly.common.lang.LangUtils;
 import cn.featherfly.common.repository.mapping.ClassMapping;
-import cn.featherfly.common.repository.mapping.PropertyMapping;
 import cn.featherfly.hammer.sqldb.jdbc.Jdbc;
 
 /**
@@ -78,40 +79,10 @@ public class DeleteOperate<T> extends AbstractExecuteOperate<T> {
      */
     @Override
     public void initSql() {
-        StringBuilder deleteSql = new StringBuilder();
-        deleteSql.append(jdbc.getDialect().getKeywords().delete()).append(Chars.SPACE)
-                .append(jdbc.getDialect().getKeywords().from()).append(Chars.SPACE)
-                .append(jdbc.getDialect().wrapName(classMapping.getRepositoryName())).append(Chars.SPACE)
-                .append(jdbc.getDialect().getKeywords().where()).append(Chars.SPACE);
-        int columnNum = 0;
-        for (PropertyMapping propertyMapping : classMapping.getPropertyMappings()) {
-            if (LangUtils.isEmpty(propertyMapping.getPropertyMappings())) {
-                if (propertyMapping.isPrimaryKey()) {
-                    if (columnNum > 0) {
-                        deleteSql.append(jdbc.getDialect().getKeywords().and()).append(Chars.SPACE);
-                    }
-                    deleteSql.append(jdbc.getDialect().wrapName(propertyMapping.getRepositoryFieldName()))
-                            .append(" = ? ");
-                    columnNum++;
-                    propertyPositions.put(columnNum, propertyMapping.getPropertyName());
-                }
-            } else {
-                for (PropertyMapping subPropertyMapping : propertyMapping.getPropertyMappings()) {
-                    if (subPropertyMapping.isPrimaryKey()) {
-                        if (columnNum > 0) {
-                            deleteSql.append(jdbc.getDialect().getKeywords().and()).append(Chars.SPACE);
-                        }
-                        deleteSql.append(jdbc.getDialect().wrapName(subPropertyMapping.getRepositoryFieldName()))
-                                .append(" = ? ");
-                        columnNum++;
-                        propertyPositions.put(columnNum,
-                                propertyMapping.getPropertyName() + "." + subPropertyMapping.getPropertyName());
-                    }
-                }
-            }
-        }
-
-        sql = deleteSql.toString();
+        Tuple2<String, Map<Integer, String>> tuple = ClassMappingUtils.getDeleteSqlAndParamPositions(classMapping,
+                jdbc.getDialect());
+        sql = tuple.get0();
+        propertyPositions.putAll(tuple.get1());
         logger.debug("sql: {}", sql);
     }
 }

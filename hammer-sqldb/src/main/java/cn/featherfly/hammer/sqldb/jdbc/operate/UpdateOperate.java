@@ -1,13 +1,12 @@
 package cn.featherfly.hammer.sqldb.jdbc.operate;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.Map;
 
-import cn.featherfly.common.constant.Chars;
+import com.speedment.common.tuple.Tuple2;
+
+import cn.featherfly.common.db.mapping.ClassMappingUtils;
 import cn.featherfly.common.db.metadata.DatabaseMetadata;
-import cn.featherfly.common.lang.LangUtils;
 import cn.featherfly.common.repository.mapping.ClassMapping;
-import cn.featherfly.common.repository.mapping.PropertyMapping;
 import cn.featherfly.hammer.sqldb.jdbc.Jdbc;
 
 /**
@@ -59,56 +58,10 @@ public class UpdateOperate<T> extends AbstractExecuteOperate<T> {
      */
     @Override
     public void initSql() {
-        StringBuilder updateSql = new StringBuilder();
-        updateSql.append(jdbc.getDialect().getKeywords().update()).append(Chars.SPACE)
-                .append(jdbc.getDialect().wrapName(classMapping.getRepositoryName())).append(Chars.SPACE)
-                .append(jdbc.getDialect().getKeywords().set()).append(Chars.SPACE);
-        int columnNum = 0;
-
-        List<PropertyMapping> pms = new ArrayList<>();
-        for (PropertyMapping propertyMapping : classMapping.getPropertyMappings()) {
-            if (LangUtils.isEmpty(propertyMapping.getPropertyMappings())) {
-                if (propertyMapping.isPrimaryKey()) {
-                    pms.add(propertyMapping);
-                } else {
-                    updateSql.append(jdbc.getDialect().wrapName(propertyMapping.getRepositoryFieldName()))
-                            .append(" = ? ,");
-                    columnNum++;
-                    propertyPositions.put(columnNum, propertyMapping.getPropertyName());
-                }
-            } else {
-                for (PropertyMapping subPropertyMapping : propertyMapping.getPropertyMappings()) {
-                    if (subPropertyMapping.isPrimaryKey()) {
-                        pms.add(subPropertyMapping);
-                    } else {
-                        updateSql.append(jdbc.getDialect().wrapName(subPropertyMapping.getRepositoryFieldName()))
-                                .append(" = ? ,");
-                        columnNum++;
-                        propertyPositions.put(columnNum,
-                                propertyMapping.getPropertyName() + Chars.DOT + subPropertyMapping.getPropertyName());
-                    }
-                }
-            }
-        }
-        if (columnNum > 0) {
-            updateSql.deleteCharAt(updateSql.length() - 1);
-        }
-        int pkNum = 0;
-        updateSql.append("where ");
-        for (PropertyMapping pm : pms) {
-            if (pkNum > 0) {
-                updateSql.append(jdbc.getDialect().getKeywords().and()).append(Chars.SPACE);
-            }
-            updateSql.append(jdbc.getDialect().wrapName(pm.getRepositoryFieldName())).append(" = ? ");
-            pkNum++;
-            if (pm.getParent() == null) {
-                propertyPositions.put(columnNum + pkNum, pm.getPropertyName());
-            } else {
-                propertyPositions.put(columnNum + pkNum,
-                        pm.getParent().getPropertyName() + Chars.DOT + pm.getPropertyName());
-            }
-        }
-        sql = updateSql.toString();
+        Tuple2<String, Map<Integer, String>> tuple = ClassMappingUtils.getUpdateSqlAndParamPositions(classMapping,
+                jdbc.getDialect());
+        sql = tuple.get0();
+        propertyPositions.putAll(tuple.get1());
         logger.debug("sql: {}", sql);
     }
 }
