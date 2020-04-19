@@ -6,6 +6,7 @@ import static org.testng.Assert.assertNotNull;
 import static org.testng.Assert.assertNull;
 import static org.testng.Assert.assertTrue;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.testng.annotations.BeforeClass;
@@ -171,6 +172,23 @@ public class HammerJdbcTest extends JdbcTestBase {
         userInfo = hammer.get(userInfo);
         assertNull(userInfo);
 
+    }
+
+    @Test
+    public void testSaveBatch() {
+        List<Role> roles = new ArrayList<>();
+        for (int i = 0; i < 100; i++) {
+            roles.add(role());
+        }
+        int size = hammer.save(roles);
+
+        for (Role role : roles) {
+            Role r = hammer.get(role);
+            assertEquals(r.getId(), role.getId());
+            assertEquals(r.getName(), role.getName());
+            hammer.delete(role);
+        }
+        assertTrue(size == roles.size());
     }
 
     @Test

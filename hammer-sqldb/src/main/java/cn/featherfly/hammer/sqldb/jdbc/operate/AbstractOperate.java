@@ -120,6 +120,23 @@ public abstract class AbstractOperate<T> {
         }
     }
 
+    /**
+     * <p>
+     * 设置预编译参数
+     * </p>
+     *
+     * @param prep   执行SQL的PreparedStatementWrapper
+     * @param entity 对象
+     * @param index  当前对象是第几个设置的
+     */
+    protected void setParameter(PreparedStatement prep, T entity, int index) {
+        int len = propertyPositions.size();
+        for (Entry<Integer, String> propertyPosition : propertyPositions.entrySet()) {
+            int position = propertyPosition.getKey() + index * len;
+            JdbcUtils.setParameter(prep, position, BeanUtils.getProperty(entity, propertyPosition.getValue()));
+        }
+    }
+
     public Object[] getParameters(T entity) {
         return getParameters(entity, propertyPositions);
     }

@@ -4,9 +4,14 @@ package cn.featherfly.hammer.sqldb.jdbc;
 import static org.testng.Assert.assertEquals;
 import static org.testng.Assert.assertNotNull;
 import static org.testng.Assert.assertNull;
+import static org.testng.Assert.assertTrue;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import org.testng.annotations.Test;
 
+import cn.featherfly.common.db.SqlExecutor;
 import cn.featherfly.common.lang.RandomUtils;
 import cn.featherfly.hammer.sqldb.jdbc.operate.DeleteOperate;
 import cn.featherfly.hammer.sqldb.jdbc.operate.GetOperate;
@@ -46,6 +51,47 @@ public class OperatorTest extends JdbcTestBase {
         delete.execute(r);
         role = get.get(r);
         assertNull(role);
+    }
+
+    @Test
+    void t() {
+        SqlExecutor executor = new SqlExecutor(jdbc.getDataSource());
+        String sql = null;
+        sql = "INSERT INTO `tree` SELECT null `id`, 'aba' `name`, 1 `parent_id` UNION SELECT null, 'abc1', 1";
+        executor.execute(sql);
+
+        sql = "INSERT INTO `tree` SELECT ? `id`, ? `name`, ? `parent_id` UNION SELECT ?, ?, ?";
+        executor.execute(sql, null, "name1", 1, null, "name2", 1);
+
+        sql = "INSERT INTO `role` SELECT ? AS `name`, ? AS `id`, ? AS `descp` UNION SELECT ?, ?, ?";
+        executor.execute(sql, "yufei", null, "descp", "yi", null, "descp2");
+    }
+
+    @Test
+    public void testInsertBatch() {
+        InsertOperate<Role> insert = new InsertOperate<>(jdbc, mappingFactory.getClassMapping(Role.class),
+                mappingFactory.getMetadata());
+        DeleteOperate<Role> delete = new DeleteOperate<>(jdbc, mappingFactory.getClassMapping(Role.class),
+                mappingFactory.getMetadata());
+        GetOperate<Role> get = new GetOperate<>(jdbc, mappingFactory.getClassMapping(Role.class),
+                mappingFactory.getMetadata());
+
+        List<Role> roles = new ArrayList<>();
+        for (int i = 0; i < 5; i++) {
+            roles.add(role());
+        }
+        int size = insert.executeBatch(roles);
+
+        for (Role role : roles) {
+            if (jdbc.getDialect().isAutoGenerateKeyBatch()) {
+                Role r = get.get(role);
+                assertEquals(r.getId(), role.getId());
+                assertEquals(r.getName(), role.getName());
+                delete.delete(role.getId());
+            }
+        }
+        assertTrue(size == roles.size());
+
     }
 
     @Test
