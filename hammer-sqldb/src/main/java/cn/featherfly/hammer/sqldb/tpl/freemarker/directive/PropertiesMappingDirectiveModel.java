@@ -6,9 +6,9 @@ import java.io.Writer;
 import java.util.Map;
 import java.util.Set;
 
+import cn.featherfly.common.db.Table;
 import cn.featherfly.common.db.mapping.ClassMappingUtils;
 import cn.featherfly.common.db.mapping.JdbcMappingFactory;
-import cn.featherfly.common.db.metadata.Table;
 import cn.featherfly.common.lang.LangUtils;
 import cn.featherfly.common.lang.WordUtils;
 import cn.featherfly.common.repository.mapping.ClassMapping;

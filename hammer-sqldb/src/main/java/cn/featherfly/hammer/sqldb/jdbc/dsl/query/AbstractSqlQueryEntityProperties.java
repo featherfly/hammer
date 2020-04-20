@@ -8,10 +8,10 @@ import java.util.stream.Collectors;
 
 import com.speedment.common.tuple.Tuple2;
 
+import cn.featherfly.common.db.Table;
 import cn.featherfly.common.db.builder.dml.basic.SqlSelectBasicBuilder;
 import cn.featherfly.common.db.mapping.ClassMappingUtils;
 import cn.featherfly.common.db.metadata.DatabaseMetadata;
-import cn.featherfly.common.db.metadata.Table;
 import cn.featherfly.common.lang.LambdaUtils;
 import cn.featherfly.common.lang.LangUtils;
 import cn.featherfly.common.lang.function.SerializableFunction;
