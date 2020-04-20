@@ -1,6 +1,7 @@
 
 package cn.featherfly.hammer.sqldb.jdbc.vo;
 
+import javax.persistence.Column;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
@@ -17,6 +18,7 @@ public class Tree {
     @Id
     private Integer id;
 
+    @Column
     private String name;
 
     private String parentId;

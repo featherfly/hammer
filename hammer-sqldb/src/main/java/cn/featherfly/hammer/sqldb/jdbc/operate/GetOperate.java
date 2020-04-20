@@ -1,7 +1,6 @@
 package cn.featherfly.hammer.sqldb.jdbc.operate;
 
 import java.io.Serializable;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -139,44 +138,18 @@ public class GetOperate<T> extends AbstractQueryOperate<T> {
      * {@inheritDoc}
      */
     @Override
-    protected String initCondition() {
-        pkPms = new ArrayList<>();
-        StringBuilder condition = new StringBuilder();
-        int columnNum = 0;
-        for (PropertyMapping propertyMapping : classMapping.getPropertyMappings()) {
-            if (propertyMapping.getPropertyMappings().isEmpty()) {
-                columnNum = setPk(condition, columnNum, propertyMapping);
-            } else {
-                for (PropertyMapping subPropertyMapping : propertyMapping.getPropertyMappings()) {
-                    columnNum = setPk(condition, columnNum, subPropertyMapping);
-                }
-            }
-        }
-        logger.debug("condition -> " + condition.toString());
-        return condition.toString();
+    protected void initSql() {
+        sql = ClassMappingUtils.getSelectByIdSql(classMapping, jdbc.getDialect());
+        pkPms = classMapping.getPrivaryKeyPropertyMappings();
+        logger.debug("sql: {}", sql);
     }
 
     /**
-     * <p>
-     * 方法的说明
-     * </p>
-     *
-     * @param condition
-     * @param columnNum
-     * @param pm
-     * @return
+     * {@inheritDoc}
      */
-    private int setPk(StringBuilder condition, int columnNum, PropertyMapping pm) {
-        if (pm.isPrimaryKey()) {
-            if (columnNum > 0) {
-                condition.append("and ");
-            }
-            condition.append(jdbc.getDialect().wrapName(pm.getRepositoryFieldName())).append(" = ? ");
-            columnNum++;
-            propertyPositions.put(columnNum, ClassMappingUtils.getPropertyAliasName(pm));
-            // 设置主键值
-            pkPms.add(pm);
-        }
-        return columnNum;
+    @Override
+    protected String initCondition() {
+        // 重写了initSql，此方法在此类已经没用了
+        return "";
     }
 }
