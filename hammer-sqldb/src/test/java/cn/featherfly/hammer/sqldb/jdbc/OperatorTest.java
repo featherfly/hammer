@@ -11,7 +11,6 @@ import java.util.List;
 
 import org.testng.annotations.Test;
 
-import cn.featherfly.common.db.SqlExecutor;
 import cn.featherfly.common.lang.RandomUtils;
 import cn.featherfly.hammer.sqldb.jdbc.operate.DeleteOperate;
 import cn.featherfly.hammer.sqldb.jdbc.operate.GetOperate;
@@ -53,19 +52,19 @@ public class OperatorTest extends JdbcTestBase {
         assertNull(role);
     }
 
-    @Test
-    void t() {
-        SqlExecutor executor = new SqlExecutor(jdbc.getDataSource());
-        String sql = null;
-        sql = "INSERT INTO `tree` SELECT null `id`, 'aba' `name`, 1 `parent_id` UNION SELECT null, 'abc1', 1";
-        executor.execute(sql);
-
-        sql = "INSERT INTO `tree` SELECT ? `id`, ? `name`, ? `parent_id` UNION SELECT ?, ?, ?";
-        executor.execute(sql, null, "name1", 1, null, "name2", 1);
-
-        sql = "INSERT INTO `role` SELECT ? AS `name`, ? AS `id`, ? AS `descp` UNION SELECT ?, ?, ?";
-        executor.execute(sql, "yufei", null, "descp", "yi", null, "descp2");
-    }
+    //    @Test
+    //    public void t() {
+    //        SqlExecutor executor = new SqlExecutor(jdbc.getDataSource());
+    //        String sql = null;
+    //        sql = "INSERT INTO `tree` SELECT null `id`, 'aba' `name`, 1 `parent_id` UNION SELECT null, 'abc1', 1";
+    //        executor.execute(sql);
+    //
+    //        sql = "INSERT INTO `tree` SELECT ? `id`, ? `name`, ? `parent_id` UNION SELECT ?, ?, ?";
+    //        executor.execute(sql, null, "name1", 1, null, "name2", 1);
+    //
+    //        sql = "INSERT INTO `role` SELECT ? AS `name`, ? AS `id`, ? AS `descp` UNION SELECT ?, ?, ?";
+    //        executor.execute(sql, "yufei", null, "descp", "yi", null, "descp2");
+    //    }
 
     @Test
     public void testInsertBatch() {

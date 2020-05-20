@@ -50,7 +50,7 @@ public class JdbcTestBase {
 
     @BeforeSuite
     @Parameters({ "dataBase" })
-    public void init(@Optional("mysql") String dataBase) throws IOException {
+    public void init(@Optional("postgresql") String dataBase) throws IOException {
         DOMConfigurator.configure(ClassLoaderUtils.getResource("log4j.xml", JdbcTestBase.class));
         initDataBase(dataBase);
     }
@@ -127,7 +127,7 @@ public class JdbcTestBase {
                 .execute(new File(ClassLoaderUtils.getResource("test.postgresql.sql", JdbcTestBase.class).getFile()));
 
         jdbc = new SpringJdbcTemplateImpl(dataSource, Dialects.POSTGRESQL);
-        metadata = DatabaseMetadataManager.getDefaultManager().create(dataSource, "hammer_jdbc");
+        metadata = DatabaseMetadataManager.getDefaultManager().create(dataSource);
 
         mappingFactory = new JdbcMappingFactory(metadata, Dialects.POSTGRESQL);
 
