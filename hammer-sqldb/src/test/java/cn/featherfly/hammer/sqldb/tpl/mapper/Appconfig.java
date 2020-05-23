@@ -10,6 +10,8 @@ import org.apache.log4j.xml.DOMConfigurator;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
+import cn.featherfly.common.db.dialect.Dialects;
+import cn.featherfly.common.db.mapping.JdbcMappingFactory;
 import cn.featherfly.common.db.metadata.DatabaseMetadata;
 import cn.featherfly.common.db.metadata.DatabaseMetadataManager;
 import cn.featherfly.common.lang.ClassLoaderUtils;
@@ -18,8 +20,6 @@ import cn.featherfly.hammer.sqldb.SqldbHammerImpl;
 import cn.featherfly.hammer.sqldb.jdbc.Jdbc;
 import cn.featherfly.hammer.sqldb.jdbc.JdbcTestBase;
 import cn.featherfly.hammer.sqldb.jdbc.SpringJdbcTemplateImpl;
-import cn.featherfly.common.db.mapping.JdbcMappingFactory;
-import cn.featherfly.common.db.dialect.Dialects;
 import cn.featherfly.hammer.tpl.TplConfigFactory;
 import cn.featherfly.hammer.tpl.TplConfigFactoryImpl;
 import cn.featherfly.hammer.tpl.mapper.DynamicTplExecutorScanSpringRegistor;
@@ -62,7 +62,9 @@ public class Appconfig {
 
         JdbcMappingFactory mappingFactory = new JdbcMappingFactory(metadata, Dialects.MYSQL);
 
-        TplConfigFactory configFactory = new TplConfigFactoryImpl("tpl/");
+        Set<String> basePackages = new HashSet<>();
+        basePackages.add("cn.featherfly.hammer.sqldb.tpl.mapper");
+        TplConfigFactory configFactory = new TplConfigFactoryImpl("tpl/", basePackages);
 
         SqldbHammerImpl hammer = new SqldbHammerImpl(jdbc, mappingFactory, configFactory);
         return hammer;

@@ -22,8 +22,8 @@ roleFromTemplate2: "from role <@where>
 </@where>"
 selectWithTemplate3:
   query: >
-    select <@prop alias="_r"/> <@tpl id='roleFromTemplate2' file='tpl/role_common'/>
-  count: "select count(*) <@sql id='roleFromTemplate2' file='tpl/role_common'/>"
+    select <@prop alias="_r"/> <@tpl id='roleFromTemplate2' namespace='tpl/role_common'/>
+  count: "select count(*) <@sql id='roleFromTemplate2' namespace='tpl/role_common'/>"
 insertRole: >
   insert into role(name, descp) values(:name, :descp)
 updateRoleByName: >

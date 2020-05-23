@@ -1,3 +1,7 @@
+2020-5-23
+0.4.4
+    1.include标签的file参数改为namespace参数
+                        
 2020-4-20
 0.4.3
     1.完成batch save优化，如果数据库支持批量插入并且当使用数据库生成主键策略时数据库对应驱动能够返回批量生成的主键，则使用批量插入sql
@@ -15,7 +19,7 @@
     
 2020-4-17
 0.4.0
-    1.为模板执行加入execute，可以使用模板sql进行insert,update,delete操作
+    1.为模板执行加入操作数据能力，可以使用模板sql进行insert,update,delete操作
     2.@Template加入type参数，默认值AUTO
     2.Mapper中int xxx(ar1, ar2.. arn)， void yyy(ar1, ar2...arn)
                     当返回值是void时，执行execute（即执行insert,update,delete等操作）
