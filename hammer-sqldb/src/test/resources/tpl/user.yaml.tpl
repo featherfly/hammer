@@ -1,14 +1,14 @@
 selectByUsername: >
     select <@columns table='user'/> from <@wrap value='user'/> where username = :username    
 selectByUsername2: >
-    select <@columns table='user'/> from ${tpl_wrap("user")}  where username = :username    
+    select <@columns table='user'/> from ${tpl_wrap('user')}  where username = :username    
 selectByUsernameAndPassword: >
-    select username, password pwd from <@wrap value="user"/> where username = :username and password = :password
-selectUser: select username, password pwd from user
-selectByAge: "select <@prop/> from user where age = :age"
+    select username, password pwd from <@wrap value='user'/> where username = :username and password = :password
+selectUser: select username, password pwd from ${tpl_wrap('user')}
+selectByAge: "select <@prop/> from ${tpl_wrap('user')} where age = :age"
 selectByAge2: >
-    select <@prop/> from user where age = :age
-selectConditions: "select id, username, password pwd, mobile_no, age from user<@where>
+    select <@prop/> from ${tpl_wrap('user')} where age = :age
+selectConditions: "select id, username, password pwd, mobile_no, age from ${tpl_wrap('user')}<@where>
 <@and if=username??>
     username like :username
 </@and>
@@ -25,8 +25,8 @@ selectConditions: "select id, username, password pwd, mobile_no, age from user<@
     age <= :maxAge
 </@and>
 </@where>"
-selectAvg: "select avg(age) from user"
-selectString: "select username from user where id = 1"
-selectAvg2: "select avg(age) from user where age > :age"
-selectString2: "select username from user where id = :id"
-selectById: "select <@prop/> from user where id = :id"
+selectAvg: "select avg(age) from ${tpl_wrap('user')}"
+selectString: "select username from ${tpl_wrap('user')} where id = 1"
+selectAvg2: "select avg(age) from ${tpl_wrap('user')} where age > :age"
+selectString2: "select username from ${tpl_wrap('user')} where id = :id"
+selectById: "select <@prop/> from ${tpl_wrap('user')} where id = :id"

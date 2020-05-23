@@ -46,7 +46,8 @@ public class IncludeDirectiveModel extends IncludeDirective implements Freemarke
         if (LangUtils.isNotEmpty(file)) {
             includeTemplateName = file + TplConfigFactory.ID_SIGN + id;
         } else {
-            TplExecuteId executeId = new TplExecuteIdFileImpl(environment.getCurrentNamespace().getTemplate().getName());
+            TplExecuteId executeId = new TplExecuteIdFileImpl(
+                    environment.getCurrentNamespace().getTemplate().getName());
             TplExecuteConfig config = tplConfigFactory.getConfig(executeId);
             includeTemplateName = config.getName() + TplConfigFactory.ID_SIGN + id;
         }
@@ -82,10 +83,10 @@ public class IncludeDirectiveModel extends IncludeDirective implements Freemarke
      */
     private String getFile(Map<String, TemplateModel> params) throws TemplateModelException {
         String file = null;
-        TemplateModel paramValue = params.get(FILE_PARAM);
+        TemplateModel paramValue = params.get(NAME_SPACE_PARAM);
         if (paramValue != null) {
             if (!(paramValue instanceof TemplateScalarModel)) {
-                throw new TplException("The \"" + FILE_PARAM + "\" parameter " + "must be a String.");
+                throw new TplException("The \"" + NAME_SPACE_PARAM + "\" parameter " + "must be a String.");
             }
             file = ((TemplateScalarModel) paramValue).getAsString();
         }

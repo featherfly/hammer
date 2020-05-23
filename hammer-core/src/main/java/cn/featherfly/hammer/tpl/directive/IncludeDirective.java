@@ -11,7 +11,7 @@ import cn.featherfly.hammer.tpl.TplConfigFactory;
  */
 public abstract class IncludeDirective implements TemplateDirective {
 
-    protected static final String FILE_PARAM = "file";
+    protected static final String NAME_SPACE_PARAM = "namespace";
 
     protected static final String ID_PARAM = "id";
 
