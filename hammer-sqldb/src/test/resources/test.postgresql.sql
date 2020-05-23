@@ -1,15 +1,13 @@
-drop database hammer_jdbc;
-create database hammer_jdbc;
-\c hammer_jdbc;
-
-CREATE SEQUENCE globl_id_seq START 1;
+DROP SEQUENCE IF EXISTS globl_id_seq CASCADE;
+CREATE SEQUENCE globl_id_seq START 1000;
 
 -- ----------------------------
 -- Table structure for role
 -- ----------------------------
-DROP TABLE IF EXISTS "role";
+DROP TABLE IF EXISTS "role" CASCADE;
 CREATE TABLE "public"."role" (
-  "id" serial NOT NULL ,
+  -- "id" serial NOT NULL ,
+  "id" int4 NOT NULL DEFAULT nextval('globl_id_seq'),
   "name" varchar(20) COLLATE "pg_catalog"."default",
   "descp" varchar(36) COLLATE "pg_catalog"."default",
   CONSTRAINT "role_pkey" PRIMARY KEY ("id")
@@ -38,7 +36,7 @@ INSERT INTO "role" VALUES ('12', 'n_12', 'descp_65');
 -- ----------------------------
 -- Table structure for user
 -- ----------------------------
-DROP TABLE IF EXISTS "user";
+DROP TABLE IF EXISTS "user" CASCADE;
 CREATE TABLE "public"."user" (
   "id" int4 NOT NULL DEFAULT nextval('globl_id_seq'),
   "username" varchar(255) COLLATE "pg_catalog"."default",
@@ -69,11 +67,12 @@ INSERT INTO "user" VALUES ('9', 'featherfly20', '654321', '20765432120', '20');
 INSERT INTO "user" VALUES ('10', 'featherfly30', '654321', '30765432130', '30');
 INSERT INTO "user" VALUES ('11', 'featherfly40', '654321', '40765432140', '40');
 INSERT INTO "user" VALUES ('12', 'featherfly50', '654321', '50765432150', '50');
+INSERT INTO "user" VALUES ('13', 'featherfly10-2', '654321', '10765432112', '10');
 
 -- ----------------------------
 -- Table structure for user_role
 -- ----------------------------
-DROP TABLE IF EXISTS "user_role";
+DROP TABLE IF EXISTS "user_role" CASCADE;
 CREATE TABLE "user_role" (
   "user_id" int4 NOT NULL,
   "role_id" int4 NOT NULL,
@@ -103,7 +102,7 @@ INSERT INTO "user_role" VALUES ('10', '10', 'descp581', null);
 -- ----------------------------
 -- Table structure for user_role
 -- ----------------------------
-DROP TABLE IF EXISTS "user_info";
+DROP TABLE IF EXISTS "user_info" CASCADE;
 CREATE TABLE "user_info" (
   "id" int4 NOT NULL DEFAULT nextval('globl_id_seq'),
   "user_id" int4 NOT NULL,
@@ -122,7 +121,7 @@ CREATE TABLE "user_info" (
 INSERT INTO "user_info" ("id", "user_id", "name", "descp", "province", "city", "district") VALUES ('1', '1', '羽飞', '羽飞描述', '四川', '成都', '金牛');
 INSERT INTO "user_info" ("id", "user_id", "name", "descp", "province", "city", "district") VALUES ('2', '2', '翼', '翼描述', '广东', '深圳', '罗湖');
 
-DROP TABLE IF EXISTS "cms_article";
+DROP TABLE IF EXISTS "cms_article" CASCADE;
 CREATE TABLE "cms_article" (
   "id" int4 NOT NULL DEFAULT nextval('globl_id_seq'),
   "title" varchar(255) DEFAULT NULL,
@@ -130,7 +129,7 @@ CREATE TABLE "cms_article" (
   CONSTRAINT "cms_article_pkey" PRIMARY KEY ("id")
 );
 
-DROP TABLE IF EXISTS "tree";
+DROP TABLE IF EXISTS "tree" CASCADE;
 CREATE TABLE "tree" (
   "id" int4 NOT NULL DEFAULT nextval('globl_id_seq'),
   "parent_id" int4 DEFAULT NULL,
