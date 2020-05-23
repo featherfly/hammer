@@ -29,7 +29,7 @@ compile group: 'cn.featherfly.hammer', name: 'hammer-sqldb', version: '+'
 ```java
 
 // 示例用，具体配置看SqlDbHammerImpl配置章节
-Hammer hammer = new SqldbHammerJdbcImpl(jdbc, mappingFactory, configFactory);
+Hammer hammer = new SqldbHammerImpl(jdbc, mappingFactory, configFactory);
 
 // 通过主键获取
 User u = hammer.get(id, User.class);
