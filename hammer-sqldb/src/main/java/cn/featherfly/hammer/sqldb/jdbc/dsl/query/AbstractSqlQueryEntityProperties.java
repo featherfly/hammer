@@ -13,7 +13,7 @@ import cn.featherfly.common.db.builder.dml.basic.SqlSelectBasicBuilder;
 import cn.featherfly.common.db.mapping.ClassMappingUtils;
 import cn.featherfly.common.db.metadata.DatabaseMetadata;
 import cn.featherfly.common.lang.LambdaUtils;
-import cn.featherfly.common.lang.LangUtils;
+import cn.featherfly.common.lang.Lang;
 import cn.featherfly.common.lang.function.SerializableFunction;
 import cn.featherfly.common.repository.builder.AliasManager;
 import cn.featherfly.common.repository.mapping.ClassMapping;
@@ -93,7 +93,7 @@ public abstract class AbstractSqlQueryEntityProperties<E extends AbstractSqlQuer
     public E property(String propertyName) {
         Tuple2<String, String> columnAndProperty = ClassMappingUtils.getColumnAndPropertyName(propertyName,
                 classMapping);
-        if (LangUtils.isEmpty(columnAndProperty.get1())) {
+        if (Lang.isEmpty(columnAndProperty.get1())) {
             selectBuilder.addSelectColumn(columnAndProperty.get0());
         } else {
             selectBuilder.addSelectColumn(columnAndProperty.get0(), columnAndProperty.get1());
@@ -105,7 +105,7 @@ public abstract class AbstractSqlQueryEntityProperties<E extends AbstractSqlQuer
     public E property(String propertyName, AggregateFunction aggregateFunction) {
         Tuple2<String, String> columnAndProperty = ClassMappingUtils.getColumnAndPropertyName(propertyName,
                 classMapping);
-        if (LangUtils.isEmpty(columnAndProperty.get1())) {
+        if (Lang.isEmpty(columnAndProperty.get1())) {
             selectBuilder.addSelectColumn(columnAndProperty.get0(), aggregateFunction);
         } else {
             selectBuilder.addSelectColumn(columnAndProperty.get0(), aggregateFunction, columnAndProperty.get1());
@@ -171,7 +171,7 @@ public abstract class AbstractSqlQueryEntityProperties<E extends AbstractSqlQuer
     }
 
     protected String getIdName() {
-        if (LangUtils.isEmpty(idName)) {
+        if (Lang.isEmpty(idName)) {
             throw new HammerException("privary key column name is null");
         }
         return idName;

@@ -3,7 +3,7 @@ package cn.featherfly.hammer.expression.condition.property;
 
 import java.util.Date;
 
-import cn.featherfly.common.lang.LangUtils;
+import cn.featherfly.common.lang.Lang;
 import cn.featherfly.hammer.expression.condition.LogicExpression;
 import cn.featherfly.hammer.expression.condition.RepositoryConditionsExpression;
 
@@ -64,7 +64,7 @@ public class RepositorySimpleDateExpression<C extends RepositoryConditionsExpres
      */
     @Override
     public L eq(Date value) {
-        if (LangUtils.isNotEmpty(repository)) {
+        if (Lang.isNotEmpty(repository)) {
             return expression.eq(repository, name, value);
         } else if (repositoryIndex > -1) {
             return expression.eq(repositoryIndex, name, value);
@@ -86,7 +86,7 @@ public class RepositorySimpleDateExpression<C extends RepositoryConditionsExpres
      */
     @Override
     public L ne(Date value) {
-        if (LangUtils.isNotEmpty(repository)) {
+        if (Lang.isNotEmpty(repository)) {
             return expression.ne(repository, name, value);
         } else if (repositoryIndex > -1) {
             return expression.ne(repositoryIndex, name, value);
@@ -100,7 +100,7 @@ public class RepositorySimpleDateExpression<C extends RepositoryConditionsExpres
      */
     @Override
     public L in(Date value) {
-        if (LangUtils.isNotEmpty(repository)) {
+        if (Lang.isNotEmpty(repository)) {
             return expression.in(repository, name, value);
         } else if (repositoryIndex > -1) {
             return expression.in(repositoryIndex, name, value);
@@ -114,7 +114,7 @@ public class RepositorySimpleDateExpression<C extends RepositoryConditionsExpres
      */
     @Override
     public L nin(Date value) {
-        if (LangUtils.isNotEmpty(repository)) {
+        if (Lang.isNotEmpty(repository)) {
             return expression.nin(repository, name, value);
         } else if (repositoryIndex > -1) {
             return expression.nin(repositoryIndex, name, value);
@@ -128,7 +128,7 @@ public class RepositorySimpleDateExpression<C extends RepositoryConditionsExpres
      */
     @Override
     public L le(Date value) {
-        if (LangUtils.isNotEmpty(repository)) {
+        if (Lang.isNotEmpty(repository)) {
             return expression.le(repository, name, value);
         } else if (repositoryIndex > -1) {
             return expression.le(repositoryIndex, name, value);
@@ -142,7 +142,7 @@ public class RepositorySimpleDateExpression<C extends RepositoryConditionsExpres
      */
     @Override
     public L lt(Date value) {
-        if (LangUtils.isNotEmpty(repository)) {
+        if (Lang.isNotEmpty(repository)) {
             return expression.lt(repository, name, value);
         } else if (repositoryIndex > -1) {
             return expression.lt(repositoryIndex, name, value);
@@ -156,7 +156,7 @@ public class RepositorySimpleDateExpression<C extends RepositoryConditionsExpres
      */
     @Override
     public L ge(Date value) {
-        if (LangUtils.isNotEmpty(repository)) {
+        if (Lang.isNotEmpty(repository)) {
             return expression.ge(repository, name, value);
         } else if (repositoryIndex > -1) {
             return expression.ge(repositoryIndex, name, value);
@@ -170,7 +170,7 @@ public class RepositorySimpleDateExpression<C extends RepositoryConditionsExpres
      */
     @Override
     public L gt(Date value) {
-        if (LangUtils.isNotEmpty(repository)) {
+        if (Lang.isNotEmpty(repository)) {
             return expression.gt(repository, name, value);
         } else if (repositoryIndex > -1) {
             return expression.gt(repositoryIndex, name, value);
@@ -184,7 +184,7 @@ public class RepositorySimpleDateExpression<C extends RepositoryConditionsExpres
      */
     @Override
     public L isn() {
-        if (LangUtils.isNotEmpty(repository)) {
+        if (Lang.isNotEmpty(repository)) {
             return expression.isn(repository, name);
         } else if (repositoryIndex > -1) {
             return expression.isn(repositoryIndex, name);
@@ -198,7 +198,7 @@ public class RepositorySimpleDateExpression<C extends RepositoryConditionsExpres
      */
     @Override
     public L inn() {
-        if (LangUtils.isNotEmpty(repository)) {
+        if (Lang.isNotEmpty(repository)) {
             return expression.inn(repository, name);
         } else if (repositoryIndex > -1) {
             return expression.inn(repositoryIndex, name);

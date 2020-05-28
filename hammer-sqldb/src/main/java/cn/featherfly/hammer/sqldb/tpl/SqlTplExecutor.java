@@ -19,7 +19,7 @@ import com.speedment.common.tuple.Tuples;
 
 import cn.featherfly.common.db.SqlUtils;
 import cn.featherfly.common.db.mapping.JdbcMappingFactory;
-import cn.featherfly.common.lang.LangUtils;
+import cn.featherfly.common.lang.Lang;
 import cn.featherfly.common.structure.page.Limit;
 import cn.featherfly.common.structure.page.Page;
 import cn.featherfly.common.structure.page.PaginationResults;
@@ -272,7 +272,7 @@ public class SqlTplExecutor implements TplExecutor {
         String countSql = null;
         ConditionParamsManager manager = null;
         TplExecuteConfig config = listTuple.get2();
-        if (LangUtils.isEmpty(config.getCount())) {
+        if (Lang.isEmpty(config.getCount())) {
             countSql = SqlUtils.convertSelectToCount(listTuple.get1());
             manager = listTuple.get3();
         } else {
@@ -332,7 +332,7 @@ public class SqlTplExecutor implements TplExecutor {
         String countSql = null;
         ConditionParamsManager manager = null;
         TplExecuteConfig config = listTuple.get2();
-        if (LangUtils.isEmpty(config.getCount())) {
+        if (Lang.isEmpty(config.getCount())) {
             countSql = SqlUtils.convertSelectToCount(listTuple.get1());
             manager = listTuple.get3();
         } else {

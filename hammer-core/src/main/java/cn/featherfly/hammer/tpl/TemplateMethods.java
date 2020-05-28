@@ -4,7 +4,7 @@ package cn.featherfly.hammer.tpl;
 import java.util.HashMap;
 import java.util.Map;
 
-import cn.featherfly.common.lang.LangUtils;
+import cn.featherfly.common.lang.Lang;
 import cn.featherfly.hammer.HammerException;
 
 /**
@@ -43,7 +43,7 @@ public class TemplateMethods<M> {
      *            prefix
      */
     public void setPrefix(String prefix) {
-        if (LangUtils.isNotEmpty(prefix)) {
+        if (Lang.isNotEmpty(prefix)) {
             this.prefix = prefix;
         }
     }

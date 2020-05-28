@@ -9,7 +9,7 @@ import cn.featherfly.common.db.JdbcUtils;
 import cn.featherfly.common.db.mapping.ClassMappingUtils;
 import cn.featherfly.common.db.mapping.SqlResultSet;
 import cn.featherfly.common.db.metadata.DatabaseMetadata;
-import cn.featherfly.common.lang.LangUtils;
+import cn.featherfly.common.lang.Lang;
 import cn.featherfly.common.repository.mapping.ClassMapping;
 import cn.featherfly.common.repository.mapping.PropertyMapping;
 import cn.featherfly.hammer.sqldb.jdbc.Jdbc;
@@ -131,7 +131,7 @@ public abstract class AbstractQueryOperate<T> extends AbstractOperate<T> {
         StringBuilder getSql = new StringBuilder();
         getSql.append(getSelectSql());
         String condition = initCondition();
-        if (LangUtils.isNotEmpty(condition)) {
+        if (Lang.isNotEmpty(condition)) {
             getSql.append(Chars.SPACE).append(jdbc.getDialect().getKeywords().where()).append(Chars.SPACE)
                     .append(condition);
         }

@@ -16,7 +16,7 @@ import org.hibernate.validator.HibernateValidator;
 
 import cn.featherfly.common.db.mapping.JdbcMappingFactory;
 import cn.featherfly.common.lang.ArrayUtils;
-import cn.featherfly.common.lang.LangUtils;
+import cn.featherfly.common.lang.Lang;
 import cn.featherfly.common.repository.mapping.ClassMapping;
 import cn.featherfly.common.structure.page.Page;
 import cn.featherfly.common.structure.page.PaginationResults;
@@ -154,7 +154,7 @@ public class SqldbHammerImpl implements SqldbHammer {
             return insert.executeBatch(entities);
         } else {
             int size = 0;
-            if (LangUtils.isNotEmpty(entities)) {
+            if (Lang.isNotEmpty(entities)) {
                 for (E e : entities) {
                     size += save(e);
                 }
@@ -201,7 +201,7 @@ public class SqldbHammerImpl implements SqldbHammer {
     @Override
     public <E> int update(@SuppressWarnings("unchecked") E... entities) {
         int size = 0;
-        if (LangUtils.isNotEmpty(entities)) {
+        if (Lang.isNotEmpty(entities)) {
             for (E e : entities) {
                 size += update(e);
             }
@@ -215,7 +215,7 @@ public class SqldbHammerImpl implements SqldbHammer {
     @Override
     public <E> int update(List<E> entities) {
         int size = 0;
-        if (LangUtils.isNotEmpty(entities)) {
+        if (Lang.isNotEmpty(entities)) {
             for (E e : entities) {
                 size += update(e);
             }
@@ -244,7 +244,7 @@ public class SqldbHammerImpl implements SqldbHammer {
     @Override
     public <E> int update(List<E> entities, IgnorePolicy ignorePolicy) {
         int size = 0;
-        if (LangUtils.isNotEmpty(entities)) {
+        if (Lang.isNotEmpty(entities)) {
             for (E e : entities) {
                 size += update(e, ignorePolicy);
             }
@@ -282,7 +282,7 @@ public class SqldbHammerImpl implements SqldbHammer {
     @Override
     public <E> int merge(@SuppressWarnings("unchecked") E... entities) {
         int size = 0;
-        if (LangUtils.isNotEmpty(entities)) {
+        if (Lang.isNotEmpty(entities)) {
             for (E e : entities) {
                 size += merge(e);
             }
@@ -296,7 +296,7 @@ public class SqldbHammerImpl implements SqldbHammer {
     @Override
     public <E> int merge(List<E> entities) {
         int size = 0;
-        if (LangUtils.isNotEmpty(entities)) {
+        if (Lang.isNotEmpty(entities)) {
             for (E e : entities) {
                 size += merge(e);
             }
@@ -348,7 +348,7 @@ public class SqldbHammerImpl implements SqldbHammer {
     public <E> int delete(@SuppressWarnings("unchecked") E... entities) {
         int size = 0;
         // TODO 后续加入DeleteBatchOperate优化为sql批量删除
-        if (LangUtils.isNotEmpty(entities)) {
+        if (Lang.isNotEmpty(entities)) {
             for (E e : entities) {
                 size += delete(e);
             }
@@ -363,7 +363,7 @@ public class SqldbHammerImpl implements SqldbHammer {
     public <E> int delete(List<E> entities) {
         // TODO 后续加入DeleteBatchOperate优化为sql批量删除
         int size = 0;
-        if (LangUtils.isNotEmpty(entities)) {
+        if (Lang.isNotEmpty(entities)) {
             for (E e : entities) {
                 size += delete(e);
             }
@@ -453,7 +453,7 @@ public class SqldbHammerImpl implements SqldbHammer {
     private <E> void validate(E entity) {
         if (validator != null) {
             Set<ConstraintViolation<E>> cons = validator.validate(entity);
-            if (LangUtils.isNotEmpty(cons)) {
+            if (Lang.isNotEmpty(cons)) {
                 StringBuilder errorMessage = new StringBuilder();
                 for (ConstraintViolation<E> constraintViolation : cons) {
                     errorMessage.append(constraintViolation.getMessage()).append(",");

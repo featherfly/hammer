@@ -13,7 +13,7 @@ import org.springframework.beans.factory.support.BeanDefinitionRegistryPostProce
 import org.springframework.core.type.classreading.MetadataReader;
 
 import cn.featherfly.common.lang.ClassUtils;
-import cn.featherfly.common.lang.LangUtils;
+import cn.featherfly.common.lang.Lang;
 import cn.featherfly.hammer.HammerException;
 import cn.featherfly.hammer.tpl.annotation.Mapper;
 import javassist.CannotCompileException;
@@ -68,7 +68,7 @@ public class DynamicTplExecutorSpringRegistor implements BeanDefinitionRegistryP
      */
     @Override
     public void postProcessBeanDefinitionRegistry(BeanDefinitionRegistry registry) throws BeansException {
-        if (LangUtils.isEmpty(metadataReaders)) {
+        if (Lang.isEmpty(metadataReaders)) {
             logger.debug("metadataReaders is empty");
             return;
         }

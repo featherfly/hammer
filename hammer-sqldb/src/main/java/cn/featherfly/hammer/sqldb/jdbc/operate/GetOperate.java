@@ -7,7 +7,7 @@ import java.util.stream.Collectors;
 import cn.featherfly.common.bean.BeanUtils;
 import cn.featherfly.common.db.mapping.ClassMappingUtils;
 import cn.featherfly.common.db.metadata.DatabaseMetadata;
-import cn.featherfly.common.lang.LangUtils;
+import cn.featherfly.common.lang.Lang;
 import cn.featherfly.common.repository.mapping.ClassMapping;
 import cn.featherfly.common.repository.mapping.PropertyMapping;
 import cn.featherfly.common.repository.mapping.RowMapper;
@@ -128,7 +128,7 @@ public class GetOperate<T> extends AbstractQueryOperate<T> {
             throw new SqldbHammerException("#get.id.null");
         }
         List<Serializable> ids = getIds(entity);
-        if (LangUtils.isEmpty(ids)) {
+        if (Lang.isEmpty(ids)) {
             throw new SqldbHammerException("#get.id.null");
         }
         return jdbc.querySingle(sql, ids.toArray(), (RowMapper<T>) (res, rowNum) -> mapRow(res, rowNum));

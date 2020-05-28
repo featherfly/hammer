@@ -4,7 +4,7 @@ package cn.featherfly.hammer.sqldb.jdbc.dsl.query;
 import java.util.List;
 
 import cn.featherfly.common.db.builder.dml.basic.SqlSelectJoinOnBasicBuilder;
-import cn.featherfly.common.lang.LangUtils;
+import cn.featherfly.common.lang.Lang;
 import cn.featherfly.common.lang.function.SerializableFunction;
 import cn.featherfly.common.repository.builder.AliasManager;
 import cn.featherfly.common.repository.mapping.ClassMapping;
@@ -124,7 +124,7 @@ public class TypeSqlQueryWith implements TypeQueryWith, TypeQueryWithEntity {
      */
     @Override
     public TypeQueryWith fetch() {
-        if (LangUtils.isEmpty(fetchProperty)) {
+        if (Lang.isEmpty(fetchProperty)) {
             // TODO 后续细化描述
             throw new SqldbHammerException("can not fetch because there is no relation for find type");
         }

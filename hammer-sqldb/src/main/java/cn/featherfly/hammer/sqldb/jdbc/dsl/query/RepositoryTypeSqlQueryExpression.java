@@ -15,7 +15,7 @@ import cn.featherfly.common.db.mapping.ClassMappingUtils;
 import cn.featherfly.common.lang.ClassUtils;
 import cn.featherfly.common.lang.LambdaUtils;
 import cn.featherfly.common.lang.LambdaUtils.SerializedLambdaInfo;
-import cn.featherfly.common.lang.LangUtils;
+import cn.featherfly.common.lang.Lang;
 import cn.featherfly.common.lang.function.SerializableFunction;
 import cn.featherfly.common.repository.mapping.ClassMapping;
 import cn.featherfly.common.repository.mapping.MappingFactory;
@@ -96,7 +96,7 @@ public class RepositoryTypeSqlQueryExpression extends RepositoryTypeSqlQueryCond
             result = selectBuilder.build();
         }
         String condition = super.build();
-        if (LangUtils.isNotEmpty(condition)) {
+        if (Lang.isNotEmpty(condition)) {
             result = result + Chars.SPACE + condition;
         }
         return result;
