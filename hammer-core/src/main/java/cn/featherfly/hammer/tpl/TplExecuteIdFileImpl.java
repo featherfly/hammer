@@ -1,7 +1,7 @@
 
 package cn.featherfly.hammer.tpl;
 
-import cn.featherfly.common.lang.LangUtils;
+import cn.featherfly.common.lang.Lang;
 
 /**
  * <p>
@@ -47,7 +47,7 @@ public class TplExecuteIdFileImpl implements TplExecuteId {
      */
     @Override
     public String getId() {
-        return LangUtils.isEmpty(namespace) ? name : namespace + TplConfigFactory.ID_SIGN + name;
+        return Lang.isEmpty(namespace) ? name : namespace + TplConfigFactory.ID_SIGN + name;
     }
 
     /**

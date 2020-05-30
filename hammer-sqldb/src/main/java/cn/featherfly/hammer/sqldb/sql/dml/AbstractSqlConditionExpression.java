@@ -11,8 +11,8 @@ import cn.featherfly.common.db.builder.SqlBuilder;
 import cn.featherfly.common.db.builder.dml.SqlLogicExpression;
 import cn.featherfly.common.db.dialect.Dialect;
 import cn.featherfly.common.lang.LambdaUtils;
-import cn.featherfly.common.lang.LangUtils;
-import cn.featherfly.common.lang.StringUtils;
+import cn.featherfly.common.lang.Lang;
+import cn.featherfly.common.lang.Strings;
 import cn.featherfly.common.lang.function.SerializableFunction;
 import cn.featherfly.common.repository.builder.BuilderException;
 import cn.featherfly.common.repository.builder.BuilderExceptionCode;
@@ -64,7 +64,7 @@ public abstract class AbstractSqlConditionExpression<L> implements SqlBuilder, P
         for (Expression expression : conditions) {
             // String condition = expression.build();
             String condition = expression.expression();
-            if (StringUtils.isNotBlank(condition)) {
+            if (Strings.isNotBlank(condition)) {
                 availableConditions.add(condition);
                 availableExpressions.add(expression);
             } else {
@@ -120,7 +120,7 @@ public abstract class AbstractSqlConditionExpression<L> implements SqlBuilder, P
         for (Expression condition : conditions) {
             if (condition instanceof ParamedExpression) {
                 Object param = ((ParamedExpression) condition).getParam();
-                if (LangUtils.isNotEmpty(param)) {
+                if (Lang.isNotEmpty(param)) {
                     if (param instanceof Collection) {
                         params.addAll((Collection<?>) param);
                     } else if (param.getClass().isArray()) {

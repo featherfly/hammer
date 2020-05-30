@@ -15,7 +15,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import cn.featherfly.common.lang.ClassUtils;
-import cn.featherfly.common.lang.LangUtils;
+import cn.featherfly.common.lang.Lang;
 import cn.featherfly.common.structure.HashChainMap;
 import cn.featherfly.common.structure.page.Page;
 import cn.featherfly.common.structure.page.PaginationResults;
@@ -303,7 +303,7 @@ public class TplDynamicExecutorFactory {
 
     private String getNamespace(Class<?> type) {
         Mapper mapper = type.getAnnotation(Mapper.class);
-        if (mapper != null && LangUtils.isNotEmpty(mapper.namespace())) {
+        if (mapper != null && Lang.isNotEmpty(mapper.namespace())) {
             return mapper.namespace();
         } else {
             return type.getSimpleName();
@@ -312,7 +312,7 @@ public class TplDynamicExecutorFactory {
 
     private String getNamespace(Method method, String namespace) {
         Template tplExecution = method.getAnnotation(Template.class);
-        if (tplExecution != null && LangUtils.isNotEmpty(tplExecution.namespace())) {
+        if (tplExecution != null && Lang.isNotEmpty(tplExecution.namespace())) {
             return tplExecution.namespace();
         } else {
             return namespace;
@@ -321,7 +321,7 @@ public class TplDynamicExecutorFactory {
 
     private Boolean getIsTemplate(Method method) {
         Template template = method.getAnnotation(Template.class);
-        if (template != null && LangUtils.isNotEmpty(template.value())) {
+        if (template != null && Lang.isNotEmpty(template.value())) {
             return template.isTemplate();
         }
         return null;
@@ -329,7 +329,7 @@ public class TplDynamicExecutorFactory {
 
     private TplType getType(Method method) {
         Template template = method.getAnnotation(Template.class);
-        if (template != null && LangUtils.isNotEmpty(template.type())) {
+        if (template != null && Lang.isNotEmpty(template.type())) {
             return template.type();
         } else {
             return TplType.AUTO;
@@ -338,7 +338,7 @@ public class TplDynamicExecutorFactory {
 
     private String getName(Method method) {
         Template tplExecution = method.getAnnotation(Template.class);
-        if (tplExecution != null && LangUtils.isNotEmpty(tplExecution.name())) {
+        if (tplExecution != null && Lang.isNotEmpty(tplExecution.name())) {
             return tplExecution.name();
         } else {
             return method.getName();
@@ -347,9 +347,9 @@ public class TplDynamicExecutorFactory {
 
     private String getParamName(Parameter parameter) {
         Param tplParam = parameter.getAnnotation(Param.class);
-        if (tplParam != null && LangUtils.isNotEmpty(tplParam.name())) {
+        if (tplParam != null && Lang.isNotEmpty(tplParam.name())) {
             return tplParam.name();
-        } else if (tplParam != null && LangUtils.isNotEmpty(tplParam.value())) {
+        } else if (tplParam != null && Lang.isNotEmpty(tplParam.value())) {
             return tplParam.value();
         } else {
             return parameter.getName();

@@ -314,7 +314,7 @@ public class NestedBeanPropertyRowMapper<T> implements RowMapper<T> {
 
         for (int index = 1; index <= columnCount; index++) {
             String column = JdbcUtils.lookupColumnName(rsmd, index);
-            String field = lowerCaseName(StringUtils.delete(column, " "));
+            String field = lowerCaseName(org.springframework.util.StringUtils.delete(column, " "));
 
             boolean nestedProperty = false;
             if (field.contains(".")) {

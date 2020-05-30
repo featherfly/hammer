@@ -6,7 +6,7 @@ import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.Date;
 
-import cn.featherfly.common.lang.LangUtils;
+import cn.featherfly.common.lang.Lang;
 import cn.featherfly.hammer.HammerException;
 import cn.featherfly.hammer.expression.condition.LogicExpression;
 import cn.featherfly.hammer.expression.condition.RepositoryConditionsExpression;
@@ -68,7 +68,7 @@ public class RepositorySimpleObjectExpression<C extends RepositoryConditionsExpr
      */
     @Override
     public L eq(Object value) {
-        if (LangUtils.isNotEmpty(repository)) {
+        if (Lang.isNotEmpty(repository)) {
             return expression.eq(repository, name, value);
         } else if (repositoryIndex > -1) {
             return expression.eq(repositoryIndex, name, value);
@@ -90,7 +90,7 @@ public class RepositorySimpleObjectExpression<C extends RepositoryConditionsExpr
      */
     @Override
     public L ne(Object value) {
-        if (LangUtils.isNotEmpty(repository)) {
+        if (Lang.isNotEmpty(repository)) {
             return expression.ne(repository, name, value);
         } else if (repositoryIndex > -1) {
             return expression.ne(repositoryIndex, name, value);
@@ -104,7 +104,7 @@ public class RepositorySimpleObjectExpression<C extends RepositoryConditionsExpr
      */
     @Override
     public L in(Object value) {
-        if (LangUtils.isNotEmpty(repository)) {
+        if (Lang.isNotEmpty(repository)) {
             return expression.in(repository, name, value);
         } else if (repositoryIndex > -1) {
             return expression.in(repositoryIndex, name, value);
@@ -118,7 +118,7 @@ public class RepositorySimpleObjectExpression<C extends RepositoryConditionsExpr
      */
     @Override
     public L nin(Object value) {
-        if (LangUtils.isNotEmpty(repository)) {
+        if (Lang.isNotEmpty(repository)) {
             return expression.nin(repository, name, value);
         } else if (repositoryIndex > -1) {
             return expression.nin(repositoryIndex, name, value);
@@ -132,7 +132,7 @@ public class RepositorySimpleObjectExpression<C extends RepositoryConditionsExpr
      */
     @Override
     public L le(Object value) {
-        if (LangUtils.isNotEmpty(repository)) {
+        if (Lang.isNotEmpty(repository)) {
             if (value == null) {
                 Integer v = null;
                 return expression.le(repository, name, v);
@@ -195,7 +195,7 @@ public class RepositorySimpleObjectExpression<C extends RepositoryConditionsExpr
      */
     @Override
     public L lt(Object value) {
-        if (LangUtils.isNotEmpty(repository)) {
+        if (Lang.isNotEmpty(repository)) {
             if (value == null) {
                 Integer v = null;
                 return expression.lt(repository, name, v);
@@ -258,7 +258,7 @@ public class RepositorySimpleObjectExpression<C extends RepositoryConditionsExpr
      */
     @Override
     public L ge(Object value) {
-        if (LangUtils.isNotEmpty(repository)) {
+        if (Lang.isNotEmpty(repository)) {
             if (value == null) {
                 Integer v = null;
                 return expression.ge(repository, name, v);
@@ -321,7 +321,7 @@ public class RepositorySimpleObjectExpression<C extends RepositoryConditionsExpr
      */
     @Override
     public L gt(Object value) {
-        if (LangUtils.isNotEmpty(repository)) {
+        if (Lang.isNotEmpty(repository)) {
             if (value == null) {
                 Integer v = null;
                 return expression.gt(repository, name, v);
@@ -384,7 +384,7 @@ public class RepositorySimpleObjectExpression<C extends RepositoryConditionsExpr
      */
     @Override
     public L sw(String value) {
-        if (LangUtils.isNotEmpty(repository)) {
+        if (Lang.isNotEmpty(repository)) {
             return expression.sw(repository, name, value);
         } else if (repositoryIndex > -1) {
             return expression.sw(repositoryIndex, name, value);
@@ -398,7 +398,7 @@ public class RepositorySimpleObjectExpression<C extends RepositoryConditionsExpr
      */
     @Override
     public L co(String value) {
-        if (LangUtils.isNotEmpty(repository)) {
+        if (Lang.isNotEmpty(repository)) {
             return expression.co(repository, name, value);
         } else if (repositoryIndex > -1) {
             return expression.co(repositoryIndex, name, value);
@@ -412,7 +412,7 @@ public class RepositorySimpleObjectExpression<C extends RepositoryConditionsExpr
      */
     @Override
     public L ew(String value) {
-        if (LangUtils.isNotEmpty(repository)) {
+        if (Lang.isNotEmpty(repository)) {
             return expression.ew(repository, name, value);
         } else if (repositoryIndex > -1) {
             return expression.ew(repositoryIndex, name, value);
@@ -426,7 +426,7 @@ public class RepositorySimpleObjectExpression<C extends RepositoryConditionsExpr
      */
     @Override
     public L isn() {
-        if (LangUtils.isNotEmpty(repository)) {
+        if (Lang.isNotEmpty(repository)) {
             return expression.isn(repository, name);
         } else if (repositoryIndex > -1) {
             return expression.isn(repositoryIndex, name);
@@ -440,7 +440,7 @@ public class RepositorySimpleObjectExpression<C extends RepositoryConditionsExpr
      */
     @Override
     public L inn() {
-        if (LangUtils.isNotEmpty(repository)) {
+        if (Lang.isNotEmpty(repository)) {
             return expression.inn(repository, name);
         } else if (repositoryIndex > -1) {
             return expression.inn(repositoryIndex, name);

@@ -13,7 +13,7 @@ import cn.featherfly.common.bean.BeanUtils;
 import cn.featherfly.common.db.JdbcUtils;
 import cn.featherfly.common.db.metadata.DatabaseMetadata;
 import cn.featherfly.common.db.metadata.DatabaseMetadataManager;
-import cn.featherfly.common.lang.LangUtils;
+import cn.featherfly.common.lang.Lang;
 import cn.featherfly.common.repository.mapping.ClassMapping;
 import cn.featherfly.hammer.sqldb.Constants;
 import cn.featherfly.hammer.sqldb.jdbc.Jdbc;
@@ -74,7 +74,7 @@ public abstract class AbstractOperate<T> {
      * @param dataBase     具体库
      */
     public AbstractOperate(Jdbc jdbc, ClassMapping<T> classMapping, String dataBase) {
-        if (LangUtils.isEmpty(dataBase)) {
+        if (Lang.isEmpty(dataBase)) {
             meta = DatabaseMetadataManager.getDefaultManager().create(jdbc.getDataSource());
         } else {
             meta = DatabaseMetadataManager.getDefaultManager().create(jdbc.getDataSource(), dataBase);

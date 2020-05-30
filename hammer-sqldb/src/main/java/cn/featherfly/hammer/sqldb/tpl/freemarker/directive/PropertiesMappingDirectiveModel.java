@@ -9,7 +9,7 @@ import java.util.Set;
 import cn.featherfly.common.db.Table;
 import cn.featherfly.common.db.mapping.ClassMappingUtils;
 import cn.featherfly.common.db.mapping.JdbcMappingFactory;
-import cn.featherfly.common.lang.LangUtils;
+import cn.featherfly.common.lang.Lang;
 import cn.featherfly.common.lang.WordUtils;
 import cn.featherfly.common.repository.mapping.ClassMapping;
 import cn.featherfly.hammer.tpl.TplException;
@@ -99,7 +99,7 @@ public class PropertiesMappingDirectiveModel extends PropertiesMappingDirective 
 
         ClassMapping<?> classMapping = null;
         if (mappingType == null) {
-            if (LangUtils.isEmpty(nameParam)) {
+            if (Lang.isEmpty(nameParam)) {
                 throw new TplException(
                         "The \"" + paramName + "\" parameter " + "can not be null when result type is not mapped");
             }
@@ -111,7 +111,7 @@ public class PropertiesMappingDirectiveModel extends PropertiesMappingDirective 
         // Do the actual directive execution:
 
         Writer out = env.getOut();
-        final boolean aliasIsEmpty = LangUtils.isEmpty(aliasParam);
+        final boolean aliasIsEmpty = Lang.isEmpty(aliasParam);
         final String alias = aliasParam;
         final StringBuilder result = new StringBuilder();
 

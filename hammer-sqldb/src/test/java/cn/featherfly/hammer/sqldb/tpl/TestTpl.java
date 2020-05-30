@@ -14,7 +14,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.dataformat.yaml.YAMLFactory;
 
 import cn.featherfly.common.lang.ClassLoaderUtils;
-import cn.featherfly.common.lang.LangUtils;
+import cn.featherfly.common.lang.Lang;
 import cn.featherfly.hammer.sqldb.tpl.freemarker.directive.AndTemplateDirectiveModel;
 import cn.featherfly.hammer.sqldb.tpl.freemarker.directive.OrTemplateDirectiveModel;
 import cn.featherfly.hammer.sqldb.tpl.freemarker.directive.WhereTemplateDirectiveModel;
@@ -72,13 +72,13 @@ public class TestTpl {
                 @SuppressWarnings("unchecked")
                 Map<String, Object> map = (Map<String, Object>) v;
                 System.err.println(map);
-                if (LangUtils.isNotEmpty(map.get("query"))) {
+                if (Lang.isNotEmpty(map.get("query"))) {
                     config.setQuery(map.get("query").toString());
                 }
-                if (LangUtils.isNotEmpty(map.get("count"))) {
+                if (Lang.isNotEmpty(map.get("count"))) {
                     config.setCount(map.get("count").toString());
                 }
-                if (LangUtils.isNotEmpty(map.get("type"))) {
+                if (Lang.isNotEmpty(map.get("type"))) {
                     config.setType(TplType.valueOf(map.get("type").toString()));
                 }
             }

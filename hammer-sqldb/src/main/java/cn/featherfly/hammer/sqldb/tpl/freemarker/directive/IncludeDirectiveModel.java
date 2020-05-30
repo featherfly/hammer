@@ -3,7 +3,7 @@ package cn.featherfly.hammer.sqldb.tpl.freemarker.directive;
 import java.io.IOException;
 import java.util.Map;
 
-import cn.featherfly.common.lang.LangUtils;
+import cn.featherfly.common.lang.Lang;
 import cn.featherfly.hammer.tpl.TplConfigFactory;
 import cn.featherfly.hammer.tpl.TplException;
 import cn.featherfly.hammer.tpl.TplExecuteConfig;
@@ -43,7 +43,7 @@ public class IncludeDirectiveModel extends IncludeDirective implements Freemarke
         String id = getId(params);
         @SuppressWarnings("unchecked")
         String file = getFile(params);
-        if (LangUtils.isNotEmpty(file)) {
+        if (Lang.isNotEmpty(file)) {
             includeTemplateName = file + TplConfigFactory.ID_SIGN + id;
         } else {
             TplExecuteId executeId = new TplExecuteIdFileImpl(

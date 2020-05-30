@@ -3,7 +3,7 @@ package cn.featherfly.hammer.sqldb.jdbc.dsl.query;
 
 import cn.featherfly.common.constant.Chars;
 import cn.featherfly.common.db.builder.dml.basic.SqlSelectBasicBuilder;
-import cn.featherfly.common.lang.LangUtils;
+import cn.featherfly.common.lang.Lang;
 import cn.featherfly.common.repository.mapping.ClassMapping;
 import cn.featherfly.common.repository.mapping.MappingFactory;
 import cn.featherfly.common.repository.operate.AggregateFunction;
@@ -120,7 +120,7 @@ public class RepositorySqlQueryExpression extends RepositorySqlQueryConditionGro
             result = selectBuilder.build();
         }
         String condition = super.build();
-        if (LangUtils.isNotEmpty(condition)) {
+        if (Lang.isNotEmpty(condition)) {
             // result = result + Chars.SPACE +
             // jdbc.getDialect().getKeywords().where() + Chars.SPACE +
             // condition;

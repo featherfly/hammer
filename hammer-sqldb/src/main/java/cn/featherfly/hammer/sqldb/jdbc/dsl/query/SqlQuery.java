@@ -2,7 +2,7 @@
 package cn.featherfly.hammer.sqldb.jdbc.dsl.query;
 
 import cn.featherfly.common.db.metadata.DatabaseMetadata;
-import cn.featherfly.common.lang.LangUtils;
+import cn.featherfly.common.lang.Lang;
 import cn.featherfly.common.repository.builder.AliasManager;
 import cn.featherfly.hammer.dsl.query.Query;
 import cn.featherfly.hammer.expression.Repository;
@@ -56,7 +56,7 @@ public class SqlQuery implements Query {
         }
         AliasManager aliasManager = new AliasManager();
         String alias = repository.alias();
-        if (LangUtils.isNotEmpty(alias)) {
+        if (Lang.isNotEmpty(alias)) {
             aliasManager.put(repository.name(), alias);
         } else {
             alias = aliasManager.put(repository.name());

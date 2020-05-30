@@ -10,7 +10,7 @@ import cn.featherfly.common.db.builder.dml.SqlSortBuilder;
 import cn.featherfly.common.db.mapping.ClassMappingUtils;
 import cn.featherfly.common.exception.UnsupportedException;
 import cn.featherfly.common.lang.LambdaUtils;
-import cn.featherfly.common.lang.LangUtils;
+import cn.featherfly.common.lang.Lang;
 import cn.featherfly.common.lang.function.SerializableFunction;
 import cn.featherfly.common.repository.mapping.ClassMapping;
 import cn.featherfly.common.structure.page.Limit;
@@ -90,7 +90,7 @@ public class TypeSqlQueryConditionGroupExpression extends
     public String build() {
         String condition = super.build();
         if (parent == null) {
-            if (LangUtils.isNotEmpty(condition)) {
+            if (Lang.isNotEmpty(condition)) {
                 return dialect.getKeywords().where() + Chars.SPACE + super.build() + Chars.SPACE + sortBuilder.build();
             } else {
                 return super.build() + Chars.SPACE + sortBuilder.build();
