@@ -9,6 +9,8 @@ import javax.sql.DataSource;
 import org.apache.log4j.xml.DOMConfigurator;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.jdbc.datasource.DataSourceTransactionManager;
+import org.springframework.transaction.annotation.EnableTransactionManagement;
 
 import cn.featherfly.common.db.dialect.Dialects;
 import cn.featherfly.common.db.mapping.JdbcMappingFactory;
@@ -33,6 +35,7 @@ import cn.featherfly.hammer.tpl.mapper.DynamicTplExecutorSpringRegistor;
  * @author zhongj
  */
 @Configuration
+@EnableTransactionManagement
 public class Appconfig {
 
     @Bean
@@ -68,6 +71,11 @@ public class Appconfig {
 
         SqldbHammerImpl hammer = new SqldbHammerImpl(jdbc, mappingFactory, configFactory);
         return hammer;
+    }
+
+    @Bean
+    public DataSourceTransactionManager dataSourceTransactionManager(DataSource dataSource) {
+        return new DataSourceTransactionManager(dataSource);
     }
 
     //    @Bean("cacheManager")
