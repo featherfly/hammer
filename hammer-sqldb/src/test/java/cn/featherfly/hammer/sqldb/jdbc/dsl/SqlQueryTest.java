@@ -160,6 +160,16 @@ public class SqlQueryTest extends JdbcTestBase {
     }
 
     @Test
+    void testMapping2() {
+        SqlQuery query = new SqlQuery(jdbc, mappingFactory);
+
+        User user = new User();
+        user.setUsername("yufei");
+        user.setPwd("123456");
+        query.find(User.class).where().eq(user::getUsername).and().eq(user::getPwd).list();
+    }
+
+    @Test
     void testNestedMapping() {
         SqlQuery query = new SqlQuery(jdbc, mappingFactory);
         Integer userId = 1;

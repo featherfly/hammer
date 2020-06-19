@@ -10,7 +10,7 @@ import java.util.Map;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
-import cn.featherfly.common.lang.RandomUtils;
+import cn.featherfly.common.lang.Randoms;
 import cn.featherfly.common.structure.HashChainMap;
 import cn.featherfly.common.structure.page.PaginationResults;
 import cn.featherfly.common.structure.page.SimplePagination;
@@ -298,8 +298,8 @@ public class SqlTplExecutorTest extends JdbcTestBase {
 
     @Test
     void testInsertUpdateDelete() {
-        String name = "name_insert_" + RandomUtils.getRandomString(6);
-        String descp = "descp_" + RandomUtils.getRandomString(6);
+        String name = "name_insert_" + Randoms.getString(6);
+        String descp = "descp_" + Randoms.getString(6);
         int i = executor.execute("insertRole",
                 new HashChainMap<String, Object>().putChain("name", name).putChain("descp", descp));
         assertTrue(i == 1);
@@ -308,7 +308,7 @@ public class SqlTplExecutorTest extends JdbcTestBase {
         assertEquals(role.getName(), name);
         assertEquals(role.getDescp(), descp);
 
-        descp = "descp_" + RandomUtils.getRandomString(6);
+        descp = "descp_" + Randoms.getString(6);
         i = executor.execute("updateRoleByName",
                 new HashChainMap<String, Object>().putChain("name", name).putChain("descp", descp));
         assertTrue(i == 1);

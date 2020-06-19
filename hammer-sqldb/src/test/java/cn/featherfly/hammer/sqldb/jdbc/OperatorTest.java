@@ -11,7 +11,7 @@ import java.util.List;
 
 import org.testng.annotations.Test;
 
-import cn.featherfly.common.lang.RandomUtils;
+import cn.featherfly.common.lang.Randoms;
 import cn.featherfly.hammer.sqldb.jdbc.operate.DeleteOperate;
 import cn.featherfly.hammer.sqldb.jdbc.operate.GetOperate;
 import cn.featherfly.hammer.sqldb.jdbc.operate.InsertOperate;
@@ -128,8 +128,8 @@ public class OperatorTest extends JdbcTestBase {
                 mappingFactory.getMetadata());
         Role r = new Role();
         r.setId(10);
-        r.setName("name_update_" + RandomUtils.getRandomInt(99));
-        r.setDescp("descp_update_" + RandomUtils.getRandomInt(99));
+        r.setName("name_update_" + Randoms.getInt(99));
+        r.setDescp("descp_update_" + Randoms.getInt(99));
         update.execute(r);
 
         Role role = get.get(r);
@@ -149,8 +149,8 @@ public class OperatorTest extends JdbcTestBase {
         UserRole userRole = new UserRole();
         userRole.setRoleId(3);
         userRole.setUserId(3);
-        userRole.setDescp("descp_update_" + RandomUtils.getRandomInt(99));
-        userRole.setDescp2("descp2_update_" + RandomUtils.getRandomInt(99));
+        userRole.setDescp("descp_update_" + Randoms.getInt(99));
+        userRole.setDescp2("descp2_update_" + Randoms.getInt(99));
         update.execute(userRole);
 
         UserRole ur = get.get(userRole);

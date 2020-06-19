@@ -10,7 +10,7 @@ import java.util.Map;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
 
-import cn.featherfly.common.lang.RandomUtils;
+import cn.featherfly.common.lang.Randoms;
 import cn.featherfly.common.structure.page.Page;
 import cn.featherfly.common.structure.page.PaginationResults;
 import cn.featherfly.common.structure.page.SimplePagination;
@@ -42,7 +42,7 @@ public class SqlTplDynamicExecutorTest3 extends JdbcTestBase {
     void testSave() {
         User user = new User();
         user.setAge(100);
-        user.setUsername("username_" + RandomUtils.getRandomString(5));
+        user.setUsername("username_" + Randoms.getString(5));
         userMapper.save(user);
 
         User u = userMapper.get(user.getId());

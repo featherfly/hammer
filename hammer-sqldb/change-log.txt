@@ -1,8 +1,11 @@
 TODO dsl的链式调用需要使用链表结构重构实现内容
 
-2020
+2020-6-30
 0.4.5
-    1.兼容性升级，LangUtils修改为Lang，StringUtils修改为Strings
+    1.所有参数为SerializableFunction, Value的方法加入同名参数为的SerializableSupplier方法
+    2.部分参数为SerializableFunction更改为各种ReturnXXXFunction
+    3.兼容性升级，LangUtils修改为Lang，StringUtils修改为Strings
+    4.升级依赖包
 
 2020-5-23
 0.4.4
