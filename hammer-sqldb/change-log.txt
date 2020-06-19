@@ -3,6 +3,7 @@ TODO dsl的链式调用需要使用链表结构重构实现内容
 2020
 0.4.5
     1.兼容性升级，LangUtils修改为Lang，StringUtils修改为Strings
+    2.升级依赖包
 
 2020-5-23
 0.4.4
