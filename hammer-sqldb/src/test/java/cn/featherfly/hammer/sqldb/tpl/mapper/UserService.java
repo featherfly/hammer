@@ -13,7 +13,7 @@ import org.springframework.transaction.annotation.Transactional;
 import cn.featherfly.common.db.JdbcException;
 import cn.featherfly.common.db.JdbcUtils;
 import cn.featherfly.common.lang.ArrayUtils;
-import cn.featherfly.common.lang.RandomUtils;
+import cn.featherfly.common.lang.Randoms;
 import cn.featherfly.hammer.sqldb.jdbc.vo.User;
 import cn.featherfly.hammer.sqldb.tpl.UserMapper3;
 
@@ -37,7 +37,7 @@ public class UserService {
     public void saveBatch(User... users) {
         ArrayUtils.each(users, (a, i) -> {
             userMapper.save(a);
-            insert(RandomUtils.getRandomString(10), RandomUtils.getRandomString(6), RandomUtils.getRandomInt(4));
+            insert(Randoms.getString(10), Randoms.getString(6), Randoms.getInt(4));
             if (i > 1) {
                 throw new RuntimeException("test transaction , i = " + i);
             }
