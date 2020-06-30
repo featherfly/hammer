@@ -2,6 +2,7 @@
 package cn.featherfly.hammer.expression.condition;
 
 import cn.featherfly.common.lang.function.SerializableFunction;
+import cn.featherfly.common.lang.function.SerializableSupplier;
 
 /**
  * <p>
@@ -35,5 +36,14 @@ public interface NotInExpression<C extends ConditionExpression, L extends LogicE
      * @return LogicExpression
      */
     <T, R> L nin(SerializableFunction<T, R> name, Object value);
+
+    /**
+     * 不包含指定，sql中的not in.
+     *
+     * @param <R>      the generic type
+     * @param property 对象属性
+     * @return LogicExpression
+     */
+    <R> L nin(SerializableSupplier<R> property);
 
 }

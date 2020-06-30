@@ -2,6 +2,7 @@
 package cn.featherfly.hammer.expression.condition;
 
 import cn.featherfly.common.lang.function.SerializableFunction;
+import cn.featherfly.common.lang.function.SerializableSupplier;
 
 /**
  * <p>
@@ -35,4 +36,13 @@ public interface InExpression<C extends ConditionExpression, L extends LogicExpr
      * @return LogicExpression
      */
     <T, R> L in(SerializableFunction<T, R> name, Object value);
+
+    /**
+     * 包含指定，sql中的in.
+     *
+     * @param <R>      the generic type
+     * @param property 对象属性
+     * @return LogicExpression
+     */
+    <R> L in(SerializableSupplier<R> property);
 }

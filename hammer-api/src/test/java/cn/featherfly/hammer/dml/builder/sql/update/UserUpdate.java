@@ -2,6 +2,7 @@
 package cn.featherfly.hammer.dml.builder.sql.update;
 
 import cn.featherfly.common.lang.function.SerializableFunction;
+import cn.featherfly.common.lang.function.SerializableSupplier;
 import cn.featherfly.hammer.dml.builder.sql.query.UserQueryConditionGroupExpression;
 import cn.featherfly.hammer.expression.execute.SetExecutableUpdateExpression;
 
@@ -128,6 +129,24 @@ public class UserUpdate implements UserPropertiesUpdate,
      */
     @Override
     public <T, R extends Number, N extends Number> UserUpdate increase(SerializableFunction<T, R> name, N value) {
+        // YUFEI_TODO Auto-generated method stub
+        return null;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public <R> UserUpdate set(SerializableSupplier<R> property) {
+        // YUFEI_TODO Auto-generated method stub
+        return null;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public <N extends Number> UserUpdate increase(SerializableSupplier<N> property) {
         // YUFEI_TODO Auto-generated method stub
         return null;
     }

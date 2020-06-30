@@ -14,7 +14,7 @@ import org.springframework.test.context.testng.AbstractTestNGSpringContextTests;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
 
-import cn.featherfly.common.lang.RandomUtils;
+import cn.featherfly.common.lang.Randoms;
 import cn.featherfly.hammer.sqldb.jdbc.vo.User;
 import cn.featherfly.hammer.sqldb.jdbc.vo.UserInfo;
 import cn.featherfly.hammer.sqldb.tpl.UserMapper;
@@ -98,9 +98,9 @@ public class TplDynamicExecutorSpringRegistorTest extends AbstractTestNGSpringCo
         List<User> list = new ArrayList<>();
         for (int i = 0; i < 3; i++) {
             User u = new User();
-            u.setUsername("rollback_" + RandomUtils.getRandomString(6));
-            u.setPwd(RandomUtils.getRandomString(6));
-            u.setAge(RandomUtils.getRandomInt(40));
+            u.setUsername("rollback_" + Randoms.getString(6));
+            u.setPwd(Randoms.getString(6));
+            u.setAge(Randoms.getInt(40));
             list.add(u);
         }
         userService.saveBatch(list.toArray(new User[list.size()]));

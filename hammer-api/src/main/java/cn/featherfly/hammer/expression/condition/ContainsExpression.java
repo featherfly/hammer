@@ -1,7 +1,8 @@
 
 package cn.featherfly.hammer.expression.condition;
 
-import cn.featherfly.common.lang.function.SerializableFunction;
+import cn.featherfly.common.lang.function.ReturnStringFunction;
+import cn.featherfly.common.lang.function.StringSupplier;
 
 /**
  * <p>
@@ -29,10 +30,17 @@ public interface ContainsExpression<C extends ConditionExpression, L extends Log
      * 包含value.
      *
      * @param <T>   the generic type
-     * @param <R>   the generic type
      * @param name  参数名称
      * @param value 参数值
      * @return LogicExpression
      */
-    <T, R> L co(SerializableFunction<T, R> name, String value);
+    <T> L co(ReturnStringFunction<T> name, String value);
+
+    /**
+     * 包含value.
+     *
+     * @param property 对象属性
+     * @return LogicExpression
+     */
+    L co(StringSupplier property);
 }

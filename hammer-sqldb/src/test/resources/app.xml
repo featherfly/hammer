@@ -17,12 +17,12 @@
 		base-package="cn.featherfly.hammer" />
 	<cache:annotation-driven proxy-target-class="true"/>
 	
-	<bean id="dataSource" class="org.apache.commons.dbcp.BasicDataSource">
-	   <property name="url" value="jdbc:mysql://127.0.0.1:3306/hammer_jdbc"/>
-	   <property name="driverClassName" value="com.mysql.jdbc.Driver"/>
-	   <property name="username" value="root"/>
-	   <property name="password" value="123456"/>
-	</bean>
+<!-- 	<bean id="dataSource" class="org.apache.commons.dbcp.BasicDataSource"> -->
+<!-- 	   <property name="url" value="jdbc:mysql://127.0.0.1:3306/hammer_jdbc?serverTimezone=UTC&characterEncoding=utf8&useUnicode=true&useSSL=false"/> -->
+<!-- 	   <property name="driverClassName" value="com.mysql.jdbc.Driver"/> -->
+<!-- 	   <property name="username" value="root"/> -->
+<!-- 	   <property name="password" value="123456"/> -->
+<!-- 	</bean> -->
 	
 	
 	<bean id="ehcacheManager" class="org.springframework.cache.ehcache.EhCacheManagerFactoryBean">

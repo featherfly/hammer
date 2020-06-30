@@ -2,6 +2,7 @@
 package cn.featherfly.hammer.expression.condition;
 
 import cn.featherfly.common.lang.function.SerializableFunction;
+import cn.featherfly.common.lang.function.SerializableSupplier;
 
 /**
  * <p>
@@ -35,4 +36,13 @@ public interface NotEqualsExpression<C extends ConditionExpression, L extends Lo
      * @return LogicExpression
      */
     <T, R> L ne(SerializableFunction<T, R> name, Object value);
+
+    /**
+     * not equals.不等于
+     *
+     * @param <R>      the generic type
+     * @param property 对象属性
+     * @return LogicExpression
+     */
+    <R> L ne(SerializableSupplier<R> property);
 }
