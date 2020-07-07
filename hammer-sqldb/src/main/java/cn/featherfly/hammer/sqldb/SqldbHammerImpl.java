@@ -143,6 +143,9 @@ public class SqldbHammerImpl implements SqldbHammer {
      */
     @Override
     public <E> int save(List<E> entities) {
+        if (Lang.isEmpty(entities)) {
+            return 0;
+        }
         InsertOperate<E> insert = null;
         if (jdbc.getDialect().isInsertBatch() && jdbc.getDialect().isAutoGenerateKeyBatch()) {
             for (E entity : entities) {
