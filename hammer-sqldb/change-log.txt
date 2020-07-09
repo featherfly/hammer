@@ -1,5 +1,10 @@
 TODO dsl的链式调用需要使用链表结构重构实现内容
 
+2020
+0.4.6
+    1.修复save(List) list.size = 0 时的空指针异常
+    
+    
 2020-6-30
 0.4.5
     1.所有参数为SerializableFunction, Value的方法加入同名参数为的SerializableSupplier方法
