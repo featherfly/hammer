@@ -83,6 +83,19 @@ public class TplDynamicExecutorFactory {
      * @throws CannotCompileException CannotCompileException
      */
     public String create(Class<?> type) throws NotFoundException, CannotCompileException {
+        return create(type, null);
+    }
+
+    /**
+     * create mapper interface implemented class.
+     *
+     * @param type        configuration interface class
+     * @param classLoader the class loader
+     * @return implemented class name
+     * @throws NotFoundException      NotFoundException
+     * @throws CannotCompileException CannotCompileException
+     */
+    public String create(Class<?> type, ClassLoader classLoader) throws NotFoundException, CannotCompileException {
         String dynamicClassName = type.getPackage().getName() + "._" + type.getSimpleName() + "DynamicImpl";
         if (!types.contains(type)) {
             String globalNamespace = getNamespace(type);
@@ -127,7 +140,7 @@ public class TplDynamicExecutorFactory {
 
             addImplMethods(type, globalNamespace, pool, dynamicImplClass, hammerFieldName);
 
-            dynamicImplClass.toClass();
+            dynamicImplClass.toClass(classLoader, dynamicImplClass.getClass().getProtectionDomain());
             dynamicImplClass.detach();
             types.add(type);
         }

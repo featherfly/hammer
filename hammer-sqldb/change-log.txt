@@ -1,9 +1,10 @@
 TODO dsl的链式调用需要使用链表结构重构实现内容
 TODO 所有的数据库操作，都应该使用SqlTypeMappingManager来进行数据转换操作
 
-2020
+2020-7-14
 0.4.6
     1.修复save(List) list.size = 0 时的空指针异常
+    2.修复javassit动态创建Mapper在spring boot中出错的问题
     
     
 2020-6-30
