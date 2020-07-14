@@ -1,5 +1,6 @@
 TODO dsl的链式调用需要使用链表结构重构实现内容
 TODO 所有的数据库操作，都应该使用SqlTypeMappingManager来进行数据转换操作
+TODO @Mapper(namespace = "xx/xx") 标注在类上，不进行文件查找，只有当有Template时，才进行文件查找，减少不必要的错误提示
 
 2020-7-14
 0.4.6
