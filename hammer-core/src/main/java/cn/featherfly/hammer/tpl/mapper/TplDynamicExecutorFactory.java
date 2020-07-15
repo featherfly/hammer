@@ -176,7 +176,8 @@ public class TplDynamicExecutorFactory {
             String body = null;
 
             CtMethod ctMethod;
-            if (isImplementMethod(parentHammer, method)) {
+            Method parentMethod = getMethodFromParent(parentHammer, method);
+            if (parentMethod != null) {
                 String returnStr = "";
                 if (method.getReturnType() != void.class) {
                     returnStr = "return";
@@ -302,19 +303,31 @@ public class TplDynamicExecutorFactory {
             logger.debug("method {} -> {}", method.getName(), body);
             ctMethod.setBody(body);
             dynamicImplClass.addMethod(ctMethod);
+
+            if (parentMethod != null && method.getReturnType() != parentMethod.getReturnType()) {
+                logger.debug("method {} -> {}", method.getName(), body);
+                ctMethod = new CtMethod(pool.getCtClass(parentMethod.getReturnType().getTypeName()),
+                        parentMethod.getName(), ctParamTypes, dynamicImplClass);
+                ctMethod.setBody(body);
+                dynamicImplClass.addMethod(ctMethod);
+            }
+        }
+    }
+
+    private Method getMethodFromParent(Class<?> parentHammer, Method method) {
+        // FIXME 这里还没有处理泛型参数问题
+        if (parentHammer == null) {
+            return null;
+        }
+        try {
+            return parentHammer.getMethod(method.getName(), method.getParameterTypes());
+        } catch (NoSuchMethodException e) {
+            return null;
         }
     }
 
     private boolean isImplementMethod(Class<?> parentHammer, Method method) {
-        // FIXME 这里还没有处理泛型参数问题
-        if (parentHammer == null) {
-            return false;
-        }
-        try {
-            return parentHammer.getMethod(method.getName(), method.getParameterTypes()) != null;
-        } catch (NoSuchMethodException e) {
-            return false;
-        }
+        return getMethodFromParent(parentHammer, method) != null;
     }
 
     /**
