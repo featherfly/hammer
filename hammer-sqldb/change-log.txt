@@ -1,9 +1,10 @@
 TODO dsl的链式调用需要使用链表结构重构实现内容
 TODO 所有的数据库操作，都应该使用SqlTypeMappingManager来进行数据转换操作
 
-2020
+2020-7-15
 0.4.7
     1.修复自定义Mapper接口覆盖了GenericHammer，Hammer接口定义的方法，没有继承来默认实现的问题（目前只是先了方法不带泛型的接口，后续实现带泛型的）
+    2.加入JdbcImpl，临时实现，后续会剔除对SpringJdbcTemplateImpl的继承
     
 2020-7-14
 0.4.6
