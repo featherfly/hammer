@@ -99,7 +99,7 @@ public class JdbcImpl extends SpringJdbcTemplateImpl {
 
     private void setParams(PreparedStatement prep, Object... args) {
         for (int i = 0; i < args.length; i++) {
-            manager.set(prep, i, args[i]);
+            manager.set(prep, i + 1, args[i]);
         }
     }
 
@@ -107,23 +107,4 @@ public class JdbcImpl extends SpringJdbcTemplateImpl {
         return DataSourceUtils.getConnection(dataSource);
     }
 
-    /**
-     * 设置dataSource
-     *
-     * @param dataSource dataSource
-     */
-    @Override
-    public void setDataSource(DataSource dataSource) {
-        this.dataSource = dataSource;
-    }
-
-    /**
-     * 设置dialect
-     *
-     * @param dialect dialect
-     */
-    @Override
-    public void setDialect(Dialect dialect) {
-        this.dialect = dialect;
-    }
 }
