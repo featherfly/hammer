@@ -88,7 +88,8 @@ public class JdbcImpl extends SpringJdbcTemplateImpl {
     }
 
     private int executeUpdate(String sql, Object... args) {
-        try (Connection connection = getConnection(); PreparedStatement prep = connection.prepareStatement(sql)) {
+        Connection connection = getConnection();
+        try (PreparedStatement prep = connection.prepareStatement(sql)) {
             Constants.LOGGER.debug("sql -> {}, args -> {}", sql, ArrayUtils.toString(args));
             setParams(prep, args);
             return prep.executeUpdate();
