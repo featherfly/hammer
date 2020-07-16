@@ -65,7 +65,7 @@ public class JdbcImpl extends SpringJdbcTemplateImpl {
         Constants.LOGGER.debug("sql -> {}, args -> {}", sql, args);
         if (Lang.isNotEmpty(sql)) {
             sql = sql.trim();
-            executeUpdate(sql, args);
+            return executeUpdate(sql, args);
         }
         return 0;
     }
@@ -78,7 +78,7 @@ public class JdbcImpl extends SpringJdbcTemplateImpl {
         Constants.LOGGER.debug("sql -> {}, args -> {}", sql, args);
         if (Lang.isNotEmpty(sql)) {
             sql = sql.trim();
-            executeUpdate(SqlUtils.convertNamedParamSql(sql, args));
+            return executeUpdate(SqlUtils.convertNamedParamSql(sql, args));
         }
         return 0;
     }
