@@ -5,7 +5,7 @@ FIXME Mapper参数是原始类型（int,long）会出现错误，需要在生成
 FIXME query().where().eq(Machine::isAdvertised, advertised).and().co(Machine::getSearchText, searchText).limit(30).list()
       如果 advertised和 searchText都为null,则生成sql有问题，where and 都加进来了
 
-2020
+2020-7-16
 0.4.7
     1.修复自定义Mapper接口覆盖了GenericHammer，Hammer接口定义的方法，没有继承来默认实现的问题（目前只是先了方法不带泛型的接口，后续实现带泛型的）
     2.加入JdbcImpl，临时实现，后续会剔除对SpringJdbcTemplateImpl的继承
