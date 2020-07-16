@@ -11,6 +11,7 @@ import java.util.Map;
 
 import org.testng.annotations.Test;
 
+import cn.featherfly.common.lang.Strings;
 import cn.featherfly.common.structure.page.PaginationResults;
 import cn.featherfly.hammer.expression.SimpleRepository;
 import cn.featherfly.hammer.sqldb.SqldbHammerException;
@@ -30,6 +31,19 @@ import cn.featherfly.hammer.sqldb.jdbc.vo.UserRole2;
  * @author zhongj
  */
 public class SqlQueryTest extends JdbcTestBase {
+
+    @Test
+    void testNull() {
+        SqlQuery query = new SqlQuery(jdbc, metadata);
+        List<Map<String, Object>> list = query.find("user").where().eq("a", null).and().eq("b", null).and()
+                .sw("username", "yufei").and().eq("d", null).list();
+        for (Map<String, Object> map : list) {
+            String username = (String) map.get("username");
+            System.err.println(username);
+            assertTrue(Strings.startsWith(username, "yufei"));
+        }
+
+    }
 
     @Test
     void test0() {

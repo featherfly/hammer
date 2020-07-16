@@ -17,6 +17,7 @@ import cn.featherfly.common.lang.function.SerializableFunction;
 import cn.featherfly.common.repository.builder.BuilderException;
 import cn.featherfly.common.repository.builder.BuilderExceptionCode;
 import cn.featherfly.hammer.expression.condition.Expression;
+import cn.featherfly.hammer.expression.condition.LogicOperatorExpression;
 import cn.featherfly.hammer.expression.condition.ParamedExpression;
 
 /**
@@ -52,7 +53,8 @@ public abstract class AbstractSqlConditionExpression<L> implements SqlBuilder, P
         StringBuilder result = new StringBuilder();
         if (conditions.size() > 0) {
             Expression last = conditions.get(conditions.size() - 1);
-            if (last instanceof SqlLogicExpression) {
+            //            if (last instanceof SqlLogicExpression) {
+            if (last instanceof LogicOperatorExpression) {
                 //                throw new BuilderException(((SqlLogicExpression) last).getLogicOperator() + " 后没有跟条件表达式");
                 throw new BuilderException(BuilderExceptionCode
                         .createNoConditionBehindCode(((SqlLogicExpression) last).getLogicOperator().name()));
@@ -70,7 +72,8 @@ public abstract class AbstractSqlConditionExpression<L> implements SqlBuilder, P
             } else {
                 if (availableExpressions.size() > 0) {
                     Expression pre = availableExpressions.get(availableExpressions.size() - 1);
-                    if (pre instanceof SqlLogicExpression) {
+                    //                    if (pre instanceof SqlLogicExpression) {
+                    if (pre instanceof LogicOperatorExpression) {
                         availableExpressions.remove(availableExpressions.size() - 1);
                         availableConditions.remove(availableConditions.size() - 1);
                     }
@@ -79,11 +82,11 @@ public abstract class AbstractSqlConditionExpression<L> implements SqlBuilder, P
         }
 
         if (availableExpressions.size() > 0) {
-            if (availableExpressions.get(0) instanceof SqlLogicExpression) {
+            if (availableExpressions.get(0) instanceof LogicOperatorExpression) {
                 availableExpressions.remove(0);
                 availableConditions.remove(0);
             }
-            if (availableExpressions.get(availableExpressions.size() - 1) instanceof SqlLogicExpression) {
+            if (availableExpressions.get(availableExpressions.size() - 1) instanceof LogicOperatorExpression) {
                 availableExpressions.remove(availableExpressions.size() - 1);
                 availableConditions.remove(availableConditions.size() - 1);
             }
