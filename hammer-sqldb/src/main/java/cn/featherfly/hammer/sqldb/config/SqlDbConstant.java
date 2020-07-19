@@ -3,6 +3,10 @@ package cn.featherfly.hammer.sqldb.config;
 
 import javax.sql.DataSource;
 
+import cn.featherfly.common.db.dialect.Dialect;
+import cn.featherfly.common.db.dialect.Dialects;
+import cn.featherfly.common.db.mapping.JdbcMappingFactory;
+import cn.featherfly.common.db.mapping.JdbcMappingFactoryImpl;
 import cn.featherfly.common.db.metadata.DatabaseMetadata;
 import cn.featherfly.common.db.metadata.DatabaseMetadataManager;
 import cn.featherfly.constant.annotation.Constant;
@@ -10,9 +14,6 @@ import cn.featherfly.constant.annotation.ConstantClass;
 import cn.featherfly.hammer.config.HammerConstant;
 import cn.featherfly.hammer.sqldb.jdbc.Jdbc;
 import cn.featherfly.hammer.sqldb.jdbc.SpringJdbcTemplateImpl;
-import cn.featherfly.common.db.mapping.JdbcMappingFactory;
-import cn.featherfly.common.db.dialect.Dialect;
-import cn.featherfly.common.db.dialect.Dialects;
 import cn.featherfly.hammer.sqldb.tpl.SqlDbTemplateEngine;
 
 /**
@@ -77,7 +78,7 @@ public class SqlDbConstant extends HammerConstant {
         if (mappingFactory == null) {
             synchronized (this) {
                 if (mappingFactory == null && getMetadata() != null) {
-                    mappingFactory = new JdbcMappingFactory(getMetadata(), getDialect());
+                    mappingFactory = new JdbcMappingFactoryImpl(getMetadata(), getDialect());
                 }
             }
         }
