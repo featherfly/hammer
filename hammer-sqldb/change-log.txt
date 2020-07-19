@@ -1,9 +1,7 @@
 TODO dsl的链式调用需要使用链表结构重构实现内容
-TODO 所有的数据库操作，都应该使用SqlTypeMappingManager来进行数据转换操作
-
+TODO 所有的数据库操作，都应该使用SqlTypeMappingManager来进行数据转换操作，为了实现自定义类型的存储和读取
+                    目前dsl的update,delete,orm的save,update,delete都已经实现，差查询实现
 FIXME Mapper参数是原始类型（int,long）会出现错误，需要在生成的类内部转换为包装类型
-FIXME query().where().eq(Machine::isAdvertised, advertised).and().co(Machine::getSearchText, searchText).limit(30).list()
-      如果 advertised和 searchText都为null,则生成sql有问题，where and 都加进来了
 
 2020-7-16
 0.4.7
