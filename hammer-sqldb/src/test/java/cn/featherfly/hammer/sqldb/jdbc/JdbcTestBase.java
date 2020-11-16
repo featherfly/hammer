@@ -13,6 +13,7 @@ import org.testng.annotations.Parameters;
 import cn.featherfly.common.db.SqlExecutor;
 import cn.featherfly.common.db.dialect.Dialects;
 import cn.featherfly.common.db.mapping.JdbcMappingFactory;
+import cn.featherfly.common.db.mapping.JdbcMappingFactoryImpl;
 import cn.featherfly.common.db.metadata.DatabaseMetadata;
 import cn.featherfly.common.db.metadata.DatabaseMetadataManager;
 import cn.featherfly.common.lang.ClassLoaderUtils;
@@ -94,7 +95,7 @@ public class JdbcTestBase {
         jdbc = new SpringJdbcTemplateImpl(dataSource, Dialects.MYSQL);
         metadata = DatabaseMetadataManager.getDefaultManager().create(dataSource);
 
-        mappingFactory = new JdbcMappingFactory(metadata, Dialects.MYSQL);
+        mappingFactory = new JdbcMappingFactoryImpl(metadata, Dialects.MYSQL);
 
         // factory.getClassNameConversions().add(new ClassNameJpaConversion());
         // factory.getClassNameConversions().add(new
@@ -131,7 +132,7 @@ public class JdbcTestBase {
         jdbc = new SpringJdbcTemplateImpl(dataSource, Dialects.POSTGRESQL);
         metadata = DatabaseMetadataManager.getDefaultManager().create(dataSource);
 
-        mappingFactory = new JdbcMappingFactory(metadata, Dialects.POSTGRESQL);
+        mappingFactory = new JdbcMappingFactoryImpl(metadata, Dialects.POSTGRESQL);
 
         configFactory = new TplConfigFactoryImpl("tpl/");
     }
@@ -157,7 +158,7 @@ public class JdbcTestBase {
         jdbc = new SpringJdbcTemplateImpl(dataSource, Dialects.SQLITE);
         metadata = DatabaseMetadataManager.getDefaultManager().create(dataSource, "main");
 
-        mappingFactory = new JdbcMappingFactory(metadata, Dialects.SQLITE);
+        mappingFactory = new JdbcMappingFactoryImpl(metadata, Dialects.SQLITE);
 
         configFactory = new TplConfigFactoryImpl("tpl/");
     }
