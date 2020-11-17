@@ -11,12 +11,13 @@ import cn.featherfly.common.db.builder.SqlBuilder;
 import cn.featherfly.common.db.builder.dml.SqlLogicExpression;
 import cn.featherfly.common.db.dialect.Dialect;
 import cn.featherfly.common.lang.LambdaUtils;
-import cn.featherfly.common.lang.LangUtils;
-import cn.featherfly.common.lang.StringUtils;
+import cn.featherfly.common.lang.Lang;
+import cn.featherfly.common.lang.Strings;
 import cn.featherfly.common.lang.function.SerializableFunction;
 import cn.featherfly.common.repository.builder.BuilderException;
 import cn.featherfly.common.repository.builder.BuilderExceptionCode;
 import cn.featherfly.hammer.expression.condition.Expression;
+import cn.featherfly.hammer.expression.condition.LogicOperatorExpression;
 import cn.featherfly.hammer.expression.condition.ParamedExpression;
 
 /**
@@ -52,7 +53,8 @@ public abstract class AbstractSqlConditionExpression<L> implements SqlBuilder, P
         StringBuilder result = new StringBuilder();
         if (conditions.size() > 0) {
             Expression last = conditions.get(conditions.size() - 1);
-            if (last instanceof SqlLogicExpression) {
+            //            if (last instanceof SqlLogicExpression) {
+            if (last instanceof LogicOperatorExpression) {
                 //                throw new BuilderException(((SqlLogicExpression) last).getLogicOperator() + " 后没有跟条件表达式");
                 throw new BuilderException(BuilderExceptionCode
                         .createNoConditionBehindCode(((SqlLogicExpression) last).getLogicOperator().name()));
@@ -64,13 +66,14 @@ public abstract class AbstractSqlConditionExpression<L> implements SqlBuilder, P
         for (Expression expression : conditions) {
             // String condition = expression.build();
             String condition = expression.expression();
-            if (StringUtils.isNotBlank(condition)) {
+            if (Strings.isNotBlank(condition)) {
                 availableConditions.add(condition);
                 availableExpressions.add(expression);
             } else {
                 if (availableExpressions.size() > 0) {
                     Expression pre = availableExpressions.get(availableExpressions.size() - 1);
-                    if (pre instanceof SqlLogicExpression) {
+                    //                    if (pre instanceof SqlLogicExpression) {
+                    if (pre instanceof LogicOperatorExpression) {
                         availableExpressions.remove(availableExpressions.size() - 1);
                         availableConditions.remove(availableConditions.size() - 1);
                     }
@@ -79,11 +82,11 @@ public abstract class AbstractSqlConditionExpression<L> implements SqlBuilder, P
         }
 
         if (availableExpressions.size() > 0) {
-            if (availableExpressions.get(0) instanceof SqlLogicExpression) {
+            if (availableExpressions.get(0) instanceof LogicOperatorExpression) {
                 availableExpressions.remove(0);
                 availableConditions.remove(0);
             }
-            if (availableExpressions.get(availableExpressions.size() - 1) instanceof SqlLogicExpression) {
+            if (availableExpressions.get(availableExpressions.size() - 1) instanceof LogicOperatorExpression) {
                 availableExpressions.remove(availableExpressions.size() - 1);
                 availableConditions.remove(availableConditions.size() - 1);
             }
@@ -120,7 +123,7 @@ public abstract class AbstractSqlConditionExpression<L> implements SqlBuilder, P
         for (Expression condition : conditions) {
             if (condition instanceof ParamedExpression) {
                 Object param = ((ParamedExpression) condition).getParam();
-                if (LangUtils.isNotEmpty(param)) {
+                if (Lang.isNotEmpty(param)) {
                     if (param instanceof Collection) {
                         params.addAll((Collection<?>) param);
                     } else if (param.getClass().isArray()) {

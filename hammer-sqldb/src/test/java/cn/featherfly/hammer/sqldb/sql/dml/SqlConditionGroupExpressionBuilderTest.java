@@ -46,6 +46,35 @@ public class SqlConditionGroupExpressionBuilderTest extends JdbcTestBase {
 
         assertEquals("`name` = ? AND `pwd` = ? AND ( `sex` = ? OR `age` > ? )", builder.build());
         assertEquals(params, builder.getParams());
+    }
+
+    @Test
+    public void testSqlConditionGroupExpressionBuilderEmptyParam() {
+        SqlConditionGroupExpressionBuilder builder = new SqlConditionGroupExpressionBuilder(Dialects.MYSQL);
+        Integer a = null;
+
+        builder.eq("name", name).and().eq("pwd", null).and().eq("sex", sex).or().gt("age", a);
+
+        System.out.println(builder.build());
+        System.out.println(builder.getParams());
+
+        assertEquals("`name` = ? AND `sex` = ?", builder.build());
+        //        assertEquals(params, builder.getParams());
+
+        builder = new SqlConditionGroupExpressionBuilder(Dialects.MYSQL);
+        builder.eq("name", name).and().eq("pwd", null).and().eq("sex", null).and().gt("age", a);
+
+        System.out.println(builder.build());
+        System.out.println(builder.getParams());
+        assertEquals("`name` = ?", builder.build());
+        //        assertEquals(params, builder.getParams());
+
+        builder = new SqlConditionGroupExpressionBuilder(Dialects.MYSQL);
+        builder.eq("name", null).and().eq("pwd", "1234").and().eq("sex", null).and().gt("age", a);
+
+        System.out.println(builder.build());
+        System.out.println(builder.getParams());
+        //        assertEquals("`name` = ?", builder.build());
 
     }
 }

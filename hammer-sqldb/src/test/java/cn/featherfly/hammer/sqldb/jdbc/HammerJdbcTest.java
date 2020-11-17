@@ -12,7 +12,7 @@ import java.util.List;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
 
-import cn.featherfly.common.lang.RandomUtils;
+import cn.featherfly.common.lang.Randoms;
 import cn.featherfly.common.structure.page.PaginationResults;
 import cn.featherfly.hammer.Hammer;
 import cn.featherfly.hammer.sqldb.SqldbHammerImpl;
@@ -119,7 +119,7 @@ public class HammerJdbcTest extends JdbcTestBase {
         assertNull(role);
 
         r = role();
-        r.setName("name_" + RandomUtils.getRandomInt(100));
+        r.setName("name_" + Randoms.getInt(100));
         hammer.save(r);
         assertNotNull(r.getId());
 
@@ -136,8 +136,8 @@ public class HammerJdbcTest extends JdbcTestBase {
     @Test
     public void testSave2() {
         Article a = new Article();
-        a.setTitle("title_" + RandomUtils.getRandomInt(100));
-        a.setContent("content_" + RandomUtils.getRandomInt(1000));
+        a.setTitle("title_" + Randoms.getInt(100));
+        a.setContent("content_" + Randoms.getInt(1000));
         hammer.save(a);
         assertNotNull(a.getId());
 
@@ -151,8 +151,8 @@ public class HammerJdbcTest extends JdbcTestBase {
     public void testSave3() {
         UserInfo ui = new UserInfo();
         ui.setUser(new User(1));
-        ui.setDescp("descp_" + RandomUtils.getRandomInt(100));
-        ui.setName("name_" + RandomUtils.getRandomInt(100));
+        ui.setDescp("descp_" + Randoms.getInt(100));
+        ui.setName("name_" + Randoms.getInt(100));
         ui.setDivision(new DistrictDivision("四川", "成都", "高新"));
         hammer.save(ui);
 
@@ -194,10 +194,10 @@ public class HammerJdbcTest extends JdbcTestBase {
     @Test
     public void testSaveMultyKey() {
         UserRole ur = new UserRole();
-        ur.setUserId(RandomUtils.getRandomInt(1000));
-        ur.setRoleId(RandomUtils.getRandomInt(1000));
-        ur.setDescp("descp_" + RandomUtils.getRandomInt(1000));
-        ur.setDescp2("descp2_" + RandomUtils.getRandomInt(1000));
+        ur.setUserId(Randoms.getInt(1000));
+        ur.setRoleId(Randoms.getInt(1000));
+        ur.setDescp("descp_" + Randoms.getInt(1000));
+        ur.setDescp2("descp2_" + Randoms.getInt(1000));
         hammer.save(ur);
 
         UserRole userRole = hammer.get(ur);
@@ -215,10 +215,10 @@ public class HammerJdbcTest extends JdbcTestBase {
     @Test
     public void testSaveMultyKey2() {
         UserRole2 ur = new UserRole2();
-        ur.setUser(new User(RandomUtils.getRandomInt(1000)));
-        ur.setRole(new Role(RandomUtils.getRandomInt(1000)));
-        ur.setDescp("descp" + RandomUtils.getRandomInt(1000));
-        ur.setDescp2("descp2" + RandomUtils.getRandomInt(1000));
+        ur.setUser(new User(Randoms.getInt(1000)));
+        ur.setRole(new Role(Randoms.getInt(1000)));
+        ur.setDescp("descp" + Randoms.getInt(1000));
+        ur.setDescp2("descp2" + Randoms.getInt(1000));
         hammer.save(ur);
 
         UserRole2 userRole = hammer.get(ur);
@@ -246,7 +246,7 @@ public class HammerJdbcTest extends JdbcTestBase {
 
         Role r2 = new Role();
         r2.setId(r.getId());
-        r2.setName("update_" + RandomUtils.getRandomInt(100));
+        r2.setName("update_" + Randoms.getInt(100));
         hammer.update(r2);
 
         r3 = hammer.get(r2);
@@ -265,13 +265,13 @@ public class HammerJdbcTest extends JdbcTestBase {
     public void testUpdate2() {
         UserInfo ui = new UserInfo();
         ui.setUser(new User(1));
-        ui.setDescp("descp_" + RandomUtils.getRandomInt(100));
-        ui.setName("name_" + RandomUtils.getRandomInt(100));
+        ui.setDescp("descp_" + Randoms.getInt(100));
+        ui.setName("name_" + Randoms.getInt(100));
         ui.setDivision(new DistrictDivision("四川", "成都", "高新"));
         hammer.save(ui);
 
         UserInfo userInfo = hammer.get(ui);
-        userInfo.setDescp("descp_" + RandomUtils.getRandomInt(100));
+        userInfo.setDescp("descp_" + Randoms.getInt(100));
         userInfo.getDivision().setDistrict("青羊");
         hammer.update(userInfo);
 
@@ -298,8 +298,8 @@ public class HammerJdbcTest extends JdbcTestBase {
         UserRole userRole = new UserRole();
         userRole.setRoleId(3);
         userRole.setUserId(3);
-        userRole.setDescp("descp_update_" + RandomUtils.getRandomInt(99));
-        userRole.setDescp2("descp2_update_" + RandomUtils.getRandomInt(99));
+        userRole.setDescp("descp_update_" + Randoms.getInt(99));
+        userRole.setDescp2("descp2_update_" + Randoms.getInt(99));
         hammer.update(userRole);
 
         UserRole ur = hammer.get(userRole);
@@ -315,8 +315,8 @@ public class HammerJdbcTest extends JdbcTestBase {
         UserRole2 userRole = new UserRole2();
         userRole.setRole(new Role(3));
         userRole.setUser(new User(3));
-        userRole.setDescp("descp_update_" + RandomUtils.getRandomInt(99));
-        userRole.setDescp2("descp2_update_" + RandomUtils.getRandomInt(99));
+        userRole.setDescp("descp_update_" + Randoms.getInt(99));
+        userRole.setDescp2("descp2_update_" + Randoms.getInt(99));
         hammer.update(userRole);
 
         UserRole2 ur = hammer.get(userRole);
@@ -340,7 +340,7 @@ public class HammerJdbcTest extends JdbcTestBase {
 
         Role r2 = new Role();
         r2.setId(r.getId());
-        r2.setName("merge_name" + RandomUtils.getRandomInt(100));
+        r2.setName("merge_name" + Randoms.getInt(100));
         hammer.merge(r2);
 
         r3 = hammer.get(r2);
@@ -363,7 +363,7 @@ public class HammerJdbcTest extends JdbcTestBase {
     public void testMerge2() {
         UserInfo ui = new UserInfo();
         ui.setId(2);
-        ui.setDescp("descp_" + RandomUtils.getRandomInt(100));
+        ui.setDescp("descp_" + Randoms.getInt(100));
         hammer.merge(ui);
 
         UserInfo ui2 = hammer.get(ui);
@@ -388,7 +388,7 @@ public class HammerJdbcTest extends JdbcTestBase {
         UserRole ur = new UserRole();
         ur.setRoleId(4);
         ur.setUserId(4);
-        ur.setDescp("descp_update_" + RandomUtils.getRandomInt(99));
+        ur.setDescp("descp_update_" + Randoms.getInt(99));
         hammer.merge(ur);
 
         UserRole userRole = hammer.get(ur);
@@ -474,16 +474,16 @@ public class HammerJdbcTest extends JdbcTestBase {
     @Test
     public void testUpdater() {
         int id = 10;
-        String newName = "name_updater_" + RandomUtils.getRandomInt(99);
-        String newDescp = "descp_updater_" + RandomUtils.getRandomInt(99);
+        String newName = "name_updater_" + Randoms.getInt(99);
+        String newDescp = "descp_updater_" + Randoms.getInt(99);
         hammer.update(Role.class).set("name", newName).property("descp").set(newDescp).where().eq("id", id).execute();
         Role role = hammer.get(id, Role.class);
         assertEquals(role.getName(), newName);
         assertEquals(role.getDescp(), newDescp);
 
         id = 11;
-        newName = "name_updater_" + RandomUtils.getRandomInt(90);
-        newDescp = "descp_updater_" + RandomUtils.getRandomInt(99);
+        newName = "name_updater_" + Randoms.getInt(90);
+        newDescp = "descp_updater_" + Randoms.getInt(99);
         hammer.update(Role.class).set(Role::getName, newName).property(Role::getDescp).set(newDescp).where()
                 .eq("id", id).execute();
         role = hammer.get(id, Role.class);
@@ -491,8 +491,8 @@ public class HammerJdbcTest extends JdbcTestBase {
         assertEquals(role.getDescp(), newDescp);
 
         id = 12;
-        newName = "name_updater_" + RandomUtils.getRandomInt(90);
-        newDescp = "descp_updater_" + RandomUtils.getRandomInt(99);
+        newName = "name_updater_" + Randoms.getInt(90);
+        newDescp = "descp_updater_" + Randoms.getInt(99);
         hammer.update(Role.class).set(Role::getName, newName).property(Role::getDescp).set(newDescp).where()
                 .eq(Role::getId, id).execute();
         role = hammer.get(id, Role.class);
@@ -504,9 +504,9 @@ public class HammerJdbcTest extends JdbcTestBase {
     //    public void testUpdater2() {
     //        User user = new User();
     //        user.setAge(10);
-    //        user.setUsername(RandomUtils.getRandomString(10));
-    //        user.setPwd(RandomUtils.getRandomString(6));
-    //        user.setMobileNo(RandomUtils.getRandomString(11, CharType.NUMBER_CASE));
+    //        user.setUsername(Randoms.getString(10));
+    //        user.setPwd(Randoms.getString(6));
+    //        user.setMobileNo(Randoms.getString(11, CharType.NUMBER_CASE));
     //        hammer.save(user);
     //        hammer.update(User.class).propertyNumber(User::getAge).increase(2).where().eq(User::getId, user.getId()).and()
     //                .ge("age - 1", 10).execute();

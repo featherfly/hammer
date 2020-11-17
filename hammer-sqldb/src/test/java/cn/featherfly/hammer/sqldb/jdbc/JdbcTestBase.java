@@ -13,10 +13,11 @@ import org.testng.annotations.Parameters;
 import cn.featherfly.common.db.SqlExecutor;
 import cn.featherfly.common.db.dialect.Dialects;
 import cn.featherfly.common.db.mapping.JdbcMappingFactory;
+import cn.featherfly.common.db.mapping.JdbcMappingFactoryImpl;
 import cn.featherfly.common.db.metadata.DatabaseMetadata;
 import cn.featherfly.common.db.metadata.DatabaseMetadataManager;
 import cn.featherfly.common.lang.ClassLoaderUtils;
-import cn.featherfly.common.lang.RandomUtils;
+import cn.featherfly.common.lang.Randoms;
 import cn.featherfly.common.lang.UriUtils;
 import cn.featherfly.constant.ConstantConfigurator;
 import cn.featherfly.hammer.sqldb.jdbc.vo.Role;
@@ -50,7 +51,7 @@ public class JdbcTestBase {
 
     @BeforeSuite
     @Parameters({ "dataBase" })
-    public void init(@Optional("postgresql") String dataBase) throws IOException {
+    public void init(@Optional("mysql") String dataBase) throws IOException {
         DOMConfigurator.configure(ClassLoaderUtils.getResource("log4j.xml", JdbcTestBase.class));
         initDataBase(dataBase);
     }
@@ -80,7 +81,9 @@ public class JdbcTestBase {
         //        ConstantConfigurator.config("constant.mysql.yaml");
 
         BasicDataSource dataSource = new BasicDataSource();
-        dataSource.setUrl("jdbc:mysql://127.0.0.1:3306/hammer_jdbc?useUnicode=true&characterEncoding=UTF-8");
+        //        dataSource.setUrl("jdbc:mysql://127.0.0.1:3306/hammer_jdbc?useUnicode=true&characterEncoding=UTF-8");
+        dataSource.setUrl(
+                "jdbc:mysql://127.0.0.1:3306/hammer_jdbc?serverTimezone=UTC&characterEncoding=utf8&useUnicode=true&useSSL=false");
         dataSource.setDriverClassName("com.mysql.jdbc.Driver");
         dataSource.setUsername("root");
         dataSource.setPassword("123456");
@@ -92,7 +95,7 @@ public class JdbcTestBase {
         jdbc = new SpringJdbcTemplateImpl(dataSource, Dialects.MYSQL);
         metadata = DatabaseMetadataManager.getDefaultManager().create(dataSource);
 
-        mappingFactory = new JdbcMappingFactory(metadata, Dialects.MYSQL);
+        mappingFactory = new JdbcMappingFactoryImpl(metadata, Dialects.MYSQL);
 
         // factory.getClassNameConversions().add(new ClassNameJpaConversion());
         // factory.getClassNameConversions().add(new
@@ -129,7 +132,7 @@ public class JdbcTestBase {
         jdbc = new SpringJdbcTemplateImpl(dataSource, Dialects.POSTGRESQL);
         metadata = DatabaseMetadataManager.getDefaultManager().create(dataSource);
 
-        mappingFactory = new JdbcMappingFactory(metadata, Dialects.POSTGRESQL);
+        mappingFactory = new JdbcMappingFactoryImpl(metadata, Dialects.POSTGRESQL);
 
         configFactory = new TplConfigFactoryImpl("tpl/");
     }
@@ -155,15 +158,15 @@ public class JdbcTestBase {
         jdbc = new SpringJdbcTemplateImpl(dataSource, Dialects.SQLITE);
         metadata = DatabaseMetadataManager.getDefaultManager().create(dataSource, "main");
 
-        mappingFactory = new JdbcMappingFactory(metadata, Dialects.SQLITE);
+        mappingFactory = new JdbcMappingFactoryImpl(metadata, Dialects.SQLITE);
 
         configFactory = new TplConfigFactoryImpl("tpl/");
     }
 
     Role role() {
         Role r = new Role();
-        r.setName("n_" + RandomUtils.getRandomInt(100));
-        r.setDescp("descp_" + RandomUtils.getRandomInt(100));
+        r.setName("n_" + Randoms.getInt(100));
+        r.setDescp("descp_" + Randoms.getInt(100));
         return r;
     }
 }

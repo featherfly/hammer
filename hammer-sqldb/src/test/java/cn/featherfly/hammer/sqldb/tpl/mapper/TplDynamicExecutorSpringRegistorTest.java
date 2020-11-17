@@ -3,6 +3,9 @@ package cn.featherfly.hammer.sqldb.tpl.mapper;
 
 import static org.testng.Assert.assertEquals;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import javax.annotation.Resource;
 
 import org.springframework.test.context.ContextConfiguration;
@@ -11,6 +14,8 @@ import org.springframework.test.context.testng.AbstractTestNGSpringContextTests;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
 
+import cn.featherfly.common.lang.Randoms;
+import cn.featherfly.hammer.sqldb.jdbc.vo.User;
 import cn.featherfly.hammer.sqldb.jdbc.vo.UserInfo;
 import cn.featherfly.hammer.sqldb.tpl.UserMapper;
 
@@ -32,6 +37,9 @@ public class TplDynamicExecutorSpringRegistorTest extends AbstractTestNGSpringCo
 
     @Resource
     UserInfoMapper2 userInfoMapper2;
+
+    @Resource
+    UserService userService;
 
     @BeforeClass
     public void setUp() {
@@ -83,5 +91,18 @@ public class TplDynamicExecutorSpringRegistorTest extends AbstractTestNGSpringCo
         userInfoMapper.selectById(id);
         System.out.println("selectString = " + ui);
         assertEquals(ui.getId(), id);
+    }
+
+    @Test(expectedExceptions = { RuntimeException.class })
+    void testTransactionRollBack() {
+        List<User> list = new ArrayList<>();
+        for (int i = 0; i < 3; i++) {
+            User u = new User();
+            u.setUsername("rollback_" + Randoms.getString(6));
+            u.setPwd(Randoms.getString(6));
+            u.setAge(Randoms.getInt(40));
+            list.add(u);
+        }
+        userService.saveBatch(list.toArray(new User[list.size()]));
     }
 }

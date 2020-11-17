@@ -11,7 +11,7 @@ import java.util.Set;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
 
-import cn.featherfly.common.lang.RandomUtils;
+import cn.featherfly.common.lang.Randoms;
 import cn.featherfly.common.structure.page.PaginationResults;
 import cn.featherfly.common.structure.page.SimplePagination;
 import cn.featherfly.hammer.Hammer;
@@ -74,13 +74,13 @@ public class RoleMapperTest extends JdbcTestBase {
     void testMapperSqlInAnnotationPage() {
         Integer ps = 3;
         PaginationResults<Role> page = roleMapper.page(new SimplePagination(5, ps));
-        assertEquals(page.getPageSize(), ps);
-        assertTrue(page.getPageNumber() == 2);
+        assertEquals(page.getSize(), ps);
+        assertTrue(page.getNumber() == 2);
         assertTrue(page.getTotal() > 0);
 
         page = roleMapper.page(1, ps);
-        assertEquals(page.getPageSize(), ps);
-        assertTrue(page.getPageNumber() == 1);
+        assertEquals(page.getSize(), ps);
+        assertTrue(page.getNumber() == 1);
         assertTrue(page.getTotal() > 0);
     }
 
@@ -94,8 +94,8 @@ public class RoleMapperTest extends JdbcTestBase {
 
     @Test
     void testInsertUpdateDelete() {
-        String name = "name_insert_" + RandomUtils.getRandomString(6);
-        String descp = "descp_" + RandomUtils.getRandomString(6);
+        String name = "name_insert_" + Randoms.getString(6);
+        String descp = "descp_" + Randoms.getString(6);
         int i = roleMapper.insertRole(name, descp);
         assertTrue(i == 1);
 
@@ -103,7 +103,7 @@ public class RoleMapperTest extends JdbcTestBase {
         assertEquals(role.getName(), name);
         assertEquals(role.getDescp(), descp);
 
-        descp = "descp_" + RandomUtils.getRandomString(6);
+        descp = "descp_" + Randoms.getString(6);
         i = roleMapper.updateRoleByName(name, descp);
         assertTrue(i == 1);
 

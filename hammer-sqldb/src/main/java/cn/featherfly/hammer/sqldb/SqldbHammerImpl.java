@@ -8,15 +8,17 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import javax.annotation.Nonnull;
 import javax.validation.ConstraintViolation;
 import javax.validation.Validation;
 import javax.validation.Validator;
 
 import org.hibernate.validator.HibernateValidator;
 
+import cn.featherfly.common.constant.Chars;
 import cn.featherfly.common.db.mapping.JdbcMappingFactory;
 import cn.featherfly.common.lang.ArrayUtils;
-import cn.featherfly.common.lang.LangUtils;
+import cn.featherfly.common.lang.Lang;
 import cn.featherfly.common.repository.mapping.ClassMapping;
 import cn.featherfly.common.structure.page.Page;
 import cn.featherfly.common.structure.page.PaginationResults;
@@ -143,6 +145,9 @@ public class SqldbHammerImpl implements SqldbHammer {
      */
     @Override
     public <E> int save(List<E> entities) {
+        if (Lang.isEmpty(entities)) {
+            return 0;
+        }
         InsertOperate<E> insert = null;
         if (jdbc.getDialect().isInsertBatch() && jdbc.getDialect().isAutoGenerateKeyBatch()) {
             for (E entity : entities) {
@@ -154,7 +159,7 @@ public class SqldbHammerImpl implements SqldbHammer {
             return insert.executeBatch(entities);
         } else {
             int size = 0;
-            if (LangUtils.isNotEmpty(entities)) {
+            if (Lang.isNotEmpty(entities)) {
                 for (E e : entities) {
                     size += save(e);
                 }
@@ -201,7 +206,7 @@ public class SqldbHammerImpl implements SqldbHammer {
     @Override
     public <E> int update(@SuppressWarnings("unchecked") E... entities) {
         int size = 0;
-        if (LangUtils.isNotEmpty(entities)) {
+        if (Lang.isNotEmpty(entities)) {
             for (E e : entities) {
                 size += update(e);
             }
@@ -215,7 +220,7 @@ public class SqldbHammerImpl implements SqldbHammer {
     @Override
     public <E> int update(List<E> entities) {
         int size = 0;
-        if (LangUtils.isNotEmpty(entities)) {
+        if (Lang.isNotEmpty(entities)) {
             for (E e : entities) {
                 size += update(e);
             }
@@ -244,7 +249,7 @@ public class SqldbHammerImpl implements SqldbHammer {
     @Override
     public <E> int update(List<E> entities, IgnorePolicy ignorePolicy) {
         int size = 0;
-        if (LangUtils.isNotEmpty(entities)) {
+        if (Lang.isNotEmpty(entities)) {
             for (E e : entities) {
                 size += update(e, ignorePolicy);
             }
@@ -282,7 +287,7 @@ public class SqldbHammerImpl implements SqldbHammer {
     @Override
     public <E> int merge(@SuppressWarnings("unchecked") E... entities) {
         int size = 0;
-        if (LangUtils.isNotEmpty(entities)) {
+        if (Lang.isNotEmpty(entities)) {
             for (E e : entities) {
                 size += merge(e);
             }
@@ -296,7 +301,7 @@ public class SqldbHammerImpl implements SqldbHammer {
     @Override
     public <E> int merge(List<E> entities) {
         int size = 0;
-        if (LangUtils.isNotEmpty(entities)) {
+        if (Lang.isNotEmpty(entities)) {
             for (E e : entities) {
                 size += merge(e);
             }
@@ -308,18 +313,36 @@ public class SqldbHammerImpl implements SqldbHammer {
      * {@inheritDoc}
      */
     @Override
-    public <E> int delete(Serializable id, Class<E> entityType) {
+    public <E> int delete(Serializable id, @Nonnull Class<E> entityType) {
         if (id == null || entityType == null) {
             return 0;
         }
-        @SuppressWarnings("unchecked")
-        DeleteOperate<E> delete = (DeleteOperate<E>) deleteOperates.get(entityType);
-        if (delete == null) {
-            ClassMapping<E> mapping = mappingFactory.getClassMapping(entityType);
-            delete = new DeleteOperate<>(jdbc, mapping, mappingFactory.getMetadata());
-            deleteOperates.put(entityType, delete);
-        }
+        DeleteOperate<E> delete = getDelete(entityType);
         return delete.delete(id);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public <E> int delete(Serializable[] ids, @Nonnull Class<E> entityType) {
+        if (Lang.isEmpty(ids)) {
+            return Chars.ZERO;
+        }
+        DeleteOperate<E> delete = getDelete(entityType);
+        return delete.deleteBatch(ids);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public <E> int delete(List<Serializable> ids, @Nonnull Class<E> entityType) {
+        if (Lang.isEmpty(ids)) {
+            return Chars.ZERO;
+        }
+        DeleteOperate<E> delete = getDelete(entityType);
+        return delete.deleteBatch(ids);
     }
 
     /**
@@ -330,14 +353,7 @@ public class SqldbHammerImpl implements SqldbHammer {
         if (entity == null) {
             return 0;
         }
-        @SuppressWarnings("unchecked")
-        DeleteOperate<E> delete = (DeleteOperate<E>) deleteOperates.get(entity.getClass());
-        if (delete == null) {
-            @SuppressWarnings("unchecked")
-            ClassMapping<E> mapping = (ClassMapping<E>) mappingFactory.getClassMapping(entity.getClass());
-            delete = new DeleteOperate<>(jdbc, mapping, mappingFactory.getMetadata());
-            deleteOperates.put(entity.getClass(), delete);
-        }
+        DeleteOperate<E> delete = getDelete(entity);
         return delete.execute(entity);
     }
 
@@ -346,14 +362,11 @@ public class SqldbHammerImpl implements SqldbHammer {
      */
     @Override
     public <E> int delete(@SuppressWarnings("unchecked") E... entities) {
-        int size = 0;
-        // TODO 后续加入DeleteBatchOperate优化为sql批量删除
-        if (LangUtils.isNotEmpty(entities)) {
-            for (E e : entities) {
-                size += delete(e);
-            }
+        if (Lang.isEmpty(entities)) {
+            return Chars.ZERO;
         }
-        return size;
+        DeleteOperate<E> delete = getDelete(entities[0]);
+        return delete.executeBatch(entities);
     }
 
     /**
@@ -361,14 +374,28 @@ public class SqldbHammerImpl implements SqldbHammer {
      */
     @Override
     public <E> int delete(List<E> entities) {
-        // TODO 后续加入DeleteBatchOperate优化为sql批量删除
-        int size = 0;
-        if (LangUtils.isNotEmpty(entities)) {
-            for (E e : entities) {
-                size += delete(e);
-            }
+        if (Lang.isEmpty(entities)) {
+            return Chars.ZERO;
         }
-        return size;
+        DeleteOperate<E> delete = getDelete(entities.get(0));
+        return delete.executeBatch(entities);
+    }
+
+    private <E> DeleteOperate<E> getDelete(E entity) {
+        @SuppressWarnings("unchecked")
+        Class<E> type = (Class<E>) entity.getClass();
+        return getDelete(type);
+    }
+
+    private <E> DeleteOperate<E> getDelete(Class<E> entityType) {
+        @SuppressWarnings("unchecked")
+        DeleteOperate<E> delete = (DeleteOperate<E>) deleteOperates.get(entityType);
+        if (delete == null) {
+            ClassMapping<E> mapping = mappingFactory.getClassMapping(entityType);
+            delete = new DeleteOperate<>(jdbc, mapping, mappingFactory.getMetadata());
+            deleteOperates.put(entityType, delete);
+        }
+        return delete;
     }
 
     /**
@@ -453,7 +480,7 @@ public class SqldbHammerImpl implements SqldbHammer {
     private <E> void validate(E entity) {
         if (validator != null) {
             Set<ConstraintViolation<E>> cons = validator.validate(entity);
-            if (LangUtils.isNotEmpty(cons)) {
+            if (Lang.isNotEmpty(cons)) {
                 StringBuilder errorMessage = new StringBuilder();
                 for (ConstraintViolation<E> constraintViolation : cons) {
                     errorMessage.append(constraintViolation.getMessage()).append(",");
@@ -867,4 +894,5 @@ public class SqldbHammerImpl implements SqldbHammer {
     public Jdbc getJdbc() {
         return jdbc;
     }
+
 }

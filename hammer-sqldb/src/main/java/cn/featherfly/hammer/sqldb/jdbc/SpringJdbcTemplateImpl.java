@@ -30,9 +30,9 @@ public class SpringJdbcTemplateImpl implements Jdbc {
 
     private NamedParameterJdbcTemplate namedParameterJdbcTemplate;
 
-    private DataSource dataSource;
+    protected DataSource dataSource;
 
-    private Dialect dialect;
+    protected Dialect dialect;
 
     /**
      *

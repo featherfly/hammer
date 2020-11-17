@@ -169,6 +169,25 @@ public interface Hammer extends TplExecutor {
     <E> int delete(Serializable id, Class<E> entityType);
 
     /**
+     * delete entity by id array.
+     *
+     * @param <E>        generic type
+     * @param ids        the ids
+     * @param entityType entity type
+     * @return effect data row num
+     */
+    <E> int delete(Serializable[] ids, Class<E> entityType);
+
+    /**
+     * delete entity by id list
+     *
+     * @param <E>        generic type
+     * @param entityType entity type
+     * @return effect data row num
+     */
+    <E> int delete(List<Serializable> ids, Class<E> entityType);
+
+    /**
      * delete each entity in entity list
      *
      * @param <E>      generic type

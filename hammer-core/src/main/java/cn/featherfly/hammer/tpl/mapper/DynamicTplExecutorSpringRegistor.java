@@ -13,7 +13,7 @@ import org.springframework.beans.factory.support.BeanDefinitionRegistryPostProce
 import org.springframework.core.type.classreading.MetadataReader;
 
 import cn.featherfly.common.lang.ClassUtils;
-import cn.featherfly.common.lang.LangUtils;
+import cn.featherfly.common.lang.Lang;
 import cn.featherfly.hammer.HammerException;
 import cn.featherfly.hammer.tpl.annotation.Mapper;
 import javassist.CannotCompileException;
@@ -39,6 +39,8 @@ public class DynamicTplExecutorSpringRegistor implements BeanDefinitionRegistryP
 
     private String hammerReference;
 
+    private ClassLoader classLoader;
+
     /**
      * @param hammerReference hammerReference
      */
@@ -51,9 +53,22 @@ public class DynamicTplExecutorSpringRegistor implements BeanDefinitionRegistryP
      * @param hammerReference hammerReference
      */
     public DynamicTplExecutorSpringRegistor(Set<MetadataReader> metadataReaders, String hammerReference) {
+        this(metadataReaders, hammerReference, null);
+    }
+
+    /**
+     * Instantiates a new dynamic tpl executor spring registor.
+     *
+     * @param metadataReaders metadataReaders
+     * @param hammerReference hammerReference
+     * @param classLoader     the class loader
+     */
+    public DynamicTplExecutorSpringRegistor(Set<MetadataReader> metadataReaders, String hammerReference,
+            ClassLoader classLoader) {
         super();
         this.metadataReaders = metadataReaders;
         this.hammerReference = hammerReference;
+        this.classLoader = classLoader;
     }
 
     /**
@@ -68,7 +83,7 @@ public class DynamicTplExecutorSpringRegistor implements BeanDefinitionRegistryP
      */
     @Override
     public void postProcessBeanDefinitionRegistry(BeanDefinitionRegistry registry) throws BeansException {
-        if (LangUtils.isEmpty(metadataReaders)) {
+        if (Lang.isEmpty(metadataReaders)) {
             logger.debug("metadataReaders is empty");
             return;
         }
@@ -77,15 +92,20 @@ public class DynamicTplExecutorSpringRegistor implements BeanDefinitionRegistryP
             if (metadataReader.getAnnotationMetadata().hasAnnotation(Mapper.class.getName())) {
                 try {
                     Class<?> type = ClassUtils.forName(metadataReader.getClassMetadata().getClassName());
-                    String dynamicImplName = dynamicExecutorFactory.create(type);
+                    String dynamicImplName = dynamicExecutorFactory.create(type, classLoader);
                     logger.debug("create class {} for {} with hammerReference {}", dynamicImplName, type.getName(),
                             hammerReference);
-                    BeanDefinitionBuilder builder = BeanDefinitionBuilder
-                            .rootBeanDefinition(ClassUtils.forName(dynamicImplName));
+                    Class<?> newType = null;
+                    if (classLoader == null) {
+                        newType = ClassUtils.forName(dynamicImplName);
+                    } else {
+                        newType = classLoader.loadClass(dynamicImplName);
+                    }
+                    BeanDefinitionBuilder builder = BeanDefinitionBuilder.rootBeanDefinition(newType);
                     builder.addConstructorArgReference(hammerReference);
                     builder.setScope(BeanDefinition.SCOPE_SINGLETON);
                     registry.registerBeanDefinition(type.getName(), builder.getBeanDefinition());
-                } catch (NotFoundException | CannotCompileException e) {
+                } catch (NotFoundException | CannotCompileException | ClassNotFoundException e) {
                     throw new HammerException(e);
                 }
             }
@@ -109,5 +129,23 @@ public class DynamicTplExecutorSpringRegistor implements BeanDefinitionRegistryP
      */
     public void setMetadataReaders(Set<MetadataReader> metadataReaders) {
         this.metadataReaders = metadataReaders;
+    }
+
+    /**
+     * 返回classLoader
+     *
+     * @return classLoader
+     */
+    public ClassLoader getClassLoader() {
+        return classLoader;
+    }
+
+    /**
+     * 设置classLoader
+     *
+     * @param classLoader classLoader
+     */
+    public void setClassLoader(ClassLoader classLoader) {
+        this.classLoader = classLoader;
     }
 }

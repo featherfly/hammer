@@ -28,7 +28,7 @@ import cn.featherfly.common.io.ClassPathScanningProvider;
 import cn.featherfly.common.io.FileUtils;
 import cn.featherfly.common.lang.ClassLoaderUtils;
 import cn.featherfly.common.lang.ClassUtils;
-import cn.featherfly.common.lang.LangUtils;
+import cn.featherfly.common.lang.Lang;
 import cn.featherfly.common.lang.UriUtils;
 import cn.featherfly.common.lang.matcher.MethodAnnotationMatcher;
 import cn.featherfly.constant.ConstantPool;
@@ -114,12 +114,12 @@ public class TplConfigFactoryImpl implements TplConfigFactory {
         mapper = new ObjectMapper(new YAMLFactory());
         mapper.enable(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES);
 
-        if (LangUtils.isEmpty(prefix)) {
+        if (Lang.isEmpty(prefix)) {
             this.prefix = HammerConstant.DEFAULT_PREFIX;
         } else {
             this.prefix = prefix;
         }
-        if (LangUtils.isEmpty(suffix)) {
+        if (Lang.isEmpty(suffix)) {
             this.suffix = HammerConstant.DEFAULT_SUFFIX;
         } else {
             this.suffix = suffix;
@@ -137,7 +137,7 @@ public class TplConfigFactoryImpl implements TplConfigFactory {
     }
 
     private void resolverMapper() {
-        if (LangUtils.isEmpty(basePackages)) {
+        if (Lang.isEmpty(basePackages)) {
             return;
         }
         if (classPathScanningProvider == null) {
@@ -165,7 +165,7 @@ public class TplConfigFactoryImpl implements TplConfigFactory {
 
     private String getNamespace(Class<?> type) {
         Mapper mapper = type.getAnnotation(Mapper.class);
-        return mapper == null || LangUtils.isEmpty(mapper.namespace()) ? type.getName() : mapper.namespace();
+        return mapper == null || Lang.isEmpty(mapper.namespace()) ? type.getName() : mapper.namespace();
     }
 
     private TplExecuteConfigs readConfig(Class<?> type) {
@@ -178,11 +178,11 @@ public class TplConfigFactoryImpl implements TplConfigFactory {
         Set<String> executeIds = new HashSet<>();
         for (Method method : methods) {
             Template template = method.getAnnotation(Template.class);
-            if (LangUtils.isEmpty(template.value())) {
+            if (Lang.isEmpty(template.value())) {
                 continue;
             }
-            String name = LangUtils.isEmpty(template.name()) ? method.getName() : template.name();
-            String namespace = LangUtils.isEmpty(template.namespace()) ? globalNamespace : template.namespace();
+            String name = Lang.isEmpty(template.name()) ? method.getName() : template.name();
+            String namespace = Lang.isEmpty(template.namespace()) ? globalNamespace : template.namespace();
             checkName(executeIds, name, namespace);
             TplExecuteConfig config = new TplExecuteConfig();
             config.setQuery(template.value());
@@ -265,13 +265,13 @@ public class TplConfigFactoryImpl implements TplConfigFactory {
                 } else {
                     @SuppressWarnings("unchecked")
                     Map<String, Object> map = (Map<String, Object>) v;
-                    if (LangUtils.isNotEmpty(map.get("query"))) {
+                    if (Lang.isNotEmpty(map.get("query"))) {
                         config.setQuery(map.get("query").toString());
                     }
-                    if (LangUtils.isNotEmpty(map.get("count"))) {
+                    if (Lang.isNotEmpty(map.get("count"))) {
                         config.setCount(map.get("count").toString());
                     }
-                    if (LangUtils.isNotEmpty(map.get("type"))) {
+                    if (Lang.isNotEmpty(map.get("type"))) {
                         config.setType(TplType.valueOf(map.get("type").toString()));
                     }
                 }

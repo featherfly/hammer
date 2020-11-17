@@ -78,11 +78,7 @@ public class BasedTplGenericHammer<E> implements GenericHammer<E> {
      */
     @Override
     public int deleteIds(Serializable... ids) {
-        int result = 0;
-        for (Serializable id : ids) {
-            result += delete(id);
-        }
-        return result;
+        return hammer.delete(ids, type);
     }
 
     /**
@@ -90,11 +86,7 @@ public class BasedTplGenericHammer<E> implements GenericHammer<E> {
      */
     @Override
     public int deleteIds(List<Serializable> ids) {
-        int result = 0;
-        for (Serializable id : ids) {
-            result += delete(id);
-        }
-        return result;
+        return hammer.delete(ids, type);
     }
 
     /**

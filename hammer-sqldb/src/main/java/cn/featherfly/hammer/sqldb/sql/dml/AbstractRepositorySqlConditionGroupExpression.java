@@ -9,7 +9,23 @@ import java.util.Date;
 import cn.featherfly.common.db.builder.SqlBuilder;
 import cn.featherfly.common.db.dialect.Dialect;
 import cn.featherfly.common.db.mapping.ClassMappingUtils;
+import cn.featherfly.common.lang.LambdaUtils;
+import cn.featherfly.common.lang.LambdaUtils.SerializableSupplierLambdaInfo;
+import cn.featherfly.common.lang.function.DateSupplier;
+import cn.featherfly.common.lang.function.LocalDateSupplier;
+import cn.featherfly.common.lang.function.LocalDateTimeSupplier;
+import cn.featherfly.common.lang.function.LocalTimeSupplier;
+import cn.featherfly.common.lang.function.NumberSupplier;
+import cn.featherfly.common.lang.function.ReturnDateFunction;
+import cn.featherfly.common.lang.function.ReturnEnumFunction;
+import cn.featherfly.common.lang.function.ReturnLocalDateFunction;
+import cn.featherfly.common.lang.function.ReturnLocalDateTimeFunction;
+import cn.featherfly.common.lang.function.ReturnLocalTimeFunction;
+import cn.featherfly.common.lang.function.ReturnNumberFunction;
+import cn.featherfly.common.lang.function.ReturnStringFunction;
 import cn.featherfly.common.lang.function.SerializableFunction;
+import cn.featherfly.common.lang.function.SerializableSupplier;
+import cn.featherfly.common.lang.function.StringSupplier;
 import cn.featherfly.common.repository.builder.AliasManager;
 import cn.featherfly.common.repository.mapping.ClassMapping;
 import cn.featherfly.common.repository.mapping.MappingFactory;
@@ -170,7 +186,7 @@ public abstract class AbstractRepositorySqlConditionGroupExpression<C extends Re
      * {@inheritDoc}
      */
     @Override
-    public <T, R> L co(SerializableFunction<T, R> name, String value) {
+    public <T> L co(ReturnStringFunction<T> name, String value) {
         return co(getPropertyName(name), value);
     }
 
@@ -259,7 +275,7 @@ public abstract class AbstractRepositorySqlConditionGroupExpression<C extends Re
      * {@inheritDoc}
      */
     @Override
-    public <T, R> L ew(SerializableFunction<T, R> name, String value) {
+    public <T> L ew(ReturnStringFunction<T> name, String value) {
         return ew(getPropertyName(name), value);
     }
 
@@ -394,7 +410,7 @@ public abstract class AbstractRepositorySqlConditionGroupExpression<C extends Re
      * {@inheritDoc}
      */
     @Override
-    public <T, R, D extends Date> L ge(SerializableFunction<T, R> name, D value) {
+    public <T, D extends Date> L ge(ReturnDateFunction<T, D> name, D value) {
         return ge(getPropertyName(name), value);
     }
 
@@ -402,7 +418,7 @@ public abstract class AbstractRepositorySqlConditionGroupExpression<C extends Re
      * {@inheritDoc}
      */
     @Override
-    public <T, R> L ge(SerializableFunction<T, R> name, LocalDate value) {
+    public <T> L ge(ReturnLocalDateFunction<T> name, LocalDate value) {
         return ge(getPropertyName(name), value);
     }
 
@@ -410,7 +426,7 @@ public abstract class AbstractRepositorySqlConditionGroupExpression<C extends Re
      * {@inheritDoc}
      */
     @Override
-    public <T, R> L ge(SerializableFunction<T, R> name, LocalDateTime value) {
+    public <T> L ge(ReturnLocalDateTimeFunction<T> name, LocalDateTime value) {
         return ge(getPropertyName(name), value);
     }
 
@@ -418,7 +434,7 @@ public abstract class AbstractRepositorySqlConditionGroupExpression<C extends Re
      * {@inheritDoc}
      */
     @Override
-    public <T, R> L ge(SerializableFunction<T, R> name, LocalTime value) {
+    public <T> L ge(ReturnLocalTimeFunction<T> name, LocalTime value) {
         return ge(getPropertyName(name), value);
     }
 
@@ -426,7 +442,7 @@ public abstract class AbstractRepositorySqlConditionGroupExpression<C extends Re
      * {@inheritDoc}
      */
     @Override
-    public <T, R, N extends Number> L ge(SerializableFunction<T, R> name, N value) {
+    public <T, N extends Number> L ge(ReturnNumberFunction<T, N> name, N value) {
         return ge(getPropertyName(name), value);
     }
 
@@ -434,7 +450,7 @@ public abstract class AbstractRepositorySqlConditionGroupExpression<C extends Re
      * {@inheritDoc}
      */
     @Override
-    public <T, R> L ge(SerializableFunction<T, R> name, String value) {
+    public <T> L ge(ReturnStringFunction<T> name, String value) {
         return ge(getPropertyName(name), value);
     }
 
@@ -686,7 +702,7 @@ public abstract class AbstractRepositorySqlConditionGroupExpression<C extends Re
      * {@inheritDoc}
      */
     @Override
-    public <T, R, D extends Date> L gt(SerializableFunction<T, R> name, D value) {
+    public <T, D extends Date> L gt(ReturnDateFunction<T, D> name, D value) {
         return gt(getPropertyName(name), value);
     }
 
@@ -694,7 +710,7 @@ public abstract class AbstractRepositorySqlConditionGroupExpression<C extends Re
      * {@inheritDoc}
      */
     @Override
-    public <T, R> L gt(SerializableFunction<T, R> name, LocalDate value) {
+    public <T> L gt(ReturnLocalDateFunction<T> name, LocalDate value) {
         return gt(getPropertyName(name), value);
     }
 
@@ -702,7 +718,7 @@ public abstract class AbstractRepositorySqlConditionGroupExpression<C extends Re
      * {@inheritDoc}
      */
     @Override
-    public <T, R> L gt(SerializableFunction<T, R> name, LocalDateTime value) {
+    public <T> L gt(ReturnLocalDateTimeFunction<T> name, LocalDateTime value) {
         return gt(getPropertyName(name), value);
     }
 
@@ -710,7 +726,7 @@ public abstract class AbstractRepositorySqlConditionGroupExpression<C extends Re
      * {@inheritDoc}
      */
     @Override
-    public <T, R> L gt(SerializableFunction<T, R> name, LocalTime value) {
+    public <T> L gt(ReturnLocalTimeFunction<T> name, LocalTime value) {
         return gt(getPropertyName(name), value);
     }
 
@@ -718,7 +734,7 @@ public abstract class AbstractRepositorySqlConditionGroupExpression<C extends Re
      * {@inheritDoc}
      */
     @Override
-    public <T, R, N extends Number> L gt(SerializableFunction<T, R> name, N value) {
+    public <T, N extends Number> L gt(ReturnNumberFunction<T, N> name, N value) {
         return gt(getPropertyName(name), value);
     }
 
@@ -726,7 +742,7 @@ public abstract class AbstractRepositorySqlConditionGroupExpression<C extends Re
      * {@inheritDoc}
      */
     @Override
-    public <T, R> L gt(SerializableFunction<T, R> name, String value) {
+    public <T> L gt(ReturnStringFunction<T> name, String value) {
         return gt(getPropertyName(name), value);
     }
 
@@ -1091,7 +1107,7 @@ public abstract class AbstractRepositorySqlConditionGroupExpression<C extends Re
      * {@inheritDoc}
      */
     @Override
-    public <T, R, D extends Date> L le(SerializableFunction<T, R> name, D value) {
+    public <T, D extends Date> L le(ReturnDateFunction<T, D> name, D value) {
         return le(getPropertyName(name), value);
     }
 
@@ -1099,7 +1115,7 @@ public abstract class AbstractRepositorySqlConditionGroupExpression<C extends Re
      * {@inheritDoc}
      */
     @Override
-    public <T, R> L le(SerializableFunction<T, R> name, LocalDate value) {
+    public <T> L le(ReturnLocalDateFunction<T> name, LocalDate value) {
         return le(getPropertyName(name), value);
     }
 
@@ -1107,7 +1123,7 @@ public abstract class AbstractRepositorySqlConditionGroupExpression<C extends Re
      * {@inheritDoc}
      */
     @Override
-    public <T, R> L le(SerializableFunction<T, R> name, LocalDateTime value) {
+    public <T> L le(ReturnLocalDateTimeFunction<T> name, LocalDateTime value) {
         return le(getPropertyName(name), value);
     }
 
@@ -1115,7 +1131,7 @@ public abstract class AbstractRepositorySqlConditionGroupExpression<C extends Re
      * {@inheritDoc}
      */
     @Override
-    public <T, R> L le(SerializableFunction<T, R> name, LocalTime value) {
+    public <T> L le(ReturnLocalTimeFunction<T> name, LocalTime value) {
         return le(getPropertyName(name), value);
     }
 
@@ -1123,7 +1139,7 @@ public abstract class AbstractRepositorySqlConditionGroupExpression<C extends Re
      * {@inheritDoc}
      */
     @Override
-    public <T, R, N extends Number> L le(SerializableFunction<T, R> name, N value) {
+    public <T, N extends Number> L le(ReturnNumberFunction<T, N> name, N value) {
         return le(getPropertyName(name), value);
     }
 
@@ -1131,7 +1147,7 @@ public abstract class AbstractRepositorySqlConditionGroupExpression<C extends Re
      * {@inheritDoc}
      */
     @Override
-    public <T, R> L le(SerializableFunction<T, R> name, String value) {
+    public <T> L le(ReturnStringFunction<T> name, String value) {
         return le(getPropertyName(name), value);
     }
 
@@ -1361,7 +1377,7 @@ public abstract class AbstractRepositorySqlConditionGroupExpression<C extends Re
      * {@inheritDoc}
      */
     @Override
-    public <T, R, D extends Date> L lt(SerializableFunction<T, R> name, D value) {
+    public <T, D extends Date> L lt(ReturnDateFunction<T, D> name, D value) {
         return lt(getPropertyName(name), value);
     }
 
@@ -1369,7 +1385,7 @@ public abstract class AbstractRepositorySqlConditionGroupExpression<C extends Re
      * {@inheritDoc}
      */
     @Override
-    public <T, R> L lt(SerializableFunction<T, R> name, LocalDate value) {
+    public <T> L lt(ReturnLocalDateFunction<T> name, LocalDate value) {
         return lt(getPropertyName(name), value);
     }
 
@@ -1377,7 +1393,7 @@ public abstract class AbstractRepositorySqlConditionGroupExpression<C extends Re
      * {@inheritDoc}
      */
     @Override
-    public <T, R> L lt(SerializableFunction<T, R> name, LocalDateTime value) {
+    public <T> L lt(ReturnLocalDateTimeFunction<T> name, LocalDateTime value) {
         return lt(getPropertyName(name), value);
     }
 
@@ -1385,7 +1401,7 @@ public abstract class AbstractRepositorySqlConditionGroupExpression<C extends Re
      * {@inheritDoc}
      */
     @Override
-    public <T, R> L lt(SerializableFunction<T, R> name, LocalTime value) {
+    public <T> L lt(ReturnLocalTimeFunction<T> name, LocalTime value) {
         return lt(getPropertyName(name), value);
     }
 
@@ -1393,7 +1409,7 @@ public abstract class AbstractRepositorySqlConditionGroupExpression<C extends Re
      * {@inheritDoc}
      */
     @Override
-    public <T, R, N extends Number> L lt(SerializableFunction<T, R> name, N value) {
+    public <T, N extends Number> L lt(ReturnNumberFunction<T, N> name, N value) {
         return lt(getPropertyName(name), value);
     }
 
@@ -1401,7 +1417,7 @@ public abstract class AbstractRepositorySqlConditionGroupExpression<C extends Re
      * {@inheritDoc}
      */
     @Override
-    public <T, R> L lt(SerializableFunction<T, R> name, String value) {
+    public <T> L lt(ReturnStringFunction<T> name, String value) {
         return lt(getPropertyName(name), value);
     }
 
@@ -1810,8 +1826,6 @@ public abstract class AbstractRepositorySqlConditionGroupExpression<C extends Re
         return new SimpleStringExpression<>(ClassMappingUtils.getColumnName(name, classMapping), this);
     }
 
-    // ********************************************************************
-
     /**
      * {@inheritDoc}
      */
@@ -1819,6 +1833,38 @@ public abstract class AbstractRepositorySqlConditionGroupExpression<C extends Re
     public StringExpression<C, L> propertyString(String repository, String name) {
         return new RepositorySimpleStringExpression<>(repository, ClassMappingUtils.getColumnName(name, classMapping),
                 this);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public <T> StringExpression<C, L> property(ReturnStringFunction<T> name) {
+        return propertyString(getPropertyName(name));
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public <T, R extends Number> NumberExpression<C, L> property(ReturnNumberFunction<T, R> name) {
+        return propertyNumber(getPropertyName(name));
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public <T, R extends Date> DateExpression<C, L> property(ReturnDateFunction<T, R> name) {
+        return propertyDate(getPropertyName(name));
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public <T, R extends Enum<?>> EnumExpression<C, L> property(ReturnEnumFunction<T, R> name) {
+        return propertyEnum(getPropertyName(name));
     }
 
     // ********************************************************************
@@ -1856,7 +1902,7 @@ public abstract class AbstractRepositorySqlConditionGroupExpression<C extends Re
      * {@inheritDoc}
      */
     @Override
-    public <T, R> L sw(SerializableFunction<T, R> name, String value) {
+    public <T> L sw(ReturnStringFunction<T> name, String value) {
         return sw(getPropertyName(name), value);
     }
 
@@ -1877,5 +1923,284 @@ public abstract class AbstractRepositorySqlConditionGroupExpression<C extends Re
         return (L) addCondition(
                 new SqlConditionExpressionBuilder(dialect, ClassMappingUtils.getColumnName(name, classMapping), value,
                         QueryOperator.SW, aliasManager.getAlias(repository)));
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public L co(StringSupplier property) {
+        SerializableSupplierLambdaInfo<String> info = LambdaUtils.getSerializableSupplierLambdaInfo(property);
+        return co(info.getSerializedLambdaInfo().getPropertyName(), info.getValue());
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public L ew(StringSupplier property) {
+        SerializableSupplierLambdaInfo<String> info = LambdaUtils.getSerializableSupplierLambdaInfo(property);
+        return co(info.getSerializedLambdaInfo().getPropertyName(), info.getValue());
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public <R> L eq(SerializableSupplier<R> property) {
+        SerializableSupplierLambdaInfo<R> info = LambdaUtils.getSerializableSupplierLambdaInfo(property);
+        return eq(info.getSerializedLambdaInfo().getPropertyName(), info.getValue());
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public <R> L in(SerializableSupplier<R> property) {
+        SerializableSupplierLambdaInfo<R> info = LambdaUtils.getSerializableSupplierLambdaInfo(property);
+        return in(info.getSerializedLambdaInfo().getPropertyName(), info.getValue());
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public <R> L ne(SerializableSupplier<R> property) {
+        SerializableSupplierLambdaInfo<R> info = LambdaUtils.getSerializableSupplierLambdaInfo(property);
+        return ne(info.getSerializedLambdaInfo().getPropertyName(), info.getValue());
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public <R> L nin(SerializableSupplier<R> property) {
+        SerializableSupplierLambdaInfo<R> info = LambdaUtils.getSerializableSupplierLambdaInfo(property);
+        return nin(info.getSerializedLambdaInfo().getPropertyName(), info.getValue());
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public L sw(StringSupplier property) {
+        SerializableSupplierLambdaInfo<String> info = LambdaUtils.getSerializableSupplierLambdaInfo(property);
+        return sw(info.getSerializedLambdaInfo().getPropertyName(), info.getValue());
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public <R extends Date> L ge(DateSupplier<R> property) {
+        SerializableSupplierLambdaInfo<R> info = LambdaUtils.getSerializableSupplierLambdaInfo(property);
+        return ge(info.getSerializedLambdaInfo().getPropertyName(), info.getValue());
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public <R extends Number> L ge(NumberSupplier<R> property) {
+        SerializableSupplierLambdaInfo<R> info = LambdaUtils.getSerializableSupplierLambdaInfo(property);
+        return ge(info.getSerializedLambdaInfo().getPropertyName(), info.getValue());
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public L ge(LocalDateSupplier property) {
+        SerializableSupplierLambdaInfo<LocalDate> info = LambdaUtils.getSerializableSupplierLambdaInfo(property);
+        return ge(info.getSerializedLambdaInfo().getPropertyName(), info.getValue());
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public L ge(LocalTimeSupplier property) {
+        SerializableSupplierLambdaInfo<LocalTime> info = LambdaUtils.getSerializableSupplierLambdaInfo(property);
+        return ge(info.getSerializedLambdaInfo().getPropertyName(), info.getValue());
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public L ge(LocalDateTimeSupplier property) {
+        SerializableSupplierLambdaInfo<LocalDateTime> info = LambdaUtils.getSerializableSupplierLambdaInfo(property);
+        return ge(info.getSerializedLambdaInfo().getPropertyName(), info.getValue());
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public L ge(StringSupplier property) {
+        SerializableSupplierLambdaInfo<String> info = LambdaUtils.getSerializableSupplierLambdaInfo(property);
+        return ge(info.getSerializedLambdaInfo().getPropertyName(), info.getValue());
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public <R extends Number> L gt(NumberSupplier<R> property) {
+        SerializableSupplierLambdaInfo<R> info = LambdaUtils.getSerializableSupplierLambdaInfo(property);
+        return gt(info.getSerializedLambdaInfo().getPropertyName(), info.getValue());
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public <R extends Date> L gt(DateSupplier<R> property) {
+        SerializableSupplierLambdaInfo<R> info = LambdaUtils.getSerializableSupplierLambdaInfo(property);
+        return gt(info.getSerializedLambdaInfo().getPropertyName(), info.getValue());
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public L gt(LocalDateSupplier property) {
+        SerializableSupplierLambdaInfo<LocalDate> info = LambdaUtils.getSerializableSupplierLambdaInfo(property);
+        return gt(info.getSerializedLambdaInfo().getPropertyName(), info.getValue());
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public L gt(LocalTimeSupplier property) {
+        SerializableSupplierLambdaInfo<LocalTime> info = LambdaUtils.getSerializableSupplierLambdaInfo(property);
+        return gt(info.getSerializedLambdaInfo().getPropertyName(), info.getValue());
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public L gt(LocalDateTimeSupplier property) {
+        SerializableSupplierLambdaInfo<LocalDateTime> info = LambdaUtils.getSerializableSupplierLambdaInfo(property);
+        return gt(info.getSerializedLambdaInfo().getPropertyName(), info.getValue());
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public L gt(StringSupplier property) {
+        SerializableSupplierLambdaInfo<String> info = LambdaUtils.getSerializableSupplierLambdaInfo(property);
+        return gt(info.getSerializedLambdaInfo().getPropertyName(), info.getValue());
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public <R extends Date> L le(DateSupplier<R> property) {
+        SerializableSupplierLambdaInfo<R> info = LambdaUtils.getSerializableSupplierLambdaInfo(property);
+        return le(info.getSerializedLambdaInfo().getPropertyName(), info.getValue());
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public <R extends Number> L le(NumberSupplier<R> property) {
+        SerializableSupplierLambdaInfo<R> info = LambdaUtils.getSerializableSupplierLambdaInfo(property);
+        return le(info.getSerializedLambdaInfo().getPropertyName(), info.getValue());
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public L le(LocalDateSupplier property) {
+        SerializableSupplierLambdaInfo<LocalDate> info = LambdaUtils.getSerializableSupplierLambdaInfo(property);
+        return le(info.getSerializedLambdaInfo().getPropertyName(), info.getValue());
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public L le(LocalTimeSupplier property) {
+        SerializableSupplierLambdaInfo<LocalTime> info = LambdaUtils.getSerializableSupplierLambdaInfo(property);
+        return le(info.getSerializedLambdaInfo().getPropertyName(), info.getValue());
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public L le(LocalDateTimeSupplier property) {
+        SerializableSupplierLambdaInfo<LocalDateTime> info = LambdaUtils.getSerializableSupplierLambdaInfo(property);
+        return le(info.getSerializedLambdaInfo().getPropertyName(), info.getValue());
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public L le(StringSupplier property) {
+        SerializableSupplierLambdaInfo<String> info = LambdaUtils.getSerializableSupplierLambdaInfo(property);
+        return le(info.getSerializedLambdaInfo().getPropertyName(), info.getValue());
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public <R extends Number> L lt(NumberSupplier<R> property) {
+        SerializableSupplierLambdaInfo<R> info = LambdaUtils.getSerializableSupplierLambdaInfo(property);
+        return lt(info.getSerializedLambdaInfo().getPropertyName(), info.getValue());
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public <R extends Date> L lt(DateSupplier<R> property) {
+        SerializableSupplierLambdaInfo<R> info = LambdaUtils.getSerializableSupplierLambdaInfo(property);
+        return lt(info.getSerializedLambdaInfo().getPropertyName(), info.getValue());
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public L lt(LocalDateSupplier property) {
+        SerializableSupplierLambdaInfo<LocalDate> info = LambdaUtils.getSerializableSupplierLambdaInfo(property);
+        return lt(info.getSerializedLambdaInfo().getPropertyName(), info.getValue());
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public L lt(LocalTimeSupplier property) {
+        SerializableSupplierLambdaInfo<LocalTime> info = LambdaUtils.getSerializableSupplierLambdaInfo(property);
+        return lt(info.getSerializedLambdaInfo().getPropertyName(), info.getValue());
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public L lt(LocalDateTimeSupplier property) {
+        SerializableSupplierLambdaInfo<LocalDateTime> info = LambdaUtils.getSerializableSupplierLambdaInfo(property);
+        return lt(info.getSerializedLambdaInfo().getPropertyName(), info.getValue());
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public L lt(StringSupplier property) {
+        SerializableSupplierLambdaInfo<String> info = LambdaUtils.getSerializableSupplierLambdaInfo(property);
+        return lt(info.getSerializedLambdaInfo().getPropertyName(), info.getValue());
     }
 }

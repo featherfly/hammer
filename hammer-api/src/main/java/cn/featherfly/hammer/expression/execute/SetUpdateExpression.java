@@ -2,6 +2,7 @@
 package cn.featherfly.hammer.expression.execute;
 
 import cn.featherfly.common.lang.function.SerializableFunction;
+import cn.featherfly.common.lang.function.SerializableSupplier;
 import cn.featherfly.hammer.expression.ConditionGroupExpression;
 import cn.featherfly.hammer.expression.ConditionGroupLogicExpression;
 
@@ -50,6 +51,15 @@ public interface SetUpdateExpression<U extends SetExecutableUpdateExpression<U, 
     <T, R> U set(SerializableFunction<T, R> name, Object value);
 
     /**
+     * set value for property.
+     *
+     * @param <R>      the generic type
+     * @param property object property
+     * @return Update
+     */
+    <R> U set(SerializableSupplier<R> property);
+
+    /**
      * increase value for property.
      *
      * @param <T>   the generic type
@@ -60,4 +70,13 @@ public interface SetUpdateExpression<U extends SetExecutableUpdateExpression<U, 
      * @return Update
      */
     <T, R extends Number, N extends Number> U increase(SerializableFunction<T, R> name, N value);
+
+    /**
+     * increase value for property.
+     *
+     * @param <N>      number type
+     * @param property object property
+     * @return Update
+     */
+    <N extends Number> U increase(SerializableSupplier<N> property);
 }

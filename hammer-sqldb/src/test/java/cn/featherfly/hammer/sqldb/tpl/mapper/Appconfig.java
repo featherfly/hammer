@@ -6,12 +6,16 @@ import java.util.Set;
 
 import javax.sql.DataSource;
 
+import org.apache.commons.dbcp.BasicDataSource;
 import org.apache.log4j.xml.DOMConfigurator;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.jdbc.datasource.DataSourceTransactionManager;
+import org.springframework.transaction.annotation.EnableTransactionManagement;
 
 import cn.featherfly.common.db.dialect.Dialects;
 import cn.featherfly.common.db.mapping.JdbcMappingFactory;
+import cn.featherfly.common.db.mapping.JdbcMappingFactoryImpl;
 import cn.featherfly.common.db.metadata.DatabaseMetadata;
 import cn.featherfly.common.db.metadata.DatabaseMetadataManager;
 import cn.featherfly.common.lang.ClassLoaderUtils;
@@ -33,6 +37,7 @@ import cn.featherfly.hammer.tpl.mapper.DynamicTplExecutorSpringRegistor;
  * @author zhongj
  */
 @Configuration
+@EnableTransactionManagement
 public class Appconfig {
 
     @Bean
@@ -42,6 +47,18 @@ public class Appconfig {
         //packages.add("你需要扫描的包路径");
         DynamicTplExecutorScanSpringRegistor registor = new DynamicTplExecutorScanSpringRegistor(packages, "hammer");
         return registor;
+    }
+
+    @Bean
+    public DataSource DataSource() {
+        BasicDataSource dataSource = new BasicDataSource();
+        //        dataSource.setUrl("jdbc:mysql://127.0.0.1:3306/hammer_jdbc?useUnicode=true&characterEncoding=UTF-8");
+        dataSource.setUrl(
+                "jdbc:mysql://127.0.0.1:3306/hammer_jdbc?serverTimezone=UTC&characterEncoding=utf8&useUnicode=true&useSSL=false");
+        dataSource.setDriverClassName("com.mysql.jdbc.Driver");
+        dataSource.setUsername("root");
+        dataSource.setPassword("123456");
+        return dataSource;
     }
 
     @Bean
@@ -60,7 +77,7 @@ public class Appconfig {
         Jdbc jdbc = new SpringJdbcTemplateImpl(dataSource, Dialects.MYSQL);
         DatabaseMetadata metadata = DatabaseMetadataManager.getDefaultManager().create(dataSource);
 
-        JdbcMappingFactory mappingFactory = new JdbcMappingFactory(metadata, Dialects.MYSQL);
+        JdbcMappingFactory mappingFactory = new JdbcMappingFactoryImpl(metadata, Dialects.MYSQL);
 
         Set<String> basePackages = new HashSet<>();
         basePackages.add("cn.featherfly.hammer.sqldb.tpl.mapper");
@@ -68,6 +85,11 @@ public class Appconfig {
 
         SqldbHammerImpl hammer = new SqldbHammerImpl(jdbc, mappingFactory, configFactory);
         return hammer;
+    }
+
+    @Bean
+    public DataSourceTransactionManager dataSourceTransactionManager(DataSource dataSource) {
+        return new DataSourceTransactionManager(dataSource);
     }
 
     //    @Bean("cacheManager")

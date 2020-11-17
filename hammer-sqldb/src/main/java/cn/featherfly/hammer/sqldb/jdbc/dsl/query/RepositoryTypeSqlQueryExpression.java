@@ -15,12 +15,18 @@ import cn.featherfly.common.db.mapping.ClassMappingUtils;
 import cn.featherfly.common.lang.ClassUtils;
 import cn.featherfly.common.lang.LambdaUtils;
 import cn.featherfly.common.lang.LambdaUtils.SerializedLambdaInfo;
-import cn.featherfly.common.lang.LangUtils;
+import cn.featherfly.common.lang.Lang;
+import cn.featherfly.common.lang.function.ReturnDateFunction;
+import cn.featherfly.common.lang.function.ReturnLocalDateFunction;
+import cn.featherfly.common.lang.function.ReturnLocalDateTimeFunction;
+import cn.featherfly.common.lang.function.ReturnLocalTimeFunction;
+import cn.featherfly.common.lang.function.ReturnNumberFunction;
+import cn.featherfly.common.lang.function.ReturnStringFunction;
 import cn.featherfly.common.lang.function.SerializableFunction;
+import cn.featherfly.common.repository.builder.AliasManager;
 import cn.featherfly.common.repository.mapping.ClassMapping;
 import cn.featherfly.common.repository.mapping.MappingFactory;
 import cn.featherfly.common.repository.operate.QueryOperator;
-import cn.featherfly.common.repository.builder.AliasManager;
 import cn.featherfly.hammer.dsl.query.RepositoryTypeQueryConditionGroupExpression;
 import cn.featherfly.hammer.dsl.query.RepositoryTypeQueryConditionGroupLogicExpression;
 import cn.featherfly.hammer.expression.condition.property.DateExpression;
@@ -96,7 +102,7 @@ public class RepositoryTypeSqlQueryExpression extends RepositoryTypeSqlQueryCond
             result = selectBuilder.build();
         }
         String condition = super.build();
-        if (LangUtils.isNotEmpty(condition)) {
+        if (Lang.isNotEmpty(condition)) {
             result = result + Chars.SPACE + condition;
         }
         return result;
@@ -122,7 +128,7 @@ public class RepositoryTypeSqlQueryExpression extends RepositoryTypeSqlQueryCond
      * {@inheritDoc}
      */
     @Override
-    public <T, R> RepositoryTypeQueryConditionGroupLogicExpression sw(SerializableFunction<T, R> name, String value) {
+    public <T> RepositoryTypeQueryConditionGroupLogicExpression sw(ReturnStringFunction<T> name, String value) {
         return addCondition(name, value, QueryOperator.SW);
     }
 
@@ -130,7 +136,7 @@ public class RepositoryTypeSqlQueryExpression extends RepositoryTypeSqlQueryCond
      * {@inheritDoc}
      */
     @Override
-    public <T, R> RepositoryTypeQueryConditionGroupLogicExpression ew(SerializableFunction<T, R> name, String value) {
+    public <T> RepositoryTypeQueryConditionGroupLogicExpression ew(ReturnStringFunction<T> name, String value) {
         return addCondition(name, value, QueryOperator.EW);
     }
 
@@ -138,7 +144,7 @@ public class RepositoryTypeSqlQueryExpression extends RepositoryTypeSqlQueryCond
      * {@inheritDoc}
      */
     @Override
-    public <T, R> RepositoryTypeQueryConditionGroupLogicExpression co(SerializableFunction<T, R> name, String value) {
+    public <T> RepositoryTypeQueryConditionGroupLogicExpression co(ReturnStringFunction<T> name, String value) {
         return addCondition(name, value, QueryOperator.CO);
     }
 
@@ -146,7 +152,7 @@ public class RepositoryTypeSqlQueryExpression extends RepositoryTypeSqlQueryCond
      * {@inheritDoc}
      */
     @Override
-    public <T, R, D extends Date> RepositoryTypeQueryConditionGroupLogicExpression ge(SerializableFunction<T, R> name,
+    public <T, D extends Date> RepositoryTypeQueryConditionGroupLogicExpression ge(ReturnDateFunction<T, D> name,
             D value) {
         return addCondition(name, value, QueryOperator.GE);
     }
@@ -155,8 +161,7 @@ public class RepositoryTypeSqlQueryExpression extends RepositoryTypeSqlQueryCond
      * {@inheritDoc}
      */
     @Override
-    public <T, R> RepositoryTypeQueryConditionGroupLogicExpression ge(SerializableFunction<T, R> name,
-            LocalDate value) {
+    public <T> RepositoryTypeQueryConditionGroupLogicExpression ge(ReturnLocalDateFunction<T> name, LocalDate value) {
         return addCondition(name, value, QueryOperator.GE);
     }
 
@@ -164,7 +169,7 @@ public class RepositoryTypeSqlQueryExpression extends RepositoryTypeSqlQueryCond
      * {@inheritDoc}
      */
     @Override
-    public <T, R> RepositoryTypeQueryConditionGroupLogicExpression ge(SerializableFunction<T, R> name,
+    public <T> RepositoryTypeQueryConditionGroupLogicExpression ge(ReturnLocalDateTimeFunction<T> name,
             LocalDateTime value) {
         return addCondition(name, value, QueryOperator.GE);
     }
@@ -173,8 +178,7 @@ public class RepositoryTypeSqlQueryExpression extends RepositoryTypeSqlQueryCond
      * {@inheritDoc}
      */
     @Override
-    public <T, R> RepositoryTypeQueryConditionGroupLogicExpression ge(SerializableFunction<T, R> name,
-            LocalTime value) {
+    public <T> RepositoryTypeQueryConditionGroupLogicExpression ge(ReturnLocalTimeFunction<T> name, LocalTime value) {
         return addCondition(name, value, QueryOperator.GE);
     }
 
@@ -182,7 +186,7 @@ public class RepositoryTypeSqlQueryExpression extends RepositoryTypeSqlQueryCond
      * {@inheritDoc}
      */
     @Override
-    public <T, R, N extends Number> RepositoryTypeQueryConditionGroupLogicExpression ge(SerializableFunction<T, R> name,
+    public <T, N extends Number> RepositoryTypeQueryConditionGroupLogicExpression ge(ReturnNumberFunction<T, N> name,
             N value) {
         return addCondition(name, value, QueryOperator.GE);
     }
@@ -191,7 +195,7 @@ public class RepositoryTypeSqlQueryExpression extends RepositoryTypeSqlQueryCond
      * {@inheritDoc}
      */
     @Override
-    public <T, R> RepositoryTypeQueryConditionGroupLogicExpression ge(SerializableFunction<T, R> name, String value) {
+    public <T> RepositoryTypeQueryConditionGroupLogicExpression ge(ReturnStringFunction<T> name, String value) {
         return addCondition(name, value, QueryOperator.GE);
     }
 
@@ -199,7 +203,7 @@ public class RepositoryTypeSqlQueryExpression extends RepositoryTypeSqlQueryCond
      * {@inheritDoc}
      */
     @Override
-    public <T, R, D extends Date> RepositoryTypeQueryConditionGroupLogicExpression gt(SerializableFunction<T, R> name,
+    public <T, D extends Date> RepositoryTypeQueryConditionGroupLogicExpression gt(ReturnDateFunction<T, D> name,
             D value) {
         return addCondition(name, value, QueryOperator.GT);
     }
@@ -208,8 +212,7 @@ public class RepositoryTypeSqlQueryExpression extends RepositoryTypeSqlQueryCond
      * {@inheritDoc}
      */
     @Override
-    public <T, R> RepositoryTypeQueryConditionGroupLogicExpression gt(SerializableFunction<T, R> name,
-            LocalDate value) {
+    public <T> RepositoryTypeQueryConditionGroupLogicExpression gt(ReturnLocalDateFunction<T> name, LocalDate value) {
         return addCondition(name, value, QueryOperator.GT);
     }
 
@@ -217,7 +220,7 @@ public class RepositoryTypeSqlQueryExpression extends RepositoryTypeSqlQueryCond
      * {@inheritDoc}
      */
     @Override
-    public <T, R> RepositoryTypeQueryConditionGroupLogicExpression gt(SerializableFunction<T, R> name,
+    public <T> RepositoryTypeQueryConditionGroupLogicExpression gt(ReturnLocalDateTimeFunction<T> name,
             LocalDateTime value) {
         return addCondition(name, value, QueryOperator.GT);
     }
@@ -226,8 +229,7 @@ public class RepositoryTypeSqlQueryExpression extends RepositoryTypeSqlQueryCond
      * {@inheritDoc}
      */
     @Override
-    public <T, R> RepositoryTypeQueryConditionGroupLogicExpression gt(SerializableFunction<T, R> name,
-            LocalTime value) {
+    public <T> RepositoryTypeQueryConditionGroupLogicExpression gt(ReturnLocalTimeFunction<T> name, LocalTime value) {
         return addCondition(name, value, QueryOperator.GT);
     }
 
@@ -235,7 +237,7 @@ public class RepositoryTypeSqlQueryExpression extends RepositoryTypeSqlQueryCond
      * {@inheritDoc}
      */
     @Override
-    public <T, R, N extends Number> RepositoryTypeQueryConditionGroupLogicExpression gt(SerializableFunction<T, R> name,
+    public <T, N extends Number> RepositoryTypeQueryConditionGroupLogicExpression gt(ReturnNumberFunction<T, N> name,
             N value) {
         return addCondition(name, value, QueryOperator.GT);
     }
@@ -244,7 +246,7 @@ public class RepositoryTypeSqlQueryExpression extends RepositoryTypeSqlQueryCond
      * {@inheritDoc}
      */
     @Override
-    public <T, R> RepositoryTypeQueryConditionGroupLogicExpression gt(SerializableFunction<T, R> name, String value) {
+    public <T> RepositoryTypeQueryConditionGroupLogicExpression gt(ReturnStringFunction<T> name, String value) {
         return addCondition(name, value, QueryOperator.GT);
     }
 
@@ -276,7 +278,7 @@ public class RepositoryTypeSqlQueryExpression extends RepositoryTypeSqlQueryCond
      * {@inheritDoc}
      */
     @Override
-    public <T, R, D extends Date> RepositoryTypeQueryConditionGroupLogicExpression le(SerializableFunction<T, R> name,
+    public <T, D extends Date> RepositoryTypeQueryConditionGroupLogicExpression le(ReturnDateFunction<T, D> name,
             D value) {
         return addCondition(name, value, QueryOperator.LE);
     }
@@ -285,8 +287,7 @@ public class RepositoryTypeSqlQueryExpression extends RepositoryTypeSqlQueryCond
      * {@inheritDoc}
      */
     @Override
-    public <T, R> RepositoryTypeQueryConditionGroupLogicExpression le(SerializableFunction<T, R> name,
-            LocalDate value) {
+    public <T> RepositoryTypeQueryConditionGroupLogicExpression le(ReturnLocalDateFunction<T> name, LocalDate value) {
         return addCondition(name, value, QueryOperator.LE);
     }
 
@@ -294,7 +295,7 @@ public class RepositoryTypeSqlQueryExpression extends RepositoryTypeSqlQueryCond
      * {@inheritDoc}
      */
     @Override
-    public <T, R> RepositoryTypeQueryConditionGroupLogicExpression le(SerializableFunction<T, R> name,
+    public <T> RepositoryTypeQueryConditionGroupLogicExpression le(ReturnLocalDateTimeFunction<T> name,
             LocalDateTime value) {
         return addCondition(name, value, QueryOperator.LE);
     }
@@ -303,8 +304,7 @@ public class RepositoryTypeSqlQueryExpression extends RepositoryTypeSqlQueryCond
      * {@inheritDoc}
      */
     @Override
-    public <T, R> RepositoryTypeQueryConditionGroupLogicExpression le(SerializableFunction<T, R> name,
-            LocalTime value) {
+    public <T> RepositoryTypeQueryConditionGroupLogicExpression le(ReturnLocalTimeFunction<T> name, LocalTime value) {
         return addCondition(name, value, QueryOperator.LE);
     }
 
@@ -312,7 +312,7 @@ public class RepositoryTypeSqlQueryExpression extends RepositoryTypeSqlQueryCond
      * {@inheritDoc}
      */
     @Override
-    public <T, R, N extends Number> RepositoryTypeQueryConditionGroupLogicExpression le(SerializableFunction<T, R> name,
+    public <T, N extends Number> RepositoryTypeQueryConditionGroupLogicExpression le(ReturnNumberFunction<T, N> name,
             N value) {
         return addCondition(name, value, QueryOperator.LE);
     }
@@ -321,7 +321,7 @@ public class RepositoryTypeSqlQueryExpression extends RepositoryTypeSqlQueryCond
      * {@inheritDoc}
      */
     @Override
-    public <T, R> RepositoryTypeQueryConditionGroupLogicExpression le(SerializableFunction<T, R> name, String value) {
+    public <T> RepositoryTypeQueryConditionGroupLogicExpression le(ReturnStringFunction<T> name, String value) {
         return addCondition(name, value, QueryOperator.LE);
     }
 
@@ -329,7 +329,7 @@ public class RepositoryTypeSqlQueryExpression extends RepositoryTypeSqlQueryCond
      * {@inheritDoc}
      */
     @Override
-    public <T, R, D extends Date> RepositoryTypeQueryConditionGroupLogicExpression lt(SerializableFunction<T, R> name,
+    public <T, D extends Date> RepositoryTypeQueryConditionGroupLogicExpression lt(ReturnDateFunction<T, D> name,
             D value) {
         return addCondition(name, value, QueryOperator.LT);
     }
@@ -338,8 +338,7 @@ public class RepositoryTypeSqlQueryExpression extends RepositoryTypeSqlQueryCond
      * {@inheritDoc}
      */
     @Override
-    public <T, R> RepositoryTypeQueryConditionGroupLogicExpression lt(SerializableFunction<T, R> name,
-            LocalDate value) {
+    public <T> RepositoryTypeQueryConditionGroupLogicExpression lt(ReturnLocalDateFunction<T> name, LocalDate value) {
         return addCondition(name, value, QueryOperator.LT);
     }
 
@@ -347,7 +346,7 @@ public class RepositoryTypeSqlQueryExpression extends RepositoryTypeSqlQueryCond
      * {@inheritDoc}
      */
     @Override
-    public <T, R> RepositoryTypeQueryConditionGroupLogicExpression lt(SerializableFunction<T, R> name,
+    public <T> RepositoryTypeQueryConditionGroupLogicExpression lt(ReturnLocalDateTimeFunction<T> name,
             LocalDateTime value) {
         return addCondition(name, value, QueryOperator.LT);
     }
@@ -356,8 +355,7 @@ public class RepositoryTypeSqlQueryExpression extends RepositoryTypeSqlQueryCond
      * {@inheritDoc}
      */
     @Override
-    public <T, R> RepositoryTypeQueryConditionGroupLogicExpression lt(SerializableFunction<T, R> name,
-            LocalTime value) {
+    public <T> RepositoryTypeQueryConditionGroupLogicExpression lt(ReturnLocalTimeFunction<T> name, LocalTime value) {
         return addCondition(name, value, QueryOperator.LT);
     }
 
@@ -365,7 +363,7 @@ public class RepositoryTypeSqlQueryExpression extends RepositoryTypeSqlQueryCond
      * {@inheritDoc}
      */
     @Override
-    public <T, R, N extends Number> RepositoryTypeQueryConditionGroupLogicExpression lt(SerializableFunction<T, R> name,
+    public <T, N extends Number> RepositoryTypeQueryConditionGroupLogicExpression lt(ReturnNumberFunction<T, N> name,
             N value) {
         return addCondition(name, value, QueryOperator.LT);
     }
@@ -374,7 +372,7 @@ public class RepositoryTypeSqlQueryExpression extends RepositoryTypeSqlQueryCond
      * {@inheritDoc}
      */
     @Override
-    public <T, R> RepositoryTypeQueryConditionGroupLogicExpression lt(SerializableFunction<T, R> name, String value) {
+    public <T> RepositoryTypeQueryConditionGroupLogicExpression lt(ReturnStringFunction<T> name, String value) {
         return addCondition(name, value, QueryOperator.LT);
     }
 
