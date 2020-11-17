@@ -8,12 +8,14 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import javax.annotation.Nonnull;
 import javax.validation.ConstraintViolation;
 import javax.validation.Validation;
 import javax.validation.Validator;
 
 import org.hibernate.validator.HibernateValidator;
 
+import cn.featherfly.common.constant.Chars;
 import cn.featherfly.common.db.mapping.JdbcMappingFactory;
 import cn.featherfly.common.lang.ArrayUtils;
 import cn.featherfly.common.lang.Lang;
@@ -311,18 +313,36 @@ public class SqldbHammerImpl implements SqldbHammer {
      * {@inheritDoc}
      */
     @Override
-    public <E> int delete(Serializable id, Class<E> entityType) {
+    public <E> int delete(Serializable id, @Nonnull Class<E> entityType) {
         if (id == null || entityType == null) {
             return 0;
         }
-        @SuppressWarnings("unchecked")
-        DeleteOperate<E> delete = (DeleteOperate<E>) deleteOperates.get(entityType);
-        if (delete == null) {
-            ClassMapping<E> mapping = mappingFactory.getClassMapping(entityType);
-            delete = new DeleteOperate<>(jdbc, mapping, mappingFactory.getMetadata());
-            deleteOperates.put(entityType, delete);
-        }
+        DeleteOperate<E> delete = getDelete(entityType);
         return delete.delete(id);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public <E> int delete(Serializable[] ids, @Nonnull Class<E> entityType) {
+        if (Lang.isEmpty(ids)) {
+            return Chars.ZERO;
+        }
+        DeleteOperate<E> delete = getDelete(entityType);
+        return delete.deleteBatch(ids);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public <E> int delete(List<Serializable> ids, @Nonnull Class<E> entityType) {
+        if (Lang.isEmpty(ids)) {
+            return Chars.ZERO;
+        }
+        DeleteOperate<E> delete = getDelete(entityType);
+        return delete.deleteBatch(ids);
     }
 
     /**
@@ -333,14 +353,7 @@ public class SqldbHammerImpl implements SqldbHammer {
         if (entity == null) {
             return 0;
         }
-        @SuppressWarnings("unchecked")
-        DeleteOperate<E> delete = (DeleteOperate<E>) deleteOperates.get(entity.getClass());
-        if (delete == null) {
-            @SuppressWarnings("unchecked")
-            ClassMapping<E> mapping = (ClassMapping<E>) mappingFactory.getClassMapping(entity.getClass());
-            delete = new DeleteOperate<>(jdbc, mapping, mappingFactory.getMetadata());
-            deleteOperates.put(entity.getClass(), delete);
-        }
+        DeleteOperate<E> delete = getDelete(entity);
         return delete.execute(entity);
     }
 
@@ -349,14 +362,11 @@ public class SqldbHammerImpl implements SqldbHammer {
      */
     @Override
     public <E> int delete(@SuppressWarnings("unchecked") E... entities) {
-        int size = 0;
-        // TODO 后续加入DeleteBatchOperate优化为sql批量删除
-        if (Lang.isNotEmpty(entities)) {
-            for (E e : entities) {
-                size += delete(e);
-            }
+        if (Lang.isEmpty(entities)) {
+            return Chars.ZERO;
         }
-        return size;
+        DeleteOperate<E> delete = getDelete(entities[0]);
+        return delete.executeBatch(entities);
     }
 
     /**
@@ -364,14 +374,28 @@ public class SqldbHammerImpl implements SqldbHammer {
      */
     @Override
     public <E> int delete(List<E> entities) {
-        // TODO 后续加入DeleteBatchOperate优化为sql批量删除
-        int size = 0;
-        if (Lang.isNotEmpty(entities)) {
-            for (E e : entities) {
-                size += delete(e);
-            }
+        if (Lang.isEmpty(entities)) {
+            return Chars.ZERO;
         }
-        return size;
+        DeleteOperate<E> delete = getDelete(entities.get(0));
+        return delete.executeBatch(entities);
+    }
+
+    private <E> DeleteOperate<E> getDelete(E entity) {
+        @SuppressWarnings("unchecked")
+        Class<E> type = (Class<E>) entity.getClass();
+        return getDelete(type);
+    }
+
+    private <E> DeleteOperate<E> getDelete(Class<E> entityType) {
+        @SuppressWarnings("unchecked")
+        DeleteOperate<E> delete = (DeleteOperate<E>) deleteOperates.get(entityType);
+        if (delete == null) {
+            ClassMapping<E> mapping = mappingFactory.getClassMapping(entityType);
+            delete = new DeleteOperate<>(jdbc, mapping, mappingFactory.getMetadata());
+            deleteOperates.put(entityType, delete);
+        }
+        return delete;
     }
 
     /**
@@ -870,4 +894,5 @@ public class SqldbHammerImpl implements SqldbHammer {
     public Jdbc getJdbc() {
         return jdbc;
     }
+
 }

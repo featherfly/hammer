@@ -1,9 +1,9 @@
 
 package cn.featherfly.hammer.sqldb.jdbc;
 
+import static org.junit.Assert.assertNull;
 import static org.testng.Assert.assertEquals;
 import static org.testng.Assert.assertNotNull;
-import static org.testng.Assert.assertNull;
 import static org.testng.Assert.assertTrue;
 
 import java.util.ArrayList;
@@ -228,6 +228,65 @@ public class OperatorTest extends JdbcTestBase {
 
         ur = get.get(userRole);
         assertNull(ur);
+    }
+
+    @Test
+    public void testDeleteBatch() {
+        DeleteOperate<Role> delete = new DeleteOperate<>(jdbc, mappingFactory.getClassMapping(Role.class),
+                mappingFactory.getMetadata());
+        InsertOperate<Role> insert = new InsertOperate<>(jdbc, mappingFactory.getClassMapping(Role.class),
+                mappingFactory.getMetadata());
+        GetOperate<Role> get = new GetOperate<>(jdbc, mappingFactory.getClassMapping(Role.class),
+                mappingFactory.getMetadata());
+
+        List<Role> roles = new ArrayList<>();
+        int size = 5;
+        for (int i = 0; i < size; i++) {
+            Role r = new Role();
+            insert.execute(r);
+            assertNotNull(r.getId());
+            roles.add(r);
+        }
+        assertEquals(roles.size(), size);
+
+        delete.executeBatch(roles);
+
+        roles.forEach(r -> {
+            assertNull(get.get(r));
+        });
+    }
+
+    @Test
+    public void testDeleteBatchMulityPrimaryKey() {
+        DeleteOperate<UserRole> delete = new DeleteOperate<>(jdbc, mappingFactory.getClassMapping(UserRole.class),
+                mappingFactory.getMetadata());
+        InsertOperate<UserRole> insert = new InsertOperate<>(jdbc, mappingFactory.getClassMapping(UserRole.class),
+                mappingFactory.getMetadata());
+        GetOperate<UserRole> get = new GetOperate<>(jdbc, mappingFactory.getClassMapping(UserRole.class),
+                mappingFactory.getMetadata());
+
+        List<UserRole> userRoles = new ArrayList<>();
+        int size = 5;
+        for (int i = 0; i < size; i++) {
+            UserRole userRole = new UserRole();
+            userRole.setRoleId(33333 + i);
+            userRole.setUserId(22222 + i);
+
+            assertNull(get.get(userRole));
+
+            insert.execute(userRole);
+
+            assertNotNull(get.get(userRole));
+
+            userRoles.add(userRole);
+        }
+        assertEquals(userRoles.size(), size);
+
+        delete.executeBatch(userRoles);
+
+        userRoles.forEach(ur -> {
+            assertNull(get.get(ur));
+        });
     }
 
 }

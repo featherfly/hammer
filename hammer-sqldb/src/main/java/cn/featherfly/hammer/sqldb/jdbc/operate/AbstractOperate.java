@@ -4,6 +4,7 @@ package cn.featherfly.hammer.sqldb.jdbc.operate;
 import java.io.Serializable;
 import java.sql.PreparedStatement;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 
@@ -139,6 +140,24 @@ public abstract class AbstractOperate<T> {
 
     public Object[] getParameters(T entity) {
         return getParameters(entity, propertyPositions);
+    }
+
+    public Object[] getBatchParameters(List<T> entities, Map<Integer, String> propertyPositions) {
+        if (Lang.isEmpty(entities)) {
+            return new Object[] {};
+        }
+        Object[] params = new Object[propertyPositions.size()];
+        int pkNum = propertyPositions.size() / entities.size();
+        int i = 0;
+        T entity = null;
+        for (Entry<Integer, String> propertyPosition : propertyPositions.entrySet()) {
+            if (i % pkNum == 0) {
+                entity = entities.get(i / pkNum);
+            }
+            params[i] = BeanUtils.getProperty(entity, propertyPosition.getValue());
+            i++;
+        }
+        return params;
     }
 
     protected Object[] getParameters(T entity, Map<Integer, String> propertyPositions) {
