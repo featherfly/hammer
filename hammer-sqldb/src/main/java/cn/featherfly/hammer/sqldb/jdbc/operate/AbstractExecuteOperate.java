@@ -59,15 +59,6 @@ public abstract class AbstractExecuteOperate<T> extends AbstractOperate<T> {
      */
     public int execute(final T entity) {
         return jdbc.update(sql, getParameters(entity));
-        //        return jdbc.execute(con -> {
-        //            PreparedStatement prep = null;
-        //            prep = con.prepareStatement(sql);
-        //            setParameter(prep, entity);
-        //            logger.debug("execute sql: {}", sql);
-        //            int result = prep.executeUpdate();
-        //            prep.close();
-        //            return result;
-        //        });
     }
 
     // ********************************************************************

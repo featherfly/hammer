@@ -1,3 +1,7 @@
+# 0.4.8 2020-11-17
+    1.Hammer加入delete(Ids,Class)方法,delete(Ids),delete(Entities)方法实现一条sql进行批量删除
+    2.升级common-core、common-db、common-model-repository
+
 # 0.4.7 2020-7-16
 
     1.修复自定义Mapper接口覆盖了GenericHammer，Hammer接口定义的方法，没有继承来默认实现的问题（目前只是先了方法不带泛型的接口，后续实现带泛型的）
