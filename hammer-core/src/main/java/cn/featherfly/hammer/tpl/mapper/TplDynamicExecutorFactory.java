@@ -37,6 +37,10 @@ import javassist.CtField;
 import javassist.CtMethod;
 import javassist.Modifier;
 import javassist.NotFoundException;
+import javassist.bytecode.SignatureAttribute;
+import javassist.bytecode.SignatureAttribute.ClassSignature;
+import javassist.bytecode.SignatureAttribute.ClassType;
+import javassist.bytecode.SignatureAttribute.TypeParameter;
 
 /**
  * <p>
@@ -121,7 +125,17 @@ public class TplDynamicExecutorFactory {
                     }
                 }
                 parentHammer = GenericHammer.class;
-                dynamicImplClass.setSuperclass(pool.getCtClass(BasedTplGenericHammer.class.getName()));
+                CtClass superclass = pool.getCtClass(BasedTplGenericHammer.class.getName());
+
+                ClassSignature cs = new ClassSignature(new TypeParameter[] { new TypeParameter(typeName) },
+                        new ClassType(superclass.getName()), new ClassType[] {});
+                System.err.println(cs);
+                //                superclass.setGenericSignature(cs.encode());
+                dynamicImplClass.setSuperclass(superclass);
+                //                dynamicImplClass.setGenericSignature(
+                //                        new SignatureAttribute.TypeVariable("BasedTplGenericHammer<" + typeName + ">").encode());
+                dynamicImplClass.setGenericSignature(
+                        new SignatureAttribute.TypeParameter("BasedTplGenericHammer<" + typeName + ">").toString());
                 constructorBody = "{super($1, " + typeName + ".class);}";
                 hammerFieldName = "super." + hammerFieldName;
             } else {
@@ -178,23 +192,26 @@ public class TplDynamicExecutorFactory {
             CtMethod ctMethod;
             Method parentMethod = getMethodFromParent(parentHammer, method);
             if (parentMethod != null) {
-                String returnStr = "";
-                if (method.getReturnType() != void.class) {
-                    returnStr = "return";
-                }
-                StringBuilder params = new StringBuilder();
-                for (int i = 0; i < method.getParameters().length; i++) {
-                    ctParamTypes[i] = pool.getCtClass(method.getParameters()[i].getType().getName());
-                    params.append("$").append(i + 1).append(",");
-                }
-                if (params.length() > 0) {
-                    params.deleteCharAt(params.length() - 1);
-                }
-
-                ctMethod = new CtMethod(pool.getCtClass(method.getReturnType().getTypeName()), method.getName(),
-                        ctParamTypes, dynamicImplClass);
-
-                body = String.format("{%s super.%s(%s);}", returnStr, method.getName(), params.toString());
+                //                String returnStr = "";
+                //                // 方法返回值是泛型，因为泛型使用的擦除法，所以使用方法定义中的返回类型
+                //                if (parentMethod.getReturnType() != void.class) {
+                //                    returnStr = "return";
+                //                }
+                //                StringBuilder params = new StringBuilder();
+                //                for (int i = 0; i < parentMethod.getParameters().length; i++) {
+                //                    ctParamTypes[i] = pool.getCtClass(parentMethod.getParameters()[i].getType().getName());
+                //                    params.append("$").append(i + 1).append(",");
+                //                }
+                //                if (params.length() > 0) {
+                //                    params.deleteCharAt(params.length() - 1);
+                //                }
+                //
+                //                ctMethod = new CtMethod(pool.getCtClass(parentMethod.getReturnType().getTypeName()),
+                //                        parentMethod.getName(), ctParamTypes, dynamicImplClass);
+                //
+                //                body = String.format("{%s super.%s(%s);}", returnStr, parentMethod.getName(), params.toString());
+                // FIXME 泛型返回值的方法重载有问题
+                ctMethod = createInvokeSupper(parentMethod, ctParamTypes, dynamicImplClass, pool);
             } else {
                 String namespace = getNamespace(method, globalNamespace);
                 String name = getName(method);
@@ -299,19 +316,35 @@ public class TplDynamicExecutorFactory {
                     body = String.format("{return (%3$s)  %s.single(%s, %s.class, new %s()%s);}", hammerFieldName,
                             executeId, method.getReturnType().getName(), HashChainMap.class.getName(), setParams);
                 }
-            }
-            logger.debug("method {} -> {}", method.getName(), body);
-            ctMethod.setBody(body);
-            dynamicImplClass.addMethod(ctMethod);
-
-            if (parentMethod != null && method.getReturnType() != parentMethod.getReturnType()) {
                 logger.debug("method {} -> {}", method.getName(), body);
-                ctMethod = new CtMethod(pool.getCtClass(parentMethod.getReturnType().getTypeName()),
-                        parentMethod.getName(), ctParamTypes, dynamicImplClass);
                 ctMethod.setBody(body);
-                dynamicImplClass.addMethod(ctMethod);
             }
+            dynamicImplClass.addMethod(ctMethod);
         }
+    }
+
+    private CtMethod createInvokeSupper(Method method, CtClass[] ctParamTypes, CtClass dynamicImplClass, ClassPool pool)
+            throws NotFoundException, CannotCompileException {
+        String returnStr = "";
+        // 方法返回值是泛型，因为泛型使用的擦除法，所以使用方法定义中的返回类型
+        if (method.getReturnType() != void.class) {
+            returnStr = "return";
+        }
+        StringBuilder params = new StringBuilder();
+        for (int i = 0; i < method.getParameters().length; i++) {
+            ctParamTypes[i] = pool.getCtClass(method.getParameters()[i].getType().getName());
+            params.append("$").append(i + 1).append(",");
+        }
+        if (params.length() > 0) {
+            params.deleteCharAt(params.length() - 1);
+        }
+
+        String body = String.format("{%s super.%s(%s);}", returnStr, method.getName(), params.toString());
+        CtMethod ctMethod = new CtMethod(pool.getCtClass(method.getReturnType().getTypeName()), method.getName(),
+                ctParamTypes, dynamicImplClass);
+        logger.debug("method {} -> {}", method.getName(), body);
+        ctMethod.setBody(body);
+        return ctMethod;
     }
 
     private Method getMethodFromParent(Class<?> parentHammer, Method method) {
