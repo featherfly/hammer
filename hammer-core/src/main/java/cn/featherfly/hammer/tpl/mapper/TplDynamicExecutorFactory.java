@@ -1,26 +1,39 @@
 package cn.featherfly.hammer.tpl.mapper;
 
+import java.io.IOException;
 import java.lang.reflect.Method;
 import java.lang.reflect.Parameter;
 import java.lang.reflect.ParameterizedType;
-import java.lang.reflect.Type;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import org.objectweb.asm.ClassReader;
+import org.objectweb.asm.ClassWriter;
+import org.objectweb.asm.Opcodes;
+import org.objectweb.asm.Type;
+import org.objectweb.asm.signature.SignatureVisitor;
+import org.objectweb.asm.signature.SignatureWriter;
+import org.objectweb.asm.tree.AbstractInsnNode;
+import org.objectweb.asm.tree.ClassNode;
+import org.objectweb.asm.tree.MethodNode;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import cn.featherfly.common.exception.ReflectException;
 import cn.featherfly.common.lang.ClassUtils;
 import cn.featherfly.common.lang.Lang;
+import cn.featherfly.common.lang.Strings;
+import cn.featherfly.common.structure.ChainMap;
 import cn.featherfly.common.structure.HashChainMap;
 import cn.featherfly.common.structure.page.Page;
 import cn.featherfly.common.structure.page.PaginationResults;
 import cn.featherfly.hammer.GenericHammer;
 import cn.featherfly.hammer.Hammer;
 import cn.featherfly.hammer.HammerException;
+import cn.featherfly.hammer.tpl.TplExecuteId;
 import cn.featherfly.hammer.tpl.TplExecuteIdFileImpl;
 import cn.featherfly.hammer.tpl.TplExecuteIdMapperImpl;
 import cn.featherfly.hammer.tpl.TplType;
@@ -28,15 +41,6 @@ import cn.featherfly.hammer.tpl.annotation.Mapper;
 import cn.featherfly.hammer.tpl.annotation.Param;
 import cn.featherfly.hammer.tpl.annotation.ParamType;
 import cn.featherfly.hammer.tpl.annotation.Template;
-import javassist.CannotCompileException;
-import javassist.ClassClassPath;
-import javassist.ClassPool;
-import javassist.CtClass;
-import javassist.CtConstructor;
-import javassist.CtField;
-import javassist.CtMethod;
-import javassist.Modifier;
-import javassist.NotFoundException;
 
 /**
  * <p>
@@ -45,7 +49,9 @@ import javassist.NotFoundException;
  *
  * @author zhongj
  */
-public class TplDynamicExecutorFactory {
+public class TplDynamicExecutorFactory extends ClassLoader implements Opcodes {
+
+    public static final String HAMMER_FIELD_NAME = "hammer";
 
     protected final Logger logger = LoggerFactory.getLogger(this.getClass());
 
@@ -55,11 +61,164 @@ public class TplDynamicExecutorFactory {
 
     private Map<Class<?>, Object> typeInstances = new HashMap<>();
 
+    private final Method putChainMethod;
+
+    private final Method executeMethod;
+
+    private final String executeMethodDescriptor;
+
+    private final Method paginationTypeMethod;
+
+    private final String paginationTypeMethodDescriptor;
+
+    private final Method paginationTypeLimitMethod;
+
+    private final String paginationTypeLimitMethodDescriptor;
+
+    private final Method paginationMapMethod;
+
+    private final String paginationMapMethodDescriptor;
+
+    private final Method paginationMapLimitMethod;
+
+    private final String paginationMapLimitMethodDescriptor;
+
+    private final Method listTypeMethod;
+
+    private final String listTypeMethodDescriptor;
+
+    private final Method listTypePageMethod;
+
+    private final String listTypePageMethodDescriptor;
+
+    private final Method listTypeLimitMethod;
+
+    private final String listTypeLimitMethodDescriptor;
+
+    private final Method listMapMethod;
+
+    private final String listMapMethodDescriptor;
+
+    private final Method listMapPageMethod;
+
+    private final String listMapPageMethodDescriptor;
+
+    private final Method listMapLimitMethod;
+
+    private final String listMapLimitMethodDescriptor;
+
+    private final Method singleTypeMethod;
+
+    private final String singleTypeMethodDescriptor;
+
+    private final Method singleMapMethod;
+
+    private final String singleMapMethodDescriptor;
+
+    private final Method stringMethod;
+
+    private final String stringMethodDescriptor;
+
+    private final Method numberMethod;
+
+    private final String numberMethodDescriptor;
+
+    private final Method intValueMethod;
+
+    private final String intValueMethodDescriptor;
+
+    private final Method longValueMethod;
+
+    private final String longValueMethodDescriptor;
+
+    private final Method doubleValueMethod;
+
+    private final String doubleValueMethodDescriptor;
+
+    private final String hammerDescriptor;
+
+    private final String hammerName;
+
+    private final String paramName;
+
+    private final String paramChainName;
+
+    private final String constructorDescriptor;
+
     /**
-     *
      */
     private TplDynamicExecutorFactory() {
         super();
+        try {
+            putChainMethod = ChainMap.class.getMethod("putChain", Object.class, Object.class);
+
+            executeMethod = Hammer.class.getMethod("execute", TplExecuteId.class, Map.class);
+            executeMethodDescriptor = Type.getMethodDescriptor(executeMethod);
+
+            listTypeMethod = Hammer.class.getMethod("list", TplExecuteId.class, Class.class, Map.class);
+            listTypeMethodDescriptor = Type.getMethodDescriptor(listTypeMethod);
+
+            listTypePageMethod = Hammer.class.getMethod("list", TplExecuteId.class, Class.class, Map.class, Page.class);
+            listTypePageMethodDescriptor = Type.getMethodDescriptor(listTypePageMethod);
+
+            listTypeLimitMethod = Hammer.class.getMethod("list", TplExecuteId.class, Class.class, Map.class, int.class,
+                    int.class);
+            listTypeLimitMethodDescriptor = Type.getMethodDescriptor(listTypeLimitMethod);
+
+            listMapMethod = Hammer.class.getMethod("list", TplExecuteId.class, Map.class);
+            listMapMethodDescriptor = Type.getMethodDescriptor(listMapMethod);
+
+            listMapPageMethod = Hammer.class.getMethod("list", TplExecuteId.class, Map.class, Page.class);
+            listMapPageMethodDescriptor = Type.getMethodDescriptor(listMapPageMethod);
+
+            listMapLimitMethod = Hammer.class.getMethod("list", TplExecuteId.class, Map.class, int.class, int.class);
+            listMapLimitMethodDescriptor = Type.getMethodDescriptor(listMapLimitMethod);
+
+            paginationTypeMethod = Hammer.class.getMethod("pagination", TplExecuteId.class, Class.class, Map.class,
+                    Page.class);
+            paginationTypeMethodDescriptor = Type.getMethodDescriptor(paginationTypeMethod);
+            paginationTypeLimitMethod = Hammer.class.getMethod("pagination", TplExecuteId.class, Class.class, Map.class,
+                    int.class, int.class);
+            paginationTypeLimitMethodDescriptor = Type.getMethodDescriptor(paginationTypeLimitMethod);
+
+            paginationMapMethod = Hammer.class.getMethod("pagination", TplExecuteId.class, Map.class, Page.class);
+            paginationMapMethodDescriptor = Type.getMethodDescriptor(paginationMapMethod);
+
+            paginationMapLimitMethod = Hammer.class.getMethod("pagination", TplExecuteId.class, Map.class, int.class,
+                    int.class);
+            paginationMapLimitMethodDescriptor = Type.getMethodDescriptor(paginationMapLimitMethod);
+
+            singleTypeMethod = Hammer.class.getMethod("single", TplExecuteId.class, Class.class, Map.class);
+            singleTypeMethodDescriptor = Type.getMethodDescriptor(singleTypeMethod);
+
+            singleMapMethod = Hammer.class.getMethod("single", TplExecuteId.class, Map.class);
+            singleMapMethodDescriptor = Type.getMethodDescriptor(singleMapMethod);
+
+            stringMethod = Hammer.class.getMethod("string", TplExecuteId.class, Map.class);
+            stringMethodDescriptor = Type.getMethodDescriptor(stringMethod);
+
+            numberMethod = Hammer.class.getMethod("number", TplExecuteId.class, Class.class, Map.class);
+            numberMethodDescriptor = Type.getMethodDescriptor(numberMethod);
+
+            intValueMethod = Hammer.class.getMethod("intValue", TplExecuteId.class, Map.class);
+            intValueMethodDescriptor = Type.getMethodDescriptor(intValueMethod);
+
+            longValueMethod = Hammer.class.getMethod("longValue", TplExecuteId.class, Map.class);
+            longValueMethodDescriptor = Type.getMethodDescriptor(longValueMethod);
+
+            doubleValueMethod = Hammer.class.getMethod("doubleValue", TplExecuteId.class, Map.class);
+            doubleValueMethodDescriptor = Type.getMethodDescriptor(doubleValueMethod);
+
+            hammerDescriptor = Type.getDescriptor(Hammer.class);
+            hammerName = Type.getInternalName(Hammer.class);
+            paramName = Type.getInternalName(HashChainMap.class);
+            paramChainName = Type.getInternalName(ChainMap.class);
+
+            constructorDescriptor = ByteCodeUtils.getConstructorDescriptor(Hammer.class);
+
+        } catch (Exception e) {
+            throw new ReflectException(e);
+        }
     }
 
     /**
@@ -78,11 +237,12 @@ public class TplDynamicExecutorFactory {
      *
      * @param type configuration interface class
      * @return implemented class name
-     * @throws NotFoundException      NotFoundException
-     * @throws CannotCompileException CannotCompileException
+     * @throws IOException
+     * @throws SecurityException
+     * @throws NoSuchMethodException
      */
-    public String create(Class<?> type) throws NotFoundException, CannotCompileException {
-        return create(type, null);
+    public String create(Class<?> type) throws IOException, NoSuchMethodException, SecurityException {
+        return create(type, this.getClass().getClassLoader());
     }
 
     /**
@@ -91,229 +251,459 @@ public class TplDynamicExecutorFactory {
      * @param type        configuration interface class
      * @param classLoader the class loader
      * @return implemented class name
-     * @throws NotFoundException      NotFoundException
-     * @throws CannotCompileException CannotCompileException
+     * @throws IOException           Signals that an I/O exception has occurred.
+     * @throws NoSuchMethodException the no such method exception
+     * @throws SecurityException     the security exception
      */
-    public String create(Class<?> type, ClassLoader classLoader) throws NotFoundException, CannotCompileException {
-        String dynamicClassName = type.getPackage().getName() + "._" + type.getSimpleName() + "DynamicImpl";
+    public String create(Class<?> type, ClassLoader classLoader)
+            throws IOException, NoSuchMethodException, SecurityException {
+        if (classLoader == null) {
+            classLoader = this.getClass().getClassLoader();
+        }
+        ClassReader classReader = new ClassReader(type.getName());
+        ClassWriter cw = new ClassWriter(classReader, ClassWriter.COMPUTE_MAXS);
+
+        String implClassName = type.getName() + "$ImplByHammer";
+        String implClassByteCodeName = ByteCodeUtils.getName(implClassName);
+
         Class<?> parentHammer = null;
         if (!types.contains(type)) {
             String globalNamespace = getNamespace(type);
-            String hammerFieldName = "hammer";
 
-            ClassPool pool = ClassPool.getDefault();
-            pool.insertClassPath(new ClassClassPath(this.getClass()));
-            CtClass dynamicImplClass = pool.makeClass(dynamicClassName);
-            dynamicImplClass.addInterface(pool.getCtClass(type.getName()));
-            String constructorBody = null;
-            if (ClassUtils.isParent(Hammer.class, type)) {
-                parentHammer = Hammer.class;
-                dynamicImplClass.setSuperclass(pool.getCtClass(BasedTplHammer.class.getName()));
-                constructorBody = "{super($1);}";
-                hammerFieldName = "super." + hammerFieldName;
-            } else if (ClassUtils.isParent(GenericHammer.class, type)) {
+            ClassNode cn = new ClassNode();
+            cn.version = V1_8;
+            cn.access = ACC_PUBLIC;
+            cn.name = implClassByteCodeName;
+            cn.interfaces.add(ByteCodeUtils.getName(type));
+
+            if (ClassUtils.isParent(GenericHammer.class, type)) {
                 String typeName = null;
-                for (Type implType : type.getGenericInterfaces()) {
+                Class<?> genericType = null;
+                for (java.lang.reflect.Type implType : type.getGenericInterfaces()) {
                     ParameterizedType parameterizedType = (ParameterizedType) implType;
                     if (parameterizedType.getRawType() == GenericHammer.class) {
                         typeName = parameterizedType.getActualTypeArguments()[0].getTypeName();
+                        genericType = ClassUtils.forName(typeName);
                         break;
                     }
                 }
                 parentHammer = GenericHammer.class;
-                dynamicImplClass.setSuperclass(pool.getCtClass(BasedTplGenericHammer.class.getName()));
-                constructorBody = "{super($1, " + typeName + ".class);}";
-                hammerFieldName = "super." + hammerFieldName;
+                cn.superName = Type.getInternalName(BasedTplGenericHammer.class);
+                SignatureWriter signature = new SignatureWriter();
+                SignatureVisitor superVisitor = signature.visitSuperclass();
+                superVisitor.visitClassType(cn.superName);
+                SignatureVisitor typeVisitor = superVisitor.visitTypeArgument(SignatureVisitor.INSTANCEOF);
+                typeVisitor.visitClassType(Type.getInternalName(genericType));
+                typeVisitor.visitEnd();
+
+                cn.signature = signature.toString();
+
+                MethodNode constructor = new MethodNode(ACC_PUBLIC, ByteCodeUtils.CONSTRUCT_METHOD,
+                        constructorDescriptor, null, null);
+                constructor.visitVarInsn(ALOAD, 0);
+                constructor.visitVarInsn(ALOAD, 1);
+                constructor.visitLdcInsn(Type.getType(genericType));
+                constructor.visitMethodInsn(INVOKESPECIAL, cn.superName, ByteCodeUtils.CONSTRUCT_METHOD,
+                        ByteCodeUtils.getConstructorDescriptor(Hammer.class, Class.class), false);
+                constructor.visitInsn(RETURN);
+                constructor.visitMaxs(1, 1);
+                constructor.visitEnd();
+                cn.methods.add(constructor);
             } else {
-                constructorBody = "{this.hammer=$1;}";
+                if (ClassUtils.isParent(Hammer.class, type)) {
+                    parentHammer = Hammer.class;
+                    cn.superName = Type.getInternalName(BasedTplHammer.class);
+                } else {
+                    parentHammer = BasedMapper.class;
+                    cn.superName = Type.getInternalName(BasedMapper.class);
+                }
+                MethodNode constructor = new MethodNode(ASM9, ACC_PUBLIC, ByteCodeUtils.CONSTRUCT_METHOD,
+                        constructorDescriptor, null, null);
+                constructor.visitVarInsn(ALOAD, 0);
+                constructor.visitVarInsn(ALOAD, 1);
+                constructor.visitMethodInsn(INVOKESPECIAL, cn.superName, ByteCodeUtils.CONSTRUCT_METHOD,
+                        constructorDescriptor, false);
+                constructor.visitInsn(RETURN);
+                constructor.visitMaxs(1, 1);
+                constructor.visitEnd();
+                cn.methods.add(constructor);
             }
 
-            // 加入hammer
-            CtField nameField = new CtField(pool.getCtClass(Hammer.class.getName()), "hammer", dynamicImplClass);
-            nameField.setModifiers(Modifier.PRIVATE);
-            dynamicImplClass.addField(nameField);
+            addImplMethods(type, globalNamespace, cn, parentHammer);
 
-            CtConstructor constraConstructor = new CtConstructor(
-                    new CtClass[] { pool.getCtClass(Hammer.class.getName()) }, dynamicImplClass);
-            constraConstructor.setModifiers(Modifier.PUBLIC);
-            constraConstructor.setBody(constructorBody);
-            dynamicImplClass.addConstructor(constraConstructor);
-            // System.err.println(constraConstructor);
-
-            addImplMethods(type, globalNamespace, pool, dynamicImplClass, hammerFieldName, parentHammer);
-
-            dynamicImplClass.toClass(classLoader, dynamicImplClass.getClass().getProtectionDomain());
-            dynamicImplClass.detach();
+            cn.accept(cw);
+            byte[] code = cw.toByteArray();
+            // 定义类
+            //            try (FileOutputStream os = new FileOutputStream(implClassName + ".class")) {
+            //                os.write(code);
+            //            }
+            org.springframework.objenesis.instantiator.util.DefineClassHelper.defineClass(implClassName, code, 0,
+                    code.length, null, classLoader, this.getClass().getProtectionDomain());
             types.add(type);
         }
-        return dynamicClassName;
+        return implClassName;
     }
 
-    /*
-     * add implements methods
-     */
-    private void addImplMethods(Class<?> type, String globalNamespace, ClassPool pool, CtClass dynamicImplClass,
-            String hammerFieldName, Class<?> parentHammer) throws NotFoundException, CannotCompileException {
-        // FIXME 后续的isImplementMethod需要加入泛型的判断
-        //        Type entityType = null;
-        //        if (parentHammer != null && parentHammer == GenericHammer.class) {
-        //            for (Type t : type.getGenericInterfaces()) {
-        //                ParameterizedType pt = (ParameterizedType) t;
-        //                if (pt.getRawType() == GenericHammer.class) {
-        //                    entityType = pt.getActualTypeArguments()[0];
-        //                    break;
-        //                }
-        //            }
-        //        }
+    private void addImplMethods(Class<?> type, String globalNamespace, ClassNode classNode, Class<?> parentHammer)
+            throws NoSuchMethodException, SecurityException {
         for (Method method : type.getDeclaredMethods()) {
             if (method.isDefault()) {
                 continue;
             }
+            int localeSize = method.getParameters().length + 1;
+            int stackSize = 1;
 
             // TODO 注解annotation要代理到实现类
-            CtClass[] ctParamTypes = new CtClass[method.getParameterTypes().length];
 
-            String body = null;
-
-            CtMethod ctMethod;
+            //            MethodNode methodNode;
+            MethodNode methodNode = null;
             Method parentMethod = getMethodFromParent(parentHammer, method);
             if (parentMethod != null) {
-                String returnStr = "";
-                if (method.getReturnType() != void.class) {
-                    returnStr = "return";
-                }
-                StringBuilder params = new StringBuilder();
-                for (int i = 0; i < method.getParameters().length; i++) {
-                    ctParamTypes[i] = pool.getCtClass(method.getParameters()[i].getType().getName());
-                    params.append("$").append(i + 1).append(",");
-                }
-                if (params.length() > 0) {
-                    params.deleteCharAt(params.length() - 1);
-                }
+                stackSize = 2;
+                // TODO 未处理泛型
+                String methodDescriptor = Type.getMethodDescriptor(method);
+                String parentMethodDescriptor = Type.getMethodDescriptor(parentMethod);
+                methodNode = new MethodNode(ACC_PUBLIC, method.getName(), methodDescriptor, null, null);
+                methodNode.visitVarInsn(ALOAD, 0);
 
-                ctMethod = new CtMethod(pool.getCtClass(method.getReturnType().getTypeName()), method.getName(),
-                        ctParamTypes, dynamicImplClass);
+                int size = method.getParameters().length + 1;
+                for (int i = 1; i < size; i++) {
+                    methodNode.visitVarInsn(ALOAD, i);
+                }
+                methodNode.visitMethodInsn(INVOKESPECIAL, classNode.superName, parentMethod.getName(),
+                        parentMethodDescriptor, false);
+                if (method.getReturnType().isPrimitive()) {
+                    // TODO 基本类型是否需要强制类型转换
+                    if (method.getReturnType() == Integer.TYPE) {
+                        methodNode.visitInsn(IRETURN);
+                    } else if (method.getReturnType() == Byte.TYPE) {
+                        methodNode.visitInsn(IRETURN);
+                    } else if (method.getReturnType() == Short.TYPE) {
+                        methodNode.visitInsn(IRETURN);
+                    } else if (method.getReturnType() == Character.TYPE) {
+                        methodNode.visitInsn(IRETURN);
+                    } else if (method.getReturnType() == Boolean.TYPE) {
+                        methodNode.visitInsn(IRETURN);
+                    } else if (method.getReturnType() == Long.TYPE) {
+                        methodNode.visitInsn(LRETURN);
+                    } else if (method.getReturnType() == Double.TYPE) {
+                        methodNode.visitInsn(DRETURN);
+                    } else if (method.getReturnType() == Float.TYPE) {
+                        methodNode.visitInsn(FRETURN);
+                    }
+                } else {
+                    methodNode.visitTypeInsn(CHECKCAST, Type.getInternalName(method.getReturnType()));
+                    methodNode.visitInsn(ARETURN);
+                }
+                methodNode.visitMaxs(stackSize, localeSize);
+                methodNode.visitEnd();
 
-                body = String.format("{%s super.%s(%s);}", returnStr, method.getName(), params.toString());
             } else {
                 String namespace = getNamespace(method, globalNamespace);
                 String name = getName(method);
+
+                // TODO 未处理泛型
+                methodNode = new MethodNode(ACC_PUBLIC, method.getName(), Type.getMethodDescriptor(method), null, null);
+                methodNode.visitVarInsn(ALOAD, 0);
+                methodNode.visitFieldInsn(GETFIELD, classNode.name, HAMMER_FIELD_NAME, hammerDescriptor);
                 TplType tplType = getType(method);
-                String executeId = "";
-                //            TplExecuteId executeId = null;
+
                 Boolean isTemplate = getIsTemplate(method);
                 if (isTemplate != null) {
-                    //                executeId = new TplExecuteIdMapperImpl(name, namespace, type, isTemplate);
-                    executeId = String.format("new %s(\"%s\", \"%s\", %s.class, %s)",
-                            TplExecuteIdMapperImpl.class.getName(), name, namespace, type.getName(), isTemplate);
-
-                } else {
-                    //                executeId = new TplExecuteIdFileImpl(name, namespace);
-                    executeId = String.format("new %s(\"%s\", \"%s\")", TplExecuteIdFileImpl.class.getName(), name,
-                            namespace, type.getName(), isTemplate);
-                }
-
-                int i = 0;
-                String setParams = "";
-                int pageParamPosition = -1;
-                int offsetParamPosition = -1;
-                int limitParamPosition = -1;
-                for (Parameter parameter : method.getParameters()) {
-                    ctParamTypes[i] = pool.getCtClass(parameter.getType().getName());
-                    i++;
-                    ParamType paramType = getParamType(parameter);
-                    switch (paramType) {
-                        case COMMON:
-                            setParams += ".putChain(\"" + getParamName(parameter) + "\", $" + i + ")";
-                            break;
-                        case PAGE:
-                            pageParamPosition = i;
-                            break;
-                        case PAGE_OFFSET:
-                            offsetParamPosition = i;
-                            break;
-                        case PAGE_LIMIT:
-                            limitParamPosition = i;
-                            break;
-                    }
-                }
-                if (pageParamPosition > 0) {
-                    setParams += ", $" + pageParamPosition;
-                } else if (limitParamPosition > 0) {
-                    if (offsetParamPosition > 0) {
-                        setParams += ", $" + offsetParamPosition + ", $" + limitParamPosition;
+                    //                    String typeDescriptor = Type.getDescriptor(TplExecuteIdMapperImpl.class);
+                    String executeIdType = Type.getInternalName(TplExecuteIdMapperImpl.class);
+                    methodNode.visitTypeInsn(NEW, executeIdType);
+                    methodNode.visitInsn(DUP);
+                    methodNode.visitLdcInsn(name);
+                    methodNode.visitLdcInsn(namespace);
+                    methodNode.visitLdcInsn(Type.getType(type));
+                    if (isTemplate) {
+                        methodNode.visitInsn(ICONST_1);
                     } else {
-                        setParams += ", 0, $" + limitParamPosition;
+                        methodNode.visitInsn(ICONST_0);
                     }
+                    methodNode.visitMethodInsn(
+                            INVOKESPECIAL, executeIdType, ByteCodeUtils.CONSTRUCT_METHOD, ByteCodeUtils
+                                    .getConstructorDescriptor(String.class, String.class, Class.class, boolean.class),
+                            false);
+                    stackSize = 7;
+                } else {
+                    //                    String typeDescriptor = Type.getDescriptor(TplExecuteIdFileImpl.class);
+                    String executeIdType = Type.getInternalName(TplExecuteIdFileImpl.class);
+                    methodNode.visitTypeInsn(NEW, executeIdType);
+                    methodNode.visitInsn(DUP);
+                    methodNode.visitLdcInsn(name);
+                    methodNode.visitLdcInsn(namespace);
+                    methodNode.visitMethodInsn(INVOKESPECIAL, executeIdType, ByteCodeUtils.CONSTRUCT_METHOD,
+                            ByteCodeUtils.getConstructorDescriptor(String.class, String.class), false);
+                    stackSize = 5;
                 }
-
-                ctMethod = new CtMethod(pool.getCtClass(method.getReturnType().getTypeName()), method.getName(),
-                        ctParamTypes, dynamicImplClass);
 
                 if (method.getReturnType() == void.class) {
-                    body = String.format("{%s.execute(%s, new %s()%s);}", hammerFieldName, executeId,
-                            HashChainMap.class.getName(), setParams);
+                    setParams(methodNode, method);
+                    methodNode.visitMethodInsn(INVOKEINTERFACE, hammerName, executeMethod.getName(),
+                            executeMethodDescriptor, true);
+                    methodNode.visitInsn(POP);
+                    methodNode.visitInsn(RETURN);
+                    methodNode.visitMaxs(stackSize, localeSize);
+                    methodNode.visitEnd();
                 } else if (method.getReturnType() == Integer.TYPE
                         && (tplType == TplType.AUTO || tplType == TplType.EXECUTE)) {
-                    body = String.format("{return %s.execute(%s, new %s()%s);}", hammerFieldName, executeId,
-                            HashChainMap.class.getName(), setParams);
+                    setParams(methodNode, method);
+                    methodNode.visitMethodInsn(INVOKEINTERFACE, hammerName, executeMethod.getName(),
+                            executeMethodDescriptor, true);
+                    methodNode.visitInsn(IRETURN);
+                    methodNode.visitMaxs(stackSize, localeSize);
+                    methodNode.visitEnd();
                 } else if (ClassUtils.isParent(List.class, method.getReturnType())) {
                     String returnTypeName = getReturnTypeName(method);
                     if (ClassUtils.isParent(Map.class, ClassUtils.forName(returnTypeName))) {
-                        body = String.format("{return %s.list(%s, new %s()%s);}", hammerFieldName, executeId,
-                                HashChainMap.class.getName(), setParams);
+                        ParamPosition position = setParams(methodNode, method);
+                        if (position.limitParamPosition > 0) {
+                            methodNode.visitMethodInsn(INVOKEINTERFACE, hammerName, listMapLimitMethod.getName(),
+                                    listMapLimitMethodDescriptor, true);
+                        } else if (position.pageParamPosition > 0) {
+                            methodNode.visitMethodInsn(INVOKEINTERFACE, hammerName, listMapPageMethod.getName(),
+                                    listMapPageMethodDescriptor, true);
+                        } else {
+                            methodNode.visitMethodInsn(INVOKEINTERFACE, hammerName, listMapMethod.getName(),
+                                    listMapMethodDescriptor, true);
+                        }
+
+                        methodNode.visitInsn(ARETURN);
+                        methodNode.visitMaxs(stackSize, localeSize);
+                        methodNode.visitEnd();
                     } else {
-                        body = String.format("{return %s.list(%s, %s.class, new %s()%s);}", hammerFieldName, executeId,
-                                returnTypeName, HashChainMap.class.getName(), setParams);
+                        methodNode.visitLdcInsn(Type.getType(ClassUtils.forName(returnTypeName)));
+                        ParamPosition position = setParams(methodNode, method);
+                        if (isTemplate == null && position.commonParamNum > 0) {
+                            stackSize++;
+                        }
+                        if (position.limitParamPosition > 0) {
+                            methodNode.visitMethodInsn(INVOKEINTERFACE, hammerName, listTypeLimitMethod.getName(),
+                                    listTypeLimitMethodDescriptor, true);
+                        } else if (position.pageParamPosition > 0) {
+                            methodNode.visitMethodInsn(INVOKEINTERFACE, hammerName, listTypePageMethod.getName(),
+                                    listTypePageMethodDescriptor, true);
+                        } else {
+                            methodNode.visitMethodInsn(INVOKEINTERFACE, hammerName, listTypeMethod.getName(),
+                                    listTypeMethodDescriptor, true);
+                        }
+                        methodNode.visitInsn(ARETURN);
+                        methodNode.visitMaxs(stackSize, localeSize);
+                        methodNode.visitEnd();
                     }
                 } else if (ClassUtils.isParent(PaginationResults.class, method.getReturnType())) {
                     String returnTypeName = getReturnTypeName(method);
                     if (ClassUtils.isParent(Map.class, ClassUtils.forName(returnTypeName))) {
-                        body = String.format("{return %s.pagination(%s, new %s()%s);}", hammerFieldName, executeId,
-                                HashChainMap.class.getName(), setParams);
+                        ParamPosition position = setParams(methodNode, method);
+                        if (position.limitParamPosition > 0) {
+                            methodNode.visitMethodInsn(INVOKEINTERFACE, hammerName, paginationMapLimitMethod.getName(),
+                                    paginationMapLimitMethodDescriptor, true);
+                        } else {
+                            methodNode.visitMethodInsn(INVOKEINTERFACE, hammerName, paginationMapMethod.getName(),
+                                    paginationMapMethodDescriptor, true);
+                        }
+                        methodNode.visitInsn(ARETURN);
+                        methodNode.visitMaxs(stackSize, localeSize);
+                        methodNode.visitEnd();
+
                     } else {
-                        body = String.format("{return %s.pagination(%s, %s.class, new %s()%s);}", hammerFieldName,
-                                executeId, returnTypeName, HashChainMap.class.getName(), setParams);
+                        methodNode.visitLdcInsn(Type.getType(ClassUtils.forName(returnTypeName)));
+                        ParamPosition position = setParams(methodNode, method);
+                        if (isTemplate == null && position.commonParamNum > 0) {
+                            stackSize++;
+                        }
+                        if (position.limitParamPosition > 0) {
+                            methodNode.visitMethodInsn(INVOKEINTERFACE, hammerName, paginationTypeLimitMethod.getName(),
+                                    paginationTypeLimitMethodDescriptor, true);
+                        } else {
+                            methodNode.visitMethodInsn(INVOKEINTERFACE, hammerName, paginationTypeMethod.getName(),
+                                    paginationTypeMethodDescriptor, true);
+                        }
+                        methodNode.visitInsn(ARETURN);
+                        methodNode.visitMaxs(stackSize, localeSize);
+                        methodNode.visitEnd();
                     }
                 } else if (ClassUtils.isParent(Number.class, method.getReturnType())) {
-                    body = String.format("{return (%3$s) %s.number(%s, %s.class, new %s()%s);}", hammerFieldName,
-                            executeId, method.getReturnType().getName(), HashChainMap.class.getName(), setParams);
+                    if (isTemplate == null && method.getParameters().length > 0) {
+                        stackSize++;
+                    }
+                    methodNode.visitLdcInsn(Type.getType(method.getReturnType()));
+                    setParams(methodNode, method);
+                    methodNode.visitMethodInsn(INVOKEINTERFACE, hammerName, numberMethod.getName(),
+                            numberMethodDescriptor, true);
+                    methodNode.visitTypeInsn(CHECKCAST, Type.getInternalName(method.getReturnType()));
+                    methodNode.visitInsn(ARETURN);
+                    methodNode.visitMaxs(stackSize, localeSize);
+                    methodNode.visitEnd();
                 } else if (method.getReturnType().isPrimitive()) {
-                    if (method.getReturnType() == Integer.TYPE || method.getReturnType() == Long.TYPE
-                            || method.getReturnType() == Long.TYPE) {
-                        body = String.format("{return %s.%sValue(%s, new %s()%s);}", hammerFieldName,
-                                method.getReturnType().getName(), executeId, HashChainMap.class.getName(), setParams,
-                                method.getReturnType().getName());
+                    if (method.getReturnType() == Integer.TYPE) {
+                        setParams(methodNode, method);
+                        methodNode.visitMethodInsn(INVOKEINTERFACE, hammerName, intValueMethod.getName(),
+                                intValueMethodDescriptor, true);
+                        methodNode.visitInsn(IRETURN);
+                        methodNode.visitMaxs(stackSize, localeSize);
+                        methodNode.visitEnd();
+                    } else if (method.getReturnType() == Long.TYPE) {
+                        setParams(methodNode, method);
+                        methodNode.visitMethodInsn(INVOKEINTERFACE, hammerName, longValueMethod.getName(),
+                                longValueMethodDescriptor, true);
+                        methodNode.visitInsn(LRETURN);
+                        methodNode.visitMaxs(stackSize, localeSize);
+                        methodNode.visitEnd();
+                    } else if (method.getReturnType() == Double.TYPE) {
+                        setParams(methodNode, method);
+                        methodNode.visitMethodInsn(INVOKEINTERFACE, hammerName, doubleValueMethod.getName(),
+                                doubleValueMethodDescriptor, true);
+                        methodNode.visitInsn(DRETURN);
+                        methodNode.visitMaxs(stackSize, localeSize);
+                        methodNode.visitEnd();
                     } else {
                         // TODO 使用exception code
                         throw new HammerException("unsupport query return type with primitive type "
                                 + method.getReturnType() + ", you can use wrapper type instead");
                     }
                 } else if (String.class == method.getReturnType()) {
-                    body = String.format("{return  %s.string(%s, new %s()%s);}", hammerFieldName, executeId,
-                            HashChainMap.class.getName(), setParams);
+                    setParams(methodNode, method);
+                    methodNode.visitMethodInsn(INVOKEINTERFACE, hammerName, stringMethod.getName(),
+                            stringMethodDescriptor, true);
+                    methodNode.visitInsn(ARETURN);
+                    methodNode.visitMaxs(stackSize, localeSize);
+                    methodNode.visitEnd();
                 } else if (ClassUtils.isParent(Map.class, method.getReturnType())) {
-                    body = String.format("{return  %s.single(%s, new %s()%s);}", hammerFieldName, executeId,
-                            HashChainMap.class.getName(), setParams);
+                    setParams(methodNode, method);
+                    methodNode.visitMethodInsn(INVOKEINTERFACE, hammerName, singleMapMethod.getName(),
+                            singleMapMethodDescriptor, true);
+                    methodNode.visitInsn(ARETURN);
+                    methodNode.visitMaxs(stackSize, localeSize);
+                    methodNode.visitEnd();
                 } else {
-                    body = String.format("{return (%3$s)  %s.single(%s, %s.class, new %s()%s);}", hammerFieldName,
-                            executeId, method.getReturnType().getName(), HashChainMap.class.getName(), setParams);
+                    if (isTemplate == null && method.getParameters().length > 0) {
+                        stackSize++;
+                    }
+                    methodNode.visitLdcInsn(Type.getType(method.getReturnType()));
+                    setParams(methodNode, method);
+                    methodNode.visitMethodInsn(INVOKEINTERFACE, hammerName, singleTypeMethod.getName(),
+                            singleTypeMethodDescriptor, true);
+                    methodNode.visitTypeInsn(CHECKCAST, Type.getInternalName(method.getReturnType()));
+                    methodNode.visitInsn(ARETURN);
+                    methodNode.visitMaxs(stackSize, localeSize);
+                    methodNode.visitEnd();
                 }
+                logger.debug("generate method {}", method.getName());
             }
-            logger.debug("method {} -> {}", method.getName(), body);
-            ctMethod.setBody(body);
-            dynamicImplClass.addMethod(ctMethod);
-
-            if (parentMethod != null && method.getReturnType() != parentMethod.getReturnType()) {
-                logger.debug("method {} -> {}", method.getName(), body);
-                ctMethod = new CtMethod(pool.getCtClass(parentMethod.getReturnType().getTypeName()),
-                        parentMethod.getName(), ctParamTypes, dynamicImplClass);
-                ctMethod.setBody(body);
-                dynamicImplClass.addMethod(ctMethod);
+            if (methodNode != null) {
+                if (logger.isTraceEnabled()) {
+                    StringBuilder javapString = new StringBuilder();
+                    javapString.append(methodNode.access + " " + methodNode.name + methodNode.desc + "\n");
+                    javapString.append(Strings.format("stack={0},locales={1}", stackSize, localeSize));
+                    for (AbstractInsnNode node : methodNode.instructions) {
+                        javapString.append("  ").append(ByteCodeUtils.javapString(node));
+                    }
+                    logger.trace(javapString.toString());
+                }
+                //                System.err.println(methodNode.access + " " + methodNode.name + methodNode.desc);
+                //                System.err.println(Strings.format("stack={0},locales={1}", stackSize, localeSize));
+                //                for (AbstractInsnNode node : methodNode.instructions) {
+                //                    System.err.println(ByteCodeUtils.javapString(node));
+                //                }
+                //                System.err.println();
+                classNode.methods.add(methodNode);
             }
         }
     }
 
+    private static class ParamPosition {
+        int pageParamPosition = -1;
+        int offsetParamPosition = -1;
+        int limitParamPosition = -1;
+        int commonParamNum = 0;
+
+        /**
+        	 */
+        public ParamPosition() {
+        }
+    }
+
+    private ParamPosition setParams(MethodNode methodNode, Method method)
+            throws NoSuchMethodException, SecurityException {
+        ParamPosition position = new ParamPosition();
+        int commonParamIndex = 1;
+
+        methodNode.visitTypeInsn(NEW, paramName);
+        methodNode.visitInsn(DUP);
+        methodNode.visitMethodInsn(INVOKESPECIAL, paramName, ByteCodeUtils.CONSTRUCT_METHOD,
+                ByteCodeUtils.NONE_PARAMETER_DESCRIPTOR, false);
+        for (int i = 0; i < method.getParameters().length; i++) {
+            Parameter parameter = method.getParameters()[i];
+            ParamType paramType = getParamType(parameter);
+            switch (paramType) {
+                case COMMON:
+                    methodNode.visitLdcInsn(getParamName(parameter));
+                    //                    methodNode.visitVarInsn(ALOAD, commonParamIndex);
+                    methodNode.visitVarInsn(ALOAD, i + 1);
+                    if (commonParamIndex == 1) {
+                        methodNode.visitMethodInsn(INVOKEVIRTUAL, paramName, putChainMethod.getName(),
+                                org.objectweb.asm.Type.getMethodDescriptor(putChainMethod), false);
+                    } else {
+                        methodNode.visitMethodInsn(INVOKEINTERFACE, paramChainName, putChainMethod.getName(),
+                                org.objectweb.asm.Type.getMethodDescriptor(putChainMethod), true);
+                    }
+                    commonParamIndex++;
+                    //                    setParams += ".putChain(\"" + getParamName(parameter) + "\", $" + i + ")";
+                    break;
+                case PAGE:
+                    position.pageParamPosition = i + 1;
+                    break;
+                case PAGE_OFFSET:
+                    position.offsetParamPosition = i + 1;
+                    break;
+                case PAGE_LIMIT:
+                    position.limitParamPosition = i + 1;
+                    break;
+            }
+        }
+        position.commonParamNum = commonParamIndex - 1;
+
+        if (position.pageParamPosition > 0) {
+            methodNode.visitVarInsn(ALOAD, position.pageParamPosition);
+        } else if (position.limitParamPosition > 0) {
+            if (position.offsetParamPosition > 0) {
+                methodNode.visitVarInsn(ILOAD, position.offsetParamPosition);
+                methodNode.visitVarInsn(ILOAD, position.limitParamPosition);
+            } else {
+                methodNode.visitInsn(ICONST_0);
+                methodNode.visitVarInsn(ILOAD, position.limitParamPosition);
+            }
+        }
+        return position;
+    }
+
+    //    private CtMethod createInvokeSupper(Method method, CtClass[] ctParamTypes, CtClass dynamicImplClass, ClassPool pool)
+    //            throws NotFoundException, CannotCompileException {
+    //        String returnStr = "";
+    //        // 方法返回值是泛型，因为泛型使用的擦除法，所以使用方法定义中的返回类型
+    //        if (method.getReturnType() != void.class) {
+    //            returnStr = "return";
+    //        }
+    //        StringBuilder params = new StringBuilder();
+    //        for (int i = 0; i < method.getParameters().length; i++) {
+    //            ctParamTypes[i] = pool.getCtClass(method.getParameters()[i].getType().getName());
+    //            params.append("$").append(i + 1).append(",");
+    //        }
+    //        if (params.length() > 0) {
+    //            params.deleteCharAt(params.length() - 1);
+    //        }
+    //
+    //        String body = String.format("{%s super.%s(%s);}", returnStr, method.getName(), params.toString());
+    //        CtMethod ctMethod = new CtMethod(pool.getCtClass(method.getReturnType().getTypeName()), method.getName(),
+    //                ctParamTypes, dynamicImplClass);
+    //        logger.debug("method {} -> {}", method.getName(), body);
+    //        ctMethod.setBody(body);
+    //        return ctMethod;
+    //    }
+    //
     private Method getMethodFromParent(Class<?> parentHammer, Method method) {
         // FIXME 这里还没有处理泛型参数问题
         if (parentHammer == null) {
@@ -324,10 +714,6 @@ public class TplDynamicExecutorFactory {
         } catch (NoSuchMethodException e) {
             return null;
         }
-    }
-
-    private boolean isImplementMethod(Class<?> parentHammer, Method method) {
-        return getMethodFromParent(parentHammer, method) != null;
     }
 
     /**
@@ -369,7 +755,7 @@ public class TplDynamicExecutorFactory {
     private String getReturnTypeName(Method method) {
         if (method.getGenericReturnType() instanceof ParameterizedType) {
             ParameterizedType parameterizedType = (ParameterizedType) method.getGenericReturnType();
-            Type objectType = ClassUtils.getRawType(parameterizedType.getActualTypeArguments()[0]);
+            java.lang.reflect.Type objectType = ClassUtils.getRawType(parameterizedType.getActualTypeArguments()[0]);
             return objectType.getTypeName();
         }
         return method.getName();
@@ -440,26 +826,4 @@ public class TplDynamicExecutorFactory {
             return ParamType.COMMON;
         }
     }
-
-    //    private Class<?> getWrapType(Class<?> type) {
-    //        if (!type.isPrimitive()) {
-    //            return type;
-    //        }
-    //        if (type == Integer.TYPE) {
-    //            return Integer.class;
-    //        } else if (type == Long.TYPE) {
-    //            return Long.class;
-    //        } else if (type == Float.TYPE) {
-    //            return Float.class;
-    //        } else if (type == Double.TYPE) {
-    //            return Double.class;
-    //        } else if (type == Byte.TYPE) {
-    //            return Byte.class;
-    //        } else if (type == Boolean.TYPE) {
-    //            return Boolean.class;
-    //        } else if (type == Character.TYPE) {
-    //            return Character.class;
-    //        }
-    //        return type;
-    //    }
 }

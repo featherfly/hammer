@@ -46,6 +46,7 @@ public class Appconfig {
         packages.add("cn.featherfly");
         //packages.add("你需要扫描的包路径");
         DynamicTplExecutorScanSpringRegistor registor = new DynamicTplExecutorScanSpringRegistor(packages, "hammer");
+        //        registor.setClassLoader(classLoader);
         return registor;
     }
 

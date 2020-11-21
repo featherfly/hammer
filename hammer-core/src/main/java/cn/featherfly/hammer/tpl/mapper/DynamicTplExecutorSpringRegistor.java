@@ -16,8 +16,6 @@ import cn.featherfly.common.lang.ClassUtils;
 import cn.featherfly.common.lang.Lang;
 import cn.featherfly.hammer.HammerException;
 import cn.featherfly.hammer.tpl.annotation.Mapper;
-import javassist.CannotCompileException;
-import javassist.NotFoundException;
 
 /**
  * <p>
@@ -105,7 +103,7 @@ public class DynamicTplExecutorSpringRegistor implements BeanDefinitionRegistryP
                     builder.addConstructorArgReference(hammerReference);
                     builder.setScope(BeanDefinition.SCOPE_SINGLETON);
                     registry.registerBeanDefinition(type.getName(), builder.getBeanDefinition());
-                } catch (NotFoundException | CannotCompileException | ClassNotFoundException e) {
+                } catch (Exception e) {
                     throw new HammerException(e);
                 }
             }
