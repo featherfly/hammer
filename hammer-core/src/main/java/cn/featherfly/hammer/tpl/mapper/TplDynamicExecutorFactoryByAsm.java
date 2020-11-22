@@ -50,7 +50,7 @@ import cn.featherfly.hammer.tpl.annotation.Template;
  *
  * @author zhongj
  */
-public class TplDynamicExecutorFactory extends ClassLoader implements Opcodes {
+public class TplDynamicExecutorFactoryByAsm extends ClassLoader implements Opcodes {
 
     public static final String HAMMER_FIELD_NAME = "hammer";
 
@@ -58,7 +58,7 @@ public class TplDynamicExecutorFactory extends ClassLoader implements Opcodes {
 
     private Set<Class<?>> types = new HashSet<>();
 
-    private static final TplDynamicExecutorFactory INSTANCE = new TplDynamicExecutorFactory();
+    private static final TplDynamicExecutorFactoryByAsm INSTANCE = new TplDynamicExecutorFactoryByAsm();
 
     private Map<Class<?>, Object> typeInstances = new HashMap<>();
 
@@ -148,7 +148,7 @@ public class TplDynamicExecutorFactory extends ClassLoader implements Opcodes {
 
     /**
      */
-    private TplDynamicExecutorFactory() {
+    private TplDynamicExecutorFactoryByAsm() {
         super();
         try {
             putChainMethod = ChainMap.class.getMethod("putChain", Object.class, Object.class);
@@ -229,7 +229,7 @@ public class TplDynamicExecutorFactory extends ClassLoader implements Opcodes {
      *
      * @return DynamicTplMapperFactory
      */
-    public static TplDynamicExecutorFactory getInstance() {
+    public static TplDynamicExecutorFactoryByAsm getInstance() {
         return INSTANCE;
     }
 
@@ -645,7 +645,7 @@ public class TplDynamicExecutorFactory extends ClassLoader implements Opcodes {
         int commonParamNum = 0;
 
         /**
-        	 */
+             */
         public ParamPosition() {
         }
     }
