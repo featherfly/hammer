@@ -1,3 +1,6 @@
+# 0.4.9 2020-11-24
+    1.使用ASM替换javassist修复自定义的Mapper继承GenericHammer接口并重载了get(Serializable)方法报错的问题
+    
 # 0.4.8 2020-11-17
     1.Hammer加入delete(Ids,Class)方法,delete(Ids),delete(Entities)方法实现一条sql进行批量删除
     2.升级common-core、common-db、common-model-repository
