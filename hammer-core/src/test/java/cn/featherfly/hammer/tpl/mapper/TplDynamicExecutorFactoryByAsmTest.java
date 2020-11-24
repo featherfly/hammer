@@ -16,7 +16,9 @@ import cn.featherfly.common.lang.ClassUtils;
  */
 public class TplDynamicExecutorFactoryByAsmTest {
 
-    static TplDynamicExecutorFactoryByAsm factory = TplDynamicExecutorFactoryByAsm.getInstance();
+    //    static TplDynamicExecutorFactoryByAsm factory = TplDynamicExecutorFactoryByAsm.getInstance();
+
+    static TplDynamicExecutorFactory factory = TplDynamicExecutorFactory.getInstance();
 
     @Test
     public void testNoExtends() throws Exception {

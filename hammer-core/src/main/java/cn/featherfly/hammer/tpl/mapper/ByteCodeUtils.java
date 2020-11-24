@@ -65,16 +65,6 @@ public class ByteCodeUtils {
             }
         }
         return result;
-        //        switch (opcode) {
-        //            case Opcodes.ALOAD:
-        //                return "aload";
-        //            case Opcodes.GETFIELD:
-        //                return "getfield";
-        //            case Opcodes.NEW:
-        //                return "new";
-        //            default:
-        //                return opcode + "";
-        //        }
     }
 
     public static String javapString(AbstractInsnNode abstractInsnNode) {
@@ -110,12 +100,6 @@ public class ByteCodeUtils {
     public static String _getMethodDescriptor(Class<?> type) {
         return Type.getDescriptor(type);
     }
-    //    public static String getConstructorDescriptor(Class<?> paramType) {
-    //        if (paramType == null) {
-    //            return NONE_PARAMETER_DESCRIPTOR;
-    //        }
-    //        return Strings.format("({0})V", _getMethodDescriptor(paramType));
-    //    }
 
     public static String getConstructorDescriptor(Class<?>... paramTypes) {
         if (Lang.isEmpty(paramTypes)) {
@@ -134,12 +118,5 @@ public class ByteCodeUtils {
 
     public static String getName(String className) {
         return className.replace('.', '/');
-    }
-
-    public static void main(String[] args) {
-        for (Field field : Opcodes.class.getFields()) {
-            System.out.println(field.getName());
-        }
-
     }
 }

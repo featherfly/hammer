@@ -1,6 +1,5 @@
 package cn.featherfly.hammer.tpl.mapper;
 
-import java.io.FileOutputStream;
 import java.io.IOException;
 import java.lang.reflect.Method;
 import java.lang.reflect.Parameter;
@@ -252,20 +251,20 @@ public class TplDynamicExecutorFactory extends ClassLoader implements Opcodes {
      * @param type        configuration interface class
      * @param classLoader the class loader
      * @return implemented class name
-     * @throws IOException
-     * @throws SecurityException
-     * @throws NoSuchMethodException
+     * @throws IOException           Signals that an I/O exception has occurred.
+     * @throws NoSuchMethodException the no such method exception
+     * @throws SecurityException     the security exception
      */
     public String create(Class<?> type, ClassLoader classLoader)
             throws IOException, NoSuchMethodException, SecurityException {
+        if (classLoader == null) {
+            classLoader = this.getClass().getClassLoader();
+        }
         ClassReader classReader = new ClassReader(type.getName());
         ClassWriter cw = new ClassWriter(classReader, ClassWriter.COMPUTE_MAXS);
 
         String implClassName = type.getName() + "$ImplByHammer";
-        //        String implClassName = type.getName() + "_ImplByAsm";
         String implClassByteCodeName = ByteCodeUtils.getName(implClassName);
-        //        String implClassName = type.getPackage().getName() + "." + type.getSimpleName() + "DynamicImpl";
-        //        String hammerTypeDescriptor = ByteCodeUtils.getName(Hammer.class);
 
         Class<?> parentHammer = null;
         if (!types.contains(type)) {
@@ -335,41 +334,18 @@ public class TplDynamicExecutorFactory extends ClassLoader implements Opcodes {
             cn.accept(cw);
             byte[] code = cw.toByteArray();
             // 定义类
-            try (FileOutputStream os = new FileOutputStream(implClassName + ".class")) {
-                os.write(code);
-            }
-            //            Method method = classLoader.getClass().getMethod("defineClass", String.class, byte[].class, int.class,
-            //                    int.class);
-            //            ClassUtils.invokeMethod(classLoader, method, implClassName, code, 0, code.length);
-
-            //            ClassUtils.invokeMethod(classLoader, "defineClass", implClassName, code, 0, code.length);
-
-            //            DefineClassHelper.defineClass(implClassName, code, 0, code.length, neighbor, classLoader,
-            //                    this.getClass().getProtectionDomain());
-
+            //            try (FileOutputStream os = new FileOutputStream(implClassName + ".class")) {
+            //                os.write(code);
+            //            }
             org.springframework.objenesis.instantiator.util.DefineClassHelper.defineClass(implClassName, code, 0,
                     code.length, null, classLoader, this.getClass().getProtectionDomain());
-
-            //            defineClass(implClassName, code, 0, code.length);
             types.add(type);
-
         }
         return implClassName;
     }
 
     private void addImplMethods(Class<?> type, String globalNamespace, ClassNode classNode, Class<?> parentHammer)
             throws NoSuchMethodException, SecurityException {
-        // FIXME 后续的isImplementMethod需要加入泛型的判断
-        //        Type entityType = null;
-        //        if (parentHammer != null && parentHammer == GenericHammer.class) {
-        //            for (Type t : type.getGenericInterfaces()) {
-        //                ParameterizedType pt = (ParameterizedType) t;
-        //                if (pt.getRawType() == GenericHammer.class) {
-        //                    entityType = pt.getActualTypeArguments()[0];
-        //                    break;
-        //                }
-        //            }
-        //        }
         for (Method method : type.getDeclaredMethods()) {
             if (method.isDefault()) {
                 continue;

@@ -73,6 +73,5 @@ public interface Test extends GenericHammer<User> {
             System.out.println(pt.getRawType());
             System.out.println(ArrayUtils.toString(pt.getActualTypeArguments()));
         }
-
     }
 }
