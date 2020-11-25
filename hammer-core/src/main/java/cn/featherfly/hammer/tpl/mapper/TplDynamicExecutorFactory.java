@@ -22,6 +22,7 @@ import org.objectweb.asm.tree.MethodNode;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import cn.featherfly.common.constant.Chars;
 import cn.featherfly.common.exception.ReflectException;
 import cn.featherfly.common.lang.ClassUtils;
 import cn.featherfly.common.lang.Lang;
@@ -354,8 +355,6 @@ public class TplDynamicExecutorFactory extends ClassLoader implements Opcodes {
             int stackSize = 1;
 
             // TODO 注解annotation要代理到实现类
-
-            //            MethodNode methodNode;
             MethodNode methodNode = null;
             Method parentMethod = getMethodFromParent(parentHammer, method);
             if (parentMethod != null) {
@@ -390,6 +389,8 @@ public class TplDynamicExecutorFactory extends ClassLoader implements Opcodes {
                         methodNode.visitInsn(DRETURN);
                     } else if (method.getReturnType() == Float.TYPE) {
                         methodNode.visitInsn(FRETURN);
+                    } else {
+                        methodNode.visitInsn(RETURN);
                     }
                 } else {
                     methodNode.visitTypeInsn(CHECKCAST, Type.getInternalName(method.getReturnType()));
@@ -397,7 +398,6 @@ public class TplDynamicExecutorFactory extends ClassLoader implements Opcodes {
                 }
                 methodNode.visitMaxs(stackSize, localeSize);
                 methodNode.visitEnd();
-
             } else {
                 String namespace = getNamespace(method, globalNamespace);
                 String name = getName(method);
@@ -596,19 +596,15 @@ public class TplDynamicExecutorFactory extends ClassLoader implements Opcodes {
             if (methodNode != null) {
                 if (logger.isTraceEnabled()) {
                     StringBuilder javapString = new StringBuilder();
-                    javapString.append(methodNode.access + " " + methodNode.name + methodNode.desc + "\n");
-                    javapString.append(Strings.format("stack={0},locales={1}", stackSize, localeSize));
+                    javapString.append(methodNode.access + " " + methodNode.name + methodNode.desc)
+                            .append(Chars.NEW_LINE)
+                            .append(Strings.format("stack={0},locales={1}", stackSize, localeSize))
+                            .append(Chars.NEW_LINE);
                     for (AbstractInsnNode node : methodNode.instructions) {
-                        javapString.append("  ").append(ByteCodeUtils.javapString(node));
+                        javapString.append("  ").append(ByteCodeUtils.javapString(node)).append(Chars.NEW_LINE);
                     }
                     logger.trace(javapString.toString());
                 }
-                //                System.err.println(methodNode.access + " " + methodNode.name + methodNode.desc);
-                //                System.err.println(Strings.format("stack={0},locales={1}", stackSize, localeSize));
-                //                for (AbstractInsnNode node : methodNode.instructions) {
-                //                    System.err.println(ByteCodeUtils.javapString(node));
-                //                }
-                //                System.err.println();
                 classNode.methods.add(methodNode);
             }
         }
@@ -641,8 +637,13 @@ public class TplDynamicExecutorFactory extends ClassLoader implements Opcodes {
             switch (paramType) {
                 case COMMON:
                     methodNode.visitLdcInsn(getParamName(parameter));
-                    //                    methodNode.visitVarInsn(ALOAD, commonParamIndex);
-                    methodNode.visitVarInsn(ALOAD, i + 1);
+                    methodNode.visitVarInsn(ByteCodeUtils.getLoadCode(parameter.getType()), i + 1);
+                    if (parameter.getType().isPrimitive()) {
+                        methodNode.visitMethodInsn(INVOKESTATIC,
+                                ByteCodeUtils.getPrimitiveWrapperName(parameter.getType()),
+                                ByteCodeUtils.PRIMITIVE_WRAPPER_METHOD,
+                                ByteCodeUtils.getPrimitiveWrapperMethodDescriptor(parameter.getType()), false);
+                    }
                     if (commonParamIndex == 1) {
                         methodNode.visitMethodInsn(INVOKEVIRTUAL, paramName, putChainMethod.getName(),
                                 org.objectweb.asm.Type.getMethodDescriptor(putChainMethod), false);
@@ -651,7 +652,6 @@ public class TplDynamicExecutorFactory extends ClassLoader implements Opcodes {
                                 org.objectweb.asm.Type.getMethodDescriptor(putChainMethod), true);
                     }
                     commonParamIndex++;
-                    //                    setParams += ".putChain(\"" + getParamName(parameter) + "\", $" + i + ")";
                     break;
                 case PAGE:
                     position.pageParamPosition = i + 1;
@@ -680,30 +680,6 @@ public class TplDynamicExecutorFactory extends ClassLoader implements Opcodes {
         return position;
     }
 
-    //    private CtMethod createInvokeSupper(Method method, CtClass[] ctParamTypes, CtClass dynamicImplClass, ClassPool pool)
-    //            throws NotFoundException, CannotCompileException {
-    //        String returnStr = "";
-    //        // 方法返回值是泛型，因为泛型使用的擦除法，所以使用方法定义中的返回类型
-    //        if (method.getReturnType() != void.class) {
-    //            returnStr = "return";
-    //        }
-    //        StringBuilder params = new StringBuilder();
-    //        for (int i = 0; i < method.getParameters().length; i++) {
-    //            ctParamTypes[i] = pool.getCtClass(method.getParameters()[i].getType().getName());
-    //            params.append("$").append(i + 1).append(",");
-    //        }
-    //        if (params.length() > 0) {
-    //            params.deleteCharAt(params.length() - 1);
-    //        }
-    //
-    //        String body = String.format("{%s super.%s(%s);}", returnStr, method.getName(), params.toString());
-    //        CtMethod ctMethod = new CtMethod(pool.getCtClass(method.getReturnType().getTypeName()), method.getName(),
-    //                ctParamTypes, dynamicImplClass);
-    //        logger.debug("method {} -> {}", method.getName(), body);
-    //        ctMethod.setBody(body);
-    //        return ctMethod;
-    //    }
-    //
     private Method getMethodFromParent(Class<?> parentHammer, Method method) {
         // FIXME 这里还没有处理泛型参数问题
         if (parentHammer == null) {

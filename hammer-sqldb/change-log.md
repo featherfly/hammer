@@ -1,3 +1,6 @@
+# 0.4.10 2020-11-25
+    1.修复Mapper参数是基本值类型(int,integer等)时报错的问题
+    
 # 0.4.9 2020-11-24
     1.使用ASM替换javassist修复自定义的Mapper继承GenericHammer接口并重载了get(Serializable)方法报错的问题
     

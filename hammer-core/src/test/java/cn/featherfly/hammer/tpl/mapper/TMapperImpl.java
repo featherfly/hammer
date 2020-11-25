@@ -426,10 +426,20 @@ public class TMapperImpl extends BasedTplHammer implements TMapper {
         return null;
     }
 
-    @Override
     public List<Map<String, Object>> findMapList(Page page) {
         return hammer.list(new TplExecuteIdMapperImpl("findMapList", "namesapce", TMapper.class, true),
                 new HashChainMap<String, Object>(), page);
+    }
+
+    public List<User> getGtAge(Integer age) {
+        return hammer.list(new TplExecuteIdMapperImpl("getGtAge", "namesapce", TMapper.class, true), User.class,
+                new HashChainMap<String, Object>().putChain("age", age));
+    }
+
+    @Override
+    public List<User> getGtAge(int age) {
+        return hammer.list(new TplExecuteIdMapperImpl("getGtAge", "namesapce", TMapper.class, true), User.class,
+                new HashChainMap<String, Object>().putChain("age", age));
     }
 
 }
