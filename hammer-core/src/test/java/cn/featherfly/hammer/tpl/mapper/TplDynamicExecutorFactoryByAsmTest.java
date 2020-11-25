@@ -1,10 +1,15 @@
 
 package cn.featherfly.hammer.tpl.mapper;
 
+import java.io.IOException;
 import java.util.Arrays;
 
+import org.apache.log4j.xml.DOMConfigurator;
+import org.slf4j.Logger;
+import org.testng.annotations.BeforeSuite;
 import org.testng.annotations.Test;
 
+import cn.featherfly.common.lang.ClassLoaderUtils;
 import cn.featherfly.common.lang.ClassUtils;
 
 /**
@@ -20,6 +25,15 @@ public class TplDynamicExecutorFactoryByAsmTest {
 
     static TplDynamicExecutorFactory factory = TplDynamicExecutorFactory.getInstance();
 
+    Logger logger = org.slf4j.LoggerFactory.getLogger(this.getClass());
+
+    @BeforeSuite
+    public void init() throws IOException {
+        DOMConfigurator.configure(ClassLoaderUtils.getResource("log4j.xml", this.getClass()));
+
+        logger.debug("init");
+    }
+
     @Test
     public void testNoExtends() throws Exception {
         Class<?> type = ClassUtils
@@ -28,7 +42,7 @@ public class TplDynamicExecutorFactoryByAsmTest {
         System.out.println(type);
         System.out.println(Arrays.toString(type.getInterfaces()));
         System.out.println(type.getGenericSuperclass());
-        System.out.println(ClassUtils.getSuperClassGenricType(type));
+        System.out.println(ClassUtils.getSuperClassGenericType(type));
 
         //        ClassUtils.forName(factory.create(TestMapper.class));
     }
@@ -40,7 +54,7 @@ public class TplDynamicExecutorFactoryByAsmTest {
         System.out.println(type);
         System.out.println(Arrays.toString(type.getInterfaces()));
         System.out.println(type.getGenericSuperclass());
-        System.out.println(ClassUtils.getSuperClassGenricType(type));
+        System.out.println(ClassUtils.getSuperClassGenericType(type));
 
         //        ClassUtils.forName(factory.create(TestMapper.class));
     }

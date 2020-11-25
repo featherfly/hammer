@@ -19,4 +19,8 @@ public interface UserMapper4 extends GenericHammer<User> {
 
     @Override
     User get(Serializable id);
+
+    default User getById(int id) {
+        return query().where().eq(User::getId, id).single();
+    }
 }
