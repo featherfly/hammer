@@ -368,7 +368,7 @@ public class TMapperImpl extends BasedTplHammer implements TMapper {
      */
 
     public List<User> findUserList(Page page) {
-        // YUFEI_TODO Auto-generated method stub
+
         return null;
     }
 
@@ -377,7 +377,7 @@ public class TMapperImpl extends BasedTplHammer implements TMapper {
      */
 
     public List<User> findUserList2(String name, Page page) {
-        // YUFEI_TODO Auto-generated method stub
+
         return null;
     }
 
@@ -386,7 +386,7 @@ public class TMapperImpl extends BasedTplHammer implements TMapper {
      */
 
     public List<User> findUserList(int offset, int limit) {
-        // YUFEI_TODO Auto-generated method stub
+
         return null;
     }
 
@@ -395,7 +395,7 @@ public class TMapperImpl extends BasedTplHammer implements TMapper {
      */
 
     public List<User> findUserList2(String name, int offset, int limit) {
-        // YUFEI_TODO Auto-generated method stub
+
         return null;
     }
 
@@ -404,7 +404,7 @@ public class TMapperImpl extends BasedTplHammer implements TMapper {
      */
 
     public List<Map<String, Object>> findMapList2(String name, Page page) {
-        // YUFEI_TODO Auto-generated method stub
+
         return null;
     }
 
@@ -413,7 +413,7 @@ public class TMapperImpl extends BasedTplHammer implements TMapper {
      */
 
     public List<Map<String, Object>> findMapList(int offset, int limit) {
-        // YUFEI_TODO Auto-generated method stub
+
         return null;
     }
 
@@ -422,14 +422,24 @@ public class TMapperImpl extends BasedTplHammer implements TMapper {
      */
 
     public List<Map<String, Object>> findMapList2(String name, int offset, int limit) {
-        // YUFEI_TODO Auto-generated method stub
+
         return null;
     }
 
-    @Override
     public List<Map<String, Object>> findMapList(Page page) {
         return hammer.list(new TplExecuteIdMapperImpl("findMapList", "namesapce", TMapper.class, true),
                 new HashChainMap<String, Object>(), page);
+    }
+
+    public List<User> getGtAge(Integer age) {
+        return hammer.list(new TplExecuteIdMapperImpl("getGtAge", "namesapce", TMapper.class, true), User.class,
+                new HashChainMap<String, Object>().putChain("age", age));
+    }
+
+    @Override
+    public List<User> getGtAge(int age) {
+        return hammer.list(new TplExecuteIdMapperImpl("getGtAge", "namesapce", TMapper.class, true), User.class,
+                new HashChainMap<String, Object>().putChain("age", age));
     }
 
 }

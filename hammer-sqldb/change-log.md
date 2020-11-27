@@ -1,3 +1,46 @@
+# 0.5.0 2020-11-27
+
+    1.加入预编译程序，把为sql特化的模板定义预编译为freemarker模板，参考下面示例
+
+```sql
+select /*<<prop*/* from /*<<wrap*/user
+/*<where*/ where
+    /*id?*/id = /*$=:id*/1
+    /*name??*/and name like /*$=:name*/'name'
+    /*gender??*/ and gender in /*$=:gender*/1
+    /*<?*/ and
+    (
+        /*??*/ username = /*$=:username*/'admin'
+        /*??*/ or email = /*$=:email*/'featherfly@foxmail.com'
+        /*??*/ or mobile = /*$=:mobile*/13212345678
+    )
+    /*>?*/
+/*>where*/
+/*<sql id='roleFromTemplate'>*/
+```
+
+转换结果
+
+```sql
+select <@prop>*</@prop> from <@wrap>user</@wrap>
+<@where>
+    <@and if=id??>id = :id</@and>
+    <@and if=name?? && name?length gt 0>name like :name</@and>
+    <@and if=gender?? && gender?size gt 0>gender in :gender</@and>
+    <@and>
+
+        <@and if=username?? && username?length gt 0> username = :username</@and>
+        <@or if=email?? && email?size gt 0>email = :email</@or>
+        <@or if=mobile?? && mobile?size gt 0>mobile = :mobile</@or>
+
+    </@and>
+</@where>
+</@sql id='roleFromTemplate'>
+```
+    
+# 0.4.10 2020-11-25
+    1.修复Mapper参数是基本值类型(int,integer等)时报错的问题
+    
 # 0.4.9 2020-11-24
     1.使用ASM替换javassist修复自定义的Mapper继承GenericHammer接口并重载了get(Serializable)方法报错的问题
     
