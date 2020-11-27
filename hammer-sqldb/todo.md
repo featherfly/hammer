@@ -3,7 +3,8 @@
 - [ ] 所有的数据库操作，都应该使用SqlTypeMappingManager来进行数据转换操作，为了实现自定义类型的存储和读取
         目前dsl的update,delete,orm的save,update,delete都已经实现，查询操作还未实现
 - [ ] dsl的链式调用考虑是否需要使用链表结构重构实现内容
-- [ ] 可以先编写预编译程序，把下面定义的模板定义预编译为freemarker模板，后续再来实现自己的模板
+- [x] 可以先编写预编译程序，把下面定义的模板定义预编译为freemarker模板，后续再来实现自己的模板
+- [ ] 预编译把参数都编译为?，然后把参数映射加入Config内对应的paramMap映射paramName <--> paramIndex
 - [ ] 定制专门为dml准备的简单模板实现，让模板sql更简洁更接近原生sql
 
 	先进行预编译
@@ -14,10 +15,10 @@
 ```sql
 select /*<<prop*/* from /*<<wrap*/user
 /*<where*/ where
-    /*id*/id = /*#$=:id*/1
+    /*id?*/id = /*$=:id*/1
     /*name??*/and name like /*$=:name*/'name'
-    /*gender?*/ and gender = /*$=:gender*/1
-    /*<? username??|email??|mobile??*/ and
+    /*gender??*/ and gender = /*$=:gender*/1
+    /*<?*/ and
     (
         /*??*/ username = /*$=:username*/'admin'
         /*??*/ or email = /*$=:email*/'featherfly@foxmail.com'
@@ -32,7 +33,7 @@ from /*#wrap*/user
     /*id?*/id = /*$=?*/1
     /*name??*/and name like /*$=?*/'name'
     /*gender?*/ and gender = /*$=?*/1
-    /*<? username??|email??|mobile??*/ and
+    /*<?*/ and
         (
         /*username??*/ username = /*$=?*/'admin'
         /*email??*/ or email = /*$=?*/'featherfly@foxmail.com'
@@ -41,6 +42,7 @@ from /*#wrap*/user
     /*>?*/
 /*>where*/
 -- include模板
+<@tpl id='roleFromTemplate2' namespace='tpl/role_common'/>
 select /*#prop $*/ *
     /*@ roleFromTemplate*/
 select count(*)

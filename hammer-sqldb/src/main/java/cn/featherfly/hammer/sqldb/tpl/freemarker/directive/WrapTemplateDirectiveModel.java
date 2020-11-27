@@ -2,6 +2,7 @@
 package cn.featherfly.hammer.sqldb.tpl.freemarker.directive;
 
 import java.io.IOException;
+import java.io.StringWriter;
 import java.io.Writer;
 import java.util.Map;
 
@@ -43,20 +44,32 @@ public class WrapTemplateDirectiveModel implements FreemarkerDirective, WrapDire
             TemplateDirectiveBody body) throws TemplateException, IOException {
         @SuppressWarnings("unchecked")
         String value = getValue(params);
-        Writer out = env.getOut();
-        out.write(dialect.wrapName(value));
+        if (value == null) {
+            if (body != null) {
+                StringWriter stringWriter = new StringWriter();
+                body.render(stringWriter);
+                value = stringWriter.toString().trim();
+            }
+        }
+        if (value != null) {
+            Writer out = env.getOut();
+            out.write(dialect.wrapName(value));
+        }
     }
 
     private String getValue(Map<String, TemplateModel> params) throws TemplateModelException {
-        String value;
+        String value = null;
         TemplateModel paramValue = params.get(PARAM_NAME_VALUE);
-        if (paramValue == null) {
-            throw new TplException("The \"" + PARAM_NAME_VALUE + "\" parameter " + "can not be null.");
+        //        if (paramValue == null) {
+        //            throw new TplException("The \"" + PARAM_NAME_VALUE + "\" parameter " + "can not be null.");
+        //        }
+        if (paramValue != null) {
+
+            if (!(paramValue instanceof TemplateScalarModel)) {
+                throw new TplException("The \"" + PARAM_NAME_VALUE + "\" parameter " + "must be a String.");
+            }
+            value = ((TemplateScalarModel) paramValue).getAsString();
         }
-        if (!(paramValue instanceof TemplateScalarModel)) {
-            throw new TplException("The \"" + PARAM_NAME_VALUE + "\" parameter " + "must be a String.");
-        }
-        value = ((TemplateScalarModel) paramValue).getAsString();
         return value;
     }
 
