@@ -41,11 +41,13 @@ import cn.featherfly.hammer.tpl.annotation.Template;
  * <p>
  * Config
  * </p>
+ * .
  *
  * @author zhongj
  */
 public class TplConfigFactoryImpl implements TplConfigFactory {
 
+    /** The logger. */
     protected final Logger logger = LoggerFactory.getLogger(this.getClass());
 
     private static final String MULTI_SAME_EXECUTEID = "!" + ID_SIGN + "!";
@@ -68,14 +70,18 @@ public class TplConfigFactoryImpl implements TplConfigFactory {
 
     private Set<String> basePackages = new HashSet<>();
 
+    private TemplatePreprocessor preCompiler;
+
     /**
-     *
+     * Instantiates a new tpl config factory impl.
      */
     public TplConfigFactoryImpl() {
         this(HammerConstant.DEFAULT_PREFIX);
     }
 
     /**
+     * Instantiates a new tpl config factory impl.
+     *
      * @param basePackages basePackages
      */
     public TplConfigFactoryImpl(Set<String> basePackages) {
@@ -83,6 +89,8 @@ public class TplConfigFactoryImpl implements TplConfigFactory {
     }
 
     /**
+     * Instantiates a new tpl config factory impl.
+     *
      * @param prefix prefix
      */
     public TplConfigFactoryImpl(String prefix) {
@@ -90,6 +98,8 @@ public class TplConfigFactoryImpl implements TplConfigFactory {
     }
 
     /**
+     * Instantiates a new tpl config factory impl.
+     *
      * @param prefix       prefix
      * @param basePackages basePackages
      */
@@ -98,21 +108,95 @@ public class TplConfigFactoryImpl implements TplConfigFactory {
     }
 
     /**
+     * Instantiates a new tpl config factory impl.
+     *
      * @param prefix prefix
      * @param suffix suffix
      */
     public TplConfigFactoryImpl(String prefix, String suffix) {
-        this(prefix, suffix, null);
+        this(prefix, suffix, null, null);
     }
 
     /**
+     * Instantiates a new tpl config factory impl.
+     *
      * @param prefix       prefix
      * @param suffix       suffix
      * @param basePackages basePackages
      */
     public TplConfigFactoryImpl(String prefix, String suffix, Set<String> basePackages) {
+        this(prefix, suffix, basePackages, null);
+    }
+
+    /**
+     * Instantiates a new tpl config factory impl.
+     *
+     * @param preCompiler the pre compiler
+     */
+    public TplConfigFactoryImpl(TemplatePreprocessor preCompiler) {
+        this(HammerConstant.DEFAULT_PREFIX, preCompiler);
+    }
+
+    /**
+     * Instantiates a new tpl config factory impl.
+     *
+     * @param basePackages basePackages
+     * @param preCompiler  the pre compiler
+     */
+    public TplConfigFactoryImpl(Set<String> basePackages, TemplatePreprocessor preCompiler) {
+        this(HammerConstant.DEFAULT_PREFIX, basePackages, preCompiler);
+    }
+
+    /**
+     * Instantiates a new tpl config factory impl.
+     *
+     * @param prefix      prefix
+     * @param preCompiler the pre compiler
+     */
+    public TplConfigFactoryImpl(String prefix, TemplatePreprocessor preCompiler) {
+        this(prefix, HammerConstant.DEFAULT_SUFFIX, preCompiler);
+    }
+
+    /**
+     * Instantiates a new tpl config factory impl.
+     *
+     * @param prefix       prefix
+     * @param basePackages basePackages
+     * @param preCompiler  the pre compiler
+     */
+    public TplConfigFactoryImpl(String prefix, Set<String> basePackages, TemplatePreprocessor preCompiler) {
+        this(prefix, HammerConstant.DEFAULT_SUFFIX, basePackages, preCompiler);
+    }
+
+    /**
+     * Instantiates a new tpl config factory impl.
+     *
+     * @param prefix      prefix
+     * @param suffix      suffix
+     * @param preCompiler the pre compiler
+     */
+    public TplConfigFactoryImpl(String prefix, String suffix, TemplatePreprocessor preCompiler) {
+        this(prefix, suffix, null, preCompiler);
+    }
+
+    /**
+     * Instantiates a new tpl config factory impl.
+     *
+     * @param prefix       prefix
+     * @param suffix       suffix
+     * @param basePackages basePackages
+     * @param preCompiler  the pre compiler
+     */
+    public TplConfigFactoryImpl(String prefix, String suffix, Set<String> basePackages,
+            TemplatePreprocessor preCompiler) {
         mapper = new ObjectMapper(new YAMLFactory());
         mapper.enable(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES);
+
+        if (preCompiler == null) {
+            this.preCompiler = value -> value;
+        } else {
+            this.preCompiler = preCompiler;
+        }
 
         if (Lang.isEmpty(prefix)) {
             this.prefix = HammerConstant.DEFAULT_PREFIX;
@@ -130,13 +214,13 @@ public class TplConfigFactoryImpl implements TplConfigFactory {
         devMode = ConstantPool.getDefault().getConstantParameter().isDevMode();
 
         // 读取模板文件
-        initConfigs();
+        initConfigsFromFile();
 
         // 读取mapper类
-        resolverMapper();
+        initConfigFromMapper();
     }
 
-    private void resolverMapper() {
+    private void initConfigFromMapper() {
         if (Lang.isEmpty(basePackages)) {
             return;
         }
@@ -185,7 +269,7 @@ public class TplConfigFactoryImpl implements TplConfigFactory {
             String namespace = Lang.isEmpty(template.namespace()) ? globalNamespace : template.namespace();
             checkName(executeIds, name, namespace);
             TplExecuteConfig config = new TplExecuteConfig();
-            config.setQuery(template.value());
+            config.setQuery(preCompiler.process(template.value()));
             config.setTplName(namespace + ID_SIGN + name);
             config.setExecuteId(name);
             config.setName(type.getSimpleName());
@@ -214,7 +298,7 @@ public class TplConfigFactoryImpl implements TplConfigFactory {
         }
     }
 
-    private void initConfigs() {
+    private void initConfigsFromFile() {
         resourcePatternResolver = new PathMatchingResourcePatternResolver();
         String packageSearchPath = ResourcePatternResolver.CLASSPATH_ALL_URL_PREFIX + UriUtils.linkUri(prefix, "**/*")
                 + suffix;
@@ -261,15 +345,17 @@ public class TplConfigFactoryImpl implements TplConfigFactory {
             tplExecuteConfigs.forEach((k, v) -> {
                 TplExecuteConfig config = new TplExecuteConfig();
                 if (v instanceof String) {
-                    config.setQuery(v.toString());
+                    config.setQuery(preCompiler.process(v.toString()));
                 } else {
                     @SuppressWarnings("unchecked")
                     Map<String, Object> map = (Map<String, Object>) v;
-                    if (Lang.isNotEmpty(map.get("query"))) {
-                        config.setQuery(map.get("query").toString());
+                    Object query = map.get("query");
+                    if (Lang.isNotEmpty(query)) {
+                        config.setQuery(preCompiler.process(query.toString()));
                     }
-                    if (Lang.isNotEmpty(map.get("count"))) {
-                        config.setCount(map.get("count").toString());
+                    Object count = map.get("count");
+                    if (Lang.isNotEmpty(count)) {
+                        config.setCount(preCompiler.process(count.toString()));
                     }
                     if (Lang.isNotEmpty(map.get("type"))) {
                         config.setType(TplType.valueOf(map.get("type").toString()));
@@ -308,7 +394,11 @@ public class TplConfigFactoryImpl implements TplConfigFactory {
         if (!result.endsWith(suffix)) {
             result = result + suffix;
             if (!result.startsWith("/")) {
-                result = prefix + result;
+                if (prefix.endsWith("/")) {
+                    result = prefix + result;
+                } else {
+                    result = prefix + "/" + result;
+                }
             }
         }
         if (result.startsWith("/")) {
@@ -417,7 +507,7 @@ public class TplConfigFactoryImpl implements TplConfigFactory {
     }
 
     /**
-     * 返回devMode
+     * 返回devMode.
      *
      * @return devMode
      */
@@ -426,7 +516,7 @@ public class TplConfigFactoryImpl implements TplConfigFactory {
     }
 
     /**
-     * 返回suffix
+     * 返回suffix.
      *
      * @return suffix
      */
@@ -435,7 +525,7 @@ public class TplConfigFactoryImpl implements TplConfigFactory {
     }
 
     /**
-     * 返回prefix
+     * 返回prefix.
      *
      * @return prefix
      */

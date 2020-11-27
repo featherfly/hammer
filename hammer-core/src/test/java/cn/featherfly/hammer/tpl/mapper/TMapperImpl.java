@@ -368,7 +368,7 @@ public class TMapperImpl extends BasedTplHammer implements TMapper {
      */
 
     public List<User> findUserList(Page page) {
-        // YUFEI_TODO Auto-generated method stub
+
         return null;
     }
 
@@ -377,7 +377,7 @@ public class TMapperImpl extends BasedTplHammer implements TMapper {
      */
 
     public List<User> findUserList2(String name, Page page) {
-        // YUFEI_TODO Auto-generated method stub
+
         return null;
     }
 
@@ -386,7 +386,7 @@ public class TMapperImpl extends BasedTplHammer implements TMapper {
      */
 
     public List<User> findUserList(int offset, int limit) {
-        // YUFEI_TODO Auto-generated method stub
+
         return null;
     }
 
@@ -395,7 +395,7 @@ public class TMapperImpl extends BasedTplHammer implements TMapper {
      */
 
     public List<User> findUserList2(String name, int offset, int limit) {
-        // YUFEI_TODO Auto-generated method stub
+
         return null;
     }
 
@@ -404,7 +404,7 @@ public class TMapperImpl extends BasedTplHammer implements TMapper {
      */
 
     public List<Map<String, Object>> findMapList2(String name, Page page) {
-        // YUFEI_TODO Auto-generated method stub
+
         return null;
     }
 
@@ -413,7 +413,7 @@ public class TMapperImpl extends BasedTplHammer implements TMapper {
      */
 
     public List<Map<String, Object>> findMapList(int offset, int limit) {
-        // YUFEI_TODO Auto-generated method stub
+
         return null;
     }
 
@@ -422,7 +422,7 @@ public class TMapperImpl extends BasedTplHammer implements TMapper {
      */
 
     public List<Map<String, Object>> findMapList2(String name, int offset, int limit) {
-        // YUFEI_TODO Auto-generated method stub
+
         return null;
     }
 

@@ -30,3 +30,16 @@ selectString: "select username from ${tpl_wrap('user')} where id = 1"
 selectAvg2: "select avg(age) from ${tpl_wrap('user')} where age > :age"
 selectString2: "select username from ${tpl_wrap('user')} where id = :id"
 selectById: "select <@prop/> from ${tpl_wrap('user')} where id = :id"
+selectConditions2: >
+    select <@prop alias='r'>*</@prop> from <@wrap>user</@wrap> <@where>
+    <#if test=id??>id = :id</#if>
+    <@and if=name??>name like :name</@and>
+    <@and if=gender??>gender = :gender</@and>
+    <@and>
+    (
+        <#if test=username??> username = :username</#if>
+        <@or if=email??>email = :email</@or>
+        <@or if=mobile??>mobile = :mobile</@or>
+    )
+    </@and>
+    </@where>

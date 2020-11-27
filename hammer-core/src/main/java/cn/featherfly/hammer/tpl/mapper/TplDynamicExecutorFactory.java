@@ -47,13 +47,16 @@ import cn.featherfly.hammer.tpl.annotation.Template;
  * <p>
  * TplMapperFactory
  * </p>
+ * .
  *
  * @author zhongj
  */
 public class TplDynamicExecutorFactory extends ClassLoader implements Opcodes {
 
+    /** The Constant HAMMER_FIELD_NAME. */
     public static final String HAMMER_FIELD_NAME = "hammer";
 
+    /** The logger. */
     protected final Logger logger = LoggerFactory.getLogger(this.getClass());
 
     private Set<Class<?>> types = new HashSet<>();
@@ -226,6 +229,7 @@ public class TplDynamicExecutorFactory extends ClassLoader implements Opcodes {
      * <p>
      * get DynamicTplMapperFactory Instance
      * </p>
+     * .
      *
      * @return DynamicTplMapperFactory
      */
@@ -234,13 +238,13 @@ public class TplDynamicExecutorFactory extends ClassLoader implements Opcodes {
     }
 
     /**
-     * create mapper interface implemented class
+     * create mapper interface implemented class.
      *
      * @param type configuration interface class
      * @return implemented class name
-     * @throws IOException
-     * @throws SecurityException
-     * @throws NoSuchMethodException
+     * @throws IOException           Signals that an I/O exception has occurred.
+     * @throws NoSuchMethodException the no such method exception
+     * @throws SecurityException     the security exception
      */
     public String create(Class<?> type) throws IOException, NoSuchMethodException, SecurityException {
         return create(type, this.getClass().getClassLoader());
@@ -693,7 +697,7 @@ public class TplDynamicExecutorFactory extends ClassLoader implements Opcodes {
     }
 
     /**
-     * always return a new instance
+     * always return a new instance.
      *
      * @param <E>    generic type
      * @param type   mapper interface type
@@ -710,7 +714,7 @@ public class TplDynamicExecutorFactory extends ClassLoader implements Opcodes {
     }
 
     /**
-     * return a singleton instance, every type only new one instance
+     * return a singleton instance, every type only new one instance.
      *
      * @param <E>    generic type
      * @param type   mapper interface type
