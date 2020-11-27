@@ -194,9 +194,9 @@ public class Parser {
                                             append = "?";
                                         } else if (isConditionNullOrEmpty(de.getSource())) {
                                             if (isInCondition(source.substring(index, wrapIndex))) {
-                                                append = " && " + name + "?length gt 0";
-                                            } else {
                                                 append = " && " + name + "?size gt 0";
+                                            } else {
+                                                append = " && " + name + "?length gt 0";
                                             }
                                         }
                                         de.setSource(pre + name + de.getSource() + append);
@@ -248,7 +248,7 @@ public class Parser {
         return false;
     }
 
-    private String getFirstParamName(String value) {
+    private String getFirstParamName(String value, boolean autoEnd) {
         StringBuilder sb = new StringBuilder();
         for (int i = 0; i < value.length(); i++) {
             char c = value.charAt(i);
@@ -262,10 +262,17 @@ public class Parser {
                 sb.append(c);
             }
         }
-        if (sb.length() > 0) {
+        if (sb.length() > 0 && !autoEnd) {
             throw new TplException("格式错误，未找到匹配的结束符号");
         }
+        if (sb.length() > 0) {
+            sb.deleteCharAt(0);
+        }
         return sb.toString();
+    }
+
+    private String getFirstParamName(String value) {
+        return getFirstParamName(value, true);
     }
 
     private boolean isNamedParamEnd(char c) {
@@ -289,6 +296,12 @@ public class Parser {
             c = value.charAt(index);
             if (!notWhitespace && !Character.isWhitespace(c)) {
                 notWhitespace = true;
+            }
+            if (c == directiveStart[0] && value.length() < index + 1) {
+                char c2 = value.charAt(index + 1);
+                if (c2 == directiveStart[1]) {
+                    return index;
+                }
             }
             if (onlyNewLine) {
                 if (notWhitespace && c == Chars.NEW_LINEZ_CHAR) {
