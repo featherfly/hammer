@@ -5,6 +5,8 @@ import org.objectweb.asm.Type;
 import org.objectweb.asm.signature.SignatureVisitor;
 import org.objectweb.asm.signature.SignatureWriter;
 
+import cn.featherfly.common.asm.Asm;
+
 /**
  * <p>
  * Sig
@@ -14,7 +16,7 @@ import org.objectweb.asm.signature.SignatureWriter;
  */
 public class SignatureTest {
     public static void main(String[] args) {
-        String superClass = ByteCodeUtils.getName(Superclass.class);
+        String superClass = Asm.getName(Superclass.class);
         String superClassGenericType = Type.getInternalName(User.class);
 
         System.out.println(superClass);

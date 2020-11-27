@@ -5,6 +5,7 @@ import java.util.Map;
 
 import org.objectweb.asm.Type;
 
+import cn.featherfly.common.asm.Asm;
 import cn.featherfly.common.lang.ArrayUtils;
 import cn.featherfly.common.structure.ChainMap;
 import cn.featherfly.hammer.Hammer;
@@ -32,8 +33,7 @@ public class User {
         System.out.println(Hammer.class.getMethod("longValue", TplExecuteId.class, Map.class));
         System.out.println(Hammer.class.getMethod("longValue", TplExecuteId.class, Map.class));
 
-        System.out.println(
-                ByteCodeUtils.getConstructorDescriptor(String.class, String.class, Class.class, boolean.class));
+        System.out.println(Asm.getConstructorDescriptor(String.class, String.class, Class.class, boolean.class));
         System.out.println(Type.getDescriptor(boolean.class));
         System.out.println(Type.getDescriptor(String.class));
         System.out.println(Type.getDescriptor(Object.class));

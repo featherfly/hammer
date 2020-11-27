@@ -1,5 +1,5 @@
 
-package cn.featherfly.hammer.sqldb.tpl.pre;
+package cn.featherfly.hammer.sqldb.tpl;
 
 import static org.testng.Assert.assertEquals;
 import static org.testng.Assert.assertTrue;
@@ -15,11 +15,8 @@ import cn.featherfly.common.structure.page.PaginationResults;
 import cn.featherfly.common.structure.page.SimplePagination;
 import cn.featherfly.hammer.Hammer;
 import cn.featherfly.hammer.sqldb.SqldbHammerImpl;
-import cn.featherfly.hammer.sqldb.jdbc.DataSourceTestBase;
+import cn.featherfly.hammer.sqldb.jdbc.JdbcTestBase;
 import cn.featherfly.hammer.sqldb.jdbc.vo.User;
-import cn.featherfly.hammer.sqldb.tpl.UserMapper;
-import cn.featherfly.hammer.tpl.TplConfigFactoryImpl;
-import cn.featherfly.hammer.tpl.freemarker.FreemarkerTemplatePreProcessor;
 import cn.featherfly.hammer.tpl.mapper.TplDynamicExecutorFactory;
 
 /**
@@ -29,27 +26,28 @@ import cn.featherfly.hammer.tpl.mapper.TplDynamicExecutorFactory;
  *
  * @author zhongj
  */
-public class SqlTplDynamicExecutorTest extends DataSourceTestBase {
+public class SqlTplDynamicExecutorTest3WithoutParamName extends JdbcTestBase {
 
-    UserMapper userMapper;
+    UserMapper3WithoutParamName userMapper;
 
     @BeforeClass
     void setup() {
-        TplConfigFactoryImpl configFactory = new TplConfigFactoryImpl("tpl_pre/", new FreemarkerTemplatePreProcessor());
         TplDynamicExecutorFactory mapperFactory = TplDynamicExecutorFactory.getInstance();
         Hammer hammer = new SqldbHammerImpl(jdbc, mappingFactory, configFactory);
-        userMapper = mapperFactory.newInstance(UserMapper.class, hammer);
+        userMapper = mapperFactory.newInstance(UserMapper3WithoutParamName.class, hammer);
     }
 
     @Test
     void testMapperString() {
         String str = userMapper.selectString();
+
         System.out.println("selectString = " + str);
         assertEquals(str, "yufei");
 
         str = userMapper.selectString2(2);
         System.out.println("selectString = " + str);
         assertEquals(str, "featherfly");
+
     }
 
     @Test
@@ -67,12 +65,27 @@ public class SqlTplDynamicExecutorTest extends DataSourceTestBase {
     @Test
     void testMapperSingle() {
         String username = "yufei";
-        cn.featherfly.hammer.sqldb.jdbc.vo.User u = userMapper.selectByUsername(username);
+        User u = userMapper.selectByUsername(username);
         System.out.println(u);
         assertEquals(u.getUsername(), username);
 
         String password = "123456";
         u = userMapper.selectByUsernameAndPassword(username, password);
+        System.out.println(u);
+        assertEquals(u.getUsername(), username);
+        assertEquals(u.getPwd(), password);
+
+        u = userMapper.getByUsernameAndPassword(username, password);
+        System.out.println(u);
+        assertEquals(u.getUsername(), username);
+        assertEquals(u.getPwd(), password);
+
+        u = userMapper.getByUsernameAndPassword2(username, password);
+        System.out.println(u);
+        assertEquals(u.getUsername(), username);
+        assertEquals(u.getPwd(), password);
+
+        u = userMapper.getByUsernameAndPassword3(username, password);
         System.out.println(u);
         assertEquals(u.getUsername(), username);
         assertEquals(u.getPwd(), password);
@@ -107,25 +120,24 @@ public class SqlTplDynamicExecutorTest extends DataSourceTestBase {
     @Test
     void testMapperPage() {
         int limit = 1;
-        int age = 10;
         Page page = new SimplePagination(0, limit);
 
-        List<User> list = userMapper.selectByAge2(age, 0, limit);
+        List<User> list = userMapper.selectByAge2(10, 0, limit);
         System.out.println(list.size());
         System.out.println(list);
         assertEquals(list.size(), limit);
 
-        list = userMapper.selectByAge2(age, page);
+        list = userMapper.selectByAge2(10, page);
         System.out.println(list.size());
         System.out.println(list);
         assertEquals(list.size(), limit);
 
-        PaginationResults<User> us = userMapper.selectByAge2Page(age, 0, limit);
+        PaginationResults<User> us = userMapper.selectByAge2Page(10, 0, limit);
         System.out.println(us.getResultSize());
         System.out.println(us.getPageResults());
         assertEquals(us.getResultSize(), new Integer(limit));
 
-        us = userMapper.selectByAge2Page(age, page);
+        us = userMapper.selectByAge2Page(10, page);
         System.out.println(us.getResultSize());
         System.out.println(us.getPageResults());
         assertEquals(us.getResultSize(), new Integer(limit));

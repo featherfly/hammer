@@ -21,39 +21,39 @@ import cn.featherfly.hammer.tpl.annotation.Template;
  * @author zhongj
  */
 @Mapper(namespace = "user")
-public interface UserMapper3 extends GenericHammer<User> {
+public interface UserMapper3WithoutParamName extends GenericHammer<User> {
 
-    User selectByUsername(@Param("username") String username);
+    User selectByUsername(String username);
 
-    Map<String, Object> selectByUsername2(@Param("username") String username);
+    Map<String, Object> selectByUsername2(String username);
 
-    User selectByUsernameAndPassword(@Param("username") String username, @Param("password") String pwd);
+    User selectByUsernameAndPassword(String username, String password);
 
     Integer selectAvg();
 
     String selectString();
 
-    List<User> selectByAge2(@Param("age") Integer age);
+    List<User> selectByAge2(Integer age);
 
     @Template
-    List<User> selectByAge2(@Param("age") Integer age, @Param(type = ParamType.PAGE_OFFSET) int offset,
+    List<User> selectByAge2(Integer age, @Param(type = ParamType.PAGE_OFFSET) int offset,
             @Param(type = ParamType.PAGE_LIMIT) int limit);
 
     @Template
-    List<User> selectByAge2(@Param("age") Integer age, Page page);
+    List<User> selectByAge2(Integer age, Page page);
 
     @Template(name = "selectByAge2")
-    PaginationResults<User> selectByAge2Page(@Param("age") Integer age, @Param(type = ParamType.PAGE_OFFSET) int offset,
+    PaginationResults<User> selectByAge2Page(Integer age, @Param(type = ParamType.PAGE_OFFSET) int offset,
             @Param(type = ParamType.PAGE_LIMIT) int limit);
 
     @Template(name = "selectByAge2")
-    PaginationResults<User> selectByAge2Page(@Param("age") Integer age, Page page);
+    PaginationResults<User> selectByAge2Page(Integer age, Page page);
 
-    List<User> selectById(@Param("id") Integer id);
+    List<User> selectById(Integer id);
 
-    Integer selectAvg2(@Param("age") Integer age);
+    Integer selectAvg2(Integer age);
 
-    String selectString2(@Param("id") Integer id);
+    String selectString2(Integer id);
 
     @Template(namespace = "user_info")
     List<Map<String, Object>> select2();
@@ -73,7 +73,7 @@ public interface UserMapper3 extends GenericHammer<User> {
     PaginationResults<Map<String, Object>> select2Page(Page page);
 
     @Template(namespace = "user_info", name = "selectById")
-    List<Map<String, Object>> selectById2(@Param("id") Integer id);
+    List<Map<String, Object>> selectById2(Integer id);
 
     default User getByUsernameAndPassword(String username, String pwd) {
         return query().where().eq("username", username).and().eq("pwd", pwd).single();

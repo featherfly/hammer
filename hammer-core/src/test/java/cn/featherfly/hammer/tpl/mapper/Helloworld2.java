@@ -9,6 +9,7 @@ import org.objectweb.asm.Type;
 import org.objectweb.asm.signature.SignatureVisitor;
 import org.objectweb.asm.signature.SignatureWriter;
 
+import cn.featherfly.common.asm.Asm;
 import cn.featherfly.common.lang.ClassUtils;
 
 public class Helloworld2 extends ClassLoader implements Opcodes {
@@ -50,7 +51,7 @@ public class Helloworld2 extends ClassLoader implements Opcodes {
 
         //        cw.visit(V1_8, ACC_PUBLIC, ByteCodeUtils.getName(name), null, superClass, null);
         System.out.println(signature.toString());
-        cw.visit(V1_8, ACC_PUBLIC, ByteCodeUtils.getName(name),
+        cw.visit(V1_8, ACC_PUBLIC, Asm.getName(name),
                 "Lcn/featherfly/hammer/tpl/mapper/Superclass<Lcn/featherfly/hammer/tpl/mapper/User;>;", superClass,
                 null);
 

@@ -53,6 +53,7 @@ public class WrapTemplateDirectiveModel implements FreemarkerDirective, WrapDire
         }
         if (value != null) {
             Writer out = env.getOut();
+            // TODO 实现trim ' " ` 等包装字符串
             out.write(dialect.wrapName(value));
         }
     }
