@@ -23,6 +23,7 @@ import cn.featherfly.constant.ConstantConfigurator;
 import cn.featherfly.hammer.sqldb.jdbc.vo.Role;
 import cn.featherfly.hammer.tpl.TplConfigFactory;
 import cn.featherfly.hammer.tpl.TplConfigFactoryImpl;
+import cn.featherfly.hammer.tpl.freemarker.FreemarkerTemplatePreProcessor;
 
 /**
  * <p>
@@ -54,6 +55,8 @@ public class JdbcTestBase {
     public void init(@Optional("mysql") String dataBase) throws IOException {
         DOMConfigurator.configure(ClassLoaderUtils.getResource("log4j.xml", JdbcTestBase.class));
         initDataBase(dataBase);
+
+        configFactory = new TplConfigFactoryImpl("tpl/", new FreemarkerTemplatePreProcessor());
     }
 
     public void initDataBase(String dataBase) throws IOException {
@@ -104,9 +107,6 @@ public class JdbcTestBase {
         // PropertyNameJpaConversion());
         // factory.getPropertyNameConversions().add(new
         // PropertyNameUnderlineConversion());
-
-        configFactory = new TplConfigFactoryImpl("tpl/");
-
     }
 
     //    @BeforeSuite(groups = "postgresql", dependsOnMethods = "init")
@@ -133,8 +133,6 @@ public class JdbcTestBase {
         metadata = DatabaseMetadataManager.getDefaultManager().create(dataSource);
 
         mappingFactory = new JdbcMappingFactoryImpl(metadata, Dialects.POSTGRESQL);
-
-        configFactory = new TplConfigFactoryImpl("tpl/");
     }
 
     //    @BeforeSuite(groups = "sqlite", dependsOnMethods = "init")
@@ -160,7 +158,6 @@ public class JdbcTestBase {
 
         mappingFactory = new JdbcMappingFactoryImpl(metadata, Dialects.SQLITE);
 
-        configFactory = new TplConfigFactoryImpl("tpl/");
     }
 
     Role role() {

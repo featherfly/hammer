@@ -1,5 +1,5 @@
 
-package cn.featherfly.hammer.sqldb.tpl;
+package cn.featherfly.hammer.sqldb.tpl.pre;
 
 import static org.testng.Assert.assertTrue;
 
@@ -11,6 +11,7 @@ import org.testng.annotations.Test;
 import cn.featherfly.common.structure.HashChainMap;
 import cn.featherfly.hammer.sqldb.jdbc.DataSourceTestBase;
 import cn.featherfly.hammer.sqldb.jdbc.vo.User;
+import cn.featherfly.hammer.sqldb.tpl.SqlTplExecutor;
 import cn.featherfly.hammer.sqldb.tpl.freemarker.SqldbFreemarkerTemplateEngine;
 import cn.featherfly.hammer.tpl.TplConfigFactoryImpl;
 import cn.featherfly.hammer.tpl.freemarker.FreemarkerTemplatePreProcessor;
