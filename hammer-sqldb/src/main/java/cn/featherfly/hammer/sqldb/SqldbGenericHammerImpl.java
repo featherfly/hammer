@@ -28,7 +28,7 @@ public abstract class SqldbGenericHammerImpl<E> implements GenericHammer<E> {
      */
     public SqldbGenericHammerImpl(SqldbHammerImpl hammer) {
         this.hammer = hammer;
-        type = ClassUtils.getSuperClassGenricType(this.getClass());
+        type = ClassUtils.getSuperClassGenericType(this.getClass());
     }
 
     /**
