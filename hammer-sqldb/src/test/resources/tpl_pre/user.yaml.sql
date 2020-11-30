@@ -9,7 +9,7 @@ selectByAge: >
     select /*<<prop*/* from /*<<wrap*/user where age = :age
 selectByAge2: >
     select /*<<prop*/* from /*<<wrap*/user where age = :age
-selectConditions: >
+selectConditions: |
     select id, username, password pwd, mobile_no, age from /*<<wrap*/user
     /*<where*/ where
     /*??*/ username like :username

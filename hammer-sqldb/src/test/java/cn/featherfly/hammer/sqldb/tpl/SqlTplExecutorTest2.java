@@ -26,7 +26,7 @@ public class SqlTplExecutorTest2 extends JdbcTestBase {
 
     @Test(expectedExceptions = HammerException.class)
     void testInvalidateChar() {
-        TplConfigFactoryImpl configFactory = new TplConfigFactoryImpl("tpl2/");
+        TplConfigFactoryImpl configFactory = new TplConfigFactoryImpl("tpl2/", ".yaml.tpl");
         executor = new SqlTplExecutor(configFactory, new SqldbFreemarkerTemplateEngine(configFactory), jdbc,
                 mappingFactory);
     }

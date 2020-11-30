@@ -117,7 +117,7 @@ public abstract class LogicTemplateDirectiveModel implements FreemarkerDirective
                 body.render(stringWriter);
 
                 String condition = stringWriter.toString().trim();
-                if (org.apache.commons.lang3.StringUtils.isBlank(nameParam) && condition.length() > 0) {
+                if (org.apache.commons.lang3.StringUtils.isBlank(name) && condition.length() > 0) {
                     Matcher m = null;
                     m = CONDITION_PATTERN.matcher(condition);
                     if (!m.matches()) {

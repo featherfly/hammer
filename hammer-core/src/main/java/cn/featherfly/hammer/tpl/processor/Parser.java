@@ -199,6 +199,7 @@ public class Parser {
                                                 append = " && " + name + "?length gt 0";
                                             }
                                         }
+                                        append = append + " name='" + name + "'";
                                         de.setSource(pre + name + de.getSource() + append);
                                     } else {
                                         name = de.getSource().replaceAll("\\?", "");
@@ -248,6 +249,7 @@ public class Parser {
         return false;
     }
 
+    // TODO 后续加入多个参数的获取，主要是为了between :param1 and :param2
     private String getFirstParamName(String value, boolean autoEnd) {
         StringBuilder sb = new StringBuilder();
         for (int i = 0; i < value.length(); i++) {
