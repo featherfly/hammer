@@ -22,6 +22,7 @@ import org.objectweb.asm.tree.MethodNode;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import cn.featherfly.common.asm.Asm;
 import cn.featherfly.common.constant.Chars;
 import cn.featherfly.common.exception.ReflectException;
 import cn.featherfly.common.lang.ClassUtils;
@@ -218,7 +219,7 @@ public class TplDynamicExecutorFactory extends ClassLoader implements Opcodes {
             paramName = Type.getInternalName(HashChainMap.class);
             paramChainName = Type.getInternalName(ChainMap.class);
 
-            constructorDescriptor = ByteCodeUtils.getConstructorDescriptor(Hammer.class);
+            constructorDescriptor = Asm.getConstructorDescriptor(Hammer.class);
 
         } catch (Exception e) {
             throw new ReflectException(e);
@@ -269,7 +270,7 @@ public class TplDynamicExecutorFactory extends ClassLoader implements Opcodes {
         ClassWriter cw = new ClassWriter(classReader, ClassWriter.COMPUTE_MAXS);
 
         String implClassName = type.getName() + "$ImplByHammer";
-        String implClassByteCodeName = ByteCodeUtils.getName(implClassName);
+        String implClassByteCodeName = Asm.getName(implClassName);
 
         Class<?> parentHammer = null;
         if (!types.contains(type)) {
@@ -279,7 +280,7 @@ public class TplDynamicExecutorFactory extends ClassLoader implements Opcodes {
             cn.version = V1_8;
             cn.access = ACC_PUBLIC;
             cn.name = implClassByteCodeName;
-            cn.interfaces.add(ByteCodeUtils.getName(type));
+            cn.interfaces.add(Asm.getName(type));
 
             if (ClassUtils.isParent(GenericHammer.class, type)) {
                 String typeName = null;
@@ -303,13 +304,13 @@ public class TplDynamicExecutorFactory extends ClassLoader implements Opcodes {
 
                 cn.signature = signature.toString();
 
-                MethodNode constructor = new MethodNode(ACC_PUBLIC, ByteCodeUtils.CONSTRUCT_METHOD,
-                        constructorDescriptor, null, null);
+                MethodNode constructor = new MethodNode(ACC_PUBLIC, Asm.CONSTRUCT_METHOD, constructorDescriptor, null,
+                        null);
                 constructor.visitVarInsn(ALOAD, 0);
                 constructor.visitVarInsn(ALOAD, 1);
                 constructor.visitLdcInsn(Type.getType(genericType));
-                constructor.visitMethodInsn(INVOKESPECIAL, cn.superName, ByteCodeUtils.CONSTRUCT_METHOD,
-                        ByteCodeUtils.getConstructorDescriptor(Hammer.class, Class.class), false);
+                constructor.visitMethodInsn(INVOKESPECIAL, cn.superName, Asm.CONSTRUCT_METHOD,
+                        Asm.getConstructorDescriptor(Hammer.class, Class.class), false);
                 constructor.visitInsn(RETURN);
                 constructor.visitMaxs(1, 1);
                 constructor.visitEnd();
@@ -322,12 +323,12 @@ public class TplDynamicExecutorFactory extends ClassLoader implements Opcodes {
                     parentHammer = BasedMapper.class;
                     cn.superName = Type.getInternalName(BasedMapper.class);
                 }
-                MethodNode constructor = new MethodNode(ASM9, ACC_PUBLIC, ByteCodeUtils.CONSTRUCT_METHOD,
-                        constructorDescriptor, null, null);
+                MethodNode constructor = new MethodNode(ASM9, ACC_PUBLIC, Asm.CONSTRUCT_METHOD, constructorDescriptor,
+                        null, null);
                 constructor.visitVarInsn(ALOAD, 0);
                 constructor.visitVarInsn(ALOAD, 1);
-                constructor.visitMethodInsn(INVOKESPECIAL, cn.superName, ByteCodeUtils.CONSTRUCT_METHOD,
-                        constructorDescriptor, false);
+                constructor.visitMethodInsn(INVOKESPECIAL, cn.superName, Asm.CONSTRUCT_METHOD, constructorDescriptor,
+                        false);
                 constructor.visitInsn(RETURN);
                 constructor.visitMaxs(1, 1);
                 constructor.visitEnd();
@@ -426,9 +427,8 @@ public class TplDynamicExecutorFactory extends ClassLoader implements Opcodes {
                     } else {
                         methodNode.visitInsn(ICONST_0);
                     }
-                    methodNode.visitMethodInsn(
-                            INVOKESPECIAL, executeIdType, ByteCodeUtils.CONSTRUCT_METHOD, ByteCodeUtils
-                                    .getConstructorDescriptor(String.class, String.class, Class.class, boolean.class),
+                    methodNode.visitMethodInsn(INVOKESPECIAL, executeIdType, Asm.CONSTRUCT_METHOD,
+                            Asm.getConstructorDescriptor(String.class, String.class, Class.class, boolean.class),
                             false);
                     stackSize = 7;
                 } else {
@@ -438,8 +438,8 @@ public class TplDynamicExecutorFactory extends ClassLoader implements Opcodes {
                     methodNode.visitInsn(DUP);
                     methodNode.visitLdcInsn(name);
                     methodNode.visitLdcInsn(namespace);
-                    methodNode.visitMethodInsn(INVOKESPECIAL, executeIdType, ByteCodeUtils.CONSTRUCT_METHOD,
-                            ByteCodeUtils.getConstructorDescriptor(String.class, String.class), false);
+                    methodNode.visitMethodInsn(INVOKESPECIAL, executeIdType, Asm.CONSTRUCT_METHOD,
+                            Asm.getConstructorDescriptor(String.class, String.class), false);
                     stackSize = 5;
                 }
 
@@ -605,7 +605,7 @@ public class TplDynamicExecutorFactory extends ClassLoader implements Opcodes {
                             .append(Strings.format("stack={0},locales={1}", stackSize, localeSize))
                             .append(Chars.NEW_LINE);
                     for (AbstractInsnNode node : methodNode.instructions) {
-                        javapString.append("  ").append(ByteCodeUtils.javapString(node)).append(Chars.NEW_LINE);
+                        javapString.append("  ").append(Asm.javapString(node)).append(Chars.NEW_LINE);
                     }
                     logger.trace(javapString.toString());
                 }
@@ -633,20 +633,19 @@ public class TplDynamicExecutorFactory extends ClassLoader implements Opcodes {
 
         methodNode.visitTypeInsn(NEW, paramName);
         methodNode.visitInsn(DUP);
-        methodNode.visitMethodInsn(INVOKESPECIAL, paramName, ByteCodeUtils.CONSTRUCT_METHOD,
-                ByteCodeUtils.NONE_PARAMETER_DESCRIPTOR, false);
-        for (int i = 0; i < method.getParameters().length; i++) {
-            Parameter parameter = method.getParameters()[i];
+        methodNode.visitMethodInsn(INVOKESPECIAL, paramName, Asm.CONSTRUCT_METHOD, Asm.NONE_PARAMETER_DESCRIPTOR,
+                false);
+        for (int paramIndex = 0; paramIndex < method.getParameters().length; paramIndex++) {
+            Parameter parameter = method.getParameters()[paramIndex];
             ParamType paramType = getParamType(parameter);
             switch (paramType) {
                 case COMMON:
-                    methodNode.visitLdcInsn(getParamName(parameter));
-                    methodNode.visitVarInsn(ByteCodeUtils.getLoadCode(parameter.getType()), i + 1);
+                    methodNode.visitLdcInsn(getParamName(parameter, paramIndex));
+                    methodNode.visitVarInsn(Asm.getLoadCode(parameter.getType()), paramIndex + 1);
                     if (parameter.getType().isPrimitive()) {
-                        methodNode.visitMethodInsn(INVOKESTATIC,
-                                ByteCodeUtils.getPrimitiveWrapperName(parameter.getType()),
-                                ByteCodeUtils.PRIMITIVE_WRAPPER_METHOD,
-                                ByteCodeUtils.getPrimitiveWrapperMethodDescriptor(parameter.getType()), false);
+                        methodNode.visitMethodInsn(INVOKESTATIC, Asm.getPrimitiveWrapperName(parameter.getType()),
+                                Asm.PRIMITIVE_WRAPPER_METHOD,
+                                Asm.getPrimitiveWrapperMethodDescriptor(parameter.getType()), false);
                     }
                     if (commonParamIndex == 1) {
                         methodNode.visitMethodInsn(INVOKEVIRTUAL, paramName, putChainMethod.getName(),
@@ -658,13 +657,13 @@ public class TplDynamicExecutorFactory extends ClassLoader implements Opcodes {
                     commonParamIndex++;
                     break;
                 case PAGE:
-                    position.pageParamPosition = i + 1;
+                    position.pageParamPosition = paramIndex + 1;
                     break;
                 case PAGE_OFFSET:
-                    position.offsetParamPosition = i + 1;
+                    position.offsetParamPosition = paramIndex + 1;
                     break;
                 case PAGE_LIMIT:
-                    position.limitParamPosition = i + 1;
+                    position.limitParamPosition = paramIndex + 1;
                     break;
             }
         }
@@ -785,13 +784,21 @@ public class TplDynamicExecutorFactory extends ClassLoader implements Opcodes {
         }
     }
 
-    private String getParamName(Parameter parameter) {
+    private String getParamName(Parameter parameter, int paramIndex) {
         Param tplParam = parameter.getAnnotation(Param.class);
         if (tplParam != null && Lang.isNotEmpty(tplParam.name())) {
             return tplParam.name();
         } else if (tplParam != null && Lang.isNotEmpty(tplParam.value())) {
             return tplParam.value();
         } else {
+            // 在没有使用-parameter编译时，Asm也不能获取到接口和抽象类的方法参数名称
+            //            try {
+            //                String[] names = Asm.getParamNames(parameter.getDeclaringExecutable());
+            //                if (names != null && names.length > paramIndex) {
+            //                    return names[paramIndex];
+            //                }
+            //            } catch (Exception e) {
+            //            }
             return parameter.getName();
         }
     }

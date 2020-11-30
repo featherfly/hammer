@@ -33,7 +33,7 @@ public class SqlTplExecutorTest3 extends DataSourceTestBase {
 
     @Test
     void testPreprocess() {
-        TplConfigFactoryImpl configFactory = new TplConfigFactoryImpl("tpl/pre", new FreemarkerTemplatePreProcessor());
+        TplConfigFactoryImpl configFactory = new TplConfigFactoryImpl("tpl_pre", new FreemarkerTemplatePreProcessor());
         executor = new SqlTplExecutor(configFactory, new SqldbFreemarkerTemplateEngine(configFactory), jdbc,
                 mappingFactory);
 

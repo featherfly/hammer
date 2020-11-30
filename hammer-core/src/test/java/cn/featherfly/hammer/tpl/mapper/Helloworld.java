@@ -6,6 +6,8 @@ import org.objectweb.asm.ClassWriter;
 import org.objectweb.asm.MethodVisitor;
 import org.objectweb.asm.Opcodes;
 
+import cn.featherfly.common.asm.Asm;
+
 public class Helloworld extends ClassLoader implements Opcodes {
 
     public static void main(final String args[]) throws Exception {
@@ -14,7 +16,7 @@ public class Helloworld extends ClassLoader implements Opcodes {
 
         //定义一个叫做Example的类
         ClassWriter cw = new ClassWriter(0);
-        cw.visit(V1_8, ACC_PUBLIC, ByteCodeUtils.getName(name), null, "java/lang/Object", null);
+        cw.visit(V1_8, ACC_PUBLIC, Asm.getName(name), null, "java/lang/Object", null);
 
         //生成默认的构造方法
         MethodVisitor mw = cw.visitMethod(ACC_PUBLIC, "<init>", "()V", null, null);

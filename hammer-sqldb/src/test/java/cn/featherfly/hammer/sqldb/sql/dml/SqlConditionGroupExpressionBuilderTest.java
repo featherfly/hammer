@@ -30,6 +30,7 @@ public class SqlConditionGroupExpressionBuilderTest extends JdbcTestBase {
 
     @BeforeClass
     public void init2() {
+        params.clear();
         params.add(name);
         params.add(pwd);
         params.add(sex);
