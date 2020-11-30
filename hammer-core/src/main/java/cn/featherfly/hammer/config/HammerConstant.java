@@ -13,7 +13,7 @@ import cn.featherfly.hammer.tpl.TplConfigFactory;
  */
 public abstract class HammerConstant {
 
-    public static final String DEFAULT_SUFFIX = ".yaml.tpl";
+    public static final String DEFAULT_SUFFIX = ".yaml.sql";
 
     public static final String DEFAULT_PREFIX = "";
 

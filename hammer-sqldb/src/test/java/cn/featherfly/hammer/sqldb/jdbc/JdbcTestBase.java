@@ -56,7 +56,7 @@ public class JdbcTestBase {
         DOMConfigurator.configure(ClassLoaderUtils.getResource("log4j.xml", JdbcTestBase.class));
         initDataBase(dataBase);
 
-        configFactory = new TplConfigFactoryImpl("tpl/", new FreemarkerTemplatePreProcessor());
+        configFactory = new TplConfigFactoryImpl("tpl/", ".yaml.tpl", new FreemarkerTemplatePreProcessor());
     }
 
     public void initDataBase(String dataBase) throws IOException {

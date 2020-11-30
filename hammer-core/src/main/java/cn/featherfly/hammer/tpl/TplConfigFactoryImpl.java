@@ -70,7 +70,7 @@ public class TplConfigFactoryImpl implements TplConfigFactory {
 
     private Set<String> basePackages = new HashSet<>();
 
-    private TemplatePreprocessor preCompiler;
+    private TemplatePreprocessor templatePreprocessor;
 
     /**
      * Instantiates a new tpl config factory impl.
@@ -193,9 +193,9 @@ public class TplConfigFactoryImpl implements TplConfigFactory {
         mapper.enable(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES);
 
         if (preCompiler == null) {
-            this.preCompiler = value -> value;
+            templatePreprocessor = value -> value;
         } else {
-            this.preCompiler = preCompiler;
+            templatePreprocessor = preCompiler;
         }
 
         if (Lang.isEmpty(prefix)) {
@@ -269,7 +269,7 @@ public class TplConfigFactoryImpl implements TplConfigFactory {
             String namespace = Lang.isEmpty(template.namespace()) ? globalNamespace : template.namespace();
             checkName(executeIds, name, namespace);
             TplExecuteConfig config = new TplExecuteConfig();
-            config.setQuery(preCompiler.process(template.value()));
+            config.setQuery(templatePreprocessor.process(template.value()));
             config.setTplName(namespace + ID_SIGN + name);
             config.setExecuteId(name);
             config.setName(type.getSimpleName());
@@ -345,17 +345,17 @@ public class TplConfigFactoryImpl implements TplConfigFactory {
             tplExecuteConfigs.forEach((k, v) -> {
                 TplExecuteConfig config = new TplExecuteConfig();
                 if (v instanceof String) {
-                    config.setQuery(preCompiler.process(v.toString()));
+                    config.setQuery(templatePreprocessor.process(v.toString()));
                 } else {
                     @SuppressWarnings("unchecked")
                     Map<String, Object> map = (Map<String, Object>) v;
                     Object query = map.get("query");
                     if (Lang.isNotEmpty(query)) {
-                        config.setQuery(preCompiler.process(query.toString()));
+                        config.setQuery(templatePreprocessor.process(query.toString()));
                     }
                     Object count = map.get("count");
                     if (Lang.isNotEmpty(count)) {
-                        config.setCount(preCompiler.process(count.toString()));
+                        config.setCount(templatePreprocessor.process(count.toString()));
                     }
                     if (Lang.isNotEmpty(map.get("type"))) {
                         config.setType(TplType.valueOf(map.get("type").toString()));
@@ -531,5 +531,14 @@ public class TplConfigFactoryImpl implements TplConfigFactory {
      */
     public String getPrefix() {
         return prefix;
+    }
+
+    /**
+     * 返回templatePreprocessor
+     * 
+     * @return templatePreprocessor
+     */
+    public TemplatePreprocessor getTemplatePreprocessor() {
+        return templatePreprocessor;
     }
 }

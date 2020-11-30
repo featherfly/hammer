@@ -33,12 +33,52 @@ public class SqlTplDynamicExecutorTest extends DataSourceTestBase {
 
     UserMapper userMapper;
 
+    Integer minAge = 5;
+    Integer maxAge = 40;
+    String username1 = "yufei";
+    String username2 = "featherfly";
+    String password = "123";
+
     @BeforeClass
     void setup() {
         TplConfigFactoryImpl configFactory = new TplConfigFactoryImpl("tpl_pre/", new FreemarkerTemplatePreProcessor());
         TplDynamicExecutorFactory mapperFactory = TplDynamicExecutorFactory.getInstance();
         Hammer hammer = new SqldbHammerImpl(jdbc, mappingFactory, configFactory);
         userMapper = mapperFactory.newInstance(UserMapper.class, hammer);
+    }
+
+    @Test
+    void testUserList2() {
+        List<User> users = userMapper.selectConditions(null, null, null, null, null);
+        assertTrue(users.size() > 0);
+
+        users = userMapper.selectConditions(username1 + "%", null, null, minAge, maxAge);
+        users.forEach(u -> {
+            assertTrue(u.getAge() >= minAge);
+            assertTrue(u.getAge() <= maxAge);
+            assertTrue(u.getUsername().startsWith(username1));
+        });
+
+        users = userMapper.selectConditions(username2 + "%", null, null, minAge, maxAge);
+        users.forEach(u -> {
+            assertTrue(u.getAge() >= minAge);
+            assertTrue(u.getAge() <= maxAge);
+            assertTrue(u.getUsername().startsWith(username2));
+        });
+
+        users = userMapper.selectConditions(null, password + "%", null, minAge, maxAge);
+        users.forEach(u -> {
+            assertTrue(u.getAge() >= minAge);
+            assertTrue(u.getAge() <= maxAge);
+            assertTrue(u.getPwd().startsWith(password));
+        });
+
+        users = userMapper.selectConditions(null, "%" + password, null, minAge, maxAge);
+        users.forEach(u -> {
+            assertTrue(u.getAge() >= minAge);
+            assertTrue(u.getAge() <= maxAge);
+            assertTrue(u.getPwd().endsWith(password));
+        });
     }
 
     @Test

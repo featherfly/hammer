@@ -41,7 +41,7 @@ public class SqlTplExecutorTest extends JdbcTestBase {
 
     @BeforeMethod
     void setup() {
-        TplConfigFactoryImpl configFactory = new TplConfigFactoryImpl("tpl/");
+        TplConfigFactoryImpl configFactory = new TplConfigFactoryImpl("tpl/", ".yaml.tpl");
         executor = new SqlTplExecutor(configFactory, new SqldbFreemarkerTemplateEngine(configFactory), jdbc,
                 mappingFactory);
     }

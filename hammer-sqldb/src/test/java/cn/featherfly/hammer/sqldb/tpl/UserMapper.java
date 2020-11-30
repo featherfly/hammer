@@ -73,4 +73,7 @@ public interface UserMapper {
 
     @Template(namespace = "user_info", name = "selectById")
     List<Map<String, Object>> selectById2(@Param("id") Integer id);
+
+    List<User> selectConditions(@Param("username") String username, @Param("password") String password,
+            @Param("mobileNo") String mobileNo, @Param("minAge") Integer minAge, @Param("maxAge") Integer maxAge);
 }

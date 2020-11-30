@@ -1,14 +1,8 @@
-select /*<<prop*/* from /*<<wrap*/user
-/*<where*/ where
-    /*id?*/id = /*$=:id*/1
-    /*name??*/and name like /*$=:name*/'name'
-    /*gender??*/ and gender in /*$=:gender*/1
-    /*<?*/ and
-    (
-        /*??*/ username = /*$=:username*/'admin'
-        /*??*/ or email = /*$=:email*/'featherfly@foxmail.com'
-        /*??*/ or mobile = /*$=:mobile*/13212345678
-    )
-    /*>?*/
-/*>where*/
-/*<sql id='roleFromTemplate'>*/
+select id, username, password pwd, mobile_no, age from /*<<wrap*/user
+    /*<where*/ where
+    /*??*/ username like :username
+    /*??*/ and password like :password
+    /*??*/ and mobile_no like :mobileNo
+    /*?*/ and age >= :minAge
+    /*?*/ and age <= :maxAge
+    /*>where*/

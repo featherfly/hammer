@@ -37,7 +37,7 @@ public class RoleMapperTest extends JdbcTestBase {
         TplDynamicExecutorFactory mapperFactory = TplDynamicExecutorFactory.getInstance();
         Set<String> basePackages = new HashSet<>();
         basePackages.add("cn.featherfly.hammer.sqldb.tpl");
-        configFactory = new TplConfigFactoryImpl("tpl/", basePackages);
+        configFactory = new TplConfigFactoryImpl("tpl/", ".yaml.tpl", basePackages);
         Hammer hammer = new SqldbHammerImpl(jdbc, mappingFactory, configFactory);
         roleMapper = mapperFactory.newInstance(RoleMapper.class, hammer);
     }

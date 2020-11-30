@@ -82,7 +82,7 @@ public class Appconfig {
 
         Set<String> basePackages = new HashSet<>();
         basePackages.add("cn.featherfly.hammer.sqldb.tpl.mapper");
-        TplConfigFactory configFactory = new TplConfigFactoryImpl("tpl/", basePackages);
+        TplConfigFactory configFactory = new TplConfigFactoryImpl("tpl/", ".yaml.tpl", basePackages);
 
         SqldbHammerImpl hammer = new SqldbHammerImpl(jdbc, mappingFactory, configFactory);
         return hammer;
