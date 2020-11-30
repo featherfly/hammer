@@ -38,11 +38,11 @@ public class UserMapper4Impl extends BasedTplGenericHammer<cn.featherfly.hammer.
         }
         System.out.println("");
         System.out.println(ArrayUtils.toString(UserMapper4.class.getGenericInterfaces()));
-        System.out.println(ClassUtils.getSuperClassGenricType(UserMapper4.class));
+        System.out.println(ClassUtils.getSuperClassGenericType(UserMapper4.class));
         System.out.println(UserMapper4.class.getGenericSuperclass());
 
         System.out.println(UserMapper4Impl.class.getGenericSuperclass());
-        System.out.println(ClassUtils.getSuperClassGenricType(UserMapper4Impl.class));
+        System.out.println(ClassUtils.getSuperClassGenericType(UserMapper4Impl.class));
 
     }
 }
