@@ -286,6 +286,7 @@ public class TplDynamicExecutorFactory extends ClassLoader implements Opcodes {
                 String typeName = null;
                 Class<?> genericType = null;
                 Class<?> idType = null;
+
                 for (java.lang.reflect.Type implType : type.getGenericInterfaces()) {
                     ParameterizedType parameterizedType = (ParameterizedType) implType;
                     if (parameterizedType.getRawType() == GenericHammer.class) {
@@ -358,6 +359,8 @@ public class TplDynamicExecutorFactory extends ClassLoader implements Opcodes {
 
     private void addImplMethods(Class<?> type, String globalNamespace, ClassNode classNode, Class<?> parentHammer)
             throws NoSuchMethodException, SecurityException {
+        Map<String, java.lang.reflect.Type> genericTypes = ClassUtils.getInterfaceGenericTypeMap(type,
+                GenericHammer.class);
         for (Method method : type.getDeclaredMethods()) {
             if (method.isDefault()) {
                 continue;
@@ -367,7 +370,7 @@ public class TplDynamicExecutorFactory extends ClassLoader implements Opcodes {
 
             // TODO 注解annotation要代理到实现类
             MethodNode methodNode = null;
-            Method parentMethod = getMethodFromParent(parentHammer, method);
+            Method parentMethod = getMethodFromParent(parentHammer, method, genericTypes);
             if (parentMethod != null) {
                 stackSize = 2;
                 // TODO 未处理泛型
@@ -689,16 +692,57 @@ public class TplDynamicExecutorFactory extends ClassLoader implements Opcodes {
         return position;
     }
 
-    private Method getMethodFromParent(Class<?> parentHammer, Method method) {
+    private Method getMethodFromParent(Class<?> parentHammer, Method method,
+            Map<String, java.lang.reflect.Type> genericTypes) {
         // FIXME 这里还没有处理泛型参数问题
         if (parentHammer == null) {
             return null;
         }
-        try {
-            return parentHammer.getMethod(method.getName(), method.getParameterTypes());
-        } catch (NoSuchMethodException e) {
+        if (ClassUtils.isParent(GenericHammer.class, parentHammer)) {
+            for (Method m : parentHammer.getMethods()) {
+                if (isOverwrite(m, method, genericTypes)) {
+                    return m;
+                }
+            }
             return null;
+        } else {
+            try {
+                return parentHammer.getMethod(method.getName(), method.getParameterTypes());
+            } catch (NoSuchMethodException e) {
+                return null;
+            }
         }
+    }
+
+    private boolean isOverwrite(Method method, Method overwriteMethod,
+            Map<String, java.lang.reflect.Type> genericTypes) {
+        if (method.getName().equals(overwriteMethod.getName())
+                && method.getParameterCount() == overwriteMethod.getParameterCount()) {
+            if (method.getParameterTypes().equals(overwriteMethod.getParameterTypes())) {
+                return true;
+            } else {
+                return isSameParameter(method, overwriteMethod, genericTypes);
+            }
+        }
+        return false;
+    }
+
+    private boolean isSameParameter(Method method, Method overwriteMethod,
+            Map<String, java.lang.reflect.Type> genericTypes) {
+        Class<?>[] types = new Class[method.getParameterCount()];
+        int i = 0;
+        for (java.lang.reflect.Type type : method.getGenericParameterTypes()) {
+            if (type instanceof Class) {
+                types[i] = (Class<?>) type;
+            } else {
+                java.lang.reflect.Type genericType = genericTypes.get(type.getTypeName());
+                if (genericType == null) {
+                    return false;
+                }
+                types[i] = (Class<?>) genericType;
+            }
+        }
+        return true;
     }
 
     /**
