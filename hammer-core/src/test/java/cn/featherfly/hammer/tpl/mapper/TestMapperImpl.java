@@ -1,8 +1,6 @@
 
 package cn.featherfly.hammer.tpl.mapper;
 
-import java.io.Serializable;
-
 import cn.featherfly.hammer.Hammer;
 
 /**
@@ -12,7 +10,7 @@ import cn.featherfly.hammer.Hammer;
  *
  * @author zhongj
  */
-public class TestMapperImpl extends BasedTplGenericHammer<User> implements TestMapper {
+public class TestMapperImpl extends BasedTplGenericHammer<User, Long> implements TestMapper {
 
     /**
      * @param hammer
@@ -599,11 +597,11 @@ public class TestMapperImpl extends BasedTplGenericHammer<User> implements TestM
     //    }
 
     @Override
-    public User get(Serializable id) {
+    public User get(Long id) {
         return super.get(id);
     }
 
-    public User2 get2(Serializable id) {
+    public User2 get2(Long id) {
         return (User2) super.get(id);
     }
 

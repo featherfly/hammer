@@ -285,11 +285,13 @@ public class TplDynamicExecutorFactory extends ClassLoader implements Opcodes {
             if (ClassUtils.isParent(GenericHammer.class, type)) {
                 String typeName = null;
                 Class<?> genericType = null;
+                Class<?> idType = null;
                 for (java.lang.reflect.Type implType : type.getGenericInterfaces()) {
                     ParameterizedType parameterizedType = (ParameterizedType) implType;
                     if (parameterizedType.getRawType() == GenericHammer.class) {
                         typeName = parameterizedType.getActualTypeArguments()[0].getTypeName();
                         genericType = ClassUtils.forName(typeName);
+                        idType = ClassUtils.forName(parameterizedType.getActualTypeArguments()[1].getTypeName());
                         break;
                     }
                 }
@@ -301,6 +303,10 @@ public class TplDynamicExecutorFactory extends ClassLoader implements Opcodes {
                 SignatureVisitor typeVisitor = superVisitor.visitTypeArgument(SignatureVisitor.INSTANCEOF);
                 typeVisitor.visitClassType(Type.getInternalName(genericType));
                 typeVisitor.visitEnd();
+                SignatureVisitor idVisitor = superVisitor.visitTypeArgument(SignatureVisitor.INSTANCEOF);
+                idVisitor.visitClassType(Type.getInternalName(idType));
+                idVisitor.visitEnd();
+                superVisitor.visitEnd();
 
                 cn.signature = signature.toString();
 
