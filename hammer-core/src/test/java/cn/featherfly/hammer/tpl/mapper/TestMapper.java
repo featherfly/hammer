@@ -1,8 +1,6 @@
 
 package cn.featherfly.hammer.tpl.mapper;
 
-import java.io.Serializable;
-
 import cn.featherfly.hammer.GenericHammer;
 import cn.featherfly.hammer.tpl.annotation.Mapper;
 
@@ -14,7 +12,7 @@ import cn.featherfly.hammer.tpl.annotation.Mapper;
  * @author zhongj
  */
 @Mapper
-public interface TestMapper extends GenericHammer<User> {
+public interface TestMapper extends GenericHammer<User, Long> {
 
     //    int count();
 
@@ -210,5 +208,5 @@ public interface TestMapper extends GenericHammer<User> {
     //            @Param(type = ParamType.PAGE_LIMIT) int limit);
 
     @Override
-    User get(Serializable id);
+    User get(Long id);
 }

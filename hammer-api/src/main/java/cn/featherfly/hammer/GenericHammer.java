@@ -17,7 +17,7 @@ import cn.featherfly.hammer.dsl.query.TypeQueryEntity;
  * @param <E> generic entity type
  * @author zhongj
  */
-public interface GenericHammer<E> {
+public interface GenericHammer<E, ID extends Serializable> {
 
     /**
      * save entity
@@ -154,7 +154,7 @@ public interface GenericHammer<E> {
      * @param id entity id
      * @return effect data row num
      */
-    int delete(Serializable id);
+    int delete(ID id);
 
     /**
      * delete each entity in entity id array
@@ -162,7 +162,7 @@ public interface GenericHammer<E> {
      * @param ids entity id array
      * @return effect data row num
      */
-    int deleteIds(Serializable... ids);
+    int deleteIds(@SuppressWarnings("unchecked") ID... ids);
 
     /**
      * delete each entity in entity id list
@@ -170,7 +170,7 @@ public interface GenericHammer<E> {
      * @param ids entity id list
      * @return effect data row num
      */
-    int deleteIds(List<Serializable> ids);
+    int deleteIds(List<ID> ids);
 
     /**
      * get entity by id.
@@ -178,7 +178,15 @@ public interface GenericHammer<E> {
      * @param id entity id
      * @return entity
      */
-    E get(Serializable id);
+    E get(ID id);
+
+    /**
+     * get entity by id.
+     *
+     * @param entity entity with id value
+     * @return entity
+     */
+    E get(E entity);
 
     /**
      * create QueryData for entityType

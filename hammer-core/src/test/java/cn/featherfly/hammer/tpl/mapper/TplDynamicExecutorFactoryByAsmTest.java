@@ -66,7 +66,7 @@ public class TplDynamicExecutorFactoryByAsmTest {
         System.out.println(type);
         System.out.println(Arrays.toString(type.getInterfaces()));
         System.out.println(type.getGenericSuperclass());
-        System.out.println(ClassUtils.getSuperClassGenricType(type));
+        System.out.println(ClassUtils.getSuperClassGenericTypeMap(type));
     }
 
     public static void main(String[] args) throws Exception {

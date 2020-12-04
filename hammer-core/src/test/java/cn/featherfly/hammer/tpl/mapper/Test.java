@@ -21,7 +21,7 @@ import cn.featherfly.hammer.GenericHammer;
  *
  * @author zhongj
  */
-public interface Test extends GenericHammer<User> {
+public interface Test extends GenericHammer<User, Long> {
 
     List<Superclass> find();
 

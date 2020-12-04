@@ -33,7 +33,7 @@ public class TplDynamicExecutorFactoryTest {
         System.out.println(type);
         System.out.println(Arrays.toString(type.getInterfaces()));
         System.out.println(type.getGenericSuperclass());
-        System.out.println(ClassUtils.getSuperClassGenricType(type));
+        System.out.println(ClassUtils.getSuperClassGenericType(type));
 
         //        ClassUtils.forName(factory.create(TestMapper.class));
     }

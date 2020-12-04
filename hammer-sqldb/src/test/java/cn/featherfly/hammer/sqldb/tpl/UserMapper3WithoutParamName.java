@@ -21,7 +21,7 @@ import cn.featherfly.hammer.tpl.annotation.Template;
  * @author zhongj
  */
 @Mapper(namespace = "user")
-public interface UserMapper3WithoutParamName extends GenericHammer<User> {
+public interface UserMapper3WithoutParamName extends GenericHammer<User, Integer> {
 
     User selectByUsername(String username);
 

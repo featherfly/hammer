@@ -18,7 +18,7 @@ import cn.featherfly.hammer.dsl.query.TypeQueryEntity;
  *
  * @author zhongj
  */
-public class BasedTplGenericHammer<E> implements GenericHammer<E> {
+public class BasedTplGenericHammer<E, ID extends Serializable> implements GenericHammer<E, ID> {
 
     protected Hammer hammer;
 
@@ -69,7 +69,7 @@ public class BasedTplGenericHammer<E> implements GenericHammer<E> {
      * {@inheritDoc}
      */
     @Override
-    public int delete(Serializable id) {
+    public int delete(ID id) {
         return hammer.delete(id, type);
     }
 
@@ -77,7 +77,7 @@ public class BasedTplGenericHammer<E> implements GenericHammer<E> {
      * {@inheritDoc}
      */
     @Override
-    public int deleteIds(Serializable... ids) {
+    public int deleteIds(@SuppressWarnings("unchecked") ID... ids) {
         return hammer.delete(ids, type);
     }
 
@@ -85,7 +85,7 @@ public class BasedTplGenericHammer<E> implements GenericHammer<E> {
      * {@inheritDoc}
      */
     @Override
-    public int deleteIds(List<Serializable> ids) {
+    public int deleteIds(List<ID> ids) {
         return hammer.delete(ids, type);
     }
 
@@ -93,8 +93,16 @@ public class BasedTplGenericHammer<E> implements GenericHammer<E> {
      * {@inheritDoc}
      */
     @Override
-    public E get(Serializable id) {
+    public E get(ID id) {
         return hammer.get(id, type);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public E get(E entity) {
+        return hammer.get(entity);
     }
 
     /**
