@@ -11,7 +11,6 @@ import cn.featherfly.hammer.Hammer;
  * @author zhongj
  */
 public class TestMapperImpl extends BasedTplGenericHammer<User, Long> implements TestMapper {
-
     /**
      * @param hammer
      * @param type
@@ -635,5 +634,14 @@ public class TestMapperImpl extends BasedTplGenericHammer<User, Long> implements
 
     public char c() {
         return 'c';
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public User getByUsername(String username) {
+        // YUFEI_TODO Auto-generated method stub
+        return null;
     }
 }

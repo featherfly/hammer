@@ -1,3 +1,7 @@
+# 0.5.4 2020-12-7
+    1.开启-parameter进行编译，保留名称信息
+    2.修复Mapper覆盖超类接口asm自动生成的实现方法没有paramaeter name信息的问题
+    
 # 0.5.3 2020-12-04
     1.修复asm生成mapper实现类泛型定义出错的问题
     2.GenericHammer加入id泛型
