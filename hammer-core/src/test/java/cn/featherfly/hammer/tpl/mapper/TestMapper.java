@@ -209,4 +209,6 @@ public interface TestMapper extends GenericHammer<User, Long> {
 
     @Override
     User get(Long id);
+
+    User getByUsername(String username);
 }

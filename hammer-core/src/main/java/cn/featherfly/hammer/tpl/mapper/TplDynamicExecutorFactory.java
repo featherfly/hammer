@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.lang.reflect.Method;
 import java.lang.reflect.Parameter;
 import java.lang.reflect.ParameterizedType;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -19,6 +20,7 @@ import org.objectweb.asm.signature.SignatureWriter;
 import org.objectweb.asm.tree.AbstractInsnNode;
 import org.objectweb.asm.tree.ClassNode;
 import org.objectweb.asm.tree.MethodNode;
+import org.objectweb.asm.tree.ParameterNode;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -56,6 +58,9 @@ public class TplDynamicExecutorFactory extends ClassLoader implements Opcodes {
 
     /** The Constant HAMMER_FIELD_NAME. */
     public static final String HAMMER_FIELD_NAME = "hammer";
+
+    /** The Constant CLASS_NAME_SUFFIX. */
+    public static final String CLASS_NAME_SUFFIX = "$ImplByHammer";
 
     /** The logger. */
     protected final Logger logger = LoggerFactory.getLogger(this.getClass());
@@ -269,7 +274,7 @@ public class TplDynamicExecutorFactory extends ClassLoader implements Opcodes {
         ClassReader classReader = new ClassReader(type.getName());
         ClassWriter cw = new ClassWriter(classReader, ClassWriter.COMPUTE_MAXS);
 
-        String implClassName = type.getName() + "$ImplByHammer";
+        String implClassName = type.getName() + CLASS_NAME_SUFFIX;
         String implClassByteCodeName = Asm.getName(implClassName);
 
         Class<?> parentHammer = null;
@@ -377,11 +382,14 @@ public class TplDynamicExecutorFactory extends ClassLoader implements Opcodes {
                 String methodDescriptor = Type.getMethodDescriptor(method);
                 String parentMethodDescriptor = Type.getMethodDescriptor(parentMethod);
                 methodNode = new MethodNode(ACC_PUBLIC, method.getName(), methodDescriptor, null, null);
+                methodNode.parameters = new ArrayList<>();
                 methodNode.visitVarInsn(ALOAD, 0);
-
                 int size = method.getParameters().length + 1;
                 for (int i = 1; i < size; i++) {
                     methodNode.visitVarInsn(ALOAD, i);
+                    ParameterNode parameterNode = new ParameterNode(method.getParameters()[i - 1].getName(),
+                            Opcodes.ACC_MANDATED);
+                    methodNode.parameters.add(parameterNode);
                 }
                 methodNode.visitMethodInsn(INVOKESPECIAL, classNode.superName, parentMethod.getName(),
                         parentMethodDescriptor, false);
@@ -418,6 +426,7 @@ public class TplDynamicExecutorFactory extends ClassLoader implements Opcodes {
 
                 // TODO 未处理泛型
                 methodNode = new MethodNode(ACC_PUBLIC, method.getName(), Type.getMethodDescriptor(method), null, null);
+                methodNode.parameters = new ArrayList<>();
                 methodNode.visitVarInsn(ALOAD, 0);
                 methodNode.visitFieldInsn(GETFIELD, classNode.name, HAMMER_FIELD_NAME, hammerDescriptor);
                 TplType tplType = getType(method);
@@ -647,6 +656,7 @@ public class TplDynamicExecutorFactory extends ClassLoader implements Opcodes {
         for (int paramIndex = 0; paramIndex < method.getParameters().length; paramIndex++) {
             Parameter parameter = method.getParameters()[paramIndex];
             ParamType paramType = getParamType(parameter);
+            methodNode.parameters.add(new ParameterNode(parameter.getName(), Opcodes.ACC_MANDATED));
             switch (paramType) {
                 case COMMON:
                     methodNode.visitLdcInsn(getParamName(parameter, paramIndex));
