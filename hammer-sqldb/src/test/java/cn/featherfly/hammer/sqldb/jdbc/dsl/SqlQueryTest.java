@@ -46,6 +46,50 @@ public class SqlQueryTest extends JdbcTestBase {
     }
 
     @Test
+    void testFunction() {
+        SqlQuery query = new SqlQuery(jdbc, metadata);
+
+        Object result = null;
+
+        List<Map<String, Object>> ages = query.find("user").property("age").list();
+
+        int min = Integer.MAX_VALUE;
+        int max = Integer.MIN_VALUE;
+        int sum = 0;
+        for (Map<String, Object> m : ages) {
+            int i = (int) m.get("age");
+            sum += i;
+            if (i > max) {
+                max = i;
+            }
+            if (i < min) {
+                min = i;
+            }
+        }
+
+        result = query.find("user").min("age").integer();
+        System.out.println("min = " + result);
+        assertEquals(result, min);
+
+        result = query.find("user").max("age").integer();
+        System.out.println("max = " + result);
+        assertEquals(result, max);
+
+        result = query.find("user").avg("age").integer();
+        System.out.println("avg = " + result);
+        assertEquals(result, sum / ages.size());
+
+        result = query.find("user").sum("age").integer();
+        System.out.println("sum = " + result);
+        assertEquals(result, sum);
+
+        result = query.find("user").count("age").integer();
+        System.out.println("count = " + result);
+        assertEquals(result, ages.size());
+
+    }
+
+    @Test
     void test0() {
         SqlQuery query = new SqlQuery(jdbc, metadata);
         List<Map<String, Object>> list = query.find("user").property("username", "password", "age").sort().asc("age")
@@ -66,6 +110,8 @@ public class SqlQueryTest extends JdbcTestBase {
         query.find("user").property("username", "password", "age").list(User.class);
         query.find("user").property("username", "password", "age").where().eq("username", "yufei").and()
                 .eq("password", "123456").and().group().gt("age", 18).and().lt("age", 60).list(User.class);
+        query.find("user").property("username", "password", "age").where().eq("username", "yufei").and()
+                .eq("password", "123456").and().group(g -> g.gt("age", 18).and().lt("age", 60)).list(User.class);
     }
 
     @Test

@@ -54,6 +54,114 @@ public interface QueryEntityExpression<Q extends QueryEntityPropertiesExpression
     <T, R> Q id(SerializableFunction<T, R> propertyName);
 
     /**
+     * Count.
+     *
+     * @param propertyName the property name
+     * @return the q
+     */
+    Q count(String propertyName);
+
+    /**
+     * Count.
+     *
+     * @param <T>          the generic type
+     * @param <R>          the generic type
+     * @param propertyName the property name
+     * @return the q
+     */
+    <T, R> Q count(SerializableFunction<T, R> propertyName);
+
+    /**
+     * Sum.
+     *
+     * @param propertyName the property name
+     * @return the q
+     */
+    Q sum(String propertyName);
+
+    /**
+     * Sum.
+     *
+     * @param <T>          the generic type
+     * @param <R>          the generic type
+     * @param propertyName the property name
+     * @return the q
+     */
+    <T, R> Q sum(SerializableFunction<T, R> propertyName);
+
+    /**
+     * Max.
+     *
+     * @param propertyName the property name
+     * @return the q
+     */
+    Q max(String propertyName);
+
+    /**
+     * Max.
+     *
+     * @param <T>          the generic type
+     * @param <R>          the generic type
+     * @param propertyName the property name
+     * @return the q
+     */
+    <T, R> Q max(SerializableFunction<T, R> propertyName);
+
+    /**
+     * Min.
+     *
+     * @param propertyName the property name
+     * @return the q
+     */
+    Q min(String propertyName);
+
+    /**
+     * Min.
+     *
+     * @param <T>          the generic type
+     * @param <R>          the generic type
+     * @param propertyName the property name
+     * @return the q
+     */
+    <T, R> Q min(SerializableFunction<T, R> propertyName);
+
+    /**
+     * Avg.
+     *
+     * @param propertyName the property name
+     * @return the q
+     */
+    Q avg(String propertyName);
+
+    /**
+     * Avg.
+     *
+     * @param <T>          the generic type
+     * @param <R>          the generic type
+     * @param propertyName the property name
+     * @return the q
+     */
+    <T, R> Q avg(SerializableFunction<T, R> propertyName);
+
+    /**
+     * Distinct.
+     *
+     * @param propertyName the property name
+     * @return the q
+     */
+    Q distinct(String propertyName);
+
+    /**
+     * Distinct.
+     *
+     * @param <T>          the generic type
+     * @param <R>          the generic type
+     * @param propertyName the property name
+     * @return the q
+     */
+    <T, R> Q distinct(SerializableFunction<T, R> propertyName);
+
+    /**
      * <p>
      * 添加查询出来的属性
      * </p>
@@ -91,6 +199,7 @@ public interface QueryEntityExpression<Q extends QueryEntityPropertiesExpression
      * <p>
      * 添加查询出来的属性
      * </p>
+     * .
      *
      * @param <T>          the generic type
      * @param <R>          the generic type
@@ -155,7 +264,7 @@ public interface QueryEntityExpression<Q extends QueryEntityPropertiesExpression
     <T> QWO with(Class<T> repositoryType);
 
     /**
-     * 结束当前条件并进入排序器
+     * 结束当前条件并进入排序器.
      *
      * @return SortBuilder
      */

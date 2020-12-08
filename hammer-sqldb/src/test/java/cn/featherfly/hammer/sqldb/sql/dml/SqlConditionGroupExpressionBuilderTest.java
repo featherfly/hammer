@@ -10,7 +10,6 @@ import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
 
 import cn.featherfly.common.db.dialect.Dialects;
-import cn.featherfly.hammer.sqldb.jdbc.JdbcTestBase;
 
 /**
  * <p>
@@ -20,10 +19,11 @@ import cn.featherfly.hammer.sqldb.jdbc.JdbcTestBase;
  * @author zhongj
  */
 @Test(groups = { "dml-test" })
-public class SqlConditionGroupExpressionBuilderTest extends JdbcTestBase {
+public class SqlConditionGroupExpressionBuilderTest {
     List<Object> params = new ArrayList<>();
 
     String name = "yufei";
+    String username = "featherfly";
     String pwd = "123";
     String sex = "m";
     Integer age = 18;
@@ -35,17 +35,29 @@ public class SqlConditionGroupExpressionBuilderTest extends JdbcTestBase {
         params.add(pwd);
         params.add(sex);
         params.add(age);
+        params.add(username);
     }
 
     @Test
     public void testSqlConditionGroupExpressionBuilder() {
         SqlConditionGroupExpressionBuilder builder = new SqlConditionGroupExpressionBuilder(Dialects.MYSQL);
-        builder.eq("name", name).and().eq("pwd", pwd).and().group().eq("sex", sex).or().gt("age", age);
+        builder.eq("name", name).and().eq("pwd", pwd).and().group().eq("sex", sex).or().gt("age", age).endGroup().and()
+                .eq("username", username);
 
         System.out.println(builder.build());
         System.out.println(builder.getParams());
 
-        assertEquals("`name` = ? AND `pwd` = ? AND ( `sex` = ? OR `age` > ? )", builder.build());
+        assertEquals("`name` = ? AND `pwd` = ? AND ( `sex` = ? OR `age` > ? ) AND `username` = ?", builder.build());
+        assertEquals(params, builder.getParams());
+
+        builder = new SqlConditionGroupExpressionBuilder(Dialects.MYSQL);
+        builder.eq("name", name).and().eq("pwd", pwd).and().group(c -> c.eq("sex", sex).or().gt("age", age)).and()
+                .eq("username", username);
+
+        System.out.println(builder.build());
+        System.out.println(builder.getParams());
+
+        assertEquals("`name` = ? AND `pwd` = ? AND ( `sex` = ? OR `age` > ? ) AND `username` = ?", builder.build());
         assertEquals(params, builder.getParams());
     }
 

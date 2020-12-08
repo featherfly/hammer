@@ -1,3 +1,8 @@
+# 0.5.5 2020-12-8
+    1.DSL条件查询加入group(Fucntion<C,L> function)方法 ，不用手动调用endGroup方法
+        where().eq("name", name).and().eq("pwd", pwd).and().group(c -> c.eq("sex", sex).or().gt("age", age)).and().eq("username", username)
+    2.QueryEntityExpression加入sum(propertyName),max(propertyName),min(propertyName),avg(propertyName),distinct(propertyName)方法
+    
 # 0.5.4 2020-12-7
     1.开启-parameter进行编译，保留名称信息
     2.修复Mapper覆盖超类接口asm自动生成的实现方法没有paramaeter name信息的问题
