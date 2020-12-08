@@ -1,3 +1,12 @@
+# 0.5.6 
+    1.Jdbc方法参数位置修改
+    2.修复JdbcImpl没有释放connection的问题
+
+# 0.5.5 2020-12-8
+    1.DSL条件查询加入group(Fucntion<C,L> function)方法 ，不用手动调用endGroup方法
+        where().eq("name", name).and().eq("pwd", pwd).and().group(c -> c.eq("sex", sex).or().gt("age", age)).and().eq("username", username)
+    2.QueryEntityExpression加入sum(propertyName),max(propertyName),min(propertyName),avg(propertyName),distinct(propertyName)方法
+    
 # 0.5.4 2020-12-7
     1.开启-parameter进行编译，保留名称信息
     2.修复Mapper覆盖超类接口asm自动生成的实现方法没有paramaeter name信息的问题
@@ -18,16 +27,17 @@
     1.加入预处理程序，把为sql特化的模板定义预编译为freemarker模板，参考下面示例
 
 ```sql
-select /*<<prop*/* from /*<<wrap*/user
+select /*<<prop alias='r'*/* from /*<<wrap*/user
 /*<where*/ where
-    /*id?*/id = /*$=:id*/1
-    /*name??*/and name like /*$=:name*/'name'
-    /*gender??*/ and gender in /*$=:gender*/1
+    /*?*/id = /*$=:id*/1
+    /*??*/and name like /*$=:name*/'name'
+    /*?*/ and gender = /*$=:gender*/1
+    /*??*/ and tag in /*$=:tag*/(1,2,3)
     /*<?*/ and
     (
-        /*??*/ username = /*$=:username*/'admin'
-        /*??*/ or email = /*$=:email*/'featherfly@foxmail.com'
-        /*??*/ or mobile = /*$=:mobile*/13212345678
+        /*username??*/ username = /*$=:username*/'admin'
+        /*email??*/ or email = /*$=:email*/'featherfly@foxmail.com'
+        /*mobile??*/ or mobile = /*$=:mobile*/13212345678
     )
     /*>?*/
 /*>where*/
@@ -37,17 +47,18 @@ select /*<<prop*/* from /*<<wrap*/user
 转换结果
 
 ```sql
-select <@prop>*</@prop> from <@wrap>user</@wrap>
+select <@prop alias='r'>*</@prop> from <@wrap>user</@wrap>
 <@where>
-    <@and if=id??>id = :id</@and>
-    <@and if=name?? && name?length gt 0>name like :name</@and>
-    <@and if=gender?? && gender?size gt 0>gender in :gender</@and>
+    <@and if=id?? name='id'>id = :id</@and>
+    <@and if=name?? && name?length gt 0 name='name'>name like :name</@and>
+    <@and if=gender?? name='gender'>gender = :gender</@and>
+    <@and if=tag?? && tag?size gt 0 name='tag'>tag in :tag</@and>
     <@and>
-
-        <@and if=username?? && username?length gt 0> username = :username</@and>
-        <@or if=email?? && email?size gt 0>email = :email</@or>
-        <@or if=mobile?? && mobile?size gt 0>mobile = :mobile</@or>
-
+    
+        <@and if=username?? && username?size gt 0> username = :username</@and>
+        <@or if=email?? && email?length gt 0>email = :email</@or>
+        <@or if=mobile?? && mobile?length gt 0>mobile = :mobile</@or>
+    
     </@and>
 </@where>
 </@sql id='roleFromTemplate'>

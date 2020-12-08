@@ -5,6 +5,7 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.Date;
+import java.util.function.Function;
 
 import cn.featherfly.common.db.builder.SqlBuilder;
 import cn.featherfly.common.db.dialect.Dialect;
@@ -148,6 +149,15 @@ public abstract class AbstractRepositorySqlConditionGroupExpression<C extends Re
         C group = createGroup((L) this, queryAlias);
         addCondition(group);
         return group;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public L group(Function<C, L> group) {
+        group.apply(group());
+        return endGroup();
     }
 
     /**
