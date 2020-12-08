@@ -1,3 +1,17 @@
+# 0.5.5 2020-12-8
+    1.DSL条件查询加入group(Fucntion<C,L> function)方法 ，不用手动调用endGroup方法
+        where().eq("name", name).and().eq("pwd", pwd).and().group(c -> c.eq("sex", sex).or().gt("age", age)).and().eq("username", username)
+    2.QueryEntityExpression加入sum(propertyName),max(propertyName),min(propertyName),avg(propertyName),distinct(propertyName)方法
+    
+# 0.5.4 2020-12-7
+    1.开启-parameter进行编译，保留名称信息
+    2.修复Mapper覆盖超类接口asm自动生成的实现方法没有paramaeter name信息的问题
+    
+# 0.5.3 2020-12-04
+    1.修复asm生成mapper实现类泛型定义出错的问题
+    2.GenericHammer加入id泛型
+    3.支持继承自GenericHammer的Mapper重写带泛型参数的方法
+    
 # 0.5.2 2020-11-30
     1.预处理条件查询时，明确查询条件参数名称（可以加快执行效率，避免条件标签自动匹配查询条件参数名称）
     2.TplConfigFactoryImpl默认后缀参数从.yaml.tpl改为.yaml.sql

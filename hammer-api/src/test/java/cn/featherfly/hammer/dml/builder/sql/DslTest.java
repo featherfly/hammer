@@ -33,10 +33,15 @@ public class DslTest {
         query.find(data).property("id", AggregateFunction.COUNT).integer();
         query.find(data).property("id", AggregateFunction.COUNT).longInt();
 
+        query.find(data).sum("id").longInt();
+
         query.find(data).property("count(*)").where().lt("age", 18).longInt();
         query.find(data).property("id", AggregateFunction.COUNT).where().lt("age", 18).longInt();
 
         query.find(data).where().lt("age", 18).count();
+
+        query.find(data).property("name").where().eq("", 1).and().lt("age", 18).and().group(t -> t.gt("score", 80))
+                .limit(11, 10).list(DslTest.class);
 
         query.find(data).property("name").where().eq("", 1).and().lt("age", 18).and().group().gt("score", 80)
                 .limit(11, 10).list(DslTest.class);

@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.lang.reflect.Method;
 import java.lang.reflect.Parameter;
 import java.lang.reflect.ParameterizedType;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -19,6 +20,7 @@ import org.objectweb.asm.signature.SignatureWriter;
 import org.objectweb.asm.tree.AbstractInsnNode;
 import org.objectweb.asm.tree.ClassNode;
 import org.objectweb.asm.tree.MethodNode;
+import org.objectweb.asm.tree.ParameterNode;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -56,6 +58,9 @@ public class TplDynamicExecutorFactory extends ClassLoader implements Opcodes {
 
     /** The Constant HAMMER_FIELD_NAME. */
     public static final String HAMMER_FIELD_NAME = "hammer";
+
+    /** The Constant CLASS_NAME_SUFFIX. */
+    public static final String CLASS_NAME_SUFFIX = "$ImplByHammer";
 
     /** The logger. */
     protected final Logger logger = LoggerFactory.getLogger(this.getClass());
@@ -269,7 +274,7 @@ public class TplDynamicExecutorFactory extends ClassLoader implements Opcodes {
         ClassReader classReader = new ClassReader(type.getName());
         ClassWriter cw = new ClassWriter(classReader, ClassWriter.COMPUTE_MAXS);
 
-        String implClassName = type.getName() + "$ImplByHammer";
+        String implClassName = type.getName() + CLASS_NAME_SUFFIX;
         String implClassByteCodeName = Asm.getName(implClassName);
 
         Class<?> parentHammer = null;
@@ -285,11 +290,14 @@ public class TplDynamicExecutorFactory extends ClassLoader implements Opcodes {
             if (ClassUtils.isParent(GenericHammer.class, type)) {
                 String typeName = null;
                 Class<?> genericType = null;
+                Class<?> idType = null;
+
                 for (java.lang.reflect.Type implType : type.getGenericInterfaces()) {
                     ParameterizedType parameterizedType = (ParameterizedType) implType;
                     if (parameterizedType.getRawType() == GenericHammer.class) {
                         typeName = parameterizedType.getActualTypeArguments()[0].getTypeName();
                         genericType = ClassUtils.forName(typeName);
+                        idType = ClassUtils.forName(parameterizedType.getActualTypeArguments()[1].getTypeName());
                         break;
                     }
                 }
@@ -301,6 +309,10 @@ public class TplDynamicExecutorFactory extends ClassLoader implements Opcodes {
                 SignatureVisitor typeVisitor = superVisitor.visitTypeArgument(SignatureVisitor.INSTANCEOF);
                 typeVisitor.visitClassType(Type.getInternalName(genericType));
                 typeVisitor.visitEnd();
+                SignatureVisitor idVisitor = superVisitor.visitTypeArgument(SignatureVisitor.INSTANCEOF);
+                idVisitor.visitClassType(Type.getInternalName(idType));
+                idVisitor.visitEnd();
+                superVisitor.visitEnd();
 
                 cn.signature = signature.toString();
 
@@ -352,6 +364,8 @@ public class TplDynamicExecutorFactory extends ClassLoader implements Opcodes {
 
     private void addImplMethods(Class<?> type, String globalNamespace, ClassNode classNode, Class<?> parentHammer)
             throws NoSuchMethodException, SecurityException {
+        Map<String, java.lang.reflect.Type> genericTypes = ClassUtils.getInterfaceGenericTypeMap(type,
+                GenericHammer.class);
         for (Method method : type.getDeclaredMethods()) {
             if (method.isDefault()) {
                 continue;
@@ -361,18 +375,21 @@ public class TplDynamicExecutorFactory extends ClassLoader implements Opcodes {
 
             // TODO 注解annotation要代理到实现类
             MethodNode methodNode = null;
-            Method parentMethod = getMethodFromParent(parentHammer, method);
+            Method parentMethod = getMethodFromParent(parentHammer, method, genericTypes);
             if (parentMethod != null) {
                 stackSize = 2;
                 // TODO 未处理泛型
                 String methodDescriptor = Type.getMethodDescriptor(method);
                 String parentMethodDescriptor = Type.getMethodDescriptor(parentMethod);
                 methodNode = new MethodNode(ACC_PUBLIC, method.getName(), methodDescriptor, null, null);
+                methodNode.parameters = new ArrayList<>();
                 methodNode.visitVarInsn(ALOAD, 0);
-
                 int size = method.getParameters().length + 1;
                 for (int i = 1; i < size; i++) {
                     methodNode.visitVarInsn(ALOAD, i);
+                    ParameterNode parameterNode = new ParameterNode(method.getParameters()[i - 1].getName(),
+                            Opcodes.ACC_MANDATED);
+                    methodNode.parameters.add(parameterNode);
                 }
                 methodNode.visitMethodInsn(INVOKESPECIAL, classNode.superName, parentMethod.getName(),
                         parentMethodDescriptor, false);
@@ -409,6 +426,7 @@ public class TplDynamicExecutorFactory extends ClassLoader implements Opcodes {
 
                 // TODO 未处理泛型
                 methodNode = new MethodNode(ACC_PUBLIC, method.getName(), Type.getMethodDescriptor(method), null, null);
+                methodNode.parameters = new ArrayList<>();
                 methodNode.visitVarInsn(ALOAD, 0);
                 methodNode.visitFieldInsn(GETFIELD, classNode.name, HAMMER_FIELD_NAME, hammerDescriptor);
                 TplType tplType = getType(method);
@@ -638,6 +656,7 @@ public class TplDynamicExecutorFactory extends ClassLoader implements Opcodes {
         for (int paramIndex = 0; paramIndex < method.getParameters().length; paramIndex++) {
             Parameter parameter = method.getParameters()[paramIndex];
             ParamType paramType = getParamType(parameter);
+            methodNode.parameters.add(new ParameterNode(parameter.getName(), Opcodes.ACC_MANDATED));
             switch (paramType) {
                 case COMMON:
                     methodNode.visitLdcInsn(getParamName(parameter, paramIndex));
@@ -683,16 +702,57 @@ public class TplDynamicExecutorFactory extends ClassLoader implements Opcodes {
         return position;
     }
 
-    private Method getMethodFromParent(Class<?> parentHammer, Method method) {
+    private Method getMethodFromParent(Class<?> parentHammer, Method method,
+            Map<String, java.lang.reflect.Type> genericTypes) {
         // FIXME 这里还没有处理泛型参数问题
         if (parentHammer == null) {
             return null;
         }
-        try {
-            return parentHammer.getMethod(method.getName(), method.getParameterTypes());
-        } catch (NoSuchMethodException e) {
+        if (ClassUtils.isParent(GenericHammer.class, parentHammer)) {
+            for (Method m : parentHammer.getMethods()) {
+                if (isOverwrite(m, method, genericTypes)) {
+                    return m;
+                }
+            }
             return null;
+        } else {
+            try {
+                return parentHammer.getMethod(method.getName(), method.getParameterTypes());
+            } catch (NoSuchMethodException e) {
+                return null;
+            }
         }
+    }
+
+    private boolean isOverwrite(Method method, Method overwriteMethod,
+            Map<String, java.lang.reflect.Type> genericTypes) {
+        if (method.getName().equals(overwriteMethod.getName())
+                && method.getParameterCount() == overwriteMethod.getParameterCount()) {
+            if (method.getParameterTypes().equals(overwriteMethod.getParameterTypes())) {
+                return true;
+            } else {
+                return isSameParameter(method, overwriteMethod, genericTypes);
+            }
+        }
+        return false;
+    }
+
+    private boolean isSameParameter(Method method, Method overwriteMethod,
+            Map<String, java.lang.reflect.Type> genericTypes) {
+        Class<?>[] types = new Class[method.getParameterCount()];
+        int i = 0;
+        for (java.lang.reflect.Type type : method.getGenericParameterTypes()) {
+            if (type instanceof Class) {
+                types[i] = (Class<?>) type;
+            } else {
+                java.lang.reflect.Type genericType = genericTypes.get(type.getTypeName());
+                if (genericType == null) {
+                    return false;
+                }
+                types[i] = (Class<?>) genericType;
+            }
+        }
+        return true;
     }
 
     /**

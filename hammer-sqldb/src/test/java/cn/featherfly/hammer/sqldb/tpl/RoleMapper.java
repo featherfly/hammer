@@ -21,7 +21,7 @@ import cn.featherfly.hammer.tpl.annotation.Template;
  * @author zhongj
  */
 @Mapper(namespace = "role")
-public interface RoleMapper extends GenericHammer<Role> {
+public interface RoleMapper extends GenericHammer<Role, Integer> {
 
     @Template("select <@prop repo='role'/> from role")
     List<Role> list();

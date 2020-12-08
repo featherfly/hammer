@@ -16,7 +16,7 @@ import cn.featherfly.hammer.tpl.mapper.BasedTplGenericHammer;
  *
  * @author zhongj
  */
-public class UserMapper4Impl extends BasedTplGenericHammer<cn.featherfly.hammer.sqldb.jdbc.vo.User>
+public class UserMapper4Impl extends BasedTplGenericHammer<cn.featherfly.hammer.sqldb.jdbc.vo.User, Integer>
         implements UserMapper4 {
 
     /**

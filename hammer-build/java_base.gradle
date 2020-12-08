@@ -3,6 +3,7 @@ apply plugin: 'maven-publish'
 
 tasks.withType(JavaCompile) {
     options.encoding = "UTF-8"
+    options.compilerArgs << "-parameters"
 }
 tasks.withType(Javadoc) {
     options.encoding = "UTF-8"

@@ -1,7 +1,10 @@
 
 package cn.featherfly.hammer.tpl.mapper;
 
+import static org.testng.Assert.assertEquals;
+
 import java.io.IOException;
+import java.lang.reflect.Method;
 import java.util.Arrays;
 
 import org.apache.log4j.xml.DOMConfigurator;
@@ -61,12 +64,28 @@ public class TplDynamicExecutorFactoryByAsmTest {
 
     @Test
     public void testExtendsGenericHammer() throws Exception {
-        Class<?> type = ClassUtils
-                .forName(factory.create(TestMapper.class, Thread.currentThread().getContextClassLoader()));
+        Class<?> c = TestMapper.class;
+        Class<?> type = ClassUtils.forName(factory.create(c, Thread.currentThread().getContextClassLoader()));
         System.out.println(type);
         System.out.println(Arrays.toString(type.getInterfaces()));
         System.out.println(type.getGenericSuperclass());
-        System.out.println(ClassUtils.getSuperClassGenricType(type));
+        System.out.println(ClassUtils.getSuperClassGenericTypeMap(type));
+
+        assertEquals(type.getSimpleName(), c.getSimpleName() + TplDynamicExecutorFactory.CLASS_NAME_SUFFIX);
+
+        String id = "id";
+        assertEquals(TestMapper.class.getMethod("get", Long.class).getParameters()[0].getName(), id);
+        assertEquals(type.getMethod("get", Long.class).getParameters()[0].getName(), id);
+
+        for (Method method : type.getMethods()) {
+            if (method.getParameterCount() > 0) {
+                System.out.println(type.getName() + "." + method.getName() + " " + method.getParameters()[0].getName()
+                        + " " + method.getParameters()[0].getType().getName());
+            }
+        }
+        assertEquals(type.getMethod("save", Object.class).getParameters()[0].getName(), "entity");
+        assertEquals(type.getMethod("getByUsername", String.class).getParameters()[0].getName(), "username");
+
     }
 
     public static void main(String[] args) throws Exception {

@@ -1,6 +1,7 @@
 
 package cn.featherfly.hammer.sqldb;
 
+import java.io.Serializable;
 import java.util.List;
 
 import cn.featherfly.common.lang.ClassUtils;
@@ -17,7 +18,7 @@ import cn.featherfly.hammer.dsl.query.TypeQueryEntity;
  *
  * @author zhongj
  */
-public abstract class SqldbGenericHammerImpl<E> implements GenericHammer<E> {
+public abstract class SqldbGenericHammerImpl<E, ID extends Serializable> implements GenericHammer<E, ID> {
 
     private Class<E> type;
 

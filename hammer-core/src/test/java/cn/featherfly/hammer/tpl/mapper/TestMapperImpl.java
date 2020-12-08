@@ -1,8 +1,6 @@
 
 package cn.featherfly.hammer.tpl.mapper;
 
-import java.io.Serializable;
-
 import cn.featherfly.hammer.Hammer;
 
 /**
@@ -12,8 +10,7 @@ import cn.featherfly.hammer.Hammer;
  *
  * @author zhongj
  */
-public class TestMapperImpl extends BasedTplGenericHammer<User> implements TestMapper {
-
+public class TestMapperImpl extends BasedTplGenericHammer<User, Long> implements TestMapper {
     /**
      * @param hammer
      * @param type
@@ -599,11 +596,11 @@ public class TestMapperImpl extends BasedTplGenericHammer<User> implements TestM
     //    }
 
     @Override
-    public User get(Serializable id) {
+    public User get(Long id) {
         return super.get(id);
     }
 
-    public User2 get2(Serializable id) {
+    public User2 get2(Long id) {
         return (User2) super.get(id);
     }
 
@@ -637,5 +634,14 @@ public class TestMapperImpl extends BasedTplGenericHammer<User> implements TestM
 
     public char c() {
         return 'c';
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public User getByUsername(String username) {
+        // YUFEI_TODO Auto-generated method stub
+        return null;
     }
 }
