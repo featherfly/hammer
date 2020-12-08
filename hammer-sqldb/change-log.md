@@ -23,16 +23,17 @@
     1.加入预处理程序，把为sql特化的模板定义预编译为freemarker模板，参考下面示例
 
 ```sql
-select /*<<prop*/* from /*<<wrap*/user
+select /*<<prop alias='r'*/* from /*<<wrap*/user
 /*<where*/ where
-    /*id?*/id = /*$=:id*/1
-    /*name??*/and name like /*$=:name*/'name'
-    /*gender??*/ and gender in /*$=:gender*/1
+    /*?*/id = /*$=:id*/1
+    /*??*/and name like /*$=:name*/'name'
+    /*?*/ and gender = /*$=:gender*/1
+    /*??*/ and tag in /*$=:tag*/(1,2,3)
     /*<?*/ and
     (
-        /*??*/ username = /*$=:username*/'admin'
-        /*??*/ or email = /*$=:email*/'featherfly@foxmail.com'
-        /*??*/ or mobile = /*$=:mobile*/13212345678
+        /*username??*/ username = /*$=:username*/'admin'
+        /*email??*/ or email = /*$=:email*/'featherfly@foxmail.com'
+        /*mobile??*/ or mobile = /*$=:mobile*/13212345678
     )
     /*>?*/
 /*>where*/
@@ -42,17 +43,18 @@ select /*<<prop*/* from /*<<wrap*/user
 转换结果
 
 ```sql
-select <@prop>*</@prop> from <@wrap>user</@wrap>
+select <@prop alias='r'>*</@prop> from <@wrap>user</@wrap>
 <@where>
-    <@and if=id??>id = :id</@and>
-    <@and if=name?? && name?length gt 0>name like :name</@and>
-    <@and if=gender?? && gender?size gt 0>gender in :gender</@and>
+    <@and if=id?? name='id'>id = :id</@and>
+    <@and if=name?? && name?length gt 0 name='name'>name like :name</@and>
+    <@and if=gender?? name='gender'>gender = :gender</@and>
+    <@and if=tag?? && tag?size gt 0 name='tag'>tag in :tag</@and>
     <@and>
-
-        <@and if=username?? && username?length gt 0> username = :username</@and>
-        <@or if=email?? && email?size gt 0>email = :email</@or>
-        <@or if=mobile?? && mobile?size gt 0>mobile = :mobile</@or>
-
+    
+        <@and if=username?? && username?size gt 0> username = :username</@and>
+        <@or if=email?? && email?length gt 0>email = :email</@or>
+        <@or if=mobile?? && mobile?length gt 0>mobile = :mobile</@or>
+    
     </@and>
 </@where>
 </@sql id='roleFromTemplate'>
