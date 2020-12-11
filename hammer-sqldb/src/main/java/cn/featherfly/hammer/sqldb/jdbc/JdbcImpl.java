@@ -94,11 +94,15 @@ public class JdbcImpl extends SpringJdbcTemplateImpl {
             setParams(prep, args);
             return prep.executeUpdate();
         } catch (SQLException e) {
+            DataSourceUtils.releaseConnection(connection, getDataSource());
             throw new JdbcException();
+        } finally {
+            DataSourceUtils.releaseConnection(connection, getDataSource());
         }
     }
 
-    private void setParams(PreparedStatement prep, Object... args) {
+    @Override
+    protected void setParams(PreparedStatement prep, Object... args) {
         for (int i = 0; i < args.length; i++) {
             manager.set(prep, i + 1, args[i]);
         }
@@ -107,5 +111,4 @@ public class JdbcImpl extends SpringJdbcTemplateImpl {
     private Connection getConnection() {
         return DataSourceUtils.getConnection(dataSource);
     }
-
 }

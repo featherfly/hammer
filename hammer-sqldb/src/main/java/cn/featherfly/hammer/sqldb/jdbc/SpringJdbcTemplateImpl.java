@@ -2,6 +2,7 @@
 package cn.featherfly.hammer.sqldb.jdbc;
 
 import java.math.BigDecimal;
+import java.sql.PreparedStatement;
 import java.util.List;
 import java.util.Map;
 
@@ -11,6 +12,7 @@ import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 
+import cn.featherfly.common.db.JdbcUtils;
 import cn.featherfly.common.db.dialect.Dialect;
 import cn.featherfly.common.db.mapping.SqlResultSet;
 import cn.featherfly.common.lang.ArrayUtils;
@@ -84,6 +86,7 @@ public class SpringJdbcTemplateImpl implements Jdbc {
         // FIXME 需要优化ArrayUtils.toString(args)在不需要debug时不调用，加入一个logger工具来实现
         Constants.LOGGER.debug("sql -> {}, args -> {}", sql, ArrayUtils.toString(args));
         return jdbcTemplate.queryForList(sql, args);
+        //        return list(sql, new ColumnMapRowMapper(), args);
     }
 
     /**
@@ -358,5 +361,21 @@ public class SpringJdbcTemplateImpl implements Jdbc {
     public int update(String sql, Map<String, Object> args) {
         Constants.LOGGER.debug("sql -> {}, args -> {}", sql, args);
         return namedParameterJdbcTemplate.update(sql, args);
+    }
+
+    private <E> List<E> list(String sql, org.springframework.jdbc.core.RowMapper<E> rowMapper, Object... args) {
+        return jdbcTemplate.query(connection -> {
+            PreparedStatement prep = connection.prepareStatement(sql);
+            Constants.LOGGER.debug("sql -> {}, args -> {}", sql, ArrayUtils.toString(args));
+            setParams(prep, args);
+            prep.executeUpdate();
+            return prep;
+        }, rowMapper);
+    }
+
+    protected void setParams(PreparedStatement prep, Object... args) {
+        for (int i = 0; i < args.length; i++) {
+            JdbcUtils.setParameter(prep, i + 1, args[i]);
+        }
     }
 }

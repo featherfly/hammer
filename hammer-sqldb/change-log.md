@@ -1,5 +1,6 @@
 # 0.5.6 
     1.Jdbc方法参数位置修改
+    2.修复JdbcImpl没有释放connection的问题
 
 # 0.5.5 2020-12-8
     1.DSL条件查询加入group(Fucntion<C,L> function)方法 ，不用手动调用endGroup方法
