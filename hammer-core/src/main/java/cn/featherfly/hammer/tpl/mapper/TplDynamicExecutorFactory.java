@@ -1,6 +1,7 @@
 package cn.featherfly.hammer.tpl.mapper;
 
 import java.io.IOException;
+import java.io.InputStream;
 import java.lang.reflect.Method;
 import java.lang.reflect.Parameter;
 import java.lang.reflect.ParameterizedType;
@@ -271,9 +272,12 @@ public class TplDynamicExecutorFactory extends ClassLoader implements Opcodes {
         if (classLoader == null) {
             classLoader = this.getClass().getClassLoader();
         }
-        ClassReader classReader = new ClassReader(type.getName());
+        //        ClassReader classReader = new ClassReader(type.getName());
+        ClassReader classReader;
+        try (InputStream is = classLoader.getResourceAsStream(type.getName().replace('.', '/') + ".class")) {
+            classReader = new ClassReader(is);
+        }
         ClassWriter cw = new ClassWriter(classReader, ClassWriter.COMPUTE_MAXS);
-
         String implClassName = type.getName() + CLASS_NAME_SUFFIX;
         String implClassByteCodeName = Asm.getName(implClassName);
 
@@ -368,6 +372,10 @@ public class TplDynamicExecutorFactory extends ClassLoader implements Opcodes {
                 GenericHammer.class);
         for (Method method : type.getDeclaredMethods()) {
             if (method.isDefault()) {
+                continue;
+            }
+            // $deserializeLambda
+            if (method.getName().startsWith("$")) {
                 continue;
             }
             int localeSize = method.getParameters().length + 1;
