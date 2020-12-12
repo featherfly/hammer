@@ -133,3 +133,13 @@ INSERT INTO `tree`(`id`, `parent_id`, `name`) VALUES (3, 1, 'node_22');
 INSERT INTO `tree`(`id`, `parent_id`, `name`) VALUES (4, 2, 'node_211');
 INSERT INTO `tree`(`id`, `parent_id`, `name`) VALUES (5, 2, 'node_212');
 INSERT INTO `tree`(`id`, `parent_id`, `name`) VALUES (6, 5, 'node_2121');
+
+DROP TABLE IF EXISTS `cms_article2`;
+CREATE TABLE `cms_article2` (
+  `ID` int(10) unsigned NOT NULL AUTO_INCREMENT COMMENT '主键ID，由于此表数据不用上传，所以直接使用自动递增',
+  `title` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci DEFAULT NULL,
+  `content` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci DEFAULT NULL,
+  `content2` varchar(2000) CHARACTER SET utf8 COLLATE utf8_general_ci DEFAULT NULL,
+  `content3` json DEFAULT NULL,
+  PRIMARY KEY (`ID`) USING BTREE
+) ENGINE=InnoDB AUTO_INCREMENT=18 DEFAULT CHARSET=utf8 ROW_FORMAT=COMPACT;

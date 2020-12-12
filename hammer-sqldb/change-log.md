@@ -1,3 +1,6 @@
+# 0.5.7 2020-02-22
+1. JdbcImpl的所有的query方法都支持SqlTypeMappingManager的自定义类型
+
 # 0.5.6 2020-12-12
 1. Jdbc方法参数位置修改
 2. 修复JdbcImpl没有释放connection的问题
@@ -5,10 +8,29 @@
 4. operate包下的所有数据库操作支持SqlTypeMappingManager的自定义类型管理
 5. dsl条件查询eq(SerializableSupplier<R>),ne(SerializableSupplier<R>)方法支持ManyToOne对象自动使用id进行查询
 ```java
-UserRole2 userRole2 = new UserRole2();
-userRole2.setRole(new Role(2));
-userRole2.setUser(new User(1));
-query.find(UserRole2.class).where().eq(userRole2::getRole).and().ne(userRole2::getUser).list();
+ UserRole2 userRole2 = new UserRole2();
+ userRole2.setRole(new Role(2));
+ userRole2.setUser(new User(1));
+ query.find(UserRole2.class).where().eq(userRole2::getRole).and().ne(userRole2::getUser).list();
+ // SELECT _user_role0.`user_id` `user.id`, _user_role0.`role_id` `role.id`, _user_role0.`descp` `descp`, _user_role0.`descp2` `descp2` FROM `user_role` _user_role0 WHERE _user_role0.`role_id` = ? AND _user_role0.`user_id` != ? , args -> [2, 1]
+```
+6. dsl条件查询eq(SerializableSupplier<R>),ne(SerializableSupplier<R>)方法支持@Embedded对象，自动使用该对象的所有非空属性
+```java
+ DistrictDivision division = new DistrictDivision();
+ division.setCity("成都");
+ division.setProvince("四川");
+ division.setDistrict("高新");
+ userInfo.setDivision(division);
+ query.find(UserInfo.class).where().eq(userInfo::getDivision).list();
+ // SELECT _user_info0.`province` `division.province`, _user_info0.`city` `division.city`, _user_info0.`district` `division.district`, _user_info0.`id` `id`, _user_info0.`user_id` `user.id`, _user_info0.`name` `name`, _user_info0.`descp` `descp` FROM `user_info` _user_info0 WHERE ( _user_info0.`province` = ? AND _user_info0.`city` = ? AND _user_info0.`district` = ? ) , args -> [四川, 成都, 高新]
+
+ userInfo.getDivision().setDistrict(null);
+ query.find(UserInfo.class).where().eq(userInfo::getDivision).or().eq(userInfo::getDivision).list();
+ // SELECT _user_info0.`province` `division.province`, _user_info0.`city` `division.city`, _user_info0.`district` `division.district`, _user_info0.`id` `id`, _user_info0.`user_id` `user.id`, _user_info0.`name` `name`, _user_info0.`descp` `descp` FROM `user_info` _user_info0 WHERE ( _user_info0.`province` = ? AND _user_info0.`city` = ? ) OR ( _user_info0.`province` = ? AND _user_info0.`city` = ? ) , args -> [四川, 成都, 四川, 成都]
+```
+7. dsl查询query.find(Class)后的条件查询加入支持关联对象的连表查询
+```java
+query.find(UserInfo.class).where().eq(userInfo::getUser, User::getPwd).and().eq(userInfo::getId).and().lt(UserInfo::getUser, User::getAge, 10).list()
 ```
 
 # 0.5.5 2020-12-8
@@ -62,11 +84,9 @@ select <@prop alias='r'>*</@prop> from <@wrap>user</@wrap>
     <@and if=gender?? name='gender'>gender = :gender</@and>
     <@and if=tag?? && tag?size gt 0 name='tag'>tag in :tag</@and>
     <@and>
-    
         <@and if=username?? && username?size gt 0> username = :username</@and>
         <@or if=email?? && email?length gt 0>email = :email</@or>
         <@or if=mobile?? && mobile?length gt 0>mobile = :mobile</@or>
-    
     </@and>
 </@where>
 </@sql id='roleFromTemplate'>
@@ -121,8 +141,7 @@ select <@prop alias='r'>*</@prop> from <@wrap>user</@wrap>
 
 # 0.3.3 2020-4-15
 1. 重命名@TplExecution为@Template,@TplParam为@Param，@TplParamType为ParamType
-2. @Template加入value()，用于直接在注解上使用模板（如sqldb模块的sql模板）,加入isTemplate()用于在执行value()时是否使用模板引擎
-            用于value()是一个不可变的字符串就可以禁用其使用模板引擎，可以提高一丢丢的性能-_-，默认是开启的，当前版本未实现禁用模板引擎
+2. @Template加入value()，用于直接在注解上使用模板（如sqldb模块的sql模板）,加入isTemplate()用于在执行value()时是否使用模板引擎,用于value()是一个不可变的字符串就可以禁用其使用模板引擎，可以提高一丢丢的性能-_-，默认是开启的，当前版本未实现禁用模板引擎
 3. @Param加入name(),而value()作为name()的快捷别名，name()优先级高于value()
 4. 加入SqldbHammer接口
 

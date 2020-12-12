@@ -13,7 +13,7 @@ import cn.featherfly.constant.annotation.Constant;
 import cn.featherfly.constant.annotation.ConstantClass;
 import cn.featherfly.hammer.config.HammerConstant;
 import cn.featherfly.hammer.sqldb.jdbc.Jdbc;
-import cn.featherfly.hammer.sqldb.jdbc.SpringJdbcTemplateImpl;
+import cn.featherfly.hammer.sqldb.jdbc.JdbcImpl;
 import cn.featherfly.hammer.sqldb.tpl.SqlDbTemplateEngine;
 
 /**
@@ -120,7 +120,8 @@ public class SqlDbConstant extends HammerConstant {
         if (jdbc == null) {
             synchronized (this) {
                 if (jdbc == null && getDataSource() != null) {
-                    jdbc = new SpringJdbcTemplateImpl(getDataSource(), getDialect());
+                    //                    jdbc = new SpringJdbcTemplateImpl(getDataSource(), getDialect());
+                    jdbc = new JdbcImpl(getDataSource(), getDialect());
                 }
             }
         }

@@ -5,6 +5,8 @@ import cn.featherfly.hammer.expression.ConditionGroupExpression;
 import cn.featherfly.hammer.expression.ConditionGroupLogicExpression;
 import cn.featherfly.hammer.expression.Repository;
 import cn.featherfly.hammer.expression.RepositoryConditionGroupLogicExpression;
+import cn.featherfly.hammer.expression.TypeConditionGroupExpression;
+import cn.featherfly.hammer.expression.TypeConditionGroupLogicExpression;
 import cn.featherfly.hammer.expression.condition.RepositoryConditionsGroupExpression;
 
 /**
@@ -23,8 +25,9 @@ public interface QueryExpression<Q extends QueryEntityExpression<QP, QW, QWO, QW
         TQ extends TypeQueryEntityExpression<TQP, TQW, TQWE, TC, TL, RTC, RTL>,
         TQP extends TypeQueryEntityPropertiesExpression<TQP, TQW, TQWE, TC, TL, RTC, RTL>,
         TQW extends TypeQueryWithExpression<TQW, TQWE, RTC, RTL>,
-        TQWE extends TypeQueryWithEntityExpression<TQW, TQWE, RTC, RTL>, TC extends ConditionGroupExpression<TC, TL>,
-        TL extends ConditionGroupLogicExpression<TC, TL>, RTC extends RepositoryConditionsGroupExpression<RTC, RTL>,
+        TQWE extends TypeQueryWithEntityExpression<TQW, TQWE, RTC, RTL>,
+        TC extends TypeConditionGroupExpression<TC, TL>, TL extends TypeConditionGroupLogicExpression<TC, TL>,
+        RTC extends RepositoryConditionsGroupExpression<RTC, RTL>,
         RTL extends RepositoryConditionGroupLogicExpression<RTC, RTL>> {
     /**
      * find repository

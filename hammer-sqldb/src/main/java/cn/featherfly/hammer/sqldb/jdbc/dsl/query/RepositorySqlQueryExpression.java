@@ -4,10 +4,10 @@ package cn.featherfly.hammer.sqldb.jdbc.dsl.query;
 import cn.featherfly.common.constant.Chars;
 import cn.featherfly.common.db.builder.dml.basic.SqlSelectBasicBuilder;
 import cn.featherfly.common.lang.Lang;
+import cn.featherfly.common.repository.builder.AliasManager;
 import cn.featherfly.common.repository.mapping.ClassMapping;
 import cn.featherfly.common.repository.mapping.MappingFactory;
 import cn.featherfly.common.repository.operate.AggregateFunction;
-import cn.featherfly.common.repository.builder.AliasManager;
 import cn.featherfly.hammer.dsl.query.RepositoryQueryConditionGroupExpression;
 import cn.featherfly.hammer.dsl.query.RepositoryQueryConditionGroupLogicExpression;
 import cn.featherfly.hammer.sqldb.jdbc.Jdbc;
@@ -105,7 +105,6 @@ public class RepositorySqlQueryExpression extends RepositorySqlQueryConditionGro
      */
     @Override
     public Long count() {
-        // TODO count 方法
         selectBuilder.addSelectColumn(Chars.STAR, AggregateFunction.COUNT);
         return longInt();
     }

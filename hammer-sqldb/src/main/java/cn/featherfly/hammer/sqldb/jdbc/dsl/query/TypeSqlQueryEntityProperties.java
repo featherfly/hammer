@@ -9,6 +9,7 @@ import cn.featherfly.common.lang.ClassUtils;
 import cn.featherfly.common.lang.LambdaUtils;
 import cn.featherfly.common.lang.LambdaUtils.SerializedLambdaInfo;
 import cn.featherfly.common.lang.function.SerializableFunction;
+import cn.featherfly.common.lang.function.SerializableSupplier;
 import cn.featherfly.common.repository.builder.AliasManager;
 import cn.featherfly.common.repository.mapping.ClassMapping;
 import cn.featherfly.common.repository.mapping.MappingFactory;
@@ -52,7 +53,7 @@ public class TypeSqlQueryEntityProperties extends AbstractSqlQueryEntityProperti
      */
     @Override
     public TypeQueryConditionGroupExpression where() {
-        return new TypeSqlQueryExpression(jdbc, classMapping, selectBuilder);
+        return new TypeSqlQueryExpression(jdbc, classMapping, this, factory, aliasManager, selectBuilder);
     }
 
     /**
@@ -60,7 +61,7 @@ public class TypeSqlQueryEntityProperties extends AbstractSqlQueryEntityProperti
      */
     @Override
     public <E> List<E> list() {
-        return new TypeSqlQueryExpression(jdbc, classMapping, selectBuilder).list();
+        return new TypeSqlQueryExpression(jdbc, classMapping, this, factory, aliasManager, selectBuilder).list();
     }
 
     /**
@@ -68,7 +69,7 @@ public class TypeSqlQueryEntityProperties extends AbstractSqlQueryEntityProperti
      */
     @Override
     public TypeQueryLimitExecutor limit(Integer limit) {
-        return new TypeSqlQueryExpression(jdbc, classMapping, selectBuilder).limit(limit);
+        return new TypeSqlQueryExpression(jdbc, classMapping, this, factory, aliasManager, selectBuilder).limit(limit);
     }
 
     /**
@@ -76,7 +77,8 @@ public class TypeSqlQueryEntityProperties extends AbstractSqlQueryEntityProperti
      */
     @Override
     public TypeQueryLimitExecutor limit(Integer offset, Integer limit) {
-        return new TypeSqlQueryExpression(jdbc, classMapping, selectBuilder).limit(offset, limit);
+        return new TypeSqlQueryExpression(jdbc, classMapping, this, factory, aliasManager, selectBuilder).limit(offset,
+                limit);
     }
 
     /**
@@ -84,7 +86,7 @@ public class TypeSqlQueryEntityProperties extends AbstractSqlQueryEntityProperti
      */
     @Override
     public TypeQueryLimitExecutor limit(Page page) {
-        return new TypeSqlQueryExpression(jdbc, classMapping, selectBuilder).limit(page);
+        return new TypeSqlQueryExpression(jdbc, classMapping, this, factory, aliasManager, selectBuilder).limit(page);
     }
 
     /**
@@ -100,8 +102,21 @@ public class TypeSqlQueryEntityProperties extends AbstractSqlQueryEntityProperti
      * {@inheritDoc}
      */
     @Override
+    public <T> TypeQueryWithEntity with(SerializableSupplier<T> propertyName) {
+        SerializedLambdaInfo joinInfo = LambdaUtils.getLambdaInfo(propertyName);
+        return with(joinInfo);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
     public <T, R> TypeQueryWithEntity with(SerializableFunction<T, R> propertyName) {
         SerializedLambdaInfo joinInfo = LambdaUtils.getLambdaInfo(propertyName);
+        return with(joinInfo);
+    }
+
+    private TypeQueryWithEntity with(SerializedLambdaInfo joinInfo) {
         TypeSqlQueryWith typeSqlQueryWith = with(classMapping, selectBuilder.getTableAlias(), joinInfo);
         if (typeSqlQueryWith != null) {
             return typeSqlQueryWith;
@@ -145,14 +160,14 @@ public class TypeSqlQueryEntityProperties extends AbstractSqlQueryEntityProperti
         String name = joinInfo.getPropertyName();
         if (cm.getType().getName().equals(joinInfo.getMethodInstanceClassName())) {
             // 表示是查找对象的属性，可以连表查询，也可以查询返回到查询对象的指定属性上
-            ClassMapping<?> joinClassMapping = factory.getClassMapping(joinInfo.getMethod().getReturnType());
+            ClassMapping<?> joinClassMapping = factory.getClassMapping(joinInfo.getPropertyType());
             PropertyMapping pm = cm.getPropertyMapping(name);
             TypeSqlQueryWith typeSqlQueryWith = new TypeSqlQueryWith(this, aliasManager, factory, cm, tableAlias,
                     pm.getRepositoryFieldName(), joinClassMapping,
                     getPkMapping(joinClassMapping).getRepositoryFieldName(), name);
             typeSqlQueryWiths.add(typeSqlQueryWith);
             return typeSqlQueryWith;
-        } else if (ClassUtils.isParent(cm.getType(), joinInfo.getMethod().getReturnType())) {
+        } else if (ClassUtils.isParent(cm.getType(), joinInfo.getPropertyType())) {
             // 表示是查找对象是with对象的属性，可以进行连表查询，但是不能返回到查询对象上，因为没有指明返回对象属性
             ClassMapping<?> joinClassMapping = factory
                     .getClassMapping(ClassUtils.forName(joinInfo.getMethodInstanceClassName()));
@@ -185,5 +200,4 @@ public class TypeSqlQueryEntityProperties extends AbstractSqlQueryEntityProperti
         }
         return classMapping.getPrivaryKeyPropertyMappings().get(0);
     }
-
 }

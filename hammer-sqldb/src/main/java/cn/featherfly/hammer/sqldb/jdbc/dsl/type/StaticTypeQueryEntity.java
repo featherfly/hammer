@@ -44,7 +44,7 @@ public abstract class StaticTypeQueryEntity<E, C extends StaticTypeQueryConditio
      * @param mappingFactory        the mapping factory
      */
     public StaticTypeQueryEntity(SqlQueryEntityProperties queryEntityProperties, JdbcMappingFactory mappingFactory) {
-        type = ClassUtils.getSuperClassGenricType(this.getClass());
+        type = ClassUtils.getSuperClassGenericType(this.getClass());
         this.queryEntityProperties = queryEntityProperties;
         mappping = mappingFactory.getClassMapping(type);
     }

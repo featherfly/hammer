@@ -5,17 +5,17 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.Date;
+import java.util.List;
+import java.util.Optional;
 import java.util.function.Function;
 
 import com.speedment.common.tuple.Tuple2;
-import com.speedment.common.tuple.Tuples;
 
 import cn.featherfly.common.db.builder.SqlBuilder;
 import cn.featherfly.common.db.dialect.Dialect;
 import cn.featherfly.common.db.mapping.ClassMappingUtils;
 import cn.featherfly.common.lang.LambdaUtils;
 import cn.featherfly.common.lang.LambdaUtils.SerializableSupplierLambdaInfo;
-import cn.featherfly.common.lang.Lang;
 import cn.featherfly.common.lang.function.DateSupplier;
 import cn.featherfly.common.lang.function.LocalDateSupplier;
 import cn.featherfly.common.lang.function.LocalDateTimeSupplier;
@@ -32,9 +32,9 @@ import cn.featherfly.common.lang.function.SerializableFunction;
 import cn.featherfly.common.lang.function.SerializableSupplier;
 import cn.featherfly.common.lang.function.StringSupplier;
 import cn.featherfly.common.repository.mapping.ClassMapping;
-import cn.featherfly.common.repository.mapping.PropertyMapping;
 import cn.featherfly.common.repository.operate.LogicOperator;
 import cn.featherfly.common.repository.operate.QueryOperator;
+import cn.featherfly.hammer.dsl.query.TypeQueryEntity;
 import cn.featherfly.hammer.expression.ConditionGroupExpression;
 import cn.featherfly.hammer.expression.ConditionGroupLogicExpression;
 import cn.featherfly.hammer.expression.condition.ParamedExpression;
@@ -53,49 +53,69 @@ import cn.featherfly.hammer.expression.condition.property.StringExpression;
  * <p>
  * sql condition group builder sql条件逻辑组构造器
  * </p>
+ * .
  *
  * @author zhongj
+ * @param <C> the generic type
+ * @param <L> the generic type
  */
 @SuppressWarnings("unchecked")
 public abstract class AbstractSqlConditionGroupExpression<C extends ConditionGroupExpression<C, L>,
         L extends ConditionGroupLogicExpression<C, L>> extends AbstractSqlConditionExpression<L>
         implements ConditionGroupExpression<C, L>, ConditionGroupLogicExpression<C, L>, SqlBuilder, ParamedExpression {
 
+    /** The type query entity. */
+    protected TypeQueryEntity typeQueryEntity;
+
     /**
-     * @param dialect dialect
+     * Instantiates a new abstract sql condition group expression.
+     *
+     * @param dialect         dialect
+     * @param typeQueryEntity the type query entity
      */
-    public AbstractSqlConditionGroupExpression(Dialect dialect) {
-        this(dialect, null, null);
+    public AbstractSqlConditionGroupExpression(Dialect dialect, TypeQueryEntity typeQueryEntity) {
+        this(dialect, null, typeQueryEntity);
     }
 
     /**
-     * @param dialect    dialect
-     * @param queryAlias queryAlias
+     * Instantiates a new abstract sql condition group expression.
+     *
+     * @param dialect         dialect
+     * @param queryAlias      queryAlias
+     * @param typeQueryEntity the type query entity
      */
-    public AbstractSqlConditionGroupExpression(Dialect dialect, String queryAlias) {
-        this(dialect, null, queryAlias, null);
+    public AbstractSqlConditionGroupExpression(Dialect dialect, String queryAlias, TypeQueryEntity typeQueryEntity) {
+        this(dialect, queryAlias, null, typeQueryEntity);
     }
 
     /**
-     * @param dialect      dialect
-     * @param queryAlias   queryAlias
-     * @param classMapping classMapping
+     * Instantiates a new abstract sql condition group expression.
+     *
+     * @param dialect         dialect
+     * @param queryAlias      queryAlias
+     * @param classMapping    classMapping
+     * @param typeQueryEntity the type query entity
      */
-    public AbstractSqlConditionGroupExpression(Dialect dialect, String queryAlias, ClassMapping<?> classMapping) {
-        this(dialect, null, queryAlias, classMapping);
+    public AbstractSqlConditionGroupExpression(Dialect dialect, String queryAlias, ClassMapping<?> classMapping,
+            TypeQueryEntity typeQueryEntity) {
+        this(dialect, null, queryAlias, classMapping, typeQueryEntity);
     }
 
     /**
-     * @param dialect      dialect
-     * @param parent       parent group
-     * @param queryAlias   queryAlias
-     * @param classMapping classMapping
+     * Instantiates a new abstract sql condition group expression.
+     *
+     * @param dialect         dialect
+     * @param parent          parent group
+     * @param queryAlias      queryAlias
+     * @param classMapping    classMapping
+     * @param typeQueryEntity the type query entity
      */
     protected AbstractSqlConditionGroupExpression(Dialect dialect, L parent, String queryAlias,
-            ClassMapping<?> classMapping) {
+            ClassMapping<?> classMapping, TypeQueryEntity typeQueryEntity) {
         super(dialect, parent);
         this.queryAlias = queryAlias;
         this.classMapping = classMapping;
+        this.typeQueryEntity = typeQueryEntity;
     }
 
     /**
@@ -411,7 +431,7 @@ public abstract class AbstractSqlConditionGroupExpression<C extends ConditionGro
         // SqlConditionGroupExpressionBuilder group = new
         // SqlConditionGroupExpressionBuilder(
         // jdbc, this, queryAlias);
-        C group = createGroup((L) this, queryAlias);
+        C group = createGroup((L) this, queryAlias, typeQueryEntity);
         addCondition(group);
         return group;
     }
@@ -425,8 +445,21 @@ public abstract class AbstractSqlConditionGroupExpression<C extends ConditionGro
         return endGroup();
     }
 
-    protected abstract C createGroup(L parent, String queryAlias);
+    /**
+     * Creates the group.
+     *
+     * @param parent          the parent
+     * @param queryAlias      the query alias
+     * @param typeQueryEntity the type query entity
+     * @return the c
+     */
+    protected abstract C createGroup(L parent, String queryAlias, TypeQueryEntity typeQueryEntity);
 
+    /**
+     * Gets the root.
+     *
+     * @return the root
+     */
     protected AbstractSqlConditionGroupExpression<C, L> getRoot() {
         L p = endGroup();
         L p2 = p.endGroup();
@@ -791,8 +824,24 @@ public abstract class AbstractSqlConditionGroupExpression<C extends ConditionGro
      */
     @Override
     public <R> L eq(SerializableSupplier<R> property) {
-        Tuple2<String, R> tuple = supplier(LambdaUtils.getSerializableSupplierLambdaInfo(property));
-        return eq(tuple.get0(), tuple.get1());
+        //        Tuple2<String, R> tuple = supplier(LambdaUtils.getSerializableSupplierLambdaInfo(property));
+        //        return eq(tuple.get0(), tuple.get1());
+        List<Tuple2<String, Optional<R>>> tuples = supplier(LambdaUtils.getSerializableSupplierLambdaInfo(property));
+        L logic = null;
+        C condition = (C) this;
+        if (tuples.size() > 1) {
+            condition = group();
+        }
+        for (Tuple2<String, Optional<R>> tuple : tuples) {
+            if (logic != null) {
+                condition = logic.and();
+            }
+            logic = condition.eq(tuple.get0(), tuple.get1().orElseGet(() -> null));
+        }
+        if (tuples.size() > 1) {
+            logic = logic.endGroup();
+        }
+        return logic;
     }
 
     /**
@@ -1027,8 +1076,22 @@ public abstract class AbstractSqlConditionGroupExpression<C extends ConditionGro
     public <R> L ne(SerializableSupplier<R> property) {
         //        SerializableSupplierLambdaInfo<R> info = LambdaUtils.getSerializableSupplierLambdaInfo(property);
         //        return ne(info.getSerializedLambdaInfo().getPropertyName(), info.getValue());
-        Tuple2<String, R> tuple = supplier(LambdaUtils.getSerializableSupplierLambdaInfo(property));
-        return ne(tuple.get0(), tuple.get1());
+        List<Tuple2<String, Optional<R>>> tuples = supplier(LambdaUtils.getSerializableSupplierLambdaInfo(property));
+        L l = null;
+        C c = (C) this;
+        if (tuples.size() > 1) {
+            c = group();
+        }
+        for (Tuple2<String, Optional<R>> tuple : tuples) {
+            if (l != null) {
+                c = l.and();
+            }
+            l = c.ne(tuple.get0(), tuple.get1().orElseGet(() -> null));
+        }
+        if (tuples.size() > 1) {
+            l = l.endGroup();
+        }
+        return l;
     }
 
     /**
@@ -1125,30 +1188,28 @@ public abstract class AbstractSqlConditionGroupExpression<C extends ConditionGro
     // private method
     // ********************************************************************
 
-    protected <R> Tuple2<String, R> supplier(SerializableSupplierLambdaInfo<R> info) {
-        String propertyName = info.getSerializedLambdaInfo().getPropertyName();
-        R r = info.getValue();
-        if (r != null && classMapping != null) {
-            PropertyMapping propertyMapping = classMapping.getPropertyMapping(propertyName);
-            if (Lang.isNotEmpty(propertyMapping.getPropertyMappings())) {
-                PropertyMapping pm = propertyMapping.getPropertyMappings().get(0);
-                return (Tuple2<String, R>) Tuples.of(pm.getRepositoryFieldName(),
-                        cn.featherfly.common.bean.BeanUtils.getProperty(r, pm.getPropertyName()));
-            }
-        }
-        return Tuples.of(propertyName, r);
+    /**
+     * Supplier.
+     *
+     * @param <R>  the generic type
+     * @param info the info
+     * @return the list
+     */
+    protected <R> List<Tuple2<String, Optional<R>>> supplier(SerializableSupplierLambdaInfo<R> info) {
+        return supplier(info, classMapping);
     }
 
     // ********************************************************************
     // property
     // ********************************************************************
 
+    /** The class mapping. */
     protected ClassMapping<?> classMapping;
 
     private String queryAlias;
 
     /**
-     * 返回queryAlias
+     * 返回queryAlias.
      *
      * @return queryAlias
      */
@@ -1157,7 +1218,7 @@ public abstract class AbstractSqlConditionGroupExpression<C extends ConditionGro
     }
 
     /**
-     * 设置queryAlias
+     * 设置queryAlias.
      *
      * @param queryAlias queryAlias
      */
