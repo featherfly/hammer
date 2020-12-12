@@ -1,7 +1,10 @@
 
 package cn.featherfly.hammer.sqldb.jdbc.operate;
 
+import java.sql.PreparedStatement;
+
 import cn.featherfly.common.db.metadata.DatabaseMetadata;
+import cn.featherfly.common.lang.ArrayUtils;
 import cn.featherfly.common.repository.mapping.ClassMapping;
 import cn.featherfly.hammer.sqldb.jdbc.Jdbc;
 
@@ -58,7 +61,17 @@ public abstract class AbstractExecuteOperate<T> extends AbstractOperate<T> {
      * @return 操作影响的数据行数
      */
     public int execute(final T entity) {
-        return jdbc.update(sql, getParameters(entity));
+        return jdbc.execute((con, manager) -> {
+            try (PreparedStatement prep = con.prepareStatement(sql)) {
+                Object[] params = setParameters(entity, prep, manager);
+                if (logger.isDebugEnabled()) {
+                    logger.debug("execute sql: {} \n params: {}", sql, ArrayUtils.toString(params));
+                }
+                int result = prep.executeUpdate();
+                return result;
+            }
+        });
+        //        return jdbc.update(sql, getParameters(entity));
     }
 
     // ********************************************************************
