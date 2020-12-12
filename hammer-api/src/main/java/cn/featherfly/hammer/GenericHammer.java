@@ -186,7 +186,7 @@ public interface GenericHammer<E, ID extends Serializable> {
      * @param entity entity with id value
      * @return entity
      */
-    E get(E entity);
+    E load(E entity);
 
     /**
      * create QueryData for entityType
