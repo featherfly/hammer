@@ -27,40 +27,34 @@ import cn.featherfly.hammer.sqldb.jdbc.Jdbc;
  * <p>
  * 数据库操作的抽象类
  * </p>
+ * .
  *
- * @param <T> 类型
  * @author zhongj
- * @since 1.0
  * @version 1.0
+ * @param <T> 类型
+ * @since 1.0
  */
 public abstract class AbstractOperate<T> {
 
-    /**
-     * logger
-     */
+    /** logger. */
     protected final Logger logger = Constants.LOGGER;
 
-    /**
-     * sql 语句
-     */
+    /** sql 语句. */
     protected String sql;
-    /**
-     * jdbc
-     */
+
+    /** jdbc. */
     protected Jdbc jdbc;
-    /**
-     * 类型映射
-     */
+
+    /** 类型映射. */
     protected ClassMapping<T> classMapping;
-    /**
-     * 数据库元数据
-     */
+
+    /** 数据库元数据. */
     protected DatabaseMetadata meta;
-    /**
-     * 属性在SQL中出现的位置，即SQL语句中每个问号对应的对象属性
-     */
+
+    /** 属性在SQL中出现的位置，即SQL语句中每个问号对应的对象属性. */
     protected Map<Integer, String> propertyPositions = new HashMap<>(0);
 
+    /** The pk properties. */
     protected List<BeanProperty<Serializable>> pkProperties = new ArrayList<>();
 
     /**
@@ -114,6 +108,8 @@ public abstract class AbstractOperate<T> {
     }
 
     /**
+     * Gets the sql.
+     *
      * @return 返回sql
      */
     public String getSql() {
@@ -124,9 +120,11 @@ public abstract class AbstractOperate<T> {
      * <p>
      * 设置预编译参数
      * </p>
+     * .
      *
-     * @param prep   执行SQL的PreparedStatementWrapper
-     * @param entity 对象
+     * @param prep    执行SQL的PreparedStatementWrapper
+     * @param entity  对象
+     * @param manager the manager
      */
     protected void setParameter(PreparedStatement prep, T entity, SqlTypeMappingManager manager) {
         BeanDescriptor<?> beanDescriptor = BeanDescriptor.getBeanDescriptor(entity.getClass());
@@ -143,10 +141,12 @@ public abstract class AbstractOperate<T> {
      * <p>
      * 设置预编译参数
      * </p>
+     * .
      *
-     * @param prep   执行SQL的PreparedStatementWrapper
-     * @param entity 对象
-     * @param index  当前对象是第几个设置的
+     * @param prep    执行SQL的PreparedStatementWrapper
+     * @param entity  对象
+     * @param index   当前对象是第几个设置的
+     * @param manager the manager
      */
     protected void setParameter(PreparedStatement prep, T entity, int index, SqlTypeMappingManager manager) {
         int len = propertyPositions.size();
@@ -159,10 +159,27 @@ public abstract class AbstractOperate<T> {
         }
     }
 
+    /**
+     * Sets the parameters.
+     *
+     * @param entity  the entity
+     * @param prep    the prep
+     * @param manager the manager
+     * @return the object[]
+     */
     protected Object[] setParameters(T entity, PreparedStatement prep, SqlTypeMappingManager manager) {
         return setParameters(entity, propertyPositions, prep, manager);
     }
 
+    /**
+     * Sets the parameters.
+     *
+     * @param entity            the entity
+     * @param propertyPositions the property positions
+     * @param prep              the prep
+     * @param manager           the manager
+     * @return the object[]
+     */
     protected Object[] setParameters(T entity, Map<Integer, String> propertyPositions, PreparedStatement prep,
             SqlTypeMappingManager manager) {
         BeanDescriptor<?> beanDescriptor = BeanDescriptor.getBeanDescriptor(entity.getClass());
@@ -178,6 +195,15 @@ public abstract class AbstractOperate<T> {
         return params;
     }
 
+    /**
+     * Sets the batch parameters.
+     *
+     * @param entities          the entities
+     * @param propertyPositions the property positions
+     * @param prep              the prep
+     * @param manager           the manager
+     * @return the object[]
+     */
     public Object[] setBatchParameters(List<T> entities, Map<Integer, String> propertyPositions, PreparedStatement prep,
             SqlTypeMappingManager manager) {
         if (Lang.isEmpty(entities)) {
@@ -200,15 +226,35 @@ public abstract class AbstractOperate<T> {
         return params;
     }
 
+    /**
+     * Sets the batch parameters.
+     *
+     * @param entities          the entities
+     * @param propertyPositions the property positions
+     * @param manager           the manager
+     */
     protected void setBatchParameters(List<T> entities, Map<Integer, String> propertyPositions,
             SqlTypeMappingManager manager) {
 
     }
 
+    /**
+     * Gets the parameters.
+     *
+     * @param entity the entity
+     * @return the parameters
+     */
     public Object[] getParameters(T entity) {
         return getParameters(entity, propertyPositions);
     }
 
+    /**
+     * Gets the batch parameters.
+     *
+     * @param entities          the entities
+     * @param propertyPositions the property positions
+     * @return the batch parameters
+     */
     public Object[] getBatchParameters(List<T> entities, Map<Integer, String> propertyPositions) {
         if (Lang.isEmpty(entities)) {
             return new Object[] {};
@@ -227,6 +273,13 @@ public abstract class AbstractOperate<T> {
         return params;
     }
 
+    /**
+     * Gets the parameters.
+     *
+     * @param entity            the entity
+     * @param propertyPositions the property positions
+     * @return the parameters
+     */
     protected Object[] getParameters(T entity, Map<Integer, String> propertyPositions) {
         Object[] params = new Object[propertyPositions.size()];
         int i = 0;
@@ -241,9 +294,11 @@ public abstract class AbstractOperate<T> {
      * <p>
      * 设置预编译参数
      * </p>
+     * .
      *
-     * @param prep 执行SQL的PreparedStatementWrapper
-     * @param id   主键
+     * @param prep    执行SQL的PreparedStatementWrapper
+     * @param id      主键
+     * @param manager the manager
      */
     protected void setParameter(PreparedStatement prep, Serializable id, SqlTypeMappingManager manager) {
         manager.set(prep, 1, id, pkProperties.get(0));
@@ -254,9 +309,11 @@ public abstract class AbstractOperate<T> {
      * <p>
      * 设置预编译参数
      * </p>
+     * .
      *
-     * @param prep 执行SQL的PreparedStatementWrapper
-     * @param ids  主键列表
+     * @param prep    执行SQL的PreparedStatementWrapper
+     * @param ids     主键列表
+     * @param manager the manager
      */
     protected void setParameter(PreparedStatement prep, java.util.List<Serializable> ids,
             SqlTypeMappingManager manager) {
@@ -272,6 +329,7 @@ public abstract class AbstractOperate<T> {
      * <p>
      * 初始化SQL，由具体的实现类来实现
      * </p>
+     * .
      */
     protected abstract void initSql();
 }

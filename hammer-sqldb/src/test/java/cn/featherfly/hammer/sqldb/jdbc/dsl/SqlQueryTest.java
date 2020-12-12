@@ -402,6 +402,15 @@ public class SqlQueryTest extends JdbcTestBase {
         }
     }
 
+    @Test
+    void testNestedProperty() {
+        SqlQuery query = new SqlQuery(jdbc, mappingFactory);
+        UserRole2 userRole2 = new UserRole2();
+        userRole2.setRole(new Role(2));
+        userRole2.setUser(new User(1));
+        query.find(UserRole2.class).where().eq(userRole2::getRole).and().ne(userRole2::getUser).list();
+    }
+
     // @Test
     // void test1111() {
     // ClassMapping<?> classMapping =

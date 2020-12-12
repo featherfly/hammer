@@ -7,11 +7,15 @@ import java.time.LocalTime;
 import java.util.Date;
 import java.util.function.Function;
 
+import com.speedment.common.tuple.Tuple2;
+import com.speedment.common.tuple.Tuples;
+
 import cn.featherfly.common.db.builder.SqlBuilder;
 import cn.featherfly.common.db.dialect.Dialect;
 import cn.featherfly.common.db.mapping.ClassMappingUtils;
 import cn.featherfly.common.lang.LambdaUtils;
 import cn.featherfly.common.lang.LambdaUtils.SerializableSupplierLambdaInfo;
+import cn.featherfly.common.lang.Lang;
 import cn.featherfly.common.lang.function.DateSupplier;
 import cn.featherfly.common.lang.function.LocalDateSupplier;
 import cn.featherfly.common.lang.function.LocalDateTimeSupplier;
@@ -30,6 +34,7 @@ import cn.featherfly.common.lang.function.StringSupplier;
 import cn.featherfly.common.repository.builder.AliasManager;
 import cn.featherfly.common.repository.mapping.ClassMapping;
 import cn.featherfly.common.repository.mapping.MappingFactory;
+import cn.featherfly.common.repository.mapping.PropertyMapping;
 import cn.featherfly.common.repository.operate.LogicOperator;
 import cn.featherfly.common.repository.operate.QueryOperator;
 import cn.featherfly.hammer.expression.RepositoryConditionGroupLogicExpression;
@@ -1958,8 +1963,10 @@ public abstract class AbstractRepositorySqlConditionGroupExpression<C extends Re
      */
     @Override
     public <R> L eq(SerializableSupplier<R> property) {
-        SerializableSupplierLambdaInfo<R> info = LambdaUtils.getSerializableSupplierLambdaInfo(property);
-        return eq(info.getSerializedLambdaInfo().getPropertyName(), info.getValue());
+        //        SerializableSupplierLambdaInfo<R> info = LambdaUtils.getSerializableSupplierLambdaInfo(property);
+        //        return eq(info.getSerializedLambdaInfo().getPropertyName(), info.getValue());
+        Tuple2<String, R> tuple = supplier(LambdaUtils.getSerializableSupplierLambdaInfo(property));
+        return eq(tuple.get0(), tuple.get1());
     }
 
     /**
@@ -1976,8 +1983,10 @@ public abstract class AbstractRepositorySqlConditionGroupExpression<C extends Re
      */
     @Override
     public <R> L ne(SerializableSupplier<R> property) {
-        SerializableSupplierLambdaInfo<R> info = LambdaUtils.getSerializableSupplierLambdaInfo(property);
-        return ne(info.getSerializedLambdaInfo().getPropertyName(), info.getValue());
+        //        SerializableSupplierLambdaInfo<R> info = LambdaUtils.getSerializableSupplierLambdaInfo(property);
+        //        return ne(info.getSerializedLambdaInfo().getPropertyName(), info.getValue());
+        Tuple2<String, R> tuple = supplier(LambdaUtils.getSerializableSupplierLambdaInfo(property));
+        return eq(tuple.get0(), tuple.get1());
     }
 
     /**
@@ -2212,5 +2221,19 @@ public abstract class AbstractRepositorySqlConditionGroupExpression<C extends Re
     public L lt(StringSupplier property) {
         SerializableSupplierLambdaInfo<String> info = LambdaUtils.getSerializableSupplierLambdaInfo(property);
         return lt(info.getSerializedLambdaInfo().getPropertyName(), info.getValue());
+    }
+
+    protected <R> Tuple2<String, R> supplier(SerializableSupplierLambdaInfo<R> info) {
+        String propertyName = info.getSerializedLambdaInfo().getPropertyName();
+        R r = info.getValue();
+        if (r != null && classMapping != null) {
+            PropertyMapping propertyMapping = classMapping.getPropertyMapping(propertyName);
+            if (Lang.isNotEmpty(propertyMapping.getPropertyMappings())) {
+                PropertyMapping pm = propertyMapping.getPropertyMappings().get(0);
+                return (Tuple2<String, R>) Tuples.of(pm.getRepositoryFieldName(),
+                        cn.featherfly.common.bean.BeanUtils.getProperty(r, pm.getPropertyName()));
+            }
+        }
+        return Tuples.of(propertyName, r);
     }
 }
