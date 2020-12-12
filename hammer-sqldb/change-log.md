@@ -1,7 +1,8 @@
-# 0.5.6 
+# 0.5.6 2020-12-12
     1.Jdbc方法参数位置修改
     2.修复JdbcImpl没有释放connection的问题
     3.Asm使用ClassLoader加载类信息，可以加载fatjar模式的类
+    4.operate包下的所有数据库操作支持SqlTypeMappingManager的自定义类型管理
 
 # 0.5.5 2020-12-8
     1.DSL条件查询加入group(Fucntion<C,L> function)方法 ，不用手动调用endGroup方法

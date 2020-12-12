@@ -3,6 +3,7 @@ package cn.featherfly.hammer.sqldb.jdbc.operate;
 
 import java.io.Serializable;
 import java.sql.PreparedStatement;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -10,12 +11,15 @@ import java.util.Map.Entry;
 
 import org.slf4j.Logger;
 
+import cn.featherfly.common.bean.BeanDescriptor;
+import cn.featherfly.common.bean.BeanProperty;
 import cn.featherfly.common.bean.BeanUtils;
-import cn.featherfly.common.db.JdbcUtils;
+import cn.featherfly.common.db.mapping.SqlTypeMappingManager;
 import cn.featherfly.common.db.metadata.DatabaseMetadata;
 import cn.featherfly.common.db.metadata.DatabaseMetadataManager;
 import cn.featherfly.common.lang.Lang;
 import cn.featherfly.common.repository.mapping.ClassMapping;
+import cn.featherfly.common.repository.mapping.PropertyMapping;
 import cn.featherfly.hammer.sqldb.Constants;
 import cn.featherfly.hammer.sqldb.jdbc.Jdbc;
 
@@ -57,6 +61,8 @@ public abstract class AbstractOperate<T> {
      */
     protected Map<Integer, String> propertyPositions = new HashMap<>(0);
 
+    protected List<BeanProperty<Serializable>> pkProperties = new ArrayList<>();
+
     /**
      * 使用给定数据源以及给定对象映射生成其相应的操作.
      *
@@ -82,7 +88,7 @@ public abstract class AbstractOperate<T> {
         }
         this.jdbc = jdbc;
         this.classMapping = classMapping;
-        initSql();
+        init();
     }
 
     /**
@@ -96,6 +102,14 @@ public abstract class AbstractOperate<T> {
         this.jdbc = jdbc;
         this.classMapping = classMapping;
         this.meta = databaseMetadata;
+        init();
+    }
+
+    private void init() {
+        for (PropertyMapping pm : classMapping.getPrivaryKeyPropertyMappings()) {
+            pkProperties.add(
+                    BeanDescriptor.getBeanDescriptor(classMapping.getType()).getBeanProperty(pm.getPropertyFullName()));
+        }
         initSql();
     }
 
@@ -114,10 +128,14 @@ public abstract class AbstractOperate<T> {
      * @param prep   执行SQL的PreparedStatementWrapper
      * @param entity 对象
      */
-    protected void setParameter(PreparedStatement prep, T entity) {
+    protected void setParameter(PreparedStatement prep, T entity, SqlTypeMappingManager manager) {
+        BeanDescriptor<?> beanDescriptor = BeanDescriptor.getBeanDescriptor(entity.getClass());
         for (Entry<Integer, String> propertyPosition : propertyPositions.entrySet()) {
-            JdbcUtils.setParameter(prep, propertyPosition.getKey(),
-                    BeanUtils.getProperty(entity, propertyPosition.getValue()));
+            BeanProperty<Object> property = beanDescriptor.getBeanProperty(propertyPosition.getValue());
+            manager.set(prep, propertyPosition.getKey(), BeanUtils.getProperty(entity, propertyPosition.getValue()),
+                    property);
+            //            JdbcUtils.setParameter(prep, propertyPosition.getKey(),
+            //                    BeanUtils.getProperty(entity, propertyPosition.getValue()));
         }
     }
 
@@ -130,12 +148,61 @@ public abstract class AbstractOperate<T> {
      * @param entity 对象
      * @param index  当前对象是第几个设置的
      */
-    protected void setParameter(PreparedStatement prep, T entity, int index) {
+    protected void setParameter(PreparedStatement prep, T entity, int index, SqlTypeMappingManager manager) {
         int len = propertyPositions.size();
+        BeanDescriptor<?> beanDescriptor = BeanDescriptor.getBeanDescriptor(entity.getClass());
         for (Entry<Integer, String> propertyPosition : propertyPositions.entrySet()) {
             int position = propertyPosition.getKey() + index * len;
-            JdbcUtils.setParameter(prep, position, BeanUtils.getProperty(entity, propertyPosition.getValue()));
+            BeanProperty<Object> property = beanDescriptor.getBeanProperty(propertyPosition.getValue());
+            manager.set(prep, position, BeanUtils.getProperty(entity, propertyPosition.getValue()), property);
+            //            JdbcUtils.setParameter(prep, position, BeanUtils.getProperty(entity, propertyPosition.getValue()));
         }
+    }
+
+    protected Object[] setParameters(T entity, PreparedStatement prep, SqlTypeMappingManager manager) {
+        return setParameters(entity, propertyPositions, prep, manager);
+    }
+
+    protected Object[] setParameters(T entity, Map<Integer, String> propertyPositions, PreparedStatement prep,
+            SqlTypeMappingManager manager) {
+        BeanDescriptor<?> beanDescriptor = BeanDescriptor.getBeanDescriptor(entity.getClass());
+        Object[] params = new Object[propertyPositions.size()];
+        int i = 0;
+        for (Entry<Integer, String> propertyPosition : propertyPositions.entrySet()) {
+            BeanProperty<Object> property = beanDescriptor.getBeanProperty(propertyPosition.getValue());
+            Object value = BeanUtils.getProperty(entity, propertyPosition.getValue());
+            params[i] = value;
+            i++;
+            manager.set(prep, i, value, property);
+        }
+        return params;
+    }
+
+    public Object[] setBatchParameters(List<T> entities, Map<Integer, String> propertyPositions, PreparedStatement prep,
+            SqlTypeMappingManager manager) {
+        if (Lang.isEmpty(entities)) {
+            return new Object[] {};
+        }
+        BeanDescriptor<?> beanDescriptor = BeanDescriptor.getBeanDescriptor(entities.get(0).getClass());
+        Object[] params = new Object[propertyPositions.size()];
+        int pkNum = propertyPositions.size() / entities.size();
+        int i = 0;
+        T entity = null;
+        for (Entry<Integer, String> propertyPosition : propertyPositions.entrySet()) {
+            if (i % pkNum == 0) {
+                entity = entities.get(i / pkNum);
+            }
+            params[i] = BeanUtils.getProperty(entity, propertyPosition.getValue());
+            BeanProperty<Object> property = beanDescriptor.getBeanProperty(propertyPosition.getValue());
+            manager.set(prep, i + 1, params[i], property);
+            i++;
+        }
+        return params;
+    }
+
+    protected void setBatchParameters(List<T> entities, Map<Integer, String> propertyPositions,
+            SqlTypeMappingManager manager) {
+
     }
 
     public Object[] getParameters(T entity) {
@@ -178,8 +245,9 @@ public abstract class AbstractOperate<T> {
      * @param prep 执行SQL的PreparedStatementWrapper
      * @param id   主键
      */
-    protected void setParameter(PreparedStatement prep, Serializable id) {
-        JdbcUtils.setParameter(prep, 1, id);
+    protected void setParameter(PreparedStatement prep, Serializable id, SqlTypeMappingManager manager) {
+        manager.set(prep, 1, id, pkProperties.get(0));
+        //        JdbcUtils.setParameter(prep, 1, id);
     }
 
     /**
@@ -190,11 +258,13 @@ public abstract class AbstractOperate<T> {
      * @param prep 执行SQL的PreparedStatementWrapper
      * @param ids  主键列表
      */
-    protected void setParameter(PreparedStatement prep, java.util.List<Serializable> ids) {
+    protected void setParameter(PreparedStatement prep, java.util.List<Serializable> ids,
+            SqlTypeMappingManager manager) {
         int i = 0;
         for (Serializable id : ids) {
             i++;
-            JdbcUtils.setParameter(prep, i, id);
+            manager.set(prep, i, id, pkProperties.get(i - 1));
+            //            JdbcUtils.setParameter(prep, i, id);
         }
     }
 

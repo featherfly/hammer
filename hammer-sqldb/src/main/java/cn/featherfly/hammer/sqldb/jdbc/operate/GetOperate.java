@@ -112,6 +112,7 @@ public class GetOperate<T> extends AbstractQueryOperate<T> {
         if (id == null) {
             throw new SqldbHammerException("#get.id.null");
         }
+        // TODO 没有使用SqlTypeMappingManager
         return jdbc.querySingle(sql, (RowMapper<T>) (res, rowNum) -> mapRow(res, rowNum), id);
     }
 
@@ -131,6 +132,7 @@ public class GetOperate<T> extends AbstractQueryOperate<T> {
         if (Lang.isEmpty(ids)) {
             throw new SqldbHammerException("#get.id.null");
         }
+        // TODO 没有使用SqlTypeMappingManager
         return jdbc.querySingle(sql, (RowMapper<T>) (res, rowNum) -> mapRow(res, rowNum), ids.toArray());
     }
 

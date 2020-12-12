@@ -15,6 +15,7 @@ import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import cn.featherfly.common.db.JdbcUtils;
 import cn.featherfly.common.db.dialect.Dialect;
 import cn.featherfly.common.db.mapping.SqlResultSet;
+import cn.featherfly.common.db.mapping.SqlTypeMappingManager;
 import cn.featherfly.common.lang.ArrayUtils;
 import cn.featherfly.common.repository.mapping.RowMapper;
 import cn.featherfly.hammer.sqldb.Constants;
@@ -36,11 +37,21 @@ public class SpringJdbcTemplateImpl implements Jdbc {
 
     protected Dialect dialect;
 
+    protected SqlTypeMappingManager manager;
+
     /**
      *
      */
     public SpringJdbcTemplateImpl() {
+        this(new SqlTypeMappingManager());
+    }
+
+    /**
+     *
+     */
+    public SpringJdbcTemplateImpl(SqlTypeMappingManager manager) {
         super();
+        this.manager = manager;
     }
 
     /**
@@ -48,9 +59,18 @@ public class SpringJdbcTemplateImpl implements Jdbc {
      * @param dialect    dialect
      */
     public SpringJdbcTemplateImpl(DataSource dataSource, Dialect dialect) {
+        this(dataSource, dialect, new SqlTypeMappingManager());
+    }
+
+    /**
+     * @param dataSource dataSource
+     * @param dialect    dialect
+     */
+    public SpringJdbcTemplateImpl(DataSource dataSource, Dialect dialect, SqlTypeMappingManager manager) {
         super();
         setDataSource(dataSource);
         this.dialect = dialect;
+        this.manager = manager;
     }
 
     /**
@@ -58,8 +78,8 @@ public class SpringJdbcTemplateImpl implements Jdbc {
      */
     @Override
     public <T> T execute(ConnectionCallback<T> action) {
-        return jdbcTemplate
-                .execute((org.springframework.jdbc.core.ConnectionCallback<T>) con -> action.doInConnection(con));
+        return jdbcTemplate.execute(
+                (org.springframework.jdbc.core.ConnectionCallback<T>) con -> action.doInConnection(con, manager));
     }
 
     /**
