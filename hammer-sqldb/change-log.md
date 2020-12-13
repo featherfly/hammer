@@ -1,3 +1,6 @@
+# 0.5.7
+1. 
+
 # 0.5.6 2020-12-12
 1. Jdbc方法参数位置修改
 2. 修复JdbcImpl没有释放connection的问题
@@ -140,8 +143,7 @@ select <@prop alias='r'>*</@prop> from <@wrap>user</@wrap>
 
 # 0.3.3 2020-4-15
 1. 重命名@TplExecution为@Template,@TplParam为@Param，@TplParamType为ParamType
-2. @Template加入value()，用于直接在注解上使用模板（如sqldb模块的sql模板）,加入isTemplate()用于在执行value()时是否使用模板引擎
-            用于value()是一个不可变的字符串就可以禁用其使用模板引擎，可以提高一丢丢的性能-_-，默认是开启的，当前版本未实现禁用模板引擎
+2. @Template加入value()，用于直接在注解上使用模板（如sqldb模块的sql模板）,加入isTemplate()用于在执行value()时是否使用模板引擎,用于value()是一个不可变的字符串就可以禁用其使用模板引擎，可以提高一丢丢的性能-_-，默认是开启的，当前版本未实现禁用模板引擎
 3. @Param加入name(),而value()作为name()的快捷别名，name()优先级高于value()
 4. 加入SqldbHammer接口
 
