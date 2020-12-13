@@ -5,7 +5,12 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.Date;
+import java.util.List;
+import java.util.Optional;
 import java.util.function.Function;
+
+import com.speedment.common.tuple.Tuple2;
+import com.speedment.common.tuple.Tuple3;
 
 import cn.featherfly.common.db.builder.SqlBuilder;
 import cn.featherfly.common.db.dialect.Dialect;
@@ -55,8 +60,11 @@ import cn.featherfly.hammer.expression.condition.property.StringExpression;
  * <p>
  * sql condition group builder sql条件逻辑组构造器
  * </p>
+ * .
  *
  * @author zhongj
+ * @param <C> the generic type
+ * @param <L> the generic type
  */
 @SuppressWarnings("unchecked")
 public abstract class AbstractRepositorySqlConditionGroupExpression<C extends RepositoryConditionsGroupExpression<C, L>,
@@ -64,15 +72,20 @@ public abstract class AbstractRepositorySqlConditionGroupExpression<C extends Re
         implements RepositoryConditionsGroupExpression<C, L>, RepositoryConditionGroupLogicExpression<C, L>, SqlBuilder,
         ParamedExpression {
 
+    /** The class mapping. */
     protected ClassMapping<?> classMapping;
 
     private String queryAlias;
 
+    /** The alias manager. */
     protected AliasManager aliasManager;
 
+    /** The factory. */
     protected MappingFactory factory;
 
     /**
+     * Instantiates a new abstract repository sql condition group expression.
+     *
      * @param dialect      dialect
      * @param factory      MappingFactory
      * @param aliasManager aliasManager
@@ -83,6 +96,8 @@ public abstract class AbstractRepositorySqlConditionGroupExpression<C extends Re
     }
 
     /**
+     * Instantiates a new abstract repository sql condition group expression.
+     *
      * @param dialect      dialect
      * @param factory      MappingFactory
      * @param aliasManager aliasManager
@@ -94,6 +109,8 @@ public abstract class AbstractRepositorySqlConditionGroupExpression<C extends Re
     }
 
     /**
+     * Instantiates a new abstract repository sql condition group expression.
+     *
      * @param dialect      dialect
      * @param factory      MappingFactory
      * @param aliasManager aliasManager
@@ -106,6 +123,8 @@ public abstract class AbstractRepositorySqlConditionGroupExpression<C extends Re
     }
 
     /**
+     * Instantiates a new abstract repository sql condition group expression.
+     *
      * @param dialect      dialect
      * @param factory      MappingFactory
      * @param aliasManager aliasManager
@@ -172,6 +191,13 @@ public abstract class AbstractRepositorySqlConditionGroupExpression<C extends Re
         }
     }
 
+    /**
+     * Creates the group.
+     *
+     * @param parent     the parent
+     * @param queryAlias the query alias
+     * @return the c
+     */
     protected abstract C createGroup(L parent, String queryAlias);
 
     /**
@@ -261,6 +287,23 @@ public abstract class AbstractRepositorySqlConditionGroupExpression<C extends Re
         return (L) addCondition(
                 new SqlConditionExpressionBuilder(dialect, ClassMappingUtils.getColumnName(name, classMapping), value,
                         QueryOperator.EQ, aliasManager.getAlias(repository)));
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public <T, R> L eq(SerializableFunction<T, R> repository, SerializableFunction<T, R> property, Object value) {
+        return eq(getPropertyName(repository), getPropertyName(property), value);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public <T, R> L eq(SerializableSupplier<T> repository, SerializableFunction<T, R> property) {
+        Tuple3<String, String, Object> tuple = conditionResult(repository, property);
+        return eq(tuple.get0(), tuple.get1(), tuple.get2());
     }
 
     /**
@@ -579,7 +622,7 @@ public abstract class AbstractRepositorySqlConditionGroupExpression<C extends Re
     }
 
     /**
-     * 返回queryAlias
+     * 返回queryAlias.
      *
      * @return queryAlias
      */
@@ -587,6 +630,11 @@ public abstract class AbstractRepositorySqlConditionGroupExpression<C extends Re
         return queryAlias;
     }
 
+    /**
+     * Gets the root.
+     *
+     * @return the root
+     */
     protected AbstractRepositorySqlConditionGroupExpression<C, L> getRoot() {
         L p = endGroup();
         L p2 = p.endGroup();
@@ -1594,6 +1642,23 @@ public abstract class AbstractRepositorySqlConditionGroupExpression<C extends Re
      * {@inheritDoc}
      */
     @Override
+    public <T, R> L ne(SerializableFunction<T, R> repository, SerializableFunction<T, R> property, Object value) {
+        return ne(getPropertyName(repository), getPropertyName(property), value);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public <T, R> L ne(SerializableSupplier<T> repository, SerializableFunction<T, R> property) {
+        Tuple3<String, String, Object> tuple = conditionResult(repository, property);
+        return ne(tuple.get0(), tuple.get1(), tuple.get2());
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
     public <T> L nin(Class<T> repository, String name, Object value) {
         return nin(getTableName(repository), name, value);
     }
@@ -1882,7 +1947,7 @@ public abstract class AbstractRepositorySqlConditionGroupExpression<C extends Re
     // ********************************************************************
 
     /**
-     * 设置queryAlias
+     * 设置queryAlias.
      *
      * @param queryAlias queryAlias
      */
@@ -1958,8 +2023,26 @@ public abstract class AbstractRepositorySqlConditionGroupExpression<C extends Re
      */
     @Override
     public <R> L eq(SerializableSupplier<R> property) {
-        SerializableSupplierLambdaInfo<R> info = LambdaUtils.getSerializableSupplierLambdaInfo(property);
-        return eq(info.getSerializedLambdaInfo().getPropertyName(), info.getValue());
+        //        SerializableSupplierLambdaInfo<R> info = LambdaUtils.getSerializableSupplierLambdaInfo(property);
+        //        return eq(info.getSerializedLambdaInfo().getPropertyName(), info.getValue());
+        //        Tuple2<String, R> tuple = supplier(LambdaUtils.getSerializableSupplierLambdaInfo(property));
+        //        return eq(tuple.get0(), tuple.get1());
+        List<Tuple2<String, Optional<R>>> tuples = supplier(LambdaUtils.getSerializableSupplierLambdaInfo(property));
+        L l = null;
+        C c = (C) this;
+        if (tuples.size() > 1) {
+            c = group();
+        }
+        for (Tuple2<String, Optional<R>> tuple : tuples) {
+            if (l != null) {
+                c = l.and();
+            }
+            l = c.ne(tuple.get0(), tuple.get1().orElseGet(() -> null));
+        }
+        if (tuples.size() > 1) {
+            l = l.endGroup();
+        }
+        return l;
     }
 
     /**
@@ -1976,8 +2059,26 @@ public abstract class AbstractRepositorySqlConditionGroupExpression<C extends Re
      */
     @Override
     public <R> L ne(SerializableSupplier<R> property) {
-        SerializableSupplierLambdaInfo<R> info = LambdaUtils.getSerializableSupplierLambdaInfo(property);
-        return ne(info.getSerializedLambdaInfo().getPropertyName(), info.getValue());
+        //        SerializableSupplierLambdaInfo<R> info = LambdaUtils.getSerializableSupplierLambdaInfo(property);
+        //        return ne(info.getSerializedLambdaInfo().getPropertyName(), info.getValue());
+        //        Tuple2<String, R> tuple = supplier(LambdaUtils.getSerializableSupplierLambdaInfo(property));
+        //        return eq(tuple.get0(), tuple.get1());
+        List<Tuple2<String, Optional<R>>> tuples = supplier(LambdaUtils.getSerializableSupplierLambdaInfo(property));
+        L l = null;
+        C c = (C) this;
+        if (tuples.size() > 1) {
+            c = group();
+        }
+        for (Tuple2<String, Optional<R>> tuple : tuples) {
+            if (l != null) {
+                c = l.and();
+            }
+            l = c.ne(tuple.get0(), tuple.get1().orElseGet(() -> null));
+        }
+        if (tuples.size() > 1) {
+            l = l.endGroup();
+        }
+        return l;
     }
 
     /**
@@ -2212,5 +2313,30 @@ public abstract class AbstractRepositorySqlConditionGroupExpression<C extends Re
     public L lt(StringSupplier property) {
         SerializableSupplierLambdaInfo<String> info = LambdaUtils.getSerializableSupplierLambdaInfo(property);
         return lt(info.getSerializedLambdaInfo().getPropertyName(), info.getValue());
+    }
+
+    /**
+     * Supplier.
+     *
+     * @param <R>  the generic type
+     * @param info the info
+     * @return the list
+     */
+    protected <R> List<Tuple2<String, Optional<R>>> supplier(SerializableSupplierLambdaInfo<R> info) {
+        return supplier(info, classMapping);
+    }
+
+    /**
+     * Properties.
+     *
+     * @param <T>        the generic type
+     * @param <R>        the generic type
+     * @param repository the repository
+     * @param property   the property
+     * @return the tuple 3
+     */
+    protected <T, R> Tuple3<String, String, Object> conditionResult(SerializableSupplier<T> repository,
+            SerializableFunction<T, R> property) {
+        return conditionResult(repository, property, factory);
     }
 }

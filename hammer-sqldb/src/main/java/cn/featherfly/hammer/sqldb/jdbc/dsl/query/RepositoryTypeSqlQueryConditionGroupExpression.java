@@ -11,13 +11,13 @@ import cn.featherfly.common.db.mapping.ClassMappingUtils;
 import cn.featherfly.common.lang.LambdaUtils;
 import cn.featherfly.common.lang.Lang;
 import cn.featherfly.common.lang.function.SerializableFunction;
+import cn.featherfly.common.repository.builder.AliasManager;
 import cn.featherfly.common.repository.mapping.ClassMapping;
 import cn.featherfly.common.repository.mapping.MappingFactory;
 import cn.featherfly.common.structure.page.Limit;
 import cn.featherfly.common.structure.page.Page;
 import cn.featherfly.common.structure.page.PaginationResults;
 import cn.featherfly.common.structure.page.SimplePaginationResults;
-import cn.featherfly.common.repository.builder.AliasManager;
 import cn.featherfly.hammer.dsl.query.RepositoryTypeQueryConditionGroupExpression;
 import cn.featherfly.hammer.dsl.query.RepositoryTypeQueryConditionGroupLogicExpression;
 import cn.featherfly.hammer.dsl.query.TypeQuerySortExpression;
@@ -152,7 +152,7 @@ public class RepositoryTypeSqlQueryConditionGroupExpression extends
             sql = dialect.getPaginationSql(sql, limit.getOffset(), limit.getLimit());
             params = dialect.getPaginationSqlParameter(params, limit.getOffset(), limit.getLimit());
         }
-        return (List<E>) jdbc.query(sql, params, classMapping.getType());
+        return (List<E>) jdbc.query(sql, classMapping.getType(), params);
     }
 
     /**
@@ -167,8 +167,8 @@ public class RepositoryTypeSqlQueryConditionGroupExpression extends
         if (limit != null) {
             @SuppressWarnings("unchecked")
             List<E> list = (List<E>) jdbc.query(dialect.getPaginationSql(sql, limit.getOffset(), limit.getLimit()),
-                    dialect.getPaginationSqlParameter(params, limit.getOffset(), limit.getLimit()),
-                    classMapping.getType());
+                    classMapping.getType(),
+                    dialect.getPaginationSqlParameter(params, limit.getOffset(), limit.getLimit()));
             pagination.setPageResults(list);
             int total = jdbc.queryInt(countSql, params);
             pagination.setTotal(total);
@@ -193,7 +193,7 @@ public class RepositoryTypeSqlQueryConditionGroupExpression extends
             sql = dialect.getPaginationSql(sql, limit.getOffset(), limit.getLimit());
             params = dialect.getPaginationSqlParameter(params, limit.getOffset(), limit.getLimit());
         }
-        return (E) jdbc.querySingle(sql, params, classMapping.getType());
+        return (E) jdbc.querySingle(sql, classMapping.getType(), params);
     }
 
     /**

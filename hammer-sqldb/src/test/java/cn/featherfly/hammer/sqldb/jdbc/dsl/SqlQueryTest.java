@@ -17,6 +17,7 @@ import cn.featherfly.hammer.expression.SimpleRepository;
 import cn.featherfly.hammer.sqldb.SqldbHammerException;
 import cn.featherfly.hammer.sqldb.jdbc.JdbcTestBase;
 import cn.featherfly.hammer.sqldb.jdbc.dsl.query.SqlQuery;
+import cn.featherfly.hammer.sqldb.jdbc.vo.DistrictDivision;
 import cn.featherfly.hammer.sqldb.jdbc.vo.Role;
 import cn.featherfly.hammer.sqldb.jdbc.vo.Tree2;
 import cn.featherfly.hammer.sqldb.jdbc.vo.User;
@@ -341,6 +342,79 @@ public class SqlQueryTest extends JdbcTestBase {
     }
 
     @Test
+    void testJoinCondition2_1() {
+        SqlQuery query = new SqlQuery(jdbc, mappingFactory);
+        UserInfo userInfo = new UserInfo();
+
+        User user = new User();
+        user.setPwd("123456");
+        userInfo.setUser(user);
+
+        List<UserInfo> userInfos = query.find(UserInfo.class).with(UserInfo::getUser).where()
+                .eq(userInfo::getUser, User::getPwd).list();
+        System.out.println(userInfos.size());
+        assertTrue(userInfos.size() == 1);
+
+    }
+
+    @Test
+    void testJoinCondition2_2() {
+        SqlQuery query = new SqlQuery(jdbc, mappingFactory);
+        UserInfo userInfo = new UserInfo();
+
+        User user = new User();
+        user.setPwd("123456");
+        user.setUsername("yufei");
+        userInfo.setUser(user);
+        userInfo.setId(1);
+
+        List<UserInfo> userInfos = query.find(UserInfo.class).where().eq(userInfo::getUser, User::getPwd).list();
+        System.out.println(userInfos.size());
+        assertTrue(userInfos.size() == 1);
+
+        userInfos = query.find(UserInfo.class).where().eq(userInfo::getUser, User::getPwd).and().eq(userInfo::getId)
+                .list();
+        System.out.println(userInfos.size());
+        assertTrue(userInfos.size() == 1);
+
+        userInfos = query.find(UserInfo.class).where().eq(userInfo::getUser, User::getPwd).and().eq(userInfo::getId)
+                .and().lt(UserInfo::getUser, User::getAge, 10).list();
+        System.out.println(userInfos.size());
+        assertTrue(userInfos.size() == 1);
+
+        userInfos = query.find(UserInfo.class).where().eq(userInfo::getUser, User::getPwd).and().eq(UserInfo::getId, 2)
+                .list();
+        System.out.println(userInfos.size());
+        assertTrue(userInfos.size() == 0);
+
+        userInfos = query.find(UserInfo.class).where().eq(userInfo::getUser, User::getPwd).and().eq(userInfo::getId)
+                .and().ge(UserInfo::getUser, User::getAge, 10).list();
+        System.out.println(userInfos.size());
+        assertTrue(userInfos.size() == 0);
+
+        userInfos = query.find(UserInfo.class).where().eq(userInfo::getUser, User::getPwd).and()
+                .eq(userInfo::getUser, User::getUsername).list();
+        System.out.println(userInfos.size());
+        assertTrue(userInfos.size() == 1);
+
+        userInfos = query.find(UserInfo.class).where().eq(userInfo::getUser, User::getPwd).and()
+                .eq(userInfo::getUser, User::getUsername).and().eq(userInfo::getId).list();
+        System.out.println(userInfos.size());
+        assertTrue(userInfos.size() == 1);
+
+        userInfos = query.find(UserInfo.class).where().eq(userInfo::getUser, User::getPwd).and()
+                .eq(userInfo::getUser, User::getUsername).and().eq(UserInfo::getId, 2).list();
+        System.out.println(userInfos.size());
+        assertTrue(userInfos.size() == 0);
+
+        user.setUsername("yufei1111");
+        userInfos = query.find(UserInfo.class).where().eq(userInfo::getUser, User::getPwd).and()
+                .eq(userInfo::getUser, User::getUsername).list();
+        System.out.println(userInfos.size());
+        assertTrue(userInfos.size() == 0);
+    }
+
+    @Test
     void testJoin3() {
         SqlQuery query = new SqlQuery(jdbc, mappingFactory);
 
@@ -400,6 +474,27 @@ public class SqlQueryTest extends JdbcTestBase {
         for (Tree2 t : list) {
             assertTrue(1 == t.getParent().getId());
         }
+    }
+
+    @Test
+    void testNestedProperty() {
+        SqlQuery query = new SqlQuery(jdbc, mappingFactory);
+        UserRole2 userRole2 = new UserRole2();
+        userRole2.setRole(new Role(2));
+        userRole2.setUser(new User(1));
+        query.find(UserRole2.class).where().eq(userRole2::getRole).and().ne(userRole2::getUser).list();
+
+        UserInfo userInfo = new UserInfo();
+        DistrictDivision division = new DistrictDivision();
+        division.setCity("成都");
+        division.setProvince("四川");
+        division.setDistrict("高新");
+        userInfo.setDivision(division);
+
+        query.find(UserInfo.class).where().eq(userInfo::getDivision).list();
+
+        userInfo.getDivision().setDistrict(null);
+        query.find(UserInfo.class).where().eq(userInfo::getDivision).or().eq(userInfo::getDivision).list();
     }
 
     // @Test

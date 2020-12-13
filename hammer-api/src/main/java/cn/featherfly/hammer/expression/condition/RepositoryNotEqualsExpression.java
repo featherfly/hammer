@@ -1,6 +1,9 @@
 
 package cn.featherfly.hammer.expression.condition;
 
+import cn.featherfly.common.lang.function.SerializableFunction;
+import cn.featherfly.common.lang.function.SerializableSupplier;
+
 // TODO: Auto-generated Javadoc
 /**
  * <p>
@@ -45,5 +48,28 @@ public interface RepositoryNotEqualsExpression<C extends ConditionExpression, L 
      * @return LogicExpression
      */
     L ne(int repositoryIndex, String name, Object value);
+
+    /**
+     * not equals.不等于.
+     *
+     * @param <T>        the generic type
+     * @param <R>        the generic type
+     * @param repository the repository
+     * @param property   the property
+     * @param value      参数值
+     * @return LogicExpression
+     */
+    <T, R> L ne(SerializableFunction<T, R> repository, SerializableFunction<T, R> property, Object value);
+
+    /**
+     * not equals.不等于.
+     *
+     * @param <T>        the generic type
+     * @param <R>        the generic type
+     * @param repository the repository
+     * @param property   对象属性
+     * @return LogicExpression
+     */
+    <T, R> L ne(SerializableSupplier<T> repository, SerializableFunction<T, R> property);
 
 }

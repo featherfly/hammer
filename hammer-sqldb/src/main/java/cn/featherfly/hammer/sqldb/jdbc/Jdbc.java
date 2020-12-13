@@ -7,8 +7,8 @@ import java.util.Map;
 
 import javax.sql.DataSource;
 
-import cn.featherfly.common.repository.mapping.RowMapper;
 import cn.featherfly.common.db.dialect.Dialect;
+import cn.featherfly.common.repository.mapping.RowMapper;
 
 /**
  * <p>
@@ -68,7 +68,7 @@ public interface Jdbc {
      * @param args args
      * @return map list
      */
-    List<Map<String, Object>> query(String sql, Object[] args);
+    List<Map<String, Object>> query(String sql, Object... args);
 
     /**
      * Query.
@@ -84,44 +84,44 @@ public interface Jdbc {
      *
      * @param <T>       generic type
      * @param sql       sql
-     * @param args      args
      * @param rowMapper rowMapper
+     * @param args      args
      * @return elementType object list
      */
-    <T> List<T> query(String sql, Object[] args, RowMapper<T> rowMapper);
+    <T> List<T> query(String sql, RowMapper<T> rowMapper, Object... args);
 
     /**
      * Query.
      *
      * @param <T>         generic type
      * @param sql         sql
-     * @param args        args
      * @param elementType return object type
+     * @param args        args
      * @return elementType object list
      */
-    <T> List<T> query(String sql, Object[] args, Class<T> elementType);
+    <T> List<T> query(String sql, Class<T> elementType, Object... args);
 
     /**
      * Query.
      *
      * @param <T>       generic type
      * @param sql       sql
-     * @param args      args
      * @param rowMapper rowMapper
+     * @param args      args
      * @return elementType object list
      */
-    <T> List<T> query(String sql, Map<String, Object> args, RowMapper<T> rowMapper);
+    <T> List<T> query(String sql, RowMapper<T> rowMapper, Map<String, Object> args);
 
     /**
      * Query.
      *
      * @param <T>         generic type
      * @param sql         sql
-     * @param args        args
      * @param elementType return object type
+     * @param args        args
      * @return elementType object list
      */
-    <T> List<T> query(String sql, Map<String, Object> args, Class<T> elementType);
+    <T> List<T> query(String sql, Class<T> elementType, Map<String, Object> args);
 
     /**
      * Query single.
@@ -139,51 +139,51 @@ public interface Jdbc {
      * @param args args
      * @return map
      */
-    Map<String, Object> querySingle(String sql, Object[] args);
+    Map<String, Object> querySingle(String sql, Object... args);
 
     /**
      * Query single.
      *
      * @param <T>       generic type
      * @param sql       sql
-     * @param args      args
      * @param rowMapper rowMapper
+     * @param args      args
      * @return single elementType object
      */
-    <T> T querySingle(String sql, Object[] args, RowMapper<T> rowMapper);
+    <T> T querySingle(String sql, RowMapper<T> rowMapper, Object... args);
 
     /**
      * Query single.
      *
      * @param <T>       generic type
      * @param sql       sql
-     * @param args      args
      * @param rowMapper rowMapper
+     * @param args      args
      * @return single elementType object
      */
-    <T> T querySingle(String sql, Map<String, Object> args, RowMapper<T> rowMapper);
+    <T> T querySingle(String sql, RowMapper<T> rowMapper, Map<String, Object> args);
 
     /**
      * Query single.
      *
      * @param <T>         generic type
      * @param sql         sql
-     * @param args        args
      * @param elementType return object type
+     * @param args        args
      * @return element type object list
      */
-    <T> T querySingle(String sql, Map<String, Object> args, Class<T> elementType);
+    <T> T querySingle(String sql, Class<T> elementType, Map<String, Object> args);
 
     /**
      * Query single.
      *
      * @param <T>         generic type
      * @param sql         sql
-     * @param args        args
      * @param elementType return object type
+     * @param args        args
      * @return single elementType object
      */
-    <T> T querySingle(String sql, Object[] args, Class<T> elementType);
+    <T> T querySingle(String sql, Class<T> elementType, Object... args);
 
     /**
      * queryInt.
@@ -192,7 +192,7 @@ public interface Jdbc {
      * @param args the args
      * @return the integer
      */
-    Integer queryInt(String sql, Object[] args);
+    Integer queryInt(String sql, Object... args);
 
     /**
      * Query int.
@@ -210,7 +210,7 @@ public interface Jdbc {
      * @param args the args
      * @return the long
      */
-    Long queryLong(String sql, Object[] args);
+    Long queryLong(String sql, Object... args);
 
     /**
      * Query long.
@@ -228,7 +228,7 @@ public interface Jdbc {
      * @param args the args
      * @return the big decimal
      */
-    BigDecimal queryBigDecimal(String sql, Object[] args);
+    BigDecimal queryBigDecimal(String sql, Object... args);
 
     /**
      * Query big decimal.
@@ -246,7 +246,7 @@ public interface Jdbc {
      * @param args the args
      * @return the double
      */
-    Double queryDouble(String sql, Object[] args);
+    Double queryDouble(String sql, Object... args);
 
     /**
      * Query double.
@@ -264,7 +264,7 @@ public interface Jdbc {
      * @param args the args
      * @return the string
      */
-    String queryString(String sql, Object[] args);
+    String queryString(String sql, Object... args);
 
     /**
      * Query string.
@@ -284,7 +284,7 @@ public interface Jdbc {
      * @param valueType the value type
      * @return the t
      */
-    <T> T queryValue(String sql, Object[] args, Class<T> valueType);
+    <T> T queryValue(String sql, Class<T> valueType, Object... args);
 
     /**
      * Query value.

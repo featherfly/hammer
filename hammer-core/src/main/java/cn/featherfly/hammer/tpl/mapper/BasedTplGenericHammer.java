@@ -101,7 +101,7 @@ public class BasedTplGenericHammer<E, ID extends Serializable> implements Generi
      * {@inheritDoc}
      */
     @Override
-    public E get(E entity) {
+    public E load(E entity) {
         return hammer.get(entity);
     }
 

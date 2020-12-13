@@ -4,6 +4,7 @@ package cn.featherfly.hammer.sqldb.jdbc.dsl.execute;
 import cn.featherfly.common.repository.mapping.ClassMapping;
 import cn.featherfly.hammer.dsl.execute.ExecutableConditionGroupExpression;
 import cn.featherfly.hammer.dsl.execute.ExecutableConditionGroupLogicExpression;
+import cn.featherfly.hammer.dsl.query.TypeQueryEntity;
 import cn.featherfly.hammer.sqldb.jdbc.Jdbc;
 import cn.featherfly.hammer.sqldb.sql.dml.AbstractSqlConditionGroupExpression;
 
@@ -34,6 +35,8 @@ public class SqlConditionGroupExpression extends
     }
 
     /**
+     * Instantiates a new sql condition group expression.
+     *
      * @param jdbc         jdbc
      * @param queryAlias   queryAlias
      * @param classMapping classMapping
@@ -50,7 +53,7 @@ public class SqlConditionGroupExpression extends
      */
     SqlConditionGroupExpression(Jdbc jdbc, ExecutableConditionGroupLogicExpression parent, String queryAlias,
             ClassMapping<?> classMapping) {
-        super(jdbc.getDialect(), parent, queryAlias, classMapping);
+        super(jdbc.getDialect(), parent, queryAlias, classMapping, null);
         this.jdbc = jdbc;
     }
 
@@ -73,7 +76,7 @@ public class SqlConditionGroupExpression extends
      */
     @Override
     protected ExecutableConditionGroupExpression createGroup(ExecutableConditionGroupLogicExpression parent,
-            String queryAlias) {
+            String queryAlias, TypeQueryEntity typeQueryEntity) {
         return new SqlConditionGroupExpression(jdbc, parent, queryAlias, classMapping);
     }
 }

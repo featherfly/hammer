@@ -9,7 +9,6 @@ import java.util.Map;
 import com.speedment.common.tuple.Tuple2;
 
 import cn.featherfly.common.bean.BeanUtils;
-import cn.featherfly.common.db.JdbcUtils;
 import cn.featherfly.common.db.mapping.ClassMappingUtils;
 import cn.featherfly.common.db.metadata.DatabaseMetadata;
 import cn.featherfly.common.lang.ArrayUtils;
@@ -91,7 +90,7 @@ public class InsertOperate<T> extends AbstractExecuteOperate<T> {
      */
     public int executeBatch(final List<T> entities, boolean autoSetGenerateId) {
         if (jdbc.getDialect().isInsertBatch()) {
-            return jdbc.execute(con -> {
+            return jdbc.execute((con, manager) -> {
                 Tuple2<String, Map<Integer, String>> tuple = ClassMappingUtils
                         .getInsertBatchSqlAndParamPositions(entities.size(), classMapping, jdbc.getDialect());
                 String sql = tuple.get0();
@@ -104,7 +103,7 @@ public class InsertOperate<T> extends AbstractExecuteOperate<T> {
                 }
                 int index = 0;
                 for (T entity : entities) {
-                    setParameter(prep, entity, index);
+                    setParameter(prep, entity, index, manager);
                     index++;
                 }
 
@@ -120,7 +119,8 @@ public class InsertOperate<T> extends AbstractExecuteOperate<T> {
                     }
                     index = 0;
                     while (res.next()) {
-                        Object value = JdbcUtils.getResultSetValue(res, 1, pm.getPropertyType());
+                        Object value = manager.get(res, 1, pkProperties.get(0));
+                        //                        Object value = JdbcUtils.getResultSetValue(res, 1, pm.getPropertyType());
                         if (logger.isDebugEnabled()) {
                             msg.append(" ").append(value).append(", ");
                         }
@@ -153,7 +153,7 @@ public class InsertOperate<T> extends AbstractExecuteOperate<T> {
      */
     @Override
     public int execute(final T entity) {
-        return jdbc.execute(con -> {
+        return jdbc.execute((con, manager) -> {
             List<PropertyMapping> pks = classMapping.getPrivaryKeyPropertyMappings();
             PreparedStatement prep = null;
             if (pks.size() == 1) {
@@ -161,7 +161,7 @@ public class InsertOperate<T> extends AbstractExecuteOperate<T> {
             } else {
                 prep = con.prepareStatement(sql);
             }
-            setParameter(prep, entity);
+            setParameter(prep, entity, manager);
             logger.debug("execute sql: {}", sql);
             int result = prep.executeUpdate();
 
@@ -173,7 +173,8 @@ public class InsertOperate<T> extends AbstractExecuteOperate<T> {
                     msg = new StringBuilder("自动生成的键值 : ");
                 }
                 if (res.next()) {
-                    Object value = JdbcUtils.getResultSetValue(res, 1, pm.getPropertyType());
+                    Object value = manager.get(res, 1, pkProperties.get(0));
+                    //                    Object value = JdbcUtils.getResultSetValue(res, 1, pm.getPropertyType());
                     if (logger.isDebugEnabled()) {
                         msg.append(" ").append(value).append(", ");
                     }

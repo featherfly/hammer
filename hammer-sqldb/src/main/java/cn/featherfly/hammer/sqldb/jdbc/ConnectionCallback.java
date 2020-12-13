@@ -6,6 +6,8 @@ import java.sql.SQLException;
 
 import org.springframework.lang.Nullable;
 
+import cn.featherfly.common.db.mapping.SqlTypeMappingManager;
+
 /**
  * <p>
  * ConnectionCallback
@@ -17,5 +19,5 @@ import org.springframework.lang.Nullable;
 public interface ConnectionCallback<T> {
 
     @Nullable
-    T doInConnection(Connection con) throws SQLException;
+    T doInConnection(Connection con, SqlTypeMappingManager sqlTypeMappingManager) throws SQLException;
 }

@@ -28,13 +28,11 @@ import cn.featherfly.hammer.sqldb.Constants;
  */
 public class JdbcImpl extends SpringJdbcTemplateImpl {
 
-    private SqlTypeMappingManager manager;
-
     /**
      *
      */
     public JdbcImpl() {
-        super();
+        super(new SqlTypeMappingManager());
     }
 
     /**
@@ -53,8 +51,7 @@ public class JdbcImpl extends SpringJdbcTemplateImpl {
      * @param sqlTypeMappingManager the sql type mapping manager
      */
     public JdbcImpl(DataSource dataSource, Dialect dialect, SqlTypeMappingManager sqlTypeMappingManager) {
-        super(dataSource, dialect);
-        manager = sqlTypeMappingManager;
+        super(dataSource, dialect, sqlTypeMappingManager);
     }
 
     /**
@@ -94,11 +91,15 @@ public class JdbcImpl extends SpringJdbcTemplateImpl {
             setParams(prep, args);
             return prep.executeUpdate();
         } catch (SQLException e) {
+            DataSourceUtils.releaseConnection(connection, getDataSource());
             throw new JdbcException();
+        } finally {
+            DataSourceUtils.releaseConnection(connection, getDataSource());
         }
     }
 
-    private void setParams(PreparedStatement prep, Object... args) {
+    @Override
+    protected void setParams(PreparedStatement prep, Object... args) {
         for (int i = 0; i < args.length; i++) {
             manager.set(prep, i + 1, args[i]);
         }
@@ -107,5 +108,4 @@ public class JdbcImpl extends SpringJdbcTemplateImpl {
     private Connection getConnection() {
         return DataSourceUtils.getConnection(dataSource);
     }
-
 }

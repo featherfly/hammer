@@ -11,7 +11,6 @@ import java.util.Map;
 import com.speedment.common.tuple.Tuple2;
 
 import cn.featherfly.common.constant.Chars;
-import cn.featherfly.common.db.JdbcUtils;
 import cn.featherfly.common.db.mapping.ClassMappingUtils;
 import cn.featherfly.common.db.metadata.DatabaseMetadata;
 import cn.featherfly.common.lang.ArrayUtils;
@@ -74,10 +73,10 @@ public class DeleteOperate<T> extends AbstractExecuteOperate<T> {
      * @return 操作影响的数据行数
      */
     public int delete(Serializable id) {
-        return jdbc.execute(con -> {
+        return jdbc.execute((con, manager) -> {
             PreparedStatement prep = null;
             prep = con.prepareStatement(sql);
-            setParameter(prep, id);
+            setParameter(prep, id, manager);
             logger.debug("execute sql: {}", sql);
             int result = prep.executeUpdate();
             prep.close();
@@ -111,13 +110,14 @@ public class DeleteOperate<T> extends AbstractExecuteOperate<T> {
         if (Lang.isEmpty(ids)) {
             return Chars.ZERO;
         }
-        return jdbc.execute(con -> {
+        return jdbc.execute((con, manager) -> {
             Tuple2<String, Map<Integer, String>> tuple = ClassMappingUtils.getDeleteSqlAndParamPositions(ids.size(),
                     classMapping, jdbc.getDialect());
             try (PreparedStatement prep = con.prepareStatement(tuple.get0())) {
                 int index = 1;
                 for (Serializable id : ids) {
-                    JdbcUtils.setParameter(prep, index, id);
+                    manager.set(prep, index, id, pkProperties.get(index - 1));
+                    //                    JdbcUtils.setParameter(prep, index, id);
                     index++;
                 }
                 logger.debug("execute sql: {} \n params: {}", sql, ids);
@@ -149,7 +149,17 @@ public class DeleteOperate<T> extends AbstractExecuteOperate<T> {
         }
         Tuple2<String, Map<Integer, String>> tuple = ClassMappingUtils.getDeleteSqlAndParamPositions(entities.size(),
                 classMapping, jdbc.getDialect());
-        return jdbc.update(tuple.get0(), getBatchParameters(entities, tuple.get1()));
+        //        return jdbc.update(tuple.get0(), getBatchParameters(entities, tuple.get1()));
+        return jdbc.execute((con, manager) -> {
+            try (PreparedStatement prep = con.prepareStatement(tuple.get0())) {
+                Object[] params = setBatchParameters(entities, tuple.get1(), prep, manager);
+                if (logger.isDebugEnabled()) {
+                    logger.debug("execute sql: {} \n params: {}", sql, ArrayUtils.toString(params));
+                }
+                int result = prep.executeUpdate();
+                return result;
+            }
+        });
     }
 
     /**
