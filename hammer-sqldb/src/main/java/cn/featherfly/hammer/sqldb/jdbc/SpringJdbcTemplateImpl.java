@@ -24,6 +24,7 @@ import cn.featherfly.hammer.sqldb.Constants;
  * <p>
  * Jdbc
  * </p>
+ * .
  *
  * @author zhongj
  */
@@ -33,21 +34,26 @@ public class SpringJdbcTemplateImpl implements Jdbc {
 
     private NamedParameterJdbcTemplate namedParameterJdbcTemplate;
 
+    /** The data source. */
     protected DataSource dataSource;
 
+    /** The dialect. */
     protected Dialect dialect;
 
+    /** The manager. */
     protected SqlTypeMappingManager manager;
 
     /**
-     *
+     * Instantiates a new spring jdbc template impl.
      */
     public SpringJdbcTemplateImpl() {
         this(new SqlTypeMappingManager());
     }
 
     /**
+     * Instantiates a new spring jdbc template impl.
      *
+     * @param manager the manager
      */
     public SpringJdbcTemplateImpl(SqlTypeMappingManager manager) {
         super();
@@ -55,6 +61,8 @@ public class SpringJdbcTemplateImpl implements Jdbc {
     }
 
     /**
+     * Instantiates a new spring jdbc template impl.
+     *
      * @param dataSource dataSource
      * @param dialect    dialect
      */
@@ -63,8 +71,11 @@ public class SpringJdbcTemplateImpl implements Jdbc {
     }
 
     /**
+     * Instantiates a new spring jdbc template impl.
+     *
      * @param dataSource dataSource
      * @param dialect    dialect
+     * @param manager    the manager
      */
     public SpringJdbcTemplateImpl(DataSource dataSource, Dialect dialect, SqlTypeMappingManager manager) {
         super();
@@ -346,7 +357,7 @@ public class SpringJdbcTemplateImpl implements Jdbc {
     }
 
     /**
-     * 设置dataSource
+     * 设置dataSource.
      *
      * @param dataSource dataSource
      */
@@ -357,7 +368,7 @@ public class SpringJdbcTemplateImpl implements Jdbc {
     }
 
     /**
-     * 设置dialect
+     * 设置dialect.
      *
      * @param dialect dialect
      */
@@ -393,6 +404,12 @@ public class SpringJdbcTemplateImpl implements Jdbc {
         }, rowMapper);
     }
 
+    /**
+     * Sets the params.
+     *
+     * @param prep the prep
+     * @param args the args
+     */
     protected void setParams(PreparedStatement prep, Object... args) {
         for (int i = 0; i < args.length; i++) {
             JdbcUtils.setParameter(prep, i + 1, args[i]);

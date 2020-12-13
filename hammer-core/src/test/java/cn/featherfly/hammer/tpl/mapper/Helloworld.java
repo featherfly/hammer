@@ -56,6 +56,5 @@ public class Helloworld extends ClassLoader implements Opcodes {
 
         //通过反射调用main方法
         exampleClass.getMethods()[0].invoke(null, new Object[] { null });
-
     }
 }

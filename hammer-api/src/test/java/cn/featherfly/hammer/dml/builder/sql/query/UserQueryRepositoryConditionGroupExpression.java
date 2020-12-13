@@ -2195,4 +2195,44 @@ public class UserQueryRepositoryConditionGroupExpression implements
         return null;
     }
 
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public <T, R> UserQueryRepositoryConditionGroupExpression eq(SerializableFunction<T, R> repository,
+            SerializableFunction<T, R> property, Object value) {
+        // YUFEI_TODO Auto-generated method stub
+        return null;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public <T, R> UserQueryRepositoryConditionGroupExpression eq(SerializableSupplier<T> repository,
+            SerializableFunction<T, R> property) {
+        // YUFEI_TODO Auto-generated method stub
+        return null;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public <T, R> UserQueryRepositoryConditionGroupExpression ne(SerializableFunction<T, R> repository,
+            SerializableFunction<T, R> property, Object value) {
+        // YUFEI_TODO Auto-generated method stub
+        return null;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public <T, R> UserQueryRepositoryConditionGroupExpression ne(SerializableSupplier<T> repository,
+            SerializableFunction<T, R> property) {
+        // YUFEI_TODO Auto-generated method stub
+        return null;
+    }
+
 }

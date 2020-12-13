@@ -4,9 +4,12 @@ package cn.featherfly.hammer.sqldb.jdbc.dsl.query;
 import cn.featherfly.common.constant.Chars;
 import cn.featherfly.common.db.builder.dml.basic.SqlSelectBasicBuilder;
 import cn.featherfly.common.lang.Lang;
+import cn.featherfly.common.repository.builder.AliasManager;
 import cn.featherfly.common.repository.mapping.ClassMapping;
+import cn.featherfly.common.repository.mapping.MappingFactory;
 import cn.featherfly.common.repository.operate.AggregateFunction;
 import cn.featherfly.hammer.dsl.query.TypeQueryConditionGroupLogicExpression;
+import cn.featherfly.hammer.dsl.query.TypeQueryEntity;
 import cn.featherfly.hammer.sqldb.jdbc.Jdbc;
 
 /**
@@ -24,24 +27,34 @@ public class TypeSqlQueryExpression extends TypeSqlQueryConditionGroupExpression
     /**
      * Instantiates a new sql query expression.
      *
-     * @param jdbc          the jdbc
-     * @param classMapping  the class mapping
-     * @param selectBuilder the select builder
+     * @param jdbc            the jdbc
+     * @param classMapping    the class mapping
+     * @param typeQueryEntity the type query entity
+     * @param factory         the factory
+     * @param aliasManager    the alias manager
+     * @param selectBuilder   the select builder
      */
-    public TypeSqlQueryExpression(Jdbc jdbc, ClassMapping<?> classMapping, SqlSelectBasicBuilder selectBuilder) {
-        super(jdbc, selectBuilder.getTableAlias(), classMapping);
+    public TypeSqlQueryExpression(Jdbc jdbc, ClassMapping<?> classMapping, TypeQueryEntity typeQueryEntity,
+            MappingFactory factory, AliasManager aliasManager, SqlSelectBasicBuilder selectBuilder) {
+        super(jdbc, selectBuilder.getTableAlias(), classMapping, factory, aliasManager, typeQueryEntity);
         this.selectBuilder = selectBuilder;
     }
 
     /**
-     * @param jdbc
-     * @param parent
-     * @param queryAlias
-     * @param classMapping
+     * Instantiates a new type sql query expression.
+     *
+     * @param jdbc            the jdbc
+     * @param parent          the parent
+     * @param queryAlias      the query alias
+     * @param classMapping    the class mapping
+     * @param factory         the factory
+     * @param aliasManager    the alias manager
+     * @param typeQueryEntity the type query entity
      */
     TypeSqlQueryExpression(Jdbc jdbc, TypeQueryConditionGroupLogicExpression parent, String queryAlias,
-            ClassMapping<?> classMapping) {
-        super(jdbc, parent, queryAlias, classMapping);
+            ClassMapping<?> classMapping, MappingFactory factory, AliasManager aliasManager,
+            TypeQueryEntity typeQueryEntity) {
+        super(jdbc, parent, queryAlias, classMapping, factory, aliasManager, typeQueryEntity);
     }
 
     /**
@@ -49,9 +62,10 @@ public class TypeSqlQueryExpression extends TypeSqlQueryConditionGroupExpression
      */
     @Override
     protected TypeSqlQueryConditionGroupExpression createGroup(TypeQueryConditionGroupLogicExpression parent,
-            String queryAlias) {
+            String queryAlias, TypeQueryEntity typeQueryEntity) {
         selectBuilder.setTableAlias(queryAlias);
-        return new TypeSqlQueryExpression(jdbc, parent, queryAlias, classMapping);
+        return new TypeSqlQueryExpression(jdbc, parent, queryAlias, classMapping, factory, aliasManager,
+                typeQueryEntity);
     }
 
     /**

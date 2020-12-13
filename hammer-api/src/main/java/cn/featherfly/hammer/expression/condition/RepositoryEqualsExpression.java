@@ -1,6 +1,9 @@
 
 package cn.featherfly.hammer.expression.condition;
 
+import cn.featherfly.common.lang.function.SerializableFunction;
+import cn.featherfly.common.lang.function.SerializableSupplier;
+
 /**
  * <p>
  * RepositoryEqualsExpression
@@ -44,4 +47,28 @@ public interface RepositoryEqualsExpression<C extends ConditionExpression, L ext
      * @return LogicExpression
      */
     L eq(int repositoryIndex, String name, Object value);
+
+    /**
+     * 等于.
+     *
+     * @param <T>        the generic type
+     * @param <R>        the generic type
+     * @param repository the repository
+     * @param property   the property
+     * @param value      参数值
+     * @return LogicExpression
+     */
+    <T, R> L eq(SerializableFunction<T, R> repository, SerializableFunction<T, R> property, Object value);
+
+    /**
+     * 等于.
+     *
+     * @param <T>        the generic type
+     * @param <R>        the generic type
+     * @param repository the repository
+     * @param property   对象属性
+     * @return LogicExpression
+     */
+    <T, R> L eq(SerializableSupplier<T> repository, SerializableFunction<T, R> property);
+
 }

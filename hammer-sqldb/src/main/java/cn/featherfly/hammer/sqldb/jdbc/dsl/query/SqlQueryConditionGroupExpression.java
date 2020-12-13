@@ -23,6 +23,7 @@ import cn.featherfly.common.structure.page.SimplePaginationResults;
 import cn.featherfly.hammer.dsl.query.QueryConditionGroupExpression;
 import cn.featherfly.hammer.dsl.query.QueryConditionGroupLogicExpression;
 import cn.featherfly.hammer.dsl.query.QuerySortExpression;
+import cn.featherfly.hammer.dsl.query.TypeQueryEntity;
 import cn.featherfly.hammer.expression.query.QueryLimitExecutor;
 import cn.featherfly.hammer.sqldb.jdbc.Jdbc;
 import cn.featherfly.hammer.sqldb.sql.dml.AbstractSqlConditionGroupExpression;
@@ -74,7 +75,7 @@ public class SqlQueryConditionGroupExpression
      */
     SqlQueryConditionGroupExpression(Jdbc jdbc, QueryConditionGroupLogicExpression parent, String queryAlias,
             ClassMapping<?> classMapping) {
-        super(jdbc.getDialect(), parent, queryAlias, classMapping);
+        super(jdbc.getDialect(), parent, queryAlias, classMapping, null);
         this.jdbc = jdbc;
     }
 
@@ -88,7 +89,8 @@ public class SqlQueryConditionGroupExpression
      * {@inheritDoc}
      */
     @Override
-    protected QueryConditionGroupExpression createGroup(QueryConditionGroupLogicExpression parent, String queryAlias) {
+    protected QueryConditionGroupExpression createGroup(QueryConditionGroupLogicExpression parent, String queryAlias,
+            TypeQueryEntity typeQueryEntity) {
         return new SqlQueryConditionGroupExpression(jdbc, parent, queryAlias, classMapping);
     }
 

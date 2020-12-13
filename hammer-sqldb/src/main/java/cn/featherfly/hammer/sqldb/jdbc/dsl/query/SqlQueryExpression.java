@@ -8,6 +8,7 @@ import cn.featherfly.common.repository.mapping.ClassMapping;
 import cn.featherfly.common.repository.operate.AggregateFunction;
 import cn.featherfly.hammer.dsl.query.QueryConditionGroupExpression;
 import cn.featherfly.hammer.dsl.query.QueryConditionGroupLogicExpression;
+import cn.featherfly.hammer.dsl.query.TypeQueryEntity;
 import cn.featherfly.hammer.sqldb.jdbc.Jdbc;
 
 /**
@@ -79,7 +80,8 @@ public class SqlQueryExpression extends SqlQueryConditionGroupExpression {
      * {@inheritDoc}
      */
     @Override
-    protected QueryConditionGroupExpression createGroup(QueryConditionGroupLogicExpression parent, String queryAlias) {
+    protected QueryConditionGroupExpression createGroup(QueryConditionGroupLogicExpression parent, String queryAlias,
+            TypeQueryEntity typeQueryEntity) {
         selectBuilder.setTableAlias(queryAlias);
         return new SqlQueryExpression(jdbc, parent, queryAlias, classMapping);
     }

@@ -1,7 +1,7 @@
 
 package cn.featherfly.hammer.dsl.query;
 
-import cn.featherfly.hammer.expression.ConditionExpression;
+import cn.featherfly.hammer.expression.condition.TypeConditionsExpression;
 
 /**
  * <p>
@@ -11,5 +11,5 @@ import cn.featherfly.hammer.expression.ConditionExpression;
  * @author zhongj
  */
 public interface TypeQueryConditionExpression
-        extends ConditionExpression<TypeQueryConditionExpression, TypeQueryConditionLogicExpression> {
+        extends TypeConditionsExpression<TypeQueryConditionExpression, TypeQueryConditionLogicExpression> {
 }
