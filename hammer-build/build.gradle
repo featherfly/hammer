@@ -5,7 +5,7 @@ allprojects {
     dependencies {
         api group: 'org.slf4j', name: 'slf4j-api', version: '1.7.30'
         api group: 'cn.featherfly.common', name: 'common-api', version: '0.2.4'
-        api group: 'cn.featherfly.common', name: 'common-core', version: '1.8.19'		
+        api group: 'cn.featherfly.common', name: 'common-core', version: '1.8.21'		
 
         testImplementation group: 'org.testng', name: 'testng', version: '7.3.0'
         testImplementation group: 'com.google.inject', name: 'guice', version: '4.2.3'
