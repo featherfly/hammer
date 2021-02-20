@@ -385,7 +385,7 @@ public class SqlTplExecutor implements TplExecutor {
         Tuple3<String, TplExecuteConfig, ConditionParamsManager> tuple3 = getQueryExecution(tplExecuteId, params,
                 valueType);
         if (tuple3.get2().getParamNamed() == null || tuple3.get2().getParamNamed()) {
-            return jdbc.queryValue(tuple3.get0(), getEffectiveParamMap(params, tuple3.get2()), valueType);
+            return jdbc.queryValue(tuple3.get0(), valueType, getEffectiveParamMap(params, tuple3.get2()));
         } else {
             return jdbc.queryValue(tuple3.get0(), valueType, getEffectiveParamArray(params, tuple3.get2()));
         }

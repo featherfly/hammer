@@ -91,7 +91,6 @@ public class SqlQueryExpression extends SqlQueryConditionGroupExpression {
      */
     @Override
     public Long count() {
-        // TODO count 方法
         selectBuilder.addSelectColumn(Chars.STAR, AggregateFunction.COUNT);
         return longInt();
     }

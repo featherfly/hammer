@@ -37,6 +37,7 @@ public class UserService {
     public void saveBatch(User... users) {
         ArrayUtils.each(users, (a, i) -> {
             userMapper.save(a);
+            System.out.println("save " + i);
             insert(Randoms.getString(10), Randoms.getString(6), Randoms.getInt(4));
             if (i > 1) {
                 throw new RuntimeException("test transaction , i = " + i);

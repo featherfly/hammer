@@ -6,6 +6,7 @@ import java.util.stream.Collectors;
 
 import cn.featherfly.common.bean.BeanUtils;
 import cn.featherfly.common.db.mapping.ClassMappingUtils;
+import cn.featherfly.common.db.mapping.SqlTypeMappingManager;
 import cn.featherfly.common.db.metadata.DatabaseMetadata;
 import cn.featherfly.common.lang.Lang;
 import cn.featherfly.common.repository.mapping.ClassMapping;
@@ -18,44 +19,50 @@ import cn.featherfly.hammer.sqldb.jdbc.Jdbc;
  * <p>
  * 根据ID读取操作
  * </p>
+ * .
  *
- * @param <T> 对象类型
  * @author zhongj
- * @since 1.0
  * @version 1.0
+ * @param <T> 对象类型
+ * @since 1.0
  */
 public class GetOperate<T> extends AbstractQueryOperate<T> {
 
     /**
      * 使用给定数据源以及给定对象生成读取操作.
      *
-     * @param jdbc         jdbc
-     * @param classMapping classMapping
+     * @param jdbc                  jdbc
+     * @param classMapping          classMapping
+     * @param sqlTypeMappingManager the sql type mapping manager
      */
-    public GetOperate(Jdbc jdbc, ClassMapping<T> classMapping) {
-        super(jdbc, classMapping);
+    public GetOperate(Jdbc jdbc, ClassMapping<T> classMapping, SqlTypeMappingManager sqlTypeMappingManager) {
+        super(jdbc, classMapping, sqlTypeMappingManager);
     }
 
     /**
      * 使用给定数据源以及给定对象生成读取操作.
      *
-     * @param jdbc         jdbc
-     * @param classMapping classMapping
-     * @param dataBase     具体库
+     * @param jdbc                  jdbc
+     * @param classMapping          classMapping
+     * @param sqlTypeMappingManager the sql type mapping manager
+     * @param dataBase              具体库
      */
-    public GetOperate(Jdbc jdbc, ClassMapping<T> classMapping, String dataBase) {
-        super(jdbc, classMapping, dataBase);
+    public GetOperate(Jdbc jdbc, ClassMapping<T> classMapping, SqlTypeMappingManager sqlTypeMappingManager,
+            String dataBase) {
+        super(jdbc, classMapping, sqlTypeMappingManager, dataBase);
     }
 
     /**
      * 使用给定数据源以及给定对象生成读取操作.
      *
-     * @param jdbc             the jdbc
-     * @param classMapping     the class mapping
-     * @param databaseMetadata the database metadata
+     * @param jdbc                  the jdbc
+     * @param classMapping          the class mapping
+     * @param sqlTypeMappingManager the sql type mapping manager
+     * @param databaseMetadata      the database metadata
      */
-    public GetOperate(Jdbc jdbc, ClassMapping<T> classMapping, DatabaseMetadata databaseMetadata) {
-        super(jdbc, classMapping, databaseMetadata);
+    public GetOperate(Jdbc jdbc, ClassMapping<T> classMapping, SqlTypeMappingManager sqlTypeMappingManager,
+            DatabaseMetadata databaseMetadata) {
+        super(jdbc, classMapping, sqlTypeMappingManager, databaseMetadata);
     }
 
     private List<PropertyMapping> pkPms;
@@ -112,7 +119,6 @@ public class GetOperate<T> extends AbstractQueryOperate<T> {
         if (id == null) {
             throw new SqldbHammerException("#get.id.null");
         }
-        // TODO 没有使用SqlTypeMappingManager
         return jdbc.querySingle(sql, (RowMapper<T>) (res, rowNum) -> mapRow(res, rowNum), id);
     }
 
@@ -132,7 +138,6 @@ public class GetOperate<T> extends AbstractQueryOperate<T> {
         if (Lang.isEmpty(ids)) {
             throw new SqldbHammerException("#get.id.null");
         }
-        // TODO 没有使用SqlTypeMappingManager
         return jdbc.querySingle(sql, (RowMapper<T>) (res, rowNum) -> mapRow(res, rowNum), ids.toArray());
     }
 

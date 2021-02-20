@@ -186,6 +186,68 @@ public interface Jdbc {
     <T> T querySingle(String sql, Class<T> elementType, Object... args);
 
     /**
+     * Query unique.
+     *
+     * @param sql  sql
+     * @param args args
+     * @return map
+     */
+    Map<String, Object> queryUnique(String sql, Map<String, Object> args);
+
+    /**
+     * Query unique.
+     *
+     * @param sql  sql
+     * @param args args
+     * @return map
+     */
+    Map<String, Object> queryUnique(String sql, Object... args);
+
+    /**
+     * Query unique.
+     *
+     * @param <T>       generic type
+     * @param sql       sql
+     * @param rowMapper rowMapper
+     * @param args      args
+     * @return single elementType object
+     */
+    <T> T queryUnique(String sql, RowMapper<T> rowMapper, Object... args);
+
+    /**
+     * Query unique.
+     *
+     * @param <T>       generic type
+     * @param sql       sql
+     * @param rowMapper rowMapper
+     * @param args      args
+     * @return single elementType object
+     */
+    <T> T queryUnique(String sql, RowMapper<T> rowMapper, Map<String, Object> args);
+
+    /**
+     * Query unique.
+     *
+     * @param <T>         generic type
+     * @param sql         sql
+     * @param elementType return object type
+     * @param args        args
+     * @return element type object list
+     */
+    <T> T queryUnique(String sql, Class<T> elementType, Map<String, Object> args);
+
+    /**
+     * Query unique.
+     *
+     * @param <T>         generic type
+     * @param sql         sql
+     * @param elementType return object type
+     * @param args        args
+     * @return single elementType object
+     */
+    <T> T queryUnique(String sql, Class<T> elementType, Object... args);
+
+    /**
      * queryInt.
      *
      * @param sql  the sql
@@ -291,10 +353,31 @@ public interface Jdbc {
      *
      * @param <T>       the generic type
      * @param sql       the sql
-     * @param args      the args
      * @param valueType the value type
+     * @param args      the args
      * @return the t
      */
-    <T> T queryValue(String sql, Map<String, Object> args, Class<T> valueType);
+    <T> T queryValue(String sql, Class<T> valueType, Map<String, Object> args);
+
+    /**
+     * Query value.
+     *
+     * @param <T>       the generic type
+     * @param sql       the sql
+     * @param rowMapper the row mapper
+     * @param args      the args
+     * @return the t
+     */
+    <T> T queryValue(String sql, RowMapper<T> rowMapper, Object... args);
+
+    /**
+     * Query value.
+     *
+     * @param <T>  the generic type
+     * @param sql  the sql
+     * @param args the args
+     * @return the t
+     */
+    <T> T queryValue(String sql, RowMapper<T> rowMapper, Map<String, Object> args);
 
 }

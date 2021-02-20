@@ -224,7 +224,6 @@ public abstract class AbstractSqlConditionExpression<L> implements SqlBuilder, P
             PropertyMapping propertyMapping = classMapping.getPropertyMapping(propertyName);
             if (Lang.isNotEmpty(propertyMapping.getPropertyMappings())) {
                 for (PropertyMapping pm : propertyMapping.getPropertyMappings()) {
-                    // FIXME Tuple内参数不能为null,使用Optional来处理
                     Object obj = cn.featherfly.common.bean.BeanUtils.getProperty(r, pm.getPropertyName());
                     Optional<R> optional = Optional.empty();
                     if (obj != null) {

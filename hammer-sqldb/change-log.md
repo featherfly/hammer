@@ -1,5 +1,5 @@
-# 0.5.7
-1. 
+# 0.5.7 
+1. JdbcImpl的所有的query方法都支持SqlTypeMappingManager的自定义类型
 
 # 0.5.6 2020-12-12
 1. Jdbc方法参数位置修改
