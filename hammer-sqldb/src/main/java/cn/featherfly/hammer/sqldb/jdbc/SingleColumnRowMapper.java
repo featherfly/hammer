@@ -23,6 +23,12 @@ import cn.featherfly.common.db.mapping.SqlTypeMappingManager;
 import cn.featherfly.common.lang.AssertIllegalArgument;
 import cn.featherfly.common.lang.reflect.GenericClass;
 
+/**
+ * The Class SingleColumnRowMapper.
+ *
+ * @author zhongj
+ * @param <T> the generic type
+ */
 /*
  * package org.springframework.jdbc.core; import java.sql.ResultSet; import
  * java.sql.ResultSetMetaData; import java.sql.SQLException; import
@@ -61,6 +67,7 @@ public class SingleColumnRowMapper<T> implements RowMapper<T>, cn.featherfly.com
      * Create a new {@code SingleColumnRowMapper}.
      *
      * @param requiredType the type that each result object is expected to match
+     * @param manager      the manager
      */
     public SingleColumnRowMapper(Class<T> requiredType, SqlTypeMappingManager manager) {
         setRequiredType(requiredType);
@@ -72,6 +79,8 @@ public class SingleColumnRowMapper<T> implements RowMapper<T>, cn.featherfly.com
      * <p>
      * If not specified, the column value will be exposed as returned by the
      * JDBC driver.
+     *
+     * @param requiredType the new required type
      */
     public void setRequiredType(Class<T> requiredType) {
         this.requiredType = ClassUtils.resolvePrimitiveIfNecessary(requiredType);
@@ -82,8 +91,9 @@ public class SingleColumnRowMapper<T> implements RowMapper<T>, cn.featherfly.com
      * <p>
      * Default is the {@link DefaultConversionService}.
      *
-     * @since 5.0.4
+     * @param conversionService the new conversion service
      * @see DefaultConversionService#getSharedInstance
+     * @since 5.0.4
      */
     public void setConversionService(@Nullable ConversionService conversionService) {
         this.conversionService = conversionService;
@@ -117,6 +127,10 @@ public class SingleColumnRowMapper<T> implements RowMapper<T>, cn.featherfly.com
      * {@code getColumnValue()} and also {@code convertValueToRequiredType}, if
      * necessary.
      *
+     * @param rs     the rs
+     * @param rowNum the row num
+     * @return the t
+     * @throws SQLException the SQL exception
      * @see java.sql.ResultSetMetaData#getColumnCount()
      * @see #getColumnValue(java.sql.ResultSet, int, Class)
      * @see #convertValueToRequiredType(Object, Class)

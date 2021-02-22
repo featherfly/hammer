@@ -69,8 +69,8 @@ import cn.featherfly.common.lang.AssertIllegalArgument;
  *
  * @author Thomas Risberg
  * @author Juergen Hoeller
- * @since 2.5
  * @param <T> the result type
+ * @since 2.5
  */
 public class NestedBeanPropertyRowMapper<T>
         implements RowMapper<T>, cn.featherfly.common.repository.mapping.RowMapper<T> {
@@ -107,8 +107,6 @@ public class NestedBeanPropertyRowMapper<T>
      * Create a new {@code BeanPropertyRowMapper}, accepting unpopulated
      * properties in the target bean.
      * <p>
-     * Consider using the {@link #newInstance} factory method instead, which
-     * allows for specifying the mapped type once only.
      *
      * @param mappedClass the class that each row should be mapped to
      * @param manager     the manager
@@ -265,8 +263,8 @@ public class NestedBeanPropertyRowMapper<T>
      *
      * @param name the original name
      * @return the converted name
-     * @since 4.2
      * @see #lowerCaseName
+     * @since 4.2
      */
     protected String underscoreName(String name) {
         if (!StringUtils.hasLength(name)) {
@@ -324,6 +322,10 @@ public class NestedBeanPropertyRowMapper<T>
      * <p>
      * Utilizes public setters and result set meta-data.
      *
+     * @param rs        the rs
+     * @param rowNumber the row number
+     * @return the t
+     * @throws SQLException the SQL exception
      * @see java.sql.ResultSetMetaData
      */
     @Override

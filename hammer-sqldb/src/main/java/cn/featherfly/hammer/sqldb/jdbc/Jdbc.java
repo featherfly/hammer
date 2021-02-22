@@ -342,8 +342,8 @@ public interface Jdbc {
      *
      * @param <T>       the generic type
      * @param sql       the sql
-     * @param args      the args
      * @param valueType the value type
+     * @param args      the args
      * @return the t
      */
     <T> T queryValue(String sql, Class<T> valueType, Object... args);
@@ -373,9 +373,10 @@ public interface Jdbc {
     /**
      * Query value.
      *
-     * @param <T>  the generic type
-     * @param sql  the sql
-     * @param args the args
+     * @param <T>       the generic type
+     * @param sql       the sql
+     * @param rowMapper the row mapper
+     * @param args      the args
      * @return the t
      */
     <T> T queryValue(String sql, RowMapper<T> rowMapper, Map<String, Object> args);
