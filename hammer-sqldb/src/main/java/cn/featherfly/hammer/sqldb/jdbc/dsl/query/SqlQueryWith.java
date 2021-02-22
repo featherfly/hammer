@@ -8,22 +8,24 @@ import java.util.Map;
 import java.util.stream.Collectors;
 
 import cn.featherfly.common.db.builder.dml.basic.SqlSelectJoinOnBasicBuilder;
+import cn.featherfly.common.db.dialect.Join;
 import cn.featherfly.common.db.mapping.ClassMappingUtils;
 import cn.featherfly.common.lang.LambdaUtils;
 import cn.featherfly.common.lang.function.SerializableFunction;
 import cn.featherfly.common.repository.builder.AliasManager;
 import cn.featherfly.common.repository.mapping.ClassMapping;
 import cn.featherfly.common.repository.mapping.MappingFactory;
+import cn.featherfly.common.repository.mapping.RowMapper;
 import cn.featherfly.common.structure.page.Page;
 import cn.featherfly.hammer.dsl.query.QueryWith;
 import cn.featherfly.hammer.dsl.query.RepositoryQueryConditionGroupExpression;
 import cn.featherfly.hammer.expression.query.QueryLimitExecutor;
-import cn.featherfly.common.repository.mapping.RowMapper;
 
 /**
  * <p>
  * SqlQueryWith
  * </p>
+ * .
  *
  * @author zhongj
  */
@@ -47,6 +49,8 @@ public class SqlQueryWith implements QueryWith, SqlQueryWithOn, SqlQueryWithEnti
 
     private ClassMapping<?> classMapping;
 
+    private Join join;
+
     /**
      * Instantiates a new sql query with.
      *
@@ -61,6 +65,25 @@ public class SqlQueryWith implements QueryWith, SqlQueryWithOn, SqlQueryWithEnti
     public SqlQueryWith(SqlQueryEntityProperties sqlQueryEntityProperties, AliasManager aliasManager,
             MappingFactory factory, String selectTableAlis, String selectTableColumn, String joinTableName,
             String joinTableAlias) {
+        this(sqlQueryEntityProperties, aliasManager, factory, selectTableAlis, selectTableColumn, joinTableName,
+                joinTableAlias, Join.INNER_JOIN);
+    }
+
+    /**
+     * Instantiates a new sql query with.
+     *
+     * @param sqlQueryEntityProperties the sql query entity properties
+     * @param aliasManager             the alias manager
+     * @param factory                  the factory
+     * @param selectTableAlis          the select table alis
+     * @param selectTableColumn        the select table column
+     * @param joinTableName            the join table name
+     * @param joinTableAlias           the join table alias
+     * @param join                     the join
+     */
+    public SqlQueryWith(SqlQueryEntityProperties sqlQueryEntityProperties, AliasManager aliasManager,
+            MappingFactory factory, String selectTableAlis, String selectTableColumn, String joinTableName,
+            String joinTableAlias, Join join) {
         super();
         this.sqlQueryEntityProperties = sqlQueryEntityProperties;
         this.aliasManager = aliasManager;
@@ -69,6 +92,7 @@ public class SqlQueryWith implements QueryWith, SqlQueryWithOn, SqlQueryWithEnti
         this.selectTableColumn = selectTableColumn;
         this.joinTableName = joinTableName;
         this.joinTableAlias = joinTableAlias;
+        this.join = join;
     }
 
     /**
@@ -92,6 +116,31 @@ public class SqlQueryWith implements QueryWith, SqlQueryWithOn, SqlQueryWithEnti
         classMapping = factory.getClassMapping(joinType);
         joinTableName = classMapping.getRepositoryName();
         joinTableAlias = aliasManager.put(classMapping.getRepositoryName());
+    }
+
+    /**
+     * Instantiates a new sql query with.
+     *
+     * @param sqlQueryEntityProperties the sql query entity properties
+     * @param aliasManager             the alias manager
+     * @param factory                  the factory
+     * @param selectTableAlis          the select table alis
+     * @param selectTableColumn        the select table column
+     * @param joinType                 the join type
+     * @param join                     the join
+     */
+    public SqlQueryWith(SqlQueryEntityProperties sqlQueryEntityProperties, AliasManager aliasManager,
+            MappingFactory factory, String selectTableAlis, String selectTableColumn, Class<?> joinType, Join join) {
+        super();
+        this.sqlQueryEntityProperties = sqlQueryEntityProperties;
+        this.aliasManager = aliasManager;
+        this.factory = factory;
+        this.selectTableAlis = selectTableAlis;
+        this.selectTableColumn = selectTableColumn;
+        classMapping = factory.getClassMapping(joinType);
+        joinTableName = classMapping.getRepositoryName();
+        joinTableAlias = aliasManager.put(classMapping.getRepositoryName());
+        this.join = join;
     }
 
     /**
@@ -138,10 +187,10 @@ public class SqlQueryWith implements QueryWith, SqlQueryWithOn, SqlQueryWithEnti
 
     private SqlQueryWithEntity on2(String columnName, String tableAlias, String tableColumn) {
         if (classMapping == null) {
-            selectJoinOnBasicBuilder = sqlQueryEntityProperties.getSelectBuilder().join(tableAlias, tableColumn,
+            selectJoinOnBasicBuilder = sqlQueryEntityProperties.getSelectBuilder().join(join, tableAlias, tableColumn,
                     joinTableName, joinTableAlias, columnName);
         } else {
-            selectJoinOnBasicBuilder = sqlQueryEntityProperties.getSelectBuilder().join(tableAlias, tableColumn,
+            selectJoinOnBasicBuilder = sqlQueryEntityProperties.getSelectBuilder().join(join, tableAlias, tableColumn,
                     classMapping, joinTableAlias, columnName);
         }
         return this;
@@ -194,7 +243,10 @@ public class SqlQueryWith implements QueryWith, SqlQueryWithOn, SqlQueryWithEnti
      * <p>
      * 添加select的列
      * </p>
+     * .
      *
+     * @param <T>          the generic type
+     * @param <R>          the generic type
      * @param propertyName propertyName
      * @param aliasName    alias name
      * @return QueryEntityPropertiesExpression
@@ -208,6 +260,7 @@ public class SqlQueryWith implements QueryWith, SqlQueryWithOn, SqlQueryWithEnti
      * <p>
      * 添加select的列
      * </p>
+     * .
      *
      * @param columnName propertyName
      * @param aliasName  alias name
@@ -223,6 +276,7 @@ public class SqlQueryWith implements QueryWith, SqlQueryWithOn, SqlQueryWithEnti
      * <p>
      * 添加select的列
      * </p>
+     * .
      *
      * @param columnNameMap columnNameMap
      * @return QueryEntityPropertiesExpression

@@ -1,3 +1,7 @@
+# 0.5.8 
+1. SqlQueryEntity加入SqlQueryWithOn with(Join join, String repositoryName)，SqlQueryWithOn with(Join join, Class<T> repositoryType)方法
+2. 
+
 # 0.5.7 2020-02-22
 1. JdbcImpl的所有的query方法都支持SqlTypeMappingManager的自定义类型
 
