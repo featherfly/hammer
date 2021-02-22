@@ -11,10 +11,7 @@ import cn.featherfly.common.db.dialect.Dialect;
 import cn.featherfly.common.repository.mapping.RowMapper;
 
 /**
- * <p>
- * Jdbc
- * </p>
- * .
+ * Jdbc.
  *
  * @author zhongj
  */
