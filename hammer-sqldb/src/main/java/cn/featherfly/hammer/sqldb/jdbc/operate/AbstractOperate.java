@@ -10,6 +10,7 @@ import java.util.Map;
 import java.util.Map.Entry;
 
 import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import cn.featherfly.common.bean.BeanDescriptor;
 import cn.featherfly.common.bean.BeanProperty;
@@ -20,7 +21,6 @@ import cn.featherfly.common.db.metadata.DatabaseMetadataManager;
 import cn.featherfly.common.lang.Lang;
 import cn.featherfly.common.repository.mapping.ClassMapping;
 import cn.featherfly.common.repository.mapping.PropertyMapping;
-import cn.featherfly.hammer.sqldb.Constants;
 import cn.featherfly.hammer.sqldb.jdbc.Jdbc;
 
 /**
@@ -37,7 +37,7 @@ import cn.featherfly.hammer.sqldb.jdbc.Jdbc;
 public abstract class AbstractOperate<T> {
 
     /** logger. */
-    protected final Logger logger = Constants.LOGGER;
+    protected final Logger logger = LoggerFactory.getLogger(this.getClass());
 
     /** sql 语句. */
     protected String sql;

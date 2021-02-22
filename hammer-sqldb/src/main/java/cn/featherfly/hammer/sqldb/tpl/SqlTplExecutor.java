@@ -24,7 +24,6 @@ import cn.featherfly.common.structure.page.Limit;
 import cn.featherfly.common.structure.page.Page;
 import cn.featherfly.common.structure.page.PaginationResults;
 import cn.featherfly.common.structure.page.SimplePaginationResults;
-import cn.featherfly.hammer.sqldb.Constants;
 import cn.featherfly.hammer.sqldb.jdbc.Jdbc;
 import cn.featherfly.hammer.tpl.TplConfigFactory;
 import cn.featherfly.hammer.tpl.TplExecuteConfig;
@@ -540,8 +539,8 @@ public class SqlTplExecutor implements TplExecutor {
         TplExecuteConfig config = configFactory.getConfig(tplExecuteId);
         Tuple2<String, ConditionParamsManager> tuple2 = getExecution(tplExecuteId, config.getQuery(), params,
                 resultType);
-        Constants.LOGGER.debug("tplExecuteId -> {} \nexecuteQuerySql -> {} \nqueryTemplate -> {}", tplExecuteId,
-                tuple2.get0(), config.getQuery());
+        logger.debug("tplExecuteId -> {} \nexecuteQuerySql -> {} \nqueryTemplate -> {}", tplExecuteId, tuple2.get0(),
+                config.getQuery());
         return Tuples.of(tuple2.get0(), config, tuple2.get1());
     }
 
@@ -559,8 +558,8 @@ public class SqlTplExecutor implements TplExecutor {
             Map<String, Object> params, TplExecuteConfig config, Class<?> resultType) {
         Tuple2<String, ConditionParamsManager> result = getExecution(tplExecuteId, config.getCount(), params,
                 resultType);
-        Constants.LOGGER.debug("tplExecuteId -> {}  \nexecuteCountSql -> {}  \ncountTemplate -> {}", tplExecuteId,
-                result.get0(), config.getCount());
+        logger.debug("tplExecuteId -> {}  \nexecuteCountSql -> {}  \ncountTemplate -> {}", tplExecuteId, result.get0(),
+                config.getCount());
         return result;
     }
 

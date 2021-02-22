@@ -1,7 +1,6 @@
 
 package cn.featherfly.hammer.sqldb.jdbc.dsl.query;
 
-import cn.featherfly.hammer.sqldb.jdbc.dsl.query.SqlQueryConditionGroupExpression;
 import cn.featherfly.hammer.sqldb.jdbc.dsl.type.StaticTypeQueryConditionGroupExpression;
 import cn.featherfly.hammer.sqldb.jdbc.dsl.type.StaticTypeStringExpression;
 import cn.featherfly.hammer.sqldb.jdbc.vo.User;
@@ -13,29 +12,26 @@ import cn.featherfly.hammer.sqldb.jdbc.vo.User;
  *
  * @author zhongj
  */
-public class UserSqlQueryConditionGroupExpression extends
-        StaticTypeQueryConditionGroupExpression<User, UserSqlQueryConditionGroupExpression> {
+public class UserSqlQueryConditionGroupExpression
+        extends StaticTypeQueryConditionGroupExpression<User, UserSqlQueryConditionGroupExpression> {
 
     /**
      * @param queryConditionGroupExpression
      */
-    public UserSqlQueryConditionGroupExpression(
-            SqlQueryConditionGroupExpression queryConditionGroupExpression) {
+    public UserSqlQueryConditionGroupExpression(SqlQueryConditionGroupExpression queryConditionGroupExpression) {
         this(queryConditionGroupExpression, null);
     }
 
     /**
      * @param queryConditionGroupExpression
      */
-    public UserSqlQueryConditionGroupExpression(
-            SqlQueryConditionGroupExpression queryConditionGroupExpression,
+    public UserSqlQueryConditionGroupExpression(SqlQueryConditionGroupExpression queryConditionGroupExpression,
             UserSqlQueryConditionGroupExpression parent) {
         super(queryConditionGroupExpression, parent);
     }
 
     public StaticTypeStringExpression<User, UserSqlQueryConditionGroupExpression> username() {
-        return new StaticTypeStringExpression<>(
-                queryConditionGroupExpression.propertyString("username"), this);
+        return new StaticTypeStringExpression<>(queryConditionGroupExpression.propertyString("username"), this);
 
     }
 
@@ -45,8 +41,7 @@ public class UserSqlQueryConditionGroupExpression extends
     // }
 
     public StaticTypeStringExpression<User, UserSqlQueryConditionGroupExpression> pwd() {
-        return new StaticTypeStringExpression<>(
-                queryConditionGroupExpression.propertyString("password"), this);
+        return new StaticTypeStringExpression<>(queryConditionGroupExpression.propertyString("password"), this);
     }
 
     /**
@@ -56,8 +51,7 @@ public class UserSqlQueryConditionGroupExpression extends
     protected UserSqlQueryConditionGroupExpression createChild(
             SqlQueryConditionGroupExpression queryConditionGroupExpression,
             UserSqlQueryConditionGroupExpression parent) {
-        return new UserSqlQueryConditionGroupExpression(
-                queryConditionGroupExpression, this);
+        return new UserSqlQueryConditionGroupExpression(queryConditionGroupExpression, this);
     }
 
 }

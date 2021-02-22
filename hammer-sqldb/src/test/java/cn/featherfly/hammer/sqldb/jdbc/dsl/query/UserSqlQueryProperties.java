@@ -1,10 +1,8 @@
 
 package cn.featherfly.hammer.sqldb.jdbc.dsl.query;
 
-import cn.featherfly.hammer.sqldb.jdbc.dsl.query.SqlQueryConditionGroupExpression;
-import cn.featherfly.hammer.sqldb.jdbc.dsl.query.SqlQueryEntityProperties;
-import cn.featherfly.hammer.sqldb.jdbc.dsl.type.StaticTypeQueryProperties;
 import cn.featherfly.common.db.mapping.JdbcMappingFactory;
+import cn.featherfly.hammer.sqldb.jdbc.dsl.type.StaticTypeQueryProperties;
 import cn.featherfly.hammer.sqldb.jdbc.vo.User;
 
 /**

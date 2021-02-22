@@ -1,4 +1,4 @@
-# 0.5.7 
+# 0.5.7 2020-02-22
 1. JdbcImpl的所有的query方法都支持SqlTypeMappingManager的自定义类型
 
 # 0.5.6 2020-12-12
@@ -84,11 +84,9 @@ select <@prop alias='r'>*</@prop> from <@wrap>user</@wrap>
     <@and if=gender?? name='gender'>gender = :gender</@and>
     <@and if=tag?? && tag?size gt 0 name='tag'>tag in :tag</@and>
     <@and>
-    
         <@and if=username?? && username?size gt 0> username = :username</@and>
         <@or if=email?? && email?length gt 0>email = :email</@or>
         <@or if=mobile?? && mobile?length gt 0>mobile = :mobile</@or>
-    
     </@and>
 </@where>
 </@sql id='roleFromTemplate'>
