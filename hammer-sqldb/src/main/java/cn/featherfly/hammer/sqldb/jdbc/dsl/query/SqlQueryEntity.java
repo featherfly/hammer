@@ -56,22 +56,39 @@ public interface SqlQueryEntity extends QueryEntity {
     QueryEntityProperties propertyAlias(Map<String, String> columnNameMap);
 
     /**
-     * With.
+     * Join.
+     *
+     * @param repositoryName the repository name
+     * @return the sql query with on
+     */
+    SqlQueryWithOn join(String repositoryName);
+
+    /**
+     * Join.
      *
      * @param join           the join
      * @param repositoryName the repository name
      * @return the sql query with on
      */
-    SqlQueryWithOn with(Join join, String repositoryName);
+    SqlQueryWithOn join(Join join, String repositoryName);
 
     /**
-     * With.
+     * Join.
+     *
+     * @param <T>            the generic type
+     * @param repositoryType the repository type
+     * @return the sql query with on
+     */
+    <T> SqlQueryWithOn join(Class<T> repositoryType);
+
+    /**
+     * Join.
      *
      * @param <T>            the generic type
      * @param join           the join
      * @param repositoryType the repository type
      * @return the sql query with on
      */
-    <T> SqlQueryWithOn with(Join join, Class<T> repositoryType);
+    <T> SqlQueryWithOn join(Join join, Class<T> repositoryType);
 
 }

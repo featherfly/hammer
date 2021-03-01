@@ -1,5 +1,5 @@
 # 0.5.8 
-1. SqlQueryEntity加入SqlQueryWithOn with(Join join, String repositoryName)，SqlQueryWithOn with(Join join, Class<T> repositoryType)方法
+1. SqlQueryEntity加入join(Join)，join(Join, String)，join(Class<T>)，join(Join, Class<T>)方法
 2. 
 
 # 0.5.7 2020-02-22
