@@ -230,5 +230,4 @@ public class SqlQueryEntityProperties extends AbstractSqlQueryEntityProperties<S
     public QuerySortExpression sort() {
         return new SqlQueryExpression(jdbc, classMapping, selectBuilder).sort();
     }
-
 }

@@ -247,6 +247,18 @@ public interface QueryEntityExpression<Q extends QueryEntityPropertiesExpression
     Q property(Collection<String> propertyNames);
 
     /**
+     * Cast.
+     *
+     * @param <QI>                      the generic type
+     * @param queryEntityExpressionType the query entity expression type
+     * @return the qi
+     */
+    @SuppressWarnings("unchecked")
+    default <QI> QI cast(Class<QI> queryEntityExpressionType) {
+        return (QI) this;
+    }
+
+    /**
      * with.
      *
      * @param repositoryName with repository name

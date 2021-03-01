@@ -1,6 +1,6 @@
 # 0.5.8 
 1. SqlQueryEntity加入join(Join)，join(Join, String)，join(Class<T>)，join(Join, Class<T>)方法
-2. 
+2. QueryEntityExpression加入<QI extends Q> QI cast(Class<QI> queryEntityExpressionType)方法
 
 # 0.5.7 2020-02-22
 1. JdbcImpl的所有的query方法都支持SqlTypeMappingManager的自定义类型
