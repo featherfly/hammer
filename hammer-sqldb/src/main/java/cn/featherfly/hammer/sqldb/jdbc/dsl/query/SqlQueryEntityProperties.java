@@ -178,14 +178,22 @@ public class SqlQueryEntityProperties extends AbstractSqlQueryEntityProperties<S
      */
     @Override
     public SqlQueryWithOn with(String repositoryName) {
-        return with(Join.INNER_JOIN, repositoryName);
+        return join(repositoryName);
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public SqlQueryWithOn with(Join join, String repositoryName) {
+    public SqlQueryWithOn join(String repositoryName) {
+        return join(Join.INNER_JOIN, repositoryName);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public SqlQueryWithOn join(Join join, String repositoryName) {
         return new SqlQueryWith(this, aliasManager, factory, selectBuilder.getTableAlias(), getIdName(), repositoryName,
                 aliasManager.put(repositoryName), join);
     }
@@ -195,14 +203,22 @@ public class SqlQueryEntityProperties extends AbstractSqlQueryEntityProperties<S
      */
     @Override
     public <T> SqlQueryWithOn with(Class<T> repositoryType) {
-        return with(Join.INNER_JOIN, repositoryType);
+        return join(repositoryType);
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public <T> SqlQueryWithOn with(Join join, Class<T> repositoryType) {
+    public <T> SqlQueryWithOn join(Class<T> repositoryType) {
+        return join(Join.INNER_JOIN, repositoryType);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public <T> SqlQueryWithOn join(Join join, Class<T> repositoryType) {
         return new SqlQueryWith(this, aliasManager, factory, selectBuilder.getTableAlias(), getIdName(), repositoryType,
                 join);
     }
