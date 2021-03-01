@@ -10,6 +10,7 @@ import org.springframework.core.convert.ConversionService;
 import org.springframework.core.convert.support.DefaultConversionService;
 import org.springframework.dao.TypeMismatchDataAccessException;
 import org.springframework.jdbc.IncorrectResultSetColumnCountException;
+import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.lang.Nullable;
 import org.springframework.util.ClassUtils;
@@ -24,30 +25,18 @@ import cn.featherfly.common.lang.AssertIllegalArgument;
 import cn.featherfly.common.lang.reflect.GenericClass;
 
 /**
- * The Class SingleColumnRowMapper.
+ * {@link RowMapper} implementation that converts a single column into a single
+ * result value per row. Expects to operate on a {@code java.sql.ResultSet} that
+ * just contains a single column.
+ * <p>
+ * The type of the result value for each row can be specified. The value for the
+ * single column will be extracted from the {@code ResultSet} and converted into
+ * the specified target type.
  *
- * @author zhongj
- * @param <T> the generic type
- */
-/*
- * package org.springframework.jdbc.core; import java.sql.ResultSet; import
- * java.sql.ResultSetMetaData; import java.sql.SQLException; import
- * org.springframework.core.convert.ConversionService; import
- * org.springframework.core.convert.support.DefaultConversionService; import
- * org.springframework.dao.TypeMismatchDataAccessException; import
- * org.springframework.jdbc.IncorrectResultSetColumnCountException; import
- * org.springframework.jdbc.support.JdbcUtils; import
- * org.springframework.lang.Nullable; import
- * org.springframework.util.ClassUtils; import
- * org.springframework.util.NumberUtils; /** {@link RowMapper} implementation
- * that converts a single column into a single result value per row. Expects to
- * operate on a {@code java.sql.ResultSet} that just contains a single column.
- * <p>The type of the result value for each row can be specified. The value for
- * the single column will be extracted from the {@code ResultSet} and converted
- * into the specified target type.
  * @author Juergen Hoeller
  * @author Kazuki Shimizu
- * @since 1.2
+ * @author zhongj
+ * @since 0.5.7
  * @param <T> the result type
  * @see JdbcTemplate#queryForList(String, Class)
  * @see JdbcTemplate#queryForObject(String, Class)

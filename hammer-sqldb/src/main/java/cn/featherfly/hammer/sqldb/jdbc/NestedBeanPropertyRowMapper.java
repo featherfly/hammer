@@ -69,8 +69,9 @@ import cn.featherfly.common.lang.AssertIllegalArgument;
  *
  * @author Thomas Risberg
  * @author Juergen Hoeller
+ * @author zhongj
  * @param <T> the result type
- * @since 2.5
+ * @since 0.1.0
  */
 public class NestedBeanPropertyRowMapper<T>
         implements RowMapper<T>, cn.featherfly.common.repository.mapping.RowMapper<T> {

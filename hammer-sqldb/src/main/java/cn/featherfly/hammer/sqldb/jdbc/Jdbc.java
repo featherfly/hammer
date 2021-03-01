@@ -1,4 +1,3 @@
-
 package cn.featherfly.hammer.sqldb.jdbc;
 
 import java.math.BigDecimal;
