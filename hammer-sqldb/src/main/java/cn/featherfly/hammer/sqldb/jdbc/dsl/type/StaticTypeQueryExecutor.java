@@ -49,4 +49,12 @@ public class StaticTypeQueryExecutor<E> implements cn.featherfly.hammer.expressi
     public E single() {
         return queryExecutor.single(type);
     }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public E unique() {
+        return queryExecutor.unique(type);
+    }
 }

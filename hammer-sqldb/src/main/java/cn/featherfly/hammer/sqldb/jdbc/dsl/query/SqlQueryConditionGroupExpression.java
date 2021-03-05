@@ -280,6 +280,20 @@ public class SqlQueryConditionGroupExpression
      * {@inheritDoc}
      */
     @Override
+    public Map<String, Object> unique() {
+        String sql = getRoot().expression();
+        Object[] params = getRoot().getParams().toArray();
+        if (limit != null) {
+            sql = dialect.getPaginationSql(sql, limit.getOffset(), limit.getLimit());
+            params = dialect.getPaginationSqlParameter(params, limit.getOffset(), limit.getLimit());
+        }
+        return jdbc.queryUnique(sql, params);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
     public <E> E single(Class<E> type) {
         String sql = getRoot().expression();
         Object[] params = getRoot().getParams().toArray();
@@ -294,8 +308,42 @@ public class SqlQueryConditionGroupExpression
      * {@inheritDoc}
      */
     @Override
+    public <E> E unique(Class<E> type) {
+        String sql = getRoot().expression();
+        Object[] params = getRoot().getParams().toArray();
+        if (limit != null) {
+            sql = dialect.getPaginationSql(sql, limit.getOffset(), limit.getLimit());
+            params = dialect.getPaginationSqlParameter(params, limit.getOffset(), limit.getLimit());
+        }
+        return jdbc.queryUnique(sql, type, params);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
     public <E> E single(RowMapper<E> rowMapper) {
-        return jdbc.querySingle(getRoot().expression(), rowMapper, getRoot().getParams().toArray());
+        String sql = getRoot().expression();
+        Object[] params = getRoot().getParams().toArray();
+        if (limit != null) {
+            sql = dialect.getPaginationSql(sql, limit.getOffset(), limit.getLimit());
+            params = dialect.getPaginationSqlParameter(params, limit.getOffset(), limit.getLimit());
+        }
+        return jdbc.querySingle(sql, rowMapper, params);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public <E> E unique(RowMapper<E> rowMapper) {
+        String sql = getRoot().expression();
+        Object[] params = getRoot().getParams().toArray();
+        if (limit != null) {
+            sql = dialect.getPaginationSql(sql, limit.getOffset(), limit.getLimit());
+            params = dialect.getPaginationSqlParameter(params, limit.getOffset(), limit.getLimit());
+        }
+        return jdbc.queryUnique(sql, rowMapper, params);
     }
 
     /**
