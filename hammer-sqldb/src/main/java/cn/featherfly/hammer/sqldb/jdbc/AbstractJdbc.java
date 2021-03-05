@@ -299,7 +299,7 @@ public abstract class AbstractJdbc implements Jdbc {
      */
     @Override
     public Map<String, Object> querySingle(String sql, Map<String, Object> args) {
-        return getSingle(query(sql, args));
+        return singleResult(query(sql, args));
     }
 
     /**
@@ -307,7 +307,7 @@ public abstract class AbstractJdbc implements Jdbc {
      */
     @Override
     public Map<String, Object> querySingle(String sql, Object... args) {
-        return getSingle(query(sql, args));
+        return singleResult(query(sql, args));
     }
 
     /**
@@ -315,7 +315,7 @@ public abstract class AbstractJdbc implements Jdbc {
      */
     @Override
     public <T> T querySingle(String sql, RowMapper<T> rowMapper, Object... args) {
-        return getSingle(query(sql, rowMapper, args));
+        return singleResult(query(sql, rowMapper, args));
     }
 
     /**
@@ -323,7 +323,7 @@ public abstract class AbstractJdbc implements Jdbc {
      */
     @Override
     public <T> T querySingle(String sql, RowMapper<T> rowMapper, Map<String, Object> args) {
-        return getSingle(query(sql, rowMapper, args));
+        return singleResult(query(sql, rowMapper, args));
     }
 
     /**
@@ -331,7 +331,7 @@ public abstract class AbstractJdbc implements Jdbc {
      */
     @Override
     public <T> T querySingle(String sql, Class<T> elementType, Map<String, Object> args) {
-        return getSingle(query(sql, elementType, args));
+        return singleResult(query(sql, elementType, args));
     }
 
     /**
@@ -339,14 +339,17 @@ public abstract class AbstractJdbc implements Jdbc {
      */
     @Override
     public <T> T querySingle(String sql, Class<T> elementType, Object... args) {
-        return getSingle(query(sql, elementType, args));
+        return singleResult(query(sql, elementType, args));
     }
 
-    private <T> T getSingle(Collection<T> results) {
-        if (results.size() > 0) {
-            return results.iterator().next();
+    private <T> T singleResult(Collection<T> results) {
+        if (results == null || results.size() <= 0) {
+            return null;
+        } else if (results.size() > 1) {
+            // TODO 优化错误消息
+            throw new JdbcException(Strings.format("results size must be 1, but is {0}", results.size()));
         }
-        return null;
+        return results.iterator().next();
     }
 
     /**
