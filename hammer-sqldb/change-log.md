@@ -1,6 +1,8 @@
 # 0.5.8 
 1. SqlQueryEntity加入join(Join)，join(Join, String)，join(Class<T>)，join(Join, Class<T>)方法
 2. QueryEntityExpression加入<QI> QI cast(Class<QI> queryEntityExpressionType)方法
+3. Jdbc.querySingle返回集合的数量大于1时抛出异常
+4. 所有的SingleExecutor都加入了对应single方法的unique方法
 
 # 0.5.7 2020-02-22
 1. JdbcImpl的所有的query方法都支持SqlTypeMappingManager的自定义类型

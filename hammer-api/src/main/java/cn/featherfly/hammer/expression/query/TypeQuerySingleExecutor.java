@@ -11,10 +11,18 @@ package cn.featherfly.hammer.expression.query;
 public interface TypeQuerySingleExecutor {
 
     /**
-     * query for single.
+     * query for single, return null when not found.
      *
      * @param <E> the element type
      * @return object
      */
     <E> E single();
+
+    /**
+     * query for unique, throw JdbcException when not found.
+     *
+     * @param <E> the element type
+     * @return object
+     */
+    <E> E unique();
 }
