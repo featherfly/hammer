@@ -224,7 +224,7 @@ public abstract class AbstractSqlConditionExpression<L> implements SqlBuilder, P
             PropertyMapping propertyMapping = classMapping.getPropertyMapping(propertyName);
             if (Lang.isNotEmpty(propertyMapping.getPropertyMappings())) {
                 for (PropertyMapping pm : propertyMapping.getPropertyMappings()) {
-                    Object obj = cn.featherfly.common.bean.BeanUtils.getProperty(r, pm.getPropertyName());
+                    Object obj = BeanUtils.getProperty(r, pm.getPropertyName());
                     Optional<R> optional = Optional.empty();
                     if (obj != null) {
                         optional = (Optional<R>) Optional.of(obj);

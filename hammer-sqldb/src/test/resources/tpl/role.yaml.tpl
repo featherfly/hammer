@@ -4,6 +4,25 @@ selectByName: "select <@prop repo='role'/> from role
         name like :name
     </@and>
 </@where>"
+selectByNameCo: >
+    select <@prop repo='role'/> from role
+    <@where>
+        <@and if = name?? transverter="CO">
+            name like :name
+        </@and>
+    </@where>
+selectByNameSw: "select <@prop repo='role'/> from role
+<@where>
+    <@and if = name?? transverter='SW'>
+        name like :name
+    </@and>
+</@where>"
+selectByNameEw: "select <@prop repo='role'/> from role
+<@where>
+    <@and if = name?? transverter='EW'>
+        name like :name
+    </@and>
+</@where>"
 selectWithTemplate:
   query: "select <@prop/> <#include '/tpl/role@roleFromTemplate'>"
   count: "select count(*) <#include '/tpl/role@roleFromTemplate'>"
