@@ -7,6 +7,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
 import java.util.Map;
@@ -165,7 +166,8 @@ public abstract class AbstractJdbc implements Jdbc {
             return prep.executeUpdate();
         } catch (SQLException e) {
             releaseConnection(connection, getDataSource());
-            throw new JdbcException();
+            throw new JdbcException(Strings.format("executeUpdate: \nsql: {0} \nargs: {1}", sql, Arrays.toString(args)),
+                    e);
         } finally {
             releaseConnection(connection, getDataSource());
         }
@@ -200,7 +202,7 @@ public abstract class AbstractJdbc implements Jdbc {
             } catch (SQLException e) {
                 releaseConnection(con, getDataSource());
                 con = null;
-                throw new JdbcException();
+                throw new JdbcException(Strings.format("query: \nsql: {0} \nargs: {1}", sql, Arrays.toString(args)), e);
             } finally {
                 releaseConnection(con, getDataSource());
             }
@@ -286,7 +288,7 @@ public abstract class AbstractJdbc implements Jdbc {
             } catch (SQLException e) {
                 releaseConnection(con, getDataSource());
                 con = null;
-                throw new JdbcException();
+                throw new JdbcException(Strings.format("query: \nsql: {0} \nargs: {1}", sql, Arrays.toString(args)), e);
             } finally {
                 releaseConnection(con, getDataSource());
             }
