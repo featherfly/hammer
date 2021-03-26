@@ -22,8 +22,8 @@ import cn.featherfly.common.lang.ClassLoaderUtils;
 import cn.featherfly.constant.ConstantConfigurator;
 import cn.featherfly.hammer.sqldb.SqldbHammerImpl;
 import cn.featherfly.hammer.sqldb.jdbc.Jdbc;
+import cn.featherfly.hammer.sqldb.jdbc.JdbcImpl;
 import cn.featherfly.hammer.sqldb.jdbc.JdbcTestBase;
-import cn.featherfly.hammer.sqldb.jdbc.SpringJdbcTemplateImpl;
 import cn.featherfly.hammer.tpl.TplConfigFactory;
 import cn.featherfly.hammer.tpl.TplConfigFactoryImpl;
 import cn.featherfly.hammer.tpl.mapper.DynamicTplExecutorScanSpringRegistor;
@@ -75,7 +75,8 @@ public class Appconfig {
         //        dataSource.setUsername("root");
         //        dataSource.setPassword("123456");
 
-        Jdbc jdbc = new SpringJdbcTemplateImpl(dataSource, Dialects.MYSQL);
+        //        Jdbc jdbc = new SpringJdbcTemplateImpl(dataSource, Dialects.MYSQL);
+        Jdbc jdbc = new JdbcImpl(dataSource, Dialects.MYSQL);
         DatabaseMetadata metadata = DatabaseMetadataManager.getDefaultManager().create(dataSource);
 
         JdbcMappingFactory mappingFactory = new JdbcMappingFactoryImpl(metadata, Dialects.MYSQL);

@@ -14,7 +14,8 @@ import cn.featherfly.hammer.sqldb.jdbc.dsl.query.SqlQueryConditionGroupExpressio
  *
  * @author zhongj
  */
-public abstract class StaticTypeQueryConditionGroupExpression<E, Q extends StaticTypeQueryConditionGroupExpression<E, Q>> {
+public abstract class StaticTypeQueryConditionGroupExpression<E,
+        Q extends StaticTypeQueryConditionGroupExpression<E, Q>> {
 
     private Q parent;
 
@@ -26,9 +27,10 @@ public abstract class StaticTypeQueryConditionGroupExpression<E, Q extends Stati
      * @param queryConditionGroupExpression queryConditionGroupExpression
      * @param parent                        parent
      */
-    public StaticTypeQueryConditionGroupExpression(SqlQueryConditionGroupExpression queryConditionGroupExpression, Q parent) {
+    public StaticTypeQueryConditionGroupExpression(SqlQueryConditionGroupExpression queryConditionGroupExpression,
+            Q parent) {
         super();
-        this.type = ClassUtils.getSuperClassGenricType(this.getClass());
+        this.type = ClassUtils.getSuperClassGenericType(this.getClass());
         this.queryConditionGroupExpression = queryConditionGroupExpression;
         this.parent = parent;
     }

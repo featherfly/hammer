@@ -3,6 +3,7 @@ package cn.featherfly.hammer.sqldb.jdbc.dsl.query;
 
 import java.util.Map;
 
+import cn.featherfly.common.db.dialect.Join;
 import cn.featherfly.common.lang.function.SerializableFunction;
 import cn.featherfly.hammer.dsl.query.QueryEntity;
 import cn.featherfly.hammer.dsl.query.QueryEntityProperties;
@@ -11,6 +12,7 @@ import cn.featherfly.hammer.dsl.query.QueryEntityProperties;
  * <p>
  * SqlQueryEntity
  * </p>
+ * .
  *
  * @author zhongj
  */
@@ -34,6 +36,7 @@ public interface SqlQueryEntity extends QueryEntity {
      * <p>
      * 添加select的列
      * </p>
+     * .
      *
      * @param columnName propertyName
      * @param aliasName  alias name
@@ -45,10 +48,47 @@ public interface SqlQueryEntity extends QueryEntity {
      * <p>
      * 批量添加select的列
      * </p>
+     * .
      *
      * @param columnNameMap key is columnName, value is asName
      * @return QueryEntityPropertiesExpression
      */
     QueryEntityProperties propertyAlias(Map<String, String> columnNameMap);
+
+    /**
+     * Join.
+     *
+     * @param repositoryName the repository name
+     * @return the sql query with on
+     */
+    SqlQueryWithOn join(String repositoryName);
+
+    /**
+     * Join.
+     *
+     * @param join           the join
+     * @param repositoryName the repository name
+     * @return the sql query with on
+     */
+    SqlQueryWithOn join(Join join, String repositoryName);
+
+    /**
+     * Join.
+     *
+     * @param <T>            the generic type
+     * @param repositoryType the repository type
+     * @return the sql query with on
+     */
+    <T> SqlQueryWithOn join(Class<T> repositoryType);
+
+    /**
+     * Join.
+     *
+     * @param <T>            the generic type
+     * @param join           the join
+     * @param repositoryType the repository type
+     * @return the sql query with on
+     */
+    <T> SqlQueryWithOn join(Join join, Class<T> repositoryType);
 
 }

@@ -31,6 +31,10 @@ import org.springframework.util.StringUtils;
 
 import cn.featherfly.common.bean.BeanDescriptor;
 import cn.featherfly.common.bean.BeanProperty;
+import cn.featherfly.common.db.JdbcException;
+import cn.featherfly.common.db.mapping.JdbcMappingException;
+import cn.featherfly.common.db.mapping.SqlResultSet;
+import cn.featherfly.common.db.mapping.SqlTypeMappingManager;
 import cn.featherfly.common.lang.AssertIllegalArgument;
 
 /**
@@ -65,10 +69,12 @@ import cn.featherfly.common.lang.AssertIllegalArgument;
  *
  * @author Thomas Risberg
  * @author Juergen Hoeller
- * @since 2.5
+ * @author zhongj
  * @param <T> the result type
+ * @since 0.1.0
  */
-public class NestedBeanPropertyRowMapper<T> implements RowMapper<T> {
+public class NestedBeanPropertyRowMapper<T>
+        implements RowMapper<T>, cn.featherfly.common.repository.mapping.RowMapper<T> {
 
     /** Logger available to subclasses. */
     protected final Logger logger = LoggerFactory.getLogger(getClass());
@@ -95,38 +101,35 @@ public class NestedBeanPropertyRowMapper<T> implements RowMapper<T> {
     @Nullable
     private Set<String> mappedProperties;
 
-    /**
-     * Create a new {@code BeanPropertyRowMapper} for bean-style configuration.
-     *
-     * @see #setMappedClass
-     * @see #setCheckFullyPopulated
-     */
-    public NestedBeanPropertyRowMapper() {
-    }
+    @Nullable
+    private SqlTypeMappingManager manager;
 
     /**
      * Create a new {@code BeanPropertyRowMapper}, accepting unpopulated
      * properties in the target bean.
      * <p>
-     * Consider using the {@link #newInstance} factory method instead, which
-     * allows for specifying the mapped type once only.
      *
      * @param mappedClass the class that each row should be mapped to
+     * @param manager     the manager
      */
-    public NestedBeanPropertyRowMapper(Class<T> mappedClass) {
+    public NestedBeanPropertyRowMapper(Class<T> mappedClass, SqlTypeMappingManager manager) {
         initialize(mappedClass);
+        this.manager = manager;
     }
 
     /**
      * Create a new {@code BeanPropertyRowMapper}.
      *
      * @param mappedClass         the class that each row should be mapped to
+     * @param manager             the manager
      * @param checkFullyPopulated whether we're strictly validating that all
      *                            bean properties have been mapped from
      *                            corresponding database fields
      */
-    public NestedBeanPropertyRowMapper(Class<T> mappedClass, boolean checkFullyPopulated) {
+    public NestedBeanPropertyRowMapper(Class<T> mappedClass, SqlTypeMappingManager manager,
+            boolean checkFullyPopulated) {
         initialize(mappedClass);
+        this.manager = manager;
         this.checkFullyPopulated = checkFullyPopulated;
     }
 
@@ -261,8 +264,8 @@ public class NestedBeanPropertyRowMapper<T> implements RowMapper<T> {
      *
      * @param name the original name
      * @return the converted name
-     * @since 4.2
      * @see #lowerCaseName
+     * @since 4.2
      */
     protected String underscoreName(String name) {
         if (!StringUtils.hasLength(name)) {
@@ -295,10 +298,35 @@ public class NestedBeanPropertyRowMapper<T> implements RowMapper<T> {
     }
 
     /**
+     * {@inheritDoc}
+     */
+    @Override
+    public T mapRow(cn.featherfly.common.repository.mapping.ResultSet res, int rowNum) {
+        ResultSet rs = null;
+        if (res instanceof SqlResultSet) {
+            SqlResultSet sqlrs = (SqlResultSet) res;
+            rs = sqlrs.getResultSet();
+            AssertIllegalArgument.isNotNull(rs, "java.sql.ResultSet");
+        } else {
+            throw new JdbcMappingException("ResultSet is not type of SqlResultSet");
+        }
+
+        try {
+            return mapRow(rs, rowNum);
+        } catch (SQLException e) {
+            throw new JdbcException(e);
+        }
+    }
+
+    /**
      * Extract the values for all columns in the current row.
      * <p>
      * Utilizes public setters and result set meta-data.
      *
+     * @param rs        the rs
+     * @param rowNumber the row number
+     * @return the t
+     * @throws SQLException the SQL exception
      * @see java.sql.ResultSetMetaData
      */
     @Override
@@ -324,23 +352,31 @@ public class NestedBeanPropertyRowMapper<T> implements RowMapper<T> {
             PropertyDescriptor pd = this.mappedFields != null ? this.mappedFields.get(field) : null;
             if (pd != null) {
                 try {
+                    BeanDescriptor<T> bd = BeanDescriptor.getBeanDescriptor(mappedClass);
+                    BeanProperty<?> bp;
                     Object value = null;
                     if (nestedProperty) {
+                        bp = bd.getChildBeanProperty(column);
                         // 嵌套设值，所以直接使用SQL查询出来列的别名
-                        BeanDescriptor<T> bd = BeanDescriptor.getBeanDescriptor(mappedClass);
-                        @SuppressWarnings("rawtypes")
-
-                        BeanProperty bp = bd.getChildBeanProperty(column);
+                        //                        BeanDescriptor<T> bd = BeanDescriptor.getBeanDescriptor(mappedClass);
+                        //                        @SuppressWarnings("rawtypes")
+                        //                        BeanProperty bp = bd.getChildBeanProperty(column);
                         if (bp != null) {
                             if (rowNumber == 0) {
                                 logger.debug("Mapping column '{} as {}' to property '{}' of type '{}'",
                                         rsmd.getColumnName(index), column, column, bp.getType().getName());
                             }
+                            // FIXME 未实现嵌套查询的复杂映射
                             value = JdbcUtils.getResultSetValue(rs, index, bp.getType());
                             bd.setProperty(mappedObject, column, value);
                         }
                     } else {
-                        value = getColumnValue(rs, index, pd);
+                        bp = bd.getChildBeanProperty(pd.getName());
+                        if (bp != null) {
+                            value = manager.get(rs, index, bp);
+                        } else {
+                            value = getColumnValue(rs, index, pd);
+                        }
                         if (rowNumber == 0) {
                             logger.debug("Mapping column '{}' to property '{}' of type '{}'", column, pd.getName(),
                                     ClassUtils.getQualifiedName(pd.getPropertyType()));
@@ -424,17 +460,4 @@ public class NestedBeanPropertyRowMapper<T> implements RowMapper<T> {
     protected Object getColumnValue(ResultSet rs, int index, PropertyDescriptor pd) throws SQLException {
         return JdbcUtils.getResultSetValue(rs, index, pd.getPropertyType());
     }
-
-    /**
-     * Static factory method to create a new {@code BeanPropertyRowMapper} (with
-     * the mapped class specified only once).
-     *
-     * @param <T>         the generic type
-     * @param mappedClass the class that each row should be mapped to
-     * @return new instance
-     */
-    public static <T> NestedBeanPropertyRowMapper<T> newInstance(Class<T> mappedClass) {
-        return new NestedBeanPropertyRowMapper<>(mappedClass);
-    }
-
 }

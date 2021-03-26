@@ -6,17 +6,18 @@ import java.util.List;
 import java.util.Map;
 
 import cn.featherfly.common.constant.Chars;
+import cn.featherfly.common.db.dialect.Join;
 import cn.featherfly.common.db.metadata.DatabaseMetadata;
+import cn.featherfly.common.repository.builder.AliasManager;
 import cn.featherfly.common.repository.mapping.ClassMapping;
 import cn.featherfly.common.repository.mapping.MappingFactory;
+import cn.featherfly.common.repository.mapping.RowMapper;
 import cn.featherfly.common.repository.operate.AggregateFunction;
 import cn.featherfly.common.structure.page.Page;
-import cn.featherfly.common.repository.builder.AliasManager;
 import cn.featherfly.hammer.dsl.query.QueryConditionGroupExpression;
 import cn.featherfly.hammer.dsl.query.QueryEntityProperties;
 import cn.featherfly.hammer.dsl.query.QuerySortExpression;
 import cn.featherfly.hammer.expression.query.QueryLimitExecutor;
-import cn.featherfly.common.repository.mapping.RowMapper;
 import cn.featherfly.hammer.sqldb.jdbc.Jdbc;
 
 /**
@@ -177,8 +178,24 @@ public class SqlQueryEntityProperties extends AbstractSqlQueryEntityProperties<S
      */
     @Override
     public SqlQueryWithOn with(String repositoryName) {
+        return join(repositoryName);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public SqlQueryWithOn join(String repositoryName) {
+        return join(Join.INNER_JOIN, repositoryName);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public SqlQueryWithOn join(Join join, String repositoryName) {
         return new SqlQueryWith(this, aliasManager, factory, selectBuilder.getTableAlias(), getIdName(), repositoryName,
-                aliasManager.put(repositoryName));
+                aliasManager.put(repositoryName), join);
     }
 
     /**
@@ -186,8 +203,24 @@ public class SqlQueryEntityProperties extends AbstractSqlQueryEntityProperties<S
      */
     @Override
     public <T> SqlQueryWithOn with(Class<T> repositoryType) {
-        return new SqlQueryWith(this, aliasManager, factory, selectBuilder.getTableAlias(), getIdName(),
-                repositoryType);
+        return join(repositoryType);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public <T> SqlQueryWithOn join(Class<T> repositoryType) {
+        return join(Join.INNER_JOIN, repositoryType);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public <T> SqlQueryWithOn join(Join join, Class<T> repositoryType) {
+        return new SqlQueryWith(this, aliasManager, factory, selectBuilder.getTableAlias(), getIdName(), repositoryType,
+                join);
     }
 
     /**

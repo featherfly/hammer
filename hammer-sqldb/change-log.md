@@ -1,3 +1,14 @@
+# 0.5.8 2020-03-26
+1. SqlQueryEntity加入join(Join)，join(Join, String)，join(Class<T>)，join(Join, Class<T>)方法
+2. QueryEntityExpression加入<QI> QI cast(Class<QI> queryEntityExpressionType)方法
+3. Jdbc.querySingle返回集合的数量大于1时抛出异常
+4. 所有的SingleExecutor都加入了对应single方法的unique方法
+5. MergeOperate实现当对象除了id以外的属性都判定为忽略时（一般为null,空字符串，空集合等）不进行数据库操作
+6. 修复AbstractJdbc抛出JdbcException没有添加错误信息的问题
+
+# 0.5.7 2020-02-22
+1. JdbcImpl的所有的query方法都支持SqlTypeMappingManager的自定义类型
+
 # 0.5.6 2020-12-12
 1. Jdbc方法参数位置修改
 2. 修复JdbcImpl没有释放connection的问题
@@ -81,11 +92,9 @@ select <@prop alias='r'>*</@prop> from <@wrap>user</@wrap>
     <@and if=gender?? name='gender'>gender = :gender</@and>
     <@and if=tag?? && tag?size gt 0 name='tag'>tag in :tag</@and>
     <@and>
-    
         <@and if=username?? && username?size gt 0> username = :username</@and>
         <@or if=email?? && email?length gt 0>email = :email</@or>
         <@or if=mobile?? && mobile?length gt 0>mobile = :mobile</@or>
-    
     </@and>
 </@where>
 </@sql id='roleFromTemplate'>
@@ -140,8 +149,7 @@ select <@prop alias='r'>*</@prop> from <@wrap>user</@wrap>
 
 # 0.3.3 2020-4-15
 1. 重命名@TplExecution为@Template,@TplParam为@Param，@TplParamType为ParamType
-2. @Template加入value()，用于直接在注解上使用模板（如sqldb模块的sql模板）,加入isTemplate()用于在执行value()时是否使用模板引擎
-            用于value()是一个不可变的字符串就可以禁用其使用模板引擎，可以提高一丢丢的性能-_-，默认是开启的，当前版本未实现禁用模板引擎
+2. @Template加入value()，用于直接在注解上使用模板（如sqldb模块的sql模板）,加入isTemplate()用于在执行value()时是否使用模板引擎,用于value()是一个不可变的字符串就可以禁用其使用模板引擎，可以提高一丢丢的性能-_-，默认是开启的，当前版本未实现禁用模板引擎
 3. @Param加入name(),而value()作为name()的快捷别名，name()优先级高于value()
 4. 加入SqldbHammer接口
 

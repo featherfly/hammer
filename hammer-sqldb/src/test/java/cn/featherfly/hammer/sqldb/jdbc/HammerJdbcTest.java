@@ -360,6 +360,37 @@ public class HammerJdbcTest extends JdbcTestBase {
     }
 
     @Test
+    public void testMergeNotChange() {
+        Role r = new Role();
+        r.setName("name");
+        r.setDescp("descp");
+        hammer.save(r);
+
+        Role r3 = hammer.get(r);
+        assertNotNull(r3.getDescp());
+        assertEquals(r3.getName(), r.getName());
+
+        Role r2 = new Role();
+        r2.setId(r.getId());
+        hammer.merge(r2);
+
+        r3 = hammer.get(r2);
+
+        assertEquals(r3.getName(), r.getName());
+
+        assertEquals(r3.getDescp(), r.getDescp());
+
+        assertNotNull(r3.getDescp());
+
+        hammer.delete(r2);
+
+        r3 = hammer.get(r2);
+
+        assertNull(r3);
+
+    }
+
+    @Test
     public void testMerge2() {
         UserInfo ui = new UserInfo();
         ui.setId(2);

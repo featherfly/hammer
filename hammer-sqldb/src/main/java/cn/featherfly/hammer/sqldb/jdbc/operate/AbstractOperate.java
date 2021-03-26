@@ -10,6 +10,7 @@ import java.util.Map;
 import java.util.Map.Entry;
 
 import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import cn.featherfly.common.bean.BeanDescriptor;
 import cn.featherfly.common.bean.BeanProperty;
@@ -20,7 +21,6 @@ import cn.featherfly.common.db.metadata.DatabaseMetadataManager;
 import cn.featherfly.common.lang.Lang;
 import cn.featherfly.common.repository.mapping.ClassMapping;
 import cn.featherfly.common.repository.mapping.PropertyMapping;
-import cn.featherfly.hammer.sqldb.Constants;
 import cn.featherfly.hammer.sqldb.jdbc.Jdbc;
 
 /**
@@ -37,7 +37,7 @@ import cn.featherfly.hammer.sqldb.jdbc.Jdbc;
 public abstract class AbstractOperate<T> {
 
     /** logger. */
-    protected final Logger logger = Constants.LOGGER;
+    protected final Logger logger = LoggerFactory.getLogger(this.getClass());
 
     /** sql 语句. */
     protected String sql;
@@ -47,6 +47,12 @@ public abstract class AbstractOperate<T> {
 
     /** 类型映射. */
     protected ClassMapping<T> classMapping;
+
+    /** The bean descriptor. */
+    protected BeanDescriptor<T> beanDescriptor;
+
+    /** The sql type mapping manager. */
+    protected SqlTypeMappingManager sqlTypeMappingManager;
 
     /** 数据库元数据. */
     protected DatabaseMetadata meta;
@@ -60,21 +66,24 @@ public abstract class AbstractOperate<T> {
     /**
      * 使用给定数据源以及给定对象映射生成其相应的操作.
      *
-     * @param jdbc         jdbc
-     * @param classMapping classMapping
+     * @param jdbc                  jdbc
+     * @param classMapping          classMapping
+     * @param sqlTypeMappingManager the sql type mapping manager
      */
-    public AbstractOperate(Jdbc jdbc, ClassMapping<T> classMapping) {
-        this(jdbc, classMapping, "");
+    public AbstractOperate(Jdbc jdbc, ClassMapping<T> classMapping, SqlTypeMappingManager sqlTypeMappingManager) {
+        this(jdbc, classMapping, sqlTypeMappingManager, "");
     }
 
     /**
      * 使用给定数据源以及给定对象生成其相应的操作.
      *
-     * @param jdbc         jdbc
-     * @param classMapping classMapping
-     * @param dataBase     具体库
+     * @param jdbc                  jdbc
+     * @param classMapping          classMapping
+     * @param sqlTypeMappingManager the sql type mapping manager
+     * @param dataBase              具体库
      */
-    public AbstractOperate(Jdbc jdbc, ClassMapping<T> classMapping, String dataBase) {
+    public AbstractOperate(Jdbc jdbc, ClassMapping<T> classMapping, SqlTypeMappingManager sqlTypeMappingManager,
+            String dataBase) {
         if (Lang.isEmpty(dataBase)) {
             meta = DatabaseMetadataManager.getDefaultManager().create(jdbc.getDataSource());
         } else {
@@ -82,24 +91,38 @@ public abstract class AbstractOperate<T> {
         }
         this.jdbc = jdbc;
         this.classMapping = classMapping;
+        if (sqlTypeMappingManager == null) {
+            this.sqlTypeMappingManager = new SqlTypeMappingManager();
+        } else {
+            this.sqlTypeMappingManager = sqlTypeMappingManager;
+        }
         init();
     }
 
     /**
      * 使用给定数据源以及给定对象生成其相应的操作.
      *
-     * @param jdbc             jdbc
-     * @param classMapping     classMapping
-     * @param databaseMetadata databaseMetadata
+     * @param jdbc                  jdbc
+     * @param classMapping          classMapping
+     * @param databaseMetadata      databaseMetadata
+     * @param sqlTypeMappingManager the sql type mapping manager
      */
-    public AbstractOperate(Jdbc jdbc, ClassMapping<T> classMapping, DatabaseMetadata databaseMetadata) {
+    public AbstractOperate(Jdbc jdbc, ClassMapping<T> classMapping, SqlTypeMappingManager sqlTypeMappingManager,
+            DatabaseMetadata databaseMetadata) {
         this.jdbc = jdbc;
         this.classMapping = classMapping;
         this.meta = databaseMetadata;
+        if (sqlTypeMappingManager == null) {
+            this.sqlTypeMappingManager = new SqlTypeMappingManager();
+        } else {
+            this.sqlTypeMappingManager = sqlTypeMappingManager;
+        }
         init();
     }
 
+    @SuppressWarnings("unchecked")
     private void init() {
+        beanDescriptor = (BeanDescriptor<T>) BeanDescriptor.getBeanDescriptor(classMapping.getType());
         for (PropertyMapping pm : classMapping.getPrivaryKeyPropertyMappings()) {
             pkProperties.add(
                     BeanDescriptor.getBeanDescriptor(classMapping.getType()).getBeanProperty(pm.getPropertyFullName()));

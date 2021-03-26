@@ -4,6 +4,8 @@ package cn.featherfly.hammer.sqldb.jdbc;
 import java.io.File;
 import java.io.IOException;
 
+import javax.sql.DataSource;
+
 import org.apache.commons.dbcp.BasicDataSource;
 import org.apache.log4j.xml.DOMConfigurator;
 import org.testng.annotations.BeforeSuite;
@@ -11,9 +13,11 @@ import org.testng.annotations.Optional;
 import org.testng.annotations.Parameters;
 
 import cn.featherfly.common.db.SqlExecutor;
+import cn.featherfly.common.db.dialect.Dialect;
 import cn.featherfly.common.db.dialect.Dialects;
 import cn.featherfly.common.db.mapping.JdbcMappingFactory;
 import cn.featherfly.common.db.mapping.JdbcMappingFactoryImpl;
+import cn.featherfly.common.db.mapping.SqlTypeMappingManager;
 import cn.featherfly.common.db.metadata.DatabaseMetadata;
 import cn.featherfly.common.db.metadata.DatabaseMetadataManager;
 import cn.featherfly.common.lang.ClassLoaderUtils;
@@ -50,10 +54,19 @@ public class JdbcTestBase {
 
     protected static DatabaseMetadata metadata;
 
+    protected static DataSource dataSource;
+
+    protected static Dialect dialect;
+
+    protected static SqlTypeMappingManager sqlTypeMappingManager;
+
     @BeforeSuite
     @Parameters({ "dataBase" })
     public void init(@Optional("mysql") String dataBase) throws IOException {
         DOMConfigurator.configure(ClassLoaderUtils.getResource("log4j.xml", JdbcTestBase.class));
+
+        sqlTypeMappingManager = new SqlTypeMappingManager();
+
         initDataBase(dataBase);
 
         configFactory = new TplConfigFactoryImpl("tpl/", ".yaml.tpl", new FreemarkerTemplatePreProcessor());
@@ -83,22 +96,27 @@ public class JdbcTestBase {
         ConstantConfigurator.config();
         //        ConstantConfigurator.config("constant.mysql.yaml");
 
-        BasicDataSource dataSource = new BasicDataSource();
+        BasicDataSource ds = new BasicDataSource();
         //        dataSource.setUrl("jdbc:mysql://127.0.0.1:3306/hammer_jdbc?useUnicode=true&characterEncoding=UTF-8");
-        dataSource.setUrl(
+        ds.setUrl(
                 "jdbc:mysql://127.0.0.1:3306/hammer_jdbc?serverTimezone=UTC&characterEncoding=utf8&useUnicode=true&useSSL=false");
-        dataSource.setDriverClassName("com.mysql.jdbc.Driver");
-        dataSource.setUsername("root");
-        dataSource.setPassword("123456");
+        ds.setDriverClassName("com.mysql.jdbc.Driver");
+        ds.setUsername("root");
+        ds.setPassword("123456");
+        dataSource = ds;
 
         // 初始化数据库
-        SqlExecutor sqlExecutor = new SqlExecutor(dataSource);
+        SqlExecutor sqlExecutor = new SqlExecutor(ds);
         sqlExecutor.execute(new File(ClassLoaderUtils.getResource("test.mysql.sql", JdbcTestBase.class).getFile()));
 
-        jdbc = new SpringJdbcTemplateImpl(dataSource, Dialects.MYSQL);
-        metadata = DatabaseMetadataManager.getDefaultManager().create(dataSource);
+        dialect = Dialects.MYSQL;
 
-        mappingFactory = new JdbcMappingFactoryImpl(metadata, Dialects.MYSQL);
+        //        jdbc = new SpringJdbcTemplateImpl(ds, dialect);
+        //        jdbc = new JdbcImpl(ds, dialect, sqlTypeMappingManager);
+        jdbc = new JdbcImpl(ds, dialect);
+        metadata = DatabaseMetadataManager.getDefaultManager().create(ds);
+
+        mappingFactory = new JdbcMappingFactoryImpl(metadata, dialect, sqlTypeMappingManager);
 
         // factory.getClassNameConversions().add(new ClassNameJpaConversion());
         // factory.getClassNameConversions().add(new
@@ -114,25 +132,30 @@ public class JdbcTestBase {
         //        ConstantConfigurator.config(CONFIG_FILE);
         ConstantConfigurator.config("constant.postgresql.yaml");
 
-        BasicDataSource dataSource = new BasicDataSource();
-        dataSource.setUrl("jdbc:postgresql://localhost:5432/hammer_jdbc");
-        dataSource.setDriverClassName("org.postgresql.Driver");
-        dataSource.setUsername("postgres");
-        dataSource.setPassword("123456");
+        BasicDataSource ds = new BasicDataSource();
+        ds.setUrl("jdbc:postgresql://localhost:5432/hammer_jdbc");
+        ds.setDriverClassName("org.postgresql.Driver");
+        ds.setUsername("postgres");
+        ds.setPassword("123456");
+        dataSource = ds;
 
         //        PostgreSQLDialect postgreSQLDialect = Dialects.POSTGRESQL;
         //        postgreSQLDialect.setTableAndColumnNameUppercase(false);
         //        jdbc = new SpringJdbcTemplateImpl(dataSource, postgreSQLDialect);
 
         // 初始化数据库
-        SqlExecutor sqlExecutor = new SqlExecutor(dataSource);
+        SqlExecutor sqlExecutor = new SqlExecutor(ds);
         sqlExecutor
                 .execute(new File(ClassLoaderUtils.getResource("test.postgresql.sql", JdbcTestBase.class).getFile()));
 
-        jdbc = new SpringJdbcTemplateImpl(dataSource, Dialects.POSTGRESQL);
-        metadata = DatabaseMetadataManager.getDefaultManager().create(dataSource);
+        dialect = Dialects.POSTGRESQL;
 
-        mappingFactory = new JdbcMappingFactoryImpl(metadata, Dialects.POSTGRESQL);
+        //        jdbc = new SpringJdbcTemplateImpl(ds, dialect);
+        jdbc = new JdbcImpl(ds, dialect, sqlTypeMappingManager);
+        metadata = DatabaseMetadataManager.getDefaultManager().create(ds);
+
+        mappingFactory = new JdbcMappingFactoryImpl(metadata, dialect, sqlTypeMappingManager);
+
     }
 
     //    @BeforeSuite(groups = "sqlite", dependsOnMethods = "init")
@@ -143,20 +166,24 @@ public class JdbcTestBase {
         String path = new File(UriUtils.linkUri(this.getClass().getResource("/").getFile(), "hammer.sqlite3.db"))
                 .getPath();
         System.out.println(path);
-        BasicDataSource dataSource = new BasicDataSource();
-        dataSource.setDriverClassName("org.sqlite.JDBC");
-        dataSource.setUrl("jdbc:sqlite:" + path);
+        BasicDataSource ds = new BasicDataSource();
+        ds.setDriverClassName("org.sqlite.JDBC");
+        ds.setUrl("jdbc:sqlite:" + path);
         //        dataSource.setUsername("root");
         //        dataSource.setPassword("123456");
+        dataSource = ds;
 
         // 初始化数据库
-        SqlExecutor sqlExecutor = new SqlExecutor(dataSource);
+        SqlExecutor sqlExecutor = new SqlExecutor(ds);
         sqlExecutor.execute(new File(ClassLoaderUtils.getResource("test.sqlite.sql", JdbcTestBase.class).getFile()));
 
-        jdbc = new SpringJdbcTemplateImpl(dataSource, Dialects.SQLITE);
-        metadata = DatabaseMetadataManager.getDefaultManager().create(dataSource, "main");
+        dialect = Dialects.SQLITE;
 
-        mappingFactory = new JdbcMappingFactoryImpl(metadata, Dialects.SQLITE);
+        //        jdbc = new SpringJdbcTemplateImpl(ds, dialect);
+        jdbc = new JdbcImpl(ds, dialect, sqlTypeMappingManager);
+        metadata = DatabaseMetadataManager.getDefaultManager().create(ds, "main");
+
+        mappingFactory = new JdbcMappingFactoryImpl(metadata, dialect, sqlTypeMappingManager);
 
     }
 

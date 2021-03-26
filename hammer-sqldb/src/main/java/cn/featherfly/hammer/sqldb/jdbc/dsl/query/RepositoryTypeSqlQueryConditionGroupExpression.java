@@ -199,6 +199,21 @@ public class RepositoryTypeSqlQueryConditionGroupExpression extends
     /**
      * {@inheritDoc}
      */
+    @SuppressWarnings("unchecked")
+    @Override
+    public <E> E unique() {
+        String sql = getRoot().expression();
+        Object[] params = getRoot().getParams().toArray();
+        if (limit != null) {
+            sql = dialect.getPaginationSql(sql, limit.getOffset(), limit.getLimit());
+            params = dialect.getPaginationSqlParameter(params, limit.getOffset(), limit.getLimit());
+        }
+        return (E) jdbc.queryUnique(sql, classMapping.getType(), params);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public TypeQuerySortExpression sort() {
         return this;

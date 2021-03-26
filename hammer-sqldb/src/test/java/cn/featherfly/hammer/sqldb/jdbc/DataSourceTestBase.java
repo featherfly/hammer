@@ -95,7 +95,8 @@ public class DataSourceTestBase {
 
         ds = dataSource;
 
-        jdbc = new SpringJdbcTemplateImpl(dataSource, Dialects.MYSQL);
+        //        jdbc = new SpringJdbcTemplateImpl(dataSource, Dialects.MYSQL);
+        jdbc = new JdbcImpl(dataSource, Dialects.MYSQL);
         metadata = DatabaseMetadataManager.getDefaultManager().create(dataSource);
 
         mappingFactory = new JdbcMappingFactoryImpl(metadata, Dialects.MYSQL);
@@ -123,7 +124,8 @@ public class DataSourceTestBase {
 
         ds = dataSource;
 
-        jdbc = new SpringJdbcTemplateImpl(dataSource, Dialects.POSTGRESQL);
+        //        jdbc = new SpringJdbcTemplateImpl(dataSource, Dialects.POSTGRESQL);
+        jdbc = new JdbcImpl(dataSource, Dialects.POSTGRESQL);
         metadata = DatabaseMetadataManager.getDefaultManager().create(dataSource);
 
         mappingFactory = new JdbcMappingFactoryImpl(metadata, Dialects.POSTGRESQL);
@@ -150,7 +152,8 @@ public class DataSourceTestBase {
 
         ds = dataSource;
 
-        jdbc = new SpringJdbcTemplateImpl(dataSource, Dialects.SQLITE);
+        //        jdbc = new SpringJdbcTemplateImpl(dataSource, Dialects.SQLITE);
+        jdbc = new JdbcImpl(dataSource, Dialects.SQLITE);
         metadata = DatabaseMetadataManager.getDefaultManager().create(dataSource, "main");
 
         mappingFactory = new JdbcMappingFactoryImpl(metadata, Dialects.SQLITE);

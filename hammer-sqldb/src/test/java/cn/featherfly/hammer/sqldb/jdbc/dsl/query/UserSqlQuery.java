@@ -1,8 +1,6 @@
 
 package cn.featherfly.hammer.sqldb.jdbc.dsl.query;
 
-import cn.featherfly.hammer.sqldb.jdbc.dsl.query.SqlQuery;
-import cn.featherfly.hammer.sqldb.jdbc.dsl.query.SqlQueryEntityProperties;
 import cn.featherfly.common.db.mapping.JdbcMappingFactory;
 
 /**
@@ -29,7 +27,6 @@ public class UserSqlQuery {
     }
 
     public UserSqlQueryEntity find() {
-        return new UserSqlQueryEntity(
-                (SqlQueryEntityProperties) query.find("user"), mappingFactory);
+        return new UserSqlQueryEntity(query.find("user"), mappingFactory);
     }
 }
