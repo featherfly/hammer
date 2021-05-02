@@ -18,3 +18,19 @@ selectByNameEw: |
     /*<where*/ where
     /*??*/ name like /*$=%:name*/me\\_
     /*>where*/
+
+selectByNameCo2: |
+    select /*prop*/* from role
+    /*<where*/ where
+    /*??*/ name like %:name%
+    /*>where*/
+selectByNameSw2: |
+    select /*prop*/* from role
+    /*<where*/ where
+    /*??*/ name like :name%
+    /*>where*/
+selectByNameEw2: |
+    select /*prop*/* from role
+    /*<where*/ where
+    /*??*/ name like %:name
+    /*>where*/

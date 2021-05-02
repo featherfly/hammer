@@ -169,7 +169,7 @@ public class Parser {
                         if (element != null) {
                             de = (DirectiveElement) element;
                         }
-                        element = new StringElement();
+                        element = new StringElement(this);
                         addElement(element);
 
                         if (de != null) {
@@ -231,7 +231,7 @@ public class Parser {
                                     Parser parser = new Parser(this, de);
                                     parser.parse(source.substring(subStart, wrapIndex));
                                 } else {
-                                    de.addChild(new StringElement(source.substring(index, wrapIndex)));
+                                    de.addChild(new StringElement(source.substring(index, wrapIndex), this));
                                 }
                                 index = wrapIndex;
                                 continue;

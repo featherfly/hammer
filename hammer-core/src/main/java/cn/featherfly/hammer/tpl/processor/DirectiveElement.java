@@ -13,9 +13,6 @@ import cn.featherfly.common.lang.Lang;
  */
 public class DirectiveElement extends AbstractElement {
 
-    /** The parser. */
-    protected Parser parser;
-
     protected char directive = '@';
 
     protected char macro = '#';
@@ -36,8 +33,7 @@ public class DirectiveElement extends AbstractElement {
      * @param parser the parser
      */
     public DirectiveElement(String value, Parser parser) {
-        super(value);
-        this.parser = parser;
+        super(value, parser);
     }
 
     /**
