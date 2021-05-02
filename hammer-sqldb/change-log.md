@@ -19,6 +19,7 @@
     /*name??*/ name like %:name
     /*name??*/ name like :name%
     ```
+3. 修复where标签后换行直接跟order by语句没有空格符号导致最后的参数名称连接到order单词的问题
 
 # 0.5.8 2020-03-26
 1. SqlQueryEntity加入join(Join)，join(Join, String)，join(Class<T>)，join(Join, Class<T>)方法
