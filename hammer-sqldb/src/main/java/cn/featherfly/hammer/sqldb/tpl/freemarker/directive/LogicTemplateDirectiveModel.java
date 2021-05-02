@@ -188,6 +188,7 @@ public abstract class LogicTemplateDirectiveModel implements FreemarkerDirective
                 }
                 if (needAppendLogicWorld) {
                     condition = " " + getLogicWorld() + " " + condition;
+                    //                    condition = getLogicWorld() + " " + condition + " ";
                 }
                 out.write(condition);
                 // body.render(out);

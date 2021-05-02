@@ -8,15 +8,15 @@ CREATE TABLE "role" (
 -- ----------------------------
 -- Records of role
 -- ----------------------------
-INSERT INTO `role` VALUES ('1', 'n_1', 'descp_1');
-INSERT INTO `role` VALUES ('2', 'n_2', 'descp_2');
-INSERT INTO `role` VALUES ('3', 'n_3', 'descp_3');
-INSERT INTO `role` VALUES ('4', 'n_4', 'descp_4');
-INSERT INTO `role` VALUES ('5', 'n_5', 'descp_5');
-INSERT INTO `role` VALUES ('6', 'n_11', 'descp_64');
-INSERT INTO `role` VALUES ('7', 'name_98', 'descp_79');
-INSERT INTO `role` VALUES ('8', 'name_21', 'descp_5');
-INSERT INTO `role` VALUES ('9', 'name_96', 'descp_98');
+INSERT INTO `role` VALUES ('1', 'n_init_1', 'descp_1');
+INSERT INTO `role` VALUES ('2', 'n_init_2', 'descp_2');
+INSERT INTO `role` VALUES ('3', 'n_init_3', 'descp_3');
+INSERT INTO `role` VALUES ('4', 'n_init_4', 'descp_4');
+INSERT INTO `role` VALUES ('5', 'n_init_5', 'descp_5');
+INSERT INTO `role` VALUES ('6', 'n_init_11', 'descp_64');
+INSERT INTO `role` VALUES ('7', 'name_init_98', 'descp_79');
+INSERT INTO `role` VALUES ('8', 'name_init_21', 'descp_5');
+INSERT INTO `role` VALUES ('9', 'name_init_96', 'descp_98');
 INSERT INTO `role` VALUES ('10', 'n_96', 'descp_29');
 INSERT INTO `role` VALUES ('11', 'n_42', 'descp_54');
 INSERT INTO `role` VALUES ('12', 'n_12', 'descp_65');

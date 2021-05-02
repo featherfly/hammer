@@ -16,7 +16,9 @@ import cn.featherfly.common.structure.page.SimplePagination;
 import cn.featherfly.hammer.Hammer;
 import cn.featherfly.hammer.sqldb.SqldbHammerImpl;
 import cn.featherfly.hammer.sqldb.jdbc.DataSourceTestBase;
+import cn.featherfly.hammer.sqldb.jdbc.vo.Role;
 import cn.featherfly.hammer.sqldb.jdbc.vo.User;
+import cn.featherfly.hammer.sqldb.tpl.RoleMapper;
 import cn.featherfly.hammer.sqldb.tpl.UserMapper;
 import cn.featherfly.hammer.tpl.TplConfigFactoryImpl;
 import cn.featherfly.hammer.tpl.freemarker.FreemarkerTemplatePreProcessor;
@@ -33,6 +35,8 @@ public class SqlTplDynamicExecutorTest extends DataSourceTestBase {
 
     UserMapper userMapper;
 
+    RoleMapper roleMapper;
+
     Integer minAge = 5;
     Integer maxAge = 40;
     String username1 = "yufei";
@@ -45,6 +49,7 @@ public class SqlTplDynamicExecutorTest extends DataSourceTestBase {
         TplDynamicExecutorFactory mapperFactory = TplDynamicExecutorFactory.getInstance();
         Hammer hammer = new SqldbHammerImpl(jdbc, mappingFactory, configFactory);
         userMapper = mapperFactory.newInstance(UserMapper.class, hammer);
+        roleMapper = mapperFactory.newInstance(RoleMapper.class, hammer);
     }
 
     @Test
@@ -199,4 +204,30 @@ public class SqlTplDynamicExecutorTest extends DataSourceTestBase {
         assertEquals(us.getResultSize(), new Integer(limit));
 
     }
+
+    @Test
+    void testFluzzpQuery() {
+        List<Role> list = null;
+        list = roleMapper.selectByName("me");
+        assertEquals(list.size(), 0);
+
+        list = roleMapper.selectByNameCo("\\_init\\_");
+        assertEquals(list.size(), 9);
+
+        list = roleMapper.selectByNameSw("n\\_init");
+        assertEquals(list.size(), 6);
+
+        list = roleMapper.selectByNameEw("init\\_98");
+        assertEquals(list.size(), 1);
+
+        list = roleMapper.selectByNameCo2("\\_init\\_");
+        assertEquals(list.size(), 9);
+
+        list = roleMapper.selectByNameSw2("n\\_init");
+        assertEquals(list.size(), 6);
+
+        list = roleMapper.selectByNameEw2("init\\_98");
+        assertEquals(list.size(), 1);
+    }
+
 }

@@ -29,7 +29,9 @@ public class Parser {
 
     private char namedParamStart = ':';
 
-    private char[] namedParamEnds = { directiveEnd[0], ' ', '\n' };
+    private char fuzzyQueryChar = '%';
+
+    private char[] namedParamEnds = { directiveEnd[0], ' ', '\n', fuzzyQueryChar };
 
     private String source;
 
@@ -38,7 +40,8 @@ public class Parser {
      */
     public enum NullType {
         /** The null. */
-        NULL, EMPTY
+        NULL,
+        EMPTY
     }
 
     //    Parser parent;
@@ -166,7 +169,7 @@ public class Parser {
                         if (element != null) {
                             de = (DirectiveElement) element;
                         }
-                        element = new StringElement();
+                        element = new StringElement(this);
                         addElement(element);
 
                         if (de != null) {
@@ -189,7 +192,9 @@ public class Parser {
                                         pre = "<and if=";
                                     }
                                     if (de.isEmptyConditionParam()) {
-                                        name = getFirstParamName(source.substring(index, wrapIndex));
+                                        String paramContent = source.substring(index, wrapIndex);
+                                        StringPart namePart = getFirstParamName(paramContent);
+                                        name = namePart.getValue();
                                         if (isConditionNull(de.getSource())) {
                                             append = "?";
                                         } else if (isConditionNullOrEmpty(de.getSource())) {
@@ -200,6 +205,15 @@ public class Parser {
                                             }
                                         }
                                         append = append + " name='" + name + "'";
+                                        boolean endWith = paramContent.charAt(namePart.getStart() - 2) == '%';
+                                        boolean startWith = paramContent.charAt(namePart.getEnd()) == '%';
+                                        if (startWith && endWith) {
+                                            append = append + " transverter='CO'";
+                                        } else if (startWith) {
+                                            append = append + " transverter='SW'";
+                                        } else if (endWith) {
+                                            append = append + " transverter='EW'";
+                                        }
                                         de.setSource(pre + name + de.getSource() + append);
                                     } else {
                                         name = de.getSource().replaceAll("\\?", "");
@@ -217,7 +231,7 @@ public class Parser {
                                     Parser parser = new Parser(this, de);
                                     parser.parse(source.substring(subStart, wrapIndex));
                                 } else {
-                                    de.addChild(new StringElement(source.substring(index, wrapIndex)));
+                                    de.addChild(new StringElement(source.substring(index, wrapIndex), this));
                                 }
                                 index = wrapIndex;
                                 continue;
@@ -250,16 +264,22 @@ public class Parser {
     }
 
     // TODO 后续加入多个参数的获取，主要是为了between :param1 and :param2
-    private String getFirstParamName(String value, boolean autoEnd) {
+    private StringPart getFirstParamName(String value, boolean autoEnd) {
         StringBuilder sb = new StringBuilder();
+        int start = 0;
+        int end = 0;
         for (int i = 0; i < value.length(); i++) {
             char c = value.charAt(i);
+            end = i;
             if (c == namedParamStart) {
+                start = i;
                 sb.append(c);
             } else if (sb.length() > 0) {
                 if (isNamedParamEnd(c)) {
                     sb.deleteCharAt(0);
-                    return sb.toString();
+                    start++;
+                    return new StringPart(start, end, sb.toString());
+                    //                    return sb.toString();
                 }
                 sb.append(c);
             }
@@ -269,11 +289,13 @@ public class Parser {
         }
         if (sb.length() > 0) {
             sb.deleteCharAt(0);
+            start++;
         }
-        return sb.toString();
+        return new StringPart(start, end, sb.toString());
+        //        return sb.toString();
     }
 
-    private String getFirstParamName(String value) {
+    private StringPart getFirstParamName(String value) {
         return getFirstParamName(value, true);
     }
 
@@ -636,4 +658,131 @@ public class Parser {
     public List<AbstractElement> getElements() {
         return elements;
     }
+
+    /**
+     * 返回directiveStart
+     *
+     * @return directiveStart
+     */
+    public char[] getDirectiveStart() {
+        return directiveStart;
+    }
+
+    /**
+     * 设置directiveStart
+     *
+     * @param directiveStart directiveStart
+     */
+    public void setDirectiveStart(char[] directiveStart) {
+        this.directiveStart = directiveStart;
+    }
+
+    /**
+     * 返回directiveEnd
+     *
+     * @return directiveEnd
+     */
+    public char[] getDirectiveEnd() {
+        return directiveEnd;
+    }
+
+    /**
+     * 设置directiveEnd
+     *
+     * @param directiveEnd directiveEnd
+     */
+    public void setDirectiveEnd(char[] directiveEnd) {
+        this.directiveEnd = directiveEnd;
+    }
+
+    /**
+     * 返回startDirecitve
+     *
+     * @return startDirecitve
+     */
+    public char getStartDirecitve() {
+        return startDirecitve;
+    }
+
+    /**
+     * 设置startDirecitve
+     *
+     * @param startDirecitve startDirecitve
+     */
+    public void setStartDirecitve(char startDirecitve) {
+        this.startDirecitve = startDirecitve;
+    }
+
+    /**
+     * 返回endDirecitve
+     *
+     * @return endDirecitve
+     */
+    public char getEndDirecitve() {
+        return endDirecitve;
+    }
+
+    /**
+     * 设置endDirecitve
+     *
+     * @param endDirecitve endDirecitve
+     */
+    public void setEndDirecitve(char endDirecitve) {
+        this.endDirecitve = endDirecitve;
+    }
+
+    /**
+     * 返回namedParamStart
+     *
+     * @return namedParamStart
+     */
+    public char getNamedParamStart() {
+        return namedParamStart;
+    }
+
+    /**
+     * 设置namedParamStart
+     *
+     * @param namedParamStart namedParamStart
+     */
+    public void setNamedParamStart(char namedParamStart) {
+        this.namedParamStart = namedParamStart;
+    }
+
+    /**
+     * 返回fuzzyQueryChar
+     *
+     * @return fuzzyQueryChar
+     */
+    public char getFuzzyQueryChar() {
+        return fuzzyQueryChar;
+    }
+
+    /**
+     * 设置fuzzyQueryChar
+     *
+     * @param fuzzyQueryChar fuzzyQueryChar
+     */
+    public void setFuzzyQueryChar(char fuzzyQueryChar) {
+        this.fuzzyQueryChar = fuzzyQueryChar;
+    }
+
+    /**
+     * 返回namedParamEnds
+     *
+     * @return namedParamEnds
+     */
+    public char[] getNamedParamEnds() {
+        return namedParamEnds;
+    }
+
+    /**
+     * 设置namedParamEnds
+     *
+     * @param namedParamEnds namedParamEnds
+     */
+    public void setNamedParamEnds(char[] namedParamEnds) {
+        this.namedParamEnds = namedParamEnds;
+    }
+
 }
