@@ -192,6 +192,8 @@ public abstract class LogicTemplateDirectiveModel implements FreemarkerDirective
                 }
                 out.write(condition);
                 // body.render(out);
+            } else {
+                out.write("");
             }
         }
     }

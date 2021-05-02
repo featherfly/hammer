@@ -3,6 +3,7 @@ selectByName: |
     /*<where*/ where
     /*??*/ name like :name
     /*>where*/
+    order by id
 selectByNameCo: |
     select /*prop*/* from role
     /*<where*/ where

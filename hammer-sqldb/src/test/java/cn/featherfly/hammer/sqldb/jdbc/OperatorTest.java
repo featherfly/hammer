@@ -170,7 +170,7 @@ public class OperatorTest extends JdbcTestBase {
         assertEquals(role.getId(), id);
         assertNotNull(role.getName());
         assertNotNull(role.getDescp());
-        assertEquals(role.getName(), "n_1");
+        assertEquals(role.getName(), "n_init_1");
         assertEquals(role.getDescp(), "descp_1");
     }
 

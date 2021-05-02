@@ -118,7 +118,7 @@ public class PropertiesMappingDirectiveModel extends PropertiesMappingDirective 
         if (classMapping == null) {
             Table tableMetadata = mappingFactory.getMetadata().getTable(nameParam.toUpperCase());
             tableMetadata.getColumns().forEach(column -> {
-                String propName = WordUtils.parseToUpperFirst(column.getName(), '_');
+                String propName = WordUtils.parseToUpperFirst(column.getName().toLowerCase(), '_');
                 if (aliasIsEmpty) {
                     result.append(" " + column.getName() + " as " + propName + ",");
                 } else {
