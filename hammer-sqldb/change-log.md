@@ -1,9 +1,24 @@
 # 0.5.9
 1. 模板sql的<@and>和<@Or>标签加入transverter属性，用于对字符串模糊查询，支持CO,SW,EW
+    ```
     <@and if = name?? transverter="CO"> 表示%value%
     <@and if = name?? transverter="SW"> 表示value%
     <@and if = name?? transverter="EW"> 表示%value
+    ```
+2. 预编译实现对模糊查询%的处理
+   ```    
+    /*??*/ name like /*$=%:name%*/\\_init\\_
+    /*??*/ name like /*$=%:name*/init\\_98
+    /*??*/ name like /*$=:name%*/n\\_init
     
+    /*??*/ name like %:name%
+    /*??*/ name like %:name
+    /*??*/ name like :name%
+    
+    /*name??*/ name like %:name%
+    /*name??*/ name like %:name
+    /*name??*/ name like :name%
+    ```
 
 # 0.5.8 2020-03-26
 1. SqlQueryEntity加入join(Join)，join(Join, String)，join(Class<T>)，join(Join, Class<T>)方法

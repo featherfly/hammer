@@ -228,6 +228,15 @@ public class SqlTplDynamicExecutorTest extends DataSourceTestBase {
 
         list = roleMapper.selectByNameEw2("init\\_98");
         assertEquals(list.size(), 1);
+
+        list = roleMapper.selectByNameCo3("\\_init\\_");
+        assertEquals(list.size(), 9);
+
+        list = roleMapper.selectByNameSw3("n\\_init");
+        assertEquals(list.size(), 6);
+
+        list = roleMapper.selectByNameEw3("init\\_98");
+        assertEquals(list.size(), 1);
     }
 
 }
