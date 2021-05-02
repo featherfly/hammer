@@ -205,15 +205,10 @@ public class Parser {
                                             }
                                         }
                                         append = append + " name='" + name + "'";
-                                        boolean endWith = paramContent.charAt(namePart.getStart() - 2) == '%';
-                                        boolean startWith = paramContent.charAt(namePart.getEnd()) == '%';
-                                        if (startWith && endWith) {
-                                            append = append + " transverter='CO'";
-                                        } else if (startWith) {
-                                            append = append + " transverter='SW'";
-                                        } else if (endWith) {
-                                            append = append + " transverter='EW'";
-                                        }
+                                        boolean endWith = paramContent
+                                                .charAt(namePart.getStart() - 2) == fuzzyQueryChar;
+                                        boolean startWith = paramContent.charAt(namePart.getEnd()) == fuzzyQueryChar;
+                                        append = appendTransverter(endWith, startWith, append);
                                         de.setSource(pre + name + de.getSource() + append);
                                     } else {
                                         name = de.getSource().replaceAll("\\?", "");
@@ -226,6 +221,18 @@ public class Parser {
                                                 append = "?? && " + name + "?length gt 0";
                                             }
                                         }
+
+                                        String paramContent = source.substring(index, wrapIndex);
+                                        String fuzzyStr = paramContent.chars()
+                                                .filter(i -> i == fuzzyQueryChar || i == namedParamStart || i == '?')
+                                                .collect(StringBuilder::new, StringBuilder::appendCodePoint,
+                                                        StringBuilder::append)
+                                                .toString();
+                                        boolean endWith = fuzzyStr.indexOf(fuzzyQueryChar) == 0;
+                                        boolean startWith = fuzzyStr.lastIndexOf(fuzzyQueryChar) == fuzzyStr.length()
+                                                - 1;
+                                        append = appendTransverter(endWith, startWith, append);
+
                                         de.setSource(pre + name + append);
                                     }
                                     Parser parser = new Parser(this, de);
@@ -247,6 +254,17 @@ public class Parser {
             }
             index++;
         }
+    }
+
+    private String appendTransverter(boolean endWith, boolean startWith, String append) {
+        if (startWith && endWith) {
+            append = append + " transverter='CO'";
+        } else if (startWith) {
+            append = append + " transverter='SW'";
+        } else if (endWith) {
+            append = append + " transverter='EW'";
+        }
+        return append;
     }
 
     private boolean isInCondition(String value) {
