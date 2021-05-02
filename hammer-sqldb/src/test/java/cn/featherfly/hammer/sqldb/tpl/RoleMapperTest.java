@@ -136,13 +136,13 @@ public class RoleMapperTest extends JdbcTestBase {
         list = roleMapper.selectByName("me");
         assertEquals(list.size(), 0);
 
-        list = roleMapper.selectByNameCo("me\\_");
-        assertEquals(list.size(), 3);
+        list = roleMapper.selectByNameCo("\\_init\\_");
+        assertEquals(list.size(), 9);
 
-        list = roleMapper.selectByNameSw("name\\_");
-        assertEquals(list.size(), 3);
+        list = roleMapper.selectByNameSw("n\\_init");
+        assertEquals(list.size(), 6);
 
-        list = roleMapper.selectByNameEw("\\_1");
+        list = roleMapper.selectByNameEw("init\\_98");
         assertEquals(list.size(), 1);
     }
 }
