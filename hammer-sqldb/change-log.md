@@ -1,3 +1,10 @@
+# 0.5.9
+1. 模板sql的<@and>和<@Or>标签加入transverter属性，用于对字符串模糊查询，支持CO,SW,EW
+    <@and if = name?? transverter="CO"> 表示%value%
+    <@and if = name?? transverter="SW"> 表示value%
+    <@and if = name?? transverter="EW"> 表示%value
+    
+
 # 0.5.8 2020-03-26
 1. SqlQueryEntity加入join(Join)，join(Join, String)，join(Class<T>)，join(Join, Class<T>)方法
 2. QueryEntityExpression加入<QI> QI cast(Class<QI> queryEntityExpressionType)方法

@@ -129,4 +129,20 @@ public class RoleMapperTest extends JdbcTestBase {
         long count3 = roleMapper.countRole3();
         assertTrue(count3 > 1);
     }
+
+    @Test
+    void testSelectByName() {
+        List<Role> list = null;
+        list = roleMapper.selectByName("me");
+        assertEquals(list.size(), 0);
+
+        list = roleMapper.selectByNameCo("me\\_");
+        assertEquals(list.size(), 3);
+
+        list = roleMapper.selectByNameSw("name\\_");
+        assertEquals(list.size(), 3);
+
+        list = roleMapper.selectByNameEw("\\_1");
+        assertEquals(list.size(), 1);
+    }
 }

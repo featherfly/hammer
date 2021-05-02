@@ -20,10 +20,12 @@ import com.speedment.common.tuple.Tuples;
 import cn.featherfly.common.db.SqlUtils;
 import cn.featherfly.common.db.mapping.JdbcMappingFactory;
 import cn.featherfly.common.lang.Lang;
+import cn.featherfly.common.repository.operate.QueryOperator;
 import cn.featherfly.common.structure.page.Limit;
 import cn.featherfly.common.structure.page.Page;
 import cn.featherfly.common.structure.page.PaginationResults;
 import cn.featherfly.common.structure.page.SimplePaginationResults;
+import cn.featherfly.hammer.sqldb.SqldbHammerException;
 import cn.featherfly.hammer.sqldb.jdbc.Jdbc;
 import cn.featherfly.hammer.tpl.TplConfigFactory;
 import cn.featherfly.hammer.tpl.TplExecuteConfig;
@@ -33,6 +35,7 @@ import cn.featherfly.hammer.tpl.TplExecutor;
 import cn.featherfly.hammer.tpl.directive.TemplateDirective;
 import cn.featherfly.hammer.tpl.method.TemplateMethod;
 import cn.featherfly.hammer.tpl.supports.ConditionParamsManager;
+import cn.featherfly.hammer.tpl.supports.ConditionParamsManager.Param;
 
 /**
  * <p>
@@ -633,11 +636,22 @@ public class SqlTplExecutor implements TplExecutor {
     }
 
     private Object[] getEffectiveParamArray(Map<String, Object> params, ConditionParamsManager manager) {
-        return manager.getParamNames().stream().filter(n -> params.containsKey(n)).map(n -> params.get(n))
-                .collect(Collectors.toList()).toArray();
+        return manager.getParamNames().stream().filter(n -> params.containsKey(n)).map(n -> {
+            return transvert(n, params.get(n), manager);
+            //            return params.get(n);
+        }).collect(Collectors.toList()).toArray();
     }
 
     private Map<String, Object> getEffectiveParamMap(Map<String, Object> params, ConditionParamsManager manager) {
+        //        params.entrySet().stream().filter(t -> {
+        //            return !manager.filterName(t.getKey());
+        //            //            return manager.containsName(t.getKey());
+        //        }).collect(Collectors.toMap(e -> {
+        //            return e.getKey();
+        //        }, e -> {
+        //
+        //            return e.getValue();
+        //        }));
         if (manager.getAmount() == 0) {
             return params;
         } else {
@@ -646,8 +660,28 @@ public class SqlTplExecutor implements TplExecutor {
             }).collect(Collectors.toMap(e -> {
                 return e.getKey();
             }, e -> {
-                return e.getValue();
+                return transvert(e.getKey(), e.getValue(), manager);
             }));
         }
+    }
+
+    private Object transvert(String name, Object value, ConditionParamsManager manager) {
+        if (value == null) {
+            return value;
+        }
+        Param p = manager.getParam(name);
+        if (p != null && Lang.isNotEmpty(p.getTransverter())) {
+            // TODO 这里后续需要使用TransverterManager来处理，这样就可以用户自定义处理器了
+            if (QueryOperator.CO.name().equals(p.getTransverter())) {
+                return "%" + value + "%";
+            } else if (QueryOperator.SW.name().equals(p.getTransverter())) {
+                return value + "%";
+            } else if (QueryOperator.EW.name().equals(p.getTransverter())) {
+                return "%" + value;
+            } else {
+                throw new SqldbHammerException("no implemention for " + p.getTransverter());
+            }
+        }
+        return value;
     }
 }
