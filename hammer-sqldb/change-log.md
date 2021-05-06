@@ -1,3 +1,6 @@
+# 0.5.9
+
+
 # 0.5.8 2020-03-26
 1. SqlQueryEntity加入join(Join)，join(Join, String)，join(Class<T>)，join(Join, Class<T>)方法
 2. QueryEntityExpression加入<QI> QI cast(Class<QI> queryEntityExpressionType)方法

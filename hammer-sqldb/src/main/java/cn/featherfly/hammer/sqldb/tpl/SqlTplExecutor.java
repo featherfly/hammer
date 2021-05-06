@@ -632,6 +632,9 @@ public class SqlTplExecutor implements TplExecutor {
         return Tuples.of(list, sql, tuple3.get1(), manager);
     }
 
+    // 如果sql中有参数没有使用条件判断，则参数会被过滤掉，（即过滤掉username参数）
+    // select * from user <@where>  username = :username <@and if=password> password = :password</@and></@where>
+    // 上面这种情况应该是不存在的，因为这样用本身会带来bug，如果一个查询条件不会空，也使用<@and> <@or>连接起来
     private Object[] getEffectiveParamArray(Map<String, Object> params, ConditionParamsManager manager) {
         return manager.getParamNames().stream().filter(n -> params.containsKey(n)).map(n -> params.get(n))
                 .collect(Collectors.toList()).toArray();
