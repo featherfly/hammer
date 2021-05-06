@@ -118,7 +118,8 @@ public class PropertiesMappingDirectiveModel extends PropertiesMappingDirective 
         if (classMapping == null) {
             Table tableMetadata = mappingFactory.getMetadata().getTable(nameParam.toUpperCase());
             tableMetadata.getColumns().forEach(column -> {
-                String propName = WordUtils.parseToUpperFirst(column.getName(), '_');
+                // TODO 更新版本后WordUtils.parseToUpperFirst就有除了大写其余全部小写的处理了，到时候不需要再先转一次小写
+                String propName = WordUtils.parseToUpperFirst(column.getName().toLowerCase(), '_');
                 if (aliasIsEmpty) {
                     result.append(" " + column.getName() + " as " + propName + ",");
                 } else {

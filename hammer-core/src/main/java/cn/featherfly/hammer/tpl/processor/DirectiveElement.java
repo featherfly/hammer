@@ -13,9 +13,6 @@ import cn.featherfly.common.lang.Lang;
  */
 public class DirectiveElement extends AbstractElement {
 
-    /** The parser. */
-    protected Parser parser;
-
     protected char directive = '@';
 
     protected char macro = '#';
@@ -36,8 +33,7 @@ public class DirectiveElement extends AbstractElement {
      * @param parser the parser
      */
     public DirectiveElement(String value, Parser parser) {
-        super(value);
-        this.parser = parser;
+        super(value, parser);
     }
 
     /**
@@ -59,7 +55,17 @@ public class DirectiveElement extends AbstractElement {
      */
     protected String wrapDirective() {
         if (isReplaceable()) {
-            return source.substring(2);
+            boolean isStartWith = source.charAt(2) == parser.getFuzzyQueryChar();
+            boolean isEndWith = source.charAt(source.length() - 1) == parser.getFuzzyQueryChar();
+            if (isStartWith && isEndWith) {
+                return source.substring(3, source.length() - 1);
+            } else if (isEndWith) {
+                return source.substring(2, source.length() - 1);
+            } else if (isStartWith) {
+                return source.substring(3);
+            } else {
+                return source.substring(2);
+            }
         } else {
             if (isEnclosed()) {
                 return getString(false, true);

@@ -9,11 +9,13 @@ import java.util.Set;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import cn.featherfly.common.lang.Strings;
 import cn.featherfly.hammer.sqldb.SqldbHammerException;
 import cn.featherfly.hammer.tpl.TplException;
 import cn.featherfly.hammer.tpl.directive.LogicDirective;
 import cn.featherfly.hammer.tpl.freemarker.FreemarkerDirective;
 import cn.featherfly.hammer.tpl.supports.ConditionParamsManager;
+import cn.featherfly.hammer.tpl.supports.ConditionParamsManager.Param;
 import freemarker.core.Environment;
 import freemarker.template.TemplateBooleanModel;
 import freemarker.template.TemplateDirectiveBody;
@@ -61,6 +63,7 @@ public abstract class LogicTemplateDirectiveModel implements FreemarkerDirective
 
         Boolean ifParam = null;
         String nameParam = null;
+        String transverterParam = null;
 
         @SuppressWarnings("unchecked")
         Set<Map.Entry<String, Object>> entrySet = params.entrySet();
@@ -79,6 +82,11 @@ public abstract class LogicTemplateDirectiveModel implements FreemarkerDirective
                     throw new TplException("The \"" + PARAM_NAME_NAME + "\" parameter " + "must be a String.");
                 }
                 nameParam = ((TemplateScalarModel) paramValue).getAsString();
+            } else if (paramName.equals(PARAM_NAME_TRANSVERTER)) {
+                if (!(paramValue instanceof TemplateScalarModel)) {
+                    throw new TplException("The \"" + PARAM_NAME_TRANSVERTER + "\" parameter " + "must be a String.");
+                }
+                transverterParam = ((TemplateScalarModel) paramValue).getAsString();
             } else {
                 throw new TplException("Unsupported parameter: " + paramName);
             }
@@ -107,7 +115,7 @@ public abstract class LogicTemplateDirectiveModel implements FreemarkerDirective
                     out.write(result);
                 }
                 conditionParamsManager.endGroup();
-            } else if (ifParam) {
+            } else if (ifParam) { // 判断!ifParam，在conditionManager里加入filterNames
                 String name = nameParam;
                 boolean needAppendLogicWorld = conditionParamsManager.isNeedAppendLogicWorld();
                 // if (conditionParamsManager.isNeedAppendLogicWorld()) {
@@ -161,16 +169,31 @@ public abstract class LogicTemplateDirectiveModel implements FreemarkerDirective
 
                 if (name.contains(",")) {
                     for (String n : name.split(",")) {
-                        conditionParamsManager.addParam(n.trim());
+                        Param param = new Param();
+                        if (Strings.isNotBlank(transverterParam)) {
+                            param.setTransverter(transverterParam.trim());
+                        }
+                        param.setName(n.trim());
+                        conditionParamsManager.addParam(param);
+                        //                        conditionParamsManager.addParam(n.trim());
                     }
                 } else {
-                    conditionParamsManager.addParam(name.trim());
+                    Param param = new Param();
+                    if (Strings.isNotBlank(transverterParam)) {
+                        param.setTransverter(transverterParam.trim());
+                    }
+                    param.setName(name.trim());
+                    conditionParamsManager.addParam(param);
+                    //                    conditionParamsManager.addParam(name.trim());
                 }
                 if (needAppendLogicWorld) {
                     condition = " " + getLogicWorld() + " " + condition;
+                    //                    condition = getLogicWorld() + " " + condition + " ";
                 }
                 out.write(condition);
                 // body.render(out);
+            } else {
+                out.write("");
             }
         }
     }

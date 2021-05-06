@@ -263,6 +263,7 @@ public class SqlTplExecutorTest extends JdbcTestBase {
         Map<String, Object> uis = executor.single("user_info@selectById",
                 new HashChainMap<String, Object>().putChain("id", 1));
         assertEquals(uis.get("id").toString(), "1");
+        //        assertEquals(uis.get("ID").toString(), "1");
         System.out.println(uis);
     }
 
