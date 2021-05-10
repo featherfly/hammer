@@ -53,6 +53,48 @@ public class FreemarkerTemplatePreProcessorTest {
         System.out.println(s);
         System.err.println(new FreemarkerTemplatePreProcessor().process(s));
     }
+
+    @Test
+    void testTransverter() throws IOException {
+        String file = ClassUtils.packageToDir(FreemarkerTemplatePreProcessorTest.class) + "/tpl_transverter.sql";
+        System.out.println(ClassLoaderUtils.getResource(file));
+        List<String> list = IOUtils.readLines(ClassLoaderUtils.getResourceAsStream(file), StandardCharsets.UTF_8);
+        StringBuilder sb = new StringBuilder();
+        for (String string : list) {
+            sb.append(string).append("\n");
+        }
+        String s = sb.toString();
+        //        System.out.println(s);
+        System.err.println(new FreemarkerTemplatePreProcessor().process(s));
+    }
+
+    @Test
+    void testTransverter2() throws IOException {
+        String file = ClassUtils.packageToDir(FreemarkerTemplatePreProcessorTest.class) + "/tpl_transverter2.sql";
+        System.out.println(ClassLoaderUtils.getResource(file));
+        List<String> list = IOUtils.readLines(ClassLoaderUtils.getResourceAsStream(file), StandardCharsets.UTF_8);
+        StringBuilder sb = new StringBuilder();
+        for (String string : list) {
+            sb.append(string).append("\n");
+        }
+        String s = sb.toString();
+        //        System.out.println(s);
+        System.err.println(new FreemarkerTemplatePreProcessor().process(s));
+    }
+
+    @Test
+    void testTransverter3() throws IOException {
+        String file = ClassUtils.packageToDir(FreemarkerTemplatePreProcessorTest.class) + "/tpl_transverter3.sql";
+        System.out.println(ClassLoaderUtils.getResource(file));
+        List<String> list = IOUtils.readLines(ClassLoaderUtils.getResourceAsStream(file), StandardCharsets.UTF_8);
+        StringBuilder sb = new StringBuilder();
+        for (String string : list) {
+            sb.append(string).append("\n");
+        }
+        String s = sb.toString();
+        //        System.out.println(s);
+        System.err.println(new FreemarkerTemplatePreProcessor().process(s));
+    }
     //
     //    static String s = "select /*<<prop alias='r'*/* from /*<<wrap*/user\n" + "/*<where*/ where\n"
     //            + "    /*id?*/id = /*$=:id*/1\n" + "    /*name??*/and name like /*$=:name*/'name'\n"

@@ -39,7 +39,7 @@ public class SqlQueryTest extends JdbcTestBase {
         List<Map<String, Object>> list = query.find("user").where().eq("a", null).and().eq("b", null).and()
                 .sw("username", "yufei").and().eq("d", null).list();
         for (Map<String, Object> map : list) {
-            String username = (String) map.get("username");
+            String username = (String) map.get("USERNAME");
             System.err.println(username);
             assertTrue(Strings.startsWith(username, "yufei"));
         }

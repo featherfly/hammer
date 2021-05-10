@@ -29,19 +29,27 @@ public abstract class AbstractElement implements Element {
     /** The end. */
     protected int end;
 
+    /** The parser. */
+    protected Parser parser;
+
     /**
      * Instantiates a new abstract element.
+     *
+     * @param parser the parser
      */
-    public AbstractElement() {
+    public AbstractElement(Parser parser) {
+        this.parser = parser;
     }
 
     /**
      * Instantiates a new abstract element.
      *
      * @param source the source
+     * @param parser the parser
      */
-    public AbstractElement(String source) {
+    public AbstractElement(String source, Parser parser) {
         super();
+        this.parser = parser;
         this.source.append(source);
     }
 
@@ -86,22 +94,24 @@ public abstract class AbstractElement implements Element {
      * Append.
      *
      * @param c the c
-     * @return the string builder
+     * @return this AbstractElement
      * @see java.lang.StringBuilder#append(char)
      */
-    public StringBuilder append(char c) {
-        return source.append(c);
+    public AbstractElement append(char c) {
+        source.append(c);
+        return this;
     }
 
     /**
      * Append.
      *
      * @param str the str
-     * @return the string builder
+     * @return this AbstractElement
      * @see java.lang.StringBuilder#append(java.lang.String)
      */
-    public StringBuilder append(String str) {
-        return source.append(str);
+    public AbstractElement append(String str) {
+        source.append(str);
+        return this;
     }
 
     /**
@@ -120,6 +130,11 @@ public abstract class AbstractElement implements Element {
         return source.toString();
     }
 
+    /**
+     * Sets the source.
+     *
+     * @param source the new source
+     */
     public void setSource(String source) {
         this.source = new StringBuilder(source);
     }
