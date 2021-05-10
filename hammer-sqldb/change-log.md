@@ -1,4 +1,4 @@
-# 0.5.9
+# 0.5.9 2021-05-06
 1. 模板sql的<@and>和<@Or>标签加入transverter属性，用于对字符串模糊查询，支持CO,SW,EW
     ```
     <@and if = name?? transverter="CO"> 表示%value%
