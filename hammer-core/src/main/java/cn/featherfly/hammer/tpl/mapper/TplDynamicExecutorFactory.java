@@ -66,6 +66,8 @@ public class TplDynamicExecutorFactory extends ClassLoader implements Opcodes {
     /** The logger. */
     protected final Logger logger = LoggerFactory.getLogger(this.getClass());
 
+    private ClassLoader classLoader;
+
     private Set<Class<?>> types = new HashSet<>();
 
     private static final TplDynamicExecutorFactory INSTANCE = new TplDynamicExecutorFactory();
@@ -272,6 +274,15 @@ public class TplDynamicExecutorFactory extends ClassLoader implements Opcodes {
         if (classLoader == null) {
             classLoader = this.getClass().getClassLoader();
         }
+        if (this.classLoader == null) {
+            // 第一次加载
+            this.classLoader = classLoader;
+        }
+        if (this.classLoader != classLoader) {
+            // 表示使用的classLoader没了，使用新的classLoader重新加载，一般出现在热部署时，如springboot-dev-tool的RestartClassLoader
+            clear();
+            this.classLoader = classLoader;
+        }
         //        ClassReader classReader = new ClassReader(type.getName());
         ClassReader classReader;
         try (InputStream is = classLoader.getResourceAsStream(type.getName().replace('.', '/') + ".class")) {
@@ -364,6 +375,11 @@ public class TplDynamicExecutorFactory extends ClassLoader implements Opcodes {
             types.add(type);
         }
         return implClassName;
+    }
+
+    private void clear() {
+        types.clear();
+        typeInstances.clear();
     }
 
     private void addImplMethods(Class<?> type, String globalNamespace, ClassNode classNode, Class<?> parentHammer)
@@ -647,7 +663,7 @@ public class TplDynamicExecutorFactory extends ClassLoader implements Opcodes {
         int commonParamNum = 0;
 
         /**
-        	 */
+             */
         public ParamPosition() {
         }
     }
@@ -676,10 +692,10 @@ public class TplDynamicExecutorFactory extends ClassLoader implements Opcodes {
                     }
                     if (commonParamIndex == 1) {
                         methodNode.visitMethodInsn(INVOKEVIRTUAL, paramName, putChainMethod.getName(),
-                                org.objectweb.asm.Type.getMethodDescriptor(putChainMethod), false);
+                                Type.getMethodDescriptor(putChainMethod), false);
                     } else {
                         methodNode.visitMethodInsn(INVOKEINTERFACE, paramChainName, putChainMethod.getName(),
-                                org.objectweb.asm.Type.getMethodDescriptor(putChainMethod), true);
+                                Type.getMethodDescriptor(putChainMethod), true);
                     }
                     commonParamIndex++;
                     break;

@@ -1,3 +1,6 @@
+# 0.5.10 2021-05-12
+1. 修复springboot使用dev-tool进行热部署时，重新加载生成mapper报错的问题
+
 # 0.5.9 2021-05-06
 1. 模板sql的<@and>和<@Or>标签加入transverter属性，用于对字符串模糊查询，支持CO,SW,EW
     ```
