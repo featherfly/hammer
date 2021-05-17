@@ -98,9 +98,11 @@ public class JdbcTestBase {
 
         BasicDataSource ds = new BasicDataSource();
         //        dataSource.setUrl("jdbc:mysql://127.0.0.1:3306/hammer_jdbc?useUnicode=true&characterEncoding=UTF-8");
+        //        ds.setUrl(
+        //                "jdbc:mysql://127.0.0.1:3306/hammer_jdbc?serverTimezone=UTC&characterEncoding=utf8&useUnicode=true&useSSL=false");
         ds.setUrl(
-                "jdbc:mysql://127.0.0.1:3306/hammer_jdbc?serverTimezone=UTC&characterEncoding=utf8&useUnicode=true&useSSL=false");
-        ds.setDriverClassName("com.mysql.jdbc.Driver");
+                "jdbc:mysql://127.0.0.1:3306/hammer_jdbc?serverTimezone=CTT&characterEncoding=utf8&useUnicode=true&useSSL=false");
+        ds.setDriverClassName("com.mysql.cj.jdbc.Driver");
         ds.setUsername("root");
         ds.setPassword("123456");
         dataSource = ds;
