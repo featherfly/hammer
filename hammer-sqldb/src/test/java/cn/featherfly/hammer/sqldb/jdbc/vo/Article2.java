@@ -1,6 +1,9 @@
 
 package cn.featherfly.hammer.sqldb.jdbc.vo;
 
+import java.util.Arrays;
+import java.util.List;
+
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Table;
@@ -20,11 +23,13 @@ public class Article2 {
 
     private String title;
 
-    //    private Long[] content;
+    private Long[] content;
 
     private Content content2;
 
     private Content content3;
+
+    private List<Long> content4;
 
     /**
      * 返回id
@@ -99,11 +104,47 @@ public class Article2 {
     }
 
     /**
+     * get content value
+     *
+     * @return content
+     */
+    public Long[] getContent() {
+        return content;
+    }
+
+    /**
+     * set content value
+     *
+     * @param content content
+     */
+    public void setContent(Long[] content) {
+        this.content = content;
+    }
+
+    /**
+     * get content4 value
+     *
+     * @return content4
+     */
+    public List<Long> getContent4() {
+        return content4;
+    }
+
+    /**
+     * set content4 value
+     *
+     * @param content4 content4
+     */
+    public void setContent4(List<Long> content4) {
+        this.content4 = content4;
+    }
+
+    /**
      * {@inheritDoc}
      */
     @Override
     public String toString() {
-        return "Article2 [id=" + id + ", title=" + title + ", content2=" + content2 + ", content3=" + content3 + "]";
+        return "Article2 [id=" + id + ", title=" + title + ", content=" + Arrays.toString(content) + ", content2="
+                + content2 + ", content3=" + content3 + ", content4=" + content4 + "]";
     }
-
 }
