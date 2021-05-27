@@ -3,16 +3,21 @@ package cn.featherfly.hammer.sqldb.jdbc;
 
 import static org.testng.Assert.assertEquals;
 
+import java.util.List;
+
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
 
 import cn.featherfly.common.bean.BeanDescriptor;
 import cn.featherfly.common.bean.BeanProperty;
 import cn.featherfly.common.db.mapping.mappers.ObjectToJsonMapper;
+import cn.featherfly.common.lang.ArrayUtils;
 import cn.featherfly.common.lang.Randoms;
 import cn.featherfly.common.lang.reflect.GenericClass;
 import cn.featherfly.hammer.Hammer;
 import cn.featherfly.hammer.sqldb.SqldbHammerImpl;
+import cn.featherfly.hammer.sqldb.jdbc.sqltype.ArrayToStringSqlTypeMapper;
+import cn.featherfly.hammer.sqldb.jdbc.sqltype.ListToStringSqlTypeMapper;
 import cn.featherfly.hammer.sqldb.jdbc.vo.Article2;
 import cn.featherfly.hammer.sqldb.jdbc.vo.Content;
 import cn.featherfly.hammer.sqldb.jdbc.vo.Content2;
@@ -79,6 +84,13 @@ public class HammerJdbcMappingTypeTest extends JdbcTestBase {
         contentProperty = bd.getBeanProperty("content3");
         sqlTypeMappingManager.regist(contentProperty, new ObjectToJsonMapper<>(contentProperty));
 
+        contentProperty = bd.getBeanProperty("content4");
+        //        sqlTypeMappingManager.regist(contentProperty, new ListToStringSqlTypeMapper());
+        sqlTypeMappingManager.regist(new ListToStringSqlTypeMapper());
+
+        contentProperty = bd.getBeanProperty("content");
+        sqlTypeMappingManager.regist(contentProperty, new ArrayToStringSqlTypeMapper());
+
         sqlTypeMappingManager.regist(new GenericClass<>(Content2.class), new ObjectToJsonMapper<>(Content2.class));
 
         hammer = new SqldbHammerImpl(jdbc, mappingFactory, configFactory);
@@ -97,12 +109,27 @@ public class HammerJdbcMappingTypeTest extends JdbcTestBase {
         content3.setImg("content3_img_" + Randoms.getInt(1000));
         article.setContent3(content3);
 
+        Long[] content = new Long[] { 1L, 2L };
+        article.setContent(content);
+
+        List<Long> content4 = ArrayUtils.toList(1L, 2L, 3L);
+        article.setContent4(content4);
+
         hammer.save(article);
 
         Article2 a = hammer.get(article.getId(), article.getClass());
 
         assertEquals(a.getContent2(), content2);
         assertEquals(a.getContent3(), content3);
+        assertEquals(a.getContent(), content);
+        assertEquals(a.getContent4(), content4);
+
+        a = hammer.query(Article2.class).where().eq(article::getId).single();
+
+        assertEquals(a.getContent2(), content2);
+        assertEquals(a.getContent3(), content3);
+        assertEquals(a.getContent(), content);
+        assertEquals(a.getContent4(), content4);
     }
 
     @Test
