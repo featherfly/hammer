@@ -39,7 +39,7 @@ public class SqlQueryTest extends JdbcTestBase {
         List<Map<String, Object>> list = query.find("user").where().eq("a", null).and().eq("b", null).and()
                 .sw("username", "yufei").and().eq("d", null).list();
         for (Map<String, Object> map : list) {
-            String username = (String) map.get("USERNAME");
+            String username = (String) map.get("username");
             System.err.println(username);
             assertTrue(Strings.startsWith(username, "yufei"));
         }
@@ -102,6 +102,24 @@ public class SqlQueryTest extends JdbcTestBase {
             assertTrue(age <= a);
             age = a;
         }
+
+        //        list = query.find("user").property("username", "password", "AGE").sort().asc("AGE").list();
+        //        age = Integer.MIN_VALUE;
+        //        for (Map<String, Object> map : list) {
+        //            Integer a = (Integer) map.get("AGE");
+        //            System.err.println(age + "    " + a);
+        //            assertTrue(age <= a);
+        //            age = a;
+        //        }
+
+        //        list = query.find("user").property("username", "password").propertyAlias("AGE", "age").sort().asc("age").list();
+        //        age = Integer.MIN_VALUE;
+        //        for (Map<String, Object> map : list) {
+        //            Integer a = (Integer) map.get("age");
+        //            System.err.println(age + "    " + a);
+        //            assertTrue(age <= a);
+        //            age = a;
+        //        }
     }
 
     @Test

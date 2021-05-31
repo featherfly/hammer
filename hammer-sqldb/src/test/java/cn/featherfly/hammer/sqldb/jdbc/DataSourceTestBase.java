@@ -13,6 +13,7 @@ import org.testng.annotations.Optional;
 import org.testng.annotations.Parameters;
 
 import cn.featherfly.common.db.SqlExecutor;
+import cn.featherfly.common.db.dialect.Dialect;
 import cn.featherfly.common.db.dialect.Dialects;
 import cn.featherfly.common.db.mapping.JdbcMappingFactory;
 import cn.featherfly.common.db.mapping.JdbcMappingFactoryImpl;
@@ -42,6 +43,8 @@ public class DataSourceTestBase {
     //    public static final String CONFIG_FILE = "constant.mysql.yaml";
     //    public static final String CONFIG_FILE = "constant.postgresql.yaml";
     //    public static final String CONFIG_FILE = "constant.sqlite.yaml";
+
+    protected static Dialect dialect;
 
     protected static Jdbc jdbc;
 
@@ -98,7 +101,8 @@ public class DataSourceTestBase {
         ds = dataSource;
 
         //        jdbc = new SpringJdbcTemplateImpl(dataSource, Dialects.MYSQL);
-        jdbc = new JdbcImpl(dataSource, Dialects.MYSQL);
+        dialect = Dialects.MYSQL;
+        jdbc = new JdbcImpl(dataSource, dialect);
         metadata = DatabaseMetadataManager.getDefaultManager().create(dataSource);
 
         mappingFactory = new JdbcMappingFactoryImpl(metadata, Dialects.MYSQL);
@@ -127,7 +131,8 @@ public class DataSourceTestBase {
         ds = dataSource;
 
         //        jdbc = new SpringJdbcTemplateImpl(dataSource, Dialects.POSTGRESQL);
-        jdbc = new JdbcImpl(dataSource, Dialects.POSTGRESQL);
+        dialect = Dialects.POSTGRESQL;
+        jdbc = new JdbcImpl(dataSource, dialect);
         metadata = DatabaseMetadataManager.getDefaultManager().create(dataSource);
 
         mappingFactory = new JdbcMappingFactoryImpl(metadata, Dialects.POSTGRESQL);
@@ -155,7 +160,8 @@ public class DataSourceTestBase {
         ds = dataSource;
 
         //        jdbc = new SpringJdbcTemplateImpl(dataSource, Dialects.SQLITE);
-        jdbc = new JdbcImpl(dataSource, Dialects.SQLITE);
+        dialect = Dialects.SQLITE;
+        jdbc = new JdbcImpl(dataSource, dialect);
         metadata = DatabaseMetadataManager.getDefaultManager().create(dataSource, "main");
 
         mappingFactory = new JdbcMappingFactoryImpl(metadata, Dialects.SQLITE);

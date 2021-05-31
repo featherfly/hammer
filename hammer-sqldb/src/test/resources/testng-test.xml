@@ -1,10 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- <!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd"> -->
-<suite name="Hammer SQLDB Test Suite" parallel="tests"
+<suite name="Hammer SQLDB Test Suite {0}" parallel="tests"
 	thread-count="1">
 <!-- 	<parameter name="dataBase" value="mysql" /> -->
 <!-- 	<parameter name="dataBase" value="sqlite" /> -->
 	<!-- <parameter name="dataBase" value="postgresql" /> -->
+    <listeners>
+        <listener class-name="cn.featherfly.hammer.sqldb.TestngListener"></listener>
+    </listeners>
 	<test name="dml builder test">
 		<packages>
 			<package name="cn.featherfly.hammer.sqldb.sql.dml.*" />

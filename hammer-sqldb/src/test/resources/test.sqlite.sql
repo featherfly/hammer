@@ -26,11 +26,11 @@ INSERT INTO `role` VALUES ('12', 'n_12', 'descp_65');
 -- ----------------------------
 DROP TABLE IF EXISTS `user`;
 CREATE TABLE `user` (
-  `ID` INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
-  `USERNAME` text(255) DEFAULT NULL,
-  `PASSWORD` text(255) DEFAULT NULL,
-  `MOBILE_NO` text(11) DEFAULT NULL,
-  `AGE` INTEGER DEFAULT NULL,
+  `id` INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
+  `username` text(255) DEFAULT NULL,
+  `password` text(255) DEFAULT NULL,
+  `mobile_no` text(11) DEFAULT NULL,
+  `age` INTEGER DEFAULT NULL,
   UNIQUE ("USERNAME"),
   UNIQUE ("MOBILE_NO")
 );
@@ -84,7 +84,7 @@ INSERT INTO `user_role` VALUES ('10', '10', 'descp581', null);
 -- ----------------------------
 DROP TABLE IF EXISTS `user_info`;
 CREATE TABLE `user_info` (
-  `ID` INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
+  `id` INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
   `user_id` INTEGER NOT NULL,
   `name` text(255) DEFAULT NULL,
   `descp` text(255) DEFAULT NULL,
@@ -102,7 +102,7 @@ INSERT INTO `user_info` (`ID`, `user_id`, `name`, `descp`, `province`, `city`, `
 
 DROP TABLE IF EXISTS `cms_article`;
 CREATE TABLE `cms_article` (
-  `ID` INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
+  `id` INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
   `title` text(255) DEFAULT NULL,
   `content` text(255) DEFAULT NULL
 );
