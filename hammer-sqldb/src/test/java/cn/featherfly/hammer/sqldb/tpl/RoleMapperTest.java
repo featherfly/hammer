@@ -1,8 +1,8 @@
 
 package cn.featherfly.hammer.sqldb.tpl;
 
+import static org.junit.Assert.assertTrue;
 import static org.testng.Assert.assertEquals;
-import static org.testng.Assert.assertTrue;
 
 import java.util.HashSet;
 import java.util.List;
@@ -11,6 +11,7 @@ import java.util.Set;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
 
+import cn.featherfly.common.db.dialect.Dialects;
 import cn.featherfly.common.lang.Randoms;
 import cn.featherfly.common.structure.page.PaginationResults;
 import cn.featherfly.common.structure.page.SimplePagination;
@@ -137,12 +138,33 @@ public class RoleMapperTest extends JdbcTestBase {
         assertEquals(list.size(), 0);
 
         list = roleMapper.selectByNameCo("\\_init\\_");
+        if (dialect == Dialects.SQLITE) {
+            list = roleMapper.selectByNameCo("_init_");
+        }
         assertEquals(list.size(), 9);
 
         list = roleMapper.selectByNameSw("n\\_init");
+        if (dialect == Dialects.SQLITE) {
+            list = roleMapper.selectByNameCo("n_init");
+        }
         assertEquals(list.size(), 6);
 
         list = roleMapper.selectByNameEw("init\\_98");
+        if (dialect == Dialects.SQLITE) {
+            list = roleMapper.selectByNameCo("init_98");
+        }
         assertEquals(list.size(), 1);
+    }
+
+    @Test
+    void testIdList() {
+        List<Long> idList = roleMapper.idList();
+        System.out.println(idList);
+        assertTrue(idList.size() > 0);
+        Long pid = Long.MIN_VALUE;
+        for (Long id : idList) {
+            assertTrue(pid < id);
+            pid = id;
+        }
     }
 }

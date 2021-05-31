@@ -15,6 +15,7 @@ import org.testng.annotations.Parameters;
 import cn.featherfly.common.db.SqlExecutor;
 import cn.featherfly.common.db.dialect.Dialect;
 import cn.featherfly.common.db.dialect.Dialects;
+import cn.featherfly.common.db.dialect.PostgreSQLDialect;
 import cn.featherfly.common.db.mapping.JdbcMappingFactory;
 import cn.featherfly.common.db.mapping.JdbcMappingFactoryImpl;
 import cn.featherfly.common.db.mapping.SqlTypeMappingManager;
@@ -150,7 +151,9 @@ public class JdbcTestBase {
         sqlExecutor
                 .execute(new File(ClassLoaderUtils.getResource("test.postgresql.sql", JdbcTestBase.class).getFile()));
 
-        dialect = Dialects.POSTGRESQL;
+        PostgreSQLDialect postgreSQLDialect = new PostgreSQLDialect();
+        //        postgreSQLDialect.setTableAndColumnNameUppercase(StringConverter.UPPER_CASE);
+        dialect = postgreSQLDialect;
 
         //        jdbc = new SpringJdbcTemplateImpl(ds, dialect);
         jdbc = new JdbcImpl(ds, dialect, sqlTypeMappingManager);

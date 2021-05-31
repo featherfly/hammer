@@ -11,5 +11,5 @@ public interface TypeConditionsExpression<C extends TypeConditionsExpression<C, 
         TypeGreatEqualsExpressoin<C, L>, TypeGreatThanExpressoin<C, L>, TypeInExpression<C, L>,
         TypeIsNotNullExpression<C, L>, TypeIsNullExpression<C, L>, TypeLessEqualsExpressoin<C, L>,
         TypeLessThanExpressoin<C, L>, TypeNotEqualsExpression<C, L>, TypeNotInExpression<C, L>,
-        TypeStartWithExpression<C, L>, TypePropertyConditionsExpression<C, L> {
+        TypeStartWithExpression<C, L>, TypeLikeExpression<C, L>, TypePropertyConditionsExpression<C, L> {
 }

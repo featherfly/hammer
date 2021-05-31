@@ -330,4 +330,37 @@ public class SqlTplExecutorTest extends JdbcTestBase {
         int i = executor.value("countRole", int.class, new HashChainMap<String, Object>());
         System.out.println(i);
     }
+
+    @Test
+    void testInParams() {
+        int resultSize = 3;
+
+        Long[] ids = new Long[] { 1L, 2L, 3L };
+
+        Map<String, Object> params = new HashChainMap<String, Object>().putChain("ids", ids);
+
+        List<User> users;
+        // list
+        users = executor.list("selectIn", User.class, params);
+        assertEquals(users.size(), resultSize);
+
+        // value
+        int size = executor.value("selectInCount", int.class, params);
+        assertEquals(size, resultSize);
+
+        //  list page
+        resultSize = 2;
+        users = executor.list("selectIn", User.class, params, 0, 2);
+        assertEquals(users.size(), resultSize);
+
+        //  pagination
+        PaginationResults<User> p = executor.pagination("selectIn", User.class, params, 0, 2);
+        assertEquals(p.getPageResults().size(), resultSize);
+        assertEquals(p.getTotal(), new Integer(ids.length));
+
+        // single
+        User user = executor.single("selectInSingle", User.class,
+                new HashChainMap<String, Object>().putChain("ids", new Long[] { 1L, -1L }));
+        assertEquals(user.getId(), new Integer(1));
+    }
 }

@@ -6,10 +6,7 @@ import cn.featherfly.common.lang.function.SerializableFunction;
 import cn.featherfly.common.lang.function.SerializableSupplier;
 
 /**
- * <p>
- * StartWithExpression
- * </p>
- * .
+ * TypeStartWithExpression.
  *
  * @author zhongj
  * @param <C> the generic type

@@ -9,10 +9,10 @@ SET FOREIGN_KEY_CHECKS=0;
 -- ----------------------------
 DROP TABLE IF EXISTS `role`;
 CREATE TABLE `role` (
-  `ID` int(10) unsigned NOT NULL AUTO_INCREMENT ,
-  `NAME` varchar(20) DEFAULT NULL,
-  `DESCP` varchar(36) DEFAULT NULL,
-  PRIMARY KEY (`ID`)
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT ,
+  `name` varchar(20) DEFAULT NULL,
+  `descp` varchar(36) DEFAULT NULL,
+  PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=21 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
@@ -36,14 +36,14 @@ INSERT INTO `role` VALUES ('12', 'n_12', 'descp_65');
 -- ----------------------------
 DROP TABLE IF EXISTS `user`;
 CREATE TABLE `user` (
-  `ID` int(10) unsigned NOT NULL AUTO_INCREMENT ,
-  `USERNAME` varchar(255) DEFAULT NULL ,
-  `PASSWORD` varchar(255) DEFAULT NULL ,
-  `MOBILE_NO` varchar(11) DEFAULT NULL ,
-  `AGE` int(11) DEFAULT NULL,
-  PRIMARY KEY (`ID`),
-  UNIQUE KEY `USER_NAME_UQ` (`USERNAME`),
-  UNIQUE KEY `MOBILE_NO_UQ` (`MOBILE_NO`)
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT ,
+  `username` varchar(255) DEFAULT NULL ,
+  `password` varchar(255) DEFAULT NULL ,
+  `mobile_no` varchar(11) DEFAULT NULL ,
+  `age` int(11) DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `USER_NAME_UQ` (`username`),
+  UNIQUE KEY `MOBILE_NO_UQ` (`mobile_no`)
 ) ENGINE=InnoDB AUTO_INCREMENT=13 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
@@ -94,14 +94,14 @@ INSERT INTO `user_role` VALUES ('8', '8', 'descp581',null);
 -- ----------------------------
 DROP TABLE IF EXISTS `user_info`;
 CREATE TABLE `user_info` (
-  `ID` int(10) unsigned NOT NULL AUTO_INCREMENT ,
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT ,
   `user_id` int(10) unsigned NOT NULL,
   `name` varchar(255) DEFAULT NULL,
   `descp` varchar(255) DEFAULT NULL,
   `province` varchar(255) DEFAULT NULL,
   `city` varchar(255) DEFAULT NULL,
   `district` varchar(255) DEFAULT NULL,
-  PRIMARY KEY (`ID`)
+  PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 ;
 
 -- ----------------------------

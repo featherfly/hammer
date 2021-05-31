@@ -38,7 +38,7 @@ import cn.featherfly.hammer.tpl.mapper.DynamicTplExecutorSpringRegistor;
  */
 @Configuration
 @EnableTransactionManagement
-public class Appconfig {
+public class Appconfig extends JdbcTestBase {
 
     @Bean
     public DynamicTplExecutorSpringRegistor tplDynamicExecutorSpringRegistor() {

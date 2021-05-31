@@ -1116,6 +1116,32 @@ public abstract class AbstractSqlConditionGroupExpression<C extends ConditionGro
      * {@inheritDoc}
      */
     @Override
+    public L lk(String name, String value) {
+        return (L) addCondition(new SqlConditionExpressionBuilder(dialect,
+                ClassMappingUtils.getColumnName(name, classMapping), value, QueryOperator.LK, queryAlias));
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public <T> L lk(ReturnStringFunction<T> name, String value) {
+        return lk(getPropertyName(name), value);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public L lk(StringSupplier property) {
+        SerializableSupplierLambdaInfo<String> info = LambdaUtils.getSerializableSupplierLambdaInfo(property);
+        return lk(info.getSerializedLambdaInfo().getPropertyName(), info.getValue());
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
     public <T, R> ObjectExpression<C, L> property(SerializableFunction<T, R> name) {
         return property(getPropertyName(name));
     }

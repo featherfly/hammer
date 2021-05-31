@@ -1,8 +1,12 @@
 
 package cn.featherfly.hammer.sqldb.tpl;
 
+import java.lang.reflect.Array;
 import java.math.BigDecimal;
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -14,7 +18,7 @@ import org.slf4j.LoggerFactory;
 
 import com.speedment.common.tuple.Tuple2;
 import com.speedment.common.tuple.Tuple3;
-import com.speedment.common.tuple.Tuple4;
+import com.speedment.common.tuple.Tuple5;
 import com.speedment.common.tuple.Tuples;
 
 import cn.featherfly.common.db.SqlUtils;
@@ -88,10 +92,15 @@ public class SqlTplExecutor implements TplExecutor {
     public int execute(TplExecuteId tplExecuteId, Map<String, Object> params) {
         Tuple3<String, TplExecuteConfig, ConditionParamsManager> queryExecution = getQueryExecution(tplExecuteId,
                 params, Integer.class);
+        String sql = queryExecution.get0();
+        ConditionParamsManager manager = queryExecution.get2();
+        Tuple2<String, Map<String, Object>> processTuple = processInParams(sql, params, manager);
+        sql = processTuple.get0();
+        params = processTuple.get1();
         if (queryExecution.get2().getParamNamed() == null || queryExecution.get2().getParamNamed()) {
-            return jdbc.update(queryExecution.get0(), getEffectiveParamMap(params, queryExecution.get2()));
+            return jdbc.update(sql, getEffectiveParamMap(params, manager));
         } else {
-            return jdbc.update(queryExecution.get0(), getEffectiveParamArray(params, queryExecution.get2()));
+            return jdbc.update(sql, getEffectiveParamArray(params, manager));
         }
     }
 
@@ -109,11 +118,15 @@ public class SqlTplExecutor implements TplExecutor {
     @Override
     public Map<String, Object> single(TplExecuteId tplExecuteId, Map<String, Object> params) {
         Tuple3<String, TplExecuteConfig, ConditionParamsManager> tuple3 = getQueryExecution(tplExecuteId, params, null);
+        String sql = tuple3.get0();
+        ConditionParamsManager manager = tuple3.get2();
+        Tuple2<String, Map<String, Object>> processTuple = processInParams(sql, params, manager);
+        sql = processTuple.get0();
+        params = processTuple.get1();
         if (tuple3.get2().getParamNamed() == null || tuple3.get2().getParamNamed()) {
-            return jdbc.querySingle(tuple3.get0(), getEffectiveParamMap(params, tuple3.get2()));
+            return jdbc.querySingle(sql, getEffectiveParamMap(params, manager));
         } else {
-
-            return jdbc.querySingle(tuple3.get0(), getEffectiveParamArray(params, tuple3.get2()));
+            return jdbc.querySingle(sql, getEffectiveParamArray(params, manager));
         }
     }
 
@@ -132,10 +145,15 @@ public class SqlTplExecutor implements TplExecutor {
     public <E> E single(TplExecuteId tplExecuteId, Class<E> entityType, Map<String, Object> params) {
         Tuple3<String, TplExecuteConfig, ConditionParamsManager> tuple3 = getQueryExecution(tplExecuteId, params,
                 entityType);
+        String sql = tuple3.get0();
+        ConditionParamsManager manager = tuple3.get2();
+        Tuple2<String, Map<String, Object>> processTuple = processInParams(sql, params, manager);
+        sql = processTuple.get0();
+        params = processTuple.get1();
         if (tuple3.get2().getParamNamed() == null || tuple3.get2().getParamNamed()) {
-            return jdbc.querySingle(tuple3.get0(), entityType, getEffectiveParamMap(params, tuple3.get2()));
+            return jdbc.querySingle(sql, entityType, getEffectiveParamMap(params, manager));
         } else {
-            return jdbc.querySingle(tuple3.get0(), entityType, getEffectiveParamArray(params, tuple3.get2()));
+            return jdbc.querySingle(sql, entityType, getEffectiveParamArray(params, manager));
         }
     }
 
@@ -153,10 +171,15 @@ public class SqlTplExecutor implements TplExecutor {
     @Override
     public List<Map<String, Object>> list(TplExecuteId tplExecuteId, Map<String, Object> params) {
         Tuple3<String, TplExecuteConfig, ConditionParamsManager> tuple3 = getQueryExecution(tplExecuteId, params, null);
+        String sql = tuple3.get0();
+        ConditionParamsManager manager = tuple3.get2();
+        Tuple2<String, Map<String, Object>> processTuple = processInParams(sql, params, manager);
+        sql = processTuple.get0();
+        params = processTuple.get1();
         if (tuple3.get2().getParamNamed() == null || tuple3.get2().getParamNamed()) {
-            return jdbc.query(tuple3.get0(), getEffectiveParamMap(params, tuple3.get2()));
+            return jdbc.query(sql, getEffectiveParamMap(params, manager));
         } else {
-            return jdbc.query(tuple3.get0(), getEffectiveParamArray(params, tuple3.get2()));
+            return jdbc.query(sql, getEffectiveParamArray(params, manager));
         }
     }
 
@@ -175,10 +198,15 @@ public class SqlTplExecutor implements TplExecutor {
     public <E> List<E> list(TplExecuteId tplExecuteId, Class<E> entityType, Map<String, Object> params) {
         Tuple3<String, TplExecuteConfig, ConditionParamsManager> tuple3 = getQueryExecution(tplExecuteId, params,
                 entityType);
+        String sql = tuple3.get0();
+        ConditionParamsManager manager = tuple3.get2();
+        Tuple2<String, Map<String, Object>> processTuple = processInParams(sql, params, manager);
+        sql = processTuple.get0();
+        params = processTuple.get1();
         if (tuple3.get2().getParamNamed() == null || tuple3.get2().getParamNamed()) {
-            return jdbc.query(tuple3.get0(), entityType, getEffectiveParamMap(params, tuple3.get2()));
+            return jdbc.query(sql, entityType, getEffectiveParamMap(params, manager));
         } else {
-            return jdbc.query(tuple3.get0(), entityType, getEffectiveParamArray(params, tuple3.get2()));
+            return jdbc.query(sql, entityType, getEffectiveParamArray(params, manager));
         }
     }
 
@@ -267,7 +295,7 @@ public class SqlTplExecutor implements TplExecutor {
     public PaginationResults<Map<String, Object>> pagination(TplExecuteId tplExecuteId, Map<String, Object> params,
             int offset, int limit) {
         SimplePaginationResults<Map<String, Object>> pagination = new SimplePaginationResults<>(offset, limit);
-        Tuple4<List<Map<String, Object>>, String, TplExecuteConfig, ConditionParamsManager> listTuple = findList(
+        Tuple5<List<Map<String, Object>>, String, TplExecuteConfig, ConditionParamsManager, Map<String, Object>> listTuple = findList(
                 tplExecuteId, params, offset, limit);
         pagination.setPageResults(listTuple.get0());
 
@@ -278,15 +306,16 @@ public class SqlTplExecutor implements TplExecutor {
             countSql = SqlUtils.convertSelectToCount(listTuple.get1());
             manager = listTuple.get3();
         } else {
+            // TODO 这里在有in参数是正确与否还需要测试
             Tuple2<String, ConditionParamsManager> countTuple = getCountExecution(tplExecuteId, params, config, null);
             countSql = countTuple.get0();
             manager = countTuple.get1();
         }
         // 默认使用namedParameter
         if (manager.getParamNamed() == null || manager.getParamNamed()) {
-            pagination.setTotal(jdbc.queryInt(countSql, getEffectiveParamMap(params, manager)));
+            pagination.setTotal(jdbc.queryInt(countSql, getEffectiveParamMap(listTuple.get4(), manager)));
         } else {
-            pagination.setTotal(jdbc.queryInt(countSql, getEffectiveParamArray(params, manager)));
+            pagination.setTotal(jdbc.queryInt(countSql, getEffectiveParamArray(listTuple.get4(), manager)));
         }
         return pagination;
     }
@@ -327,8 +356,8 @@ public class SqlTplExecutor implements TplExecutor {
             Map<String, Object> params, int offset, int limit) {
         SimplePaginationResults<E> pagination = new SimplePaginationResults<>(offset, limit);
 
-        Tuple4<List<E>, String, TplExecuteConfig, ConditionParamsManager> listTuple = findList(tplExecuteId, entityType,
-                params, offset, limit);
+        Tuple5<List<E>, String, TplExecuteConfig, ConditionParamsManager, Map<String, Object>> listTuple = findList(
+                tplExecuteId, entityType, params, offset, limit);
         pagination.setPageResults(listTuple.get0());
 
         String countSql = null;
@@ -338,6 +367,7 @@ public class SqlTplExecutor implements TplExecutor {
             countSql = SqlUtils.convertSelectToCount(listTuple.get1());
             manager = listTuple.get3();
         } else {
+            // TODO 这里在有in参数是正确与否还需要测试
             Tuple2<String, ConditionParamsManager> countTuple = getCountExecution(tplExecuteId, params, config,
                     entityType);
             countSql = countTuple.get0();
@@ -345,9 +375,9 @@ public class SqlTplExecutor implements TplExecutor {
         }
         // 默认使用namedParameter
         if (manager.getParamNamed() == null || manager.getParamNamed()) {
-            pagination.setTotal(jdbc.queryInt(countSql, getEffectiveParamMap(params, manager)));
+            pagination.setTotal(jdbc.queryInt(countSql, getEffectiveParamMap(listTuple.get4(), manager)));
         } else {
-            pagination.setTotal(jdbc.queryInt(countSql, getEffectiveParamArray(params, manager)));
+            pagination.setTotal(jdbc.queryInt(countSql, getEffectiveParamArray(listTuple.get4(), manager)));
         }
         return pagination;
     }
@@ -386,10 +416,15 @@ public class SqlTplExecutor implements TplExecutor {
     public <E> E value(TplExecuteId tplExecuteId, Class<E> valueType, Map<String, Object> params) {
         Tuple3<String, TplExecuteConfig, ConditionParamsManager> tuple3 = getQueryExecution(tplExecuteId, params,
                 valueType);
+        String sql = tuple3.get0();
+        ConditionParamsManager manager = tuple3.get2();
+        Tuple2<String, Map<String, Object>> processTuple = processInParams(sql, params, manager);
+        sql = processTuple.get0();
+        params = processTuple.get1();
         if (tuple3.get2().getParamNamed() == null || tuple3.get2().getParamNamed()) {
-            return jdbc.queryValue(tuple3.get0(), valueType, getEffectiveParamMap(params, tuple3.get2()));
+            return jdbc.queryValue(sql, valueType, getEffectiveParamMap(params, manager));
         } else {
-            return jdbc.queryValue(tuple3.get0(), valueType, getEffectiveParamArray(params, tuple3.get2()));
+            return jdbc.queryValue(sql, valueType, getEffectiveParamArray(params, manager));
         }
     }
 
@@ -600,12 +635,15 @@ public class SqlTplExecutor implements TplExecutor {
         return env;
     }
 
-    private Tuple4<List<Map<String, Object>>, String, TplExecuteConfig, ConditionParamsManager> findList(
+    private Tuple5<List<Map<String, Object>>, String, TplExecuteConfig, ConditionParamsManager, Map<String, Object>> findList(
             TplExecuteId tplExecuteId, Map<String, Object> params, int offset, int limit) {
         Tuple3<String, TplExecuteConfig, ConditionParamsManager> tuple3 = getQueryExecution(tplExecuteId, params, null);
         List<Map<String, Object>> list = null;
         String sql = tuple3.get0();
         ConditionParamsManager manager = tuple3.get2();
+        Tuple2<String, Map<String, Object>> processTuple = processInParams(sql, params, manager);
+        sql = processTuple.get0();
+        params = processTuple.get1();
         // 默认使用namedParameter
         if (manager.getParamNamed() == null || manager.getParamNamed()) {
             list = jdbc.query(jdbc.getDialect().getParamNamedPaginationSql(sql, offset, limit),
@@ -614,16 +652,21 @@ public class SqlTplExecutor implements TplExecutor {
             list = jdbc.query(jdbc.getDialect().getPaginationSql(sql, offset, limit), jdbc.getDialect()
                     .getPaginationSqlParameter(getEffectiveParamArray(params, tuple3.get2()), offset, limit));
         }
-        return Tuples.of(list, sql, tuple3.get1(), manager);
+        return Tuples.of(list, sql, tuple3.get1(), manager, params);
     }
 
-    private <E> Tuple4<List<E>, String, TplExecuteConfig, ConditionParamsManager> findList(TplExecuteId tplExecuteId,
-            Class<E> entityType, Map<String, Object> params, int offset, int limit) {
+    private <E> Tuple5<List<E>, String, TplExecuteConfig, ConditionParamsManager, Map<String, Object>> findList(
+            TplExecuteId tplExecuteId, Class<E> entityType, Map<String, Object> params, int offset, int limit) {
         Tuple3<String, TplExecuteConfig, ConditionParamsManager> tuple3 = getQueryExecution(tplExecuteId, params,
                 entityType);
         List<E> list = null;
         String sql = tuple3.get0();
         ConditionParamsManager manager = tuple3.get2();
+
+        Tuple2<String, Map<String, Object>> processTuple = processInParams(sql, params, manager);
+        sql = processTuple.get0();
+        params = processTuple.get1();
+
         // 默认使用namedParameter
         if (manager.getParamNamed() == null || manager.getParamNamed()) {
             list = jdbc.query(jdbc.getDialect().getParamNamedPaginationSql(sql, offset, limit), entityType,
@@ -632,13 +675,60 @@ public class SqlTplExecutor implements TplExecutor {
             list = jdbc.query(jdbc.getDialect().getPaginationSql(sql, offset, limit), entityType, jdbc.getDialect()
                     .getPaginationSqlParameter(getEffectiveParamArray(params, manager), offset, limit));
         }
-        return Tuples.of(list, sql, tuple3.get1(), manager);
+        return Tuples.of(list, sql, tuple3.get1(), manager, params);
+    }
+
+    private Tuple2<String, Map<String, Object>> processInParams(String sql, Map<String, Object> params,
+            ConditionParamsManager manager) {
+        if (manager.hasInParam()) {
+            for (Param param : manager.getParams()) {
+                //                if (param.isInCondition()) {
+                Object value = params.get(param.getName());
+                Tuple2<String, Map<String, Object>> result = null;
+                if (Lang.isNotEmpty(value)) {
+                    if (value instanceof Collection) {
+                        result = param.convertSqlForInParam(sql, (Collection<?>) value);
+                    } else if (value.getClass().isArray()) {
+                        int size = Array.getLength(value);
+                        List<String> names = new ArrayList<>();
+                        for (int i = 0; i < size; i++) {
+                            Object paramObject = Array.get(value, i);
+                            if (paramObject == null) {
+                                names.add(null);
+                            } else {
+                                names.add(paramObject.toString());
+                            }
+                        }
+                        result = param.convertSqlForInParam(sql, names);
+                    }
+                }
+                Map<String, Object> newParams = new LinkedHashMap<>(params);
+                if (result != null) {
+                    newParams.remove(param.getName());
+                    newParams.putAll(result.get1());
+
+                    manager.addParams(result.get1().keySet());
+
+                    return Tuples.of(result.get0(), newParams);
+                }
+                //                }
+            }
+        }
+        return Tuples.of(sql, params);
     }
 
     // 如果sql中有参数没有使用条件判断，则参数会被过滤掉，（即过滤掉username参数）
     // select * from user <@where>  username = :username <@and if=password> password = :password</@and></@where>
     // 上面这种情况应该是不存在的，因为这样用本身会带来bug，如果一个查询条件不会空，也使用<@and> <@or>连接起来
     private Object[] getEffectiveParamArray(Map<String, Object> params, ConditionParamsManager manager) {
+        //        return params.entrySet().stream().filter(t -> {
+        //            return !manager.filterParamName(t.getKey());
+        //        }).collect(Collectors.toMap(e -> {
+        //            return e.getKey();
+        //        }, e -> {
+        //            return transvert(e.getKey(), e.getValue(), manager);
+        //        })).values().toArray();
+
         return manager.getParamNames().stream().filter(n -> params.containsKey(n)).map(n -> {
             return transvert(n, params.get(n), manager);
             //            return params.get(n);
@@ -646,15 +736,14 @@ public class SqlTplExecutor implements TplExecutor {
     }
 
     private Map<String, Object> getEffectiveParamMap(Map<String, Object> params, ConditionParamsManager manager) {
-        //        params.entrySet().stream().filter(t -> {
-        //            return !manager.filterName(t.getKey());
-        //            //            return manager.containsName(t.getKey());
+        //        return params.entrySet().stream().filter(t -> {
+        //            return !manager.filterParamName(t.getKey());
         //        }).collect(Collectors.toMap(e -> {
         //            return e.getKey();
         //        }, e -> {
-        //
-        //            return e.getValue();
+        //            return transvert(e.getKey(), e.getValue(), manager);
         //        }));
+
         if (manager.getAmount() == 0) {
             return params;
         } else {

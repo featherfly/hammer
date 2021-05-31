@@ -43,3 +43,16 @@ selectConditions2: >
     )
     </@and>
     </@where>
+    
+selectIn: >
+    select <@columns table='user'/> from <@wrap value='user'/> 
+    where 
+        <@and if=ids??> id in :ids </@and>
+selectInCount: >
+    select count(*) from <@wrap value='user'/> 
+    where 
+        <@and if=ids??> id in :ids </@and>
+selectInSingle: >
+    select <@columns table='user'/> from <@wrap value='user'/> 
+    where 
+        <@and if=ids??> id in :ids </@and>
