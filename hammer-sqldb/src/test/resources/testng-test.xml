@@ -38,6 +38,7 @@
 			<class name="cn.featherfly.hammer.sqldb.jdbc.HammerJdbcTest" />
 <!-- 			<class name="cn.featherfly.hammer.sqldb.jdbc.HammerJdbcTest2" /> -->
 			<class name="cn.featherfly.hammer.sqldb.jdbc.OperatorTest" />
+			<class name="cn.featherfly.hammer.sqldb.jdbc.JdbcTest" />
 			<class name="cn.featherfly.hammer.sqldb.tpl.SqlTplExecutorTest" />
 		</classes>
 	</test>

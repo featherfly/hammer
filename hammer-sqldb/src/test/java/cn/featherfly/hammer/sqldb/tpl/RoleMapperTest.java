@@ -1,8 +1,8 @@
 
 package cn.featherfly.hammer.sqldb.tpl;
 
+import static org.junit.Assert.assertTrue;
 import static org.testng.Assert.assertEquals;
-import static org.testng.Assert.assertTrue;
 
 import java.util.HashSet;
 import java.util.List;
@@ -154,5 +154,17 @@ public class RoleMapperTest extends JdbcTestBase {
             list = roleMapper.selectByNameCo("init_98");
         }
         assertEquals(list.size(), 1);
+    }
+
+    @Test
+    void testIdList() {
+        List<Long> idList = roleMapper.idList();
+        System.out.println(idList);
+        assertTrue(idList.size() > 0);
+        Long pid = Long.MIN_VALUE;
+        for (Long id : idList) {
+            assertTrue(pid < id);
+            pid = id;
+        }
     }
 }

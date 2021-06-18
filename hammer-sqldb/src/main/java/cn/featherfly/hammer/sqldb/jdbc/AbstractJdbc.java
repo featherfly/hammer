@@ -6,6 +6,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.SQLType;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
@@ -235,33 +236,14 @@ public abstract class AbstractJdbc implements Jdbc {
      */
     @Override
     public <T> List<T> query(String sql, Class<T> elementType, Object... args) {
-        NestedBeanPropertyRowMapper<T> rowMapper = new NestedBeanPropertyRowMapper<>(elementType, manager);
+        SQLType sqlType = manager.getSqlType(elementType);
+        RowMapper<T> rowMapper = null;
+        if (sqlType == null) {
+            rowMapper = new NestedBeanPropertyRowMapper<>(elementType, manager);
+        } else {
+            rowMapper = new SingleColumnRowMapper<>(elementType, manager);
+        }
         return query(sql, rowMapper, args);
-        //        List<T> list = new ArrayList<>();
-        //        if (Lang.isNotEmpty(sql)) {
-        //            sql = sql.trim();
-        //            Connection con = getConnection();
-        //            try (PreparedStatement prep = con.prepareStatement(sql)) {
-        //                if (logger.isDebugEnabled()) {
-        //                    logger.debug("execute sql -> {} , params -> {}", sql, ArrayUtils.toString(args));
-        //                }
-        //                setParams(prep, args);
-        //                try (ResultSet rs = prep.executeQuery()) {
-        //                    int i = 0;
-        //                    while (rs.next()) {
-        //                        list.add(rowMapper.mapRow(rs, i++));
-        //                    }
-        //                    return list;
-        //                }
-        //            } catch (SQLException e) {
-        //                releaseConnection(con, getDataSource());
-        //                con = null;
-        //                throw new JdbcException();
-        //            } finally {
-        //                releaseConnection(con, getDataSource());
-        //            }
-        //        }
-        //        return list;
     }
 
     /**

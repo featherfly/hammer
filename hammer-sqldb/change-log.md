@@ -1,3 +1,12 @@
+# 0.5.11 2021-06-18
+1. 优化类型映射查询，自动处理处理返回List<Integer>,List<String>,List<Long>等单一属性列表，只要是SqlTypeMappingManager支持的类型都行
+    ```
+    List<Long> idList = jdbc.query("select id from role order by id", Long.class);
+    
+    @Template("select id from role order by id")
+    List<Long> idList();
+    ```
+
 # 0.5.10 2021-05-12
 1. 修复springboot使用dev-tool进行热部署时，重新加载生成mapper报错的问题
 
