@@ -1,5 +1,6 @@
 - [ ] 优化page查询，缓存total_size，在相同查询条件下，使用缓存的total_size
-- [ ] 在模板查询中加入快捷的模糊查询，即在sql中的查询条件两边加入%，则可以实现对应的模糊查询
+- [x] 优化类型映射查询，自动处理处理返回List<Integer>,List<String>,List<Long>等单一属性列表，只要是manager支持的类型都行
+- [x] 在模板查询中加入快捷的模糊查询，即在sql中的查询条件两边加入%，则可以实现对应的模糊查询
    1. ConditionManger中加入对应的逻辑
    2. 在and和or条件标签中加入标签属性，可以设置value的转换逻辑
    3. 预编译时把%value, value%, %value%转换为对应的and or条件标签时直接转换为and or的对应标签

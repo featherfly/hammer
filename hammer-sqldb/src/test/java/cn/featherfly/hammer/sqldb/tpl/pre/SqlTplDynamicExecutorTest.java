@@ -10,6 +10,7 @@ import java.util.Map;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
 
+import cn.featherfly.common.db.dialect.Dialects;
 import cn.featherfly.common.structure.page.Page;
 import cn.featherfly.common.structure.page.PaginationResults;
 import cn.featherfly.common.structure.page.SimplePagination;
@@ -206,36 +207,63 @@ public class SqlTplDynamicExecutorTest extends DataSourceTestBase {
     }
 
     @Test
-    void testFluzzpQuery() {
+    void testFuzzpQuery() {
         List<Role> list = null;
         list = roleMapper.selectByName("me");
         assertEquals(list.size(), 0);
 
         list = roleMapper.selectByNameCo("\\_init\\_");
+        if (dialect == Dialects.SQLITE) {
+            list = roleMapper.selectByNameCo("_init_");
+        }
         assertEquals(list.size(), 9);
 
         list = roleMapper.selectByNameSw("n\\_init");
+        if (dialect == Dialects.SQLITE) {
+            list = roleMapper.selectByNameSw("n_init");
+        }
         assertEquals(list.size(), 6);
 
         list = roleMapper.selectByNameEw("init\\_98");
+        if (dialect == Dialects.SQLITE) {
+            list = roleMapper.selectByNameEw("init_98");
+        }
         assertEquals(list.size(), 1);
 
         list = roleMapper.selectByNameCo2("\\_init\\_");
+        if (dialect == Dialects.SQLITE) {
+            list = roleMapper.selectByNameCo2("_init_");
+        }
         assertEquals(list.size(), 9);
 
         list = roleMapper.selectByNameSw2("n\\_init");
+        if (dialect == Dialects.SQLITE) {
+            list = roleMapper.selectByNameSw2("n_init");
+        }
         assertEquals(list.size(), 6);
 
         list = roleMapper.selectByNameEw2("init\\_98");
+        if (dialect == Dialects.SQLITE) {
+            list = roleMapper.selectByNameEw2("init_98");
+        }
         assertEquals(list.size(), 1);
 
         list = roleMapper.selectByNameCo3("\\_init\\_");
+        if (dialect == Dialects.SQLITE) {
+            list = roleMapper.selectByNameCo3("_init_");
+        }
         assertEquals(list.size(), 9);
 
         list = roleMapper.selectByNameSw3("n\\_init");
+        if (dialect == Dialects.SQLITE) {
+            list = roleMapper.selectByNameSw3("n_init");
+        }
         assertEquals(list.size(), 6);
 
         list = roleMapper.selectByNameEw3("init\\_98");
+        if (dialect == Dialects.SQLITE) {
+            list = roleMapper.selectByNameEw3("init_98");
+        }
         assertEquals(list.size(), 1);
     }
 

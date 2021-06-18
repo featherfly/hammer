@@ -15,6 +15,7 @@ import org.testng.annotations.Parameters;
 import cn.featherfly.common.db.SqlExecutor;
 import cn.featherfly.common.db.dialect.Dialect;
 import cn.featherfly.common.db.dialect.Dialects;
+import cn.featherfly.common.db.dialect.PostgreSQLDialect;
 import cn.featherfly.common.db.mapping.JdbcMappingFactory;
 import cn.featherfly.common.db.mapping.JdbcMappingFactoryImpl;
 import cn.featherfly.common.db.mapping.SqlTypeMappingManager;
@@ -98,9 +99,11 @@ public class JdbcTestBase {
 
         BasicDataSource ds = new BasicDataSource();
         //        dataSource.setUrl("jdbc:mysql://127.0.0.1:3306/hammer_jdbc?useUnicode=true&characterEncoding=UTF-8");
+        //        ds.setUrl(
+        //                "jdbc:mysql://127.0.0.1:3306/hammer_jdbc?serverTimezone=UTC&characterEncoding=utf8&useUnicode=true&useSSL=false");
         ds.setUrl(
-                "jdbc:mysql://127.0.0.1:3306/hammer_jdbc?serverTimezone=UTC&characterEncoding=utf8&useUnicode=true&useSSL=false");
-        ds.setDriverClassName("com.mysql.jdbc.Driver");
+                "jdbc:mysql://127.0.0.1:3306/hammer_jdbc?serverTimezone=CTT&characterEncoding=utf8&useUnicode=true&useSSL=false");
+        ds.setDriverClassName("com.mysql.cj.jdbc.Driver");
         ds.setUsername("root");
         ds.setPassword("123456");
         dataSource = ds;
@@ -148,7 +151,9 @@ public class JdbcTestBase {
         sqlExecutor
                 .execute(new File(ClassLoaderUtils.getResource("test.postgresql.sql", JdbcTestBase.class).getFile()));
 
-        dialect = Dialects.POSTGRESQL;
+        PostgreSQLDialect postgreSQLDialect = new PostgreSQLDialect();
+        //        postgreSQLDialect.setTableAndColumnNameUppercase(StringConverter.UPPER_CASE);
+        dialect = postgreSQLDialect;
 
         //        jdbc = new SpringJdbcTemplateImpl(ds, dialect);
         jdbc = new JdbcImpl(ds, dialect, sqlTypeMappingManager);

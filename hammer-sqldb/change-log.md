@@ -1,3 +1,15 @@
+# 0.5.11 2021-06-18
+1. 优化类型映射查询，自动处理处理返回List<Integer>,List<String>,List<Long>等单一属性列表，只要是SqlTypeMappingManager支持的类型都行
+    ```
+    List<Long> idList = jdbc.query("select id from role order by id", Long.class);
+    
+    @Template("select id from role order by id")
+    List<Long> idList();
+    ```
+
+# 0.5.10 2021-05-12
+1. 修复springboot使用dev-tool进行热部署时，重新加载生成mapper报错的问题
+
 # 0.5.9 2021-05-06
 1. 模板sql的<@and>和<@Or>标签加入transverter属性，用于对字符串模糊查询，支持CO,SW,EW
     ```
@@ -21,7 +33,7 @@
     ```
 3. 修复where标签后换行直接跟order by语句没有空格符号导致最后的参数名称连接到order单词的问题
 
-# 0.5.8 2020-03-26
+# 0.5.8 2021-03-26
 1. SqlQueryEntity加入join(Join)，join(Join, String)，join(Class<T>)，join(Join, Class<T>)方法
 2. QueryEntityExpression加入<QI> QI cast(Class<QI> queryEntityExpressionType)方法
 3. Jdbc.querySingle返回集合的数量大于1时抛出异常
@@ -29,7 +41,7 @@
 5. MergeOperate实现当对象除了id以外的属性都判定为忽略时（一般为null,空字符串，空集合等）不进行数据库操作
 6. 修复AbstractJdbc抛出JdbcException没有添加错误信息的问题
 
-# 0.5.7 2020-02-22
+# 0.5.7 2021-02-22
 1. JdbcImpl的所有的query方法都支持SqlTypeMappingManager的自定义类型
 
 # 0.5.6 2020-12-12
