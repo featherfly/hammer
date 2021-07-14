@@ -1,3 +1,6 @@
+# 0.5.12 2021-07-14
+1. sql模板(SqlTplExecutor中实现)支持<and if=ids??> id in :ids </and>自动设置集合或者数组参数
+
 # 0.5.11 2021-06-18
 1. 优化类型映射查询，自动处理处理返回List<Integer>,List<String>,List<Long>等单一属性列表，只要是SqlTypeMappingManager支持的类型都行
     ```

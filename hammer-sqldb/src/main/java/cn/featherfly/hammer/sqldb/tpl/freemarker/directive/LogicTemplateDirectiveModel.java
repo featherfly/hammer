@@ -57,6 +57,9 @@ public abstract class LogicTemplateDirectiveModel implements FreemarkerDirective
     /**
      * {@inheritDoc}
      */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void execute(Environment env, @SuppressWarnings("rawtypes") Map params, TemplateModel[] loopVars,
             TemplateDirectiveBody body) throws TemplateException, IOException {
@@ -125,6 +128,7 @@ public abstract class LogicTemplateDirectiveModel implements FreemarkerDirective
                 body.render(stringWriter);
 
                 String condition = stringWriter.toString().trim();
+                boolean in = false;
                 if (org.apache.commons.lang3.StringUtils.isBlank(name) && condition.length() > 0) {
                     Matcher m = null;
                     m = CONDITION_PATTERN.matcher(condition);
@@ -140,6 +144,7 @@ public abstract class LogicTemplateDirectiveModel implements FreemarkerDirective
                         betweenAnd = true;
                     } else {
                         paramType = m.group(4);
+                        in = m.group(3).trim().equalsIgnoreCase("in");
                     }
 
                     if ("?".equals(paramType)) {
@@ -182,6 +187,7 @@ public abstract class LogicTemplateDirectiveModel implements FreemarkerDirective
                     if (Strings.isNotBlank(transverterParam)) {
                         param.setTransverter(transverterParam.trim());
                     }
+                    param.setInCondition(in);
                     param.setName(name.trim());
                     conditionParamsManager.addParam(param);
                     //                    conditionParamsManager.addParam(name.trim());
