@@ -13,6 +13,8 @@ public class StringElement extends AbstractElement {
 
     /**
      * Instantiates a new string element.
+     *
+     * @param parser the parser
      */
     public StringElement(Parser parser) {
         super(parser);
@@ -21,7 +23,8 @@ public class StringElement extends AbstractElement {
     /**
      * Instantiates a new string element.
      *
-     * @param value the value
+     * @param value  the value
+     * @param parser the parser
      */
     public StringElement(String value, Parser parser) {
         super(parser);
@@ -52,6 +55,9 @@ public class StringElement extends AbstractElement {
         return c != parser.getFuzzyQueryChar();
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public String getValue() {
         if (source.toString().trim().equals("(")) {

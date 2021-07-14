@@ -193,7 +193,7 @@ public class ConditionParamsManager {
     /**
      * Adds the param.
      *
-     * @param paramName the param name
+     * @param paramNames the param names
      */
     public void addParams(Collection<String> paramNames) {
         if (Lang.isEmpty(paramNames)) {
