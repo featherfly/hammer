@@ -1,3 +1,6 @@
+# 0.5.13 
+1. 加入QueryOperator.LK的支持
+
 # 0.5.12 2021-07-14
 1. sql模板(SqlTplExecutor中实现)支持<and if=ids??> id in :ids </and>自动设置集合或者数组参数
 

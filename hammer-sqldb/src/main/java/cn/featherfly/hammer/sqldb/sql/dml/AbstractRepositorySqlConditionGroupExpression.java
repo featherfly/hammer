@@ -2316,6 +2316,60 @@ public abstract class AbstractRepositorySqlConditionGroupExpression<C extends Re
     }
 
     /**
+     * {@inheritDoc}
+     */
+    @Override
+    public L lk(String repository, String name, String value) {
+        return (L) addCondition(
+                new SqlConditionExpressionBuilder(dialect, ClassMappingUtils.getColumnName(name, classMapping), value,
+                        QueryOperator.LK, aliasManager.getAlias(repository)));
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public <T> L lk(Class<T> repository, String name, String value) {
+        return lk(getTableName(repository), name, value);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public L lk(int repositoryIndex, String name, String value) {
+        return (L) addCondition(
+                new SqlConditionExpressionBuilder(dialect, ClassMappingUtils.getColumnName(name, classMapping), value,
+                        QueryOperator.LK, aliasManager.getAlias(repositoryIndex)));
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public L lk(String name, String value) {
+        return (L) addCondition(new SqlConditionExpressionBuilder(dialect,
+                ClassMappingUtils.getColumnName(name, classMapping), value, QueryOperator.LK, queryAlias));
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public <T> L lk(ReturnStringFunction<T> name, String value) {
+        return lk(getPropertyName(name), value);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public L lk(StringSupplier property) {
+        SerializableSupplierLambdaInfo<String> info = LambdaUtils.getSerializableSupplierLambdaInfo(property);
+        return lk(info.getSerializedLambdaInfo().getPropertyName(), info.getValue());
+    }
+
+    /**
      * Supplier.
      *
      * @param <R>  the generic type
