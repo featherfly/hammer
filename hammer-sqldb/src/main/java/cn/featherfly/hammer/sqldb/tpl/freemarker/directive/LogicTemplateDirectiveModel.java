@@ -42,10 +42,12 @@ public abstract class LogicTemplateDirectiveModel implements FreemarkerDirective
     // .compile("(\\w+) *([=><]|<>|!=|>=|<=| in | is ) *(:\\w+|\\?)",
     // Pattern.CASE_INSENSITIVE);
 
-    // (\w+) *(([=><]|<>|!=|>=|<=| like | in | is ) *(:\w+|\?)|(between)
-    // +(:\w+|\?) *(and) *(:\w+|\?))
+    // (\w+) *(([=><]|<>|!=|>=|<=| like | in | is ) *(:\w+|\?)|(between) +(:\w+|\?) *(and) *(:\w+|\?))
+
+    //  "(\\w+) *(([=><]|<>|!=|>=|<=|!>|!<| like | in | is ) *(:\\w+|\\?)|(between) +(:\\w+|\\?) *(and) *(:\\w+|\\?))"
+
     private static final Pattern CONDITION_PATTERN = Pattern.compile(
-            "(\\w+) *(([=><]|<>|!=|>=|<=|!>|!<| like | in | is ) *(:\\w+|\\?)|(between) +(:\\w+|\\?) *(and) *(:\\w+|\\?))",
+            "(\\w*\\.?[\\[`'\"]?\\w+[\\]`'\"]?) *(([=><]|<>|!=|>=|<=|!>|!<| like | in | is ) *(:\\w+|\\?)|(between) +(:\\w+|\\?) *(and) *(:\\w+|\\?))",
             Pattern.CASE_INSENSITIVE);
 
     private ConditionParamsManager conditionParamsManager;
