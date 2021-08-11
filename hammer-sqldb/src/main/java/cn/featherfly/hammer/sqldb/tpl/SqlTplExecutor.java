@@ -575,7 +575,7 @@ public class SqlTplExecutor implements TplExecutor {
     private Tuple3<String, TplExecuteConfig, ConditionParamsManager> getQueryExecution(TplExecuteId tplExecuteId,
             Map<String, Object> params, Class<?> resultType) {
         TplExecuteConfig config = configFactory.getConfig(tplExecuteId);
-        Tuple2<String, ConditionParamsManager> tuple2 = getExecution(tplExecuteId, config.getQuery(), params,
+        Tuple2<String, ConditionParamsManager> tuple2 = getExecution(tplExecuteId.getId(), config.getQuery(), params,
                 resultType);
         logger.debug("tplExecuteId -> {} \nexecuteQuerySql -> {} \nqueryTemplate -> {}", tplExecuteId, tuple2.get0(),
                 config.getQuery());
@@ -594,7 +594,8 @@ public class SqlTplExecutor implements TplExecutor {
 
     private Tuple2<String, ConditionParamsManager> getCountExecution(TplExecuteId tplExecuteId,
             Map<String, Object> params, TplExecuteConfig config, Class<?> resultType) {
-        Tuple2<String, ConditionParamsManager> result = getExecution(tplExecuteId, config.getCount(), params,
+        String templateName = tplExecuteId.getId() + TplConfigFactory.COUNT_SUFFIX;
+        Tuple2<String, ConditionParamsManager> result = getExecution(templateName, config.getCount(), params,
                 resultType);
         logger.debug("tplExecuteId -> {}  \nexecuteCountSql -> {}  \ncountTemplate -> {}", tplExecuteId, result.get0(),
                 config.getCount());
@@ -610,9 +611,22 @@ public class SqlTplExecutor implements TplExecutor {
     //        return result;
     //    }
 
-    private Tuple2<String, ConditionParamsManager> getExecution(TplExecuteId tplExecuteId, String sql,
+    //    private Tuple2<String, ConditionParamsManager> getExecution(TplExecuteId tplExecuteId, String sql,
+    //            Map<String, Object> params, Class<?> resultType) {
+    //        String templateName = tplExecuteId.getId() + TplConfigFactory.COUNT_SUFFIX;
+    //        logger.debug("execute template name : {}", templateName);
+    //        ConditionParamsManager manager = new ConditionParamsManager();
+    //        Map<String, Object> root = new HashMap<>();
+    //        root.putAll(params);
+    //
+    //        SqlDbTemplateProcessEnv<TemplateDirective, TemplateMethod> templateProcessEnv = createTemplateProcessEnv(
+    //                manager, resultType);
+    //        String result = templateEngine.process(templateName, sql, params, templateProcessEnv);
+    //        return Tuples.of(result, manager);
+    //    }
+
+    private Tuple2<String, ConditionParamsManager> getExecution(String templateName, String sql,
             Map<String, Object> params, Class<?> resultType) {
-        String templateName = tplExecuteId.getId() + TplConfigFactory.COUNT_SUFFIX;
         logger.debug("execute template name : {}", templateName);
         ConditionParamsManager manager = new ConditionParamsManager();
         Map<String, Object> root = new HashMap<>();

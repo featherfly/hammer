@@ -40,8 +40,7 @@ public class Parser {
      */
     public enum NullType {
         /** The null. */
-        NULL,
-        EMPTY
+        NULL, EMPTY
     }
 
     //    Parser parent;
@@ -204,12 +203,15 @@ public class Parser {
                                                 append = " && " + name + "?length gt 0";
                                             }
                                         }
-                                        append = append + " name='" + name + "'";
+                                        append = append + " name=\"" + name + "\"";
                                         boolean endWith = paramContent
                                                 .charAt(namePart.getStart() - 2) == fuzzyQueryChar;
                                         boolean startWith = paramContent.charAt(namePart.getEnd()) == fuzzyQueryChar;
                                         append = appendTransverter(endWith, startWith, append);
-                                        de.setSource(pre + name + de.getSource() + append);
+
+                                        //                                        de.setSource(pre + name + de.getSource() + append);
+                                        de.setSource(pre + name + de.getSource() + " name=\"" + name + "\"");
+
                                     } else {
                                         name = de.getSource().replaceAll("\\?", "");
                                         if (isConditionNull(de.getSource())) {
@@ -232,8 +234,8 @@ public class Parser {
                                         boolean startWith = fuzzyStr.lastIndexOf(fuzzyQueryChar) == fuzzyStr.length()
                                                 - 1;
                                         append = appendTransverter(endWith, startWith, append);
-
-                                        de.setSource(pre + name + append);
+                                        //                                        de.setSource(pre + name + append);
+                                        de.setSource(pre + name + append + " name=\"" + name + "\"");
                                     }
                                     Parser parser = new Parser(this, de);
                                     parser.parse(source.substring(subStart, wrapIndex));
