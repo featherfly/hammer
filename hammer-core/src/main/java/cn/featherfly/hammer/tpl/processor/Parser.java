@@ -203,14 +203,14 @@ public class Parser {
                                                 append = " && " + name + "?length gt 0";
                                             }
                                         }
-                                        append = append + " name=\"" + name + "\"";
+
                                         boolean endWith = paramContent
                                                 .charAt(namePart.getStart() - 2) == fuzzyQueryChar;
                                         boolean startWith = paramContent.charAt(namePart.getEnd()) == fuzzyQueryChar;
                                         append = appendTransverter(endWith, startWith, append);
 
                                         //                                        de.setSource(pre + name + de.getSource() + append);
-                                        de.setSource(pre + name + de.getSource() + " name=\"" + name + "\"");
+                                        de.setSource(pre + name + de.getSource() + append + " name=\"" + name + "\"");
 
                                     } else {
                                         name = de.getSource().replaceAll("\\?", "");
@@ -348,11 +348,11 @@ public class Parser {
                 }
             }
             if (onlyNewLine) {
-                if (notWhitespace && c == Chars.NEW_LINEZ_CHAR) {
+                if (notWhitespace && c == Chars.NEW_LINE_CHAR) {
                     return index;
                 }
             } else {
-                if (notWhitespace && (c == Chars.SPACE_CHAR || c == Chars.NEW_LINEZ_CHAR)) {
+                if (notWhitespace && (c == Chars.SPACE_CHAR || c == Chars.NEW_LINE_CHAR)) {
                     return index;
                 }
             }
@@ -558,7 +558,7 @@ public class Parser {
         StringBuilder sb = new StringBuilder();
         for (int i = 0; i < directiveContent.length(); i++) {
             char c = directiveContent.charAt(i);
-            if (c == Chars.SPACE_CHAR || c == Chars.NEW_LINEZ_CHAR) {
+            if (c == Chars.SPACE_CHAR || c == Chars.NEW_LINE_CHAR) {
                 return sb.toString();
             } else if (c != '<' && c != '>') {
                 sb.append(c);

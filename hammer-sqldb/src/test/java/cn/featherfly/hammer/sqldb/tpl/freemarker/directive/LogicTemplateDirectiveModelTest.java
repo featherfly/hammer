@@ -1,7 +1,7 @@
 
 /*
  * All rights Reserved, Designed By zhongj
- * @Title: LogicTemplateDirectiveModelTest.java
+ * @Title: AndTemplateDirectiveModelTest.java
  * @Package cn.featherfly.hammer.sqldb.tpl.freemarker.directive
  * @Description: todo (用一句话描述该文件做什么)
  * @author: zhongj
@@ -11,17 +11,21 @@
 package cn.featherfly.hammer.sqldb.tpl.freemarker.directive;
 
 import static org.junit.Assert.assertTrue;
+import static org.testng.Assert.assertEquals;
 
 import java.lang.reflect.Field;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import org.testng.annotations.Test;
 
 import cn.featherfly.common.lang.ClassUtils;
+import cn.featherfly.hammer.tpl.supports.ConditionParamsManager;
 
 /**
- * LogicTemplateDirectiveModelTest.
+ * AndTemplateDirectiveModelTest.
  *
  * @author zhongj
  */
@@ -32,10 +36,23 @@ public class LogicTemplateDirectiveModelTest {
 
     Pattern conditionPattern;
 
-    public LogicTemplateDirectiveModelTest() throws IllegalArgumentException, IllegalAccessException {
+    Method getParamName;
+
+    AndTemplateDirectiveModel templateDirectiveModel = new AndTemplateDirectiveModel(new ConditionParamsManager());
+
+    public LogicTemplateDirectiveModelTest()
+            throws IllegalArgumentException, IllegalAccessException, NoSuchMethodException, SecurityException {
         Field field = ClassUtils.getField(LogicTemplateDirectiveModel.class, "CONDITION_PATTERN");
         field.setAccessible(true);
         conditionPattern = (Pattern) field.get(LogicTemplateDirectiveModel.class);
+
+        getParamName = LogicTemplateDirectiveModel.class.getDeclaredMethod("getParamName", String.class, String.class);
+        getParamName.setAccessible(true);
+    }
+
+    private String getParamName(String name, String condition)
+            throws IllegalAccessException, IllegalArgumentException, InvocationTargetException {
+        return (String) getParamName.invoke(templateDirectiveModel, name, condition);
     }
 
     @Test
@@ -70,5 +87,11 @@ public class LogicTemplateDirectiveModelTest {
 
         m = conditionPattern.matcher("u.[user_id] = :userId");
         assertTrue(m.matches());
+    }
+
+    @Test
+    public void testGetParamName() throws IllegalAccessException, IllegalArgumentException, InvocationTargetException {
+        String name = getParamName(null, "ids in :ids");
+        assertEquals(name, "ids");
     }
 }

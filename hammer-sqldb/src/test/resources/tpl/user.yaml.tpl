@@ -56,3 +56,7 @@ selectInSingle: >
     select <@columns table='user'/> from <@wrap value='user'/> 
     where 
         <@and if=ids??> id in :ids </@and>
+selectIn2: >
+    select <@columns table='user'/> from <@wrap value='user'/> 
+    where 
+        id in :ids

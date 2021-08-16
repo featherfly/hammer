@@ -362,5 +362,21 @@ public class SqlTplExecutorTest extends JdbcTestBase {
         User user = executor.single("selectInSingle", User.class,
                 new HashChainMap<String, Object>().putChain("ids", new Long[] { 1L, -1L }));
         assertEquals(user.getId(), new Integer(1));
+
+    }
+
+    @Test
+    void testInParams2() {
+        int resultSize = 4;
+
+        Long[] ids = new Long[] { 1L, 2L, 3L, 4L };
+
+        Map<String, Object> params = new HashChainMap<String, Object>().putChain("ids", ids);
+
+        List<User> users;
+
+        // list
+        users = executor.list("selectIn2", User.class, params);
+        assertEquals(users.size(), resultSize);
     }
 }
