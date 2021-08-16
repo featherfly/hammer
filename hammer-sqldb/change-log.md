@@ -1,3 +1,11 @@
+# 0.5.16
+1. TODO 加入transverter="IN"转换器实现（未实现）
+2. TODO 预编译加入transverter="IN"转换器，用于处理in的问题（未实现）
+
+# 0.5.15 2021-08-16
+1. 修复预编译优化条件标签<@and>和<@Or>，在编译为Freemarker模板后，明确加入name="fieldName"属性时CO,SW,EW丢失的问题
+2. 修复SqlTplExecutor执行模板语句时，都注册为TplExecuteId.count的问题
+
 # 0.5.14 2021-08-11
 1. 预编译优化条件标签<@and>和<@Or>，在编译为Freemarker模板后，明确加入name="fieldName"属性
 2. 修复LogicTemplateDirectiveModel在获取参数名称时的正则表达式不支持表别名的问题，并支持关键字转移符['"`]
