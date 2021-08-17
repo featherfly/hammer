@@ -1,3 +1,6 @@
+# 0.5.17 2021-08-20
+1. sql模板加入precompile参数，可以使用false禁用当前sql的预编译
+
 # 0.5.16 2021-08-18
 1. 使用SqlUtils转换namedsql自动处理in的情况，去掉之前<@and>和<@or>的实现
 
