@@ -9,9 +9,6 @@ import java.util.Set;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import com.speedment.common.tuple.Tuple2;
-import com.speedment.common.tuple.Tuples;
-
 import cn.featherfly.common.lang.Strings;
 import cn.featherfly.hammer.sqldb.SqldbHammerException;
 import cn.featherfly.hammer.tpl.TplException;
@@ -36,15 +33,6 @@ import freemarker.template.TemplateScalarModel;
 public abstract class LogicTemplateDirectiveModel implements FreemarkerDirective, LogicDirective {
 
     private static final String BETWEEN = "between";
-
-    // (\w+) *([=><]|<>|!=|>=|<=| in | is ) *(:\w+|\?)
-    // private static final Pattern CONDITION_PATTERN = Pattern
-    // .compile("(\\w+) *([=><]|<>|!=|>=|<=| in | is ) *(:\\w+|\\?)",
-    // Pattern.CASE_INSENSITIVE);
-
-    // (\w+) *(([=><]|<>|!=|>=|<=| like | in | is ) *(:\w+|\?)|(between) +(:\w+|\?) *(and) *(:\w+|\?))
-
-    //  "(\\w+) *(([=><]|<>|!=|>=|<=|!>|!<| like | in | is ) *(:\\w+|\\?)|(between) +(:\\w+|\\?) *(and) *(:\\w+|\\?))"
 
     private static final Pattern CONDITION_PATTERN = Pattern.compile(
             "(\\w*\\.?[\\[`'\"]?\\w+[\\]`'\"]?) *(([=><]|<>|!=|>=|<=|!>|!<| like | in | is ) *(:\\w+|\\?)|(between) +(:\\w+|\\?) *(and) *(:\\w+|\\?))",
@@ -105,8 +93,6 @@ public abstract class LogicTemplateDirectiveModel implements FreemarkerDirective
 
         Writer out = env.getOut();
         if (body != null) {
-            // System.out.println("ifParam: " + ifParam + " amount: "
-            // + conditionParamsManager.getAmount());
             if (ifParam == null) {
                 boolean needAppendLogicWorld = conditionParamsManager.isNeedAppendLogicWorld();
                 conditionParamsManager.startGroup();
@@ -125,26 +111,12 @@ public abstract class LogicTemplateDirectiveModel implements FreemarkerDirective
                 conditionParamsManager.endGroup();
             } else {
                 String name = nameParam;
-
-                //                StringWriter stringWriter = new StringWriter();
-                //                body.render(stringWriter);
-                //                String condition = stringWriter.toString().trim();
-                //                Tuple2<String, Boolean> tuple2 = getParamName(name, condition);
-                //                name = tuple2.get0();
-                //                boolean in = tuple2.get1();
-
                 if (ifParam) { // 判断!ifParam，在conditionManager里加入filterNames
                     boolean needAppendLogicWorld = conditionParamsManager.isNeedAppendLogicWorld();
-                    // if (conditionParamsManager.isNeedAppendLogicWorld()) {
-                    // out.write(" " + getLogicWorld() + " ");
-                    // }
-
                     StringWriter stringWriter = new StringWriter();
                     body.render(stringWriter);
                     String condition = stringWriter.toString().trim();
-                    Tuple2<String, Boolean> tuple2 = getParamName(name, condition);
-                    name = tuple2.get0();
-                    boolean in = tuple2.get1();
+                    name = getParamName(name, condition);
 
                     if (name.contains(",")) {
                         for (String n : name.split(",")) {
@@ -154,24 +126,19 @@ public abstract class LogicTemplateDirectiveModel implements FreemarkerDirective
                             }
                             param.setName(n.trim());
                             conditionParamsManager.addParam(param);
-                            //                        conditionParamsManager.addParam(n.trim());
                         }
                     } else {
                         Param param = new Param();
                         if (Strings.isNotBlank(transverterParam)) {
                             param.setTransverter(transverterParam.trim());
                         }
-                        param.setInCondition(in);
                         param.setName(name.trim());
                         conditionParamsManager.addParam(param);
-                        //                    conditionParamsManager.addParam(name.trim());
                     }
                     if (needAppendLogicWorld) {
                         condition = " " + getLogicWorld() + " " + condition;
-                        //                    condition = getLogicWorld() + " " + condition + " ";
                     }
                     out.write(condition);
-                    // body.render(out);
                 } else {
                     //                    conditionParamsManager.addFilterParamName(name);
                     out.write("");
@@ -180,8 +147,7 @@ public abstract class LogicTemplateDirectiveModel implements FreemarkerDirective
         }
     }
 
-    private Tuple2<String, Boolean> getParamName(String name, String condition) {
-        boolean in = false;
+    private String getParamName(String name, String condition) {
         if (org.apache.commons.lang3.StringUtils.isBlank(name) && condition.length() > 0) {
             Matcher m = null;
             m = CONDITION_PATTERN.matcher(condition);
@@ -197,7 +163,6 @@ public abstract class LogicTemplateDirectiveModel implements FreemarkerDirective
                 betweenAnd = true;
             } else {
                 paramType = m.group(4);
-                in = m.group(3).trim().equalsIgnoreCase("in");
             }
 
             if ("?".equals(paramType)) {
@@ -222,7 +187,7 @@ public abstract class LogicTemplateDirectiveModel implements FreemarkerDirective
                 }
             }
         }
-        return Tuples.of(name, in);
+        return name;
     }
 
     protected abstract String getLogicWorld();

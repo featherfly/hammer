@@ -21,8 +21,6 @@ import java.util.regex.Pattern;
 
 import org.testng.annotations.Test;
 
-import com.speedment.common.tuple.Tuple2;
-
 import cn.featherfly.common.lang.ClassUtils;
 import cn.featherfly.hammer.tpl.supports.ConditionParamsManager;
 
@@ -52,9 +50,9 @@ public class LogicTemplateDirectiveModelTest {
         getParamName.setAccessible(true);
     }
 
-    private Tuple2<String, Boolean> getParamName(String name, String condition)
+    private String getParamName(String name, String condition)
             throws IllegalAccessException, IllegalArgumentException, InvocationTargetException {
-        return (Tuple2<String, Boolean>) getParamName.invoke(templateDirectiveModel, name, condition);
+        return (String) getParamName.invoke(templateDirectiveModel, name, condition);
     }
 
     @Test
@@ -93,8 +91,7 @@ public class LogicTemplateDirectiveModelTest {
 
     @Test
     public void testGetParamName() throws IllegalAccessException, IllegalArgumentException, InvocationTargetException {
-        Tuple2<String, Boolean> t = getParamName(null, "ids in :ids");
-        assertTrue(t.get1());
-        assertEquals("ids", t.get0());
+        String name = getParamName(null, "ids in :ids");
+        assertEquals(name, "ids");
     }
 }

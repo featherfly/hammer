@@ -2,8 +2,9 @@ dependencies {
     api project(":hammer-api")
     api project(":hammer-core")
 
-    api group: 'cn.featherfly.common', name: 'common-model-repository', version: '0.1.9'
-    api group: 'cn.featherfly.common', name: 'common-db', version: '0.3.16'
+    //api group: 'cn.featherfly.common', name: 'common-model-repository', version: '0.1.9'
+    //api group: 'cn.featherfly.common', name: 'common-api', version: '0.2.7'
+    api group: 'cn.featherfly.common', name: 'common-db', version: '0.3.17'
     api group: 'org.springframework', name: 'spring-jdbc', version: '5.3.1'
     api group: 'org.glassfish', name: 'javax.el', version: '3.0.0'   
     api group: 'org.hibernate.validator', name: 'hibernate-validator', version: '6.1.5.Final'    

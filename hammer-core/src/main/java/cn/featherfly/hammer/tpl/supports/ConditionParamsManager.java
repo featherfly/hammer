@@ -4,15 +4,10 @@ package cn.featherfly.hammer.tpl.supports;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
-import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
 
-import com.speedment.common.tuple.Tuple2;
-import com.speedment.common.tuple.Tuples;
-
-import cn.featherfly.common.lang.ArrayUtils;
 import cn.featherfly.common.lang.Lang;
 
 /**
@@ -41,32 +36,18 @@ public class ConditionParamsManager {
         /**
          * Instantiates a new param.
          *
-         * @param name        param name
-         * @param transverter param transverter name
-         */
-        public Param(String name, String transverter) {
-            this(name, transverter, false);
-        }
-
-        /**
-         * Instantiates a new param.
-         *
          * @param name        the name
          * @param transverter the transverter
-         * @param inCondition the in condition
          */
-        public Param(String name, String transverter, boolean inCondition) {
+        public Param(String name, String transverter) {
             super();
             this.name = name;
             this.transverter = transverter;
-            this.inCondition = inCondition;
         }
 
         private String name;
 
         private String transverter;
-
-        private boolean inCondition;
 
         /**
          * 返回name.
@@ -102,57 +83,6 @@ public class ConditionParamsManager {
          */
         public void setTransverter(String transverter) {
             this.transverter = transverter;
-        }
-
-        /**
-         * get inCondition value.
-         *
-         * @return inCondition
-         */
-        public boolean isInCondition() {
-            return inCondition;
-        }
-
-        /**
-         * set inCondition value.
-         *
-         * @param inCondition inCondition
-         */
-        public void setInCondition(boolean inCondition) {
-            this.inCondition = inCondition;
-        }
-
-        /**
-         * Convert sql for in param.
-         *
-         * @param sql      the sql
-         * @param inParams the in params
-         * @return the tuple 2
-         */
-        public Tuple2<String, Map<String, Object>> convertSqlForInParam(String sql, Collection<?> inParams) {
-            Map<String, Object> newParams = new LinkedHashMap<>();
-            final StringBuilder inParamsSql = new StringBuilder("( ");
-            Lang.each(inParams, (v, i) -> {
-                String newName = name + i;
-                inParamsSql.append(":").append(newName);
-                if (i < inParams.size() - 1) {
-                    inParamsSql.append(", ");
-                }
-                newParams.put(newName, v);
-            });
-            inParamsSql.append(" )");
-            return Tuples.of(sql.replaceAll(":" + name, inParamsSql.toString()), newParams);
-        }
-
-        /**
-         * Convert sql for in param.
-         *
-         * @param sql      the sql
-         * @param inParams the in params
-         * @return the tuple 2
-         */
-        public Tuple2<String, Map<String, Object>> convertSqlForInParam(String sql, Object... inParams) {
-            return convertSqlForInParam(sql, ArrayUtils.toList(inParams));
         }
 
     }
@@ -323,14 +253,4 @@ public class ConditionParamsManager {
     //    public boolean filterParamName(String paramName) {
     //        return filterParamNames.contains(paramName);
     //    }
-
-    /**
-     * Checks for in param.
-     *
-     * @return true, if successful
-     */
-    public boolean hasInParam() {
-        return paramNames.values().stream().anyMatch(v -> v.isInCondition());
-    }
-
 }
