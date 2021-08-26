@@ -24,4 +24,18 @@ public interface TypeIsNullExpression<C extends ConditionExpression, L extends L
      * @return LogicExpression
      */
     <O, T, R> L isn(SerializableFunction<O, T> repository, SerializableFunction<T, R> property);
+
+    /**
+     * is null.
+     *
+     * @param <O>        the generic type
+     * @param <T>        the generic type
+     * @param <R>        the generic type
+     * @param repository the repository
+     * @param property   the property
+     * @param value      if true, is null; if false, is not null; if null,
+     *                   ignore this operate
+     * @return LogicExpression
+     */
+    <O, T, R> L isn(SerializableFunction<O, T> repository, SerializableFunction<T, R> property, Boolean value);
 }

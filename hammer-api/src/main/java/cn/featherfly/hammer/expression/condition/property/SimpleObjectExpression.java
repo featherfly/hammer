@@ -214,4 +214,20 @@ public class SimpleObjectExpression<C extends ConditionsExpression<C, L>, L exte
         return expression.inn(name);
     }
 
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public L isn(Boolean value) {
+        return expression.isn(name, value);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public L inn(Boolean value) {
+        return expression.inn(name, value);
+    }
+
 }

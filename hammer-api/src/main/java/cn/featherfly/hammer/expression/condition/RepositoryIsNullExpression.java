@@ -41,4 +41,38 @@ public interface RepositoryIsNullExpression<C extends ConditionExpression, L ext
      * @return LogicExpression
      */
     L isn(int repositoryIndex, String name);
+
+    /**
+     * is null.
+     *
+     * @param repository repository
+     * @param name       参数名称
+     * @param value      if true, is null; if false, is not null; if null,
+     *                   ignore this operate
+     * @return LogicExpression
+     */
+    L isn(String repository, String name, Boolean value);
+
+    /**
+     * is null.
+     *
+     * @param <T>        the generic type
+     * @param repository repository
+     * @param name       参数名称
+     * @param value      if true, is null; if false, is not null; if null,
+     *                   ignore this operate
+     * @return LogicExpression
+     */
+    <T> L isn(Class<T> repository, String name, Boolean value);
+
+    /**
+     * is null.
+     *
+     * @param repositoryIndex repository index
+     * @param name            参数名称
+     * @param value           if true, is null; if false, is not null; if null,
+     *                        ignore this operate
+     * @return LogicExpression
+     */
+    L isn(int repositoryIndex, String name, Boolean value);
 }

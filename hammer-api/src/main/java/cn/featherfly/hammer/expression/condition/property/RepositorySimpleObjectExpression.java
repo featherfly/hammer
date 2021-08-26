@@ -449,4 +449,32 @@ public class RepositorySimpleObjectExpression<C extends RepositoryConditionsExpr
         }
     }
 
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public L isn(Boolean value) {
+        if (Lang.isNotEmpty(repository)) {
+            return expression.isn(repository, name, value);
+        } else if (repositoryIndex > -1) {
+            return expression.isn(repositoryIndex, name, value);
+        } else {
+            return expression.isn(name, value);
+        }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public L inn(Boolean value) {
+        if (Lang.isNotEmpty(repository)) {
+            return expression.inn(repository, name, value);
+        } else if (repositoryIndex > -1) {
+            return expression.inn(repositoryIndex, name, value);
+        } else {
+            return expression.inn(name, value);
+        }
+    }
+
 }

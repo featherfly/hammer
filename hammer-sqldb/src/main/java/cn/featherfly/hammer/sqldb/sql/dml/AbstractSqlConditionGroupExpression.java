@@ -275,8 +275,16 @@ public abstract class AbstractSqlConditionGroupExpression<C extends ConditionGro
      */
     @Override
     public L inn(String name) {
+        return inn(name, true);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public L inn(String name, Boolean value) {
         return (L) addCondition(new SqlConditionExpressionBuilder(dialect,
-                ClassMappingUtils.getColumnName(name, classMapping), null, QueryOperator.INN, queryAlias));
+                ClassMappingUtils.getColumnName(name, classMapping), value, QueryOperator.INN, queryAlias));
     }
 
     /**
@@ -284,8 +292,16 @@ public abstract class AbstractSqlConditionGroupExpression<C extends ConditionGro
      */
     @Override
     public L isn(String name) {
+        return isn(name, true);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public L isn(String name, Boolean value) {
         return (L) addCondition(new SqlConditionExpressionBuilder(dialect,
-                ClassMappingUtils.getColumnName(name, classMapping), null, QueryOperator.ISN, queryAlias));
+                ClassMappingUtils.getColumnName(name, classMapping), value, QueryOperator.ISN, queryAlias));
     }
 
     /**
@@ -677,8 +693,24 @@ public abstract class AbstractSqlConditionGroupExpression<C extends ConditionGro
      * {@inheritDoc}
      */
     @Override
+    public <T, R> L inn(SerializableFunction<T, R> name, Boolean value) {
+        return inn(getPropertyName(name), value);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
     public <T, R> L isn(SerializableFunction<T, R> name) {
         return isn(getPropertyName(name));
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public <T, R> L isn(SerializableFunction<T, R> name, Boolean value) {
+        return isn(getPropertyName(name), value);
     }
 
     /**
