@@ -33,4 +33,26 @@ public interface IsNotNullExpression<C extends ConditionExpression, L extends Lo
      * @return LogicExpression
      */
     <T, R> L inn(SerializableFunction<T, R> name);
+
+    /**
+     * is not null.
+     *
+     * @param name  参数名称
+     * @param value if true, is not null; if false, is null; if null, ignore
+     *              this operate
+     * @return LogicExpression
+     */
+    L inn(String name, Boolean value);
+
+    /**
+     * is not null.
+     *
+     * @param <T>   the generic type
+     * @param <R>   the generic type
+     * @param name  参数名称
+     * @param value if true, is not null; if false, is null; if null, ignore
+     *              this operate
+     * @return LogicExpression
+     */
+    <T, R> L inn(SerializableFunction<T, R> name, Boolean value);
 }

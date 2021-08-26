@@ -117,4 +117,20 @@ public class SimpleDateExpression<C extends ConditionsExpression<C, L>, L extend
     public L inn() {
         return expression.inn(name);
     }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public L isn(Boolean value) {
+        return expression.isn(name, value);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public L inn(Boolean value) {
+        return expression.inn(name, value);
+    }
 }

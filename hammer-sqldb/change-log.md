@@ -1,3 +1,6 @@
+# 0.5.18 2021-08-26
+1. 加入isn(... Boolean),inn(... Boolean)方法
+
 # 0.5.17 2021-08-20
 1. sql模板加入precompile参数，可以使用false禁用当前sql的预编译
 
