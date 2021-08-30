@@ -1,4 +1,6 @@
 - [ ] 优化page查询，缓存total_size，在相同查询条件下，使用缓存的total_size
+- [ ] dsl api 加入gourp by支持
+- [ ] dsl api 加入having支持
 - [x] namedSql转换时候把in params进行相应的转换
 - [x] 优化类型映射查询，自动处理处理返回List<Integer>,List<String>,List<Long>等单一属性列表，只要是manager支持的类型都行
 - [x] 在模板查询中加入快捷的模糊查询，即在sql中的查询条件两边加入%，则可以实现对应的模糊查询
