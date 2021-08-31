@@ -113,37 +113,53 @@ public abstract class LogicTemplateDirectiveModel implements FreemarkerDirective
                 String name = nameParam;
                 if (ifParam) { // 判断!ifParam，在conditionManager里加入filterNames
                     boolean needAppendLogicWorld = conditionParamsManager.isNeedAppendLogicWorld();
-                    StringWriter stringWriter = new StringWriter();
-                    body.render(stringWriter);
-                    String condition = stringWriter.toString().trim();
+                    String condition = getContent(body);
                     name = getParamName(name, condition);
 
-                    if (name.contains(",")) {
-                        for (String n : name.split(",")) {
-                            Param param = new Param();
-                            if (Strings.isNotBlank(transverterParam)) {
-                                param.setTransverter(transverterParam.trim());
-                            }
-                            param.setName(n.trim());
-                            conditionParamsManager.addParam(param);
-                        }
-                    } else {
+                    for (String n : getParamNames(name)) {
                         Param param = new Param();
                         if (Strings.isNotBlank(transverterParam)) {
                             param.setTransverter(transverterParam.trim());
                         }
-                        param.setName(name.trim());
+                        param.setName(n.trim());
                         conditionParamsManager.addParam(param);
                     }
+
                     if (needAppendLogicWorld) {
                         condition = " " + getLogicWorld() + " " + condition;
                     }
                     out.write(condition);
                 } else {
-                    //                    conditionParamsManager.addFilterParamName(name);
+                    conditionParamsManager.addFilterParamNames(getParamNames(name, body));
                     out.write("");
                 }
             }
+        }
+    }
+
+    private String getContent(TemplateDirectiveBody body) throws TemplateException, IOException {
+        StringWriter stringWriter = new StringWriter();
+        body.render(stringWriter);
+        return stringWriter.toString().trim();
+    }
+
+    private String[] getParamNames(String name) {
+        if (name.contains(",")) {
+            return name.split(",");
+        } else {
+            return new String[] { name };
+        }
+    }
+
+    private String[] getParamNames(String name, TemplateDirectiveBody body) throws TemplateException, IOException {
+        return getParamNames(getParamName(name, body));
+    }
+
+    private String getParamName(String name, TemplateDirectiveBody body) throws TemplateException, IOException {
+        if (org.apache.commons.lang3.StringUtils.isBlank(name)) {
+            return getParamName(name, getContent(body));
+        } else {
+            return name;
         }
     }
 

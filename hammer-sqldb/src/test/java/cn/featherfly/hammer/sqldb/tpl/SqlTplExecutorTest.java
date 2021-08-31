@@ -10,6 +10,7 @@ import java.util.Map;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
+import cn.featherfly.common.db.dialect.MySQLDialect;
 import cn.featherfly.common.lang.Randoms;
 import cn.featherfly.common.structure.HashChainMap;
 import cn.featherfly.common.structure.page.PaginationResults;
@@ -205,6 +206,41 @@ public class SqlTplExecutorTest extends JdbcTestBase {
         List<Role> roles2 = executor.list("role@selectByName", Role.class,
                 new HashChainMap<String, Object>().putChain("name", null));
         assertTrue(roles2.size() > roles.size());
+    }
+
+    @Test
+    void testRoleListWithFomat() {
+        String sql = null;
+        final String dateFormat;
+        final String datePattern;
+        if (dialect instanceof MySQLDialect) {
+            sql = "role@selectByName_mysql";
+            dateFormat = "%Y-%m-%d";
+            datePattern = "(\\d\\d\\d\\d)-(\\d\\d)-(\\d\\d)";
+        } else {
+            dateFormat = "%Y-%m-%d";
+            datePattern = "(\\d\\d\\d\\d)-(\\d\\d)-(\\d\\d)";
+        }
+
+        if (sql != null) {
+            List<Map<String, Object>> roles = executor.list(sql,
+                    new HashChainMap<String, Object>().putChain("name", "name%").putChain("dateFormat", dateFormat));
+            assertTrue(roles.size() > 0);
+            roles.forEach(r -> {
+                if (r.get("") != null) {
+                    assertTrue(r.get("dateFormat").toString().matches(datePattern));
+                }
+                assertTrue(r.get("name").toString().startsWith("name"));
+            });
+            List<Map<String, Object>> roles2 = executor.list(sql,
+                    new HashChainMap<String, Object>().putChain("name", null).putChain("dateFormat", dateFormat));
+            assertTrue(roles2.size() > roles.size());
+            roles.forEach(r -> {
+                if (r.get("") != null) {
+                    assertTrue(r.get("dateFormat").toString().matches(datePattern));
+                }
+            });
+        }
     }
 
     @Test

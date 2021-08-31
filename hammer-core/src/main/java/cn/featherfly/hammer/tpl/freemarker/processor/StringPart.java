@@ -1,5 +1,5 @@
 
-package cn.featherfly.hammer.tpl.processor;
+package cn.featherfly.hammer.tpl.freemarker.processor;
 
 /**
  * <p>

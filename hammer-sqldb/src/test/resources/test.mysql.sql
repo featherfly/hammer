@@ -7,29 +7,29 @@ SET FOREIGN_KEY_CHECKS=0;
 -- ----------------------------
 -- Table structure for role
 -- ----------------------------
-DROP TABLE IF EXISTS `role`;
 CREATE TABLE `role` (
-  `id` int(10) unsigned NOT NULL AUTO_INCREMENT ,
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
   `name` varchar(20) DEFAULT NULL,
   `descp` varchar(36) DEFAULT NULL,
+  `create_time` datetime DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=21 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of role
 -- ----------------------------
-INSERT INTO `role` VALUES ('1', 'n_init_1', 'descp_1');
-INSERT INTO `role` VALUES ('2', 'n_init_2', 'descp_2');
-INSERT INTO `role` VALUES ('3', 'n_init_3', 'descp_3');
-INSERT INTO `role` VALUES ('4', 'n_init_4', 'descp_4');
-INSERT INTO `role` VALUES ('5', 'n_init_5', 'descp_5');
-INSERT INTO `role` VALUES ('6', 'n_init_11', 'descp_64');
-INSERT INTO `role` VALUES ('7', 'name_init_98', 'descp_79');
-INSERT INTO `role` VALUES ('8', 'name_init_21', 'descp_5');
-INSERT INTO `role` VALUES ('9', 'name_init_96', 'descp_98');
-INSERT INTO `role` VALUES ('10', 'n_96', 'descp_29');
-INSERT INTO `role` VALUES ('11', 'n_42', 'descp_54');
-INSERT INTO `role` VALUES ('12', 'n_12', 'descp_65');
+INSERT INTO `role` VALUES ('1', 'n_init_1', 'descp_1', now());
+INSERT INTO `role` VALUES ('2', 'n_init_2', 'descp_2', now());
+INSERT INTO `role` VALUES ('3', 'n_init_3', 'descp_3', now());
+INSERT INTO `role` VALUES ('4', 'n_init_4', 'descp_4', now());
+INSERT INTO `role` VALUES ('5', 'n_init_5', 'descp_5', now());
+INSERT INTO `role` VALUES ('6', 'n_init_11', 'descp_64', now());
+INSERT INTO `role` VALUES ('7', 'name_init_98', 'descp_79', now());
+INSERT INTO `role` VALUES ('8', 'name_init_21', 'descp_5', now());
+INSERT INTO `role` VALUES ('9', 'name_init_96', 'descp_98', now());
+INSERT INTO `role` VALUES ('10', 'n_96', 'descp_29', now());
+INSERT INTO `role` VALUES ('11', 'n_42', 'descp_54', now());
+INSERT INTO `role` VALUES ('12', 'n_12', 'descp_65', now());
 
 -- ----------------------------
 -- Table structure for user

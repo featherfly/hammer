@@ -1,9 +1,13 @@
 
-package cn.featherfly.hammer.tpl.processor;
+package cn.featherfly.hammer.tpl.freemarker.processor;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.concurrent.atomic.AtomicInteger;
+
+import com.speedment.common.tuple.Tuple2;
+import com.speedment.common.tuple.Tuples;
 
 import cn.featherfly.common.constant.Chars;
 import cn.featherfly.common.lang.Strings;
@@ -30,6 +34,8 @@ public class Parser {
     private char namedParamStart = ':';
 
     private char fuzzyQueryChar = '%';
+
+    private char[] sqlStringWarpChars = new char[] { '\'', '\"' };
 
     private char[] namedParamEnds = { directiveEnd[0], ' ', '\n', fuzzyQueryChar };
 
@@ -146,23 +152,7 @@ public class Parser {
                     element.setEnd(directive.end);
                     element.setStart(directive.start);
                     index = directive.end;
-                }
-                //                else if (comment) {
-                //                    if (!(element instanceof DirectiveElement)) {
-                //                        element = new DirectiveElement();
-                //                        //                    addChildElement(element);
-                //                        //                    elements.add(element);
-                //                        addElement(element);
-                //                    }
-                //                    element.append(c);
-                //                    // TODO todo
-                //                    if (c == tagSign) {
-                //                        if (c2 == tagSign) {
-                //                        } else {
-                //                        }
-                //                    }
-                //                }
-                else {
+                } else {
                     if (!(element instanceof StringElement)) {
                         DirectiveElement de = null;
                         if (element != null) {
@@ -207,7 +197,7 @@ public class Parser {
                                         boolean endWith = paramContent
                                                 .charAt(namePart.getStart() - 2) == fuzzyQueryChar;
                                         boolean startWith = paramContent.charAt(namePart.getEnd()) == fuzzyQueryChar;
-                                        append = appendTransverter(endWith, startWith, append);
+                                        append = appendTransverter(startWith, endWith, append);
 
                                         //                                        de.setSource(pre + name + de.getSource() + append);
                                         de.setSource(pre + name + de.getSource() + append + " name=\"" + name + "\"");
@@ -225,15 +215,18 @@ public class Parser {
                                         }
 
                                         String paramContent = source.substring(index, wrapIndex);
-                                        String fuzzyStr = paramContent.chars()
-                                                .filter(i -> i == fuzzyQueryChar || i == namedParamStart || i == '?')
-                                                .collect(StringBuilder::new, StringBuilder::appendCodePoint,
-                                                        StringBuilder::append)
-                                                .toString();
-                                        boolean endWith = fuzzyStr.indexOf(fuzzyQueryChar) == 0;
-                                        boolean startWith = fuzzyStr.lastIndexOf(fuzzyQueryChar) == fuzzyStr.length()
-                                                - 1;
-                                        append = appendTransverter(endWith, startWith, append);
+                                        Tuple2<Boolean, Boolean> isFuzzy = isFuzzy(paramContent);
+                                        append = appendTransverter(isFuzzy.get0(), isFuzzy.get1(), append);
+
+                                        //                                        String fuzzyStr = paramContent.chars()
+                                        //                                                .filter(i -> i == fuzzyQueryChar || i == namedParamStart || i == '?')
+                                        //                                                .collect(StringBuilder::new, StringBuilder::appendCodePoint,
+                                        //                                                        StringBuilder::append)
+                                        //                                                .toString();
+                                        //                                        boolean endWith = fuzzyStr.indexOf(fuzzyQueryChar) == 0;
+                                        //                                        boolean startWith = fuzzyStr.lastIndexOf(fuzzyQueryChar) == fuzzyStr.length()
+                                        //                                                - 1;
+                                        //                                        append = appendTransverter(startWith, endWith, append);
                                         //                                        de.setSource(pre + name + append);
                                         de.setSource(pre + name + append + " name=\"" + name + "\"");
                                     }
@@ -258,7 +251,28 @@ public class Parser {
         }
     }
 
-    private String appendTransverter(boolean endWith, boolean startWith, String append) {
+    private Tuple2<Boolean, Boolean> isFuzzy(String paramContent) {
+        AtomicInteger preSqlStringChar = new AtomicInteger(0);
+        String fuzzyStr = paramContent.chars().filter(i -> {
+            char c = (char) i;
+            if (preSqlStringChar.byteValue() == 0) {
+                if (isSqlStringWarpChar(c)) {
+                    preSqlStringChar.set(c);
+                    return true;
+                } else {
+                    return c == fuzzyQueryChar || c == namedParamStart || c == '?';
+                }
+            } else if (preSqlStringChar.byteValue() == c) {
+                preSqlStringChar.set(0); // 字符串结束
+            }
+            return true;
+        }).collect(StringBuilder::new, StringBuilder::appendCodePoint, StringBuilder::append).toString();
+        boolean endWith = fuzzyStr.indexOf(fuzzyQueryChar) == 0;
+        boolean startWith = fuzzyStr.lastIndexOf(fuzzyQueryChar) == fuzzyStr.length() - 1;
+        return Tuples.of(startWith, endWith);
+    }
+
+    private String appendTransverter(boolean startWith, boolean endWith, String append) {
         if (startWith && endWith) {
             append = append + " transverter='CO'";
         } else if (startWith) {
@@ -805,4 +819,30 @@ public class Parser {
         this.namedParamEnds = namedParamEnds;
     }
 
+    /**
+     * get sqlStringWarpChars value
+     *
+     * @return sqlStringWarpChars
+     */
+    public char[] getSqlStringWarpChars() {
+        return sqlStringWarpChars;
+    }
+
+    /**
+     * set sqlStringWarpChars value
+     *
+     * @param sqlStringWarpChars sqlStringWarpChars
+     */
+    public void setSqlStringWarpChars(char[] sqlStringWarpChars) {
+        this.sqlStringWarpChars = sqlStringWarpChars;
+    }
+
+    public boolean isSqlStringWarpChar(char c) {
+        for (char sqlStringWrapChar : sqlStringWarpChars) {
+            if (sqlStringWrapChar == c) {
+                return true;
+            }
+        }
+        return false;
+    }
 }
