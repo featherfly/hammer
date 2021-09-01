@@ -4,8 +4,10 @@ package cn.featherfly.hammer.tpl.supports;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.TreeMap;
 
 import cn.featherfly.common.lang.Lang;
@@ -91,7 +93,7 @@ public class ConditionParamsManager {
 
     private int amount = 0;
 
-    //    private Set<String> filterParamNames = new HashSet<>();
+    private Set<String> filterParamNames = new HashSet<>();
 
     private Map<String, Param> paramNames = new HashMap<>();
 
@@ -240,17 +242,25 @@ public class ConditionParamsManager {
         return paramNames.get(paramName);
     }
 
-    //    public void addFilterParamName(String paramName) {
-    //        filterParamNames.add(paramName);
-    //    }
+    public void addFilterParamName(String paramName) {
+        filterParamNames.add(paramName);
+    }
 
-    //    /**
-    //     * Filter name.
-    //     *
-    //     * @param paramName the param name
-    //     * @return true, if successful
-    //     */
-    //    public boolean filterParamName(String paramName) {
-    //        return filterParamNames.contains(paramName);
-    //    }
+    public void addFilterParamNames(String... paramNames) {
+        if (paramNames != null) {
+            for (String pn : paramNames) {
+                addFilterParamName(pn);
+            }
+        }
+    }
+
+    /**
+     * Filter name.
+     *
+     * @param paramName the param name
+     * @return true, if successful
+     */
+    public boolean filterParamName(String paramName) {
+        return filterParamNames.contains(paramName);
+    }
 }

@@ -1,6 +1,8 @@
 
 package cn.featherfly.hammer.sqldb.jdbc.vo;
 
+import java.time.LocalDateTime;
+
 import javax.persistence.Id;
 import javax.persistence.Table;
 
@@ -20,6 +22,8 @@ public class Role {
     private String name;
 
     private String descp;
+
+    private LocalDateTime createTime;
 
     /**
      */
@@ -46,8 +50,7 @@ public class Role {
     /**
      * 设置id
      *
-     * @param id
-     *            id
+     * @param id id
      */
     public void setId(Integer id) {
         this.id = id;
@@ -65,8 +68,7 @@ public class Role {
     /**
      * 设置name
      *
-     * @param name
-     *            name
+     * @param name name
      */
     public void setName(String name) {
         this.name = name;
@@ -84,11 +86,28 @@ public class Role {
     /**
      * 设置descp
      *
-     * @param descp
-     *            descp
+     * @param descp descp
      */
     public void setDescp(String descp) {
         this.descp = descp;
+    }
+
+    /**
+     * get createTime value
+     *
+     * @return createTime
+     */
+    public LocalDateTime getCreateTime() {
+        return createTime;
+    }
+
+    /**
+     * set createTime value
+     *
+     * @param createTime createTime
+     */
+    public void setCreateTime(LocalDateTime createTime) {
+        this.createTime = createTime;
     }
 
     /**

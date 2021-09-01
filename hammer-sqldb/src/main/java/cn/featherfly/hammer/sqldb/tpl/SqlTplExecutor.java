@@ -671,40 +671,40 @@ public class SqlTplExecutor implements TplExecutor {
     // select * from user <@where>  username = :username <@and if=password> password = :password</@and></@where>
     // 上面这种情况应该是不存在的，因为这样用本身会带来bug，如果一个查询条件不会空，也使用<@and> <@or>连接起来
     private Object[] getEffectiveParamArray(Map<String, Object> params, ConditionParamsManager manager) {
-        //        return params.entrySet().stream().filter(t -> {
-        //            return !manager.filterParamName(t.getKey());
-        //        }).collect(Collectors.toMap(e -> {
-        //            return e.getKey();
-        //        }, e -> {
-        //            return transvert(e.getKey(), e.getValue(), manager);
-        //        })).values().toArray();
+        return params.entrySet().stream().filter(t -> {
+            return !manager.filterParamName(t.getKey());
+        }).collect(Collectors.toMap(e -> {
+            return e.getKey();
+        }, e -> {
+            return transvert(e.getKey(), e.getValue(), manager);
+        })).values().toArray();
 
-        return manager.getParamNames().stream().filter(n -> params.containsKey(n)).map(n -> {
-            return transvert(n, params.get(n), manager);
-            //            return params.get(n);
-        }).collect(Collectors.toList()).toArray();
+        //        return manager.getParamNames().stream().filter(n -> params.containsKey(n)).map(n -> {
+        //            return transvert(n, params.get(n), manager);
+        //            //            return params.get(n);
+        //        }).collect(Collectors.toList()).toArray();
     }
 
     private Map<String, Object> getEffectiveParamMap(Map<String, Object> params, ConditionParamsManager manager) {
-        //        return params.entrySet().stream().filter(t -> {
-        //            return !manager.filterParamName(t.getKey());
-        //        }).collect(Collectors.toMap(e -> {
-        //            return e.getKey();
-        //        }, e -> {
-        //            return transvert(e.getKey(), e.getValue(), manager);
-        //        }));
+        return params.entrySet().stream().filter(t -> {
+            return !manager.filterParamName(t.getKey());
+        }).collect(Collectors.toMap(e -> {
+            return e.getKey();
+        }, e -> {
+            return transvert(e.getKey(), e.getValue(), manager);
+        }));
 
-        if (manager.getAmount() == 0) {
-            return params;
-        } else {
-            return params.entrySet().stream().filter(t -> {
-                return manager.containsName(t.getKey());
-            }).collect(Collectors.toMap(e -> {
-                return e.getKey();
-            }, e -> {
-                return transvert(e.getKey(), e.getValue(), manager);
-            }));
-        }
+        //        if (manager.getAmount() == 0) {
+        //            return params;
+        //        } else {
+        //            return params.entrySet().stream().filter(t -> {
+        //                return manager.containsName(t.getKey());
+        //            }).collect(Collectors.toMap(e -> {
+        //                return e.getKey();
+        //            }, e -> {
+        //                return transvert(e.getKey(), e.getValue(), manager);
+        //            }));
+        //        }
     }
 
     private Object transvert(String name, Object value, ConditionParamsManager manager) {
