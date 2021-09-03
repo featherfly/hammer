@@ -1,3 +1,32 @@
+# 0.5.20 2021-09-01
+1. 修复模板sql中有参数传入没有进行条件判断，则参数会被过滤掉的问题
+
+# 0.5.19 2021-08-31
+1. 修复预编译把字符串中的%过滤掉的问题，例如DATE_FORMAT(date, '%Y-%D-%M')
+
+# 0.5.18 2021-08-26
+1. 加入isn(... Boolean),inn(... Boolean)方法
+
+# 0.5.17 2021-08-20
+1. sql模板加入precompile参数，可以使用false禁用当前sql的预编译
+
+# 0.5.16 2021-08-18
+1. 使用SqlUtils转换namedsql自动处理in的情况，去掉之前<@and>和<@or>的实现
+
+# 0.5.15 2021-08-16
+1. 修复预编译优化条件标签<@and>和<@Or>，在编译为Freemarker模板后，明确加入name="fieldName"属性时CO,SW,EW丢失的问题
+2. 修复SqlTplExecutor执行模板语句时，都注册为TplExecuteId.count的问题
+
+# 0.5.14 2021-08-11
+1. 预编译优化条件标签<@and>和<@or>，在编译为Freemarker模板后，明确加入name="fieldName"属性
+2. 修复LogicTemplateDirectiveModel在获取参数名称时的正则表达式不支持表别名的问题，并支持关键字转移符['"`]
+
+# 0.5.13 2021-07-26
+1. 加入QueryOperator.LK的支持
+
+# 0.5.12 2021-07-14
+1. sql模板(SqlTplExecutor中实现)支持<and if=ids??> id in :ids </and>自动设置集合或者数组参数
+
 # 0.5.11 2021-06-18
 1. 优化类型映射查询，自动处理处理返回List<Integer>,List<String>,List<Long>等单一属性列表，只要是SqlTypeMappingManager支持的类型都行
     ```

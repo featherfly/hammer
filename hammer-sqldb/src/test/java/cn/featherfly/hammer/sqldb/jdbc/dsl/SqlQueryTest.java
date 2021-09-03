@@ -19,6 +19,7 @@ import cn.featherfly.hammer.sqldb.jdbc.JdbcTestBase;
 import cn.featherfly.hammer.sqldb.jdbc.dsl.query.SqlQuery;
 import cn.featherfly.hammer.sqldb.jdbc.vo.DistrictDivision;
 import cn.featherfly.hammer.sqldb.jdbc.vo.Role;
+import cn.featherfly.hammer.sqldb.jdbc.vo.Tree;
 import cn.featherfly.hammer.sqldb.jdbc.vo.Tree2;
 import cn.featherfly.hammer.sqldb.jdbc.vo.User;
 import cn.featherfly.hammer.sqldb.jdbc.vo.UserInfo;
@@ -513,6 +514,74 @@ public class SqlQueryTest extends JdbcTestBase {
 
         userInfo.getDivision().setDistrict(null);
         query.find(UserInfo.class).where().eq(userInfo::getDivision).or().eq(userInfo::getDivision).list();
+    }
+
+    @Test
+    void testInn() {
+        SqlQuery query = new SqlQuery(jdbc, mappingFactory);
+
+        long nullNum = 1;
+
+        long total = query.find(Tree.class).count();
+
+        long count = query.find(Tree.class).where().isn("parent_id").count();
+        assertEquals(count, nullNum);
+
+        count = query.find(Tree.class).where().isn("parent_id", true).count();
+        assertEquals(count, nullNum);
+
+        count = query.find(Tree.class).where().isn("parent_id", false).count();
+        assertTrue(nullNum < count);
+
+        count = query.find(Tree.class).where().isn("parent_id", null).count();
+        assertTrue(count == total);
+
+        count = query.find(Tree.class).where().isn(Tree::getParentId).count();
+        assertEquals(count, nullNum);
+
+        count = query.find(Tree.class).where().isn(Tree::getParentId, true).count();
+        assertEquals(count, nullNum);
+
+        count = query.find(Tree.class).where().isn(Tree::getParentId, false).count();
+        assertTrue(nullNum < count);
+
+        count = query.find(Tree.class).where().isn(Tree::getParentId, (Boolean) null).count();
+        assertTrue(count == total);
+
+        count = query.find(Tree.class).where().inn("parent_id").count();
+        assertTrue(nullNum < count);
+
+        count = query.find(Tree.class).where().inn("parent_id", true).count();
+        assertTrue(nullNum < count);
+
+        count = query.find(Tree.class).where().inn("parent_id", false).count();
+        assertEquals(count, nullNum);
+
+        count = query.find(Tree.class).where().inn("parent_id", null).count();
+        assertTrue(count == total);
+
+        count = query.find(Tree.class).where().inn(Tree::getParentId).count();
+        assertTrue(nullNum < count);
+
+        count = query.find(Tree.class).where().inn(Tree::getParentId, true).count();
+        assertTrue(nullNum < count);
+
+        count = query.find(Tree.class).where().inn(Tree::getParentId, false).count();
+        assertEquals(count, nullNum);
+
+        count = query.find(Tree.class).where().inn(Tree::getParentId, (Boolean) null).count();
+        assertTrue(count == total);
+    }
+
+    @Test
+    void testInn2() {
+        SqlQuery query = new SqlQuery(jdbc, mappingFactory);
+
+        long nullNum = 1;
+
+        long count = query.find(Tree2.class).with(Tree2::getParent).where().isn(1, "parent_id").list().size();
+        assertTrue(nullNum < count);
+
     }
 
     // @Test

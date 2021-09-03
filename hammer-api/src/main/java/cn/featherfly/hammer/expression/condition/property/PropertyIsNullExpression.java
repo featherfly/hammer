@@ -11,13 +11,22 @@ import cn.featherfly.hammer.expression.condition.LogicExpression;
  *
  * @author zhongj
  */
-public interface PropertyIsNullExpression<C extends ConditionExpression,
-        L extends LogicExpression<C, L>> extends ConditionExpression {
+public interface PropertyIsNullExpression<C extends ConditionExpression, L extends LogicExpression<C, L>>
+        extends ConditionExpression {
 
     /**
-     * is not null
+     * is null
      *
      * @return LogicExpression
      */
     L isn();
+
+    /**
+     * is null
+     *
+     * @param value if true, is null; if false, is not null; if null, ignore
+     *              this operate
+     * @return LogicExpression
+     */
+    L isn(Boolean value);
 }

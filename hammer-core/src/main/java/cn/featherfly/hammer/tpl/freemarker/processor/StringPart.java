@@ -1,10 +1,11 @@
 
-package cn.featherfly.hammer.tpl.processor;
+package cn.featherfly.hammer.tpl.freemarker.processor;
 
 /**
  * <p>
  * StringPart
  * </p>
+ * .
  *
  * @author zhongj
  */
@@ -17,9 +18,11 @@ public class StringPart {
     private String value;
 
     /**
-     * @param start
-     * @param end
-     * @param value
+     * Instantiates a new string part.
+     *
+     * @param start the start
+     * @param end   the end
+     * @param value the value
      */
     public StringPart(int start, int end, String value) {
         super();
@@ -29,8 +32,8 @@ public class StringPart {
     }
 
     /**
-     * 返回start
-     * 
+     * 返回start.
+     *
      * @return start
      */
     public int getStart() {
@@ -38,8 +41,8 @@ public class StringPart {
     }
 
     /**
-     * 返回end
-     * 
+     * 返回end.
+     *
      * @return end
      */
     public int getEnd() {
@@ -47,8 +50,8 @@ public class StringPart {
     }
 
     /**
-     * 返回value
-     * 
+     * 返回value.
+     *
      * @return value
      */
     public String getValue() {

@@ -34,15 +34,8 @@ public abstract class LogicTemplateDirectiveModel implements FreemarkerDirective
 
     private static final String BETWEEN = "between";
 
-    // (\w+) *([=><]|<>|!=|>=|<=| in | is ) *(:\w+|\?)
-    // private static final Pattern CONDITION_PATTERN = Pattern
-    // .compile("(\\w+) *([=><]|<>|!=|>=|<=| in | is ) *(:\\w+|\\?)",
-    // Pattern.CASE_INSENSITIVE);
-
-    // (\w+) *(([=><]|<>|!=|>=|<=| like | in | is ) *(:\w+|\?)|(between)
-    // +(:\w+|\?) *(and) *(:\w+|\?))
     private static final Pattern CONDITION_PATTERN = Pattern.compile(
-            "(\\w+) *(([=><]|<>|!=|>=|<=|!>|!<| like | in | is ) *(:\\w+|\\?)|(between) +(:\\w+|\\?) *(and) *(:\\w+|\\?))",
+            "(\\w*\\.?[\\[`'\"]?\\w+[\\]`'\"]?) *(([=><]|<>|!=|>=|<=|!>|!<| like | in | is ) *(:\\w+|\\?)|(between) +(:\\w+|\\?) *(and) *(:\\w+|\\?))",
             Pattern.CASE_INSENSITIVE);
 
     private ConditionParamsManager conditionParamsManager;
@@ -54,6 +47,9 @@ public abstract class LogicTemplateDirectiveModel implements FreemarkerDirective
         this.conditionParamsManager = conditionParamsManager;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     /**
      * {@inheritDoc}
      */
@@ -97,8 +93,6 @@ public abstract class LogicTemplateDirectiveModel implements FreemarkerDirective
 
         Writer out = env.getOut();
         if (body != null) {
-            // System.out.println("ifParam: " + ifParam + " amount: "
-            // + conditionParamsManager.getAmount());
             if (ifParam == null) {
                 boolean needAppendLogicWorld = conditionParamsManager.isNeedAppendLogicWorld();
                 conditionParamsManager.startGroup();
@@ -115,87 +109,101 @@ public abstract class LogicTemplateDirectiveModel implements FreemarkerDirective
                     out.write(result);
                 }
                 conditionParamsManager.endGroup();
-            } else if (ifParam) { // 判断!ifParam，在conditionManager里加入filterNames
+            } else {
                 String name = nameParam;
-                boolean needAppendLogicWorld = conditionParamsManager.isNeedAppendLogicWorld();
-                // if (conditionParamsManager.isNeedAppendLogicWorld()) {
-                // out.write(" " + getLogicWorld() + " ");
-                // }
-                StringWriter stringWriter = new StringWriter();
-                body.render(stringWriter);
+                if (ifParam) { // 判断!ifParam，在conditionManager里加入filterNames
+                    boolean needAppendLogicWorld = conditionParamsManager.isNeedAppendLogicWorld();
+                    String condition = getContent(body);
+                    name = getParamName(name, condition);
 
-                String condition = stringWriter.toString().trim();
-                if (org.apache.commons.lang3.StringUtils.isBlank(name) && condition.length() > 0) {
-                    Matcher m = null;
-                    m = CONDITION_PATTERN.matcher(condition);
-                    if (!m.matches()) {
-                        throw new IllegalArgumentException(
-                                "[" + condition + "] " + "查询条件无法获取条件名称，请直接在指令上设置参数名称<@and name=\"paramName\">");
-                    }
-
-                    String paramType = null;
-                    boolean betweenAnd = false;
-                    if (BETWEEN.equalsIgnoreCase(m.group(5))) {
-                        paramType = m.group(6);
-                        betweenAnd = true;
-                    } else {
-                        paramType = m.group(4);
-                    }
-
-                    if ("?".equals(paramType)) {
-                        if (conditionParamsManager.getParamNamed() != null
-                                && conditionParamsManager.getParamNamed() == true) {
-                            throw new SqldbHammerException("不能name = ? 和 name = :name混合一起用");
-                        }
-                        conditionParamsManager.setParamNamed(false);
-
-                        name = m.group(1);
-                        if (org.apache.commons.lang3.StringUtils.isBlank(name) || betweenAnd) {
-                            throw new IllegalArgumentException("[" + condition + "] "
-                                    + "查询条件无法获取条件名称，请直接在指令上设置参数名称<@and name=\"paramName\">或者<@and name=\"paramName1,paramName2\">");
-                        }
-                    } else if (paramType.startsWith(":")) {
-                        if (conditionParamsManager.getParamNamed() != null
-                                && conditionParamsManager.getParamNamed() == false) {
-                            throw new SqldbHammerException("不能name = ? 和 name = :name混合一起用");
-                        }
-                        conditionParamsManager.setParamNamed(true);
-                        name = paramType.substring(1);
-                        if (betweenAnd) {
-                            name = name + "," + m.group(8).substring(1);
-                        }
-                    }
-                }
-
-                if (name.contains(",")) {
-                    for (String n : name.split(",")) {
+                    for (String n : getParamNames(name)) {
                         Param param = new Param();
                         if (Strings.isNotBlank(transverterParam)) {
                             param.setTransverter(transverterParam.trim());
                         }
                         param.setName(n.trim());
                         conditionParamsManager.addParam(param);
-                        //                        conditionParamsManager.addParam(n.trim());
                     }
+
+                    if (needAppendLogicWorld) {
+                        condition = " " + getLogicWorld() + " " + condition;
+                    }
+                    out.write(condition);
                 } else {
-                    Param param = new Param();
-                    if (Strings.isNotBlank(transverterParam)) {
-                        param.setTransverter(transverterParam.trim());
-                    }
-                    param.setName(name.trim());
-                    conditionParamsManager.addParam(param);
-                    //                    conditionParamsManager.addParam(name.trim());
+                    conditionParamsManager.addFilterParamNames(getParamNames(name, body));
+                    out.write("");
                 }
-                if (needAppendLogicWorld) {
-                    condition = " " + getLogicWorld() + " " + condition;
-                    //                    condition = getLogicWorld() + " " + condition + " ";
-                }
-                out.write(condition);
-                // body.render(out);
-            } else {
-                out.write("");
             }
         }
+    }
+
+    private String getContent(TemplateDirectiveBody body) throws TemplateException, IOException {
+        StringWriter stringWriter = new StringWriter();
+        body.render(stringWriter);
+        return stringWriter.toString().trim();
+    }
+
+    private String[] getParamNames(String name) {
+        if (name.contains(",")) {
+            return name.split(",");
+        } else {
+            return new String[] { name };
+        }
+    }
+
+    private String[] getParamNames(String name, TemplateDirectiveBody body) throws TemplateException, IOException {
+        return getParamNames(getParamName(name, body));
+    }
+
+    private String getParamName(String name, TemplateDirectiveBody body) throws TemplateException, IOException {
+        if (org.apache.commons.lang3.StringUtils.isBlank(name)) {
+            return getParamName(name, getContent(body));
+        } else {
+            return name;
+        }
+    }
+
+    private String getParamName(String name, String condition) {
+        if (org.apache.commons.lang3.StringUtils.isBlank(name) && condition.length() > 0) {
+            Matcher m = null;
+            m = CONDITION_PATTERN.matcher(condition);
+            if (!m.matches()) {
+                throw new IllegalArgumentException(
+                        "[" + condition + "] " + "查询条件无法获取条件名称，请直接在指令上设置参数名称<@and name=\"paramName\">");
+            }
+
+            String paramType = null;
+            boolean betweenAnd = false;
+            if (BETWEEN.equalsIgnoreCase(m.group(5))) {
+                paramType = m.group(6);
+                betweenAnd = true;
+            } else {
+                paramType = m.group(4);
+            }
+
+            if ("?".equals(paramType)) {
+                if (conditionParamsManager.getParamNamed() != null && conditionParamsManager.getParamNamed() == true) {
+                    throw new SqldbHammerException("不能name = ? 和 name = :name混合一起用");
+                }
+                conditionParamsManager.setParamNamed(false);
+
+                name = m.group(1);
+                if (org.apache.commons.lang3.StringUtils.isBlank(name) || betweenAnd) {
+                    throw new IllegalArgumentException("[" + condition + "] "
+                            + "查询条件无法获取条件名称，请直接在指令上设置参数名称<@and name=\"paramName\">或者<@and name=\"paramName1,paramName2\">");
+                }
+            } else if (paramType.startsWith(":")) {
+                if (conditionParamsManager.getParamNamed() != null && conditionParamsManager.getParamNamed() == false) {
+                    throw new SqldbHammerException("不能name = ? 和 name = :name混合一起用");
+                }
+                conditionParamsManager.setParamNamed(true);
+                name = paramType.substring(1);
+                if (betweenAnd) {
+                    name = name + "," + m.group(8).substring(1);
+                }
+            }
+        }
+        return name;
     }
 
     protected abstract String getLogicWorld();

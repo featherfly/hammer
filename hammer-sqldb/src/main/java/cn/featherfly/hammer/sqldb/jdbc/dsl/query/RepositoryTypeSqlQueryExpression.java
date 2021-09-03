@@ -263,7 +263,15 @@ public class RepositoryTypeSqlQueryExpression extends RepositoryTypeSqlQueryCond
      */
     @Override
     public <T, R> RepositoryTypeQueryConditionGroupLogicExpression inn(SerializableFunction<T, R> name) {
-        return addCondition(name, null, QueryOperator.INN);
+        return inn(name, true);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public <T, R> RepositoryTypeQueryConditionGroupLogicExpression inn(SerializableFunction<T, R> name, Boolean value) {
+        return addCondition(name, value, QueryOperator.INN);
     }
 
     /**
@@ -271,7 +279,15 @@ public class RepositoryTypeSqlQueryExpression extends RepositoryTypeSqlQueryCond
      */
     @Override
     public <T, R> RepositoryTypeQueryConditionGroupLogicExpression isn(SerializableFunction<T, R> name) {
-        return addCondition(name, null, QueryOperator.ISN);
+        return isn(name, true);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public <T, R> RepositoryTypeQueryConditionGroupLogicExpression isn(SerializableFunction<T, R> name, Boolean value) {
+        return addCondition(name, value, QueryOperator.ISN);
     }
 
     /**

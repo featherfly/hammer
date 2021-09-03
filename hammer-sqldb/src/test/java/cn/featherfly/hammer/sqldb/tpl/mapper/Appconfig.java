@@ -54,11 +54,12 @@ public class Appconfig extends JdbcTestBase {
     public DataSource DataSource() {
         BasicDataSource dataSource = new BasicDataSource();
         //        dataSource.setUrl("jdbc:mysql://127.0.0.1:3306/hammer_jdbc?useUnicode=true&characterEncoding=UTF-8");
+        //        dataSource.setDriverClassName("com.mysql.jdbc.Driver");
         //        dataSource.setUrl(
         //                "jdbc:mysql://127.0.0.1:3306/hammer_jdbc?serverTimezone=UTC&characterEncoding=utf8&useUnicode=true&useSSL=false");
         dataSource.setUrl(
                 "jdbc:mysql://127.0.0.1:3306/hammer_jdbc?serverTimezone=CTT&characterEncoding=utf8&useUnicode=true&useSSL=false");
-        dataSource.setDriverClassName("com.mysql.jdbc.Driver");
+        dataSource.setDriverClassName("com.mysql.cj.jdbc.Driver");
         dataSource.setUsername("root");
         dataSource.setPassword("123456");
         return dataSource;
@@ -71,13 +72,6 @@ public class Appconfig extends JdbcTestBase {
         //        ConstantConfigurator.config(JdbcTestBase.configFile);
         ConstantConfigurator.config();
 
-        //        BasicDataSource dataSource = new BasicDataSource();
-        //        dataSource.setUrl("jdbc:mysql://127.0.0.1:3306/hammer_jdbc");
-        //        dataSource.setDriverClassName("com.mysql.jdbc.Driver");
-        //        dataSource.setUsername("root");
-        //        dataSource.setPassword("123456");
-
-        //        Jdbc jdbc = new SpringJdbcTemplateImpl(dataSource, Dialects.MYSQL);
         Jdbc jdbc = new JdbcImpl(dataSource, Dialects.MYSQL);
         DatabaseMetadata metadata = DatabaseMetadataManager.getDefaultManager().create(dataSource);
 

@@ -22,6 +22,8 @@ public class TplExecuteConfig {
 
     private String count;
 
+    private Boolean precompile;
+
     private String executeId;
 
     private String tplName;
@@ -171,12 +173,30 @@ public class TplExecuteConfig {
     }
 
     /**
+     * get precompile value
+     *
+     * @return precompile
+     */
+    public Boolean getPrecompile() {
+        return precompile;
+    }
+
+    /**
+     * set precompile value
+     *
+     * @param precompile precompile
+     */
+    public void setPrecompile(Boolean precompile) {
+        this.precompile = precompile;
+    }
+
+    /**
      * {@inheritDoc}
      */
     @Override
     public String toString() {
         return "TplExecuteConfig [fileName=" + fileName + ", fileDirectory=" + fileDirectory + ", name=" + name
-                + ", type=" + type + ", query=" + query + ", count=" + count + ", executeId=" + executeId + ", tplName="
-                + tplName + "]";
+                + ", type=" + type + ", query=" + query + ", count=" + count + ", precompile=" + precompile
+                + ", executeId=" + executeId + ", tplName=" + tplName + "]";
     }
 }

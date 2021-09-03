@@ -262,6 +262,7 @@ public class TplConfigFactoryImpl implements TplConfigFactory {
         Set<String> executeIds = new HashSet<>();
         for (Method method : methods) {
             Template template = method.getAnnotation(Template.class);
+
             if (Lang.isEmpty(template.value())) {
                 continue;
             }
@@ -349,13 +350,33 @@ public class TplConfigFactoryImpl implements TplConfigFactory {
                 } else {
                     @SuppressWarnings("unchecked")
                     Map<String, Object> map = (Map<String, Object>) v;
+
+                    Object precompileObj = map.get("precompile");
+                    boolean precompile = true; // 默认使用预编译
+                    if (Lang.isNotEmpty(precompileObj)) {
+                        if (precompileObj instanceof Boolean) {
+                            precompile = (Boolean) precompileObj;
+                        } else {
+                            precompile = Boolean.parseBoolean(precompileObj.toString());
+                        }
+                    }
+                    config.setPrecompile(precompile);
+
                     Object query = map.get("query");
                     if (Lang.isNotEmpty(query)) {
-                        config.setQuery(templatePreprocessor.process(query.toString()));
+                        if (precompile) {
+                            config.setQuery(templatePreprocessor.process(query.toString()));
+                        } else {
+                            config.setQuery(query.toString());
+                        }
                     }
                     Object count = map.get("count");
                     if (Lang.isNotEmpty(count)) {
-                        config.setCount(templatePreprocessor.process(count.toString()));
+                        if (precompile) {
+                            config.setCount(templatePreprocessor.process(count.toString()));
+                        } else {
+                            config.setQuery(query.toString());
+                        }
                     }
                     if (Lang.isNotEmpty(map.get("type"))) {
                         config.setType(TplType.valueOf(map.get("type").toString()));
@@ -535,7 +556,7 @@ public class TplConfigFactoryImpl implements TplConfigFactory {
 
     /**
      * 返回templatePreprocessor
-     * 
+     *
      * @return templatePreprocessor
      */
     public TemplatePreprocessor getTemplatePreprocessor() {

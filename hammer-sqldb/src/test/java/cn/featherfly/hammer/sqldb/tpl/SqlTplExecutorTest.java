@@ -10,6 +10,7 @@ import java.util.Map;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
+import cn.featherfly.common.db.dialect.MySQLDialect;
 import cn.featherfly.common.lang.Randoms;
 import cn.featherfly.common.structure.HashChainMap;
 import cn.featherfly.common.structure.page.PaginationResults;
@@ -208,6 +209,41 @@ public class SqlTplExecutorTest extends JdbcTestBase {
     }
 
     @Test
+    void testRoleListWithFomat() {
+        String sql = null;
+        final String dateFormat;
+        final String datePattern;
+        if (dialect instanceof MySQLDialect) {
+            sql = "role@selectByName_mysql";
+            dateFormat = "%Y-%m-%d";
+            datePattern = "(\\d\\d\\d\\d)-(\\d\\d)-(\\d\\d)";
+        } else {
+            dateFormat = "%Y-%m-%d";
+            datePattern = "(\\d\\d\\d\\d)-(\\d\\d)-(\\d\\d)";
+        }
+
+        if (sql != null) {
+            List<Map<String, Object>> roles = executor.list(sql,
+                    new HashChainMap<String, Object>().putChain("name", "name%").putChain("dateFormat", dateFormat));
+            assertTrue(roles.size() > 0);
+            roles.forEach(r -> {
+                if (r.get("") != null) {
+                    assertTrue(r.get("dateFormat").toString().matches(datePattern));
+                }
+                assertTrue(r.get("name").toString().startsWith("name"));
+            });
+            List<Map<String, Object>> roles2 = executor.list(sql,
+                    new HashChainMap<String, Object>().putChain("name", null).putChain("dateFormat", dateFormat));
+            assertTrue(roles2.size() > roles.size());
+            roles.forEach(r -> {
+                if (r.get("") != null) {
+                    assertTrue(r.get("dateFormat").toString().matches(datePattern));
+                }
+            });
+        }
+    }
+
+    @Test
     void testUserInfoList() {
         List<UserInfo> uis = executor.list("user_info@select", UserInfo.class, new HashChainMap<String, Object>());
         assertTrue(uis.size() > 0);
@@ -329,5 +365,54 @@ public class SqlTplExecutorTest extends JdbcTestBase {
     void testPrivileType() {
         int i = executor.value("countRole", int.class, new HashChainMap<String, Object>());
         System.out.println(i);
+    }
+
+    @Test
+    void testInParams() {
+        int resultSize = 3;
+
+        Long[] ids = new Long[] { 1L, 2L, 3L };
+
+        Map<String, Object> params = new HashChainMap<String, Object>().putChain("ids", ids);
+
+        List<User> users;
+        // list
+        users = executor.list("selectIn", User.class, params);
+        assertEquals(users.size(), resultSize);
+
+        // value
+        int size = executor.value("selectInCount", int.class, params);
+        assertEquals(size, resultSize);
+
+        //  list page
+        resultSize = 2;
+        users = executor.list("selectIn", User.class, params, 0, 2);
+        assertEquals(users.size(), resultSize);
+
+        //  pagination
+        PaginationResults<User> p = executor.pagination("selectIn", User.class, params, 0, 2);
+        assertEquals(p.getPageResults().size(), resultSize);
+        assertEquals(p.getTotal(), new Integer(ids.length));
+
+        // single
+        User user = executor.single("selectInSingle", User.class,
+                new HashChainMap<String, Object>().putChain("ids", new Long[] { 1L, -1L }));
+        assertEquals(user.getId(), new Integer(1));
+
+    }
+
+    @Test
+    void testInParams2() {
+        int resultSize = 4;
+
+        Long[] ids = new Long[] { 1L, 2L, 3L, 4L };
+
+        Map<String, Object> params = new HashChainMap<String, Object>().putChain("ids", ids);
+
+        List<User> users;
+
+        // list
+        users = executor.list("selectIn2", User.class, params);
+        assertEquals(users.size(), resultSize);
     }
 }

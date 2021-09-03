@@ -105,7 +105,6 @@ public class SqlConditionGroupExpressionBuilder extends
             String queryAlias, TypeQueryEntity typeQueryEntity) {
         return new SqlConditionGroupExpressionBuilder(dialect, parent, queryAlias, classMapping, typeQueryEntity);
     }
-
     // ********************************************************************
     // property
     // ********************************************************************
