@@ -253,7 +253,7 @@ public class Appconfig {
 
     @Bean
     public SqldbHammerImpl hammer(DataSource dataSource) {
-    	// 我这里的dataSource通过xml配置，主要方便在各种datasource实现之间切换
+    	// dataSource自行配置
         // 配置你自己的日志框架
         DOMConfigurator.configure(ClassLoaderUtils.getResource("log4j.xml", JdbcTestBase.class));
         ConstantConfigurator.config(); //这条语句不能少
