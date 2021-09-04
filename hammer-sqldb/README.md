@@ -268,31 +268,6 @@ public class Appconfig {
 }
 ```
 
-xml 配置 dataSource
-
-```xml
-<?xml version="1.0" encoding="UTF-8"?>
-<beans xmlns="http://www.springframework.org/schema/beans"
-	xmlns:context="http://www.springframework.org/schema/context"
-	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	xmlns:p="http://www.springframework.org/schema/p"
-	xsi:schemaLocation="http://www.springframework.org/schema/beans
-		http://www.springframework.org/schema/beans/spring-beans.xsd
-		http://www.springframework.org/schema/context
-        http://www.springframework.org/schema/context/spring-context.xsd">
-	<context:component-scan
-		base-package="cn.featherfly.hammer" />
-	<cache:annotation-driven proxy-target-class="true"/>
-	<bean id="dataSource" class="org.apache.commons.dbcp.BasicDataSource">
-	   <property name="url" value="jdbc:mysql://127.0.0.1:3306/hammer_jdbc"/>
-	   <property name="driverClassName" value="com.mysql.jdbc.Driver"/>
-	   <property name="username" value="root"/>
-	   <property name="password" value="123456"/>
-	</bean>
-</beans>
-
-```
-
 #### 使用 Mapper
 
 ```java
