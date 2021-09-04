@@ -5,6 +5,7 @@
 - [ ] 加入一次交互完成锁查询、修改，并返回修改后的结果的功能
 - [ ] dsl api 加入gourp by支持
 - [ ] dsl api 加入having支持
+- [ ] 移除对constant模块的强依赖，使用简单的java属性来设置开发模式
 - [x] 自定义数据映射加入数据库返回数据到java对象映射时，加入其相关元数据（如列名，表名）进行更具体的映射
 - [x] namedSql转换时候把in params进行相应的转换
 - [x] 优化类型映射查询，自动处理处理返回List<Integer>,List<String>,List<Long>等单一属性列表，只要是SqlTypeMappingManager支持的类型都行
