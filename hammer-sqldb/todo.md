@@ -10,6 +10,8 @@
 
 - [ ] dsl api 加入gourp by和having支持
 
+- [ ] dsl api 强类型查询的数据泛型要在启动那时候就确定（例如query(User.class).list()或.single() 这个list方法的泛型参数一定是User）
+
 - [ ] 查询返回支持Map支持多对象映射
     map的key为别名,value为映射对象
     例如
