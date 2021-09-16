@@ -67,6 +67,8 @@
 
 - [ ] 模板文件加载器加入支持从不同文件后缀加载的实现(例如 .yaml.sql, .tpl.sql)
 
+- [ ] 模板文件加载器加入支持从不同前置目录加载的实现(例如 rbac, cms, blog, common/config)
+
 - [ ] 预编译把参数都编译为?，然后把参数映射加入Config内对应的paramMap映射paramName <--> paramIndex
 
 - [x] 实现预编译程序，把下面定义的模板定义预编译为freemarker模板
