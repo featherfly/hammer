@@ -65,8 +65,6 @@
 
 - [x] 所有的数据库操作，都应该使用SqlTypeMappingManager来进行数据转换操作
 
-- [ ] dsl的链式调用考虑是否需要使用链表结构重构实现内容
-
 - [ ] 模板文件加载器加入支持从不同文件后缀加载的实现(例如 .yaml.sql, .tpl.sql)
 
 - [ ] 预编译把参数都编译为?，然后把参数映射加入Config内对应的paramMap映射paramName <--> paramIndex
@@ -118,6 +116,8 @@ from /*<<wrap*/ role
 /*name??*/ name like :name
 /*>where*/
 ```
+
+- [ ] dsl的链式调用考虑是否需要使用链表结构重构实现内容（低优先级）
 
 - [ ] 定制专门为dml准备的简单模板实现，让模板sql更简洁更接近原生sql（已经以预编译的形式实现了特化模板，此项暂时不考虑）
 
