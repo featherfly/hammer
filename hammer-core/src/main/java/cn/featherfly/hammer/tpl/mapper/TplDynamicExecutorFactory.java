@@ -22,6 +22,7 @@ import org.objectweb.asm.tree.AbstractInsnNode;
 import org.objectweb.asm.tree.ClassNode;
 import org.objectweb.asm.tree.MethodNode;
 import org.objectweb.asm.tree.ParameterNode;
+import org.objenesis.instantiator.util.DefineClassHelper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -370,8 +371,8 @@ public class TplDynamicExecutorFactory extends ClassLoader implements Opcodes {
             //            try (FileOutputStream os = new FileOutputStream(implClassName + ".class")) {
             //                os.write(code);
             //            }
-            org.springframework.objenesis.instantiator.util.DefineClassHelper.defineClass(implClassName, code, 0,
-                    code.length, null, classLoader, this.getClass().getProtectionDomain());
+            DefineClassHelper.defineClass(implClassName, code, 0, code.length, null, classLoader,
+                    this.getClass().getProtectionDomain());
             types.add(type);
         }
         return implClassName;
