@@ -71,7 +71,7 @@
 
 - [ ] 预编译把参数都编译为?，然后把参数映射加入Config内对应的paramMap映射paramName <--> paramIndex
 
-- [x] 实现预编译程序，把下面定义的模板定义预编译为freemarker模板，后续再来实现自己的模板
+- [x] 实现预编译程序，把下面定义的模板定义预编译为freemarker模板
 
 	1. 快捷实现的标签替换为标签对,例如`/*<<keyword*/user[\n ]`替换为`/*<keyword*/user/*>keyword*/[\n ]`
 	2. 预编译替换替换掉，例如`mobile = /*$=:mobile*/13212345678[\n]`替换为`mobile = :mobile[\n]`
@@ -119,7 +119,7 @@ from /*<<wrap*/ role
 /*>where*/
 ```
 
-- [ ] 定制专门为dml准备的简单模板实现，让模板sql更简洁更接近原生sql
+- [ ] 定制专门为dml准备的简单模板实现，让模板sql更简洁更接近原生sql（已经以预编译的形式实现了特化模板，此项暂时不考虑）
 
 - [ ] TODO1
 - [ ] TODO2
