@@ -8,6 +8,8 @@
 
 - [ ] 加入一次交互完成锁查询、修改，并返回修改后的结果的功能
 
+- [ ] dsl api 条件查询加入表达式支持，（例如 store - :outNum >= 0[这种可以用传入的参数名用一个特殊的类来处理]， u.id = ur.user_id[这种可以用传入的value以一个特殊类来处理，表示传入的是需要拼接的字符串，不需要用占位符]）
+
 - [ ] dsl api 加入gourp by和having支持
 
 - [ ] dsl api 强类型查询的数据泛型要在启动那时候就确定（例如query(User.class).list()或.single() 这个list方法的泛型参数一定是User）
