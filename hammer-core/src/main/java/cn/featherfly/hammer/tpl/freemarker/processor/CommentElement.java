@@ -5,14 +5,17 @@ package cn.featherfly.hammer.tpl.freemarker.processor;
  * <p>
  * CommentElement
  * </p>
+ * .
  *
  * @author zhongj
  */
 public class CommentElement extends AbstractElement {
 
     /**
-     * @param source
-     * @param parser
+     * Instantiates a new comment element.
+     *
+     * @param source the source
+     * @param parser the parser
      */
     public CommentElement(String source, Parser parser) {
         super(source, parser);
