@@ -55,6 +55,7 @@ import cn.featherfly.hammer.expression.condition.property.SimpleNumberExpression
 import cn.featherfly.hammer.expression.condition.property.SimpleObjectExpression;
 import cn.featherfly.hammer.expression.condition.property.SimpleStringExpression;
 import cn.featherfly.hammer.expression.condition.property.StringExpression;
+import cn.featherfly.hammer.sqldb.jdbc.SqlPageFactory;
 
 /**
  * <p>
@@ -75,6 +76,7 @@ public abstract class AbstractRepositorySqlConditionGroupExpression<C extends Re
     /** The class mapping. */
     protected ClassMapping<?> classMapping;
 
+    /** The query alias. */
     private String queryAlias;
 
     /** The alias manager. */
@@ -83,62 +85,70 @@ public abstract class AbstractRepositorySqlConditionGroupExpression<C extends Re
     /** The factory. */
     protected MappingFactory factory;
 
+    /** The sql page factory. */
+    protected SqlPageFactory sqlPageFactory;
+
     /**
      * Instantiates a new abstract repository sql condition group expression.
      *
-     * @param dialect      dialect
-     * @param factory      MappingFactory
-     * @param aliasManager aliasManager
+     * @param dialect        dialect
+     * @param factory        MappingFactory
+     * @param aliasManager   aliasManager
+     * @param sqlPageFactory the sql page factory
      */
     public AbstractRepositorySqlConditionGroupExpression(Dialect dialect, MappingFactory factory,
-            AliasManager aliasManager) {
-        this(dialect, factory, aliasManager, null, null);
+            AliasManager aliasManager, SqlPageFactory sqlPageFactory) {
+        this(dialect, factory, aliasManager, null, sqlPageFactory);
     }
 
     /**
      * Instantiates a new abstract repository sql condition group expression.
      *
-     * @param dialect      dialect
-     * @param factory      MappingFactory
-     * @param aliasManager aliasManager
-     * @param queryAlias   queryAlias
+     * @param dialect        dialect
+     * @param factory        MappingFactory
+     * @param aliasManager   aliasManager
+     * @param queryAlias     queryAlias
+     * @param sqlPageFactory the sql page factory
      */
     public AbstractRepositorySqlConditionGroupExpression(Dialect dialect, MappingFactory factory,
-            AliasManager aliasManager, String queryAlias) {
-        this(dialect, factory, aliasManager, null, queryAlias, null);
+            AliasManager aliasManager, String queryAlias, SqlPageFactory sqlPageFactory) {
+        this(null, dialect, factory, aliasManager, queryAlias, sqlPageFactory, null);
     }
 
     /**
      * Instantiates a new abstract repository sql condition group expression.
      *
-     * @param dialect      dialect
-     * @param factory      MappingFactory
-     * @param aliasManager aliasManager
-     * @param queryAlias   queryAlias
-     * @param classMapping classMapping
+     * @param dialect        dialect
+     * @param factory        MappingFactory
+     * @param aliasManager   aliasManager
+     * @param queryAlias     queryAlias
+     * @param sqlPageFactory the sql page factory
+     * @param classMapping   classMapping
      */
     public AbstractRepositorySqlConditionGroupExpression(Dialect dialect, MappingFactory factory,
-            AliasManager aliasManager, String queryAlias, ClassMapping<?> classMapping) {
-        this(dialect, factory, aliasManager, null, queryAlias, classMapping);
+            AliasManager aliasManager, String queryAlias, SqlPageFactory sqlPageFactory, ClassMapping<?> classMapping) {
+        this(null, dialect, factory, aliasManager, queryAlias, sqlPageFactory, classMapping);
     }
 
     /**
      * Instantiates a new abstract repository sql condition group expression.
      *
-     * @param dialect      dialect
-     * @param factory      MappingFactory
-     * @param aliasManager aliasManager
-     * @param parent       parent group
-     * @param queryAlias   queryAlias
-     * @param classMapping classMapping
+     * @param parent         parent group
+     * @param dialect        dialect
+     * @param factory        MappingFactory
+     * @param aliasManager   aliasManager
+     * @param queryAlias     queryAlias
+     * @param sqlPageFactory the sql page factory
+     * @param classMapping   classMapping
      */
-    protected AbstractRepositorySqlConditionGroupExpression(Dialect dialect, MappingFactory factory,
-            AliasManager aliasManager, L parent, String queryAlias, ClassMapping<?> classMapping) {
+    protected AbstractRepositorySqlConditionGroupExpression(L parent, Dialect dialect, MappingFactory factory,
+            AliasManager aliasManager, String queryAlias, SqlPageFactory sqlPageFactory, ClassMapping<?> classMapping) {
         super(dialect, parent);
         this.queryAlias = queryAlias;
         this.classMapping = classMapping;
         this.aliasManager = aliasManager;
         this.factory = factory;
+        this.sqlPageFactory = sqlPageFactory;
     }
 
     /**
@@ -644,6 +654,13 @@ public abstract class AbstractRepositorySqlConditionGroupExpression<C extends Re
         return (AbstractRepositorySqlConditionGroupExpression<C, L>) p;
     }
 
+    /**
+     * Gets the table name.
+     *
+     * @param <T>        the generic type
+     * @param repository the repository
+     * @return the table name
+     */
     private <T> String getTableName(Class<T> repository) {
         return factory.getClassMapping(repository).getRepositoryName();
     }

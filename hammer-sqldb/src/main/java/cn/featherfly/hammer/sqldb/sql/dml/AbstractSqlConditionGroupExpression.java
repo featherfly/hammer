@@ -48,6 +48,7 @@ import cn.featherfly.hammer.expression.condition.property.SimpleNumberExpression
 import cn.featherfly.hammer.expression.condition.property.SimpleObjectExpression;
 import cn.featherfly.hammer.expression.condition.property.SimpleStringExpression;
 import cn.featherfly.hammer.expression.condition.property.StringExpression;
+import cn.featherfly.hammer.sqldb.jdbc.SqlPageFactory;
 
 /**
  * <p>
@@ -67,53 +68,63 @@ public abstract class AbstractSqlConditionGroupExpression<C extends ConditionGro
     /** The type query entity. */
     protected TypeQueryEntity typeQueryEntity;
 
-    /**
-     * Instantiates a new abstract sql condition group expression.
-     *
-     * @param dialect         dialect
-     * @param typeQueryEntity the type query entity
-     */
-    public AbstractSqlConditionGroupExpression(Dialect dialect, TypeQueryEntity typeQueryEntity) {
-        this(dialect, null, typeQueryEntity);
-    }
+    /** The sql page factory. */
+    protected SqlPageFactory sqlPageFactory;
 
     /**
      * Instantiates a new abstract sql condition group expression.
      *
      * @param dialect         dialect
-     * @param queryAlias      queryAlias
+     * @param sqlPageFactory  the sql page factory
      * @param typeQueryEntity the type query entity
      */
-    public AbstractSqlConditionGroupExpression(Dialect dialect, String queryAlias, TypeQueryEntity typeQueryEntity) {
-        this(dialect, queryAlias, null, typeQueryEntity);
-    }
-
-    /**
-     * Instantiates a new abstract sql condition group expression.
-     *
-     * @param dialect         dialect
-     * @param queryAlias      queryAlias
-     * @param classMapping    classMapping
-     * @param typeQueryEntity the type query entity
-     */
-    public AbstractSqlConditionGroupExpression(Dialect dialect, String queryAlias, ClassMapping<?> classMapping,
+    public AbstractSqlConditionGroupExpression(Dialect dialect, SqlPageFactory sqlPageFactory,
             TypeQueryEntity typeQueryEntity) {
-        this(dialect, null, queryAlias, classMapping, typeQueryEntity);
+        this(dialect, sqlPageFactory, null, typeQueryEntity);
     }
 
     /**
      * Instantiates a new abstract sql condition group expression.
      *
      * @param dialect         dialect
-     * @param parent          parent group
+     * @param sqlPageFactory  the sql page factory
+     * @param queryAlias      queryAlias
+     * @param typeQueryEntity the type query entity
+     */
+    public AbstractSqlConditionGroupExpression(Dialect dialect, SqlPageFactory sqlPageFactory, String queryAlias,
+            TypeQueryEntity typeQueryEntity) {
+        this(dialect, sqlPageFactory, queryAlias, null, typeQueryEntity);
+    }
+
+    /**
+     * Instantiates a new abstract sql condition group expression.
+     *
+     * @param dialect         dialect
+     * @param sqlPageFactory  the sql page factory
      * @param queryAlias      queryAlias
      * @param classMapping    classMapping
      * @param typeQueryEntity the type query entity
      */
-    protected AbstractSqlConditionGroupExpression(Dialect dialect, L parent, String queryAlias,
+    public AbstractSqlConditionGroupExpression(Dialect dialect, SqlPageFactory sqlPageFactory, String queryAlias,
             ClassMapping<?> classMapping, TypeQueryEntity typeQueryEntity) {
+        this(null, dialect, sqlPageFactory, queryAlias, classMapping, typeQueryEntity);
+    }
+
+    /**
+     * Instantiates a new abstract sql condition group expression.
+     *
+     * @param parent          parent group
+     * @param dialect         dialect
+     * @param sqlPageFactory  the sql page factory
+     * @param queryAlias      queryAlias
+     * @param classMapping    classMapping
+     * @param typeQueryEntity the type query entity
+     */
+    protected AbstractSqlConditionGroupExpression(L parent, Dialect dialect, SqlPageFactory sqlPageFactory,
+            String queryAlias, ClassMapping<?> classMapping, TypeQueryEntity typeQueryEntity) {
         super(dialect, parent);
         this.queryAlias = queryAlias;
+        this.sqlPageFactory = sqlPageFactory;
         this.classMapping = classMapping;
         this.typeQueryEntity = typeQueryEntity;
     }
@@ -1264,6 +1275,7 @@ public abstract class AbstractSqlConditionGroupExpression<C extends ConditionGro
     /** The class mapping. */
     protected ClassMapping<?> classMapping;
 
+    /** The query alias. */
     private String queryAlias;
 
     /**

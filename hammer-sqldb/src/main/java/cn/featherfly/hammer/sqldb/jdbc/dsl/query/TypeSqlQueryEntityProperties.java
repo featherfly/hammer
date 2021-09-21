@@ -22,6 +22,7 @@ import cn.featherfly.hammer.dsl.query.TypeQueryWithEntity;
 import cn.featherfly.hammer.expression.query.TypeQueryLimitExecutor;
 import cn.featherfly.hammer.sqldb.SqldbHammerException;
 import cn.featherfly.hammer.sqldb.jdbc.Jdbc;
+import cn.featherfly.hammer.sqldb.jdbc.SqlPageFactory;
 
 /**
  * <p>
@@ -38,14 +39,15 @@ public class TypeSqlQueryEntityProperties extends AbstractSqlQueryEntityProperti
     /**
      * Instantiates a new type sql query entity properties.
      *
-     * @param jdbc         jdbc
-     * @param classMapping classMapping
-     * @param factory      the factory
-     * @param aliasManager aliasManager
+     * @param jdbc           jdbc
+     * @param classMapping   classMapping
+     * @param factory        the factory
+     * @param sqlPageFactory the sql page factory
+     * @param aliasManager   aliasManager
      */
     public TypeSqlQueryEntityProperties(Jdbc jdbc, ClassMapping<?> classMapping, MappingFactory factory,
-            AliasManager aliasManager) {
-        super(jdbc, classMapping, factory, aliasManager);
+            SqlPageFactory sqlPageFactory, AliasManager aliasManager) {
+        super(jdbc, classMapping, factory, sqlPageFactory, aliasManager);
     }
 
     /**
@@ -53,7 +55,8 @@ public class TypeSqlQueryEntityProperties extends AbstractSqlQueryEntityProperti
      */
     @Override
     public TypeQueryConditionGroupExpression where() {
-        return new TypeSqlQueryExpression(jdbc, classMapping, this, factory, aliasManager, selectBuilder);
+        return new TypeSqlQueryExpression(jdbc, classMapping, this, factory, sqlPageFactory, aliasManager,
+                selectBuilder);
     }
 
     /**
@@ -61,7 +64,8 @@ public class TypeSqlQueryEntityProperties extends AbstractSqlQueryEntityProperti
      */
     @Override
     public <E> List<E> list() {
-        return new TypeSqlQueryExpression(jdbc, classMapping, this, factory, aliasManager, selectBuilder).list();
+        return new TypeSqlQueryExpression(jdbc, classMapping, this, factory, sqlPageFactory, aliasManager,
+                selectBuilder).list();
     }
 
     /**
@@ -69,7 +73,8 @@ public class TypeSqlQueryEntityProperties extends AbstractSqlQueryEntityProperti
      */
     @Override
     public TypeQueryLimitExecutor limit(Integer limit) {
-        return new TypeSqlQueryExpression(jdbc, classMapping, this, factory, aliasManager, selectBuilder).limit(limit);
+        return new TypeSqlQueryExpression(jdbc, classMapping, this, factory, sqlPageFactory, aliasManager,
+                selectBuilder).limit(limit);
     }
 
     /**
@@ -77,8 +82,8 @@ public class TypeSqlQueryEntityProperties extends AbstractSqlQueryEntityProperti
      */
     @Override
     public TypeQueryLimitExecutor limit(Integer offset, Integer limit) {
-        return new TypeSqlQueryExpression(jdbc, classMapping, this, factory, aliasManager, selectBuilder).limit(offset,
-                limit);
+        return new TypeSqlQueryExpression(jdbc, classMapping, this, factory, sqlPageFactory, aliasManager,
+                selectBuilder).limit(offset, limit);
     }
 
     /**
@@ -86,7 +91,8 @@ public class TypeSqlQueryEntityProperties extends AbstractSqlQueryEntityProperti
      */
     @Override
     public TypeQueryLimitExecutor limit(Page page) {
-        return new TypeSqlQueryExpression(jdbc, classMapping, this, factory, aliasManager, selectBuilder).limit(page);
+        return new TypeSqlQueryExpression(jdbc, classMapping, this, factory, sqlPageFactory, aliasManager,
+                selectBuilder).limit(page);
     }
 
     /**
@@ -94,7 +100,7 @@ public class TypeSqlQueryEntityProperties extends AbstractSqlQueryEntityProperti
      */
     @Override
     public Long count() {
-        return new SqlQueryExpression(jdbc, classMapping,
+        return new SqlQueryExpression(jdbc, sqlPageFactory, classMapping,
                 selectBuilder.addSelectColumn(Chars.STAR, AggregateFunction.COUNT)).longInt();
     }
 
@@ -162,8 +168,8 @@ public class TypeSqlQueryEntityProperties extends AbstractSqlQueryEntityProperti
             // 表示是查找对象的属性，可以连表查询，也可以查询返回到查询对象的指定属性上
             ClassMapping<?> joinClassMapping = factory.getClassMapping(joinInfo.getPropertyType());
             PropertyMapping pm = cm.getPropertyMapping(name);
-            TypeSqlQueryWith typeSqlQueryWith = new TypeSqlQueryWith(this, aliasManager, factory, cm, tableAlias,
-                    pm.getRepositoryFieldName(), joinClassMapping,
+            TypeSqlQueryWith typeSqlQueryWith = new TypeSqlQueryWith(this, aliasManager, factory, sqlPageFactory, cm,
+                    tableAlias, pm.getRepositoryFieldName(), joinClassMapping,
                     getPkMapping(joinClassMapping).getRepositoryFieldName(), name);
             typeSqlQueryWiths.add(typeSqlQueryWith);
             return typeSqlQueryWith;
@@ -173,8 +179,8 @@ public class TypeSqlQueryEntityProperties extends AbstractSqlQueryEntityProperti
                     .getClassMapping(ClassUtils.forName(joinInfo.getMethodInstanceClassName()));
             PropertyMapping pm = joinClassMapping.getPropertyMapping(name);
 
-            TypeSqlQueryWith typeSqlQueryWith = new TypeSqlQueryWith(this, aliasManager, factory, cm, tableAlias,
-                    getIdName(), joinClassMapping, pm.getRepositoryFieldName());
+            TypeSqlQueryWith typeSqlQueryWith = new TypeSqlQueryWith(this, aliasManager, factory, sqlPageFactory, cm,
+                    tableAlias, getIdName(), joinClassMapping, pm.getRepositoryFieldName());
             typeSqlQueryWiths.add(typeSqlQueryWith);
             return typeSqlQueryWith;
         } else {

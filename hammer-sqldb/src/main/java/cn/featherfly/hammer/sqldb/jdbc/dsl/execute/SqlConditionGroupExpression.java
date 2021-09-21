@@ -12,6 +12,7 @@ import cn.featherfly.hammer.sqldb.sql.dml.AbstractSqlConditionGroupExpression;
  * <p>
  * sql condition group builder sql条件逻辑组构造器
  * </p>
+ * .
  *
  * @author zhongj
  */
@@ -20,6 +21,8 @@ public class SqlConditionGroupExpression extends
         implements ExecutableConditionGroupExpression, ExecutableConditionGroupLogicExpression {
 
     /**
+     * Instantiates a new sql condition group expression.
+     *
      * @param jdbc jdbc
      */
     public SqlConditionGroupExpression(Jdbc jdbc) {
@@ -27,6 +30,8 @@ public class SqlConditionGroupExpression extends
     }
 
     /**
+     * Instantiates a new sql condition group expression.
+     *
      * @param jdbc       jdbc
      * @param queryAlias queryAlias
      */
@@ -46,6 +51,8 @@ public class SqlConditionGroupExpression extends
     }
 
     /**
+     * Instantiates a new sql condition group expression.
+     *
      * @param jdbc         jdbc
      * @param parent       parent group
      * @param queryAlias   queryAlias
@@ -53,7 +60,8 @@ public class SqlConditionGroupExpression extends
      */
     SqlConditionGroupExpression(Jdbc jdbc, ExecutableConditionGroupLogicExpression parent, String queryAlias,
             ClassMapping<?> classMapping) {
-        super(jdbc.getDialect(), parent, queryAlias, classMapping, null);
+        // TODO 删除，和更新不需要分页，需要测试
+        super(parent, jdbc.getDialect(), null, queryAlias, classMapping, null);
         this.jdbc = jdbc;
     }
 
@@ -69,6 +77,7 @@ public class SqlConditionGroupExpression extends
     // property
     // ********************************************************************
 
+    /** The jdbc. */
     protected Jdbc jdbc;
 
     /**

@@ -57,6 +57,20 @@ public class FreemarkerTemplatePreProcessorTest {
     }
 
     @Test
+    void testSqlHints() throws IOException {
+        String file = ClassUtils.packageToDir(FreemarkerTemplatePreProcessorTest.class) + "/tpl_sqlhints.sql";
+        System.out.println(ClassLoaderUtils.getResource(file));
+        String s = read(file);
+
+        String process = new FreemarkerTemplatePreProcessor().process(s);
+        System.err.println(process);
+
+        String result = read(
+                ClassUtils.packageToDir(FreemarkerTemplatePreProcessorTest.class) + "/tpl_sqlhints_result.sql");
+        assertEquals(process, result);
+    }
+
+    @Test
     void testTransverter() throws IOException {
         String file = ClassUtils.packageToDir(FreemarkerTemplatePreProcessorTest.class) + "/tpl_transverter.sql";
         System.out.println(ClassLoaderUtils.getResource(file));
