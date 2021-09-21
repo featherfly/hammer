@@ -40,31 +40,38 @@ import cn.featherfly.hammer.tpl.supports.ConditionParamsManager;
 import cn.featherfly.hammer.tpl.supports.ConditionParamsManager.Param;
 
 /**
- * <p>
- * Config
- * </p>
+ * sql template executor .
  *
  * @author zhongj
  */
 public class SqlTplExecutor implements TplExecutor {
 
+    /** The logger. */
     protected final Logger logger = LoggerFactory.getLogger(this.getClass());
 
+    /** The config factory. */
     private TplConfigFactory configFactory;
 
+    /** The jdbc. */
     private Jdbc jdbc;
 
+    /** The mapping factory. */
     private JdbcMappingFactory mappingFactory;
 
+    /** The template engine. */
     private SqlDbTemplateEngine<TemplateDirective, TemplateMethod> templateEngine;
 
+    /** The sql page factory. */
     private SqlPageFactory sqlPageFactory;
 
     /**
+     * Instantiates a new sql tpl executor.
+     *
      * @param configFactory  configFactory
      * @param templateEngine templateEngine
      * @param jdbc           jdbc
      * @param mappingFactory mappingFactory
+     * @param sqlPageFactory the sql page factory
      */
     @SuppressWarnings("unchecked")
     public SqlTplExecutor(@Nonnull TplConfigFactory configFactory,
@@ -559,6 +566,14 @@ public class SqlTplExecutor implements TplExecutor {
         return value(tplExecuteId, String.class, params);
     }
 
+    /**
+     * Gets the query execution.
+     *
+     * @param tplExecuteId the tpl execute id
+     * @param params       the params
+     * @param resultType   the result type
+     * @return the query execution
+     */
     private Tuple3<String, TplExecuteConfig, ConditionParamsManager> getQueryExecution(TplExecuteId tplExecuteId,
             Map<String, Object> params, Class<?> resultType) {
         TplExecuteConfig config = configFactory.getConfig(tplExecuteId);
@@ -579,6 +594,15 @@ public class SqlTplExecutor implements TplExecutor {
     //        return Tuples.of(tuple2.get0(), config, tuple2.get1());
     //    }
 
+    /**
+     * Gets the count execution.
+     *
+     * @param tplExecuteId the tpl execute id
+     * @param params       the params
+     * @param config       the config
+     * @param resultType   the result type
+     * @return the count execution
+     */
     private Tuple2<String, ConditionParamsManager> getCountExecution(TplExecuteId tplExecuteId,
             Map<String, Object> params, TplExecuteConfig config, Class<?> resultType) {
         String templateName = tplExecuteId.getId() + TplConfigFactory.COUNT_SUFFIX;
@@ -612,6 +636,15 @@ public class SqlTplExecutor implements TplExecutor {
     //        return Tuples.of(result, manager);
     //    }
 
+    /**
+     * Gets the execution.
+     *
+     * @param templateName the template name
+     * @param sql          the sql
+     * @param params       the params
+     * @param resultType   the result type
+     * @return the execution
+     */
     private Tuple2<String, ConditionParamsManager> getExecution(String templateName, String sql,
             Map<String, Object> params, Class<?> resultType) {
         logger.debug("execute template name : {}", templateName);
@@ -625,6 +658,13 @@ public class SqlTplExecutor implements TplExecutor {
         return Tuples.of(result, manager);
     }
 
+    /**
+     * Creates the template process env.
+     *
+     * @param manager    the manager
+     * @param resultType the result type
+     * @return the sql db template process env
+     */
     private SqlDbTemplateProcessEnv<TemplateDirective, TemplateMethod> createTemplateProcessEnv(
             ConditionParamsManager manager, Class<?> resultType) {
         SqlDbTemplateProcessEnv<TemplateDirective, TemplateMethod> env = templateEngine.createTemplateProcessEnv();
@@ -636,6 +676,15 @@ public class SqlTplExecutor implements TplExecutor {
         return env;
     }
 
+    /**
+     * Find list.
+     *
+     * @param tplExecuteId the tpl execute id
+     * @param params       the params
+     * @param offset       the offset
+     * @param limit        the limit
+     * @return the tuple 5
+     */
     private Tuple5<List<Map<String, Object>>, String, TplExecuteConfig, ConditionParamsManager, Map<String, Object>> findList(
             TplExecuteId tplExecuteId, Map<String, Object> params, int offset, int limit) {
         Tuple3<String, TplExecuteConfig, ConditionParamsManager> tuple3 = getQueryExecution(tplExecuteId, params, null);
@@ -659,6 +708,17 @@ public class SqlTplExecutor implements TplExecutor {
         return Tuples.of(list, sql, tuple3.get1(), manager, params);
     }
 
+    /**
+     * Find list.
+     *
+     * @param <E>          the element type
+     * @param tplExecuteId the tpl execute id
+     * @param entityType   the entity type
+     * @param params       the params
+     * @param offset       the offset
+     * @param limit        the limit
+     * @return the tuple 5
+     */
     private <E> Tuple5<List<E>, String, TplExecuteConfig, ConditionParamsManager, Map<String, Object>> findList(
             TplExecuteId tplExecuteId, Class<E> entityType, Map<String, Object> params, int offset, int limit) {
         Tuple3<String, TplExecuteConfig, ConditionParamsManager> tuple3 = getQueryExecution(tplExecuteId, params,
@@ -686,6 +746,13 @@ public class SqlTplExecutor implements TplExecutor {
 
     // 如果sql中有参数没有使用条件判断，则参数会被过滤掉，（即过滤掉username参数）
     // select * from user <@where>  username = :username <@and if=password> password = :password</@and></@where>
+    /**
+     * Gets the effective param array.
+     *
+     * @param params  the params
+     * @param manager the manager
+     * @return the effective param array
+     */
     // 上面这种情况应该是不存在的，因为这样用本身会带来bug，如果一个查询条件不会空，也使用<@and> <@or>连接起来
     private Object[] getEffectiveParamArray(Map<String, Object> params, ConditionParamsManager manager) {
         return params.entrySet().stream().filter(t -> {
@@ -702,6 +769,13 @@ public class SqlTplExecutor implements TplExecutor {
         //        }).collect(Collectors.toList()).toArray();
     }
 
+    /**
+     * Gets the effective param map.
+     *
+     * @param params  the params
+     * @param manager the manager
+     * @return the effective param map
+     */
     private Map<String, Object> getEffectiveParamMap(Map<String, Object> params, ConditionParamsManager manager) {
         return params.entrySet().stream().filter(t -> {
             return !manager.filterParamName(t.getKey());
@@ -724,6 +798,14 @@ public class SqlTplExecutor implements TplExecutor {
         //        }
     }
 
+    /**
+     * Transvert.
+     *
+     * @param name    the name
+     * @param value   the value
+     * @param manager the manager
+     * @return the object
+     */
     private Object transvert(String name, Object value, ConditionParamsManager manager) {
         if (value == null) {
             return value;
@@ -745,7 +827,7 @@ public class SqlTplExecutor implements TplExecutor {
     }
 
     /**
-     * 返回sqlPageFactory
+     * 返回sqlPageFactory.
      *
      * @return sqlPageFactory
      */
