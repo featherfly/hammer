@@ -40,6 +40,7 @@ import cn.featherfly.hammer.expression.condition.property.RepositorySimpleObject
 import cn.featherfly.hammer.expression.condition.property.RepositorySimpleStringExpression;
 import cn.featherfly.hammer.expression.condition.property.StringExpression;
 import cn.featherfly.hammer.sqldb.jdbc.Jdbc;
+import cn.featherfly.hammer.sqldb.jdbc.SqlPageFactory;
 import cn.featherfly.hammer.sqldb.sql.dml.SqlConditionExpressionBuilder;
 
 /**
@@ -63,9 +64,9 @@ public class RepositoryTypeSqlQueryExpression extends RepositoryTypeSqlQueryCond
      * @param classMapping  the class mapping
      * @param selectBuilder the select builder
      */
-    public RepositoryTypeSqlQueryExpression(Jdbc jdbc, MappingFactory factory, AliasManager aliasManager,
-            ClassMapping<?> classMapping, SqlSelectBasicBuilder selectBuilder) {
-        super(jdbc, factory, aliasManager, selectBuilder.getTableAlias(), classMapping);
+    public RepositoryTypeSqlQueryExpression(Jdbc jdbc, MappingFactory factory, SqlPageFactory sqlPageFactory,
+            AliasManager aliasManager, ClassMapping<?> classMapping, SqlSelectBasicBuilder selectBuilder) {
+        super(jdbc, factory, aliasManager, selectBuilder.getTableAlias(), sqlPageFactory, classMapping);
         this.selectBuilder = selectBuilder;
     }
 
@@ -77,9 +78,10 @@ public class RepositoryTypeSqlQueryExpression extends RepositoryTypeSqlQueryCond
      * @param queryAlias
      * @param classMapping
      */
-    RepositoryTypeSqlQueryExpression(Jdbc jdbc, MappingFactory factory, AliasManager aliasManager,
-            RepositoryTypeQueryConditionGroupLogicExpression parent, String queryAlias, ClassMapping<?> classMapping) {
-        super(jdbc, factory, aliasManager, parent, queryAlias, classMapping);
+    RepositoryTypeSqlQueryExpression(RepositoryTypeQueryConditionGroupLogicExpression parent, Jdbc jdbc,
+            MappingFactory factory, AliasManager aliasManager, String queryAlias, SqlPageFactory sqlPageFactory,
+            ClassMapping<?> classMapping) {
+        super(parent, jdbc, factory, aliasManager, queryAlias, sqlPageFactory, classMapping);
     }
 
     /**
@@ -89,7 +91,8 @@ public class RepositoryTypeSqlQueryExpression extends RepositoryTypeSqlQueryCond
     protected RepositoryTypeSqlQueryConditionGroupExpression createGroup(
             RepositoryTypeQueryConditionGroupLogicExpression parent, String queryAlias) {
         selectBuilder.setTableAlias(queryAlias);
-        return new RepositoryTypeSqlQueryExpression(jdbc, factory, aliasManager, parent, queryAlias, classMapping);
+        return new RepositoryTypeSqlQueryExpression(parent, jdbc, factory, aliasManager, queryAlias, sqlPageFactory,
+                classMapping);
     }
 
     /**

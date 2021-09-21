@@ -27,6 +27,8 @@ import cn.featherfly.common.structure.page.PaginationResults;
 import cn.featherfly.common.structure.page.SimplePaginationResults;
 import cn.featherfly.hammer.sqldb.SqldbHammerException;
 import cn.featherfly.hammer.sqldb.jdbc.Jdbc;
+import cn.featherfly.hammer.sqldb.jdbc.SqlPageFactory;
+import cn.featherfly.hammer.sqldb.jdbc.SqlPageFactory.SqlPageQuery;
 import cn.featherfly.hammer.tpl.TplConfigFactory;
 import cn.featherfly.hammer.tpl.TplExecuteConfig;
 import cn.featherfly.hammer.tpl.TplExecuteId;
@@ -56,6 +58,8 @@ public class SqlTplExecutor implements TplExecutor {
 
     private SqlDbTemplateEngine<TemplateDirective, TemplateMethod> templateEngine;
 
+    private SqlPageFactory sqlPageFactory;
+
     /**
      * @param configFactory  configFactory
      * @param templateEngine templateEngine
@@ -65,12 +69,13 @@ public class SqlTplExecutor implements TplExecutor {
     @SuppressWarnings("unchecked")
     public SqlTplExecutor(@Nonnull TplConfigFactory configFactory,
             @SuppressWarnings("rawtypes") @Nonnull SqlDbTemplateEngine templateEngine, @Nonnull Jdbc jdbc,
-            @Nonnull JdbcMappingFactory mappingFactory) {
+            @Nonnull JdbcMappingFactory mappingFactory, SqlPageFactory sqlPageFactory) {
         super();
         this.configFactory = configFactory;
         this.jdbc = jdbc;
         this.mappingFactory = mappingFactory;
         this.templateEngine = templateEngine;
+        this.sqlPageFactory = sqlPageFactory;
     }
 
     /**
@@ -639,11 +644,17 @@ public class SqlTplExecutor implements TplExecutor {
         ConditionParamsManager manager = tuple3.get2();
         // 默认使用namedParameter
         if (manager.getParamNamed() == null || manager.getParamNamed()) {
-            list = jdbc.query(jdbc.getDialect().getParamNamedPaginationSql(sql, offset, limit),
-                    jdbc.getDialect().getPaginationSqlParameter(getEffectiveParamMap(params, manager), offset, limit));
+            SqlPageQuery<Map<String, Object>> sqlPageQuery = sqlPageFactory.toPage(jdbc.getDialect(), sql, offset,
+                    limit, getEffectiveParamMap(params, manager));
+            list = jdbc.query(sqlPageQuery.getSql(), sqlPageQuery.getParams());
+            //            list = jdbc.query(jdbc.getDialect().getParamNamedPaginationSql(sql, offset, limit),
+            //                    jdbc.getDialect().getPaginationSqlParameter(getEffectiveParamMap(params, manager), offset, limit));
         } else {
-            list = jdbc.query(jdbc.getDialect().getPaginationSql(sql, offset, limit), jdbc.getDialect()
-                    .getPaginationSqlParameter(getEffectiveParamArray(params, tuple3.get2()), offset, limit));
+            SqlPageQuery<Object[]> sqlPageQuery = sqlPageFactory.toPage(jdbc.getDialect(), sql, offset, limit,
+                    getEffectiveParamArray(params, manager));
+            list = jdbc.query(sqlPageQuery.getSql(), sqlPageQuery.getParams());
+            //            list = jdbc.query(jdbc.getDialect().getPaginationSql(sql, offset, limit), jdbc.getDialect()
+            //                    .getPaginationSqlParameter(getEffectiveParamArray(params, tuple3.get2()), offset, limit));
         }
         return Tuples.of(list, sql, tuple3.get1(), manager, params);
     }
@@ -658,11 +669,17 @@ public class SqlTplExecutor implements TplExecutor {
 
         // 默认使用namedParameter
         if (manager.getParamNamed() == null || manager.getParamNamed()) {
-            list = jdbc.query(jdbc.getDialect().getParamNamedPaginationSql(sql, offset, limit), entityType,
-                    jdbc.getDialect().getPaginationSqlParameter(getEffectiveParamMap(params, manager), offset, limit));
+            SqlPageQuery<Map<String, Object>> sqlPageQuery = sqlPageFactory.toPage(jdbc.getDialect(), sql, offset,
+                    limit, getEffectiveParamMap(params, manager));
+            list = jdbc.query(sqlPageQuery.getSql(), entityType, sqlPageQuery.getParams());
+            //            list = jdbc.query(jdbc.getDialect().getParamNamedPaginationSql(sql, offset, limit), entityType,
+            //                    jdbc.getDialect().getPaginationSqlParameter(getEffectiveParamMap(params, manager), offset, limit));
         } else {
-            list = jdbc.query(jdbc.getDialect().getPaginationSql(sql, offset, limit), entityType, jdbc.getDialect()
-                    .getPaginationSqlParameter(getEffectiveParamArray(params, manager), offset, limit));
+            SqlPageQuery<Object[]> sqlPageQuery = sqlPageFactory.toPage(jdbc.getDialect(), sql, offset, limit,
+                    getEffectiveParamArray(params, manager));
+            list = jdbc.query(sqlPageQuery.getSql(), entityType, sqlPageQuery.getParams());
+            //            list = jdbc.query(jdbc.getDialect().getPaginationSql(sql, offset, limit), entityType, jdbc.getDialect()
+            //                    .getPaginationSqlParameter(getEffectiveParamArray(params, manager), offset, limit));
         }
         return Tuples.of(list, sql, tuple3.get1(), manager, params);
     }
@@ -726,4 +743,14 @@ public class SqlTplExecutor implements TplExecutor {
         }
         return value;
     }
+
+    /**
+     * 返回sqlPageFactory
+     *
+     * @return sqlPageFactory
+     */
+    public SqlPageFactory getSqlPageFactory() {
+        return sqlPageFactory;
+    }
+
 }

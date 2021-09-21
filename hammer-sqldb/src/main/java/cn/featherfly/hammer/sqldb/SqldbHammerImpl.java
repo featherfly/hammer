@@ -27,6 +27,8 @@ import cn.featherfly.hammer.dsl.execute.Update;
 import cn.featherfly.hammer.dsl.query.QueryEntity;
 import cn.featherfly.hammer.dsl.query.TypeQueryEntity;
 import cn.featherfly.hammer.sqldb.jdbc.Jdbc;
+import cn.featherfly.hammer.sqldb.jdbc.SimpleSqlPageFactory;
+import cn.featherfly.hammer.sqldb.jdbc.SqlPageFactory;
 import cn.featherfly.hammer.sqldb.jdbc.dsl.execute.SqlDeleter;
 import cn.featherfly.hammer.sqldb.jdbc.dsl.execute.SqlUpdater;
 import cn.featherfly.hammer.sqldb.jdbc.dsl.query.SqlQuery;
@@ -52,18 +54,31 @@ import cn.featherfly.hammer.tpl.TplExecuteId;
  */
 public class SqldbHammerImpl implements SqldbHammer {
 
+    /** The jdbc. */
     private Jdbc jdbc;
 
+    /** The mapping factory. */
     private JdbcMappingFactory mappingFactory;
 
+    /** The validator. */
     private Validator validator;
 
+    /** The sql tpl executor. */
     private SqlTplExecutor sqlTplExecutor;
 
+    /** The insert operates. */
     private Map<Class<?>, InsertOperate<?>> insertOperates = new HashMap<>();
+
+    /** The update operates. */
     private Map<Class<?>, UpdateOperate<?>> updateOperates = new HashMap<>();
+
+    /** The get operates. */
     private Map<Class<?>, GetOperate<?>> getOperates = new HashMap<>();
+
+    /** The delete operates. */
     private Map<Class<?>, DeleteOperate<?>> deleteOperates = new HashMap<>();
+
+    /** The merge operates. */
     private Map<Class<?>, MergeOperate<?>> mergeOperates = new HashMap<>();
 
     /**
@@ -98,8 +113,7 @@ public class SqldbHammerImpl implements SqldbHammer {
     public SqldbHammerImpl(Jdbc jdbc, JdbcMappingFactory mappingFactory, TplConfigFactory configFactory,
             @SuppressWarnings("rawtypes") SqlDbTemplateEngine templateEngine) {
         // this(jdbc, mappingFactory, configFactory, Validation.buildDefaultValidatorFactory().getValidator());
-        this(jdbc, mappingFactory, configFactory, templateEngine, Validation.byProvider(HibernateValidator.class)
-                .configure().failFast(false).buildValidatorFactory().getValidator());
+        this(jdbc, mappingFactory, configFactory, templateEngine, new SimpleSqlPageFactory());
     }
 
     /**
@@ -109,14 +123,32 @@ public class SqldbHammerImpl implements SqldbHammer {
      * @param mappingFactory the mapping factory
      * @param configFactory  the config factory
      * @param templateEngine the template processor
+     * @param sqlPageFacotry the sql page facotry
+     */
+    public SqldbHammerImpl(Jdbc jdbc, JdbcMappingFactory mappingFactory, TplConfigFactory configFactory,
+            @SuppressWarnings("rawtypes") SqlDbTemplateEngine templateEngine, SqlPageFactory sqlPageFacotry) {
+        this(jdbc, mappingFactory, configFactory, templateEngine, sqlPageFacotry,
+                Validation.byProvider(HibernateValidator.class).configure().failFast(false).buildValidatorFactory()
+                        .getValidator());
+    }
+
+    /**
+     * Instantiates a new hammer jdbc impl.
+     *
+     * @param jdbc           the jdbc
+     * @param mappingFactory the mapping factory
+     * @param configFactory  the config factory
+     * @param templateEngine the template processor
+     * @param sqlPageFacotry the sql page facotry
      * @param validator      the validator
      */
     public SqldbHammerImpl(Jdbc jdbc, JdbcMappingFactory mappingFactory, TplConfigFactory configFactory,
-            @SuppressWarnings("rawtypes") SqlDbTemplateEngine templateEngine, Validator validator) {
+            @SuppressWarnings("rawtypes") SqlDbTemplateEngine templateEngine, SqlPageFactory sqlPageFacotry,
+            Validator validator) {
         this.jdbc = jdbc;
         this.mappingFactory = mappingFactory;
         this.validator = validator;
-        sqlTplExecutor = new SqlTplExecutor(configFactory, templateEngine, jdbc, mappingFactory);
+        sqlTplExecutor = new SqlTplExecutor(configFactory, templateEngine, jdbc, mappingFactory, sqlPageFacotry);
     }
 
     /**
@@ -168,6 +200,13 @@ public class SqldbHammerImpl implements SqldbHammer {
         }
     }
 
+    /**
+     * Gets the insert.
+     *
+     * @param <E>    the element type
+     * @param entity the entity
+     * @return the insert
+     */
     private <E> InsertOperate<E> getInsert(E entity) {
         @SuppressWarnings("unchecked")
         InsertOperate<E> insert = (InsertOperate<E>) insertOperates.get(entity.getClass());
@@ -259,6 +298,14 @@ public class SqldbHammerImpl implements SqldbHammer {
         return size;
     }
 
+    /**
+     * Merge.
+     *
+     * @param <E>      the element type
+     * @param entity   the entity
+     * @param onlyNull the only null
+     * @return the int
+     */
     private <E> int merge(E entity, boolean onlyNull) {
         if (entity == null) {
             return 0;
@@ -384,12 +431,26 @@ public class SqldbHammerImpl implements SqldbHammer {
         return delete.executeBatch(entities);
     }
 
+    /**
+     * Gets the delete.
+     *
+     * @param <E>    the element type
+     * @param entity the entity
+     * @return the delete
+     */
     private <E> DeleteOperate<E> getDelete(E entity) {
         @SuppressWarnings("unchecked")
         Class<E> type = (Class<E>) entity.getClass();
         return getDelete(type);
     }
 
+    /**
+     * Gets the delete.
+     *
+     * @param <E>        the element type
+     * @param entityType the entity type
+     * @return the delete
+     */
     private <E> DeleteOperate<E> getDelete(Class<E> entityType) {
         @SuppressWarnings("unchecked")
         DeleteOperate<E> delete = (DeleteOperate<E>) deleteOperates.get(entityType);
@@ -432,7 +493,7 @@ public class SqldbHammerImpl implements SqldbHammer {
      */
     @Override
     public QueryEntity query(String repository) {
-        SqlQuery query = new SqlQuery(jdbc, mappingFactory);
+        SqlQuery query = new SqlQuery(jdbc, mappingFactory, sqlTplExecutor.getSqlPageFactory());
         return query.find(repository);
     }
 
@@ -441,7 +502,7 @@ public class SqldbHammerImpl implements SqldbHammer {
      */
     @Override
     public <E> TypeQueryEntity query(Class<E> entityType) {
-        SqlQuery query = new SqlQuery(jdbc, mappingFactory);
+        SqlQuery query = new SqlQuery(jdbc, mappingFactory, sqlTplExecutor.getSqlPageFactory());
         return query.find(entityType);
     }
 
@@ -481,6 +542,12 @@ public class SqldbHammerImpl implements SqldbHammer {
         return deleter.delete(entityType);
     }
 
+    /**
+     * Validate.
+     *
+     * @param <E>    the element type
+     * @param entity the entity
+     */
     private <E> void validate(E entity) {
         if (validator != null) {
             Set<ConstraintViolation<E>> cons = validator.validate(entity);

@@ -36,7 +36,7 @@ public class SqlQueryTest extends JdbcTestBase {
 
     @Test
     void testNull() {
-        SqlQuery query = new SqlQuery(jdbc, metadata);
+        SqlQuery query = new SqlQuery(jdbc, metadata, sqlPageFactory);
         List<Map<String, Object>> list = query.find("user").where().eq("a", null).and().eq("b", null).and()
                 .sw("username", "yufei").and().eq("d", null).list();
         for (Map<String, Object> map : list) {
@@ -49,7 +49,7 @@ public class SqlQueryTest extends JdbcTestBase {
 
     @Test
     void testFunction() {
-        SqlQuery query = new SqlQuery(jdbc, metadata);
+        SqlQuery query = new SqlQuery(jdbc, metadata, sqlPageFactory);
 
         Object result = null;
 
@@ -93,7 +93,7 @@ public class SqlQueryTest extends JdbcTestBase {
 
     @Test
     void test0() {
-        SqlQuery query = new SqlQuery(jdbc, metadata);
+        SqlQuery query = new SqlQuery(jdbc, metadata, sqlPageFactory);
         List<Map<String, Object>> list = query.find("user").property("username", "password", "age").sort().asc("age")
                 .list();
         int age = Integer.MIN_VALUE;
@@ -125,7 +125,7 @@ public class SqlQueryTest extends JdbcTestBase {
 
     @Test
     void test1() {
-        SqlQuery query = new SqlQuery(jdbc, metadata);
+        SqlQuery query = new SqlQuery(jdbc, metadata, sqlPageFactory);
         query.find("user").list(User.class);
         query.find("user").property("username", "password", "age").list(User.class);
         query.find("user").property("username", "password", "age").where().eq("username", "yufei").and()
@@ -136,21 +136,21 @@ public class SqlQueryTest extends JdbcTestBase {
 
     @Test
     void test2() {
-        SqlQuery query = new SqlQuery(jdbc, metadata);
+        SqlQuery query = new SqlQuery(jdbc, metadata, sqlPageFactory);
         query.find("user").property("username", "password", "age").where().eq("username", "yufei").and()
                 .eq("password", "123456").and().group().gt("age", 18).and().lt("age", 60).list(User.class);
     }
 
     @Test
     void test3() {
-        SqlQuery query = new SqlQuery(jdbc, metadata);
+        SqlQuery query = new SqlQuery(jdbc, metadata, sqlPageFactory);
         query.find(new SimpleRepository("user", "u")).where().eq("username", "yufei").and().eq("password", "123456")
                 .and().group().gt("age", 18).and().lt("age", 60).list(User.class);
     }
 
     @Test
     void test4() {
-        SqlQuery query = new SqlQuery(jdbc, metadata);
+        SqlQuery query = new SqlQuery(jdbc, metadata, sqlPageFactory);
         query.find(new SimpleRepository("user", "u")).property("username", "password", "age").where()
                 .eq("username", "yufei").and().eq("password", "123456").and().group().gt("age", 18).and().lt("age", 60)
                 .list(User.class);
@@ -158,7 +158,7 @@ public class SqlQueryTest extends JdbcTestBase {
 
     @Test
     void testCount() {
-        SqlQuery query = new SqlQuery(jdbc, mappingFactory);
+        SqlQuery query = new SqlQuery(jdbc, mappingFactory, sqlPageFactory);
         Long number = query.find("user").count();
         System.out.println("count:" + number);
         assertTrue(number > 0);
@@ -179,7 +179,7 @@ public class SqlQueryTest extends JdbcTestBase {
 
     @Test
     void testLimit() {
-        SqlQuery query = new SqlQuery(jdbc, metadata);
+        SqlQuery query = new SqlQuery(jdbc, metadata, sqlPageFactory);
         int pageSize = 3;
         Integer total = 10;
         List<Role> roleList = query.find(new SimpleRepository("role")).where().le("id", total).limit(2, pageSize)
@@ -213,7 +213,7 @@ public class SqlQueryTest extends JdbcTestBase {
     @SuppressWarnings("unchecked")
     @Test
     void testMapping() {
-        SqlQuery query = new SqlQuery(jdbc, mappingFactory);
+        SqlQuery query = new SqlQuery(jdbc, mappingFactory, sqlPageFactory);
 
         query.find(User.class).where().eq("username", "yufei").and().eq("pwd", "123456").and().group().gt("age", 18)
                 .and().lt("age", 60).list();
@@ -241,7 +241,7 @@ public class SqlQueryTest extends JdbcTestBase {
 
     @Test
     void testMapping2() {
-        SqlQuery query = new SqlQuery(jdbc, mappingFactory);
+        SqlQuery query = new SqlQuery(jdbc, mappingFactory, sqlPageFactory);
 
         User user = new User();
         user.setUsername("yufei");
@@ -251,7 +251,7 @@ public class SqlQueryTest extends JdbcTestBase {
 
     @Test
     void testNestedMapping() {
-        SqlQuery query = new SqlQuery(jdbc, mappingFactory);
+        SqlQuery query = new SqlQuery(jdbc, mappingFactory, sqlPageFactory);
         Integer userId = 1;
         UserInfo userInfo = query.find(UserInfo.class).where().eq("user.id", userId).single();
         assertEquals(userInfo.getUser().getId(), userId);
@@ -265,7 +265,7 @@ public class SqlQueryTest extends JdbcTestBase {
 
     @Test
     void testJoin() {
-        SqlQuery query = new SqlQuery(jdbc, mappingFactory);
+        SqlQuery query = new SqlQuery(jdbc, mappingFactory, sqlPageFactory);
 
         query.find("user").property("username", "password", "age").with("user_info").on("user_id").list();
 
@@ -297,7 +297,7 @@ public class SqlQueryTest extends JdbcTestBase {
 
     @Test
     void testJoinCondition() {
-        SqlQuery query = new SqlQuery(jdbc, mappingFactory);
+        SqlQuery query = new SqlQuery(jdbc, mappingFactory, sqlPageFactory);
 
         List<Map<String, Object>> list = query.find("user").property("username", "password", "age").with("user_info")
                 .on("user_id").where().eq("user_info", "name", "羽飞").list();
@@ -318,7 +318,7 @@ public class SqlQueryTest extends JdbcTestBase {
 
     @Test
     void testJoin2() {
-        SqlQuery query = new SqlQuery(jdbc, mappingFactory);
+        SqlQuery query = new SqlQuery(jdbc, mappingFactory, sqlPageFactory);
 
         UserInfo userInfo = query.find(UserInfo.class).with(UserInfo::getUser).where().eq(UserInfo::getId, 1).single();
         System.err.println(userInfo);
@@ -336,7 +336,7 @@ public class SqlQueryTest extends JdbcTestBase {
 
     @Test
     void testJoinCondition2() {
-        SqlQuery query = new SqlQuery(jdbc, mappingFactory);
+        SqlQuery query = new SqlQuery(jdbc, mappingFactory, sqlPageFactory);
         Integer userInfoId = 1;
         Integer userId = 1;
         User user = null;
@@ -362,7 +362,7 @@ public class SqlQueryTest extends JdbcTestBase {
 
     @Test
     void testJoinCondition2_1() {
-        SqlQuery query = new SqlQuery(jdbc, mappingFactory);
+        SqlQuery query = new SqlQuery(jdbc, mappingFactory, sqlPageFactory);
         UserInfo userInfo = new UserInfo();
 
         User user = new User();
@@ -378,7 +378,7 @@ public class SqlQueryTest extends JdbcTestBase {
 
     @Test
     void testJoinCondition2_2() {
-        SqlQuery query = new SqlQuery(jdbc, mappingFactory);
+        SqlQuery query = new SqlQuery(jdbc, mappingFactory, sqlPageFactory);
         UserInfo userInfo = new UserInfo();
 
         User user = new User();
@@ -435,7 +435,7 @@ public class SqlQueryTest extends JdbcTestBase {
 
     @Test
     void testJoin3() {
-        SqlQuery query = new SqlQuery(jdbc, mappingFactory);
+        SqlQuery query = new SqlQuery(jdbc, mappingFactory, sqlPageFactory);
 
         List<Tree2> list1 = query.find(Tree2.class).list();
         list1.forEach(v -> {
@@ -481,13 +481,13 @@ public class SqlQueryTest extends JdbcTestBase {
 
     @Test(expectedExceptions = SqldbHammerException.class)
     void testJoinExceptions() {
-        SqlQuery query = new SqlQuery(jdbc, mappingFactory);
+        SqlQuery query = new SqlQuery(jdbc, mappingFactory, sqlPageFactory);
         query.find(UserInfo.class).with(UserRole2::getUser).list();
     }
 
     @Test
     void testManyToOne() {
-        SqlQuery query = new SqlQuery(jdbc, mappingFactory);
+        SqlQuery query = new SqlQuery(jdbc, mappingFactory, sqlPageFactory);
         List<Tree2> list = query.find(Tree2.class).where().eq(Tree2::getParent, 1).list();
         System.out.println(list);
         for (Tree2 t : list) {
@@ -497,7 +497,7 @@ public class SqlQueryTest extends JdbcTestBase {
 
     @Test
     void testNestedProperty() {
-        SqlQuery query = new SqlQuery(jdbc, mappingFactory);
+        SqlQuery query = new SqlQuery(jdbc, mappingFactory, sqlPageFactory);
         UserRole2 userRole2 = new UserRole2();
         userRole2.setRole(new Role(2));
         userRole2.setUser(new User(1));
@@ -518,7 +518,7 @@ public class SqlQueryTest extends JdbcTestBase {
 
     @Test
     void testInn() {
-        SqlQuery query = new SqlQuery(jdbc, mappingFactory);
+        SqlQuery query = new SqlQuery(jdbc, mappingFactory, sqlPageFactory);
 
         long nullNum = 1;
 
@@ -575,7 +575,7 @@ public class SqlQueryTest extends JdbcTestBase {
 
     @Test
     void testInn2() {
-        SqlQuery query = new SqlQuery(jdbc, mappingFactory);
+        SqlQuery query = new SqlQuery(jdbc, mappingFactory, sqlPageFactory);
 
         long nullNum = 1;
 

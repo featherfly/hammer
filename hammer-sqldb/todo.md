@@ -58,7 +58,11 @@
     User user = userRoleTuple.get0()
     Role role = userRoleTuple.get1();
     ```
-        
+
+- [x] 分页功能重构，加入PageFactory接口，方便后续扩展，提供默认实现（相当于之前的分页功能）
+  
+- [ ] 分页实现高性能分页功能（PageFactory接口的一个实现） 
+ 
 - [x] 预编译实现对sql hints的支持，即不过滤/*+ */的内容
   
 - [x] 移除对constant模块的强依赖，使用简单的java属性来设置开发模式

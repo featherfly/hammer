@@ -40,6 +40,8 @@ import cn.featherfly.hammer.dsl.query.TypeQueryEntity;
 import cn.featherfly.hammer.dsl.query.TypeQuerySortExpression;
 import cn.featherfly.hammer.expression.query.TypeQueryLimitExecutor;
 import cn.featherfly.hammer.sqldb.jdbc.Jdbc;
+import cn.featherfly.hammer.sqldb.jdbc.SqlPageFactory;
+import cn.featherfly.hammer.sqldb.jdbc.SqlPageFactory.SqlPageQuery;
 import cn.featherfly.hammer.sqldb.sql.dml.AbstractSqlConditionGroupExpression;
 import cn.featherfly.hammer.sqldb.sql.dml.SqlConditionExpressionBuilder;
 
@@ -55,8 +57,10 @@ public class TypeSqlQueryConditionGroupExpression extends
         AbstractSqlConditionGroupExpression<TypeQueryConditionGroupExpression, TypeQueryConditionGroupLogicExpression>
         implements TypeQueryConditionGroupExpression, TypeQueryConditionGroupLogicExpression, TypeQuerySortExpression {
 
+    /** The sort builder. */
     private SqlSortBuilder sortBuilder = new SqlSortBuilder(dialect);
 
+    /** The limit. */
     private Limit limit;
 
     /** The factory. */
@@ -71,12 +75,13 @@ public class TypeSqlQueryConditionGroupExpression extends
      * @param jdbc            jdbc
      * @param classMapping    classMapping
      * @param factory         the factory
+     * @param sqlPageFactory  the sql page factory
      * @param aliasManager    the alias manager
      * @param typeQueryEntity the type query entity
      */
     public TypeSqlQueryConditionGroupExpression(Jdbc jdbc, ClassMapping<?> classMapping, MappingFactory factory,
-            AliasManager aliasManager, TypeQueryEntity typeQueryEntity) {
-        this(jdbc, null, classMapping, factory, aliasManager, typeQueryEntity);
+            SqlPageFactory sqlPageFactory, AliasManager aliasManager, TypeQueryEntity typeQueryEntity) {
+        this(jdbc, null, classMapping, factory, sqlPageFactory, aliasManager, typeQueryEntity);
     }
 
     /**
@@ -86,29 +91,32 @@ public class TypeSqlQueryConditionGroupExpression extends
      * @param queryAlias      queryAlias
      * @param classMapping    classMapping
      * @param factory         the factory
+     * @param sqlPageFactory  the sql page factory
      * @param aliasManager    the alias manager
      * @param typeQueryEntity the type query entity
      */
     public TypeSqlQueryConditionGroupExpression(Jdbc jdbc, String queryAlias, ClassMapping<?> classMapping,
-            MappingFactory factory, AliasManager aliasManager, TypeQueryEntity typeQueryEntity) {
-        this(jdbc, null, queryAlias, classMapping, factory, aliasManager, typeQueryEntity);
+            MappingFactory factory, SqlPageFactory sqlPageFactory, AliasManager aliasManager,
+            TypeQueryEntity typeQueryEntity) {
+        this(null, jdbc, queryAlias, classMapping, factory, sqlPageFactory, aliasManager, typeQueryEntity);
     }
 
     /**
      * Instantiates a new type sql query condition group expression.
      *
-     * @param jdbc            the jdbc
      * @param parent          parent group
+     * @param jdbc            the jdbc
      * @param queryAlias      queryAlias
      * @param classMapping    classMapping
      * @param factory         the factory
+     * @param sqlPageFactory  the sql page factory
      * @param aliasManager    the alias manager
      * @param typeQueryEntity the type query entity
      */
-    TypeSqlQueryConditionGroupExpression(Jdbc jdbc, TypeQueryConditionGroupLogicExpression parent, String queryAlias,
-            ClassMapping<?> classMapping, MappingFactory factory, AliasManager aliasManager,
-            TypeQueryEntity typeQueryEntity) {
-        super(jdbc.getDialect(), parent, queryAlias, classMapping, typeQueryEntity);
+    TypeSqlQueryConditionGroupExpression(TypeQueryConditionGroupLogicExpression parent, Jdbc jdbc, String queryAlias,
+            ClassMapping<?> classMapping, MappingFactory factory, SqlPageFactory sqlPageFactory,
+            AliasManager aliasManager, TypeQueryEntity typeQueryEntity) {
+        super(parent, jdbc.getDialect(), sqlPageFactory, queryAlias, classMapping, typeQueryEntity);
         this.jdbc = jdbc;
         this.factory = factory;
         this.aliasManager = aliasManager;
@@ -127,8 +135,8 @@ public class TypeSqlQueryConditionGroupExpression extends
     @Override
     protected TypeSqlQueryConditionGroupExpression createGroup(TypeQueryConditionGroupLogicExpression parent,
             String queryAlias, TypeQueryEntity typeQueryEntity) {
-        return new TypeSqlQueryConditionGroupExpression(jdbc, parent, queryAlias, classMapping, factory, aliasManager,
-                typeQueryEntity);
+        return new TypeSqlQueryConditionGroupExpression(parent, jdbc, queryAlias, classMapping, factory, sqlPageFactory,
+                aliasManager, typeQueryEntity);
     }
 
     /**
@@ -172,6 +180,12 @@ public class TypeSqlQueryConditionGroupExpression extends
         return limit(new Limit(page));
     }
 
+    /**
+     * Limit.
+     *
+     * @param limit the limit
+     * @return the type query limit executor
+     */
     private TypeQueryLimitExecutor limit(Limit limit) {
         this.limit = limit;
         return this;
@@ -186,8 +200,12 @@ public class TypeSqlQueryConditionGroupExpression extends
         String sql = getRoot().expression();
         Object[] params = getRoot().getParams().toArray();
         if (limit != null) {
-            sql = dialect.getPaginationSql(sql, limit.getOffset(), limit.getLimit());
-            params = dialect.getPaginationSqlParameter(params, limit.getOffset(), limit.getLimit());
+            SqlPageQuery<Object[]> pageQuery = sqlPageFactory.toPage(dialect, sql, limit.getOffset(), limit.getLimit(),
+                    params);
+            sql = pageQuery.getSql();
+            params = pageQuery.getParams();
+            //            sql = dialect.getPaginationSql(sql, limit.getOffset(), limit.getLimit());
+            //            params = dialect.getPaginationSqlParameter(params, limit.getOffset(), limit.getLimit());
         }
         return (List<E>) jdbc.query(sql, classMapping.getType(), params);
     }
@@ -202,10 +220,14 @@ public class TypeSqlQueryConditionGroupExpression extends
         Object[] params = getRoot().getParams().toArray();
         SimplePaginationResults<E> pagination = new SimplePaginationResults<>(limit);
         if (limit != null) {
+            SqlPageQuery<Object[]> pageQuery = sqlPageFactory.toPage(dialect, sql, limit.getOffset(), limit.getLimit(),
+                    params);
             @SuppressWarnings("unchecked")
-            List<E> list = (List<E>) jdbc.query(dialect.getPaginationSql(sql, limit.getOffset(), limit.getLimit()),
-                    classMapping.getType(),
-                    dialect.getPaginationSqlParameter(params, limit.getOffset(), limit.getLimit()));
+            List<E> list = (List<E>) jdbc.query(pageQuery.getSql(), classMapping.getType(), pageQuery.getParams());
+            //            @SuppressWarnings("unchecked")
+            //            List<E> list = (List<E>) jdbc.query(dialect.getPaginationSql(sql, limit.getOffset(), limit.getLimit()),
+            //                    classMapping.getType(),
+            //                    dialect.getPaginationSqlParameter(params, limit.getOffset(), limit.getLimit()));
             pagination.setPageResults(list);
             int total = jdbc.queryInt(countSql, params);
             pagination.setTotal(total);
@@ -227,8 +249,12 @@ public class TypeSqlQueryConditionGroupExpression extends
         String sql = getRoot().expression();
         Object[] params = getRoot().getParams().toArray();
         if (limit != null) {
-            sql = dialect.getPaginationSql(sql, limit.getOffset(), limit.getLimit());
-            params = dialect.getPaginationSqlParameter(params, limit.getOffset(), limit.getLimit());
+            SqlPageQuery<Object[]> pageQuery = sqlPageFactory.toPage(dialect, sql, limit.getOffset(), limit.getLimit(),
+                    params);
+            sql = pageQuery.getSql();
+            params = pageQuery.getParams();
+            //            sql = dialect.getPaginationSql(sql, limit.getOffset(), limit.getLimit());
+            //            params = dialect.getPaginationSqlParameter(params, limit.getOffset(), limit.getLimit());
         }
         return (E) jdbc.querySingle(sql, classMapping.getType(), params);
     }
@@ -242,8 +268,12 @@ public class TypeSqlQueryConditionGroupExpression extends
         String sql = getRoot().expression();
         Object[] params = getRoot().getParams().toArray();
         if (limit != null) {
-            sql = dialect.getPaginationSql(sql, limit.getOffset(), limit.getLimit());
-            params = dialect.getPaginationSqlParameter(params, limit.getOffset(), limit.getLimit());
+            SqlPageQuery<Object[]> pageQuery = sqlPageFactory.toPage(dialect, sql, limit.getOffset(), limit.getLimit(),
+                    params);
+            sql = pageQuery.getSql();
+            params = pageQuery.getParams();
+            //            sql = dialect.getPaginationSql(sql, limit.getOffset(), limit.getLimit());
+            //            params = dialect.getPaginationSqlParameter(params, limit.getOffset(), limit.getLimit());
         }
         return (E) jdbc.queryUnique(sql, classMapping.getType(), params);
     }

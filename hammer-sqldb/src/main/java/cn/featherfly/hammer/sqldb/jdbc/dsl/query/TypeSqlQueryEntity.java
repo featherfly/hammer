@@ -10,6 +10,7 @@ import cn.featherfly.hammer.dsl.query.TypeQueryEntityProperties;
  * <p>
  * SqlQueryEntity
  * </p>
+ * .
  *
  * @author zhongj
  */
@@ -19,6 +20,7 @@ public interface TypeSqlQueryEntity extends TypeQueryEntity {
      * <p>
      * 添加select的列
      * </p>
+     * .
      *
      * @param columnName propertyName
      * @param asName     alias name
@@ -30,6 +32,7 @@ public interface TypeSqlQueryEntity extends TypeQueryEntity {
      * <p>
      * 批量添加select的列
      * </p>
+     * .
      *
      * @param columnNameMap key is columnName, value is asName
      * @return QueryEntityPropertiesExpression
