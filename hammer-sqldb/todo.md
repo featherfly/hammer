@@ -59,8 +59,9 @@
     Role role = userRoleTuple.get1();
     ```
         
-- [ ] 预编译实现对sql hints的支持，即不过滤/*+ */的内容
-- [ ] 移除对constant模块的强依赖，使用简单的java属性来设置开发模式
+- [x] 预编译实现对sql hints的支持，即不过滤/*+ */的内容
+  
+- [x] 移除对constant模块的强依赖，使用简单的java属性来设置开发模式
 
 - [x] 自定义数据映射加入数据库返回数据到java对象映射时，加入其相关元数据（如列名，表名）进行更具体的映射
 - [x] namedSql转换时候把in params进行相应的转换
