@@ -20,35 +20,46 @@ import cn.featherfly.common.structure.page.Page;
 import cn.featherfly.hammer.dsl.query.QueryWith;
 import cn.featherfly.hammer.dsl.query.RepositoryQueryConditionGroupExpression;
 import cn.featherfly.hammer.expression.query.QueryLimitExecutor;
+import cn.featherfly.hammer.sqldb.jdbc.SqlPageFactory;
 
 /**
- * <p>
- * SqlQueryWith
- * </p>
- * .
+ * SqlQueryWith .
  *
  * @author zhongj
  */
 public class SqlQueryWith implements QueryWith, SqlQueryWithOn, SqlQueryWithEntity {
 
+    /** The sql query entity properties. */
     private SqlQueryEntityProperties sqlQueryEntityProperties;
 
+    /** The alias manager. */
     private AliasManager aliasManager;
 
+    /** The select table alis. */
     private String selectTableAlis;
 
+    /** The select table column. */
     private String selectTableColumn;
 
+    /** The join table name. */
     private String joinTableName;
 
+    /** The join table alias. */
     private String joinTableAlias;
 
+    /** The select join on basic builder. */
     private SqlSelectJoinOnBasicBuilder selectJoinOnBasicBuilder;
 
+    /** The factory. */
     private MappingFactory factory;
 
+    /** The sql page factory. */
+    private SqlPageFactory sqlPageFactory;
+
+    /** The class mapping. */
     private ClassMapping<?> classMapping;
 
+    /** The join. */
     private Join join;
 
     /**
@@ -57,16 +68,17 @@ public class SqlQueryWith implements QueryWith, SqlQueryWithOn, SqlQueryWithEnti
      * @param sqlQueryEntityProperties the sql query entity properties
      * @param aliasManager             the alias manager
      * @param factory                  the factory
+     * @param sqlPageFactory           the sql page factory
      * @param selectTableAlis          the select table alis
      * @param selectTableColumn        the select table column
      * @param joinTableName            the join table name
      * @param joinTableAlias           the join table alias
      */
     public SqlQueryWith(SqlQueryEntityProperties sqlQueryEntityProperties, AliasManager aliasManager,
-            MappingFactory factory, String selectTableAlis, String selectTableColumn, String joinTableName,
-            String joinTableAlias) {
-        this(sqlQueryEntityProperties, aliasManager, factory, selectTableAlis, selectTableColumn, joinTableName,
-                joinTableAlias, Join.INNER_JOIN);
+            MappingFactory factory, SqlPageFactory sqlPageFactory, String selectTableAlis, String selectTableColumn,
+            String joinTableName, String joinTableAlias) {
+        this(sqlQueryEntityProperties, aliasManager, factory, sqlPageFactory, selectTableAlis, selectTableColumn,
+                joinTableName, joinTableAlias, null);
     }
 
     /**
@@ -75,6 +87,7 @@ public class SqlQueryWith implements QueryWith, SqlQueryWithOn, SqlQueryWithEnti
      * @param sqlQueryEntityProperties the sql query entity properties
      * @param aliasManager             the alias manager
      * @param factory                  the factory
+     * @param sqlPageFactory           the sql page factory
      * @param selectTableAlis          the select table alis
      * @param selectTableColumn        the select table column
      * @param joinTableName            the join table name
@@ -82,12 +95,13 @@ public class SqlQueryWith implements QueryWith, SqlQueryWithOn, SqlQueryWithEnti
      * @param join                     the join
      */
     public SqlQueryWith(SqlQueryEntityProperties sqlQueryEntityProperties, AliasManager aliasManager,
-            MappingFactory factory, String selectTableAlis, String selectTableColumn, String joinTableName,
-            String joinTableAlias, Join join) {
+            MappingFactory factory, SqlPageFactory sqlPageFactory, String selectTableAlis, String selectTableColumn,
+            String joinTableName, String joinTableAlias, Join join) {
         super();
         this.sqlQueryEntityProperties = sqlQueryEntityProperties;
         this.aliasManager = aliasManager;
         this.factory = factory;
+        this.sqlPageFactory = sqlPageFactory;
         this.selectTableAlis = selectTableAlis;
         this.selectTableColumn = selectTableColumn;
         this.joinTableName = joinTableName;
@@ -101,21 +115,16 @@ public class SqlQueryWith implements QueryWith, SqlQueryWithOn, SqlQueryWithEnti
      * @param sqlQueryEntityProperties the sql query entity properties
      * @param aliasManager             the alias manager
      * @param factory                  the factory
+     * @param sqlPageFactory           the sql page factory
      * @param selectTableAlis          the select table alis
      * @param selectTableColumn        the select table column
      * @param joinType                 the join type
      */
     public SqlQueryWith(SqlQueryEntityProperties sqlQueryEntityProperties, AliasManager aliasManager,
-            MappingFactory factory, String selectTableAlis, String selectTableColumn, Class<?> joinType) {
-        super();
-        this.sqlQueryEntityProperties = sqlQueryEntityProperties;
-        this.aliasManager = aliasManager;
-        this.factory = factory;
-        this.selectTableAlis = selectTableAlis;
-        this.selectTableColumn = selectTableColumn;
-        classMapping = factory.getClassMapping(joinType);
-        joinTableName = classMapping.getRepositoryName();
-        joinTableAlias = aliasManager.put(classMapping.getRepositoryName());
+            MappingFactory factory, SqlPageFactory sqlPageFactory, String selectTableAlis, String selectTableColumn,
+            Class<?> joinType) {
+        this(sqlQueryEntityProperties, aliasManager, factory, sqlPageFactory, selectTableAlis, selectTableColumn,
+                joinType, null);
     }
 
     /**
@@ -124,19 +133,22 @@ public class SqlQueryWith implements QueryWith, SqlQueryWithOn, SqlQueryWithEnti
      * @param sqlQueryEntityProperties the sql query entity properties
      * @param aliasManager             the alias manager
      * @param factory                  the factory
+     * @param sqlPageFactory           the sql page factory
      * @param selectTableAlis          the select table alis
      * @param selectTableColumn        the select table column
      * @param joinType                 the join type
      * @param join                     the join
      */
     public SqlQueryWith(SqlQueryEntityProperties sqlQueryEntityProperties, AliasManager aliasManager,
-            MappingFactory factory, String selectTableAlis, String selectTableColumn, Class<?> joinType, Join join) {
+            MappingFactory factory, SqlPageFactory sqlPageFactory, String selectTableAlis, String selectTableColumn,
+            Class<?> joinType, Join join) {
         super();
         this.sqlQueryEntityProperties = sqlQueryEntityProperties;
         this.aliasManager = aliasManager;
         this.factory = factory;
         this.selectTableAlis = selectTableAlis;
         this.selectTableColumn = selectTableColumn;
+        this.sqlPageFactory = sqlPageFactory;
         classMapping = factory.getClassMapping(joinType);
         joinTableName = classMapping.getRepositoryName();
         joinTableAlias = aliasManager.put(classMapping.getRepositoryName());
@@ -148,8 +160,8 @@ public class SqlQueryWith implements QueryWith, SqlQueryWithOn, SqlQueryWithEnti
      */
     @Override
     public SqlQueryWithOn with(String repositoryName) {
-        return new SqlQueryWith(sqlQueryEntityProperties, aliasManager, factory, selectTableAlis, selectTableColumn,
-                repositoryName, aliasManager.put(repositoryName));
+        return new SqlQueryWith(sqlQueryEntityProperties, aliasManager, factory, sqlPageFactory, selectTableAlis,
+                selectTableColumn, repositoryName, aliasManager.put(repositoryName));
     }
 
     /**
@@ -157,8 +169,8 @@ public class SqlQueryWith implements QueryWith, SqlQueryWithOn, SqlQueryWithEnti
      */
     @Override
     public <T> SqlQueryWithOn with(Class<T> repositoryType) {
-        return new SqlQueryWith(sqlQueryEntityProperties, aliasManager, factory, selectTableAlis, selectTableColumn,
-                repositoryType);
+        return new SqlQueryWith(sqlQueryEntityProperties, aliasManager, factory, sqlPageFactory, selectTableAlis,
+                selectTableColumn, repositoryType);
     }
 
     /**
@@ -185,6 +197,14 @@ public class SqlQueryWith implements QueryWith, SqlQueryWithOn, SqlQueryWithEnti
         return on2(propertyName, aliasManager.getAlias(repositoryName), repositoryPropertyName);
     }
 
+    /**
+     * On 2.
+     *
+     * @param columnName  the column name
+     * @param tableAlias  the table alias
+     * @param tableColumn the table column
+     * @return the sql query with entity
+     */
     private SqlQueryWithEntity on2(String columnName, String tableAlias, String tableColumn) {
         if (classMapping == null) {
             selectJoinOnBasicBuilder = sqlQueryEntityProperties.getSelectBuilder().join(join, tableAlias, tableColumn,
@@ -304,8 +324,8 @@ public class SqlQueryWith implements QueryWith, SqlQueryWithOn, SqlQueryWithEnti
     @Override
     public RepositoryQueryConditionGroupExpression where() {
         //        return sqlQueryEntityProperties.where();
-        return new RepositorySqlQueryExpression(sqlQueryEntityProperties.jdbc, factory, aliasManager, classMapping,
-                sqlQueryEntityProperties.selectBuilder);
+        return new RepositorySqlQueryExpression(sqlQueryEntityProperties.jdbc, factory, aliasManager, sqlPageFactory,
+                classMapping, sqlQueryEntityProperties.selectBuilder);
     }
 
     /**

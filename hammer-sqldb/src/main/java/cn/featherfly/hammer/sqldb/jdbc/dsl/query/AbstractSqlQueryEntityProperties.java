@@ -21,6 +21,7 @@ import cn.featherfly.common.repository.mapping.MappingFactory;
 import cn.featherfly.common.repository.operate.AggregateFunction;
 import cn.featherfly.hammer.HammerException;
 import cn.featherfly.hammer.sqldb.jdbc.Jdbc;
+import cn.featherfly.hammer.sqldb.jdbc.SqlPageFactory;
 
 /**
  * <p>
@@ -48,22 +49,27 @@ public abstract class AbstractSqlQueryEntityProperties<E extends AbstractSqlQuer
     /** The factory. */
     protected MappingFactory factory;
 
+    /** The sql page factory. */
+    protected SqlPageFactory sqlPageFactory;
+
     /** The alias manager. */
     protected AliasManager aliasManager;
 
     /**
      * Instantiates a new abstract sql query entity properties.
      *
-     * @param jdbc         jdbc
-     * @param classMapping classMapping
-     * @param factory      MappingFactory
-     * @param aliasManager aliasManager
+     * @param jdbc           jdbc
+     * @param classMapping   classMapping
+     * @param factory        MappingFactory
+     * @param sqlPageFactory the sql page factory
+     * @param aliasManager   aliasManager
      */
     public AbstractSqlQueryEntityProperties(Jdbc jdbc, ClassMapping<?> classMapping, MappingFactory factory,
-            AliasManager aliasManager) {
+            SqlPageFactory sqlPageFactory, AliasManager aliasManager) {
         this.jdbc = jdbc;
         this.classMapping = classMapping;
         this.factory = factory;
+        this.sqlPageFactory = sqlPageFactory;
         this.aliasManager = aliasManager;
         String tableAlias = aliasManager.getAlias(classMapping.getRepositoryName());
         if (tableAlias == null) {
@@ -83,13 +89,15 @@ public abstract class AbstractSqlQueryEntityProperties<E extends AbstractSqlQuer
      * @param tableName        tableName
      * @param tableAlias       tableAlias
      * @param factory          MappingFactory
+     * @param sqlPageFactory   the sql page factory
      * @param aliasManager     aliasManager
      */
     public AbstractSqlQueryEntityProperties(Jdbc jdbc, DatabaseMetadata databaseMetadata, String tableName,
-            String tableAlias, MappingFactory factory, AliasManager aliasManager) {
+            String tableAlias, MappingFactory factory, SqlPageFactory sqlPageFactory, AliasManager aliasManager) {
         super();
         this.jdbc = jdbc;
         this.factory = factory;
+        this.sqlPageFactory = sqlPageFactory;
         this.aliasManager = aliasManager;
         if (tableAlias == null) {
             tableAlias = aliasManager.put(tableName);

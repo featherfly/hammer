@@ -55,6 +55,8 @@ public class JdbcTestBase {
 
     protected static DatabaseMetadata metadata;
 
+    protected static SqlPageFactory sqlPageFactory = new SimpleSqlPageFactory();
+
     protected static DataSource dataSource;
 
     protected static Dialect dialect;
