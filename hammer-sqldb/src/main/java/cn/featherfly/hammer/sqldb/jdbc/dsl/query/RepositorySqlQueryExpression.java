@@ -11,6 +11,7 @@ import cn.featherfly.common.repository.operate.AggregateFunction;
 import cn.featherfly.hammer.dsl.query.RepositoryQueryConditionGroupExpression;
 import cn.featherfly.hammer.dsl.query.RepositoryQueryConditionGroupLogicExpression;
 import cn.featherfly.hammer.sqldb.jdbc.Jdbc;
+import cn.featherfly.hammer.sqldb.jdbc.SqlPageFactory;
 
 /**
  * <p>
@@ -22,72 +23,81 @@ import cn.featherfly.hammer.sqldb.jdbc.Jdbc;
  */
 public class RepositorySqlQueryExpression extends RepositorySqlQueryConditionGroupExpression {
 
+    /** The select builder. */
     private SqlSelectBasicBuilder selectBuilder;
 
     /**
      * Instantiates a new sql query expression.
      *
-     * @param jdbc          the jdbc
-     * @param factory       MappingFactory
-     * @param aliasManager  aliasManager
-     * @param selectBuilder the select builder
+     * @param jdbc           the jdbc
+     * @param factory        MappingFactory
+     * @param aliasManager   aliasManager
+     * @param selectBuilder  the select builder
+     * @param sqlPageFactory the sql page factory
      */
     public RepositorySqlQueryExpression(Jdbc jdbc, MappingFactory factory, AliasManager aliasManager,
-            SqlSelectBasicBuilder selectBuilder) {
-        super(jdbc, factory, aliasManager, selectBuilder.getTableAlias());
+            SqlSelectBasicBuilder selectBuilder, SqlPageFactory sqlPageFactory) {
+        super(jdbc, factory, aliasManager, selectBuilder.getTableAlias(), sqlPageFactory);
         this.selectBuilder = selectBuilder;
     }
 
     /**
      * Instantiates a new sql query expression.
      *
-     * @param jdbc          the jdbc
-     * @param factory       MappingFactory
-     * @param aliasManager  aliasManager
-     * @param classMapping  the class mapping
-     * @param selectBuilder the select builder
+     * @param jdbc           the jdbc
+     * @param factory        MappingFactory
+     * @param aliasManager   aliasManager
+     * @param sqlPageFactory the sql page factory
+     * @param classMapping   the class mapping
+     * @param selectBuilder  the select builder
      */
     public RepositorySqlQueryExpression(Jdbc jdbc, MappingFactory factory, AliasManager aliasManager,
-            ClassMapping<?> classMapping, SqlSelectBasicBuilder selectBuilder) {
-        super(jdbc, factory, aliasManager, selectBuilder.getTableAlias(), classMapping);
+            SqlPageFactory sqlPageFactory, ClassMapping<?> classMapping, SqlSelectBasicBuilder selectBuilder) {
+        super(jdbc, factory, aliasManager, selectBuilder.getTableAlias(), sqlPageFactory, classMapping);
         this.selectBuilder = selectBuilder;
     }
 
     /**
-     * @param jdbc
-     * @param factory      MappingFactory
-     * @param aliasManager aliasManager
-     * @param parent
-     * @param queryAlias
-     * @param classMapping
+     * Instantiates a new sql query expression.
+     *
+     * @param jdbc           the jdbc
+     * @param factory        MappingFactory
+     * @param aliasManager   aliasManager
+     * @param queryAlias     the query alias
+     * @param sqlPageFactory the sql page factory
      */
-    RepositorySqlQueryExpression(Jdbc jdbc, MappingFactory factory, AliasManager aliasManager,
-            RepositoryQueryConditionGroupLogicExpression parent, String queryAlias, ClassMapping<?> classMapping) {
-        super(jdbc, factory, aliasManager, parent, queryAlias, classMapping);
+    public RepositorySqlQueryExpression(Jdbc jdbc, MappingFactory factory, AliasManager aliasManager, String queryAlias,
+            SqlPageFactory sqlPageFactory) {
+        super(jdbc, factory, aliasManager, queryAlias, sqlPageFactory);
     }
 
     /**
      * Instantiates a new sql query expression.
      *
-     * @param jdbc         the jdbc
-     * @param factory      MappingFactory
-     * @param aliasManager aliasManager
-     * @param queryAlias   the query alias
+     * @param jdbc           jdbc
+     * @param factory        MappingFactory
+     * @param aliasManager   aliasManager
+     * @param sqlPageFactory the sql page factory
      */
     public RepositorySqlQueryExpression(Jdbc jdbc, MappingFactory factory, AliasManager aliasManager,
-            String queryAlias) {
-        super(jdbc, factory, aliasManager, queryAlias);
+            SqlPageFactory sqlPageFactory) {
+        super(jdbc, factory, aliasManager, sqlPageFactory);
     }
 
     /**
-     * Instantiates a new sql query expression.
+     * Instantiates a new repository sql query expression.
      *
-     * @param jdbc         jdbc
-     * @param factory      MappingFactory
-     * @param aliasManager aliasManager
+     * @param parent         the parent
+     * @param jdbc           the jdbc
+     * @param factory        MappingFactory
+     * @param aliasManager   aliasManager
+     * @param queryAlias     the query alias
+     * @param sqlPageFactory the sql page factory
+     * @param classMapping   the class mapping
      */
-    public RepositorySqlQueryExpression(Jdbc jdbc, MappingFactory factory, AliasManager aliasManager) {
-        super(jdbc, factory, aliasManager);
+    RepositorySqlQueryExpression(RepositoryQueryConditionGroupLogicExpression parent, Jdbc jdbc, MappingFactory factory,
+            AliasManager aliasManager, String queryAlias, SqlPageFactory sqlPageFactory, ClassMapping<?> classMapping) {
+        super(parent, jdbc, factory, aliasManager, queryAlias, sqlPageFactory, classMapping);
     }
 
     /**
@@ -97,7 +107,8 @@ public class RepositorySqlQueryExpression extends RepositorySqlQueryConditionGro
     protected RepositoryQueryConditionGroupExpression createGroup(RepositoryQueryConditionGroupLogicExpression parent,
             String queryAlias) {
         selectBuilder.setTableAlias(queryAlias);
-        return new RepositorySqlQueryExpression(jdbc, factory, aliasManager, parent, queryAlias, classMapping);
+        return new RepositorySqlQueryExpression(parent, jdbc, factory, aliasManager, queryAlias, sqlPageFactory,
+                classMapping);
     }
 
     /**

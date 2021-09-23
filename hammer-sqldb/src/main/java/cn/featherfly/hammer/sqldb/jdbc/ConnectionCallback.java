@@ -4,7 +4,7 @@ package cn.featherfly.hammer.sqldb.jdbc;
 import java.sql.Connection;
 import java.sql.SQLException;
 
-import org.springframework.lang.Nullable;
+import javax.annotation.Nullable;
 
 import cn.featherfly.common.db.mapping.SqlTypeMappingManager;
 

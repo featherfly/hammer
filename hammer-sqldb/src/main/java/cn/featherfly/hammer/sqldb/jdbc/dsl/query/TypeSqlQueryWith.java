@@ -15,6 +15,7 @@ import cn.featherfly.hammer.dsl.query.TypeQueryWith;
 import cn.featherfly.hammer.dsl.query.TypeQueryWithEntity;
 import cn.featherfly.hammer.expression.query.TypeQueryLimitExecutor;
 import cn.featherfly.hammer.sqldb.SqldbHammerException;
+import cn.featherfly.hammer.sqldb.jdbc.SqlPageFactory;
 
 /**
  * <p>
@@ -39,6 +40,8 @@ public class TypeSqlQueryWith implements TypeQueryWith, TypeQueryWithEntity {
 
     protected MappingFactory factory;
 
+    protected SqlPageFactory sqlPageFactory;
+
     protected ClassMapping<?> conditionTypeClassMapping;
 
     protected ClassMapping<?> joinTypeClassMapping;
@@ -60,10 +63,11 @@ public class TypeSqlQueryWith implements TypeQueryWith, TypeQueryWithEntity {
      * @param joinTableColumn           the join table column
      */
     public TypeSqlQueryWith(TypeSqlQueryEntityProperties sqlQueryEntityProperties, AliasManager aliasManager,
-            MappingFactory factory, ClassMapping<?> conditionTypeClassMapping, String conditionTableAlias,
-            String conditionTableColumn, ClassMapping<?> joinTypeClassMapping, String joinTableColumn) {
-        this(sqlQueryEntityProperties, aliasManager, factory, conditionTypeClassMapping, conditionTableAlias,
-                conditionTableColumn, joinTypeClassMapping, joinTableColumn, null);
+            MappingFactory factory, SqlPageFactory sqlPageFactory, ClassMapping<?> conditionTypeClassMapping,
+            String conditionTableAlias, String conditionTableColumn, ClassMapping<?> joinTypeClassMapping,
+            String joinTableColumn) {
+        this(sqlQueryEntityProperties, aliasManager, factory, sqlPageFactory, conditionTypeClassMapping,
+                conditionTableAlias, conditionTableColumn, joinTypeClassMapping, joinTableColumn, null);
     }
 
     /**
@@ -80,12 +84,13 @@ public class TypeSqlQueryWith implements TypeQueryWith, TypeQueryWithEntity {
      * @param fetchProperty             the fetch property
      */
     public TypeSqlQueryWith(TypeSqlQueryEntityProperties sqlQueryEntityProperties, AliasManager aliasManager,
-            MappingFactory factory, ClassMapping<?> conditionTypeClassMapping, String conditionTableAlias,
-            String conditionTableColumn, ClassMapping<?> joinTypeClassMapping, String joinTableColumn,
-            String fetchProperty) {
+            MappingFactory factory, SqlPageFactory sqlPageFactory, ClassMapping<?> conditionTypeClassMapping,
+            String conditionTableAlias, String conditionTableColumn, ClassMapping<?> joinTypeClassMapping,
+            String joinTableColumn, String fetchProperty) {
         super();
         this.sqlQueryEntityProperties = sqlQueryEntityProperties;
         this.factory = factory;
+        this.sqlPageFactory = sqlPageFactory;
         this.conditionTypeClassMapping = conditionTypeClassMapping;
         this.conditionTableAlias = conditionTableAlias;
         this.conditionTableColumn = conditionTableColumn;
@@ -137,7 +142,7 @@ public class TypeSqlQueryWith implements TypeQueryWith, TypeQueryWithEntity {
      */
     @Override
     public RepositoryTypeQueryConditionGroupExpression where() {
-        return new RepositoryTypeSqlQueryExpression(sqlQueryEntityProperties.jdbc, factory,
+        return new RepositoryTypeSqlQueryExpression(sqlQueryEntityProperties.jdbc, factory, sqlPageFactory,
                 sqlQueryEntityProperties.aliasManager, sqlQueryEntityProperties.classMapping,
                 sqlQueryEntityProperties.selectBuilder);
     }

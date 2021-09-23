@@ -1,9 +1,13 @@
 
-package cn.featherfly.hammer.tpl.processor;
+package cn.featherfly.hammer.tpl.freemarker.processor;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.concurrent.atomic.AtomicInteger;
+
+import com.speedment.common.tuple.Tuple2;
+import com.speedment.common.tuple.Tuples;
 
 import cn.featherfly.common.constant.Chars;
 import cn.featherfly.common.lang.Strings;
@@ -19,6 +23,8 @@ import cn.featherfly.hammer.tpl.TplException;
  */
 public class Parser {
 
+    public static char[] COMMENT_SYMBOL_AFTER_DIRECTIVE_START = new char[] { '+', ' ', '\n' };
+
     private char[] directiveStart = new char[] { '/', '*' };
 
     private char[] directiveEnd = new char[] { '*', '/' };
@@ -30,6 +36,8 @@ public class Parser {
     private char namedParamStart = ':';
 
     private char fuzzyQueryChar = '%';
+
+    private char[] sqlStringWarpChars = new char[] { '\'', '\"' };
 
     private char[] namedParamEnds = { directiveEnd[0], ' ', '\n', fuzzyQueryChar };
 
@@ -142,29 +150,17 @@ public class Parser {
             } else {
                 if (isDirectiveStart(c, c2)) {
                     Directive directive = parseDirective(source, index);
-                    element = new DirectiveElement(directive.content, this);
+                    if (directive.comment) {
+                        element = new CommentElement(directive.content, this);
+                    } else {
+                        element = new DirectiveElement(directive.content, this);
+                    }
                     addElement(element);
                     element.setEnd(directive.end);
                     element.setStart(directive.start);
                     index = directive.end;
-                }
-                //                else if (comment) {
-                //                    if (!(element instanceof DirectiveElement)) {
-                //                        element = new DirectiveElement();
-                //                        //                    addChildElement(element);
-                //                        //                    elements.add(element);
-                //                        addElement(element);
-                //                    }
-                //                    element.append(c);
-                //                    // TODO todo
-                //                    if (c == tagSign) {
-                //                        if (c2 == tagSign) {
-                //                        } else {
-                //                        }
-                //                    }
-                //                }
-                else {
-                    if (!(element instanceof StringElement)) {
+                } else {
+                    if (!(element instanceof StringElement || element instanceof CommentElement)) {
                         DirectiveElement de = null;
                         if (element != null) {
                             de = (DirectiveElement) element;
@@ -204,12 +200,15 @@ public class Parser {
                                                 append = " && " + name + "?length gt 0";
                                             }
                                         }
-                                        append = append + " name='" + name + "'";
+
                                         boolean endWith = paramContent
                                                 .charAt(namePart.getStart() - 2) == fuzzyQueryChar;
                                         boolean startWith = paramContent.charAt(namePart.getEnd()) == fuzzyQueryChar;
-                                        append = appendTransverter(endWith, startWith, append);
-                                        de.setSource(pre + name + de.getSource() + append);
+                                        append = appendTransverter(startWith, endWith, append);
+
+                                        //                                        de.setSource(pre + name + de.getSource() + append);
+                                        de.setSource(pre + name + de.getSource() + append + " name=\"" + name + "\"");
+
                                     } else {
                                         name = de.getSource().replaceAll("\\?", "");
                                         if (isConditionNull(de.getSource())) {
@@ -223,17 +222,20 @@ public class Parser {
                                         }
 
                                         String paramContent = source.substring(index, wrapIndex);
-                                        String fuzzyStr = paramContent.chars()
-                                                .filter(i -> i == fuzzyQueryChar || i == namedParamStart || i == '?')
-                                                .collect(StringBuilder::new, StringBuilder::appendCodePoint,
-                                                        StringBuilder::append)
-                                                .toString();
-                                        boolean endWith = fuzzyStr.indexOf(fuzzyQueryChar) == 0;
-                                        boolean startWith = fuzzyStr.lastIndexOf(fuzzyQueryChar) == fuzzyStr.length()
-                                                - 1;
-                                        append = appendTransverter(endWith, startWith, append);
+                                        Tuple2<Boolean, Boolean> isFuzzy = isFuzzy(paramContent);
+                                        append = appendTransverter(isFuzzy.get0(), isFuzzy.get1(), append);
 
-                                        de.setSource(pre + name + append);
+                                        //                                        String fuzzyStr = paramContent.chars()
+                                        //                                                .filter(i -> i == fuzzyQueryChar || i == namedParamStart || i == '?')
+                                        //                                                .collect(StringBuilder::new, StringBuilder::appendCodePoint,
+                                        //                                                        StringBuilder::append)
+                                        //                                                .toString();
+                                        //                                        boolean endWith = fuzzyStr.indexOf(fuzzyQueryChar) == 0;
+                                        //                                        boolean startWith = fuzzyStr.lastIndexOf(fuzzyQueryChar) == fuzzyStr.length()
+                                        //                                                - 1;
+                                        //                                        append = appendTransverter(startWith, endWith, append);
+                                        //                                        de.setSource(pre + name + append);
+                                        de.setSource(pre + name + append + " name=\"" + name + "\"");
                                     }
                                     Parser parser = new Parser(this, de);
                                     parser.parse(source.substring(subStart, wrapIndex));
@@ -256,7 +258,28 @@ public class Parser {
         }
     }
 
-    private String appendTransverter(boolean endWith, boolean startWith, String append) {
+    private Tuple2<Boolean, Boolean> isFuzzy(String paramContent) {
+        AtomicInteger preSqlStringChar = new AtomicInteger(0);
+        String fuzzyStr = paramContent.chars().filter(i -> {
+            char c = (char) i;
+            if (preSqlStringChar.byteValue() == 0) {
+                if (isSqlStringWarpChar(c)) {
+                    preSqlStringChar.set(c);
+                    return true;
+                } else {
+                    return c == fuzzyQueryChar || c == namedParamStart || c == '?';
+                }
+            } else if (preSqlStringChar.byteValue() == c) {
+                preSqlStringChar.set(0); // 字符串结束
+            }
+            return true;
+        }).collect(StringBuilder::new, StringBuilder::appendCodePoint, StringBuilder::append).toString();
+        boolean endWith = fuzzyStr.indexOf(fuzzyQueryChar) == 0;
+        boolean startWith = fuzzyStr.lastIndexOf(fuzzyQueryChar) == fuzzyStr.length() - 1;
+        return Tuples.of(startWith, endWith);
+    }
+
+    private String appendTransverter(boolean startWith, boolean endWith, String append) {
         if (startWith && endWith) {
             append = append + " transverter='CO'";
         } else if (startWith) {
@@ -346,11 +369,11 @@ public class Parser {
                 }
             }
             if (onlyNewLine) {
-                if (notWhitespace && c == Chars.NEW_LINEZ_CHAR) {
+                if (notWhitespace && c == Chars.NEW_LINE_CHAR) {
                     return index;
                 }
             } else {
-                if (notWhitespace && (c == Chars.SPACE_CHAR || c == Chars.NEW_LINEZ_CHAR)) {
+                if (notWhitespace && (c == Chars.SPACE_CHAR || c == Chars.NEW_LINE_CHAR)) {
                     return index;
                 }
             }
@@ -430,6 +453,7 @@ public class Parser {
     private Directive parseDirective(String value, int start) {
         char c = 0;
         char c2 = 0;
+        char c3 = 0;
         int index = start;
         Directive directive = new Directive();
         directive.start = start;
@@ -441,6 +465,14 @@ public class Parser {
                 c2 = 0;
             }
             if (isDirectiveStart(c, c2)) {
+                if (index + 2 < value.length()) {
+                    c3 = value.charAt(index + 2);
+                } else {
+                    c3 = 0;
+                }
+                if (isComment(c3)) {
+                    directive.comment = true;
+                }
                 directive.start = index;
             } else if (isDirectiveEnd(c, c2)) {
                 // 因为结束是两位符号
@@ -465,6 +497,7 @@ public class Parser {
     private Directive getEndDirective(String value, DirectiveElement directiveElement) {
         char c = 0;
         char c2 = 0;
+        //        char c3 = 0;
         int index = directiveElement.getStart();
         Directive directive = new Directive();
         directive.start = directiveElement.getStart();
@@ -476,6 +509,14 @@ public class Parser {
                 c2 = 0;
             }
             if (isDirectiveStart(c, c2)) {
+                //                if (index + 2 < value.length()) {
+                //                    c3 = value.charAt(index + 2);
+                //                } else {
+                //                    c3 = 0;
+                //                }
+                //                if (isComment(c3)) {
+                //                    directive.comment = true;
+                //                }
                 directive.start = index;
             } else if (isDirectiveEnd(c, c2)) {
                 // 当前是结束符开始的第一个字符
@@ -505,6 +546,18 @@ public class Parser {
 
     private boolean isDirectiveStart(char c, char c2) {
         return directiveStart[0] == c && directiveStart[1] == c2;
+    }
+
+    //    private boolean isComment(char c, char c2, char c3) {
+    //        if (isDirectiveStart(c, c2)) {
+    //            return isComment(c3);
+    //        }
+    //        return false;
+    //    }
+
+    private boolean isComment(char c3) {
+        return COMMENT_SYMBOL_AFTER_DIRECTIVE_START[0] == c3 || COMMENT_SYMBOL_AFTER_DIRECTIVE_START[1] == c3
+                || COMMENT_SYMBOL_AFTER_DIRECTIVE_START[2] == c3;
     }
 
     private boolean isDirectiveEnd(char c, char c2) {
@@ -556,7 +609,7 @@ public class Parser {
         StringBuilder sb = new StringBuilder();
         for (int i = 0; i < directiveContent.length(); i++) {
             char c = directiveContent.charAt(i);
-            if (c == Chars.SPACE_CHAR || c == Chars.NEW_LINEZ_CHAR) {
+            if (c == Chars.SPACE_CHAR || c == Chars.NEW_LINE_CHAR) {
                 return sb.toString();
             } else if (c != '<' && c != '>') {
                 sb.append(c);
@@ -639,6 +692,8 @@ public class Parser {
 
         int end = -1;
 
+        boolean comment;
+
         String name;
 
         String source;
@@ -647,8 +702,12 @@ public class Parser {
 
         public void setSource(String source, Parser parser) {
             this.source = source;
-            content = parser.directiveContent(source);
-            name = parser.directiveName(content);
+            if (comment) {
+                content = source;
+            } else {
+                content = parser.directiveContent(source);
+                name = parser.directiveName(content);
+            }
         }
 
         /**
@@ -803,4 +862,30 @@ public class Parser {
         this.namedParamEnds = namedParamEnds;
     }
 
+    /**
+     * get sqlStringWarpChars value
+     *
+     * @return sqlStringWarpChars
+     */
+    public char[] getSqlStringWarpChars() {
+        return sqlStringWarpChars;
+    }
+
+    /**
+     * set sqlStringWarpChars value
+     *
+     * @param sqlStringWarpChars sqlStringWarpChars
+     */
+    public void setSqlStringWarpChars(char[] sqlStringWarpChars) {
+        this.sqlStringWarpChars = sqlStringWarpChars;
+    }
+
+    public boolean isSqlStringWarpChar(char c) {
+        for (char sqlStringWrapChar : sqlStringWarpChars) {
+            if (sqlStringWrapChar == c) {
+                return true;
+            }
+        }
+        return false;
+    }
 }

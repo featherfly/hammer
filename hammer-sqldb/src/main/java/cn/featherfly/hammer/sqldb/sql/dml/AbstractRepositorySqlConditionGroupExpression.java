@@ -55,6 +55,7 @@ import cn.featherfly.hammer.expression.condition.property.SimpleNumberExpression
 import cn.featherfly.hammer.expression.condition.property.SimpleObjectExpression;
 import cn.featherfly.hammer.expression.condition.property.SimpleStringExpression;
 import cn.featherfly.hammer.expression.condition.property.StringExpression;
+import cn.featherfly.hammer.sqldb.jdbc.SqlPageFactory;
 
 /**
  * <p>
@@ -75,6 +76,7 @@ public abstract class AbstractRepositorySqlConditionGroupExpression<C extends Re
     /** The class mapping. */
     protected ClassMapping<?> classMapping;
 
+    /** The query alias. */
     private String queryAlias;
 
     /** The alias manager. */
@@ -83,62 +85,70 @@ public abstract class AbstractRepositorySqlConditionGroupExpression<C extends Re
     /** The factory. */
     protected MappingFactory factory;
 
+    /** The sql page factory. */
+    protected SqlPageFactory sqlPageFactory;
+
     /**
      * Instantiates a new abstract repository sql condition group expression.
      *
-     * @param dialect      dialect
-     * @param factory      MappingFactory
-     * @param aliasManager aliasManager
+     * @param dialect        dialect
+     * @param factory        MappingFactory
+     * @param aliasManager   aliasManager
+     * @param sqlPageFactory the sql page factory
      */
     public AbstractRepositorySqlConditionGroupExpression(Dialect dialect, MappingFactory factory,
-            AliasManager aliasManager) {
-        this(dialect, factory, aliasManager, null, null);
+            AliasManager aliasManager, SqlPageFactory sqlPageFactory) {
+        this(dialect, factory, aliasManager, null, sqlPageFactory);
     }
 
     /**
      * Instantiates a new abstract repository sql condition group expression.
      *
-     * @param dialect      dialect
-     * @param factory      MappingFactory
-     * @param aliasManager aliasManager
-     * @param queryAlias   queryAlias
+     * @param dialect        dialect
+     * @param factory        MappingFactory
+     * @param aliasManager   aliasManager
+     * @param queryAlias     queryAlias
+     * @param sqlPageFactory the sql page factory
      */
     public AbstractRepositorySqlConditionGroupExpression(Dialect dialect, MappingFactory factory,
-            AliasManager aliasManager, String queryAlias) {
-        this(dialect, factory, aliasManager, null, queryAlias, null);
+            AliasManager aliasManager, String queryAlias, SqlPageFactory sqlPageFactory) {
+        this(null, dialect, factory, aliasManager, queryAlias, sqlPageFactory, null);
     }
 
     /**
      * Instantiates a new abstract repository sql condition group expression.
      *
-     * @param dialect      dialect
-     * @param factory      MappingFactory
-     * @param aliasManager aliasManager
-     * @param queryAlias   queryAlias
-     * @param classMapping classMapping
+     * @param dialect        dialect
+     * @param factory        MappingFactory
+     * @param aliasManager   aliasManager
+     * @param queryAlias     queryAlias
+     * @param sqlPageFactory the sql page factory
+     * @param classMapping   classMapping
      */
     public AbstractRepositorySqlConditionGroupExpression(Dialect dialect, MappingFactory factory,
-            AliasManager aliasManager, String queryAlias, ClassMapping<?> classMapping) {
-        this(dialect, factory, aliasManager, null, queryAlias, classMapping);
+            AliasManager aliasManager, String queryAlias, SqlPageFactory sqlPageFactory, ClassMapping<?> classMapping) {
+        this(null, dialect, factory, aliasManager, queryAlias, sqlPageFactory, classMapping);
     }
 
     /**
      * Instantiates a new abstract repository sql condition group expression.
      *
-     * @param dialect      dialect
-     * @param factory      MappingFactory
-     * @param aliasManager aliasManager
-     * @param parent       parent group
-     * @param queryAlias   queryAlias
-     * @param classMapping classMapping
+     * @param parent         parent group
+     * @param dialect        dialect
+     * @param factory        MappingFactory
+     * @param aliasManager   aliasManager
+     * @param queryAlias     queryAlias
+     * @param sqlPageFactory the sql page factory
+     * @param classMapping   classMapping
      */
-    protected AbstractRepositorySqlConditionGroupExpression(Dialect dialect, MappingFactory factory,
-            AliasManager aliasManager, L parent, String queryAlias, ClassMapping<?> classMapping) {
+    protected AbstractRepositorySqlConditionGroupExpression(L parent, Dialect dialect, MappingFactory factory,
+            AliasManager aliasManager, String queryAlias, SqlPageFactory sqlPageFactory, ClassMapping<?> classMapping) {
         super(dialect, parent);
         this.queryAlias = queryAlias;
         this.classMapping = classMapping;
         this.aliasManager = aliasManager;
         this.factory = factory;
+        this.sqlPageFactory = sqlPageFactory;
     }
 
     /**
@@ -644,6 +654,13 @@ public abstract class AbstractRepositorySqlConditionGroupExpression<C extends Re
         return (AbstractRepositorySqlConditionGroupExpression<C, L>) p;
     }
 
+    /**
+     * Gets the table name.
+     *
+     * @param <T>        the generic type
+     * @param repository the repository
+     * @return the table name
+     */
     private <T> String getTableName(Class<T> repository) {
         return factory.getClassMapping(repository).getRepositoryName();
     }
@@ -975,9 +992,25 @@ public abstract class AbstractRepositorySqlConditionGroupExpression<C extends Re
      * {@inheritDoc}
      */
     @Override
+    public <T> L inn(Class<T> repository, String name, Boolean value) {
+        return inn(getTableName(repository), name, value);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
     public L inn(int repositoryIndex, String name) {
+        return inn(repositoryIndex, name, true);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public L inn(int repositoryIndex, String name, Boolean value) {
         return (L) addCondition(
-                new SqlConditionExpressionBuilder(dialect, ClassMappingUtils.getColumnName(name, classMapping), null,
+                new SqlConditionExpressionBuilder(dialect, ClassMappingUtils.getColumnName(name, classMapping), value,
                         QueryOperator.INN, aliasManager.getAlias(repositoryIndex)));
     }
 
@@ -993,9 +1026,25 @@ public abstract class AbstractRepositorySqlConditionGroupExpression<C extends Re
      * {@inheritDoc}
      */
     @Override
+    public <T, R> L inn(SerializableFunction<T, R> name, Boolean value) {
+        return inn(getPropertyName(name), value);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
     public L inn(String name) {
+        return inn(name, true);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public L inn(String name, Boolean value) {
         return (L) addCondition(new SqlConditionExpressionBuilder(dialect,
-                ClassMappingUtils.getColumnName(name, classMapping), null, QueryOperator.INN, queryAlias));
+                ClassMappingUtils.getColumnName(name, classMapping), value, QueryOperator.INN, queryAlias));
     }
 
     /**
@@ -1003,8 +1052,16 @@ public abstract class AbstractRepositorySqlConditionGroupExpression<C extends Re
      */
     @Override
     public L inn(String repository, String name) {
+        return inn(repository, name, true);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public L inn(String repository, String name, Boolean value) {
         return (L) addCondition(
-                new SqlConditionExpressionBuilder(dialect, ClassMappingUtils.getColumnName(name, classMapping), null,
+                new SqlConditionExpressionBuilder(dialect, ClassMappingUtils.getColumnName(name, classMapping), value,
                         QueryOperator.INN, aliasManager.getAlias(repository)));
     }
 
@@ -1020,9 +1077,25 @@ public abstract class AbstractRepositorySqlConditionGroupExpression<C extends Re
      * {@inheritDoc}
      */
     @Override
+    public <T> L isn(Class<T> repository, String name, Boolean value) {
+        return isn(getTableName(repository), name, value);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
     public L isn(int repositoryIndex, String name) {
+        return isn(repositoryIndex, name, true);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public L isn(int repositoryIndex, String name, Boolean value) {
         return (L) addCondition(
-                new SqlConditionExpressionBuilder(dialect, ClassMappingUtils.getColumnName(name, classMapping), null,
+                new SqlConditionExpressionBuilder(dialect, ClassMappingUtils.getColumnName(name, classMapping), value,
                         QueryOperator.ISN, aliasManager.getAlias(repositoryIndex)));
     }
 
@@ -1038,9 +1111,25 @@ public abstract class AbstractRepositorySqlConditionGroupExpression<C extends Re
      * {@inheritDoc}
      */
     @Override
+    public <T, R> L isn(SerializableFunction<T, R> name, Boolean value) {
+        return isn(getPropertyName(name), value);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
     public L isn(String name) {
+        return isn(name, true);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public L isn(String name, Boolean value) {
         return (L) addCondition(new SqlConditionExpressionBuilder(dialect,
-                ClassMappingUtils.getColumnName(name, classMapping), null, QueryOperator.ISN, queryAlias));
+                ClassMappingUtils.getColumnName(name, classMapping), value, QueryOperator.ISN, queryAlias));
     }
 
     /**
@@ -1048,8 +1137,16 @@ public abstract class AbstractRepositorySqlConditionGroupExpression<C extends Re
      */
     @Override
     public L isn(String repository, String name) {
+        return isn(repository, name, true);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public L isn(String repository, String name, Boolean value) {
         return (L) addCondition(
-                new SqlConditionExpressionBuilder(dialect, ClassMappingUtils.getColumnName(name, classMapping), null,
+                new SqlConditionExpressionBuilder(dialect, ClassMappingUtils.getColumnName(name, classMapping), value,
                         QueryOperator.ISN, aliasManager.getAlias(repository)));
     }
 
@@ -2313,6 +2410,60 @@ public abstract class AbstractRepositorySqlConditionGroupExpression<C extends Re
     public L lt(StringSupplier property) {
         SerializableSupplierLambdaInfo<String> info = LambdaUtils.getSerializableSupplierLambdaInfo(property);
         return lt(info.getSerializedLambdaInfo().getPropertyName(), info.getValue());
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public L lk(String repository, String name, String value) {
+        return (L) addCondition(
+                new SqlConditionExpressionBuilder(dialect, ClassMappingUtils.getColumnName(name, classMapping), value,
+                        QueryOperator.LK, aliasManager.getAlias(repository)));
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public <T> L lk(Class<T> repository, String name, String value) {
+        return lk(getTableName(repository), name, value);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public L lk(int repositoryIndex, String name, String value) {
+        return (L) addCondition(
+                new SqlConditionExpressionBuilder(dialect, ClassMappingUtils.getColumnName(name, classMapping), value,
+                        QueryOperator.LK, aliasManager.getAlias(repositoryIndex)));
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public L lk(String name, String value) {
+        return (L) addCondition(new SqlConditionExpressionBuilder(dialect,
+                ClassMappingUtils.getColumnName(name, classMapping), value, QueryOperator.LK, queryAlias));
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public <T> L lk(ReturnStringFunction<T> name, String value) {
+        return lk(getPropertyName(name), value);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public L lk(StringSupplier property) {
+        SerializableSupplierLambdaInfo<String> info = LambdaUtils.getSerializableSupplierLambdaInfo(property);
+        return lk(info.getSerializedLambdaInfo().getPropertyName(), info.getValue());
     }
 
     /**

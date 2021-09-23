@@ -5,8 +5,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import cn.featherfly.hammer.tpl.TemplatePreprocessor;
-import cn.featherfly.hammer.tpl.processor.AbstractElement;
-import cn.featherfly.hammer.tpl.processor.Parser;
+import cn.featherfly.hammer.tpl.freemarker.processor.AbstractElement;
+import cn.featherfly.hammer.tpl.freemarker.processor.Parser;
 
 /**
  * <p>

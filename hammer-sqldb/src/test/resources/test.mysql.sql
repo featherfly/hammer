@@ -7,43 +7,43 @@ SET FOREIGN_KEY_CHECKS=0;
 -- ----------------------------
 -- Table structure for role
 -- ----------------------------
-DROP TABLE IF EXISTS `role`;
 CREATE TABLE `role` (
-  `ID` int(10) unsigned NOT NULL AUTO_INCREMENT ,
-  `NAME` varchar(20) DEFAULT NULL,
-  `DESCP` varchar(36) DEFAULT NULL,
-  PRIMARY KEY (`ID`)
-) ENGINE=InnoDB AUTO_INCREMENT=21 DEFAULT CHARSET=utf8;
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `name` varchar(20) DEFAULT NULL,
+  `descp` varchar(36) DEFAULT NULL,
+  `create_time` datetime DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of role
 -- ----------------------------
-INSERT INTO `role` VALUES ('1', 'n_init_1', 'descp_1');
-INSERT INTO `role` VALUES ('2', 'n_init_2', 'descp_2');
-INSERT INTO `role` VALUES ('3', 'n_init_3', 'descp_3');
-INSERT INTO `role` VALUES ('4', 'n_init_4', 'descp_4');
-INSERT INTO `role` VALUES ('5', 'n_init_5', 'descp_5');
-INSERT INTO `role` VALUES ('6', 'n_init_11', 'descp_64');
-INSERT INTO `role` VALUES ('7', 'name_init_98', 'descp_79');
-INSERT INTO `role` VALUES ('8', 'name_init_21', 'descp_5');
-INSERT INTO `role` VALUES ('9', 'name_init_96', 'descp_98');
-INSERT INTO `role` VALUES ('10', 'n_96', 'descp_29');
-INSERT INTO `role` VALUES ('11', 'n_42', 'descp_54');
-INSERT INTO `role` VALUES ('12', 'n_12', 'descp_65');
+INSERT INTO `role` VALUES ('1', 'n_init_1', 'descp_1', now());
+INSERT INTO `role` VALUES ('2', 'n_init_2', 'descp_2', now());
+INSERT INTO `role` VALUES ('3', 'n_init_3', 'descp_3', now());
+INSERT INTO `role` VALUES ('4', 'n_init_4', 'descp_4', now());
+INSERT INTO `role` VALUES ('5', 'n_init_5', 'descp_5', now());
+INSERT INTO `role` VALUES ('6', 'n_init_11', 'descp_64', now());
+INSERT INTO `role` VALUES ('7', 'name_init_98', 'descp_79', now());
+INSERT INTO `role` VALUES ('8', 'name_init_21', 'descp_5', now());
+INSERT INTO `role` VALUES ('9', 'name_init_96', 'descp_98', now());
+INSERT INTO `role` VALUES ('10', 'n_96', 'descp_29', now());
+INSERT INTO `role` VALUES ('11', 'n_42', 'descp_54', now());
+INSERT INTO `role` VALUES ('12', 'n_12', 'descp_65', now());
 
 -- ----------------------------
 -- Table structure for user
 -- ----------------------------
 DROP TABLE IF EXISTS `user`;
 CREATE TABLE `user` (
-  `ID` int(10) unsigned NOT NULL AUTO_INCREMENT ,
-  `USERNAME` varchar(255) DEFAULT NULL ,
-  `PASSWORD` varchar(255) DEFAULT NULL ,
-  `MOBILE_NO` varchar(11) DEFAULT NULL ,
-  `AGE` int(11) DEFAULT NULL,
-  PRIMARY KEY (`ID`),
-  UNIQUE KEY `USER_NAME_UQ` (`USERNAME`),
-  UNIQUE KEY `MOBILE_NO_UQ` (`MOBILE_NO`)
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT ,
+  `username` varchar(255) DEFAULT NULL ,
+  `password` varchar(255) DEFAULT NULL ,
+  `mobile_no` varchar(11) DEFAULT NULL ,
+  `age` int(11) DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `USER_NAME_UQ` (`username`),
+  UNIQUE KEY `MOBILE_NO_UQ` (`mobile_no`)
 ) ENGINE=InnoDB AUTO_INCREMENT=13 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
@@ -94,14 +94,14 @@ INSERT INTO `user_role` VALUES ('8', '8', 'descp581',null);
 -- ----------------------------
 DROP TABLE IF EXISTS `user_info`;
 CREATE TABLE `user_info` (
-  `ID` int(10) unsigned NOT NULL AUTO_INCREMENT ,
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT ,
   `user_id` int(10) unsigned NOT NULL,
   `name` varchar(255) DEFAULT NULL,
   `descp` varchar(255) DEFAULT NULL,
   `province` varchar(255) DEFAULT NULL,
   `city` varchar(255) DEFAULT NULL,
   `district` varchar(255) DEFAULT NULL,
-  PRIMARY KEY (`ID`)
+  PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 ;
 
 -- ----------------------------
@@ -141,5 +141,6 @@ CREATE TABLE `cms_article2` (
   `content` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci DEFAULT NULL,
   `content2` varchar(2000) CHARACTER SET utf8 COLLATE utf8_general_ci DEFAULT NULL,
   `content3` json DEFAULT NULL,
+  `content4` varchar(2000) DEFAULT NULL,
   PRIMARY KEY (`ID`) USING BTREE
 ) ENGINE=InnoDB AUTO_INCREMENT=18 DEFAULT CHARSET=utf8 ROW_FORMAT=COMPACT;

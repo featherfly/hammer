@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- <!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd"> -->
+<suite name="Hammer SQLDB Test Suite All" parallel="tests"
+	thread-count="1">
+    <suite-files>
+       <suite-file path="testng-test-mysql.xml"/>
+       <suite-file path="testng-test-postgresql.xml"/>
+       <suite-file path="testng-test-sqlite.xml"/>
+    </suite-files>
+</suite>

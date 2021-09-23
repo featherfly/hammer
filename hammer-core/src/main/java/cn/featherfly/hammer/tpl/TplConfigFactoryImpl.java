@@ -31,7 +31,6 @@ import cn.featherfly.common.lang.ClassUtils;
 import cn.featherfly.common.lang.Lang;
 import cn.featherfly.common.lang.UriUtils;
 import cn.featherfly.common.lang.matcher.MethodAnnotationMatcher;
-import cn.featherfly.constant.ConstantPool;
 import cn.featherfly.hammer.HammerException;
 import cn.featherfly.hammer.config.HammerConstant;
 import cn.featherfly.hammer.tpl.annotation.Mapper;
@@ -50,26 +49,37 @@ public class TplConfigFactoryImpl implements TplConfigFactory {
     /** The logger. */
     protected final Logger logger = LoggerFactory.getLogger(this.getClass());
 
+    /** The Constant MULTI_SAME_EXECUTEID. */
     private static final String MULTI_SAME_EXECUTEID = "!" + ID_SIGN + "!";
 
+    /** The mapper. */
     private ObjectMapper mapper;
 
+    /** The dev mode. */
     private boolean devMode;
 
+    /** The suffix. */
     private String suffix;
 
+    /** The prefix. */
     private String prefix;
 
+    /** The configs. */
     private Map<String, TplExecuteConfigs> configs = new HashMap<>();
 
+    /** The execut id file map. */
     private Map<String, String> executIdFileMap = new HashMap<>();
 
+    /** The resource pattern resolver. */
     private ResourcePatternResolver resourcePatternResolver;
 
+    /** The class path scanning provider. */
     private ClassPathScanningProvider classPathScanningProvider;
 
+    /** The base packages. */
     private Set<String> basePackages = new HashSet<>();
 
+    /** The template preprocessor. */
     private TemplatePreprocessor templatePreprocessor;
 
     /**
@@ -85,7 +95,17 @@ public class TplConfigFactoryImpl implements TplConfigFactory {
      * @param basePackages basePackages
      */
     public TplConfigFactoryImpl(Set<String> basePackages) {
-        this(HammerConstant.DEFAULT_PREFIX, basePackages);
+        this(basePackages, false);
+    }
+
+    /**
+     * Instantiates a new tpl config factory impl.
+     *
+     * @param basePackages the base packages
+     * @param devMode      the dev mode
+     */
+    public TplConfigFactoryImpl(Set<String> basePackages, boolean devMode) {
+        this(HammerConstant.DEFAULT_PREFIX, basePackages, devMode);
     }
 
     /**
@@ -95,6 +115,16 @@ public class TplConfigFactoryImpl implements TplConfigFactory {
      */
     public TplConfigFactoryImpl(String prefix) {
         this(prefix, HammerConstant.DEFAULT_SUFFIX);
+    }
+
+    /**
+     * Instantiates a new tpl config factory impl.
+     *
+     * @param prefix  the prefix
+     * @param devMode the dev mode
+     */
+    public TplConfigFactoryImpl(String prefix, boolean devMode) {
+        this(prefix, HammerConstant.DEFAULT_SUFFIX, devMode);
     }
 
     /**
@@ -110,11 +140,33 @@ public class TplConfigFactoryImpl implements TplConfigFactory {
     /**
      * Instantiates a new tpl config factory impl.
      *
+     * @param prefix       the prefix
+     * @param basePackages the base packages
+     * @param devMode      the dev mode
+     */
+    public TplConfigFactoryImpl(String prefix, Set<String> basePackages, boolean devMode) {
+        this(prefix, HammerConstant.DEFAULT_SUFFIX, basePackages, devMode);
+    }
+
+    /**
+     * Instantiates a new tpl config factory impl.
+     *
      * @param prefix prefix
      * @param suffix suffix
      */
     public TplConfigFactoryImpl(String prefix, String suffix) {
-        this(prefix, suffix, null, null);
+        this(prefix, suffix, false);
+    }
+
+    /**
+     * Instantiates a new tpl config factory impl.
+     *
+     * @param prefix  the prefix
+     * @param suffix  the suffix
+     * @param devMode the dev mode
+     */
+    public TplConfigFactoryImpl(String prefix, String suffix, boolean devMode) {
+        this(prefix, suffix, null, null, devMode);
     }
 
     /**
@@ -125,7 +177,19 @@ public class TplConfigFactoryImpl implements TplConfigFactory {
      * @param basePackages basePackages
      */
     public TplConfigFactoryImpl(String prefix, String suffix, Set<String> basePackages) {
-        this(prefix, suffix, basePackages, null);
+        this(prefix, suffix, basePackages, null, false);
+    }
+
+    /**
+     * Instantiates a new tpl config factory impl.
+     *
+     * @param prefix       the prefix
+     * @param suffix       the suffix
+     * @param basePackages the base packages
+     * @param devMode      the dev mode
+     */
+    public TplConfigFactoryImpl(String prefix, String suffix, Set<String> basePackages, boolean devMode) {
+        this(prefix, suffix, basePackages, null, devMode);
     }
 
     /**
@@ -135,6 +199,16 @@ public class TplConfigFactoryImpl implements TplConfigFactory {
      */
     public TplConfigFactoryImpl(TemplatePreprocessor preCompiler) {
         this(HammerConstant.DEFAULT_PREFIX, preCompiler);
+    }
+
+    /**
+     * Instantiates a new tpl config factory impl.
+     *
+     * @param preCompiler the pre compiler
+     * @param devMode     the dev mode
+     */
+    public TplConfigFactoryImpl(TemplatePreprocessor preCompiler, boolean devMode) {
+        this(HammerConstant.DEFAULT_PREFIX, preCompiler, devMode);
     }
 
     /**
@@ -150,6 +224,17 @@ public class TplConfigFactoryImpl implements TplConfigFactory {
     /**
      * Instantiates a new tpl config factory impl.
      *
+     * @param basePackages the base packages
+     * @param preCompiler  the pre compiler
+     * @param devMode      the dev mode
+     */
+    public TplConfigFactoryImpl(Set<String> basePackages, TemplatePreprocessor preCompiler, boolean devMode) {
+        this(HammerConstant.DEFAULT_PREFIX, basePackages, preCompiler, devMode);
+    }
+
+    /**
+     * Instantiates a new tpl config factory impl.
+     *
      * @param prefix      prefix
      * @param preCompiler the pre compiler
      */
@@ -160,12 +245,36 @@ public class TplConfigFactoryImpl implements TplConfigFactory {
     /**
      * Instantiates a new tpl config factory impl.
      *
+     * @param prefix      the prefix
+     * @param preCompiler the pre compiler
+     * @param devMode     the dev mode
+     */
+    public TplConfigFactoryImpl(String prefix, TemplatePreprocessor preCompiler, boolean devMode) {
+        this(prefix, HammerConstant.DEFAULT_SUFFIX, preCompiler, devMode);
+    }
+
+    /**
+     * Instantiates a new tpl config factory impl.
+     *
      * @param prefix       prefix
      * @param basePackages basePackages
      * @param preCompiler  the pre compiler
      */
     public TplConfigFactoryImpl(String prefix, Set<String> basePackages, TemplatePreprocessor preCompiler) {
-        this(prefix, HammerConstant.DEFAULT_SUFFIX, basePackages, preCompiler);
+        this(prefix, basePackages, preCompiler, false);
+    }
+
+    /**
+     * Instantiates a new tpl config factory impl.
+     *
+     * @param prefix       the prefix
+     * @param basePackages the base packages
+     * @param preCompiler  the pre compiler
+     * @param devMode      the dev mode
+     */
+    public TplConfigFactoryImpl(String prefix, Set<String> basePackages, TemplatePreprocessor preCompiler,
+            boolean devMode) {
+        this(prefix, HammerConstant.DEFAULT_SUFFIX, basePackages, preCompiler, devMode);
     }
 
     /**
@@ -176,7 +285,19 @@ public class TplConfigFactoryImpl implements TplConfigFactory {
      * @param preCompiler the pre compiler
      */
     public TplConfigFactoryImpl(String prefix, String suffix, TemplatePreprocessor preCompiler) {
-        this(prefix, suffix, null, preCompiler);
+        this(prefix, suffix, preCompiler, false);
+    }
+
+    /**
+     * Instantiates a new tpl config factory impl.
+     *
+     * @param prefix      the prefix
+     * @param suffix      the suffix
+     * @param preCompiler the pre compiler
+     * @param devMode     the dev mode
+     */
+    public TplConfigFactoryImpl(String prefix, String suffix, TemplatePreprocessor preCompiler, boolean devMode) {
+        this(prefix, suffix, null, preCompiler, devMode);
     }
 
     /**
@@ -186,9 +307,10 @@ public class TplConfigFactoryImpl implements TplConfigFactory {
      * @param suffix       suffix
      * @param basePackages basePackages
      * @param preCompiler  the pre compiler
+     * @param devMode      the dev mode
      */
     public TplConfigFactoryImpl(String prefix, String suffix, Set<String> basePackages,
-            TemplatePreprocessor preCompiler) {
+            TemplatePreprocessor preCompiler, boolean devMode) {
         mapper = new ObjectMapper(new YAMLFactory());
         mapper.enable(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES);
 
@@ -211,7 +333,9 @@ public class TplConfigFactoryImpl implements TplConfigFactory {
 
         this.basePackages = basePackages == null ? new HashSet<>() : basePackages;
 
-        devMode = ConstantPool.getDefault().getConstantParameter().isDevMode();
+        // 这里去掉ConstantPool依赖
+        //        devMode = ConstantPool.getDefault().getConstantParameter().isDevMode();
+        this.devMode = devMode;
 
         // 读取模板文件
         initConfigsFromFile();
@@ -220,6 +344,9 @@ public class TplConfigFactoryImpl implements TplConfigFactory {
         initConfigFromMapper();
     }
 
+    /**
+     * Inits the config from mapper.
+     */
     private void initConfigFromMapper() {
         if (Lang.isEmpty(basePackages)) {
             return;
@@ -247,11 +374,23 @@ public class TplConfigFactoryImpl implements TplConfigFactory {
     //        }
     //    }
 
+    /**
+     * Gets the namespace.
+     *
+     * @param type the type
+     * @return the namespace
+     */
     private String getNamespace(Class<?> type) {
         Mapper mapper = type.getAnnotation(Mapper.class);
         return mapper == null || Lang.isEmpty(mapper.namespace()) ? type.getName() : mapper.namespace();
     }
 
+    /**
+     * Read config.
+     *
+     * @param type the type
+     * @return the tpl execute configs
+     */
     private TplExecuteConfigs readConfig(Class<?> type) {
         Collection<Method> methods = ClassUtils.findMethods(type, new MethodAnnotationMatcher(Template.class));
         String globalNamespace = getNamespace(type);
@@ -262,6 +401,7 @@ public class TplConfigFactoryImpl implements TplConfigFactory {
         Set<String> executeIds = new HashSet<>();
         for (Method method : methods) {
             Template template = method.getAnnotation(Template.class);
+
             if (Lang.isEmpty(template.value())) {
                 continue;
             }
@@ -289,6 +429,13 @@ public class TplConfigFactoryImpl implements TplConfigFactory {
         return newConfigs;
     }
 
+    /**
+     * Check name.
+     *
+     * @param executeIds the execute ids
+     * @param name       the name
+     * @param namespace  the namespace
+     */
     private void checkName(Set<String> executeIds, String name, String namespace) {
         if (name.contains(ID_SIGN)) {
             throw new HammerException("invalidate character [" + ID_SIGN + "] in executeId [" + name + "]");
@@ -298,6 +445,9 @@ public class TplConfigFactoryImpl implements TplConfigFactory {
         }
     }
 
+    /**
+     * Inits the configs from file.
+     */
     private void initConfigsFromFile() {
         resourcePatternResolver = new PathMatchingResourcePatternResolver();
         String packageSearchPath = ResourcePatternResolver.CLASSPATH_ALL_URL_PREFIX + UriUtils.linkUri(prefix, "**/*")
@@ -327,6 +477,12 @@ public class TplConfigFactoryImpl implements TplConfigFactory {
         }
     }
 
+    /**
+     * Read config.
+     *
+     * @param filePath the file path
+     * @return the tpl execute configs
+     */
     private TplExecuteConfigs readConfig(final String filePath) {
         String finalFilePath = toFinalFilePath(filePath);
         final String fileName = org.apache.commons.lang3.StringUtils.substringAfterLast(finalFilePath, "/");
@@ -349,13 +505,33 @@ public class TplConfigFactoryImpl implements TplConfigFactory {
                 } else {
                     @SuppressWarnings("unchecked")
                     Map<String, Object> map = (Map<String, Object>) v;
+
+                    Object precompileObj = map.get("precompile");
+                    boolean precompile = true; // 默认使用预编译
+                    if (Lang.isNotEmpty(precompileObj)) {
+                        if (precompileObj instanceof Boolean) {
+                            precompile = (Boolean) precompileObj;
+                        } else {
+                            precompile = Boolean.parseBoolean(precompileObj.toString());
+                        }
+                    }
+                    config.setPrecompile(precompile);
+
                     Object query = map.get("query");
                     if (Lang.isNotEmpty(query)) {
-                        config.setQuery(templatePreprocessor.process(query.toString()));
+                        if (precompile) {
+                            config.setQuery(templatePreprocessor.process(query.toString()));
+                        } else {
+                            config.setQuery(query.toString());
+                        }
                     }
                     Object count = map.get("count");
                     if (Lang.isNotEmpty(count)) {
-                        config.setCount(templatePreprocessor.process(count.toString()));
+                        if (precompile) {
+                            config.setCount(templatePreprocessor.process(count.toString()));
+                        } else {
+                            config.setQuery(query.toString());
+                        }
                     }
                     if (Lang.isNotEmpty(map.get("type"))) {
                         config.setType(TplType.valueOf(map.get("type").toString()));
@@ -388,6 +564,12 @@ public class TplConfigFactoryImpl implements TplConfigFactory {
         }
     }
 
+    /**
+     * To final file path.
+     *
+     * @param filePath the file path
+     * @return the string
+     */
     private String toFinalFilePath(String filePath) {
         String result = filePath;
         // 表示传入不是文件地址字符串，不是完整的地址
@@ -427,6 +609,12 @@ public class TplConfigFactoryImpl implements TplConfigFactory {
         }
     }
 
+    /**
+     * Gets the configs.
+     *
+     * @param type the type
+     * @return the configs
+     */
     private TplExecuteConfigs getConfigs(Class<?> type) {
         if (devMode) {
             return readConfig(type);
@@ -491,11 +679,23 @@ public class TplConfigFactoryImpl implements TplConfigFactory {
         return config;
     }
 
+    /**
+     * Gets the file path andexecute id.
+     *
+     * @param executeId the execute id
+     * @return the file path andexecute id
+     */
     private String[] getFilePathAndexecuteId(String executeId) {
         String[] result = executeId.split(ID_SIGN);
         return result;
     }
 
+    /**
+     * Gets the file path.
+     *
+     * @param executeId the execute id
+     * @return the file path
+     */
     private String getFilePath(String executeId) {
         String file = executIdFileMap.get(executeId);
         if (MULTI_SAME_EXECUTEID.equals(file)) {
@@ -534,8 +734,8 @@ public class TplConfigFactoryImpl implements TplConfigFactory {
     }
 
     /**
-     * 返回templatePreprocessor
-     * 
+     * 返回templatePreprocessor.
+     *
      * @return templatePreprocessor
      */
     public TemplatePreprocessor getTemplatePreprocessor() {

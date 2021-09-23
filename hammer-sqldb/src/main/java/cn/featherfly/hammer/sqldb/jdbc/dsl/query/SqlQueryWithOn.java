@@ -4,9 +4,7 @@ package cn.featherfly.hammer.sqldb.jdbc.dsl.query;
 import cn.featherfly.hammer.dsl.query.QueryWithOn;
 
 /**
- * <p>
- * SqlQueryWithOn
- * </p>
+ * SqlQueryWithOn.
  *
  * @author zhongj
  */

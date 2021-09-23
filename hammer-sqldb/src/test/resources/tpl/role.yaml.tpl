@@ -53,3 +53,10 @@ getByName: >
   select <@prop repo='role'/> from role where name = :name
 countRole: >
   select count(*) from role
+selectByName_mysql: >
+    select <@prop repo='role'/>, DATE_FORMAT(create_time,:dateFormat) as dateFormat from role
+    <@where>
+    <@and if = name??>
+        name like :name
+    </@and>
+    </@where>

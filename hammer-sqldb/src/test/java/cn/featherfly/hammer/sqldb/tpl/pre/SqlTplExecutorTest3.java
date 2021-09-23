@@ -10,6 +10,7 @@ import org.testng.annotations.Test;
 
 import cn.featherfly.common.structure.HashChainMap;
 import cn.featherfly.hammer.sqldb.jdbc.DataSourceTestBase;
+import cn.featherfly.hammer.sqldb.jdbc.SimpleSqlPageFactory;
 import cn.featherfly.hammer.sqldb.jdbc.vo.User;
 import cn.featherfly.hammer.sqldb.tpl.SqlTplExecutor;
 import cn.featherfly.hammer.sqldb.tpl.freemarker.SqldbFreemarkerTemplateEngine;
@@ -35,7 +36,7 @@ public class SqlTplExecutorTest3 extends DataSourceTestBase {
     void testPreprocess() {
         TplConfigFactoryImpl configFactory = new TplConfigFactoryImpl("tpl_pre", new FreemarkerTemplatePreProcessor());
         executor = new SqlTplExecutor(configFactory, new SqldbFreemarkerTemplateEngine(configFactory), jdbc,
-                mappingFactory);
+                mappingFactory, new SimpleSqlPageFactory());
 
         List<User> users = executor.list("preprocess@selectConditions", User.class, new HashChainMap<String, Object>());
         assertTrue(users.size() > 0);

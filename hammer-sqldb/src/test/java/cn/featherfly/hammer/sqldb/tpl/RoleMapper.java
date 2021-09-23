@@ -23,6 +23,9 @@ import cn.featherfly.hammer.tpl.annotation.Template;
 @Mapper(namespace = "role")
 public interface RoleMapper extends GenericHammer<Role, Integer> {
 
+    @Template("select id from role order by id")
+    List<Long> idList();
+
     @Template("select <@prop repo='role'/> from role")
     List<Role> list();
 

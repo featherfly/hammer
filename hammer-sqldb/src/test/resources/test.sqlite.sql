@@ -2,35 +2,36 @@ DROP TABLE IF EXISTS `role`;
 CREATE TABLE "role" (
   "id" INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
   "name" text(20),
-  "descp" TEXT(36)
+  "descp" TEXT(36),
+  "create_time" INTEGER
 );
 
 -- ----------------------------
 -- Records of role
 -- ----------------------------
-INSERT INTO `role` VALUES ('1', 'n_init_1', 'descp_1');
-INSERT INTO `role` VALUES ('2', 'n_init_2', 'descp_2');
-INSERT INTO `role` VALUES ('3', 'n_init_3', 'descp_3');
-INSERT INTO `role` VALUES ('4', 'n_init_4', 'descp_4');
-INSERT INTO `role` VALUES ('5', 'n_init_5', 'descp_5');
-INSERT INTO `role` VALUES ('6', 'n_init_11', 'descp_64');
-INSERT INTO `role` VALUES ('7', 'name_init_98', 'descp_79');
-INSERT INTO `role` VALUES ('8', 'name_init_21', 'descp_5');
-INSERT INTO `role` VALUES ('9', 'name_init_96', 'descp_98');
-INSERT INTO `role` VALUES ('10', 'n_96', 'descp_29');
-INSERT INTO `role` VALUES ('11', 'n_42', 'descp_54');
-INSERT INTO `role` VALUES ('12', 'n_12', 'descp_65');
+INSERT INTO `role` VALUES ('1', 'n_init_1', 'descp_1', strftime('%s','now'));
+INSERT INTO `role` VALUES ('2', 'n_init_2', 'descp_2', strftime('%s','now'));
+INSERT INTO `role` VALUES ('3', 'n_init_3', 'descp_3', strftime('%s','now'));
+INSERT INTO `role` VALUES ('4', 'n_init_4', 'descp_4', strftime('%s','now'));
+INSERT INTO `role` VALUES ('5', 'n_init_5', 'descp_5', strftime('%s','now'));
+INSERT INTO `role` VALUES ('6', 'n_init_11', 'descp_64', strftime('%s','now'));
+INSERT INTO `role` VALUES ('7', 'name_init_98', 'descp_79', strftime('%s','now'));
+INSERT INTO `role` VALUES ('8', 'name_init_21', 'descp_5', strftime('%s','now'));
+INSERT INTO `role` VALUES ('9', 'name_init_96', 'descp_98', strftime('%s','now'));
+INSERT INTO `role` VALUES ('10', 'n_96', 'descp_29', strftime('%s','now'));
+INSERT INTO `role` VALUES ('11', 'n_42', 'descp_54', strftime('%s','now'));
+INSERT INTO `role` VALUES ('12', 'n_12', 'descp_65', strftime('%s','now'));
 
 -- ----------------------------
 -- Table structure for user
 -- ----------------------------
 DROP TABLE IF EXISTS `user`;
 CREATE TABLE `user` (
-  `ID` INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
-  `USERNAME` text(255) DEFAULT NULL,
-  `PASSWORD` text(255) DEFAULT NULL,
-  `MOBILE_NO` text(11) DEFAULT NULL,
-  `AGE` INTEGER DEFAULT NULL,
+  `id` INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
+  `username` text(255) DEFAULT NULL,
+  `password` text(255) DEFAULT NULL,
+  `mobile_no` text(11) DEFAULT NULL,
+  `age` INTEGER DEFAULT NULL,
   UNIQUE ("USERNAME"),
   UNIQUE ("MOBILE_NO")
 );
@@ -84,7 +85,7 @@ INSERT INTO `user_role` VALUES ('10', '10', 'descp581', null);
 -- ----------------------------
 DROP TABLE IF EXISTS `user_info`;
 CREATE TABLE `user_info` (
-  `ID` INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
+  `id` INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
   `user_id` INTEGER NOT NULL,
   `name` text(255) DEFAULT NULL,
   `descp` text(255) DEFAULT NULL,
@@ -102,7 +103,7 @@ INSERT INTO `user_info` (`ID`, `user_id`, `name`, `descp`, `province`, `city`, `
 
 DROP TABLE IF EXISTS `cms_article`;
 CREATE TABLE `cms_article` (
-  `ID` INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
+  `id` INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
   `title` text(255) DEFAULT NULL,
   `content` text(255) DEFAULT NULL
 );

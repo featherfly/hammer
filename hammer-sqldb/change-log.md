@@ -1,3 +1,51 @@
+# 0.5.21 2021-09-21 
+1. 修复版本升级出现的问题，不再依赖spring打包的objenesis,而是直接依赖objenesis包
+2. 预编译实现对sql hints的支持，即不过滤/*+ */的内容，添加了注释不过滤功能
+    /*后跟[ +\n]空格+号换行就认为是一个需要保留的注释
+3. 移除对constant模块的强依赖，使用简单的java属性来设置开发模式
+4. 分页功能重构，加入PageFactory接口，方便后续扩展，提供默认实现（相当于之前的分页功能）
+
+# 0.5.20 2021-09-01
+1. 修复模板sql中有参数传入没有进行条件判断，则参数会被过滤掉的问题
+
+# 0.5.19 2021-08-31
+1. 修复预编译把字符串中的%过滤掉的问题，例如DATE_FORMAT(date, '%Y-%D-%M')
+
+# 0.5.18 2021-08-26
+1. 加入isn(... Boolean),inn(... Boolean)方法
+
+# 0.5.17 2021-08-20
+1. sql模板加入precompile参数，可以使用false禁用当前sql的预编译
+
+# 0.5.16 2021-08-18
+1. 使用SqlUtils转换namedsql自动处理in的情况，去掉之前<@and>和<@or>的实现
+
+# 0.5.15 2021-08-16
+1. 修复预编译优化条件标签<@and>和<@Or>，在编译为Freemarker模板后，明确加入name="fieldName"属性时CO,SW,EW丢失的问题
+2. 修复SqlTplExecutor执行模板语句时，都注册为TplExecuteId.count的问题
+
+# 0.5.14 2021-08-11
+1. 预编译优化条件标签<@and>和<@or>，在编译为Freemarker模板后，明确加入name="fieldName"属性
+2. 修复LogicTemplateDirectiveModel在获取参数名称时的正则表达式不支持表别名的问题，并支持关键字转移符['"`]
+
+# 0.5.13 2021-07-26
+1. 加入QueryOperator.LK的支持
+
+# 0.5.12 2021-07-14
+1. sql模板(SqlTplExecutor中实现)支持<and if=ids??> id in :ids </and>自动设置集合或者数组参数
+
+# 0.5.11 2021-06-18
+1. 优化类型映射查询，自动处理处理返回List<Integer>,List<String>,List<Long>等单一属性列表，只要是SqlTypeMappingManager支持的类型都行
+    ```
+    List<Long> idList = jdbc.query("select id from role order by id", Long.class);
+    
+    @Template("select id from role order by id")
+    List<Long> idList();
+    ```
+
+# 0.5.10 2021-05-12
+1. 修复springboot使用dev-tool进行热部署时，重新加载生成mapper报错的问题
+
 # 0.5.9 2021-05-06
 1. 模板sql的<@and>和<@Or>标签加入transverter属性，用于对字符串模糊查询，支持CO,SW,EW
     ```
@@ -21,7 +69,7 @@
     ```
 3. 修复where标签后换行直接跟order by语句没有空格符号导致最后的参数名称连接到order单词的问题
 
-# 0.5.8 2020-03-26
+# 0.5.8 2021-03-26
 1. SqlQueryEntity加入join(Join)，join(Join, String)，join(Class<T>)，join(Join, Class<T>)方法
 2. QueryEntityExpression加入<QI> QI cast(Class<QI> queryEntityExpressionType)方法
 3. Jdbc.querySingle返回集合的数量大于1时抛出异常
@@ -29,7 +77,7 @@
 5. MergeOperate实现当对象除了id以外的属性都判定为忽略时（一般为null,空字符串，空集合等）不进行数据库操作
 6. 修复AbstractJdbc抛出JdbcException没有添加错误信息的问题
 
-# 0.5.7 2020-02-22
+# 0.5.7 2021-02-22
 1. JdbcImpl的所有的query方法都支持SqlTypeMappingManager的自定义类型
 
 # 0.5.6 2020-12-12
