@@ -23,6 +23,8 @@ import cn.featherfly.hammer.tpl.TplException;
  */
 public class Parser {
 
+    public static char[] COMMENT_SYMBOL_AFTER_DIRECTIVE_START = new char[] { '+', ' ', '\n' };
+
     private char[] directiveStart = new char[] { '/', '*' };
 
     private char[] directiveEnd = new char[] { '*', '/' };
@@ -46,7 +48,8 @@ public class Parser {
      */
     public enum NullType {
         /** The null. */
-        NULL, EMPTY
+        NULL,
+        EMPTY
     }
 
     //    Parser parent;
@@ -147,13 +150,17 @@ public class Parser {
             } else {
                 if (isDirectiveStart(c, c2)) {
                     Directive directive = parseDirective(source, index);
-                    element = new DirectiveElement(directive.content, this);
+                    if (directive.comment) {
+                        element = new CommentElement(directive.content, this);
+                    } else {
+                        element = new DirectiveElement(directive.content, this);
+                    }
                     addElement(element);
                     element.setEnd(directive.end);
                     element.setStart(directive.start);
                     index = directive.end;
                 } else {
-                    if (!(element instanceof StringElement)) {
+                    if (!(element instanceof StringElement || element instanceof CommentElement)) {
                         DirectiveElement de = null;
                         if (element != null) {
                             de = (DirectiveElement) element;
@@ -446,6 +453,7 @@ public class Parser {
     private Directive parseDirective(String value, int start) {
         char c = 0;
         char c2 = 0;
+        char c3 = 0;
         int index = start;
         Directive directive = new Directive();
         directive.start = start;
@@ -457,6 +465,14 @@ public class Parser {
                 c2 = 0;
             }
             if (isDirectiveStart(c, c2)) {
+                if (index + 2 < value.length()) {
+                    c3 = value.charAt(index + 2);
+                } else {
+                    c3 = 0;
+                }
+                if (isComment(c3)) {
+                    directive.comment = true;
+                }
                 directive.start = index;
             } else if (isDirectiveEnd(c, c2)) {
                 // 因为结束是两位符号
@@ -481,6 +497,7 @@ public class Parser {
     private Directive getEndDirective(String value, DirectiveElement directiveElement) {
         char c = 0;
         char c2 = 0;
+        //        char c3 = 0;
         int index = directiveElement.getStart();
         Directive directive = new Directive();
         directive.start = directiveElement.getStart();
@@ -492,6 +509,14 @@ public class Parser {
                 c2 = 0;
             }
             if (isDirectiveStart(c, c2)) {
+                //                if (index + 2 < value.length()) {
+                //                    c3 = value.charAt(index + 2);
+                //                } else {
+                //                    c3 = 0;
+                //                }
+                //                if (isComment(c3)) {
+                //                    directive.comment = true;
+                //                }
                 directive.start = index;
             } else if (isDirectiveEnd(c, c2)) {
                 // 当前是结束符开始的第一个字符
@@ -521,6 +546,18 @@ public class Parser {
 
     private boolean isDirectiveStart(char c, char c2) {
         return directiveStart[0] == c && directiveStart[1] == c2;
+    }
+
+    //    private boolean isComment(char c, char c2, char c3) {
+    //        if (isDirectiveStart(c, c2)) {
+    //            return isComment(c3);
+    //        }
+    //        return false;
+    //    }
+
+    private boolean isComment(char c3) {
+        return COMMENT_SYMBOL_AFTER_DIRECTIVE_START[0] == c3 || COMMENT_SYMBOL_AFTER_DIRECTIVE_START[1] == c3
+                || COMMENT_SYMBOL_AFTER_DIRECTIVE_START[2] == c3;
     }
 
     private boolean isDirectiveEnd(char c, char c2) {
@@ -655,6 +692,8 @@ public class Parser {
 
         int end = -1;
 
+        boolean comment;
+
         String name;
 
         String source;
@@ -663,8 +702,12 @@ public class Parser {
 
         public void setSource(String source, Parser parser) {
             this.source = source;
-            content = parser.directiveContent(source);
-            name = parser.directiveName(content);
+            if (comment) {
+                content = source;
+            } else {
+                content = parser.directiveContent(source);
+                name = parser.directiveName(content);
+            }
         }
 
         /**

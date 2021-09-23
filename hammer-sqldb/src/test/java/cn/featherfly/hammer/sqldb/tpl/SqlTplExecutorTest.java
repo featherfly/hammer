@@ -17,6 +17,7 @@ import cn.featherfly.common.structure.page.PaginationResults;
 import cn.featherfly.common.structure.page.SimplePagination;
 import cn.featherfly.hammer.HammerException;
 import cn.featherfly.hammer.sqldb.jdbc.JdbcTestBase;
+import cn.featherfly.hammer.sqldb.jdbc.SimpleSqlPageFactory;
 import cn.featherfly.hammer.sqldb.jdbc.vo.Role;
 import cn.featherfly.hammer.sqldb.jdbc.vo.User;
 import cn.featherfly.hammer.sqldb.jdbc.vo.UserInfo;
@@ -44,7 +45,7 @@ public class SqlTplExecutorTest extends JdbcTestBase {
     void setup() {
         TplConfigFactoryImpl configFactory = new TplConfigFactoryImpl("tpl/", ".yaml.tpl");
         executor = new SqlTplExecutor(configFactory, new SqldbFreemarkerTemplateEngine(configFactory), jdbc,
-                mappingFactory);
+                mappingFactory, new SimpleSqlPageFactory());
     }
 
     @Test

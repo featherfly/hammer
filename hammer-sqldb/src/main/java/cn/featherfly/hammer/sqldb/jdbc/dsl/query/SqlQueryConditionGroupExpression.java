@@ -26,12 +26,15 @@ import cn.featherfly.hammer.dsl.query.QuerySortExpression;
 import cn.featherfly.hammer.dsl.query.TypeQueryEntity;
 import cn.featherfly.hammer.expression.query.QueryLimitExecutor;
 import cn.featherfly.hammer.sqldb.jdbc.Jdbc;
+import cn.featherfly.hammer.sqldb.jdbc.SqlPageFactory;
+import cn.featherfly.hammer.sqldb.jdbc.SqlPageFactory.SqlPageQuery;
 import cn.featherfly.hammer.sqldb.sql.dml.AbstractSqlConditionGroupExpression;
 
 /**
  * <p>
  * sql condition group builder sql条件逻辑组构造器
  * </p>
+ * .
  *
  * @author zhongj
  */
@@ -39,43 +42,58 @@ public class SqlQueryConditionGroupExpression
         extends AbstractSqlConditionGroupExpression<QueryConditionGroupExpression, QueryConditionGroupLogicExpression>
         implements QueryConditionGroupExpression, QueryConditionGroupLogicExpression, QuerySortExpression {
 
+    /** The sort builder. */
     private SqlSortBuilder sortBuilder = new SqlSortBuilder(dialect);
 
+    /** The limit. */
     private Limit limit;
 
     /**
-     * @param jdbc jdbc
+     * Instantiates a new sql query condition group expression.
+     *
+     * @param jdbc           jdbc
+     * @param sqlPageFactory the sql page factory
      */
-    public SqlQueryConditionGroupExpression(Jdbc jdbc) {
-        this(jdbc, null);
+    public SqlQueryConditionGroupExpression(Jdbc jdbc, SqlPageFactory sqlPageFactory) {
+        this(jdbc, sqlPageFactory, null);
     }
 
     /**
-     * @param jdbc       jdbc
-     * @param queryAlias queryAlias
+     * Instantiates a new sql query condition group expression.
+     *
+     * @param jdbc           jdbc
+     * @param sqlPageFactory the sql page factory
+     * @param queryAlias     queryAlias
      */
-    public SqlQueryConditionGroupExpression(Jdbc jdbc, String queryAlias) {
-        this(jdbc, queryAlias, null);
+    public SqlQueryConditionGroupExpression(Jdbc jdbc, SqlPageFactory sqlPageFactory, String queryAlias) {
+        this(jdbc, sqlPageFactory, queryAlias, null);
     }
 
     /**
-     * @param jdbc         jdbc
-     * @param queryAlias   queryAlias
-     * @param classMapping classMapping
+     * Instantiates a new sql query condition group expression.
+     *
+     * @param jdbc           jdbc
+     * @param sqlPageFactory the sql page factory
+     * @param queryAlias     queryAlias
+     * @param classMapping   classMapping
      */
-    public SqlQueryConditionGroupExpression(Jdbc jdbc, String queryAlias, ClassMapping<?> classMapping) {
-        this(jdbc, null, queryAlias, classMapping);
-    }
-
-    /**
-     * @param jdbc         jdbc
-     * @param parent       parent group
-     * @param queryAlias   queryAlias
-     * @param classMapping classMapping
-     */
-    SqlQueryConditionGroupExpression(Jdbc jdbc, QueryConditionGroupLogicExpression parent, String queryAlias,
+    public SqlQueryConditionGroupExpression(Jdbc jdbc, SqlPageFactory sqlPageFactory, String queryAlias,
             ClassMapping<?> classMapping) {
-        super(jdbc.getDialect(), parent, queryAlias, classMapping, null);
+        this(null, jdbc, sqlPageFactory, queryAlias, classMapping);
+    }
+
+    /**
+     * Instantiates a new sql query condition group expression.
+     *
+     * @param parent         parent group
+     * @param jdbc           jdbc
+     * @param sqlPageFactory the sql page factory
+     * @param queryAlias     queryAlias
+     * @param classMapping   classMapping
+     */
+    SqlQueryConditionGroupExpression(QueryConditionGroupLogicExpression parent, Jdbc jdbc,
+            SqlPageFactory sqlPageFactory, String queryAlias, ClassMapping<?> classMapping) {
+        super(parent, jdbc.getDialect(), sqlPageFactory, queryAlias, classMapping, null);
         this.jdbc = jdbc;
     }
 
@@ -83,6 +101,7 @@ public class SqlQueryConditionGroupExpression
     // property
     // ********************************************************************
 
+    /** The jdbc. */
     protected Jdbc jdbc;
 
     /**
@@ -91,7 +110,7 @@ public class SqlQueryConditionGroupExpression
     @Override
     protected QueryConditionGroupExpression createGroup(QueryConditionGroupLogicExpression parent, String queryAlias,
             TypeQueryEntity typeQueryEntity) {
-        return new SqlQueryConditionGroupExpression(jdbc, parent, queryAlias, classMapping);
+        return new SqlQueryConditionGroupExpression(parent, jdbc, sqlPageFactory, queryAlias, classMapping);
     }
 
     /**
@@ -145,6 +164,12 @@ public class SqlQueryConditionGroupExpression
         return limit(new Limit(page));
     }
 
+    /**
+     * Limit.
+     *
+     * @param limit the limit
+     * @return the query limit executor
+     */
     private QueryLimitExecutor limit(Limit limit) {
         this.limit = limit;
         return this;
@@ -158,8 +183,12 @@ public class SqlQueryConditionGroupExpression
         String sql = getRoot().expression();
         Object[] params = getRoot().getParams().toArray();
         if (limit != null) {
-            sql = dialect.getPaginationSql(sql, limit.getOffset(), limit.getLimit());
-            params = dialect.getPaginationSqlParameter(params, limit.getOffset(), limit.getLimit());
+            SqlPageQuery<Object[]> pageQuery = sqlPageFactory.toPage(dialect, sql, limit.getOffset(), limit.getLimit(),
+                    params);
+            sql = pageQuery.getSql();
+            params = pageQuery.getParams();
+            //            sql = dialect.getPaginationSql(sql, limit.getOffset(), limit.getLimit());
+            //            params = dialect.getPaginationSqlParameter(params, limit.getOffset(), limit.getLimit());
         }
         return jdbc.query(sql, params);
     }
@@ -172,8 +201,12 @@ public class SqlQueryConditionGroupExpression
         String sql = getRoot().expression();
         Object[] params = getRoot().getParams().toArray();
         if (limit != null) {
-            sql = dialect.getPaginationSql(sql, limit.getOffset(), limit.getLimit());
-            params = dialect.getPaginationSqlParameter(params, limit.getOffset(), limit.getLimit());
+            SqlPageQuery<Object[]> pageQuery = sqlPageFactory.toPage(dialect, sql, limit.getOffset(), limit.getLimit(),
+                    params);
+            sql = pageQuery.getSql();
+            params = pageQuery.getParams();
+            //            sql = dialect.getPaginationSql(sql, limit.getOffset(), limit.getLimit());
+            //            params = dialect.getPaginationSqlParameter(params, limit.getOffset(), limit.getLimit());
         }
         return jdbc.query(sql, type, params);
     }
@@ -186,8 +219,12 @@ public class SqlQueryConditionGroupExpression
         String sql = getRoot().expression();
         Object[] params = getRoot().getParams().toArray();
         if (limit != null) {
-            sql = dialect.getPaginationSql(sql, limit.getOffset(), limit.getLimit());
-            params = dialect.getPaginationSqlParameter(params, limit.getOffset(), limit.getLimit());
+            SqlPageQuery<Object[]> pageQuery = sqlPageFactory.toPage(dialect, sql, limit.getOffset(), limit.getLimit(),
+                    params);
+            sql = pageQuery.getSql();
+            params = pageQuery.getParams();
+            //            sql = dialect.getPaginationSql(sql, limit.getOffset(), limit.getLimit());
+            //            params = dialect.getPaginationSqlParameter(params, limit.getOffset(), limit.getLimit());
         }
         return jdbc.query(sql, rowMapper, params);
     }
@@ -202,9 +239,12 @@ public class SqlQueryConditionGroupExpression
         Object[] params = getRoot().getParams().toArray();
         SimplePaginationResults<Map<String, Object>> pagination = new SimplePaginationResults<>(limit);
         if (limit != null) {
-            List<Map<String, Object>> list = jdbc.query(
-                    dialect.getPaginationSql(sql, limit.getOffset(), limit.getLimit()),
-                    dialect.getPaginationSqlParameter(params, limit.getOffset(), limit.getLimit()));
+            SqlPageQuery<Object[]> pageQuery = sqlPageFactory.toPage(dialect, sql, limit.getOffset(), limit.getLimit(),
+                    params);
+            List<Map<String, Object>> list = jdbc.query(pageQuery.getSql(), pageQuery.getParams());
+            //            List<Map<String, Object>> list = jdbc.query(
+            //                    dialect.getPaginationSql(sql, limit.getOffset(), limit.getLimit()),
+            //                    dialect.getPaginationSqlParameter(params, limit.getOffset(), limit.getLimit()));
             pagination.setPageResults(list);
             int total = jdbc.queryInt(countSql, params);
             pagination.setTotal(total);
@@ -226,8 +266,11 @@ public class SqlQueryConditionGroupExpression
         Object[] params = getRoot().getParams().toArray();
         SimplePaginationResults<E> pagination = new SimplePaginationResults<>(limit);
         if (limit != null) {
-            List<E> list = jdbc.query(dialect.getPaginationSql(sql, limit.getOffset(), limit.getLimit()), type,
-                    dialect.getPaginationSqlParameter(params, limit.getOffset(), limit.getLimit()));
+            SqlPageQuery<Object[]> pageQuery = sqlPageFactory.toPage(dialect, sql, limit.getOffset(), limit.getLimit(),
+                    params);
+            List<E> list = jdbc.query(pageQuery.getSql(), type, pageQuery.getParams());
+            //            List<E> list = jdbc.query(dialect.getPaginationSql(sql, limit.getOffset(), limit.getLimit()), type,
+            //                    dialect.getPaginationSqlParameter(params, limit.getOffset(), limit.getLimit()));
             pagination.setPageResults(list);
             int total = jdbc.queryInt(countSql, params);
             pagination.setTotal(total);
@@ -249,8 +292,11 @@ public class SqlQueryConditionGroupExpression
         Object[] params = getRoot().getParams().toArray();
         SimplePaginationResults<E> pagination = new SimplePaginationResults<>(limit);
         if (limit != null) {
-            List<E> list = jdbc.query(dialect.getPaginationSql(sql, limit.getOffset(), limit.getLimit()), rowMapper,
-                    dialect.getPaginationSqlParameter(params, limit.getOffset(), limit.getLimit()));
+            SqlPageQuery<Object[]> pageQuery = sqlPageFactory.toPage(dialect, sql, limit.getOffset(), limit.getLimit(),
+                    params);
+            List<E> list = jdbc.query(pageQuery.getSql(), rowMapper, pageQuery.getParams());
+            //            List<E> list = jdbc.query(dialect.getPaginationSql(sql, limit.getOffset(), limit.getLimit()), rowMapper,
+            //                    dialect.getPaginationSqlParameter(params, limit.getOffset(), limit.getLimit()));
             pagination.setPageResults(list);
             int total = jdbc.queryInt(countSql, params);
             pagination.setTotal(total);
@@ -270,8 +316,12 @@ public class SqlQueryConditionGroupExpression
         String sql = getRoot().expression();
         Object[] params = getRoot().getParams().toArray();
         if (limit != null) {
-            sql = dialect.getPaginationSql(sql, limit.getOffset(), limit.getLimit());
-            params = dialect.getPaginationSqlParameter(params, limit.getOffset(), limit.getLimit());
+            SqlPageQuery<Object[]> pageQuery = sqlPageFactory.toPage(dialect, sql, limit.getOffset(), limit.getLimit(),
+                    params);
+            sql = pageQuery.getSql();
+            params = pageQuery.getParams();
+            //            sql = dialect.getPaginationSql(sql, limit.getOffset(), limit.getLimit());
+            //            params = dialect.getPaginationSqlParameter(params, limit.getOffset(), limit.getLimit());
         }
         return jdbc.querySingle(sql, params);
     }
@@ -284,8 +334,12 @@ public class SqlQueryConditionGroupExpression
         String sql = getRoot().expression();
         Object[] params = getRoot().getParams().toArray();
         if (limit != null) {
-            sql = dialect.getPaginationSql(sql, limit.getOffset(), limit.getLimit());
-            params = dialect.getPaginationSqlParameter(params, limit.getOffset(), limit.getLimit());
+            SqlPageQuery<Object[]> pageQuery = sqlPageFactory.toPage(dialect, sql, limit.getOffset(), limit.getLimit(),
+                    params);
+            sql = pageQuery.getSql();
+            params = pageQuery.getParams();
+            //            sql = dialect.getPaginationSql(sql, limit.getOffset(), limit.getLimit());
+            //            params = dialect.getPaginationSqlParameter(params, limit.getOffset(), limit.getLimit());
         }
         return jdbc.queryUnique(sql, params);
     }
@@ -298,8 +352,12 @@ public class SqlQueryConditionGroupExpression
         String sql = getRoot().expression();
         Object[] params = getRoot().getParams().toArray();
         if (limit != null) {
-            sql = dialect.getPaginationSql(sql, limit.getOffset(), limit.getLimit());
-            params = dialect.getPaginationSqlParameter(params, limit.getOffset(), limit.getLimit());
+            SqlPageQuery<Object[]> pageQuery = sqlPageFactory.toPage(dialect, sql, limit.getOffset(), limit.getLimit(),
+                    params);
+            sql = pageQuery.getSql();
+            params = pageQuery.getParams();
+            //            sql = dialect.getPaginationSql(sql, limit.getOffset(), limit.getLimit());
+            //            params = dialect.getPaginationSqlParameter(params, limit.getOffset(), limit.getLimit());
         }
         return jdbc.querySingle(sql, type, params);
     }
@@ -312,8 +370,12 @@ public class SqlQueryConditionGroupExpression
         String sql = getRoot().expression();
         Object[] params = getRoot().getParams().toArray();
         if (limit != null) {
-            sql = dialect.getPaginationSql(sql, limit.getOffset(), limit.getLimit());
-            params = dialect.getPaginationSqlParameter(params, limit.getOffset(), limit.getLimit());
+            SqlPageQuery<Object[]> pageQuery = sqlPageFactory.toPage(dialect, sql, limit.getOffset(), limit.getLimit(),
+                    params);
+            sql = pageQuery.getSql();
+            params = pageQuery.getParams();
+            //            sql = dialect.getPaginationSql(sql, limit.getOffset(), limit.getLimit());
+            //            params = dialect.getPaginationSqlParameter(params, limit.getOffset(), limit.getLimit());
         }
         return jdbc.queryUnique(sql, type, params);
     }
@@ -326,8 +388,12 @@ public class SqlQueryConditionGroupExpression
         String sql = getRoot().expression();
         Object[] params = getRoot().getParams().toArray();
         if (limit != null) {
-            sql = dialect.getPaginationSql(sql, limit.getOffset(), limit.getLimit());
-            params = dialect.getPaginationSqlParameter(params, limit.getOffset(), limit.getLimit());
+            SqlPageQuery<Object[]> pageQuery = sqlPageFactory.toPage(dialect, sql, limit.getOffset(), limit.getLimit(),
+                    params);
+            sql = pageQuery.getSql();
+            params = pageQuery.getParams();
+            //            sql = dialect.getPaginationSql(sql, limit.getOffset(), limit.getLimit());
+            //            params = dialect.getPaginationSqlParameter(params, limit.getOffset(), limit.getLimit());
         }
         return jdbc.querySingle(sql, rowMapper, params);
     }
@@ -340,8 +406,12 @@ public class SqlQueryConditionGroupExpression
         String sql = getRoot().expression();
         Object[] params = getRoot().getParams().toArray();
         if (limit != null) {
-            sql = dialect.getPaginationSql(sql, limit.getOffset(), limit.getLimit());
-            params = dialect.getPaginationSqlParameter(params, limit.getOffset(), limit.getLimit());
+            SqlPageQuery<Object[]> pageQuery = sqlPageFactory.toPage(dialect, sql, limit.getOffset(), limit.getLimit(),
+                    params);
+            sql = pageQuery.getSql();
+            params = pageQuery.getParams();
+            //            sql = dialect.getPaginationSql(sql, limit.getOffset(), limit.getLimit());
+            //            params = dialect.getPaginationSqlParameter(params, limit.getOffset(), limit.getLimit());
         }
         return jdbc.queryUnique(sql, rowMapper, params);
     }

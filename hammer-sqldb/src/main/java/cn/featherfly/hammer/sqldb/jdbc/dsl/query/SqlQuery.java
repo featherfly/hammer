@@ -1,6 +1,7 @@
 
 package cn.featherfly.hammer.sqldb.jdbc.dsl.query;
 
+import cn.featherfly.common.db.mapping.JdbcMappingFactory;
 import cn.featherfly.common.db.metadata.DatabaseMetadata;
 import cn.featherfly.common.lang.Lang;
 import cn.featherfly.common.repository.builder.AliasManager;
@@ -8,42 +9,57 @@ import cn.featherfly.hammer.dsl.query.Query;
 import cn.featherfly.hammer.expression.Repository;
 import cn.featherfly.hammer.sqldb.SqldbHammerException;
 import cn.featherfly.hammer.sqldb.jdbc.Jdbc;
-import cn.featherfly.common.db.mapping.JdbcMappingFactory;
+import cn.featherfly.hammer.sqldb.jdbc.SqlPageFactory;
 
 /**
  * <p>
  * SqlQuery
  * </p>
+ * .
  *
  * @author zhongj
  */
 public class SqlQuery implements Query {
 
+    /** The jdbc. */
     private Jdbc jdbc;
 
+    /** The database metadata. */
     private DatabaseMetadata databaseMetadata;
 
+    /** The mapping factory. */
     private JdbcMappingFactory mappingFactory;
 
+    /** The sql page factory. */
+    private SqlPageFactory sqlPageFactory;
+
     /**
+     * Instantiates a new sql query.
+     *
      * @param jdbc             jdbc
      * @param databaseMetadata databaseMetadata
+     * @param sqlPageFactory   the sql page factory
      */
-    public SqlQuery(Jdbc jdbc, DatabaseMetadata databaseMetadata) {
+    public SqlQuery(Jdbc jdbc, DatabaseMetadata databaseMetadata, SqlPageFactory sqlPageFactory) {
         super();
         this.jdbc = jdbc;
         this.databaseMetadata = databaseMetadata;
+        this.sqlPageFactory = sqlPageFactory;
     }
 
     /**
+     * Instantiates a new sql query.
+     *
      * @param jdbc           jdbc
      * @param mappingFactory mappingFactory
+     * @param sqlPageFactory the sql page factory
      */
-    public SqlQuery(Jdbc jdbc, JdbcMappingFactory mappingFactory) {
+    public SqlQuery(Jdbc jdbc, JdbcMappingFactory mappingFactory, SqlPageFactory sqlPageFactory) {
         super();
         this.jdbc = jdbc;
         this.mappingFactory = mappingFactory;
         databaseMetadata = mappingFactory.getMetadata();
+        this.sqlPageFactory = sqlPageFactory;
     }
 
     /**
@@ -62,7 +78,7 @@ public class SqlQuery implements Query {
             alias = aliasManager.put(repository.name());
         }
         return new SqlQueryEntityProperties(jdbc, databaseMetadata, repository.name(), alias, mappingFactory,
-                aliasManager);
+                sqlPageFactory, aliasManager);
     }
 
     /**
@@ -70,7 +86,8 @@ public class SqlQuery implements Query {
      */
     @Override
     public SqlQueryEntityProperties find(String tableName) {
-        return new SqlQueryEntityProperties(jdbc, databaseMetadata, tableName, mappingFactory, new AliasManager());
+        return new SqlQueryEntityProperties(jdbc, databaseMetadata, tableName, mappingFactory, sqlPageFactory,
+                new AliasManager());
     }
 
     /**
@@ -82,6 +99,6 @@ public class SqlQuery implements Query {
             throw new SqldbHammerException("mappingFactory is null");
         }
         return new TypeSqlQueryEntityProperties(jdbc, mappingFactory.getClassMapping(repositType), mappingFactory,
-                new AliasManager());
+                sqlPageFactory, new AliasManager());
     }
 }
