@@ -132,6 +132,8 @@ public class SqlQueryTest extends JdbcTestBase {
                 .eq("password", "123456").and().group().gt("age", 18).and().lt("age", 60).list(User.class);
         query.find("user").property("username", "password", "age").where().eq("username", "yufei").and()
                 .eq("password", "123456").and().group(g -> g.gt("age", 18).and().lt("age", 60)).list(User.class);
+        query.find("user").property("username", "password", "age").where().eq("username", "yufei").and()
+                .eq("password", "123456").and(g -> g.gt("age", 18).and().lt("age", 60)).list(User.class);
     }
 
     @Test

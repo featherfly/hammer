@@ -65,6 +65,16 @@ public class SqlConditionGroupExpressionBuilderTest {
 
         assertEquals("`name` = ? AND `pwd` = ? AND ( `sex` = ? OR `age` > ? ) AND `username` = ?", builder.build());
         assertEquals(params, builder.getParams());
+
+        builder = new SqlConditionGroupExpressionBuilder(Dialects.MYSQL, sqlPageFactory);
+        builder.eq("name", name).and().eq("pwd", pwd).and(c -> c.eq("sex", sex).or().gt("age", age)).and()
+                .eq("username", username);
+
+        System.out.println(builder.build());
+        System.out.println(builder.getParams());
+
+        assertEquals("`name` = ? AND `pwd` = ? AND ( `sex` = ? OR `age` > ? ) AND `username` = ?", builder.build());
+        assertEquals(params, builder.getParams());
     }
 
     @Test
