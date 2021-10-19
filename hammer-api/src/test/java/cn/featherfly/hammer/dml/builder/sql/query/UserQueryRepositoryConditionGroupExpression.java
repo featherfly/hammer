@@ -5,7 +5,7 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.Date;
-import java.util.function.Function;
+import java.util.function.Consumer;
 
 import cn.featherfly.common.lang.function.DateSupplier;
 import cn.featherfly.common.lang.function.LocalDateSupplier;
@@ -2190,7 +2190,7 @@ public class UserQueryRepositoryConditionGroupExpression implements
      */
     @Override
     public UserQueryRepositoryConditionGroupExpression group(
-            Function<UserQueryRepositoryConditionGroupExpression, UserQueryRepositoryConditionGroupExpression> group) {
+            Consumer<UserQueryRepositoryConditionGroupExpression> group) {
         // YUFEI_TODO Auto-generated method stub
         return null;
     }
@@ -2379,4 +2379,22 @@ public class UserQueryRepositoryConditionGroupExpression implements
         return null;
     }
 
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public UserQueryRepositoryConditionGroupExpression and(
+            Consumer<UserQueryRepositoryConditionGroupExpression> group) {
+        // YUFEI_TODO Auto-generated method stub
+        return null;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public UserQueryRepositoryConditionGroupExpression or(Consumer<UserQueryRepositoryConditionGroupExpression> group) {
+        // YUFEI_TODO Auto-generated method stub
+        return null;
+    }
 }

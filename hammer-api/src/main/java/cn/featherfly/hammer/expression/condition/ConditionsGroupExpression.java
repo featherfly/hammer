@@ -1,7 +1,7 @@
 
 package cn.featherfly.hammer.expression.condition;
 
-import java.util.function.Function;
+import java.util.function.Consumer;
 
 /**
  * <p>
@@ -23,12 +23,10 @@ public interface ConditionsGroupExpression<C extends ConditionsGroupExpression<C
     C group();
 
     /**
-     * <p>
      * 把group对应的表达式组加入当前,无需调用endGroup.
-     * </p>
      *
      * @param group the group function
      * @return 条件组结束后的逻辑表达式
      */
-    L group(Function<C, L> group);
+    L group(Consumer<C> group);
 }

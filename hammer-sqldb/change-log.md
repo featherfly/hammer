@@ -1,3 +1,7 @@
+# 0.5.22
+1. LogicExpression加入L and(Consumer<C> group)和L or(Consumer<C> group)
+2. L group(Function<C,L> group)修改为L group(Consumer<C> group);
+
 # 0.5.21 2021-09-21 
 1. 修复版本升级出现的问题，不再依赖spring打包的objenesis,而是直接依赖objenesis包
 2. 预编译实现对sql hints的支持，即不过滤/*+ */的内容，添加了注释不过滤功能
