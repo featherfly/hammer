@@ -7,7 +7,7 @@ import java.time.LocalTime;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
-import java.util.function.Function;
+import java.util.function.Consumer;
 
 import com.speedment.common.tuple.Tuple2;
 import com.speedment.common.tuple.Tuple3;
@@ -163,8 +163,24 @@ public abstract class AbstractRepositorySqlConditionGroupExpression<C extends Re
      * {@inheritDoc}
      */
     @Override
+    public L and(Consumer<C> group) {
+        return and().group(group);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
     public C or() {
         return (C) addCondition(new SqlLogicOperatorExpressionBuilder(LogicOperator.OR));
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public L or(Consumer<C> group) {
+        return or().group(group);
     }
 
     /**
@@ -184,8 +200,8 @@ public abstract class AbstractRepositorySqlConditionGroupExpression<C extends Re
      * {@inheritDoc}
      */
     @Override
-    public L group(Function<C, L> group) {
-        group.apply(group());
+    public L group(Consumer<C> group) {
+        group.accept(group());
         return endGroup();
     }
 
