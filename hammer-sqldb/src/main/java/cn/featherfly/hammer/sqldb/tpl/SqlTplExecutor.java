@@ -744,16 +744,6 @@ public class SqlTplExecutor implements TplExecutor {
         return Tuples.of(list, sql, tuple3.get1(), manager, params);
     }
 
-    // 如果sql中有参数没有使用条件判断，则参数会被过滤掉，（即过滤掉username参数）
-    // select * from user <@where>  username = :username <@and if=password> password = :password</@and></@where>
-    /**
-     * Gets the effective param array.
-     *
-     * @param params  the params
-     * @param manager the manager
-     * @return the effective param array
-     */
-    // 上面这种情况应该是不存在的，因为这样用本身会带来bug，如果一个查询条件不会空，也使用<@and> <@or>连接起来
     private Object[] getEffectiveParamArray(Map<String, Object> params, ConditionParamsManager manager) {
         return params.entrySet().stream().filter(t -> {
             return !manager.filterParamName(t.getKey());
@@ -762,20 +752,8 @@ public class SqlTplExecutor implements TplExecutor {
         }, e -> {
             return transvert(e.getKey(), e.getValue(), manager);
         })).values().toArray();
-
-        //        return manager.getParamNames().stream().filter(n -> params.containsKey(n)).map(n -> {
-        //            return transvert(n, params.get(n), manager);
-        //            //            return params.get(n);
-        //        }).collect(Collectors.toList()).toArray();
     }
 
-    /**
-     * Gets the effective param map.
-     *
-     * @param params  the params
-     * @param manager the manager
-     * @return the effective param map
-     */
     private Map<String, Object> getEffectiveParamMap(Map<String, Object> params, ConditionParamsManager manager) {
         return params.entrySet().stream().filter(t -> {
             return !manager.filterParamName(t.getKey());
@@ -784,28 +762,8 @@ public class SqlTplExecutor implements TplExecutor {
         }, e -> {
             return transvert(e.getKey(), e.getValue(), manager);
         }));
-
-        //        if (manager.getAmount() == 0) {
-        //            return params;
-        //        } else {
-        //            return params.entrySet().stream().filter(t -> {
-        //                return manager.containsName(t.getKey());
-        //            }).collect(Collectors.toMap(e -> {
-        //                return e.getKey();
-        //            }, e -> {
-        //                return transvert(e.getKey(), e.getValue(), manager);
-        //            }));
-        //        }
     }
 
-    /**
-     * Transvert.
-     *
-     * @param name    the name
-     * @param value   the value
-     * @param manager the manager
-     * @return the object
-     */
     private Object transvert(String name, Object value, ConditionParamsManager manager) {
         if (value == null) {
             return value;
