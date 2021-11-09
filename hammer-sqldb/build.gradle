@@ -1,5 +1,5 @@
 ext {
-    sv = "5.3.9"
+    sv = "5.3.12"
 }
 dependencies {
     api project(":hammer-api")
