@@ -146,6 +146,8 @@ from /*<<wrap*/ role
 
 - [ ] 定制专门为dml准备的简单模板实现，让模板sql更简洁更接近原生sql（已经以预编译的形式实现了特化模板，此项暂时不考虑）
 
-- [ ] TODO1
-- [ ] TODO2
-- [ ] TODO3
+# 为云原生GraalVM打包原生应用的相关支持
+
+- [ ] 加入mapper的编译期织入支持
+
+- [ ] dslapi的SerialFunction如果GraalVM不支持，则加入编译期转换功能
