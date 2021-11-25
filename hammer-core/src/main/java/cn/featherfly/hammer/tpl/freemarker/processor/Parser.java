@@ -5,6 +5,8 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicInteger;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import com.speedment.common.tuple.Tuple2;
 import com.speedment.common.tuple.Tuples;
@@ -22,6 +24,8 @@ import cn.featherfly.hammer.tpl.TplException;
  * @author zhongj
  */
 public class Parser {
+
+    private static final Pattern WRAP_PARAM_WITH_VALUE_PATTERN = Pattern.compile("(.+/\\*\\$=.*\\*/)(.+)");
 
     public static char[] COMMENT_SYMBOL_AFTER_DIRECTIVE_START = new char[] { '+', ' ', '\n' };
 
@@ -43,13 +47,14 @@ public class Parser {
 
     private String source;
 
+    private Pattern hasReplaceableTargetPattern = Pattern.compile("\\$=%?" + namedParamStart + "\\w+%?");
+
     /**
      * The Enum NullType.
      */
     public enum NullType {
         /** The null. */
-        NULL,
-        EMPTY
+        NULL, EMPTY
     }
 
     //    Parser parent;
@@ -222,6 +227,10 @@ public class Parser {
                                         }
 
                                         String paramContent = source.substring(index, wrapIndex);
+                                        Matcher matcher = WRAP_PARAM_WITH_VALUE_PATTERN.matcher(paramContent);
+                                        if (matcher.matches()) {
+                                            paramContent = matcher.group(1);
+                                        }
                                         Tuple2<Boolean, Boolean> isFuzzy = isFuzzy(paramContent);
                                         append = appendTransverter(isFuzzy.get0(), isFuzzy.get1(), append);
 
@@ -256,6 +265,7 @@ public class Parser {
             }
             index++;
         }
+
     }
 
     private Tuple2<Boolean, Boolean> isFuzzy(String paramContent) {
@@ -659,7 +669,18 @@ public class Parser {
      * @return true, if is replaceable
      */
     public boolean isReplaceable(String directiveContent) {
-        return directiveContent.charAt(0) == '$';
+        return directiveContent.length() >= 2 && directiveContent.charAt(0) == '$' && directiveContent.charAt(1) == '=';
+    }
+
+    /**
+     * Checks for replaceable target.
+     *
+     * @param directiveContent the directive content
+     * @return true, if is replaceable
+     */
+    public boolean hasReplaceableTarget(String directiveContent) {
+        return isReplaceable(directiveContent) && directiveContent.length() > 2
+                && hasReplaceableTargetPattern.matcher(directiveContent).matches();
     }
 
     /**
@@ -824,6 +845,7 @@ public class Parser {
      */
     public void setNamedParamStart(char namedParamStart) {
         this.namedParamStart = namedParamStart;
+        hasReplaceableTargetPattern = Pattern.compile("\\$=%?" + namedParamStart + "\\w+%?");
     }
 
     /**

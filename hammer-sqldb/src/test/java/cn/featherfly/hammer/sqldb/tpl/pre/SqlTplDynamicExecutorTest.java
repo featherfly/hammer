@@ -267,4 +267,15 @@ public class SqlTplDynamicExecutorTest extends DataSourceTestBase {
         assertEquals(list.size(), 1);
     }
 
+    @Test
+    void testFuzzpQuery2() {
+        List<Role> list = null;
+
+        list = roleMapper.selectByNameCo4("\\_init\\_");
+        if (dialect == Dialects.SQLITE) {
+            list = roleMapper.selectByNameCo4("_init_");
+        }
+        assertEquals(list.size(), 9);
+    }
+
 }
