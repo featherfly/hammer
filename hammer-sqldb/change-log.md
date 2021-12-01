@@ -1,5 +1,5 @@
 # 0.5.23 2021-12-01
-1. 修复/*password??*/ and password like /*$=%:password%*/'123'没有正确预编译的问题
+1. 修复/*fieldName??*/ and column_name like /*$=%:fieldName%*/'123' 这种格式没有正确预编译的问题
 
 # 0.5.22 2021-10-19
 1. LogicExpression加入L and(Consumer<C> group)和L or(Consumer<C> group)
