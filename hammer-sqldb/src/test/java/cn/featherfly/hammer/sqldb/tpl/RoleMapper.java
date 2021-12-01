@@ -78,6 +78,9 @@ public interface RoleMapper extends GenericHammer<Role, Integer> {
     @Template
     List<Role> selectByNameEw3(@Param("name") String name);
 
+    @Template
+    List<Role> selectByNameCo4(@Param("name") String name);
+
     @Template("select <@prop alias=\"_r\"/> <@tpl id='roleFromTemplate2' namespace='tpl/role_common'/>")
     List<Role> selectWithTemplate(@Param("name") String name);
 

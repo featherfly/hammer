@@ -51,3 +51,8 @@ selectByNameEw3: |
     /*<where*/ where
     /*name??*/ name like %:name
     /*>where*/
+selectByNameCo4: |
+    select /*prop*/* from role
+    /*<where*/ where
+    /*name??*/ name like /*$=%:name%*/'a'
+    /*>where*/
