@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import cn.featherfly.common.lang.Strings;
+import cn.featherfly.hammer.sqldb.jdbc.NestedBeanPropertyRowMapper.Mapping;
 
 /**
  * The Class MappingDebugMessage.
@@ -62,35 +63,17 @@ public class MappingDebugMessage {
         mappings.add(mapping);
     }
 
-    private class Mapping {
-
-        private String column;
-
-        private String columnAs;
-
-        private String property;
-
-        private String propertyTypeName;
-
-        /**
-         * {@inheritDoc}
-         */
-        @Override
-        public String toString() {
-            String format = Strings.format("  Mapping column %-{0}s as %-{1}s to property %-{2}s of type {3}\n",
-                    columnMaxLength, columnAsMaxLength, propertyMaxLength, propertyTypeName);
-            return String.format(format, column, columnAs, property);
-        }
-    }
-
     /**
      * {@inheritDoc}
      */
     @Override
     public String toString() {
         StringBuilder dm = new StringBuilder();
+        String format = Strings.format("  Mapping column %-{0}s as %-{1}s to property %-{2}s of type %s\n",
+                columnMaxLength, columnAsMaxLength, propertyMaxLength);
         for (Mapping mapping : mappings) {
-            dm.append(mapping.toString());
+            dm.append(String.format(format, mapping.column, mapping.columnAs, mapping.property,
+                    mapping.propertyTypeName));
         }
         return dm.toString();
     }
