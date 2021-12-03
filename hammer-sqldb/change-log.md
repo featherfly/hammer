@@ -1,7 +1,8 @@
-# 0.5.24 
+# 0.5.24 2021-12-03
 1. 优化NestedBeanPropertyRowMapper的日志输出格式
 2. 优化AbstractFreemarkerTemplateEngine的日志输出格式
 3. 优化部分调试日志输出格式
+4. 修复嵌套对象（xxx.yyy）获取值时没有使用自定义属性映射的问题
 
 # 0.5.23 2021-12-01
 1. 修复/*fieldName??*/ and column_name like /*$=%:fieldName%*/'123' 这种格式没有正确预编译的问题
