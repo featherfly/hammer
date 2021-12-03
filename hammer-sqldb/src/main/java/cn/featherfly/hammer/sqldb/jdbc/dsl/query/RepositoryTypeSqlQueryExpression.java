@@ -58,11 +58,12 @@ public class RepositoryTypeSqlQueryExpression extends RepositoryTypeSqlQueryCond
     /**
      * Instantiates a new sql query expression.
      *
-     * @param jdbc          the jdbc
-     * @param factory       MappingFactory
-     * @param aliasManager  aliasManager
-     * @param classMapping  the class mapping
-     * @param selectBuilder the select builder
+     * @param jdbc           the jdbc
+     * @param factory        MappingFactory
+     * @param sqlPageFactory the sql page factory
+     * @param aliasManager   aliasManager
+     * @param classMapping   the class mapping
+     * @param selectBuilder  the select builder
      */
     public RepositoryTypeSqlQueryExpression(Jdbc jdbc, MappingFactory factory, SqlPageFactory sqlPageFactory,
             AliasManager aliasManager, ClassMapping<?> classMapping, SqlSelectBasicBuilder selectBuilder) {
@@ -71,12 +72,15 @@ public class RepositoryTypeSqlQueryExpression extends RepositoryTypeSqlQueryCond
     }
 
     /**
-     * @param jdbc
-     * @param factory      MappingFactory
-     * @param aliasManager aliasManager
-     * @param parent
-     * @param queryAlias
-     * @param classMapping
+     * Instantiates a new repository type sql query expression.
+     *
+     * @param parent         the parent
+     * @param jdbc           the jdbc
+     * @param factory        MappingFactory
+     * @param aliasManager   aliasManager
+     * @param queryAlias     the query alias
+     * @param sqlPageFactory the sql page factory
+     * @param classMapping   the class mapping
      */
     RepositoryTypeSqlQueryExpression(RepositoryTypeQueryConditionGroupLogicExpression parent, Jdbc jdbc,
             MappingFactory factory, AliasManager aliasManager, String queryAlias, SqlPageFactory sqlPageFactory,
