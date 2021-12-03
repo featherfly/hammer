@@ -118,7 +118,7 @@ public class JdbcTestBase {
 
         //        jdbc = new SpringJdbcTemplateImpl(ds, dialect);
         //        jdbc = new JdbcImpl(ds, dialect, sqlTypeMappingManager);
-        jdbc = new JdbcImpl(ds, dialect);
+        jdbc = new JdbcImpl(ds, dialect, sqlTypeMappingManager);
         metadata = DatabaseMetadataManager.getDefaultManager().create(ds);
 
         mappingFactory = new JdbcMappingFactoryImpl(metadata, dialect, sqlTypeMappingManager);

@@ -121,3 +121,34 @@ INSERT INTO `tree`(`id`, `parent_id`, `name`) VALUES (3, 1, 'node_22');
 INSERT INTO `tree`(`id`, `parent_id`, `name`) VALUES (4, 2, 'node_211');
 INSERT INTO `tree`(`id`, `parent_id`, `name`) VALUES (5, 2, 'node_212');
 INSERT INTO `tree`(`id`, `parent_id`, `name`) VALUES (6, 5, 'node_2121');
+
+DROP TABLE IF EXISTS `app`;
+CREATE TABLE `app`  (
+  `id` INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
+  `code` text(64) NULL DEFAULT NULL,
+  `name` text(255) NULL DEFAULT NULL,
+  `descp` text(255) NULL DEFAULT NULL,
+  `platform` INTEGER NULL DEFAULT NULL,
+  `last_version` INTEGER NULL DEFAULT NULL
+);
+
+INSERT INTO `app` VALUES (1, 'cn.featherfly.surveillance.camera', '监控摄像头', NULL, 101, 2);
+
+-- ----------------------------
+-- Table structure for app_version
+-- ----------------------------
+DROP TABLE IF EXISTS `app_version`;
+CREATE TABLE `app_version`  (
+  `id` INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
+  `app_id` INTEGER NOT NULL,
+  `platform` INTEGER NULL DEFAULT NULL,
+  `version` INTEGER NULL DEFAULT NULL,
+  `version_code` text(255)  NULL DEFAULT NULL,
+  `descp` text(255)  NULL DEFAULT NULL,
+  `url` text(255)  NULL DEFAULT NULL,
+  `store_key` text(255) NULL DEFAULT NULL,
+  `release_date` datetime(0) NULL DEFAULT NULL
+) ;
+
+INSERT INTO `app_version` VALUES (1, 1, 101, 1, '0.1.0', NULL, 'http://www.baidu.com', NULL, '2021-11-27 17:18:36');
+INSERT INTO `app_version` VALUES (2, 1, 101, 2, '0.2.0', NULL, 'http://www.baidu.com', NULL, '2021-11-29 15:18:36');

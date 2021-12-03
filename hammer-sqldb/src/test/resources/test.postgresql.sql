@@ -144,3 +144,39 @@ INSERT INTO "tree"("id", "parent_id", "name") VALUES (3, 1, 'node_22');
 INSERT INTO "tree"("id", "parent_id", "name") VALUES (4, 2, 'node_211');
 INSERT INTO "tree"("id", "parent_id", "name") VALUES (5, 2, 'node_212');
 INSERT INTO "tree"("id", "parent_id", "name") VALUES (6, 5, 'node_2121');
+
+
+DROP TABLE IF EXISTS "app";
+CREATE TABLE "app"  (
+  "id" int4 NOT NULL DEFAULT nextval('globl_id_seq'),
+  "code" varchar(64)  NULL DEFAULT NULL,
+  "name" varchar(255)  NULL DEFAULT NULL,
+  "descp" varchar(255)  NULL DEFAULT NULL,
+  "platform" int2 NULL DEFAULT NULL,
+  "last_version" int4 NULL DEFAULT NULL,
+  CONSTRAINT "app_pk" PRIMARY KEY ("id")
+);
+
+CREATE UNIQUE INDEX "code_platform_unique" ON "app" (
+  "code",
+  "platform"
+);
+
+INSERT INTO "app" VALUES (1, 'cn.featherfly.surveillance.camera', '监控摄像头', NULL, 101, 2);
+
+DROP TABLE IF EXISTS "app_version";
+CREATE TABLE "app_version"  (
+  "id" int4 NOT NULL DEFAULT nextval('globl_id_seq'),
+  "app_id" int4 NOT NULL,
+  "platform" int4 NULL DEFAULT NULL,
+  "version" int4 NULL DEFAULT NULL,
+  "version_code" varchar(255)  NULL DEFAULT NULL,
+  "descp" varchar(255)  NULL DEFAULT NULL,
+  "url" varchar(255)  NULL DEFAULT NULL,
+  "store_key" varchar(255)  NULL DEFAULT NULL,
+  "release_date" timestamp NULL DEFAULT NULL,
+  CONSTRAINT "app_version_pk" PRIMARY KEY ("id")
+);
+
+INSERT INTO "app_version" VALUES (1, 1, 101, 1, '0.1.0', NULL, 'http://www.baidu.com', NULL, '2021-11-27 17:18:36');
+INSERT INTO "app_version" VALUES (2, 1, 101, 2, '0.2.0', NULL, 'http://www.baidu.com', NULL, '2021-11-29 15:18:36');
