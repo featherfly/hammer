@@ -44,13 +44,24 @@ public abstract class AbstractFreemarkerTemplateEngine<
         cfg.setTemplateExceptionHandler(TemplateExceptionHandler.RETHROW_HANDLER);
 
         StringTemplateLoader templateLoader = new StringTemplateLoader();
+        StringBuilder debugMessage = new StringBuilder();
+        if (logger.isDebugEnabled()) {
+            debugMessage.append("\n---------- template loader load template start ----------\n");
+        }
         configFactory.getAllConfigs().forEach(configs -> {
             configs.values().forEach(c -> {
                 TplExecuteConfig config = (TplExecuteConfig) c;
-                logger.debug("put template name: {}", config.getTplName());
+                if (logger.isDebugEnabled()) {
+                    debugMessage.append("  template name: " + config.getTplName() + "\n");
+                }
+                // logger.debug("put template name: {}", config.getTplName());
                 templateLoader.putTemplate(config.getTplName(), config.getQuery());
             });
         });
+        if (logger.isDebugEnabled()) {
+            debugMessage.append("---------- template loader load template end ----------");
+            logger.debug(debugMessage.toString());
+        }
         cfg.setTemplateLoader(templateLoader);
     }
 

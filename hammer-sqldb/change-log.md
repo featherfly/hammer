@@ -1,5 +1,6 @@
 # 0.5.24 
 1. 优化NestedBeanPropertyRowMapper的日志输出格式
+2. 优化AbstractFreemarkerTemplateEngine的日志输出格式
 
 # 0.5.23 2021-12-01
 1. 修复/*fieldName??*/ and column_name like /*$=%:fieldName%*/'123' 这种格式没有正确预编译的问题
