@@ -1,12 +1,24 @@
+/*
+ * All rights Reserved, Designed By zhongj
+ * @Title: AbstractJdbc.java
+ * @Package cn.featherfly.hammer.sqldb.jdbc
+ * @Description: todo (用一句话描述该文件做什么)
+ * @author: zhongj
+ * @date: 2021年12月3日 下午9:07:01
+ * @version V1.0
+ * @Copyright: 2021 www.featherfly.cn Inc. All rights reserved.
+ */
 
 package cn.featherfly.hammer.sqldb.jdbc;
 
+import java.io.Serializable;
 import java.math.BigDecimal;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.SQLType;
+import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
@@ -25,7 +37,6 @@ import cn.featherfly.common.db.dialect.Dialect;
 import cn.featherfly.common.db.mapping.SqlResultSet;
 import cn.featherfly.common.db.mapping.SqlTypeMappingManager;
 import cn.featherfly.common.lang.ArrayUtils;
-import cn.featherfly.common.lang.AssertIllegalArgument;
 import cn.featherfly.common.lang.Lang;
 import cn.featherfly.common.lang.Strings;
 import cn.featherfly.common.repository.Execution;
@@ -49,6 +60,8 @@ public abstract class AbstractJdbc implements Jdbc {
 
     /** The manager. */
     protected SqlTypeMappingManager manager;
+
+    protected final List<JdbcExecutionInterceptor> interceptors = new ArrayList<>(0);
 
     /**
      * Instantiates a new abstract jdbc.
@@ -120,20 +133,23 @@ public abstract class AbstractJdbc implements Jdbc {
      * {@inheritDoc}
      */
     @Override
-    public <T> T execute(ConnectionCallback<T> action) {
-        AssertIllegalArgument.isNotNull(action, "connectionCallback");
-        Connection con = getConnection();
-        try {
-            // Create close-suppressing Connection proxy, also preparing returned Statements.
-            //            Connection conToUse = createConnectionProxy(con);
-            return action.doInConnection(con, manager);
-        } catch (SQLException ex) {
-            releaseConnection(con, getDataSource());
-            con = null;
-            throw new JdbcException("ConnectionCallback", ex);
-        } finally {
-            releaseConnection(con, getDataSource());
+    public <T extends Serializable> int update(String sql, GeneratedKeyHolder<T> keySupplier, Object... args) {
+        if (Lang.isNotEmpty(sql)) {
+            sql = sql.trim();
+            return executeUpdate(sql, keySupplier, args);
         }
+        return 0;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public <T extends Serializable> int update(String sql, GeneratedKeyHolder<T> keySupplier,
+            Map<String, Object> args) {
+        logger.debug("sql -> {}, args -> {}", sql, args);
+        Execution execution = SqlUtils.convertNamedParamSql(sql, args);
+        return update(execution.getExecution(), keySupplier, execution.getParams());
     }
 
     /**
@@ -151,7 +167,6 @@ public abstract class AbstractJdbc implements Jdbc {
      */
     @Override
     public int update(String sql, Object... args) {
-        logger.debug("sql -> {}, args -> {}", sql, args);
         if (Lang.isNotEmpty(sql)) {
             sql = sql.trim();
             return executeUpdate(sql, args);
@@ -159,12 +174,31 @@ public abstract class AbstractJdbc implements Jdbc {
         return 0;
     }
 
-    private int executeUpdate(String sql, Object... args) {
+    private <T extends Serializable> int executeUpdate(String sql, GeneratedKeyHolder<T> generatedKeyHolder,
+            Object... args) {
+        logger.debug("sql -> {}, args -> {}", sql, args);
+        JdbcExecution execution = preHandle(sql, args);
+        sql = execution.getExecution();
+        args = execution.getParams();
         Connection connection = getConnection();
-        try (PreparedStatement prep = connection.prepareStatement(sql)) {
-            logger.debug("sql -> {}, args -> {}", sql, ArrayUtils.toString(args));
+        try (PreparedStatement prep = generatedKeyHolder == null ? connection.prepareStatement(sql)
+                : connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
             setParams(prep, args);
-            return prep.executeUpdate();
+            int result = prep.executeUpdate();
+            // 不是查询操作，没有查询结果
+            postHandle(execution, sql, args);
+            if (generatedKeyHolder != null) {
+                try (ResultSet res = prep.getGeneratedKeys()) {
+                    int row = 0;
+                    while (res.next()) {
+                        T value = manager.get(res, 1, generatedKeyHolder.getType());
+                        //                    Object value = JdbcUtils.getResultSetValue(res, 1, pm.getPropertyType());
+                        generatedKeyHolder.acceptKey(value, row++);
+                        logger.debug("auto generated key: ", value);
+                    }
+                }
+            }
+            return result;
         } catch (SQLException e) {
             releaseConnection(connection, getDataSource());
             throw new JdbcException(Strings.format("executeUpdate: \nsql: {0} \nargs: {1}", sql, Arrays.toString(args)),
@@ -172,6 +206,10 @@ public abstract class AbstractJdbc implements Jdbc {
         } finally {
             releaseConnection(connection, getDataSource());
         }
+    }
+
+    private int executeUpdate(String sql, Object... args) {
+        return executeUpdate(sql, null, args);
     }
 
     /**
@@ -191,6 +229,9 @@ public abstract class AbstractJdbc implements Jdbc {
     public List<Map<String, Object>> query(String sql, Object... args) {
         if (Lang.isNotEmpty(sql)) {
             sql = sql.trim();
+            JdbcExecution execution = preHandle(sql, args);
+            sql = execution.getExecution();
+            args = execution.getParams();
             Connection con = getConnection();
             try (PreparedStatement prep = con.prepareStatement(sql)) {
                 if (logger.isDebugEnabled()) {
@@ -198,7 +239,7 @@ public abstract class AbstractJdbc implements Jdbc {
                 }
                 setParams(prep, args);
                 try (ResultSet rs = prep.executeQuery()) {
-                    return JdbcUtils.getResultSetMaps(rs, manager);
+                    return postHandle(execution.setOriginalResult(JdbcUtils.getResultSetMaps(rs, manager)), sql, args);
                 }
             } catch (SQLException e) {
                 releaseConnection(con, getDataSource());
@@ -254,18 +295,21 @@ public abstract class AbstractJdbc implements Jdbc {
         List<T> list = new ArrayList<>();
         if (Lang.isNotEmpty(sql)) {
             sql = sql.trim();
+            JdbcExecution execution = preHandle(sql, args);
+            sql = execution.getExecution();
+            args = execution.getParams();
+            if (logger.isDebugEnabled()) { // TODO 后续移动到对应Intercepor中去
+                logger.debug("execute sql -> {} , params -> {}", sql, args);
+            }
             Connection con = getConnection();
             try (PreparedStatement prep = con.prepareStatement(sql)) {
-                if (logger.isDebugEnabled()) {
-                    logger.debug("execute sql -> {} , params -> {}", sql, ArrayUtils.toString(args));
-                }
                 setParams(prep, args);
                 try (ResultSet rs = prep.executeQuery()) {
                     int i = 0;
                     while (rs.next()) {
                         list.add(rowMapper.mapRow(new SqlResultSet(rs), i++));
                     }
-                    return list;
+                    return postHandle(execution.setOriginalResult(list), sql, args);
                 }
             } catch (SQLException e) {
                 releaseConnection(con, getDataSource());
@@ -521,6 +565,45 @@ public abstract class AbstractJdbc implements Jdbc {
         for (int i = 0; i < args.length; i++) {
             manager.set(prep, i + 1, args[i]);
         }
+    }
+
+    public void addInterceptor(JdbcExecutionInterceptor interceptor) {
+        if (interceptor != null) {
+            interceptors.add(interceptor);
+        }
+
+    }
+
+    public void addInterceptor(List<JdbcExecutionInterceptor> interceptors) {
+        if (interceptors != null) {
+            for (JdbcExecutionInterceptor jdbcExecutionInterceptor : interceptors) {
+                addInterceptor(jdbcExecutionInterceptor);
+            }
+        }
+    }
+
+    public void addInterceptor(JdbcExecutionInterceptor... interceptors) {
+        if (interceptors != null) {
+            for (JdbcExecutionInterceptor jdbcExecutionInterceptor : interceptors) {
+                addInterceptor(jdbcExecutionInterceptor);
+            }
+        }
+    }
+
+    private JdbcExecution preHandle(String sql, Object... params) {
+        JdbcExecution jdbcExecution = new JdbcExecution(this, sql, params);
+        for (JdbcExecutionInterceptor interceptor : interceptors) {
+            interceptor.preHandle(jdbcExecution);
+        }
+        return jdbcExecution;
+    }
+
+    @SuppressWarnings("unchecked")
+    private <O> O postHandle(JdbcExecution jdbcExecution, String sql, Object... params) {
+        for (JdbcExecutionInterceptor interceptor : interceptors) {
+            interceptor.postHandle(jdbcExecution);
+        }
+        return (O) jdbcExecution.getResult();
     }
 
     /**

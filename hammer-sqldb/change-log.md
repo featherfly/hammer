@@ -1,6 +1,7 @@
 # 0.5.25  
 1. 优化AbstractQueryOperate的日志输出格式
 2. 优化NestedBeanPropertyRowMapper在查询列表时，只进行一次类型检测和映射元数据，后续的都使用映射元数据结果直接进行赋值
+3. Jdbc执行sql加入intercptor
 
 # 0.5.24 2021-12-03
 1. 优化NestedBeanPropertyRowMapper的日志输出格式
