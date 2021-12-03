@@ -458,7 +458,7 @@ public class NestedBeanPropertyRowMapper<T>
         if (rowNumber == 0 && logger.isDebugEnabled()) {
             debugMessage.append("\n---------- Map " + mappedClass.getName() + " Start ----------\n");
             for (DebugMessage dm : debugMessages) {
-                dm.columnMaxLength = columnAsMaxLength;
+                dm.columnAsMaxLength = columnAsMaxLength;
                 dm.columnMaxLength = columnMaxLength;
                 dm.propertyMaxLength = propertyMaxLength;
                 debugMessage.append(dm.toString());
