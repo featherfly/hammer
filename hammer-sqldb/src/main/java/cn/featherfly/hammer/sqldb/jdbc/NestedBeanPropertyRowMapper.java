@@ -5,8 +5,10 @@ import java.beans.PropertyDescriptor;
 import java.sql.ResultSet;
 import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 import java.util.Set;
@@ -36,6 +38,8 @@ import cn.featherfly.common.db.mapping.JdbcMappingException;
 import cn.featherfly.common.db.mapping.SqlResultSet;
 import cn.featherfly.common.db.mapping.SqlTypeMappingManager;
 import cn.featherfly.common.lang.AssertIllegalArgument;
+import cn.featherfly.common.lang.Lang;
+import cn.featherfly.common.lang.Strings;
 
 /**
  * {@link RowMapper} implementation that converts a row into a new instance of
@@ -340,6 +344,10 @@ public class NestedBeanPropertyRowMapper<T>
         int columnCount = rsmd.getColumnCount();
         Set<String> populatedProperties = isCheckFullyPopulated() ? new HashSet<>() : null;
 
+        int columnMaxLength = 0;
+        int columnAsMaxLength = 0;
+        int propertyMaxLength = 0;
+        List<DebugMessage> debugMessages = new ArrayList<>();
         for (int index = 1; index <= columnCount; index++) {
             String column = JdbcUtils.lookupColumnName(rsmd, index);
             String field = lowerCaseName(org.springframework.util.StringUtils.delete(column, " "));
@@ -362,9 +370,28 @@ public class NestedBeanPropertyRowMapper<T>
                         //                        @SuppressWarnings("rawtypes")
                         //                        BeanProperty bp = bd.getChildBeanProperty(column);
                         if (bp != null) {
-                            if (rowNumber == 0) {
-                                logger.debug("Mapping column '{} as {}' to property '{}' of type '{}'",
-                                        rsmd.getColumnName(index), column, column, bp.getType().getName());
+                            if (rowNumber == 0 && logger.isDebugEnabled()) {
+                                DebugMessage dm = new DebugMessage();
+                                dm.column = rsmd.getColumnName(index);
+                                dm.columnAs = column;
+                                dm.property = column;
+                                dm.propertyTypeName = bp.getType().getName();
+                                debugMessages.add(dm);
+
+                                if (columnMaxLength < dm.column.length()) {
+                                    columnMaxLength = dm.column.length();
+                                }
+                                if (columnAsMaxLength < dm.columnAs.length()) {
+                                    columnAsMaxLength = dm.columnAs.length();
+                                }
+                                if (propertyMaxLength < dm.property.length()) {
+                                    propertyMaxLength = dm.property.length();
+                                }
+                                //                                debugMessage.append(
+                                //                                        Strings.format("Mapping column '{0} as {1}' to property '{2}' of type '{3}'\n",
+                                //                                                rsmd.getColumnName(index), column, column, bp.getType().getName()));
+                                //                                logger.debug("Mapping column '{} as {}' to property '{}' of type '{}'",
+                                //                                        rsmd.getColumnName(index), column, column, bp.getType().getName());
                             }
                             // FIXME 未实现嵌套查询的复杂映射
                             value = JdbcUtils.getResultSetValue(rs, index, bp.getType());
@@ -377,9 +404,24 @@ public class NestedBeanPropertyRowMapper<T>
                         } else {
                             value = getColumnValue(rs, index, pd);
                         }
-                        if (rowNumber == 0) {
-                            logger.debug("Mapping column '{}' to property '{}' of type '{}'", column, pd.getName(),
-                                    ClassUtils.getQualifiedName(pd.getPropertyType()));
+                        if (rowNumber == 0 && logger.isDebugEnabled()) {
+                            DebugMessage dm = new DebugMessage();
+                            dm.column = rsmd.getColumnName(index);
+                            dm.property = pd.getName();
+                            dm.propertyTypeName = ClassUtils.getQualifiedName(pd.getPropertyType());
+                            debugMessages.add(dm);
+
+                            if (columnMaxLength < dm.column.length()) {
+                                columnMaxLength = dm.column.length();
+                            }
+                            if (propertyMaxLength < dm.property.length()) {
+                                propertyMaxLength = dm.property.length();
+                            }
+                            //                            debugMessage.append(String.format("Mapping column %-15s to property %-15s of type %s\n",
+                            //                                    rsmd.getColumnName(index), pd.getName(),
+                            //                                    ClassUtils.getQualifiedName(pd.getPropertyType())));
+                            //                            logger.debug("Mapping column '{}' to property '{}' of type '{}'", column, pd.getName(),
+                            //                                    ClassUtils.getQualifiedName(pd.getPropertyType()));
                         }
                         try {
                             bw.setPropertyValue(pd.getName(), value);
@@ -410,6 +452,19 @@ public class NestedBeanPropertyRowMapper<T>
                     logger.debug("No property found for column '" + column + "' mapped to field '" + field + "'");
                 }
             }
+        }
+
+        StringBuilder debugMessage = new StringBuilder();
+        if (rowNumber == 0 && logger.isDebugEnabled()) {
+            debugMessage.append("\n---------- Map " + mappedClass.getName() + " Start ----------\n");
+            for (DebugMessage dm : debugMessages) {
+                dm.columnMaxLength = columnAsMaxLength;
+                dm.columnMaxLength = columnMaxLength;
+                dm.propertyMaxLength = propertyMaxLength;
+                debugMessage.append(dm.toString());
+            }
+            debugMessage.append("---------- Map " + mappedClass.getName() + " End ----------");
+            logger.debug(debugMessage.toString());
         }
 
         if (populatedProperties != null && !populatedProperties.equals(this.mappedProperties)) {
@@ -459,5 +514,39 @@ public class NestedBeanPropertyRowMapper<T>
     @Nullable
     protected Object getColumnValue(ResultSet rs, int index, PropertyDescriptor pd) throws SQLException {
         return JdbcUtils.getResultSetValue(rs, index, pd.getPropertyType());
+    }
+
+    private class DebugMessage {
+
+        private String column;
+
+        private int columnMaxLength;
+
+        private String columnAs;
+
+        private int columnAsMaxLength;
+
+        private String property;
+
+        private int propertyMaxLength;
+
+        private String propertyTypeName;
+
+        /**
+         * {@inheritDoc}
+         */
+        @Override
+        public String toString() {
+            if (Lang.isEmpty(columnAs)) {
+                String format = Strings.format("Mapping column %-{0}s to property %-{1}s of type {2}\n",
+                        columnMaxLength, propertyMaxLength, propertyTypeName);
+                return String.format(format, column, property);
+            } else {
+                String format = Strings.format("Mapping column %-{0}s as %-{1}s to property %-{2}s of type {3}\n",
+                        columnMaxLength, columnAsMaxLength, propertyMaxLength, propertyTypeName);
+                return String.format(format, column, columnAs, property);
+            }
+
+        }
     }
 }
