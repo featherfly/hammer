@@ -29,6 +29,7 @@ import cn.featherfly.common.io.FileUtils;
 import cn.featherfly.common.lang.ClassLoaderUtils;
 import cn.featherfly.common.lang.ClassUtils;
 import cn.featherfly.common.lang.Lang;
+import cn.featherfly.common.lang.Strings;
 import cn.featherfly.common.lang.UriUtils;
 import cn.featherfly.common.lang.matcher.MethodAnnotationMatcher;
 import cn.featherfly.hammer.HammerException;
@@ -498,6 +499,12 @@ public class TplConfigFactoryImpl implements TplConfigFactory {
             newConfigs.setFilePath(finalFilePath);
             newConfigs.setName(org.apache.commons.lang3.StringUtils.removeEnd(finalFilePath, suffix));
             Set<String> executeIds = new HashSet<>();
+
+            StringBuilder debugMessage = new StringBuilder();
+            if (logger.isDebugEnabled()) {
+                debugMessage.append("\n---------- read config from filePath -> " + filePath + " finalFilePath -> "
+                        + finalFilePath + " start ----------\n");
+            }
             tplExecuteConfigs.forEach((k, v) -> {
                 TplExecuteConfig config = new TplExecuteConfig();
                 if (v instanceof String) {
@@ -545,8 +552,11 @@ public class TplConfigFactoryImpl implements TplConfigFactory {
                 config.setName(name);
                 config.setFileName(fileName);
                 config.setFileDirectory(fileDirectory);
-                logger.debug("filePath -> {} , finalFilePath -> {} ,  {} -> {}", filePath, finalFilePath, k, config);
-                //                System.out.println(config);
+                if (logger.isDebugEnabled()) {
+                    debugMessage.append(Strings.format("  {0} -> {1}\n\n", k, config));
+                }
+                //                logger.debug("\n filePath -> {},\n finalFilePath -> {} ,\n {} -> {}", filePath, finalFilePath, k,
+                //                        config);
                 newConfigs.put(k, config);
                 if (executIdFileMap.containsKey(config.getExecuteId())
                         && !executIdFileMap.get(config.getExecuteId()).equals(finalFilePath)) {
@@ -555,7 +565,12 @@ public class TplConfigFactoryImpl implements TplConfigFactory {
                     executIdFileMap.put(config.getExecuteId(), finalFilePath);
                 }
             });
-            logger.debug("filePath -> {} , finalFilePath -> {} ,  configs -> {}", filePath, finalFilePath, newConfigs);
+            if (logger.isDebugEnabled()) {
+                debugMessage.append("---------- read config from filePath -> " + filePath + " finalFilePath -> "
+                        + finalFilePath + " end ----------\n");
+                logger.debug(debugMessage.toString());
+            }
+            //            logger.debug("filePath -> {} , finalFilePath -> {} ,  configs -> {}", filePath, finalFilePath, newConfigs);
             configs.put(finalFilePath, newConfigs);
             return newConfigs;
         } catch (IOException e) {

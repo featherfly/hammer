@@ -538,11 +538,11 @@ public class NestedBeanPropertyRowMapper<T>
         @Override
         public String toString() {
             if (Lang.isEmpty(columnAs)) {
-                String format = Strings.format("Mapping column %-{0}s to property %-{1}s of type {2}\n",
+                String format = Strings.format("  Mapping column %-{0}s to property %-{1}s of type {2}\n",
                         columnMaxLength, propertyMaxLength, propertyTypeName);
                 return String.format(format, column, property);
             } else {
-                String format = Strings.format("Mapping column %-{0}s as %-{1}s to property %-{2}s of type {3}\n",
+                String format = Strings.format("  Mapping column %-{0}s as %-{1}s to property %-{2}s of type {3}\n",
                         columnMaxLength, columnAsMaxLength, propertyMaxLength, propertyTypeName);
                 return String.format(format, column, columnAs, property);
             }
