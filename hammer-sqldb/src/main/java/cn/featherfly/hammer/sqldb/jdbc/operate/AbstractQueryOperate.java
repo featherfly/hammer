@@ -14,6 +14,7 @@ import cn.featherfly.common.lang.Lang;
 import cn.featherfly.common.repository.mapping.ClassMapping;
 import cn.featherfly.common.repository.mapping.PropertyMapping;
 import cn.featherfly.hammer.sqldb.jdbc.Jdbc;
+import cn.featherfly.hammer.sqldb.jdbc.MappingDebugMessage;
 
 /**
  * <p>
@@ -83,69 +84,48 @@ public abstract class AbstractQueryOperate<T> extends AbstractOperate<T> {
             SqlResultSet sqlrs = (SqlResultSet) rs;
             resultSet = sqlrs.getResultSet();
         }
+        MappingDebugMessage mappingDebugMessage = new MappingDebugMessage();
         for (PropertyMapping propertyMapping : classMapping.getPropertyMappings()) {
             if (propertyMapping.getPropertyMappings().isEmpty()) {
                 BeanProperty<?> bp = getBeanProperty(propertyMapping, rowNumber);
                 Object value = sqlTypeMappingManager.get(resultSet, index, bp);
-                index = setProperty(rowNumber, mappedObject, index, propertyMapping, value);
+                index = setProperty(rowNumber, mappedObject, index, propertyMapping, value, mappingDebugMessage);
             } else {
                 for (PropertyMapping subPropertyMapping : propertyMapping.getPropertyMappings()) {
                     // TODO 还没有测试
                     BeanProperty<?> bp = getBeanProperty(subPropertyMapping, rowNumber);
                     Object value = sqlTypeMappingManager.get(resultSet, index, bp);
                     //                    Object value = getColumnValue(rs, index, subPropertyMapping.getPropertyType());
-                    index = setProperty(rowNumber, mappedObject, index, subPropertyMapping, value);
+                    index = setProperty(rowNumber, mappedObject, index, subPropertyMapping, value, mappingDebugMessage);
                 }
             }
+        }
+        if (rowNumber == 0 && logger.isDebugEnabled()) {
+            StringBuilder debugMessage = new StringBuilder();
+            debugMessage.append("\n---------- Map " + classMapping.getType().getName() + " Start ----------\n")
+                    .append(mappingDebugMessage.toString())
+                    .append("---------- Map " + classMapping.getType().getName() + " End ----------");
+            logger.debug(debugMessage.toString());
         }
         return mappedObject;
     }
 
     private BeanProperty<?> getBeanProperty(PropertyMapping propertyMapping, int rowNumber) {
         String propertyName = ClassMappingUtils.getPropertyAliasName(propertyMapping);
-        //        if (logger.isDebugEnabled() && rowNumber == 0) {
-        //            logger.debug("Mapping column '{}' to property '{}' of type {}", new Object[] {
-        //                    propertyMapping.getRepositoryFieldName(), propertyName, propertyMapping.getPropertyType() });
-        //        }
         return beanDescriptor.getChildBeanProperty(propertyName);
     }
 
-    private int setProperty(int rowNumber, T mappedObject, int index, PropertyMapping propertyMapping, Object value) {
+    private int setProperty(int rowNumber, T mappedObject, int index, PropertyMapping propertyMapping, Object value,
+            MappingDebugMessage mappingDebugMessage) {
         String propertyName = ClassMappingUtils.getPropertyAliasName(propertyMapping);
         if (logger.isDebugEnabled() && rowNumber == 0) {
-            logger.debug("Mapping column '{}' to property '{}' of type {}", new Object[] {
-                    propertyMapping.getRepositoryFieldName(), propertyName, propertyMapping.getPropertyType() });
+            mappingDebugMessage.addMapping(propertyMapping.getRepositoryFieldName(), propertyName,
+                    propertyMapping.getPropertyType().getName());
         }
         BeanUtils.setProperty(mappedObject, propertyName, value);
         index++;
         return index;
     }
-
-    //    /**
-    //     * <p>
-    //     * 每条记录映射为对象.
-    //     * </p>
-    //     *
-    //     * @param rs        结果集
-    //     * @param rowNumber 行数
-    //     * @return 映射后的对象
-    //     */
-    //    protected T mapRow(ResultSet rs, int rowNumber) {
-    //        @SuppressWarnings("unchecked")
-    //        T mappedObject = (T) BeanUtils.instantiateClass(classMapping.getType());
-    //        int index = 1;
-    //        for (PropertyMapping propertyMapping : classMapping.getPropertyMappings()) {
-    //            Object value = getColumnValue(rs, index, propertyMapping.getPropertyType());
-    //            if (logger.isDebugEnabled() && rowNumber == 0) {
-    //                logger.debug("Mapping column '{}' to property '{}' of type {}",
-    //                        new Object[] { propertyMapping.getRepositoryFieldName(), propertyMapping.getPropertyName(),
-    //                                propertyMapping.getPropertyType() });
-    //            }
-    //            BeanUtils.setProperty(mappedObject, propertyMapping.getPropertyName(), value);
-    //            index++;
-    //        }
-    //        return mappedObject;
-    //    }
 
     /**
      * {@inheritDoc}

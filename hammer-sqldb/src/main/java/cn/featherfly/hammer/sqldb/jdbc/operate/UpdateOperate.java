@@ -64,7 +64,7 @@ public class UpdateOperate<T> extends AbstractExecuteOperate<T> {
      * {@inheritDoc}
      */
     @Override
-    public void initSql() {
+    protected void initSql() {
         Tuple2<String, Map<Integer, String>> tuple = ClassMappingUtils.getUpdateSqlAndParamPositions(classMapping,
                 jdbc.getDialect());
         sql = tuple.get0();
