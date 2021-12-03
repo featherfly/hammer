@@ -364,39 +364,29 @@ public class NestedBeanPropertyRowMapper<T>
                     BeanProperty<?> bp;
                     Object value = null;
                     if (nestedProperty) {
-                        bp = bd.getChildBeanProperty(column);
                         // 嵌套设值，所以直接使用SQL查询出来列的别名
-                        //                        BeanDescriptor<T> bd = BeanDescriptor.getBeanDescriptor(mappedClass);
-                        //                        @SuppressWarnings("rawtypes")
-                        //                        BeanProperty bp = bd.getChildBeanProperty(column);
-                        if (bp != null) {
-                            if (rowNumber == 0 && logger.isDebugEnabled()) {
-                                DebugMessage dm = new DebugMessage();
-                                dm.column = rsmd.getColumnName(index);
-                                dm.columnAs = column;
-                                dm.property = column;
-                                dm.propertyTypeName = bp.getType().getName();
-                                debugMessages.add(dm);
+                        bp = bd.getChildBeanProperty(column);
+                        // bp == null will throw NoSuchPropertyException
+                        if (rowNumber == 0 && logger.isDebugEnabled()) {
+                            DebugMessage dm = new DebugMessage();
+                            dm.column = rsmd.getColumnName(index);
+                            dm.columnAs = column;
+                            dm.property = column;
+                            dm.propertyTypeName = bp.getType().getName();
+                            debugMessages.add(dm);
 
-                                if (columnMaxLength < dm.column.length()) {
-                                    columnMaxLength = dm.column.length();
-                                }
-                                if (columnAsMaxLength < dm.columnAs.length()) {
-                                    columnAsMaxLength = dm.columnAs.length();
-                                }
-                                if (propertyMaxLength < dm.property.length()) {
-                                    propertyMaxLength = dm.property.length();
-                                }
-                                //                                debugMessage.append(
-                                //                                        Strings.format("Mapping column '{0} as {1}' to property '{2}' of type '{3}'\n",
-                                //                                                rsmd.getColumnName(index), column, column, bp.getType().getName()));
-                                //                                logger.debug("Mapping column '{} as {}' to property '{}' of type '{}'",
-                                //                                        rsmd.getColumnName(index), column, column, bp.getType().getName());
+                            if (columnMaxLength < dm.column.length()) {
+                                columnMaxLength = dm.column.length();
                             }
-                            // FIXME 未实现嵌套查询的复杂映射
-                            value = JdbcUtils.getResultSetValue(rs, index, bp.getType());
-                            bd.setProperty(mappedObject, column, value);
+                            if (columnAsMaxLength < dm.columnAs.length()) {
+                                columnAsMaxLength = dm.columnAs.length();
+                            }
+                            if (propertyMaxLength < dm.property.length()) {
+                                propertyMaxLength = dm.property.length();
+                            }
                         }
+                        value = manager.get(rs, index, bp);
+                        bd.setProperty(mappedObject, column, value);
                     } else {
                         bp = bd.getChildBeanProperty(pd.getName());
                         if (bp != null) {
@@ -417,11 +407,6 @@ public class NestedBeanPropertyRowMapper<T>
                             if (propertyMaxLength < dm.property.length()) {
                                 propertyMaxLength = dm.property.length();
                             }
-                            //                            debugMessage.append(String.format("Mapping column %-15s to property %-15s of type %s\n",
-                            //                                    rsmd.getColumnName(index), pd.getName(),
-                            //                                    ClassUtils.getQualifiedName(pd.getPropertyType())));
-                            //                            logger.debug("Mapping column '{}' to property '{}' of type '{}'", column, pd.getName(),
-                            //                                    ClassUtils.getQualifiedName(pd.getPropertyType()));
                         }
                         try {
                             bw.setPropertyValue(pd.getName(), value);
