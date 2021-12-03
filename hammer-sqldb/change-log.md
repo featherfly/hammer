@@ -1,3 +1,7 @@
+# 0.5.25  
+1. 优化AbstractQueryOperate的日志输出格式
+2. 
+
 # 0.5.24 2021-12-03
 1. 优化NestedBeanPropertyRowMapper的日志输出格式
 2. 优化AbstractFreemarkerTemplateEngine的日志输出格式
