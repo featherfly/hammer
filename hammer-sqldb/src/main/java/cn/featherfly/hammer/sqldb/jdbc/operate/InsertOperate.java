@@ -1,10 +1,9 @@
 package cn.featherfly.hammer.sqldb.jdbc.operate;
 
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.Statement;
+import java.io.Serializable;
 import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
 
 import com.speedment.common.tuple.Tuple2;
 
@@ -12,9 +11,12 @@ import cn.featherfly.common.bean.BeanUtils;
 import cn.featherfly.common.db.mapping.ClassMappingUtils;
 import cn.featherfly.common.db.mapping.SqlTypeMappingManager;
 import cn.featherfly.common.db.metadata.DatabaseMetadata;
-import cn.featherfly.common.lang.ArrayUtils;
+import cn.featherfly.common.lang.GenericType;
+import cn.featherfly.common.lang.Lang;
+import cn.featherfly.common.lang.reflect.GenericClass;
 import cn.featherfly.common.repository.mapping.ClassMapping;
 import cn.featherfly.common.repository.mapping.PropertyMapping;
+import cn.featherfly.hammer.sqldb.jdbc.GeneratedKeyHolder;
 import cn.featherfly.hammer.sqldb.jdbc.Jdbc;
 
 /**
@@ -28,7 +30,7 @@ import cn.featherfly.hammer.sqldb.jdbc.Jdbc;
  * @param <T> 对象类型
  * @since 1.0
  */
-public class InsertOperate<T> extends AbstractExecuteOperate<T> {
+public class InsertOperate<T> extends AbstractBatchExecuteOperate<T> {
 
     /**
      * 使用给定数据源以及给定对象生成插入操作.
@@ -73,16 +75,7 @@ public class InsertOperate<T> extends AbstractExecuteOperate<T> {
      * @param entities the entities
      * @return insert success amount
      */
-    public int executeBatch(final T[] entities) {
-        return executeBatch(ArrayUtils.toList(entities));
-    }
-
-    /**
-     * insert batch.
-     *
-     * @param entities the entities
-     * @return insert success amount
-     */
+    @Override
     public int executeBatch(final List<T> entities) {
         return executeBatch(entities, true);
     }
@@ -96,50 +89,26 @@ public class InsertOperate<T> extends AbstractExecuteOperate<T> {
      */
     public int executeBatch(final List<T> entities, boolean autoSetGenerateId) {
         if (jdbc.getDialect().isInsertBatch()) {
-            return jdbc.execute((con, manager) -> {
-                Tuple2<String, Map<Integer, String>> tuple = ClassMappingUtils
-                        .getInsertBatchSqlAndParamPositions(entities.size(), classMapping, jdbc.getDialect());
-                String sql = tuple.get0();
-                List<PropertyMapping> pks = classMapping.getPrivaryKeyPropertyMappings();
-                PreparedStatement prep = null;
-                if (pks.size() == 1 && autoSetGenerateId) {
-                    prep = con.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
-                } else {
-                    prep = con.prepareStatement(sql);
-                }
-                int index = 0;
-                for (T entity : entities) {
-                    setParameter(prep, entity, index, manager);
-                    index++;
-                }
+            Tuple2<String, Map<Integer, String>> tuple = ClassMappingUtils
+                    .getInsertBatchSqlAndParamPositions(entities.size(), classMapping, jdbc.getDialect());
+            String sql = tuple.get0();
+            List<PropertyMapping> pks = classMapping.getPrivaryKeyPropertyMappings();
+            if (pks.size() == 1) {
+                return jdbc.update(sql, new GeneratedKeyHolder<Serializable>() {
+                    @Override
+                    public void acceptKey(Serializable key, int row) {
+                        BeanUtils.setProperty(entities.get(row), pks.get(0).getPropertyName(), key);
+                    }
 
-                logger.debug("execute sql: {}", sql);
-                int result = prep.executeUpdate();
-
-                if (pks.size() == 1 && autoSetGenerateId) {
-                    PropertyMapping pm = pks.get(0);
-                    ResultSet res = prep.getGeneratedKeys();
-                    StringBuilder msg = null;
-                    if (logger.isDebugEnabled()) {
-                        msg = new StringBuilder("自动生成的键值 : ");
+                    @SuppressWarnings("unchecked")
+                    @Override
+                    public GenericType<Serializable> getType() {
+                        return (GenericClass<Serializable>) new GenericClass<>(pks.get(0).getPropertyType());
                     }
-                    index = 0;
-                    while (res.next()) {
-                        Object value = manager.get(res, 1, pkProperties.get(0));
-                        //                        Object value = JdbcUtils.getResultSetValue(res, 1, pm.getPropertyType());
-                        if (logger.isDebugEnabled()) {
-                            msg.append(" ").append(value).append(", ");
-                        }
-                        BeanUtils.setProperty(entities.get(index), pm.getPropertyName(), value);
-                        index++;
-                    }
-                    if (logger.isDebugEnabled()) {
-                        logger.debug(msg.toString());
-                    }
-                }
-                prep.close();
-                return result;
-            });
+                }, getBatchParameters(entities, tuple.get1()));
+            } else {
+                return jdbc.update(sql, getBatchParameters(entities, tuple.get1()));
+            }
         } else {
             int size = 0;
             for (T entity : entities) {
@@ -160,40 +129,23 @@ public class InsertOperate<T> extends AbstractExecuteOperate<T> {
      */
     @Override
     public int execute(final T entity) {
-        return jdbc.execute((con, manager) -> {
-            List<PropertyMapping> pks = classMapping.getPrivaryKeyPropertyMappings();
-            PreparedStatement prep = null;
-            if (pks.size() == 1) {
-                prep = con.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
-            } else {
-                prep = con.prepareStatement(sql);
-            }
-            setParameter(prep, entity, manager);
-            logger.debug("execute sql: {}", sql);
-            int result = prep.executeUpdate();
+        List<PropertyMapping> pks = classMapping.getPrivaryKeyPropertyMappings();
+        if (pks.size() == 1) {
+            return jdbc.update(sql, new GeneratedKeyHolder<Serializable>() {
+                @Override
+                public void acceptKey(Serializable key, int row) {
+                    BeanUtils.setProperty(entity, pks.get(0).getPropertyName(), key);
+                }
 
-            if (pks.size() == 1) {
-                PropertyMapping pm = pks.get(0);
-                ResultSet res = prep.getGeneratedKeys();
-                StringBuilder msg = null;
-                if (logger.isDebugEnabled()) {
-                    msg = new StringBuilder("自动生成的键值 : ");
+                @SuppressWarnings("unchecked")
+                @Override
+                public GenericType<Serializable> getType() {
+                    return (GenericClass<Serializable>) new GenericClass<>(pks.get(0).getPropertyType());
                 }
-                if (res.next()) {
-                    Object value = manager.get(res, 1, pkProperties.get(0));
-                    //                    Object value = JdbcUtils.getResultSetValue(res, 1, pm.getPropertyType());
-                    if (logger.isDebugEnabled()) {
-                        msg.append(" ").append(value).append(", ");
-                    }
-                    BeanUtils.setProperty(entity, pm.getPropertyName(), value);
-                }
-                if (logger.isDebugEnabled()) {
-                    logger.debug(msg.toString());
-                }
-            }
-            prep.close();
-            return result;
-        });
+            }, getParameters(entity));
+        } else {
+            return jdbc.update(sql, getParameters(entity));
+        }
     }
 
     /**
@@ -206,5 +158,29 @@ public class InsertOperate<T> extends AbstractExecuteOperate<T> {
         sql = tuple.get0();
         propertyPositions.putAll(tuple.get1());
         logger.debug("sql: {}", sql);
+    }
+
+    /**
+     * Gets the batch parameters.
+     *
+     * @param entities          the entities
+     * @param propertyPositions the property positions
+     * @return the batch parameters
+     */
+    protected Object[] getBatchParameters(List<T> entities, Map<Integer, String> propertyPositions) {
+        if (Lang.isEmpty(entities)) {
+            return new Object[] {};
+        }
+        Object[] params = new Object[propertyPositions.size() * entities.size()];
+        for (int i = 0; i < entities.size(); i++) {
+            T entity = entities.get(i);
+            int index = 0;
+            for (Entry<Integer, String> propertyPosition : propertyPositions.entrySet()) {
+                params[i * propertyPositions.size() + index] = BeanUtils.getProperty(entity,
+                        propertyPosition.getValue());
+                index++;
+            }
+        }
+        return params;
     }
 }

@@ -250,18 +250,6 @@ public abstract class AbstractOperate<T> {
     }
 
     /**
-     * Sets the batch parameters.
-     *
-     * @param entities          the entities
-     * @param propertyPositions the property positions
-     * @param manager           the manager
-     */
-    protected void setBatchParameters(List<T> entities, Map<Integer, String> propertyPositions,
-            SqlTypeMappingManager manager) {
-
-    }
-
-    /**
      * Gets the parameters.
      *
      * @param entity the entity
@@ -269,31 +257,6 @@ public abstract class AbstractOperate<T> {
      */
     public Object[] getParameters(T entity) {
         return getParameters(entity, propertyPositions);
-    }
-
-    /**
-     * Gets the batch parameters.
-     *
-     * @param entities          the entities
-     * @param propertyPositions the property positions
-     * @return the batch parameters
-     */
-    public Object[] getBatchParameters(List<T> entities, Map<Integer, String> propertyPositions) {
-        if (Lang.isEmpty(entities)) {
-            return new Object[] {};
-        }
-        Object[] params = new Object[propertyPositions.size()];
-        int pkNum = propertyPositions.size() / entities.size();
-        int i = 0;
-        T entity = null;
-        for (Entry<Integer, String> propertyPosition : propertyPositions.entrySet()) {
-            if (i % pkNum == 0) {
-                entity = entities.get(i / pkNum);
-            }
-            params[i] = BeanUtils.getProperty(entity, propertyPosition.getValue());
-            i++;
-        }
-        return params;
     }
 
     /**

@@ -387,7 +387,7 @@ public class SqldbHammerImpl implements SqldbHammer {
      * {@inheritDoc}
      */
     @Override
-    public <E> int delete(List<Serializable> ids, @Nonnull Class<E> entityType) {
+    public <E, ID extends Serializable> int delete(List<ID> ids, @Nonnull Class<E> entityType) {
         if (Lang.isEmpty(ids)) {
             return Chars.ZERO;
         }

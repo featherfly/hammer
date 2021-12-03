@@ -4,12 +4,13 @@
 package cn.featherfly.hammer.sqldb.jdbc.operate;
 
 import java.io.Serializable;
-import java.sql.PreparedStatement;
 import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
 
 import com.speedment.common.tuple.Tuple2;
 
+import cn.featherfly.common.bean.BeanUtils;
 import cn.featherfly.common.constant.Chars;
 import cn.featherfly.common.db.mapping.ClassMappingUtils;
 import cn.featherfly.common.db.mapping.SqlTypeMappingManager;
@@ -30,7 +31,7 @@ import cn.featherfly.hammer.sqldb.jdbc.Jdbc;
  * @param <T> 对象类型
  * @since 1.0
  */
-public class DeleteOperate<T> extends AbstractExecuteOperate<T> {
+public class DeleteOperate<T> extends AbstractBatchExecuteOperate<T> {
 
     /**
      * 使用给定数据源以及给定对象生成删除操作.
@@ -79,15 +80,7 @@ public class DeleteOperate<T> extends AbstractExecuteOperate<T> {
      * @return 操作影响的数据行数
      */
     public int delete(Serializable id) {
-        return jdbc.execute((con, manager) -> {
-            PreparedStatement prep = null;
-            prep = con.prepareStatement(sql);
-            setParameter(prep, id, manager);
-            logger.debug("execute sql: {}", sql);
-            int result = prep.executeUpdate();
-            prep.close();
-            return result;
-        });
+        return jdbc.update(sql, id);
     }
 
     /**
@@ -112,35 +105,14 @@ public class DeleteOperate<T> extends AbstractExecuteOperate<T> {
      * @param ids id list
      * @return 操作影响的数据行数
      */
-    public int deleteBatch(List<Serializable> ids) {
+    public <ID extends Serializable> int deleteBatch(List<ID> ids) {
         if (Lang.isEmpty(ids)) {
             return Chars.ZERO;
         }
-        return jdbc.execute((con, manager) -> {
-            Tuple2<String, Map<Integer, String>> tuple = ClassMappingUtils.getDeleteSqlAndParamPositions(ids.size(),
-                    classMapping, jdbc.getDialect());
-            try (PreparedStatement prep = con.prepareStatement(tuple.get0())) {
-                int index = 1;
-                for (Serializable id : ids) {
-                    manager.set(prep, index, id, pkProperties.get(index - 1));
-                    //                    JdbcUtils.setParameter(prep, index, id);
-                    index++;
-                }
-                logger.debug("execute sql: {} \n params: {}", sql, ids);
-                int result = prep.executeUpdate();
-                return result;
-            }
-        });
-    }
+        Tuple2<String, Map<Integer, String>> tuple = ClassMappingUtils.getDeleteSqlAndParamPositions(ids.size(),
+                classMapping, jdbc.getDialect());
 
-    /**
-     * Execute batch.
-     *
-     * @param entities the entities
-     * @return the int
-     */
-    public int executeBatch(final T[] entities) {
-        return executeBatch(ArrayUtils.toList(entities));
+        return jdbc.update(tuple.get0(), ids.toArray());
     }
 
     /**
@@ -149,23 +121,14 @@ public class DeleteOperate<T> extends AbstractExecuteOperate<T> {
      * @param entities the entity
      * @return the int
      */
+    @Override
     public int executeBatch(final List<T> entities) {
         if (Lang.isEmpty(entities)) {
             return Chars.ZERO;
         }
         Tuple2<String, Map<Integer, String>> tuple = ClassMappingUtils.getDeleteSqlAndParamPositions(entities.size(),
                 classMapping, jdbc.getDialect());
-        //        return jdbc.update(tuple.get0(), getBatchParameters(entities, tuple.get1()));
-        return jdbc.execute((con, manager) -> {
-            try (PreparedStatement prep = con.prepareStatement(tuple.get0())) {
-                Object[] params = setBatchParameters(entities, tuple.get1(), prep, manager);
-                if (logger.isDebugEnabled()) {
-                    logger.debug("execute sql: {} \n params: {}", sql, ArrayUtils.toString(params));
-                }
-                int result = prep.executeUpdate();
-                return result;
-            }
-        });
+        return jdbc.update(tuple.get0(), getBatchParameters(entities, tuple.get1()));
     }
 
     /**
@@ -181,4 +144,23 @@ public class DeleteOperate<T> extends AbstractExecuteOperate<T> {
 
         // TODO 后续使用batchSql template优化，只需要替换动态参数部分
     }
+
+    protected Object[] getBatchParameters(List<T> entities, Map<Integer, String> propertyPositions) {
+        if (Lang.isEmpty(entities)) {
+            return new Object[] {};
+        }
+        Object[] params = new Object[propertyPositions.size()];
+        int pkNum = propertyPositions.size() / entities.size();
+        int i = 0;
+        T entity = null;
+        for (Entry<Integer, String> propertyPosition : propertyPositions.entrySet()) {
+            if (i % pkNum == 0) {
+                entity = entities.get(i / pkNum);
+            }
+            params[i] = BeanUtils.getProperty(entity, propertyPosition.getValue());
+            i++;
+        }
+        return params;
+    }
+
 }

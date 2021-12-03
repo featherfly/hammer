@@ -6,6 +6,7 @@ import static org.testng.Assert.assertNotNull;
 import static org.testng.Assert.assertNull;
 import static org.testng.Assert.assertTrue;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -250,6 +251,24 @@ public class OperatorTest extends JdbcTestBase {
         assertEquals(roles.size(), size);
 
         delete.executeBatch(roles);
+
+        roles.forEach(r -> {
+            assertNull(get.get(r));
+        });
+
+        List<Serializable> ids = new ArrayList<>();
+        roles.clear();
+        for (int i = 0; i < size; i++) {
+            Role r = new Role();
+            insert.execute(r);
+            assertNotNull(r.getId());
+            roles.add(r);
+            ids.add(r.getId());
+        }
+        assertEquals(roles.size(), size);
+        assertEquals(ids.size(), size);
+
+        delete.deleteBatch(ids);
 
         roles.forEach(r -> {
             assertNull(get.get(r));

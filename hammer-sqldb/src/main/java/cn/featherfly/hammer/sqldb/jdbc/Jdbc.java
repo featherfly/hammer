@@ -1,5 +1,6 @@
 package cn.featherfly.hammer.sqldb.jdbc;
 
+import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.List;
 import java.util.Map;
@@ -49,13 +50,26 @@ public interface Jdbc {
     int update(String sql, Map<String, Object> args);
 
     /**
-     * Execute.
+     * Update.
      *
-     * @param <T>    the generic type
-     * @param action the action
-     * @return the t
+     * @param <T>                the generic type
+     * @param sql                sql
+     * @param generatedKeyHolder the key supplier
+     * @param args               args
+     * @return map list
      */
-    <T> T execute(ConnectionCallback<T> action);
+    <T extends Serializable> int update(String sql, GeneratedKeyHolder<T> generatedKeyHolder, Object... args);
+
+    /**
+     * Update.
+     *
+     * @param <T>                the generic type
+     * @param sql                sql
+     * @param generatedKeyHolder the key supplier
+     * @param args               args
+     * @return map list
+     */
+    <T extends Serializable> int update(String sql, GeneratedKeyHolder<T> generatedKeyHolder, Map<String, Object> args);
 
     /**
      * Query.
