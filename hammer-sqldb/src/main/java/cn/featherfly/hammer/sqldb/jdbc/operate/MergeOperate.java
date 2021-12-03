@@ -1,6 +1,5 @@
 package cn.featherfly.hammer.sqldb.jdbc.operate;
 
-import java.sql.PreparedStatement;
 import java.util.Map;
 
 import com.speedment.common.tuple.Tuple3;
@@ -8,7 +7,6 @@ import com.speedment.common.tuple.Tuple3;
 import cn.featherfly.common.db.mapping.ClassMappingUtils;
 import cn.featherfly.common.db.mapping.SqlTypeMappingManager;
 import cn.featherfly.common.db.metadata.DatabaseMetadata;
-import cn.featherfly.common.lang.ArrayUtils;
 import cn.featherfly.common.repository.mapping.ClassMapping;
 import cn.featherfly.hammer.sqldb.jdbc.Jdbc;
 
@@ -78,17 +76,18 @@ public class MergeOperate<T> extends AbstractOperate<T> {
         if (tuple.get2() == 0) {
             return 0;
         }
-        return jdbc.execute((con, manager) -> {
-            try (PreparedStatement prep = con.prepareStatement(tuple.get0())) {
-                Object[] params = setParameters(entity, tuple.get1(), prep, manager);
-                if (logger.isDebugEnabled()) {
-                    logger.debug("execute sql: {} \n params: {}", tuple.get0(), ArrayUtils.toString(params));
-                }
-                int result = prep.executeUpdate();
-                return result;
-            }
-        });
-        //        return jdbc.update(tuple.get0(), getParameters(entity, tuple.get1()));
+        return jdbc.update(tuple.get0(), getParameters(entity, tuple.get1()));
+        //        return jdbc.execute((con, manager) -> {
+        //            try (PreparedStatement prep = con.prepareStatement(tuple.get0())) {
+        //                Object[] params = setParameters(entity, tuple.get1(), prep, manager);
+        //                if (logger.isDebugEnabled()) {
+        //                    logger.debug("execute sql: {} \n params: {}", tuple.get0(), ArrayUtils.toString(params));
+        //                }
+        //                int result = prep.executeUpdate();
+        //                return result;
+        //            }
+        //        });
+
     }
 
     /**

@@ -611,7 +611,7 @@ public class BasedTplHammer implements Hammer {
      * {@inheritDoc}
      */
     @Override
-    public <E> int delete(List<Serializable> ids, Class<E> entityType) {
+    public <E, ID extends Serializable> int delete(List<ID> ids, Class<E> entityType) {
         return hammer.delete(ids, entityType);
     }
 
