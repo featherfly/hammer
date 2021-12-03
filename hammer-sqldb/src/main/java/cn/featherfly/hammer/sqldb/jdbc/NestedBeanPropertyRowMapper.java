@@ -5,8 +5,10 @@ import java.beans.PropertyDescriptor;
 import java.sql.ResultSet;
 import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 import java.util.Set;
@@ -31,6 +33,7 @@ import org.springframework.util.StringUtils;
 
 import cn.featherfly.common.bean.BeanDescriptor;
 import cn.featherfly.common.bean.BeanProperty;
+import cn.featherfly.common.bean.NoSuchPropertyException;
 import cn.featherfly.common.db.JdbcException;
 import cn.featherfly.common.db.mapping.JdbcMappingException;
 import cn.featherfly.common.db.mapping.SqlResultSet;
@@ -318,6 +321,8 @@ public class NestedBeanPropertyRowMapper<T>
         }
     }
 
+    private List<Mapping> mappings;
+
     /**
      * Extract the values for all columns in the current row.
      * <p>
@@ -341,80 +346,173 @@ public class NestedBeanPropertyRowMapper<T>
         Set<String> populatedProperties = isCheckFullyPopulated() ? new HashSet<>() : null;
 
         MappingDebugMessage mappingDebugMessage = new MappingDebugMessage();
-        for (int index = 1; index <= columnCount; index++) {
-            String column = JdbcUtils.lookupColumnName(rsmd, index);
-            String field = lowerCaseName(org.springframework.util.StringUtils.delete(column, " "));
+        BeanDescriptor<T> beanDescriptor = BeanDescriptor.getBeanDescriptor(mappedClass);
+        if (rowNumber == 0) {
+            mappings = new ArrayList<>();
 
-            boolean nestedProperty = false;
-            if (field.contains(".")) {
-                nestedProperty = true;
-                field = org.apache.commons.lang3.StringUtils.substringBefore(field, ".");
-            }
-            PropertyDescriptor pd = this.mappedFields != null ? this.mappedFields.get(field) : null;
-            if (pd != null) {
-                try {
-                    BeanDescriptor<T> bd = BeanDescriptor.getBeanDescriptor(mappedClass);
+            for (int index = 1; index <= columnCount; index++) {
+                Mapping mapping = new Mapping();
+                mappings.add(mapping);
+
+                String column = JdbcUtils.lookupColumnName(rsmd, index);
+                String field = lowerCaseName(org.springframework.util.StringUtils.delete(column, " "));
+                boolean nestedProperty = false;
+                if (field.contains(".")) {
+                    nestedProperty = true;
+                    field = org.apache.commons.lang3.StringUtils.substringBefore(field, ".");
+                }
+                mapping.column = rsmd.getColumnName(index);
+                mapping.columnAs = column;
+
+                PropertyDescriptor pd = this.mappedFields != null ? this.mappedFields.get(field) : null;
+                mapping.propertyDescriptor = pd;
+                if (pd != null) {
                     BeanProperty<?> bp;
-                    Object value = null;
                     if (nestedProperty) {
                         // 嵌套设值，所以直接使用SQL查询出来列的别名
-                        bp = bd.getChildBeanProperty(column);
+                        bp = beanDescriptor.getChildBeanProperty(column);
                         // bp == null will throw NoSuchPropertyException
-                        if (rowNumber == 0 && logger.isDebugEnabled()) {
-                            mappingDebugMessage.addMapping(rsmd.getColumnName(index), column, column,
-                                    bp.getType().getName());
-                        }
-                        value = manager.get(rs, index, bp);
-                        bd.setProperty(mappedObject, column, value);
+                        mapping.property = column;
+                        mapping.propertyTypeName = bp.getType().getName();
+                        mapping.beanProperty = bp;
                     } else {
-                        bp = bd.getChildBeanProperty(pd.getName());
-                        if (bp != null) {
-                            value = manager.get(rs, index, bp);
-                        } else {
-                            value = getColumnValue(rs, index, pd);
-                        }
-                        if (rowNumber == 0 && logger.isDebugEnabled()) {
-                            mappingDebugMessage.addMapping(rsmd.getColumnName(index), pd.getName(),
-                                    ClassUtils.getQualifiedName(pd.getPropertyType()));
-                        }
                         try {
-                            bw.setPropertyValue(pd.getName(), value);
+                            bp = beanDescriptor.getChildBeanProperty(pd.getName());
+
+                            mapping.property = pd.getName();
+                            mapping.propertyTypeName = bp.getType().getName();
+                            mapping.beanProperty = bp;
+
+                        } catch (NoSuchPropertyException e) {
+                            logger.debug(e.getMessage());
+
+                            mapping.property = pd.getName();
+                            mapping.propertyTypeName = ClassUtils.getQualifiedName(pd.getPropertyType());
+                        }
+                    }
+
+                    if (logger.isDebugEnabled()) {
+                        mappingDebugMessage.addMapping(mapping.column, mapping.columnAs, mapping.property,
+                                mapping.propertyTypeName);
+                    }
+
+                    if (populatedProperties != null) {
+                        populatedProperties.add(mapping.propertyDescriptor.getName());
+                    }
+                } else {
+                    logger.debug("No property found for column '" + column + "' mapped to field '" + field + "'");
+                }
+            }
+
+            if (logger.isDebugEnabled()) {
+                StringBuilder debugMessage = new StringBuilder();
+                debugMessage.append("\n---------- Map " + mappedClass.getName() + " Start ----------\n")
+                        .append(mappingDebugMessage.toString())
+                        .append("---------- Map " + mappedClass.getName() + " End ----------");
+                logger.debug(debugMessage.toString());
+            }
+        }
+
+        for (int index = 1; index <= mappings.size(); index++) {
+            Mapping mapping = mappings.get(index - 1);
+            if (mapping.propertyDescriptor != null) {
+                try {
+                    Object value = null;
+                    if (mapping.beanProperty != null) {
+                        value = manager.get(rs, index, mapping.beanProperty);
+                        beanDescriptor.setProperty(mappedObject, mapping.property, value);
+                    } else {
+                        value = getColumnValue(rs, index, mapping.propertyDescriptor);
+                        try {
+                            bw.setPropertyValue(mapping.propertyDescriptor.getName(), value);
                         } catch (TypeMismatchException ex) {
                             if (value == null && this.primitivesDefaultedForNullValue) {
                                 if (logger.isDebugEnabled()) {
                                     logger.debug("Intercepted TypeMismatchException for row " + rowNumber
-                                            + " and column '" + column + "' with null value when setting property '"
-                                            + pd.getName() + "' of type '"
-                                            + ClassUtils.getQualifiedName(pd.getPropertyType()) + "' on object: "
-                                            + mappedObject, ex);
+                                            + " and column '" + mapping.columnAs
+                                            + "' with null value when setting property '"
+                                            + mapping.propertyDescriptor.getName() + "' of type '"
+                                            + ClassUtils.getQualifiedName(mapping.propertyDescriptor.getPropertyType())
+                                            + "' on object: " + mappedObject, ex);
                                 }
                             } else {
                                 throw ex;
                             }
                         }
-                        if (populatedProperties != null) {
-                            populatedProperties.add(pd.getName());
-                        }
                     }
                 } catch (NotWritablePropertyException ex) {
                     throw new DataRetrievalFailureException(
-                            "Unable to map column '" + column + "' to property '" + pd.getName() + "'", ex);
-                }
-            } else {
-                // No PropertyDescriptor found
-                if (rowNumber == 0 && logger.isDebugEnabled()) {
-                    logger.debug("No property found for column '" + column + "' mapped to field '" + field + "'");
+                            "Unable to map column '" + mapping.columnAs + "' to property '" + mapping.property + "'",
+                            ex);
                 }
             }
         }
 
-        if (rowNumber == 0 && logger.isDebugEnabled()) {
-            StringBuilder debugMessage = new StringBuilder();
-            debugMessage.append("\n---------- Map " + mappedClass.getName() + " Start ----------\n")
-                    .append(mappingDebugMessage.toString())
-                    .append("---------- Map " + mappedClass.getName() + " End ----------");
-            logger.debug(debugMessage.toString());
-        }
+        //        for (int index = 1; index <= columnCount; index++) {
+        //            PropertyDescriptor pd = this.mappedFields != null ? this.mappedFields.get(field) : null;
+        //            if (pd != null) {
+        //                try {
+        //                    BeanDescriptor<T> bd = BeanDescriptor.getBeanDescriptor(mappedClass);
+        //                    Object value = null;
+        //                    if (nestedProperty) {
+        //                        // 嵌套设值，所以直接使用SQL查询出来列的别名
+        //                        bp = bd.getChildBeanProperty(column);
+        //                        // bp == null will throw NoSuchPropertyException
+        //                        if (rowNumber == 0 && logger.isDebugEnabled()) {
+        //                            mappingDebugMessage.addMapping(rsmd.getColumnName(index), column, column,
+        //                                    bp.getType().getName());
+        //                        }
+        //                        value = manager.get(rs, index, bp);
+        //                        bd.setProperty(mappedObject, column, value);
+        //                    } else {
+        //                        bp = bd.getChildBeanProperty(pd.getName());
+        //                        if (bp != null) {
+        //                            value = manager.get(rs, index, bp);
+        //                        } else {
+        //                            value = getColumnValue(rs, index, pd);
+        //                        }
+        //                        if (rowNumber == 0 && logger.isDebugEnabled()) {
+        //                            mappingDebugMessage.addMapping(rsmd.getColumnName(index), pd.getName(),
+        //                                    ClassUtils.getQualifiedName(pd.getPropertyType()));
+        //                        }
+        //                        try {
+        //                            bw.setPropertyValue(pd.getName(), value);
+        //                        } catch (TypeMismatchException ex) {
+        //                            if (value == null && this.primitivesDefaultedForNullValue) {
+        //                                if (logger.isDebugEnabled()) {
+        //                                    logger.debug("Intercepted TypeMismatchException for row " + rowNumber
+        //                                            + " and column '" + column + "' with null value when setting property '"
+        //                                            + pd.getName() + "' of type '"
+        //                                            + ClassUtils.getQualifiedName(pd.getPropertyType()) + "' on object: "
+        //                                            + mappedObject, ex);
+        //                                }
+        //                            } else {
+        //                                throw ex;
+        //                            }
+        //                        }
+        //                        if (populatedProperties != null) {
+        //                            populatedProperties.add(pd.getName());
+        //                        }
+        //                    }
+        //                } catch (NotWritablePropertyException ex) {
+        //                    throw new DataRetrievalFailureException(
+        //                            "Unable to map column '" + column + "' to property '" + pd.getName() + "'", ex);
+        //                }
+        //            } else {
+        //                // No PropertyDescriptor found
+        //                if (rowNumber == 0 && logger.isDebugEnabled()) {
+        //                    logger.debug("No property found for column '" + column + "' mapped to field '" + field + "'");
+        //                }
+        //            }
+        //        }
+
+        //        if (rowNumber == 0 && logger.isDebugEnabled()) {
+        //            StringBuilder debugMessage = new StringBuilder();
+        //            debugMessage.append("\n---------- Map " + mappedClass.getName() + " Start ----------\n")
+        //                    .append(mappingDebugMessage.toString())
+        //                    .append("---------- Map " + mappedClass.getName() + " End ----------");
+        //            logger.debug(debugMessage.toString());
+        //        }
 
         if (populatedProperties != null && !populatedProperties.equals(this.mappedProperties)) {
             throw new InvalidDataAccessApiUsageException(
@@ -463,5 +561,30 @@ public class NestedBeanPropertyRowMapper<T>
     @Nullable
     protected Object getColumnValue(ResultSet rs, int index, PropertyDescriptor pd) throws SQLException {
         return JdbcUtils.getResultSetValue(rs, index, pd.getPropertyType());
+    }
+
+    public static class Mapping {
+
+        String column;
+
+        String columnAs;
+
+        String property;
+
+        String propertyTypeName;
+
+        BeanProperty<?> beanProperty;
+
+        private PropertyDescriptor propertyDescriptor;
+
+        //        /**
+        //         * {@inheritDoc}
+        //         */
+        //        @Override
+        //        public String toString() {
+        //            String format = Strings.format("  Mapping column %-{0}s as %-{1}s to property %-{2}s of type {3}\n",
+        //                    columnMaxLength, columnAsMaxLength, propertyMaxLength, propertyTypeName);
+        //            return String.format(format, column, columnAs, property);
+        //        }
     }
 }

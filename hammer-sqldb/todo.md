@@ -1,4 +1,6 @@
-- [ ] 优化NestedBeanPropertyRowMapper和SingleColumnRowMapper在查询列表时，只进行一次类型检测和映射元数据，后续的都使用映射元数据结果直接进行赋值（相当于预编译的概念）
+- [x] 优化NestedBeanPropertyRowMapper在查询列表时，只进行一次类型检测和映射元数据，后续的都使用映射元数据结果直接进行赋值（相当于预编译的概念）
+
+- [ ] 优化SingleColumnRowMapper在查询列表时，只进行一次类型检测和映射元数据，后续的都使用映射元数据结果直接进行赋值（相当于预编译的概念）
 
 - [ ] 加入实体对象的延迟级联查询，基于JPA注解
 
