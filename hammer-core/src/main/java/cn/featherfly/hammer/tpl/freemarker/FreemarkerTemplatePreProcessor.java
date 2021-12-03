@@ -31,7 +31,7 @@ public class FreemarkerTemplatePreProcessor implements TemplatePreprocessor {
             result.append(abstractElement.getValue());
         }
         String s = result.toString();
-        logger.debug("source:\n {} \nresult:\n {}", value, s);
+        logger.debug("\nsource:\n{}\nresult:\n{}", value, s);
         return s;
     }
 }
