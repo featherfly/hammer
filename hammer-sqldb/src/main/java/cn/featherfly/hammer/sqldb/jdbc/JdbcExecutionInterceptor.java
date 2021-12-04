@@ -24,7 +24,6 @@ public interface JdbcExecutionInterceptor extends ExecutionInterceptor<JdbcExecu
      * Post handle.
      *
      * @param execution the execution
-     * @param result    the result
      * @throws JdbcException the jdbc exception
      */
     @Override

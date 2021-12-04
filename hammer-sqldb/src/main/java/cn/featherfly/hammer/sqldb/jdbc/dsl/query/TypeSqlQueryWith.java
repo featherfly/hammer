@@ -21,33 +21,46 @@ import cn.featherfly.hammer.sqldb.jdbc.SqlPageFactory;
  * <p>
  * SqlQueryWith
  * </p>
+ * .
  *
  * @author zhongj
  */
 public class TypeSqlQueryWith implements TypeQueryWith, TypeQueryWithEntity {
 
+    /** The sql query entity properties. */
     protected TypeSqlQueryEntityProperties sqlQueryEntityProperties;
 
+    /** The condition table alias. */
     protected String conditionTableAlias;
 
+    /** The condition table column. */
     protected String conditionTableColumn;
 
+    /** The join table alias. */
     protected String joinTableAlias;
 
+    /** The join table column. */
     protected String joinTableColumn;
 
+    /** The select join on basic builder. */
     protected SqlSelectJoinOnBasicBuilder selectJoinOnBasicBuilder;
 
+    /** The factory. */
     protected MappingFactory factory;
 
+    /** The sql page factory. */
     protected SqlPageFactory sqlPageFactory;
 
+    /** The condition type class mapping. */
     protected ClassMapping<?> conditionTypeClassMapping;
 
+    /** The join type class mapping. */
     protected ClassMapping<?> joinTypeClassMapping;
 
+    /** The fetch property. */
     protected String fetchProperty;
 
+    /** The fetch property alias. */
     protected String fetchPropertyAlias;
 
     /**
@@ -56,6 +69,7 @@ public class TypeSqlQueryWith implements TypeQueryWith, TypeQueryWithEntity {
      * @param sqlQueryEntityProperties  the sql query entity properties
      * @param aliasManager              the alias manager
      * @param factory                   the factory
+     * @param sqlPageFactory            the sql page factory
      * @param conditionTypeClassMapping the condition type class mapping
      * @param conditionTableAlias       the condition table alias
      * @param conditionTableColumn      the condition table column
@@ -76,6 +90,7 @@ public class TypeSqlQueryWith implements TypeQueryWith, TypeQueryWithEntity {
      * @param sqlQueryEntityProperties  the sql query entity properties
      * @param aliasManager              the alias manager
      * @param factory                   the factory
+     * @param sqlPageFactory            the sql page factory
      * @param conditionTypeClassMapping the condition type class mapping
      * @param conditionTableAlias       the condition table alias
      * @param conditionTableColumn      the condition table column

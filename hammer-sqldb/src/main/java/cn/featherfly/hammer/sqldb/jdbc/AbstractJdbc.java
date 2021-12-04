@@ -2,10 +2,9 @@
  * All rights Reserved, Designed By zhongj
  * @Title: AbstractJdbc.java
  * @Package cn.featherfly.hammer.sqldb.jdbc
- * @Description: todo (用一句话描述该文件做什么)
+ * @Description: AbstractJdbc
  * @author: zhongj
  * @date: 2021年12月3日 下午9:07:01
- * @version V1.0
  * @Copyright: 2021 www.featherfly.cn Inc. All rights reserved.
  */
 
