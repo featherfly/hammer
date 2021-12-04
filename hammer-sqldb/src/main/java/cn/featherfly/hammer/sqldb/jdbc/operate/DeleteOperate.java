@@ -97,12 +97,10 @@ public class DeleteOperate<T> extends AbstractBatchExecuteOperate<T> {
     }
 
     /**
-     * <p>
-     * 删除指定ids列表
-     * </p>
-     * .
+     * 删除指定ids列表.
      *
-     * @param ids id list
+     * @param <ID> the generic type
+     * @param ids  id list
      * @return 操作影响的数据行数
      */
     public <ID extends Serializable> int deleteBatch(List<ID> ids) {
@@ -145,6 +143,13 @@ public class DeleteOperate<T> extends AbstractBatchExecuteOperate<T> {
         // TODO 后续使用batchSql template优化，只需要替换动态参数部分
     }
 
+    /**
+     * Gets the batch parameters.
+     *
+     * @param entities          the entities
+     * @param propertyPositions the property positions
+     * @return the batch parameters
+     */
     protected Object[] getBatchParameters(List<T> entities, Map<Integer, String> propertyPositions) {
         if (Lang.isEmpty(entities)) {
             return new Object[] {};

@@ -22,6 +22,7 @@ import cn.featherfly.hammer.sqldb.jdbc.Jdbc;
  * AbstractBatchExecuteOperate.
  *
  * @author zhongj
+ * @param <T> the generic type
  */
 public abstract class AbstractBatchExecuteOperate<T> extends AbstractExecuteOperate<T> {
 
@@ -39,10 +40,12 @@ public abstract class AbstractBatchExecuteOperate<T> extends AbstractExecuteOper
     }
 
     /**
-     * @param jdbc
-     * @param classMapping
-     * @param sqlTypeMappingManager
-     * @param dataBase
+     * Instantiates a new abstract batch execute operate.
+     *
+     * @param jdbc                  the jdbc
+     * @param classMapping          the class mapping
+     * @param sqlTypeMappingManager the sql type mapping manager
+     * @param dataBase              the data base
      */
     public AbstractBatchExecuteOperate(Jdbc jdbc, ClassMapping<T> classMapping,
             SqlTypeMappingManager sqlTypeMappingManager, String dataBase) {
@@ -50,9 +53,11 @@ public abstract class AbstractBatchExecuteOperate<T> extends AbstractExecuteOper
     }
 
     /**
-     * @param jdbc
-     * @param classMapping
-     * @param sqlTypeMappingManager
+     * Instantiates a new abstract batch execute operate.
+     *
+     * @param jdbc                  the jdbc
+     * @param classMapping          the class mapping
+     * @param sqlTypeMappingManager the sql type mapping manager
      */
     public AbstractBatchExecuteOperate(Jdbc jdbc, ClassMapping<T> classMapping,
             SqlTypeMappingManager sqlTypeMappingManager) {
