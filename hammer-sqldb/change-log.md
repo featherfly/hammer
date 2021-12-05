@@ -1,3 +1,7 @@
+# 0.5.26 2021-12-05
+1. Jdbc加入update(String,BeanPropertyValue<?>...),update(String,GeneratedKeyHolder,BeanPropertyValue<?>...)方法
+2. 相关operate类使用新的update方法
+
 # 0.5.25 2021-12-04
 1. 优化AbstractQueryOperate的日志输出格式
 2. 优化NestedBeanPropertyRowMapper在查询列表时，只进行一次类型检测和映射元数据，后续的都使用映射元数据结果直接进行赋值

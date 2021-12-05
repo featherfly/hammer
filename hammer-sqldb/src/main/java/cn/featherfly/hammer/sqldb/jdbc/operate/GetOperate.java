@@ -120,6 +120,8 @@ public class GetOperate<T> extends AbstractQueryOperate<T> {
             throw new SqldbHammerException("#get.id.null");
         }
         return jdbc.querySingle(sql, (RowMapper<T>) (res, rowNum) -> mapRow(res, rowNum), id);
+        //        return jdbc.querySingle(sql, (RowMapper<T>) (res, rowNum) -> mapRow(res, rowNum),
+        //                new BeanPropertyValue<>(pkProperties.get(0), id));
     }
 
     /**
@@ -139,6 +141,11 @@ public class GetOperate<T> extends AbstractQueryOperate<T> {
             throw new SqldbHammerException("#get.id.null");
         }
         return jdbc.querySingle(sql, (RowMapper<T>) (res, rowNum) -> mapRow(res, rowNum), ids.toArray());
+        //        BeanPropertyValue<?>[] bpvs = new BeanPropertyValue[ids.size()];
+        //        Lang.each(ids, (id, i) -> {
+        //            bpvs[i] = new BeanPropertyValue<>(pkProperties.get(i), id);
+        //        });
+        //        return jdbc.querySingle(sql, (RowMapper<T>) (res, rowNum) -> mapRow(res, rowNum), bpvs);
     }
 
     /**

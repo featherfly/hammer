@@ -23,12 +23,15 @@ import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
 import java.util.Map;
+import java.util.function.Consumer;
 
 import javax.sql.DataSource;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import cn.featherfly.common.bean.BeanProperty;
+import cn.featherfly.common.bean.BeanPropertyValue;
 import cn.featherfly.common.db.JdbcException;
 import cn.featherfly.common.db.JdbcUtils;
 import cn.featherfly.common.db.SqlUtils;
@@ -145,6 +148,19 @@ public abstract class AbstractJdbc implements Jdbc {
      */
     @Override
     public <T extends Serializable> int update(String sql, GeneratedKeyHolder<T> keySupplier,
+            BeanPropertyValue<?>... args) {
+        if (Lang.isNotEmpty(sql)) {
+            sql = sql.trim();
+            return executeUpdate(sql, keySupplier, args);
+        }
+        return 0;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public <T extends Serializable> int update(String sql, GeneratedKeyHolder<T> keySupplier,
             Map<String, Object> args) {
         logger.debug("sql -> {}, args -> {}", sql, args);
         Execution execution = SqlUtils.convertNamedParamSql(sql, args);
@@ -173,16 +189,48 @@ public abstract class AbstractJdbc implements Jdbc {
         return 0;
     }
 
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public int update(String sql, BeanPropertyValue<?>... args) {
+        if (Lang.isNotEmpty(sql)) {
+            sql = sql.trim();
+            return executeUpdate(sql, args);
+        }
+        return 0;
+    }
+
     private <T extends Serializable> int executeUpdate(String sql, GeneratedKeyHolder<T> generatedKeyHolder,
             Object... args) {
         logger.debug("sql -> {}, args -> {}", sql, args);
+        return executeUpdate(prep -> setParams(prep, args), sql, generatedKeyHolder, args);
+    }
+
+    private int executeUpdate(String sql, Object... args) {
+        return executeUpdate(sql, null, args);
+    }
+
+    private int executeUpdate(String sql, BeanPropertyValue<?>... args) {
+        return executeUpdate(sql, null, args);
+    }
+
+    private <T extends Serializable> int executeUpdate(String sql, GeneratedKeyHolder<T> generatedKeyHolder,
+            BeanPropertyValue<?>... argsBp) {
+        logger.debug("sql -> {}, args -> {}", sql, argsBp);
+        return executeUpdate(prep -> setParams(prep, argsBp), sql, generatedKeyHolder,
+                Arrays.stream(argsBp).map(arg -> arg.getValue()).toArray());
+    }
+
+    private <T extends Serializable> int executeUpdate(Consumer<PreparedStatement> setParams, String sql,
+            GeneratedKeyHolder<T> generatedKeyHolder, Object... args) {
         JdbcExecution execution = preHandle(sql, args);
         sql = execution.getExecution();
         args = execution.getParams();
         Connection connection = getConnection();
         try (PreparedStatement prep = generatedKeyHolder == null ? connection.prepareStatement(sql)
                 : connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
-            setParams(prep, args);
+            setParams.accept(prep);
             int result = prep.executeUpdate();
             // 不是查询操作，没有查询结果
             postHandle(execution, sql, args);
@@ -205,10 +253,6 @@ public abstract class AbstractJdbc implements Jdbc {
         } finally {
             releaseConnection(connection, getDataSource());
         }
-    }
-
-    private int executeUpdate(String sql, Object... args) {
-        return executeUpdate(sql, null, args);
     }
 
     /**
@@ -286,6 +330,18 @@ public abstract class AbstractJdbc implements Jdbc {
         return query(sql, rowMapper, args);
     }
 
+    //    @Override
+    //    public <T> List<T> query(String sql, Class<T> elementType, BeanPropertyValue<?>... args) {
+    //        SQLType sqlType = manager.getSqlType(elementType);
+    //        RowMapper<T> rowMapper = null;
+    //        if (sqlType == null) {
+    //            rowMapper = new NestedBeanPropertyRowMapper<>(elementType, manager);
+    //        } else {
+    //            rowMapper = new SingleColumnRowMapper<>(elementType, manager);
+    //        }
+    //        return query(sql, rowMapper, args);
+    //    }
+
     /**
      * {@inheritDoc}
      */
@@ -321,6 +377,15 @@ public abstract class AbstractJdbc implements Jdbc {
         return list;
     }
 
+    //    /**
+    //     * {@inheritDoc}
+    //     */
+    //    @Override
+    //    public <T> List<T> query(String sql, RowMapper<T> rowMapper, BeanPropertyValue<?>... args) {
+    //        return query(prep -> setParams(prep, args), sql, rowMapper,
+    //                Arrays.stream(args).map(arg -> arg.getValue()).toArray());
+    //    }
+
     /**
      * {@inheritDoc}
      */
@@ -345,6 +410,14 @@ public abstract class AbstractJdbc implements Jdbc {
         return singleResult(query(sql, rowMapper, args));
     }
 
+    //    /**
+    //     * {@inheritDoc}
+    //     */
+    //    @Override
+    //    public <T> T querySingle(String sql, RowMapper<T> rowMapper, BeanPropertyValue<?>... args) {
+    //        return singleResult(query(sql, rowMapper, args));
+    //    }
+
     /**
      * {@inheritDoc}
      */
@@ -368,6 +441,14 @@ public abstract class AbstractJdbc implements Jdbc {
     public <T> T querySingle(String sql, Class<T> elementType, Object... args) {
         return singleResult(query(sql, elementType, args));
     }
+
+    //    /**
+    //     * {@inheritDoc}
+    //     */
+    //    @Override
+    //    public <T> T querySingle(String sql, Class<T> elementType, BeanPropertyValue<?>... args) {
+    //        return singleResult(query(sql, elementType, args));
+    //    }
 
     private <T> T singleResult(Collection<T> results) {
         if (results == null || results.size() <= 0) {
@@ -403,6 +484,14 @@ public abstract class AbstractJdbc implements Jdbc {
         return nullableSingleResult(query(sql, rowMapper, args));
     }
 
+    //    /**
+    //     * {@inheritDoc}
+    //     */
+    //    @Override
+    //    public <T> T queryUnique(String sql, RowMapper<T> rowMapper, BeanPropertyValue<?>... args) {
+    //        return nullableSingleResult(query(sql, rowMapper, args));
+    //    }
+
     /**
      * {@inheritDoc}
      */
@@ -426,6 +515,14 @@ public abstract class AbstractJdbc implements Jdbc {
     public <T> T queryUnique(String sql, Class<T> elementType, Object... args) {
         return nullableSingleResult(query(sql, elementType, args));
     }
+
+    //    /**
+    //     * {@inheritDoc}
+    //     */
+    //    @Override
+    //    public <T> T queryUnique(String sql, Class<T> elementType, BeanPropertyValue<?>... args) {
+    //        return nullableSingleResult(query(sql, elementType, args));
+    //    }
 
     private <T> T nullableSingleResult(Collection<T> results) {
         if (Lang.isEmpty(results)) {
@@ -554,6 +651,38 @@ public abstract class AbstractJdbc implements Jdbc {
         return nullableSingleResult(results);
     }
 
+    //    private <T> List<T> query(Consumer<PreparedStatement> setParams, String sql, RowMapper<T> rowMapper,
+    //            Object... args) {
+    //        List<T> list = new ArrayList<>();
+    //        if (Lang.isNotEmpty(sql)) {
+    //            sql = sql.trim();
+    //            JdbcExecution execution = preHandle(sql, args);
+    //            sql = execution.getExecution();
+    //            args = execution.getParams();
+    //            if (logger.isDebugEnabled()) { // TODO 后续移动到对应Intercepor中去
+    //                logger.debug("execute sql -> {} , params -> {}", sql, args);
+    //            }
+    //            Connection con = getConnection();
+    //            try (PreparedStatement prep = con.prepareStatement(sql)) {
+    //                setParams.accept(prep);
+    //                try (ResultSet rs = prep.executeQuery()) {
+    //                    int i = 0;
+    //                    while (rs.next()) {
+    //                        list.add(rowMapper.mapRow(new SqlResultSet(rs), i++));
+    //                    }
+    //                    return postHandle(execution.setOriginalResult(list), sql, args);
+    //                }
+    //            } catch (SQLException e) {
+    //                releaseConnection(con, getDataSource());
+    //                con = null;
+    //                throw new JdbcException(Strings.format("query: \nsql: {0} \nargs: {1}", sql, Arrays.toString(args)), e);
+    //            } finally {
+    //                releaseConnection(con, getDataSource());
+    //            }
+    //        }
+    //        return list;
+    //    }
+
     /**
      * Sets the params.
      *
@@ -563,6 +692,20 @@ public abstract class AbstractJdbc implements Jdbc {
     protected void setParams(PreparedStatement prep, Object... args) {
         for (int i = 0; i < args.length; i++) {
             manager.set(prep, i + 1, args[i]);
+        }
+    }
+
+    /**
+     * Sets the params.
+     *
+     * @param prep the prep
+     * @param args the args
+     */
+    protected void setParams(PreparedStatement prep, BeanPropertyValue<?>... args) {
+        for (int i = 0; i < args.length; i++) {
+            @SuppressWarnings("unchecked")
+            BeanProperty<Object> argBp = (BeanProperty<Object>) args[i].getBeanProperty();
+            manager.set(prep, i + 1, args[i].getValue(), argBp);
         }
     }
 
