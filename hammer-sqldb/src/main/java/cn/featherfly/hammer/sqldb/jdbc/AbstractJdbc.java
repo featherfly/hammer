@@ -683,6 +683,17 @@ public abstract class AbstractJdbc implements Jdbc {
     //        return list;
     //    }
 
+    protected void setParam(PreparedStatement prep, int index, Object arg) {
+        if (arg instanceof BeanPropertyValue) {
+            BeanPropertyValue<?> bpv = (BeanPropertyValue<?>) arg;
+            @SuppressWarnings("unchecked")
+            BeanProperty<Object> bp = (BeanProperty<Object>) bpv.getBeanProperty();
+            manager.set(prep, index, bpv.getValue(), bp);
+        } else {
+            manager.set(prep, index, arg);
+        }
+    }
+
     /**
      * Sets the params.
      *
