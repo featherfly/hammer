@@ -7,6 +7,7 @@ import java.util.Map;
 
 import javax.sql.DataSource;
 
+import cn.featherfly.common.bean.BeanPropertyValue;
 import cn.featherfly.common.db.dialect.Dialect;
 import cn.featherfly.common.repository.mapping.RowMapper;
 
@@ -47,6 +48,15 @@ public interface Jdbc {
      * @param args the args
      * @return the int
      */
+    int update(String sql, BeanPropertyValue<?>... args);
+
+    /**
+     * Update.
+     *
+     * @param sql  the sql
+     * @param args the args
+     * @return the int
+     */
     int update(String sql, Map<String, Object> args);
 
     /**
@@ -59,6 +69,18 @@ public interface Jdbc {
      * @return map list
      */
     <T extends Serializable> int update(String sql, GeneratedKeyHolder<T> generatedKeyHolder, Object... args);
+
+    /**
+     * Update.
+     *
+     * @param <T>                the generic type
+     * @param sql                the sql
+     * @param generatedKeyHolder the generated key holder
+     * @param args               the args
+     * @return the int
+     */
+    <T extends Serializable> int update(String sql, GeneratedKeyHolder<T> generatedKeyHolder,
+            BeanPropertyValue<?>... args);
 
     /**
      * Update.
@@ -100,6 +122,17 @@ public interface Jdbc {
      */
     <T> List<T> query(String sql, RowMapper<T> rowMapper, Object... args);
 
+    //    /**
+    //     * Query.
+    //     *
+    //     * @param <T>       the generic type
+    //     * @param sql       the sql
+    //     * @param rowMapper the row mapper
+    //     * @param args      the args
+    //     * @return the list
+    //     */
+    //    <T> List<T> query(String sql, RowMapper<T> rowMapper, BeanPropertyValue<?>... args);
+
     /**
      * Query.
      *
@@ -110,6 +143,17 @@ public interface Jdbc {
      * @return elementType object list
      */
     <T> List<T> query(String sql, Class<T> elementType, Object... args);
+
+    //    /**
+    //     * Query.
+    //     *
+    //     * @param <T>         the generic type
+    //     * @param sql         the sql
+    //     * @param elementType the element type
+    //     * @param args        the args
+    //     * @return the list
+    //     */
+    //    <T> List<T> query(String sql, Class<T> elementType, BeanPropertyValue<?>... args);
 
     /**
      * Query.
@@ -162,6 +206,17 @@ public interface Jdbc {
      */
     <T> T querySingle(String sql, RowMapper<T> rowMapper, Object... args);
 
+    //    /**
+    //     * Query single.
+    //     *
+    //     * @param <T>       the generic type
+    //     * @param sql       the sql
+    //     * @param rowMapper the row mapper
+    //     * @param args      the args
+    //     * @return the t
+    //     */
+    //    <T> T querySingle(String sql, RowMapper<T> rowMapper, BeanPropertyValue<?>... args);
+
     /**
      * Query single.
      *
@@ -195,6 +250,17 @@ public interface Jdbc {
      */
     <T> T querySingle(String sql, Class<T> elementType, Object... args);
 
+    //    /**
+    //     * Query single.
+    //     *
+    //     * @param <T>         the generic type
+    //     * @param sql         the sql
+    //     * @param elementType the element type
+    //     * @param args        the args
+    //     * @return the t
+    //     */
+    //    <T> T querySingle(String sql, Class<T> elementType, BeanPropertyValue<?>... args);
+
     /**
      * Query unique.
      *
@@ -223,6 +289,17 @@ public interface Jdbc {
      * @return single elementType object
      */
     <T> T queryUnique(String sql, RowMapper<T> rowMapper, Object... args);
+
+    //    /**
+    //     * Query unique.
+    //     *
+    //     * @param <T>       the generic type
+    //     * @param sql       the sql
+    //     * @param rowMapper the row mapper
+    //     * @param args      the args
+    //     * @return the t
+    //     */
+    //    <T> T queryUnique(String sql, RowMapper<T> rowMapper, BeanPropertyValue<?>... args);
 
     /**
      * Query unique.
@@ -256,6 +333,17 @@ public interface Jdbc {
      * @return single elementType object
      */
     <T> T queryUnique(String sql, Class<T> elementType, Object... args);
+
+    //    /**
+    //     * Query unique.
+    //     *
+    //     * @param <T>         the generic type
+    //     * @param sql         the sql
+    //     * @param elementType the element type
+    //     * @param args        the args
+    //     * @return the t
+    //     */
+    //    <T> T queryUnique(String sql, Class<T> elementType, BeanPropertyValue<?>... args);
 
     /**
      * queryInt.

@@ -14,6 +14,7 @@ import org.slf4j.LoggerFactory;
 
 import cn.featherfly.common.bean.BeanDescriptor;
 import cn.featherfly.common.bean.BeanProperty;
+import cn.featherfly.common.bean.BeanPropertyValue;
 import cn.featherfly.common.bean.BeanUtils;
 import cn.featherfly.common.db.mapping.SqlTypeMappingManager;
 import cn.featherfly.common.db.metadata.DatabaseMetadata;
@@ -255,9 +256,26 @@ public abstract class AbstractOperate<T> {
      * @param entity the entity
      * @return the parameters
      */
-    public Object[] getParameters(T entity) {
+    public BeanPropertyValue<?>[] getParameters(T entity) {
         return getParameters(entity, propertyPositions);
     }
+
+    //    /**
+    //     * Gets the parameters.
+    //     *
+    //     * @param entity            the entity
+    //     * @param propertyPositions the property positions
+    //     * @return the parameters
+    //     */
+    //    protected Object[] getParameters(T entity, Map<Integer, String> propertyPositions) {
+    //        Object[] params = new Object[propertyPositions.size()];
+    //        int i = 0;
+    //        for (Entry<Integer, String> propertyPosition : propertyPositions.entrySet()) {
+    //            params[i] = BeanUtils.getProperty(entity, propertyPosition.getValue());
+    //            i++;
+    //        }
+    //        return params;
+    //    }
 
     /**
      * Gets the parameters.
@@ -266,14 +284,16 @@ public abstract class AbstractOperate<T> {
      * @param propertyPositions the property positions
      * @return the parameters
      */
-    protected Object[] getParameters(T entity, Map<Integer, String> propertyPositions) {
-        Object[] params = new Object[propertyPositions.size()];
+    @SuppressWarnings({ "unchecked", "rawtypes" })
+    protected BeanPropertyValue<?>[] getParameters(T entity, Map<Integer, String> propertyPositions) {
+        BeanPropertyValue<?>[] bpvs = new BeanPropertyValue[propertyPositions.size()];
         int i = 0;
         for (Entry<Integer, String> propertyPosition : propertyPositions.entrySet()) {
-            params[i] = BeanUtils.getProperty(entity, propertyPosition.getValue());
+            BeanProperty<?> bp = beanDescriptor.getBeanProperty(propertyPosition.getValue());
+            bpvs[i] = new BeanPropertyValue(bp, BeanUtils.getProperty(entity, propertyPosition.getValue()));
             i++;
         }
-        return params;
+        return bpvs;
     }
 
     /**

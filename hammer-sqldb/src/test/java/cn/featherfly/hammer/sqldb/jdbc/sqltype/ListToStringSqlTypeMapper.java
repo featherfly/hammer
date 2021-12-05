@@ -28,7 +28,7 @@ import cn.featherfly.common.lang.GenericType;
  *
  * @author zhongj
  */
-public class ListToStringSqlTypeMapper extends AbstractGenericJavaSqlTypeMapper<List> {
+public class ListToStringSqlTypeMapper extends AbstractGenericJavaSqlTypeMapper<List<?>> {
 
     //            private BeanProperty<List> bp = BeanDescriptor.getBeanDescriptor(Article.class)
     //                    .getBeanProperty("content");
@@ -39,32 +39,12 @@ public class ListToStringSqlTypeMapper extends AbstractGenericJavaSqlTypeMapper<
     }
 
     @Override
-    public boolean support(GenericType<List> type) {
+    public boolean support(GenericType<List<?>> type) {
         return type.getType().equals(List.class);
     }
 
     @Override
-    public Class<List> getJavaType(SQLType sqlType) {
-        return List.class;
-        //                if (JDBCType.VARCHAR.equals(sqlType)) {
-        //                    return List.class;
-        //                } else {
-        //                    return null;
-        //                }
-    }
-
-    @Override
-    public SQLType getSqlType(GenericType<List> javaType) {
-        return JDBCType.VARCHAR;
-        //                if (javaType.getType().equals(List.class)) {
-        //                    return JDBCType.VARCHAR;
-        //                } else {
-        //                    return null;
-        //                }
-    }
-
-    @Override
-    public void set(PreparedStatement prep, int columnIndex, List value) {
+    public void set(PreparedStatement prep, int columnIndex, List<?> value) {
         StringBuilder sb = new StringBuilder();
         for (Object object : value) {
             sb.append(object.toString()).append(",");
@@ -76,9 +56,13 @@ public class ListToStringSqlTypeMapper extends AbstractGenericJavaSqlTypeMapper<
     }
 
     @Override
-    public List get(ResultSet rs, int columnIndex) {
+    public List<?> get(ResultSet rs, int columnIndex) {
         try {
-            List list = new ArrayList<>();
+            List<? super Object> list = new ArrayList<>();
+            String value = rs.getString(columnIndex);
+            if (value == null) {
+                return list;
+            }
             for (String v : rs.getString(columnIndex).split(",")) {
                 list.add(Long.valueOf(v));
             }
