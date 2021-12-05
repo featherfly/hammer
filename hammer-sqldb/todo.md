@@ -16,6 +16,8 @@
 
 - [ ] 加入一次交互完成锁查询、修改，并返回修改后的结果的功能
 
+- [ ] dsl api 更新删除操作集成update(String,BeanPropertyValue<?>...)用于完善自定义属性映射
+
 - [ ] dsl api （eq,co,sw,ew,lk）加入like查询大小写敏感的支持
 
 - [ ] dsl api 条件查询加入表达式支持，（例如 store - :outNum >= 0[这种可以用传入的参数名用一个特殊的类来处理]， u.id = ur.user_id[这种可以用传入的value以一个特殊类来处理，表示传入的是需要拼接的字符串，不需要用占位符]）
