@@ -21,6 +21,7 @@ import cn.featherfly.common.db.JdbcUtils;
 import cn.featherfly.common.db.mapping.AbstractGenericJavaSqlTypeMapper;
 import cn.featherfly.common.lang.ArrayUtils;
 import cn.featherfly.common.lang.GenericType;
+import cn.featherfly.common.lang.Lang;
 
 /**
  * ListToStringSqlTypeMapper.
@@ -40,16 +41,6 @@ public class ArrayToStringSqlTypeMapper extends AbstractGenericJavaSqlTypeMapper
     }
 
     @Override
-    public Class<Long[]> getJavaType(SQLType sqlType) {
-        return Long[].class;
-    }
-
-    @Override
-    public SQLType getSqlType(GenericType<Long[]> javaType) {
-        return JDBCType.VARCHAR;
-    }
-
-    @Override
     public void set(PreparedStatement prep, int columnIndex, Long[] value) {
         System.out.println(ArrayUtils.toString(value, ','));
         JdbcUtils.setParameter(prep, columnIndex, ArrayUtils.toString(value, ','));
@@ -58,7 +49,12 @@ public class ArrayToStringSqlTypeMapper extends AbstractGenericJavaSqlTypeMapper
     @Override
     public Long[] get(ResultSet rs, int columnIndex) {
         try {
-            return ArrayUtils.toNumbers(Long.class, rs.getString(columnIndex).split(","));
+            String value = rs.getString(columnIndex);
+            if (Lang.isEmpty(value)) {
+                return ArrayUtils.EMPTY_LONG_OBJECT_ARRAY;
+            } else {
+                return ArrayUtils.toNumbers(Long.class, rs.getString(columnIndex).split(","));
+            }
         } catch (SQLException e) {
             throw new JdbcException(e);
         }
