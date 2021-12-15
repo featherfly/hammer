@@ -216,6 +216,26 @@ public interface Hammer extends TplExecutor {
     <E> E get(Serializable id, Class<E> type);
 
     /**
+     * get entity list by id array.
+     *
+     * @param <E>  entity type
+     * @param ids  id array
+     * @param type entity type
+     * @return entity
+     */
+    <E> List<E> get(Class<E> type, Serializable... ids);
+
+    /**
+     * get entity list by id list.
+     *
+     * @param <E>  entity type
+     * @param ids  id list
+     * @param type entity type
+     * @return entity
+     */
+    <E> List<E> get(Class<E> type, List<Serializable> ids);
+
+    /**
      * get entity by id.
      *
      * @param <E>    entity generic type
