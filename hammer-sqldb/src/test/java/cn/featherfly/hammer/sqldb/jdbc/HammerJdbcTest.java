@@ -12,6 +12,7 @@ import java.util.List;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
 
+import cn.featherfly.common.lang.ArrayUtils;
 import cn.featherfly.common.lang.Randoms;
 import cn.featherfly.common.structure.page.PaginationResults;
 import cn.featherfly.hammer.Hammer;
@@ -71,6 +72,57 @@ public class HammerJdbcTest extends JdbcTestBase {
         assertEquals(ui.getDivision().getProvince(), "四川");
         assertEquals(ui.getDivision().getCity(), "成都");
         assertEquals(ui.getDivision().getDistrict(), "金牛");
+        System.out.println(ui);
+    }
+
+    @Test
+    public void testGet3() {
+        Integer id1 = 1;
+        Integer id2 = 2;
+        int size = 2;
+
+        UserInfo ui = null;
+
+        List<UserInfo> uis = hammer.get(UserInfo.class, id1, id2);
+
+        assertEquals(uis.size(), size);
+
+        ui = uis.get(0);
+        assertEquals(ui.getId(), id1);
+        assertEquals(ui.getUser().getId(), new Integer(1));
+        assertEquals(ui.getName(), "羽飞");
+        assertEquals(ui.getDescp(), "羽飞描述");
+        assertEquals(ui.getDivision().getProvince(), "四川");
+        assertEquals(ui.getDivision().getCity(), "成都");
+        assertEquals(ui.getDivision().getDistrict(), "金牛");
+        System.out.println(ui);
+
+        ui = uis.get(1);
+        assertEquals(ui.getId(), id2);
+        assertEquals(ui.getUser().getId(), new Integer(2));
+        assertEquals(ui.getName(), "翼");
+        System.out.println(ui);
+
+        //
+
+        uis = hammer.get(UserInfo.class, ArrayUtils.toList(id1, id2));
+
+        assertEquals(uis.size(), size);
+
+        ui = uis.get(0);
+        assertEquals(ui.getId(), id1);
+        assertEquals(ui.getUser().getId(), new Integer(1));
+        assertEquals(ui.getName(), "羽飞");
+        assertEquals(ui.getDescp(), "羽飞描述");
+        assertEquals(ui.getDivision().getProvince(), "四川");
+        assertEquals(ui.getDivision().getCity(), "成都");
+        assertEquals(ui.getDivision().getDistrict(), "金牛");
+        System.out.println(ui);
+
+        ui = uis.get(1);
+        assertEquals(ui.getId(), id2);
+        assertEquals(ui.getUser().getId(), new Integer(2));
+        assertEquals(ui.getName(), "翼");
         System.out.println(ui);
     }
 

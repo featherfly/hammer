@@ -13,14 +13,16 @@ import cn.featherfly.hammer.dsl.query.TypeQueryEntity;
  * <p>
  * GenericHammer
  * </p>
+ * .
  *
- * @param <E> generic entity type
  * @author zhongj
+ * @param <E>  generic entity type
+ * @param <ID> the generic type
  */
 public interface GenericHammer<E, ID extends Serializable> {
 
     /**
-     * save entity
+     * save entity.
      *
      * @param entity entity to save
      * @return effect data row num
@@ -28,7 +30,7 @@ public interface GenericHammer<E, ID extends Serializable> {
     int save(E entity);
 
     /**
-     * save entities
+     * save entities.
      *
      * @param entities entity array to save
      * @return effect data row num
@@ -36,7 +38,7 @@ public interface GenericHammer<E, ID extends Serializable> {
     int save(@SuppressWarnings("unchecked") E... entities);
 
     /**
-     * save entities
+     * save entities.
      *
      * @param entities entity list to save
      * @return effect data row num
@@ -95,7 +97,8 @@ public interface GenericHammer<E, ID extends Serializable> {
     int update(List<E> entities, IgnorePolicy ignorePolicy);
 
     /**
-     * merge entity, update values ignore null or empty(string, list, map) value
+     * merge entity, update values ignore null or empty(string, list, map)
+     * value.
      *
      * @param entity entity to merge
      * @return effect data row num
@@ -125,7 +128,7 @@ public interface GenericHammer<E, ID extends Serializable> {
     int merge(List<E> entities);
 
     /**
-     * delete entity
+     * delete entity.
      *
      * @param entity entity to delete
      * @return effect data row num
@@ -133,7 +136,7 @@ public interface GenericHammer<E, ID extends Serializable> {
     int delete(E entity);
 
     /**
-     * delete each entity in entity list
+     * delete each entity in entity list.
      *
      * @param entities entity array to delete
      * @return effect data row num
@@ -141,7 +144,7 @@ public interface GenericHammer<E, ID extends Serializable> {
     int delete(@SuppressWarnings("unchecked") E... entities);
 
     /**
-     * delete each entity in entity list
+     * delete each entity in entity list.
      *
      * @param entities entity list to delete
      * @return effect data row num
@@ -149,7 +152,7 @@ public interface GenericHammer<E, ID extends Serializable> {
     int delete(List<E> entities);
 
     /**
-     * delete entity
+     * delete entity.
      *
      * @param id entity id
      * @return effect data row num
@@ -157,7 +160,7 @@ public interface GenericHammer<E, ID extends Serializable> {
     int delete(ID id);
 
     /**
-     * delete each entity in entity id array
+     * delete each entity in entity id array.
      *
      * @param ids entity id array
      * @return effect data row num
@@ -165,7 +168,7 @@ public interface GenericHammer<E, ID extends Serializable> {
     int deleteIds(@SuppressWarnings("unchecked") ID... ids);
 
     /**
-     * delete each entity in entity id list
+     * delete each entity in entity id list.
      *
      * @param ids entity id list
      * @return effect data row num
@@ -181,6 +184,22 @@ public interface GenericHammer<E, ID extends Serializable> {
     E get(ID id);
 
     /**
+     * get entity list by id array.
+     *
+     * @param ids the id array
+     * @return entity
+     */
+    List<E> get(@SuppressWarnings("unchecked") ID... ids);
+
+    /**
+     * get entity list by id list.
+     *
+     * @param ids the id list
+     * @return the list
+     */
+    List<E> get(List<ID> ids);
+
+    /**
      * get entity by id.
      *
      * @param entity entity with id value
@@ -189,21 +208,21 @@ public interface GenericHammer<E, ID extends Serializable> {
     E load(E entity);
 
     /**
-     * create QueryData for entityType
+     * create QueryData for entityType.
      *
      * @return QueryEntity
      */
     TypeQueryEntity query();
 
     /**
-     * create update for entityType
+     * create update for entityType.
      *
      * @return Update
      */
     Update update();
 
     /**
-     * create delete for entityType
+     * create delete for entityType.
      *
      * @return Delete
      */

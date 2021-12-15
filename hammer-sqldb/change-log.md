@@ -1,3 +1,6 @@
+# 0.
+1. Hammer加入List<E> get(Class<E>, Serializable...)和List<E> get(Class<E>, List<Serializable>);
+
 # 0.5.26 2021-12-05
 1. Jdbc加入update(String,BeanPropertyValue<?>...),update(String,GeneratedKeyHolder,BeanPropertyValue<?>...)方法
 2. 相关operate类使用新的update方法
