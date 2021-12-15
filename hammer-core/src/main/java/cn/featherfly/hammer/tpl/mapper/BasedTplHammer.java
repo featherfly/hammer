@@ -615,4 +615,20 @@ public class BasedTplHammer implements Hammer {
         return hammer.delete(ids, entityType);
     }
 
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public <E> List<E> get(Class<E> type, Serializable... ids) {
+        return hammer.get(type, ids);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public <E> List<E> get(Class<E> type, List<Serializable> ids) {
+        return hammer.get(type, ids);
+    }
+
 }

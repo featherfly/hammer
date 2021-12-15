@@ -228,8 +228,8 @@ public abstract class AbstractOperate<T> {
      * @param manager           the manager
      * @return the object[]
      */
-    public Object[] setBatchParameters(List<T> entities, Map<Integer, String> propertyPositions, PreparedStatement prep,
-            SqlTypeMappingManager manager) {
+    protected Object[] setBatchParameters(List<T> entities, Map<Integer, String> propertyPositions,
+            PreparedStatement prep, SqlTypeMappingManager manager) {
         if (Lang.isEmpty(entities)) {
             return new Object[] {};
         }

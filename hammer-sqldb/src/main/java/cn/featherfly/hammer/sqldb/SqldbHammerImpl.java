@@ -3,6 +3,7 @@ package cn.featherfly.hammer.sqldb;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -45,10 +46,7 @@ import cn.featherfly.hammer.tpl.TplConfigFactoryImpl;
 import cn.featherfly.hammer.tpl.TplExecuteId;
 
 /**
- * <p>
- * SqldbHammerImpl
- * </p>
- * .
+ * SqldbHammerImpl.
  *
  * @author zhongj
  */
@@ -473,6 +471,38 @@ public class SqldbHammerImpl implements SqldbHammer {
         }
         GetOperate<E> get = getOperate(type);
         return get.get(id);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public <E> List<E> get(Class<E> type, Serializable... ids) {
+        List<E> list = new ArrayList<>();
+        if (Lang.isEmpty(ids)) {
+            return list;
+        }
+        for (Serializable id : ids) {
+            // TODO 后续优化为GetOperator支持的多个组件
+            list.add(get(id, type));
+        }
+        return list;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public <E> List<E> get(Class<E> type, List<Serializable> ids) {
+        List<E> list = new ArrayList<>();
+        if (Lang.isEmpty(ids)) {
+            return list;
+        }
+        for (Serializable id : ids) {
+            // TODO 后续优化为GetOperator支持的多个组件
+            list.add(get(id, type));
+        }
+        return list;
     }
 
     /**
@@ -966,5 +996,4 @@ public class SqldbHammerImpl implements SqldbHammer {
     public Jdbc getJdbc() {
         return jdbc;
     }
-
 }

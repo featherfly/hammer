@@ -4,6 +4,7 @@ package cn.featherfly.hammer.tpl.mapper;
 import java.io.Serializable;
 import java.util.List;
 
+import cn.featherfly.common.lang.CollectionUtils;
 import cn.featherfly.hammer.GenericHammer;
 import cn.featherfly.hammer.Hammer;
 import cn.featherfly.hammer.Hammer.IgnorePolicy;
@@ -95,6 +96,22 @@ public class BasedTplGenericHammer<E, ID extends Serializable> implements Generi
     @Override
     public E get(ID id) {
         return hammer.get(id, type);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public List<E> get(@SuppressWarnings("unchecked") ID... ids) {
+        return hammer.get(type, ids);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public List<E> get(List<ID> ids) {
+        return get(CollectionUtils.toArray(ids));
     }
 
     /**
