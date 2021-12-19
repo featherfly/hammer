@@ -3,11 +3,13 @@ package cn.featherfly.hammer.sqldb.jdbc.dsl.execute;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.function.Predicate;
 
 import cn.featherfly.common.constant.Chars;
+import cn.featherfly.common.db.builder.dml.basic.SqlUpdateSetBasicBuilder;
+import cn.featherfly.common.repository.IgnorePolicy;
 import cn.featherfly.common.repository.mapping.ClassMapping;
 import cn.featherfly.hammer.sqldb.jdbc.Jdbc;
-import cn.featherfly.common.db.builder.dml.basic.SqlUpdateSetBasicBuilder;
 
 /**
  * <p>
@@ -28,7 +30,18 @@ public class SqlUpdateExpression extends SqlConditionGroupExpression {
      * @param builder the builder
      */
     public SqlUpdateExpression(Jdbc jdbc, SqlUpdateSetBasicBuilder builder) {
-        this(jdbc, builder, null);
+        this(jdbc, builder, IgnorePolicy.NONE);
+    }
+
+    /**
+     * Instantiates a new sql update expression.
+     *
+     * @param jdbc         the jdbc
+     * @param builder      the builder
+     * @param ignorePolicy the ignore policy
+     */
+    public SqlUpdateExpression(Jdbc jdbc, SqlUpdateSetBasicBuilder builder, Predicate<Object> ignorePolicy) {
+        this(jdbc, builder, null, ignorePolicy);
     }
 
     /**
@@ -39,7 +52,20 @@ public class SqlUpdateExpression extends SqlConditionGroupExpression {
      * @param classMapping the class mapping
      */
     public SqlUpdateExpression(Jdbc jdbc, SqlUpdateSetBasicBuilder builder, ClassMapping<?> classMapping) {
-        super(jdbc, null, classMapping);
+        this(jdbc, builder, classMapping, IgnorePolicy.NONE);
+    }
+
+    /**
+     * Instantiates a new sql update expression.
+     *
+     * @param jdbc         the jdbc
+     * @param builder      the builder
+     * @param classMapping the class mapping
+     * @param ignorePolicy the ignore policy
+     */
+    public SqlUpdateExpression(Jdbc jdbc, SqlUpdateSetBasicBuilder builder, ClassMapping<?> classMapping,
+            Predicate<Object> ignorePolicy) {
+        super(jdbc, null, classMapping, ignorePolicy);
         this.builder = builder;
     }
 

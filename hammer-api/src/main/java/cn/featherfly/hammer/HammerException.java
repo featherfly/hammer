@@ -6,9 +6,7 @@ import java.util.Locale;
 import cn.featherfly.common.exception.LocalizedException;
 
 /**
- * <p>
- * Hammer base Exception
- * </p>
+ * Hammer base Exception.
  *
  * @author zhongj
  */

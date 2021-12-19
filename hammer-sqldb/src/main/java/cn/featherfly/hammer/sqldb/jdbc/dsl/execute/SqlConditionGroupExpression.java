@@ -1,6 +1,8 @@
 
 package cn.featherfly.hammer.sqldb.jdbc.dsl.execute;
 
+import java.util.function.Predicate;
+
 import cn.featherfly.common.repository.mapping.ClassMapping;
 import cn.featherfly.hammer.dsl.execute.ExecutableConditionGroupExpression;
 import cn.featherfly.hammer.dsl.execute.ExecutableConditionGroupLogicExpression;
@@ -23,20 +25,22 @@ public class SqlConditionGroupExpression extends
     /**
      * Instantiates a new sql condition group expression.
      *
-     * @param jdbc jdbc
+     * @param jdbc         jdbc
+     * @param ignorePolicy the ignore policy
      */
-    public SqlConditionGroupExpression(Jdbc jdbc) {
-        this(jdbc, null);
+    public SqlConditionGroupExpression(Jdbc jdbc, Predicate<Object> ignorePolicy) {
+        this(jdbc, null, ignorePolicy);
     }
 
     /**
      * Instantiates a new sql condition group expression.
      *
-     * @param jdbc       jdbc
-     * @param queryAlias queryAlias
+     * @param jdbc         jdbc
+     * @param queryAlias   queryAlias
+     * @param ignorePolicy the ignore policy
      */
-    public SqlConditionGroupExpression(Jdbc jdbc, String queryAlias) {
-        this(jdbc, queryAlias, null);
+    public SqlConditionGroupExpression(Jdbc jdbc, String queryAlias, Predicate<Object> ignorePolicy) {
+        this(jdbc, queryAlias, null, ignorePolicy);
     }
 
     /**
@@ -45,9 +49,11 @@ public class SqlConditionGroupExpression extends
      * @param jdbc         jdbc
      * @param queryAlias   queryAlias
      * @param classMapping classMapping
+     * @param ignorePolicy the ignore policy
      */
-    public SqlConditionGroupExpression(Jdbc jdbc, String queryAlias, ClassMapping<?> classMapping) {
-        this(jdbc, null, queryAlias, classMapping);
+    public SqlConditionGroupExpression(Jdbc jdbc, String queryAlias, ClassMapping<?> classMapping,
+            Predicate<Object> ignorePolicy) {
+        this(jdbc, null, queryAlias, classMapping, ignorePolicy);
     }
 
     /**
@@ -57,11 +63,12 @@ public class SqlConditionGroupExpression extends
      * @param parent       parent group
      * @param queryAlias   queryAlias
      * @param classMapping classMapping
+     * @param ignorePolicy the ignore policy
      */
     SqlConditionGroupExpression(Jdbc jdbc, ExecutableConditionGroupLogicExpression parent, String queryAlias,
-            ClassMapping<?> classMapping) {
-        // TODO 删除，和更新不需要分页，需要测试
-        super(parent, jdbc.getDialect(), null, queryAlias, classMapping, null);
+            ClassMapping<?> classMapping, Predicate<Object> ignorePolicy) {
+        // 删除，和更新不需要分页
+        super(parent, jdbc.getDialect(), null, queryAlias, classMapping, null, ignorePolicy);
         this.jdbc = jdbc;
     }
 
@@ -86,6 +93,6 @@ public class SqlConditionGroupExpression extends
     @Override
     protected ExecutableConditionGroupExpression createGroup(ExecutableConditionGroupLogicExpression parent,
             String queryAlias, TypeQueryEntity typeQueryEntity) {
-        return new SqlConditionGroupExpression(jdbc, parent, queryAlias, classMapping);
+        return new SqlConditionGroupExpression(jdbc, parent, queryAlias, classMapping, ignorePolicy);
     }
 }

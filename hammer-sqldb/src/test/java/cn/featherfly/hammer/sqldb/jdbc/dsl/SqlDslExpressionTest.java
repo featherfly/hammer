@@ -12,6 +12,7 @@ import org.testng.annotations.Test;
 
 import cn.featherfly.common.db.builder.dml.basic.SqlDeleteFromBasicBuilder;
 import cn.featherfly.common.lang.UUIDGenerator;
+import cn.featherfly.common.repository.IgnorePolicy;
 import cn.featherfly.hammer.expression.SimpleRepository;
 import cn.featherfly.hammer.sqldb.SqldbHammerImpl;
 import cn.featherfly.hammer.sqldb.jdbc.JdbcTestBase;
@@ -56,7 +57,7 @@ public class SqlDslExpressionTest extends JdbcTestBase {
 
     @Test
     public void testSqlConditionGroupExpressionBuilder() {
-        SqlConditionGroupExpression builder = new SqlConditionGroupExpression(jdbc);
+        SqlConditionGroupExpression builder = new SqlConditionGroupExpression(jdbc, IgnorePolicy.EMPTY);
         builder.eq("name", name).and().eq("pwd", pwd).and().group().eq("sex", sex).or().gt("age", age);
 
         System.out.println(builder.build());
@@ -65,7 +66,31 @@ public class SqlDslExpressionTest extends JdbcTestBase {
         assertEquals("`name` = ? AND `pwd` = ? AND ( `sex` = ? OR `age` > ? )".replaceAll("`",
                 jdbc.getDialect().getWrapSign()), builder.build());
         assertEquals(params, builder.getParams());
+    }
 
+    @Test
+    public void testSqlConditionGroupExpressionBuilder2() {
+        SqlConditionGroupExpression builder = new SqlConditionGroupExpression(jdbc, IgnorePolicy.EMPTY);
+        // 测试忽略策略为NONE
+
+        String mobile = null;
+        List<Object> params2 = new ArrayList<>();
+        params2.add(name);
+        params2.add(pwd);
+        params2.add(sex);
+        params2.add(age);
+        params2.add(mobile);
+
+        builder = new SqlConditionGroupExpression(jdbc, IgnorePolicy.NONE);
+        builder.eq("name", name).and().eq("pwd", pwd).and().group().eq("sex", sex).or().gt("age", age).endGroup().and()
+                .eq("mobile", mobile);
+
+        System.out.println(builder.build());
+        System.out.println(builder.getParams());
+
+        assertEquals("`name` = ? AND `pwd` = ? AND ( `sex` = ? OR `age` > ? ) AND `mobile` = ?".replaceAll("`",
+                jdbc.getDialect().getWrapSign()), builder.build());
+        assertEquals(params2, builder.getParams());
     }
 
     @Test

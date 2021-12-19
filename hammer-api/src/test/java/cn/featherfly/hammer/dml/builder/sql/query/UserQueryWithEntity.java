@@ -4,12 +4,13 @@ package cn.featherfly.hammer.dml.builder.sql.query;
 import java.util.Collection;
 import java.util.List;
 import java.util.Map;
+import java.util.function.Consumer;
 
 import cn.featherfly.common.lang.function.SerializableFunction;
+import cn.featherfly.common.repository.mapping.RowMapper;
 import cn.featherfly.common.structure.page.Page;
 import cn.featherfly.hammer.expression.query.QueryLimitExecutor;
 import cn.featherfly.hammer.expression.query.QueryWithEntityExpression;
-import cn.featherfly.common.repository.mapping.RowMapper;
 
 /**
  * <p>
@@ -152,6 +153,16 @@ public class UserQueryWithEntity implements
      */
     @Override
     public <T> UserQueryWithOn with(Class<T> repositoryType) {
+        // YUFEI_TODO Auto-generated method stub
+        return null;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public UserQueryRepositoryConditionGroupExpression where(
+            Consumer<UserQueryRepositoryConditionGroupExpression> consumer) {
         // YUFEI_TODO Auto-generated method stub
         return null;
     }

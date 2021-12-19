@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
+import java.util.function.Predicate;
 
 import com.speedment.common.tuple.Tuple2;
 import com.speedment.common.tuple.Tuple3;
@@ -17,6 +18,7 @@ import cn.featherfly.common.db.builder.SqlBuilder;
 import cn.featherfly.common.db.builder.dml.SqlLogicExpression;
 import cn.featherfly.common.db.dialect.Dialect;
 import cn.featherfly.common.db.mapping.ClassMappingUtils;
+import cn.featherfly.common.lang.AssertIllegalArgument;
 import cn.featherfly.common.lang.LambdaUtils;
 import cn.featherfly.common.lang.LambdaUtils.SerializableSupplierLambdaInfo;
 import cn.featherfly.common.lang.LambdaUtils.SerializedLambdaInfo;
@@ -24,6 +26,7 @@ import cn.featherfly.common.lang.Lang;
 import cn.featherfly.common.lang.Strings;
 import cn.featherfly.common.lang.function.SerializableFunction;
 import cn.featherfly.common.lang.function.SerializableSupplier;
+import cn.featherfly.common.repository.IgnorePolicy;
 import cn.featherfly.common.repository.builder.BuilderException;
 import cn.featherfly.common.repository.builder.BuilderExceptionCode;
 import cn.featherfly.common.repository.mapping.ClassMapping;
@@ -47,19 +50,23 @@ public abstract class AbstractSqlConditionExpression<L> implements SqlBuilder, P
     /**
      * Instantiates a new abstract sql condition expression.
      *
-     * @param dialect dialect
+     * @param dialect      dialect
+     * @param ignorePolicy the ignore policy
      */
-    public AbstractSqlConditionExpression(Dialect dialect) {
-        this(dialect, null);
+    public AbstractSqlConditionExpression(Dialect dialect, Predicate<Object> ignorePolicy) {
+        this(dialect, ignorePolicy, null);
     }
 
     /**
      * Instantiates a new abstract sql condition expression.
      *
-     * @param dialect dialect
-     * @param parent  parent group
+     * @param dialect      dialect
+     * @param ignorePolicy the ignore policy
+     * @param parent       parent group
      */
-    protected AbstractSqlConditionExpression(Dialect dialect, L parent) {
+    protected AbstractSqlConditionExpression(Dialect dialect, Predicate<Object> ignorePolicy, L parent) {
+        AssertIllegalArgument.isNotNull(ignorePolicy, "ignorePolicy");
+        this.ignorePolicy = ignorePolicy;
         this.dialect = dialect;
         this.parent = parent;
     }
@@ -72,7 +79,6 @@ public abstract class AbstractSqlConditionExpression<L> implements SqlBuilder, P
         StringBuilder result = new StringBuilder();
         if (conditions.size() > 0) {
             Expression last = conditions.get(conditions.size() - 1);
-            //            if (last instanceof SqlLogicExpression) {
             if (last instanceof LogicOperatorExpression) {
                 //                throw new BuilderException(((SqlLogicExpression) last).getLogicOperator() + " 后没有跟条件表达式");
                 throw new BuilderException(BuilderExceptionCode
@@ -83,7 +89,6 @@ public abstract class AbstractSqlConditionExpression<L> implements SqlBuilder, P
         List<String> availableConditions = new ArrayList<>();
         List<Expression> availableExpressions = new ArrayList<>();
         for (Expression expression : conditions) {
-            // String condition = expression.build();
             String condition = expression.expression();
             if (Strings.isNotBlank(condition)) {
                 availableConditions.add(condition);
@@ -147,8 +152,10 @@ public abstract class AbstractSqlConditionExpression<L> implements SqlBuilder, P
         for (Expression condition : conditions) {
             if (condition instanceof ParamedExpression) {
                 Object param = ((ParamedExpression) condition).getParam();
-                if (Lang.isNotEmpty(param)) {
-                    if (param instanceof Collection) {
+                if (!ignorePolicy.test(param)) {
+                    if (param == null) {
+                        params.add(param);
+                    } else if (param instanceof Collection) {
                         params.addAll((Collection<?>) param);
                     } else if (param.getClass().isArray()) {
                         int length = Array.getLength(param);
@@ -201,6 +208,19 @@ public abstract class AbstractSqlConditionExpression<L> implements SqlBuilder, P
                         BuilderExceptionCode.createNextToSameConditionCode(condition.getClass().getName()));
             }
         }
+        //        if (condition instanceof ParamedExpression) {
+        //            ParamedExpression paramedExpression = (ParamedExpression) condition;
+        //            if (ignorePolicy.test(paramedExpression.getParam())) { // 忽略带参数的条件表达式
+        //                // 移除逻辑表达式
+        //                conditions.remove(conditions.size() - 1);
+        //                if (conditions.isEmpty()) {
+        //                    previousCondition = null;
+        //                } else {
+        //                    previousCondition = conditions.get(conditions.size() - 1);
+        //                }
+        //                return this;
+        //            }
+        //        }
         previousCondition = condition;
         conditions.add(condition);
         return this;
@@ -238,6 +258,18 @@ public abstract class AbstractSqlConditionExpression<L> implements SqlBuilder, P
         return list;
     }
 
+    /**
+     * Condition result.
+     *
+     * @param <O>        the generic type
+     * @param <T>        the generic type
+     * @param <R>        the generic type
+     * @param repository the repository
+     * @param property   the property
+     * @param value      the value
+     * @param factory    the factory
+     * @return the tuple 2
+     */
     protected <O, T, R> Tuple2<String, String> conditionResult(SerializableFunction<O, T> repository,
             SerializableFunction<T, R> property, Object value, MappingFactory factory) {
         SerializedLambdaInfo repositoryInfo = LambdaUtils.getLambdaInfo(repository);
@@ -248,6 +280,16 @@ public abstract class AbstractSqlConditionExpression<L> implements SqlBuilder, P
         return Tuples.of(repositoryInfo.getPropertyName(), column);
     }
 
+    /**
+     * Condition result.
+     *
+     * @param <T>        the generic type
+     * @param <R>        the generic type
+     * @param repository the repository
+     * @param property   the property
+     * @param factory    the factory
+     * @return the tuple 3
+     */
     protected <T, R> Tuple3<String, String, Object> conditionResult(SerializableSupplier<T> repository,
             SerializableFunction<T, R> property, MappingFactory factory) {
         SerializableSupplierLambdaInfo<T> repositoryInfo = LambdaUtils.getSerializableSupplierLambdaInfo(repository);
@@ -264,6 +306,7 @@ public abstract class AbstractSqlConditionExpression<L> implements SqlBuilder, P
     // property
     // ********************************************************************
 
+    /** The conditions. */
     private List<Expression> conditions = new ArrayList<>();
 
     /** The parent. */
@@ -274,27 +317,19 @@ public abstract class AbstractSqlConditionExpression<L> implements SqlBuilder, P
 
     private Expression previousCondition;
 
+    /** The ignore policy. */
     /*
-     * 忽略空值
+     * 忽略策略
      */
-    private boolean ignoreEmpty = true;
+    protected Predicate<Object> ignorePolicy = IgnorePolicy.EMPTY;
 
     /**
-     * Checks if is ignore empty.
+     * get ignorePolicy value.
      *
-     * @return true, if is ignore empty
+     * @return ignorePolicy
      */
-    public boolean isIgnoreEmpty() {
-        return ignoreEmpty;
-    }
-
-    /**
-     * Sets the ignore empty.
-     *
-     * @param ignoreEmpty the new ignore empty
-     */
-    public void setIgnoreEmpty(boolean ignoreEmpty) {
-        this.ignoreEmpty = ignoreEmpty;
+    public Predicate<Object> getIgnorePolicy() {
+        return ignorePolicy;
     }
 
     /**

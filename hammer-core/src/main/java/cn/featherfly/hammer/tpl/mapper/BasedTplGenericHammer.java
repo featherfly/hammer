@@ -5,9 +5,9 @@ import java.io.Serializable;
 import java.util.List;
 
 import cn.featherfly.common.lang.CollectionUtils;
+import cn.featherfly.common.repository.IgnorePolicy;
 import cn.featherfly.hammer.GenericHammer;
 import cn.featherfly.hammer.Hammer;
-import cn.featherfly.hammer.Hammer.IgnorePolicy;
 import cn.featherfly.hammer.dsl.execute.Delete;
 import cn.featherfly.hammer.dsl.execute.Update;
 import cn.featherfly.hammer.dsl.query.TypeQueryEntity;

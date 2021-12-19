@@ -1,6 +1,8 @@
 
 package cn.featherfly.hammer.sqldb.jdbc.dsl.query;
 
+import java.util.function.Predicate;
+
 import cn.featherfly.common.constant.Chars;
 import cn.featherfly.common.db.builder.dml.basic.SqlSelectBasicBuilder;
 import cn.featherfly.common.lang.Lang;
@@ -31,9 +33,11 @@ public class SqlQueryExpression extends SqlQueryConditionGroupExpression {
      * @param jdbc           the jdbc
      * @param sqlPageFactory the sql page factory
      * @param selectBuilder  the select builder
+     * @param ignorePolicy   the ignore policy
      */
-    public SqlQueryExpression(Jdbc jdbc, SqlPageFactory sqlPageFactory, SqlSelectBasicBuilder selectBuilder) {
-        super(jdbc, sqlPageFactory, selectBuilder.getTableAlias());
+    public SqlQueryExpression(Jdbc jdbc, SqlPageFactory sqlPageFactory, SqlSelectBasicBuilder selectBuilder,
+            Predicate<Object> ignorePolicy) {
+        super(jdbc, sqlPageFactory, selectBuilder.getTableAlias(), ignorePolicy);
         this.selectBuilder = selectBuilder;
     }
 
@@ -44,10 +48,11 @@ public class SqlQueryExpression extends SqlQueryConditionGroupExpression {
      * @param sqlPageFactory the sql page factory
      * @param classMapping   the class mapping
      * @param selectBuilder  the select builder
+     * @param ignorePolicy   the ignore policy
      */
     public SqlQueryExpression(Jdbc jdbc, SqlPageFactory sqlPageFactory, ClassMapping<?> classMapping,
-            SqlSelectBasicBuilder selectBuilder) {
-        super(jdbc, sqlPageFactory, selectBuilder.getTableAlias(), classMapping);
+            SqlSelectBasicBuilder selectBuilder, Predicate<Object> ignorePolicy) {
+        super(jdbc, sqlPageFactory, selectBuilder.getTableAlias(), classMapping, ignorePolicy);
         this.selectBuilder = selectBuilder;
     }
 
@@ -56,24 +61,27 @@ public class SqlQueryExpression extends SqlQueryConditionGroupExpression {
      *
      * @param parent         the parent
      * @param jdbc           the jdbc
-     * @param queryAlias     the query alias
      * @param sqlPageFactory the sql page factory
+     * @param queryAlias     the query alias
      * @param classMapping   the class mapping
+     * @param ignorePolicy   the ignore policy
      */
     SqlQueryExpression(QueryConditionGroupLogicExpression parent, Jdbc jdbc, SqlPageFactory sqlPageFactory,
-            String queryAlias, ClassMapping<?> classMapping) {
-        super(parent, jdbc, sqlPageFactory, queryAlias, classMapping);
+            String queryAlias, ClassMapping<?> classMapping, Predicate<Object> ignorePolicy) {
+        super(parent, jdbc, sqlPageFactory, queryAlias, classMapping, ignorePolicy);
     }
 
     /**
      * Instantiates a new sql query expression.
      *
      * @param jdbc           the jdbc
-     * @param queryAlias     the query alias
      * @param sqlPageFactory the sql page factory
+     * @param queryAlias     the query alias
+     * @param ignorePolicy   the ignore policy
      */
-    public SqlQueryExpression(Jdbc jdbc, SqlPageFactory sqlPageFactory, String queryAlias) {
-        super(jdbc, sqlPageFactory, queryAlias);
+    public SqlQueryExpression(Jdbc jdbc, SqlPageFactory sqlPageFactory, String queryAlias,
+            Predicate<Object> ignorePolicy) {
+        super(jdbc, sqlPageFactory, queryAlias, ignorePolicy);
     }
 
     /**
@@ -81,9 +89,10 @@ public class SqlQueryExpression extends SqlQueryConditionGroupExpression {
      *
      * @param jdbc           jdbc
      * @param sqlPageFactory the sql page factory
+     * @param ignorePolicy   the ignore policy
      */
-    public SqlQueryExpression(Jdbc jdbc, SqlPageFactory sqlPageFactory) {
-        super(jdbc, sqlPageFactory);
+    public SqlQueryExpression(Jdbc jdbc, SqlPageFactory sqlPageFactory, Predicate<Object> ignorePolicy) {
+        super(jdbc, sqlPageFactory, ignorePolicy);
     }
 
     /**
@@ -93,7 +102,7 @@ public class SqlQueryExpression extends SqlQueryConditionGroupExpression {
     protected QueryConditionGroupExpression createGroup(QueryConditionGroupLogicExpression parent, String queryAlias,
             TypeQueryEntity typeQueryEntity) {
         selectBuilder.setTableAlias(queryAlias);
-        return new SqlQueryExpression(parent, jdbc, sqlPageFactory, queryAlias, classMapping);
+        return new SqlQueryExpression(parent, jdbc, sqlPageFactory, queryAlias, classMapping, ignorePolicy);
     }
 
     /**

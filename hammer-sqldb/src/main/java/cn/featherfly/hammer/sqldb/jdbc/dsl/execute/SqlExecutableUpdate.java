@@ -1,6 +1,9 @@
 
 package cn.featherfly.hammer.sqldb.jdbc.dsl.execute;
 
+import java.util.function.Consumer;
+import java.util.function.Predicate;
+
 import cn.featherfly.common.db.builder.dml.basic.SqlUpdateSetBasicBuilder;
 import cn.featherfly.common.db.builder.model.UpdateColumnElement.SetType;
 import cn.featherfly.common.db.mapping.ClassMappingUtils;
@@ -8,6 +11,7 @@ import cn.featherfly.common.lang.LambdaUtils;
 import cn.featherfly.common.lang.LambdaUtils.SerializableSupplierLambdaInfo;
 import cn.featherfly.common.lang.function.SerializableFunction;
 import cn.featherfly.common.lang.function.SerializableSupplier;
+import cn.featherfly.common.repository.IgnorePolicy;
 import cn.featherfly.common.repository.mapping.ClassMapping;
 import cn.featherfly.hammer.dsl.execute.ExecutableConditionGroupExpression;
 import cn.featherfly.hammer.dsl.execute.ExecutableUpdate;
@@ -41,8 +45,7 @@ public class SqlExecutableUpdate implements SqlUpdate, ExecutableUpdate {
      * @param jdbc      jdbc
      */
     public SqlExecutableUpdate(String tableName, Jdbc jdbc) {
-        this.jdbc = jdbc;
-        builder = new SqlUpdateSetBasicBuilder(jdbc.getDialect(), tableName);
+        this(tableName, jdbc, IgnorePolicy.NONE);
     }
 
     /**
@@ -62,9 +65,43 @@ public class SqlExecutableUpdate implements SqlUpdate, ExecutableUpdate {
      * @param jdbc         the jdbc
      */
     public SqlExecutableUpdate(ClassMapping<?> classMapping, Jdbc jdbc) {
+        this(classMapping, jdbc, IgnorePolicy.NONE);
+    }
+
+    /**
+     * Instantiates a new sql executable update.
+     *
+     * @param tableName    tableName
+     * @param jdbc         jdbc
+     * @param ignorePolicy the ignore policy
+     */
+    public SqlExecutableUpdate(String tableName, Jdbc jdbc, Predicate<Object> ignorePolicy) {
+        this.jdbc = jdbc;
+        builder = new SqlUpdateSetBasicBuilder(jdbc.getDialect(), tableName, ignorePolicy);
+    }
+
+    /**
+     * Instantiates a new sql executable update.
+     *
+     * @param repository   the repository
+     * @param jdbc         the jdbc
+     * @param ignorePolicy the ignore policy
+     */
+    public SqlExecutableUpdate(Repository repository, Jdbc jdbc, Predicate<Object> ignorePolicy) {
+        this(repository.name(), jdbc, ignorePolicy);
+    }
+
+    /**
+     * Instantiates a new sql executable update.
+     *
+     * @param classMapping the class mapping
+     * @param jdbc         the jdbc
+     * @param ignorePolicy the ignore policy
+     */
+    public SqlExecutableUpdate(ClassMapping<?> classMapping, Jdbc jdbc, Predicate<Object> ignorePolicy) {
         this.classMapping = classMapping;
         this.jdbc = jdbc;
-        builder = new SqlUpdateSetBasicBuilder(jdbc.getDialect(), classMapping.getRepositoryName());
+        builder = new SqlUpdateSetBasicBuilder(jdbc.getDialect(), classMapping.getRepositoryName(), ignorePolicy);
     }
 
     /**
@@ -156,7 +193,20 @@ public class SqlExecutableUpdate implements SqlUpdate, ExecutableUpdate {
      */
     @Override
     public ExecutableConditionGroupExpression where() {
-        return new SqlUpdateExpression(jdbc, builder, classMapping);
+        return new SqlUpdateExpression(jdbc, builder, classMapping, builder.getIgnorePolicy());
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public ExecutableConditionGroupExpression where(Consumer<ExecutableConditionGroupExpression> consumer) {
+        SqlUpdateExpression sqlUpdateExpression = new SqlUpdateExpression(jdbc, builder, classMapping,
+                builder.getIgnorePolicy());
+        if (consumer != null) {
+            consumer.accept(sqlUpdateExpression);
+        }
+        return sqlUpdateExpression;
     }
 
     /**

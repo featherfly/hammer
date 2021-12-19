@@ -20,6 +20,7 @@ import cn.featherfly.common.constant.Chars;
 import cn.featherfly.common.db.mapping.JdbcMappingFactory;
 import cn.featherfly.common.lang.ArrayUtils;
 import cn.featherfly.common.lang.Lang;
+import cn.featherfly.common.repository.IgnorePolicy;
 import cn.featherfly.common.repository.mapping.ClassMapping;
 import cn.featherfly.common.structure.page.Page;
 import cn.featherfly.common.structure.page.PaginationResults;

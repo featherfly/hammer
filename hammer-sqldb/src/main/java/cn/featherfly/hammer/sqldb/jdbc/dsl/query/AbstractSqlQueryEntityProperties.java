@@ -4,6 +4,7 @@ package cn.featherfly.hammer.sqldb.jdbc.dsl.query;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Map;
+import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
 import com.speedment.common.tuple.Tuple2;
@@ -12,6 +13,7 @@ import cn.featherfly.common.db.Table;
 import cn.featherfly.common.db.builder.dml.basic.SqlSelectBasicBuilder;
 import cn.featherfly.common.db.mapping.ClassMappingUtils;
 import cn.featherfly.common.db.metadata.DatabaseMetadata;
+import cn.featherfly.common.lang.AssertIllegalArgument;
 import cn.featherfly.common.lang.LambdaUtils;
 import cn.featherfly.common.lang.Lang;
 import cn.featherfly.common.lang.function.SerializableFunction;
@@ -55,6 +57,9 @@ public abstract class AbstractSqlQueryEntityProperties<E extends AbstractSqlQuer
     /** The alias manager. */
     protected AliasManager aliasManager;
 
+    /** The ignore policy. */
+    protected Predicate<Object> ignorePolicy;
+
     /**
      * Instantiates a new abstract sql query entity properties.
      *
@@ -63,9 +68,12 @@ public abstract class AbstractSqlQueryEntityProperties<E extends AbstractSqlQuer
      * @param factory        MappingFactory
      * @param sqlPageFactory the sql page factory
      * @param aliasManager   aliasManager
+     * @param ignorePolicy   the ignore policy
      */
     public AbstractSqlQueryEntityProperties(Jdbc jdbc, ClassMapping<?> classMapping, MappingFactory factory,
-            SqlPageFactory sqlPageFactory, AliasManager aliasManager) {
+            SqlPageFactory sqlPageFactory, AliasManager aliasManager, Predicate<Object> ignorePolicy) {
+        AssertIllegalArgument.isNotNull(ignorePolicy, "ignorePolicy");
+        this.ignorePolicy = ignorePolicy;
         this.jdbc = jdbc;
         this.classMapping = classMapping;
         this.factory = factory;
@@ -91,10 +99,13 @@ public abstract class AbstractSqlQueryEntityProperties<E extends AbstractSqlQuer
      * @param factory          MappingFactory
      * @param sqlPageFactory   the sql page factory
      * @param aliasManager     aliasManager
+     * @param ignorePolicy     the ignore policy
      */
     public AbstractSqlQueryEntityProperties(Jdbc jdbc, DatabaseMetadata databaseMetadata, String tableName,
-            String tableAlias, MappingFactory factory, SqlPageFactory sqlPageFactory, AliasManager aliasManager) {
-        super();
+            String tableAlias, MappingFactory factory, SqlPageFactory sqlPageFactory, AliasManager aliasManager,
+            Predicate<Object> ignorePolicy) {
+        AssertIllegalArgument.isNotNull(ignorePolicy, "ignorePolicy");
+        this.ignorePolicy = ignorePolicy;
         this.jdbc = jdbc;
         this.factory = factory;
         this.sqlPageFactory = sqlPageFactory;

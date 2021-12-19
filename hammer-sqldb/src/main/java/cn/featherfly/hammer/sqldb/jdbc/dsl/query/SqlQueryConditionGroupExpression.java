@@ -5,6 +5,7 @@ import java.math.BigDecimal;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
+import java.util.function.Predicate;
 
 import cn.featherfly.common.constant.Chars;
 import cn.featherfly.common.db.SqlUtils;
@@ -53,9 +54,10 @@ public class SqlQueryConditionGroupExpression
      *
      * @param jdbc           jdbc
      * @param sqlPageFactory the sql page factory
+     * @param ignorePolicy   the ignore policy
      */
-    public SqlQueryConditionGroupExpression(Jdbc jdbc, SqlPageFactory sqlPageFactory) {
-        this(jdbc, sqlPageFactory, null);
+    public SqlQueryConditionGroupExpression(Jdbc jdbc, SqlPageFactory sqlPageFactory, Predicate<Object> ignorePolicy) {
+        this(jdbc, sqlPageFactory, null, ignorePolicy);
     }
 
     /**
@@ -64,9 +66,11 @@ public class SqlQueryConditionGroupExpression
      * @param jdbc           jdbc
      * @param sqlPageFactory the sql page factory
      * @param queryAlias     queryAlias
+     * @param ignorePolicy   the ignore policy
      */
-    public SqlQueryConditionGroupExpression(Jdbc jdbc, SqlPageFactory sqlPageFactory, String queryAlias) {
-        this(jdbc, sqlPageFactory, queryAlias, null);
+    public SqlQueryConditionGroupExpression(Jdbc jdbc, SqlPageFactory sqlPageFactory, String queryAlias,
+            Predicate<Object> ignorePolicy) {
+        this(jdbc, sqlPageFactory, queryAlias, null, ignorePolicy);
     }
 
     /**
@@ -76,10 +80,11 @@ public class SqlQueryConditionGroupExpression
      * @param sqlPageFactory the sql page factory
      * @param queryAlias     queryAlias
      * @param classMapping   classMapping
+     * @param ignorePolicy   the ignore policy
      */
     public SqlQueryConditionGroupExpression(Jdbc jdbc, SqlPageFactory sqlPageFactory, String queryAlias,
-            ClassMapping<?> classMapping) {
-        this(null, jdbc, sqlPageFactory, queryAlias, classMapping);
+            ClassMapping<?> classMapping, Predicate<Object> ignorePolicy) {
+        this(null, jdbc, sqlPageFactory, queryAlias, classMapping, ignorePolicy);
     }
 
     /**
@@ -90,10 +95,12 @@ public class SqlQueryConditionGroupExpression
      * @param sqlPageFactory the sql page factory
      * @param queryAlias     queryAlias
      * @param classMapping   classMapping
+     * @param ignorePolicy   the ignore policy
      */
     SqlQueryConditionGroupExpression(QueryConditionGroupLogicExpression parent, Jdbc jdbc,
-            SqlPageFactory sqlPageFactory, String queryAlias, ClassMapping<?> classMapping) {
-        super(parent, jdbc.getDialect(), sqlPageFactory, queryAlias, classMapping, null);
+            SqlPageFactory sqlPageFactory, String queryAlias, ClassMapping<?> classMapping,
+            Predicate<Object> ignorePolicy) {
+        super(parent, jdbc.getDialect(), sqlPageFactory, queryAlias, classMapping, null, ignorePolicy);
         this.jdbc = jdbc;
     }
 
@@ -110,7 +117,8 @@ public class SqlQueryConditionGroupExpression
     @Override
     protected QueryConditionGroupExpression createGroup(QueryConditionGroupLogicExpression parent, String queryAlias,
             TypeQueryEntity typeQueryEntity) {
-        return new SqlQueryConditionGroupExpression(parent, jdbc, sqlPageFactory, queryAlias, classMapping);
+        return new SqlQueryConditionGroupExpression(parent, jdbc, sqlPageFactory, queryAlias, classMapping,
+                ignorePolicy);
     }
 
     /**
