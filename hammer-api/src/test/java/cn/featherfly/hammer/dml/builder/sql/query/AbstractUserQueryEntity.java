@@ -5,6 +5,7 @@ import java.math.BigDecimal;
 import java.util.Collection;
 import java.util.List;
 import java.util.Map;
+import java.util.function.Consumer;
 
 import cn.featherfly.common.lang.function.SerializableFunction;
 import cn.featherfly.common.repository.mapping.RowMapper;
@@ -360,6 +361,15 @@ public class AbstractUserQueryEntity<Q extends AbstractUserQueryEntity<Q, QW, QW
      */
     @Override
     public <T, R> Q distinct(SerializableFunction<T, R> propertyName) {
+        // YUFEI_TODO Auto-generated method stub
+        return null;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public UserQueryConditionGroupExpression where(Consumer<UserQueryConditionGroupExpression> consumer) {
         // YUFEI_TODO Auto-generated method stub
         return null;
     }

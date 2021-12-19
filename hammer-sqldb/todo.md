@@ -16,6 +16,8 @@
 
 - [ ] 加入一次交互完成锁查询、修改，并返回修改后的结果的功能
 
+- [x] dsl api where() 加入查询参数的忽略规则的配置， 例如 where(c -> c.setIgnorePolity(IgnorePolity.EMPTY))
+
 - [ ] dsl api 更新删除操作集成update(String,BeanPropertyValue<?>...)用于完善自定义属性映射
 
 - [ ] dsl api （eq,co,sw,ew,lk）加入like查询大小写敏感的支持

@@ -8,12 +8,14 @@ import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 import java.util.function.Consumer;
+import java.util.function.Predicate;
 
 import com.speedment.common.tuple.Tuple2;
 
 import cn.featherfly.common.db.builder.SqlBuilder;
 import cn.featherfly.common.db.dialect.Dialect;
 import cn.featherfly.common.db.mapping.ClassMappingUtils;
+import cn.featherfly.common.lang.AssertIllegalArgument;
 import cn.featherfly.common.lang.LambdaUtils;
 import cn.featherfly.common.lang.LambdaUtils.SerializableSupplierLambdaInfo;
 import cn.featherfly.common.lang.function.DateSupplier;
@@ -75,39 +77,42 @@ public abstract class AbstractSqlConditionGroupExpression<C extends ConditionGro
      * Instantiates a new abstract sql condition group expression.
      *
      * @param dialect         dialect
+     * @param ignorePolicy    the ignore policy
      * @param sqlPageFactory  the sql page factory
      * @param typeQueryEntity the type query entity
      */
     public AbstractSqlConditionGroupExpression(Dialect dialect, SqlPageFactory sqlPageFactory,
-            TypeQueryEntity typeQueryEntity) {
-        this(dialect, sqlPageFactory, null, typeQueryEntity);
+            TypeQueryEntity typeQueryEntity, Predicate<Object> ignorePolicy) {
+        this(dialect, sqlPageFactory, null, typeQueryEntity, ignorePolicy);
     }
 
     /**
      * Instantiates a new abstract sql condition group expression.
      *
      * @param dialect         dialect
+     * @param ignorePolicy    the ignore policy
      * @param sqlPageFactory  the sql page factory
      * @param queryAlias      queryAlias
      * @param typeQueryEntity the type query entity
      */
     public AbstractSqlConditionGroupExpression(Dialect dialect, SqlPageFactory sqlPageFactory, String queryAlias,
-            TypeQueryEntity typeQueryEntity) {
-        this(dialect, sqlPageFactory, queryAlias, null, typeQueryEntity);
+            TypeQueryEntity typeQueryEntity, Predicate<Object> ignorePolicy) {
+        this(dialect, sqlPageFactory, queryAlias, null, typeQueryEntity, ignorePolicy);
     }
 
     /**
      * Instantiates a new abstract sql condition group expression.
      *
      * @param dialect         dialect
+     * @param ignorePolicy    the ignore policy
      * @param sqlPageFactory  the sql page factory
      * @param queryAlias      queryAlias
      * @param classMapping    classMapping
      * @param typeQueryEntity the type query entity
      */
     public AbstractSqlConditionGroupExpression(Dialect dialect, SqlPageFactory sqlPageFactory, String queryAlias,
-            ClassMapping<?> classMapping, TypeQueryEntity typeQueryEntity) {
-        this(null, dialect, sqlPageFactory, queryAlias, classMapping, typeQueryEntity);
+            ClassMapping<?> classMapping, TypeQueryEntity typeQueryEntity, Predicate<Object> ignorePolicy) {
+        this(null, dialect, sqlPageFactory, queryAlias, classMapping, typeQueryEntity, ignorePolicy);
     }
 
     /**
@@ -115,14 +120,16 @@ public abstract class AbstractSqlConditionGroupExpression<C extends ConditionGro
      *
      * @param parent          parent group
      * @param dialect         dialect
+     * @param ignorePolicy    the ignore policy
      * @param sqlPageFactory  the sql page factory
      * @param queryAlias      queryAlias
      * @param classMapping    classMapping
      * @param typeQueryEntity the type query entity
      */
     protected AbstractSqlConditionGroupExpression(L parent, Dialect dialect, SqlPageFactory sqlPageFactory,
-            String queryAlias, ClassMapping<?> classMapping, TypeQueryEntity typeQueryEntity) {
-        super(dialect, parent);
+            String queryAlias, ClassMapping<?> classMapping, TypeQueryEntity typeQueryEntity,
+            Predicate<Object> ignorePolicy) {
+        super(dialect, ignorePolicy, parent);
         this.queryAlias = queryAlias;
         this.sqlPageFactory = sqlPageFactory;
         this.classMapping = classMapping;
@@ -142,8 +149,9 @@ public abstract class AbstractSqlConditionGroupExpression<C extends ConditionGro
      */
     @Override
     public L co(String name, String value) {
-        return (L) addCondition(new SqlConditionExpressionBuilder(dialect,
-                ClassMappingUtils.getColumnName(name, classMapping), value, QueryOperator.CO, queryAlias));
+        return (L) addCondition(
+                new SqlConditionExpressionBuilder(dialect, ClassMappingUtils.getColumnName(name, classMapping), value,
+                        QueryOperator.CO, queryAlias, ignorePolicy));
     }
 
     /**
@@ -151,8 +159,9 @@ public abstract class AbstractSqlConditionGroupExpression<C extends ConditionGro
      */
     @Override
     public L ew(String name, String value) {
-        return (L) addCondition(new SqlConditionExpressionBuilder(dialect,
-                ClassMappingUtils.getColumnName(name, classMapping), value, QueryOperator.EW, queryAlias));
+        return (L) addCondition(
+                new SqlConditionExpressionBuilder(dialect, ClassMappingUtils.getColumnName(name, classMapping), value,
+                        QueryOperator.EW, queryAlias, ignorePolicy));
     }
 
     /**
@@ -160,8 +169,9 @@ public abstract class AbstractSqlConditionGroupExpression<C extends ConditionGro
      */
     @Override
     public L eq(String name, Object value) {
-        return (L) addCondition(new SqlConditionExpressionBuilder(dialect,
-                ClassMappingUtils.getColumnName(name, classMapping), value, QueryOperator.EQ, queryAlias));
+        return (L) addCondition(
+                new SqlConditionExpressionBuilder(dialect, ClassMappingUtils.getColumnName(name, classMapping), value,
+                        QueryOperator.EQ, queryAlias, ignorePolicy));
     }
 
     /**
@@ -169,8 +179,9 @@ public abstract class AbstractSqlConditionGroupExpression<C extends ConditionGro
      */
     @Override
     public <N extends Number> L ge(String name, N value) {
-        return (L) addCondition(new SqlConditionExpressionBuilder(dialect,
-                ClassMappingUtils.getColumnName(name, classMapping), value, QueryOperator.GE, queryAlias));
+        return (L) addCondition(
+                new SqlConditionExpressionBuilder(dialect, ClassMappingUtils.getColumnName(name, classMapping), value,
+                        QueryOperator.GE, queryAlias, ignorePolicy));
     }
 
     /**
@@ -178,8 +189,9 @@ public abstract class AbstractSqlConditionGroupExpression<C extends ConditionGro
      */
     @Override
     public <D extends Date> L ge(String name, D value) {
-        return (L) addCondition(new SqlConditionExpressionBuilder(dialect,
-                ClassMappingUtils.getColumnName(name, classMapping), value, QueryOperator.GE, queryAlias));
+        return (L) addCondition(
+                new SqlConditionExpressionBuilder(dialect, ClassMappingUtils.getColumnName(name, classMapping), value,
+                        QueryOperator.GE, queryAlias, ignorePolicy));
     }
 
     /**
@@ -187,8 +199,9 @@ public abstract class AbstractSqlConditionGroupExpression<C extends ConditionGro
      */
     @Override
     public L ge(String name, LocalTime value) {
-        return (L) addCondition(new SqlConditionExpressionBuilder(dialect,
-                ClassMappingUtils.getColumnName(name, classMapping), value, QueryOperator.GE, queryAlias));
+        return (L) addCondition(
+                new SqlConditionExpressionBuilder(dialect, ClassMappingUtils.getColumnName(name, classMapping), value,
+                        QueryOperator.GE, queryAlias, ignorePolicy));
     }
 
     /**
@@ -196,8 +209,9 @@ public abstract class AbstractSqlConditionGroupExpression<C extends ConditionGro
      */
     @Override
     public L ge(String name, LocalDate value) {
-        return (L) addCondition(new SqlConditionExpressionBuilder(dialect,
-                ClassMappingUtils.getColumnName(name, classMapping), value, QueryOperator.GE, queryAlias));
+        return (L) addCondition(
+                new SqlConditionExpressionBuilder(dialect, ClassMappingUtils.getColumnName(name, classMapping), value,
+                        QueryOperator.GE, queryAlias, ignorePolicy));
     }
 
     /**
@@ -205,8 +219,9 @@ public abstract class AbstractSqlConditionGroupExpression<C extends ConditionGro
      */
     @Override
     public L ge(String name, LocalDateTime value) {
-        return (L) addCondition(new SqlConditionExpressionBuilder(dialect,
-                ClassMappingUtils.getColumnName(name, classMapping), value, QueryOperator.GE, queryAlias));
+        return (L) addCondition(
+                new SqlConditionExpressionBuilder(dialect, ClassMappingUtils.getColumnName(name, classMapping), value,
+                        QueryOperator.GE, queryAlias, ignorePolicy));
     }
 
     /**
@@ -214,8 +229,9 @@ public abstract class AbstractSqlConditionGroupExpression<C extends ConditionGro
      */
     @Override
     public L ge(String name, String value) {
-        return (L) addCondition(new SqlConditionExpressionBuilder(dialect,
-                ClassMappingUtils.getColumnName(name, classMapping), value, QueryOperator.GE, queryAlias));
+        return (L) addCondition(
+                new SqlConditionExpressionBuilder(dialect, ClassMappingUtils.getColumnName(name, classMapping), value,
+                        QueryOperator.GE, queryAlias, ignorePolicy));
     }
 
     /**
@@ -223,8 +239,9 @@ public abstract class AbstractSqlConditionGroupExpression<C extends ConditionGro
      */
     @Override
     public <N extends Number> L gt(String name, N value) {
-        return (L) addCondition(new SqlConditionExpressionBuilder(dialect,
-                ClassMappingUtils.getColumnName(name, classMapping), value, QueryOperator.GT, queryAlias));
+        return (L) addCondition(
+                new SqlConditionExpressionBuilder(dialect, ClassMappingUtils.getColumnName(name, classMapping), value,
+                        QueryOperator.GT, queryAlias, ignorePolicy));
     }
 
     /**
@@ -232,8 +249,9 @@ public abstract class AbstractSqlConditionGroupExpression<C extends ConditionGro
      */
     @Override
     public <D extends Date> L gt(String name, D value) {
-        return (L) addCondition(new SqlConditionExpressionBuilder(dialect,
-                ClassMappingUtils.getColumnName(name, classMapping), value, QueryOperator.GT, queryAlias));
+        return (L) addCondition(
+                new SqlConditionExpressionBuilder(dialect, ClassMappingUtils.getColumnName(name, classMapping), value,
+                        QueryOperator.GT, queryAlias, ignorePolicy));
     }
 
     /**
@@ -241,8 +259,9 @@ public abstract class AbstractSqlConditionGroupExpression<C extends ConditionGro
      */
     @Override
     public L gt(String name, LocalTime value) {
-        return (L) addCondition(new SqlConditionExpressionBuilder(dialect,
-                ClassMappingUtils.getColumnName(name, classMapping), value, QueryOperator.GT, queryAlias));
+        return (L) addCondition(
+                new SqlConditionExpressionBuilder(dialect, ClassMappingUtils.getColumnName(name, classMapping), value,
+                        QueryOperator.GT, queryAlias, ignorePolicy));
     }
 
     /**
@@ -250,8 +269,9 @@ public abstract class AbstractSqlConditionGroupExpression<C extends ConditionGro
      */
     @Override
     public L gt(String name, LocalDate value) {
-        return (L) addCondition(new SqlConditionExpressionBuilder(dialect,
-                ClassMappingUtils.getColumnName(name, classMapping), value, QueryOperator.GT, queryAlias));
+        return (L) addCondition(
+                new SqlConditionExpressionBuilder(dialect, ClassMappingUtils.getColumnName(name, classMapping), value,
+                        QueryOperator.GT, queryAlias, ignorePolicy));
     }
 
     /**
@@ -259,8 +279,9 @@ public abstract class AbstractSqlConditionGroupExpression<C extends ConditionGro
      */
     @Override
     public L gt(String name, LocalDateTime value) {
-        return (L) addCondition(new SqlConditionExpressionBuilder(dialect,
-                ClassMappingUtils.getColumnName(name, classMapping), value, QueryOperator.GT, queryAlias));
+        return (L) addCondition(
+                new SqlConditionExpressionBuilder(dialect, ClassMappingUtils.getColumnName(name, classMapping), value,
+                        QueryOperator.GT, queryAlias, ignorePolicy));
     }
 
     /**
@@ -268,8 +289,9 @@ public abstract class AbstractSqlConditionGroupExpression<C extends ConditionGro
      */
     @Override
     public L gt(String name, String value) {
-        return (L) addCondition(new SqlConditionExpressionBuilder(dialect,
-                ClassMappingUtils.getColumnName(name, classMapping), value, QueryOperator.GT, queryAlias));
+        return (L) addCondition(
+                new SqlConditionExpressionBuilder(dialect, ClassMappingUtils.getColumnName(name, classMapping), value,
+                        QueryOperator.GT, queryAlias, ignorePolicy));
     }
 
     /**
@@ -277,8 +299,9 @@ public abstract class AbstractSqlConditionGroupExpression<C extends ConditionGro
      */
     @Override
     public L in(String name, Object value) {
-        return (L) addCondition(new SqlConditionExpressionBuilder(dialect,
-                ClassMappingUtils.getColumnName(name, classMapping), value, QueryOperator.IN, queryAlias));
+        return (L) addCondition(
+                new SqlConditionExpressionBuilder(dialect, ClassMappingUtils.getColumnName(name, classMapping), value,
+                        QueryOperator.IN, queryAlias, ignorePolicy));
     }
 
     /**
@@ -294,8 +317,9 @@ public abstract class AbstractSqlConditionGroupExpression<C extends ConditionGro
      */
     @Override
     public L inn(String name, Boolean value) {
-        return (L) addCondition(new SqlConditionExpressionBuilder(dialect,
-                ClassMappingUtils.getColumnName(name, classMapping), value, QueryOperator.INN, queryAlias));
+        return (L) addCondition(
+                new SqlConditionExpressionBuilder(dialect, ClassMappingUtils.getColumnName(name, classMapping), value,
+                        QueryOperator.INN, queryAlias, ignorePolicy));
     }
 
     /**
@@ -311,8 +335,9 @@ public abstract class AbstractSqlConditionGroupExpression<C extends ConditionGro
      */
     @Override
     public L isn(String name, Boolean value) {
-        return (L) addCondition(new SqlConditionExpressionBuilder(dialect,
-                ClassMappingUtils.getColumnName(name, classMapping), value, QueryOperator.ISN, queryAlias));
+        return (L) addCondition(
+                new SqlConditionExpressionBuilder(dialect, ClassMappingUtils.getColumnName(name, classMapping), value,
+                        QueryOperator.ISN, queryAlias, ignorePolicy));
     }
 
     /**
@@ -320,8 +345,9 @@ public abstract class AbstractSqlConditionGroupExpression<C extends ConditionGro
      */
     @Override
     public <N extends Number> L le(String name, N value) {
-        return (L) addCondition(new SqlConditionExpressionBuilder(dialect,
-                ClassMappingUtils.getColumnName(name, classMapping), value, QueryOperator.LE, queryAlias));
+        return (L) addCondition(
+                new SqlConditionExpressionBuilder(dialect, ClassMappingUtils.getColumnName(name, classMapping), value,
+                        QueryOperator.LE, queryAlias, ignorePolicy));
     }
 
     /**
@@ -329,8 +355,9 @@ public abstract class AbstractSqlConditionGroupExpression<C extends ConditionGro
      */
     @Override
     public <D extends Date> L le(String name, D value) {
-        return (L) addCondition(new SqlConditionExpressionBuilder(dialect,
-                ClassMappingUtils.getColumnName(name, classMapping), value, QueryOperator.LE, queryAlias));
+        return (L) addCondition(
+                new SqlConditionExpressionBuilder(dialect, ClassMappingUtils.getColumnName(name, classMapping), value,
+                        QueryOperator.LE, queryAlias, ignorePolicy));
     }
 
     /**
@@ -338,8 +365,9 @@ public abstract class AbstractSqlConditionGroupExpression<C extends ConditionGro
      */
     @Override
     public L le(String name, LocalTime value) {
-        return (L) addCondition(new SqlConditionExpressionBuilder(dialect,
-                ClassMappingUtils.getColumnName(name, classMapping), value, QueryOperator.LE, queryAlias));
+        return (L) addCondition(
+                new SqlConditionExpressionBuilder(dialect, ClassMappingUtils.getColumnName(name, classMapping), value,
+                        QueryOperator.LE, queryAlias, ignorePolicy));
     }
 
     /**
@@ -347,8 +375,9 @@ public abstract class AbstractSqlConditionGroupExpression<C extends ConditionGro
      */
     @Override
     public L le(String name, LocalDate value) {
-        return (L) addCondition(new SqlConditionExpressionBuilder(dialect,
-                ClassMappingUtils.getColumnName(name, classMapping), value, QueryOperator.LE, queryAlias));
+        return (L) addCondition(
+                new SqlConditionExpressionBuilder(dialect, ClassMappingUtils.getColumnName(name, classMapping), value,
+                        QueryOperator.LE, queryAlias, ignorePolicy));
     }
 
     /**
@@ -356,8 +385,9 @@ public abstract class AbstractSqlConditionGroupExpression<C extends ConditionGro
      */
     @Override
     public L le(String name, LocalDateTime value) {
-        return (L) addCondition(new SqlConditionExpressionBuilder(dialect,
-                ClassMappingUtils.getColumnName(name, classMapping), value, QueryOperator.LE, queryAlias));
+        return (L) addCondition(
+                new SqlConditionExpressionBuilder(dialect, ClassMappingUtils.getColumnName(name, classMapping), value,
+                        QueryOperator.LE, queryAlias, ignorePolicy));
     }
 
     /**
@@ -365,8 +395,9 @@ public abstract class AbstractSqlConditionGroupExpression<C extends ConditionGro
      */
     @Override
     public L le(String name, String value) {
-        return (L) addCondition(new SqlConditionExpressionBuilder(dialect,
-                ClassMappingUtils.getColumnName(name, classMapping), value, QueryOperator.LE, queryAlias));
+        return (L) addCondition(
+                new SqlConditionExpressionBuilder(dialect, ClassMappingUtils.getColumnName(name, classMapping), value,
+                        QueryOperator.LE, queryAlias, ignorePolicy));
     }
 
     /**
@@ -374,8 +405,9 @@ public abstract class AbstractSqlConditionGroupExpression<C extends ConditionGro
      */
     @Override
     public <N extends Number> L lt(String name, N value) {
-        return (L) addCondition(new SqlConditionExpressionBuilder(dialect,
-                ClassMappingUtils.getColumnName(name, classMapping), value, QueryOperator.LT, queryAlias));
+        return (L) addCondition(
+                new SqlConditionExpressionBuilder(dialect, ClassMappingUtils.getColumnName(name, classMapping), value,
+                        QueryOperator.LT, queryAlias, ignorePolicy));
     }
 
     /**
@@ -383,8 +415,9 @@ public abstract class AbstractSqlConditionGroupExpression<C extends ConditionGro
      */
     @Override
     public <D extends Date> L lt(String name, D value) {
-        return (L) addCondition(new SqlConditionExpressionBuilder(dialect,
-                ClassMappingUtils.getColumnName(name, classMapping), value, QueryOperator.LT, queryAlias));
+        return (L) addCondition(
+                new SqlConditionExpressionBuilder(dialect, ClassMappingUtils.getColumnName(name, classMapping), value,
+                        QueryOperator.LT, queryAlias, ignorePolicy));
     }
 
     /**
@@ -392,8 +425,9 @@ public abstract class AbstractSqlConditionGroupExpression<C extends ConditionGro
      */
     @Override
     public L lt(String name, LocalTime value) {
-        return (L) addCondition(new SqlConditionExpressionBuilder(dialect,
-                ClassMappingUtils.getColumnName(name, classMapping), value, QueryOperator.LT, queryAlias));
+        return (L) addCondition(
+                new SqlConditionExpressionBuilder(dialect, ClassMappingUtils.getColumnName(name, classMapping), value,
+                        QueryOperator.LT, queryAlias, ignorePolicy));
     }
 
     /**
@@ -401,8 +435,9 @@ public abstract class AbstractSqlConditionGroupExpression<C extends ConditionGro
      */
     @Override
     public L lt(String name, LocalDate value) {
-        return (L) addCondition(new SqlConditionExpressionBuilder(dialect,
-                ClassMappingUtils.getColumnName(name, classMapping), value, QueryOperator.LT, queryAlias));
+        return (L) addCondition(
+                new SqlConditionExpressionBuilder(dialect, ClassMappingUtils.getColumnName(name, classMapping), value,
+                        QueryOperator.LT, queryAlias, ignorePolicy));
     }
 
     /**
@@ -410,8 +445,9 @@ public abstract class AbstractSqlConditionGroupExpression<C extends ConditionGro
      */
     @Override
     public L lt(String name, LocalDateTime value) {
-        return (L) addCondition(new SqlConditionExpressionBuilder(dialect,
-                ClassMappingUtils.getColumnName(name, classMapping), value, QueryOperator.LT, queryAlias));
+        return (L) addCondition(
+                new SqlConditionExpressionBuilder(dialect, ClassMappingUtils.getColumnName(name, classMapping), value,
+                        QueryOperator.LT, queryAlias, ignorePolicy));
     }
 
     /**
@@ -419,8 +455,9 @@ public abstract class AbstractSqlConditionGroupExpression<C extends ConditionGro
      */
     @Override
     public L lt(String name, String value) {
-        return (L) addCondition(new SqlConditionExpressionBuilder(dialect,
-                ClassMappingUtils.getColumnName(name, classMapping), value, QueryOperator.LT, queryAlias));
+        return (L) addCondition(
+                new SqlConditionExpressionBuilder(dialect, ClassMappingUtils.getColumnName(name, classMapping), value,
+                        QueryOperator.LT, queryAlias, ignorePolicy));
     }
 
     /**
@@ -428,8 +465,9 @@ public abstract class AbstractSqlConditionGroupExpression<C extends ConditionGro
      */
     @Override
     public L ne(String name, Object value) {
-        return (L) addCondition(new SqlConditionExpressionBuilder(dialect,
-                ClassMappingUtils.getColumnName(name, classMapping), value, QueryOperator.NE, queryAlias));
+        return (L) addCondition(
+                new SqlConditionExpressionBuilder(dialect, ClassMappingUtils.getColumnName(name, classMapping), value,
+                        QueryOperator.NE, queryAlias, ignorePolicy));
     }
 
     /**
@@ -437,8 +475,9 @@ public abstract class AbstractSqlConditionGroupExpression<C extends ConditionGro
      */
     @Override
     public L nin(String name, Object value) {
-        return (L) addCondition(new SqlConditionExpressionBuilder(dialect,
-                ClassMappingUtils.getColumnName(name, classMapping), value, QueryOperator.NIN, queryAlias));
+        return (L) addCondition(
+                new SqlConditionExpressionBuilder(dialect, ClassMappingUtils.getColumnName(name, classMapping), value,
+                        QueryOperator.NIN, queryAlias, ignorePolicy));
     }
 
     /**
@@ -446,8 +485,9 @@ public abstract class AbstractSqlConditionGroupExpression<C extends ConditionGro
      */
     @Override
     public L sw(String name, String value) {
-        return (L) addCondition(new SqlConditionExpressionBuilder(dialect,
-                ClassMappingUtils.getColumnName(name, classMapping), value, QueryOperator.SW, queryAlias));
+        return (L) addCondition(
+                new SqlConditionExpressionBuilder(dialect, ClassMappingUtils.getColumnName(name, classMapping), value,
+                        QueryOperator.SW, queryAlias, ignorePolicy));
     }
 
     /**
@@ -1176,8 +1216,9 @@ public abstract class AbstractSqlConditionGroupExpression<C extends ConditionGro
      */
     @Override
     public L lk(String name, String value) {
-        return (L) addCondition(new SqlConditionExpressionBuilder(dialect,
-                ClassMappingUtils.getColumnName(name, classMapping), value, QueryOperator.LK, queryAlias));
+        return (L) addCondition(
+                new SqlConditionExpressionBuilder(dialect, ClassMappingUtils.getColumnName(name, classMapping), value,
+                        QueryOperator.LK, queryAlias, ignorePolicy));
     }
 
     /**
@@ -1267,6 +1308,16 @@ public abstract class AbstractSqlConditionGroupExpression<C extends ConditionGro
     @Override
     public <T, R extends Enum<?>> EnumExpression<C, L> propertyEnum(SerializableFunction<T, R> name) {
         return propertyEnum(getPropertyName(name));
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public C setIgnorePolicy(Predicate<Object> ignorePolicy) {
+        AssertIllegalArgument.isNotNull(ignorePolicy, "ignorePolicy");
+        this.ignorePolicy = ignorePolicy;
+        return (C) this;
     }
 
     // ********************************************************************

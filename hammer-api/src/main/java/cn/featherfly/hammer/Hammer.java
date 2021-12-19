@@ -4,6 +4,7 @@ package cn.featherfly.hammer;
 import java.io.Serializable;
 import java.util.List;
 
+import cn.featherfly.common.repository.IgnorePolicy;
 import cn.featherfly.hammer.dsl.execute.Delete;
 import cn.featherfly.hammer.dsl.execute.Update;
 import cn.featherfly.hammer.dsl.query.QueryEntity;
@@ -11,28 +12,11 @@ import cn.featherfly.hammer.dsl.query.TypeQueryEntity;
 import cn.featherfly.hammer.tpl.TplExecutor;
 
 /**
- * <p>
- * Hammer
- * </p>
+ * Hammer.
  *
  * @author zhongj
  */
 public interface Hammer extends TplExecutor {
-
-    enum IgnorePolicy {
-        /**
-         * not ignore
-         */
-        NONE,
-        /**
-         * ignore null
-         */
-        NULL,
-        /**
-         * ignore null and empty (String Array Collection Map size = 0)
-         */
-        EMPTY
-    }
 
     /**
      * save entity
@@ -179,9 +163,11 @@ public interface Hammer extends TplExecutor {
     <E> int delete(Serializable[] ids, Class<E> entityType);
 
     /**
-     * delete entity by id list
+     * delete entity by id list.
      *
      * @param <E>        generic type
+     * @param <ID>       the generic type
+     * @param ids        the ids
      * @param entityType entity type
      * @return effect data row num
      */
