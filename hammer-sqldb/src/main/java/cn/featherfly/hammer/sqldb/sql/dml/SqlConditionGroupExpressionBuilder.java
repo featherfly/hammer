@@ -1,6 +1,8 @@
 
 package cn.featherfly.hammer.sqldb.sql.dml;
 
+import java.util.function.Predicate;
+
 import cn.featherfly.common.db.dialect.Dialect;
 import cn.featherfly.common.repository.mapping.ClassMapping;
 import cn.featherfly.hammer.dml.BuildableConditionGroupExpression;
@@ -25,9 +27,11 @@ public class SqlConditionGroupExpressionBuilder extends
      *
      * @param dialect        dialect
      * @param sqlPageFactory the sql page factory
+     * @param ignorePolicy   the ignore policy
      */
-    public SqlConditionGroupExpressionBuilder(Dialect dialect, SqlPageFactory sqlPageFactory) {
-        this(dialect, sqlPageFactory, null, null, null);
+    public SqlConditionGroupExpressionBuilder(Dialect dialect, SqlPageFactory sqlPageFactory,
+            Predicate<Object> ignorePolicy) {
+        this(dialect, sqlPageFactory, null, null, null, ignorePolicy);
     }
 
     /**
@@ -36,68 +40,75 @@ public class SqlConditionGroupExpressionBuilder extends
      * @param dialect        dialect
      * @param sqlPageFactory the sql page factory
      * @param queryAlias     queryAlias
+     * @param ignorePolicy   the ignore policy
      */
-    public SqlConditionGroupExpressionBuilder(Dialect dialect, SqlPageFactory sqlPageFactory, String queryAlias) {
-        this(dialect, sqlPageFactory, queryAlias, null, null);
+    public SqlConditionGroupExpressionBuilder(Dialect dialect, SqlPageFactory sqlPageFactory, String queryAlias,
+            Predicate<Object> ignorePolicy) {
+        this(dialect, sqlPageFactory, queryAlias, null, null, ignorePolicy);
     }
 
     /**
      * Instantiates a new sql condition group expression builder.
      *
      * @param dialect        dialect
+     * @param ignorePolicy   the ignore policy
      * @param sqlPageFactory the sql page factory
      * @param queryAlias     queryAlias
      * @param classMapping   classMapping
      */
     public SqlConditionGroupExpressionBuilder(Dialect dialect, SqlPageFactory sqlPageFactory, String queryAlias,
-            ClassMapping<?> classMapping) {
-        this(dialect, sqlPageFactory, queryAlias, classMapping, null);
+            ClassMapping<?> classMapping, Predicate<Object> ignorePolicy) {
+        this(dialect, sqlPageFactory, queryAlias, classMapping, null, ignorePolicy);
     }
 
     /**
      * Instantiates a new sql condition group expression builder.
      *
      * @param dialect         dialect
+     * @param ignorePolicy    the ignore policy
      * @param sqlPageFactory  the sql page factory
      * @param typeQueryEntity the type query entity
      */
     public SqlConditionGroupExpressionBuilder(Dialect dialect, SqlPageFactory sqlPageFactory,
-            TypeQueryEntity typeQueryEntity) {
-        this(dialect, sqlPageFactory, null, typeQueryEntity);
+            TypeQueryEntity typeQueryEntity, Predicate<Object> ignorePolicy) {
+        this(dialect, sqlPageFactory, null, typeQueryEntity, ignorePolicy);
     }
 
     /**
      * Instantiates a new sql condition group expression builder.
      *
      * @param dialect         dialect
+     * @param ignorePolicy    the ignore policy
      * @param sqlPageFactory  the sql page factory
      * @param queryAlias      queryAlias
      * @param typeQueryEntity the type query entity
      */
     public SqlConditionGroupExpressionBuilder(Dialect dialect, SqlPageFactory sqlPageFactory, String queryAlias,
-            TypeQueryEntity typeQueryEntity) {
-        this(dialect, sqlPageFactory, queryAlias, null, typeQueryEntity);
+            TypeQueryEntity typeQueryEntity, Predicate<Object> ignorePolicy) {
+        this(dialect, sqlPageFactory, queryAlias, null, typeQueryEntity, ignorePolicy);
     }
 
     /**
      * Instantiates a new sql condition group expression builder.
      *
      * @param dialect         dialect
+     * @param ignorePolicy    the ignore policy
      * @param sqlPageFactory  the sql page factory
      * @param queryAlias      queryAlias
      * @param classMapping    classMapping
      * @param typeQueryEntity the type query entity
      */
     public SqlConditionGroupExpressionBuilder(Dialect dialect, SqlPageFactory sqlPageFactory, String queryAlias,
-            ClassMapping<?> classMapping, TypeQueryEntity typeQueryEntity) {
-        this(null, dialect, sqlPageFactory, queryAlias, classMapping, typeQueryEntity);
+            ClassMapping<?> classMapping, TypeQueryEntity typeQueryEntity, Predicate<Object> ignorePolicy) {
+        this(null, dialect, sqlPageFactory, queryAlias, classMapping, typeQueryEntity, ignorePolicy);
     }
 
     /**
      * Instantiates a new sql condition group expression builder.
      *
-     * @param dialect         dialect
      * @param parent          parent group
+     * @param dialect         dialect
+     * @param ignorePolicy    the ignore policy
      * @param sqlPageFactory  the sql page factory
      * @param queryAlias      queryAlias
      * @param classMapping    classMapping
@@ -105,8 +116,8 @@ public class SqlConditionGroupExpressionBuilder extends
      */
     SqlConditionGroupExpressionBuilder(BuildableConditionGroupLogicExpression parent, Dialect dialect,
             SqlPageFactory sqlPageFactory, String queryAlias, ClassMapping<?> classMapping,
-            TypeQueryEntity typeQueryEntity) {
-        super(parent, dialect, sqlPageFactory, queryAlias, classMapping, typeQueryEntity);
+            TypeQueryEntity typeQueryEntity, Predicate<Object> ignorePolicy) {
+        super(parent, dialect, sqlPageFactory, queryAlias, classMapping, typeQueryEntity, ignorePolicy);
     }
 
     /**
@@ -116,10 +127,7 @@ public class SqlConditionGroupExpressionBuilder extends
     protected BuildableConditionGroupExpression createGroup(BuildableConditionGroupLogicExpression parent,
             String queryAlias, TypeQueryEntity typeQueryEntity) {
         return new SqlConditionGroupExpressionBuilder(parent, dialect, sqlPageFactory, queryAlias, classMapping,
-                typeQueryEntity);
+                typeQueryEntity, ignorePolicy);
     }
-    // ********************************************************************
-    // property
-    // ********************************************************************
 
 }

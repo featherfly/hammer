@@ -5,6 +5,7 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.Date;
+import java.util.function.Predicate;
 
 import com.speedment.common.tuple.Tuple2;
 import com.speedment.common.tuple.Tuples;
@@ -64,10 +65,12 @@ public class RepositoryTypeSqlQueryExpression extends RepositoryTypeSqlQueryCond
      * @param aliasManager   aliasManager
      * @param classMapping   the class mapping
      * @param selectBuilder  the select builder
+     * @param ignorePolicy   the ignore policy
      */
     public RepositoryTypeSqlQueryExpression(Jdbc jdbc, MappingFactory factory, SqlPageFactory sqlPageFactory,
-            AliasManager aliasManager, ClassMapping<?> classMapping, SqlSelectBasicBuilder selectBuilder) {
-        super(jdbc, factory, aliasManager, selectBuilder.getTableAlias(), sqlPageFactory, classMapping);
+            AliasManager aliasManager, ClassMapping<?> classMapping, SqlSelectBasicBuilder selectBuilder,
+            Predicate<Object> ignorePolicy) {
+        super(jdbc, factory, aliasManager, selectBuilder.getTableAlias(), sqlPageFactory, classMapping, ignorePolicy);
         this.selectBuilder = selectBuilder;
     }
 
@@ -81,11 +84,12 @@ public class RepositoryTypeSqlQueryExpression extends RepositoryTypeSqlQueryCond
      * @param queryAlias     the query alias
      * @param sqlPageFactory the sql page factory
      * @param classMapping   the class mapping
+     * @param ignorePolicy   the ignore policy
      */
     RepositoryTypeSqlQueryExpression(RepositoryTypeQueryConditionGroupLogicExpression parent, Jdbc jdbc,
             MappingFactory factory, AliasManager aliasManager, String queryAlias, SqlPageFactory sqlPageFactory,
-            ClassMapping<?> classMapping) {
-        super(parent, jdbc, factory, aliasManager, queryAlias, sqlPageFactory, classMapping);
+            ClassMapping<?> classMapping, Predicate<Object> ignorePolicy) {
+        super(parent, jdbc, factory, aliasManager, queryAlias, sqlPageFactory, classMapping, ignorePolicy);
     }
 
     /**
@@ -96,7 +100,7 @@ public class RepositoryTypeSqlQueryExpression extends RepositoryTypeSqlQueryCond
             RepositoryTypeQueryConditionGroupLogicExpression parent, String queryAlias) {
         selectBuilder.setTableAlias(queryAlias);
         return new RepositoryTypeSqlQueryExpression(parent, jdbc, factory, aliasManager, queryAlias, sqlPageFactory,
-                classMapping);
+                classMapping, ignorePolicy);
     }
 
     /**
@@ -471,7 +475,7 @@ public class RepositoryTypeSqlQueryExpression extends RepositoryTypeSqlQueryCond
         Tuple2<String, String> tableNameAndColumnName = getTableAliasAndColumnName(name);
         return (RepositoryTypeQueryConditionGroupLogicExpression) addCondition(
                 new SqlConditionExpressionBuilder(dialect, tableNameAndColumnName.get1(), value, queryOperator,
-                        aliasManager.getAlias(tableNameAndColumnName.get0())));
+                        aliasManager.getAlias(tableNameAndColumnName.get0()), ignorePolicy));
     }
 
     private <T, R> Tuple2<String, String> getTableAliasAndColumnName(SerializableFunction<T, R> name) {

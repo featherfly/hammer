@@ -4,6 +4,7 @@ package cn.featherfly.hammer.sqldb.jdbc.dsl.query;
 import cn.featherfly.common.db.mapping.JdbcMappingFactory;
 import cn.featherfly.common.db.metadata.DatabaseMetadata;
 import cn.featherfly.common.lang.Lang;
+import cn.featherfly.common.repository.IgnorePolicy;
 import cn.featherfly.common.repository.builder.AliasManager;
 import cn.featherfly.hammer.dsl.query.Query;
 import cn.featherfly.hammer.expression.Repository;
@@ -78,7 +79,7 @@ public class SqlQuery implements Query {
             alias = aliasManager.put(repository.name());
         }
         return new SqlQueryEntityProperties(jdbc, databaseMetadata, repository.name(), alias, mappingFactory,
-                sqlPageFactory, aliasManager);
+                sqlPageFactory, aliasManager, IgnorePolicy.EMPTY);
     }
 
     /**
@@ -87,7 +88,7 @@ public class SqlQuery implements Query {
     @Override
     public SqlQueryEntityProperties find(String tableName) {
         return new SqlQueryEntityProperties(jdbc, databaseMetadata, tableName, mappingFactory, sqlPageFactory,
-                new AliasManager());
+                new AliasManager(), IgnorePolicy.EMPTY);
     }
 
     /**
@@ -99,6 +100,6 @@ public class SqlQuery implements Query {
             throw new SqldbHammerException("mappingFactory is null");
         }
         return new TypeSqlQueryEntityProperties(jdbc, mappingFactory.getClassMapping(repositType), mappingFactory,
-                sqlPageFactory, new AliasManager());
+                sqlPageFactory, new AliasManager(), IgnorePolicy.EMPTY);
     }
 }

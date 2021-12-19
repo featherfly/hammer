@@ -2,6 +2,7 @@
 package cn.featherfly.hammer.tpl.mapper;
 
 import cn.featherfly.hammer.Hammer;
+import cn.featherfly.hammer.HammerSupport;
 
 /**
  * <p>
@@ -10,7 +11,7 @@ import cn.featherfly.hammer.Hammer;
  *
  * @author zhongj
  */
-public class BasedMapper {
+public class BasedMapper implements HammerSupport {
 
     /** The hammer. */
     protected Hammer hammer;
@@ -22,5 +23,13 @@ public class BasedMapper {
      */
     public BasedMapper(Hammer hammer) {
         this.hammer = hammer;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public Hammer getHammer() {
+        return hammer;
     }
 }

@@ -8,6 +8,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 import java.util.function.Consumer;
+import java.util.function.Predicate;
 
 import com.speedment.common.tuple.Tuple2;
 import com.speedment.common.tuple.Tuple3;
@@ -15,6 +16,7 @@ import com.speedment.common.tuple.Tuple3;
 import cn.featherfly.common.db.builder.SqlBuilder;
 import cn.featherfly.common.db.dialect.Dialect;
 import cn.featherfly.common.db.mapping.ClassMappingUtils;
+import cn.featherfly.common.lang.AssertIllegalArgument;
 import cn.featherfly.common.lang.LambdaUtils;
 import cn.featherfly.common.lang.LambdaUtils.SerializableSupplierLambdaInfo;
 import cn.featherfly.common.lang.function.DateSupplier;
@@ -92,33 +94,37 @@ public abstract class AbstractRepositorySqlConditionGroupExpression<C extends Re
      * Instantiates a new abstract repository sql condition group expression.
      *
      * @param dialect        dialect
+     * @param ignorePolicy   the ignore policy
      * @param factory        MappingFactory
      * @param aliasManager   aliasManager
      * @param sqlPageFactory the sql page factory
      */
     public AbstractRepositorySqlConditionGroupExpression(Dialect dialect, MappingFactory factory,
-            AliasManager aliasManager, SqlPageFactory sqlPageFactory) {
-        this(dialect, factory, aliasManager, null, sqlPageFactory);
+            AliasManager aliasManager, SqlPageFactory sqlPageFactory, Predicate<Object> ignorePolicy) {
+        this(dialect, factory, aliasManager, null, sqlPageFactory, ignorePolicy);
     }
 
     /**
      * Instantiates a new abstract repository sql condition group expression.
      *
      * @param dialect        dialect
+     * @param ignorePolicy   the ignore policy
      * @param factory        MappingFactory
      * @param aliasManager   aliasManager
      * @param queryAlias     queryAlias
      * @param sqlPageFactory the sql page factory
      */
     public AbstractRepositorySqlConditionGroupExpression(Dialect dialect, MappingFactory factory,
-            AliasManager aliasManager, String queryAlias, SqlPageFactory sqlPageFactory) {
-        this(null, dialect, factory, aliasManager, queryAlias, sqlPageFactory, null);
+            AliasManager aliasManager, String queryAlias, SqlPageFactory sqlPageFactory,
+            Predicate<Object> ignorePolicy) {
+        this(null, dialect, factory, aliasManager, queryAlias, sqlPageFactory, null, ignorePolicy);
     }
 
     /**
      * Instantiates a new abstract repository sql condition group expression.
      *
      * @param dialect        dialect
+     * @param ignorePolicy   the ignore policy
      * @param factory        MappingFactory
      * @param aliasManager   aliasManager
      * @param queryAlias     queryAlias
@@ -126,8 +132,9 @@ public abstract class AbstractRepositorySqlConditionGroupExpression<C extends Re
      * @param classMapping   classMapping
      */
     public AbstractRepositorySqlConditionGroupExpression(Dialect dialect, MappingFactory factory,
-            AliasManager aliasManager, String queryAlias, SqlPageFactory sqlPageFactory, ClassMapping<?> classMapping) {
-        this(null, dialect, factory, aliasManager, queryAlias, sqlPageFactory, classMapping);
+            AliasManager aliasManager, String queryAlias, SqlPageFactory sqlPageFactory, ClassMapping<?> classMapping,
+            Predicate<Object> ignorePolicy) {
+        this(null, dialect, factory, aliasManager, queryAlias, sqlPageFactory, classMapping, ignorePolicy);
     }
 
     /**
@@ -135,6 +142,7 @@ public abstract class AbstractRepositorySqlConditionGroupExpression<C extends Re
      *
      * @param parent         parent group
      * @param dialect        dialect
+     * @param ignorePolicy   the ignore policy
      * @param factory        MappingFactory
      * @param aliasManager   aliasManager
      * @param queryAlias     queryAlias
@@ -142,8 +150,9 @@ public abstract class AbstractRepositorySqlConditionGroupExpression<C extends Re
      * @param classMapping   classMapping
      */
     protected AbstractRepositorySqlConditionGroupExpression(L parent, Dialect dialect, MappingFactory factory,
-            AliasManager aliasManager, String queryAlias, SqlPageFactory sqlPageFactory, ClassMapping<?> classMapping) {
-        super(dialect, parent);
+            AliasManager aliasManager, String queryAlias, SqlPageFactory sqlPageFactory, ClassMapping<?> classMapping,
+            Predicate<Object> ignorePolicy) {
+        super(dialect, ignorePolicy, parent);
         this.queryAlias = queryAlias;
         this.classMapping = classMapping;
         this.aliasManager = aliasManager;
@@ -241,7 +250,7 @@ public abstract class AbstractRepositorySqlConditionGroupExpression<C extends Re
     public L co(int repositoryIndex, String name, String value) {
         return (L) addCondition(
                 new SqlConditionExpressionBuilder(dialect, ClassMappingUtils.getColumnName(name, classMapping), value,
-                        QueryOperator.CO, aliasManager.getAlias(repositoryIndex)));
+                        QueryOperator.CO, aliasManager.getAlias(repositoryIndex), ignorePolicy));
     }
 
     /**
@@ -257,8 +266,9 @@ public abstract class AbstractRepositorySqlConditionGroupExpression<C extends Re
      */
     @Override
     public L co(String name, String value) {
-        return (L) addCondition(new SqlConditionExpressionBuilder(dialect,
-                ClassMappingUtils.getColumnName(name, classMapping), value, QueryOperator.CO, queryAlias));
+        return (L) addCondition(
+                new SqlConditionExpressionBuilder(dialect, ClassMappingUtils.getColumnName(name, classMapping), value,
+                        QueryOperator.CO, queryAlias, ignorePolicy));
     }
 
     /**
@@ -266,8 +276,9 @@ public abstract class AbstractRepositorySqlConditionGroupExpression<C extends Re
      */
     @Override
     public L co(String repository, String name, String value) {
-        return (L) addCondition(new SqlConditionExpressionBuilder(dialect,
-                ClassMappingUtils.getColumnName(name, classMapping), value, QueryOperator.CO, queryAlias));
+        return (L) addCondition(
+                new SqlConditionExpressionBuilder(dialect, ClassMappingUtils.getColumnName(name, classMapping), value,
+                        QueryOperator.CO, queryAlias, ignorePolicy));
     }
 
     /**
@@ -285,7 +296,7 @@ public abstract class AbstractRepositorySqlConditionGroupExpression<C extends Re
     public L eq(int repositoryIndex, String name, Object value) {
         return (L) addCondition(
                 new SqlConditionExpressionBuilder(dialect, ClassMappingUtils.getColumnName(name, classMapping), value,
-                        QueryOperator.EQ, aliasManager.getAlias(repositoryIndex)));
+                        QueryOperator.EQ, aliasManager.getAlias(repositoryIndex), ignorePolicy));
     }
 
     /**
@@ -301,8 +312,9 @@ public abstract class AbstractRepositorySqlConditionGroupExpression<C extends Re
      */
     @Override
     public L eq(String name, Object value) {
-        return (L) addCondition(new SqlConditionExpressionBuilder(dialect,
-                ClassMappingUtils.getColumnName(name, classMapping), value, QueryOperator.EQ, queryAlias));
+        return (L) addCondition(
+                new SqlConditionExpressionBuilder(dialect, ClassMappingUtils.getColumnName(name, classMapping), value,
+                        QueryOperator.EQ, queryAlias, ignorePolicy));
     }
 
     /**
@@ -312,7 +324,7 @@ public abstract class AbstractRepositorySqlConditionGroupExpression<C extends Re
     public L eq(String repository, String name, Object value) {
         return (L) addCondition(
                 new SqlConditionExpressionBuilder(dialect, ClassMappingUtils.getColumnName(name, classMapping), value,
-                        QueryOperator.EQ, aliasManager.getAlias(repository)));
+                        QueryOperator.EQ, aliasManager.getAlias(repository), ignorePolicy));
     }
 
     /**
@@ -347,7 +359,7 @@ public abstract class AbstractRepositorySqlConditionGroupExpression<C extends Re
     public L ew(int repositoryIndex, String name, String value) {
         return (L) addCondition(
                 new SqlConditionExpressionBuilder(dialect, ClassMappingUtils.getColumnName(name, classMapping), value,
-                        QueryOperator.EW, aliasManager.getAlias(repositoryIndex)));
+                        QueryOperator.EW, aliasManager.getAlias(repositoryIndex), ignorePolicy));
     }
 
     /**
@@ -363,8 +375,9 @@ public abstract class AbstractRepositorySqlConditionGroupExpression<C extends Re
      */
     @Override
     public L ew(String name, String value) {
-        return (L) addCondition(new SqlConditionExpressionBuilder(dialect,
-                ClassMappingUtils.getColumnName(name, classMapping), value, QueryOperator.EW, queryAlias));
+        return (L) addCondition(
+                new SqlConditionExpressionBuilder(dialect, ClassMappingUtils.getColumnName(name, classMapping), value,
+                        QueryOperator.EW, queryAlias, ignorePolicy));
     }
 
     /**
@@ -374,7 +387,7 @@ public abstract class AbstractRepositorySqlConditionGroupExpression<C extends Re
     public L ew(String repository, String name, String value) {
         return (L) addCondition(
                 new SqlConditionExpressionBuilder(dialect, ClassMappingUtils.getColumnName(name, classMapping), value,
-                        QueryOperator.EW, aliasManager.getAlias(repository)));
+                        QueryOperator.EW, aliasManager.getAlias(repository), ignorePolicy));
     }
 
     /**
@@ -432,7 +445,7 @@ public abstract class AbstractRepositorySqlConditionGroupExpression<C extends Re
     public <D extends Date> L ge(int repositoryIndex, String name, D value) {
         return (L) addCondition(
                 new SqlConditionExpressionBuilder(dialect, ClassMappingUtils.getColumnName(name, classMapping), value,
-                        QueryOperator.GE, aliasManager.getAlias(repositoryIndex)));
+                        QueryOperator.GE, aliasManager.getAlias(repositoryIndex), ignorePolicy));
     }
 
     /**
@@ -442,7 +455,7 @@ public abstract class AbstractRepositorySqlConditionGroupExpression<C extends Re
     public L ge(int repositoryIndex, String name, LocalDate value) {
         return (L) addCondition(
                 new SqlConditionExpressionBuilder(dialect, ClassMappingUtils.getColumnName(name, classMapping), value,
-                        QueryOperator.GE, aliasManager.getAlias(repositoryIndex)));
+                        QueryOperator.GE, aliasManager.getAlias(repositoryIndex), ignorePolicy));
     }
 
     /**
@@ -452,7 +465,7 @@ public abstract class AbstractRepositorySqlConditionGroupExpression<C extends Re
     public L ge(int repositoryIndex, String name, LocalDateTime value) {
         return (L) addCondition(
                 new SqlConditionExpressionBuilder(dialect, ClassMappingUtils.getColumnName(name, classMapping), value,
-                        QueryOperator.GE, aliasManager.getAlias(repositoryIndex)));
+                        QueryOperator.GE, aliasManager.getAlias(repositoryIndex), ignorePolicy));
     }
 
     /**
@@ -462,7 +475,7 @@ public abstract class AbstractRepositorySqlConditionGroupExpression<C extends Re
     public L ge(int repositoryIndex, String name, LocalTime value) {
         return (L) addCondition(
                 new SqlConditionExpressionBuilder(dialect, ClassMappingUtils.getColumnName(name, classMapping), value,
-                        QueryOperator.GE, aliasManager.getAlias(repositoryIndex)));
+                        QueryOperator.GE, aliasManager.getAlias(repositoryIndex), ignorePolicy));
     }
 
     /**
@@ -472,7 +485,7 @@ public abstract class AbstractRepositorySqlConditionGroupExpression<C extends Re
     public <N extends Number> L ge(int repositoryIndex, String name, N value) {
         return (L) addCondition(
                 new SqlConditionExpressionBuilder(dialect, ClassMappingUtils.getColumnName(name, classMapping), value,
-                        QueryOperator.GE, aliasManager.getAlias(repositoryIndex)));
+                        QueryOperator.GE, aliasManager.getAlias(repositoryIndex), ignorePolicy));
     }
 
     /**
@@ -482,7 +495,7 @@ public abstract class AbstractRepositorySqlConditionGroupExpression<C extends Re
     public L ge(int repositoryIndex, String name, String value) {
         return (L) addCondition(
                 new SqlConditionExpressionBuilder(dialect, ClassMappingUtils.getColumnName(name, classMapping), value,
-                        QueryOperator.GE, aliasManager.getAlias(repositoryIndex)));
+                        QueryOperator.GE, aliasManager.getAlias(repositoryIndex), ignorePolicy));
     }
 
     /**
@@ -538,8 +551,9 @@ public abstract class AbstractRepositorySqlConditionGroupExpression<C extends Re
      */
     @Override
     public <D extends Date> L ge(String name, D value) {
-        return (L) addCondition(new SqlConditionExpressionBuilder(dialect,
-                ClassMappingUtils.getColumnName(name, classMapping), value, QueryOperator.GE, queryAlias));
+        return (L) addCondition(
+                new SqlConditionExpressionBuilder(dialect, ClassMappingUtils.getColumnName(name, classMapping), value,
+                        QueryOperator.GE, queryAlias, ignorePolicy));
     }
 
     /**
@@ -547,8 +561,9 @@ public abstract class AbstractRepositorySqlConditionGroupExpression<C extends Re
      */
     @Override
     public L ge(String name, LocalDate value) {
-        return (L) addCondition(new SqlConditionExpressionBuilder(dialect,
-                ClassMappingUtils.getColumnName(name, classMapping), value, QueryOperator.GE, queryAlias));
+        return (L) addCondition(
+                new SqlConditionExpressionBuilder(dialect, ClassMappingUtils.getColumnName(name, classMapping), value,
+                        QueryOperator.GE, queryAlias, ignorePolicy));
     }
 
     /**
@@ -556,8 +571,9 @@ public abstract class AbstractRepositorySqlConditionGroupExpression<C extends Re
      */
     @Override
     public L ge(String name, LocalDateTime value) {
-        return (L) addCondition(new SqlConditionExpressionBuilder(dialect,
-                ClassMappingUtils.getColumnName(name, classMapping), value, QueryOperator.GE, queryAlias));
+        return (L) addCondition(
+                new SqlConditionExpressionBuilder(dialect, ClassMappingUtils.getColumnName(name, classMapping), value,
+                        QueryOperator.GE, queryAlias, ignorePolicy));
     }
 
     /**
@@ -565,8 +581,9 @@ public abstract class AbstractRepositorySqlConditionGroupExpression<C extends Re
      */
     @Override
     public L ge(String name, LocalTime value) {
-        return (L) addCondition(new SqlConditionExpressionBuilder(dialect,
-                ClassMappingUtils.getColumnName(name, classMapping), value, QueryOperator.GE, queryAlias));
+        return (L) addCondition(
+                new SqlConditionExpressionBuilder(dialect, ClassMappingUtils.getColumnName(name, classMapping), value,
+                        QueryOperator.GE, queryAlias, ignorePolicy));
     }
 
     /**
@@ -574,8 +591,9 @@ public abstract class AbstractRepositorySqlConditionGroupExpression<C extends Re
      */
     @Override
     public <N extends Number> L ge(String name, N value) {
-        return (L) addCondition(new SqlConditionExpressionBuilder(dialect,
-                ClassMappingUtils.getColumnName(name, classMapping), value, QueryOperator.GE, queryAlias));
+        return (L) addCondition(
+                new SqlConditionExpressionBuilder(dialect, ClassMappingUtils.getColumnName(name, classMapping), value,
+                        QueryOperator.GE, queryAlias, ignorePolicy));
     }
 
     /**
@@ -583,8 +601,9 @@ public abstract class AbstractRepositorySqlConditionGroupExpression<C extends Re
      */
     @Override
     public L ge(String name, String value) {
-        return (L) addCondition(new SqlConditionExpressionBuilder(dialect,
-                ClassMappingUtils.getColumnName(name, classMapping), value, QueryOperator.GE, queryAlias));
+        return (L) addCondition(
+                new SqlConditionExpressionBuilder(dialect, ClassMappingUtils.getColumnName(name, classMapping), value,
+                        QueryOperator.GE, queryAlias, ignorePolicy));
     }
 
     /**
@@ -594,7 +613,7 @@ public abstract class AbstractRepositorySqlConditionGroupExpression<C extends Re
     public <D extends Date> L ge(String repository, String name, D value) {
         return (L) addCondition(
                 new SqlConditionExpressionBuilder(dialect, ClassMappingUtils.getColumnName(name, classMapping), value,
-                        QueryOperator.GE, aliasManager.getAlias(repository)));
+                        QueryOperator.GE, aliasManager.getAlias(repository), ignorePolicy));
     }
 
     /**
@@ -604,7 +623,7 @@ public abstract class AbstractRepositorySqlConditionGroupExpression<C extends Re
     public L ge(String repository, String name, LocalDate value) {
         return (L) addCondition(
                 new SqlConditionExpressionBuilder(dialect, ClassMappingUtils.getColumnName(name, classMapping), value,
-                        QueryOperator.GE, aliasManager.getAlias(repository)));
+                        QueryOperator.GE, aliasManager.getAlias(repository), ignorePolicy));
     }
 
     /**
@@ -614,7 +633,7 @@ public abstract class AbstractRepositorySqlConditionGroupExpression<C extends Re
     public L ge(String repository, String name, LocalDateTime value) {
         return (L) addCondition(
                 new SqlConditionExpressionBuilder(dialect, ClassMappingUtils.getColumnName(name, classMapping), value,
-                        QueryOperator.GE, aliasManager.getAlias(repository)));
+                        QueryOperator.GE, aliasManager.getAlias(repository), ignorePolicy));
     }
 
     /**
@@ -624,7 +643,7 @@ public abstract class AbstractRepositorySqlConditionGroupExpression<C extends Re
     public L ge(String repository, String name, LocalTime value) {
         return (L) addCondition(
                 new SqlConditionExpressionBuilder(dialect, ClassMappingUtils.getColumnName(name, classMapping), value,
-                        QueryOperator.GE, aliasManager.getAlias(repository)));
+                        QueryOperator.GE, aliasManager.getAlias(repository), ignorePolicy));
     }
 
     /**
@@ -634,7 +653,7 @@ public abstract class AbstractRepositorySqlConditionGroupExpression<C extends Re
     public <N extends Number> L ge(String repository, String name, N value) {
         return (L) addCondition(
                 new SqlConditionExpressionBuilder(dialect, ClassMappingUtils.getColumnName(name, classMapping), value,
-                        QueryOperator.GE, aliasManager.getAlias(repository)));
+                        QueryOperator.GE, aliasManager.getAlias(repository), ignorePolicy));
     }
 
     /**
@@ -644,7 +663,7 @@ public abstract class AbstractRepositorySqlConditionGroupExpression<C extends Re
     public L ge(String repository, String name, String value) {
         return (L) addCondition(
                 new SqlConditionExpressionBuilder(dialect, ClassMappingUtils.getColumnName(name, classMapping), value,
-                        QueryOperator.GE, aliasManager.getAlias(repository)));
+                        QueryOperator.GE, aliasManager.getAlias(repository), ignorePolicy));
     }
 
     /**
@@ -736,7 +755,7 @@ public abstract class AbstractRepositorySqlConditionGroupExpression<C extends Re
     public <D extends Date> L gt(int repositoryIndex, String name, D value) {
         return (L) addCondition(
                 new SqlConditionExpressionBuilder(dialect, ClassMappingUtils.getColumnName(name, classMapping), value,
-                        QueryOperator.GT, aliasManager.getAlias(repositoryIndex)));
+                        QueryOperator.GT, aliasManager.getAlias(repositoryIndex), ignorePolicy));
     }
 
     /**
@@ -746,7 +765,7 @@ public abstract class AbstractRepositorySqlConditionGroupExpression<C extends Re
     public L gt(int repositoryIndex, String name, LocalDate value) {
         return (L) addCondition(
                 new SqlConditionExpressionBuilder(dialect, ClassMappingUtils.getColumnName(name, classMapping), value,
-                        QueryOperator.GT, aliasManager.getAlias(repositoryIndex)));
+                        QueryOperator.GT, aliasManager.getAlias(repositoryIndex), ignorePolicy));
     }
 
     /**
@@ -756,7 +775,7 @@ public abstract class AbstractRepositorySqlConditionGroupExpression<C extends Re
     public L gt(int repositoryIndex, String name, LocalDateTime value) {
         return (L) addCondition(
                 new SqlConditionExpressionBuilder(dialect, ClassMappingUtils.getColumnName(name, classMapping), value,
-                        QueryOperator.GT, aliasManager.getAlias(repositoryIndex)));
+                        QueryOperator.GT, aliasManager.getAlias(repositoryIndex), ignorePolicy));
     }
 
     /**
@@ -766,7 +785,7 @@ public abstract class AbstractRepositorySqlConditionGroupExpression<C extends Re
     public L gt(int repositoryIndex, String name, LocalTime value) {
         return (L) addCondition(
                 new SqlConditionExpressionBuilder(dialect, ClassMappingUtils.getColumnName(name, classMapping), value,
-                        QueryOperator.GT, aliasManager.getAlias(repositoryIndex)));
+                        QueryOperator.GT, aliasManager.getAlias(repositoryIndex), ignorePolicy));
     }
 
     /**
@@ -776,7 +795,7 @@ public abstract class AbstractRepositorySqlConditionGroupExpression<C extends Re
     public <N extends Number> L gt(int repositoryIndex, String name, N value) {
         return (L) addCondition(
                 new SqlConditionExpressionBuilder(dialect, ClassMappingUtils.getColumnName(name, classMapping), value,
-                        QueryOperator.GT, aliasManager.getAlias(repositoryIndex)));
+                        QueryOperator.GT, aliasManager.getAlias(repositoryIndex), ignorePolicy));
     }
 
     /**
@@ -786,7 +805,7 @@ public abstract class AbstractRepositorySqlConditionGroupExpression<C extends Re
     public L gt(int repositoryIndex, String name, String value) {
         return (L) addCondition(
                 new SqlConditionExpressionBuilder(dialect, ClassMappingUtils.getColumnName(name, classMapping), value,
-                        QueryOperator.GT, aliasManager.getAlias(repositoryIndex)));
+                        QueryOperator.GT, aliasManager.getAlias(repositoryIndex), ignorePolicy));
     }
 
     /**
@@ -842,8 +861,9 @@ public abstract class AbstractRepositorySqlConditionGroupExpression<C extends Re
      */
     @Override
     public <D extends Date> L gt(String name, D value) {
-        return (L) addCondition(new SqlConditionExpressionBuilder(dialect,
-                ClassMappingUtils.getColumnName(name, classMapping), value, QueryOperator.GT, queryAlias));
+        return (L) addCondition(
+                new SqlConditionExpressionBuilder(dialect, ClassMappingUtils.getColumnName(name, classMapping), value,
+                        QueryOperator.GT, queryAlias, ignorePolicy));
     }
 
     /**
@@ -851,8 +871,9 @@ public abstract class AbstractRepositorySqlConditionGroupExpression<C extends Re
      */
     @Override
     public L gt(String name, LocalDate value) {
-        return (L) addCondition(new SqlConditionExpressionBuilder(dialect,
-                ClassMappingUtils.getColumnName(name, classMapping), value, QueryOperator.GT, queryAlias));
+        return (L) addCondition(
+                new SqlConditionExpressionBuilder(dialect, ClassMappingUtils.getColumnName(name, classMapping), value,
+                        QueryOperator.GT, queryAlias, ignorePolicy));
     }
 
     /**
@@ -860,8 +881,9 @@ public abstract class AbstractRepositorySqlConditionGroupExpression<C extends Re
      */
     @Override
     public L gt(String name, LocalDateTime value) {
-        return (L) addCondition(new SqlConditionExpressionBuilder(dialect,
-                ClassMappingUtils.getColumnName(name, classMapping), value, QueryOperator.GT, queryAlias));
+        return (L) addCondition(
+                new SqlConditionExpressionBuilder(dialect, ClassMappingUtils.getColumnName(name, classMapping), value,
+                        QueryOperator.GT, queryAlias, ignorePolicy));
     }
 
     /**
@@ -869,8 +891,9 @@ public abstract class AbstractRepositorySqlConditionGroupExpression<C extends Re
      */
     @Override
     public L gt(String name, LocalTime value) {
-        return (L) addCondition(new SqlConditionExpressionBuilder(dialect,
-                ClassMappingUtils.getColumnName(name, classMapping), value, QueryOperator.GT, queryAlias));
+        return (L) addCondition(
+                new SqlConditionExpressionBuilder(dialect, ClassMappingUtils.getColumnName(name, classMapping), value,
+                        QueryOperator.GT, queryAlias, ignorePolicy));
     }
 
     /**
@@ -878,8 +901,9 @@ public abstract class AbstractRepositorySqlConditionGroupExpression<C extends Re
      */
     @Override
     public <N extends Number> L gt(String name, N value) {
-        return (L) addCondition(new SqlConditionExpressionBuilder(dialect,
-                ClassMappingUtils.getColumnName(name, classMapping), value, QueryOperator.GT, queryAlias));
+        return (L) addCondition(
+                new SqlConditionExpressionBuilder(dialect, ClassMappingUtils.getColumnName(name, classMapping), value,
+                        QueryOperator.GT, queryAlias, ignorePolicy));
     }
 
     /**
@@ -887,8 +911,9 @@ public abstract class AbstractRepositorySqlConditionGroupExpression<C extends Re
      */
     @Override
     public L gt(String name, String value) {
-        return (L) addCondition(new SqlConditionExpressionBuilder(dialect,
-                ClassMappingUtils.getColumnName(name, classMapping), value, QueryOperator.GT, queryAlias));
+        return (L) addCondition(
+                new SqlConditionExpressionBuilder(dialect, ClassMappingUtils.getColumnName(name, classMapping), value,
+                        QueryOperator.GT, queryAlias, ignorePolicy));
     }
 
     /**
@@ -898,7 +923,7 @@ public abstract class AbstractRepositorySqlConditionGroupExpression<C extends Re
     public <D extends Date> L gt(String repository, String name, D value) {
         return (L) addCondition(
                 new SqlConditionExpressionBuilder(dialect, ClassMappingUtils.getColumnName(name, classMapping), value,
-                        QueryOperator.GT, aliasManager.getAlias(repository)));
+                        QueryOperator.GT, aliasManager.getAlias(repository), ignorePolicy));
     }
 
     /**
@@ -908,7 +933,7 @@ public abstract class AbstractRepositorySqlConditionGroupExpression<C extends Re
     public L gt(String repository, String name, LocalDate value) {
         return (L) addCondition(
                 new SqlConditionExpressionBuilder(dialect, ClassMappingUtils.getColumnName(name, classMapping), value,
-                        QueryOperator.GT, aliasManager.getAlias(repository)));
+                        QueryOperator.GT, aliasManager.getAlias(repository), ignorePolicy));
     }
 
     /**
@@ -918,7 +943,7 @@ public abstract class AbstractRepositorySqlConditionGroupExpression<C extends Re
     public L gt(String repository, String name, LocalDateTime value) {
         return (L) addCondition(
                 new SqlConditionExpressionBuilder(dialect, ClassMappingUtils.getColumnName(name, classMapping), value,
-                        QueryOperator.GT, aliasManager.getAlias(repository)));
+                        QueryOperator.GT, aliasManager.getAlias(repository), ignorePolicy));
     }
 
     /**
@@ -928,7 +953,7 @@ public abstract class AbstractRepositorySqlConditionGroupExpression<C extends Re
     public L gt(String repository, String name, LocalTime value) {
         return (L) addCondition(
                 new SqlConditionExpressionBuilder(dialect, ClassMappingUtils.getColumnName(name, classMapping), value,
-                        QueryOperator.GT, aliasManager.getAlias(repository)));
+                        QueryOperator.GT, aliasManager.getAlias(repository), ignorePolicy));
     }
 
     /**
@@ -938,7 +963,7 @@ public abstract class AbstractRepositorySqlConditionGroupExpression<C extends Re
     public <N extends Number> L gt(String repository, String name, N value) {
         return (L) addCondition(
                 new SqlConditionExpressionBuilder(dialect, ClassMappingUtils.getColumnName(name, classMapping), value,
-                        QueryOperator.GT, aliasManager.getAlias(repository)));
+                        QueryOperator.GT, aliasManager.getAlias(repository), ignorePolicy));
     }
 
     /**
@@ -948,7 +973,7 @@ public abstract class AbstractRepositorySqlConditionGroupExpression<C extends Re
     public L gt(String repository, String name, String value) {
         return (L) addCondition(
                 new SqlConditionExpressionBuilder(dialect, ClassMappingUtils.getColumnName(name, classMapping), value,
-                        QueryOperator.GT, aliasManager.getAlias(repository)));
+                        QueryOperator.GT, aliasManager.getAlias(repository), ignorePolicy));
     }
 
     /**
@@ -966,7 +991,7 @@ public abstract class AbstractRepositorySqlConditionGroupExpression<C extends Re
     public L in(int repositoryIndex, String name, Object value) {
         return (L) addCondition(
                 new SqlConditionExpressionBuilder(dialect, ClassMappingUtils.getColumnName(name, classMapping), value,
-                        QueryOperator.IN, aliasManager.getAlias(repositoryIndex)));
+                        QueryOperator.IN, aliasManager.getAlias(repositoryIndex), ignorePolicy));
     }
 
     /**
@@ -982,8 +1007,9 @@ public abstract class AbstractRepositorySqlConditionGroupExpression<C extends Re
      */
     @Override
     public L in(String name, Object value) {
-        return (L) addCondition(new SqlConditionExpressionBuilder(dialect,
-                ClassMappingUtils.getColumnName(name, classMapping), value, QueryOperator.IN, queryAlias));
+        return (L) addCondition(
+                new SqlConditionExpressionBuilder(dialect, ClassMappingUtils.getColumnName(name, classMapping), value,
+                        QueryOperator.IN, queryAlias, ignorePolicy));
     }
 
     /**
@@ -993,7 +1019,7 @@ public abstract class AbstractRepositorySqlConditionGroupExpression<C extends Re
     public L in(String repository, String name, Object value) {
         return (L) addCondition(
                 new SqlConditionExpressionBuilder(dialect, ClassMappingUtils.getColumnName(name, classMapping), value,
-                        QueryOperator.IN, aliasManager.getAlias(repository)));
+                        QueryOperator.IN, aliasManager.getAlias(repository), ignorePolicy));
     }
 
     /**
@@ -1027,7 +1053,7 @@ public abstract class AbstractRepositorySqlConditionGroupExpression<C extends Re
     public L inn(int repositoryIndex, String name, Boolean value) {
         return (L) addCondition(
                 new SqlConditionExpressionBuilder(dialect, ClassMappingUtils.getColumnName(name, classMapping), value,
-                        QueryOperator.INN, aliasManager.getAlias(repositoryIndex)));
+                        QueryOperator.INN, aliasManager.getAlias(repositoryIndex), ignorePolicy));
     }
 
     /**
@@ -1059,8 +1085,9 @@ public abstract class AbstractRepositorySqlConditionGroupExpression<C extends Re
      */
     @Override
     public L inn(String name, Boolean value) {
-        return (L) addCondition(new SqlConditionExpressionBuilder(dialect,
-                ClassMappingUtils.getColumnName(name, classMapping), value, QueryOperator.INN, queryAlias));
+        return (L) addCondition(
+                new SqlConditionExpressionBuilder(dialect, ClassMappingUtils.getColumnName(name, classMapping), value,
+                        QueryOperator.INN, queryAlias, ignorePolicy));
     }
 
     /**
@@ -1078,7 +1105,7 @@ public abstract class AbstractRepositorySqlConditionGroupExpression<C extends Re
     public L inn(String repository, String name, Boolean value) {
         return (L) addCondition(
                 new SqlConditionExpressionBuilder(dialect, ClassMappingUtils.getColumnName(name, classMapping), value,
-                        QueryOperator.INN, aliasManager.getAlias(repository)));
+                        QueryOperator.INN, aliasManager.getAlias(repository), ignorePolicy));
     }
 
     /**
@@ -1112,7 +1139,7 @@ public abstract class AbstractRepositorySqlConditionGroupExpression<C extends Re
     public L isn(int repositoryIndex, String name, Boolean value) {
         return (L) addCondition(
                 new SqlConditionExpressionBuilder(dialect, ClassMappingUtils.getColumnName(name, classMapping), value,
-                        QueryOperator.ISN, aliasManager.getAlias(repositoryIndex)));
+                        QueryOperator.ISN, aliasManager.getAlias(repositoryIndex), ignorePolicy));
     }
 
     /**
@@ -1144,8 +1171,9 @@ public abstract class AbstractRepositorySqlConditionGroupExpression<C extends Re
      */
     @Override
     public L isn(String name, Boolean value) {
-        return (L) addCondition(new SqlConditionExpressionBuilder(dialect,
-                ClassMappingUtils.getColumnName(name, classMapping), value, QueryOperator.ISN, queryAlias));
+        return (L) addCondition(
+                new SqlConditionExpressionBuilder(dialect, ClassMappingUtils.getColumnName(name, classMapping), value,
+                        QueryOperator.ISN, queryAlias, ignorePolicy));
     }
 
     /**
@@ -1163,7 +1191,7 @@ public abstract class AbstractRepositorySqlConditionGroupExpression<C extends Re
     public L isn(String repository, String name, Boolean value) {
         return (L) addCondition(
                 new SqlConditionExpressionBuilder(dialect, ClassMappingUtils.getColumnName(name, classMapping), value,
-                        QueryOperator.ISN, aliasManager.getAlias(repository)));
+                        QueryOperator.ISN, aliasManager.getAlias(repository), ignorePolicy));
     }
 
     /**
@@ -1221,7 +1249,7 @@ public abstract class AbstractRepositorySqlConditionGroupExpression<C extends Re
     public <D extends Date> L le(int repositoryIndex, String name, D value) {
         return (L) addCondition(
                 new SqlConditionExpressionBuilder(dialect, ClassMappingUtils.getColumnName(name, classMapping), value,
-                        QueryOperator.LE, aliasManager.getAlias(repositoryIndex)));
+                        QueryOperator.LE, aliasManager.getAlias(repositoryIndex), ignorePolicy));
     }
 
     /**
@@ -1231,7 +1259,7 @@ public abstract class AbstractRepositorySqlConditionGroupExpression<C extends Re
     public L le(int repositoryIndex, String name, LocalDate value) {
         return (L) addCondition(
                 new SqlConditionExpressionBuilder(dialect, ClassMappingUtils.getColumnName(name, classMapping), value,
-                        QueryOperator.LE, aliasManager.getAlias(repositoryIndex)));
+                        QueryOperator.LE, aliasManager.getAlias(repositoryIndex), ignorePolicy));
     }
 
     /**
@@ -1241,7 +1269,7 @@ public abstract class AbstractRepositorySqlConditionGroupExpression<C extends Re
     public L le(int repositoryIndex, String name, LocalDateTime value) {
         return (L) addCondition(
                 new SqlConditionExpressionBuilder(dialect, ClassMappingUtils.getColumnName(name, classMapping), value,
-                        QueryOperator.LE, aliasManager.getAlias(repositoryIndex)));
+                        QueryOperator.LE, aliasManager.getAlias(repositoryIndex), ignorePolicy));
     }
 
     /**
@@ -1251,7 +1279,7 @@ public abstract class AbstractRepositorySqlConditionGroupExpression<C extends Re
     public L le(int repositoryIndex, String name, LocalTime value) {
         return (L) addCondition(
                 new SqlConditionExpressionBuilder(dialect, ClassMappingUtils.getColumnName(name, classMapping), value,
-                        QueryOperator.LE, aliasManager.getAlias(repositoryIndex)));
+                        QueryOperator.LE, aliasManager.getAlias(repositoryIndex), ignorePolicy));
     }
 
     /**
@@ -1261,7 +1289,7 @@ public abstract class AbstractRepositorySqlConditionGroupExpression<C extends Re
     public <N extends Number> L le(int repositoryIndex, String name, N value) {
         return (L) addCondition(
                 new SqlConditionExpressionBuilder(dialect, ClassMappingUtils.getColumnName(name, classMapping), value,
-                        QueryOperator.LE, aliasManager.getAlias(repositoryIndex)));
+                        QueryOperator.LE, aliasManager.getAlias(repositoryIndex), ignorePolicy));
     }
 
     /**
@@ -1271,7 +1299,7 @@ public abstract class AbstractRepositorySqlConditionGroupExpression<C extends Re
     public L le(int repositoryIndex, String name, String value) {
         return (L) addCondition(
                 new SqlConditionExpressionBuilder(dialect, ClassMappingUtils.getColumnName(name, classMapping), value,
-                        QueryOperator.LE, aliasManager.getAlias(repositoryIndex)));
+                        QueryOperator.LE, aliasManager.getAlias(repositoryIndex), ignorePolicy));
     }
 
     /**
@@ -1327,8 +1355,9 @@ public abstract class AbstractRepositorySqlConditionGroupExpression<C extends Re
      */
     @Override
     public <D extends Date> L le(String name, D value) {
-        return (L) addCondition(new SqlConditionExpressionBuilder(dialect,
-                ClassMappingUtils.getColumnName(name, classMapping), value, QueryOperator.LE, queryAlias));
+        return (L) addCondition(
+                new SqlConditionExpressionBuilder(dialect, ClassMappingUtils.getColumnName(name, classMapping), value,
+                        QueryOperator.LE, queryAlias, ignorePolicy));
     }
 
     /**
@@ -1336,8 +1365,9 @@ public abstract class AbstractRepositorySqlConditionGroupExpression<C extends Re
      */
     @Override
     public L le(String name, LocalDate value) {
-        return (L) addCondition(new SqlConditionExpressionBuilder(dialect,
-                ClassMappingUtils.getColumnName(name, classMapping), value, QueryOperator.LE, queryAlias));
+        return (L) addCondition(
+                new SqlConditionExpressionBuilder(dialect, ClassMappingUtils.getColumnName(name, classMapping), value,
+                        QueryOperator.LE, queryAlias, ignorePolicy));
     }
 
     /**
@@ -1345,8 +1375,9 @@ public abstract class AbstractRepositorySqlConditionGroupExpression<C extends Re
      */
     @Override
     public L le(String name, LocalDateTime value) {
-        return (L) addCondition(new SqlConditionExpressionBuilder(dialect,
-                ClassMappingUtils.getColumnName(name, classMapping), value, QueryOperator.LE, queryAlias));
+        return (L) addCondition(
+                new SqlConditionExpressionBuilder(dialect, ClassMappingUtils.getColumnName(name, classMapping), value,
+                        QueryOperator.LE, queryAlias, ignorePolicy));
     }
 
     /**
@@ -1354,8 +1385,9 @@ public abstract class AbstractRepositorySqlConditionGroupExpression<C extends Re
      */
     @Override
     public L le(String name, LocalTime value) {
-        return (L) addCondition(new SqlConditionExpressionBuilder(dialect,
-                ClassMappingUtils.getColumnName(name, classMapping), value, QueryOperator.LE, queryAlias));
+        return (L) addCondition(
+                new SqlConditionExpressionBuilder(dialect, ClassMappingUtils.getColumnName(name, classMapping), value,
+                        QueryOperator.LE, queryAlias, ignorePolicy));
     }
 
     /**
@@ -1363,8 +1395,9 @@ public abstract class AbstractRepositorySqlConditionGroupExpression<C extends Re
      */
     @Override
     public <N extends Number> L le(String name, N value) {
-        return (L) addCondition(new SqlConditionExpressionBuilder(dialect,
-                ClassMappingUtils.getColumnName(name, classMapping), value, QueryOperator.LE, queryAlias));
+        return (L) addCondition(
+                new SqlConditionExpressionBuilder(dialect, ClassMappingUtils.getColumnName(name, classMapping), value,
+                        QueryOperator.LE, queryAlias, ignorePolicy));
     }
 
     /**
@@ -1372,8 +1405,9 @@ public abstract class AbstractRepositorySqlConditionGroupExpression<C extends Re
      */
     @Override
     public L le(String name, String value) {
-        return (L) addCondition(new SqlConditionExpressionBuilder(dialect,
-                ClassMappingUtils.getColumnName(name, classMapping), value, QueryOperator.LE, queryAlias));
+        return (L) addCondition(
+                new SqlConditionExpressionBuilder(dialect, ClassMappingUtils.getColumnName(name, classMapping), value,
+                        QueryOperator.LE, queryAlias, ignorePolicy));
     }
 
     /**
@@ -1383,7 +1417,7 @@ public abstract class AbstractRepositorySqlConditionGroupExpression<C extends Re
     public <D extends Date> L le(String repository, String name, D value) {
         return (L) addCondition(
                 new SqlConditionExpressionBuilder(dialect, ClassMappingUtils.getColumnName(name, classMapping), value,
-                        QueryOperator.LE, aliasManager.getAlias(repository)));
+                        QueryOperator.LE, aliasManager.getAlias(repository), ignorePolicy));
     }
 
     /**
@@ -1393,7 +1427,7 @@ public abstract class AbstractRepositorySqlConditionGroupExpression<C extends Re
     public L le(String repository, String name, LocalDate value) {
         return (L) addCondition(
                 new SqlConditionExpressionBuilder(dialect, ClassMappingUtils.getColumnName(name, classMapping), value,
-                        QueryOperator.LE, aliasManager.getAlias(repository)));
+                        QueryOperator.LE, aliasManager.getAlias(repository), ignorePolicy));
     }
 
     /**
@@ -1403,7 +1437,7 @@ public abstract class AbstractRepositorySqlConditionGroupExpression<C extends Re
     public L le(String repository, String name, LocalDateTime value) {
         return (L) addCondition(
                 new SqlConditionExpressionBuilder(dialect, ClassMappingUtils.getColumnName(name, classMapping), value,
-                        QueryOperator.LE, aliasManager.getAlias(repository)));
+                        QueryOperator.LE, aliasManager.getAlias(repository), ignorePolicy));
     }
 
     /**
@@ -1413,7 +1447,7 @@ public abstract class AbstractRepositorySqlConditionGroupExpression<C extends Re
     public L le(String repository, String name, LocalTime value) {
         return (L) addCondition(
                 new SqlConditionExpressionBuilder(dialect, ClassMappingUtils.getColumnName(name, classMapping), value,
-                        QueryOperator.LE, aliasManager.getAlias(repository)));
+                        QueryOperator.LE, aliasManager.getAlias(repository), ignorePolicy));
     }
 
     /**
@@ -1423,7 +1457,7 @@ public abstract class AbstractRepositorySqlConditionGroupExpression<C extends Re
     public <N extends Number> L le(String repository, String name, N value) {
         return (L) addCondition(
                 new SqlConditionExpressionBuilder(dialect, ClassMappingUtils.getColumnName(name, classMapping), value,
-                        QueryOperator.LE, aliasManager.getAlias(repository)));
+                        QueryOperator.LE, aliasManager.getAlias(repository), ignorePolicy));
     }
 
     /**
@@ -1433,7 +1467,7 @@ public abstract class AbstractRepositorySqlConditionGroupExpression<C extends Re
     public L le(String repository, String name, String value) {
         return (L) addCondition(
                 new SqlConditionExpressionBuilder(dialect, ClassMappingUtils.getColumnName(name, classMapping), value,
-                        QueryOperator.LE, aliasManager.getAlias(repository)));
+                        QueryOperator.LE, aliasManager.getAlias(repository), ignorePolicy));
     }
 
     /**
@@ -1491,7 +1525,7 @@ public abstract class AbstractRepositorySqlConditionGroupExpression<C extends Re
     public <D extends Date> L lt(int repositoryIndex, String name, D value) {
         return (L) addCondition(
                 new SqlConditionExpressionBuilder(dialect, ClassMappingUtils.getColumnName(name, classMapping), value,
-                        QueryOperator.LT, aliasManager.getAlias(repositoryIndex)));
+                        QueryOperator.LT, aliasManager.getAlias(repositoryIndex), ignorePolicy));
     }
 
     /**
@@ -1501,7 +1535,7 @@ public abstract class AbstractRepositorySqlConditionGroupExpression<C extends Re
     public L lt(int repositoryIndex, String name, LocalDate value) {
         return (L) addCondition(
                 new SqlConditionExpressionBuilder(dialect, ClassMappingUtils.getColumnName(name, classMapping), value,
-                        QueryOperator.LT, aliasManager.getAlias(repositoryIndex)));
+                        QueryOperator.LT, aliasManager.getAlias(repositoryIndex), ignorePolicy));
     }
 
     /**
@@ -1511,7 +1545,7 @@ public abstract class AbstractRepositorySqlConditionGroupExpression<C extends Re
     public L lt(int repositoryIndex, String name, LocalDateTime value) {
         return (L) addCondition(
                 new SqlConditionExpressionBuilder(dialect, ClassMappingUtils.getColumnName(name, classMapping), value,
-                        QueryOperator.LT, aliasManager.getAlias(repositoryIndex)));
+                        QueryOperator.LT, aliasManager.getAlias(repositoryIndex), ignorePolicy));
     }
 
     /**
@@ -1521,7 +1555,7 @@ public abstract class AbstractRepositorySqlConditionGroupExpression<C extends Re
     public L lt(int repositoryIndex, String name, LocalTime value) {
         return (L) addCondition(
                 new SqlConditionExpressionBuilder(dialect, ClassMappingUtils.getColumnName(name, classMapping), value,
-                        QueryOperator.LT, aliasManager.getAlias(repositoryIndex)));
+                        QueryOperator.LT, aliasManager.getAlias(repositoryIndex), ignorePolicy));
     }
 
     /**
@@ -1531,7 +1565,7 @@ public abstract class AbstractRepositorySqlConditionGroupExpression<C extends Re
     public <N extends Number> L lt(int repositoryIndex, String name, N value) {
         return (L) addCondition(
                 new SqlConditionExpressionBuilder(dialect, ClassMappingUtils.getColumnName(name, classMapping), value,
-                        QueryOperator.LT, aliasManager.getAlias(repositoryIndex)));
+                        QueryOperator.LT, aliasManager.getAlias(repositoryIndex), ignorePolicy));
     }
 
     /**
@@ -1541,7 +1575,7 @@ public abstract class AbstractRepositorySqlConditionGroupExpression<C extends Re
     public L lt(int repositoryIndex, String name, String value) {
         return (L) addCondition(
                 new SqlConditionExpressionBuilder(dialect, ClassMappingUtils.getColumnName(name, classMapping), value,
-                        QueryOperator.LT, aliasManager.getAlias(repositoryIndex)));
+                        QueryOperator.LT, aliasManager.getAlias(repositoryIndex), ignorePolicy));
     }
 
     /**
@@ -1597,8 +1631,9 @@ public abstract class AbstractRepositorySqlConditionGroupExpression<C extends Re
      */
     @Override
     public <D extends Date> L lt(String name, D value) {
-        return (L) addCondition(new SqlConditionExpressionBuilder(dialect,
-                ClassMappingUtils.getColumnName(name, classMapping), value, QueryOperator.LT, queryAlias));
+        return (L) addCondition(
+                new SqlConditionExpressionBuilder(dialect, ClassMappingUtils.getColumnName(name, classMapping), value,
+                        QueryOperator.LT, queryAlias, ignorePolicy));
     }
 
     /**
@@ -1606,8 +1641,9 @@ public abstract class AbstractRepositorySqlConditionGroupExpression<C extends Re
      */
     @Override
     public L lt(String name, LocalDate value) {
-        return (L) addCondition(new SqlConditionExpressionBuilder(dialect,
-                ClassMappingUtils.getColumnName(name, classMapping), value, QueryOperator.LT, queryAlias));
+        return (L) addCondition(
+                new SqlConditionExpressionBuilder(dialect, ClassMappingUtils.getColumnName(name, classMapping), value,
+                        QueryOperator.LT, queryAlias, ignorePolicy));
     }
 
     /**
@@ -1615,8 +1651,9 @@ public abstract class AbstractRepositorySqlConditionGroupExpression<C extends Re
      */
     @Override
     public L lt(String name, LocalDateTime value) {
-        return (L) addCondition(new SqlConditionExpressionBuilder(dialect,
-                ClassMappingUtils.getColumnName(name, classMapping), value, QueryOperator.LT, queryAlias));
+        return (L) addCondition(
+                new SqlConditionExpressionBuilder(dialect, ClassMappingUtils.getColumnName(name, classMapping), value,
+                        QueryOperator.LT, queryAlias, ignorePolicy));
     }
 
     /**
@@ -1624,8 +1661,9 @@ public abstract class AbstractRepositorySqlConditionGroupExpression<C extends Re
      */
     @Override
     public L lt(String name, LocalTime value) {
-        return (L) addCondition(new SqlConditionExpressionBuilder(dialect,
-                ClassMappingUtils.getColumnName(name, classMapping), value, QueryOperator.LT, queryAlias));
+        return (L) addCondition(
+                new SqlConditionExpressionBuilder(dialect, ClassMappingUtils.getColumnName(name, classMapping), value,
+                        QueryOperator.LT, queryAlias, ignorePolicy));
     }
 
     /**
@@ -1633,8 +1671,9 @@ public abstract class AbstractRepositorySqlConditionGroupExpression<C extends Re
      */
     @Override
     public <N extends Number> L lt(String name, N value) {
-        return (L) addCondition(new SqlConditionExpressionBuilder(dialect,
-                ClassMappingUtils.getColumnName(name, classMapping), value, QueryOperator.LT, queryAlias));
+        return (L) addCondition(
+                new SqlConditionExpressionBuilder(dialect, ClassMappingUtils.getColumnName(name, classMapping), value,
+                        QueryOperator.LT, queryAlias, ignorePolicy));
     }
 
     /**
@@ -1642,8 +1681,9 @@ public abstract class AbstractRepositorySqlConditionGroupExpression<C extends Re
      */
     @Override
     public L lt(String name, String value) {
-        return (L) addCondition(new SqlConditionExpressionBuilder(dialect,
-                ClassMappingUtils.getColumnName(name, classMapping), value, QueryOperator.LT, queryAlias));
+        return (L) addCondition(
+                new SqlConditionExpressionBuilder(dialect, ClassMappingUtils.getColumnName(name, classMapping), value,
+                        QueryOperator.LT, queryAlias, ignorePolicy));
     }
 
     /**
@@ -1653,7 +1693,7 @@ public abstract class AbstractRepositorySqlConditionGroupExpression<C extends Re
     public <D extends Date> L lt(String repository, String name, D value) {
         return (L) addCondition(
                 new SqlConditionExpressionBuilder(dialect, ClassMappingUtils.getColumnName(name, classMapping), value,
-                        QueryOperator.LT, aliasManager.getAlias(repository)));
+                        QueryOperator.LT, aliasManager.getAlias(repository), ignorePolicy));
     }
 
     /**
@@ -1663,7 +1703,7 @@ public abstract class AbstractRepositorySqlConditionGroupExpression<C extends Re
     public L lt(String repository, String name, LocalDate value) {
         return (L) addCondition(
                 new SqlConditionExpressionBuilder(dialect, ClassMappingUtils.getColumnName(name, classMapping), value,
-                        QueryOperator.LT, aliasManager.getAlias(repository)));
+                        QueryOperator.LT, aliasManager.getAlias(repository), ignorePolicy));
     }
 
     /**
@@ -1673,7 +1713,7 @@ public abstract class AbstractRepositorySqlConditionGroupExpression<C extends Re
     public L lt(String repository, String name, LocalDateTime value) {
         return (L) addCondition(
                 new SqlConditionExpressionBuilder(dialect, ClassMappingUtils.getColumnName(name, classMapping), value,
-                        QueryOperator.LT, aliasManager.getAlias(repository)));
+                        QueryOperator.LT, aliasManager.getAlias(repository), ignorePolicy));
     }
 
     /**
@@ -1683,7 +1723,7 @@ public abstract class AbstractRepositorySqlConditionGroupExpression<C extends Re
     public L lt(String repository, String name, LocalTime value) {
         return (L) addCondition(
                 new SqlConditionExpressionBuilder(dialect, ClassMappingUtils.getColumnName(name, classMapping), value,
-                        QueryOperator.LT, aliasManager.getAlias(repository)));
+                        QueryOperator.LT, aliasManager.getAlias(repository), ignorePolicy));
     }
 
     /**
@@ -1693,7 +1733,7 @@ public abstract class AbstractRepositorySqlConditionGroupExpression<C extends Re
     public <N extends Number> L lt(String repository, String name, N value) {
         return (L) addCondition(
                 new SqlConditionExpressionBuilder(dialect, ClassMappingUtils.getColumnName(name, classMapping), value,
-                        QueryOperator.LT, aliasManager.getAlias(repository)));
+                        QueryOperator.LT, aliasManager.getAlias(repository), ignorePolicy));
     }
 
     /**
@@ -1703,7 +1743,7 @@ public abstract class AbstractRepositorySqlConditionGroupExpression<C extends Re
     public L lt(String repository, String name, String value) {
         return (L) addCondition(
                 new SqlConditionExpressionBuilder(dialect, ClassMappingUtils.getColumnName(name, classMapping), value,
-                        QueryOperator.LT, aliasManager.getAlias(repository)));
+                        QueryOperator.LT, aliasManager.getAlias(repository), ignorePolicy));
     }
 
     /**
@@ -1721,7 +1761,7 @@ public abstract class AbstractRepositorySqlConditionGroupExpression<C extends Re
     public L ne(int repositoryIndex, String name, Object value) {
         return (L) addCondition(
                 new SqlConditionExpressionBuilder(dialect, ClassMappingUtils.getColumnName(name, classMapping), value,
-                        QueryOperator.NE, aliasManager.getAlias(repositoryIndex)));
+                        QueryOperator.NE, aliasManager.getAlias(repositoryIndex), ignorePolicy));
     }
 
     /**
@@ -1737,8 +1777,9 @@ public abstract class AbstractRepositorySqlConditionGroupExpression<C extends Re
      */
     @Override
     public L ne(String name, Object value) {
-        return (L) addCondition(new SqlConditionExpressionBuilder(dialect,
-                ClassMappingUtils.getColumnName(name, classMapping), value, QueryOperator.NE, queryAlias));
+        return (L) addCondition(
+                new SqlConditionExpressionBuilder(dialect, ClassMappingUtils.getColumnName(name, classMapping), value,
+                        QueryOperator.NE, queryAlias, ignorePolicy));
     }
 
     /**
@@ -1748,7 +1789,7 @@ public abstract class AbstractRepositorySqlConditionGroupExpression<C extends Re
     public L ne(String repository, String name, Object value) {
         return (L) addCondition(
                 new SqlConditionExpressionBuilder(dialect, ClassMappingUtils.getColumnName(name, classMapping), value,
-                        QueryOperator.NE, aliasManager.getAlias(repository)));
+                        QueryOperator.NE, aliasManager.getAlias(repository), ignorePolicy));
     }
 
     /**
@@ -1783,7 +1824,7 @@ public abstract class AbstractRepositorySqlConditionGroupExpression<C extends Re
     public L nin(int repositoryIndex, String name, Object value) {
         return (L) addCondition(
                 new SqlConditionExpressionBuilder(dialect, ClassMappingUtils.getColumnName(name, classMapping), value,
-                        QueryOperator.NIN, aliasManager.getAlias(repositoryIndex)));
+                        QueryOperator.NIN, aliasManager.getAlias(repositoryIndex), ignorePolicy));
     }
 
     /**
@@ -1799,8 +1840,9 @@ public abstract class AbstractRepositorySqlConditionGroupExpression<C extends Re
      */
     @Override
     public L nin(String name, Object value) {
-        return (L) addCondition(new SqlConditionExpressionBuilder(dialect,
-                ClassMappingUtils.getColumnName(name, classMapping), value, QueryOperator.NIN, queryAlias));
+        return (L) addCondition(
+                new SqlConditionExpressionBuilder(dialect, ClassMappingUtils.getColumnName(name, classMapping), value,
+                        QueryOperator.NIN, queryAlias, ignorePolicy));
     }
 
     /**
@@ -1810,7 +1852,7 @@ public abstract class AbstractRepositorySqlConditionGroupExpression<C extends Re
     public L nin(String repository, String name, Object value) {
         return (L) addCondition(
                 new SqlConditionExpressionBuilder(dialect, ClassMappingUtils.getColumnName(name, classMapping), value,
-                        QueryOperator.NIN, aliasManager.getAlias(repository)));
+                        QueryOperator.NIN, aliasManager.getAlias(repository), ignorePolicy));
     }
 
     /**
@@ -2083,7 +2125,7 @@ public abstract class AbstractRepositorySqlConditionGroupExpression<C extends Re
     public L sw(int repositoryIndex, String name, String value) {
         return (L) addCondition(
                 new SqlConditionExpressionBuilder(dialect, ClassMappingUtils.getColumnName(name, classMapping), value,
-                        QueryOperator.SW, aliasManager.getAlias(repositoryIndex)));
+                        QueryOperator.SW, aliasManager.getAlias(repositoryIndex), ignorePolicy));
     }
 
     /**
@@ -2099,8 +2141,9 @@ public abstract class AbstractRepositorySqlConditionGroupExpression<C extends Re
      */
     @Override
     public L sw(String name, String value) {
-        return (L) addCondition(new SqlConditionExpressionBuilder(dialect,
-                ClassMappingUtils.getColumnName(name, classMapping), value, QueryOperator.SW, queryAlias));
+        return (L) addCondition(
+                new SqlConditionExpressionBuilder(dialect, ClassMappingUtils.getColumnName(name, classMapping), value,
+                        QueryOperator.SW, queryAlias, ignorePolicy));
     }
 
     /**
@@ -2110,7 +2153,7 @@ public abstract class AbstractRepositorySqlConditionGroupExpression<C extends Re
     public L sw(String repository, String name, String value) {
         return (L) addCondition(
                 new SqlConditionExpressionBuilder(dialect, ClassMappingUtils.getColumnName(name, classMapping), value,
-                        QueryOperator.SW, aliasManager.getAlias(repository)));
+                        QueryOperator.SW, aliasManager.getAlias(repository), ignorePolicy));
     }
 
     /**
@@ -2435,7 +2478,7 @@ public abstract class AbstractRepositorySqlConditionGroupExpression<C extends Re
     public L lk(String repository, String name, String value) {
         return (L) addCondition(
                 new SqlConditionExpressionBuilder(dialect, ClassMappingUtils.getColumnName(name, classMapping), value,
-                        QueryOperator.LK, aliasManager.getAlias(repository)));
+                        QueryOperator.LK, aliasManager.getAlias(repository), ignorePolicy));
     }
 
     /**
@@ -2453,7 +2496,7 @@ public abstract class AbstractRepositorySqlConditionGroupExpression<C extends Re
     public L lk(int repositoryIndex, String name, String value) {
         return (L) addCondition(
                 new SqlConditionExpressionBuilder(dialect, ClassMappingUtils.getColumnName(name, classMapping), value,
-                        QueryOperator.LK, aliasManager.getAlias(repositoryIndex)));
+                        QueryOperator.LK, aliasManager.getAlias(repositoryIndex), ignorePolicy));
     }
 
     /**
@@ -2461,8 +2504,9 @@ public abstract class AbstractRepositorySqlConditionGroupExpression<C extends Re
      */
     @Override
     public L lk(String name, String value) {
-        return (L) addCondition(new SqlConditionExpressionBuilder(dialect,
-                ClassMappingUtils.getColumnName(name, classMapping), value, QueryOperator.LK, queryAlias));
+        return (L) addCondition(
+                new SqlConditionExpressionBuilder(dialect, ClassMappingUtils.getColumnName(name, classMapping), value,
+                        QueryOperator.LK, queryAlias, ignorePolicy));
     }
 
     /**
@@ -2480,6 +2524,16 @@ public abstract class AbstractRepositorySqlConditionGroupExpression<C extends Re
     public L lk(StringSupplier property) {
         SerializableSupplierLambdaInfo<String> info = LambdaUtils.getSerializableSupplierLambdaInfo(property);
         return lk(info.getSerializedLambdaInfo().getPropertyName(), info.getValue());
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public C setIgnorePolicy(Predicate<Object> ignorePolicy) {
+        AssertIllegalArgument.isNotNull(ignorePolicy, "ignorePolicy");
+        this.ignorePolicy = ignorePolicy;
+        return (C) this;
     }
 
     /**

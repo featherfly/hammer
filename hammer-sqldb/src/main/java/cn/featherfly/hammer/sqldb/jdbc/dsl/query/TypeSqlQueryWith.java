@@ -2,8 +2,11 @@
 package cn.featherfly.hammer.sqldb.jdbc.dsl.query;
 
 import java.util.List;
+import java.util.function.Consumer;
+import java.util.function.Predicate;
 
 import cn.featherfly.common.db.builder.dml.basic.SqlSelectJoinOnBasicBuilder;
+import cn.featherfly.common.lang.AssertIllegalArgument;
 import cn.featherfly.common.lang.Lang;
 import cn.featherfly.common.lang.function.SerializableFunction;
 import cn.featherfly.common.repository.builder.AliasManager;
@@ -63,6 +66,9 @@ public class TypeSqlQueryWith implements TypeQueryWith, TypeQueryWithEntity {
     /** The fetch property alias. */
     protected String fetchPropertyAlias;
 
+    /** The ignore policy. */
+    protected Predicate<Object> ignorePolicy;
+
     /**
      * Instantiates a new type sql query with.
      *
@@ -75,13 +81,14 @@ public class TypeSqlQueryWith implements TypeQueryWith, TypeQueryWithEntity {
      * @param conditionTableColumn      the condition table column
      * @param joinTypeClassMapping      the join type class mapping
      * @param joinTableColumn           the join table column
+     * @param ignorePolicy              the ignore policy
      */
     public TypeSqlQueryWith(TypeSqlQueryEntityProperties sqlQueryEntityProperties, AliasManager aliasManager,
             MappingFactory factory, SqlPageFactory sqlPageFactory, ClassMapping<?> conditionTypeClassMapping,
             String conditionTableAlias, String conditionTableColumn, ClassMapping<?> joinTypeClassMapping,
-            String joinTableColumn) {
+            String joinTableColumn, Predicate<Object> ignorePolicy) {
         this(sqlQueryEntityProperties, aliasManager, factory, sqlPageFactory, conditionTypeClassMapping,
-                conditionTableAlias, conditionTableColumn, joinTypeClassMapping, joinTableColumn, null);
+                conditionTableAlias, conditionTableColumn, joinTypeClassMapping, joinTableColumn, null, ignorePolicy);
     }
 
     /**
@@ -97,11 +104,12 @@ public class TypeSqlQueryWith implements TypeQueryWith, TypeQueryWithEntity {
      * @param joinTypeClassMapping      the join type class mapping
      * @param joinTableColumn           the join table column
      * @param fetchProperty             the fetch property
+     * @param ignorePolicy              the ignore policy
      */
     public TypeSqlQueryWith(TypeSqlQueryEntityProperties sqlQueryEntityProperties, AliasManager aliasManager,
             MappingFactory factory, SqlPageFactory sqlPageFactory, ClassMapping<?> conditionTypeClassMapping,
             String conditionTableAlias, String conditionTableColumn, ClassMapping<?> joinTypeClassMapping,
-            String joinTableColumn, String fetchProperty) {
+            String joinTableColumn, String fetchProperty, Predicate<Object> ignorePolicy) {
         super();
         this.sqlQueryEntityProperties = sqlQueryEntityProperties;
         this.factory = factory;
@@ -114,6 +122,8 @@ public class TypeSqlQueryWith implements TypeQueryWith, TypeQueryWithEntity {
         this.joinTypeClassMapping = joinTypeClassMapping;
         this.fetchProperty = fetchProperty;
         fetchPropertyAlias = joinTableAlias;
+        AssertIllegalArgument.isNotNull(ignorePolicy, "ignorePolicy");
+        this.ignorePolicy = ignorePolicy;
         on();
     }
 
@@ -159,7 +169,22 @@ public class TypeSqlQueryWith implements TypeQueryWith, TypeQueryWithEntity {
     public RepositoryTypeQueryConditionGroupExpression where() {
         return new RepositoryTypeSqlQueryExpression(sqlQueryEntityProperties.jdbc, factory, sqlPageFactory,
                 sqlQueryEntityProperties.aliasManager, sqlQueryEntityProperties.classMapping,
-                sqlQueryEntityProperties.selectBuilder);
+                sqlQueryEntityProperties.selectBuilder, ignorePolicy);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public RepositoryTypeQueryConditionGroupExpression where(
+            Consumer<RepositoryTypeQueryConditionGroupExpression> consumer) {
+        RepositoryTypeSqlQueryExpression repositorySqlQueryExpression = new RepositoryTypeSqlQueryExpression(
+                sqlQueryEntityProperties.jdbc, factory, sqlPageFactory, sqlQueryEntityProperties.aliasManager,
+                sqlQueryEntityProperties.classMapping, sqlQueryEntityProperties.selectBuilder, ignorePolicy);
+        if (consumer != null) {
+            consumer.accept(repositorySqlQueryExpression);
+        }
+        return repositorySqlQueryExpression;
     }
 
     /**
@@ -193,5 +218,4 @@ public class TypeSqlQueryWith implements TypeQueryWith, TypeQueryWithEntity {
     public TypeQueryLimitExecutor limit(Page page) {
         return sqlQueryEntityProperties.limit(page);
     }
-
 }

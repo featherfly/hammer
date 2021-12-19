@@ -1,6 +1,8 @@
 
 package cn.featherfly.hammer.dml.builder.sql.update;
 
+import java.util.function.Consumer;
+
 import cn.featherfly.common.lang.function.SerializableFunction;
 import cn.featherfly.common.lang.function.SerializableSupplier;
 import cn.featherfly.hammer.dml.builder.sql.query.UserQueryConditionGroupExpression;
@@ -147,6 +149,15 @@ public class UserUpdate implements UserPropertiesUpdate,
      */
     @Override
     public <N extends Number> UserUpdate increase(SerializableSupplier<N> property) {
+        // YUFEI_TODO Auto-generated method stub
+        return null;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public UserQueryConditionGroupExpression where(Consumer<UserQueryConditionGroupExpression> consumer) {
         // YUFEI_TODO Auto-generated method stub
         return null;
     }

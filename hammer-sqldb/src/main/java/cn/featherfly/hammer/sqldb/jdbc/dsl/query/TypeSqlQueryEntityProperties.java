@@ -3,6 +3,8 @@ package cn.featherfly.hammer.sqldb.jdbc.dsl.query;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.function.Consumer;
+import java.util.function.Predicate;
 
 import cn.featherfly.common.constant.Chars;
 import cn.featherfly.common.lang.ClassUtils;
@@ -28,12 +30,14 @@ import cn.featherfly.hammer.sqldb.jdbc.SqlPageFactory;
  * <p>
  * SqlQueryProperties
  * </p>
+ * .
  *
  * @author zhongj
  */
 public class TypeSqlQueryEntityProperties extends AbstractSqlQueryEntityProperties<TypeSqlQueryEntityProperties>
         implements TypeSqlQueryEntity, TypeQueryEntityProperties {
 
+    /** The type sql query withs. */
     List<TypeSqlQueryWith> typeSqlQueryWiths = new ArrayList<>();
 
     /**
@@ -44,10 +48,11 @@ public class TypeSqlQueryEntityProperties extends AbstractSqlQueryEntityProperti
      * @param factory        the factory
      * @param sqlPageFactory the sql page factory
      * @param aliasManager   aliasManager
+     * @param ignorePolicy   the ignore policy
      */
     public TypeSqlQueryEntityProperties(Jdbc jdbc, ClassMapping<?> classMapping, MappingFactory factory,
-            SqlPageFactory sqlPageFactory, AliasManager aliasManager) {
-        super(jdbc, classMapping, factory, sqlPageFactory, aliasManager);
+            SqlPageFactory sqlPageFactory, AliasManager aliasManager, Predicate<Object> ignorePolicy) {
+        super(jdbc, classMapping, factory, sqlPageFactory, aliasManager, ignorePolicy);
     }
 
     /**
@@ -56,7 +61,20 @@ public class TypeSqlQueryEntityProperties extends AbstractSqlQueryEntityProperti
     @Override
     public TypeQueryConditionGroupExpression where() {
         return new TypeSqlQueryExpression(jdbc, classMapping, this, factory, sqlPageFactory, aliasManager,
-                selectBuilder);
+                selectBuilder, ignorePolicy);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public TypeQueryConditionGroupExpression where(Consumer<TypeQueryConditionGroupExpression> consumer) {
+        TypeSqlQueryExpression typeSqlQueryExpression = new TypeSqlQueryExpression(jdbc, classMapping, this, factory,
+                sqlPageFactory, aliasManager, selectBuilder, ignorePolicy);
+        if (consumer != null) {
+            consumer.accept(typeSqlQueryExpression);
+        }
+        return typeSqlQueryExpression;
     }
 
     /**
@@ -65,7 +83,7 @@ public class TypeSqlQueryEntityProperties extends AbstractSqlQueryEntityProperti
     @Override
     public <E> List<E> list() {
         return new TypeSqlQueryExpression(jdbc, classMapping, this, factory, sqlPageFactory, aliasManager,
-                selectBuilder).list();
+                selectBuilder, ignorePolicy).list();
     }
 
     /**
@@ -74,7 +92,7 @@ public class TypeSqlQueryEntityProperties extends AbstractSqlQueryEntityProperti
     @Override
     public TypeQueryLimitExecutor limit(Integer limit) {
         return new TypeSqlQueryExpression(jdbc, classMapping, this, factory, sqlPageFactory, aliasManager,
-                selectBuilder).limit(limit);
+                selectBuilder, ignorePolicy).limit(limit);
     }
 
     /**
@@ -83,7 +101,7 @@ public class TypeSqlQueryEntityProperties extends AbstractSqlQueryEntityProperti
     @Override
     public TypeQueryLimitExecutor limit(Integer offset, Integer limit) {
         return new TypeSqlQueryExpression(jdbc, classMapping, this, factory, sqlPageFactory, aliasManager,
-                selectBuilder).limit(offset, limit);
+                selectBuilder, ignorePolicy).limit(offset, limit);
     }
 
     /**
@@ -92,7 +110,7 @@ public class TypeSqlQueryEntityProperties extends AbstractSqlQueryEntityProperti
     @Override
     public TypeQueryLimitExecutor limit(Page page) {
         return new TypeSqlQueryExpression(jdbc, classMapping, this, factory, sqlPageFactory, aliasManager,
-                selectBuilder).limit(page);
+                selectBuilder, ignorePolicy).limit(page);
     }
 
     /**
@@ -101,7 +119,7 @@ public class TypeSqlQueryEntityProperties extends AbstractSqlQueryEntityProperti
     @Override
     public Long count() {
         return new SqlQueryExpression(jdbc, sqlPageFactory, classMapping,
-                selectBuilder.addSelectColumn(Chars.STAR, AggregateFunction.COUNT)).longInt();
+                selectBuilder.addSelectColumn(Chars.STAR, AggregateFunction.COUNT), ignorePolicy).longInt();
     }
 
     /**
@@ -170,7 +188,7 @@ public class TypeSqlQueryEntityProperties extends AbstractSqlQueryEntityProperti
             PropertyMapping pm = cm.getPropertyMapping(name);
             TypeSqlQueryWith typeSqlQueryWith = new TypeSqlQueryWith(this, aliasManager, factory, sqlPageFactory, cm,
                     tableAlias, pm.getRepositoryFieldName(), joinClassMapping,
-                    getPkMapping(joinClassMapping).getRepositoryFieldName(), name);
+                    getPkMapping(joinClassMapping).getRepositoryFieldName(), name, ignorePolicy);
             typeSqlQueryWiths.add(typeSqlQueryWith);
             return typeSqlQueryWith;
         } else if (ClassUtils.isParent(cm.getType(), joinInfo.getPropertyType())) {
@@ -180,7 +198,7 @@ public class TypeSqlQueryEntityProperties extends AbstractSqlQueryEntityProperti
             PropertyMapping pm = joinClassMapping.getPropertyMapping(name);
 
             TypeSqlQueryWith typeSqlQueryWith = new TypeSqlQueryWith(this, aliasManager, factory, sqlPageFactory, cm,
-                    tableAlias, getIdName(), joinClassMapping, pm.getRepositoryFieldName());
+                    tableAlias, getIdName(), joinClassMapping, pm.getRepositoryFieldName(), ignorePolicy);
             typeSqlQueryWiths.add(typeSqlQueryWith);
             return typeSqlQueryWith;
         } else {

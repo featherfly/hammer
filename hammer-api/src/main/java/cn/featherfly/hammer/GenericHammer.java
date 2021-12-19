@@ -4,16 +4,13 @@ package cn.featherfly.hammer;
 import java.io.Serializable;
 import java.util.List;
 
-import cn.featherfly.hammer.Hammer.IgnorePolicy;
+import cn.featherfly.common.repository.IgnorePolicy;
 import cn.featherfly.hammer.dsl.execute.Delete;
 import cn.featherfly.hammer.dsl.execute.Update;
 import cn.featherfly.hammer.dsl.query.TypeQueryEntity;
 
 /**
- * <p>
- * GenericHammer
- * </p>
- * .
+ * GenericHammer .
  *
  * @author zhongj
  * @param <E>  generic entity type

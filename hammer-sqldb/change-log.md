@@ -1,5 +1,7 @@
-# 0.
+# 0.5.27 2021-12-19
 1. Hammer加入List<E> get(Class<E>, Serializable...)和List<E> get(Class<E>, List<Serializable>);
+2. ConditionGroupExpression,RepositoryConditionGroupLogicExpression加入Predicate<Object> getIgnorePolicy(),C setIgnorePolicy(Predicate<Object> ignorePolicy);
+3. dsl api 加入C where(Consumer<C> consumer)方法
 
 # 0.5.26 2021-12-05
 1. Jdbc加入update(String,BeanPropertyValue<?>...),update(String,GeneratedKeyHolder,BeanPropertyValue<?>...)方法
