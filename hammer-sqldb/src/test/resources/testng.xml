@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!-- <!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd"> -->
+<!DOCTYPE suite SYSTEM "https://testng.org/testng-1.0.dtd" >
 <suite name="Hammer SQLDB Test Suite" parallel="tests"
-	thread-count="3">
+	thread-count="1">
 	<parameter name="dataBase" value="mysql" />
     <!-- <parameter name="dataBase" value="sqlite" /> -->
     <!-- <parameter name="dataBase" value="postgresql" /> -->
 	<suite-files>
 	   <suite-file path="testng-test.xml"/>
-	   <suite-file path="testng-test-config.xml"/>
+<!-- 	   <suite-file path="testng-test-config.xml"/> -->
 	</suite-files>
 </suite>

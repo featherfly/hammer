@@ -1,3 +1,6 @@
+# 0.5.28 2021-12-20
+1. Mapper加入HammerSupport和GenericHammerSupport支持
+
 # 0.5.27 2021-12-19
 1. Hammer加入List<E> get(Class<E>, Serializable...)和List<E> get(Class<E>, List<Serializable>);
 2. ConditionGroupExpression,RepositoryConditionGroupLogicExpression加入Predicate<Object> getIgnorePolicy(),C setIgnorePolicy(Predicate<Object> ignorePolicy);

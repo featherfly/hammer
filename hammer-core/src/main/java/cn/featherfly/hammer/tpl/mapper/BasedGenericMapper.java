@@ -5,6 +5,7 @@ import java.io.Serializable;
 
 import cn.featherfly.hammer.GenericHammer;
 import cn.featherfly.hammer.GenericHammerSupport;
+import cn.featherfly.hammer.Hammer;
 
 /**
  * The Class BasedGenericMapper.
@@ -22,9 +23,10 @@ public class BasedGenericMapper<E, ID extends Serializable> implements GenericHa
      * Instantiates a new based generic mapper.
      *
      * @param hammer the hammer
+     * @param type   the type
      */
-    public BasedGenericMapper(GenericHammer<E, ID> hammer) {
-        this.hammer = hammer;
+    public BasedGenericMapper(Hammer hammer, Class<E> type) {
+        this.hammer = new BasedTplGenericHammer<>(hammer, type);
     }
 
     /**

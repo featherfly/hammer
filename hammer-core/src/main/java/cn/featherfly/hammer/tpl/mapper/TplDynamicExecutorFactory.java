@@ -37,6 +37,8 @@ import cn.featherfly.common.structure.HashChainMap;
 import cn.featherfly.common.structure.page.Page;
 import cn.featherfly.common.structure.page.PaginationResults;
 import cn.featherfly.hammer.GenericHammer;
+import cn.featherfly.hammer.GenericHammerSupport;
+import cn.featherfly.hammer.GenericMapper;
 import cn.featherfly.hammer.Hammer;
 import cn.featherfly.hammer.HammerException;
 import cn.featherfly.hammer.tpl.TplExecuteId;
@@ -303,22 +305,32 @@ public class TplDynamicExecutorFactory extends ClassLoader implements Opcodes {
             cn.name = implClassByteCodeName;
             cn.interfaces.add(Asm.getName(type));
 
-            if (ClassUtils.isParent(GenericHammer.class, type)) {
+            if (ClassUtils.isParent(GenericHammer.class, type)
+                    || ClassUtils.isParent(GenericHammerSupport.class, type)) {
+                if (ClassUtils.isParent(GenericHammer.class, type)) {
+                    parentHammer = GenericHammer.class;
+                    cn.superName = Type.getInternalName(BasedTplGenericHammer.class);
+                } else {
+                    parentHammer = GenericHammerSupport.class;
+                    cn.superName = Type.getInternalName(BasedGenericMapper.class);
+                }
+
                 String typeName = null;
                 Class<?> genericType = null;
                 Class<?> idType = null;
 
                 for (java.lang.reflect.Type implType : type.getGenericInterfaces()) {
                     ParameterizedType parameterizedType = (ParameterizedType) implType;
-                    if (parameterizedType.getRawType() == GenericHammer.class) {
+                    if (parameterizedType.getRawType() == GenericHammer.class
+                            || parameterizedType.getRawType() == GenericHammerSupport.class) {
                         typeName = parameterizedType.getActualTypeArguments()[0].getTypeName();
                         genericType = ClassUtils.forName(typeName);
                         idType = ClassUtils.forName(parameterizedType.getActualTypeArguments()[1].getTypeName());
                         break;
                     }
                 }
-                parentHammer = GenericHammer.class;
-                cn.superName = Type.getInternalName(BasedTplGenericHammer.class);
+                //                parentHammer = GenericHammer.class;
+                //                cn.superName = Type.getInternalName(BasedTplGenericHammer.class);
                 SignatureWriter signature = new SignatureWriter();
                 SignatureVisitor superVisitor = signature.visitSuperclass();
                 superVisitor.visitClassType(cn.superName);
@@ -347,7 +359,7 @@ public class TplDynamicExecutorFactory extends ClassLoader implements Opcodes {
                 if (ClassUtils.isParent(Hammer.class, type)) {
                     parentHammer = Hammer.class;
                     cn.superName = Type.getInternalName(BasedTplHammer.class);
-                } else {
+                } else { // HammerSupport
                     parentHammer = BasedMapper.class;
                     cn.superName = Type.getInternalName(BasedMapper.class);
                 }
@@ -739,6 +751,8 @@ public class TplDynamicExecutorFactory extends ClassLoader implements Opcodes {
                     return m;
                 }
             }
+            return null;
+        } else if (ClassUtils.isParent(GenericMapper.class, parentHammer)) {
             return null;
         } else {
             try {
