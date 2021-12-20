@@ -1,5 +1,5 @@
 
-package cn.featherfly.hammer.sqldb.jdbc;
+package cn.featherfly.hammer.sqldb.jdbc.mappingtype;
 
 import static org.testng.Assert.assertEquals;
 
@@ -15,8 +15,10 @@ import cn.featherfly.common.lang.ArrayUtils;
 import cn.featherfly.common.lang.Randoms;
 import cn.featherfly.hammer.Hammer;
 import cn.featherfly.hammer.sqldb.SqldbHammerImpl;
-import cn.featherfly.hammer.sqldb.jdbc.sqltype.ArrayToStringSqlTypeMapper;
-import cn.featherfly.hammer.sqldb.jdbc.sqltype.ListToStringSqlTypeMapper;
+import cn.featherfly.hammer.sqldb.jdbc.JdbcImpl;
+import cn.featherfly.hammer.sqldb.jdbc.JdbcTestBase;
+import cn.featherfly.hammer.sqldb.jdbc.mappingtype.sqltype.ArrayToStringSqlTypeMapper;
+import cn.featherfly.hammer.sqldb.jdbc.mappingtype.sqltype.ListToStringSqlTypeMapper;
 import cn.featherfly.hammer.sqldb.jdbc.vo.Article2;
 import cn.featherfly.hammer.sqldb.jdbc.vo.Content;
 

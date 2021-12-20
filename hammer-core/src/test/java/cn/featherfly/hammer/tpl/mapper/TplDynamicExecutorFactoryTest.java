@@ -38,6 +38,17 @@ public class TplDynamicExecutorFactoryTest {
         //        ClassUtils.forName(factory.create(TestMapper.class));
     }
 
+    @Test
+    public void test2() throws Exception {
+        Class<TestMapper2> type = forName(factory.create(TestMapper2.class));
+        System.out.println(type);
+        System.out.println(Arrays.toString(type.getInterfaces()));
+        System.out.println(type.getGenericSuperclass());
+        System.out.println(ClassUtils.getSuperClassGenericType(type));
+
+        //        ClassUtils.forName(factory.create(TestMapper.class));
+    }
+
     public static void main(String[] args) throws Exception {
         String newClassName = "cn.test.NewClass";
         ClassPool pool = ClassPool.getDefault();
