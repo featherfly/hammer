@@ -18,6 +18,32 @@
 
 - [x] dsl api where() 加入查询参数的忽略规则的配置， 例如 where(c -> c.setIgnorePolity(IgnorePolity.EMPTY))
 
+- [ ] dsl api 更新操作set方法加入set(Supllier<UpdateSetDsl>)用于在链式调用中进行条件帅选
+    
+    例如
+    ```
+    hammer.update(Device.class).set(Device::getChannel1State, channel1State)
+                .set(Device::getChannel2State, channel2State)
+                .set(Device::getChannel3State, channel3State)
+                .set((u)-> {
+                    if (xxx == yyy) {
+                        u.set(Device::isOnline, true)
+                    }
+                })
+                .set(()-> { // 或者
+                    if (xxx == yyy) {
+                        return Tuples.of(Device::isOnline, true);
+                    } else {
+                        return null;
+                    }
+                })
+                .set(Device::getLastModifyTime, new Date())
+                .set(Device::getServerName, serverName)
+            .where()
+                .eq(Device::getId, id)
+            .execute();
+    ```
+
 - [ ] dsl api 更新删除操作集成update(String,BeanPropertyValue<?>...)用于完善自定义属性映射
 
 - [ ] dsl api （eq,co,sw,ew,lk）加入like查询大小写敏感的支持
