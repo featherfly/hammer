@@ -108,6 +108,16 @@ CREATE TABLE `cms_article` (
   `content` text(255) DEFAULT NULL
 );
 
+DROP TABLE IF EXISTS `cms_article2`;
+CREATE TABLE `cms_article2` (
+  `id` INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
+  `title` text(255) DEFAULT NULL,
+  `content` text(255) DEFAULT NULL,
+  `content2` text(2000) DEFAULT NULL,
+  `content3` text(2000) DEFAULT NULL,
+  `content4` text(2000) DEFAULT NULL
+);
+
 DROP TABLE IF EXISTS `tree`;
 CREATE TABLE `tree` (
   `id` INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,

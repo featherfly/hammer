@@ -19,7 +19,7 @@ public interface TypeQuerySingleExecutor {
     <E> E single();
 
     /**
-     * query for unique, throw JdbcException when not found.
+     * query for unique, throw exception when not found.
      *
      * @param <E> the element type
      * @return object
