@@ -23,7 +23,7 @@ public interface QuerySingleExecutor {
     Map<String, Object> single();
 
     /**
-     * query for unique, throw JdbcException when not found.
+     * query for unique, throw exception when not found.
      *
      * @return map
      */
@@ -39,7 +39,7 @@ public interface QuerySingleExecutor {
     <E> E single(Class<E> type);
 
     /**
-     * query for unique, throw JdbcException when not found.
+     * query for unique, throw exception when not found.
      *
      * @param <E>  the element type
      * @param type the type
@@ -57,7 +57,7 @@ public interface QuerySingleExecutor {
     <E> E single(RowMapper<E> rowMapper);
 
     /**
-     * query for unique, throw JdbcException when not found.
+     * query for unique, throw exception when not found.
      *
      * @param <E>       the element type
      * @param rowMapper the row mapper
