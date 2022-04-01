@@ -48,7 +48,7 @@ public interface SetUpdateExpression<U extends SetExecutableUpdateExpression<U, 
      * @param value property value
      * @return Update
      */
-    <T, R> U set(SerializableFunction<T, R> name, Object value);
+    <T, R> U set(SerializableFunction<T, R> name, R value);
 
     /**
      * set value for property.
@@ -63,13 +63,12 @@ public interface SetUpdateExpression<U extends SetExecutableUpdateExpression<U, 
      * increase value for property.
      *
      * @param <T>   the generic type
-     * @param <R>   the generic type
-     * @param <N>   number type
+     * @param <R>   the generic number type
      * @param name  property name
      * @param value property value
      * @return Update
      */
-    <T, R extends Number, N extends Number> U increase(SerializableFunction<T, R> name, N value);
+    <T, R extends Number> U increase(SerializableFunction<T, R> name, R value);
 
     /**
      * increase value for property.

@@ -28,7 +28,7 @@ public interface TypeEqualsExpression<C extends ConditionExpression, L extends L
      * @param value      参数值
      * @return LogicExpression
      */
-    <O, T, R> L eq(SerializableFunction<O, T> repository, SerializableFunction<T, R> property, Object value);
+    <O, T, R> L eq(SerializableFunction<O, T> repository, SerializableFunction<T, R> property, R value);
 
     /**
      * not equals.不等于.

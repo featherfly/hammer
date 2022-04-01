@@ -123,7 +123,7 @@ public class RepositoryTypeSqlQueryExpression extends RepositoryTypeSqlQueryCond
      * {@inheritDoc}
      */
     @Override
-    public <T, R> RepositoryTypeQueryConditionGroupLogicExpression eq(SerializableFunction<T, R> name, Object value) {
+    public <T, R> RepositoryTypeQueryConditionGroupLogicExpression eq(SerializableFunction<T, R> name, R value) {
         return addCondition(name, value, QueryOperator.EQ);
     }
 
@@ -131,7 +131,7 @@ public class RepositoryTypeSqlQueryExpression extends RepositoryTypeSqlQueryCond
      * {@inheritDoc}
      */
     @Override
-    public <T, R> RepositoryTypeQueryConditionGroupLogicExpression ne(SerializableFunction<T, R> name, Object value) {
+    public <T, R> RepositoryTypeQueryConditionGroupLogicExpression ne(SerializableFunction<T, R> name, R value) {
         return addCondition(name, value, QueryOperator.NE);
     }
 

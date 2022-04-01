@@ -35,7 +35,7 @@ public interface NotEqualsExpression<C extends ConditionExpression, L extends Lo
      * @param value 参数值
      * @return LogicExpression
      */
-    <T, R> L ne(SerializableFunction<T, R> name, Object value);
+    <T, R> L ne(SerializableFunction<T, R> name, R value);
 
     /**
      * not equals.不等于
