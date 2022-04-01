@@ -640,7 +640,7 @@ public abstract class AbstractSqlConditionGroupExpression<C extends ConditionGro
      * {@inheritDoc}
      */
     @Override
-    public <T, R> L eq(SerializableFunction<T, R> name, Object value) {
+    public <T, R> L eq(SerializableFunction<T, R> name, R value) {
         return eq(getPropertyName(name), value);
     }
 
@@ -880,7 +880,7 @@ public abstract class AbstractSqlConditionGroupExpression<C extends ConditionGro
      * {@inheritDoc}
      */
     @Override
-    public <T, R> L ne(SerializableFunction<T, R> name, Object value) {
+    public <T, R> L ne(SerializableFunction<T, R> name, R value) {
         return ne(getPropertyName(name), value);
     }
 

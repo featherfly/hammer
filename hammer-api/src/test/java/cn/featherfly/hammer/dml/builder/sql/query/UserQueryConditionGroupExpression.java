@@ -145,7 +145,7 @@ public class UserQueryConditionGroupExpression
      * {@inheritDoc}
      */
     @Override
-    public <T, R> UserQueryConditionGroupExpression eq(SerializableFunction<T, R> name, Object value) {
+    public <T, R> UserQueryConditionGroupExpression eq(SerializableFunction<T, R> name, R value) {
         // YUFEI_TODO Auto-generated method stub
         return null;
     }
@@ -883,7 +883,7 @@ public class UserQueryConditionGroupExpression
      * {@inheritDoc}
      */
     @Override
-    public <T, R> UserQueryConditionGroupExpression ne(SerializableFunction<T, R> name, Object value) {
+    public <T, R> UserQueryConditionGroupExpression ne(SerializableFunction<T, R> name, R value) {
         // YUFEI_TODO Auto-generated method stub
         return null;
     }

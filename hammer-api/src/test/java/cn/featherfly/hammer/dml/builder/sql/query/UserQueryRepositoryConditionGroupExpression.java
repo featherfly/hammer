@@ -217,7 +217,7 @@ public class UserQueryRepositoryConditionGroupExpression implements
      * {@inheritDoc}
      */
     @Override
-    public <T, R> UserQueryRepositoryConditionGroupExpression eq(SerializableFunction<T, R> name, Object value) {
+    public <T, R> UserQueryRepositoryConditionGroupExpression eq(SerializableFunction<T, R> name, R value) {
         // YUFEI_TODO Auto-generated method stub
         return null;
     }
@@ -1731,7 +1731,7 @@ public class UserQueryRepositoryConditionGroupExpression implements
      * {@inheritDoc}
      */
     @Override
-    public <T, R> UserQueryRepositoryConditionGroupExpression ne(SerializableFunction<T, R> name, Object value) {
+    public <T, R> UserQueryRepositoryConditionGroupExpression ne(SerializableFunction<T, R> name, R value) {
         // YUFEI_TODO Auto-generated method stub
         return null;
     }
@@ -2201,7 +2201,7 @@ public class UserQueryRepositoryConditionGroupExpression implements
      */
     @Override
     public <T, R> UserQueryRepositoryConditionGroupExpression eq(SerializableFunction<T, R> repository,
-            SerializableFunction<T, R> property, Object value) {
+            SerializableFunction<T, R> property, R value) {
         // YUFEI_TODO Auto-generated method stub
         return null;
     }
@@ -2221,7 +2221,7 @@ public class UserQueryRepositoryConditionGroupExpression implements
      */
     @Override
     public <T, R> UserQueryRepositoryConditionGroupExpression ne(SerializableFunction<T, R> repository,
-            SerializableFunction<T, R> property, Object value) {
+            SerializableFunction<T, R> property, R value) {
         // YUFEI_TODO Auto-generated method stub
         return null;
     }
