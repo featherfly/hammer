@@ -58,7 +58,7 @@ public interface RepositoryEqualsExpression<C extends ConditionExpression, L ext
      * @param value      参数值
      * @return LogicExpression
      */
-    <T, R> L eq(SerializableFunction<T, R> repository, SerializableFunction<T, R> property, Object value);
+    <T, R> L eq(SerializableFunction<T, R> repository, SerializableFunction<T, R> property, R value);
 
     /**
      * 等于.

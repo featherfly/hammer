@@ -35,7 +35,7 @@ public interface EqualsExpression<C extends ConditionExpression, L extends Logic
      * @param value 参数值
      * @return LogicExpression
      */
-    <T, R> L eq(SerializableFunction<T, R> name, Object value);
+    <T, R> L eq(SerializableFunction<T, R> name, R value);
 
     /**
      * 等于.

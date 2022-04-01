@@ -303,7 +303,7 @@ public abstract class AbstractRepositorySqlConditionGroupExpression<C extends Re
      * {@inheritDoc}
      */
     @Override
-    public <T, R> L eq(SerializableFunction<T, R> name, Object value) {
+    public <T, R> L eq(SerializableFunction<T, R> name, R value) {
         return eq(getPropertyName(name), value);
     }
 
@@ -331,7 +331,7 @@ public abstract class AbstractRepositorySqlConditionGroupExpression<C extends Re
      * {@inheritDoc}
      */
     @Override
-    public <T, R> L eq(SerializableFunction<T, R> repository, SerializableFunction<T, R> property, Object value) {
+    public <T, R> L eq(SerializableFunction<T, R> repository, SerializableFunction<T, R> property, R value) {
         return eq(getPropertyName(repository), getPropertyName(property), value);
     }
 
@@ -1768,7 +1768,7 @@ public abstract class AbstractRepositorySqlConditionGroupExpression<C extends Re
      * {@inheritDoc}
      */
     @Override
-    public <T, R> L ne(SerializableFunction<T, R> name, Object value) {
+    public <T, R> L ne(SerializableFunction<T, R> name, R value) {
         return ne(getPropertyName(name), value);
     }
 
@@ -1796,7 +1796,7 @@ public abstract class AbstractRepositorySqlConditionGroupExpression<C extends Re
      * {@inheritDoc}
      */
     @Override
-    public <T, R> L ne(SerializableFunction<T, R> repository, SerializableFunction<T, R> property, Object value) {
+    public <T, R> L ne(SerializableFunction<T, R> repository, SerializableFunction<T, R> property, R value) {
         return ne(getPropertyName(repository), getPropertyName(property), value);
     }
 

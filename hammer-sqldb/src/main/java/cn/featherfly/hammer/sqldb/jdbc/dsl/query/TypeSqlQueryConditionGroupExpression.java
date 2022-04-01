@@ -429,7 +429,7 @@ public class TypeSqlQueryConditionGroupExpression extends
      */
     @Override
     public <O, T, R> TypeQueryConditionGroupLogicExpression eq(SerializableFunction<O, T> repository,
-            SerializableFunction<T, R> property, Object value) {
+            SerializableFunction<T, R> property, R value) {
         typeQueryEntity.with(repository);
         Tuple2<String, String> tuple = conditionResult(repository, property, value, factory);
         return (TypeQueryConditionGroupLogicExpression) addCondition(new SqlConditionExpressionBuilder(dialect,
@@ -1095,7 +1095,7 @@ public class TypeSqlQueryConditionGroupExpression extends
      */
     @Override
     public <O, T, R> TypeQueryConditionGroupLogicExpression ne(SerializableFunction<O, T> repository,
-            SerializableFunction<T, R> property, Object value) {
+            SerializableFunction<T, R> property, R value) {
         typeQueryEntity.with(repository);
         Tuple2<String, String> tuple = conditionResult(repository, property, value, factory);
         return (TypeQueryConditionGroupLogicExpression) addCondition(new SqlConditionExpressionBuilder(dialect,

@@ -126,7 +126,7 @@ public class SqlExecutableUpdate implements SqlUpdate, ExecutableUpdate {
      * {@inheritDoc}
      */
     @Override
-    public <T, R> ExecutableUpdate set(SerializableFunction<T, R> name, Object value) {
+    public <T, R> ExecutableUpdate set(SerializableFunction<T, R> name, R value) {
         return set(LambdaUtils.getLambdaPropertyName(name), value);
     }
 
@@ -134,7 +134,7 @@ public class SqlExecutableUpdate implements SqlUpdate, ExecutableUpdate {
      * {@inheritDoc}
      */
     @Override
-    public <T, R extends Number, N extends Number> ExecutableUpdate increase(SerializableFunction<T, R> name, N value) {
+    public <T, R extends Number> ExecutableUpdate increase(SerializableFunction<T, R> name, R value) {
         return increase(LambdaUtils.getLambdaPropertyName(name), value);
     }
 
