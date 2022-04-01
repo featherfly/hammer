@@ -38,7 +38,6 @@ import cn.featherfly.common.db.SqlUtils;
 import cn.featherfly.common.db.dialect.Dialect;
 import cn.featherfly.common.db.mapping.SqlResultSet;
 import cn.featherfly.common.db.mapping.SqlTypeMappingManager;
-import cn.featherfly.common.lang.ArrayUtils;
 import cn.featherfly.common.lang.Lang;
 import cn.featherfly.common.lang.Strings;
 import cn.featherfly.common.repository.Execution;
@@ -201,14 +200,14 @@ public abstract class AbstractJdbc implements Jdbc {
         return 0;
     }
 
+    private int executeUpdate(String sql, Object... args) {
+        return executeUpdate(sql, null, args);
+    }
+
     private <T extends Serializable> int executeUpdate(String sql, GeneratedKeyHolder<T> generatedKeyHolder,
             Object... args) {
         logger.debug("sql -> {}, args -> {}", sql, args);
         return executeUpdate(prep -> setParams(prep, args), sql, generatedKeyHolder, args);
-    }
-
-    private int executeUpdate(String sql, Object... args) {
-        return executeUpdate(sql, null, args);
     }
 
     private int executeUpdate(String sql, BeanPropertyValue<?>... args) {
@@ -227,6 +226,7 @@ public abstract class AbstractJdbc implements Jdbc {
         JdbcExecution execution = preHandle(sql, args);
         sql = execution.getExecution();
         args = execution.getParams();
+        logger.debug("execute sql -> {}, args -> {}", sql, args);
         Connection connection = getConnection();
         try (PreparedStatement prep = generatedKeyHolder == null ? connection.prepareStatement(sql)
                 : connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
@@ -275,11 +275,12 @@ public abstract class AbstractJdbc implements Jdbc {
             JdbcExecution execution = preHandle(sql, args);
             sql = execution.getExecution();
             args = execution.getParams();
+            logger.debug("execute sql -> {}, args -> {}", sql, args);
             Connection con = getConnection();
             try (PreparedStatement prep = con.prepareStatement(sql)) {
-                if (logger.isDebugEnabled()) {
-                    logger.debug("execute sql -> {} , params -> {}", sql, ArrayUtils.toString(args));
-                }
+                //                if (logger.isDebugEnabled()) {
+                //                    logger.debug("execute sql -> {} , params -> {}", sql, ArrayUtils.toString(args));
+                //                }
                 setParams(prep, args);
                 try (ResultSet rs = prep.executeQuery()) {
                     return postHandle(execution.setOriginalResult(JdbcUtils.getResultSetMaps(rs, manager)), sql, args);
@@ -353,9 +354,7 @@ public abstract class AbstractJdbc implements Jdbc {
             JdbcExecution execution = preHandle(sql, args);
             sql = execution.getExecution();
             args = execution.getParams();
-            if (logger.isDebugEnabled()) { // TODO 后续移动到对应Intercepor中去
-                logger.debug("execute sql -> {} , params -> {}", sql, args);
-            }
+            logger.debug("execute sql -> {}, args -> {}", sql, args);
             Connection con = getConnection();
             try (PreparedStatement prep = con.prepareStatement(sql)) {
                 setParams(prep, args);
