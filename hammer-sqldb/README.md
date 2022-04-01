@@ -190,9 +190,11 @@ JdbcMappingFactory mappingFactory = new JdbcMappingFactoryImpl(metadata, dialect
 
 Set<String> basePackages = new HashSet<>();
 basePackages.add("cn.featherfly.hammer.sqldb.tpl.mapper");
+boolean devMode = true;
 // 这里的tpl/表示开始查找sql模板文件的根目录
 // 这里的basePackages表示扫描Mapper文件的根目录集合,用于把@Template("sql")内置sql模板加入模板管理
-TplConfigFactory configFactory = new TplConfigFactoryImpl("tpl/", basePackages, new FreemarkerTemplatePreProcessor(), true);
+// FreemarkerTemplatePreProcessor表示模板预处理，即把为sql处理特化的模板转换为freemarker模板
+TplConfigFactory configFactory = new TplConfigFactoryImpl("tpl/", basePackages, new FreemarkerTemplatePreProcessor(), devMode);
 hammer hammer = new hammerJdbcImpl(jdbc, mappingFactory, configFactory);
 // 然后使用hammer进行数据操作
 ```
