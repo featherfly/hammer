@@ -997,4 +997,12 @@ public class SqldbHammerImpl implements SqldbHammer {
     public Jdbc getJdbc() {
         return jdbc;
     }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JdbcMappingFactory getMappingFactory() {
+        return mappingFactory;
+    }
 }
