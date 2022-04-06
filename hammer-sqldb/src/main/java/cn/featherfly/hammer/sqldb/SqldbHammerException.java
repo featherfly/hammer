@@ -20,13 +20,6 @@ public class SqldbHammerException extends HammerException {
 
     /**
      * Instantiates a new hammer jdbc exception.
-     */
-    public SqldbHammerException() {
-        super();
-    }
-
-    /**
-     * Instantiates a new hammer jdbc exception.
      *
      * @param message the message
      * @param locale  the locale

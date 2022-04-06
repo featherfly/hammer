@@ -1,5 +1,5 @@
 ext {
-    sv = "5.3.14"
+    sv = "5.3.18"
 }
 dependencies {
     api project(":hammer-api")
@@ -7,16 +7,17 @@ dependencies {
 
     //api group: 'cn.featherfly.common', name: 'common-model-repository', version: '0.1.9'
     //api group: 'cn.featherfly.common', name: 'common-api', version: '0.2.7'
-    api group: 'cn.featherfly.common', name: 'common-db', version: '0.4.0'
+    api group: 'cn.featherfly.common', name: 'common-db', version: '0.4.7'
     api group: 'org.springframework', name: 'spring-jdbc', version: sv
     //api group: 'org.springframework', name: 'spring-jdbc', version: '5.2.16.RELEASE'
     api group: 'org.glassfish', name: 'javax.el', version: '3.0.0'
     //api group: 'javax.el', name: 'javax.el-api', version: '3.0.0'
-    api group: 'org.hibernate.validator', name: 'hibernate-validator', version: '6.2.0.Final'
-    //api group: 'org.hibernate.validator', name: 'hibernate-validator', version: '7.0.1.Final'
-    api group: 'com.speedment.common', name: 'tuple', version: '3.2.9'
+    api group: 'org.hibernate.validator', name: 'hibernate-validator', version: '6.2.3.Final'
+    //api group: 'org.hibernate.validator', name: 'hibernate-validator', version: '7.0.1.Final''
     implementation group: 'com.google.code.findbugs', name: 'jsr305', version: '3.0.2'
 
+    testImplementation group: 'cn.featherfly.common', name: 'common-db-mapping-model', version: '0.1.0'
+    testImplementation group: 'cn.featherfly.common', name: 'common-model', version: '0.2.0'
     testImplementation group: 'mysql', name: 'mysql-connector-java', version: '8.0.20'    
     //testImplementation 'mysql:mysql-connector-java:5.1.48'
     testImplementation "org.springframework:spring-test:${sv}"
