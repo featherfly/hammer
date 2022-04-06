@@ -18,13 +18,6 @@ public class HammerException extends LocalizedException {
     private static final long serialVersionUID = -9019711912180497707L;
 
     /**
-     *
-     */
-    public HammerException() {
-        super();
-    }
-
-    /**
      * @param message message
      * @param locale  locale
      * @param ex      ex
