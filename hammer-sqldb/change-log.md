@@ -1,9 +1,15 @@
+# 0.5.29 2022-04-06
+1. 修复common-core不兼容升级
+2. 优化AbstractJdbc的日志输出
+3. update().set(SerialFunction, value)、where().eq(SerialFunction, value)/ne(SerialFunction, value)的value改为对应Function的泛型
+4. SqldbHammer加入JdbcMappingFactory getMappingFactory()方法
+
 # 0.5.28 2021-12-20
 1. Mapper加入HammerSupport和GenericHammerSupport支持
 
 # 0.5.27 2021-12-19
 1. Hammer加入List<E> get(Class<E>, Serializable...)和List<E> get(Class<E>, List<Serializable>);
-2. ConditionGroupExpression,RepositoryConditionGroupLogicExpression加入Predicate<Object> getIgnorePolicy(),C setIgnorePolicy(Predicate<Object> ignorePolicy);
+2. ConditionGroupExpression,RepositoryConditionGroupLogicExpression加入Predicate<Object> getIgnorePolicy(),C setIgnorePolicy(Predicate<Object> ignorePolicy)
 3. dsl api 加入C where(Consumer<C> consumer)方法
 
 # 0.5.26 2021-12-05

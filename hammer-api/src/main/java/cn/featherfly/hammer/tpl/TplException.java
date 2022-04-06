@@ -19,13 +19,6 @@ public class TplException extends HammerException {
 
     /**
      * Instantiates a new tpl exception.
-     */
-    public TplException() {
-        super();
-    }
-
-    /**
-     * Instantiates a new tpl exception.
      *
      * @param message the message
      * @param locale  the locale
