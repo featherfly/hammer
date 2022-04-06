@@ -17,6 +17,10 @@ allprojects {
         useTestNG()
         //reports.html.enabled = false
     }
+    
+    ext {
+        sv = "5.3.18"
+    }
 }
 
 dependencies {
