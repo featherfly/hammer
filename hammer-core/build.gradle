@@ -19,6 +19,8 @@ dependencies {
 	//api group: 'org.ow2.asm', name: 'asm-util', version: '9.0'
 	//api group: 'org.ow2.asm', name: 'asm-common', version: '9.0'
 	//api group: 'org.ow2.asm', name: 'asm-debug-all', version: '5.2'
+	
+	implementation group: 'org.springframework', name: 'spring-context', version: sv
 		
 	testImplementation project(":hammer-api")
 	testImplementation group: 'org.ow2.asm', name: 'asm-util', version: '9.0'
