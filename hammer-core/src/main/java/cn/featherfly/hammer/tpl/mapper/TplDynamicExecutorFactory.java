@@ -383,7 +383,7 @@ public class TplDynamicExecutorFactory extends ClassLoader implements Opcodes {
             //            try (FileOutputStream os = new FileOutputStream(implClassName + ".class")) {
             //                os.write(code);
             //            }
-            DefineClassHelper.defineClass(implClassName, code, 0, code.length, null, classLoader,
+            DefineClassHelper.defineClass(implClassName, code, 0, code.length, type, classLoader,
                     this.getClass().getProtectionDomain());
             types.add(type);
         }
