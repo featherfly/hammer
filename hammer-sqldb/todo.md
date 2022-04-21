@@ -16,6 +16,8 @@
 
 - [ ] 加入一次交互完成锁查询、修改，并返回修改后的结果的功能
 
+- [ ] 加入@Execution（@Sql）注解，用于非模板执行字符串（sql，json等）的直接运行，并去掉@Template的isTemplate方法（需要处理字节码动态加载）
+
 - [x] dsl api where() 加入查询参数的忽略规则的配置， 例如 where(c -> c.setIgnorePolity(IgnorePolity.EMPTY))
 
 - [ ] dsl api 更新操作set方法加入set(Supllier<UpdateSetDsl>)用于在链式调用中进行条件帅选
