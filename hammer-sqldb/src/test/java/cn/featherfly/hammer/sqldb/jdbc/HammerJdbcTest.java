@@ -581,6 +581,74 @@ public class HammerJdbcTest extends JdbcTestBase {
         role = hammer.get(id, Role.class);
         assertEquals(role.getName(), newName);
         assertEquals(role.getDescp(), newDescp);
+
+        id = 12;
+        boolean set = Randoms.getBoolean();
+        final String setNewName = "name_updater_" + Randoms.getInt(90);
+
+        Role oldRole = hammer.get(id, Role.class);
+        hammer.update(Role.class).set(u -> {
+            if (set) {
+                u.set(Role::getName, setNewName);
+            }
+        }).where().eq(Role::getId, id).execute();
+
+        role = hammer.get(id, Role.class);
+
+        if (set) {
+            assertEquals(role.getName(), newName);
+        } else {
+            assertEquals(role.getName(), oldRole.getName());
+        }
+
+    }
+
+    @Test
+    public void testUpdater2() {
+        int id = 10;
+        String newName = "name_updater_" + Randoms.getInt(99);
+        String newDescp = "descp_updater_" + Randoms.getInt(99);
+        hammer.update(Role.class).set("name", newName).property("descp").set(newDescp).where().eq("id", id).execute();
+        Role role = hammer.get(id, Role.class);
+        assertEquals(role.getName(), newName);
+        assertEquals(role.getDescp(), newDescp);
+
+        id = 10;
+        final String setNewName = "name_updater_" + Randoms.getInt(90);
+        Role oldRole = hammer.get(id, Role.class);
+        final boolean unset = false;
+
+        hammer.update(Role.class).set(u -> {
+            if (unset) {
+                u.set(Role::getName, setNewName);
+            }
+        }).property("descp").set(oldRole.getDescp()).where().eq(Role::getId, id).execute();
+
+        role = hammer.get(id, Role.class);
+        assertEquals(role.getName(), oldRole.getName());
+
+        final boolean set = true;
+
+        hammer.update(Role.class).set(u -> {
+            if (set) {
+                u.set(Role::getName, setNewName);
+            }
+        }).property("descp").set(oldRole.getDescp()).where().eq(Role::getId, id).execute();
+
+        role = hammer.get(id, Role.class);
+        assertEquals(role.getName(), setNewName);
+
+        final String setNewName2 = "name_updater_" + Randoms.getInt(90);
+        oldRole = hammer.get(id, Role.class);
+        hammer.update(Role.class).property(Role::getName).set(u -> {
+            if (true) {
+                u.set(setNewName2);
+            }
+        }).property("descp").set(oldRole.getDescp()).where().eq(Role::getId, id).execute();
+
+        role = hammer.get(id, Role.class);
+        assertEquals(role.getName(), setNewName2);
+
     }
 
     //    @Test

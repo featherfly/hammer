@@ -1,6 +1,8 @@
 
 package cn.featherfly.hammer.expression.execute;
 
+import java.util.function.Consumer;
+
 import cn.featherfly.common.lang.function.SerializableFunction;
 import cn.featherfly.common.lang.function.SerializableSupplier;
 import cn.featherfly.hammer.expression.ConditionGroupExpression;
@@ -60,6 +62,14 @@ public interface SetUpdateExpression<U extends SetExecutableUpdateExpression<U, 
     <R> U set(SerializableSupplier<R> property);
 
     /**
+     * Sets the.
+     *
+     * @param consumer the consumer
+     * @return the u
+     */
+    U set(Consumer<U> consumer);
+
+    /**
      * increase value for property.
      *
      * @param <T>   the generic type
@@ -78,4 +88,12 @@ public interface SetUpdateExpression<U extends SetExecutableUpdateExpression<U, 
      * @return Update
      */
     <N extends Number> U increase(SerializableSupplier<N> property);
+
+    /**
+     * Sets the.
+     *
+     * @param consumer the consumer
+     * @return the u
+     */
+    U increase(Consumer<U> consumer);
 }
