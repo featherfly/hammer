@@ -151,9 +151,27 @@ public class SqlExecutableUpdate implements SqlUpdate, ExecutableUpdate {
      * {@inheritDoc}
      */
     @Override
+    public ExecutableUpdate set(Consumer<ExecutableUpdate> consumer) {
+        consumer.accept(this);
+        return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
     public <N extends Number> ExecutableUpdate increase(SerializableSupplier<N> property) {
         SerializableSupplierLambdaInfo<N> info = LambdaUtils.getSerializableSupplierLambdaInfo(property);
         return increase(info.getSerializedLambdaInfo().getPropertyName(), info.getValue());
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public ExecutableUpdate increase(Consumer<ExecutableUpdate> consumer) {
+        consumer.accept(this);
+        return this;
     }
 
     /**

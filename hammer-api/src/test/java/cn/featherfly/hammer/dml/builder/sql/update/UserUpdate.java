@@ -162,4 +162,22 @@ public class UserUpdate implements UserPropertiesUpdate,
         return null;
     }
 
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public UserUpdate set(Consumer<UserUpdate> consumer) {
+        // YUFEI_TODO Auto-generated method stub
+        return null;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public UserUpdate increase(Consumer<UserUpdate> consumer) {
+        // YUFEI_TODO Auto-generated method stub
+        return null;
+    }
+
 }
