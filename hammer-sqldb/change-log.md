@@ -1,5 +1,6 @@
-# 0.5.30
+# 0.5.30 2022-04-22
 1. 修复在java11下生成mapper出现的空指针异常
+2. dsl api 更新操作set方法加入set(Consumer<UpdateSetDsl>)用于在链式调用中进行条件帅选
 
 # 0.5.29 2022-04-06
 1. 修复common-core不兼容升级

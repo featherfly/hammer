@@ -26,7 +26,7 @@
     where().setIgnorePolity(IgnorePolity.EMPTY).eq ....
     ```
 
-- [ ] dsl api 更新操作set方法加入set(Supllier<UpdateSetDsl>)用于在链式调用中进行条件帅选
+- [x] dsl api 更新操作set方法加入set(Consumer<UpdateSetDsl>)用于在链式调用中进行条件帅选
     
     例如
     ```
@@ -187,9 +187,9 @@ from /*<<wrap*/ role
 
 - [ ] 优化SingleColumnRowMapper在查询列表时，只进行一次类型检测和映射元数据，后续的都使用映射元数据结果直接进行赋值（相当于预编译的概念）
 
-- [ ] 预编译把参数都编译为?，然后把参数映射加入Config内对应的paramMap映射paramName <--> paramIndex（因为使用了命名sql转换时的in支持，所以这条暂时搁置）
+- [ ] ~~预编译把参数都编译为?，然后把参数映射加入Config内对应的paramMap映射paramName <--> paramIndex~~（因为使用了命名sql转换时的in支持，所以这条暂时搁置）
 
-- [ ] dsl的链式调用考虑是否需要重构，在每次方法调用后返回新对象，这样做方法调用就没有任何副作用（低优先级）
+- [ ] dsl的链式调用考虑是否需要重构，在每次方法调用后返回新对象，这样做方法调用就没有任何副作用（低优先级，暂时不考虑）
 
 ## 为云原生GraalVM打包原生应用的相关支持
 
