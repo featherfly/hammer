@@ -118,6 +118,13 @@ public class DslTest {
 
         updater.update(r).set("name", "yufei").where().eq("user_id", 18).execute();
 
+        String name = "yufei";
+
+        updater.update(r).set(t -> {
+            if (name.equals("yufei")) {
+                t.set("name", name);
+            }
+        });
     }
 
     public void testPropertyUpdate() {

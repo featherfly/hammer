@@ -1,6 +1,8 @@
 
 package cn.featherfly.hammer.expression.execute;
 
+import java.util.function.Consumer;
+
 import cn.featherfly.hammer.expression.ConditionGroupExpression;
 import cn.featherfly.hammer.expression.ConditionGroupLogicExpression;
 
@@ -18,4 +20,6 @@ public interface UpdateNumberValueExpression<U extends PropertyExecutableUpdateE
         extends UpdateValueExpression<U, C, L, T, V, VN> {
 
     U increase(T value);
+
+    U increase(Consumer<UpdateNumberValueExpression<U, C, L, T, V, VN>> consumer);
 }
