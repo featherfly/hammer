@@ -18,6 +18,8 @@
 
 - [ ] 加入@Execution（@Sql）注解，用于非模板执行字符串（sql，json等）的直接运行，并去掉@Template的isTemplate方法（需要处理字节码动态加载）
 
+- [ ] dsl条件查询eq(SerialFunction<T, R>, T),ne(SerialFunction<T, R> t)方法支持@Embedded对象，自动使用该对象的所有非空属性（参考eq(SerializableSupplier<R>),ne(SerializableSupplier<R>)支持@Embedded对象的实现）
+
 - [x] dsl api where() 加入查询参数的忽略规则的配置
 
     例如 
