@@ -1,8 +1,12 @@
-# 0.5.30 2022-04-22
+# 0.6.0 2022-05-24  
+1. 模板文件加载器加入支持从不同前置目录加载的实现(例如 rbac, cms, blog, common/config)
+2. 模板文件加载器加入支持从不同文件后缀加载的实现(例如 .yaml.sql, .tpl.sql)
+
+# 0.5.30 2022-04-22  
 1. 修复在java11下生成mapper出现的空指针异常
 2. dsl api 更新操作set方法加入set(Consumer<UpdateSetDsl>)用于在链式调用中进行条件帅选
 
-# 0.5.29 2022-04-06
+# 0.5.29 2022-04-06  
 1. 修复common-core不兼容升级
 2. 优化AbstractJdbc的日志输出
 3. update().set(SerialFunction, value)、where().eq(SerialFunction, value)/ne(SerialFunction, value)的value改为对应Function的泛型

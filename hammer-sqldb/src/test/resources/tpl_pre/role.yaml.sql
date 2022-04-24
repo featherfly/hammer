@@ -56,3 +56,8 @@ selectByNameCo4: |
     /*<where*/ where
     /*name??*/ name like /*$=%:name%*/'a'
     /*>where*/
+selectWithTemplate3:
+  query: |
+    select /*prop alias="_r"*/* /*<tpl id='roleFromTemplate2' namespace='role_common'>*/
+  count: |
+    select count(*) /*<sql id='roleFromTemplate2' namespace='role_common'>*/

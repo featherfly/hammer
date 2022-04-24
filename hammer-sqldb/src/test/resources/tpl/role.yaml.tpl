@@ -24,8 +24,8 @@ selectByNameEw: "select <@prop repo='role'/> from role
     </@and>
 </@where>"
 selectWithTemplate:
-  query: "select <@prop/> <#include '/tpl/role@roleFromTemplate'>"
-  count: "select count(*) <#include '/tpl/role@roleFromTemplate'>"
+  query: "select <@prop/> <#include 'role@roleFromTemplate'>"
+  count: "select count(*) <#include 'role@roleFromTemplate'>"
 roleFromTemplate: "from role <@where>
 <@and if = name??>
     name like :name
@@ -41,8 +41,8 @@ roleFromTemplate2: "from role <@where>
 </@where>"
 selectWithTemplate3:
   query: >
-    select <@prop alias="_r"/> <@tpl id='roleFromTemplate2' namespace='tpl/role_common'/>
-  count: "select count(*) <@sql id='roleFromTemplate2' namespace='tpl/role_common'/>"
+    select <@prop alias="_r"/> <@tpl id='roleFromTemplate2' namespace='role_common'/>
+  count: "select count(*) <@sql id='roleFromTemplate2' namespace='role_common'/>"
 insertRole: >
   insert into role(name, descp) values(:name, :descp)
 updateRoleByName: >
