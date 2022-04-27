@@ -6,6 +6,48 @@
   2. 实体对象的级联查询可以使用编译期织入(编译的时候字节码修改）和运行期织入（启动的时候字节码修改）
    编译期织入在实现中需要获取版本号，用于后续版本加载出来判断兼容性问题
 
+- [ ] 加入继承支持（保存都支持，主要是查询）  
+
+> 例如
+
+```
+    User extends Authorized {
+    ...
+    }
+    App extends Authorized {
+    ...
+    }
+    List<Authorized> authorizeds = hamer.query(Authorized.class).list();      
+    User user = (User) authorizeds.get(0);
+    App app = (App) authorizeds.get(1);
+```
+
+> 可能的实现方案
+
+    1. 设置类映射配置，在查询映射类时，先找映射配置，有则使用配置的映射映射对象，如果没有，则走现有模式  
+
+> 例如
+
+```
+    hammer.regist(Authorized.class, new AuthorizedMapper());
+```
+    2. 设置抽象类（接口）映射配置，在查询映射类时，先判断映射的类是否时抽象的，如果是抽象的，则在映射配置中查找，如果查找不到，则抛出异常
+
+> 例如
+ 
+```
+    hammer.regist(Authorized.class, new AuthorizedMapper());
+```
+    3. 加入一个映射类（类似spring的BeanFactory）    
+
+> 例如
+
+```
+    List<Authorized> authorizeds = query(AuthorizedMapper<Authorized>.class).list();
+
+    List<Authorized> authorizeds = query(Authorized.class).mapper(AuthorizedMapper.class).list();
+```
+
 - [ ] 优化page查询，缓存total_size，在相同查询条件下，使用缓存的total_size
 
 - [ ] 加入查询结果缓存翻译功能
@@ -22,16 +64,18 @@
 
 - [x] dsl api where() 加入查询参数的忽略规则的配置
 
-    例如 
-    ```
+> 例如
+
+```
     where(c -> c.setIgnorePolity(IgnorePolity.EMPTY)).eq ....
     where().setIgnorePolity(IgnorePolity.EMPTY).eq ....
-    ```
+```
 
 - [x] dsl api 更新操作set方法加入set(Consumer<UpdateSetDsl>)用于在链式调用中进行条件帅选
     
-    例如
-    ```
+> 例如
+
+```
     hammer.update(Device.class).set(Device::getChannel1State, channel1State)
                 .set(Device::getChannel2State, channel2State)
                 .set(Device::getChannel3State, channel3State)
@@ -52,7 +96,7 @@
             .where()
                 .eq(Device::getId, id)
             .execute();
-    ```
+```
 
 - [ ] dsl api 更新删除操作集成update(String,BeanPropertyValue<?>...)用于完善自定义属性映射
 
@@ -69,8 +113,10 @@
 
 - [ ] 查询返回支持Map支持多对象映射
     map的key为别名,value为映射对象
-    例如
-    ```
+    
+> 例如
+
+```
     select u.name,u.age, r.name from ....
     
     Map<String,Object> userRoleMap = 
@@ -78,12 +124,14 @@
     
     User user = userRoleMap.get("u")
     Role role = userRoleMap.get("role");
-    ```
+```
 
 - [ ] 查询返回支持Tuple
     类似Map，但是可以支持强类型，因为是强类型，所以返回数据的个数要与Tuple对象的个数匹配
-    例如
-    ```
+
+> 例如
+
+```
     select u.name, u.age from ....
     
     Tuple2<String,Integer> userTuple = 
@@ -91,12 +139,13 @@
     
     String name = userTuple.get0()
     Integer age = userTuple.get1();
-    ```
+```
     
-    如果是多个对象类型，则对象的顺序以别名的顺序为准
+  
 
-    例如
-    ```
+> 如果是多个对象类型，则对象的顺序以别名的顺序为准，例如
+
+```
     select u.name,u.age, r.name from ....
     
     Tuple2<User,Role> userRoleTuple = 
@@ -104,7 +153,7 @@
     
     User user = userRoleTuple.get0()
     Role role = userRoleTuple.get1();
-    ```
+```
 
 - [x] Jdbc执行sql加入intercptor
 
@@ -139,46 +188,51 @@
     2. 预编译替换替换掉，例如`mobile = /*$=:mobile*/13212345678[\n]`替换为`mobile = :mobile[\n]`
     3. 条件查询明确[if and or]并替换标签对，例如`/*id??*/id = ?[\n ]`替换为`/*<? id?*/id = ?/*>?*/[\n ]`,`/*name??*/and name = ?[\n ]`替换为`/*<and name??*/name = ?/*>and*/[\n ]`,`/*??*/ or email = ?[\n ]`替换为`/*<or email??*/email = ?/*>or*/[\n ]`
     4. 条件查询明确条件，例如`/*??*/ username = :username[\n ]`替换为`/*<? username??*/ username = :username/*>?*/[\n ]`
+
+> 例如
+
 ```sql
-select /*<<prop*/* from /*<<wrap*/user
-/*<where*/ where
-    /*id?*/id = /*$=:id*/1
-    /*name??*/and name like /*$=:name*/'name'
-    /*gender??*/ and gender = /*$=:gender*/1
-    /*<?*/ and
-    (
-        /*??*/ username = /*$=:username*/'admin'
-        /*??*/ or email = /*$=:email*/'featherfly@foxmail.com'
-        /*??*/ or mobile = /*$=:mobile*/13212345678
-    )
-    /*>?*/
-/*>where*/
--- 另一种写法
-select /*#prop $*/*
-from /*#wrap*/user
-/*<where*/ where
-    /*id?*/id = /*$=?*/1
-    /*name??*/and name like /*$=?*/'name'
-    /*gender?*/ and gender = /*$=?*/1
-    /*<?*/ and
+    select /*<<prop*/* from /*<<wrap*/user
+    /*<where*/ where
+        /*id?*/id = /*$=:id*/1
+        /*name??*/and name like /*$=:name*/'name'
+        /*gender??*/ and gender = /*$=:gender*/1
+        /*<?*/ and
         (
-        /*username??*/ username = /*$=?*/'admin'
-        /*email??*/ or email = /*$=?*/'featherfly@foxmail.com'
-        /*mobile??*/ or mobile_no = /*$=?*/'13212345678'
+            /*??*/ username = /*$=:username*/'admin'
+            /*??*/ or email = /*$=:email*/'featherfly@foxmail.com'
+            /*??*/ or mobile = /*$=:mobile*/13212345678
         )
-    /*>?*/
-/*>where*/
--- include模板
-<@tpl id='roleFromTemplate2' namespace='tpl/role_common'/>
-select /*#prop $*/ *
-    /*@ roleFromTemplate*/
-select count(*)
-    /*@ roleFromTemplate tpl/role_common*/
--- roleFromTemplate
-from /*<<wrap*/ role
-/*<where*/ where
-/*name??*/ name like :name
-/*>where*/
+        /*>?*/
+    /*>where*/
+    
+    -- 另一种写法
+    
+    select /*#prop $*/*
+    from /*#wrap*/user
+    /*<where*/ where
+        /*id?*/id = /*$=?*/1
+        /*name??*/and name like /*$=?*/'name'
+        /*gender?*/ and gender = /*$=?*/1
+        /*<?*/ and
+            (
+            /*username??*/ username = /*$=?*/'admin'
+            /*email??*/ or email = /*$=?*/'featherfly@foxmail.com'
+            /*mobile??*/ or mobile_no = /*$=?*/'13212345678'
+            )
+        /*>?*/
+    /*>where*/
+    -- include模板
+    <@tpl id='roleFromTemplate2' namespace='tpl/role_common'/>
+    select /*#prop $*/ *
+        /*@ roleFromTemplate*/
+    select count(*)
+        /*@ roleFromTemplate tpl/role_common*/
+    -- roleFromTemplate
+    from /*<<wrap*/ role
+    /*<where*/ where
+    /*name??*/ name like :name
+    /*>where*/
 ```
 
 - [ ] ~~定制专门为dml准备的简单模板实现，让模板sql更简洁更接近原生sql~~（已经以预编译的形式实现了特化模板，此项暂时不考虑）
