@@ -50,6 +50,8 @@ public @interface Template {
      * value is template
      *
      * @return value is template
+     * @deprecated 会使用专门的注解处理非模板的情况，后续删除此属性
      */
+    @Deprecated
     boolean isTemplate() default true;
 }
