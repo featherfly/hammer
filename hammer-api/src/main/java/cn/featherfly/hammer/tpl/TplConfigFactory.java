@@ -13,6 +13,7 @@ import java.util.Collection;
 public interface TplConfigFactory {
 
     String ID_SIGN = "@";
+    String FILE_SIGN = "#";
     String COUNT_SUFFIX = ".count";
 
     /**

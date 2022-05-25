@@ -59,7 +59,7 @@ public abstract class AbstractFreemarkerTemplateEngine<
                 TplExecuteConfig tplConfig = templateMap.get(config.getTplName());
                 if (tplConfig != null) {
                     throw new HammerException(Strings.format("duplicate template name {0} with {1} , {1}",
-                            config.getTplName(), config.getFileDirectory() + "/" + config.getFileName(),
+                            config.getTplName(), config.getFilePath(),
                             tplConfig.getFileDirectory() + "/" + tplConfig.getFileName()));
                 }
                 templateLoader.putTemplate(config.getTplName(), config.getQuery());

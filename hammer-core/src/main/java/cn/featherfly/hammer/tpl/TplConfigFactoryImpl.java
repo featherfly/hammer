@@ -23,6 +23,7 @@ import java.util.HashSet;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -64,8 +65,6 @@ public class TplConfigFactoryImpl implements TplConfigFactory {
 
         private String filePath;
 
-        private String finalFilePath;
-
         /**
          * Instantiates a new file path.
          *
@@ -74,16 +73,14 @@ public class TplConfigFactoryImpl implements TplConfigFactory {
          * @param suffix        the suffix
          * @param finalFilePath the final file path
          */
-        private FinalPath(String filePath, String prefix, String suffix, String finalFilePath) {
+        private FinalPath(String filePath, String prefix, String suffix) {
             super();
             AssertIllegalArgument.isNotNull(suffix, "suffix");
             AssertIllegalArgument.isNotNull(prefix, "prefix");
             AssertIllegalArgument.isNotNull(filePath, "filePath");
-            AssertIllegalArgument.isNotNull(finalFilePath, "finalFilePath");
             this.suffix = suffix;
             this.prefix = prefix;
             this.filePath = filePath;
-            this.finalFilePath = finalFilePath;
         }
 
         /**
@@ -91,8 +88,7 @@ public class TplConfigFactoryImpl implements TplConfigFactory {
          */
         @Override
         public String toString() {
-            return "FinalPath [suffix=" + suffix + ", prefix=" + prefix + ", filePath=" + filePath + ", finalFilePath="
-                    + finalFilePath + "]";
+            return "FinalPath [suffix=" + suffix + ", prefix=" + prefix + ", filePath=" + filePath + "]";
         }
     }
 
@@ -443,14 +439,30 @@ public class TplConfigFactoryImpl implements TplConfigFactory {
         initConfigFromMapper();
 
         if (logger.isDebugEnabled()) {
-            StringBuilder message = new StringBuilder("\n---------- template file config start ----------\n");
+            StringBuilder message = new StringBuilder("\n---------- template config start ----------\n");
             for (Entry<String, TplExecuteConfigs> entry : configsMap.entrySet()) {
                 TplExecuteConfigs configs = entry.getValue();
-                message.append(Strings.format("  namespace={0}  config.name={1}  config.filePath={2} config.type={3}\n",
-                        entry.getKey(), configs.getName(), configs.getFilePath(),
-                        configs.getType() == null ? "" : configs.getType().getName()));
+                message.append(Strings.format("  key={0}  namespace={1}  filePath={2} types={3}\n", entry.getKey(),
+                        configs.getNamespace(), configs.getFilePath(),
+                        configs.getTypes().stream().map((t) -> t.getName()).collect(Collectors.toList())));
+                for (Entry<String, Object> e : configs.entrySet()) {
+                    Object v = e.getValue();
+                    if (v instanceof TplExecuteConfig) {
+                        TplExecuteConfig config = (TplExecuteConfig) v;
+                        message.append(Strings.format(
+                                "    name={0}  tplName={1}  filePath={2}  namespace={3}  executeId={4}  type={5}  precompile={6}\n",
+                                config.getName(), config.getTplName(), config.getFilePath(), config.getNamespace(),
+                                config.getExecuteId(), config.getType(), config.getPrecompile()));
+                        message.append(Strings.format("      query:  {0}\n",
+                                config.getQuery().replaceAll("\n", "\n              ")));
+                        if (config.getCount() != null) {
+                            message.append(Strings.format("      count:  {0}\n",
+                                    config.getCount().replaceAll("\n", "\n              ")));
+                        }
+                    }
+                }
             }
-            message.append("---------- template file config end ----------");
+            message.append("---------- template config end ----------");
             logger.debug(message.toString());
         }
     }
@@ -505,46 +517,62 @@ public class TplConfigFactoryImpl implements TplConfigFactory {
     private TplExecuteConfigs readConfig(Class<?> type) {
         Collection<Method> methods = ClassUtils.findMethods(type, new MethodAnnotationMatcher(Template.class));
         String globalNamespace = getNamespace(type);
-        TplExecuteConfigs newConfigs = new TplExecuteConfigs();
-        newConfigs.setType(type);
-        newConfigs.setName(globalNamespace);
         //        newConfigs.setFilePath(ClassUtils.packageToDir(type.getName()));
+        TplExecuteConfigs newConfigs = new TplExecuteConfigs();
+        newConfigs.setNamespace(globalNamespace);
+        newConfigs.getTypes().add(type);
+
         String fileDirectory = ClassUtils.packageToDir(type);
         Set<String> executeIds = new HashSet<>();
         for (Method method : methods) {
             Template template = method.getAnnotation(Template.class);
-
             if (Lang.isEmpty(template.value())) {
                 continue;
             }
             String name = Lang.isEmpty(template.name()) ? method.getName() : template.name();
             String namespace = Lang.isEmpty(template.namespace()) ? globalNamespace : template.namespace();
+
             checkName(executeIds, name, namespace);
             TplExecuteConfig config = new TplExecuteConfig();
             config.setQuery(templatePreprocessor.process(template.value()));
             config.setTplName(namespace + ID_SIGN + name);
+            config.setNamespace(namespace);
             config.setExecuteId(name);
-            config.setName(type.getSimpleName());
-            config.setFileName(type.getSimpleName() + ".class");
+            config.setName(type.getName() + FILE_SIGN + name);
+            config.setFileName(type.getName() + ".class");
             config.setFileDirectory(fileDirectory);
-            logger.debug("type -> {} , namespace -> {} ,  {} -> {}", type.getName(), namespace, name, config);
-            newConfigs.put(name, config);
+            //            logger.debug("type -> {} , namespace -> {} ,  {} -> {}", type.getName(), namespace, name, config);
+
+            if (namespace.equals(globalNamespace)) {
+                newConfigs.put(name, config);
+            } else {
+                TplExecuteConfigs configs = configsMap.get(namespace);
+                if (configs == null) {
+                    configs = new TplExecuteConfigs();
+                    configs.setNamespace(namespace);
+                    configsMap.put(namespace, configs);
+                }
+                configs.getTypes().add(type);
+                configs.put(name, config);
+            }
+
             if (executIdNamespaceMap.containsKey(config.getExecuteId())
-                    && !executIdNamespaceMap.get(config.getExecuteId()).equals(newConfigs.getName())) {
+                    && !executIdNamespaceMap.get(config.getExecuteId()).equals(newConfigs.getNamespace())) {
                 executIdNamespaceMap.put(config.getExecuteId(), MULTI_SAME_EXECUTEID);
             } else {
                 executIdNamespaceMap.put(config.getExecuteId(), namespace);
             }
         }
-        logger.debug("type -> {} , namespace -> {} ,  configs -> {}", type.getName(), globalNamespace, newConfigs);
+        //        logger.debug("type -> {} , namespace -> {} ,  configs -> {}", type.getName(), globalNamespace, newConfigs);
 
-        TplExecuteConfigs existsConfig = configsMap.get(newConfigs.getName());
+        TplExecuteConfigs existsConfig = configsMap.get(newConfigs.getNamespace());
         if (existsConfig != null) {
             existsConfig.putAll(newConfigs);
-            configsMap.put(newConfigs.getName(), existsConfig);
+            existsConfig.getTypes().add(type);
+            configsMap.put(newConfigs.getNamespace(), existsConfig);
             // TODO 目前逻辑先用mapper的覆盖已经从文件读取的
         } else {
-            configsMap.put(newConfigs.getName(), newConfigs);
+            configsMap.put(newConfigs.getNamespace(), newConfigs);
         }
         return newConfigs;
     }
@@ -601,12 +629,12 @@ public class TplConfigFactoryImpl implements TplConfigFactory {
         }
 
         if (logger.isDebugEnabled()) {
-            StringBuilder message = new StringBuilder("\n---------- template file namespace start ----------\n");
+            StringBuilder message = new StringBuilder("\n---------- template file config start ----------\n");
             for (Entry<String, FinalPath> entry : filePathMap.entrySet()) {
                 FinalPath finalPath = entry.getValue();
                 message.append(Strings.format("  namespace: {0} -> {1}\n", entry.getKey(), finalPath));
             }
-            message.append("---------- template file namespace end ----------");
+            message.append("---------- template file config end ----------");
             logger.debug(message.toString());
         }
     }
@@ -618,28 +646,27 @@ public class TplConfigFactoryImpl implements TplConfigFactory {
      * @return the tpl execute configs
      */
     private TplExecuteConfigs readConfig(final String filePath, final String prefix, final String suffix) {
-        String finalFilePath = toFinalFilePath(filePath, prefix, suffix);
-        final String fileName = org.apache.commons.lang3.StringUtils.substringAfterLast(finalFilePath, "/");
-        final String fileDirectory = org.apache.commons.lang3.StringUtils.substringBeforeLast(finalFilePath, "/");
+        //        String finalFilePath = toFinalFilePath(filePath, prefix, suffix);
+        final String fileName = org.apache.commons.lang3.StringUtils.substringAfterLast(filePath, "/");
+        final String fileDirectory = org.apache.commons.lang3.StringUtils.substringBeforeLast(filePath, "/");
         //        final String name = org.apache.commons.lang3.StringUtils.substringBeforeLast(finalFilePath, suffix);
-        final String name = org.apache.commons.lang3.StringUtils.substringBeforeLast(
-                org.apache.commons.lang3.StringUtils.substringAfter(finalFilePath, prefix), suffix);
+        final String namespace = org.apache.commons.lang3.StringUtils
+                .substringBeforeLast(org.apache.commons.lang3.StringUtils.substringAfter(filePath, prefix), suffix);
         try {
-            InputStream in = ClassLoaderUtils.getResourceAsStream(finalFilePath, TplConfigFactoryImpl.class);
+            InputStream in = ClassLoaderUtils.getResourceAsStream(filePath, TplConfigFactoryImpl.class);
             if (in == null) {
-                throw new HammerException("can not read config from " + finalFilePath + " it may be does not exist");
+                throw new HammerException("can not read config from " + filePath + " it may be does not exist");
             }
             TplExecuteConfigs tplExecuteConfigs = mapper.readerFor(TplExecuteConfigs.class).readValue(in);
             TplExecuteConfigs newConfigs = new TplExecuteConfigs();
-            newConfigs.setFilePath(finalFilePath);
-            newConfigs.setName(org.apache.commons.lang3.StringUtils.removeEnd(finalFilePath, suffix));
+            newConfigs.setFilePath(filePath);
+            newConfigs.setNamespace(namespace);
             Set<String> executeIds = new HashSet<>();
 
-            StringBuilder debugMessage = new StringBuilder();
-            if (logger.isDebugEnabled()) {
-                debugMessage.append("\n---------- read config from filePath -> " + filePath + " finalFilePath -> "
-                        + finalFilePath + " start ----------\n");
-            }
+            //            StringBuilder debugMessage = new StringBuilder();
+            //            if (logger.isDebugEnabled()) {
+            //                debugMessage.append("\n---------- read config from filePath -> " + filePath + " start ----------\n");
+            //            }
             tplExecuteConfigs.forEach((k, v) -> {
                 TplExecuteConfig config = new TplExecuteConfig();
                 if (v instanceof String) {
@@ -679,84 +706,82 @@ public class TplConfigFactoryImpl implements TplConfigFactory {
                         config.setType(TplType.valueOf(map.get("type").toString()));
                     }
                 }
-                checkName(executeIds, k, finalFilePath);
+                checkName(executeIds, k, filePath);
                 executeIds.add(k);
 
                 //                config.setTplName(newConfigs.getName() + ID_SIGN + k);
                 // 多prefix、suffix实现
-                config.setTplName(name + ID_SIGN + k);
+                config.setTplName(namespace + ID_SIGN + k);
+                config.setNamespace(namespace);
                 config.setExecuteId(k);
-                config.setName(name);
+                config.setName(filePath + FILE_SIGN + config.getExecuteId());
                 config.setFileName(fileName);
                 config.setFileDirectory(fileDirectory);
-                if (logger.isDebugEnabled()) {
-                    debugMessage.append(Strings.format("  {0} -> {1}\n\n", k, config));
-                }
-                //                logger.debug("\n filePath -> {},\n finalFilePath -> {} ,\n {} -> {}", filePath, finalFilePath, k,
-                //                        config);
+                //                if (logger.isDebugEnabled()) {
+                //                    debugMessage.append(Strings.format("  {0} -> {1}\n\n", k, config));
+                //                }
                 newConfigs.put(k, config);
                 if (executIdNamespaceMap.containsKey(config.getExecuteId())
-                        && !executIdNamespaceMap.get(config.getExecuteId()).equals(finalFilePath)) {
+                        && !executIdNamespaceMap.get(config.getExecuteId()).equals(filePath)) {
                     executIdNamespaceMap.put(config.getExecuteId(), MULTI_SAME_EXECUTEID);
                 } else {
-                    executIdNamespaceMap.put(config.getExecuteId(), name);
+                    executIdNamespaceMap.put(config.getExecuteId(), namespace);
                 }
             });
-            if (logger.isDebugEnabled()) {
-                debugMessage.append("---------- read config from filePath -> " + filePath + " finalFilePath -> "
-                        + finalFilePath + " end ----------\n");
-                logger.debug(debugMessage.toString());
-            }
-            //            logger.debug("filePath -> {} , finalFilePath -> {} ,  configs -> {}", filePath, finalFilePath, newConfigs);
-            //            configsMap.put(finalFilePath, newConfigs);
-            configsMap.put(name, newConfigs);
+            //            if (logger.isDebugEnabled()) {
+            //                debugMessage.append("---------- read config from filePath -> " + filePath + " end ----------\n");
+            //                logger.debug(debugMessage.toString());
+            //            }
+            configsMap.put(namespace, newConfigs);
 
-            // 处理重复的filePath（即namespace），因为会有多个prefix或者suffix会导致filePath重复
-            FinalPath fp = filePathMap.get(name);
-            if (fp != null && !finalFilePath.equals(fp.finalFilePath)) {
-                //                filePathFinalPathMap.put(filePath, MULTI_SAME_EXECUTEID);
+            // 处理重复的namespace，因为会有多个prefix或者suffix会导致filePath重复注册为相同的namespace
+            FinalPath fp = filePathMap.get(namespace);
+            if (fp != null && !filePath.equals(fp.filePath)) {
                 // TODO 使用exceptioncode
-                throw new HammerException("namespace[" + name + "] already regist with filePath[" + filePath + "]");
+                throw new HammerException(Strings.format("duplicate regist namespace[{0}] filePath[{1} , {2}]",
+                        namespace, fp.filePath, filePath));
             } else {
-                filePathMap.put(name, new FinalPath(filePath, prefix, suffix, finalFilePath));
+                filePathMap.put(namespace, new FinalPath(filePath, prefix, suffix));
             }
 
             return newConfigs;
         } catch (IOException e) {
             // TODO 使用exceptioncode
-            throw new HammerException("exception when read config file " + finalFilePath + " with argu " + filePath, e);
+            throw new HammerException(
+                    "exception when read config file " + filePath + " with prefix " + prefix + " and suffix " + suffix,
+                    e);
         }
     }
 
-    /**
-     * To final file path.
-     *
-     * @param filePath the file path
-     * @return the string
-     */
-    private String toFinalFilePath(final String filePath, final String prefix, final String suffix) {
-        String result = filePath;
-        // 表示传入不是文件地址字符串，不是完整的地址
-        if (!result.endsWith(suffix)) {
-            result = result + suffix;
-            if (!result.startsWith("/")) {
-                if (prefix.endsWith("/")) {
-                    result = prefix + result;
-                } else {
-                    result = prefix + "/" + result;
-                }
-            }
-        }
-        if (result.startsWith("/")) {
-            result = result.substring(1);
-        }
-        return result;
-    }
+    //    /**
+    //     * To final file path.
+    //     *
+    //     * @param filePath the file path
+    //     * @return the string
+    //     */
+    //    private String toFinalFilePath(final String filePath, final String prefix, final String suffix) {
+    //        String result = filePath;
+    //        // 表示传入不是文件地址字符串，不是完整的地址
+    //        if (!result.endsWith(suffix)) {
+    //            result = result + suffix;
+    //            if (!result.startsWith("/")) {
+    //                if (prefix.endsWith("/")) {
+    //                    result = prefix + result;
+    //                } else {
+    //                    result = prefix + "/" + result;
+    //                }
+    //            }
+    //        }
+    //        if (result.startsWith("/")) {
+    //            result = result.substring(1);
+    //        }
+    //        return result;
+    //    }
 
-    private FinalPath getExistsFinalPath(final String filePath) {
-        FinalPath fp = filePathMap.get(filePath);
+    private FinalPath getExistsFinalPath(final String namespace) {
+        FinalPath fp = filePathMap.get(namespace);
         if (fp == null) {
-            throw new HammerException("no FinalPath found for " + filePath);
+            throw new HammerException("no FinalPath found for " + namespace);
         }
         return fp;
     }
@@ -773,25 +798,19 @@ public class TplConfigFactoryImpl implements TplConfigFactory {
      * {@inheritDoc}
      */
     @Override
-    public TplExecuteConfigs getConfigs(String filePath) {
+    public TplExecuteConfigs getConfigs(String namespace) {
         // filePath即namespace
-        TplExecuteConfigs configs = configsMap.get(filePath);
+        TplExecuteConfigs configs = configsMap.get(namespace);
         if (configs != null) {
             if (devMode) {
-                FinalPath fp = getExistsFinalPath(configs.getName());
+                FinalPath fp = getExistsFinalPath(configs.getNamespace());
                 return readConfig(fp.filePath, fp.prefix, fp.suffix);
-            } else {
-                return configs;
             }
+            //            else {
+            //                return configs;
+            //            }
         }
-
-        FinalPath fp = getExistsFinalPath(filePath);
-        if (devMode) {
-            return readConfig(fp.filePath, fp.prefix, fp.suffix);
-        } else {
-            //            return configs.get(toFinalFilePath(filePath));
-            return configsMap.get(fp.finalFilePath);
-        }
+        return configs;
     }
 
     /**
