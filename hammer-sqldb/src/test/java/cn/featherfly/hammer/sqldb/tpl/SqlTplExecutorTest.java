@@ -92,7 +92,10 @@ public class SqlTplExecutorTest extends JdbcTestBase {
         assertEquals(u2.getUsername(), username);
         assertEquals(u2.getPwd(), password);
 
-        u2 = executor.single("/tpl/user@selectByUsernameAndPassword", User.class,
+        //        u2 = executor.single("/tpl/user@selectByUsernameAndPassword", User.class,
+        //                new HashChainMap<String, Object>().putChain("username", username).putChain("password", password));
+        // 加入多prefix、suffix支持后的获取
+        u2 = executor.single("user@selectByUsernameAndPassword", User.class,
                 new HashChainMap<String, Object>().putChain("username", username).putChain("password", password));
 
         assertEquals(u2.getUsername(), username);
