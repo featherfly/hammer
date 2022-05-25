@@ -43,7 +43,6 @@ import cn.featherfly.hammer.Hammer;
 import cn.featherfly.hammer.HammerException;
 import cn.featherfly.hammer.tpl.TplExecuteId;
 import cn.featherfly.hammer.tpl.TplExecuteIdFileImpl;
-import cn.featherfly.hammer.tpl.TplExecuteIdMapperImpl;
 import cn.featherfly.hammer.tpl.TplType;
 import cn.featherfly.hammer.tpl.annotation.Mapper;
 import cn.featherfly.hammer.tpl.annotation.Param;
@@ -468,35 +467,15 @@ public class TplDynamicExecutorFactory extends ClassLoader implements Opcodes {
                 methodNode.visitFieldInsn(GETFIELD, classNode.name, HAMMER_FIELD_NAME, hammerDescriptor);
                 TplType tplType = getType(method);
 
-                Boolean isTemplate = getIsTemplate(method);
-                if (isTemplate != null) {
-                    //                    String typeDescriptor = Type.getDescriptor(TplExecuteIdMapperImpl.class);
-                    String executeIdType = Type.getInternalName(TplExecuteIdMapperImpl.class);
-                    methodNode.visitTypeInsn(NEW, executeIdType);
-                    methodNode.visitInsn(DUP);
-                    methodNode.visitLdcInsn(name);
-                    methodNode.visitLdcInsn(namespace);
-                    methodNode.visitLdcInsn(Type.getType(type));
-                    if (isTemplate) {
-                        methodNode.visitInsn(ICONST_1);
-                    } else {
-                        methodNode.visitInsn(ICONST_0);
-                    }
-                    methodNode.visitMethodInsn(INVOKESPECIAL, executeIdType, Asm.CONSTRUCT_METHOD,
-                            Asm.getConstructorDescriptor(String.class, String.class, Class.class, boolean.class),
-                            false);
-                    stackSize = 7;
-                } else {
-                    //                    String typeDescriptor = Type.getDescriptor(TplExecuteIdFileImpl.class);
-                    String executeIdType = Type.getInternalName(TplExecuteIdFileImpl.class);
-                    methodNode.visitTypeInsn(NEW, executeIdType);
-                    methodNode.visitInsn(DUP);
-                    methodNode.visitLdcInsn(name);
-                    methodNode.visitLdcInsn(namespace);
-                    methodNode.visitMethodInsn(INVOKESPECIAL, executeIdType, Asm.CONSTRUCT_METHOD,
-                            Asm.getConstructorDescriptor(String.class, String.class), false);
-                    stackSize = 5;
-                }
+                //                    String typeDescriptor = Type.getDescriptor(TplExecuteIdFileImpl.class);
+                String executeIdType = Type.getInternalName(TplExecuteIdFileImpl.class);
+                methodNode.visitTypeInsn(NEW, executeIdType);
+                methodNode.visitInsn(DUP);
+                methodNode.visitLdcInsn(name);
+                methodNode.visitLdcInsn(namespace);
+                methodNode.visitMethodInsn(INVOKESPECIAL, executeIdType, Asm.CONSTRUCT_METHOD,
+                        Asm.getConstructorDescriptor(String.class, String.class), false);
+                stackSize = 5;
 
                 if (method.getReturnType() == void.class) {
                     setParams(methodNode, method);
@@ -535,7 +514,7 @@ public class TplDynamicExecutorFactory extends ClassLoader implements Opcodes {
                     } else {
                         methodNode.visitLdcInsn(Type.getType(ClassUtils.forName(returnTypeName)));
                         ParamPosition position = setParams(methodNode, method);
-                        if (isTemplate == null && position.commonParamNum > 0) {
+                        if (position.commonParamNum > 0) {
                             stackSize++;
                         }
                         if (position.limitParamPosition > 0) {
@@ -570,7 +549,7 @@ public class TplDynamicExecutorFactory extends ClassLoader implements Opcodes {
                     } else {
                         methodNode.visitLdcInsn(Type.getType(ClassUtils.forName(returnTypeName)));
                         ParamPosition position = setParams(methodNode, method);
-                        if (isTemplate == null && position.commonParamNum > 0) {
+                        if (position.commonParamNum > 0) {
                             stackSize++;
                         }
                         if (position.limitParamPosition > 0) {
@@ -585,7 +564,7 @@ public class TplDynamicExecutorFactory extends ClassLoader implements Opcodes {
                         methodNode.visitEnd();
                     }
                 } else if (ClassUtils.isParent(Number.class, method.getReturnType())) {
-                    if (isTemplate == null && method.getParameters().length > 0) {
+                    if (method.getParameters().length > 0) {
                         stackSize++;
                     }
                     methodNode.visitLdcInsn(Type.getType(method.getReturnType()));
@@ -638,7 +617,7 @@ public class TplDynamicExecutorFactory extends ClassLoader implements Opcodes {
                     methodNode.visitMaxs(stackSize, localeSize);
                     methodNode.visitEnd();
                 } else {
-                    if (isTemplate == null && method.getParameters().length > 0) {
+                    if (method.getParameters().length > 0) {
                         stackSize++;
                     }
                     methodNode.visitLdcInsn(Type.getType(method.getReturnType()));
@@ -855,14 +834,6 @@ public class TplDynamicExecutorFactory extends ClassLoader implements Opcodes {
         } else {
             return namespace;
         }
-    }
-
-    private Boolean getIsTemplate(Method method) {
-        Template template = method.getAnnotation(Template.class);
-        if (template != null && Lang.isNotEmpty(template.value())) {
-            return template.isTemplate();
-        }
-        return null;
     }
 
     private TplType getType(Method method) {
