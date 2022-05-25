@@ -9,6 +9,7 @@ import java.util.Map;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import cn.featherfly.common.lang.Strings;
 import cn.featherfly.hammer.HammerException;
 import cn.featherfly.hammer.tpl.TemplateEngine;
 import cn.featherfly.hammer.tpl.TemplateProcessEnv;
@@ -48,13 +49,19 @@ public abstract class AbstractFreemarkerTemplateEngine<
         if (logger.isDebugEnabled()) {
             debugMessage.append("\n---------- template loader load template start ----------\n");
         }
+        Map<String, TplExecuteConfig> templateMap = new HashMap<>();
         configFactory.getAllConfigs().forEach(configs -> {
             configs.values().forEach(c -> {
                 TplExecuteConfig config = (TplExecuteConfig) c;
                 if (logger.isDebugEnabled()) {
                     debugMessage.append("  template name: " + config.getTplName() + "\n");
                 }
-                // logger.debug("put template name: {}", config.getTplName());
+                TplExecuteConfig tplConfig = templateMap.get(config.getTplName());
+                if (tplConfig != null) {
+                    throw new HammerException(Strings.format("duplicate template name {0} with {1} , {1}",
+                            config.getTplName(), config.getFileDirectory() + "/" + config.getFileName(),
+                            tplConfig.getFileDirectory() + "/" + tplConfig.getFileName()));
+                }
                 templateLoader.putTemplate(config.getTplName(), config.getQuery());
             });
         });

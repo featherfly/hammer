@@ -123,7 +123,7 @@
     List<Map<String,Object>> userRoleMapList =     
     
     User user = userRoleMap.get("u")
-    Role role = userRoleMap.get("role");
+    Role role = userRoleMap.get("r");
 ```
 
 - [ ] 查询返回支持Tuple
@@ -178,9 +178,9 @@
 
 - [x] 所有的数据库操作，都应该使用SqlTypeMappingManager来进行数据转换操作
 
-- [ ] 模板文件加载器加入支持从不同前置目录加载的实现(例如 rbac, cms, blog, common/config)
+- [x] 模板文件加载器加入支持从不同前置目录加载的实现(例如 rbac, cms, blog, common/config)
 
-- [ ] 模板文件加载器加入支持从不同文件后缀加载的实现(例如 .yaml.sql, .tpl.sql)
+- [x] 模板文件加载器加入支持从不同文件后缀加载的实现(例如 .yaml.sql, .tpl.sql)
 
 - [ ] 为不同文件后缀名添加对应的解析器（例如.yaml.sql是yaml格式文件，.toml.sql是toml格式文件）
 

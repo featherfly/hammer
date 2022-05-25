@@ -14,6 +14,8 @@ public class TplExecuteConfigs extends HashMap<String, Object> {
 
     private String filePath;
 
+    private Class<?> type;
+
     private String name;
 
     /**
@@ -64,5 +66,23 @@ public class TplExecuteConfigs extends HashMap<String, Object> {
      */
     public void setName(String name) {
         this.name = name;
+    }
+
+    /**
+     * get type value
+     *
+     * @return type
+     */
+    public Class<?> getType() {
+        return type;
+    }
+
+    /**
+     * set type value
+     *
+     * @param type type
+     */
+    public void setType(Class<?> type) {
+        this.type = type;
     }
 }

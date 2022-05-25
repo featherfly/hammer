@@ -3,6 +3,8 @@ package cn.featherfly.hammer.sqldb.tpl.freemarker.directive;
 import java.io.IOException;
 import java.util.Map;
 
+import org.apache.commons.lang3.StringUtils;
+
 import cn.featherfly.common.lang.Lang;
 import cn.featherfly.hammer.tpl.TplConfigFactory;
 import cn.featherfly.hammer.tpl.TplException;
@@ -49,7 +51,8 @@ public class IncludeDirectiveModel extends IncludeDirective implements Freemarke
             TplExecuteId executeId = new TplExecuteIdFileImpl(
                     environment.getCurrentNamespace().getTemplate().getName());
             TplExecuteConfig config = tplConfigFactory.getConfig(executeId);
-            includeTemplateName = config.getName() + TplConfigFactory.ID_SIGN + id;
+            includeTemplateName = StringUtils.substringBefore(config.getTplName(), TplConfigFactory.ID_SIGN)
+                    + TplConfigFactory.ID_SIGN + id;
         }
         environment.include(environment.getTemplateForInclusion(includeTemplateName, null, true));
     }

@@ -62,6 +62,7 @@ public abstract class AbstractJdbc implements Jdbc {
     /** The manager. */
     protected SqlTypeMappingManager manager;
 
+    /** The interceptors. */
     protected final List<JdbcExecutionInterceptor> interceptors = new ArrayList<>(0);
 
     /**
@@ -227,7 +228,8 @@ public abstract class AbstractJdbc implements Jdbc {
         sql = execution.getExecution();
         args = execution.getParams();
         logger.debug("execute sql -> {}, args -> {}", sql, args);
-        Connection connection = getConnection();
+        DataSource ds = getDataSource();
+        Connection connection = getConnection(ds);
         try (PreparedStatement prep = generatedKeyHolder == null ? connection.prepareStatement(sql)
                 : connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
             setParams.accept(prep);
@@ -247,7 +249,7 @@ public abstract class AbstractJdbc implements Jdbc {
             }
             return result;
         } catch (SQLException e) {
-            releaseConnection(connection, getDataSource());
+            releaseConnection(connection, ds);
             throw new JdbcException(Strings.format("executeUpdate: \nsql: {0} \nargs: {1}", sql, Arrays.toString(args)),
                     e);
         } finally {
@@ -276,7 +278,8 @@ public abstract class AbstractJdbc implements Jdbc {
             sql = execution.getExecution();
             args = execution.getParams();
             logger.debug("execute sql -> {}, args -> {}", sql, args);
-            Connection con = getConnection();
+            DataSource ds = getDataSource();
+            Connection con = getConnection(ds);
             try (PreparedStatement prep = con.prepareStatement(sql)) {
                 //                if (logger.isDebugEnabled()) {
                 //                    logger.debug("execute sql -> {} , params -> {}", sql, ArrayUtils.toString(args));
@@ -286,7 +289,7 @@ public abstract class AbstractJdbc implements Jdbc {
                     return postHandle(execution.setOriginalResult(JdbcUtils.getResultSetMaps(rs, manager)), sql, args);
                 }
             } catch (SQLException e) {
-                releaseConnection(con, getDataSource());
+                releaseConnection(con, ds);
                 con = null;
                 throw new JdbcException(Strings.format("query: \nsql: {0} \nargs: {1}", sql, Arrays.toString(args)), e);
             } finally {
@@ -355,7 +358,8 @@ public abstract class AbstractJdbc implements Jdbc {
             sql = execution.getExecution();
             args = execution.getParams();
             logger.debug("execute sql -> {}, args -> {}", sql, args);
-            Connection con = getConnection();
+            DataSource ds = getDataSource();
+            Connection con = getConnection(ds);
             try (PreparedStatement prep = con.prepareStatement(sql)) {
                 setParams(prep, args);
                 try (ResultSet rs = prep.executeQuery()) {
@@ -366,7 +370,7 @@ public abstract class AbstractJdbc implements Jdbc {
                     return postHandle(execution.setOriginalResult(list), sql, args);
                 }
             } catch (SQLException e) {
-                releaseConnection(con, getDataSource());
+                releaseConnection(con, ds);
                 con = null;
                 throw new JdbcException(Strings.format("query: \nsql: {0} \nargs: {1}", sql, Arrays.toString(args)), e);
             } finally {
@@ -682,6 +686,13 @@ public abstract class AbstractJdbc implements Jdbc {
     //        return list;
     //    }
 
+    /**
+     * Sets the param.
+     *
+     * @param prep  the prep
+     * @param index the index
+     * @param arg   the arg
+     */
     protected void setParam(PreparedStatement prep, int index, Object arg) {
         if (arg instanceof BeanPropertyValue) {
             BeanPropertyValue<?> bpv = (BeanPropertyValue<?>) arg;
@@ -719,6 +730,11 @@ public abstract class AbstractJdbc implements Jdbc {
         }
     }
 
+    /**
+     * Adds the interceptor.
+     *
+     * @param interceptor the interceptor
+     */
     public void addInterceptor(JdbcExecutionInterceptor interceptor) {
         if (interceptor != null) {
             interceptors.add(interceptor);
@@ -726,6 +742,11 @@ public abstract class AbstractJdbc implements Jdbc {
 
     }
 
+    /**
+     * Adds the interceptor.
+     *
+     * @param interceptors the interceptors
+     */
     public void addInterceptor(List<JdbcExecutionInterceptor> interceptors) {
         if (interceptors != null) {
             for (JdbcExecutionInterceptor jdbcExecutionInterceptor : interceptors) {
@@ -734,6 +755,11 @@ public abstract class AbstractJdbc implements Jdbc {
         }
     }
 
+    /**
+     * Adds the interceptor.
+     *
+     * @param interceptors the interceptors
+     */
     public void addInterceptor(JdbcExecutionInterceptor... interceptors) {
         if (interceptors != null) {
             for (JdbcExecutionInterceptor jdbcExecutionInterceptor : interceptors) {
@@ -769,7 +795,8 @@ public abstract class AbstractJdbc implements Jdbc {
     /**
      * Gets the connection.
      *
+     * @param dataSource the data source
      * @return the connection
      */
-    protected abstract Connection getConnection();
+    protected abstract Connection getConnection(DataSource dataSource);
 }

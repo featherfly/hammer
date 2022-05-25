@@ -590,13 +590,15 @@ public class HammerJdbcTest extends JdbcTestBase {
         hammer.update(Role.class).set(u -> {
             if (set) {
                 u.set(Role::getName, setNewName);
+            } else {
+                u.set(Role::getName, oldRole.getName());
             }
         }).where().eq(Role::getId, id).execute();
 
         role = hammer.get(id, Role.class);
 
         if (set) {
-            assertEquals(role.getName(), newName);
+            assertEquals(role.getName(), setNewName);
         } else {
             assertEquals(role.getName(), oldRole.getName());
         }
