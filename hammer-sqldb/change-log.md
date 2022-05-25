@@ -1,6 +1,7 @@
 # 0.6.1
 1. 优化TplExecutionConfig的配置信息
 2. 优化配置的日志输出
+3. Template删除isTemplate()方法
 
 # 0.6.0 2022-05-24  
 1. 模板文件加载器加入支持从不同前置目录加载的实现(例如 rbac, cms, blog, common/config)
