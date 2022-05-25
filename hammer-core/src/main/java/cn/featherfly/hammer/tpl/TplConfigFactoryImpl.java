@@ -453,10 +453,10 @@ public class TplConfigFactoryImpl implements TplConfigFactory {
                                 "    name={0}  tplName={1}  filePath={2}  namespace={3}  executeId={4}  type={5}  precompile={6}\n",
                                 config.getName(), config.getTplName(), config.getFilePath(), config.getNamespace(),
                                 config.getExecuteId(), config.getType(), config.getPrecompile()));
-                        message.append(Strings.format("      query:  {0}\n",
+                        message.append(String.format("      query:  %s\n",
                                 config.getQuery().replaceAll("\n", "\n              ")));
                         if (config.getCount() != null) {
-                            message.append(Strings.format("      count:  {0}\n",
+                            message.append(String.format("      count:  %s\n",
                                     config.getCount().replaceAll("\n", "\n              ")));
                         }
                     }
