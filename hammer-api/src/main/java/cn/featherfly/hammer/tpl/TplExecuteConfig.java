@@ -24,6 +24,8 @@ public class TplExecuteConfig {
 
     private Boolean precompile;
 
+    private String namespace;
+
     private String executeId;
 
     private String tplName;
@@ -190,6 +192,28 @@ public class TplExecuteConfig {
         this.precompile = precompile;
     }
 
+    public String getFilePath() {
+        return fileDirectory + "/" + fileName;
+    }
+
+    /**
+     * get namespace value
+     *
+     * @return namespace
+     */
+    public String getNamespace() {
+        return namespace;
+    }
+
+    /**
+     * set namespace value
+     *
+     * @param namespace namespace
+     */
+    public void setNamespace(String namespace) {
+        this.namespace = namespace;
+    }
+
     /**
      * {@inheritDoc}
      */
@@ -197,6 +221,6 @@ public class TplExecuteConfig {
     public String toString() {
         return "TplExecuteConfig [fileName=" + fileName + ", fileDirectory=" + fileDirectory + ", name=" + name
                 + ", type=" + type + ", query=" + query + ", count=" + count + ", precompile=" + precompile
-                + ", executeId=" + executeId + ", tplName=" + tplName + "]";
+                + ", namespace=" + namespace + ", executeId=" + executeId + ", tplName=" + tplName + "]";
     }
 }

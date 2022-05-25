@@ -2,6 +2,8 @@
 package cn.featherfly.hammer.tpl;
 
 import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Set;
 
 /**
  * <p>
@@ -14,9 +16,9 @@ public class TplExecuteConfigs extends HashMap<String, Object> {
 
     private String filePath;
 
-    private Class<?> type;
+    private Set<Class<?>> types = new HashSet<>(0);
 
-    private String name;
+    private String namespace;
 
     /**
      *
@@ -51,38 +53,39 @@ public class TplExecuteConfigs extends HashMap<String, Object> {
     }
 
     /**
-     * 返回name
+     * get namespace value
      *
-     * @return name
+     * @return namespace
      */
-    public String getName() {
-        return name;
+    public String getNamespace() {
+        return namespace;
     }
 
     /**
-     * 设置name
+     * set namespace value
      *
-     * @param name name
+     * @param namespace namespace
      */
-    public void setName(String name) {
-        this.name = name;
+    public void setNamespace(String namespace) {
+        this.namespace = namespace;
     }
 
     /**
-     * get type value
+     * get types value
      *
-     * @return type
+     * @return types
      */
-    public Class<?> getType() {
-        return type;
+    public Set<Class<?>> getTypes() {
+        return types;
     }
 
     /**
-     * set type value
+     * set types value
      *
-     * @param type type
+     * @param types types
      */
-    public void setType(Class<?> type) {
-        this.type = type;
+    public void setTypes(Set<Class<?>> types) {
+        this.types = types;
     }
+
 }
