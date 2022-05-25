@@ -51,7 +51,7 @@ public interface TeMapper {
     @Template(namespace = "namespace")
     void update();
 
-    @Template(value = "merge", isTemplate = false)
+    @Template(value = "merge")
     void merge();
 
     @Template("merge")
