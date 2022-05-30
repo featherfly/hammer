@@ -134,6 +134,15 @@ public interface Hammer extends TplExecutor {
     <E> int merge(List<E> entities);
 
     /**
+     * save or update entity
+     *
+     * @param <E>    generic type
+     * @param entity entity to save
+     * @return effect data row num
+     */
+    <E> int saveOrUpdate(E entity);
+
+    /**
      * delete entity by id
      *
      * @param <E>    generic type

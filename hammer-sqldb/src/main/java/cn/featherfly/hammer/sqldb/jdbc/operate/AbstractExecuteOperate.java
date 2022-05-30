@@ -7,17 +7,14 @@ import cn.featherfly.common.repository.mapping.ClassMapping;
 import cn.featherfly.hammer.sqldb.jdbc.Jdbc;
 
 /**
- * <p>
- * 数据库操作的抽象类
- * </p>
- * .
+ * 数据库操作的抽象类.
  *
  * @author zhongj
- * @version 1.0
+ * @version 0.1.0
+ * @since 0.1.0
  * @param <T> 对象类型
- * @since 1.0
  */
-public abstract class AbstractExecuteOperate<T> extends AbstractOperate<T> {
+public abstract class AbstractExecuteOperate<T> extends AbstractOperate<T> implements ExecuteOperate<T> {
 
     /**
      * 使用给定数据源以及给定对象生成其相应的操作.
@@ -65,19 +62,9 @@ public abstract class AbstractExecuteOperate<T> extends AbstractOperate<T> {
      * @param entity 对象
      * @return 操作影响的数据行数
      */
+    @Override
     public int execute(final T entity) {
         return jdbc.update(sql, getParameters(entity));
-        //        return jdbc.execute((con, manager) -> {
-        //            try (PreparedStatement prep = con.prepareStatement(sql)) {
-        //                Object[] params = setParameters(entity, prep, manager);
-        //                if (logger.isDebugEnabled()) {
-        //                    logger.debug("execute sql: {} \n params: {}", sql, ArrayUtils.toString(params));
-        //                }
-        //                int result = prep.executeUpdate();
-        //                return result;
-        //            }
-        //        });
-        //        return jdbc.update(sql, getParameters(entity));
     }
 
     // ********************************************************************
