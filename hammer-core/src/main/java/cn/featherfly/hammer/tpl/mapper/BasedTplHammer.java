@@ -632,4 +632,12 @@ public class BasedTplHammer implements Hammer {
         return hammer.get(type, ids);
     }
 
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public <E> int saveOrUpdate(E entity) {
+        return hammer.saveOrUpdate(entity);
+    }
+
 }

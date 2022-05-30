@@ -10,11 +10,8 @@
  */
 package cn.featherfly.hammer.sqldb.jdbc.operate;
 
-import java.util.List;
-
 import cn.featherfly.common.db.mapping.SqlTypeMappingManager;
 import cn.featherfly.common.db.metadata.DatabaseMetadata;
-import cn.featherfly.common.lang.ArrayUtils;
 import cn.featherfly.common.repository.mapping.ClassMapping;
 import cn.featherfly.hammer.sqldb.jdbc.Jdbc;
 
@@ -22,9 +19,12 @@ import cn.featherfly.hammer.sqldb.jdbc.Jdbc;
  * AbstractBatchExecuteOperate.
  *
  * @author zhongj
+ * @version 0.5.25
+ * @since 0.5.25
  * @param <T> the generic type
  */
-public abstract class AbstractBatchExecuteOperate<T> extends AbstractExecuteOperate<T> {
+public abstract class AbstractBatchExecuteOperate<T> extends AbstractExecuteOperate<T>
+        implements BatchExecuteOperate<T> {
 
     /**
      * Instantiates a new abstract batch execute operate.
@@ -63,22 +63,4 @@ public abstract class AbstractBatchExecuteOperate<T> extends AbstractExecuteOper
             SqlTypeMappingManager sqlTypeMappingManager) {
         super(jdbc, classMapping, sqlTypeMappingManager);
     }
-
-    /**
-     * Execute batch.
-     *
-     * @param entities the entities
-     * @return the int
-     */
-    public int executeBatch(final T[] entities) {
-        return executeBatch(ArrayUtils.toList(entities));
-    }
-
-    /**
-     * Execute batch.
-     *
-     * @param entities the entity
-     * @return the int
-     */
-    public abstract int executeBatch(final List<T> entities);
 }

@@ -73,6 +73,30 @@ public interface Jdbc {
     /**
      * Update.
      *
+     * @param <T>       the generic type
+     * @param sql       sql
+     * @param batchSize the batch size
+     * @param args      args
+     * @return map list
+     */
+    <T extends Serializable> int updateBatch(String sql, int batchSize, Object... args);
+
+    /**
+     * Update.
+     *
+     * @param <T>                the generic type
+     * @param sql                sql
+     * @param batchSize          the batch size
+     * @param generatedKeyHolder the key supplier
+     * @param args               args
+     * @return map list
+     */
+    <T extends Serializable> int updateBatch(String sql, int batchSize, GeneratedKeyHolder<T> generatedKeyHolder,
+            Object... args);
+
+    /**
+     * Update.
+     *
      * @param <T>                the generic type
      * @param sql                the sql
      * @param generatedKeyHolder the generated key holder

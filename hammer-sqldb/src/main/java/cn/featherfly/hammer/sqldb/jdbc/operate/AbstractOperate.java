@@ -25,15 +25,12 @@ import cn.featherfly.common.repository.mapping.PropertyMapping;
 import cn.featherfly.hammer.sqldb.jdbc.Jdbc;
 
 /**
- * <p>
- * 数据库操作的抽象类
- * </p>
- * .
+ * 数据库操作的抽象类.
  *
  * @author zhongj
- * @version 1.0
+ * @version 0.1.0
+ * @since 0.1.0
  * @param <T> 类型
- * @since 1.0
  */
 public abstract class AbstractOperate<T> {
 

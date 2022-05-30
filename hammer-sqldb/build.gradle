@@ -4,7 +4,7 @@ dependencies {
 
     //api group: 'cn.featherfly.common', name: 'common-model-repository', version: '0.2.3'
     //api group: 'cn.featherfly.common', name: 'common-api', version: '0.2.7'
-    api group: 'cn.featherfly.common', name: 'common-db', version: '0.4.9'
+    api group: 'cn.featherfly.common', name: 'common-db', version: '0.5.1'
     api group: 'org.springframework', name: 'spring-jdbc', version: sv
     //api group: 'org.springframework', name: 'spring-jdbc', version: '5.2.16.RELEASE'
     api group: 'org.glassfish', name: 'javax.el', version: '3.0.0'

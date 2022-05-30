@@ -136,9 +136,26 @@ public abstract class AbstractJdbc implements Jdbc {
      */
     @Override
     public <T extends Serializable> int update(String sql, GeneratedKeyHolder<T> keySupplier, Object... args) {
+        return updateBatch(sql, 1, keySupplier, args);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public <T extends Serializable> int updateBatch(String sql, int batchSize, Object... args) {
+        return updateBatch(sql, batchSize, null, args);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public <T extends Serializable> int updateBatch(String sql, int batchSize, GeneratedKeyHolder<T> keySupplier,
+            Object... args) {
         if (Lang.isNotEmpty(sql)) {
             sql = sql.trim();
-            return executeUpdate(sql, keySupplier, args);
+            return executeUpdate(sql, batchSize, keySupplier, args);
         }
         return 0;
     }
@@ -151,7 +168,7 @@ public abstract class AbstractJdbc implements Jdbc {
             BeanPropertyValue<?>... args) {
         if (Lang.isNotEmpty(sql)) {
             sql = sql.trim();
-            return executeUpdate(sql, keySupplier, args);
+            return executeUpdate(sql, 1, keySupplier, args);
         }
         return 0;
     }
@@ -184,7 +201,7 @@ public abstract class AbstractJdbc implements Jdbc {
     public int update(String sql, Object... args) {
         if (Lang.isNotEmpty(sql)) {
             sql = sql.trim();
-            return executeUpdate(sql, args);
+            return executeUpdate(sql, 1, args);
         }
         return 0;
     }
@@ -196,33 +213,33 @@ public abstract class AbstractJdbc implements Jdbc {
     public int update(String sql, BeanPropertyValue<?>... args) {
         if (Lang.isNotEmpty(sql)) {
             sql = sql.trim();
-            return executeUpdate(sql, args);
+            return executeUpdate(sql, 1, args);
         }
         return 0;
     }
 
-    private int executeUpdate(String sql, Object... args) {
-        return executeUpdate(sql, null, args);
+    private int executeUpdate(String sql, int batchSize, Object... args) {
+        return executeUpdate(sql, batchSize, null, args);
     }
 
-    private <T extends Serializable> int executeUpdate(String sql, GeneratedKeyHolder<T> generatedKeyHolder,
-            Object... args) {
+    private <T extends Serializable> int executeUpdate(String sql, int batchSize,
+            GeneratedKeyHolder<T> generatedKeyHolder, Object... args) {
         logger.debug("sql -> {}, args -> {}", sql, args);
-        return executeUpdate(prep -> setParams(prep, args), sql, generatedKeyHolder, args);
+        return executeUpdate(prep -> setParams(prep, args), sql, batchSize, generatedKeyHolder, args);
     }
 
-    private int executeUpdate(String sql, BeanPropertyValue<?>... args) {
-        return executeUpdate(sql, null, args);
+    private int executeUpdate(String sql, int batchSize, BeanPropertyValue<?>... args) {
+        return executeUpdate(sql, batchSize, null, args);
     }
 
-    private <T extends Serializable> int executeUpdate(String sql, GeneratedKeyHolder<T> generatedKeyHolder,
-            BeanPropertyValue<?>... argsBp) {
+    private <T extends Serializable> int executeUpdate(String sql, int batchSize,
+            GeneratedKeyHolder<T> generatedKeyHolder, BeanPropertyValue<?>... argsBp) {
         logger.debug("sql -> {}, args -> {}", sql, argsBp);
-        return executeUpdate(prep -> setParams(prep, argsBp), sql, generatedKeyHolder,
+        return executeUpdate(prep -> setParams(prep, argsBp), sql, batchSize, generatedKeyHolder,
                 Arrays.stream(argsBp).map(arg -> arg.getValue()).toArray());
     }
 
-    private <T extends Serializable> int executeUpdate(Consumer<PreparedStatement> setParams, String sql,
+    private <T extends Serializable> int executeUpdate(Consumer<PreparedStatement> setParams, String sql, int batchSize,
             GeneratedKeyHolder<T> generatedKeyHolder, Object... args) {
         JdbcExecution execution = preHandle(sql, args);
         sql = execution.getExecution();
@@ -236,7 +253,7 @@ public abstract class AbstractJdbc implements Jdbc {
             int result = prep.executeUpdate();
             // 不是查询操作，没有查询结果
             postHandle(execution, sql, args);
-            if (generatedKeyHolder != null) {
+            if (generatedKeyHolder != null && (batchSize == 1 && result == 1 || batchSize > 1)) {
                 try (ResultSet res = prep.getGeneratedKeys()) {
                     int row = 0;
                     while (res.next()) {
