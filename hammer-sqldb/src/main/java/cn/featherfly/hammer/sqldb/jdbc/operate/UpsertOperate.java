@@ -22,14 +22,13 @@ import cn.featherfly.hammer.sqldb.jdbc.GeneratedKeyHolder;
 import cn.featherfly.hammer.sqldb.jdbc.Jdbc;
 
 /**
- * 插入操作.
+ * upsert.
  *
  * @author zhongj
- * @version 0.4.3
- * @since 0.1.0
  * @param <T> 对象类型
+ * @since 0.6.1
  */
-public class InsertOperate<T> extends AbstractBatchExecuteOperate<T> {
+public class UpsertOperate<T> extends AbstractBatchExecuteOperate<T> {
 
     /**
      * 使用给定数据源以及给定对象生成插入操作.
@@ -38,7 +37,7 @@ public class InsertOperate<T> extends AbstractBatchExecuteOperate<T> {
      * @param classMapping          classMapping
      * @param sqlTypeMappingManager the sql type mapping manager
      */
-    public InsertOperate(Jdbc jdbc, ClassMapping<T> classMapping, SqlTypeMappingManager sqlTypeMappingManager) {
+    public UpsertOperate(Jdbc jdbc, ClassMapping<T> classMapping, SqlTypeMappingManager sqlTypeMappingManager) {
         super(jdbc, classMapping, sqlTypeMappingManager);
     }
 
@@ -50,7 +49,7 @@ public class InsertOperate<T> extends AbstractBatchExecuteOperate<T> {
      * @param sqlTypeMappingManager the sql type mapping manager
      * @param dataBase              具体库
      */
-    public InsertOperate(Jdbc jdbc, ClassMapping<T> classMapping, SqlTypeMappingManager sqlTypeMappingManager,
+    public UpsertOperate(Jdbc jdbc, ClassMapping<T> classMapping, SqlTypeMappingManager sqlTypeMappingManager,
             String dataBase) {
         super(jdbc, classMapping, sqlTypeMappingManager, dataBase);
     }
@@ -63,7 +62,7 @@ public class InsertOperate<T> extends AbstractBatchExecuteOperate<T> {
      * @param sqlTypeMappingManager the sql type mapping manager
      * @param databaseMetadata      the database metadata
      */
-    public InsertOperate(Jdbc jdbc, ClassMapping<T> classMapping, SqlTypeMappingManager sqlTypeMappingManager,
+    public UpsertOperate(Jdbc jdbc, ClassMapping<T> classMapping, SqlTypeMappingManager sqlTypeMappingManager,
             DatabaseMetadata databaseMetadata) {
         super(jdbc, classMapping, sqlTypeMappingManager, databaseMetadata);
     }
@@ -76,7 +75,7 @@ public class InsertOperate<T> extends AbstractBatchExecuteOperate<T> {
         if (Lang.isEmpty(entities)) {
             return Chars.ZERO;
         }
-        if (jdbc.getDialect().isInsertBatch()) {
+        if (jdbc.getDialect().isUpsertBatch()) {
             return _executeBatch(entities, batchSize);
         } else {
             int size = 0;
@@ -91,26 +90,29 @@ public class InsertOperate<T> extends AbstractBatchExecuteOperate<T> {
         if (entities.size() == 0) {
             return 0;
         }
-        List<PropertyMapping> pks = classMapping.getPrivaryKeyPropertyMappings();
         Tuple2<String, Map<Integer, String>> tuple = ClassMappingUtils
-                .getInsertBatchSqlAndParamPositions(entities.size(), classMapping, jdbc.getDialect());
+                .getUpsertBatchSqlAndParamPositions(entities.size(), classMapping, jdbc.getDialect());
         String sql = tuple.get0();
-        if (pks.size() == 1) {
-            return jdbc.updateBatch(sql, entities.size(), new GeneratedKeyHolder<Serializable>() {
-                @Override
-                public void acceptKey(Serializable key, int row) {
-                    BeanUtils.setProperty(entities.get(row), pks.get(0).getPropertyName(), key);
-                }
+        return jdbc.updateBatch(sql, entities.size(), getBatchParameters(entities, tuple.get1()));
+        // TODO 批量upsert时， 返回值不确定，所以无法设置自动生成的id值，后续再研究
 
-                @SuppressWarnings("unchecked")
-                @Override
-                public GenericType<Serializable> getType() {
-                    return (GenericClass<Serializable>) new GenericClass<>(pks.get(0).getPropertyType());
-                }
-            }, getBatchParameters(entities, tuple.get1()));
-        } else {
-            return jdbc.updateBatch(sql, entities.size(), getBatchParameters(entities, tuple.get1()));
-        }
+        //        List<PropertyMapping> pks = classMapping.getPrivaryKeyPropertyMappings();
+        //        if (pks.size() == 1) {
+        //            return jdbc.updateBatch(sql, entities.size(), new GeneratedKeyHolder<Serializable>() {
+        //                @Override
+        //                public void acceptKey(Serializable key, int row) {
+        //                    BeanUtils.setProperty(entities.get(row), pks.get(0).getPropertyName(), key);
+        //                }
+        //
+        //                @SuppressWarnings("unchecked")
+        //                @Override
+        //                public GenericType<Serializable> getType() {
+        //                    return (GenericClass<Serializable>) new GenericClass<>(pks.get(0).getPropertyType());
+        //                }
+        //            }, getBatchParameters(entities, tuple.get1()));
+        //        } else {
+        //            return jdbc.updateBatch(sql, entities.size(), getBatchParameters(entities, tuple.get1()));
+        //        }
     }
 
     private int _executeBatch(final List<T> entities, int batchSize) {
@@ -160,7 +162,7 @@ public class InsertOperate<T> extends AbstractBatchExecuteOperate<T> {
      */
     @Override
     protected void initSql() {
-        Tuple2<String, Map<Integer, String>> tuple = ClassMappingUtils.getInsertSqlAndParamPositions(classMapping,
+        Tuple2<String, Map<Integer, String>> tuple = ClassMappingUtils.getUpsertSqlAndParamPositions(classMapping,
                 jdbc.getDialect());
         sql = tuple.get0();
         propertyPositions.putAll(tuple.get1());

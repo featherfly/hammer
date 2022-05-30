@@ -16,15 +16,12 @@ import cn.featherfly.hammer.sqldb.SqldbHammerException;
 import cn.featherfly.hammer.sqldb.jdbc.Jdbc;
 
 /**
- * <p>
- * 根据ID读取操作
- * </p>
- * .
+ * 根据ID读取操作.
  *
  * @author zhongj
- * @version 1.0
+ * @version 0.1.0
+ * @since 0.1.0
  * @param <T> 对象类型
- * @since 1.0
  */
 public class GetOperate<T> extends AbstractQueryOperate<T> {
 
@@ -105,6 +102,14 @@ public class GetOperate<T> extends AbstractQueryOperate<T> {
         return pkPms.stream()
                 .map(p -> (Serializable) BeanUtils.getProperty(entity, ClassMappingUtils.getPropertyAliasName(p)))
                 .collect(Collectors.toList());
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public T execute(final Serializable id) {
+        return get(id);
     }
 
     /**

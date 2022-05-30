@@ -17,17 +17,14 @@ import cn.featherfly.hammer.sqldb.jdbc.Jdbc;
 import cn.featherfly.hammer.sqldb.jdbc.MappingDebugMessage;
 
 /**
- * <p>
- * 数据库操作的抽象类
- * </p>
- * .
+ * 数据库操作的抽象类.
  *
  * @author zhongj
- * @version 1.0
+ * @version 0.1.0
+ * @since 0.1.0
  * @param <T> 对象类型
- * @since 1.0
  */
-public abstract class AbstractQueryOperate<T> extends AbstractOperate<T> {
+public abstract class AbstractQueryOperate<T> extends AbstractOperate<T> implements QueryOperate<T> {
 
     /**
      * 使用给定数据源以及给定对象生成其相应的操作.

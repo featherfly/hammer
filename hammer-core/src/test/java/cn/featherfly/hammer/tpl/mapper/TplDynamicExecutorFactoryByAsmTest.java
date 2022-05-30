@@ -597,6 +597,12 @@ public class TplDynamicExecutorFactoryByAsmTest {
 
                 return 0;
             }
+
+            @Override
+            public <E> int saveOrUpdate(E entity) {
+                // YUFEI_TODO Auto-generated method stub
+                return 0;
+            }
         };
     }
 

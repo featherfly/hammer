@@ -21,15 +21,12 @@ import cn.featherfly.common.repository.mapping.ClassMapping;
 import cn.featherfly.hammer.sqldb.jdbc.Jdbc;
 
 /**
- * <p>
- * 删除操作
- * </p>
- * .
+ * 删除操作.
  *
  * @author zhongj
- * @version 1.0
+ * @version 0.4.8
+ * @since 0.1.0
  * @param <T> 对象类型
- * @since 1.0
  */
 public class DeleteOperate<T> extends AbstractBatchExecuteOperate<T> {
 
@@ -113,20 +110,30 @@ public class DeleteOperate<T> extends AbstractBatchExecuteOperate<T> {
         return jdbc.update(tuple.get0(), ids.toArray());
     }
 
-    /**
-     * Execute batch.
-     *
-     * @param entities the entity
-     * @return the int
-     */
     @Override
-    public int executeBatch(final List<T> entities) {
+    public int executeBatch(final List<T> entities, int batchSize) {
         if (Lang.isEmpty(entities)) {
             return Chars.ZERO;
         }
-        Tuple2<String, Map<Integer, String>> tuple = ClassMappingUtils.getDeleteSqlAndParamPositions(entities.size(),
-                classMapping, jdbc.getDialect());
-        return jdbc.update(tuple.get0(), getBatchParameters(entities, tuple.get1()));
+        int bs = batchSize;
+        if (entities.size() <= batchSize) {
+            bs = entities.size();
+            Tuple2<String, Map<Integer, String>> tuple = ClassMappingUtils.getDeleteSqlAndParamPositions(bs,
+                    classMapping, jdbc.getDialect());
+            return jdbc.updateBatch(tuple.get0(), bs, getBatchParameters(entities, tuple.get1()));
+        } else {
+            int size = 0;
+            int len = entities.size() / batchSize;
+            for (int i = 0; i < len; i++) {
+                if (i == len - 1) {
+                    bs = entities.size() - batchSize * i;
+                }
+                Tuple2<String, Map<Integer, String>> tuple = ClassMappingUtils.getDeleteSqlAndParamPositions(bs,
+                        classMapping, jdbc.getDialect());
+                size += jdbc.updateBatch(tuple.get0(), bs, getBatchParameters(entities, tuple.get1()));
+            }
+            return size;
+        }
     }
 
     /**
