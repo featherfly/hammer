@@ -11,7 +11,6 @@
 package cn.featherfly.hammer.sqldb.jdbc;
 
 import java.io.Serializable;
-import java.math.BigDecimal;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -67,39 +66,12 @@ public abstract class AbstractJdbc implements Jdbc {
 
     /**
      * Instantiates a new abstract jdbc.
-     */
-    public AbstractJdbc() {
-        this(new SqlTypeMappingManager());
-    }
-
-    /**
-     * Instantiates a new spring jdbc template impl.
-     *
-     * @param manager the manager
-     */
-    public AbstractJdbc(SqlTypeMappingManager manager) {
-        super();
-        this.manager = manager;
-    }
-
-    /**
-     * Instantiates a new abstract jdbc.
-     *
-     * @param dataSource the data source
-     * @param dialect    the dialect
-     */
-    public AbstractJdbc(DataSource dataSource, Dialect dialect) {
-        this(dataSource, dialect, new SqlTypeMappingManager());
-    }
-
-    /**
-     * Instantiates a new abstract jdbc.
      *
      * @param dataSource the data source
      * @param dialect    the dialect
      * @param manager    the manager
      */
-    public AbstractJdbc(DataSource dataSource, Dialect dialect, SqlTypeMappingManager manager) {
+    protected AbstractJdbc(DataSource dataSource, Dialect dialect, SqlTypeMappingManager manager) {
         super();
         setDataSource(dataSource);
         this.dialect = dialect;
@@ -131,20 +103,28 @@ public abstract class AbstractJdbc implements Jdbc {
         return dialect;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
-    public <T extends Serializable> int update(String sql, GeneratedKeyHolder<T> keySupplier, Object... args) {
-        return updateBatch(sql, 1, keySupplier, args);
+    public <T extends Serializable> int insert(String tableName, String[] columnNames, GeneratedKeyHolder<T> keyHolder,
+            Object... args) {
+        return update(getDialect().buildInsertSql(tableName, columnNames), keyHolder, args);
+    }
+
+    @Override
+    public int insertBatch(String tableName, String[] columnNames, int batchSize, Object... args) {
+        return update(getDialect().buildInsertBatchSql(tableName, columnNames, batchSize), args);
+    }
+
+    @Override
+    public int upsert(String tableName, String[] columnNames, String[] uniqueColumns, Object... args) {
+        return update(getDialect().buildUpsertSql(tableName, columnNames, uniqueColumns), args);
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public <T extends Serializable> int updateBatch(String sql, int batchSize, Object... args) {
-        return updateBatch(sql, batchSize, null, args);
+    public <T extends Serializable> int update(String sql, GeneratedKeyHolder<T> keyHolder, Object... args) {
+        return updateBatch(sql, 1, keyHolder, args);
     }
 
     /**
@@ -156,6 +136,18 @@ public abstract class AbstractJdbc implements Jdbc {
         if (Lang.isNotEmpty(sql)) {
             sql = sql.trim();
             return executeUpdate(sql, batchSize, keySupplier, args);
+        }
+        return 0;
+    }
+
+    @Override
+    public <T extends Serializable> int updateBatch(String sql, int batchSize, GeneratedKeyHolder<T> keySupplier,
+            Map<String, Object> args) {
+        if (Lang.isNotEmpty(sql)) {
+            sql = sql.trim();
+            logger.debug("sql -> {}, args -> {}", sql, args);
+            Execution execution = SqlUtils.convertNamedParamSql(sql, args);
+            return executeUpdate(execution.getExecution(), batchSize, keySupplier, execution.getParams());
         }
         return 0;
     }
@@ -238,6 +230,63 @@ public abstract class AbstractJdbc implements Jdbc {
         return executeUpdate(prep -> setParams(prep, argsBp), sql, batchSize, generatedKeyHolder,
                 Arrays.stream(argsBp).map(arg -> arg.getValue()).toArray());
     }
+
+    //    private <T extends Serializable> int[] executeUpdate(Consumer<PreparedStatement> setParams, String[] sqls,
+    //            GeneratedKeyHolder<T> generatedKeyHolder, Object... args) {
+    //        if (Lang.isEmpty(sqls)) {
+    //            return ArrayUtils.EMPTY_INT_ARRAY;
+    //        }
+    //        DataSource ds = getDataSource();
+    //        Connection connection = getConnection(ds);
+    //        String sql = sqls[0];
+    //        JdbcExecution execution = preHandle(sql, args);
+    //        sql = execution.getExecution();
+    //        args = execution.getParams();
+    //        try (PreparedStatement prep = generatedKeyHolder == null ? connection.prepareStatement(sql)
+    //                : connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
+    //            for (int i = 1; i < args.length; i++) {
+    //                execution = preHandle(sqls[i], args);
+    //                sql = execution.getExecution();
+    //                args = execution.getParams();
+    //                logger.debug("execute sql -> {}, args -> {}", sql, args);
+    //                prep.addBatch(sql);
+    //                // 不是查询操作，没有查询结果
+    //                //                postHandle(execution, sql, args);
+    //                //                if (generatedKeyHolder != null) {
+    //                //                    try (ResultSet res = prep.getGeneratedKeys()) {
+    //                //                        int row = 0;
+    //                //                        while (res.next()) {
+    //                //                            T value = manager.get(res, 1, generatedKeyHolder.getType());
+    //                //                            //                    Object value = JdbcUtils.getResultSetValue(res, 1, pm.getPropertyType());
+    //                //                            generatedKeyHolder.acceptKey(value, row++);
+    //                //                            logger.debug("auto generated key: ", value);
+    //                //                        }
+    //                //                    }
+    //                //                }
+    //            }
+    //            setParams.accept(prep);
+    //            int results[] = prep.executeBatch();
+    //            //            postHandle(execution, sql, args);
+    //            if (generatedKeyHolder != null) {
+    //                try (ResultSet res = prep.getGeneratedKeys()) {
+    //                    int row = 0;
+    //                    while (res.next()) {
+    //                        T value = manager.get(res, 1, generatedKeyHolder.getType());
+    //                        //                    Object value = JdbcUtils.getResultSetValue(res, 1, pm.getPropertyType());
+    //                        generatedKeyHolder.acceptKey(value, row++);
+    //                        logger.debug("auto generated key: ", value);
+    //                    }
+    //                }
+    //            }
+    //            return results;
+    //        } catch (SQLException e) {
+    //            releaseConnection(connection, ds);
+    //            throw new JdbcException(Strings.format("executeUpdate: \nsql: {0} \nargs: {1}", sql, Arrays.toString(args)),
+    //                    e);
+    //        } finally {
+    //            releaseConnection(connection, getDataSource());
+    //        }
+    //    }
 
     private <T extends Serializable> int executeUpdate(Consumer<PreparedStatement> setParams, String sql, int batchSize,
             GeneratedKeyHolder<T> generatedKeyHolder, Object... args) {
@@ -554,86 +603,6 @@ public abstract class AbstractJdbc implements Jdbc {
             throw new JdbcException(Strings.format("results size must be 1, but is {0}", results.size()));
         }
         return results.iterator().next();
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public Integer queryInt(String sql, Object... args) {
-        return queryValue(sql, Integer.class, args);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public Integer queryInt(String sql, Map<String, Object> args) {
-        return queryValue(sql, Integer.class, args);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public Long queryLong(String sql, Object... args) {
-        return queryValue(sql, Long.class, args);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public Long queryLong(String sql, Map<String, Object> args) {
-        return queryValue(sql, Long.class, args);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public BigDecimal queryBigDecimal(String sql, Object... args) {
-        return queryValue(sql, BigDecimal.class, args);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public BigDecimal queryBigDecimal(String sql, Map<String, Object> args) {
-        return queryValue(sql, BigDecimal.class, args);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public Double queryDouble(String sql, Object... args) {
-        return queryValue(sql, Double.class, args);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public Double queryDouble(String sql, Map<String, Object> args) {
-        return queryValue(sql, Double.class, args);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public String queryString(String sql, Object... args) {
-        return queryValue(sql, String.class, args);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public String queryString(String sql, Map<String, Object> args) {
-        return queryValue(sql, String.class, args);
     }
 
     /**

@@ -3,6 +3,7 @@
 2. 优化配置的日志输出
 3. Template删除isTemplate()方法
 4. 实现saveOrUpdate方法，如果数据库支持upsert，则使用upsert,否则判断id是否为空进行保存或者更新
+5. Jdbc加入各种insert,upsert方法
 
 # 0.6.0 2022-05-24  
 1. 模板文件加载器加入支持从不同前置目录加载的实现(例如 rbac, cms, blog, common/config)

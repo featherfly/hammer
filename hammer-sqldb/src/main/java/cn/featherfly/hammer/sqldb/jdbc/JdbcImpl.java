@@ -19,13 +19,6 @@ public class JdbcImpl extends AbstractJdbc {
 
     /**
      * Instantiates a new jdbc impl.
-     */
-    public JdbcImpl() {
-        super(new SqlTypeMappingManager());
-    }
-
-    /**
-     * Instantiates a new jdbc impl.
      *
      * @param dataSource dataSource
      * @param dialect    dialect
