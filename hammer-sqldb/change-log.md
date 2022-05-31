@@ -1,4 +1,4 @@
-# 0.6.1
+# 0.6.1 2022-05-31
 1. 优化TplExecutionConfig的配置信息
 2. 优化配置的日志输出
 3. Template删除isTemplate()方法
