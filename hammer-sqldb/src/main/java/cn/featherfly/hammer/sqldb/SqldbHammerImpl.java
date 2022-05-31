@@ -218,6 +218,7 @@ public class SqldbHammerImpl implements SqldbHammer {
             @SuppressWarnings("unchecked")
             GetOperate<E> get = (GetOperate<E>) getOperate(entity.getClass());
             Serializable id = get.getId(entity);
+            // FIXME 这里没有处理符合主键的情况
             if (id == null) {
                 return save(entity);
             } else {
