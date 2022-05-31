@@ -5,7 +5,9 @@ import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 import static org.testng.Assert.assertEquals;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.concurrent.atomic.AtomicLong;
 
 import org.testng.annotations.BeforeClass;
@@ -18,8 +20,11 @@ import cn.featherfly.common.lang.ArrayUtils;
 import cn.featherfly.common.lang.GenericType;
 import cn.featherfly.common.lang.Strings;
 import cn.featherfly.common.lang.reflect.GenericClass;
+import cn.featherfly.common.model.app.Platforms;
+import cn.featherfly.common.structure.HashChainMap;
 import cn.featherfly.hammer.sqldb.jdbc.vo.App;
 import cn.featherfly.hammer.sqldb.jdbc.vo.AppVersion;
+import cn.featherfly.hammer.sqldb.jdbc.vo.Article;
 
 /**
  * <p>
@@ -123,5 +128,109 @@ public class JdbcTest extends JdbcTestBase {
 
         assertTrue(l == id.longValue());
 
+    }
+
+    @Test
+    public void testInsert() {
+        Article article;
+        int result = 0;
+        final String tableName = "cms_article";
+        final String id = "id";
+        final String title = "title";
+        final String content = "content";
+        final String[] columnNames = new String[] { id, title, content };
+        final Object[] params = new Object[] { null, "title_01", "content_01" };
+
+        result = jdbc.update("delete from cms_article");
+
+        result = jdbc.insert(tableName, columnNames, params);
+        assertEquals(result, 1);
+
+        result = jdbc.update("delete from cms_article");
+        assertEquals(result, 1);
+
+        final AtomicLong l = new AtomicLong();
+
+        result = jdbc.insert(tableName, columnNames, new GeneratedKeyHolder<Long>() {
+            @Override
+            public void acceptKey(Long key, int row) {
+                l.set(key);
+            }
+
+            @Override
+            public GenericType<Long> getType() {
+                return new GenericClass<>(Long.class);
+            }
+        }, params);
+
+        article = jdbc.querySingle("select * from cms_article where id = ?", Article.class, l.longValue());
+        assertEquals(article.getTitle(), "title_01");
+        assertEquals(article.getContent(), "content_01");
+
+        result = jdbc.insert(tableName, new HashChainMap<String, Object>().putChain(id, null)
+                .putChain(title, "title_02").putChain(content, "content_02"));
+        assertEquals(result, 1);
+
+        result = jdbc.update("delete from cms_article");
+        assertEquals(result, 2);
+    }
+
+    @Test
+    public void testInsertBatch() {
+        int result = 0;
+        final String tableName = "cms_article";
+        final String id = "id";
+        final String title = "title";
+        final String content = "content";
+        final String[] columnNames = new String[] { id, title, content };
+
+        result = jdbc.update("delete from cms_article");
+
+        result = jdbc.insertBatch(tableName, columnNames, null, "title_batch_01", "content_batch_01", null,
+                "title_batch_02", "content_batch_02");
+        assertEquals(result, 2);
+
+        List<Map<String, Object>> params = new ArrayList<>();
+        params.add(new HashChainMap<String, Object>().putChain(id, null).putChain(title, "title_batch_03")
+                .putChain(content, "content_batch_03"));
+        params.add(new HashChainMap<String, Object>().putChain(id, null).putChain(title, "title_batch_04")
+                .putChain(content, "content_batch_04"));
+        params.add(new HashChainMap<String, Object>().putChain(id, null).putChain(title, "title_batch_05")
+                .putChain(content, "content_batch_05"));
+        result = jdbc.insertBatch(tableName, params);
+        assertEquals(result, params.size());
+    }
+
+    @Test
+    public void testUpsert() {
+        int result = 0;
+        final String tableName = "app";
+        final String id = "id";
+        final String code = "code";
+        final String name = "name";
+        final String platform = "platform";
+        final String[] columnNames = new String[] { id, code, name, platform };
+        final String[] ukNames = new String[] { code };
+
+        result = jdbc.update("delete from app");
+
+        final Object[] params = new Object[] { null, "code_01", "name_01", Platforms.ANDROID };
+        result = jdbc.upsert(tableName, columnNames, ukNames, params);
+        assertEquals(result, 1);
+
+        final Object[] params2 = new Object[] { null, "code_01", "name_02", Platforms.ANDROID };
+        result = jdbc.upsert(tableName, columnNames, ukNames, params2);
+        assertEquals(result, 2);
+
+        result = jdbc.upsert(tableName, ukNames, new HashChainMap<String, Object>().putChain(id, null)
+                .putChain(code, "code_03").putChain(name, "name_03").putChain(platform, Platforms.IOS));
+        assertEquals(result, 1);
+
+        result = jdbc.upsert(tableName, ukNames, new HashChainMap<String, Object>().putChain(id, null)
+                .putChain(code, "code_03").putChain(name, "name_04").putChain(platform, Platforms.IOS));
+        assertEquals(result, 2);
+        //
+        result = jdbc.update("delete from app where code like ?", "code_%");
+        assertEquals(result, 2);
     }
 }
