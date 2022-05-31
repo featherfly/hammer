@@ -68,10 +68,9 @@ public class TplConfigFactoryImpl implements TplConfigFactory {
         /**
          * Instantiates a new file path.
          *
-         * @param filePath      the file path
-         * @param prefix        the prefix
-         * @param suffix        the suffix
-         * @param finalFilePath the final file path
+         * @param filePath the file path
+         * @param prefix   the prefix
+         * @param suffix   the suffix
          */
         private FinalPath(String filePath, String prefix, String suffix) {
             super();
@@ -639,6 +638,14 @@ public class TplConfigFactoryImpl implements TplConfigFactory {
         }
     }
 
+    private String toFinalFilePath(final String filePath) {
+        String result = filePath;
+        if (result.startsWith("/")) {
+            result = result.substring(1);
+        }
+        return result;
+    }
+
     /**
      * Read config.
      *
@@ -646,20 +653,20 @@ public class TplConfigFactoryImpl implements TplConfigFactory {
      * @return the tpl execute configs
      */
     private TplExecuteConfigs readConfig(final String filePath, final String prefix, final String suffix) {
-        //        String finalFilePath = toFinalFilePath(filePath, prefix, suffix);
-        final String fileName = org.apache.commons.lang3.StringUtils.substringAfterLast(filePath, "/");
-        final String fileDirectory = org.apache.commons.lang3.StringUtils.substringBeforeLast(filePath, "/");
+        String finalFilePath = toFinalFilePath(filePath);
+        final String fileName = org.apache.commons.lang3.StringUtils.substringAfterLast(finalFilePath, "/");
+        final String fileDirectory = org.apache.commons.lang3.StringUtils.substringBeforeLast(finalFilePath, "/");
         //        final String name = org.apache.commons.lang3.StringUtils.substringBeforeLast(finalFilePath, suffix);
-        final String namespace = org.apache.commons.lang3.StringUtils
-                .substringBeforeLast(org.apache.commons.lang3.StringUtils.substringAfter(filePath, prefix), suffix);
+        final String namespace = org.apache.commons.lang3.StringUtils.substringBeforeLast(
+                org.apache.commons.lang3.StringUtils.substringAfter(finalFilePath, prefix), suffix);
         try {
-            InputStream in = ClassLoaderUtils.getResourceAsStream(filePath, TplConfigFactoryImpl.class);
+            InputStream in = ClassLoaderUtils.getResourceAsStream(finalFilePath, TplConfigFactoryImpl.class);
             if (in == null) {
-                throw new HammerException("can not read config from " + filePath + " it may be does not exist");
+                throw new HammerException("can not read config from " + finalFilePath + " it may be does not exist");
             }
             TplExecuteConfigs tplExecuteConfigs = mapper.readerFor(TplExecuteConfigs.class).readValue(in);
             TplExecuteConfigs newConfigs = new TplExecuteConfigs();
-            newConfigs.setFilePath(filePath);
+            newConfigs.setFilePath(finalFilePath);
             newConfigs.setNamespace(namespace);
             Set<String> executeIds = new HashSet<>();
 
@@ -706,7 +713,7 @@ public class TplConfigFactoryImpl implements TplConfigFactory {
                         config.setType(TplType.valueOf(map.get("type").toString()));
                     }
                 }
-                checkName(executeIds, k, filePath);
+                checkName(executeIds, k, finalFilePath);
                 executeIds.add(k);
 
                 //                config.setTplName(newConfigs.getName() + ID_SIGN + k);
@@ -714,7 +721,7 @@ public class TplConfigFactoryImpl implements TplConfigFactory {
                 config.setTplName(namespace + ID_SIGN + k);
                 config.setNamespace(namespace);
                 config.setExecuteId(k);
-                config.setName(filePath + FILE_SIGN + config.getExecuteId());
+                config.setName(finalFilePath + FILE_SIGN + config.getExecuteId());
                 config.setFileName(fileName);
                 config.setFileDirectory(fileDirectory);
                 //                if (logger.isDebugEnabled()) {
@@ -722,7 +729,7 @@ public class TplConfigFactoryImpl implements TplConfigFactory {
                 //                }
                 newConfigs.put(k, config);
                 if (executIdNamespaceMap.containsKey(config.getExecuteId())
-                        && !executIdNamespaceMap.get(config.getExecuteId()).equals(filePath)) {
+                        && !executIdNamespaceMap.get(config.getExecuteId()).equals(finalFilePath)) {
                     executIdNamespaceMap.put(config.getExecuteId(), MULTI_SAME_EXECUTEID);
                 } else {
                     executIdNamespaceMap.put(config.getExecuteId(), namespace);
@@ -736,20 +743,19 @@ public class TplConfigFactoryImpl implements TplConfigFactory {
 
             // 处理重复的namespace，因为会有多个prefix或者suffix会导致filePath重复注册为相同的namespace
             FinalPath fp = filePathMap.get(namespace);
-            if (fp != null && !filePath.equals(fp.filePath)) {
+            if (fp != null && !finalFilePath.equals(fp.filePath)) {
                 // TODO 使用exceptioncode
                 throw new HammerException(Strings.format("duplicate regist namespace[{0}] filePath[{1} , {2}]",
-                        namespace, fp.filePath, filePath));
+                        namespace, fp.filePath, finalFilePath));
             } else {
-                filePathMap.put(namespace, new FinalPath(filePath, prefix, suffix));
+                filePathMap.put(namespace, new FinalPath(finalFilePath, prefix, suffix));
             }
 
             return newConfigs;
         } catch (IOException e) {
             // TODO 使用exceptioncode
-            throw new HammerException(
-                    "exception when read config file " + filePath + " with prefix " + prefix + " and suffix " + suffix,
-                    e);
+            throw new HammerException("exception when read config file " + finalFilePath + " with prefix " + prefix
+                    + " and suffix " + suffix, e);
         }
     }
 
