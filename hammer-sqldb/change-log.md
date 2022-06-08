@@ -1,6 +1,7 @@
-# 0.6.3
+# 0.6.3 2022-06-08
 1. NestedBeanPropertyRowMapper加入MapperObjectFactory
 2. 动态Mapper实现生成时加入方法的注解
+3. 修复devMode的时候读取@Template内置sql报错的问题
 
 # 0.6.2 2022-05-31
 1. 修复template文件在jar包中获取文件出错的问题
