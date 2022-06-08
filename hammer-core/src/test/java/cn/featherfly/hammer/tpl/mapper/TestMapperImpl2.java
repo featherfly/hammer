@@ -31,6 +31,7 @@ public class TestMapperImpl2 extends BasedTplGenericHammer<User, Long> implement
      * {@inheritDoc}
      */
     @Override
+    @Cacheable(cacheNames = { "userCache", "userCache2" }, key = "'user:username:' + #username ")
     public User getByUsername(String username) {
         // YUFEI_TODO Auto-generated method stub
         return null;

@@ -20,5 +20,6 @@ public interface TestMapper2 extends GenericHammer<User, Long> {
     @Cacheable(cacheNames = "userCache", key = "'user:' + #id ")
     User get(Long id);
 
+    @Cacheable(cacheNames = { "userCache", "userCache2" }, key = "'user:username:' + #username ")
     User getByUsername(String username);
 }
