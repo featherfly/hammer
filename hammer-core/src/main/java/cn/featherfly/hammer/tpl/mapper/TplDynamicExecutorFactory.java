@@ -2,6 +2,8 @@ package cn.featherfly.hammer.tpl.mapper;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.lang.annotation.Annotation;
+import java.lang.reflect.Array;
 import java.lang.reflect.Method;
 import java.lang.reflect.Parameter;
 import java.lang.reflect.ParameterizedType;
@@ -12,6 +14,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import org.objectweb.asm.AnnotationVisitor;
 import org.objectweb.asm.ClassReader;
 import org.objectweb.asm.ClassWriter;
 import org.objectweb.asm.Opcodes;
@@ -19,6 +22,7 @@ import org.objectweb.asm.Type;
 import org.objectweb.asm.signature.SignatureVisitor;
 import org.objectweb.asm.signature.SignatureWriter;
 import org.objectweb.asm.tree.AbstractInsnNode;
+import org.objectweb.asm.tree.AnnotationNode;
 import org.objectweb.asm.tree.ClassNode;
 import org.objectweb.asm.tree.MethodNode;
 import org.objectweb.asm.tree.ParameterNode;
@@ -29,6 +33,7 @@ import org.slf4j.LoggerFactory;
 import cn.featherfly.common.asm.Asm;
 import cn.featherfly.common.constant.Chars;
 import cn.featherfly.common.exception.ReflectException;
+import cn.featherfly.common.lang.ArrayUtils;
 import cn.featherfly.common.lang.ClassUtils;
 import cn.featherfly.common.lang.Lang;
 import cn.featherfly.common.lang.Strings;
@@ -375,7 +380,6 @@ public class TplDynamicExecutorFactory extends ClassLoader implements Opcodes {
             }
 
             addImplMethods(type, globalNamespace, cn, parentHammer);
-
             cn.accept(cw);
             byte[] code = cw.toByteArray();
             // 定义类
@@ -418,6 +422,7 @@ public class TplDynamicExecutorFactory extends ClassLoader implements Opcodes {
                 String methodDescriptor = Type.getMethodDescriptor(method);
                 String parentMethodDescriptor = Type.getMethodDescriptor(parentMethod);
                 methodNode = new MethodNode(ACC_PUBLIC, method.getName(), methodDescriptor, null, null);
+                setAnnotations(methodNode, method);
                 methodNode.parameters = new ArrayList<>();
                 methodNode.visitVarInsn(ALOAD, 0);
                 int size = method.getParameters().length + 1;
@@ -462,6 +467,7 @@ public class TplDynamicExecutorFactory extends ClassLoader implements Opcodes {
 
                 // TODO 未处理泛型
                 methodNode = new MethodNode(ACC_PUBLIC, method.getName(), Type.getMethodDescriptor(method), null, null);
+                setAnnotations(methodNode, method);
                 methodNode.parameters = new ArrayList<>();
                 methodNode.visitVarInsn(ALOAD, 0);
                 methodNode.visitFieldInsn(GETFIELD, classNode.name, HAMMER_FIELD_NAME, hammerDescriptor);
@@ -638,6 +644,13 @@ public class TplDynamicExecutorFactory extends ClassLoader implements Opcodes {
                             .append(Chars.NEW_LINE)
                             .append(Strings.format("stack={0},locales={1}", stackSize, localeSize))
                             .append(Chars.NEW_LINE);
+                    if (methodNode.visibleAnnotations != null) {
+                        for (AnnotationNode annotation : methodNode.visibleAnnotations) {
+
+                            javapString.append(annotation.desc).append(Chars.NEW_LINE).append(Chars.TAB)
+                                    .append(ArrayUtils.toString(annotation.values)).append(Chars.NEW_LINE);
+                        }
+                    }
                     for (AbstractInsnNode node : methodNode.instructions) {
                         javapString.append("  ").append(Asm.javapString(node)).append(Chars.NEW_LINE);
                     }
@@ -655,8 +668,34 @@ public class TplDynamicExecutorFactory extends ClassLoader implements Opcodes {
         int commonParamNum = 0;
 
         /**
-             */
+         */
         public ParamPosition() {
+        }
+    }
+
+    private void setAnnotations(MethodNode methodNode, Method method) {
+        Annotation[] annotations = method.getAnnotations();
+        if (Lang.isNotEmpty(annotations)) {
+            for (Annotation annotation : annotations) {
+                AnnotationVisitor visitor = methodNode.visitAnnotation(Type.getDescriptor(annotation.annotationType()),
+                        true);
+                for (Method annotationMethod : annotation.annotationType().getDeclaredMethods()) {
+                    Object value = ClassUtils.invokeMethod(annotation, annotationMethod);
+                    if (value.getClass().isArray()) {
+                        AnnotationVisitor as = visitor.visitArray(annotationMethod.getName());
+                        for (int i = 0; i < Array.getLength(value); i++) {
+                            Object a = Array.get(value, i);
+                            as.visit(annotationMethod.getName(), a);
+                        }
+                    } else if (value.getClass().isEnum()) {
+                        visitor.visitEnum(annotationMethod.getName(), Type.getDescriptor(value.getClass()),
+                                ((Enum<?>) value).name());
+                    } else {
+                        visitor.visit(annotationMethod.getName(), value);
+                    }
+                }
+                visitor.visitEnd();
+            }
         }
     }
 
@@ -673,6 +712,7 @@ public class TplDynamicExecutorFactory extends ClassLoader implements Opcodes {
             Parameter parameter = method.getParameters()[paramIndex];
             ParamType paramType = getParamType(parameter);
             methodNode.parameters.add(new ParameterNode(parameter.getName(), Opcodes.ACC_MANDATED));
+
             switch (paramType) {
                 case COMMON:
                     methodNode.visitLdcInsn(getParamName(parameter, paramIndex));
