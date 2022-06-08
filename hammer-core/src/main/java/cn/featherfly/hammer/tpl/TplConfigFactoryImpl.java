@@ -357,6 +357,20 @@ public class TplConfigFactoryImpl implements TplConfigFactory {
      * @param devMode      the dev mode
      */
     public TplConfigFactoryImpl(String prefix, String suffix, Set<String> basePackages,
+            TemplatePreprocessor preCompiler) {
+        this(prefix, suffix, basePackages, preCompiler, false);
+    }
+
+    /**
+     * Instantiates a new tpl config factory impl.
+     *
+     * @param prefix       prefix
+     * @param suffix       suffix
+     * @param basePackages basePackages
+     * @param preCompiler  the pre compiler
+     * @param devMode      the dev mode
+     */
+    public TplConfigFactoryImpl(String prefix, String suffix, Set<String> basePackages,
             TemplatePreprocessor preCompiler, boolean devMode) {
         Set<String> prefixs = new HashSet<>();
         prefixs.add(prefix);
@@ -784,13 +798,13 @@ public class TplConfigFactoryImpl implements TplConfigFactory {
     //        return result;
     //    }
 
-    private FinalPath getExistsFinalPath(final String namespace) {
-        FinalPath fp = filePathMap.get(namespace);
-        if (fp == null) {
-            throw new HammerException("no FinalPath found for " + namespace);
-        }
-        return fp;
-    }
+    //    private FinalPath getExistsFinalPath(final String namespace) {
+    //        FinalPath fp = filePathMap.get(namespace);
+    //        if (fp == null) {
+    //            throw new HammerException("no FinalPath found for " + namespace);
+    //        }
+    //        return fp;
+    //    }
 
     /**
      * {@inheritDoc}
@@ -809,12 +823,13 @@ public class TplConfigFactoryImpl implements TplConfigFactory {
         TplExecuteConfigs configs = configsMap.get(namespace);
         if (configs != null) {
             if (devMode) {
-                FinalPath fp = getExistsFinalPath(configs.getNamespace());
-                return readConfig(fp.filePath, fp.prefix, fp.suffix);
+                FinalPath fp = filePathMap.get(configs.getNamespace());
+                if (fp != null) {
+                    return readConfig(fp.filePath, fp.prefix, fp.suffix);
+                } else {
+                    return configs;
+                }
             }
-            //            else {
-            //                return configs;
-            //            }
         }
         return configs;
     }
