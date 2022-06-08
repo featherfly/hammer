@@ -3,6 +3,8 @@ package cn.featherfly.hammer.sqldb.jdbc;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.HashSet;
+import java.util.Set;
 
 import javax.sql.DataSource;
 
@@ -72,7 +74,11 @@ public class JdbcTestBase {
 
         initDataBase(dataBase);
 
-        configFactory = new TplConfigFactoryImpl("tpl/", ".yaml.tpl", new FreemarkerTemplatePreProcessor());
+        Set<String> basePackages = new HashSet<>();
+        basePackages.add("cn.featherfly.hammer");
+
+        configFactory = new TplConfigFactoryImpl("tpl/", ".yaml.tpl", basePackages,
+                new FreemarkerTemplatePreProcessor());
     }
 
     public void initDataBase(String dataBase) throws IOException {
