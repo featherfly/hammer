@@ -354,7 +354,6 @@ public class TplConfigFactoryImpl implements TplConfigFactory {
      * @param suffix       suffix
      * @param basePackages basePackages
      * @param preCompiler  the pre compiler
-     * @param devMode      the dev mode
      */
     public TplConfigFactoryImpl(String prefix, String suffix, Set<String> basePackages,
             TemplatePreprocessor preCompiler) {

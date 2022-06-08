@@ -1,3 +1,7 @@
+# 0.6.4 2022-07-15
+1. 升级依赖
+2. 修复使用jdk17时,springdev里的restartclassloader加载有错的问题
+
 # 0.6.3 2022-06-08
 1. NestedBeanPropertyRowMapper加入MapperObjectFactory
 2. 动态Mapper实现生成时加入方法的注解

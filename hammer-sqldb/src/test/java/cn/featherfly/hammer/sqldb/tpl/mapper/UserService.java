@@ -35,14 +35,14 @@ public class UserService {
 
     @Transactional
     public void saveBatch(User... users) {
-        ArrayUtils.each(users, (a, i) -> {
+        ArrayUtils.each((a, i) -> {
             userMapper.save(a);
             System.out.println("save " + i);
             insert(Randoms.getString(10), Randoms.getString(6), Randoms.getInt(4));
             if (i > 1) {
                 throw new RuntimeException("test transaction , i = " + i);
             }
-        });
+        }, users);
     }
 
     private void insert(String username, String password, int age) {

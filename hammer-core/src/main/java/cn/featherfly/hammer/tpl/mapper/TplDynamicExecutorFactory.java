@@ -34,6 +34,7 @@ import cn.featherfly.common.asm.Asm;
 import cn.featherfly.common.constant.Chars;
 import cn.featherfly.common.exception.ReflectException;
 import cn.featherfly.common.lang.ArrayUtils;
+import cn.featherfly.common.lang.ClassLoaderUtils;
 import cn.featherfly.common.lang.ClassUtils;
 import cn.featherfly.common.lang.Lang;
 import cn.featherfly.common.lang.Strings;
@@ -383,11 +384,9 @@ public class TplDynamicExecutorFactory extends ClassLoader implements Opcodes {
             cn.accept(cw);
             byte[] code = cw.toByteArray();
             // 定义类
-            //            try (FileOutputStream os = new FileOutputStream(implClassName + ".class")) {
-            //                os.write(code);
-            //            }
-            DefineClassHelper.defineClass(implClassName, code, 0, code.length, type, classLoader,
-                    this.getClass().getProtectionDomain());
+            final ClassLoader cl = classLoader;
+            ClassLoaderUtils.defineClass(cl, implClassName, code, type.getProtectionDomain(), () -> DefineClassHelper
+                    .defineClass(implClassName, code, 0, code.length, type, cl, type.getProtectionDomain()));
             types.add(type);
         }
         return implClassName;
