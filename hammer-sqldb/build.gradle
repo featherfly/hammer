@@ -4,7 +4,7 @@ dependencies {
 
     //api group: 'cn.featherfly.common', name: 'common-model-repository', version: '0.2.3'
     //api group: 'cn.featherfly.common', name: 'common-api', version: '0.2.7'
-    api group: 'cn.featherfly.common', name: 'common-db', version: '0.5.3'
+    api group: 'cn.featherfly.common', name: 'common-db', version: '0.5.4'
     api group: 'org.springframework', name: 'spring-jdbc', version: sv
     //api group: 'org.springframework', name: 'spring-jdbc', version: '5.2.16.RELEASE'
     api group: 'org.glassfish', name: 'javax.el', version: '3.0.0'
@@ -15,7 +15,7 @@ dependencies {
 
     testImplementation group: 'cn.featherfly.common', name: 'common-db-mapping-model', version: '0.1.0'
     testImplementation group: 'cn.featherfly.common', name: 'common-model', version: '0.2.0'
-    testImplementation group: 'mysql', name: 'mysql-connector-java', version: '8.0.20'    
+    testImplementation group: 'mysql', name: 'mysql-connector-java', version: '8.0.29'    
     //testImplementation 'mysql:mysql-connector-java:5.1.48'
     testImplementation "org.springframework:spring-test:${sv}"
     //testImplementation 'org.springframework:spring-test:5.2.16.RELEASE'

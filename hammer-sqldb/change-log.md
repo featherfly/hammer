@@ -1,3 +1,6 @@
+# 0.6
+1. 升级依赖
+
 # 0.6.3 2022-06-08
 1. NestedBeanPropertyRowMapper加入MapperObjectFactory
 2. 动态Mapper实现生成时加入方法的注解
