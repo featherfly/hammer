@@ -1,3 +1,6 @@
+# 0.6.5
+1. TplExecuteIdMapperImpl删除isTemplate相关代码
+
 # 0.6.4 2022-07-15
 1. 升级依赖
 2. 修复使用jdk17时,springdev里的restartclassloader加载有错的问题
