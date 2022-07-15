@@ -1,7 +1,7 @@
 dependencies {
     api project(":hammer-api")
     
-    api group: 'cn.featherfly.common', name: 'common-spring', version: '0.2.2'
+    api group: 'cn.featherfly.common', name: 'common-spring', version: '0.3.0'
     api group: 'cn.featherfly.common', name: 'common-asm', version: '0.2.0'
     api group: 'cn.featherfly.constant', name: 'constant-core', version: '1.6.6'
     api group: 'cn.featherfly', name: 'featherfly-conversion', version: '1.4.2'
