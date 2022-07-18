@@ -4,9 +4,7 @@ package cn.featherfly.hammer.expression.query;
 import cn.featherfly.common.structure.page.Page;
 
 /**
- * <p>
- * limit condition
- * </p>
+ * limit condition.
  *
  * @author zhongj
  */

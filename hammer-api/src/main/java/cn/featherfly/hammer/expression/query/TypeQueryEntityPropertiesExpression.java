@@ -7,9 +7,7 @@ import cn.featherfly.hammer.expression.TypeConditionGroupLogicExpression;
 import cn.featherfly.hammer.expression.condition.RepositoryConditionsGroupExpression;
 
 /**
- * <p>
- * dsl for query data
- * </p>
+ * dsl for query data.
  *
  * @author zhongj
  */
