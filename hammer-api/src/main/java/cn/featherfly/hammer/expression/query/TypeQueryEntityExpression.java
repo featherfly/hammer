@@ -135,7 +135,7 @@ public interface TypeQueryEntityExpression<Q extends TypeQueryEntityPropertiesEx
      * @param <T>          the generic type
      * @param <R>          the generic type
      * @param propertyName with type object property name
-     * @param index        with index
+     * @param index        with index, the first is 1
      * @return TypeQueryWithOnExpression
      */
     <T, R> QWE with(SerializableFunction<T, R> propertyName, int index);
