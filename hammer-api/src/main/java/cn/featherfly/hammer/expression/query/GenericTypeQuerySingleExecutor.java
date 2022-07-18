@@ -2,10 +2,7 @@
 package cn.featherfly.hammer.expression.query;
 
 /**
- * <p>
- * dsl for query single executor
- * </p>
- * .
+ * dsl for query single executor.
  *
  * @author zhongj
  * @param <E> the element type
