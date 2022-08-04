@@ -64,12 +64,12 @@ public class TMapperImpl extends BasedTplHammer implements TMapper {
     }
 
     public User get2() {
-        return hammer.single(new TplExecuteIdMapperImpl("get2", "TMapper", TMapper.class, true), User.class,
+        return hammer.single(new TplExecuteIdMapperImpl("get2", "TMapper", TMapper.class), User.class,
                 new HashChainMap<String, Object>());
     }
 
     public User get2(String username, String password, Integer age) {
-        return hammer.single(new TplExecuteIdMapperImpl("get2_", "TMapper", TMapper.class, true), User.class,
+        return hammer.single(new TplExecuteIdMapperImpl("get2_", "TMapper", TMapper.class), User.class,
                 new HashChainMap<String, Object>().putChain("username", username).putChain("password", password)
                         .putChain("age", age));
     }
@@ -84,17 +84,17 @@ public class TMapperImpl extends BasedTplHammer implements TMapper {
     }
 
     public void merge() {
-        hammer.execute(new TplExecuteIdMapperImpl("merge", "TMapper", TMapper.class, false),
+        hammer.execute(new TplExecuteIdMapperImpl("merge", "TMapper", TMapper.class),
                 new HashChainMap<String, Object>());
     }
 
     public void merge(String name, String pass) {
-        hammer.execute(new TplExecuteIdMapperImpl("merge", "TMapper", TMapper.class, true),
+        hammer.execute(new TplExecuteIdMapperImpl("merge", "TMapper", TMapper.class),
                 new HashChainMap<String, Object>().putChain("name", name).putChain("pass", pass));
     }
 
     public int merge2(String name, String pass) {
-        return hammer.execute(new TplExecuteIdMapperImpl("merge2", "TMapper", TMapper.class, true),
+        return hammer.execute(new TplExecuteIdMapperImpl("merge2", "TMapper", TMapper.class),
                 new HashChainMap<String, Object>().putChain("name", name).putChain("pass", pass));
     }
 
@@ -108,12 +108,12 @@ public class TMapperImpl extends BasedTplHammer implements TMapper {
     }
 
     public Map<String, Object> getMap2() {
-        return hammer.single(new TplExecuteIdMapperImpl("getMap2", "TMapper", TMapper.class, true),
+        return hammer.single(new TplExecuteIdMapperImpl("getMap2", "TMapper", TMapper.class),
                 new HashChainMap<String, Object>());
     }
 
     public Map<String, Object> getMap2(String username, String password, Integer age) {
-        return hammer.single(new TplExecuteIdMapperImpl("getMap2_1", "TMapper", TMapper.class, true),
+        return hammer.single(new TplExecuteIdMapperImpl("getMap2_1", "TMapper", TMapper.class),
                 new HashChainMap<String, Object>().putChain("username", username).putChain("password", password)
                         .putChain("age", age));
     }
@@ -128,12 +128,12 @@ public class TMapperImpl extends BasedTplHammer implements TMapper {
     }
 
     public String getName2() {
-        return hammer.string(new TplExecuteIdMapperImpl("getName2", "TMapper", TMapper.class, true),
+        return hammer.string(new TplExecuteIdMapperImpl("getName2", "TMapper", TMapper.class),
                 new HashChainMap<String, Object>());
     }
 
     public String getName2(Long id) {
-        return hammer.string(new TplExecuteIdMapperImpl("getName2_1", "TMapper", TMapper.class, true),
+        return hammer.string(new TplExecuteIdMapperImpl("getName2_1", "TMapper", TMapper.class),
                 new HashChainMap<String, Object>().putChain("id", id));
     }
 
@@ -147,12 +147,12 @@ public class TMapperImpl extends BasedTplHammer implements TMapper {
     }
 
     public int getInt2() {
-        return hammer.intValue(new TplExecuteIdMapperImpl("getInt2", "TMapper", TMapper.class, true),
+        return hammer.intValue(new TplExecuteIdMapperImpl("getInt2", "TMapper", TMapper.class),
                 new HashChainMap<String, Object>());
     }
 
     public int getInt2(Long id) {
-        return hammer.intValue(new TplExecuteIdMapperImpl("getInt2_1", "TMapper", TMapper.class, true),
+        return hammer.intValue(new TplExecuteIdMapperImpl("getInt2_1", "TMapper", TMapper.class),
                 new HashChainMap<String, Object>().putChain("id", id));
     }
 
@@ -166,12 +166,12 @@ public class TMapperImpl extends BasedTplHammer implements TMapper {
     }
 
     public long getLong2() {
-        return hammer.longValue(new TplExecuteIdMapperImpl("getLong2", "TMapper", TMapper.class, true),
+        return hammer.longValue(new TplExecuteIdMapperImpl("getLong2", "TMapper", TMapper.class),
                 new HashChainMap<String, Object>());
     }
 
     public long getLong2(Long id) {
-        return hammer.longValue(new TplExecuteIdMapperImpl("getLong2_1", "TMapper", TMapper.class, true),
+        return hammer.longValue(new TplExecuteIdMapperImpl("getLong2_1", "TMapper", TMapper.class),
                 new HashChainMap<String, Object>().putChain("id", id));
     }
 
@@ -185,12 +185,12 @@ public class TMapperImpl extends BasedTplHammer implements TMapper {
     }
 
     public double getDouble2() {
-        return hammer.doubleValue(new TplExecuteIdMapperImpl("getLong2", "TMapper", TMapper.class, true),
+        return hammer.doubleValue(new TplExecuteIdMapperImpl("getLong2", "TMapper", TMapper.class),
                 new HashChainMap<String, Object>());
     }
 
     public double getDouble2(Long id) {
-        return hammer.doubleValue(new TplExecuteIdMapperImpl("getLong2_1", "TMapper", TMapper.class, true),
+        return hammer.doubleValue(new TplExecuteIdMapperImpl("getLong2_1", "TMapper", TMapper.class),
                 new HashChainMap<String, Object>().putChain("id", id));
     }
 
@@ -205,12 +205,12 @@ public class TMapperImpl extends BasedTplHammer implements TMapper {
     }
 
     public Integer getInteger2() {
-        return hammer.number(new TplExecuteIdMapperImpl("getInteger2", "TMapper", TMapper.class, true), Integer.class,
+        return hammer.number(new TplExecuteIdMapperImpl("getInteger2", "TMapper", TMapper.class), Integer.class,
                 new HashChainMap<String, Object>());
     }
 
     public Integer getInteger2(Long id) {
-        return hammer.number(new TplExecuteIdMapperImpl("getInteger2_1", "TMapper", TMapper.class, true), Integer.class,
+        return hammer.number(new TplExecuteIdMapperImpl("getInteger2_1", "TMapper", TMapper.class), Integer.class,
                 new HashChainMap<String, Object>().putChain("id", id));
     }
 
@@ -225,12 +225,12 @@ public class TMapperImpl extends BasedTplHammer implements TMapper {
     }
 
     public List<User> findUserList2() {
-        return hammer.list(new TplExecuteIdMapperImpl("findUserList2", "TMapper", TMapper.class, true), User.class,
+        return hammer.list(new TplExecuteIdMapperImpl("findUserList2", "TMapper", TMapper.class), User.class,
                 new HashChainMap<String, Object>());
     }
 
     public List<User> findUserList2(String name) {
-        return hammer.list(new TplExecuteIdMapperImpl("findUserList2_1", "TMapper", TMapper.class, true), User.class,
+        return hammer.list(new TplExecuteIdMapperImpl("findUserList2_1", "TMapper", TMapper.class), User.class,
                 new HashChainMap<String, Object>().putChain("name", name));
     }
 
@@ -244,12 +244,12 @@ public class TMapperImpl extends BasedTplHammer implements TMapper {
     }
 
     public List<Map<String, Object>> findMapList2() {
-        return hammer.list(new TplExecuteIdMapperImpl("findMapList2", "TMapper", TMapper.class, true),
+        return hammer.list(new TplExecuteIdMapperImpl("findMapList2", "TMapper", TMapper.class),
                 new HashChainMap<String, Object>());
     }
 
     public List<Map<String, Object>> findMapList2(String name) {
-        return hammer.list(new TplExecuteIdMapperImpl("findMapList2_1", "TMapper", TMapper.class, true),
+        return hammer.list(new TplExecuteIdMapperImpl("findMapList2_1", "TMapper", TMapper.class),
                 new HashChainMap<String, Object>().putChain("name", name));
     }
 
@@ -264,13 +264,13 @@ public class TMapperImpl extends BasedTplHammer implements TMapper {
     }
 
     public PaginationResults<User> findUserPage2(Page page) {
-        return hammer.pagination(new TplExecuteIdMapperImpl("findUserPage2", "TMapper", TMapper.class, true),
-                User.class, new HashChainMap<String, Object>(), page);
+        return hammer.pagination(new TplExecuteIdMapperImpl("findUserPage2", "TMapper", TMapper.class), User.class,
+                new HashChainMap<String, Object>(), page);
     }
 
     public PaginationResults<User> findUserPage2(String name, Page page) {
-        return hammer.pagination(new TplExecuteIdMapperImpl("findUserPage2_1", "TMapper", TMapper.class, true),
-                User.class, new HashChainMap<String, Object>().putChain("name", name), page);
+        return hammer.pagination(new TplExecuteIdMapperImpl("findUserPage2_1", "TMapper", TMapper.class), User.class,
+                new HashChainMap<String, Object>().putChain("name", name), page);
     }
 
     public PaginationResults<Map<String, Object>> findMapPage(Page page) {
@@ -284,12 +284,12 @@ public class TMapperImpl extends BasedTplHammer implements TMapper {
     }
 
     public PaginationResults<Map<String, Object>> findMapPage2(Page page) {
-        return hammer.pagination(new TplExecuteIdMapperImpl("findMapPage2", "TMapper", TMapper.class, true),
+        return hammer.pagination(new TplExecuteIdMapperImpl("findMapPage2", "TMapper", TMapper.class),
                 new HashChainMap<String, Object>(), page);
     }
 
     public PaginationResults<Map<String, Object>> findMapPage2(String name, Page page) {
-        return hammer.pagination(new TplExecuteIdMapperImpl("findMapPage2_1", "TMapper", TMapper.class, true),
+        return hammer.pagination(new TplExecuteIdMapperImpl("findMapPage2_1", "TMapper", TMapper.class),
                 new HashChainMap<String, Object>().putChain("name", name), page);
     }
 
@@ -304,13 +304,13 @@ public class TMapperImpl extends BasedTplHammer implements TMapper {
     }
 
     public PaginationResults<User> findUserLimit2(int offset, int limit) {
-        return hammer.pagination(new TplExecuteIdMapperImpl("findUserLimit2", "TMapper", TMapper.class, true),
-                User.class, new HashChainMap<String, Object>(), offset, limit);
+        return hammer.pagination(new TplExecuteIdMapperImpl("findUserLimit2", "TMapper", TMapper.class), User.class,
+                new HashChainMap<String, Object>(), offset, limit);
     }
 
     public PaginationResults<User> findUserLimit2(String name, int offset, int limit) {
-        return hammer.pagination(new TplExecuteIdMapperImpl("findUserLimit2_1", "TMapper", TMapper.class, true),
-                User.class, new HashChainMap<String, Object>().putChain("name", name), offset, limit);
+        return hammer.pagination(new TplExecuteIdMapperImpl("findUserLimit2_1", "TMapper", TMapper.class), User.class,
+                new HashChainMap<String, Object>().putChain("name", name), offset, limit);
     }
 
     public PaginationResults<Map<String, Object>> findMapLimit(int offset, int limit) {
@@ -324,42 +324,42 @@ public class TMapperImpl extends BasedTplHammer implements TMapper {
     }
 
     public PaginationResults<Map<String, Object>> findMapLimit2(int offset, int limit) {
-        return hammer.pagination(new TplExecuteIdMapperImpl("findMapLimit2", "TMapper", TMapper.class, true),
+        return hammer.pagination(new TplExecuteIdMapperImpl("findMapLimit2", "TMapper", TMapper.class),
                 new HashChainMap<String, Object>(), offset, limit);
     }
 
     public PaginationResults<Map<String, Object>> findMapLimit2(String name, int offset, int limit) {
-        return hammer.pagination(new TplExecuteIdMapperImpl("findMapLimit2_1", "TMapper", TMapper.class, true),
+        return hammer.pagination(new TplExecuteIdMapperImpl("findMapLimit2_1", "TMapper", TMapper.class),
                 new HashChainMap<String, Object>().putChain("name", name), offset, limit);
     }
 
     public PaginationResults<Map<String, Object>> testPosition(int offset, int limit, String name, String pass) {
-        return hammer.pagination(new TplExecuteIdMapperImpl("testPosition", "TMapper", TMapper.class, true),
+        return hammer.pagination(new TplExecuteIdMapperImpl("testPosition", "TMapper", TMapper.class),
                 new HashChainMap<String, Object>().putChain("name", name).putChain("pass", pass), offset, limit);
     }
 
     public PaginationResults<Map<String, Object>> testPosition(String name, int limit, String pass) {
-        return hammer.pagination(new TplExecuteIdMapperImpl("testPosition", "TMapper", TMapper.class, true),
+        return hammer.pagination(new TplExecuteIdMapperImpl("testPosition", "TMapper", TMapper.class),
                 new HashChainMap<String, Object>().putChain("name", name).putChain("pass", pass), 0, limit);
     }
 
     public PaginationResults<User> testPosition2(int offset, int limit, String name, String pass) {
-        return hammer.pagination(new TplExecuteIdMapperImpl("testPosition", "TMapper", TMapper.class, true), User.class,
+        return hammer.pagination(new TplExecuteIdMapperImpl("testPosition", "TMapper", TMapper.class), User.class,
                 new HashChainMap<String, Object>().putChain("name", name).putChain("pass", pass), offset, limit);
     }
 
     public PaginationResults<User> testPosition2(String name, int limit, String pass) {
-        return hammer.pagination(new TplExecuteIdMapperImpl("testPosition", "TMapper", TMapper.class, true), User.class,
+        return hammer.pagination(new TplExecuteIdMapperImpl("testPosition", "TMapper", TMapper.class), User.class,
                 new HashChainMap<String, Object>().putChain("name", name).putChain("pass", pass), 0, limit);
     }
 
     public PaginationResults<Map<String, Object>> testPosition(Page page, String name, String pass) {
-        return hammer.pagination(new TplExecuteIdMapperImpl("testPosition", "TMapper", TMapper.class, true),
+        return hammer.pagination(new TplExecuteIdMapperImpl("testPosition", "TMapper", TMapper.class),
                 new HashChainMap<String, Object>().putChain("name", name).putChain("pass", pass), page);
     }
 
     public PaginationResults<User> testPosition2(Page page, String name, String pass) {
-        return hammer.pagination(new TplExecuteIdMapperImpl("testPosition", "TMapper", TMapper.class, true), User.class,
+        return hammer.pagination(new TplExecuteIdMapperImpl("testPosition", "TMapper", TMapper.class), User.class,
                 new HashChainMap<String, Object>().putChain("name", name).putChain("pass", pass), page);
     }
 
@@ -427,18 +427,18 @@ public class TMapperImpl extends BasedTplHammer implements TMapper {
     }
 
     public List<Map<String, Object>> findMapList(Page page) {
-        return hammer.list(new TplExecuteIdMapperImpl("findMapList", "namesapce", TMapper.class, true),
+        return hammer.list(new TplExecuteIdMapperImpl("findMapList", "namesapce", TMapper.class),
                 new HashChainMap<String, Object>(), page);
     }
 
     public List<User> getGtAge(Integer age) {
-        return hammer.list(new TplExecuteIdMapperImpl("getGtAge", "namesapce", TMapper.class, true), User.class,
+        return hammer.list(new TplExecuteIdMapperImpl("getGtAge", "namesapce", TMapper.class), User.class,
                 new HashChainMap<String, Object>().putChain("age", age));
     }
 
     @Override
     public List<User> getGtAge(int age) {
-        return hammer.list(new TplExecuteIdMapperImpl("getGtAge", "namesapce", TMapper.class, true), User.class,
+        return hammer.list(new TplExecuteIdMapperImpl("getGtAge", "namesapce", TMapper.class), User.class,
                 new HashChainMap<String, Object>().putChain("age", age));
     }
 
