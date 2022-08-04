@@ -18,6 +18,7 @@ import cn.featherfly.common.db.mapping.ClassMappingUtils;
 import cn.featherfly.common.lang.AssertIllegalArgument;
 import cn.featherfly.common.lang.LambdaUtils;
 import cn.featherfly.common.lang.LambdaUtils.SerializableSupplierLambdaInfo;
+import cn.featherfly.common.lang.LambdaUtils.SerializedLambdaInfo;
 import cn.featherfly.common.lang.function.DateSupplier;
 import cn.featherfly.common.lang.function.LocalDateSupplier;
 import cn.featherfly.common.lang.function.LocalDateTimeSupplier;
@@ -641,7 +642,23 @@ public abstract class AbstractSqlConditionGroupExpression<C extends ConditionGro
      */
     @Override
     public <T, R> L eq(SerializableFunction<T, R> name, R value) {
-        return eq(getPropertyName(name), value);
+        //        return eq(getPropertyName(name), value);
+        List<Tuple2<String, Optional<R>>> tuples = supplier(LambdaUtils.getLambdaInfo(name), value);
+        L logic = null;
+        C condition = (C) this;
+        if (tuples.size() > 1) {
+            condition = group();
+        }
+        for (Tuple2<String, Optional<R>> tuple : tuples) {
+            if (logic != null) {
+                condition = logic.and();
+            }
+            logic = condition.eq(tuple.get0(), tuple.get1().orElseGet(() -> null));
+        }
+        if (tuples.size() > 1) {
+            logic = logic.endGroup();
+        }
+        return logic;
     }
 
     /**
@@ -881,7 +898,23 @@ public abstract class AbstractSqlConditionGroupExpression<C extends ConditionGro
      */
     @Override
     public <T, R> L ne(SerializableFunction<T, R> name, R value) {
-        return ne(getPropertyName(name), value);
+        //        return ne(getPropertyName(name), value);
+        List<Tuple2<String, Optional<R>>> tuples = supplier(LambdaUtils.getLambdaInfo(name), value);
+        L l = null;
+        C c = (C) this;
+        if (tuples.size() > 1) {
+            c = group();
+        }
+        for (Tuple2<String, Optional<R>> tuple : tuples) {
+            if (l != null) {
+                c = l.and();
+            }
+            l = c.ne(tuple.get0(), tuple.get1().orElseGet(() -> null));
+        }
+        if (tuples.size() > 1) {
+            l = l.endGroup();
+        }
+        return l;
     }
 
     /**
@@ -1323,6 +1356,17 @@ public abstract class AbstractSqlConditionGroupExpression<C extends ConditionGro
     // ********************************************************************
     // private method
     // ********************************************************************
+
+    /**
+     * Supplier.
+     *
+     * @param <R>  the generic type
+     * @param info the info
+     * @return the list
+     */
+    protected <R> List<Tuple2<String, Optional<R>>> supplier(SerializedLambdaInfo info, R value) {
+        return supplier(info, value, classMapping);
+    }
 
     /**
      * Supplier.

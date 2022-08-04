@@ -235,16 +235,17 @@ public abstract class AbstractSqlConditionExpression<L> implements SqlBuilder, P
      * @return the list
      */
     @SuppressWarnings("unchecked")
-    protected <R> List<Tuple2<String, Optional<R>>> supplier(SerializableSupplierLambdaInfo<R> info,
+    protected <R> List<Tuple2<String, Optional<R>>> supplier(SerializedLambdaInfo info, R value,
             ClassMapping<?> classMapping) {
         List<Tuple2<String, Optional<R>>> list = new ArrayList<>();
-        String propertyName = info.getSerializedLambdaInfo().getPropertyName();
-        R r = info.getValue();
-        if (r != null && classMapping != null) {
+        String propertyName = info.getPropertyName();
+        if (value != null && classMapping != null) {
             PropertyMapping propertyMapping = classMapping.getPropertyMapping(propertyName);
-            if (Lang.isNotEmpty(propertyMapping.getPropertyMappings())) {
+            if (Lang.isNotEmpty(propertyMapping.getPropertyMappings())
+                    && propertyMapping.getPropertyType() == value.getClass()) {
                 for (PropertyMapping pm : propertyMapping.getPropertyMappings()) {
-                    Object obj = BeanUtils.getProperty(r, pm.getPropertyName());
+                    Object obj = BeanUtils.getProperty(value, pm.getPropertyName());
+                    // TODO 这里的返回值不是R类型
                     Optional<R> optional = Optional.empty();
                     if (obj != null) {
                         optional = (Optional<R>) Optional.of(obj);
@@ -254,8 +255,41 @@ public abstract class AbstractSqlConditionExpression<L> implements SqlBuilder, P
                 return list;
             }
         }
-        list.add(Tuples.of(propertyName, Optional.of(r)));
+        list.add(Tuples.of(propertyName, Optional.of(value)));
         return list;
+    }
+
+    /**
+     * Supplier.
+     *
+     * @param <R>          the generic type
+     * @param info         the info
+     * @param classMapping the class mapping
+     * @return the list
+     */
+    protected <R> List<Tuple2<String, Optional<R>>> supplier(SerializableSupplierLambdaInfo<R> info,
+            ClassMapping<?> classMapping) {
+        return supplier(info.getSerializedLambdaInfo(), info.get(), classMapping);
+        //        List<Tuple2<String, Optional<R>>> list = new ArrayList<>();
+        //        String propertyName = info.getSerializedLambdaInfo().getPropertyName();
+        //        R r = info.getValue();
+        //        if (r != null && classMapping != null) {
+        //            PropertyMapping propertyMapping = classMapping.getPropertyMapping(propertyName);
+        //            if (Lang.isNotEmpty(propertyMapping.getPropertyMappings())) {
+        //                for (PropertyMapping pm : propertyMapping.getPropertyMappings()) {
+        //                    Object obj = BeanUtils.getProperty(r, pm.getPropertyName());
+        //                    // TODO 这里的返回值不是R类型
+        //                    Optional<R> optional = Optional.empty();
+        //                    if (obj != null) {
+        //                        optional = (Optional<R>) Optional.of(obj);
+        //                    }
+        //                    list.add(Tuples.of(pm.getRepositoryFieldName(), optional));
+        //                }
+        //                return list;
+        //            }
+        //        }
+        //        list.add(Tuples.of(propertyName, Optional.of(r)));
+        //        return list;
     }
 
     /**
