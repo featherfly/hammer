@@ -1,71 +1,84 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE suite SYSTEM "https://testng.org/testng-1.0.dtd" >
 <suite name="Hammer SQLDB Test Suite {0}" parallel="tests"
-	thread-count="1">
-<!-- 	<parameter name="dataBase" value="mysql" /> -->
-<!-- 	<parameter name="dataBase" value="sqlite" /> -->
-	<!-- <parameter name="dataBase" value="postgresql" /> -->
+    thread-count="1">
+    <!-- <parameter name="dataBase" value="mysql" /> -->
+    <!-- <parameter name="dataBase" value="sqlite" /> -->
+    <!-- <parameter name="dataBase" value="postgresql" /> -->
     <listeners>
-        <listener class-name="cn.featherfly.hammer.sqldb.TestngListener"></listener>
+        <listener
+            class-name="cn.featherfly.hammer.sqldb.TestngListener"></listener>
     </listeners>
-	<test name="dml builder test">
-		<packages>
-			<package name="cn.featherfly.hammer.sqldb.sql.dml.*" />
-		</packages>
-		<!-- <classes> -->
-		<!-- <class name="cn.featherfly.hammer.sqldb.sql.dml.builder.BasicBuilderTest" 
-			/> -->
-		<!-- <class name="cn.featherfly.hammer.sqldb.sql.dml.builder.ConditionBuilderTest" 
-			/> -->
-		<!-- <class name="cn.featherfly.hammer.sqldb.sql.dml.SqlConditionGroupExpressionBuilderTest" 
-			/> -->
-		<!-- </classes> -->
-	</test>
-	<test name="dsl test">
-		<packages>
-			<package name="cn.featherfly.hammer.sqldb.jdbc.dsl.*" />
-		</packages>
-		<!-- <classes> -->
-		<!-- <class name="cn.featherfly.hammer.sqldb.jdbc.dsl.SqlDslExpressionTest" 
-			/> -->
-		<!-- <class name="cn.featherfly.hammer.sqldb.jdbc.dsl.DslStaticTypeTest" /> -->
-		<!-- <class name="cn.featherfly.hammer.sqldb.jdbc.dsl.SqlQueryTest" /> -->
-		<!-- </classes> -->
-	</test>
+    <test name="dml builder test">
+        <packages>
+            <package name="cn.featherfly.hammer.sqldb.sql.dml.*" />
+        </packages>
+        <!-- <classes> -->
+        <!-- <class name="cn.featherfly.hammer.sqldb.sql.dml.builder.BasicBuilderTest" 
+            /> -->
+        <!-- <class name="cn.featherfly.hammer.sqldb.sql.dml.builder.ConditionBuilderTest" 
+            /> -->
+        <!-- <class name="cn.featherfly.hammer.sqldb.sql.dml.SqlConditionGroupExpressionBuilderTest" 
+            /> -->
+        <!-- </classes> -->
+    </test>
+    <test name="dsl test">
+        <packages>
+            <package
+                name="cn.featherfly.hammer.sqldb.jdbc.dsl.*" />
+        </packages>
+        <!-- <classes> -->
+        <!-- <class name="cn.featherfly.hammer.sqldb.jdbc.dsl.SqlDslExpressionTest" 
+            /> -->
+        <!-- <class name="cn.featherfly.hammer.sqldb.jdbc.dsl.DslStaticTypeTest" 
+            /> -->
+        <!-- <class name="cn.featherfly.hammer.sqldb.jdbc.dsl.SqlQueryTest" 
+            /> -->
+        <!-- </classes> -->
+    </test>
     <test name="mapping type test">
         <packages>
-            <package name="cn.featherfly.hammer.sqldb.jdbc.mappingtype.*" />
+            <package
+                name="cn.featherfly.hammer.sqldb.jdbc.mappingtype.*" />
         </packages>
     </test>
 
-	<test name="orm test">
-		<classes>
-			<class name="cn.featherfly.hammer.sqldb.jdbc.HammerJdbcTest" />
-<!-- 			<class name="cn.featherfly.hammer.sqldb.jdbc.HammerJdbcTest2" /> -->
-			<class name="cn.featherfly.hammer.sqldb.jdbc.OperatorTest" />
-			<class name="cn.featherfly.hammer.sqldb.jdbc.JdbcTest" />
-			<class name="cn.featherfly.hammer.sqldb.tpl.SqlTplExecutorTest" />
-		</classes>
-	</test>
+    <test name="orm test">
+        <classes>
+            <class
+                name="cn.featherfly.hammer.sqldb.jdbc.HammerJdbcTest" />
+            <!-- <class name="cn.featherfly.hammer.sqldb.jdbc.HammerJdbcTest2" 
+                /> -->
+            <class
+                name="cn.featherfly.hammer.sqldb.jdbc.OperatorTest" />
+            <class name="cn.featherfly.hammer.sqldb.jdbc.JdbcTest" />
+            <!-- <class name="cn.featherfly.hammer.sqldb.tpl.SqlTplExecutorTest" 
+                /> -->
+        </classes>
+    </test>
 
-	<test name="mapper test">
-	   <packages>
+    <test name="mapper test">
+        <packages>
             <package name="cn.featherfly.hammer.sqldb.tpl.*" />
         </packages>
-<!-- 		<classes> -->
-<!-- 			<class -->
-<!-- 				name="cn.featherfly.hammer.sqldb.tpl.SqlTplDynamicExecutorTest" /> -->
-<!-- 			<class -->
-<!-- 				name="cn.featherfly.hammer.sqldb.tpl.SqlTplDynamicExecutorTest2" /> -->
-<!-- 			<class -->
-<!-- 				name="cn.featherfly.hammer.sqldb.tpl.SqlTplDynamicExecutorTest3" /> -->
-<!-- 		</classes> -->
-	</test>
+        <!-- <classes> -->
+        <!-- <class -->
+        <!-- name="cn.featherfly.hammer.sqldb.tpl.SqlTplDynamicExecutorTest" 
+            /> -->
+        <!-- <class -->
+        <!-- name="cn.featherfly.hammer.sqldb.tpl.SqlTplDynamicExecutorTest2" 
+            /> -->
+        <!-- <class -->
+        <!-- name="cn.featherfly.hammer.sqldb.tpl.SqlTplDynamicExecutorTest3" 
+            /> -->
+        <!-- </classes> -->
+    </test>
 
-<!-- 	<test name="mapper spring register test"> -->
-<!-- 		<classes> -->
-<!-- 			<class -->
-<!-- 				name="cn.featherfly.hammer.sqldb.tpl.mapper.TplDynamicExecutorSpringRegistorTest" /> -->
-<!-- 		</classes> -->
-<!-- 	</test> -->
+    <!-- <test name="mapper spring register test"> -->
+    <!-- <classes> -->
+    <!-- <class -->
+    <!-- name="cn.featherfly.hammer.sqldb.tpl.mapper.TplDynamicExecutorSpringRegistorTest" 
+        /> -->
+    <!-- </classes> -->
+    <!-- </test> -->
 </suite>
