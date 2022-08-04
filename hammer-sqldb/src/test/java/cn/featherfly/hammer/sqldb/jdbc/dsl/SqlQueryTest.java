@@ -490,7 +490,21 @@ public class SqlQueryTest extends JdbcTestBase {
     @Test
     void testManyToOne() {
         SqlQuery query = new SqlQuery(jdbc, mappingFactory, sqlPageFactory);
-        List<Tree2> list = query.find(Tree2.class).where().eq(Tree2::getParent, 1).list();
+        int parent = 1;
+        List<Tree2> list = query.find(Tree2.class).where().eq(Tree2::getParent, parent).list();
+        System.out.println(list);
+        for (Tree2 t : list) {
+            assertTrue(parent == t.getParent().getId());
+        }
+    }
+
+    @Test
+    void testManyToOne2() {
+        SqlQuery query = new SqlQuery(jdbc, mappingFactory, sqlPageFactory);
+        int parent = 1;
+        Tree2 tree2 = new Tree2();
+        tree2.setParent(new Tree2(parent));
+        List<Tree2> list = query.find(Tree2.class).where().eq(tree2::getParent).list();
         System.out.println(list);
         for (Tree2 t : list) {
             assertTrue(1 == t.getParent().getId());
@@ -513,9 +527,33 @@ public class SqlQueryTest extends JdbcTestBase {
         userInfo.setDivision(division);
 
         query.find(UserInfo.class).where().eq(userInfo::getDivision).list();
+        query.find(UserInfo.class).where().ne(userInfo::getDivision).list();
 
         userInfo.getDivision().setDistrict(null);
         query.find(UserInfo.class).where().eq(userInfo::getDivision).or().eq(userInfo::getDivision).list();
+    }
+
+    @Test
+    void testNestedProperty2() {
+        SqlQuery query = new SqlQuery(jdbc, mappingFactory, sqlPageFactory);
+        UserRole2 userRole2 = new UserRole2();
+        userRole2.setRole(new Role(2));
+        userRole2.setUser(new User(1));
+        query.find(UserRole2.class).where().eq(userRole2::getRole).and().ne(userRole2::getUser).list();
+
+        UserInfo userInfo = new UserInfo();
+        DistrictDivision division = new DistrictDivision();
+        division.setCity("成都");
+        division.setProvince("四川");
+        division.setDistrict("高新");
+        userInfo.setDivision(division);
+
+        query.find(UserInfo.class).where().eq(UserInfo::getDivision, division).list();
+        query.find(UserInfo.class).where().ne(UserInfo::getDivision, division).list();
+
+        userInfo.getDivision().setDistrict(null);
+        query.find(UserInfo.class).where().eq(UserInfo::getDivision, division).or().eq(UserInfo::getDivision, division)
+                .list();
     }
 
     @Test

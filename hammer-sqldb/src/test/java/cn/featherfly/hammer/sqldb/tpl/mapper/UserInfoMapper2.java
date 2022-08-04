@@ -11,9 +11,7 @@ import cn.featherfly.hammer.Hammer;
 import cn.featherfly.hammer.sqldb.jdbc.vo.UserInfo;
 
 /**
- * <p>
- * UserMapper
- * </p>
+ * UserInfoMapper2.
  *
  * @author zhongj
  */

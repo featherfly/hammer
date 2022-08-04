@@ -1,5 +1,6 @@
 # 0.6.5
 1. TplExecuteIdMapperImpl删除isTemplate相关代码
+2. dsl条件查询eq(SerialFunction<T, R>, T),ne(SerialFunction<T, R> t)方法支持@Embedded对象，自动使用该对象的所有非空属性
 
 # 0.6.4 2022-07-15
 1. 升级依赖

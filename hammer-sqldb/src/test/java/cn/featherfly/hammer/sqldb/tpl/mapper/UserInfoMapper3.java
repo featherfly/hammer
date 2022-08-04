@@ -9,9 +9,7 @@ import cn.featherfly.hammer.tpl.annotation.Mapper;
 import cn.featherfly.hammer.tpl.annotation.Param;
 
 /**
- * <p>
- * UserMapper
- * </p>
+ * UserInfoMapper3.
  *
  * @author zhongj
  */

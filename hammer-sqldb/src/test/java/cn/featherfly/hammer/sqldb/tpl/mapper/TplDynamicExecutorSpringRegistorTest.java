@@ -21,9 +21,7 @@ import cn.featherfly.hammer.sqldb.jdbc.vo.UserInfo2;
 import cn.featherfly.hammer.sqldb.tpl.UserMapper;
 
 /**
- * <p>
- * TplDynamicExecutorSpringRegistorTest
- * </p>
+ * TplDynamicExecutorSpringRegistorTest.
  *
  * @author zhongj
  */
