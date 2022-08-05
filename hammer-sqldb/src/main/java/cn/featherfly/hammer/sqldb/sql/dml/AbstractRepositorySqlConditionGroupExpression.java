@@ -164,6 +164,15 @@ public abstract class AbstractRepositorySqlConditionGroupExpression<C extends Re
      * {@inheritDoc}
      */
     @Override
+    public C logic(LogicOperator operator) {
+        AssertIllegalArgument.isNotNull(operator, "operator");
+        return (C) addCondition(new SqlLogicOperatorExpressionBuilder(operator));
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
     public C and() {
         return (C) addCondition(new SqlLogicOperatorExpressionBuilder(LogicOperator.AND));
     }

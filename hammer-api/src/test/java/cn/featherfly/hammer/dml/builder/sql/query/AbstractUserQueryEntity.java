@@ -12,6 +12,7 @@ import cn.featherfly.common.repository.mapping.RowMapper;
 import cn.featherfly.common.repository.operate.AggregateFunction;
 import cn.featherfly.common.structure.page.Page;
 import cn.featherfly.hammer.dsl.query.QuerySortExpression;
+import cn.featherfly.hammer.expression.condition.ConditionGroupConfig;
 import cn.featherfly.hammer.expression.query.QueryEntityPropertiesExpression;
 import cn.featherfly.hammer.expression.query.QueryLimitExecutor;
 import cn.featherfly.hammer.expression.query.QueryWithEntityExpression;
@@ -369,7 +370,7 @@ public class AbstractUserQueryEntity<Q extends AbstractUserQueryEntity<Q, QW, QW
      * {@inheritDoc}
      */
     @Override
-    public UserQueryConditionGroupExpression where(Consumer<UserQueryConditionGroupExpression> consumer) {
+    public UserQueryConditionGroupExpression where(Consumer<ConditionGroupConfig> consumer) {
         // YUFEI_TODO Auto-generated method stub
         return null;
     }
