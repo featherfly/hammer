@@ -204,32 +204,32 @@ public interface GenericHammer<E, ID extends Serializable> {
      * @param entity entity with id value
      * @return entity
      */
-    E get(E entity);
+    E load(E entity);
 
     /**
-     * Query single by.
+     * Query single by propertyValues.
      *
      * @param propertyValues the property values
      * @return the e
      */
-    E querySingleBy(SerializableSupplier<?>... propertyValues);
+    E querySingle(SerializableSupplier<?>... propertyValues);
 
     /**
-     * Query list by.
+     * Query list by propertyValues.
      *
      * @param propertyValues the property values
      * @return the list
      */
-    List<E> queryListBy(SerializableSupplier<?>... propertyValues);
+    List<E> queryList(SerializableSupplier<?>... propertyValues);
 
     /**
-     * Query list by.
+     * Query list by propertyValues.
      *
      * @param operator       the operator
      * @param propertyValues the property values
      * @return the list
      */
-    List<E> queryListBy(LogicOperator operator, SerializableSupplier<?>... propertyValues);
+    List<E> queryList(LogicOperator operator, SerializableSupplier<?>... propertyValues);
 
     /**
      * create QueryData for entityType.
