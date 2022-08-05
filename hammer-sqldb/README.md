@@ -44,22 +44,76 @@ int result = hammer.update(u);// 或者 hammer.merge(u); // update和merge区别
 int result = hammer.delete(u);
 
 // DSL模式更新数据
-int result = hammer.update(User.class).set("name", newName).property("descp").set(newDescp).where().eq("id", id).execute();
-int result = hammer.update(User.class).set(User::getName, newName).property(User::getDescp).set(newDescp).where().eq(User::getId, id).execute();
+int result = hammer.update(User.class)
+    			.set("name", newName)
+    			.property("descp").set(newDescp)
+    			.where()
+    			.eq("id", id)
+    			.execute();
+int result = hammer.update(User.class)
+    			.set(User::getName, newName)
+    			.property(User::getDescp)
+    			.set(newDescp)
+    			.where()
+    			.eq(User::getId, id)
+    			.execute();
 
 // DSL模式更新自增长数据
-int result = hammer.update(User.class).increase("age", 1).where().eq("id", id).execute();
-int result = hammer.update(User.class).increase(User::getAge, 1).where().eq(User::getId, id).execute();
+int result = hammer.update(User.class)
+    			.increase("age", 1)
+    			.where()
+    			.eq("id", id)
+    			.execute();
+int result = hammer.update(User.class)
+    			.increase(User::getAge, 1)
+    			.where()
+    			.eq(User::getId, id)
+    			.execute();
 
 // DSL模式删除数据
-int result = hammer.delete(Role.class).where().in("id", new Integer[] { r.getId(), r2.getId() }).or().eq("id", r3.getId()).or().ge("id", r4.getId()).execute();
-int result = hammer.delete(Role.class).where().eq(Role::getId, r3.getId()).execute();
+int result = hammer.delete(Role.class)
+    			.where()
+    			.in("id", new Integer[] { r.getId(), r2.getId() })
+    			.or()
+    			.eq("id", r3.getId())
+    			.or()
+    			.ge("id", r4.getId())
+    			.execute();
+int result = hammer.delete(Role.class)
+    			.where()
+    			.eq(Role::getId, r3.getId())
+    			.execute();
 
 // DSL模式查询数据
-User user = hammer.query("user").where().eq("username", username).and().eq("password", password).single()
-User user = hammer.query(User.class).where().eq(User::getUsername, username).and().eq(User::getPassword, password).single()
-List<User> users = query.find("user").where().eq("username", username).and().eq("password", password).and().group().gt("age", 18).and().lt("age", 60).list(User.class)
-List<Role> roles = hammer.query(Role.class).where().gt("id", 5).and().le("id", 10).list()
+User user = hammer.query("user")
+    			.where()
+    			.eq("username", username)
+    			.and()
+    			.eq("password", password)
+    			.single()    
+User user = hammer.query(User.class)
+    			.where()
+    			.eq(User::getUsername, username)
+    			.and()
+    			.eq(User::getPassword, password)
+    			.single()
+List<User> users = query.find("user")
+    			.where()
+    			.eq("username", username)
+    			.and()
+    			.eq("password", password)
+    			.and()
+    			.group()
+    				.gt("age", 18)
+    				.and()
+    				.lt("age", 60)
+    			.list(User.class)
+List<Role> roles = hammer.query(Role.class)
+    			.where()
+    			.gt("id", 5)
+    			.and()
+    			.le("id", 10)
+    			.list()
 
 // 模板SQL查询数据
 String str = hammer.string("selectString", new HashMap<String, Object>());
@@ -98,7 +152,7 @@ public interface UserMapper {
 ```
 
 ```java
-// 除了可以使用模板sql进行查询外，可以继承hammer或者GenericHammer进行api操作,需要使用jdk8的default method
+// 除了可以使用模板sql进行查询外，可以继承Hammer、GenericHammer进行api操作,或者继承HammerSupport通过getHammer获取hammer对象进行操作，需要使用jdk8的default method
 @Mapper(namespace = "user")
 public interface UserMapper3 extends GenericHammer<User> {
 	// 这里的query方法就是GenericHammer接口定义的方法
@@ -106,6 +160,15 @@ public interface UserMapper3 extends GenericHammer<User> {
         return query().where().eq("username", username).and().eq("password", pwd).single();
     }
 }
+
+@Mapper
+public interface HammerSupportMapper extends HammerSupport {
+    default User get(Long id) {
+        return getHammer().get(id, User.class);
+    }
+    User getByUsername(String username);
+}
+
 // 外部调用也可以直接使用hammer或者GenericHammer里定义的方法
 public class UserService {
     UserMapper3 userMapper;
@@ -119,6 +182,8 @@ public class UserService {
         }
     }
 }
+
+
 ```
 
 ## 目录
@@ -1259,7 +1324,7 @@ PaginationResults<User> selectByAge2Page(@Param("age") Integer age, Page page);
 
 ### Mapper 中实现模板查询以外的操作
 
-定义接口继承自 hammer 或者 GenericHammer，然后定义 default method，在其内部就可以使用已有的方法进行逻辑编写了。**需要 java8 的 default method**。  
+定义接口继承自 hammer 、GenericHammer、HammerSupport，然后定义 default method，在其内部就可以使用已有的方法进行逻辑编写了。**需要 java8 的 default method**。  
 通过此方式，我们可以把一种实体类型的数据库操作写在一个 Mapper 文件中，通过继承的接口已经获得了实体的基本增删改查方法，其他简单的查询（更新，删除）也可以用 DSL API 实现，只有复杂的查询，才需要在模板中写 sql。
 
 ```java
@@ -1290,5 +1355,13 @@ public interface UserMapper3 extends GenericHammer<User> {
         //return delete().where().eq("username", username);
         return delete().where().eq(User::getUsername, username).execute();
     }
+}
+
+@Mapper
+public interface HammerSupportMapper extends HammerSupport {
+    default User get(Long id) {
+        return getHammer().get(id, User.class);
+    }
+    User getByUsername(String username);
 }
 ```
