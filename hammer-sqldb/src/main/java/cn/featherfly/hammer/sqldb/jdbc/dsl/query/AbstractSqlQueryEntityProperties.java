@@ -9,6 +9,7 @@ import java.util.stream.Collectors;
 
 import com.speedment.common.tuple.Tuple2;
 
+import cn.featherfly.common.constant.Chars;
 import cn.featherfly.common.db.Table;
 import cn.featherfly.common.db.builder.dml.basic.SqlSelectBasicBuilder;
 import cn.featherfly.common.db.mapping.ClassMappingUtils;
@@ -285,6 +286,16 @@ public abstract class AbstractSqlQueryEntityProperties<E extends AbstractSqlQuer
      */
     public <T, R> E id(SerializableFunction<T, R> propertyName) {
         return id(LambdaUtils.getLambdaPropertyName(propertyName));
+    }
+
+    /**
+     * Count.
+     *
+     * @return the e
+     */
+    public Long count() {
+        return new SqlQueryExpression(jdbc, sqlPageFactory, classMapping,
+                selectBuilder.addSelectColumn(Chars.STAR, AggregateFunction.COUNT), ignorePolicy).longInt();
     }
 
     /**
