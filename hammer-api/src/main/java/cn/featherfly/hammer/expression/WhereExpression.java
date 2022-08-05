@@ -3,6 +3,8 @@ package cn.featherfly.hammer.expression;
 
 import java.util.function.Consumer;
 
+import cn.featherfly.hammer.expression.condition.ConditionGroupConfig;
+
 /**
  * <p>
  * WhereExpression
@@ -28,5 +30,5 @@ public interface WhereExpression<C extends ConditionGroupExpression<C, L>,
      * @param consumer the consumer
      * @return QueryCondition
      */
-    C where(Consumer<C> consumer);
+    C where(Consumer<ConditionGroupConfig> consumer);
 }

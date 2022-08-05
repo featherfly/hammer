@@ -5,7 +5,9 @@ import java.io.Serializable;
 import java.util.List;
 
 import cn.featherfly.common.lang.CollectionUtils;
+import cn.featherfly.common.lang.function.SerializableSupplier;
 import cn.featherfly.common.repository.IgnorePolicy;
+import cn.featherfly.common.repository.operate.LogicOperator;
 import cn.featherfly.hammer.GenericHammer;
 import cn.featherfly.hammer.Hammer;
 import cn.featherfly.hammer.dsl.execute.Delete;
@@ -118,7 +120,7 @@ public class BasedTplGenericHammer<E, ID extends Serializable> implements Generi
      * {@inheritDoc}
      */
     @Override
-    public E load(E entity) {
+    public E get(E entity) {
         return hammer.get(entity);
     }
 
@@ -224,5 +226,29 @@ public class BasedTplGenericHammer<E, ID extends Serializable> implements Generi
     @Override
     public int update(List<E> entities, IgnorePolicy ignorePolicy) {
         return hammer.update(entities, ignorePolicy);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public E querySingleBy(SerializableSupplier<?>... propertyValues) {
+        return hammer.querySingleBy(type, propertyValues);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public List<E> queryListBy(SerializableSupplier<?>... propertyValues) {
+        return hammer.queryListBy(type, propertyValues);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public List<E> queryListBy(LogicOperator operator, SerializableSupplier<?>... propertyValues) {
+        return hammer.queryListBy(type, operator, propertyValues);
     }
 }

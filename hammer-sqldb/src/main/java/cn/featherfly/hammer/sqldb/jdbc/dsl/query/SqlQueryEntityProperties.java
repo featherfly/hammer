@@ -17,6 +17,7 @@ import cn.featherfly.common.structure.page.Page;
 import cn.featherfly.hammer.dsl.query.QueryConditionGroupExpression;
 import cn.featherfly.hammer.dsl.query.QueryEntityProperties;
 import cn.featherfly.hammer.dsl.query.QuerySortExpression;
+import cn.featherfly.hammer.expression.condition.ConditionGroupConfig;
 import cn.featherfly.hammer.expression.query.QueryLimitExecutor;
 import cn.featherfly.hammer.sqldb.jdbc.Jdbc;
 import cn.featherfly.hammer.sqldb.jdbc.SqlPageFactory;
@@ -95,7 +96,7 @@ public class SqlQueryEntityProperties extends AbstractSqlQueryEntityProperties<S
      * {@inheritDoc}
      */
     @Override
-    public QueryConditionGroupExpression where(Consumer<QueryConditionGroupExpression> consumer) {
+    public QueryConditionGroupExpression where(Consumer<ConditionGroupConfig> consumer) {
         SqlQueryExpression sqlQueryExpression = new SqlQueryExpression(jdbc, sqlPageFactory, classMapping,
                 selectBuilder, ignorePolicy);
         if (consumer != null) {

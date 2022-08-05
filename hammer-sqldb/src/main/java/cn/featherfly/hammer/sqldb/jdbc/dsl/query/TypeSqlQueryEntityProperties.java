@@ -19,6 +19,7 @@ import cn.featherfly.common.structure.page.Page;
 import cn.featherfly.hammer.dsl.query.TypeQueryConditionGroupExpression;
 import cn.featherfly.hammer.dsl.query.TypeQueryEntityProperties;
 import cn.featherfly.hammer.dsl.query.TypeQueryWithEntity;
+import cn.featherfly.hammer.expression.condition.ConditionGroupConfig;
 import cn.featherfly.hammer.expression.query.TypeQueryLimitExecutor;
 import cn.featherfly.hammer.sqldb.SqldbHammerException;
 import cn.featherfly.hammer.sqldb.jdbc.Jdbc;
@@ -66,7 +67,7 @@ public class TypeSqlQueryEntityProperties extends AbstractSqlQueryEntityProperti
      * {@inheritDoc}
      */
     @Override
-    public TypeQueryConditionGroupExpression where(Consumer<TypeQueryConditionGroupExpression> consumer) {
+    public TypeQueryConditionGroupExpression where(Consumer<ConditionGroupConfig> consumer) {
         TypeSqlQueryExpression typeSqlQueryExpression = new TypeSqlQueryExpression(jdbc, classMapping, this, factory,
                 sqlPageFactory, aliasManager, selectBuilder, ignorePolicy);
         if (consumer != null) {

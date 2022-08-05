@@ -14,6 +14,7 @@ import org.testng.annotations.Test;
 
 import cn.featherfly.common.lang.ArrayUtils;
 import cn.featherfly.common.lang.Randoms;
+import cn.featherfly.common.repository.operate.LogicOperator;
 import cn.featherfly.common.structure.page.PaginationResults;
 import cn.featherfly.hammer.Hammer;
 import cn.featherfly.hammer.sqldb.SqldbHammerImpl;
@@ -752,5 +753,34 @@ public class HammerJdbcTest extends JdbcTestBase {
         for (Role role : roles) {
             System.out.println(role);
         }
+    }
+
+    @Test
+    public void testQuerySingleBy() {
+        Role role = new Role();
+        role.setId(4);
+        Role r = hammer.querySingleBy(Role.class, role::getId);
+        assertEquals(r.getId(), role.getId());
+    }
+
+    @Test
+    public void testQueryListBy() {
+        Role role = new Role();
+        role.setId(4);
+        Role role2 = new Role();
+        role2.setId(5);
+        List<Role> list = hammer.queryListBy(Role.class, LogicOperator.OR, role::getId, role2::getId);
+        assertEquals(list.size(), 2);
+        assertEquals(list.get(0).getId(), role.getId());
+        assertEquals(list.get(1).getId(), role2.getId());
+
+        list = hammer.queryListBy(Role.class, LogicOperator.AND, role::getId, role2::getId);
+        assertEquals(list.size(), 0);
+
+        Role _role = hammer.get(role);
+        list = hammer.queryListBy(Role.class, LogicOperator.AND, role::getId, _role::getName);
+        assertEquals(list.size(), 1);
+        assertEquals(list.get(0).getId(), _role.getId());
+        assertEquals(list.get(0).getName(), _role.getName());
     }
 }

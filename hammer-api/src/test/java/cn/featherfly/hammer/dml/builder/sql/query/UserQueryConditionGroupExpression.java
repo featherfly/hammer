@@ -23,6 +23,7 @@ import cn.featherfly.common.lang.function.ReturnStringFunction;
 import cn.featherfly.common.lang.function.SerializableFunction;
 import cn.featherfly.common.lang.function.SerializableSupplier;
 import cn.featherfly.common.lang.function.StringSupplier;
+import cn.featherfly.common.repository.operate.LogicOperator;
 import cn.featherfly.hammer.expression.ConditionGroupExpression;
 import cn.featherfly.hammer.expression.ConditionGroupLogicExpression;
 import cn.featherfly.hammer.expression.condition.property.DateExpression;
@@ -1228,6 +1229,15 @@ public class UserQueryConditionGroupExpression
      */
     @Override
     public UserQueryConditionGroupExpression setIgnorePolicy(Predicate<Object> ignorePolicy) {
+        // YUFEI_TODO Auto-generated method stub
+        return null;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public UserQueryConditionGroupExpression logic(LogicOperator operator) {
         // YUFEI_TODO Auto-generated method stub
         return null;
     }
