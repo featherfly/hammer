@@ -105,8 +105,16 @@ public class BasedTplHammer implements Hammer {
      * {@inheritDoc}
      */
     @Override
+    public <E> E load(E entity) {
+        return hammer.load(entity);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
     public <E> E get(E entity) {
-        return hammer.get(entity);
+        return hammer.load(entity);
     }
 
     /**

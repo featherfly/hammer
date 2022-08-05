@@ -532,6 +532,12 @@ public class TplDynamicExecutorFactoryByAsmTest {
             }
 
             @Override
+            public <E> E load(E entity) {
+
+                return null;
+            }
+
+            @Override
             public <E> List<E> get(Class<E> type, List<Serializable> ids) {
 
                 return null;
