@@ -120,8 +120,8 @@ public class BasedTplGenericHammer<E, ID extends Serializable> implements Generi
      * {@inheritDoc}
      */
     @Override
-    public E get(E entity) {
-        return hammer.get(entity);
+    public E load(E entity) {
+        return hammer.load(entity);
     }
 
     /**
@@ -232,23 +232,23 @@ public class BasedTplGenericHammer<E, ID extends Serializable> implements Generi
      * {@inheritDoc}
      */
     @Override
-    public E querySingleBy(SerializableSupplier<?>... propertyValues) {
-        return hammer.querySingleBy(type, propertyValues);
+    public E querySingle(SerializableSupplier<?>... propertyValues) {
+        return hammer.querySingle(type, propertyValues);
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public List<E> queryListBy(SerializableSupplier<?>... propertyValues) {
-        return hammer.queryListBy(type, propertyValues);
+    public List<E> queryList(SerializableSupplier<?>... propertyValues) {
+        return hammer.queryList(type, propertyValues);
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public List<E> queryListBy(LogicOperator operator, SerializableSupplier<?>... propertyValues) {
-        return hammer.queryListBy(type, operator, propertyValues);
+    public List<E> queryList(LogicOperator operator, SerializableSupplier<?>... propertyValues) {
+        return hammer.queryList(type, operator, propertyValues);
     }
 }

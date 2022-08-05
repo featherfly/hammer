@@ -756,29 +756,29 @@ public class HammerJdbcTest extends JdbcTestBase {
     }
 
     @Test
-    public void testQuerySingleBy() {
+    public void testQuerySingle() {
         Role role = new Role();
         role.setId(4);
-        Role r = hammer.querySingleBy(Role.class, role::getId);
+        Role r = hammer.querySingle(Role.class, role::getId);
         assertEquals(r.getId(), role.getId());
     }
 
     @Test
-    public void testQueryListBy() {
+    public void testQueryList() {
         Role role = new Role();
         role.setId(4);
         Role role2 = new Role();
         role2.setId(5);
-        List<Role> list = hammer.queryListBy(Role.class, LogicOperator.OR, role::getId, role2::getId);
+        List<Role> list = hammer.queryList(Role.class, LogicOperator.OR, role::getId, role2::getId);
         assertEquals(list.size(), 2);
         assertEquals(list.get(0).getId(), role.getId());
         assertEquals(list.get(1).getId(), role2.getId());
 
-        list = hammer.queryListBy(Role.class, LogicOperator.AND, role::getId, role2::getId);
+        list = hammer.queryList(Role.class, LogicOperator.AND, role::getId, role2::getId);
         assertEquals(list.size(), 0);
 
         Role _role = hammer.get(role);
-        list = hammer.queryListBy(Role.class, LogicOperator.AND, role::getId, _role::getName);
+        list = hammer.queryList(Role.class, LogicOperator.AND, role::getId, _role::getName);
         assertEquals(list.size(), 1);
         assertEquals(list.get(0).getId(), _role.getId());
         assertEquals(list.get(0).getName(), _role.getName());

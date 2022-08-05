@@ -125,7 +125,7 @@ public class BasedTplGenericMapper<E, ID extends Serializable> implements Generi
      */
     @Override
     public E load(E entity) {
-        return hammer.get(entity);
+        return hammer.load(entity);
     }
 
     /**

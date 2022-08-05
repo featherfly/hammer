@@ -245,19 +245,30 @@ public interface Hammer extends TplExecutor {
      */
     <E> E get(E entity);
 
+    /**
+     * load entity by id, the same logic with get(entity).
+     *
+     * @param <E>    entity generic type
+     * @param entity entity with id value
+     * @return entity
+     */
+    default <E> E load(E entity) {
+        return get(entity);
+    }
+
     //    <E> E getBy(Class<E> type, Map<String, Object> propertyValueMap);
     //
     //    <E> E getBy(Class<E> type, Map<SerializableFunction<E, ?>, ?> propertyValueMap);
 
     /**
-     * Query single by.
+     * Query single by propertyValues.
      *
      * @param <E>            the element type
      * @param type           the type
      * @param propertyValues the property values
      * @return the e
      */
-    default <E> E querySingleBy(Class<E> type, SerializableSupplier<?>... propertyValues) {
+    default <E> E querySingle(Class<E> type, SerializableSupplier<?>... propertyValues) {
         AssertIllegalArgument.isNotEmpty(propertyValues, "propertyValues");
 
         TypeQueryConditionGroupExpression queryCondition = query(type).where();
@@ -274,19 +285,19 @@ public interface Hammer extends TplExecutor {
     }
 
     /**
-     * Query list by.
+     * Query list by propertyValues.
      *
      * @param <E>            the element type
      * @param type           the type
      * @param propertyValues the property values
      * @return the list
      */
-    default <E> List<E> queryListBy(Class<E> type, SerializableSupplier<?>... propertyValues) {
-        return queryListBy(type, LogicOperator.AND, propertyValues);
+    default <E> List<E> queryList(Class<E> type, SerializableSupplier<?>... propertyValues) {
+        return queryList(type, LogicOperator.AND, propertyValues);
     }
 
     /**
-     * Query list by.
+     * Query list by propertyValues.
      *
      * @param <E>            the element type
      * @param type           the type
@@ -294,7 +305,7 @@ public interface Hammer extends TplExecutor {
      * @param propertyValues the property values
      * @return the list
      */
-    default <E> List<E> queryListBy(Class<E> type, LogicOperator operator, SerializableSupplier<?>... propertyValues) {
+    default <E> List<E> queryList(Class<E> type, LogicOperator operator, SerializableSupplier<?>... propertyValues) {
         if (Lang.isEmpty(propertyValues)) {
             return query(type).list();
         }
