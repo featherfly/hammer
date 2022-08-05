@@ -4,7 +4,9 @@ package cn.featherfly.hammer;
 import java.io.Serializable;
 import java.util.List;
 
+import cn.featherfly.common.lang.function.SerializableSupplier;
 import cn.featherfly.common.repository.IgnorePolicy;
+import cn.featherfly.common.repository.operate.LogicOperator;
 import cn.featherfly.hammer.dsl.execute.Delete;
 import cn.featherfly.hammer.dsl.execute.Update;
 import cn.featherfly.hammer.dsl.query.TypeQueryEntity;
@@ -202,7 +204,32 @@ public interface GenericHammer<E, ID extends Serializable> {
      * @param entity entity with id value
      * @return entity
      */
-    E load(E entity);
+    E get(E entity);
+
+    /**
+     * Query single by.
+     *
+     * @param propertyValues the property values
+     * @return the e
+     */
+    E querySingleBy(SerializableSupplier<?>... propertyValues);
+
+    /**
+     * Query list by.
+     *
+     * @param propertyValues the property values
+     * @return the list
+     */
+    List<E> queryListBy(SerializableSupplier<?>... propertyValues);
+
+    /**
+     * Query list by.
+     *
+     * @param operator       the operator
+     * @param propertyValues the property values
+     * @return the list
+     */
+    List<E> queryListBy(LogicOperator operator, SerializableSupplier<?>... propertyValues);
 
     /**
      * create QueryData for entityType.

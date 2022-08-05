@@ -20,6 +20,7 @@ import cn.featherfly.hammer.dsl.execute.SimpleUpdateValue;
 import cn.featherfly.hammer.dsl.execute.UpdateNumberValue;
 import cn.featherfly.hammer.dsl.execute.UpdateValue;
 import cn.featherfly.hammer.expression.Repository;
+import cn.featherfly.hammer.expression.condition.ConditionGroupConfig;
 import cn.featherfly.hammer.sqldb.jdbc.Jdbc;
 
 /**
@@ -218,7 +219,7 @@ public class SqlExecutableUpdate implements SqlUpdate, ExecutableUpdate {
      * {@inheritDoc}
      */
     @Override
-    public ExecutableConditionGroupExpression where(Consumer<ExecutableConditionGroupExpression> consumer) {
+    public ExecutableConditionGroupExpression where(Consumer<ConditionGroupConfig> consumer) {
         SqlUpdateExpression sqlUpdateExpression = new SqlUpdateExpression(jdbc, builder, classMapping,
                 builder.getIgnorePolicy());
         if (consumer != null) {
