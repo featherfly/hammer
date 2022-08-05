@@ -7,14 +7,12 @@ import java.util.Map;
 import java.util.function.Consumer;
 import java.util.function.Predicate;
 
-import cn.featherfly.common.constant.Chars;
 import cn.featherfly.common.db.dialect.Join;
 import cn.featherfly.common.db.metadata.DatabaseMetadata;
 import cn.featherfly.common.repository.builder.AliasManager;
 import cn.featherfly.common.repository.mapping.ClassMapping;
 import cn.featherfly.common.repository.mapping.MappingFactory;
 import cn.featherfly.common.repository.mapping.RowMapper;
-import cn.featherfly.common.repository.operate.AggregateFunction;
 import cn.featherfly.common.structure.page.Page;
 import cn.featherfly.hammer.dsl.query.QueryConditionGroupExpression;
 import cn.featherfly.hammer.dsl.query.QueryEntityProperties;
@@ -195,14 +193,14 @@ public class SqlQueryEntityProperties extends AbstractSqlQueryEntityProperties<S
         return new SqlQueryExpression(jdbc, sqlPageFactory, classMapping, selectBuilder, ignorePolicy).number(type);
     }
 
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public Long count() {
-        return new SqlQueryExpression(jdbc, sqlPageFactory, classMapping,
-                selectBuilder.addSelectColumn(Chars.STAR, AggregateFunction.COUNT), ignorePolicy).longInt();
-    }
+    //    /**
+    //     * {@inheritDoc}
+    //     */
+    //    @Override
+    //    public Long count() {
+    //        return new SqlQueryExpression(jdbc, sqlPageFactory, classMapping,
+    //                selectBuilder.addSelectColumn(Chars.STAR, AggregateFunction.COUNT), ignorePolicy).longInt();
+    //    }
 
     /**
      * {@inheritDoc}
