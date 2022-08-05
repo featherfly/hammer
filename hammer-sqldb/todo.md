@@ -34,7 +34,7 @@
     2. 设置抽象类（接口）映射配置，在查询映射类时，先判断映射的类是否时抽象的，如果是抽象的，则在映射配置中查找，如果查找不到，则抛出异常
 
 > 例如
- 
+
 ```
     hammer.regist(Authorized.class, new AuthorizedMapper());
 ```
@@ -72,7 +72,7 @@
 ```
 
 - [x] dsl api 更新操作set方法加入set(Consumer<UpdateSetDsl>)用于在链式调用中进行条件帅选
-    
+  
 > 例如
 
 ```
@@ -84,15 +84,7 @@
                         u.set(Device::isOnline, true)
                     }
                 })
-                .set(()-> { // 或者
-                    if (xxx == yyy) {
-                        return Tuples.of(Device::isOnline, true);
-                    } else {
-                        return null;
-                    }
-                })
                 .set(Device::getLastModifyTime, new Date())
-                .set(Device::getServerName, serverName)
             .where()
                 .eq(Device::getId, id)
             .execute();
@@ -104,7 +96,15 @@
 
 - [ ] dsl api 条件查询加入表达式支持，（例如 store - :outNum >= 0[这种可以用传入的参数名用一个特殊的类来处理]， u.id = ur.user_id[这种可以用传入的value以一个特殊类来处理，表示传入的是需要拼接的字符串，不需要用占位符]）
 
-- [ ] dsl api 加入gourp by和having支持
+- [ ] dsl api 加入gourp by和having支持 
+
+```sql
+    SELECT m.`name` mn, count(model_id) num FROM `smoking_facility` s 
+        join smoking_facility_model m on s.model_id = m.id
+    where s.id > 1
+    group by mn
+    having num > 20
+```
 
 - [ ] dsl api 强类型全局支持
 
@@ -140,7 +140,7 @@
     String name = userTuple.get0()
     Integer age = userTuple.get1();
 ```
-    
+
   
 
 > 如果是多个对象类型，则对象的顺序以别名的顺序为准，例如
