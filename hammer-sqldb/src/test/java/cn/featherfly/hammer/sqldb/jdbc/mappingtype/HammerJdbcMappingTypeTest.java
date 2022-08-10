@@ -175,4 +175,50 @@ public class HammerJdbcMappingTypeTest extends JdbcTestBase {
         assertEquals(a.getContent2(), content2);
         assertEquals(a.getContent3(), content3);
     }
+
+    @Test
+    public void testUpdate() {
+        Article2 article = new Article2();
+        article.setTitle("article_" + Randoms.getInt(1000));
+        Content content2 = new Content();
+        content2.setDescp("content2_descp_" + Randoms.getInt(1000));
+        content2.setImg("content2_img_" + Randoms.getInt(1000));
+        article.setContent2(content2);
+        Content content3 = new Content();
+        content3.setDescp("content3_descp_" + Randoms.getInt(1000));
+        content3.setImg("content3_img_" + Randoms.getInt(1000));
+        article.setContent3(content3);
+
+        hammer.save(article);
+
+        Article2 a = hammer.query(Article2.class).where().eq(article::getId).single();
+
+        assertEquals(a.getContent2(), content2);
+        assertEquals(a.getContent3(), content3);
+
+        content2.setDescp("content2_descp_update_" + Randoms.getInt(1000));
+        content2.setImg("content2_img_update_" + Randoms.getInt(1000));
+
+        hammer.update(Article2.class).set(Article2::getContent2, content2).where().eq(article::getId).execute();
+
+        a = hammer.query(Article2.class).where().eq(article::getId).single();
+
+        assertEquals(a.getContent2(), content2);
+        assertEquals(a.getContent3(), content3);
+
+        content3.setDescp("content3_descp_update_" + Randoms.getInt(1000));
+        content3.setImg("content3_img_update_" + Randoms.getInt(1000));
+        article.setContent3(content3);
+
+        String title = "article_update_" + Randoms.getInt(1000);
+        hammer.update(Article2.class).set(article::getContent3).set(Article2::getTitle, title).where()
+                .eq(article::getId).execute();
+
+        a = hammer.query(Article2.class).where().eq(article::getId).single();
+
+        assertEquals(a.getContent2(), content2);
+        assertEquals(a.getContent3(), content3);
+        assertEquals(a.getTitle(), title);
+
+    }
 }

@@ -3,6 +3,8 @@
 2. dsl条件查询eq(SerialFunction<T, R>, T),ne(SerialFunction<T, R> t)方法支持@Embedded对象，自动使用该对象的所有非空属性
 3. where(Consumer<ConditionGroupConfig>)泛型参数变更
 4. Hammer、GenericHammer加入querySingleBy，queryListBy等一系列方法
+5. Jdbc.update支持多参数支持其中某几个参数是BeanPropertyValue
+6. dsl api update的set方法支持自定义映射(使用BeanPropertyValue)
 
 # 0.6.4 2022-07-15
 1. 升级依赖

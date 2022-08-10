@@ -1,9 +1,13 @@
 
 package cn.featherfly.hammer.sqldb.jdbc.dsl.execute;
 
+import java.lang.invoke.SerializedLambda;
 import java.util.function.Consumer;
 import java.util.function.Predicate;
 
+import cn.featherfly.common.bean.BeanDescriptor;
+import cn.featherfly.common.bean.BeanProperty;
+import cn.featherfly.common.bean.BeanPropertyValue;
 import cn.featherfly.common.db.builder.dml.basic.SqlUpdateSetBasicBuilder;
 import cn.featherfly.common.db.builder.model.UpdateColumnElement.SetType;
 import cn.featherfly.common.db.mapping.ClassMappingUtils;
@@ -105,13 +109,22 @@ public class SqlExecutableUpdate implements SqlUpdate, ExecutableUpdate {
         builder = new SqlUpdateSetBasicBuilder(jdbc.getDialect(), classMapping.getRepositoryName(), ignorePolicy);
     }
 
+    private SqlExecutableUpdate _set(String name, Object value) {
+        builder.setValue(name, value);
+        return this;
+    }
+
+    private <N extends Number> SqlExecutableUpdate _increase(String name, N value) {
+        builder.setValue(name, value, SetType.INCR);
+        return this;
+    }
+
     /**
      * {@inheritDoc}
      */
     @Override
     public SqlExecutableUpdate set(String name, Object value) {
-        builder.setValue(ClassMappingUtils.getColumnName(name, classMapping), value);
-        return this;
+        return _set(ClassMappingUtils.getColumnName(name, classMapping), value);
     }
 
     /**
@@ -119,8 +132,7 @@ public class SqlExecutableUpdate implements SqlUpdate, ExecutableUpdate {
      */
     @Override
     public <N extends Number> SqlExecutableUpdate increase(String name, N value) {
-        builder.setValue(ClassMappingUtils.getColumnName(name, classMapping), value, SetType.INCR);
-        return this;
+        return _increase(ClassMappingUtils.getColumnName(name, classMapping), value);
     }
 
     /**
@@ -128,7 +140,15 @@ public class SqlExecutableUpdate implements SqlUpdate, ExecutableUpdate {
      */
     @Override
     public <T, R> ExecutableUpdate set(SerializableFunction<T, R> name, R value) {
-        return set(LambdaUtils.getLambdaPropertyName(name), value);
+        SerializedLambda serializedLambda = LambdaUtils.getSerializedLambda(name);
+        String propertyName = LambdaUtils.getLambdaPropertyName(serializedLambda);
+        if (classMapping != null) {
+            BeanDescriptor<?> bd = BeanDescriptor.getBeanDescriptor(classMapping.getType());
+            BeanProperty<R> bp = bd.getBeanProperty(propertyName);
+            return set(bp.getName(), new BeanPropertyValue<>(bp, value));
+        } else {
+            return set(propertyName, value);
+        }
     }
 
     /**
@@ -145,7 +165,13 @@ public class SqlExecutableUpdate implements SqlUpdate, ExecutableUpdate {
     @Override
     public <R> ExecutableUpdate set(SerializableSupplier<R> property) {
         SerializableSupplierLambdaInfo<R> info = LambdaUtils.getSerializableSupplierLambdaInfo(property);
-        return set(info.getSerializedLambdaInfo().getPropertyName(), info.getValue());
+        if (classMapping != null) {
+            BeanDescriptor<?> bd = BeanDescriptor.getBeanDescriptor(classMapping.getType());
+            BeanProperty<R> bp = bd.getBeanProperty(info.getSerializedLambdaInfo().getPropertyName());
+            return set(bp.getName(), new BeanPropertyValue<>(bp, info.getValue()));
+        } else {
+            return set(info.getSerializedLambdaInfo().getPropertyName(), info.getValue());
+        }
     }
 
     /**
@@ -162,6 +188,7 @@ public class SqlExecutableUpdate implements SqlUpdate, ExecutableUpdate {
      */
     @Override
     public <N extends Number> ExecutableUpdate increase(SerializableSupplier<N> property) {
+        // TODO increase 应该用不上自定义类型映射?? 暂时先不包装BeanPropertyValue
         SerializableSupplierLambdaInfo<N> info = LambdaUtils.getSerializableSupplierLambdaInfo(property);
         return increase(info.getSerializedLambdaInfo().getPropertyName(), info.getValue());
     }
