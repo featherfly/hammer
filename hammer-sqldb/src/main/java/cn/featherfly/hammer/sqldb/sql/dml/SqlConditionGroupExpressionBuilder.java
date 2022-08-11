@@ -129,5 +129,4 @@ public class SqlConditionGroupExpressionBuilder extends
         return new SqlConditionGroupExpressionBuilder(parent, dialect, sqlPageFactory, queryAlias, classMapping,
                 typeQueryEntity, ignorePolicy);
     }
-
 }
