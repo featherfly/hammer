@@ -15,6 +15,7 @@ import org.testng.annotations.Test;
 import cn.featherfly.common.lang.ArrayUtils;
 import cn.featherfly.common.lang.Randoms;
 import cn.featherfly.common.repository.operate.LogicOperator;
+import cn.featherfly.common.structure.HashChainMap;
 import cn.featherfly.common.structure.page.PaginationResults;
 import cn.featherfly.hammer.Hammer;
 import cn.featherfly.hammer.sqldb.SqldbHammerImpl;
@@ -782,5 +783,22 @@ public class HammerJdbcTest extends JdbcTestBase {
         assertEquals(list.size(), 1);
         assertEquals(list.get(0).getId(), _role.getId());
         assertEquals(list.get(0).getName(), _role.getName());
+    }
+
+    @Test
+    void testQueryExpresstion() {
+        Integer id = 1;
+        User user = hammer.query(User.class).where().eq(User::getId, id).single();
+        assertEquals(user.getId(), id);
+
+        user = hammer.query(User.class).where().eq(User::getId, id).and()
+                .expression("age - :age >= 0", new HashChainMap<String, Object>().putChain("age", 100)).single();
+        assertNull(user);
+
+        user = hammer.query(User.class).where().eq(User::getId, id).and().expression("age - ? >= 0", 100).single();
+        assertNull(user);
+
+        user = hammer.query(User.class).where().eq(User::getId, id).and().expression("username = password").single();
+        assertNull(user);
     }
 }

@@ -6,12 +6,14 @@ import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 import java.util.function.Consumer;
 import java.util.function.Predicate;
 
 import com.speedment.common.tuple.Tuple2;
 
+import cn.featherfly.common.db.SqlUtils;
 import cn.featherfly.common.db.builder.SqlBuilder;
 import cn.featherfly.common.db.dialect.Dialect;
 import cn.featherfly.common.db.mapping.ClassMappingUtils;
@@ -34,6 +36,7 @@ import cn.featherfly.common.lang.function.ReturnStringFunction;
 import cn.featherfly.common.lang.function.SerializableFunction;
 import cn.featherfly.common.lang.function.SerializableSupplier;
 import cn.featherfly.common.lang.function.StringSupplier;
+import cn.featherfly.common.repository.Execution;
 import cn.featherfly.common.repository.mapping.ClassMapping;
 import cn.featherfly.common.repository.operate.LogicOperator;
 import cn.featherfly.common.repository.operate.QueryOperator;
@@ -1278,6 +1281,34 @@ public abstract class AbstractSqlConditionGroupExpression<C extends ConditionGro
     public L lk(StringSupplier property) {
         SerializableSupplierLambdaInfo<String> info = LambdaUtils.getSerializableSupplierLambdaInfo(property);
         return lk(info.getSerializedLambdaInfo().getPropertyName(), info.getValue());
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public L expression(String expression, final Map<String, Object> params) {
+        final Execution execution = SqlUtils.convertNamedParamSql(expression, params);
+        return expression(execution.getExecution(), execution.getParams());
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public L expression(String expression, Object... params) {
+        return (L) addCondition(new ParamedExpression() {
+
+            @Override
+            public String expression() {
+                return expression;
+            }
+
+            @Override
+            public Object getParam() {
+                return params;
+            }
+        });
     }
 
     /**
