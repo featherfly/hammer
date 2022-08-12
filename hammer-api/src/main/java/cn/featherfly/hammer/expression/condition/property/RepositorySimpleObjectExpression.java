@@ -82,20 +82,6 @@ public class RepositorySimpleObjectExpression<C extends RepositoryConditionsExpr
      * {@inheritDoc}
      */
     @Override
-    public L ne(Object value) {
-        if (Lang.isNotEmpty(repository)) {
-            return expression.ne(repository, name, value);
-        } else if (repositoryIndex > -1) {
-            return expression.ne(repositoryIndex, name, value);
-        } else {
-            return expression.ne(name, value);
-        }
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
     public L in(Object value) {
         if (Lang.isNotEmpty(repository)) {
             return expression.in(repository, name, value);
@@ -370,48 +356,6 @@ public class RepositorySimpleObjectExpression<C extends RepositoryConditionsExpr
             }
         }
         throw new HammerException("gt(value) method not support to type " + value.getClass().getName());
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public L sw(String value) {
-        if (Lang.isNotEmpty(repository)) {
-            return expression.sw(repository, name, value);
-        } else if (repositoryIndex > -1) {
-            return expression.sw(repositoryIndex, name, value);
-        } else {
-            return expression.sw(name, value);
-        }
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public L co(String value) {
-        if (Lang.isNotEmpty(repository)) {
-            return expression.co(repository, name, value);
-        } else if (repositoryIndex > -1) {
-            return expression.co(repositoryIndex, name, value);
-        } else {
-            return expression.co(name, value);
-        }
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public L ew(String value) {
-        if (Lang.isNotEmpty(repository)) {
-            return expression.ew(repository, name, value);
-        } else if (repositoryIndex > -1) {
-            return expression.ew(repositoryIndex, name, value);
-        } else {
-            return expression.ew(name, value);
-        }
     }
 
     /**
