@@ -26,9 +26,7 @@ import cn.featherfly.hammer.sqldb.jdbc.vo.UserInfo;
 import cn.featherfly.hammer.sqldb.jdbc.vo.UserRole2;
 
 /**
- * <p>
- * SqlQueryTest
- * </p>
+ * SqlQueryTest.
  *
  * @author zhongj
  */
@@ -44,7 +42,6 @@ public class SqlQueryTest extends JdbcTestBase {
             System.err.println(username);
             assertTrue(Strings.startsWith(username, "yufei"));
         }
-
     }
 
     @Test

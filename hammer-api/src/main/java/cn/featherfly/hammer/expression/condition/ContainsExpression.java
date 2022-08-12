@@ -3,12 +3,10 @@ package cn.featherfly.hammer.expression.condition;
 
 import cn.featherfly.common.lang.function.ReturnStringFunction;
 import cn.featherfly.common.lang.function.StringSupplier;
+import cn.featherfly.common.repository.operate.QueryOperator.QueryPolicy;
 
 /**
- * <p>
- * ContainsExpression
- * </p>
- * .
+ * ContainsExpression .
  *
  * @author zhongj
  * @param <C> the generic type
@@ -18,29 +16,65 @@ public interface ContainsExpression<C extends ConditionExpression, L extends Log
         extends ConditionExpression {
 
     /**
-     * 包含value.
+     * contains value. 包含value.
      *
      * @param name  参数名称
      * @param value 参数值
      * @return LogicExpression
      */
-    L co(String name, String value);
+    default L co(String name, String value) {
+        return co(name, value, QueryPolicy.AUTO);
+    }
 
     /**
-     * 包含value.
+     * contains value. 包含value.
+     *
+     * @param name        the name
+     * @param value       the value
+     * @param queryPolicy the query policy
+     * @return the l
+     */
+    L co(String name, String value, QueryPolicy queryPolicy);
+
+    /**
+     * contains value. 包含value.
      *
      * @param <T>   the generic type
      * @param name  参数名称
      * @param value 参数值
      * @return LogicExpression
      */
-    <T> L co(ReturnStringFunction<T> name, String value);
+    default <T> L co(ReturnStringFunction<T> name, String value) {
+        return co(name, value, QueryPolicy.AUTO);
+    }
 
     /**
-     * 包含value.
+     * contains value. 包含value.
+     *
+     * @param <T>         the generic type
+     * @param name        the name
+     * @param value       the value
+     * @param queryPolicy the query policy
+     * @return the l
+     */
+    <T> L co(ReturnStringFunction<T> name, String value, QueryPolicy queryPolicy);
+
+    /**
+     * contains value. 包含value.
      *
      * @param property 对象属性
      * @return LogicExpression
      */
-    L co(StringSupplier property);
+    default L co(StringSupplier property) {
+        return co(property, QueryPolicy.AUTO);
+    }
+
+    /**
+     * contains value. 包含value.
+     *
+     * @param property    the property
+     * @param queryPolicy the query policy
+     * @return the l
+     */
+    L co(StringSupplier property, QueryPolicy queryPolicy);
 }

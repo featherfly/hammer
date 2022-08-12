@@ -9,6 +9,7 @@ import cn.featherfly.common.db.dialect.Dialect;
 import cn.featherfly.common.repository.builder.BuilderException;
 import cn.featherfly.common.repository.builder.BuilderExceptionCode;
 import cn.featherfly.common.repository.operate.QueryOperator;
+import cn.featherfly.common.repository.operate.QueryOperator.QueryPolicy;
 import cn.featherfly.hammer.expression.condition.ParamedExpression;
 
 /**
@@ -49,11 +50,27 @@ public class SqlConditionExpressionBuilder implements ParamedExpression, SqlBuil
      */
     public SqlConditionExpressionBuilder(Dialect dialect, String name, Object value, QueryOperator queryOperator,
             String queryAlias, Predicate<Object> ignorePolicy) {
+        this(dialect, name, value, queryOperator, QueryPolicy.AUTO, queryAlias, ignorePolicy);
+    }
+
+    /**
+     * Instantiates a new sql condition expression builder.
+     *
+     * @param dialect       dialect
+     * @param name          名称
+     * @param value         值
+     * @param queryOperator 查询运算符（查询类型）
+     * @param queryPolicy   the query policy
+     * @param queryAlias    查询别名
+     * @param ignorePolicy  the ignore policy
+     */
+    public SqlConditionExpressionBuilder(Dialect dialect, String name, Object value, QueryOperator queryOperator,
+            QueryPolicy queryPolicy, String queryAlias, Predicate<Object> ignorePolicy) {
         if (queryOperator == null) {
             throw new BuilderException(BuilderExceptionCode.createQueryOperatorNullCode());
         }
-        conditionColumnElement = new ConditionColumnElement(dialect, name, value, queryOperator, queryAlias,
-                ignorePolicy);
+        conditionColumnElement = new ConditionColumnElement(dialect, name, value, queryOperator, queryPolicy,
+                queryAlias, ignorePolicy);
     }
 
     /**

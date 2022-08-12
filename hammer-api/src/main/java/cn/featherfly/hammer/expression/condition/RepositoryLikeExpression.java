@@ -1,6 +1,8 @@
 
 package cn.featherfly.hammer.expression.condition;
 
+import cn.featherfly.common.repository.operate.QueryOperator.QueryPolicy;
+
 /**
  * RepositoryLikeExpression.
  *
@@ -19,7 +21,19 @@ public interface RepositoryLikeExpression<C extends ConditionExpression, L exten
      * @param value      参数值
      * @return LogicExpression
      */
-    L lk(String repository, String name, String value);
+    default L lk(String repository, String name, String value) {
+        return lk(repository, name, value, QueryPolicy.AUTO);
+    }
+
+    /**
+     * like value.
+     *
+     * @param repository repository
+     * @param name       参数名称
+     * @param value      参数值
+     * @return LogicExpression
+     */
+    L lk(String repository, String name, String value, QueryPolicy queryPolicy);
 
     /**
      * like value.
@@ -30,7 +44,20 @@ public interface RepositoryLikeExpression<C extends ConditionExpression, L exten
      * @param value      参数值
      * @return LogicExpression
      */
-    <T> L lk(Class<T> repository, String name, String value);
+    default <T> L lk(Class<T> repository, String name, String value) {
+        return lk(repository, name, value, QueryPolicy.AUTO);
+    }
+
+    /**
+     * like value.
+     *
+     * @param <T>        the generic type
+     * @param repository repository
+     * @param name       参数名称
+     * @param value      参数值
+     * @return LogicExpression
+     */
+    <T> L lk(Class<T> repository, String name, String value, QueryPolicy queryPolicy);
 
     /**
      * like value.
@@ -40,6 +67,18 @@ public interface RepositoryLikeExpression<C extends ConditionExpression, L exten
      * @param value           参数值
      * @return LogicExpression
      */
-    L lk(int repositoryIndex, String name, String value);
+    default L lk(int repositoryIndex, String name, String value) {
+        return lk(repositoryIndex, name, value, QueryPolicy.AUTO);
+    }
+
+    /**
+     * like value.
+     *
+     * @param repositoryIndex repository index
+     * @param name            参数名称
+     * @param value           参数值
+     * @return LogicExpression
+     */
+    L lk(int repositoryIndex, String name, String value, QueryPolicy queryPolicy);
 
 }

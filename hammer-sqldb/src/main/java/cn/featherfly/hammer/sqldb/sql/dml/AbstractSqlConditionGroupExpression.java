@@ -40,6 +40,7 @@ import cn.featherfly.common.repository.Execution;
 import cn.featherfly.common.repository.mapping.ClassMapping;
 import cn.featherfly.common.repository.operate.LogicOperator;
 import cn.featherfly.common.repository.operate.QueryOperator;
+import cn.featherfly.common.repository.operate.QueryOperator.QueryPolicy;
 import cn.featherfly.hammer.dsl.query.TypeQueryEntity;
 import cn.featherfly.hammer.expression.ConditionGroupExpression;
 import cn.featherfly.hammer.expression.ConditionGroupLogicExpression;
@@ -57,10 +58,7 @@ import cn.featherfly.hammer.expression.condition.property.StringExpression;
 import cn.featherfly.hammer.sqldb.jdbc.SqlPageFactory;
 
 /**
- * <p>
- * sql condition group builder sql条件逻辑组构造器
- * </p>
- * .
+ * sql condition group builder sql条件逻辑组构造器 .
  *
  * @author zhongj
  * @param <C> the generic type
@@ -148,34 +146,444 @@ public abstract class AbstractSqlConditionGroupExpression<C extends ConditionGro
         return build();
     }
 
+    //    /**
+    //     * {@inheritDoc}
+    //     */
+    //    @Override
+    //    public L eq(String name, Object value) {
+    //        return (L) addCondition(
+    //                new SqlConditionExpressionBuilder(dialect, ClassMappingUtils.getColumnName(name, classMapping), value,
+    //                        QueryOperator.EQ, queryAlias, ignorePolicy));
+    //    }
+
+    //    /**
+    //     * {@inheritDoc}
+    //     */
+    //    @Override
+    //    public <T, R> L eq(SerializableFunction<T, R> name, R value) {
+    //        //        return eq(getPropertyName(name), value);
+    //        List<Tuple2<String, Optional<R>>> tuples = supplier(LambdaUtils.getLambdaInfo(name), value);
+    //        L logic = null;
+    //        C condition = (C) this;
+    //        if (tuples.size() > 1) {
+    //            condition = group();
+    //        }
+    //        for (Tuple2<String, Optional<R>> tuple : tuples) {
+    //            if (logic != null) {
+    //                condition = logic.and();
+    //            }
+    //            logic = condition.eq(tuple.get0(), tuple.get1().orElseGet(() -> null));
+    //        }
+    //        if (tuples.size() > 1) {
+    //            logic = logic.endGroup();
+    //        }
+    //        return logic;
+    //    }
+
+    //    /**
+    //     * {@inheritDoc}
+    //     */
+    //    @Override
+    //    public <R> L eq(SerializableSupplier<R> property) {
+    //        //        Tuple2<String, R> tuple = supplier(LambdaUtils.getSerializableSupplierLambdaInfo(property));
+    //        //        return eq(tuple.get0(), tuple.get1());
+    //        List<Tuple2<String, Optional<R>>> tuples = supplier(LambdaUtils.getSerializableSupplierLambdaInfo(property));
+    //        L logic = null;
+    //        C condition = (C) this;
+    //        if (tuples.size() > 1) {
+    //            condition = group();
+    //        }
+    //        for (Tuple2<String, Optional<R>> tuple : tuples) {
+    //            if (logic != null) {
+    //                condition = logic.and();
+    //            }
+    //            logic = condition.eq(tuple.get0(), tuple.get1().orElseGet(() -> null));
+    //        }
+    //        if (tuples.size() > 1) {
+    //            logic = logic.endGroup();
+    //        }
+    //        return logic;
+    //    }
+
     /**
      * {@inheritDoc}
      */
     @Override
-    public L co(String name, String value) {
+    public L eq(String name, Object value, QueryPolicy queryPolicy) {
         return (L) addCondition(
                 new SqlConditionExpressionBuilder(dialect, ClassMappingUtils.getColumnName(name, classMapping), value,
-                        QueryOperator.CO, queryAlias, ignorePolicy));
+                        QueryOperator.EQ, queryPolicy, queryAlias, ignorePolicy));
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public L ew(String name, String value) {
-        return (L) addCondition(
-                new SqlConditionExpressionBuilder(dialect, ClassMappingUtils.getColumnName(name, classMapping), value,
-                        QueryOperator.EW, queryAlias, ignorePolicy));
+    public <T, R> L eq(SerializableFunction<T, R> name, R value, QueryPolicy queryPolicy) {
+        List<Tuple2<String, Optional<R>>> tuples = supplier(LambdaUtils.getLambdaInfo(name), value);
+        L logic = null;
+        C condition = (C) this;
+        if (tuples.size() > 1) {
+            condition = group();
+        }
+        for (Tuple2<String, Optional<R>> tuple : tuples) {
+            if (logic != null) {
+                condition = logic.and();
+            }
+            logic = condition.eq(tuple.get0(), tuple.get1().orElseGet(() -> null), queryPolicy);
+        }
+        if (tuples.size() > 1) {
+            logic = logic.endGroup();
+        }
+        return logic;
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public L eq(String name, Object value) {
+    public <R> L eq(SerializableSupplier<R> property, QueryPolicy queryPolicy) {
+        List<Tuple2<String, Optional<R>>> tuples = supplier(LambdaUtils.getSerializableSupplierLambdaInfo(property));
+        L logic = null;
+        C condition = (C) this;
+        if (tuples.size() > 1) {
+            condition = group();
+        }
+        for (Tuple2<String, Optional<R>> tuple : tuples) {
+            if (logic != null) {
+                condition = logic.and();
+            }
+            logic = condition.eq(tuple.get0(), tuple.get1().orElseGet(() -> null), queryPolicy);
+        }
+        if (tuples.size() > 1) {
+            logic = logic.endGroup();
+        }
+        return logic;
+    }
+
+    //    /**
+    //     * {@inheritDoc}
+    //     */
+    //    @Override
+    //    public L ne(String name, Object value) {
+    //        return (L) addCondition(
+    //                new SqlConditionExpressionBuilder(dialect, ClassMappingUtils.getColumnName(name, classMapping), value,
+    //                        QueryOperator.NE, queryAlias, ignorePolicy));
+    //    }
+    //
+    //    /**
+    //     * {@inheritDoc}
+    //     */
+    //    @Override
+    //    public <T, R> L ne(SerializableFunction<T, R> name, R value) {
+    //        //        return ne(getPropertyName(name), value);
+    //        List<Tuple2<String, Optional<R>>> tuples = supplier(LambdaUtils.getLambdaInfo(name), value);
+    //        L l = null;
+    //        C c = (C) this;
+    //        if (tuples.size() > 1) {
+    //            c = group();
+    //        }
+    //        for (Tuple2<String, Optional<R>> tuple : tuples) {
+    //            if (l != null) {
+    //                c = l.and();
+    //            }
+    //            l = c.ne(tuple.get0(), tuple.get1().orElseGet(() -> null));
+    //        }
+    //        if (tuples.size() > 1) {
+    //            l = l.endGroup();
+    //        }
+    //        return l;
+    //    }
+    //
+    //    /**
+    //     * {@inheritDoc}
+    //     */
+    //    @Override
+    //    public <R> L ne(SerializableSupplier<R> property) {
+    //        //        SerializableSupplierLambdaInfo<R> info = LambdaUtils.getSerializableSupplierLambdaInfo(property);
+    //        //        return ne(info.getSerializedLambdaInfo().getPropertyName(), info.getValue());
+    //        List<Tuple2<String, Optional<R>>> tuples = supplier(LambdaUtils.getSerializableSupplierLambdaInfo(property));
+    //        L l = null;
+    //        C c = (C) this;
+    //        if (tuples.size() > 1) {
+    //            c = group();
+    //        }
+    //        for (Tuple2<String, Optional<R>> tuple : tuples) {
+    //            if (l != null) {
+    //                c = l.and();
+    //            }
+    //            l = c.ne(tuple.get0(), tuple.get1().orElseGet(() -> null));
+    //        }
+    //        if (tuples.size() > 1) {
+    //            l = l.endGroup();
+    //        }
+    //        return l;
+    //    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public L ne(String name, Object value, QueryPolicy queryPolicy) {
         return (L) addCondition(
                 new SqlConditionExpressionBuilder(dialect, ClassMappingUtils.getColumnName(name, classMapping), value,
-                        QueryOperator.EQ, queryAlias, ignorePolicy));
+                        QueryOperator.NE, queryPolicy, queryAlias, ignorePolicy));
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public <T, R> L ne(SerializableFunction<T, R> name, R value, QueryPolicy queryPolicy) {
+        List<Tuple2<String, Optional<R>>> tuples = supplier(LambdaUtils.getLambdaInfo(name), value);
+        L l = null;
+        C c = (C) this;
+        if (tuples.size() > 1) {
+            c = group();
+        }
+        for (Tuple2<String, Optional<R>> tuple : tuples) {
+            if (l != null) {
+                c = l.and();
+            }
+            l = c.ne(tuple.get0(), tuple.get1().orElseGet(() -> null), queryPolicy);
+        }
+        if (tuples.size() > 1) {
+            l = l.endGroup();
+        }
+        return l;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public <R> L ne(SerializableSupplier<R> property, QueryPolicy queryPolicy) {
+        List<Tuple2<String, Optional<R>>> tuples = supplier(LambdaUtils.getSerializableSupplierLambdaInfo(property));
+        L l = null;
+        C c = (C) this;
+        if (tuples.size() > 1) {
+            c = group();
+        }
+        for (Tuple2<String, Optional<R>> tuple : tuples) {
+            if (l != null) {
+                c = l.and();
+            }
+            l = c.ne(tuple.get0(), tuple.get1().orElseGet(() -> null), queryPolicy);
+        }
+        if (tuples.size() > 1) {
+            l = l.endGroup();
+        }
+        return l;
+    }
+
+    //    /**
+    //     * {@inheritDoc}
+    //     */
+    //    @Override
+    //    public L lk(String name, String value) {
+    //        return (L) addCondition(
+    //                new SqlConditionExpressionBuilder(dialect, ClassMappingUtils.getColumnName(name, classMapping), value,
+    //                        QueryOperator.LK, queryAlias, ignorePolicy));
+    //    }
+    //
+    //    /**
+    //     * {@inheritDoc}
+    //     */
+    //    @Override
+    //    public <T> L lk(ReturnStringFunction<T> name, String value) {
+    //        return lk(getPropertyName(name), value);
+    //    }
+    //
+    //    /**
+    //     * {@inheritDoc}
+    //     */
+    //    @Override
+    //    public L lk(StringSupplier property) {
+    //        SerializableSupplierLambdaInfo<String> info = LambdaUtils.getSerializableSupplierLambdaInfo(property);
+    //        return lk(info.getSerializedLambdaInfo().getPropertyName(), info.getValue());
+    //    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public L lk(String name, String value, QueryPolicy queryPolicy) {
+        return (L) addCondition(
+                new SqlConditionExpressionBuilder(dialect, ClassMappingUtils.getColumnName(name, classMapping), value,
+                        QueryOperator.LK, queryPolicy, queryAlias, ignorePolicy));
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public <T> L lk(ReturnStringFunction<T> name, String value, QueryPolicy queryPolicy) {
+        return lk(getPropertyName(name), value, queryPolicy);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public L lk(StringSupplier property, QueryPolicy queryPolicy) {
+        SerializableSupplierLambdaInfo<String> info = LambdaUtils.getSerializableSupplierLambdaInfo(property);
+        return lk(info.getSerializedLambdaInfo().getPropertyName(), info.getValue(), queryPolicy);
+    }
+
+    //  /**
+    //     * {@inheritDoc}
+    //     */
+    //    @Override
+    //    public L sw(String name, String value) {
+    //        return (L) addCondition(
+    //                new SqlConditionExpressionBuilder(dialect, ClassMappingUtils.getColumnName(name, classMapping), value,
+    //                        QueryOperator.SW, queryAlias, ignorePolicy));
+    //    }
+    //    /**
+    //     * {@inheritDoc}
+    //     */
+    //    @Override
+    //    public <T> L sw(ReturnStringFunction<T> name, String value) {
+    //        return sw(getPropertyName(name), value);
+    //    }
+    //    /**
+    //     * {@inheritDoc}
+    //     */
+    //    @Override
+    //    public L sw(StringSupplier property) {
+    //        SerializableSupplierLambdaInfo<String> info = LambdaUtils.getSerializableSupplierLambdaInfo(property);
+    //        return sw(info.getSerializedLambdaInfo().getPropertyName(), info.getValue());
+    //    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public L sw(String name, String value, QueryPolicy queryPolicy) {
+        return (L) addCondition(
+                new SqlConditionExpressionBuilder(dialect, ClassMappingUtils.getColumnName(name, classMapping), value,
+                        QueryOperator.SW, queryPolicy, queryAlias, ignorePolicy));
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public <T> L sw(ReturnStringFunction<T> name, String value, QueryPolicy queryPolicy) {
+        return sw(getPropertyName(name), value, queryPolicy);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public L sw(StringSupplier property, QueryPolicy queryPolicy) {
+        SerializableSupplierLambdaInfo<String> info = LambdaUtils.getSerializableSupplierLambdaInfo(property);
+        return sw(info.getSerializedLambdaInfo().getPropertyName(), info.getValue());
+    }
+
+    //    /**
+    //     * {@inheritDoc}
+    //     */
+    //    @Override
+    //    public L ew(String name, String value) {
+    //        return (L) addCondition(
+    //                new SqlConditionExpressionBuilder(dialect, ClassMappingUtils.getColumnName(name, classMapping), value,
+    //                        QueryOperator.EW, queryAlias, ignorePolicy));
+    //    }
+    //    /**
+    //     * {@inheritDoc}
+    //     */
+    //    @Override
+    //    public <T> L ew(ReturnStringFunction<T> name, String value) {
+    //        return ew(getPropertyName(name), value);
+    //    }
+    //    /**
+    //     * {@inheritDoc}
+    //     */
+    //    @Override
+    //    public L ew(StringSupplier property) {
+    //        SerializableSupplierLambdaInfo<String> info = LambdaUtils.getSerializableSupplierLambdaInfo(property);
+    //        return co(info.getSerializedLambdaInfo().getPropertyName(), info.getValue());
+    //    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public L ew(String name, String value, QueryPolicy queryPolicy) {
+        return (L) addCondition(
+                new SqlConditionExpressionBuilder(dialect, ClassMappingUtils.getColumnName(name, classMapping), value,
+                        QueryOperator.EW, queryPolicy, queryAlias, ignorePolicy));
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public <T> L ew(ReturnStringFunction<T> name, String value, QueryPolicy queryPolicy) {
+        return ew(getPropertyName(name), value, queryPolicy);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public L ew(StringSupplier property, QueryPolicy queryPolicy) {
+        SerializableSupplierLambdaInfo<String> info = LambdaUtils.getSerializableSupplierLambdaInfo(property);
+        return co(info.getSerializedLambdaInfo().getPropertyName(), info.getValue(), queryPolicy);
+    }
+
+    //    /**
+    //     * {@inheritDoc}
+    //     */
+    //    @Override
+    //    public L co(String name, String value) {
+    //        return (L) addCondition(
+    //                new SqlConditionExpressionBuilder(dialect, ClassMappingUtils.getColumnName(name, classMapping), value,
+    //                        QueryOperator.CO, queryAlias, ignorePolicy));
+    //    }
+    //    /**
+    //     * {@inheritDoc}
+    //     */
+    //    @Override
+    //    public <T> L co(ReturnStringFunction<T> name, String value) {
+    //        return co(getPropertyName(name), value);
+    //    }
+    //    /**
+    //     * {@inheritDoc}
+    //     */
+    //    @Override
+    //    public L co(StringSupplier property) {
+    //        SerializableSupplierLambdaInfo<String> info = LambdaUtils.getSerializableSupplierLambdaInfo(property);
+    //        return co(info.getSerializedLambdaInfo().getPropertyName(), info.getValue());
+    //    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public L co(String name, String value, QueryPolicy queryPolicy) {
+        return (L) addCondition(
+                new SqlConditionExpressionBuilder(dialect, ClassMappingUtils.getColumnName(name, classMapping), value,
+                        QueryOperator.CO, queryPolicy, queryAlias, ignorePolicy));
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public <T> L co(ReturnStringFunction<T> name, String value, QueryPolicy queryPolicy) {
+        return co(getPropertyName(name), value, queryPolicy);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public L co(StringSupplier property, QueryPolicy queryPolicy) {
+        SerializableSupplierLambdaInfo<String> info = LambdaUtils.getSerializableSupplierLambdaInfo(property);
+        return co(info.getSerializedLambdaInfo().getPropertyName(), info.getValue(), queryPolicy);
     }
 
     /**
@@ -468,30 +876,10 @@ public abstract class AbstractSqlConditionGroupExpression<C extends ConditionGro
      * {@inheritDoc}
      */
     @Override
-    public L ne(String name, Object value) {
-        return (L) addCondition(
-                new SqlConditionExpressionBuilder(dialect, ClassMappingUtils.getColumnName(name, classMapping), value,
-                        QueryOperator.NE, queryAlias, ignorePolicy));
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
     public L nin(String name, Object value) {
         return (L) addCondition(
                 new SqlConditionExpressionBuilder(dialect, ClassMappingUtils.getColumnName(name, classMapping), value,
                         QueryOperator.NIN, queryAlias, ignorePolicy));
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public L sw(String name, String value) {
-        return (L) addCondition(
-                new SqlConditionExpressionBuilder(dialect, ClassMappingUtils.getColumnName(name, classMapping), value,
-                        QueryOperator.SW, queryAlias, ignorePolicy));
     }
 
     /**
@@ -631,46 +1019,6 @@ public abstract class AbstractSqlConditionGroupExpression<C extends ConditionGro
     @Override
     public EnumExpression<C, L> propertyEnum(String name) {
         return new SimpleEnumExpression<>(ClassMappingUtils.getColumnName(name, classMapping), this);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public <T> L co(ReturnStringFunction<T> name, String value) {
-        return co(getPropertyName(name), value);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public <T> L ew(ReturnStringFunction<T> name, String value) {
-        return ew(getPropertyName(name), value);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public <T, R> L eq(SerializableFunction<T, R> name, R value) {
-        //        return eq(getPropertyName(name), value);
-        List<Tuple2<String, Optional<R>>> tuples = supplier(LambdaUtils.getLambdaInfo(name), value);
-        L logic = null;
-        C condition = (C) this;
-        if (tuples.size() > 1) {
-            condition = group();
-        }
-        for (Tuple2<String, Optional<R>> tuple : tuples) {
-            if (logic != null) {
-                condition = logic.and();
-            }
-            logic = condition.eq(tuple.get0(), tuple.get1().orElseGet(() -> null));
-        }
-        if (tuples.size() > 1) {
-            logic = logic.endGroup();
-        }
-        return logic;
     }
 
     /**
@@ -909,83 +1257,8 @@ public abstract class AbstractSqlConditionGroupExpression<C extends ConditionGro
      * {@inheritDoc}
      */
     @Override
-    public <T, R> L ne(SerializableFunction<T, R> name, R value) {
-        //        return ne(getPropertyName(name), value);
-        List<Tuple2<String, Optional<R>>> tuples = supplier(LambdaUtils.getLambdaInfo(name), value);
-        L l = null;
-        C c = (C) this;
-        if (tuples.size() > 1) {
-            c = group();
-        }
-        for (Tuple2<String, Optional<R>> tuple : tuples) {
-            if (l != null) {
-                c = l.and();
-            }
-            l = c.ne(tuple.get0(), tuple.get1().orElseGet(() -> null));
-        }
-        if (tuples.size() > 1) {
-            l = l.endGroup();
-        }
-        return l;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
     public <T, R> L nin(SerializableFunction<T, R> name, Object value) {
         return nin(getPropertyName(name), value);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public <T> L sw(ReturnStringFunction<T> name, String value) {
-        return sw(getPropertyName(name), value);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public L co(StringSupplier property) {
-        SerializableSupplierLambdaInfo<String> info = LambdaUtils.getSerializableSupplierLambdaInfo(property);
-        return co(info.getSerializedLambdaInfo().getPropertyName(), info.getValue());
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public L ew(StringSupplier property) {
-        SerializableSupplierLambdaInfo<String> info = LambdaUtils.getSerializableSupplierLambdaInfo(property);
-        return co(info.getSerializedLambdaInfo().getPropertyName(), info.getValue());
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public <R> L eq(SerializableSupplier<R> property) {
-        //        Tuple2<String, R> tuple = supplier(LambdaUtils.getSerializableSupplierLambdaInfo(property));
-        //        return eq(tuple.get0(), tuple.get1());
-        List<Tuple2<String, Optional<R>>> tuples = supplier(LambdaUtils.getSerializableSupplierLambdaInfo(property));
-        L logic = null;
-        C condition = (C) this;
-        if (tuples.size() > 1) {
-            condition = group();
-        }
-        for (Tuple2<String, Optional<R>> tuple : tuples) {
-            if (logic != null) {
-                condition = logic.and();
-            }
-            logic = condition.eq(tuple.get0(), tuple.get1().orElseGet(() -> null));
-        }
-        if (tuples.size() > 1) {
-            logic = logic.endGroup();
-        }
-        return logic;
     }
 
     /**
@@ -1217,70 +1490,9 @@ public abstract class AbstractSqlConditionGroupExpression<C extends ConditionGro
      * {@inheritDoc}
      */
     @Override
-    public <R> L ne(SerializableSupplier<R> property) {
-        //        SerializableSupplierLambdaInfo<R> info = LambdaUtils.getSerializableSupplierLambdaInfo(property);
-        //        return ne(info.getSerializedLambdaInfo().getPropertyName(), info.getValue());
-        List<Tuple2<String, Optional<R>>> tuples = supplier(LambdaUtils.getSerializableSupplierLambdaInfo(property));
-        L l = null;
-        C c = (C) this;
-        if (tuples.size() > 1) {
-            c = group();
-        }
-        for (Tuple2<String, Optional<R>> tuple : tuples) {
-            if (l != null) {
-                c = l.and();
-            }
-            l = c.ne(tuple.get0(), tuple.get1().orElseGet(() -> null));
-        }
-        if (tuples.size() > 1) {
-            l = l.endGroup();
-        }
-        return l;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
     public <R> L nin(SerializableSupplier<R> property) {
         SerializableSupplierLambdaInfo<R> info = LambdaUtils.getSerializableSupplierLambdaInfo(property);
         return nin(info.getSerializedLambdaInfo().getPropertyName(), info.getValue());
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public L sw(StringSupplier property) {
-        SerializableSupplierLambdaInfo<String> info = LambdaUtils.getSerializableSupplierLambdaInfo(property);
-        return sw(info.getSerializedLambdaInfo().getPropertyName(), info.getValue());
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public L lk(String name, String value) {
-        return (L) addCondition(
-                new SqlConditionExpressionBuilder(dialect, ClassMappingUtils.getColumnName(name, classMapping), value,
-                        QueryOperator.LK, queryAlias, ignorePolicy));
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public <T> L lk(ReturnStringFunction<T> name, String value) {
-        return lk(getPropertyName(name), value);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public L lk(StringSupplier property) {
-        SerializableSupplierLambdaInfo<String> info = LambdaUtils.getSerializableSupplierLambdaInfo(property);
-        return lk(info.getSerializedLambdaInfo().getPropertyName(), info.getValue());
     }
 
     /**

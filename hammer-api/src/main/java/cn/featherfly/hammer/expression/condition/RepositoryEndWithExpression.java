@@ -1,11 +1,10 @@
 
 package cn.featherfly.hammer.expression.condition;
 
+import cn.featherfly.common.repository.operate.QueryOperator.QueryPolicy;
+
 /**
- * <p>
- * RepositoryEndWithExpression
- * </p>
- * .
+ * The Interface RepositoryEndWithExpression.
  *
  * @author zhongj
  * @param <C> the generic type
@@ -15,17 +14,30 @@ public interface RepositoryEndWithExpression<C extends ConditionExpression, L ex
         extends EndWithExpression<C, L> {
 
     /**
-     * 以value结尾.
+     * end with value. 以value结尾.
      *
      * @param repository repository
      * @param name       参数名称
      * @param value      参数值
      * @return LogicExpression
      */
-    L ew(String repository, String name, String value);
+    default L ew(String repository, String name, String value) {
+        return ew(repository, name, value, QueryPolicy.AUTO);
+    }
 
     /**
-     * 以value结尾.
+     * end with value. 以value结尾.
+     *
+     * @param repository  repository
+     * @param name        参数名称
+     * @param value       参数值
+     * @param queryPolicy the query policy
+     * @return LogicExpression
+     */
+    L ew(String repository, String name, String value, QueryPolicy queryPolicy);
+
+    /**
+     * end with value. 以value结尾.
      *
      * @param <T>        the generic type
      * @param repository repository
@@ -33,15 +45,42 @@ public interface RepositoryEndWithExpression<C extends ConditionExpression, L ex
      * @param value      参数值
      * @return LogicExpression
      */
-    <T> L ew(Class<T> repository, String name, String value);
+    default <T> L ew(Class<T> repository, String name, String value) {
+        return ew(repository, name, value, QueryPolicy.AUTO);
+    }
 
     /**
-     * 以value结尾.
+     * end with value. 以value结尾.
+     *
+     * @param <T>         the generic type
+     * @param repository  repository
+     * @param name        参数名称
+     * @param value       参数值
+     * @param queryPolicy the query policy
+     * @return LogicExpression
+     */
+    <T> L ew(Class<T> repository, String name, String value, QueryPolicy queryPolicy);
+
+    /**
+     * end with value. 以value结尾.
      *
      * @param repositoryIndex repository index
      * @param name            参数名称
      * @param value           参数值
      * @return LogicExpression
      */
-    L ew(int repositoryIndex, String name, String value);
+    default L ew(int repositoryIndex, String name, String value) {
+        return ew(repositoryIndex, name, value, QueryPolicy.AUTO);
+    }
+
+    /**
+     * end with value. 以value结尾.
+     *
+     * @param repositoryIndex repository index
+     * @param name            参数名称
+     * @param value           参数值
+     * @param queryPolicy     the query policy
+     * @return LogicExpression
+     */
+    L ew(int repositoryIndex, String name, String value, QueryPolicy queryPolicy);
 }

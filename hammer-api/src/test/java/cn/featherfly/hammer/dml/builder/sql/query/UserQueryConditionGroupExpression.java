@@ -5,6 +5,7 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.Date;
+import java.util.Map;
 import java.util.function.Consumer;
 import java.util.function.Predicate;
 
@@ -24,6 +25,7 @@ import cn.featherfly.common.lang.function.SerializableFunction;
 import cn.featherfly.common.lang.function.SerializableSupplier;
 import cn.featherfly.common.lang.function.StringSupplier;
 import cn.featherfly.common.repository.operate.LogicOperator;
+import cn.featherfly.common.repository.operate.QueryOperator.QueryPolicy;
 import cn.featherfly.hammer.expression.ConditionGroupExpression;
 import cn.featherfly.hammer.expression.ConditionGroupLogicExpression;
 import cn.featherfly.hammer.expression.condition.property.DateExpression;
@@ -33,9 +35,7 @@ import cn.featherfly.hammer.expression.condition.property.ObjectExpression;
 import cn.featherfly.hammer.expression.condition.property.StringExpression;
 
 /**
- * <p>
- * UserQueryConditionGroupExpression
- * </p>
+ * The Class UserQueryConditionGroupExpression.
  *
  * @author zhongj
  */
@@ -44,19 +44,34 @@ public class UserQueryConditionGroupExpression
         ConditionGroupLogicExpression<UserQueryConditionGroupExpression, UserQueryConditionGroupExpression> {
 
     /**
-     *
+     * Instantiates a new user query condition group expression.
      */
     public UserQueryConditionGroupExpression() {
     }
 
+    /**
+     * Name.
+     *
+     * @return the string expression
+     */
     public StringExpression<UserQueryConditionGroupExpression, UserQueryConditionGroupExpression> name() {
         return propertyString("name");
     }
 
+    /**
+     * Age.
+     *
+     * @return the number expression
+     */
     public NumberExpression<UserQueryConditionGroupExpression, UserQueryConditionGroupExpression> age() {
         return propertyNumber("age");
     }
 
+    /**
+     * Pwd.
+     *
+     * @return the string expression
+     */
     public StringExpression<UserQueryConditionGroupExpression, UserQueryConditionGroupExpression> pwd() {
         return propertyString("pwd");
     }
@@ -1238,6 +1253,201 @@ public class UserQueryConditionGroupExpression
      */
     @Override
     public UserQueryConditionGroupExpression logic(LogicOperator operator) {
+        // YUFEI_TODO Auto-generated method stub
+        return null;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public UserQueryConditionGroupExpression expression(String expression) {
+        // YUFEI_TODO Auto-generated method stub
+        return null;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public UserQueryConditionGroupExpression expression(String expression, Map<String, Object> params) {
+        // YUFEI_TODO Auto-generated method stub
+        return null;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public UserQueryConditionGroupExpression expression(String expression, Object... params) {
+        // YUFEI_TODO Auto-generated method stub
+        return null;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public UserQueryConditionGroupExpression eq(String name, Object value, QueryPolicy queryPolicy) {
+        // YUFEI_TODO Auto-generated method stub
+        return null;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public <T, R> UserQueryConditionGroupExpression eq(SerializableFunction<T, R> name, R value,
+            QueryPolicy queryPolicy) {
+        // YUFEI_TODO Auto-generated method stub
+        return null;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public <R> UserQueryConditionGroupExpression eq(SerializableSupplier<R> property, QueryPolicy queryPolicy) {
+        // YUFEI_TODO Auto-generated method stub
+        return null;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public UserQueryConditionGroupExpression ne(String name, Object value, QueryPolicy queryPolicy) {
+        // YUFEI_TODO Auto-generated method stub
+        return null;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public <T, R> UserQueryConditionGroupExpression ne(SerializableFunction<T, R> name, R value,
+            QueryPolicy queryPolicy) {
+        // YUFEI_TODO Auto-generated method stub
+        return null;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public <R> UserQueryConditionGroupExpression ne(SerializableSupplier<R> property, QueryPolicy queryPolicy) {
+        // YUFEI_TODO Auto-generated method stub
+        return null;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public UserQueryConditionGroupExpression lk(String name, String value, QueryPolicy queryPolicy) {
+        // YUFEI_TODO Auto-generated method stub
+        return null;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public <T> UserQueryConditionGroupExpression lk(ReturnStringFunction<T> name, String value,
+            QueryPolicy queryPolicy) {
+        // YUFEI_TODO Auto-generated method stub
+        return null;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public UserQueryConditionGroupExpression lk(StringSupplier property, QueryPolicy queryPolicy) {
+        // YUFEI_TODO Auto-generated method stub
+        return null;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public UserQueryConditionGroupExpression co(String name, String value, QueryPolicy queryPolicy) {
+        // YUFEI_TODO Auto-generated method stub
+        return null;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public <T> UserQueryConditionGroupExpression co(ReturnStringFunction<T> name, String value,
+            QueryPolicy queryPolicy) {
+        // YUFEI_TODO Auto-generated method stub
+        return null;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public UserQueryConditionGroupExpression co(StringSupplier property, QueryPolicy queryPolicy) {
+        // YUFEI_TODO Auto-generated method stub
+        return null;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public UserQueryConditionGroupExpression ew(String name, String value, QueryPolicy queryPolicy) {
+        // YUFEI_TODO Auto-generated method stub
+        return null;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public <T> UserQueryConditionGroupExpression ew(ReturnStringFunction<T> name, String value,
+            QueryPolicy queryPolicy) {
+        // YUFEI_TODO Auto-generated method stub
+        return null;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public UserQueryConditionGroupExpression ew(StringSupplier property, QueryPolicy queryPolicy) {
+        // YUFEI_TODO Auto-generated method stub
+        return null;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public UserQueryConditionGroupExpression sw(String name, String value, QueryPolicy queryPolicy) {
+        // YUFEI_TODO Auto-generated method stub
+        return null;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public <T> UserQueryConditionGroupExpression sw(ReturnStringFunction<T> name, String value,
+            QueryPolicy queryPolicy) {
+        // YUFEI_TODO Auto-generated method stub
+        return null;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public UserQueryConditionGroupExpression sw(StringSupplier property, QueryPolicy queryPolicy) {
         // YUFEI_TODO Auto-generated method stub
         return null;
     }

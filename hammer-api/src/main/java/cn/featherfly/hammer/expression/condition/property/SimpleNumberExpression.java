@@ -1,13 +1,12 @@
 
 package cn.featherfly.hammer.expression.condition.property;
 
+import cn.featherfly.common.repository.operate.QueryOperator.QueryPolicy;
 import cn.featherfly.hammer.expression.condition.ConditionsExpression;
 import cn.featherfly.hammer.expression.condition.LogicExpression;
 
 /**
- * <p>
- * SimpleObjectExpression
- * </p>
+ * SimpleObjectExpression.
  *
  * @author zhongj
  */
@@ -130,5 +129,21 @@ public class SimpleNumberExpression<C extends ConditionsExpression<C, L>, L exte
     @Override
     public L inn(Boolean value) {
         return expression.inn(name, value);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public L eq(Number value, QueryPolicy queryPolicy) {
+        return expression.eq(name, value, queryPolicy);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public L ne(Number value, QueryPolicy queryPolicy) {
+        return expression.ne(name, value, queryPolicy);
     }
 }
