@@ -8,6 +8,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.function.Function;
 
 import javax.annotation.Nonnull;
 import javax.validation.ConstraintViolation;
@@ -16,10 +17,13 @@ import javax.validation.Validator;
 
 import org.hibernate.validator.HibernateValidator;
 
+import cn.featherfly.common.bean.BeanDescriptor;
+import cn.featherfly.common.bean.BeanProperty;
 import cn.featherfly.common.constant.Chars;
 import cn.featherfly.common.db.mapping.JdbcMappingFactory;
 import cn.featherfly.common.lang.ArrayUtils;
 import cn.featherfly.common.lang.Lang;
+import cn.featherfly.common.lang.function.SerializableFunction;
 import cn.featherfly.common.repository.IgnorePolicy;
 import cn.featherfly.common.repository.mapping.ClassMapping;
 import cn.featherfly.common.structure.page.Page;
@@ -552,13 +556,65 @@ public class SqldbHammerImpl implements SqldbHammer {
      * {@inheritDoc}
      */
     @Override
+    public <E, R> E get(Serializable id, Class<E> type, SerializableFunction<E, R> fetchProperty) {
+        E entity = get(id, type);
+        if (entity == null) {
+            return null;
+        }
+        // TODO 后续再来优化，先用两次查询实现
+        // TODO 只实现了多对一或者一对一的获取，没有实现一对多的获取
+        BeanProperty<R> bp = BeanDescriptor.getBeanDescriptor(type).getBeanProperty(fetchProperty);
+        @SuppressWarnings("unchecked")
+        R fetchObj = get((R) bp.getValue(entity));
+        bp.setValue(entity, fetchObj);
+        return entity;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
     public <E> E get(E entity) {
+        return _get(entity, false);
+    }
+
+    private <E> E _get(Serializable id, Class<E> type, boolean forUpdate) {
+        if (id == null || type == null) {
+            return null;
+        }
+        GetOperate<E> get = getOperate(type);
+        return get.get(id, forUpdate);
+    }
+
+    private <E> E _get(E entity, boolean forUpdate) {
         if (entity == null) {
             return null;
         }
         @SuppressWarnings("unchecked")
         GetOperate<E> get = (GetOperate<E>) getOperate(entity.getClass());
-        return get.get(entity);
+        return get.get(entity, forUpdate);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public <E> E getLockUpdate(Serializable id, Class<E> type, Function<E, E> updateFunction) {
+        E e = _get(id, type, true);
+        E result = updateFunction.apply(e);
+        update(result);
+        return result;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public <E> E getLockUpdate(E entity, Function<E, E> updateFunction) {
+        E e = _get(entity, true);
+        E result = updateFunction.apply(e);
+        update(result);
+        return result;
     }
 
     /**
@@ -1047,4 +1103,5 @@ public class SqldbHammerImpl implements SqldbHammer {
     public JdbcMappingFactory getMappingFactory() {
         return mappingFactory;
     }
+
 }

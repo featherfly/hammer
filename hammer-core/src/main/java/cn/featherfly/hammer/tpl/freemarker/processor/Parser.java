@@ -16,10 +16,7 @@ import cn.featherfly.common.lang.Strings;
 import cn.featherfly.hammer.tpl.TplException;
 
 /**
- * <p>
- * Parser
- * </p>
- * .
+ * Parser .
  *
  * @author zhongj
  */

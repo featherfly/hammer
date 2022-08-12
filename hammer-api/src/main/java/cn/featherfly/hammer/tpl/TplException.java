@@ -6,10 +6,7 @@ import java.util.Locale;
 import cn.featherfly.hammer.HammerException;
 
 /**
- * <p>
- * TplException
- * </p>
- * .
+ * TplException .
  *
  * @author zhongj
  */

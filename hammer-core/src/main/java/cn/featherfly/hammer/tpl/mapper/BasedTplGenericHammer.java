@@ -3,8 +3,10 @@ package cn.featherfly.hammer.tpl.mapper;
 
 import java.io.Serializable;
 import java.util.List;
+import java.util.function.Function;
 
 import cn.featherfly.common.lang.CollectionUtils;
+import cn.featherfly.common.lang.function.SerializableFunction;
 import cn.featherfly.common.lang.function.SerializableSupplier;
 import cn.featherfly.common.repository.IgnorePolicy;
 import cn.featherfly.common.repository.operate.LogicOperator;
@@ -15,9 +17,7 @@ import cn.featherfly.hammer.dsl.execute.Update;
 import cn.featherfly.hammer.dsl.query.TypeQueryEntity;
 
 /**
- * <p>
- * BasedTplGenericHammer
- * </p>
+ * BasedTplGenericHammer.
  *
  * @author zhongj
  */
@@ -98,6 +98,14 @@ public class BasedTplGenericHammer<E, ID extends Serializable> implements Generi
     @Override
     public E get(ID id) {
         return hammer.get(id, type);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public <R> E get(Serializable id, SerializableFunction<E, R> fetchProperty) {
+        return hammer.get(id, type, fetchProperty);
     }
 
     /**
@@ -250,5 +258,21 @@ public class BasedTplGenericHammer<E, ID extends Serializable> implements Generi
     @Override
     public List<E> queryList(LogicOperator operator, SerializableSupplier<?>... propertyValues) {
         return hammer.queryList(type, operator, propertyValues);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public E getLockUpdate(Serializable id, Function<E, E> updateFunction) {
+        return hammer.getLockUpdate(id, type, updateFunction);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public E loadLockUpdate(E entity, Function<E, E> updateFunction) {
+        return hammer.loadLockUpdate(entity, updateFunction);
     }
 }

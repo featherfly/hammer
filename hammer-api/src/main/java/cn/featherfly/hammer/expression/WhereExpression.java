@@ -6,10 +6,7 @@ import java.util.function.Consumer;
 import cn.featherfly.hammer.expression.condition.ConditionGroupConfig;
 
 /**
- * <p>
- * WhereExpression
- * </p>
- * .
+ * WhereExpression .
  *
  * @author zhongj
  * @param <C> the generic type

@@ -2,10 +2,7 @@
 package cn.featherfly.hammer.tpl.freemarker.processor;
 
 /**
- * <p>
- * StringElement
- * </p>
- * .
+ * StringElement .
  *
  * @author zhongj
  */

@@ -1,7 +1,5 @@
 /**
- * <p>
- * dsl for execute
- * </p>
+ * dsl for execute (update delete).
  *
  * @author zhongj
  */

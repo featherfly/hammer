@@ -11,6 +11,7 @@ import java.math.BigDecimal;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
+import java.util.function.Function;
 
 import org.apache.log4j.xml.DOMConfigurator;
 import org.slf4j.Logger;
@@ -19,6 +20,7 @@ import org.testng.annotations.Test;
 
 import cn.featherfly.common.lang.ClassLoaderUtils;
 import cn.featherfly.common.lang.ClassUtils;
+import cn.featherfly.common.lang.function.SerializableFunction;
 import cn.featherfly.common.repository.IgnorePolicy;
 import cn.featherfly.common.structure.page.Page;
 import cn.featherfly.common.structure.page.PaginationResults;
@@ -608,6 +610,30 @@ public class TplDynamicExecutorFactoryByAsmTest {
             public <E> int saveOrUpdate(E entity) {
                 // YUFEI_TODO Auto-generated method stub
                 return 0;
+            }
+
+            @Override
+            public <E, R> E get(Serializable id, Class<E> type, SerializableFunction<E, R> fetchProperty) {
+                // YUFEI_TODO Auto-generated method stub
+                return null;
+            }
+
+            @Override
+            public <E> E getLockUpdate(Serializable id, Class<E> type, Function<E, E> updateFunction) {
+                // YUFEI_TODO Auto-generated method stub
+                return null;
+            }
+
+            @Override
+            public <E> E loadLockUpdate(E entity, Function<E, E> updateFunction) {
+                // YUFEI_TODO Auto-generated method stub
+                return null;
+            }
+
+            @Override
+            public <E> E getLockUpdate(E entity, Function<E, E> updateFunction) {
+                // YUFEI_TODO Auto-generated method stub
+                return null;
             }
         };
     }

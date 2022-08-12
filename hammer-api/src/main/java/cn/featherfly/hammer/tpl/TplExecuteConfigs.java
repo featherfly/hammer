@@ -6,9 +6,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 /**
- * <p>
- * Config
- * </p>
+ * template execute configs.
  *
  * @author zhongj
  */

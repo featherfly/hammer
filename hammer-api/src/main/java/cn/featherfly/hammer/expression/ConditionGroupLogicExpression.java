@@ -5,9 +5,7 @@ import cn.featherfly.hammer.expression.condition.ConditionsGroupExpression;
 import cn.featherfly.hammer.expression.condition.LogicGroupExpression;
 
 /**
- * <p>
- * *ConditionGroupLogicExpression
- * </p>
+ * ConditionGroupLogicExpression.
  *
  * @author zhongj
  */

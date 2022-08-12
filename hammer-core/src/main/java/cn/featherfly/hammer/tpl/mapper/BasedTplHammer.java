@@ -5,7 +5,9 @@ import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.List;
 import java.util.Map;
+import java.util.function.Function;
 
+import cn.featherfly.common.lang.function.SerializableFunction;
 import cn.featherfly.common.repository.IgnorePolicy;
 import cn.featherfly.common.structure.page.Page;
 import cn.featherfly.common.structure.page.PaginationResults;
@@ -17,9 +19,7 @@ import cn.featherfly.hammer.dsl.query.TypeQueryEntity;
 import cn.featherfly.hammer.tpl.TplExecuteId;
 
 /**
- * <p>
- * BasedTplHammer
- * </p>
+ * BasedTplHammer.
  *
  * @author zhongj
  */
@@ -644,8 +644,31 @@ public class BasedTplHammer implements Hammer {
      * {@inheritDoc}
      */
     @Override
+    public <E, R> E get(Serializable id, Class<E> type, SerializableFunction<E, R> fetchProperty) {
+        return hammer.get(id, type, fetchProperty);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
     public <E> int saveOrUpdate(E entity) {
         return hammer.saveOrUpdate(entity);
     }
 
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public <E> E getLockUpdate(Serializable id, Class<E> type, Function<E, E> updateFunction) {
+        return hammer.getLockUpdate(id, type, updateFunction);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public <E> E getLockUpdate(E entity, Function<E, E> updateFunction) {
+        return hammer.getLockUpdate(entity, updateFunction);
+    }
 }

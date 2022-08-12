@@ -193,6 +193,19 @@ public class OperatorTest extends JdbcTestBase {
     }
 
     @Test
+    public void testGetForUpdate() {
+        GetOperate<Role> operate = new GetOperate<>(jdbc, mappingFactory.getClassMapping(Role.class),
+                mappingFactory.getSqlTypeMappingManager(), mappingFactory.getMetadata());
+        Integer id = 1;
+        Role role = operate.get(id, true);
+        assertEquals(role.getId(), id);
+        assertNotNull(role.getName());
+        assertNotNull(role.getDescp());
+        assertEquals(role.getName(), "n_init_1");
+        assertEquals(role.getDescp(), "descp_1");
+    }
+
+    @Test
     public void testGetMulityPrimaryKey() {
         GetOperate<UserRole> operate = new GetOperate<>(jdbc, mappingFactory.getClassMapping(UserRole.class),
                 mappingFactory.getSqlTypeMappingManager(), mappingFactory.getMetadata());

@@ -1,4 +1,4 @@
-# 0.6.5
+# 0.6.5 2022-08-16
 1. TplExecuteIdMapperImpl删除isTemplate相关代码
 2. dsl条件查询eq(SerialFunction<T, R>, T),ne(SerialFunction<T, R> t)方法支持@Embedded对象，自动使用该对象的所有非空属性
 3. where(Consumer<ConditionGroupConfig>)泛型参数变更
@@ -7,6 +7,8 @@
 6. dsl api update的set方法支持自定义映射(使用BeanPropertyValue)
 7. 加入StringConditionExpression，用于在dsl中加入特殊sql拼接
 8. dsl api （eq,ne,co,sw,ew,lk）加入查询大小写敏感的支持（即 = 和 like 支持区分大小写）（根据数据库不同可能不支持）
+9. Hammer加入get(id,Class,SerializableFunction)方法用于在获取对象时自动获取关联属性对象（目前只支持多对一和一对一（Entity），即不支持一对多(List)）
+10. Hammer加入getLockUpdate用于一次交互完成锁查询、修改，并返回修改后的结果的功能
 
 # 0.6.4 2022-07-15
 1. 升级依赖

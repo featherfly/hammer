@@ -2,9 +2,7 @@
 package cn.featherfly.hammer.tpl;
 
 /**
- * <p>
- * Config
- * </p>
+ * The Class TplExecuteConfig.
  *
  * @author zhongj
  */
@@ -31,7 +29,7 @@ public class TplExecuteConfig {
     private String tplName;
 
     /**
-     * 返回query
+     * 返回query.
      *
      * @return query
      */
@@ -40,7 +38,7 @@ public class TplExecuteConfig {
     }
 
     /**
-     * 设置query
+     * 设置query.
      *
      * @param query query
      */
@@ -49,7 +47,7 @@ public class TplExecuteConfig {
     }
 
     /**
-     * 返回count
+     * 返回count.
      *
      * @return count
      */
@@ -58,7 +56,7 @@ public class TplExecuteConfig {
     }
 
     /**
-     * 设置count
+     * 设置count.
      *
      * @param count count
      */
@@ -67,7 +65,7 @@ public class TplExecuteConfig {
     }
 
     /**
-     * 返回type
+     * 返回type.
      *
      * @return type
      */
@@ -76,7 +74,7 @@ public class TplExecuteConfig {
     }
 
     /**
-     * 设置type
+     * 设置type.
      *
      * @param type type
      */
@@ -85,7 +83,7 @@ public class TplExecuteConfig {
     }
 
     /**
-     * 返回name
+     * 返回name.
      *
      * @return name
      */
@@ -94,7 +92,7 @@ public class TplExecuteConfig {
     }
 
     /**
-     * 设置name
+     * 设置name.
      *
      * @param name name
      */
@@ -103,7 +101,7 @@ public class TplExecuteConfig {
     }
 
     /**
-     * 返回name
+     * 返回name.
      *
      * @return name
      */
@@ -112,7 +110,7 @@ public class TplExecuteConfig {
     }
 
     /**
-     * 设置name
+     * 设置name.
      *
      * @param name name
      */
@@ -121,7 +119,7 @@ public class TplExecuteConfig {
     }
 
     /**
-     * 返回directory
+     * 返回directory.
      *
      * @return directory
      */
@@ -130,7 +128,7 @@ public class TplExecuteConfig {
     }
 
     /**
-     * 设置directory
+     * 设置directory.
      *
      * @param directory directory
      */
@@ -139,7 +137,7 @@ public class TplExecuteConfig {
     }
 
     /**
-     * 返回executeId
+     * 返回executeId.
      *
      * @return executeId
      */
@@ -148,7 +146,7 @@ public class TplExecuteConfig {
     }
 
     /**
-     * 设置executeId
+     * 设置executeId.
      *
      * @param executeId executeId
      */
@@ -157,7 +155,7 @@ public class TplExecuteConfig {
     }
 
     /**
-     * 返回tplPath
+     * 返回tplPath.
      *
      * @return tplPath
      */
@@ -166,7 +164,7 @@ public class TplExecuteConfig {
     }
 
     /**
-     * 设置tplPath
+     * 设置tplPath.
      *
      * @param tplPath tplPath
      */
@@ -175,7 +173,7 @@ public class TplExecuteConfig {
     }
 
     /**
-     * get precompile value
+     * get precompile value.
      *
      * @return precompile
      */
@@ -184,7 +182,7 @@ public class TplExecuteConfig {
     }
 
     /**
-     * set precompile value
+     * set precompile value.
      *
      * @param precompile precompile
      */
@@ -192,12 +190,17 @@ public class TplExecuteConfig {
         this.precompile = precompile;
     }
 
+    /**
+     * Gets the file path.
+     *
+     * @return the file path
+     */
     public String getFilePath() {
         return fileDirectory + "/" + fileName;
     }
 
     /**
-     * get namespace value
+     * get namespace value.
      *
      * @return namespace
      */
@@ -206,7 +209,7 @@ public class TplExecuteConfig {
     }
 
     /**
-     * set namespace value
+     * set namespace value.
      *
      * @param namespace namespace
      */

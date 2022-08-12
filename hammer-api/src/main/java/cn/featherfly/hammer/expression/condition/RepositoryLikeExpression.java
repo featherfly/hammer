@@ -28,9 +28,10 @@ public interface RepositoryLikeExpression<C extends ConditionExpression, L exten
     /**
      * like value.
      *
-     * @param repository repository
-     * @param name       参数名称
-     * @param value      参数值
+     * @param repository  repository
+     * @param name        参数名称
+     * @param value       参数值
+     * @param queryPolicy the query policy
      * @return LogicExpression
      */
     L lk(String repository, String name, String value, QueryPolicy queryPolicy);
@@ -51,10 +52,11 @@ public interface RepositoryLikeExpression<C extends ConditionExpression, L exten
     /**
      * like value.
      *
-     * @param <T>        the generic type
-     * @param repository repository
-     * @param name       参数名称
-     * @param value      参数值
+     * @param <T>         the generic type
+     * @param repository  repository
+     * @param name        参数名称
+     * @param value       参数值
+     * @param queryPolicy the query policy
      * @return LogicExpression
      */
     <T> L lk(Class<T> repository, String name, String value, QueryPolicy queryPolicy);
@@ -77,6 +79,7 @@ public interface RepositoryLikeExpression<C extends ConditionExpression, L exten
      * @param repositoryIndex repository index
      * @param name            参数名称
      * @param value           参数值
+     * @param queryPolicy     the query policy
      * @return LogicExpression
      */
     L lk(int repositoryIndex, String name, String value, QueryPolicy queryPolicy);
