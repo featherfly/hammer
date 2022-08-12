@@ -4,9 +4,7 @@ package cn.featherfly.hammer.tpl;
 import java.util.Collection;
 
 /**
- * <p>
- * SqlTplConfigFactory
- * </p>
+ * SqlTplConfigFactory.
  *
  * @author zhongj
  */
