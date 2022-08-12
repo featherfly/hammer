@@ -7,16 +7,23 @@ import java.time.LocalTime;
 import java.util.Date;
 
 import cn.featherfly.common.lang.Lang;
+import cn.featherfly.common.repository.operate.QueryOperator.QueryPolicy;
 import cn.featherfly.hammer.HammerException;
+import cn.featherfly.hammer.expression.condition.ContainsExpression;
+import cn.featherfly.hammer.expression.condition.EndWithExpression;
+import cn.featherfly.hammer.expression.condition.EqualsExpression;
+import cn.featherfly.hammer.expression.condition.LikeExpression;
 import cn.featherfly.hammer.expression.condition.LogicExpression;
+import cn.featherfly.hammer.expression.condition.NotEqualsExpression;
 import cn.featherfly.hammer.expression.condition.RepositoryConditionsExpression;
+import cn.featherfly.hammer.expression.condition.StartWithExpression;
 
 /**
- * <p>
- * SimpleObjectExpression
- * </p>
+ * The Class RepositorySimpleObjectExpression.
  *
  * @author zhongj
+ * @param <C> the generic type
+ * @param <L> the generic type
  */
 public class RepositorySimpleObjectExpression<C extends RepositoryConditionsExpression<C, L>,
         L extends LogicExpression<C, L>> implements ObjectExpression<C, L> {
@@ -61,20 +68,6 @@ public class RepositorySimpleObjectExpression<C extends RepositoryConditionsExpr
      */
     public RepositorySimpleObjectExpression(String name, RepositoryConditionsExpression<C, L> expression) {
         this(null, name, expression);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public L eq(Object value) {
-        if (Lang.isNotEmpty(repository)) {
-            return expression.eq(repository, name, value);
-        } else if (repositoryIndex > -1) {
-            return expression.eq(repositoryIndex, name, value);
-        } else {
-            return expression.eq(name, value);
-        }
     }
 
     /**
@@ -477,4 +470,87 @@ public class RepositorySimpleObjectExpression<C extends RepositoryConditionsExpr
         }
     }
 
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public L eq(Object value, QueryPolicy queryPolicy) {
+        if (Lang.isNotEmpty(repository)) {
+            return expression.eq(repository, name, value, queryPolicy);
+        } else if (repositoryIndex > -1) {
+            return expression.eq(repositoryIndex, name, value, queryPolicy);
+        } else {
+            return ((EqualsExpression<C, L>) expression).eq(name, value, queryPolicy);
+        }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public L ne(Object value, QueryPolicy queryPolicy) {
+        if (Lang.isNotEmpty(repository)) {
+            return expression.ne(repository, name, value, queryPolicy);
+        } else if (repositoryIndex > -1) {
+            return expression.ne(repositoryIndex, name, value, queryPolicy);
+        } else {
+            return ((NotEqualsExpression<C, L>) expression).ne(name, value, queryPolicy);
+        }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public L sw(String value, QueryPolicy queryPolicy) {
+        if (Lang.isNotEmpty(repository)) {
+            return expression.sw(repository, name, value, queryPolicy);
+        } else if (repositoryIndex > -1) {
+            return expression.sw(repositoryIndex, name, value, queryPolicy);
+        } else {
+            return ((StartWithExpression<C, L>) expression).sw(name, value, queryPolicy);
+        }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public L co(String value, QueryPolicy queryPolicy) {
+        if (Lang.isNotEmpty(repository)) {
+            return expression.co(repository, name, value, queryPolicy);
+        } else if (repositoryIndex > -1) {
+            return expression.co(repositoryIndex, name, value, queryPolicy);
+        } else {
+            return ((ContainsExpression<C, L>) expression).co(name, value, queryPolicy);
+        }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public L ew(String value, QueryPolicy queryPolicy) {
+        if (Lang.isNotEmpty(repository)) {
+            return expression.ew(repository, name, value, queryPolicy);
+        } else if (repositoryIndex > -1) {
+            return expression.ew(repositoryIndex, name, value, queryPolicy);
+        } else {
+            return ((EndWithExpression<C, L>) expression).ew(name, value, queryPolicy);
+        }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public L lk(String value, QueryPolicy queryPolicy) {
+        if (Lang.isNotEmpty(repository)) {
+            return expression.lk(repository, name, value, queryPolicy);
+        } else if (repositoryIndex > -1) {
+            return expression.lk(repositoryIndex, name, value, queryPolicy);
+        } else {
+            return ((LikeExpression<C, L>) expression).lk(name, value, queryPolicy);
+        }
+    }
 }

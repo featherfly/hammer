@@ -6,11 +6,11 @@ import cn.featherfly.hammer.expression.condition.LogicExpression;
 import cn.featherfly.hammer.expression.condition.RepositoryConditionsExpression;
 
 /**
- * <p>
- * SimpleObjectExpression
- * </p>
+ * The Class RepositorySimpleNumberExpression.
  *
  * @author zhongj
+ * @param <C> the generic type
+ * @param <L> the generic type
  */
 public class RepositorySimpleNumberExpression<C extends RepositoryConditionsExpression<C, L>,
         L extends LogicExpression<C, L>> implements NumberExpression<C, L> {
@@ -24,6 +24,8 @@ public class RepositorySimpleNumberExpression<C extends RepositoryConditionsExpr
     private int repositoryIndex = -1;
 
     /**
+     * Instantiates a new repository simple number expression.
+     *
      * @param repositoryIndex repositoryIndex
      * @param name            name
      * @param expression      expression
@@ -37,6 +39,8 @@ public class RepositorySimpleNumberExpression<C extends RepositoryConditionsExpr
     }
 
     /**
+     * Instantiates a new repository simple number expression.
+     *
      * @param repository repository
      * @param name       name
      * @param expression expression
@@ -50,6 +54,8 @@ public class RepositorySimpleNumberExpression<C extends RepositoryConditionsExpr
     }
 
     /**
+     * Instantiates a new repository simple number expression.
+     *
      * @param name       name
      * @param expression expression
      */

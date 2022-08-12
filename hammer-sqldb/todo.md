@@ -92,7 +92,7 @@
 
 - [x] dsl api 更新操作集成update(String, BeanPropertyValue<?>...)用于完善自定义属性映射
 - [x] dsl api 条件查询加入表达式支持，（例如 store - :outNum >= 0[这种可以用传入的参数名用一个特殊的类来处理]， u.id = ur.user_id[这种可以用传入的value以一个特殊类来处理，表示传入的是需要拼接的字符串，不需要用占位符]）
-- [ ] dsl api （eq,co,sw,ew,lk）加入like查询大小写敏感的支持
+- [x] dsl api （eq,ne,co,sw,ew,lk）加入查询大小写敏感的支持（即 = 和 like 支持区分大小写）
 - [ ] dsl api 加入gourp by和having支持 
 
 ```sql

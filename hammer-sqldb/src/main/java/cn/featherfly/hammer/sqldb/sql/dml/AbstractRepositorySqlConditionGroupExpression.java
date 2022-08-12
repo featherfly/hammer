@@ -21,6 +21,7 @@ import cn.featherfly.common.db.mapping.ClassMappingUtils;
 import cn.featherfly.common.lang.AssertIllegalArgument;
 import cn.featherfly.common.lang.LambdaUtils;
 import cn.featherfly.common.lang.LambdaUtils.SerializableSupplierLambdaInfo;
+import cn.featherfly.common.lang.LambdaUtils.SerializedLambdaInfo;
 import cn.featherfly.common.lang.function.DateSupplier;
 import cn.featherfly.common.lang.function.LocalDateSupplier;
 import cn.featherfly.common.lang.function.LocalDateTimeSupplier;
@@ -42,6 +43,7 @@ import cn.featherfly.common.repository.mapping.ClassMapping;
 import cn.featherfly.common.repository.mapping.MappingFactory;
 import cn.featherfly.common.repository.operate.LogicOperator;
 import cn.featherfly.common.repository.operate.QueryOperator;
+import cn.featherfly.common.repository.operate.QueryOperator.QueryPolicy;
 import cn.featherfly.hammer.expression.RepositoryConditionGroupLogicExpression;
 import cn.featherfly.hammer.expression.condition.ParamedExpression;
 import cn.featherfly.hammer.expression.condition.RepositoryConditionsGroupExpression;
@@ -63,10 +65,7 @@ import cn.featherfly.hammer.expression.condition.property.StringExpression;
 import cn.featherfly.hammer.sqldb.jdbc.SqlPageFactory;
 
 /**
- * <p>
- * sql condition group builder sql条件逻辑组构造器
- * </p>
- * .
+ * sql condition group builder sql条件逻辑组构造器 .
  *
  * @author zhongj
  * @param <C> the generic type
@@ -247,159 +246,765 @@ public abstract class AbstractRepositorySqlConditionGroupExpression<C extends Re
      */
     protected abstract C createGroup(L parent, String queryAlias);
 
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public <T> L co(Class<T> repository, String name, String value) {
-        return co(getTableName(repository), name, value);
-    }
+    //    /**
+    //     * {@inheritDoc}
+    //     */
+    //    @Override
+    //    public <T, R> L eq(SerializableFunction<T, R> name, R value) {
+    //        return eq(getPropertyName(name), value);
+    //    }
+    //    /**
+    //     * {@inheritDoc}
+    //     */
+    //    @Override
+    //    public L eq(String name, Object value) {
+    //        return (L) addCondition(
+    //                new SqlConditionExpressionBuilder(dialect, ClassMappingUtils.getColumnName(name, classMapping), value,
+    //                        QueryOperator.EQ, queryAlias, ignorePolicy));
+    //    }
+    //    /**
+    //     * {@inheritDoc}
+    //     */
+    //    @Override
+    //    public <R> L eq(SerializableSupplier<R> property) {
+    //        //        SerializableSupplierLambdaInfo<R> info = LambdaUtils.getSerializableSupplierLambdaInfo(property);
+    //        //        return eq(info.getSerializedLambdaInfo().getPropertyName(), info.getValue());
+    //        //        Tuple2<String, R> tuple = supplier(LambdaUtils.getSerializableSupplierLambdaInfo(property));
+    //        //        return eq(tuple.get0(), tuple.get1());
+    //        List<Tuple2<String, Optional<R>>> tuples = supplier(LambdaUtils.getSerializableSupplierLambdaInfo(property));
+    //        L l = null;
+    //        C c = (C) this;
+    //        if (tuples.size() > 1) {
+    //            c = group();
+    //        }
+    //        for (Tuple2<String, Optional<R>> tuple : tuples) {
+    //            if (l != null) {
+    //                c = l.and();
+    //            }
+    //            l = c.ne(tuple.get0(), tuple.get1().orElseGet(() -> null));
+    //        }
+    //        if (tuples.size() > 1) {
+    //            l = l.endGroup();
+    //        }
+    //        return l;
+    //    }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public L co(int repositoryIndex, String name, String value) {
+    public L eq(String name, Object value, QueryPolicy queryPolicy) {
         return (L) addCondition(
                 new SqlConditionExpressionBuilder(dialect, ClassMappingUtils.getColumnName(name, classMapping), value,
-                        QueryOperator.CO, aliasManager.getAlias(repositoryIndex), ignorePolicy));
+                        QueryOperator.EQ, queryPolicy, queryAlias, ignorePolicy));
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public <T> L co(ReturnStringFunction<T> name, String value) {
-        return co(getPropertyName(name), value);
+    public <T, R> L eq(SerializableFunction<T, R> name, R value, QueryPolicy queryPolicy) {
+        List<Tuple2<String, Optional<R>>> tuples = supplier(LambdaUtils.getLambdaInfo(name), value);
+        L logic = null;
+        C condition = (C) this;
+        if (tuples.size() > 1) {
+            condition = group();
+        }
+        for (Tuple2<String, Optional<R>> tuple : tuples) {
+            if (logic != null) {
+                condition = logic.and();
+            }
+            logic = condition.eq(tuple.get0(), tuple.get1().orElseGet(() -> null), queryPolicy);
+        }
+        if (tuples.size() > 1) {
+            logic = logic.endGroup();
+        }
+        return logic;
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public L co(String name, String value) {
+    public <R> L eq(SerializableSupplier<R> property, QueryPolicy queryPolicy) {
+        List<Tuple2<String, Optional<R>>> tuples = supplier(LambdaUtils.getSerializableSupplierLambdaInfo(property));
+        L l = null;
+        C c = (C) this;
+        if (tuples.size() > 1) {
+            c = group();
+        }
+        for (Tuple2<String, Optional<R>> tuple : tuples) {
+            if (l != null) {
+                c = l.and();
+            }
+            l = c.eq(tuple.get0(), tuple.get1().orElseGet(() -> null), queryPolicy);
+        }
+        if (tuples.size() > 1) {
+            l = l.endGroup();
+        }
+        return l;
+    }
+
+    //    /**
+    //     * {@inheritDoc}
+    //     */
+    //    @Override
+    //    public L eq(String repository, String name, Object value) {
+    //        return (L) addCondition(
+    //                new SqlConditionExpressionBuilder(dialect, ClassMappingUtils.getColumnName(name, classMapping), value,
+    //                        QueryOperator.EQ, aliasManager.getAlias(repository), ignorePolicy));
+    //    }
+    //    /**
+    //     * {@inheritDoc}
+    //     */
+    //    @Override
+    //    public <T> L eq(Class<T> repository, String name, Object value) {
+    //        return eq(getTableName(repository), name, value);
+    //    }
+    //    /**
+    //     * {@inheritDoc}
+    //     */
+    //    @Override
+    //    public L eq(int repositoryIndex, String name, Object value) {
+    //        return (L) addCondition(
+    //                new SqlConditionExpressionBuilder(dialect, ClassMappingUtils.getColumnName(name, classMapping), value,
+    //                        QueryOperator.EQ, aliasManager.getAlias(repositoryIndex), ignorePolicy));
+    //    }
+    //    /**
+    //     * {@inheritDoc}
+    //     */
+    //    @Override
+    //    public <T, R> L eq(SerializableFunction<T, R> repository, SerializableFunction<T, R> property, R value) {
+    //        return eq(getPropertyName(repository), getPropertyName(property), value);
+    //    }
+    //    /**
+    //     * {@inheritDoc}
+    //     */
+    //    @Override
+    //    public <T, R> L eq(SerializableSupplier<T> repository, SerializableFunction<T, R> property) {
+    //        Tuple3<String, String, Object> tuple = conditionResult(repository, property);
+    //        return eq(tuple.get0(), tuple.get1(), tuple.get2());
+    //    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public L eq(String repository, String name, Object value, QueryPolicy queryPolicy) {
         return (L) addCondition(
                 new SqlConditionExpressionBuilder(dialect, ClassMappingUtils.getColumnName(name, classMapping), value,
-                        QueryOperator.CO, queryAlias, ignorePolicy));
+                        QueryOperator.EQ, queryPolicy, aliasManager.getAlias(repository), ignorePolicy));
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public L co(String repository, String name, String value) {
+    public <T> L eq(Class<T> repository, String name, Object value, QueryPolicy queryPolicy) {
+        return eq(getTableName(repository), name, value, queryPolicy);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public L eq(int repositoryIndex, String name, Object value, QueryPolicy queryPolicy) {
         return (L) addCondition(
                 new SqlConditionExpressionBuilder(dialect, ClassMappingUtils.getColumnName(name, classMapping), value,
-                        QueryOperator.CO, queryAlias, ignorePolicy));
+                        QueryOperator.EQ, queryPolicy, aliasManager.getAlias(repositoryIndex), ignorePolicy));
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public <T> L eq(Class<T> repository, String name, Object value) {
-        return eq(getTableName(repository), name, value);
+    public <T, R> L eq(SerializableFunction<T, R> repository, SerializableFunction<T, R> property, R value,
+            QueryPolicy queryPolicy) {
+        return eq(getPropertyName(repository), getPropertyName(property), value, queryPolicy);
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public L eq(int repositoryIndex, String name, Object value) {
-        return (L) addCondition(
-                new SqlConditionExpressionBuilder(dialect, ClassMappingUtils.getColumnName(name, classMapping), value,
-                        QueryOperator.EQ, aliasManager.getAlias(repositoryIndex), ignorePolicy));
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public <T, R> L eq(SerializableFunction<T, R> name, R value) {
-        return eq(getPropertyName(name), value);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public L eq(String name, Object value) {
-        return (L) addCondition(
-                new SqlConditionExpressionBuilder(dialect, ClassMappingUtils.getColumnName(name, classMapping), value,
-                        QueryOperator.EQ, queryAlias, ignorePolicy));
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public L eq(String repository, String name, Object value) {
-        return (L) addCondition(
-                new SqlConditionExpressionBuilder(dialect, ClassMappingUtils.getColumnName(name, classMapping), value,
-                        QueryOperator.EQ, aliasManager.getAlias(repository), ignorePolicy));
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public <T, R> L eq(SerializableFunction<T, R> repository, SerializableFunction<T, R> property, R value) {
-        return eq(getPropertyName(repository), getPropertyName(property), value);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public <T, R> L eq(SerializableSupplier<T> repository, SerializableFunction<T, R> property) {
+    public <T, R> L eq(SerializableSupplier<T> repository, SerializableFunction<T, R> property,
+            QueryPolicy queryPolicy) {
         Tuple3<String, String, Object> tuple = conditionResult(repository, property);
-        return eq(tuple.get0(), tuple.get1(), tuple.get2());
+        return eq(tuple.get0(), tuple.get1(), tuple.get2(), queryPolicy);
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public <T> L ew(Class<T> repository, String name, String value) {
-        return ew(getTableName(repository), name, value);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public L ew(int repositoryIndex, String name, String value) {
+    public L ne(String name, Object value, QueryPolicy queryPolicy) {
         return (L) addCondition(
                 new SqlConditionExpressionBuilder(dialect, ClassMappingUtils.getColumnName(name, classMapping), value,
-                        QueryOperator.EW, aliasManager.getAlias(repositoryIndex), ignorePolicy));
+                        QueryOperator.NE, queryPolicy, queryAlias, ignorePolicy));
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public <T> L ew(ReturnStringFunction<T> name, String value) {
-        return ew(getPropertyName(name), value);
+    public <T, R> L ne(SerializableFunction<T, R> name, R value, QueryPolicy queryPolicy) {
+        List<Tuple2<String, Optional<R>>> tuples = supplier(LambdaUtils.getLambdaInfo(name), value);
+        L l = null;
+        C c = (C) this;
+        if (tuples.size() > 1) {
+            c = group();
+        }
+        for (Tuple2<String, Optional<R>> tuple : tuples) {
+            if (l != null) {
+                c = l.and();
+            }
+            l = c.ne(tuple.get0(), tuple.get1().orElseGet(() -> null), queryPolicy);
+        }
+        if (tuples.size() > 1) {
+            l = l.endGroup();
+        }
+        return l;
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public L ew(String name, String value) {
+    public <R> L ne(SerializableSupplier<R> property, QueryPolicy queryPolicy) {
+        List<Tuple2<String, Optional<R>>> tuples = supplier(LambdaUtils.getSerializableSupplierLambdaInfo(property));
+        L l = null;
+        C c = (C) this;
+        if (tuples.size() > 1) {
+            c = group();
+        }
+        for (Tuple2<String, Optional<R>> tuple : tuples) {
+            if (l != null) {
+                c = l.and();
+            }
+            l = c.ne(tuple.get0(), tuple.get1().orElseGet(() -> null), queryPolicy);
+        }
+        if (tuples.size() > 1) {
+            l = l.endGroup();
+        }
+        return l;
+    }
+
+    //    /**
+    //     * {@inheritDoc}
+    //     */
+    //    @Override
+    //    public <T> L ne(Class<T> repository, String name, Object value) {
+    //        return ne(getTableName(repository), name, value);
+    //    }
+    //    /**
+    //     * {@inheritDoc}
+    //     */
+    //    @Override
+    //    public L ne(int repositoryIndex, String name, Object value) {
+    //        return (L) addCondition(
+    //                new SqlConditionExpressionBuilder(dialect, ClassMappingUtils.getColumnName(name, classMapping), value,
+    //                        QueryOperator.NE, aliasManager.getAlias(repositoryIndex), ignorePolicy));
+    //    }
+    //    /**
+    //     * {@inheritDoc}
+    //     */
+    //    @Override
+    //    public L ne(String repository, String name, Object value) {
+    //        return (L) addCondition(
+    //                new SqlConditionExpressionBuilder(dialect, ClassMappingUtils.getColumnName(name, classMapping), value,
+    //                        QueryOperator.NE, aliasManager.getAlias(repository), ignorePolicy));
+    //    }
+    //    /**
+    //     * {@inheritDoc}
+    //     */
+    //    @Override
+    //    public <T, R> L ne(SerializableFunction<T, R> repository, SerializableFunction<T, R> property, R value) {
+    //        return ne(getPropertyName(repository), getPropertyName(property), value);
+    //    }
+    //    /**
+    //     * {@inheritDoc}
+    //     */
+    //    @Override
+    //    public <T, R> L ne(SerializableSupplier<T> repository, SerializableFunction<T, R> property) {
+    //        Tuple3<String, String, Object> tuple = conditionResult(repository, property);
+    //        return ne(tuple.get0(), tuple.get1(), tuple.get2());
+    //    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public L ne(String repository, String name, Object value, QueryPolicy queryPolicy) {
         return (L) addCondition(
                 new SqlConditionExpressionBuilder(dialect, ClassMappingUtils.getColumnName(name, classMapping), value,
-                        QueryOperator.EW, queryAlias, ignorePolicy));
+                        QueryOperator.NE, queryPolicy, aliasManager.getAlias(repository), ignorePolicy));
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public L ew(String repository, String name, String value) {
+    public <T> L ne(Class<T> repository, String name, Object value, QueryPolicy queryPolicy) {
+        return ne(getTableName(repository), name, value, queryPolicy);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public L ne(int repositoryIndex, String name, Object value, QueryPolicy queryPolicy) {
         return (L) addCondition(
                 new SqlConditionExpressionBuilder(dialect, ClassMappingUtils.getColumnName(name, classMapping), value,
-                        QueryOperator.EW, aliasManager.getAlias(repository), ignorePolicy));
+                        QueryOperator.NE, queryPolicy, aliasManager.getAlias(repositoryIndex), ignorePolicy));
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public <T, R> L ne(SerializableFunction<T, R> repository, SerializableFunction<T, R> property, R value,
+            QueryPolicy queryPolicy) {
+        return eq(getPropertyName(repository), getPropertyName(property), value, queryPolicy);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public <T, R> L ne(SerializableSupplier<T> repository, SerializableFunction<T, R> property,
+            QueryPolicy queryPolicy) {
+        Tuple3<String, String, Object> tuple = conditionResult(repository, property);
+        return eq(tuple.get0(), tuple.get1(), tuple.get2(), queryPolicy);
+    }
+
+    //  /**
+    //     * {@inheritDoc}
+    //     */
+    //    @Override
+    //    public L lk(String name, String value) {
+    //        return (L) addCondition(
+    //                new SqlConditionExpressionBuilder(dialect, ClassMappingUtils.getColumnName(name, classMapping), value,
+    //                        QueryOperator.LK, queryAlias, ignorePolicy));
+    //    }
+    //
+    //    /**
+    //     * {@inheritDoc}
+    //     */
+    //    @Override
+    //    public <T> L lk(ReturnStringFunction<T> name, String value) {
+    //        return lk(getPropertyName(name), value);
+    //    }
+    //
+    //    /**
+    //     * {@inheritDoc}
+    //     */
+    //    @Override
+    //    public L lk(StringSupplier property) {
+    //        SerializableSupplierLambdaInfo<String> info = LambdaUtils.getSerializableSupplierLambdaInfo(property);
+    //        return lk(info.getSerializedLambdaInfo().getPropertyName(), info.getValue());
+    //    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public L lk(String name, String value, QueryPolicy queryPolicy) {
+        return (L) addCondition(
+                new SqlConditionExpressionBuilder(dialect, ClassMappingUtils.getColumnName(name, classMapping), value,
+                        QueryOperator.LK, queryPolicy, queryAlias, ignorePolicy));
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public <T> L lk(ReturnStringFunction<T> name, String value, QueryPolicy queryPolicy) {
+        return lk(getPropertyName(name), value, queryPolicy);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public L lk(StringSupplier property, QueryPolicy queryPolicy) {
+        SerializableSupplierLambdaInfo<String> info = LambdaUtils.getSerializableSupplierLambdaInfo(property);
+        return lk(info.getSerializedLambdaInfo().getPropertyName(), info.getValue(), queryPolicy);
+    }
+
+    //     /**
+    //     * {@inheritDoc}
+    //     */
+    //    @Override
+    //    public L lk(String repository, String name, String value) {
+    //        return (L) addCondition(
+    //                new SqlConditionExpressionBuilder(dialect, ClassMappingUtils.getColumnName(name, classMapping), value,
+    //                        QueryOperator.LK, aliasManager.getAlias(repository), ignorePolicy));
+    //    }
+    //    /**
+    //     * {@inheritDoc}
+    //     */
+    //    @Override
+    //    public <T> L lk(Class<T> repository, String name, String value) {
+    //        return lk(getTableName(repository), name, value);
+    //    }
+    //    /**
+    //     * {@inheritDoc}
+    //     */
+    //    @Override
+    //    public L lk(int repositoryIndex, String name, String value) {
+    //        return (L) addCondition(
+    //                new SqlConditionExpressionBuilder(dialect, ClassMappingUtils.getColumnName(name, classMapping), value,
+    //                        QueryOperator.LK, aliasManager.getAlias(repositoryIndex), ignorePolicy));
+    //    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public L lk(String repository, String name, String value, QueryPolicy queryPolicy) {
+        return (L) addCondition(
+                new SqlConditionExpressionBuilder(dialect, ClassMappingUtils.getColumnName(name, classMapping), value,
+                        QueryOperator.LK, queryPolicy, aliasManager.getAlias(repository), ignorePolicy));
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public <T> L lk(Class<T> repository, String name, String value, QueryPolicy queryPolicy) {
+        return lk(getTableName(repository), name, value, queryPolicy);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public L lk(int repositoryIndex, String name, String value, QueryPolicy queryPolicy) {
+        return (L) addCondition(
+                new SqlConditionExpressionBuilder(dialect, ClassMappingUtils.getColumnName(name, classMapping), value,
+                        QueryOperator.LK, queryPolicy, aliasManager.getAlias(repositoryIndex), ignorePolicy));
+    }
+
+    //  /**
+    //     * {@inheritDoc}
+    //     */
+    //    @Override
+    //    public L sw(String name, String value) {
+    //        return (L) addCondition(
+    //                new SqlConditionExpressionBuilder(dialect, ClassMappingUtils.getColumnName(name, classMapping), value,
+    //                        QueryOperator.SW, queryAlias, ignorePolicy));
+    //    }
+    //    /**
+    //     * {@inheritDoc}
+    //     */
+    //    @Override
+    //    public <T> L sw(ReturnStringFunction<T> name, String value) {
+    //        return sw(getPropertyName(name), value);
+    //    }
+    //    /**
+    //     * {@inheritDoc}
+    //     */
+    //    @Override
+    //    public L sw(StringSupplier property) {
+    //        SerializableSupplierLambdaInfo<String> info = LambdaUtils.getSerializableSupplierLambdaInfo(property);
+    //        return sw(info.getSerializedLambdaInfo().getPropertyName(), info.getValue());
+    //    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public L sw(String name, String value, QueryPolicy queryPolicy) {
+        return (L) addCondition(
+                new SqlConditionExpressionBuilder(dialect, ClassMappingUtils.getColumnName(name, classMapping), value,
+                        QueryOperator.SW, queryPolicy, queryAlias, ignorePolicy));
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public <T> L sw(ReturnStringFunction<T> name, String value, QueryPolicy queryPolicy) {
+        return sw(getPropertyName(name), value, queryPolicy);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public L sw(StringSupplier property, QueryPolicy queryPolicy) {
+        SerializableSupplierLambdaInfo<String> info = LambdaUtils.getSerializableSupplierLambdaInfo(property);
+        return sw(info.getSerializedLambdaInfo().getPropertyName(), info.getValue());
+    }
+
+    //    /**
+    //     * {@inheritDoc}
+    //     */
+    //    @Override
+    //    public <T> L sw(Class<T> repository, String name, String value) {
+    //        return sw(getTableName(repository), name, value);
+    //    }
+    //    /**
+    //     * {@inheritDoc}
+    //     */
+    //    @Override
+    //    public L sw(int repositoryIndex, String name, String value) {
+    //        return (L) addCondition(
+    //                new SqlConditionExpressionBuilder(dialect, ClassMappingUtils.getColumnName(name, classMapping), value,
+    //                        QueryOperator.SW, aliasManager.getAlias(repositoryIndex), ignorePolicy));
+    //    }
+    //    /**
+    //     * {@inheritDoc}
+    //     */
+    //    @Override
+    //    public L sw(String repository, String name, String value) {
+    //        return (L) addCondition(
+    //                new SqlConditionExpressionBuilder(dialect, ClassMappingUtils.getColumnName(name, classMapping), value,
+    //                        QueryOperator.SW, aliasManager.getAlias(repository), ignorePolicy));
+    //    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public L sw(String repository, String name, String value, QueryPolicy queryPolicy) {
+        return (L) addCondition(
+                new SqlConditionExpressionBuilder(dialect, ClassMappingUtils.getColumnName(name, classMapping), value,
+                        QueryOperator.SW, queryPolicy, aliasManager.getAlias(repository), ignorePolicy));
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public <T> L sw(Class<T> repository, String name, String value, QueryPolicy queryPolicy) {
+        return sw(getTableName(repository), name, value, queryPolicy);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public L sw(int repositoryIndex, String name, String value, QueryPolicy queryPolicy) {
+        return (L) addCondition(
+                new SqlConditionExpressionBuilder(dialect, ClassMappingUtils.getColumnName(name, classMapping), value,
+                        QueryOperator.SW, queryPolicy, aliasManager.getAlias(repositoryIndex), ignorePolicy));
+    }
+
+    //    /**
+    //     * {@inheritDoc}
+    //     */
+    //    @Override
+    //    public L ew(String name, String value) {
+    //        return (L) addCondition(
+    //                new SqlConditionExpressionBuilder(dialect, ClassMappingUtils.getColumnName(name, classMapping), value,
+    //                        QueryOperator.EW, queryAlias, ignorePolicy));
+    //    }
+    //    /**
+    //     * {@inheritDoc}
+    //     */
+    //    @Override
+    //    public <T> L ew(ReturnStringFunction<T> name, String value) {
+    //        return ew(getPropertyName(name), value);
+    //    }
+    //    /**
+    //     * {@inheritDoc}
+    //     */
+    //    @Override
+    //    public L ew(StringSupplier property) {
+    //        SerializableSupplierLambdaInfo<String> info = LambdaUtils.getSerializableSupplierLambdaInfo(property);
+    //        return co(info.getSerializedLambdaInfo().getPropertyName(), info.getValue());
+    //    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public L ew(String name, String value, QueryPolicy queryPolicy) {
+        return (L) addCondition(
+                new SqlConditionExpressionBuilder(dialect, ClassMappingUtils.getColumnName(name, classMapping), value,
+                        QueryOperator.EW, queryPolicy, queryAlias, ignorePolicy));
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public <T> L ew(ReturnStringFunction<T> name, String value, QueryPolicy queryPolicy) {
+        return ew(getPropertyName(name), value, queryPolicy);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public L ew(StringSupplier property, QueryPolicy queryPolicy) {
+        SerializableSupplierLambdaInfo<String> info = LambdaUtils.getSerializableSupplierLambdaInfo(property);
+        return co(info.getSerializedLambdaInfo().getPropertyName(), info.getValue(), queryPolicy);
+    }
+
+    //    /**
+    //     * {@inheritDoc}
+    //     */
+    //    @Override
+    //    public <T> L ew(Class<T> repository, String name, String value) {
+    //        return ew(getTableName(repository), name, value);
+    //    }
+    //
+    //    /**
+    //     * {@inheritDoc}
+    //     */
+    //    @Override
+    //    public L ew(int repositoryIndex, String name, String value) {
+    //        return (L) addCondition(
+    //                new SqlConditionExpressionBuilder(dialect, ClassMappingUtils.getColumnName(name, classMapping), value,
+    //                        QueryOperator.EW, aliasManager.getAlias(repositoryIndex), ignorePolicy));
+    //    }
+    //
+    //    /**
+    //     * {@inheritDoc}
+    //     */
+    //    @Override
+    //    public L ew(String repository, String name, String value) {
+    //        return (L) addCondition(
+    //                new SqlConditionExpressionBuilder(dialect, ClassMappingUtils.getColumnName(name, classMapping), value,
+    //                        QueryOperator.EW, aliasManager.getAlias(repository), ignorePolicy));
+    //    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public L ew(String repository, String name, String value, QueryPolicy queryPolicy) {
+        return (L) addCondition(
+                new SqlConditionExpressionBuilder(dialect, ClassMappingUtils.getColumnName(name, classMapping), value,
+                        QueryOperator.EW, queryPolicy, aliasManager.getAlias(repository), ignorePolicy));
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public <T> L ew(Class<T> repository, String name, String value, QueryPolicy queryPolicy) {
+        return ew(getTableName(repository), name, value, queryPolicy);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public L ew(int repositoryIndex, String name, String value, QueryPolicy queryPolicy) {
+        return (L) addCondition(
+                new SqlConditionExpressionBuilder(dialect, ClassMappingUtils.getColumnName(name, classMapping), value,
+                        QueryOperator.EW, queryPolicy, aliasManager.getAlias(repositoryIndex), ignorePolicy));
+    }
+
+    //    /**
+    //     * {@inheritDoc}
+    //     */
+    //    @Override
+    //    public L co(String name, String value) {
+    //        return (L) addCondition(
+    //                new SqlConditionExpressionBuilder(dialect, ClassMappingUtils.getColumnName(name, classMapping), value,
+    //                        QueryOperator.CO, queryAlias, ignorePolicy));
+    //    }
+    //    /**
+    //     * {@inheritDoc}
+    //     */
+    //    @Override
+    //    public <T> L co(ReturnStringFunction<T> name, String value) {
+    //        return co(getPropertyName(name), value);
+    //    }
+    //    /**
+    //     * {@inheritDoc}
+    //     */
+    //    @Override
+    //    public L co(StringSupplier property) {
+    //        SerializableSupplierLambdaInfo<String> info = LambdaUtils.getSerializableSupplierLambdaInfo(property);
+    //        return co(info.getSerializedLambdaInfo().getPropertyName(), info.getValue());
+    //    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public L co(String name, String value, QueryPolicy queryPolicy) {
+        return (L) addCondition(
+                new SqlConditionExpressionBuilder(dialect, ClassMappingUtils.getColumnName(name, classMapping), value,
+                        QueryOperator.CO, queryPolicy, queryAlias, ignorePolicy));
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public <T> L co(ReturnStringFunction<T> name, String value, QueryPolicy queryPolicy) {
+        return co(getPropertyName(name), value, queryPolicy);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public L co(StringSupplier property, QueryPolicy queryPolicy) {
+        SerializableSupplierLambdaInfo<String> info = LambdaUtils.getSerializableSupplierLambdaInfo(property);
+        return co(info.getSerializedLambdaInfo().getPropertyName(), info.getValue(), queryPolicy);
+    }
+
+    //  /**
+    //     * {@inheritDoc}
+    //     */
+    //    @Override
+    //    public <T> L co(Class<T> repository, String name, String value) {
+    //        return co(getTableName(repository), name, value);
+    //    }
+    //
+    //    /**
+    //     * {@inheritDoc}
+    //     */
+    //    @Override
+    //    public L co(int repositoryIndex, String name, String value) {
+    //        return (L) addCondition(
+    //                new SqlConditionExpressionBuilder(dialect, ClassMappingUtils.getColumnName(name, classMapping), value,
+    //                        QueryOperator.CO, aliasManager.getAlias(repositoryIndex), ignorePolicy));
+    //    }
+    //
+    //    /**
+    //     * {@inheritDoc}
+    //     */
+    //    @Override
+    //    public L co(String repository, String name, String value) {
+    //        return (L) addCondition(
+    //                new SqlConditionExpressionBuilder(dialect, ClassMappingUtils.getColumnName(name, classMapping), value,
+    //                        QueryOperator.CO, queryAlias, ignorePolicy));
+    //    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public L co(String repository, String name, String value, QueryPolicy queryPolicy) {
+        return (L) addCondition(
+                new SqlConditionExpressionBuilder(dialect, ClassMappingUtils.getColumnName(name, classMapping), value,
+                        QueryOperator.CO, queryPolicy, aliasManager.getAlias(repository), ignorePolicy));
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public <T> L co(Class<T> repository, String name, String value, QueryPolicy queryPolicy) {
+        return co(getTableName(repository), name, value, queryPolicy);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public L co(int repositoryIndex, String name, String value, QueryPolicy queryPolicy) {
+        return (L) addCondition(
+                new SqlConditionExpressionBuilder(dialect, ClassMappingUtils.getColumnName(name, classMapping), value,
+                        QueryOperator.CO, queryPolicy, aliasManager.getAlias(repositoryIndex), ignorePolicy));
     }
 
     /**
@@ -1762,69 +2367,6 @@ public abstract class AbstractRepositorySqlConditionGroupExpression<C extends Re
      * {@inheritDoc}
      */
     @Override
-    public <T> L ne(Class<T> repository, String name, Object value) {
-        return ne(getTableName(repository), name, value);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public L ne(int repositoryIndex, String name, Object value) {
-        return (L) addCondition(
-                new SqlConditionExpressionBuilder(dialect, ClassMappingUtils.getColumnName(name, classMapping), value,
-                        QueryOperator.NE, aliasManager.getAlias(repositoryIndex), ignorePolicy));
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public <T, R> L ne(SerializableFunction<T, R> name, R value) {
-        return ne(getPropertyName(name), value);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public L ne(String name, Object value) {
-        return (L) addCondition(
-                new SqlConditionExpressionBuilder(dialect, ClassMappingUtils.getColumnName(name, classMapping), value,
-                        QueryOperator.NE, queryAlias, ignorePolicy));
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public L ne(String repository, String name, Object value) {
-        return (L) addCondition(
-                new SqlConditionExpressionBuilder(dialect, ClassMappingUtils.getColumnName(name, classMapping), value,
-                        QueryOperator.NE, aliasManager.getAlias(repository), ignorePolicy));
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public <T, R> L ne(SerializableFunction<T, R> repository, SerializableFunction<T, R> property, R value) {
-        return ne(getPropertyName(repository), getPropertyName(property), value);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public <T, R> L ne(SerializableSupplier<T> repository, SerializableFunction<T, R> property) {
-        Tuple3<String, String, Object> tuple = conditionResult(repository, property);
-        return ne(tuple.get0(), tuple.get1(), tuple.get2());
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
     public <T> L nin(Class<T> repository, String name, Object value) {
         return nin(getTableName(repository), name, value);
     }
@@ -2126,97 +2668,6 @@ public abstract class AbstractRepositorySqlConditionGroupExpression<C extends Re
      * {@inheritDoc}
      */
     @Override
-    public <T> L sw(Class<T> repository, String name, String value) {
-        return sw(getTableName(repository), name, value);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public L sw(int repositoryIndex, String name, String value) {
-        return (L) addCondition(
-                new SqlConditionExpressionBuilder(dialect, ClassMappingUtils.getColumnName(name, classMapping), value,
-                        QueryOperator.SW, aliasManager.getAlias(repositoryIndex), ignorePolicy));
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public <T> L sw(ReturnStringFunction<T> name, String value) {
-        return sw(getPropertyName(name), value);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public L sw(String name, String value) {
-        return (L) addCondition(
-                new SqlConditionExpressionBuilder(dialect, ClassMappingUtils.getColumnName(name, classMapping), value,
-                        QueryOperator.SW, queryAlias, ignorePolicy));
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public L sw(String repository, String name, String value) {
-        return (L) addCondition(
-                new SqlConditionExpressionBuilder(dialect, ClassMappingUtils.getColumnName(name, classMapping), value,
-                        QueryOperator.SW, aliasManager.getAlias(repository), ignorePolicy));
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public L co(StringSupplier property) {
-        SerializableSupplierLambdaInfo<String> info = LambdaUtils.getSerializableSupplierLambdaInfo(property);
-        return co(info.getSerializedLambdaInfo().getPropertyName(), info.getValue());
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public L ew(StringSupplier property) {
-        SerializableSupplierLambdaInfo<String> info = LambdaUtils.getSerializableSupplierLambdaInfo(property);
-        return co(info.getSerializedLambdaInfo().getPropertyName(), info.getValue());
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public <R> L eq(SerializableSupplier<R> property) {
-        //        SerializableSupplierLambdaInfo<R> info = LambdaUtils.getSerializableSupplierLambdaInfo(property);
-        //        return eq(info.getSerializedLambdaInfo().getPropertyName(), info.getValue());
-        //        Tuple2<String, R> tuple = supplier(LambdaUtils.getSerializableSupplierLambdaInfo(property));
-        //        return eq(tuple.get0(), tuple.get1());
-        List<Tuple2<String, Optional<R>>> tuples = supplier(LambdaUtils.getSerializableSupplierLambdaInfo(property));
-        L l = null;
-        C c = (C) this;
-        if (tuples.size() > 1) {
-            c = group();
-        }
-        for (Tuple2<String, Optional<R>> tuple : tuples) {
-            if (l != null) {
-                c = l.and();
-            }
-            l = c.ne(tuple.get0(), tuple.get1().orElseGet(() -> null));
-        }
-        if (tuples.size() > 1) {
-            l = l.endGroup();
-        }
-        return l;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
     public <R> L in(SerializableSupplier<R> property) {
         SerializableSupplierLambdaInfo<R> info = LambdaUtils.getSerializableSupplierLambdaInfo(property);
         return in(info.getSerializedLambdaInfo().getPropertyName(), info.getValue());
@@ -2226,45 +2677,9 @@ public abstract class AbstractRepositorySqlConditionGroupExpression<C extends Re
      * {@inheritDoc}
      */
     @Override
-    public <R> L ne(SerializableSupplier<R> property) {
-        //        SerializableSupplierLambdaInfo<R> info = LambdaUtils.getSerializableSupplierLambdaInfo(property);
-        //        return ne(info.getSerializedLambdaInfo().getPropertyName(), info.getValue());
-        //        Tuple2<String, R> tuple = supplier(LambdaUtils.getSerializableSupplierLambdaInfo(property));
-        //        return eq(tuple.get0(), tuple.get1());
-        List<Tuple2<String, Optional<R>>> tuples = supplier(LambdaUtils.getSerializableSupplierLambdaInfo(property));
-        L l = null;
-        C c = (C) this;
-        if (tuples.size() > 1) {
-            c = group();
-        }
-        for (Tuple2<String, Optional<R>> tuple : tuples) {
-            if (l != null) {
-                c = l.and();
-            }
-            l = c.ne(tuple.get0(), tuple.get1().orElseGet(() -> null));
-        }
-        if (tuples.size() > 1) {
-            l = l.endGroup();
-        }
-        return l;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
     public <R> L nin(SerializableSupplier<R> property) {
         SerializableSupplierLambdaInfo<R> info = LambdaUtils.getSerializableSupplierLambdaInfo(property);
         return nin(info.getSerializedLambdaInfo().getPropertyName(), info.getValue());
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public L sw(StringSupplier property) {
-        SerializableSupplierLambdaInfo<String> info = LambdaUtils.getSerializableSupplierLambdaInfo(property);
-        return sw(info.getSerializedLambdaInfo().getPropertyName(), info.getValue());
     }
 
     /**
@@ -2487,61 +2902,6 @@ public abstract class AbstractRepositorySqlConditionGroupExpression<C extends Re
      * {@inheritDoc}
      */
     @Override
-    public L lk(String repository, String name, String value) {
-        return (L) addCondition(
-                new SqlConditionExpressionBuilder(dialect, ClassMappingUtils.getColumnName(name, classMapping), value,
-                        QueryOperator.LK, aliasManager.getAlias(repository), ignorePolicy));
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public <T> L lk(Class<T> repository, String name, String value) {
-        return lk(getTableName(repository), name, value);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public L lk(int repositoryIndex, String name, String value) {
-        return (L) addCondition(
-                new SqlConditionExpressionBuilder(dialect, ClassMappingUtils.getColumnName(name, classMapping), value,
-                        QueryOperator.LK, aliasManager.getAlias(repositoryIndex), ignorePolicy));
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public L lk(String name, String value) {
-        return (L) addCondition(
-                new SqlConditionExpressionBuilder(dialect, ClassMappingUtils.getColumnName(name, classMapping), value,
-                        QueryOperator.LK, queryAlias, ignorePolicy));
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public <T> L lk(ReturnStringFunction<T> name, String value) {
-        return lk(getPropertyName(name), value);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public L lk(StringSupplier property) {
-        SerializableSupplierLambdaInfo<String> info = LambdaUtils.getSerializableSupplierLambdaInfo(property);
-        return lk(info.getSerializedLambdaInfo().getPropertyName(), info.getValue());
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
     public L expression(String expression, final Map<String, Object> params) {
         final Execution execution = SqlUtils.convertNamedParamSql(expression, params);
         return expression(execution.getExecution(), execution.getParams());
@@ -2574,6 +2934,21 @@ public abstract class AbstractRepositorySqlConditionGroupExpression<C extends Re
         AssertIllegalArgument.isNotNull(ignorePolicy, "ignorePolicy");
         this.ignorePolicy = ignorePolicy;
         return (C) this;
+    }
+
+    // ********************************************************************
+    // protected method
+    // ********************************************************************
+
+    /**
+     * Supplier.
+     *
+     * @param <R>  the generic type
+     * @param info the info
+     * @return the list
+     */
+    protected <R> List<Tuple2<String, Optional<R>>> supplier(SerializedLambdaInfo info, R value) {
+        return supplier(info, value, classMapping);
     }
 
     /**

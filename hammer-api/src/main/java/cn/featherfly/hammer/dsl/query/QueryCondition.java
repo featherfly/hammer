@@ -2,9 +2,7 @@
 package cn.featherfly.hammer.dsl.query;
 
 /**
- * <p>
- * QueryCondition
- * </p>
+ * QueryCondition.
  *
  * @author zhongj
  */

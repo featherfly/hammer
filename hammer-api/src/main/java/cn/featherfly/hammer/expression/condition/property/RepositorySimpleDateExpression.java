@@ -8,11 +8,11 @@ import cn.featherfly.hammer.expression.condition.LogicExpression;
 import cn.featherfly.hammer.expression.condition.RepositoryConditionsExpression;
 
 /**
- * <p>
- * SimpleObjectExpression
- * </p>
+ * The Class RepositorySimpleDateExpression.
  *
  * @author zhongj
+ * @param <C> the generic type
+ * @param <L> the generic type
  */
 public class RepositorySimpleDateExpression<C extends RepositoryConditionsExpression<C, L>,
         L extends LogicExpression<C, L>> implements DateExpression<C, L> {
@@ -26,6 +26,8 @@ public class RepositorySimpleDateExpression<C extends RepositoryConditionsExpres
     private RepositoryConditionsExpression<C, L> expression;
 
     /**
+     * Instantiates a new repository simple date expression.
+     *
      * @param repositoryIndex repository index
      * @param name            name
      * @param expression      expression
@@ -39,6 +41,8 @@ public class RepositorySimpleDateExpression<C extends RepositoryConditionsExpres
     }
 
     /**
+     * Instantiates a new repository simple date expression.
+     *
      * @param repository repository
      * @param name       name
      * @param expression expression
@@ -52,6 +56,8 @@ public class RepositorySimpleDateExpression<C extends RepositoryConditionsExpres
     }
 
     /**
+     * Instantiates a new repository simple date expression.
+     *
      * @param name       name
      * @param expression expression
      */

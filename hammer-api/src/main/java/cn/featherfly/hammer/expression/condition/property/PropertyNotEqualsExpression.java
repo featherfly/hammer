@@ -1,25 +1,34 @@
 
 package cn.featherfly.hammer.expression.condition.property;
 
+import cn.featherfly.common.repository.operate.QueryOperator.QueryPolicy;
 import cn.featherfly.hammer.expression.condition.ConditionExpression;
 import cn.featherfly.hammer.expression.condition.LogicExpression;
 
 /**
- * <p>
- * NotEqualsExpressoin
- * </p>
+ * NotEqualsExpressoin.
  *
  * @author zhongj
  */
-public interface PropertyNotEqualsExpression<C extends ConditionExpression,
-        L extends LogicExpression<C, L>, V> extends ConditionExpression {
+public interface PropertyNotEqualsExpression<C extends ConditionExpression, L extends LogicExpression<C, L>, V>
+        extends ConditionExpression {
 
     /**
-     * not equals.不等于
+     * not equals. 不等于.
      *
-     * @param value
-     *            参数值
+     * @param value 参数值
      * @return LogicExpression
      */
-    L ne(V value);
+    default L ne(V value) {
+        return ne(value, QueryPolicy.AUTO);
+    }
+
+    /**
+     * not equals. 不等于.
+     *
+     * @param value       参数值
+     * @param queryPolicy the query policy
+     * @return LogicExpression
+     */
+    L ne(V value, QueryPolicy queryPolicy);
 }
