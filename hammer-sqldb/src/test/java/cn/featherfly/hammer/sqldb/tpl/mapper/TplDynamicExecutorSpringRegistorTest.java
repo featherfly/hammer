@@ -17,12 +17,11 @@ import org.testng.annotations.Test;
 import cn.featherfly.common.lang.Randoms;
 import cn.featherfly.hammer.sqldb.jdbc.vo.User;
 import cn.featherfly.hammer.sqldb.jdbc.vo.UserInfo;
+import cn.featherfly.hammer.sqldb.jdbc.vo.UserInfo2;
 import cn.featherfly.hammer.sqldb.tpl.UserMapper;
 
 /**
- * <p>
- * TplDynamicExecutorSpringRegistorTest
- * </p>
+ * TplDynamicExecutorSpringRegistorTest.
  *
  * @author zhongj
  */
@@ -34,6 +33,9 @@ public class TplDynamicExecutorSpringRegistorTest extends AbstractTestNGSpringCo
 
     @Resource
     UserInfoMapper userInfoMapper;
+
+    @Resource
+    UserInfoMapper3 userInfoMapper3;
 
     @Resource
     UserInfoMapper2 userInfoMapper2;
@@ -66,12 +68,32 @@ public class TplDynamicExecutorSpringRegistorTest extends AbstractTestNGSpringCo
 
         System.err.println("--------------------------------");
 
-        userInfoMapper.selectById(id);
+        ui = userInfoMapper.selectById(id);
         System.out.println("selectString = " + ui);
         assertEquals(ui.getId(), id);
 
-        userInfoMapper.selectById(id);
+        ui = userInfoMapper.selectById(id);
         System.out.println("selectString = " + ui);
+        assertEquals(ui.getId(), id);
+
+        System.err.println("--------------------------------");
+
+        ui = userInfoMapper.get(id);
+        System.out.println("get = " + ui);
+        assertEquals(ui.getId(), id);
+
+        ui = userInfoMapper.get(id);
+        System.out.println("get = " + ui);
+        assertEquals(ui.getId(), id);
+
+        System.err.println("--------------------------------");
+
+        ui = userInfoMapper.get2(id);
+        System.out.println("get2 = " + ui);
+        assertEquals(ui.getId(), id);
+
+        ui = userInfoMapper.get2(id);
+        System.out.println("get2 = " + ui);
         assertEquals(ui.getId(), id);
     }
 
@@ -90,6 +112,55 @@ public class TplDynamicExecutorSpringRegistorTest extends AbstractTestNGSpringCo
 
         userInfoMapper.selectById(id);
         System.out.println("selectString = " + ui);
+        assertEquals(ui.getId(), id);
+    }
+
+    @Test
+    void testMapperCache3() {
+        UserInfoMapper3 userInfoMapper = userInfoMapper3;
+
+        Long id = 1L;
+        UserInfo2 ui = userInfoMapper.selectById(id);
+        System.out.println("selectString = " + ui);
+        assertEquals(ui.getId(), id);
+
+        System.err.println("--------------------------------");
+
+        ui = userInfoMapper.selectById(id);
+        System.out.println("selectString = " + ui);
+        assertEquals(ui.getId(), id);
+
+        ui = userInfoMapper.selectById(id);
+        System.out.println("selectString = " + ui);
+        assertEquals(ui.getId(), id);
+
+        System.err.println("--------------------------------");
+
+        ui = userInfoMapper.get(id);
+        System.out.println("get = " + ui);
+        assertEquals(ui.getId(), id);
+
+        ui = userInfoMapper.get(id);
+        System.out.println("get = " + ui);
+        assertEquals(ui.getId(), id);
+    }
+
+    @Test
+    void testMapperCache3_2() {
+        UserInfoMapper3 userInfoMapper = userInfoMapper3;
+
+        Long id = 1L;
+        UserInfo2 ui = userInfoMapper.get(id);
+        System.out.println("get = " + ui);
+
+        System.err.println("--------------------------------");
+
+        ui = userInfoMapper.get(id);
+        System.out.println("get = " + ui);
+        assertEquals(ui.getId(), id);
+
+        ui = userInfoMapper.get(id);
+        System.out.println("get = " + ui);
         assertEquals(ui.getId(), id);
     }
 

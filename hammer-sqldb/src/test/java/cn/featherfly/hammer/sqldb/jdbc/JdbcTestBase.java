@@ -3,6 +3,8 @@ package cn.featherfly.hammer.sqldb.jdbc;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.HashSet;
+import java.util.Set;
 
 import javax.sql.DataSource;
 
@@ -72,7 +74,11 @@ public class JdbcTestBase {
 
         initDataBase(dataBase);
 
-        configFactory = new TplConfigFactoryImpl("tpl/", ".yaml.tpl", new FreemarkerTemplatePreProcessor());
+        Set<String> basePackages = new HashSet<>();
+        basePackages.add("cn.featherfly.hammer");
+
+        configFactory = new TplConfigFactoryImpl("tpl/", ".yaml.tpl", basePackages,
+                new FreemarkerTemplatePreProcessor());
     }
 
     public void initDataBase(String dataBase) throws IOException {
@@ -103,8 +109,10 @@ public class JdbcTestBase {
         //        dataSource.setUrl("jdbc:mysql://127.0.0.1:3306/hammer_jdbc?useUnicode=true&characterEncoding=UTF-8");
         //        ds.setUrl(
         //                "jdbc:mysql://127.0.0.1:3306/hammer_jdbc?serverTimezone=UTC&characterEncoding=utf8&useUnicode=true&useSSL=false");
-        ds.setUrl(
-                "jdbc:mysql://127.0.0.1:3306/hammer_jdbc?serverTimezone=CTT&characterEncoding=utf8&useUnicode=true&useSSL=false");
+        //        ds.setUrl(
+        //                "jdbc:mysql://127.0.0.1:3306/hammer_jdbc?serverTimezone=CTT&characterEncoding=utf8&useUnicode=true&useSSL=false");
+        // 高版本mysql-connector已经不需要serverTimezone=CTT
+        ds.setUrl("jdbc:mysql://127.0.0.1:3306/hammer_jdbc?characterEncoding=utf8&useUnicode=true&useSSL=false");
         ds.setDriverClassName("com.mysql.cj.jdbc.Driver");
         ds.setUsername("root");
         ds.setPassword("123456");

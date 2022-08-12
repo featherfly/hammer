@@ -30,9 +30,7 @@ import cn.featherfly.hammer.tpl.mapper.DynamicTplExecutorScanSpringRegistor;
 import cn.featherfly.hammer.tpl.mapper.DynamicTplExecutorSpringRegistor;
 
 /**
- * <p>
- * Appconfig
- * </p>
+ * Appconfig.
  *
  * @author zhongj
  */
@@ -57,8 +55,11 @@ public class Appconfig extends JdbcTestBase {
         //        dataSource.setDriverClassName("com.mysql.jdbc.Driver");
         //        dataSource.setUrl(
         //                "jdbc:mysql://127.0.0.1:3306/hammer_jdbc?serverTimezone=UTC&characterEncoding=utf8&useUnicode=true&useSSL=false");
-        dataSource.setUrl(
-                "jdbc:mysql://127.0.0.1:3306/hammer_jdbc?serverTimezone=CTT&characterEncoding=utf8&useUnicode=true&useSSL=false");
+        //        dataSource.setUrl(
+        //                "jdbc:mysql://127.0.0.1:3306/hammer_jdbc?serverTimezone=CTT&characterEncoding=utf8&useUnicode=true&useSSL=false");
+        // 高版本mysql-connector已经不需要serverTimezone=CTT
+        dataSource
+                .setUrl("jdbc:mysql://127.0.0.1:3306/hammer_jdbc?characterEncoding=utf8&useUnicode=true&useSSL=false");
         dataSource.setDriverClassName("com.mysql.cj.jdbc.Driver");
         dataSource.setUsername("root");
         dataSource.setPassword("123456");

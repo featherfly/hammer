@@ -105,8 +105,16 @@ public class BasedTplHammer implements Hammer {
      * {@inheritDoc}
      */
     @Override
+    public <E> E load(E entity) {
+        return hammer.load(entity);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
     public <E> E get(E entity) {
-        return hammer.get(entity);
+        return hammer.load(entity);
     }
 
     /**
@@ -630,6 +638,14 @@ public class BasedTplHammer implements Hammer {
     @Override
     public <E> List<E> get(Class<E> type, List<Serializable> ids) {
         return hammer.get(type, ids);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public <E> int saveOrUpdate(E entity) {
+        return hammer.saveOrUpdate(entity);
     }
 
 }

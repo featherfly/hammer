@@ -6,7 +6,6 @@ import java.util.List;
 import java.util.function.Consumer;
 import java.util.function.Predicate;
 
-import cn.featherfly.common.constant.Chars;
 import cn.featherfly.common.lang.ClassUtils;
 import cn.featherfly.common.lang.LambdaUtils;
 import cn.featherfly.common.lang.LambdaUtils.SerializedLambdaInfo;
@@ -16,11 +15,11 @@ import cn.featherfly.common.repository.builder.AliasManager;
 import cn.featherfly.common.repository.mapping.ClassMapping;
 import cn.featherfly.common.repository.mapping.MappingFactory;
 import cn.featherfly.common.repository.mapping.PropertyMapping;
-import cn.featherfly.common.repository.operate.AggregateFunction;
 import cn.featherfly.common.structure.page.Page;
 import cn.featherfly.hammer.dsl.query.TypeQueryConditionGroupExpression;
 import cn.featherfly.hammer.dsl.query.TypeQueryEntityProperties;
 import cn.featherfly.hammer.dsl.query.TypeQueryWithEntity;
+import cn.featherfly.hammer.expression.condition.ConditionGroupConfig;
 import cn.featherfly.hammer.expression.query.TypeQueryLimitExecutor;
 import cn.featherfly.hammer.sqldb.SqldbHammerException;
 import cn.featherfly.hammer.sqldb.jdbc.Jdbc;
@@ -68,7 +67,7 @@ public class TypeSqlQueryEntityProperties extends AbstractSqlQueryEntityProperti
      * {@inheritDoc}
      */
     @Override
-    public TypeQueryConditionGroupExpression where(Consumer<TypeQueryConditionGroupExpression> consumer) {
+    public TypeQueryConditionGroupExpression where(Consumer<ConditionGroupConfig> consumer) {
         TypeSqlQueryExpression typeSqlQueryExpression = new TypeSqlQueryExpression(jdbc, classMapping, this, factory,
                 sqlPageFactory, aliasManager, selectBuilder, ignorePolicy);
         if (consumer != null) {
@@ -113,14 +112,14 @@ public class TypeSqlQueryEntityProperties extends AbstractSqlQueryEntityProperti
                 selectBuilder, ignorePolicy).limit(page);
     }
 
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public Long count() {
-        return new SqlQueryExpression(jdbc, sqlPageFactory, classMapping,
-                selectBuilder.addSelectColumn(Chars.STAR, AggregateFunction.COUNT), ignorePolicy).longInt();
-    }
+    //    /**
+    //     * {@inheritDoc}
+    //     */
+    //    @Override
+    //    public Long count() {
+    //        return new SqlQueryExpression(jdbc, sqlPageFactory, classMapping,
+    //                selectBuilder.addSelectColumn(Chars.STAR, AggregateFunction.COUNT), ignorePolicy).longInt();
+    //    }
 
     /**
      * {@inheritDoc}

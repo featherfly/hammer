@@ -21,6 +21,19 @@ public class Tree2 {
 
     private String name;
 
+    /**
+     */
+    public Tree2() {
+    }
+
+    /**
+     * @param id
+     */
+    public Tree2(Integer id) {
+        super();
+        this.id = id;
+    }
+
     @Column(name = "parent_id")
     @ManyToOne
     private Tree2 parent;

@@ -1,6 +1,52 @@
+# 0.6.5
+1. TplExecuteIdMapperImpl删除isTemplate相关代码
+2. dsl条件查询eq(SerialFunction<T, R>, T),ne(SerialFunction<T, R> t)方法支持@Embedded对象，自动使用该对象的所有非空属性
+3. where(Consumer<ConditionGroupConfig>)泛型参数变更
+4. Hammer、GenericHammer加入querySingleBy，queryListBy等一系列方法
+5. Jdbc.update支持多参数支持其中某几个参数是BeanPropertyValue
+6. dsl api update的set方法支持自定义映射(使用BeanPropertyValue)
+7. 加入StringConditionExpression，用于在dsl中加入特殊sql拼接
+8. dsl api （eq,ne,co,sw,ew,lk）加入查询大小写敏感的支持（即 = 和 like 支持区分大小写）（根据数据库不同可能不支持）
+
+# 0.6.4 2022-07-15
+1. 升级依赖
+2. 修复使用jdk17时,springdev里的restartclassloader加载有错的问题
+
+# 0.6.3 2022-06-08
+1. NestedBeanPropertyRowMapper加入MapperObjectFactory
+2. 动态Mapper实现生成时加入方法的注解
+3. 修复devMode的时候读取@Template内置sql报错的问题
+
+# 0.6.2 2022-05-31
+1. 修复template文件在jar包中获取文件出错的问题
+
+# 0.6.1 2022-05-31
+1. 优化TplExecutionConfig的配置信息
+2. 优化配置的日志输出
+3. Template删除isTemplate()方法
+4. 实现saveOrUpdate方法，如果数据库支持upsert，则使用upsert,否则判断id是否为空进行保存或者更新
+5. Jdbc加入各种insert,upsert方法
+
+# 0.6.0 2022-05-24  
+1. 模板文件加载器加入支持从不同前置目录加载的实现(例如 rbac, cms, blog, common/config)
+2. 模板文件加载器加入支持从不同文件后缀加载的实现(例如 .yaml.sql, .tpl.sql)
+
+# 0.5.30 2022-04-22  
+1. 修复在java11下生成mapper出现的空指针异常
+2. dsl api 更新操作set方法加入set(Consumer<UpdateSetDsl>)用于在链式调用中进行条件帅选
+
+# 0.5.29 2022-04-06  
+1. 修复common-core不兼容升级
+2. 优化AbstractJdbc的日志输出
+3. update().set(SerialFunction, value)、where().eq(SerialFunction, value)/ne(SerialFunction, value)的value改为对应Function的泛型
+4. SqldbHammer加入JdbcMappingFactory getMappingFactory()方法
+
+# 0.5.28 2021-12-20
+1. Mapper加入HammerSupport和GenericHammerSupport支持
+
 # 0.5.27 2021-12-19
 1. Hammer加入List<E> get(Class<E>, Serializable...)和List<E> get(Class<E>, List<Serializable>);
-2. ConditionGroupExpression,RepositoryConditionGroupLogicExpression加入Predicate<Object> getIgnorePolicy(),C setIgnorePolicy(Predicate<Object> ignorePolicy);
+2. ConditionGroupExpression,RepositoryConditionGroupLogicExpression加入Predicate<Object> getIgnorePolicy(),C setIgnorePolicy(Predicate<Object> ignorePolicy)
 3. dsl api 加入C where(Consumer<C> consumer)方法
 
 # 0.5.26 2021-12-05

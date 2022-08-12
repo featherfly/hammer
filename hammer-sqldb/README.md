@@ -44,22 +44,76 @@ int result = hammer.update(u);// 或者 hammer.merge(u); // update和merge区别
 int result = hammer.delete(u);
 
 // DSL模式更新数据
-int result = hammer.update(User.class).set("name", newName).property("descp").set(newDescp).where().eq("id", id).execute();
-int result = hammer.update(User.class).set(User::getName, newName).property(User::getDescp).set(newDescp).where().eq(User::getId, id).execute();
+int result = hammer.update(User.class)
+    			.set("name", newName)
+    			.property("descp").set(newDescp)
+    			.where()
+    			.eq("id", id)
+    			.execute();
+int result = hammer.update(User.class)
+    			.set(User::getName, newName)
+    			.property(User::getDescp)
+    			.set(newDescp)
+    			.where()
+    			.eq(User::getId, id)
+    			.execute();
 
 // DSL模式更新自增长数据
-int result = hammer.update(User.class).increase("age", 1).where().eq("id", id).execute();
-int result = hammer.update(User.class).increase(User::getAge, 1).where().eq(User::getId, id).execute();
+int result = hammer.update(User.class)
+    			.increase("age", 1)
+    			.where()
+    			.eq("id", id)
+    			.execute();
+int result = hammer.update(User.class)
+    			.increase(User::getAge, 1)
+    			.where()
+    			.eq(User::getId, id)
+    			.execute();
 
 // DSL模式删除数据
-int result = hammer.delete(Role.class).where().in("id", new Integer[] { r.getId(), r2.getId() }).or().eq("id", r3.getId()).or().ge("id", r4.getId()).execute();
-int result = hammer.delete(Role.class).where().eq(Role::getId, r3.getId()).execute();
+int result = hammer.delete(Role.class)
+    			.where()
+    			.in("id", new Integer[] { r.getId(), r2.getId() })
+    			.or()
+    			.eq("id", r3.getId())
+    			.or()
+    			.ge("id", r4.getId())
+    			.execute();
+int result = hammer.delete(Role.class)
+    			.where()
+    			.eq(Role::getId, r3.getId())
+    			.execute();
 
 // DSL模式查询数据
-User user = hammer.query("user").where().eq("username", username).and().eq("password", password).single()
-User user = hammer.query(User.class).where().eq(User::getUsername, username).and().eq(User::getPassword, password).single()
-List<User> users = query.find("user").where().eq("username", username).and().eq("password", password).and().group().gt("age", 18).and().lt("age", 60).list(User.class)
-List<Role> roles = hammer.query(Role.class).where().gt("id", 5).and().le("id", 10).list()
+User user = hammer.query("user")
+    			.where()
+    			.eq("username", username)
+    			.and()
+    			.eq("password", password)
+    			.single()    
+User user = hammer.query(User.class)
+    			.where()
+    			.eq(User::getUsername, username)
+    			.and()
+    			.eq(User::getPassword, password)
+    			.single()
+List<User> users = query.find("user")
+    			.where()
+    			.eq("username", username)
+    			.and()
+    			.eq("password", password)
+    			.and()
+    			.group()
+    				.gt("age", 18)
+    				.and()
+    				.lt("age", 60)
+    			.list(User.class)
+List<Role> roles = hammer.query(Role.class)
+    			.where()
+    			.gt("id", 5)
+    			.and()
+    			.le("id", 10)
+    			.list()
 
 // 模板SQL查询数据
 String str = hammer.string("selectString", new HashMap<String, Object>());
@@ -98,7 +152,7 @@ public interface UserMapper {
 ```
 
 ```java
-// 除了可以使用模板sql进行查询外，可以继承hammer或者GenericHammer进行api操作,需要使用jdk8的default method
+// 除了可以使用模板sql进行查询外，可以继承Hammer、GenericHammer进行api操作,或者继承HammerSupport通过getHammer获取hammer对象进行操作，需要使用jdk8的default method
 @Mapper(namespace = "user")
 public interface UserMapper3 extends GenericHammer<User> {
 	// 这里的query方法就是GenericHammer接口定义的方法
@@ -106,6 +160,15 @@ public interface UserMapper3 extends GenericHammer<User> {
         return query().where().eq("username", username).and().eq("password", pwd).single();
     }
 }
+
+@Mapper
+public interface HammerSupportMapper extends HammerSupport {
+    default User get(Long id) {
+        return getHammer().get(id, User.class);
+    }
+    User getByUsername(String username);
+}
+
 // 外部调用也可以直接使用hammer或者GenericHammer里定义的方法
 public class UserService {
     UserMapper3 userMapper;
@@ -119,6 +182,8 @@ public class UserService {
         }
     }
 }
+
+
 ```
 
 ## 目录
@@ -164,48 +229,37 @@ public class UserService {
 
 **java 中初始化配置**
 
-```java
-import cn.featherfly.constant.ConstantConfigurator;
-//默认使用constant.yaml，如果你要使用其他名字，请使用config(fileName)传入文件名
-ConstantConfigurator.config();
-// ConstantConfigurator.config("your_file_name.yaml");
-```
 
-hammer-sqldb 不需要任何配置文件就能直接运行，所有配置都有默认值，所以下面这里加入文件不是必须的，不过鉴于开发要频繁修改 sql 模板文件，所以开启 devMode 更省事，devMode 下会热加载 sql 模板文件的内容  
-`需要注意的是：ConstantConfigurator.config()的调用是必须的`
-
-**在 resources 目录下加入 constant.yaml 文件（默认是从 classpath 根目录读取）**
-
-```yaml
-devMode: true
-```
-
-<!--`basePackeges` 需要扫描constant配置的包路径，多个包使用逗号（,）隔开，如(cn.fetherfly,com.github)。如果你的项目没有使用constant配置，直接使用cn.featherfly就行了。)   -->
-
-`devMode` 开发模式，为 true 时，sql 模板会在每次获取时都重新从文件读取，生产环境请设置为 false，或者删除此配置，默认值就是 false
+hammer-sqldb 不需要任何配置文件就能直接运行，所有配置都有默认值，所以下面这里加入文件不是必须的，不过鉴于开发要频繁修改 sql 模板文件，所以开启 devMode 更省事，devMode 下会热加载 sql 模板文件的内容   
 
 ### SqlDbHammer 配置
 
 ```java
-ConstantConfigurator.config();
 DataSource dataSource = new BasicDataSource();
 dataSource.setUrl("jdbc:mysql://127.0.0.1:3306/hammer_jdbc");
 dataSource.setDriverClassName("com.mysql.jdbc.Driver");
 dataSource.setUsername("root");
 dataSource.setPassword("123456");
+
+Dialect dialect = Dialects.MYSQL;
 // 这里的dataSource使用你自己的数据源实现
-Jdbc jdbc = new SpringJdbcTemplateImpl(dataSource, Dialects.MYSQL);
+Jdbc jdbc = new JdbcImpl(dataSource, dialect, sqlTypeMappingManager);
 DatabaseMetadata metadata = DatabaseMetadataManager.getDefaultManager().create(dataSource);
+
+SqlTypeMappingManager sqlTypeMappingManager = new SqlTypeMappingManager();
 
 //Jdbc jdbc = new SpringJdbcTemplateImpl(dataSource, Dialects.ORACLE);
 //DatabaseMetadata metadata = DatabaseMetadataManager.getDefaultManager().create(dataSource, "hammer_jdbc");
 // 如果数据库驱动不支持从connnection获取数据库名称，需要在create时传入数据库名称
-JdbcMappingFactory mappingFactory = new JdbcMappingFactory(metadata, Dialects.MYSQL);
+JdbcMappingFactory mappingFactory = new JdbcMappingFactoryImpl(metadata, dialect, sqlTypeMappingManager);
+
 Set<String> basePackages = new HashSet<>();
 basePackages.add("cn.featherfly.hammer.sqldb.tpl.mapper");
+boolean devMode = true;
 // 这里的tpl/表示开始查找sql模板文件的根目录
 // 这里的basePackages表示扫描Mapper文件的根目录集合,用于把@Template("sql")内置sql模板加入模板管理
-TplConfigFactory configFactory = new TplConfigFactoryImpl("tpl/", basePackages);
+// FreemarkerTemplatePreProcessor表示模板预处理，即把为sql处理特化的模板转换为freemarker模板
+TplConfigFactory configFactory = new TplConfigFactoryImpl("tpl/", basePackages, new FreemarkerTemplatePreProcessor(), devMode);
 hammer hammer = new hammerJdbcImpl(jdbc, mappingFactory, configFactory);
 // 然后使用hammer进行数据操作
 ```
@@ -1061,6 +1115,7 @@ public interface UserMapper3 extends GenericHammer<User> {
 -   `name` sqlId，如果为空，则使用方法名作为 sqlId 进行查找
 -   `template` sql template，如果不为空，则直接使用此模板执行，用法和在模板文件中定义的完全一样，模板管理器会使用 namespace 和 name 注册，前提是在使用 TplConfigFactory 时给定了 basePackges 进行类扫描注册
 -   `type` sql template type，默认值 AUTO，枚举 AUTO,QUERY,EXECUTE
+    
     > 在@Template 中定义 template 直接写 sql 模板其实是为了 jdk13，jdk14 中出现的文本块（目前还是预览版，不是正式版），目前把复杂 sql 模板放在@Template 中一点都不方便，也就适合放简单 sql, 但是简单 sql 我个人更倾向于直接使用 query dsl
 
 `@Param` 标注在方法参数中，用于映射方法参数和查询参数
@@ -1269,7 +1324,7 @@ PaginationResults<User> selectByAge2Page(@Param("age") Integer age, Page page);
 
 ### Mapper 中实现模板查询以外的操作
 
-定义接口继承自 hammer 或者 GenericHammer，然后定义 default method，在其内部就可以使用已有的方法进行逻辑编写了。**需要 java8 的 default method**。  
+定义接口继承自 hammer 、GenericHammer、HammerSupport，然后定义 default method，在其内部就可以使用已有的方法进行逻辑编写了。**需要 java8 的 default method**。  
 通过此方式，我们可以把一种实体类型的数据库操作写在一个 Mapper 文件中，通过继承的接口已经获得了实体的基本增删改查方法，其他简单的查询（更新，删除）也可以用 DSL API 实现，只有复杂的查询，才需要在模板中写 sql。
 
 ```java
@@ -1300,5 +1355,13 @@ public interface UserMapper3 extends GenericHammer<User> {
         //return delete().where().eq("username", username);
         return delete().where().eq(User::getUsername, username).execute();
     }
+}
+
+@Mapper
+public interface HammerSupportMapper extends HammerSupport {
+    default User get(Long id) {
+        return getHammer().get(id, User.class);
+    }
+    User getByUsername(String username);
 }
 ```

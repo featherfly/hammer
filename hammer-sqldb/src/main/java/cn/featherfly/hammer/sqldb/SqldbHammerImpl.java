@@ -39,6 +39,7 @@ import cn.featherfly.hammer.sqldb.jdbc.operate.GetOperate;
 import cn.featherfly.hammer.sqldb.jdbc.operate.InsertOperate;
 import cn.featherfly.hammer.sqldb.jdbc.operate.MergeOperate;
 import cn.featherfly.hammer.sqldb.jdbc.operate.UpdateOperate;
+import cn.featherfly.hammer.sqldb.jdbc.operate.UpsertOperate;
 import cn.featherfly.hammer.sqldb.tpl.SqlDbTemplateEngine;
 import cn.featherfly.hammer.sqldb.tpl.SqlTplExecutor;
 import cn.featherfly.hammer.sqldb.tpl.freemarker.SqldbFreemarkerTemplateEngine;
@@ -70,6 +71,9 @@ public class SqldbHammerImpl implements SqldbHammer {
 
     /** The update operates. */
     private Map<Class<?>, UpdateOperate<?>> updateOperates = new HashMap<>();
+
+    /** The update operates. */
+    private Map<Class<?>, UpsertOperate<?>> upsertOperates = new HashMap<>();
 
     /** The get operates. */
     private Map<Class<?>, GetOperate<?>> getOperates = new HashMap<>();
@@ -200,6 +204,30 @@ public class SqldbHammerImpl implements SqldbHammer {
     }
 
     /**
+     * {@inheritDoc}
+     */
+    @Override
+    public <E> int saveOrUpdate(E entity) {
+        if (entity == null) {
+            return 0;
+        }
+        if (jdbc.getDialect().isUpsert()) {
+            UpsertOperate<E> upsert = getUpsert(entity);
+            return upsert.execute(entity);
+        } else {
+            @SuppressWarnings("unchecked")
+            GetOperate<E> get = (GetOperate<E>) getOperate(entity.getClass());
+            Serializable id = get.getId(entity);
+            // FIXME 这里没有处理符合主键的情况
+            if (id == null) {
+                return save(entity);
+            } else {
+                return update(entity);
+            }
+        }
+    }
+
+    /**
      * Gets the insert.
      *
      * @param <E>    the element type
@@ -217,6 +245,19 @@ public class SqldbHammerImpl implements SqldbHammer {
             insertOperates.put(entity.getClass(), insert);
         }
         return insert;
+    }
+
+    private <E> UpsertOperate<E> getUpsert(E entity) {
+        @SuppressWarnings("unchecked")
+        UpsertOperate<E> upsert = (UpsertOperate<E>) upsertOperates.get(entity.getClass());
+        if (upsert == null) {
+            @SuppressWarnings("unchecked")
+            ClassMapping<E> mapping = (ClassMapping<E>) mappingFactory.getClassMapping(entity.getClass());
+            upsert = new UpsertOperate<>(jdbc, mapping, mappingFactory.getSqlTypeMappingManager(),
+                    mappingFactory.getMetadata());
+            upsertOperates.put(entity.getClass(), upsert);
+        }
+        return upsert;
     }
 
     /**
@@ -259,6 +300,7 @@ public class SqldbHammerImpl implements SqldbHammer {
      */
     @Override
     public <E> int update(List<E> entities) {
+        // TODO 使用upsert来进行批量更新
         int size = 0;
         if (Lang.isNotEmpty(entities)) {
             for (E e : entities) {
@@ -471,7 +513,7 @@ public class SqldbHammerImpl implements SqldbHammer {
             return null;
         }
         GetOperate<E> get = getOperate(type);
-        return get.get(id);
+        return get.execute(id);
     }
 
     /**
@@ -484,7 +526,7 @@ public class SqldbHammerImpl implements SqldbHammer {
             return list;
         }
         for (Serializable id : ids) {
-            // TODO 后续优化为GetOperator支持的多个组件
+            // TODO 后续优化为支持一条sql获取多个的实现
             list.add(get(id, type));
         }
         return list;
@@ -500,7 +542,7 @@ public class SqldbHammerImpl implements SqldbHammer {
             return list;
         }
         for (Serializable id : ids) {
-            // TODO 后续优化为GetOperator支持的多个组件
+            // TODO 后续优化为支持一条sql获取多个的实现
             list.add(get(id, type));
         }
         return list;
@@ -606,7 +648,7 @@ public class SqldbHammerImpl implements SqldbHammer {
             ClassMapping<E> mapping = mappingFactory.getClassMapping(entityType);
             get = new GetOperate<>(jdbc, mapping, mappingFactory.getSqlTypeMappingManager(),
                     mappingFactory.getMetadata());
-            getOperates.put(entityType.getClass(), get);
+            getOperates.put(entityType, get);
         }
         return get;
     }
@@ -996,5 +1038,13 @@ public class SqldbHammerImpl implements SqldbHammer {
     @Override
     public Jdbc getJdbc() {
         return jdbc;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JdbcMappingFactory getMappingFactory() {
+        return mappingFactory;
     }
 }

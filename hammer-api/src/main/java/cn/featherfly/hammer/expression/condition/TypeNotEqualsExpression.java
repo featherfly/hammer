@@ -28,7 +28,7 @@ public interface TypeNotEqualsExpression<C extends ConditionExpression, L extend
      * @param value      参数值
      * @return LogicExpression
      */
-    <O, T, R> L ne(SerializableFunction<O, T> repository, SerializableFunction<T, R> property, Object value);
+    <O, T, R> L ne(SerializableFunction<O, T> repository, SerializableFunction<T, R> property, R value);
 
     /**
      * not equals.不等于.

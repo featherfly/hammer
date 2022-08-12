@@ -1,17 +1,17 @@
 dependencies {
     api project(":hammer-api")
     
-    api group: 'cn.featherfly.common', name: 'common-spring', version: '0.2.1'
+    api group: 'cn.featherfly.common', name: 'common-spring', version: '0.3.0'
     api group: 'cn.featherfly.common', name: 'common-asm', version: '0.2.0'
-    api group: 'cn.featherfly.constant', name: 'constant-core', version: '1.6.4'
-    api group: 'cn.featherfly', name: 'featherfly-conversion', version: '1.4.0'
+    api group: 'cn.featherfly.constant', name: 'constant-core', version: '1.6.6'
+    api group: 'cn.featherfly', name: 'featherfly-conversion', version: '1.4.2'
 	api group: 'org.hibernate.javax.persistence', name: 'hibernate-jpa-2.1-api', version: '1.0.2.Final'	
-	api group: 'com.fasterxml.jackson.core', name: 'jackson-databind', version: '2.9.10.1'
-    api group: 'com.fasterxml.jackson.dataformat', name: 'jackson-dataformat-yaml', version: '2.9.10'
-    api group: 'com.speedment.common', name: 'tuple', version: '3.2.9'
+	api group: 'com.fasterxml.jackson.core', name: 'jackson-databind', version: '2.13.2.2'
+    api group: 'com.fasterxml.jackson.dataformat', name: 'jackson-dataformat-yaml', version: '2.13.2'
+    api group: 'com.speedment.common', name: 'tuple', version: '3.2.10'
     // 3.2 去掉了DefineClassHelper，未找到替代实现前暂不升级
     api group: 'org.objenesis', name: 'objenesis', version: '3.1'
-    api group: 'org.freemarker', name: 'freemarker', version: '2.3.28'
+    api group: 'org.freemarker', name: 'freemarker', version: '2.3.31'
 	//api group: 'org.javassist', name: 'javassist', version: '3.27.0-GA'
 	//api group: 'net.bytebuddy', name: 'byte-buddy', version: '1.10.18'
 	//api group: 'org.ow2.asm', name: 'asm', version: '9.0'
@@ -19,7 +19,11 @@ dependencies {
 	//api group: 'org.ow2.asm', name: 'asm-util', version: '9.0'
 	//api group: 'org.ow2.asm', name: 'asm-common', version: '9.0'
 	//api group: 'org.ow2.asm', name: 'asm-debug-all', version: '5.2'
+	
+	implementation group: 'org.springframework', name: 'spring-context', version: sv
 		
 	testImplementation project(":hammer-api")
 	testImplementation group: 'org.ow2.asm', name: 'asm-util', version: '9.0'
+	testImplementation group: 'org.springframework', name: 'spring-core', version: '5.3.14'
+	
 }

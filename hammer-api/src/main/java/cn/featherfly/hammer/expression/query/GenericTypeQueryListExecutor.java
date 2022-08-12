@@ -4,16 +4,15 @@ package cn.featherfly.hammer.expression.query;
 import java.util.List;
 
 /**
- * <p>
- * dsl for query list executor
- * </p>
+ * dsl for query list executor.
  *
  * @author zhongj
+ * @param <E> the element type
  */
 public interface GenericTypeQueryListExecutor<E> {
 
     /**
-     * query for list
+     * query for list.
      *
      * @return list
      */

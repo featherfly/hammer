@@ -45,11 +45,4 @@ public @interface Template {
      * @return template type
      */
     TplType type() default TplType.AUTO;
-
-    /**
-     * value is template
-     *
-     * @return value is template
-     */
-    boolean isTemplate() default true;
 }

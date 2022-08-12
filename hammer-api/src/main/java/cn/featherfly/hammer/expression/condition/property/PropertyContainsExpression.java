@@ -1,25 +1,36 @@
 
 package cn.featherfly.hammer.expression.condition.property;
 
+import cn.featherfly.common.repository.operate.QueryOperator.QueryPolicy;
 import cn.featherfly.hammer.expression.condition.ConditionExpression;
 import cn.featherfly.hammer.expression.condition.LogicExpression;
 
 /**
- * <p>
- * ContainsExpression
- * </p>
+ * ContainsExpression .
  *
  * @author zhongj
+ * @param <C> the generic type
+ * @param <L> the generic type
  */
-public interface PropertyContainsExpression<C extends ConditionExpression,
-        L extends LogicExpression<C, L>> extends ConditionExpression {
+public interface PropertyContainsExpression<C extends ConditionExpression, L extends LogicExpression<C, L>>
+        extends ConditionExpression {
 
     /**
-     * 包含value
+     * contains value. 包含value.
      *
-     * @param value
-     *            参数值
+     * @param value 参数值
      * @return LogicExpression
      */
-    L co(String value);
+    default L co(String value) {
+        return co(value, QueryPolicy.AUTO);
+    }
+
+    /**
+     * contains value. 包含value.
+     *
+     * @param value       the value
+     * @param queryPolicy the query policy
+     * @return the l
+     */
+    L co(String value, QueryPolicy queryPolicy);
 }

@@ -1,6 +1,7 @@
 package cn.featherfly.hammer.sqldb.jdbc.operate;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
@@ -8,6 +9,7 @@ import java.util.Map.Entry;
 import com.speedment.common.tuple.Tuple2;
 
 import cn.featherfly.common.bean.BeanUtils;
+import cn.featherfly.common.constant.Chars;
 import cn.featherfly.common.db.mapping.ClassMappingUtils;
 import cn.featherfly.common.db.mapping.SqlTypeMappingManager;
 import cn.featherfly.common.db.metadata.DatabaseMetadata;
@@ -20,15 +22,12 @@ import cn.featherfly.hammer.sqldb.jdbc.GeneratedKeyHolder;
 import cn.featherfly.hammer.sqldb.jdbc.Jdbc;
 
 /**
- * <p>
- * 插入操作
- * </p>
- * .
+ * 插入操作.
  *
  * @author zhongj
- * @version 1.0
+ * @version 0.4.3
+ * @since 0.1.0
  * @param <T> 对象类型
- * @since 1.0
  */
 public class InsertOperate<T> extends AbstractBatchExecuteOperate<T> {
 
@@ -70,45 +69,15 @@ public class InsertOperate<T> extends AbstractBatchExecuteOperate<T> {
     }
 
     /**
-     * insert batch.
-     *
-     * @param entities the entities
-     * @return insert success amount
+     * {@inheritDoc}
      */
     @Override
-    public int executeBatch(final List<T> entities) {
-        return executeBatch(entities, true);
-    }
-
-    /**
-     * insert batch.
-     *
-     * @param entities          entity list
-     * @param autoSetGenerateId 自动设置自动生成的id值
-     * @return 操作影响的数据行数
-     */
-    public int executeBatch(final List<T> entities, boolean autoSetGenerateId) {
+    public int executeBatch(final List<T> entities, int batchSize) {
+        if (Lang.isEmpty(entities)) {
+            return Chars.ZERO;
+        }
         if (jdbc.getDialect().isInsertBatch()) {
-            Tuple2<String, Map<Integer, String>> tuple = ClassMappingUtils
-                    .getInsertBatchSqlAndParamPositions(entities.size(), classMapping, jdbc.getDialect());
-            String sql = tuple.get0();
-            List<PropertyMapping> pks = classMapping.getPrivaryKeyPropertyMappings();
-            if (pks.size() == 1) {
-                return jdbc.update(sql, new GeneratedKeyHolder<Serializable>() {
-                    @Override
-                    public void acceptKey(Serializable key, int row) {
-                        BeanUtils.setProperty(entities.get(row), pks.get(0).getPropertyName(), key);
-                    }
-
-                    @SuppressWarnings("unchecked")
-                    @Override
-                    public GenericType<Serializable> getType() {
-                        return (GenericClass<Serializable>) new GenericClass<>(pks.get(0).getPropertyType());
-                    }
-                }, getBatchParameters(entities, tuple.get1()));
-            } else {
-                return jdbc.update(sql, getBatchParameters(entities, tuple.get1()));
-            }
+            return _executeBatch(entities, batchSize);
         } else {
             int size = 0;
             for (T entity : entities) {
@@ -118,14 +87,52 @@ public class InsertOperate<T> extends AbstractBatchExecuteOperate<T> {
         }
     }
 
+    private int _executeBatch(final List<T> entities) {
+        if (entities.size() == 0) {
+            return 0;
+        }
+        List<PropertyMapping> pks = classMapping.getPrivaryKeyPropertyMappings();
+        Tuple2<String, Map<Integer, String>> tuple = ClassMappingUtils
+                .getInsertBatchSqlAndParamPositions(entities.size(), classMapping, jdbc.getDialect());
+        String sql = tuple.get0();
+        if (pks.size() == 1) {
+            return jdbc.updateBatch(sql, entities.size(), new GeneratedKeyHolder<Serializable>() {
+                @Override
+                public void acceptKey(Serializable key, int row) {
+                    BeanUtils.setProperty(entities.get(row), pks.get(0).getPropertyName(), key);
+                }
+
+                @SuppressWarnings("unchecked")
+                @Override
+                public GenericType<Serializable> getType() {
+                    return (GenericClass<Serializable>) new GenericClass<>(pks.get(0).getPropertyType());
+                }
+            }, getBatchParameters(entities, tuple.get1()));
+        } else {
+            return jdbc.updateBatch(sql, entities.size(), getBatchParameters(entities, tuple.get1()));
+        }
+    }
+
+    private int _executeBatch(final List<T> entities, int batchSize) {
+        if (entities.size() <= batchSize) {
+            return _executeBatch(entities);
+        } else {
+            int size = 0;
+            List<T> batchList = new ArrayList<>();
+            for (int i = 0; i < entities.size(); i++) {
+                if (i % batchSize == 0) {
+                    batchList.clear();
+                    size += _executeBatch(batchList);
+                }
+                batchList.add(entities.get(i));
+            }
+            size += _executeBatch(batchList);
+            return size;
+        }
+    }
+
     /**
-     * <p>
-     * insert
-     * </p>
-     * .
-     *
-     * @param entity 对象
-     * @return 操作影响的数据行数
+     * {@inheritDoc}
      */
     @Override
     public int execute(final T entity) {

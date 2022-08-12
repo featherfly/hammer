@@ -1,6 +1,10 @@
 
 package cn.featherfly.hammer.dsl.execute;
 
+import java.util.function.Consumer;
+
+import cn.featherfly.hammer.expression.execute.UpdateValueExpression;
+
 /**
  * <p>
  * SimpleUpdateValue
@@ -30,6 +34,16 @@ public class SimpleUpdateValue implements UpdateValue {
     @Override
     public ExecutableUpdate set(Object value) {
         return update.set(name, value);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public ExecutableUpdate set(
+            Consumer<UpdateValueExpression<ExecutableUpdate, ExecutableConditionGroupExpression, ExecutableConditionGroupLogicExpression, Object, UpdateValue, UpdateNumberValue>> consumer) {
+        consumer.accept(this);
+        return update;
     }
 
 }

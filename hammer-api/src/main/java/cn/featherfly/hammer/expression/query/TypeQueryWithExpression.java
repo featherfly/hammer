@@ -6,12 +6,8 @@ import cn.featherfly.hammer.expression.RepositoryConditionGroupLogicExpression;
 import cn.featherfly.hammer.expression.RepositoryWhereExpression;
 import cn.featherfly.hammer.expression.condition.RepositoryConditionsGroupExpression;
 
-// TODO: Auto-generated Javadoc
 /**
- * <p>
- * TypeQueryWithExpression
- * </p>
- * .
+ * The Interface TypeQueryWithExpression.
  *
  * @author zhongj
  * @param <QW>  the generic type

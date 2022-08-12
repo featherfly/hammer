@@ -107,6 +107,9 @@ public class NestedBeanPropertyRowMapper<T>
     @Nullable
     private SqlTypeMappingManager manager;
 
+    @Nullable
+    private MapperObjectFactory<T> mapperObjectFactory;
+
     /**
      * Create a new {@code BeanPropertyRowMapper}, accepting unpopulated
      * properties in the target bean.
@@ -116,8 +119,7 @@ public class NestedBeanPropertyRowMapper<T>
      * @param manager     the manager
      */
     public NestedBeanPropertyRowMapper(Class<T> mappedClass, SqlTypeMappingManager manager) {
-        initialize(mappedClass);
-        this.manager = manager;
+        this(mappedClass, manager, false);
     }
 
     /**
@@ -131,36 +133,65 @@ public class NestedBeanPropertyRowMapper<T>
      */
     public NestedBeanPropertyRowMapper(Class<T> mappedClass, SqlTypeMappingManager manager,
             boolean checkFullyPopulated) {
-        initialize(mappedClass);
+        this(new ClassMapperObjectFactory<>(mappedClass), manager, checkFullyPopulated);
+    }
+
+    /**
+     * Create a new {@code BeanPropertyRowMapper}, accepting unpopulated
+     * properties in the target bean.
+     * <p>
+     *
+     * @param mapperObjectFactory the mapper object factory
+     * @param manager             the manager
+     */
+    public NestedBeanPropertyRowMapper(MapperObjectFactory<T> mapperObjectFactory, SqlTypeMappingManager manager) {
+        this(mapperObjectFactory, manager, false);
+    }
+
+    /**
+     * Create a new {@code BeanPropertyRowMapper}.
+     *
+     * @param mapperObjectFactory the mapper object factory
+     * @param manager             the manager
+     * @param checkFullyPopulated whether we're strictly validating that all
+     *                            bean properties have been mapped from
+     *                            corresponding database fields
+     */
+    public NestedBeanPropertyRowMapper(MapperObjectFactory<T> mapperObjectFactory, SqlTypeMappingManager manager,
+            boolean checkFullyPopulated) {
+        //        if (mapperObjectFactory instanceof ClassMapperObjectFactory) {
+        //            initialize(((ClassMapperObjectFactory<T>) mapperObjectFactory).getType());
+        //        }
         this.manager = manager;
+        this.mapperObjectFactory = mapperObjectFactory;
         this.checkFullyPopulated = checkFullyPopulated;
     }
 
-    /**
-     * Set the class that each row should be mapped to.
-     *
-     * @param mappedClass the new mapped class
-     */
-    public void setMappedClass(Class<T> mappedClass) {
-        if (this.mappedClass == null) {
-            initialize(mappedClass);
-        } else {
-            if (this.mappedClass != mappedClass) {
-                throw new InvalidDataAccessApiUsageException("The mapped class can not be reassigned to map to "
-                        + mappedClass + " since it is already providing mapping for " + this.mappedClass);
-            }
-        }
-    }
-
-    /**
-     * Get the class that we are mapping to.
-     *
-     * @return the mapped class
-     */
-    @Nullable
-    public final Class<T> getMappedClass() {
-        return this.mappedClass;
-    }
+    //    /**
+    //     * Set the class that each row should be mapped to.
+    //     *
+    //     * @param mappedClass the new mapped class
+    //     */
+    //    public void setMappedClass(Class<T> mappedClass) {
+    //        if (this.mappedClass == null) {
+    //            initialize(mappedClass);
+    //        } else {
+    //            if (this.mappedClass != mappedClass) {
+    //                throw new InvalidDataAccessApiUsageException("The mapped class can not be reassigned to map to "
+    //                        + mappedClass + " since it is already providing mapping for " + this.mappedClass);
+    //            }
+    //        }
+    //    }
+    //
+    //    /**
+    //     * Get the class that we are mapping to.
+    //     *
+    //     * @return the mapped class
+    //     */
+    //    @Nullable
+    //    public final Class<T> getMappedClass() {
+    //        return this.mappedClass;
+    //    }
 
     /**
      * Set whether we're strictly validating that all bean properties have been
@@ -336,8 +367,8 @@ public class NestedBeanPropertyRowMapper<T>
      */
     @Override
     public T mapRow(ResultSet rs, int rowNumber) throws SQLException {
-        Assert.state(this.mappedClass != null, "Mapped class was not specified");
-        T mappedObject = BeanUtils.instantiateClass(this.mappedClass);
+        //        T mappedObject = BeanUtils.instantiateClass(this.mappedClass);
+        T mappedObject = mapperObjectFactory.create(rs);
         BeanWrapper bw = PropertyAccessorFactory.forBeanPropertyAccess(mappedObject);
         initBeanWrapper(bw);
 
@@ -346,9 +377,13 @@ public class NestedBeanPropertyRowMapper<T>
         Set<String> populatedProperties = isCheckFullyPopulated() ? new HashSet<>() : null;
 
         MappingDebugMessage mappingDebugMessage = new MappingDebugMessage();
-        BeanDescriptor<T> beanDescriptor = BeanDescriptor.getBeanDescriptor(mappedClass);
+
         if (rowNumber == 0) {
             mappings = new ArrayList<>();
+            @SuppressWarnings("unchecked")
+            Class<T> mappedType = (Class<T>) mappedObject.getClass();
+            initialize(mappedType);
+            BeanDescriptor<T> beanDescriptor = BeanDescriptor.getBeanDescriptor(mappedClass);
 
             for (int index = 1; index <= columnCount; index++) {
                 Mapping mapping = new Mapping();
@@ -413,7 +448,10 @@ public class NestedBeanPropertyRowMapper<T>
             }
         }
 
+        Assert.state(this.mappedClass != null, "Mapped class was not specified");
+
         for (int index = 1; index <= mappings.size(); index++) {
+            BeanDescriptor<T> beanDescriptor = BeanDescriptor.getBeanDescriptor(mappedClass);
             Mapping mapping = mappings.get(index - 1);
             if (mapping.propertyDescriptor != null) {
                 try {
@@ -447,72 +485,6 @@ public class NestedBeanPropertyRowMapper<T>
                 }
             }
         }
-
-        //        for (int index = 1; index <= columnCount; index++) {
-        //            PropertyDescriptor pd = this.mappedFields != null ? this.mappedFields.get(field) : null;
-        //            if (pd != null) {
-        //                try {
-        //                    BeanDescriptor<T> bd = BeanDescriptor.getBeanDescriptor(mappedClass);
-        //                    Object value = null;
-        //                    if (nestedProperty) {
-        //                        // 嵌套设值，所以直接使用SQL查询出来列的别名
-        //                        bp = bd.getChildBeanProperty(column);
-        //                        // bp == null will throw NoSuchPropertyException
-        //                        if (rowNumber == 0 && logger.isDebugEnabled()) {
-        //                            mappingDebugMessage.addMapping(rsmd.getColumnName(index), column, column,
-        //                                    bp.getType().getName());
-        //                        }
-        //                        value = manager.get(rs, index, bp);
-        //                        bd.setProperty(mappedObject, column, value);
-        //                    } else {
-        //                        bp = bd.getChildBeanProperty(pd.getName());
-        //                        if (bp != null) {
-        //                            value = manager.get(rs, index, bp);
-        //                        } else {
-        //                            value = getColumnValue(rs, index, pd);
-        //                        }
-        //                        if (rowNumber == 0 && logger.isDebugEnabled()) {
-        //                            mappingDebugMessage.addMapping(rsmd.getColumnName(index), pd.getName(),
-        //                                    ClassUtils.getQualifiedName(pd.getPropertyType()));
-        //                        }
-        //                        try {
-        //                            bw.setPropertyValue(pd.getName(), value);
-        //                        } catch (TypeMismatchException ex) {
-        //                            if (value == null && this.primitivesDefaultedForNullValue) {
-        //                                if (logger.isDebugEnabled()) {
-        //                                    logger.debug("Intercepted TypeMismatchException for row " + rowNumber
-        //                                            + " and column '" + column + "' with null value when setting property '"
-        //                                            + pd.getName() + "' of type '"
-        //                                            + ClassUtils.getQualifiedName(pd.getPropertyType()) + "' on object: "
-        //                                            + mappedObject, ex);
-        //                                }
-        //                            } else {
-        //                                throw ex;
-        //                            }
-        //                        }
-        //                        if (populatedProperties != null) {
-        //                            populatedProperties.add(pd.getName());
-        //                        }
-        //                    }
-        //                } catch (NotWritablePropertyException ex) {
-        //                    throw new DataRetrievalFailureException(
-        //                            "Unable to map column '" + column + "' to property '" + pd.getName() + "'", ex);
-        //                }
-        //            } else {
-        //                // No PropertyDescriptor found
-        //                if (rowNumber == 0 && logger.isDebugEnabled()) {
-        //                    logger.debug("No property found for column '" + column + "' mapped to field '" + field + "'");
-        //                }
-        //            }
-        //        }
-
-        //        if (rowNumber == 0 && logger.isDebugEnabled()) {
-        //            StringBuilder debugMessage = new StringBuilder();
-        //            debugMessage.append("\n---------- Map " + mappedClass.getName() + " Start ----------\n")
-        //                    .append(mappingDebugMessage.toString())
-        //                    .append("---------- Map " + mappedClass.getName() + " End ----------");
-        //            logger.debug(debugMessage.toString());
-        //        }
 
         if (populatedProperties != null && !populatedProperties.equals(this.mappedProperties)) {
             throw new InvalidDataAccessApiUsageException(

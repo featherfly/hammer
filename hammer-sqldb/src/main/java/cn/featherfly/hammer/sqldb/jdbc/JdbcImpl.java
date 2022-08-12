@@ -11,21 +11,11 @@ import cn.featherfly.common.db.dialect.Dialect;
 import cn.featherfly.common.db.mapping.SqlTypeMappingManager;
 
 /**
- * <p>
- * Jdbc
- * </p>
- * .
+ * Jdbc Impl.
  *
  * @author zhongj
  */
 public class JdbcImpl extends AbstractJdbc {
-
-    /**
-     * Instantiates a new jdbc impl.
-     */
-    public JdbcImpl() {
-        super(new SqlTypeMappingManager());
-    }
 
     /**
      * Instantiates a new jdbc impl.
@@ -52,7 +42,7 @@ public class JdbcImpl extends AbstractJdbc {
      * {@inheritDoc}
      */
     @Override
-    protected Connection getConnection() {
+    protected Connection getConnection(DataSource dataSource) {
         return DataSourceUtils.getConnection(dataSource);
     }
 

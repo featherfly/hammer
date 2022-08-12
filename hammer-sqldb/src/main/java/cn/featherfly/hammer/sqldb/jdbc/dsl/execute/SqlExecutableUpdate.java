@@ -1,9 +1,13 @@
 
 package cn.featherfly.hammer.sqldb.jdbc.dsl.execute;
 
+import java.lang.invoke.SerializedLambda;
 import java.util.function.Consumer;
 import java.util.function.Predicate;
 
+import cn.featherfly.common.bean.BeanDescriptor;
+import cn.featherfly.common.bean.BeanProperty;
+import cn.featherfly.common.bean.BeanPropertyValue;
 import cn.featherfly.common.db.builder.dml.basic.SqlUpdateSetBasicBuilder;
 import cn.featherfly.common.db.builder.model.UpdateColumnElement.SetType;
 import cn.featherfly.common.db.mapping.ClassMappingUtils;
@@ -20,6 +24,7 @@ import cn.featherfly.hammer.dsl.execute.SimpleUpdateValue;
 import cn.featherfly.hammer.dsl.execute.UpdateNumberValue;
 import cn.featherfly.hammer.dsl.execute.UpdateValue;
 import cn.featherfly.hammer.expression.Repository;
+import cn.featherfly.hammer.expression.condition.ConditionGroupConfig;
 import cn.featherfly.hammer.sqldb.jdbc.Jdbc;
 
 /**
@@ -104,13 +109,22 @@ public class SqlExecutableUpdate implements SqlUpdate, ExecutableUpdate {
         builder = new SqlUpdateSetBasicBuilder(jdbc.getDialect(), classMapping.getRepositoryName(), ignorePolicy);
     }
 
+    private SqlExecutableUpdate _set(String name, Object value) {
+        builder.setValue(name, value);
+        return this;
+    }
+
+    private <N extends Number> SqlExecutableUpdate _increase(String name, N value) {
+        builder.setValue(name, value, SetType.INCR);
+        return this;
+    }
+
     /**
      * {@inheritDoc}
      */
     @Override
     public SqlExecutableUpdate set(String name, Object value) {
-        builder.setValue(ClassMappingUtils.getColumnName(name, classMapping), value);
-        return this;
+        return _set(ClassMappingUtils.getColumnName(name, classMapping), value);
     }
 
     /**
@@ -118,23 +132,30 @@ public class SqlExecutableUpdate implements SqlUpdate, ExecutableUpdate {
      */
     @Override
     public <N extends Number> SqlExecutableUpdate increase(String name, N value) {
-        builder.setValue(ClassMappingUtils.getColumnName(name, classMapping), value, SetType.INCR);
-        return this;
+        return _increase(ClassMappingUtils.getColumnName(name, classMapping), value);
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public <T, R> ExecutableUpdate set(SerializableFunction<T, R> name, Object value) {
-        return set(LambdaUtils.getLambdaPropertyName(name), value);
+    public <T, R> ExecutableUpdate set(SerializableFunction<T, R> name, R value) {
+        SerializedLambda serializedLambda = LambdaUtils.getSerializedLambda(name);
+        String propertyName = LambdaUtils.getLambdaPropertyName(serializedLambda);
+        if (classMapping != null) {
+            BeanDescriptor<?> bd = BeanDescriptor.getBeanDescriptor(classMapping.getType());
+            BeanProperty<R> bp = bd.getBeanProperty(propertyName);
+            return set(bp.getName(), new BeanPropertyValue<>(bp, value));
+        } else {
+            return set(propertyName, value);
+        }
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public <T, R extends Number, N extends Number> ExecutableUpdate increase(SerializableFunction<T, R> name, N value) {
+    public <T, R extends Number> ExecutableUpdate increase(SerializableFunction<T, R> name, R value) {
         return increase(LambdaUtils.getLambdaPropertyName(name), value);
     }
 
@@ -144,7 +165,22 @@ public class SqlExecutableUpdate implements SqlUpdate, ExecutableUpdate {
     @Override
     public <R> ExecutableUpdate set(SerializableSupplier<R> property) {
         SerializableSupplierLambdaInfo<R> info = LambdaUtils.getSerializableSupplierLambdaInfo(property);
-        return set(info.getSerializedLambdaInfo().getPropertyName(), info.getValue());
+        if (classMapping != null) {
+            BeanDescriptor<?> bd = BeanDescriptor.getBeanDescriptor(classMapping.getType());
+            BeanProperty<R> bp = bd.getBeanProperty(info.getSerializedLambdaInfo().getPropertyName());
+            return set(bp.getName(), new BeanPropertyValue<>(bp, info.getValue()));
+        } else {
+            return set(info.getSerializedLambdaInfo().getPropertyName(), info.getValue());
+        }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public ExecutableUpdate set(Consumer<ExecutableUpdate> consumer) {
+        consumer.accept(this);
+        return this;
     }
 
     /**
@@ -152,8 +188,18 @@ public class SqlExecutableUpdate implements SqlUpdate, ExecutableUpdate {
      */
     @Override
     public <N extends Number> ExecutableUpdate increase(SerializableSupplier<N> property) {
+        // TODO increase 应该用不上自定义类型映射?? 暂时先不包装BeanPropertyValue
         SerializableSupplierLambdaInfo<N> info = LambdaUtils.getSerializableSupplierLambdaInfo(property);
         return increase(info.getSerializedLambdaInfo().getPropertyName(), info.getValue());
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public ExecutableUpdate increase(Consumer<ExecutableUpdate> consumer) {
+        consumer.accept(this);
+        return this;
     }
 
     /**
@@ -200,7 +246,7 @@ public class SqlExecutableUpdate implements SqlUpdate, ExecutableUpdate {
      * {@inheritDoc}
      */
     @Override
-    public ExecutableConditionGroupExpression where(Consumer<ExecutableConditionGroupExpression> consumer) {
+    public ExecutableConditionGroupExpression where(Consumer<ConditionGroupConfig> consumer) {
         SqlUpdateExpression sqlUpdateExpression = new SqlUpdateExpression(jdbc, builder, classMapping,
                 builder.getIgnorePolicy());
         if (consumer != null) {

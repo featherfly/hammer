@@ -2,10 +2,7 @@
 package cn.featherfly.hammer.expression.query;
 
 /**
- * <p>
- * dsl for query single executor
- * </p>
- * .
+ * dsl for query single executor.
  *
  * @author zhongj
  * @param <E> the element type
@@ -20,7 +17,7 @@ public interface GenericTypeQuerySingleExecutor<E> {
     E single();
 
     /**
-     * query for unique, throw JdbcException when not found.
+     * query for unique, throw exception when not found.
      *
      * @return object
      */

@@ -4,9 +4,7 @@ package cn.featherfly.hammer.expression.condition;
 import java.util.function.Consumer;
 
 /**
- * <p>
- * condition expression
- * </p>
+ * condition expression.
  *
  * @author zhongj
  */

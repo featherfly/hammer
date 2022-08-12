@@ -10,13 +10,19 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
 
+import cn.featherfly.common.bean.BeanDescriptor;
+import cn.featherfly.common.db.mapping.mappers.PlatformJavaSqlTypeMapper;
 import cn.featherfly.common.lang.Randoms;
 import cn.featherfly.hammer.sqldb.jdbc.operate.DeleteOperate;
 import cn.featherfly.hammer.sqldb.jdbc.operate.GetOperate;
 import cn.featherfly.hammer.sqldb.jdbc.operate.InsertOperate;
 import cn.featherfly.hammer.sqldb.jdbc.operate.UpdateOperate;
+import cn.featherfly.hammer.sqldb.jdbc.operate.UpsertOperate;
+import cn.featherfly.hammer.sqldb.jdbc.vo.App;
+import cn.featherfly.hammer.sqldb.jdbc.vo.AppVersion;
 import cn.featherfly.hammer.sqldb.jdbc.vo.Role;
 import cn.featherfly.hammer.sqldb.jdbc.vo.UserRole;
 
@@ -28,6 +34,17 @@ import cn.featherfly.hammer.sqldb.jdbc.vo.UserRole;
  * @author zhongj
  */
 public class OperatorTest extends JdbcTestBase {
+
+    @BeforeClass
+    void before() {
+        PlatformJavaSqlTypeMapper platformJavaSqlTypeMapper = new PlatformJavaSqlTypeMapper();
+
+        mappingFactory.getSqlTypeMappingManager().regist(
+                BeanDescriptor.getBeanDescriptor(App.class).getBeanProperty("platform"), platformJavaSqlTypeMapper);
+        mappingFactory.getSqlTypeMappingManager().regist(
+                BeanDescriptor.getBeanDescriptor(AppVersion.class).getBeanProperty("platform"),
+                platformJavaSqlTypeMapper);
+    }
 
     @Test
     public void testInsert() {
@@ -306,6 +323,82 @@ public class OperatorTest extends JdbcTestBase {
         userRoles.forEach(ur -> {
             assertNull(get.get(ur));
         });
+    }
+
+    @Test
+    public void testUpsert() {
+        UpsertOperate<App> upsert = new UpsertOperate<>(jdbc, mappingFactory.getClassMapping(App.class),
+                mappingFactory.getSqlTypeMappingManager(), mappingFactory.getMetadata());
+        DeleteOperate<App> delete = new DeleteOperate<>(jdbc, mappingFactory.getClassMapping(App.class),
+                mappingFactory.getSqlTypeMappingManager(), mappingFactory.getMetadata());
+        GetOperate<App> get = new GetOperate<>(jdbc, mappingFactory.getClassMapping(App.class),
+                mappingFactory.getSqlTypeMappingManager(), mappingFactory.getMetadata());
+
+        App app = new App();
+        app.setCode("code01");
+        app.setName("name01");
+        upsert.execute(app);
+        assertNotNull(app.getId());
+
+        Long id = app.getId();
+        String name = "name02";
+
+        app.setName(name);
+        upsert.execute(app);
+        assertEquals(app.getId(), id);
+
+        App a = get.get(app);
+        assertNotNull(a);
+        assertEquals(a.getName(), name);
+
+        delete.execute(a);
+        a = get.get(a);
+        assertNull(a);
+    }
+
+    @Test
+    public void testUpsertBatch() {
+        UpsertOperate<App> upsert = new UpsertOperate<>(jdbc, mappingFactory.getClassMapping(App.class),
+                mappingFactory.getSqlTypeMappingManager(), mappingFactory.getMetadata());
+        DeleteOperate<App> delete = new DeleteOperate<>(jdbc, mappingFactory.getClassMapping(App.class),
+                mappingFactory.getSqlTypeMappingManager(), mappingFactory.getMetadata());
+        GetOperate<App> get = new GetOperate<>(jdbc, mappingFactory.getClassMapping(App.class),
+                mappingFactory.getSqlTypeMappingManager(), mappingFactory.getMetadata());
+
+        List<App> apps = new ArrayList<>();
+
+        App app = new App();
+        app.setCode("code01");
+        app.setName("name01");
+        apps.add(app);
+
+        App app2 = new App();
+        app2.setCode("code02");
+        app2.setName("name02");
+        apps.add(app2);
+
+        upsert.executeBatch(apps);
+
+        Long id = app.getId();
+        Long id2 = app2.getId();
+        String name = "name03";
+        String name2 = "name04";
+
+        app.setName(name);
+        app2.setName(name2);
+
+        upsert.executeBatch(apps);
+
+        assertEquals(app.getId(), id);
+        assertEquals(app2.getId(), id2);
+
+        //        App a = get.get(app);
+        //        assertNotNull(a);
+        //        assertEquals(a.getName(), name);
+        //
+        //        delete.execute(a);
+        //        a = get.get(a);
+        //        assertNull(a);
     }
 
 }

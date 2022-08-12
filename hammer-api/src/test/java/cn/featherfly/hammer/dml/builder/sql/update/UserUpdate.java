@@ -6,6 +6,7 @@ import java.util.function.Consumer;
 import cn.featherfly.common.lang.function.SerializableFunction;
 import cn.featherfly.common.lang.function.SerializableSupplier;
 import cn.featherfly.hammer.dml.builder.sql.query.UserQueryConditionGroupExpression;
+import cn.featherfly.hammer.expression.condition.ConditionGroupConfig;
 import cn.featherfly.hammer.expression.execute.SetExecutableUpdateExpression;
 
 /**
@@ -112,7 +113,7 @@ public class UserUpdate implements UserPropertiesUpdate,
      * {@inheritDoc}
      */
     @Override
-    public <T, R> UserUpdate set(SerializableFunction<T, R> name, Object value) {
+    public <T, R> UserUpdate set(SerializableFunction<T, R> name, R value) {
         // YUFEI_TODO Auto-generated method stub
         return null;
     }
@@ -130,7 +131,7 @@ public class UserUpdate implements UserPropertiesUpdate,
      * {@inheritDoc}
      */
     @Override
-    public <T, R extends Number, N extends Number> UserUpdate increase(SerializableFunction<T, R> name, N value) {
+    public <T, R extends Number> UserUpdate increase(SerializableFunction<T, R> name, R value) {
         // YUFEI_TODO Auto-generated method stub
         return null;
     }
@@ -157,7 +158,25 @@ public class UserUpdate implements UserPropertiesUpdate,
      * {@inheritDoc}
      */
     @Override
-    public UserQueryConditionGroupExpression where(Consumer<UserQueryConditionGroupExpression> consumer) {
+    public UserUpdate set(Consumer<UserUpdate> consumer) {
+        // YUFEI_TODO Auto-generated method stub
+        return null;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public UserUpdate increase(Consumer<UserUpdate> consumer) {
+        // YUFEI_TODO Auto-generated method stub
+        return null;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public UserQueryConditionGroupExpression where(Consumer<ConditionGroupConfig> consumer) {
         // YUFEI_TODO Auto-generated method stub
         return null;
     }

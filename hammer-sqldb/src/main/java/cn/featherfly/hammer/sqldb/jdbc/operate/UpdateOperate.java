@@ -11,15 +11,11 @@ import cn.featherfly.common.repository.mapping.ClassMapping;
 import cn.featherfly.hammer.sqldb.jdbc.Jdbc;
 
 /**
- * <p>
- * 更新操作
- * </p>
- * .
+ * 更新操作.
  *
  * @author zhongj
- * @version 1.0
  * @param <T> 对象类型
- * @since 1.0
+ * @since 0.1.0
  */
 public class UpdateOperate<T> extends AbstractExecuteOperate<T> {
 

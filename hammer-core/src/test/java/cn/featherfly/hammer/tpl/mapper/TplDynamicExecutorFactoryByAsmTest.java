@@ -1,11 +1,16 @@
 
 package cn.featherfly.hammer.tpl.mapper;
 
+import static org.junit.Assert.assertNull;
 import static org.testng.Assert.assertEquals;
 
 import java.io.IOException;
+import java.io.Serializable;
 import java.lang.reflect.Method;
+import java.math.BigDecimal;
 import java.util.Arrays;
+import java.util.List;
+import java.util.Map;
 
 import org.apache.log4j.xml.DOMConfigurator;
 import org.slf4j.Logger;
@@ -14,6 +19,15 @@ import org.testng.annotations.Test;
 
 import cn.featherfly.common.lang.ClassLoaderUtils;
 import cn.featherfly.common.lang.ClassUtils;
+import cn.featherfly.common.repository.IgnorePolicy;
+import cn.featherfly.common.structure.page.Page;
+import cn.featherfly.common.structure.page.PaginationResults;
+import cn.featherfly.hammer.Hammer;
+import cn.featherfly.hammer.dsl.execute.Delete;
+import cn.featherfly.hammer.dsl.execute.Update;
+import cn.featherfly.hammer.dsl.query.QueryEntity;
+import cn.featherfly.hammer.dsl.query.TypeQueryEntity;
+import cn.featherfly.hammer.tpl.TplExecuteId;
 
 /**
  * <p>
@@ -86,6 +100,516 @@ public class TplDynamicExecutorFactoryByAsmTest {
         assertEquals(type.getMethod("save", Object.class).getParameters()[0].getName(), "entity");
         assertEquals(type.getMethod("getByUsername", String.class).getParameters()[0].getName(), "username");
 
+    }
+
+    @Test
+    public void testGenericHammerSupport() throws Exception {
+        @SuppressWarnings("unchecked")
+        Class<GenericHammerSupportMapper> type = (Class<GenericHammerSupportMapper>) ClassUtils
+                .forName(factory.create(GenericHammerSupportMapper.class));
+        //        Class<TMapper> type = forName(factory.create(TMapper.class));
+        System.out.println(type);
+        System.out.println(Arrays.toString(type.getInterfaces()));
+        System.out.println(type.getGenericSuperclass());
+        System.out.println(ClassUtils.getSuperClassGenericType(type));
+
+        Class<User> userClass = User.class;
+        Long userId = 1L;
+
+        GenericHammerSupportMapper mapper = ClassUtils.newInstance(type, getHammer(userId, userClass));
+
+        User u = mapper.get(userId);
+        assertNull(u);
+    }
+
+    @Test
+    public void testHammerSupport() throws Exception {
+        @SuppressWarnings("unchecked")
+        Class<HammerSupportMapper> type = (Class<HammerSupportMapper>) ClassUtils
+                .forName(factory.create(HammerSupportMapper.class));
+        //        Class<TMapper> type = forName(factory.create(TMapper.class));
+        System.out.println(type);
+        System.out.println(Arrays.toString(type.getInterfaces()));
+        System.out.println(type.getGenericSuperclass());
+        System.out.println(ClassUtils.getSuperClassGenericType(type));
+
+        Class<User> userClass = User.class;
+        Long userId = 1L;
+
+        HammerSupportMapper mapper = ClassUtils.newInstance(type, getHammer(userId, userClass));
+
+        User u = mapper.get(userId);
+        assertNull(u);
+    }
+
+    private Hammer getHammer(Long userId, Class<User> userClass) {
+        return new Hammer() {
+
+            @Override
+            public <E> E value(TplExecuteId tplExecuteId, Class<E> valueType, Map<String, Object> params) {
+
+                return null;
+            }
+
+            @Override
+            public <E> E value(String tplExecuteId, Class<E> valueType, Map<String, Object> params) {
+
+                return null;
+            }
+
+            @Override
+            public String string(TplExecuteId tplExecuteId, Map<String, Object> params) {
+
+                return null;
+            }
+
+            @Override
+            public String string(String tplExecuteId, Map<String, Object> params) {
+
+                return null;
+            }
+
+            @Override
+            public <E> E single(TplExecuteId tplExecuteId, Class<E> entityType, Map<String, Object> params) {
+
+                return null;
+            }
+
+            @Override
+            public <E> E single(String tplExecuteId, Class<E> entityType, Map<String, Object> params) {
+
+                return null;
+            }
+
+            @Override
+            public Map<String, Object> single(TplExecuteId tplExecuteId, Map<String, Object> params) {
+
+                return null;
+            }
+
+            @Override
+            public Map<String, Object> single(String tplExecuteId, Map<String, Object> params) {
+
+                return null;
+            }
+
+            @Override
+            public <E> PaginationResults<E> pagination(TplExecuteId tplExecuteId, Class<E> entityType,
+                    Map<String, Object> params, Page page) {
+
+                return null;
+            }
+
+            @Override
+            public <E> PaginationResults<E> pagination(String tplExecuteId, Class<E> entityType,
+                    Map<String, Object> params, Page page) {
+
+                return null;
+            }
+
+            @Override
+            public <E> PaginationResults<E> pagination(TplExecuteId tplExecuteId, Class<E> entityType,
+                    Map<String, Object> params, int offset, int limit) {
+
+                return null;
+            }
+
+            @Override
+            public <E> PaginationResults<E> pagination(String tplExecuteId, Class<E> entityType,
+                    Map<String, Object> params, int offset, int limit) {
+
+                return null;
+            }
+
+            @Override
+            public PaginationResults<Map<String, Object>> pagination(TplExecuteId tplExecuteId,
+                    Map<String, Object> params, Page page) {
+
+                return null;
+            }
+
+            @Override
+            public PaginationResults<Map<String, Object>> pagination(String tplExecuteId, Map<String, Object> params,
+                    Page page) {
+
+                return null;
+            }
+
+            @Override
+            public PaginationResults<Map<String, Object>> pagination(TplExecuteId tplExecuteId,
+                    Map<String, Object> params, int offset, int limit) {
+
+                return null;
+            }
+
+            @Override
+            public PaginationResults<Map<String, Object>> pagination(String tplExecuteId, Map<String, Object> params,
+                    int offset, int limit) {
+
+                return null;
+            }
+
+            @Override
+            public Long numberLong(TplExecuteId tplExecuteId, Map<String, Object> params) {
+
+                return null;
+            }
+
+            @Override
+            public Long numberLong(String tplExecuteId, Map<String, Object> params) {
+
+                return null;
+            }
+
+            @Override
+            public Integer numberInt(TplExecuteId tplExecuteId, Map<String, Object> params) {
+
+                return null;
+            }
+
+            @Override
+            public Integer numberInt(String tplExecuteId, Map<String, Object> params) {
+
+                return null;
+            }
+
+            @Override
+            public Double numberDouble(TplExecuteId tplExecuteId, Map<String, Object> params) {
+
+                return null;
+            }
+
+            @Override
+            public Double numberDouble(String tplExecuteId, Map<String, Object> params) {
+
+                return null;
+            }
+
+            @Override
+            public BigDecimal numberBigDecimal(TplExecuteId tplExecuteId, Map<String, Object> params) {
+
+                return null;
+            }
+
+            @Override
+            public BigDecimal numberBigDecimal(String tplExecuteId, Map<String, Object> params) {
+
+                return null;
+            }
+
+            @Override
+            public <N extends Number> N number(TplExecuteId tplExecuteId, Class<N> numberType,
+                    Map<String, Object> params) {
+
+                return null;
+            }
+
+            @Override
+            public <N extends Number> N number(String tplExecuteId, Class<N> numberType, Map<String, Object> params) {
+
+                return null;
+            }
+
+            @Override
+            public long longValue(TplExecuteId tplExecuteId, Map<String, Object> params) {
+
+                return 0;
+            }
+
+            @Override
+            public long longValue(String tplExecuteId, Map<String, Object> params) {
+
+                return 0;
+            }
+
+            @Override
+            public List<Map<String, Object>> list(TplExecuteId tplExecuteId, Map<String, Object> params, Page page) {
+
+                return null;
+            }
+
+            @Override
+            public List<Map<String, Object>> list(String tplExecuteId, Map<String, Object> params, Page page) {
+
+                return null;
+            }
+
+            @Override
+            public <E> List<E> list(TplExecuteId tplExecuteId, Class<E> entityType, Map<String, Object> params,
+                    Page page) {
+
+                return null;
+            }
+
+            @Override
+            public <E> List<E> list(String tplExecuteId, Class<E> entityType, Map<String, Object> params, Page page) {
+
+                return null;
+            }
+
+            @Override
+            public <E> List<E> list(TplExecuteId tplExecuteId, Class<E> entityType, Map<String, Object> params,
+                    int offset, int limit) {
+
+                return null;
+            }
+
+            @Override
+            public <E> List<E> list(String tplExecuteId, Class<E> entityType, Map<String, Object> params, int offset,
+                    int limit) {
+
+                return null;
+            }
+
+            @Override
+            public List<Map<String, Object>> list(TplExecuteId tplExecuteId, Map<String, Object> params, int offset,
+                    int limit) {
+
+                return null;
+            }
+
+            @Override
+            public List<Map<String, Object>> list(String tplExecuteId, Map<String, Object> params, int offset,
+                    int limit) {
+
+                return null;
+            }
+
+            @Override
+            public <E> List<E> list(TplExecuteId tplExecuteId, Class<E> entityType, Map<String, Object> params) {
+
+                return null;
+            }
+
+            @Override
+            public <E> List<E> list(String tplExecuteId, Class<E> entityType, Map<String, Object> params) {
+
+                return null;
+            }
+
+            @Override
+            public List<Map<String, Object>> list(TplExecuteId tplExecuteId, Map<String, Object> params) {
+
+                return null;
+            }
+
+            @Override
+            public List<Map<String, Object>> list(String tplExecuteId, Map<String, Object> params) {
+
+                return null;
+            }
+
+            @Override
+            public int intValue(TplExecuteId tplExecuteId, Map<String, Object> params) {
+
+                return 0;
+            }
+
+            @Override
+            public int intValue(String tplExecuteId, Map<String, Object> params) {
+
+                return 0;
+            }
+
+            @Override
+            public int execute(TplExecuteId tplExecuteId, Map<String, Object> params) {
+
+                return 0;
+            }
+
+            @Override
+            public int execute(String tplExecuteId, Map<String, Object> params) {
+
+                return 0;
+            }
+
+            @Override
+            public double doubleValue(TplExecuteId tplExecuteId, Map<String, Object> params) {
+
+                return 0;
+            }
+
+            @Override
+            public double doubleValue(String tplExecuteId, Map<String, Object> params) {
+
+                return 0;
+            }
+
+            @Override
+            public <E> Update update(Class<E> entityType) {
+
+                return null;
+            }
+
+            @Override
+            public Update update(String repository) {
+
+                return null;
+            }
+
+            @Override
+            public <E> int update(List<E> entities, IgnorePolicy ignorePolicy) {
+
+                return 0;
+            }
+
+            @Override
+            public <E> int update(E entity, IgnorePolicy ignorePolicy) {
+
+                return 0;
+            }
+
+            @Override
+            public <E> int update(List<E> entities) {
+
+                return 0;
+            }
+
+            @Override
+            public <E> int update(E... entities) {
+
+                return 0;
+            }
+
+            @Override
+            public <E> int update(E entity) {
+
+                return 0;
+            }
+
+            @Override
+            public <E> int save(List<E> entities) {
+
+                return 0;
+            }
+
+            @Override
+            public <E> int save(E... entities) {
+
+                return 0;
+            }
+
+            @Override
+            public <E> int save(E entity) {
+
+                return 0;
+            }
+
+            @Override
+            public <E> TypeQueryEntity query(Class<E> entityType) {
+
+                return null;
+            }
+
+            @Override
+            public QueryEntity query(String repository) {
+
+                return null;
+            }
+
+            @Override
+            public <E> int merge(List<E> entities) {
+
+                return 0;
+            }
+
+            @Override
+            public <E> int merge(E... entities) {
+
+                return 0;
+            }
+
+            @Override
+            public <E> int merge(E entity) {
+
+                return 0;
+            }
+
+            @Override
+            public <E> E get(E entity) {
+
+                return null;
+            }
+
+            @Override
+            public <E> E load(E entity) {
+
+                return null;
+            }
+
+            @Override
+            public <E> List<E> get(Class<E> type, List<Serializable> ids) {
+
+                return null;
+            }
+
+            @Override
+            public <E> List<E> get(Class<E> type, Serializable... ids) {
+
+                return null;
+            }
+
+            @Override
+            public <E> E get(Serializable id, Class<E> type) {
+                assertEquals(id, userId);
+                assertEquals(type, userClass);
+                return null;
+            }
+
+            @Override
+            public <E> Delete delete(Class<E> entityType) {
+
+                return null;
+            }
+
+            @Override
+            public Delete delete(String repository) {
+
+                return null;
+            }
+
+            @Override
+            public <E> int delete(List<E> entities) {
+
+                return 0;
+            }
+
+            @Override
+            public <E> int delete(E... entities) {
+
+                return 0;
+            }
+
+            @Override
+            public <E, ID extends Serializable> int delete(List<ID> ids, Class<E> entityType) {
+
+                return 0;
+            }
+
+            @Override
+            public <E> int delete(Serializable[] ids, Class<E> entityType) {
+
+                return 0;
+            }
+
+            @Override
+            public <E> int delete(Serializable id, Class<E> entityType) {
+
+                return 0;
+            }
+
+            @Override
+            public <E> int delete(E entity) {
+
+                return 0;
+            }
+
+            @Override
+            public <E> int saveOrUpdate(E entity) {
+                // YUFEI_TODO Auto-generated method stub
+                return 0;
+            }
+        };
     }
 
     public static void main(String[] args) throws Exception {

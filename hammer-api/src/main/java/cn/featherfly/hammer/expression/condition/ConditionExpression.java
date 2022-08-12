@@ -1,12 +1,15 @@
 
 package cn.featherfly.hammer.expression.condition;
 
+import java.util.HashMap;
+import java.util.Map;
+
 /**
- * <p>
- * condition expression
- * </p>
+ * condition expression.
  *
  * @author zhongj
  */
 public interface ConditionExpression extends Expression {
+
+    Map<String, Object> EMPTY_PARAMS = new HashMap<>(0);
 }

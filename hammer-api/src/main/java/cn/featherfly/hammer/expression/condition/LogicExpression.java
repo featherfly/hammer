@@ -3,14 +3,23 @@ package cn.featherfly.hammer.expression.condition;
 
 import java.util.function.Consumer;
 
+import cn.featherfly.common.repository.operate.LogicOperator;
+
 /**
- * <p>
- * 逻辑条件
- * </p>
+ * 逻辑条件.
  *
  * @author zhongj
  */
 public interface LogicExpression<C extends ConditionExpression, L extends LogicExpression<C, L>> extends Expression {
+
+    /**
+     * 根据传入参数进行逻辑运算.
+     *
+     * @param operator the operator
+     * @return ExpressionBuilder
+     */
+    C logic(LogicOperator operator);
+
     /**
      * 逻辑与.
      *

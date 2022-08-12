@@ -1,6 +1,8 @@
 
 package cn.featherfly.hammer.expression.execute;
 
+import java.util.function.Consumer;
+
 import cn.featherfly.common.lang.function.SerializableFunction;
 import cn.featherfly.common.lang.function.SerializableSupplier;
 import cn.featherfly.hammer.expression.ConditionGroupExpression;
@@ -48,7 +50,7 @@ public interface SetUpdateExpression<U extends SetExecutableUpdateExpression<U, 
      * @param value property value
      * @return Update
      */
-    <T, R> U set(SerializableFunction<T, R> name, Object value);
+    <T, R> U set(SerializableFunction<T, R> name, R value);
 
     /**
      * set value for property.
@@ -60,16 +62,23 @@ public interface SetUpdateExpression<U extends SetExecutableUpdateExpression<U, 
     <R> U set(SerializableSupplier<R> property);
 
     /**
+     * Sets the.
+     *
+     * @param consumer the consumer
+     * @return the u
+     */
+    U set(Consumer<U> consumer);
+
+    /**
      * increase value for property.
      *
      * @param <T>   the generic type
-     * @param <R>   the generic type
-     * @param <N>   number type
+     * @param <R>   the generic number type
      * @param name  property name
      * @param value property value
      * @return Update
      */
-    <T, R extends Number, N extends Number> U increase(SerializableFunction<T, R> name, N value);
+    <T, R extends Number> U increase(SerializableFunction<T, R> name, R value);
 
     /**
      * increase value for property.
@@ -79,4 +88,12 @@ public interface SetUpdateExpression<U extends SetExecutableUpdateExpression<U, 
      * @return Update
      */
     <N extends Number> U increase(SerializableSupplier<N> property);
+
+    /**
+     * Sets the.
+     *
+     * @param consumer the consumer
+     * @return the u
+     */
+    U increase(Consumer<U> consumer);
 }

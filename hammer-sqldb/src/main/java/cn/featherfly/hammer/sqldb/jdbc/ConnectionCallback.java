@@ -11,7 +11,6 @@ import cn.featherfly.common.db.mapping.SqlTypeMappingManager;
 /**
  * <p>
  * ConnectionCallback
- * </p>
  *
  * @author zhongj
  */

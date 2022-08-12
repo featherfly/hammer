@@ -6,12 +6,8 @@ import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.Date;
 
-// TODO: Auto-generated Javadoc
 /**
- * <p>
- * RepositoryLessThanExpressoin
- * </p>
- * .
+ * The Interface RepositoryLessThanExpressoin.
  *
  * @author zhongj
  * @param <C> the generic type

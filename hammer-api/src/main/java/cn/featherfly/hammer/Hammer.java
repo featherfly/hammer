@@ -4,10 +4,16 @@ package cn.featherfly.hammer;
 import java.io.Serializable;
 import java.util.List;
 
+import cn.featherfly.common.lang.AssertIllegalArgument;
+import cn.featherfly.common.lang.Lang;
+import cn.featherfly.common.lang.function.SerializableSupplier;
 import cn.featherfly.common.repository.IgnorePolicy;
+import cn.featherfly.common.repository.operate.LogicOperator;
 import cn.featherfly.hammer.dsl.execute.Delete;
 import cn.featherfly.hammer.dsl.execute.Update;
 import cn.featherfly.hammer.dsl.query.QueryEntity;
+import cn.featherfly.hammer.dsl.query.TypeQueryConditionGroupExpression;
+import cn.featherfly.hammer.dsl.query.TypeQueryConditionGroupLogicExpression;
 import cn.featherfly.hammer.dsl.query.TypeQueryEntity;
 import cn.featherfly.hammer.tpl.TplExecutor;
 
@@ -19,7 +25,7 @@ import cn.featherfly.hammer.tpl.TplExecutor;
 public interface Hammer extends TplExecutor {
 
     /**
-     * save entity
+     * save entity.
      *
      * @param <E>    generic type
      * @param entity entity to save
@@ -28,7 +34,7 @@ public interface Hammer extends TplExecutor {
     <E> int save(E entity);
 
     /**
-     * batch save entity list
+     * batch save entity list.
      *
      * @param <E>      generic type
      * @param entities entity array to save
@@ -37,7 +43,7 @@ public interface Hammer extends TplExecutor {
     <E> int save(@SuppressWarnings("unchecked") E... entities);
 
     /**
-     * batch save entity list
+     * batch save entity list.
      *
      * @param <E>      generic type
      * @param entities entity list to save
@@ -79,7 +85,7 @@ public interface Hammer extends TplExecutor {
     <E> int update(List<E> entities);
 
     /**
-     * update entity, update values with ignorePolicy
+     * update entity, update values with ignorePolicy.
      *
      * @param <E>          generic type
      * @param entity       entity to update
@@ -134,7 +140,16 @@ public interface Hammer extends TplExecutor {
     <E> int merge(List<E> entities);
 
     /**
-     * delete entity by id
+     * save or update entity.
+     *
+     * @param <E>    generic type
+     * @param entity entity to save
+     * @return effect data row num
+     */
+    <E> int saveOrUpdate(E entity);
+
+    /**
+     * delete entity by id.
      *
      * @param <E>    generic type
      * @param entity entity to delete
@@ -143,7 +158,7 @@ public interface Hammer extends TplExecutor {
     <E> int delete(E entity);
 
     /**
-     * delete entity by id
+     * delete entity by id.
      *
      * @param <E>        generic type
      * @param id         entity id
@@ -174,7 +189,7 @@ public interface Hammer extends TplExecutor {
     <E, ID extends Serializable> int delete(List<ID> ids, Class<E> entityType);
 
     /**
-     * delete each entity in entity list
+     * delete each entity in entity list.
      *
      * @param <E>      generic type
      * @param entities entity array to delete
@@ -183,7 +198,7 @@ public interface Hammer extends TplExecutor {
     <E> int delete(@SuppressWarnings("unchecked") E... entities);
 
     /**
-     * delete each entity in entity list
+     * delete each entity in entity list.
      *
      * @param <E>      generic type
      * @param entities entity list to delete
@@ -205,8 +220,8 @@ public interface Hammer extends TplExecutor {
      * get entity list by id array.
      *
      * @param <E>  entity type
-     * @param ids  id array
      * @param type entity type
+     * @param ids  id array
      * @return entity
      */
     <E> List<E> get(Class<E> type, Serializable... ids);
@@ -215,8 +230,8 @@ public interface Hammer extends TplExecutor {
      * get entity list by id list.
      *
      * @param <E>  entity type
-     * @param ids  id list
      * @param type entity type
+     * @param ids  id list
      * @return entity
      */
     <E> List<E> get(Class<E> type, List<Serializable> ids);
@@ -231,7 +246,90 @@ public interface Hammer extends TplExecutor {
     <E> E get(E entity);
 
     /**
-     * create QueryEntity for repository
+     * load entity by id, the same logic with get(entity).
+     *
+     * @param <E>    entity generic type
+     * @param entity entity with id value
+     * @return entity
+     */
+    default <E> E load(E entity) {
+        return get(entity);
+    }
+
+    //    <E> E getBy(Class<E> type, Map<String, Object> propertyValueMap);
+    //
+    //    <E> E getBy(Class<E> type, Map<SerializableFunction<E, ?>, ?> propertyValueMap);
+
+    /**
+     * Query single by propertyValues.
+     *
+     * @param <E>            the element type
+     * @param type           the type
+     * @param propertyValues the property values
+     * @return the e
+     */
+    default <E> E querySingle(Class<E> type, SerializableSupplier<?>... propertyValues) {
+        AssertIllegalArgument.isNotEmpty(propertyValues, "propertyValues");
+
+        TypeQueryConditionGroupExpression queryCondition = query(type).where();
+        TypeQueryConditionGroupLogicExpression queryLogic = null;
+        for (int i = 0; i < propertyValues.length; i++) {
+            SerializableSupplier<?> propertyValue = propertyValues[i];
+            if (i == 0) {
+                queryLogic = queryCondition.eq(propertyValue);
+            } else {
+                queryLogic = queryLogic.and().eq(propertyValue);
+            }
+        }
+        return queryLogic.single();
+    }
+
+    /**
+     * Query list by propertyValues.
+     *
+     * @param <E>            the element type
+     * @param type           the type
+     * @param propertyValues the property values
+     * @return the list
+     */
+    default <E> List<E> queryList(Class<E> type, SerializableSupplier<?>... propertyValues) {
+        return queryList(type, LogicOperator.AND, propertyValues);
+    }
+
+    /**
+     * Query list by propertyValues.
+     *
+     * @param <E>            the element type
+     * @param type           the type
+     * @param operator       the operator
+     * @param propertyValues the property values
+     * @return the list
+     */
+    default <E> List<E> queryList(Class<E> type, LogicOperator operator, SerializableSupplier<?>... propertyValues) {
+        if (Lang.isEmpty(propertyValues)) {
+            return query(type).list();
+        }
+        AssertIllegalArgument.isNotNull(operator, "operator");
+
+        TypeQueryConditionGroupExpression queryCondition = query(type).where();
+        TypeQueryConditionGroupLogicExpression queryLogic = null;
+        for (int i = 0; i < propertyValues.length; i++) {
+            SerializableSupplier<?> propertyValue = propertyValues[i];
+            if (i == 0) {
+                queryLogic = queryCondition.eq(propertyValue);
+            } else {
+                if (operator == LogicOperator.AND) {
+                    queryLogic = queryLogic.and().eq(propertyValue);
+                } else {
+                    queryLogic = queryLogic.or().eq(propertyValue);
+                }
+            }
+        }
+        return queryLogic.list();
+    }
+
+    /**
+     * create QueryEntity for repository.
      *
      * @param repository repository name
      * @return QueryEntity
@@ -239,7 +337,7 @@ public interface Hammer extends TplExecutor {
     QueryEntity query(String repository);
 
     /**
-     * create QueryEntity for entityType
+     * create QueryEntity for entityType.
      *
      * @param <E>        entity generic type
      * @param entityType query for entityType
@@ -248,7 +346,7 @@ public interface Hammer extends TplExecutor {
     <E> TypeQueryEntity query(Class<E> entityType);
 
     /**
-     * create update for repository
+     * create update for repository.
      *
      * @param repository repository name
      * @return Update
@@ -256,7 +354,7 @@ public interface Hammer extends TplExecutor {
     Update update(String repository);
 
     /**
-     * create update for entityType
+     * create update for entityType.
      *
      * @param <E>        entity generic type
      * @param entityType update for entityType
@@ -265,7 +363,7 @@ public interface Hammer extends TplExecutor {
     <E> Update update(Class<E> entityType);
 
     /**
-     * create delete for repository
+     * create delete for repository.
      *
      * @param repository repository name
      * @return Delete
@@ -273,7 +371,7 @@ public interface Hammer extends TplExecutor {
     Delete delete(String repository);
 
     /**
-     * create delete for entityType
+     * create delete for entityType.
      *
      * @param <E>        entity generic type
      * @param entityType update for entityType

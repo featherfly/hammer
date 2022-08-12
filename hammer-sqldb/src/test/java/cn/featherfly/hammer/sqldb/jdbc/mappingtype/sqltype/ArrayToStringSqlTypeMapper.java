@@ -8,7 +8,7 @@
  * @date: 2021-05-27 11:48:27
  * @Copyright: 2021 www.featherfly.cn Inc. All rights reserved.
  */
-package cn.featherfly.hammer.sqldb.jdbc.sqltype;
+package cn.featherfly.hammer.sqldb.jdbc.mappingtype.sqltype;
 
 import java.sql.JDBCType;
 import java.sql.PreparedStatement;

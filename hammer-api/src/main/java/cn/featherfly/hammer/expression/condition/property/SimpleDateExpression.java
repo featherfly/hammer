@@ -3,13 +3,12 @@ package cn.featherfly.hammer.expression.condition.property;
 
 import java.util.Date;
 
+import cn.featherfly.common.repository.operate.QueryOperator.QueryPolicy;
 import cn.featherfly.hammer.expression.condition.ConditionsExpression;
 import cn.featherfly.hammer.expression.condition.LogicExpression;
 
 /**
- * <p>
- * SimpleObjectExpression
- * </p>
+ * SimpleObjectExpression.
  *
  * @author zhongj
  */
@@ -132,5 +131,21 @@ public class SimpleDateExpression<C extends ConditionsExpression<C, L>, L extend
     @Override
     public L inn(Boolean value) {
         return expression.inn(name, value);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public L eq(Date value, QueryPolicy queryPolicy) {
+        return expression.eq(name, value, queryPolicy);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public L ne(Date value, QueryPolicy queryPolicy) {
+        return expression.ne(name, value, queryPolicy);
     }
 }

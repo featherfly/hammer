@@ -11,7 +11,6 @@
 package cn.featherfly.hammer.sqldb.jdbc;
 
 import java.io.Serializable;
-import java.math.BigDecimal;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -38,7 +37,6 @@ import cn.featherfly.common.db.SqlUtils;
 import cn.featherfly.common.db.dialect.Dialect;
 import cn.featherfly.common.db.mapping.SqlResultSet;
 import cn.featherfly.common.db.mapping.SqlTypeMappingManager;
-import cn.featherfly.common.lang.ArrayUtils;
 import cn.featherfly.common.lang.Lang;
 import cn.featherfly.common.lang.Strings;
 import cn.featherfly.common.repository.Execution;
@@ -63,34 +61,8 @@ public abstract class AbstractJdbc implements Jdbc {
     /** The manager. */
     protected SqlTypeMappingManager manager;
 
+    /** The interceptors. */
     protected final List<JdbcExecutionInterceptor> interceptors = new ArrayList<>(0);
-
-    /**
-     * Instantiates a new abstract jdbc.
-     */
-    public AbstractJdbc() {
-        this(new SqlTypeMappingManager());
-    }
-
-    /**
-     * Instantiates a new spring jdbc template impl.
-     *
-     * @param manager the manager
-     */
-    public AbstractJdbc(SqlTypeMappingManager manager) {
-        super();
-        this.manager = manager;
-    }
-
-    /**
-     * Instantiates a new abstract jdbc.
-     *
-     * @param dataSource the data source
-     * @param dialect    the dialect
-     */
-    public AbstractJdbc(DataSource dataSource, Dialect dialect) {
-        this(dataSource, dialect, new SqlTypeMappingManager());
-    }
 
     /**
      * Instantiates a new abstract jdbc.
@@ -99,7 +71,7 @@ public abstract class AbstractJdbc implements Jdbc {
      * @param dialect    the dialect
      * @param manager    the manager
      */
-    public AbstractJdbc(DataSource dataSource, Dialect dialect, SqlTypeMappingManager manager) {
+    protected AbstractJdbc(DataSource dataSource, Dialect dialect, SqlTypeMappingManager manager) {
         super();
         setDataSource(dataSource);
         this.dialect = dialect;
@@ -131,14 +103,51 @@ public abstract class AbstractJdbc implements Jdbc {
         return dialect;
     }
 
+    @Override
+    public <T extends Serializable> int insert(String tableName, String[] columnNames, GeneratedKeyHolder<T> keyHolder,
+            Object... args) {
+        return update(getDialect().buildInsertSql(tableName, columnNames), keyHolder, args);
+    }
+
+    @Override
+    public int insertBatch(String tableName, String[] columnNames, int batchSize, Object... args) {
+        return update(getDialect().buildInsertBatchSql(tableName, columnNames, batchSize), args);
+    }
+
+    @Override
+    public int upsert(String tableName, String[] columnNames, String[] uniqueColumns, Object... args) {
+        return update(getDialect().buildUpsertSql(tableName, columnNames, uniqueColumns), args);
+    }
+
     /**
      * {@inheritDoc}
      */
     @Override
-    public <T extends Serializable> int update(String sql, GeneratedKeyHolder<T> keySupplier, Object... args) {
+    public <T extends Serializable> int update(String sql, GeneratedKeyHolder<T> keyHolder, Object... args) {
+        return updateBatch(sql, 1, keyHolder, args);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public <T extends Serializable> int updateBatch(String sql, int batchSize, GeneratedKeyHolder<T> keySupplier,
+            Object... args) {
         if (Lang.isNotEmpty(sql)) {
             sql = sql.trim();
-            return executeUpdate(sql, keySupplier, args);
+            return executeUpdate(sql, batchSize, keySupplier, args);
+        }
+        return 0;
+    }
+
+    @Override
+    public <T extends Serializable> int updateBatch(String sql, int batchSize, GeneratedKeyHolder<T> keySupplier,
+            Map<String, Object> args) {
+        if (Lang.isNotEmpty(sql)) {
+            sql = sql.trim();
+            logger.debug("sql -> {}, args -> {}", sql, args);
+            Execution execution = SqlUtils.convertNamedParamSql(sql, args);
+            return executeUpdate(execution.getExecution(), batchSize, keySupplier, execution.getParams());
         }
         return 0;
     }
@@ -151,7 +160,7 @@ public abstract class AbstractJdbc implements Jdbc {
             BeanPropertyValue<?>... args) {
         if (Lang.isNotEmpty(sql)) {
             sql = sql.trim();
-            return executeUpdate(sql, keySupplier, args);
+            return executeUpdate(sql, 1, keySupplier, args);
         }
         return 0;
     }
@@ -184,7 +193,7 @@ public abstract class AbstractJdbc implements Jdbc {
     public int update(String sql, Object... args) {
         if (Lang.isNotEmpty(sql)) {
             sql = sql.trim();
-            return executeUpdate(sql, args);
+            return executeUpdate(sql, 1, args);
         }
         return 0;
     }
@@ -196,45 +205,104 @@ public abstract class AbstractJdbc implements Jdbc {
     public int update(String sql, BeanPropertyValue<?>... args) {
         if (Lang.isNotEmpty(sql)) {
             sql = sql.trim();
-            return executeUpdate(sql, args);
+            return executeUpdate(sql, 1, args);
         }
         return 0;
     }
 
-    private <T extends Serializable> int executeUpdate(String sql, GeneratedKeyHolder<T> generatedKeyHolder,
-            Object... args) {
+    private int executeUpdate(String sql, int batchSize, Object... args) {
+        return executeUpdate(sql, batchSize, null, args);
+    }
+
+    private <T extends Serializable> int executeUpdate(String sql, int batchSize,
+            GeneratedKeyHolder<T> generatedKeyHolder, Object... args) {
         logger.debug("sql -> {}, args -> {}", sql, args);
-        return executeUpdate(prep -> setParams(prep, args), sql, generatedKeyHolder, args);
+        return executeUpdate(prep -> setParams(prep, args), sql, batchSize, generatedKeyHolder, args);
     }
 
-    private int executeUpdate(String sql, Object... args) {
-        return executeUpdate(sql, null, args);
+    private int executeUpdate(String sql, int batchSize, BeanPropertyValue<?>... args) {
+        return executeUpdate(sql, batchSize, null, args);
     }
 
-    private int executeUpdate(String sql, BeanPropertyValue<?>... args) {
-        return executeUpdate(sql, null, args);
-    }
-
-    private <T extends Serializable> int executeUpdate(String sql, GeneratedKeyHolder<T> generatedKeyHolder,
-            BeanPropertyValue<?>... argsBp) {
+    private <T extends Serializable> int executeUpdate(String sql, int batchSize,
+            GeneratedKeyHolder<T> generatedKeyHolder, BeanPropertyValue<?>... argsBp) {
         logger.debug("sql -> {}, args -> {}", sql, argsBp);
-        return executeUpdate(prep -> setParams(prep, argsBp), sql, generatedKeyHolder,
+        return executeUpdate(prep -> setParams(prep, argsBp), sql, batchSize, generatedKeyHolder,
                 Arrays.stream(argsBp).map(arg -> arg.getValue()).toArray());
     }
 
-    private <T extends Serializable> int executeUpdate(Consumer<PreparedStatement> setParams, String sql,
+    //    private <T extends Serializable> int[] executeUpdate(Consumer<PreparedStatement> setParams, String[] sqls,
+    //            GeneratedKeyHolder<T> generatedKeyHolder, Object... args) {
+    //        if (Lang.isEmpty(sqls)) {
+    //            return ArrayUtils.EMPTY_INT_ARRAY;
+    //        }
+    //        DataSource ds = getDataSource();
+    //        Connection connection = getConnection(ds);
+    //        String sql = sqls[0];
+    //        JdbcExecution execution = preHandle(sql, args);
+    //        sql = execution.getExecution();
+    //        args = execution.getParams();
+    //        try (PreparedStatement prep = generatedKeyHolder == null ? connection.prepareStatement(sql)
+    //                : connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
+    //            for (int i = 1; i < args.length; i++) {
+    //                execution = preHandle(sqls[i], args);
+    //                sql = execution.getExecution();
+    //                args = execution.getParams();
+    //                logger.debug("execute sql -> {}, args -> {}", sql, args);
+    //                prep.addBatch(sql);
+    //                // 不是查询操作，没有查询结果
+    //                //                postHandle(execution, sql, args);
+    //                //                if (generatedKeyHolder != null) {
+    //                //                    try (ResultSet res = prep.getGeneratedKeys()) {
+    //                //                        int row = 0;
+    //                //                        while (res.next()) {
+    //                //                            T value = manager.get(res, 1, generatedKeyHolder.getType());
+    //                //                            //                    Object value = JdbcUtils.getResultSetValue(res, 1, pm.getPropertyType());
+    //                //                            generatedKeyHolder.acceptKey(value, row++);
+    //                //                            logger.debug("auto generated key: ", value);
+    //                //                        }
+    //                //                    }
+    //                //                }
+    //            }
+    //            setParams.accept(prep);
+    //            int results[] = prep.executeBatch();
+    //            //            postHandle(execution, sql, args);
+    //            if (generatedKeyHolder != null) {
+    //                try (ResultSet res = prep.getGeneratedKeys()) {
+    //                    int row = 0;
+    //                    while (res.next()) {
+    //                        T value = manager.get(res, 1, generatedKeyHolder.getType());
+    //                        //                    Object value = JdbcUtils.getResultSetValue(res, 1, pm.getPropertyType());
+    //                        generatedKeyHolder.acceptKey(value, row++);
+    //                        logger.debug("auto generated key: ", value);
+    //                    }
+    //                }
+    //            }
+    //            return results;
+    //        } catch (SQLException e) {
+    //            releaseConnection(connection, ds);
+    //            throw new JdbcException(Strings.format("executeUpdate: \nsql: {0} \nargs: {1}", sql, Arrays.toString(args)),
+    //                    e);
+    //        } finally {
+    //            releaseConnection(connection, getDataSource());
+    //        }
+    //    }
+
+    private <T extends Serializable> int executeUpdate(Consumer<PreparedStatement> setParams, String sql, int batchSize,
             GeneratedKeyHolder<T> generatedKeyHolder, Object... args) {
         JdbcExecution execution = preHandle(sql, args);
         sql = execution.getExecution();
         args = execution.getParams();
-        Connection connection = getConnection();
+        logger.debug("execute sql -> {}, args -> {}", sql, args);
+        DataSource ds = getDataSource();
+        Connection connection = getConnection(ds);
         try (PreparedStatement prep = generatedKeyHolder == null ? connection.prepareStatement(sql)
                 : connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
             setParams.accept(prep);
             int result = prep.executeUpdate();
             // 不是查询操作，没有查询结果
             postHandle(execution, sql, args);
-            if (generatedKeyHolder != null) {
+            if (generatedKeyHolder != null && (batchSize == 1 && result == 1 || batchSize > 1)) {
                 try (ResultSet res = prep.getGeneratedKeys()) {
                     int row = 0;
                     while (res.next()) {
@@ -247,7 +315,7 @@ public abstract class AbstractJdbc implements Jdbc {
             }
             return result;
         } catch (SQLException e) {
-            releaseConnection(connection, getDataSource());
+            releaseConnection(connection, ds);
             throw new JdbcException(Strings.format("executeUpdate: \nsql: {0} \nargs: {1}", sql, Arrays.toString(args)),
                     e);
         } finally {
@@ -275,17 +343,19 @@ public abstract class AbstractJdbc implements Jdbc {
             JdbcExecution execution = preHandle(sql, args);
             sql = execution.getExecution();
             args = execution.getParams();
-            Connection con = getConnection();
+            logger.debug("execute sql -> {}, args -> {}", sql, args);
+            DataSource ds = getDataSource();
+            Connection con = getConnection(ds);
             try (PreparedStatement prep = con.prepareStatement(sql)) {
-                if (logger.isDebugEnabled()) {
-                    logger.debug("execute sql -> {} , params -> {}", sql, ArrayUtils.toString(args));
-                }
+                //                if (logger.isDebugEnabled()) {
+                //                    logger.debug("execute sql -> {} , params -> {}", sql, ArrayUtils.toString(args));
+                //                }
                 setParams(prep, args);
                 try (ResultSet rs = prep.executeQuery()) {
                     return postHandle(execution.setOriginalResult(JdbcUtils.getResultSetMaps(rs, manager)), sql, args);
                 }
             } catch (SQLException e) {
-                releaseConnection(con, getDataSource());
+                releaseConnection(con, ds);
                 con = null;
                 throw new JdbcException(Strings.format("query: \nsql: {0} \nargs: {1}", sql, Arrays.toString(args)), e);
             } finally {
@@ -353,10 +423,9 @@ public abstract class AbstractJdbc implements Jdbc {
             JdbcExecution execution = preHandle(sql, args);
             sql = execution.getExecution();
             args = execution.getParams();
-            if (logger.isDebugEnabled()) { // TODO 后续移动到对应Intercepor中去
-                logger.debug("execute sql -> {} , params -> {}", sql, args);
-            }
-            Connection con = getConnection();
+            logger.debug("execute sql -> {}, args -> {}", sql, args);
+            DataSource ds = getDataSource();
+            Connection con = getConnection(ds);
             try (PreparedStatement prep = con.prepareStatement(sql)) {
                 setParams(prep, args);
                 try (ResultSet rs = prep.executeQuery()) {
@@ -367,7 +436,7 @@ public abstract class AbstractJdbc implements Jdbc {
                     return postHandle(execution.setOriginalResult(list), sql, args);
                 }
             } catch (SQLException e) {
-                releaseConnection(con, getDataSource());
+                releaseConnection(con, ds);
                 con = null;
                 throw new JdbcException(Strings.format("query: \nsql: {0} \nargs: {1}", sql, Arrays.toString(args)), e);
             } finally {
@@ -540,86 +609,6 @@ public abstract class AbstractJdbc implements Jdbc {
      * {@inheritDoc}
      */
     @Override
-    public Integer queryInt(String sql, Object... args) {
-        return queryValue(sql, Integer.class, args);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public Integer queryInt(String sql, Map<String, Object> args) {
-        return queryValue(sql, Integer.class, args);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public Long queryLong(String sql, Object... args) {
-        return queryValue(sql, Long.class, args);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public Long queryLong(String sql, Map<String, Object> args) {
-        return queryValue(sql, Long.class, args);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public BigDecimal queryBigDecimal(String sql, Object... args) {
-        return queryValue(sql, BigDecimal.class, args);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public BigDecimal queryBigDecimal(String sql, Map<String, Object> args) {
-        return queryValue(sql, BigDecimal.class, args);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public Double queryDouble(String sql, Object... args) {
-        return queryValue(sql, Double.class, args);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public Double queryDouble(String sql, Map<String, Object> args) {
-        return queryValue(sql, Double.class, args);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public String queryString(String sql, Object... args) {
-        return queryValue(sql, String.class, args);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public String queryString(String sql, Map<String, Object> args) {
-        return queryValue(sql, String.class, args);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
     public <T> T queryValue(String sql, Class<T> valueType, Map<String, Object> args) {
         return queryValue(sql, new SingleColumnRowMapper<>(valueType, manager), args);
     }
@@ -683,6 +672,13 @@ public abstract class AbstractJdbc implements Jdbc {
     //        return list;
     //    }
 
+    /**
+     * Sets the param.
+     *
+     * @param prep  the prep
+     * @param index the index
+     * @param arg   the arg
+     */
     protected void setParam(PreparedStatement prep, int index, Object arg) {
         if (arg instanceof BeanPropertyValue) {
             BeanPropertyValue<?> bpv = (BeanPropertyValue<?>) arg;
@@ -702,7 +698,15 @@ public abstract class AbstractJdbc implements Jdbc {
      */
     protected void setParams(PreparedStatement prep, Object... args) {
         for (int i = 0; i < args.length; i++) {
-            manager.set(prep, i + 1, args[i]);
+            Object arg = args[i];
+            if (arg instanceof BeanPropertyValue) {
+                BeanPropertyValue<?> bpv = (BeanPropertyValue<?>) arg;
+                @SuppressWarnings("unchecked")
+                BeanProperty<Object> argBp = (BeanProperty<Object>) bpv.getBeanProperty();
+                manager.set(prep, i + 1, bpv.getValue(), argBp);
+            } else {
+                manager.set(prep, i + 1, arg);
+            }
         }
     }
 
@@ -720,6 +724,11 @@ public abstract class AbstractJdbc implements Jdbc {
         }
     }
 
+    /**
+     * Adds the interceptor.
+     *
+     * @param interceptor the interceptor
+     */
     public void addInterceptor(JdbcExecutionInterceptor interceptor) {
         if (interceptor != null) {
             interceptors.add(interceptor);
@@ -727,6 +736,11 @@ public abstract class AbstractJdbc implements Jdbc {
 
     }
 
+    /**
+     * Adds the interceptor.
+     *
+     * @param interceptors the interceptors
+     */
     public void addInterceptor(List<JdbcExecutionInterceptor> interceptors) {
         if (interceptors != null) {
             for (JdbcExecutionInterceptor jdbcExecutionInterceptor : interceptors) {
@@ -735,6 +749,11 @@ public abstract class AbstractJdbc implements Jdbc {
         }
     }
 
+    /**
+     * Adds the interceptor.
+     *
+     * @param interceptors the interceptors
+     */
     public void addInterceptor(JdbcExecutionInterceptor... interceptors) {
         if (interceptors != null) {
             for (JdbcExecutionInterceptor jdbcExecutionInterceptor : interceptors) {
@@ -770,7 +789,8 @@ public abstract class AbstractJdbc implements Jdbc {
     /**
      * Gets the connection.
      *
+     * @param dataSource the data source
      * @return the connection
      */
-    protected abstract Connection getConnection();
+    protected abstract Connection getConnection(DataSource dataSource);
 }
