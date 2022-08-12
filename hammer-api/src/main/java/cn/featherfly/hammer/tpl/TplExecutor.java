@@ -9,17 +9,13 @@ import cn.featherfly.common.structure.page.Page;
 import cn.featherfly.common.structure.page.PaginationResults;
 
 /**
- * <p>
- * TplExecutor
- * </p>
+ * TplExecutor.
  *
  * @author zhongj
  */
 public interface TplExecutor {
     /**
-     * <p>
      * execute.
-     * </p>
      *
      * @param tplExecuteId tpl execute id
      * @param params       params
@@ -28,9 +24,7 @@ public interface TplExecutor {
     int execute(String tplExecuteId, Map<String, Object> params);
 
     /**
-     * <p>
      * execute.
-     * </p>
      *
      * @param tplExecuteId tpl execute id
      * @param params       params
@@ -39,9 +33,7 @@ public interface TplExecutor {
     int execute(TplExecuteId tplExecuteId, Map<String, Object> params);
 
     /**
-     * <p>
-     * query int value, use query str in template find with executeId
-     * </p>
+     * query int value, use query str in template find with executeId.
      *
      * @param tplExecuteId tpl execute id
      * @param params       params
@@ -50,9 +42,7 @@ public interface TplExecutor {
     int intValue(String tplExecuteId, Map<String, Object> params);
 
     /**
-     * <p>
-     * query int value, use query str in template find with executeId
-     * </p>
+     * query int value, use query str in template find with executeId.
      *
      * @param tplExecuteId tpl execute id
      * @param params       params
@@ -61,9 +51,7 @@ public interface TplExecutor {
     int intValue(TplExecuteId tplExecuteId, Map<String, Object> params);
 
     /**
-     * <p>
-     * query long value, use query str in template find with executeId
-     * </p>
+     * query long value, use query str in template find with executeId.
      *
      * @param tplExecuteId tpl execute id
      * @param params       params
@@ -72,9 +60,7 @@ public interface TplExecutor {
     long longValue(String tplExecuteId, Map<String, Object> params);
 
     /**
-     * <p>
-     * query long value, use query str in template find with executeId
-     * </p>
+     * query long value, use query str in template find with executeId.
      *
      * @param tplExecuteId tpl execute id
      * @param params       params
@@ -83,9 +69,7 @@ public interface TplExecutor {
     long longValue(TplExecuteId tplExecuteId, Map<String, Object> params);
 
     /**
-     * <p>
-     * query double value, use query str in template find with executeId
-     * </p>
+     * query double value, use query str in template find with executeId.
      *
      * @param tplExecuteId tpl execute id
      * @param params       params
@@ -94,9 +78,7 @@ public interface TplExecutor {
     double doubleValue(String tplExecuteId, Map<String, Object> params);
 
     /**
-     * <p>
-     * query double value, use query str in template find with executeId
-     * </p>
+     * query double value, use query str in template find with executeId.
      *
      * @param tplExecuteId tpl execute id
      * @param params       params
@@ -105,9 +87,7 @@ public interface TplExecutor {
     double doubleValue(TplExecuteId tplExecuteId, Map<String, Object> params);
 
     /**
-     * <p>
-     * query value, use query str in template find with executeId
-     * </p>
+     * query value, use query str in template find with executeId.
      *
      * @param <E>          value type
      * @param tplExecuteId tpl execute id
@@ -118,9 +98,7 @@ public interface TplExecutor {
     <E> E value(String tplExecuteId, Class<E> valueType, Map<String, Object> params);
 
     /**
-     * <p>
-     * query value, use query str in template find with executeId
-     * </p>
+     * query value, use query str in template find with executeId.
      *
      * @param <E>          value type
      * @param tplExecuteId tpl execute id
@@ -131,9 +109,7 @@ public interface TplExecutor {
     <E> E value(TplExecuteId tplExecuteId, Class<E> valueType, Map<String, Object> params);
 
     /**
-     * <p>
-     * query number value, use query str in template find with executeId
-     * </p>
+     * query number value, use query str in template find with executeId.
      *
      * @param <N>          number type
      * @param tplExecuteId tpl execute id
@@ -144,9 +120,7 @@ public interface TplExecutor {
     <N extends Number> N number(String tplExecuteId, Class<N> numberType, Map<String, Object> params);
 
     /**
-     * <p>
-     * query number value, use query str in template find with executeId
-     * </p>
+     * query number value, use query str in template find with executeId.
      *
      * @param <N>          number type
      * @param tplExecuteId tpl execute id
@@ -157,9 +131,7 @@ public interface TplExecutor {
     <N extends Number> N number(TplExecuteId tplExecuteId, Class<N> numberType, Map<String, Object> params);
 
     /**
-     * <p>
-     * query int value, use query str in template find with executeId
-     * </p>
+     * query int value, use query str in template find with executeId.
      *
      * @param tplExecuteId tpl execute id
      * @param params       params
@@ -168,9 +140,7 @@ public interface TplExecutor {
     Integer numberInt(String tplExecuteId, Map<String, Object> params);
 
     /**
-     * <p>
-     * query int value, use query str in template find with executeId
-     * </p>
+     * query int value, use query str in template find with executeId.
      *
      * @param tplExecuteId tpl execute id
      * @param params       params
@@ -179,9 +149,7 @@ public interface TplExecutor {
     Integer numberInt(TplExecuteId tplExecuteId, Map<String, Object> params);
 
     /**
-     * <p>
-     * query long value, use query str in template find with executeId
-     * </p>
+     * query long value, use query str in template find with executeId.
      *
      * @param tplExecuteId tpl execute id
      * @param params       params
@@ -190,9 +158,7 @@ public interface TplExecutor {
     Long numberLong(String tplExecuteId, Map<String, Object> params);
 
     /**
-     * <p>
-     * query long value, use query str in template find with executeId
-     * </p>
+     * query long value, use query str in template find with executeId.
      *
      * @param tplExecuteId tpl execute id
      * @param params       params
@@ -201,9 +167,7 @@ public interface TplExecutor {
     Long numberLong(TplExecuteId tplExecuteId, Map<String, Object> params);
 
     /**
-     * <p>
-     * query bigDecimal value, use query str in template find with executeId
-     * </p>
+     * query bigDecimal value, use query str in template find with executeId.
      *
      * @param tplExecuteId tpl execute id
      * @param params       params
@@ -212,9 +176,7 @@ public interface TplExecutor {
     BigDecimal numberBigDecimal(String tplExecuteId, Map<String, Object> params);
 
     /**
-     * <p>
-     * query bigDecimal value, use query str in template find with executeId
-     * </p>
+     * query bigDecimal value, use query str in template find with executeId.
      *
      * @param tplExecuteId tpl execute id
      * @param params       params
@@ -223,9 +185,7 @@ public interface TplExecutor {
     BigDecimal numberBigDecimal(TplExecuteId tplExecuteId, Map<String, Object> params);
 
     /**
-     * <p>
-     * query double value, use query str in template find with executeId
-     * </p>
+     * query double value, use query str in template find with executeId.
      *
      * @param tplExecuteId tpl execute id
      * @param params       params
@@ -234,9 +194,7 @@ public interface TplExecutor {
     Double numberDouble(String tplExecuteId, Map<String, Object> params);
 
     /**
-     * <p>
-     * query double value, use query str in template find with executeId
-     * </p>
+     * query double value, use query str in template find with executeId.
      *
      * @param tplExecuteId tpl execute id
      * @param params       params
@@ -245,9 +203,7 @@ public interface TplExecutor {
     Double numberDouble(TplExecuteId tplExecuteId, Map<String, Object> params);
 
     /**
-     * <p>
-     * query string value, use query str in template find with executeId
-     * </p>
+     * query string value, use query str in template find with executeId.
      *
      * @param tplExecuteId tpl execute id
      * @param params       params
@@ -256,9 +212,7 @@ public interface TplExecutor {
     String string(String tplExecuteId, Map<String, Object> params);
 
     /**
-     * <p>
-     * query string value, use query str in template find with executeId
-     * </p>
+     * query string value, use query str in template find with executeId.
      *
      * @param tplExecuteId tpl execute id
      * @param params       params
@@ -267,9 +221,7 @@ public interface TplExecutor {
     String string(TplExecuteId tplExecuteId, Map<String, Object> params);
 
     /**
-     * <p>
-     * query single, use query str in template find with executeId
-     * </p>
+     * query single, use query str in template find with executeId.
      *
      * @param tplExecuteId tpl execute id
      * @param params       params
@@ -278,9 +230,7 @@ public interface TplExecutor {
     Map<String, Object> single(String tplExecuteId, Map<String, Object> params);
 
     /**
-     * <p>
-     * query single, use query str in template find with executeId
-     * </p>
+     * query single, use query str in template find with executeId.
      *
      * @param tplExecuteId tpl execute id
      * @param params       params
@@ -289,9 +239,7 @@ public interface TplExecutor {
     Map<String, Object> single(TplExecuteId tplExecuteId, Map<String, Object> params);
 
     /**
-     * <p>
-     * query single, use query str in template find with executeId
-     * </p>
+     * query single, use query str in template find with executeId.
      *
      * @param <E>          entity type
      * @param tplExecuteId tpl execute id
@@ -302,9 +250,7 @@ public interface TplExecutor {
     <E> E single(String tplExecuteId, Class<E> entityType, Map<String, Object> params);
 
     /**
-     * <p>
-     * query single, use query str in template find with executeId
-     * </p>
+     * query single, use query str in template find with executeId.
      *
      * @param <E>          entity type
      * @param tplExecuteId tpl execute id
@@ -315,9 +261,7 @@ public interface TplExecutor {
     <E> E single(TplExecuteId tplExecuteId, Class<E> entityType, Map<String, Object> params);
 
     /**
-     * <p>
-     * query list, use query str in template find with executeId
-     * </p>
+     * query list, use query str in template find with executeId.
      *
      * @param tplExecuteId tpl execute id
      * @param params       params
@@ -326,9 +270,7 @@ public interface TplExecutor {
     List<Map<String, Object>> list(String tplExecuteId, Map<String, Object> params);
 
     /**
-     * <p>
-     * query list, use query str in template find with executeId
-     * </p>
+     * query list, use query str in template find with executeId.
      *
      * @param tplExecuteId tpl execute id
      * @param params       params
@@ -337,9 +279,7 @@ public interface TplExecutor {
     List<Map<String, Object>> list(TplExecuteId tplExecuteId, Map<String, Object> params);
 
     /**
-     * <p>
-     * query list, use query str in template find with executeId
-     * </p>
+     * query list, use query str in template find with executeId.
      *
      * @param <E>          entity type
      * @param tplExecuteId tpl execute id
@@ -350,9 +290,7 @@ public interface TplExecutor {
     <E> List<E> list(String tplExecuteId, Class<E> entityType, Map<String, Object> params);
 
     /**
-     * <p>
-     * query list, use query str in template find with executeId
-     * </p>
+     * query list, use query str in template find with executeId.
      *
      * @param <E>          entity type
      * @param tplExecuteId tpl execute id
@@ -363,9 +301,7 @@ public interface TplExecutor {
     <E> List<E> list(TplExecuteId tplExecuteId, Class<E> entityType, Map<String, Object> params);
 
     /**
-     * <p>
-     * query list, use query str in template find with executeId
-     * </p>
+     * query list, use query str in template find with executeId.
      *
      * @param tplExecuteId tpl execute id
      * @param params       params
@@ -376,9 +312,7 @@ public interface TplExecutor {
     List<Map<String, Object>> list(String tplExecuteId, Map<String, Object> params, int offset, int limit);
 
     /**
-     * <p>
-     * query list, use query str in template find with executeId
-     * </p>
+     * query list, use query str in template find with executeId.
      *
      * @param tplExecuteId tpl execute id
      * @param params       params
@@ -389,9 +323,7 @@ public interface TplExecutor {
     List<Map<String, Object>> list(TplExecuteId tplExecuteId, Map<String, Object> params, int offset, int limit);
 
     /**
-     * <p>
-     * query list, use query str in template find with executeId
-     * </p>
+     * query list, use query str in template find with executeId.
      *
      * @param <E>          entity type
      * @param tplExecuteId tpl execute id
@@ -404,9 +336,7 @@ public interface TplExecutor {
     <E> List<E> list(String tplExecuteId, Class<E> entityType, Map<String, Object> params, int offset, int limit);
 
     /**
-     * <p>
-     * query list, use query str in template find with executeId
-     * </p>
+     * query list, use query str in template find with executeId.
      *
      * @param <E>          entity type
      * @param tplExecuteId tpl execute id
@@ -419,9 +349,7 @@ public interface TplExecutor {
     <E> List<E> list(TplExecuteId tplExecuteId, Class<E> entityType, Map<String, Object> params, int offset, int limit);
 
     /**
-     * <p>
-     * query list, use query str in template find with executeId
-     * </p>
+     * query list, use query str in template find with executeId.
      *
      * @param <E>          entity type
      * @param tplExecuteId tpl execute id
@@ -433,9 +361,7 @@ public interface TplExecutor {
     <E> List<E> list(String tplExecuteId, Class<E> entityType, Map<String, Object> params, Page page);
 
     /**
-     * <p>
-     * query list, use query str in template find with executeId
-     * </p>
+     * query list, use query str in template find with executeId.
      *
      * @param <E>          entity type
      * @param tplExecuteId tpl execute id
@@ -447,9 +373,7 @@ public interface TplExecutor {
     <E> List<E> list(TplExecuteId tplExecuteId, Class<E> entityType, Map<String, Object> params, Page page);
 
     /**
-     * <p>
-     * query list, use query str in template find with executeId
-     * </p>
+     * query list, use query str in template find with executeId.
      *
      * @param tplExecuteId tpl execute id
      * @param params       params
@@ -459,9 +383,7 @@ public interface TplExecutor {
     List<Map<String, Object>> list(String tplExecuteId, Map<String, Object> params, Page page);
 
     /**
-     * <p>
-     * query list, use query str in template find with executeId
-     * </p>
+     * query list, use query str in template find with executeId.
      *
      * @param tplExecuteId tpl execute id
      * @param params       params
@@ -514,9 +436,7 @@ public interface TplExecutor {
     // Object params);
 
     /**
-     * <p>
-     * query page, use query str in template find with executeId
-     * </p>
+     * query page, use query str in template find with executeId.
      *
      * @param tplExecuteId tpl execute id
      * @param params       params
@@ -528,9 +448,7 @@ public interface TplExecutor {
             int limit);
 
     /**
-     * <p>
-     * query page, use query str in template find with executeId
-     * </p>
+     * query page, use query str in template find with executeId.
      *
      * @param tplExecuteId tpl execute id
      * @param params       params
@@ -542,9 +460,7 @@ public interface TplExecutor {
             int limit);
 
     /**
-     * <p>
-     * query page, use query str in template find with executeId
-     * </p>
+     * query page, use query str in template find with executeId.
      *
      * @param tplExecuteId tpl execute id
      * @param params       params
@@ -554,9 +470,7 @@ public interface TplExecutor {
     PaginationResults<Map<String, Object>> pagination(String tplExecuteId, Map<String, Object> params, Page page);
 
     /**
-     * <p>
-     * query page, use query str in template find with executeId
-     * </p>
+     * query page, use query str in template find with executeId.
      *
      * @param tplExecuteId tpl execute id
      * @param params       params
@@ -566,9 +480,7 @@ public interface TplExecutor {
     PaginationResults<Map<String, Object>> pagination(TplExecuteId tplExecuteId, Map<String, Object> params, Page page);
 
     /**
-     * <p>
-     * query page, use query str in template find with executeId
-     * </p>
+     * query page, use query str in template find with executeId.
      *
      * @param <E>          entity type
      * @param tplExecuteId tpl execute id
@@ -582,9 +494,7 @@ public interface TplExecutor {
             int offset, int limit);
 
     /**
-     * <p>
-     * query page, use query str in template find with executeId
-     * </p>
+     * query page, use query str in template find with executeId.
      *
      * @param <E>          entity type
      * @param tplExecuteId tpl execute id
@@ -598,9 +508,7 @@ public interface TplExecutor {
             int offset, int limit);
 
     /**
-     * <p>
-     * query page, use query str in template find with executeId
-     * </p>
+     * query page, use query str in template find with executeId.
      *
      * @param <E>          entity type
      * @param tplExecuteId tpl execute id
@@ -613,9 +521,7 @@ public interface TplExecutor {
             Page page);
 
     /**
-     * <p>
-     * query page, use query str in template find with executeId
-     * </p>
+     * query page, use query str in template find with executeId.
      *
      * @param <E>          entity type
      * @param tplExecuteId tpl execute id
