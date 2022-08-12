@@ -166,34 +166,6 @@ public class RepositorySimpleStringExpression<C extends RepositoryConditionsExpr
      * {@inheritDoc}
      */
     @Override
-    public L co(String value) {
-        if (Lang.isNotEmpty(repository)) {
-            return expression.co(repository, name, value);
-        } else if (repositoryIndex > -1) {
-            return expression.co(repositoryIndex, name, value);
-        } else {
-            return expression.co(name, value);
-        }
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public L ew(String value) {
-        if (Lang.isNotEmpty(repository)) {
-            return expression.ew(repository, name, value);
-        } else if (repositoryIndex > -1) {
-            return expression.ew(repositoryIndex, name, value);
-        } else {
-            return expression.ew(name, value);
-        }
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
     public L isn() {
         if (Lang.isNotEmpty(repository)) {
             return expression.isn(repository, name);
