@@ -6,14 +6,13 @@ import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.Date;
 
+import cn.featherfly.common.repository.operate.QueryOperator.QueryPolicy;
 import cn.featherfly.hammer.HammerException;
 import cn.featherfly.hammer.expression.condition.ConditionsExpression;
 import cn.featherfly.hammer.expression.condition.LogicExpression;
 
 /**
- * <p>
- * SimpleObjectExpression
- * </p>
+ * SimpleObjectExpression.
  *
  * @author zhongj
  */
@@ -228,6 +227,54 @@ public class SimpleObjectExpression<C extends ConditionsExpression<C, L>, L exte
     @Override
     public L inn(Boolean value) {
         return expression.inn(name, value);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public L eq(Object value, QueryPolicy queryPolicy) {
+        return expression.eq(name, value, queryPolicy);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public L ne(Object value, QueryPolicy queryPolicy) {
+        return expression.ne(name, value, queryPolicy);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public L sw(String value, QueryPolicy queryPolicy) {
+        return expression.sw(name, value, queryPolicy);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public L co(String value, QueryPolicy queryPolicy) {
+        return expression.co(name, value, queryPolicy);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public L ew(String value, QueryPolicy queryPolicy) {
+        return expression.ew(name, value, queryPolicy);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public L lk(String value, QueryPolicy queryPolicy) {
+        return expression.lk(name, value, queryPolicy);
     }
 
 }

@@ -5,6 +5,8 @@
 4. Hammer、GenericHammer加入querySingleBy，queryListBy等一系列方法
 5. Jdbc.update支持多参数支持其中某几个参数是BeanPropertyValue
 6. dsl api update的set方法支持自定义映射(使用BeanPropertyValue)
+7. 加入StringConditionExpression，用于在dsl中加入特殊sql拼接
+8. dsl api （eq,ne,co,sw,ew,lk）加入查询大小写敏感的支持（即 = 和 like 支持区分大小写）（根据数据库不同可能不支持）
 
 # 0.6.4 2022-07-15
 1. 升级依赖

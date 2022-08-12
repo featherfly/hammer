@@ -1,13 +1,12 @@
 
 package cn.featherfly.hammer.expression.condition.property;
 
+import cn.featherfly.common.repository.operate.QueryOperator.QueryPolicy;
 import cn.featherfly.hammer.expression.condition.ConditionsExpression;
 import cn.featherfly.hammer.expression.condition.LogicExpression;
 
 /**
- * <p>
- * SimpleObjectExpression
- * </p>
+ * SimpleObjectExpression.
  *
  * @author zhongj
  */
@@ -154,5 +153,53 @@ public class SimpleStringExpression<C extends ConditionsExpression<C, L>, L exte
     @Override
     public L inn(Boolean value) {
         return expression.inn(name, value);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public L eq(String value, QueryPolicy queryPolicy) {
+        return expression.eq(name, value, queryPolicy);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public L ne(String value, QueryPolicy queryPolicy) {
+        return expression.ne(name, value, queryPolicy);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public L sw(String value, QueryPolicy queryPolicy) {
+        return expression.sw(name, value, queryPolicy);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public L co(String value, QueryPolicy queryPolicy) {
+        return expression.co(name, value, queryPolicy);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public L ew(String value, QueryPolicy queryPolicy) {
+        return expression.ew(name, value, queryPolicy);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public L lk(String value, QueryPolicy queryPolicy) {
+        return expression.lk(name, value, queryPolicy);
     }
 }
