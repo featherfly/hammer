@@ -1,8 +1,8 @@
 
 package cn.featherfly.hammer.sqldb.jdbc;
 
+import static org.junit.Assert.assertNotNull;
 import static org.testng.Assert.assertEquals;
-import static org.testng.Assert.assertNotNull;
 import static org.testng.Assert.assertNull;
 import static org.testng.Assert.assertTrue;
 
@@ -367,6 +367,42 @@ public class HammerJdbcTest extends JdbcTestBase {
 
         userInfo2 = hammer.get(userInfo);
         assertNull(userInfo2);
+    }
+
+    @Test
+    public void testUpdate3() {
+        Role r = new Role();
+        r.setName("name");
+        r.setDescp("descp");
+        hammer.save(r);
+
+        final String updateName1 = "update_" + Randoms.getInt(100);
+        Role updatedRole = hammer.getLockUpdate(r.getId(), Role.class, role -> {
+            assertNotNull(role.getDescp());
+            assertEquals(role.getName(), r.getName());
+
+            role.setName(updateName1);
+            return role;
+        });
+        assertEquals(updatedRole.getId(), r.getId());
+        assertEquals(updatedRole.getName(), updateName1);
+
+        final String updateName2 = "update_" + Randoms.getInt(100);
+        updatedRole = hammer.loadLockUpdate(r, role -> {
+            assertNotNull(role.getDescp());
+            assertEquals(role.getName(), updateName1);
+
+            role.setName(updateName2);
+            return role;
+        });
+
+        assertEquals(updatedRole.getId(), r.getId());
+        assertEquals(updatedRole.getName(), updateName2);
+
+        hammer.delete(updatedRole);
+
+        updatedRole = hammer.get(updatedRole);
+        assertNull(updatedRole);
     }
 
     @Test

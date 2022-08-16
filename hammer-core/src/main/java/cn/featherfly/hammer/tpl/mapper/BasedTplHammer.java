@@ -5,6 +5,7 @@ import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.List;
 import java.util.Map;
+import java.util.function.Function;
 
 import cn.featherfly.common.lang.function.SerializableFunction;
 import cn.featherfly.common.repository.IgnorePolicy;
@@ -653,5 +654,21 @@ public class BasedTplHammer implements Hammer {
     @Override
     public <E> int saveOrUpdate(E entity) {
         return hammer.saveOrUpdate(entity);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public <E> E getLockUpdate(Serializable id, Class<E> type, Function<E, E> updateFunction) {
+        return hammer.getLockUpdate(id, type, updateFunction);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public <E> E getLockUpdate(E entity, Function<E, E> updateFunction) {
+        return hammer.getLockUpdate(entity, updateFunction);
     }
 }

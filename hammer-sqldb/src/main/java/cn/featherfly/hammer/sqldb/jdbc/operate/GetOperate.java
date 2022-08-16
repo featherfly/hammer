@@ -113,31 +113,52 @@ public class GetOperate<T> extends AbstractQueryOperate<T> {
     }
 
     /**
-     * <p>
      * 返回指定ID的对象.
-     * </p>
      *
      * @param id 对象唯一标识
      * @return 指定ID的对象
      */
     public T get(final Serializable id) {
+        return get(id, false);
+    }
+
+    /**
+     * 返回指定ID的对象.
+     *
+     * @param id        对象唯一标识
+     * @param forUpdate the for update
+     * @return 指定ID的对象
+     */
+    public T get(final Serializable id, boolean forUpdate) {
         if (id == null) {
             throw new SqldbHammerException("#get.id.null");
         }
-        return jdbc.querySingle(sql, (RowMapper<T>) (res, rowNum) -> mapRow(res, rowNum), id);
+        if (forUpdate) {
+            return jdbc.querySingle(sql + " for update", (RowMapper<T>) (res, rowNum) -> mapRow(res, rowNum), id);
+        } else {
+            return jdbc.querySingle(sql, (RowMapper<T>) (res, rowNum) -> mapRow(res, rowNum), id);
+        }
         //        return jdbc.querySingle(sql, (RowMapper<T>) (res, rowNum) -> mapRow(res, rowNum),
         //                new BeanPropertyValue<>(pkProperties.get(0), id));
     }
 
     /**
-     * <p>
      * 返回指定ID的对象.
-     * </p>
      *
      * @param entity 包含id值得entity对象，支持复合主键
      * @return 指定ids的对象
      */
     public T get(final T entity) {
+        return get(entity, false);
+    }
+
+    /**
+     * 返回指定ID的对象.
+     *
+     * @param entity 包含id值得entity对象，支持复合主键
+     * @return 指定ids的对象
+     */
+    public T get(final T entity, boolean forUpdate) {
         if (entity == null) {
             throw new SqldbHammerException("#get.id.null");
         }
@@ -145,7 +166,12 @@ public class GetOperate<T> extends AbstractQueryOperate<T> {
         if (Lang.isEmpty(ids)) {
             throw new SqldbHammerException("#get.id.null");
         }
-        return jdbc.querySingle(sql, (RowMapper<T>) (res, rowNum) -> mapRow(res, rowNum), ids.toArray());
+        if (forUpdate) {
+            return jdbc.querySingle(sql + " for update", (RowMapper<T>) (res, rowNum) -> mapRow(res, rowNum),
+                    ids.toArray());
+        } else {
+            return jdbc.querySingle(sql, (RowMapper<T>) (res, rowNum) -> mapRow(res, rowNum), ids.toArray());
+        }
         //        BeanPropertyValue<?>[] bpvs = new BeanPropertyValue[ids.size()];
         //        Lang.each(ids, (id, i) -> {
         //            bpvs[i] = new BeanPropertyValue<>(pkProperties.get(i), id);

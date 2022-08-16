@@ -11,6 +11,7 @@ import java.math.BigDecimal;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
+import java.util.function.Function;
 
 import org.apache.log4j.xml.DOMConfigurator;
 import org.slf4j.Logger;
@@ -613,6 +614,24 @@ public class TplDynamicExecutorFactoryByAsmTest {
 
             @Override
             public <E, R> E get(Serializable id, Class<E> type, SerializableFunction<E, R> fetchProperty) {
+                // YUFEI_TODO Auto-generated method stub
+                return null;
+            }
+
+            @Override
+            public <E> E getLockUpdate(Serializable id, Class<E> type, Function<E, E> updateFunction) {
+                // YUFEI_TODO Auto-generated method stub
+                return null;
+            }
+
+            @Override
+            public <E> E loadLockUpdate(E entity, Function<E, E> updateFunction) {
+                // YUFEI_TODO Auto-generated method stub
+                return null;
+            }
+
+            @Override
+            public <E> E getLockUpdate(E entity, Function<E, E> updateFunction) {
                 // YUFEI_TODO Auto-generated method stub
                 return null;
             }
