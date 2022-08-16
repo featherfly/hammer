@@ -19,6 +19,7 @@ import org.testng.annotations.Test;
 
 import cn.featherfly.common.lang.ClassLoaderUtils;
 import cn.featherfly.common.lang.ClassUtils;
+import cn.featherfly.common.lang.function.SerializableFunction;
 import cn.featherfly.common.repository.IgnorePolicy;
 import cn.featherfly.common.structure.page.Page;
 import cn.featherfly.common.structure.page.PaginationResults;
@@ -608,6 +609,12 @@ public class TplDynamicExecutorFactoryByAsmTest {
             public <E> int saveOrUpdate(E entity) {
                 // YUFEI_TODO Auto-generated method stub
                 return 0;
+            }
+
+            @Override
+            public <E, R> E get(Serializable id, Class<E> type, SerializableFunction<E, R> fetchProperty) {
+                // YUFEI_TODO Auto-generated method stub
+                return null;
             }
         };
     }

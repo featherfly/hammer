@@ -4,9 +4,7 @@ package cn.featherfly.hammer.expression;
 import cn.featherfly.hammer.expression.condition.TypeConditionsGroupExpression;
 
 /**
- * <p>
- * ConditionGroupExpression
- * </p>
+ * TypeConditionGroupExpression.
  *
  * @author zhongj
  */

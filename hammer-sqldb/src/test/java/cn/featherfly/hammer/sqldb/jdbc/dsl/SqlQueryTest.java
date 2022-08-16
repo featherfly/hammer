@@ -326,11 +326,32 @@ public class SqlQueryTest extends JdbcTestBase {
         assertNotNull(userInfo.getUser().getUsername());
         System.err.println(userInfo);
 
-        query.find(UserInfo.class).with(UserInfo::getUser).with(UserRole2::getUser).with(UserRole2::getRole).list();
+        List<UserInfo> list = query.find(UserInfo.class).with(UserInfo::getUser).with(UserRole2::getUser)
+                .with(UserRole2::getRole).list();
+        System.out.println(list.size());
 
         query.find(Tree2.class).with(Tree2::getParent).list();
 
         query.find(Tree2.class).with(Tree2::getParent).with(Tree2::getParent, 1).list();
+    }
+
+    @Test(expectedExceptions = SqldbHammerException.class)
+    void testJoinFetchException() {
+        SqlQuery query = new SqlQuery(jdbc, mappingFactory, sqlPageFactory);
+        // 因为User类中没有UserRole类的关系，所以fetch时会找不到关系，不fetch只是使用条件查询问题不大
+        // userInfo.user.userRole 这里没有userRole
+        query.find(UserInfo.class).with(UserInfo::getUser).fetch().with(UserRole2::getUser).fetch()
+                .with(UserRole2::getRole).fetch().list();
+
+        // TODO 可能的条件查询
+        /*
+         query.find(UserInfo.class).with(UserInfo::getUser, (c) -> {
+             c.eq() ..... // 关联user的条件查询
+         }).fetch().with(UserRole2::getUser).fetch()
+                .with(UserRole2::getRole).fetch().list();
+        
+        
+         */
     }
 
     @Test

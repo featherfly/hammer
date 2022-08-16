@@ -5,10 +5,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * <p>
- * AbstractElement
- * </p>
- * .
+ * AbstractElement .
  *
  * @author zhongj
  */

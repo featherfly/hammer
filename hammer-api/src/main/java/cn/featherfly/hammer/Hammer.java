@@ -6,6 +6,7 @@ import java.util.List;
 
 import cn.featherfly.common.lang.AssertIllegalArgument;
 import cn.featherfly.common.lang.Lang;
+import cn.featherfly.common.lang.function.SerializableFunction;
 import cn.featherfly.common.lang.function.SerializableSupplier;
 import cn.featherfly.common.repository.IgnorePolicy;
 import cn.featherfly.common.repository.operate.LogicOperator;
@@ -215,6 +216,18 @@ public interface Hammer extends TplExecutor {
      * @return entity
      */
     <E> E get(Serializable id, Class<E> type);
+
+    /**
+     * get entity by id and fetch property entity.
+     *
+     * @param <E>           entity type
+     * @param <R>           the generic type
+     * @param id            entity id
+     * @param type          entity type
+     * @param fetchProperty the fetch property
+     * @return entity
+     */
+    <E, R> E get(Serializable id, Class<E> type, SerializableFunction<E, R> fetchProperty);
 
     /**
      * get entity list by id array.

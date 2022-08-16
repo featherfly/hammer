@@ -158,7 +158,7 @@ public class GetOperate<T> extends AbstractQueryOperate<T> {
      */
     @Override
     protected void initSql() {
-        sql = ClassMappingUtils.getSelectByIdSql(classMapping, jdbc.getDialect());
+        sql = ClassMappingUtils.getSelectByPkSql(classMapping, jdbc.getDialect());
         pkPms = classMapping.getPrivaryKeyPropertyMappings();
         logger.debug("sql: {}", sql);
     }

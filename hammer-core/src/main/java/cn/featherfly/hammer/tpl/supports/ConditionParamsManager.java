@@ -13,10 +13,7 @@ import java.util.TreeMap;
 import cn.featherfly.common.lang.Lang;
 
 /**
- * <p>
- * ConditionParamsManager
- * </p>
- * .
+ * ConditionParamsManager .
  *
  * @author zhongj
  */

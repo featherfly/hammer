@@ -12,6 +12,7 @@ import java.util.List;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
 
+import cn.featherfly.common.db.mapping.JdbcMappingException;
 import cn.featherfly.common.lang.ArrayUtils;
 import cn.featherfly.common.lang.Randoms;
 import cn.featherfly.common.repository.operate.LogicOperator;
@@ -28,9 +29,7 @@ import cn.featherfly.hammer.sqldb.jdbc.vo.UserRole;
 import cn.featherfly.hammer.sqldb.jdbc.vo.UserRole2;
 
 /**
- * <p>
- * SqlOrmTest
- * </p>
+ * HammerJdbcTest.
  *
  * @author zhongj
  */
@@ -159,6 +158,29 @@ public class HammerJdbcTest extends JdbcTestBase {
         assertEquals(ur.getDescp(), "descp");
         assertEquals(ur.getDescp2(), "descp2");
         System.out.println(ur);
+    }
+
+    @Test
+    public void testGetAndFetch() {
+        Integer id = 1;
+        UserInfo userInfo;
+
+        userInfo = hammer.get(id, UserInfo.class);
+
+        assertEquals(userInfo.getId(), id);
+        assertNotNull(userInfo.getUser().getId());
+
+        userInfo = hammer.get(id, UserInfo.class, UserInfo::getUser);
+
+        assertEquals(userInfo.getId(), id);
+        assertNotNull(userInfo.getUser().getId());
+        assertNotNull(userInfo.getUser().getUsername());
+    }
+
+    @Test(expectedExceptions = JdbcMappingException.class)
+    public void testGetAndFetchException() {
+        Integer id = 1;
+        hammer.get(id, UserInfo.class, UserInfo::getDescp);
     }
 
     @Test

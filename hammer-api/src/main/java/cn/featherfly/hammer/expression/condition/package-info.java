@@ -1,7 +1,5 @@
 /**
- * <p>
- * expression
- * </p>
+ * expression condition api.
  *
  * @author zhongj
  */
