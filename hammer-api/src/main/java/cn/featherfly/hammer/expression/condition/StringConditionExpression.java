@@ -45,6 +45,7 @@ public interface StringConditionExpression<C extends ConditionExpression, L exte
      * Expression.
      *
      * @param expression the expression
+     * @param params     the params
      * @return the l
      */
     L expression(String expression, Object... params);

@@ -222,7 +222,6 @@ public interface GenericHammer<E, ID extends Serializable> {
      * query id of type then lock and update.
      *
      * @param id             entity id
-     * @param type           entity type
      * @param updateFunction the update function
      * @return updated entity
      */

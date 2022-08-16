@@ -96,10 +96,10 @@ public abstract class AbstractRepositorySqlConditionGroupExpression<C extends Re
      * Instantiates a new abstract repository sql condition group expression.
      *
      * @param dialect        dialect
-     * @param ignorePolicy   the ignore policy
      * @param factory        MappingFactory
      * @param aliasManager   aliasManager
      * @param sqlPageFactory the sql page factory
+     * @param ignorePolicy   the ignore policy
      */
     public AbstractRepositorySqlConditionGroupExpression(Dialect dialect, MappingFactory factory,
             AliasManager aliasManager, SqlPageFactory sqlPageFactory, Predicate<Object> ignorePolicy) {
@@ -110,11 +110,11 @@ public abstract class AbstractRepositorySqlConditionGroupExpression<C extends Re
      * Instantiates a new abstract repository sql condition group expression.
      *
      * @param dialect        dialect
-     * @param ignorePolicy   the ignore policy
      * @param factory        MappingFactory
      * @param aliasManager   aliasManager
      * @param queryAlias     queryAlias
      * @param sqlPageFactory the sql page factory
+     * @param ignorePolicy   the ignore policy
      */
     public AbstractRepositorySqlConditionGroupExpression(Dialect dialect, MappingFactory factory,
             AliasManager aliasManager, String queryAlias, SqlPageFactory sqlPageFactory,
@@ -126,12 +126,12 @@ public abstract class AbstractRepositorySqlConditionGroupExpression<C extends Re
      * Instantiates a new abstract repository sql condition group expression.
      *
      * @param dialect        dialect
-     * @param ignorePolicy   the ignore policy
      * @param factory        MappingFactory
      * @param aliasManager   aliasManager
      * @param queryAlias     queryAlias
      * @param sqlPageFactory the sql page factory
      * @param classMapping   classMapping
+     * @param ignorePolicy   the ignore policy
      */
     public AbstractRepositorySqlConditionGroupExpression(Dialect dialect, MappingFactory factory,
             AliasManager aliasManager, String queryAlias, SqlPageFactory sqlPageFactory, ClassMapping<?> classMapping,
@@ -144,12 +144,12 @@ public abstract class AbstractRepositorySqlConditionGroupExpression<C extends Re
      *
      * @param parent         parent group
      * @param dialect        dialect
-     * @param ignorePolicy   the ignore policy
      * @param factory        MappingFactory
      * @param aliasManager   aliasManager
      * @param queryAlias     queryAlias
      * @param sqlPageFactory the sql page factory
      * @param classMapping   classMapping
+     * @param ignorePolicy   the ignore policy
      */
     protected AbstractRepositorySqlConditionGroupExpression(L parent, Dialect dialect, MappingFactory factory,
             AliasManager aliasManager, String queryAlias, SqlPageFactory sqlPageFactory, ClassMapping<?> classMapping,
@@ -2943,8 +2943,9 @@ public abstract class AbstractRepositorySqlConditionGroupExpression<C extends Re
     /**
      * Supplier.
      *
-     * @param <R>  the generic type
-     * @param info the info
+     * @param <R>   the generic type
+     * @param info  the info
+     * @param value the value
      * @return the list
      */
     protected <R> List<Tuple2<String, Optional<R>>> supplier(SerializedLambdaInfo info, R value) {
