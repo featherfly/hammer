@@ -20,8 +20,8 @@ import cn.featherfly.hammer.sqldb.jdbc.Jdbc;
  *
  * @author zhongj
  * @version 0.1.0
- * @since 0.1.0
  * @param <T> 对象类型
+ * @since 0.1.0
  */
 public class GetOperate<T> extends AbstractQueryOperate<T> {
 
@@ -155,7 +155,8 @@ public class GetOperate<T> extends AbstractQueryOperate<T> {
     /**
      * 返回指定ID的对象.
      *
-     * @param entity 包含id值得entity对象，支持复合主键
+     * @param entity    包含id值得entity对象，支持复合主键
+     * @param forUpdate the for update
      * @return 指定ids的对象
      */
     public T get(final T entity, boolean forUpdate) {

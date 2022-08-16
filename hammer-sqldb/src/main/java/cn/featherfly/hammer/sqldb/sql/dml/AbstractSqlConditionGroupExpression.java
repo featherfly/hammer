@@ -79,9 +79,9 @@ public abstract class AbstractSqlConditionGroupExpression<C extends ConditionGro
      * Instantiates a new abstract sql condition group expression.
      *
      * @param dialect         dialect
-     * @param ignorePolicy    the ignore policy
      * @param sqlPageFactory  the sql page factory
      * @param typeQueryEntity the type query entity
+     * @param ignorePolicy    the ignore policy
      */
     public AbstractSqlConditionGroupExpression(Dialect dialect, SqlPageFactory sqlPageFactory,
             TypeQueryEntity typeQueryEntity, Predicate<Object> ignorePolicy) {
@@ -92,10 +92,10 @@ public abstract class AbstractSqlConditionGroupExpression<C extends ConditionGro
      * Instantiates a new abstract sql condition group expression.
      *
      * @param dialect         dialect
-     * @param ignorePolicy    the ignore policy
      * @param sqlPageFactory  the sql page factory
      * @param queryAlias      queryAlias
      * @param typeQueryEntity the type query entity
+     * @param ignorePolicy    the ignore policy
      */
     public AbstractSqlConditionGroupExpression(Dialect dialect, SqlPageFactory sqlPageFactory, String queryAlias,
             TypeQueryEntity typeQueryEntity, Predicate<Object> ignorePolicy) {
@@ -106,11 +106,11 @@ public abstract class AbstractSqlConditionGroupExpression<C extends ConditionGro
      * Instantiates a new abstract sql condition group expression.
      *
      * @param dialect         dialect
-     * @param ignorePolicy    the ignore policy
      * @param sqlPageFactory  the sql page factory
      * @param queryAlias      queryAlias
      * @param classMapping    classMapping
      * @param typeQueryEntity the type query entity
+     * @param ignorePolicy    the ignore policy
      */
     public AbstractSqlConditionGroupExpression(Dialect dialect, SqlPageFactory sqlPageFactory, String queryAlias,
             ClassMapping<?> classMapping, TypeQueryEntity typeQueryEntity, Predicate<Object> ignorePolicy) {
@@ -122,11 +122,11 @@ public abstract class AbstractSqlConditionGroupExpression<C extends ConditionGro
      *
      * @param parent          parent group
      * @param dialect         dialect
-     * @param ignorePolicy    the ignore policy
      * @param sqlPageFactory  the sql page factory
      * @param queryAlias      queryAlias
      * @param classMapping    classMapping
      * @param typeQueryEntity the type query entity
+     * @param ignorePolicy    the ignore policy
      */
     protected AbstractSqlConditionGroupExpression(L parent, Dialect dialect, SqlPageFactory sqlPageFactory,
             String queryAlias, ClassMapping<?> classMapping, TypeQueryEntity typeQueryEntity,
@@ -1612,8 +1612,9 @@ public abstract class AbstractSqlConditionGroupExpression<C extends ConditionGro
     /**
      * Supplier.
      *
-     * @param <R>  the generic type
-     * @param info the info
+     * @param <R>   the generic type
+     * @param info  the info
+     * @param value the value
      * @return the list
      */
     protected <R> List<Tuple2<String, Optional<R>>> supplier(SerializedLambdaInfo info, R value) {

@@ -52,10 +52,11 @@ public interface NotEqualsExpression<C extends ConditionExpression, L extends Lo
     /**
      * not equals. 不等于.
      *
-     * @param <T>   the generic type
-     * @param <R>   the generic type
-     * @param name  参数名称
-     * @param value 参数值
+     * @param <T>         the generic type
+     * @param <R>         the generic type
+     * @param name        参数名称
+     * @param value       参数值
+     * @param queryPolicy the query policy
      * @return LogicExpression
      */
     <T, R> L ne(SerializableFunction<T, R> name, R value, QueryPolicy queryPolicy);
