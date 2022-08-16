@@ -2,9 +2,7 @@
 package cn.featherfly.hammer.expression;
 
 /**
- * <p>
- * Repository
- * </p>
+ * SimpleRepository.
  *
  * @author zhongj
  */

@@ -5,9 +5,7 @@ import cn.featherfly.hammer.Hammer;
 import cn.featherfly.hammer.HammerSupport;
 
 /**
- * <p>
- * BasedMapper
- * </p>
+ * BasedMapper.
  *
  * @author zhongj
  */

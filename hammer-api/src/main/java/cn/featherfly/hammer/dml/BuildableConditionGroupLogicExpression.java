@@ -4,9 +4,7 @@ package cn.featherfly.hammer.dml;
 import cn.featherfly.hammer.expression.ConditionGroupLogicExpression;
 
 /**
- * <p>
- * ConditionGroupLogic
- * </p>
+ * BuildableConditionGroupLogicExpression.
  *
  * @author zhongj
  */

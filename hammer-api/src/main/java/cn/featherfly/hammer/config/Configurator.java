@@ -4,9 +4,7 @@ package cn.featherfly.hammer.config;
 import cn.featherfly.hammer.Hammer;
 
 /**
- * <p>
- * Configurator
- * </p>
+ * Configurator.
  *
  * @author zhongj
  */

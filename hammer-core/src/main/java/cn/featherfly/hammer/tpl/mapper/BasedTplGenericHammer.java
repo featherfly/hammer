@@ -5,6 +5,7 @@ import java.io.Serializable;
 import java.util.List;
 
 import cn.featherfly.common.lang.CollectionUtils;
+import cn.featherfly.common.lang.function.SerializableFunction;
 import cn.featherfly.common.lang.function.SerializableSupplier;
 import cn.featherfly.common.repository.IgnorePolicy;
 import cn.featherfly.common.repository.operate.LogicOperator;
@@ -15,9 +16,7 @@ import cn.featherfly.hammer.dsl.execute.Update;
 import cn.featherfly.hammer.dsl.query.TypeQueryEntity;
 
 /**
- * <p>
- * BasedTplGenericHammer
- * </p>
+ * BasedTplGenericHammer.
  *
  * @author zhongj
  */
@@ -98,6 +97,14 @@ public class BasedTplGenericHammer<E, ID extends Serializable> implements Generi
     @Override
     public E get(ID id) {
         return hammer.get(id, type);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public <R> E get(Serializable id, SerializableFunction<E, R> fetchProperty) {
+        return hammer.get(id, type, fetchProperty);
     }
 
     /**

@@ -7,6 +7,7 @@
 6. dsl api update的set方法支持自定义映射(使用BeanPropertyValue)
 7. 加入StringConditionExpression，用于在dsl中加入特殊sql拼接
 8. dsl api （eq,ne,co,sw,ew,lk）加入查询大小写敏感的支持（即 = 和 like 支持区分大小写）（根据数据库不同可能不支持）
+9. Hammer加入get(id,Class,SerializableFunction)方法用于在获取对象时自动获取关联属性对象（目前只支持多对一和一对一（Entity），即不支持一对多(List)）
 
 # 0.6.4 2022-07-15
 1. 升级依赖

@@ -4,6 +4,7 @@ package cn.featherfly.hammer;
 import java.io.Serializable;
 import java.util.List;
 
+import cn.featherfly.common.lang.function.SerializableFunction;
 import cn.featherfly.common.lang.function.SerializableSupplier;
 import cn.featherfly.common.repository.IgnorePolicy;
 import cn.featherfly.common.repository.operate.LogicOperator;
@@ -181,6 +182,16 @@ public interface GenericHammer<E, ID extends Serializable> {
      * @return entity
      */
     E get(ID id);
+
+    /**
+     * get entity by id and fetch property entity.
+     *
+     * @param <R>           the generic type
+     * @param id            entity id
+     * @param fetchProperty the fetch property
+     * @return entity
+     */
+    <R> E get(Serializable id, SerializableFunction<E, R> fetchProperty);
 
     /**
      * get entity list by id array.

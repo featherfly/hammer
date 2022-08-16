@@ -7,10 +7,7 @@ import cn.featherfly.hammer.expression.condition.RepositoryConditionsGroupExpres
 import cn.featherfly.hammer.expression.condition.RepositoryLogicGroupExpression;
 
 /**
- * <p>
- * *ConditionGroupLogicExpression
- * </p>
- * .
+ * ConditionGroupLogicExpression .
  *
  * @author zhongj
  * @param <C> the generic type

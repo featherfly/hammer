@@ -44,7 +44,6 @@ import cn.featherfly.common.structure.page.Page;
 import cn.featherfly.common.structure.page.PaginationResults;
 import cn.featherfly.hammer.GenericHammer;
 import cn.featherfly.hammer.GenericHammerSupport;
-import cn.featherfly.hammer.GenericMapper;
 import cn.featherfly.hammer.Hammer;
 import cn.featherfly.hammer.HammerException;
 import cn.featherfly.hammer.tpl.TplExecuteId;
@@ -56,10 +55,7 @@ import cn.featherfly.hammer.tpl.annotation.ParamType;
 import cn.featherfly.hammer.tpl.annotation.Template;
 
 /**
- * <p>
- * TplMapperFactory
- * </p>
- * .
+ * TplMapperFactory.
  *
  * @author zhongj
  */
@@ -769,8 +765,6 @@ public class TplDynamicExecutorFactory extends ClassLoader implements Opcodes {
                     return m;
                 }
             }
-            return null;
-        } else if (ClassUtils.isParent(GenericMapper.class, parentHammer)) {
             return null;
         } else {
             try {

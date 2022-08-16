@@ -2,9 +2,7 @@
 package cn.featherfly.hammer.expression;
 
 /**
- * <p>
- * *ConditionGroupLogicExpression
- * </p>
+ * TypeConditionGroupLogicExpression.
  *
  * @author zhongj
  */

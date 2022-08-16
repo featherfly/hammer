@@ -1,8 +1,6 @@
 /**
- * <p>
- * dsl
- * </p>
- * 
+ * dsl api.
+ *
  * @author zhongj
  */
 package cn.featherfly.hammer.dsl;
