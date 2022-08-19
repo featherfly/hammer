@@ -69,7 +69,7 @@
 
 - [x] 加入upsert支持
 
-- [ ] 加入一次交互完成锁查询、修改，并返回修改后的结果的功能
+- [x] 加入一次交互完成锁查询、修改，并返回修改后的结果的功能
 
 - [ ] 加入@Execution（@Sql）注解，用于非模板执行字符串（sql，json等）的直接运行，并去掉@Template的isTemplate方法（需要处理字节码动态加载）
 
@@ -126,16 +126,17 @@
   
 - [ ] 查询返回支持Map支持多对象映射
     map的key为别名,value为映射对象
+
   > 例如
 
-  ```
+  ```java
   select u.name,u.age, r.name from ....
 
-  Map<String,Object> userRoleMap = 
-  List<Map<String,Object>> userRoleMapList =     
+  Map<String,Object> userRoleMap =   
+  List<Map<String,Object>> userRoleMapList =   
 
-  User user = userRoleMap.get("u")
-  Role role = userRoleMap.get("r");
+  User user = userRoleMap.get("u");  
+  Role role = userRoleMap.get("r");  
   ```
 
 - [ ] 查询返回支持Tuple
@@ -143,7 +144,7 @@
 
   > 例如
 
-  ```
+  ```java
   select u.name, u.age from ....
     
   Tuple2<String,Integer> userTuple = 
@@ -157,7 +158,7 @@
 
   > 如果是多个对象类型，则对象的顺序以别名的顺序为准，例如
 
-  ```
+  ```java
   select u.name,u.age, r.name from ....
     
   Tuple2<User,Role> userRoleTuple = 

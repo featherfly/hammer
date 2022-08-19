@@ -1,7 +1,7 @@
 
 package cn.featherfly.hammer.expression.condition;
 
-import java.util.function.Consumer;
+import java.util.function.Function;
 
 import cn.featherfly.common.repository.operate.LogicOperator;
 
@@ -33,7 +33,7 @@ public interface LogicExpression<C extends ConditionExpression, L extends LogicE
      * @param group group
      * @return ExpressionBuilder
      */
-    L and(Consumer<C> group);
+    L and(Function<C, L> group);
 
     /**
      * 逻辑或.
@@ -48,7 +48,7 @@ public interface LogicExpression<C extends ConditionExpression, L extends LogicE
      * @param group group
      * @return ExpressionBuilder
      */
-    L or(Consumer<C> group);
+    L or(Function<C, L> group);
 
     // /**
     // * 结束当前条件逻辑组并返回上一级逻辑组 {@link ExpressionBuilder#group()}

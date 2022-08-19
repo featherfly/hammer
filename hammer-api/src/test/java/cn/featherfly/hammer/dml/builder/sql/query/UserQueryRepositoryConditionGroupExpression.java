@@ -6,7 +6,7 @@ import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.Date;
 import java.util.Map;
-import java.util.function.Consumer;
+import java.util.function.Function;
 import java.util.function.Predicate;
 
 import cn.featherfly.common.lang.function.DateSupplier;
@@ -2206,16 +2206,6 @@ public class UserQueryRepositoryConditionGroupExpression implements
      * {@inheritDoc}
      */
     @Override
-    public UserQueryRepositoryConditionGroupExpression group(
-            Consumer<UserQueryRepositoryConditionGroupExpression> group) {
-        // YUFEI_TODO Auto-generated method stub
-        return null;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
     public <T, R> UserQueryRepositoryConditionGroupExpression eq(SerializableFunction<T, R> repository,
             SerializableFunction<T, R> property, R value) {
         // YUFEI_TODO Auto-generated method stub
@@ -2392,25 +2382,6 @@ public class UserQueryRepositoryConditionGroupExpression implements
      */
     @Override
     public <T, R> UserQueryRepositoryConditionGroupExpression isn(SerializableFunction<T, R> name, Boolean value) {
-        // YUFEI_TODO Auto-generated method stub
-        return null;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public UserQueryRepositoryConditionGroupExpression and(
-            Consumer<UserQueryRepositoryConditionGroupExpression> group) {
-        // YUFEI_TODO Auto-generated method stub
-        return null;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public UserQueryRepositoryConditionGroupExpression or(Consumer<UserQueryRepositoryConditionGroupExpression> group) {
         // YUFEI_TODO Auto-generated method stub
         return null;
     }
@@ -2855,6 +2826,36 @@ public class UserQueryRepositoryConditionGroupExpression implements
     @Override
     public UserQueryRepositoryConditionGroupExpression lk(int repositoryIndex, String name, String value,
             QueryPolicy queryPolicy) {
+        // YUFEI_TODO Auto-generated method stub
+        return null;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public UserQueryRepositoryConditionGroupExpression and(
+            Function<UserQueryRepositoryConditionGroupExpression, UserQueryRepositoryConditionGroupExpression> group) {
+        // YUFEI_TODO Auto-generated method stub
+        return null;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public UserQueryRepositoryConditionGroupExpression or(
+            Function<UserQueryRepositoryConditionGroupExpression, UserQueryRepositoryConditionGroupExpression> group) {
+        // YUFEI_TODO Auto-generated method stub
+        return null;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public UserQueryRepositoryConditionGroupExpression group(
+            Function<UserQueryRepositoryConditionGroupExpression, UserQueryRepositoryConditionGroupExpression> group) {
         // YUFEI_TODO Auto-generated method stub
         return null;
     }
