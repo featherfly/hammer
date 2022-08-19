@@ -56,7 +56,7 @@ public interface Test extends GenericHammer<User, Long> {
 
         method = Test.class.getMethod("get", Serializable.class);
 
-        Map<String, Type> map = ClassUtils.getSuperClassGenricTypeMap(Test.class);
+        Map<String, Type> map = ClassUtils.getSuperClassGenericTypeMap(Test.class);
 
         System.out.println(map);
         System.out.println(method.getGenericReturnType().getClass());
