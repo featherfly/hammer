@@ -126,25 +126,25 @@
   
 - [ ] 查询返回支持Map支持多对象映射
     map的key为别名,value为映射对象
-  
-> 例如
-  
+
+  > 例如
+
+  ```java
+  select u.name,u.age, r.name from ....
+
+  Map<String,Object> userRoleMap =   
+  List<Map<String,Object>> userRoleMapList =   
+
+  User user = userRoleMap.get("u");  
+  Role role = userRoleMap.get("r");  
   ```
-select u.name,u.age, r.name from ....
-  
-  Map<String,Object> userRoleMap = 
-List<Map<String,Object>> userRoleMapList =     
-  
-  User user = userRoleMap.get("u")
-  Role role = userRoleMap.get("r");
-```
-    
+
 - [ ] 查询返回支持Tuple
     类似Map，但是可以支持强类型，因为是强类型，所以返回数据的个数要与Tuple对象的个数匹配
 
   > 例如
 
-  ```
+  ```java
   select u.name, u.age from ....
     
   Tuple2<String,Integer> userTuple = 
@@ -158,7 +158,7 @@ List<Map<String,Object>> userRoleMapList =
 
   > 如果是多个对象类型，则对象的顺序以别名的顺序为准，例如
 
-  ```
+  ```java
   select u.name,u.age, r.name from ....
     
   Tuple2<User,Role> userRoleTuple = 
