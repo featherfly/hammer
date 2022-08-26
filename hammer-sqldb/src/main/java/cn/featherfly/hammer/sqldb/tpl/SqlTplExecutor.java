@@ -20,7 +20,7 @@ import com.speedment.common.tuple.Tuples;
 import cn.featherfly.common.db.SqlUtils;
 import cn.featherfly.common.db.mapping.JdbcMappingFactory;
 import cn.featherfly.common.lang.Lang;
-import cn.featherfly.common.repository.operate.QueryOperator;
+import cn.featherfly.common.operator.QueryOperator;
 import cn.featherfly.common.structure.page.Limit;
 import cn.featherfly.common.structure.page.Page;
 import cn.featherfly.common.structure.page.PaginationResults;

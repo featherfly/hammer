@@ -18,7 +18,7 @@ public interface TypeEqualsExpression<C extends ConditionExpression, L extends L
         extends EqualsExpression<C, L> {
 
     /**
-     * not equals.不等于.
+     * equals. 等于.
      *
      * @param <O>        the generic type
      * @param <T>        the generic type
@@ -31,7 +31,7 @@ public interface TypeEqualsExpression<C extends ConditionExpression, L extends L
     <O, T, R> L eq(SerializableFunction<O, T> repository, SerializableFunction<T, R> property, R value);
 
     /**
-     * not equals.不等于.
+     * equals. 等于.
      *
      * @param <T>        the generic type
      * @param <R>        the generic type

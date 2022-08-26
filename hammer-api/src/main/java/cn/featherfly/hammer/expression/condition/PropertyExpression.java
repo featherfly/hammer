@@ -46,18 +46,20 @@ public interface PropertyExpression<C extends ConditionExpression, L extends Log
     /**
      * Property number.
      *
+     * @param <N>  the number type
      * @param name the name
      * @return the number expression
      */
-    NumberExpression<C, L> propertyNumber(String name);
+    <N extends Number> NumberExpression<N, C, L> propertyNumber(String name);
 
     /**
      * Property date.
      *
+     * @param <D>  the generic type
      * @param name the name
      * @return the date expression
      */
-    DateExpression<C, L> propertyDate(String name);
+    <D extends Date> DateExpression<D, C, L> propertyDate(String name);
 
     /**
      * Property enum.
@@ -65,7 +67,7 @@ public interface PropertyExpression<C extends ConditionExpression, L extends Log
      * @param name the name
      * @return the enum expression
      */
-    EnumExpression<C, L> propertyEnum(String name);
+    <R extends Enum<?>> EnumExpression<R, C, L> propertyEnum(String name);
 
     /**
      * Property.
@@ -94,7 +96,7 @@ public interface PropertyExpression<C extends ConditionExpression, L extends Log
      * @param name the name
      * @return the number expression
      */
-    <T, R extends Number> NumberExpression<C, L> property(ReturnNumberFunction<T, R> name);
+    <T, R extends Number> NumberExpression<R, C, L> property(ReturnNumberFunction<T, R> name);
 
     /**
      * Property date.
@@ -104,7 +106,7 @@ public interface PropertyExpression<C extends ConditionExpression, L extends Log
      * @param name the name
      * @return the date expression
      */
-    <T, R extends Date> DateExpression<C, L> property(ReturnDateFunction<T, R> name);
+    <T, R extends Date> DateExpression<R, C, L> property(ReturnDateFunction<T, R> name);
 
     /**
      * Property enum.
@@ -114,52 +116,5 @@ public interface PropertyExpression<C extends ConditionExpression, L extends Log
      * @param name the name
      * @return the enum expression
      */
-    <T, R extends Enum<?>> EnumExpression<C, L> property(ReturnEnumFunction<T, R> name);
-
-    /**
-     * Property string.
-     *
-     * @param <T>  the generic type
-     * @param name the name
-     * @return the string expression
-     * @deprecated use {@link #property(ReturnStringFunction)} instead
-     */
-    @Deprecated
-    <T> StringExpression<C, L> propertyString(SerializableFunction<T, String> name);
-
-    /**
-     * Property number.
-     *
-     * @param <T>  the generic type
-     * @param <R>  the generic type
-     * @param name the name
-     * @return the number expression
-     * @deprecated use {@link #property(ReturnNumberFunction)} instead
-     */
-    @Deprecated
-    <T, R extends Number> NumberExpression<C, L> propertyNumber(SerializableFunction<T, R> name);
-
-    /**
-     * Property date.
-     *
-     * @param <T>  the generic type
-     * @param <R>  the generic type
-     * @param name the name
-     * @return the date expression
-     * @deprecated use {@link #property(ReturnDateFunction)} instead
-     */
-    @Deprecated
-    <T, R extends Date> DateExpression<C, L> propertyDate(SerializableFunction<T, R> name);
-
-    /**
-     * Property enum.
-     *
-     * @param <T>  the generic type
-     * @param <R>  the generic type
-     * @param name the name
-     * @return the enum expression
-     * @deprecated use {@link #property(ReturnEnumFunction)} instead
-     */
-    @Deprecated
-    <T, R extends Enum<?>> EnumExpression<C, L> propertyEnum(SerializableFunction<T, R> name);
+    <T, R extends Enum<?>> EnumExpression<R, C, L> property(ReturnEnumFunction<T, R> name);
 }

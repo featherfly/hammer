@@ -3,7 +3,7 @@ package cn.featherfly.hammer.sqldb.jdbc.dsl.execute;
 
 import java.util.function.Predicate;
 
-import cn.featherfly.common.repository.mapping.ClassMapping;
+import cn.featherfly.common.db.mapping.JdbcClassMapping;
 import cn.featherfly.hammer.dsl.execute.ExecutableConditionGroupExpression;
 import cn.featherfly.hammer.dsl.execute.ExecutableConditionGroupLogicExpression;
 import cn.featherfly.hammer.dsl.query.TypeQueryEntity;
@@ -11,10 +11,7 @@ import cn.featherfly.hammer.sqldb.jdbc.Jdbc;
 import cn.featherfly.hammer.sqldb.sql.dml.AbstractSqlConditionGroupExpression;
 
 /**
- * <p>
- * sql condition group builder sql条件逻辑组构造器
- * </p>
- * .
+ * sql condition group builder sql条件逻辑组构造器 .
  *
  * @author zhongj
  */
@@ -51,7 +48,7 @@ public class SqlConditionGroupExpression extends
      * @param classMapping classMapping
      * @param ignorePolicy the ignore policy
      */
-    public SqlConditionGroupExpression(Jdbc jdbc, String queryAlias, ClassMapping<?> classMapping,
+    public SqlConditionGroupExpression(Jdbc jdbc, String queryAlias, JdbcClassMapping<?> classMapping,
             Predicate<Object> ignorePolicy) {
         this(jdbc, null, queryAlias, classMapping, ignorePolicy);
     }
@@ -66,7 +63,7 @@ public class SqlConditionGroupExpression extends
      * @param ignorePolicy the ignore policy
      */
     SqlConditionGroupExpression(Jdbc jdbc, ExecutableConditionGroupLogicExpression parent, String queryAlias,
-            ClassMapping<?> classMapping, Predicate<Object> ignorePolicy) {
+            JdbcClassMapping<?> classMapping, Predicate<Object> ignorePolicy) {
         // 删除，和更新不需要分页
         super(parent, jdbc.getDialect(), null, queryAlias, classMapping, null, ignorePolicy);
         this.jdbc = jdbc;

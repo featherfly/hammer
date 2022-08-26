@@ -25,19 +25,40 @@ public interface QueryWithExpression<QW extends QueryWithExpression<QW, QWO, QWE
         extends RepositoryWhereExpression<C, L>, QueryListExecutor, QueryConditionLimit {
 
     /**
-     * with.
+     * relate to .
      *
      * @param repositoryName with repository name
      * @return QueryWithExpression
      */
-    QWO with(String repositoryName);
+    default QWO relate(String repositoryName) {
+        return relate(repositoryName);
+    }
 
     /**
-     * with.
+     * join on .
+     *
+     * @param repositoryName with repository name
+     * @return QueryWithExpression
+     */
+    QWO join(String repositoryName);
+
+    /**
+     * relate to.
      *
      * @param <T>            the generic type
      * @param repositoryType with repository type
      * @return QueryWithExpression
      */
-    <T> QWO with(Class<T> repositoryType);
+    default <T> QWO relate(Class<T> repositoryType) {
+        return join(repositoryType);
+    }
+
+    /**
+     * join on.
+     *
+     * @param <T>            the generic type
+     * @param repositoryType with repository type
+     * @return QueryWithExpression
+     */
+    <T> QWO join(Class<T> repositoryType);
 }

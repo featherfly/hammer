@@ -4,7 +4,7 @@ package cn.featherfly.hammer.sqldb.jdbc.dsl.execute;
 import java.util.function.Consumer;
 
 import cn.featherfly.common.db.builder.dml.basic.SqlDeleteFromBasicBuilder;
-import cn.featherfly.common.repository.mapping.ClassMapping;
+import cn.featherfly.common.db.mapping.JdbcClassMapping;
 import cn.featherfly.hammer.dsl.execute.Delete;
 import cn.featherfly.hammer.dsl.execute.ExecutableConditionGroupExpression;
 import cn.featherfly.hammer.expression.Repository;
@@ -12,10 +12,7 @@ import cn.featherfly.hammer.expression.condition.ConditionGroupConfig;
 import cn.featherfly.hammer.sqldb.jdbc.Jdbc;
 
 /**
- * <p>
- * SqlDelete
- * </p>
- * .
+ * SqlDelete .
  *
  * @author zhongj
  */
@@ -23,7 +20,7 @@ public class SqlDelete implements Delete {
 
     private String tableName;
 
-    private ClassMapping<?> classMapping;
+    private JdbcClassMapping<?> classMapping;
 
     private Jdbc jdbc;
 
@@ -44,7 +41,7 @@ public class SqlDelete implements Delete {
      * @param classMapping the class mapping
      * @param jdbc         the jdbc
      */
-    public SqlDelete(ClassMapping<?> classMapping, Jdbc jdbc) {
+    public SqlDelete(JdbcClassMapping<?> classMapping, Jdbc jdbc) {
         this.jdbc = jdbc;
         this.classMapping = classMapping;
         tableName = classMapping.getRepositoryName();
@@ -72,7 +69,8 @@ public class SqlDelete implements Delete {
      * {@inheritDoc}
      */
     @Override
-    public ExecutableConditionGroupExpression where(Consumer<ConditionGroupConfig> consumer) {
+    public ExecutableConditionGroupExpression where(
+            Consumer<ConditionGroupConfig<ExecutableConditionGroupExpression>> consumer) {
         SqlDeleteExpression sqlDeleteExpression = new SqlDeleteExpression(jdbc,
                 new SqlDeleteFromBasicBuilder(jdbc.getDialect(), tableName), classMapping);
         if (consumer != null) {

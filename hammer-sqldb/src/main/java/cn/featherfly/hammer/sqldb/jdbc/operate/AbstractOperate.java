@@ -16,12 +16,12 @@ import cn.featherfly.common.bean.BeanDescriptor;
 import cn.featherfly.common.bean.BeanProperty;
 import cn.featherfly.common.bean.BeanPropertyValue;
 import cn.featherfly.common.bean.BeanUtils;
+import cn.featherfly.common.db.mapping.JdbcClassMapping;
+import cn.featherfly.common.db.mapping.JdbcPropertyMapping;
 import cn.featherfly.common.db.mapping.SqlTypeMappingManager;
 import cn.featherfly.common.db.metadata.DatabaseMetadata;
 import cn.featherfly.common.db.metadata.DatabaseMetadataManager;
 import cn.featherfly.common.lang.Lang;
-import cn.featherfly.common.repository.mapping.ClassMapping;
-import cn.featherfly.common.repository.mapping.PropertyMapping;
 import cn.featherfly.hammer.sqldb.jdbc.Jdbc;
 
 /**
@@ -44,7 +44,7 @@ public abstract class AbstractOperate<T> {
     protected Jdbc jdbc;
 
     /** 类型映射. */
-    protected ClassMapping<T> classMapping;
+    protected JdbcClassMapping<T> classMapping;
 
     /** The bean descriptor. */
     protected BeanDescriptor<T> beanDescriptor;
@@ -68,7 +68,7 @@ public abstract class AbstractOperate<T> {
      * @param classMapping          classMapping
      * @param sqlTypeMappingManager the sql type mapping manager
      */
-    public AbstractOperate(Jdbc jdbc, ClassMapping<T> classMapping, SqlTypeMappingManager sqlTypeMappingManager) {
+    public AbstractOperate(Jdbc jdbc, JdbcClassMapping<T> classMapping, SqlTypeMappingManager sqlTypeMappingManager) {
         this(jdbc, classMapping, sqlTypeMappingManager, "");
     }
 
@@ -80,7 +80,7 @@ public abstract class AbstractOperate<T> {
      * @param sqlTypeMappingManager the sql type mapping manager
      * @param dataBase              具体库
      */
-    public AbstractOperate(Jdbc jdbc, ClassMapping<T> classMapping, SqlTypeMappingManager sqlTypeMappingManager,
+    public AbstractOperate(Jdbc jdbc, JdbcClassMapping<T> classMapping, SqlTypeMappingManager sqlTypeMappingManager,
             String dataBase) {
         if (Lang.isEmpty(dataBase)) {
             meta = DatabaseMetadataManager.getDefaultManager().create(jdbc.getDataSource());
@@ -105,7 +105,7 @@ public abstract class AbstractOperate<T> {
      * @param databaseMetadata      databaseMetadata
      * @param sqlTypeMappingManager the sql type mapping manager
      */
-    public AbstractOperate(Jdbc jdbc, ClassMapping<T> classMapping, SqlTypeMappingManager sqlTypeMappingManager,
+    public AbstractOperate(Jdbc jdbc, JdbcClassMapping<T> classMapping, SqlTypeMappingManager sqlTypeMappingManager,
             DatabaseMetadata databaseMetadata) {
         this.jdbc = jdbc;
         this.classMapping = classMapping;
@@ -121,7 +121,7 @@ public abstract class AbstractOperate<T> {
     @SuppressWarnings("unchecked")
     private void init() {
         beanDescriptor = (BeanDescriptor<T>) BeanDescriptor.getBeanDescriptor(classMapping.getType());
-        for (PropertyMapping pm : classMapping.getPrivaryKeyPropertyMappings()) {
+        for (JdbcPropertyMapping pm : classMapping.getPrivaryKeyPropertyMappings()) {
             pkProperties.add(
                     BeanDescriptor.getBeanDescriptor(classMapping.getType()).getBeanProperty(pm.getPropertyFullName()));
         }
@@ -283,9 +283,14 @@ public abstract class AbstractOperate<T> {
      */
     @SuppressWarnings({ "unchecked", "rawtypes" })
     protected BeanPropertyValue<?>[] getParameters(T entity, Map<Integer, String> propertyPositions) {
+        /* TODO  这里后续可以优化为 BeanPropertyValue为EntityBeanPropertyValue,  EntityBeanPropertyValue带有已注册的Mapper
+                       然后sql执行时，直接绕过TypeManager不在去找java类型和sql类型的映射关系
+                       此举可以加速实体类型的数据库操作速度
+        */
         BeanPropertyValue<?>[] bpvs = new BeanPropertyValue[propertyPositions.size()];
         int i = 0;
         for (Entry<Integer, String> propertyPosition : propertyPositions.entrySet()) {
+            // ENHANCE 下面这个逻辑后续可以用map优化，缓存下来
             BeanProperty<?> bp = beanDescriptor.getBeanProperty(propertyPosition.getValue());
             bpvs[i] = new BeanPropertyValue(bp, BeanUtils.getProperty(entity, propertyPosition.getValue()));
             i++;
@@ -329,10 +334,7 @@ public abstract class AbstractOperate<T> {
     }
 
     /**
-     * <p>
-     * 初始化SQL，由具体的实现类来实现
-     * </p>
-     * .
+     * 初始化SQL，由具体的实现类来实现.
      */
     protected abstract void initSql();
 }

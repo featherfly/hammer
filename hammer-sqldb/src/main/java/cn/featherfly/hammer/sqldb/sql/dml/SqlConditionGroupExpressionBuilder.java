@@ -4,7 +4,7 @@ package cn.featherfly.hammer.sqldb.sql.dml;
 import java.util.function.Predicate;
 
 import cn.featherfly.common.db.dialect.Dialect;
-import cn.featherfly.common.repository.mapping.ClassMapping;
+import cn.featherfly.common.db.mapping.JdbcClassMapping;
 import cn.featherfly.hammer.dml.BuildableConditionGroupExpression;
 import cn.featherfly.hammer.dml.BuildableConditionGroupLogicExpression;
 import cn.featherfly.hammer.dsl.query.TypeQueryEntity;
@@ -57,7 +57,7 @@ public class SqlConditionGroupExpressionBuilder extends
      * @param classMapping   classMapping
      */
     public SqlConditionGroupExpressionBuilder(Dialect dialect, SqlPageFactory sqlPageFactory, String queryAlias,
-            ClassMapping<?> classMapping, Predicate<Object> ignorePolicy) {
+            JdbcClassMapping<?> classMapping, Predicate<Object> ignorePolicy) {
         this(dialect, sqlPageFactory, queryAlias, classMapping, null, ignorePolicy);
     }
 
@@ -99,7 +99,7 @@ public class SqlConditionGroupExpressionBuilder extends
      * @param typeQueryEntity the type query entity
      */
     public SqlConditionGroupExpressionBuilder(Dialect dialect, SqlPageFactory sqlPageFactory, String queryAlias,
-            ClassMapping<?> classMapping, TypeQueryEntity typeQueryEntity, Predicate<Object> ignorePolicy) {
+            JdbcClassMapping<?> classMapping, TypeQueryEntity typeQueryEntity, Predicate<Object> ignorePolicy) {
         this(null, dialect, sqlPageFactory, queryAlias, classMapping, typeQueryEntity, ignorePolicy);
     }
 
@@ -115,7 +115,7 @@ public class SqlConditionGroupExpressionBuilder extends
      * @param typeQueryEntity the type query entity
      */
     SqlConditionGroupExpressionBuilder(BuildableConditionGroupLogicExpression parent, Dialect dialect,
-            SqlPageFactory sqlPageFactory, String queryAlias, ClassMapping<?> classMapping,
+            SqlPageFactory sqlPageFactory, String queryAlias, JdbcClassMapping<?> classMapping,
             TypeQueryEntity typeQueryEntity, Predicate<Object> ignorePolicy) {
         super(parent, dialect, sqlPageFactory, queryAlias, classMapping, typeQueryEntity, ignorePolicy);
     }

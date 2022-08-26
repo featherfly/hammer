@@ -1,7 +1,7 @@
 
 package cn.featherfly.hammer.expression.condition.property;
 
-import cn.featherfly.common.repository.operate.QueryOperator.QueryPolicy;
+import cn.featherfly.common.operator.QueryOperator.QueryPolicy;
 import cn.featherfly.hammer.expression.condition.ConditionsExpression;
 import cn.featherfly.hammer.expression.condition.LogicExpression;
 
@@ -9,15 +9,20 @@ import cn.featherfly.hammer.expression.condition.LogicExpression;
  * SimpleObjectExpression.
  *
  * @author zhongj
+ * @param <N> the number type
+ * @param <C> the generic type
+ * @param <L> the generic type
  */
-public class SimpleNumberExpression<C extends ConditionsExpression<C, L>, L extends LogicExpression<C, L>>
-        implements NumberExpression<C, L> {
+public class SimpleNumberExpression<N extends Number, C extends ConditionsExpression<C, L>,
+        L extends LogicExpression<C, L>> implements NumberExpression<N, C, L> {
 
     private String name;
 
     private ConditionsExpression<C, L> expression;
 
     /**
+     * Instantiates a new simple number expression.
+     *
      * @param name       name
      * @param expression expression
      */
@@ -31,7 +36,7 @@ public class SimpleNumberExpression<C extends ConditionsExpression<C, L>, L exte
      * {@inheritDoc}
      */
     @Override
-    public L eq(Number value) {
+    public L eq(N value) {
         return expression.eq(name, value);
     }
 
@@ -47,7 +52,7 @@ public class SimpleNumberExpression<C extends ConditionsExpression<C, L>, L exte
      * {@inheritDoc}
      */
     @Override
-    public L ne(Number value) {
+    public L ne(N value) {
         return expression.ne(name, value);
     }
 
@@ -55,7 +60,7 @@ public class SimpleNumberExpression<C extends ConditionsExpression<C, L>, L exte
      * {@inheritDoc}
      */
     @Override
-    public L in(Number value) {
+    public L in(N value) {
         return expression.in(name, value);
     }
 
@@ -63,7 +68,7 @@ public class SimpleNumberExpression<C extends ConditionsExpression<C, L>, L exte
      * {@inheritDoc}
      */
     @Override
-    public L nin(Number value) {
+    public L nin(N value) {
         return expression.nin(name, value);
     }
 
@@ -71,7 +76,7 @@ public class SimpleNumberExpression<C extends ConditionsExpression<C, L>, L exte
      * {@inheritDoc}
      */
     @Override
-    public L le(Number value) {
+    public L le(N value) {
         return expression.le(name, value);
     }
 
@@ -79,7 +84,7 @@ public class SimpleNumberExpression<C extends ConditionsExpression<C, L>, L exte
      * {@inheritDoc}
      */
     @Override
-    public L lt(Number value) {
+    public L lt(N value) {
         return expression.lt(name, value);
     }
 
@@ -87,7 +92,7 @@ public class SimpleNumberExpression<C extends ConditionsExpression<C, L>, L exte
      * {@inheritDoc}
      */
     @Override
-    public L ge(Number value) {
+    public L ge(N value) {
         return expression.ge(name, value);
     }
 
@@ -95,7 +100,7 @@ public class SimpleNumberExpression<C extends ConditionsExpression<C, L>, L exte
      * {@inheritDoc}
      */
     @Override
-    public L gt(Number value) {
+    public L gt(N value) {
         return expression.gt(name, value);
     }
 
@@ -135,7 +140,7 @@ public class SimpleNumberExpression<C extends ConditionsExpression<C, L>, L exte
      * {@inheritDoc}
      */
     @Override
-    public L eq(Number value, QueryPolicy queryPolicy) {
+    public L eq(N value, QueryPolicy queryPolicy) {
         return expression.eq(name, value, queryPolicy);
     }
 
@@ -143,7 +148,7 @@ public class SimpleNumberExpression<C extends ConditionsExpression<C, L>, L exte
      * {@inheritDoc}
      */
     @Override
-    public L ne(Number value, QueryPolicy queryPolicy) {
+    public L ne(N value, QueryPolicy queryPolicy) {
         return expression.ne(name, value, queryPolicy);
     }
 }

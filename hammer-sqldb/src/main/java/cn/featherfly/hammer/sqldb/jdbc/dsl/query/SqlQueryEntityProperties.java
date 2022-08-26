@@ -8,10 +8,10 @@ import java.util.function.Consumer;
 import java.util.function.Predicate;
 
 import cn.featherfly.common.db.dialect.Join;
+import cn.featherfly.common.db.mapping.JdbcClassMapping;
+import cn.featherfly.common.db.mapping.JdbcMappingFactory;
 import cn.featherfly.common.db.metadata.DatabaseMetadata;
 import cn.featherfly.common.repository.builder.AliasManager;
-import cn.featherfly.common.repository.mapping.ClassMapping;
-import cn.featherfly.common.repository.mapping.MappingFactory;
 import cn.featherfly.common.repository.mapping.RowMapper;
 import cn.featherfly.common.structure.page.Page;
 import cn.featherfly.hammer.dsl.query.QueryConditionGroupExpression;
@@ -23,10 +23,7 @@ import cn.featherfly.hammer.sqldb.jdbc.Jdbc;
 import cn.featherfly.hammer.sqldb.jdbc.SqlPageFactory;
 
 /**
- * <p>
- * SqlQueryProperties
- * </p>
- * .
+ * SqlQueryProperties.
  *
  * @author zhongj
  */
@@ -45,7 +42,7 @@ public class SqlQueryEntityProperties extends AbstractSqlQueryEntityProperties<S
      * @param ignorePolicy     the ignore policy
      */
     public SqlQueryEntityProperties(Jdbc jdbc, DatabaseMetadata databaseMetadata, String tableName,
-            MappingFactory factory, SqlPageFactory sqlPageFactory, AliasManager aliasManager,
+            JdbcMappingFactory factory, SqlPageFactory sqlPageFactory, AliasManager aliasManager,
             Predicate<Object> ignorePolicy) {
         this(jdbc, databaseMetadata, tableName, aliasManager.put(tableName), factory, sqlPageFactory, aliasManager,
                 ignorePolicy);
@@ -61,7 +58,7 @@ public class SqlQueryEntityProperties extends AbstractSqlQueryEntityProperties<S
      * @param aliasManager   aliasManager
      * @param ignorePolicy   the ignore policy
      */
-    public SqlQueryEntityProperties(Jdbc jdbc, ClassMapping<?> classMapping, MappingFactory factory,
+    public SqlQueryEntityProperties(Jdbc jdbc, JdbcClassMapping<?> classMapping, JdbcMappingFactory factory,
             SqlPageFactory sqlPageFactory, AliasManager aliasManager, Predicate<Object> ignorePolicy) {
         super(jdbc, classMapping, factory, sqlPageFactory, aliasManager, ignorePolicy);
     }
@@ -79,7 +76,7 @@ public class SqlQueryEntityProperties extends AbstractSqlQueryEntityProperties<S
      * @param ignorePolicy     the ignore policy
      */
     public SqlQueryEntityProperties(Jdbc jdbc, DatabaseMetadata databaseMetadata, String tableName, String tableAlias,
-            MappingFactory factory, SqlPageFactory sqlPageFactory, AliasManager aliasManager,
+            JdbcMappingFactory factory, SqlPageFactory sqlPageFactory, AliasManager aliasManager,
             Predicate<Object> ignorePolicy) {
         super(jdbc, databaseMetadata, tableName, tableAlias, factory, sqlPageFactory, aliasManager, ignorePolicy);
     }
@@ -96,7 +93,7 @@ public class SqlQueryEntityProperties extends AbstractSqlQueryEntityProperties<S
      * {@inheritDoc}
      */
     @Override
-    public QueryConditionGroupExpression where(Consumer<ConditionGroupConfig> consumer) {
+    public QueryConditionGroupExpression where(Consumer<ConditionGroupConfig<QueryConditionGroupExpression>> consumer) {
         SqlQueryExpression sqlQueryExpression = new SqlQueryExpression(jdbc, sqlPageFactory, classMapping,
                 selectBuilder, ignorePolicy);
         if (consumer != null) {
@@ -200,48 +197,19 @@ public class SqlQueryEntityProperties extends AbstractSqlQueryEntityProperties<S
     //    @Override
     //    public Long count() {
     //        return new SqlQueryExpression(jdbc, sqlPageFactory, classMapping,
-    //                selectBuilder.addSelectColumn(Chars.STAR, AggregateFunction.COUNT), ignorePolicy).longInt();
+    //                selectBuilder.addColumn(Chars.STAR, AggregateFunction.COUNT), ignorePolicy).longInt();
     //    }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public SqlQueryWithOn with(String repositoryName) {
-        return join(repositoryName);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public SqlQueryWithOn join(String repositoryName) {
-        return join(Join.INNER_JOIN, repositoryName);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
     public SqlQueryWithOn join(Join join, String repositoryName) {
-        return new SqlQueryWith(this, aliasManager, factory, sqlPageFactory, selectBuilder.getTableAlias(), getIdName(),
-                repositoryName, aliasManager.put(repositoryName), join, ignorePolicy);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public <T> SqlQueryWithOn with(Class<T> repositoryType) {
-        return join(repositoryType);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public <T> SqlQueryWithOn join(Class<T> repositoryType) {
-        return join(Join.INNER_JOIN, repositoryType);
+        //        return new SqlQueryWith(this, aliasManager, factory, sqlPageFactory, selectBuilder.getTableAlias(), getIdName(),
+        //                repositoryName, aliasManager.put(repositoryName), join, ignorePolicy);
+        //      IMPLSOON 后续来实现，先让编译通过
+        return new SqlQueryWith(this, aliasManager, factory, sqlPageFactory, tableAlias, getIdName(), repositoryName,
+                aliasManager.put(repositoryName), join, ignorePolicy);
     }
 
     /**
@@ -249,8 +217,11 @@ public class SqlQueryEntityProperties extends AbstractSqlQueryEntityProperties<S
      */
     @Override
     public <T> SqlQueryWithOn join(Join join, Class<T> repositoryType) {
-        return new SqlQueryWith(this, aliasManager, factory, sqlPageFactory, selectBuilder.getTableAlias(), getIdName(),
-                repositoryType, join, ignorePolicy);
+        //        return new SqlQueryWith(this, aliasManager, factory, sqlPageFactory, selectBuilder.getTableAlias(), getIdName(),
+        //                repositoryType, join, ignorePolicy);
+        //      IMPLSOON 后续来实现，先让编译通过
+        return new SqlQueryWith(this, aliasManager, factory, sqlPageFactory, tableAlias, getIdName(), repositoryType,
+                join, ignorePolicy);
     }
 
     /**

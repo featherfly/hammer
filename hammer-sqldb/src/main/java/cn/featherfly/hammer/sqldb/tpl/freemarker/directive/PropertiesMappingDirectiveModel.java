@@ -8,10 +8,10 @@ import java.util.Set;
 
 import cn.featherfly.common.db.Table;
 import cn.featherfly.common.db.mapping.ClassMappingUtils;
+import cn.featherfly.common.db.mapping.JdbcClassMapping;
 import cn.featherfly.common.db.mapping.JdbcMappingFactory;
 import cn.featherfly.common.lang.Lang;
 import cn.featherfly.common.lang.WordUtils;
-import cn.featherfly.common.repository.mapping.ClassMapping;
 import cn.featherfly.hammer.tpl.TplException;
 import cn.featherfly.hammer.tpl.directive.PropertiesMappingDirective;
 import cn.featherfly.hammer.tpl.freemarker.FreemarkerDirective;
@@ -97,7 +97,7 @@ public class PropertiesMappingDirectiveModel extends PropertiesMappingDirective 
             mappingType = resultType;
         }
 
-        ClassMapping<?> classMapping = null;
+        JdbcClassMapping<?> classMapping = null;
         if (mappingType == null) {
             if (Lang.isEmpty(nameParam)) {
                 throw new TplException(
@@ -118,8 +118,7 @@ public class PropertiesMappingDirectiveModel extends PropertiesMappingDirective 
         if (classMapping == null) {
             Table tableMetadata = mappingFactory.getMetadata().getTable(nameParam.toUpperCase());
             tableMetadata.getColumns().forEach(column -> {
-                // TODO 更新版本后WordUtils.parseToUpperFirst就有除了大写其余全部小写的处理了，到时候不需要再先转一次小写
-                String propName = WordUtils.parseToUpperFirst(column.getName().toLowerCase(), '_');
+                String propName = WordUtils.parseToUpperFirst(column.getName(), '_');
                 if (aliasIsEmpty) {
                     result.append(" " + column.getName() + " as " + propName + ",");
                 } else {

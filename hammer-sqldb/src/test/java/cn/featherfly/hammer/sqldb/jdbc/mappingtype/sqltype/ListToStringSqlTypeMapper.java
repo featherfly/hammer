@@ -21,7 +21,7 @@ import java.util.List;
 import cn.featherfly.common.db.JdbcException;
 import cn.featherfly.common.db.JdbcUtils;
 import cn.featherfly.common.db.mapping.AbstractGenericJavaSqlTypeMapper;
-import cn.featherfly.common.lang.GenericType;
+import cn.featherfly.common.lang.reflect.Type;
 
 /**
  * ListToStringSqlTypeMapper.
@@ -39,7 +39,7 @@ public class ListToStringSqlTypeMapper extends AbstractGenericJavaSqlTypeMapper<
     }
 
     @Override
-    public boolean support(GenericType<List<?>> type) {
+    public boolean support(Type<List<?>> type) {
         return type.getType().equals(List.class);
     }
 

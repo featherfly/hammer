@@ -1,9 +1,11 @@
 
 package cn.featherfly.hammer.sqldb.jdbc.dsl.query;
 
+import cn.featherfly.common.db.mapping.JdbcClassMapping;
 import cn.featherfly.common.db.mapping.JdbcMappingFactory;
 import cn.featherfly.common.db.metadata.DatabaseMetadata;
 import cn.featherfly.common.lang.Lang;
+import cn.featherfly.common.lang.Strings;
 import cn.featherfly.common.repository.IgnorePolicy;
 import cn.featherfly.common.repository.builder.AliasManager;
 import cn.featherfly.hammer.dsl.query.Query;
@@ -13,10 +15,7 @@ import cn.featherfly.hammer.sqldb.jdbc.Jdbc;
 import cn.featherfly.hammer.sqldb.jdbc.SqlPageFactory;
 
 /**
- * <p>
- * SqlQuery
- * </p>
- * .
+ * SqlQuery .
  *
  * @author zhongj
  */
@@ -95,11 +94,22 @@ public class SqlQuery implements Query {
      * {@inheritDoc}
      */
     @Override
-    public TypeSqlQueryEntityProperties find(Class<?> repositType) {
+    public <E> EntitySqlQueryEntityProperties<E> find(Class<E> repositoryType) {
         if (mappingFactory == null) {
             throw new SqldbHammerException("mappingFactory is null");
         }
-        return new TypeSqlQueryEntityProperties(jdbc, mappingFactory.getClassMapping(repositType), mappingFactory,
-                sqlPageFactory, new AliasManager(), IgnorePolicy.EMPTY);
+        JdbcClassMapping<E> mapping = mappingFactory.getClassMapping(repositoryType);
+        if (mapping == null) {
+            throw new SqldbHammerException(Strings.format("type {0} is not a entity"));
+        }
+        return new EntitySqlQueryEntityProperties<>(jdbc, mapping, mappingFactory, sqlPageFactory, new AliasManager(),
+                IgnorePolicy.EMPTY);
     }
+    //   public TypeSqlQueryEntityProperties find(Class<?> repositoryType) {
+    //        if (mappingFactory == null) {
+    //            throw new SqldbHammerException("mappingFactory is null");
+    //        }
+    //        return new TypeSqlQueryEntityProperties(jdbc, mappingFactory.getClassMapping(repositoryType), mappingFactory,
+    //                sqlPageFactory, new AliasManager(), IgnorePolicy.EMPTY);
+    //    }
 }

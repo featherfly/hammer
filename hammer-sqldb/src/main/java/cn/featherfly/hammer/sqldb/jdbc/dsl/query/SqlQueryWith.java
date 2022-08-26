@@ -12,12 +12,12 @@ import java.util.stream.Collectors;
 import cn.featherfly.common.db.builder.dml.basic.SqlSelectJoinOnBasicBuilder;
 import cn.featherfly.common.db.dialect.Join;
 import cn.featherfly.common.db.mapping.ClassMappingUtils;
+import cn.featherfly.common.db.mapping.JdbcClassMapping;
+import cn.featherfly.common.db.mapping.JdbcMappingFactory;
 import cn.featherfly.common.lang.AssertIllegalArgument;
 import cn.featherfly.common.lang.LambdaUtils;
 import cn.featherfly.common.lang.function.SerializableFunction;
 import cn.featherfly.common.repository.builder.AliasManager;
-import cn.featherfly.common.repository.mapping.ClassMapping;
-import cn.featherfly.common.repository.mapping.MappingFactory;
 import cn.featherfly.common.repository.mapping.RowMapper;
 import cn.featherfly.common.structure.page.Page;
 import cn.featherfly.hammer.dsl.query.QueryWith;
@@ -54,13 +54,13 @@ public class SqlQueryWith implements QueryWith, SqlQueryWithOn, SqlQueryWithEnti
     private SqlSelectJoinOnBasicBuilder selectJoinOnBasicBuilder;
 
     /** The factory. */
-    private MappingFactory factory;
+    private JdbcMappingFactory factory;
 
     /** The sql page factory. */
     private SqlPageFactory sqlPageFactory;
 
     /** The class mapping. */
-    private ClassMapping<?> classMapping;
+    private JdbcClassMapping<?> classMapping;
 
     /** The join. */
     private Join join;
@@ -81,7 +81,7 @@ public class SqlQueryWith implements QueryWith, SqlQueryWithOn, SqlQueryWithEnti
      * @param ignorePolicy             the ignore policy
      */
     public SqlQueryWith(SqlQueryEntityProperties sqlQueryEntityProperties, AliasManager aliasManager,
-            MappingFactory factory, SqlPageFactory sqlPageFactory, String selectTableAlis, String selectTableColumn,
+            JdbcMappingFactory factory, SqlPageFactory sqlPageFactory, String selectTableAlis, String selectTableColumn,
             String joinTableName, String joinTableAlias, Predicate<Object> ignorePolicy) {
         this(sqlQueryEntityProperties, aliasManager, factory, sqlPageFactory, selectTableAlis, selectTableColumn,
                 joinTableName, joinTableAlias, null, ignorePolicy);
@@ -102,7 +102,7 @@ public class SqlQueryWith implements QueryWith, SqlQueryWithOn, SqlQueryWithEnti
      * @param ignorePolicy             the ignore policy
      */
     public SqlQueryWith(SqlQueryEntityProperties sqlQueryEntityProperties, AliasManager aliasManager,
-            MappingFactory factory, SqlPageFactory sqlPageFactory, String selectTableAlis, String selectTableColumn,
+            JdbcMappingFactory factory, SqlPageFactory sqlPageFactory, String selectTableAlis, String selectTableColumn,
             String joinTableName, String joinTableAlias, Join join, Predicate<Object> ignorePolicy) {
         super();
         this.sqlQueryEntityProperties = sqlQueryEntityProperties;
@@ -133,7 +133,7 @@ public class SqlQueryWith implements QueryWith, SqlQueryWithOn, SqlQueryWithEnti
      * @param ignorePolicy             the ignore policy
      */
     public SqlQueryWith(SqlQueryEntityProperties sqlQueryEntityProperties, AliasManager aliasManager,
-            MappingFactory factory, SqlPageFactory sqlPageFactory, String selectTableAlis, String selectTableColumn,
+            JdbcMappingFactory factory, SqlPageFactory sqlPageFactory, String selectTableAlis, String selectTableColumn,
             Class<?> joinType, Predicate<Object> ignorePolicy) {
         this(sqlQueryEntityProperties, aliasManager, factory, sqlPageFactory, selectTableAlis, selectTableColumn,
                 joinType, null, ignorePolicy);
@@ -153,7 +153,7 @@ public class SqlQueryWith implements QueryWith, SqlQueryWithOn, SqlQueryWithEnti
      * @param ignorePolicy             the ignore policy
      */
     public SqlQueryWith(SqlQueryEntityProperties sqlQueryEntityProperties, AliasManager aliasManager,
-            MappingFactory factory, SqlPageFactory sqlPageFactory, String selectTableAlis, String selectTableColumn,
+            JdbcMappingFactory factory, SqlPageFactory sqlPageFactory, String selectTableAlis, String selectTableColumn,
             Class<?> joinType, Join join, Predicate<Object> ignorePolicy) {
         super();
         this.sqlQueryEntityProperties = sqlQueryEntityProperties;
@@ -175,7 +175,7 @@ public class SqlQueryWith implements QueryWith, SqlQueryWithOn, SqlQueryWithEnti
      * {@inheritDoc}
      */
     @Override
-    public SqlQueryWithOn with(String repositoryName) {
+    public SqlQueryWithOn join(String repositoryName) {
         return new SqlQueryWith(sqlQueryEntityProperties, aliasManager, factory, sqlPageFactory, selectTableAlis,
                 selectTableColumn, repositoryName, aliasManager.put(repositoryName), ignorePolicy);
     }
@@ -184,7 +184,7 @@ public class SqlQueryWith implements QueryWith, SqlQueryWithOn, SqlQueryWithEnti
      * {@inheritDoc}
      */
     @Override
-    public <T> SqlQueryWithOn with(Class<T> repositoryType) {
+    public <T> SqlQueryWithOn join(Class<T> repositoryType) {
         return new SqlQueryWith(sqlQueryEntityProperties, aliasManager, factory, sqlPageFactory, selectTableAlis,
                 selectTableColumn, repositoryType, ignorePolicy);
     }
@@ -245,7 +245,7 @@ public class SqlQueryWith implements QueryWith, SqlQueryWithOn, SqlQueryWithEnti
      */
     @Override
     public SqlQueryWithEntity fetch(String propertyName) {
-        selectJoinOnBasicBuilder.addSelectColumn(ClassMappingUtils.getColumnName(propertyName, classMapping));
+        selectJoinOnBasicBuilder.addColumn(ClassMappingUtils.getColumnName(propertyName, classMapping));
         return this;
     }
 
@@ -254,7 +254,7 @@ public class SqlQueryWith implements QueryWith, SqlQueryWithOn, SqlQueryWithEnti
      */
     @Override
     public SqlQueryWithEntity fetch(String... propertyNames) {
-        selectJoinOnBasicBuilder.addSelectColumns(ClassMappingUtils.getColumnNames(classMapping, propertyNames));
+        selectJoinOnBasicBuilder.addColumns(ClassMappingUtils.getColumnNames(classMapping, propertyNames));
         return this;
     }
 
@@ -271,7 +271,7 @@ public class SqlQueryWith implements QueryWith, SqlQueryWithOn, SqlQueryWithEnti
      */
     @Override
     public SqlQueryWithEntity fetch(Collection<String> propertyNames) {
-        selectJoinOnBasicBuilder.addSelectColumns(ClassMappingUtils.getColumnNames(classMapping, propertyNames));
+        selectJoinOnBasicBuilder.addColumns(ClassMappingUtils.getColumnNames(classMapping, propertyNames));
         return this;
     }
 
@@ -304,7 +304,7 @@ public class SqlQueryWith implements QueryWith, SqlQueryWithOn, SqlQueryWithEnti
      */
     @Override
     public SqlQueryWithEntity fetchAlias(String columnName, String aliasName) {
-        selectJoinOnBasicBuilder.addSelectColumn(ClassMappingUtils.getColumnName(columnName, classMapping), aliasName);
+        selectJoinOnBasicBuilder.addColumn(ClassMappingUtils.getColumnName(columnName, classMapping), aliasName);
         return this;
     }
 

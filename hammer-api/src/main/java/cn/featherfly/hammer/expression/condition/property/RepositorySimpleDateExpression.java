@@ -14,8 +14,8 @@ import cn.featherfly.hammer.expression.condition.RepositoryConditionsExpression;
  * @param <C> the generic type
  * @param <L> the generic type
  */
-public class RepositorySimpleDateExpression<C extends RepositoryConditionsExpression<C, L>,
-        L extends LogicExpression<C, L>> implements DateExpression<C, L> {
+public class RepositorySimpleDateExpression<D extends Date, C extends RepositoryConditionsExpression<C, L>,
+        L extends LogicExpression<C, L>> implements DateExpression<D, C, L> {
 
     private String name;
 

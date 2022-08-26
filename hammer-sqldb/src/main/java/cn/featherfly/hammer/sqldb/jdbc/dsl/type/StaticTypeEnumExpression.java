@@ -12,13 +12,13 @@ import cn.featherfly.hammer.expression.condition.property.EnumExpression;
  * .
  *
  * @author zhongj
- * @param <E> the element type
+ * @param <T> the element type
  * @param <Q> the generic type
  */
-public class StaticTypeEnumExpression<E, Q extends StaticTypeQueryConditionGroupExpression<E, Q>> {
+public class StaticTypeEnumExpression<T, E extends Enum<?>, Q extends StaticTypeQueryConditionGroupExpression<T, Q>> {
 
     /** The expression. */
-    private EnumExpression<QueryConditionGroupExpression, QueryConditionGroupLogicExpression> expression;
+    private EnumExpression<E, QueryConditionGroupExpression, QueryConditionGroupLogicExpression> expression;
 
     /** The type expression. */
     private Q typeExpression;
@@ -30,7 +30,7 @@ public class StaticTypeEnumExpression<E, Q extends StaticTypeQueryConditionGroup
      * @param typeExpression the type expression
      */
     public StaticTypeEnumExpression(
-            EnumExpression<QueryConditionGroupExpression, QueryConditionGroupLogicExpression> expression,
+            EnumExpression<E, QueryConditionGroupExpression, QueryConditionGroupLogicExpression> expression,
             Q typeExpression) {
         super();
         this.expression = expression;
@@ -43,7 +43,7 @@ public class StaticTypeEnumExpression<E, Q extends StaticTypeQueryConditionGroup
      * @param value the value
      * @return the q
      */
-    public Q eq(Enum<?> value) {
+    public Q eq(E value) {
         expression.eq(value);
         return typeExpression;
     }
@@ -54,7 +54,7 @@ public class StaticTypeEnumExpression<E, Q extends StaticTypeQueryConditionGroup
      * @param value the value
      * @return the q
      */
-    public Q ne(Enum<?> value) {
+    public Q ne(E value) {
         expression.ne(value);
         return typeExpression;
     }
@@ -65,7 +65,7 @@ public class StaticTypeEnumExpression<E, Q extends StaticTypeQueryConditionGroup
      * @param value the value
      * @return the q
      */
-    public Q in(Enum<?> value) {
+    public Q in(E value) {
         expression.in(value);
         return typeExpression;
     }
@@ -76,7 +76,7 @@ public class StaticTypeEnumExpression<E, Q extends StaticTypeQueryConditionGroup
      * @param value the value
      * @return the q
      */
-    public Q nin(Enum<?> value) {
+    public Q nin(E value) {
         expression.nin(value);
         return typeExpression;
     }

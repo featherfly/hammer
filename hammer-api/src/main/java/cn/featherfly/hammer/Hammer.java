@@ -10,13 +10,13 @@ import cn.featherfly.common.lang.Lang;
 import cn.featherfly.common.lang.function.SerializableFunction;
 import cn.featherfly.common.lang.function.SerializableSupplier;
 import cn.featherfly.common.repository.IgnorePolicy;
-import cn.featherfly.common.repository.operate.LogicOperator;
+import cn.featherfly.common.operator.LogicOperator;
 import cn.featherfly.hammer.dsl.execute.Delete;
 import cn.featherfly.hammer.dsl.execute.Update;
 import cn.featherfly.hammer.dsl.query.QueryEntity;
-import cn.featherfly.hammer.dsl.query.TypeQueryConditionGroupExpression;
-import cn.featherfly.hammer.dsl.query.TypeQueryConditionGroupLogicExpression;
-import cn.featherfly.hammer.dsl.query.TypeQueryEntity;
+import cn.featherfly.hammer.dsl.query.type.EntityQueryConditionGroupExpression;
+import cn.featherfly.hammer.dsl.query.type.EntityQueryConditionGroupLogicExpression;
+import cn.featherfly.hammer.dsl.query.type.EntityQueryEntity;
 import cn.featherfly.hammer.tpl.TplExecutor;
 
 /**
@@ -326,9 +326,8 @@ public interface Hammer extends TplExecutor {
      */
     default <E> E querySingle(Class<E> type, SerializableSupplier<?>... propertyValues) {
         AssertIllegalArgument.isNotEmpty(propertyValues, "propertyValues");
-
-        TypeQueryConditionGroupExpression queryCondition = query(type).where();
-        TypeQueryConditionGroupLogicExpression queryLogic = null;
+        EntityQueryConditionGroupExpression<E> queryCondition = query(type).where();
+        EntityQueryConditionGroupLogicExpression<E> queryLogic = null;
         for (int i = 0; i < propertyValues.length; i++) {
             SerializableSupplier<?> propertyValue = propertyValues[i];
             if (i == 0) {
@@ -367,8 +366,8 @@ public interface Hammer extends TplExecutor {
         }
         AssertIllegalArgument.isNotNull(operator, "operator");
 
-        TypeQueryConditionGroupExpression queryCondition = query(type).where();
-        TypeQueryConditionGroupLogicExpression queryLogic = null;
+        EntityQueryConditionGroupExpression<E> queryCondition = query(type).where();
+        EntityQueryConditionGroupLogicExpression<E> queryLogic = null;
         for (int i = 0; i < propertyValues.length; i++) {
             SerializableSupplier<?> propertyValue = propertyValues[i];
             if (i == 0) {
@@ -392,14 +391,24 @@ public interface Hammer extends TplExecutor {
      */
     QueryEntity query(String repository);
 
+    //    /**
+    //     * create QueryEntity for type.
+    //     *
+    //     * @param <E>  entity generic type
+    //     * @param type query for type
+    //     * @return TypeQueryEntity
+    //     */
+    //    <E> TypeQueryEntity queryType(Class<E> type);
+
     /**
-     * create QueryEntity for entityType.
+     * create EntityQueryEntity for entityType. entity type must be a entity
+     * object, otherwise throws HammerException
      *
      * @param <E>        entity generic type
-     * @param entityType query for entityType
-     * @return QueryEntity
+     * @param entityType query for entity type
+     * @return EntityQueryEntity
      */
-    <E> TypeQueryEntity query(Class<E> entityType);
+    <E> EntityQueryEntity<E> query(Class<E> entityType);
 
     /**
      * create update for repository.

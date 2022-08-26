@@ -18,6 +18,9 @@ import cn.featherfly.common.db.builder.SqlBuilder;
 import cn.featherfly.common.db.builder.dml.SqlLogicExpression;
 import cn.featherfly.common.db.dialect.Dialect;
 import cn.featherfly.common.db.mapping.ClassMappingUtils;
+import cn.featherfly.common.db.mapping.JdbcClassMapping;
+import cn.featherfly.common.db.mapping.JdbcMappingFactory;
+import cn.featherfly.common.db.mapping.JdbcPropertyMapping;
 import cn.featherfly.common.lang.AssertIllegalArgument;
 import cn.featherfly.common.lang.LambdaUtils;
 import cn.featherfly.common.lang.LambdaUtils.SerializableSupplierLambdaInfo;
@@ -29,18 +32,12 @@ import cn.featherfly.common.lang.function.SerializableSupplier;
 import cn.featherfly.common.repository.IgnorePolicy;
 import cn.featherfly.common.repository.builder.BuilderException;
 import cn.featherfly.common.repository.builder.BuilderExceptionCode;
-import cn.featherfly.common.repository.mapping.ClassMapping;
-import cn.featherfly.common.repository.mapping.MappingFactory;
-import cn.featherfly.common.repository.mapping.PropertyMapping;
 import cn.featherfly.hammer.expression.condition.Expression;
 import cn.featherfly.hammer.expression.condition.LogicOperatorExpression;
 import cn.featherfly.hammer.expression.condition.ParamedExpression;
 
 /**
- * <p>
- * sql condition group builder sql条件逻辑组构造器
- * </p>
- * .
+ * sql condition group builder sql条件逻辑组构造器.
  *
  * @author zhongj
  * @param <L> the generic type
@@ -195,6 +192,10 @@ public abstract class AbstractSqlConditionExpression<L> implements SqlBuilder, P
         return LambdaUtils.getLambdaPropertyName(name);
     }
 
+    //    protected <T, R extends Number> String getPropertyName(ReturnNumberFunction<T, R> name) {
+    //        return LambdaUtils.getLambdaPropertyName(name);
+    //    }
+
     /**
      * Adds the condition.
      *
@@ -237,26 +238,28 @@ public abstract class AbstractSqlConditionExpression<L> implements SqlBuilder, P
      */
     @SuppressWarnings("unchecked")
     protected <R> List<Tuple2<String, Optional<R>>> supplier(SerializedLambdaInfo info, R value,
-            ClassMapping<?> classMapping) {
+            JdbcClassMapping<?> classMapping) {
         List<Tuple2<String, Optional<R>>> list = new ArrayList<>();
-        String propertyName = info.getPropertyName();
-        if (value != null && classMapping != null) {
-            PropertyMapping propertyMapping = classMapping.getPropertyMapping(propertyName);
-            if (Lang.isNotEmpty(propertyMapping.getPropertyMappings())
-                    && propertyMapping.getPropertyType() == value.getClass()) {
-                for (PropertyMapping pm : propertyMapping.getPropertyMappings()) {
-                    Object obj = BeanUtils.getProperty(value, pm.getPropertyName());
-                    // TODO 这里的返回值不是R类型
-                    Optional<R> optional = Optional.empty();
-                    if (obj != null) {
-                        optional = (Optional<R>) Optional.of(obj);
+        if (value != null) {
+            String propertyName = info.getPropertyName();
+            if (classMapping != null) {
+                JdbcPropertyMapping propertyMapping = classMapping.getPropertyMapping(propertyName);
+                if (Lang.isNotEmpty(propertyMapping.getPropertyMappings())
+                        && propertyMapping.getPropertyType() == value.getClass()) {
+                    for (JdbcPropertyMapping pm : propertyMapping.getPropertyMappings()) {
+                        Object obj = BeanUtils.getProperty(value, pm.getPropertyName());
+                        // TODO 这里的返回值不是R类型
+                        Optional<R> optional = Optional.empty();
+                        if (obj != null) {
+                            optional = (Optional<R>) Optional.of(obj);
+                        }
+                        list.add(Tuples.of(pm.getRepositoryFieldName(), optional));
                     }
-                    list.add(Tuples.of(pm.getRepositoryFieldName(), optional));
+                    return list;
                 }
-                return list;
             }
+            list.add(Tuples.of(propertyName, Optional.of(value)));
         }
-        list.add(Tuples.of(propertyName, Optional.of(value)));
         return list;
     }
 
@@ -269,7 +272,7 @@ public abstract class AbstractSqlConditionExpression<L> implements SqlBuilder, P
      * @return the list
      */
     protected <R> List<Tuple2<String, Optional<R>>> supplier(SerializableSupplierLambdaInfo<R> info,
-            ClassMapping<?> classMapping) {
+            JdbcClassMapping<?> classMapping) {
         return supplier(info.getSerializedLambdaInfo(), info.get(), classMapping);
         //        List<Tuple2<String, Optional<R>>> list = new ArrayList<>();
         //        String propertyName = info.getSerializedLambdaInfo().getPropertyName();
@@ -306,11 +309,11 @@ public abstract class AbstractSqlConditionExpression<L> implements SqlBuilder, P
      * @return the tuple 2
      */
     protected <O, T, R> Tuple2<String, String> conditionResult(SerializableFunction<O, T> repository,
-            SerializableFunction<T, R> property, Object value, MappingFactory factory) {
+            SerializableFunction<T, R> property, Object value, JdbcMappingFactory factory) {
         SerializedLambdaInfo repositoryInfo = LambdaUtils.getLambdaInfo(repository);
         SerializedLambdaInfo propertyInfo = LambdaUtils.getLambdaInfo(property);
         String pn = propertyInfo.getPropertyName();
-        ClassMapping<?> cm = factory.getClassMapping(repositoryInfo.getPropertyType());
+        JdbcClassMapping<?> cm = factory.getClassMapping(repositoryInfo.getPropertyType());
         String column = ClassMappingUtils.getColumnName(pn, cm);
         return Tuples.of(repositoryInfo.getPropertyName(), column);
     }
@@ -326,12 +329,12 @@ public abstract class AbstractSqlConditionExpression<L> implements SqlBuilder, P
      * @return the tuple 3
      */
     protected <T, R> Tuple3<String, String, Object> conditionResult(SerializableSupplier<T> repository,
-            SerializableFunction<T, R> property, MappingFactory factory) {
+            SerializableFunction<T, R> property, JdbcMappingFactory factory) {
         SerializableSupplierLambdaInfo<T> repositoryInfo = LambdaUtils.getSerializableSupplierLambdaInfo(repository);
         SerializedLambdaInfo propertyInfo = LambdaUtils.getLambdaInfo(property);
         String pn = propertyInfo.getPropertyName();
         T obj = repositoryInfo.getValue();
-        ClassMapping<?> cm = factory.getClassMapping(repositoryInfo.getSerializedLambdaInfo().getPropertyType());
+        JdbcClassMapping<?> cm = factory.getClassMapping(repositoryInfo.getSerializedLambdaInfo().getPropertyType());
         String column = ClassMappingUtils.getColumnName(pn, cm);
         return Tuples.of(repositoryInfo.getSerializedLambdaInfo().getPropertyName(), column,
                 BeanUtils.getProperty(obj, pn));

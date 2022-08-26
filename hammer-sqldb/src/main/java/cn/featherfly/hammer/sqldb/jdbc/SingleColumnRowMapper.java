@@ -22,7 +22,6 @@ import cn.featherfly.common.db.mapping.JdbcMappingException;
 import cn.featherfly.common.db.mapping.SqlResultSet;
 import cn.featherfly.common.db.mapping.SqlTypeMappingManager;
 import cn.featherfly.common.lang.AssertIllegalArgument;
-import cn.featherfly.common.lang.reflect.GenericClass;
 
 /**
  * {@link RowMapper} implementation that converts a single column into a single
@@ -172,12 +171,12 @@ public class SingleColumnRowMapper<T> implements RowMapper<T>, cn.featherfly.com
     @Nullable
     protected Object getColumnValue(ResultSet rs, int index, @Nullable Class<?> requiredType) throws SQLException {
         if (requiredType != null) {
-            return manager.get(rs, index, new GenericClass<>(requiredType));
+            return manager.get(rs, index, requiredType);
         } else {
             SQLType sqlType = JDBCType.valueOf(rs.getMetaData().getColumnType(index));
             Class<?> type = manager.getJavaType(sqlType);
             if (type != null) {
-                return manager.get(rs, index, new GenericClass<>(type));
+                return manager.get(rs, index, type);
             } else {
                 // No required type specified -> perform default extraction.
                 return getColumnValue(rs, index);

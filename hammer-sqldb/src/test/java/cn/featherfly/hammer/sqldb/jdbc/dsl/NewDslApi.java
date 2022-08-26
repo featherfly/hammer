@@ -27,7 +27,7 @@ public class NewDslApi {
 
         UserInfo userInfo = new UserInfo();
 
-        List<UserInfo> userInfos = query.find(UserInfo.class).with(UserInfo::getUser).where()
+        List<UserInfo> userInfos = query.find(UserInfo.class).join(UserInfo::getUser).where()
                 .eq(userInfo::getUser, User::getPwd).list();
 
         // 实例对象可以获取property

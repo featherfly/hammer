@@ -33,15 +33,6 @@ public class UserQueryWith implements
      * {@inheritDoc}
      */
     @Override
-    public UserQueryWithOn with(String repositoryName) {
-        // YUFEI_TODO Auto-generated method stub
-        return null;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
     public List<Map<String, Object>> list() {
         // YUFEI_TODO Auto-generated method stub
         return null;
@@ -96,7 +87,8 @@ public class UserQueryWith implements
      * {@inheritDoc}
      */
     @Override
-    public <T> UserQueryWithOn with(Class<T> repositoryType) {
+    public UserQueryRepositoryConditionGroupExpression where(
+            Consumer<UserQueryRepositoryConditionGroupExpression> consumer) {
         // YUFEI_TODO Auto-generated method stub
         return null;
     }
@@ -105,8 +97,16 @@ public class UserQueryWith implements
      * {@inheritDoc}
      */
     @Override
-    public UserQueryRepositoryConditionGroupExpression where(
-            Consumer<UserQueryRepositoryConditionGroupExpression> consumer) {
+    public UserQueryWithOn join(String repositoryName) {
+        // YUFEI_TODO Auto-generated method stub
+        return null;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public <T> UserQueryWithOn join(Class<T> repositoryType) {
         // YUFEI_TODO Auto-generated method stub
         return null;
     }

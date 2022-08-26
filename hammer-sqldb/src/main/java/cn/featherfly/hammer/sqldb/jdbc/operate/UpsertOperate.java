@@ -8,16 +8,16 @@ import java.util.Map.Entry;
 
 import com.speedment.common.tuple.Tuple2;
 
+import cn.featherfly.common.bean.BeanDescriptor;
 import cn.featherfly.common.bean.BeanUtils;
 import cn.featherfly.common.constant.Chars;
 import cn.featherfly.common.db.mapping.ClassMappingUtils;
+import cn.featherfly.common.db.mapping.JdbcClassMapping;
+import cn.featherfly.common.db.mapping.JdbcPropertyMapping;
 import cn.featherfly.common.db.mapping.SqlTypeMappingManager;
 import cn.featherfly.common.db.metadata.DatabaseMetadata;
-import cn.featherfly.common.lang.GenericType;
 import cn.featherfly.common.lang.Lang;
-import cn.featherfly.common.lang.reflect.GenericClass;
-import cn.featherfly.common.repository.mapping.ClassMapping;
-import cn.featherfly.common.repository.mapping.PropertyMapping;
+import cn.featherfly.common.lang.reflect.Type;
 import cn.featherfly.hammer.sqldb.jdbc.GeneratedKeyHolder;
 import cn.featherfly.hammer.sqldb.jdbc.Jdbc;
 
@@ -37,7 +37,7 @@ public class UpsertOperate<T> extends AbstractBatchExecuteOperate<T> {
      * @param classMapping          classMapping
      * @param sqlTypeMappingManager the sql type mapping manager
      */
-    public UpsertOperate(Jdbc jdbc, ClassMapping<T> classMapping, SqlTypeMappingManager sqlTypeMappingManager) {
+    public UpsertOperate(Jdbc jdbc, JdbcClassMapping<T> classMapping, SqlTypeMappingManager sqlTypeMappingManager) {
         super(jdbc, classMapping, sqlTypeMappingManager);
     }
 
@@ -49,7 +49,7 @@ public class UpsertOperate<T> extends AbstractBatchExecuteOperate<T> {
      * @param sqlTypeMappingManager the sql type mapping manager
      * @param dataBase              具体库
      */
-    public UpsertOperate(Jdbc jdbc, ClassMapping<T> classMapping, SqlTypeMappingManager sqlTypeMappingManager,
+    public UpsertOperate(Jdbc jdbc, JdbcClassMapping<T> classMapping, SqlTypeMappingManager sqlTypeMappingManager,
             String dataBase) {
         super(jdbc, classMapping, sqlTypeMappingManager, dataBase);
     }
@@ -62,7 +62,7 @@ public class UpsertOperate<T> extends AbstractBatchExecuteOperate<T> {
      * @param sqlTypeMappingManager the sql type mapping manager
      * @param databaseMetadata      the database metadata
      */
-    public UpsertOperate(Jdbc jdbc, ClassMapping<T> classMapping, SqlTypeMappingManager sqlTypeMappingManager,
+    public UpsertOperate(Jdbc jdbc, JdbcClassMapping<T> classMapping, SqlTypeMappingManager sqlTypeMappingManager,
             DatabaseMetadata databaseMetadata) {
         super(jdbc, classMapping, sqlTypeMappingManager, databaseMetadata);
     }
@@ -107,7 +107,7 @@ public class UpsertOperate<T> extends AbstractBatchExecuteOperate<T> {
         //                @SuppressWarnings("unchecked")
         //                @Override
         //                public GenericType<Serializable> getType() {
-        //                    return (GenericClass<Serializable>) new GenericClass<>(pks.get(0).getPropertyType());
+        //                    return (ClassType<Serializable>) new ClassType<>(pks.get(0).getPropertyType());
         //                }
         //            }, getBatchParameters(entities, tuple.get1()));
         //        } else {
@@ -138,7 +138,7 @@ public class UpsertOperate<T> extends AbstractBatchExecuteOperate<T> {
      */
     @Override
     public int execute(final T entity) {
-        List<PropertyMapping> pks = classMapping.getPrivaryKeyPropertyMappings();
+        List<JdbcPropertyMapping> pks = classMapping.getPrivaryKeyPropertyMappings();
         if (pks.size() == 1) {
             return jdbc.update(sql, new GeneratedKeyHolder<Serializable>() {
                 @Override
@@ -146,10 +146,10 @@ public class UpsertOperate<T> extends AbstractBatchExecuteOperate<T> {
                     BeanUtils.setProperty(entity, pks.get(0).getPropertyName(), key);
                 }
 
-                @SuppressWarnings("unchecked")
                 @Override
-                public GenericType<Serializable> getType() {
-                    return (GenericClass<Serializable>) new GenericClass<>(pks.get(0).getPropertyType());
+                public Type<Serializable> getType() {
+                    return BeanDescriptor.getBeanDescriptor(classMapping.getType())
+                            .getBeanProperty(pks.get(0).getPropertyName());
                 }
             }, getParameters(entity));
         } else {

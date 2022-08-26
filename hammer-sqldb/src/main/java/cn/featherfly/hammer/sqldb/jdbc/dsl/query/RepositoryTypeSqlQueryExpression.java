@@ -13,6 +13,8 @@ import com.speedment.common.tuple.Tuples;
 import cn.featherfly.common.constant.Chars;
 import cn.featherfly.common.db.builder.dml.basic.SqlSelectBasicBuilder;
 import cn.featherfly.common.db.mapping.ClassMappingUtils;
+import cn.featherfly.common.db.mapping.JdbcClassMapping;
+import cn.featherfly.common.db.mapping.JdbcMappingFactory;
 import cn.featherfly.common.lang.ClassUtils;
 import cn.featherfly.common.lang.LambdaUtils;
 import cn.featherfly.common.lang.LambdaUtils.SerializedLambdaInfo;
@@ -24,31 +26,18 @@ import cn.featherfly.common.lang.function.ReturnLocalTimeFunction;
 import cn.featherfly.common.lang.function.ReturnNumberFunction;
 import cn.featherfly.common.lang.function.ReturnStringFunction;
 import cn.featherfly.common.lang.function.SerializableFunction;
+import cn.featherfly.common.operator.QueryOperator;
 import cn.featherfly.common.repository.builder.AliasManager;
-import cn.featherfly.common.repository.mapping.ClassMapping;
-import cn.featherfly.common.repository.mapping.MappingFactory;
-import cn.featherfly.common.repository.operate.QueryOperator;
 import cn.featherfly.hammer.dsl.query.RepositoryTypeQueryConditionGroupExpression;
 import cn.featherfly.hammer.dsl.query.RepositoryTypeQueryConditionGroupLogicExpression;
-import cn.featherfly.hammer.expression.condition.property.DateExpression;
-import cn.featherfly.hammer.expression.condition.property.EnumExpression;
-import cn.featherfly.hammer.expression.condition.property.NumberExpression;
 import cn.featherfly.hammer.expression.condition.property.ObjectExpression;
-import cn.featherfly.hammer.expression.condition.property.RepositorySimpleDateExpression;
-import cn.featherfly.hammer.expression.condition.property.RepositorySimpleEnumExpression;
-import cn.featherfly.hammer.expression.condition.property.RepositorySimpleNumberExpression;
 import cn.featherfly.hammer.expression.condition.property.RepositorySimpleObjectExpression;
-import cn.featherfly.hammer.expression.condition.property.RepositorySimpleStringExpression;
-import cn.featherfly.hammer.expression.condition.property.StringExpression;
 import cn.featherfly.hammer.sqldb.jdbc.Jdbc;
 import cn.featherfly.hammer.sqldb.jdbc.SqlPageFactory;
 import cn.featherfly.hammer.sqldb.sql.dml.SqlConditionExpressionBuilder;
 
 /**
- * <p>
- * SqlDeleteExpression
- * </p>
- * .
+ * SqlDeleteExpression .
  *
  * @author zhongj
  */
@@ -67,10 +56,12 @@ public class RepositoryTypeSqlQueryExpression extends RepositoryTypeSqlQueryCond
      * @param selectBuilder  the select builder
      * @param ignorePolicy   the ignore policy
      */
-    public RepositoryTypeSqlQueryExpression(Jdbc jdbc, MappingFactory factory, SqlPageFactory sqlPageFactory,
-            AliasManager aliasManager, ClassMapping<?> classMapping, SqlSelectBasicBuilder selectBuilder,
+    public RepositoryTypeSqlQueryExpression(Jdbc jdbc, JdbcMappingFactory factory, SqlPageFactory sqlPageFactory,
+            AliasManager aliasManager, JdbcClassMapping<?> classMapping, SqlSelectBasicBuilder selectBuilder,
             Predicate<Object> ignorePolicy) {
-        super(jdbc, factory, aliasManager, selectBuilder.getTableAlias(), sqlPageFactory, classMapping, ignorePolicy);
+        //        super(jdbc, factory, aliasManager, selectBuilder.getTableAlias(), sqlPageFactory, classMapping, ignorePolicy);
+        //      IMPLSOON 后续来实现，先让编译通过
+        super(jdbc, factory, aliasManager, "", sqlPageFactory, classMapping, ignorePolicy);
         this.selectBuilder = selectBuilder;
     }
 
@@ -87,8 +78,8 @@ public class RepositoryTypeSqlQueryExpression extends RepositoryTypeSqlQueryCond
      * @param ignorePolicy   the ignore policy
      */
     RepositoryTypeSqlQueryExpression(RepositoryTypeQueryConditionGroupLogicExpression parent, Jdbc jdbc,
-            MappingFactory factory, AliasManager aliasManager, String queryAlias, SqlPageFactory sqlPageFactory,
-            ClassMapping<?> classMapping, Predicate<Object> ignorePolicy) {
+            JdbcMappingFactory factory, AliasManager aliasManager, String queryAlias, SqlPageFactory sqlPageFactory,
+            JdbcClassMapping<?> classMapping, Predicate<Object> ignorePolicy) {
         super(parent, jdbc, factory, aliasManager, queryAlias, sqlPageFactory, classMapping, ignorePolicy);
     }
 
@@ -98,7 +89,8 @@ public class RepositoryTypeSqlQueryExpression extends RepositoryTypeSqlQueryCond
     @Override
     protected RepositoryTypeSqlQueryConditionGroupExpression createGroup(
             RepositoryTypeQueryConditionGroupLogicExpression parent, String queryAlias) {
-        selectBuilder.setTableAlias(queryAlias);
+        //      IMPLSOON 后续来实现，先让编译通过
+        //        selectBuilder.setTableAlias(queryAlias);
         return new RepositoryTypeSqlQueryExpression(parent, jdbc, factory, aliasManager, queryAlias, sqlPageFactory,
                 classMapping, ignorePolicy);
     }
@@ -420,51 +412,6 @@ public class RepositoryTypeSqlQueryExpression extends RepositoryTypeSqlQueryCond
                     SerializableFunction<T, R> name) {
         Tuple2<String, String> tableNameAndColumnName = getTableAliasAndColumnName(name);
         return new RepositorySimpleObjectExpression<>(tableNameAndColumnName.get0(), tableNameAndColumnName.get1(),
-                this);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public <T> StringExpression<RepositoryTypeQueryConditionGroupExpression, RepositoryTypeQueryConditionGroupLogicExpression> propertyString(
-            SerializableFunction<T, String> name) {
-        Tuple2<String, String> tableNameAndColumnName = getTableAliasAndColumnName(name);
-        return new RepositorySimpleStringExpression<>(tableNameAndColumnName.get0(), tableNameAndColumnName.get1(),
-                this);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public <T,
-            R extends Date> DateExpression<RepositoryTypeQueryConditionGroupExpression, RepositoryTypeQueryConditionGroupLogicExpression> propertyDate(
-                    SerializableFunction<T, R> name) {
-        Tuple2<String, String> tableNameAndColumnName = getTableAliasAndColumnName(name);
-        return new RepositorySimpleDateExpression<>(tableNameAndColumnName.get0(), tableNameAndColumnName.get1(), this);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public <T,
-            R extends Enum<?>> EnumExpression<RepositoryTypeQueryConditionGroupExpression, RepositoryTypeQueryConditionGroupLogicExpression> propertyEnum(
-                    SerializableFunction<T, R> name) {
-        Tuple2<String, String> tableNameAndColumnName = getTableAliasAndColumnName(name);
-        return new RepositorySimpleEnumExpression<>(tableNameAndColumnName.get0(), tableNameAndColumnName.get1(), this);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public <T,
-            R extends Number> NumberExpression<RepositoryTypeQueryConditionGroupExpression, RepositoryTypeQueryConditionGroupLogicExpression> propertyNumber(
-                    SerializableFunction<T, R> name) {
-        Tuple2<String, String> tableNameAndColumnName = getTableAliasAndColumnName(name);
-        return new RepositorySimpleNumberExpression<>(tableNameAndColumnName.get0(), tableNameAndColumnName.get1(),
                 this);
     }
 

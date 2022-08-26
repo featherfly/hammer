@@ -8,10 +8,10 @@ import java.util.function.Function;
 import cn.featherfly.common.lang.function.SerializableFunction;
 import cn.featherfly.common.lang.function.SerializableSupplier;
 import cn.featherfly.common.repository.IgnorePolicy;
-import cn.featherfly.common.repository.operate.LogicOperator;
+import cn.featherfly.common.operator.LogicOperator;
 import cn.featherfly.hammer.dsl.execute.Delete;
 import cn.featherfly.hammer.dsl.execute.Update;
-import cn.featherfly.hammer.dsl.query.TypeQueryEntity;
+import cn.featherfly.hammer.dsl.query.type.EntityQueryEntity;
 
 /**
  * GenericHammer .
@@ -266,7 +266,7 @@ public interface GenericHammer<E, ID extends Serializable> {
      *
      * @return QueryEntity
      */
-    TypeQueryEntity query();
+    EntityQueryEntity<E> query();
 
     /**
      * create update for entityType.

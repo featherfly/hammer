@@ -9,11 +9,12 @@ import cn.featherfly.hammer.expression.condition.RepositoryConditionsExpression;
  * The Class RepositorySimpleNumberExpression.
  *
  * @author zhongj
+ * @param <N> the number type
  * @param <C> the generic type
  * @param <L> the generic type
  */
-public class RepositorySimpleNumberExpression<C extends RepositoryConditionsExpression<C, L>,
-        L extends LogicExpression<C, L>> implements NumberExpression<C, L> {
+public class RepositorySimpleNumberExpression<N extends Number, C extends RepositoryConditionsExpression<C, L>,
+        L extends LogicExpression<C, L>> implements NumberExpression<N, C, L> {
 
     private String repository;
 
@@ -67,7 +68,7 @@ public class RepositorySimpleNumberExpression<C extends RepositoryConditionsExpr
      * {@inheritDoc}
      */
     @Override
-    public L eq(Number value) {
+    public L eq(N value) {
         if (Lang.isNotEmpty(repository)) {
             return expression.eq(repository, name, value);
         } else if (repositoryIndex > -1) {
@@ -89,7 +90,7 @@ public class RepositorySimpleNumberExpression<C extends RepositoryConditionsExpr
      * {@inheritDoc}
      */
     @Override
-    public L ne(Number value) {
+    public L ne(N value) {
         if (Lang.isNotEmpty(repository)) {
             return expression.ne(repository, name, value);
         } else if (repositoryIndex > -1) {
@@ -103,7 +104,7 @@ public class RepositorySimpleNumberExpression<C extends RepositoryConditionsExpr
      * {@inheritDoc}
      */
     @Override
-    public L in(Number value) {
+    public L in(N value) {
         if (Lang.isNotEmpty(repository)) {
             return expression.in(repository, name, value);
         } else if (repositoryIndex > -1) {
@@ -117,7 +118,7 @@ public class RepositorySimpleNumberExpression<C extends RepositoryConditionsExpr
      * {@inheritDoc}
      */
     @Override
-    public L nin(Number value) {
+    public L nin(N value) {
         if (Lang.isNotEmpty(repository)) {
             return expression.nin(repository, name, value);
         } else if (repositoryIndex > -1) {
@@ -131,7 +132,7 @@ public class RepositorySimpleNumberExpression<C extends RepositoryConditionsExpr
      * {@inheritDoc}
      */
     @Override
-    public L le(Number value) {
+    public L le(N value) {
         if (Lang.isNotEmpty(repository)) {
             return expression.le(repository, name, value);
         } else if (repositoryIndex > -1) {
@@ -145,7 +146,7 @@ public class RepositorySimpleNumberExpression<C extends RepositoryConditionsExpr
      * {@inheritDoc}
      */
     @Override
-    public L lt(Number value) {
+    public L lt(N value) {
         if (Lang.isNotEmpty(repository)) {
             return expression.lt(repository, name, value);
         } else if (repositoryIndex > -1) {
@@ -159,7 +160,7 @@ public class RepositorySimpleNumberExpression<C extends RepositoryConditionsExpr
      * {@inheritDoc}
      */
     @Override
-    public L ge(Number value) {
+    public L ge(N value) {
         if (Lang.isNotEmpty(repository)) {
             return expression.ge(repository, name, value);
         } else if (repositoryIndex > -1) {
@@ -173,7 +174,7 @@ public class RepositorySimpleNumberExpression<C extends RepositoryConditionsExpr
      * {@inheritDoc}
      */
     @Override
-    public L gt(Number value) {
+    public L gt(N value) {
         if (Lang.isNotEmpty(repository)) {
             return expression.gt(repository, name, value);
         } else if (repositoryIndex > -1) {

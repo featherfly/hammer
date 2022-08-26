@@ -12,8 +12,8 @@ import cn.featherfly.hammer.expression.condition.RepositoryConditionsExpression;
  * @param <C> the generic type
  * @param <L> the generic type
  */
-public class RepositorySimpleEnumExpression<C extends RepositoryConditionsExpression<C, L>,
-        L extends LogicExpression<C, L>> implements EnumExpression<C, L> {
+public class RepositorySimpleEnumExpression<E extends Enum<?>, C extends RepositoryConditionsExpression<C, L>,
+        L extends LogicExpression<C, L>> implements EnumExpression<E, C, L> {
 
     private String repository;
 
@@ -67,7 +67,7 @@ public class RepositorySimpleEnumExpression<C extends RepositoryConditionsExpres
      * {@inheritDoc}
      */
     @Override
-    public L eq(Enum<?> value) {
+    public L eq(E value) {
         if (Lang.isNotEmpty(repository)) {
             return expression.eq(repository, name, value);
         } else if (repositoryIndex > -1) {
@@ -89,7 +89,7 @@ public class RepositorySimpleEnumExpression<C extends RepositoryConditionsExpres
      * {@inheritDoc}
      */
     @Override
-    public L ne(Enum<?> value) {
+    public L ne(E value) {
         if (Lang.isNotEmpty(repository)) {
             return expression.ne(repository, name, value);
         } else if (repositoryIndex > -1) {
@@ -103,7 +103,7 @@ public class RepositorySimpleEnumExpression<C extends RepositoryConditionsExpres
      * {@inheritDoc}
      */
     @Override
-    public L in(Enum<?> value) {
+    public L in(E value) {
         if (Lang.isNotEmpty(repository)) {
             return expression.in(repository, name, value);
         } else if (repositoryIndex > -1) {
@@ -117,7 +117,7 @@ public class RepositorySimpleEnumExpression<C extends RepositoryConditionsExpres
      * {@inheritDoc}
      */
     @Override
-    public L nin(Enum<?> value) {
+    public L nin(E value) {
         if (Lang.isNotEmpty(repository)) {
             return expression.nin(repository, name, value);
         } else if (repositoryIndex > -1) {

@@ -31,6 +31,7 @@ import org.slf4j.LoggerFactory;
 
 import cn.featherfly.common.bean.BeanProperty;
 import cn.featherfly.common.bean.BeanPropertyValue;
+import cn.featherfly.common.db.FieldValueOperator;
 import cn.featherfly.common.db.JdbcException;
 import cn.featherfly.common.db.JdbcUtils;
 import cn.featherfly.common.db.SqlUtils;
@@ -306,7 +307,12 @@ public abstract class AbstractJdbc implements Jdbc {
                 try (ResultSet res = prep.getGeneratedKeys()) {
                     int row = 0;
                     while (res.next()) {
-                        T value = manager.get(res, 1, generatedKeyHolder.getType());
+                        T value;
+                        if (generatedKeyHolder.getType() instanceof BeanProperty) {
+                            value = manager.get(res, 1, (BeanProperty<T>) generatedKeyHolder.getType());
+                        } else {
+                            value = manager.get(res, 1, generatedKeyHolder.getType().getType());
+                        }
                         //                    Object value = JdbcUtils.getResultSetValue(res, 1, pm.getPropertyType());
                         generatedKeyHolder.acceptKey(value, row++);
                         logger.debug("auto generated key: ", value);
@@ -347,9 +353,6 @@ public abstract class AbstractJdbc implements Jdbc {
             DataSource ds = getDataSource();
             Connection con = getConnection(ds);
             try (PreparedStatement prep = con.prepareStatement(sql)) {
-                //                if (logger.isDebugEnabled()) {
-                //                    logger.debug("execute sql -> {} , params -> {}", sql, ArrayUtils.toString(args));
-                //                }
                 setParams(prep, args);
                 try (ResultSet rs = prep.executeQuery()) {
                     return postHandle(execution.setOriginalResult(JdbcUtils.getResultSetMaps(rs, manager)), sql, args);
@@ -523,7 +526,7 @@ public abstract class AbstractJdbc implements Jdbc {
         if (results == null || results.size() <= 0) {
             return null;
         } else if (results.size() > 1) {
-            // TODO 优化错误消息
+            // ENHANCE 优化错误消息
             throw new JdbcException(Strings.format("results size must be 1, but is {0}", results.size()));
         }
         return results.iterator().next();
@@ -595,11 +598,11 @@ public abstract class AbstractJdbc implements Jdbc {
 
     private <T> T nullableSingleResult(Collection<T> results) {
         if (Lang.isEmpty(results)) {
-            // TODO 优化错误消息
+            // ENHANCE 优化错误消息
             throw new JdbcException("results is empty");
         }
         if (results.size() > 1) {
-            // TODO 优化错误消息
+            // ENHANCE 优化错误消息
             throw new JdbcException(Strings.format("results size must be 1, but is {0}", results.size()));
         }
         return results.iterator().next();
@@ -685,6 +688,9 @@ public abstract class AbstractJdbc implements Jdbc {
             @SuppressWarnings("unchecked")
             BeanProperty<Object> bp = (BeanProperty<Object>) bpv.getBeanProperty();
             manager.set(prep, index, bpv.getValue(), bp);
+        } else if (arg instanceof FieldValueOperator) {
+            //              IMPLSOON 这里直接用FieldValue设置，不用manager.set就能减少判断
+            ((FieldValueOperator<?>) arg).set(prep, index);
         } else {
             manager.set(prep, index, arg);
         }
@@ -699,14 +705,15 @@ public abstract class AbstractJdbc implements Jdbc {
     protected void setParams(PreparedStatement prep, Object... args) {
         for (int i = 0; i < args.length; i++) {
             Object arg = args[i];
-            if (arg instanceof BeanPropertyValue) {
-                BeanPropertyValue<?> bpv = (BeanPropertyValue<?>) arg;
-                @SuppressWarnings("unchecked")
-                BeanProperty<Object> argBp = (BeanProperty<Object>) bpv.getBeanProperty();
-                manager.set(prep, i + 1, bpv.getValue(), argBp);
-            } else {
-                manager.set(prep, i + 1, arg);
-            }
+            setParam(prep, i + 1, arg);
+            //            if (arg instanceof BeanPropertyValue) {
+            //                BeanPropertyValue<?> bpv = (BeanPropertyValue<?>) arg;
+            //                @SuppressWarnings("unchecked")
+            //                BeanProperty<Object> argBp = (BeanProperty<Object>) bpv.getBeanProperty();
+            //                manager.set(prep, i + 1, bpv.getValue(), argBp);
+            //            } else {
+            //                manager.set(prep, i + 1, arg);
+            //            }
         }
     }
 

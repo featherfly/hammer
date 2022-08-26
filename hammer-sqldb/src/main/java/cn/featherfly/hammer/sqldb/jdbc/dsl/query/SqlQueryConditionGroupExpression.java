@@ -11,11 +11,11 @@ import cn.featherfly.common.constant.Chars;
 import cn.featherfly.common.db.SqlUtils;
 import cn.featherfly.common.db.builder.dml.SqlSortBuilder;
 import cn.featherfly.common.db.mapping.ClassMappingUtils;
+import cn.featherfly.common.db.mapping.JdbcClassMapping;
 import cn.featherfly.common.exception.UnsupportedException;
 import cn.featherfly.common.lang.LambdaUtils;
 import cn.featherfly.common.lang.Lang;
 import cn.featherfly.common.lang.function.SerializableFunction;
-import cn.featherfly.common.repository.mapping.ClassMapping;
 import cn.featherfly.common.repository.mapping.RowMapper;
 import cn.featherfly.common.structure.page.Limit;
 import cn.featherfly.common.structure.page.Page;
@@ -83,7 +83,7 @@ public class SqlQueryConditionGroupExpression
      * @param ignorePolicy   the ignore policy
      */
     public SqlQueryConditionGroupExpression(Jdbc jdbc, SqlPageFactory sqlPageFactory, String queryAlias,
-            ClassMapping<?> classMapping, Predicate<Object> ignorePolicy) {
+            JdbcClassMapping<?> classMapping, Predicate<Object> ignorePolicy) {
         this(null, jdbc, sqlPageFactory, queryAlias, classMapping, ignorePolicy);
     }
 
@@ -98,7 +98,7 @@ public class SqlQueryConditionGroupExpression
      * @param ignorePolicy   the ignore policy
      */
     SqlQueryConditionGroupExpression(QueryConditionGroupLogicExpression parent, Jdbc jdbc,
-            SqlPageFactory sqlPageFactory, String queryAlias, ClassMapping<?> classMapping,
+            SqlPageFactory sqlPageFactory, String queryAlias, JdbcClassMapping<?> classMapping,
             Predicate<Object> ignorePolicy) {
         super(parent, jdbc.getDialect(), sqlPageFactory, queryAlias, classMapping, null, ignorePolicy);
         this.jdbc = jdbc;
@@ -469,6 +469,7 @@ public class SqlQueryConditionGroupExpression
      */
     @Override
     public Long count() {
+        //  YUFEI_TODO 未实现
         throw new UnsupportedException();
     }
 

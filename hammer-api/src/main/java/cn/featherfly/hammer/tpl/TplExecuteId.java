@@ -2,25 +2,11 @@
 package cn.featherfly.hammer.tpl;
 
 /**
- * TplExecuteId.
+ * template execute id.
  *
  * @author zhongj
  */
-public interface TplExecuteId {
-
-    /**
-     * getNamespace
-     *
-     * @return namespace
-     */
-    String getNamespace();
-
-    /**
-     * getName
-     *
-     * @return name
-     */
-    String getName();
+public interface TplExecuteId extends Template {
 
     /**
      * getId

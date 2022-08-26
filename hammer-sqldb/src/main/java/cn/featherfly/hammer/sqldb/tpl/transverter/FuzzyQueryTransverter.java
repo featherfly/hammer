@@ -11,7 +11,7 @@
 package cn.featherfly.hammer.sqldb.tpl.transverter;
 
 import cn.featherfly.common.lang.Lang;
-import cn.featherfly.common.repository.operate.QueryOperator;
+import cn.featherfly.common.operator.QueryOperator;
 import cn.featherfly.hammer.tpl.Transverter;
 
 /**
