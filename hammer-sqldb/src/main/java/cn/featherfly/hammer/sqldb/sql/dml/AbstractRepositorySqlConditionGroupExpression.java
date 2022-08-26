@@ -8,7 +8,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
-import java.util.function.Consumer;
+import java.util.function.Function;
 import java.util.function.Predicate;
 
 import com.speedment.common.tuple.Tuple2;
@@ -183,7 +183,7 @@ public abstract class AbstractRepositorySqlConditionGroupExpression<C extends Re
      * {@inheritDoc}
      */
     @Override
-    public L and(Consumer<C> group) {
+    public L and(Function<C, L> group) {
         return and().group(group);
     }
 
@@ -199,7 +199,7 @@ public abstract class AbstractRepositorySqlConditionGroupExpression<C extends Re
      * {@inheritDoc}
      */
     @Override
-    public L or(Consumer<C> group) {
+    public L or(Function<C, L> group) {
         return or().group(group);
     }
 
@@ -208,9 +208,6 @@ public abstract class AbstractRepositorySqlConditionGroupExpression<C extends Re
      */
     @Override
     public C group() {
-        // SqlConditionGroupExpressionBuilder group = new
-        // SqlConditionGroupExpressionBuilder(
-        // jdbc, this, queryAlias);
         C group = createGroup((L) this, queryAlias);
         addCondition(group);
         return group;
@@ -220,9 +217,8 @@ public abstract class AbstractRepositorySqlConditionGroupExpression<C extends Re
      * {@inheritDoc}
      */
     @Override
-    public L group(Consumer<C> group) {
-        group.accept(group());
-        return endGroup();
+    public L group(Function<C, L> group) {
+        return group.apply(group()).endGroup();
     }
 
     /**

@@ -71,7 +71,9 @@ public class TypeSqlQueryExpression extends TypeSqlQueryConditionGroupExpression
     @Override
     protected TypeSqlQueryConditionGroupExpression createGroup(TypeQueryConditionGroupLogicExpression parent,
             String queryAlias, TypeQueryEntity typeQueryEntity) {
-        selectBuilder.setTableAlias(queryAlias);
+        if (selectBuilder != null) {
+            selectBuilder.setTableAlias(queryAlias);
+        }
         return new TypeSqlQueryExpression(parent, jdbc, queryAlias, classMapping, factory, sqlPageFactory, aliasManager,
                 typeQueryEntity, ignorePolicy);
     }
