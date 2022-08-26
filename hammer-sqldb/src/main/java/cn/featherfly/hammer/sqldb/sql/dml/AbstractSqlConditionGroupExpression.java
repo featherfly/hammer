@@ -220,6 +220,7 @@ public abstract class AbstractSqlConditionGroupExpression<C extends ConditionGro
      */
     @Override
     public <T, R> L eq(SerializableFunction<T, R> name, R value, QueryPolicy queryPolicy) {
+        // FIXME value 空指针异常
         List<Tuple2<String, Optional<R>>> tuples = supplier(LambdaUtils.getLambdaInfo(name), value);
         L logic = null;
         C condition = (C) this;
