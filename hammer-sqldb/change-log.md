@@ -1,3 +1,7 @@
+# 0.6.6 2022-08-26
+1. 修改L group(Consumer<C>)为L group(Function<C,L>)，
+2. 修复分组多次调用分组层次不对的问题
+
 # 0.6.5 2022-08-16
 1. TplExecuteIdMapperImpl删除isTemplate相关代码
 2. dsl条件查询eq(SerialFunction<T, R>, T),ne(SerialFunction<T, R> t)方法支持@Embedded对象，自动使用该对象的所有非空属性

@@ -349,8 +349,8 @@ public class SqlQueryTest extends JdbcTestBase {
              c.eq() ..... // 关联user的条件查询
          }).fetch().with(UserRole2::getUser).fetch()
                 .with(UserRole2::getRole).fetch().list();
-        
-        
+
+
          */
     }
 
@@ -640,6 +640,68 @@ public class SqlQueryTest extends JdbcTestBase {
         long count = query.find(Tree2.class).with(Tree2::getParent).where().isn(1, "parent_id").list().size();
         assertTrue(nullNum < count);
 
+    }
+
+    @Test
+    void testComplexQuery() {
+        SqlQuery query = new SqlQuery(jdbc, mappingFactory, sqlPageFactory);
+
+        //        query.find(User.class).where().gt(User::getId, 1).and().group().group();
+
+        //        query.find(User.class).where().gt(User::getId, 1).and(c -> {
+        //            c.group(g1 -> {
+        //                g1.eq(User::getId, 2).and().eq(User::getAge, 5);
+        //            }).or().group(g2 -> {
+        //                g2.eq(User::getId, 3).and().eq(User::getAge, 15);
+        //            });
+        //        }).list();
+
+//        query.find(User.class).where().gt(User::getId, 1).and().group()
+//                .group(g1 -> g1.eq(User::getId, 2).and().eq(User::getAge, 5)).or()
+//                .group(g2 -> g2.eq(User::getId, 3).and().eq(User::getAge, 15)).endGroup().list();
+
+        long count = -1;
+
+        // 基于group() endGroup() 方法
+        count = query.find(User.class).where().gt(User::getId, 1).and()
+            .group().
+                group().eq(User::getId, 2).and().eq(User::getAge, 5).endGroup()
+                .or()
+                .group().eq(User::getId, 3).and().eq(User::getAge, 15).endGroup()
+            .endGroup()
+            .count();
+        assertEquals(count, 2);
+
+        //  基于group(g -> g.xxx)
+        count = query.find(User.class).where().gt(User::getId, 1)
+                .and(g ->
+                        g.group(g1 -> g1.eq(User::getId, 2).and().eq(User::getAge, 5))
+                        .or()
+                        .group(g2 -> g2.eq(User::getId, 3).and().eq(User::getAge, 15))
+                )
+        .count();
+        assertEquals(count, 2);
+
+        //  混合使用
+        count = query.find(User.class).where().gt(User::getId, 1)
+                .and(g ->
+                        g.group().eq(User::getId, 2).and().eq(User::getAge, 5).endGroup()
+                        .or()
+                        .group().eq(User::getId, 3).and().eq(User::getAge, 15).endGroup()
+                )
+        .count();
+        assertEquals(count, 2);
+
+        // 混合使用，这个使用方法不建议，太难看懂了
+        count = query.find(User.class).where().gt(User::getId, 1)
+                .and(g -> g.group(
+                                g1 -> g1.eq(User::getId, 2).and().eq(User::getAge, 5).endGroup()
+                                .or()
+                                .group(g2 -> g2.eq(User::getId, 3).and().eq(User::getAge, 15))
+                                )
+                )
+        .count();
+        assertEquals(count, 2);
     }
 
     // @Test
