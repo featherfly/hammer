@@ -96,7 +96,7 @@ public class SqlQueryEntityProperties extends AbstractSqlQueryEntityProperties<S
      * {@inheritDoc}
      */
     @Override
-    public QueryConditionGroupExpression where(Consumer<ConditionGroupConfig> consumer) {
+    public QueryConditionGroupExpression where(Consumer<ConditionGroupConfig<QueryConditionGroupExpression>> consumer) {
         SqlQueryExpression sqlQueryExpression = new SqlQueryExpression(jdbc, sqlPageFactory, classMapping,
                 selectBuilder, ignorePolicy);
         if (consumer != null) {

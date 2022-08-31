@@ -27,5 +27,5 @@ public interface WhereExpression<C extends ConditionGroupExpression<C, L>,
      * @param consumer the consumer
      * @return QueryCondition
      */
-    C where(Consumer<ConditionGroupConfig> consumer);
+    C where(Consumer<ConditionGroupConfig<C>> consumer);
 }

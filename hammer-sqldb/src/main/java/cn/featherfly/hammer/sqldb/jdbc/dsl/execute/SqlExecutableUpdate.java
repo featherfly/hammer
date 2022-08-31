@@ -246,7 +246,8 @@ public class SqlExecutableUpdate implements SqlUpdate, ExecutableUpdate {
      * {@inheritDoc}
      */
     @Override
-    public ExecutableConditionGroupExpression where(Consumer<ConditionGroupConfig> consumer) {
+    public ExecutableConditionGroupExpression where(
+            Consumer<ConditionGroupConfig<ExecutableConditionGroupExpression>> consumer) {
         SqlUpdateExpression sqlUpdateExpression = new SqlUpdateExpression(jdbc, builder, classMapping,
                 builder.getIgnorePolicy());
         if (consumer != null) {

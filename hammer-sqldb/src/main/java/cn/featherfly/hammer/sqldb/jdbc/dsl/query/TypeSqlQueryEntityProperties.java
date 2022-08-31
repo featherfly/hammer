@@ -16,6 +16,7 @@ import cn.featherfly.common.repository.mapping.ClassMapping;
 import cn.featherfly.common.repository.mapping.MappingFactory;
 import cn.featherfly.common.repository.mapping.PropertyMapping;
 import cn.featherfly.common.structure.page.Page;
+import cn.featherfly.hammer.dsl.query.EntityQueryWithEntity;
 import cn.featherfly.hammer.dsl.query.TypeQueryConditionGroupExpression;
 import cn.featherfly.hammer.dsl.query.TypeQueryEntityProperties;
 import cn.featherfly.hammer.dsl.query.TypeQueryWithEntity;
@@ -67,7 +68,8 @@ public class TypeSqlQueryEntityProperties extends AbstractSqlQueryEntityProperti
      * {@inheritDoc}
      */
     @Override
-    public TypeQueryConditionGroupExpression where(Consumer<ConditionGroupConfig> consumer) {
+    public TypeQueryConditionGroupExpression where(
+            Consumer<ConditionGroupConfig<TypeQueryConditionGroupExpression>> consumer) {
         TypeSqlQueryExpression typeSqlQueryExpression = new TypeSqlQueryExpression(jdbc, classMapping, this, factory,
                 sqlPageFactory, aliasManager, selectBuilder, ignorePolicy);
         if (consumer != null) {
@@ -167,7 +169,7 @@ public class TypeSqlQueryEntityProperties extends AbstractSqlQueryEntityProperti
      * {@inheritDoc}
      */
     @Override
-    public <T, R> TypeQueryWithEntity with(SerializableFunction<T, R> propertyName, int index) {
+    public <T, R> EntityQueryWithEntity<E> with(SerializableFunction<T, R> propertyName, int index) {
         if (index <= 0) {
             throw new SqldbHammerException("index must > 0");
         }
