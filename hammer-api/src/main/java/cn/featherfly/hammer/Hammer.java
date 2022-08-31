@@ -9,16 +9,14 @@ import cn.featherfly.common.lang.AssertIllegalArgument;
 import cn.featherfly.common.lang.Lang;
 import cn.featherfly.common.lang.function.SerializableFunction;
 import cn.featherfly.common.lang.function.SerializableSupplier;
-import cn.featherfly.common.operator.LogicOperator;
 import cn.featherfly.common.repository.IgnorePolicy;
+import cn.featherfly.common.operator.LogicOperator;
 import cn.featherfly.hammer.dsl.execute.Delete;
-import cn.featherfly.hammer.dsl.execute.EntityDelete;
-import cn.featherfly.hammer.dsl.execute.EntityUpdate;
 import cn.featherfly.hammer.dsl.execute.Update;
+import cn.featherfly.hammer.dsl.query.EntityQueryConditionGroupExpression;
+import cn.featherfly.hammer.dsl.query.EntityQueryConditionGroupLogicExpression;
+import cn.featherfly.hammer.dsl.query.EntityQueryEntity;
 import cn.featherfly.hammer.dsl.query.QueryEntity;
-import cn.featherfly.hammer.dsl.query.type.EntityQueryConditionGroupExpression;
-import cn.featherfly.hammer.dsl.query.type.EntityQueryConditionGroupLogicExpression;
-import cn.featherfly.hammer.dsl.query.type.EntityQueryEntity;
 import cn.featherfly.hammer.tpl.TplExecutor;
 
 /**
@@ -427,7 +425,7 @@ public interface Hammer extends TplExecutor {
      * @param entityType update for entityType
      * @return Update
      */
-    <E> EntityUpdate<E> update(Class<E> entityType);
+    <E> Update update(Class<E> entityType);
 
     /**
      * create delete for repository.
@@ -444,5 +442,5 @@ public interface Hammer extends TplExecutor {
      * @param entityType update for entityType
      * @return Delete
      */
-    <E> EntityDelete<E> delete(Class<E> entityType);
+    <E> Delete delete(Class<E> entityType);
 }

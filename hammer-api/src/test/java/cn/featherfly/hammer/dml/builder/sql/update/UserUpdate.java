@@ -7,7 +7,7 @@ import cn.featherfly.common.lang.function.SerializableFunction;
 import cn.featherfly.common.lang.function.SerializableSupplier;
 import cn.featherfly.hammer.dml.builder.sql.query.UserQueryConditionGroupExpression;
 import cn.featherfly.hammer.expression.condition.ConditionGroupConfig;
-import cn.featherfly.hammer.expression.execute.ExecutableUpdateSetExpression;
+import cn.featherfly.hammer.expression.execute.SetExecutableUpdateExpression;
 
 /**
  * <p>
@@ -17,7 +17,7 @@ import cn.featherfly.hammer.expression.execute.ExecutableUpdateSetExpression;
  * @author zhongj
  */
 public class UserUpdate implements UserPropertiesUpdate,
-        ExecutableUpdateSetExpression<UserUpdate, UserQueryConditionGroupExpression, UserQueryConditionGroupExpression> {
+        SetExecutableUpdateExpression<UserUpdate, UserQueryConditionGroupExpression, UserQueryConditionGroupExpression> {
 
     /**
      * {@inheritDoc}
@@ -159,6 +159,15 @@ public class UserUpdate implements UserPropertiesUpdate,
      */
     @Override
     public UserUpdate set(Consumer<UserUpdate> consumer) {
+        // YUFEI_TODO Auto-generated method stub
+        return null;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public UserUpdate increase(Consumer<UserUpdate> consumer) {
         // YUFEI_TODO Auto-generated method stub
         return null;
     }

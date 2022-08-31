@@ -49,7 +49,7 @@
 //     * @param aliasManager   aliasManager
 //     * @param ignorePolicy   the ignore policy
 //     */
-//    public TypeSqlQueryEntityProperties(Jdbc jdbc, JdbcClassMapping<?> classMapping, JdbcMappingFactory factory,
+//    public TypeSqlQueryEntityProperties(Jdbc jdbc, ClassMapping<?> classMapping, MappingFactory factory,
 //            SqlPageFactory sqlPageFactory, AliasManager aliasManager, Predicate<Object> ignorePolicy) {
 //        super(jdbc, classMapping, factory, sqlPageFactory, aliasManager, ignorePolicy);
 //    }
@@ -180,11 +180,11 @@
 //        return with(with.joinTypeClassMapping, with.joinTableAlias, joinInfo);
 //    }
 //
-//    private TypeSqlQueryWith with(JdbcClassMapping<?> cm, String tableAlias, SerializedLambdaInfo joinInfo) {
+//    private TypeSqlQueryWith with(ClassMapping<?> cm, String tableAlias, SerializedLambdaInfo joinInfo) {
 //        String name = joinInfo.getPropertyName();
 //        if (cm.getType().getName().equals(joinInfo.getMethodInstanceClassName())) {
 //            // 表示是查找对象的属性，可以连表查询，也可以查询返回到查询对象的指定属性上
-//            JdbcClassMapping<?> joinClassMapping = factory.getClassMapping(joinInfo.getPropertyType());
+//            ClassMapping<?> joinClassMapping = factory.getClassMapping(joinInfo.getPropertyType());
 //            PropertyMapping pm = cm.getPropertyMapping(name);
 //            TypeSqlQueryWith typeSqlQueryWith = new TypeSqlQueryWith(this, aliasManager, factory, sqlPageFactory, cm,
 //                    tableAlias, pm.getRepositoryFieldName(), joinClassMapping,
@@ -193,7 +193,7 @@
 //            return typeSqlQueryWith;
 //        } else if (ClassUtils.isParent(cm.getType(), joinInfo.getPropertyType())) {
 //            // 表示是查找对象是with对象的属性，可以进行连表查询，但是不能返回到查询对象上，因为没有指明返回对象属性
-//            JdbcClassMapping<?> joinClassMapping = factory
+//            ClassMapping<?> joinClassMapping = factory
 //                    .getClassMapping(ClassUtils.forName(joinInfo.getMethodInstanceClassName()));
 //            PropertyMapping pm = joinClassMapping.getPropertyMapping(name);
 //
@@ -214,7 +214,7 @@
 //        return getPkMapping(classMapping).getRepositoryFieldName();
 //    }
 //
-//    private PropertyMapping getPkMapping(JdbcClassMapping<?> classMapping) {
+//    private PropertyMapping getPkMapping(ClassMapping<?> classMapping) {
 //        if (classMapping.getPrivaryKeyPropertyMappings().size() > 1) {
 //            throw new SqldbHammerException(String.format("there is more than one privary key property in type(%s)",
 //                    classMapping.getType().getName()));

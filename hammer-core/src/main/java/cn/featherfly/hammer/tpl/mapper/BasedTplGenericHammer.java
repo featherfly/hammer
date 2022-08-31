@@ -8,13 +8,13 @@ import java.util.function.Function;
 import cn.featherfly.common.lang.CollectionUtils;
 import cn.featherfly.common.lang.function.SerializableFunction;
 import cn.featherfly.common.lang.function.SerializableSupplier;
-import cn.featherfly.common.operator.LogicOperator;
 import cn.featherfly.common.repository.IgnorePolicy;
+import cn.featherfly.common.operator.LogicOperator;
 import cn.featherfly.hammer.GenericHammer;
 import cn.featherfly.hammer.Hammer;
-import cn.featherfly.hammer.dsl.execute.EntityDelete;
-import cn.featherfly.hammer.dsl.execute.EntityUpdate;
-import cn.featherfly.hammer.dsl.query.type.EntityQueryEntity;
+import cn.featherfly.hammer.dsl.execute.Delete;
+import cn.featherfly.hammer.dsl.execute.Update;
+import cn.featherfly.hammer.dsl.query.EntityQueryEntity;
 
 /**
  * BasedTplGenericHammer.
@@ -40,7 +40,7 @@ public class BasedTplGenericHammer<E, ID extends Serializable> implements Generi
      * {@inheritDoc}
      */
     @Override
-    public EntityDelete<E> delete() {
+    public Delete delete() {
         return hammer.delete(type);
     }
 
@@ -192,7 +192,7 @@ public class BasedTplGenericHammer<E, ID extends Serializable> implements Generi
      * {@inheritDoc}
      */
     @Override
-    public EntityUpdate<E> update() {
+    public Update update() {
         return hammer.update(type);
     }
 

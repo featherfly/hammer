@@ -26,11 +26,9 @@ import cn.featherfly.common.structure.page.Page;
 import cn.featherfly.common.structure.page.PaginationResults;
 import cn.featherfly.hammer.Hammer;
 import cn.featherfly.hammer.dsl.execute.Delete;
-import cn.featherfly.hammer.dsl.execute.EntityDelete;
-import cn.featherfly.hammer.dsl.execute.EntityUpdate;
 import cn.featherfly.hammer.dsl.execute.Update;
+import cn.featherfly.hammer.dsl.query.EntityQueryEntity;
 import cn.featherfly.hammer.dsl.query.QueryEntity;
-import cn.featherfly.hammer.dsl.query.type.EntityQueryEntity;
 import cn.featherfly.hammer.tpl.TplExecuteId;
 
 /**
@@ -440,7 +438,7 @@ public class TplDynamicExecutorFactoryByAsmTest {
             }
 
             @Override
-            public <E> EntityUpdate<E> update(Class<E> entityType) {
+            public <E> Update update(Class<E> entityType) {
 
                 return null;
             }
@@ -470,7 +468,7 @@ public class TplDynamicExecutorFactoryByAsmTest {
             }
 
             @Override
-            public <E> int update(@SuppressWarnings("unchecked") E... entities) {
+            public <E> int update(E... entities) {
 
                 return 0;
             }
@@ -488,7 +486,7 @@ public class TplDynamicExecutorFactoryByAsmTest {
             }
 
             @Override
-            public <E> int save(@SuppressWarnings("unchecked") E... entities) {
+            public <E> int save(E... entities) {
 
                 return 0;
             }
@@ -518,7 +516,7 @@ public class TplDynamicExecutorFactoryByAsmTest {
             }
 
             @Override
-            public <E> int merge(@SuppressWarnings("unchecked") E... entities) {
+            public <E> int merge(E... entities) {
 
                 return 0;
             }
@@ -561,7 +559,7 @@ public class TplDynamicExecutorFactoryByAsmTest {
             }
 
             @Override
-            public <E> EntityDelete<E> delete(Class<E> entityType) {
+            public <E> Delete delete(Class<E> entityType) {
 
                 return null;
             }
@@ -579,7 +577,7 @@ public class TplDynamicExecutorFactoryByAsmTest {
             }
 
             @Override
-            public <E> int delete(@SuppressWarnings("unchecked") E... entities) {
+            public <E> int delete(E... entities) {
 
                 return 0;
             }

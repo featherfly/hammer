@@ -7,15 +7,19 @@ import cn.featherfly.common.constant.Chars;
 import cn.featherfly.common.db.builder.dml.basic.SqlSelectBasicBuilder;
 import cn.featherfly.common.lang.Lang;
 import cn.featherfly.common.operator.AggregateFunction;
-import cn.featherfly.common.repository.IgnorePolicy;
 import cn.featherfly.common.repository.builder.AliasManager;
+import cn.featherfly.common.repository.mapping.ClassMapping;
+import cn.featherfly.common.repository.mapping.MappingFactory;
 import cn.featherfly.hammer.dsl.query.RepositoryQueryConditionGroupExpression;
 import cn.featherfly.hammer.dsl.query.RepositoryQueryConditionGroupLogicExpression;
 import cn.featherfly.hammer.sqldb.jdbc.Jdbc;
 import cn.featherfly.hammer.sqldb.jdbc.SqlPageFactory;
 
 /**
- * SqlDeleteExpression .
+ * <p>
+ * SqlDeleteExpression
+ * </p>
+ * .
  *
  * @author zhongj
  */
@@ -28,28 +32,17 @@ public class RepositorySqlQueryExpression extends RepositorySqlQueryConditionGro
      * Instantiates a new sql query expression.
      *
      * @param jdbc           the jdbc
-     * @param aliasManager   aliasManager
-     * @param selectBuilder  the select builder
-     * @param sqlPageFactory the sql page factory
-     */
-    public RepositorySqlQueryExpression(Jdbc jdbc, AliasManager aliasManager, SqlSelectBasicBuilder selectBuilder,
-            SqlPageFactory sqlPageFactory) {
-        this(jdbc, aliasManager, selectBuilder, sqlPageFactory, IgnorePolicy.EMPTY);
-    }
-
-    /**
-     * Instantiates a new sql query expression.
-     *
-     * @param jdbc           the jdbc
+     * @param factory        MappingFactory
      * @param aliasManager   aliasManager
      * @param selectBuilder  the select builder
      * @param sqlPageFactory the sql page factory
      * @param ignorePolicy   the ignore policy
      */
-    public RepositorySqlQueryExpression(Jdbc jdbc, AliasManager aliasManager, SqlSelectBasicBuilder selectBuilder,
-            SqlPageFactory sqlPageFactory, Predicate<Object> ignorePolicy) {
+    public RepositorySqlQueryExpression(Jdbc jdbc, MappingFactory factory, AliasManager aliasManager,
+            SqlSelectBasicBuilder selectBuilder, SqlPageFactory sqlPageFactory, Predicate<Object> ignorePolicy) {
         //        super(jdbc, factory, aliasManager, selectBuilder.getTableAlias(), sqlPageFactory, ignorePolicy);
-        super(jdbc, aliasManager, selectBuilder.getDefaultTableAlias(), sqlPageFactory, ignorePolicy);
+        //      IMPLSOON 后续来实现，先让编译通过
+        super(jdbc, factory, aliasManager, "", sqlPageFactory, ignorePolicy);
         this.selectBuilder = selectBuilder;
     }
 
@@ -57,27 +50,49 @@ public class RepositorySqlQueryExpression extends RepositorySqlQueryConditionGro
      * Instantiates a new sql query expression.
      *
      * @param jdbc           the jdbc
+     * @param factory        MappingFactory
+     * @param aliasManager   aliasManager
+     * @param sqlPageFactory the sql page factory
+     * @param classMapping   the class mapping
+     * @param selectBuilder  the select builder
+     * @param ignorePolicy   the ignore policy
+     */
+    public RepositorySqlQueryExpression(Jdbc jdbc, MappingFactory factory, AliasManager aliasManager,
+            SqlPageFactory sqlPageFactory, ClassMapping<?> classMapping, SqlSelectBasicBuilder selectBuilder,
+            Predicate<Object> ignorePolicy) {
+        //        super(jdbc, factory, aliasManager, selectBuilder.getTableAlias(), sqlPageFactory, classMapping, ignorePolicy);
+        //      IMPLSOON 后续来实现，先让编译通过
+        super(jdbc, factory, aliasManager, "", sqlPageFactory, classMapping, ignorePolicy);
+        this.selectBuilder = selectBuilder;
+    }
+
+    /**
+     * Instantiates a new sql query expression.
+     *
+     * @param jdbc           the jdbc
+     * @param factory        MappingFactory
      * @param aliasManager   aliasManager
      * @param queryAlias     the query alias
      * @param sqlPageFactory the sql page factory
      * @param ignorePolicy   the ignore policy
      */
-    public RepositorySqlQueryExpression(Jdbc jdbc, AliasManager aliasManager, String queryAlias,
+    public RepositorySqlQueryExpression(Jdbc jdbc, MappingFactory factory, AliasManager aliasManager, String queryAlias,
             SqlPageFactory sqlPageFactory, Predicate<Object> ignorePolicy) {
-        super(jdbc, aliasManager, queryAlias, sqlPageFactory, ignorePolicy);
+        super(jdbc, factory, aliasManager, queryAlias, sqlPageFactory, ignorePolicy);
     }
 
     /**
      * Instantiates a new sql query expression.
      *
      * @param jdbc           jdbc
+     * @param factory        MappingFactory
      * @param aliasManager   aliasManager
      * @param sqlPageFactory the sql page factory
      * @param ignorePolicy   the ignore policy
      */
-    public RepositorySqlQueryExpression(Jdbc jdbc, AliasManager aliasManager, SqlPageFactory sqlPageFactory,
-            Predicate<Object> ignorePolicy) {
-        super(jdbc, aliasManager, sqlPageFactory, ignorePolicy);
+    public RepositorySqlQueryExpression(Jdbc jdbc, MappingFactory factory, AliasManager aliasManager,
+            SqlPageFactory sqlPageFactory, Predicate<Object> ignorePolicy) {
+        super(jdbc, factory, aliasManager, sqlPageFactory, ignorePolicy);
     }
 
     /**
@@ -85,15 +100,17 @@ public class RepositorySqlQueryExpression extends RepositorySqlQueryConditionGro
      *
      * @param parent         the parent
      * @param jdbc           the jdbc
+     * @param factory        MappingFactory
      * @param aliasManager   aliasManager
      * @param queryAlias     the query alias
      * @param sqlPageFactory the sql page factory
+     * @param classMapping   the class mapping
      * @param ignorePolicy   the ignore policy
      */
-    RepositorySqlQueryExpression(RepositoryQueryConditionGroupLogicExpression parent, Jdbc jdbc,
-            AliasManager aliasManager, String queryAlias, SqlPageFactory sqlPageFactory,
+    RepositorySqlQueryExpression(RepositoryQueryConditionGroupLogicExpression parent, Jdbc jdbc, MappingFactory factory,
+            AliasManager aliasManager, String queryAlias, SqlPageFactory sqlPageFactory, ClassMapping<?> classMapping,
             Predicate<Object> ignorePolicy) {
-        super(parent, jdbc, aliasManager, queryAlias, sqlPageFactory, ignorePolicy);
+        super(parent, jdbc, factory, aliasManager, queryAlias, sqlPageFactory, classMapping, ignorePolicy);
     }
 
     /**
@@ -104,7 +121,8 @@ public class RepositorySqlQueryExpression extends RepositorySqlQueryConditionGro
             String queryAlias) {
         //      IMPLSOON 后续来实现，先让编译通过
         //        selectBuilder.setTableAlias(queryAlias);
-        return new RepositorySqlQueryExpression(parent, jdbc, aliasManager, queryAlias, sqlPageFactory, ignorePolicy);
+        return new RepositorySqlQueryExpression(parent, jdbc, factory, aliasManager, queryAlias, sqlPageFactory,
+                classMapping, ignorePolicy);
     }
 
     /**
@@ -123,8 +141,7 @@ public class RepositorySqlQueryExpression extends RepositorySqlQueryConditionGro
     public String build() {
         String result = "";
         if (selectBuilder != null) {
-            result = selectBuilder
-                    .build((tableName, tableAlias) -> selectBuilder.getDefaultTableAlias().equals(tableAlias));
+            result = selectBuilder.build();
         }
         String condition = super.build();
         if (Lang.isNotEmpty(condition)) {

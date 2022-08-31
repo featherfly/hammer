@@ -5,12 +5,13 @@ import java.util.function.Predicate;
 
 import cn.featherfly.common.constant.Chars;
 import cn.featherfly.common.db.builder.dml.basic.SqlSelectBasicBuilder;
-import cn.featherfly.common.db.mapping.JdbcClassMapping;
-import cn.featherfly.common.db.mapping.JdbcMappingFactory;
 import cn.featherfly.common.lang.Lang;
 import cn.featherfly.common.operator.AggregateFunction;
 import cn.featherfly.common.repository.builder.AliasManager;
-import cn.featherfly.hammer.dsl.query.type.EntityQueryConditionGroupLogicExpression;
+import cn.featherfly.common.repository.mapping.ClassMapping;
+import cn.featherfly.common.repository.mapping.MappingFactory;
+import cn.featherfly.hammer.dsl.query.EntityQueryConditionGroupLogicExpression;
+import cn.featherfly.hammer.dsl.query.EntityQueryEntity;
 import cn.featherfly.hammer.sqldb.jdbc.Jdbc;
 import cn.featherfly.hammer.sqldb.jdbc.SqlPageFactory;
 
@@ -36,14 +37,13 @@ public class EntitySqlQueryExpression<E> extends EntitySqlQueryConditionGroupExp
      * @param selectBuilder     the select builder
      * @param ignorePolicy      the ignore policy
      */
-    public EntitySqlQueryExpression(Jdbc jdbc, JdbcClassMapping<E> classMapping, EntitySqlQuery<E> entityQueryEntity,
-            JdbcMappingFactory factory, SqlPageFactory sqlPageFactory, AliasManager aliasManager,
+    public EntitySqlQueryExpression(Jdbc jdbc, ClassMapping<?> classMapping, EntityQueryEntity<E> entityQueryEntity,
+            MappingFactory factory, SqlPageFactory sqlPageFactory, AliasManager aliasManager,
             SqlSelectBasicBuilder selectBuilder, Predicate<Object> ignorePolicy) {
         //        super(jdbc, selectBuilder.getTableAlias(), classMapping, factory, sqlPageFactory, aliasManager,
         //                entityQueryEntity, ignorePolicy);
         //      IMPLSOON 后续来实现，先让编译通过
-        super(jdbc, aliasManager.getAlias(0), classMapping, factory, sqlPageFactory, aliasManager, entityQueryEntity,
-                ignorePolicy);
+        super(jdbc, "", classMapping, factory, sqlPageFactory, aliasManager, entityQueryEntity, ignorePolicy);
         this.selectBuilder = selectBuilder;
     }
 
@@ -61,8 +61,8 @@ public class EntitySqlQueryExpression<E> extends EntitySqlQueryConditionGroupExp
      * @param ignorePolicy      the ignore policy
      */
     EntitySqlQueryExpression(EntityQueryConditionGroupLogicExpression<E> parent, Jdbc jdbc, String queryAlias,
-            JdbcClassMapping<E> classMapping, JdbcMappingFactory factory, SqlPageFactory sqlPageFactory,
-            AliasManager aliasManager, EntitySqlQuery<E> entityQueryEntity, Predicate<Object> ignorePolicy) {
+            ClassMapping<?> classMapping, MappingFactory factory, SqlPageFactory sqlPageFactory,
+            AliasManager aliasManager, EntityQueryEntity<E> entityQueryEntity, Predicate<Object> ignorePolicy) {
         super(parent, jdbc, queryAlias, classMapping, factory, sqlPageFactory, aliasManager, entityQueryEntity,
                 ignorePolicy);
     }
@@ -72,7 +72,7 @@ public class EntitySqlQueryExpression<E> extends EntitySqlQueryConditionGroupExp
      */
     @Override
     protected EntitySqlQueryConditionGroupExpression<E> createGroup(EntityQueryConditionGroupLogicExpression<E> parent,
-            String queryAlias, EntitySqlQuery<E> entityQueryEntity) {
+            String queryAlias, EntityQueryEntity<E> entityQueryEntity) {
         if (selectBuilder != null) {
             //      IMPLSOON 后续来实现，先让编译通过
             //            selectBuilder.setTableAlias(queryAlias);
@@ -97,8 +97,7 @@ public class EntitySqlQueryExpression<E> extends EntitySqlQueryConditionGroupExp
     public String build() {
         String result = "";
         if (selectBuilder != null) {
-            result = selectBuilder
-                    .build((tableName, tableAlias) -> selectBuilder.getDefaultTableAlias().equals(tableAlias));
+            result = selectBuilder.build();
         }
         String condition = super.build();
         if (Lang.isNotEmpty(condition)) {

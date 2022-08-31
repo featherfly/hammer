@@ -13,6 +13,7 @@ import cn.featherfly.common.bean.BeanProperty;
 import cn.featherfly.common.db.mapping.mappers.ObjectToJsonMapper;
 import cn.featherfly.common.lang.ArrayUtils;
 import cn.featherfly.common.lang.Randoms;
+import cn.featherfly.common.lang.reflect.ClassType;
 import cn.featherfly.hammer.Hammer;
 import cn.featherfly.hammer.sqldb.SqldbHammerImpl;
 import cn.featherfly.hammer.sqldb.jdbc.JdbcImpl;
@@ -38,63 +39,61 @@ public class HammerJdbcMappingTypeTest extends JdbcTestBase {
 
         Class<Article2> type = Article2.class;
 
-        //                manager.regist(new JavaSqlTypeMapper<Long[]>() {
-        //                    private BeanProperty<Long[]> bp = BeanDescriptor.getBeanDescriptor(type).getBeanProperty("content");
+        //        manager.regist(new JavaSqlTypeMapper<Long[]>() {
+        //            private BeanProperty<Long[]> bp = BeanDescriptor.getBeanDescriptor(type).getBeanProperty("content");
         //
-        //                    @Override
-        //                    public boolean support(SQLType sqlType) {
-        //                        return JDBCType.VARCHAR.equals(sqlType);
-        //                    }
+        //            @Override
+        //            public boolean support(SQLType sqlType) {
+        //                return JDBCType.VARCHAR.equals(sqlType);
+        //            }
         //
-        //                    @Override
-        //                    public boolean support(Type<Long[]> type) {
-        //                        return type.getType().equals(Long[].class);
-        //                    }
+        //            @Override
+        //            public boolean support(Type<Long[]> type) {
+        //                return type.getType().equals(Long[].class);
+        //            }
         //
-        //                    @Override
-        //                    public Class<Long[]> getJavaType(SQLType sqlType) {
-        //                        return Long[].class;
-        //                    }
+        //            @Override
+        //            public Class<Long[]> getJavaType(SQLType sqlType) {
+        //                return Long[].class;
+        //            }
         //
-        //                    @Override
-        //                    public SQLType getSqlType(Type<Long[]> javaType) {
-        //                        return JDBCType.VARCHAR;
-        //                    }
+        //            @Override
+        //            public SQLType getSqlType(Type<Long[]> javaType) {
+        //                return JDBCType.VARCHAR;
+        //            }
         //
-        //                    @Override
-        //                    public void set(PreparedStatement prep, int columnIndex, Long[] value) {
-        //                        System.out.println(ArrayUtils.toString(value, ','));
-        //                        JdbcUtils.setParameter(prep, columnIndex, ArrayUtils.toString(value, ','));
-        //                    }
+        //            @Override
+        //            public void set(PreparedStatement prep, int columnIndex, Long[] value) {
+        //                System.out.println(ArrayUtils.toString(value, ','));
+        //                JdbcUtils.setParameter(prep, columnIndex, ArrayUtils.toString(value, ','));
+        //            }
         //
-        //                    @Override
-        //                    public Long[] get(ResultSet rs, int columnIndex) {
-        //                        try {
-        //                            return ArrayUtils.toNumbers(Long.class, rs.getString(columnIndex).split(","));
-        //                        } catch (SQLException e) {
-        //                            throw new JdbcException(e);
-        //                        }
-        //                    }
-        //                });
+        //            @Override
+        //            public Long[] get(ResultSet rs, int columnIndex) {
+        //                try {
+        //                    return ArrayUtils.toNumbers(Long.class, rs.getString(columnIndex).split(","));
+        //                } catch (SQLException e) {
+        //                    throw new JdbcException(e);
+        //                }
+        //            }
+        //        });
 
         BeanDescriptor<Article2> bd = BeanDescriptor.getBeanDescriptor(type);
 
-        BeanProperty<Content> contentProperty = bd.getBeanProperty("content");
+        BeanProperty<Content> contentProperty = bd.getBeanProperty("content2");
+        sqlTypeMappingManager.regist(contentProperty, new ObjectToJsonMapper<>(contentProperty));
+
+        contentProperty = bd.getBeanProperty("content3");
+        sqlTypeMappingManager.regist(contentProperty, new ObjectToJsonMapper<>(contentProperty));
+
+        contentProperty = bd.getBeanProperty("content4");
+        //        sqlTypeMappingManager.regist(contentProperty, new ListToStringSqlTypeMapper());
+        sqlTypeMappingManager.regist(new ListToStringSqlTypeMapper());
+
+        contentProperty = bd.getBeanProperty("content");
         sqlTypeMappingManager.regist(contentProperty, new ArrayToStringSqlTypeMapper());
 
-        BeanProperty<Content> contentProperty2 = bd.getBeanProperty("content2");
-        sqlTypeMappingManager.regist(contentProperty2, new ObjectToJsonMapper<>(contentProperty2));
-
-        BeanProperty<Content> contentProperty3 = bd.getBeanProperty("content3");
-        sqlTypeMappingManager.regist(contentProperty3, new ObjectToJsonMapper<>(contentProperty3));
-
-        BeanProperty<Content> contentProperty4 = bd.getBeanProperty("content4");
-        sqlTypeMappingManager.regist(contentProperty4, new ListToStringSqlTypeMapper());
-        //        sqlTypeMappingManager.regist(new ListToStringSqlTypeMapper());
-
-        // sqlTypeMappingManager.regist(Content2.class, new ObjectToJsonMapper<>(Content2.class));
-        // regist(entityClass, Mapper) 的entity类型是用于分组的
-        sqlTypeMappingManager.regist(new ObjectToJsonMapper<>(Content2.class));
+        sqlTypeMappingManager.regist(new ClassType<>(Content2.class), new ObjectToJsonMapper<>(Content2.class));
 
         hammer = new SqldbHammerImpl(jdbc, mappingFactory, configFactory);
     }

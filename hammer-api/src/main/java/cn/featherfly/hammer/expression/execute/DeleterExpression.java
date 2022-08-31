@@ -1,9 +1,9 @@
 
 package cn.featherfly.hammer.expression.execute;
 
-import cn.featherfly.common.repository.Repository;
 import cn.featherfly.hammer.expression.ConditionGroupExpression;
 import cn.featherfly.hammer.expression.ConditionGroupLogicExpression;
+import cn.featherfly.hammer.expression.Repository;
 
 /**
  * <p>
@@ -19,7 +19,7 @@ public interface DeleterExpression<D extends DeleteExpression<C, L>, C extends C
      * start delete dsl for repository
      *
      * @param repository repository
-     * @return DeleteExpression
+     * @return Delete
      */
     D delete(String repository);
 
@@ -27,7 +27,16 @@ public interface DeleterExpression<D extends DeleteExpression<C, L>, C extends C
      * start delete dsl for repository
      *
      * @param repository repository
-     * @return DeleteExpression
+     * @return Delete
      */
     D delete(Repository repository);
+
+    /**
+     * start delete dsl for the reposited type
+     *
+     * @param repositType repositType
+     * @return Delete
+     */
+    // YUFEI_TODO 后续需要对返回的对象进行泛型约束改造
+    D delete(Class<?> repositType);
 }

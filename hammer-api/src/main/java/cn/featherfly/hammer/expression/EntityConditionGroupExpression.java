@@ -2,7 +2,7 @@
 package cn.featherfly.hammer.expression;
 
 import cn.featherfly.hammer.expression.condition.ConditionGroupConfig;
-import cn.featherfly.hammer.expression.condition.type.EntityConditionsGroupExpression;
+import cn.featherfly.hammer.expression.condition.EntityConditionsGroupExpression;
 
 /**
  * The Interface EntityConditionGroupExpression.

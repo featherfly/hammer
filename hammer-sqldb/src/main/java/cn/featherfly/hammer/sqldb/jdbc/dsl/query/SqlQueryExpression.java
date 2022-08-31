@@ -7,7 +7,7 @@ import cn.featherfly.common.constant.Chars;
 import cn.featherfly.common.db.builder.dml.basic.SqlSelectBasicBuilder;
 import cn.featherfly.common.lang.Lang;
 import cn.featherfly.common.operator.AggregateFunction;
-import cn.featherfly.common.repository.IgnorePolicy;
+import cn.featherfly.common.repository.mapping.ClassMapping;
 import cn.featherfly.hammer.dsl.query.QueryConditionGroupExpression;
 import cn.featherfly.hammer.dsl.query.QueryConditionGroupLogicExpression;
 import cn.featherfly.hammer.dsl.query.TypeQueryEntity;
@@ -30,9 +30,14 @@ public class SqlQueryExpression extends SqlQueryConditionGroupExpression {
      * @param jdbc           the jdbc
      * @param sqlPageFactory the sql page factory
      * @param selectBuilder  the select builder
+     * @param ignorePolicy   the ignore policy
      */
-    public SqlQueryExpression(Jdbc jdbc, SqlPageFactory sqlPageFactory, SqlSelectBasicBuilder selectBuilder) {
-        this(jdbc, sqlPageFactory, IgnorePolicy.EMPTY);
+    public SqlQueryExpression(Jdbc jdbc, SqlPageFactory sqlPageFactory, SqlSelectBasicBuilder selectBuilder,
+            Predicate<Object> ignorePolicy) {
+        //        super(jdbc, sqlPageFactory, selectBuilder.getTableAlias(), ignorePolicy);
+        //      IMPLSOON 后续来实现，先让编译通过
+        super(jdbc, sqlPageFactory, "", ignorePolicy);
+        this.selectBuilder = selectBuilder;
     }
 
     /**
@@ -40,12 +45,15 @@ public class SqlQueryExpression extends SqlQueryConditionGroupExpression {
      *
      * @param jdbc           the jdbc
      * @param sqlPageFactory the sql page factory
+     * @param classMapping   the class mapping
      * @param selectBuilder  the select builder
      * @param ignorePolicy   the ignore policy
      */
-    public SqlQueryExpression(Jdbc jdbc, SqlPageFactory sqlPageFactory, SqlSelectBasicBuilder selectBuilder,
-            Predicate<Object> ignorePolicy) {
-        super(jdbc, sqlPageFactory, selectBuilder.getDefaultTableAlias(), ignorePolicy);
+    public SqlQueryExpression(Jdbc jdbc, SqlPageFactory sqlPageFactory, ClassMapping<?> classMapping,
+            SqlSelectBasicBuilder selectBuilder, Predicate<Object> ignorePolicy) {
+        //        super(jdbc, sqlPageFactory, selectBuilder.getTableAlias(), classMapping, ignorePolicy);
+        //      IMPLSOON 后续来实现，先让编译通过
+        super(jdbc, sqlPageFactory, "", classMapping, ignorePolicy);
         this.selectBuilder = selectBuilder;
     }
 
@@ -56,11 +64,12 @@ public class SqlQueryExpression extends SqlQueryConditionGroupExpression {
      * @param jdbc           the jdbc
      * @param sqlPageFactory the sql page factory
      * @param queryAlias     the query alias
+     * @param classMapping   the class mapping
      * @param ignorePolicy   the ignore policy
      */
     SqlQueryExpression(QueryConditionGroupLogicExpression parent, Jdbc jdbc, SqlPageFactory sqlPageFactory,
-            String queryAlias, Predicate<Object> ignorePolicy) {
-        super(parent, jdbc, sqlPageFactory, queryAlias, ignorePolicy);
+            String queryAlias, ClassMapping<?> classMapping, Predicate<Object> ignorePolicy) {
+        super(parent, jdbc, sqlPageFactory, queryAlias, classMapping, ignorePolicy);
     }
 
     /**
@@ -93,7 +102,9 @@ public class SqlQueryExpression extends SqlQueryConditionGroupExpression {
     @Override
     protected QueryConditionGroupExpression createGroup(QueryConditionGroupLogicExpression parent, String queryAlias,
             TypeQueryEntity typeQueryEntity) {
-        return new SqlQueryExpression(parent, jdbc, sqlPageFactory, queryAlias, ignorePolicy);
+        // FIXME 未测试
+        //        selectBuilder.setTableAlias(queryAlias);
+        return new SqlQueryExpression(parent, jdbc, sqlPageFactory, queryAlias, classMapping, ignorePolicy);
     }
 
     /**
@@ -112,8 +123,7 @@ public class SqlQueryExpression extends SqlQueryConditionGroupExpression {
     public String build() {
         String result = "";
         if (selectBuilder != null) {
-            result = selectBuilder
-                    .build((tableName, tableAlias) -> selectBuilder.getDefaultTableAlias().equals(tableAlias));
+            result = selectBuilder.build();
         }
         String condition = super.build();
         if (Lang.isNotEmpty(condition)) {

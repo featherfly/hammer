@@ -17,10 +17,6 @@ public class User {
 
     private String username;
 
-    private String pwd;
-
-    private Integer age;
-
     @OneToOne
     private UserInfo userInfo;
 
@@ -98,41 +94,4 @@ public class User {
     public void setUserInfo(UserInfo userInfo) {
         this.userInfo = userInfo;
     }
-
-    /**
-     * get pwd value
-     *
-     * @return pwd
-     */
-    public String getPwd() {
-        return pwd;
-    }
-
-    /**
-     * set pwd value
-     *
-     * @param pwd pwd
-     */
-    public void setPwd(String pwd) {
-        this.pwd = pwd;
-    }
-
-    /**
-     * get age value
-     *
-     * @return age
-     */
-    public Integer getAge() {
-        return age;
-    }
-
-    /**
-     * set age value
-     *
-     * @param age age
-     */
-    public void setAge(Integer age) {
-        this.age = age;
-    }
-
 }

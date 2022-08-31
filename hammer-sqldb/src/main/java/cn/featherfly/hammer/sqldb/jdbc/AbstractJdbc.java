@@ -29,25 +29,16 @@ import javax.sql.DataSource;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.speedment.common.tuple.Tuple2;
-import com.speedment.common.tuple.Tuple3;
-import com.speedment.common.tuple.Tuple4;
-import com.speedment.common.tuple.Tuple5;
-
 import cn.featherfly.common.bean.BeanProperty;
 import cn.featherfly.common.bean.BeanPropertyValue;
-import cn.featherfly.common.db.FieldValueOperator;
 import cn.featherfly.common.db.JdbcException;
 import cn.featherfly.common.db.JdbcUtils;
 import cn.featherfly.common.db.SqlUtils;
 import cn.featherfly.common.db.dialect.Dialect;
-import cn.featherfly.common.db.dialect.SQLiteDialect;
 import cn.featherfly.common.db.mapping.SqlResultSet;
 import cn.featherfly.common.db.mapping.SqlTypeMappingManager;
-import cn.featherfly.common.lang.ArrayUtils;
 import cn.featherfly.common.lang.Lang;
 import cn.featherfly.common.lang.Strings;
-import cn.featherfly.common.lang.reflect.Type;
 import cn.featherfly.common.repository.Execution;
 import cn.featherfly.common.repository.mapping.RowMapper;
 
@@ -108,14 +99,6 @@ public abstract class AbstractJdbc implements Jdbc {
      * {@inheritDoc}
      */
     @Override
-    public SqlTypeMappingManager getSqlTypeMappingManager() {
-        return manager;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
     public Dialect getDialect() {
         return dialect;
     }
@@ -128,20 +111,7 @@ public abstract class AbstractJdbc implements Jdbc {
 
     @Override
     public int insertBatch(String tableName, String[] columnNames, int batchSize, Object... args) {
-        if (args.length % columnNames.length != 0) {
-            throw new JdbcException("batch size is not explicit (args.length % columnNames.length != 0)");
-        }
-        int actualBatchSize = args.length / columnNames.length;
-        if (batchSize >= actualBatchSize) { // 表示批量执行数的最大限制小于等于参数计算出的实际需要的批量执行数
-            return updateBatch(getDialect().buildInsertBatchSql(tableName, columnNames, actualBatchSize),
-                    actualBatchSize, args);
-        } else {
-            int index = batchSize * columnNames.length;
-            return updateBatch(getDialect().buildInsertBatchSql(tableName, columnNames, batchSize), batchSize,
-                    Arrays.copyOfRange(args, 0, index))
-                    + insertBatch(tableName, columnNames, actualBatchSize - batchSize,
-                            Arrays.copyOfRange(args, index, args.length));
-        }
+        return update(getDialect().buildInsertBatchSql(tableName, columnNames, batchSize), args);
     }
 
     @Override
@@ -261,16 +231,62 @@ public abstract class AbstractJdbc implements Jdbc {
                 Arrays.stream(argsBp).map(arg -> arg.getValue()).toArray());
     }
 
-    private <T extends Serializable> T getGenereteKey(Type<T> type, ResultSet res) {
-        T value;
-        if (type instanceof BeanProperty) {
-            value = manager.get(res, 1, (BeanProperty<T>) type);
-        } else {
-            value = manager.get(res, 1, type.getType());
-        }
-        logger.debug("auto generated key: {}", value);
-        return value;
-    }
+    //    private <T extends Serializable> int[] executeUpdate(Consumer<PreparedStatement> setParams, String[] sqls,
+    //            GeneratedKeyHolder<T> generatedKeyHolder, Object... args) {
+    //        if (Lang.isEmpty(sqls)) {
+    //            return ArrayUtils.EMPTY_INT_ARRAY;
+    //        }
+    //        DataSource ds = getDataSource();
+    //        Connection connection = getConnection(ds);
+    //        String sql = sqls[0];
+    //        JdbcExecution execution = preHandle(sql, args);
+    //        sql = execution.getExecution();
+    //        args = execution.getParams();
+    //        try (PreparedStatement prep = generatedKeyHolder == null ? connection.prepareStatement(sql)
+    //                : connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
+    //            for (int i = 1; i < args.length; i++) {
+    //                execution = preHandle(sqls[i], args);
+    //                sql = execution.getExecution();
+    //                args = execution.getParams();
+    //                logger.debug("execute sql -> {}, args -> {}", sql, args);
+    //                prep.addBatch(sql);
+    //                // 不是查询操作，没有查询结果
+    //                //                postHandle(execution, sql, args);
+    //                //                if (generatedKeyHolder != null) {
+    //                //                    try (ResultSet res = prep.getGeneratedKeys()) {
+    //                //                        int row = 0;
+    //                //                        while (res.next()) {
+    //                //                            T value = manager.get(res, 1, generatedKeyHolder.getType());
+    //                //                            //                    Object value = JdbcUtils.getResultSetValue(res, 1, pm.getPropertyType());
+    //                //                            generatedKeyHolder.acceptKey(value, row++);
+    //                //                            logger.debug("auto generated key: ", value);
+    //                //                        }
+    //                //                    }
+    //                //                }
+    //            }
+    //            setParams.accept(prep);
+    //            int results[] = prep.executeBatch();
+    //            //            postHandle(execution, sql, args);
+    //            if (generatedKeyHolder != null) {
+    //                try (ResultSet res = prep.getGeneratedKeys()) {
+    //                    int row = 0;
+    //                    while (res.next()) {
+    //                        T value = manager.get(res, 1, generatedKeyHolder.getType());
+    //                        //                    Object value = JdbcUtils.getResultSetValue(res, 1, pm.getPropertyType());
+    //                        generatedKeyHolder.acceptKey(value, row++);
+    //                        logger.debug("auto generated key: ", value);
+    //                    }
+    //                }
+    //            }
+    //            return results;
+    //        } catch (SQLException e) {
+    //            releaseConnection(connection, ds);
+    //            throw new JdbcException(Strings.format("executeUpdate: \nsql: {0} \nargs: {1}", sql, Arrays.toString(args)),
+    //                    e);
+    //        } finally {
+    //            releaseConnection(connection, getDataSource());
+    //        }
+    //    }
 
     private <T extends Serializable> int executeUpdate(Consumer<PreparedStatement> setParams, String sql, int batchSize,
             GeneratedKeyHolder<T> generatedKeyHolder, Object... args) {
@@ -289,25 +305,11 @@ public abstract class AbstractJdbc implements Jdbc {
             if (generatedKeyHolder != null && (batchSize == 1 && result == 1 || batchSize > 1)) {
                 try (ResultSet res = prep.getGeneratedKeys()) {
                     int row = 0;
-                    if (dialect instanceof SQLiteDialect) { // res.isLast() not supported by sqlite
-                        while (res.next()) {
-                            T value = getGenereteKey(generatedKeyHolder.getType(), res);
-                            generatedKeyHolder.acceptKey(value, row++);
-                        }
-                    } else {
-                        if (res.next()) {
-                            if (res.isLast()) {
-                                T value = getGenereteKey(generatedKeyHolder.getType(), res);
-                                generatedKeyHolder.acceptKey(value, row);
-                            } else {
-                                List<T> keys = new ArrayList<>();
-                                keys.add(getGenereteKey(generatedKeyHolder.getType(), res));
-                                while (res.next()) {
-                                    keys.add(getGenereteKey(generatedKeyHolder.getType(), res));
-                                }
-                                generatedKeyHolder.acceptKey(keys);
-                            }
-                        }
+                    while (res.next()) {
+                        T value = manager.get(res, 1, generatedKeyHolder.getType());
+                        //                    Object value = JdbcUtils.getResultSetValue(res, 1, pm.getPropertyType());
+                        generatedKeyHolder.acceptKey(value, row++);
+                        logger.debug("auto generated key: ", value);
                     }
                 }
             }
@@ -384,61 +386,6 @@ public abstract class AbstractJdbc implements Jdbc {
      * {@inheritDoc}
      */
     @Override
-    public <T1, T2> List<Tuple2<T1, T2>> query(String sql, Class<T1> elementType1, Class<T2> elementType2,
-            Tuple2<String, String> prefixes, Map<String, Object> args) {
-        logger.debug("sql -> {}, args -> {}, elementType1 -> {}, elementType2 -> {}", sql, args, elementType1,
-                elementType2);
-        Execution execution = SqlUtils.convertNamedParamSql(sql, args);
-        return query(execution.getExecution(), elementType1, elementType2, prefixes, execution.getParams());
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public <T1, T2, T3> List<Tuple3<T1, T2, T3>> query(String sql, Class<T1> elementType1, Class<T2> elementType2,
-            Class<T3> elementType3, Tuple3<String, String, String> prefixes, Map<String, Object> args) {
-        logger.debug("sql -> {}, args -> {}, elementType1 -> {}, elementType2 -> {}, elementType3 -> {}", sql, args,
-                elementType1, elementType2, elementType3);
-        Execution execution = SqlUtils.convertNamedParamSql(sql, args);
-        return query(execution.getExecution(), elementType1, elementType2, elementType3, prefixes,
-                execution.getParams());
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public <T1, T2, T3, T4> List<Tuple4<T1, T2, T3, T4>> query(String sql, Class<T1> elementType1,
-            Class<T2> elementType2, Class<T3> elementType3, Class<T4> elementType4,
-            Tuple4<String, String, String, String> prefixes, Map<String, Object> args) {
-        logger.debug(
-                "sql -> {}, args -> {}, elementType1 -> {}, elementType2 -> {}, elementType3 -> {}, elementType4 -> {}",
-                sql, args, elementType1, elementType2, elementType3, elementType4);
-        Execution execution = SqlUtils.convertNamedParamSql(sql, args);
-        return query(execution.getExecution(), elementType1, elementType2, elementType3, elementType4, prefixes,
-                execution.getParams());
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public <T1, T2, T3, T4, T5> List<Tuple5<T1, T2, T3, T4, T5>> query(String sql, Class<T1> elementType1,
-            Class<T2> elementType2, Class<T3> elementType3, Class<T4> elementType4, Class<T5> elementType5,
-            Tuple5<String, String, String, String, String> prefixes, Map<String, Object> args) {
-        logger.debug(
-                "sql -> {}, args -> {}, elementType1 -> {}, elementType2 -> {}, elementType3 -> {}, elementType4 -> {}, elementType5 -> {}",
-                sql, args, elementType1, elementType2, elementType3, elementType4, elementType5);
-        Execution execution = SqlUtils.convertNamedParamSql(sql, args);
-        return query(execution.getExecution(), elementType1, elementType2, elementType3, elementType4, elementType5,
-                prefixes, execution.getParams());
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
     public <T> List<T> query(String sql, Class<T> elementType, Object... args) {
         SQLType sqlType = manager.getSqlType(elementType);
         RowMapper<T> rowMapper = null;
@@ -448,61 +395,6 @@ public abstract class AbstractJdbc implements Jdbc {
             rowMapper = new SingleColumnRowMapper<>(elementType, manager);
         }
         return query(sql, rowMapper, args);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public <T1, T2> List<Tuple2<T1, T2>> query(String sql, Class<T1> elementType1, Class<T2> elementType2,
-            Tuple2<String, String> prefixes, Object... args) {
-        //        SQLType sqlType = manager.getSqlType(elementType);
-        //        RowMapper<T> rowMapper = null;
-        //        if (sqlType == null) {
-        //            rowMapper = new NestedBeanPropertyRowMapper<>(elementType, manager);
-        //        } else {
-        //            rowMapper = new SingleColumnRowMapper<>(elementType, manager);
-        //        }
-        //        return query(sql, rowMapper, args);
-        return query(sql, new TupleNestedBeanPropertyRowMapper<>(ArrayUtils.toList(elementType1, elementType2),
-                prefixes, manager), args);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public <T1, T2, T3> List<Tuple3<T1, T2, T3>> query(String sql, Class<T1> elementType1, Class<T2> elementType2,
-            Class<T3> elementType3, Tuple3<String, String, String> prefixes, Object... args) {
-        return query(sql, new TupleNestedBeanPropertyRowMapper<>(
-                ArrayUtils.toList(elementType1, elementType2, elementType3), prefixes, manager), args);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public <T1, T2, T3, T4> List<Tuple4<T1, T2, T3, T4>> query(String sql, Class<T1> elementType1,
-            Class<T2> elementType2, Class<T3> elementType3, Class<T4> elementType4,
-            Tuple4<String, String, String, String> prefixes, Object... args) {
-        return query(sql,
-                new TupleNestedBeanPropertyRowMapper<>(
-                        ArrayUtils.toList(elementType1, elementType2, elementType3, elementType4), prefixes, manager),
-                args);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public <T1, T2, T3, T4, T5> List<Tuple5<T1, T2, T3, T4, T5>> query(String sql, Class<T1> elementType1,
-            Class<T2> elementType2, Class<T3> elementType3, Class<T4> elementType4, Class<T5> elementType5,
-            Tuple5<String, String, String, String, String> prefixes, Object... args) {
-        return query(sql,
-                new TupleNestedBeanPropertyRowMapper<>(
-                        ArrayUtils.toList(elementType1, elementType2, elementType3, elementType4, elementType5),
-                        prefixes, manager),
-                args);
     }
 
     //    @Override
@@ -612,86 +504,8 @@ public abstract class AbstractJdbc implements Jdbc {
      * {@inheritDoc}
      */
     @Override
-    public <T1, T2> Tuple2<T1, T2> querySingle(String sql, Class<T1> elementType1, Class<T2> elementType2,
-            Tuple2<String, String> prefixes, Map<String, Object> args) {
-        return singleResult(query(sql, elementType1, elementType2, prefixes, args));
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public <T1, T2, T3> Tuple3<T1, T2, T3> querySingle(String sql, Class<T1> elementType1, Class<T2> elementType2,
-            Class<T3> elementType3, Tuple3<String, String, String> prefixes, Map<String, Object> args) {
-        return singleResult(query(sql, elementType1, elementType2, elementType3, prefixes, args));
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public <T1, T2, T3, T4> Tuple4<T1, T2, T3, T4> querySingle(String sql, Class<T1> elementType1,
-            Class<T2> elementType2, Class<T3> elementType3, Class<T4> elementType4,
-            Tuple4<String, String, String, String> prefixes, Map<String, Object> args) {
-        return singleResult(query(sql, elementType1, elementType2, elementType3, elementType4, prefixes, args));
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public <T1, T2, T3, T4, T5> Tuple5<T1, T2, T3, T4, T5> querySingle(String sql, Class<T1> elementType1,
-            Class<T2> elementType2, Class<T3> elementType3, Class<T4> elementType4, Class<T5> elementType5,
-            Tuple5<String, String, String, String, String> prefixes, Map<String, Object> args) {
-        return singleResult(
-                query(sql, elementType1, elementType2, elementType3, elementType4, elementType5, prefixes, args));
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
     public <T> T querySingle(String sql, Class<T> elementType, Object... args) {
         return singleResult(query(sql, elementType, args));
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public <T1, T2> Tuple2<T1, T2> querySingle(String sql, Class<T1> elementType1, Class<T2> elementType2,
-            Tuple2<String, String> prefixes, Object... args) {
-        return singleResult(query(sql, elementType1, elementType2, prefixes, args));
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public <T1, T2, T3> Tuple3<T1, T2, T3> querySingle(String sql, Class<T1> elementType1, Class<T2> elementType2,
-            Class<T3> elementType3, Tuple3<String, String, String> prefixes, Object... args) {
-        return singleResult(query(sql, elementType1, elementType2, elementType3, prefixes, args));
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public <T1, T2, T3, T4> Tuple4<T1, T2, T3, T4> querySingle(String sql, Class<T1> elementType1,
-            Class<T2> elementType2, Class<T3> elementType3, Class<T4> elementType4,
-            Tuple4<String, String, String, String> prefixes, Object... args) {
-        return singleResult(query(sql, elementType1, elementType2, elementType3, elementType4, prefixes, args));
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public <T1, T2, T3, T4, T5> Tuple5<T1, T2, T3, T4, T5> querySingle(String sql, Class<T1> elementType1,
-            Class<T2> elementType2, Class<T3> elementType3, Class<T4> elementType4, Class<T5> elementType5,
-            Tuple5<String, String, String, String, String> prefixes, Object... args) {
-        return singleResult(
-                query(sql, elementType1, elementType2, elementType3, elementType4, elementType5, prefixes, args));
     }
 
     //    /**
@@ -860,18 +674,20 @@ public abstract class AbstractJdbc implements Jdbc {
      *
      * @param prep  the prep
      * @param index the index
-     * @param argu  the arg
+     * @param arg   the arg
      */
-    protected void setParam(PreparedStatement prep, int index, Object argu) {
-        if (argu instanceof FieldValueOperator) {
-            ((FieldValueOperator<?>) argu).set(prep, index);
-        } else if (argu instanceof BeanPropertyValue) {
+    protected void setParam(PreparedStatement prep, int index, Object arg) {
+        if (arg instanceof BeanPropertyValue) {
+            BeanPropertyValue<?> bpv = (BeanPropertyValue<?>) arg;
             @SuppressWarnings("unchecked")
-            BeanPropertyValue<Object> bpv = (BeanPropertyValue<Object>) argu;
-            BeanProperty<Object> bp = bpv.getBeanProperty();
+            BeanProperty<Object> bp = (BeanProperty<Object>) bpv.getBeanProperty();
             manager.set(prep, index, bpv.getValue(), bp);
-        } else {
-            manager.set(prep, index, argu);
+        }
+        //        else if (arg instanceof FieldValue) {
+        //      IMPLSOON 这里直接用FieldValue设置，不用manager.set就能减少判断
+        //        }
+        else {
+            manager.set(prep, index, arg);
         }
     }
 
@@ -884,7 +700,14 @@ public abstract class AbstractJdbc implements Jdbc {
     protected void setParams(PreparedStatement prep, Object... args) {
         for (int i = 0; i < args.length; i++) {
             Object arg = args[i];
-            setParam(prep, i + 1, arg);
+            if (arg instanceof BeanPropertyValue) {
+                BeanPropertyValue<?> bpv = (BeanPropertyValue<?>) arg;
+                @SuppressWarnings("unchecked")
+                BeanProperty<Object> argBp = (BeanProperty<Object>) bpv.getBeanProperty();
+                manager.set(prep, i + 1, bpv.getValue(), argBp);
+            } else {
+                manager.set(prep, i + 1, arg);
+            }
         }
     }
 
