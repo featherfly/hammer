@@ -176,7 +176,8 @@ public class UserUpdate implements UserPropertiesUpdate,
      * {@inheritDoc}
      */
     @Override
-    public UserQueryConditionGroupExpression where(Consumer<ConditionGroupConfig> consumer) {
+    public UserQueryConditionGroupExpression where(
+            Consumer<ConditionGroupConfig<UserQueryConditionGroupExpression>> consumer) {
         // YUFEI_TODO Auto-generated method stub
         return null;
     }

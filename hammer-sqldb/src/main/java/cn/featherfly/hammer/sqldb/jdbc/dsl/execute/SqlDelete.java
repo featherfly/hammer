@@ -72,7 +72,8 @@ public class SqlDelete implements Delete {
      * {@inheritDoc}
      */
     @Override
-    public ExecutableConditionGroupExpression where(Consumer<ConditionGroupConfig> consumer) {
+    public ExecutableConditionGroupExpression where(
+            Consumer<ConditionGroupConfig<ExecutableConditionGroupExpression>> consumer) {
         SqlDeleteExpression sqlDeleteExpression = new SqlDeleteExpression(jdbc,
                 new SqlDeleteFromBasicBuilder(jdbc.getDialect(), tableName), classMapping);
         if (consumer != null) {

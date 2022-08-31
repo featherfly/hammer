@@ -370,7 +370,8 @@ public class AbstractUserQueryEntity<Q extends AbstractUserQueryEntity<Q, QW, QW
      * {@inheritDoc}
      */
     @Override
-    public UserQueryConditionGroupExpression where(Consumer<ConditionGroupConfig> consumer) {
+    public UserQueryConditionGroupExpression where(
+            Consumer<ConditionGroupConfig<UserQueryConditionGroupExpression>> consumer) {
         // YUFEI_TODO Auto-generated method stub
         return null;
     }

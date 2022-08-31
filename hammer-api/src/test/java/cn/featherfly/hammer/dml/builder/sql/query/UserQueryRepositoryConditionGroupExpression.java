@@ -7,7 +7,6 @@ import java.time.LocalTime;
 import java.util.Date;
 import java.util.Map;
 import java.util.function.Function;
-import java.util.function.Predicate;
 
 import cn.featherfly.common.lang.function.DateSupplier;
 import cn.featherfly.common.lang.function.LocalDateSupplier;
@@ -2382,24 +2381,6 @@ public class UserQueryRepositoryConditionGroupExpression implements
      */
     @Override
     public <T, R> UserQueryRepositoryConditionGroupExpression isn(SerializableFunction<T, R> name, Boolean value) {
-        // YUFEI_TODO Auto-generated method stub
-        return null;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public Predicate<Object> getIgnorePolicy() {
-        // YUFEI_TODO Auto-generated method stub
-        return null;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public UserQueryRepositoryConditionGroupExpression setIgnorePolicy(Predicate<Object> ignorePolicy) {
         // YUFEI_TODO Auto-generated method stub
         return null;
     }

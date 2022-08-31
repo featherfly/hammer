@@ -9,9 +9,7 @@ import cn.featherfly.hammer.expression.Repository;
 import cn.featherfly.hammer.expression.SimpleRepository;
 
 /**
- * <p>
- * DslTest
- * </p>
+ * dsl api invoke test
  *
  * @author zhongj
  */
@@ -64,7 +62,8 @@ public class DslTest {
         query.find(DslTest.class).count();
         query.find(DslTest.class).limit(10).list();
         query.find(DslTest.class).limit(1).single();
-        query.find(DslTest.class).where().lt("age", 18).count();
+        //        query.find(DslTest.class).where().lt("age", 18).count();
+
         // query.find(DslTest.class).property("name").number(Integer.class);
         // query.find(DslTest.class).property("name").integer();
         // query.find(DslTest.class).property("sum(price)").decimal();
@@ -88,19 +87,30 @@ public class DslTest {
         // query.find("user").with("user_role").on("user_id").with("role").on("id",
         // "user_role", "role_id").fetch()
 
-        query.find(DslTest.class).property("name").where().eq("", 1).and().lt("age", 18).and().group().gt("score", 80)
-                .limit(11, 10).list();
+        // 错误
+        //        query.find(DslTest.class).property("name").where().eq("", 1).and().lt("age", 18).and().group().gt("score", 80)
+        //                .limit(11, 10).list();
+        query.find(DslTest.class).property(DslTest::getName).where().eq(DslTest::getId, 1).and().lt(DslTest::getAge, 18)
+                .and().group().gt(DslTest::getPrice, 80).limit(11, 10).list();
 
-        query.find(DslTest.class).where().eq("", 1).and().lt("age", 18).and().group().gt("score", 80).single();
+        query.find(DslTest.class).where().eq(DslTest::getId, 1).and().lt(DslTest::getAge, 18).and().group()
+                .gt(DslTest::getPrice, 80).limit(11, 10).list();
 
-        query.find(DslTest.class).property("name").where().eq("", 1).and().lt("age", 18).and().group().gt("score", 80)
-                .limit(11, 10).list();
+        //        query.find(DslTest.class).where().eq("", 1).and().lt("age", 18).and().group().gt("score", 80).single();
 
-        query.find(DslTest.class).property("name").where().property("").eq(1).and().property("age").lt(18).and().group()
-                .property("score").gt(80).limit(11, 10).list();
+        //        query.find(DslTest.class).property("name").where().eq("", 1).and().lt("age", 18).and().group().gt("score", 80)
+        //                .limit(11, 10).list();
 
-        query.find(DslTest.class).where().eq("", 1).and().lt("age", 18).and().group().gt("score", 80).sort().asc("name")
-                .limit(2).list();
+        //        query.find(DslTest.class).property("name").where().property("").eq(1).and().property("age").lt(18).and().group()
+        //                .property("score").gt(80).limit(11, 10).list();
+
+        //        query.find(DslTest.class).where().eq(DslTest::getId, 1).and().lt("age", 18).and().group().gt("score", 80).sort()
+        //                .asc("name").limit(2).list();
+
+        // 错误调用
+        //        query.find(DslTest.class).where().eq(DslTest::getId, 1).and().eq(DslStaticTypeTest::toString, "").single();
+        query.find(DslTest.class).where().co(DslTest::getName, "").and().setIgnorePolicy(null).co(null).single();
+        query.find(DslTest.class).where().setIgnorePolicy(null).co(DslTest::toString, "").and().co(null).list();
     }
 
     public void testUpdate() {
@@ -145,5 +155,85 @@ public class DslTest {
         deleter.delete(new SimpleRepository("user")).where().eq("user_id", 18).and().group().lt("age", 18).or()
                 .gt("age", 60).execute();
 
+    }
+
+    private int id;
+
+    private int age;
+
+    private String name;
+
+    private double price;
+
+    /**
+     * get id value
+     *
+     * @return id
+     */
+    public int getId() {
+        return id;
+    }
+
+    /**
+     * set id value
+     *
+     * @param id id
+     */
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    /**
+     * get age value
+     *
+     * @return age
+     */
+    public int getAge() {
+        return age;
+    }
+
+    /**
+     * set age value
+     *
+     * @param age age
+     */
+    public void setAge(int age) {
+        this.age = age;
+    }
+
+    /**
+     * get name value
+     *
+     * @return name
+     */
+    public String getName() {
+        return name;
+    }
+
+    /**
+     * set name value
+     *
+     * @param name name
+     */
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    /**
+     * get price value
+     *
+     * @return price
+     */
+    public double getPrice() {
+        return price;
+    }
+
+    /**
+     * set price value
+     *
+     * @param price price
+     */
+    public void setPrice(double price) {
+        this.price = price;
     }
 }

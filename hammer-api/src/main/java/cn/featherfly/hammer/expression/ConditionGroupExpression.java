@@ -12,6 +12,7 @@ import cn.featherfly.hammer.expression.condition.ConditionsGroupExpression;
  * @param <L> the generic type
  */
 public interface ConditionGroupExpression<C extends ConditionGroupExpression<C, L>,
-        L extends ConditionGroupLogicExpression<C, L>> extends ConditionsGroupExpression<C, L>, ConditionGroupConfig {
+        L extends ConditionGroupLogicExpression<C, L>>
+        extends ConditionsGroupExpression<C, L>, ConditionGroupConfig<C> {
 
 }

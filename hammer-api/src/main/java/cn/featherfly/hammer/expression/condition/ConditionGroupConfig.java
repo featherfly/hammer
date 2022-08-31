@@ -7,7 +7,7 @@ import java.util.function.Predicate;
  *
  * @author zhongj
  */
-public interface ConditionGroupConfig {
+public interface ConditionGroupConfig<C> {
     /**
      * Gets the ignore policy.
      *
@@ -21,5 +21,5 @@ public interface ConditionGroupConfig {
      * @param ignorePolicy the new ignore policy
      * @return the ConditionGroupExpression
      */
-    ConditionGroupConfig setIgnorePolicy(Predicate<Object> ignorePolicy);
+    C setIgnorePolicy(Predicate<Object> ignorePolicy);
 }
