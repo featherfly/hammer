@@ -15,6 +15,7 @@ import com.speedment.common.tuple.Tuple2;
 import cn.featherfly.common.db.builder.SqlBuilder;
 import cn.featherfly.common.db.dialect.Dialect;
 import cn.featherfly.common.db.mapping.ClassMappingUtils;
+import cn.featherfly.common.db.mapping.JdbcClassMapping;
 import cn.featherfly.common.lang.AssertIllegalArgument;
 import cn.featherfly.common.lang.LambdaUtils;
 import cn.featherfly.common.lang.LambdaUtils.SerializableSupplierLambdaInfo;
@@ -34,25 +35,36 @@ import cn.featherfly.common.lang.function.ReturnStringFunction;
 import cn.featherfly.common.lang.function.SerializableFunction;
 import cn.featherfly.common.lang.function.SerializableSupplier;
 import cn.featherfly.common.lang.function.StringSupplier;
-import cn.featherfly.common.repository.mapping.ClassMapping;
 import cn.featherfly.common.operator.LogicOperator;
 import cn.featherfly.common.operator.QueryOperator;
 import cn.featherfly.common.operator.QueryOperator.QueryPolicy;
-import cn.featherfly.hammer.dsl.query.EntityQueryEntity;
 import cn.featherfly.hammer.expression.EntityConditionGroupExpression;
 import cn.featherfly.hammer.expression.EntityConditionGroupLogicExpression;
 import cn.featherfly.hammer.expression.condition.ParamedExpression;
 import cn.featherfly.hammer.expression.condition.property.DateExpression;
 import cn.featherfly.hammer.expression.condition.property.EnumExpression;
+import cn.featherfly.hammer.expression.condition.property.LocalDateExpression;
+import cn.featherfly.hammer.expression.condition.property.LocalDateTimeExpression;
+import cn.featherfly.hammer.expression.condition.property.LocalTimeExpression;
 import cn.featherfly.hammer.expression.condition.property.NumberExpression;
 import cn.featherfly.hammer.expression.condition.property.ObjectExpression;
 import cn.featherfly.hammer.expression.condition.property.StringExpression;
+import cn.featherfly.hammer.expression.condition.type.property.TypeDateExpression;
+import cn.featherfly.hammer.expression.condition.type.property.TypeEnumExpression;
+import cn.featherfly.hammer.expression.condition.type.property.TypeLocalDateExpression;
+import cn.featherfly.hammer.expression.condition.type.property.TypeLocalDateTimeExpression;
+import cn.featherfly.hammer.expression.condition.type.property.TypeLocalTimeExpression;
+import cn.featherfly.hammer.expression.condition.type.property.TypeNumberExpression;
+import cn.featherfly.hammer.expression.condition.type.property.TypeStringExpression;
 import cn.featherfly.hammer.sqldb.jdbc.SqlPageFactory;
+import cn.featherfly.hammer.sqldb.jdbc.dsl.query.EntitySqlQuery;
 
 /**
  * sql condition group builder sql条件逻辑组构造器 .
  *
  * @author zhongj
+ * @param <E> the element type
+ * @param <Q> the generic type
  * @param <C> the generic type
  * @param <L> the generic type
  */
@@ -63,7 +75,7 @@ public abstract class AbstractEntitySqlConditionGroupExpression<E, C extends Ent
         ParamedExpression {
 
     /** The type query entity. */
-    protected EntityQueryEntity<E> entityQueryEntity;
+    protected EntitySqlQuery<E> entityQuery;
 
     /** The sql page factory. */
     protected SqlPageFactory sqlPageFactory;
@@ -71,64 +83,64 @@ public abstract class AbstractEntitySqlConditionGroupExpression<E, C extends Ent
     /**
      * Instantiates a new abstract sql condition group expression.
      *
-     * @param dialect         dialect
-     * @param sqlPageFactory  the sql page factory
-     * @param typeQueryEntity the type query entity
-     * @param ignorePolicy    the ignore policy
+     * @param dialect        dialect
+     * @param sqlPageFactory the sql page factory
+     * @param entityQuery    the entity query
+     * @param ignorePolicy   the ignore policy
      */
     public AbstractEntitySqlConditionGroupExpression(Dialect dialect, SqlPageFactory sqlPageFactory,
-            EntityQueryEntity<E> entityQueryEntity, Predicate<Object> ignorePolicy) {
-        this(dialect, sqlPageFactory, null, entityQueryEntity, ignorePolicy);
+            EntitySqlQuery<E> entityQuery, Predicate<Object> ignorePolicy) {
+        this(dialect, sqlPageFactory, null, entityQuery, ignorePolicy);
     }
 
     /**
      * Instantiates a new abstract sql condition group expression.
      *
-     * @param dialect         dialect
-     * @param sqlPageFactory  the sql page factory
-     * @param queryAlias      queryAlias
-     * @param typeQueryEntity the type query entity
-     * @param ignorePolicy    the ignore policy
+     * @param dialect        dialect
+     * @param sqlPageFactory the sql page factory
+     * @param queryAlias     queryAlias
+     * @param entityQuery    the entity query
+     * @param ignorePolicy   the ignore policy
      */
     public AbstractEntitySqlConditionGroupExpression(Dialect dialect, SqlPageFactory sqlPageFactory, String queryAlias,
-            EntityQueryEntity<E> entityQueryEntity, Predicate<Object> ignorePolicy) {
-        this(dialect, sqlPageFactory, queryAlias, null, entityQueryEntity, ignorePolicy);
+            EntitySqlQuery<E> entityQuery, Predicate<Object> ignorePolicy) {
+        this(dialect, sqlPageFactory, queryAlias, null, entityQuery, ignorePolicy);
     }
 
     /**
      * Instantiates a new abstract sql condition group expression.
      *
-     * @param dialect           dialect
-     * @param sqlPageFactory    the sql page factory
-     * @param queryAlias        queryAlias
-     * @param classMapping      classMapping
-     * @param entityQueryEntity the entity query entity
-     * @param ignorePolicy      the ignore policy
+     * @param dialect        dialect
+     * @param sqlPageFactory the sql page factory
+     * @param queryAlias     queryAlias
+     * @param classMapping   classMapping
+     * @param entityQuery    the entity query
+     * @param ignorePolicy   the ignore policy
      */
     public AbstractEntitySqlConditionGroupExpression(Dialect dialect, SqlPageFactory sqlPageFactory, String queryAlias,
-            ClassMapping<?> classMapping, EntityQueryEntity<E> entityQueryEntity, Predicate<Object> ignorePolicy) {
-        this(null, dialect, sqlPageFactory, queryAlias, classMapping, entityQueryEntity, ignorePolicy);
+            JdbcClassMapping<E> classMapping, EntitySqlQuery<E> entityQuery, Predicate<Object> ignorePolicy) {
+        this(null, dialect, sqlPageFactory, queryAlias, classMapping, entityQuery, ignorePolicy);
     }
 
     /**
      * Instantiates a new abstract sql condition group expression.
      *
-     * @param parent          parent group
-     * @param dialect         dialect
-     * @param sqlPageFactory  the sql page factory
-     * @param queryAlias      queryAlias
-     * @param classMapping    classMapping
-     * @param typeQueryEntity the type query entity
-     * @param ignorePolicy    the ignore policy
+     * @param parent         parent group
+     * @param dialect        dialect
+     * @param sqlPageFactory the sql page factory
+     * @param queryAlias     queryAlias
+     * @param classMapping   classMapping
+     * @param entityQuery    the entity query
+     * @param ignorePolicy   the ignore policy
      */
     protected AbstractEntitySqlConditionGroupExpression(L parent, Dialect dialect, SqlPageFactory sqlPageFactory,
-            String queryAlias, ClassMapping<?> classMapping, EntityQueryEntity<E> typeQueryEntity,
+            String queryAlias, JdbcClassMapping<E> classMapping, EntitySqlQuery<E> entityQuery,
             Predicate<Object> ignorePolicy) {
         super(dialect, ignorePolicy, parent);
         this.queryAlias = queryAlias;
         this.sqlPageFactory = sqlPageFactory;
         this.classMapping = classMapping;
-        this.entityQueryEntity = typeQueryEntity;
+        this.entityQuery = entityQuery;
     }
 
     /**
@@ -275,6 +287,14 @@ public abstract class AbstractEntitySqlConditionGroupExpression<E, C extends Ent
     //    /**
     //     * {@inheritDoc}
     //     */
+    /**
+     * Ne.
+     *
+     * @param name        the name
+     * @param value       the value
+     * @param queryPolicy the query policy
+     * @return the l
+     */
     //    @Override
     public L ne(String name, Object value, QueryPolicy queryPolicy) {
         return (L) addCondition(
@@ -340,6 +360,14 @@ public abstract class AbstractEntitySqlConditionGroupExpression<E, C extends Ent
     //    /**
     //     * {@inheritDoc}
     //     */
+    /**
+     * Lk.
+     *
+     * @param name        the name
+     * @param value       the value
+     * @param queryPolicy the query policy
+     * @return the l
+     */
     //    @Override
     public L lk(String name, String value, QueryPolicy queryPolicy) {
         return (L) addCondition(
@@ -351,7 +379,7 @@ public abstract class AbstractEntitySqlConditionGroupExpression<E, C extends Ent
      * {@inheritDoc}
      */
     @Override
-    public L lk(ReturnStringFunction<E> name, String value, QueryPolicy queryPolicy) {
+    public L lk(SerializableFunction<E, String> name, String value, QueryPolicy queryPolicy) {
         return lk(getPropertyName(name), value, queryPolicy);
     }
 
@@ -367,6 +395,13 @@ public abstract class AbstractEntitySqlConditionGroupExpression<E, C extends Ent
     //  /**
     //     * {@inheritDoc}
     //     */
+    /**
+     * Sw.
+     *
+     * @param name  the name
+     * @param value the value
+     * @return the l
+     */
     //    @Override
     public L sw(String name, String value) {
         return sw(name, value, QueryPolicy.AUTO);
@@ -375,6 +410,14 @@ public abstract class AbstractEntitySqlConditionGroupExpression<E, C extends Ent
     //    /**
     //     * {@inheritDoc}
     //     */
+    /**
+     * Sw.
+     *
+     * @param name        the name
+     * @param value       the value
+     * @param queryPolicy the query policy
+     * @return the l
+     */
     //    @Override
     public L sw(String name, String value, QueryPolicy queryPolicy) {
         return (L) addCondition(
@@ -386,7 +429,7 @@ public abstract class AbstractEntitySqlConditionGroupExpression<E, C extends Ent
      * {@inheritDoc}
      */
     @Override
-    public L sw(ReturnStringFunction<E> name, String value, QueryPolicy queryPolicy) {
+    public L sw(SerializableFunction<E, String> name, String value, QueryPolicy queryPolicy) {
         return sw(getPropertyName(name), value, queryPolicy);
     }
 
@@ -402,6 +445,14 @@ public abstract class AbstractEntitySqlConditionGroupExpression<E, C extends Ent
     //    /**
     //     * {@inheritDoc}
     //     */
+    /**
+     * Ew.
+     *
+     * @param name        the name
+     * @param value       the value
+     * @param queryPolicy the query policy
+     * @return the l
+     */
     //    @Override
     public L ew(String name, String value, QueryPolicy queryPolicy) {
         return (L) addCondition(
@@ -413,7 +464,7 @@ public abstract class AbstractEntitySqlConditionGroupExpression<E, C extends Ent
      * {@inheritDoc}
      */
     @Override
-    public L ew(ReturnStringFunction<E> name, String value, QueryPolicy queryPolicy) {
+    public L ew(SerializableFunction<E, String> name, String value, QueryPolicy queryPolicy) {
         return ew(getPropertyName(name), value, queryPolicy);
     }
 
@@ -429,6 +480,14 @@ public abstract class AbstractEntitySqlConditionGroupExpression<E, C extends Ent
     //    /**
     //     * {@inheritDoc}
     //     */
+    /**
+     * Co.
+     *
+     * @param name        the name
+     * @param value       the value
+     * @param queryPolicy the query policy
+     * @return the l
+     */
     //    @Override
     public L co(String name, String value, QueryPolicy queryPolicy) {
         // TODO 后续来加入BeanPropertyValue
@@ -441,7 +500,7 @@ public abstract class AbstractEntitySqlConditionGroupExpression<E, C extends Ent
      * {@inheritDoc}
      */
     @Override
-    public L co(ReturnStringFunction<E> name, String value, QueryPolicy queryPolicy) {
+    public L co(SerializableFunction<E, String> name, String value, QueryPolicy queryPolicy) {
         return co(getPropertyName(name), value, queryPolicy);
     }
 
@@ -457,6 +516,14 @@ public abstract class AbstractEntitySqlConditionGroupExpression<E, C extends Ent
     //    /**
     //     * {@inheritDoc}
     //     */
+    /**
+     * Ge.
+     *
+     * @param <N>   the number type
+     * @param name  the name
+     * @param value the value
+     * @return the l
+     */
     //    @Override
     public <N extends Number> L ge(String name, N value) {
         return (L) addCondition(
@@ -468,6 +535,14 @@ public abstract class AbstractEntitySqlConditionGroupExpression<E, C extends Ent
     //    /**
     //     * {@inheritDoc}
     //     */
+    /**
+     * Ge.
+     *
+     * @param <D>   the generic type
+     * @param name  the name
+     * @param value the value
+     * @return the l
+     */
     //    @Override
     public <D extends Date> L ge(String name, D value) {
         return (L) addCondition(
@@ -479,6 +554,13 @@ public abstract class AbstractEntitySqlConditionGroupExpression<E, C extends Ent
     //    /**
     //     * {@inheritDoc}
     //     */
+    /**
+     * Ge.
+     *
+     * @param name  the name
+     * @param value the value
+     * @return the l
+     */
     //    @Override
     public L ge(String name, LocalTime value) {
         return (L) addCondition(
@@ -490,6 +572,13 @@ public abstract class AbstractEntitySqlConditionGroupExpression<E, C extends Ent
     //    /**
     //     * {@inheritDoc}
     //     */
+    /**
+     * Ge.
+     *
+     * @param name  the name
+     * @param value the value
+     * @return the l
+     */
     //    @Override
     public L ge(String name, LocalDate value) {
         return (L) addCondition(
@@ -501,6 +590,13 @@ public abstract class AbstractEntitySqlConditionGroupExpression<E, C extends Ent
     //    /**
     //     * {@inheritDoc}
     //     */
+    /**
+     * Ge.
+     *
+     * @param name  the name
+     * @param value the value
+     * @return the l
+     */
     //    @Override
     public L ge(String name, LocalDateTime value) {
         return (L) addCondition(
@@ -512,6 +608,13 @@ public abstract class AbstractEntitySqlConditionGroupExpression<E, C extends Ent
     //    /**
     //     * {@inheritDoc}
     //     */
+    /**
+     * Ge.
+     *
+     * @param name  the name
+     * @param value the value
+     * @return the l
+     */
     //    @Override
     public L ge(String name, String value) {
         return (L) addCondition(
@@ -523,6 +626,14 @@ public abstract class AbstractEntitySqlConditionGroupExpression<E, C extends Ent
     //    /**
     //     * {@inheritDoc}
     //     */
+    /**
+     * Gt.
+     *
+     * @param <N>   the number type
+     * @param name  the name
+     * @param value the value
+     * @return the l
+     */
     //    @Override
     public <N extends Number> L gt(String name, N value) {
         return (L) addCondition(
@@ -533,6 +644,14 @@ public abstract class AbstractEntitySqlConditionGroupExpression<E, C extends Ent
     //    /**
     //     * {@inheritDoc}
     //     */
+    /**
+     * Gt.
+     *
+     * @param <D>   the generic type
+     * @param name  the name
+     * @param value the value
+     * @return the l
+     */
     //    @Override
     public <D extends Date> L gt(String name, D value) {
         return (L) addCondition(
@@ -543,6 +662,13 @@ public abstract class AbstractEntitySqlConditionGroupExpression<E, C extends Ent
     //    /**
     //     * {@inheritDoc}
     //     */
+    /**
+     * Gt.
+     *
+     * @param name  the name
+     * @param value the value
+     * @return the l
+     */
     //    @Override
     public L gt(String name, LocalTime value) {
         return (L) addCondition(
@@ -553,6 +679,13 @@ public abstract class AbstractEntitySqlConditionGroupExpression<E, C extends Ent
     //    /**
     //     * {@inheritDoc}
     //     */
+    /**
+     * Gt.
+     *
+     * @param name  the name
+     * @param value the value
+     * @return the l
+     */
     //    @Override
     public L gt(String name, LocalDate value) {
         return (L) addCondition(
@@ -563,6 +696,13 @@ public abstract class AbstractEntitySqlConditionGroupExpression<E, C extends Ent
     //    /**
     //     * {@inheritDoc}
     //     */
+    /**
+     * Gt.
+     *
+     * @param name  the name
+     * @param value the value
+     * @return the l
+     */
     //    @Override
     public L gt(String name, LocalDateTime value) {
         return (L) addCondition(
@@ -573,6 +713,13 @@ public abstract class AbstractEntitySqlConditionGroupExpression<E, C extends Ent
     //    /**
     //     * {@inheritDoc}
     //     */
+    /**
+     * Gt.
+     *
+     * @param name  the name
+     * @param value the value
+     * @return the l
+     */
     //    @Override
     public L gt(String name, String value) {
         return (L) addCondition(
@@ -583,6 +730,13 @@ public abstract class AbstractEntitySqlConditionGroupExpression<E, C extends Ent
     //    /**
     //     * {@inheritDoc}
     //     */
+    /**
+     * In.
+     *
+     * @param name  the name
+     * @param value the value
+     * @return the l
+     */
     //    @Override
     public L in(String name, Object value) {
         return (L) addCondition(
@@ -593,6 +747,12 @@ public abstract class AbstractEntitySqlConditionGroupExpression<E, C extends Ent
     //    /**
     //     * {@inheritDoc}
     //     */
+    /**
+     * Inn.
+     *
+     * @param name the name
+     * @return the l
+     */
     //    @Override
     public L inn(String name) {
         return inn(name, true);
@@ -601,6 +761,13 @@ public abstract class AbstractEntitySqlConditionGroupExpression<E, C extends Ent
     //    /**
     //     * {@inheritDoc}
     //     */
+    /**
+     * Inn.
+     *
+     * @param name  the name
+     * @param value the value
+     * @return the l
+     */
     //    @Override
     public L inn(String name, Boolean value) {
         return (L) addCondition(
@@ -611,6 +778,12 @@ public abstract class AbstractEntitySqlConditionGroupExpression<E, C extends Ent
     //    /**
     //     * {@inheritDoc}
     //     */
+    /**
+     * Isn.
+     *
+     * @param name the name
+     * @return the l
+     */
     //    @Override
     public L isn(String name) {
         return isn(name, true);
@@ -619,6 +792,13 @@ public abstract class AbstractEntitySqlConditionGroupExpression<E, C extends Ent
     //    /**
     //     * {@inheritDoc}
     //     */
+    /**
+     * Isn.
+     *
+     * @param name  the name
+     * @param value the value
+     * @return the l
+     */
     //    @Override
     public L isn(String name, Boolean value) {
         return (L) addCondition(
@@ -629,6 +809,14 @@ public abstract class AbstractEntitySqlConditionGroupExpression<E, C extends Ent
     //    /**
     //     * {@inheritDoc}
     //     */
+    /**
+     * Le.
+     *
+     * @param <N>   the number type
+     * @param name  the name
+     * @param value the value
+     * @return the l
+     */
     //    @Override
     public <N extends Number> L le(String name, N value) {
         return (L) addCondition(
@@ -639,6 +827,14 @@ public abstract class AbstractEntitySqlConditionGroupExpression<E, C extends Ent
     //    /**
     //     * {@inheritDoc}
     //     */
+    /**
+     * Le.
+     *
+     * @param <D>   the generic type
+     * @param name  the name
+     * @param value the value
+     * @return the l
+     */
     //    @Override
     public <D extends Date> L le(String name, D value) {
         return (L) addCondition(
@@ -649,6 +845,13 @@ public abstract class AbstractEntitySqlConditionGroupExpression<E, C extends Ent
     //    /**
     //     * {@inheritDoc}
     //     */
+    /**
+     * Le.
+     *
+     * @param name  the name
+     * @param value the value
+     * @return the l
+     */
     //    @Override
     public L le(String name, LocalTime value) {
         return (L) addCondition(
@@ -659,6 +862,13 @@ public abstract class AbstractEntitySqlConditionGroupExpression<E, C extends Ent
     //    /**
     //     * {@inheritDoc}
     //     */
+    /**
+     * Le.
+     *
+     * @param name  the name
+     * @param value the value
+     * @return the l
+     */
     //    @Override
     public L le(String name, LocalDate value) {
         return (L) addCondition(
@@ -669,6 +879,13 @@ public abstract class AbstractEntitySqlConditionGroupExpression<E, C extends Ent
     //    /**
     //     * {@inheritDoc}
     //     */
+    /**
+     * Le.
+     *
+     * @param name  the name
+     * @param value the value
+     * @return the l
+     */
     //    @Override
     public L le(String name, LocalDateTime value) {
         return (L) addCondition(
@@ -679,6 +896,13 @@ public abstract class AbstractEntitySqlConditionGroupExpression<E, C extends Ent
     //    /**
     //     * {@inheritDoc}
     //     */
+    /**
+     * Le.
+     *
+     * @param name  the name
+     * @param value the value
+     * @return the l
+     */
     //    @Override
     public L le(String name, String value) {
         return (L) addCondition(
@@ -689,6 +913,14 @@ public abstract class AbstractEntitySqlConditionGroupExpression<E, C extends Ent
     //    /**
     //     * {@inheritDoc}
     //     */
+    /**
+     * Lt.
+     *
+     * @param <N>   the number type
+     * @param name  the name
+     * @param value the value
+     * @return the l
+     */
     //    @Override
     public <N extends Number> L lt(String name, N value) {
         return (L) addCondition(
@@ -699,6 +931,14 @@ public abstract class AbstractEntitySqlConditionGroupExpression<E, C extends Ent
     //    /**
     //     * {@inheritDoc}
     //     */
+    /**
+     * Lt.
+     *
+     * @param <D>   the generic type
+     * @param name  the name
+     * @param value the value
+     * @return the l
+     */
     //    @Override
     public <D extends Date> L lt(String name, D value) {
         return (L) addCondition(
@@ -709,6 +949,13 @@ public abstract class AbstractEntitySqlConditionGroupExpression<E, C extends Ent
     //    /**
     //     * {@inheritDoc}
     //     */
+    /**
+     * Lt.
+     *
+     * @param name  the name
+     * @param value the value
+     * @return the l
+     */
     //    @Override
     public L lt(String name, LocalTime value) {
         return (L) addCondition(
@@ -719,6 +966,13 @@ public abstract class AbstractEntitySqlConditionGroupExpression<E, C extends Ent
     //    /**
     //     * {@inheritDoc}
     //     */
+    /**
+     * Lt.
+     *
+     * @param name  the name
+     * @param value the value
+     * @return the l
+     */
     //    @Override
     public L lt(String name, LocalDate value) {
         return (L) addCondition(
@@ -729,6 +983,13 @@ public abstract class AbstractEntitySqlConditionGroupExpression<E, C extends Ent
     //    /**
     //     * {@inheritDoc}
     //     */
+    /**
+     * Lt.
+     *
+     * @param name  the name
+     * @param value the value
+     * @return the l
+     */
     //    @Override
     public L lt(String name, LocalDateTime value) {
         return (L) addCondition(
@@ -739,6 +1000,13 @@ public abstract class AbstractEntitySqlConditionGroupExpression<E, C extends Ent
     //    /**
     //     * {@inheritDoc}
     //     */
+    /**
+     * Lt.
+     *
+     * @param name  the name
+     * @param value the value
+     * @return the l
+     */
     //    @Override
     public L lt(String name, String value) {
         return (L) addCondition(
@@ -749,6 +1017,13 @@ public abstract class AbstractEntitySqlConditionGroupExpression<E, C extends Ent
     //    /**
     //     * {@inheritDoc}
     //     */
+    /**
+     * Nin.
+     *
+     * @param name  the name
+     * @param value the value
+     * @return the l
+     */
     //    @Override
     public L nin(String name, Object value) {
         return (L) addCondition(
@@ -761,7 +1036,7 @@ public abstract class AbstractEntitySqlConditionGroupExpression<E, C extends Ent
      */
     @Override
     public C group() {
-        C group = createGroup((L) this, queryAlias, entityQueryEntity);
+        C group = createGroup((L) this, queryAlias, entityQuery);
         addCondition(group);
         return group;
     }
@@ -783,7 +1058,7 @@ public abstract class AbstractEntitySqlConditionGroupExpression<E, C extends Ent
      * @param entityQueryEntity the entity query entity
      * @return the c
      */
-    protected abstract C createGroup(L parent, String queryAlias, EntityQueryEntity<E> entityQueryEntity);
+    protected abstract C createGroup(L parent, String queryAlias, EntitySqlQuery<E> entityQueryEntity);
 
     /**
      * Gets the root.
@@ -855,6 +1130,12 @@ public abstract class AbstractEntitySqlConditionGroupExpression<E, C extends Ent
     //    /**
     //     * {@inheritDoc}
     //     */
+    /**
+     * Property.
+     *
+     * @param name the name
+     * @return the object expression
+     */
     //    @Override
     public ObjectExpression<C, L> property(String name) {
         // IMPLSOON 这里后续来实现
@@ -898,7 +1179,7 @@ public abstract class AbstractEntitySqlConditionGroupExpression<E, C extends Ent
      * {@inheritDoc}
      */
     @Override
-    public <N extends Number> L ge(ReturnNumberFunction<E, N> name, N value) {
+    public <N extends Number> L ge(SerializableFunction<E, N> name, N value) {
         return ge(getPropertyName(name), value);
     }
 
@@ -906,7 +1187,7 @@ public abstract class AbstractEntitySqlConditionGroupExpression<E, C extends Ent
      * {@inheritDoc}
      */
     @Override
-    public <D extends Date> L ge(ReturnDateFunction<E, D> name, D value) {
+    public <D extends Date> L ge(SerializableFunction<E, D> name, D value) {
         return ge(getPropertyName(name), value);
     }
 
@@ -914,7 +1195,7 @@ public abstract class AbstractEntitySqlConditionGroupExpression<E, C extends Ent
      * {@inheritDoc}
      */
     @Override
-    public L ge(ReturnLocalTimeFunction<E> name, LocalTime value) {
+    public L ge(SerializableFunction<E, LocalTime> name, LocalTime value) {
         return ge(getPropertyName(name), value);
     }
 
@@ -922,7 +1203,7 @@ public abstract class AbstractEntitySqlConditionGroupExpression<E, C extends Ent
      * {@inheritDoc}
      */
     @Override
-    public L ge(ReturnLocalDateFunction<E> name, LocalDate value) {
+    public L ge(SerializableFunction<E, LocalDate> name, LocalDate value) {
         return ge(getPropertyName(name), value);
     }
 
@@ -930,7 +1211,7 @@ public abstract class AbstractEntitySqlConditionGroupExpression<E, C extends Ent
      * {@inheritDoc}
      */
     @Override
-    public L ge(ReturnLocalDateTimeFunction<E> name, LocalDateTime value) {
+    public L ge(SerializableFunction<E, LocalDateTime> name, LocalDateTime value) {
         return ge(getPropertyName(name), value);
     }
 
@@ -938,7 +1219,7 @@ public abstract class AbstractEntitySqlConditionGroupExpression<E, C extends Ent
      * {@inheritDoc}
      */
     @Override
-    public L ge(ReturnStringFunction<E> name, String value) {
+    public L ge(SerializableFunction<E, String> name, String value) {
         return ge(getPropertyName(name), value);
     }
 
@@ -946,7 +1227,7 @@ public abstract class AbstractEntitySqlConditionGroupExpression<E, C extends Ent
      * {@inheritDoc}
      */
     @Override
-    public <N extends Number> L gt(ReturnNumberFunction<E, N> name, N value) {
+    public <N extends Number> L gt(SerializableFunction<E, N> name, N value) {
         return gt(getPropertyName(name), value);
     }
 
@@ -954,7 +1235,7 @@ public abstract class AbstractEntitySqlConditionGroupExpression<E, C extends Ent
      * {@inheritDoc}
      */
     @Override
-    public <D extends Date> L gt(ReturnDateFunction<E, D> name, D value) {
+    public <D extends Date> L gt(SerializableFunction<E, D> name, D value) {
         return gt(getPropertyName(name), value);
     }
 
@@ -962,7 +1243,7 @@ public abstract class AbstractEntitySqlConditionGroupExpression<E, C extends Ent
      * {@inheritDoc}
      */
     @Override
-    public L gt(ReturnLocalTimeFunction<E> name, LocalTime value) {
+    public L gt(SerializableFunction<E, LocalTime> name, LocalTime value) {
         return gt(getPropertyName(name), value);
     }
 
@@ -970,7 +1251,7 @@ public abstract class AbstractEntitySqlConditionGroupExpression<E, C extends Ent
      * {@inheritDoc}
      */
     @Override
-    public L gt(ReturnLocalDateFunction<E> name, LocalDate value) {
+    public L gt(SerializableFunction<E, LocalDate> name, LocalDate value) {
         return gt(getPropertyName(name), value);
     }
 
@@ -978,7 +1259,7 @@ public abstract class AbstractEntitySqlConditionGroupExpression<E, C extends Ent
      * {@inheritDoc}
      */
     @Override
-    public L gt(ReturnLocalDateTimeFunction<E> name, LocalDateTime value) {
+    public L gt(SerializableFunction<E, LocalDateTime> name, LocalDateTime value) {
         return gt(getPropertyName(name), value);
     }
 
@@ -986,7 +1267,7 @@ public abstract class AbstractEntitySqlConditionGroupExpression<E, C extends Ent
      * {@inheritDoc}
      */
     @Override
-    public L gt(ReturnStringFunction<E> name, String value) {
+    public L gt(SerializableFunction<E, String> name, String value) {
         return gt(getPropertyName(name), value);
     }
 
@@ -1034,7 +1315,7 @@ public abstract class AbstractEntitySqlConditionGroupExpression<E, C extends Ent
      * {@inheritDoc}
      */
     @Override
-    public <N extends Number> L le(ReturnNumberFunction<E, N> name, N value) {
+    public <N extends Number> L le(SerializableFunction<E, N> name, N value) {
         return le(getPropertyName(name), value);
     }
 
@@ -1042,7 +1323,7 @@ public abstract class AbstractEntitySqlConditionGroupExpression<E, C extends Ent
      * {@inheritDoc}
      */
     @Override
-    public <D extends Date> L le(ReturnDateFunction<E, D> name, D value) {
+    public <D extends Date> L le(SerializableFunction<E, D> name, D value) {
         return le(getPropertyName(name), value);
     }
 
@@ -1050,7 +1331,7 @@ public abstract class AbstractEntitySqlConditionGroupExpression<E, C extends Ent
      * {@inheritDoc}
      */
     @Override
-    public L le(ReturnLocalTimeFunction<E> name, LocalTime value) {
+    public L le(SerializableFunction<E, LocalTime> name, LocalTime value) {
         return le(getPropertyName(name), value);
     }
 
@@ -1058,7 +1339,7 @@ public abstract class AbstractEntitySqlConditionGroupExpression<E, C extends Ent
      * {@inheritDoc}
      */
     @Override
-    public L le(ReturnLocalDateFunction<E> name, LocalDate value) {
+    public L le(SerializableFunction<E, LocalDate> name, LocalDate value) {
         return le(getPropertyName(name), value);
     }
 
@@ -1066,7 +1347,7 @@ public abstract class AbstractEntitySqlConditionGroupExpression<E, C extends Ent
      * {@inheritDoc}
      */
     @Override
-    public L le(ReturnLocalDateTimeFunction<E> name, LocalDateTime value) {
+    public L le(SerializableFunction<E, LocalDateTime> name, LocalDateTime value) {
         return le(getPropertyName(name), value);
     }
 
@@ -1074,7 +1355,7 @@ public abstract class AbstractEntitySqlConditionGroupExpression<E, C extends Ent
      * {@inheritDoc}
      */
     @Override
-    public L le(ReturnStringFunction<E> name, String value) {
+    public L le(SerializableFunction<E, String> name, String value) {
         return le(getPropertyName(name), value);
     }
 
@@ -1082,7 +1363,7 @@ public abstract class AbstractEntitySqlConditionGroupExpression<E, C extends Ent
      * {@inheritDoc}
      */
     @Override
-    public <N extends Number> L lt(ReturnNumberFunction<E, N> name, N value) {
+    public <N extends Number> L lt(SerializableFunction<E, N> name, N value) {
         return lt(getPropertyName(name), value);
     }
 
@@ -1090,7 +1371,7 @@ public abstract class AbstractEntitySqlConditionGroupExpression<E, C extends Ent
      * {@inheritDoc}
      */
     @Override
-    public <D extends Date> L lt(ReturnDateFunction<E, D> name, D value) {
+    public <D extends Date> L lt(SerializableFunction<E, D> name, D value) {
         return lt(getPropertyName(name), value);
     }
 
@@ -1098,7 +1379,7 @@ public abstract class AbstractEntitySqlConditionGroupExpression<E, C extends Ent
      * {@inheritDoc}
      */
     @Override
-    public L lt(ReturnLocalTimeFunction<E> name, LocalTime value) {
+    public L lt(SerializableFunction<E, LocalTime> name, LocalTime value) {
         return lt(getPropertyName(name), value);
     }
 
@@ -1106,7 +1387,7 @@ public abstract class AbstractEntitySqlConditionGroupExpression<E, C extends Ent
      * {@inheritDoc}
      */
     @Override
-    public L lt(ReturnLocalDateFunction<E> name, LocalDate value) {
+    public L lt(SerializableFunction<E, LocalDate> name, LocalDate value) {
         return lt(getPropertyName(name), value);
     }
 
@@ -1114,7 +1395,7 @@ public abstract class AbstractEntitySqlConditionGroupExpression<E, C extends Ent
      * {@inheritDoc}
      */
     @Override
-    public L lt(ReturnLocalDateTimeFunction<E> name, LocalDateTime value) {
+    public L lt(SerializableFunction<E, LocalDateTime> name, LocalDateTime value) {
         return lt(getPropertyName(name), value);
     }
 
@@ -1122,7 +1403,7 @@ public abstract class AbstractEntitySqlConditionGroupExpression<E, C extends Ent
      * {@inheritDoc}
      */
     @Override
-    public L lt(ReturnStringFunction<E> name, String value) {
+    public L lt(SerializableFunction<E, String> name, String value) {
         return lt(getPropertyName(name), value);
     }
 
@@ -1396,52 +1677,69 @@ public abstract class AbstractEntitySqlConditionGroupExpression<E, C extends Ent
     //        });
     //    }
 
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public <R> ObjectExpression<C, L> property(SerializableFunction<E, R> name) {
-        return property(getPropertyName(name));
-    }
+    //    /**
+    //     * {@inheritDoc}
+    //     */
+    //    @Override
+    //    public <R> ObjectExpression<C, L> property(SerializableFunction<E, R> name) {
+    //        return property(getPropertyName(name));
+    //    }
 
     /**
      * {@inheritDoc}
      */
     @Override
     public StringExpression<C, L> property(ReturnStringFunction<E> name) {
-        // IMPLSOON 这里后续来实现
-        return null;
-        //        return propertyString(getPropertyName(name));
+        return new TypeStringExpression<>(name, this);
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public <R extends Number> NumberExpression<C, L> property(ReturnNumberFunction<E, R> name) {
-        // IMPLSOON 这里后续来实现
-        return null;
-        //        return propertyNumber(getPropertyName(name));
+    public <R extends Number> NumberExpression<R, C, L> property(ReturnNumberFunction<E, R> name) {
+        return new TypeNumberExpression<>(name, this);
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public <R extends Date> DateExpression<C, L> property(ReturnDateFunction<E, R> name) {
-        // IMPLSOON 这里后续来实现
-        return null;
-        //        return propertyDate(getPropertyName(name));
+    public LocalDateExpression<C, L> property(ReturnLocalDateFunction<E> name) {
+        return new TypeLocalDateExpression<>(name, this);
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public <R extends Enum<?>> EnumExpression<C, L> property(ReturnEnumFunction<E, R> name) {
+    public LocalDateTimeExpression<C, L> property(ReturnLocalDateTimeFunction<E> name) {
+        return new TypeLocalDateTimeExpression<>(name, this);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public LocalTimeExpression<C, L> property(ReturnLocalTimeFunction<E> name) {
+        return new TypeLocalTimeExpression<>(name, this);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public <R extends Date> DateExpression<R, C, L> property(ReturnDateFunction<E, R> name) {
+        return new TypeDateExpression<>(name, this);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public <R extends Enum<?>> EnumExpression<R, C, L> property(ReturnEnumFunction<E, R> name) {
         // IMPLSOON 这里后续来实现
-        return null;
-        //        return propertyEnum(getPropertyName(name));
+        return new TypeEnumExpression<>(name, this);
     }
 
     /**
@@ -1486,10 +1784,10 @@ public abstract class AbstractEntitySqlConditionGroupExpression<E, C extends Ent
     // ********************************************************************
 
     /** The class mapping. */
-    protected ClassMapping<?> classMapping;
+    protected JdbcClassMapping<E> classMapping;
 
     /** The query alias. */
-    private String queryAlias;
+    protected String queryAlias;
 
     /**
      * 返回queryAlias.
@@ -1498,14 +1796,5 @@ public abstract class AbstractEntitySqlConditionGroupExpression<E, C extends Ent
      */
     public String getQueryAlias() {
         return queryAlias;
-    }
-
-    /**
-     * 设置queryAlias.
-     *
-     * @param queryAlias queryAlias
-     */
-    public void setQueryAlias(String queryAlias) {
-        this.queryAlias = queryAlias;
     }
 }

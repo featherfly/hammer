@@ -16,30 +16,30 @@ import cn.featherfly.hammer.sqldb.jdbc.Jdbc;
  */
 public abstract class AbstractExecuteOperate<T> extends AbstractOperate<T> implements ExecuteOperate<T> {
 
-    //    /**
-    //     * 使用给定数据源以及给定对象生成其相应的操作.
-    //     *
-    //     * @param jdbc                  jdbc
-    //     * @param classMapping          classMapping
-    //     * @param sqlTypeMappingManager the sql type mapping manager
-    //     */
-    //    public AbstractExecuteOperate(Jdbc jdbc, JdbcClassMapping<T> classMapping,
-    //            SqlTypeMappingManager sqlTypeMappingManager) {
-    //        super(jdbc, classMapping, sqlTypeMappingManager);
-    //    }
-    //
-    //    /**
-    //     * 使用给定数据源以及给定对象生成其相应的操作.
-    //     *
-    //     * @param jdbc                  jdbc
-    //     * @param classMapping          classMapping
-    //     * @param sqlTypeMappingManager the sql type mapping manager
-    //     * @param dataBase              具体库
-    //     */
-    //    public AbstractExecuteOperate(Jdbc jdbc, JdbcClassMapping<T> classMapping,
-    //            SqlTypeMappingManager sqlTypeMappingManager, String dataBase) {
-    //        super(jdbc, classMapping, sqlTypeMappingManager, dataBase);
-    //    }
+    /**
+     * 使用给定数据源以及给定对象生成其相应的操作.
+     *
+     * @param jdbc                  jdbc
+     * @param classMapping          classMapping
+     * @param sqlTypeMappingManager the sql type mapping manager
+     */
+    public AbstractExecuteOperate(Jdbc jdbc, JdbcClassMapping<T> classMapping,
+            SqlTypeMappingManager sqlTypeMappingManager) {
+        super(jdbc, classMapping, sqlTypeMappingManager);
+    }
+
+    /**
+     * 使用给定数据源以及给定对象生成其相应的操作.
+     *
+     * @param jdbc                  jdbc
+     * @param classMapping          classMapping
+     * @param sqlTypeMappingManager the sql type mapping manager
+     * @param dataBase              具体库
+     */
+    public AbstractExecuteOperate(Jdbc jdbc, JdbcClassMapping<T> classMapping,
+            SqlTypeMappingManager sqlTypeMappingManager, String dataBase) {
+        super(jdbc, classMapping, sqlTypeMappingManager, dataBase);
+    }
 
     /**
      * 使用给定数据源以及给定对象生成其相应的操作.

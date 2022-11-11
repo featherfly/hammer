@@ -1,12 +1,5 @@
 # 0.7.0
 1. 加入强类型dsl查询
-   一级、二级、三级、四级、五级join实现与测试
-2. Jdbc实现查询返回Tuple2,List<Tuple2>,Tuple4,List<Tuple4>,Tuple4,List<Tuple4>,Tuple5,List<Tuple5>
-   
-   
-2. 实现TransverterManager
-3. 实现upsert在全部是插入时为entity设置自动生成的主键（存在update时返回的key无法确定）
-4. 优化GetOperate的ForUpdate逻辑
 
 # 0.6.6 2022-08-26
 1. 修改L group(Consumer<C>)为L group(Function<C,L>)，

@@ -57,8 +57,8 @@ public interface TypeQueryEntityExpression<Q extends TypeQueryEntityPropertiesEx
     /**
      * 添加查询出来的属性.
      *
-     * @param function     the function
-     * @param propertyName propertyName
+     * @param aggregateFunction aggregateFunction
+     * @param propertyName      propertyName
      * @return QueryEntityPropertiesExpression
      */
     default Q property(Function function, String propertyName) {
@@ -122,7 +122,6 @@ public interface TypeQueryEntityExpression<Q extends TypeQueryEntityPropertiesEx
      *
      * @param <T>          the generic type
      * @param <R>          the generic type
-     * @param distinct     the distinct
      * @param propertyName propertyName
      * @return QueryEntityPropertiesExpression
      */
@@ -131,10 +130,8 @@ public interface TypeQueryEntityExpression<Q extends TypeQueryEntityPropertiesEx
     /**
      * 添加查询出来的属性.
      *
-     * @param <T>          the generic type
-     * @param <R>          the generic type
-     * @param function     the function
-     * @param propertyName propertyName
+     * @param aggregateFunction aggregateFunction
+     * @param propertyName      propertyName
      * @return QueryEntityPropertiesExpression
      */
     default <T, R> Q property(Function function, SerializableFunction<T, R> propertyName) {
@@ -149,8 +146,6 @@ public interface TypeQueryEntityExpression<Q extends TypeQueryEntityPropertiesEx
     /**
      * 添加查询出来的属性.
      *
-     * @param <T>               the generic type
-     * @param <R>               the generic type
      * @param aggregateFunction aggregateFunction
      * @param propertyName      propertyName
      * @return QueryEntityPropertiesExpression
@@ -162,8 +157,6 @@ public interface TypeQueryEntityExpression<Q extends TypeQueryEntityPropertiesEx
     /**
      * 添加查询出来的属性.
      *
-     * @param <T>               the generic type
-     * @param <R>               the generic type
      * @param aggregateFunction aggregateFunction
      * @param distinct          the distinct
      * @param propertyName      propertyName

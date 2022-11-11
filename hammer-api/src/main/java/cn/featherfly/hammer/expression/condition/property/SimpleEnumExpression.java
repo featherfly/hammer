@@ -10,7 +10,7 @@ import cn.featherfly.hammer.expression.condition.LogicExpression;
  *
  * @author zhongj
  */
-public class SimpleEnumExpression<E extends Enum<E>, C extends ConditionsExpression<C, L>,
+public class SimpleEnumExpression<E extends Enum<?>, C extends ConditionsExpression<C, L>,
         L extends LogicExpression<C, L>> implements EnumExpression<E, C, L> {
 
     private String name;

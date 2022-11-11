@@ -15,12 +15,12 @@ import com.speedment.common.tuple.Tuples;
 import cn.featherfly.common.bean.BeanUtils;
 import cn.featherfly.common.db.builder.BuilderUtils;
 import cn.featherfly.common.db.builder.SqlBuilder;
+import cn.featherfly.common.db.builder.dml.SqlLogicExpression;
 import cn.featherfly.common.db.dialect.Dialect;
 import cn.featherfly.common.db.mapping.ClassMappingUtils;
 import cn.featherfly.common.db.mapping.JdbcClassMapping;
 import cn.featherfly.common.db.mapping.JdbcMappingFactory;
 import cn.featherfly.common.db.mapping.JdbcPropertyMapping;
-import cn.featherfly.common.exception.UnsupportedException;
 import cn.featherfly.common.lang.AssertIllegalArgument;
 import cn.featherfly.common.lang.LambdaUtils;
 import cn.featherfly.common.lang.LambdaUtils.SerializableSupplierLambdaInfo;
@@ -32,7 +32,6 @@ import cn.featherfly.common.lang.function.SerializableSupplier;
 import cn.featherfly.common.repository.IgnorePolicy;
 import cn.featherfly.common.repository.builder.BuilderException;
 import cn.featherfly.common.repository.builder.BuilderExceptionCode;
-import cn.featherfly.common.repository.mapping.PropertyMapping.Mode;
 import cn.featherfly.hammer.expression.condition.Expression;
 import cn.featherfly.hammer.expression.condition.LogicOperatorExpression;
 import cn.featherfly.hammer.expression.condition.ParamedExpression;
@@ -44,6 +43,16 @@ import cn.featherfly.hammer.expression.condition.ParamedExpression;
  * @param <L> the generic type
  */
 public abstract class AbstractSqlConditionExpression<L> implements SqlBuilder, ParamedExpression {
+
+    /**
+     * Instantiates a new abstract sql condition expression.
+     *
+     * @param dialect      dialect
+     * @param ignorePolicy the ignore policy
+     */
+    public AbstractSqlConditionExpression(Dialect dialect, Predicate<Object> ignorePolicy) {
+        this(dialect, ignorePolicy, null);
+    }
 
     /**
      * Instantiates a new abstract sql condition expression.
@@ -70,7 +79,7 @@ public abstract class AbstractSqlConditionExpression<L> implements SqlBuilder, P
             if (last instanceof LogicOperatorExpression) {
                 //                throw new BuilderException(((SqlLogicExpression) last).getLogicOperator() + " 后没有跟条件表达式");
                 throw new BuilderException(BuilderExceptionCode
-                        .createNoConditionBehindCode(((LogicOperatorExpression) last).getLogicOperator().name()));
+                        .createNoConditionBehindCode(((SqlLogicExpression) last).getLogicOperator().name()));
             }
         }
 
@@ -290,87 +299,41 @@ public abstract class AbstractSqlConditionExpression<L> implements SqlBuilder, P
     /**
      * Condition result.
      *
-     * @param <O>            the generic type
-     * @param <T>            the generic type
-     * @param <R>            the generic type
-     * @param property       the repository
-     * @param nestedProperty the property
-     * @param value          the value
-     * @param classMapping   the class mapping
-     * @param factory        the factory
+     * @param <O>        the generic type
+     * @param <T>        the generic type
+     * @param <R>        the generic type
+     * @param repository the repository
+     * @param property   the property
+     * @param value      the value
+     * @param factory    the factory
      * @return the tuple 2
      */
-    protected <O, T, R> Tuple2<String, String> conditionResult(SerializableFunction<O, T> property,
-            SerializableFunction<T, R> nestedProperty, Object value, JdbcClassMapping<O> classMapping,
-            JdbcMappingFactory factory) {
-        SerializedLambdaInfo propertyRepo = LambdaUtils.getLambdaInfo(property);
-        SerializedLambdaInfo propertyInfo = LambdaUtils.getLambdaInfo(nestedProperty);
+    protected <O, T, R> Tuple2<String, String> conditionResult(SerializableFunction<O, T> repository,
+            SerializableFunction<T, R> property, Object value, JdbcMappingFactory factory) {
+        SerializedLambdaInfo repositoryInfo = LambdaUtils.getLambdaInfo(repository);
+        SerializedLambdaInfo propertyInfo = LambdaUtils.getLambdaInfo(property);
         String pn = propertyInfo.getPropertyName();
-        // IMPLSOON 参考set(SerializableFunction<T, R> property,SerializableFunction<R, O> nestedProperty, O value)的实现重构逻辑
-
-        JdbcPropertyMapping pm = classMapping.getPropertyMapping(propertyRepo.getPropertyName());
-        if (pm.getMode() == Mode.EMBEDDED) {
-            JdbcPropertyMapping spm = pm.getPropertyMapping(pn);
-            if (spm != null) {
-                return Tuples.of(propertyRepo.getPropertyName(), spm.getRepositoryFieldName());
-            }
-        } else if (pm.getMode() == Mode.ONE_TO_MANY) {
-            // FIXME 未实现
-            throw new UnsupportedException();
-        } else if (pm.getMode() == Mode.SINGLE) {
-            // FIXME 未实现
-            throw new UnsupportedException();
-        } else if (pm.getMode() == Mode.MANY_TO_ONE) {
-            JdbcPropertyMapping spm = pm.getPropertyMapping(pn);
-            if (spm != null) {
-                return Tuples.of(propertyRepo.getPropertyName(), spm.getRepositoryFieldName());
-            } else {
-                @SuppressWarnings("unchecked")
-                JdbcClassMapping<T> cm = factory.getClassMapping((Class<T>) pm.getPropertyType());
-                spm = cm.getPropertyMapping(pn);
-                if (spm != null) {
-                    return Tuples.of(propertyRepo.getPropertyName(), spm.getRepositoryFieldName());
-                }
-            }
-        }
-        throw new UnsupportedException();
-        // IMPLSOON 下面的逻辑还未测试，应该是有问题的
-        //        JdbcClassMapping<?> cm = factory.getClassMapping(propertyRepo.getPropertyType());
-        //        String column = ClassMappingUtils.getColumnName(pn, cm);
-        //        return Tuples.of(propertyRepo.getPropertyName(), column);
+        JdbcClassMapping<?> cm = factory.getClassMapping(repositoryInfo.getPropertyType());
+        String column = ClassMappingUtils.getColumnName(pn, cm);
+        return Tuples.of(repositoryInfo.getPropertyName(), column);
     }
 
     /**
      * Condition result.
      *
-     * @param <O>          the generic type
-     * @param <T>          the generic type
-     * @param <R>          the generic type
-     * @param repository   the repository
-     * @param property     the property
-     * @param classMapping the class mapping
-     * @param factory      the factory
+     * @param <T>        the generic type
+     * @param <R>        the generic type
+     * @param repository the repository
+     * @param property   the property
+     * @param factory    the factory
      * @return the tuple 3
      */
-    protected <O, T, R> Tuple3<String, String, Object> conditionResult(SerializableSupplier<T> repository,
-            SerializableFunction<T, R> property, JdbcClassMapping<O> classMapping, JdbcMappingFactory factory) {
-        // IMPLSOON 这里为测试
+    protected <T, R> Tuple3<String, String, Object> conditionResult(SerializableSupplier<T> repository,
+            SerializableFunction<T, R> property, JdbcMappingFactory factory) {
         SerializableSupplierLambdaInfo<T> repositoryInfo = LambdaUtils.getSerializableSupplierLambdaInfo(repository);
         SerializedLambdaInfo propertyInfo = LambdaUtils.getLambdaInfo(property);
         String pn = propertyInfo.getPropertyName();
         T obj = repositoryInfo.getValue();
-
-        JdbcPropertyMapping pm = classMapping
-                .getPropertyMapping(repositoryInfo.getSerializedLambdaInfo().getPropertyName());
-        if (pm.getMode() == Mode.EMBEDDED) {
-            for (JdbcPropertyMapping spm : pm.getPropertyMappings()) {
-                if (spm.getPropertyName().equals(pn)) {
-                    return Tuples.of(repositoryInfo.getSerializedLambdaInfo().getPropertyName(),
-                            spm.getRepositoryFieldName(), BeanUtils.getProperty(obj, pn));
-                }
-            }
-        }
-        // IMPLSOON 下面的逻辑还未测试，应该是有问题的
         JdbcClassMapping<?> cm = factory.getClassMapping(repositoryInfo.getSerializedLambdaInfo().getPropertyType());
         String column = ClassMappingUtils.getColumnName(pn, cm);
         return Tuples.of(repositoryInfo.getSerializedLambdaInfo().getPropertyName(), column,
@@ -407,12 +370,12 @@ public abstract class AbstractSqlConditionExpression<L> implements SqlBuilder, P
         return ignorePolicy;
     }
 
-    //    /**
-    //     * Gets the conditions.
-    //     *
-    //     * @return the conditions
-    //     */
-    //    public List<Expression> getConditions() {
-    //        return conditions;
-    //    }
+    /**
+     * Gets the conditions.
+     *
+     * @return the conditions
+     */
+    public List<Expression> getConditions() {
+        return conditions;
+    }
 }

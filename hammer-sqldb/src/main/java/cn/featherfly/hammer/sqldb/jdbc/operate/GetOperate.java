@@ -1,7 +1,6 @@
 package cn.featherfly.hammer.sqldb.jdbc.operate;
 
 import java.io.Serializable;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -26,29 +25,29 @@ import cn.featherfly.hammer.sqldb.jdbc.Jdbc;
  */
 public class GetOperate<T> extends AbstractQueryOperate<T> {
 
-    //    /**
-    //     * 使用给定数据源以及给定对象生成读取操作.
-    //     *
-    //     * @param jdbc                  jdbc
-    //     * @param classMapping          classMapping
-    //     * @param sqlTypeMappingManager the sql type mapping manager
-    //     */
-    //    public GetOperate(Jdbc jdbc, JdbcClassMapping<T> classMapping, SqlTypeMappingManager sqlTypeMappingManager) {
-    //        super(jdbc, classMapping, sqlTypeMappingManager);
-    //    }
-    //
-    //    /**
-    //     * 使用给定数据源以及给定对象生成读取操作.
-    //     *
-    //     * @param jdbc                  jdbc
-    //     * @param classMapping          classMapping
-    //     * @param sqlTypeMappingManager the sql type mapping manager
-    //     * @param dataBase              具体库
-    //     */
-    //    public GetOperate(Jdbc jdbc, JdbcClassMapping<T> classMapping, SqlTypeMappingManager sqlTypeMappingManager,
-    //            String dataBase) {
-    //        super(jdbc, classMapping, sqlTypeMappingManager, dataBase);
-    //    }
+    /**
+     * 使用给定数据源以及给定对象生成读取操作.
+     *
+     * @param jdbc                  jdbc
+     * @param classMapping          classMapping
+     * @param sqlTypeMappingManager the sql type mapping manager
+     */
+    public GetOperate(Jdbc jdbc, JdbcClassMapping<T> classMapping, SqlTypeMappingManager sqlTypeMappingManager) {
+        super(jdbc, classMapping, sqlTypeMappingManager);
+    }
+
+    /**
+     * 使用给定数据源以及给定对象生成读取操作.
+     *
+     * @param jdbc                  jdbc
+     * @param classMapping          classMapping
+     * @param sqlTypeMappingManager the sql type mapping manager
+     * @param dataBase              具体库
+     */
+    public GetOperate(Jdbc jdbc, JdbcClassMapping<T> classMapping, SqlTypeMappingManager sqlTypeMappingManager,
+            String dataBase) {
+        super(jdbc, classMapping, sqlTypeMappingManager, dataBase);
+    }
 
     /**
      * 使用给定数据源以及给定对象生成读取操作.
@@ -89,14 +88,16 @@ public class GetOperate<T> extends AbstractQueryOperate<T> {
     }
 
     /**
-     * 返回对象的id值列表,主要用于复合主键.如果传入对象为空或没有主键标示属性，则返回空列表.
+     * <p>
+     * 返回对象的id值列表,主要用于复合主键.如果传入对象为空或没有主键标示属性，则返回空.
+     * </p>
      *
      * @param entity 对象
      * @return id值列表
      */
     public List<Serializable> getIds(T entity) {
         if (entity == null) {
-            return new ArrayList<>(0);
+            return null;
         }
         return pkPms.stream()
                 .map(p -> (Serializable) BeanUtils.getProperty(entity, ClassMappingUtils.getPropertyAliasName(p)))
@@ -133,13 +134,7 @@ public class GetOperate<T> extends AbstractQueryOperate<T> {
             throw new SqldbHammerException("#get.id.null");
         }
         if (forUpdate) {
-            if (jdbc.getDialect().supportSelectForUpdate()) { // 后续来实现
-                return jdbc.querySingle(sql + " for update", (RowMapper<T>) (res, rowNum) -> mapRow(res, rowNum), id);
-            } else {
-                // TODO 后续加入行为可配置策略
-                throw new SqldbHammerException(
-                        "unsupport [select...for update] with dialect " + jdbc.getDialect().getClass().getSimpleName());
-            }
+            return jdbc.querySingle(sql + " for update", (RowMapper<T>) (res, rowNum) -> mapRow(res, rowNum), id);
         } else {
             return jdbc.querySingle(sql, (RowMapper<T>) (res, rowNum) -> mapRow(res, rowNum), id);
         }
@@ -194,13 +189,13 @@ public class GetOperate<T> extends AbstractQueryOperate<T> {
         pkPms = classMapping.getPrivaryKeyPropertyMappings();
         logger.debug("sql: {}", sql);
     }
-    //
-    //    /**
-    //     * {@inheritDoc}
-    //     */
-    //    @Override
-    //    protected String initCondition() {
-    //        // 重写了initSql，此方法在此类已经没用了
-    //        return "";
-    //    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    protected String initCondition() {
+        // 重写了initSql，此方法在此类已经没用了
+        return "";
+    }
 }

@@ -14,6 +14,7 @@ import cn.featherfly.hammer.expression.query.type.EntityQueryRelationExpression6
  * @param <R4> the generic type
  * @param <R5> the generic type
  * @param <R6> the generic type
+ * @param <Q>  the generic type
  */
 public interface EntityQueryRelation6<E, R1, R2, R3, R4, R5, R6> extends
         EntityQueryRelationExpression6<E, R1, R2, R3, R4, R5, R6, EntityQueryEntityProperties<E>, EntityQueryConditionGroupExpression<E>, EntityQueryConditionGroupLogicExpression<E>>,

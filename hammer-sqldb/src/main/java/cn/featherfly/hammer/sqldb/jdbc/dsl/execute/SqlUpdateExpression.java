@@ -3,10 +3,12 @@ package cn.featherfly.hammer.sqldb.jdbc.dsl.execute;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.function.Predicate;
 
 import cn.featherfly.common.constant.Chars;
 import cn.featherfly.common.db.builder.dml.basic.SqlUpdateSetBasicBuilder;
-import cn.featherfly.common.lang.Strings;
+import cn.featherfly.common.db.mapping.JdbcClassMapping;
+import cn.featherfly.common.repository.IgnorePolicy;
 import cn.featherfly.hammer.sqldb.jdbc.Jdbc;
 
 /**
@@ -25,7 +27,42 @@ public class SqlUpdateExpression extends SqlConditionGroupExpression {
      * @param builder the builder
      */
     public SqlUpdateExpression(Jdbc jdbc, SqlUpdateSetBasicBuilder builder) {
-        super(jdbc, builder.getAlias(), builder.getIgnorePolicy());
+        this(jdbc, builder, IgnorePolicy.NONE);
+    }
+
+    /**
+     * Instantiates a new sql update expression.
+     *
+     * @param jdbc         the jdbc
+     * @param builder      the builder
+     * @param ignorePolicy the ignore policy
+     */
+    public SqlUpdateExpression(Jdbc jdbc, SqlUpdateSetBasicBuilder builder, Predicate<Object> ignorePolicy) {
+        this(jdbc, builder, null, ignorePolicy);
+    }
+
+    /**
+     * Instantiates a new sql update expression.
+     *
+     * @param jdbc         the jdbc
+     * @param builder      the builder
+     * @param classMapping the class mapping
+     */
+    public SqlUpdateExpression(Jdbc jdbc, SqlUpdateSetBasicBuilder builder, JdbcClassMapping<?> classMapping) {
+        this(jdbc, builder, classMapping, IgnorePolicy.NONE);
+    }
+
+    /**
+     * Instantiates a new sql update expression.
+     *
+     * @param jdbc         the jdbc
+     * @param builder      the builder
+     * @param classMapping the class mapping
+     * @param ignorePolicy the ignore policy
+     */
+    public SqlUpdateExpression(Jdbc jdbc, SqlUpdateSetBasicBuilder builder, JdbcClassMapping<?> classMapping,
+            Predicate<Object> ignorePolicy) {
+        super(jdbc, null, classMapping, ignorePolicy);
         this.builder = builder;
     }
 
@@ -34,12 +71,7 @@ public class SqlUpdateExpression extends SqlConditionGroupExpression {
      */
     @Override
     public String build() {
-        String condition = super.build();
-        if (Strings.isEmpty(condition)) {
-            return builder.build();
-        } else {
-            return builder.build() + Chars.SPACE + jdbc.getDialect().getKeywords().where() + Chars.SPACE + condition;
-        }
+        return builder.build() + Chars.SPACE + jdbc.getDialect().getKeywords().where() + Chars.SPACE + super.build();
     }
 
     /**

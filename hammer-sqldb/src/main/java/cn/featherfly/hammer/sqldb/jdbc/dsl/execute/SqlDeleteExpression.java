@@ -5,7 +5,7 @@ import java.util.function.Predicate;
 
 import cn.featherfly.common.constant.Chars;
 import cn.featherfly.common.db.builder.dml.basic.SqlDeleteFromBasicBuilder;
-import cn.featherfly.common.lang.Strings;
+import cn.featherfly.common.db.mapping.JdbcClassMapping;
 import cn.featherfly.common.repository.IgnorePolicy;
 import cn.featherfly.hammer.sqldb.jdbc.Jdbc;
 
@@ -17,6 +17,31 @@ import cn.featherfly.hammer.sqldb.jdbc.Jdbc;
 public class SqlDeleteExpression extends SqlConditionGroupExpression {
 
     private SqlDeleteFromBasicBuilder builder;
+
+    /**
+     * Instantiates a new sql delete expression.
+     *
+     * @param jdbc         the jdbc
+     * @param builder      the builder
+     * @param classMapping the class mapping
+     */
+    public SqlDeleteExpression(Jdbc jdbc, SqlDeleteFromBasicBuilder builder, JdbcClassMapping<?> classMapping) {
+        this(jdbc, builder, classMapping, IgnorePolicy.NONE);
+    }
+
+    /**
+     * Instantiates a new sql delete expression.
+     *
+     * @param jdbc         the jdbc
+     * @param builder      the builder
+     * @param classMapping the class mapping
+     * @param ignorePolicy the ignore policy
+     */
+    public SqlDeleteExpression(Jdbc jdbc, SqlDeleteFromBasicBuilder builder, JdbcClassMapping<?> classMapping,
+            Predicate<Object> ignorePolicy) {
+        super(jdbc, null, classMapping, ignorePolicy);
+        this.builder = builder;
+    }
 
     /**
      * Instantiates a new sql delete expression.
@@ -36,8 +61,7 @@ public class SqlDeleteExpression extends SqlConditionGroupExpression {
      * @param ignorePolicy the ignore policy
      */
     public SqlDeleteExpression(Jdbc jdbc, SqlDeleteFromBasicBuilder builder, Predicate<Object> ignorePolicy) {
-        super(jdbc, builder.getTableAlias(), ignorePolicy);
-        this.builder = builder;
+        this(jdbc, builder, null, ignorePolicy);
     }
 
     /**
@@ -45,11 +69,6 @@ public class SqlDeleteExpression extends SqlConditionGroupExpression {
      */
     @Override
     public String build() {
-        String condition = super.build();
-        if (Strings.isEmpty(condition)) {
-            return builder.build();
-        } else {
-            return builder.build() + Chars.SPACE + jdbc.getDialect().getKeywords().where() + Chars.SPACE + condition;
-        }
+        return builder.build() + Chars.SPACE + jdbc.getDialect().getKeywords().where() + Chars.SPACE + super.build();
     }
 }

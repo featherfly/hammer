@@ -1395,7 +1395,7 @@ public class UserQueryConditionGroupExpression
      * {@inheritDoc}
      */
     @Override
-    public <R extends Enum<R>> EnumExpression<R, UserQueryConditionGroupExpression, UserQueryConditionGroupExpression> propertyEnum(
+    public <R extends Enum<?>> EnumExpression<R, UserQueryConditionGroupExpression, UserQueryConditionGroupExpression> propertyEnum(
             String name) {
         // YUFEI_TODO Auto-generated method stub
         return null;
@@ -1406,7 +1406,7 @@ public class UserQueryConditionGroupExpression
      */
     @Override
     public <T,
-            R extends Enum<R>> EnumExpression<R, UserQueryConditionGroupExpression, UserQueryConditionGroupExpression> property(
+            R extends Enum<?>> EnumExpression<R, UserQueryConditionGroupExpression, UserQueryConditionGroupExpression> property(
                     ReturnEnumFunction<T, R> name) {
         // YUFEI_TODO Auto-generated method stub
         return null;

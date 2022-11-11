@@ -808,7 +808,7 @@ public class HammerJdbcTest extends JdbcTestBase {
     @Test
     public void testQuerySort() {
         List<Role> roles = hammer.query(Role.class).where().eq(Role::getId, 4).or().group().gt(Role::getId, 5).and()
-                .le(Role::getId, 10).sort().asc("id").desc("name").list();
+                .le(Role::getId, 10).sort().asc(Role::getId).desc(Role::getName).list();
         for (Role role : roles) {
             System.out.println(role);
         }

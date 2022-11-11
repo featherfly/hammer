@@ -1,3 +1,4 @@
 dependencies {
-    api 'cn.featherfly.common:common-model-repository:0.3.0' 
+    api 'cn.featherfly.common:common-model-repository:0.3.0'
+    api group: 'com.speedment.common', name: 'tuple', version: '3.2.10' 
 }

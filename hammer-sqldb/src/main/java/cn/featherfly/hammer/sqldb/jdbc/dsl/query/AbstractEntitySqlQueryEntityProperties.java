@@ -13,6 +13,8 @@ import cn.featherfly.common.constant.Chars;
 import cn.featherfly.common.db.Table;
 import cn.featherfly.common.db.builder.dml.basic.SqlSelectBasicBuilder;
 import cn.featherfly.common.db.mapping.ClassMappingUtils;
+import cn.featherfly.common.db.mapping.JdbcClassMapping;
+import cn.featherfly.common.db.mapping.JdbcMappingFactory;
 import cn.featherfly.common.db.metadata.DatabaseMetadata;
 import cn.featherfly.common.lang.AssertIllegalArgument;
 import cn.featherfly.common.lang.LambdaUtils;
@@ -20,17 +22,12 @@ import cn.featherfly.common.lang.Lang;
 import cn.featherfly.common.lang.function.SerializableFunction;
 import cn.featherfly.common.operator.AggregateFunction;
 import cn.featherfly.common.repository.builder.AliasManager;
-import cn.featherfly.common.repository.mapping.ClassMapping;
-import cn.featherfly.common.repository.mapping.MappingFactory;
 import cn.featherfly.hammer.HammerException;
 import cn.featherfly.hammer.sqldb.jdbc.Jdbc;
 import cn.featherfly.hammer.sqldb.jdbc.SqlPageFactory;
 
 /**
- * <p>
- * SqlQueryProperties
- * </p>
- * .
+ * abstract entity sql query entity properties.
  *
  * @author zhongj
  * @param <E> the element type
@@ -49,10 +46,10 @@ public abstract class AbstractEntitySqlQueryEntityProperties<E,
     protected SqlSelectBasicBuilder selectBuilder;
 
     /** The class mapping. */
-    protected ClassMapping<?> classMapping;
+    protected JdbcClassMapping<E> classMapping;
 
     /** The factory. */
-    protected MappingFactory factory;
+    protected JdbcMappingFactory factory;
 
     /** The sql page factory. */
     protected SqlPageFactory sqlPageFactory;
@@ -62,6 +59,9 @@ public abstract class AbstractEntitySqlQueryEntityProperties<E,
 
     /** The ignore policy. */
     protected Predicate<Object> ignorePolicy;
+
+    /** The table alias. */
+    protected String tableAlias;
 
     /**
      * Instantiates a new abstract sql query entity properties.
@@ -73,8 +73,9 @@ public abstract class AbstractEntitySqlQueryEntityProperties<E,
      * @param aliasManager   aliasManager
      * @param ignorePolicy   the ignore policy
      */
-    public AbstractEntitySqlQueryEntityProperties(Jdbc jdbc, ClassMapping<?> classMapping, MappingFactory factory,
-            SqlPageFactory sqlPageFactory, AliasManager aliasManager, Predicate<Object> ignorePolicy) {
+    public AbstractEntitySqlQueryEntityProperties(Jdbc jdbc, JdbcClassMapping<E> classMapping,
+            JdbcMappingFactory factory, SqlPageFactory sqlPageFactory, AliasManager aliasManager,
+            Predicate<Object> ignorePolicy) {
         AssertIllegalArgument.isNotNull(ignorePolicy, "ignorePolicy");
         this.ignorePolicy = ignorePolicy;
         this.jdbc = jdbc;
@@ -90,6 +91,8 @@ public abstract class AbstractEntitySqlQueryEntityProperties<E,
             idName = classMapping.getPrivaryKeyPropertyMappings().get(0).getRepositoryFieldName();
         }
         selectBuilder = new SqlSelectBasicBuilder(jdbc.getDialect(), classMapping, tableAlias);
+
+        this.tableAlias = tableAlias;
     }
 
     /**
@@ -105,7 +108,7 @@ public abstract class AbstractEntitySqlQueryEntityProperties<E,
      * @param ignorePolicy     the ignore policy
      */
     public AbstractEntitySqlQueryEntityProperties(Jdbc jdbc, DatabaseMetadata databaseMetadata, String tableName,
-            String tableAlias, MappingFactory factory, SqlPageFactory sqlPageFactory, AliasManager aliasManager,
+            String tableAlias, JdbcMappingFactory factory, SqlPageFactory sqlPageFactory, AliasManager aliasManager,
             Predicate<Object> ignorePolicy) {
         AssertIllegalArgument.isNotNull(ignorePolicy, "ignorePolicy");
         this.ignorePolicy = ignorePolicy;
@@ -121,6 +124,8 @@ public abstract class AbstractEntitySqlQueryEntityProperties<E,
             idName = tableMetadata.getPrimaryColumns().get(0).getName();
         }
         selectBuilder = new SqlSelectBasicBuilder(jdbc.getDialect(), tableName, tableAlias);
+
+        this.tableAlias = tableAlias;
     }
 
     /**
@@ -130,13 +135,13 @@ public abstract class AbstractEntitySqlQueryEntityProperties<E,
      * @return the e
      */
     @SuppressWarnings("unchecked")
-    public P property(String propertyName) {
+    public P property(boolean distinct, String propertyName) {
         Tuple2<String, String> columnAndProperty = ClassMappingUtils.getColumnAndPropertyName(propertyName,
                 classMapping);
         if (Lang.isEmpty(columnAndProperty.get1())) {
-            selectBuilder.addColumn(columnAndProperty.get0());
+            selectBuilder.addColumn(distinct, columnAndProperty.get0());
         } else {
-            selectBuilder.addColumn(columnAndProperty.get0(), columnAndProperty.get1());
+            selectBuilder.addColumn(distinct, columnAndProperty.get0(), columnAndProperty.get1());
         }
         return (P) this;
     }
@@ -144,18 +149,19 @@ public abstract class AbstractEntitySqlQueryEntityProperties<E,
     /**
      * Property.
      *
-     * @param propertyName      the property name
      * @param aggregateFunction the aggregate function
+     * @param distinct          the distinct
+     * @param propertyName      the property name
      * @return the e
      */
     @SuppressWarnings("unchecked")
-    public P property(String propertyName, AggregateFunction aggregateFunction) {
+    public P property(AggregateFunction aggregateFunction, boolean distinct, String propertyName) {
         Tuple2<String, String> columnAndProperty = ClassMappingUtils.getColumnAndPropertyName(propertyName,
                 classMapping);
         if (Lang.isEmpty(columnAndProperty.get1())) {
-            selectBuilder.addColumn(aggregateFunction, columnAndProperty.get0());
+            selectBuilder.addColumn(aggregateFunction, distinct, columnAndProperty.get0());
         } else {
-            selectBuilder.addColumn(aggregateFunction, columnAndProperty.get1(), columnAndProperty.get0());
+            selectBuilder.addColumn(aggregateFunction, distinct, columnAndProperty.get0(), columnAndProperty.get1());
         }
         return (P) this;
     }
@@ -163,13 +169,16 @@ public abstract class AbstractEntitySqlQueryEntityProperties<E,
     /**
      * Property.
      *
+     * @param <T>               the generic type
      * @param <R>               the generic type
-     * @param propertyName      the property name
      * @param aggregateFunction the aggregate function
+     * @param distinct          the distinct
+     * @param propertyName      the property name
      * @return the e
      */
-    public <R> P property(SerializableFunction<E, R> propertyName, AggregateFunction aggregateFunction) {
-        return property(LambdaUtils.getLambdaPropertyName(propertyName), aggregateFunction);
+    public <R> P property(AggregateFunction aggregateFunction, boolean distinct,
+            SerializableFunction<E, R> propertyName) {
+        return property(aggregateFunction, distinct, LambdaUtils.getLambdaPropertyName(propertyName));
     }
 
     /**
@@ -219,8 +228,8 @@ public abstract class AbstractEntitySqlQueryEntityProperties<E,
      * @param propertyName the property name
      * @return the e
      */
-    public <R> P property(SerializableFunction<E, R> propertyName) {
-        return property(LambdaUtils.getLambdaPropertyName(propertyName));
+    public <R> P property(boolean distinct, SerializableFunction<E, R> propertyName) {
+        return property(distinct, LambdaUtils.getLambdaPropertyName(propertyName));
     }
 
     /**
@@ -301,8 +310,8 @@ public abstract class AbstractEntitySqlQueryEntityProperties<E,
      * @param propertyName the property name
      * @return the e
      */
-    public P count(String propertyName) {
-        return property(propertyName, AggregateFunction.COUNT);
+    public P count(boolean distinct, String propertyName) {
+        return property(AggregateFunction.COUNT, distinct, propertyName);
     }
 
     /**
@@ -312,8 +321,8 @@ public abstract class AbstractEntitySqlQueryEntityProperties<E,
      * @param propertyName the property name
      * @return the e
      */
-    public <R> P count(SerializableFunction<E, R> propertyName) {
-        return property(propertyName, AggregateFunction.COUNT);
+    public <R> P count(boolean distinct, SerializableFunction<E, R> propertyName) {
+        return property(AggregateFunction.COUNT, distinct, propertyName);
     }
 
     /**
@@ -322,8 +331,8 @@ public abstract class AbstractEntitySqlQueryEntityProperties<E,
      * @param propertyName the property name
      * @return the e
      */
-    public P sum(String propertyName) {
-        return property(propertyName, AggregateFunction.SUM);
+    public P sum(boolean distinct, String propertyName) {
+        return property(AggregateFunction.SUM, distinct, propertyName);
     }
 
     /**
@@ -333,8 +342,8 @@ public abstract class AbstractEntitySqlQueryEntityProperties<E,
      * @param propertyName the property name
      * @return the e
      */
-    public <R> P sum(SerializableFunction<E, R> propertyName) {
-        return property(propertyName, AggregateFunction.SUM);
+    public <R> P sum(boolean distinct, SerializableFunction<E, R> propertyName) {
+        return property(AggregateFunction.SUM, distinct, propertyName);
     }
 
     /**
@@ -343,8 +352,8 @@ public abstract class AbstractEntitySqlQueryEntityProperties<E,
      * @param propertyName the property name
      * @return the e
      */
-    public P max(String propertyName) {
-        return property(propertyName, AggregateFunction.MAX);
+    public P max(boolean distinct, String propertyName) {
+        return property(AggregateFunction.MAX, distinct, propertyName);
     }
 
     /**
@@ -354,8 +363,8 @@ public abstract class AbstractEntitySqlQueryEntityProperties<E,
      * @param propertyName the property name
      * @return the e
      */
-    public <R> P max(SerializableFunction<E, R> propertyName) {
-        return property(propertyName, AggregateFunction.MAX);
+    public <R> P max(boolean distinct, SerializableFunction<E, R> propertyName) {
+        return property(AggregateFunction.MAX, distinct, propertyName);
     }
 
     /**
@@ -364,8 +373,8 @@ public abstract class AbstractEntitySqlQueryEntityProperties<E,
      * @param propertyName the property name
      * @return the e
      */
-    public P min(String propertyName) {
-        return property(propertyName, AggregateFunction.MIN);
+    public P min(boolean distinct, String propertyName) {
+        return property(AggregateFunction.MIN, distinct, propertyName);
     }
 
     /**
@@ -375,8 +384,8 @@ public abstract class AbstractEntitySqlQueryEntityProperties<E,
      * @param propertyName the property name
      * @return the e
      */
-    public <R> P min(SerializableFunction<E, R> propertyName) {
-        return property(propertyName, AggregateFunction.MIN);
+    public <R> P min(boolean distinct, SerializableFunction<E, R> propertyName) {
+        return property(AggregateFunction.MIN, distinct, propertyName);
     }
 
     /**
@@ -385,8 +394,8 @@ public abstract class AbstractEntitySqlQueryEntityProperties<E,
      * @param propertyName the property name
      * @return the e
      */
-    public P avg(String propertyName) {
-        return property(propertyName, AggregateFunction.AVG);
+    public P avg(boolean distinct, String propertyName) {
+        return property(AggregateFunction.AVG, distinct, propertyName);
     }
 
     /**
@@ -396,8 +405,8 @@ public abstract class AbstractEntitySqlQueryEntityProperties<E,
      * @param propertyName the property name
      * @return the e
      */
-    public <R> P avg(SerializableFunction<E, R> propertyName) {
-        return property(propertyName, AggregateFunction.AVG);
+    public <R> P avg(boolean distinct, SerializableFunction<E, R> propertyName) {
+        return property(AggregateFunction.AVG, distinct, propertyName);
     }
 
     /**
@@ -407,7 +416,7 @@ public abstract class AbstractEntitySqlQueryEntityProperties<E,
      * @return the e
      */
     public P distinct(String propertyName) {
-        return property(propertyName, AggregateFunction.DISTINCT);
+        return property(true, propertyName);
     }
 
     /**
@@ -418,7 +427,7 @@ public abstract class AbstractEntitySqlQueryEntityProperties<E,
      * @return the e
      */
     public <R> P distinct(SerializableFunction<E, R> propertyName) {
-        return property(propertyName, AggregateFunction.DISTINCT);
+        return property(true, propertyName);
     }
 
     /**

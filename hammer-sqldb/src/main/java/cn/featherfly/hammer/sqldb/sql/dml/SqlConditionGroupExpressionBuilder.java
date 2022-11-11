@@ -1,19 +1,10 @@
-/*
- * All rights Reserved, Designed By zhongj
- * @Title: SqlConditionGroupExpressionBuilder.java
- * @Package cn.featherfly.hammer.sqldb.sql.dml
- * @Description: todo (用一句话描述该文件做什么)
- * @author: zhongj
- * @date: 2022年11月29日 下午5:03:42
- * @version V1.0
- * @Copyright: 2022 www.featherfly.cn Inc. All rights reserved.
- */
 
 package cn.featherfly.hammer.sqldb.sql.dml;
 
 import java.util.function.Predicate;
 
 import cn.featherfly.common.db.dialect.Dialect;
+import cn.featherfly.common.db.mapping.JdbcClassMapping;
 import cn.featherfly.hammer.dml.BuildableConditionGroupExpression;
 import cn.featherfly.hammer.dml.BuildableConditionGroupLogicExpression;
 import cn.featherfly.hammer.dsl.query.TypeQueryEntity;
@@ -40,16 +31,43 @@ public class SqlConditionGroupExpressionBuilder extends
      */
     public SqlConditionGroupExpressionBuilder(Dialect dialect, SqlPageFactory sqlPageFactory,
             Predicate<Object> ignorePolicy) {
-        this(dialect, sqlPageFactory, null, ignorePolicy);
+        this(dialect, sqlPageFactory, null, null, null, ignorePolicy);
+    }
+
+    /**
+     * Instantiates a new sql condition group expression builder.
+     *
+     * @param dialect        dialect
+     * @param sqlPageFactory the sql page factory
+     * @param queryAlias     queryAlias
+     * @param ignorePolicy   the ignore policy
+     */
+    public SqlConditionGroupExpressionBuilder(Dialect dialect, SqlPageFactory sqlPageFactory, String queryAlias,
+            Predicate<Object> ignorePolicy) {
+        this(dialect, sqlPageFactory, queryAlias, null, null, ignorePolicy);
+    }
+
+    /**
+     * Instantiates a new sql condition group expression builder.
+     *
+     * @param dialect        dialect
+     * @param ignorePolicy   the ignore policy
+     * @param sqlPageFactory the sql page factory
+     * @param queryAlias     queryAlias
+     * @param classMapping   classMapping
+     */
+    public SqlConditionGroupExpressionBuilder(Dialect dialect, SqlPageFactory sqlPageFactory, String queryAlias,
+            JdbcClassMapping<?> classMapping, Predicate<Object> ignorePolicy) {
+        this(dialect, sqlPageFactory, queryAlias, classMapping, null, ignorePolicy);
     }
 
     /**
      * Instantiates a new sql condition group expression builder.
      *
      * @param dialect         dialect
+     * @param ignorePolicy    the ignore policy
      * @param sqlPageFactory  the sql page factory
      * @param typeQueryEntity the type query entity
-     * @param ignorePolicy    the ignore policy
      */
     public SqlConditionGroupExpressionBuilder(Dialect dialect, SqlPageFactory sqlPageFactory,
             TypeQueryEntity typeQueryEntity, Predicate<Object> ignorePolicy) {
@@ -60,14 +78,29 @@ public class SqlConditionGroupExpressionBuilder extends
      * Instantiates a new sql condition group expression builder.
      *
      * @param dialect         dialect
+     * @param ignorePolicy    the ignore policy
      * @param sqlPageFactory  the sql page factory
      * @param queryAlias      queryAlias
      * @param typeQueryEntity the type query entity
-     * @param ignorePolicy    the ignore policy
      */
     public SqlConditionGroupExpressionBuilder(Dialect dialect, SqlPageFactory sqlPageFactory, String queryAlias,
             TypeQueryEntity typeQueryEntity, Predicate<Object> ignorePolicy) {
-        this(null, dialect, sqlPageFactory, queryAlias, typeQueryEntity, ignorePolicy);
+        this(dialect, sqlPageFactory, queryAlias, null, typeQueryEntity, ignorePolicy);
+    }
+
+    /**
+     * Instantiates a new sql condition group expression builder.
+     *
+     * @param dialect         dialect
+     * @param ignorePolicy    the ignore policy
+     * @param sqlPageFactory  the sql page factory
+     * @param queryAlias      queryAlias
+     * @param classMapping    classMapping
+     * @param typeQueryEntity the type query entity
+     */
+    public SqlConditionGroupExpressionBuilder(Dialect dialect, SqlPageFactory sqlPageFactory, String queryAlias,
+            JdbcClassMapping<?> classMapping, TypeQueryEntity typeQueryEntity, Predicate<Object> ignorePolicy) {
+        this(null, dialect, sqlPageFactory, queryAlias, classMapping, typeQueryEntity, ignorePolicy);
     }
 
     /**
@@ -75,15 +108,16 @@ public class SqlConditionGroupExpressionBuilder extends
      *
      * @param parent          parent group
      * @param dialect         dialect
+     * @param ignorePolicy    the ignore policy
      * @param sqlPageFactory  the sql page factory
      * @param queryAlias      queryAlias
+     * @param classMapping    classMapping
      * @param typeQueryEntity the type query entity
-     * @param ignorePolicy    the ignore policy
      */
     SqlConditionGroupExpressionBuilder(BuildableConditionGroupLogicExpression parent, Dialect dialect,
-            SqlPageFactory sqlPageFactory, String queryAlias, TypeQueryEntity typeQueryEntity,
-            Predicate<Object> ignorePolicy) {
-        super(parent, dialect, sqlPageFactory, queryAlias, typeQueryEntity, ignorePolicy);
+            SqlPageFactory sqlPageFactory, String queryAlias, JdbcClassMapping<?> classMapping,
+            TypeQueryEntity typeQueryEntity, Predicate<Object> ignorePolicy) {
+        super(parent, dialect, sqlPageFactory, queryAlias, classMapping, typeQueryEntity, ignorePolicy);
     }
 
     /**
@@ -92,7 +126,7 @@ public class SqlConditionGroupExpressionBuilder extends
     @Override
     protected BuildableConditionGroupExpression createGroup(BuildableConditionGroupLogicExpression parent,
             String queryAlias, TypeQueryEntity typeQueryEntity) {
-        return new SqlConditionGroupExpressionBuilder(parent, dialect, sqlPageFactory, queryAlias, typeQueryEntity,
-                ignorePolicy);
+        return new SqlConditionGroupExpressionBuilder(parent, dialect, sqlPageFactory, queryAlias, classMapping,
+                typeQueryEntity, ignorePolicy);
     }
 }

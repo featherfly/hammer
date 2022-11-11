@@ -1,26 +1,27 @@
 
 package cn.featherfly.hammer.dsl.query.type;
 
+import cn.featherfly.hammer.dsl.query.TypeQuerySortExpression;
 import cn.featherfly.hammer.expression.ConditionLogicExpression;
 import cn.featherfly.hammer.expression.query.QueryCountExecutor;
-import cn.featherfly.hammer.expression.query.QueryValueExecutor;
 import cn.featherfly.hammer.expression.query.type.EntityQueryConditionLimit;
 import cn.featherfly.hammer.expression.query.type.EntityQueryExecutor;
 
 /**
- * The Interface EntityQueryConditionLogicExpression.
+ * <p>
+ * QueryConditionLogic
+ * </p>
  *
  * @author zhongj
- * @param <E> the element type
  */
 public interface EntityQueryConditionLogicExpression<E>
-        extends EntityQueryConditionLimit<E>, EntityQueryExecutor<E>, QueryCountExecutor, QueryValueExecutor,
+        extends EntityQueryConditionLimit<E>, EntityQueryExecutor<E>, QueryCountExecutor,
         ConditionLogicExpression<EntityQueryConditionExpression<E>, EntityQueryConditionLogicExpression<E>> {
 
     /**
-     * 结束当前条件并进入排序器.
+     * 结束当前条件并进入排序器
      *
      * @return QuerySortExpression
      */
-    EntityQuerySortExpression<E> sort();
+    TypeQuerySortExpression sort();
 }

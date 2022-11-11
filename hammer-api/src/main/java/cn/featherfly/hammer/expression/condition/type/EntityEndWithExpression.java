@@ -22,6 +22,7 @@ public interface EntityEndWithExpression<E, C extends ConditionExpression, L ext
     /**
      * end with value. 以value结尾.
      *
+     * @param <T>   the generic type
      * @param name  参数名称
      * @param value 参数值
      * @return LogicExpression
@@ -33,10 +34,11 @@ public interface EntityEndWithExpression<E, C extends ConditionExpression, L ext
     /**
      * end with value. 以value结尾.
      *
+     * @param <T>         the generic type
      * @param name        the name
      * @param value       the value
      * @param queryPolicy the query policy
-     * @return LogicExpression
+     * @return the l
      */
     L ew(SerializableFunction<E, String> name, String value, QueryPolicy queryPolicy);
 
@@ -55,13 +57,14 @@ public interface EntityEndWithExpression<E, C extends ConditionExpression, L ext
      *
      * @param property    the property
      * @param queryPolicy the query policy
-     * @return LogicExpression
+     * @return the l
      */
     L ew(StringSupplier property, QueryPolicy queryPolicy);
 
     /**
      * end with value. 以value结尾.
      *
+     * @param <E>        the generic type
      * @param <R>        the generic type
      * @param repository the repository
      * @param property   the property

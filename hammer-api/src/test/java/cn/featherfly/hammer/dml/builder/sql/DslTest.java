@@ -32,17 +32,17 @@ public class DslTest {
         query.find(data).property("name").number(Integer.class);
         query.find(data).property("name").integer();
         query.find(data).property("sum(price)").decimal();
-        query.find(data).property("price", AggregateFunction.SUM).decimal();
+        query.find(data).property(AggregateFunction.SUM, "price").decimal();
         query.find(data).sum("price").decimal();
-        query.find(data).property("id", AggregateFunction.COUNT).integer();
+        query.find(data).property(AggregateFunction.COUNT, "id").integer();
         query.find(data).count("id").integer();
-        query.find(data).property("id", AggregateFunction.COUNT).longInt();
+        query.find(data).property(AggregateFunction.COUNT, "id").longInt();
         query.find(data).count("id").longInt();
 
         query.find(data).sum("id").longInt();
 
         query.find(data).property("count(*)").where().lt("age", 18).longInt();
-        query.find(data).property("id", AggregateFunction.COUNT).where().lt("age", 18).longInt();
+        query.find(data).property(AggregateFunction.COUNT, "id").where().lt("age", 18).longInt();
 
         query.find(data).where().lt("age", 18).count();
 
@@ -65,7 +65,25 @@ public class DslTest {
 
         query.find(data).where().eq("", 1).and().lt("age", 18).and().group().gt("score", 80).sort().asc("name").limit(2)
                 .list(DslTest.class);
+    }
 
+    public void testQueryJoin() {
+        query.find("user").relate("user_info").on("user_id").fetch().relate("role").on("id", "user_role", "role_id")
+                .fetch();
+        query.find("user").relate("user_info").on("user_id").relate("role").on("id", "user_role", "role_id").fetch();
+
+        query.find("user").relate("user_info").on("user_id").where();
+        query.find("user").relate("user_info").on("user_id").fetch().where();
+        query.find("user").relate("user_info").on("user_id").relate("user_role").on("user_id", "id").relate("role")
+                .on("id", "user_role", "role_id").fetch();
+
+        query.find("user").relate("user_info").on("user_id").fetch("name").fetch();
+
+        query.find("user").relate("user_info").on("user_id").fetch("name").relate("user_role").on("user_id", "id")
+                .relate("role").on("id", "user_role", "role_id").fetch();
+    }
+
+    public void testTypeQuery() {
         query.find(DslTest.class).list();
         query.find(DslTest.class).count();
         query.find(DslTest.class).limit(10).list();
@@ -78,21 +96,7 @@ public class DslTest {
         // query.find(DslTest.class).property("count(*)").where().lt("age",
         // 18).longInt();
 
-        query.find("user").with("user_info").on("user_id").fetch().with("role").on("id", "user_role", "role_id")
-                .fetch();
-        query.find("user").with("user_info").on("user_id").with("role").on("id", "user_role", "role_id").fetch();
-
-        query.find("user").with("user_info").on("user_id").where();
-        query.find("user").with("user_info").on("user_id").fetch().where();
-        query.find("user").with("user_info").on("user_id").with("user_role").on("user_id", "id").with("role")
-                .on("id", "user_role", "role_id").fetch();
-
-        query.find("user").with("user_info").on("user_id").fetch("name").fetch();
-
-        query.find("user").with("user_info").on("user_id").fetch("name").with("user_role").on("user_id", "id")
-                .with("role").on("id", "user_role", "role_id").fetch();
-
-        // query.find("user").with("user_role").on("user_id").with("role").on("id",
+        // query.find("user").relate("user_role").on("user_id").relate("role").on("id",
         // "user_role", "role_id").fetch()
 
         // 错误
@@ -132,44 +136,48 @@ public class DslTest {
                 .setIgnorePolicy(null).co(null).single();
     }
 
-    public void testQuery2() {
+    public void testTypeQueryJoin() {
         // IMPLSOON 这里的where()后没有list等方法
         //        query.find(DslTest.class).with(DslTest::getId).where().list();
-        query.find(DslTest.class).with(DslTest::getId).where().eq(DslTest::getId, 1).list();
-        query.find(DslTest.class).with(DslTest::getId).fetch().where().eq(DslTest::getId, 1).list();
+        query.find(DslTest.class).join(DslTest::getId).where().eq(DslTest::getId, 1).list();
+        query.find(DslTest.class).join(DslTest::getId).fetch().where().eq(DslTest::getId, 1).list();
 
         // select * from user u join userinfo ui on u.id = ui.user_id
-        query.find(User.class).with(User::getUserInfo);
+        query.find(User.class).join(User::getUserInfo);
         // select * from user u join userinfo ui on u.id = ui.user_id
-        query.find(User.class).with(UserInfo::getUser);
+        query.find(User.class).join(UserInfo::getUser);
         // select * from user u join device d on u.id = d.user_id
-        query.find(User.class).with(User::getDevices);
+        query.find(User.class).join(User::getDevices);
         // select * from user u join device d on u.id = d.user_id
-        query.find(User.class).with(Device::getUser);
+        query.find(User.class).join(Device::getUser);
 
         // with(Function)，都是和find的对象进行关联
         // select * from user u join userinfo ui on u.id = ui.user_id join device d on u.id = d.user_id
-        query.find(User.class).with(User::getUserInfo).with(User::getDevices);
+        query.find(User.class).join(User::getUserInfo).join(User::getDevices);
         // select * from user u join userinfo ui on u.id = ui.user_id join device d on u.id = d.user_id join user u2 on ui.user_id = u2.id
-        query.find(User.class).with(User::getUserInfo).with(User::getDevices).with(UserInfo::getUser);
+        query.find(User.class).join(User::getUserInfo).join(User::getDevices).join(UserInfo::getUser);
 
         // select * from tree t1 join tree t2 on t1.id = t2.parent_id join tree t3 on t1.id = t3.parent_id
-        query.find(Tree.class).with(Tree::getParent).with(Tree::getParent);
+        query.find(Tree.class).join(Tree::getParent).join(Tree::getParent);
+
+        query.find(Tree.class).join(Tree::getParent).join(Tree::getUser).join2(User::getUserInfo);
+
+        query.find(Tree.class).join(Tree::getParent).join(Tree::getParent).join(Tree::getParent);
 
         // IMPLSOON with join的api定义规则
         /*
          // select * from tree t1 join tree t2 on t1.id = t2.parent_id join tree t3 on t2.id = t3.parent_id
-         query.find(Tree.class).with(Tree::getParent).with(t -> {
+         query.find(Tree.class).join(Tree::getParent).join(t -> {
              //  t为Tuple类型，有几个可以join的对象就是有几个对象的tuple
              //  这里表示和 tree t2 进行join，所以join tree t3 on t2.id = t3.parent_id
-             t.get1().with(Tree::getParent);
+             t.get1().join(Tree::getParent);
          });
          // IMPLSOON 可以先实现下面这种方式，因为这种方式不需要多个返回结果类型，在现有结构上就能实现
-         query.find(Tree.class).with(Tree::getParent, t -> {
+         query.find(Tree.class).join(Tree::getParent, t -> {
            //  这里表示和 tree t2 进行join，所以join tree t3 on t2.id = t3.parent_id
            // 也就是t2有多个关联可以在这里进行全部操作
-           t.with(Tree::getParent)
-               .with(Tree::getParent);
+           t.join(Tree::getParent)
+               .join(Tree::getParent);
          });
          */
 

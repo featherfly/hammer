@@ -14,7 +14,7 @@ import cn.featherfly.hammer.GenericHammer;
 import cn.featherfly.hammer.Hammer;
 import cn.featherfly.hammer.dsl.execute.Delete;
 import cn.featherfly.hammer.dsl.execute.Update;
-import cn.featherfly.hammer.dsl.query.EntityQueryEntity;
+import cn.featherfly.hammer.dsl.query.type.EntityQueryEntity;
 
 /**
  * BasedTplGenericHammer.

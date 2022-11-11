@@ -1,7 +1,7 @@
 
 package cn.featherfly.hammer.expression;
 
-import cn.featherfly.hammer.expression.condition.EntityLogicGroupExpression;
+import cn.featherfly.hammer.expression.condition.type.EntityLogicGroupExpression;
 
 /**
  * The Interface EntityConditionGroupLogicExpression.

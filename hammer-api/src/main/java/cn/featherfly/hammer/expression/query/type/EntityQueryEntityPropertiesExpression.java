@@ -3,7 +3,6 @@ package cn.featherfly.hammer.expression.query.type;
 
 import cn.featherfly.hammer.expression.EntityConditionGroupExpression;
 import cn.featherfly.hammer.expression.EntityConditionGroupLogicExpression;
-import cn.featherfly.hammer.expression.query.QueryValueExecutor;
 
 /**
  * dsl for query data.
@@ -12,5 +11,5 @@ import cn.featherfly.hammer.expression.query.QueryValueExecutor;
  */
 public interface EntityQueryEntityPropertiesExpression<E, Q extends EntityQueryEntityPropertiesExpression<E, Q, C, L>,
         C extends EntityConditionGroupExpression<E, C, L>, L extends EntityConditionGroupLogicExpression<E, C, L>>
-        extends EntityQueryEntityExpression<E, Q, C, L>, QueryValueExecutor {
+        extends EntityQueryEntityExpression<E, Q, C, L> {
 }

@@ -20,18 +20,18 @@ import org.hibernate.validator.HibernateValidator;
 import cn.featherfly.common.bean.BeanDescriptor;
 import cn.featherfly.common.bean.BeanProperty;
 import cn.featherfly.common.constant.Chars;
+import cn.featherfly.common.db.mapping.JdbcClassMapping;
 import cn.featherfly.common.db.mapping.JdbcMappingFactory;
 import cn.featherfly.common.lang.ArrayUtils;
 import cn.featherfly.common.lang.Lang;
 import cn.featherfly.common.lang.function.SerializableFunction;
 import cn.featherfly.common.repository.IgnorePolicy;
-import cn.featherfly.common.repository.mapping.ClassMapping;
 import cn.featherfly.common.structure.page.Page;
 import cn.featherfly.common.structure.page.PaginationResults;
 import cn.featherfly.hammer.dsl.execute.Delete;
 import cn.featherfly.hammer.dsl.execute.Update;
-import cn.featherfly.hammer.dsl.query.EntityQueryEntity;
 import cn.featherfly.hammer.dsl.query.QueryEntity;
+import cn.featherfly.hammer.dsl.query.type.EntityQueryEntity;
 import cn.featherfly.hammer.sqldb.jdbc.Jdbc;
 import cn.featherfly.hammer.sqldb.jdbc.SimpleSqlPageFactory;
 import cn.featherfly.hammer.sqldb.jdbc.SqlPageFactory;
@@ -243,7 +243,7 @@ public class SqldbHammerImpl implements SqldbHammer {
         InsertOperate<E> insert = (InsertOperate<E>) insertOperates.get(entity.getClass());
         if (insert == null) {
             @SuppressWarnings("unchecked")
-            ClassMapping<E> mapping = (ClassMapping<E>) mappingFactory.getClassMapping(entity.getClass());
+            JdbcClassMapping<E> mapping = mappingFactory.getClassMapping((Class<E>) entity.getClass());
             insert = new InsertOperate<>(jdbc, mapping, mappingFactory.getSqlTypeMappingManager(),
                     mappingFactory.getMetadata());
             insertOperates.put(entity.getClass(), insert);
@@ -256,7 +256,7 @@ public class SqldbHammerImpl implements SqldbHammer {
         UpsertOperate<E> upsert = (UpsertOperate<E>) upsertOperates.get(entity.getClass());
         if (upsert == null) {
             @SuppressWarnings("unchecked")
-            ClassMapping<E> mapping = (ClassMapping<E>) mappingFactory.getClassMapping(entity.getClass());
+            JdbcClassMapping<E> mapping = (JdbcClassMapping<E>) mappingFactory.getClassMapping(entity.getClass());
             upsert = new UpsertOperate<>(jdbc, mapping, mappingFactory.getSqlTypeMappingManager(),
                     mappingFactory.getMetadata());
             upsertOperates.put(entity.getClass(), upsert);
@@ -276,7 +276,7 @@ public class SqldbHammerImpl implements SqldbHammer {
         UpdateOperate<E> update = (UpdateOperate<E>) updateOperates.get(entity.getClass());
         if (update == null) {
             @SuppressWarnings("unchecked")
-            ClassMapping<E> mapping = (ClassMapping<E>) mappingFactory.getClassMapping(entity.getClass());
+            JdbcClassMapping<E> mapping = (JdbcClassMapping<E>) mappingFactory.getClassMapping(entity.getClass());
             update = new UpdateOperate<>(jdbc, mapping, mappingFactory.getSqlTypeMappingManager(),
                     mappingFactory.getMetadata());
             updateOperates.put(entity.getClass(), update);
@@ -359,7 +359,7 @@ public class SqldbHammerImpl implements SqldbHammer {
         MergeOperate<E> update = (MergeOperate<E>) mergeOperates.get(entity.getClass());
         if (update == null) {
             @SuppressWarnings("unchecked")
-            ClassMapping<E> mapping = (ClassMapping<E>) mappingFactory.getClassMapping(entity.getClass());
+            JdbcClassMapping<E> mapping = (JdbcClassMapping<E>) mappingFactory.getClassMapping(entity.getClass());
             update = new MergeOperate<>(jdbc, mapping, mappingFactory.getSqlTypeMappingManager(),
                     mappingFactory.getMetadata());
             mergeOperates.put(entity.getClass(), update);
@@ -500,7 +500,7 @@ public class SqldbHammerImpl implements SqldbHammer {
         @SuppressWarnings("unchecked")
         DeleteOperate<E> delete = (DeleteOperate<E>) deleteOperates.get(entityType);
         if (delete == null) {
-            ClassMapping<E> mapping = mappingFactory.getClassMapping(entityType);
+            JdbcClassMapping<E> mapping = mappingFactory.getClassMapping(entityType);
             delete = new DeleteOperate<>(jdbc, mapping, mappingFactory.getSqlTypeMappingManager(),
                     mappingFactory.getMetadata());
             deleteOperates.put(entityType, delete);
@@ -701,7 +701,7 @@ public class SqldbHammerImpl implements SqldbHammer {
         @SuppressWarnings("unchecked")
         GetOperate<E> get = (GetOperate<E>) getOperates.get(entityType);
         if (get == null) {
-            ClassMapping<E> mapping = mappingFactory.getClassMapping(entityType);
+            JdbcClassMapping<E> mapping = mappingFactory.getClassMapping(entityType);
             get = new GetOperate<>(jdbc, mapping, mappingFactory.getSqlTypeMappingManager(),
                     mappingFactory.getMetadata());
             getOperates.put(entityType, get);

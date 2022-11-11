@@ -11,7 +11,6 @@ import cn.featherfly.hammer.expression.condition.LogicExpression;
  * The Interface EntityEqualsExpression.
  *
  * @author zhongj
- * @param <E> the element type
  * @param <C> the generic type
  * @param <L> the generic type
  */
@@ -21,6 +20,7 @@ public interface EntityEqualsExpression<E, C extends ConditionExpression, L exte
     /**
      * equals. 等于.
      *
+     * @param <T>   the generic type
      * @param <R>   the generic type
      * @param name  参数名称
      * @param value 参数值
@@ -33,6 +33,7 @@ public interface EntityEqualsExpression<E, C extends ConditionExpression, L exte
     /**
      * equals. 等于.
      *
+     * @param <T>         the generic type
      * @param <R>         the generic type
      * @param name        参数名称
      * @param value       参数值
@@ -65,8 +66,9 @@ public interface EntityEqualsExpression<E, C extends ConditionExpression, L exte
     /**
      * equals. 等于.
      *
+     * @param <O>        the generic type
      * @param <T>        the generic type
-     * @param <V>        the value type
+     * @param <R>        the generic type
      * @param repository the repository
      * @param property   the property
      * @param value      参数值
@@ -78,7 +80,7 @@ public interface EntityEqualsExpression<E, C extends ConditionExpression, L exte
      * equals. 等于.
      *
      * @param <T>        the generic type
-     * @param <V>        the value type
+     * @param <R>        the generic type
      * @param repository the repository
      * @param property   对象属性
      * @return LogicExpression

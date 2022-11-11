@@ -62,7 +62,7 @@ public class UserQueryRepositoryConditionGroupExpression implements
      *
      * @return the number expression
      */
-    public NumberExpression<UserQueryRepositoryConditionGroupExpression, UserQueryRepositoryConditionGroupExpression> age() {
+    public NumberExpression<Number, UserQueryRepositoryConditionGroupExpression, UserQueryRepositoryConditionGroupExpression> age() {
         return propertyNumber("age");
     }
 
@@ -1892,7 +1892,7 @@ public class UserQueryRepositoryConditionGroupExpression implements
      * {@inheritDoc}
      */
     @Override
-    public NumberExpression<UserQueryRepositoryConditionGroupExpression, UserQueryRepositoryConditionGroupExpression> propertyNumber(
+    public NumberExpression<Number, UserQueryRepositoryConditionGroupExpression, UserQueryRepositoryConditionGroupExpression> propertyNumber(
             String repository, String name) {
         // YUFEI_TODO Auto-generated method stub
         return null;
@@ -1902,17 +1902,7 @@ public class UserQueryRepositoryConditionGroupExpression implements
      * {@inheritDoc}
      */
     @Override
-    public DateExpression<UserQueryRepositoryConditionGroupExpression, UserQueryRepositoryConditionGroupExpression> propertyDate(
-            String repository, String name) {
-        // YUFEI_TODO Auto-generated method stub
-        return null;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public EnumExpression<UserQueryRepositoryConditionGroupExpression, UserQueryRepositoryConditionGroupExpression> propertyEnum(
+    public DateExpression<Date, UserQueryRepositoryConditionGroupExpression, UserQueryRepositoryConditionGroupExpression> propertyDate(
             String repository, String name) {
         // YUFEI_TODO Auto-generated method stub
         return null;
@@ -1942,8 +1932,9 @@ public class UserQueryRepositoryConditionGroupExpression implements
      * {@inheritDoc}
      */
     @Override
-    public <T> NumberExpression<UserQueryRepositoryConditionGroupExpression, UserQueryRepositoryConditionGroupExpression> propertyNumber(
-            Class<T> repository, String name) {
+    public <N extends Number,
+            T> NumberExpression<N, UserQueryRepositoryConditionGroupExpression, UserQueryRepositoryConditionGroupExpression> propertyNumber(
+                    Class<T> repository, String name) {
         // YUFEI_TODO Auto-generated method stub
         return null;
     }
@@ -1952,18 +1943,9 @@ public class UserQueryRepositoryConditionGroupExpression implements
      * {@inheritDoc}
      */
     @Override
-    public <T> DateExpression<UserQueryRepositoryConditionGroupExpression, UserQueryRepositoryConditionGroupExpression> propertyDate(
-            Class<T> repository, String name) {
-        // YUFEI_TODO Auto-generated method stub
-        return null;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public <T> EnumExpression<UserQueryRepositoryConditionGroupExpression, UserQueryRepositoryConditionGroupExpression> propertyEnum(
-            Class<T> repository, String name) {
+    public <D extends Date,
+            T> DateExpression<D, UserQueryRepositoryConditionGroupExpression, UserQueryRepositoryConditionGroupExpression> propertyDate(
+                    Class<T> repository, String name) {
         // YUFEI_TODO Auto-generated method stub
         return null;
     }
@@ -1992,7 +1974,7 @@ public class UserQueryRepositoryConditionGroupExpression implements
      * {@inheritDoc}
      */
     @Override
-    public NumberExpression<UserQueryRepositoryConditionGroupExpression, UserQueryRepositoryConditionGroupExpression> propertyNumber(
+    public NumberExpression<Number, UserQueryRepositoryConditionGroupExpression, UserQueryRepositoryConditionGroupExpression> propertyNumber(
             int repositoryIndex, String name) {
         // YUFEI_TODO Auto-generated method stub
         return null;
@@ -2002,17 +1984,7 @@ public class UserQueryRepositoryConditionGroupExpression implements
      * {@inheritDoc}
      */
     @Override
-    public DateExpression<UserQueryRepositoryConditionGroupExpression, UserQueryRepositoryConditionGroupExpression> propertyDate(
-            int repositoryIndex, String name) {
-        // YUFEI_TODO Auto-generated method stub
-        return null;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public EnumExpression<UserQueryRepositoryConditionGroupExpression, UserQueryRepositoryConditionGroupExpression> propertyEnum(
+    public DateExpression<Date, UserQueryRepositoryConditionGroupExpression, UserQueryRepositoryConditionGroupExpression> propertyDate(
             int repositoryIndex, String name) {
         // YUFEI_TODO Auto-generated method stub
         return null;
@@ -2042,7 +2014,7 @@ public class UserQueryRepositoryConditionGroupExpression implements
      * {@inheritDoc}
      */
     @Override
-    public NumberExpression<UserQueryRepositoryConditionGroupExpression, UserQueryRepositoryConditionGroupExpression> propertyNumber(
+    public NumberExpression<Number, UserQueryRepositoryConditionGroupExpression, UserQueryRepositoryConditionGroupExpression> propertyNumber(
             String name) {
         // YUFEI_TODO Auto-generated method stub
         return null;
@@ -2052,17 +2024,7 @@ public class UserQueryRepositoryConditionGroupExpression implements
      * {@inheritDoc}
      */
     @Override
-    public DateExpression<UserQueryRepositoryConditionGroupExpression, UserQueryRepositoryConditionGroupExpression> propertyDate(
-            String name) {
-        // YUFEI_TODO Auto-generated method stub
-        return null;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public EnumExpression<UserQueryRepositoryConditionGroupExpression, UserQueryRepositoryConditionGroupExpression> propertyEnum(
+    public DateExpression<Date, UserQueryRepositoryConditionGroupExpression, UserQueryRepositoryConditionGroupExpression> propertyDate(
             String name) {
         // YUFEI_TODO Auto-generated method stub
         return null;
@@ -2094,8 +2056,9 @@ public class UserQueryRepositoryConditionGroupExpression implements
      */
     @Override
     public <T,
-            R extends Number> NumberExpression<UserQueryRepositoryConditionGroupExpression, UserQueryRepositoryConditionGroupExpression> property(
-                    ReturnNumberFunction<T, R> name) {
+            R extends Number> NumberExpression<R, UserQueryRepositoryConditionGroupExpression, UserQueryRepositoryConditionGroupExpression>
+
+            property(ReturnNumberFunction<T, R> name) {
         // YUFEI_TODO Auto-generated method stub
         return null;
     }
@@ -2105,62 +2068,8 @@ public class UserQueryRepositoryConditionGroupExpression implements
      */
     @Override
     public <T,
-            R extends Date> DateExpression<UserQueryRepositoryConditionGroupExpression, UserQueryRepositoryConditionGroupExpression> property(
+            R extends Date> DateExpression<R, UserQueryRepositoryConditionGroupExpression, UserQueryRepositoryConditionGroupExpression> property(
                     ReturnDateFunction<T, R> name) {
-        // YUFEI_TODO Auto-generated method stub
-        return null;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public <T,
-            R extends Enum<?>> EnumExpression<UserQueryRepositoryConditionGroupExpression, UserQueryRepositoryConditionGroupExpression> property(
-                    ReturnEnumFunction<T, R> name) {
-        // YUFEI_TODO Auto-generated method stub
-        return null;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public <T> StringExpression<UserQueryRepositoryConditionGroupExpression, UserQueryRepositoryConditionGroupExpression> propertyString(
-            SerializableFunction<T, String> name) {
-        // YUFEI_TODO Auto-generated method stub
-        return null;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public <T,
-            R extends Number> NumberExpression<UserQueryRepositoryConditionGroupExpression, UserQueryRepositoryConditionGroupExpression> propertyNumber(
-                    SerializableFunction<T, R> name) {
-        // YUFEI_TODO Auto-generated method stub
-        return null;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public <T,
-            R extends Date> DateExpression<UserQueryRepositoryConditionGroupExpression, UserQueryRepositoryConditionGroupExpression> propertyDate(
-                    SerializableFunction<T, R> name) {
-        // YUFEI_TODO Auto-generated method stub
-        return null;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public <T,
-            R extends Enum<?>> EnumExpression<UserQueryRepositoryConditionGroupExpression, UserQueryRepositoryConditionGroupExpression> propertyEnum(
-                    SerializableFunction<T, R> name) {
         // YUFEI_TODO Auto-generated method stub
         return null;
     }
@@ -2840,4 +2749,57 @@ public class UserQueryRepositoryConditionGroupExpression implements
         // YUFEI_TODO Auto-generated method stub
         return null;
     }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public <E extends Enum<?>> EnumExpression<E, UserQueryRepositoryConditionGroupExpression, UserQueryRepositoryConditionGroupExpression> propertyEnum(
+            String repository, String name) {
+        // YUFEI_TODO Auto-generated method stub
+        return null;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public <T,
+            E extends Enum<?>> EnumExpression<E, UserQueryRepositoryConditionGroupExpression, UserQueryRepositoryConditionGroupExpression> propertyEnum(
+                    Class<T> repository, String name) {
+        // YUFEI_TODO Auto-generated method stub
+        return null;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public <E extends Enum<?>> EnumExpression<E, UserQueryRepositoryConditionGroupExpression, UserQueryRepositoryConditionGroupExpression> propertyEnum(
+            int repositoryIndex, String name) {
+        // YUFEI_TODO Auto-generated method stub
+        return null;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public <R extends Enum<?>> EnumExpression<R, UserQueryRepositoryConditionGroupExpression, UserQueryRepositoryConditionGroupExpression> propertyEnum(
+            String name) {
+        // YUFEI_TODO Auto-generated method stub
+        return null;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public <T,
+            R extends Enum<?>> EnumExpression<R, UserQueryRepositoryConditionGroupExpression, UserQueryRepositoryConditionGroupExpression> property(
+                    ReturnEnumFunction<T, R> name) {
+        // YUFEI_TODO Auto-generated method stub
+        return null;
+    }
+
 }

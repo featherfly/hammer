@@ -2,7 +2,6 @@
 package cn.featherfly.hammer.expression.query.type;
 
 import cn.featherfly.common.lang.function.SerializableFunction;
-import cn.featherfly.common.lang.function.SerializableFunction1;
 import cn.featherfly.common.lang.function.SerializableFunction2;
 import cn.featherfly.common.lang.function.SerializableFunction3;
 import cn.featherfly.hammer.expression.EntityConditionGroupExpression;
@@ -89,7 +88,7 @@ public interface EntityQueryRelationExpression2<E, R1, R2, Q extends EntityQuery
      */
     default <RE extends EntityQueryRelationEntityExpression3<E, R1, R2, E, Q, QR, C, L>,
             QR extends EntityQueryRelationExpression3<E, R1, R2, E, Q, C, L>> RE relate(
-                    SerializableFunction1<E, E> propertyName) {
+                    SerializableFunction3<E, E> propertyName) {
         return join(propertyName);
     }
 
@@ -103,7 +102,7 @@ public interface EntityQueryRelationExpression2<E, R1, R2, Q extends EntityQuery
      */
     <RE extends EntityQueryRelationEntityExpression3<E, R1, R2, E, Q, QR, C, L>,
             QR extends EntityQueryRelationExpression3<E, R1, R2, E, Q, C, L>> RE join(
-                    SerializableFunction1<E, E> propertyName);
+                    SerializableFunction3<E, E> propertyName);
 
     /**
      * relate to.
@@ -171,7 +170,7 @@ public interface EntityQueryRelationExpression2<E, R1, R2, Q extends EntityQuery
      */
     default <RE extends EntityQueryRelationEntityExpression3<E, R1, R2, R1, Q, QR, C, L>,
             QR extends EntityQueryRelationExpression3<E, R1, R2, R1, Q, C, L>> RE relate1(
-                    SerializableFunction1<R1, R1> propertyName) {
+                    SerializableFunction3<R1, R1> propertyName) {
         return join1(propertyName);
     }
 
@@ -185,7 +184,7 @@ public interface EntityQueryRelationExpression2<E, R1, R2, Q extends EntityQuery
      */
     <RE extends EntityQueryRelationEntityExpression3<E, R1, R2, R1, Q, QR, C, L>,
             QR extends EntityQueryRelationExpression3<E, R1, R2, R1, Q, C, L>> RE join1(
-                    SerializableFunction1<R1, R1> propertyName);
+                    SerializableFunction3<R1, R1> propertyName);
 
     // ********************************************************************
     // 2
@@ -202,7 +201,7 @@ public interface EntityQueryRelationExpression2<E, R1, R2, Q extends EntityQuery
      */
     default <RE extends EntityQueryRelationEntityExpression3<E, R1, R2, R3, Q, QR, C, L>,
             QR extends EntityQueryRelationExpression3<E, R1, R2, R3, Q, C, L>,
-            R3> RE relate2(SerializableFunction1<R2, R3> propertyName) {
+            R3> RE relate2(SerializableFunction<R2, R3> propertyName) {
         return join2(propertyName);
     }
 
@@ -217,7 +216,7 @@ public interface EntityQueryRelationExpression2<E, R1, R2, Q extends EntityQuery
      */
     <RE extends EntityQueryRelationEntityExpression3<E, R1, R2, R3, Q, QR, C, L>,
             QR extends EntityQueryRelationExpression3<E, R1, R2, R3, Q, C, L>,
-            R3> RE join2(SerializableFunction1<R2, R3> propertyName);
+            R3> RE join2(SerializableFunction<R2, R3> propertyName);
 
     /**
      * relate to.

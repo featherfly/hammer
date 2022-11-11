@@ -75,26 +75,26 @@ public interface SqlQueryEntity extends QueryEntity {
      */
     SqlQueryWithOn join(Join join, String repositoryName);
 
-    //    /**
-    //     * Join.
-    //     *
-    //     * @param <T>            the generic type
-    //     * @param repositoryType the repository type
-    //     * @return the sql query with on
-    //     */
-    //    @Override
-    //    default <T> SqlQueryWithOn join(Class<T> repositoryType) {
-    //        return join(Join.INNER_JOIN, repositoryType);
-    //    }
+    /**
+     * Join.
+     *
+     * @param <T>            the generic type
+     * @param repositoryType the repository type
+     * @return the sql query with on
+     */
+    @Override
+    default <T> SqlQueryWithOn join(Class<T> repositoryType) {
+        return join(Join.INNER_JOIN, repositoryType);
+    }
 
-    //    /**
-    //     * Join.
-    //     *
-    //     * @param <T>            the generic type
-    //     * @param join           the join
-    //     * @param repositoryType the repository type
-    //     * @return the sql query with on
-    //     */
-    //    <T> SqlQueryWithOn join(Join join, Class<T> repositoryType);
+    /**
+     * Join.
+     *
+     * @param <T>            the generic type
+     * @param join           the join
+     * @param repositoryType the repository type
+     * @return the sql query with on
+     */
+    <T> SqlQueryWithOn join(Join join, Class<T> repositoryType);
 
 }

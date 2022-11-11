@@ -15,7 +15,7 @@ import cn.featherfly.hammer.expression.condition.property.EnumExpression;
  * @param <T> the element type
  * @param <Q> the generic type
  */
-public class StaticTypeEnumExpression<T, E extends Enum<E>, Q extends StaticTypeQueryConditionGroupExpression<T, Q>> {
+public class StaticTypeEnumExpression<T, E extends Enum<?>, Q extends StaticTypeQueryConditionGroupExpression<T, Q>> {
 
     /** The expression. */
     private EnumExpression<E, QueryConditionGroupExpression, QueryConditionGroupLogicExpression> expression;

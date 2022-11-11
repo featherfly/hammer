@@ -10,7 +10,7 @@ import cn.featherfly.common.lang.function.SerializableFunction;
 import cn.featherfly.common.repository.mapping.RowMapper;
 import cn.featherfly.common.structure.page.Page;
 import cn.featherfly.hammer.expression.query.QueryLimitExecutor;
-import cn.featherfly.hammer.expression.query.QueryRelateEntityExpression;
+import cn.featherfly.hammer.expression.query.QueryWithEntityExpression;
 
 /**
  * The Class UserQueryWithEntity.
@@ -18,7 +18,7 @@ import cn.featherfly.hammer.expression.query.QueryRelateEntityExpression;
  * @author zhongj
  */
 public class UserQueryWithEntity implements
-        QueryRelateEntityExpression<UserQueryWith, UserQueryWithOn, UserQueryWithEntity, UserQueryRepositoryConditionGroupExpression, UserQueryRepositoryConditionGroupExpression> {
+        QueryWithEntityExpression<UserQueryWith, UserQueryWithOn, UserQueryWithEntity, UserQueryRepositoryConditionGroupExpression, UserQueryRepositoryConditionGroupExpression> {
 
     /**
      * {@inheritDoc}
@@ -69,8 +69,7 @@ public class UserQueryWithEntity implements
      * {@inheritDoc}
      */
     @Override
-    public <T,
-            R> UserQueryWithEntity fetch(@SuppressWarnings("unchecked") SerializableFunction<T, R>... propertyNames) {
+    public <T, R> UserQueryWithEntity fetch(SerializableFunction<T, R>... propertyNames) {
         // YUFEI_TODO Auto-generated method stub
         return null;
     }
@@ -153,6 +152,15 @@ public class UserQueryWithEntity implements
      */
     @Override
     public UserQueryWithOn join(String repositoryName) {
+        // YUFEI_TODO Auto-generated method stub
+        return null;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public <T> UserQueryWithOn join(Class<T> repositoryType) {
         // YUFEI_TODO Auto-generated method stub
         return null;
     }

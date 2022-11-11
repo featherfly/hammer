@@ -9,7 +9,7 @@ import cn.featherfly.common.repository.IgnorePolicy;
 import cn.featherfly.hammer.GenericHammer;
 import cn.featherfly.hammer.dsl.execute.Delete;
 import cn.featherfly.hammer.dsl.execute.Update;
-import cn.featherfly.hammer.dsl.query.EntityQueryEntity;
+import cn.featherfly.hammer.dsl.query.type.EntityQueryEntity;
 
 /**
  * <p>

@@ -18,6 +18,8 @@ import cn.featherfly.common.db.SqlUtils;
 import cn.featherfly.common.db.builder.SqlBuilder;
 import cn.featherfly.common.db.dialect.Dialect;
 import cn.featherfly.common.db.mapping.ClassMappingUtils;
+import cn.featherfly.common.db.mapping.JdbcClassMapping;
+import cn.featherfly.common.db.mapping.JdbcMappingFactory;
 import cn.featherfly.common.lang.AssertIllegalArgument;
 import cn.featherfly.common.lang.LambdaUtils;
 import cn.featherfly.common.lang.LambdaUtils.SerializableSupplierLambdaInfo;
@@ -37,13 +39,11 @@ import cn.featherfly.common.lang.function.ReturnStringFunction;
 import cn.featherfly.common.lang.function.SerializableFunction;
 import cn.featherfly.common.lang.function.SerializableSupplier;
 import cn.featherfly.common.lang.function.StringSupplier;
-import cn.featherfly.common.repository.Execution;
-import cn.featherfly.common.repository.builder.AliasManager;
-import cn.featherfly.common.repository.mapping.ClassMapping;
-import cn.featherfly.common.repository.mapping.MappingFactory;
 import cn.featherfly.common.operator.LogicOperator;
 import cn.featherfly.common.operator.QueryOperator;
 import cn.featherfly.common.operator.QueryOperator.QueryPolicy;
+import cn.featherfly.common.repository.Execution;
+import cn.featherfly.common.repository.builder.AliasManager;
 import cn.featherfly.hammer.expression.RepositoryConditionGroupLogicExpression;
 import cn.featherfly.hammer.expression.condition.ParamedExpression;
 import cn.featherfly.hammer.expression.condition.RepositoryConditionsGroupExpression;
@@ -78,7 +78,7 @@ public abstract class AbstractRepositorySqlConditionGroupExpression<C extends Re
         ParamedExpression {
 
     /** The class mapping. */
-    protected ClassMapping<?> classMapping;
+    protected JdbcClassMapping<?> classMapping;
 
     /** The query alias. */
     private String queryAlias;
@@ -87,7 +87,7 @@ public abstract class AbstractRepositorySqlConditionGroupExpression<C extends Re
     protected AliasManager aliasManager;
 
     /** The factory. */
-    protected MappingFactory factory;
+    protected JdbcMappingFactory factory;
 
     /** The sql page factory. */
     protected SqlPageFactory sqlPageFactory;
@@ -101,7 +101,7 @@ public abstract class AbstractRepositorySqlConditionGroupExpression<C extends Re
      * @param sqlPageFactory the sql page factory
      * @param ignorePolicy   the ignore policy
      */
-    public AbstractRepositorySqlConditionGroupExpression(Dialect dialect, MappingFactory factory,
+    public AbstractRepositorySqlConditionGroupExpression(Dialect dialect, JdbcMappingFactory factory,
             AliasManager aliasManager, SqlPageFactory sqlPageFactory, Predicate<Object> ignorePolicy) {
         this(dialect, factory, aliasManager, null, sqlPageFactory, ignorePolicy);
     }
@@ -116,7 +116,7 @@ public abstract class AbstractRepositorySqlConditionGroupExpression<C extends Re
      * @param sqlPageFactory the sql page factory
      * @param ignorePolicy   the ignore policy
      */
-    public AbstractRepositorySqlConditionGroupExpression(Dialect dialect, MappingFactory factory,
+    public AbstractRepositorySqlConditionGroupExpression(Dialect dialect, JdbcMappingFactory factory,
             AliasManager aliasManager, String queryAlias, SqlPageFactory sqlPageFactory,
             Predicate<Object> ignorePolicy) {
         this(null, dialect, factory, aliasManager, queryAlias, sqlPageFactory, null, ignorePolicy);
@@ -133,9 +133,9 @@ public abstract class AbstractRepositorySqlConditionGroupExpression<C extends Re
      * @param classMapping   classMapping
      * @param ignorePolicy   the ignore policy
      */
-    public AbstractRepositorySqlConditionGroupExpression(Dialect dialect, MappingFactory factory,
-            AliasManager aliasManager, String queryAlias, SqlPageFactory sqlPageFactory, ClassMapping<?> classMapping,
-            Predicate<Object> ignorePolicy) {
+    public AbstractRepositorySqlConditionGroupExpression(Dialect dialect, JdbcMappingFactory factory,
+            AliasManager aliasManager, String queryAlias, SqlPageFactory sqlPageFactory,
+            JdbcClassMapping<?> classMapping, Predicate<Object> ignorePolicy) {
         this(null, dialect, factory, aliasManager, queryAlias, sqlPageFactory, classMapping, ignorePolicy);
     }
 
@@ -151,9 +151,9 @@ public abstract class AbstractRepositorySqlConditionGroupExpression<C extends Re
      * @param classMapping   classMapping
      * @param ignorePolicy   the ignore policy
      */
-    protected AbstractRepositorySqlConditionGroupExpression(L parent, Dialect dialect, MappingFactory factory,
-            AliasManager aliasManager, String queryAlias, SqlPageFactory sqlPageFactory, ClassMapping<?> classMapping,
-            Predicate<Object> ignorePolicy) {
+    protected AbstractRepositorySqlConditionGroupExpression(L parent, Dialect dialect, JdbcMappingFactory factory,
+            AliasManager aliasManager, String queryAlias, SqlPageFactory sqlPageFactory,
+            JdbcClassMapping<?> classMapping, Predicate<Object> ignorePolicy) {
         super(dialect, ignorePolicy, parent);
         this.queryAlias = queryAlias;
         this.classMapping = classMapping;
@@ -324,6 +324,7 @@ public abstract class AbstractRepositorySqlConditionGroupExpression<C extends Re
      */
     @Override
     public <R> L eq(SerializableSupplier<R> property, QueryPolicy queryPolicy) {
+        // FIXME value 空指针异常
         List<Tuple2<String, Optional<R>>> tuples = supplier(LambdaUtils.getSerializableSupplierLambdaInfo(property));
         L l = null;
         C c = (C) this;
@@ -445,6 +446,7 @@ public abstract class AbstractRepositorySqlConditionGroupExpression<C extends Re
      */
     @Override
     public <T, R> L ne(SerializableFunction<T, R> name, R value, QueryPolicy queryPolicy) {
+        // FIXME value 空指针异常
         List<Tuple2<String, Optional<R>>> tuples = supplier(LambdaUtils.getLambdaInfo(name), value);
         L l = null;
         C c = (C) this;
@@ -468,6 +470,7 @@ public abstract class AbstractRepositorySqlConditionGroupExpression<C extends Re
      */
     @Override
     public <R> L ne(SerializableSupplier<R> property, QueryPolicy queryPolicy) {
+        // FIXME value 空指针异常
         List<Tuple2<String, Optional<R>>> tuples = supplier(LambdaUtils.getSerializableSupplierLambdaInfo(property));
         L l = null;
         C c = (C) this;
@@ -2452,7 +2455,7 @@ public abstract class AbstractRepositorySqlConditionGroupExpression<C extends Re
      * {@inheritDoc}
      */
     @Override
-    public <T> DateExpression<C, L> propertyDate(Class<T> repository, String name) {
+    public <D extends Date, T> DateExpression<D, C, L> propertyDate(Class<T> repository, String name) {
         return propertyDate(getTableName(repository), name);
     }
 
@@ -2460,7 +2463,7 @@ public abstract class AbstractRepositorySqlConditionGroupExpression<C extends Re
      * {@inheritDoc}
      */
     @Override
-    public DateExpression<C, L> propertyDate(int repositoryIndex, String name) {
+    public <D extends Date> DateExpression<D, C, L> propertyDate(int repositoryIndex, String name) {
         return new RepositorySimpleDateExpression<>(repositoryIndex,
                 ClassMappingUtils.getColumnName(name, classMapping), this);
     }
@@ -2469,15 +2472,7 @@ public abstract class AbstractRepositorySqlConditionGroupExpression<C extends Re
      * {@inheritDoc}
      */
     @Override
-    public <T, R extends Date> DateExpression<C, L> propertyDate(SerializableFunction<T, R> name) {
-        return propertyDate(getPropertyName(name));
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public DateExpression<C, L> propertyDate(String name) {
+    public <D extends Date> DateExpression<D, C, L> propertyDate(String name) {
         return new SimpleDateExpression<>(ClassMappingUtils.getColumnName(name, classMapping), this);
     }
 
@@ -2485,7 +2480,7 @@ public abstract class AbstractRepositorySqlConditionGroupExpression<C extends Re
      * {@inheritDoc}
      */
     @Override
-    public DateExpression<C, L> propertyDate(String repository, String name) {
+    public <D extends Date> DateExpression<D, C, L> propertyDate(String repository, String name) {
         return new RepositorySimpleDateExpression<>(repository, ClassMappingUtils.getColumnName(name, classMapping),
                 this);
     }
@@ -2494,7 +2489,7 @@ public abstract class AbstractRepositorySqlConditionGroupExpression<C extends Re
      * {@inheritDoc}
      */
     @Override
-    public <T> EnumExpression<C, L> propertyEnum(Class<T> repository, String name) {
+    public <T, E extends Enum<?>> EnumExpression<E, C, L> propertyEnum(Class<T> repository, String name) {
         return propertyEnum(getTableName(repository), name);
     }
 
@@ -2502,7 +2497,7 @@ public abstract class AbstractRepositorySqlConditionGroupExpression<C extends Re
      * {@inheritDoc}
      */
     @Override
-    public EnumExpression<C, L> propertyEnum(int repositoryIndex, String name) {
+    public <E extends Enum<?>> EnumExpression<E, C, L> propertyEnum(int repositoryIndex, String name) {
         return new RepositorySimpleEnumExpression<>(repositoryIndex,
                 ClassMappingUtils.getColumnName(name, classMapping), this);
     }
@@ -2511,23 +2506,7 @@ public abstract class AbstractRepositorySqlConditionGroupExpression<C extends Re
      * {@inheritDoc}
      */
     @Override
-    public <T, R extends Enum<?>> EnumExpression<C, L> propertyEnum(SerializableFunction<T, R> name) {
-        return propertyEnum(getPropertyName(name));
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public EnumExpression<C, L> propertyEnum(String name) {
-        return new SimpleEnumExpression<>(ClassMappingUtils.getColumnName(name, classMapping), this);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public EnumExpression<C, L> propertyEnum(String repository, String name) {
+    public <E extends Enum<?>> EnumExpression<E, C, L> propertyEnum(String repository, String name) {
         return new RepositorySimpleEnumExpression<>(repository, ClassMappingUtils.getColumnName(name, classMapping),
                 this);
     }
@@ -2536,7 +2515,15 @@ public abstract class AbstractRepositorySqlConditionGroupExpression<C extends Re
      * {@inheritDoc}
      */
     @Override
-    public <T> NumberExpression<C, L> propertyNumber(Class<T> repository, String name) {
+    public <E extends Enum<?>> EnumExpression<E, C, L> propertyEnum(String name) {
+        return new SimpleEnumExpression<>(ClassMappingUtils.getColumnName(name, classMapping), this);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public <N extends Number, T> NumberExpression<N, C, L> propertyNumber(Class<T> repository, String name) {
         return propertyNumber(getTableName(repository), name);
     }
 
@@ -2544,7 +2531,7 @@ public abstract class AbstractRepositorySqlConditionGroupExpression<C extends Re
      * {@inheritDoc}
      */
     @Override
-    public NumberExpression<C, L> propertyNumber(int repositoryIndex, String name) {
+    public <N extends Number> NumberExpression<N, C, L> propertyNumber(int repositoryIndex, String name) {
         return new RepositorySimpleNumberExpression<>(repositoryIndex,
                 ClassMappingUtils.getColumnName(name, classMapping), this);
     }
@@ -2553,15 +2540,7 @@ public abstract class AbstractRepositorySqlConditionGroupExpression<C extends Re
      * {@inheritDoc}
      */
     @Override
-    public <T, R extends Number> NumberExpression<C, L> propertyNumber(SerializableFunction<T, R> name) {
-        return propertyNumber(getPropertyName(name));
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public NumberExpression<C, L> propertyNumber(String name) {
+    public <N extends Number> NumberExpression<N, C, L> propertyNumber(String name) {
         return new SimpleNumberExpression<>(ClassMappingUtils.getColumnName(name, classMapping), this);
     }
 
@@ -2569,7 +2548,7 @@ public abstract class AbstractRepositorySqlConditionGroupExpression<C extends Re
      * {@inheritDoc}
      */
     @Override
-    public NumberExpression<C, L> propertyNumber(String repository, String name) {
+    public <N extends Number> NumberExpression<N, C, L> propertyNumber(String repository, String name) {
         return new RepositorySimpleNumberExpression<>(repository, ClassMappingUtils.getColumnName(name, classMapping),
                 this);
     }
@@ -2589,14 +2568,6 @@ public abstract class AbstractRepositorySqlConditionGroupExpression<C extends Re
     public StringExpression<C, L> propertyString(int repositoryIndex, String name) {
         return new RepositorySimpleStringExpression<>(repositoryIndex,
                 ClassMappingUtils.getColumnName(name, classMapping), this);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public <T> StringExpression<C, L> propertyString(SerializableFunction<T, String> name) {
-        return propertyString(getPropertyName(name));
     }
 
     /**
@@ -2628,15 +2599,15 @@ public abstract class AbstractRepositorySqlConditionGroupExpression<C extends Re
      * {@inheritDoc}
      */
     @Override
-    public <T, R extends Number> NumberExpression<C, L> property(ReturnNumberFunction<T, R> name) {
-        return propertyNumber(getPropertyName(name));
+    public <T, R extends Number> NumberExpression<R, C, L> property(ReturnNumberFunction<T, R> name) {
+        return (NumberExpression<R, C, L>) propertyNumber(getPropertyName(name));
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public <T, R extends Date> DateExpression<C, L> property(ReturnDateFunction<T, R> name) {
+    public <T, R extends Date> DateExpression<R, C, L> property(ReturnDateFunction<T, R> name) {
         return propertyDate(getPropertyName(name));
     }
 
@@ -2644,7 +2615,7 @@ public abstract class AbstractRepositorySqlConditionGroupExpression<C extends Re
      * {@inheritDoc}
      */
     @Override
-    public <T, R extends Enum<?>> EnumExpression<C, L> property(ReturnEnumFunction<T, R> name) {
+    public <T, R extends Enum<?>> EnumExpression<R, C, L> property(ReturnEnumFunction<T, R> name) {
         return propertyEnum(getPropertyName(name));
     }
 

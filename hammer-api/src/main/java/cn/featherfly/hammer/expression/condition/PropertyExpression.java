@@ -15,7 +15,10 @@ import cn.featherfly.hammer.expression.condition.property.ObjectExpression;
 import cn.featherfly.hammer.expression.condition.property.StringExpression;
 
 /**
- * PropertyConditionExpression. .
+ * <p>
+ * PropertyConditionExpression
+ * </p>
+ * .
  *
  * @author zhongj
  * @param <C> the generic type
@@ -61,11 +64,10 @@ public interface PropertyExpression<C extends ConditionExpression, L extends Log
     /**
      * Property enum.
      *
-     * @param <R>  the generic type
      * @param name the name
      * @return the enum expression
      */
-    <R extends Enum<R>> EnumExpression<R, C, L> propertyEnum(String name);
+    <R extends Enum<?>> EnumExpression<R, C, L> propertyEnum(String name);
 
     /**
      * Property.
@@ -114,5 +116,5 @@ public interface PropertyExpression<C extends ConditionExpression, L extends Log
      * @param name the name
      * @return the enum expression
      */
-    <T, R extends Enum<R>> EnumExpression<R, C, L> property(ReturnEnumFunction<T, R> name);
+    <T, R extends Enum<?>> EnumExpression<R, C, L> property(ReturnEnumFunction<T, R> name);
 }

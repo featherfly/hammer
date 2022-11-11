@@ -8,8 +8,8 @@ import java.util.Map;
 import java.util.function.Consumer;
 
 import cn.featherfly.common.lang.function.SerializableFunction;
-import cn.featherfly.common.repository.mapping.RowMapper;
 import cn.featherfly.common.operator.AggregateFunction;
+import cn.featherfly.common.repository.mapping.RowMapper;
 import cn.featherfly.common.structure.page.Page;
 import cn.featherfly.hammer.dsl.query.QuerySortExpression;
 import cn.featherfly.hammer.expression.condition.ConditionGroupConfig;
@@ -20,11 +20,13 @@ import cn.featherfly.hammer.expression.query.QueryWithExpression;
 import cn.featherfly.hammer.expression.query.QueryWithOnExpression;
 
 /**
- * <p>
- * UserUpdate
- * </p>
+ * The Class AbstractUserQueryEntity.
  *
  * @author zhongj
+ * @param <Q>   the generic type
+ * @param <QW>  the generic type
+ * @param <QWO> the generic type
+ * @param <QWE> the generic type
  */
 public class AbstractUserQueryEntity<Q extends AbstractUserQueryEntity<Q, QW, QWO, QWE>,
         QW extends QueryWithExpression<QW, QWO, QWE, UserQueryRepositoryConditionGroupExpression, UserQueryRepositoryConditionGroupExpression>,
@@ -190,15 +192,6 @@ public class AbstractUserQueryEntity<Q extends AbstractUserQueryEntity<Q, QW, QW
      * {@inheritDoc}
      */
     @Override
-    public QWO with(String repositoryName) {
-        // YUFEI_TODO Auto-generated method stub
-        return null;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
     public Q id(String propertyName) {
         // YUFEI_TODO Auto-generated method stub
         return null;
@@ -209,15 +202,6 @@ public class AbstractUserQueryEntity<Q extends AbstractUserQueryEntity<Q, QW, QW
      */
     @Override
     public <T, R> Q id(SerializableFunction<T, R> propertyName) {
-        // YUFEI_TODO Auto-generated method stub
-        return null;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public <T> QWO with(Class<T> repositoryType) {
         // YUFEI_TODO Auto-generated method stub
         return null;
     }
@@ -238,24 +222,6 @@ public class AbstractUserQueryEntity<Q extends AbstractUserQueryEntity<Q, QW, QW
     public Long count() {
         // YUFEI_TODO Auto-generated method stub
         return 0l;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public Q property(String propertyName, AggregateFunction aggregateFunction) {
-        // YUFEI_TODO Auto-generated method stub
-        return null;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public <T, R> Q property(SerializableFunction<T, R> propertyName, AggregateFunction aggregateFunction) {
-        // YUFEI_TODO Auto-generated method stub
-        return null;
     }
 
     /**
@@ -372,6 +338,151 @@ public class AbstractUserQueryEntity<Q extends AbstractUserQueryEntity<Q, QW, QW
     @Override
     public UserQueryConditionGroupExpression where(
             Consumer<ConditionGroupConfig<UserQueryConditionGroupExpression>> consumer) {
+        // YUFEI_TODO Auto-generated method stub
+        return null;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public Q count(boolean distinct, String propertyName) {
+        // YUFEI_TODO Auto-generated method stub
+        return null;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public <T, R> Q count(boolean distinct, SerializableFunction<T, R> propertyName) {
+        // YUFEI_TODO Auto-generated method stub
+        return null;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public Q sum(boolean distinct, String propertyName) {
+        // YUFEI_TODO Auto-generated method stub
+        return null;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public <T, R> Q sum(boolean distinct, SerializableFunction<T, R> propertyName) {
+        // YUFEI_TODO Auto-generated method stub
+        return null;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public Q max(boolean distinct, String propertyName) {
+        // YUFEI_TODO Auto-generated method stub
+        return null;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public <T, R> Q max(boolean distinct, SerializableFunction<T, R> propertyName) {
+        // YUFEI_TODO Auto-generated method stub
+        return null;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public Q min(boolean distinct, String propertyName) {
+        // YUFEI_TODO Auto-generated method stub
+        return null;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public <T, R> Q min(boolean distinct, SerializableFunction<T, R> propertyName) {
+        // YUFEI_TODO Auto-generated method stub
+        return null;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public Q avg(boolean distinct, String propertyName) {
+        // YUFEI_TODO Auto-generated method stub
+        return null;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public <T, R> Q avg(boolean distinct, SerializableFunction<T, R> propertyName) {
+        // YUFEI_TODO Auto-generated method stub
+        return null;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public Q property(boolean distinct, String propertyName) {
+        // YUFEI_TODO Auto-generated method stub
+        return null;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public Q property(AggregateFunction aggregateFunction, boolean distinct, String propertyName) {
+        // YUFEI_TODO Auto-generated method stub
+        return null;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public <T, R> Q property(boolean distinct, SerializableFunction<T, R> propertyName) {
+        // YUFEI_TODO Auto-generated method stub
+        return null;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public <T, R> Q property(AggregateFunction aggregateFunction, boolean distinct,
+            SerializableFunction<T, R> propertyName) {
+        // YUFEI_TODO Auto-generated method stub
+        return null;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public QWO join(String repositoryName) {
+        // YUFEI_TODO Auto-generated method stub
+        return null;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public <T> QWO join(Class<T> repositoryType) {
         // YUFEI_TODO Auto-generated method stub
         return null;
     }

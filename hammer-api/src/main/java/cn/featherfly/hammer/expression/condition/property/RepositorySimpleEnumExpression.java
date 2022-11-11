@@ -12,7 +12,7 @@ import cn.featherfly.hammer.expression.condition.RepositoryConditionsExpression;
  * @param <C> the generic type
  * @param <L> the generic type
  */
-public class RepositorySimpleEnumExpression<E extends Enum<E>, C extends RepositoryConditionsExpression<C, L>,
+public class RepositorySimpleEnumExpression<E extends Enum<?>, C extends RepositoryConditionsExpression<C, L>,
         L extends LogicExpression<C, L>> implements EnumExpression<E, C, L> {
 
     private String repository;

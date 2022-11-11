@@ -31,6 +31,7 @@ import org.slf4j.LoggerFactory;
 
 import cn.featherfly.common.bean.BeanProperty;
 import cn.featherfly.common.bean.BeanPropertyValue;
+import cn.featherfly.common.db.FieldValueOperator;
 import cn.featherfly.common.db.JdbcException;
 import cn.featherfly.common.db.JdbcUtils;
 import cn.featherfly.common.db.SqlUtils;
@@ -306,7 +307,12 @@ public abstract class AbstractJdbc implements Jdbc {
                 try (ResultSet res = prep.getGeneratedKeys()) {
                     int row = 0;
                     while (res.next()) {
-                        T value = manager.get(res, 1, generatedKeyHolder.getType());
+                        T value;
+                        if (generatedKeyHolder.getType() instanceof BeanProperty) {
+                            value = manager.get(res, 1, (BeanProperty<T>) generatedKeyHolder.getType());
+                        } else {
+                            value = manager.get(res, 1, generatedKeyHolder.getType().getType());
+                        }
                         //                    Object value = JdbcUtils.getResultSetValue(res, 1, pm.getPropertyType());
                         generatedKeyHolder.acceptKey(value, row++);
                         logger.debug("auto generated key: ", value);
@@ -682,11 +688,10 @@ public abstract class AbstractJdbc implements Jdbc {
             @SuppressWarnings("unchecked")
             BeanProperty<Object> bp = (BeanProperty<Object>) bpv.getBeanProperty();
             manager.set(prep, index, bpv.getValue(), bp);
-        }
-        //        else if (arg instanceof FieldValue) {
-        //      IMPLSOON 这里直接用FieldValue设置，不用manager.set就能减少判断
-        //        }
-        else {
+        } else if (arg instanceof FieldValueOperator) {
+            //              IMPLSOON 这里直接用FieldValue设置，不用manager.set就能减少判断
+            ((FieldValueOperator<?>) arg).set(prep, index);
+        } else {
             manager.set(prep, index, arg);
         }
     }
@@ -700,14 +705,15 @@ public abstract class AbstractJdbc implements Jdbc {
     protected void setParams(PreparedStatement prep, Object... args) {
         for (int i = 0; i < args.length; i++) {
             Object arg = args[i];
-            if (arg instanceof BeanPropertyValue) {
-                BeanPropertyValue<?> bpv = (BeanPropertyValue<?>) arg;
-                @SuppressWarnings("unchecked")
-                BeanProperty<Object> argBp = (BeanProperty<Object>) bpv.getBeanProperty();
-                manager.set(prep, i + 1, bpv.getValue(), argBp);
-            } else {
-                manager.set(prep, i + 1, arg);
-            }
+            setParam(prep, i + 1, arg);
+            //            if (arg instanceof BeanPropertyValue) {
+            //                BeanPropertyValue<?> bpv = (BeanPropertyValue<?>) arg;
+            //                @SuppressWarnings("unchecked")
+            //                BeanProperty<Object> argBp = (BeanProperty<Object>) bpv.getBeanProperty();
+            //                manager.set(prep, i + 1, bpv.getValue(), argBp);
+            //            } else {
+            //                manager.set(prep, i + 1, arg);
+            //            }
         }
     }
 
