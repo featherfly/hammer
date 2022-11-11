@@ -9,7 +9,7 @@ import java.util.function.Consumer;
 
 import cn.featherfly.common.lang.function.SerializableFunction;
 import cn.featherfly.common.repository.mapping.RowMapper;
-import cn.featherfly.common.repository.operate.AggregateFunction;
+import cn.featherfly.common.operator.AggregateFunction;
 import cn.featherfly.common.structure.page.Page;
 import cn.featherfly.hammer.dsl.query.QuerySortExpression;
 import cn.featherfly.hammer.expression.condition.ConditionGroupConfig;

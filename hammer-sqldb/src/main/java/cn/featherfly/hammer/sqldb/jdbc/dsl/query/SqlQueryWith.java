@@ -245,7 +245,7 @@ public class SqlQueryWith implements QueryWith, SqlQueryWithOn, SqlQueryWithEnti
      */
     @Override
     public SqlQueryWithEntity fetch(String propertyName) {
-        selectJoinOnBasicBuilder.addSelectColumn(ClassMappingUtils.getColumnName(propertyName, classMapping));
+        selectJoinOnBasicBuilder.addColumn(ClassMappingUtils.getColumnName(propertyName, classMapping));
         return this;
     }
 
@@ -254,7 +254,7 @@ public class SqlQueryWith implements QueryWith, SqlQueryWithOn, SqlQueryWithEnti
      */
     @Override
     public SqlQueryWithEntity fetch(String... propertyNames) {
-        selectJoinOnBasicBuilder.addSelectColumns(ClassMappingUtils.getColumnNames(classMapping, propertyNames));
+        selectJoinOnBasicBuilder.addColumns(ClassMappingUtils.getColumnNames(classMapping, propertyNames));
         return this;
     }
 
@@ -271,7 +271,7 @@ public class SqlQueryWith implements QueryWith, SqlQueryWithOn, SqlQueryWithEnti
      */
     @Override
     public SqlQueryWithEntity fetch(Collection<String> propertyNames) {
-        selectJoinOnBasicBuilder.addSelectColumns(ClassMappingUtils.getColumnNames(classMapping, propertyNames));
+        selectJoinOnBasicBuilder.addColumns(ClassMappingUtils.getColumnNames(classMapping, propertyNames));
         return this;
     }
 
@@ -304,7 +304,7 @@ public class SqlQueryWith implements QueryWith, SqlQueryWithOn, SqlQueryWithEnti
      */
     @Override
     public SqlQueryWithEntity fetchAlias(String columnName, String aliasName) {
-        selectJoinOnBasicBuilder.addSelectColumn(ClassMappingUtils.getColumnName(columnName, classMapping), aliasName);
+        selectJoinOnBasicBuilder.addColumn(ClassMappingUtils.getColumnName(columnName, classMapping), aliasName);
         return this;
     }
 

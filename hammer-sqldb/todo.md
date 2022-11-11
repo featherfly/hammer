@@ -1,5 +1,10 @@
 ## 新功能
 
+- [ ] TplExecutor各种方法中的TplTemplateId可以加入直接传入字符串模板的方式（用于jdk17的多行字符串），类似@Template(value = "sql template....")
+    使用sha1把编码sql template，作为sql template的name进行模板注册，使用固定的
+
+- [ ] TplExecuteId的字符串表现形式应该从namespace@name改为name@namesapce，这样就和现在url,email等中的@使用方式一致了，表示name at namesapce
+
 - [ ] 对象映射加入动态表名
 
 - [ ] 加入获取实体对象以及其关系对象的查询方式

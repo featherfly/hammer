@@ -18,7 +18,7 @@ import cn.featherfly.hammer.sqldb.jdbc.Jdbc;
  * @since 0.1.0
  * @param <T> 对象类型
  */
-public class MergeOperate<T> extends AbstractOperate<T> {
+public class MergeOperate<T> extends AbstractOperate<T> implements ExecuteOperate<T> {
 
     /**
      * 使用给定数据源以及给定对象生成更新操作.
@@ -58,9 +58,15 @@ public class MergeOperate<T> extends AbstractOperate<T> {
     }
 
     /**
-     * <p>
+     * {@inheritDoc}
+     */
+    @Override
+    public int execute(T entity) {
+        return execute(entity, false);
+    }
+
+    /**
      * 合并操作，将传入对象的非空字段更新进数据库（忽略null）.
-     * </p>
      *
      * @param entity   对象
      * @param onlyNull only null

@@ -23,10 +23,7 @@ import cn.featherfly.hammer.sqldb.jdbc.Jdbc;
 import cn.featherfly.hammer.sqldb.jdbc.SqlPageFactory;
 
 /**
- * <p>
- * SqlQueryProperties
- * </p>
- * .
+ * SqlQueryProperties.
  *
  * @author zhongj
  */
@@ -200,7 +197,7 @@ public class SqlQueryEntityProperties extends AbstractSqlQueryEntityProperties<S
     //    @Override
     //    public Long count() {
     //        return new SqlQueryExpression(jdbc, sqlPageFactory, classMapping,
-    //                selectBuilder.addSelectColumn(Chars.STAR, AggregateFunction.COUNT), ignorePolicy).longInt();
+    //                selectBuilder.addColumn(Chars.STAR, AggregateFunction.COUNT), ignorePolicy).longInt();
     //    }
 
     /**
@@ -224,8 +221,11 @@ public class SqlQueryEntityProperties extends AbstractSqlQueryEntityProperties<S
      */
     @Override
     public SqlQueryWithOn join(Join join, String repositoryName) {
-        return new SqlQueryWith(this, aliasManager, factory, sqlPageFactory, selectBuilder.getTableAlias(), getIdName(),
-                repositoryName, aliasManager.put(repositoryName), join, ignorePolicy);
+        //        return new SqlQueryWith(this, aliasManager, factory, sqlPageFactory, selectBuilder.getTableAlias(), getIdName(),
+        //                repositoryName, aliasManager.put(repositoryName), join, ignorePolicy);
+        //      IMPLSOON 后续来实现，先让编译通过
+        return new SqlQueryWith(this, aliasManager, factory, sqlPageFactory, "", getIdName(), repositoryName,
+                aliasManager.put(repositoryName), join, ignorePolicy);
     }
 
     /**
@@ -249,8 +249,11 @@ public class SqlQueryEntityProperties extends AbstractSqlQueryEntityProperties<S
      */
     @Override
     public <T> SqlQueryWithOn join(Join join, Class<T> repositoryType) {
-        return new SqlQueryWith(this, aliasManager, factory, sqlPageFactory, selectBuilder.getTableAlias(), getIdName(),
-                repositoryType, join, ignorePolicy);
+        //        return new SqlQueryWith(this, aliasManager, factory, sqlPageFactory, selectBuilder.getTableAlias(), getIdName(),
+        //                repositoryType, join, ignorePolicy);
+        //      IMPLSOON 后续来实现，先让编译通过
+        return new SqlQueryWith(this, aliasManager, factory, sqlPageFactory, "", getIdName(), repositoryType, join,
+                ignorePolicy);
     }
 
     /**

@@ -8,8 +8,8 @@ import cn.featherfly.common.db.builder.model.ConditionColumnElement;
 import cn.featherfly.common.db.dialect.Dialect;
 import cn.featherfly.common.repository.builder.BuilderException;
 import cn.featherfly.common.repository.builder.BuilderExceptionCode;
-import cn.featherfly.common.repository.operate.QueryOperator;
-import cn.featherfly.common.repository.operate.QueryOperator.QueryPolicy;
+import cn.featherfly.common.operator.QueryOperator;
+import cn.featherfly.common.operator.QueryOperator.QueryPolicy;
 import cn.featherfly.hammer.expression.condition.ParamedExpression;
 
 /**

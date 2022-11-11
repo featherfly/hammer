@@ -347,9 +347,6 @@ public abstract class AbstractJdbc implements Jdbc {
             DataSource ds = getDataSource();
             Connection con = getConnection(ds);
             try (PreparedStatement prep = con.prepareStatement(sql)) {
-                //                if (logger.isDebugEnabled()) {
-                //                    logger.debug("execute sql -> {} , params -> {}", sql, ArrayUtils.toString(args));
-                //                }
                 setParams(prep, args);
                 try (ResultSet rs = prep.executeQuery()) {
                     return postHandle(execution.setOriginalResult(JdbcUtils.getResultSetMaps(rs, manager)), sql, args);
@@ -523,7 +520,7 @@ public abstract class AbstractJdbc implements Jdbc {
         if (results == null || results.size() <= 0) {
             return null;
         } else if (results.size() > 1) {
-            // TODO 优化错误消息
+            // ENHANCE 优化错误消息
             throw new JdbcException(Strings.format("results size must be 1, but is {0}", results.size()));
         }
         return results.iterator().next();
@@ -595,11 +592,11 @@ public abstract class AbstractJdbc implements Jdbc {
 
     private <T> T nullableSingleResult(Collection<T> results) {
         if (Lang.isEmpty(results)) {
-            // TODO 优化错误消息
+            // ENHANCE 优化错误消息
             throw new JdbcException("results is empty");
         }
         if (results.size() > 1) {
-            // TODO 优化错误消息
+            // ENHANCE 优化错误消息
             throw new JdbcException(Strings.format("results size must be 1, but is {0}", results.size()));
         }
         return results.iterator().next();
@@ -685,7 +682,11 @@ public abstract class AbstractJdbc implements Jdbc {
             @SuppressWarnings("unchecked")
             BeanProperty<Object> bp = (BeanProperty<Object>) bpv.getBeanProperty();
             manager.set(prep, index, bpv.getValue(), bp);
-        } else {
+        }
+        //        else if (arg instanceof FieldValue) {
+        //      IMPLSOON 这里直接用FieldValue设置，不用manager.set就能减少判断
+        //        }
+        else {
             manager.set(prep, index, arg);
         }
     }

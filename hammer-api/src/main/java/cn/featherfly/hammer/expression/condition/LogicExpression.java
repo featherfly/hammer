@@ -3,7 +3,7 @@ package cn.featherfly.hammer.expression.condition;
 
 import java.util.function.Function;
 
-import cn.featherfly.common.repository.operate.LogicOperator;
+import cn.featherfly.common.operator.LogicOperator;
 
 /**
  * 逻辑条件.

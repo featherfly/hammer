@@ -13,9 +13,9 @@ import cn.featherfly.common.constant.Chars;
 import cn.featherfly.common.db.mapping.ClassMappingUtils;
 import cn.featherfly.common.db.mapping.SqlTypeMappingManager;
 import cn.featherfly.common.db.metadata.DatabaseMetadata;
-import cn.featherfly.common.lang.GenericType;
 import cn.featherfly.common.lang.Lang;
-import cn.featherfly.common.lang.reflect.GenericClass;
+import cn.featherfly.common.lang.reflect.ClassType;
+import cn.featherfly.common.lang.reflect.Type;
 import cn.featherfly.common.repository.mapping.ClassMapping;
 import cn.featherfly.common.repository.mapping.PropertyMapping;
 import cn.featherfly.hammer.sqldb.jdbc.GeneratedKeyHolder;
@@ -107,7 +107,7 @@ public class UpsertOperate<T> extends AbstractBatchExecuteOperate<T> {
         //                @SuppressWarnings("unchecked")
         //                @Override
         //                public GenericType<Serializable> getType() {
-        //                    return (GenericClass<Serializable>) new GenericClass<>(pks.get(0).getPropertyType());
+        //                    return (ClassType<Serializable>) new ClassType<>(pks.get(0).getPropertyType());
         //                }
         //            }, getBatchParameters(entities, tuple.get1()));
         //        } else {
@@ -148,8 +148,8 @@ public class UpsertOperate<T> extends AbstractBatchExecuteOperate<T> {
 
                 @SuppressWarnings("unchecked")
                 @Override
-                public GenericType<Serializable> getType() {
-                    return (GenericClass<Serializable>) new GenericClass<>(pks.get(0).getPropertyType());
+                public Type<Serializable> getType() {
+                    return (ClassType<Serializable>) new ClassType<>(pks.get(0).getPropertyType());
                 }
             }, getParameters(entity));
         } else {

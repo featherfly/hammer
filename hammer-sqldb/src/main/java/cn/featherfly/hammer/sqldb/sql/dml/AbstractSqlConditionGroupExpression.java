@@ -38,9 +38,9 @@ import cn.featherfly.common.lang.function.SerializableSupplier;
 import cn.featherfly.common.lang.function.StringSupplier;
 import cn.featherfly.common.repository.Execution;
 import cn.featherfly.common.repository.mapping.ClassMapping;
-import cn.featherfly.common.repository.operate.LogicOperator;
-import cn.featherfly.common.repository.operate.QueryOperator;
-import cn.featherfly.common.repository.operate.QueryOperator.QueryPolicy;
+import cn.featherfly.common.operator.LogicOperator;
+import cn.featherfly.common.operator.QueryOperator;
+import cn.featherfly.common.operator.QueryOperator.QueryPolicy;
 import cn.featherfly.hammer.dsl.query.TypeQueryEntity;
 import cn.featherfly.hammer.expression.ConditionGroupExpression;
 import cn.featherfly.hammer.expression.ConditionGroupLogicExpression;
@@ -532,7 +532,7 @@ public abstract class AbstractSqlConditionGroupExpression<C extends ConditionGro
     @Override
     public L ew(StringSupplier property, QueryPolicy queryPolicy) {
         SerializableSupplierLambdaInfo<String> info = LambdaUtils.getSerializableSupplierLambdaInfo(property);
-        return co(info.getSerializedLambdaInfo().getPropertyName(), info.getValue(), queryPolicy);
+        return ew(info.getSerializedLambdaInfo().getPropertyName(), info.getValue(), queryPolicy);
     }
 
     //    /**

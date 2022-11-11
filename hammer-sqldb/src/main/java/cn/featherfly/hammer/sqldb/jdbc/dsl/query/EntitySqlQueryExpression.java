@@ -6,17 +6,17 @@ import java.util.function.Predicate;
 import cn.featherfly.common.constant.Chars;
 import cn.featherfly.common.db.builder.dml.basic.SqlSelectBasicBuilder;
 import cn.featherfly.common.lang.Lang;
+import cn.featherfly.common.operator.AggregateFunction;
 import cn.featherfly.common.repository.builder.AliasManager;
 import cn.featherfly.common.repository.mapping.ClassMapping;
 import cn.featherfly.common.repository.mapping.MappingFactory;
-import cn.featherfly.common.repository.operate.AggregateFunction;
-import cn.featherfly.hammer.dsl.query.TypeQueryConditionGroupLogicExpression;
-import cn.featherfly.hammer.dsl.query.TypeQueryEntity;
+import cn.featherfly.hammer.dsl.query.EntityQueryConditionGroupLogicExpression;
+import cn.featherfly.hammer.dsl.query.EntityQueryEntity;
 import cn.featherfly.hammer.sqldb.jdbc.Jdbc;
 import cn.featherfly.hammer.sqldb.jdbc.SqlPageFactory;
 
 /**
- * SqlDeleteExpression .
+ * EntitySqlQueryExpression .
  *
  * @author zhongj
  */
@@ -28,40 +28,42 @@ public class EntitySqlQueryExpression<E> extends EntitySqlQueryConditionGroupExp
     /**
      * Instantiates a new sql query expression.
      *
-     * @param jdbc            the jdbc
-     * @param classMapping    the class mapping
-     * @param typeQueryEntity the type query entity
-     * @param factory         the factory
-     * @param sqlPageFactory  the sql page factory
-     * @param aliasManager    the alias manager
-     * @param selectBuilder   the select builder
-     * @param ignorePolicy    the ignore policy
+     * @param jdbc              the jdbc
+     * @param classMapping      the class mapping
+     * @param entityQueryEntity the entity query entity
+     * @param factory           the factory
+     * @param sqlPageFactory    the sql page factory
+     * @param aliasManager      the alias manager
+     * @param selectBuilder     the select builder
+     * @param ignorePolicy      the ignore policy
      */
-    public EntitySqlQueryExpression(Jdbc jdbc, ClassMapping<?> classMapping, TypeQueryEntity typeQueryEntity,
+    public EntitySqlQueryExpression(Jdbc jdbc, ClassMapping<?> classMapping, EntityQueryEntity<E> entityQueryEntity,
             MappingFactory factory, SqlPageFactory sqlPageFactory, AliasManager aliasManager,
             SqlSelectBasicBuilder selectBuilder, Predicate<Object> ignorePolicy) {
-        super(jdbc, selectBuilder.getTableAlias(), classMapping, factory, sqlPageFactory, aliasManager, typeQueryEntity,
-                ignorePolicy);
+        //        super(jdbc, selectBuilder.getTableAlias(), classMapping, factory, sqlPageFactory, aliasManager,
+        //                entityQueryEntity, ignorePolicy);
+        //      IMPLSOON 后续来实现，先让编译通过
+        super(jdbc, "", classMapping, factory, sqlPageFactory, aliasManager, entityQueryEntity, ignorePolicy);
         this.selectBuilder = selectBuilder;
     }
 
     /**
      * Instantiates a new type sql query expression.
      *
-     * @param parent          the parent
-     * @param jdbc            the jdbc
-     * @param queryAlias      the query alias
-     * @param classMapping    the class mapping
-     * @param factory         the factory
-     * @param sqlPageFactory  the sql page factory
-     * @param aliasManager    the alias manager
-     * @param typeQueryEntity the type query entity
-     * @param ignorePolicy    the ignore policy
+     * @param parent            the parent
+     * @param jdbc              the jdbc
+     * @param queryAlias        the query alias
+     * @param classMapping      the class mapping
+     * @param factory           the factory
+     * @param sqlPageFactory    the sql page factory
+     * @param aliasManager      the alias manager
+     * @param entityQueryEntity the entity query entity
+     * @param ignorePolicy      the ignore policy
      */
-    EntitySqlQueryExpression(TypeQueryConditionGroupLogicExpression parent, Jdbc jdbc, String queryAlias,
+    EntitySqlQueryExpression(EntityQueryConditionGroupLogicExpression<E> parent, Jdbc jdbc, String queryAlias,
             ClassMapping<?> classMapping, MappingFactory factory, SqlPageFactory sqlPageFactory,
-            AliasManager aliasManager, TypeQueryEntity typeQueryEntity, Predicate<Object> ignorePolicy) {
-        super(parent, jdbc, queryAlias, classMapping, factory, sqlPageFactory, aliasManager, typeQueryEntity,
+            AliasManager aliasManager, EntityQueryEntity<E> entityQueryEntity, Predicate<Object> ignorePolicy) {
+        super(parent, jdbc, queryAlias, classMapping, factory, sqlPageFactory, aliasManager, entityQueryEntity,
                 ignorePolicy);
     }
 
@@ -69,13 +71,14 @@ public class EntitySqlQueryExpression<E> extends EntitySqlQueryConditionGroupExp
      * {@inheritDoc}
      */
     @Override
-    protected EntitySqlQueryConditionGroupExpression<E> createGroup(TypeQueryConditionGroupLogicExpression parent,
-            String queryAlias, TypeQueryEntity typeQueryEntity) {
+    protected EntitySqlQueryConditionGroupExpression<E> createGroup(EntityQueryConditionGroupLogicExpression<E> parent,
+            String queryAlias, EntityQueryEntity<E> entityQueryEntity) {
         if (selectBuilder != null) {
-            selectBuilder.setTableAlias(queryAlias);
+            //      IMPLSOON 后续来实现，先让编译通过
+            //            selectBuilder.setTableAlias(queryAlias);
         }
         return new EntitySqlQueryExpression<>(parent, jdbc, queryAlias, classMapping, factory, sqlPageFactory,
-                aliasManager, typeQueryEntity, ignorePolicy);
+                aliasManager, entityQueryEntity, ignorePolicy);
     }
 
     /**
@@ -83,7 +86,7 @@ public class EntitySqlQueryExpression<E> extends EntitySqlQueryConditionGroupExp
      */
     @Override
     public Long count() {
-        selectBuilder.addSelectColumn(Chars.STAR, AggregateFunction.COUNT);
+        selectBuilder.addColumn(AggregateFunction.COUNT, Chars.STAR);
         return jdbc.queryLong(getRoot().expression(), getRoot().getParams().toArray());
     }
 

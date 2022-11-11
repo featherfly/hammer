@@ -9,6 +9,8 @@ import cn.featherfly.common.db.builder.dml.basic.SqlSelectJoinOnBasicBuilder;
 import cn.featherfly.common.lang.AssertIllegalArgument;
 import cn.featherfly.common.lang.Lang;
 import cn.featherfly.common.lang.function.SerializableFunction;
+import cn.featherfly.common.lang.function.SerializableFunction2;
+import cn.featherfly.common.lang.function.SerializableFunction3;
 import cn.featherfly.common.repository.builder.AliasManager;
 import cn.featherfly.common.repository.mapping.ClassMapping;
 import cn.featherfly.common.repository.mapping.MappingFactory;
@@ -133,7 +135,7 @@ public class EntitySqlQueryWith<E> implements EntityQueryWith<E>, EntityQueryWit
      * {@inheritDoc}
      */
     @Override
-    public <T, R> EntityQueryWithEntity<E> with(SerializableFunction<T, R> propertyName) {
+    public <R> EntityQueryWithEntity<E> with(SerializableFunction<E, R> propertyName) {
         return sqlQueryEntityProperties.with(propertyName);
     }
 
@@ -141,8 +143,26 @@ public class EntitySqlQueryWith<E> implements EntityQueryWith<E>, EntityQueryWit
      * {@inheritDoc}
      */
     @Override
-    public <T, R> EntityQueryWithEntity<E> with(SerializableFunction<T, R> propertyName, int index) {
+    public <R> EntityQueryWithEntity<E> with(SerializableFunction<E, R> propertyName, int index) {
         return sqlQueryEntityProperties.with(propertyName, index);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public <R> EntityQueryWithEntity<E> with(SerializableFunction2<R, E> propertyName) {
+        // IMPLSOON Auto-generated method stub
+        return null;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public EntityQueryWithEntity<E> with(SerializableFunction3<E, E> propertyName) {
+        // IMPLSOON Auto-generated method stub
+        return null;
     }
 
     /**
@@ -151,7 +171,7 @@ public class EntitySqlQueryWith<E> implements EntityQueryWith<E>, EntityQueryWit
     @Override
     public EntityQueryWith<E> fetch() {
         if (Lang.isEmpty(fetchProperty)) {
-            // TODO 后续细化描述
+            // ENHANCE 后续细化描述
             throw new SqldbHammerException("can not fetch because there is no relation for find type");
         }
         selectJoinOnBasicBuilder.fetch(fetchProperty, fetchPropertyAlias);
@@ -166,7 +186,7 @@ public class EntitySqlQueryWith<E> implements EntityQueryWith<E>, EntityQueryWit
         //        return new RepositoryTypeSqlQueryExpression(sqlQueryEntityProperties.jdbc, factory, sqlPageFactory,
         //                sqlQueryEntityProperties.aliasManager, sqlQueryEntityProperties.classMapping,
         //                sqlQueryEntityProperties.selectBuilder, ignorePolicy);
-        // FIXME 未实现
+        // IMPLSOON 未实现
         return null;
     }
 
@@ -183,7 +203,7 @@ public class EntitySqlQueryWith<E> implements EntityQueryWith<E>, EntityQueryWit
         //            consumer.accept(repositorySqlQueryExpression);
         //        }
         //        return repositorySqlQueryExpression;
-        // FIXME 未实现
+        // IMPLSOON 未实现
         return null;
     }
 
