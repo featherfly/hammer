@@ -6,8 +6,8 @@ import java.util.function.Predicate;
 import cn.featherfly.common.constant.Chars;
 import cn.featherfly.common.db.builder.dml.basic.SqlSelectBasicBuilder;
 import cn.featherfly.common.lang.Lang;
+import cn.featherfly.common.operator.AggregateFunction;
 import cn.featherfly.common.repository.mapping.ClassMapping;
-import cn.featherfly.common.repository.operate.AggregateFunction;
 import cn.featherfly.hammer.dsl.query.QueryConditionGroupExpression;
 import cn.featherfly.hammer.dsl.query.QueryConditionGroupLogicExpression;
 import cn.featherfly.hammer.dsl.query.TypeQueryEntity;
@@ -15,10 +15,7 @@ import cn.featherfly.hammer.sqldb.jdbc.Jdbc;
 import cn.featherfly.hammer.sqldb.jdbc.SqlPageFactory;
 
 /**
- * <p>
- * SqlDeleteExpression
- * </p>
- * .
+ * SqlDeleteExpression .
  *
  * @author zhongj
  */
@@ -37,7 +34,9 @@ public class SqlQueryExpression extends SqlQueryConditionGroupExpression {
      */
     public SqlQueryExpression(Jdbc jdbc, SqlPageFactory sqlPageFactory, SqlSelectBasicBuilder selectBuilder,
             Predicate<Object> ignorePolicy) {
-        super(jdbc, sqlPageFactory, selectBuilder.getTableAlias(), ignorePolicy);
+        //        super(jdbc, sqlPageFactory, selectBuilder.getTableAlias(), ignorePolicy);
+        //      IMPLSOON 后续来实现，先让编译通过
+        super(jdbc, sqlPageFactory, "", ignorePolicy);
         this.selectBuilder = selectBuilder;
     }
 
@@ -52,7 +51,9 @@ public class SqlQueryExpression extends SqlQueryConditionGroupExpression {
      */
     public SqlQueryExpression(Jdbc jdbc, SqlPageFactory sqlPageFactory, ClassMapping<?> classMapping,
             SqlSelectBasicBuilder selectBuilder, Predicate<Object> ignorePolicy) {
-        super(jdbc, sqlPageFactory, selectBuilder.getTableAlias(), classMapping, ignorePolicy);
+        //        super(jdbc, sqlPageFactory, selectBuilder.getTableAlias(), classMapping, ignorePolicy);
+        //      IMPLSOON 后续来实现，先让编译通过
+        super(jdbc, sqlPageFactory, "", classMapping, ignorePolicy);
         this.selectBuilder = selectBuilder;
     }
 
@@ -101,7 +102,8 @@ public class SqlQueryExpression extends SqlQueryConditionGroupExpression {
     @Override
     protected QueryConditionGroupExpression createGroup(QueryConditionGroupLogicExpression parent, String queryAlias,
             TypeQueryEntity typeQueryEntity) {
-        selectBuilder.setTableAlias(queryAlias);
+        // FIXME 未测试
+        //        selectBuilder.setTableAlias(queryAlias);
         return new SqlQueryExpression(parent, jdbc, sqlPageFactory, queryAlias, classMapping, ignorePolicy);
     }
 
@@ -110,7 +112,7 @@ public class SqlQueryExpression extends SqlQueryConditionGroupExpression {
      */
     @Override
     public Long count() {
-        selectBuilder.addSelectColumn(Chars.STAR, AggregateFunction.COUNT);
+        selectBuilder.addColumn(AggregateFunction.COUNT, Chars.STAR);
         return longInt();
     }
 

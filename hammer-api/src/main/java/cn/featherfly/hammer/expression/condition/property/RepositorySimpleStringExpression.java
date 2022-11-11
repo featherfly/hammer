@@ -2,7 +2,7 @@
 package cn.featherfly.hammer.expression.condition.property;
 
 import cn.featherfly.common.lang.Lang;
-import cn.featherfly.common.repository.operate.QueryOperator.QueryPolicy;
+import cn.featherfly.common.operator.QueryOperator.QueryPolicy;
 import cn.featherfly.hammer.expression.condition.ContainsExpression;
 import cn.featherfly.hammer.expression.condition.EndWithExpression;
 import cn.featherfly.hammer.expression.condition.EqualsExpression;

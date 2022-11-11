@@ -1,7 +1,7 @@
 
 package cn.featherfly.hammer.expression.condition.property;
 
-import cn.featherfly.common.repository.operate.QueryOperator.QueryPolicy;
+import cn.featherfly.common.operator.QueryOperator.QueryPolicy;
 import cn.featherfly.hammer.expression.condition.ConditionExpression;
 import cn.featherfly.hammer.expression.condition.LogicExpression;
 

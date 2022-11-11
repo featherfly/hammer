@@ -2,7 +2,7 @@
 package cn.featherfly.hammer.sqldb.sql.dml;
 
 import cn.featherfly.common.db.builder.SqlBuilder;
-import cn.featherfly.common.repository.operate.LogicOperator;
+import cn.featherfly.common.operator.LogicOperator;
 import cn.featherfly.hammer.expression.condition.LogicOperatorExpression;
 
 /**

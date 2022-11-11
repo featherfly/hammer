@@ -283,9 +283,14 @@ public abstract class AbstractOperate<T> {
      */
     @SuppressWarnings({ "unchecked", "rawtypes" })
     protected BeanPropertyValue<?>[] getParameters(T entity, Map<Integer, String> propertyPositions) {
+        /* TODO  这里后续可以优化为 BeanPropertyValue为EntityBeanPropertyValue,  EntityBeanPropertyValue带有已注册的Mapper
+                       然后sql执行时，直接绕过TypeManager不在去找java类型和sql类型的映射关系
+                       此举可以加速实体类型的数据库操作速度
+        */
         BeanPropertyValue<?>[] bpvs = new BeanPropertyValue[propertyPositions.size()];
         int i = 0;
         for (Entry<Integer, String> propertyPosition : propertyPositions.entrySet()) {
+            // ENHANCE 下面这个逻辑后续可以用map优化，缓存下来
             BeanProperty<?> bp = beanDescriptor.getBeanProperty(propertyPosition.getValue());
             bpvs[i] = new BeanPropertyValue(bp, BeanUtils.getProperty(entity, propertyPosition.getValue()));
             i++;
@@ -329,10 +334,7 @@ public abstract class AbstractOperate<T> {
     }
 
     /**
-     * <p>
-     * 初始化SQL，由具体的实现类来实现
-     * </p>
-     * .
+     * 初始化SQL，由具体的实现类来实现.
      */
     protected abstract void initSql();
 }

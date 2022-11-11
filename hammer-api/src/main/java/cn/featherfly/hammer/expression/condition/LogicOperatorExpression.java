@@ -1,7 +1,7 @@
 
 package cn.featherfly.hammer.expression.condition;
 
-import cn.featherfly.common.repository.operate.LogicOperator;
+import cn.featherfly.common.operator.LogicOperator;
 
 /**
  * <p>

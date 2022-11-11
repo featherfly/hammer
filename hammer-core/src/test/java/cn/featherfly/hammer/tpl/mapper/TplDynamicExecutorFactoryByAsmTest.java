@@ -27,8 +27,8 @@ import cn.featherfly.common.structure.page.PaginationResults;
 import cn.featherfly.hammer.Hammer;
 import cn.featherfly.hammer.dsl.execute.Delete;
 import cn.featherfly.hammer.dsl.execute.Update;
+import cn.featherfly.hammer.dsl.query.EntityQueryEntity;
 import cn.featherfly.hammer.dsl.query.QueryEntity;
-import cn.featherfly.hammer.dsl.query.TypeQueryEntity;
 import cn.featherfly.hammer.tpl.TplExecuteId;
 
 /**
@@ -498,7 +498,7 @@ public class TplDynamicExecutorFactoryByAsmTest {
             }
 
             @Override
-            public <E> TypeQueryEntity query(Class<E> entityType) {
+            public <E> EntityQueryEntity<E> query(Class<E> entityType) {
 
                 return null;
             }

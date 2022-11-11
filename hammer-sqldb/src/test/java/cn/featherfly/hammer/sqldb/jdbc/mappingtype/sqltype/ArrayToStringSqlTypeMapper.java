@@ -20,8 +20,8 @@ import cn.featherfly.common.db.JdbcException;
 import cn.featherfly.common.db.JdbcUtils;
 import cn.featherfly.common.db.mapping.AbstractGenericJavaSqlTypeMapper;
 import cn.featherfly.common.lang.ArrayUtils;
-import cn.featherfly.common.lang.GenericType;
 import cn.featherfly.common.lang.Lang;
+import cn.featherfly.common.lang.reflect.Type;
 
 /**
  * ListToStringSqlTypeMapper.
@@ -36,7 +36,7 @@ public class ArrayToStringSqlTypeMapper extends AbstractGenericJavaSqlTypeMapper
     }
 
     @Override
-    public boolean support(GenericType<Long[]> type) {
+    public boolean support(Type<Long[]> type) {
         return type.getType().equals(Long[].class);
     }
 

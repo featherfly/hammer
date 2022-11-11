@@ -10,6 +10,8 @@ import cn.featherfly.common.lang.ClassUtils;
 import cn.featherfly.common.lang.LambdaUtils;
 import cn.featherfly.common.lang.LambdaUtils.SerializedLambdaInfo;
 import cn.featherfly.common.lang.function.SerializableFunction;
+import cn.featherfly.common.lang.function.SerializableFunction2;
+import cn.featherfly.common.lang.function.SerializableFunction3;
 import cn.featherfly.common.lang.function.SerializableSupplier;
 import cn.featherfly.common.repository.builder.AliasManager;
 import cn.featherfly.common.repository.mapping.ClassMapping;
@@ -26,19 +28,16 @@ import cn.featherfly.hammer.sqldb.jdbc.Jdbc;
 import cn.featherfly.hammer.sqldb.jdbc.SqlPageFactory;
 
 /**
- * <p>
- * SqlQueryProperties
- * </p>
- * .
+ * EntitySqlQueryEntityProperties.
  *
  * @author zhongj
  */
 public class EntitySqlQueryEntityProperties<E>
-        extends AbstractSqlQueryEntityProperties<EntitySqlQueryEntityProperties<E>>
+        extends AbstractEntitySqlQueryEntityProperties<E, EntitySqlQueryEntityProperties<E>>
         implements EntitySqlQueryEntity<E>, EntityQueryEntityProperties<E> {
 
     /** The type sql query withs. */
-    List<EntitySqlQueryWith<E>> typeSqlQueryWiths = new ArrayList<>();
+    List<EntitySqlQueryWith<?>> entitySqlQueryWiths = new ArrayList<>();
 
     /**
      * Instantiates a new type sql query entity properties.
@@ -69,13 +68,13 @@ public class EntitySqlQueryEntityProperties<E>
      */
     @Override
     public EntityQueryConditionGroupExpression<E> where(
-            Consumer<ConditionGroupConfig<EntityQueryConditionGroupExpression>> consumer) {
-        EntitySqlQueryExpression<E> typeSqlQueryExpression = new EntitySqlQueryExpression(jdbc, classMapping, this,
+            Consumer<ConditionGroupConfig<EntityQueryConditionGroupExpression<E>>> consumer) {
+        EntitySqlQueryExpression<E> entitySqlQueryExpression = new EntitySqlQueryExpression<>(jdbc, classMapping, this,
                 factory, sqlPageFactory, aliasManager, selectBuilder, ignorePolicy);
         if (consumer != null) {
-            consumer.accept(typeSqlQueryExpression);
+            consumer.accept(entitySqlQueryExpression);
         }
-        return typeSqlQueryExpression;
+        return entitySqlQueryExpression;
     }
 
     /**
@@ -83,7 +82,7 @@ public class EntitySqlQueryEntityProperties<E>
      */
     @Override
     public List<E> list() {
-        return new EntitySqlQueryExpression(jdbc, classMapping, this, factory, sqlPageFactory, aliasManager,
+        return new EntitySqlQueryExpression<>(jdbc, classMapping, this, factory, sqlPageFactory, aliasManager,
                 selectBuilder, ignorePolicy).list();
     }
 
@@ -92,7 +91,7 @@ public class EntitySqlQueryEntityProperties<E>
      */
     @Override
     public EntityQueryLimitExecutor<E> limit(Integer limit) {
-        return new TypeSqlQueryExpression(jdbc, classMapping, this, factory, sqlPageFactory, aliasManager,
+        return new EntitySqlQueryExpression<>(jdbc, classMapping, this, factory, sqlPageFactory, aliasManager,
                 selectBuilder, ignorePolicy).limit(limit);
     }
 
@@ -101,7 +100,7 @@ public class EntitySqlQueryEntityProperties<E>
      */
     @Override
     public EntityQueryLimitExecutor<E> limit(Integer offset, Integer limit) {
-        return new TypeSqlQueryExpression(jdbc, classMapping, this, factory, sqlPageFactory, aliasManager,
+        return new EntitySqlQueryExpression<>(jdbc, classMapping, this, factory, sqlPageFactory, aliasManager,
                 selectBuilder, ignorePolicy).limit(offset, limit);
     }
 
@@ -110,7 +109,7 @@ public class EntitySqlQueryEntityProperties<E>
      */
     @Override
     public EntityQueryLimitExecutor<E> limit(Page page) {
-        return new TypeSqlQueryExpression(jdbc, classMapping, this, factory, sqlPageFactory, aliasManager,
+        return new EntitySqlQueryExpression<>(jdbc, classMapping, this, factory, sqlPageFactory, aliasManager,
                 selectBuilder, ignorePolicy).limit(page);
     }
 
@@ -120,7 +119,7 @@ public class EntitySqlQueryEntityProperties<E>
     //    @Override
     //    public Long count() {
     //        return new SqlQueryExpression(jdbc, sqlPageFactory, classMapping,
-    //                selectBuilder.addSelectColumn(Chars.STAR, AggregateFunction.COUNT), ignorePolicy).longInt();
+    //                selectBuilder.addColumn(Chars.STAR, AggregateFunction.COUNT), ignorePolicy).longInt();
     //    }
 
     /**
@@ -136,18 +135,38 @@ public class EntitySqlQueryEntityProperties<E>
      * {@inheritDoc}
      */
     @Override
-    public <T, R> EntityQueryWithEntity<E> with(SerializableFunction<T, R> propertyName) {
+    public <R> EntityQueryWithEntity<E> with(SerializableFunction2<R, E> propertyName) {
+        // YUFEI_TODO Auto-generated method stub
+        return null;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public EntityQueryWithEntity<E> with(SerializableFunction3<E, E> propertyName) {
+        // YUFEI_TODO Auto-generated method stub
+        return null;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public <R> EntityQueryWithEntity<E> with(SerializableFunction<E, R> propertyName) {
         SerializedLambdaInfo joinInfo = LambdaUtils.getLambdaInfo(propertyName);
         return with(joinInfo);
     }
 
     private EntityQueryWithEntity<E> with(SerializedLambdaInfo joinInfo) {
-        EntitySqlQueryWith<E> typeSqlQueryWith = with(classMapping, selectBuilder.getTableAlias(), joinInfo);
+        //        EntitySqlQueryWith<E> typeSqlQueryWith = with(classMapping, selectBuilder.getTableAlias(), joinInfo);
+        //      IMPLSOON 后续来实现，先让编译通过
+        EntitySqlQueryWith<E> typeSqlQueryWith = with(classMapping, "", joinInfo);
         if (typeSqlQueryWith != null) {
             return typeSqlQueryWith;
         }
 
-        for (TypeSqlQueryWith with : typeSqlQueryWiths) {
+        for (EntitySqlQueryWith<?> with : entitySqlQueryWiths) {
             if (classMapping != with.joinTypeClassMapping) {
                 typeSqlQueryWith = with(with.joinTypeClassMapping, with.joinTableAlias, joinInfo);
                 if (typeSqlQueryWith != null) {
@@ -169,15 +188,15 @@ public class EntitySqlQueryEntityProperties<E>
      * {@inheritDoc}
      */
     @Override
-    public <T, R> EntityQueryWithEntity<E> with(SerializableFunction<T, R> propertyName, int index) {
+    public <R> EntityQueryWithEntity<E> with(SerializableFunction<E, R> propertyName, int index) {
         if (index <= 0) {
             throw new SqldbHammerException("index must > 0");
         }
-        if (index > typeSqlQueryWiths.size()) {
+        if (index > entitySqlQueryWiths.size()) {
             throw new SqldbHammerException("index must < invoke with method times");
         }
         SerializedLambdaInfo joinInfo = LambdaUtils.getLambdaInfo(propertyName);
-        TypeSqlQueryWith with = typeSqlQueryWiths.get(index - 1);
+        EntitySqlQueryWith<?> with = entitySqlQueryWiths.get(index - 1);
         return with(with.joinTypeClassMapping, with.joinTableAlias, joinInfo);
     }
 
@@ -190,7 +209,7 @@ public class EntitySqlQueryEntityProperties<E>
             EntitySqlQueryWith<E> typeSqlQueryWith = new EntitySqlQueryWith<>(this, aliasManager, factory,
                     sqlPageFactory, cm, tableAlias, pm.getRepositoryFieldName(), joinClassMapping,
                     getPkMapping(joinClassMapping).getRepositoryFieldName(), name, ignorePolicy);
-            typeSqlQueryWiths.add(typeSqlQueryWith);
+            entitySqlQueryWiths.add(typeSqlQueryWith);
             return typeSqlQueryWith;
         } else if (ClassUtils.isParent(cm.getType(), joinInfo.getPropertyType())) {
             // 表示是查找对象是with对象的属性，可以进行连表查询，但是不能返回到查询对象上，因为没有指明返回对象属性
@@ -201,7 +220,7 @@ public class EntitySqlQueryEntityProperties<E>
             EntitySqlQueryWith<E> typeSqlQueryWith = new EntitySqlQueryWith<>(this, aliasManager, factory,
                     sqlPageFactory, cm, tableAlias, getIdName(), joinClassMapping, pm.getRepositoryFieldName(),
                     ignorePolicy);
-            typeSqlQueryWiths.add(typeSqlQueryWith);
+            entitySqlQueryWiths.add(typeSqlQueryWith);
             return typeSqlQueryWith;
         } else {
             return null;
@@ -226,4 +245,31 @@ public class EntitySqlQueryEntityProperties<E>
         }
         return classMapping.getPrivaryKeyPropertyMappings().get(0);
     }
+
+    //    /**
+    //     * {@inheritDoc}
+    //     */
+    //    @Override
+    //    public <R> EntityQueryEntityProperties<E> id(SerializableFunction<E, R> propertyName) {
+    //        // YUFEI_TODO Auto-generated method stub
+    //        return null;
+    //    }
+    //
+    //    /**
+    //     * {@inheritDoc}
+    //     */
+    //    @Override
+    //    public <R> EntityQueryEntityProperties<E> property(SerializableFunction<E, R> propertyName) {
+    //        // YUFEI_TODO Auto-generated method stub
+    //        return null;
+    //    }
+    //
+    //    /**
+    //     * {@inheritDoc}
+    //     */
+    //    @Override
+    //    public <R> EntityQueryEntityProperties<E> property(SerializableFunction<E, R>... propertyNames) {
+    //        // YUFEI_TODO Auto-generated method stub
+    //        return null;
+    //    }
 }

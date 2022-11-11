@@ -13,7 +13,7 @@ import cn.featherfly.common.bean.BeanProperty;
 import cn.featherfly.common.db.mapping.mappers.ObjectToJsonMapper;
 import cn.featherfly.common.lang.ArrayUtils;
 import cn.featherfly.common.lang.Randoms;
-import cn.featherfly.common.lang.reflect.GenericClass;
+import cn.featherfly.common.lang.reflect.ClassType;
 import cn.featherfly.hammer.Hammer;
 import cn.featherfly.hammer.sqldb.SqldbHammerImpl;
 import cn.featherfly.hammer.sqldb.jdbc.JdbcImpl;
@@ -48,7 +48,7 @@ public class HammerJdbcMappingTypeTest extends JdbcTestBase {
         //            }
         //
         //            @Override
-        //            public boolean support(GenericType<Long[]> type) {
+        //            public boolean support(Type<Long[]> type) {
         //                return type.getType().equals(Long[].class);
         //            }
         //
@@ -58,7 +58,7 @@ public class HammerJdbcMappingTypeTest extends JdbcTestBase {
         //            }
         //
         //            @Override
-        //            public SQLType getSqlType(GenericType<Long[]> javaType) {
+        //            public SQLType getSqlType(Type<Long[]> javaType) {
         //                return JDBCType.VARCHAR;
         //            }
         //
@@ -93,7 +93,7 @@ public class HammerJdbcMappingTypeTest extends JdbcTestBase {
         contentProperty = bd.getBeanProperty("content");
         sqlTypeMappingManager.regist(contentProperty, new ArrayToStringSqlTypeMapper());
 
-        sqlTypeMappingManager.regist(new GenericClass<>(Content2.class), new ObjectToJsonMapper<>(Content2.class));
+        sqlTypeMappingManager.regist(new ClassType<>(Content2.class), new ObjectToJsonMapper<>(Content2.class));
 
         hammer = new SqldbHammerImpl(jdbc, mappingFactory, configFactory);
     }

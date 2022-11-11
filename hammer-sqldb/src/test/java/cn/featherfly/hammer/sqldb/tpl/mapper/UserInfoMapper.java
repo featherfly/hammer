@@ -61,6 +61,7 @@ public interface UserInfoMapper extends Hammer {
      * @return the by username and password
      */
     default User getByUsernameAndPassword(String username, String pwd) {
-        return query(User.class).where().eq("username", username).and().eq("pwd", pwd).single();
+        //        return query(User.class).where().eq("username", username).and().eq("pwd", pwd).single();
+        return query(User.class).where().eq(User::getUsername, username).and().eq(User::getPwd, pwd).single();
     }
 }

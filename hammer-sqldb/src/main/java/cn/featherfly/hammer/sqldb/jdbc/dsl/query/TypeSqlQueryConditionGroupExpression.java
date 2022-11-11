@@ -27,10 +27,10 @@ import cn.featherfly.common.lang.function.ReturnNumberFunction;
 import cn.featherfly.common.lang.function.ReturnStringFunction;
 import cn.featherfly.common.lang.function.SerializableFunction;
 import cn.featherfly.common.lang.function.SerializableSupplier;
+import cn.featherfly.common.operator.QueryOperator;
 import cn.featherfly.common.repository.builder.AliasManager;
 import cn.featherfly.common.repository.mapping.ClassMapping;
 import cn.featherfly.common.repository.mapping.MappingFactory;
-import cn.featherfly.common.repository.operate.QueryOperator;
 import cn.featherfly.common.structure.page.Limit;
 import cn.featherfly.common.structure.page.Page;
 import cn.featherfly.common.structure.page.PaginationResults;
@@ -47,10 +47,7 @@ import cn.featherfly.hammer.sqldb.sql.dml.AbstractSqlConditionGroupExpression;
 import cn.featherfly.hammer.sqldb.sql.dml.SqlConditionExpressionBuilder;
 
 /**
- * <p>
- * sql condition group builder sql条件逻辑组构造器
- * </p>
- * .
+ * sql condition group builder sql条件逻辑组构造器.
  *
  * @author zhongj
  */

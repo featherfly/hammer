@@ -24,10 +24,10 @@ import cn.featherfly.common.lang.function.ReturnLocalTimeFunction;
 import cn.featherfly.common.lang.function.ReturnNumberFunction;
 import cn.featherfly.common.lang.function.ReturnStringFunction;
 import cn.featherfly.common.lang.function.SerializableFunction;
+import cn.featherfly.common.operator.QueryOperator;
 import cn.featherfly.common.repository.builder.AliasManager;
 import cn.featherfly.common.repository.mapping.ClassMapping;
 import cn.featherfly.common.repository.mapping.MappingFactory;
-import cn.featherfly.common.repository.operate.QueryOperator;
 import cn.featherfly.hammer.dsl.query.RepositoryTypeQueryConditionGroupExpression;
 import cn.featherfly.hammer.dsl.query.RepositoryTypeQueryConditionGroupLogicExpression;
 import cn.featherfly.hammer.expression.condition.property.DateExpression;
@@ -70,7 +70,9 @@ public class RepositoryTypeSqlQueryExpression extends RepositoryTypeSqlQueryCond
     public RepositoryTypeSqlQueryExpression(Jdbc jdbc, MappingFactory factory, SqlPageFactory sqlPageFactory,
             AliasManager aliasManager, ClassMapping<?> classMapping, SqlSelectBasicBuilder selectBuilder,
             Predicate<Object> ignorePolicy) {
-        super(jdbc, factory, aliasManager, selectBuilder.getTableAlias(), sqlPageFactory, classMapping, ignorePolicy);
+        //        super(jdbc, factory, aliasManager, selectBuilder.getTableAlias(), sqlPageFactory, classMapping, ignorePolicy);
+        //      IMPLSOON 后续来实现，先让编译通过
+        super(jdbc, factory, aliasManager, "", sqlPageFactory, classMapping, ignorePolicy);
         this.selectBuilder = selectBuilder;
     }
 
@@ -98,7 +100,8 @@ public class RepositoryTypeSqlQueryExpression extends RepositoryTypeSqlQueryCond
     @Override
     protected RepositoryTypeSqlQueryConditionGroupExpression createGroup(
             RepositoryTypeQueryConditionGroupLogicExpression parent, String queryAlias) {
-        selectBuilder.setTableAlias(queryAlias);
+        //      IMPLSOON 后续来实现，先让编译通过
+        //        selectBuilder.setTableAlias(queryAlias);
         return new RepositoryTypeSqlQueryExpression(parent, jdbc, factory, aliasManager, queryAlias, sqlPageFactory,
                 classMapping, ignorePolicy);
     }

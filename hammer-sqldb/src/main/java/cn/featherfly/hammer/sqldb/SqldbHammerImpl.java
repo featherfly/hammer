@@ -30,8 +30,8 @@ import cn.featherfly.common.structure.page.Page;
 import cn.featherfly.common.structure.page.PaginationResults;
 import cn.featherfly.hammer.dsl.execute.Delete;
 import cn.featherfly.hammer.dsl.execute.Update;
+import cn.featherfly.hammer.dsl.query.EntityQueryEntity;
 import cn.featherfly.hammer.dsl.query.QueryEntity;
-import cn.featherfly.hammer.dsl.query.TypeQueryEntity;
 import cn.featherfly.hammer.sqldb.jdbc.Jdbc;
 import cn.featherfly.hammer.sqldb.jdbc.SimpleSqlPageFactory;
 import cn.featherfly.hammer.sqldb.jdbc.SqlPageFactory;
@@ -222,7 +222,7 @@ public class SqldbHammerImpl implements SqldbHammer {
             @SuppressWarnings("unchecked")
             GetOperate<E> get = (GetOperate<E>) getOperate(entity.getClass());
             Serializable id = get.getId(entity);
-            // FIXME 这里没有处理符合主键的情况
+            // FIXME 这里没有处理复合主键的情况
             if (id == null) {
                 return save(entity);
             } else {
@@ -561,7 +561,7 @@ public class SqldbHammerImpl implements SqldbHammer {
         if (entity == null) {
             return null;
         }
-        // TODO 后续再来优化，先用两次查询实现
+        // ENHANCE 后续再来优化，先用两次查询实现
         // TODO 只实现了多对一或者一对一的获取，没有实现一对多的获取
         BeanProperty<R> bp = BeanDescriptor.getBeanDescriptor(type).getBeanProperty(fetchProperty);
         @SuppressWarnings("unchecked")
@@ -630,7 +630,7 @@ public class SqldbHammerImpl implements SqldbHammer {
      * {@inheritDoc}
      */
     @Override
-    public <E> TypeQueryEntity query(Class<E> entityType) {
+    public <E> EntityQueryEntity<E> query(Class<E> entityType) {
         SqlQuery query = new SqlQuery(jdbc, mappingFactory, sqlTplExecutor.getSqlPageFactory());
         return query.find(entityType);
     }

@@ -17,9 +17,9 @@ import cn.featherfly.common.bean.BeanDescriptor;
 import cn.featherfly.common.db.JdbcException;
 import cn.featherfly.common.db.mapping.mappers.PlatformJavaSqlTypeMapper;
 import cn.featherfly.common.lang.ArrayUtils;
-import cn.featherfly.common.lang.GenericType;
 import cn.featherfly.common.lang.Strings;
-import cn.featherfly.common.lang.reflect.GenericClass;
+import cn.featherfly.common.lang.reflect.ClassType;
+import cn.featherfly.common.lang.reflect.Type;
 import cn.featherfly.common.model.app.Platforms;
 import cn.featherfly.common.structure.HashChainMap;
 import cn.featherfly.hammer.sqldb.jdbc.vo.App;
@@ -110,8 +110,8 @@ public class JdbcTest extends JdbcTestBase {
         AtomicLong id = new AtomicLong(-1);
         int i = jdbc.update("insert into cms_article values(?,?,?)", new GeneratedKeyHolder<Long>() {
             @Override
-            public GenericType<Long> getType() {
-                return new GenericClass<>(Long.class);
+            public Type<Long> getType() {
+                return new ClassType<>(Long.class);
             }
 
             @Override
@@ -158,8 +158,8 @@ public class JdbcTest extends JdbcTestBase {
             }
 
             @Override
-            public GenericType<Long> getType() {
-                return new GenericClass<>(Long.class);
+            public Type<Long> getType() {
+                return new ClassType<>(Long.class);
             }
         }, params);
 

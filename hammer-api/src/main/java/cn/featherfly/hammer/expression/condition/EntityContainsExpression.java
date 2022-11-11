@@ -5,7 +5,7 @@ import cn.featherfly.common.lang.function.ReturnStringFunction;
 import cn.featherfly.common.lang.function.SerializableFunction;
 import cn.featherfly.common.lang.function.SerializableSupplier;
 import cn.featherfly.common.lang.function.StringSupplier;
-import cn.featherfly.common.repository.operate.QueryOperator.QueryPolicy;
+import cn.featherfly.common.operator.QueryOperator.QueryPolicy;
 
 /**
  * The Interface EntityContainsExpression.
@@ -25,7 +25,7 @@ public interface EntityContainsExpression<E, C extends ConditionExpression, L ex
      * @param value 参数值
      * @return LogicExpression
      */
-    default L co(SerializableFunction<E, String> name, String value) {
+    default L co(ReturnStringFunction<E> name, String value) {
         return co(name, value, QueryPolicy.AUTO);
     }
 
@@ -37,7 +37,7 @@ public interface EntityContainsExpression<E, C extends ConditionExpression, L ex
      * @param queryPolicy the query policy
      * @return the l
      */
-    L co(SerializableFunction<E, String> name, String value, QueryPolicy queryPolicy);
+    L co(ReturnStringFunction<E> name, String value, QueryPolicy queryPolicy);
 
     /**
      * contains value. 包含value.

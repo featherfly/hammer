@@ -30,7 +30,7 @@ import cn.featherfly.common.lang.function.SerializableSupplier;
 import cn.featherfly.common.repository.builder.AliasManager;
 import cn.featherfly.common.repository.mapping.ClassMapping;
 import cn.featherfly.common.repository.mapping.MappingFactory;
-import cn.featherfly.common.repository.operate.QueryOperator;
+import cn.featherfly.common.operator.QueryOperator;
 import cn.featherfly.common.structure.page.Limit;
 import cn.featherfly.common.structure.page.Page;
 import cn.featherfly.common.structure.page.PaginationResults;
@@ -43,7 +43,7 @@ import cn.featherfly.hammer.expression.query.EntityQueryLimitExecutor;
 import cn.featherfly.hammer.sqldb.jdbc.Jdbc;
 import cn.featherfly.hammer.sqldb.jdbc.SqlPageFactory;
 import cn.featherfly.hammer.sqldb.jdbc.SqlPageFactory.SqlPageQuery;
-import cn.featherfly.hammer.sqldb.sql.dml.AbstractSqlConditionGroupExpression;
+import cn.featherfly.hammer.sqldb.sql.dml.AbstractEntitySqlConditionGroupExpression;
 import cn.featherfly.hammer.sqldb.sql.dml.SqlConditionExpressionBuilder;
 
 /**
@@ -55,7 +55,7 @@ import cn.featherfly.hammer.sqldb.sql.dml.SqlConditionExpressionBuilder;
  * @author zhongj
  */
 public class EntitySqlQueryConditionGroupExpression<E> extends
-        AbstractSqlConditionGroupExpression<EntityQueryConditionGroupExpression<E>, EntityQueryConditionGroupLogicExpression<E>>
+        AbstractEntitySqlConditionGroupExpression<E, EntityQueryConditionGroupExpression<E>, EntityQueryConditionGroupLogicExpression<E>>
         implements EntityQueryConditionGroupExpression<E>, EntityQueryConditionGroupLogicExpression<E>,
         EntityQuerySortExpression<E> {
 
@@ -74,56 +74,56 @@ public class EntitySqlQueryConditionGroupExpression<E> extends
     /**
      * Instantiates a new type sql query condition group expression.
      *
-     * @param jdbc            jdbc
-     * @param classMapping    classMapping
-     * @param factory         the factory
-     * @param sqlPageFactory  the sql page factory
-     * @param aliasManager    the alias manager
-     * @param typeQueryEntity the type query entity
-     * @param ignorePolicy    the ignore policy
+     * @param jdbc              jdbc
+     * @param classMapping      classMapping
+     * @param factory           the factory
+     * @param sqlPageFactory    the sql page factory
+     * @param aliasManager      the alias manager
+     * @param entityQueryEntity the entity query entity
+     * @param ignorePolicy      the ignore policy
      */
     public EntitySqlQueryConditionGroupExpression(Jdbc jdbc, ClassMapping<?> classMapping, MappingFactory factory,
-            SqlPageFactory sqlPageFactory, AliasManager aliasManager, EntityQueryEntity typeQueryEntity,
+            SqlPageFactory sqlPageFactory, AliasManager aliasManager, EntityQueryEntity<E> entityQueryEntity,
             Predicate<Object> ignorePolicy) {
-        this(jdbc, null, classMapping, factory, sqlPageFactory, aliasManager, typeQueryEntity, ignorePolicy);
+        this(jdbc, null, classMapping, factory, sqlPageFactory, aliasManager, entityQueryEntity, ignorePolicy);
     }
 
     /**
      * Instantiates a new type sql query condition group expression.
      *
-     * @param jdbc            jdbc
-     * @param queryAlias      queryAlias
-     * @param classMapping    classMapping
-     * @param factory         the factory
-     * @param sqlPageFactory  the sql page factory
-     * @param aliasManager    the alias manager
-     * @param typeQueryEntity the type query entity
-     * @param ignorePolicy    the ignore policy
+     * @param jdbc              jdbc
+     * @param queryAlias        queryAlias
+     * @param classMapping      classMapping
+     * @param factory           the factory
+     * @param sqlPageFactory    the sql page factory
+     * @param aliasManager      the alias manager
+     * @param entityQueryEntity the entity query entity
+     * @param ignorePolicy      the ignore policy
      */
     public EntitySqlQueryConditionGroupExpression(Jdbc jdbc, String queryAlias, ClassMapping<?> classMapping,
             MappingFactory factory, SqlPageFactory sqlPageFactory, AliasManager aliasManager,
-            EntityQueryEntity<E> typeQueryEntity, Predicate<Object> ignorePolicy) {
-        this(null, jdbc, queryAlias, classMapping, factory, sqlPageFactory, aliasManager, typeQueryEntity,
+            EntityQueryEntity<E> entityQueryEntity, Predicate<Object> ignorePolicy) {
+        this(null, jdbc, queryAlias, classMapping, factory, sqlPageFactory, aliasManager, entityQueryEntity,
                 ignorePolicy);
     }
 
     /**
      * Instantiates a new type sql query condition group expression.
      *
-     * @param parent          parent group
-     * @param jdbc            the jdbc
-     * @param queryAlias      queryAlias
-     * @param classMapping    classMapping
-     * @param factory         the factory
-     * @param sqlPageFactory  the sql page factory
-     * @param aliasManager    the alias manager
-     * @param typeQueryEntity the type query entity
-     * @param ignorePolicy    the ignore policy
+     * @param parent            parent group
+     * @param jdbc              the jdbc
+     * @param queryAlias        queryAlias
+     * @param classMapping      classMapping
+     * @param factory           the factory
+     * @param sqlPageFactory    the sql page factory
+     * @param aliasManager      the alias manager
+     * @param entityQueryEntity the entity query entity
+     * @param ignorePolicy      the ignore policy
      */
     EntitySqlQueryConditionGroupExpression(EntityQueryConditionGroupLogicExpression<E> parent, Jdbc jdbc,
             String queryAlias, ClassMapping<?> classMapping, MappingFactory factory, SqlPageFactory sqlPageFactory,
-            AliasManager aliasManager, EntityQueryEntity<E> typeQueryEntity, Predicate<Object> ignorePolicy) {
-        super(parent, jdbc.getDialect(), sqlPageFactory, queryAlias, classMapping, typeQueryEntity, ignorePolicy);
+            AliasManager aliasManager, EntityQueryEntity<E> entityQueryEntity, Predicate<Object> ignorePolicy) {
+        super(parent, jdbc.getDialect(), sqlPageFactory, queryAlias, classMapping, entityQueryEntity, ignorePolicy);
         this.jdbc = jdbc;
         this.factory = factory;
         this.aliasManager = aliasManager;
@@ -141,9 +141,9 @@ public class EntitySqlQueryConditionGroupExpression<E> extends
      */
     @Override
     protected EntitySqlQueryConditionGroupExpression<E> createGroup(EntityQueryConditionGroupLogicExpression<E> parent,
-            String queryAlias, EntityQueryEntity typeQueryEntity) {
+            String queryAlias, EntityQueryEntity<E> entityQueryEntity) {
         return new EntitySqlQueryConditionGroupExpression(parent, jdbc, queryAlias, classMapping, factory,
-                sqlPageFactory, aliasManager, typeQueryEntity, ignorePolicy);
+                sqlPageFactory, aliasManager, entityQueryEntity, ignorePolicy);
     }
 
     /**
@@ -316,6 +316,7 @@ public class EntitySqlQueryConditionGroupExpression<E> extends
      */
     @Override
     public EntityQuerySortExpression<E> asc(List<String> names) {
+        // YUFEI_TODO asc desc 需要和强类型绑定
         ((EntitySqlQueryConditionGroupExpression<E>) getRoot()).sortBuilder
                 .asc(ClassMappingUtils.getColumnNames(classMapping, names));
         return this;
@@ -326,6 +327,7 @@ public class EntitySqlQueryConditionGroupExpression<E> extends
      */
     @Override
     public <T, R> EntityQuerySortExpression<E> asc(SerializableFunction<T, R> name) {
+        // YUFEI_TODO asc desc 需要和强类型绑定
         return asc(getPropertyName(name));
     }
 
@@ -334,6 +336,7 @@ public class EntitySqlQueryConditionGroupExpression<E> extends
      */
     @Override
     public <T, R> EntityQuerySortExpression<E> asc(@SuppressWarnings("unchecked") SerializableFunction<T, R>... names) {
+        // YUFEI_TODO asc desc 需要和强类型绑定
         String[] nameArray = Arrays.stream(names).map(LambdaUtils::getLambdaPropertyName)
                 .toArray(value -> new String[value]);
         return asc(nameArray);
@@ -344,6 +347,7 @@ public class EntitySqlQueryConditionGroupExpression<E> extends
      */
     @Override
     public EntityQuerySortExpression<E> desc(String... names) {
+        // YUFEI_TODO asc desc 需要和强类型绑定
         ((EntitySqlQueryConditionGroupExpression<E>) getRoot()).sortBuilder
                 .desc(ClassMappingUtils.getColumnNames(classMapping, names));
         return this;
@@ -354,6 +358,7 @@ public class EntitySqlQueryConditionGroupExpression<E> extends
      */
     @Override
     public EntityQuerySortExpression<E> desc(List<String> names) {
+        // YUFEI_TODO asc desc 需要和强类型绑定
         ((EntitySqlQueryConditionGroupExpression<E>) getRoot()).sortBuilder
                 .desc(ClassMappingUtils.getColumnNames(classMapping, names));
         return this;
@@ -364,6 +369,7 @@ public class EntitySqlQueryConditionGroupExpression<E> extends
      */
     @Override
     public <T, R> EntityQuerySortExpression<E> desc(SerializableFunction<T, R> name) {
+        // YUFEI_TODO asc desc 需要和强类型绑定
         return desc(getPropertyName(name));
     }
 
@@ -373,6 +379,7 @@ public class EntitySqlQueryConditionGroupExpression<E> extends
     @Override
     public <T,
             R> EntityQuerySortExpression<E> desc(@SuppressWarnings("unchecked") SerializableFunction<T, R>... names) {
+        // YUFEI_TODO asc desc 需要和强类型绑定
         String[] nameArray = Arrays.stream(names).map(LambdaUtils::getLambdaPropertyName)
                 .toArray(value -> new String[value]);
         return desc(nameArray);
@@ -382,9 +389,9 @@ public class EntitySqlQueryConditionGroupExpression<E> extends
      * {@inheritDoc}
      */
     @Override
-    public <T, R> EntityQueryConditionGroupLogicExpression<E> co(SerializableFunction<T, R> repository,
+    public <R> EntityQueryConditionGroupLogicExpression<E> co(SerializableFunction<E, R> repository,
             ReturnStringFunction<R> property, Object value) {
-        typeQueryEntity.with(repository);
+        entityQueryEntity.with(repository);
         Tuple2<String, String> tuple = conditionResult(repository, property, value, factory);
         return (EntityQueryConditionGroupLogicExpression<E>) addCondition(new SqlConditionExpressionBuilder(dialect,
                 tuple.get1(), value, QueryOperator.CO, aliasManager.getAlias(tuple.get0()), ignorePolicy));
@@ -394,9 +401,9 @@ public class EntitySqlQueryConditionGroupExpression<E> extends
      * {@inheritDoc}
      */
     @Override
-    public <T, R> EntityQueryConditionGroupLogicExpression<E> co(SerializableSupplier<T> repository,
-            ReturnStringFunction<T> property) {
-        typeQueryEntity.with(repository);
+    public <R> EntityQueryConditionGroupLogicExpression<E> co(SerializableSupplier<R> repository,
+            ReturnStringFunction<R> property) {
+        entityQueryEntity.with(repository);
         Tuple3<String, String, Object> tuple = conditionResult(repository, property, factory);
         return (EntityQueryConditionGroupLogicExpression<E>) addCondition(new SqlConditionExpressionBuilder(dialect,
                 tuple.get1(), tuple.get2(), QueryOperator.CO, aliasManager.getAlias(tuple.get0()), ignorePolicy));
@@ -406,9 +413,9 @@ public class EntitySqlQueryConditionGroupExpression<E> extends
      * {@inheritDoc}
      */
     @Override
-    public <T, R> EntityQueryConditionGroupLogicExpression<E> ew(SerializableFunction<T, R> repository,
+    public <R> EntityQueryConditionGroupLogicExpression<E> ew(SerializableFunction<E, R> repository,
             ReturnStringFunction<R> property, Object value) {
-        typeQueryEntity.with(repository);
+        entityQueryEntity.with(repository);
         Tuple2<String, String> tuple = conditionResult(repository, property, value, factory);
         return (EntityQueryConditionGroupLogicExpression<E>) addCondition(new SqlConditionExpressionBuilder(dialect,
                 tuple.get1(), value, QueryOperator.EW, aliasManager.getAlias(tuple.get0()), ignorePolicy));
@@ -418,9 +425,9 @@ public class EntitySqlQueryConditionGroupExpression<E> extends
      * {@inheritDoc}
      */
     @Override
-    public <T, R> EntityQueryConditionGroupLogicExpression<E> ew(SerializableSupplier<T> repository,
-            ReturnStringFunction<T> property) {
-        typeQueryEntity.with(repository);
+    public <R> EntityQueryConditionGroupLogicExpression<E> ew(SerializableSupplier<R> repository,
+            ReturnStringFunction<R> property) {
+        entityQueryEntity.with(repository);
         Tuple3<String, String, Object> tuple = conditionResult(repository, property, factory);
         return (EntityQueryConditionGroupLogicExpression<E>) addCondition(new SqlConditionExpressionBuilder(dialect,
                 tuple.get1(), tuple.get2(), QueryOperator.EW, aliasManager.getAlias(tuple.get0()), ignorePolicy));
@@ -430,9 +437,9 @@ public class EntitySqlQueryConditionGroupExpression<E> extends
      * {@inheritDoc}
      */
     @Override
-    public <O, T, R> EntityQueryConditionGroupLogicExpression<E> eq(SerializableFunction<O, T> repository,
-            SerializableFunction<T, R> property, R value) {
-        typeQueryEntity.with(repository);
+    public <R, V> EntityQueryConditionGroupLogicExpression<E> eq(SerializableFunction<E, R> repository,
+            SerializableFunction<R, V> property, V value) {
+        entityQueryEntity.with(repository);
         Tuple2<String, String> tuple = conditionResult(repository, property, value, factory);
         return (EntityQueryConditionGroupLogicExpression<E>) addCondition(new SqlConditionExpressionBuilder(dialect,
                 tuple.get1(), value, QueryOperator.EQ, aliasManager.getAlias(tuple.get0()), ignorePolicy));
@@ -442,9 +449,9 @@ public class EntitySqlQueryConditionGroupExpression<E> extends
      * {@inheritDoc}
      */
     @Override
-    public <T, R> EntityQueryConditionGroupLogicExpression<E> eq(SerializableSupplier<T> repository,
-            SerializableFunction<T, R> property) {
-        typeQueryEntity.with(repository);
+    public <R, V> EntityQueryConditionGroupLogicExpression<E> eq(SerializableSupplier<R> repository,
+            SerializableFunction<R, V> property) {
+        entityQueryEntity.with(repository);
         Tuple3<String, String, Object> tuple = conditionResult(repository, property, factory);
         return (EntityQueryConditionGroupLogicExpression<E>) addCondition(new SqlConditionExpressionBuilder(dialect,
                 tuple.get1(), tuple.get2(), QueryOperator.EQ, aliasManager.getAlias(tuple.get0()), ignorePolicy));
@@ -454,9 +461,9 @@ public class EntitySqlQueryConditionGroupExpression<E> extends
      * {@inheritDoc}
      */
     @Override
-    public <T, R, N extends Number> EntityQueryConditionGroupLogicExpression<E> ge(
-            SerializableFunction<T, R> repository, ReturnNumberFunction<R, N> property, N value) {
-        typeQueryEntity.with(repository);
+    public <R, N extends Number> EntityQueryConditionGroupLogicExpression<E> ge(SerializableFunction<E, R> repository,
+            ReturnNumberFunction<R, N> property, N value) {
+        entityQueryEntity.with(repository);
         Tuple2<String, String> tuple = conditionResult(repository, property, value, factory);
         return (EntityQueryConditionGroupLogicExpression<E>) addCondition(new SqlConditionExpressionBuilder(dialect,
                 tuple.get1(), value, QueryOperator.GE, aliasManager.getAlias(tuple.get0()), ignorePolicy));
@@ -468,7 +475,7 @@ public class EntitySqlQueryConditionGroupExpression<E> extends
     @Override
     public <T, N extends Number> EntityQueryConditionGroupLogicExpression<E> ge(SerializableSupplier<T> repository,
             ReturnNumberFunction<T, N> property) {
-        typeQueryEntity.with(repository);
+        entityQueryEntity.with(repository);
         Tuple3<String, String, Object> tuple = conditionResult(repository, property, factory);
         return (EntityQueryConditionGroupLogicExpression<E>) addCondition(new SqlConditionExpressionBuilder(dialect,
                 tuple.get1(), tuple.get2(), QueryOperator.GE, aliasManager.getAlias(tuple.get0()), ignorePolicy));
@@ -478,9 +485,9 @@ public class EntitySqlQueryConditionGroupExpression<E> extends
      * {@inheritDoc}
      */
     @Override
-    public <T, R, D extends Date> EntityQueryConditionGroupLogicExpression<E> ge(SerializableFunction<T, R> repository,
+    public <R, D extends Date> EntityQueryConditionGroupLogicExpression<E> ge(SerializableFunction<E, R> repository,
             ReturnDateFunction<R, D> property, D value) {
-        typeQueryEntity.with(repository);
+        entityQueryEntity.with(repository);
         Tuple2<String, String> tuple = conditionResult(repository, property, value, factory);
         return (EntityQueryConditionGroupLogicExpression<E>) addCondition(new SqlConditionExpressionBuilder(dialect,
                 tuple.get1(), value, QueryOperator.GE, aliasManager.getAlias(tuple.get0()), ignorePolicy));
@@ -492,7 +499,7 @@ public class EntitySqlQueryConditionGroupExpression<E> extends
     @Override
     public <T, D extends Date> EntityQueryConditionGroupLogicExpression<E> ge(SerializableSupplier<T> repository,
             ReturnDateFunction<T, D> property) {
-        typeQueryEntity.with(repository);
+        entityQueryEntity.with(repository);
         Tuple3<String, String, Object> tuple = conditionResult(repository, property, factory);
         return (EntityQueryConditionGroupLogicExpression<E>) addCondition(new SqlConditionExpressionBuilder(dialect,
                 tuple.get1(), tuple.get2(), QueryOperator.GE, aliasManager.getAlias(tuple.get0()), ignorePolicy));
@@ -502,9 +509,9 @@ public class EntitySqlQueryConditionGroupExpression<E> extends
      * {@inheritDoc}
      */
     @Override
-    public <T, R> EntityQueryConditionGroupLogicExpression<E> ge(SerializableFunction<T, R> repository,
+    public <R> EntityQueryConditionGroupLogicExpression<E> ge(SerializableFunction<E, R> repository,
             ReturnLocalTimeFunction<R> property, LocalTime value) {
-        typeQueryEntity.with(repository);
+        entityQueryEntity.with(repository);
         Tuple2<String, String> tuple = conditionResult(repository, property, value, factory);
         return (EntityQueryConditionGroupLogicExpression<E>) addCondition(new SqlConditionExpressionBuilder(dialect,
                 tuple.get1(), value, QueryOperator.GE, aliasManager.getAlias(tuple.get0()), ignorePolicy));
@@ -516,7 +523,7 @@ public class EntitySqlQueryConditionGroupExpression<E> extends
     @Override
     public <T> EntityQueryConditionGroupLogicExpression<E> ge(SerializableSupplier<T> repository,
             ReturnLocalTimeFunction<T> property) {
-        typeQueryEntity.with(repository);
+        entityQueryEntity.with(repository);
         Tuple3<String, String, Object> tuple = conditionResult(repository, property, factory);
         return (EntityQueryConditionGroupLogicExpression<E>) addCondition(new SqlConditionExpressionBuilder(dialect,
                 tuple.get1(), tuple.get2(), QueryOperator.GE, aliasManager.getAlias(tuple.get0()), ignorePolicy));
@@ -526,9 +533,9 @@ public class EntitySqlQueryConditionGroupExpression<E> extends
      * {@inheritDoc}
      */
     @Override
-    public <T, R> EntityQueryConditionGroupLogicExpression<E> ge(SerializableFunction<T, R> repository,
+    public <R> EntityQueryConditionGroupLogicExpression<E> ge(SerializableFunction<E, R> repository,
             ReturnLocalDateFunction<R> property, LocalDate value) {
-        typeQueryEntity.with(repository);
+        entityQueryEntity.with(repository);
         Tuple2<String, String> tuple = conditionResult(repository, property, value, factory);
         return (EntityQueryConditionGroupLogicExpression<E>) addCondition(new SqlConditionExpressionBuilder(dialect,
                 tuple.get1(), value, QueryOperator.GE, aliasManager.getAlias(tuple.get0()), ignorePolicy));
@@ -540,7 +547,7 @@ public class EntitySqlQueryConditionGroupExpression<E> extends
     @Override
     public <T> EntityQueryConditionGroupLogicExpression<E> ge(SerializableSupplier<T> repository,
             ReturnLocalDateFunction<T> property) {
-        typeQueryEntity.with(repository);
+        entityQueryEntity.with(repository);
         Tuple3<String, String, Object> tuple = conditionResult(repository, property, factory);
         return (EntityQueryConditionGroupLogicExpression<E>) addCondition(new SqlConditionExpressionBuilder(dialect,
                 tuple.get1(), tuple.get2(), QueryOperator.GE, aliasManager.getAlias(tuple.get0()), ignorePolicy));
@@ -550,9 +557,9 @@ public class EntitySqlQueryConditionGroupExpression<E> extends
      * {@inheritDoc}
      */
     @Override
-    public <T, R> EntityQueryConditionGroupLogicExpression<E> ge(SerializableFunction<T, R> repository,
+    public <R> EntityQueryConditionGroupLogicExpression<E> ge(SerializableFunction<E, R> repository,
             ReturnLocalDateTimeFunction<R> property, LocalDateTime value) {
-        typeQueryEntity.with(repository);
+        entityQueryEntity.with(repository);
         Tuple2<String, String> tuple = conditionResult(repository, property, value, factory);
         return (EntityQueryConditionGroupLogicExpression<E>) addCondition(new SqlConditionExpressionBuilder(dialect,
                 tuple.get1(), value, QueryOperator.GE, aliasManager.getAlias(tuple.get0()), ignorePolicy));
@@ -564,7 +571,7 @@ public class EntitySqlQueryConditionGroupExpression<E> extends
     @Override
     public <T> EntityQueryConditionGroupLogicExpression<E> ge(SerializableSupplier<T> repository,
             ReturnLocalDateTimeFunction<T> property) {
-        typeQueryEntity.with(repository);
+        entityQueryEntity.with(repository);
         Tuple3<String, String, Object> tuple = conditionResult(repository, property, factory);
         return (EntityQueryConditionGroupLogicExpression<E>) addCondition(new SqlConditionExpressionBuilder(dialect,
                 tuple.get1(), tuple.get2(), QueryOperator.GE, aliasManager.getAlias(tuple.get0()), ignorePolicy));
@@ -574,9 +581,9 @@ public class EntitySqlQueryConditionGroupExpression<E> extends
      * {@inheritDoc}
      */
     @Override
-    public <T, R> EntityQueryConditionGroupLogicExpression<E> ge(SerializableFunction<T, R> repository,
+    public <R> EntityQueryConditionGroupLogicExpression<E> ge(SerializableFunction<E, R> repository,
             ReturnStringFunction<R> property, String value) {
-        typeQueryEntity.with(repository);
+        entityQueryEntity.with(repository);
         Tuple2<String, String> tuple = conditionResult(repository, property, value, factory);
         return (EntityQueryConditionGroupLogicExpression<E>) addCondition(new SqlConditionExpressionBuilder(dialect,
                 tuple.get1(), value, QueryOperator.GE, aliasManager.getAlias(tuple.get0()), ignorePolicy));
@@ -588,7 +595,7 @@ public class EntitySqlQueryConditionGroupExpression<E> extends
     @Override
     public <T> EntityQueryConditionGroupLogicExpression<E> ge(SerializableSupplier<T> repository,
             ReturnStringFunction<T> property) {
-        typeQueryEntity.with(repository);
+        entityQueryEntity.with(repository);
         Tuple3<String, String, Object> tuple = conditionResult(repository, property, factory);
         return (EntityQueryConditionGroupLogicExpression<E>) addCondition(new SqlConditionExpressionBuilder(dialect,
                 tuple.get1(), tuple.get2(), QueryOperator.GE, aliasManager.getAlias(tuple.get0()), ignorePolicy));
@@ -598,9 +605,9 @@ public class EntitySqlQueryConditionGroupExpression<E> extends
      * {@inheritDoc}
      */
     @Override
-    public <T, R, N extends Number> EntityQueryConditionGroupLogicExpression<E> gt(
-            SerializableFunction<T, R> repository, ReturnNumberFunction<R, N> property, N value) {
-        typeQueryEntity.with(repository);
+    public <R, N extends Number> EntityQueryConditionGroupLogicExpression<E> gt(SerializableFunction<E, R> repository,
+            ReturnNumberFunction<R, N> property, N value) {
+        entityQueryEntity.with(repository);
         Tuple2<String, String> tuple = conditionResult(repository, property, value, factory);
         return (EntityQueryConditionGroupLogicExpression<E>) addCondition(new SqlConditionExpressionBuilder(dialect,
                 tuple.get1(), value, QueryOperator.GT, aliasManager.getAlias(tuple.get0()), ignorePolicy));
@@ -612,7 +619,7 @@ public class EntitySqlQueryConditionGroupExpression<E> extends
     @Override
     public <T, N extends Number> EntityQueryConditionGroupLogicExpression<E> gt(SerializableSupplier<T> repository,
             ReturnNumberFunction<T, N> property) {
-        typeQueryEntity.with(repository);
+        entityQueryEntity.with(repository);
         Tuple3<String, String, Object> tuple = conditionResult(repository, property, factory);
         return (EntityQueryConditionGroupLogicExpression<E>) addCondition(new SqlConditionExpressionBuilder(dialect,
                 tuple.get1(), tuple.get2(), QueryOperator.GT, aliasManager.getAlias(tuple.get0()), ignorePolicy));
@@ -622,9 +629,9 @@ public class EntitySqlQueryConditionGroupExpression<E> extends
      * {@inheritDoc}
      */
     @Override
-    public <T, R, D extends Date> EntityQueryConditionGroupLogicExpression<E> gt(SerializableFunction<T, R> repository,
+    public <R, D extends Date> EntityQueryConditionGroupLogicExpression<E> gt(SerializableFunction<E, R> repository,
             ReturnDateFunction<R, D> property, D value) {
-        typeQueryEntity.with(repository);
+        entityQueryEntity.with(repository);
         Tuple2<String, String> tuple = conditionResult(repository, property, value, factory);
         return (EntityQueryConditionGroupLogicExpression<E>) addCondition(new SqlConditionExpressionBuilder(dialect,
                 tuple.get1(), value, QueryOperator.GT, aliasManager.getAlias(tuple.get0()), ignorePolicy));
@@ -636,7 +643,7 @@ public class EntitySqlQueryConditionGroupExpression<E> extends
     @Override
     public <T, D extends Date> EntityQueryConditionGroupLogicExpression<E> gt(SerializableSupplier<T> repository,
             ReturnDateFunction<T, D> property) {
-        typeQueryEntity.with(repository);
+        entityQueryEntity.with(repository);
         Tuple3<String, String, Object> tuple = conditionResult(repository, property, factory);
         return (EntityQueryConditionGroupLogicExpression<E>) addCondition(new SqlConditionExpressionBuilder(dialect,
                 tuple.get1(), tuple.get2(), QueryOperator.GT, aliasManager.getAlias(tuple.get0()), ignorePolicy));
@@ -646,9 +653,9 @@ public class EntitySqlQueryConditionGroupExpression<E> extends
      * {@inheritDoc}
      */
     @Override
-    public <T, R> EntityQueryConditionGroupLogicExpression<E> gt(SerializableFunction<T, R> repository,
+    public <R> EntityQueryConditionGroupLogicExpression<E> gt(SerializableFunction<E, R> repository,
             ReturnLocalTimeFunction<R> property, LocalTime value) {
-        typeQueryEntity.with(repository);
+        entityQueryEntity.with(repository);
         Tuple2<String, String> tuple = conditionResult(repository, property, value, factory);
         return (EntityQueryConditionGroupLogicExpression<E>) addCondition(new SqlConditionExpressionBuilder(dialect,
                 tuple.get1(), value, QueryOperator.GT, aliasManager.getAlias(tuple.get0()), ignorePolicy));
@@ -660,7 +667,7 @@ public class EntitySqlQueryConditionGroupExpression<E> extends
     @Override
     public <T> EntityQueryConditionGroupLogicExpression<E> gt(SerializableSupplier<T> repository,
             ReturnLocalTimeFunction<T> property) {
-        typeQueryEntity.with(repository);
+        entityQueryEntity.with(repository);
         Tuple3<String, String, Object> tuple = conditionResult(repository, property, factory);
         return (EntityQueryConditionGroupLogicExpression<E>) addCondition(new SqlConditionExpressionBuilder(dialect,
                 tuple.get1(), tuple.get2(), QueryOperator.GT, aliasManager.getAlias(tuple.get0()), ignorePolicy));
@@ -670,9 +677,9 @@ public class EntitySqlQueryConditionGroupExpression<E> extends
      * {@inheritDoc}
      */
     @Override
-    public <T, R> EntityQueryConditionGroupLogicExpression<E> gt(SerializableFunction<T, R> repository,
+    public <R> EntityQueryConditionGroupLogicExpression<E> gt(SerializableFunction<E, R> repository,
             ReturnLocalDateFunction<R> property, LocalDate value) {
-        typeQueryEntity.with(repository);
+        entityQueryEntity.with(repository);
         Tuple2<String, String> tuple = conditionResult(repository, property, value, factory);
         return (EntityQueryConditionGroupLogicExpression<E>) addCondition(new SqlConditionExpressionBuilder(dialect,
                 tuple.get1(), value, QueryOperator.GT, aliasManager.getAlias(tuple.get0()), ignorePolicy));
@@ -684,7 +691,7 @@ public class EntitySqlQueryConditionGroupExpression<E> extends
     @Override
     public <T> EntityQueryConditionGroupLogicExpression<E> gt(SerializableSupplier<T> repository,
             ReturnLocalDateFunction<T> property) {
-        typeQueryEntity.with(repository);
+        entityQueryEntity.with(repository);
         Tuple3<String, String, Object> tuple = conditionResult(repository, property, factory);
         return (EntityQueryConditionGroupLogicExpression<E>) addCondition(new SqlConditionExpressionBuilder(dialect,
                 tuple.get1(), tuple.get2(), QueryOperator.GT, aliasManager.getAlias(tuple.get0()), ignorePolicy));
@@ -694,9 +701,9 @@ public class EntitySqlQueryConditionGroupExpression<E> extends
      * {@inheritDoc}
      */
     @Override
-    public <T, R> EntityQueryConditionGroupLogicExpression<E> gt(SerializableFunction<T, R> repository,
+    public <R> EntityQueryConditionGroupLogicExpression<E> gt(SerializableFunction<E, R> repository,
             ReturnLocalDateTimeFunction<R> property, LocalDateTime value) {
-        typeQueryEntity.with(repository);
+        entityQueryEntity.with(repository);
         Tuple2<String, String> tuple = conditionResult(repository, property, value, factory);
         return (EntityQueryConditionGroupLogicExpression<E>) addCondition(new SqlConditionExpressionBuilder(dialect,
                 tuple.get1(), value, QueryOperator.GT, aliasManager.getAlias(tuple.get0()), ignorePolicy));
@@ -708,7 +715,7 @@ public class EntitySqlQueryConditionGroupExpression<E> extends
     @Override
     public <T> EntityQueryConditionGroupLogicExpression<E> gt(SerializableSupplier<T> repository,
             ReturnLocalDateTimeFunction<T> property) {
-        typeQueryEntity.with(repository);
+        entityQueryEntity.with(repository);
         Tuple3<String, String, Object> tuple = conditionResult(repository, property, factory);
         return (EntityQueryConditionGroupLogicExpression<E>) addCondition(new SqlConditionExpressionBuilder(dialect,
                 tuple.get1(), tuple.get2(), QueryOperator.GT, aliasManager.getAlias(tuple.get0()), ignorePolicy));
@@ -718,9 +725,9 @@ public class EntitySqlQueryConditionGroupExpression<E> extends
      * {@inheritDoc}
      */
     @Override
-    public <T, R> EntityQueryConditionGroupLogicExpression<E> gt(SerializableFunction<T, R> repository,
+    public <R> EntityQueryConditionGroupLogicExpression<E> gt(SerializableFunction<E, R> repository,
             ReturnStringFunction<R> property, String value) {
-        typeQueryEntity.with(repository);
+        entityQueryEntity.with(repository);
         Tuple2<String, String> tuple = conditionResult(repository, property, value, factory);
         return (EntityQueryConditionGroupLogicExpression<E>) addCondition(new SqlConditionExpressionBuilder(dialect,
                 tuple.get1(), value, QueryOperator.GT, aliasManager.getAlias(tuple.get0()), ignorePolicy));
@@ -732,7 +739,7 @@ public class EntitySqlQueryConditionGroupExpression<E> extends
     @Override
     public <T> EntityQueryConditionGroupLogicExpression<E> gt(SerializableSupplier<T> repository,
             ReturnStringFunction<T> property) {
-        typeQueryEntity.with(repository);
+        entityQueryEntity.with(repository);
         Tuple3<String, String, Object> tuple = conditionResult(repository, property, factory);
         return (EntityQueryConditionGroupLogicExpression<E>) addCondition(new SqlConditionExpressionBuilder(dialect,
                 tuple.get1(), tuple.get2(), QueryOperator.GT, aliasManager.getAlias(tuple.get0()), ignorePolicy));
@@ -742,9 +749,9 @@ public class EntitySqlQueryConditionGroupExpression<E> extends
      * {@inheritDoc}
      */
     @Override
-    public <O, T, R> EntityQueryConditionGroupLogicExpression<E> in(SerializableFunction<O, T> repository,
-            SerializableFunction<T, R> property, Object value) {
-        typeQueryEntity.with(repository);
+    public <R, V> EntityQueryConditionGroupLogicExpression<E> in(SerializableFunction<E, R> repository,
+            SerializableFunction<R, V> property, Object value) {
+        entityQueryEntity.with(repository);
         Tuple2<String, String> tuple = conditionResult(repository, property, value, factory);
         return (EntityQueryConditionGroupLogicExpression<E>) addCondition(new SqlConditionExpressionBuilder(dialect,
                 tuple.get1(), value, QueryOperator.IN, aliasManager.getAlias(tuple.get0()), ignorePolicy));
@@ -754,9 +761,9 @@ public class EntitySqlQueryConditionGroupExpression<E> extends
      * {@inheritDoc}
      */
     @Override
-    public <T, R> EntityQueryConditionGroupLogicExpression<E> in(SerializableSupplier<T> repository,
-            SerializableFunction<T, R> property) {
-        typeQueryEntity.with(repository);
+    public <R, V> EntityQueryConditionGroupLogicExpression<E> in(SerializableSupplier<R> repository,
+            SerializableFunction<R, V> property) {
+        entityQueryEntity.with(repository);
         Tuple3<String, String, Object> tuple = conditionResult(repository, property, factory);
         return (EntityQueryConditionGroupLogicExpression<E>) addCondition(new SqlConditionExpressionBuilder(dialect,
                 tuple.get1(), tuple.get2(), QueryOperator.IN, aliasManager.getAlias(tuple.get0()), ignorePolicy));
@@ -766,8 +773,8 @@ public class EntitySqlQueryConditionGroupExpression<E> extends
      * {@inheritDoc}
      */
     @Override
-    public <O, T, R> EntityQueryConditionGroupLogicExpression<E> inn(SerializableFunction<O, T> repository,
-            SerializableFunction<T, R> property) {
+    public <R, V> EntityQueryConditionGroupLogicExpression<E> inn(SerializableFunction<E, R> repository,
+            SerializableFunction<R, V> property) {
         return inn(repository, property, true);
     }
 
@@ -775,9 +782,9 @@ public class EntitySqlQueryConditionGroupExpression<E> extends
      * {@inheritDoc}
      */
     @Override
-    public <O, T, R> EntityQueryConditionGroupLogicExpression<E> inn(SerializableFunction<O, T> repository,
-            SerializableFunction<T, R> property, Boolean value) {
-        typeQueryEntity.with(repository);
+    public <R, V> EntityQueryConditionGroupLogicExpression<E> inn(SerializableFunction<E, R> repository,
+            SerializableFunction<R, V> property, Boolean value) {
+        entityQueryEntity.with(repository);
         Tuple2<String, String> tuple = conditionResult(repository, property, value, factory);
         return (EntityQueryConditionGroupLogicExpression<E>) addCondition(new SqlConditionExpressionBuilder(dialect,
                 tuple.get1(), value, QueryOperator.INN, aliasManager.getAlias(tuple.get0()), ignorePolicy));
@@ -787,8 +794,8 @@ public class EntitySqlQueryConditionGroupExpression<E> extends
      * {@inheritDoc}
      */
     @Override
-    public <O, T, R> EntityQueryConditionGroupLogicExpression<E> isn(SerializableFunction<O, T> repository,
-            SerializableFunction<T, R> property) {
+    public <R, V> EntityQueryConditionGroupLogicExpression<E> isn(SerializableFunction<E, R> repository,
+            SerializableFunction<R, V> property) {
         return isn(repository, property, true);
     }
 
@@ -796,9 +803,9 @@ public class EntitySqlQueryConditionGroupExpression<E> extends
      * {@inheritDoc}
      */
     @Override
-    public <O, T, R> EntityQueryConditionGroupLogicExpression<E> isn(SerializableFunction<O, T> repository,
-            SerializableFunction<T, R> property, Boolean value) {
-        typeQueryEntity.with(repository);
+    public <R, V> EntityQueryConditionGroupLogicExpression<E> isn(SerializableFunction<E, R> repository,
+            SerializableFunction<R, V> property, Boolean value) {
+        entityQueryEntity.with(repository);
         Tuple2<String, String> tuple = conditionResult(repository, property, value, factory);
         return (EntityQueryConditionGroupLogicExpression<E>) addCondition(new SqlConditionExpressionBuilder(dialect,
                 tuple.get1(), value, QueryOperator.ISN, aliasManager.getAlias(tuple.get0()), ignorePolicy));
@@ -808,9 +815,9 @@ public class EntitySqlQueryConditionGroupExpression<E> extends
      * {@inheritDoc}
      */
     @Override
-    public <T, R, N extends Number> EntityQueryConditionGroupLogicExpression<E> le(
-            SerializableFunction<T, R> repository, ReturnNumberFunction<R, N> property, N value) {
-        typeQueryEntity.with(repository);
+    public <R, N extends Number> EntityQueryConditionGroupLogicExpression<E> le(SerializableFunction<E, R> repository,
+            ReturnNumberFunction<R, N> property, N value) {
+        entityQueryEntity.with(repository);
         Tuple2<String, String> tuple = conditionResult(repository, property, value, factory);
         return (EntityQueryConditionGroupLogicExpression<E>) addCondition(new SqlConditionExpressionBuilder(dialect,
                 tuple.get1(), value, QueryOperator.LE, aliasManager.getAlias(tuple.get0()), ignorePolicy));
@@ -820,9 +827,9 @@ public class EntitySqlQueryConditionGroupExpression<E> extends
      * {@inheritDoc}
      */
     @Override
-    public <T, N extends Number> EntityQueryConditionGroupLogicExpression<E> le(SerializableSupplier<T> repository,
-            ReturnNumberFunction<T, N> property) {
-        typeQueryEntity.with(repository);
+    public <R, N extends Number> EntityQueryConditionGroupLogicExpression<E> le(SerializableSupplier<R> repository,
+            ReturnNumberFunction<R, N> property) {
+        entityQueryEntity.with(repository);
         Tuple3<String, String, Object> tuple = conditionResult(repository, property, factory);
         return (EntityQueryConditionGroupLogicExpression<E>) addCondition(new SqlConditionExpressionBuilder(dialect,
                 tuple.get1(), tuple.get2(), QueryOperator.LE, aliasManager.getAlias(tuple.get0()), ignorePolicy));
@@ -832,9 +839,9 @@ public class EntitySqlQueryConditionGroupExpression<E> extends
      * {@inheritDoc}
      */
     @Override
-    public <T, R, D extends Date> EntityQueryConditionGroupLogicExpression<E> le(SerializableFunction<T, R> repository,
+    public <R, D extends Date> EntityQueryConditionGroupLogicExpression<E> le(SerializableFunction<E, R> repository,
             ReturnDateFunction<R, D> property, D value) {
-        typeQueryEntity.with(repository);
+        entityQueryEntity.with(repository);
         Tuple2<String, String> tuple = conditionResult(repository, property, value, factory);
         return (EntityQueryConditionGroupLogicExpression<E>) addCondition(new SqlConditionExpressionBuilder(dialect,
                 tuple.get1(), value, QueryOperator.LE, aliasManager.getAlias(tuple.get0()), ignorePolicy));
@@ -844,9 +851,9 @@ public class EntitySqlQueryConditionGroupExpression<E> extends
      * {@inheritDoc}
      */
     @Override
-    public <T, D extends Date> EntityQueryConditionGroupLogicExpression<E> le(SerializableSupplier<T> repository,
-            ReturnDateFunction<T, D> property) {
-        typeQueryEntity.with(repository);
+    public <R, D extends Date> EntityQueryConditionGroupLogicExpression<E> le(SerializableSupplier<R> repository,
+            ReturnDateFunction<R, D> property) {
+        entityQueryEntity.with(repository);
         Tuple3<String, String, Object> tuple = conditionResult(repository, property, factory);
         return (EntityQueryConditionGroupLogicExpression<E>) addCondition(new SqlConditionExpressionBuilder(dialect,
                 tuple.get1(), tuple.get2(), QueryOperator.LE, aliasManager.getAlias(tuple.get0()), ignorePolicy));
@@ -856,9 +863,9 @@ public class EntitySqlQueryConditionGroupExpression<E> extends
      * {@inheritDoc}
      */
     @Override
-    public <T, R> EntityQueryConditionGroupLogicExpression<E> le(SerializableFunction<T, R> repository,
+    public <R> EntityQueryConditionGroupLogicExpression<E> le(SerializableFunction<E, R> repository,
             ReturnLocalTimeFunction<R> property, LocalTime value) {
-        typeQueryEntity.with(repository);
+        entityQueryEntity.with(repository);
         Tuple2<String, String> tuple = conditionResult(repository, property, value, factory);
         return (EntityQueryConditionGroupLogicExpression<E>) addCondition(new SqlConditionExpressionBuilder(dialect,
                 tuple.get1(), value, QueryOperator.LE, aliasManager.getAlias(tuple.get0()), ignorePolicy));
@@ -870,7 +877,7 @@ public class EntitySqlQueryConditionGroupExpression<E> extends
     @Override
     public <T> EntityQueryConditionGroupLogicExpression<E> le(SerializableSupplier<T> repository,
             ReturnLocalTimeFunction<T> property) {
-        typeQueryEntity.with(repository);
+        entityQueryEntity.with(repository);
         Tuple3<String, String, Object> tuple = conditionResult(repository, property, factory);
         return (EntityQueryConditionGroupLogicExpression<E>) addCondition(new SqlConditionExpressionBuilder(dialect,
                 tuple.get1(), tuple.get2(), QueryOperator.LE, aliasManager.getAlias(tuple.get0()), ignorePolicy));
@@ -880,9 +887,9 @@ public class EntitySqlQueryConditionGroupExpression<E> extends
      * {@inheritDoc}
      */
     @Override
-    public <T, R> EntityQueryConditionGroupLogicExpression<E> le(SerializableFunction<T, R> repository,
+    public <R> EntityQueryConditionGroupLogicExpression<E> le(SerializableFunction<E, R> repository,
             ReturnLocalDateFunction<R> property, LocalDate value) {
-        typeQueryEntity.with(repository);
+        entityQueryEntity.with(repository);
         Tuple2<String, String> tuple = conditionResult(repository, property, value, factory);
         return (EntityQueryConditionGroupLogicExpression<E>) addCondition(new SqlConditionExpressionBuilder(dialect,
                 tuple.get1(), value, QueryOperator.LE, aliasManager.getAlias(tuple.get0()), ignorePolicy));
@@ -894,7 +901,7 @@ public class EntitySqlQueryConditionGroupExpression<E> extends
     @Override
     public <T> EntityQueryConditionGroupLogicExpression<E> le(SerializableSupplier<T> repository,
             ReturnLocalDateFunction<T> property) {
-        typeQueryEntity.with(repository);
+        entityQueryEntity.with(repository);
         Tuple3<String, String, Object> tuple = conditionResult(repository, property, factory);
         return (EntityQueryConditionGroupLogicExpression<E>) addCondition(new SqlConditionExpressionBuilder(dialect,
                 tuple.get1(), tuple.get2(), QueryOperator.LE, aliasManager.getAlias(tuple.get0()), ignorePolicy));
@@ -904,9 +911,9 @@ public class EntitySqlQueryConditionGroupExpression<E> extends
      * {@inheritDoc}
      */
     @Override
-    public <T, R> EntityQueryConditionGroupLogicExpression<E> le(SerializableFunction<T, R> repository,
+    public <R> EntityQueryConditionGroupLogicExpression<E> le(SerializableFunction<E, R> repository,
             ReturnLocalDateTimeFunction<R> property, LocalDateTime value) {
-        typeQueryEntity.with(repository);
+        entityQueryEntity.with(repository);
         Tuple2<String, String> tuple = conditionResult(repository, property, value, factory);
         return (EntityQueryConditionGroupLogicExpression<E>) addCondition(new SqlConditionExpressionBuilder(dialect,
                 tuple.get1(), value, QueryOperator.LE, aliasManager.getAlias(tuple.get0()), ignorePolicy));
@@ -918,7 +925,7 @@ public class EntitySqlQueryConditionGroupExpression<E> extends
     @Override
     public <T> EntityQueryConditionGroupLogicExpression<E> le(SerializableSupplier<T> repository,
             ReturnLocalDateTimeFunction<T> property) {
-        typeQueryEntity.with(repository);
+        entityQueryEntity.with(repository);
         Tuple3<String, String, Object> tuple = conditionResult(repository, property, factory);
         return (EntityQueryConditionGroupLogicExpression<E>) addCondition(new SqlConditionExpressionBuilder(dialect,
                 tuple.get1(), tuple.get2(), QueryOperator.LE, aliasManager.getAlias(tuple.get0()), ignorePolicy));
@@ -928,9 +935,9 @@ public class EntitySqlQueryConditionGroupExpression<E> extends
      * {@inheritDoc}
      */
     @Override
-    public <T, R> EntityQueryConditionGroupLogicExpression<E> le(SerializableFunction<T, R> repository,
+    public <R> EntityQueryConditionGroupLogicExpression<E> le(SerializableFunction<E, R> repository,
             ReturnStringFunction<R> property, String value) {
-        typeQueryEntity.with(repository);
+        entityQueryEntity.with(repository);
         Tuple2<String, String> tuple = conditionResult(repository, property, value, factory);
         return (EntityQueryConditionGroupLogicExpression<E>) addCondition(new SqlConditionExpressionBuilder(dialect,
                 tuple.get1(), value, QueryOperator.LE, aliasManager.getAlias(tuple.get0()), ignorePolicy));
@@ -940,9 +947,9 @@ public class EntitySqlQueryConditionGroupExpression<E> extends
      * {@inheritDoc}
      */
     @Override
-    public <T> EntityQueryConditionGroupLogicExpression<E> le(SerializableSupplier<T> repository,
-            ReturnStringFunction<T> property) {
-        typeQueryEntity.with(repository);
+    public <R> EntityQueryConditionGroupLogicExpression<E> le(SerializableSupplier<R> repository,
+            ReturnStringFunction<R> property) {
+        entityQueryEntity.with(repository);
         Tuple3<String, String, Object> tuple = conditionResult(repository, property, factory);
         return (EntityQueryConditionGroupLogicExpression<E>) addCondition(new SqlConditionExpressionBuilder(dialect,
                 tuple.get1(), tuple.get2(), QueryOperator.LE, aliasManager.getAlias(tuple.get0()), ignorePolicy));
@@ -952,9 +959,9 @@ public class EntitySqlQueryConditionGroupExpression<E> extends
      * {@inheritDoc}
      */
     @Override
-    public <T, R, N extends Number> EntityQueryConditionGroupLogicExpression<E> lt(
-            SerializableFunction<T, R> repository, ReturnNumberFunction<R, N> property, N value) {
-        typeQueryEntity.with(repository);
+    public <R, N extends Number> EntityQueryConditionGroupLogicExpression<E> lt(SerializableFunction<E, R> repository,
+            ReturnNumberFunction<R, N> property, N value) {
+        entityQueryEntity.with(repository);
         Tuple2<String, String> tuple = conditionResult(repository, property, value, factory);
         return (EntityQueryConditionGroupLogicExpression<E>) addCondition(new SqlConditionExpressionBuilder(dialect,
                 tuple.get1(), value, QueryOperator.LT, aliasManager.getAlias(tuple.get0()), ignorePolicy));
@@ -966,7 +973,7 @@ public class EntitySqlQueryConditionGroupExpression<E> extends
     @Override
     public <T, N extends Number> EntityQueryConditionGroupLogicExpression<E> lt(SerializableSupplier<T> repository,
             ReturnNumberFunction<T, N> property) {
-        typeQueryEntity.with(repository);
+        entityQueryEntity.with(repository);
         Tuple3<String, String, Object> tuple = conditionResult(repository, property, factory);
         return (EntityQueryConditionGroupLogicExpression<E>) addCondition(new SqlConditionExpressionBuilder(dialect,
                 tuple.get1(), tuple.get2(), QueryOperator.LT, aliasManager.getAlias(tuple.get0()), ignorePolicy));
@@ -976,9 +983,9 @@ public class EntitySqlQueryConditionGroupExpression<E> extends
      * {@inheritDoc}
      */
     @Override
-    public <T, R, D extends Date> EntityQueryConditionGroupLogicExpression<E> lt(SerializableFunction<T, R> repository,
+    public <R, D extends Date> EntityQueryConditionGroupLogicExpression<E> lt(SerializableFunction<E, R> repository,
             ReturnDateFunction<R, D> property, D value) {
-        typeQueryEntity.with(repository);
+        entityQueryEntity.with(repository);
         Tuple2<String, String> tuple = conditionResult(repository, property, value, factory);
         return (EntityQueryConditionGroupLogicExpression<E>) addCondition(new SqlConditionExpressionBuilder(dialect,
                 tuple.get1(), value, QueryOperator.LT, aliasManager.getAlias(tuple.get0()), ignorePolicy));
@@ -990,7 +997,7 @@ public class EntitySqlQueryConditionGroupExpression<E> extends
     @Override
     public <T, D extends Date> EntityQueryConditionGroupLogicExpression<E> lt(SerializableSupplier<T> repository,
             ReturnDateFunction<T, D> property) {
-        typeQueryEntity.with(repository);
+        entityQueryEntity.with(repository);
         Tuple3<String, String, Object> tuple = conditionResult(repository, property, factory);
         return (EntityQueryConditionGroupLogicExpression<E>) addCondition(new SqlConditionExpressionBuilder(dialect,
                 tuple.get1(), tuple.get2(), QueryOperator.LT, aliasManager.getAlias(tuple.get0()), ignorePolicy));
@@ -1000,9 +1007,9 @@ public class EntitySqlQueryConditionGroupExpression<E> extends
      * {@inheritDoc}
      */
     @Override
-    public <T, R> EntityQueryConditionGroupLogicExpression<E> lt(SerializableFunction<T, R> repository,
+    public <R> EntityQueryConditionGroupLogicExpression<E> lt(SerializableFunction<E, R> repository,
             ReturnLocalTimeFunction<R> property, LocalTime value) {
-        typeQueryEntity.with(repository);
+        entityQueryEntity.with(repository);
         Tuple2<String, String> tuple = conditionResult(repository, property, value, factory);
         return (EntityQueryConditionGroupLogicExpression<E>) addCondition(new SqlConditionExpressionBuilder(dialect,
                 tuple.get1(), value, QueryOperator.LT, aliasManager.getAlias(tuple.get0()), ignorePolicy));
@@ -1014,7 +1021,7 @@ public class EntitySqlQueryConditionGroupExpression<E> extends
     @Override
     public <T> EntityQueryConditionGroupLogicExpression<E> lt(SerializableSupplier<T> repository,
             ReturnLocalTimeFunction<T> property) {
-        typeQueryEntity.with(repository);
+        entityQueryEntity.with(repository);
         Tuple3<String, String, Object> tuple = conditionResult(repository, property, factory);
         return (EntityQueryConditionGroupLogicExpression<E>) addCondition(new SqlConditionExpressionBuilder(dialect,
                 tuple.get1(), tuple.get2(), QueryOperator.LT, aliasManager.getAlias(tuple.get0()), ignorePolicy));
@@ -1024,9 +1031,9 @@ public class EntitySqlQueryConditionGroupExpression<E> extends
      * {@inheritDoc}
      */
     @Override
-    public <T, R> EntityQueryConditionGroupLogicExpression<E> lt(SerializableFunction<T, R> repository,
+    public <R> EntityQueryConditionGroupLogicExpression<E> lt(SerializableFunction<E, R> repository,
             ReturnLocalDateFunction<R> property, LocalDate value) {
-        typeQueryEntity.with(repository);
+        entityQueryEntity.with(repository);
         Tuple2<String, String> tuple = conditionResult(repository, property, value, factory);
         return (EntityQueryConditionGroupLogicExpression<E>) addCondition(new SqlConditionExpressionBuilder(dialect,
                 tuple.get1(), value, QueryOperator.LT, aliasManager.getAlias(tuple.get0()), ignorePolicy));
@@ -1038,7 +1045,7 @@ public class EntitySqlQueryConditionGroupExpression<E> extends
     @Override
     public <T> EntityQueryConditionGroupLogicExpression<E> lt(SerializableSupplier<T> repository,
             ReturnLocalDateFunction<T> property) {
-        typeQueryEntity.with(repository);
+        entityQueryEntity.with(repository);
         Tuple3<String, String, Object> tuple = conditionResult(repository, property, factory);
         return (EntityQueryConditionGroupLogicExpression<E>) addCondition(new SqlConditionExpressionBuilder(dialect,
                 tuple.get1(), tuple.get2(), QueryOperator.LT, aliasManager.getAlias(tuple.get0()), ignorePolicy));
@@ -1048,9 +1055,9 @@ public class EntitySqlQueryConditionGroupExpression<E> extends
      * {@inheritDoc}
      */
     @Override
-    public <T, R> EntityQueryConditionGroupLogicExpression<E> lt(SerializableFunction<T, R> repository,
+    public <R> EntityQueryConditionGroupLogicExpression<E> lt(SerializableFunction<E, R> repository,
             ReturnLocalDateTimeFunction<R> property, LocalDateTime value) {
-        typeQueryEntity.with(repository);
+        entityQueryEntity.with(repository);
         Tuple2<String, String> tuple = conditionResult(repository, property, value, factory);
         return (EntityQueryConditionGroupLogicExpression<E>) addCondition(new SqlConditionExpressionBuilder(dialect,
                 tuple.get1(), value, QueryOperator.LT, aliasManager.getAlias(tuple.get0()), ignorePolicy));
@@ -1062,7 +1069,7 @@ public class EntitySqlQueryConditionGroupExpression<E> extends
     @Override
     public <T> EntityQueryConditionGroupLogicExpression<E> lt(SerializableSupplier<T> repository,
             ReturnLocalDateTimeFunction<T> property) {
-        typeQueryEntity.with(repository);
+        entityQueryEntity.with(repository);
         Tuple3<String, String, Object> tuple = conditionResult(repository, property, factory);
         return (EntityQueryConditionGroupLogicExpression<E>) addCondition(new SqlConditionExpressionBuilder(dialect,
                 tuple.get1(), tuple.get2(), QueryOperator.LT, aliasManager.getAlias(tuple.get0()), ignorePolicy));
@@ -1072,9 +1079,9 @@ public class EntitySqlQueryConditionGroupExpression<E> extends
      * {@inheritDoc}
      */
     @Override
-    public <T, R> EntityQueryConditionGroupLogicExpression<E> lt(SerializableFunction<T, R> repository,
+    public <R> EntityQueryConditionGroupLogicExpression<E> lt(SerializableFunction<E, R> repository,
             ReturnStringFunction<R> property, String value) {
-        typeQueryEntity.with(repository);
+        entityQueryEntity.with(repository);
         Tuple2<String, String> tuple = conditionResult(repository, property, value, factory);
         return (EntityQueryConditionGroupLogicExpression<E>) addCondition(new SqlConditionExpressionBuilder(dialect,
                 tuple.get1(), value, QueryOperator.LT, aliasManager.getAlias(tuple.get0()), ignorePolicy));
@@ -1086,7 +1093,7 @@ public class EntitySqlQueryConditionGroupExpression<E> extends
     @Override
     public <T> EntityQueryConditionGroupLogicExpression<E> lt(SerializableSupplier<T> repository,
             ReturnStringFunction<T> property) {
-        typeQueryEntity.with(repository);
+        entityQueryEntity.with(repository);
         Tuple3<String, String, Object> tuple = conditionResult(repository, property, factory);
         return (EntityQueryConditionGroupLogicExpression<E>) addCondition(new SqlConditionExpressionBuilder(dialect,
                 tuple.get1(), tuple.get2(), QueryOperator.LT, aliasManager.getAlias(tuple.get0()), ignorePolicy));
@@ -1096,9 +1103,9 @@ public class EntitySqlQueryConditionGroupExpression<E> extends
      * {@inheritDoc}
      */
     @Override
-    public <O, T, R> EntityQueryConditionGroupLogicExpression<E> ne(SerializableFunction<O, T> repository,
-            SerializableFunction<T, R> property, R value) {
-        typeQueryEntity.with(repository);
+    public <R, V> EntityQueryConditionGroupLogicExpression<E> ne(SerializableFunction<E, R> repository,
+            SerializableFunction<R, V> property, V value) {
+        entityQueryEntity.with(repository);
         Tuple2<String, String> tuple = conditionResult(repository, property, value, factory);
         return (EntityQueryConditionGroupLogicExpression<E>) addCondition(new SqlConditionExpressionBuilder(dialect,
                 tuple.get1(), value, QueryOperator.EQ, aliasManager.getAlias(tuple.get0()), ignorePolicy));
@@ -1108,9 +1115,9 @@ public class EntitySqlQueryConditionGroupExpression<E> extends
      * {@inheritDoc}
      */
     @Override
-    public <T, R> EntityQueryConditionGroupLogicExpression<E> ne(SerializableSupplier<T> repository,
-            SerializableFunction<T, R> property) {
-        typeQueryEntity.with(repository);
+    public <R, V> EntityQueryConditionGroupLogicExpression<E> ne(SerializableSupplier<R> repository,
+            SerializableFunction<R, V> property) {
+        entityQueryEntity.with(repository);
         Tuple3<String, String, Object> tuple = conditionResult(repository, property, factory);
         return (EntityQueryConditionGroupLogicExpression<E>) addCondition(new SqlConditionExpressionBuilder(dialect,
                 tuple.get1(), tuple.get2(), QueryOperator.NE, aliasManager.getAlias(tuple.get0()), ignorePolicy));
@@ -1120,9 +1127,9 @@ public class EntitySqlQueryConditionGroupExpression<E> extends
      * {@inheritDoc}
      */
     @Override
-    public <O, T, R> EntityQueryConditionGroupLogicExpression<E> nin(SerializableFunction<O, T> repository,
-            SerializableFunction<T, R> property, Object value) {
-        typeQueryEntity.with(repository);
+    public <R, V> EntityQueryConditionGroupLogicExpression<E> nin(SerializableFunction<E, R> repository,
+            SerializableFunction<R, V> property, Object value) {
+        entityQueryEntity.with(repository);
         Tuple2<String, String> tuple = conditionResult(repository, property, value, factory);
         return (EntityQueryConditionGroupLogicExpression<E>) addCondition(new SqlConditionExpressionBuilder(dialect,
                 tuple.get1(), value, QueryOperator.NIN, aliasManager.getAlias(tuple.get0()), ignorePolicy));
@@ -1132,9 +1139,9 @@ public class EntitySqlQueryConditionGroupExpression<E> extends
      * {@inheritDoc}
      */
     @Override
-    public <T, R> EntityQueryConditionGroupLogicExpression<E> nin(SerializableSupplier<T> repository,
-            SerializableFunction<T, R> property) {
-        typeQueryEntity.with(repository);
+    public <R, V> EntityQueryConditionGroupLogicExpression<E> nin(SerializableSupplier<R> repository,
+            SerializableFunction<R, V> property) {
+        entityQueryEntity.with(repository);
         Tuple3<String, String, Object> tuple = conditionResult(repository, property, factory);
         return (EntityQueryConditionGroupLogicExpression<E>) addCondition(new SqlConditionExpressionBuilder(dialect,
                 tuple.get1(), tuple.get2(), QueryOperator.NE, aliasManager.getAlias(tuple.get0()), ignorePolicy));
@@ -1144,9 +1151,9 @@ public class EntitySqlQueryConditionGroupExpression<E> extends
      * {@inheritDoc}
      */
     @Override
-    public <T, R> EntityQueryConditionGroupLogicExpression<E> sw(SerializableFunction<T, R> repository,
+    public <R> EntityQueryConditionGroupLogicExpression<E> sw(SerializableFunction<E, R> repository,
             ReturnStringFunction<R> property, Object value) {
-        typeQueryEntity.with(repository);
+        entityQueryEntity.with(repository);
         Tuple2<String, String> tuple = conditionResult(repository, property, value, factory);
         return (EntityQueryConditionGroupLogicExpression<E>) addCondition(new SqlConditionExpressionBuilder(dialect,
                 tuple.get1(), value, QueryOperator.SW, aliasManager.getAlias(tuple.get0()), ignorePolicy));
@@ -1156,9 +1163,9 @@ public class EntitySqlQueryConditionGroupExpression<E> extends
      * {@inheritDoc}
      */
     @Override
-    public <T, R> EntityQueryConditionGroupLogicExpression<E> sw(SerializableSupplier<T> repository,
-            ReturnStringFunction<T> property) {
-        typeQueryEntity.with(repository);
+    public <R> EntityQueryConditionGroupLogicExpression<E> sw(SerializableSupplier<R> repository,
+            ReturnStringFunction<R> property) {
+        entityQueryEntity.with(repository);
         Tuple3<String, String, Object> tuple = conditionResult(repository, property, factory);
         return (EntityQueryConditionGroupLogicExpression<E>) addCondition(new SqlConditionExpressionBuilder(dialect,
                 tuple.get1(), tuple.get2(), QueryOperator.SW, aliasManager.getAlias(tuple.get0()), ignorePolicy));
@@ -1168,9 +1175,9 @@ public class EntitySqlQueryConditionGroupExpression<E> extends
      * {@inheritDoc}
      */
     @Override
-    public <T, R> EntityQueryConditionGroupLogicExpression<E> lk(SerializableFunction<T, R> repository,
+    public <R> EntityQueryConditionGroupLogicExpression<E> lk(SerializableFunction<E, R> repository,
             ReturnStringFunction<R> property, Object value) {
-        typeQueryEntity.with(repository);
+        entityQueryEntity.with(repository);
         Tuple2<String, String> tuple = conditionResult(repository, property, value, factory);
         return (EntityQueryConditionGroupLogicExpression<E>) addCondition(new SqlConditionExpressionBuilder(dialect,
                 tuple.get1(), value, QueryOperator.LK, aliasManager.getAlias(tuple.get0()), ignorePolicy));
@@ -1180,9 +1187,9 @@ public class EntitySqlQueryConditionGroupExpression<E> extends
      * {@inheritDoc}
      */
     @Override
-    public <T, R> EntityQueryConditionGroupLogicExpression<E> lk(SerializableSupplier<T> repository,
-            ReturnStringFunction<T> property) {
-        typeQueryEntity.with(repository);
+    public <R> EntityQueryConditionGroupLogicExpression<E> lk(SerializableSupplier<R> repository,
+            ReturnStringFunction<R> property) {
+        entityQueryEntity.with(repository);
         Tuple3<String, String, Object> tuple = conditionResult(repository, property, factory);
         return (EntityQueryConditionGroupLogicExpression<E>) addCondition(new SqlConditionExpressionBuilder(dialect,
                 tuple.get1(), tuple.get2(), QueryOperator.LK, aliasManager.getAlias(tuple.get0()), ignorePolicy));

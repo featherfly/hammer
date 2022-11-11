@@ -59,6 +59,15 @@ public interface EntityLessThanExpressoin<E, C extends ConditionExpression, L ex
      * @param value 参数值
      * @return LogicExpression
      */
+    L lt(ReturnLocalTimeFunction<E> name, LocalTime value);
+
+    /**
+     * less than. 小于.
+     *
+     * @param name  参数名称
+     * @param value 参数值
+     * @return LogicExpression
+     */
     L lt(ReturnLocalDateFunction<E> name, LocalDate value);
 
     /**
@@ -185,7 +194,7 @@ public interface EntityLessThanExpressoin<E, C extends ConditionExpression, L ex
      * @param value      参数值
      * @return LogicExpression
      */
-    <T, R> L lt(SerializableFunction<E, R> repository, ReturnLocalTimeFunction<R> property, LocalTime value);
+    <R> L lt(SerializableFunction<E, R> repository, ReturnLocalTimeFunction<R> property, LocalTime value);
 
     /**
      * less than. 小于.

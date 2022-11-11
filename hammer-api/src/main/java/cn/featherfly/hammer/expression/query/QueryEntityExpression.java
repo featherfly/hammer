@@ -4,7 +4,7 @@ package cn.featherfly.hammer.expression.query;
 import java.util.Collection;
 
 import cn.featherfly.common.lang.function.SerializableFunction;
-import cn.featherfly.common.repository.operate.AggregateFunction;
+import cn.featherfly.common.operator.AggregateFunction;
 import cn.featherfly.hammer.dsl.query.QuerySortExpression;
 import cn.featherfly.hammer.expression.ConditionGroupExpression;
 import cn.featherfly.hammer.expression.ConditionGroupLogicExpression;

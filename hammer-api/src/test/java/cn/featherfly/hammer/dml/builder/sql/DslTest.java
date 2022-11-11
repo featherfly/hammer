@@ -1,7 +1,11 @@
 
 package cn.featherfly.hammer.dml.builder.sql;
 
-import cn.featherfly.common.repository.operate.AggregateFunction;
+import cn.featherfly.common.operator.AggregateFunction;
+import cn.featherfly.hammer.dml.builder.sql.vo.Device;
+import cn.featherfly.hammer.dml.builder.sql.vo.Tree;
+import cn.featherfly.hammer.dml.builder.sql.vo.User;
+import cn.featherfly.hammer.dml.builder.sql.vo.UserInfo;
 import cn.featherfly.hammer.dsl.execute.Deleter;
 import cn.featherfly.hammer.dsl.execute.Updater;
 import cn.featherfly.hammer.dsl.query.Query;
@@ -15,10 +19,11 @@ import cn.featherfly.hammer.expression.SimpleRepository;
  */
 public class DslTest {
 
-    public void testQuery() {
-        Query query = null;
-        Repository data = null;
+    Query query = null;
 
+    Repository data = null;
+
+    public void testQuery() {
         query.find(data).list(DslTest.class);
         query.find(data).limit(10).list(DslTest.class);
         query.find(data).limit(1).single(DslTest.class);
@@ -28,8 +33,11 @@ public class DslTest {
         query.find(data).property("name").integer();
         query.find(data).property("sum(price)").decimal();
         query.find(data).property("price", AggregateFunction.SUM).decimal();
+        query.find(data).sum("price").decimal();
         query.find(data).property("id", AggregateFunction.COUNT).integer();
+        query.find(data).count("id").integer();
         query.find(data).property("id", AggregateFunction.COUNT).longInt();
+        query.find(data).count("id").longInt();
 
         query.find(data).sum("id").longInt();
 
@@ -111,6 +119,76 @@ public class DslTest {
         //        query.find(DslTest.class).where().eq(DslTest::getId, 1).and().eq(DslStaticTypeTest::toString, "").single();
         query.find(DslTest.class).where().co(DslTest::getName, "").and().setIgnorePolicy(null).co(null).single();
         query.find(DslTest.class).where().setIgnorePolicy(null).co(DslTest::toString, "").and().co(null).list();
+
+        // TODO 如果后续加入编译期增强，则在使用注解标注泛型方法（例如find）
+        // 目的是使得各种判断和类型匹配在编译期就处理完成，而不是在运行期就在获取
+        /*
+         1. co(DslTest::getName, "")替换为co("name", "")，或者BeanPropertyValue）
+         2. co(DslTest::getName, "")替换为co(BeanPropertyValue)
+         3. co(DslTest::getName, "")替换为co(RepositoryFieldValue)
+            此参数需要在编译期就搞好所有中间过程，即在jdbc设置时，不去使用SqlTypeMappingManager进行类型判断
+         */
+        DslTest test = query.<@Enhance DslTest>find(DslTest.class).where().co(DslTest::getName, "").and()
+                .setIgnorePolicy(null).co(null).single();
+    }
+
+    public void testQuery2() {
+        // IMPLSOON 这里的where()后没有list等方法
+        //        query.find(DslTest.class).with(DslTest::getId).where().list();
+        query.find(DslTest.class).with(DslTest::getId).where().eq(DslTest::getId, 1).list();
+        query.find(DslTest.class).with(DslTest::getId).fetch().where().eq(DslTest::getId, 1).list();
+
+        // select * from user u join userinfo ui on u.id = ui.user_id
+        query.find(User.class).with(User::getUserInfo);
+        // select * from user u join userinfo ui on u.id = ui.user_id
+        query.find(User.class).with(UserInfo::getUser);
+        // select * from user u join device d on u.id = d.user_id
+        query.find(User.class).with(User::getDevices);
+        // select * from user u join device d on u.id = d.user_id
+        query.find(User.class).with(Device::getUser);
+
+        // with(Function)，都是和find的对象进行关联
+        // select * from user u join userinfo ui on u.id = ui.user_id join device d on u.id = d.user_id
+        query.find(User.class).with(User::getUserInfo).with(User::getDevices);
+        // select * from user u join userinfo ui on u.id = ui.user_id join device d on u.id = d.user_id join user u2 on ui.user_id = u2.id
+        query.find(User.class).with(User::getUserInfo).with(User::getDevices).with(UserInfo::getUser);
+
+        // select * from tree t1 join tree t2 on t1.id = t2.parent_id join tree t3 on t1.id = t3.parent_id
+        query.find(Tree.class).with(Tree::getParent).with(Tree::getParent);
+
+        // IMPLSOON with join的api定义规则
+        /*
+         // select * from tree t1 join tree t2 on t1.id = t2.parent_id join tree t3 on t2.id = t3.parent_id
+         query.find(Tree.class).with(Tree::getParent).with(t -> {
+             //  t为Tuple类型，有几个可以join的对象就是有几个对象的tuple
+             //  这里表示和 tree t2 进行join，所以join tree t3 on t2.id = t3.parent_id
+             t.get1().with(Tree::getParent);
+         });
+         // IMPLSOON 可以先实现下面这种方式，因为这种方式不需要多个返回结果类型，在现有结构上就能实现
+         query.find(Tree.class).with(Tree::getParent, t -> {
+           //  这里表示和 tree t2 进行join，所以join tree t3 on t2.id = t3.parent_id
+           // 也就是t2有多个关联可以在这里进行全部操作
+           t.with(Tree::getParent)
+               .with(Tree::getParent);
+         });
+         */
+
+        // IMPLSOON with join的api定义规则
+        /*
+         // select * from tree t1 join tree t2 on t1.id = t2.parent_id join tree t3 on t2.id = t3.parent_id
+         query.find(Tree.class).with(Tree::getParent).with(t -> {
+             //  t为Tuple类型，有几个可以join的对象就是有几个对象的tuple
+             //  这里表示和 tree t2 进行join，所以join tree t3 on t2.id = t3.parent_id
+             t.get1().with(Tree::getParent);
+         });
+         // IMPLSOON 可以先实现下面这种方式，因为这种方式不需要多个返回结果类型，在现有结构上就能实现
+         query.find(Tree.class).with(Tree::getParent, t -> {
+           //  这里表示和 tree t2 进行join，所以join tree t3 on t2.id = t3.parent_id
+           // 也就是t2有多个关联可以在这里进行全部操作
+           t.with(Tree::getParent)
+               .with(Tree::getParent);
+         });
+         */
     }
 
     public void testUpdate() {

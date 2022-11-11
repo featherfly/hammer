@@ -2,6 +2,8 @@
 package cn.featherfly.hammer.expression.query;
 
 import cn.featherfly.common.lang.function.SerializableFunction;
+import cn.featherfly.common.lang.function.SerializableFunction2;
+import cn.featherfly.common.lang.function.SerializableFunction3;
 import cn.featherfly.common.lang.function.SerializableSupplier;
 import cn.featherfly.hammer.expression.EntityConditionGroupExpression;
 import cn.featherfly.hammer.expression.EntityConditionGroupLogicExpression;
@@ -36,37 +38,33 @@ public interface EntityQueryEntityExpression<E, Q extends EntityQueryEntityPrope
     /**
      * 设置id.
      *
-     * @param <T>          the generic type
      * @param <R>          the generic type
      * @param propertyName the property name
      * @return the q
      */
-    <T, R> Q id(SerializableFunction<T, R> propertyName);
+    <R> Q id(SerializableFunction<E, R> propertyName);
 
     /**
      * 添加select的列 .
      *
-     * @param <T>          the generic type
      * @param <R>          the generic type
      * @param propertyName propertyName
      * @return QueryEntityPropertiesExpression
      */
-    <T, R> Q property(SerializableFunction<T, R> propertyName);
+    <R> Q property(SerializableFunction<E, R> propertyName);
 
     /**
      * 批量添加select的列 .
      *
-     * @param <T>           the generic type
      * @param <R>           the generic type
      * @param propertyNames propertyNames
      * @return QueryEntityPropertiesExpression
      */
-    <T, R> Q property(@SuppressWarnings("unchecked") SerializableFunction<T, R>... propertyNames);
+    <R> Q property(@SuppressWarnings("unchecked") SerializableFunction<E, R>... propertyNames);
 
     /**
      * with.
      *
-     * @param <T>          the generic type
      * @param <R>          the generic type
      * @param propertyName find type object property name
      * @return EntityQueryWithOnExpression
@@ -80,12 +78,29 @@ public interface EntityQueryEntityExpression<E, Q extends EntityQueryEntityPrope
      * @param propertyName find type object property name
      * @return EntityQueryWithOnExpression
      */
+    <R> QWE with(SerializableFunction2<R, E> propertyName);
+
+    /**
+     * with.
+     *
+     * @param <R>          the generic type
+     * @param propertyName find type object property name
+     * @return EntityQueryWithOnExpression
+     */
+    QWE with(SerializableFunction3<E, E> propertyName);
+
+    /**
+     * with.
+     *
+     * @param <R>          the generic type
+     * @param propertyName find type object property name
+     * @return EntityQueryWithOnExpression
+     */
     <R> QWE with(SerializableSupplier<R> propertyName);
 
     /**
      * with.
      *
-     * @param <T>          the generic type
      * @param <R>          the generic type
      * @param propertyName with type object property name
      * @param index        with index, the first is 1

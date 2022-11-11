@@ -76,15 +76,18 @@ public interface UserMapper3 extends GenericHammer<User, Integer> {
     List<Map<String, Object>> selectById2(@Param("id") Integer id);
 
     default User getByUsernameAndPassword(String username, String pwd) {
-        return query().where().eq("username", username).and().eq("pwd", pwd).single();
+        //        return query().where().eq("username", username).and().eq("pwd", pwd).single();
+        return query().where().eq(User::getUsername, username).and().eq(User::getPwd, pwd).single();
     }
 
     default User getByUsernameAndPassword2(String username, String pwd) {
-        return query().where().eq("username", username).and().eq("password", pwd).single();
+        //        return query().where().eq("username", username).and().eq("password", pwd).single();
+        return query().where().eq(User::getUsername, username).and().eq(User::getPwd, pwd).single();
     }
 
     default User getByUsernameAndPassword3(String username, String pwd) {
-        return query().where().property("username").eq(username).and().property("pwd").eq(pwd).single();
+        //        return query().where().property("username").eq(username).and().property("pwd").eq(pwd).single();
+        return query().where().property(User::getUsername).eq(username).and().property(User::getPwd).eq(pwd).single();
     }
 
     default int updatePasswordByUsername(String username, String pwd) {

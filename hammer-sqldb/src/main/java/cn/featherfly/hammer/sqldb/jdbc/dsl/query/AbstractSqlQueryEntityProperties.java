@@ -18,10 +18,10 @@ import cn.featherfly.common.lang.AssertIllegalArgument;
 import cn.featherfly.common.lang.LambdaUtils;
 import cn.featherfly.common.lang.Lang;
 import cn.featherfly.common.lang.function.SerializableFunction;
+import cn.featherfly.common.operator.AggregateFunction;
 import cn.featherfly.common.repository.builder.AliasManager;
 import cn.featherfly.common.repository.mapping.ClassMapping;
 import cn.featherfly.common.repository.mapping.MappingFactory;
-import cn.featherfly.common.repository.operate.AggregateFunction;
 import cn.featherfly.hammer.HammerException;
 import cn.featherfly.hammer.sqldb.jdbc.Jdbc;
 import cn.featherfly.hammer.sqldb.jdbc.SqlPageFactory;
@@ -87,7 +87,7 @@ public abstract class AbstractSqlQueryEntityProperties<E extends AbstractSqlQuer
         if (classMapping.getPrivaryKeyPropertyMappings().size() == 1) {
             idName = classMapping.getPrivaryKeyPropertyMappings().get(0).getRepositoryFieldName();
         }
-        selectBuilder = new SqlSelectBasicBuilder(jdbc.getDialect(), classMapping, tableAlias, factory);
+        selectBuilder = new SqlSelectBasicBuilder(jdbc.getDialect(), classMapping, tableAlias);
     }
 
     /**
@@ -132,9 +132,9 @@ public abstract class AbstractSqlQueryEntityProperties<E extends AbstractSqlQuer
         Tuple2<String, String> columnAndProperty = ClassMappingUtils.getColumnAndPropertyName(propertyName,
                 classMapping);
         if (Lang.isEmpty(columnAndProperty.get1())) {
-            selectBuilder.addSelectColumn(columnAndProperty.get0());
+            selectBuilder.addColumn(columnAndProperty.get0());
         } else {
-            selectBuilder.addSelectColumn(columnAndProperty.get0(), columnAndProperty.get1());
+            selectBuilder.addColumn(columnAndProperty.get0(), columnAndProperty.get1());
         }
         return (E) this;
     }
@@ -151,9 +151,9 @@ public abstract class AbstractSqlQueryEntityProperties<E extends AbstractSqlQuer
         Tuple2<String, String> columnAndProperty = ClassMappingUtils.getColumnAndPropertyName(propertyName,
                 classMapping);
         if (Lang.isEmpty(columnAndProperty.get1())) {
-            selectBuilder.addSelectColumn(columnAndProperty.get0(), aggregateFunction);
+            selectBuilder.addColumn(aggregateFunction, columnAndProperty.get0());
         } else {
-            selectBuilder.addSelectColumn(columnAndProperty.get0(), aggregateFunction, columnAndProperty.get1());
+            selectBuilder.addColumn(aggregateFunction, columnAndProperty.get0(), columnAndProperty.get1());
         }
         return (E) this;
     }
@@ -246,7 +246,7 @@ public abstract class AbstractSqlQueryEntityProperties<E extends AbstractSqlQuer
      */
     @SuppressWarnings("unchecked")
     public E propertyAlias(String columnName, String alias) {
-        selectBuilder.addSelectColumn(ClassMappingUtils.getColumnName(columnName, classMapping), alias);
+        selectBuilder.addColumn(ClassMappingUtils.getColumnName(columnName, classMapping), alias);
         return (E) this;
     }
 
@@ -295,7 +295,7 @@ public abstract class AbstractSqlQueryEntityProperties<E extends AbstractSqlQuer
      */
     public Long count() {
         return new SqlQueryExpression(jdbc, sqlPageFactory, classMapping,
-                selectBuilder.addSelectColumn(Chars.STAR, AggregateFunction.COUNT), ignorePolicy).longInt();
+                selectBuilder.addColumn(AggregateFunction.COUNT, Chars.STAR), ignorePolicy).longInt();
     }
 
     /**

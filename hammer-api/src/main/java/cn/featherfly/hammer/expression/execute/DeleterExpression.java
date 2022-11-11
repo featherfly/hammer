@@ -37,5 +37,6 @@ public interface DeleterExpression<D extends DeleteExpression<C, L>, C extends C
      * @param repositType repositType
      * @return Delete
      */
+    // YUFEI_TODO 后续需要对返回的对象进行泛型约束改造
     D delete(Class<?> repositType);
 }
