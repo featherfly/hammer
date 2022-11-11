@@ -34,19 +34,28 @@ import cn.featherfly.common.lang.function.ReturnStringFunction;
 import cn.featherfly.common.lang.function.SerializableFunction;
 import cn.featherfly.common.lang.function.SerializableSupplier;
 import cn.featherfly.common.lang.function.StringSupplier;
-import cn.featherfly.common.repository.mapping.ClassMapping;
 import cn.featherfly.common.operator.LogicOperator;
 import cn.featherfly.common.operator.QueryOperator;
 import cn.featherfly.common.operator.QueryOperator.QueryPolicy;
+import cn.featherfly.common.repository.mapping.ClassMapping;
 import cn.featherfly.hammer.dsl.query.EntityQueryEntity;
 import cn.featherfly.hammer.expression.EntityConditionGroupExpression;
 import cn.featherfly.hammer.expression.EntityConditionGroupLogicExpression;
 import cn.featherfly.hammer.expression.condition.ParamedExpression;
 import cn.featherfly.hammer.expression.condition.property.DateExpression;
 import cn.featherfly.hammer.expression.condition.property.EnumExpression;
+import cn.featherfly.hammer.expression.condition.property.LocalDateExpression;
+import cn.featherfly.hammer.expression.condition.property.LocalDateTimeExpression;
+import cn.featherfly.hammer.expression.condition.property.LocalTimeExpression;
 import cn.featherfly.hammer.expression.condition.property.NumberExpression;
 import cn.featherfly.hammer.expression.condition.property.ObjectExpression;
 import cn.featherfly.hammer.expression.condition.property.StringExpression;
+import cn.featherfly.hammer.expression.condition.type.property.TypeDateExpression;
+import cn.featherfly.hammer.expression.condition.type.property.TypeLocalDateExpression;
+import cn.featherfly.hammer.expression.condition.type.property.TypeLocalDateTimeExpression;
+import cn.featherfly.hammer.expression.condition.type.property.TypeLocalTimeExpression;
+import cn.featherfly.hammer.expression.condition.type.property.TypeNumberExpression;
+import cn.featherfly.hammer.expression.condition.type.property.TypeStringExpression;
 import cn.featherfly.hammer.sqldb.jdbc.SqlPageFactory;
 
 /**
@@ -351,7 +360,7 @@ public abstract class AbstractEntitySqlConditionGroupExpression<E, C extends Ent
      * {@inheritDoc}
      */
     @Override
-    public L lk(ReturnStringFunction<E> name, String value, QueryPolicy queryPolicy) {
+    public L lk(SerializableFunction<E, String> name, String value, QueryPolicy queryPolicy) {
         return lk(getPropertyName(name), value, queryPolicy);
     }
 
@@ -386,7 +395,7 @@ public abstract class AbstractEntitySqlConditionGroupExpression<E, C extends Ent
      * {@inheritDoc}
      */
     @Override
-    public L sw(ReturnStringFunction<E> name, String value, QueryPolicy queryPolicy) {
+    public L sw(SerializableFunction<E, String> name, String value, QueryPolicy queryPolicy) {
         return sw(getPropertyName(name), value, queryPolicy);
     }
 
@@ -413,7 +422,7 @@ public abstract class AbstractEntitySqlConditionGroupExpression<E, C extends Ent
      * {@inheritDoc}
      */
     @Override
-    public L ew(ReturnStringFunction<E> name, String value, QueryPolicy queryPolicy) {
+    public L ew(SerializableFunction<E, String> name, String value, QueryPolicy queryPolicy) {
         return ew(getPropertyName(name), value, queryPolicy);
     }
 
@@ -441,7 +450,7 @@ public abstract class AbstractEntitySqlConditionGroupExpression<E, C extends Ent
      * {@inheritDoc}
      */
     @Override
-    public L co(ReturnStringFunction<E> name, String value, QueryPolicy queryPolicy) {
+    public L co(SerializableFunction<E, String> name, String value, QueryPolicy queryPolicy) {
         return co(getPropertyName(name), value, queryPolicy);
     }
 
@@ -898,7 +907,7 @@ public abstract class AbstractEntitySqlConditionGroupExpression<E, C extends Ent
      * {@inheritDoc}
      */
     @Override
-    public <N extends Number> L ge(ReturnNumberFunction<E, N> name, N value) {
+    public <N extends Number> L ge(SerializableFunction<E, N> name, N value) {
         return ge(getPropertyName(name), value);
     }
 
@@ -906,7 +915,7 @@ public abstract class AbstractEntitySqlConditionGroupExpression<E, C extends Ent
      * {@inheritDoc}
      */
     @Override
-    public <D extends Date> L ge(ReturnDateFunction<E, D> name, D value) {
+    public <D extends Date> L ge(SerializableFunction<E, D> name, D value) {
         return ge(getPropertyName(name), value);
     }
 
@@ -914,7 +923,7 @@ public abstract class AbstractEntitySqlConditionGroupExpression<E, C extends Ent
      * {@inheritDoc}
      */
     @Override
-    public L ge(ReturnLocalTimeFunction<E> name, LocalTime value) {
+    public L ge(SerializableFunction<E, LocalTime> name, LocalTime value) {
         return ge(getPropertyName(name), value);
     }
 
@@ -922,7 +931,7 @@ public abstract class AbstractEntitySqlConditionGroupExpression<E, C extends Ent
      * {@inheritDoc}
      */
     @Override
-    public L ge(ReturnLocalDateFunction<E> name, LocalDate value) {
+    public L ge(SerializableFunction<E, LocalDate> name, LocalDate value) {
         return ge(getPropertyName(name), value);
     }
 
@@ -930,7 +939,7 @@ public abstract class AbstractEntitySqlConditionGroupExpression<E, C extends Ent
      * {@inheritDoc}
      */
     @Override
-    public L ge(ReturnLocalDateTimeFunction<E> name, LocalDateTime value) {
+    public L ge(SerializableFunction<E, LocalDateTime> name, LocalDateTime value) {
         return ge(getPropertyName(name), value);
     }
 
@@ -938,7 +947,7 @@ public abstract class AbstractEntitySqlConditionGroupExpression<E, C extends Ent
      * {@inheritDoc}
      */
     @Override
-    public L ge(ReturnStringFunction<E> name, String value) {
+    public L ge(SerializableFunction<E, String> name, String value) {
         return ge(getPropertyName(name), value);
     }
 
@@ -946,7 +955,7 @@ public abstract class AbstractEntitySqlConditionGroupExpression<E, C extends Ent
      * {@inheritDoc}
      */
     @Override
-    public <N extends Number> L gt(ReturnNumberFunction<E, N> name, N value) {
+    public <N extends Number> L gt(SerializableFunction<E, N> name, N value) {
         return gt(getPropertyName(name), value);
     }
 
@@ -954,7 +963,7 @@ public abstract class AbstractEntitySqlConditionGroupExpression<E, C extends Ent
      * {@inheritDoc}
      */
     @Override
-    public <D extends Date> L gt(ReturnDateFunction<E, D> name, D value) {
+    public <D extends Date> L gt(SerializableFunction<E, D> name, D value) {
         return gt(getPropertyName(name), value);
     }
 
@@ -962,7 +971,7 @@ public abstract class AbstractEntitySqlConditionGroupExpression<E, C extends Ent
      * {@inheritDoc}
      */
     @Override
-    public L gt(ReturnLocalTimeFunction<E> name, LocalTime value) {
+    public L gt(SerializableFunction<E, LocalTime> name, LocalTime value) {
         return gt(getPropertyName(name), value);
     }
 
@@ -970,7 +979,7 @@ public abstract class AbstractEntitySqlConditionGroupExpression<E, C extends Ent
      * {@inheritDoc}
      */
     @Override
-    public L gt(ReturnLocalDateFunction<E> name, LocalDate value) {
+    public L gt(SerializableFunction<E, LocalDate> name, LocalDate value) {
         return gt(getPropertyName(name), value);
     }
 
@@ -978,7 +987,7 @@ public abstract class AbstractEntitySqlConditionGroupExpression<E, C extends Ent
      * {@inheritDoc}
      */
     @Override
-    public L gt(ReturnLocalDateTimeFunction<E> name, LocalDateTime value) {
+    public L gt(SerializableFunction<E, LocalDateTime> name, LocalDateTime value) {
         return gt(getPropertyName(name), value);
     }
 
@@ -986,7 +995,7 @@ public abstract class AbstractEntitySqlConditionGroupExpression<E, C extends Ent
      * {@inheritDoc}
      */
     @Override
-    public L gt(ReturnStringFunction<E> name, String value) {
+    public L gt(SerializableFunction<E, String> name, String value) {
         return gt(getPropertyName(name), value);
     }
 
@@ -1034,7 +1043,7 @@ public abstract class AbstractEntitySqlConditionGroupExpression<E, C extends Ent
      * {@inheritDoc}
      */
     @Override
-    public <N extends Number> L le(ReturnNumberFunction<E, N> name, N value) {
+    public <N extends Number> L le(SerializableFunction<E, N> name, N value) {
         return le(getPropertyName(name), value);
     }
 
@@ -1042,7 +1051,7 @@ public abstract class AbstractEntitySqlConditionGroupExpression<E, C extends Ent
      * {@inheritDoc}
      */
     @Override
-    public <D extends Date> L le(ReturnDateFunction<E, D> name, D value) {
+    public <D extends Date> L le(SerializableFunction<E, D> name, D value) {
         return le(getPropertyName(name), value);
     }
 
@@ -1050,7 +1059,7 @@ public abstract class AbstractEntitySqlConditionGroupExpression<E, C extends Ent
      * {@inheritDoc}
      */
     @Override
-    public L le(ReturnLocalTimeFunction<E> name, LocalTime value) {
+    public L le(SerializableFunction<E, LocalTime> name, LocalTime value) {
         return le(getPropertyName(name), value);
     }
 
@@ -1058,7 +1067,7 @@ public abstract class AbstractEntitySqlConditionGroupExpression<E, C extends Ent
      * {@inheritDoc}
      */
     @Override
-    public L le(ReturnLocalDateFunction<E> name, LocalDate value) {
+    public L le(SerializableFunction<E, LocalDate> name, LocalDate value) {
         return le(getPropertyName(name), value);
     }
 
@@ -1066,7 +1075,7 @@ public abstract class AbstractEntitySqlConditionGroupExpression<E, C extends Ent
      * {@inheritDoc}
      */
     @Override
-    public L le(ReturnLocalDateTimeFunction<E> name, LocalDateTime value) {
+    public L le(SerializableFunction<E, LocalDateTime> name, LocalDateTime value) {
         return le(getPropertyName(name), value);
     }
 
@@ -1074,7 +1083,7 @@ public abstract class AbstractEntitySqlConditionGroupExpression<E, C extends Ent
      * {@inheritDoc}
      */
     @Override
-    public L le(ReturnStringFunction<E> name, String value) {
+    public L le(SerializableFunction<E, String> name, String value) {
         return le(getPropertyName(name), value);
     }
 
@@ -1082,7 +1091,7 @@ public abstract class AbstractEntitySqlConditionGroupExpression<E, C extends Ent
      * {@inheritDoc}
      */
     @Override
-    public <N extends Number> L lt(ReturnNumberFunction<E, N> name, N value) {
+    public <N extends Number> L lt(SerializableFunction<E, N> name, N value) {
         return lt(getPropertyName(name), value);
     }
 
@@ -1090,7 +1099,7 @@ public abstract class AbstractEntitySqlConditionGroupExpression<E, C extends Ent
      * {@inheritDoc}
      */
     @Override
-    public <D extends Date> L lt(ReturnDateFunction<E, D> name, D value) {
+    public <D extends Date> L lt(SerializableFunction<E, D> name, D value) {
         return lt(getPropertyName(name), value);
     }
 
@@ -1098,7 +1107,7 @@ public abstract class AbstractEntitySqlConditionGroupExpression<E, C extends Ent
      * {@inheritDoc}
      */
     @Override
-    public L lt(ReturnLocalTimeFunction<E> name, LocalTime value) {
+    public L lt(SerializableFunction<E, LocalTime> name, LocalTime value) {
         return lt(getPropertyName(name), value);
     }
 
@@ -1106,7 +1115,7 @@ public abstract class AbstractEntitySqlConditionGroupExpression<E, C extends Ent
      * {@inheritDoc}
      */
     @Override
-    public L lt(ReturnLocalDateFunction<E> name, LocalDate value) {
+    public L lt(SerializableFunction<E, LocalDate> name, LocalDate value) {
         return lt(getPropertyName(name), value);
     }
 
@@ -1114,7 +1123,7 @@ public abstract class AbstractEntitySqlConditionGroupExpression<E, C extends Ent
      * {@inheritDoc}
      */
     @Override
-    public L lt(ReturnLocalDateTimeFunction<E> name, LocalDateTime value) {
+    public L lt(SerializableFunction<E, LocalDateTime> name, LocalDateTime value) {
         return lt(getPropertyName(name), value);
     }
 
@@ -1122,7 +1131,7 @@ public abstract class AbstractEntitySqlConditionGroupExpression<E, C extends Ent
      * {@inheritDoc}
      */
     @Override
-    public L lt(ReturnStringFunction<E> name, String value) {
+    public L lt(SerializableFunction<E, String> name, String value) {
         return lt(getPropertyName(name), value);
     }
 
@@ -1396,42 +1405,60 @@ public abstract class AbstractEntitySqlConditionGroupExpression<E, C extends Ent
     //        });
     //    }
 
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public <R> ObjectExpression<C, L> property(SerializableFunction<E, R> name) {
-        return property(getPropertyName(name));
-    }
+    //    /**
+    //     * {@inheritDoc}
+    //     */
+    //    @Override
+    //    public <R> ObjectExpression<C, L> property(SerializableFunction<E, R> name) {
+    //        return property(getPropertyName(name));
+    //    }
 
     /**
      * {@inheritDoc}
      */
     @Override
     public StringExpression<C, L> property(ReturnStringFunction<E> name) {
-        // IMPLSOON 这里后续来实现
-        return null;
-        //        return propertyString(getPropertyName(name));
+        return new TypeStringExpression<>(name, this);
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public <R extends Number> NumberExpression<C, L> property(ReturnNumberFunction<E, R> name) {
-        // IMPLSOON 这里后续来实现
-        return null;
-        //        return propertyNumber(getPropertyName(name));
+    public <R extends Number> NumberExpression<R, C, L> property(ReturnNumberFunction<E, R> name) {
+        return new TypeNumberExpression<>(name, this);
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public <R extends Date> DateExpression<C, L> property(ReturnDateFunction<E, R> name) {
-        // IMPLSOON 这里后续来实现
-        return null;
-        //        return propertyDate(getPropertyName(name));
+    public LocalDateExpression<C, L> property(ReturnLocalDateFunction<E> name) {
+        return new TypeLocalDateExpression<>(name, this);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public LocalDateTimeExpression<C, L> property(ReturnLocalDateTimeFunction<E> name) {
+        return new TypeLocalDateTimeExpression<>(name, this);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public LocalTimeExpression<C, L> property(ReturnLocalTimeFunction<E> name) {
+        return new TypeLocalTimeExpression<>(name, this);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public <R extends Date> DateExpression<R, C, L> property(ReturnDateFunction<E, R> name) {
+        return new TypeDateExpression<>(name, this);
     }
 
     /**

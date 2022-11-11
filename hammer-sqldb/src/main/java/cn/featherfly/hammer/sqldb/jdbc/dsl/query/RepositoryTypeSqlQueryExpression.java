@@ -442,7 +442,7 @@ public class RepositoryTypeSqlQueryExpression extends RepositoryTypeSqlQueryCond
      */
     @Override
     public <T,
-            R extends Date> DateExpression<RepositoryTypeQueryConditionGroupExpression, RepositoryTypeQueryConditionGroupLogicExpression> propertyDate(
+            R extends Date> DateExpression<R, RepositoryTypeQueryConditionGroupExpression, RepositoryTypeQueryConditionGroupLogicExpression> propertyDate(
                     SerializableFunction<T, R> name) {
         Tuple2<String, String> tableNameAndColumnName = getTableAliasAndColumnName(name);
         return new RepositorySimpleDateExpression<>(tableNameAndColumnName.get0(), tableNameAndColumnName.get1(), this);
@@ -464,7 +464,7 @@ public class RepositoryTypeSqlQueryExpression extends RepositoryTypeSqlQueryCond
      */
     @Override
     public <T,
-            R extends Number> NumberExpression<RepositoryTypeQueryConditionGroupExpression, RepositoryTypeQueryConditionGroupLogicExpression> propertyNumber(
+            R extends Number> NumberExpression<R, RepositoryTypeQueryConditionGroupExpression, RepositoryTypeQueryConditionGroupLogicExpression> propertyNumber(
                     SerializableFunction<T, R> name) {
         Tuple2<String, String> tableNameAndColumnName = getTableAliasAndColumnName(name);
         return new RepositorySimpleNumberExpression<>(tableNameAndColumnName.get0(), tableNameAndColumnName.get1(),

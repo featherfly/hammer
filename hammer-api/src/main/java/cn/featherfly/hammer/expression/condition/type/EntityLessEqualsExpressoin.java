@@ -1,5 +1,5 @@
 
-package cn.featherfly.hammer.expression.condition;
+package cn.featherfly.hammer.expression.condition.type;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -20,126 +20,128 @@ import cn.featherfly.common.lang.function.ReturnStringFunction;
 import cn.featherfly.common.lang.function.SerializableFunction;
 import cn.featherfly.common.lang.function.SerializableSupplier;
 import cn.featherfly.common.lang.function.StringSupplier;
+import cn.featherfly.hammer.expression.condition.ConditionExpression;
+import cn.featherfly.hammer.expression.condition.LogicExpression;
 
 /**
- * TypeLessThanExpressoin. .
+ * The Interface EntityLessEqualsExpressoin.
  *
  * @author zhongj
  * @param <E> the element type
- * @param <C> the generic type
- * @param <L> the generic type
+ * @param <C> the generic type ConditionExpression
+ * @param <L> the generic type LogicExpression
  */
-public interface EntityLessThanExpressoin<E, C extends ConditionExpression, L extends LogicExpression<C, L>>
+public interface EntityLessEqualsExpressoin<E, C extends ConditionExpression, L extends LogicExpression<C, L>>
         extends ConditionExpression {
 
     /**
-     * less than. 小于.
+     * less and equals. 小于等于.
      *
      * @param <N>   number type
      * @param name  参数名称
      * @param value 参数值
      * @return LogicExpression
      */
-    <N extends Number> L lt(ReturnNumberFunction<E, N> name, N value);
+    <N extends Number> L le(SerializableFunction<E, N> name, N value);
 
     /**
-     * less than. 小于.
+     * less and equals. 小于等于.
      *
      * @param <D>   date type
      * @param name  参数名称
      * @param value 参数值
      * @return LogicExpression
      */
-    <D extends Date> L lt(ReturnDateFunction<E, D> name, D value);
+    <D extends Date> L le(SerializableFunction<E, D> name, D value);
 
     /**
-     * less than. 小于.
+     * less and equals. 小于等于.
      *
      * @param name  参数名称
      * @param value 参数值
      * @return LogicExpression
      */
-    L lt(ReturnLocalTimeFunction<E> name, LocalTime value);
+    L le(SerializableFunction<E, LocalTime> name, LocalTime value);
 
     /**
-     * less than. 小于.
+     * less and equals. 小于等于.
      *
      * @param name  参数名称
      * @param value 参数值
      * @return LogicExpression
      */
-    L lt(ReturnLocalDateFunction<E> name, LocalDate value);
+    L le(SerializableFunction<E, LocalDate> name, LocalDate value);
 
     /**
-     * less than. 小于.
+     * less and equals. 小于等于.
      *
      * @param name  参数名称
      * @param value 参数值
      * @return LogicExpression
      */
-    L lt(ReturnLocalDateTimeFunction<E> name, LocalDateTime value);
+    L le(SerializableFunction<E, LocalDateTime> name, LocalDateTime value);
 
     /**
-     * less than. 小于.
+     * less and equals. 小于等于.
      *
      * @param name  参数名称
      * @param value 参数值
      * @return LogicExpression
      */
-    L lt(ReturnStringFunction<E> name, String value);
+    L le(SerializableFunction<E, String> name, String value);
 
     /**
-     * less than. 小于.
+     * less and equals. 小于等于.
      *
      * @param <R>      the generic type
      * @param property 对象属性
      * @return LogicExpression
      */
-    <R extends Date> L lt(DateSupplier<R> property);
+    <R extends Date> L le(DateSupplier<R> property);
 
     /**
-     * less than. 小于.
+     * less and equals. 小于等于.
      *
      * @param <R>      the generic type
      * @param property 对象属性
      * @return LogicExpression
      */
-    <R extends Number> L lt(NumberSupplier<R> property);
+    <R extends Number> L le(NumberSupplier<R> property);
 
     /**
-     * less than. 小于.
+     * less and equals. 小于等于.
      *
      * @param property 对象属性
      * @return LogicExpression
      */
-    L lt(LocalDateSupplier property);
+    L le(LocalDateSupplier property);
 
     /**
-     * less than. 小于.
+     * less and equals. 小于等于.
      *
      * @param property 对象属性
      * @return LogicExpression
      */
-    L lt(LocalTimeSupplier property);
+    L le(LocalTimeSupplier property);
 
     /**
-     * less than. 小于.
+     * less and equals. 小于等于.
      *
      * @param property 对象属性
      * @return LogicExpression
      */
-    L lt(LocalDateTimeSupplier property);
+    L le(LocalDateTimeSupplier property);
 
     /**
-     * less than. 小于.
+     * less and equals. 小于等于.
      *
      * @param property 对象属性
      * @return LogicExpression
      */
-    L lt(StringSupplier property);
+    L le(StringSupplier property);
 
     /**
-     * less than. 小于.
+     * less equals. 小于等于.
      *
      * @param <R>        the generic type
      * @param <N>        the number type
@@ -148,10 +150,10 @@ public interface EntityLessThanExpressoin<E, C extends ConditionExpression, L ex
      * @param value      参数值
      * @return LogicExpression
      */
-    <R, N extends Number> L lt(SerializableFunction<E, R> repository, ReturnNumberFunction<R, N> property, N value);
+    <R, N extends Number> L le(SerializableFunction<E, R> repository, SerializableFunction<R, N> property, N value);
 
     /**
-     * less than. 小于.
+     * less equals. 小于等于.
      *
      * @param <R>        the generic type
      * @param <N>        the number type
@@ -159,10 +161,10 @@ public interface EntityLessThanExpressoin<E, C extends ConditionExpression, L ex
      * @param property   对象属性
      * @return LogicExpression
      */
-    <R, N extends Number> L lt(SerializableSupplier<R> repository, ReturnNumberFunction<R, N> property);
+    <R, N extends Number> L le(SerializableSupplier<R> repository, ReturnNumberFunction<R, N> property);
 
     /**
-     * less than. 小于.
+     * less equals. 小于等于.
      *
      * @param <R>        the date type
      * @param <D>        the generic type
@@ -171,10 +173,10 @@ public interface EntityLessThanExpressoin<E, C extends ConditionExpression, L ex
      * @param value      参数值
      * @return LogicExpression
      */
-    <R, D extends Date> L lt(SerializableFunction<E, R> repository, ReturnDateFunction<R, D> property, D value);
+    <R, D extends Date> L le(SerializableFunction<E, R> repository, SerializableFunction<R, D> property, D value);
 
     /**
-     * less than. 小于.
+     * less equals. 小于等于.
      *
      * @param <R>        the generic type
      * @param <D>        the date type
@@ -182,32 +184,10 @@ public interface EntityLessThanExpressoin<E, C extends ConditionExpression, L ex
      * @param property   对象属性
      * @return LogicExpression
      */
-    <R, D extends Date> L lt(SerializableSupplier<R> repository, ReturnDateFunction<R, D> property);
+    <R, D extends Date> L le(SerializableSupplier<R> repository, ReturnDateFunction<R, D> property);
 
     /**
-     * less than. 小于.
-     *
-     * @param <T>        the generic type
-     * @param <R>        the date type
-     * @param repository the repository
-     * @param property   the property
-     * @param value      参数值
-     * @return LogicExpression
-     */
-    <R> L lt(SerializableFunction<E, R> repository, ReturnLocalTimeFunction<R> property, LocalTime value);
-
-    /**
-     * less than. 小于.
-     *
-     * @param <R>        the generic type
-     * @param repository the repository
-     * @param property   对象属性
-     * @return LogicExpression
-     */
-    <R> L lt(SerializableSupplier<R> repository, ReturnLocalTimeFunction<R> property);
-
-    /**
-     * less than. 小于.
+     * less equals. 小于等于.
      *
      * @param <R>        the date type
      * @param repository the repository
@@ -215,20 +195,20 @@ public interface EntityLessThanExpressoin<E, C extends ConditionExpression, L ex
      * @param value      参数值
      * @return LogicExpression
      */
-    <R> L lt(SerializableFunction<E, R> repository, ReturnLocalDateFunction<R> property, LocalDate value);
+    <R> L le(SerializableFunction<E, R> repository, SerializableFunction<R, LocalTime> property, LocalTime value);
 
     /**
-     * less than. 小于.
+     * less equals. 小于等于.
      *
      * @param <R>        the generic type
      * @param repository the repository
      * @param property   对象属性
      * @return LogicExpression
      */
-    <R> L lt(SerializableSupplier<R> repository, ReturnLocalDateFunction<R> property);
+    <R> L le(SerializableSupplier<R> repository, ReturnLocalTimeFunction<R> property);
 
     /**
-     * less than. 小于.
+     * less equals. 小于等于.
      *
      * @param <R>        the date type
      * @param repository the repository
@@ -236,20 +216,20 @@ public interface EntityLessThanExpressoin<E, C extends ConditionExpression, L ex
      * @param value      参数值
      * @return LogicExpression
      */
-    <R> L lt(SerializableFunction<E, R> repository, ReturnLocalDateTimeFunction<R> property, LocalDateTime value);
+    <R> L le(SerializableFunction<E, R> repository, SerializableFunction<R, LocalDate> property, LocalDate value);
 
     /**
-     * less than. 小于.
+     * less equals. 小于等于.
      *
      * @param <R>        the generic type
      * @param repository the repository
      * @param property   对象属性
      * @return LogicExpression
      */
-    <R> L lt(SerializableSupplier<R> repository, ReturnLocalDateTimeFunction<R> property);
+    <R> L le(SerializableSupplier<R> repository, ReturnLocalDateFunction<R> property);
 
     /**
-     * less than. 小于.
+     * less equals. 小于等于.
      *
      * @param <R>        the date type
      * @param repository the repository
@@ -257,15 +237,37 @@ public interface EntityLessThanExpressoin<E, C extends ConditionExpression, L ex
      * @param value      参数值
      * @return LogicExpression
      */
-    <R> L lt(SerializableFunction<E, R> repository, ReturnStringFunction<R> property, String value);
+    <R> L le(SerializableFunction<E, R> repository, SerializableFunction<R, LocalDateTime> property,
+            LocalDateTime value);
 
     /**
-     * less than. 小于.
+     * less equals. 小于等于.
      *
      * @param <R>        the generic type
      * @param repository the repository
      * @param property   对象属性
      * @return LogicExpression
      */
-    <R> L lt(SerializableSupplier<R> repository, ReturnStringFunction<R> property);
+    <R> L le(SerializableSupplier<R> repository, ReturnLocalDateTimeFunction<R> property);
+
+    /**
+     * less equals. 小于等于.
+     *
+     * @param <R>        the date type
+     * @param repository the repository
+     * @param property   the property
+     * @param value      参数值
+     * @return LogicExpression
+     */
+    <R> L le(SerializableFunction<E, R> repository, SerializableFunction<R, String> property, String value);
+
+    /**
+     * less equals. 小于等于.
+     *
+     * @param <R>        the generic type
+     * @param repository the repository
+     * @param property   对象属性
+     * @return LogicExpression
+     */
+    <R> L le(SerializableSupplier<R> repository, ReturnStringFunction<R> property);
 }

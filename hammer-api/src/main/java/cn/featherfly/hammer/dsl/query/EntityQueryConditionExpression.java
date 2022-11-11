@@ -1,7 +1,7 @@
 
 package cn.featherfly.hammer.dsl.query;
 
-import cn.featherfly.hammer.expression.condition.EntityConditionsExpression;
+import cn.featherfly.hammer.expression.condition.type.EntityConditionsExpression;
 
 /**
  * The Interface EntityQueryConditionExpression.

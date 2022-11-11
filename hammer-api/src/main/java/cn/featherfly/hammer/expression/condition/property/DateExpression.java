@@ -8,26 +8,28 @@ import cn.featherfly.hammer.expression.condition.ConditionExpression;
 import cn.featherfly.hammer.expression.condition.LogicExpression;
 
 /**
- * EqualsExpressoin.
+ * DateExpression.
  *
  * @author zhongj
+ * @param <C> the generic type
+ * @param <L> the generic type
  */
-public interface DateExpression<C extends ConditionExpression, L extends LogicExpression<C, L>>
-        extends PropertyEqualsExpression<C, L, Date>, PropertyNotEqualsExpression<C, L, Date>,
-        PropertyInExpression<C, L, Date>, PropertyNotInExpression<C, L, Date>, PropertyLessEqualsExpressoin<C, L, Date>,
-        PropertyLessThanExpressoin<C, L, Date>, PropertyGreatEqualsExpressoin<C, L, Date>,
-        PropertyGreatThanExpressoin<C, L, Date>, PropertyIsNullExpression<C, L>, PropertyIsNotNullExpression<C, L> {
+public interface DateExpression<D extends Date, C extends ConditionExpression, L extends LogicExpression<C, L>>
+        extends PropertyEqualsExpression<C, L, D>, PropertyNotEqualsExpression<C, L, D>, PropertyInExpression<C, L, D>,
+        PropertyNotInExpression<C, L, D>, PropertyLessEqualsExpressoin<C, L, D>, PropertyLessThanExpressoin<C, L, D>,
+        PropertyGreatEqualsExpressoin<C, L, D>, PropertyGreatThanExpressoin<C, L, D>, PropertyIsNullExpression<C, L>,
+        PropertyIsNotNullExpression<C, L> {
     /**
      * {@inheritDoc}
      */
     @Override
-    L eq(Date value);
+    L eq(D value);
 
     /**
      * {@inheritDoc}
      */
     @Override
-    default L eq(Date value, QueryPolicy queryPolicy) {
+    default L eq(D value, QueryPolicy queryPolicy) {
         return eq(value);
     }
 
@@ -35,13 +37,13 @@ public interface DateExpression<C extends ConditionExpression, L extends LogicEx
      * {@inheritDoc}
      */
     @Override
-    L ne(Date value);
+    L ne(D value);
 
     /**
      * {@inheritDoc}
      */
     @Override
-    default L ne(Date value, QueryPolicy queryPolicy) {
+    default L ne(D value, QueryPolicy queryPolicy) {
         return ne(value);
     }
 }

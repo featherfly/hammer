@@ -1,11 +1,12 @@
 
-package cn.featherfly.hammer.expression.condition;
+package cn.featherfly.hammer.expression.condition.type;
 
-import cn.featherfly.common.lang.function.ReturnStringFunction;
 import cn.featherfly.common.lang.function.SerializableFunction;
 import cn.featherfly.common.lang.function.SerializableSupplier;
 import cn.featherfly.common.lang.function.StringSupplier;
 import cn.featherfly.common.operator.QueryOperator.QueryPolicy;
+import cn.featherfly.hammer.expression.condition.ConditionExpression;
+import cn.featherfly.hammer.expression.condition.LogicExpression;
 
 /**
  * The Interface EntityContainsExpression.
@@ -25,7 +26,7 @@ public interface EntityContainsExpression<E, C extends ConditionExpression, L ex
      * @param value 参数值
      * @return LogicExpression
      */
-    default L co(ReturnStringFunction<E> name, String value) {
+    default L co(SerializableFunction<E, String> name, String value) {
         return co(name, value, QueryPolicy.AUTO);
     }
 
@@ -37,7 +38,7 @@ public interface EntityContainsExpression<E, C extends ConditionExpression, L ex
      * @param queryPolicy the query policy
      * @return the l
      */
-    L co(ReturnStringFunction<E> name, String value, QueryPolicy queryPolicy);
+    L co(SerializableFunction<E, String> name, String value, QueryPolicy queryPolicy);
 
     /**
      * contains value. 包含value.
@@ -67,7 +68,7 @@ public interface EntityContainsExpression<E, C extends ConditionExpression, L ex
      * @param value      参数值
      * @return LogicExpression
      */
-    <R> L co(SerializableFunction<E, R> repository, ReturnStringFunction<R> property, Object value);
+    <R> L co(SerializableFunction<E, R> repository, SerializableFunction<R, String> property, String value);
 
     /**
      * contains value. 包含value.
@@ -77,5 +78,5 @@ public interface EntityContainsExpression<E, C extends ConditionExpression, L ex
      * @param property   对象属性
      * @return LogicExpression
      */
-    <R> L co(SerializableSupplier<R> repository, ReturnStringFunction<R> property);
+    <R> L co(SerializableSupplier<R> repository, SerializableFunction<R, String> property);
 }

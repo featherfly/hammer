@@ -195,6 +195,10 @@ public abstract class AbstractSqlConditionExpression<L> implements SqlBuilder, P
         return LambdaUtils.getLambdaPropertyName(name);
     }
 
+    //    protected <T, R extends Number> String getPropertyName(ReturnNumberFunction<T, R> name) {
+    //        return LambdaUtils.getLambdaPropertyName(name);
+    //    }
+
     /**
      * Adds the condition.
      *
