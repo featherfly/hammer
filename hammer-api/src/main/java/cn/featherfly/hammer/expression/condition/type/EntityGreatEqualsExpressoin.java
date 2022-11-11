@@ -1,5 +1,5 @@
 
-package cn.featherfly.hammer.expression.condition;
+package cn.featherfly.hammer.expression.condition.type;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -20,6 +20,8 @@ import cn.featherfly.common.lang.function.ReturnStringFunction;
 import cn.featherfly.common.lang.function.SerializableFunction;
 import cn.featherfly.common.lang.function.SerializableSupplier;
 import cn.featherfly.common.lang.function.StringSupplier;
+import cn.featherfly.hammer.expression.condition.ConditionExpression;
+import cn.featherfly.hammer.expression.condition.LogicExpression;
 
 /**
  * The Interface EntityGreatEqualsExpressoin.
@@ -40,7 +42,7 @@ public interface EntityGreatEqualsExpressoin<E, C extends ConditionExpression, L
      * @param value 参数值
      * @return LogicExpression
      */
-    <N extends Number> L ge(ReturnNumberFunction<E, N> name, N value);
+    <N extends Number> L ge(SerializableFunction<E, N> name, N value);
 
     /**
      * great and equals. 大于等于.
@@ -50,7 +52,7 @@ public interface EntityGreatEqualsExpressoin<E, C extends ConditionExpression, L
      * @param value 参数值
      * @return LogicExpression
      */
-    <D extends Date> L ge(ReturnDateFunction<E, D> name, D value);
+    <D extends Date> L ge(SerializableFunction<E, D> name, D value);
 
     /**
      * great and equals. 大于等于.
@@ -59,7 +61,7 @@ public interface EntityGreatEqualsExpressoin<E, C extends ConditionExpression, L
      * @param value 参数值
      * @return LogicExpression
      */
-    L ge(ReturnLocalTimeFunction<E> name, LocalTime value);
+    L ge(SerializableFunction<E, LocalTime> name, LocalTime value);
 
     /**
      * great and equals. 大于等于.
@@ -68,7 +70,7 @@ public interface EntityGreatEqualsExpressoin<E, C extends ConditionExpression, L
      * @param value 参数值
      * @return LogicExpression
      */
-    L ge(ReturnLocalDateFunction<E> name, LocalDate value);
+    L ge(SerializableFunction<E, LocalDate> name, LocalDate value);
 
     /**
      * great and equals. 大于等于.
@@ -77,7 +79,7 @@ public interface EntityGreatEqualsExpressoin<E, C extends ConditionExpression, L
      * @param value 参数值
      * @return LogicExpression
      */
-    L ge(ReturnLocalDateTimeFunction<E> name, LocalDateTime value);
+    L ge(SerializableFunction<E, LocalDateTime> name, LocalDateTime value);
 
     /**
      * great and equals. 大于等于.
@@ -86,7 +88,7 @@ public interface EntityGreatEqualsExpressoin<E, C extends ConditionExpression, L
      * @param value 参数值
      * @return LogicExpression
      */
-    L ge(ReturnStringFunction<E> name, String value);
+    L ge(SerializableFunction<E, String> name, String value);
 
     /**
      * great and equals. 大于等于.
@@ -148,7 +150,7 @@ public interface EntityGreatEqualsExpressoin<E, C extends ConditionExpression, L
      * @param value      参数值
      * @return LogicExpression
      */
-    <R, N extends Number> L ge(SerializableFunction<E, R> repository, ReturnNumberFunction<R, N> property, N value);
+    <R, N extends Number> L ge(SerializableFunction<E, R> repository, SerializableFunction<R, N> property, N value);
 
     /**
      * great equals. 大于等于.
@@ -171,7 +173,7 @@ public interface EntityGreatEqualsExpressoin<E, C extends ConditionExpression, L
      * @param value      参数值
      * @return LogicExpression
      */
-    <R, D extends Date> L ge(SerializableFunction<E, R> repository, ReturnDateFunction<R, D> property, D value);
+    <R, D extends Date> L ge(SerializableFunction<E, R> repository, SerializableFunction<R, D> property, D value);
 
     /**
      * great equals. 大于等于.
@@ -193,7 +195,7 @@ public interface EntityGreatEqualsExpressoin<E, C extends ConditionExpression, L
      * @param value      参数值
      * @return LogicExpression
      */
-    <R> L ge(SerializableFunction<E, R> repository, ReturnLocalTimeFunction<R> property, LocalTime value);
+    <R> L ge(SerializableFunction<E, R> repository, SerializableFunction<R, LocalTime> property, LocalTime value);
 
     /**
      * great equals. 大于等于.
@@ -214,7 +216,7 @@ public interface EntityGreatEqualsExpressoin<E, C extends ConditionExpression, L
      * @param value      参数值
      * @return LogicExpression
      */
-    <R> L ge(SerializableFunction<E, R> repository, ReturnLocalDateFunction<R> property, LocalDate value);
+    <R> L ge(SerializableFunction<E, R> repository, SerializableFunction<R, LocalDate> property, LocalDate value);
 
     /**
      * great equals. 大于等于.
@@ -235,7 +237,8 @@ public interface EntityGreatEqualsExpressoin<E, C extends ConditionExpression, L
      * @param value      参数值
      * @return LogicExpression
      */
-    <R> L ge(SerializableFunction<E, R> repository, ReturnLocalDateTimeFunction<R> property, LocalDateTime value);
+    <R> L ge(SerializableFunction<E, R> repository, SerializableFunction<R, LocalDateTime> property,
+            LocalDateTime value);
 
     /**
      * great equals. 大于等于.
@@ -256,7 +259,7 @@ public interface EntityGreatEqualsExpressoin<E, C extends ConditionExpression, L
      * @param value      参数值
      * @return LogicExpression
      */
-    <R> L ge(SerializableFunction<E, R> repository, ReturnStringFunction<R> property, String value);
+    <R> L ge(SerializableFunction<E, R> repository, SerializableFunction<R, String> property, String value);
 
     /**
      * great equals. 大于等于.

@@ -1,11 +1,12 @@
 
-package cn.featherfly.hammer.expression.condition;
+package cn.featherfly.hammer.expression.condition.type;
 
-import cn.featherfly.common.lang.function.ReturnStringFunction;
 import cn.featherfly.common.lang.function.SerializableFunction;
 import cn.featherfly.common.lang.function.SerializableSupplier;
 import cn.featherfly.common.lang.function.StringSupplier;
 import cn.featherfly.common.operator.QueryOperator.QueryPolicy;
+import cn.featherfly.hammer.expression.condition.ConditionExpression;
+import cn.featherfly.hammer.expression.condition.LogicExpression;
 
 /**
  * The Interface EntityLikeExpression.
@@ -25,7 +26,7 @@ public interface EntityLikeExpression<E, C extends ConditionExpression, L extend
      * @param value 参数值
      * @return LogicExpression
      */
-    default L lk(ReturnStringFunction<E> name, String value) {
+    default L lk(SerializableFunction<E, String> name, String value) {
         return lk(name, value, QueryPolicy.AUTO);
     }
 
@@ -37,7 +38,7 @@ public interface EntityLikeExpression<E, C extends ConditionExpression, L extend
      * @param queryPolicy the query policy
      * @return the l
      */
-    L lk(ReturnStringFunction<E> name, String value, QueryPolicy queryPolicy);
+    L lk(SerializableFunction<E, String> name, String value, QueryPolicy queryPolicy);
 
     /**
      * like value.
@@ -67,7 +68,7 @@ public interface EntityLikeExpression<E, C extends ConditionExpression, L extend
      * @param value      参数值
      * @return LogicExpression
      */
-    <R> L lk(SerializableFunction<E, R> repository, ReturnStringFunction<R> property, Object value);
+    <R> L lk(SerializableFunction<E, R> repository, SerializableFunction<R, String> property, String value);
 
     /**
      * like value.
@@ -77,5 +78,5 @@ public interface EntityLikeExpression<E, C extends ConditionExpression, L extend
      * @param property   对象属性
      * @return LogicExpression
      */
-    <R> L lk(SerializableSupplier<R> repository, ReturnStringFunction<R> property);
+    <R> L lk(SerializableSupplier<R> repository, SerializableFunction<R, String> property);
 }

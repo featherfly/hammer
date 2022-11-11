@@ -62,7 +62,7 @@ public class UserQueryRepositoryConditionGroupExpression implements
      *
      * @return the number expression
      */
-    public NumberExpression<UserQueryRepositoryConditionGroupExpression, UserQueryRepositoryConditionGroupExpression> age() {
+    public NumberExpression<Number, UserQueryRepositoryConditionGroupExpression, UserQueryRepositoryConditionGroupExpression> age() {
         return propertyNumber("age");
     }
 
@@ -1892,7 +1892,7 @@ public class UserQueryRepositoryConditionGroupExpression implements
      * {@inheritDoc}
      */
     @Override
-    public NumberExpression<UserQueryRepositoryConditionGroupExpression, UserQueryRepositoryConditionGroupExpression> propertyNumber(
+    public NumberExpression<Number, UserQueryRepositoryConditionGroupExpression, UserQueryRepositoryConditionGroupExpression> propertyNumber(
             String repository, String name) {
         // YUFEI_TODO Auto-generated method stub
         return null;
@@ -1902,7 +1902,7 @@ public class UserQueryRepositoryConditionGroupExpression implements
      * {@inheritDoc}
      */
     @Override
-    public DateExpression<UserQueryRepositoryConditionGroupExpression, UserQueryRepositoryConditionGroupExpression> propertyDate(
+    public DateExpression<Date, UserQueryRepositoryConditionGroupExpression, UserQueryRepositoryConditionGroupExpression> propertyDate(
             String repository, String name) {
         // YUFEI_TODO Auto-generated method stub
         return null;
@@ -1942,8 +1942,9 @@ public class UserQueryRepositoryConditionGroupExpression implements
      * {@inheritDoc}
      */
     @Override
-    public <T> NumberExpression<UserQueryRepositoryConditionGroupExpression, UserQueryRepositoryConditionGroupExpression> propertyNumber(
-            Class<T> repository, String name) {
+    public <N extends Number,
+            T> NumberExpression<N, UserQueryRepositoryConditionGroupExpression, UserQueryRepositoryConditionGroupExpression> propertyNumber(
+                    Class<T> repository, String name) {
         // YUFEI_TODO Auto-generated method stub
         return null;
     }
@@ -1952,8 +1953,9 @@ public class UserQueryRepositoryConditionGroupExpression implements
      * {@inheritDoc}
      */
     @Override
-    public <T> DateExpression<UserQueryRepositoryConditionGroupExpression, UserQueryRepositoryConditionGroupExpression> propertyDate(
-            Class<T> repository, String name) {
+    public <D extends Date,
+            T> DateExpression<D, UserQueryRepositoryConditionGroupExpression, UserQueryRepositoryConditionGroupExpression> propertyDate(
+                    Class<T> repository, String name) {
         // YUFEI_TODO Auto-generated method stub
         return null;
     }
@@ -1992,7 +1994,7 @@ public class UserQueryRepositoryConditionGroupExpression implements
      * {@inheritDoc}
      */
     @Override
-    public NumberExpression<UserQueryRepositoryConditionGroupExpression, UserQueryRepositoryConditionGroupExpression> propertyNumber(
+    public NumberExpression<Number, UserQueryRepositoryConditionGroupExpression, UserQueryRepositoryConditionGroupExpression> propertyNumber(
             int repositoryIndex, String name) {
         // YUFEI_TODO Auto-generated method stub
         return null;
@@ -2002,7 +2004,7 @@ public class UserQueryRepositoryConditionGroupExpression implements
      * {@inheritDoc}
      */
     @Override
-    public DateExpression<UserQueryRepositoryConditionGroupExpression, UserQueryRepositoryConditionGroupExpression> propertyDate(
+    public DateExpression<Date, UserQueryRepositoryConditionGroupExpression, UserQueryRepositoryConditionGroupExpression> propertyDate(
             int repositoryIndex, String name) {
         // YUFEI_TODO Auto-generated method stub
         return null;
@@ -2042,7 +2044,7 @@ public class UserQueryRepositoryConditionGroupExpression implements
      * {@inheritDoc}
      */
     @Override
-    public NumberExpression<UserQueryRepositoryConditionGroupExpression, UserQueryRepositoryConditionGroupExpression> propertyNumber(
+    public NumberExpression<Number, UserQueryRepositoryConditionGroupExpression, UserQueryRepositoryConditionGroupExpression> propertyNumber(
             String name) {
         // YUFEI_TODO Auto-generated method stub
         return null;
@@ -2052,7 +2054,7 @@ public class UserQueryRepositoryConditionGroupExpression implements
      * {@inheritDoc}
      */
     @Override
-    public DateExpression<UserQueryRepositoryConditionGroupExpression, UserQueryRepositoryConditionGroupExpression> propertyDate(
+    public DateExpression<Date, UserQueryRepositoryConditionGroupExpression, UserQueryRepositoryConditionGroupExpression> propertyDate(
             String name) {
         // YUFEI_TODO Auto-generated method stub
         return null;
@@ -2094,8 +2096,9 @@ public class UserQueryRepositoryConditionGroupExpression implements
      */
     @Override
     public <T,
-            R extends Number> NumberExpression<UserQueryRepositoryConditionGroupExpression, UserQueryRepositoryConditionGroupExpression> property(
-                    ReturnNumberFunction<T, R> name) {
+            R extends Number> NumberExpression<R, UserQueryRepositoryConditionGroupExpression, UserQueryRepositoryConditionGroupExpression>
+
+            property(ReturnNumberFunction<T, R> name) {
         // YUFEI_TODO Auto-generated method stub
         return null;
     }
@@ -2105,7 +2108,7 @@ public class UserQueryRepositoryConditionGroupExpression implements
      */
     @Override
     public <T,
-            R extends Date> DateExpression<UserQueryRepositoryConditionGroupExpression, UserQueryRepositoryConditionGroupExpression> property(
+            R extends Date> DateExpression<R, UserQueryRepositoryConditionGroupExpression, UserQueryRepositoryConditionGroupExpression> property(
                     ReturnDateFunction<T, R> name) {
         // YUFEI_TODO Auto-generated method stub
         return null;
@@ -2137,7 +2140,7 @@ public class UserQueryRepositoryConditionGroupExpression implements
      */
     @Override
     public <T,
-            R extends Number> NumberExpression<UserQueryRepositoryConditionGroupExpression, UserQueryRepositoryConditionGroupExpression> propertyNumber(
+            R extends Number> NumberExpression<R, UserQueryRepositoryConditionGroupExpression, UserQueryRepositoryConditionGroupExpression> propertyNumber(
                     SerializableFunction<T, R> name) {
         // YUFEI_TODO Auto-generated method stub
         return null;
@@ -2148,7 +2151,7 @@ public class UserQueryRepositoryConditionGroupExpression implements
      */
     @Override
     public <T,
-            R extends Date> DateExpression<UserQueryRepositoryConditionGroupExpression, UserQueryRepositoryConditionGroupExpression> propertyDate(
+            R extends Date> DateExpression<R, UserQueryRepositoryConditionGroupExpression, UserQueryRepositoryConditionGroupExpression> propertyDate(
                     SerializableFunction<T, R> name) {
         // YUFEI_TODO Auto-generated method stub
         return null;

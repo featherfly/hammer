@@ -15,10 +15,10 @@ import cn.featherfly.hammer.expression.condition.property.NumberExpression;
  * @param <E> the element type
  * @param <Q> the generic type
  */
-public class StaticTypeNumberExpression<E, Q extends StaticTypeQueryConditionGroupExpression<E, Q>> {
+public class StaticTypeNumberExpression<N extends Number, E, Q extends StaticTypeQueryConditionGroupExpression<E, Q>> {
 
     /** The expression. */
-    private NumberExpression<QueryConditionGroupExpression, QueryConditionGroupLogicExpression> expression;
+    private NumberExpression<N, QueryConditionGroupExpression, QueryConditionGroupLogicExpression> expression;
 
     /** The type expression. */
     private Q typeExpression;
@@ -30,7 +30,7 @@ public class StaticTypeNumberExpression<E, Q extends StaticTypeQueryConditionGro
      * @param typeExpression the type expression
      */
     public StaticTypeNumberExpression(
-            NumberExpression<QueryConditionGroupExpression, QueryConditionGroupLogicExpression> expression,
+            NumberExpression<N, QueryConditionGroupExpression, QueryConditionGroupLogicExpression> expression,
             Q typeExpression) {
         super();
         this.expression = expression;
@@ -43,7 +43,7 @@ public class StaticTypeNumberExpression<E, Q extends StaticTypeQueryConditionGro
      * @param value the value
      * @return the q
      */
-    public Q eq(Number value) {
+    public Q eq(N value) {
         expression.eq(value);
         return typeExpression;
     }
@@ -54,7 +54,7 @@ public class StaticTypeNumberExpression<E, Q extends StaticTypeQueryConditionGro
      * @param value the value
      * @return the q
      */
-    public Q ne(Number value) {
+    public Q ne(N value) {
         expression.ne(value);
         return typeExpression;
     }
@@ -65,7 +65,7 @@ public class StaticTypeNumberExpression<E, Q extends StaticTypeQueryConditionGro
      * @param value the value
      * @return the q
      */
-    public Q in(Number value) {
+    public Q in(N value) {
         expression.in(value);
         return typeExpression;
     }
@@ -76,7 +76,7 @@ public class StaticTypeNumberExpression<E, Q extends StaticTypeQueryConditionGro
      * @param value the value
      * @return the q
      */
-    public Q nin(Number value) {
+    public Q nin(N value) {
         expression.nin(value);
         return typeExpression;
     }
@@ -87,7 +87,7 @@ public class StaticTypeNumberExpression<E, Q extends StaticTypeQueryConditionGro
      * @param value the value
      * @return the q
      */
-    public Q le(Number value) {
+    public Q le(N value) {
         expression.le(value);
         return typeExpression;
     }
@@ -98,7 +98,7 @@ public class StaticTypeNumberExpression<E, Q extends StaticTypeQueryConditionGro
      * @param value the value
      * @return the q
      */
-    public Q lt(Number value) {
+    public Q lt(N value) {
         expression.lt(value);
         return typeExpression;
     }
@@ -109,7 +109,7 @@ public class StaticTypeNumberExpression<E, Q extends StaticTypeQueryConditionGro
      * @param value the value
      * @return the q
      */
-    public Q ge(Number value) {
+    public Q ge(N value) {
         expression.ge(value);
         return typeExpression;
     }
@@ -120,7 +120,7 @@ public class StaticTypeNumberExpression<E, Q extends StaticTypeQueryConditionGro
      * @param value the value
      * @return the q
      */
-    public Q gt(Number value) {
+    public Q gt(N value) {
         expression.gt(value);
         return typeExpression;
     }

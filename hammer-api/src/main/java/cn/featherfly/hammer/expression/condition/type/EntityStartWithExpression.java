@@ -1,11 +1,12 @@
 
-package cn.featherfly.hammer.expression.condition;
+package cn.featherfly.hammer.expression.condition.type;
 
-import cn.featherfly.common.lang.function.ReturnStringFunction;
 import cn.featherfly.common.lang.function.SerializableFunction;
 import cn.featherfly.common.lang.function.SerializableSupplier;
 import cn.featherfly.common.lang.function.StringSupplier;
 import cn.featherfly.common.operator.QueryOperator.QueryPolicy;
+import cn.featherfly.hammer.expression.condition.ConditionExpression;
+import cn.featherfly.hammer.expression.condition.LogicExpression;
 
 /**
  * The Interface EntityStartWithExpression.
@@ -25,7 +26,7 @@ public interface EntityStartWithExpression<E, C extends ConditionExpression, L e
      * @param value 参数值
      * @return LogicExpression
      */
-    default L sw(ReturnStringFunction<E> name, String value) {
+    default L sw(SerializableFunction<E, String> name, String value) {
         return sw(name, value, QueryPolicy.AUTO);
     }
 
@@ -38,7 +39,7 @@ public interface EntityStartWithExpression<E, C extends ConditionExpression, L e
      * @param queryPolicy the query policy
      * @return the l
      */
-    L sw(ReturnStringFunction<E> name, String value, QueryPolicy queryPolicy);
+    L sw(SerializableFunction<E, String> name, String value, QueryPolicy queryPolicy);
 
     /**
      * start with value. 以value开始.
@@ -69,7 +70,7 @@ public interface EntityStartWithExpression<E, C extends ConditionExpression, L e
      * @param value      参数值
      * @return LogicExpression
      */
-    <R> L sw(SerializableFunction<E, R> repository, ReturnStringFunction<R> property, Object value);
+    <R> L sw(SerializableFunction<E, R> repository, SerializableFunction<R, String> property, String value);
 
     /**
      * 以value开始.
@@ -80,5 +81,5 @@ public interface EntityStartWithExpression<E, C extends ConditionExpression, L e
      * @param property   对象属性
      * @return LogicExpression
      */
-    <R> L sw(SerializableSupplier<R> repository, ReturnStringFunction<R> property);
+    <R> L sw(SerializableSupplier<R> repository, SerializableFunction<R, String> property);
 }

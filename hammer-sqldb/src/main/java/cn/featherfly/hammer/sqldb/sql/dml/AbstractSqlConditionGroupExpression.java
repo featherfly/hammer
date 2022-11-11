@@ -36,11 +36,11 @@ import cn.featherfly.common.lang.function.ReturnStringFunction;
 import cn.featherfly.common.lang.function.SerializableFunction;
 import cn.featherfly.common.lang.function.SerializableSupplier;
 import cn.featherfly.common.lang.function.StringSupplier;
-import cn.featherfly.common.repository.Execution;
-import cn.featherfly.common.repository.mapping.ClassMapping;
 import cn.featherfly.common.operator.LogicOperator;
 import cn.featherfly.common.operator.QueryOperator;
 import cn.featherfly.common.operator.QueryOperator.QueryPolicy;
+import cn.featherfly.common.repository.Execution;
+import cn.featherfly.common.repository.mapping.ClassMapping;
 import cn.featherfly.hammer.dsl.query.TypeQueryEntity;
 import cn.featherfly.hammer.expression.ConditionGroupExpression;
 import cn.featherfly.hammer.expression.ConditionGroupLogicExpression;
@@ -999,7 +999,7 @@ public abstract class AbstractSqlConditionGroupExpression<C extends ConditionGro
      * {@inheritDoc}
      */
     @Override
-    public NumberExpression<C, L> propertyNumber(String name) {
+    public <N extends Number> NumberExpression<N, C, L> propertyNumber(String name) {
         return new SimpleNumberExpression<>(ClassMappingUtils.getColumnName(name, classMapping), this);
     }
 
@@ -1007,7 +1007,7 @@ public abstract class AbstractSqlConditionGroupExpression<C extends ConditionGro
      * {@inheritDoc}
      */
     @Override
-    public DateExpression<C, L> propertyDate(String name) {
+    public <D extends Date> DateExpression<D, C, L> propertyDate(String name) {
         return new SimpleDateExpression<>(ClassMappingUtils.getColumnName(name, classMapping), this);
     }
 
@@ -1541,16 +1541,16 @@ public abstract class AbstractSqlConditionGroupExpression<C extends ConditionGro
      * {@inheritDoc}
      */
     @Override
-    public <T, R extends Number> NumberExpression<C, L> property(ReturnNumberFunction<T, R> name) {
-        return propertyNumber(getPropertyName(name));
+    public <T, R extends Number> NumberExpression<R, C, L> property(ReturnNumberFunction<T, R> name) {
+        return new SimpleNumberExpression<>(ClassMappingUtils.getColumnName(getPropertyName(name), classMapping), this);
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public <T, R extends Date> DateExpression<C, L> property(ReturnDateFunction<T, R> name) {
-        return propertyDate(getPropertyName(name));
+    public <T, R extends Date> DateExpression<R, C, L> property(ReturnDateFunction<T, R> name) {
+        return new SimpleDateExpression<>(ClassMappingUtils.getColumnName(getPropertyName(name), classMapping), this);
     }
 
     /**
@@ -1573,16 +1573,16 @@ public abstract class AbstractSqlConditionGroupExpression<C extends ConditionGro
      * {@inheritDoc}
      */
     @Override
-    public <T, R extends Number> NumberExpression<C, L> propertyNumber(SerializableFunction<T, R> name) {
-        return propertyNumber(getPropertyName(name));
+    public <T, R extends Number> NumberExpression<R, C, L> propertyNumber(SerializableFunction<T, R> name) {
+        return new SimpleNumberExpression<>(ClassMappingUtils.getColumnName(getPropertyName(name), classMapping), this);
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public <T, R extends Date> DateExpression<C, L> propertyDate(SerializableFunction<T, R> name) {
-        return propertyDate(getPropertyName(name));
+    public <T, R extends Date> DateExpression<R, C, L> propertyDate(SerializableFunction<T, R> name) {
+        return (DateExpression<R, C, L>) propertyDate(getPropertyName(name));
     }
 
     /**

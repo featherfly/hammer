@@ -12,8 +12,8 @@ import cn.featherfly.hammer.expression.condition.LogicExpression;
  *
  * @author zhongj
  */
-public class SimpleDateExpression<C extends ConditionsExpression<C, L>, L extends LogicExpression<C, L>>
-        implements DateExpression<C, L> {
+public class SimpleDateExpression<D extends Date, C extends ConditionsExpression<C, L>, L extends LogicExpression<C, L>>
+        implements DateExpression<D, C, L> {
 
     private String name;
 
