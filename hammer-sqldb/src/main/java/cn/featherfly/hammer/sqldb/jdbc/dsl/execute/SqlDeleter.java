@@ -1,16 +1,14 @@
 
 package cn.featherfly.hammer.sqldb.jdbc.dsl.execute;
 
+import cn.featherfly.common.db.mapping.JdbcMappingFactory;
+import cn.featherfly.common.repository.Repository;
 import cn.featherfly.hammer.dsl.execute.Deleter;
-import cn.featherfly.hammer.expression.Repository;
 import cn.featherfly.hammer.sqldb.SqldbHammerException;
 import cn.featherfly.hammer.sqldb.jdbc.Jdbc;
-import cn.featherfly.common.db.mapping.JdbcMappingFactory;
 
 /**
- * <p>
- * SqlDeleter
- * </p>
+ * SqlDeleter.
  *
  * @author zhongj
  */
@@ -21,18 +19,15 @@ public class SqlDeleter implements Deleter {
     private JdbcMappingFactory mappingFactory;
 
     /**
-     * @param jdbc
-     *            jdbc
+     * @param jdbc jdbc
      */
     public SqlDeleter(Jdbc jdbc) {
         this.jdbc = jdbc;
     }
 
     /**
-     * @param jdbc
-     *            jdbc
-     * @param mappingFactory
-     *            mappingFactory
+     * @param jdbc           jdbc
+     * @param mappingFactory mappingFactory
      */
     public SqlDeleter(Jdbc jdbc, JdbcMappingFactory mappingFactory) {
         this.jdbc = jdbc;

@@ -680,19 +680,19 @@ public abstract class AbstractJdbc implements Jdbc {
      *
      * @param prep  the prep
      * @param index the index
-     * @param arg   the arg
+     * @param argu  the arg
      */
-    protected void setParam(PreparedStatement prep, int index, Object arg) {
-        if (arg instanceof BeanPropertyValue) {
-            BeanPropertyValue<?> bpv = (BeanPropertyValue<?>) arg;
+    protected void setParam(PreparedStatement prep, int index, Object argu) {
+        if (argu instanceof FieldValueOperator) {
+            // YUFEI_TODO 还未测试
+            ((FieldValueOperator<?>) argu).set(prep, index);
+        } else if (argu instanceof BeanPropertyValue) {
             @SuppressWarnings("unchecked")
-            BeanProperty<Object> bp = (BeanProperty<Object>) bpv.getBeanProperty();
+            BeanPropertyValue<Object> bpv = (BeanPropertyValue<Object>) argu;
+            BeanProperty<Object> bp = bpv.getBeanProperty();
             manager.set(prep, index, bpv.getValue(), bp);
-        } else if (arg instanceof FieldValueOperator) {
-            //              IMPLSOON 这里直接用FieldValue设置，不用manager.set就能减少判断
-            ((FieldValueOperator<?>) arg).set(prep, index);
         } else {
-            manager.set(prep, index, arg);
+            manager.set(prep, index, argu);
         }
     }
 
@@ -706,14 +706,6 @@ public abstract class AbstractJdbc implements Jdbc {
         for (int i = 0; i < args.length; i++) {
             Object arg = args[i];
             setParam(prep, i + 1, arg);
-            //            if (arg instanceof BeanPropertyValue) {
-            //                BeanPropertyValue<?> bpv = (BeanPropertyValue<?>) arg;
-            //                @SuppressWarnings("unchecked")
-            //                BeanProperty<Object> argBp = (BeanProperty<Object>) bpv.getBeanProperty();
-            //                manager.set(prep, i + 1, bpv.getValue(), argBp);
-            //            } else {
-            //                manager.set(prep, i + 1, arg);
-            //            }
         }
     }
 

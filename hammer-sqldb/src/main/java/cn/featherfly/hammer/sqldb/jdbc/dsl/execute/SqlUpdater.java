@@ -1,18 +1,15 @@
 
 package cn.featherfly.hammer.sqldb.jdbc.dsl.execute;
 
+import cn.featherfly.common.db.mapping.JdbcMappingFactory;
+import cn.featherfly.common.repository.Repository;
 import cn.featherfly.hammer.dsl.execute.Update;
 import cn.featherfly.hammer.dsl.execute.Updater;
-import cn.featherfly.hammer.expression.Repository;
 import cn.featherfly.hammer.sqldb.SqldbHammerException;
 import cn.featherfly.hammer.sqldb.jdbc.Jdbc;
-import cn.featherfly.common.db.mapping.JdbcMappingFactory;
 
 /**
- * <p>
- * SqlUpdater
- * </p>
- * .
+ * SqlUpdater .
  *
  * @author zhongj
  */
@@ -25,8 +22,7 @@ public class SqlUpdater implements Updater {
     /**
      * Instantiates a new sql updater.
      *
-     * @param jdbc
-     *            the jdbc
+     * @param jdbc the jdbc
      */
     public SqlUpdater(Jdbc jdbc) {
         this.jdbc = jdbc;
@@ -35,10 +31,8 @@ public class SqlUpdater implements Updater {
     /**
      * Instantiates a new sql updater.
      *
-     * @param jdbc
-     *            the jdbc
-     * @param mappingFactory
-     *            the mapping factory
+     * @param jdbc           the jdbc
+     * @param mappingFactory the mapping factory
      */
     public SqlUpdater(Jdbc jdbc, JdbcMappingFactory mappingFactory) {
         super();
@@ -70,7 +64,6 @@ public class SqlUpdater implements Updater {
         if (mappingFactory == null) {
             throw new SqldbHammerException("mappingFactory is null");
         }
-        return new SqlExecutableUpdate(
-                mappingFactory.getClassMapping(repositType), jdbc);
+        return new SqlExecutableUpdate(mappingFactory.getClassMapping(repositType), jdbc);
     }
 }

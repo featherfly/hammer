@@ -5,9 +5,9 @@ import java.util.function.Consumer;
 
 import cn.featherfly.common.db.builder.dml.basic.SqlDeleteFromBasicBuilder;
 import cn.featherfly.common.db.mapping.JdbcClassMapping;
+import cn.featherfly.common.repository.Repository;
 import cn.featherfly.hammer.dsl.execute.Delete;
 import cn.featherfly.hammer.dsl.execute.ExecutableConditionGroupExpression;
-import cn.featherfly.hammer.expression.Repository;
 import cn.featherfly.hammer.expression.condition.ConditionGroupConfig;
 import cn.featherfly.hammer.sqldb.jdbc.Jdbc;
 

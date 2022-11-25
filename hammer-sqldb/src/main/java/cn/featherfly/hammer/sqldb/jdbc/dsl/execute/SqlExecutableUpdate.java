@@ -17,13 +17,13 @@ import cn.featherfly.common.lang.LambdaUtils.SerializableSupplierLambdaInfo;
 import cn.featherfly.common.lang.function.SerializableFunction;
 import cn.featherfly.common.lang.function.SerializableSupplier;
 import cn.featherfly.common.repository.IgnorePolicy;
+import cn.featherfly.common.repository.Repository;
 import cn.featherfly.hammer.dsl.execute.ExecutableConditionGroupExpression;
 import cn.featherfly.hammer.dsl.execute.ExecutableUpdate;
 import cn.featherfly.hammer.dsl.execute.SimpleUpdateNumberValue;
 import cn.featherfly.hammer.dsl.execute.SimpleUpdateValue;
 import cn.featherfly.hammer.dsl.execute.UpdateNumberValue;
 import cn.featherfly.hammer.dsl.execute.UpdateValue;
-import cn.featherfly.hammer.expression.Repository;
 import cn.featherfly.hammer.expression.condition.ConditionGroupConfig;
 import cn.featherfly.hammer.sqldb.jdbc.Jdbc;
 
