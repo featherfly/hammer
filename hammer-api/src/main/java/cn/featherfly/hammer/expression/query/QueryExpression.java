@@ -1,9 +1,9 @@
 
 package cn.featherfly.hammer.expression.query;
 
+import cn.featherfly.common.repository.Repository;
 import cn.featherfly.hammer.expression.ConditionGroupExpression;
 import cn.featherfly.hammer.expression.ConditionGroupLogicExpression;
-import cn.featherfly.hammer.expression.Repository;
 import cn.featherfly.hammer.expression.RepositoryConditionGroupLogicExpression;
 import cn.featherfly.hammer.expression.TypeConditionGroupExpression;
 import cn.featherfly.hammer.expression.TypeConditionGroupLogicExpression;

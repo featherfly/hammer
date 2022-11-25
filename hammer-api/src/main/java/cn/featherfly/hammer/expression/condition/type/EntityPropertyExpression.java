@@ -28,6 +28,9 @@ import cn.featherfly.hammer.expression.condition.property.StringExpression;
  * @param <C> the generic type
  * @param <L> the generic type
  */
+// IMPLSOON 后续来处理带类型的property
+//public interface EntityPropertyExpression<E, C extends EntityConditionsExpression<E, C, L>,
+//L extends LogicExpression<C, L>> extends ConditionExpression {
 public interface EntityPropertyExpression<E, C extends ConditionExpression, L extends LogicExpression<C, L>>
         extends ConditionExpression {
 

@@ -13,7 +13,8 @@ import org.testng.annotations.Test;
 import cn.featherfly.common.db.builder.dml.basic.SqlDeleteFromBasicBuilder;
 import cn.featherfly.common.lang.UUIDGenerator;
 import cn.featherfly.common.repository.IgnorePolicy;
-import cn.featherfly.hammer.expression.SimpleRepository;
+import cn.featherfly.common.repository.SimpleAliasRepository;
+import cn.featherfly.common.repository.SimpleRepository;
 import cn.featherfly.hammer.sqldb.SqldbHammerImpl;
 import cn.featherfly.hammer.sqldb.jdbc.JdbcTestBase;
 import cn.featherfly.hammer.sqldb.jdbc.dsl.execute.SqlConditionGroupExpression;
@@ -164,7 +165,7 @@ public class SqlDslExpressionTest extends JdbcTestBase {
         params.add(age);
         params.add(sex);
         SqlUpdater updater = new SqlUpdater(jdbc);
-        SqlConditionGroupExpression e = (SqlConditionGroupExpression) updater.update(new SimpleRepository("user"))
+        SqlConditionGroupExpression e = (SqlConditionGroupExpression) updater.update(new SimpleAliasRepository("user"))
                 .set("name", name).set("pwd", pwd).increase("age", age).where().eq("sex", sex);
 
         System.out.println(e);

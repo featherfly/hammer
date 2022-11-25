@@ -6,10 +6,11 @@ import cn.featherfly.common.db.mapping.JdbcMappingFactory;
 import cn.featherfly.common.db.metadata.DatabaseMetadata;
 import cn.featherfly.common.lang.Lang;
 import cn.featherfly.common.lang.Strings;
+import cn.featherfly.common.repository.AliasRepository;
 import cn.featherfly.common.repository.IgnorePolicy;
+import cn.featherfly.common.repository.Repository;
 import cn.featherfly.common.repository.builder.AliasManager;
 import cn.featherfly.hammer.dsl.query.Query;
-import cn.featherfly.hammer.expression.Repository;
 import cn.featherfly.hammer.sqldb.SqldbHammerException;
 import cn.featherfly.hammer.sqldb.jdbc.Jdbc;
 import cn.featherfly.hammer.sqldb.jdbc.SqlPageFactory;
@@ -71,7 +72,10 @@ public class SqlQuery implements Query {
             return null;
         }
         AliasManager aliasManager = new AliasManager();
-        String alias = repository.alias();
+        String alias = null;
+        if (repository instanceof AliasRepository) {
+            alias = ((AliasRepository) repository).alias();
+        }
         if (Lang.isNotEmpty(alias)) {
             aliasManager.put(repository.name(), alias);
         } else {
