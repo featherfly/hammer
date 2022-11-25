@@ -64,7 +64,7 @@ public interface RepositoryPropertyConditionsExpression<C extends RepositoryCond
      * @param name       the name
      * @return the enum expression
      */
-    <E extends Enum<?>> EnumExpression<E, C, L> propertyEnum(String repository, String name);
+    <E extends Enum<E>> EnumExpression<E, C, L> propertyEnum(String repository, String name);
 
     /**
      * Property.
@@ -116,7 +116,7 @@ public interface RepositoryPropertyConditionsExpression<C extends RepositoryCond
      * @param name       the name
      * @return the enum expression
      */
-    <T, E extends Enum<?>> EnumExpression<E, C, L> propertyEnum(Class<T> repository, String name);
+    <T, E extends Enum<E>> EnumExpression<E, C, L> propertyEnum(Class<T> repository, String name);
 
     /**
      * Property.
@@ -163,5 +163,5 @@ public interface RepositoryPropertyConditionsExpression<C extends RepositoryCond
      * @param name            the name
      * @return the enum expression
      */
-    <E extends Enum<?>> EnumExpression<E, C, L> propertyEnum(int repositoryIndex, String name);
+    <E extends Enum<E>> EnumExpression<E, C, L> propertyEnum(int repositoryIndex, String name);
 }

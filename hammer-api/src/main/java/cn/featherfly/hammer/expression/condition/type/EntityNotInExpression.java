@@ -1,8 +1,12 @@
 
 package cn.featherfly.hammer.expression.condition.type;
 
+import java.util.Collection;
+
 import cn.featherfly.common.lang.function.SerializableFunction;
 import cn.featherfly.common.lang.function.SerializableSupplier;
+import cn.featherfly.common.lang.function.SerializableSupplier1;
+import cn.featherfly.common.lang.function.SerializableSupplier2;
 import cn.featherfly.hammer.expression.condition.ConditionExpression;
 import cn.featherfly.hammer.expression.condition.LogicExpression;
 
@@ -25,7 +29,27 @@ public interface EntityNotInExpression<E, C extends ConditionExpression, L exten
      * @param value 参数值
      * @return LogicExpression
      */
-    <R> L nin(SerializableFunction<E, R> name, Object value);
+    <R> L nin(SerializableFunction<E, R> name, R value);
+
+    /**
+     * 不包含指定，sql中的not in.
+     *
+     * @param <R>   the generic type
+     * @param name  参数名称
+     * @param value 参数值
+     * @return LogicExpression
+     */
+    <R> L nin(SerializableFunction<E, R> name, @SuppressWarnings("unchecked") R... value);
+
+    /**
+     * 不包含指定，sql中的not in.
+     *
+     * @param <R>   the generic type
+     * @param name  参数名称
+     * @param value 参数值
+     * @return LogicExpression
+     */
+    <R> L nin(SerializableFunction<E, R> name, Collection<R> value);
 
     /**
      * 不包含指定，sql中的not in.
@@ -35,6 +59,24 @@ public interface EntityNotInExpression<E, C extends ConditionExpression, L exten
      * @return LogicExpression
      */
     <R> L nin(SerializableSupplier<R> property);
+
+    /**
+     * 不包含指定，sql中的not in.
+     *
+     * @param <R>      the generic type
+     * @param property 对象属性
+     * @return LogicExpression
+     */
+    <R> L nin(SerializableSupplier1<R[]> property);
+
+    /**
+     * 不包含指定，sql中的not in.
+     *
+     * @param <R>      the generic type
+     * @param property 对象属性
+     * @return LogicExpression
+     */
+    <R> L nin(SerializableSupplier2<Collection<R>> property);
 
     /**
      * 包含指定，sql中的in.
@@ -47,7 +89,7 @@ public interface EntityNotInExpression<E, C extends ConditionExpression, L exten
      * @param value      参数值
      * @return LogicExpression
      */
-    <R, V> L nin(SerializableFunction<E, R> repository, SerializableFunction<R, V> property, Object value);
+    <R, V> L nin(SerializableFunction<E, R> repository, SerializableFunction<R, V> property, V value);
 
     /**
      * 包含指定，sql中的in.

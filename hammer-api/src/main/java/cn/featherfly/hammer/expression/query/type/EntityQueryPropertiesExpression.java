@@ -53,7 +53,7 @@ public interface EntityQueryPropertiesExpression<E, Q extends EntityQueryPropert
      * @param propertyNames propertyNames
      * @return QueryEntityPropertiesExpression
      */
-    <R> Q property(@SuppressWarnings("unchecked") SerializableFunction<E, R>... propertyNames);
+    Q property(@SuppressWarnings("unchecked") SerializableFunction<E, ?>... propertyNames);
 
     /**
      * Count.

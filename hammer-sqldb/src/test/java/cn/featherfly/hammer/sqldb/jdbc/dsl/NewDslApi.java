@@ -8,8 +8,8 @@ import com.speedment.common.tuple.Tuple;
 import com.speedment.common.tuple.Tuple2;
 import com.speedment.common.tuple.Tuples;
 
-import cn.featherfly.hammer.expression.Repository;
-import cn.featherfly.hammer.expression.SimpleRepository;
+import cn.featherfly.common.repository.Repository;
+import cn.featherfly.common.repository.SimpleRepository;
 import cn.featherfly.hammer.sqldb.jdbc.dsl.query.SqlQuery;
 import cn.featherfly.hammer.sqldb.jdbc.vo.User;
 import cn.featherfly.hammer.sqldb.jdbc.vo.UserInfo;

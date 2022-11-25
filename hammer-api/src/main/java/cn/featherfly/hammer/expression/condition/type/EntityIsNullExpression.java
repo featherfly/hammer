@@ -23,7 +23,9 @@ public interface EntityIsNullExpression<E, C extends ConditionExpression, L exte
      * @param name 参数名称
      * @return LogicExpression
      */
-    <R> L isn(SerializableFunction<E, R> name);
+    default <R> L isn(SerializableFunction<E, R> name) {
+        return isn(name, true);
+    }
 
     /**
      * is null.
@@ -45,7 +47,9 @@ public interface EntityIsNullExpression<E, C extends ConditionExpression, L exte
      * @param property   the property
      * @return LogicExpression
      */
-    <R, V> L isn(SerializableFunction<E, R> repository, SerializableFunction<R, V> property);
+    default <R, V> L isn(SerializableFunction<E, R> repository, SerializableFunction<R, V> property) {
+        return isn(repository, property, true);
+    }
 
     /**
      * is null.

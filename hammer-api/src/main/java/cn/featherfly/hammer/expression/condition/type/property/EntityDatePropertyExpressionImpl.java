@@ -1,23 +1,25 @@
 
 package cn.featherfly.hammer.expression.condition.type.property;
 
+import java.util.Date;
+
 import cn.featherfly.common.lang.function.SerializableFunction;
 import cn.featherfly.common.operator.QueryOperator.QueryPolicy;
 import cn.featherfly.hammer.expression.condition.LogicExpression;
-import cn.featherfly.hammer.expression.condition.property.EnumExpression;
 import cn.featherfly.hammer.expression.condition.type.EntityConditionsExpression;
 
 /**
- * The Class TypeEnumExpression.
+ * The Class EntityDateExpressionImpl.
  *
  * @author zhongj
  * @param <E> the element type
+ * @param <D> the generic type
  * @param <C> the generic type
  * @param <L> the generic type
  */
-public class TypeEnumExpression<E, T extends Enum<?>, C extends EntityConditionsExpression<E, C, L>,
-        L extends LogicExpression<C, L>> extends AbstractTypeExpression<E, T, SerializableFunction<E, T>, C, L>
-        implements EnumExpression<T, C, L> {
+public class EntityDatePropertyExpressionImpl<E, D extends Date, C extends EntityConditionsExpression<E, C, L>,
+        L extends LogicExpression<C, L>> extends AbstractEntityPropertyExpression<E, D, SerializableFunction<E, D>, C, L>
+        implements EntityDatePropertyExpression<E, D, C, L> {
 
     /**
      * Instantiates a new type date expression.
@@ -25,7 +27,8 @@ public class TypeEnumExpression<E, T extends Enum<?>, C extends EntityConditions
      * @param property   the property
      * @param expression the expression
      */
-    public TypeEnumExpression(SerializableFunction<E, T> property, EntityConditionsExpression<E, C, L> expression) {
+    public EntityDatePropertyExpressionImpl(SerializableFunction<E, D> property,
+            EntityConditionsExpression<E, C, L> expression) {
         super(property, expression);
     }
 
@@ -33,7 +36,7 @@ public class TypeEnumExpression<E, T extends Enum<?>, C extends EntityConditions
      * {@inheritDoc}
      */
     @Override
-    public L eq(T value) {
+    public L eq(D value) {
         return expression.eq(name, value);
     }
 
@@ -49,7 +52,7 @@ public class TypeEnumExpression<E, T extends Enum<?>, C extends EntityConditions
      * {@inheritDoc}
      */
     @Override
-    public L ne(T value) {
+    public L ne(D value) {
         return expression.ne(name, value);
     }
 
@@ -57,7 +60,7 @@ public class TypeEnumExpression<E, T extends Enum<?>, C extends EntityConditions
      * {@inheritDoc}
      */
     @Override
-    public L in(T value) {
+    public L in(D value) {
         return expression.in(name, value);
     }
 
@@ -65,8 +68,40 @@ public class TypeEnumExpression<E, T extends Enum<?>, C extends EntityConditions
      * {@inheritDoc}
      */
     @Override
-    public L nin(T value) {
+    public L nin(D value) {
         return expression.nin(name, value);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public L le(D value) {
+        return expression.le(name, value);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public L lt(D value) {
+        return expression.lt(name, value);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public L ge(D value) {
+        return expression.ge(name, value);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public L gt(D value) {
+        return expression.gt(name, value);
     }
 
     /**
@@ -105,7 +140,7 @@ public class TypeEnumExpression<E, T extends Enum<?>, C extends EntityConditions
      * {@inheritDoc}
      */
     @Override
-    public L eq(T value, QueryPolicy queryPolicy) {
+    public L eq(D value, QueryPolicy queryPolicy) {
         return expression.eq(name, value, queryPolicy);
     }
 
@@ -113,7 +148,7 @@ public class TypeEnumExpression<E, T extends Enum<?>, C extends EntityConditions
      * {@inheritDoc}
      */
     @Override
-    public L ne(T value, QueryPolicy queryPolicy) {
+    public L ne(D value, QueryPolicy queryPolicy) {
         return expression.ne(name, value, queryPolicy);
     }
 }

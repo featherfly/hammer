@@ -4,36 +4,38 @@ package cn.featherfly.hammer.expression.condition.type.property;
 import cn.featherfly.common.lang.function.SerializableFunction;
 import cn.featherfly.common.operator.QueryOperator.QueryPolicy;
 import cn.featherfly.hammer.expression.condition.LogicExpression;
-import cn.featherfly.hammer.expression.condition.property.NumberExpression;
 import cn.featherfly.hammer.expression.condition.type.EntityConditionsExpression;
 
 /**
- * The Class TypeNumberExpression.
+ * The Class TypeEnumExpression.
  *
  * @author zhongj
  * @param <E> the element type
+ * @param <T> the generic type
  * @param <C> the generic type
  * @param <L> the generic type
  */
-public class TypeNumberExpression<E, N extends Number, C extends EntityConditionsExpression<E, C, L>,
-        L extends LogicExpression<C, L>> extends AbstractTypeExpression<E, N, SerializableFunction<E, N>, C, L>
-        implements NumberExpression<N, C, L> {
+public class EntityEnumPropertyExpressionImpl<E, T extends Enum<T>, C extends EntityConditionsExpression<E, C, L>,
+        L extends LogicExpression<C, L>>
+        extends AbstractEntityPropertyExpression<E, T, SerializableFunction<E, T>, C, L>
+        implements EntityEnumPropertyExpression<E, T, C, L> {
 
     /**
-     * Instantiates a new type number expression.
+     * Instantiates a new type date expression.
      *
-     * @param name       the name
+     * @param property   the property
      * @param expression the expression
      */
-    public TypeNumberExpression(SerializableFunction<E, N> name, EntityConditionsExpression<E, C, L> expression) {
-        super(name, expression);
+    public EntityEnumPropertyExpressionImpl(SerializableFunction<E, T> property,
+            EntityConditionsExpression<E, C, L> expression) {
+        super(property, expression);
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public L eq(N value) {
+    public L eq(T value) {
         return expression.eq(name, value);
     }
 
@@ -49,7 +51,7 @@ public class TypeNumberExpression<E, N extends Number, C extends EntityCondition
      * {@inheritDoc}
      */
     @Override
-    public L ne(N value) {
+    public L ne(T value) {
         return expression.ne(name, value);
     }
 
@@ -57,7 +59,7 @@ public class TypeNumberExpression<E, N extends Number, C extends EntityCondition
      * {@inheritDoc}
      */
     @Override
-    public L in(N value) {
+    public L in(T value) {
         return expression.in(name, value);
     }
 
@@ -65,40 +67,8 @@ public class TypeNumberExpression<E, N extends Number, C extends EntityCondition
      * {@inheritDoc}
      */
     @Override
-    public L nin(N value) {
+    public L nin(T value) {
         return expression.nin(name, value);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public L le(N value) {
-        return expression.le(name, value);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public L lt(N value) {
-        return expression.lt(name, value);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public L ge(N value) {
-        return expression.ge(name, value);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public L gt(N value) {
-        return expression.gt(name, value);
     }
 
     /**
@@ -137,7 +107,7 @@ public class TypeNumberExpression<E, N extends Number, C extends EntityCondition
      * {@inheritDoc}
      */
     @Override
-    public L eq(N value, QueryPolicy queryPolicy) {
+    public L eq(T value, QueryPolicy queryPolicy) {
         return expression.eq(name, value, queryPolicy);
     }
 
@@ -145,7 +115,7 @@ public class TypeNumberExpression<E, N extends Number, C extends EntityCondition
      * {@inheritDoc}
      */
     @Override
-    public L ne(N value, QueryPolicy queryPolicy) {
+    public L ne(T value, QueryPolicy queryPolicy) {
         return expression.ne(name, value, queryPolicy);
     }
 }

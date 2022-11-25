@@ -6,10 +6,11 @@ import cn.featherfly.common.db.mapping.JdbcMappingFactory;
 import cn.featherfly.common.db.metadata.DatabaseMetadata;
 import cn.featherfly.common.lang.Lang;
 import cn.featherfly.common.lang.Strings;
+import cn.featherfly.common.repository.AliasRepository;
 import cn.featherfly.common.repository.IgnorePolicy;
+import cn.featherfly.common.repository.Repository;
 import cn.featherfly.common.repository.builder.AliasManager;
 import cn.featherfly.hammer.dsl.query.Query;
-import cn.featherfly.hammer.expression.Repository;
 import cn.featherfly.hammer.sqldb.SqldbHammerException;
 import cn.featherfly.hammer.sqldb.jdbc.Jdbc;
 import cn.featherfly.hammer.sqldb.jdbc.SqlPageFactory;
@@ -66,12 +67,16 @@ public class SqlQuery implements Query {
      * {@inheritDoc}
      */
     @Override
-    public SqlQueryEntityProperties find(Repository repository) {
+    //    public SqlQueryEntityProperties find(Repository repository) {
+    public SqlQueryEntity find(Repository repository) {
         if (repository == null) {
             return null;
         }
         AliasManager aliasManager = new AliasManager();
-        String alias = repository.alias();
+        String alias = null;
+        if (repository instanceof AliasRepository) {
+            alias = ((AliasRepository) repository).alias();
+        }
         if (Lang.isNotEmpty(alias)) {
             aliasManager.put(repository.name(), alias);
         } else {
@@ -85,7 +90,8 @@ public class SqlQuery implements Query {
      * {@inheritDoc}
      */
     @Override
-    public SqlQueryEntityProperties find(String tableName) {
+    //    public SqlQueryEntityProperties find(String tableName) {
+    public SqlQueryEntity find(String tableName) {
         return new SqlQueryEntityProperties(jdbc, databaseMetadata, tableName, mappingFactory, sqlPageFactory,
                 new AliasManager(), IgnorePolicy.EMPTY);
     }
@@ -94,7 +100,8 @@ public class SqlQuery implements Query {
      * {@inheritDoc}
      */
     @Override
-    public <E> EntitySqlQueryEntityProperties<E> find(Class<E> repositoryType) {
+    //    public <E> EntitySqlQueryEntityProperties<E> find(Class<E> repositoryType) {
+    public <E> EntitySqlQueryEntity<E> find(Class<E> repositoryType) {
         if (mappingFactory == null) {
             throw new SqldbHammerException("mappingFactory is null");
         }

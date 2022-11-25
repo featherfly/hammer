@@ -4,19 +4,19 @@ package cn.featherfly.hammer.expression.condition.type.property;
 import cn.featherfly.common.lang.function.SerializableFunction;
 import cn.featherfly.common.operator.QueryOperator.QueryPolicy;
 import cn.featherfly.hammer.expression.condition.LogicExpression;
-import cn.featherfly.hammer.expression.condition.property.StringExpression;
 import cn.featherfly.hammer.expression.condition.type.EntityConditionsExpression;
 
 /**
  * The Class RepositorySimpleStringExpression.
  *
  * @author zhongj
+ * @param <E> the element type
  * @param <C> the generic type
  * @param <L> the generic type
  */
-public class TypeStringExpression<E, C extends EntityConditionsExpression<E, C, L>, L extends LogicExpression<C, L>>
-        extends AbstractTypeExpression<E, String, SerializableFunction<E, String>, C, L>
-        implements StringExpression<C, L> {
+public class EntityStringPropertyExpressionImpl<E, C extends EntityConditionsExpression<E, C, L>, L extends LogicExpression<C, L>>
+        extends AbstractEntityPropertyExpression<E, String, SerializableFunction<E, String>, C, L>
+        implements EntityStringPropertyExpression<E, C, L> {
 
     /**
      * Instantiates a new type string expression.
@@ -24,7 +24,7 @@ public class TypeStringExpression<E, C extends EntityConditionsExpression<E, C, 
      * @param name       the name
      * @param expression the expression
      */
-    public TypeStringExpression(SerializableFunction<E, String> name, EntityConditionsExpression<E, C, L> expression) {
+    public EntityStringPropertyExpressionImpl(SerializableFunction<E, String> name, EntityConditionsExpression<E, C, L> expression) {
         super(name, expression);
     }
 
