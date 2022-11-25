@@ -4,6 +4,7 @@ package cn.featherfly.hammer.sqldb.sql.dml;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
+import java.util.Collection;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
@@ -12,10 +13,12 @@ import java.util.function.Predicate;
 
 import com.speedment.common.tuple.Tuple2;
 
+import cn.featherfly.common.db.FieldValueOperator;
 import cn.featherfly.common.db.builder.SqlBuilder;
 import cn.featherfly.common.db.dialect.Dialect;
-import cn.featherfly.common.db.mapping.ClassMappingUtils;
+import cn.featherfly.common.db.mapping.JavaTypeSqlTypeOperator;
 import cn.featherfly.common.db.mapping.JdbcClassMapping;
+import cn.featherfly.common.db.mapping.JdbcPropertyMapping;
 import cn.featherfly.common.lang.AssertIllegalArgument;
 import cn.featherfly.common.lang.LambdaUtils;
 import cn.featherfly.common.lang.LambdaUtils.SerializableSupplierLambdaInfo;
@@ -34,6 +37,8 @@ import cn.featherfly.common.lang.function.ReturnNumberFunction;
 import cn.featherfly.common.lang.function.ReturnStringFunction;
 import cn.featherfly.common.lang.function.SerializableFunction;
 import cn.featherfly.common.lang.function.SerializableSupplier;
+import cn.featherfly.common.lang.function.SerializableSupplier1;
+import cn.featherfly.common.lang.function.SerializableSupplier2;
 import cn.featherfly.common.lang.function.StringSupplier;
 import cn.featherfly.common.operator.LogicOperator;
 import cn.featherfly.common.operator.QueryOperator;
@@ -41,21 +46,20 @@ import cn.featherfly.common.operator.QueryOperator.QueryPolicy;
 import cn.featherfly.hammer.expression.EntityConditionGroupExpression;
 import cn.featherfly.hammer.expression.EntityConditionGroupLogicExpression;
 import cn.featherfly.hammer.expression.condition.ParamedExpression;
-import cn.featherfly.hammer.expression.condition.property.DateExpression;
-import cn.featherfly.hammer.expression.condition.property.EnumExpression;
-import cn.featherfly.hammer.expression.condition.property.LocalDateExpression;
-import cn.featherfly.hammer.expression.condition.property.LocalDateTimeExpression;
-import cn.featherfly.hammer.expression.condition.property.LocalTimeExpression;
-import cn.featherfly.hammer.expression.condition.property.NumberExpression;
-import cn.featherfly.hammer.expression.condition.property.ObjectExpression;
-import cn.featherfly.hammer.expression.condition.property.StringExpression;
-import cn.featherfly.hammer.expression.condition.type.property.TypeDateExpression;
-import cn.featherfly.hammer.expression.condition.type.property.TypeEnumExpression;
-import cn.featherfly.hammer.expression.condition.type.property.TypeLocalDateExpression;
-import cn.featherfly.hammer.expression.condition.type.property.TypeLocalDateTimeExpression;
-import cn.featherfly.hammer.expression.condition.type.property.TypeLocalTimeExpression;
-import cn.featherfly.hammer.expression.condition.type.property.TypeNumberExpression;
-import cn.featherfly.hammer.expression.condition.type.property.TypeStringExpression;
+import cn.featherfly.hammer.expression.condition.type.property.EntityDatePropertyExpression;
+import cn.featherfly.hammer.expression.condition.type.property.EntityDatePropertyExpressionImpl;
+import cn.featherfly.hammer.expression.condition.type.property.EntityEnumPropertyExpression;
+import cn.featherfly.hammer.expression.condition.type.property.EntityEnumPropertyExpressionImpl;
+import cn.featherfly.hammer.expression.condition.type.property.EntityLocalDatePropertyExpression;
+import cn.featherfly.hammer.expression.condition.type.property.EntityLocalDatePropertyExpressionImpl;
+import cn.featherfly.hammer.expression.condition.type.property.EntityLocalDateTimePropertyExpression;
+import cn.featherfly.hammer.expression.condition.type.property.EntityLocalDateTimePropertyExpressionImpl;
+import cn.featherfly.hammer.expression.condition.type.property.EntityLocalTimePropertyExpression;
+import cn.featherfly.hammer.expression.condition.type.property.EntityLocalTimePropertyExpressionImpl;
+import cn.featherfly.hammer.expression.condition.type.property.EntityNumberPropertyExpression;
+import cn.featherfly.hammer.expression.condition.type.property.EntityNumberPropertyExpressionImpl;
+import cn.featherfly.hammer.expression.condition.type.property.EntityStringPropertyExpression;
+import cn.featherfly.hammer.expression.condition.type.property.EntityStringPropertyExpressionImpl;
 import cn.featherfly.hammer.sqldb.jdbc.SqlPageFactory;
 import cn.featherfly.hammer.sqldb.jdbc.dsl.query.EntitySqlQuery;
 
@@ -174,10 +178,13 @@ public abstract class AbstractEntitySqlConditionGroupExpression<E, C extends Ent
      */
     @Override
     public <R> L eq(SerializableFunction<E, R> name, R value, QueryPolicy queryPolicy) {
-        // IMPLSOON 后续来实现
-        return (L) addCondition(new SqlConditionExpressionBuilder(dialect,
-                ClassMappingUtils.getColumnName(getPropertyName(name), classMapping), value, QueryOperator.EQ,
-                queryPolicy, queryAlias, ignorePolicy));
+        // YUFEI_TODO 未测试
+        JdbcPropertyMapping pm = classMapping.getPropertyMapping(getPropertyName(name));
+        return (L) addCondition(new SqlConditionExpressionBuilder(dialect, pm.getRepositoryFieldName(),
+                value == null ? null
+                        : new FieldValueOperator<>((JavaTypeSqlTypeOperator<R>) pm.getJavaTypeSqlTypeOperator(), value),
+                QueryOperator.EQ, queryPolicy, queryAlias, ignorePolicy));
+        // IMPLSOON 后续再把下面的逻辑加回来
         // FIXME value 空指针异常
         //        List<Tuple2<String, Optional<R>>> tuples = supplier(LambdaUtils.getLambdaInfo(name), value);
         //        L logic = null;
@@ -202,11 +209,15 @@ public abstract class AbstractEntitySqlConditionGroupExpression<E, C extends Ent
      */
     @Override
     public <R> L eq(SerializableSupplier<R> property, QueryPolicy queryPolicy) {
-        // IMPLSOON 后续来实现
+        //  YUFEI_TODO 未测试
+        R value = property.get();
         SerializableSupplierLambdaInfo<R> info = LambdaUtils.getSerializableSupplierLambdaInfo(property);
-        return (L) addCondition(new SqlConditionExpressionBuilder(dialect,
-                ClassMappingUtils.getColumnName(info.getSerializedLambdaInfo().getPropertyName(), classMapping),
-                property.get(), QueryOperator.EQ, queryPolicy, queryAlias, ignorePolicy));
+        JdbcPropertyMapping pm = classMapping.getPropertyMapping(info.getSerializedLambdaInfo().getPropertyName());
+        return (L) addCondition(new SqlConditionExpressionBuilder(dialect, pm.getRepositoryFieldName(),
+                value == null ? null
+                        : new FieldValueOperator<>((JavaTypeSqlTypeOperator<R>) pm.getJavaTypeSqlTypeOperator(), value),
+                QueryOperator.EQ, queryPolicy, queryAlias, ignorePolicy));
+        // IMPLSOON 后续再把下面的逻辑加回来
         //        List<Tuple2<String, Optional<R>>> tuples = supplier(LambdaUtils.getSerializableSupplierLambdaInfo(property));
         //        L logic = null;
         //        C condition = (C) this;
@@ -287,30 +298,27 @@ public abstract class AbstractEntitySqlConditionGroupExpression<E, C extends Ent
     //    /**
     //     * {@inheritDoc}
     //     */
-    /**
-     * Ne.
-     *
-     * @param name        the name
-     * @param value       the value
-     * @param queryPolicy the query policy
-     * @return the l
-     */
-    //    @Override
-    public L ne(String name, Object value, QueryPolicy queryPolicy) {
-        return (L) addCondition(
-                new SqlConditionExpressionBuilder(dialect, ClassMappingUtils.getColumnName(name, classMapping), value,
-                        QueryOperator.NE, queryPolicy, queryAlias, ignorePolicy));
-    }
+    //    /**
+    //    //    @Override
+    //    public L ne(String name, Object value, QueryPolicy queryPolicy) {
+    //        return (L) addCondition(
+    //                new SqlConditionExpressionBuilder(dialect, ClassMappingUtils.getColumnName(name, classMapping), value,
+    //                        QueryOperator.NE, queryPolicy, queryAlias, ignorePolicy));
+    //    }
 
     /**
      * {@inheritDoc}
      */
     @Override
     public <R> L ne(SerializableFunction<E, R> name, R value, QueryPolicy queryPolicy) {
-        // IMPLSOON 后续来实现
-        return (L) addCondition(new SqlConditionExpressionBuilder(dialect,
-                ClassMappingUtils.getColumnName(getPropertyName(name), classMapping), value, QueryOperator.NE,
-                queryPolicy, queryAlias, ignorePolicy));
+        // YUFEI_TODO 未测试
+        JdbcPropertyMapping pm = classMapping.getPropertyMapping(getPropertyName(name));
+        return (L) addCondition(new SqlConditionExpressionBuilder(dialect, pm.getRepositoryFieldName(),
+                value == null ? null
+                        : new FieldValueOperator<>((JavaTypeSqlTypeOperator<R>) pm.getJavaTypeSqlTypeOperator(), value),
+                QueryOperator.NE, queryPolicy, queryAlias, ignorePolicy));
+        // IMPLSOON 后续再把下面的逻辑加回来
+        // FIXME value 空指针异常
         //        List<Tuple2<String, Optional<R>>> tuples = supplier(LambdaUtils.getLambdaInfo(name), value);
         //        L l = null;
         //        C c = (C) this;
@@ -334,11 +342,15 @@ public abstract class AbstractEntitySqlConditionGroupExpression<E, C extends Ent
      */
     @Override
     public <R> L ne(SerializableSupplier<R> property, QueryPolicy queryPolicy) {
-        // IMPLSOON 后续来实现
+        //  YUFEI_TODO 未测试
+        R value = property.get();
         SerializableSupplierLambdaInfo<R> info = LambdaUtils.getSerializableSupplierLambdaInfo(property);
-        return (L) addCondition(new SqlConditionExpressionBuilder(dialect,
-                ClassMappingUtils.getColumnName(info.getSerializedLambdaInfo().getPropertyName(), classMapping),
-                property.get(), QueryOperator.NE, queryPolicy, queryAlias, ignorePolicy));
+        JdbcPropertyMapping pm = classMapping.getPropertyMapping(info.getSerializedLambdaInfo().getPropertyName());
+        return (L) addCondition(new SqlConditionExpressionBuilder(dialect, pm.getRepositoryFieldName(),
+                value == null ? null
+                        : new FieldValueOperator<>((JavaTypeSqlTypeOperator<R>) pm.getJavaTypeSqlTypeOperator(), value),
+                QueryOperator.NE, queryPolicy, queryAlias, ignorePolicy));
+        // IMPLSOON 后续再把下面的逻辑加回来
         //        List<Tuple2<String, Optional<R>>> tuples = supplier(LambdaUtils.getSerializableSupplierLambdaInfo(property));
         //        L l = null;
         //        C c = (C) this;
@@ -360,18 +372,25 @@ public abstract class AbstractEntitySqlConditionGroupExpression<E, C extends Ent
     //    /**
     //     * {@inheritDoc}
     //     */
-    /**
-     * Lk.
-     *
-     * @param name        the name
-     * @param value       the value
-     * @param queryPolicy the query policy
-     * @return the l
-     */
     //    @Override
-    public L lk(String name, String value, QueryPolicy queryPolicy) {
+    //    public L lk(String name, String value, QueryPolicy queryPolicy) {
+    //        return (L) addCondition(
+    //                new SqlConditionExpressionBuilder(dialect, ClassMappingUtils.getColumnName(name, classMapping), value,
+    //                        QueryOperator.LK, queryPolicy, queryAlias, ignorePolicy));
+    //    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public L lk(SerializableFunction<E, String> name, String value, QueryPolicy queryPolicy) {
+        // YUFEI_TODO 未测试
+        JdbcPropertyMapping pm = classMapping.getPropertyMapping(getPropertyName(name));
         return (L) addCondition(
-                new SqlConditionExpressionBuilder(dialect, ClassMappingUtils.getColumnName(name, classMapping), value,
+                new SqlConditionExpressionBuilder(dialect, pm.getRepositoryFieldName(),
+                        value == null ? null
+                                : new FieldValueOperator<>(
+                                        (JavaTypeSqlTypeOperator<String>) pm.getJavaTypeSqlTypeOperator(), value),
                         QueryOperator.LK, queryPolicy, queryAlias, ignorePolicy));
     }
 
@@ -379,49 +398,49 @@ public abstract class AbstractEntitySqlConditionGroupExpression<E, C extends Ent
      * {@inheritDoc}
      */
     @Override
-    public L lk(SerializableFunction<E, String> name, String value, QueryPolicy queryPolicy) {
-        return lk(getPropertyName(name), value, queryPolicy);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
     public L lk(StringSupplier property, QueryPolicy queryPolicy) {
+        //  YUFEI_TODO 未测试
+        String value = property.get();
         SerializableSupplierLambdaInfo<String> info = LambdaUtils.getSerializableSupplierLambdaInfo(property);
-        return lk(info.getSerializedLambdaInfo().getPropertyName(), info.getValue(), queryPolicy);
+        JdbcPropertyMapping pm = classMapping.getPropertyMapping(info.getSerializedLambdaInfo().getPropertyName());
+        return (L) addCondition(
+                new SqlConditionExpressionBuilder(dialect, pm.getRepositoryFieldName(),
+                        value == null ? null
+                                : new FieldValueOperator<>(
+                                        (JavaTypeSqlTypeOperator<String>) pm.getJavaTypeSqlTypeOperator(), value),
+                        QueryOperator.LK, queryPolicy, queryAlias, ignorePolicy));
     }
 
     //  /**
     //     * {@inheritDoc}
     //     */
-    /**
-     * Sw.
-     *
-     * @param name  the name
-     * @param value the value
-     * @return the l
-     */
     //    @Override
-    public L sw(String name, String value) {
-        return sw(name, value, QueryPolicy.AUTO);
-    }
+    //    public L sw(String name, String value) {
+    //        return sw(name, value, QueryPolicy.AUTO);
+    //    }
 
     //    /**
     //     * {@inheritDoc}
     //     */
-    /**
-     * Sw.
-     *
-     * @param name        the name
-     * @param value       the value
-     * @param queryPolicy the query policy
-     * @return the l
-     */
     //    @Override
-    public L sw(String name, String value, QueryPolicy queryPolicy) {
+    //    public L sw(String name, String value, QueryPolicy queryPolicy) {
+    //        return (L) addCondition(
+    //                new SqlConditionExpressionBuilder(dialect, ClassMappingUtils.getColumnName(name, classMapping), value,
+    //                        QueryOperator.SW, queryPolicy, queryAlias, ignorePolicy));
+    //    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public L sw(SerializableFunction<E, String> name, String value, QueryPolicy queryPolicy) {
+        // YUFEI_TODO 未测试
+        JdbcPropertyMapping pm = classMapping.getPropertyMapping(getPropertyName(name));
         return (L) addCondition(
-                new SqlConditionExpressionBuilder(dialect, ClassMappingUtils.getColumnName(name, classMapping), value,
+                new SqlConditionExpressionBuilder(dialect, pm.getRepositoryFieldName(),
+                        value == null ? null
+                                : new FieldValueOperator<>(
+                                        (JavaTypeSqlTypeOperator<String>) pm.getJavaTypeSqlTypeOperator(), value),
                         QueryOperator.SW, queryPolicy, queryAlias, ignorePolicy));
     }
 
@@ -429,34 +448,41 @@ public abstract class AbstractEntitySqlConditionGroupExpression<E, C extends Ent
      * {@inheritDoc}
      */
     @Override
-    public L sw(SerializableFunction<E, String> name, String value, QueryPolicy queryPolicy) {
-        return sw(getPropertyName(name), value, queryPolicy);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
     public L sw(StringSupplier property, QueryPolicy queryPolicy) {
+        //  YUFEI_TODO 未测试
+        String value = property.get();
         SerializableSupplierLambdaInfo<String> info = LambdaUtils.getSerializableSupplierLambdaInfo(property);
-        return sw(info.getSerializedLambdaInfo().getPropertyName(), info.getValue());
+        JdbcPropertyMapping pm = classMapping.getPropertyMapping(info.getSerializedLambdaInfo().getPropertyName());
+        return (L) addCondition(
+                new SqlConditionExpressionBuilder(dialect, pm.getRepositoryFieldName(),
+                        value == null ? null
+                                : new FieldValueOperator<>(
+                                        (JavaTypeSqlTypeOperator<String>) pm.getJavaTypeSqlTypeOperator(), value),
+                        QueryOperator.SW, queryPolicy, queryAlias, ignorePolicy));
     }
 
     //    /**
     //     * {@inheritDoc}
     //     */
-    /**
-     * Ew.
-     *
-     * @param name        the name
-     * @param value       the value
-     * @param queryPolicy the query policy
-     * @return the l
-     */
     //    @Override
-    public L ew(String name, String value, QueryPolicy queryPolicy) {
+    //    public L ew(String name, String value, QueryPolicy queryPolicy) {
+    //        return (L) addCondition(
+    //                new SqlConditionExpressionBuilder(dialect, ClassMappingUtils.getColumnName(name, classMapping), value,
+    //                        QueryOperator.EW, queryPolicy, queryAlias, ignorePolicy));
+    //    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public L ew(SerializableFunction<E, String> name, String value, QueryPolicy queryPolicy) {
+        // YUFEI_TODO 未测试
+        JdbcPropertyMapping pm = classMapping.getPropertyMapping(getPropertyName(name));
         return (L) addCondition(
-                new SqlConditionExpressionBuilder(dialect, ClassMappingUtils.getColumnName(name, classMapping), value,
+                new SqlConditionExpressionBuilder(dialect, pm.getRepositoryFieldName(),
+                        value == null ? null
+                                : new FieldValueOperator<>(
+                                        (JavaTypeSqlTypeOperator<String>) pm.getJavaTypeSqlTypeOperator(), value),
                         QueryOperator.EW, queryPolicy, queryAlias, ignorePolicy));
     }
 
@@ -464,35 +490,42 @@ public abstract class AbstractEntitySqlConditionGroupExpression<E, C extends Ent
      * {@inheritDoc}
      */
     @Override
-    public L ew(SerializableFunction<E, String> name, String value, QueryPolicy queryPolicy) {
-        return ew(getPropertyName(name), value, queryPolicy);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
     public L ew(StringSupplier property, QueryPolicy queryPolicy) {
+        //  YUFEI_TODO 未测试
+        String value = property.get();
         SerializableSupplierLambdaInfo<String> info = LambdaUtils.getSerializableSupplierLambdaInfo(property);
-        return ew(info.getSerializedLambdaInfo().getPropertyName(), info.getValue(), queryPolicy);
+        JdbcPropertyMapping pm = classMapping.getPropertyMapping(info.getSerializedLambdaInfo().getPropertyName());
+        return (L) addCondition(
+                new SqlConditionExpressionBuilder(dialect, pm.getRepositoryFieldName(),
+                        value == null ? null
+                                : new FieldValueOperator<>(
+                                        (JavaTypeSqlTypeOperator<String>) pm.getJavaTypeSqlTypeOperator(), value),
+                        QueryOperator.EW, queryPolicy, queryAlias, ignorePolicy));
     }
 
     //    /**
     //     * {@inheritDoc}
     //     */
-    /**
-     * Co.
-     *
-     * @param name        the name
-     * @param value       the value
-     * @param queryPolicy the query policy
-     * @return the l
-     */
     //    @Override
-    public L co(String name, String value, QueryPolicy queryPolicy) {
-        // TODO 后续来加入BeanPropertyValue
+    //    public L co(String name, String value, QueryPolicy queryPolicy) {
+    //        // TODO 后续来加入BeanPropertyValue
+    //        return (L) addCondition(
+    //                new SqlConditionExpressionBuilder(dialect, ClassMappingUtils.getColumnName(name, classMapping), value,
+    //                        QueryOperator.CO, queryPolicy, queryAlias, ignorePolicy));
+    //    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public L co(SerializableFunction<E, String> name, String value, QueryPolicy queryPolicy) {
+        // YUFEI_TODO 未测试
+        JdbcPropertyMapping pm = classMapping.getPropertyMapping(getPropertyName(name));
         return (L) addCondition(
-                new SqlConditionExpressionBuilder(dialect, ClassMappingUtils.getColumnName(name, classMapping), value,
+                new SqlConditionExpressionBuilder(dialect, pm.getRepositoryFieldName(),
+                        value == null ? null
+                                : new FieldValueOperator<>(
+                                        (JavaTypeSqlTypeOperator<String>) pm.getJavaTypeSqlTypeOperator(), value),
                         QueryOperator.CO, queryPolicy, queryAlias, ignorePolicy));
     }
 
@@ -500,536 +533,320 @@ public abstract class AbstractEntitySqlConditionGroupExpression<E, C extends Ent
      * {@inheritDoc}
      */
     @Override
-    public L co(SerializableFunction<E, String> name, String value, QueryPolicy queryPolicy) {
-        return co(getPropertyName(name), value, queryPolicy);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
     public L co(StringSupplier property, QueryPolicy queryPolicy) {
+        //  YUFEI_TODO 未测试
+        String value = property.get();
         SerializableSupplierLambdaInfo<String> info = LambdaUtils.getSerializableSupplierLambdaInfo(property);
-        return co(info.getSerializedLambdaInfo().getPropertyName(), info.getValue(), queryPolicy);
+        JdbcPropertyMapping pm = classMapping.getPropertyMapping(info.getSerializedLambdaInfo().getPropertyName());
+        return (L) addCondition(
+                new SqlConditionExpressionBuilder(dialect, pm.getRepositoryFieldName(),
+                        value == null ? null
+                                : new FieldValueOperator<>(
+                                        (JavaTypeSqlTypeOperator<String>) pm.getJavaTypeSqlTypeOperator(), value),
+                        QueryOperator.CO, queryPolicy, queryAlias, ignorePolicy));
     }
 
     //    /**
     //     * {@inheritDoc}
     //     */
-    /**
-     * Ge.
-     *
-     * @param <N>   the number type
-     * @param name  the name
-     * @param value the value
-     * @return the l
-     */
     //    @Override
-    public <N extends Number> L ge(String name, N value) {
-        return (L) addCondition(
-                new SqlConditionExpressionBuilder(dialect, ClassMappingUtils.getColumnName(name, classMapping), value,
-                        QueryOperator.GE, queryAlias, ignorePolicy));
-    }
+    //    public <N extends Number> L ge(String name, N value) {
+    //        return (L) addCondition(
+    //                new SqlConditionExpressionBuilder(dialect, ClassMappingUtils.getColumnName(name, classMapping), value,
+    //                        QueryOperator.GE, queryAlias, ignorePolicy));
+    //    }
 
     //
     //    /**
     //     * {@inheritDoc}
     //     */
-    /**
-     * Ge.
-     *
-     * @param <D>   the generic type
-     * @param name  the name
-     * @param value the value
-     * @return the l
-     */
     //    @Override
-    public <D extends Date> L ge(String name, D value) {
-        return (L) addCondition(
-                new SqlConditionExpressionBuilder(dialect, ClassMappingUtils.getColumnName(name, classMapping), value,
-                        QueryOperator.GE, queryAlias, ignorePolicy));
-    }
+    //    public <D extends Date> L ge(String name, D value) {
+    //        return (L) addCondition(
+    //                new SqlConditionExpressionBuilder(dialect, ClassMappingUtils.getColumnName(name, classMapping), value,
+    //                        QueryOperator.GE, queryAlias, ignorePolicy));
+    //    }
 
     //
     //    /**
     //     * {@inheritDoc}
     //     */
-    /**
-     * Ge.
-     *
-     * @param name  the name
-     * @param value the value
-     * @return the l
-     */
     //    @Override
-    public L ge(String name, LocalTime value) {
-        return (L) addCondition(
-                new SqlConditionExpressionBuilder(dialect, ClassMappingUtils.getColumnName(name, classMapping), value,
-                        QueryOperator.GE, queryAlias, ignorePolicy));
-    }
+    //    public L ge(String name, LocalTime value) {
+    //        return (L) addCondition(
+    //                new SqlConditionExpressionBuilder(dialect, ClassMappingUtils.getColumnName(name, classMapping), value,
+    //                        QueryOperator.GE, queryAlias, ignorePolicy));
+    //    }
 
     //
     //    /**
     //     * {@inheritDoc}
     //     */
-    /**
-     * Ge.
-     *
-     * @param name  the name
-     * @param value the value
-     * @return the l
-     */
     //    @Override
-    public L ge(String name, LocalDate value) {
-        return (L) addCondition(
-                new SqlConditionExpressionBuilder(dialect, ClassMappingUtils.getColumnName(name, classMapping), value,
-                        QueryOperator.GE, queryAlias, ignorePolicy));
-    }
+    //    public L ge(String name, LocalDate value) {
+    //        return (L) addCondition(
+    //                new SqlConditionExpressionBuilder(dialect, ClassMappingUtils.getColumnName(name, classMapping), value,
+    //                        QueryOperator.GE, queryAlias, ignorePolicy));
+    //    }
 
     //
     //    /**
     //     * {@inheritDoc}
     //     */
-    /**
-     * Ge.
-     *
-     * @param name  the name
-     * @param value the value
-     * @return the l
-     */
     //    @Override
-    public L ge(String name, LocalDateTime value) {
-        return (L) addCondition(
-                new SqlConditionExpressionBuilder(dialect, ClassMappingUtils.getColumnName(name, classMapping), value,
-                        QueryOperator.GE, queryAlias, ignorePolicy));
-    }
+    //    public L ge(String name, LocalDateTime value) {
+    //        return (L) addCondition(
+    //                new SqlConditionExpressionBuilder(dialect, ClassMappingUtils.getColumnName(name, classMapping), value,
+    //                        QueryOperator.GE, queryAlias, ignorePolicy));
+    //    }
 
     //
     //    /**
     //     * {@inheritDoc}
     //     */
-    /**
-     * Ge.
-     *
-     * @param name  the name
-     * @param value the value
-     * @return the l
-     */
     //    @Override
-    public L ge(String name, String value) {
-        return (L) addCondition(
-                new SqlConditionExpressionBuilder(dialect, ClassMappingUtils.getColumnName(name, classMapping), value,
-                        QueryOperator.GE, queryAlias, ignorePolicy));
-    }
+    //    public L ge(String name, String value) {
+    //        return (L) addCondition(
+    //                new SqlConditionExpressionBuilder(dialect, ClassMappingUtils.getColumnName(name, classMapping), value,
+    //                        QueryOperator.GE, queryAlias, ignorePolicy));
+    //    }
 
     //
     //    /**
     //     * {@inheritDoc}
     //     */
-    /**
-     * Gt.
-     *
-     * @param <N>   the number type
-     * @param name  the name
-     * @param value the value
-     * @return the l
-     */
     //    @Override
-    public <N extends Number> L gt(String name, N value) {
-        return (L) addCondition(
-                new SqlConditionExpressionBuilder(dialect, ClassMappingUtils.getColumnName(name, classMapping), value,
-                        QueryOperator.GT, queryAlias, ignorePolicy));
-    }
+    //    public <N extends Number> L gt(String name, N value) {
+    //        return (L) addCondition(
+    //                new SqlConditionExpressionBuilder(dialect, ClassMappingUtils.getColumnName(name, classMapping), value,
+    //                        QueryOperator.GT, queryAlias, ignorePolicy));
+    //    }
 
     //    /**
     //     * {@inheritDoc}
     //     */
-    /**
-     * Gt.
-     *
-     * @param <D>   the generic type
-     * @param name  the name
-     * @param value the value
-     * @return the l
-     */
     //    @Override
-    public <D extends Date> L gt(String name, D value) {
-        return (L) addCondition(
-                new SqlConditionExpressionBuilder(dialect, ClassMappingUtils.getColumnName(name, classMapping), value,
-                        QueryOperator.GT, queryAlias, ignorePolicy));
-    }
+    //    public <D extends Date> L gt(String name, D value) {
+    //        return (L) addCondition(
+    //                new SqlConditionExpressionBuilder(dialect, ClassMappingUtils.getColumnName(name, classMapping), value,
+    //                        QueryOperator.GT, queryAlias, ignorePolicy));
+    //    }
 
     //    /**
     //     * {@inheritDoc}
     //     */
-    /**
-     * Gt.
-     *
-     * @param name  the name
-     * @param value the value
-     * @return the l
-     */
     //    @Override
-    public L gt(String name, LocalTime value) {
-        return (L) addCondition(
-                new SqlConditionExpressionBuilder(dialect, ClassMappingUtils.getColumnName(name, classMapping), value,
-                        QueryOperator.GT, queryAlias, ignorePolicy));
-    }
+    //    public L gt(String name, LocalTime value) {
+    //        return (L) addCondition(
+    //                new SqlConditionExpressionBuilder(dialect, ClassMappingUtils.getColumnName(name, classMapping), value,
+    //                        QueryOperator.GT, queryAlias, ignorePolicy));
+    //    }
 
     //    /**
     //     * {@inheritDoc}
     //     */
-    /**
-     * Gt.
-     *
-     * @param name  the name
-     * @param value the value
-     * @return the l
-     */
     //    @Override
-    public L gt(String name, LocalDate value) {
-        return (L) addCondition(
-                new SqlConditionExpressionBuilder(dialect, ClassMappingUtils.getColumnName(name, classMapping), value,
-                        QueryOperator.GT, queryAlias, ignorePolicy));
-    }
+    //    public L gt(String name, LocalDate value) {
+    //        return (L) addCondition(
+    //                new SqlConditionExpressionBuilder(dialect, ClassMappingUtils.getColumnName(name, classMapping), value,
+    //                        QueryOperator.GT, queryAlias, ignorePolicy));
+    //    }
 
     //    /**
     //     * {@inheritDoc}
     //     */
-    /**
-     * Gt.
-     *
-     * @param name  the name
-     * @param value the value
-     * @return the l
-     */
     //    @Override
-    public L gt(String name, LocalDateTime value) {
-        return (L) addCondition(
-                new SqlConditionExpressionBuilder(dialect, ClassMappingUtils.getColumnName(name, classMapping), value,
-                        QueryOperator.GT, queryAlias, ignorePolicy));
-    }
+    //    public L gt(String name, LocalDateTime value) {
+    //        return (L) addCondition(
+    //                new SqlConditionExpressionBuilder(dialect, ClassMappingUtils.getColumnName(name, classMapping), value,
+    //                        QueryOperator.GT, queryAlias, ignorePolicy));
+    //    }
 
     //    /**
     //     * {@inheritDoc}
     //     */
-    /**
-     * Gt.
-     *
-     * @param name  the name
-     * @param value the value
-     * @return the l
-     */
     //    @Override
-    public L gt(String name, String value) {
-        return (L) addCondition(
-                new SqlConditionExpressionBuilder(dialect, ClassMappingUtils.getColumnName(name, classMapping), value,
-                        QueryOperator.GT, queryAlias, ignorePolicy));
-    }
+    //    public L gt(String name, String value) {
+    //        return (L) addCondition(
+    //                new SqlConditionExpressionBuilder(dialect, ClassMappingUtils.getColumnName(name, classMapping), value,
+    //                        QueryOperator.GT, queryAlias, ignorePolicy));
+    //    }
 
     //    /**
     //     * {@inheritDoc}
     //     */
-    /**
-     * In.
-     *
-     * @param name  the name
-     * @param value the value
-     * @return the l
-     */
     //    @Override
-    public L in(String name, Object value) {
-        return (L) addCondition(
-                new SqlConditionExpressionBuilder(dialect, ClassMappingUtils.getColumnName(name, classMapping), value,
-                        QueryOperator.IN, queryAlias, ignorePolicy));
-    }
+    //    public L in(String name, Object value) {
+    //        return (L) addCondition(
+    //                new SqlConditionExpressionBuilder(dialect, ClassMappingUtils.getColumnName(name, classMapping), value,
+    //                        QueryOperator.IN, queryAlias, ignorePolicy));
+    //    }
 
     //    /**
     //     * {@inheritDoc}
     //     */
-    /**
-     * Inn.
-     *
-     * @param name the name
-     * @return the l
-     */
     //    @Override
-    public L inn(String name) {
-        return inn(name, true);
-    }
+    //    public L inn(String name) {
+    //        return inn(name, true);
+    //    }
 
     //    /**
     //     * {@inheritDoc}
     //     */
-    /**
-     * Inn.
-     *
-     * @param name  the name
-     * @param value the value
-     * @return the l
-     */
     //    @Override
-    public L inn(String name, Boolean value) {
-        return (L) addCondition(
-                new SqlConditionExpressionBuilder(dialect, ClassMappingUtils.getColumnName(name, classMapping), value,
-                        QueryOperator.INN, queryAlias, ignorePolicy));
-    }
+    //    public L inn(String name, Boolean value) {
+    //        return (L) addCondition(
+    //                new SqlConditionExpressionBuilder(dialect, ClassMappingUtils.getColumnName(name, classMapping), value,
+    //                        QueryOperator.INN, queryAlias, ignorePolicy));
+    //    }
 
     //    /**
     //     * {@inheritDoc}
     //     */
-    /**
-     * Isn.
-     *
-     * @param name the name
-     * @return the l
-     */
     //    @Override
-    public L isn(String name) {
-        return isn(name, true);
-    }
+    //    public L isn(String name) {
+    //        return isn(name, true);
+    //    }
 
     //    /**
     //     * {@inheritDoc}
     //     */
-    /**
-     * Isn.
-     *
-     * @param name  the name
-     * @param value the value
-     * @return the l
-     */
     //    @Override
-    public L isn(String name, Boolean value) {
-        return (L) addCondition(
-                new SqlConditionExpressionBuilder(dialect, ClassMappingUtils.getColumnName(name, classMapping), value,
-                        QueryOperator.ISN, queryAlias, ignorePolicy));
-    }
+    //    public L isn(String name, Boolean value) {
+    //        return (L) addCondition(
+    //                new SqlConditionExpressionBuilder(dialect, ClassMappingUtils.getColumnName(name, classMapping), value,
+    //                        QueryOperator.ISN, queryAlias, ignorePolicy));
+    //    }
 
     //    /**
     //     * {@inheritDoc}
     //     */
-    /**
-     * Le.
-     *
-     * @param <N>   the number type
-     * @param name  the name
-     * @param value the value
-     * @return the l
-     */
     //    @Override
-    public <N extends Number> L le(String name, N value) {
-        return (L) addCondition(
-                new SqlConditionExpressionBuilder(dialect, ClassMappingUtils.getColumnName(name, classMapping), value,
-                        QueryOperator.LE, queryAlias, ignorePolicy));
-    }
+    //    public <N extends Number> L le(String name, N value) {
+    //        return (L) addCondition(
+    //                new SqlConditionExpressionBuilder(dialect, ClassMappingUtils.getColumnName(name, classMapping), value,
+    //                        QueryOperator.LE, queryAlias, ignorePolicy));
+    //    }
 
     //    /**
     //     * {@inheritDoc}
     //     */
-    /**
-     * Le.
-     *
-     * @param <D>   the generic type
-     * @param name  the name
-     * @param value the value
-     * @return the l
-     */
     //    @Override
-    public <D extends Date> L le(String name, D value) {
-        return (L) addCondition(
-                new SqlConditionExpressionBuilder(dialect, ClassMappingUtils.getColumnName(name, classMapping), value,
-                        QueryOperator.LE, queryAlias, ignorePolicy));
-    }
+    //    public <D extends Date> L le(String name, D value) {
+    //        return (L) addCondition(
+    //                new SqlConditionExpressionBuilder(dialect, ClassMappingUtils.getColumnName(name, classMapping), value,
+    //                        QueryOperator.LE, queryAlias, ignorePolicy));
+    //    }
 
     //    /**
     //     * {@inheritDoc}
     //     */
-    /**
-     * Le.
-     *
-     * @param name  the name
-     * @param value the value
-     * @return the l
-     */
     //    @Override
-    public L le(String name, LocalTime value) {
-        return (L) addCondition(
-                new SqlConditionExpressionBuilder(dialect, ClassMappingUtils.getColumnName(name, classMapping), value,
-                        QueryOperator.LE, queryAlias, ignorePolicy));
-    }
+    //    public L le(String name, LocalTime value) {
+    //        return (L) addCondition(
+    //                new SqlConditionExpressionBuilder(dialect, ClassMappingUtils.getColumnName(name, classMapping), value,
+    //                        QueryOperator.LE, queryAlias, ignorePolicy));
+    //    }
 
     //    /**
     //     * {@inheritDoc}
     //     */
-    /**
-     * Le.
-     *
-     * @param name  the name
-     * @param value the value
-     * @return the l
-     */
     //    @Override
-    public L le(String name, LocalDate value) {
-        return (L) addCondition(
-                new SqlConditionExpressionBuilder(dialect, ClassMappingUtils.getColumnName(name, classMapping), value,
-                        QueryOperator.LE, queryAlias, ignorePolicy));
-    }
+    //    public L le(String name, LocalDate value) {
+    //        return (L) addCondition(
+    //                new SqlConditionExpressionBuilder(dialect, ClassMappingUtils.getColumnName(name, classMapping), value,
+    //                        QueryOperator.LE, queryAlias, ignorePolicy));
+    //    }
 
     //    /**
     //     * {@inheritDoc}
     //     */
-    /**
-     * Le.
-     *
-     * @param name  the name
-     * @param value the value
-     * @return the l
-     */
     //    @Override
-    public L le(String name, LocalDateTime value) {
-        return (L) addCondition(
-                new SqlConditionExpressionBuilder(dialect, ClassMappingUtils.getColumnName(name, classMapping), value,
-                        QueryOperator.LE, queryAlias, ignorePolicy));
-    }
+    //    public L le(String name, LocalDateTime value) {
+    //        return (L) addCondition(
+    //                new SqlConditionExpressionBuilder(dialect, ClassMappingUtils.getColumnName(name, classMapping), value,
+    //                        QueryOperator.LE, queryAlias, ignorePolicy));
+    //    }
 
     //    /**
     //     * {@inheritDoc}
     //     */
-    /**
-     * Le.
-     *
-     * @param name  the name
-     * @param value the value
-     * @return the l
-     */
     //    @Override
-    public L le(String name, String value) {
-        return (L) addCondition(
-                new SqlConditionExpressionBuilder(dialect, ClassMappingUtils.getColumnName(name, classMapping), value,
-                        QueryOperator.LE, queryAlias, ignorePolicy));
-    }
+    //    public L le(String name, String value) {
+    //        return (L) addCondition(
+    //                new SqlConditionExpressionBuilder(dialect, ClassMappingUtils.getColumnName(name, classMapping), value,
+    //                        QueryOperator.LE, queryAlias, ignorePolicy));
+    //    }
 
     //    /**
     //     * {@inheritDoc}
     //     */
-    /**
-     * Lt.
-     *
-     * @param <N>   the number type
-     * @param name  the name
-     * @param value the value
-     * @return the l
-     */
     //    @Override
-    public <N extends Number> L lt(String name, N value) {
-        return (L) addCondition(
-                new SqlConditionExpressionBuilder(dialect, ClassMappingUtils.getColumnName(name, classMapping), value,
-                        QueryOperator.LT, queryAlias, ignorePolicy));
-    }
+    //    public <N extends Number> L lt(String name, N value) {
+    //        return (L) addCondition(
+    //                new SqlConditionExpressionBuilder(dialect, ClassMappingUtils.getColumnName(name, classMapping), value,
+    //                        QueryOperator.LT, queryAlias, ignorePolicy));
+    //    }
 
     //    /**
     //     * {@inheritDoc}
     //     */
-    /**
-     * Lt.
-     *
-     * @param <D>   the generic type
-     * @param name  the name
-     * @param value the value
-     * @return the l
-     */
     //    @Override
-    public <D extends Date> L lt(String name, D value) {
-        return (L) addCondition(
-                new SqlConditionExpressionBuilder(dialect, ClassMappingUtils.getColumnName(name, classMapping), value,
-                        QueryOperator.LT, queryAlias, ignorePolicy));
-    }
+    //    public <D extends Date> L lt(String name, D value) {
+    //        return (L) addCondition(
+    //                new SqlConditionExpressionBuilder(dialect, ClassMappingUtils.getColumnName(name, classMapping), value,
+    //                        QueryOperator.LT, queryAlias, ignorePolicy));
+    //    }
 
     //    /**
     //     * {@inheritDoc}
     //     */
-    /**
-     * Lt.
-     *
-     * @param name  the name
-     * @param value the value
-     * @return the l
-     */
     //    @Override
-    public L lt(String name, LocalTime value) {
-        return (L) addCondition(
-                new SqlConditionExpressionBuilder(dialect, ClassMappingUtils.getColumnName(name, classMapping), value,
-                        QueryOperator.LT, queryAlias, ignorePolicy));
-    }
+    //    public L lt(String name, LocalTime value) {
+    //        return (L) addCondition(
+    //                new SqlConditionExpressionBuilder(dialect, ClassMappingUtils.getColumnName(name, classMapping), value,
+    //                        QueryOperator.LT, queryAlias, ignorePolicy));
+    //    }
 
     //    /**
     //     * {@inheritDoc}
     //     */
-    /**
-     * Lt.
-     *
-     * @param name  the name
-     * @param value the value
-     * @return the l
-     */
     //    @Override
-    public L lt(String name, LocalDate value) {
-        return (L) addCondition(
-                new SqlConditionExpressionBuilder(dialect, ClassMappingUtils.getColumnName(name, classMapping), value,
-                        QueryOperator.LT, queryAlias, ignorePolicy));
-    }
+    //    public L lt(String name, LocalDate value) {
+    //        return (L) addCondition(
+    //                new SqlConditionExpressionBuilder(dialect, ClassMappingUtils.getColumnName(name, classMapping), value,
+    //                        QueryOperator.LT, queryAlias, ignorePolicy));
+    //    }
 
     //    /**
     //     * {@inheritDoc}
     //     */
-    /**
-     * Lt.
-     *
-     * @param name  the name
-     * @param value the value
-     * @return the l
-     */
     //    @Override
-    public L lt(String name, LocalDateTime value) {
-        return (L) addCondition(
-                new SqlConditionExpressionBuilder(dialect, ClassMappingUtils.getColumnName(name, classMapping), value,
-                        QueryOperator.LT, queryAlias, ignorePolicy));
-    }
+    //    public L lt(String name, LocalDateTime value) {
+    //        return (L) addCondition(
+    //                new SqlConditionExpressionBuilder(dialect, ClassMappingUtils.getColumnName(name, classMapping), value,
+    //                        QueryOperator.LT, queryAlias, ignorePolicy));
+    //    }
 
     //    /**
     //     * {@inheritDoc}
     //     */
-    /**
-     * Lt.
-     *
-     * @param name  the name
-     * @param value the value
-     * @return the l
-     */
     //    @Override
-    public L lt(String name, String value) {
-        return (L) addCondition(
-                new SqlConditionExpressionBuilder(dialect, ClassMappingUtils.getColumnName(name, classMapping), value,
-                        QueryOperator.LT, queryAlias, ignorePolicy));
-    }
+    //    public L lt(String name, String value) {
+    //        return (L) addCondition(
+    //                new SqlConditionExpressionBuilder(dialect, ClassMappingUtils.getColumnName(name, classMapping), value,
+    //                        QueryOperator.LT, queryAlias, ignorePolicy));
+    //    }
 
     //    /**
     //     * {@inheritDoc}
     //     */
-    /**
-     * Nin.
-     *
-     * @param name  the name
-     * @param value the value
-     * @return the l
-     */
     //    @Override
-    public L nin(String name, Object value) {
-        return (L) addCondition(
-                new SqlConditionExpressionBuilder(dialect, ClassMappingUtils.getColumnName(name, classMapping), value,
-                        QueryOperator.NIN, queryAlias, ignorePolicy));
-    }
+    //    public L nin(String name, Object value) {
+    //        return (L) addCondition(
+    //                new SqlConditionExpressionBuilder(dialect, ClassMappingUtils.getColumnName(name, classMapping), value,
+    //                        QueryOperator.NIN, queryAlias, ignorePolicy));
+    //    }
 
     /**
      * {@inheritDoc}
@@ -1130,18 +947,12 @@ public abstract class AbstractEntitySqlConditionGroupExpression<E, C extends Ent
     //    /**
     //     * {@inheritDoc}
     //     */
-    /**
-     * Property.
-     *
-     * @param name the name
-     * @return the object expression
-     */
     //    @Override
-    public ObjectExpression<C, L> property(String name) {
-        // IMPLSOON 这里后续来实现
-        return null;
-        //        return new SimpleObjectExpression<C, L>(ClassMappingUtils.getColumnName(name, classMapping), this);
-    }
+    //    public ObjectExpression<C, L> property(String name) {
+    //        // IMPLSOON 这里后续来实现
+    //        return null;
+    //        //        return new SimpleObjectExpression<C, L>(ClassMappingUtils.getColumnName(name, classMapping), this);
+    //    }
     //
     //    /**
     //     * {@inheritDoc}
@@ -1180,7 +991,7 @@ public abstract class AbstractEntitySqlConditionGroupExpression<E, C extends Ent
      */
     @Override
     public <N extends Number> L ge(SerializableFunction<E, N> name, N value) {
-        return ge(getPropertyName(name), value);
+        return ge0(name, value);
     }
 
     /**
@@ -1188,7 +999,7 @@ public abstract class AbstractEntitySqlConditionGroupExpression<E, C extends Ent
      */
     @Override
     public <D extends Date> L ge(SerializableFunction<E, D> name, D value) {
-        return ge(getPropertyName(name), value);
+        return ge0(name, value);
     }
 
     /**
@@ -1196,7 +1007,7 @@ public abstract class AbstractEntitySqlConditionGroupExpression<E, C extends Ent
      */
     @Override
     public L ge(SerializableFunction<E, LocalTime> name, LocalTime value) {
-        return ge(getPropertyName(name), value);
+        return ge0(name, value);
     }
 
     /**
@@ -1204,7 +1015,7 @@ public abstract class AbstractEntitySqlConditionGroupExpression<E, C extends Ent
      */
     @Override
     public L ge(SerializableFunction<E, LocalDate> name, LocalDate value) {
-        return ge(getPropertyName(name), value);
+        return ge0(name, value);
     }
 
     /**
@@ -1212,7 +1023,7 @@ public abstract class AbstractEntitySqlConditionGroupExpression<E, C extends Ent
      */
     @Override
     public L ge(SerializableFunction<E, LocalDateTime> name, LocalDateTime value) {
-        return ge(getPropertyName(name), value);
+        return ge0(name, value);
     }
 
     /**
@@ -1220,199 +1031,7 @@ public abstract class AbstractEntitySqlConditionGroupExpression<E, C extends Ent
      */
     @Override
     public L ge(SerializableFunction<E, String> name, String value) {
-        return ge(getPropertyName(name), value);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public <N extends Number> L gt(SerializableFunction<E, N> name, N value) {
-        return gt(getPropertyName(name), value);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public <D extends Date> L gt(SerializableFunction<E, D> name, D value) {
-        return gt(getPropertyName(name), value);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public L gt(SerializableFunction<E, LocalTime> name, LocalTime value) {
-        return gt(getPropertyName(name), value);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public L gt(SerializableFunction<E, LocalDate> name, LocalDate value) {
-        return gt(getPropertyName(name), value);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public L gt(SerializableFunction<E, LocalDateTime> name, LocalDateTime value) {
-        return gt(getPropertyName(name), value);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public L gt(SerializableFunction<E, String> name, String value) {
-        return gt(getPropertyName(name), value);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public <R> L in(SerializableFunction<E, R> name, Object value) {
-        return in(getPropertyName(name), value);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public <R> L inn(SerializableFunction<E, R> name) {
-        return inn(getPropertyName(name));
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public <R> L inn(SerializableFunction<E, R> name, Boolean value) {
-        return inn(getPropertyName(name), value);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public <R> L isn(SerializableFunction<E, R> name) {
-        return isn(getPropertyName(name));
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public <R> L isn(SerializableFunction<E, R> name, Boolean value) {
-        return isn(getPropertyName(name), value);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public <N extends Number> L le(SerializableFunction<E, N> name, N value) {
-        return le(getPropertyName(name), value);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public <D extends Date> L le(SerializableFunction<E, D> name, D value) {
-        return le(getPropertyName(name), value);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public L le(SerializableFunction<E, LocalTime> name, LocalTime value) {
-        return le(getPropertyName(name), value);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public L le(SerializableFunction<E, LocalDate> name, LocalDate value) {
-        return le(getPropertyName(name), value);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public L le(SerializableFunction<E, LocalDateTime> name, LocalDateTime value) {
-        return le(getPropertyName(name), value);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public L le(SerializableFunction<E, String> name, String value) {
-        return le(getPropertyName(name), value);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public <N extends Number> L lt(SerializableFunction<E, N> name, N value) {
-        return lt(getPropertyName(name), value);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public <D extends Date> L lt(SerializableFunction<E, D> name, D value) {
-        return lt(getPropertyName(name), value);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public L lt(SerializableFunction<E, LocalTime> name, LocalTime value) {
-        return lt(getPropertyName(name), value);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public L lt(SerializableFunction<E, LocalDate> name, LocalDate value) {
-        return lt(getPropertyName(name), value);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public L lt(SerializableFunction<E, LocalDateTime> name, LocalDateTime value) {
-        return lt(getPropertyName(name), value);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public L lt(SerializableFunction<E, String> name, String value) {
-        return lt(getPropertyName(name), value);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public <R> L nin(SerializableFunction<E, R> name, Object value) {
-        return nin(getPropertyName(name), value);
+        return ge0(name, value);
     }
 
     /**
@@ -1420,8 +1039,7 @@ public abstract class AbstractEntitySqlConditionGroupExpression<E, C extends Ent
      */
     @Override
     public <R extends Date> L ge(DateSupplier<R> property) {
-        SerializableSupplierLambdaInfo<R> info = LambdaUtils.getSerializableSupplierLambdaInfo(property);
-        return ge(info.getSerializedLambdaInfo().getPropertyName(), info.getValue());
+        return ge0(property);
     }
 
     /**
@@ -1429,8 +1047,7 @@ public abstract class AbstractEntitySqlConditionGroupExpression<E, C extends Ent
      */
     @Override
     public <R extends Number> L ge(NumberSupplier<R> property) {
-        SerializableSupplierLambdaInfo<R> info = LambdaUtils.getSerializableSupplierLambdaInfo(property);
-        return ge(info.getSerializedLambdaInfo().getPropertyName(), info.getValue());
+        return ge0(property);
     }
 
     /**
@@ -1438,8 +1055,7 @@ public abstract class AbstractEntitySqlConditionGroupExpression<E, C extends Ent
      */
     @Override
     public L ge(LocalDateSupplier property) {
-        SerializableSupplierLambdaInfo<LocalDate> info = LambdaUtils.getSerializableSupplierLambdaInfo(property);
-        return ge(info.getSerializedLambdaInfo().getPropertyName(), info.getValue());
+        return ge0(property);
     }
 
     /**
@@ -1447,8 +1063,7 @@ public abstract class AbstractEntitySqlConditionGroupExpression<E, C extends Ent
      */
     @Override
     public L ge(LocalTimeSupplier property) {
-        SerializableSupplierLambdaInfo<LocalTime> info = LambdaUtils.getSerializableSupplierLambdaInfo(property);
-        return ge(info.getSerializedLambdaInfo().getPropertyName(), info.getValue());
+        return ge0(property);
     }
 
     /**
@@ -1456,8 +1071,7 @@ public abstract class AbstractEntitySqlConditionGroupExpression<E, C extends Ent
      */
     @Override
     public L ge(LocalDateTimeSupplier property) {
-        SerializableSupplierLambdaInfo<LocalDateTime> info = LambdaUtils.getSerializableSupplierLambdaInfo(property);
-        return ge(info.getSerializedLambdaInfo().getPropertyName(), info.getValue());
+        return ge0(property);
     }
 
     /**
@@ -1465,8 +1079,55 @@ public abstract class AbstractEntitySqlConditionGroupExpression<E, C extends Ent
      */
     @Override
     public L ge(StringSupplier property) {
-        SerializableSupplierLambdaInfo<String> info = LambdaUtils.getSerializableSupplierLambdaInfo(property);
-        return ge(info.getSerializedLambdaInfo().getPropertyName(), info.getValue());
+        return ge0(property);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public <N extends Number> L gt(SerializableFunction<E, N> name, N value) {
+        return gt0(name, value);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public <D extends Date> L gt(SerializableFunction<E, D> name, D value) {
+        return gt0(name, value);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public L gt(SerializableFunction<E, LocalTime> name, LocalTime value) {
+        return gt0(name, value);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public L gt(SerializableFunction<E, LocalDate> name, LocalDate value) {
+        return gt0(name, value);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public L gt(SerializableFunction<E, LocalDateTime> name, LocalDateTime value) {
+        return gt0(name, value);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public L gt(SerializableFunction<E, String> name, String value) {
+        return gt0(name, value);
     }
 
     /**
@@ -1474,8 +1135,7 @@ public abstract class AbstractEntitySqlConditionGroupExpression<E, C extends Ent
      */
     @Override
     public <R extends Number> L gt(NumberSupplier<R> property) {
-        SerializableSupplierLambdaInfo<R> info = LambdaUtils.getSerializableSupplierLambdaInfo(property);
-        return gt(info.getSerializedLambdaInfo().getPropertyName(), info.getValue());
+        return gt0(property);
     }
 
     /**
@@ -1483,8 +1143,7 @@ public abstract class AbstractEntitySqlConditionGroupExpression<E, C extends Ent
      */
     @Override
     public <R extends Date> L gt(DateSupplier<R> property) {
-        SerializableSupplierLambdaInfo<R> info = LambdaUtils.getSerializableSupplierLambdaInfo(property);
-        return gt(info.getSerializedLambdaInfo().getPropertyName(), info.getValue());
+        return gt0(property);
     }
 
     /**
@@ -1492,8 +1151,7 @@ public abstract class AbstractEntitySqlConditionGroupExpression<E, C extends Ent
      */
     @Override
     public L gt(LocalDateSupplier property) {
-        SerializableSupplierLambdaInfo<LocalDate> info = LambdaUtils.getSerializableSupplierLambdaInfo(property);
-        return gt(info.getSerializedLambdaInfo().getPropertyName(), info.getValue());
+        return gt0(property);
     }
 
     /**
@@ -1501,8 +1159,7 @@ public abstract class AbstractEntitySqlConditionGroupExpression<E, C extends Ent
      */
     @Override
     public L gt(LocalTimeSupplier property) {
-        SerializableSupplierLambdaInfo<LocalTime> info = LambdaUtils.getSerializableSupplierLambdaInfo(property);
-        return gt(info.getSerializedLambdaInfo().getPropertyName(), info.getValue());
+        return gt0(property);
     }
 
     /**
@@ -1510,8 +1167,7 @@ public abstract class AbstractEntitySqlConditionGroupExpression<E, C extends Ent
      */
     @Override
     public L gt(LocalDateTimeSupplier property) {
-        SerializableSupplierLambdaInfo<LocalDateTime> info = LambdaUtils.getSerializableSupplierLambdaInfo(property);
-        return gt(info.getSerializedLambdaInfo().getPropertyName(), info.getValue());
+        return gt0(property);
     }
 
     /**
@@ -1519,116 +1175,31 @@ public abstract class AbstractEntitySqlConditionGroupExpression<E, C extends Ent
      */
     @Override
     public L gt(StringSupplier property) {
-        SerializableSupplierLambdaInfo<String> info = LambdaUtils.getSerializableSupplierLambdaInfo(property);
-        return gt(info.getSerializedLambdaInfo().getPropertyName(), info.getValue());
+        return gt0(property);
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public <R extends Date> L le(DateSupplier<R> property) {
-        SerializableSupplierLambdaInfo<R> info = LambdaUtils.getSerializableSupplierLambdaInfo(property);
-        return le(info.getSerializedLambdaInfo().getPropertyName(), info.getValue());
+    public <R> L in(SerializableFunction<E, R> name, R value) {
+        return in(classMapping.getPropertyMapping(getPropertyName(name)), value);
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public <R extends Number> L le(NumberSupplier<R> property) {
-        SerializableSupplierLambdaInfo<R> info = LambdaUtils.getSerializableSupplierLambdaInfo(property);
-        return le(info.getSerializedLambdaInfo().getPropertyName(), info.getValue());
+    public <R> L in(SerializableFunction<E, R> name, R... value) {
+        return in(classMapping.getPropertyMapping(getPropertyName(name)), value);
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public L le(LocalDateSupplier property) {
-        SerializableSupplierLambdaInfo<LocalDate> info = LambdaUtils.getSerializableSupplierLambdaInfo(property);
-        return le(info.getSerializedLambdaInfo().getPropertyName(), info.getValue());
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public L le(LocalTimeSupplier property) {
-        SerializableSupplierLambdaInfo<LocalTime> info = LambdaUtils.getSerializableSupplierLambdaInfo(property);
-        return le(info.getSerializedLambdaInfo().getPropertyName(), info.getValue());
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public L le(LocalDateTimeSupplier property) {
-        SerializableSupplierLambdaInfo<LocalDateTime> info = LambdaUtils.getSerializableSupplierLambdaInfo(property);
-        return le(info.getSerializedLambdaInfo().getPropertyName(), info.getValue());
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public L le(StringSupplier property) {
-        SerializableSupplierLambdaInfo<String> info = LambdaUtils.getSerializableSupplierLambdaInfo(property);
-        return le(info.getSerializedLambdaInfo().getPropertyName(), info.getValue());
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public <R extends Number> L lt(NumberSupplier<R> property) {
-        SerializableSupplierLambdaInfo<R> info = LambdaUtils.getSerializableSupplierLambdaInfo(property);
-        return lt(info.getSerializedLambdaInfo().getPropertyName(), info.getValue());
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public <R extends Date> L lt(DateSupplier<R> property) {
-        SerializableSupplierLambdaInfo<R> info = LambdaUtils.getSerializableSupplierLambdaInfo(property);
-        return lt(info.getSerializedLambdaInfo().getPropertyName(), info.getValue());
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public L lt(LocalDateSupplier property) {
-        SerializableSupplierLambdaInfo<LocalDate> info = LambdaUtils.getSerializableSupplierLambdaInfo(property);
-        return lt(info.getSerializedLambdaInfo().getPropertyName(), info.getValue());
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public L lt(LocalTimeSupplier property) {
-        SerializableSupplierLambdaInfo<LocalTime> info = LambdaUtils.getSerializableSupplierLambdaInfo(property);
-        return lt(info.getSerializedLambdaInfo().getPropertyName(), info.getValue());
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public L lt(LocalDateTimeSupplier property) {
-        SerializableSupplierLambdaInfo<LocalDateTime> info = LambdaUtils.getSerializableSupplierLambdaInfo(property);
-        return lt(info.getSerializedLambdaInfo().getPropertyName(), info.getValue());
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public L lt(StringSupplier property) {
-        SerializableSupplierLambdaInfo<String> info = LambdaUtils.getSerializableSupplierLambdaInfo(property);
-        return lt(info.getSerializedLambdaInfo().getPropertyName(), info.getValue());
+    public <R> L in(SerializableFunction<E, R> name, Collection<R> value) {
+        return in(classMapping.getPropertyMapping(getPropertyName(name)), value);
     }
 
     /**
@@ -1637,7 +1208,49 @@ public abstract class AbstractEntitySqlConditionGroupExpression<E, C extends Ent
     @Override
     public <R> L in(SerializableSupplier<R> property) {
         SerializableSupplierLambdaInfo<R> info = LambdaUtils.getSerializableSupplierLambdaInfo(property);
-        return in(info.getSerializedLambdaInfo().getPropertyName(), info.getValue());
+        return in(classMapping.getPropertyMapping(info.getSerializedLambdaInfo().getPropertyName()), property.get());
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public <R> L in(SerializableSupplier1<R[]> property) {
+        SerializableSupplierLambdaInfo<R[]> info = LambdaUtils.getSerializableSupplierLambdaInfo(property);
+        return in(classMapping.getPropertyMapping(info.getSerializedLambdaInfo().getPropertyName()), property.get());
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public <R> L in(SerializableSupplier2<Collection<R>> property) {
+        SerializableSupplierLambdaInfo<Collection<R>> info = LambdaUtils.getSerializableSupplierLambdaInfo(property);
+        return in(classMapping.getPropertyMapping(info.getSerializedLambdaInfo().getPropertyName()), property.get());
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public <R> L nin(SerializableFunction<E, R> name, R value) {
+        return nin(classMapping.getPropertyMapping(getPropertyName(name)), value);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public <R> L nin(SerializableFunction<E, R> name, R... value) {
+        return nin(classMapping.getPropertyMapping(getPropertyName(name)), value);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public <R> L nin(SerializableFunction<E, R> name, Collection<R> value) {
+        return nin(classMapping.getPropertyMapping(getPropertyName(name)), value);
     }
 
     /**
@@ -1646,7 +1259,233 @@ public abstract class AbstractEntitySqlConditionGroupExpression<E, C extends Ent
     @Override
     public <R> L nin(SerializableSupplier<R> property) {
         SerializableSupplierLambdaInfo<R> info = LambdaUtils.getSerializableSupplierLambdaInfo(property);
-        return nin(info.getSerializedLambdaInfo().getPropertyName(), info.getValue());
+        return nin(classMapping.getPropertyMapping(info.getSerializedLambdaInfo().getPropertyName()), property.get());
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public <R> L nin(SerializableSupplier1<R[]> property) {
+        SerializableSupplierLambdaInfo<R[]> info = LambdaUtils.getSerializableSupplierLambdaInfo(property);
+        return nin(classMapping.getPropertyMapping(info.getSerializedLambdaInfo().getPropertyName()), property.get());
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public <R> L nin(SerializableSupplier2<Collection<R>> property) {
+        SerializableSupplierLambdaInfo<Collection<R>> info = LambdaUtils.getSerializableSupplierLambdaInfo(property);
+        return nin(classMapping.getPropertyMapping(info.getSerializedLambdaInfo().getPropertyName()), property.get());
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public <R> L inn(SerializableFunction<E, R> name, Boolean value) {
+        return inn(classMapping.getPropertyMapping(getPropertyName(name)), value);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public <R> L isn(SerializableFunction<E, R> name, Boolean value) {
+        return isn(classMapping.getPropertyMapping(getPropertyName(name)), value);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public <N extends Number> L le(SerializableFunction<E, N> name, N value) {
+        return le0(name, value);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public <D extends Date> L le(SerializableFunction<E, D> name, D value) {
+        return le0(name, value);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public L le(SerializableFunction<E, LocalTime> name, LocalTime value) {
+        return le0(name, value);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public L le(SerializableFunction<E, LocalDate> name, LocalDate value) {
+        return le0(name, value);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public L le(SerializableFunction<E, LocalDateTime> name, LocalDateTime value) {
+        return le0(name, value);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public L le(SerializableFunction<E, String> name, String value) {
+        return le0(name, value);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public <R extends Date> L le(DateSupplier<R> property) {
+        return le0(property);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public <R extends Number> L le(NumberSupplier<R> property) {
+        return le0(property);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public L le(LocalDateSupplier property) {
+        return le0(property);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public L le(LocalTimeSupplier property) {
+        return le0(property);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public L le(LocalDateTimeSupplier property) {
+        return le0(property);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public L le(StringSupplier property) {
+        return le0(property);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public <N extends Number> L lt(SerializableFunction<E, N> name, N value) {
+        return lt0(name, value);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public <D extends Date> L lt(SerializableFunction<E, D> name, D value) {
+        return lt0(name, value);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public L lt(SerializableFunction<E, LocalTime> name, LocalTime value) {
+        return lt0(name, value);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public L lt(SerializableFunction<E, LocalDate> name, LocalDate value) {
+        return lt0(name, value);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public L lt(SerializableFunction<E, LocalDateTime> name, LocalDateTime value) {
+        return lt0(name, value);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public L lt(SerializableFunction<E, String> name, String value) {
+        return lt0(name, value);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public <R extends Number> L lt(NumberSupplier<R> property) {
+        return lt0(property);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public <R extends Date> L lt(DateSupplier<R> property) {
+        return lt0(property);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public L lt(LocalDateSupplier property) {
+        return lt0(property);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public L lt(LocalTimeSupplier property) {
+        return lt0(property);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public L lt(LocalDateTimeSupplier property) {
+        return lt0(property);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public L lt(StringSupplier property) {
+        return lt0(property);
     }
 
     //    /**
@@ -1689,57 +1528,56 @@ public abstract class AbstractEntitySqlConditionGroupExpression<E, C extends Ent
      * {@inheritDoc}
      */
     @Override
-    public StringExpression<C, L> property(ReturnStringFunction<E> name) {
-        return new TypeStringExpression<>(name, this);
+    public EntityStringPropertyExpression<E, C, L> property(ReturnStringFunction<E> name) {
+        return new EntityStringPropertyExpressionImpl<>(name, this);
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public <R extends Number> NumberExpression<R, C, L> property(ReturnNumberFunction<E, R> name) {
-        return new TypeNumberExpression<>(name, this);
+    public <R extends Number> EntityNumberPropertyExpression<E, R, C, L> property(ReturnNumberFunction<E, R> name) {
+        return new EntityNumberPropertyExpressionImpl<>(name, this);
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public LocalDateExpression<C, L> property(ReturnLocalDateFunction<E> name) {
-        return new TypeLocalDateExpression<>(name, this);
+    public EntityLocalDatePropertyExpression<E, C, L> property(ReturnLocalDateFunction<E> name) {
+        return new EntityLocalDatePropertyExpressionImpl<>(name, this);
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public LocalDateTimeExpression<C, L> property(ReturnLocalDateTimeFunction<E> name) {
-        return new TypeLocalDateTimeExpression<>(name, this);
+    public EntityLocalDateTimePropertyExpression<E, C, L> property(ReturnLocalDateTimeFunction<E> name) {
+        return new EntityLocalDateTimePropertyExpressionImpl<>(name, this);
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public LocalTimeExpression<C, L> property(ReturnLocalTimeFunction<E> name) {
-        return new TypeLocalTimeExpression<>(name, this);
+    public EntityLocalTimePropertyExpression<E, C, L> property(ReturnLocalTimeFunction<E> name) {
+        return new EntityLocalTimePropertyExpressionImpl<>(name, this);
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public <R extends Date> DateExpression<R, C, L> property(ReturnDateFunction<E, R> name) {
-        return new TypeDateExpression<>(name, this);
+    public <R extends Date> EntityDatePropertyExpression<E, R, C, L> property(ReturnDateFunction<E, R> name) {
+        return new EntityDatePropertyExpressionImpl<>(name, this);
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public <R extends Enum<?>> EnumExpression<R, C, L> property(ReturnEnumFunction<E, R> name) {
-        // IMPLSOON 这里后续来实现
-        return new TypeEnumExpression<>(name, this);
+    public <R extends Enum<R>> EntityEnumPropertyExpression<E, R, C, L> property(ReturnEnumFunction<E, R> name) {
+        return new EntityEnumPropertyExpressionImpl<>(name, this);
     }
 
     /**
@@ -1754,6 +1592,102 @@ public abstract class AbstractEntitySqlConditionGroupExpression<E, C extends Ent
 
     // ********************************************************************
     // private method
+    // ********************************************************************
+
+    private <R> L in(JdbcPropertyMapping pm, R value) {
+        return (L) addCondition(new SqlConditionExpressionBuilder(dialect, pm.getRepositoryFieldName(),
+                value == null ? null
+                        : new FieldValueOperator<>((JavaTypeSqlTypeOperator<R>) pm.getJavaTypeSqlTypeOperator(), value),
+                QueryOperator.IN, queryAlias, ignorePolicy));
+    }
+
+    private <R> L nin(JdbcPropertyMapping pm, R value) {
+        return (L) addCondition(new SqlConditionExpressionBuilder(dialect, pm.getRepositoryFieldName(),
+                value == null ? null
+                        : new FieldValueOperator<>((JavaTypeSqlTypeOperator<R>) pm.getJavaTypeSqlTypeOperator(), value),
+                QueryOperator.NIN, queryAlias, ignorePolicy));
+    }
+
+    private L isn(JdbcPropertyMapping pm, Boolean value) {
+        return (L) addCondition(new SqlConditionExpressionBuilder(dialect, pm.getRepositoryFieldName(), value,
+                QueryOperator.ISN, queryAlias, ignorePolicy));
+    }
+
+    private L inn(JdbcPropertyMapping pm, Boolean value) {
+        return (L) addCondition(new SqlConditionExpressionBuilder(dialect, pm.getRepositoryFieldName(), value,
+                QueryOperator.INN, queryAlias, ignorePolicy));
+    }
+
+    private <V> L ge0(SerializableFunction<E, V> name, V value) {
+        return ge0(classMapping.getPropertyMapping(getPropertyName(name)), value);
+    }
+
+    private <V> L ge0(SerializableSupplier<V> property) {
+        return ge0(classMapping.getPropertyMapping(
+                LambdaUtils.getSerializableSupplierLambdaInfo(property).getSerializedLambdaInfo().getPropertyName()),
+                property.get());
+    }
+
+    private <V> L ge0(JdbcPropertyMapping pm, V value) {
+        return (L) addCondition(new SqlConditionExpressionBuilder(dialect, pm.getRepositoryFieldName(),
+                value == null ? null
+                        : new FieldValueOperator<>((JavaTypeSqlTypeOperator<V>) pm.getJavaTypeSqlTypeOperator(), value),
+                QueryOperator.GE, queryAlias, ignorePolicy));
+    }
+
+    private <V> L gt0(SerializableFunction<E, V> name, V value) {
+        return gt0(classMapping.getPropertyMapping(getPropertyName(name)), value);
+    }
+
+    private <V> L gt0(SerializableSupplier<V> property) {
+        return gt0(classMapping.getPropertyMapping(
+                LambdaUtils.getSerializableSupplierLambdaInfo(property).getSerializedLambdaInfo().getPropertyName()),
+                property.get());
+    }
+
+    private <V> L gt0(JdbcPropertyMapping pm, V value) {
+        return (L) addCondition(new SqlConditionExpressionBuilder(dialect, pm.getRepositoryFieldName(),
+                value == null ? null
+                        : new FieldValueOperator<>((JavaTypeSqlTypeOperator<V>) pm.getJavaTypeSqlTypeOperator(), value),
+                QueryOperator.GT, queryAlias, ignorePolicy));
+    }
+
+    private <V> L le0(SerializableFunction<E, V> name, V value) {
+        return le0(classMapping.getPropertyMapping(getPropertyName(name)), value);
+    }
+
+    private <V> L le0(SerializableSupplier<V> property) {
+        return le0(classMapping.getPropertyMapping(
+                LambdaUtils.getSerializableSupplierLambdaInfo(property).getSerializedLambdaInfo().getPropertyName()),
+                property.get());
+    }
+
+    private <V> L le0(JdbcPropertyMapping pm, V value) {
+        return (L) addCondition(new SqlConditionExpressionBuilder(dialect, pm.getRepositoryFieldName(),
+                value == null ? null
+                        : new FieldValueOperator<>((JavaTypeSqlTypeOperator<V>) pm.getJavaTypeSqlTypeOperator(), value),
+                QueryOperator.LE, queryAlias, ignorePolicy));
+    }
+
+    private <V> L lt0(SerializableFunction<E, V> name, V value) {
+        return lt0(classMapping.getPropertyMapping(getPropertyName(name)), value);
+    }
+
+    private <V> L lt0(SerializableSupplier<V> property) {
+        return lt0(classMapping.getPropertyMapping(
+                LambdaUtils.getSerializableSupplierLambdaInfo(property).getSerializedLambdaInfo().getPropertyName()),
+                property.get());
+    }
+
+    private <V> L lt0(JdbcPropertyMapping pm, V value) {
+        return (L) addCondition(new SqlConditionExpressionBuilder(dialect, pm.getRepositoryFieldName(),
+                value == null ? null
+                        : new FieldValueOperator<>((JavaTypeSqlTypeOperator<V>) pm.getJavaTypeSqlTypeOperator(), value),
+                QueryOperator.LT, queryAlias, ignorePolicy));
+    }
+
+    // ********************************************************************
+    // protected method
     // ********************************************************************
 
     /**

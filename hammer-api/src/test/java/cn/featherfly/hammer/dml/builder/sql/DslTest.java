@@ -2,6 +2,8 @@
 package cn.featherfly.hammer.dml.builder.sql;
 
 import cn.featherfly.common.operator.AggregateFunction;
+import cn.featherfly.common.repository.Repository;
+import cn.featherfly.common.repository.SimpleRepository;
 import cn.featherfly.hammer.dml.builder.sql.vo.Device;
 import cn.featherfly.hammer.dml.builder.sql.vo.Tree;
 import cn.featherfly.hammer.dml.builder.sql.vo.User;
@@ -9,8 +11,6 @@ import cn.featherfly.hammer.dml.builder.sql.vo.UserInfo;
 import cn.featherfly.hammer.dsl.execute.Deleter;
 import cn.featherfly.hammer.dsl.execute.Updater;
 import cn.featherfly.hammer.dsl.query.Query;
-import cn.featherfly.hammer.expression.Repository;
-import cn.featherfly.hammer.expression.SimpleRepository;
 
 /**
  * dsl api invoke test

@@ -8,7 +8,6 @@ import com.speedment.common.tuple.Tuple;
 import com.speedment.common.tuple.Tuple2;
 import com.speedment.common.tuple.Tuples;
 
-import cn.featherfly.common.operator.AggregateFunction;
 import cn.featherfly.common.repository.Repository;
 import cn.featherfly.common.repository.SimpleRepository;
 import cn.featherfly.hammer.sqldb.jdbc.dsl.query.SqlQuery;
@@ -35,12 +34,10 @@ public class NewDslApi {
         query.find(UserInfo.class).where().eq(userInfos.get(0)::getDescp);
         query.find(UserInfo.class).where().eq(userInfo::getDescp);
 
-        query.find("user").property(AggregateFunction.SUM, true, "age").integer();
-
-        Function<FindAndFetchManager<Tuple2<EntityRepository<UserInfo>, EntityRepository<UserInfo>>>,
-                Repository> f = (find) -> {
-                    return find.getFindAndFetch().get0();
-                };
+        Function<FindAndFetchManager<Tuple2<EntityRepository<UserInfo>, EntityRepository<UserInfo>>>, Repository> f = (
+                find) -> {
+            return find.getFindAndFetch().get0();
+        };
 
         Function<Tuple2<EntityRepository<UserInfo>, EntityRepository<User>>, Repository> f2 = (tuple) -> {
             return tuple.get0();

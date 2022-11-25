@@ -2,8 +2,8 @@
 package cn.featherfly.hammer.sqldb.jdbc.dsl.execute;
 
 import cn.featherfly.common.db.mapping.JdbcMappingFactory;
-import cn.featherfly.common.repository.AliasRepository;
 import cn.featherfly.common.repository.Repository;
+import cn.featherfly.hammer.dsl.execute.Update;
 import cn.featherfly.hammer.dsl.execute.Updater;
 import cn.featherfly.hammer.sqldb.SqldbHammerException;
 import cn.featherfly.hammer.sqldb.jdbc.Jdbc;
@@ -45,11 +45,7 @@ public class SqlUpdater implements Updater {
      */
     @Override
     public SqlUpdate update(Repository repository) {
-        if (repository instanceof AliasRepository) {
-            return new SqlExecutableUpdate((AliasRepository) repository, jdbc);
-        } else {
-            return new SqlExecutableUpdate(repository, jdbc);
-        }
+        return new SqlExecutableUpdate(repository, jdbc);
     }
 
     /**
@@ -64,11 +60,10 @@ public class SqlUpdater implements Updater {
      * {@inheritDoc}
      */
     @Override
-    public <E> SqlEntityUpdate<E> update(Class<E> repositType) {
+    public Update update(Class<?> repositType) {
         if (mappingFactory == null) {
             throw new SqldbHammerException("mappingFactory is null");
         }
-        // ENHANCE 删除暂时没有支持别名
-        return new SqlEntityExecutableUpdate<>(jdbc, mappingFactory.getClassMapping(repositType), mappingFactory);
+        return new SqlExecutableUpdate(mappingFactory.getClassMapping(repositType), jdbc);
     }
 }

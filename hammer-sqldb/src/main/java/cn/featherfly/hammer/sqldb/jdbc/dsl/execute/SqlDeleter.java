@@ -2,7 +2,6 @@
 package cn.featherfly.hammer.sqldb.jdbc.dsl.execute;
 
 import cn.featherfly.common.db.mapping.JdbcMappingFactory;
-import cn.featherfly.common.repository.AliasRepository;
 import cn.featherfly.common.repository.Repository;
 import cn.featherfly.hammer.dsl.execute.Deleter;
 import cn.featherfly.hammer.sqldb.SqldbHammerException;
@@ -40,11 +39,7 @@ public class SqlDeleter implements Deleter {
      */
     @Override
     public SqlDelete delete(Repository repository) {
-        if (repository instanceof AliasRepository) {
-            return new SqlDelete(jdbc, (AliasRepository) repository);
-        } else {
-            return new SqlDelete(jdbc, repository);
-        }
+        return new SqlDelete(repository, jdbc);
     }
 
     /**
@@ -52,18 +47,17 @@ public class SqlDeleter implements Deleter {
      */
     @Override
     public SqlDelete delete(String repository) {
-        return new SqlDelete(jdbc, repository);
+        return new SqlDelete(repository, jdbc);
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public <E> SqlEntityDelete<E> delete(Class<E> repositType) {
+    public SqlDelete delete(Class<?> repositType) {
         if (mappingFactory == null) {
             throw new SqldbHammerException("mappingFactory is null");
         }
-        // ENHANCE 删除暂时没有支持别名
-        return new SqlEntityDelete<>(jdbc, mappingFactory, mappingFactory.getClassMapping(repositType));
+        return new SqlDelete(mappingFactory.getClassMapping(repositType), jdbc);
     }
 }

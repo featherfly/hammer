@@ -2489,7 +2489,7 @@ public abstract class AbstractRepositorySqlConditionGroupExpression<C extends Re
      * {@inheritDoc}
      */
     @Override
-    public <T, E extends Enum<?>> EnumExpression<E, C, L> propertyEnum(Class<T> repository, String name) {
+    public <T, E extends Enum<E>> EnumExpression<E, C, L> propertyEnum(Class<T> repository, String name) {
         return propertyEnum(getTableName(repository), name);
     }
 
@@ -2497,7 +2497,7 @@ public abstract class AbstractRepositorySqlConditionGroupExpression<C extends Re
      * {@inheritDoc}
      */
     @Override
-    public <E extends Enum<?>> EnumExpression<E, C, L> propertyEnum(int repositoryIndex, String name) {
+    public <E extends Enum<E>> EnumExpression<E, C, L> propertyEnum(int repositoryIndex, String name) {
         return new RepositorySimpleEnumExpression<>(repositoryIndex,
                 ClassMappingUtils.getColumnName(name, classMapping), this);
     }
@@ -2506,7 +2506,7 @@ public abstract class AbstractRepositorySqlConditionGroupExpression<C extends Re
      * {@inheritDoc}
      */
     @Override
-    public <E extends Enum<?>> EnumExpression<E, C, L> propertyEnum(String repository, String name) {
+    public <E extends Enum<E>> EnumExpression<E, C, L> propertyEnum(String repository, String name) {
         return new RepositorySimpleEnumExpression<>(repository, ClassMappingUtils.getColumnName(name, classMapping),
                 this);
     }
@@ -2515,7 +2515,7 @@ public abstract class AbstractRepositorySqlConditionGroupExpression<C extends Re
      * {@inheritDoc}
      */
     @Override
-    public <E extends Enum<?>> EnumExpression<E, C, L> propertyEnum(String name) {
+    public <E extends Enum<E>> EnumExpression<E, C, L> propertyEnum(String name) {
         return new SimpleEnumExpression<>(ClassMappingUtils.getColumnName(name, classMapping), this);
     }
 
@@ -2615,7 +2615,7 @@ public abstract class AbstractRepositorySqlConditionGroupExpression<C extends Re
      * {@inheritDoc}
      */
     @Override
-    public <T, R extends Enum<?>> EnumExpression<R, C, L> property(ReturnEnumFunction<T, R> name) {
+    public <T, R extends Enum<R>> EnumExpression<R, C, L> property(ReturnEnumFunction<T, R> name) {
         return propertyEnum(getPropertyName(name));
     }
 

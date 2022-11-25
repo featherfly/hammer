@@ -59,9 +59,6 @@ public class SqlQueryTypeTest extends JdbcTestBase {
         query.find(User.class).where().eq(User::getUsername, "yufei").and().eq(User::getPwd, "123456").and().group()
                 .gt(User::getAge, 18).and().property(User::getAge).lt(60).list();
 
-        query.find(User.class).property("username", "pwd", "age").where().eq(User::getUsername, "yufei").and()
-                .eq(User::getPwd, "123456").and().group().gt(User::getAge, 18).and().lt(User::getAge, 60).list();
-
         query.find(User.class).property(User::getUsername, User::getPwd, User::getAge).where()
                 .eq(User::getUsername, "yufei").and().eq(User::getPwd, "123456").and().group().gt(User::getAge, 18)
                 .and().lt(User::getAge, 60).list();
@@ -87,6 +84,29 @@ public class SqlQueryTypeTest extends JdbcTestBase {
         user.setUsername("yufei");
         user.setPwd("123456");
         query.find(User.class).where().eq(user::getUsername).and().eq(user::getPwd).list();
+    }
+
+    @SuppressWarnings("unchecked")
+    @Test
+    void testPropertyExpression() {
+        SqlQuery query = new SqlQuery(jdbc, mappingFactory, sqlPageFactory);
+
+        query.find(User.class).where().property(User::getUsername).eq("yufei").and().property(User::getPwd).eq("123456")
+                .list();
+
+        query.find(User.class).where().property(User::getUsername).eq("yufei").and().property(User::getPwd).eq("123456")
+                .and().group().property(User::getAge).gt(18).and().property(User::getAge).lt(60).list();
+
+        query.find(User.class).where().property(User::getUsername).eq("yufei").and().property(User::getPwd).eq("123456")
+                .and().group().gt(User::getAge, 18).and().property(User::getAge).lt(60).list();
+
+        query.find(User.class).property(User::getUsername, User::getPwd, User::getAge).where()
+                .eq(User::getUsername, "yufei").and().eq(User::getPwd, "123456").and().group().gt(User::getAge, 18)
+                .and().lt(User::getAge, 60).list();
+
+        query.find(User.class).property(User::getUsername, User::getPwd, User::getAge).where()
+                .eq(User::getUsername, "yufei").and().eq(User::getPwd, "123456").and().group().gt(User::getAge, 18)
+                .and().lt(User::getAge, 60).list();
     }
 
     @Test
@@ -146,8 +166,8 @@ public class SqlQueryTypeTest extends JdbcTestBase {
              c.eq() ..... // 关联user的条件查询
          }).fetch().join(UserRole2::getUser).fetch()
                 .join(UserRole2::getRole).fetch().list();
-
-
+        
+        
          */
     }
 

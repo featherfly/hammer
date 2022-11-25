@@ -208,8 +208,6 @@ public class EntitySqlQueryConditionGroupExpression<E> extends
                     params);
             sql = pageQuery.getSql();
             params = pageQuery.getParams();
-            //            sql = dialect.getPaginationSql(sql, limit.getOffset(), limit.getLimit());
-            //            params = dialect.getPaginationSqlParameter(params, limit.getOffset(), limit.getLimit());
         }
         return (List<E>) jdbc.query(sql, classMapping.getType(), params);
     }
@@ -777,7 +775,7 @@ public class EntitySqlQueryConditionGroupExpression<E> extends
      */
     @Override
     public <R, V> EntityQueryConditionGroupLogicExpression<E> in(SerializableFunction<E, R> repository,
-            SerializableFunction<R, V> property, Object value) {
+            SerializableFunction<R, V> property, V value) {
         //        IMPLSOON 后续来实现join
         //        entityQuery.join(repository);
         Tuple2<String, String> tuple = conditionResult(repository, property, value, factory);
@@ -796,15 +794,6 @@ public class EntitySqlQueryConditionGroupExpression<E> extends
         Tuple3<String, String, Object> tuple = conditionResult(repository, property, factory);
         return (EntityQueryConditionGroupLogicExpression<E>) addCondition(new SqlConditionExpressionBuilder(dialect,
                 tuple.get1(), tuple.get2(), QueryOperator.IN, aliasManager.getAlias(tuple.get0()), ignorePolicy));
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public <R, V> EntityQueryConditionGroupLogicExpression<E> inn(SerializableFunction<E, R> repository,
-            SerializableFunction<R, V> property) {
-        return inn(repository, property, true);
     }
 
     /**
@@ -1185,7 +1174,7 @@ public class EntitySqlQueryConditionGroupExpression<E> extends
      */
     @Override
     public <R, V> EntityQueryConditionGroupLogicExpression<E> nin(SerializableFunction<E, R> repository,
-            SerializableFunction<R, V> property, Object value) {
+            SerializableFunction<R, V> property, V value) {
         //        IMPLSOON 后续来实现join
         //        entityQuery.join(repository);
         Tuple2<String, String> tuple = conditionResult(repository, property, value, factory);

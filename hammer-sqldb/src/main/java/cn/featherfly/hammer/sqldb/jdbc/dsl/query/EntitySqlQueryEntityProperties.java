@@ -268,7 +268,7 @@ public class EntitySqlQueryEntityProperties<E>
         return getPkMapping(classMapping).getRepositoryFieldName();
     }
 
-    private PropertyMapping getPkMapping(JdbcClassMapping<?> classMapping) {
+    private PropertyMapping<?> getPkMapping(JdbcClassMapping<?> classMapping) {
         if (classMapping.getPrivaryKeyPropertyMappings().size() > 1) {
             throw new SqldbHammerException(String.format("there is more than one privary key property in type(%s)",
                     classMapping.getType().getName()));

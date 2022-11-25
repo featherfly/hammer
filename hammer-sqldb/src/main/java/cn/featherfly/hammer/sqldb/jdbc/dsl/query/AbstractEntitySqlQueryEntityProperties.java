@@ -23,6 +23,7 @@ import cn.featherfly.common.lang.function.SerializableFunction;
 import cn.featherfly.common.operator.AggregateFunction;
 import cn.featherfly.common.repository.builder.AliasManager;
 import cn.featherfly.hammer.HammerException;
+import cn.featherfly.hammer.dsl.query.type.EntityQueryEntityProperties;
 import cn.featherfly.hammer.sqldb.jdbc.Jdbc;
 import cn.featherfly.hammer.sqldb.jdbc.SqlPageFactory;
 
@@ -33,8 +34,8 @@ import cn.featherfly.hammer.sqldb.jdbc.SqlPageFactory;
  * @param <E> the element type
  * @param <P> the generic type
  */
-public abstract class AbstractEntitySqlQueryEntityProperties<E,
-        P extends AbstractEntitySqlQueryEntityProperties<E, P>> {
+public abstract class AbstractEntitySqlQueryEntityProperties<E, P extends AbstractEntitySqlQueryEntityProperties<E, P>>
+        implements EntityQueryEntityProperties<E> {
 
     /** The jdbc. */
     protected Jdbc jdbc;
@@ -216,7 +217,8 @@ public abstract class AbstractEntitySqlQueryEntityProperties<E,
      * @param propertyNames the property names
      * @return the e
      */
-    public <R> P property(@SuppressWarnings("unchecked") SerializableFunction<E, R>... propertyNames) {
+    @Override
+    public P property(@SuppressWarnings("unchecked") SerializableFunction<E, ?>... propertyNames) {
         return property(
                 Arrays.stream(propertyNames).map(LambdaUtils::getLambdaPropertyName).collect(Collectors.toList()));
     }
@@ -228,6 +230,7 @@ public abstract class AbstractEntitySqlQueryEntityProperties<E,
      * @param propertyName the property name
      * @return the e
      */
+    @Override
     public <R> P property(boolean distinct, SerializableFunction<E, R> propertyName) {
         return property(distinct, LambdaUtils.getLambdaPropertyName(propertyName));
     }
@@ -299,6 +302,7 @@ public abstract class AbstractEntitySqlQueryEntityProperties<E,
      *
      * @return the e
      */
+    @Override
     public Long count() {
         return new SqlQueryExpression(jdbc, sqlPageFactory, classMapping,
                 selectBuilder.addColumn(AggregateFunction.COUNT, Chars.STAR), ignorePolicy).longInt();
@@ -321,6 +325,7 @@ public abstract class AbstractEntitySqlQueryEntityProperties<E,
      * @param propertyName the property name
      * @return the e
      */
+    @Override
     public <R> P count(boolean distinct, SerializableFunction<E, R> propertyName) {
         return property(AggregateFunction.COUNT, distinct, propertyName);
     }
@@ -342,6 +347,7 @@ public abstract class AbstractEntitySqlQueryEntityProperties<E,
      * @param propertyName the property name
      * @return the e
      */
+    @Override
     public <R> P sum(boolean distinct, SerializableFunction<E, R> propertyName) {
         return property(AggregateFunction.SUM, distinct, propertyName);
     }
@@ -363,6 +369,7 @@ public abstract class AbstractEntitySqlQueryEntityProperties<E,
      * @param propertyName the property name
      * @return the e
      */
+    @Override
     public <R> P max(boolean distinct, SerializableFunction<E, R> propertyName) {
         return property(AggregateFunction.MAX, distinct, propertyName);
     }
@@ -384,6 +391,7 @@ public abstract class AbstractEntitySqlQueryEntityProperties<E,
      * @param propertyName the property name
      * @return the e
      */
+    @Override
     public <R> P min(boolean distinct, SerializableFunction<E, R> propertyName) {
         return property(AggregateFunction.MIN, distinct, propertyName);
     }
@@ -405,6 +413,7 @@ public abstract class AbstractEntitySqlQueryEntityProperties<E,
      * @param propertyName the property name
      * @return the e
      */
+    @Override
     public <R> P avg(boolean distinct, SerializableFunction<E, R> propertyName) {
         return property(AggregateFunction.AVG, distinct, propertyName);
     }
@@ -426,6 +435,7 @@ public abstract class AbstractEntitySqlQueryEntityProperties<E,
      * @param propertyName the property name
      * @return the e
      */
+    @Override
     public <R> P distinct(SerializableFunction<E, R> propertyName) {
         return property(true, propertyName);
     }

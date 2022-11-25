@@ -1030,7 +1030,7 @@ public abstract class AbstractSqlConditionGroupExpression<C extends ConditionGro
      * {@inheritDoc}
      */
     @Override
-    public <E extends Enum<?>> EnumExpression<E, C, L> propertyEnum(String name) {
+    public <E extends Enum<E>> EnumExpression<E, C, L> propertyEnum(String name) {
         return new SimpleEnumExpression<>(ClassMappingUtils.getColumnName(name, classMapping), this);
     }
 
@@ -1572,7 +1572,7 @@ public abstract class AbstractSqlConditionGroupExpression<C extends ConditionGro
      * {@inheritDoc}
      */
     @Override
-    public <T, R extends Enum<?>> EnumExpression<R, C, L> property(ReturnEnumFunction<T, R> name) {
+    public <T, R extends Enum<R>> EnumExpression<R, C, L> property(ReturnEnumFunction<T, R> name) {
         return propertyEnum(getPropertyName(name));
     }
 

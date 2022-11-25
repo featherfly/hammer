@@ -10,8 +10,9 @@ import java.util.Map;
 import org.testng.annotations.Test;
 
 import cn.featherfly.common.lang.Strings;
+import cn.featherfly.common.repository.SimpleAliasRepository;
+import cn.featherfly.common.repository.SimpleRepository;
 import cn.featherfly.common.structure.page.PaginationResults;
-import cn.featherfly.hammer.expression.SimpleRepository;
 import cn.featherfly.hammer.sqldb.jdbc.JdbcTestBase;
 import cn.featherfly.hammer.sqldb.jdbc.dsl.query.SqlQuery;
 import cn.featherfly.hammer.sqldb.jdbc.vo.Role;
@@ -136,14 +137,14 @@ public class SqlQueryTest extends JdbcTestBase {
     @Test
     void test3() {
         SqlQuery query = new SqlQuery(jdbc, metadata, sqlPageFactory);
-        query.find(new SimpleRepository("user", "u")).where().eq("username", "yufei").and().eq("password", "123456")
-                .and().group().gt("age", 18).and().lt("age", 60).list(User.class);
+        query.find(new SimpleAliasRepository("user", "u")).where().eq("username", "yufei").and()
+                .eq("password", "123456").and().group().gt("age", 18).and().lt("age", 60).list(User.class);
     }
 
     @Test
     void test4() {
         SqlQuery query = new SqlQuery(jdbc, metadata, sqlPageFactory);
-        query.find(new SimpleRepository("user", "u")).property("username", "password", "age").where()
+        query.find(new SimpleAliasRepository("user", "u")).property("username", "password", "age").where()
                 .eq("username", "yufei").and().eq("password", "123456").and().group().gt("age", 18).and().lt("age", 60)
                 .list(User.class);
     }

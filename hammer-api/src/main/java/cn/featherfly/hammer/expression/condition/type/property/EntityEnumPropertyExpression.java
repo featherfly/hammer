@@ -18,10 +18,10 @@ import cn.featherfly.hammer.expression.condition.type.EntityConditionsExpression
  * EntityEnumExpression.
  *
  * @author zhongj
- * @param <E>  the element type
- * @param <EN> the generic type
- * @param <C>  the generic type
- * @param <L>  the generic type
+ * @param <E> the element type
+ * @param <D> the generic type
+ * @param <C> the generic type
+ * @param <L> the generic type
  */
 public interface EntityEnumPropertyExpression<E, EN extends Enum<EN>, C extends EntityConditionsExpression<E, C, L>,
         L extends LogicExpression<C, L>> extends EnumExpression<EN, C, L> {
