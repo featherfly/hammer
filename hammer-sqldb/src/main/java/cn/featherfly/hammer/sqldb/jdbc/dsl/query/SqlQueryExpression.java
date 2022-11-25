@@ -5,9 +5,9 @@ import java.util.function.Predicate;
 
 import cn.featherfly.common.constant.Chars;
 import cn.featherfly.common.db.builder.dml.basic.SqlSelectBasicBuilder;
+import cn.featherfly.common.db.mapping.JdbcClassMapping;
 import cn.featherfly.common.lang.Lang;
 import cn.featherfly.common.operator.AggregateFunction;
-import cn.featherfly.common.repository.mapping.ClassMapping;
 import cn.featherfly.hammer.dsl.query.QueryConditionGroupExpression;
 import cn.featherfly.hammer.dsl.query.QueryConditionGroupLogicExpression;
 import cn.featherfly.hammer.dsl.query.TypeQueryEntity;
@@ -49,7 +49,7 @@ public class SqlQueryExpression extends SqlQueryConditionGroupExpression {
      * @param selectBuilder  the select builder
      * @param ignorePolicy   the ignore policy
      */
-    public SqlQueryExpression(Jdbc jdbc, SqlPageFactory sqlPageFactory, ClassMapping<?> classMapping,
+    public SqlQueryExpression(Jdbc jdbc, SqlPageFactory sqlPageFactory, JdbcClassMapping<?> classMapping,
             SqlSelectBasicBuilder selectBuilder, Predicate<Object> ignorePolicy) {
         //        super(jdbc, sqlPageFactory, selectBuilder.getTableAlias(), classMapping, ignorePolicy);
         //      IMPLSOON 后续来实现，先让编译通过
@@ -68,7 +68,7 @@ public class SqlQueryExpression extends SqlQueryConditionGroupExpression {
      * @param ignorePolicy   the ignore policy
      */
     SqlQueryExpression(QueryConditionGroupLogicExpression parent, Jdbc jdbc, SqlPageFactory sqlPageFactory,
-            String queryAlias, ClassMapping<?> classMapping, Predicate<Object> ignorePolicy) {
+            String queryAlias, JdbcClassMapping<?> classMapping, Predicate<Object> ignorePolicy) {
         super(parent, jdbc, sqlPageFactory, queryAlias, classMapping, ignorePolicy);
     }
 

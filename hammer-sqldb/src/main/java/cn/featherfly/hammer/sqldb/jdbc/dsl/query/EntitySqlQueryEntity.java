@@ -1,7 +1,7 @@
 
 package cn.featherfly.hammer.sqldb.jdbc.dsl.query;
 
-import cn.featherfly.hammer.dsl.query.EntityQueryEntity;
+import cn.featherfly.hammer.dsl.query.type.EntityQueryEntity;
 
 /**
  * The Interface EntitySqlQueryEntity.
@@ -9,7 +9,7 @@ import cn.featherfly.hammer.dsl.query.EntityQueryEntity;
  * @author zhongj
  * @param <E> the element type
  */
-public interface EntitySqlQueryEntity<E> extends EntityQueryEntity<E> {
+public interface EntitySqlQueryEntity<E> extends EntitySqlQuery<E>, EntityQueryEntity<E> {
 
     //    /**
     //     * 添加select的列.

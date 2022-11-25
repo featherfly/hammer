@@ -9,12 +9,12 @@ import cn.featherfly.common.constant.Chars;
 import cn.featherfly.common.db.SqlUtils;
 import cn.featherfly.common.db.builder.dml.SqlSortBuilder;
 import cn.featherfly.common.db.mapping.ClassMappingUtils;
+import cn.featherfly.common.db.mapping.JdbcClassMapping;
+import cn.featherfly.common.db.mapping.JdbcMappingFactory;
 import cn.featherfly.common.lang.LambdaUtils;
 import cn.featherfly.common.lang.Lang;
 import cn.featherfly.common.lang.function.SerializableFunction;
 import cn.featherfly.common.repository.builder.AliasManager;
-import cn.featherfly.common.repository.mapping.ClassMapping;
-import cn.featherfly.common.repository.mapping.MappingFactory;
 import cn.featherfly.common.structure.page.Limit;
 import cn.featherfly.common.structure.page.Page;
 import cn.featherfly.common.structure.page.PaginationResults;
@@ -54,8 +54,9 @@ public class RepositoryTypeSqlQueryConditionGroupExpression extends
      * @param classMapping   classMapping
      * @param ignorePolicy   the ignore policy
      */
-    public RepositoryTypeSqlQueryConditionGroupExpression(Jdbc jdbc, MappingFactory factory, AliasManager aliasManager,
-            SqlPageFactory sqlPageFactory, ClassMapping<?> classMapping, Predicate<Object> ignorePolicy) {
+    public RepositoryTypeSqlQueryConditionGroupExpression(Jdbc jdbc, JdbcMappingFactory factory,
+            AliasManager aliasManager, SqlPageFactory sqlPageFactory, JdbcClassMapping<?> classMapping,
+            Predicate<Object> ignorePolicy) {
         this(jdbc, factory, aliasManager, null, sqlPageFactory, classMapping, ignorePolicy);
     }
 
@@ -70,9 +71,9 @@ public class RepositoryTypeSqlQueryConditionGroupExpression extends
      * @param classMapping   classMapping
      * @param ignorePolicy   the ignore policy
      */
-    public RepositoryTypeSqlQueryConditionGroupExpression(Jdbc jdbc, MappingFactory factory, AliasManager aliasManager,
-            String queryAlias, SqlPageFactory sqlPageFactory, ClassMapping<?> classMapping,
-            Predicate<Object> ignorePolicy) {
+    public RepositoryTypeSqlQueryConditionGroupExpression(Jdbc jdbc, JdbcMappingFactory factory,
+            AliasManager aliasManager, String queryAlias, SqlPageFactory sqlPageFactory,
+            JdbcClassMapping<?> classMapping, Predicate<Object> ignorePolicy) {
         this(null, jdbc, factory, aliasManager, queryAlias, sqlPageFactory, classMapping, ignorePolicy);
     }
 
@@ -89,8 +90,8 @@ public class RepositoryTypeSqlQueryConditionGroupExpression extends
      * @param ignorePolicy   the ignore policy
      */
     RepositoryTypeSqlQueryConditionGroupExpression(RepositoryTypeQueryConditionGroupLogicExpression parent, Jdbc jdbc,
-            MappingFactory factory, AliasManager aliasManager, String queryAlias, SqlPageFactory sqlPageFactory,
-            ClassMapping<?> classMapping, Predicate<Object> ignorePolicy) {
+            JdbcMappingFactory factory, AliasManager aliasManager, String queryAlias, SqlPageFactory sqlPageFactory,
+            JdbcClassMapping<?> classMapping, Predicate<Object> ignorePolicy) {
         super(parent, jdbc.getDialect(), factory, aliasManager, queryAlias, sqlPageFactory, classMapping, ignorePolicy);
         this.jdbc = jdbc;
     }

@@ -67,7 +67,7 @@ public interface PropertyExpression<C extends ConditionExpression, L extends Log
      * @param name the name
      * @return the enum expression
      */
-    EnumExpression<C, L> propertyEnum(String name);
+    <R extends Enum<?>> EnumExpression<R, C, L> propertyEnum(String name);
 
     /**
      * Property.
@@ -116,52 +116,5 @@ public interface PropertyExpression<C extends ConditionExpression, L extends Log
      * @param name the name
      * @return the enum expression
      */
-    <T, R extends Enum<?>> EnumExpression<C, L> property(ReturnEnumFunction<T, R> name);
-
-    /**
-     * Property string.
-     *
-     * @param <T>  the generic type
-     * @param name the name
-     * @return the string expression
-     * @deprecated use {@link #property(ReturnStringFunction)} instead
-     */
-    @Deprecated
-    <T> StringExpression<C, L> propertyString(SerializableFunction<T, String> name);
-
-    /**
-     * Property number.
-     *
-     * @param <T>  the generic type
-     * @param <R>  the generic type
-     * @param name the name
-     * @return the number expression
-     * @deprecated use {@link #property(ReturnNumberFunction)} instead
-     */
-    @Deprecated
-    <T, R extends Number> NumberExpression<R, C, L> propertyNumber(SerializableFunction<T, R> name);
-
-    /**
-     * Property date.
-     *
-     * @param <T>  the generic type
-     * @param <R>  the generic type
-     * @param name the name
-     * @return the date expression
-     * @deprecated use {@link #property(ReturnDateFunction)} instead
-     */
-    @Deprecated
-    <T, R extends Date> DateExpression<R, C, L> propertyDate(SerializableFunction<T, R> name);
-
-    /**
-     * Property enum.
-     *
-     * @param <T>  the generic type
-     * @param <R>  the generic type
-     * @param name the name
-     * @return the enum expression
-     * @deprecated use {@link #property(ReturnEnumFunction)} instead
-     */
-    @Deprecated
-    <T, R extends Enum<?>> EnumExpression<C, L> propertyEnum(SerializableFunction<T, R> name);
+    <T, R extends Enum<?>> EnumExpression<R, C, L> property(ReturnEnumFunction<T, R> name);
 }

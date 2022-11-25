@@ -11,12 +11,12 @@ import cn.featherfly.common.bean.BeanPropertyValue;
 import cn.featherfly.common.db.builder.dml.basic.SqlUpdateSetBasicBuilder;
 import cn.featherfly.common.db.builder.model.UpdateColumnElement.SetType;
 import cn.featherfly.common.db.mapping.ClassMappingUtils;
+import cn.featherfly.common.db.mapping.JdbcClassMapping;
 import cn.featherfly.common.lang.LambdaUtils;
 import cn.featherfly.common.lang.LambdaUtils.SerializableSupplierLambdaInfo;
 import cn.featherfly.common.lang.function.SerializableFunction;
 import cn.featherfly.common.lang.function.SerializableSupplier;
 import cn.featherfly.common.repository.IgnorePolicy;
-import cn.featherfly.common.repository.mapping.ClassMapping;
 import cn.featherfly.hammer.dsl.execute.ExecutableConditionGroupExpression;
 import cn.featherfly.hammer.dsl.execute.ExecutableUpdate;
 import cn.featherfly.hammer.dsl.execute.SimpleUpdateNumberValue;
@@ -28,10 +28,7 @@ import cn.featherfly.hammer.expression.condition.ConditionGroupConfig;
 import cn.featherfly.hammer.sqldb.jdbc.Jdbc;
 
 /**
- * <p>
- * SqlExecutableUpdate
- * </p>
- * .
+ * SqlExecutableUpdate .
  *
  * @author zhongj
  */
@@ -41,7 +38,7 @@ public class SqlExecutableUpdate implements SqlUpdate, ExecutableUpdate {
 
     private SqlUpdateSetBasicBuilder builder;
 
-    private ClassMapping<?> classMapping;
+    private JdbcClassMapping<?> classMapping;
 
     /**
      * Instantiates a new sql executable update.
@@ -69,7 +66,7 @@ public class SqlExecutableUpdate implements SqlUpdate, ExecutableUpdate {
      * @param classMapping the class mapping
      * @param jdbc         the jdbc
      */
-    public SqlExecutableUpdate(ClassMapping<?> classMapping, Jdbc jdbc) {
+    public SqlExecutableUpdate(JdbcClassMapping<?> classMapping, Jdbc jdbc) {
         this(classMapping, jdbc, IgnorePolicy.NONE);
     }
 
@@ -103,7 +100,7 @@ public class SqlExecutableUpdate implements SqlUpdate, ExecutableUpdate {
      * @param jdbc         the jdbc
      * @param ignorePolicy the ignore policy
      */
-    public SqlExecutableUpdate(ClassMapping<?> classMapping, Jdbc jdbc, Predicate<Object> ignorePolicy) {
+    public SqlExecutableUpdate(JdbcClassMapping<?> classMapping, Jdbc jdbc, Predicate<Object> ignorePolicy) {
         this.classMapping = classMapping;
         this.jdbc = jdbc;
         builder = new SqlUpdateSetBasicBuilder(jdbc.getDialect(), classMapping.getRepositoryName(), ignorePolicy);

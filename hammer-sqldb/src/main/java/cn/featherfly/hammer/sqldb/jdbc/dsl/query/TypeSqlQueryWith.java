@@ -49,16 +49,16 @@
 //    protected SqlSelectJoinOnBasicBuilder selectJoinOnBasicBuilder;
 //
 //    /** The factory. */
-//    protected MappingFactory factory;
+//    protected JdbcMappingFactory factory;
 //
 //    /** The sql page factory. */
 //    protected SqlPageFactory sqlPageFactory;
 //
 //    /** The condition type class mapping. */
-//    protected ClassMapping<?> conditionTypeClassMapping;
+//    protected JdbcClassMapping<?> conditionTypeClassMapping;
 //
 //    /** The join type class mapping. */
-//    protected ClassMapping<?> joinTypeClassMapping;
+//    protected JdbcClassMapping<?> joinTypeClassMapping;
 //
 //    /** The fetch property. */
 //    protected String fetchProperty;
@@ -84,8 +84,8 @@
 //     * @param ignorePolicy              the ignore policy
 //     */
 //    public TypeSqlQueryWith(TypeSqlQueryEntityProperties sqlQueryEntityProperties, AliasManager aliasManager,
-//            MappingFactory factory, SqlPageFactory sqlPageFactory, ClassMapping<?> conditionTypeClassMapping,
-//            String conditionTableAlias, String conditionTableColumn, ClassMapping<?> joinTypeClassMapping,
+//            JdbcMappingFactory factory, SqlPageFactory sqlPageFactory, JdbcClassMapping<?> conditionTypeClassMapping,
+//            String conditionTableAlias, String conditionTableColumn, JdbcClassMapping<?> joinTypeClassMapping,
 //            String joinTableColumn, Predicate<Object> ignorePolicy) {
 //        this(sqlQueryEntityProperties, aliasManager, factory, sqlPageFactory, conditionTypeClassMapping,
 //                conditionTableAlias, conditionTableColumn, joinTypeClassMapping, joinTableColumn, null, ignorePolicy);
@@ -107,8 +107,8 @@
 //     * @param ignorePolicy              the ignore policy
 //     */
 //    public TypeSqlQueryWith(TypeSqlQueryEntityProperties sqlQueryEntityProperties, AliasManager aliasManager,
-//            MappingFactory factory, SqlPageFactory sqlPageFactory, ClassMapping<?> conditionTypeClassMapping,
-//            String conditionTableAlias, String conditionTableColumn, ClassMapping<?> joinTypeClassMapping,
+//            JdbcMappingFactory factory, SqlPageFactory sqlPageFactory, JdbcClassMapping<?> conditionTypeClassMapping,
+//            String conditionTableAlias, String conditionTableColumn, JdbcClassMapping<?> joinTypeClassMapping,
 //            String joinTableColumn, String fetchProperty, Predicate<Object> ignorePolicy) {
 //        super();
 //        this.sqlQueryEntityProperties = sqlQueryEntityProperties;

@@ -1,10 +1,16 @@
 
 package cn.featherfly.hammer.expression.query;
 
+import java.util.Arrays;
 import java.util.Collection;
+import java.util.stream.Collectors;
 
+import cn.featherfly.common.exception.UnsupportedException;
+import cn.featherfly.common.lang.LambdaUtils;
 import cn.featherfly.common.lang.function.SerializableFunction;
 import cn.featherfly.common.lang.function.SerializableSupplier;
+import cn.featherfly.common.operator.AggregateFunction;
+import cn.featherfly.common.operator.Function;
 import cn.featherfly.hammer.expression.RepositoryConditionGroupLogicExpression;
 import cn.featherfly.hammer.expression.TypeConditionGroupExpression;
 import cn.featherfly.hammer.expression.TypeConditionGroupLogicExpression;
@@ -12,10 +18,7 @@ import cn.featherfly.hammer.expression.WhereExpression;
 import cn.featherfly.hammer.expression.condition.RepositoryConditionsGroupExpression;
 
 /**
- * <p>
- * TypeQueryEntityExpression
- * </p>
- * .
+ * TypeQueryEntityExpression.
  *
  * @author zhongj
  * @param <Q>   the generic type
@@ -52,63 +55,141 @@ public interface TypeQueryEntityExpression<Q extends TypeQueryEntityPropertiesEx
     <T, R> Q id(SerializableFunction<T, R> propertyName);
 
     /**
-     * <p>
-     * 添加select的列
-     * </p>
-     * .
+     * 添加查询出来的属性.
      *
-     * @param propertyName propertyName
+     * @param aggregateFunction aggregateFunction
+     * @param propertyName      propertyName
      * @return QueryEntityPropertiesExpression
      */
-    Q property(String propertyName);
+    default Q property(Function function, String propertyName) {
+        if (function instanceof AggregateFunction) {
+            return property((AggregateFunction) function, propertyName);
+        } else {
+            // TODO 后续实现了相关Function再来修改
+            throw new UnsupportedException();
+        }
+    }
 
     /**
-     * <p>
-     * 批量添加select的列
-     * </p>
-     * .
+     * 添加查询出来的属性.
+     *
+     * @param aggregateFunction aggregateFunction
+     * @param propertyName      propertyName
+     * @return QueryEntityPropertiesExpression
+     */
+    default Q property(AggregateFunction aggregateFunction, String propertyName) {
+        return property(aggregateFunction, false, propertyName);
+    }
+
+    /**
+     * 添加查询出来的属性.
+     *
+     * @param aggregateFunction aggregateFunction
+     * @param distinct          the distinct
+     * @param propertyName      propertyName
+     * @return QueryEntityPropertiesExpression
+     */
+    Q property(AggregateFunction aggregateFunction, boolean distinct, String propertyName);
+
+    /**
+     * 添加查询出来的属性 .
      *
      * @param propertyNames propertyNames
      * @return QueryEntityPropertiesExpression
      */
-    Q property(String... propertyNames);
+    @SuppressWarnings("unchecked")
+    default Q property(String... propertyNames) {
+        for (String propertyName : propertyNames) {
+            property(propertyName);
+        }
+        return (Q) this;
+    }
 
     /**
-     * <p>
-     * 添加select的列
-     * </p>
-     * .
+     * 添加查询出来的属性.
      *
      * @param <T>          the generic type
      * @param <R>          the generic type
      * @param propertyName propertyName
      * @return QueryEntityPropertiesExpression
      */
-    <T, R> Q property(SerializableFunction<T, R> propertyName);
+    default <T, R> Q property(SerializableFunction<T, R> propertyName) {
+        return property(false, propertyName);
+    }
 
     /**
-     * <p>
-     * 批量添加select的列
-     * </p>
-     * .
+     * 添加查询出来的属性 .
+     *
+     * @param <T>          the generic type
+     * @param <R>          the generic type
+     * @param propertyName propertyName
+     * @return QueryEntityPropertiesExpression
+     */
+    <T, R> Q property(boolean distinct, SerializableFunction<T, R> propertyName);
+
+    /**
+     * 添加查询出来的属性.
+     *
+     * @param aggregateFunction aggregateFunction
+     * @param propertyName      propertyName
+     * @return QueryEntityPropertiesExpression
+     */
+    default <T, R> Q property(Function function, SerializableFunction<T, R> propertyName) {
+        if (function instanceof AggregateFunction) {
+            return property((AggregateFunction) function, propertyName);
+        } else {
+            // TODO 后续实现了相关Function再来修改
+            throw new UnsupportedException();
+        }
+    }
+
+    /**
+     * 添加查询出来的属性.
+     *
+     * @param aggregateFunction aggregateFunction
+     * @param propertyName      propertyName
+     * @return QueryEntityPropertiesExpression
+     */
+    default <T, R> Q property(AggregateFunction aggregateFunction, SerializableFunction<T, R> propertyName) {
+        return property(aggregateFunction, false, propertyName);
+    }
+
+    /**
+     * 添加查询出来的属性.
+     *
+     * @param aggregateFunction aggregateFunction
+     * @param distinct          the distinct
+     * @param propertyName      propertyName
+     * @return QueryEntityPropertiesExpression
+     */
+    <T, R> Q property(AggregateFunction aggregateFunction, boolean distinct, SerializableFunction<T, R> propertyName);
+
+    /**
+     * 添加查询出来的属性 .
      *
      * @param <T>           the generic type
      * @param <R>           the generic type
      * @param propertyNames propertyNames
      * @return QueryEntityPropertiesExpression
      */
-    <T, R> Q property(@SuppressWarnings("unchecked") SerializableFunction<T, R>... propertyNames);
+    default <T, R> Q property(@SuppressWarnings("unchecked") SerializableFunction<T, R>... propertyNames) {
+        return property(
+                Arrays.stream(propertyNames).map(LambdaUtils::getLambdaPropertyName).collect(Collectors.toList()));
+    }
 
     /**
-     * <p>
-     * 批量添加select的列
-     * </p>
-     * .
+     * 添加查询出来的属性 .
      *
      * @param propertyNames propertyNames
      * @return QueryEntityPropertiesExpression
      */
-    Q property(Collection<String> propertyNames);
+    @SuppressWarnings("unchecked")
+    default Q property(Collection<String> propertyNames) {
+        for (String propertyName : propertyNames) {
+            property(propertyName);
+        }
+        return (Q) this;
+    }
 
     /**
      * with.

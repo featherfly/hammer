@@ -13,10 +13,10 @@ import cn.featherfly.common.repository.IgnorePolicy;
 import cn.featherfly.common.operator.LogicOperator;
 import cn.featherfly.hammer.dsl.execute.Delete;
 import cn.featherfly.hammer.dsl.execute.Update;
-import cn.featherfly.hammer.dsl.query.EntityQueryConditionGroupExpression;
-import cn.featherfly.hammer.dsl.query.EntityQueryConditionGroupLogicExpression;
-import cn.featherfly.hammer.dsl.query.EntityQueryEntity;
 import cn.featherfly.hammer.dsl.query.QueryEntity;
+import cn.featherfly.hammer.dsl.query.type.EntityQueryConditionGroupExpression;
+import cn.featherfly.hammer.dsl.query.type.EntityQueryConditionGroupLogicExpression;
+import cn.featherfly.hammer.dsl.query.type.EntityQueryEntity;
 import cn.featherfly.hammer.tpl.TplExecutor;
 
 /**

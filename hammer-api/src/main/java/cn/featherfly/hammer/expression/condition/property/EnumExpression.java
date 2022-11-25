@@ -12,22 +12,21 @@ import cn.featherfly.hammer.expression.condition.LogicExpression;
  * @param <C> the generic type
  * @param <L> the generic type
  */
-public interface EnumExpression<C extends ConditionExpression, L extends LogicExpression<C, L>>
-        extends PropertyEqualsExpression<C, L, Enum<?>>, PropertyNotEqualsExpression<C, L, Enum<?>>,
-        PropertyInExpression<C, L, Enum<?>>, PropertyNotInExpression<C, L, Enum<?>>, PropertyIsNullExpression<C, L>,
-        PropertyIsNotNullExpression<C, L> {
+public interface EnumExpression<E extends Enum<?>, C extends ConditionExpression, L extends LogicExpression<C, L>>
+        extends PropertyEqualsExpression<C, L, E>, PropertyNotEqualsExpression<C, L, E>, PropertyInExpression<C, L, E>,
+        PropertyNotInExpression<C, L, E>, PropertyIsNullExpression<C, L>, PropertyIsNotNullExpression<C, L> {
 
     /**
      * {@inheritDoc}
      */
     @Override
-    L eq(Enum<?> value);
+    L eq(E value);
 
     /**
      * {@inheritDoc}
      */
     @Override
-    default L eq(Enum<?> value, QueryPolicy queryPolicy) {
+    default L eq(E value, QueryPolicy queryPolicy) {
         return eq(value);
     }
 
@@ -35,13 +34,13 @@ public interface EnumExpression<C extends ConditionExpression, L extends LogicEx
      * {@inheritDoc}
      */
     @Override
-    L ne(Enum<?> value);
+    L ne(E value);
 
     /**
      * {@inheritDoc}
      */
     @Override
-    default L ne(Enum<?> value, QueryPolicy queryPolicy) {
+    default L ne(E value, QueryPolicy queryPolicy) {
         return ne(value);
     }
 }

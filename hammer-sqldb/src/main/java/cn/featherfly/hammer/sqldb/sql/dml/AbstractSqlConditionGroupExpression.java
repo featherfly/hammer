@@ -17,6 +17,7 @@ import cn.featherfly.common.db.SqlUtils;
 import cn.featherfly.common.db.builder.SqlBuilder;
 import cn.featherfly.common.db.dialect.Dialect;
 import cn.featherfly.common.db.mapping.ClassMappingUtils;
+import cn.featherfly.common.db.mapping.JdbcClassMapping;
 import cn.featherfly.common.lang.AssertIllegalArgument;
 import cn.featherfly.common.lang.LambdaUtils;
 import cn.featherfly.common.lang.LambdaUtils.SerializableSupplierLambdaInfo;
@@ -40,7 +41,6 @@ import cn.featherfly.common.operator.LogicOperator;
 import cn.featherfly.common.operator.QueryOperator;
 import cn.featherfly.common.operator.QueryOperator.QueryPolicy;
 import cn.featherfly.common.repository.Execution;
-import cn.featherfly.common.repository.mapping.ClassMapping;
 import cn.featherfly.hammer.dsl.query.TypeQueryEntity;
 import cn.featherfly.hammer.expression.ConditionGroupExpression;
 import cn.featherfly.hammer.expression.ConditionGroupLogicExpression;
@@ -113,7 +113,7 @@ public abstract class AbstractSqlConditionGroupExpression<C extends ConditionGro
      * @param ignorePolicy    the ignore policy
      */
     public AbstractSqlConditionGroupExpression(Dialect dialect, SqlPageFactory sqlPageFactory, String queryAlias,
-            ClassMapping<?> classMapping, TypeQueryEntity typeQueryEntity, Predicate<Object> ignorePolicy) {
+            JdbcClassMapping<?> classMapping, TypeQueryEntity typeQueryEntity, Predicate<Object> ignorePolicy) {
         this(null, dialect, sqlPageFactory, queryAlias, classMapping, typeQueryEntity, ignorePolicy);
     }
 
@@ -129,7 +129,7 @@ public abstract class AbstractSqlConditionGroupExpression<C extends ConditionGro
      * @param ignorePolicy    the ignore policy
      */
     protected AbstractSqlConditionGroupExpression(L parent, Dialect dialect, SqlPageFactory sqlPageFactory,
-            String queryAlias, ClassMapping<?> classMapping, TypeQueryEntity typeQueryEntity,
+            String queryAlias, JdbcClassMapping<?> classMapping, TypeQueryEntity typeQueryEntity,
             Predicate<Object> ignorePolicy) {
         super(dialect, ignorePolicy, parent);
         this.queryAlias = queryAlias;
@@ -220,8 +220,11 @@ public abstract class AbstractSqlConditionGroupExpression<C extends ConditionGro
      */
     @Override
     public <T, R> L eq(SerializableFunction<T, R> name, R value, QueryPolicy queryPolicy) {
-        // FIXME value 空指针异常
-        List<Tuple2<String, Optional<R>>> tuples = supplier(LambdaUtils.getLambdaInfo(name), value);
+        SerializedLambdaInfo lambdaInfo = LambdaUtils.getLambdaInfo(name);
+        if (value == null) {
+            return eq(lambdaInfo.getPropertyName(), value, queryPolicy);
+        }
+        List<Tuple2<String, Optional<R>>> tuples = supplier(lambdaInfo, value);
         L logic = null;
         C condition = (C) this;
         if (tuples.size() > 1) {
@@ -244,7 +247,11 @@ public abstract class AbstractSqlConditionGroupExpression<C extends ConditionGro
      */
     @Override
     public <R> L eq(SerializableSupplier<R> property, QueryPolicy queryPolicy) {
-        List<Tuple2<String, Optional<R>>> tuples = supplier(LambdaUtils.getSerializableSupplierLambdaInfo(property));
+        SerializableSupplierLambdaInfo<R> lambdaInfo = LambdaUtils.getSerializableSupplierLambdaInfo(property);
+        if (property.get() == null) {
+            return eq(lambdaInfo.getSerializedLambdaInfo().getPropertyName(), property.get(), queryPolicy);
+        }
+        List<Tuple2<String, Optional<R>>> tuples = supplier(lambdaInfo);
         L logic = null;
         C condition = (C) this;
         if (tuples.size() > 1) {
@@ -336,7 +343,11 @@ public abstract class AbstractSqlConditionGroupExpression<C extends ConditionGro
      */
     @Override
     public <T, R> L ne(SerializableFunction<T, R> name, R value, QueryPolicy queryPolicy) {
-        List<Tuple2<String, Optional<R>>> tuples = supplier(LambdaUtils.getLambdaInfo(name), value);
+        SerializedLambdaInfo lambdaInfo = LambdaUtils.getLambdaInfo(name);
+        if (value == null) {
+            return ne(lambdaInfo.getPropertyName(), value, queryPolicy);
+        }
+        List<Tuple2<String, Optional<R>>> tuples = supplier(lambdaInfo, value);
         L l = null;
         C c = (C) this;
         if (tuples.size() > 1) {
@@ -359,7 +370,11 @@ public abstract class AbstractSqlConditionGroupExpression<C extends ConditionGro
      */
     @Override
     public <R> L ne(SerializableSupplier<R> property, QueryPolicy queryPolicy) {
-        List<Tuple2<String, Optional<R>>> tuples = supplier(LambdaUtils.getSerializableSupplierLambdaInfo(property));
+        SerializableSupplierLambdaInfo<R> lambdaInfo = LambdaUtils.getSerializableSupplierLambdaInfo(property);
+        if (property.get() == null) {
+            return ne(lambdaInfo.getSerializedLambdaInfo().getPropertyName(), property.get(), queryPolicy);
+        }
+        List<Tuple2<String, Optional<R>>> tuples = supplier(lambdaInfo);
         L l = null;
         C c = (C) this;
         if (tuples.size() > 1) {
@@ -1015,7 +1030,7 @@ public abstract class AbstractSqlConditionGroupExpression<C extends ConditionGro
      * {@inheritDoc}
      */
     @Override
-    public EnumExpression<C, L> propertyEnum(String name) {
+    public <E extends Enum<?>> EnumExpression<E, C, L> propertyEnum(String name) {
         return new SimpleEnumExpression<>(ClassMappingUtils.getColumnName(name, classMapping), this);
     }
 
@@ -1557,39 +1572,7 @@ public abstract class AbstractSqlConditionGroupExpression<C extends ConditionGro
      * {@inheritDoc}
      */
     @Override
-    public <T, R extends Enum<?>> EnumExpression<C, L> property(ReturnEnumFunction<T, R> name) {
-        return propertyEnum(getPropertyName(name));
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public <T> StringExpression<C, L> propertyString(SerializableFunction<T, String> name) {
-        return propertyString(getPropertyName(name));
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public <T, R extends Number> NumberExpression<R, C, L> propertyNumber(SerializableFunction<T, R> name) {
-        return new SimpleNumberExpression<>(ClassMappingUtils.getColumnName(getPropertyName(name), classMapping), this);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public <T, R extends Date> DateExpression<R, C, L> propertyDate(SerializableFunction<T, R> name) {
-        return (DateExpression<R, C, L>) propertyDate(getPropertyName(name));
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public <T, R extends Enum<?>> EnumExpression<C, L> propertyEnum(SerializableFunction<T, R> name) {
+    public <T, R extends Enum<?>> EnumExpression<R, C, L> property(ReturnEnumFunction<T, R> name) {
         return propertyEnum(getPropertyName(name));
     }
 
@@ -1635,7 +1618,7 @@ public abstract class AbstractSqlConditionGroupExpression<C extends ConditionGro
     // ********************************************************************
 
     /** The class mapping. */
-    protected ClassMapping<?> classMapping;
+    protected JdbcClassMapping<?> classMapping;
 
     /** The query alias. */
     private String queryAlias;

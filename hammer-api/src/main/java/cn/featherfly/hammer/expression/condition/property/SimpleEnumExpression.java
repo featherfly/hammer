@@ -10,8 +10,8 @@ import cn.featherfly.hammer.expression.condition.LogicExpression;
  *
  * @author zhongj
  */
-public class SimpleEnumExpression<C extends ConditionsExpression<C, L>, L extends LogicExpression<C, L>>
-        implements EnumExpression<C, L> {
+public class SimpleEnumExpression<E extends Enum<?>, C extends ConditionsExpression<C, L>,
+        L extends LogicExpression<C, L>> implements EnumExpression<E, C, L> {
 
     private String name;
 
@@ -31,7 +31,7 @@ public class SimpleEnumExpression<C extends ConditionsExpression<C, L>, L extend
      * {@inheritDoc}
      */
     @Override
-    public L eq(Enum<?> value) {
+    public L eq(E value) {
         return expression.eq(name, value);
     }
 
@@ -47,7 +47,7 @@ public class SimpleEnumExpression<C extends ConditionsExpression<C, L>, L extend
      * {@inheritDoc}
      */
     @Override
-    public L ne(Enum<?> value) {
+    public L ne(E value) {
         return expression.ne(name, value);
     }
 
@@ -55,7 +55,7 @@ public class SimpleEnumExpression<C extends ConditionsExpression<C, L>, L extend
      * {@inheritDoc}
      */
     @Override
-    public L in(Enum<?> value) {
+    public L in(E value) {
         return expression.in(name, value);
     }
 
@@ -63,7 +63,7 @@ public class SimpleEnumExpression<C extends ConditionsExpression<C, L>, L extend
      * {@inheritDoc}
      */
     @Override
-    public L nin(Enum<?> value) {
+    public L nin(E value) {
         return expression.nin(name, value);
     }
 
@@ -103,7 +103,7 @@ public class SimpleEnumExpression<C extends ConditionsExpression<C, L>, L extend
      * {@inheritDoc}
      */
     @Override
-    public L eq(Enum<?> value, QueryPolicy queryPolicy) {
+    public L eq(E value, QueryPolicy queryPolicy) {
         return expression.eq(name, value, queryPolicy);
     }
 
@@ -111,7 +111,7 @@ public class SimpleEnumExpression<C extends ConditionsExpression<C, L>, L extend
      * {@inheritDoc}
      */
     @Override
-    public L ne(Enum<?> value, QueryPolicy queryPolicy) {
+    public L ne(E value, QueryPolicy queryPolicy) {
         return expression.ne(name, value, queryPolicy);
     }
 }
