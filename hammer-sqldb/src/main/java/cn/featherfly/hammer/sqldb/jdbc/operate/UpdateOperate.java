@@ -5,9 +5,9 @@ import java.util.Map;
 import com.speedment.common.tuple.Tuple2;
 
 import cn.featherfly.common.db.mapping.ClassMappingUtils;
+import cn.featherfly.common.db.mapping.JdbcClassMapping;
 import cn.featherfly.common.db.mapping.SqlTypeMappingManager;
 import cn.featherfly.common.db.metadata.DatabaseMetadata;
-import cn.featherfly.common.repository.mapping.ClassMapping;
 import cn.featherfly.hammer.sqldb.jdbc.Jdbc;
 
 /**
@@ -26,7 +26,7 @@ public class UpdateOperate<T> extends AbstractExecuteOperate<T> {
      * @param classMapping          classMapping
      * @param sqlTypeMappingManager the sql type mapping manager
      */
-    public UpdateOperate(Jdbc jdbc, ClassMapping<T> classMapping, SqlTypeMappingManager sqlTypeMappingManager) {
+    public UpdateOperate(Jdbc jdbc, JdbcClassMapping<T> classMapping, SqlTypeMappingManager sqlTypeMappingManager) {
         super(jdbc, classMapping, sqlTypeMappingManager);
     }
 
@@ -38,7 +38,7 @@ public class UpdateOperate<T> extends AbstractExecuteOperate<T> {
      * @param sqlTypeMappingManager the sql type mapping manager
      * @param dataBase              具体库
      */
-    public UpdateOperate(Jdbc jdbc, ClassMapping<T> classMapping, SqlTypeMappingManager sqlTypeMappingManager,
+    public UpdateOperate(Jdbc jdbc, JdbcClassMapping<T> classMapping, SqlTypeMappingManager sqlTypeMappingManager,
             String dataBase) {
         super(jdbc, classMapping, sqlTypeMappingManager, dataBase);
     }
@@ -51,7 +51,7 @@ public class UpdateOperate<T> extends AbstractExecuteOperate<T> {
      * @param sqlTypeMappingManager the sql type mapping manager
      * @param databaseMetadata      the database metadata
      */
-    public UpdateOperate(Jdbc jdbc, ClassMapping<T> classMapping, SqlTypeMappingManager sqlTypeMappingManager,
+    public UpdateOperate(Jdbc jdbc, JdbcClassMapping<T> classMapping, SqlTypeMappingManager sqlTypeMappingManager,
             DatabaseMetadata databaseMetadata) {
         super(jdbc, classMapping, sqlTypeMappingManager, databaseMetadata);
     }

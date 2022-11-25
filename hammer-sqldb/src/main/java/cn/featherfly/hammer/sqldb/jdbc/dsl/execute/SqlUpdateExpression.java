@@ -7,15 +7,12 @@ import java.util.function.Predicate;
 
 import cn.featherfly.common.constant.Chars;
 import cn.featherfly.common.db.builder.dml.basic.SqlUpdateSetBasicBuilder;
+import cn.featherfly.common.db.mapping.JdbcClassMapping;
 import cn.featherfly.common.repository.IgnorePolicy;
-import cn.featherfly.common.repository.mapping.ClassMapping;
 import cn.featherfly.hammer.sqldb.jdbc.Jdbc;
 
 /**
- * <p>
- * SqlDeleteExpression
- * </p>
- * .
+ * SqlDeleteExpression .
  *
  * @author zhongj
  */
@@ -51,7 +48,7 @@ public class SqlUpdateExpression extends SqlConditionGroupExpression {
      * @param builder      the builder
      * @param classMapping the class mapping
      */
-    public SqlUpdateExpression(Jdbc jdbc, SqlUpdateSetBasicBuilder builder, ClassMapping<?> classMapping) {
+    public SqlUpdateExpression(Jdbc jdbc, SqlUpdateSetBasicBuilder builder, JdbcClassMapping<?> classMapping) {
         this(jdbc, builder, classMapping, IgnorePolicy.NONE);
     }
 
@@ -63,7 +60,7 @@ public class SqlUpdateExpression extends SqlConditionGroupExpression {
      * @param classMapping the class mapping
      * @param ignorePolicy the ignore policy
      */
-    public SqlUpdateExpression(Jdbc jdbc, SqlUpdateSetBasicBuilder builder, ClassMapping<?> classMapping,
+    public SqlUpdateExpression(Jdbc jdbc, SqlUpdateSetBasicBuilder builder, JdbcClassMapping<?> classMapping,
             Predicate<Object> ignorePolicy) {
         super(jdbc, null, classMapping, ignorePolicy);
         this.builder = builder;

@@ -1011,16 +1011,6 @@ public class UserQueryConditionGroupExpression
      * {@inheritDoc}
      */
     @Override
-    public EnumExpression<UserQueryConditionGroupExpression, UserQueryConditionGroupExpression> propertyEnum(
-            String name) {
-        // YUFEI_TODO Auto-generated method stub
-        return null;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
     public <T, R> ObjectExpression<UserQueryConditionGroupExpression, UserQueryConditionGroupExpression> property(
             SerializableFunction<T, R> name) {
         // YUFEI_TODO Auto-generated method stub
@@ -1055,60 +1045,6 @@ public class UserQueryConditionGroupExpression
     public <T,
             R extends Date> DateExpression<R, UserQueryConditionGroupExpression, UserQueryConditionGroupExpression> property(
                     ReturnDateFunction<T, R> name) {
-        // YUFEI_TODO Auto-generated method stub
-        return null;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public <T,
-            R extends Enum<?>> EnumExpression<UserQueryConditionGroupExpression, UserQueryConditionGroupExpression> property(
-                    ReturnEnumFunction<T, R> name) {
-        // YUFEI_TODO Auto-generated method stub
-        return null;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public <T> StringExpression<UserQueryConditionGroupExpression, UserQueryConditionGroupExpression> propertyString(
-            SerializableFunction<T, String> name) {
-        // YUFEI_TODO Auto-generated method stub
-        return null;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public <T,
-            R extends Number> NumberExpression<R, UserQueryConditionGroupExpression, UserQueryConditionGroupExpression> propertyNumber(
-                    SerializableFunction<T, R> name) {
-        // YUFEI_TODO Auto-generated method stub
-        return null;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public <T,
-            R extends Date> DateExpression<R, UserQueryConditionGroupExpression, UserQueryConditionGroupExpression> propertyDate(
-                    SerializableFunction<T, R> name) {
-        // YUFEI_TODO Auto-generated method stub
-        return null;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public <T,
-            R extends Enum<?>> EnumExpression<UserQueryConditionGroupExpression, UserQueryConditionGroupExpression> propertyEnum(
-                    SerializableFunction<T, R> name) {
         // YUFEI_TODO Auto-generated method stub
         return null;
     }
@@ -1451,6 +1387,27 @@ public class UserQueryConditionGroupExpression
     @Override
     public UserQueryConditionGroupExpression or(
             Function<UserQueryConditionGroupExpression, UserQueryConditionGroupExpression> group) {
+        // YUFEI_TODO Auto-generated method stub
+        return null;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public <R extends Enum<?>> EnumExpression<R, UserQueryConditionGroupExpression, UserQueryConditionGroupExpression> propertyEnum(
+            String name) {
+        // YUFEI_TODO Auto-generated method stub
+        return null;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public <T,
+            R extends Enum<?>> EnumExpression<R, UserQueryConditionGroupExpression, UserQueryConditionGroupExpression> property(
+                    ReturnEnumFunction<T, R> name) {
         // YUFEI_TODO Auto-generated method stub
         return null;
     }

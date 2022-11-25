@@ -97,5 +97,5 @@ public interface EntityPropertyExpression<E, C extends ConditionExpression, L ex
      * @param name the name
      * @return the enum expression
      */
-    <R extends Enum<?>> EnumExpression<C, L> property(ReturnEnumFunction<E, R> name);
+    <R extends Enum<?>> EnumExpression<R, C, L> property(ReturnEnumFunction<E, R> name);
 }

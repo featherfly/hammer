@@ -13,9 +13,7 @@ import cn.featherfly.hammer.expression.query.QueryLimitExecutor;
 import cn.featherfly.hammer.expression.query.QueryWithEntityExpression;
 
 /**
- * <p>
- * UserUpdate
- * </p>
+ * The Class UserQueryWithEntity.
  *
  * @author zhongj
  */
@@ -27,15 +25,6 @@ public class UserQueryWithEntity implements
      */
     @Override
     public UserQueryRepositoryConditionGroupExpression where() {
-        // YUFEI_TODO Auto-generated method stub
-        return null;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public UserQueryWithOn with(String repositoryName) {
         // YUFEI_TODO Auto-generated method stub
         return null;
     }
@@ -152,7 +141,8 @@ public class UserQueryWithEntity implements
      * {@inheritDoc}
      */
     @Override
-    public <T> UserQueryWithOn with(Class<T> repositoryType) {
+    public UserQueryRepositoryConditionGroupExpression where(
+            Consumer<UserQueryRepositoryConditionGroupExpression> consumer) {
         // YUFEI_TODO Auto-generated method stub
         return null;
     }
@@ -161,8 +151,16 @@ public class UserQueryWithEntity implements
      * {@inheritDoc}
      */
     @Override
-    public UserQueryRepositoryConditionGroupExpression where(
-            Consumer<UserQueryRepositoryConditionGroupExpression> consumer) {
+    public UserQueryWithOn join(String repositoryName) {
+        // YUFEI_TODO Auto-generated method stub
+        return null;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public <T> UserQueryWithOn join(Class<T> repositoryType) {
         // YUFEI_TODO Auto-generated method stub
         return null;
     }

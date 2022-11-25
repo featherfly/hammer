@@ -34,6 +34,10 @@ public class Tree {
     @ManyToOne
     private Tree parent;
 
+    @Column(name = "user_id")
+    @ManyToOne
+    private User user;
+
     /**
      * 返回id
      *
@@ -89,11 +93,28 @@ public class Tree {
     }
 
     /**
+     * get user value
+     *
+     * @return user
+     */
+    public User getUser() {
+        return user;
+    }
+
+    /**
+     * set user value
+     *
+     * @param user user
+     */
+    public void setUser(User user) {
+        this.user = user;
+    }
+
+    /**
      * {@inheritDoc}
      */
     @Override
     public String toString() {
-        return "Tree [id=" + id + ", name=" + name + ", parent=" + parent + "]";
+        return "Tree [id=" + id + ", name=" + name + ", parent=" + parent + ", user=" + user + "]";
     }
-
 }

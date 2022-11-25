@@ -61,7 +61,10 @@ public interface SqlQueryEntity extends QueryEntity {
      * @param repositoryName the repository name
      * @return the sql query with on
      */
-    SqlQueryWithOn join(String repositoryName);
+    @Override
+    default SqlQueryWithOn join(String repositoryName) {
+        return join(Join.INNER_JOIN, repositoryName);
+    }
 
     /**
      * Join.
@@ -79,7 +82,10 @@ public interface SqlQueryEntity extends QueryEntity {
      * @param repositoryType the repository type
      * @return the sql query with on
      */
-    <T> SqlQueryWithOn join(Class<T> repositoryType);
+    @Override
+    default <T> SqlQueryWithOn join(Class<T> repositoryType) {
+        return join(Join.INNER_JOIN, repositoryType);
+    }
 
     /**
      * Join.

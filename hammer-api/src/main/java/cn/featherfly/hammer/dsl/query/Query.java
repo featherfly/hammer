@@ -1,6 +1,7 @@
 
 package cn.featherfly.hammer.dsl.query;
 
+import cn.featherfly.hammer.dsl.query.type.EntityQueryEntity;
 import cn.featherfly.hammer.expression.query.QueryExpression;
 
 /**

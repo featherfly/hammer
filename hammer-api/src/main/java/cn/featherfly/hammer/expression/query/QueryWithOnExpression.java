@@ -5,18 +5,22 @@ import cn.featherfly.hammer.expression.RepositoryConditionGroupLogicExpression;
 import cn.featherfly.hammer.expression.condition.RepositoryConditionsGroupExpression;
 
 /**
- * <p>
- * dsl for query data
- * </p>
+ * query with on expression.
  *
  * @author zhongj
+ * @param <QW>  the generic type
+ * @param <QWO> the generic type
+ * @param <QWE> the generic type
+ * @param <C>   the generic type
+ * @param <L>   the generic type
  */
 public interface QueryWithOnExpression<QW extends QueryWithExpression<QW, QWO, QWE, C, L>,
         QWO extends QueryWithOnExpression<QW, QWO, QWE, C, L>,
         QWE extends QueryWithEntityExpression<QW, QWO, QWE, C, L>, C extends RepositoryConditionsGroupExpression<C, L>,
         L extends RepositoryConditionGroupLogicExpression<C, L>> {
+
     /**
-     * on
+     * on.
      *
      * @param propertyName with repository property name (use repository name
      *                     invoke with method argu with(repositoryName))
@@ -25,7 +29,7 @@ public interface QueryWithOnExpression<QW extends QueryWithExpression<QW, QWO, Q
     QWE on(String propertyName);
 
     /**
-     * on
+     * on.
      *
      * @param propertyName               with repository property name (use
      *                                   repository name invoke with method argu
@@ -38,7 +42,7 @@ public interface QueryWithOnExpression<QW extends QueryWithExpression<QW, QWO, Q
     QWE on(String propertyName, String findRepositoryPropertyName);
 
     /**
-     * on
+     * on.
      *
      * @param propertyName           with repository property name (use
      *                               repository name invoke with method argu
