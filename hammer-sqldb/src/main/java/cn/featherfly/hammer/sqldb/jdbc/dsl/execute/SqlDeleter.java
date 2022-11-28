@@ -54,10 +54,10 @@ public class SqlDeleter implements Deleter {
      * {@inheritDoc}
      */
     @Override
-    public SqlDelete delete(Class<?> repositType) {
+    public <E> EntitySqlDelete<E> delete(Class<E> repositType) {
         if (mappingFactory == null) {
             throw new SqldbHammerException("mappingFactory is null");
         }
-        return new SqlDelete(mappingFactory.getClassMapping(repositType), jdbc);
+        return new EntitySqlDelete<>(mappingFactory.getClassMapping(repositType), jdbc);
     }
 }

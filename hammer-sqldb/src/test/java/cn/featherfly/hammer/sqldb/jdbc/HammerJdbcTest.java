@@ -600,8 +600,31 @@ public class HammerJdbcTest extends JdbcTestBase {
         Role r3 = role();
         Role r4 = role();
         hammer.save(r, r2, r3, r4);
-        hammer.delete(Role.class).where().in(Role::getId, new Integer[] { r.getId(), r2.getId() }).or()
-                .eq("id", r3.getId()).or().ge("id", r4.getId()).execute();
+
+        hammer.delete(Role.class).where().in(Role::getId, r2.getId()).or().eq(Role::getId, r3.getId()).or()
+                .ge(Role::getId, r4.getId()).execute();
+
+        r = hammer.get(r);
+        r2 = hammer.get(r2);
+        r3 = hammer.get(r3);
+        r4 = hammer.get(r4);
+        assertNotNull(r);
+        assertNull(r2);
+        assertNull(r3);
+        assertNull(r4);
+
+    }
+
+    @Test
+    public void testDeleter1() {
+        Role r = role();
+        Role r2 = role();
+        Role r3 = role();
+        Role r4 = role();
+        hammer.save(r, r2, r3, r4);
+
+        hammer.delete(Role.class).where().in(Role::getId, ArrayUtils.toList(r.getId(), r2.getId())).or()
+                .eq(Role::getId, r3.getId()).or().ge(Role::getId, r4.getId()).execute();
 
         r = hammer.get(r);
         r2 = hammer.get(r2);
@@ -611,6 +634,29 @@ public class HammerJdbcTest extends JdbcTestBase {
         assertNull(r2);
         assertNull(r3);
         assertNull(r4);
+
+    }
+
+    @Test
+    public void testDeleter2() {
+        Role r = role();
+        Role r2 = role();
+        Role r3 = role();
+        Role r4 = role();
+        hammer.save(r, r2, r3, r4);
+
+        hammer.delete(Role.class).where().in(Role::getId, new Integer[] { r.getId(), r2.getId() }).or()
+                .eq(Role::getId, r3.getId()).or().ge(Role::getId, r4.getId()).execute();
+
+        r = hammer.get(r);
+        r2 = hammer.get(r2);
+        r3 = hammer.get(r3);
+        r4 = hammer.get(r4);
+        assertNull(r);
+        assertNull(r2);
+        assertNull(r3);
+        assertNull(r4);
+
     }
 
     @Test

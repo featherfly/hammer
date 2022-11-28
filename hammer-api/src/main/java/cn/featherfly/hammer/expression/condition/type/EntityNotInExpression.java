@@ -29,7 +29,7 @@ public interface EntityNotInExpression<E, C extends ConditionExpression, L exten
      * @param value 参数值
      * @return LogicExpression
      */
-    <R> L nin(SerializableFunction<E, R> name, R value);
+    L nin(SerializableFunction<E, ?> name, Object value);
 
     /**
      * 不包含指定，sql中的not in.
@@ -39,7 +39,7 @@ public interface EntityNotInExpression<E, C extends ConditionExpression, L exten
      * @param value 参数值
      * @return LogicExpression
      */
-    <R> L nin(SerializableFunction<E, R> name, @SuppressWarnings("unchecked") R... value);
+    <R> L nin(SerializableFunction<E, R> name, R[] value);
 
     /**
      * 不包含指定，sql中的not in.

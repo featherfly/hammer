@@ -4,9 +4,7 @@ package cn.featherfly.hammer.dsl.execute;
 import cn.featherfly.hammer.expression.ConditionExpression;
 
 /**
- * <p>
- * Condition Expression
- * </p>
+ * executable condition expression,.
  *
  * @author zhongj
  */

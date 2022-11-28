@@ -29,6 +29,7 @@ import cn.featherfly.common.repository.IgnorePolicy;
 import cn.featherfly.common.structure.page.Page;
 import cn.featherfly.common.structure.page.PaginationResults;
 import cn.featherfly.hammer.dsl.execute.Delete;
+import cn.featherfly.hammer.dsl.execute.EntityDelete;
 import cn.featherfly.hammer.dsl.execute.Update;
 import cn.featherfly.hammer.dsl.query.QueryEntity;
 import cn.featherfly.hammer.dsl.query.type.EntityQueryEntity;
@@ -666,7 +667,7 @@ public class SqldbHammerImpl implements SqldbHammer {
      * {@inheritDoc}
      */
     @Override
-    public <E> Delete delete(Class<E> entityType) {
+    public <E> EntityDelete<E> delete(Class<E> entityType) {
         SqlDeleter deleter = new SqlDeleter(jdbc, mappingFactory);
         return deleter.delete(entityType);
     }
