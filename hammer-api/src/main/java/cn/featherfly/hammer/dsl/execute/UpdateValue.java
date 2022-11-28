@@ -4,9 +4,7 @@ package cn.featherfly.hammer.dsl.execute;
 import cn.featherfly.hammer.expression.execute.UpdateValueExpression;
 
 /**
- * <p>
- * update value
- * </p>
+ * update value.
  *
  * @author zhongj
  */

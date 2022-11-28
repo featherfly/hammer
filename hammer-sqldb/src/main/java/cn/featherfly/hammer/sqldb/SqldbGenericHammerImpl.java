@@ -7,7 +7,7 @@ import java.util.List;
 import cn.featherfly.common.lang.ClassUtils;
 import cn.featherfly.common.repository.IgnorePolicy;
 import cn.featherfly.hammer.GenericHammer;
-import cn.featherfly.hammer.dsl.execute.Delete;
+import cn.featherfly.hammer.dsl.execute.EntityDelete;
 import cn.featherfly.hammer.dsl.execute.Update;
 import cn.featherfly.hammer.dsl.query.type.EntityQueryEntity;
 
@@ -132,7 +132,7 @@ public abstract class SqldbGenericHammerImpl<E, ID extends Serializable> impleme
      * {@inheritDoc}
      */
     @Override
-    public Delete delete() {
+    public EntityDelete<E> delete() {
         return hammer.delete(type);
     }
 

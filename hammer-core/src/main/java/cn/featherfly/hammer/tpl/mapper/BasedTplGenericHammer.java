@@ -8,11 +8,11 @@ import java.util.function.Function;
 import cn.featherfly.common.lang.CollectionUtils;
 import cn.featherfly.common.lang.function.SerializableFunction;
 import cn.featherfly.common.lang.function.SerializableSupplier;
-import cn.featherfly.common.repository.IgnorePolicy;
 import cn.featherfly.common.operator.LogicOperator;
+import cn.featherfly.common.repository.IgnorePolicy;
 import cn.featherfly.hammer.GenericHammer;
 import cn.featherfly.hammer.Hammer;
-import cn.featherfly.hammer.dsl.execute.Delete;
+import cn.featherfly.hammer.dsl.execute.EntityDelete;
 import cn.featherfly.hammer.dsl.execute.Update;
 import cn.featherfly.hammer.dsl.query.type.EntityQueryEntity;
 
@@ -40,7 +40,7 @@ public class BasedTplGenericHammer<E, ID extends Serializable> implements Generi
      * {@inheritDoc}
      */
     @Override
-    public Delete delete() {
+    public EntityDelete<E> delete() {
         return hammer.delete(type);
     }
 

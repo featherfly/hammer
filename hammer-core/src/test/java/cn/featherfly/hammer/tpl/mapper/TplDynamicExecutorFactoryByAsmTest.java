@@ -26,6 +26,7 @@ import cn.featherfly.common.structure.page.Page;
 import cn.featherfly.common.structure.page.PaginationResults;
 import cn.featherfly.hammer.Hammer;
 import cn.featherfly.hammer.dsl.execute.Delete;
+import cn.featherfly.hammer.dsl.execute.EntityDelete;
 import cn.featherfly.hammer.dsl.execute.Update;
 import cn.featherfly.hammer.dsl.query.QueryEntity;
 import cn.featherfly.hammer.dsl.query.type.EntityQueryEntity;
@@ -559,7 +560,7 @@ public class TplDynamicExecutorFactoryByAsmTest {
             }
 
             @Override
-            public <E> Delete delete(Class<E> entityType) {
+            public <E> EntityDelete<E> delete(Class<E> entityType) {
 
                 return null;
             }

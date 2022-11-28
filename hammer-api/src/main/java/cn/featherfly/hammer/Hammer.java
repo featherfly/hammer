@@ -9,9 +9,10 @@ import cn.featherfly.common.lang.AssertIllegalArgument;
 import cn.featherfly.common.lang.Lang;
 import cn.featherfly.common.lang.function.SerializableFunction;
 import cn.featherfly.common.lang.function.SerializableSupplier;
-import cn.featherfly.common.repository.IgnorePolicy;
 import cn.featherfly.common.operator.LogicOperator;
+import cn.featherfly.common.repository.IgnorePolicy;
 import cn.featherfly.hammer.dsl.execute.Delete;
+import cn.featherfly.hammer.dsl.execute.EntityDelete;
 import cn.featherfly.hammer.dsl.execute.Update;
 import cn.featherfly.hammer.dsl.query.QueryEntity;
 import cn.featherfly.hammer.dsl.query.type.EntityQueryConditionGroupExpression;
@@ -442,5 +443,5 @@ public interface Hammer extends TplExecutor {
      * @param entityType update for entityType
      * @return Delete
      */
-    <E> Delete delete(Class<E> entityType);
+    <E> EntityDelete<E> delete(Class<E> entityType);
 }
