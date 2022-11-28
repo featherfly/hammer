@@ -19,7 +19,7 @@ public class UserSqlQueryProperties
      * @param queryEntityProperties
      * @param mappingFactory
      */
-    public UserSqlQueryProperties(SqlQueryEntityProperties queryEntityProperties, JdbcMappingFactory mappingFactory) {
+    public UserSqlQueryProperties(SqlQueryEntity queryEntityProperties, JdbcMappingFactory mappingFactory) {
         super(queryEntityProperties, mappingFactory);
     }
 

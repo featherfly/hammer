@@ -67,7 +67,8 @@ public class SqlQuery implements Query {
      * {@inheritDoc}
      */
     @Override
-    public SqlQueryEntityProperties find(Repository repository) {
+    //    public SqlQueryEntityProperties find(Repository repository) {
+    public SqlQueryEntity find(Repository repository) {
         if (repository == null) {
             return null;
         }
@@ -89,7 +90,8 @@ public class SqlQuery implements Query {
      * {@inheritDoc}
      */
     @Override
-    public SqlQueryEntityProperties find(String tableName) {
+    //    public SqlQueryEntityProperties find(String tableName) {
+    public SqlQueryEntity find(String tableName) {
         return new SqlQueryEntityProperties(jdbc, databaseMetadata, tableName, mappingFactory, sqlPageFactory,
                 new AliasManager(), IgnorePolicy.EMPTY);
     }
@@ -98,7 +100,8 @@ public class SqlQuery implements Query {
      * {@inheritDoc}
      */
     @Override
-    public <E> EntitySqlQueryEntityProperties<E> find(Class<E> repositoryType) {
+    //    public <E> EntitySqlQueryEntityProperties<E> find(Class<E> repositoryType) {
+    public <E> EntitySqlQueryEntity<E> find(Class<E> repositoryType) {
         if (mappingFactory == null) {
             throw new SqldbHammerException("mappingFactory is null");
         }

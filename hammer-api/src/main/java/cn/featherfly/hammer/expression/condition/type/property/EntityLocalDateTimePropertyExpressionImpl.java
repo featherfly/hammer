@@ -6,7 +6,6 @@ import java.time.LocalDateTime;
 import cn.featherfly.common.lang.function.SerializableFunction;
 import cn.featherfly.common.operator.QueryOperator.QueryPolicy;
 import cn.featherfly.hammer.expression.condition.LogicExpression;
-import cn.featherfly.hammer.expression.condition.property.LocalDateTimeExpression;
 import cn.featherfly.hammer.expression.condition.type.EntityConditionsExpression;
 
 /**
@@ -17,10 +16,10 @@ import cn.featherfly.hammer.expression.condition.type.EntityConditionsExpression
  * @param <C> the generic type
  * @param <L> the generic type
  */
-public class TypeLocalDateTimeExpression<E, C extends EntityConditionsExpression<E, C, L>,
+public class EntityLocalDateTimePropertyExpressionImpl<E, C extends EntityConditionsExpression<E, C, L>,
         L extends LogicExpression<C, L>>
-        extends AbstractTypeExpression<E, LocalDateTime, SerializableFunction<E, LocalDateTime>, C, L>
-        implements LocalDateTimeExpression<C, L> {
+        extends AbstractEntityPropertyExpression<E, LocalDateTime, SerializableFunction<E, LocalDateTime>, C, L>
+        implements EntityLocalDateTimePropertyExpression<E, C, L> {
 
     /**
      * Instantiates a new type date expression.
@@ -28,7 +27,7 @@ public class TypeLocalDateTimeExpression<E, C extends EntityConditionsExpression
      * @param property   the property
      * @param expression the expression
      */
-    public TypeLocalDateTimeExpression(SerializableFunction<E, LocalDateTime> property,
+    public EntityLocalDateTimePropertyExpressionImpl(SerializableFunction<E, LocalDateTime> property,
             EntityConditionsExpression<E, C, L> expression) {
         super(property, expression);
     }

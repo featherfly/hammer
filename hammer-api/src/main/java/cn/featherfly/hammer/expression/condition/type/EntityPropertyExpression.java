@@ -12,13 +12,13 @@ import cn.featherfly.common.lang.function.ReturnNumberFunction;
 import cn.featherfly.common.lang.function.ReturnStringFunction;
 import cn.featherfly.hammer.expression.condition.ConditionExpression;
 import cn.featherfly.hammer.expression.condition.LogicExpression;
-import cn.featherfly.hammer.expression.condition.property.DateExpression;
-import cn.featherfly.hammer.expression.condition.property.EnumExpression;
-import cn.featherfly.hammer.expression.condition.property.LocalDateExpression;
-import cn.featherfly.hammer.expression.condition.property.LocalDateTimeExpression;
-import cn.featherfly.hammer.expression.condition.property.LocalTimeExpression;
-import cn.featherfly.hammer.expression.condition.property.NumberExpression;
-import cn.featherfly.hammer.expression.condition.property.StringExpression;
+import cn.featherfly.hammer.expression.condition.type.property.EntityDatePropertyExpression;
+import cn.featherfly.hammer.expression.condition.type.property.EntityEnumPropertyExpression;
+import cn.featherfly.hammer.expression.condition.type.property.EntityLocalDatePropertyExpression;
+import cn.featherfly.hammer.expression.condition.type.property.EntityLocalDateTimePropertyExpression;
+import cn.featherfly.hammer.expression.condition.type.property.EntityLocalTimePropertyExpression;
+import cn.featherfly.hammer.expression.condition.type.property.EntityNumberPropertyExpression;
+import cn.featherfly.hammer.expression.condition.type.property.EntityStringPropertyExpression;
 
 /**
  * The Interface EntityPropertyExpression.
@@ -29,10 +29,8 @@ import cn.featherfly.hammer.expression.condition.property.StringExpression;
  * @param <L> the generic type
  */
 // IMPLSOON 后续来处理带类型的property
-//public interface EntityPropertyExpression<E, C extends EntityConditionsExpression<E, C, L>,
-//L extends LogicExpression<C, L>> extends ConditionExpression {
-public interface EntityPropertyExpression<E, C extends ConditionExpression, L extends LogicExpression<C, L>>
-        extends ConditionExpression {
+public interface EntityPropertyExpression<E, C extends EntityConditionsExpression<E, C, L>,
+        L extends LogicExpression<C, L>> extends ConditionExpression {
 
     //    /**
     //     * Property.
@@ -49,7 +47,7 @@ public interface EntityPropertyExpression<E, C extends ConditionExpression, L ex
      * @param name the name
      * @return the string expression
      */
-    StringExpression<C, L> property(ReturnStringFunction<E> name);
+    EntityStringPropertyExpression<E, C, L> property(ReturnStringFunction<E> name);
 
     /**
      * Property number.
@@ -58,7 +56,7 @@ public interface EntityPropertyExpression<E, C extends ConditionExpression, L ex
      * @param name the name
      * @return the number expression
      */
-    <R extends Number> NumberExpression<R, C, L> property(ReturnNumberFunction<E, R> name);
+    <R extends Number> EntityNumberPropertyExpression<E, R, C, L> property(ReturnNumberFunction<E, R> name);
 
     /**
      * Property date.
@@ -67,7 +65,15 @@ public interface EntityPropertyExpression<E, C extends ConditionExpression, L ex
      * @param name the name
      * @return the date expression
      */
-    <R extends Date> DateExpression<R, C, L> property(ReturnDateFunction<E, R> name);
+    <R extends Date> EntityDatePropertyExpression<E, R, C, L> property(ReturnDateFunction<E, R> name);
+
+    /**
+     * Property LocalDate.
+     *
+     * @param name the name
+     * @return the date expression
+     */
+    EntityLocalDatePropertyExpression<E, C, L> property(ReturnLocalDateFunction<E> name);
 
     /**
      * Property date.
@@ -75,7 +81,7 @@ public interface EntityPropertyExpression<E, C extends ConditionExpression, L ex
      * @param name the name
      * @return the date expression
      */
-    LocalDateExpression<C, L> property(ReturnLocalDateFunction<E> name);
+    EntityLocalDateTimePropertyExpression<E, C, L> property(ReturnLocalDateTimeFunction<E> name);
 
     /**
      * Property date.
@@ -83,15 +89,7 @@ public interface EntityPropertyExpression<E, C extends ConditionExpression, L ex
      * @param name the name
      * @return the date expression
      */
-    LocalDateTimeExpression<C, L> property(ReturnLocalDateTimeFunction<E> name);
-
-    /**
-     * Property date.
-     *
-     * @param name the name
-     * @return the date expression
-     */
-    LocalTimeExpression<C, L> property(ReturnLocalTimeFunction<E> name);
+    EntityLocalTimePropertyExpression<E, C, L> property(ReturnLocalTimeFunction<E> name);
 
     /**
      * Property enum.
@@ -100,5 +98,5 @@ public interface EntityPropertyExpression<E, C extends ConditionExpression, L ex
      * @param name the name
      * @return the enum expression
      */
-    <R extends Enum<?>> EnumExpression<R, C, L> property(ReturnEnumFunction<E, R> name);
+    <R extends Enum<R>> EntityEnumPropertyExpression<E, R, C, L> property(ReturnEnumFunction<E, R> name);
 }
