@@ -46,20 +46,20 @@ import cn.featherfly.common.operator.QueryOperator.QueryPolicy;
 import cn.featherfly.hammer.expression.EntityConditionGroupExpression;
 import cn.featherfly.hammer.expression.EntityConditionGroupLogicExpression;
 import cn.featherfly.hammer.expression.condition.ParamedExpression;
-import cn.featherfly.hammer.expression.condition.property.DateExpression;
-import cn.featherfly.hammer.expression.condition.property.EnumExpression;
-import cn.featherfly.hammer.expression.condition.property.LocalDateExpression;
-import cn.featherfly.hammer.expression.condition.property.LocalDateTimeExpression;
-import cn.featherfly.hammer.expression.condition.property.LocalTimeExpression;
-import cn.featherfly.hammer.expression.condition.property.NumberExpression;
-import cn.featherfly.hammer.expression.condition.property.StringExpression;
-import cn.featherfly.hammer.expression.condition.type.property.TypeDateExpression;
-import cn.featherfly.hammer.expression.condition.type.property.TypeEnumExpression;
-import cn.featherfly.hammer.expression.condition.type.property.TypeLocalDateExpression;
-import cn.featherfly.hammer.expression.condition.type.property.TypeLocalDateTimeExpression;
-import cn.featherfly.hammer.expression.condition.type.property.TypeLocalTimeExpression;
-import cn.featherfly.hammer.expression.condition.type.property.TypeNumberExpression;
-import cn.featherfly.hammer.expression.condition.type.property.TypeStringExpression;
+import cn.featherfly.hammer.expression.condition.type.property.EntityDatePropertyExpression;
+import cn.featherfly.hammer.expression.condition.type.property.EntityDatePropertyExpressionImpl;
+import cn.featherfly.hammer.expression.condition.type.property.EntityEnumPropertyExpression;
+import cn.featherfly.hammer.expression.condition.type.property.EntityEnumPropertyExpressionImpl;
+import cn.featherfly.hammer.expression.condition.type.property.EntityLocalDatePropertyExpression;
+import cn.featherfly.hammer.expression.condition.type.property.EntityLocalDatePropertyExpressionImpl;
+import cn.featherfly.hammer.expression.condition.type.property.EntityLocalDateTimePropertyExpression;
+import cn.featherfly.hammer.expression.condition.type.property.EntityLocalDateTimePropertyExpressionImpl;
+import cn.featherfly.hammer.expression.condition.type.property.EntityLocalTimePropertyExpression;
+import cn.featherfly.hammer.expression.condition.type.property.EntityLocalTimePropertyExpressionImpl;
+import cn.featherfly.hammer.expression.condition.type.property.EntityNumberPropertyExpression;
+import cn.featherfly.hammer.expression.condition.type.property.EntityNumberPropertyExpressionImpl;
+import cn.featherfly.hammer.expression.condition.type.property.EntityStringPropertyExpression;
+import cn.featherfly.hammer.expression.condition.type.property.EntityStringPropertyExpressionImpl;
 import cn.featherfly.hammer.sqldb.jdbc.SqlPageFactory;
 import cn.featherfly.hammer.sqldb.jdbc.dsl.query.EntitySqlQuery;
 
@@ -1528,57 +1528,56 @@ public abstract class AbstractEntitySqlConditionGroupExpression<E, C extends Ent
      * {@inheritDoc}
      */
     @Override
-    public StringExpression<C, L> property(ReturnStringFunction<E> name) {
-        return new TypeStringExpression<>(name, this);
+    public EntityStringPropertyExpression<E, C, L> property(ReturnStringFunction<E> name) {
+        return new EntityStringPropertyExpressionImpl<>(name, this);
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public <R extends Number> NumberExpression<R, C, L> property(ReturnNumberFunction<E, R> name) {
-        return new TypeNumberExpression<>(name, this);
+    public <R extends Number> EntityNumberPropertyExpression<E, R, C, L> property(ReturnNumberFunction<E, R> name) {
+        return new EntityNumberPropertyExpressionImpl<>(name, this);
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public LocalDateExpression<C, L> property(ReturnLocalDateFunction<E> name) {
-        return new TypeLocalDateExpression<>(name, this);
+    public EntityLocalDatePropertyExpression<E, C, L> property(ReturnLocalDateFunction<E> name) {
+        return new EntityLocalDatePropertyExpressionImpl<>(name, this);
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public LocalDateTimeExpression<C, L> property(ReturnLocalDateTimeFunction<E> name) {
-        return new TypeLocalDateTimeExpression<>(name, this);
+    public EntityLocalDateTimePropertyExpression<E, C, L> property(ReturnLocalDateTimeFunction<E> name) {
+        return new EntityLocalDateTimePropertyExpressionImpl<>(name, this);
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public LocalTimeExpression<C, L> property(ReturnLocalTimeFunction<E> name) {
-        return new TypeLocalTimeExpression<>(name, this);
+    public EntityLocalTimePropertyExpression<E, C, L> property(ReturnLocalTimeFunction<E> name) {
+        return new EntityLocalTimePropertyExpressionImpl<>(name, this);
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public <R extends Date> DateExpression<R, C, L> property(ReturnDateFunction<E, R> name) {
-        return new TypeDateExpression<>(name, this);
+    public <R extends Date> EntityDatePropertyExpression<E, R, C, L> property(ReturnDateFunction<E, R> name) {
+        return new EntityDatePropertyExpressionImpl<>(name, this);
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public <R extends Enum<?>> EnumExpression<R, C, L> property(ReturnEnumFunction<E, R> name) {
-        // IMPLSOON 这里后续来实现
-        return new TypeEnumExpression<>(name, this);
+    public <R extends Enum<R>> EntityEnumPropertyExpression<E, R, C, L> property(ReturnEnumFunction<E, R> name) {
+        return new EntityEnumPropertyExpressionImpl<>(name, this);
     }
 
     /**

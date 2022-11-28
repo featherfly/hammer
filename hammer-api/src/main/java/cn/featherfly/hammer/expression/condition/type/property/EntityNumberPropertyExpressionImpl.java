@@ -1,42 +1,39 @@
 
 package cn.featherfly.hammer.expression.condition.type.property;
 
-import java.time.LocalDate;
-
 import cn.featherfly.common.lang.function.SerializableFunction;
 import cn.featherfly.common.operator.QueryOperator.QueryPolicy;
 import cn.featherfly.hammer.expression.condition.LogicExpression;
-import cn.featherfly.hammer.expression.condition.property.LocalDateExpression;
 import cn.featherfly.hammer.expression.condition.type.EntityConditionsExpression;
 
 /**
- * The Class TypeDateExpression.
+ * The Class TypeNumberExpression.
  *
  * @author zhongj
  * @param <E> the element type
+ * @param <N> the number type
  * @param <C> the generic type
  * @param <L> the generic type
  */
-public class TypeLocalDateExpression<E, C extends EntityConditionsExpression<E, C, L>, L extends LogicExpression<C, L>>
-        extends AbstractTypeExpression<E, LocalDate, SerializableFunction<E, LocalDate>, C, L>
-        implements LocalDateExpression<C, L> {
+public class EntityNumberPropertyExpressionImpl<E, N extends Number, C extends EntityConditionsExpression<E, C, L>,
+        L extends LogicExpression<C, L>> extends AbstractEntityPropertyExpression<E, N, SerializableFunction<E, N>, C, L>
+        implements EntityNumberPropertyExpression<E, N, C, L> {
 
     /**
-     * Instantiates a new type date expression.
+     * Instantiates a new type number expression.
      *
-     * @param property   the property
+     * @param name       the name
      * @param expression the expression
      */
-    public TypeLocalDateExpression(SerializableFunction<E, LocalDate> property,
-            EntityConditionsExpression<E, C, L> expression) {
-        super(property, expression);
+    public EntityNumberPropertyExpressionImpl(SerializableFunction<E, N> name, EntityConditionsExpression<E, C, L> expression) {
+        super(name, expression);
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public L eq(LocalDate value) {
+    public L eq(N value) {
         return expression.eq(name, value);
     }
 
@@ -52,7 +49,7 @@ public class TypeLocalDateExpression<E, C extends EntityConditionsExpression<E, 
      * {@inheritDoc}
      */
     @Override
-    public L ne(LocalDate value) {
+    public L ne(N value) {
         return expression.ne(name, value);
     }
 
@@ -60,7 +57,7 @@ public class TypeLocalDateExpression<E, C extends EntityConditionsExpression<E, 
      * {@inheritDoc}
      */
     @Override
-    public L in(LocalDate value) {
+    public L in(N value) {
         return expression.in(name, value);
     }
 
@@ -68,7 +65,7 @@ public class TypeLocalDateExpression<E, C extends EntityConditionsExpression<E, 
      * {@inheritDoc}
      */
     @Override
-    public L nin(LocalDate value) {
+    public L nin(N value) {
         return expression.nin(name, value);
     }
 
@@ -76,7 +73,7 @@ public class TypeLocalDateExpression<E, C extends EntityConditionsExpression<E, 
      * {@inheritDoc}
      */
     @Override
-    public L le(LocalDate value) {
+    public L le(N value) {
         return expression.le(name, value);
     }
 
@@ -84,7 +81,7 @@ public class TypeLocalDateExpression<E, C extends EntityConditionsExpression<E, 
      * {@inheritDoc}
      */
     @Override
-    public L lt(LocalDate value) {
+    public L lt(N value) {
         return expression.lt(name, value);
     }
 
@@ -92,7 +89,7 @@ public class TypeLocalDateExpression<E, C extends EntityConditionsExpression<E, 
      * {@inheritDoc}
      */
     @Override
-    public L ge(LocalDate value) {
+    public L ge(N value) {
         return expression.ge(name, value);
     }
 
@@ -100,7 +97,7 @@ public class TypeLocalDateExpression<E, C extends EntityConditionsExpression<E, 
      * {@inheritDoc}
      */
     @Override
-    public L gt(LocalDate value) {
+    public L gt(N value) {
         return expression.gt(name, value);
     }
 
@@ -140,7 +137,7 @@ public class TypeLocalDateExpression<E, C extends EntityConditionsExpression<E, 
      * {@inheritDoc}
      */
     @Override
-    public L eq(LocalDate value, QueryPolicy queryPolicy) {
+    public L eq(N value, QueryPolicy queryPolicy) {
         return expression.eq(name, value, queryPolicy);
     }
 
@@ -148,7 +145,7 @@ public class TypeLocalDateExpression<E, C extends EntityConditionsExpression<E, 
      * {@inheritDoc}
      */
     @Override
-    public L ne(LocalDate value, QueryPolicy queryPolicy) {
+    public L ne(N value, QueryPolicy queryPolicy) {
         return expression.ne(name, value, queryPolicy);
     }
 }

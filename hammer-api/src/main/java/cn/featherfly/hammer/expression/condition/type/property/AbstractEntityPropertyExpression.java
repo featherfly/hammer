@@ -15,7 +15,7 @@ import cn.featherfly.hammer.expression.condition.type.EntityConditionsExpression
  * @param <C> the generic type
  * @param <L> the generic type
  */
-public abstract class AbstractTypeExpression<E, R, F extends SerializableFunction<E, R>,
+public abstract class AbstractEntityPropertyExpression<E, R, F extends SerializableFunction<E, R>,
         C extends EntityConditionsExpression<E, C, L>, L extends LogicExpression<C, L>> {
 
     /** The name. */
@@ -30,7 +30,7 @@ public abstract class AbstractTypeExpression<E, R, F extends SerializableFunctio
      * @param name       property name
      * @param expression expression
      */
-    protected AbstractTypeExpression(F name, EntityConditionsExpression<E, C, L> expression) {
+    protected AbstractEntityPropertyExpression(F name, EntityConditionsExpression<E, C, L> expression) {
         super();
         this.name = name;
         this.expression = expression;

@@ -4,9 +4,7 @@ package cn.featherfly.hammer.dsl.query;
 import cn.featherfly.hammer.expression.query.QueryEntityExpression;
 
 /**
- * <p>
- * dsl for query data
- * </p>
+ * dsl for query data.
  *
  * @author zhongj
  */
