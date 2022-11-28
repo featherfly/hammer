@@ -5,9 +5,7 @@ import cn.featherfly.hammer.expression.ConditionLogicExpression;
 import cn.featherfly.hammer.expression.execute.Executor;
 
 /**
- * <p>
- * ConditionLogic
- * </p>
+ * executable condition logic expression,.
  *
  * @author zhongj
  */

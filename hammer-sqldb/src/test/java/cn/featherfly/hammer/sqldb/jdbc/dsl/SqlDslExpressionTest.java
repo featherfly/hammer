@@ -118,7 +118,7 @@ public class SqlDslExpressionTest extends JdbcTestBase {
             hammer.save(u);
         }
         SqlDeleter sqlDeleter = new SqlDeleter(jdbc, mappingFactory);
-        int no = sqlDeleter.delete(User.class).where().sw("username", "name_delete_").execute();
+        int no = sqlDeleter.delete(User.class).where().sw(User::getUsername, "name_delete_").execute();
         assertTrue(no == size);
 
         for (int i = 0; i < size; i++) {
@@ -126,7 +126,7 @@ public class SqlDslExpressionTest extends JdbcTestBase {
             u.setPwd("pwd_delete_" + UUIDGenerator.generateUUID22Letters());
             hammer.save(u);
         }
-        no = sqlDeleter.delete(User.class).where().sw("pwd", "pwd_delete_").execute();
+        no = sqlDeleter.delete(User.class).where().sw(User::getPwd, "pwd_delete_").execute();
         assertTrue(no == size);
     }
 
@@ -140,7 +140,7 @@ public class SqlDslExpressionTest extends JdbcTestBase {
             hammer.save(u);
         }
         SqlDeleter sqlDeleter = new SqlDeleter(jdbc, mappingFactory);
-        int no = sqlDeleter.delete(UserInfo.class).where().eq("user.id", userId).execute();
+        int no = sqlDeleter.delete(UserInfo.class).where().eq(UserInfo::getUser, User::getId, userId).execute();
         assertEquals(no, size);
 
         String province = "黑龙江";
@@ -153,7 +153,8 @@ public class SqlDslExpressionTest extends JdbcTestBase {
             u.setDivision(division);
             hammer.save(u);
         }
-        no = sqlDeleter.delete(UserInfo.class).where().eq("division.province", province).execute();
+        no = sqlDeleter.delete(UserInfo.class).where()
+                .eq(UserInfo::getDivision, DistrictDivision::getProvince, province).execute();
         assertEquals(no, size);
     }
 

@@ -241,6 +241,8 @@ public class DslTest {
         deleter.delete(new SimpleRepository("user")).where().eq("user_id", 18).and().group().lt("age", 18).or()
                 .gt("age", 60).execute();
 
+        deleter.delete(User.class).where().eq(User::getId, 18).execute();
+
     }
 
     private int id;

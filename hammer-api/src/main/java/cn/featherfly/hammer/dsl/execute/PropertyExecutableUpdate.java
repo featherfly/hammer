@@ -4,9 +4,7 @@ package cn.featherfly.hammer.dsl.execute;
 import cn.featherfly.hammer.expression.execute.PropertyExecutableUpdateExpression;
 
 /**
- * <p>
- * Updator
- * </p>
+ * property executable update.
  *
  * @author zhongj
  */
