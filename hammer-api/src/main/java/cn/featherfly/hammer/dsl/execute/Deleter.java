@@ -15,6 +15,7 @@ public interface Deleter
      * start delete dsl for the reposited type.
      *
      * @param <E>        the entity type
+     * @param <ED>       the EntityDeleteExpression type
      * @param entityType the entity type
      * @return EntityDeleteExpression
      */

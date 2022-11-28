@@ -26,9 +26,14 @@ import cn.featherfly.hammer.sqldb.jdbc.vo.User;
 import cn.featherfly.hammer.sqldb.jdbc.vo.UserInfo;
 
 /**
- * SqlDslExpressionTest.
+ * <p>
+ * 类的说明放这里
+ * </p>
+ * <p>
+ * copyright cdthgk 2010-2020, all rights reserved.
+ * </p>
  *
- * @author zhongj
+ * @author 钟冀
  */
 public class SqlDslExpressionTest extends JdbcTestBase {
 
@@ -60,7 +65,7 @@ public class SqlDslExpressionTest extends JdbcTestBase {
         System.out.println(builder.getParams());
 
         assertEquals("`name` = ? AND `pwd` = ? AND ( `sex` = ? OR `age` > ? )".replaceAll("`",
-                jdbc.getDialect().getWrapSymbol()), builder.build());
+                jdbc.getDialect().getWrapSign()), builder.build());
         assertEquals(params, builder.getParams());
     }
 
@@ -85,7 +90,7 @@ public class SqlDslExpressionTest extends JdbcTestBase {
         System.out.println(builder.getParams());
 
         assertEquals("`name` = ? AND `pwd` = ? AND ( `sex` = ? OR `age` > ? ) AND `mobile` = ?".replaceAll("`",
-                jdbc.getDialect().getWrapSymbol()), builder.build());
+                jdbc.getDialect().getWrapSign()), builder.build());
         assertEquals(params2, builder.getParams());
     }
 
@@ -99,7 +104,7 @@ public class SqlDslExpressionTest extends JdbcTestBase {
         System.out.println(del.getParams());
 
         assertEquals("DELETE FROM `user` WHERE `name` = ? AND `pwd` = ? AND ( `sex` = ? OR `age` > ? )".replaceAll("`",
-                jdbc.getDialect().getWrapSymbol()), del.build());
+                jdbc.getDialect().getWrapSign()), del.build());
         assertEquals(params, del.getParams());
 
     }
@@ -118,42 +123,25 @@ public class SqlDslExpressionTest extends JdbcTestBase {
 
         for (int i = 0; i < size; i++) {
             User u = new User();
-            u.setPwd("pwd_del_" + UUIDGenerator.generateUUID22Letters());
-            u.setUsername("un_del_" + UUIDGenerator.generateUUID22Letters());
+            u.setPwd("pwd_delete_" + UUIDGenerator.generateUUID22Letters());
             hammer.save(u);
         }
-        no = sqlDeleter.delete(User.class).where().sw(User::getPwd, "pwd_del_").execute();
+        no = sqlDeleter.delete(User.class).where().sw(User::getPwd, "pwd_delete_").execute();
         assertTrue(no == size);
-    }
-
-    private void saveUserInfo(int size, User user) {
-        for (int i = 0; i < size; i++) {
-            UserInfo u = new UserInfo();
-            u.setUser(user);
-            hammer.save(u);
-        }
     }
 
     @Test
     public void testSqlTypeDelete2() {
-        int size = 3;
+        int size = 10;
         int userId = 10;
-        Integer uid = userId;
-        User user = new User(userId);
-        saveUserInfo(size, user);
-        // ManyToOne
+        for (int i = 0; i < size; i++) {
+            UserInfo u = new UserInfo();
+            u.setUser(new User(userId));
+            hammer.save(u);
+        }
         SqlDeleter sqlDeleter = new SqlDeleter(jdbc, mappingFactory);
-        //        int no = sqlDeleter.delete(UserInfo.class).where().eq(UserInfo::getUser, User::getId, userId).execute();
-        int no = sqlDeleter.delete(UserInfo.class).where().eq(UserInfo::getUser, user).execute();
+        int no = sqlDeleter.delete(UserInfo.class).where().eq(UserInfo::getUser, User::getId, userId).execute();
         assertEquals(no, size);
-
-        // ManyToOne
-        saveUserInfo(size, user);
-        no = sqlDeleter.delete(UserInfo.class).where().eq(UserInfo::getUser, uid).execute();
-        assertEquals(no, size);
-
-        //        Function<UserInfo, User> f = UserInfo::getUser;
-        //        no = sqlDeleter.delete(UserInfo.class).where().eq(f, userId).execute(); // 编译错误
 
         String province = "黑龙江";
         for (int i = 0; i < size; i++) {
@@ -167,23 +155,6 @@ public class SqlDslExpressionTest extends JdbcTestBase {
         }
         no = sqlDeleter.delete(UserInfo.class).where()
                 .eq(UserInfo::getDivision, DistrictDivision::getProvince, province).execute();
-        assertEquals(no, size);
-
-        for (int i = 0; i < size; i++) {
-            UserInfo u = new UserInfo();
-            u.setUser(new User(1));
-            DistrictDivision division = new DistrictDivision();
-            division.setProvince(province);
-            division.setCity("哈尔冰");
-            u.setDivision(division);
-            hammer.save(u);
-        }
-
-        UserInfo query = new UserInfo();
-        query.setDivision(new DistrictDivision());
-        query.getDivision().setProvince(province);
-
-        no = sqlDeleter.delete(UserInfo.class).where().eq(query::getDivision, DistrictDivision::getProvince).execute();
         assertEquals(no, size);
     }
 
@@ -203,7 +174,7 @@ public class SqlDslExpressionTest extends JdbcTestBase {
 
         String sql = "UPDATE `user` SET `name` = ?, `pwd` = ?, `age` = `age` + ? WHERE `sex` = ?";
 
-        assertEquals(sql.replaceAll("`", jdbc.getDialect().getWrapSymbol()), e.toString());
+        assertEquals(sql.replaceAll("`", jdbc.getDialect().getWrapSign()), e.toString());
         assertEquals(params, e.getParams());
 
         e = (SqlConditionGroupExpression) updater.update(new SimpleRepository("user")).property("name").set(name)
@@ -213,7 +184,7 @@ public class SqlDslExpressionTest extends JdbcTestBase {
         System.out.println(e.getParams());
 
         assertEquals("UPDATE `user` SET `name` = ?, `pwd` = ?, `age` = `age` + ? WHERE `sex` = ?".replaceAll("`",
-                jdbc.getDialect().getWrapSymbol()), e.toString());
+                jdbc.getDialect().getWrapSign()), e.toString());
         assertEquals(params, e.getParams());
 
     }
@@ -222,12 +193,12 @@ public class SqlDslExpressionTest extends JdbcTestBase {
     public void testSqlTypeUpdateExpression() {
         SqlUpdater sqlUpdater = new SqlUpdater(jdbc, mappingFactory);
 
-        int no = sqlUpdater.update(User.class).property(User::getPwd).set("a11111").where().property(User::getId).eq(3)
+        int no = sqlUpdater.update(User.class).property("password").set("a11111").where().property("id").eq(3)
                 .execute();
         assertTrue(no == 1);
 
-        no = sqlUpdater.update(User.class).property(User::getPwd).set("222222").where()
-                .in(User::getId, new Integer[] { 4, 5 }).execute();
+        no = sqlUpdater.update(User.class).property("pwd").set("222222").where().in("id", new Integer[] { 4, 5 })
+                .execute();
         assertTrue(no == 2);
     }
 
@@ -235,67 +206,19 @@ public class SqlDslExpressionTest extends JdbcTestBase {
     public void testSqlTypeUpdateExpression2() {
         SqlUpdater sqlUpdater = new SqlUpdater(jdbc, mappingFactory);
 
-        DistrictDivision division = new DistrictDivision();
-        division.setProvince("四川1");
-        int no = 0;
-
-        // Embbemed
-        no = sqlUpdater.update(UserInfo.class).set(UserInfo::getDivision, division).where().property(UserInfo::getId)
-                .eq(1).execute();
-        assertTrue(no == 1);
-
-        division.setProvince("四川");
-        division.setCity("成都");
-        division.setDistrict("金牛");
-
-        no = sqlUpdater.update(UserInfo.class).set(UserInfo::getDivision, division).where().property(UserInfo::getId)
-                .eq(1).execute();
-        assertTrue(no == 1);
-
-        no = sqlUpdater.update(UserInfo.class).property(UserInfo::getDivision).set(division).where()
-                .property(UserInfo::getId).eq(1).execute();
-        assertTrue(no == 1);
-
-        no = sqlUpdater.update(UserInfo.class).set(UserInfo::getDivision, DistrictDivision::getProvince, "四川1").where()
-                .property(UserInfo::getId).eq(1).execute();
-        assertTrue(no == 1);
-
-        no = sqlUpdater.update(UserInfo.class).property(UserInfo::getDivision, DistrictDivision::getProvince).set("四川")
-                .where().property(UserInfo::getId).eq(1).execute();
-        assertTrue(no == 1);
-
-        // ManyToOne
-        no = sqlUpdater.update(UserInfo.class).set(UserInfo::getUser, User::getId, 3).where().eq(UserInfo::getId, 2)
+        int no = sqlUpdater.update(UserInfo.class).property("province").set("四川1").where().property("id").eq(1)
                 .execute();
         assertTrue(no == 1);
 
-        no = sqlUpdater.update(UserInfo.class).property(UserInfo::getUser, User::getId).set(3).where()
-                .eq(UserInfo::getId, 2).execute();
-        assertTrue(no == 1);
-
-        User user = new User();
-        user.setId(1);
-
-        no = sqlUpdater.update(UserInfo.class).property(UserInfo::getUser).set(user).where().eq(UserInfo::getId, 2)
+        no = sqlUpdater.update(UserInfo.class).property("division.province").set("四川").where().property("id").eq(1)
                 .execute();
         assertTrue(no == 1);
 
-        no = sqlUpdater.update(UserInfo.class).set(UserInfo::getUser, 2).where().eq(UserInfo::getId, 2).execute();
+        no = sqlUpdater.update(UserInfo.class).property("user_id").set(3).where().eq("id", 2).execute();
         assertTrue(no == 1);
 
-        //        int no = sqlUpdater.update(UserInfo.class).property("province").set("四川1").where().property(UserInfo::getId)
-        //                .eq(1).execute();
-        //        assertTrue(no == 1);
-        //
-        //        no = sqlUpdater.update(UserInfo.class).property("division.province").set("四川").where().property(UserInfo::getId)
-        //                .eq(1).execute();
-        //        assertTrue(no == 1);
-        //
-        //        no = sqlUpdater.update(UserInfo.class).property("user_id").set(3).where().eq(UserInfo::getId, 2).execute();
-        //        assertTrue(no == 1);
-        //
-        //        no = sqlUpdater.update(UserInfo.class).property("user.id").set(2).where().eq(UserInfo::getId, 2).execute();
-        //        assertTrue(no == 1);
+        no = sqlUpdater.update(UserInfo.class).property("user.id").set(2).where().eq("id", 2).execute();
+        assertTrue(no == 1);
     }
 
 }

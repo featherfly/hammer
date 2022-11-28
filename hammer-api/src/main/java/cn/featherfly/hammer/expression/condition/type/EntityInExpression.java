@@ -29,7 +29,7 @@ public interface EntityInExpression<E, C extends ConditionExpression, L extends 
      * @param value 参数值
      * @return LogicExpression
      */
-    <R> L in(SerializableFunction<E, R> name, R value);
+    L in(SerializableFunction<E, ?> name, Object value);
 
     /**
      * 包含指定，sql中的in.
@@ -39,7 +39,7 @@ public interface EntityInExpression<E, C extends ConditionExpression, L extends 
      * @param value 参数值
      * @return LogicExpression
      */
-    <R> L in(SerializableFunction<E, R> name, @SuppressWarnings("unchecked") R... value);
+    <R> L in(SerializableFunction<E, R> name, R[] value);
 
     /**
      * 包含指定，sql中的in.

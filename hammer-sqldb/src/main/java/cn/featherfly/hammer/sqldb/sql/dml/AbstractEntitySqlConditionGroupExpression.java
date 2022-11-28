@@ -1,9 +1,11 @@
 
 package cn.featherfly.hammer.sqldb.sql.dml;
 
+import java.lang.reflect.Array;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
 import java.util.List;
@@ -12,12 +14,14 @@ import java.util.function.Function;
 import java.util.function.Predicate;
 
 import com.speedment.common.tuple.Tuple2;
+import com.speedment.common.tuple.Tuple3;
 
 import cn.featherfly.common.db.FieldValueOperator;
 import cn.featherfly.common.db.builder.SqlBuilder;
 import cn.featherfly.common.db.dialect.Dialect;
 import cn.featherfly.common.db.mapping.JavaTypeSqlTypeOperator;
 import cn.featherfly.common.db.mapping.JdbcClassMapping;
+import cn.featherfly.common.db.mapping.JdbcMappingFactory;
 import cn.featherfly.common.db.mapping.JdbcPropertyMapping;
 import cn.featherfly.common.lang.AssertIllegalArgument;
 import cn.featherfly.common.lang.LambdaUtils;
@@ -43,6 +47,7 @@ import cn.featherfly.common.lang.function.StringSupplier;
 import cn.featherfly.common.operator.LogicOperator;
 import cn.featherfly.common.operator.QueryOperator;
 import cn.featherfly.common.operator.QueryOperator.QueryPolicy;
+import cn.featherfly.common.repository.builder.AliasManager;
 import cn.featherfly.hammer.expression.EntityConditionGroupExpression;
 import cn.featherfly.hammer.expression.EntityConditionGroupLogicExpression;
 import cn.featherfly.hammer.expression.condition.ParamedExpression;
@@ -84,32 +89,11 @@ public abstract class AbstractEntitySqlConditionGroupExpression<E, C extends Ent
     /** The sql page factory. */
     protected SqlPageFactory sqlPageFactory;
 
-    /**
-     * Instantiates a new abstract sql condition group expression.
-     *
-     * @param dialect        dialect
-     * @param sqlPageFactory the sql page factory
-     * @param entityQuery    the entity query
-     * @param ignorePolicy   the ignore policy
-     */
-    public AbstractEntitySqlConditionGroupExpression(Dialect dialect, SqlPageFactory sqlPageFactory,
-            EntitySqlQuery<E> entityQuery, Predicate<Object> ignorePolicy) {
-        this(dialect, sqlPageFactory, null, entityQuery, ignorePolicy);
-    }
+    /** The factory. */
+    protected JdbcMappingFactory factory;
 
-    /**
-     * Instantiates a new abstract sql condition group expression.
-     *
-     * @param dialect        dialect
-     * @param sqlPageFactory the sql page factory
-     * @param queryAlias     queryAlias
-     * @param entityQuery    the entity query
-     * @param ignorePolicy   the ignore policy
-     */
-    public AbstractEntitySqlConditionGroupExpression(Dialect dialect, SqlPageFactory sqlPageFactory, String queryAlias,
-            EntitySqlQuery<E> entityQuery, Predicate<Object> ignorePolicy) {
-        this(dialect, sqlPageFactory, queryAlias, null, entityQuery, ignorePolicy);
-    }
+    /** The alias manager. */
+    protected AliasManager aliasManager;
 
     /**
      * Instantiates a new abstract sql condition group expression.
@@ -122,8 +106,9 @@ public abstract class AbstractEntitySqlConditionGroupExpression<E, C extends Ent
      * @param ignorePolicy   the ignore policy
      */
     public AbstractEntitySqlConditionGroupExpression(Dialect dialect, SqlPageFactory sqlPageFactory, String queryAlias,
-            JdbcClassMapping<E> classMapping, EntitySqlQuery<E> entityQuery, Predicate<Object> ignorePolicy) {
-        this(null, dialect, sqlPageFactory, queryAlias, classMapping, entityQuery, ignorePolicy);
+            JdbcClassMapping<E> classMapping, JdbcMappingFactory factory, AliasManager aliasManager,
+            EntitySqlQuery<E> entityQuery, Predicate<Object> ignorePolicy) {
+        this(null, dialect, sqlPageFactory, queryAlias, classMapping, factory, aliasManager, entityQuery, ignorePolicy);
     }
 
     /**
@@ -138,12 +123,14 @@ public abstract class AbstractEntitySqlConditionGroupExpression<E, C extends Ent
      * @param ignorePolicy   the ignore policy
      */
     protected AbstractEntitySqlConditionGroupExpression(L parent, Dialect dialect, SqlPageFactory sqlPageFactory,
-            String queryAlias, JdbcClassMapping<E> classMapping, EntitySqlQuery<E> entityQuery,
-            Predicate<Object> ignorePolicy) {
+            String queryAlias, JdbcClassMapping<E> classMapping, JdbcMappingFactory factory, AliasManager aliasManager,
+            EntitySqlQuery<E> entityQuery, Predicate<Object> ignorePolicy) {
         super(dialect, ignorePolicy, parent);
         this.queryAlias = queryAlias;
         this.sqlPageFactory = sqlPageFactory;
         this.classMapping = classMapping;
+        this.factory = factory;
+        this.aliasManager = aliasManager;
         this.entityQuery = entityQuery;
     }
 
@@ -1182,7 +1169,7 @@ public abstract class AbstractEntitySqlConditionGroupExpression<E, C extends Ent
      * {@inheritDoc}
      */
     @Override
-    public <R> L in(SerializableFunction<E, R> name, R value) {
+    public L in(SerializableFunction<E, ?> name, Object value) {
         return in(classMapping.getPropertyMapping(getPropertyName(name)), value);
     }
 
@@ -1190,7 +1177,7 @@ public abstract class AbstractEntitySqlConditionGroupExpression<E, C extends Ent
      * {@inheritDoc}
      */
     @Override
-    public <R> L in(SerializableFunction<E, R> name, R... value) {
+    public <R> L in(SerializableFunction<E, R> name, R[] value) {
         return in(classMapping.getPropertyMapping(getPropertyName(name)), value);
     }
 
@@ -1233,7 +1220,7 @@ public abstract class AbstractEntitySqlConditionGroupExpression<E, C extends Ent
      * {@inheritDoc}
      */
     @Override
-    public <R> L nin(SerializableFunction<E, R> name, R value) {
+    public L nin(SerializableFunction<E, ?> name, Object value) {
         return nin(classMapping.getPropertyMapping(getPropertyName(name)), value);
     }
 
@@ -1241,7 +1228,7 @@ public abstract class AbstractEntitySqlConditionGroupExpression<E, C extends Ent
      * {@inheritDoc}
      */
     @Override
-    public <R> L nin(SerializableFunction<E, R> name, R... value) {
+    public <R> L nin(SerializableFunction<E, R> name, R[] value) {
         return nin(classMapping.getPropertyMapping(getPropertyName(name)), value);
     }
 
@@ -1590,22 +1577,870 @@ public abstract class AbstractEntitySqlConditionGroupExpression<E, C extends Ent
         return (C) this;
     }
 
+    //  join 条件查询
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public <R> L co(SerializableFunction<E, R> repository, SerializableFunction<R, String> property, String value) {
+        //        IMPLSOON 后续来实现join
+        //         //        IMPLSOON 后续来实现join
+        //        entityQuery.join(repository);
+        Tuple2<String, String> tuple = conditionResult(repository, property, value, factory);
+        return (L) addCondition(new SqlConditionExpressionBuilder(dialect, tuple.get1(), value, QueryOperator.CO,
+                aliasManager.getAlias(tuple.get0()), ignorePolicy));
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public <R> L co(SerializableSupplier<R> repository, SerializableFunction<R, String> property) {
+        //        IMPLSOON 后续来实现join
+        //         //        IMPLSOON 后续来实现join
+        //        entityQuery.join(repository);
+        Tuple3<String, String, Object> tuple = conditionResult(repository, property, factory);
+        return (L) addCondition(new SqlConditionExpressionBuilder(dialect, tuple.get1(), tuple.get2(), QueryOperator.CO,
+                aliasManager.getAlias(tuple.get0()), ignorePolicy));
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public <R> L ew(SerializableFunction<E, R> repository, SerializableFunction<R, String> property, String value) {
+        //        IMPLSOON 后续来实现join
+        //         //        IMPLSOON 后续来实现join
+        //        entityQuery.join(repository);
+        Tuple2<String, String> tuple = conditionResult(repository, property, value, factory);
+        return (L) addCondition(new SqlConditionExpressionBuilder(dialect, tuple.get1(), value, QueryOperator.EW,
+                aliasManager.getAlias(tuple.get0()), ignorePolicy));
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public <R> L ew(SerializableSupplier<R> repository, SerializableFunction<R, String> property) {
+        //        IMPLSOON 后续来实现join
+        //         //        IMPLSOON 后续来实现join
+        //        entityQuery.join(repository);
+        Tuple3<String, String, Object> tuple = conditionResult(repository, property, factory);
+        return (L) addCondition(new SqlConditionExpressionBuilder(dialect, tuple.get1(), tuple.get2(), QueryOperator.EW,
+                aliasManager.getAlias(tuple.get0()), ignorePolicy));
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public <R, V> L eq(SerializableFunction<E, R> repository, SerializableFunction<R, V> property, V value) {
+        //        IMPLSOON 后续来实现join
+        //         //        IMPLSOON 后续来实现join
+        //        entityQuery.join(repository);
+        Tuple2<String, String> tuple = conditionResult(repository, property, value, factory);
+        return (L) addCondition(new SqlConditionExpressionBuilder(dialect, tuple.get1(), value, QueryOperator.EQ,
+                aliasManager.getAlias(tuple.get0()), ignorePolicy));
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public <R, V> L eq(SerializableSupplier<R> repository, SerializableFunction<R, V> property) {
+        //        IMPLSOON 后续来实现join
+        //        entityQuery.join(repository);
+        Tuple3<String, String, Object> tuple = conditionResult(repository, property, factory);
+        return (L) addCondition(new SqlConditionExpressionBuilder(dialect, tuple.get1(), tuple.get2(), QueryOperator.EQ,
+                aliasManager.getAlias(tuple.get0()), ignorePolicy));
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public <R, N extends Number> L ge(SerializableFunction<E, R> repository, SerializableFunction<R, N> property,
+            N value) {
+        //        IMPLSOON 后续来实现join
+        //        entityQuery.join(repository);
+        Tuple2<String, String> tuple = conditionResult(repository, property, value, factory);
+        return (L) addCondition(new SqlConditionExpressionBuilder(dialect, tuple.get1(), value, QueryOperator.GE,
+                aliasManager.getAlias(tuple.get0()), ignorePolicy));
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public <T, N extends Number> L ge(SerializableSupplier<T> repository, ReturnNumberFunction<T, N> property) {
+        //        IMPLSOON 后续来实现join
+        //        entityQuery.join(repository);
+        Tuple3<String, String, Object> tuple = conditionResult(repository, property, factory);
+        return (L) addCondition(new SqlConditionExpressionBuilder(dialect, tuple.get1(), tuple.get2(), QueryOperator.GE,
+                aliasManager.getAlias(tuple.get0()), ignorePolicy));
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public <R, D extends Date> L ge(SerializableFunction<E, R> repository, SerializableFunction<R, D> property,
+            D value) {
+        //        IMPLSOON 后续来实现join
+        //        entityQuery.join(repository);
+        Tuple2<String, String> tuple = conditionResult(repository, property, value, factory);
+        return (L) addCondition(new SqlConditionExpressionBuilder(dialect, tuple.get1(), value, QueryOperator.GE,
+                aliasManager.getAlias(tuple.get0()), ignorePolicy));
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public <T, D extends Date> L ge(SerializableSupplier<T> repository, ReturnDateFunction<T, D> property) {
+        //        IMPLSOON 后续来实现join
+        //        entityQuery.join(repository);
+        Tuple3<String, String, Object> tuple = conditionResult(repository, property, factory);
+        return (L) addCondition(new SqlConditionExpressionBuilder(dialect, tuple.get1(), tuple.get2(), QueryOperator.GE,
+                aliasManager.getAlias(tuple.get0()), ignorePolicy));
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public <R> L ge(SerializableFunction<E, R> repository, SerializableFunction<R, LocalTime> property,
+            LocalTime value) {
+        //        IMPLSOON 后续来实现join
+        //        entityQuery.join(repository);
+        Tuple2<String, String> tuple = conditionResult(repository, property, value, factory);
+        return (L) addCondition(new SqlConditionExpressionBuilder(dialect, tuple.get1(), value, QueryOperator.GE,
+                aliasManager.getAlias(tuple.get0()), ignorePolicy));
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public <T> L ge(SerializableSupplier<T> repository, ReturnLocalTimeFunction<T> property) {
+        //        IMPLSOON 后续来实现join
+        //        entityQuery.join(repository);
+        Tuple3<String, String, Object> tuple = conditionResult(repository, property, factory);
+        return (L) addCondition(new SqlConditionExpressionBuilder(dialect, tuple.get1(), tuple.get2(), QueryOperator.GE,
+                aliasManager.getAlias(tuple.get0()), ignorePolicy));
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public <R> L ge(SerializableFunction<E, R> repository, SerializableFunction<R, LocalDate> property,
+            LocalDate value) {
+        //        IMPLSOON 后续来实现join
+        //        entityQuery.join(repository);
+        Tuple2<String, String> tuple = conditionResult(repository, property, value, factory);
+        return (L) addCondition(new SqlConditionExpressionBuilder(dialect, tuple.get1(), value, QueryOperator.GE,
+                aliasManager.getAlias(tuple.get0()), ignorePolicy));
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public <T> L ge(SerializableSupplier<T> repository, ReturnLocalDateFunction<T> property) {
+        //        IMPLSOON 后续来实现join
+        //        entityQuery.join(repository);
+        Tuple3<String, String, Object> tuple = conditionResult(repository, property, factory);
+        return (L) addCondition(new SqlConditionExpressionBuilder(dialect, tuple.get1(), tuple.get2(), QueryOperator.GE,
+                aliasManager.getAlias(tuple.get0()), ignorePolicy));
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public <R> L ge(SerializableFunction<E, R> repository, SerializableFunction<R, LocalDateTime> property,
+            LocalDateTime value) {
+        //        IMPLSOON 后续来实现join
+        //        entityQuery.join(repository);
+        Tuple2<String, String> tuple = conditionResult(repository, property, value, factory);
+        return (L) addCondition(new SqlConditionExpressionBuilder(dialect, tuple.get1(), value, QueryOperator.GE,
+                aliasManager.getAlias(tuple.get0()), ignorePolicy));
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public <T> L ge(SerializableSupplier<T> repository, ReturnLocalDateTimeFunction<T> property) {
+        //        IMPLSOON 后续来实现join
+        //        entityQuery.join(repository);
+        Tuple3<String, String, Object> tuple = conditionResult(repository, property, factory);
+        return (L) addCondition(new SqlConditionExpressionBuilder(dialect, tuple.get1(), tuple.get2(), QueryOperator.GE,
+                aliasManager.getAlias(tuple.get0()), ignorePolicy));
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public <R> L ge(SerializableFunction<E, R> repository, SerializableFunction<R, String> property, String value) {
+        //        IMPLSOON 后续来实现join
+        //        entityQuery.join(repository);
+        Tuple2<String, String> tuple = conditionResult(repository, property, value, factory);
+        return (L) addCondition(new SqlConditionExpressionBuilder(dialect, tuple.get1(), value, QueryOperator.GE,
+                aliasManager.getAlias(tuple.get0()), ignorePolicy));
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public <T> L ge(SerializableSupplier<T> repository, ReturnStringFunction<T> property) {
+        //        IMPLSOON 后续来实现join
+        //        entityQuery.join(repository);
+        Tuple3<String, String, Object> tuple = conditionResult(repository, property, factory);
+        return (L) addCondition(new SqlConditionExpressionBuilder(dialect, tuple.get1(), tuple.get2(), QueryOperator.GE,
+                aliasManager.getAlias(tuple.get0()), ignorePolicy));
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public <R, N extends Number> L gt(SerializableFunction<E, R> repository, SerializableFunction<R, N> property,
+            N value) {
+        //        IMPLSOON 后续来实现join
+        //        entityQuery.join(repository);
+        Tuple2<String, String> tuple = conditionResult(repository, property, value, factory);
+        return (L) addCondition(new SqlConditionExpressionBuilder(dialect, tuple.get1(), value, QueryOperator.GT,
+                aliasManager.getAlias(tuple.get0()), ignorePolicy));
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public <T, N extends Number> L gt(SerializableSupplier<T> repository, ReturnNumberFunction<T, N> property) {
+        //        IMPLSOON 后续来实现join
+        //        entityQuery.join(repository);
+        Tuple3<String, String, Object> tuple = conditionResult(repository, property, factory);
+        return (L) addCondition(new SqlConditionExpressionBuilder(dialect, tuple.get1(), tuple.get2(), QueryOperator.GT,
+                aliasManager.getAlias(tuple.get0()), ignorePolicy));
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public <R, D extends Date> L gt(SerializableFunction<E, R> repository, SerializableFunction<R, D> property,
+            D value) {
+        //        IMPLSOON 后续来实现join
+        //        entityQuery.join(repository);
+        Tuple2<String, String> tuple = conditionResult(repository, property, value, factory);
+        return (L) addCondition(new SqlConditionExpressionBuilder(dialect, tuple.get1(), value, QueryOperator.GT,
+                aliasManager.getAlias(tuple.get0()), ignorePolicy));
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public <T, D extends Date> L gt(SerializableSupplier<T> repository, ReturnDateFunction<T, D> property) {
+        //        IMPLSOON 后续来实现join
+        //        entityQuery.join(repository);
+        Tuple3<String, String, Object> tuple = conditionResult(repository, property, factory);
+        return (L) addCondition(new SqlConditionExpressionBuilder(dialect, tuple.get1(), tuple.get2(), QueryOperator.GT,
+                aliasManager.getAlias(tuple.get0()), ignorePolicy));
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public <R> L gt(SerializableFunction<E, R> repository, SerializableFunction<R, LocalTime> property,
+            LocalTime value) {
+        //        IMPLSOON 后续来实现join
+        //        entityQuery.join(repository);
+        Tuple2<String, String> tuple = conditionResult(repository, property, value, factory);
+        return (L) addCondition(new SqlConditionExpressionBuilder(dialect, tuple.get1(), value, QueryOperator.GT,
+                aliasManager.getAlias(tuple.get0()), ignorePolicy));
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public <T> L gt(SerializableSupplier<T> repository, ReturnLocalTimeFunction<T> property) {
+        //        IMPLSOON 后续来实现join
+        //        entityQuery.join(repository);
+        Tuple3<String, String, Object> tuple = conditionResult(repository, property, factory);
+        return (L) addCondition(new SqlConditionExpressionBuilder(dialect, tuple.get1(), tuple.get2(), QueryOperator.GT,
+                aliasManager.getAlias(tuple.get0()), ignorePolicy));
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public <R> L gt(SerializableFunction<E, R> repository, SerializableFunction<R, LocalDate> property,
+            LocalDate value) {
+        //        IMPLSOON 后续来实现join
+        //        entityQuery.join(repository);
+        Tuple2<String, String> tuple = conditionResult(repository, property, value, factory);
+        return (L) addCondition(new SqlConditionExpressionBuilder(dialect, tuple.get1(), value, QueryOperator.GT,
+                aliasManager.getAlias(tuple.get0()), ignorePolicy));
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public <T> L gt(SerializableSupplier<T> repository, ReturnLocalDateFunction<T> property) {
+        //        IMPLSOON 后续来实现join
+        //        entityQuery.join(repository);
+        Tuple3<String, String, Object> tuple = conditionResult(repository, property, factory);
+        return (L) addCondition(new SqlConditionExpressionBuilder(dialect, tuple.get1(), tuple.get2(), QueryOperator.GT,
+                aliasManager.getAlias(tuple.get0()), ignorePolicy));
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public <R> L gt(SerializableFunction<E, R> repository, SerializableFunction<R, LocalDateTime> property,
+            LocalDateTime value) {
+        //        IMPLSOON 后续来实现join
+        //        entityQuery.join(repository);
+        Tuple2<String, String> tuple = conditionResult(repository, property, value, factory);
+        return (L) addCondition(new SqlConditionExpressionBuilder(dialect, tuple.get1(), value, QueryOperator.GT,
+                aliasManager.getAlias(tuple.get0()), ignorePolicy));
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public <T> L gt(SerializableSupplier<T> repository, ReturnLocalDateTimeFunction<T> property) {
+        //        IMPLSOON 后续来实现join
+        //        entityQuery.join(repository);
+        Tuple3<String, String, Object> tuple = conditionResult(repository, property, factory);
+        return (L) addCondition(new SqlConditionExpressionBuilder(dialect, tuple.get1(), tuple.get2(), QueryOperator.GT,
+                aliasManager.getAlias(tuple.get0()), ignorePolicy));
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public <R> L gt(SerializableFunction<E, R> repository, SerializableFunction<R, String> property, String value) {
+        //        IMPLSOON 后续来实现join
+        //        entityQuery.join(repository);
+        Tuple2<String, String> tuple = conditionResult(repository, property, value, factory);
+        return (L) addCondition(new SqlConditionExpressionBuilder(dialect, tuple.get1(), value, QueryOperator.GT,
+                aliasManager.getAlias(tuple.get0()), ignorePolicy));
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public <T> L gt(SerializableSupplier<T> repository, ReturnStringFunction<T> property) {
+        //        IMPLSOON 后续来实现join
+        //        entityQuery.join(repository);
+        Tuple3<String, String, Object> tuple = conditionResult(repository, property, factory);
+        return (L) addCondition(new SqlConditionExpressionBuilder(dialect, tuple.get1(), tuple.get2(), QueryOperator.GT,
+                aliasManager.getAlias(tuple.get0()), ignorePolicy));
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public <R, V> L in(SerializableFunction<E, R> repository, SerializableFunction<R, V> property, V value) {
+        //        IMPLSOON 后续来实现join
+        //        entityQuery.join(repository);
+        Tuple2<String, String> tuple = conditionResult(repository, property, value, factory);
+        return (L) addCondition(new SqlConditionExpressionBuilder(dialect, tuple.get1(), value, QueryOperator.IN,
+                aliasManager.getAlias(tuple.get0()), ignorePolicy));
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public <R, V> L in(SerializableSupplier<R> repository, SerializableFunction<R, V> property) {
+        //        IMPLSOON 后续来实现join
+        //        entityQuery.join(repository);
+        Tuple3<String, String, Object> tuple = conditionResult(repository, property, factory);
+        return (L) addCondition(new SqlConditionExpressionBuilder(dialect, tuple.get1(), tuple.get2(), QueryOperator.IN,
+                aliasManager.getAlias(tuple.get0()), ignorePolicy));
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public <R, V> L inn(SerializableFunction<E, R> repository, SerializableFunction<R, V> property, Boolean value) {
+        //        IMPLSOON 后续来实现join
+        //        entityQuery.join(repository);
+        Tuple2<String, String> tuple = conditionResult(repository, property, value, factory);
+        return (L) addCondition(new SqlConditionExpressionBuilder(dialect, tuple.get1(), value, QueryOperator.INN,
+                aliasManager.getAlias(tuple.get0()), ignorePolicy));
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public <R, V> L isn(SerializableFunction<E, R> repository, SerializableFunction<R, V> property) {
+        return isn(repository, property, true);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public <R, V> L isn(SerializableFunction<E, R> repository, SerializableFunction<R, V> property, Boolean value) {
+        //        IMPLSOON 后续来实现join
+        //        entityQuery.join(repository);
+        Tuple2<String, String> tuple = conditionResult(repository, property, value, factory);
+        return (L) addCondition(new SqlConditionExpressionBuilder(dialect, tuple.get1(), value, QueryOperator.ISN,
+                aliasManager.getAlias(tuple.get0()), ignorePolicy));
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public <R, N extends Number> L le(SerializableFunction<E, R> repository, SerializableFunction<R, N> property,
+            N value) {
+        //        IMPLSOON 后续来实现join
+        //        entityQuery.join(repository);
+        Tuple2<String, String> tuple = conditionResult(repository, property, value, factory);
+        return (L) addCondition(new SqlConditionExpressionBuilder(dialect, tuple.get1(), value, QueryOperator.LE,
+                aliasManager.getAlias(tuple.get0()), ignorePolicy));
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public <R, N extends Number> L le(SerializableSupplier<R> repository, ReturnNumberFunction<R, N> property) {
+        //        IMPLSOON 后续来实现join
+        //        entityQuery.join(repository);
+        Tuple3<String, String, Object> tuple = conditionResult(repository, property, factory);
+        return (L) addCondition(new SqlConditionExpressionBuilder(dialect, tuple.get1(), tuple.get2(), QueryOperator.LE,
+                aliasManager.getAlias(tuple.get0()), ignorePolicy));
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public <R, D extends Date> L le(SerializableFunction<E, R> repository, SerializableFunction<R, D> property,
+            D value) {
+        //        IMPLSOON 后续来实现join
+        //        entityQuery.join(repository);
+        Tuple2<String, String> tuple = conditionResult(repository, property, value, factory);
+        return (L) addCondition(new SqlConditionExpressionBuilder(dialect, tuple.get1(), value, QueryOperator.LE,
+                aliasManager.getAlias(tuple.get0()), ignorePolicy));
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public <R, D extends Date> L le(SerializableSupplier<R> repository, ReturnDateFunction<R, D> property) {
+        //        IMPLSOON 后续来实现join
+        //        entityQuery.join(repository);
+        Tuple3<String, String, Object> tuple = conditionResult(repository, property, factory);
+        return (L) addCondition(new SqlConditionExpressionBuilder(dialect, tuple.get1(), tuple.get2(), QueryOperator.LE,
+                aliasManager.getAlias(tuple.get0()), ignorePolicy));
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public <R> L le(SerializableFunction<E, R> repository, SerializableFunction<R, LocalTime> property,
+            LocalTime value) {
+        //        IMPLSOON 后续来实现join
+        //        entityQuery.join(repository);
+        Tuple2<String, String> tuple = conditionResult(repository, property, value, factory);
+        return (L) addCondition(new SqlConditionExpressionBuilder(dialect, tuple.get1(), value, QueryOperator.LE,
+                aliasManager.getAlias(tuple.get0()), ignorePolicy));
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public <T> L le(SerializableSupplier<T> repository, ReturnLocalTimeFunction<T> property) {
+        //        IMPLSOON 后续来实现join
+        //        entityQuery.join(repository);
+        Tuple3<String, String, Object> tuple = conditionResult(repository, property, factory);
+        return (L) addCondition(new SqlConditionExpressionBuilder(dialect, tuple.get1(), tuple.get2(), QueryOperator.LE,
+                aliasManager.getAlias(tuple.get0()), ignorePolicy));
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public <R> L le(SerializableFunction<E, R> repository, SerializableFunction<R, LocalDate> property,
+            LocalDate value) {
+        //        IMPLSOON 后续来实现join
+        //        entityQuery.join(repository);
+        Tuple2<String, String> tuple = conditionResult(repository, property, value, factory);
+        return (L) addCondition(new SqlConditionExpressionBuilder(dialect, tuple.get1(), value, QueryOperator.LE,
+                aliasManager.getAlias(tuple.get0()), ignorePolicy));
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public <T> L le(SerializableSupplier<T> repository, ReturnLocalDateFunction<T> property) {
+        //        IMPLSOON 后续来实现join
+        //        entityQuery.join(repository);
+        Tuple3<String, String, Object> tuple = conditionResult(repository, property, factory);
+        return (L) addCondition(new SqlConditionExpressionBuilder(dialect, tuple.get1(), tuple.get2(), QueryOperator.LE,
+                aliasManager.getAlias(tuple.get0()), ignorePolicy));
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public <R> L le(SerializableFunction<E, R> repository, SerializableFunction<R, LocalDateTime> property,
+            LocalDateTime value) {
+        //        IMPLSOON 后续来实现join
+        //        entityQuery.join(repository);
+        Tuple2<String, String> tuple = conditionResult(repository, property, value, factory);
+        return (L) addCondition(new SqlConditionExpressionBuilder(dialect, tuple.get1(), value, QueryOperator.LE,
+                aliasManager.getAlias(tuple.get0()), ignorePolicy));
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public <T> L le(SerializableSupplier<T> repository, ReturnLocalDateTimeFunction<T> property) {
+        //        IMPLSOON 后续来实现join
+        //        entityQuery.join(repository);
+        Tuple3<String, String, Object> tuple = conditionResult(repository, property, factory);
+        return (L) addCondition(new SqlConditionExpressionBuilder(dialect, tuple.get1(), tuple.get2(), QueryOperator.LE,
+                aliasManager.getAlias(tuple.get0()), ignorePolicy));
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public <R> L le(SerializableFunction<E, R> repository, SerializableFunction<R, String> property, String value) {
+        //        IMPLSOON 后续来实现join
+        //        entityQuery.join(repository);
+        Tuple2<String, String> tuple = conditionResult(repository, property, value, factory);
+        return (L) addCondition(new SqlConditionExpressionBuilder(dialect, tuple.get1(), value, QueryOperator.LE,
+                aliasManager.getAlias(tuple.get0()), ignorePolicy));
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public <R> L le(SerializableSupplier<R> repository, ReturnStringFunction<R> property) {
+        //        IMPLSOON 后续来实现join
+        //        entityQuery.join(repository);
+        Tuple3<String, String, Object> tuple = conditionResult(repository, property, factory);
+        return (L) addCondition(new SqlConditionExpressionBuilder(dialect, tuple.get1(), tuple.get2(), QueryOperator.LE,
+                aliasManager.getAlias(tuple.get0()), ignorePolicy));
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public <R, N extends Number> L lt(SerializableFunction<E, R> repository, SerializableFunction<R, N> property,
+            N value) {
+        //        IMPLSOON 后续来实现join
+        //        entityQuery.join(repository);
+        Tuple2<String, String> tuple = conditionResult(repository, property, value, factory);
+        return (L) addCondition(new SqlConditionExpressionBuilder(dialect, tuple.get1(), value, QueryOperator.LT,
+                aliasManager.getAlias(tuple.get0()), ignorePolicy));
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public <T, N extends Number> L lt(SerializableSupplier<T> repository, ReturnNumberFunction<T, N> property) {
+        //        IMPLSOON 后续来实现join
+        //        entityQuery.join(repository);
+        Tuple3<String, String, Object> tuple = conditionResult(repository, property, factory);
+        return (L) addCondition(new SqlConditionExpressionBuilder(dialect, tuple.get1(), tuple.get2(), QueryOperator.LT,
+                aliasManager.getAlias(tuple.get0()), ignorePolicy));
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public <R, D extends Date> L lt(SerializableFunction<E, R> repository, SerializableFunction<R, D> property,
+            D value) {
+        //        IMPLSOON 后续来实现join
+        //        entityQuery.join(repository);
+        Tuple2<String, String> tuple = conditionResult(repository, property, value, factory);
+        return (L) addCondition(new SqlConditionExpressionBuilder(dialect, tuple.get1(), value, QueryOperator.LT,
+                aliasManager.getAlias(tuple.get0()), ignorePolicy));
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public <T, D extends Date> L lt(SerializableSupplier<T> repository, SerializableFunction<T, D> property) {
+        //        IMPLSOON 后续来实现join
+        //        entityQuery.join(repository);
+        Tuple3<String, String, Object> tuple = conditionResult(repository, property, factory);
+        return (L) addCondition(new SqlConditionExpressionBuilder(dialect, tuple.get1(), tuple.get2(), QueryOperator.LT,
+                aliasManager.getAlias(tuple.get0()), ignorePolicy));
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public <R> L lt(SerializableFunction<E, R> repository, SerializableFunction<R, LocalTime> property,
+            LocalTime value) {
+        //        IMPLSOON 后续来实现join
+        //        entityQuery.join(repository);
+        Tuple2<String, String> tuple = conditionResult(repository, property, value, factory);
+        return (L) addCondition(new SqlConditionExpressionBuilder(dialect, tuple.get1(), value, QueryOperator.LT,
+                aliasManager.getAlias(tuple.get0()), ignorePolicy));
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public <T> L lt(SerializableSupplier<T> repository, ReturnLocalTimeFunction<T> property) {
+        //        IMPLSOON 后续来实现join
+        //        entityQuery.join(repository);
+        Tuple3<String, String, Object> tuple = conditionResult(repository, property, factory);
+        return (L) addCondition(new SqlConditionExpressionBuilder(dialect, tuple.get1(), tuple.get2(), QueryOperator.LT,
+                aliasManager.getAlias(tuple.get0()), ignorePolicy));
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public <R> L lt(SerializableFunction<E, R> repository, SerializableFunction<R, LocalDate> property,
+            LocalDate value) {
+        //        IMPLSOON 后续来实现join
+        //        entityQuery.join(repository);
+        Tuple2<String, String> tuple = conditionResult(repository, property, value, factory);
+        return (L) addCondition(new SqlConditionExpressionBuilder(dialect, tuple.get1(), value, QueryOperator.LT,
+                aliasManager.getAlias(tuple.get0()), ignorePolicy));
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public <T> L lt(SerializableSupplier<T> repository, ReturnLocalDateFunction<T> property) {
+        //        IMPLSOON 后续来实现join
+        //        entityQuery.join(repository);
+        Tuple3<String, String, Object> tuple = conditionResult(repository, property, factory);
+        return (L) addCondition(new SqlConditionExpressionBuilder(dialect, tuple.get1(), tuple.get2(), QueryOperator.LT,
+                aliasManager.getAlias(tuple.get0()), ignorePolicy));
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public <R> L lt(SerializableFunction<E, R> repository, SerializableFunction<R, LocalDateTime> property,
+            LocalDateTime value) {
+        //        IMPLSOON 后续来实现join
+        //        entityQuery.join(repository);
+        Tuple2<String, String> tuple = conditionResult(repository, property, value, factory);
+        return (L) addCondition(new SqlConditionExpressionBuilder(dialect, tuple.get1(), value, QueryOperator.LT,
+                aliasManager.getAlias(tuple.get0()), ignorePolicy));
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public <T> L lt(SerializableSupplier<T> repository, ReturnLocalDateTimeFunction<T> property) {
+        //        IMPLSOON 后续来实现join
+        //        entityQuery.join(repository);
+        Tuple3<String, String, Object> tuple = conditionResult(repository, property, factory);
+        return (L) addCondition(new SqlConditionExpressionBuilder(dialect, tuple.get1(), tuple.get2(), QueryOperator.LT,
+                aliasManager.getAlias(tuple.get0()), ignorePolicy));
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public <R> L lt(SerializableFunction<E, R> repository, SerializableFunction<R, String> property, String value) {
+        //        IMPLSOON 后续来实现join
+        //        entityQuery.join(repository);
+        Tuple2<String, String> tuple = conditionResult(repository, property, value, factory);
+        return (L) addCondition(new SqlConditionExpressionBuilder(dialect, tuple.get1(), value, QueryOperator.LT,
+                aliasManager.getAlias(tuple.get0()), ignorePolicy));
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public <T> L lt(SerializableSupplier<T> repository, ReturnStringFunction<T> property) {
+        //        IMPLSOON 后续来实现join
+        //        entityQuery.join(repository);
+        Tuple3<String, String, Object> tuple = conditionResult(repository, property, factory);
+        return (L) addCondition(new SqlConditionExpressionBuilder(dialect, tuple.get1(), tuple.get2(), QueryOperator.LT,
+                aliasManager.getAlias(tuple.get0()), ignorePolicy));
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public <R, V> L ne(SerializableFunction<E, R> repository, SerializableFunction<R, V> property, V value) {
+        //        IMPLSOON 后续来实现join
+        //        entityQuery.join(repository);
+        Tuple2<String, String> tuple = conditionResult(repository, property, value, factory);
+        return (L) addCondition(new SqlConditionExpressionBuilder(dialect, tuple.get1(), value, QueryOperator.EQ,
+                aliasManager.getAlias(tuple.get0()), ignorePolicy));
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public <R, V> L ne(SerializableSupplier<R> repository, SerializableFunction<R, V> property) {
+        //        IMPLSOON 后续来实现join
+        //        entityQuery.join(repository);
+        Tuple3<String, String, Object> tuple = conditionResult(repository, property, factory);
+        return (L) addCondition(new SqlConditionExpressionBuilder(dialect, tuple.get1(), tuple.get2(), QueryOperator.NE,
+                aliasManager.getAlias(tuple.get0()), ignorePolicy));
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public <R, V> L nin(SerializableFunction<E, R> repository, SerializableFunction<R, V> property, V value) {
+        //        IMPLSOON 后续来实现join
+        //        entityQuery.join(repository);
+        Tuple2<String, String> tuple = conditionResult(repository, property, value, factory);
+        return (L) addCondition(new SqlConditionExpressionBuilder(dialect, tuple.get1(), value, QueryOperator.NIN,
+                aliasManager.getAlias(tuple.get0()), ignorePolicy));
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public <R, V> L nin(SerializableSupplier<R> repository, SerializableFunction<R, V> property) {
+        //        IMPLSOON 后续来实现join
+        //        entityQuery.join(repository);
+        Tuple3<String, String, Object> tuple = conditionResult(repository, property, factory);
+        return (L) addCondition(new SqlConditionExpressionBuilder(dialect, tuple.get1(), tuple.get2(), QueryOperator.NE,
+                aliasManager.getAlias(tuple.get0()), ignorePolicy));
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public <R> L sw(SerializableFunction<E, R> repository, SerializableFunction<R, String> property, String value) {
+        //        IMPLSOON 后续来实现join
+        //        entityQuery.join(repository);
+        Tuple2<String, String> tuple = conditionResult(repository, property, value, factory);
+        return (L) addCondition(new SqlConditionExpressionBuilder(dialect, tuple.get1(), value, QueryOperator.SW,
+                aliasManager.getAlias(tuple.get0()), ignorePolicy));
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public <R> L sw(SerializableSupplier<R> repository, SerializableFunction<R, String> property) {
+        //        IMPLSOON 后续来实现join
+        //        entityQuery.join(repository);
+        Tuple3<String, String, Object> tuple = conditionResult(repository, property, factory);
+        return (L) addCondition(new SqlConditionExpressionBuilder(dialect, tuple.get1(), tuple.get2(), QueryOperator.SW,
+                aliasManager.getAlias(tuple.get0()), ignorePolicy));
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public <R> L lk(SerializableFunction<E, R> repository, SerializableFunction<R, String> property, String value) {
+        //        IMPLSOON 后续来实现join
+        //        entityQuery.join(repository);
+        Tuple2<String, String> tuple = conditionResult(repository, property, value, factory);
+        return (L) addCondition(new SqlConditionExpressionBuilder(dialect, tuple.get1(), value, QueryOperator.LK,
+                aliasManager.getAlias(tuple.get0()), ignorePolicy));
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public <R> L lk(SerializableSupplier<R> repository, SerializableFunction<R, String> property) {
+        //        IMPLSOON 后续来实现join
+        //        entityQuery.join(repository);
+        Tuple3<String, String, Object> tuple = conditionResult(repository, property, factory);
+        return (L) addCondition(new SqlConditionExpressionBuilder(dialect, tuple.get1(), tuple.get2(), QueryOperator.LK,
+                aliasManager.getAlias(tuple.get0()), ignorePolicy));
+    }
+
+    //  join 条件查询
+
     // ********************************************************************
     // private method
     // ********************************************************************
 
-    private <R> L in(JdbcPropertyMapping pm, R value) {
+    @SuppressWarnings("rawtypes")
+    private Object getParam(JdbcPropertyMapping pm, Object value) {
+        Object param = null;
+        if (value != null) {
+            if (value.getClass().isArray()) {
+                int length = Array.getLength(value);
+                param = Array.newInstance(FieldValueOperator.class, length);
+                for (int i = 0; i < length; i++) {
+                    Array.set(param, i, new FieldValueOperator(pm.getJavaTypeSqlTypeOperator(), Array.get(value, i)));
+                }
+            } else if (value instanceof Collection) {
+                param = new ArrayList<>();
+                for (Object op : (Collection<?>) value) {
+                    ((Collection<FieldValueOperator>) param)
+                            .add(new FieldValueOperator(pm.getJavaTypeSqlTypeOperator(), op));
+                }
+            } else {
+                param = value;
+            }
+        }
+        return param;
+    }
+
+    private <T, R> L in(JdbcPropertyMapping pm, R value) {
         return (L) addCondition(new SqlConditionExpressionBuilder(dialect, pm.getRepositoryFieldName(),
-                value == null ? null
-                        : new FieldValueOperator<>((JavaTypeSqlTypeOperator<R>) pm.getJavaTypeSqlTypeOperator(), value),
-                QueryOperator.IN, queryAlias, ignorePolicy));
+                getParam(pm, value), QueryOperator.IN, queryAlias, ignorePolicy));
     }
 
     private <R> L nin(JdbcPropertyMapping pm, R value) {
         return (L) addCondition(new SqlConditionExpressionBuilder(dialect, pm.getRepositoryFieldName(),
-                value == null ? null
-                        : new FieldValueOperator<>((JavaTypeSqlTypeOperator<R>) pm.getJavaTypeSqlTypeOperator(), value),
-                QueryOperator.NIN, queryAlias, ignorePolicy));
+                getParam(pm, value), QueryOperator.NIN, queryAlias, ignorePolicy));
     }
 
     private L isn(JdbcPropertyMapping pm, Boolean value) {
