@@ -45,9 +45,9 @@ public interface RepositoryLikeExpression<C extends ConditionExpression, L exten
      * @param value      参数值
      * @return LogicExpression
      */
-    default <T> L lk(Class<T> repository, String name, String value) {
-        return lk(repository, name, value, QueryPolicy.AUTO);
-    }
+    //    default <T> L lk(Class<T> repository, String name, String value) {
+    //        return lk(repository, name, value, QueryPolicy.AUTO);
+    //    }
 
     /**
      * like value.
@@ -59,7 +59,7 @@ public interface RepositoryLikeExpression<C extends ConditionExpression, L exten
      * @param queryPolicy the query policy
      * @return LogicExpression
      */
-    <T> L lk(Class<T> repository, String name, String value, QueryPolicy queryPolicy);
+    //    <T> L lk(Class<T> repository, String name, String value, QueryPolicy queryPolicy);
 
     /**
      * like value.

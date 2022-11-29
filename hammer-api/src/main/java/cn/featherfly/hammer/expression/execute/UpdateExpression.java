@@ -15,6 +15,6 @@ public interface UpdateExpression<U extends ExecutableUpdateExpression<U, C, L, 
         C extends ConditionGroupExpression<C, L>, L extends ConditionGroupLogicExpression<C, L>,
         V extends UpdateValueExpression<U, C, L, Object, V, VN>,
         VN extends UpdateNumberValueExpression<U, C, L, Number, V, VN>>
-        extends PropertyUpdateExpression<U, C, L, V, VN>, SetUpdateExpression<U, C, L> {
+        extends PropertyUpdateExpression<U, C, L, V, VN>, UpdateSetExpression<U, C, L> {
 
 }

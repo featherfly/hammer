@@ -4,13 +4,9 @@ package cn.featherfly.hammer.sqldb.jdbc.dsl.query;
 import java.util.Map;
 import java.util.function.Predicate;
 
-import com.speedment.common.tuple.Tuple2;
-
 import cn.featherfly.common.constant.Chars;
 import cn.featherfly.common.db.Table;
 import cn.featherfly.common.db.builder.dml.basic.SqlSelectBasicBuilder;
-import cn.featherfly.common.db.mapping.ClassMappingUtils;
-import cn.featherfly.common.db.mapping.JdbcClassMapping;
 import cn.featherfly.common.db.mapping.JdbcMappingFactory;
 import cn.featherfly.common.db.metadata.DatabaseMetadata;
 import cn.featherfly.common.lang.AssertIllegalArgument;
@@ -40,12 +36,6 @@ public abstract class AbstractSqlQueryEntityProperties<E extends AbstractSqlQuer
     /** The select builder. */
     protected SqlSelectBasicBuilder selectBuilder;
 
-    /** The class mapping. */
-    protected JdbcClassMapping<?> classMapping;
-
-    /** The factory. */
-    protected JdbcMappingFactory factory;
-
     /** The sql page factory. */
     protected SqlPageFactory sqlPageFactory;
 
@@ -57,37 +47,6 @@ public abstract class AbstractSqlQueryEntityProperties<E extends AbstractSqlQuer
 
     /** The table alias. */
     protected String tableAlias;
-
-    /**
-     * Instantiates a new abstract sql query entity properties.
-     *
-     * @param jdbc           jdbc
-     * @param classMapping   classMapping
-     * @param factory        MappingFactory
-     * @param sqlPageFactory the sql page factory
-     * @param aliasManager   aliasManager
-     * @param ignorePolicy   the ignore policy
-     */
-    public AbstractSqlQueryEntityProperties(Jdbc jdbc, JdbcClassMapping<?> classMapping, JdbcMappingFactory factory,
-            SqlPageFactory sqlPageFactory, AliasManager aliasManager, Predicate<Object> ignorePolicy) {
-        AssertIllegalArgument.isNotNull(ignorePolicy, "ignorePolicy");
-        this.ignorePolicy = ignorePolicy;
-        this.jdbc = jdbc;
-        this.classMapping = classMapping;
-        this.factory = factory;
-        this.sqlPageFactory = sqlPageFactory;
-        this.aliasManager = aliasManager;
-        String tableAlias = aliasManager.getAlias(classMapping.getRepositoryName());
-        if (tableAlias == null) {
-            tableAlias = aliasManager.put(classMapping.getRepositoryName());
-        }
-        if (classMapping.getPrivaryKeyPropertyMappings().size() == 1) {
-            idName = classMapping.getPrivaryKeyPropertyMappings().get(0).getRepositoryFieldName();
-        }
-        selectBuilder = new SqlSelectBasicBuilder(jdbc.getDialect(), classMapping, tableAlias);
-
-        this.tableAlias = tableAlias;
-    }
 
     /**
      * Instantiates a new abstract sql query entity properties.
@@ -107,7 +66,6 @@ public abstract class AbstractSqlQueryEntityProperties<E extends AbstractSqlQuer
         AssertIllegalArgument.isNotNull(ignorePolicy, "ignorePolicy");
         this.ignorePolicy = ignorePolicy;
         this.jdbc = jdbc;
-        this.factory = factory;
         this.sqlPageFactory = sqlPageFactory;
         this.aliasManager = aliasManager;
         if (tableAlias == null) {
@@ -135,19 +93,26 @@ public abstract class AbstractSqlQueryEntityProperties<E extends AbstractSqlQuer
     /**
      * Property.
      *
-     * @param distinct     the distinct
-     * @param propertyName the property name
+     * @param distinct   the distinct
+     * @param columnName the column name
      * @return the e
      */
     @SuppressWarnings("unchecked")
-    public E property(boolean distinct, String propertyName) {
-        Tuple2<String, String> columnAndProperty = ClassMappingUtils.getColumnAndPropertyName(propertyName,
-                classMapping);
-        if (Lang.isEmpty(columnAndProperty.get1())) {
-            selectBuilder.addColumn(distinct, columnAndProperty.get0());
-        } else {
-            selectBuilder.addColumn(distinct, columnAndProperty.get0(), columnAndProperty.get1());
-        }
+    public E property(boolean distinct, String columnName) {
+        selectBuilder.addColumn(distinct, columnName);
+        return (E) this;
+    }
+
+    /**
+     * Property.
+     *
+     * @param distinct   the distinct
+     * @param columnName the column name
+     * @return the e
+     */
+    @SuppressWarnings("unchecked")
+    public E property(boolean distinct, String columnName, String columnAlias) {
+        selectBuilder.addColumn(distinct, columnName, columnAlias);
         return (E) this;
     }
 
@@ -156,18 +121,27 @@ public abstract class AbstractSqlQueryEntityProperties<E extends AbstractSqlQuer
      *
      * @param aggregateFunction the aggregate function
      * @param distinct          the distinct
-     * @param propertyName      the property name
+     * @param columnName        the column name
      * @return the e
      */
     @SuppressWarnings("unchecked")
-    public E property(AggregateFunction aggregateFunction, boolean distinct, String propertyName) {
-        Tuple2<String, String> columnAndProperty = ClassMappingUtils.getColumnAndPropertyName(propertyName,
-                classMapping);
-        if (Lang.isEmpty(columnAndProperty.get1())) {
-            selectBuilder.addColumn(aggregateFunction, distinct, columnAndProperty.get0());
-        } else {
-            selectBuilder.addColumn(aggregateFunction, distinct, columnAndProperty.get0(), columnAndProperty.get1());
-        }
+    public E property(AggregateFunction aggregateFunction, boolean distinct, String columnName) {
+        selectBuilder.addColumn(aggregateFunction, distinct, columnName);
+        return (E) this;
+    }
+
+    /**
+     * Property.
+     *
+     * @param aggregateFunction the aggregate function
+     * @param distinct          the distinct
+     * @param columnName        the column name
+     * @param columnAlias       the column alias
+     * @return the e
+     */
+    @SuppressWarnings("unchecked")
+    public E property(AggregateFunction aggregateFunction, boolean distinct, String columnName, String columnAlias) {
+        selectBuilder.addColumn(aggregateFunction, distinct, columnName, columnAlias);
         return (E) this;
     }
 
@@ -274,7 +248,7 @@ public abstract class AbstractSqlQueryEntityProperties<E extends AbstractSqlQuer
      */
     @SuppressWarnings("unchecked")
     public E propertyAlias(String columnName, String alias) {
-        selectBuilder.addColumn(ClassMappingUtils.getColumnName(columnName, classMapping), alias);
+        selectBuilder.addColumn(columnName, alias);
         return (E) this;
     }
 
@@ -299,8 +273,8 @@ public abstract class AbstractSqlQueryEntityProperties<E extends AbstractSqlQuer
      * @return the e
      */
     @SuppressWarnings("unchecked")
-    public E id(String propertyName) {
-        idName = ClassMappingUtils.getColumnName(propertyName, classMapping);
+    public E id(String columnName) {
+        idName = columnName;
         return (E) this;
     }
 
@@ -322,19 +296,19 @@ public abstract class AbstractSqlQueryEntityProperties<E extends AbstractSqlQuer
      * @return the e
      */
     public Long count() {
-        return new SqlQueryExpression(jdbc, sqlPageFactory, classMapping,
+        return new SqlQueryExpression(jdbc, sqlPageFactory,
                 selectBuilder.addColumn(AggregateFunction.COUNT, Chars.STAR), ignorePolicy).longInt();
     }
 
     /**
      * Count.
      *
-     * @param distinct     the distinct
-     * @param propertyName the property name
+     * @param distinct   the distinct
+     * @param columnName the column name
      * @return the e
      */
-    public E count(boolean distinct, String propertyName) {
-        return property(AggregateFunction.COUNT, distinct, propertyName);
+    public E count(boolean distinct, String columnName) {
+        return property(AggregateFunction.COUNT, distinct, columnName);
     }
 
     /**

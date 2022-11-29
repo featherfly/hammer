@@ -156,13 +156,4 @@ public class UserQueryWithEntity implements
         return null;
     }
 
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public <T> UserQueryWithOn join(Class<T> repositoryType) {
-        // YUFEI_TODO Auto-generated method stub
-        return null;
-    }
-
 }

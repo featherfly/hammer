@@ -18,7 +18,7 @@ import cn.featherfly.hammer.sqldb.sql.dml.AbstractEntitySqlConditionGroupExpress
  * @author zhongj
  * @param <E> the element type
  */
-public class EntitySqlConditionGroupExpression<E> extends
+public class SqlEntityConditionGroupExpression<E> extends
         AbstractEntitySqlConditionGroupExpression<E, EntityExecutableConditionGroupExpression<E>, EntityExecutableConditionGroupLogicExpression<E>>
         implements EntityExecutableConditionGroupExpression<E>, EntityExecutableConditionGroupLogicExpression<E> {
 
@@ -31,7 +31,7 @@ public class EntitySqlConditionGroupExpression<E> extends
      * @param aliasManager the alias manager
      * @param ignorePolicy the ignore policy
      */
-    public EntitySqlConditionGroupExpression(Jdbc jdbc, JdbcClassMapping<E> classMapping, JdbcMappingFactory factory,
+    public SqlEntityConditionGroupExpression(Jdbc jdbc, JdbcClassMapping<E> classMapping, JdbcMappingFactory factory,
             AliasManager aliasManager, Predicate<Object> ignorePolicy) {
         this(jdbc, null, classMapping, factory, aliasManager, ignorePolicy);
     }
@@ -46,7 +46,7 @@ public class EntitySqlConditionGroupExpression<E> extends
      * @param aliasManager the alias manager
      * @param ignorePolicy the ignore policy
      */
-    public EntitySqlConditionGroupExpression(Jdbc jdbc, String alias, JdbcClassMapping<E> classMapping,
+    public SqlEntityConditionGroupExpression(Jdbc jdbc, String alias, JdbcClassMapping<E> classMapping,
             JdbcMappingFactory factory, AliasManager aliasManager, Predicate<Object> ignorePolicy) {
         this(jdbc, null, alias, classMapping, factory, aliasManager, ignorePolicy);
     }
@@ -62,7 +62,7 @@ public class EntitySqlConditionGroupExpression<E> extends
      * @param aliasManager the alias manager
      * @param ignorePolicy the ignore policy
      */
-    EntitySqlConditionGroupExpression(Jdbc jdbc, EntityExecutableConditionGroupLogicExpression<E> parent,
+    SqlEntityConditionGroupExpression(Jdbc jdbc, EntityExecutableConditionGroupLogicExpression<E> parent,
             String queryAlias, JdbcClassMapping<E> classMapping, JdbcMappingFactory factory, AliasManager aliasManager,
             Predicate<Object> ignorePolicy) {
         // 删除，和更新不需要分页
@@ -92,7 +92,7 @@ public class EntitySqlConditionGroupExpression<E> extends
     protected EntityExecutableConditionGroupExpression<E> createGroup(
             EntityExecutableConditionGroupLogicExpression<E> parent, String queryAlias,
             EntitySqlQuery<E> entityQueryEntity) {
-        return new EntitySqlConditionGroupExpression<>(jdbc, parent, queryAlias, classMapping, factory, aliasManager,
+        return new SqlEntityConditionGroupExpression<>(jdbc, parent, queryAlias, classMapping, factory, aliasManager,
                 ignorePolicy);
     }
 }

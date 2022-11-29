@@ -17,7 +17,7 @@ import cn.featherfly.hammer.sqldb.jdbc.Jdbc;
  * @author zhongj
  * @param <E> the element type
  */
-public class EntitySqlDeleteExpression<E> extends EntitySqlConditionGroupExpression<E> {
+public class SqlEntityDeleteExpression<E> extends SqlEntityConditionGroupExpression<E> {
 
     private SqlDeleteFromBasicBuilder builder;
 
@@ -30,9 +30,9 @@ public class EntitySqlDeleteExpression<E> extends EntitySqlConditionGroupExpress
      * @param factory      the factory
      * @param aliasManager the alias manager
      */
-    public EntitySqlDeleteExpression(Jdbc jdbc, SqlDeleteFromBasicBuilder builder, JdbcClassMapping<E> classMapping,
+    public SqlEntityDeleteExpression(Jdbc jdbc, SqlDeleteFromBasicBuilder builder, JdbcClassMapping<E> classMapping,
             JdbcMappingFactory factory, AliasManager aliasManager) {
-        this(jdbc, builder, classMapping, factory, aliasManager, IgnorePolicy.EMPTY);
+        this(jdbc, builder, classMapping, factory, aliasManager, IgnorePolicy.NONE);
     }
 
     /**
@@ -45,7 +45,7 @@ public class EntitySqlDeleteExpression<E> extends EntitySqlConditionGroupExpress
      * @param aliasManager the alias manager
      * @param ignorePolicy the ignore policy
      */
-    public EntitySqlDeleteExpression(Jdbc jdbc, SqlDeleteFromBasicBuilder builder, JdbcClassMapping<E> classMapping,
+    public SqlEntityDeleteExpression(Jdbc jdbc, SqlDeleteFromBasicBuilder builder, JdbcClassMapping<E> classMapping,
             JdbcMappingFactory factory, AliasManager aliasManager, Predicate<Object> ignorePolicy) {
         // ENHANCE 删除暂时没有支持别名
         super(jdbc, classMapping, factory, aliasManager, ignorePolicy);

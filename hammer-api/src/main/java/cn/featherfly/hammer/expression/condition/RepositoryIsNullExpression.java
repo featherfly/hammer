@@ -31,7 +31,7 @@ public interface RepositoryIsNullExpression<C extends ConditionExpression, L ext
      * @param name       参数名称
      * @return LogicExpression
      */
-    <T> L isn(Class<T> repository, String name);
+    //    <T> L isn(Class<T> repository, String name);
 
     /**
      * is null.
@@ -63,7 +63,7 @@ public interface RepositoryIsNullExpression<C extends ConditionExpression, L ext
      *                   ignore this operate
      * @return LogicExpression
      */
-    <T> L isn(Class<T> repository, String name, Boolean value);
+    //    <T> L isn(Class<T> repository, String name, Boolean value);
 
     /**
      * is null.

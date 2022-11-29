@@ -88,7 +88,7 @@ public interface RepositoryLessThanExpressoin<C extends ConditionExpression, L e
      * @param value      参数值
      * @return LogicExpression
      */
-    <N extends Number, T> L lt(Class<T> repository, String name, N value);
+    //    <N extends Number, T> L lt(Class<T> repository, String name, N value);
 
     /**
      * 小于.
@@ -100,7 +100,7 @@ public interface RepositoryLessThanExpressoin<C extends ConditionExpression, L e
      * @param value      参数值
      * @return LogicExpression
      */
-    <D extends Date, T> L lt(Class<T> repository, String name, D value);
+    //    <D extends Date, T> L lt(Class<T> repository, String name, D value);
 
     /**
      * 小于.
@@ -111,7 +111,7 @@ public interface RepositoryLessThanExpressoin<C extends ConditionExpression, L e
      * @param value      参数值
      * @return LogicExpression
      */
-    <T> L lt(Class<T> repository, String name, LocalTime value);
+    //    <T> L lt(Class<T> repository, String name, LocalTime value);
 
     /**
      * 小于.
@@ -122,7 +122,7 @@ public interface RepositoryLessThanExpressoin<C extends ConditionExpression, L e
      * @param value      参数值
      * @return LogicExpression
      */
-    <T> L lt(Class<T> repository, String name, LocalDate value);
+    //    <T> L lt(Class<T> repository, String name, LocalDate value);
 
     /**
      * 小于.
@@ -133,7 +133,7 @@ public interface RepositoryLessThanExpressoin<C extends ConditionExpression, L e
      * @param value      参数值
      * @return LogicExpression
      */
-    <T> L lt(Class<T> repository, String name, LocalDateTime value);
+    //    <T> L lt(Class<T> repository, String name, LocalDateTime value);
 
     /**
      * 小于.
@@ -144,7 +144,7 @@ public interface RepositoryLessThanExpressoin<C extends ConditionExpression, L e
      * @param value      参数值
      * @return LogicExpression
      */
-    <T> L lt(Class<T> repository, String name, String value);
+    //    <T> L lt(Class<T> repository, String name, String value);
 
     /**
      * 小于.

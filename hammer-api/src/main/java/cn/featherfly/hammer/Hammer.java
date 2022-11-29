@@ -13,6 +13,7 @@ import cn.featherfly.common.operator.LogicOperator;
 import cn.featherfly.common.repository.IgnorePolicy;
 import cn.featherfly.hammer.dsl.execute.Delete;
 import cn.featherfly.hammer.dsl.execute.EntityDelete;
+import cn.featherfly.hammer.dsl.execute.EntityUpdate;
 import cn.featherfly.hammer.dsl.execute.Update;
 import cn.featherfly.hammer.dsl.query.QueryEntity;
 import cn.featherfly.hammer.dsl.query.type.EntityQueryConditionGroupExpression;
@@ -426,7 +427,7 @@ public interface Hammer extends TplExecutor {
      * @param entityType update for entityType
      * @return Update
      */
-    <E> Update update(Class<E> entityType);
+    <E> EntityUpdate<E> update(Class<E> entityType);
 
     /**
      * create delete for repository.

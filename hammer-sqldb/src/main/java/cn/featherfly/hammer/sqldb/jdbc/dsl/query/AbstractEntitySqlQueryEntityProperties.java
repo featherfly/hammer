@@ -304,7 +304,7 @@ public abstract class AbstractEntitySqlQueryEntityProperties<E, P extends Abstra
      */
     @Override
     public Long count() {
-        return new SqlQueryExpression(jdbc, sqlPageFactory, classMapping,
+        return new SqlQueryExpression(jdbc, sqlPageFactory,
                 selectBuilder.addColumn(AggregateFunction.COUNT, Chars.STAR), ignorePolicy).longInt();
     }
 

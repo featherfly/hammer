@@ -474,25 +474,25 @@ public interface QueryEntityExpression<Q extends QueryEntityPropertiesExpression
      */
     QWO join(String repositoryName);
 
-    /**
-     * relate to.
-     *
-     * @param <T>            the generic type
-     * @param repositoryType with repository type
-     * @return QueryWithExpression
-     */
-    default <T> QWO relate(Class<T> repositoryType) {
-        return join(repositoryType);
-    }
-
-    /**
-     * join on.
-     *
-     * @param <T>            the generic type
-     * @param repositoryType with repository type
-     * @return QueryWithExpression
-     */
-    <T> QWO join(Class<T> repositoryType);
+    //    /**
+    //     * relate to.
+    //     *
+    //     * @param <T>            the generic type
+    //     * @param repositoryType with repository type
+    //     * @return QueryWithExpression
+    //     */
+    //    default <T> QWO relate(Class<T> repositoryType) {
+    //        return join(repositoryType);
+    //    }
+    //
+    //    /**
+    //     * join on.
+    //     *
+    //     * @param <T>            the generic type
+    //     * @param repositoryType with repository type
+    //     * @return QueryWithExpression
+    //     */
+    //    <T> QWO join(Class<T> repositoryType);
 
     /**
      * 结束当前条件并进入排序器.

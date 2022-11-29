@@ -6,13 +6,11 @@ import java.util.function.Consumer;
 import cn.featherfly.hammer.expression.execute.UpdateValueExpression;
 
 /**
- * <p>
- * SimpleUpdateValue
- * </p>
+ * UpdateValueImpl.
  *
  * @author zhongj
  */
-public class SimpleUpdateValue implements UpdateValue {
+public class UpdateValueImpl implements UpdateValue {
 
     private String name;
 
@@ -22,7 +20,7 @@ public class SimpleUpdateValue implements UpdateValue {
      * @param name   name
      * @param update update
      */
-    public SimpleUpdateValue(String name, ExecutableUpdate update) {
+    public UpdateValueImpl(String name, ExecutableUpdate update) {
         super();
         this.update = update;
         this.name = name;

@@ -1587,7 +1587,7 @@ public abstract class AbstractEntitySqlConditionGroupExpression<E, C extends Ent
         //        IMPLSOON 后续来实现join
         //         //        IMPLSOON 后续来实现join
         //        entityQuery.join(repository);
-        Tuple2<String, String> tuple = conditionResult(repository, property, value, factory);
+        Tuple2<String, String> tuple = conditionResult(repository, property, value, classMapping, factory);
         return (L) addCondition(new SqlConditionExpressionBuilder(dialect, tuple.get1(), value, QueryOperator.CO,
                 aliasManager.getAlias(tuple.get0()), ignorePolicy));
     }
@@ -1600,7 +1600,7 @@ public abstract class AbstractEntitySqlConditionGroupExpression<E, C extends Ent
         //        IMPLSOON 后续来实现join
         //         //        IMPLSOON 后续来实现join
         //        entityQuery.join(repository);
-        Tuple3<String, String, Object> tuple = conditionResult(repository, property, factory);
+        Tuple3<String, String, Object> tuple = conditionResult(repository, property, classMapping, factory);
         return (L) addCondition(new SqlConditionExpressionBuilder(dialect, tuple.get1(), tuple.get2(), QueryOperator.CO,
                 aliasManager.getAlias(tuple.get0()), ignorePolicy));
     }
@@ -1613,7 +1613,7 @@ public abstract class AbstractEntitySqlConditionGroupExpression<E, C extends Ent
         //        IMPLSOON 后续来实现join
         //         //        IMPLSOON 后续来实现join
         //        entityQuery.join(repository);
-        Tuple2<String, String> tuple = conditionResult(repository, property, value, factory);
+        Tuple2<String, String> tuple = conditionResult(repository, property, value, classMapping, factory);
         return (L) addCondition(new SqlConditionExpressionBuilder(dialect, tuple.get1(), value, QueryOperator.EW,
                 aliasManager.getAlias(tuple.get0()), ignorePolicy));
     }
@@ -1626,7 +1626,7 @@ public abstract class AbstractEntitySqlConditionGroupExpression<E, C extends Ent
         //        IMPLSOON 后续来实现join
         //         //        IMPLSOON 后续来实现join
         //        entityQuery.join(repository);
-        Tuple3<String, String, Object> tuple = conditionResult(repository, property, factory);
+        Tuple3<String, String, Object> tuple = conditionResult(repository, property, classMapping, factory);
         return (L) addCondition(new SqlConditionExpressionBuilder(dialect, tuple.get1(), tuple.get2(), QueryOperator.EW,
                 aliasManager.getAlias(tuple.get0()), ignorePolicy));
     }
@@ -1639,7 +1639,7 @@ public abstract class AbstractEntitySqlConditionGroupExpression<E, C extends Ent
         //        IMPLSOON 后续来实现join
         //         //        IMPLSOON 后续来实现join
         //        entityQuery.join(repository);
-        Tuple2<String, String> tuple = conditionResult(repository, property, value, factory);
+        Tuple2<String, String> tuple = conditionResult(repository, property, value, classMapping, factory);
         return (L) addCondition(new SqlConditionExpressionBuilder(dialect, tuple.get1(), value, QueryOperator.EQ,
                 aliasManager.getAlias(tuple.get0()), ignorePolicy));
     }
@@ -1651,7 +1651,7 @@ public abstract class AbstractEntitySqlConditionGroupExpression<E, C extends Ent
     public <R, V> L eq(SerializableSupplier<R> repository, SerializableFunction<R, V> property) {
         //        IMPLSOON 后续来实现join
         //        entityQuery.join(repository);
-        Tuple3<String, String, Object> tuple = conditionResult(repository, property, factory);
+        Tuple3<String, String, Object> tuple = conditionResult(repository, property, classMapping, factory);
         return (L) addCondition(new SqlConditionExpressionBuilder(dialect, tuple.get1(), tuple.get2(), QueryOperator.EQ,
                 aliasManager.getAlias(tuple.get0()), ignorePolicy));
     }
@@ -1664,7 +1664,7 @@ public abstract class AbstractEntitySqlConditionGroupExpression<E, C extends Ent
             N value) {
         //        IMPLSOON 后续来实现join
         //        entityQuery.join(repository);
-        Tuple2<String, String> tuple = conditionResult(repository, property, value, factory);
+        Tuple2<String, String> tuple = conditionResult(repository, property, value, classMapping, factory);
         return (L) addCondition(new SqlConditionExpressionBuilder(dialect, tuple.get1(), value, QueryOperator.GE,
                 aliasManager.getAlias(tuple.get0()), ignorePolicy));
     }
@@ -1676,7 +1676,7 @@ public abstract class AbstractEntitySqlConditionGroupExpression<E, C extends Ent
     public <T, N extends Number> L ge(SerializableSupplier<T> repository, ReturnNumberFunction<T, N> property) {
         //        IMPLSOON 后续来实现join
         //        entityQuery.join(repository);
-        Tuple3<String, String, Object> tuple = conditionResult(repository, property, factory);
+        Tuple3<String, String, Object> tuple = conditionResult(repository, property, classMapping, factory);
         return (L) addCondition(new SqlConditionExpressionBuilder(dialect, tuple.get1(), tuple.get2(), QueryOperator.GE,
                 aliasManager.getAlias(tuple.get0()), ignorePolicy));
     }
@@ -1689,7 +1689,7 @@ public abstract class AbstractEntitySqlConditionGroupExpression<E, C extends Ent
             D value) {
         //        IMPLSOON 后续来实现join
         //        entityQuery.join(repository);
-        Tuple2<String, String> tuple = conditionResult(repository, property, value, factory);
+        Tuple2<String, String> tuple = conditionResult(repository, property, value, classMapping, factory);
         return (L) addCondition(new SqlConditionExpressionBuilder(dialect, tuple.get1(), value, QueryOperator.GE,
                 aliasManager.getAlias(tuple.get0()), ignorePolicy));
     }
@@ -1701,7 +1701,7 @@ public abstract class AbstractEntitySqlConditionGroupExpression<E, C extends Ent
     public <T, D extends Date> L ge(SerializableSupplier<T> repository, ReturnDateFunction<T, D> property) {
         //        IMPLSOON 后续来实现join
         //        entityQuery.join(repository);
-        Tuple3<String, String, Object> tuple = conditionResult(repository, property, factory);
+        Tuple3<String, String, Object> tuple = conditionResult(repository, property, classMapping, factory);
         return (L) addCondition(new SqlConditionExpressionBuilder(dialect, tuple.get1(), tuple.get2(), QueryOperator.GE,
                 aliasManager.getAlias(tuple.get0()), ignorePolicy));
     }
@@ -1714,7 +1714,7 @@ public abstract class AbstractEntitySqlConditionGroupExpression<E, C extends Ent
             LocalTime value) {
         //        IMPLSOON 后续来实现join
         //        entityQuery.join(repository);
-        Tuple2<String, String> tuple = conditionResult(repository, property, value, factory);
+        Tuple2<String, String> tuple = conditionResult(repository, property, value, classMapping, factory);
         return (L) addCondition(new SqlConditionExpressionBuilder(dialect, tuple.get1(), value, QueryOperator.GE,
                 aliasManager.getAlias(tuple.get0()), ignorePolicy));
     }
@@ -1726,7 +1726,7 @@ public abstract class AbstractEntitySqlConditionGroupExpression<E, C extends Ent
     public <T> L ge(SerializableSupplier<T> repository, ReturnLocalTimeFunction<T> property) {
         //        IMPLSOON 后续来实现join
         //        entityQuery.join(repository);
-        Tuple3<String, String, Object> tuple = conditionResult(repository, property, factory);
+        Tuple3<String, String, Object> tuple = conditionResult(repository, property, classMapping, factory);
         return (L) addCondition(new SqlConditionExpressionBuilder(dialect, tuple.get1(), tuple.get2(), QueryOperator.GE,
                 aliasManager.getAlias(tuple.get0()), ignorePolicy));
     }
@@ -1739,7 +1739,7 @@ public abstract class AbstractEntitySqlConditionGroupExpression<E, C extends Ent
             LocalDate value) {
         //        IMPLSOON 后续来实现join
         //        entityQuery.join(repository);
-        Tuple2<String, String> tuple = conditionResult(repository, property, value, factory);
+        Tuple2<String, String> tuple = conditionResult(repository, property, value, classMapping, factory);
         return (L) addCondition(new SqlConditionExpressionBuilder(dialect, tuple.get1(), value, QueryOperator.GE,
                 aliasManager.getAlias(tuple.get0()), ignorePolicy));
     }
@@ -1751,7 +1751,7 @@ public abstract class AbstractEntitySqlConditionGroupExpression<E, C extends Ent
     public <T> L ge(SerializableSupplier<T> repository, ReturnLocalDateFunction<T> property) {
         //        IMPLSOON 后续来实现join
         //        entityQuery.join(repository);
-        Tuple3<String, String, Object> tuple = conditionResult(repository, property, factory);
+        Tuple3<String, String, Object> tuple = conditionResult(repository, property, classMapping, factory);
         return (L) addCondition(new SqlConditionExpressionBuilder(dialect, tuple.get1(), tuple.get2(), QueryOperator.GE,
                 aliasManager.getAlias(tuple.get0()), ignorePolicy));
     }
@@ -1764,7 +1764,7 @@ public abstract class AbstractEntitySqlConditionGroupExpression<E, C extends Ent
             LocalDateTime value) {
         //        IMPLSOON 后续来实现join
         //        entityQuery.join(repository);
-        Tuple2<String, String> tuple = conditionResult(repository, property, value, factory);
+        Tuple2<String, String> tuple = conditionResult(repository, property, value, classMapping, factory);
         return (L) addCondition(new SqlConditionExpressionBuilder(dialect, tuple.get1(), value, QueryOperator.GE,
                 aliasManager.getAlias(tuple.get0()), ignorePolicy));
     }
@@ -1776,7 +1776,7 @@ public abstract class AbstractEntitySqlConditionGroupExpression<E, C extends Ent
     public <T> L ge(SerializableSupplier<T> repository, ReturnLocalDateTimeFunction<T> property) {
         //        IMPLSOON 后续来实现join
         //        entityQuery.join(repository);
-        Tuple3<String, String, Object> tuple = conditionResult(repository, property, factory);
+        Tuple3<String, String, Object> tuple = conditionResult(repository, property, classMapping, factory);
         return (L) addCondition(new SqlConditionExpressionBuilder(dialect, tuple.get1(), tuple.get2(), QueryOperator.GE,
                 aliasManager.getAlias(tuple.get0()), ignorePolicy));
     }
@@ -1788,7 +1788,7 @@ public abstract class AbstractEntitySqlConditionGroupExpression<E, C extends Ent
     public <R> L ge(SerializableFunction<E, R> repository, SerializableFunction<R, String> property, String value) {
         //        IMPLSOON 后续来实现join
         //        entityQuery.join(repository);
-        Tuple2<String, String> tuple = conditionResult(repository, property, value, factory);
+        Tuple2<String, String> tuple = conditionResult(repository, property, value, classMapping, factory);
         return (L) addCondition(new SqlConditionExpressionBuilder(dialect, tuple.get1(), value, QueryOperator.GE,
                 aliasManager.getAlias(tuple.get0()), ignorePolicy));
     }
@@ -1800,7 +1800,7 @@ public abstract class AbstractEntitySqlConditionGroupExpression<E, C extends Ent
     public <T> L ge(SerializableSupplier<T> repository, ReturnStringFunction<T> property) {
         //        IMPLSOON 后续来实现join
         //        entityQuery.join(repository);
-        Tuple3<String, String, Object> tuple = conditionResult(repository, property, factory);
+        Tuple3<String, String, Object> tuple = conditionResult(repository, property, classMapping, factory);
         return (L) addCondition(new SqlConditionExpressionBuilder(dialect, tuple.get1(), tuple.get2(), QueryOperator.GE,
                 aliasManager.getAlias(tuple.get0()), ignorePolicy));
     }
@@ -1813,7 +1813,7 @@ public abstract class AbstractEntitySqlConditionGroupExpression<E, C extends Ent
             N value) {
         //        IMPLSOON 后续来实现join
         //        entityQuery.join(repository);
-        Tuple2<String, String> tuple = conditionResult(repository, property, value, factory);
+        Tuple2<String, String> tuple = conditionResult(repository, property, value, classMapping, factory);
         return (L) addCondition(new SqlConditionExpressionBuilder(dialect, tuple.get1(), value, QueryOperator.GT,
                 aliasManager.getAlias(tuple.get0()), ignorePolicy));
     }
@@ -1825,7 +1825,7 @@ public abstract class AbstractEntitySqlConditionGroupExpression<E, C extends Ent
     public <T, N extends Number> L gt(SerializableSupplier<T> repository, ReturnNumberFunction<T, N> property) {
         //        IMPLSOON 后续来实现join
         //        entityQuery.join(repository);
-        Tuple3<String, String, Object> tuple = conditionResult(repository, property, factory);
+        Tuple3<String, String, Object> tuple = conditionResult(repository, property, classMapping, factory);
         return (L) addCondition(new SqlConditionExpressionBuilder(dialect, tuple.get1(), tuple.get2(), QueryOperator.GT,
                 aliasManager.getAlias(tuple.get0()), ignorePolicy));
     }
@@ -1838,7 +1838,7 @@ public abstract class AbstractEntitySqlConditionGroupExpression<E, C extends Ent
             D value) {
         //        IMPLSOON 后续来实现join
         //        entityQuery.join(repository);
-        Tuple2<String, String> tuple = conditionResult(repository, property, value, factory);
+        Tuple2<String, String> tuple = conditionResult(repository, property, value, classMapping, factory);
         return (L) addCondition(new SqlConditionExpressionBuilder(dialect, tuple.get1(), value, QueryOperator.GT,
                 aliasManager.getAlias(tuple.get0()), ignorePolicy));
     }
@@ -1850,7 +1850,7 @@ public abstract class AbstractEntitySqlConditionGroupExpression<E, C extends Ent
     public <T, D extends Date> L gt(SerializableSupplier<T> repository, ReturnDateFunction<T, D> property) {
         //        IMPLSOON 后续来实现join
         //        entityQuery.join(repository);
-        Tuple3<String, String, Object> tuple = conditionResult(repository, property, factory);
+        Tuple3<String, String, Object> tuple = conditionResult(repository, property, classMapping, factory);
         return (L) addCondition(new SqlConditionExpressionBuilder(dialect, tuple.get1(), tuple.get2(), QueryOperator.GT,
                 aliasManager.getAlias(tuple.get0()), ignorePolicy));
     }
@@ -1863,7 +1863,7 @@ public abstract class AbstractEntitySqlConditionGroupExpression<E, C extends Ent
             LocalTime value) {
         //        IMPLSOON 后续来实现join
         //        entityQuery.join(repository);
-        Tuple2<String, String> tuple = conditionResult(repository, property, value, factory);
+        Tuple2<String, String> tuple = conditionResult(repository, property, value, classMapping, factory);
         return (L) addCondition(new SqlConditionExpressionBuilder(dialect, tuple.get1(), value, QueryOperator.GT,
                 aliasManager.getAlias(tuple.get0()), ignorePolicy));
     }
@@ -1875,7 +1875,7 @@ public abstract class AbstractEntitySqlConditionGroupExpression<E, C extends Ent
     public <T> L gt(SerializableSupplier<T> repository, ReturnLocalTimeFunction<T> property) {
         //        IMPLSOON 后续来实现join
         //        entityQuery.join(repository);
-        Tuple3<String, String, Object> tuple = conditionResult(repository, property, factory);
+        Tuple3<String, String, Object> tuple = conditionResult(repository, property, classMapping, factory);
         return (L) addCondition(new SqlConditionExpressionBuilder(dialect, tuple.get1(), tuple.get2(), QueryOperator.GT,
                 aliasManager.getAlias(tuple.get0()), ignorePolicy));
     }
@@ -1888,7 +1888,7 @@ public abstract class AbstractEntitySqlConditionGroupExpression<E, C extends Ent
             LocalDate value) {
         //        IMPLSOON 后续来实现join
         //        entityQuery.join(repository);
-        Tuple2<String, String> tuple = conditionResult(repository, property, value, factory);
+        Tuple2<String, String> tuple = conditionResult(repository, property, value, classMapping, factory);
         return (L) addCondition(new SqlConditionExpressionBuilder(dialect, tuple.get1(), value, QueryOperator.GT,
                 aliasManager.getAlias(tuple.get0()), ignorePolicy));
     }
@@ -1900,7 +1900,7 @@ public abstract class AbstractEntitySqlConditionGroupExpression<E, C extends Ent
     public <T> L gt(SerializableSupplier<T> repository, ReturnLocalDateFunction<T> property) {
         //        IMPLSOON 后续来实现join
         //        entityQuery.join(repository);
-        Tuple3<String, String, Object> tuple = conditionResult(repository, property, factory);
+        Tuple3<String, String, Object> tuple = conditionResult(repository, property, classMapping, factory);
         return (L) addCondition(new SqlConditionExpressionBuilder(dialect, tuple.get1(), tuple.get2(), QueryOperator.GT,
                 aliasManager.getAlias(tuple.get0()), ignorePolicy));
     }
@@ -1913,7 +1913,7 @@ public abstract class AbstractEntitySqlConditionGroupExpression<E, C extends Ent
             LocalDateTime value) {
         //        IMPLSOON 后续来实现join
         //        entityQuery.join(repository);
-        Tuple2<String, String> tuple = conditionResult(repository, property, value, factory);
+        Tuple2<String, String> tuple = conditionResult(repository, property, value, classMapping, factory);
         return (L) addCondition(new SqlConditionExpressionBuilder(dialect, tuple.get1(), value, QueryOperator.GT,
                 aliasManager.getAlias(tuple.get0()), ignorePolicy));
     }
@@ -1925,7 +1925,7 @@ public abstract class AbstractEntitySqlConditionGroupExpression<E, C extends Ent
     public <T> L gt(SerializableSupplier<T> repository, ReturnLocalDateTimeFunction<T> property) {
         //        IMPLSOON 后续来实现join
         //        entityQuery.join(repository);
-        Tuple3<String, String, Object> tuple = conditionResult(repository, property, factory);
+        Tuple3<String, String, Object> tuple = conditionResult(repository, property, classMapping, factory);
         return (L) addCondition(new SqlConditionExpressionBuilder(dialect, tuple.get1(), tuple.get2(), QueryOperator.GT,
                 aliasManager.getAlias(tuple.get0()), ignorePolicy));
     }
@@ -1937,7 +1937,7 @@ public abstract class AbstractEntitySqlConditionGroupExpression<E, C extends Ent
     public <R> L gt(SerializableFunction<E, R> repository, SerializableFunction<R, String> property, String value) {
         //        IMPLSOON 后续来实现join
         //        entityQuery.join(repository);
-        Tuple2<String, String> tuple = conditionResult(repository, property, value, factory);
+        Tuple2<String, String> tuple = conditionResult(repository, property, value, classMapping, factory);
         return (L) addCondition(new SqlConditionExpressionBuilder(dialect, tuple.get1(), value, QueryOperator.GT,
                 aliasManager.getAlias(tuple.get0()), ignorePolicy));
     }
@@ -1949,7 +1949,7 @@ public abstract class AbstractEntitySqlConditionGroupExpression<E, C extends Ent
     public <T> L gt(SerializableSupplier<T> repository, ReturnStringFunction<T> property) {
         //        IMPLSOON 后续来实现join
         //        entityQuery.join(repository);
-        Tuple3<String, String, Object> tuple = conditionResult(repository, property, factory);
+        Tuple3<String, String, Object> tuple = conditionResult(repository, property, classMapping, factory);
         return (L) addCondition(new SqlConditionExpressionBuilder(dialect, tuple.get1(), tuple.get2(), QueryOperator.GT,
                 aliasManager.getAlias(tuple.get0()), ignorePolicy));
     }
@@ -1961,7 +1961,7 @@ public abstract class AbstractEntitySqlConditionGroupExpression<E, C extends Ent
     public <R, V> L in(SerializableFunction<E, R> repository, SerializableFunction<R, V> property, V value) {
         //        IMPLSOON 后续来实现join
         //        entityQuery.join(repository);
-        Tuple2<String, String> tuple = conditionResult(repository, property, value, factory);
+        Tuple2<String, String> tuple = conditionResult(repository, property, value, classMapping, factory);
         return (L) addCondition(new SqlConditionExpressionBuilder(dialect, tuple.get1(), value, QueryOperator.IN,
                 aliasManager.getAlias(tuple.get0()), ignorePolicy));
     }
@@ -1973,7 +1973,7 @@ public abstract class AbstractEntitySqlConditionGroupExpression<E, C extends Ent
     public <R, V> L in(SerializableSupplier<R> repository, SerializableFunction<R, V> property) {
         //        IMPLSOON 后续来实现join
         //        entityQuery.join(repository);
-        Tuple3<String, String, Object> tuple = conditionResult(repository, property, factory);
+        Tuple3<String, String, Object> tuple = conditionResult(repository, property, classMapping, factory);
         return (L) addCondition(new SqlConditionExpressionBuilder(dialect, tuple.get1(), tuple.get2(), QueryOperator.IN,
                 aliasManager.getAlias(tuple.get0()), ignorePolicy));
     }
@@ -1985,7 +1985,7 @@ public abstract class AbstractEntitySqlConditionGroupExpression<E, C extends Ent
     public <R, V> L inn(SerializableFunction<E, R> repository, SerializableFunction<R, V> property, Boolean value) {
         //        IMPLSOON 后续来实现join
         //        entityQuery.join(repository);
-        Tuple2<String, String> tuple = conditionResult(repository, property, value, factory);
+        Tuple2<String, String> tuple = conditionResult(repository, property, value, classMapping, factory);
         return (L) addCondition(new SqlConditionExpressionBuilder(dialect, tuple.get1(), value, QueryOperator.INN,
                 aliasManager.getAlias(tuple.get0()), ignorePolicy));
     }
@@ -2005,7 +2005,7 @@ public abstract class AbstractEntitySqlConditionGroupExpression<E, C extends Ent
     public <R, V> L isn(SerializableFunction<E, R> repository, SerializableFunction<R, V> property, Boolean value) {
         //        IMPLSOON 后续来实现join
         //        entityQuery.join(repository);
-        Tuple2<String, String> tuple = conditionResult(repository, property, value, factory);
+        Tuple2<String, String> tuple = conditionResult(repository, property, value, classMapping, factory);
         return (L) addCondition(new SqlConditionExpressionBuilder(dialect, tuple.get1(), value, QueryOperator.ISN,
                 aliasManager.getAlias(tuple.get0()), ignorePolicy));
     }
@@ -2018,7 +2018,7 @@ public abstract class AbstractEntitySqlConditionGroupExpression<E, C extends Ent
             N value) {
         //        IMPLSOON 后续来实现join
         //        entityQuery.join(repository);
-        Tuple2<String, String> tuple = conditionResult(repository, property, value, factory);
+        Tuple2<String, String> tuple = conditionResult(repository, property, value, classMapping, factory);
         return (L) addCondition(new SqlConditionExpressionBuilder(dialect, tuple.get1(), value, QueryOperator.LE,
                 aliasManager.getAlias(tuple.get0()), ignorePolicy));
     }
@@ -2030,7 +2030,7 @@ public abstract class AbstractEntitySqlConditionGroupExpression<E, C extends Ent
     public <R, N extends Number> L le(SerializableSupplier<R> repository, ReturnNumberFunction<R, N> property) {
         //        IMPLSOON 后续来实现join
         //        entityQuery.join(repository);
-        Tuple3<String, String, Object> tuple = conditionResult(repository, property, factory);
+        Tuple3<String, String, Object> tuple = conditionResult(repository, property, classMapping, factory);
         return (L) addCondition(new SqlConditionExpressionBuilder(dialect, tuple.get1(), tuple.get2(), QueryOperator.LE,
                 aliasManager.getAlias(tuple.get0()), ignorePolicy));
     }
@@ -2043,7 +2043,7 @@ public abstract class AbstractEntitySqlConditionGroupExpression<E, C extends Ent
             D value) {
         //        IMPLSOON 后续来实现join
         //        entityQuery.join(repository);
-        Tuple2<String, String> tuple = conditionResult(repository, property, value, factory);
+        Tuple2<String, String> tuple = conditionResult(repository, property, value, classMapping, factory);
         return (L) addCondition(new SqlConditionExpressionBuilder(dialect, tuple.get1(), value, QueryOperator.LE,
                 aliasManager.getAlias(tuple.get0()), ignorePolicy));
     }
@@ -2055,7 +2055,7 @@ public abstract class AbstractEntitySqlConditionGroupExpression<E, C extends Ent
     public <R, D extends Date> L le(SerializableSupplier<R> repository, ReturnDateFunction<R, D> property) {
         //        IMPLSOON 后续来实现join
         //        entityQuery.join(repository);
-        Tuple3<String, String, Object> tuple = conditionResult(repository, property, factory);
+        Tuple3<String, String, Object> tuple = conditionResult(repository, property, classMapping, factory);
         return (L) addCondition(new SqlConditionExpressionBuilder(dialect, tuple.get1(), tuple.get2(), QueryOperator.LE,
                 aliasManager.getAlias(tuple.get0()), ignorePolicy));
     }
@@ -2068,7 +2068,7 @@ public abstract class AbstractEntitySqlConditionGroupExpression<E, C extends Ent
             LocalTime value) {
         //        IMPLSOON 后续来实现join
         //        entityQuery.join(repository);
-        Tuple2<String, String> tuple = conditionResult(repository, property, value, factory);
+        Tuple2<String, String> tuple = conditionResult(repository, property, value, classMapping, factory);
         return (L) addCondition(new SqlConditionExpressionBuilder(dialect, tuple.get1(), value, QueryOperator.LE,
                 aliasManager.getAlias(tuple.get0()), ignorePolicy));
     }
@@ -2080,7 +2080,7 @@ public abstract class AbstractEntitySqlConditionGroupExpression<E, C extends Ent
     public <T> L le(SerializableSupplier<T> repository, ReturnLocalTimeFunction<T> property) {
         //        IMPLSOON 后续来实现join
         //        entityQuery.join(repository);
-        Tuple3<String, String, Object> tuple = conditionResult(repository, property, factory);
+        Tuple3<String, String, Object> tuple = conditionResult(repository, property, classMapping, factory);
         return (L) addCondition(new SqlConditionExpressionBuilder(dialect, tuple.get1(), tuple.get2(), QueryOperator.LE,
                 aliasManager.getAlias(tuple.get0()), ignorePolicy));
     }
@@ -2093,7 +2093,7 @@ public abstract class AbstractEntitySqlConditionGroupExpression<E, C extends Ent
             LocalDate value) {
         //        IMPLSOON 后续来实现join
         //        entityQuery.join(repository);
-        Tuple2<String, String> tuple = conditionResult(repository, property, value, factory);
+        Tuple2<String, String> tuple = conditionResult(repository, property, value, classMapping, factory);
         return (L) addCondition(new SqlConditionExpressionBuilder(dialect, tuple.get1(), value, QueryOperator.LE,
                 aliasManager.getAlias(tuple.get0()), ignorePolicy));
     }
@@ -2105,7 +2105,7 @@ public abstract class AbstractEntitySqlConditionGroupExpression<E, C extends Ent
     public <T> L le(SerializableSupplier<T> repository, ReturnLocalDateFunction<T> property) {
         //        IMPLSOON 后续来实现join
         //        entityQuery.join(repository);
-        Tuple3<String, String, Object> tuple = conditionResult(repository, property, factory);
+        Tuple3<String, String, Object> tuple = conditionResult(repository, property, classMapping, factory);
         return (L) addCondition(new SqlConditionExpressionBuilder(dialect, tuple.get1(), tuple.get2(), QueryOperator.LE,
                 aliasManager.getAlias(tuple.get0()), ignorePolicy));
     }
@@ -2118,7 +2118,7 @@ public abstract class AbstractEntitySqlConditionGroupExpression<E, C extends Ent
             LocalDateTime value) {
         //        IMPLSOON 后续来实现join
         //        entityQuery.join(repository);
-        Tuple2<String, String> tuple = conditionResult(repository, property, value, factory);
+        Tuple2<String, String> tuple = conditionResult(repository, property, value, classMapping, factory);
         return (L) addCondition(new SqlConditionExpressionBuilder(dialect, tuple.get1(), value, QueryOperator.LE,
                 aliasManager.getAlias(tuple.get0()), ignorePolicy));
     }
@@ -2130,7 +2130,7 @@ public abstract class AbstractEntitySqlConditionGroupExpression<E, C extends Ent
     public <T> L le(SerializableSupplier<T> repository, ReturnLocalDateTimeFunction<T> property) {
         //        IMPLSOON 后续来实现join
         //        entityQuery.join(repository);
-        Tuple3<String, String, Object> tuple = conditionResult(repository, property, factory);
+        Tuple3<String, String, Object> tuple = conditionResult(repository, property, classMapping, factory);
         return (L) addCondition(new SqlConditionExpressionBuilder(dialect, tuple.get1(), tuple.get2(), QueryOperator.LE,
                 aliasManager.getAlias(tuple.get0()), ignorePolicy));
     }
@@ -2142,7 +2142,7 @@ public abstract class AbstractEntitySqlConditionGroupExpression<E, C extends Ent
     public <R> L le(SerializableFunction<E, R> repository, SerializableFunction<R, String> property, String value) {
         //        IMPLSOON 后续来实现join
         //        entityQuery.join(repository);
-        Tuple2<String, String> tuple = conditionResult(repository, property, value, factory);
+        Tuple2<String, String> tuple = conditionResult(repository, property, value, classMapping, factory);
         return (L) addCondition(new SqlConditionExpressionBuilder(dialect, tuple.get1(), value, QueryOperator.LE,
                 aliasManager.getAlias(tuple.get0()), ignorePolicy));
     }
@@ -2154,7 +2154,7 @@ public abstract class AbstractEntitySqlConditionGroupExpression<E, C extends Ent
     public <R> L le(SerializableSupplier<R> repository, ReturnStringFunction<R> property) {
         //        IMPLSOON 后续来实现join
         //        entityQuery.join(repository);
-        Tuple3<String, String, Object> tuple = conditionResult(repository, property, factory);
+        Tuple3<String, String, Object> tuple = conditionResult(repository, property, classMapping, factory);
         return (L) addCondition(new SqlConditionExpressionBuilder(dialect, tuple.get1(), tuple.get2(), QueryOperator.LE,
                 aliasManager.getAlias(tuple.get0()), ignorePolicy));
     }
@@ -2167,7 +2167,7 @@ public abstract class AbstractEntitySqlConditionGroupExpression<E, C extends Ent
             N value) {
         //        IMPLSOON 后续来实现join
         //        entityQuery.join(repository);
-        Tuple2<String, String> tuple = conditionResult(repository, property, value, factory);
+        Tuple2<String, String> tuple = conditionResult(repository, property, value, classMapping, factory);
         return (L) addCondition(new SqlConditionExpressionBuilder(dialect, tuple.get1(), value, QueryOperator.LT,
                 aliasManager.getAlias(tuple.get0()), ignorePolicy));
     }
@@ -2179,7 +2179,7 @@ public abstract class AbstractEntitySqlConditionGroupExpression<E, C extends Ent
     public <T, N extends Number> L lt(SerializableSupplier<T> repository, ReturnNumberFunction<T, N> property) {
         //        IMPLSOON 后续来实现join
         //        entityQuery.join(repository);
-        Tuple3<String, String, Object> tuple = conditionResult(repository, property, factory);
+        Tuple3<String, String, Object> tuple = conditionResult(repository, property, classMapping, factory);
         return (L) addCondition(new SqlConditionExpressionBuilder(dialect, tuple.get1(), tuple.get2(), QueryOperator.LT,
                 aliasManager.getAlias(tuple.get0()), ignorePolicy));
     }
@@ -2192,7 +2192,7 @@ public abstract class AbstractEntitySqlConditionGroupExpression<E, C extends Ent
             D value) {
         //        IMPLSOON 后续来实现join
         //        entityQuery.join(repository);
-        Tuple2<String, String> tuple = conditionResult(repository, property, value, factory);
+        Tuple2<String, String> tuple = conditionResult(repository, property, value, classMapping, factory);
         return (L) addCondition(new SqlConditionExpressionBuilder(dialect, tuple.get1(), value, QueryOperator.LT,
                 aliasManager.getAlias(tuple.get0()), ignorePolicy));
     }
@@ -2204,7 +2204,7 @@ public abstract class AbstractEntitySqlConditionGroupExpression<E, C extends Ent
     public <T, D extends Date> L lt(SerializableSupplier<T> repository, SerializableFunction<T, D> property) {
         //        IMPLSOON 后续来实现join
         //        entityQuery.join(repository);
-        Tuple3<String, String, Object> tuple = conditionResult(repository, property, factory);
+        Tuple3<String, String, Object> tuple = conditionResult(repository, property, classMapping, factory);
         return (L) addCondition(new SqlConditionExpressionBuilder(dialect, tuple.get1(), tuple.get2(), QueryOperator.LT,
                 aliasManager.getAlias(tuple.get0()), ignorePolicy));
     }
@@ -2217,7 +2217,7 @@ public abstract class AbstractEntitySqlConditionGroupExpression<E, C extends Ent
             LocalTime value) {
         //        IMPLSOON 后续来实现join
         //        entityQuery.join(repository);
-        Tuple2<String, String> tuple = conditionResult(repository, property, value, factory);
+        Tuple2<String, String> tuple = conditionResult(repository, property, value, classMapping, factory);
         return (L) addCondition(new SqlConditionExpressionBuilder(dialect, tuple.get1(), value, QueryOperator.LT,
                 aliasManager.getAlias(tuple.get0()), ignorePolicy));
     }
@@ -2229,7 +2229,7 @@ public abstract class AbstractEntitySqlConditionGroupExpression<E, C extends Ent
     public <T> L lt(SerializableSupplier<T> repository, ReturnLocalTimeFunction<T> property) {
         //        IMPLSOON 后续来实现join
         //        entityQuery.join(repository);
-        Tuple3<String, String, Object> tuple = conditionResult(repository, property, factory);
+        Tuple3<String, String, Object> tuple = conditionResult(repository, property, classMapping, factory);
         return (L) addCondition(new SqlConditionExpressionBuilder(dialect, tuple.get1(), tuple.get2(), QueryOperator.LT,
                 aliasManager.getAlias(tuple.get0()), ignorePolicy));
     }
@@ -2242,7 +2242,7 @@ public abstract class AbstractEntitySqlConditionGroupExpression<E, C extends Ent
             LocalDate value) {
         //        IMPLSOON 后续来实现join
         //        entityQuery.join(repository);
-        Tuple2<String, String> tuple = conditionResult(repository, property, value, factory);
+        Tuple2<String, String> tuple = conditionResult(repository, property, value, classMapping, factory);
         return (L) addCondition(new SqlConditionExpressionBuilder(dialect, tuple.get1(), value, QueryOperator.LT,
                 aliasManager.getAlias(tuple.get0()), ignorePolicy));
     }
@@ -2254,7 +2254,7 @@ public abstract class AbstractEntitySqlConditionGroupExpression<E, C extends Ent
     public <T> L lt(SerializableSupplier<T> repository, ReturnLocalDateFunction<T> property) {
         //        IMPLSOON 后续来实现join
         //        entityQuery.join(repository);
-        Tuple3<String, String, Object> tuple = conditionResult(repository, property, factory);
+        Tuple3<String, String, Object> tuple = conditionResult(repository, property, classMapping, factory);
         return (L) addCondition(new SqlConditionExpressionBuilder(dialect, tuple.get1(), tuple.get2(), QueryOperator.LT,
                 aliasManager.getAlias(tuple.get0()), ignorePolicy));
     }
@@ -2267,7 +2267,7 @@ public abstract class AbstractEntitySqlConditionGroupExpression<E, C extends Ent
             LocalDateTime value) {
         //        IMPLSOON 后续来实现join
         //        entityQuery.join(repository);
-        Tuple2<String, String> tuple = conditionResult(repository, property, value, factory);
+        Tuple2<String, String> tuple = conditionResult(repository, property, value, classMapping, factory);
         return (L) addCondition(new SqlConditionExpressionBuilder(dialect, tuple.get1(), value, QueryOperator.LT,
                 aliasManager.getAlias(tuple.get0()), ignorePolicy));
     }
@@ -2279,7 +2279,7 @@ public abstract class AbstractEntitySqlConditionGroupExpression<E, C extends Ent
     public <T> L lt(SerializableSupplier<T> repository, ReturnLocalDateTimeFunction<T> property) {
         //        IMPLSOON 后续来实现join
         //        entityQuery.join(repository);
-        Tuple3<String, String, Object> tuple = conditionResult(repository, property, factory);
+        Tuple3<String, String, Object> tuple = conditionResult(repository, property, classMapping, factory);
         return (L) addCondition(new SqlConditionExpressionBuilder(dialect, tuple.get1(), tuple.get2(), QueryOperator.LT,
                 aliasManager.getAlias(tuple.get0()), ignorePolicy));
     }
@@ -2291,7 +2291,7 @@ public abstract class AbstractEntitySqlConditionGroupExpression<E, C extends Ent
     public <R> L lt(SerializableFunction<E, R> repository, SerializableFunction<R, String> property, String value) {
         //        IMPLSOON 后续来实现join
         //        entityQuery.join(repository);
-        Tuple2<String, String> tuple = conditionResult(repository, property, value, factory);
+        Tuple2<String, String> tuple = conditionResult(repository, property, value, classMapping, factory);
         return (L) addCondition(new SqlConditionExpressionBuilder(dialect, tuple.get1(), value, QueryOperator.LT,
                 aliasManager.getAlias(tuple.get0()), ignorePolicy));
     }
@@ -2303,7 +2303,7 @@ public abstract class AbstractEntitySqlConditionGroupExpression<E, C extends Ent
     public <T> L lt(SerializableSupplier<T> repository, ReturnStringFunction<T> property) {
         //        IMPLSOON 后续来实现join
         //        entityQuery.join(repository);
-        Tuple3<String, String, Object> tuple = conditionResult(repository, property, factory);
+        Tuple3<String, String, Object> tuple = conditionResult(repository, property, classMapping, factory);
         return (L) addCondition(new SqlConditionExpressionBuilder(dialect, tuple.get1(), tuple.get2(), QueryOperator.LT,
                 aliasManager.getAlias(tuple.get0()), ignorePolicy));
     }
@@ -2315,7 +2315,7 @@ public abstract class AbstractEntitySqlConditionGroupExpression<E, C extends Ent
     public <R, V> L ne(SerializableFunction<E, R> repository, SerializableFunction<R, V> property, V value) {
         //        IMPLSOON 后续来实现join
         //        entityQuery.join(repository);
-        Tuple2<String, String> tuple = conditionResult(repository, property, value, factory);
+        Tuple2<String, String> tuple = conditionResult(repository, property, value, classMapping, factory);
         return (L) addCondition(new SqlConditionExpressionBuilder(dialect, tuple.get1(), value, QueryOperator.EQ,
                 aliasManager.getAlias(tuple.get0()), ignorePolicy));
     }
@@ -2327,7 +2327,7 @@ public abstract class AbstractEntitySqlConditionGroupExpression<E, C extends Ent
     public <R, V> L ne(SerializableSupplier<R> repository, SerializableFunction<R, V> property) {
         //        IMPLSOON 后续来实现join
         //        entityQuery.join(repository);
-        Tuple3<String, String, Object> tuple = conditionResult(repository, property, factory);
+        Tuple3<String, String, Object> tuple = conditionResult(repository, property, classMapping, factory);
         return (L) addCondition(new SqlConditionExpressionBuilder(dialect, tuple.get1(), tuple.get2(), QueryOperator.NE,
                 aliasManager.getAlias(tuple.get0()), ignorePolicy));
     }
@@ -2339,7 +2339,7 @@ public abstract class AbstractEntitySqlConditionGroupExpression<E, C extends Ent
     public <R, V> L nin(SerializableFunction<E, R> repository, SerializableFunction<R, V> property, V value) {
         //        IMPLSOON 后续来实现join
         //        entityQuery.join(repository);
-        Tuple2<String, String> tuple = conditionResult(repository, property, value, factory);
+        Tuple2<String, String> tuple = conditionResult(repository, property, value, classMapping, factory);
         return (L) addCondition(new SqlConditionExpressionBuilder(dialect, tuple.get1(), value, QueryOperator.NIN,
                 aliasManager.getAlias(tuple.get0()), ignorePolicy));
     }
@@ -2351,7 +2351,7 @@ public abstract class AbstractEntitySqlConditionGroupExpression<E, C extends Ent
     public <R, V> L nin(SerializableSupplier<R> repository, SerializableFunction<R, V> property) {
         //        IMPLSOON 后续来实现join
         //        entityQuery.join(repository);
-        Tuple3<String, String, Object> tuple = conditionResult(repository, property, factory);
+        Tuple3<String, String, Object> tuple = conditionResult(repository, property, classMapping, factory);
         return (L) addCondition(new SqlConditionExpressionBuilder(dialect, tuple.get1(), tuple.get2(), QueryOperator.NE,
                 aliasManager.getAlias(tuple.get0()), ignorePolicy));
     }
@@ -2363,7 +2363,7 @@ public abstract class AbstractEntitySqlConditionGroupExpression<E, C extends Ent
     public <R> L sw(SerializableFunction<E, R> repository, SerializableFunction<R, String> property, String value) {
         //        IMPLSOON 后续来实现join
         //        entityQuery.join(repository);
-        Tuple2<String, String> tuple = conditionResult(repository, property, value, factory);
+        Tuple2<String, String> tuple = conditionResult(repository, property, value, classMapping, factory);
         return (L) addCondition(new SqlConditionExpressionBuilder(dialect, tuple.get1(), value, QueryOperator.SW,
                 aliasManager.getAlias(tuple.get0()), ignorePolicy));
     }
@@ -2375,7 +2375,7 @@ public abstract class AbstractEntitySqlConditionGroupExpression<E, C extends Ent
     public <R> L sw(SerializableSupplier<R> repository, SerializableFunction<R, String> property) {
         //        IMPLSOON 后续来实现join
         //        entityQuery.join(repository);
-        Tuple3<String, String, Object> tuple = conditionResult(repository, property, factory);
+        Tuple3<String, String, Object> tuple = conditionResult(repository, property, classMapping, factory);
         return (L) addCondition(new SqlConditionExpressionBuilder(dialect, tuple.get1(), tuple.get2(), QueryOperator.SW,
                 aliasManager.getAlias(tuple.get0()), ignorePolicy));
     }
@@ -2387,7 +2387,7 @@ public abstract class AbstractEntitySqlConditionGroupExpression<E, C extends Ent
     public <R> L lk(SerializableFunction<E, R> repository, SerializableFunction<R, String> property, String value) {
         //        IMPLSOON 后续来实现join
         //        entityQuery.join(repository);
-        Tuple2<String, String> tuple = conditionResult(repository, property, value, factory);
+        Tuple2<String, String> tuple = conditionResult(repository, property, value, classMapping, factory);
         return (L) addCondition(new SqlConditionExpressionBuilder(dialect, tuple.get1(), value, QueryOperator.LK,
                 aliasManager.getAlias(tuple.get0()), ignorePolicy));
     }
@@ -2399,7 +2399,7 @@ public abstract class AbstractEntitySqlConditionGroupExpression<E, C extends Ent
     public <R> L lk(SerializableSupplier<R> repository, SerializableFunction<R, String> property) {
         //        IMPLSOON 后续来实现join
         //        entityQuery.join(repository);
-        Tuple3<String, String, Object> tuple = conditionResult(repository, property, factory);
+        Tuple3<String, String, Object> tuple = conditionResult(repository, property, classMapping, factory);
         return (L) addCondition(new SqlConditionExpressionBuilder(dialect, tuple.get1(), tuple.get2(), QueryOperator.LK,
                 aliasManager.getAlias(tuple.get0()), ignorePolicy));
     }
