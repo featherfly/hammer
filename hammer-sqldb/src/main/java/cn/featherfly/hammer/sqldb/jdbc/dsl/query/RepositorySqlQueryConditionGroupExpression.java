@@ -10,9 +10,6 @@ import java.util.function.Predicate;
 import cn.featherfly.common.constant.Chars;
 import cn.featherfly.common.db.SqlUtils;
 import cn.featherfly.common.db.builder.dml.SqlSortBuilder;
-import cn.featherfly.common.db.mapping.ClassMappingUtils;
-import cn.featherfly.common.db.mapping.JdbcClassMapping;
-import cn.featherfly.common.db.mapping.JdbcMappingFactory;
 import cn.featherfly.common.exception.UnsupportedException;
 import cn.featherfly.common.lang.LambdaUtils;
 import cn.featherfly.common.lang.Lang;
@@ -52,46 +49,28 @@ public class RepositorySqlQueryConditionGroupExpression extends
      * Instantiates a new repository sql query condition group expression.
      *
      * @param jdbc           jdbc
-     * @param factory        MappingFactory
      * @param aliasManager   aliasManager
      * @param sqlPageFactory the sql page factory
      * @param ignorePolicy   the ignore policy
      */
-    public RepositorySqlQueryConditionGroupExpression(Jdbc jdbc, JdbcMappingFactory factory, AliasManager aliasManager,
+    public RepositorySqlQueryConditionGroupExpression(Jdbc jdbc, AliasManager aliasManager,
             SqlPageFactory sqlPageFactory, Predicate<Object> ignorePolicy) {
-        this(jdbc, factory, aliasManager, null, sqlPageFactory, ignorePolicy);
+        this(jdbc, aliasManager, null, sqlPageFactory, ignorePolicy);
     }
 
     /**
      * Instantiates a new repository sql query condition group expression.
      *
      * @param jdbc           jdbc
-     * @param factory        MappingFactory
-     * @param aliasManager   aliasManager
-     * @param queryAlias     queryAlias
-     * @param sqlPageFactory the sql page factory
-     * @param ignorePolicy   the ignore policy
-     */
-    public RepositorySqlQueryConditionGroupExpression(Jdbc jdbc, JdbcMappingFactory factory, AliasManager aliasManager,
-            String queryAlias, SqlPageFactory sqlPageFactory, Predicate<Object> ignorePolicy) {
-        this(jdbc, factory, aliasManager, queryAlias, sqlPageFactory, null, ignorePolicy);
-    }
-
-    /**
-     * Instantiates a new repository sql query condition group expression.
-     *
-     * @param jdbc           jdbc
-     * @param factory        MappingFactory
      * @param aliasManager   aliasManager
      * @param queryAlias     queryAlias
      * @param sqlPageFactory the sql page factory
      * @param classMapping   classMapping
      * @param ignorePolicy   the ignore policy
      */
-    public RepositorySqlQueryConditionGroupExpression(Jdbc jdbc, JdbcMappingFactory factory, AliasManager aliasManager,
-            String queryAlias, SqlPageFactory sqlPageFactory, JdbcClassMapping<?> classMapping,
-            Predicate<Object> ignorePolicy) {
-        this(null, jdbc, factory, aliasManager, queryAlias, sqlPageFactory, classMapping, ignorePolicy);
+    public RepositorySqlQueryConditionGroupExpression(Jdbc jdbc, AliasManager aliasManager, String queryAlias,
+            SqlPageFactory sqlPageFactory, Predicate<Object> ignorePolicy) {
+        this(null, jdbc, aliasManager, queryAlias, sqlPageFactory, ignorePolicy);
     }
 
     /**
@@ -99,7 +78,6 @@ public class RepositorySqlQueryConditionGroupExpression extends
      *
      * @param parent         parent group
      * @param jdbc           jdbc
-     * @param factory        MappingFactory
      * @param aliasManager   aliasManager
      * @param queryAlias     queryAlias
      * @param sqlPageFactory the sql page factory
@@ -107,9 +85,9 @@ public class RepositorySqlQueryConditionGroupExpression extends
      * @param ignorePolicy   the ignore policy
      */
     RepositorySqlQueryConditionGroupExpression(RepositoryQueryConditionGroupLogicExpression parent, Jdbc jdbc,
-            JdbcMappingFactory factory, AliasManager aliasManager, String queryAlias, SqlPageFactory sqlPageFactory,
-            JdbcClassMapping<?> classMapping, Predicate<Object> ignorePolicy) {
-        super(parent, jdbc.getDialect(), factory, aliasManager, queryAlias, sqlPageFactory, classMapping, ignorePolicy);
+            AliasManager aliasManager, String queryAlias, SqlPageFactory sqlPageFactory,
+            Predicate<Object> ignorePolicy) {
+        super(parent, jdbc.getDialect(), aliasManager, queryAlias, sqlPageFactory, ignorePolicy);
         this.jdbc = jdbc;
     }
 
@@ -126,8 +104,8 @@ public class RepositorySqlQueryConditionGroupExpression extends
     @Override
     protected RepositoryQueryConditionGroupExpression createGroup(RepositoryQueryConditionGroupLogicExpression parent,
             String queryAlias) {
-        return new RepositorySqlQueryConditionGroupExpression(parent, jdbc, factory, aliasManager, queryAlias,
-                sqlPageFactory, classMapping, ignorePolicy);
+        return new RepositorySqlQueryConditionGroupExpression(parent, jdbc, aliasManager, queryAlias, sqlPageFactory,
+                ignorePolicy);
     }
 
     /**
@@ -495,8 +473,7 @@ public class RepositorySqlQueryConditionGroupExpression extends
      */
     @Override
     public QuerySortExpression asc(String... names) {
-        ((RepositorySqlQueryConditionGroupExpression) getRoot()).sortBuilder
-                .asc(ClassMappingUtils.getColumnNames(classMapping, names));
+        ((RepositorySqlQueryConditionGroupExpression) getRoot()).sortBuilder.asc(names);
         return this;
     }
 
@@ -505,8 +482,7 @@ public class RepositorySqlQueryConditionGroupExpression extends
      */
     @Override
     public QuerySortExpression asc(List<String> names) {
-        ((RepositorySqlQueryConditionGroupExpression) getRoot()).sortBuilder
-                .asc(ClassMappingUtils.getColumnNames(classMapping, names));
+        ((RepositorySqlQueryConditionGroupExpression) getRoot()).sortBuilder.asc(names);
         return this;
     }
 
@@ -533,8 +509,7 @@ public class RepositorySqlQueryConditionGroupExpression extends
      */
     @Override
     public QuerySortExpression desc(String... names) {
-        ((RepositorySqlQueryConditionGroupExpression) getRoot()).sortBuilder
-                .desc(ClassMappingUtils.getColumnNames(classMapping, names));
+        ((RepositorySqlQueryConditionGroupExpression) getRoot()).sortBuilder.desc(names);
         return this;
     }
 
@@ -543,8 +518,7 @@ public class RepositorySqlQueryConditionGroupExpression extends
      */
     @Override
     public QuerySortExpression desc(List<String> names) {
-        ((RepositorySqlQueryConditionGroupExpression) getRoot()).sortBuilder
-                .desc(ClassMappingUtils.getColumnNames(classMapping, names));
+        ((RepositorySqlQueryConditionGroupExpression) getRoot()).sortBuilder.desc(names);
         return this;
     }
 

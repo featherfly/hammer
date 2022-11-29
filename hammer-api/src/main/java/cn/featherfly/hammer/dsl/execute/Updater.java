@@ -12,9 +12,8 @@ public interface Updater extends
         UpdaterExpression<Update, ExecutableUpdate, ExecutableConditionGroupExpression, ExecutableConditionGroupLogicExpression, UpdateValue, UpdateNumberValue> {
 
     /**
-     * start update dsl for the entity type.
+     * start update dsl for the entity type
      *
-     * @param <E>        the element type
      * @param entityType repositType
      * @return Delete
      */

@@ -5,8 +5,6 @@ import java.util.function.Predicate;
 
 import cn.featherfly.common.constant.Chars;
 import cn.featherfly.common.db.builder.dml.basic.SqlSelectBasicBuilder;
-import cn.featherfly.common.db.mapping.JdbcClassMapping;
-import cn.featherfly.common.db.mapping.JdbcMappingFactory;
 import cn.featherfly.common.lang.Lang;
 import cn.featherfly.common.operator.AggregateFunction;
 import cn.featherfly.common.repository.builder.AliasManager;
@@ -38,11 +36,11 @@ public class RepositorySqlQueryExpression extends RepositorySqlQueryConditionGro
      * @param sqlPageFactory the sql page factory
      * @param ignorePolicy   the ignore policy
      */
-    public RepositorySqlQueryExpression(Jdbc jdbc, JdbcMappingFactory factory, AliasManager aliasManager,
-            SqlSelectBasicBuilder selectBuilder, SqlPageFactory sqlPageFactory, Predicate<Object> ignorePolicy) {
+    public RepositorySqlQueryExpression(Jdbc jdbc, AliasManager aliasManager, SqlSelectBasicBuilder selectBuilder,
+            SqlPageFactory sqlPageFactory, Predicate<Object> ignorePolicy) {
         //        super(jdbc, factory, aliasManager, selectBuilder.getTableAlias(), sqlPageFactory, ignorePolicy);
         //      IMPLSOON 后续来实现，先让编译通过
-        super(jdbc, factory, aliasManager, "", sqlPageFactory, ignorePolicy);
+        super(jdbc, aliasManager, "", sqlPageFactory, ignorePolicy);
         this.selectBuilder = selectBuilder;
     }
 
@@ -57,12 +55,11 @@ public class RepositorySqlQueryExpression extends RepositorySqlQueryConditionGro
      * @param selectBuilder  the select builder
      * @param ignorePolicy   the ignore policy
      */
-    public RepositorySqlQueryExpression(Jdbc jdbc, JdbcMappingFactory factory, AliasManager aliasManager,
-            SqlPageFactory sqlPageFactory, JdbcClassMapping<?> classMapping, SqlSelectBasicBuilder selectBuilder,
-            Predicate<Object> ignorePolicy) {
+    public RepositorySqlQueryExpression(Jdbc jdbc, AliasManager aliasManager, SqlPageFactory sqlPageFactory,
+            SqlSelectBasicBuilder selectBuilder, Predicate<Object> ignorePolicy) {
         //        super(jdbc, factory, aliasManager, selectBuilder.getTableAlias(), sqlPageFactory, classMapping, ignorePolicy);
         //      IMPLSOON 后续来实现，先让编译通过
-        super(jdbc, factory, aliasManager, "", sqlPageFactory, classMapping, ignorePolicy);
+        super(jdbc, aliasManager, "", sqlPageFactory, ignorePolicy);
         this.selectBuilder = selectBuilder;
     }
 
@@ -76,9 +73,9 @@ public class RepositorySqlQueryExpression extends RepositorySqlQueryConditionGro
      * @param sqlPageFactory the sql page factory
      * @param ignorePolicy   the ignore policy
      */
-    public RepositorySqlQueryExpression(Jdbc jdbc, JdbcMappingFactory factory, AliasManager aliasManager,
-            String queryAlias, SqlPageFactory sqlPageFactory, Predicate<Object> ignorePolicy) {
-        super(jdbc, factory, aliasManager, queryAlias, sqlPageFactory, ignorePolicy);
+    public RepositorySqlQueryExpression(Jdbc jdbc, AliasManager aliasManager, String queryAlias,
+            SqlPageFactory sqlPageFactory, Predicate<Object> ignorePolicy) {
+        super(jdbc, aliasManager, queryAlias, sqlPageFactory, ignorePolicy);
     }
 
     /**
@@ -90,9 +87,9 @@ public class RepositorySqlQueryExpression extends RepositorySqlQueryConditionGro
      * @param sqlPageFactory the sql page factory
      * @param ignorePolicy   the ignore policy
      */
-    public RepositorySqlQueryExpression(Jdbc jdbc, JdbcMappingFactory factory, AliasManager aliasManager,
-            SqlPageFactory sqlPageFactory, Predicate<Object> ignorePolicy) {
-        super(jdbc, factory, aliasManager, sqlPageFactory, ignorePolicy);
+    public RepositorySqlQueryExpression(Jdbc jdbc, AliasManager aliasManager, SqlPageFactory sqlPageFactory,
+            Predicate<Object> ignorePolicy) {
+        super(jdbc, aliasManager, sqlPageFactory, ignorePolicy);
     }
 
     /**
@@ -108,9 +105,9 @@ public class RepositorySqlQueryExpression extends RepositorySqlQueryConditionGro
      * @param ignorePolicy   the ignore policy
      */
     RepositorySqlQueryExpression(RepositoryQueryConditionGroupLogicExpression parent, Jdbc jdbc,
-            JdbcMappingFactory factory, AliasManager aliasManager, String queryAlias, SqlPageFactory sqlPageFactory,
-            JdbcClassMapping<?> classMapping, Predicate<Object> ignorePolicy) {
-        super(parent, jdbc, factory, aliasManager, queryAlias, sqlPageFactory, classMapping, ignorePolicy);
+            AliasManager aliasManager, String queryAlias, SqlPageFactory sqlPageFactory,
+            Predicate<Object> ignorePolicy) {
+        super(parent, jdbc, aliasManager, queryAlias, sqlPageFactory, ignorePolicy);
     }
 
     /**
@@ -121,8 +118,7 @@ public class RepositorySqlQueryExpression extends RepositorySqlQueryConditionGro
             String queryAlias) {
         //      IMPLSOON 后续来实现，先让编译通过
         //        selectBuilder.setTableAlias(queryAlias);
-        return new RepositorySqlQueryExpression(parent, jdbc, factory, aliasManager, queryAlias, sqlPageFactory,
-                classMapping, ignorePolicy);
+        return new RepositorySqlQueryExpression(parent, jdbc, aliasManager, queryAlias, sqlPageFactory, ignorePolicy);
     }
 
     /**

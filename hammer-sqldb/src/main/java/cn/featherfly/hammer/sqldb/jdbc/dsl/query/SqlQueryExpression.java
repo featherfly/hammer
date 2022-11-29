@@ -5,7 +5,6 @@ import java.util.function.Predicate;
 
 import cn.featherfly.common.constant.Chars;
 import cn.featherfly.common.db.builder.dml.basic.SqlSelectBasicBuilder;
-import cn.featherfly.common.db.mapping.JdbcClassMapping;
 import cn.featherfly.common.lang.Lang;
 import cn.featherfly.common.operator.AggregateFunction;
 import cn.featherfly.hammer.dsl.query.QueryConditionGroupExpression;
@@ -43,23 +42,6 @@ public class SqlQueryExpression extends SqlQueryConditionGroupExpression {
     /**
      * Instantiates a new sql query expression.
      *
-     * @param jdbc           the jdbc
-     * @param sqlPageFactory the sql page factory
-     * @param classMapping   the class mapping
-     * @param selectBuilder  the select builder
-     * @param ignorePolicy   the ignore policy
-     */
-    public SqlQueryExpression(Jdbc jdbc, SqlPageFactory sqlPageFactory, JdbcClassMapping<?> classMapping,
-            SqlSelectBasicBuilder selectBuilder, Predicate<Object> ignorePolicy) {
-        //        super(jdbc, sqlPageFactory, selectBuilder.getTableAlias(), classMapping, ignorePolicy);
-        //      IMPLSOON 后续来实现，先让编译通过
-        super(jdbc, sqlPageFactory, "", classMapping, ignorePolicy);
-        this.selectBuilder = selectBuilder;
-    }
-
-    /**
-     * Instantiates a new sql query expression.
-     *
      * @param parent         the parent
      * @param jdbc           the jdbc
      * @param sqlPageFactory the sql page factory
@@ -68,8 +50,8 @@ public class SqlQueryExpression extends SqlQueryConditionGroupExpression {
      * @param ignorePolicy   the ignore policy
      */
     SqlQueryExpression(QueryConditionGroupLogicExpression parent, Jdbc jdbc, SqlPageFactory sqlPageFactory,
-            String queryAlias, JdbcClassMapping<?> classMapping, Predicate<Object> ignorePolicy) {
-        super(parent, jdbc, sqlPageFactory, queryAlias, classMapping, ignorePolicy);
+            String queryAlias, Predicate<Object> ignorePolicy) {
+        super(parent, jdbc, sqlPageFactory, queryAlias, ignorePolicy);
     }
 
     /**
@@ -104,7 +86,7 @@ public class SqlQueryExpression extends SqlQueryConditionGroupExpression {
             TypeQueryEntity typeQueryEntity) {
         // FIXME 未测试
         //        selectBuilder.setTableAlias(queryAlias);
-        return new SqlQueryExpression(parent, jdbc, sqlPageFactory, queryAlias, classMapping, ignorePolicy);
+        return new SqlQueryExpression(parent, jdbc, sqlPageFactory, queryAlias, ignorePolicy);
     }
 
     /**

@@ -8,7 +8,6 @@ import cn.featherfly.common.constant.Chars;
 import cn.featherfly.common.db.builder.dml.basic.SqlUpdateSetBasicBuilder;
 import cn.featherfly.common.db.mapping.JdbcClassMapping;
 import cn.featherfly.common.db.mapping.JdbcMappingFactory;
-import cn.featherfly.common.lang.Strings;
 import cn.featherfly.common.repository.builder.AliasManager;
 import cn.featherfly.hammer.sqldb.jdbc.Jdbc;
 
@@ -43,12 +42,7 @@ public class SqlEntityUpdateExpression<E> extends SqlEntityConditionGroupExpress
      */
     @Override
     public String build() {
-        String condition = super.build();
-        if (Strings.isEmpty(condition)) {
-            return builder.build();
-        } else {
-            return builder.build() + Chars.SPACE + jdbc.getDialect().getKeywords().where() + Chars.SPACE + condition;
-        }
+        return builder.build() + Chars.SPACE + jdbc.getDialect().getKeywords().where() + Chars.SPACE + super.build();
     }
 
     /**

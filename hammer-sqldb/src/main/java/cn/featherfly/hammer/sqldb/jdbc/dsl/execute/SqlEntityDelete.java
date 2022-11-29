@@ -56,7 +56,11 @@ public class SqlEntityDelete<E> implements EntityDelete<E> {
         this.jdbc = jdbc;
         this.factory = factory;
         this.classMapping = classMapping;
-        this.aliasManager = aliasManager;
+        if (aliasManager != null) {
+            this.aliasManager = aliasManager;
+        } else {
+            this.aliasManager = new AliasManager();
+        }
         tableName = classMapping.getRepositoryName();
         tableAlias = this.aliasManager.put(tableName);
     }

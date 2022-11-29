@@ -10,8 +10,6 @@ import java.util.function.Predicate;
 import cn.featherfly.common.constant.Chars;
 import cn.featherfly.common.db.SqlUtils;
 import cn.featherfly.common.db.builder.dml.SqlSortBuilder;
-import cn.featherfly.common.db.mapping.ClassMappingUtils;
-import cn.featherfly.common.db.mapping.JdbcClassMapping;
 import cn.featherfly.common.exception.UnsupportedException;
 import cn.featherfly.common.lang.LambdaUtils;
 import cn.featherfly.common.lang.Lang;
@@ -66,25 +64,12 @@ public class SqlQueryConditionGroupExpression
      * @param jdbc           jdbc
      * @param sqlPageFactory the sql page factory
      * @param queryAlias     queryAlias
-     * @param ignorePolicy   the ignore policy
-     */
-    public SqlQueryConditionGroupExpression(Jdbc jdbc, SqlPageFactory sqlPageFactory, String queryAlias,
-            Predicate<Object> ignorePolicy) {
-        this(jdbc, sqlPageFactory, queryAlias, null, ignorePolicy);
-    }
-
-    /**
-     * Instantiates a new sql query condition group expression.
-     *
-     * @param jdbc           jdbc
-     * @param sqlPageFactory the sql page factory
-     * @param queryAlias     queryAlias
      * @param classMapping   classMapping
      * @param ignorePolicy   the ignore policy
      */
     public SqlQueryConditionGroupExpression(Jdbc jdbc, SqlPageFactory sqlPageFactory, String queryAlias,
-            JdbcClassMapping<?> classMapping, Predicate<Object> ignorePolicy) {
-        this(null, jdbc, sqlPageFactory, queryAlias, classMapping, ignorePolicy);
+            Predicate<Object> ignorePolicy) {
+        this(null, jdbc, sqlPageFactory, queryAlias, ignorePolicy);
     }
 
     /**
@@ -98,9 +83,8 @@ public class SqlQueryConditionGroupExpression
      * @param ignorePolicy   the ignore policy
      */
     SqlQueryConditionGroupExpression(QueryConditionGroupLogicExpression parent, Jdbc jdbc,
-            SqlPageFactory sqlPageFactory, String queryAlias, JdbcClassMapping<?> classMapping,
-            Predicate<Object> ignorePolicy) {
-        super(parent, jdbc.getDialect(), sqlPageFactory, queryAlias, classMapping, null, ignorePolicy);
+            SqlPageFactory sqlPageFactory, String queryAlias, Predicate<Object> ignorePolicy) {
+        super(parent, jdbc.getDialect(), sqlPageFactory, queryAlias, null, ignorePolicy);
         this.jdbc = jdbc;
     }
 
@@ -117,8 +101,7 @@ public class SqlQueryConditionGroupExpression
     @Override
     protected QueryConditionGroupExpression createGroup(QueryConditionGroupLogicExpression parent, String queryAlias,
             TypeQueryEntity typeQueryEntity) {
-        return new SqlQueryConditionGroupExpression(parent, jdbc, sqlPageFactory, queryAlias, classMapping,
-                ignorePolicy);
+        return new SqlQueryConditionGroupExpression(parent, jdbc, sqlPageFactory, queryAlias, ignorePolicy);
     }
 
     /**
@@ -486,8 +469,7 @@ public class SqlQueryConditionGroupExpression
      */
     @Override
     public QuerySortExpression asc(String... names) {
-        ((SqlQueryConditionGroupExpression) getRoot()).sortBuilder
-                .asc(ClassMappingUtils.getColumnNames(classMapping, names));
+        ((SqlQueryConditionGroupExpression) getRoot()).sortBuilder.asc(names);
         return this;
     }
 
@@ -496,8 +478,7 @@ public class SqlQueryConditionGroupExpression
      */
     @Override
     public QuerySortExpression asc(List<String> names) {
-        ((SqlQueryConditionGroupExpression) getRoot()).sortBuilder
-                .asc(ClassMappingUtils.getColumnNames(classMapping, names));
+        ((SqlQueryConditionGroupExpression) getRoot()).sortBuilder.asc(names);
         return this;
     }
 
@@ -524,8 +505,7 @@ public class SqlQueryConditionGroupExpression
      */
     @Override
     public QuerySortExpression desc(String... names) {
-        ((SqlQueryConditionGroupExpression) getRoot()).sortBuilder
-                .desc(ClassMappingUtils.getColumnNames(classMapping, names));
+        ((SqlQueryConditionGroupExpression) getRoot()).sortBuilder.desc(names);
         return this;
     }
 
@@ -534,8 +514,7 @@ public class SqlQueryConditionGroupExpression
      */
     @Override
     public QuerySortExpression desc(List<String> names) {
-        ((SqlQueryConditionGroupExpression) getRoot()).sortBuilder
-                .desc(ClassMappingUtils.getColumnNames(classMapping, names));
+        ((SqlQueryConditionGroupExpression) getRoot()).sortBuilder.desc(names);
         return this;
     }
 

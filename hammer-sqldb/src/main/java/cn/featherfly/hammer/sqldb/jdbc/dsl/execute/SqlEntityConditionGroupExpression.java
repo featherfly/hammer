@@ -19,8 +19,7 @@ import cn.featherfly.hammer.sqldb.sql.dml.AbstractEntitySqlConditionGroupExpress
  * @param <E> the element type
  */
 public class SqlEntityConditionGroupExpression<E> extends
-        AbstractEntitySqlConditionGroupExpression<E, EntityExecutableConditionGroupExpression<E>,
-                EntityExecutableConditionGroupLogicExpression<E>>
+        AbstractEntitySqlConditionGroupExpression<E, EntityExecutableConditionGroupExpression<E>, EntityExecutableConditionGroupLogicExpression<E>>
         implements EntityExecutableConditionGroupExpression<E>, EntityExecutableConditionGroupLogicExpression<E> {
 
     /**
@@ -76,11 +75,7 @@ public class SqlEntityConditionGroupExpression<E> extends
      */
     @Override
     public int execute() {
-        if (parent != null) {
-            return parent.execute();
-        } else {
-            return jdbc.update(build(), getParams().toArray());
-        }
+        return jdbc.update(build(), getParams().toArray());
     }
 
     // ********************************************************************

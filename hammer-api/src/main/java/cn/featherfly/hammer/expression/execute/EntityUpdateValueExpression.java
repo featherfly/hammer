@@ -10,11 +10,12 @@ import cn.featherfly.hammer.expression.EntityConditionGroupLogicExpression;
  * EntityUpdateValueExpression .
  *
  * @author zhongj
- * @param <E> the element type
- * @param <T> the generic type
- * @param <U> the generic type
- * @param <C> the generic type
- * @param <L> the generic type
+ * @param <U>  the generic type
+ * @param <C>  the generic type
+ * @param <L>  the generic type
+ * @param <T>  the generic type
+ * @param <V>  the value type
+ * @param <VN> the generic type
  */
 public interface EntityUpdateValueExpression<E, T, U extends EntityPropertyExecutableUpdateExpression<E, U, C, L>,
         C extends EntityConditionGroupExpression<E, C, L>, L extends EntityConditionGroupLogicExpression<E, C, L>> {

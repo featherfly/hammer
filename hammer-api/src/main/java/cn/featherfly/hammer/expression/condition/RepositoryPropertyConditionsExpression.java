@@ -74,7 +74,7 @@ public interface RepositoryPropertyConditionsExpression<C extends RepositoryCond
      * @param name       the name
      * @return the object expression
      */
-    <T> ObjectExpression<C, L> property(Class<T> repository, String name);
+    //    <T> ObjectExpression<C, L> property(Class<T> repository, String name);
 
     /**
      * Property string.
@@ -84,7 +84,7 @@ public interface RepositoryPropertyConditionsExpression<C extends RepositoryCond
      * @param name       the name
      * @return the string expression
      */
-    <T> StringExpression<C, L> propertyString(Class<T> repository, String name);
+    //    <T> StringExpression<C, L> propertyString(Class<T> repository, String name);
 
     /**
      * Property number.
@@ -95,7 +95,7 @@ public interface RepositoryPropertyConditionsExpression<C extends RepositoryCond
      * @param name       the name
      * @return the number expression
      */
-    <N extends Number, T> NumberExpression<N, C, L> propertyNumber(Class<T> repository, String name);
+    //    <N extends Number, T> NumberExpression<N, C, L> propertyNumber(Class<T> repository, String name);
 
     /**
      * Property date.
@@ -106,7 +106,7 @@ public interface RepositoryPropertyConditionsExpression<C extends RepositoryCond
      * @param name       the name
      * @return the date expression
      */
-    <D extends Date, T> DateExpression<D, C, L> propertyDate(Class<T> repository, String name);
+    //    <D extends Date, T> DateExpression<D, C, L> propertyDate(Class<T> repository, String name);
 
     /**
      * Property enum.
@@ -116,7 +116,7 @@ public interface RepositoryPropertyConditionsExpression<C extends RepositoryCond
      * @param name       the name
      * @return the enum expression
      */
-    <T, E extends Enum<E>> EnumExpression<E, C, L> propertyEnum(Class<T> repository, String name);
+    //    <T, E extends Enum<E>> EnumExpression<E, C, L> propertyEnum(Class<T> repository, String name);
 
     /**
      * Property.

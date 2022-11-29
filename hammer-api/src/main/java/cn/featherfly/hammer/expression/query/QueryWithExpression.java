@@ -42,23 +42,23 @@ public interface QueryWithExpression<QW extends QueryWithExpression<QW, QWO, QWE
      */
     QWO join(String repositoryName);
 
-    /**
-     * relate to.
-     *
-     * @param <T>            the generic type
-     * @param repositoryType with repository type
-     * @return QueryWithExpression
-     */
-    default <T> QWO relate(Class<T> repositoryType) {
-        return join(repositoryType);
-    }
-
-    /**
-     * join on.
-     *
-     * @param <T>            the generic type
-     * @param repositoryType with repository type
-     * @return QueryWithExpression
-     */
-    <T> QWO join(Class<T> repositoryType);
+    //    /**
+    //     * relate to.
+    //     *
+    //     * @param <T>            the generic type
+    //     * @param repositoryType with repository type
+    //     * @return QueryWithExpression
+    //     */
+    //    default <T> QWO relate(Class<T> repositoryType) {
+    //        return join(repositoryType);
+    //    }
+    //
+    //    /**
+    //     * join on.
+    //     *
+    //     * @param <T>            the generic type
+    //     * @param repositoryType with repository type
+    //     * @return QueryWithExpression
+    //     */
+    //    <T> QWO join(Class<T> repositoryType);
 }

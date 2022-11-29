@@ -3,7 +3,6 @@ package cn.featherfly.hammer.sqldb.jdbc.dsl.execute;
 
 import cn.featherfly.common.db.mapping.JdbcMappingFactory;
 import cn.featherfly.common.repository.Repository;
-import cn.featherfly.hammer.dsl.execute.Update;
 import cn.featherfly.hammer.dsl.execute.Updater;
 import cn.featherfly.hammer.sqldb.SqldbHammerException;
 import cn.featherfly.hammer.sqldb.jdbc.Jdbc;
@@ -60,10 +59,11 @@ public class SqlUpdater implements Updater {
      * {@inheritDoc}
      */
     @Override
-    public Update update(Class<?> repositType) {
+    public <E> SqlEntityUpdate<E> update(Class<E> repositType) {
         if (mappingFactory == null) {
             throw new SqldbHammerException("mappingFactory is null");
         }
-        return new SqlExecutableUpdate(mappingFactory.getClassMapping(repositType), jdbc);
+        // ENHANCE 删除暂时没有支持别名
+        return new SqlEntityExecutableUpdate<>(jdbc, mappingFactory.getClassMapping(repositType), mappingFactory);
     }
 }
