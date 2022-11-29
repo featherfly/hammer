@@ -45,9 +45,9 @@ public interface RepositoryContainsExpression<C extends ConditionExpression, L e
      * @param value      参数值
      * @return LogicExpression
      */
-    default <T> L co(Class<T> repository, String name, String value) {
-        return co(repository, name, value, QueryPolicy.AUTO);
-    }
+    //    default <T> L co(Class<T> repository, String name, String value) {
+    //        return co(repository, name, value, QueryPolicy.AUTO);
+    //    }
 
     /**
      * contains value .包含value.
@@ -59,7 +59,7 @@ public interface RepositoryContainsExpression<C extends ConditionExpression, L e
      * @param queryPolicy the query policy
      * @return LogicExpression
      */
-    <T> L co(Class<T> repository, String name, String value, QueryPolicy queryPolicy);
+    //    <T> L co(Class<T> repository, String name, String value, QueryPolicy queryPolicy);
 
     /**
      * contains value .包含value.

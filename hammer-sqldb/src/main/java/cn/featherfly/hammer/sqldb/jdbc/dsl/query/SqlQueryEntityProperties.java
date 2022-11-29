@@ -8,7 +8,6 @@ import java.util.function.Consumer;
 import java.util.function.Predicate;
 
 import cn.featherfly.common.db.dialect.Join;
-import cn.featherfly.common.db.mapping.JdbcClassMapping;
 import cn.featherfly.common.db.mapping.JdbcMappingFactory;
 import cn.featherfly.common.db.metadata.DatabaseMetadata;
 import cn.featherfly.common.repository.builder.AliasManager;
@@ -51,21 +50,6 @@ public class SqlQueryEntityProperties extends AbstractSqlQueryEntityProperties<S
     /**
      * Instantiates a new sql query entity properties.
      *
-     * @param jdbc           jdbc
-     * @param classMapping   classMapping
-     * @param factory        MappingFactory
-     * @param sqlPageFactory the sql page factory
-     * @param aliasManager   aliasManager
-     * @param ignorePolicy   the ignore policy
-     */
-    public SqlQueryEntityProperties(Jdbc jdbc, JdbcClassMapping<?> classMapping, JdbcMappingFactory factory,
-            SqlPageFactory sqlPageFactory, AliasManager aliasManager, Predicate<Object> ignorePolicy) {
-        super(jdbc, classMapping, factory, sqlPageFactory, aliasManager, ignorePolicy);
-    }
-
-    /**
-     * Instantiates a new sql query entity properties.
-     *
      * @param jdbc             jdbc
      * @param databaseMetadata databaseMetadata
      * @param tableName        tableName
@@ -86,7 +70,7 @@ public class SqlQueryEntityProperties extends AbstractSqlQueryEntityProperties<S
      */
     @Override
     public QueryConditionGroupExpression where() {
-        return new SqlQueryExpression(jdbc, sqlPageFactory, classMapping, selectBuilder, ignorePolicy);
+        return new SqlQueryExpression(jdbc, sqlPageFactory, selectBuilder, ignorePolicy);
     }
 
     /**
@@ -94,8 +78,8 @@ public class SqlQueryEntityProperties extends AbstractSqlQueryEntityProperties<S
      */
     @Override
     public QueryConditionGroupExpression where(Consumer<ConditionGroupConfig<QueryConditionGroupExpression>> consumer) {
-        SqlQueryExpression sqlQueryExpression = new SqlQueryExpression(jdbc, sqlPageFactory, classMapping,
-                selectBuilder, ignorePolicy);
+        SqlQueryExpression sqlQueryExpression = new SqlQueryExpression(jdbc, sqlPageFactory, selectBuilder,
+                ignorePolicy);
         if (consumer != null) {
             consumer.accept(sqlQueryExpression);
         }
@@ -107,7 +91,7 @@ public class SqlQueryEntityProperties extends AbstractSqlQueryEntityProperties<S
      */
     @Override
     public List<Map<String, Object>> list() {
-        return new SqlQueryExpression(jdbc, sqlPageFactory, classMapping, selectBuilder, ignorePolicy).list();
+        return new SqlQueryExpression(jdbc, sqlPageFactory, selectBuilder, ignorePolicy).list();
     }
 
     /**
@@ -115,7 +99,7 @@ public class SqlQueryEntityProperties extends AbstractSqlQueryEntityProperties<S
      */
     @Override
     public <E> List<E> list(Class<E> type) {
-        return new SqlQueryExpression(jdbc, sqlPageFactory, classMapping, selectBuilder, ignorePolicy).list(type);
+        return new SqlQueryExpression(jdbc, sqlPageFactory, selectBuilder, ignorePolicy).list(type);
     }
 
     /**
@@ -123,7 +107,7 @@ public class SqlQueryEntityProperties extends AbstractSqlQueryEntityProperties<S
      */
     @Override
     public <E> List<E> list(RowMapper<E> rowMapper) {
-        return new SqlQueryExpression(jdbc, sqlPageFactory, classMapping, selectBuilder, ignorePolicy).list(rowMapper);
+        return new SqlQueryExpression(jdbc, sqlPageFactory, selectBuilder, ignorePolicy).list(rowMapper);
     }
 
     /**
@@ -131,7 +115,7 @@ public class SqlQueryEntityProperties extends AbstractSqlQueryEntityProperties<S
      */
     @Override
     public QueryLimitExecutor limit(Integer limit) {
-        return new SqlQueryExpression(jdbc, sqlPageFactory, classMapping, selectBuilder, ignorePolicy).limit(limit);
+        return new SqlQueryExpression(jdbc, sqlPageFactory, selectBuilder, ignorePolicy).limit(limit);
     }
 
     /**
@@ -139,8 +123,7 @@ public class SqlQueryEntityProperties extends AbstractSqlQueryEntityProperties<S
      */
     @Override
     public QueryLimitExecutor limit(Integer offset, Integer limit) {
-        return new SqlQueryExpression(jdbc, sqlPageFactory, classMapping, selectBuilder, ignorePolicy).limit(offset,
-                limit);
+        return new SqlQueryExpression(jdbc, sqlPageFactory, selectBuilder, ignorePolicy).limit(offset, limit);
     }
 
     /**
@@ -148,7 +131,7 @@ public class SqlQueryEntityProperties extends AbstractSqlQueryEntityProperties<S
      */
     @Override
     public QueryLimitExecutor limit(Page page) {
-        return new SqlQueryExpression(jdbc, sqlPageFactory, classMapping, selectBuilder, ignorePolicy).limit(page);
+        return new SqlQueryExpression(jdbc, sqlPageFactory, selectBuilder, ignorePolicy).limit(page);
     }
 
     /**
@@ -156,7 +139,7 @@ public class SqlQueryEntityProperties extends AbstractSqlQueryEntityProperties<S
      */
     @Override
     public String string() {
-        return new SqlQueryExpression(jdbc, sqlPageFactory, classMapping, selectBuilder, ignorePolicy).string();
+        return new SqlQueryExpression(jdbc, sqlPageFactory, selectBuilder, ignorePolicy).string();
     }
 
     /**
@@ -164,7 +147,7 @@ public class SqlQueryEntityProperties extends AbstractSqlQueryEntityProperties<S
      */
     @Override
     public Integer integer() {
-        return new SqlQueryExpression(jdbc, sqlPageFactory, classMapping, selectBuilder, ignorePolicy).integer();
+        return new SqlQueryExpression(jdbc, sqlPageFactory, selectBuilder, ignorePolicy).integer();
     }
 
     /**
@@ -172,7 +155,7 @@ public class SqlQueryEntityProperties extends AbstractSqlQueryEntityProperties<S
      */
     @Override
     public Long longInt() {
-        return new SqlQueryExpression(jdbc, sqlPageFactory, classMapping, selectBuilder, ignorePolicy).longInt();
+        return new SqlQueryExpression(jdbc, sqlPageFactory, selectBuilder, ignorePolicy).longInt();
     }
 
     /**
@@ -180,7 +163,7 @@ public class SqlQueryEntityProperties extends AbstractSqlQueryEntityProperties<S
      */
     @Override
     public BigDecimal decimal() {
-        return new SqlQueryExpression(jdbc, sqlPageFactory, classMapping, selectBuilder, ignorePolicy).decimal();
+        return new SqlQueryExpression(jdbc, sqlPageFactory, selectBuilder, ignorePolicy).decimal();
     }
 
     /**
@@ -188,7 +171,7 @@ public class SqlQueryEntityProperties extends AbstractSqlQueryEntityProperties<S
      */
     @Override
     public <N extends Number> N number(Class<N> type) {
-        return new SqlQueryExpression(jdbc, sqlPageFactory, classMapping, selectBuilder, ignorePolicy).number(type);
+        return new SqlQueryExpression(jdbc, sqlPageFactory, selectBuilder, ignorePolicy).number(type);
     }
 
     //    /**
@@ -208,27 +191,26 @@ public class SqlQueryEntityProperties extends AbstractSqlQueryEntityProperties<S
         //        return new SqlQueryWith(this, aliasManager, factory, sqlPageFactory, selectBuilder.getTableAlias(), getIdName(),
         //                repositoryName, aliasManager.put(repositoryName), join, ignorePolicy);
         //      IMPLSOON 后续来实现，先让编译通过
-        return new SqlQueryWith(this, aliasManager, factory, sqlPageFactory, tableAlias, getIdName(), repositoryName,
+        return new SqlQueryWith(this, aliasManager, sqlPageFactory, tableAlias, getIdName(), repositoryName,
                 aliasManager.put(repositoryName), join, ignorePolicy);
     }
 
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public <T> SqlQueryWithOn join(Join join, Class<T> repositoryType) {
-        //        return new SqlQueryWith(this, aliasManager, factory, sqlPageFactory, selectBuilder.getTableAlias(), getIdName(),
-        //                repositoryType, join, ignorePolicy);
-        //      IMPLSOON 后续来实现，先让编译通过
-        return new SqlQueryWith(this, aliasManager, factory, sqlPageFactory, tableAlias, getIdName(), repositoryType,
-                join, ignorePolicy);
-    }
+    //    /**
+    //     * {@inheritDoc}
+    //     */
+    //    @Override
+    //    public <T> SqlQueryWithOn join(Join join, Class<T> repositoryType) {
+    //        //        return new SqlQueryWith(this, aliasManager, factory, sqlPageFactory, selectBuilder.getTableAlias(), getIdName(),
+    //        //                repositoryType, join, ignorePolicy);
+    //        //      IMPLSOON 后续来实现，先让编译通过
+    //        return new SqlQueryWith(this, aliasManager, sqlPageFactory, tableAlias, getIdName(), join, ignorePolicy);
+    //    }
 
     /**
      * {@inheritDoc}
      */
     @Override
     public QuerySortExpression sort() {
-        return new SqlQueryExpression(jdbc, sqlPageFactory, classMapping, selectBuilder, ignorePolicy).sort();
+        return new SqlQueryExpression(jdbc, sqlPageFactory, selectBuilder, ignorePolicy).sort();
     }
 }

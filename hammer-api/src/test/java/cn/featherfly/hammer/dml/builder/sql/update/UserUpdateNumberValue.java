@@ -55,14 +55,4 @@ public class UserUpdateNumberValue implements
         // YUFEI_TODO Auto-generated method stub
         return null;
     }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public UserPropertiesUpdate increase(
-            Consumer<UpdateNumberValueExpression<UserPropertiesUpdate, UserQueryConditionGroupExpression, UserQueryConditionGroupExpression, Number, UserUpdateValue, UserUpdateNumberValue>> consumer) {
-        // YUFEI_TODO Auto-generated method stub
-        return null;
-    }
 }

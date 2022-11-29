@@ -664,7 +664,8 @@ public class HammerJdbcTest extends JdbcTestBase {
         int id = 10;
         String newName = "name_updater_" + Randoms.getInt(99);
         String newDescp = "descp_updater_" + Randoms.getInt(99);
-        hammer.update(Role.class).set("name", newName).property("descp").set(newDescp).where().eq("id", id).execute();
+        hammer.update(Role.class).set(Role::getName, newName).property(Role::getDescp).set(newDescp).where()
+                .eq(Role::getId, id).execute();
         Role role = hammer.get(id, Role.class);
         assertEquals(role.getName(), newName);
         assertEquals(role.getDescp(), newDescp);
@@ -673,7 +674,7 @@ public class HammerJdbcTest extends JdbcTestBase {
         newName = "name_updater_" + Randoms.getInt(90);
         newDescp = "descp_updater_" + Randoms.getInt(99);
         hammer.update(Role.class).set(Role::getName, newName).property(Role::getDescp).set(newDescp).where()
-                .eq("id", id).execute();
+                .eq(Role::getId, id).execute();
         role = hammer.get(id, Role.class);
         assertEquals(role.getName(), newName);
         assertEquals(role.getDescp(), newDescp);
@@ -715,7 +716,8 @@ public class HammerJdbcTest extends JdbcTestBase {
         int id = 10;
         String newName = "name_updater_" + Randoms.getInt(99);
         String newDescp = "descp_updater_" + Randoms.getInt(99);
-        hammer.update(Role.class).set("name", newName).property("descp").set(newDescp).where().eq("id", id).execute();
+        hammer.update(Role.class).set(Role::getName, newName).property(Role::getDescp).set(newDescp).where()
+                .eq(Role::getId, id).execute();
         Role role = hammer.get(id, Role.class);
         assertEquals(role.getName(), newName);
         assertEquals(role.getDescp(), newDescp);
@@ -729,7 +731,7 @@ public class HammerJdbcTest extends JdbcTestBase {
             if (unset) {
                 u.set(Role::getName, setNewName);
             }
-        }).property("descp").set(oldRole.getDescp()).where().eq(Role::getId, id).execute();
+        }).property(Role::getDescp).set(oldRole.getDescp()).where().eq(Role::getId, id).execute();
 
         role = hammer.get(id, Role.class);
         assertEquals(role.getName(), oldRole.getName());
@@ -740,7 +742,7 @@ public class HammerJdbcTest extends JdbcTestBase {
             if (set) {
                 u.set(Role::getName, setNewName);
             }
-        }).property("descp").set(oldRole.getDescp()).where().eq(Role::getId, id).execute();
+        }).property(Role::getDescp).set(oldRole.getDescp()).where().eq(Role::getId, id).execute();
 
         role = hammer.get(id, Role.class);
         assertEquals(role.getName(), setNewName);
@@ -751,7 +753,7 @@ public class HammerJdbcTest extends JdbcTestBase {
             if (true) {
                 u.set(setNewName2);
             }
-        }).property("descp").set(oldRole.getDescp()).where().eq(Role::getId, id).execute();
+        }).property(Role::getDescp).set(oldRole.getDescp()).where().eq(Role::getId, id).execute();
 
         role = hammer.get(id, Role.class);
         assertEquals(role.getName(), setNewName2);
@@ -776,12 +778,12 @@ public class HammerJdbcTest extends JdbcTestBase {
         User user = hammer.get(new User(id));
 
         Integer age = user.getAge();
-        hammer.update(User.class).increase("age", 1).where().eq("id", id).execute();
+        hammer.update(User.class).increase(User::getAge, 1).where().eq(User::getId, id).execute();
         age++;
         user = hammer.get(user);
         assertEquals(user.getAge(), age);
 
-        hammer.update(User.class).propertyNumber("age").increase(1).where().eq("id", id).execute();
+        hammer.update(User.class).property(User::getAge).increase(1).where().eq(User::getId, id).execute();
         age++;
         user = hammer.get(user);
         assertEquals(user.getAge(), age);
@@ -791,7 +793,7 @@ public class HammerJdbcTest extends JdbcTestBase {
         user = hammer.get(user);
         assertEquals(user.getAge(), age);
 
-        hammer.update(User.class).propertyNumber(User::getAge).increase(1).where().eq(User::getId, id).execute();
+        hammer.update(User.class).property(User::getAge).increase(1).where().eq(User::getId, id).execute();
         age++;
         user = hammer.get(user);
         assertEquals(user.getAge(), age);

@@ -33,7 +33,7 @@ public interface RepositoryInExpression<C extends ConditionExpression, L extends
      * @param value      参数值
      * @return LogicExpression
      */
-    <T> L in(Class<T> repository, String name, Object value);
+    //    <T> L in(Class<T> repository, String name, Object value);
 
     /**
      * 包含指定，sql中的in.

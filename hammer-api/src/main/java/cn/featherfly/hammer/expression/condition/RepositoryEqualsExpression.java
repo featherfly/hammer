@@ -47,9 +47,9 @@ public interface RepositoryEqualsExpression<C extends ConditionExpression, L ext
      * @param value      参数值
      * @return LogicExpression
      */
-    default <T> L eq(Class<T> repository, String name, Object value) {
-        return eq(repository, name, value, QueryPolicy.AUTO);
-    }
+    //    default <T> L eq(Class<T> repository, String name, Object value) {
+    //        return eq(repository, name, value, QueryPolicy.AUTO);
+    //    }
 
     /**
      * equals. 等于.
@@ -61,7 +61,7 @@ public interface RepositoryEqualsExpression<C extends ConditionExpression, L ext
      * @param queryPolicy the query policy
      * @return LogicExpression
      */
-    <T> L eq(Class<T> repository, String name, Object value, QueryPolicy queryPolicy);
+    //    <T> L eq(Class<T> repository, String name, Object value, QueryPolicy queryPolicy);
 
     /**
      * equals. 等于.

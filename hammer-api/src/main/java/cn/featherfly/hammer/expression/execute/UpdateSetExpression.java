@@ -9,17 +9,14 @@ import cn.featherfly.hammer.expression.ConditionGroupExpression;
 import cn.featherfly.hammer.expression.ConditionGroupLogicExpression;
 
 /**
- * <p>
- * Update
- * </p>
- * .
+ * SetUpdateExpression.
  *
  * @author zhongj
  * @param <U> the generic type
  * @param <C> the generic type
  * @param <L> the generic type
  */
-public interface SetUpdateExpression<U extends SetExecutableUpdateExpression<U, C, L>,
+public interface UpdateSetExpression<U extends ExecutableUpdateSetExpression<U, C, L>,
         C extends ConditionGroupExpression<C, L>, L extends ConditionGroupLogicExpression<C, L>> {
 
     /**
@@ -88,12 +85,4 @@ public interface SetUpdateExpression<U extends SetExecutableUpdateExpression<U, 
      * @return Update
      */
     <N extends Number> U increase(SerializableSupplier<N> property);
-
-    /**
-     * Sets the.
-     *
-     * @param consumer the consumer
-     * @return the u
-     */
-    U increase(Consumer<U> consumer);
 }
