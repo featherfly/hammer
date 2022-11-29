@@ -39,7 +39,7 @@ public class SqlDeleter implements Deleter {
      */
     @Override
     public SqlDelete delete(Repository repository) {
-        return new SqlDelete(repository, jdbc);
+        return new SqlDelete(jdbc, repository);
     }
 
     /**
@@ -47,17 +47,18 @@ public class SqlDeleter implements Deleter {
      */
     @Override
     public SqlDelete delete(String repository) {
-        return new SqlDelete(repository, jdbc);
+        return new SqlDelete(jdbc, repository);
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public <E> EntitySqlDelete<E> delete(Class<E> repositType) {
+    public <E> SqlEntityDelete<E> delete(Class<E> repositType) {
         if (mappingFactory == null) {
             throw new SqldbHammerException("mappingFactory is null");
         }
-        return new EntitySqlDelete<>(mappingFactory.getClassMapping(repositType), jdbc);
+        // ENHANCE 删除暂时没有支持别名
+        return new SqlEntityDelete<>(jdbc, mappingFactory, mappingFactory.getClassMapping(repositType));
     }
 }

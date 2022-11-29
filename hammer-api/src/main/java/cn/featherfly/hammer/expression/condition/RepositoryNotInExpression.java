@@ -33,7 +33,7 @@ public interface RepositoryNotInExpression<C extends ConditionExpression, L exte
      * @param value      参数值
      * @return LogicExpression
      */
-    <T> L nin(Class<T> repository, String name, Object value);
+    //    <T> L nin(Class<T> repository, String name, Object value);
 
     /**
      * 不包含指定，sql中的not in.

@@ -91,7 +91,7 @@ public interface RepositoryGreatEqualsExpressoin<C extends ConditionExpression, 
      * @param value      参数值
      * @return LogicExpression
      */
-    <N extends Number, T> L ge(Class<T> repository, String name, N value);
+    //    <N extends Number, T> L ge(Class<T> repository, String name, N value);
 
     /**
      * 大于等于.
@@ -103,7 +103,7 @@ public interface RepositoryGreatEqualsExpressoin<C extends ConditionExpression, 
      * @param value      参数值
      * @return LogicExpression
      */
-    <D extends Date, T> L ge(Class<T> repository, String name, D value);
+    //    <D extends Date, T> L ge(Class<T> repository, String name, D value);
 
     /**
      * 大于等于.
@@ -114,7 +114,7 @@ public interface RepositoryGreatEqualsExpressoin<C extends ConditionExpression, 
      * @param value      参数值
      * @return LogicExpression
      */
-    <T> L ge(Class<T> repository, String name, LocalTime value);
+    //    <T> L ge(Class<T> repository, String name, LocalTime value);
 
     /**
      * 大于等于.
@@ -125,7 +125,7 @@ public interface RepositoryGreatEqualsExpressoin<C extends ConditionExpression, 
      * @param value      参数值
      * @return LogicExpression
      */
-    <T> L ge(Class<T> repository, String name, LocalDate value);
+    //    <T> L ge(Class<T> repository, String name, LocalDate value);
 
     /**
      * 大于等于.
@@ -136,7 +136,7 @@ public interface RepositoryGreatEqualsExpressoin<C extends ConditionExpression, 
      * @param value      参数值
      * @return LogicExpression
      */
-    <T> L ge(Class<T> repository, String name, LocalDateTime value);
+    //    <T> L ge(Class<T> repository, String name, LocalDateTime value);
 
     /**
      * 大于等于.
@@ -147,7 +147,7 @@ public interface RepositoryGreatEqualsExpressoin<C extends ConditionExpression, 
      * @param value      参数值
      * @return LogicExpression
      */
-    <T> L ge(Class<T> repository, String name, String value);
+    //    <T> L ge(Class<T> repository, String name, String value);
 
     /**
      * 大于等于.

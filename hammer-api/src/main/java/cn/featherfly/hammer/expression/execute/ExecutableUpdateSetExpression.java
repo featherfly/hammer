@@ -6,13 +6,11 @@ import cn.featherfly.hammer.expression.ConditionGroupLogicExpression;
 import cn.featherfly.hammer.expression.WhereExpression;
 
 /**
- * <p>
- * Updator
- * </p>
+ * SetExecutableUpdateExpression.
  *
  * @author zhongj
  */
-public interface SetExecutableUpdateExpression<U extends SetExecutableUpdateExpression<U, C, L>,
+public interface ExecutableUpdateSetExpression<U extends ExecutableUpdateSetExpression<U, C, L>,
         C extends ConditionGroupExpression<C, L>, L extends ConditionGroupLogicExpression<C, L>>
-        extends WhereExpression<C, L>, SetUpdateExpression<U, C, L>, Executor {
+        extends WhereExpression<C, L>, UpdateSetExpression<U, C, L>, Executor {
 }

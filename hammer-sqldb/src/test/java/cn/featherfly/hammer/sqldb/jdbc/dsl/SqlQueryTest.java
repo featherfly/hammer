@@ -17,7 +17,6 @@ import cn.featherfly.hammer.sqldb.jdbc.JdbcTestBase;
 import cn.featherfly.hammer.sqldb.jdbc.dsl.query.SqlQuery;
 import cn.featherfly.hammer.sqldb.jdbc.vo.Role;
 import cn.featherfly.hammer.sqldb.jdbc.vo.User;
-import cn.featherfly.hammer.sqldb.jdbc.vo.UserInfo;
 
 /**
  * SqlQueryTest.
@@ -217,9 +216,9 @@ public class SqlQueryTest extends JdbcTestBase {
         query.find("user").property("username", "password", "age").join("user_role").on("user_id").join("role")
                 .on("id", "user_role", "role_id").fetch().list();
 
-        query.find("user").property("username", "password", "age").join(UserInfo.class).on("user_id").list();
+        query.find("user").property("username", "password", "age").join("user_info").on("user_id").list();
 
-        query.find("user").property("username", "password", "age").join(UserInfo.class).on("user_id").fetch().list();
+        query.find("user").property("username", "password", "age").join("user_info").on("user_id").fetch().list();
 
         query.find("tree").join("tree").on("parent_id").list();
 

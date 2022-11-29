@@ -45,9 +45,9 @@ public interface RepositoryEndWithExpression<C extends ConditionExpression, L ex
      * @param value      参数值
      * @return LogicExpression
      */
-    default <T> L ew(Class<T> repository, String name, String value) {
-        return ew(repository, name, value, QueryPolicy.AUTO);
-    }
+    //    default <T> L ew(Class<T> repository, String name, String value) {
+    //        return ew(repository, name, value, QueryPolicy.AUTO);
+    //    }
 
     /**
      * end with value. 以value结尾.
@@ -59,7 +59,7 @@ public interface RepositoryEndWithExpression<C extends ConditionExpression, L ex
      * @param queryPolicy the query policy
      * @return LogicExpression
      */
-    <T> L ew(Class<T> repository, String name, String value, QueryPolicy queryPolicy);
+    //    <T> L ew(Class<T> repository, String name, String value, QueryPolicy queryPolicy);
 
     /**
      * end with value. 以value结尾.

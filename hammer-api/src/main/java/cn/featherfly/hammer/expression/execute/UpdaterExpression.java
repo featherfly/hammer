@@ -29,12 +29,4 @@ public interface UpdaterExpression<U extends UpdateExpression<EU, C, L, V, VN>,
      * @return Delete
      */
     U update(String repository);
-
-    /**
-     * start update dsl for the reposited type
-     *
-     * @param repositType repositType
-     * @return Delete
-     */
-    U update(Class<?> repositType);
 }

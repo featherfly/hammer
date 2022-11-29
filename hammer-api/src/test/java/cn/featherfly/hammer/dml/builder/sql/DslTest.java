@@ -223,6 +223,27 @@ public class DslTest {
         });
     }
 
+    public void testEntityUpdate() {
+        Updater updater = null;
+
+        updater.update(User.class).set(User::getUsername, "yufei").set(User::getPwd, "123456")
+                .increase(User::getAge, 10).execute();
+
+        updater.update(User.class).set(User::getUsername, "yufei").where().eq(User::getId, 18).and().group()
+                .lt(User::getAge, 18).or().gt(User::getAge, 60).execute();
+
+        updater.update(User.class).property(User::getAge).increase(10).property(User::getUsername).set("yufei")
+                .execute();
+
+        String name = "yufei";
+
+        updater.update(User.class).set(t -> {
+            if (name.equals("yufei")) {
+                t.set(User::getUsername, name);
+            }
+        });
+    }
+
     public void testPropertyUpdate() {
         Updater updater = null;
 

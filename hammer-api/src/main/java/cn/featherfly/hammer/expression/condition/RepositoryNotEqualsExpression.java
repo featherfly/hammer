@@ -47,9 +47,9 @@ public interface RepositoryNotEqualsExpression<C extends ConditionExpression, L 
      * @param value      参数值
      * @return LogicExpression
      */
-    default <T> L ne(Class<T> repository, String name, Object value) {
-        return ne(repository, name, value, QueryPolicy.AUTO);
-    }
+    //    default <T> L ne(Class<T> repository, String name, Object value) {
+    //        return ne(repository, name, value, QueryPolicy.AUTO);
+    //    }
 
     /**
      * not equals.不等于
@@ -61,7 +61,7 @@ public interface RepositoryNotEqualsExpression<C extends ConditionExpression, L 
      * @param queryPolicy the query policy
      * @return LogicExpression
      */
-    <T> L ne(Class<T> repository, String name, Object value, QueryPolicy queryPolicy);
+    //    <T> L ne(Class<T> repository, String name, Object value, QueryPolicy queryPolicy);
 
     /**
      * not equals.不等于

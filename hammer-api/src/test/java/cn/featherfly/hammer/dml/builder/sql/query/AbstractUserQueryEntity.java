@@ -478,13 +478,4 @@ public class AbstractUserQueryEntity<Q extends AbstractUserQueryEntity<Q, QW, QW
         return null;
     }
 
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public <T> QWO join(Class<T> repositoryType) {
-        // YUFEI_TODO Auto-generated method stub
-        return null;
-    }
-
 }
