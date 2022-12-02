@@ -30,10 +30,7 @@ import cn.featherfly.hammer.sqldb.jdbc.SqlPageFactory.SqlPageQuery;
 import cn.featherfly.hammer.sqldb.sql.dml.AbstractSqlConditionGroupExpression;
 
 /**
- * <p>
- * sql condition group builder sql条件逻辑组构造器
- * </p>
- * .
+ * sql query condition group expression. sql查询条件组表达式.
  *
  * @author zhongj
  */

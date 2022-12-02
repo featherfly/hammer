@@ -14,9 +14,9 @@ import cn.featherfly.hammer.expression.condition.RepositoryConditionsGroupExpres
  * @param <C>   the generic type
  * @param <L>   the generic type
  */
-public interface QueryWithOnExpression<QW extends QueryWithExpression<QW, QWO, QWE, C, L>,
-        QWO extends QueryWithOnExpression<QW, QWO, QWE, C, L>,
-        QWE extends QueryWithEntityExpression<QW, QWO, QWE, C, L>, C extends RepositoryConditionsGroupExpression<C, L>,
+public interface QueryRelateOnExpression<QW extends QueryRelateExpression<QW, QWO, QWE, C, L>,
+        QWO extends QueryRelateOnExpression<QW, QWO, QWE, C, L>,
+        QWE extends QueryRelateEntityExpression<QW, QWO, QWE, C, L>, C extends RepositoryConditionsGroupExpression<C, L>,
         L extends RepositoryConditionGroupLogicExpression<C, L>> {
 
     /**

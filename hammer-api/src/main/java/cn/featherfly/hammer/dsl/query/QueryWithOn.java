@@ -1,7 +1,7 @@
 
 package cn.featherfly.hammer.dsl.query;
 
-import cn.featherfly.hammer.expression.query.QueryWithOnExpression;
+import cn.featherfly.hammer.expression.query.QueryRelateOnExpression;
 
 /**
  * <p>
@@ -11,5 +11,5 @@ import cn.featherfly.hammer.expression.query.QueryWithOnExpression;
  * @author zhongj
  */
 public interface QueryWithOn extends
-        QueryWithOnExpression<QueryWith, QueryWithOn, QueryWithEntity, RepositoryQueryConditionGroupExpression, RepositoryQueryConditionGroupLogicExpression> {
+        QueryRelateOnExpression<QueryWith, QueryWithOn, QueryWithEntity, RepositoryQueryConditionGroupExpression, RepositoryQueryConditionGroupLogicExpression> {
 }

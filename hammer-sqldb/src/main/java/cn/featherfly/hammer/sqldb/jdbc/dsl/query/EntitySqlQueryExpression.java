@@ -96,7 +96,8 @@ public class EntitySqlQueryExpression<E> extends EntitySqlQueryConditionGroupExp
     public String build() {
         String result = "";
         if (selectBuilder != null) {
-            result = selectBuilder.build();
+            result = selectBuilder
+                    .build((tableName, tableAlias) -> selectBuilder.getDefaultTableAlias().equals(tableAlias));
         }
         String condition = super.build();
         if (Lang.isNotEmpty(condition)) {

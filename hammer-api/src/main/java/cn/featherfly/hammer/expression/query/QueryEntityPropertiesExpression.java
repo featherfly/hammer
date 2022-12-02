@@ -15,9 +15,9 @@ import cn.featherfly.hammer.expression.condition.RepositoryConditionsGroupExpres
  */
 public interface QueryEntityPropertiesExpression<
         Q extends QueryEntityPropertiesExpression<Q, QW, QWO, QWE, C, L, RC, RL>,
-        QW extends QueryWithExpression<QW, QWO, QWE, RC, RL>,
-        QWO extends QueryWithOnExpression<QW, QWO, QWE, RC, RL>,
-        QWE extends QueryWithEntityExpression<QW, QWO, QWE, RC, RL>,
+        QW extends QueryRelateExpression<QW, QWO, QWE, RC, RL>,
+        QWO extends QueryRelateOnExpression<QW, QWO, QWE, RC, RL>,
+        QWE extends QueryRelateEntityExpression<QW, QWO, QWE, RC, RL>,
         C extends ConditionGroupExpression<C, L>,
         L extends ConditionGroupLogicExpression<C, L>,
         RC extends RepositoryConditionsGroupExpression<RC, RL>,

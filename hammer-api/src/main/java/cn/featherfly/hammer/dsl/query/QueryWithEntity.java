@@ -1,7 +1,7 @@
 
 package cn.featherfly.hammer.dsl.query;
 
-import cn.featherfly.hammer.expression.query.QueryWithEntityExpression;
+import cn.featherfly.hammer.expression.query.QueryRelateEntityExpression;
 
 /**
  * <p>
@@ -11,5 +11,5 @@ import cn.featherfly.hammer.expression.query.QueryWithEntityExpression;
  * @author zhongj
  */
 public interface QueryWithEntity extends
-        QueryWithEntityExpression<QueryWith, QueryWithOn, QueryWithEntity, RepositoryQueryConditionGroupExpression, RepositoryQueryConditionGroupLogicExpression> {
+        QueryRelateEntityExpression<QueryWith, QueryWithOn, QueryWithEntity, RepositoryQueryConditionGroupExpression, RepositoryQueryConditionGroupLogicExpression> {
 }

@@ -96,6 +96,7 @@ public class SqlQueryWith implements QueryWith, SqlQueryWithOn, SqlQueryWithEnti
             SqlPageFactory sqlPageFactory, String selectTableAlis, String selectTableColumn, String joinTableName,
             String joinTableAlias, Join join, Predicate<Object> ignorePolicy) {
         super();
+        AssertIllegalArgument.isNotNull(ignorePolicy, "ignorePolicy");
         this.sqlQueryEntityProperties = sqlQueryEntityProperties;
         this.aliasManager = aliasManager;
         this.sqlPageFactory = sqlPageFactory;
@@ -104,9 +105,6 @@ public class SqlQueryWith implements QueryWith, SqlQueryWithOn, SqlQueryWithEnti
         this.joinTableName = joinTableName;
         this.joinTableAlias = joinTableAlias;
         this.join = join;
-        this.ignorePolicy = ignorePolicy;
-
-        AssertIllegalArgument.isNotNull(ignorePolicy, "ignorePolicy");
         this.ignorePolicy = ignorePolicy;
     }
 
@@ -251,8 +249,8 @@ public class SqlQueryWith implements QueryWith, SqlQueryWithOn, SqlQueryWithEnti
      */
     @Override
     public RepositoryQueryConditionGroupExpression where() {
-        return new RepositorySqlQueryExpression(sqlQueryEntityProperties.jdbc, aliasManager, sqlPageFactory,
-                sqlQueryEntityProperties.selectBuilder, ignorePolicy);
+        return new RepositorySqlQueryExpression(sqlQueryEntityProperties.jdbc, aliasManager,
+                sqlQueryEntityProperties.selectBuilder, sqlPageFactory, ignorePolicy);
     }
 
     /**
@@ -261,7 +259,7 @@ public class SqlQueryWith implements QueryWith, SqlQueryWithOn, SqlQueryWithEnti
     @Override
     public RepositoryQueryConditionGroupExpression where(Consumer<RepositoryQueryConditionGroupExpression> consumer) {
         RepositorySqlQueryExpression repositorySqlQueryExpression = new RepositorySqlQueryExpression(
-                sqlQueryEntityProperties.jdbc, aliasManager, sqlPageFactory, sqlQueryEntityProperties.selectBuilder,
+                sqlQueryEntityProperties.jdbc, aliasManager, sqlQueryEntityProperties.selectBuilder, sqlPageFactory,
                 ignorePolicy);
         if (consumer != null) {
             consumer.accept(repositorySqlQueryExpression);
