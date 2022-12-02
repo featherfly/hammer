@@ -8,7 +8,7 @@ import java.util.function.Consumer;
 import cn.featherfly.common.repository.mapping.RowMapper;
 import cn.featherfly.common.structure.page.Page;
 import cn.featherfly.hammer.expression.query.QueryLimitExecutor;
-import cn.featherfly.hammer.expression.query.QueryWithExpression;
+import cn.featherfly.hammer.expression.query.QueryRelateExpression;
 
 /**
  * <p>
@@ -18,7 +18,7 @@ import cn.featherfly.hammer.expression.query.QueryWithExpression;
  * @author zhongj
  */
 public class UserQueryWith implements
-        QueryWithExpression<UserQueryWith, UserQueryWithOn, UserQueryWithEntity, UserQueryRepositoryConditionGroupExpression, UserQueryRepositoryConditionGroupExpression> {
+        QueryRelateExpression<UserQueryWith, UserQueryWithOn, UserQueryWithEntity, UserQueryRepositoryConditionGroupExpression, UserQueryRepositoryConditionGroupExpression> {
 
     /**
      * {@inheritDoc}

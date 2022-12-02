@@ -60,7 +60,6 @@
 //            AliasManager aliasManager, JdbcClassMapping<?> classMapping, SqlSelectBasicBuilder selectBuilder,
 //            Predicate<Object> ignorePolicy) {
 //        //        super(jdbc, factory, aliasManager, selectBuilder.getTableAlias(), sqlPageFactory, classMapping, ignorePolicy);
-//        //      IMPLSOON 后续来实现，先让编译通过
 //        super(jdbc, factory, aliasManager, "", sqlPageFactory, classMapping, ignorePolicy);
 //        this.selectBuilder = selectBuilder;
 //    }
@@ -89,7 +88,6 @@
 //    @Override
 //    protected RepositoryTypeSqlQueryConditionGroupExpression createGroup(
 //            RepositoryTypeQueryConditionGroupLogicExpression parent, String queryAlias) {
-//        //      IMPLSOON 后续来实现，先让编译通过
 //        //        selectBuilder.setTableAlias(queryAlias);
 //        return new RepositoryTypeSqlQueryExpression(parent, jdbc, factory, aliasManager, queryAlias, sqlPageFactory,
 //                classMapping, ignorePolicy);

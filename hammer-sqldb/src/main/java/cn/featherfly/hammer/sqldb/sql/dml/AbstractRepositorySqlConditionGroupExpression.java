@@ -94,7 +94,7 @@ public abstract class AbstractRepositorySqlConditionGroupExpression<C extends Re
      * @param sqlPageFactory the sql page factory
      * @param ignorePolicy   the ignore policy
      */
-    public AbstractRepositorySqlConditionGroupExpression(Dialect dialect, AliasManager aliasManager,
+    protected AbstractRepositorySqlConditionGroupExpression(Dialect dialect, AliasManager aliasManager,
             SqlPageFactory sqlPageFactory, Predicate<Object> ignorePolicy) {
         this(dialect, aliasManager, null, sqlPageFactory, ignorePolicy);
     }
@@ -108,8 +108,8 @@ public abstract class AbstractRepositorySqlConditionGroupExpression<C extends Re
      * @param sqlPageFactory the sql page factory
      * @param ignorePolicy   the ignore policy
      */
-    public AbstractRepositorySqlConditionGroupExpression(Dialect dialect, AliasManager aliasManager, String queryAlias,
-            SqlPageFactory sqlPageFactory, Predicate<Object> ignorePolicy) {
+    protected AbstractRepositorySqlConditionGroupExpression(Dialect dialect, AliasManager aliasManager,
+            String queryAlias, SqlPageFactory sqlPageFactory, Predicate<Object> ignorePolicy) {
         this(null, dialect, aliasManager, queryAlias, sqlPageFactory, ignorePolicy);
     }
 

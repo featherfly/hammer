@@ -32,6 +32,7 @@ import cn.featherfly.common.lang.function.SerializableSupplier;
 import cn.featherfly.common.repository.IgnorePolicy;
 import cn.featherfly.common.repository.builder.BuilderException;
 import cn.featherfly.common.repository.builder.BuilderExceptionCode;
+import cn.featherfly.common.repository.mapping.PropertyMapping.Mode;
 import cn.featherfly.hammer.expression.condition.Expression;
 import cn.featherfly.hammer.expression.condition.LogicOperatorExpression;
 import cn.featherfly.hammer.expression.condition.ParamedExpression;
@@ -315,8 +316,10 @@ public abstract class AbstractSqlConditionExpression<L> implements SqlBuilder, P
         SerializedLambdaInfo propertyInfo = LambdaUtils.getLambdaInfo(property);
         String pn = propertyInfo.getPropertyName();
 
+        // IMPLSOON 参考set(SerializableFunction<T, R> property,SerializableFunction<R, O> nestedProperty, O value)的实现重构逻辑
+
         JdbcPropertyMapping pm = classMapping.getPropertyMapping(repositoryInfo.getPropertyName());
-        if (pm.isEmbeddable()) {
+        if (pm.getMode() == Mode.EMBEDDED) {
             for (JdbcPropertyMapping spm : pm.getPropertyMappings()) {
                 if (spm.getPropertyName().equals(pn)) {
                     return Tuples.of(repositoryInfo.getPropertyName(), spm.getRepositoryFieldName());
@@ -349,7 +352,7 @@ public abstract class AbstractSqlConditionExpression<L> implements SqlBuilder, P
 
         JdbcPropertyMapping pm = classMapping
                 .getPropertyMapping(repositoryInfo.getSerializedLambdaInfo().getPropertyName());
-        if (pm.isEmbeddable()) {
+        if (pm.getMode() == Mode.EMBEDDED) {
             for (JdbcPropertyMapping spm : pm.getPropertyMappings()) {
                 if (spm.getPropertyName().equals(pn)) {
                     return Tuples.of(repositoryInfo.getSerializedLambdaInfo().getPropertyName(),

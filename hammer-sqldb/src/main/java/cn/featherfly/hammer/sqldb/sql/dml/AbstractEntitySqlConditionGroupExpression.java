@@ -16,14 +16,15 @@ import java.util.function.Predicate;
 import com.speedment.common.tuple.Tuple2;
 import com.speedment.common.tuple.Tuple3;
 
+import cn.featherfly.common.bean.BeanDescriptor;
 import cn.featherfly.common.db.FieldValueOperator;
 import cn.featherfly.common.db.builder.SqlBuilder;
 import cn.featherfly.common.db.dialect.Dialect;
-import cn.featherfly.common.db.mapping.JavaTypeSqlTypeOperator;
 import cn.featherfly.common.db.mapping.JdbcClassMapping;
 import cn.featherfly.common.db.mapping.JdbcMappingFactory;
 import cn.featherfly.common.db.mapping.JdbcPropertyMapping;
 import cn.featherfly.common.lang.AssertIllegalArgument;
+import cn.featherfly.common.lang.ClassUtils;
 import cn.featherfly.common.lang.LambdaUtils;
 import cn.featherfly.common.lang.LambdaUtils.SerializableSupplierLambdaInfo;
 import cn.featherfly.common.lang.LambdaUtils.SerializedLambdaInfo;
@@ -48,6 +49,7 @@ import cn.featherfly.common.operator.LogicOperator;
 import cn.featherfly.common.operator.QueryOperator;
 import cn.featherfly.common.operator.QueryOperator.QueryPolicy;
 import cn.featherfly.common.repository.builder.AliasManager;
+import cn.featherfly.common.repository.mapping.PropertyMapping.Mode;
 import cn.featherfly.hammer.expression.EntityConditionGroupExpression;
 import cn.featherfly.hammer.expression.EntityConditionGroupLogicExpression;
 import cn.featherfly.hammer.expression.condition.ParamedExpression;
@@ -105,8 +107,8 @@ public abstract class AbstractEntitySqlConditionGroupExpression<E, C extends Ent
      * @param entityQuery    the entity query
      * @param ignorePolicy   the ignore policy
      */
-    public AbstractEntitySqlConditionGroupExpression(Dialect dialect, SqlPageFactory sqlPageFactory, String queryAlias,
-            JdbcClassMapping<E> classMapping, JdbcMappingFactory factory, AliasManager aliasManager,
+    protected AbstractEntitySqlConditionGroupExpression(Dialect dialect, SqlPageFactory sqlPageFactory,
+            String queryAlias, JdbcClassMapping<E> classMapping, JdbcMappingFactory factory, AliasManager aliasManager,
             EntitySqlQuery<E> entityQuery, Predicate<Object> ignorePolicy) {
         this(null, dialect, sqlPageFactory, queryAlias, classMapping, factory, aliasManager, entityQuery, ignorePolicy);
     }
@@ -165,30 +167,7 @@ public abstract class AbstractEntitySqlConditionGroupExpression<E, C extends Ent
      */
     @Override
     public <R> L eq(SerializableFunction<E, R> name, R value, QueryPolicy queryPolicy) {
-        // YUFEI_TODO 未测试
-        JdbcPropertyMapping pm = classMapping.getPropertyMapping(getPropertyName(name));
-        return (L) addCondition(new SqlConditionExpressionBuilder(dialect, pm.getRepositoryFieldName(),
-                value == null ? null
-                        : new FieldValueOperator<>((JavaTypeSqlTypeOperator<R>) pm.getJavaTypeSqlTypeOperator(), value),
-                QueryOperator.EQ, queryPolicy, queryAlias, ignorePolicy));
-        // IMPLSOON 后续再把下面的逻辑加回来
-        // FIXME value 空指针异常
-        //        List<Tuple2<String, Optional<R>>> tuples = supplier(LambdaUtils.getLambdaInfo(name), value);
-        //        L logic = null;
-        //        C condition = (C) this;
-        //        if (tuples.size() > 1) {
-        //            condition = group();
-        //        }
-        //        for (Tuple2<String, Optional<R>> tuple : tuples) {
-        //            if (logic != null) {
-        //                condition = logic.and();
-        //            }
-        //            logic = condition.eq(tuple.get0(), tuple.get1().orElseGet(() -> null), queryPolicy);
-        //        }
-        //        if (tuples.size() > 1) {
-        //            logic = logic.endGroup();
-        //        }
-        //        return logic;
+        return eq_ne(QueryOperator.EQ, classMapping.getPropertyMapping(getPropertyName(name)), value, queryPolicy);
     }
 
     /**
@@ -196,31 +175,10 @@ public abstract class AbstractEntitySqlConditionGroupExpression<E, C extends Ent
      */
     @Override
     public <R> L eq(SerializableSupplier<R> property, QueryPolicy queryPolicy) {
-        //  YUFEI_TODO 未测试
-        R value = property.get();
-        SerializableSupplierLambdaInfo<R> info = LambdaUtils.getSerializableSupplierLambdaInfo(property);
-        JdbcPropertyMapping pm = classMapping.getPropertyMapping(info.getSerializedLambdaInfo().getPropertyName());
-        return (L) addCondition(new SqlConditionExpressionBuilder(dialect, pm.getRepositoryFieldName(),
-                value == null ? null
-                        : new FieldValueOperator<>((JavaTypeSqlTypeOperator<R>) pm.getJavaTypeSqlTypeOperator(), value),
-                QueryOperator.EQ, queryPolicy, queryAlias, ignorePolicy));
-        // IMPLSOON 后续再把下面的逻辑加回来
-        //        List<Tuple2<String, Optional<R>>> tuples = supplier(LambdaUtils.getSerializableSupplierLambdaInfo(property));
-        //        L logic = null;
-        //        C condition = (C) this;
-        //        if (tuples.size() > 1) {
-        //            condition = group();
-        //        }
-        //        for (Tuple2<String, Optional<R>> tuple : tuples) {
-        //            if (logic != null) {
-        //                condition = logic.and();
-        //            }
-        //            logic = condition.eq(tuple.get0(), tuple.get1().orElseGet(() -> null), queryPolicy);
-        //        }
-        //        if (tuples.size() > 1) {
-        //            logic = logic.endGroup();
-        //        }
-        //        return logic;
+        return eq_ne(
+                QueryOperator.EQ, classMapping.getPropertyMapping(LambdaUtils
+                        .getSerializableSupplierLambdaInfo(property).getSerializedLambdaInfo().getPropertyName()),
+                property.get(), queryPolicy);
     }
 
     //    /**
@@ -298,30 +256,7 @@ public abstract class AbstractEntitySqlConditionGroupExpression<E, C extends Ent
      */
     @Override
     public <R> L ne(SerializableFunction<E, R> name, R value, QueryPolicy queryPolicy) {
-        // YUFEI_TODO 未测试
-        JdbcPropertyMapping pm = classMapping.getPropertyMapping(getPropertyName(name));
-        return (L) addCondition(new SqlConditionExpressionBuilder(dialect, pm.getRepositoryFieldName(),
-                value == null ? null
-                        : new FieldValueOperator<>((JavaTypeSqlTypeOperator<R>) pm.getJavaTypeSqlTypeOperator(), value),
-                QueryOperator.NE, queryPolicy, queryAlias, ignorePolicy));
-        // IMPLSOON 后续再把下面的逻辑加回来
-        // FIXME value 空指针异常
-        //        List<Tuple2<String, Optional<R>>> tuples = supplier(LambdaUtils.getLambdaInfo(name), value);
-        //        L l = null;
-        //        C c = (C) this;
-        //        if (tuples.size() > 1) {
-        //            c = group();
-        //        }
-        //        for (Tuple2<String, Optional<R>> tuple : tuples) {
-        //            if (l != null) {
-        //                c = l.and();
-        //            }
-        //            l = c.ne(tuple.get0(), tuple.get1().orElseGet(() -> null), queryPolicy);
-        //        }
-        //        if (tuples.size() > 1) {
-        //            l = l.endGroup();
-        //        }
-        //        return l;
+        return eq_ne(QueryOperator.NE, classMapping.getPropertyMapping(getPropertyName(name)), value, queryPolicy);
     }
 
     /**
@@ -329,31 +264,10 @@ public abstract class AbstractEntitySqlConditionGroupExpression<E, C extends Ent
      */
     @Override
     public <R> L ne(SerializableSupplier<R> property, QueryPolicy queryPolicy) {
-        //  YUFEI_TODO 未测试
-        R value = property.get();
-        SerializableSupplierLambdaInfo<R> info = LambdaUtils.getSerializableSupplierLambdaInfo(property);
-        JdbcPropertyMapping pm = classMapping.getPropertyMapping(info.getSerializedLambdaInfo().getPropertyName());
-        return (L) addCondition(new SqlConditionExpressionBuilder(dialect, pm.getRepositoryFieldName(),
-                value == null ? null
-                        : new FieldValueOperator<>((JavaTypeSqlTypeOperator<R>) pm.getJavaTypeSqlTypeOperator(), value),
-                QueryOperator.NE, queryPolicy, queryAlias, ignorePolicy));
-        // IMPLSOON 后续再把下面的逻辑加回来
-        //        List<Tuple2<String, Optional<R>>> tuples = supplier(LambdaUtils.getSerializableSupplierLambdaInfo(property));
-        //        L l = null;
-        //        C c = (C) this;
-        //        if (tuples.size() > 1) {
-        //            c = group();
-        //        }
-        //        for (Tuple2<String, Optional<R>> tuple : tuples) {
-        //            if (l != null) {
-        //                c = l.and();
-        //            }
-        //            l = c.ne(tuple.get0(), tuple.get1().orElseGet(() -> null), queryPolicy);
-        //        }
-        //        if (tuples.size() > 1) {
-        //            l = l.endGroup();
-        //        }
-        //        return l;
+        return eq_ne(
+                QueryOperator.NE, classMapping.getPropertyMapping(LambdaUtils
+                        .getSerializableSupplierLambdaInfo(property).getSerializedLambdaInfo().getPropertyName()),
+                property.get(), queryPolicy);
     }
 
     //    /**
@@ -372,13 +286,14 @@ public abstract class AbstractEntitySqlConditionGroupExpression<E, C extends Ent
     @Override
     public L lk(SerializableFunction<E, String> name, String value, QueryPolicy queryPolicy) {
         // YUFEI_TODO 未测试
-        JdbcPropertyMapping pm = classMapping.getPropertyMapping(getPropertyName(name));
-        return (L) addCondition(
-                new SqlConditionExpressionBuilder(dialect, pm.getRepositoryFieldName(),
-                        value == null ? null
-                                : new FieldValueOperator<>(
-                                        (JavaTypeSqlTypeOperator<String>) pm.getJavaTypeSqlTypeOperator(), value),
-                        QueryOperator.LK, queryPolicy, queryAlias, ignorePolicy));
+        //        JdbcPropertyMapping pm = classMapping.getPropertyMapping(getPropertyName(name));
+        //        return (L) addCondition(
+        //                new SqlConditionExpressionBuilder(dialect, pm.getRepositoryFieldName(),
+        //                        value == null ? null
+        //                                : new FieldValueOperator<>(
+        //                                        (JavaTypeSqlTypeOperator<String>) pm.getJavaTypeSqlTypeOperator(), value),
+        //                        QueryOperator.LK, queryPolicy, queryAlias, ignorePolicy));
+        return lk(classMapping.getPropertyMapping(getPropertyName(name)), value, queryPolicy);
     }
 
     /**
@@ -387,15 +302,18 @@ public abstract class AbstractEntitySqlConditionGroupExpression<E, C extends Ent
     @Override
     public L lk(StringSupplier property, QueryPolicy queryPolicy) {
         //  YUFEI_TODO 未测试
-        String value = property.get();
-        SerializableSupplierLambdaInfo<String> info = LambdaUtils.getSerializableSupplierLambdaInfo(property);
-        JdbcPropertyMapping pm = classMapping.getPropertyMapping(info.getSerializedLambdaInfo().getPropertyName());
-        return (L) addCondition(
-                new SqlConditionExpressionBuilder(dialect, pm.getRepositoryFieldName(),
-                        value == null ? null
-                                : new FieldValueOperator<>(
-                                        (JavaTypeSqlTypeOperator<String>) pm.getJavaTypeSqlTypeOperator(), value),
-                        QueryOperator.LK, queryPolicy, queryAlias, ignorePolicy));
+        //        String value = property.get();
+        //        SerializableSupplierLambdaInfo<String> info = LambdaUtils.getSerializableSupplierLambdaInfo(property);
+        //        JdbcPropertyMapping pm = classMapping.getPropertyMapping(info.getSerializedLambdaInfo().getPropertyName());
+        //        return (L) addCondition(
+        //                new SqlConditionExpressionBuilder(dialect, pm.getRepositoryFieldName(),
+        //                        value == null ? null
+        //                                : new FieldValueOperator<>(
+        //                                        (JavaTypeSqlTypeOperator<String>) pm.getJavaTypeSqlTypeOperator(), value),
+        //                        QueryOperator.LK, queryPolicy, queryAlias, ignorePolicy));
+        return lk(classMapping.getPropertyMapping(
+                LambdaUtils.getSerializableSupplierLambdaInfo(property).getSerializedLambdaInfo().getPropertyName()),
+                property.get(), queryPolicy);
     }
 
     //  /**
@@ -422,13 +340,14 @@ public abstract class AbstractEntitySqlConditionGroupExpression<E, C extends Ent
     @Override
     public L sw(SerializableFunction<E, String> name, String value, QueryPolicy queryPolicy) {
         // YUFEI_TODO 未测试
-        JdbcPropertyMapping pm = classMapping.getPropertyMapping(getPropertyName(name));
-        return (L) addCondition(
-                new SqlConditionExpressionBuilder(dialect, pm.getRepositoryFieldName(),
-                        value == null ? null
-                                : new FieldValueOperator<>(
-                                        (JavaTypeSqlTypeOperator<String>) pm.getJavaTypeSqlTypeOperator(), value),
-                        QueryOperator.SW, queryPolicy, queryAlias, ignorePolicy));
+        //        JdbcPropertyMapping pm = classMapping.getPropertyMapping(getPropertyName(name));
+        //        return (L) addCondition(
+        //                new SqlConditionExpressionBuilder(dialect, pm.getRepositoryFieldName(),
+        //                        value == null ? null
+        //                                : new FieldValueOperator<>(
+        //                                        (JavaTypeSqlTypeOperator<String>) pm.getJavaTypeSqlTypeOperator(), value),
+        //                        QueryOperator.SW, queryPolicy, queryAlias, ignorePolicy));
+        return sw(classMapping.getPropertyMapping(getPropertyName(name)), value, queryPolicy);
     }
 
     /**
@@ -437,15 +356,18 @@ public abstract class AbstractEntitySqlConditionGroupExpression<E, C extends Ent
     @Override
     public L sw(StringSupplier property, QueryPolicy queryPolicy) {
         //  YUFEI_TODO 未测试
-        String value = property.get();
-        SerializableSupplierLambdaInfo<String> info = LambdaUtils.getSerializableSupplierLambdaInfo(property);
-        JdbcPropertyMapping pm = classMapping.getPropertyMapping(info.getSerializedLambdaInfo().getPropertyName());
-        return (L) addCondition(
-                new SqlConditionExpressionBuilder(dialect, pm.getRepositoryFieldName(),
-                        value == null ? null
-                                : new FieldValueOperator<>(
-                                        (JavaTypeSqlTypeOperator<String>) pm.getJavaTypeSqlTypeOperator(), value),
-                        QueryOperator.SW, queryPolicy, queryAlias, ignorePolicy));
+        //        String value = property.get();
+        //        SerializableSupplierLambdaInfo<String> info = LambdaUtils.getSerializableSupplierLambdaInfo(property);
+        //        JdbcPropertyMapping pm = classMapping.getPropertyMapping(info.getSerializedLambdaInfo().getPropertyName());
+        //        return (L) addCondition(
+        //                new SqlConditionExpressionBuilder(dialect, pm.getRepositoryFieldName(),
+        //                        value == null ? null
+        //                                : new FieldValueOperator<>(
+        //                                        (JavaTypeSqlTypeOperator<String>) pm.getJavaTypeSqlTypeOperator(), value),
+        //                        QueryOperator.SW, queryPolicy, queryAlias, ignorePolicy));
+        return sw(classMapping.getPropertyMapping(
+                LambdaUtils.getSerializableSupplierLambdaInfo(property).getSerializedLambdaInfo().getPropertyName()),
+                property.get(), queryPolicy);
     }
 
     //    /**
@@ -464,13 +386,14 @@ public abstract class AbstractEntitySqlConditionGroupExpression<E, C extends Ent
     @Override
     public L ew(SerializableFunction<E, String> name, String value, QueryPolicy queryPolicy) {
         // YUFEI_TODO 未测试
-        JdbcPropertyMapping pm = classMapping.getPropertyMapping(getPropertyName(name));
-        return (L) addCondition(
-                new SqlConditionExpressionBuilder(dialect, pm.getRepositoryFieldName(),
-                        value == null ? null
-                                : new FieldValueOperator<>(
-                                        (JavaTypeSqlTypeOperator<String>) pm.getJavaTypeSqlTypeOperator(), value),
-                        QueryOperator.EW, queryPolicy, queryAlias, ignorePolicy));
+        //        JdbcPropertyMapping pm = classMapping.getPropertyMapping(getPropertyName(name));
+        //        return (L) addCondition(
+        //                new SqlConditionExpressionBuilder(dialect, pm.getRepositoryFieldName(),
+        //                        value == null ? null
+        //                                : new FieldValueOperator<>(
+        //                                        (JavaTypeSqlTypeOperator<String>) pm.getJavaTypeSqlTypeOperator(), value),
+        //                        QueryOperator.EW, queryPolicy, queryAlias, ignorePolicy));
+        return ew(classMapping.getPropertyMapping(getPropertyName(name)), value, queryPolicy);
     }
 
     /**
@@ -479,27 +402,19 @@ public abstract class AbstractEntitySqlConditionGroupExpression<E, C extends Ent
     @Override
     public L ew(StringSupplier property, QueryPolicy queryPolicy) {
         //  YUFEI_TODO 未测试
-        String value = property.get();
-        SerializableSupplierLambdaInfo<String> info = LambdaUtils.getSerializableSupplierLambdaInfo(property);
-        JdbcPropertyMapping pm = classMapping.getPropertyMapping(info.getSerializedLambdaInfo().getPropertyName());
-        return (L) addCondition(
-                new SqlConditionExpressionBuilder(dialect, pm.getRepositoryFieldName(),
-                        value == null ? null
-                                : new FieldValueOperator<>(
-                                        (JavaTypeSqlTypeOperator<String>) pm.getJavaTypeSqlTypeOperator(), value),
-                        QueryOperator.EW, queryPolicy, queryAlias, ignorePolicy));
+        //        String value = property.get();
+        //        SerializableSupplierLambdaInfo<String> info = LambdaUtils.getSerializableSupplierLambdaInfo(property);
+        //        JdbcPropertyMapping pm = classMapping.getPropertyMapping(info.getSerializedLambdaInfo().getPropertyName());
+        //        return (L) addCondition(
+        //                new SqlConditionExpressionBuilder(dialect, pm.getRepositoryFieldName(),
+        //                        value == null ? null
+        //                                : new FieldValueOperator<>(
+        //                                        (JavaTypeSqlTypeOperator<String>) pm.getJavaTypeSqlTypeOperator(), value),
+        //                        QueryOperator.EW, queryPolicy, queryAlias, ignorePolicy));
+        return ew(classMapping.getPropertyMapping(
+                LambdaUtils.getSerializableSupplierLambdaInfo(property).getSerializedLambdaInfo().getPropertyName()),
+                property.get(), queryPolicy);
     }
-
-    //    /**
-    //     * {@inheritDoc}
-    //     */
-    //    @Override
-    //    public L co(String name, String value, QueryPolicy queryPolicy) {
-    //        // TODO 后续来加入BeanPropertyValue
-    //        return (L) addCondition(
-    //                new SqlConditionExpressionBuilder(dialect, ClassMappingUtils.getColumnName(name, classMapping), value,
-    //                        QueryOperator.CO, queryPolicy, queryAlias, ignorePolicy));
-    //    }
 
     /**
      * {@inheritDoc}
@@ -507,13 +422,14 @@ public abstract class AbstractEntitySqlConditionGroupExpression<E, C extends Ent
     @Override
     public L co(SerializableFunction<E, String> name, String value, QueryPolicy queryPolicy) {
         // YUFEI_TODO 未测试
-        JdbcPropertyMapping pm = classMapping.getPropertyMapping(getPropertyName(name));
-        return (L) addCondition(
-                new SqlConditionExpressionBuilder(dialect, pm.getRepositoryFieldName(),
-                        value == null ? null
-                                : new FieldValueOperator<>(
-                                        (JavaTypeSqlTypeOperator<String>) pm.getJavaTypeSqlTypeOperator(), value),
-                        QueryOperator.CO, queryPolicy, queryAlias, ignorePolicy));
+        //        JdbcPropertyMapping pm = classMapping.getPropertyMapping(getPropertyName(name));
+        //        return (L) addCondition(
+        //                new SqlConditionExpressionBuilder(dialect, pm.getRepositoryFieldName(),
+        //                        value == null ? null
+        //                                : new FieldValueOperator<>(
+        //                                        (JavaTypeSqlTypeOperator<String>) pm.getJavaTypeSqlTypeOperator(), value),
+        //                        QueryOperator.CO, queryPolicy, queryAlias, ignorePolicy));
+        return co(classMapping.getPropertyMapping(getPropertyName(name)), value, queryPolicy);
     }
 
     /**
@@ -522,15 +438,18 @@ public abstract class AbstractEntitySqlConditionGroupExpression<E, C extends Ent
     @Override
     public L co(StringSupplier property, QueryPolicy queryPolicy) {
         //  YUFEI_TODO 未测试
-        String value = property.get();
-        SerializableSupplierLambdaInfo<String> info = LambdaUtils.getSerializableSupplierLambdaInfo(property);
-        JdbcPropertyMapping pm = classMapping.getPropertyMapping(info.getSerializedLambdaInfo().getPropertyName());
-        return (L) addCondition(
-                new SqlConditionExpressionBuilder(dialect, pm.getRepositoryFieldName(),
-                        value == null ? null
-                                : new FieldValueOperator<>(
-                                        (JavaTypeSqlTypeOperator<String>) pm.getJavaTypeSqlTypeOperator(), value),
-                        QueryOperator.CO, queryPolicy, queryAlias, ignorePolicy));
+        //        String value = property.get();
+        //        SerializableSupplierLambdaInfo<String> info = LambdaUtils.getSerializableSupplierLambdaInfo(property);
+        //        JdbcPropertyMapping pm = classMapping.getPropertyMapping(info.getSerializedLambdaInfo().getPropertyName());
+        //        return (L) addCondition(
+        //                new SqlConditionExpressionBuilder(dialect, pm.getRepositoryFieldName(),
+        //                        value == null ? null
+        //                                : new FieldValueOperator<>(
+        //                                        (JavaTypeSqlTypeOperator<String>) pm.getJavaTypeSqlTypeOperator(), value),
+        //                        QueryOperator.CO, queryPolicy, queryAlias, ignorePolicy));
+        return co(classMapping.getPropertyMapping(
+                LambdaUtils.getSerializableSupplierLambdaInfo(property).getSerializedLambdaInfo().getPropertyName()),
+                property.get(), queryPolicy);
     }
 
     //    /**
@@ -1585,7 +1504,6 @@ public abstract class AbstractEntitySqlConditionGroupExpression<E, C extends Ent
     @Override
     public <R> L co(SerializableFunction<E, R> repository, SerializableFunction<R, String> property, String value) {
         //        IMPLSOON 后续来实现join
-        //         //        IMPLSOON 后续来实现join
         //        entityQuery.join(repository);
         Tuple2<String, String> tuple = conditionResult(repository, property, value, classMapping, factory);
         return (L) addCondition(new SqlConditionExpressionBuilder(dialect, tuple.get1(), value, QueryOperator.CO,
@@ -1598,7 +1516,6 @@ public abstract class AbstractEntitySqlConditionGroupExpression<E, C extends Ent
     @Override
     public <R> L co(SerializableSupplier<R> repository, SerializableFunction<R, String> property) {
         //        IMPLSOON 后续来实现join
-        //         //        IMPLSOON 后续来实现join
         //        entityQuery.join(repository);
         Tuple3<String, String, Object> tuple = conditionResult(repository, property, classMapping, factory);
         return (L) addCondition(new SqlConditionExpressionBuilder(dialect, tuple.get1(), tuple.get2(), QueryOperator.CO,
@@ -2410,22 +2327,28 @@ public abstract class AbstractEntitySqlConditionGroupExpression<E, C extends Ent
     // private method
     // ********************************************************************
 
-    @SuppressWarnings("rawtypes")
-    private Object getParam(JdbcPropertyMapping pm, Object value) {
+    private <R> FieldValueOperator<R> getFieldValueOperator(JdbcPropertyMapping pm, R value) {
+        return value == null ? null : FieldValueOperator.craete(pm, value);
+    }
+
+    private Object getInParam(JdbcPropertyMapping pm, Object value) {
         Object param = null;
         if (value != null) {
             if (value.getClass().isArray()) {
                 int length = Array.getLength(value);
                 param = Array.newInstance(FieldValueOperator.class, length);
                 for (int i = 0; i < length; i++) {
-                    Array.set(param, i, new FieldValueOperator(pm.getJavaTypeSqlTypeOperator(), Array.get(value, i)));
+                    //                    Array.set(param, i, new FieldValueOperator(pm.getJavaTypeSqlTypeOperator(), Array.get(value, i)));
+                    Array.set(param, i, FieldValueOperator.craete(pm, Array.get(value, i)));
                 }
             } else if (value instanceof Collection) {
                 param = new ArrayList<>();
                 for (Object op : (Collection<?>) value) {
-                    ((Collection<FieldValueOperator>) param)
-                            .add(new FieldValueOperator(pm.getJavaTypeSqlTypeOperator(), op));
+                    ((Collection<FieldValueOperator<?>>) param).add(FieldValueOperator.craete(pm, op));
+                    //                    .add(new FieldValueOperator(pm.getJavaTypeSqlTypeOperator(), op));
                 }
+            } else if (!(value instanceof FieldValueOperator)) {
+                param = FieldValueOperator.craete(pm, value);
             } else {
                 param = value;
             }
@@ -2433,14 +2356,106 @@ public abstract class AbstractEntitySqlConditionGroupExpression<E, C extends Ent
         return param;
     }
 
+    private <T, R> L eq_ne0(QueryOperator queryOperator, JdbcPropertyMapping pm, R value, QueryPolicy queryPolicy) {
+        return eq_ne0(queryOperator, queryAlias, pm, value, queryPolicy);
+    }
+
+    private <T, R> L eq_ne0(QueryOperator queryOperator, String queryAlias, JdbcPropertyMapping pm, R value,
+            QueryPolicy queryPolicy) {
+        return (L) addCondition(new SqlConditionExpressionBuilder(dialect, pm.getRepositoryFieldName(),
+                getFieldValueOperator(pm, value), queryOperator, queryPolicy, queryAlias, ignorePolicy));
+    }
+
+    private <T, R> L eq_ne(QueryOperator queryOperator, JdbcPropertyMapping pm, R value, QueryPolicy queryPolicy) {
+        if (value != null) {
+            //            if (Lang.isNotEmpty(pm.getPropertyMappings())) {
+            if (pm.getMode() == Mode.MANY_TO_ONE || pm.getMode() == Mode.EMBEDDED) {
+                L logic = null;
+                C condition = (C) this;
+                boolean groupable = pm.getPropertyMappings().size() > 1;
+                if (groupable) {
+                    condition = group();
+                }
+                if (ClassUtils.isParent(pm.getPropertyType(), value.getClass())) {
+                    BeanDescriptor<?> bd = BeanDescriptor.getBeanDescriptor(value.getClass());
+
+                    for (JdbcPropertyMapping spm : pm.getPropertyMappings()) {
+                        Object ov = bd.getBeanProperty(spm.getPropertyName()).getValue(value);
+                        if (logic != null) {
+                            condition = logic.and();
+                        }
+                        logic = ((AbstractEntitySqlConditionGroupExpression<E, C, L>) condition).eq_ne0(queryOperator,
+                                spm, ov, queryPolicy);
+                    }
+
+                    //                    if (pm.getMode() == Mode.EMBEDDED) {
+                    //                        for (JdbcPropertyMapping spm : pm.getPropertyMappings()) {
+                    //                            Object ov = bd.getBeanProperty(spm.getPropertyName()).getValue(value);
+                    //                            if (logic != null) {
+                    //                                condition = logic.and();
+                    //                            }
+                    //                            logic = ((AbstractEntitySqlConditionGroupExpression<E, C, L>) condition)
+                    //                                    .eq_ne0(queryOperator, spm, ov, queryPolicy);
+                    //                        }
+                    //                    } else if (pm.getMode() == Mode.MANY_TO_ONE) {
+                    //                        JdbcClassMapping<?> cm = factory.getClassMapping(pm.getPropertyType());
+                    //                        for (JdbcPropertyMapping cpm : cm.getPropertyMappings()) {
+                    //                            // IMPLSOON 后续来实现关联对象的联表查询
+                    //                            Object ov = bd.getBeanProperty(cpm.getPropertyName()).getValue(value);
+                    //                            if (logic != null) {
+                    //                                condition = logic.and();
+                    //                            }
+                    //                            logic = ((AbstractEntitySqlConditionGroupExpression<E, C, L>) condition)
+                    //                                    .eq_ne0(queryOperator, "", cpm, ov, queryPolicy);
+                    //                        }
+                    //                    } else {
+                    //                        // FIXME 后续来实现
+                    //                        throw new SqldbHammerException("not support");
+                    //                    }
+                    if (groupable) {
+                        logic = logic.endGroup();
+                    }
+                    return logic;
+                } else {
+                    for (JdbcPropertyMapping spm : pm.getPropertyMappings()) {
+                        if (ClassUtils.isParent(spm.getPropertyType(), value.getClass())) {
+                            return eq_ne0(queryOperator, spm, value, queryPolicy);
+                        }
+                    }
+                }
+            }
+        }
+        return eq_ne0(queryOperator, pm, value, queryPolicy);
+    }
+
+    private <T> L sw(JdbcPropertyMapping pm, String value, QueryPolicy queryPolicy) {
+        return (L) addCondition(new SqlConditionExpressionBuilder(dialect, pm.getRepositoryFieldName(),
+                getFieldValueOperator(pm, value), QueryOperator.SW, queryPolicy, queryAlias, ignorePolicy));
+    }
+
+    private <T> L co(JdbcPropertyMapping pm, String value, QueryPolicy queryPolicy) {
+        return (L) addCondition(new SqlConditionExpressionBuilder(dialect, pm.getRepositoryFieldName(),
+                getFieldValueOperator(pm, value), QueryOperator.CO, queryPolicy, queryAlias, ignorePolicy));
+    }
+
+    private <T> L ew(JdbcPropertyMapping pm, String value, QueryPolicy queryPolicy) {
+        return (L) addCondition(new SqlConditionExpressionBuilder(dialect, pm.getRepositoryFieldName(),
+                getFieldValueOperator(pm, value), QueryOperator.EW, queryPolicy, queryAlias, ignorePolicy));
+    }
+
+    private <T> L lk(JdbcPropertyMapping pm, String value, QueryPolicy queryPolicy) {
+        return (L) addCondition(new SqlConditionExpressionBuilder(dialect, pm.getRepositoryFieldName(),
+                getFieldValueOperator(pm, value), QueryOperator.LK, queryPolicy, queryAlias, ignorePolicy));
+    }
+
     private <T, R> L in(JdbcPropertyMapping pm, R value) {
         return (L) addCondition(new SqlConditionExpressionBuilder(dialect, pm.getRepositoryFieldName(),
-                getParam(pm, value), QueryOperator.IN, queryAlias, ignorePolicy));
+                getInParam(pm, value), QueryOperator.IN, queryAlias, ignorePolicy));
     }
 
     private <R> L nin(JdbcPropertyMapping pm, R value) {
         return (L) addCondition(new SqlConditionExpressionBuilder(dialect, pm.getRepositoryFieldName(),
-                getParam(pm, value), QueryOperator.NIN, queryAlias, ignorePolicy));
+                getInParam(pm, value), QueryOperator.NIN, queryAlias, ignorePolicy));
     }
 
     private L isn(JdbcPropertyMapping pm, Boolean value) {
@@ -2465,9 +2480,7 @@ public abstract class AbstractEntitySqlConditionGroupExpression<E, C extends Ent
 
     private <V> L ge0(JdbcPropertyMapping pm, V value) {
         return (L) addCondition(new SqlConditionExpressionBuilder(dialect, pm.getRepositoryFieldName(),
-                value == null ? null
-                        : new FieldValueOperator<>((JavaTypeSqlTypeOperator<V>) pm.getJavaTypeSqlTypeOperator(), value),
-                QueryOperator.GE, queryAlias, ignorePolicy));
+                getFieldValueOperator(pm, value), QueryOperator.GE, queryAlias, ignorePolicy));
     }
 
     private <V> L gt0(SerializableFunction<E, V> name, V value) {
@@ -2482,9 +2495,7 @@ public abstract class AbstractEntitySqlConditionGroupExpression<E, C extends Ent
 
     private <V> L gt0(JdbcPropertyMapping pm, V value) {
         return (L) addCondition(new SqlConditionExpressionBuilder(dialect, pm.getRepositoryFieldName(),
-                value == null ? null
-                        : new FieldValueOperator<>((JavaTypeSqlTypeOperator<V>) pm.getJavaTypeSqlTypeOperator(), value),
-                QueryOperator.GT, queryAlias, ignorePolicy));
+                getFieldValueOperator(pm, value), QueryOperator.GT, queryAlias, ignorePolicy));
     }
 
     private <V> L le0(SerializableFunction<E, V> name, V value) {
@@ -2499,9 +2510,7 @@ public abstract class AbstractEntitySqlConditionGroupExpression<E, C extends Ent
 
     private <V> L le0(JdbcPropertyMapping pm, V value) {
         return (L) addCondition(new SqlConditionExpressionBuilder(dialect, pm.getRepositoryFieldName(),
-                value == null ? null
-                        : new FieldValueOperator<>((JavaTypeSqlTypeOperator<V>) pm.getJavaTypeSqlTypeOperator(), value),
-                QueryOperator.LE, queryAlias, ignorePolicy));
+                getFieldValueOperator(pm, value), QueryOperator.LE, queryAlias, ignorePolicy));
     }
 
     private <V> L lt0(SerializableFunction<E, V> name, V value) {
@@ -2516,9 +2525,7 @@ public abstract class AbstractEntitySqlConditionGroupExpression<E, C extends Ent
 
     private <V> L lt0(JdbcPropertyMapping pm, V value) {
         return (L) addCondition(new SqlConditionExpressionBuilder(dialect, pm.getRepositoryFieldName(),
-                value == null ? null
-                        : new FieldValueOperator<>((JavaTypeSqlTypeOperator<V>) pm.getJavaTypeSqlTypeOperator(), value),
-                QueryOperator.LT, queryAlias, ignorePolicy));
+                getFieldValueOperator(pm, value), QueryOperator.LT, queryAlias, ignorePolicy));
     }
 
     // ********************************************************************

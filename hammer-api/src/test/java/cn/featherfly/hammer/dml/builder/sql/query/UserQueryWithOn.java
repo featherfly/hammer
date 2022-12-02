@@ -1,7 +1,7 @@
 
 package cn.featherfly.hammer.dml.builder.sql.query;
 
-import cn.featherfly.hammer.expression.query.QueryWithOnExpression;
+import cn.featherfly.hammer.expression.query.QueryRelateOnExpression;
 
 /**
  * <p>
@@ -11,7 +11,7 @@ import cn.featherfly.hammer.expression.query.QueryWithOnExpression;
  * @author zhongj
  */
 public class UserQueryWithOn implements
-        QueryWithOnExpression<UserQueryWith, UserQueryWithOn, UserQueryWithEntity, UserQueryRepositoryConditionGroupExpression, UserQueryRepositoryConditionGroupExpression> {
+        QueryRelateOnExpression<UserQueryWith, UserQueryWithOn, UserQueryWithEntity, UserQueryRepositoryConditionGroupExpression, UserQueryRepositoryConditionGroupExpression> {
 
     /**
      * {@inheritDoc}

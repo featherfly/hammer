@@ -94,6 +94,58 @@ public class DistrictDivision {
      * {@inheritDoc}
      */
     @Override
+    public int hashCode() {
+        final int prime = 31;
+        int result = 1;
+        result = prime * result + (city == null ? 0 : city.hashCode());
+        result = prime * result + (district == null ? 0 : district.hashCode());
+        result = prime * result + (province == null ? 0 : province.hashCode());
+        return result;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        }
+        if (obj == null) {
+            return false;
+        }
+        if (getClass() != obj.getClass()) {
+            return false;
+        }
+        DistrictDivision other = (DistrictDivision) obj;
+        if (city == null) {
+            if (other.city != null) {
+                return false;
+            }
+        } else if (!city.equals(other.city)) {
+            return false;
+        }
+        if (district == null) {
+            if (other.district != null) {
+                return false;
+            }
+        } else if (!district.equals(other.district)) {
+            return false;
+        }
+        if (province == null) {
+            if (other.province != null) {
+                return false;
+            }
+        } else if (!province.equals(other.province)) {
+            return false;
+        }
+        return true;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
     public String toString() {
         return "DistrictDivision [city=" + city + ", province=" + province + ", district=" + district + "]";
     }

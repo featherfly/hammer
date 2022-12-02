@@ -18,11 +18,11 @@ import cn.featherfly.hammer.expression.condition.RepositoryConditionsGroupExpres
  * @param <C>   the generic type
  * @param <L>   the generic type
  */
-public interface QueryWithEntityExpression<QW extends QueryWithExpression<QW, QWO, QWE, C, L>,
-        QWO extends QueryWithOnExpression<QW, QWO, QWE, C, L>,
-        QWE extends QueryWithEntityExpression<QW, QWO, QWE, C, L>, C extends RepositoryConditionsGroupExpression<C, L>,
+public interface QueryRelateEntityExpression<QW extends QueryRelateExpression<QW, QWO, QWE, C, L>,
+        QWO extends QueryRelateOnExpression<QW, QWO, QWE, C, L>,
+        QWE extends QueryRelateEntityExpression<QW, QWO, QWE, C, L>, C extends RepositoryConditionsGroupExpression<C, L>,
         L extends RepositoryConditionGroupLogicExpression<C, L>>
-        extends RepositoryWhereExpression<C, L>, QueryWithExpression<QW, QWO, QWE, C, L> {
+        extends RepositoryWhereExpression<C, L>, QueryRelateExpression<QW, QWO, QWE, C, L> {
 
     /**
      * 添加查询出来的属性.

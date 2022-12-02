@@ -72,18 +72,18 @@ public class SqlQuery implements Query {
         if (repository == null) {
             return null;
         }
-        AliasManager aliasManager = new AliasManager();
-        String alias = null;
         if (repository instanceof AliasRepository) {
-            alias = ((AliasRepository) repository).alias();
-        }
-        if (Lang.isNotEmpty(alias)) {
-            aliasManager.put(repository.name(), alias);
+            return find((AliasRepository) repository);
         } else {
-            alias = aliasManager.put(repository.name());
+            return find(repository.name());
         }
-        return new SqlQueryEntityProperties(jdbc, databaseMetadata, repository.name(), alias, mappingFactory,
-                sqlPageFactory, aliasManager, IgnorePolicy.EMPTY);
+    }
+
+    public SqlQueryEntity find(AliasRepository repository) {
+        if (repository == null) {
+            return null;
+        }
+        return find(repository.name(), repository.alias());
     }
 
     /**
@@ -92,8 +92,19 @@ public class SqlQuery implements Query {
     @Override
     //    public SqlQueryEntityProperties find(String tableName) {
     public SqlQueryEntity find(String tableName) {
-        return new SqlQueryEntityProperties(jdbc, databaseMetadata, tableName, mappingFactory, sqlPageFactory,
-                new AliasManager(), IgnorePolicy.EMPTY);
+        return find(tableName, null);
+    }
+
+    public SqlQueryEntity find(String tableName, String tableAlias) {
+        AliasManager aliasManager = new AliasManager();
+        String alias = tableAlias;
+        if (Lang.isNotEmpty(alias)) {
+            aliasManager.put(tableName, alias);
+        } else {
+            alias = aliasManager.put(tableName);
+        }
+        return new SqlQueryEntityProperties(jdbc, databaseMetadata, tableName, alias, sqlPageFactory, aliasManager,
+                IgnorePolicy.EMPTY);
     }
 
     /**
@@ -101,11 +112,11 @@ public class SqlQuery implements Query {
      */
     @Override
     //    public <E> EntitySqlQueryEntityProperties<E> find(Class<E> repositoryType) {
-    public <E> EntitySqlQueryEntity<E> find(Class<E> repositoryType) {
+    public <E> EntitySqlQueryEntity<E> find(Class<E> entityType) {
         if (mappingFactory == null) {
             throw new SqldbHammerException("mappingFactory is null");
         }
-        JdbcClassMapping<E> mapping = mappingFactory.getClassMapping(repositoryType);
+        JdbcClassMapping<E> mapping = mappingFactory.getClassMapping(entityType);
         if (mapping == null) {
             throw new SqldbHammerException(Strings.format("type {0} is not a entity"));
         }
