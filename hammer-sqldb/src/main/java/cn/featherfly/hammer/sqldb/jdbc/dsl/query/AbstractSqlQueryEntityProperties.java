@@ -7,7 +7,6 @@ import java.util.function.Predicate;
 import cn.featherfly.common.constant.Chars;
 import cn.featherfly.common.db.Table;
 import cn.featherfly.common.db.builder.dml.basic.SqlSelectBasicBuilder;
-import cn.featherfly.common.db.mapping.JdbcMappingFactory;
 import cn.featherfly.common.db.metadata.DatabaseMetadata;
 import cn.featherfly.common.lang.AssertIllegalArgument;
 import cn.featherfly.common.lang.LambdaUtils;
@@ -20,7 +19,7 @@ import cn.featherfly.hammer.sqldb.jdbc.Jdbc;
 import cn.featherfly.hammer.sqldb.jdbc.SqlPageFactory;
 
 /**
- * SqlQueryProperties.
+ * AbstractSqlQueryEntityProperties.
  *
  * @author zhongj
  * @param <E> the element type
@@ -55,13 +54,12 @@ public abstract class AbstractSqlQueryEntityProperties<E extends AbstractSqlQuer
      * @param databaseMetadata databaseMetadata
      * @param tableName        tableName
      * @param tableAlias       tableAlias
-     * @param factory          MappingFactory
      * @param sqlPageFactory   the sql page factory
      * @param aliasManager     aliasManager
      * @param ignorePolicy     the ignore policy
      */
-    public AbstractSqlQueryEntityProperties(Jdbc jdbc, DatabaseMetadata databaseMetadata, String tableName,
-            String tableAlias, JdbcMappingFactory factory, SqlPageFactory sqlPageFactory, AliasManager aliasManager,
+    protected AbstractSqlQueryEntityProperties(Jdbc jdbc, DatabaseMetadata databaseMetadata, String tableName,
+            String tableAlias, SqlPageFactory sqlPageFactory, AliasManager aliasManager,
             Predicate<Object> ignorePolicy) {
         AssertIllegalArgument.isNotNull(ignorePolicy, "ignorePolicy");
         this.ignorePolicy = ignorePolicy;
@@ -73,11 +71,11 @@ public abstract class AbstractSqlQueryEntityProperties<E extends AbstractSqlQuer
         }
         Table tableMetadata = databaseMetadata.getTable(tableName);
         if (tableMetadata.getPrimaryColumns().size() == 1) {
+            // FIXME 这里处理不了复合主键的问题
             idName = tableMetadata.getPrimaryColumns().get(0).getName();
         }
-        selectBuilder = new SqlSelectBasicBuilder(jdbc.getDialect(), tableName, tableAlias);
-
         this.tableAlias = tableAlias;
+        selectBuilder = new SqlSelectBasicBuilder(jdbc.getDialect(), tableName, tableAlias, aliasManager);
     }
 
     //    /**

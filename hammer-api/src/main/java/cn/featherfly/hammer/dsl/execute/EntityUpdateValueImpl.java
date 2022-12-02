@@ -22,8 +22,8 @@ public class EntityUpdateValueImpl<E, T> implements EntityUpdateValue<E, T> {
     /**
      * Instantiates a new entity update value impl.
      *
-     * @param name   the name
-     * @param update the update
+     * @param property the property
+     * @param update   the update
      */
     public EntityUpdateValueImpl(SerializableFunction<E, T> property, EntityExecutableUpdate<E> update) {
         super();

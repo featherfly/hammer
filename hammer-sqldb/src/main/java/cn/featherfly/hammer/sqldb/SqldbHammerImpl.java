@@ -49,9 +49,11 @@ import cn.featherfly.hammer.sqldb.jdbc.operate.UpsertOperate;
 import cn.featherfly.hammer.sqldb.tpl.SqlDbTemplateEngine;
 import cn.featherfly.hammer.sqldb.tpl.SqlTplExecutor;
 import cn.featherfly.hammer.sqldb.tpl.freemarker.SqldbFreemarkerTemplateEngine;
+import cn.featherfly.hammer.sqldb.tpl.transverter.FuzzyQueryTransverter;
 import cn.featherfly.hammer.tpl.TplConfigFactory;
 import cn.featherfly.hammer.tpl.TplConfigFactoryImpl;
 import cn.featherfly.hammer.tpl.TplExecuteId;
+import cn.featherfly.hammer.tpl.TransverterManager;
 
 /**
  * SqldbHammerImpl.
@@ -111,6 +113,21 @@ public class SqldbHammerImpl implements SqldbHammer {
         this(jdbc, mappingFactory, configFactory, new SqldbFreemarkerTemplateEngine(configFactory));
     }
 
+    //    /**
+    //     * Instantiates a new sqldb hammer impl.
+    //     *
+    //     * @param jdbc               the jdbc
+    //     * @param mappingFactory     the mapping factory
+    //     * @param configFactory      the config factory
+    //     * @param transverterManager the transverter manager
+    //     */
+    //    public SqldbHammerImpl(Jdbc jdbc, JdbcMappingFactory mappingFactory, TplConfigFactory configFactory,
+    //            TransverterManager transverterManager) {
+    //        this(jdbc, mappingFactory, configFactory, new SqldbFreemarkerTemplateEngine(configFactory),
+    //                new SimpleSqlPageFactory(), new TransverterManager(), Validation.byProvider(HibernateValidator.class)
+    //                        .configure().failFast(false).buildValidatorFactory().getValidator());
+    //    }
+
     /**
      * Instantiates a new hammer jdbc impl.
      *
@@ -154,10 +171,29 @@ public class SqldbHammerImpl implements SqldbHammer {
     public SqldbHammerImpl(Jdbc jdbc, JdbcMappingFactory mappingFactory, TplConfigFactory configFactory,
             @SuppressWarnings("rawtypes") SqlDbTemplateEngine templateEngine, SqlPageFactory sqlPageFacotry,
             Validator validator) {
+        this(jdbc, mappingFactory, configFactory, templateEngine, sqlPageFacotry,
+                new TransverterManager(new FuzzyQueryTransverter()), validator);
+    }
+
+    /**
+     * Instantiates a new hammer jdbc impl.
+     *
+     * @param jdbc               the jdbc
+     * @param mappingFactory     the mapping factory
+     * @param configFactory      the config factory
+     * @param templateEngine     the template processor
+     * @param sqlPageFacotry     the sql page facotry
+     * @param transverterManager the transverter manager
+     * @param validator          the validator
+     */
+    public SqldbHammerImpl(Jdbc jdbc, JdbcMappingFactory mappingFactory, TplConfigFactory configFactory,
+            @SuppressWarnings("rawtypes") SqlDbTemplateEngine templateEngine, SqlPageFactory sqlPageFacotry,
+            TransverterManager transverterManager, Validator validator) {
         this.jdbc = jdbc;
         this.mappingFactory = mappingFactory;
         this.validator = validator;
-        sqlTplExecutor = new SqlTplExecutor(configFactory, templateEngine, jdbc, mappingFactory, sqlPageFacotry);
+        sqlTplExecutor = new SqlTplExecutor(configFactory, templateEngine, jdbc, mappingFactory, sqlPageFacotry,
+                transverterManager);
     }
 
     /**
@@ -190,7 +226,7 @@ public class SqldbHammerImpl implements SqldbHammer {
             return 0;
         }
         InsertOperate<E> insert = null;
-        if (jdbc.getDialect().isInsertBatch() && jdbc.getDialect().isAutoGenerateKeyBatch()) {
+        if (jdbc.getDialect().supportInsertBatch() && jdbc.getDialect().supportAutoGenerateKeyBatch()) {
             for (E entity : entities) {
                 if (insert == null) {
                     insert = getInsert(entity);
@@ -217,7 +253,7 @@ public class SqldbHammerImpl implements SqldbHammer {
         if (entity == null) {
             return 0;
         }
-        if (jdbc.getDialect().isUpsert()) {
+        if (jdbc.getDialect().supportUpsert()) {
             UpsertOperate<E> upsert = getUpsert(entity);
             return upsert.execute(entity);
         } else {

@@ -9,8 +9,6 @@ import cn.featherfly.common.lang.function.SerializableFunction;
  * @author zhongj
  * @param <E> the query type
  * @param <Q> the generic type
- * @param <C> the generic type
- * @param <L> the generic type
  */
 public interface EntityQueryPropertiesExpression<E, Q extends EntityQueryPropertiesExpression<E, Q>> {
 
@@ -49,7 +47,6 @@ public interface EntityQueryPropertiesExpression<E, Q extends EntityQueryPropert
     /**
      * 批量添加select的列 .
      *
-     * @param <R>           the generic type
      * @param propertyNames propertyNames
      * @return QueryEntityPropertiesExpression
      */

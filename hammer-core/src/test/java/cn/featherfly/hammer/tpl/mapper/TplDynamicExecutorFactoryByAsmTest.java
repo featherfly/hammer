@@ -470,7 +470,7 @@ public class TplDynamicExecutorFactoryByAsmTest {
             }
 
             @Override
-            public <E> int update(E... entities) {
+            public <E> int update(@SuppressWarnings("unchecked") E... entities) {
 
                 return 0;
             }
@@ -488,7 +488,7 @@ public class TplDynamicExecutorFactoryByAsmTest {
             }
 
             @Override
-            public <E> int save(E... entities) {
+            public <E> int save(@SuppressWarnings("unchecked") E... entities) {
 
                 return 0;
             }
@@ -518,7 +518,7 @@ public class TplDynamicExecutorFactoryByAsmTest {
             }
 
             @Override
-            public <E> int merge(E... entities) {
+            public <E> int merge(@SuppressWarnings("unchecked") E... entities) {
 
                 return 0;
             }
@@ -579,7 +579,7 @@ public class TplDynamicExecutorFactoryByAsmTest {
             }
 
             @Override
-            public <E> int delete(E... entities) {
+            public <E> int delete(@SuppressWarnings("unchecked") E... entities) {
 
                 return 0;
             }

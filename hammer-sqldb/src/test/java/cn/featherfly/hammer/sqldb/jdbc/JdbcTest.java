@@ -21,7 +21,7 @@ import cn.featherfly.common.lang.Strings;
 import cn.featherfly.common.lang.reflect.ClassType;
 import cn.featherfly.common.lang.reflect.Type;
 import cn.featherfly.common.model.app.Platforms;
-import cn.featherfly.common.structure.HashChainMap;
+import cn.featherfly.common.structure.ChainMapImpl;
 import cn.featherfly.hammer.sqldb.jdbc.vo.App;
 import cn.featherfly.hammer.sqldb.jdbc.vo.AppVersion;
 import cn.featherfly.hammer.sqldb.jdbc.vo.Article;
@@ -120,6 +120,11 @@ public class JdbcTest extends JdbcTestBase {
                 id.set(key);
             }
 
+            @Override
+            public void acceptKey(List<Long> keys) {
+                id.set(keys.get(0));
+            }
+
         }, null, "title", "content");
 
         assertEquals(i, 1);
@@ -161,13 +166,18 @@ public class JdbcTest extends JdbcTestBase {
             public Type<Long> getType() {
                 return new ClassType<>(Long.class);
             }
+
+            @Override
+            public void acceptKey(List<Long> keys) {
+                l.set(keys.get(0));
+            }
         }, params);
 
         article = jdbc.querySingle("select * from cms_article where id = ?", Article.class, l.longValue());
         assertEquals(article.getTitle(), "title_01");
         assertEquals(article.getContent(), "content_01");
 
-        result = jdbc.insert(tableName, new HashChainMap<String, Object>().putChain(id, null)
+        result = jdbc.insert(tableName, new ChainMapImpl<String, Object>().putChain(id, null)
                 .putChain(title, "title_02").putChain(content, "content_02"));
         assertEquals(result, 1);
 
@@ -191,11 +201,11 @@ public class JdbcTest extends JdbcTestBase {
         assertEquals(result, 2);
 
         List<Map<String, Object>> params = new ArrayList<>();
-        params.add(new HashChainMap<String, Object>().putChain(id, null).putChain(title, "title_batch_03")
+        params.add(new ChainMapImpl<String, Object>().putChain(id, null).putChain(title, "title_batch_03")
                 .putChain(content, "content_batch_03"));
-        params.add(new HashChainMap<String, Object>().putChain(id, null).putChain(title, "title_batch_04")
+        params.add(new ChainMapImpl<String, Object>().putChain(id, null).putChain(title, "title_batch_04")
                 .putChain(content, "content_batch_04"));
-        params.add(new HashChainMap<String, Object>().putChain(id, null).putChain(title, "title_batch_05")
+        params.add(new ChainMapImpl<String, Object>().putChain(id, null).putChain(title, "title_batch_05")
                 .putChain(content, "content_batch_05"));
         result = jdbc.insertBatch(tableName, params);
         assertEquals(result, params.size());
@@ -222,11 +232,11 @@ public class JdbcTest extends JdbcTestBase {
         result = jdbc.upsert(tableName, columnNames, ukNames, params2);
         assertEquals(result, 2);
 
-        result = jdbc.upsert(tableName, ukNames, new HashChainMap<String, Object>().putChain(id, null)
+        result = jdbc.upsert(tableName, ukNames, new ChainMapImpl<String, Object>().putChain(id, null)
                 .putChain(code, "code_03").putChain(name, "name_03").putChain(platform, Platforms.IOS));
         assertEquals(result, 1);
 
-        result = jdbc.upsert(tableName, ukNames, new HashChainMap<String, Object>().putChain(id, null)
+        result = jdbc.upsert(tableName, ukNames, new ChainMapImpl<String, Object>().putChain(id, null)
                 .putChain(code, "code_03").putChain(name, "name_04").putChain(platform, Platforms.IOS));
         assertEquals(result, 2);
         //

@@ -18,10 +18,10 @@ import cn.featherfly.hammer.expression.condition.RepositoryConditionsGroupExpres
  * @param <C>   the generic type
  * @param <L>   the generic type
  */
-public interface QueryWithExpression<QW extends QueryWithExpression<QW, QWO, QWE, C, L>,
-        QWO extends QueryWithOnExpression<QW, QWO, QWE, C, L>,
-        QWE extends QueryWithEntityExpression<QW, QWO, QWE, C, L>, C extends RepositoryConditionsGroupExpression<C, L>,
-        L extends RepositoryConditionGroupLogicExpression<C, L>>
+public interface QueryRelateExpression<QW extends QueryRelateExpression<QW, QWO, QWE, C, L>,
+        QWO extends QueryRelateOnExpression<QW, QWO, QWE, C, L>,
+        QWE extends QueryRelateEntityExpression<QW, QWO, QWE, C, L>,
+        C extends RepositoryConditionsGroupExpression<C, L>, L extends RepositoryConditionGroupLogicExpression<C, L>>
         extends RepositoryWhereExpression<C, L>, QueryListExecutor, QueryConditionLimit {
 
     /**
@@ -41,6 +41,8 @@ public interface QueryWithExpression<QW extends QueryWithExpression<QW, QWO, QWE
      * @return QueryWithExpression
      */
     QWO join(String repositoryName);
+
+    // IMPLSOON 后续来加入 join1 join2 join3
 
     //    /**
     //     * relate to.

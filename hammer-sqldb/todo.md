@@ -110,8 +110,11 @@
   ```
 
 - [x] dsl api 更新操作集成update(String, BeanPropertyValue<?>...)用于完善自定义属性映射
+
 - [x] dsl api 条件查询加入表达式支持，（例如 store - :outNum >= 0[这种可以用传入的参数名用一个特殊的类来处理]， u.id = ur.user_id[这种可以用传入的value以一个特殊类来处理，表示传入的是需要拼接的字符串，不需要用占位符]）
+
 - [x] dsl api （eq,ne,co,sw,ew,lk）加入查询大小写敏感的支持（即 = 和 like 支持区分大小写）
+
 - [ ] dsl api 加入gourp by和having支持 
 
   ```sql
@@ -122,13 +125,15 @@
   having num > 20
   ```
 
-- [ ] dsl api 强类型全局支持
+- [x] dsl api 强类型全局支持
 
     1.查询的数据泛型要在启动那时候就确定（例如query(User.class).list()或.single() 这个list方法的泛型参数一定是User）
     2.条件查询中的SerializableFunction中的实体类型泛型需要和启动时(query,udpate,delete)绑定的类一致 
+    3.删除的查询条件强类型支持
+    4.更新的set和查询条件强类型支持
 
-- [ ] dsl api with(SerializableFunction<T, R>, int) 重构为 with(SerializableFunction<T, R>,  Consumer<T extends Tuple>) Tuple(x)根据前面with的调用次数来确定（即x= with调用次数+1，因为可以join find的对象, 所以需要+1), StringConditionExpression加入expression( ...  ,  Consumer<T extends Tuple>)能获取Tuple的重载方法
-  
+- [x] dsl api with(SerializableFunction<T, R>, int) 重构为 relate[x]|join[x](SerializableFunction<T, R>) x表示前面relate|join的调用次数来确定（即x= relate|join调用次数+1，因为可以join find的对象, 所以需要+1), 
+- [ ] StringConditionExpression加入expression( ...  ,  Consumer<T extends Tuple>)能获取Tuple的重载方法
 - [ ] 查询返回支持Map支持多对象映射
     map的key为别名,value为映射对象
 
@@ -184,8 +189,11 @@
 - [x] 移除对constant模块的强依赖，使用简单的java属性来设置开发模式
 
 - [x] 自定义数据映射加入数据库返回数据到java对象映射时，加入其相关元数据（如列名，表名）进行更具体的映射
+
 - [x] namedSql转换时候把in params进行相应的转换
+
 - [x] 优化类型映射查询，自动处理处理返回List<Integer>,List<String>,List<Long>等单一属性列表，只要是SqlTypeMappingManager支持的类型都行
+
 - [x] 在模板查询中加入快捷的模糊查询，即在sql中的查询条件两边加入%，则可以实现对应的模糊查询
 
    1. ConditionManger中加入对应的逻辑

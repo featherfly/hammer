@@ -75,7 +75,7 @@ public class UpsertOperate<T> extends AbstractBatchExecuteOperate<T> {
         if (Lang.isEmpty(entities)) {
             return Chars.ZERO;
         }
-        if (jdbc.getDialect().isUpsertBatch()) {
+        if (jdbc.getDialect().supportUpsertBatch()) {
             return _executeBatch(entities, batchSize);
         } else {
             int size = 0;
@@ -90,29 +90,37 @@ public class UpsertOperate<T> extends AbstractBatchExecuteOperate<T> {
         if (entities.size() == 0) {
             return 0;
         }
+        List<JdbcPropertyMapping> pks = classMapping.getPrivaryKeyPropertyMappings();
         Tuple2<String, Map<Integer, String>> tuple = ClassMappingUtils
                 .getUpsertBatchSqlAndParamPositions(entities.size(), classMapping, jdbc.getDialect());
         String sql = tuple.get0();
-        return jdbc.updateBatch(sql, entities.size(), getBatchParameters(entities, tuple.get1()));
-        // TODO 批量upsert时， 返回值不确定，所以无法设置自动生成的id值，后续再研究
+        return jdbc.updateBatch(sql, entities.size(), new GeneratedKeyHolder<Serializable>() {
+            @Override
+            public void acceptKey(Serializable key, int row) {
+                if (row < entities.size()) {
+                    BeanUtils.setProperty(entities.get(row), pks.get(0).getPropertyName(), key);
+                }
+            }
 
-        //        List<PropertyMapping> pks = classMapping.getPrivaryKeyPropertyMappings();
-        //        if (pks.size() == 1) {
-        //            return jdbc.updateBatch(sql, entities.size(), new GeneratedKeyHolder<Serializable>() {
-        //                @Override
-        //                public void acceptKey(Serializable key, int row) {
-        //                    BeanUtils.setProperty(entities.get(row), pks.get(0).getPropertyName(), key);
-        //                }
-        //
-        //                @SuppressWarnings("unchecked")
-        //                @Override
-        //                public GenericType<Serializable> getType() {
-        //                    return (ClassType<Serializable>) new ClassType<>(pks.get(0).getPropertyType());
-        //                }
-        //            }, getBatchParameters(entities, tuple.get1()));
-        //        } else {
-        //            return jdbc.updateBatch(sql, entities.size(), getBatchParameters(entities, tuple.get1()));
-        //        }
+            @Override
+            public Type<Serializable> getType() {
+                return BeanDescriptor.getBeanDescriptor(classMapping.getType())
+                        .getBeanProperty(pks.get(0).getPropertyName());
+            }
+
+            @Override
+            public void acceptKey(List<Serializable> keys) {
+                if (keys.size() == entities.size()) {
+                    for (int i = 0; i < keys.size(); i++) {
+                        acceptKey(keys.get(i), i);
+                    }
+                } else {
+                    logger.warn("entities.size[{}] != genereteKeys.size[{}], can not set generate key to entity object",
+                            entities.size(), keys.size());
+                }
+            }
+        }, getBatchParameters(entities, tuple.get1()));
+        // TODO 批量upsert时， 返回值不确定，所以无法设置自动生成的id值，后续再研究
     }
 
     private int _executeBatch(final List<T> entities, int batchSize) {
@@ -150,6 +158,11 @@ public class UpsertOperate<T> extends AbstractBatchExecuteOperate<T> {
                 public Type<Serializable> getType() {
                     return BeanDescriptor.getBeanDescriptor(classMapping.getType())
                             .getBeanProperty(pks.get(0).getPropertyName());
+                }
+
+                @Override
+                public void acceptKey(List<Serializable> keys) {
+                    acceptKey(keys.get(0), 0);
                 }
             }, getParameters(entity));
         } else {

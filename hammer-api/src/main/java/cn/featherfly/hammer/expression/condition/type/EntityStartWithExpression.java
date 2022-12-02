@@ -12,6 +12,7 @@ import cn.featherfly.hammer.expression.condition.LogicExpression;
  * The Interface EntityStartWithExpression.
  *
  * @author zhongj
+ * @param <E> the element type
  * @param <C> the generic type
  * @param <L> the generic type
  */
@@ -21,7 +22,6 @@ public interface EntityStartWithExpression<E, C extends ConditionExpression, L e
     /**
      * start with value. 以value开始.
      *
-     * @param <T>   the generic type
      * @param name  参数名称
      * @param value 参数值
      * @return LogicExpression
@@ -33,7 +33,6 @@ public interface EntityStartWithExpression<E, C extends ConditionExpression, L e
     /**
      * start with value. 以value开始.
      *
-     * @param <T>         the generic type
      * @param name        the name
      * @param value       the value
      * @param queryPolicy the query policy
@@ -63,7 +62,6 @@ public interface EntityStartWithExpression<E, C extends ConditionExpression, L e
     /**
      * 以value开始.
      *
-     * @param <T>        the generic type
      * @param <R>        the generic type
      * @param repository the repository
      * @param property   the property
@@ -75,7 +73,6 @@ public interface EntityStartWithExpression<E, C extends ConditionExpression, L e
     /**
      * 以value开始.
      *
-     * @param <T>        the generic type
      * @param <R>        the generic type
      * @param repository the repository
      * @param property   对象属性

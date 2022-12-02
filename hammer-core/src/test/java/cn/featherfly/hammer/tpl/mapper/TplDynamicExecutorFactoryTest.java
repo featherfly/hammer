@@ -79,6 +79,7 @@ public class TplDynamicExecutorFactoryTest {
         //        System.out.println(cs.getInterfaces());
     }
 
+    @SuppressWarnings("unchecked")
     public <T> Class<T> forName(String name) throws NotFoundException, CannotCompileException {
         return (Class<T>) ClassUtils.forName(name);
     }

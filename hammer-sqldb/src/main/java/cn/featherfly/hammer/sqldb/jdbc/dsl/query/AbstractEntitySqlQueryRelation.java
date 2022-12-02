@@ -8,12 +8,15 @@ import java.util.function.Predicate;
 import cn.featherfly.common.db.builder.dml.basic.SqlSelectJoinOnBasicBuilder;
 import cn.featherfly.common.db.mapping.JdbcClassMapping;
 import cn.featherfly.common.db.mapping.JdbcMappingFactory;
+import cn.featherfly.common.db.mapping.JdbcPropertyMapping;
 import cn.featherfly.common.lang.AssertIllegalArgument;
+import cn.featherfly.common.lang.Lang;
 import cn.featherfly.common.repository.builder.AliasManager;
 import cn.featherfly.common.structure.page.Page;
 import cn.featherfly.hammer.dsl.query.type.EntityQueryConditionGroupExpression;
 import cn.featherfly.hammer.expression.condition.ConditionGroupConfig;
 import cn.featherfly.hammer.expression.query.type.EntityQueryLimitExecutor;
+import cn.featherfly.hammer.sqldb.SqldbHammerException;
 import cn.featherfly.hammer.sqldb.jdbc.SqlPageFactory;
 
 /**
@@ -50,50 +53,43 @@ public class AbstractEntitySqlQueryRelation<E, R1, R2> implements EntitySqlQuery
     /** The sql page factory. */
     protected SqlPageFactory sqlPageFactory;
 
+    /** The alias manager. */
+    protected AliasManager aliasManager;
+
     /** The condition type class mapping. */
-    protected JdbcClassMapping<E> conditionTypeClassMapping;
+    protected JdbcClassMapping<R1> conditionTypeClassMapping;
 
     /** The join type class mapping. */
-    protected JdbcClassMapping<R1> joinTypeClassMapping;
+    protected JdbcClassMapping<R2> joinTypeClassMapping;
 
     /** The fetch property. */
     protected String fetchProperty;
 
-    /** The fetch property alias. */
-    protected String fetchPropertyAlias;
-
     /** The ignore policy. */
     protected Predicate<Object> ignorePolicy;
 
-    /**
-     * Instantiates a new type sql query with.
-     *
-     * @param sqlQueryEntityProperties  the sql query entity properties
-     * @param aliasManager              the alias manager
-     * @param factory                   the factory
-     * @param sqlPageFactory            the sql page factory
-     * @param conditionTypeClassMapping the condition type class mapping
-     * @param conditionTableAlias       the condition table alias
-     * @param conditionTableColumn      the condition table column
-     * @param joinTypeClassMapping      the join type class mapping
-     * @param joinTableColumn           the join table column
-     * @param ignorePolicy              the ignore policy
-     */
-    public AbstractEntitySqlQueryRelation(EntitySqlQueryEntityProperties<E> sqlQueryEntityProperties,
-            AliasManager aliasManager, JdbcMappingFactory factory, SqlPageFactory sqlPageFactory,
-            JdbcClassMapping<E> conditionTypeClassMapping, String conditionTableAlias, String conditionTableColumn,
-            JdbcClassMapping<R1> joinTypeClassMapping, String joinTableColumn, Predicate<Object> ignorePolicy) {
-        this(sqlQueryEntityProperties, aliasManager, factory, sqlPageFactory, conditionTypeClassMapping,
-                conditionTableAlias, conditionTableColumn, joinTypeClassMapping, joinTableColumn, null, ignorePolicy);
-    }
+    //    /**
+    //     * Instantiates a new type sql query with.
+    //     *
+    //     * @param sqlQueryEntityProperties  the sql query entity properties
+    //     * @param conditionTypeClassMapping the condition type class mapping
+    //     * @param conditionTableAlias       the condition table alias
+    //     * @param conditionTableColumn      the condition table column
+    //     * @param joinTypeClassMapping      the join type class mapping
+    //     * @param joinTableColumn           the join table column
+    //     * @param ignorePolicy              the ignore policy
+    //     */
+    //    public AbstractEntitySqlQueryRelation(EntitySqlQueryEntityProperties<E> sqlQueryEntityProperties,
+    //            JdbcClassMapping<E> conditionTypeClassMapping, String conditionTableAlias, String conditionTableColumn,
+    //            JdbcClassMapping<R1> joinTypeClassMapping, String joinTableColumn, Predicate<Object> ignorePolicy) {
+    //        this(sqlQueryEntityProperties, conditionTypeClassMapping, conditionTableAlias, conditionTableColumn,
+    //                joinTypeClassMapping, joinTableColumn, null, ignorePolicy);
+    //    }
 
     /**
      * Instantiates a new type sql query with.
      *
      * @param sqlQueryEntityProperties  the sql query entity properties
-     * @param aliasManager              the alias manager
-     * @param factory                   the factory
-     * @param sqlPageFactory            the sql page factory
      * @param conditionTypeClassMapping the condition type class mapping
      * @param conditionTableAlias       the condition table alias
      * @param conditionTableColumn      the condition table column
@@ -103,14 +99,16 @@ public class AbstractEntitySqlQueryRelation<E, R1, R2> implements EntitySqlQuery
      * @param ignorePolicy              the ignore policy
      */
     public AbstractEntitySqlQueryRelation(EntitySqlQueryEntityProperties<E> sqlQueryEntityProperties,
-            AliasManager aliasManager, JdbcMappingFactory factory, SqlPageFactory sqlPageFactory,
-            JdbcClassMapping<E> conditionTypeClassMapping, String conditionTableAlias, String conditionTableColumn,
-            JdbcClassMapping<R1> joinTypeClassMapping, String joinTableColumn, String fetchProperty,
+            JdbcClassMapping<R1> conditionTypeClassMapping, String conditionTableAlias, String conditionTableColumn,
+            JdbcClassMapping<R2> joinTypeClassMapping, String joinTableColumn, String fetchProperty,
             Predicate<Object> ignorePolicy) {
         super();
+        AssertIllegalArgument.isNotNull(sqlQueryEntityProperties, "sqlQueryEntityProperties");
+        AssertIllegalArgument.isNotNull(ignorePolicy, "ignorePolicy");
         this.sqlQueryEntityProperties = sqlQueryEntityProperties;
-        this.factory = factory;
-        this.sqlPageFactory = sqlPageFactory;
+        this.factory = this.sqlQueryEntityProperties.factory;
+        this.sqlPageFactory = this.sqlQueryEntityProperties.sqlPageFactory;
+        this.aliasManager = this.sqlQueryEntityProperties.aliasManager;
         this.conditionTypeClassMapping = conditionTypeClassMapping;
         this.conditionTableAlias = conditionTableAlias;
         this.conditionTableColumn = conditionTableColumn;
@@ -118,9 +116,9 @@ public class AbstractEntitySqlQueryRelation<E, R1, R2> implements EntitySqlQuery
         this.joinTableColumn = joinTableColumn;
         this.joinTypeClassMapping = joinTypeClassMapping;
         this.fetchProperty = fetchProperty;
-        fetchPropertyAlias = joinTableAlias;
-        AssertIllegalArgument.isNotNull(ignorePolicy, "ignorePolicy");
+        //        fetchPropertyAlias = aliasManager.put(fetchProperty);
         this.ignorePolicy = ignorePolicy;
+        this.sqlQueryEntityProperties.sqlQueryRelations.add(this);
         on();
     }
 
@@ -130,76 +128,12 @@ public class AbstractEntitySqlQueryRelation<E, R1, R2> implements EntitySqlQuery
         return this;
     }
 
-    //    /**
-    //     * {@inheritDoc}
-    //     */
-    //    @Override
-    //    public <RE extends EntityQueryRelationEntityExpression2<E, R1, R2, EntityQueryConditionGroupExpression<E>, EntityQueryConditionGroupLogicExpression<E>>,
-    //            R2> RE join(SerializableFunction<E, R2> propertyName, int index) {
-    //        return sqlQueryEntityProperties.join(propertyName, index);
-    //    }
-
-    //    /**
-    //     * {@inheritDoc}
-    //     */
-    //    @Override
-    //    public <RE extends EntityQueryRelationEntityExpression2<E, R1, R2, EntityQueryEntityProperties<E>, QR, EntityQueryConditionGroupExpression<E>, EntityQueryConditionGroupLogicExpression<E>>,
-    //            QR extends EntityQueryRelationExpression2<E, R1, R2, EntityQueryEntityProperties<E>, EntityQueryConditionGroupExpression<E>, EntityQueryConditionGroupLogicExpression<E>>,
-    //            R2> RE join(SerializableFunction2<R2, E> propertyName) {
-    //        // IMPLSOON Auto-generated method stub
-    //        return null;
-    //    }
-    //
-    //    /**
-    //     * {@inheritDoc}
-    //     */
-    //    @Override
-    //    public <RE extends EntityQueryRelationEntityExpression2<E, R1, R2, EntityQueryEntityProperties<E>, QR, EntityQueryConditionGroupExpression<E>, EntityQueryConditionGroupLogicExpression<E>>,
-    //            QR extends EntityQueryRelationExpression2<E, R1, R2, EntityQueryEntityProperties<E>, EntityQueryConditionGroupExpression<E>, EntityQueryConditionGroupLogicExpression<E>>,
-    //            R2> RE join(SerializableFunction<E, R2> propertyName) {
-    //        return sqlQueryEntityProperties.join(propertyName);
-    //    }
-    //
-    //    /**
-    //     * {@inheritDoc}
-    //     */
-    //    @Override
-    //    public <RE extends EntityQueryRelationEntityExpression2<E, R1, E, EntityQueryEntityProperties<E>, QR, EntityQueryConditionGroupExpression<E>, EntityQueryConditionGroupLogicExpression<E>>,
-    //            QR extends EntityQueryRelationExpression2<E, R1, E, EntityQueryEntityProperties<E>, EntityQueryConditionGroupExpression<E>, EntityQueryConditionGroupLogicExpression<E>>> RE join(
-    //                    SerializableFunction3<E, E> propertyName) {
-    //        // IMPLSOON Auto-generated method stub
-    //        return null;
-    //    }
-    //
-    //    /**
-    //     * {@inheritDoc}
-    //     */
-    //    @Override
-    //    public AbstractEntitySqlQueryRelation<E, R1> fetch() {
-    //        if (Lang.isEmpty(fetchProperty)) {
-    //            // ENHANCE 后续细化描述
-    //            throw new SqldbHammerException("can not fetch because there is no relation for find type");
-    //        }
-    //        selectJoinOnBasicBuilder.fetch(fetchProperty, fetchPropertyAlias);
-    //        return this;
-    //    }
     /**
      * {@inheritDoc}
      */
     @Override
     public EntityQueryConditionGroupExpression<E> where() {
-        // IMPLSOON 未实现
-        //        return new RepositoryTypeSqlQueryExpression(sqlQueryEntityProperties.jdbc, factory, sqlPageFactory,
-        //                sqlQueryEntityProperties.aliasManager, sqlQueryEntityProperties.classMapping,
-        //                sqlQueryEntityProperties.selectBuilder, ignorePolicy);
-
-        //        Jdbc jdbc, JdbcClassMapping<E> classMapping, EntityQuery<E> entityQueryEntity,
-        //        JdbcMappingFactory factory, SqlPageFactory sqlPageFactory, AliasManager aliasManager,
-        //        SqlSelectBasicBuilder selectBuilder, Predicate<Object> ignorePolicy
-
-        return new EntitySqlQueryExpression<>(sqlQueryEntityProperties.jdbc, sqlQueryEntityProperties.classMapping,
-                this, factory, sqlPageFactory, sqlQueryEntityProperties.aliasManager,
-                sqlQueryEntityProperties.selectBuilder, ignorePolicy);
+        return sqlQueryEntityProperties.where();
     }
 
     /**
@@ -208,15 +142,7 @@ public class AbstractEntitySqlQueryRelation<E, R1, R2> implements EntitySqlQuery
     @Override
     public EntityQueryConditionGroupExpression<E> where(
             Consumer<ConditionGroupConfig<EntityQueryConditionGroupExpression<E>>> consumer) {
-        //        RepositoryTypeSqlQueryExpression repositorySqlQueryExpression = new RepositoryTypeSqlQueryExpression(
-        //                sqlQueryEntityProperties.jdbc, factory, sqlPageFactory, sqlQueryEntityProperties.aliasManager,
-        //                sqlQueryEntityProperties.classMapping, sqlQueryEntityProperties.selectBuilder, ignorePolicy);
-        //        if (consumer != null) {
-        //            consumer.accept(repositorySqlQueryExpression);
-        //        }
-        //        return repositorySqlQueryExpression;
-        // IMPLSOON 未实现
-        return null;
+        return sqlQueryEntityProperties.where(consumer);
     }
 
     /**
@@ -257,5 +183,27 @@ public class AbstractEntitySqlQueryRelation<E, R1, R2> implements EntitySqlQuery
     @Override
     public EntityQueryLimitExecutor<E> limit(Page page) {
         return sqlQueryEntityProperties.limit(page);
+    }
+
+    protected void fetch0() {
+        if (Lang.isEmpty(fetchProperty)) {
+            // ENHANCE 后续细化描述
+            throw new SqldbHammerException("can not fetch because there is no relation for find type");
+        }
+        for (JdbcPropertyMapping pm : joinTypeClassMapping.getPropertyMappings()) {
+            switch (pm.getMode()) {
+                case EMBEDDED:
+                    for (JdbcPropertyMapping spm : pm.getPropertyMappings()) {
+                        selectJoinOnBasicBuilder.addColumn(spm.getRepositoryFieldName(),
+                                fetchProperty + "." + spm.getPropertyFullName());
+                    }
+                    //                case MANY_TO_ONE:
+                    //                    selectJoinOnBasicBuilder.addColumn(pm.getRepositoryFieldName(),
+                    //                            aliasManager.put(pm.getRepositoryFieldName()));
+                default:
+                    selectJoinOnBasicBuilder.addColumn(pm.getRepositoryFieldName(),
+                            fetchProperty + "." + pm.getPropertyFullName());
+            }
+        }
     }
 }

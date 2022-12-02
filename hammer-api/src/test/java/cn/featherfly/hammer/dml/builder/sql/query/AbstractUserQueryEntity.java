@@ -15,9 +15,9 @@ import cn.featherfly.hammer.dsl.query.QuerySortExpression;
 import cn.featherfly.hammer.expression.condition.ConditionGroupConfig;
 import cn.featherfly.hammer.expression.query.QueryEntityPropertiesExpression;
 import cn.featherfly.hammer.expression.query.QueryLimitExecutor;
-import cn.featherfly.hammer.expression.query.QueryWithEntityExpression;
-import cn.featherfly.hammer.expression.query.QueryWithExpression;
-import cn.featherfly.hammer.expression.query.QueryWithOnExpression;
+import cn.featherfly.hammer.expression.query.QueryRelateEntityExpression;
+import cn.featherfly.hammer.expression.query.QueryRelateExpression;
+import cn.featherfly.hammer.expression.query.QueryRelateOnExpression;
 
 /**
  * The Class AbstractUserQueryEntity.
@@ -29,9 +29,9 @@ import cn.featherfly.hammer.expression.query.QueryWithOnExpression;
  * @param <QWE> the generic type
  */
 public class AbstractUserQueryEntity<Q extends AbstractUserQueryEntity<Q, QW, QWO, QWE>,
-        QW extends QueryWithExpression<QW, QWO, QWE, UserQueryRepositoryConditionGroupExpression, UserQueryRepositoryConditionGroupExpression>,
-        QWO extends QueryWithOnExpression<QW, QWO, QWE, UserQueryRepositoryConditionGroupExpression, UserQueryRepositoryConditionGroupExpression>,
-        QWE extends QueryWithEntityExpression<QW, QWO, QWE, UserQueryRepositoryConditionGroupExpression, UserQueryRepositoryConditionGroupExpression>>
+        QW extends QueryRelateExpression<QW, QWO, QWE, UserQueryRepositoryConditionGroupExpression, UserQueryRepositoryConditionGroupExpression>,
+        QWO extends QueryRelateOnExpression<QW, QWO, QWE, UserQueryRepositoryConditionGroupExpression, UserQueryRepositoryConditionGroupExpression>,
+        QWE extends QueryRelateEntityExpression<QW, QWO, QWE, UserQueryRepositoryConditionGroupExpression, UserQueryRepositoryConditionGroupExpression>>
         implements
         QueryEntityPropertiesExpression<Q, QW, QWO, QWE, UserQueryConditionGroupExpression, UserQueryConditionGroupExpression, UserQueryRepositoryConditionGroupExpression, UserQueryRepositoryConditionGroupExpression> {
 
@@ -173,6 +173,7 @@ public class AbstractUserQueryEntity<Q extends AbstractUserQueryEntity<Q, QW, QW
     /**
      * {@inheritDoc}
      */
+    @SuppressWarnings("unchecked")
     @Override
     public <T, R> Q property(SerializableFunction<T, R>... propertyNames) {
         // YUFEI_TODO Auto-generated method stub
@@ -437,7 +438,7 @@ public class AbstractUserQueryEntity<Q extends AbstractUserQueryEntity<Q, QW, QW
      */
     @Override
     public Q property(boolean distinct, String propertyName) {
-        // YUFEI_TODO Auto-generated method stub
+        System.out.println("boolean distinct, String propertyName");
         return null;
     }
 
