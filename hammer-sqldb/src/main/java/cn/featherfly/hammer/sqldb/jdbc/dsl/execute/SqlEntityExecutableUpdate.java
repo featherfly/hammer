@@ -4,10 +4,13 @@ package cn.featherfly.hammer.sqldb.jdbc.dsl.execute;
 import java.util.function.Consumer;
 import java.util.function.Predicate;
 
+import cn.featherfly.common.bean.BeanDescriptor;
 import cn.featherfly.common.db.FieldValueOperator;
 import cn.featherfly.common.db.mapping.JdbcClassMapping;
 import cn.featherfly.common.db.mapping.JdbcMappingFactory;
 import cn.featherfly.common.db.mapping.JdbcPropertyMapping;
+import cn.featherfly.common.lang.ClassUtils;
+import cn.featherfly.common.lang.Lang;
 import cn.featherfly.common.lang.function.SerializableFunction;
 import cn.featherfly.common.lang.function.SerializableFunction2;
 import cn.featherfly.common.lang.function.SerializableSupplier;
@@ -16,11 +19,13 @@ import cn.featherfly.common.repository.builder.AliasManager;
 import cn.featherfly.hammer.dsl.execute.EntityExecutableConditionGroupExpression;
 import cn.featherfly.hammer.dsl.execute.EntityExecutableConditionGroupLogicExpression;
 import cn.featherfly.hammer.dsl.execute.EntityExecutableUpdate;
+import cn.featherfly.hammer.dsl.execute.EntityUpdateNestedValueImpl;
 import cn.featherfly.hammer.dsl.execute.EntityUpdateNumberValueImpl;
 import cn.featherfly.hammer.dsl.execute.EntityUpdateValueImpl;
 import cn.featherfly.hammer.expression.condition.ConditionGroupConfig;
 import cn.featherfly.hammer.expression.execute.EntityUpdateNumberValueExpression;
 import cn.featherfly.hammer.expression.execute.EntityUpdateValueExpression;
+import cn.featherfly.hammer.sqldb.SqldbHammerException;
 import cn.featherfly.hammer.sqldb.jdbc.Jdbc;
 
 /**
@@ -89,8 +94,29 @@ public class SqlEntityExecutableUpdate<E> extends AbstractSqlExecutableUpdate<Sq
      */
     @Override
     public <R> EntityExecutableUpdate<E> set(SerializableFunction<E, R> name, R value) {
-        JdbcPropertyMapping pm = classMapping.getPropertyMapping(getPropertyName(name));
-        return _set(pm.getRepositoryFieldName(), FieldValueOperator.craete(pm, value));
+        return _set(classMapping.getPropertyMapping(getPropertyName(name)), value);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public <R, O> EntityExecutableUpdate<E> set(SerializableFunction<E, R> property,
+            SerializableFunction<R, O> nestedProperty, O value) {
+        JdbcPropertyMapping pm = classMapping.getPropertyMapping(getPropertyName(property));
+        if (value == null) {
+            return _set(pm.getRepositoryFieldName(), value);
+        }
+        String npn = getPropertyName(nestedProperty);
+        JdbcPropertyMapping spm = pm.getPropertyMapping(npn);
+        if (spm != null) {
+            return _set(spm, FieldValueOperator.craete(spm, value));
+        } else {
+            //            throw new JdbcMappingException(String.format("can not find mapping for property {0}.{1} for entity {2}",
+            //                    pm.getPropertyName(), npn, classMapping.getType().getName()));
+            throw new SqldbHammerException(String.format("can not find mapping for property {0}.{1} for entity {2}",
+                    pm.getPropertyName(), npn, classMapping.getType().getName()));
+        }
     }
 
     /**
@@ -98,8 +124,7 @@ public class SqlEntityExecutableUpdate<E> extends AbstractSqlExecutableUpdate<Sq
      */
     @Override
     public <R> EntityExecutableUpdate<E> set(SerializableSupplier<R> property) {
-        JdbcPropertyMapping pm = classMapping.getPropertyMapping(getPropertyName(property));
-        return _set(pm.getRepositoryFieldName(), FieldValueOperator.craete(pm, property.get()));
+        return _set(classMapping.getPropertyMapping(getPropertyName(property)), property.get());
     }
 
     /**
@@ -136,8 +161,18 @@ public class SqlEntityExecutableUpdate<E> extends AbstractSqlExecutableUpdate<Sq
      */
     @Override
     public <R> EntityUpdateValueExpression<E, R, EntityExecutableUpdate<E>, EntityExecutableConditionGroupExpression<E>, EntityExecutableConditionGroupLogicExpression<E>> property(
-            SerializableFunction<E, R> name) {
-        return new EntityUpdateValueImpl<>(name, this);
+            SerializableFunction<E, R> property) {
+        return new EntityUpdateValueImpl<>(property, this);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public <R,
+            O> EntityUpdateValueExpression<E, O, EntityExecutableUpdate<E>, EntityExecutableConditionGroupExpression<E>, EntityExecutableConditionGroupLogicExpression<E>> property(
+                    SerializableFunction<E, R> property, SerializableFunction<R, O> nestedProperty) {
+        return new EntityUpdateNestedValueImpl<>(property, nestedProperty, this);
     }
 
     /**
@@ -177,5 +212,31 @@ public class SqlEntityExecutableUpdate<E> extends AbstractSqlExecutableUpdate<Sq
     @Override
     public int execute() {
         return new SqlEntityUpdateExpression<>(jdbc, builder, classMapping, factory, aliasManager).execute();
+    }
+
+    private SqlEntityExecutableUpdate<E> _set(JdbcPropertyMapping pm, Object value) {
+        if (value == null) {
+            return _set(pm.getRepositoryFieldName(), value);
+        }
+
+        //        if (pm.isEmbeddable()) {
+        if (Lang.isNotEmpty(pm.getPropertyMappings())) {
+            if (ClassUtils.isParent(pm.getPropertyType(), value.getClass())) {
+                BeanDescriptor<?> bd = BeanDescriptor.getBeanDescriptor(value.getClass());
+                for (JdbcPropertyMapping spm : pm.getPropertyMappings()) {
+                    Object ov = bd.getBeanProperty(spm.getPropertyName()).getValue(value);
+                    _set(spm, FieldValueOperator.craete(spm, ov));
+                }
+            } else {
+                for (JdbcPropertyMapping spm : pm.getPropertyMappings()) {
+                    if (ClassUtils.isParent(spm.getPropertyType(), value.getClass())) {
+                        _set(spm, FieldValueOperator.craete(spm, value));
+                    }
+                }
+            }
+            return this;
+        } else {
+            return _set(pm.getRepositoryFieldName(), FieldValueOperator.craete(pm, value));
+        }
     }
 }

@@ -31,8 +31,9 @@ import cn.featherfly.hammer.expression.condition.RepositoryConditionsGroupExpres
  * @param <RL>  the generic type
  */
 public interface QueryEntityExpression<Q extends QueryEntityPropertiesExpression<Q, QW, QWO, QWE, C, L, RC, RL>,
-        QW extends QueryWithExpression<QW, QWO, QWE, RC, RL>, QWO extends QueryWithOnExpression<QW, QWO, QWE, RC, RL>,
-        QWE extends QueryWithEntityExpression<QW, QWO, QWE, RC, RL>, C extends ConditionGroupExpression<C, L>,
+        QW extends QueryRelateExpression<QW, QWO, QWE, RC, RL>,
+        QWO extends QueryRelateOnExpression<QW, QWO, QWE, RC, RL>,
+        QWE extends QueryRelateEntityExpression<QW, QWO, QWE, RC, RL>, C extends ConditionGroupExpression<C, L>,
         L extends ConditionGroupLogicExpression<C, L>, RC extends RepositoryConditionsGroupExpression<RC, RL>,
         RL extends RepositoryConditionGroupLogicExpression<RC, RL>>
         extends WhereExpression<C, L>, QueryListExecutor, QueryConditionLimit, QueryCountExecutor {
@@ -310,8 +311,8 @@ public interface QueryEntityExpression<Q extends QueryEntityPropertiesExpression
     /**
      * 添加查询出来的属性.
      *
-     * @param aggregateFunction aggregateFunction
-     * @param propertyName      propertyName
+     * @param function     the function
+     * @param propertyName propertyName
      * @return QueryEntityPropertiesExpression
      */
     default Q property(Function function, String propertyName) {
@@ -375,6 +376,7 @@ public interface QueryEntityExpression<Q extends QueryEntityPropertiesExpression
      *
      * @param <T>          the generic type
      * @param <R>          the generic type
+     * @param distinct     the distinct
      * @param propertyName propertyName
      * @return QueryEntityPropertiesExpression
      */
@@ -383,8 +385,10 @@ public interface QueryEntityExpression<Q extends QueryEntityPropertiesExpression
     /**
      * 添加查询出来的属性.
      *
-     * @param aggregateFunction aggregateFunction
-     * @param propertyName      propertyName
+     * @param <T>          the generic type
+     * @param <R>          the generic type
+     * @param function     the function
+     * @param propertyName propertyName
      * @return QueryEntityPropertiesExpression
      */
     default <T, R> Q property(Function function, SerializableFunction<T, R> propertyName) {
@@ -399,6 +403,8 @@ public interface QueryEntityExpression<Q extends QueryEntityPropertiesExpression
     /**
      * 添加查询出来的属性.
      *
+     * @param <T>               the generic type
+     * @param <R>               the generic type
      * @param aggregateFunction aggregateFunction
      * @param propertyName      propertyName
      * @return QueryEntityPropertiesExpression
@@ -410,6 +416,8 @@ public interface QueryEntityExpression<Q extends QueryEntityPropertiesExpression
     /**
      * 添加查询出来的属性.
      *
+     * @param <T>               the generic type
+     * @param <R>               the generic type
      * @param aggregateFunction aggregateFunction
      * @param distinct          the distinct
      * @param propertyName      propertyName

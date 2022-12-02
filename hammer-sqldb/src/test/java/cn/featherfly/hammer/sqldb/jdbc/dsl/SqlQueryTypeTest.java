@@ -1,9 +1,10 @@
 
 package cn.featherfly.hammer.sqldb.jdbc.dsl;
 
+import static org.junit.Assert.assertNotEquals;
+import static org.junit.Assert.assertNull;
 import static org.testng.Assert.assertEquals;
 import static org.testng.Assert.assertNotNull;
-import static org.testng.Assert.assertNull;
 import static org.testng.Assert.assertTrue;
 
 import java.util.List;
@@ -133,12 +134,38 @@ public class SqlQueryTypeTest extends JdbcTestBase {
         StringBuilder sb = new StringBuilder();
         sb.append("").append("").append("");
 
-        UserInfo userInfo = query.find(UserInfo.class).join(UserInfo::getUser).where().eq(UserInfo::getId, 1).single();
+        UserInfo userInfo = null;
+        User user = null;
+
+        Integer uid = 1;
+        userInfo = query.find(UserInfo.class).join(UserInfo::getUser).where().eq(UserInfo::getId, uid).single();
         System.err.println(userInfo);
+        assertEquals(userInfo.getId(), uid);
         assertNull(userInfo.getUser().getUsername());
+
         userInfo = query.find(UserInfo.class).join(UserInfo::getUser).fetch().where().eq(UserInfo::getId, 1).single();
-        assertNotNull(userInfo.getUser().getUsername());
         System.err.println(userInfo);
+        assertEquals(userInfo.getId(), uid);
+        assertNotNull(userInfo.getUser().getUsername());
+
+        user = query.find(User.class).join(UserInfo::getUser).join(UserRole2::getUser).where().eq(User::getId, uid)
+                .single();
+        System.err.println(user);
+        assertEquals(user.getId(), uid);
+
+        //        sql: SELECT _user0.`id` `id`, _user0.`username` `username`, _user0.`password` `pwd`, _user0.`mobile_no` `mobileNo`, _user0.`age` `age`
+        //        FROM `user` _user0
+        //        JOIN `user_info` _user_info0 ON _user_info0.`user_id` = _user0.`id`
+        //        JOIN `user_role` _user_role0 ON _user_role0.`user_id` = _user0.`user_id` WHERE _user0.`id` = ?
+
+        //        SELECT _user0.`id` `id`, _user0.`username` `username`, _user0.`password` `pwd`, _user0.`mobile_no` `mobileNo`, _user0.`age` `age`
+        //        FROM `user` _user0
+        //        JOIN `user_info` _user_info0 ON _user_info0.`user_id` = _user0.`id`
+        //        JOIN `user_role` _user_role0 ON _user_role0.`user_id` = _user0.`user_id`
+        //        WHERE _user0.`id` = ?
+
+        //        IMPLSOON 后续来实现多类型的查询
+        //        user = query.find(User.class).join(UserInfo::getUser).fetch().where().eq(UserInfo::getId, 1).single();
 
         // YUFEI_TODO 后续来测试
         //        List<UserInfo> list = query.find(UserInfo.class).join(UserInfo::getUser).join(UserRole2::getUser)
@@ -148,6 +175,22 @@ public class SqlQueryTypeTest extends JdbcTestBase {
         query.find(Tree2.class).join(Tree2::getParent).list();
 
         query.find(Tree2.class).join(Tree2::getParent).join1(Tree2::getParent).list();
+    }
+
+    @Test
+    void testJoin1() {
+        SqlQuery query = new SqlQuery(jdbc, mappingFactory, sqlPageFactory);
+
+        User user = new User();
+        String username = "yufei";
+        user.setUsername(username);
+
+        // UserInfo::getUser, User::getUsername 联表查询，仅查询不获取，如果没有join的话需要自动join
+        List<UserInfo> list = query.find(UserInfo.class).where().eq(UserInfo::getUser, User::getUsername, username)
+                .list();
+
+        // UserInfo::getUser, user 联表查询，仅查询不获取，如果没有join的话需要自动join
+        list = query.find(UserInfo.class).where().eq(UserInfo::getUser, user).list();
     }
 
     @Test(expectedExceptions = SqldbHammerException.class)
@@ -360,14 +403,34 @@ public class SqlQueryTypeTest extends JdbcTestBase {
         DistrictDivision division = new DistrictDivision();
         division.setCity("成都");
         division.setProvince("四川");
-        division.setDistrict("高新");
+        division.setDistrict("金牛");
         userInfo.setDivision(division);
 
-        query.find(UserInfo.class).where().eq(userInfo::getDivision).list();
-        query.find(UserInfo.class).where().ne(userInfo::getDivision).list();
+        List<UserInfo> list = query.find(UserInfo.class).where().eq(UserInfo::getDivision, division).list();
+        int size = list.size();
+        for (UserInfo ui : list) {
+            assertEquals(ui.getDivision(), division);
+        }
+        list = query.find(UserInfo.class).where().eq(UserInfo::getId, 1).or().eq(UserInfo::getDivision, division).or()
+                .eq(UserInfo::getId, 1).list();
+        size = list.size();
+        for (UserInfo ui : list) {
+            assertEquals(ui.getDivision(), division);
+        }
+
+        list = query.find(UserInfo.class).where().ne(UserInfo::getDivision, division).list();
+        for (UserInfo ui : list) {
+            assertNotEquals(ui.getDivision(), division);
+        }
 
         userInfo.getDivision().setDistrict(null);
-        query.find(UserInfo.class).where().eq(userInfo::getDivision).or().eq(userInfo::getDivision).list();
+        list = query.find(UserInfo.class).where().eq(UserInfo::getDivision, division).or()
+                .eq(UserInfo::getDivision, division).list();
+        assertTrue(list.size() == size);
+
+        list = query.find(UserInfo.class).where().eq(UserInfo::getDivision, null).or().eq(UserInfo::getDivision, null)
+                .list();
+        assertTrue(list.size() > size);
     }
 
     @Test
@@ -382,15 +445,27 @@ public class SqlQueryTypeTest extends JdbcTestBase {
         DistrictDivision division = new DistrictDivision();
         division.setCity("成都");
         division.setProvince("四川");
-        division.setDistrict("高新");
+        division.setDistrict("金牛");
         userInfo.setDivision(division);
 
-        query.find(UserInfo.class).where().eq(UserInfo::getDivision, division).list();
-        query.find(UserInfo.class).where().ne(UserInfo::getDivision, division).list();
+        List<UserInfo> list = query.find(UserInfo.class).where().eq(UserInfo::getDivision, division).list();
+        int size = list.size();
+        for (UserInfo ui : list) {
+            assertEquals(ui.getDivision(), division);
+        }
+        list = query.find(UserInfo.class).where().ne(UserInfo::getDivision, division).list();
+        for (UserInfo ui : list) {
+            assertNotEquals(ui.getDivision(), division);
+        }
 
         userInfo.getDivision().setDistrict(null);
-        query.find(UserInfo.class).where().eq(UserInfo::getDivision, division).or().eq(UserInfo::getDivision, division)
+        list = query.find(UserInfo.class).where().eq(UserInfo::getDivision, division).or()
+                .eq(UserInfo::getDivision, division).list();
+        assertTrue(list.size() == size);
+
+        list = query.find(UserInfo.class).where().eq(UserInfo::getDivision, null).or().eq(UserInfo::getDivision, null)
                 .list();
+        assertTrue(list.size() > size);
     }
 
     @Test
@@ -502,7 +577,7 @@ public class SqlQueryTypeTest extends JdbcTestBase {
     // mappingFactory.getClassMapping(Tree2.class);
     // System.err.println(ClassMappingUtils.getSelectColumnsSql(classMapping,
     // "t0", Dialects.MYSQL, mappingFactory,
-    // new HashChainMap<String, String>().putChain("parent", "t1")));
+    // new ChainMapImpl<String, String>().putChain("parent", "t1")));
     //
     // }
 }

@@ -76,7 +76,7 @@ public class InsertOperate<T> extends AbstractBatchExecuteOperate<T> {
         if (Lang.isEmpty(entities)) {
             return Chars.ZERO;
         }
-        if (jdbc.getDialect().isInsertBatch()) {
+        if (jdbc.getDialect().supportInsertBatch()) {
             return _executeBatch(entities, batchSize);
         } else {
             int size = 0;
@@ -106,6 +106,13 @@ public class InsertOperate<T> extends AbstractBatchExecuteOperate<T> {
                 public Type<Serializable> getType() {
                     return BeanDescriptor.getBeanDescriptor(classMapping.getType())
                             .getBeanProperty(pks.get(0).getPropertyName());
+                }
+
+                @Override
+                public void acceptKey(List<Serializable> keys) {
+                    for (int i = 0; i < keys.size(); i++) {
+                        acceptKey(keys.get(i), i);
+                    }
                 }
             }, getBatchParameters(entities, tuple.get1()));
         } else {
@@ -148,6 +155,13 @@ public class InsertOperate<T> extends AbstractBatchExecuteOperate<T> {
                 public Type<Serializable> getType() {
                     return BeanDescriptor.getBeanDescriptor(classMapping.getType())
                             .getBeanProperty(pks.get(0).getPropertyName());
+                }
+
+                @Override
+                public void acceptKey(List<Serializable> keys) {
+                    for (int i = 0; i < keys.size(); i++) {
+                        acceptKey(keys.get(i), i);
+                    }
                 }
             }, getParameters(entity));
         } else {

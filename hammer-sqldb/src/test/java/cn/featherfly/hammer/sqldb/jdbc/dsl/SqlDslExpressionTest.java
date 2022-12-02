@@ -130,19 +130,34 @@ public class SqlDslExpressionTest extends JdbcTestBase {
         assertTrue(no == size);
     }
 
-    @Test
-    public void testSqlTypeDelete2() {
-        int size = 10;
-        int userId = 10;
+    private void saveUserInfo(int size, User user) {
         for (int i = 0; i < size; i++) {
             UserInfo u = new UserInfo();
-            u.setUser(new User(userId));
+            u.setUser(user);
             hammer.save(u);
         }
+    }
+
+    @Test
+    public void testSqlTypeDelete2() {
+        int size = 3;
+        int userId = 10;
+        Integer uid = userId;
+        User user = new User(userId);
+        saveUserInfo(size, user);
+        // ManyToOne
         SqlDeleter sqlDeleter = new SqlDeleter(jdbc, mappingFactory);
         //        int no = sqlDeleter.delete(UserInfo.class).where().eq(UserInfo::getUser, User::getId, userId).execute();
-        int no = sqlDeleter.delete(UserInfo.class).where().eq(UserInfo::getUser, userId).execute();
+        int no = sqlDeleter.delete(UserInfo.class).where().eq(UserInfo::getUser, user).execute();
         assertEquals(no, size);
+
+        // ManyToOne
+        saveUserInfo(size, user);
+        no = sqlDeleter.delete(UserInfo.class).where().eq(UserInfo::getUser, uid).execute();
+        assertEquals(no, size);
+
+        //        Function<UserInfo, User> f = UserInfo::getUser;
+        //        no = sqlDeleter.delete(UserInfo.class).where().eq(f, userId).execute(); // 编译错误
 
         String province = "黑龙江";
         for (int i = 0; i < size; i++) {
@@ -224,7 +239,54 @@ public class SqlDslExpressionTest extends JdbcTestBase {
     public void testSqlTypeUpdateExpression2() {
         SqlUpdater sqlUpdater = new SqlUpdater(jdbc, mappingFactory);
 
-        // IMPLSOON 嵌套属性还未实现强类型
+        DistrictDivision division = new DistrictDivision();
+        division.setProvince("四川1");
+        int no = 0;
+
+        // Embbemed
+        no = sqlUpdater.update(UserInfo.class).set(UserInfo::getDivision, division).where().property(UserInfo::getId)
+                .eq(1).execute();
+        assertTrue(no == 1);
+
+        division.setProvince("四川");
+        division.setCity("成都");
+        division.setDistrict("金牛");
+
+        no = sqlUpdater.update(UserInfo.class).set(UserInfo::getDivision, division).where().property(UserInfo::getId)
+                .eq(1).execute();
+        assertTrue(no == 1);
+
+        no = sqlUpdater.update(UserInfo.class).property(UserInfo::getDivision).set(division).where()
+                .property(UserInfo::getId).eq(1).execute();
+        assertTrue(no == 1);
+
+        no = sqlUpdater.update(UserInfo.class).set(UserInfo::getDivision, DistrictDivision::getProvince, "四川1").where()
+                .property(UserInfo::getId).eq(1).execute();
+        assertTrue(no == 1);
+
+        no = sqlUpdater.update(UserInfo.class).property(UserInfo::getDivision, DistrictDivision::getProvince).set("四川")
+                .where().property(UserInfo::getId).eq(1).execute();
+        assertTrue(no == 1);
+
+        // ManyToOne
+        no = sqlUpdater.update(UserInfo.class).set(UserInfo::getUser, User::getId, 3).where().eq(UserInfo::getId, 2)
+                .execute();
+        assertTrue(no == 1);
+
+        no = sqlUpdater.update(UserInfo.class).property(UserInfo::getUser, User::getId).set(3).where()
+                .eq(UserInfo::getId, 2).execute();
+        assertTrue(no == 1);
+
+        User user = new User();
+        user.setId(1);
+
+        no = sqlUpdater.update(UserInfo.class).property(UserInfo::getUser).set(user).where().eq(UserInfo::getId, 2)
+                .execute();
+        assertTrue(no == 1);
+
+        no = sqlUpdater.update(UserInfo.class).set(UserInfo::getUser, 2).where().eq(UserInfo::getId, 2).execute();
+        assertTrue(no == 1);
+
         //        int no = sqlUpdater.update(UserInfo.class).property("province").set("四川1").where().property(UserInfo::getId)
         //                .eq(1).execute();
         //        assertTrue(no == 1);

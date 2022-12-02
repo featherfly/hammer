@@ -42,7 +42,8 @@ public class EntitySqlQueryExpression<E> extends EntitySqlQueryConditionGroupExp
         //        super(jdbc, selectBuilder.getTableAlias(), classMapping, factory, sqlPageFactory, aliasManager,
         //                entityQueryEntity, ignorePolicy);
         //      IMPLSOON 后续来实现，先让编译通过
-        super(jdbc, "", classMapping, factory, sqlPageFactory, aliasManager, entityQueryEntity, ignorePolicy);
+        super(jdbc, aliasManager.getAlias(0), classMapping, factory, sqlPageFactory, aliasManager, entityQueryEntity,
+                ignorePolicy);
         this.selectBuilder = selectBuilder;
     }
 
@@ -96,7 +97,8 @@ public class EntitySqlQueryExpression<E> extends EntitySqlQueryConditionGroupExp
     public String build() {
         String result = "";
         if (selectBuilder != null) {
-            result = selectBuilder.build();
+            result = selectBuilder
+                    .build((tableName, tableAlias) -> selectBuilder.getDefaultTableAlias().equals(tableAlias));
         }
         String condition = super.build();
         if (Lang.isNotEmpty(condition)) {

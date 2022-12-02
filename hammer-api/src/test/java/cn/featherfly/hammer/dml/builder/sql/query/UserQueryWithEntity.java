@@ -10,7 +10,7 @@ import cn.featherfly.common.lang.function.SerializableFunction;
 import cn.featherfly.common.repository.mapping.RowMapper;
 import cn.featherfly.common.structure.page.Page;
 import cn.featherfly.hammer.expression.query.QueryLimitExecutor;
-import cn.featherfly.hammer.expression.query.QueryWithEntityExpression;
+import cn.featherfly.hammer.expression.query.QueryRelateEntityExpression;
 
 /**
  * The Class UserQueryWithEntity.
@@ -18,7 +18,7 @@ import cn.featherfly.hammer.expression.query.QueryWithEntityExpression;
  * @author zhongj
  */
 public class UserQueryWithEntity implements
-        QueryWithEntityExpression<UserQueryWith, UserQueryWithOn, UserQueryWithEntity, UserQueryRepositoryConditionGroupExpression, UserQueryRepositoryConditionGroupExpression> {
+        QueryRelateEntityExpression<UserQueryWith, UserQueryWithOn, UserQueryWithEntity, UserQueryRepositoryConditionGroupExpression, UserQueryRepositoryConditionGroupExpression> {
 
     /**
      * {@inheritDoc}
@@ -69,7 +69,8 @@ public class UserQueryWithEntity implements
      * {@inheritDoc}
      */
     @Override
-    public <T, R> UserQueryWithEntity fetch(SerializableFunction<T, R>... propertyNames) {
+    public <T,
+            R> UserQueryWithEntity fetch(@SuppressWarnings("unchecked") SerializableFunction<T, R>... propertyNames) {
         // YUFEI_TODO Auto-generated method stub
         return null;
     }

@@ -134,7 +134,13 @@ public class GetOperate<T> extends AbstractQueryOperate<T> {
             throw new SqldbHammerException("#get.id.null");
         }
         if (forUpdate) {
-            return jdbc.querySingle(sql + " for update", (RowMapper<T>) (res, rowNum) -> mapRow(res, rowNum), id);
+            if (jdbc.getDialect().supportSelectForUpdate()) { // 后续来实现
+                return jdbc.querySingle(sql + " for update", (RowMapper<T>) (res, rowNum) -> mapRow(res, rowNum), id);
+            } else {
+                // TODO 后续加入行为可配置策略
+                throw new SqldbHammerException(
+                        "unsupport [select...for update] with dialect " + jdbc.getDialect().getClass().getSimpleName());
+            }
         } else {
             return jdbc.querySingle(sql, (RowMapper<T>) (res, rowNum) -> mapRow(res, rowNum), id);
         }

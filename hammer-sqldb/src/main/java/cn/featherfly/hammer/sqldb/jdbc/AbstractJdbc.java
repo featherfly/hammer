@@ -36,10 +36,12 @@ import cn.featherfly.common.db.JdbcException;
 import cn.featherfly.common.db.JdbcUtils;
 import cn.featherfly.common.db.SqlUtils;
 import cn.featherfly.common.db.dialect.Dialect;
+import cn.featherfly.common.db.dialect.SQLiteDialect;
 import cn.featherfly.common.db.mapping.SqlResultSet;
 import cn.featherfly.common.db.mapping.SqlTypeMappingManager;
 import cn.featherfly.common.lang.Lang;
 import cn.featherfly.common.lang.Strings;
+import cn.featherfly.common.lang.reflect.Type;
 import cn.featherfly.common.repository.Execution;
 import cn.featherfly.common.repository.mapping.RowMapper;
 
@@ -232,62 +234,16 @@ public abstract class AbstractJdbc implements Jdbc {
                 Arrays.stream(argsBp).map(arg -> arg.getValue()).toArray());
     }
 
-    //    private <T extends Serializable> int[] executeUpdate(Consumer<PreparedStatement> setParams, String[] sqls,
-    //            GeneratedKeyHolder<T> generatedKeyHolder, Object... args) {
-    //        if (Lang.isEmpty(sqls)) {
-    //            return ArrayUtils.EMPTY_INT_ARRAY;
-    //        }
-    //        DataSource ds = getDataSource();
-    //        Connection connection = getConnection(ds);
-    //        String sql = sqls[0];
-    //        JdbcExecution execution = preHandle(sql, args);
-    //        sql = execution.getExecution();
-    //        args = execution.getParams();
-    //        try (PreparedStatement prep = generatedKeyHolder == null ? connection.prepareStatement(sql)
-    //                : connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
-    //            for (int i = 1; i < args.length; i++) {
-    //                execution = preHandle(sqls[i], args);
-    //                sql = execution.getExecution();
-    //                args = execution.getParams();
-    //                logger.debug("execute sql -> {}, args -> {}", sql, args);
-    //                prep.addBatch(sql);
-    //                // 不是查询操作，没有查询结果
-    //                //                postHandle(execution, sql, args);
-    //                //                if (generatedKeyHolder != null) {
-    //                //                    try (ResultSet res = prep.getGeneratedKeys()) {
-    //                //                        int row = 0;
-    //                //                        while (res.next()) {
-    //                //                            T value = manager.get(res, 1, generatedKeyHolder.getType());
-    //                //                            //                    Object value = JdbcUtils.getResultSetValue(res, 1, pm.getPropertyType());
-    //                //                            generatedKeyHolder.acceptKey(value, row++);
-    //                //                            logger.debug("auto generated key: ", value);
-    //                //                        }
-    //                //                    }
-    //                //                }
-    //            }
-    //            setParams.accept(prep);
-    //            int results[] = prep.executeBatch();
-    //            //            postHandle(execution, sql, args);
-    //            if (generatedKeyHolder != null) {
-    //                try (ResultSet res = prep.getGeneratedKeys()) {
-    //                    int row = 0;
-    //                    while (res.next()) {
-    //                        T value = manager.get(res, 1, generatedKeyHolder.getType());
-    //                        //                    Object value = JdbcUtils.getResultSetValue(res, 1, pm.getPropertyType());
-    //                        generatedKeyHolder.acceptKey(value, row++);
-    //                        logger.debug("auto generated key: ", value);
-    //                    }
-    //                }
-    //            }
-    //            return results;
-    //        } catch (SQLException e) {
-    //            releaseConnection(connection, ds);
-    //            throw new JdbcException(Strings.format("executeUpdate: \nsql: {0} \nargs: {1}", sql, Arrays.toString(args)),
-    //                    e);
-    //        } finally {
-    //            releaseConnection(connection, getDataSource());
-    //        }
-    //    }
+    private <T extends Serializable> T getGenereteKey(Type<T> type, ResultSet res) {
+        T value;
+        if (type instanceof BeanProperty) {
+            value = manager.get(res, 1, (BeanProperty<T>) type);
+        } else {
+            value = manager.get(res, 1, type.getType());
+        }
+        logger.debug("auto generated key: {}", value);
+        return value;
+    }
 
     private <T extends Serializable> int executeUpdate(Consumer<PreparedStatement> setParams, String sql, int batchSize,
             GeneratedKeyHolder<T> generatedKeyHolder, Object... args) {
@@ -306,16 +262,25 @@ public abstract class AbstractJdbc implements Jdbc {
             if (generatedKeyHolder != null && (batchSize == 1 && result == 1 || batchSize > 1)) {
                 try (ResultSet res = prep.getGeneratedKeys()) {
                     int row = 0;
-                    while (res.next()) {
-                        T value;
-                        if (generatedKeyHolder.getType() instanceof BeanProperty) {
-                            value = manager.get(res, 1, (BeanProperty<T>) generatedKeyHolder.getType());
-                        } else {
-                            value = manager.get(res, 1, generatedKeyHolder.getType().getType());
+                    if (dialect instanceof SQLiteDialect) { // res.next() not supported by sqlite
+                        while (res.next()) {
+                            T value = getGenereteKey(generatedKeyHolder.getType(), res);
+                            generatedKeyHolder.acceptKey(value, row++);
                         }
-                        //                    Object value = JdbcUtils.getResultSetValue(res, 1, pm.getPropertyType());
-                        generatedKeyHolder.acceptKey(value, row++);
-                        logger.debug("auto generated key: ", value);
+                    } else {
+                        if (res.next()) {
+                            if (res.isLast()) {
+                                T value = getGenereteKey(generatedKeyHolder.getType(), res);
+                                generatedKeyHolder.acceptKey(value, row);
+                            } else {
+                                List<T> keys = new ArrayList<>();
+                                keys.add(getGenereteKey(generatedKeyHolder.getType(), res));
+                                while (res.next()) {
+                                    keys.add(getGenereteKey(generatedKeyHolder.getType(), res));
+                                }
+                                generatedKeyHolder.acceptKey(keys);
+                            }
+                        }
                     }
                 }
             }

@@ -191,7 +191,7 @@ public abstract class AbstractEntitySqlQueryEntityProperties<E, P extends Abstra
     @SuppressWarnings("unchecked")
     public P property(String... propertyNames) {
         for (String propertyName : propertyNames) {
-            property(propertyName);
+            property(false, propertyName);
         }
         return (P) this;
     }
@@ -205,7 +205,7 @@ public abstract class AbstractEntitySqlQueryEntityProperties<E, P extends Abstra
     @SuppressWarnings("unchecked")
     public P property(Collection<String> propertyNames) {
         for (String propertyName : propertyNames) {
-            property(propertyName);
+            property(false, propertyName);
         }
         return (P) this;
     }

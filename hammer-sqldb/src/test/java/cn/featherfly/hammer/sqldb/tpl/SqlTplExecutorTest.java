@@ -1,10 +1,9 @@
 
 package cn.featherfly.hammer.sqldb.tpl;
 
-import static org.junit.Assert.assertTrue;
 import static org.testng.Assert.assertEquals;
+import static org.testng.Assert.assertTrue;
 
-import java.math.BigDecimal;
 import java.util.List;
 import java.util.Map;
 
@@ -12,7 +11,6 @@ import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
 import cn.featherfly.common.db.dialect.MySQLDialect;
-import cn.featherfly.common.lang.NumberUtils;
 import cn.featherfly.common.lang.Randoms;
 import cn.featherfly.common.structure.ChainMapImpl;
 import cn.featherfly.common.structure.page.PaginationResults;
@@ -25,18 +23,18 @@ import cn.featherfly.hammer.sqldb.jdbc.vo.User;
 import cn.featherfly.hammer.sqldb.jdbc.vo.UserInfo;
 import cn.featherfly.hammer.sqldb.tpl.freemarker.SqldbFreemarkerTemplateEngine;
 import cn.featherfly.hammer.tpl.TplConfigFactoryImpl;
-import cn.featherfly.hammer.tpl.TplExecuteIdFileImpl;
-import cn.featherfly.hammer.tpl.TplExecutor;
 import cn.featherfly.hammer.tpl.TransverterManager;
 
 /**
- * SqlTplExecutorTest.
+ * <p>
+ * SqlTplExecutorTest
+ * </p>
  *
  * @author zhongj
  */
 public class SqlTplExecutorTest extends JdbcTestBase {
 
-    protected TplExecutor executor;
+    SqlTplExecutor executor;
 
     Integer minAge = 5;
     Integer maxAge = 40;
@@ -52,31 +50,8 @@ public class SqlTplExecutorTest extends JdbcTestBase {
     }
 
     @Test
-    void testNumber() {
-        Integer avg = executor.number("selectAvg", Integer.class, new ChainMapImpl<String, Object>());
-        System.out.println("avg(age) = " + avg);
-        assertTrue(avg > 20);
-
-        avg = executor.number("selectAvg2", Integer.class, new ChainMapImpl<String, Object>().putChain("age", 40));
-        System.out.println("avg(age) = " + avg);
-        assertTrue(avg > 40);
-
-    }
-
-    @Test
-    void testIntValue() {
+    void testNumberValue() {
         Integer avg = executor.numberInt("selectAvg", new ChainMapImpl<String, Object>());
-        System.out.println("avg(age) = " + avg);
-        assertTrue(avg > 20);
-
-        avg = executor.numberInt(new TplExecuteIdFileImpl("selectAvg"), new ChainMapImpl<String, Object>());
-        assertTrue(avg > 20);
-
-        avg = executor.intValue("selectAvg", new ChainMapImpl<String, Object>());
-        System.out.println("avg(age) = " + avg);
-        assertTrue(avg > 20);
-
-        avg = executor.intValue(new TplExecuteIdFileImpl("selectAvg"), new ChainMapImpl<String, Object>());
         System.out.println("avg(age) = " + avg);
         assertTrue(avg > 20);
 
@@ -84,67 +59,6 @@ public class SqlTplExecutorTest extends JdbcTestBase {
         System.out.println("avg(age) = " + avg);
         assertTrue(avg > 40);
 
-    }
-
-    @Test
-    void testLongValue() {
-        Long avg = executor.numberLong("selectAvg", new ChainMapImpl<String, Object>());
-        System.out.println("avg(age) = " + avg);
-        assertTrue(avg > 20);
-
-        avg = executor.numberLong(new TplExecuteIdFileImpl("selectAvg"), new ChainMapImpl<String, Object>());
-        assertTrue(avg > 20);
-
-        avg = executor.longValue("selectAvg", new ChainMapImpl<String, Object>());
-        System.out.println("avg(age) = " + avg);
-        assertTrue(avg > 20);
-
-        avg = executor.longValue(new TplExecuteIdFileImpl("selectAvg"), new ChainMapImpl<String, Object>());
-        System.out.println("avg(age) = " + avg);
-        assertTrue(avg > 20);
-
-        avg = executor.numberLong("selectAvg2", new ChainMapImpl<String, Object>().putChain("age", 40));
-        System.out.println("avg(age) = " + avg);
-        assertTrue(avg > 40);
-
-    }
-
-    @Test
-    void testDoubleValue() {
-        Double avg = executor.numberDouble("selectAvg", new ChainMapImpl<String, Object>());
-        System.out.println("avg(age) = " + avg);
-        assertTrue(avg > 20);
-
-        avg = executor.numberDouble(new TplExecuteIdFileImpl("selectAvg"), new ChainMapImpl<String, Object>());
-        assertTrue(avg > 20);
-
-        avg = executor.doubleValue("selectAvg", new ChainMapImpl<String, Object>());
-        System.out.println("avg(age) = " + avg);
-        assertTrue(avg > 20);
-
-        avg = executor.doubleValue(new TplExecuteIdFileImpl("selectAvg"), new ChainMapImpl<String, Object>());
-        System.out.println("avg(age) = " + avg);
-        assertTrue(avg > 20);
-
-        avg = executor.numberDouble("selectAvg2", new ChainMapImpl<String, Object>().putChain("age", 40));
-        System.out.println("avg(age) = " + avg);
-        assertTrue(avg > 40);
-    }
-
-    @Test
-    void testBigDecimalValue() {
-        BigDecimal avg = executor.numberBigDecimal("selectAvg", new ChainMapImpl<String, Object>());
-        System.out.println("avg(age) = " + avg);
-        assertTrue(avg.doubleValue() > 20);
-
-        avg = executor.numberBigDecimal("selectAvg2", new ChainMapImpl<String, Object>().putChain("age", 40));
-        System.out.println("avg(age) = " + avg);
-        assertTrue(avg.doubleValue() > 40);
-
-        avg = executor.numberBigDecimal(new TplExecuteIdFileImpl("selectAvg2"),
-                new ChainMapImpl<String, Object>().putChain("age", 40));
-        System.out.println("avg(age) = " + avg);
-        assertTrue(avg.doubleValue() > 40);
     }
 
     @Test
@@ -193,9 +107,6 @@ public class SqlTplExecutorTest extends JdbcTestBase {
     void testUserList() {
         Integer age = 5;
         List<User> users = executor.list("user@selectUser", User.class, new ChainMapImpl<String, Object>());
-        assertTrue(users.size() > 0);
-
-        users = executor.list("user@selectUserList", User.class, new ChainMapImpl<String, Object>());
         assertTrue(users.size() > 0);
 
         users = executor.list("user@selectByAge", User.class, new ChainMapImpl<String, Object>().putChain("age", 5));
@@ -261,21 +172,8 @@ public class SqlTplExecutorTest extends JdbcTestBase {
             assertTrue(u.getAge() >= minAge);
             assertTrue(u.getAge() <= maxAge);
             assertTrue(u.getUsername().startsWith(username1));
+            assertTrue(size == 3);
         });
-        assertTrue(size == 3);
-
-        List<Map<String, Object>> userList = executor.list(
-                "user@selectConditions", new ChainMapImpl<String, Object>().putChain("minAge", minAge)
-                        .putChain("maxAge", maxAge).putChain("username", username1 + "%"),
-                new SimplePagination(start, limit));
-        final int size2 = userList.size();
-        userList.forEach(u -> {
-            int age = NumberUtils.parse(u.get("age").toString(), Integer.class);
-            assertTrue(age >= minAge);
-            assertTrue(age <= maxAge);
-            assertTrue(u.get("username").toString().startsWith(username1));
-        });
-        assertTrue(size2 == 3);
     }
 
     @Test
@@ -300,30 +198,6 @@ public class SqlTplExecutorTest extends JdbcTestBase {
             assertTrue(u.getUsername().startsWith(username1));
         });
         assertTrue(size == 3);
-
-        PaginationResults<Map<String, Object>> userPage = executor.pagination(
-                "user@selectConditions", new ChainMapImpl<String, Object>().putChain("minAge", minAge)
-                        .putChain("maxAge", maxAge).putChain("username", username1 + "%"),
-                new SimplePagination(start, limit));
-        final int size2 = userPage.getResultSize();
-        userPage.getPageResults().forEach(u -> {
-            int age = NumberUtils.parse(u.get("age").toString(), Integer.class);
-            assertTrue(age >= minAge);
-            assertTrue(age <= maxAge);
-            assertTrue(u.get("username").toString().startsWith(username1));
-        });
-        assertTrue(size2 == 3);
-
-        userPage = executor.pagination("user@selectConditions", new ChainMapImpl<String, Object>()
-                .putChain("minAge", minAge).putChain("maxAge", maxAge).putChain("username", username1 + "%"), start,
-                limit);
-        userPage.getPageResults().forEach(u -> {
-            int age = NumberUtils.parse(u.get("age").toString(), Integer.class);
-            assertTrue(age >= minAge);
-            assertTrue(age <= maxAge);
-            assertTrue(u.get("username").toString().startsWith(username1));
-        });
-        assertTrue(size2 == 3);
     }
 
     @Test
@@ -426,17 +300,6 @@ public class SqlTplExecutorTest extends JdbcTestBase {
     }
 
     @Test
-    void testWithTemplate4() {
-        PaginationResults<Map<String, Object>> result = executor.pagination("role@selectWithTemplate4",
-                new ChainMapImpl<String, Object>(), 0, 10);
-        assertTrue(result.getResultSize() > 0);
-        System.out.println("result size:" + result.getResultSize());
-        result.getPageResults().forEach(ui -> {
-            System.out.println(ui);
-        });
-    }
-
-    @Test
     void testMap() {
         Map<String, Object> uis = executor.single("user_info@selectById",
                 new ChainMapImpl<String, Object>().putChain("id", 1));
@@ -505,11 +368,8 @@ public class SqlTplExecutorTest extends JdbcTestBase {
 
     @Test
     void testPrivileType() {
-        int i = executor.value("countUserInfo", int.class, new ChainMapImpl<String, Object>());
-        assertEquals(i, 2);
-
-        i = executor.value(new TplExecuteIdFileImpl("countUserInfo"), int.class, new ChainMapImpl<String, Object>());
-        assertEquals(i, 2);
+        int i = executor.value("countRole", int.class, new ChainMapImpl<String, Object>());
+        System.out.println(i);
     }
 
     @Test

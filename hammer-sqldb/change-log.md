@@ -1,5 +1,8 @@
 # 0.7.0
 1. 加入强类型dsl查询
+2. 实现TransverterManager
+3. 实现upsert在全部是插入时为entity设置自动生成的主键（存在update时返回的key无法确定）
+4. 优化GetOperate的ForUpdate逻辑
 
 # 0.6.6 2022-08-26
 1. 修改L group(Consumer<C>)为L group(Function<C,L>)，

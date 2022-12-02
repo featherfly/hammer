@@ -75,6 +75,9 @@ public abstract class AbstractSqlConditionGroupExpression<C extends ConditionGro
     /** The sql page factory. */
     protected SqlPageFactory sqlPageFactory;
 
+    /** The query alias. */
+    private String queryAlias;
+
     /**
      * Instantiates a new abstract sql condition group expression.
      *
@@ -1569,9 +1572,6 @@ public abstract class AbstractSqlConditionGroupExpression<C extends ConditionGro
     // ********************************************************************
     // property
     // ********************************************************************
-
-    /** The query alias. */
-    private String queryAlias;
 
     /**
      * 返回queryAlias.
