@@ -1,85 +1,36 @@
 
 package cn.featherfly.hammer.sqldb.jdbc.dsl.query;
 
-import java.util.List;
-import java.util.function.Consumer;
+import java.util.function.Predicate;
 
-import cn.featherfly.common.structure.page.Page;
-import cn.featherfly.hammer.dsl.query.type.EntityQueryConditionGroupExpression;
+import cn.featherfly.common.db.mapping.JdbcClassMapping;
 import cn.featherfly.hammer.dsl.query.type.EntityQueryRelation9;
 import cn.featherfly.hammer.dsl.query.type.EntityQueryRelationEntity9;
-import cn.featherfly.hammer.expression.condition.ConditionGroupConfig;
-import cn.featherfly.hammer.expression.query.type.EntityQueryLimitExecutor;
 
 /**
  * @author zhongj
  */
-public class EntitySqlQueryRelation9<E, R1, R2, R3, R4, R5, R6, R7, R8, R9>
+public class EntitySqlQueryRelation9<E, R1, R2, R3, R4, R5, R6, R7, R8, R9, J1, J2>
+        extends AbstractEntitySqlQueryRelation<E, J1, J2>
         implements EntitySqlQuery<E>, EntityQueryRelation9<E, R1, R2, R3, R4, R5, R6, R7, R8, R9>,
         EntityQueryRelationEntity9<E, R1, R2, R3, R4, R5, R6, R7, R8, R9> {
 
     /**
-     * {@inheritDoc}
+     * @param sqlQueryEntityProperties
+     * @param conditionTypeClassMapping
+     * @param conditionTableAlias
+     * @param conditionTableColumn
+     * @param joinTypeClassMapping
+     * @param joinTableColumn
+     * @param fetchProperty
+     * @param ignorePolicy
      */
-    @Override
-    public EntityQueryConditionGroupExpression<E> where() {
-        // YUFEI_TODO Auto-generated method stub
-        return null;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public EntityQueryConditionGroupExpression<E> where(
-            Consumer<ConditionGroupConfig<EntityQueryConditionGroupExpression<E>>> consumer) {
-        // YUFEI_TODO Auto-generated method stub
-        return null;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public List<E> list() {
-        // YUFEI_TODO Auto-generated method stub
-        return null;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public Long count() {
-        // YUFEI_TODO Auto-generated method stub
-        return null;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public EntityQueryLimitExecutor<E> limit(Integer limit) {
-        // YUFEI_TODO Auto-generated method stub
-        return null;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public EntityQueryLimitExecutor<E> limit(Integer offset, Integer limit) {
-        // YUFEI_TODO Auto-generated method stub
-        return null;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public EntityQueryLimitExecutor<E> limit(Page page) {
-        // YUFEI_TODO Auto-generated method stub
-        return null;
+    public EntitySqlQueryRelation9(EntitySqlQueryEntityProperties<E> sqlQueryEntityProperties,
+            JdbcClassMapping<J1> conditionTypeClassMapping, String conditionTableAlias, String conditionTableColumn,
+            JdbcClassMapping<J2> joinTypeClassMapping, String joinTableColumn, String fetchProperty,
+            Predicate<Object> ignorePolicy) {
+        super(sqlQueryEntityProperties, conditionTypeClassMapping, conditionTableAlias, conditionTableColumn,
+                joinTypeClassMapping, joinTableColumn, fetchProperty, ignorePolicy);
     }
 
     /**
@@ -87,8 +38,8 @@ public class EntitySqlQueryRelation9<E, R1, R2, R3, R4, R5, R6, R7, R8, R9>
      */
     @Override
     public EntityQueryRelationEntity9<E, R1, R2, R3, R4, R5, R6, R7, R8, R9> fetch() {
-        // YUFEI_TODO Auto-generated method stub
-        return null;
+        fetch0();
+        return this;
     }
 
 }

@@ -1554,7 +1554,6 @@ public abstract class AbstractEntitySqlConditionGroupExpression<E, C extends Ent
     @Override
     public <R, V> L eq(SerializableFunction<E, R> repository, SerializableFunction<R, V> property, V value) {
         //        IMPLSOON 后续来实现join
-        //         //        IMPLSOON 后续来实现join
         //        entityQuery.join(repository);
         Tuple2<String, String> tuple = conditionResult(repository, property, value, classMapping, factory);
         return (L) addCondition(new SqlConditionExpressionBuilder(dialect, tuple.get1(), value, QueryOperator.EQ,

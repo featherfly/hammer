@@ -21,6 +21,7 @@ import cn.featherfly.common.db.mapping.ClassMappingUtils;
 import cn.featherfly.common.db.mapping.JdbcClassMapping;
 import cn.featherfly.common.db.mapping.JdbcMappingFactory;
 import cn.featherfly.common.db.mapping.JdbcPropertyMapping;
+import cn.featherfly.common.exception.UnsupportedException;
 import cn.featherfly.common.lang.AssertIllegalArgument;
 import cn.featherfly.common.lang.LambdaUtils;
 import cn.featherfly.common.lang.LambdaUtils.SerializableSupplierLambdaInfo;
@@ -300,36 +301,53 @@ public abstract class AbstractSqlConditionExpression<L> implements SqlBuilder, P
     /**
      * Condition result.
      *
-     * @param <O>        the generic type
-     * @param <T>        the generic type
-     * @param <R>        the generic type
-     * @param repository the repository
-     * @param property   the property
-     * @param value      the value
-     * @param factory    the factory
+     * @param <O>            the generic type
+     * @param <T>            the generic type
+     * @param <R>            the generic type
+     * @param property       the repository
+     * @param nestedProperty the property
+     * @param value          the value
+     * @param factory        the factory
      * @return the tuple 2
      */
-    protected <O, T, R> Tuple2<String, String> conditionResult(SerializableFunction<O, T> repository,
-            SerializableFunction<T, R> property, Object value, JdbcClassMapping<O> classMapping,
+    protected <O, T, R> Tuple2<String, String> conditionResult(SerializableFunction<O, T> property,
+            SerializableFunction<T, R> nestedProperty, Object value, JdbcClassMapping<O> classMapping,
             JdbcMappingFactory factory) {
-        SerializedLambdaInfo repositoryInfo = LambdaUtils.getLambdaInfo(repository);
-        SerializedLambdaInfo propertyInfo = LambdaUtils.getLambdaInfo(property);
+        SerializedLambdaInfo propertyRepo = LambdaUtils.getLambdaInfo(property);
+        SerializedLambdaInfo propertyInfo = LambdaUtils.getLambdaInfo(nestedProperty);
         String pn = propertyInfo.getPropertyName();
-
         // IMPLSOON 参考set(SerializableFunction<T, R> property,SerializableFunction<R, O> nestedProperty, O value)的实现重构逻辑
 
-        JdbcPropertyMapping pm = classMapping.getPropertyMapping(repositoryInfo.getPropertyName());
+        JdbcPropertyMapping pm = classMapping.getPropertyMapping(propertyRepo.getPropertyName());
         if (pm.getMode() == Mode.EMBEDDED) {
-            for (JdbcPropertyMapping spm : pm.getPropertyMappings()) {
-                if (spm.getPropertyName().equals(pn)) {
-                    return Tuples.of(repositoryInfo.getPropertyName(), spm.getRepositoryFieldName());
+            JdbcPropertyMapping spm = pm.getPropertyMapping(pn);
+            if (spm != null) {
+                return Tuples.of(propertyRepo.getPropertyName(), spm.getRepositoryFieldName());
+            }
+        } else if (pm.getMode() == Mode.ONE_TO_MANY) {
+            // FIXME 未实现
+            throw new UnsupportedException();
+        } else if (pm.getMode() == Mode.SINGLE) {
+            // FIXME 未实现
+            throw new UnsupportedException();
+        } else if (pm.getMode() == Mode.MANY_TO_ONE) {
+            JdbcPropertyMapping spm = pm.getPropertyMapping(pn);
+            if (spm != null) {
+                return Tuples.of(propertyRepo.getPropertyName(), spm.getRepositoryFieldName());
+            } else {
+                @SuppressWarnings("unchecked")
+                JdbcClassMapping<T> cm = factory.getClassMapping((Class<T>) pm.getPropertyType());
+                spm = cm.getPropertyMapping(pn);
+                if (spm != null) {
+                    return Tuples.of(propertyRepo.getPropertyName(), spm.getRepositoryFieldName());
                 }
             }
         }
+        throw new UnsupportedException();
         // IMPLSOON 下面的逻辑还未测试，应该是有问题的
-        JdbcClassMapping<?> cm = factory.getClassMapping(repositoryInfo.getPropertyType());
-        String column = ClassMappingUtils.getColumnName(pn, cm);
-        return Tuples.of(repositoryInfo.getPropertyName(), column);
+        //        JdbcClassMapping<?> cm = factory.getClassMapping(propertyRepo.getPropertyType());
+        //        String column = ClassMappingUtils.getColumnName(pn, cm);
+        //        return Tuples.of(propertyRepo.getPropertyName(), column);
     }
 
     /**

@@ -3,7 +3,9 @@ package cn.featherfly.hammer.sqldb.jdbc.dsl.query;
 
 import java.util.List;
 import java.util.function.Consumer;
+import java.util.function.Predicate;
 
+import cn.featherfly.common.db.mapping.JdbcClassMapping;
 import cn.featherfly.common.lang.function.SerializableFunction;
 import cn.featherfly.common.lang.function.SerializableFunction2;
 import cn.featherfly.common.lang.function.SerializableFunction3;
@@ -19,11 +21,45 @@ import cn.featherfly.hammer.expression.query.type.EntityQueryRelationEntityExpre
 import cn.featherfly.hammer.expression.query.type.EntityQueryRelationExpression9;
 
 /**
+ * The Class EntitySqlQueryRelation8.
+ *
  * @author zhongj
+ * @param <E>  the element type
+ * @param <R1> the generic type
+ * @param <R2> the generic type
+ * @param <R3> the generic type
+ * @param <R4> the generic type
+ * @param <R5> the generic type
+ * @param <R6> the generic type
+ * @param <R7> the generic type
+ * @param <R8> the generic type
+ * @param <J1> the generic type
+ * @param <J2> the generic type
  */
-public class EntitySqlQueryRelation8<E, R1, R2, R3, R4, R5, R6, R7, R8>
+public class EntitySqlQueryRelation8<E, R1, R2, R3, R4, R5, R6, R7, R8, J1, J2>
+        extends AbstractEntitySqlQueryRelation<E, J1, J2>
         implements EntitySqlQuery<E>, EntityQueryRelation8<E, R1, R2, R3, R4, R5, R6, R7, R8>,
         EntityQueryRelationEntity8<E, R1, R2, R3, R4, R5, R6, R7, R8> {
+
+    /**
+     * Instantiates a new entity sql query relation 8.
+     *
+     * @param sqlQueryEntityProperties  the sql query entity properties
+     * @param conditionTypeClassMapping the condition type class mapping
+     * @param conditionTableAlias       the condition table alias
+     * @param conditionTableColumn      the condition table column
+     * @param joinTypeClassMapping      the join type class mapping
+     * @param joinTableColumn           the join table column
+     * @param fetchProperty             the fetch property
+     * @param ignorePolicy              the ignore policy
+     */
+    public EntitySqlQueryRelation8(EntitySqlQueryEntityProperties<E> sqlQueryEntityProperties,
+            JdbcClassMapping<J1> conditionTypeClassMapping, String conditionTableAlias, String conditionTableColumn,
+            JdbcClassMapping<J2> joinTypeClassMapping, String joinTableColumn, String fetchProperty,
+            Predicate<Object> ignorePolicy) {
+        super(sqlQueryEntityProperties, conditionTypeClassMapping, conditionTableAlias, conditionTableColumn,
+                joinTypeClassMapping, joinTableColumn, fetchProperty, ignorePolicy);
+    }
 
     /**
      * {@inheritDoc}
@@ -127,8 +163,8 @@ public class EntitySqlQueryRelation8<E, R1, R2, R3, R4, R5, R6, R7, R8>
      */
     @Override
     public EntityQueryRelationEntity8<E, R1, R2, R3, R4, R5, R6, R7, R8> fetch() {
-        // YUFEI_TODO Auto-generated method stub
-        return null;
+        fetch0();
+        return this;
     }
 
     /**

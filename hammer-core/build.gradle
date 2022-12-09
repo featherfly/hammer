@@ -3,8 +3,7 @@ dependencies {
     
     api group: 'cn.featherfly.common', name: 'common-spring', version: '0.3.0'
     api group: 'cn.featherfly.common', name: 'common-asm', version: '0.2.0'
-    //api group: 'cn.featherfly', name: 'featherfly-conversion', version: '1.4.3' // 新功能测试临时本地发布
-    api group: 'cn.featherfly.constant', name: 'constant-core', version: '1.6.9' // 新功能测试临时本地发布
+    api group: 'cn.featherfly.constant', name: 'constant-core', version: '1.6.9'
 	api group: 'org.hibernate.javax.persistence', name: 'hibernate-jpa-2.1-api', version: '1.0.2.Final'	
 	api group: 'com.fasterxml.jackson.core', name: 'jackson-databind', version: '2.13.2.2'
     api group: 'com.fasterxml.jackson.dataformat', name: 'jackson-dataformat-yaml', version: '2.13.2'
