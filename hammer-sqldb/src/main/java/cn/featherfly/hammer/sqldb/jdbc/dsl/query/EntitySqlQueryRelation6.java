@@ -1,28 +1,57 @@
 
 package cn.featherfly.hammer.sqldb.jdbc.dsl.query;
 
-import java.util.List;
-import java.util.function.Consumer;
+import java.util.function.Predicate;
 
+import cn.featherfly.common.db.mapping.JdbcClassMapping;
 import cn.featherfly.common.lang.function.SerializableFunction;
 import cn.featherfly.common.lang.function.SerializableFunction2;
 import cn.featherfly.common.lang.function.SerializableFunction3;
-import cn.featherfly.common.structure.page.Page;
 import cn.featherfly.hammer.dsl.query.type.EntityQueryConditionGroupExpression;
 import cn.featherfly.hammer.dsl.query.type.EntityQueryConditionGroupLogicExpression;
 import cn.featherfly.hammer.dsl.query.type.EntityQueryEntityProperties;
 import cn.featherfly.hammer.dsl.query.type.EntityQueryRelation6;
 import cn.featherfly.hammer.dsl.query.type.EntityQueryRelationEntity6;
-import cn.featherfly.hammer.expression.condition.ConditionGroupConfig;
-import cn.featherfly.hammer.expression.query.type.EntityQueryLimitExecutor;
 import cn.featherfly.hammer.expression.query.type.EntityQueryRelationEntityExpression7;
 import cn.featherfly.hammer.expression.query.type.EntityQueryRelationExpression7;
 
 /**
+ * The Class EntitySqlQueryRelation6.
+ *
  * @author zhongj
+ * @param <E>  the element type
+ * @param <R1> the generic type
+ * @param <R2> the generic type
+ * @param <R3> the generic type
+ * @param <R4> the generic type
+ * @param <R5> the generic type
+ * @param <R6> the generic type
+ * @param <J1> the generic type
+ * @param <J2> the generic type
  */
-public class EntitySqlQueryRelation6<E, R1, R2, R3, R4, R5, R6> implements EntitySqlQuery<E>,
+public class EntitySqlQueryRelation6<E, R1, R2, R3, R4, R5, R6, J1, J2>
+        extends AbstractEntitySqlQueryRelation<E, J1, J2> implements EntitySqlQuery<E>,
         EntityQueryRelation6<E, R1, R2, R3, R4, R5, R6>, EntityQueryRelationEntity6<E, R1, R2, R3, R4, R5, R6> {
+
+    /**
+     * Instantiates a new entity sql query relation 6.
+     *
+     * @param sqlQueryEntityProperties  the sql query entity properties
+     * @param conditionTypeClassMapping the condition type class mapping
+     * @param conditionTableAlias       the condition table alias
+     * @param conditionTableColumn      the condition table column
+     * @param joinTypeClassMapping      the join type class mapping
+     * @param joinTableColumn           the join table column
+     * @param fetchProperty             the fetch property
+     * @param ignorePolicy              the ignore policy
+     */
+    public EntitySqlQueryRelation6(EntitySqlQueryEntityProperties<E> sqlQueryEntityProperties,
+            JdbcClassMapping<J1> conditionTypeClassMapping, String conditionTableAlias, String conditionTableColumn,
+            JdbcClassMapping<J2> joinTypeClassMapping, String joinTableColumn, String fetchProperty,
+            Predicate<Object> ignorePolicy) {
+        super(sqlQueryEntityProperties, conditionTypeClassMapping, conditionTableAlias, conditionTableColumn,
+                joinTypeClassMapping, joinTableColumn, fetchProperty, ignorePolicy);
+    }
 
     /**
      * {@inheritDoc}
@@ -53,79 +82,6 @@ public class EntitySqlQueryRelation6<E, R1, R2, R3, R4, R5, R6> implements Entit
     public <RE extends EntityQueryRelationEntityExpression7<E, R1, R2, R3, R4, R5, R6, E, EntityQueryEntityProperties<E>, QR, EntityQueryConditionGroupExpression<E>, EntityQueryConditionGroupLogicExpression<E>>,
             QR extends EntityQueryRelationExpression7<E, R1, R2, R3, R4, R5, R6, E, EntityQueryEntityProperties<E>, EntityQueryConditionGroupExpression<E>, EntityQueryConditionGroupLogicExpression<E>>> RE join(
                     SerializableFunction3<E, E> propertyName) {
-        // YUFEI_TODO Auto-generated method stub
-        return null;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public EntityQueryConditionGroupExpression<E> where() {
-        // YUFEI_TODO Auto-generated method stub
-        return null;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public EntityQueryConditionGroupExpression<E> where(
-            Consumer<ConditionGroupConfig<EntityQueryConditionGroupExpression<E>>> consumer) {
-        // YUFEI_TODO Auto-generated method stub
-        return null;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public List<E> list() {
-        // YUFEI_TODO Auto-generated method stub
-        return null;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public Long count() {
-        // YUFEI_TODO Auto-generated method stub
-        return null;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public EntityQueryLimitExecutor<E> limit(Integer limit) {
-        // YUFEI_TODO Auto-generated method stub
-        return null;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public EntityQueryLimitExecutor<E> limit(Integer offset, Integer limit) {
-        // YUFEI_TODO Auto-generated method stub
-        return null;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public EntityQueryLimitExecutor<E> limit(Page page) {
-        // YUFEI_TODO Auto-generated method stub
-        return null;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public EntityQueryRelationEntity6<E, R1, R2, R3, R4, R5, R6> fetch() {
         // YUFEI_TODO Auto-generated method stub
         return null;
     }
@@ -326,6 +282,15 @@ public class EntitySqlQueryRelation6<E, R1, R2, R3, R4, R5, R6> implements Entit
                     SerializableFunction3<R6, R6> propertyName) {
         // YUFEI_TODO Auto-generated method stub
         return null;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public EntityQueryRelationEntity6<E, R1, R2, R3, R4, R5, R6> fetch() {
+        fetch0();
+        return this;
     }
 
 }

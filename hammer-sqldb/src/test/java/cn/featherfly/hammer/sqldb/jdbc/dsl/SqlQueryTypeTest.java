@@ -2,9 +2,9 @@
 package cn.featherfly.hammer.sqldb.jdbc.dsl;
 
 import static org.junit.Assert.assertNotEquals;
+import static org.junit.Assert.assertNull;
 import static org.testng.Assert.assertEquals;
 import static org.testng.Assert.assertNotNull;
-import static org.testng.Assert.assertNull;
 import static org.testng.Assert.assertTrue;
 
 import java.util.List;
@@ -134,12 +134,38 @@ public class SqlQueryTypeTest extends JdbcTestBase {
         StringBuilder sb = new StringBuilder();
         sb.append("").append("").append("");
 
-        UserInfo userInfo = query.find(UserInfo.class).join(UserInfo::getUser).where().eq(UserInfo::getId, 1).single();
+        UserInfo userInfo = null;
+        User user = null;
+
+        Integer uid = 1;
+        userInfo = query.find(UserInfo.class).join(UserInfo::getUser).where().eq(UserInfo::getId, uid).single();
         System.err.println(userInfo);
+        assertEquals(userInfo.getId(), uid);
         assertNull(userInfo.getUser().getUsername());
+
         userInfo = query.find(UserInfo.class).join(UserInfo::getUser).fetch().where().eq(UserInfo::getId, 1).single();
-        assertNotNull(userInfo.getUser().getUsername());
         System.err.println(userInfo);
+        assertEquals(userInfo.getId(), uid);
+        assertNotNull(userInfo.getUser().getUsername());
+
+        user = query.find(User.class).join(UserInfo::getUser).join(UserRole2::getUser).where().eq(User::getId, uid)
+                .single();
+        System.err.println(user);
+        assertEquals(user.getId(), uid);
+
+        //        sql: SELECT _user0.`id` `id`, _user0.`username` `username`, _user0.`password` `pwd`, _user0.`mobile_no` `mobileNo`, _user0.`age` `age`
+        //        FROM `user` _user0
+        //        JOIN `user_info` _user_info0 ON _user_info0.`user_id` = _user0.`id`
+        //        JOIN `user_role` _user_role0 ON _user_role0.`user_id` = _user0.`user_id` WHERE _user0.`id` = ?
+
+        //        SELECT _user0.`id` `id`, _user0.`username` `username`, _user0.`password` `pwd`, _user0.`mobile_no` `mobileNo`, _user0.`age` `age`
+        //        FROM `user` _user0
+        //        JOIN `user_info` _user_info0 ON _user_info0.`user_id` = _user0.`id`
+        //        JOIN `user_role` _user_role0 ON _user_role0.`user_id` = _user0.`user_id`
+        //        WHERE _user0.`id` = ?
+
+        //        IMPLSOON 后续来实现多类型的查询
+        //        user = query.find(User.class).join(UserInfo::getUser).fetch().where().eq(UserInfo::getId, 1).single();
 
         // YUFEI_TODO 后续来测试
         //        List<UserInfo> list = query.find(UserInfo.class).join(UserInfo::getUser).join(UserRole2::getUser)
