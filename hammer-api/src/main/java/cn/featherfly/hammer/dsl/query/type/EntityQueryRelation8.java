@@ -16,7 +16,6 @@ import cn.featherfly.hammer.expression.query.type.EntityQueryRelationExpression8
  * @param <R6> the generic type
  * @param <R7> the generic type
  * @param <R8> the generic type
- * @param <Q>  the generic type
  */
 public interface EntityQueryRelation8<E, R1, R2, R3, R4, R5, R6, R7, R8> extends
         EntityQueryRelationExpression8<E, R1, R2, R3, R4, R5, R6, R7, R8, EntityQueryEntityProperties<E>, EntityQueryConditionGroupExpression<E>, EntityQueryConditionGroupLogicExpression<E>>,

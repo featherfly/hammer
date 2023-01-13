@@ -33,6 +33,7 @@ import cn.featherfly.hammer.sqldb.jdbc.SqlPageFactory;
  * EntitySqlQueryEntityProperties.
  *
  * @author zhongj
+ * @param <E> the element type
  */
 public class EntitySqlQueryEntityProperties<E>
         extends AbstractEntitySqlQueryEntityProperties<E, EntitySqlQueryEntityProperties<E>>

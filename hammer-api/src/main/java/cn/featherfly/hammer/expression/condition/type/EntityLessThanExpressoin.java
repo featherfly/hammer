@@ -188,7 +188,6 @@ public interface EntityLessThanExpressoin<E, C extends ConditionExpression, L ex
     /**
      * less than. 小于.
      *
-     * @param <T>        the generic type
      * @param <R>        the date type
      * @param repository the repository
      * @param property   the property
