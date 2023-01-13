@@ -12,6 +12,7 @@ import cn.featherfly.hammer.expression.EntityConditionGroupLogicExpression;
  * EntityUpdateSetExpression.
  *
  * @author zhongj
+ * @param <E> the element type
  * @param <U> the generic type
  * @param <C> the generic type
  * @param <L> the generic type
@@ -61,7 +62,6 @@ public interface EntityUpdateSetExpression<E, U extends EntityUpdateSetExecutabl
     /**
      * increase value for property.
      *
-     * @param <T>   the generic type
      * @param <R>   the generic number type
      * @param name  property name
      * @param value property value

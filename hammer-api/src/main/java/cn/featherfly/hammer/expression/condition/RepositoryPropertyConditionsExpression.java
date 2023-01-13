@@ -60,6 +60,7 @@ public interface RepositoryPropertyConditionsExpression<C extends RepositoryCond
     /**
      * Property enum.
      *
+     * @param <E>        the element type
      * @param repository the repository
      * @param name       the name
      * @return the enum expression
@@ -69,9 +70,8 @@ public interface RepositoryPropertyConditionsExpression<C extends RepositoryCond
     /**
      * Property.
      *
-     * @param <T>        the generic type
-     * @param repository the repository
-     * @param name       the name
+     * @param repositoryIndex the repository index
+     * @param name            the name
      * @return the object expression
      */
     //    <T> ObjectExpression<C, L> property(Class<T> repository, String name);
@@ -159,6 +159,7 @@ public interface RepositoryPropertyConditionsExpression<C extends RepositoryCond
     /**
      * Property enum.
      *
+     * @param <E>             the element type
      * @param repositoryIndex the repository index
      * @param name            the name
      * @return the enum expression

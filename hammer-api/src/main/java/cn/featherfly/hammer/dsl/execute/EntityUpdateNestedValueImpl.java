@@ -12,6 +12,7 @@ import cn.featherfly.hammer.expression.execute.EntityUpdateValueExpression;
  * @author zhongj
  * @param <E> the element type
  * @param <T> the generic type
+ * @param <O> the generic type
  */
 public class EntityUpdateNestedValueImpl<E, T, O> implements EntityUpdateValue<E, O> {
 
@@ -24,8 +25,9 @@ public class EntityUpdateNestedValueImpl<E, T, O> implements EntityUpdateValue<E
     /**
      * Instantiates a new entity update value impl.
      *
-     * @param name   the name
-     * @param update the update
+     * @param property       the property
+     * @param nestedProperty the nested property
+     * @param update         the update
      */
     public EntityUpdateNestedValueImpl(SerializableFunction<E, T> property, SerializableFunction<T, O> nestedProperty,
             EntityExecutableUpdate<E> update) {

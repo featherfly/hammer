@@ -24,7 +24,6 @@ public interface EntityInExpression<E, C extends ConditionExpression, L extends 
     /**
      * 包含指定，sql中的in.
      *
-     * @param <R>   the generic type
      * @param name  参数名称
      * @param value 参数值
      * @return LogicExpression
@@ -81,9 +80,8 @@ public interface EntityInExpression<E, C extends ConditionExpression, L extends 
     /**
      * 包含指定，sql中的in.
      *
-     * @param <O>        the generic type
-     * @param <T>        the generic type
      * @param <R>        the generic type
+     * @param <V>        the value type
      * @param repository the repository
      * @param property   the property
      * @param value      参数值
@@ -94,8 +92,8 @@ public interface EntityInExpression<E, C extends ConditionExpression, L extends 
     /**
      * 包含指定，sql中的in.
      *
-     * @param <T>        the generic type
      * @param <R>        the generic type
+     * @param <V>        the value type
      * @param repository the repository
      * @param property   对象属性
      * @return LogicExpression
