@@ -48,6 +48,9 @@ public class SqlTplDynamicExecutorTest extends DataSourceTestBase {
     void setup() {
         TplConfigFactoryImpl configFactory = new TplConfigFactoryImpl("tpl_pre/", new FreemarkerTemplatePreProcessor());
         TplDynamicExecutorFactory mapperFactory = TplDynamicExecutorFactory.getInstance();
+        //        TransverterManager transverterManager = new TransverterManager();
+        //        transverterManager.register(new FuzzyQueryTransverter());
+        //        Hammer hammer = new SqldbHammerImpl(jdbc, mappingFactory, configFactory, transverterManager);
         Hammer hammer = new SqldbHammerImpl(jdbc, mappingFactory, configFactory);
         userMapper = mapperFactory.newInstance(UserMapper.class, hammer);
         roleMapper = mapperFactory.newInstance(RoleMapper.class, hammer);

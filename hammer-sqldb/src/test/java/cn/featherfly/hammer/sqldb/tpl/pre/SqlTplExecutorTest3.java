@@ -9,7 +9,7 @@ import java.util.Set;
 
 import org.testng.annotations.Test;
 
-import cn.featherfly.common.structure.HashChainMap;
+import cn.featherfly.common.structure.ChainMapImpl;
 import cn.featherfly.common.structure.page.PaginationResults;
 import cn.featherfly.hammer.sqldb.jdbc.DataSourceTestBase;
 import cn.featherfly.hammer.sqldb.jdbc.SimpleSqlPageFactory;
@@ -18,6 +18,7 @@ import cn.featherfly.hammer.sqldb.jdbc.vo.User;
 import cn.featherfly.hammer.sqldb.tpl.SqlTplExecutor;
 import cn.featherfly.hammer.sqldb.tpl.freemarker.SqldbFreemarkerTemplateEngine;
 import cn.featherfly.hammer.tpl.TplConfigFactoryImpl;
+import cn.featherfly.hammer.tpl.TransverterManager;
 import cn.featherfly.hammer.tpl.freemarker.FreemarkerTemplatePreProcessor;
 
 /**
@@ -43,19 +44,19 @@ public class SqlTplExecutorTest3 extends DataSourceTestBase {
         TplConfigFactoryImpl configFactory = new TplConfigFactoryImpl(prefixs, suffixs, new HashSet<String>(),
                 new FreemarkerTemplatePreProcessor());
         executor = new SqlTplExecutor(configFactory, new SqldbFreemarkerTemplateEngine(configFactory), jdbc,
-                mappingFactory, new SimpleSqlPageFactory());
+                mappingFactory, new SimpleSqlPageFactory(), new TransverterManager());
     }
 
     @Test
     void testPreprocess() {
-        List<User> users = executor.list("preprocess@selectConditions", User.class, new HashChainMap<String, Object>());
+        List<User> users = executor.list("preprocess@selectConditions", User.class, new ChainMapImpl<String, Object>());
         assertTrue(users.size() > 0);
     }
 
     @Test
     void testMulityPrefixAndSuffix() {
         PaginationResults<Role> uis = executor.pagination("role@selectWithTemplate3", Role.class,
-                new HashChainMap<String, Object>(), 0, 10);
+                new ChainMapImpl<String, Object>(), 0, 10);
         assertTrue(uis.getResultSize() > 0);
         System.out.println("result size:" + uis.getResultSize());
         uis.getPageResults().forEach(ui -> {

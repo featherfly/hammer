@@ -1,5 +1,6 @@
 # 0.7.0
 1. 加入强类型dsl查询
+2. 实现TransverterManager
 
 # 0.6.6 2022-08-26
 1. 修改L group(Consumer<C>)为L group(Function<C,L>)，
