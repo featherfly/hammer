@@ -20,12 +20,10 @@ import com.speedment.common.tuple.Tuples;
 import cn.featherfly.common.db.SqlUtils;
 import cn.featherfly.common.db.mapping.JdbcMappingFactory;
 import cn.featherfly.common.lang.Lang;
-import cn.featherfly.common.operator.QueryOperator;
 import cn.featherfly.common.structure.page.Limit;
 import cn.featherfly.common.structure.page.Page;
 import cn.featherfly.common.structure.page.PaginationResults;
 import cn.featherfly.common.structure.page.SimplePaginationResults;
-import cn.featherfly.hammer.sqldb.SqldbHammerException;
 import cn.featherfly.hammer.sqldb.jdbc.Jdbc;
 import cn.featherfly.hammer.sqldb.jdbc.SqlPageFactory;
 import cn.featherfly.hammer.sqldb.jdbc.SqlPageFactory.SqlPageQuery;
@@ -34,6 +32,8 @@ import cn.featherfly.hammer.tpl.TplExecuteConfig;
 import cn.featherfly.hammer.tpl.TplExecuteId;
 import cn.featherfly.hammer.tpl.TplExecuteIdFileImpl;
 import cn.featherfly.hammer.tpl.TplExecutor;
+import cn.featherfly.hammer.tpl.Transverter;
+import cn.featherfly.hammer.tpl.TransverterManager;
 import cn.featherfly.hammer.tpl.directive.TemplateDirective;
 import cn.featherfly.hammer.tpl.method.TemplateMethod;
 import cn.featherfly.hammer.tpl.supports.ConditionParamsManager;
@@ -64,6 +64,8 @@ public class SqlTplExecutor implements TplExecutor {
     /** The sql page factory. */
     private SqlPageFactory sqlPageFactory;
 
+    private TransverterManager transverterManager;
+
     /**
      * Instantiates a new sql tpl executor.
      *
@@ -76,13 +78,15 @@ public class SqlTplExecutor implements TplExecutor {
     @SuppressWarnings("unchecked")
     public SqlTplExecutor(@Nonnull TplConfigFactory configFactory,
             @SuppressWarnings("rawtypes") @Nonnull SqlDbTemplateEngine templateEngine, @Nonnull Jdbc jdbc,
-            @Nonnull JdbcMappingFactory mappingFactory, SqlPageFactory sqlPageFactory) {
+            @Nonnull JdbcMappingFactory mappingFactory, SqlPageFactory sqlPageFactory,
+            TransverterManager transverterManager) {
         super();
         this.configFactory = configFactory;
         this.jdbc = jdbc;
         this.mappingFactory = mappingFactory;
         this.templateEngine = templateEngine;
         this.sqlPageFactory = sqlPageFactory;
+        this.transverterManager = transverterManager;
     }
 
     /**
@@ -770,16 +774,18 @@ public class SqlTplExecutor implements TplExecutor {
         }
         Param p = manager.getParam(name);
         if (p != null && Lang.isNotEmpty(p.getTransverter())) {
-            // TODO 这里后续需要使用TransverterManager来处理，这样就可以用户自定义处理器了
-            if (QueryOperator.CO.name().equals(p.getTransverter())) {
-                return "%" + value + "%";
-            } else if (QueryOperator.SW.name().equals(p.getTransverter())) {
-                return value + "%";
-            } else if (QueryOperator.EW.name().equals(p.getTransverter())) {
-                return "%" + value;
-            } else {
-                throw new SqldbHammerException("no implemention for " + p.getTransverter());
-            }
+            Transverter transverter = transverterManager.getExist(p.getTransverter());
+            return transverter.transvert(p.getTransverter(), value);
+            //            // TODO 这里后续需要使用TransverterManager来处理，这样就可以用户自定义处理器了
+            //            if (QueryOperator.CO.name().equals(p.getTransverter())) {
+            //                return "%" + value + "%";
+            //            } else if (QueryOperator.SW.name().equals(p.getTransverter())) {
+            //                return value + "%";
+            //            } else if (QueryOperator.EW.name().equals(p.getTransverter())) {
+            //                return "%" + value;
+            //            } else {
+            //                throw new SqldbHammerException("no implemention for " + p.getTransverter());
+            //            }
         }
         return value;
     }

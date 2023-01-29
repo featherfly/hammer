@@ -9,6 +9,7 @@ import cn.featherfly.hammer.sqldb.jdbc.JdbcTestBase;
 import cn.featherfly.hammer.sqldb.jdbc.SimpleSqlPageFactory;
 import cn.featherfly.hammer.sqldb.tpl.freemarker.SqldbFreemarkerTemplateEngine;
 import cn.featherfly.hammer.tpl.TplConfigFactoryImpl;
+import cn.featherfly.hammer.tpl.TransverterManager;
 
 /**
  * <p>
@@ -29,6 +30,6 @@ public class SqlTplExecutorTest2 extends JdbcTestBase {
     void testInvalidateChar() {
         TplConfigFactoryImpl configFactory = new TplConfigFactoryImpl("tpl2/", ".yaml.tpl");
         executor = new SqlTplExecutor(configFactory, new SqldbFreemarkerTemplateEngine(configFactory), jdbc,
-                mappingFactory, new SimpleSqlPageFactory());
+                mappingFactory, new SimpleSqlPageFactory(), new TransverterManager());
     }
 }
