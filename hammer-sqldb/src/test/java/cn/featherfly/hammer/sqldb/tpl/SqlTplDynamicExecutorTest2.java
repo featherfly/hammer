@@ -11,7 +11,7 @@ import java.util.Map;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
 
-import cn.featherfly.common.structure.HashChainMap;
+import cn.featherfly.common.structure.ChainMapImpl;
 import cn.featherfly.common.structure.page.Page;
 import cn.featherfly.common.structure.page.PaginationResults;
 import cn.featherfly.common.structure.page.SimplePagination;
@@ -54,7 +54,7 @@ public class SqlTplDynamicExecutorTest2 extends JdbcTestBase {
         System.out.println("selectString = " + str);
         assertEquals(str, "yufei");
 
-        str = userMapper.string("selectString2", new HashChainMap<String, Object>().putChain("id", 2));
+        str = userMapper.string("selectString2", new ChainMapImpl<String, Object>().putChain("id", 2));
         System.out.println("selectString = " + str);
         assertEquals(str, "featherfly");
 

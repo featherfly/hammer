@@ -226,7 +226,7 @@ public class SqldbHammerImpl implements SqldbHammer {
             return 0;
         }
         InsertOperate<E> insert = null;
-        if (jdbc.getDialect().isInsertBatch() && jdbc.getDialect().isAutoGenerateKeyBatch()) {
+        if (jdbc.getDialect().supportInsertBatch() && jdbc.getDialect().supportAutoGenerateKeyBatch()) {
             for (E entity : entities) {
                 if (insert == null) {
                     insert = getInsert(entity);
@@ -253,7 +253,7 @@ public class SqldbHammerImpl implements SqldbHammer {
         if (entity == null) {
             return 0;
         }
-        if (jdbc.getDialect().isUpsert()) {
+        if (jdbc.getDialect().supportUpsert()) {
             UpsertOperate<E> upsert = getUpsert(entity);
             return upsert.execute(entity);
         } else {

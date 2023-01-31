@@ -595,7 +595,7 @@ public class TeMapperImpl implements TeMapper {
      */
     @Override
     public List<Map<String, Object>> findMapList2(String name, int offset, int limit) {
-
+        System.out.println(hammer);
         return null;
     }
 

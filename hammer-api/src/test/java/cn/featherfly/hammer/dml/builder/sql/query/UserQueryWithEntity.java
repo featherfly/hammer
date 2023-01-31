@@ -69,7 +69,8 @@ public class UserQueryWithEntity implements
      * {@inheritDoc}
      */
     @Override
-    public <T, R> UserQueryWithEntity fetch(SerializableFunction<T, R>... propertyNames) {
+    public <T,
+            R> UserQueryWithEntity fetch(@SuppressWarnings("unchecked") SerializableFunction<T, R>... propertyNames) {
         // YUFEI_TODO Auto-generated method stub
         return null;
     }

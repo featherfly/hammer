@@ -66,6 +66,7 @@ public class Subclass extends Superclass<User> {
             }
         }, new PrintWriter(System.out));
 
+        System.out.println(traceClassVisitor);
         //        ASMifier asm = new ASMifier();
     }
 

@@ -776,16 +776,6 @@ public class SqlTplExecutor implements TplExecutor {
         if (p != null && Lang.isNotEmpty(p.getTransverter())) {
             Transverter transverter = transverterManager.getExist(p.getTransverter());
             return transverter.transvert(p.getTransverter(), value);
-            //            // TODO 这里后续需要使用TransverterManager来处理，这样就可以用户自定义处理器了
-            //            if (QueryOperator.CO.name().equals(p.getTransverter())) {
-            //                return "%" + value + "%";
-            //            } else if (QueryOperator.SW.name().equals(p.getTransverter())) {
-            //                return value + "%";
-            //            } else if (QueryOperator.EW.name().equals(p.getTransverter())) {
-            //                return "%" + value;
-            //            } else {
-            //                throw new SqldbHammerException("no implemention for " + p.getTransverter());
-            //            }
         }
         return value;
     }

@@ -114,8 +114,8 @@ public class Helloworld2 extends ClassLoader implements Opcodes {
         exampleClass.getMethods()[0].invoke(null, new Object[] { null });
 
         Object target = ClassUtils.newInstance(exampleClass);
-
+        System.out.println(target.getClass().getName());
         //        ClassUtils.invokeMethod(target, "get", 1);
-        System.out.println(ClassUtils.getSuperClassGenricType(exampleClass));
+        System.out.println(ClassUtils.getSuperClassGenericType(exampleClass));
     }
 }
