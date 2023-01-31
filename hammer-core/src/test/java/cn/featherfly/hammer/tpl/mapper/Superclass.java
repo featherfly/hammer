@@ -28,7 +28,8 @@ public class Superclass<T> {
     }
 
     public T get(Serializable id) {
-        System.out.print(ClassUtils.getSuperClassGenricType(this.getClass()));
+        System.out.println(name);
+        System.out.print(ClassUtils.getSuperClassGenericType(this.getClass()));
         return null;
     }
 }

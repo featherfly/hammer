@@ -26,7 +26,7 @@ dependencies {
     testImplementation 'net.sf.ehcache:ehcache:2.10.6'
     testImplementation group: 'org.postgresql', name: 'postgresql', version: '42.2.6'
     //testImplementation group: 'org.xerial', name: 'sqlite-jdbc', version: '3.28.0'
-    testImplementation group: 'org.xerial', name: 'sqlite-jdbc', version: '3.30.1'
+    testImplementation group: 'org.xerial', name: 'sqlite-jdbc', version: '3.40.0.0'
     
 }
 

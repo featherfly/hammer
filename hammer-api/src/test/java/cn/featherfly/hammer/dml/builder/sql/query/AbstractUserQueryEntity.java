@@ -173,6 +173,7 @@ public class AbstractUserQueryEntity<Q extends AbstractUserQueryEntity<Q, QW, QW
     /**
      * {@inheritDoc}
      */
+    @SuppressWarnings("unchecked")
     @Override
     public <T, R> Q property(SerializableFunction<T, R>... propertyNames) {
         // YUFEI_TODO Auto-generated method stub

@@ -39,7 +39,7 @@ import cn.featherfly.common.lang.ClassUtils;
 import cn.featherfly.common.lang.Lang;
 import cn.featherfly.common.lang.Strings;
 import cn.featherfly.common.structure.ChainMap;
-import cn.featherfly.common.structure.HashChainMap;
+import cn.featherfly.common.structure.ChainMapImpl;
 import cn.featherfly.common.structure.page.Page;
 import cn.featherfly.common.structure.page.PaginationResults;
 import cn.featherfly.hammer.GenericHammer;
@@ -228,7 +228,7 @@ public class TplDynamicExecutorFactory extends ClassLoader implements Opcodes {
 
             hammerDescriptor = Type.getDescriptor(Hammer.class);
             hammerName = Type.getInternalName(Hammer.class);
-            paramName = Type.getInternalName(HashChainMap.class);
+            paramName = Type.getInternalName(ChainMapImpl.class);
             paramChainName = Type.getInternalName(ChainMap.class);
 
             constructorDescriptor = Asm.getConstructorDescriptor(Hammer.class);
@@ -239,10 +239,7 @@ public class TplDynamicExecutorFactory extends ClassLoader implements Opcodes {
     }
 
     /**
-     * <p>
-     * get DynamicTplMapperFactory Instance
-     * </p>
-     * .
+     * get DynamicTplMapperFactory Instance .
      *
      * @return DynamicTplMapperFactory
      */

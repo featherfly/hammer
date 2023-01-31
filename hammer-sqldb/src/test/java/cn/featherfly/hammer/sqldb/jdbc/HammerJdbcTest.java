@@ -899,7 +899,7 @@ public class HammerJdbcTest extends JdbcTestBase {
 
         // IMPLSOON 后续看如何实现expression
         //                user = hammer.query(User.class).where().eq(User::getId, id).and()
-        //                        .expression("age - :age >= 0", new HashChainMap<String, Object>().putChain("age", 100)).single();
+        //                        .expression("age - :age >= 0", new ChainMapImpl<String, Object>().putChain("age", 100)).single();
         //                assertNull(user);
         //
         //        user = hammer.query(User.class).where().eq(User::getId, id).and().expression("age - ? >= 0", 100).single();

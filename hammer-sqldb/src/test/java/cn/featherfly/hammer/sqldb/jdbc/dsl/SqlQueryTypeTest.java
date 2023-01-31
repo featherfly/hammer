@@ -577,7 +577,7 @@ public class SqlQueryTypeTest extends JdbcTestBase {
     // mappingFactory.getClassMapping(Tree2.class);
     // System.err.println(ClassMappingUtils.getSelectColumnsSql(classMapping,
     // "t0", Dialects.MYSQL, mappingFactory,
-    // new HashChainMap<String, String>().putChain("parent", "t1")));
+    // new ChainMapImpl<String, String>().putChain("parent", "t1")));
     //
     // }
 }
