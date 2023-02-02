@@ -307,6 +307,7 @@ public abstract class AbstractSqlConditionExpression<L> implements SqlBuilder, P
      * @param property       the repository
      * @param nestedProperty the property
      * @param value          the value
+     * @param classMapping   the class mapping
      * @param factory        the factory
      * @return the tuple 2
      */
@@ -353,11 +354,13 @@ public abstract class AbstractSqlConditionExpression<L> implements SqlBuilder, P
     /**
      * Condition result.
      *
-     * @param <T>        the generic type
-     * @param <R>        the generic type
-     * @param repository the repository
-     * @param property   the property
-     * @param factory    the factory
+     * @param <O>          the generic type
+     * @param <T>          the generic type
+     * @param <R>          the generic type
+     * @param repository   the repository
+     * @param property     the property
+     * @param classMapping the class mapping
+     * @param factory      the factory
      * @return the tuple 3
      */
     protected <O, T, R> Tuple3<String, String, Object> conditionResult(SerializableSupplier<T> repository,

@@ -35,7 +35,8 @@ import cn.featherfly.hammer.sqldb.sql.dml.AbstractRepositorySqlConditionGroupExp
  * @author zhongj
  */
 public class RepositorySqlQueryConditionGroupExpression extends
-        AbstractRepositorySqlConditionGroupExpression<RepositoryQueryConditionGroupExpression, RepositoryQueryConditionGroupLogicExpression>
+        AbstractRepositorySqlConditionGroupExpression<RepositoryQueryConditionGroupExpression,
+                RepositoryQueryConditionGroupLogicExpression>
         implements RepositoryQueryConditionGroupExpression, RepositoryQueryConditionGroupLogicExpression,
         QuerySortExpression {
 
@@ -65,7 +66,6 @@ public class RepositorySqlQueryConditionGroupExpression extends
      * @param aliasManager   aliasManager
      * @param queryAlias     queryAlias
      * @param sqlPageFactory the sql page factory
-     * @param classMapping   classMapping
      * @param ignorePolicy   the ignore policy
      */
     public RepositorySqlQueryConditionGroupExpression(Jdbc jdbc, AliasManager aliasManager, String queryAlias,
@@ -81,7 +81,6 @@ public class RepositorySqlQueryConditionGroupExpression extends
      * @param aliasManager   aliasManager
      * @param queryAlias     queryAlias
      * @param sqlPageFactory the sql page factory
-     * @param classMapping   classMapping
      * @param ignorePolicy   the ignore policy
      */
     RepositorySqlQueryConditionGroupExpression(RepositoryQueryConditionGroupLogicExpression parent, Jdbc jdbc,

@@ -5,7 +5,6 @@ package cn.featherfly.hammer.sqldb.jdbc.vo.order;
  *
  * @author zhongj
  */
-
 public abstract class PaymentPlatformOrder {
 
     private String appId;

@@ -2,21 +2,23 @@
 package cn.featherfly.hammer.sqldb.jdbc.dsl.query;
 
 import java.util.List;
-import java.util.function.Consumer;
-import java.util.function.Predicate;
+
+import org.apache.commons.lang3.NotImplementedException;
 
 import cn.featherfly.common.db.mapping.JdbcClassMapping;
+import cn.featherfly.common.db.mapping.JdbcPropertyMapping;
+import cn.featherfly.common.lang.ClassUtils;
+import cn.featherfly.common.lang.LambdaUtils;
+import cn.featherfly.common.lang.LambdaUtils.SerializedLambdaInfo;
 import cn.featherfly.common.lang.function.SerializableFunction;
+import cn.featherfly.common.lang.function.SerializableFunction1;
 import cn.featherfly.common.lang.function.SerializableFunction2;
-import cn.featherfly.common.lang.function.SerializableFunction3;
-import cn.featherfly.common.structure.page.Page;
 import cn.featherfly.hammer.dsl.query.type.EntityQueryConditionGroupExpression;
 import cn.featherfly.hammer.dsl.query.type.EntityQueryConditionGroupLogicExpression;
 import cn.featherfly.hammer.dsl.query.type.EntityQueryEntityProperties;
 import cn.featherfly.hammer.dsl.query.type.EntityQueryRelation8;
+import cn.featherfly.hammer.dsl.query.type.EntityQueryRelation9;
 import cn.featherfly.hammer.dsl.query.type.EntityQueryRelationEntity8;
-import cn.featherfly.hammer.expression.condition.ConditionGroupConfig;
-import cn.featherfly.hammer.expression.query.type.EntityQueryLimitExecutor;
 import cn.featherfly.hammer.expression.query.type.EntityQueryRelationEntityExpression9;
 import cn.featherfly.hammer.expression.query.type.EntityQueryRelationExpression9;
 
@@ -51,111 +53,16 @@ public class EntitySqlQueryRelation8<E, R1, R2, R3, R4, R5, R6, R7, R8, J1, J2>
      * @param joinTypeClassMapping      the join type class mapping
      * @param joinTableColumn           the join table column
      * @param fetchProperty             the fetch property
-     * @param ignorePolicy              the ignore policy
+     * @param relationParts             the relation parts
      */
     public EntitySqlQueryRelation8(EntitySqlQueryEntityProperties<E> sqlQueryEntityProperties,
             JdbcClassMapping<J1> conditionTypeClassMapping, String conditionTableAlias, String conditionTableColumn,
             JdbcClassMapping<J2> joinTypeClassMapping, String joinTableColumn, String fetchProperty,
-            Predicate<Object> ignorePolicy) {
+            List<EntitySqlQueryRelationPart<?, ?>> relationParts) {
         super(sqlQueryEntityProperties, conditionTypeClassMapping, conditionTableAlias, conditionTableColumn,
-                joinTypeClassMapping, joinTableColumn, fetchProperty, ignorePolicy);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public <RE extends EntityQueryRelationEntityExpression9<E, R1, R2, R3, R4, R5, R6, R7, R8, R9, EntityQueryEntityProperties<E>, QR, EntityQueryConditionGroupExpression<E>, EntityQueryConditionGroupLogicExpression<E>>,
-            QR extends EntityQueryRelationExpression9<E, R1, R2, R3, R4, R5, R6, R7, R8, R9, EntityQueryEntityProperties<E>, EntityQueryConditionGroupExpression<E>, EntityQueryConditionGroupLogicExpression<E>>,
-            R9> RE join(SerializableFunction<E, R9> propertyName) {
-        // YUFEI_TODO Auto-generated method stub
-        return null;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public <RE extends EntityQueryRelationEntityExpression9<E, R1, R2, R3, R4, R5, R6, R7, R8, R9, EntityQueryEntityProperties<E>, QR, EntityQueryConditionGroupExpression<E>, EntityQueryConditionGroupLogicExpression<E>>,
-            QR extends EntityQueryRelationExpression9<E, R1, R2, R3, R4, R5, R6, R7, R8, R9, EntityQueryEntityProperties<E>, EntityQueryConditionGroupExpression<E>, EntityQueryConditionGroupLogicExpression<E>>,
-            R9> RE join(SerializableFunction2<R9, E> propertyName) {
-        // YUFEI_TODO Auto-generated method stub
-        return null;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public <RE extends EntityQueryRelationEntityExpression9<E, R1, R2, R3, R4, R5, R6, R7, R8, E, EntityQueryEntityProperties<E>, QR, EntityQueryConditionGroupExpression<E>, EntityQueryConditionGroupLogicExpression<E>>,
-            QR extends EntityQueryRelationExpression9<E, R1, R2, R3, R4, R5, R6, R7, R8, E, EntityQueryEntityProperties<E>, EntityQueryConditionGroupExpression<E>, EntityQueryConditionGroupLogicExpression<E>>> RE join(
-                    SerializableFunction3<E, E> propertyName) {
-        // YUFEI_TODO Auto-generated method stub
-        return null;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public EntityQueryConditionGroupExpression<E> where() {
-        // YUFEI_TODO Auto-generated method stub
-        return null;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public EntityQueryConditionGroupExpression<E> where(
-            Consumer<ConditionGroupConfig<EntityQueryConditionGroupExpression<E>>> consumer) {
-        // YUFEI_TODO Auto-generated method stub
-        return null;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public List<E> list() {
-        // YUFEI_TODO Auto-generated method stub
-        return null;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public Long count() {
-        // YUFEI_TODO Auto-generated method stub
-        return null;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public EntityQueryLimitExecutor<E> limit(Integer limit) {
-        // YUFEI_TODO Auto-generated method stub
-        return null;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public EntityQueryLimitExecutor<E> limit(Integer offset, Integer limit) {
-        // YUFEI_TODO Auto-generated method stub
-        return null;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public EntityQueryLimitExecutor<E> limit(Page page) {
-        // YUFEI_TODO Auto-generated method stub
-        return null;
+                joinTypeClassMapping, joinTableColumn, fetchProperty, relationParts);
+        // IMPLSOON 后续来实现
+        throw new NotImplementedException();
     }
 
     /**
@@ -170,265 +77,630 @@ public class EntitySqlQueryRelation8<E, R1, R2, R3, R4, R5, R6, R7, R8, J1, J2>
     /**
      * {@inheritDoc}
      */
+    @SuppressWarnings("unchecked")
     @Override
-    public <RE extends EntityQueryRelationEntityExpression9<E, R1, R2, R3, R4, R5, R6, R7, R8, R9, EntityQueryEntityProperties<E>, QR, EntityQueryConditionGroupExpression<E>, EntityQueryConditionGroupLogicExpression<E>>,
-            QR extends EntityQueryRelationEntityExpression9<E, R1, R2, R3, R4, R5, R6, R7, R8, R9, EntityQueryEntityProperties<E>, QR, EntityQueryConditionGroupExpression<E>, EntityQueryConditionGroupLogicExpression<E>>,
+    public <RE extends EntityQueryRelationEntityExpression9<E, R1, R2, R3, R4, R5, R6, R7, R8, R9,
+            EntityQueryEntityProperties<E>, QR, EntityQueryConditionGroupExpression<E>,
+            EntityQueryConditionGroupLogicExpression<E>>,
+            QR extends EntityQueryRelationExpression9<E, R1, R2, R3, R4, R5, R6, R7, R8, R9,
+                    EntityQueryEntityProperties<E>, EntityQueryConditionGroupExpression<E>,
+                    EntityQueryConditionGroupLogicExpression<E>>,
+            R9> RE join(SerializableFunction<E, R9> propertyName) {
+        SerializedLambdaInfo info = LambdaUtils.getLambdaInfo(propertyName);
+        JdbcClassMapping<R9> joinTypeMapping2 = factory.getClassMapping((Class<R9>) info.getPropertyType());
+        JdbcPropertyMapping cpm = relationPart.conditionTypeClassMapping.getPropertyMapping(info.getPropertyName());
+        EntityQueryRelation9<E, R1, R2, R3, R4, R5, R6, R7, R8,
+                R9> r = new EntitySqlQueryRelation9<>(sqlQueryEntityProperties, relationPart.joinTypeClassMapping,
+                        relationPart.conditionTableAlias, cpm.getRepositoryFieldName(), joinTypeMapping2,
+                        joinTypeMapping2.getPrivaryKeyPropertyMappings().get(0).getRepositoryFieldName(),
+                        cpm.getPropertyName(), relationParts);
+        return (RE) r;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @SuppressWarnings("unchecked")
+    @Override
+    public <RE extends EntityQueryRelationEntityExpression9<E, R1, R2, R3, R4, R5, R6, R7, R8, R9,
+            EntityQueryEntityProperties<E>, QR, EntityQueryConditionGroupExpression<E>,
+            EntityQueryConditionGroupLogicExpression<E>>,
+            QR extends EntityQueryRelationExpression9<E, R1, R2, R3, R4, R5, R6, R7, R8, R9,
+                    EntityQueryEntityProperties<E>, EntityQueryConditionGroupExpression<E>,
+                    EntityQueryConditionGroupLogicExpression<E>>,
+            R9> RE join(SerializableFunction2<R9, E> propertyName) {
+        SerializedLambdaInfo info = LambdaUtils.getLambdaInfo(propertyName);
+        JdbcClassMapping<R9> joinTypeMapping = factory
+                .getClassMapping((Class<R9>) ClassUtils.forName(info.getMethodInstanceClassName()));
+        JdbcPropertyMapping jpm = joinTypeMapping.getPropertyMapping(info.getPropertyName());
+        EntityQueryRelation9<E, R1, R2, R3, R4, R5, R6, R7, R8,
+                R9> r = new EntitySqlQueryRelation9<>(sqlQueryEntityProperties, relationPart.joinTypeClassMapping,
+                        relationPart.conditionTableAlias, jpm.getRepositoryFieldName(), joinTypeMapping,
+                        joinTypeMapping.getPrivaryKeyPropertyMappings().get(0).getRepositoryFieldName(), null,
+                        // YUFEI_TODO 后续来根据映射关系看能不能进行处理
+                        relationParts);
+        return (RE) r;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @SuppressWarnings("unchecked")
+    @Override
+    public <RE extends EntityQueryRelationEntityExpression9<E, R1, R2, R3, R4, R5, R6, R7, R8, E,
+            EntityQueryEntityProperties<E>, QR, EntityQueryConditionGroupExpression<E>,
+            EntityQueryConditionGroupLogicExpression<E>>,
+            QR extends EntityQueryRelationExpression9<E, R1, R2, R3, R4, R5, R6, R7, R8, E,
+                    EntityQueryEntityProperties<E>, EntityQueryConditionGroupExpression<E>,
+                    EntityQueryConditionGroupLogicExpression<E>>> RE join(SerializableFunction1<E, E> propertyName) {
+        SerializedLambdaInfo info = LambdaUtils.getLambdaInfo(propertyName);
+        JdbcClassMapping<E> joinTypeMapping = factory.getClassMapping((Class<E>) info.getPropertyType());
+        JdbcPropertyMapping cpm = relationPart.conditionTypeClassMapping.getPropertyMapping(info.getPropertyName());
+        EntityQueryRelation9<E, R1, R2, R3, R4, R5, R6, R7, R8,
+                E> r = new EntitySqlQueryRelation9<>(sqlQueryEntityProperties, relationPart.joinTypeClassMapping,
+                        relationPart.conditionTableAlias, cpm.getRepositoryFieldName(), joinTypeMapping,
+                        joinTypeMapping.getPrivaryKeyPropertyMappings().get(0).getRepositoryFieldName(),
+                        cpm.getPropertyName(), relationParts);
+        return (RE) r;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @SuppressWarnings("unchecked")
+    @Override
+    public <RE extends EntityQueryRelationEntityExpression9<E, R1, R2, R3, R4, R5, R6, R7, R8, R9,
+            EntityQueryEntityProperties<E>, QR, EntityQueryConditionGroupExpression<E>,
+            EntityQueryConditionGroupLogicExpression<E>>,
+            QR extends EntityQueryRelationEntityExpression9<E, R1, R2, R3, R4, R5, R6, R7, R8, R9,
+                    EntityQueryEntityProperties<E>, QR, EntityQueryConditionGroupExpression<E>,
+                    EntityQueryConditionGroupLogicExpression<E>>,
             R9> RE join1(SerializableFunction<R1, R9> propertyName) {
-        // YUFEI_TODO Auto-generated method stub
-        return null;
+        SerializedLambdaInfo info = LambdaUtils.getLambdaInfo(propertyName);
+        JdbcClassMapping<R9> joinTypeMapping2 = factory.getClassMapping((Class<R9>) info.getPropertyType());
+        JdbcPropertyMapping cpm = relationPart.joinTypeClassMapping.getPropertyMapping(info.getPropertyName());
+        EntityQueryRelation9<E, R1, R2, R3, R4, R5, R6, R7, R8,
+                R9> r = new EntitySqlQueryRelation9<>(sqlQueryEntityProperties, relationPart.joinTypeClassMapping,
+                        relationPart.joinTableAlias, cpm.getRepositoryFieldName(), joinTypeMapping2,
+                        joinTypeMapping2.getPrivaryKeyPropertyMappings().get(0).getRepositoryFieldName(),
+                        fetchProperty(1, cpm.getPropertyName()), relationParts);
+        return (RE) r;
     }
 
     /**
      * {@inheritDoc}
      */
+    @SuppressWarnings("unchecked")
     @Override
-    public <RE extends EntityQueryRelationEntityExpression9<E, R1, R2, R3, R4, R5, R6, R7, R8, R9, EntityQueryEntityProperties<E>, QR, EntityQueryConditionGroupExpression<E>, EntityQueryConditionGroupLogicExpression<E>>,
-            QR extends EntityQueryRelationEntityExpression9<E, R1, R2, R3, R4, R5, R6, R7, R8, R9, EntityQueryEntityProperties<E>, QR, EntityQueryConditionGroupExpression<E>, EntityQueryConditionGroupLogicExpression<E>>,
+    public <RE extends EntityQueryRelationEntityExpression9<E, R1, R2, R3, R4, R5, R6, R7, R8, R9,
+            EntityQueryEntityProperties<E>, QR, EntityQueryConditionGroupExpression<E>,
+            EntityQueryConditionGroupLogicExpression<E>>,
+            QR extends EntityQueryRelationEntityExpression9<E, R1, R2, R3, R4, R5, R6, R7, R8, R9,
+                    EntityQueryEntityProperties<E>, QR, EntityQueryConditionGroupExpression<E>,
+                    EntityQueryConditionGroupLogicExpression<E>>,
             R9> RE join1(SerializableFunction2<R9, R1> propertyName) {
-        // YUFEI_TODO Auto-generated method stub
-        return null;
+        SerializedLambdaInfo info = LambdaUtils.getLambdaInfo(propertyName);
+        JdbcClassMapping<R9> joinTypeMapping = factory
+                .getClassMapping((Class<R9>) ClassUtils.forName(info.getMethodInstanceClassName()));
+        JdbcPropertyMapping jpm = joinTypeMapping.getPropertyMapping(info.getPropertyName());
+        EntityQueryRelation9<E, R1, R2, R3, R4, R5, R6, R7, R8,
+                R9> r = new EntitySqlQueryRelation9<>(sqlQueryEntityProperties, relationPart.joinTypeClassMapping,
+                        relationPart.conditionTableAlias, jpm.getRepositoryFieldName(), joinTypeMapping,
+                        joinTypeMapping.getPrivaryKeyPropertyMappings().get(0).getRepositoryFieldName(), null,
+                        // YUFEI_TODO 后续来根据映射关系看能不能进行处理
+                        relationParts);
+        return (RE) r;
     }
 
     /**
      * {@inheritDoc}
      */
+    @SuppressWarnings("unchecked")
     @Override
-    public <RE extends EntityQueryRelationEntityExpression9<E, R1, R2, R3, R4, R5, R6, R7, R8, R1, EntityQueryEntityProperties<E>, QR, EntityQueryConditionGroupExpression<E>, EntityQueryConditionGroupLogicExpression<E>>,
-            QR extends EntityQueryRelationExpression9<E, R1, R2, R3, R4, R5, R6, R7, R8, R1, EntityQueryEntityProperties<E>, EntityQueryConditionGroupExpression<E>, EntityQueryConditionGroupLogicExpression<E>>> RE join1(
-                    SerializableFunction3<R1, R1> propertyName) {
-        // YUFEI_TODO Auto-generated method stub
-        return null;
+    public <RE extends EntityQueryRelationEntityExpression9<E, R1, R2, R3, R4, R5, R6, R7, R8, R1,
+            EntityQueryEntityProperties<E>, QR, EntityQueryConditionGroupExpression<E>,
+            EntityQueryConditionGroupLogicExpression<E>>,
+            QR extends EntityQueryRelationExpression9<E, R1, R2, R3, R4, R5, R6, R7, R8, R1,
+                    EntityQueryEntityProperties<E>, EntityQueryConditionGroupExpression<E>,
+                    EntityQueryConditionGroupLogicExpression<E>>> RE join1(SerializableFunction1<R1, R1> propertyName) {
+        SerializedLambdaInfo info = LambdaUtils.getLambdaInfo(propertyName);
+        JdbcPropertyMapping cpm = relationPart.joinTypeClassMapping.getPropertyMapping(info.getPropertyName());
+        EntityQueryRelation9<
+                E, R1, R2, R3, R4, R5, R6, R7, R8, R1> r = new EntitySqlQueryRelation9<>(sqlQueryEntityProperties,
+                        relationPart.joinTypeClassMapping, relationPart.joinTableAlias, cpm.getRepositoryFieldName(),
+                        relationPart.joinTypeClassMapping, relationPart.joinTypeClassMapping
+                                .getPrivaryKeyPropertyMappings().get(0).getRepositoryFieldName(),
+                        fetchProperty(1, cpm.getPropertyName()), relationParts);
+        return (RE) r;
     }
 
     /**
      * {@inheritDoc}
      */
+    @SuppressWarnings("unchecked")
     @Override
-    public <RE extends EntityQueryRelationEntityExpression9<E, R1, R2, R3, R4, R5, R6, R7, R8, R9, EntityQueryEntityProperties<E>, QR, EntityQueryConditionGroupExpression<E>, EntityQueryConditionGroupLogicExpression<E>>,
-            QR extends EntityQueryRelationEntityExpression9<E, R1, R2, R3, R4, R5, R6, R7, R8, R9, EntityQueryEntityProperties<E>, QR, EntityQueryConditionGroupExpression<E>, EntityQueryConditionGroupLogicExpression<E>>,
+    public <RE extends EntityQueryRelationEntityExpression9<E, R1, R2, R3, R4, R5, R6, R7, R8, R9,
+            EntityQueryEntityProperties<E>, QR, EntityQueryConditionGroupExpression<E>,
+            EntityQueryConditionGroupLogicExpression<E>>,
+            QR extends EntityQueryRelationEntityExpression9<E, R1, R2, R3, R4, R5, R6, R7, R8, R9,
+                    EntityQueryEntityProperties<E>, QR, EntityQueryConditionGroupExpression<E>,
+                    EntityQueryConditionGroupLogicExpression<E>>,
             R9> RE join2(SerializableFunction<R2, R9> propertyName) {
-        // YUFEI_TODO Auto-generated method stub
-        return null;
+        SerializedLambdaInfo info = LambdaUtils.getLambdaInfo(propertyName);
+        JdbcClassMapping<R9> joinTypeMapping2 = factory.getClassMapping((Class<R9>) info.getPropertyType());
+        JdbcPropertyMapping cpm = relationPart.joinTypeClassMapping.getPropertyMapping(info.getPropertyName());
+        EntityQueryRelation9<E, R1, R2, R3, R4, R5, R6, R7, R8,
+                R9> r = new EntitySqlQueryRelation9<>(sqlQueryEntityProperties, relationPart.joinTypeClassMapping,
+                        relationPart.joinTableAlias, cpm.getRepositoryFieldName(), joinTypeMapping2,
+                        joinTypeMapping2.getPrivaryKeyPropertyMappings().get(0).getRepositoryFieldName(),
+                        fetchProperty(2, cpm.getPropertyName()), relationParts);
+        return (RE) r;
     }
 
     /**
      * {@inheritDoc}
      */
+    @SuppressWarnings("unchecked")
     @Override
-    public <RE extends EntityQueryRelationEntityExpression9<E, R1, R2, R3, R4, R5, R6, R7, R8, R9, EntityQueryEntityProperties<E>, QR, EntityQueryConditionGroupExpression<E>, EntityQueryConditionGroupLogicExpression<E>>,
-            QR extends EntityQueryRelationEntityExpression9<E, R1, R2, R3, R4, R5, R6, R7, R8, R9, EntityQueryEntityProperties<E>, QR, EntityQueryConditionGroupExpression<E>, EntityQueryConditionGroupLogicExpression<E>>,
+    public <RE extends EntityQueryRelationEntityExpression9<E, R1, R2, R3, R4, R5, R6, R7, R8, R9,
+            EntityQueryEntityProperties<E>, QR, EntityQueryConditionGroupExpression<E>,
+            EntityQueryConditionGroupLogicExpression<E>>,
+            QR extends EntityQueryRelationEntityExpression9<E, R1, R2, R3, R4, R5, R6, R7, R8, R9,
+                    EntityQueryEntityProperties<E>, QR, EntityQueryConditionGroupExpression<E>,
+                    EntityQueryConditionGroupLogicExpression<E>>,
             R9> RE join2(SerializableFunction2<R9, R2> propertyName) {
-        // YUFEI_TODO Auto-generated method stub
-        return null;
+        SerializedLambdaInfo info = LambdaUtils.getLambdaInfo(propertyName);
+        JdbcClassMapping<R9> joinTypeMapping = factory
+                .getClassMapping((Class<R9>) ClassUtils.forName(info.getMethodInstanceClassName()));
+        JdbcPropertyMapping jpm = joinTypeMapping.getPropertyMapping(info.getPropertyName());
+        EntityQueryRelation9<E, R1, R2, R3, R4, R5, R6, R7, R8,
+                R9> r = new EntitySqlQueryRelation9<>(sqlQueryEntityProperties, relationPart.joinTypeClassMapping,
+                        relationPart.conditionTableAlias, jpm.getRepositoryFieldName(), joinTypeMapping,
+                        joinTypeMapping.getPrivaryKeyPropertyMappings().get(0).getRepositoryFieldName(), null,
+                        // YUFEI_TODO 后续来根据映射关系看能不能进行处理
+                        relationParts);
+        return (RE) r;
     }
 
     /**
      * {@inheritDoc}
      */
+    @SuppressWarnings("unchecked")
     @Override
-    public <RE extends EntityQueryRelationEntityExpression9<E, R1, R2, R3, R4, R5, R6, R7, R8, R2, EntityQueryEntityProperties<E>, QR, EntityQueryConditionGroupExpression<E>, EntityQueryConditionGroupLogicExpression<E>>,
-            QR extends EntityQueryRelationExpression9<E, R1, R2, R3, R4, R5, R6, R7, R8, R2, EntityQueryEntityProperties<E>, EntityQueryConditionGroupExpression<E>, EntityQueryConditionGroupLogicExpression<E>>> RE join2(
-                    SerializableFunction3<R2, R2> propertyName) {
-        // YUFEI_TODO Auto-generated method stub
-        return null;
+    public <RE extends EntityQueryRelationEntityExpression9<E, R1, R2, R3, R4, R5, R6, R7, R8, R2,
+            EntityQueryEntityProperties<E>, QR, EntityQueryConditionGroupExpression<E>,
+            EntityQueryConditionGroupLogicExpression<E>>,
+            QR extends EntityQueryRelationExpression9<E, R1, R2, R3, R4, R5, R6, R7, R8, R2,
+                    EntityQueryEntityProperties<E>, EntityQueryConditionGroupExpression<E>,
+                    EntityQueryConditionGroupLogicExpression<E>>> RE join2(SerializableFunction1<R2, R2> propertyName) {
+        SerializedLambdaInfo info = LambdaUtils.getLambdaInfo(propertyName);
+        JdbcPropertyMapping cpm = relationPart.joinTypeClassMapping.getPropertyMapping(info.getPropertyName());
+        EntityQueryRelation9<
+                E, R1, R2, R3, R4, R5, R6, R7, R8, R1> r = new EntitySqlQueryRelation9<>(sqlQueryEntityProperties,
+                        relationPart.joinTypeClassMapping, relationPart.joinTableAlias, cpm.getRepositoryFieldName(),
+                        relationPart.joinTypeClassMapping, relationPart.joinTypeClassMapping
+                                .getPrivaryKeyPropertyMappings().get(0).getRepositoryFieldName(),
+                        fetchProperty(1, cpm.getPropertyName()), relationParts);
+        return (RE) r;
     }
 
     /**
      * {@inheritDoc}
      */
+    @SuppressWarnings("unchecked")
     @Override
-    public <RE extends EntityQueryRelationEntityExpression9<E, R1, R2, R3, R4, R5, R6, R7, R8, R9, EntityQueryEntityProperties<E>, QR, EntityQueryConditionGroupExpression<E>, EntityQueryConditionGroupLogicExpression<E>>,
-            QR extends EntityQueryRelationEntityExpression9<E, R1, R2, R3, R4, R5, R6, R7, R8, R9, EntityQueryEntityProperties<E>, QR, EntityQueryConditionGroupExpression<E>, EntityQueryConditionGroupLogicExpression<E>>,
+    public <RE extends EntityQueryRelationEntityExpression9<E, R1, R2, R3, R4, R5, R6, R7, R8, R9,
+            EntityQueryEntityProperties<E>, QR, EntityQueryConditionGroupExpression<E>,
+            EntityQueryConditionGroupLogicExpression<E>>,
+            QR extends EntityQueryRelationEntityExpression9<E, R1, R2, R3, R4, R5, R6, R7, R8, R9,
+                    EntityQueryEntityProperties<E>, QR, EntityQueryConditionGroupExpression<E>,
+                    EntityQueryConditionGroupLogicExpression<E>>,
             R9> RE join3(SerializableFunction<R3, R9> propertyName) {
-        // YUFEI_TODO Auto-generated method stub
-        return null;
+        SerializedLambdaInfo info = LambdaUtils.getLambdaInfo(propertyName);
+        JdbcClassMapping<R9> joinTypeMapping2 = factory.getClassMapping((Class<R9>) info.getPropertyType());
+        JdbcPropertyMapping cpm = relationPart.joinTypeClassMapping.getPropertyMapping(info.getPropertyName());
+        EntityQueryRelation9<E, R1, R2, R3, R4, R5, R6, R7, R8,
+                R9> r = new EntitySqlQueryRelation9<>(sqlQueryEntityProperties, relationPart.joinTypeClassMapping,
+                        relationPart.joinTableAlias, cpm.getRepositoryFieldName(), joinTypeMapping2,
+                        joinTypeMapping2.getPrivaryKeyPropertyMappings().get(0).getRepositoryFieldName(),
+                        fetchProperty(3, cpm.getPropertyName()), relationParts);
+        return (RE) r;
     }
 
     /**
      * {@inheritDoc}
      */
+    @SuppressWarnings("unchecked")
     @Override
-    public <RE extends EntityQueryRelationEntityExpression9<E, R1, R2, R3, R4, R5, R6, R7, R8, R9, EntityQueryEntityProperties<E>, QR, EntityQueryConditionGroupExpression<E>, EntityQueryConditionGroupLogicExpression<E>>,
-            QR extends EntityQueryRelationEntityExpression9<E, R1, R2, R3, R4, R5, R6, R7, R8, R9, EntityQueryEntityProperties<E>, QR, EntityQueryConditionGroupExpression<E>, EntityQueryConditionGroupLogicExpression<E>>,
+    public <RE extends EntityQueryRelationEntityExpression9<E, R1, R2, R3, R4, R5, R6, R7, R8, R9,
+            EntityQueryEntityProperties<E>, QR, EntityQueryConditionGroupExpression<E>,
+            EntityQueryConditionGroupLogicExpression<E>>,
+            QR extends EntityQueryRelationEntityExpression9<E, R1, R2, R3, R4, R5, R6, R7, R8, R9,
+                    EntityQueryEntityProperties<E>, QR, EntityQueryConditionGroupExpression<E>,
+                    EntityQueryConditionGroupLogicExpression<E>>,
             R9> RE join3(SerializableFunction2<R9, R3> propertyName) {
-        // YUFEI_TODO Auto-generated method stub
-        return null;
+        SerializedLambdaInfo info = LambdaUtils.getLambdaInfo(propertyName);
+        JdbcClassMapping<R9> joinTypeMapping = factory
+                .getClassMapping((Class<R9>) ClassUtils.forName(info.getMethodInstanceClassName()));
+        JdbcPropertyMapping jpm = joinTypeMapping.getPropertyMapping(info.getPropertyName());
+        EntityQueryRelation9<E, R1, R2, R3, R4, R5, R6, R7, R8,
+                R9> r = new EntitySqlQueryRelation9<>(sqlQueryEntityProperties, relationPart.joinTypeClassMapping,
+                        relationPart.conditionTableAlias, jpm.getRepositoryFieldName(), joinTypeMapping,
+                        joinTypeMapping.getPrivaryKeyPropertyMappings().get(0).getRepositoryFieldName(), null,
+                        // YUFEI_TODO 后续来根据映射关系看能不能进行处理
+                        relationParts);
+        return (RE) r;
     }
 
     /**
      * {@inheritDoc}
      */
+    @SuppressWarnings("unchecked")
     @Override
-    public <RE extends EntityQueryRelationEntityExpression9<E, R1, R2, R3, R4, R5, R6, R7, R8, R3, EntityQueryEntityProperties<E>, QR, EntityQueryConditionGroupExpression<E>, EntityQueryConditionGroupLogicExpression<E>>,
-            QR extends EntityQueryRelationExpression9<E, R1, R2, R3, R4, R5, R6, R7, R8, R3, EntityQueryEntityProperties<E>, EntityQueryConditionGroupExpression<E>, EntityQueryConditionGroupLogicExpression<E>>> RE join3(
-                    SerializableFunction3<R3, R3> propertyName) {
-        // YUFEI_TODO Auto-generated method stub
-        return null;
+    public <RE extends EntityQueryRelationEntityExpression9<E, R1, R2, R3, R4, R5, R6, R7, R8, R3,
+            EntityQueryEntityProperties<E>, QR, EntityQueryConditionGroupExpression<E>,
+            EntityQueryConditionGroupLogicExpression<E>>,
+            QR extends EntityQueryRelationExpression9<E, R1, R2, R3, R4, R5, R6, R7, R8, R3,
+                    EntityQueryEntityProperties<E>, EntityQueryConditionGroupExpression<E>,
+                    EntityQueryConditionGroupLogicExpression<E>>> RE join3(SerializableFunction1<R3, R3> propertyName) {
+        SerializedLambdaInfo info = LambdaUtils.getLambdaInfo(propertyName);
+        JdbcPropertyMapping cpm = relationPart.joinTypeClassMapping.getPropertyMapping(info.getPropertyName());
+        EntityQueryRelation9<
+                E, R1, R2, R3, R4, R5, R6, R7, R8, R1> r = new EntitySqlQueryRelation9<>(sqlQueryEntityProperties,
+                        relationPart.joinTypeClassMapping, relationPart.joinTableAlias, cpm.getRepositoryFieldName(),
+                        relationPart.joinTypeClassMapping, relationPart.joinTypeClassMapping
+                                .getPrivaryKeyPropertyMappings().get(0).getRepositoryFieldName(),
+                        fetchProperty(1, cpm.getPropertyName()), relationParts);
+        return (RE) r;
     }
 
     /**
      * {@inheritDoc}
      */
+    @SuppressWarnings("unchecked")
     @Override
-    public <RE extends EntityQueryRelationEntityExpression9<E, R1, R2, R3, R4, R5, R6, R7, R8, R9, EntityQueryEntityProperties<E>, QR, EntityQueryConditionGroupExpression<E>, EntityQueryConditionGroupLogicExpression<E>>,
-            QR extends EntityQueryRelationEntityExpression9<E, R1, R2, R3, R4, R5, R6, R7, R8, R9, EntityQueryEntityProperties<E>, QR, EntityQueryConditionGroupExpression<E>, EntityQueryConditionGroupLogicExpression<E>>,
+    public <RE extends EntityQueryRelationEntityExpression9<E, R1, R2, R3, R4, R5, R6, R7, R8, R9,
+            EntityQueryEntityProperties<E>, QR, EntityQueryConditionGroupExpression<E>,
+            EntityQueryConditionGroupLogicExpression<E>>,
+            QR extends EntityQueryRelationEntityExpression9<E, R1, R2, R3, R4, R5, R6, R7, R8, R9,
+                    EntityQueryEntityProperties<E>, QR, EntityQueryConditionGroupExpression<E>,
+                    EntityQueryConditionGroupLogicExpression<E>>,
             R9> RE join4(SerializableFunction<R4, R9> propertyName) {
-        // YUFEI_TODO Auto-generated method stub
-        return null;
+        SerializedLambdaInfo info = LambdaUtils.getLambdaInfo(propertyName);
+        JdbcClassMapping<R9> joinTypeMapping2 = factory.getClassMapping((Class<R9>) info.getPropertyType());
+        JdbcPropertyMapping cpm = relationPart.joinTypeClassMapping.getPropertyMapping(info.getPropertyName());
+        EntityQueryRelation9<E, R1, R2, R3, R4, R5, R6, R7, R8,
+                R9> r = new EntitySqlQueryRelation9<>(sqlQueryEntityProperties, relationPart.joinTypeClassMapping,
+                        relationPart.joinTableAlias, cpm.getRepositoryFieldName(), joinTypeMapping2,
+                        joinTypeMapping2.getPrivaryKeyPropertyMappings().get(0).getRepositoryFieldName(),
+                        fetchProperty(4, cpm.getPropertyName()), relationParts);
+        return (RE) r;
     }
 
     /**
      * {@inheritDoc}
      */
+    @SuppressWarnings("unchecked")
     @Override
-    public <RE extends EntityQueryRelationEntityExpression9<E, R1, R2, R3, R4, R5, R6, R7, R8, R9, EntityQueryEntityProperties<E>, QR, EntityQueryConditionGroupExpression<E>, EntityQueryConditionGroupLogicExpression<E>>,
-            QR extends EntityQueryRelationEntityExpression9<E, R1, R2, R3, R4, R5, R6, R7, R8, R9, EntityQueryEntityProperties<E>, QR, EntityQueryConditionGroupExpression<E>, EntityQueryConditionGroupLogicExpression<E>>,
+    public <RE extends EntityQueryRelationEntityExpression9<E, R1, R2, R3, R4, R5, R6, R7, R8, R9,
+            EntityQueryEntityProperties<E>, QR, EntityQueryConditionGroupExpression<E>,
+            EntityQueryConditionGroupLogicExpression<E>>,
+            QR extends EntityQueryRelationEntityExpression9<E, R1, R2, R3, R4, R5, R6, R7, R8, R9,
+                    EntityQueryEntityProperties<E>, QR, EntityQueryConditionGroupExpression<E>,
+                    EntityQueryConditionGroupLogicExpression<E>>,
             R9> RE join4(SerializableFunction2<R9, R4> propertyName) {
-        // YUFEI_TODO Auto-generated method stub
-        return null;
+        SerializedLambdaInfo info = LambdaUtils.getLambdaInfo(propertyName);
+        JdbcClassMapping<R9> joinTypeMapping = factory
+                .getClassMapping((Class<R9>) ClassUtils.forName(info.getMethodInstanceClassName()));
+        JdbcPropertyMapping jpm = joinTypeMapping.getPropertyMapping(info.getPropertyName());
+        EntityQueryRelation9<E, R1, R2, R3, R4, R5, R6, R7, R8,
+                R9> r = new EntitySqlQueryRelation9<>(sqlQueryEntityProperties, relationPart.joinTypeClassMapping,
+                        relationPart.conditionTableAlias, jpm.getRepositoryFieldName(), joinTypeMapping,
+                        joinTypeMapping.getPrivaryKeyPropertyMappings().get(0).getRepositoryFieldName(), null,
+                        // YUFEI_TODO 后续来根据映射关系看能不能进行处理
+                        relationParts);
+        return (RE) r;
     }
 
     /**
      * {@inheritDoc}
      */
+    @SuppressWarnings("unchecked")
     @Override
-    public <RE extends EntityQueryRelationEntityExpression9<E, R1, R2, R3, R4, R5, R6, R7, R8, R4, EntityQueryEntityProperties<E>, QR, EntityQueryConditionGroupExpression<E>, EntityQueryConditionGroupLogicExpression<E>>,
-            QR extends EntityQueryRelationExpression9<E, R1, R2, R3, R4, R5, R6, R7, R8, R4, EntityQueryEntityProperties<E>, EntityQueryConditionGroupExpression<E>, EntityQueryConditionGroupLogicExpression<E>>> RE join4(
-                    SerializableFunction3<R4, R4> propertyName) {
-        // YUFEI_TODO Auto-generated method stub
-        return null;
+    public <RE extends EntityQueryRelationEntityExpression9<E, R1, R2, R3, R4, R5, R6, R7, R8, R4,
+            EntityQueryEntityProperties<E>, QR, EntityQueryConditionGroupExpression<E>,
+            EntityQueryConditionGroupLogicExpression<E>>,
+            QR extends EntityQueryRelationExpression9<E, R1, R2, R3, R4, R5, R6, R7, R8, R4,
+                    EntityQueryEntityProperties<E>, EntityQueryConditionGroupExpression<E>,
+                    EntityQueryConditionGroupLogicExpression<E>>> RE join4(SerializableFunction1<R4, R4> propertyName) {
+        SerializedLambdaInfo info = LambdaUtils.getLambdaInfo(propertyName);
+        JdbcPropertyMapping cpm = relationPart.joinTypeClassMapping.getPropertyMapping(info.getPropertyName());
+        EntityQueryRelation9<
+                E, R1, R2, R3, R4, R5, R6, R7, R8, R1> r = new EntitySqlQueryRelation9<>(sqlQueryEntityProperties,
+                        relationPart.joinTypeClassMapping, relationPart.joinTableAlias, cpm.getRepositoryFieldName(),
+                        relationPart.joinTypeClassMapping, relationPart.joinTypeClassMapping
+                                .getPrivaryKeyPropertyMappings().get(0).getRepositoryFieldName(),
+                        fetchProperty(1, cpm.getPropertyName()), relationParts);
+        return (RE) r;
     }
 
     /**
      * {@inheritDoc}
      */
+    @SuppressWarnings("unchecked")
     @Override
-    public <RE extends EntityQueryRelationEntityExpression9<E, R1, R2, R3, R4, R5, R6, R7, R8, R9, EntityQueryEntityProperties<E>, QR, EntityQueryConditionGroupExpression<E>, EntityQueryConditionGroupLogicExpression<E>>,
-            QR extends EntityQueryRelationEntityExpression9<E, R1, R2, R3, R4, R5, R6, R7, R8, R9, EntityQueryEntityProperties<E>, QR, EntityQueryConditionGroupExpression<E>, EntityQueryConditionGroupLogicExpression<E>>,
+    public <RE extends EntityQueryRelationEntityExpression9<E, R1, R2, R3, R4, R5, R6, R7, R8, R9,
+            EntityQueryEntityProperties<E>, QR, EntityQueryConditionGroupExpression<E>,
+            EntityQueryConditionGroupLogicExpression<E>>,
+            QR extends EntityQueryRelationEntityExpression9<E, R1, R2, R3, R4, R5, R6, R7, R8, R9,
+                    EntityQueryEntityProperties<E>, QR, EntityQueryConditionGroupExpression<E>,
+                    EntityQueryConditionGroupLogicExpression<E>>,
             R9> RE join5(SerializableFunction<R5, R9> propertyName) {
-        // YUFEI_TODO Auto-generated method stub
-        return null;
+        SerializedLambdaInfo info = LambdaUtils.getLambdaInfo(propertyName);
+        JdbcClassMapping<R9> joinTypeMapping2 = factory.getClassMapping((Class<R9>) info.getPropertyType());
+        JdbcPropertyMapping cpm = relationPart.joinTypeClassMapping.getPropertyMapping(info.getPropertyName());
+        EntityQueryRelation9<E, R1, R2, R3, R4, R5, R6, R7, R8,
+                R9> r = new EntitySqlQueryRelation9<>(sqlQueryEntityProperties, relationPart.joinTypeClassMapping,
+                        relationPart.joinTableAlias, cpm.getRepositoryFieldName(), joinTypeMapping2,
+                        joinTypeMapping2.getPrivaryKeyPropertyMappings().get(0).getRepositoryFieldName(),
+                        fetchProperty(5, cpm.getPropertyName()), relationParts);
+        return (RE) r;
     }
 
     /**
      * {@inheritDoc}
      */
+    @SuppressWarnings("unchecked")
     @Override
-    public <RE extends EntityQueryRelationEntityExpression9<E, R1, R2, R3, R4, R5, R6, R7, R8, R9, EntityQueryEntityProperties<E>, QR, EntityQueryConditionGroupExpression<E>, EntityQueryConditionGroupLogicExpression<E>>,
-            QR extends EntityQueryRelationEntityExpression9<E, R1, R2, R3, R4, R5, R6, R7, R8, R9, EntityQueryEntityProperties<E>, QR, EntityQueryConditionGroupExpression<E>, EntityQueryConditionGroupLogicExpression<E>>,
+    public <RE extends EntityQueryRelationEntityExpression9<E, R1, R2, R3, R4, R5, R6, R7, R8, R9,
+            EntityQueryEntityProperties<E>, QR, EntityQueryConditionGroupExpression<E>,
+            EntityQueryConditionGroupLogicExpression<E>>,
+            QR extends EntityQueryRelationEntityExpression9<E, R1, R2, R3, R4, R5, R6, R7, R8, R9,
+                    EntityQueryEntityProperties<E>, QR, EntityQueryConditionGroupExpression<E>,
+                    EntityQueryConditionGroupLogicExpression<E>>,
             R9> RE join5(SerializableFunction2<R9, R5> propertyName) {
-        // YUFEI_TODO Auto-generated method stub
-        return null;
+        SerializedLambdaInfo info = LambdaUtils.getLambdaInfo(propertyName);
+        JdbcClassMapping<R9> joinTypeMapping = factory
+                .getClassMapping((Class<R9>) ClassUtils.forName(info.getMethodInstanceClassName()));
+        JdbcPropertyMapping jpm = joinTypeMapping.getPropertyMapping(info.getPropertyName());
+        EntityQueryRelation9<E, R1, R2, R3, R4, R5, R6, R7, R8,
+                R9> r = new EntitySqlQueryRelation9<>(sqlQueryEntityProperties, relationPart.joinTypeClassMapping,
+                        relationPart.conditionTableAlias, jpm.getRepositoryFieldName(), joinTypeMapping,
+                        joinTypeMapping.getPrivaryKeyPropertyMappings().get(0).getRepositoryFieldName(), null,
+                        // YUFEI_TODO 后续来根据映射关系看能不能进行处理
+                        relationParts);
+        return (RE) r;
     }
 
     /**
      * {@inheritDoc}
      */
+    @SuppressWarnings("unchecked")
     @Override
-    public <RE extends EntityQueryRelationEntityExpression9<E, R1, R2, R3, R4, R5, R6, R7, R8, R5, EntityQueryEntityProperties<E>, QR, EntityQueryConditionGroupExpression<E>, EntityQueryConditionGroupLogicExpression<E>>,
-            QR extends EntityQueryRelationExpression9<E, R1, R2, R3, R4, R5, R6, R7, R8, R5, EntityQueryEntityProperties<E>, EntityQueryConditionGroupExpression<E>, EntityQueryConditionGroupLogicExpression<E>>> RE join5(
-                    SerializableFunction3<R5, R5> propertyName) {
-        // YUFEI_TODO Auto-generated method stub
-        return null;
+    public <RE extends EntityQueryRelationEntityExpression9<E, R1, R2, R3, R4, R5, R6, R7, R8, R5,
+            EntityQueryEntityProperties<E>, QR, EntityQueryConditionGroupExpression<E>,
+            EntityQueryConditionGroupLogicExpression<E>>,
+            QR extends EntityQueryRelationExpression9<E, R1, R2, R3, R4, R5, R6, R7, R8, R5,
+                    EntityQueryEntityProperties<E>, EntityQueryConditionGroupExpression<E>,
+                    EntityQueryConditionGroupLogicExpression<E>>> RE join5(SerializableFunction1<R5, R5> propertyName) {
+        SerializedLambdaInfo info = LambdaUtils.getLambdaInfo(propertyName);
+        JdbcPropertyMapping cpm = relationPart.joinTypeClassMapping.getPropertyMapping(info.getPropertyName());
+        EntityQueryRelation9<
+                E, R1, R2, R3, R4, R5, R6, R7, R8, R1> r = new EntitySqlQueryRelation9<>(sqlQueryEntityProperties,
+                        relationPart.joinTypeClassMapping, relationPart.joinTableAlias, cpm.getRepositoryFieldName(),
+                        relationPart.joinTypeClassMapping, relationPart.joinTypeClassMapping
+                                .getPrivaryKeyPropertyMappings().get(0).getRepositoryFieldName(),
+                        fetchProperty(1, cpm.getPropertyName()), relationParts);
+        return (RE) r;
     }
 
     /**
      * {@inheritDoc}
      */
+    @SuppressWarnings("unchecked")
     @Override
-    public <RE extends EntityQueryRelationEntityExpression9<E, R1, R2, R3, R4, R5, R6, R7, R8, R9, EntityQueryEntityProperties<E>, QR, EntityQueryConditionGroupExpression<E>, EntityQueryConditionGroupLogicExpression<E>>,
-            QR extends EntityQueryRelationEntityExpression9<E, R1, R2, R3, R4, R5, R6, R7, R8, R9, EntityQueryEntityProperties<E>, QR, EntityQueryConditionGroupExpression<E>, EntityQueryConditionGroupLogicExpression<E>>,
+    public <RE extends EntityQueryRelationEntityExpression9<E, R1, R2, R3, R4, R5, R6, R7, R8, R9,
+            EntityQueryEntityProperties<E>, QR, EntityQueryConditionGroupExpression<E>,
+            EntityQueryConditionGroupLogicExpression<E>>,
+            QR extends EntityQueryRelationEntityExpression9<E, R1, R2, R3, R4, R5, R6, R7, R8, R9,
+                    EntityQueryEntityProperties<E>, QR, EntityQueryConditionGroupExpression<E>,
+                    EntityQueryConditionGroupLogicExpression<E>>,
             R9> RE join6(SerializableFunction<R6, R9> propertyName) {
-        // YUFEI_TODO Auto-generated method stub
-        return null;
+        SerializedLambdaInfo info = LambdaUtils.getLambdaInfo(propertyName);
+        JdbcClassMapping<R9> joinTypeMapping2 = factory.getClassMapping((Class<R9>) info.getPropertyType());
+        JdbcPropertyMapping cpm = relationPart.joinTypeClassMapping.getPropertyMapping(info.getPropertyName());
+        EntityQueryRelation9<E, R1, R2, R3, R4, R5, R6, R7, R8,
+                R9> r = new EntitySqlQueryRelation9<>(sqlQueryEntityProperties, relationPart.joinTypeClassMapping,
+                        relationPart.joinTableAlias, cpm.getRepositoryFieldName(), joinTypeMapping2,
+                        joinTypeMapping2.getPrivaryKeyPropertyMappings().get(0).getRepositoryFieldName(),
+                        fetchProperty(6, cpm.getPropertyName()), relationParts);
+        return (RE) r;
     }
 
     /**
      * {@inheritDoc}
      */
+    @SuppressWarnings("unchecked")
     @Override
-    public <RE extends EntityQueryRelationEntityExpression9<E, R1, R2, R3, R4, R5, R6, R7, R8, R9, EntityQueryEntityProperties<E>, QR, EntityQueryConditionGroupExpression<E>, EntityQueryConditionGroupLogicExpression<E>>,
-            QR extends EntityQueryRelationEntityExpression9<E, R1, R2, R3, R4, R5, R6, R7, R8, R9, EntityQueryEntityProperties<E>, QR, EntityQueryConditionGroupExpression<E>, EntityQueryConditionGroupLogicExpression<E>>,
+    public <RE extends EntityQueryRelationEntityExpression9<E, R1, R2, R3, R4, R5, R6, R7, R8, R9,
+            EntityQueryEntityProperties<E>, QR, EntityQueryConditionGroupExpression<E>,
+            EntityQueryConditionGroupLogicExpression<E>>,
+            QR extends EntityQueryRelationEntityExpression9<E, R1, R2, R3, R4, R5, R6, R7, R8, R9,
+                    EntityQueryEntityProperties<E>, QR, EntityQueryConditionGroupExpression<E>,
+                    EntityQueryConditionGroupLogicExpression<E>>,
             R9> RE join6(SerializableFunction2<R9, R6> propertyName) {
-        // YUFEI_TODO Auto-generated method stub
-        return null;
+        SerializedLambdaInfo info = LambdaUtils.getLambdaInfo(propertyName);
+        JdbcClassMapping<R9> joinTypeMapping = factory
+                .getClassMapping((Class<R9>) ClassUtils.forName(info.getMethodInstanceClassName()));
+        JdbcPropertyMapping jpm = joinTypeMapping.getPropertyMapping(info.getPropertyName());
+        EntityQueryRelation9<E, R1, R2, R3, R4, R5, R6, R7, R8,
+                R9> r = new EntitySqlQueryRelation9<>(sqlQueryEntityProperties, relationPart.joinTypeClassMapping,
+                        relationPart.conditionTableAlias, jpm.getRepositoryFieldName(), joinTypeMapping,
+                        joinTypeMapping.getPrivaryKeyPropertyMappings().get(0).getRepositoryFieldName(), null,
+                        // YUFEI_TODO 后续来根据映射关系看能不能进行处理
+                        relationParts);
+        return (RE) r;
     }
 
     /**
      * {@inheritDoc}
      */
+    @SuppressWarnings("unchecked")
     @Override
-    public <RE extends EntityQueryRelationEntityExpression9<E, R1, R2, R3, R4, R5, R6, R7, R8, R6, EntityQueryEntityProperties<E>, QR, EntityQueryConditionGroupExpression<E>, EntityQueryConditionGroupLogicExpression<E>>,
-            QR extends EntityQueryRelationExpression9<E, R1, R2, R3, R4, R5, R6, R7, R8, R6, EntityQueryEntityProperties<E>, EntityQueryConditionGroupExpression<E>, EntityQueryConditionGroupLogicExpression<E>>> RE join6(
-                    SerializableFunction3<R6, R6> propertyName) {
-        // YUFEI_TODO Auto-generated method stub
-        return null;
+    public <RE extends EntityQueryRelationEntityExpression9<E, R1, R2, R3, R4, R5, R6, R7, R8, R6,
+            EntityQueryEntityProperties<E>, QR, EntityQueryConditionGroupExpression<E>,
+            EntityQueryConditionGroupLogicExpression<E>>,
+            QR extends EntityQueryRelationExpression9<E, R1, R2, R3, R4, R5, R6, R7, R8, R6,
+                    EntityQueryEntityProperties<E>, EntityQueryConditionGroupExpression<E>,
+                    EntityQueryConditionGroupLogicExpression<E>>> RE join6(SerializableFunction1<R6, R6> propertyName) {
+        SerializedLambdaInfo info = LambdaUtils.getLambdaInfo(propertyName);
+        JdbcPropertyMapping cpm = relationPart.joinTypeClassMapping.getPropertyMapping(info.getPropertyName());
+        EntityQueryRelation9<
+                E, R1, R2, R3, R4, R5, R6, R7, R8, R1> r = new EntitySqlQueryRelation9<>(sqlQueryEntityProperties,
+                        relationPart.joinTypeClassMapping, relationPart.joinTableAlias, cpm.getRepositoryFieldName(),
+                        relationPart.joinTypeClassMapping, relationPart.joinTypeClassMapping
+                                .getPrivaryKeyPropertyMappings().get(0).getRepositoryFieldName(),
+                        fetchProperty(1, cpm.getPropertyName()), relationParts);
+        return (RE) r;
     }
 
     /**
      * {@inheritDoc}
      */
+    @SuppressWarnings("unchecked")
     @Override
-    public <RE extends EntityQueryRelationEntityExpression9<E, R1, R2, R3, R4, R5, R6, R7, R8, R9, EntityQueryEntityProperties<E>, QR, EntityQueryConditionGroupExpression<E>, EntityQueryConditionGroupLogicExpression<E>>,
-            QR extends EntityQueryRelationEntityExpression9<E, R1, R2, R3, R4, R5, R6, R7, R8, R9, EntityQueryEntityProperties<E>, QR, EntityQueryConditionGroupExpression<E>, EntityQueryConditionGroupLogicExpression<E>>,
+    public <RE extends EntityQueryRelationEntityExpression9<E, R1, R2, R3, R4, R5, R6, R7, R8, R9,
+            EntityQueryEntityProperties<E>, QR, EntityQueryConditionGroupExpression<E>,
+            EntityQueryConditionGroupLogicExpression<E>>,
+            QR extends EntityQueryRelationEntityExpression9<E, R1, R2, R3, R4, R5, R6, R7, R8, R9,
+                    EntityQueryEntityProperties<E>, QR, EntityQueryConditionGroupExpression<E>,
+                    EntityQueryConditionGroupLogicExpression<E>>,
             R9> RE join7(SerializableFunction<R7, R9> propertyName) {
-        // YUFEI_TODO Auto-generated method stub
-        return null;
+        SerializedLambdaInfo info = LambdaUtils.getLambdaInfo(propertyName);
+        JdbcClassMapping<R9> joinTypeMapping2 = factory.getClassMapping((Class<R9>) info.getPropertyType());
+        JdbcPropertyMapping cpm = relationPart.joinTypeClassMapping.getPropertyMapping(info.getPropertyName());
+        EntityQueryRelation9<E, R1, R2, R3, R4, R5, R6, R7, R8,
+                R9> r = new EntitySqlQueryRelation9<>(sqlQueryEntityProperties, relationPart.joinTypeClassMapping,
+                        relationPart.joinTableAlias, cpm.getRepositoryFieldName(), joinTypeMapping2,
+                        joinTypeMapping2.getPrivaryKeyPropertyMappings().get(0).getRepositoryFieldName(),
+                        fetchProperty(7, cpm.getPropertyName()), relationParts);
+        return (RE) r;
     }
 
     /**
      * {@inheritDoc}
      */
+    @SuppressWarnings("unchecked")
     @Override
-    public <RE extends EntityQueryRelationEntityExpression9<E, R1, R2, R3, R4, R5, R6, R7, R8, R9, EntityQueryEntityProperties<E>, QR, EntityQueryConditionGroupExpression<E>, EntityQueryConditionGroupLogicExpression<E>>,
-            QR extends EntityQueryRelationEntityExpression9<E, R1, R2, R3, R4, R5, R6, R7, R8, R9, EntityQueryEntityProperties<E>, QR, EntityQueryConditionGroupExpression<E>, EntityQueryConditionGroupLogicExpression<E>>,
+    public <RE extends EntityQueryRelationEntityExpression9<E, R1, R2, R3, R4, R5, R6, R7, R8, R9,
+            EntityQueryEntityProperties<E>, QR, EntityQueryConditionGroupExpression<E>,
+            EntityQueryConditionGroupLogicExpression<E>>,
+            QR extends EntityQueryRelationEntityExpression9<E, R1, R2, R3, R4, R5, R6, R7, R8, R9,
+                    EntityQueryEntityProperties<E>, QR, EntityQueryConditionGroupExpression<E>,
+                    EntityQueryConditionGroupLogicExpression<E>>,
             R9> RE join7(SerializableFunction2<R9, R7> propertyName) {
-        // YUFEI_TODO Auto-generated method stub
-        return null;
+        SerializedLambdaInfo info = LambdaUtils.getLambdaInfo(propertyName);
+        JdbcClassMapping<R9> joinTypeMapping = factory
+                .getClassMapping((Class<R9>) ClassUtils.forName(info.getMethodInstanceClassName()));
+        JdbcPropertyMapping jpm = joinTypeMapping.getPropertyMapping(info.getPropertyName());
+        EntityQueryRelation9<E, R1, R2, R3, R4, R5, R6, R7, R8,
+                R9> r = new EntitySqlQueryRelation9<>(sqlQueryEntityProperties, relationPart.joinTypeClassMapping,
+                        relationPart.conditionTableAlias, jpm.getRepositoryFieldName(), joinTypeMapping,
+                        joinTypeMapping.getPrivaryKeyPropertyMappings().get(0).getRepositoryFieldName(), null,
+                        // YUFEI_TODO 后续来根据映射关系看能不能进行处理
+                        relationParts);
+        return (RE) r;
     }
 
     /**
      * {@inheritDoc}
      */
+    @SuppressWarnings("unchecked")
     @Override
-    public <RE extends EntityQueryRelationEntityExpression9<E, R1, R2, R3, R4, R5, R6, R7, R8, R7, EntityQueryEntityProperties<E>, QR, EntityQueryConditionGroupExpression<E>, EntityQueryConditionGroupLogicExpression<E>>,
-            QR extends EntityQueryRelationExpression9<E, R1, R2, R3, R4, R5, R6, R7, R8, R7, EntityQueryEntityProperties<E>, EntityQueryConditionGroupExpression<E>, EntityQueryConditionGroupLogicExpression<E>>> RE join7(
-                    SerializableFunction3<R7, R7> propertyName) {
-        // YUFEI_TODO Auto-generated method stub
-        return null;
+    public <RE extends EntityQueryRelationEntityExpression9<E, R1, R2, R3, R4, R5, R6, R7, R8, R7,
+            EntityQueryEntityProperties<E>, QR, EntityQueryConditionGroupExpression<E>,
+            EntityQueryConditionGroupLogicExpression<E>>,
+            QR extends EntityQueryRelationExpression9<E, R1, R2, R3, R4, R5, R6, R7, R8, R7,
+                    EntityQueryEntityProperties<E>, EntityQueryConditionGroupExpression<E>,
+                    EntityQueryConditionGroupLogicExpression<E>>> RE join7(SerializableFunction1<R7, R7> propertyName) {
+        SerializedLambdaInfo info = LambdaUtils.getLambdaInfo(propertyName);
+        JdbcPropertyMapping cpm = relationPart.joinTypeClassMapping.getPropertyMapping(info.getPropertyName());
+        EntityQueryRelation9<
+                E, R1, R2, R3, R4, R5, R6, R7, R8, R1> r = new EntitySqlQueryRelation9<>(sqlQueryEntityProperties,
+                        relationPart.joinTypeClassMapping, relationPart.joinTableAlias, cpm.getRepositoryFieldName(),
+                        relationPart.joinTypeClassMapping, relationPart.joinTypeClassMapping
+                                .getPrivaryKeyPropertyMappings().get(0).getRepositoryFieldName(),
+                        fetchProperty(1, cpm.getPropertyName()), relationParts);
+        return (RE) r;
     }
 
     /**
      * {@inheritDoc}
      */
+    @SuppressWarnings("unchecked")
     @Override
-    public <RE extends EntityQueryRelationEntityExpression9<E, R1, R2, R3, R4, R5, R6, R7, R8, R9, EntityQueryEntityProperties<E>, QR, EntityQueryConditionGroupExpression<E>, EntityQueryConditionGroupLogicExpression<E>>,
-            QR extends EntityQueryRelationEntityExpression9<E, R1, R2, R3, R4, R5, R6, R7, R8, R9, EntityQueryEntityProperties<E>, QR, EntityQueryConditionGroupExpression<E>, EntityQueryConditionGroupLogicExpression<E>>,
+    public <RE extends EntityQueryRelationEntityExpression9<E, R1, R2, R3, R4, R5, R6, R7, R8, R9,
+            EntityQueryEntityProperties<E>, QR, EntityQueryConditionGroupExpression<E>,
+            EntityQueryConditionGroupLogicExpression<E>>,
+            QR extends EntityQueryRelationEntityExpression9<E, R1, R2, R3, R4, R5, R6, R7, R8, R9,
+                    EntityQueryEntityProperties<E>, QR, EntityQueryConditionGroupExpression<E>,
+                    EntityQueryConditionGroupLogicExpression<E>>,
             R9> RE join8(SerializableFunction<R8, R9> propertyName) {
-        // YUFEI_TODO Auto-generated method stub
-        return null;
+        SerializedLambdaInfo info = LambdaUtils.getLambdaInfo(propertyName);
+        JdbcClassMapping<R9> joinTypeMapping2 = factory.getClassMapping((Class<R9>) info.getPropertyType());
+        JdbcPropertyMapping cpm = relationPart.joinTypeClassMapping.getPropertyMapping(info.getPropertyName());
+        EntityQueryRelation9<E, R1, R2, R3, R4, R5, R6, R7, R8,
+                R9> r = new EntitySqlQueryRelation9<>(sqlQueryEntityProperties, relationPart.joinTypeClassMapping,
+                        relationPart.joinTableAlias, cpm.getRepositoryFieldName(), joinTypeMapping2,
+                        joinTypeMapping2.getPrivaryKeyPropertyMappings().get(0).getRepositoryFieldName(),
+                        fetchProperty(8, cpm.getPropertyName()), relationParts);
+        return (RE) r;
     }
 
     /**
      * {@inheritDoc}
      */
+    @SuppressWarnings("unchecked")
     @Override
-    public <RE extends EntityQueryRelationEntityExpression9<E, R1, R2, R3, R4, R5, R6, R7, R8, R9, EntityQueryEntityProperties<E>, QR, EntityQueryConditionGroupExpression<E>, EntityQueryConditionGroupLogicExpression<E>>,
-            QR extends EntityQueryRelationEntityExpression9<E, R1, R2, R3, R4, R5, R6, R7, R8, R9, EntityQueryEntityProperties<E>, QR, EntityQueryConditionGroupExpression<E>, EntityQueryConditionGroupLogicExpression<E>>,
+    public <RE extends EntityQueryRelationEntityExpression9<E, R1, R2, R3, R4, R5, R6, R7, R8, R9,
+            EntityQueryEntityProperties<E>, QR, EntityQueryConditionGroupExpression<E>,
+            EntityQueryConditionGroupLogicExpression<E>>,
+            QR extends EntityQueryRelationEntityExpression9<E, R1, R2, R3, R4, R5, R6, R7, R8, R9,
+                    EntityQueryEntityProperties<E>, QR, EntityQueryConditionGroupExpression<E>,
+                    EntityQueryConditionGroupLogicExpression<E>>,
             R9> RE join8(SerializableFunction2<R9, R8> propertyName) {
-        // YUFEI_TODO Auto-generated method stub
-        return null;
+        SerializedLambdaInfo info = LambdaUtils.getLambdaInfo(propertyName);
+        JdbcClassMapping<R9> joinTypeMapping = factory
+                .getClassMapping((Class<R9>) ClassUtils.forName(info.getMethodInstanceClassName()));
+        JdbcPropertyMapping jpm = joinTypeMapping.getPropertyMapping(info.getPropertyName());
+        EntityQueryRelation9<E, R1, R2, R3, R4, R5, R6, R7, R8,
+                R9> r = new EntitySqlQueryRelation9<>(sqlQueryEntityProperties, relationPart.joinTypeClassMapping,
+                        relationPart.conditionTableAlias, jpm.getRepositoryFieldName(), joinTypeMapping,
+                        joinTypeMapping.getPrivaryKeyPropertyMappings().get(0).getRepositoryFieldName(), null,
+                        // YUFEI_TODO 后续来根据映射关系看能不能进行处理
+                        relationParts);
+        return (RE) r;
     }
 
     /**
      * {@inheritDoc}
      */
+    @SuppressWarnings("unchecked")
     @Override
-    public <RE extends EntityQueryRelationEntityExpression9<E, R1, R2, R3, R4, R5, R6, R7, R8, R8, EntityQueryEntityProperties<E>, QR, EntityQueryConditionGroupExpression<E>, EntityQueryConditionGroupLogicExpression<E>>,
-            QR extends EntityQueryRelationExpression9<E, R1, R2, R3, R4, R5, R6, R7, R8, R8, EntityQueryEntityProperties<E>, EntityQueryConditionGroupExpression<E>, EntityQueryConditionGroupLogicExpression<E>>> RE join8(
-                    SerializableFunction3<R8, R8> propertyName) {
-        // YUFEI_TODO Auto-generated method stub
-        return null;
+    public <RE extends EntityQueryRelationEntityExpression9<E, R1, R2, R3, R4, R5, R6, R7, R8, R8,
+            EntityQueryEntityProperties<E>, QR, EntityQueryConditionGroupExpression<E>,
+            EntityQueryConditionGroupLogicExpression<E>>,
+            QR extends EntityQueryRelationExpression9<E, R1, R2, R3, R4, R5, R6, R7, R8, R8,
+                    EntityQueryEntityProperties<E>, EntityQueryConditionGroupExpression<E>,
+                    EntityQueryConditionGroupLogicExpression<E>>> RE join8(SerializableFunction1<R8, R8> propertyName) {
+        SerializedLambdaInfo info = LambdaUtils.getLambdaInfo(propertyName);
+        JdbcPropertyMapping cpm = relationPart.joinTypeClassMapping.getPropertyMapping(info.getPropertyName());
+        EntityQueryRelation9<
+                E, R1, R2, R3, R4, R5, R6, R7, R8, R1> r = new EntitySqlQueryRelation9<>(sqlQueryEntityProperties,
+                        relationPart.joinTypeClassMapping, relationPart.joinTableAlias, cpm.getRepositoryFieldName(),
+                        relationPart.joinTypeClassMapping, relationPart.joinTypeClassMapping
+                                .getPrivaryKeyPropertyMappings().get(0).getRepositoryFieldName(),
+                        fetchProperty(1, cpm.getPropertyName()), relationParts);
+        return (RE) r;
     }
-
 }

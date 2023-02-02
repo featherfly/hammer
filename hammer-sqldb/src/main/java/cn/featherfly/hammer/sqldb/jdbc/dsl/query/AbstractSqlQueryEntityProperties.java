@@ -104,8 +104,9 @@ public abstract class AbstractSqlQueryEntityProperties<E extends AbstractSqlQuer
     /**
      * Property.
      *
-     * @param distinct   the distinct
-     * @param columnName the column name
+     * @param distinct    the distinct
+     * @param columnName  the column name
+     * @param columnAlias the column alias
      * @return the e
      */
     @SuppressWarnings("unchecked")
@@ -267,7 +268,7 @@ public abstract class AbstractSqlQueryEntityProperties<E extends AbstractSqlQuer
     /**
      * Id.
      *
-     * @param propertyName the property name
+     * @param columnName the column name
      * @return the e
      */
     @SuppressWarnings("unchecked")

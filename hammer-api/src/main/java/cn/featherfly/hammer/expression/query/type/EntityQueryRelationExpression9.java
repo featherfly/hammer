@@ -72,7 +72,7 @@ public interface EntityQueryRelationExpression9<E, R1, R2, R3, R4, R5, R6, R7, R
     //     * @param propertyName find type object property name
     //     * @return TypeQueryWithOnExpression
     //     */
-    //    default void relate(SerializableFunction3<E, E> propertyName) {
+    //    default void relate(SerializableFunction1<E, E> propertyName) {
     //        join(propertyName);
     //    }
     //
@@ -82,7 +82,7 @@ public interface EntityQueryRelationExpression9<E, R1, R2, R3, R4, R5, R6, R7, R
     //     * @param propertyName find type object property name
     //     * @return TypeQueryWithOnExpression
     //     */
-    //    default void join(SerializableFunction3<E, E> propertyName) {
+    //    default void join(SerializableFunction1<E, E> propertyName) {
     //        throw new UnsupportedException();
     //    }
     //

@@ -34,7 +34,6 @@ public class SqlQueryEntityProperties extends AbstractSqlQueryEntityProperties<S
      * @param jdbc             jdbc
      * @param databaseMetadata the database metadata
      * @param tableName        tableName
-     * @param factory          MappingFactory
      * @param sqlPageFactory   the sql page factory
      * @param aliasManager     aliasManager
      * @param ignorePolicy     the ignore policy
@@ -52,7 +51,6 @@ public class SqlQueryEntityProperties extends AbstractSqlQueryEntityProperties<S
      * @param databaseMetadata databaseMetadata
      * @param tableName        tableName
      * @param tableAlias       tableAlias
-     * @param factory          MappingFactory
      * @param sqlPageFactory   the sql page factory
      * @param aliasManager     aliasManager
      * @param ignorePolicy     the ignore policy

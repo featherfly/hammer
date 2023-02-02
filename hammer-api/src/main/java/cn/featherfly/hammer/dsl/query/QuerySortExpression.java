@@ -6,14 +6,11 @@ import cn.featherfly.hammer.expression.query.QueryConditionLimit;
 import cn.featherfly.hammer.expression.query.QueryLimitExecutor;
 
 /**
- * <p>
- * SortExpression
- * </p>
+ * The Interface QuerySortExpression.
  *
  * @author zhongj
  */
 public interface QuerySortExpression
-        extends SortExpression<QuerySortExpression>, QueryConditionLimit,
-        QueryLimitExecutor {
+        extends SortExpression<QuerySortExpression>, QueryConditionLimit, QueryLimitExecutor {
 
 }

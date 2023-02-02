@@ -28,6 +28,8 @@ public class DslTest {
         query.find(data).limit(10).list(DslTest.class);
         query.find(data).limit(1).single(DslTest.class);
 
+        query.find("user").sort();
+
         query.find(data).count();
         query.find(data).property("name").number(Integer.class);
         query.find(data).property("name").integer();
@@ -90,6 +92,8 @@ public class DslTest {
         query.find(DslTest.class).limit(1).single();
         //        query.find(DslTest.class).where().lt("age", 18).count();
 
+        query.find(DslTest.class).sort();
+
         // query.find(DslTest.class).property("name").number(Integer.class);
         // query.find(DslTest.class).property("name").integer();
         // query.find(DslTest.class).property("sum(price)").decimal();
@@ -137,7 +141,6 @@ public class DslTest {
     }
 
     public void testTypeQueryJoin() {
-        // IMPLSOON 这里的where()后没有list等方法
         //        query.find(DslTest.class).with(DslTest::getId).where().list();
         query.find(DslTest.class).join(DslTest::getId).where().eq(DslTest::getId, 1).list();
         query.find(DslTest.class).join(DslTest::getId).fetch().where().eq(DslTest::getId, 1).list();
@@ -155,7 +158,9 @@ public class DslTest {
         // select * from user u join userinfo ui on u.id = ui.user_id join device d on u.id = d.user_id
         query.find(User.class).join(User::getUserInfo).join(User::getDevices);
         // select * from user u join userinfo ui on u.id = ui.user_id join device d on u.id = d.user_id join user u2 on ui.user_id = u2.id
-        query.find(User.class).join(User::getUserInfo).join(User::getDevices).join(UserInfo::getUser);
+
+        query.find(User.class).join(User::getUserInfo).join(User::getDevices).join(UserInfo::getUser); // 编译报错
+        query.find(User.class).join(User::getUserInfo).join(UserInfo::getUser).join(User::getDevices);
 
         // select * from tree t1 join tree t2 on t1.id = t2.parent_id join tree t3 on t1.id = t3.parent_id
         query.find(Tree.class).join(Tree::getParent).join(Tree::getParent);
@@ -163,6 +168,17 @@ public class DslTest {
         query.find(Tree.class).join(Tree::getParent).join(Tree::getUser).join2(User::getUserInfo);
 
         query.find(Tree.class).join(Tree::getParent).join(Tree::getParent).join(Tree::getParent);
+
+        query.find(Tree.class).join(Tree::getParent).join(Tree::getParent).join(Tree::getParent).join(Tree::getParent)
+                .join(Tree::getParent).join(Tree::getParent).join(Tree::getParent).join(Tree::getParent)
+                .join(Tree::getParent);
+
+        // IMPLSOON with join的api定义规则
+        /*
+         // select * from tree t1 join tree t2 on t1.id = t2.parent_id join tree t3 on t2.id = t3.parent_id
+         query.find(Tree.class).join(Tree::getParent).join(t -> t.get1() , Tree::getParent);
+         //  t为Tuple类型，有几个可以join的对象就是有几个对象的tuple
+        //  这里表示和 tree t2 进行join，所以join tree t3 on t2.id = t3.parent_id
 
         // IMPLSOON with join的api定义规则
         /*

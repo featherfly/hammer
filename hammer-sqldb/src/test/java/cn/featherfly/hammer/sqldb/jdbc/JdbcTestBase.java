@@ -3,7 +3,9 @@ package cn.featherfly.hammer.sqldb.jdbc;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 import javax.sql.DataSource;
@@ -27,19 +29,18 @@ import cn.featherfly.common.lang.ClassLoaderUtils;
 import cn.featherfly.common.lang.Randoms;
 import cn.featherfly.common.lang.UriUtils;
 import cn.featherfly.constant.ConstantConfigurator;
+import cn.featherfly.hammer.sqldb.SqldbHammerImpl;
 import cn.featherfly.hammer.sqldb.jdbc.vo.Role;
 import cn.featherfly.hammer.tpl.TplConfigFactory;
 import cn.featherfly.hammer.tpl.TplConfigFactoryImpl;
 import cn.featherfly.hammer.tpl.freemarker.FreemarkerTemplatePreProcessor;
 
 /**
- * <p>
- * SqlOrmTest
- * </p>
+ * JdbcTestBase.
  *
  * @author zhongj
  */
-public class JdbcTestBase {
+public class JdbcTestBase extends TestBase {
 
     private static final String CONFIG_FILE_PATTERN = "constant.%s.yaml";
 
@@ -65,6 +66,8 @@ public class JdbcTestBase {
 
     protected static SqlTypeMappingManager sqlTypeMappingManager;
 
+    protected static SqldbHammerImpl hammer;
+
     @BeforeSuite
     @Parameters({ "dataBase" })
     public void init(@Optional("mysql") String dataBase) throws IOException {
@@ -79,6 +82,8 @@ public class JdbcTestBase {
 
         configFactory = new TplConfigFactoryImpl("tpl/", ".yaml.tpl", basePackages,
                 new FreemarkerTemplatePreProcessor());
+
+        hammer = new SqldbHammerImpl(jdbc, mappingFactory, configFactory);
     }
 
     public void initDataBase(String dataBase) throws IOException {
@@ -146,7 +151,8 @@ public class JdbcTestBase {
         ConstantConfigurator.config("constant.postgresql.yaml");
 
         BasicDataSource ds = new BasicDataSource();
-        ds.setUrl("jdbc:postgresql://localhost:5432/hammer_jdbc");
+        //        ds.setUrl("jdbc:postgresql://localhost:5432/hammer_jdbc");
+        ds.setUrl("jdbc:postgresql://::1:5432/hammer_jdbc");
         ds.setDriverClassName("org.postgresql.Driver");
         ds.setUsername("postgres");
         ds.setPassword("123456");
@@ -202,10 +208,18 @@ public class JdbcTestBase {
 
     }
 
-    Role role() {
+    protected Role role() {
         Role r = new Role();
         r.setName("n_" + Randoms.getInt(100));
         r.setDescp("descp_" + Randoms.getInt(100));
         return r;
+    }
+
+    protected List<Role> roles(int size) {
+        List<Role> roles = new ArrayList<>();
+        for (int i = 0; i < size; i++) {
+            roles.add(role());
+        }
+        return roles;
     }
 }
