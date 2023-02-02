@@ -146,7 +146,8 @@ public class JdbcTestBase {
         ConstantConfigurator.config("constant.postgresql.yaml");
 
         BasicDataSource ds = new BasicDataSource();
-        ds.setUrl("jdbc:postgresql://localhost:5432/hammer_jdbc");
+        //        ds.setUrl("jdbc:postgresql://localhost:5432/hammer_jdbc");
+        ds.setUrl("jdbc:postgresql://::1:5432/hammer_jdbc");
         ds.setDriverClassName("org.postgresql.Driver");
         ds.setUsername("postgres");
         ds.setPassword("123456");

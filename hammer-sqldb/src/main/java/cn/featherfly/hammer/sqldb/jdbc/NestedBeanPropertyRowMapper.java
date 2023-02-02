@@ -24,8 +24,6 @@ import org.springframework.core.convert.ConversionService;
 import org.springframework.core.convert.support.DefaultConversionService;
 import org.springframework.dao.DataRetrievalFailureException;
 import org.springframework.dao.InvalidDataAccessApiUsageException;
-import org.springframework.jdbc.core.RowMapper;
-import org.springframework.jdbc.support.JdbcUtils;
 import org.springframework.lang.Nullable;
 import org.springframework.util.Assert;
 import org.springframework.util.ClassUtils;
@@ -35,6 +33,7 @@ import cn.featherfly.common.bean.BeanDescriptor;
 import cn.featherfly.common.bean.BeanProperty;
 import cn.featherfly.common.bean.NoSuchPropertyException;
 import cn.featherfly.common.db.JdbcException;
+import cn.featherfly.common.db.JdbcUtils;
 import cn.featherfly.common.db.mapping.JdbcMappingException;
 import cn.featherfly.common.db.mapping.SqlResultSet;
 import cn.featherfly.common.db.mapping.SqlTypeMappingManager;
@@ -76,8 +75,7 @@ import cn.featherfly.common.lang.AssertIllegalArgument;
  * @param <T> the result type
  * @since 0.1.0
  */
-public class NestedBeanPropertyRowMapper<T>
-        implements RowMapper<T>, cn.featherfly.common.repository.mapping.RowMapper<T> {
+public class NestedBeanPropertyRowMapper<T> implements cn.featherfly.common.repository.mapping.RowMapper<T> {
 
     /** Logger available to subclasses. */
     protected final Logger logger = LoggerFactory.getLogger(getClass());
@@ -365,7 +363,6 @@ public class NestedBeanPropertyRowMapper<T>
      * @throws SQLException the SQL exception
      * @see java.sql.ResultSetMetaData
      */
-    @Override
     public T mapRow(ResultSet rs, int rowNumber) throws SQLException {
         //        T mappedObject = BeanUtils.instantiateClass(this.mappedClass);
         T mappedObject = mapperObjectFactory.create(rs);

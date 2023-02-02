@@ -1,5 +1,7 @@
 # 0.7.0
 1. 加入强类型dsl查询
+   一级join实现
+   二级join实现
 2. 实现TransverterManager
 3. 实现upsert在全部是插入时为entity设置自动生成的主键（存在update时返回的key无法确定）
 4. 优化GetOperate的ForUpdate逻辑

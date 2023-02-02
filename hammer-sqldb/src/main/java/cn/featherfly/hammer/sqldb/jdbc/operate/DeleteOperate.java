@@ -28,7 +28,7 @@ import cn.featherfly.hammer.sqldb.jdbc.Jdbc;
  * @since 0.1.0
  * @param <T> 对象类型
  */
-public class DeleteOperate<T> extends AbstractBatchExecuteOperate<T> {
+public class DeleteOperate<T> extends AbstractExecuteOperate<T> implements BatchExecuteOperate<T> {
 
     /**
      * 使用给定数据源以及给定对象生成删除操作.
@@ -68,10 +68,7 @@ public class DeleteOperate<T> extends AbstractBatchExecuteOperate<T> {
     }
 
     /**
-     * <p>
-     * 删除指定id
-     * </p>
-     * .
+     * 删除指定id .
      *
      * @param id id
      * @return 操作影响的数据行数
@@ -81,10 +78,7 @@ public class DeleteOperate<T> extends AbstractBatchExecuteOperate<T> {
     }
 
     /**
-     * <p>
-     * 删除指定ids数组
-     * </p>
-     * .
+     * 删除指定ids数组 .
      *
      * @param ids id array
      * @return 操作影响的数据行数
@@ -157,10 +151,10 @@ public class DeleteOperate<T> extends AbstractBatchExecuteOperate<T> {
      * @param propertyPositions the property positions
      * @return the batch parameters
      */
-    protected Object[] getBatchParameters(List<T> entities, Map<Integer, String> propertyPositions) {
-        if (Lang.isEmpty(entities)) {
-            return new Object[] {};
-        }
+    private Object[] getBatchParameters(List<T> entities, Map<Integer, String> propertyPositions) {
+        //        if (Lang.isEmpty(entities)) {
+        //            return new Object[] {};
+        //        }
         Object[] params = new Object[propertyPositions.size()];
         int pkNum = propertyPositions.size() / entities.size();
         int i = 0;
@@ -174,5 +168,4 @@ public class DeleteOperate<T> extends AbstractBatchExecuteOperate<T> {
         }
         return params;
     }
-
 }

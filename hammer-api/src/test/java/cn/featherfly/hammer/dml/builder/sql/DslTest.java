@@ -137,7 +137,6 @@ public class DslTest {
     }
 
     public void testTypeQueryJoin() {
-        // IMPLSOON 这里的where()后没有list等方法
         //        query.find(DslTest.class).with(DslTest::getId).where().list();
         query.find(DslTest.class).join(DslTest::getId).where().eq(DslTest::getId, 1).list();
         query.find(DslTest.class).join(DslTest::getId).fetch().where().eq(DslTest::getId, 1).list();
@@ -163,6 +162,13 @@ public class DslTest {
         query.find(Tree.class).join(Tree::getParent).join(Tree::getUser).join2(User::getUserInfo);
 
         query.find(Tree.class).join(Tree::getParent).join(Tree::getParent).join(Tree::getParent);
+
+        // IMPLSOON with join的api定义规则
+        /*
+         // select * from tree t1 join tree t2 on t1.id = t2.parent_id join tree t3 on t2.id = t3.parent_id
+         query.find(Tree.class).join(Tree::getParent).join(t -> t.get1() , Tree::getParent);
+         //  t为Tuple类型，有几个可以join的对象就是有几个对象的tuple
+        //  这里表示和 tree t2 进行join，所以join tree t3 on t2.id = t3.parent_id
 
         // IMPLSOON with join的api定义规则
         /*

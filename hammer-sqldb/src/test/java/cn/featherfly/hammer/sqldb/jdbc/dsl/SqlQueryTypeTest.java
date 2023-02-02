@@ -7,8 +7,11 @@ import static org.testng.Assert.assertEquals;
 import static org.testng.Assert.assertNotNull;
 import static org.testng.Assert.assertTrue;
 
+import java.util.ArrayList;
 import java.util.List;
 
+import org.testng.annotations.BeforeMethod;
+import org.testng.annotations.BeforeTest;
 import org.testng.annotations.Test;
 
 import cn.featherfly.hammer.sqldb.SqldbHammerException;
@@ -29,9 +32,28 @@ import cn.featherfly.hammer.sqldb.jdbc.vo.UserRole2;
  */
 public class SqlQueryTypeTest extends JdbcTestBase {
 
+    SqlQuery query;
+
+    UserInfo userInfo = null;
+    User user = null;
+    Integer uid = 1;
+    List<Tree2> trees = new ArrayList<>();
+
+    @BeforeTest
+    void setupTest() {
+        query = new SqlQuery(jdbc, mappingFactory, sqlPageFactory);
+    }
+
+    @BeforeMethod
+    void setupMethod() {
+        userInfo = null;
+        user = null;
+        uid = 1;
+        trees = new ArrayList<>();
+    }
+
     @Test
     void testCount() {
-        SqlQuery query = new SqlQuery(jdbc, mappingFactory, sqlPageFactory);
         Long number = query.find("user").count();
         System.out.println("count:" + number);
 
@@ -52,7 +74,6 @@ public class SqlQueryTypeTest extends JdbcTestBase {
     @SuppressWarnings("unchecked")
     @Test
     void testMapping() {
-        SqlQuery query = new SqlQuery(jdbc, mappingFactory, sqlPageFactory);
 
         query.find(User.class).where().eq(User::getUsername, "yufei").and().eq(User::getPwd, "123456").and().group()
                 .gt(User::getAge, 18).and().lt(User::getAge, 60).list();
@@ -79,7 +100,6 @@ public class SqlQueryTypeTest extends JdbcTestBase {
 
     @Test
     void testMapping2() {
-        SqlQuery query = new SqlQuery(jdbc, mappingFactory, sqlPageFactory);
 
         User user = new User();
         user.setUsername("yufei");
@@ -90,7 +110,6 @@ public class SqlQueryTypeTest extends JdbcTestBase {
     @SuppressWarnings("unchecked")
     @Test
     void testPropertyExpression() {
-        SqlQuery query = new SqlQuery(jdbc, mappingFactory, sqlPageFactory);
 
         query.find(User.class).where().property(User::getUsername).eq("yufei").and().property(User::getPwd).eq("123456")
                 .list();
@@ -112,7 +131,7 @@ public class SqlQueryTypeTest extends JdbcTestBase {
 
     @Test
     void testNestedMapping() {
-        SqlQuery query = new SqlQuery(jdbc, mappingFactory, sqlPageFactory);
+
         Integer userId = 1;
         //        UserInfo userInfo = query.find(UserInfo.class).where().eq("user.id", userId).single();
         UserInfo userInfo = query.find(UserInfo.class).where().eq(UserInfo::getUser, userId).single(); // YUFEI_TODO 需要测试
@@ -129,7 +148,6 @@ public class SqlQueryTypeTest extends JdbcTestBase {
 
     @Test
     void testJoin() {
-        SqlQuery query = new SqlQuery(jdbc, mappingFactory, sqlPageFactory);
 
         StringBuilder sb = new StringBuilder();
         sb.append("").append("").append("");
@@ -179,23 +197,22 @@ public class SqlQueryTypeTest extends JdbcTestBase {
 
     @Test
     void testJoin1() {
-        SqlQuery query = new SqlQuery(jdbc, mappingFactory, sqlPageFactory);
 
         User user = new User();
         String username = "yufei";
         user.setUsername(username);
 
-        // UserInfo::getUser, User::getUsername 联表查询，仅查询不获取，如果没有join的话需要自动join
+        // IMPLSOON UserInfo::getUser, User::getUsername 联表查询，仅查询不获取，如果没有join的话需要自动join
         List<UserInfo> list = query.find(UserInfo.class).where().eq(UserInfo::getUser, User::getUsername, username)
                 .list();
 
-        // UserInfo::getUser, user 联表查询，仅查询不获取，如果没有join的话需要自动join
+        // IMPLSOON UserInfo::getUser, user 联表查询，仅查询不获取，如果没有join的话需要自动join
         list = query.find(UserInfo.class).where().eq(UserInfo::getUser, user).list();
     }
 
     @Test(expectedExceptions = SqldbHammerException.class)
     void testJoinFetchException() {
-        SqlQuery query = new SqlQuery(jdbc, mappingFactory, sqlPageFactory);
+
         // 因为User类中没有UserRole类的关系，所以fetch时会找不到关系，不fetch只是使用条件查询问题不大
         // userInfo.user.userRole 这里没有userRole
 
@@ -209,15 +226,15 @@ public class SqlQueryTypeTest extends JdbcTestBase {
              c.eq() ..... // 关联user的条件查询
          }).fetch().join(UserRole2::getUser).fetch()
                 .join(UserRole2::getRole).fetch().list();
-        
-        
+
+
          */
     }
 
     @Test
     void testJoinCondition2() {
         // YUFEI_TODO 后续来测试
-        //        SqlQuery query = new SqlQuery(jdbc, mappingFactory, sqlPageFactory);
+        //
         //        Integer userInfoId = 1;
         //        Integer userId = 1;
         //        User user = null;
@@ -243,7 +260,7 @@ public class SqlQueryTypeTest extends JdbcTestBase {
 
     @Test
     void testJoinCondition2_1() {
-        SqlQuery query = new SqlQuery(jdbc, mappingFactory, sqlPageFactory);
+
         UserInfo userInfo = new UserInfo();
 
         User user = new User();
@@ -259,7 +276,7 @@ public class SqlQueryTypeTest extends JdbcTestBase {
 
     @Test
     void testJoinCondition2_2() {
-        SqlQuery query = new SqlQuery(jdbc, mappingFactory, sqlPageFactory);
+
         UserInfo userInfo = new UserInfo();
 
         User user = new User();
@@ -316,7 +333,6 @@ public class SqlQueryTypeTest extends JdbcTestBase {
 
     @Test
     void testJoinMulity() {
-        SqlQuery query = new SqlQuery(jdbc, mappingFactory, sqlPageFactory);
 
         List<Tree2> list1 = query.find(Tree2.class).list();
         list1.forEach(v -> {
@@ -362,14 +378,14 @@ public class SqlQueryTypeTest extends JdbcTestBase {
 
     @Test(expectedExceptions = SqldbHammerException.class)
     void testJoinExceptions() {
-        SqlQuery query = new SqlQuery(jdbc, mappingFactory, sqlPageFactory);
+
         // YUFEI_TODO 后续来测试
         //        query.find(UserInfo.class).join(UserRole2::getUser).list();
     }
 
     @Test
     void testManyToOne() {
-        SqlQuery query = new SqlQuery(jdbc, mappingFactory, sqlPageFactory);
+
         int parent = 1;
         List<Tree2> list = query.find(Tree2.class).where().eq(Tree2::getParent, parent).list();
         System.out.println(list);
@@ -380,7 +396,7 @@ public class SqlQueryTypeTest extends JdbcTestBase {
 
     @Test
     void testManyToOne2() {
-        SqlQuery query = new SqlQuery(jdbc, mappingFactory, sqlPageFactory);
+
         int parent = 1;
         Tree2 tree2 = new Tree2();
         tree2.setParent(new Tree2(parent));
@@ -393,7 +409,7 @@ public class SqlQueryTypeTest extends JdbcTestBase {
 
     @Test
     void testNestedProperty() {
-        SqlQuery query = new SqlQuery(jdbc, mappingFactory, sqlPageFactory);
+
         UserRole2 userRole2 = new UserRole2();
         userRole2.setRole(new Role(2));
         userRole2.setUser(new User(1));
@@ -435,7 +451,7 @@ public class SqlQueryTypeTest extends JdbcTestBase {
 
     @Test
     void testNestedProperty2() {
-        SqlQuery query = new SqlQuery(jdbc, mappingFactory, sqlPageFactory);
+
         UserRole2 userRole2 = new UserRole2();
         userRole2.setRole(new Role(2));
         userRole2.setUser(new User(1));
@@ -470,7 +486,6 @@ public class SqlQueryTypeTest extends JdbcTestBase {
 
     @Test
     void testInn() {
-        SqlQuery query = new SqlQuery(jdbc, mappingFactory, sqlPageFactory);
 
         long nullNum = 1;
 
@@ -527,7 +542,6 @@ public class SqlQueryTypeTest extends JdbcTestBase {
 
     @Test
     void testComplexQuery() {
-        SqlQuery query = new SqlQuery(jdbc, mappingFactory, sqlPageFactory);
 
         //        query.find(User.class).where().gt(User::getId, 1).and().group().group();
 

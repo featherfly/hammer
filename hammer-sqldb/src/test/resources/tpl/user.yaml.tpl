@@ -26,6 +26,7 @@ selectConditions: "select id, username, password pwd, mobile_no, age from ${tpl_
 </@and>
 </@where>"
 selectAvg: "select avg(age) from ${tpl_wrap('user')}"
+selectCount: "select count(id) from ${tpl_wrap('user')}"
 selectString: "select username from ${tpl_wrap('user')} where id = 1"
 selectAvg2: "select avg(age) from ${tpl_wrap('user')} where age > :age"
 selectString2: "select username from ${tpl_wrap('user')} where id = :id"

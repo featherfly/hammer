@@ -23,18 +23,18 @@ import cn.featherfly.hammer.sqldb.jdbc.vo.User;
 import cn.featherfly.hammer.sqldb.jdbc.vo.UserInfo;
 import cn.featherfly.hammer.sqldb.tpl.freemarker.SqldbFreemarkerTemplateEngine;
 import cn.featherfly.hammer.tpl.TplConfigFactoryImpl;
+import cn.featherfly.hammer.tpl.TplExecuteIdFileImpl;
+import cn.featherfly.hammer.tpl.TplExecutor;
 import cn.featherfly.hammer.tpl.TransverterManager;
 
 /**
- * <p>
- * SqlTplExecutorTest
- * </p>
+ * SqlTplExecutorTest.
  *
  * @author zhongj
  */
 public class SqlTplExecutorTest extends JdbcTestBase {
 
-    SqlTplExecutor executor;
+    protected TplExecutor executor;
 
     Integer minAge = 5;
     Integer maxAge = 40;
@@ -52,6 +52,14 @@ public class SqlTplExecutorTest extends JdbcTestBase {
     @Test
     void testNumberValue() {
         Integer avg = executor.numberInt("selectAvg", new ChainMapImpl<String, Object>());
+        System.out.println("avg(age) = " + avg);
+        assertTrue(avg > 20);
+
+        avg = executor.intValue("selectAvg", new ChainMapImpl<String, Object>());
+        System.out.println("avg(age) = " + avg);
+        assertTrue(avg > 20);
+
+        avg = executor.intValue(new TplExecuteIdFileImpl("selectAvg"), new ChainMapImpl<String, Object>());
         System.out.println("avg(age) = " + avg);
         assertTrue(avg > 20);
 

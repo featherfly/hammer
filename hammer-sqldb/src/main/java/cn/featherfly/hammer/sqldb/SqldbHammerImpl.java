@@ -184,6 +184,24 @@ public class SqldbHammerImpl implements SqldbHammer {
      * @param templateEngine     the template processor
      * @param sqlPageFacotry     the sql page facotry
      * @param transverterManager the transverter manager
+     */
+    public SqldbHammerImpl(Jdbc jdbc, JdbcMappingFactory mappingFactory, TplConfigFactory configFactory,
+            @SuppressWarnings("rawtypes") SqlDbTemplateEngine templateEngine, SqlPageFactory sqlPageFacotry,
+            TransverterManager transverterManager) {
+        this(jdbc, mappingFactory, configFactory, templateEngine, sqlPageFacotry, transverterManager,
+                Validation.byProvider(HibernateValidator.class).configure().failFast(false).buildValidatorFactory()
+                        .getValidator());
+    }
+
+    /**
+     * Instantiates a new hammer jdbc impl.
+     *
+     * @param jdbc               the jdbc
+     * @param mappingFactory     the mapping factory
+     * @param configFactory      the config factory
+     * @param templateEngine     the template processor
+     * @param sqlPageFacotry     the sql page facotry
+     * @param transverterManager the transverter manager
      * @param validator          the validator
      */
     public SqldbHammerImpl(Jdbc jdbc, JdbcMappingFactory mappingFactory, TplConfigFactory configFactory,

@@ -2,7 +2,6 @@
 package cn.featherfly.hammer.sqldb.jdbc.operate;
 
 import java.io.Serializable;
-import java.sql.PreparedStatement;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -137,115 +136,109 @@ public abstract class AbstractOperate<T> {
         return sql;
     }
 
-    /**
-     * <p>
-     * 设置预编译参数
-     * </p>
-     * .
-     *
-     * @param prep    执行SQL的PreparedStatementWrapper
-     * @param entity  对象
-     * @param manager the manager
-     */
-    protected void setParameter(PreparedStatement prep, T entity, SqlTypeMappingManager manager) {
-        BeanDescriptor<?> beanDescriptor = BeanDescriptor.getBeanDescriptor(entity.getClass());
-        for (Entry<Integer, String> propertyPosition : propertyPositions.entrySet()) {
-            BeanProperty<Object> property = beanDescriptor.getBeanProperty(propertyPosition.getValue());
-            manager.set(prep, propertyPosition.getKey(), BeanUtils.getProperty(entity, propertyPosition.getValue()),
-                    property);
-            //            JdbcUtils.setParameter(prep, propertyPosition.getKey(),
-            //                    BeanUtils.getProperty(entity, propertyPosition.getValue()));
-        }
-    }
+    //    /**
+    //     * 设置预编译参数 .
+    //     *
+    //     * @param prep    执行SQL的PreparedStatementWrapper
+    //     * @param entity  对象
+    //     * @param manager the manager
+    //     */
+    //    protected void setParameter(PreparedStatement prep, T entity, SqlTypeMappingManager manager) {
+    //        BeanDescriptor<?> beanDescriptor = BeanDescriptor.getBeanDescriptor(entity.getClass());
+    //        for (Entry<Integer, String> propertyPosition : propertyPositions.entrySet()) {
+    //            BeanProperty<Object> property = beanDescriptor.getBeanProperty(propertyPosition.getValue());
+    //            manager.set(prep, propertyPosition.getKey(), BeanUtils.getProperty(entity, propertyPosition.getValue()),
+    //                    property);
+    //            //            JdbcUtils.setParameter(prep, propertyPosition.getKey(),
+    //            //                    BeanUtils.getProperty(entity, propertyPosition.getValue()));
+    //        }
+    //    }
 
-    /**
-     * <p>
-     * 设置预编译参数
-     * </p>
-     * .
-     *
-     * @param prep    执行SQL的PreparedStatementWrapper
-     * @param entity  对象
-     * @param index   当前对象是第几个设置的
-     * @param manager the manager
-     */
-    protected void setParameter(PreparedStatement prep, T entity, int index, SqlTypeMappingManager manager) {
-        int len = propertyPositions.size();
-        BeanDescriptor<?> beanDescriptor = BeanDescriptor.getBeanDescriptor(entity.getClass());
-        for (Entry<Integer, String> propertyPosition : propertyPositions.entrySet()) {
-            int position = propertyPosition.getKey() + index * len;
-            BeanProperty<Object> property = beanDescriptor.getBeanProperty(propertyPosition.getValue());
-            manager.set(prep, position, BeanUtils.getProperty(entity, propertyPosition.getValue()), property);
-            //            JdbcUtils.setParameter(prep, position, BeanUtils.getProperty(entity, propertyPosition.getValue()));
-        }
-    }
+    //    /**
+    //     * 设置预编译参数 .
+    //     *
+    //     * @param prep    执行SQL的PreparedStatementWrapper
+    //     * @param entity  对象
+    //     * @param index   当前对象是第几个设置的
+    //     * @param manager the manager
+    //     */
+    //    protected void setParameter(PreparedStatement prep, T entity, int index, SqlTypeMappingManager manager) {
+    //        int len = propertyPositions.size();
+    //        BeanDescriptor<?> beanDescriptor = BeanDescriptor.getBeanDescriptor(entity.getClass());
+    //        for (Entry<Integer, String> propertyPosition : propertyPositions.entrySet()) {
+    //            int position = propertyPosition.getKey() + index * len;
+    //            BeanProperty<Object> property = beanDescriptor.getBeanProperty(propertyPosition.getValue());
+    //            manager.set(prep, position, BeanUtils.getProperty(entity, propertyPosition.getValue()), property);
+    //            //            JdbcUtils.setParameter(prep, position, BeanUtils.getProperty(entity, propertyPosition.getValue()));
+    //        }
+    //    }
 
-    /**
-     * Sets the parameters.
-     *
-     * @param entity  the entity
-     * @param prep    the prep
-     * @param manager the manager
-     * @return the object[]
-     */
-    protected Object[] setParameters(T entity, PreparedStatement prep, SqlTypeMappingManager manager) {
-        return setParameters(entity, propertyPositions, prep, manager);
-    }
+    //    /**
+    //     * Sets the parameters.
+    //     *
+    //     * @param entity  the entity
+    //     * @param prep    the prep
+    //     * @param manager the manager
+    //     * @return the object[]
+    //     */
+    //    protected Object[] setParameters(T entity, PreparedStatement prep, SqlTypeMappingManager manager) {
+    //        return setParameters(entity, propertyPositions, prep, manager);
+    //    }
+    //
+    //    /**
+    //     * Sets the parameters.
+    //     *
+    //     * @param entity            the entity
+    //     * @param propertyPositions the property positions
+    //     * @param prep              the prep
+    //     * @param manager           the manager
+    //     * @return the object[]
+    //     */
+    //    protected Object[] setParameters(T entity, Map<Integer, String> propertyPositions, PreparedStatement prep,
+    //            SqlTypeMappingManager manager) {
+    //        BeanDescriptor<?> beanDescriptor = BeanDescriptor.getBeanDescriptor(entity.getClass());
+    //        Object[] params = new Object[propertyPositions.size()];
+    //        int i = 0;
+    //        for (Entry<Integer, String> propertyPosition : propertyPositions.entrySet()) {
+    //            BeanProperty<Object> property = beanDescriptor.getBeanProperty(propertyPosition.getValue());
+    //            Object value = BeanUtils.getProperty(entity, propertyPosition.getValue());
+    //            params[i] = value;
+    //            i++;
+    //            manager.set(prep, i, value, property);
+    //        }
+    //        return params;
+    //    }
 
-    /**
-     * Sets the parameters.
-     *
-     * @param entity            the entity
-     * @param propertyPositions the property positions
-     * @param prep              the prep
-     * @param manager           the manager
-     * @return the object[]
-     */
-    protected Object[] setParameters(T entity, Map<Integer, String> propertyPositions, PreparedStatement prep,
-            SqlTypeMappingManager manager) {
-        BeanDescriptor<?> beanDescriptor = BeanDescriptor.getBeanDescriptor(entity.getClass());
-        Object[] params = new Object[propertyPositions.size()];
-        int i = 0;
-        for (Entry<Integer, String> propertyPosition : propertyPositions.entrySet()) {
-            BeanProperty<Object> property = beanDescriptor.getBeanProperty(propertyPosition.getValue());
-            Object value = BeanUtils.getProperty(entity, propertyPosition.getValue());
-            params[i] = value;
-            i++;
-            manager.set(prep, i, value, property);
-        }
-        return params;
-    }
-
-    /**
-     * Sets the batch parameters.
-     *
-     * @param entities          the entities
-     * @param propertyPositions the property positions
-     * @param prep              the prep
-     * @param manager           the manager
-     * @return the object[]
-     */
-    protected Object[] setBatchParameters(List<T> entities, Map<Integer, String> propertyPositions,
-            PreparedStatement prep, SqlTypeMappingManager manager) {
-        if (Lang.isEmpty(entities)) {
-            return new Object[] {};
-        }
-        BeanDescriptor<?> beanDescriptor = BeanDescriptor.getBeanDescriptor(entities.get(0).getClass());
-        Object[] params = new Object[propertyPositions.size()];
-        int pkNum = propertyPositions.size() / entities.size();
-        int i = 0;
-        T entity = null;
-        for (Entry<Integer, String> propertyPosition : propertyPositions.entrySet()) {
-            if (i % pkNum == 0) {
-                entity = entities.get(i / pkNum);
-            }
-            params[i] = BeanUtils.getProperty(entity, propertyPosition.getValue());
-            BeanProperty<Object> property = beanDescriptor.getBeanProperty(propertyPosition.getValue());
-            manager.set(prep, i + 1, params[i], property);
-            i++;
-        }
-        return params;
-    }
+    //    /**
+    //     * Sets the batch parameters.
+    //     *
+    //     * @param entities          the entities
+    //     * @param propertyPositions the property positions
+    //     * @param prep              the prep
+    //     * @param manager           the manager
+    //     * @return the object[]
+    //     */
+    //    protected Object[] setBatchParameters(List<T> entities, Map<Integer, String> propertyPositions,
+    //            PreparedStatement prep, SqlTypeMappingManager manager) {
+    //        if (Lang.isEmpty(entities)) {
+    //            return new Object[] {};
+    //        }
+    //        BeanDescriptor<?> beanDescriptor = BeanDescriptor.getBeanDescriptor(entities.get(0).getClass());
+    //        Object[] params = new Object[propertyPositions.size()];
+    //        int pkNum = propertyPositions.size() / entities.size();
+    //        int i = 0;
+    //        T entity = null;
+    //        for (Entry<Integer, String> propertyPosition : propertyPositions.entrySet()) {
+    //            if (i % pkNum == 0) {
+    //                entity = entities.get(i / pkNum);
+    //            }
+    //            params[i] = BeanUtils.getProperty(entity, propertyPosition.getValue());
+    //            BeanProperty<Object> property = beanDescriptor.getBeanProperty(propertyPosition.getValue());
+    //            manager.set(prep, i + 1, params[i], property);
+    //            i++;
+    //        }
+    //        return params;
+    //    }
 
     /**
      * Gets the parameters.
@@ -298,40 +291,35 @@ public abstract class AbstractOperate<T> {
         return bpvs;
     }
 
-    /**
-     * <p>
-     * 设置预编译参数
-     * </p>
-     * .
-     *
-     * @param prep    执行SQL的PreparedStatementWrapper
-     * @param id      主键
-     * @param manager the manager
-     */
-    protected void setParameter(PreparedStatement prep, Serializable id, SqlTypeMappingManager manager) {
-        manager.set(prep, 1, id, pkProperties.get(0));
-        //        JdbcUtils.setParameter(prep, 1, id);
-    }
+    //    /**
+    //     * 设置预编译参数 .
+    //     *
+    //     * @param prep    执行SQL的PreparedStatementWrapper
+    //     * @param id      主键
+    //     * @param manager the manager
+    //     */
+    //    protected void setParameter(PreparedStatement prep, Serializable id, SqlTypeMappingManager manager) {
+    //        manager.set(prep, 1, id, pkProperties.get(0));
+    //        //        JdbcUtils.setParameter(prep, 1, id);
+    //    }
 
-    /**
-     * <p>
-     * 设置预编译参数
-     * </p>
-     * .
-     *
-     * @param prep    执行SQL的PreparedStatementWrapper
-     * @param ids     主键列表
-     * @param manager the manager
-     */
-    protected void setParameter(PreparedStatement prep, java.util.List<Serializable> ids,
-            SqlTypeMappingManager manager) {
-        int i = 0;
-        for (Serializable id : ids) {
-            i++;
-            manager.set(prep, i, id, pkProperties.get(i - 1));
-            //            JdbcUtils.setParameter(prep, i, id);
-        }
-    }
+    //    /**
+    //     * 设置预编译参数
+    //     * .
+    //     *
+    //     * @param prep    执行SQL的PreparedStatementWrapper
+    //     * @param ids     主键列表
+    //     * @param manager the manager
+    //     */
+    //    protected void setParameter(PreparedStatement prep, java.util.List<Serializable> ids,
+    //            SqlTypeMappingManager manager) {
+    //        int i = 0;
+    //        for (Serializable id : ids) {
+    //            i++;
+    //            manager.set(prep, i, id, pkProperties.get(i - 1));
+    //            //            JdbcUtils.setParameter(prep, i, id);
+    //        }
+    //    }
 
     /**
      * 初始化SQL，由具体的实现类来实现.
