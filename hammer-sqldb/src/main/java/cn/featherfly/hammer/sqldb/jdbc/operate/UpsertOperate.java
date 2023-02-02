@@ -1,22 +1,18 @@
 package cn.featherfly.hammer.sqldb.jdbc.operate;
 
 import java.io.Serializable;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
-import java.util.Map.Entry;
 
 import com.speedment.common.tuple.Tuple2;
 
 import cn.featherfly.common.bean.BeanDescriptor;
 import cn.featherfly.common.bean.BeanUtils;
-import cn.featherfly.common.constant.Chars;
 import cn.featherfly.common.db.mapping.ClassMappingUtils;
 import cn.featherfly.common.db.mapping.JdbcClassMapping;
 import cn.featherfly.common.db.mapping.JdbcPropertyMapping;
 import cn.featherfly.common.db.mapping.SqlTypeMappingManager;
 import cn.featherfly.common.db.metadata.DatabaseMetadata;
-import cn.featherfly.common.lang.Lang;
 import cn.featherfly.common.lang.reflect.Type;
 import cn.featherfly.hammer.sqldb.jdbc.GeneratedKeyHolder;
 import cn.featherfly.hammer.sqldb.jdbc.Jdbc;
@@ -67,26 +63,35 @@ public class UpsertOperate<T> extends AbstractBatchExecuteOperate<T> {
         super(jdbc, classMapping, sqlTypeMappingManager, databaseMetadata);
     }
 
+    //    /**
+    //     * {@inheritDoc}
+    //     */
+    //    @Override
+    //    public int executeBatch(final List<T> entities, int batchSize) {
+    //        if (Lang.isEmpty(entities)) {
+    //            return Chars.ZERO;
+    //        }
+    //        if (jdbc.getDialect().supportUpsertBatch()) {
+    //            return _executeBatch(entities, batchSize);
+    //        } else {
+    //            int size = 0;
+    //            for (T entity : entities) {
+    //                size += execute(entity);
+    //            }
+    //            return size;
+    //        }
+    //    }
+
     /**
      * {@inheritDoc}
      */
     @Override
-    public int executeBatch(final List<T> entities, int batchSize) {
-        if (Lang.isEmpty(entities)) {
-            return Chars.ZERO;
-        }
-        if (jdbc.getDialect().supportUpsertBatch()) {
-            return _executeBatch(entities, batchSize);
-        } else {
-            int size = 0;
-            for (T entity : entities) {
-                size += execute(entity);
-            }
-            return size;
-        }
+    protected boolean supportBatch() {
+        return jdbc.getDialect().supportUpsertBatch();
     }
 
-    private int _executeBatch(final List<T> entities) {
+    @Override
+    protected int doExecuteBatch(final List<T> entities) {
         if (entities.size() == 0) {
             return 0;
         }
@@ -98,7 +103,10 @@ public class UpsertOperate<T> extends AbstractBatchExecuteOperate<T> {
             @Override
             public void acceptKey(Serializable key, int row) {
                 if (row < entities.size()) {
-                    BeanUtils.setProperty(entities.get(row), pks.get(0).getPropertyName(), key);
+                    // YUFEI_TODO 需要更多测试各种情况是否正确
+                    if (BeanUtils.getProperty(entities.get(row), pks.get(0).getPropertyName()) == null) {
+                        BeanUtils.setProperty(entities.get(row), pks.get(0).getPropertyName(), key);
+                    }
                 }
             }
 
@@ -123,23 +131,23 @@ public class UpsertOperate<T> extends AbstractBatchExecuteOperate<T> {
         // TODO 批量upsert时， 返回值不确定，所以无法设置自动生成的id值，后续再研究
     }
 
-    private int _executeBatch(final List<T> entities, int batchSize) {
-        if (entities.size() <= batchSize) {
-            return _executeBatch(entities);
-        } else {
-            int size = 0;
-            List<T> batchList = new ArrayList<>();
-            for (int i = 0; i < entities.size(); i++) {
-                if (i % batchSize == 0) {
-                    batchList.clear();
-                    size += _executeBatch(batchList);
-                }
-                batchList.add(entities.get(i));
-            }
-            size += _executeBatch(batchList);
-            return size;
-        }
-    }
+    //    private int _executeBatch(final List<T> entities, int batchSize) {
+    //        if (entities.size() <= batchSize) {
+    //            return _executeBatch(entities);
+    //        } else {
+    //            int size = 0;
+    //            List<T> batchList = new ArrayList<>();
+    //            for (int i = 0; i < entities.size(); i++) {
+    //                if (i % batchSize == 0) {
+    //                    batchList.clear();
+    //                    size += _executeBatch(batchList);
+    //                }
+    //                batchList.add(entities.get(i));
+    //            }
+    //            size += _executeBatch(batchList);
+    //            return size;
+    //        }
+    //    }
 
     /**
      * {@inheritDoc}
@@ -151,7 +159,10 @@ public class UpsertOperate<T> extends AbstractBatchExecuteOperate<T> {
             return jdbc.update(sql, new GeneratedKeyHolder<Serializable>() {
                 @Override
                 public void acceptKey(Serializable key, int row) {
-                    BeanUtils.setProperty(entity, pks.get(0).getPropertyName(), key);
+                    // YUFEI_TODO 需要更多测试各种情况是否正确
+                    if (BeanUtils.getProperty(entity, pks.get(0).getPropertyName()) == null) {
+                        BeanUtils.setProperty(entity, pks.get(0).getPropertyName(), key);
+                    }
                 }
 
                 @Override
@@ -182,27 +193,27 @@ public class UpsertOperate<T> extends AbstractBatchExecuteOperate<T> {
         logger.debug("sql: {}", sql);
     }
 
-    /**
-     * Gets the batch parameters.
-     *
-     * @param entities          the entities
-     * @param propertyPositions the property positions
-     * @return the batch parameters
-     */
-    protected Object[] getBatchParameters(List<T> entities, Map<Integer, String> propertyPositions) {
-        if (Lang.isEmpty(entities)) {
-            return new Object[] {};
-        }
-        Object[] params = new Object[propertyPositions.size() * entities.size()];
-        for (int i = 0; i < entities.size(); i++) {
-            T entity = entities.get(i);
-            int index = 0;
-            for (Entry<Integer, String> propertyPosition : propertyPositions.entrySet()) {
-                params[i * propertyPositions.size() + index] = BeanUtils.getProperty(entity,
-                        propertyPosition.getValue());
-                index++;
-            }
-        }
-        return params;
-    }
+    //    /**
+    //     * Gets the batch parameters.
+    //     *
+    //     * @param entities          the entities
+    //     * @param propertyPositions the property positions
+    //     * @return the batch parameters
+    //     */
+    //    protected Object[] getBatchParameters(List<T> entities, Map<Integer, String> propertyPositions) {
+    //        if (Lang.isEmpty(entities)) {
+    //            return new Object[] {};
+    //        }
+    //        Object[] params = new Object[propertyPositions.size() * entities.size()];
+    //        for (int i = 0; i < entities.size(); i++) {
+    //            T entity = entities.get(i);
+    //            int index = 0;
+    //            for (Entry<Integer, String> propertyPosition : propertyPositions.entrySet()) {
+    //                params[i * propertyPositions.size() + index] = BeanUtils.getProperty(entity,
+    //                        propertyPosition.getValue());
+    //                index++;
+    //            }
+    //        }
+    //        return params;
+    //    }
 }

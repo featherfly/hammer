@@ -93,11 +93,25 @@ public class OperatorTest extends JdbcTestBase {
         GetOperate<Role> get = new GetOperate<>(jdbc, mappingFactory.getClassMapping(Role.class),
                 mappingFactory.getSqlTypeMappingManager(), mappingFactory.getMetadata());
 
+        assertInsertBatch(insert, delete, get, null);
+        assertInsertBatch(insert, delete, get, 3);
+
+        insert.executeBatch(new ArrayList<Role>());
+        insert.executeBatch(new Role[0]);
+    }
+
+    private void assertInsertBatch(InsertOperate<Role> insert, DeleteOperate<Role> delete, GetOperate<Role> get,
+            Integer batchSize) {
         List<Role> roles = new ArrayList<>();
-        for (int i = 0; i < 5; i++) {
+        for (int i = 0; i < 6; i++) {
             roles.add(role());
         }
-        int size = insert.executeBatch(roles);
+        int size = -1;
+        if (batchSize == null) {
+            size = insert.executeBatch(roles);
+        } else {
+            size = insert.executeBatch(roles, batchSize);
+        }
 
         for (Role role : roles) {
             if (jdbc.getDialect().supportAutoGenerateKeyBatch()) {
