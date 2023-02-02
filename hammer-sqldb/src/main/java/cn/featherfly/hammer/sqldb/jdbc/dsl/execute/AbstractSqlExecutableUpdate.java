@@ -8,7 +8,6 @@ import cn.featherfly.common.db.builder.model.UpdateColumnElement.SetType;
 import cn.featherfly.common.lang.LambdaUtils;
 import cn.featherfly.common.lang.function.SerializableFunction;
 import cn.featherfly.common.lang.function.SerializableSupplier;
-import cn.featherfly.common.repository.IgnorePolicy;
 import cn.featherfly.hammer.sqldb.jdbc.Jdbc;
 
 /**
@@ -21,16 +20,6 @@ public abstract class AbstractSqlExecutableUpdate<U extends AbstractSqlExecutabl
     protected Jdbc jdbc;
 
     protected SqlUpdateSetBasicBuilder builder;
-
-    /**
-     * Instantiates a new sql executable update.
-     *
-     * @param tableName tableName
-     * @param jdbc      jdbc
-     */
-    public AbstractSqlExecutableUpdate(String tableName, Jdbc jdbc) {
-        this(tableName, jdbc, IgnorePolicy.NONE);
-    }
 
     /**
      * Instantiates a new sql executable update.

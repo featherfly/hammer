@@ -114,7 +114,20 @@ public abstract class AbstractJdbc implements Jdbc {
 
     @Override
     public int insertBatch(String tableName, String[] columnNames, int batchSize, Object... args) {
-        return update(getDialect().buildInsertBatchSql(tableName, columnNames, batchSize), args);
+        if (args.length % columnNames.length != 0) {
+            throw new JdbcException("batch size is not explicit (args.length % columnNames.length != 0)");
+        }
+        int actualBatchSize = args.length / columnNames.length;
+        if (batchSize >= actualBatchSize) { // 表示批量执行数的最大限制小于等于参数计算出的实际需要的批量执行数
+            return updateBatch(getDialect().buildInsertBatchSql(tableName, columnNames, actualBatchSize),
+                    actualBatchSize, args);
+        } else {
+            int index = batchSize * columnNames.length;
+            return updateBatch(getDialect().buildInsertBatchSql(tableName, columnNames, batchSize), batchSize,
+                    Arrays.copyOfRange(args, 0, index))
+                    + insertBatch(tableName, columnNames, actualBatchSize - batchSize,
+                            Arrays.copyOfRange(args, index, args.length));
+        }
     }
 
     @Override
@@ -262,7 +275,7 @@ public abstract class AbstractJdbc implements Jdbc {
             if (generatedKeyHolder != null && (batchSize == 1 && result == 1 || batchSize > 1)) {
                 try (ResultSet res = prep.getGeneratedKeys()) {
                     int row = 0;
-                    if (dialect instanceof SQLiteDialect) { // res.next() not supported by sqlite
+                    if (dialect instanceof SQLiteDialect) { // res.isLast() not supported by sqlite
                         while (res.next()) {
                             T value = getGenereteKey(generatedKeyHolder.getType(), res);
                             generatedKeyHolder.acceptKey(value, row++);
@@ -649,7 +662,6 @@ public abstract class AbstractJdbc implements Jdbc {
      */
     protected void setParam(PreparedStatement prep, int index, Object argu) {
         if (argu instanceof FieldValueOperator) {
-            // YUFEI_TODO 还未测试
             ((FieldValueOperator<?>) argu).set(prep, index);
         } else if (argu instanceof BeanPropertyValue) {
             @SuppressWarnings("unchecked")

@@ -18,7 +18,6 @@ import cn.featherfly.common.repository.IgnorePolicy;
 import cn.featherfly.common.structure.page.SimplePage;
 import cn.featherfly.hammer.sqldb.SqldbHammerException;
 import cn.featherfly.hammer.sqldb.jdbc.JdbcTestBase;
-import cn.featherfly.hammer.sqldb.jdbc.dsl.query.EntitySqlQueryExpression;
 import cn.featherfly.hammer.sqldb.jdbc.dsl.query.SqlQuery;
 import cn.featherfly.hammer.sqldb.jdbc.vo.DistrictDivision;
 import cn.featherfly.hammer.sqldb.jdbc.vo.Role;
@@ -90,9 +89,6 @@ public class SqlQueryTypeTest extends JdbcTestBase {
 
     @Test
     void testConditionConfig() {
-        assertEquals(query.find(User.class).where(c -> c.setIgnorePolicy(IgnorePolicy.EMPTY)).getIgnorePolicy(),
-                IgnorePolicy.EMPTY);
-
         List<User> users = query.find(User.class).where(c -> c.setIgnorePolicy(IgnorePolicy.EMPTY))
                 .eq(User::getUsername, "").list();
         assertTrue(users.size() > 0);
@@ -352,8 +348,8 @@ public class SqlQueryTypeTest extends JdbcTestBase {
              c.eq() ..... // 关联user的条件查询
          }).fetch().join(UserRole2::getUser).fetch()
                 .join(UserRole2::getRole).fetch().list();
-
-
+        
+        
          */
     }
 
@@ -720,14 +716,4 @@ public class SqlQueryTypeTest extends JdbcTestBase {
     // new ChainMapImpl<String, String>().putChain("parent", "t1")));
     //
     // }
-
-    @Test
-    void testCoverage() {
-        EntitySqlQueryExpression<User> q = (EntitySqlQueryExpression<User>) query.find(User.class).where();
-        String sql = q.toString();
-        String sql2 = q.build();
-        assertNotNull(sql);
-        assertNotNull(sql2);
-        assertEquals(sql, sql2);
-    }
 }

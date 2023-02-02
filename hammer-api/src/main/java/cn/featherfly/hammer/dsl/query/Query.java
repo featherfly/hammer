@@ -12,7 +12,11 @@ import cn.featherfly.hammer.expression.query.QueryExpression;
  * @author zhongj
  */
 public interface Query extends
-        QueryExpression<QueryEntity, QueryEntityProperties, QueryWith, QueryWithOn, QueryWithEntity, QueryConditionGroupExpression, QueryConditionGroupLogicExpression, RepositoryQueryConditionGroupExpression, RepositoryQueryConditionGroupLogicExpression, TypeQueryEntity, TypeQueryEntityProperties, TypeQueryWith, TypeQueryWithEntity, TypeQueryConditionGroupExpression, TypeQueryConditionGroupLogicExpression, RepositoryTypeQueryConditionGroupExpression, RepositoryTypeQueryConditionGroupLogicExpression> {
+        QueryExpression<QueryEntity, QueryEntityProperties, QueryWith, QueryWithOn, QueryWithEntity,
+                QueryConditionGroupExpression, QueryConditionGroupLogicExpression,
+                RepositoryQueryConditionGroupExpression, RepositoryQueryConditionGroupLogicExpression,
+                //                TypeQueryEntity, TypeQueryEntityProperties, TypeQueryWith, TypeQueryWithEntity, TypeQueryConditionGroupExpression,TypeQueryConditionGroupLogicExpression,
+                RepositoryTypeQueryConditionGroupExpression, RepositoryTypeQueryConditionGroupLogicExpression> {
 
     <E> EntityQueryEntity<E> find(Class<E> repositoryType);
 }

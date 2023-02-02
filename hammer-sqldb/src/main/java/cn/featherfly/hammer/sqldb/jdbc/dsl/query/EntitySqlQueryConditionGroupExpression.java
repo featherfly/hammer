@@ -1,6 +1,7 @@
 
 package cn.featherfly.hammer.sqldb.jdbc.dsl.query;
 
+import java.math.BigDecimal;
 import java.util.Arrays;
 import java.util.List;
 import java.util.function.Predicate;
@@ -11,7 +12,6 @@ import cn.featherfly.common.db.builder.dml.SqlSortBuilder;
 import cn.featherfly.common.db.mapping.ClassMappingUtils;
 import cn.featherfly.common.db.mapping.JdbcClassMapping;
 import cn.featherfly.common.db.mapping.JdbcMappingFactory;
-import cn.featherfly.common.exception.UnsupportedException;
 import cn.featherfly.common.lang.LambdaUtils;
 import cn.featherfly.common.lang.Lang;
 import cn.featherfly.common.lang.function.SerializableFunction;
@@ -30,12 +30,13 @@ import cn.featherfly.hammer.sqldb.jdbc.SqlPageFactory.SqlPageQuery;
 import cn.featherfly.hammer.sqldb.sql.dml.AbstractEntitySqlConditionGroupExpression;
 
 /**
- * sql condition group builder sql条件逻辑组构造器 .
+ * entity sql query condition group expression.实体sql查询条件逻辑组表达式.
  *
  * @author zhongj
  */
-public class EntitySqlQueryConditionGroupExpression<E> extends
-        AbstractEntitySqlConditionGroupExpression<E, EntityQueryConditionGroupExpression<E>, EntityQueryConditionGroupLogicExpression<E>>
+public abstract class EntitySqlQueryConditionGroupExpression<E> extends
+        AbstractEntitySqlConditionGroupExpression<E, EntityQueryConditionGroupExpression<E>,
+                EntityQueryConditionGroupLogicExpression<E>>
         implements EntityQueryConditionGroupExpression<E>, EntityQueryConditionGroupLogicExpression<E>,
         EntityQuerySortExpression<E> {
 
@@ -110,15 +111,15 @@ public class EntitySqlQueryConditionGroupExpression<E> extends
     /** The jdbc. */
     protected Jdbc jdbc;
 
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    protected EntitySqlQueryConditionGroupExpression<E> createGroup(EntityQueryConditionGroupLogicExpression<E> parent,
-            String queryAlias, EntitySqlQuery<E> entityQueryEntity) {
-        return new EntitySqlQueryConditionGroupExpression<>(parent, jdbc, queryAlias, classMapping, factory,
-                sqlPageFactory, aliasManager, entityQueryEntity, ignorePolicy);
-    }
+    //    /**
+    //     * {@inheritDoc}
+    //     */
+    //    @Override
+    //    protected EntitySqlQueryConditionGroupExpression<E> createGroup(EntityQueryConditionGroupLogicExpression<E> parent,
+    //            String queryAlias, EntitySqlQuery<E> entityQueryEntity) {
+    //        return new EntitySqlQueryConditionGroupExpression<>(parent, jdbc, queryAlias, classMapping, factory,
+    //                sqlPageFactory, aliasManager, entityQueryEntity, ignorePolicy);
+    //    }
 
     /**
      * {@inheritDoc}
@@ -261,10 +262,89 @@ public class EntitySqlQueryConditionGroupExpression<E> extends
      * {@inheritDoc}
      */
     @Override
-    public Long count() {
-        // IMPLSOON 后续来实现
-        throw new UnsupportedException();
+    public String string() {
+        String sql = getRoot().expression();
+        Object[] params = getRoot().getParams().toArray();
+        if (limit != null) {
+            SqlPageQuery<Object[]> pageQuery = sqlPageFactory.toPage(dialect, sql, limit.getOffset(), limit.getLimit(),
+                    params);
+            sql = pageQuery.getSql();
+            params = pageQuery.getParams();
+        }
+        return jdbc.queryString(sql, params);
     }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public Integer integer() {
+        String sql = getRoot().expression();
+        Object[] params = getRoot().getParams().toArray();
+        if (limit != null) {
+            SqlPageQuery<Object[]> pageQuery = sqlPageFactory.toPage(dialect, sql, limit.getOffset(), limit.getLimit(),
+                    params);
+            sql = pageQuery.getSql();
+            params = pageQuery.getParams();
+        }
+        return jdbc.queryInt(sql, params);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public Long longInt() {
+        String sql = getRoot().expression();
+        Object[] params = getRoot().getParams().toArray();
+        if (limit != null) {
+            SqlPageQuery<Object[]> pageQuery = sqlPageFactory.toPage(dialect, sql, limit.getOffset(), limit.getLimit(),
+                    params);
+            sql = pageQuery.getSql();
+            params = pageQuery.getParams();
+        }
+        return jdbc.queryLong(sql, params);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public BigDecimal decimal() {
+        String sql = getRoot().expression();
+        Object[] params = getRoot().getParams().toArray();
+        if (limit != null) {
+            SqlPageQuery<Object[]> pageQuery = sqlPageFactory.toPage(dialect, sql, limit.getOffset(), limit.getLimit(),
+                    params);
+            sql = pageQuery.getSql();
+            params = pageQuery.getParams();
+        }
+        return jdbc.queryBigDecimal(sql, params);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public <N extends Number> N number(Class<N> type) {
+        String sql = getRoot().expression();
+        Object[] params = getRoot().getParams().toArray();
+        if (limit != null) {
+            SqlPageQuery<Object[]> pageQuery = sqlPageFactory.toPage(dialect, sql, limit.getOffset(), limit.getLimit(),
+                    params);
+            sql = pageQuery.getSql();
+            params = pageQuery.getParams();
+        }
+        return jdbc.queryValue(sql, type, params);
+    }
+
+    //    /**
+    //     * {@inheritDoc}
+    //     */
+    //    @Override
+    //    public Long count() {
+    //        throw new UnsupportedException();
+    //    }
 
     /**
      * {@inheritDoc}

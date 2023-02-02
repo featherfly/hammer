@@ -4,14 +4,12 @@ package cn.featherfly.hammer.sqldb.jdbc.operate;
 import java.sql.ResultSet;
 
 import cn.featherfly.common.bean.BeanUtils;
-import cn.featherfly.common.constant.Chars;
 import cn.featherfly.common.db.mapping.ClassMappingUtils;
 import cn.featherfly.common.db.mapping.JdbcClassMapping;
 import cn.featherfly.common.db.mapping.JdbcPropertyMapping;
 import cn.featherfly.common.db.mapping.SqlResultSet;
 import cn.featherfly.common.db.mapping.SqlTypeMappingManager;
 import cn.featherfly.common.db.metadata.DatabaseMetadata;
-import cn.featherfly.common.lang.Lang;
 import cn.featherfly.hammer.sqldb.jdbc.Jdbc;
 import cn.featherfly.hammer.sqldb.jdbc.MappingDebugMessage;
 
@@ -25,30 +23,30 @@ import cn.featherfly.hammer.sqldb.jdbc.MappingDebugMessage;
  */
 public abstract class AbstractQueryOperate<T> extends AbstractOperate<T> implements QueryOperate<T> {
 
-    /**
-     * 使用给定数据源以及给定对象生成其相应的操作.
-     *
-     * @param jdbc                  jdbc
-     * @param classMapping          classMapping
-     * @param sqlTypeMappingManager the sql type mapping manager
-     */
-    public AbstractQueryOperate(Jdbc jdbc, JdbcClassMapping<T> classMapping,
-            SqlTypeMappingManager sqlTypeMappingManager) {
-        super(jdbc, classMapping, sqlTypeMappingManager);
-    }
-
-    /**
-     * 使用给定数据源以及给定对象生成其相应的操作.
-     *
-     * @param jdbc                  jdbc
-     * @param classMapping          classMapping
-     * @param sqlTypeMappingManager the sql type mapping manager
-     * @param dataBase              具体库
-     */
-    public AbstractQueryOperate(Jdbc jdbc, JdbcClassMapping<T> classMapping,
-            SqlTypeMappingManager sqlTypeMappingManager, String dataBase) {
-        super(jdbc, classMapping, sqlTypeMappingManager, dataBase);
-    }
+    //    /**
+    //     * 使用给定数据源以及给定对象生成其相应的操作.
+    //     *
+    //     * @param jdbc                  jdbc
+    //     * @param classMapping          classMapping
+    //     * @param sqlTypeMappingManager the sql type mapping manager
+    //     */
+    //    public AbstractQueryOperate(Jdbc jdbc, JdbcClassMapping<T> classMapping,
+    //            SqlTypeMappingManager sqlTypeMappingManager) {
+    //        super(jdbc, classMapping, sqlTypeMappingManager);
+    //    }
+    //
+    //    /**
+    //     * 使用给定数据源以及给定对象生成其相应的操作.
+    //     *
+    //     * @param jdbc                  jdbc
+    //     * @param classMapping          classMapping
+    //     * @param sqlTypeMappingManager the sql type mapping manager
+    //     * @param dataBase              具体库
+    //     */
+    //    public AbstractQueryOperate(Jdbc jdbc, JdbcClassMapping<T> classMapping,
+    //            SqlTypeMappingManager sqlTypeMappingManager, String dataBase) {
+    //        super(jdbc, classMapping, sqlTypeMappingManager, dataBase);
+    //    }
 
     /**
      * 使用给定数据源以及给定对象生成其相应的操作.
@@ -130,29 +128,29 @@ public abstract class AbstractQueryOperate<T> extends AbstractOperate<T> impleme
         return index;
     }
 
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    protected void initSql() {
-        initSelectSql();
-        StringBuilder getSql = new StringBuilder();
-        getSql.append(getSelectSql());
-        String condition = initCondition();
-        if (Lang.isNotEmpty(condition)) {
-            getSql.append(Chars.SPACE).append(jdbc.getDialect().getKeywords().where()).append(Chars.SPACE)
-                    .append(condition);
-        }
-        sql = getSql.toString();
-        logger.debug("sql: {}", sql);
-    }
-
-    /**
-     * Inits the condition.
-     *
-     * @return the string
-     */
-    protected abstract String initCondition();
+    //    /**
+    //     * {@inheritDoc}
+    //     */
+    //    @Override
+    //    protected void initSql() {
+    //        initSelectSql();
+    //        StringBuilder getSql = new StringBuilder();
+    //        getSql.append(getSelectSql());
+    //        String condition = initCondition();
+    //        if (Lang.isNotEmpty(condition)) {
+    //            getSql.append(Chars.SPACE).append(jdbc.getDialect().getKeywords().where()).append(Chars.SPACE)
+    //                    .append(condition);
+    //        }
+    //        sql = getSql.toString();
+    //        logger.debug("sql: {}", sql);
+    //    }
+    //
+    //    /**
+    //     * Inits the condition.
+    //     *
+    //     * @return the string
+    //     */
+    //    protected abstract String initCondition();
 
     // ********************************************************************
     //
@@ -167,22 +165,22 @@ public abstract class AbstractQueryOperate<T> extends AbstractOperate<T> impleme
     //        return JdbcUtils.getResultSetValue(((SqlResultSet) rs).getResultSet(), index, propertyType);
     //    }
 
-    private void initSelectSql() {
-        this.selectSql = ClassMappingUtils.getSelectSql(classMapping, jdbc.getDialect());
-    }
+    //    private void initSelectSql() {
+    //        this.selectSql = ClassMappingUtils.getSelectSql(classMapping, jdbc.getDialect());
+    //    }
 
     // ********************************************************************
     //
     // ********************************************************************
 
-    private String selectSql;
-
-    /**
-     * 返回selectSql.
-     *
-     * @return selectSql
-     */
-    public String getSelectSql() {
-        return selectSql;
-    }
+    //    private String selectSql;
+    //
+    //    /**
+    //     * 返回selectSql.
+    //     *
+    //     * @return selectSql
+    //     */
+    //    public String getSelectSql() {
+    //        return selectSql;
+    //    }
 }

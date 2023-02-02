@@ -20,9 +20,8 @@ public class SqlDeleteExpression extends SqlConditionGroupExpression {
     /**
      * Instantiates a new sql delete expression.
      *
-     * @param jdbc         the jdbc
-     * @param builder      the builder
-     * @param classMapping the class mapping
+     * @param jdbc    the jdbc
+     * @param builder the builder
      */
     public SqlDeleteExpression(Jdbc jdbc, SqlDeleteFromBasicBuilder builder) {
         this(jdbc, builder, IgnorePolicy.NONE);

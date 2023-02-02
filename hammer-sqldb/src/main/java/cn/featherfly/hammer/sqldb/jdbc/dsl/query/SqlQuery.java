@@ -123,11 +123,16 @@ public class SqlQuery implements Query {
         return new EntitySqlQueryEntityProperties<>(jdbc, mapping, mappingFactory, sqlPageFactory, new AliasManager(),
                 IgnorePolicy.EMPTY);
     }
+
     //   public TypeSqlQueryEntityProperties find(Class<?> repositoryType) {
     //        if (mappingFactory == null) {
     //            throw new SqldbHammerException("mappingFactory is null");
     //        }
     //        return new TypeSqlQueryEntityProperties(jdbc, mappingFactory.getClassMapping(repositoryType), mappingFactory,
     //                sqlPageFactory, new AliasManager(), IgnorePolicy.EMPTY);
+    //    }
+
+    // IMPLSOON 后续来实现select xxx from yy 模式的方法链
+    //    public SqlSelectQuery select() {
     //    }
 }

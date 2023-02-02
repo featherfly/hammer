@@ -527,10 +527,10 @@ public class OperatorTest extends JdbcTestBase {
     public void testUpsertBatch() {
         UpsertOperate<App> upsert = new UpsertOperate<>(jdbc, mappingFactory.getClassMapping(App.class),
                 mappingFactory.getSqlTypeMappingManager(), mappingFactory.getMetadata());
-        //        DeleteOperate<App> delete = new DeleteOperate<>(jdbc, mappingFactory.getClassMapping(App.class),
-        //                mappingFactory.getSqlTypeMappingManager(), mappingFactory.getMetadata());
-        //        GetOperate<App> get = new GetOperate<>(jdbc, mappingFactory.getClassMapping(App.class),
-        //                mappingFactory.getSqlTypeMappingManager(), mappingFactory.getMetadata());
+        DeleteOperate<App> delete = new DeleteOperate<>(jdbc, mappingFactory.getClassMapping(App.class),
+                mappingFactory.getSqlTypeMappingManager(), mappingFactory.getMetadata());
+        GetOperate<App> get = new GetOperate<>(jdbc, mappingFactory.getClassMapping(App.class),
+                mappingFactory.getSqlTypeMappingManager(), mappingFactory.getMetadata());
 
         List<App> apps = new ArrayList<>();
 
@@ -546,8 +546,8 @@ public class OperatorTest extends JdbcTestBase {
 
         upsert.executeBatch(apps);
 
-        //        Long id = app.getId();
-        //        Long id2 = app2.getId();
+        Long id = app.getId();
+        Long id2 = app2.getId();
         String name = "name03";
         String name2 = "name04";
 
