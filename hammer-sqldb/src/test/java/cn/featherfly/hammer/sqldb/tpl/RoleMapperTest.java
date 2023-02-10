@@ -11,6 +11,7 @@ import java.util.Set;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
 
+import cn.featherfly.common.db.JdbcException;
 import cn.featherfly.common.db.dialect.Dialects;
 import cn.featherfly.common.lang.Randoms;
 import cn.featherfly.common.structure.page.PaginationResults;
@@ -55,19 +56,30 @@ public class RoleMapperTest extends JdbcTestBase {
         list = roleMapper.list(2, 3);
         assertTrue(list.size() == 3);
 
-        list = roleMapper.selectByName("descp%");
+        list = roleMapper.selectByName("n_init_%");
         for (Role role : list) {
-            assertTrue(role.getName().startsWith("descp"));
+            assertTrue(role.getName().startsWith("n_init_"));
         }
 
-        list = roleMapper.selectByName2("descp%");
+        list = roleMapper.selectByName2("n_init_%");
         for (Role role : list) {
-            assertTrue(role.getName().startsWith("descp"));
+            assertTrue(role.getName().startsWith("n_init_"));
         }
 
-        list = roleMapper.selectByName3("descp%");
+        //        list = roleMapper.selectByName3("n_init_%");
+        //        for (Role role : list) {
+        //            assertTrue(role.getName().startsWith("n_init_"));
+        //        }
+    }
+
+    @Test(expectedExceptions = JdbcException.class)
+    void testMapperSqlInAnnotation2() {
+        List<Role> list = null;
+
+        // YUFEI_TODO 目前已经删除模板sql中使用?占位符，是否需要支持?号占位符后续再来考虑
+        list = roleMapper.selectByName3("n_init_%");
         for (Role role : list) {
-            assertTrue(role.getName().startsWith("descp"));
+            assertTrue(role.getName().startsWith("n_init_"));
         }
     }
 

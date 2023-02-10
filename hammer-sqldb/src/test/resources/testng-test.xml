@@ -43,6 +43,16 @@
         </packages>
     </test>
 
+    <test name="jdbc test">
+        <packages>
+            <package
+                name="cn.featherfly.hammer.sqldb.jdbc.base.*" />
+        </packages>
+        <classes>
+            <class name="cn.featherfly.hammer.sqldb.jdbc.JdbcTest" />
+        </classes>
+    </test>
+
     <test name="orm test">
         <classes>
             <class
@@ -51,7 +61,6 @@
                 /> -->
             <class
                 name="cn.featherfly.hammer.sqldb.jdbc.OperatorTest" />
-            <class name="cn.featherfly.hammer.sqldb.jdbc.JdbcTest" />
             <!-- <class name="cn.featherfly.hammer.sqldb.tpl.SqlTplExecutorTest" 
                 /> -->
         </classes>

@@ -16,17 +16,16 @@ import cn.featherfly.common.lang.function.SerializableFunction;
 import cn.featherfly.common.lang.function.SerializableFunction2;
 import cn.featherfly.common.lang.function.SerializableFunction3;
 import cn.featherfly.common.repository.builder.AliasManager;
-import cn.featherfly.common.repository.mapping.PropertyMapping;
 import cn.featherfly.common.structure.page.Page;
 import cn.featherfly.hammer.dsl.query.type.EntityQueryConditionGroupExpression;
 import cn.featherfly.hammer.dsl.query.type.EntityQueryConditionGroupLogicExpression;
 import cn.featherfly.hammer.dsl.query.type.EntityQueryEntityProperties;
 import cn.featherfly.hammer.dsl.query.type.EntityQueryRelation;
+import cn.featherfly.hammer.dsl.query.type.EntityQuerySortExpression;
 import cn.featherfly.hammer.expression.condition.ConditionGroupConfig;
 import cn.featherfly.hammer.expression.query.type.EntityQueryLimitExecutor;
 import cn.featherfly.hammer.expression.query.type.EntityQueryRelationEntityExpression;
 import cn.featherfly.hammer.expression.query.type.EntityQueryRelationExpression;
-import cn.featherfly.hammer.sqldb.SqldbHammerException;
 import cn.featherfly.hammer.sqldb.jdbc.Jdbc;
 import cn.featherfly.hammer.sqldb.jdbc.SqlPageFactory;
 
@@ -152,11 +151,9 @@ public class EntitySqlQueryEntityProperties<E>
         JdbcClassMapping<R> joinTypeMapping = factory.getClassMapping((Class<R>) info.getPropertyType());
         JdbcPropertyMapping cpm = classMapping.getPropertyMapping(info.getPropertyName());
         // R(column) fk E(pk)
-        EntityQueryRelation<E,
-                R> r = new EntitySqlQueryRelation<>(this, classMapping, tableAlias, cpm.getRepositoryFieldName(),
-                        joinTypeMapping,
-                        joinTypeMapping.getPrivaryKeyPropertyMappings().get(0).getRepositoryFieldName(),
-                        cpm.getPropertyName(), ignorePolicy);
+        EntityQueryRelation<E, R> r = new EntitySqlQueryRelation<>(this, classMapping, tableAlias,
+                cpm.getRepositoryFieldName(), joinTypeMapping,
+                joinTypeMapping.getPrivaryKeyPropertyMappings().get(0).getRepositoryFieldName(), cpm.getPropertyName());
         return (RE) r;
     }
 
@@ -177,8 +174,9 @@ public class EntitySqlQueryEntityProperties<E>
         EntityQueryRelation<E,
                 R> r = new EntitySqlQueryRelation<>(this, classMapping, tableAlias,
                         classMapping.getPrivaryKeyPropertyMappings().get(0).getRepositoryFieldName(), joinTypeMapping,
-                        joinTypeMapping.getPropertyMapping(info.getPropertyName()).getRepositoryFieldName(), null, // YUFEI_TODO 后续来考虑是否需要强制获取
-                        ignorePolicy);
+                        joinTypeMapping.getPropertyMapping(info.getPropertyName()).getRepositoryFieldName(), null
+        // YUFEI_TODO 后续来根据映射关系看能不能进行处理
+        );
         return (RE) r;
 
     }
@@ -197,12 +195,19 @@ public class EntitySqlQueryEntityProperties<E>
         JdbcClassMapping<E> joinTypeMapping = classMapping;
         JdbcPropertyMapping cpm = classMapping.getPropertyMapping(info.getPropertyName());
         // E(column) fk E(pk)
-        EntityQueryRelation<E,
-                E> r = new EntitySqlQueryRelation<>(this, classMapping, tableAlias, cpm.getRepositoryFieldName(),
-                        joinTypeMapping,
-                        joinTypeMapping.getPrivaryKeyPropertyMappings().get(0).getRepositoryFieldName(),
-                        cpm.getPropertyName(), ignorePolicy);
+        EntityQueryRelation<E, E> r = new EntitySqlQueryRelation<>(this, classMapping, tableAlias,
+                cpm.getRepositoryFieldName(), joinTypeMapping,
+                joinTypeMapping.getPrivaryKeyPropertyMappings().get(0).getRepositoryFieldName(), cpm.getPropertyName());
         return (RE) r;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public EntityQuerySortExpression<E> sort() {
+        return new EntitySqlQueryExpression<>(jdbc, classMapping, this, factory, sqlPageFactory, aliasManager,
+                selectBuilder, ignorePolicy).sort();
     }
 
     //    <T, R> EntitySqlQueryRelation<E, R> with(SerializableFunction<T, R> propertyName, int index) {
@@ -214,14 +219,12 @@ public class EntitySqlQueryEntityProperties<E>
     //        }
     //        SerializedLambdaInfo joinInfo = LambdaUtils.getLambdaInfo(propertyName);
     //        AbstractEntitySqlQueryRelation with = sqlQueryRelations.get(index - 1);
-    //        // IMPLSOON join
     //        //        return with(with.joinTypeClassMapping, with.joinTableAlias, joinInfo);
     //        return null;
     //    }
 
     //    private <R> EntitySqlQueryRelation<E, R> _join(SerializableFunction<E, R> propertyName) {
     //        EntitySqlQueryWith<E> typeSqlQueryWith = with(classMapping, selectBuilder.getTableAlias(), joinInfo);
-    //      IMPLSOON 后续来实现，先让编译通过
     //        SerializedLambdaInfo joinInfo = LambdaUtils.getLambdaInfo(propertyName);
     //        @SuppressWarnings("unchecked")
     //        EntitySqlQueryRelation<E, R> typeSqlQueryWith = join(classMapping, tableAlias, joinInfo,
@@ -277,7 +280,6 @@ public class EntitySqlQueryEntityProperties<E>
     //                    sqlPageFactory, cm, tableAlias, pm.getRepositoryFieldName(), joinClassMapping,
     //                    getPkMapping(joinClassMapping).getRepositoryFieldName(), name, ignorePolicy);
     //            sqlQueryRelations.add(typeSqlQueryWith);
-    //            // IMPLSOON 后续来处理类型
     //            return (EntitySqlQueryRelation<E, R>) typeSqlQueryWith;
     //        } else if (ClassUtils.isParent(cm.getType(), joinInfo.getPropertyType())) {
     //            // 表示是查找对象是with对象的属性，可以进行连表查询，但是不能返回到查询对象上，因为没有指明返回对象属性
@@ -289,29 +291,28 @@ public class EntitySqlQueryEntityProperties<E>
     //                    sqlPageFactory, cm, tableAlias, getIdName(), joinClassMapping, pm.getRepositoryFieldName(),
     //                    ignorePolicy);
     //            sqlQueryRelations.add(typeSqlQueryWith);
-    //            // IMPLSOON 后续来处理类型
     //            return (EntitySqlQueryRelation<E, R>) typeSqlQueryWith;
     //        } else {
     //            return null;
     //        }
     //    }
 
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    protected String getIdName() {
-        return getPkMapping(classMapping).getRepositoryFieldName();
-    }
+    //    /**
+    //     * {@inheritDoc}
+    //     */
+    //    @Override
+    //    protected String getIdName() {
+    //        return getPkMapping(classMapping).getRepositoryFieldName();
+    //    }
 
-    private PropertyMapping<?> getPkMapping(JdbcClassMapping<?> classMapping) {
-        if (classMapping.getPrivaryKeyPropertyMappings().size() > 1) {
-            throw new SqldbHammerException(String.format("there is more than one privary key property in type(%s)",
-                    classMapping.getType().getName()));
-        } else if (classMapping.getPrivaryKeyPropertyMappings().size() == 0) {
-            throw new SqldbHammerException(
-                    String.format("there is no privary key property in type(%s)", classMapping.getType().getName()));
-        }
-        return classMapping.getPrivaryKeyPropertyMappings().get(0);
-    }
+    //    private PropertyMapping<?> getPkMapping(JdbcClassMapping<?> classMapping) {
+    //        if (classMapping.getPrivaryKeyPropertyMappings().size() > 1) {
+    //            throw new SqldbHammerException(String.format("there is more than one privary key property in type(%s)",
+    //                    classMapping.getType().getName()));
+    //        } else if (classMapping.getPrivaryKeyPropertyMappings().size() == 0) {
+    //            throw new SqldbHammerException(
+    //                    String.format("there is no privary key property in type(%s)", classMapping.getType().getName()));
+    //        }
+    //        return classMapping.getPrivaryKeyPropertyMappings().get(0);
+    //    }
 }

@@ -1,5 +1,5 @@
 
-package cn.featherfly.hammer.sqldb.jdbc.dsl;
+package cn.featherfly.hammer.sqldb.jdbc.dsl.entity;
 
 import static org.junit.Assert.assertNotEquals;
 import static org.junit.Assert.assertNull;
@@ -14,6 +14,8 @@ import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.BeforeTest;
 import org.testng.annotations.Test;
 
+import cn.featherfly.common.repository.IgnorePolicy;
+import cn.featherfly.common.structure.page.SimplePage;
 import cn.featherfly.hammer.sqldb.SqldbHammerException;
 import cn.featherfly.hammer.sqldb.jdbc.JdbcTestBase;
 import cn.featherfly.hammer.sqldb.jdbc.dsl.query.SqlQuery;
@@ -24,6 +26,7 @@ import cn.featherfly.hammer.sqldb.jdbc.vo.Tree2;
 import cn.featherfly.hammer.sqldb.jdbc.vo.User;
 import cn.featherfly.hammer.sqldb.jdbc.vo.UserInfo;
 import cn.featherfly.hammer.sqldb.jdbc.vo.UserRole2;
+import cn.featherfly.hammer.sqldb.jdbc.vo.order.Order2;
 
 /**
  * sql query type test.
@@ -53,6 +56,61 @@ public class SqlQueryTypeTest extends JdbcTestBase {
     }
 
     @Test
+    void testList() {
+        List<Order2> list = query.find(Order2.class).list();
+        assertTrue(list.size() > 0);
+    }
+
+    @Test
+    void testLimit() {
+        User user = query.find(User.class).limit(1).single();
+        assertTrue(user.getId() == 1);
+
+        user = query.find(User.class).limit(1, 1).single();
+        assertTrue(user.getId() == 2);
+
+        user = query.find(User.class).limit(new SimplePage(1, 1)).single();
+        assertTrue(user.getId() == 1);
+
+        user = query.find(User.class).limit(new SimplePage(1, 2)).single();
+        assertTrue(user.getId() == 2);
+    }
+
+    @Test
+    void testSort() {
+        List<User> users = query.find(User.class).sort().asc(User::getId).limit(2).list();
+        assertTrue(users.size() == 2);
+        assertTrue(users.get(0).getId() < users.get(1).getId());
+
+        users = query.find(User.class).sort().desc(User::getId).limit(2).list();
+        assertTrue(users.size() == 2);
+        assertTrue(users.get(0).getId() > users.get(1).getId());
+    }
+
+    @Test
+    void testConditionConfig() {
+        List<User> users = query.find(User.class).where(c -> c.setIgnorePolicy(IgnorePolicy.EMPTY))
+                .eq(User::getUsername, "").list();
+        assertTrue(users.size() > 0);
+
+        users = query.find(User.class).where(c -> c.setIgnorePolicy(IgnorePolicy.NULL)).eq(User::getUsername, "")
+                .list();
+        assertTrue(users.size() == 0);
+
+        users = query.find(User.class).where(c -> c.setIgnorePolicy(IgnorePolicy.NULL)).eq(User::getUsername, null)
+                .list();
+        assertTrue(users.size() > 0);
+
+        users = query.find(User.class).where(c -> c.setIgnorePolicy(IgnorePolicy.NONE)).eq(User::getUsername, null)
+                .list();
+        assertTrue(users.size() == 0);
+
+        users = query.find(User.class).where(c -> c.setIgnorePolicy(IgnorePolicy.NONE)).eq(User::getUsername, "")
+                .list();
+        assertTrue(users.size() == 0);
+    }
+
+    @Test
     void testCount() {
         Long number = query.find("user").count();
         System.out.println("count:" + number);
@@ -69,6 +127,70 @@ public class SqlQueryTypeTest extends JdbcTestBase {
         assertTrue(number2 == 2);
         assertEquals(number, number2);
 
+    }
+
+    @Test
+    void testAvg() {
+        Integer number = query.find("user").avg("age").integer();
+        System.out.println("avg:" + number);
+        assertTrue(number > 0);
+
+        //        query.find("user").integer(); // IMPLSOON 没有使用property或各种统计方法，则无法调用返回单个参数的方法
+        //        query.find("user").where().eq("id", "id").integer(); IMPLSOON 这里没有实现上面的逻辑
+
+        Integer number2 = query.find(User.class).avg(User::getAge).integer();
+        System.out.println("avg:" + number2);
+        assertTrue(number2 > 0);
+        assertEquals(number, number2);
+
+        number = query.find("user").avg("age").where().eq("age", 5).integer();
+        assertTrue(number == 5);
+
+        number2 = query.find(User.class).avg(User::getAge).where().eq(User::getAge, 5).integer();
+        assertTrue(number2 == 5);
+        assertEquals(number, number2);
+    }
+
+    @Test
+    void testSum() {
+        Long count = query.find("user").where().eq("age", 5).count();
+
+        Integer number = query.find("user").sum("age").where().eq("age", 5).integer();
+        System.out.println("sum:" + number);
+        assertTrue(number > 0);
+        assertTrue(number == count * 5);
+
+        Integer number2 = query.find(User.class).sum(User::getAge).where().eq(User::getAge, 5).integer();
+        System.out.println("avg:" + number2);
+        assertTrue(number2 > 0);
+        assertTrue(number == count * 5);
+        assertEquals(number, number2);
+    }
+
+    @Test
+    void testMin() {
+
+        Integer number = query.find("user").min("age").integer();
+        System.out.println("min:" + number);
+        assertTrue(number == 5);
+
+        Integer number2 = query.find(User.class).min(User::getAge).integer();
+        System.out.println("min:" + number2);
+        assertTrue(number2 == 5);
+        assertEquals(number, number2);
+    }
+
+    @Test
+    void testMax() {
+
+        Integer number = query.find("user").max("age").integer();
+        System.out.println("min:" + number);
+        assertTrue(number == 55);
+
+        Integer number2 = query.find(User.class).max(User::getAge).integer();
+        System.out.println("min:" + number2);
+        assertTrue(number2 == 55);
+        assertEquals(number, number2);
     }
 
     @SuppressWarnings("unchecked")
@@ -226,8 +348,8 @@ public class SqlQueryTypeTest extends JdbcTestBase {
              c.eq() ..... // 关联user的条件查询
          }).fetch().join(UserRole2::getUser).fetch()
                 .join(UserRole2::getRole).fetch().list();
-
-
+        
+        
          */
     }
 

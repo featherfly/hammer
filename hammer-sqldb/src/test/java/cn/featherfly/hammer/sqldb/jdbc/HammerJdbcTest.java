@@ -394,6 +394,43 @@ public class HammerJdbcTest extends JdbcTestBase {
         r3 = hammer.get(r2);
         assertNull(r3);
 
+        List<Role> roles = new ArrayList<>();
+        String descp = "descp";
+        String descpUpdate = "descp_updated";
+        String descpUpdate2 = "descp_updated2";
+        for (int i = 0; i < 3; i++) {
+            Role role = new Role();
+            role.setName("name");
+            role.setDescp(descp);
+            hammer.save(role);
+            roles.add(role);
+        }
+        for (int i = 0; i < 3; i++) {
+            Role role = roles.get(i);
+            Role load = hammer.get(role.getId(), Role.class);
+            assertEquals(load.getId(), role.getId());
+            assertEquals(load.getName(), role.getName());
+            assertEquals(load.getDescp(), descp);
+            role.setDescp(descpUpdate);
+        }
+        hammer.update(roles);
+        for (int i = 0; i < 3; i++) {
+            Role role = roles.get(i);
+            Role load = hammer.get(role.getId(), Role.class);
+            assertEquals(load.getId(), role.getId());
+            assertEquals(load.getName(), role.getName());
+            assertEquals(load.getDescp(), descpUpdate);
+            role.setDescp(descpUpdate2);
+        }
+        hammer.merge(roles.toArray(new Role[roles.size()]));
+        for (int i = 0; i < 3; i++) {
+            Role role = roles.get(i);
+            Role load = hammer.get(role.getId(), Role.class);
+            assertEquals(load.getId(), role.getId());
+            assertEquals(load.getName(), role.getName());
+            assertEquals(load.getDescp(), descpUpdate2);
+        }
+        hammer.delete(roles);
     }
 
     @Test
@@ -531,6 +568,44 @@ public class HammerJdbcTest extends JdbcTestBase {
         r3 = hammer.get(r2);
 
         assertNull(r3);
+
+        List<Role> roles = new ArrayList<>();
+        String descp = "descp";
+        String descpUpdate = "descp_merged";
+        String descpUpdate2 = "descp_merged2";
+        for (int i = 0; i < 3; i++) {
+            Role role = new Role();
+            role.setName("name");
+            role.setDescp(descp);
+            hammer.save(role);
+            roles.add(role);
+        }
+        for (int i = 0; i < 3; i++) {
+            Role role = roles.get(i);
+            Role load = hammer.get(role.getId(), Role.class);
+            assertEquals(load.getId(), role.getId());
+            assertEquals(load.getName(), role.getName());
+            assertEquals(load.getDescp(), descp);
+            role.setDescp(descpUpdate);
+        }
+        hammer.merge(roles);
+        for (int i = 0; i < 3; i++) {
+            Role role = roles.get(i);
+            Role load = hammer.get(role.getId(), Role.class);
+            assertEquals(load.getId(), role.getId());
+            assertEquals(load.getName(), role.getName());
+            assertEquals(load.getDescp(), descpUpdate);
+            role.setDescp(descpUpdate2);
+        }
+        hammer.merge(roles.toArray(new Role[roles.size()]));
+        for (int i = 0; i < 3; i++) {
+            Role role = roles.get(i);
+            Role load = hammer.get(role.getId(), Role.class);
+            assertEquals(load.getId(), role.getId());
+            assertEquals(load.getName(), role.getName());
+            assertEquals(load.getDescp(), descpUpdate2);
+        }
+        hammer.delete(roles);
 
     }
 
@@ -995,8 +1070,8 @@ public class HammerJdbcTest extends JdbcTestBase {
         assertEquals(user.getId(), id);
 
         // IMPLSOON 后续看如何实现expression
-        //                user = hammer.query(User.class).where().eq(User::getId, id).and()
-        //                        .expression("age - :age >= 0", new ChainMapImpl<String, Object>().putChain("age", 100)).single();
+        //        user = hammer.query(User.class).where().eq(User::getId, id).and()
+        //                .expression("age - :age >= 0", new ChainMapImpl<String, Object>().putChain("age", 100)).single();
         //                assertNull(user);
         //
         //        user = hammer.query(User.class).where().eq(User::getId, id).and().expression("age - ? >= 0", 100).single();

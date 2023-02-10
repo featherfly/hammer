@@ -27,29 +27,29 @@ import cn.featherfly.hammer.sqldb.jdbc.Jdbc;
  */
 public class InsertOperate<T> extends AbstractBatchExecuteOperate<T> {
 
-    /**
-     * 使用给定数据源以及给定对象生成插入操作.
-     *
-     * @param jdbc                  jdbc
-     * @param classMapping          classMapping
-     * @param sqlTypeMappingManager the sql type mapping manager
-     */
-    public InsertOperate(Jdbc jdbc, JdbcClassMapping<T> classMapping, SqlTypeMappingManager sqlTypeMappingManager) {
-        super(jdbc, classMapping, sqlTypeMappingManager);
-    }
-
-    /**
-     * 使用给定数据源以及给定对象生成插入操作.
-     *
-     * @param jdbc                  jdbc
-     * @param classMapping          classMapping
-     * @param sqlTypeMappingManager the sql type mapping manager
-     * @param dataBase              具体库
-     */
-    public InsertOperate(Jdbc jdbc, JdbcClassMapping<T> classMapping, SqlTypeMappingManager sqlTypeMappingManager,
-            String dataBase) {
-        super(jdbc, classMapping, sqlTypeMappingManager, dataBase);
-    }
+    //    /**
+    //     * 使用给定数据源以及给定对象生成插入操作.
+    //     *
+    //     * @param jdbc                  jdbc
+    //     * @param classMapping          classMapping
+    //     * @param sqlTypeMappingManager the sql type mapping manager
+    //     */
+    //    public InsertOperate(Jdbc jdbc, JdbcClassMapping<T> classMapping, SqlTypeMappingManager sqlTypeMappingManager) {
+    //        super(jdbc, classMapping, sqlTypeMappingManager);
+    //    }
+    //
+    //    /**
+    //     * 使用给定数据源以及给定对象生成插入操作.
+    //     *
+    //     * @param jdbc                  jdbc
+    //     * @param classMapping          classMapping
+    //     * @param sqlTypeMappingManager the sql type mapping manager
+    //     * @param dataBase              具体库
+    //     */
+    //    public InsertOperate(Jdbc jdbc, JdbcClassMapping<T> classMapping, SqlTypeMappingManager sqlTypeMappingManager,
+    //            String dataBase) {
+    //        super(jdbc, classMapping, sqlTypeMappingManager, dataBase);
+    //    }
 
     /**
      * 使用给定数据源以及给定对象生成插入操作.
@@ -85,9 +85,6 @@ public class InsertOperate<T> extends AbstractBatchExecuteOperate<T> {
 
     @Override
     protected int doExecuteBatch(final List<T> entities) {
-        if (entities.size() == 0) {
-            return 0;
-        }
         List<JdbcPropertyMapping> pks = classMapping.getPrivaryKeyPropertyMappings();
         Tuple2<String, Map<Integer, String>> tuple = ClassMappingUtils
                 .getInsertBatchSqlAndParamPositions(entities.size(), classMapping, jdbc.getDialect());

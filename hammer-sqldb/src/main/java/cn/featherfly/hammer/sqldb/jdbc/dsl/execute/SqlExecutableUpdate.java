@@ -67,7 +67,7 @@ public class SqlExecutableUpdate extends AbstractSqlExecutableUpdate<SqlExecutab
      * @param jdbc       the jdbc
      */
     public SqlExecutableUpdate(Repository repository, Jdbc jdbc) {
-        this(repository.name(), jdbc);
+        this(repository, jdbc, IgnorePolicy.NONE);
     }
 
     /**

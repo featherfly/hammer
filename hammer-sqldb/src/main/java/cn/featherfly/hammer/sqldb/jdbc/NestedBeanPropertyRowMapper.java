@@ -38,6 +38,7 @@ import cn.featherfly.common.db.mapping.JdbcMappingException;
 import cn.featherfly.common.db.mapping.SqlResultSet;
 import cn.featherfly.common.db.mapping.SqlTypeMappingManager;
 import cn.featherfly.common.lang.AssertIllegalArgument;
+import cn.featherfly.common.repository.mapping.RowMapper;
 
 /**
  * {@link RowMapper} implementation that converts a row into a new instance of
@@ -532,16 +533,26 @@ public class NestedBeanPropertyRowMapper<T> implements cn.featherfly.common.repo
         return JdbcUtils.getResultSetValue(rs, index, pd.getPropertyType());
     }
 
+    /**
+     * The Class Mapping.
+     *
+     * @author zhongj
+     */
     public static class Mapping {
 
+        /** The column. */
         String column;
 
+        /** The column as. */
         String columnAs;
 
+        /** The property. */
         String property;
 
+        /** The property type name. */
         String propertyTypeName;
 
+        /** The bean property. */
         BeanProperty<?> beanProperty;
 
         private PropertyDescriptor propertyDescriptor;

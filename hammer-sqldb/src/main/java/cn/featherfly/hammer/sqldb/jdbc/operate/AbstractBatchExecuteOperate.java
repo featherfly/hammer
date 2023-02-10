@@ -47,30 +47,30 @@ public abstract class AbstractBatchExecuteOperate<T> extends AbstractExecuteOper
         super(jdbc, classMapping, sqlTypeMappingManager, databaseMetadata);
     }
 
-    /**
-     * Instantiates a new abstract batch execute operate.
-     *
-     * @param jdbc                  the jdbc
-     * @param classMapping          the class mapping
-     * @param sqlTypeMappingManager the sql type mapping manager
-     * @param dataBase              the data base
-     */
-    public AbstractBatchExecuteOperate(Jdbc jdbc, JdbcClassMapping<T> classMapping,
-            SqlTypeMappingManager sqlTypeMappingManager, String dataBase) {
-        super(jdbc, classMapping, sqlTypeMappingManager, dataBase);
-    }
+    //    /**
+    //     * Instantiates a new abstract batch execute operate.
+    //     *
+    //     * @param jdbc                  the jdbc
+    //     * @param classMapping          the class mapping
+    //     * @param sqlTypeMappingManager the sql type mapping manager
+    //     * @param dataBase              the data base
+    //     */
+    //    public AbstractBatchExecuteOperate(Jdbc jdbc, JdbcClassMapping<T> classMapping,
+    //            SqlTypeMappingManager sqlTypeMappingManager, String dataBase) {
+    //        super(jdbc, classMapping, sqlTypeMappingManager, dataBase);
+    //    }
 
-    /**
-     * Instantiates a new abstract batch execute operate.
-     *
-     * @param jdbc                  the jdbc
-     * @param classMapping          the class mapping
-     * @param sqlTypeMappingManager the sql type mapping manager
-     */
-    public AbstractBatchExecuteOperate(Jdbc jdbc, JdbcClassMapping<T> classMapping,
-            SqlTypeMappingManager sqlTypeMappingManager) {
-        super(jdbc, classMapping, sqlTypeMappingManager);
-    }
+    //    /**
+    //     * Instantiates a new abstract batch execute operate.
+    //     *
+    //     * @param jdbc                  the jdbc
+    //     * @param classMapping          the class mapping
+    //     * @param sqlTypeMappingManager the sql type mapping manager
+    //     */
+    //    public AbstractBatchExecuteOperate(Jdbc jdbc, JdbcClassMapping<T> classMapping,
+    //            SqlTypeMappingManager sqlTypeMappingManager) {
+    //        super(jdbc, classMapping, sqlTypeMappingManager);
+    //    }
 
     /**
      * {@inheritDoc}

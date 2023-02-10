@@ -6,10 +6,7 @@ import cn.featherfly.hammer.Hammer;
 import cn.featherfly.hammer.sqldb.jdbc.Jdbc;
 
 /**
- * <p>
- * SqldbHammer
- * </p>
- * .
+ * SqldbHammer.
  *
  * @author zhongj
  */

@@ -10,7 +10,6 @@ import java.util.function.Predicate;
 import cn.featherfly.common.constant.Chars;
 import cn.featherfly.common.db.SqlUtils;
 import cn.featherfly.common.db.builder.dml.SqlSortBuilder;
-import cn.featherfly.common.exception.UnsupportedException;
 import cn.featherfly.common.lang.LambdaUtils;
 import cn.featherfly.common.lang.Lang;
 import cn.featherfly.common.lang.function.SerializableFunction;
@@ -22,7 +21,6 @@ import cn.featherfly.common.structure.page.SimplePaginationResults;
 import cn.featherfly.hammer.dsl.query.QueryConditionGroupExpression;
 import cn.featherfly.hammer.dsl.query.QueryConditionGroupLogicExpression;
 import cn.featherfly.hammer.dsl.query.QuerySortExpression;
-import cn.featherfly.hammer.dsl.query.TypeQueryEntity;
 import cn.featherfly.hammer.expression.query.QueryLimitExecutor;
 import cn.featherfly.hammer.sqldb.jdbc.Jdbc;
 import cn.featherfly.hammer.sqldb.jdbc.SqlPageFactory;
@@ -34,7 +32,7 @@ import cn.featherfly.hammer.sqldb.sql.dml.AbstractSqlConditionGroupExpression;
  *
  * @author zhongj
  */
-public class SqlQueryConditionGroupExpression
+public abstract class SqlQueryConditionGroupExpression
         extends AbstractSqlConditionGroupExpression<QueryConditionGroupExpression, QueryConditionGroupLogicExpression>
         implements QueryConditionGroupExpression, QueryConditionGroupLogicExpression, QuerySortExpression {
 
@@ -61,7 +59,6 @@ public class SqlQueryConditionGroupExpression
      * @param jdbc           jdbc
      * @param sqlPageFactory the sql page factory
      * @param queryAlias     queryAlias
-     * @param classMapping   classMapping
      * @param ignorePolicy   the ignore policy
      */
     public SqlQueryConditionGroupExpression(Jdbc jdbc, SqlPageFactory sqlPageFactory, String queryAlias,
@@ -76,7 +73,6 @@ public class SqlQueryConditionGroupExpression
      * @param jdbc           jdbc
      * @param sqlPageFactory the sql page factory
      * @param queryAlias     queryAlias
-     * @param classMapping   classMapping
      * @param ignorePolicy   the ignore policy
      */
     SqlQueryConditionGroupExpression(QueryConditionGroupLogicExpression parent, Jdbc jdbc,
@@ -92,14 +88,14 @@ public class SqlQueryConditionGroupExpression
     /** The jdbc. */
     protected Jdbc jdbc;
 
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    protected QueryConditionGroupExpression createGroup(QueryConditionGroupLogicExpression parent, String queryAlias,
-            TypeQueryEntity typeQueryEntity) {
-        return new SqlQueryConditionGroupExpression(parent, jdbc, sqlPageFactory, queryAlias, ignorePolicy);
-    }
+    //    /**
+    //     * {@inheritDoc}
+    //     */
+    //    @Override
+    //    protected QueryConditionGroupExpression createGroup(QueryConditionGroupLogicExpression parent, String queryAlias,
+    //            TypeQueryEntity typeQueryEntity) {
+    //        return new SqlQueryConditionGroupExpression(parent, jdbc, sqlPageFactory, queryAlias, ignorePolicy);
+    //    }
 
     /**
      * {@inheritDoc}
@@ -444,14 +440,13 @@ public class SqlQueryConditionGroupExpression
         return jdbc.queryValue(getRoot().expression(), type, getRoot().getParams().toArray());
     }
 
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public Long count() {
-        //  YUFEI_TODO 未实现
-        throw new UnsupportedException();
-    }
+    //    /**
+    //     * {@inheritDoc}
+    //     */
+    //    @Override
+    //    public Long count() {
+    //        throw new UnsupportedException();
+    //    }
 
     /**
      * {@inheritDoc}

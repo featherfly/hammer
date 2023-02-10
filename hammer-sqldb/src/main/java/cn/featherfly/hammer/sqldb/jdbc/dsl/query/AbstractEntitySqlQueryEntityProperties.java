@@ -1,6 +1,7 @@
 
 package cn.featherfly.hammer.sqldb.jdbc.dsl.query;
 
+import java.math.BigDecimal;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Map;
@@ -10,19 +11,16 @@ import java.util.stream.Collectors;
 import com.speedment.common.tuple.Tuple2;
 
 import cn.featherfly.common.constant.Chars;
-import cn.featherfly.common.db.Table;
 import cn.featherfly.common.db.builder.dml.basic.SqlSelectBasicBuilder;
 import cn.featherfly.common.db.mapping.ClassMappingUtils;
 import cn.featherfly.common.db.mapping.JdbcClassMapping;
 import cn.featherfly.common.db.mapping.JdbcMappingFactory;
-import cn.featherfly.common.db.metadata.DatabaseMetadata;
 import cn.featherfly.common.lang.AssertIllegalArgument;
 import cn.featherfly.common.lang.LambdaUtils;
 import cn.featherfly.common.lang.Lang;
 import cn.featherfly.common.lang.function.SerializableFunction;
 import cn.featherfly.common.operator.AggregateFunction;
 import cn.featherfly.common.repository.builder.AliasManager;
-import cn.featherfly.hammer.HammerException;
 import cn.featherfly.hammer.dsl.query.type.EntityQueryEntityProperties;
 import cn.featherfly.hammer.sqldb.jdbc.Jdbc;
 import cn.featherfly.hammer.sqldb.jdbc.SqlPageFactory;
@@ -96,49 +94,50 @@ public abstract class AbstractEntitySqlQueryEntityProperties<E, P extends Abstra
         this.tableAlias = tableAlias;
     }
 
-    /**
-     * Instantiates a new abstract sql query entity properties.
-     *
-     * @param jdbc             jdbc
-     * @param databaseMetadata databaseMetadata
-     * @param tableName        tableName
-     * @param tableAlias       tableAlias
-     * @param factory          MappingFactory
-     * @param sqlPageFactory   the sql page factory
-     * @param aliasManager     aliasManager
-     * @param ignorePolicy     the ignore policy
-     */
-    public AbstractEntitySqlQueryEntityProperties(Jdbc jdbc, DatabaseMetadata databaseMetadata, String tableName,
-            String tableAlias, JdbcMappingFactory factory, SqlPageFactory sqlPageFactory, AliasManager aliasManager,
-            Predicate<Object> ignorePolicy) {
-        AssertIllegalArgument.isNotNull(ignorePolicy, "ignorePolicy");
-        this.ignorePolicy = ignorePolicy;
-        this.jdbc = jdbc;
-        this.factory = factory;
-        this.sqlPageFactory = sqlPageFactory;
-        this.aliasManager = aliasManager;
-        if (tableAlias == null) {
-            tableAlias = aliasManager.put(tableName);
-        }
-        Table tableMetadata = databaseMetadata.getTable(tableName);
-        if (tableMetadata.getPrimaryColumns().size() == 1) {
-            idName = tableMetadata.getPrimaryColumns().get(0).getName();
-        }
-        selectBuilder = new SqlSelectBasicBuilder(jdbc.getDialect(), tableName, tableAlias);
-
-        this.tableAlias = tableAlias;
-    }
+    //    /**
+    //     * Instantiates a new abstract sql query entity properties.
+    //     *
+    //     * @param jdbc             jdbc
+    //     * @param databaseMetadata databaseMetadata
+    //     * @param tableName        tableName
+    //     * @param tableAlias       tableAlias
+    //     * @param factory          MappingFactory
+    //     * @param sqlPageFactory   the sql page factory
+    //     * @param aliasManager     aliasManager
+    //     * @param ignorePolicy     the ignore policy
+    //     */
+    //    public AbstractEntitySqlQueryEntityProperties(Jdbc jdbc, DatabaseMetadata databaseMetadata, String tableName,
+    //            String tableAlias, JdbcMappingFactory factory, SqlPageFactory sqlPageFactory, AliasManager aliasManager,
+    //            Predicate<Object> ignorePolicy) {
+    //        AssertIllegalArgument.isNotNull(ignorePolicy, "ignorePolicy");
+    //        this.ignorePolicy = ignorePolicy;
+    //        this.jdbc = jdbc;
+    //        this.factory = factory;
+    //        this.sqlPageFactory = sqlPageFactory;
+    //        this.aliasManager = aliasManager;
+    //        if (tableAlias == null) {
+    //            tableAlias = aliasManager.put(tableName);
+    //        }
+    //        Table tableMetadata = databaseMetadata.getTable(tableName);
+    //        if (tableMetadata.getPrimaryColumns().size() == 1) {
+    //            idName = tableMetadata.getPrimaryColumns().get(0).getName();
+    //        }
+    //        selectBuilder = new SqlSelectBasicBuilder(jdbc.getDialect(), tableName, tableAlias);
+    //
+    //        this.tableAlias = tableAlias;
+    //    }
 
     /**
      * Property.
      *
+     * @param distinct     the distinct
      * @param propertyName the property name
      * @return the e
      */
     @SuppressWarnings("unchecked")
     public P property(boolean distinct, String propertyName) {
-        Tuple2<String, String> columnAndProperty = ClassMappingUtils.getColumnAndPropertyName(propertyName,
-                classMapping);
+        Tuple2<String,
+                String> columnAndProperty = ClassMappingUtils.getColumnAndPropertyName(propertyName, classMapping);
         if (Lang.isEmpty(columnAndProperty.get1())) {
             selectBuilder.addColumn(distinct, columnAndProperty.get0());
         } else {
@@ -157,8 +156,8 @@ public abstract class AbstractEntitySqlQueryEntityProperties<E, P extends Abstra
      */
     @SuppressWarnings("unchecked")
     public P property(AggregateFunction aggregateFunction, boolean distinct, String propertyName) {
-        Tuple2<String, String> columnAndProperty = ClassMappingUtils.getColumnAndPropertyName(propertyName,
-                classMapping);
+        Tuple2<String,
+                String> columnAndProperty = ClassMappingUtils.getColumnAndPropertyName(propertyName, classMapping);
         if (Lang.isEmpty(columnAndProperty.get1())) {
             selectBuilder.addColumn(aggregateFunction, distinct, columnAndProperty.get0());
         } else {
@@ -170,7 +169,6 @@ public abstract class AbstractEntitySqlQueryEntityProperties<E, P extends Abstra
     /**
      * Property.
      *
-     * @param <T>               the generic type
      * @param <R>               the generic type
      * @param aggregateFunction the aggregate function
      * @param distinct          the distinct
@@ -213,7 +211,6 @@ public abstract class AbstractEntitySqlQueryEntityProperties<E, P extends Abstra
     /**
      * Property.
      *
-     * @param <R>           the generic type
      * @param propertyNames the property names
      * @return the e
      */
@@ -227,6 +224,7 @@ public abstract class AbstractEntitySqlQueryEntityProperties<E, P extends Abstra
      * Property.
      *
      * @param <R>          the generic type
+     * @param distinct     the distinct
      * @param propertyName the property name
      * @return the e
      */
@@ -309,8 +307,49 @@ public abstract class AbstractEntitySqlQueryEntityProperties<E, P extends Abstra
     }
 
     /**
+     * {@inheritDoc}
+     */
+    @Override
+    public String string() {
+        return new SqlQueryExpression(jdbc, sqlPageFactory, selectBuilder, ignorePolicy).string();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public Integer integer() {
+        return new SqlQueryExpression(jdbc, sqlPageFactory, selectBuilder, ignorePolicy).integer();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public Long longInt() {
+        return new SqlQueryExpression(jdbc, sqlPageFactory, selectBuilder, ignorePolicy).longInt();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public BigDecimal decimal() {
+        return new SqlQueryExpression(jdbc, sqlPageFactory, selectBuilder, ignorePolicy).decimal();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public <N extends Number> N number(Class<N> type) {
+        return new SqlQueryExpression(jdbc, sqlPageFactory, selectBuilder, ignorePolicy).number(type);
+    }
+
+    /**
      * Count.
      *
+     * @param distinct     the distinct
      * @param propertyName the property name
      * @return the e
      */
@@ -322,6 +361,7 @@ public abstract class AbstractEntitySqlQueryEntityProperties<E, P extends Abstra
      * Count.
      *
      * @param <R>          the generic type
+     * @param distinct     the distinct
      * @param propertyName the property name
      * @return the e
      */
@@ -333,6 +373,7 @@ public abstract class AbstractEntitySqlQueryEntityProperties<E, P extends Abstra
     /**
      * Sum.
      *
+     * @param distinct     the distinct
      * @param propertyName the property name
      * @return the e
      */
@@ -344,6 +385,7 @@ public abstract class AbstractEntitySqlQueryEntityProperties<E, P extends Abstra
      * Sum.
      *
      * @param <R>          the generic type
+     * @param distinct     the distinct
      * @param propertyName the property name
      * @return the e
      */
@@ -355,6 +397,7 @@ public abstract class AbstractEntitySqlQueryEntityProperties<E, P extends Abstra
     /**
      * Max.
      *
+     * @param distinct     the distinct
      * @param propertyName the property name
      * @return the e
      */
@@ -366,6 +409,7 @@ public abstract class AbstractEntitySqlQueryEntityProperties<E, P extends Abstra
      * Max.
      *
      * @param <R>          the generic type
+     * @param distinct     the distinct
      * @param propertyName the property name
      * @return the e
      */
@@ -377,6 +421,7 @@ public abstract class AbstractEntitySqlQueryEntityProperties<E, P extends Abstra
     /**
      * Min.
      *
+     * @param distinct     the distinct
      * @param propertyName the property name
      * @return the e
      */
@@ -388,6 +433,7 @@ public abstract class AbstractEntitySqlQueryEntityProperties<E, P extends Abstra
      * Min.
      *
      * @param <R>          the generic type
+     * @param distinct     the distinct
      * @param propertyName the property name
      * @return the e
      */
@@ -399,6 +445,7 @@ public abstract class AbstractEntitySqlQueryEntityProperties<E, P extends Abstra
     /**
      * Avg.
      *
+     * @param distinct     the distinct
      * @param propertyName the property name
      * @return the e
      */
@@ -410,6 +457,7 @@ public abstract class AbstractEntitySqlQueryEntityProperties<E, P extends Abstra
      * Avg.
      *
      * @param <R>          the generic type
+     * @param distinct     the distinct
      * @param propertyName the property name
      * @return the e
      */
@@ -440,17 +488,17 @@ public abstract class AbstractEntitySqlQueryEntityProperties<E, P extends Abstra
         return property(true, propertyName);
     }
 
-    /**
-     * Gets the id name.
-     *
-     * @return the id name
-     */
-    protected String getIdName() {
-        if (Lang.isEmpty(idName)) {
-            throw new HammerException("privary key column name is null");
-        }
-        return idName;
-    }
+    //    /**
+    //     * Gets the id name.
+    //     *
+    //     * @return the id name
+    //     */
+    //    protected String getIdName() {
+    //        if (Lang.isEmpty(idName)) {
+    //            throw new HammerException("privary key column name is null");
+    //        }
+    //        return idName;
+    //    }
 
     /**
      * 返回selectBuilder.
