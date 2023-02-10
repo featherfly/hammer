@@ -29,6 +29,7 @@ import cn.featherfly.common.lang.ClassLoaderUtils;
 import cn.featherfly.common.lang.Randoms;
 import cn.featherfly.common.lang.UriUtils;
 import cn.featherfly.constant.ConstantConfigurator;
+import cn.featherfly.hammer.Hammer;
 import cn.featherfly.hammer.sqldb.SqldbHammerImpl;
 import cn.featherfly.hammer.sqldb.jdbc.vo.Role;
 import cn.featherfly.hammer.tpl.TplConfigFactory;
@@ -66,7 +67,7 @@ public class JdbcTestBase extends TestBase {
 
     protected static SqlTypeMappingManager sqlTypeMappingManager;
 
-    protected static SqldbHammerImpl hammer;
+    protected static Hammer hammer;
 
     @BeforeSuite
     @Parameters({ "dataBase" })
