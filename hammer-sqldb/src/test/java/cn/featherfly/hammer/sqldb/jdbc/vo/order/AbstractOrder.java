@@ -1,7 +1,11 @@
 package cn.featherfly.hammer.sqldb.jdbc.vo.order;
 
+import javax.persistence.Column;
 import javax.persistence.Embedded;
 import javax.persistence.Id;
+import javax.persistence.ManyToOne;
+
+import cn.featherfly.hammer.sqldb.jdbc.vo.User;
 
 /**
  * The type abstract Order.
@@ -40,6 +44,14 @@ public abstract class AbstractOrder {
 
     @Embedded
     private AliPayOrder alipayOrder;
+
+    @ManyToOne
+    @Column(name = "create_user")
+    private User createUser;
+
+    @ManyToOne
+    @Column(name = "update_user")
+    private User updateUser;
 
     public abstract OrderType getType();
 
@@ -133,4 +145,39 @@ public abstract class AbstractOrder {
         this.alipayOrder = alipayOrder;
     }
 
+    /**
+     * get createUser value
+     *
+     * @return createUser
+     */
+    public User getCreateUser() {
+        return createUser;
+    }
+
+    /**
+     * set createUser value
+     *
+     * @param createUser createUser
+     */
+    public void setCreateUser(User createUser) {
+        this.createUser = createUser;
+    }
+
+    /**
+     * get updateUser value
+     *
+     * @return updateUser
+     */
+    public User getUpdateUser() {
+        return updateUser;
+    }
+
+    /**
+     * set updateUser value
+     *
+     * @param updateUser updateUser
+     */
+    public void setUpdateUser(User updateUser) {
+        this.updateUser = updateUser;
+    }
 }

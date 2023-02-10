@@ -30,29 +30,29 @@ import cn.featherfly.hammer.sqldb.jdbc.Jdbc;
  */
 public class DeleteOperate<T> extends AbstractExecuteOperate<T> implements BatchExecuteOperate<T> {
 
-    /**
-     * 使用给定数据源以及给定对象生成删除操作.
-     *
-     * @param jdbc                  jdbc
-     * @param classMapping          classMapping
-     * @param sqlTypeMappingManager the sql type mapping manager
-     */
-    public DeleteOperate(Jdbc jdbc, JdbcClassMapping<T> classMapping, SqlTypeMappingManager sqlTypeMappingManager) {
-        super(jdbc, classMapping, sqlTypeMappingManager);
-    }
-
-    /**
-     * 使用给定数据源以及给定对象生成删除操作.
-     *
-     * @param jdbc                  jdbc
-     * @param classMapping          classMapping
-     * @param sqlTypeMappingManager the sql type mapping manager
-     * @param dataBase              具体库
-     */
-    public DeleteOperate(Jdbc jdbc, JdbcClassMapping<T> classMapping, SqlTypeMappingManager sqlTypeMappingManager,
-            String dataBase) {
-        super(jdbc, classMapping, sqlTypeMappingManager, dataBase);
-    }
+    //    /**
+    //     * 使用给定数据源以及给定对象生成删除操作.
+    //     *
+    //     * @param jdbc                  jdbc
+    //     * @param classMapping          classMapping
+    //     * @param sqlTypeMappingManager the sql type mapping manager
+    //     */
+    //    public DeleteOperate(Jdbc jdbc, JdbcClassMapping<T> classMapping, SqlTypeMappingManager sqlTypeMappingManager) {
+    //        super(jdbc, classMapping, sqlTypeMappingManager);
+    //    }
+    //
+    //    /**
+    //     * 使用给定数据源以及给定对象生成删除操作.
+    //     *
+    //     * @param jdbc                  jdbc
+    //     * @param classMapping          classMapping
+    //     * @param sqlTypeMappingManager the sql type mapping manager
+    //     * @param dataBase              具体库
+    //     */
+    //    public DeleteOperate(Jdbc jdbc, JdbcClassMapping<T> classMapping, SqlTypeMappingManager sqlTypeMappingManager,
+    //            String dataBase) {
+    //        super(jdbc, classMapping, sqlTypeMappingManager, dataBase);
+    //    }
 
     /**
      * 使用给定数据源以及给定对象生成删除操作.
@@ -109,24 +109,14 @@ public class DeleteOperate<T> extends AbstractExecuteOperate<T> implements Batch
         if (Lang.isEmpty(entities)) {
             return Chars.ZERO;
         }
-        int bs = batchSize;
         if (entities.size() <= batchSize) {
-            bs = entities.size();
+            int bs = entities.size();
             Tuple2<String, Map<Integer, String>> tuple = ClassMappingUtils.getDeleteSqlAndParamPositions(bs,
                     classMapping, jdbc.getDialect());
             return jdbc.updateBatch(tuple.get0(), bs, getBatchParameters(entities, tuple.get1()));
         } else {
-            int size = 0;
-            int len = entities.size() / batchSize;
-            for (int i = 0; i < len; i++) {
-                if (i == len - 1) {
-                    bs = entities.size() - batchSize * i;
-                }
-                Tuple2<String, Map<Integer, String>> tuple = ClassMappingUtils.getDeleteSqlAndParamPositions(bs,
-                        classMapping, jdbc.getDialect());
-                size += jdbc.updateBatch(tuple.get0(), bs, getBatchParameters(entities, tuple.get1()));
-            }
-            return size;
+            return executeBatch(entities.subList(0, batchSize), batchSize)
+                    + executeBatch(entities.subList(batchSize, entities.size()), batchSize);
         }
     }
 

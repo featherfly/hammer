@@ -63,7 +63,6 @@ public class SqlQueryWith implements QueryWith, SqlQueryWithOn, SqlQueryWithEnti
      *
      * @param sqlQueryEntityProperties the sql query entity properties
      * @param aliasManager             the alias manager
-     * @param factory                  the factory
      * @param sqlPageFactory           the sql page factory
      * @param selectTableAlis          the select table alis
      * @param selectTableColumn        the select table column
@@ -83,7 +82,6 @@ public class SqlQueryWith implements QueryWith, SqlQueryWithOn, SqlQueryWithEnti
      *
      * @param sqlQueryEntityProperties the sql query entity properties
      * @param aliasManager             the alias manager
-     * @param factory                  the factory
      * @param sqlPageFactory           the sql page factory
      * @param selectTableAlis          the select table alis
      * @param selectTableColumn        the select table column

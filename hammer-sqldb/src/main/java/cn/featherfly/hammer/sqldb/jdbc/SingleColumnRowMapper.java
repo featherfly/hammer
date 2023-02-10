@@ -1,10 +1,8 @@
 package cn.featherfly.hammer.sqldb.jdbc;
 
-import java.sql.JDBCType;
 import java.sql.ResultSet;
 import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
-import java.sql.SQLType;
 
 import org.springframework.lang.Nullable;
 import org.springframework.util.ClassUtils;
@@ -15,6 +13,7 @@ import cn.featherfly.common.db.mapping.JdbcMappingException;
 import cn.featherfly.common.db.mapping.SqlResultSet;
 import cn.featherfly.common.db.mapping.SqlTypeMappingManager;
 import cn.featherfly.common.lang.AssertIllegalArgument;
+import cn.featherfly.common.repository.mapping.RowMapper;
 
 /**
  * {@link RowMapper} implementation that converts a single column into a single
@@ -26,7 +25,6 @@ import cn.featherfly.common.lang.AssertIllegalArgument;
  * the specified target type.
  *
  * @author zhongj
- * @since 0.5.7
  * @param <T> the result type
  * @see Jdbc#queryValue(String, Class, java.util.Map)
  * @see Jdbc#queryValue(String, Class, Object...)
@@ -40,6 +38,7 @@ import cn.featherfly.common.lang.AssertIllegalArgument;
  * @see Jdbc#queryBigDecimal(String, Object...)
  * @see Jdbc#queryString(String, java.util.Map)
  * @see Jdbc#queryString(String, Object...)
+ * @since 0.5.7
  */
 public class SingleColumnRowMapper<T> implements cn.featherfly.common.repository.mapping.RowMapper<T> {
 
@@ -109,6 +108,9 @@ public class SingleColumnRowMapper<T> implements cn.featherfly.common.repository
         }
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @SuppressWarnings("unchecked")
     public T mapRow(ResultSet rs, int rowNum) throws SQLException {
         // Validate column count.
@@ -149,23 +151,21 @@ public class SingleColumnRowMapper<T> implements cn.featherfly.common.repository
      * @param requiredType the type that each result object is expected to match
      *                     (or {@code null} if none specified)
      * @return the Object value
-     * @throws SQLException in case of extraction failure
-     * @see org.springframework.jdbc.support.JdbcUtils#getResultSetValue(java.sql.ResultSet,
-     *      int, Class)
-     * @see #getColumnValue(java.sql.ResultSet, int)
      */
     @Nullable
-    protected Object getColumnValue(ResultSet rs, int index, @Nullable Class<?> requiredType) throws SQLException {
-        if (requiredType != null) {
-            return manager.get(rs, index, requiredType);
-        } else {
-            SQLType sqlType = JDBCType.valueOf(rs.getMetaData().getColumnType(index));
-            Class<?> type = manager.getJavaType(sqlType);
-            if (type != null) {
-                return manager.get(rs, index, type);
-            } else {
-                return JdbcUtils.getResultSetValue(rs, index);
-            }
-        }
+    protected Object getColumnValue(ResultSet rs, int index, @Nullable Class<?> requiredType) {
+        return manager.get(rs, index, requiredType);
+        // requiredType 不会为null
+        //        if (requiredType != null) {
+        //            return manager.get(rs, index, requiredType);
+        //        } else {
+        //            SQLType sqlType = JDBCType.valueOf(rs.getMetaData().getColumnType(index));
+        //            Class<?> type = manager.getJavaType(sqlType);
+        //            if (type != null) {
+        //                return manager.get(rs, index, type);
+        //            } else {
+        //                return JdbcUtils.getResultSetValue(rs, index);
+        //            }
+        //        }
     }
 }

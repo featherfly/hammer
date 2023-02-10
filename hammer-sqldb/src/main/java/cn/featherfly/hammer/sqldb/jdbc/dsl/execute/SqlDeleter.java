@@ -2,6 +2,7 @@
 package cn.featherfly.hammer.sqldb.jdbc.dsl.execute;
 
 import cn.featherfly.common.db.mapping.JdbcMappingFactory;
+import cn.featherfly.common.repository.AliasRepository;
 import cn.featherfly.common.repository.Repository;
 import cn.featherfly.hammer.dsl.execute.Deleter;
 import cn.featherfly.hammer.sqldb.SqldbHammerException;
@@ -39,7 +40,11 @@ public class SqlDeleter implements Deleter {
      */
     @Override
     public SqlDelete delete(Repository repository) {
-        return new SqlDelete(jdbc, repository);
+        if (repository instanceof AliasRepository) {
+            return new SqlDelete(jdbc, (AliasRepository) repository);
+        } else {
+            return new SqlDelete(jdbc, repository);
+        }
     }
 
     /**

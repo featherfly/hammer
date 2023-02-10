@@ -31,6 +31,19 @@ public class UserInfo {
     private DistrictDivision division;
 
     /**
+     */
+    public UserInfo() {
+    }
+
+    /**
+     * @param id
+     */
+    public UserInfo(Integer id) {
+        super();
+        this.id = id;
+    }
+
+    /**
      * 返回id
      *
      * @return id

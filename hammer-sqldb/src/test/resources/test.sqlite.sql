@@ -131,6 +131,7 @@ INSERT INTO `tree`(`id`, `parent_id`, `name`) VALUES (3, 1, 'node_22');
 INSERT INTO `tree`(`id`, `parent_id`, `name`) VALUES (4, 2, 'node_211');
 INSERT INTO `tree`(`id`, `parent_id`, `name`) VALUES (5, 2, 'node_212');
 INSERT INTO `tree`(`id`, `parent_id`, `name`) VALUES (6, 5, 'node_2121');
+INSERT INTO `tree`(`id`, `parent_id`, `name`) VALUES (7, 6, 'node_21211');
 
 DROP TABLE IF EXISTS `app`;
 CREATE TABLE `app`  (

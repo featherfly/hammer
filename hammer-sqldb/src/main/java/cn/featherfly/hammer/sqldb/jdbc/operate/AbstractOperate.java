@@ -19,8 +19,6 @@ import cn.featherfly.common.db.mapping.JdbcClassMapping;
 import cn.featherfly.common.db.mapping.JdbcPropertyMapping;
 import cn.featherfly.common.db.mapping.SqlTypeMappingManager;
 import cn.featherfly.common.db.metadata.DatabaseMetadata;
-import cn.featherfly.common.db.metadata.DatabaseMetadataManager;
-import cn.featherfly.common.lang.Lang;
 import cn.featherfly.hammer.sqldb.jdbc.Jdbc;
 
 /**
@@ -60,41 +58,41 @@ public abstract class AbstractOperate<T> {
     /** The pk properties. */
     protected List<BeanProperty<Serializable>> pkProperties = new ArrayList<>();
 
-    /**
-     * 使用给定数据源以及给定对象映射生成其相应的操作.
-     *
-     * @param jdbc                  jdbc
-     * @param classMapping          classMapping
-     * @param sqlTypeMappingManager the sql type mapping manager
-     */
-    public AbstractOperate(Jdbc jdbc, JdbcClassMapping<T> classMapping, SqlTypeMappingManager sqlTypeMappingManager) {
-        this(jdbc, classMapping, sqlTypeMappingManager, "");
-    }
+    //    /**
+    //     * 使用给定数据源以及给定对象映射生成其相应的操作.
+    //     *
+    //     * @param jdbc                  jdbc
+    //     * @param classMapping          classMapping
+    //     * @param sqlTypeMappingManager the sql type mapping manager
+    //     */
+    //    public AbstractOperate(Jdbc jdbc, JdbcClassMapping<T> classMapping, SqlTypeMappingManager sqlTypeMappingManager) {
+    //        this(jdbc, classMapping, sqlTypeMappingManager, "");
+    //    }
 
-    /**
-     * 使用给定数据源以及给定对象生成其相应的操作.
-     *
-     * @param jdbc                  jdbc
-     * @param classMapping          classMapping
-     * @param sqlTypeMappingManager the sql type mapping manager
-     * @param dataBase              具体库
-     */
-    public AbstractOperate(Jdbc jdbc, JdbcClassMapping<T> classMapping, SqlTypeMappingManager sqlTypeMappingManager,
-            String dataBase) {
-        if (Lang.isEmpty(dataBase)) {
-            meta = DatabaseMetadataManager.getDefaultManager().create(jdbc.getDataSource());
-        } else {
-            meta = DatabaseMetadataManager.getDefaultManager().create(jdbc.getDataSource(), dataBase);
-        }
-        this.jdbc = jdbc;
-        this.classMapping = classMapping;
-        if (sqlTypeMappingManager == null) {
-            this.sqlTypeMappingManager = new SqlTypeMappingManager();
-        } else {
-            this.sqlTypeMappingManager = sqlTypeMappingManager;
-        }
-        init();
-    }
+    //    /**
+    //     * 使用给定数据源以及给定对象生成其相应的操作.
+    //     *
+    //     * @param jdbc                  jdbc
+    //     * @param classMapping          classMapping
+    //     * @param sqlTypeMappingManager the sql type mapping manager
+    //     * @param dataBase              具体库
+    //     */
+    //    public AbstractOperate(Jdbc jdbc, JdbcClassMapping<T> classMapping, SqlTypeMappingManager sqlTypeMappingManager,
+    //            String dataBase) {
+    //        if (Lang.isEmpty(dataBase)) {
+    //            meta = DatabaseMetadataManager.getDefaultManager().create(jdbc.getDataSource());
+    //        } else {
+    //            meta = DatabaseMetadataManager.getDefaultManager().create(jdbc.getDataSource(), dataBase);
+    //        }
+    //        this.jdbc = jdbc;
+    //        this.classMapping = classMapping;
+    //        if (sqlTypeMappingManager == null) {
+    //            this.sqlTypeMappingManager = new SqlTypeMappingManager();
+    //        } else {
+    //            this.sqlTypeMappingManager = sqlTypeMappingManager;
+    //        }
+    //        init();
+    //    }
 
     /**
      * 使用给定数据源以及给定对象生成其相应的操作.
@@ -109,11 +107,12 @@ public abstract class AbstractOperate<T> {
         this.jdbc = jdbc;
         this.classMapping = classMapping;
         this.meta = databaseMetadata;
-        if (sqlTypeMappingManager == null) {
-            this.sqlTypeMappingManager = new SqlTypeMappingManager();
-        } else {
-            this.sqlTypeMappingManager = sqlTypeMappingManager;
-        }
+        this.sqlTypeMappingManager = sqlTypeMappingManager;
+        //        if (sqlTypeMappingManager == null) {
+        //            this.sqlTypeMappingManager = new SqlTypeMappingManager();
+        //        } else {
+        //            this.sqlTypeMappingManager = sqlTypeMappingManager;
+        //        }
         init();
     }
 

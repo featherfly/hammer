@@ -15,10 +15,7 @@ import cn.featherfly.hammer.sqldb.jdbc.Jdbc;
 import cn.featherfly.hammer.sqldb.jdbc.SqlPageFactory;
 
 /**
- * <p>
- * SqlDeleteExpression
- * </p>
- * .
+ * SqlDeleteExpression .
  *
  * @author zhongj
  */
@@ -44,7 +41,6 @@ public class RepositorySqlQueryExpression extends RepositorySqlQueryConditionGro
      * Instantiates a new sql query expression.
      *
      * @param jdbc           the jdbc
-     * @param factory        MappingFactory
      * @param aliasManager   aliasManager
      * @param selectBuilder  the select builder
      * @param sqlPageFactory the sql page factory
@@ -61,7 +57,6 @@ public class RepositorySqlQueryExpression extends RepositorySqlQueryConditionGro
      * Instantiates a new sql query expression.
      *
      * @param jdbc           the jdbc
-     * @param factory        MappingFactory
      * @param aliasManager   aliasManager
      * @param queryAlias     the query alias
      * @param sqlPageFactory the sql page factory
@@ -76,7 +71,6 @@ public class RepositorySqlQueryExpression extends RepositorySqlQueryConditionGro
      * Instantiates a new sql query expression.
      *
      * @param jdbc           jdbc
-     * @param factory        MappingFactory
      * @param aliasManager   aliasManager
      * @param sqlPageFactory the sql page factory
      * @param ignorePolicy   the ignore policy
@@ -91,11 +85,9 @@ public class RepositorySqlQueryExpression extends RepositorySqlQueryConditionGro
      *
      * @param parent         the parent
      * @param jdbc           the jdbc
-     * @param factory        MappingFactory
      * @param aliasManager   aliasManager
      * @param queryAlias     the query alias
      * @param sqlPageFactory the sql page factory
-     * @param classMapping   the class mapping
      * @param ignorePolicy   the ignore policy
      */
     RepositorySqlQueryExpression(RepositoryQueryConditionGroupLogicExpression parent, Jdbc jdbc,

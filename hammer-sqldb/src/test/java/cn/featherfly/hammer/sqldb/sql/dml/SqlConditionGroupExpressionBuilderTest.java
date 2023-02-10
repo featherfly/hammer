@@ -13,16 +13,15 @@ import cn.featherfly.common.db.dialect.Dialects;
 import cn.featherfly.common.repository.IgnorePolicy;
 import cn.featherfly.hammer.sqldb.jdbc.SimpleSqlPageFactory;
 import cn.featherfly.hammer.sqldb.jdbc.SqlPageFactory;
+import cn.featherfly.hammer.sqldb.jdbc.TestBase;
 
 /**
- * <p>
- * SqlConditionGroupExpressionBuilderTest
- * </p>
+ * SqlConditionGroupExpressionBuilderTest.
  *
  * @author zhongj
  */
 @Test(groups = { "dml-test" })
-public class SqlConditionGroupExpressionBuilderTest {
+public class SqlConditionGroupExpressionBuilderTest extends TestBase {
 
     SqlPageFactory sqlPageFactory = new SimpleSqlPageFactory();
 

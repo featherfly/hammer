@@ -2,6 +2,7 @@
 package cn.featherfly.hammer.sqldb.jdbc.dsl.execute;
 
 import cn.featherfly.common.db.mapping.JdbcMappingFactory;
+import cn.featherfly.common.repository.AliasRepository;
 import cn.featherfly.common.repository.Repository;
 import cn.featherfly.hammer.dsl.execute.Updater;
 import cn.featherfly.hammer.sqldb.SqldbHammerException;
@@ -44,7 +45,11 @@ public class SqlUpdater implements Updater {
      */
     @Override
     public SqlUpdate update(Repository repository) {
-        return new SqlExecutableUpdate(repository, jdbc);
+        if (repository instanceof AliasRepository) {
+            return new SqlExecutableUpdate((AliasRepository) repository, jdbc);
+        } else {
+            return new SqlExecutableUpdate(repository, jdbc);
+        }
     }
 
     /**

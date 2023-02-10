@@ -75,7 +75,6 @@ import cn.featherfly.hammer.sqldb.jdbc.dsl.query.EntitySqlQuery;
  *
  * @author zhongj
  * @param <E> the element type
- * @param <Q> the generic type
  * @param <C> the generic type
  * @param <L> the generic type
  */
@@ -104,6 +103,8 @@ public abstract class AbstractEntitySqlConditionGroupExpression<E, C extends Ent
      * @param sqlPageFactory the sql page factory
      * @param queryAlias     queryAlias
      * @param classMapping   classMapping
+     * @param factory        the factory
+     * @param aliasManager   the alias manager
      * @param entityQuery    the entity query
      * @param ignorePolicy   the ignore policy
      */
@@ -121,6 +122,8 @@ public abstract class AbstractEntitySqlConditionGroupExpression<E, C extends Ent
      * @param sqlPageFactory the sql page factory
      * @param queryAlias     queryAlias
      * @param classMapping   classMapping
+     * @param factory        the factory
+     * @param aliasManager   the alias manager
      * @param entityQuery    the entity query
      * @param ignorePolicy   the ignore policy
      */
