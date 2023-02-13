@@ -180,7 +180,7 @@ public class JdbcTest extends JdbcTestBase {
         jdbc.queryValue(sql, String.class);
     }
 
-    @Test
+    @Test(expectedExceptions = JdbcException.class)
     public void testQueryValueException2() {
         String sql = "select name from user_info_1111 where id = 1";
         jdbc.queryValue(sql, String.class);

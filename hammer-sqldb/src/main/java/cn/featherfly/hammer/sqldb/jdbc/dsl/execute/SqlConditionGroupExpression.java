@@ -60,7 +60,11 @@ public class SqlConditionGroupExpression extends
      */
     @Override
     public int execute() {
-        return jdbc.update(build(), getParams().toArray());
+        if (parent != null) {
+            return parent.execute();
+        } else {
+            return jdbc.update(build(), getParams().toArray());
+        }
     }
 
     // ********************************************************************

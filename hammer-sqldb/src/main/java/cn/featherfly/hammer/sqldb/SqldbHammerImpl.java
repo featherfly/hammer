@@ -51,7 +51,6 @@ import cn.featherfly.hammer.sqldb.tpl.SqlTplExecutor;
 import cn.featherfly.hammer.sqldb.tpl.freemarker.SqldbFreemarkerTemplateEngine;
 import cn.featherfly.hammer.sqldb.tpl.transverter.FuzzyQueryTransverter;
 import cn.featherfly.hammer.tpl.TplConfigFactory;
-import cn.featherfly.hammer.tpl.TplConfigFactoryImpl;
 import cn.featherfly.hammer.tpl.TplExecuteId;
 import cn.featherfly.hammer.tpl.TransverterManager;
 
@@ -91,16 +90,6 @@ public class SqldbHammerImpl implements SqldbHammer {
 
     /** The merge operates. */
     private Map<Class<?>, MergeOperate<?>> mergeOperates = new HashMap<>();
-
-    /**
-     * Instantiates a new hammer jdbc impl.
-     *
-     * @param jdbc           the jdbc
-     * @param mappingFactory the mapping factory
-     */
-    public SqldbHammerImpl(Jdbc jdbc, JdbcMappingFactory mappingFactory) {
-        this(jdbc, mappingFactory, new TplConfigFactoryImpl());
-    }
 
     /**
      * Instantiates a new hammer jdbc impl.

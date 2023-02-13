@@ -86,7 +86,7 @@ INSERT INTO `user_role` VALUES ('10', '10', 'descp581', null);
 DROP TABLE IF EXISTS `user_info`;
 CREATE TABLE `user_info` (
   `id` INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
-  `user_id` INTEGER NOT NULL,
+  `user_id` INTEGER NULL,
   `name` text(255) DEFAULT NULL,
   `descp` text(255) DEFAULT NULL,
   `province` text(255) DEFAULT NULL,

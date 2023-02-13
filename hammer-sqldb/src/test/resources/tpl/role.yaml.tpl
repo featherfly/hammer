@@ -61,6 +61,8 @@ getByName: >
   select <@prop repo='role'/> from role where name = :name
 countRole: >
   select count(*) from role
+countUserInfo: >
+  select count(*) from user_info
 selectByName_mysql: >
     select <@prop repo='role'/>, DATE_FORMAT(create_time,:dateFormat) as dateFormat from role
     <@where>

@@ -95,7 +95,7 @@ INSERT INTO `user_role` VALUES ('8', '8', 'descp581',null);
 DROP TABLE IF EXISTS `user_info`;
 CREATE TABLE `user_info` (
   `id` int(10) unsigned NOT NULL AUTO_INCREMENT ,
-  `user_id` int(10) unsigned NOT NULL,
+  `user_id` int(10) unsigned NULL,
   `name` varchar(255) DEFAULT NULL,
   `descp` varchar(255) DEFAULT NULL,
   `province` varchar(255) DEFAULT NULL,
