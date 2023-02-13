@@ -10,10 +10,15 @@ import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
 
 import cn.featherfly.common.db.dialect.Dialects;
+import cn.featherfly.common.lang.ArrayUtils;
+import cn.featherfly.common.operator.QueryOperator;
+import cn.featherfly.common.operator.QueryOperator.QueryPolicy;
 import cn.featherfly.common.repository.IgnorePolicy;
+import cn.featherfly.common.repository.builder.BuilderException;
 import cn.featherfly.hammer.sqldb.jdbc.SimpleSqlPageFactory;
 import cn.featherfly.hammer.sqldb.jdbc.SqlPageFactory;
 import cn.featherfly.hammer.sqldb.jdbc.TestBase;
+import cn.featherfly.hammer.sqldb.jdbc.vo.UserInfo;
 
 /**
  * SqlConditionGroupExpressionBuilderTest.
@@ -41,6 +46,89 @@ public class SqlConditionGroupExpressionBuilderTest extends TestBase {
         params.add(sex);
         params.add(age);
         params.add(username);
+    }
+
+    @Test
+    public void testSqlSortExpressionBuilder() {
+        SqlSortExpressionBuilder builder = new SqlSortExpressionBuilder(Dialects.MYSQL);
+        String result = builder.asc("id", "name").build();
+        System.out.println(result);
+        assertEquals(result, " ORDER BY `id` ASC, `name` ASC");
+        assertEquals(builder.expression(), result);
+        System.out.println(builder.toString());
+
+        builder = new SqlSortExpressionBuilder(Dialects.MYSQL, "u");
+        result = builder.asc(ArrayUtils.toList("id", "name")).build();
+        System.out.println(result);
+        assertEquals(result, " ORDER BY u.`id` ASC, u.`name` ASC");
+        assertEquals(builder.expression(), result);
+
+        builder = new SqlSortExpressionBuilder(Dialects.MYSQL);
+        result = builder.desc("id", "name").build();
+        System.out.println(result);
+        assertEquals(result, " ORDER BY `id` DESC, `name` DESC");
+        assertEquals(builder.expression(), result);
+
+        builder = new SqlSortExpressionBuilder(Dialects.MYSQL);
+        builder.setTableAlias("u");
+        assertEquals(builder.getTableAlias(), "u");
+        result = builder.desc(ArrayUtils.toList("id", "name")).build();
+        System.out.println(result);
+        assertEquals(result, " ORDER BY u.`id` DESC, u.`name` DESC");
+        assertEquals(builder.expression(), result);
+
+        builder = new SqlSortExpressionBuilder(Dialects.MYSQL, "u");
+        result = builder.asc("id", "name").desc("age", "password").asc("email").desc("mobile").build();
+        System.out.println(result);
+        assertEquals(result,
+                " ORDER BY u.`id` ASC, u.`name` ASC, u.`age` DESC, u.`password` DESC, u.`email` ASC, u.`mobile` DESC");
+        assertEquals(builder.expression(), result);
+    }
+
+    @SuppressWarnings("unchecked")
+    @Test
+    public void testSqlSortExpressionBuilder2() {
+        SqlSortExpressionBuilder builder = new SqlSortExpressionBuilder(Dialects.MYSQL);
+        String result = builder.asc(UserInfo::getId).build();
+        System.out.println(result);
+        assertEquals(result, " ORDER BY `id` ASC");
+        assertEquals(builder.expression(), result);
+        System.out.println(builder.toString());
+
+        builder = new SqlSortExpressionBuilder(Dialects.MYSQL, "u");
+        result = builder.asc(UserInfo::getId, UserInfo::getName).build();
+        System.out.println(result);
+        assertEquals(result, " ORDER BY u.`id` ASC, u.`name` ASC");
+        assertEquals(builder.expression(), result);
+
+        builder = new SqlSortExpressionBuilder(Dialects.MYSQL);
+        result = builder.desc(UserInfo::getId).build();
+        System.out.println(result);
+        assertEquals(result, " ORDER BY `id` DESC");
+        assertEquals(builder.expression(), result);
+        System.out.println(builder.toString());
+
+        builder = new SqlSortExpressionBuilder(Dialects.MYSQL, "u");
+        result = builder.desc(UserInfo::getId, UserInfo::getName).build();
+        System.out.println(result);
+        assertEquals(result, " ORDER BY u.`id` DESC, u.`name` DESC");
+        assertEquals(builder.expression(), result);
+
+    }
+
+    @Test
+    public void testSqlConditionExpressionBuilder() {
+        SqlConditionExpressionBuilder builder = new SqlConditionExpressionBuilder(Dialects.MYSQL, "id", 1,
+                QueryOperator.EQ, IgnorePolicy.EMPTY);
+        String result = builder.toString();
+        assertEquals(result, "`id` = ?");
+
+        assertEquals(builder.getConditionColumnElement().toSql(), "`id` = ?");
+    }
+
+    @Test(expectedExceptions = BuilderException.class)
+    public void testSqlConditionExpressionBuilderException() {
+        new SqlConditionExpressionBuilder(Dialects.MYSQL, "id", 1, null, QueryPolicy.AUTO, "u", IgnorePolicy.EMPTY);
     }
 
     @Test

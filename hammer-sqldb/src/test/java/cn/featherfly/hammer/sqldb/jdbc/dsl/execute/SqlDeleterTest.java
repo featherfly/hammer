@@ -13,6 +13,8 @@ package cn.featherfly.hammer.sqldb.jdbc.dsl.execute;
 import static org.junit.Assert.assertNull;
 import static org.testng.Assert.assertEquals;
 
+import java.util.List;
+
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
 
@@ -23,6 +25,7 @@ import cn.featherfly.hammer.sqldb.SqldbHammerException;
 import cn.featherfly.hammer.sqldb.jdbc.JdbcTestBase;
 import cn.featherfly.hammer.sqldb.jdbc.vo.Role;
 import cn.featherfly.hammer.sqldb.jdbc.vo.User;
+import cn.featherfly.hammer.sqldb.jdbc.vo.UserRole;
 
 /**
  * The Class SqlDeleterTest.
@@ -103,5 +106,64 @@ public class SqlDeleterTest extends JdbcTestBase {
 
         load = hammer.get(role);
         assertNull(load);
+    }
+
+    @Test
+    public void testDeleteNoCondition() {
+        List<UserRole> urs = hammer.query(UserRole.class).list();
+
+        int result = deleter.delete("user_role").where().setIgnorePolicy(IgnorePolicy.EMPTY).eq("user_id", null)
+                .execute();
+        assertEquals(result, urs.size());
+
+        hammer.save(urs);
+    }
+
+    @Test
+    public void testDeleteEntity() {
+        Role role = role();
+
+        hammer.save(role);
+
+        Role load = hammer.get(role);
+
+        assertEquals(load.getId(), role.getId());
+        assertEquals(load.getName(), role.getName());
+
+        int result = deleter.delete(Role.class).where().eq(Role::getId, role.getId()).execute();
+        assertEquals(result, 1);
+
+        load = hammer.get(role);
+        assertNull(load);
+    }
+
+    @Test
+    public void testDeleteEntity2() {
+        Role role = role();
+
+        hammer.save(role);
+
+        Role load = hammer.get(role);
+
+        assertEquals(load.getId(), role.getId());
+        assertEquals(load.getName(), role.getName());
+
+        int result = deleter.delete(Role.class).where(c -> c.setIgnorePolicy(IgnorePolicy.EMPTY))
+                .eq(Role::getId, role.getId()).execute();
+        assertEquals(result, 1);
+
+        load = hammer.get(role);
+        assertNull(load);
+    }
+
+    @Test
+    public void testDeleteEntityNoCondition() {
+        List<UserRole> urs = hammer.query(UserRole.class).list();
+
+        int result = deleter.delete(UserRole.class).where().setIgnorePolicy(IgnorePolicy.EMPTY)
+                .eq(UserRole::getUserId, null).execute();
+        assertEquals(result, urs.size());
+
+        hammer.save(urs);
     }
 }

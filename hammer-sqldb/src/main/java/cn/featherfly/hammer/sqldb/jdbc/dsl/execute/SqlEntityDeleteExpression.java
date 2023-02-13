@@ -7,6 +7,7 @@ import cn.featherfly.common.constant.Chars;
 import cn.featherfly.common.db.builder.dml.basic.SqlDeleteFromBasicBuilder;
 import cn.featherfly.common.db.mapping.JdbcClassMapping;
 import cn.featherfly.common.db.mapping.JdbcMappingFactory;
+import cn.featherfly.common.lang.Strings;
 import cn.featherfly.common.repository.IgnorePolicy;
 import cn.featherfly.common.repository.builder.AliasManager;
 import cn.featherfly.hammer.sqldb.jdbc.Jdbc;
@@ -57,6 +58,11 @@ public class SqlEntityDeleteExpression<E> extends SqlEntityConditionGroupExpress
      */
     @Override
     public String build() {
-        return builder.build() + Chars.SPACE + jdbc.getDialect().getKeywords().where() + Chars.SPACE + super.build();
+        String condition = super.build();
+        if (Strings.isEmpty(condition)) {
+            return builder.build();
+        } else {
+            return builder.build() + Chars.SPACE + jdbc.getDialect().getKeywords().where() + Chars.SPACE + condition;
+        }
     }
 }

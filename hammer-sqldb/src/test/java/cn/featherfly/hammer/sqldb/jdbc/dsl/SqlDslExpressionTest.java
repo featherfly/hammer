@@ -123,10 +123,11 @@ public class SqlDslExpressionTest extends JdbcTestBase {
 
         for (int i = 0; i < size; i++) {
             User u = new User();
-            u.setPwd("pwd_delete_" + UUIDGenerator.generateUUID22Letters());
+            u.setPwd("pwd_del_" + UUIDGenerator.generateUUID22Letters());
+            u.setUsername("un_del_" + UUIDGenerator.generateUUID22Letters());
             hammer.save(u);
         }
-        no = sqlDeleter.delete(User.class).where().sw(User::getPwd, "pwd_delete_").execute();
+        no = sqlDeleter.delete(User.class).where().sw(User::getPwd, "pwd_del_").execute();
         assertTrue(no == size);
     }
 

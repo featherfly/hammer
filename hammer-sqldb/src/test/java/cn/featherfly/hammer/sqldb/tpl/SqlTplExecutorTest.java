@@ -52,9 +52,24 @@ public class SqlTplExecutorTest extends JdbcTestBase {
     }
 
     @Test
-    void testNumberValue() {
+    void testNumber() {
+        Integer avg = executor.number("selectAvg", Integer.class, new ChainMapImpl<String, Object>());
+        System.out.println("avg(age) = " + avg);
+        assertTrue(avg > 20);
+
+        avg = executor.number("selectAvg2", Integer.class, new ChainMapImpl<String, Object>().putChain("age", 40));
+        System.out.println("avg(age) = " + avg);
+        assertTrue(avg > 40);
+
+    }
+
+    @Test
+    void testIntValue() {
         Integer avg = executor.numberInt("selectAvg", new ChainMapImpl<String, Object>());
         System.out.println("avg(age) = " + avg);
+        assertTrue(avg > 20);
+
+        avg = executor.numberInt(new TplExecuteIdFileImpl("selectAvg"), new ChainMapImpl<String, Object>());
         assertTrue(avg > 20);
 
         avg = executor.intValue("selectAvg", new ChainMapImpl<String, Object>());
@@ -77,6 +92,9 @@ public class SqlTplExecutorTest extends JdbcTestBase {
         System.out.println("avg(age) = " + avg);
         assertTrue(avg > 20);
 
+        avg = executor.numberLong(new TplExecuteIdFileImpl("selectAvg"), new ChainMapImpl<String, Object>());
+        assertTrue(avg > 20);
+
         avg = executor.longValue("selectAvg", new ChainMapImpl<String, Object>());
         System.out.println("avg(age) = " + avg);
         assertTrue(avg > 20);
@@ -95,6 +113,9 @@ public class SqlTplExecutorTest extends JdbcTestBase {
     void testDoubleValue() {
         Double avg = executor.numberDouble("selectAvg", new ChainMapImpl<String, Object>());
         System.out.println("avg(age) = " + avg);
+        assertTrue(avg > 20);
+
+        avg = executor.numberDouble(new TplExecuteIdFileImpl("selectAvg"), new ChainMapImpl<String, Object>());
         assertTrue(avg > 20);
 
         avg = executor.doubleValue("selectAvg", new ChainMapImpl<String, Object>());
@@ -484,8 +505,11 @@ public class SqlTplExecutorTest extends JdbcTestBase {
 
     @Test
     void testPrivileType() {
-        int i = executor.value("countRole", int.class, new ChainMapImpl<String, Object>());
-        System.out.println(i);
+        int i = executor.value("countUserInfo", int.class, new ChainMapImpl<String, Object>());
+        assertEquals(i, 2);
+
+        i = executor.value(new TplExecuteIdFileImpl("countUserInfo"), int.class, new ChainMapImpl<String, Object>());
+        assertEquals(i, 2);
     }
 
     @Test
