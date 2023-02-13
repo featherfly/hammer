@@ -25,7 +25,6 @@ import cn.featherfly.hammer.dsl.execute.EntityUpdateValueImpl;
 import cn.featherfly.hammer.expression.condition.ConditionGroupConfig;
 import cn.featherfly.hammer.expression.execute.EntityUpdateNumberValueExpression;
 import cn.featherfly.hammer.expression.execute.EntityUpdateValueExpression;
-import cn.featherfly.hammer.sqldb.SqldbHammerException;
 import cn.featherfly.hammer.sqldb.jdbc.Jdbc;
 
 /**
@@ -81,11 +80,7 @@ public class SqlEntityExecutableUpdate<E> extends AbstractSqlExecutableUpdate<Sq
         super(classMapping.getRepositoryName(), jdbc, ignorePolicy);
         this.classMapping = classMapping;
         this.factory = factory;
-        if (aliasManager == null) {
-            this.aliasManager = new AliasManager();
-        } else {
-            this.aliasManager = aliasManager;
-        }
+        this.aliasManager = aliasManager;
         builder.setAlias(this.aliasManager.put(classMapping.getRepositoryName()));
     }
 
@@ -109,14 +104,13 @@ public class SqlEntityExecutableUpdate<E> extends AbstractSqlExecutableUpdate<Sq
         }
         String npn = getPropertyName(nestedProperty);
         JdbcPropertyMapping spm = pm.getPropertyMapping(npn);
-        if (spm != null) {
-            return _set(spm, FieldValueOperator.craete(spm, value));
-        } else {
-            //            throw new JdbcMappingException(String.format("can not find mapping for property {0}.{1} for entity {2}",
-            //                    pm.getPropertyName(), npn, classMapping.getType().getName()));
-            throw new SqldbHammerException(String.format("can not find mapping for property {0}.{1} for entity {2}",
-                    pm.getPropertyName(), npn, classMapping.getType().getName()));
-        }
+        return _set(spm, FieldValueOperator.craete(spm, value));
+        //        if (spm != null) {
+        //            return _set(spm, FieldValueOperator.craete(spm, value));
+        //        } else {
+        //            throw new SqldbHammerException(String.format("can not find mapping for property {0}.{1} for entity {2}",
+        //                    pm.getPropertyName(), npn, classMapping.getType().getName()));
+        //        }
     }
 
     /**
@@ -160,8 +154,8 @@ public class SqlEntityExecutableUpdate<E> extends AbstractSqlExecutableUpdate<Sq
      * {@inheritDoc}
      */
     @Override
-    public <R> EntityUpdateValueExpression<E, R, EntityExecutableUpdate<E>, EntityExecutableConditionGroupExpression<E>, EntityExecutableConditionGroupLogicExpression<E>> property(
-            SerializableFunction<E, R> property) {
+    public <R> EntityUpdateValueExpression<E, R, EntityExecutableUpdate<E>, EntityExecutableConditionGroupExpression<E>,
+            EntityExecutableConditionGroupLogicExpression<E>> property(SerializableFunction<E, R> property) {
         return new EntityUpdateValueImpl<>(property, this);
     }
 
@@ -170,8 +164,9 @@ public class SqlEntityExecutableUpdate<E> extends AbstractSqlExecutableUpdate<Sq
      */
     @Override
     public <R,
-            O> EntityUpdateValueExpression<E, O, EntityExecutableUpdate<E>, EntityExecutableConditionGroupExpression<E>, EntityExecutableConditionGroupLogicExpression<E>> property(
-                    SerializableFunction<E, R> property, SerializableFunction<R, O> nestedProperty) {
+            O> EntityUpdateValueExpression<E, O, EntityExecutableUpdate<E>, EntityExecutableConditionGroupExpression<E>,
+                    EntityExecutableConditionGroupLogicExpression<E>> property(SerializableFunction<E, R> property,
+                            SerializableFunction<R, O> nestedProperty) {
         return new EntityUpdateNestedValueImpl<>(property, nestedProperty, this);
     }
 
@@ -179,8 +174,9 @@ public class SqlEntityExecutableUpdate<E> extends AbstractSqlExecutableUpdate<Sq
      * {@inheritDoc}
      */
     @Override
-    public <R extends Number> EntityUpdateNumberValueExpression<E, R, EntityExecutableUpdate<E>, EntityExecutableConditionGroupExpression<E>, EntityExecutableConditionGroupLogicExpression<E>> property(
-            SerializableFunction2<E, R> name) {
+    public <R extends Number> EntityUpdateNumberValueExpression<E, R, EntityExecutableUpdate<E>,
+            EntityExecutableConditionGroupExpression<E>, EntityExecutableConditionGroupLogicExpression<E>> property(
+                    SerializableFunction2<E, R> name) {
         return new EntityUpdateNumberValueImpl<>(name, this);
     }
 

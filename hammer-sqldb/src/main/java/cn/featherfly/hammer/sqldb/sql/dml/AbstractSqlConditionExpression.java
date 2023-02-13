@@ -15,7 +15,6 @@ import com.speedment.common.tuple.Tuples;
 import cn.featherfly.common.bean.BeanUtils;
 import cn.featherfly.common.db.builder.BuilderUtils;
 import cn.featherfly.common.db.builder.SqlBuilder;
-import cn.featherfly.common.db.builder.dml.SqlLogicExpression;
 import cn.featherfly.common.db.dialect.Dialect;
 import cn.featherfly.common.db.mapping.ClassMappingUtils;
 import cn.featherfly.common.db.mapping.JdbcClassMapping;
@@ -51,16 +50,6 @@ public abstract class AbstractSqlConditionExpression<L> implements SqlBuilder, P
      *
      * @param dialect      dialect
      * @param ignorePolicy the ignore policy
-     */
-    public AbstractSqlConditionExpression(Dialect dialect, Predicate<Object> ignorePolicy) {
-        this(dialect, ignorePolicy, null);
-    }
-
-    /**
-     * Instantiates a new abstract sql condition expression.
-     *
-     * @param dialect      dialect
-     * @param ignorePolicy the ignore policy
      * @param parent       parent group
      */
     protected AbstractSqlConditionExpression(Dialect dialect, Predicate<Object> ignorePolicy, L parent) {
@@ -81,7 +70,7 @@ public abstract class AbstractSqlConditionExpression<L> implements SqlBuilder, P
             if (last instanceof LogicOperatorExpression) {
                 //                throw new BuilderException(((SqlLogicExpression) last).getLogicOperator() + " 后没有跟条件表达式");
                 throw new BuilderException(BuilderExceptionCode
-                        .createNoConditionBehindCode(((SqlLogicExpression) last).getLogicOperator().name()));
+                        .createNoConditionBehindCode(((LogicOperatorExpression) last).getLogicOperator().name()));
             }
         }
 

@@ -12,7 +12,10 @@ import org.testng.annotations.Test;
 import cn.featherfly.common.lang.Strings;
 import cn.featherfly.common.repository.SimpleAliasRepository;
 import cn.featherfly.common.repository.SimpleRepository;
+import cn.featherfly.common.repository.builder.BuilderException;
 import cn.featherfly.common.structure.page.PaginationResults;
+import cn.featherfly.hammer.dsl.query.QueryConditionGroupExpression;
+import cn.featherfly.hammer.dsl.query.QueryConditionGroupLogicExpression;
 import cn.featherfly.hammer.sqldb.jdbc.JdbcTestBase;
 import cn.featherfly.hammer.sqldb.jdbc.dsl.query.SqlQuery;
 import cn.featherfly.hammer.sqldb.jdbc.vo.Role;
@@ -146,6 +149,23 @@ public class SqlQueryTest extends JdbcTestBase {
         query.find(new SimpleAliasRepository("user", "u")).property("username", "password", "age").where()
                 .eq("username", "yufei").and().eq("password", "123456").and().group().gt("age", 18).and().lt("age", 60)
                 .list(User.class);
+    }
+
+    @Test(expectedExceptions = BuilderException.class)
+    void testConditionException() {
+        SqlQuery query = new SqlQuery(jdbc, metadata, sqlPageFactory);
+        QueryConditionGroupExpression condition = query.find(new SimpleAliasRepository("user", "u")).where();
+        condition.eq("id", 1);
+        condition.eq("id", 2).list();
+    }
+
+    @Test(expectedExceptions = BuilderException.class)
+    void testConditionException2() {
+        SqlQuery query = new SqlQuery(jdbc, metadata, sqlPageFactory);
+        QueryConditionGroupExpression condition = query.find(new SimpleAliasRepository("user", "u")).where();
+        QueryConditionGroupLogicExpression logic = condition.eq("id", 1);
+        logic.and();
+        logic.list();
     }
 
     @Test
