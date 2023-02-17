@@ -402,9 +402,11 @@ public interface Jdbc {
      *
      * @param <T1>         the generic type
      * @param <T2>         the generic type
+     * @param <T3>         the generic type
      * @param sql          the sql
      * @param elementType1 the element type 1
      * @param elementType2 the element type 2
+     * @param elementType3 the element type 3
      * @param prefixes     the prefixes
      * @param args         the args
      * @return the list
@@ -417,9 +419,13 @@ public interface Jdbc {
      *
      * @param <T1>         the generic type
      * @param <T2>         the generic type
+     * @param <T3>         the generic type
+     * @param <T4>         the generic type
      * @param sql          the sql
      * @param elementType1 the element type 1
      * @param elementType2 the element type 2
+     * @param elementType3 the element type 3
+     * @param elementType4 the element type 4
      * @param prefixes     the prefixes
      * @param args         the args
      * @return the list
@@ -503,9 +509,11 @@ public interface Jdbc {
      *
      * @param <T1>         the generic type
      * @param <T2>         the generic type
+     * @param <T3>         the generic type
      * @param sql          the sql
      * @param elementType1 the element type 1
      * @param elementType2 the element type 2
+     * @param elementType3 the element type 3
      * @param prefixes     the prefixes
      * @param args         the args
      * @return the list
@@ -518,9 +526,13 @@ public interface Jdbc {
      *
      * @param <T1>         the generic type
      * @param <T2>         the generic type
+     * @param <T3>         the generic type
+     * @param <T4>         the generic type
      * @param sql          the sql
      * @param elementType1 the element type 1
      * @param elementType2 the element type 2
+     * @param elementType3 the element type 3
+     * @param elementType4 the element type 4
      * @param prefixes     the prefixes
      * @param args         the args
      * @return the list
@@ -646,11 +658,17 @@ public interface Jdbc {
             Class<T3> elementType3, Tuple3<String, String, String> prefixes, Map<String, Object> args);
 
     /**
+     * Query single.
+     *
      * @param <T1>         the generic type
      * @param <T2>         the generic type
+     * @param <T3>         the generic type
+     * @param <T4>         the generic type
      * @param sql          the sql
      * @param elementType1 the element type 1
      * @param elementType2 the element type 2
+     * @param elementType3 the element type 3
+     * @param elementType4 the element type 4
      * @param prefixes     the prefixes
      * @param args         the args
      * @return the list
@@ -660,6 +678,8 @@ public interface Jdbc {
             Map<String, Object> args);
 
     /**
+     * Query single.
+     *
      * @param <T1>         the generic type
      * @param <T2>         the generic type
      * @param <T3>         the generic type
@@ -736,11 +756,17 @@ public interface Jdbc {
             Class<T3> elementType3, Tuple3<String, String, String> prefixes, Object... args);
 
     /**
+     * Query single.
+     *
      * @param <T1>         the generic type
      * @param <T2>         the generic type
+     * @param <T3>         the generic type
+     * @param <T4>         the generic type
      * @param sql          the sql
      * @param elementType1 the element type 1
      * @param elementType2 the element type 2
+     * @param elementType3 the element type 3
+     * @param elementType4 the element type 4
      * @param prefixes     the prefixes
      * @param args         the args
      * @return the list
@@ -750,6 +776,8 @@ public interface Jdbc {
             Object... args);
 
     /**
+     * Query single.
+     *
      * @param <T1>         the generic type
      * @param <T2>         the generic type
      * @param <T3>         the generic type
@@ -845,6 +873,80 @@ public interface Jdbc {
     /**
      * Query unique.
      *
+     * @param <T1>         the generic type
+     * @param <T2>         the generic type
+     * @param sql          the sql
+     * @param elementType1 the element type 1
+     * @param elementType2 the element type 2
+     * @param prefixes     the prefixes of mapping element type
+     * @param args         the args
+     * @return the tuple 2
+     */
+    <T1, T2> Tuple2<T1, T2> queryUnique(String sql, Class<T1> elementType1, Class<T2> elementType2,
+            Tuple2<String, String> prefixes, Map<String, Object> args);
+
+    /**
+     * Query unique.
+     *
+     * @param <T1>         the generic type
+     * @param <T2>         the generic type
+     * @param <T3>         the generic type
+     * @param sql          the sql
+     * @param elementType1 the element type 1
+     * @param elementType2 the element type 2
+     * @param elementType3 the element type 3
+     * @param prefixes     the prefixes
+     * @param args         the args
+     * @return the list
+     */
+    <T1, T2, T3> Tuple3<T1, T2, T3> queryUnique(String sql, Class<T1> elementType1, Class<T2> elementType2,
+            Class<T3> elementType3, Tuple3<String, String, String> prefixes, Map<String, Object> args);
+
+    /**
+     * Query unique.
+     *
+     * @param <T1>         the generic type
+     * @param <T2>         the generic type
+     * @param <T3>         the generic type
+     * @param <T4>         the generic type
+     * @param sql          the sql
+     * @param elementType1 the element type 1
+     * @param elementType2 the element type 2
+     * @param elementType3 the element type 3
+     * @param elementType4 the element type 4
+     * @param prefixes     the prefixes
+     * @param args         the args
+     * @return the list
+     */
+    <T1, T2, T3, T4> Tuple4<T1, T2, T3, T4> queryUnique(String sql, Class<T1> elementType1, Class<T2> elementType2,
+            Class<T3> elementType3, Class<T4> elementType4, Tuple4<String, String, String, String> prefixes,
+            Map<String, Object> args);
+
+    /**
+     * Query unique.
+     *
+     * @param <T1>         the generic type
+     * @param <T2>         the generic type
+     * @param <T3>         the generic type
+     * @param <T4>         the generic type
+     * @param <T5>         the generic type
+     * @param sql          the sql
+     * @param elementType1 the element type 1
+     * @param elementType2 the element type 2
+     * @param elementType3 the element type 3
+     * @param elementType4 the element type 4
+     * @param elementType5 the element type 5
+     * @param prefixes     the prefixes
+     * @param args         the args
+     * @return the list
+     */
+    <T1, T2, T3, T4, T5> Tuple5<T1, T2, T3, T4, T5> queryUnique(String sql, Class<T1> elementType1,
+            Class<T2> elementType2, Class<T3> elementType3, Class<T4> elementType4, Class<T5> elementType5,
+            Tuple5<String, String, String, String, String> prefixes, Map<String, Object> args);
+
+    /**
+     * Query unique.
+     *
      * @param <T>         generic type
      * @param sql         sql
      * @param elementType return object type
@@ -852,6 +954,80 @@ public interface Jdbc {
      * @return single elementType object
      */
     <T> T queryUnique(String sql, Class<T> elementType, Object... args);
+
+    /**
+     * Query unique.
+     *
+     * @param <T1>         the generic type
+     * @param <T2>         the generic type
+     * @param sql          the sql
+     * @param elementType1 the element type 1
+     * @param elementType2 the element type 2
+     * @param prefixes     the prefixes of mapping element type
+     * @param args         the args
+     * @return the tuple 2
+     */
+    <T1, T2> Tuple2<T1, T2> queryUnique(String sql, Class<T1> elementType1, Class<T2> elementType2,
+            Tuple2<String, String> prefixes, Object... args);
+
+    /**
+     * Query unique.
+     *
+     * @param <T1>         the generic type
+     * @param <T2>         the generic type
+     * @param <T3>         the generic type
+     * @param sql          the sql
+     * @param elementType1 the element type 1
+     * @param elementType2 the element type 2
+     * @param elementType3 the element type 3
+     * @param prefixes     the prefixes
+     * @param args         the args
+     * @return the list
+     */
+    <T1, T2, T3> Tuple3<T1, T2, T3> queryUnique(String sql, Class<T1> elementType1, Class<T2> elementType2,
+            Class<T3> elementType3, Tuple3<String, String, String> prefixes, Object... args);
+
+    /**
+     * Query unique.
+     *
+     * @param <T1>         the generic type
+     * @param <T2>         the generic type
+     * @param <T3>         the generic type
+     * @param <T4>         the generic type
+     * @param sql          the sql
+     * @param elementType1 the element type 1
+     * @param elementType2 the element type 2
+     * @param elementType3 the element type 3
+     * @param elementType4 the element type 4
+     * @param prefixes     the prefixes
+     * @param args         the args
+     * @return the list
+     */
+    <T1, T2, T3, T4> Tuple4<T1, T2, T3, T4> queryUnique(String sql, Class<T1> elementType1, Class<T2> elementType2,
+            Class<T3> elementType3, Class<T4> elementType4, Tuple4<String, String, String, String> prefixes,
+            Object... args);
+
+    /**
+     * Query unique.
+     *
+     * @param <T1>         the generic type
+     * @param <T2>         the generic type
+     * @param <T3>         the generic type
+     * @param <T4>         the generic type
+     * @param <T5>         the generic type
+     * @param sql          the sql
+     * @param elementType1 the element type 1
+     * @param elementType2 the element type 2
+     * @param elementType3 the element type 3
+     * @param elementType4 the element type 4
+     * @param elementType5 the element type 5
+     * @param prefixes     the prefixes
+     * @param args         the args
+     * @return the list
+     */
+    <T1, T2, T3, T4, T5> Tuple5<T1, T2, T3, T4, T5> queryUnique(String sql, Class<T1> elementType1,
+            Class<T2> elementType2, Class<T3> elementType3, Class<T4> elementType4, Class<T5> elementType5,
+            Tuple5<String, String, String, String, String> prefixes, Object... args);
 
     //    /**
     //     * Query unique.
