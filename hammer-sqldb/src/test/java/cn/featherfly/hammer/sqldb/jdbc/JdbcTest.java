@@ -164,6 +164,151 @@ public class JdbcTest extends JdbcTestBase {
         assertEquals(result.get("id"), id);
     }
 
+    @Test
+    public void testQueryUniqueTuple2() {
+        Integer id = 1;
+        String sql = "SELECT\r\n" + "    _user0.`id` `_user0.id`,\r\n" + "    _user0.`username` `_user0.username`,\r\n"
+                + "    _user0.`password` `_user0.pwd`,\r\n" + "    _user0.`mobile_no` `_user0.mobileNo`,\r\n"
+                + "    _user0.`age` `_user0.age`,\r\n" + "    ui.`province` `ui.division.province`,\r\n"
+                + "    ui.`city` `ui.division.city`,\r\n" + "    ui.`district` `ui.division.district`,\r\n"
+                + "    ui.`id` `ui.id`,\r\n" + "    ui.`user_id` `ui.user.id`,\r\n" + "    ui.`name` `ui.name`,\r\n"
+                + "    ui.`descp` `ui.descp` \r\n" + "FROM\r\n" + "    `user` _user0 \r\n"
+                + "    JOIN `user_info` ui ON _user0.id = ui.user_id \r\n" + "where\r\n"
+                + "    _user0.`id` = ?".replaceAll("`", jdbc.getDialect().getWrapSymbol());
+        Tuple2<User, UserInfo> r = jdbc.queryUnique(sql, User.class, UserInfo.class, Tuples.of("_user0.", "ui."), id);
+        assertEquals(r.get0().getId(), id);
+        assertEquals(r.get1().getUser().getId(), id);
+        assertNotNull(r.get0().getUsername());
+        assertNotNull(r.get1().getName());
+
+        sql = sql.replace("?", ":id");
+        r = jdbc.queryUnique(sql, User.class, UserInfo.class, Tuples.of("_user0.", "ui."),
+                new ChainMapImpl<String, Object>().putChain("id", id));
+        assertEquals(r.get0().getId(), id);
+        assertEquals(r.get1().getUser().getId(), id);
+        assertNotNull(r.get0().getUsername());
+        assertNotNull(r.get1().getName());
+    }
+
+    @Test
+    public void testQueryUniqueTuple3() {
+        Integer id = 1;
+        String sql = "SELECT\r\n" + "    _user0.`id` `_user0.id`,\r\n" + "    _user0.`username` `_user0.username`,\r\n"
+                + "    _user0.`password` `_user0.pwd`,\r\n" + "    _user0.`mobile_no` `_user0.mobileNo`,\r\n"
+                + "    _user0.`age` `_user0.age`,\r\n" + "    ui.`province` `ui.division.province`,\r\n"
+                + "    ui.`city` `ui.division.city`,\r\n" + "    ui.`district` `ui.division.district`,\r\n"
+                + "    ui.`id` `ui.id`,\r\n" + "    ui.`user_id` `ui.user.id`,\r\n" + "    ui.`name` `ui.name`,\r\n"
+                + "    ui.`descp` `ui.descp`,\r\n" + "    ur.`user_id` `ur.userId`,\r\n"
+                + "    ur.`role_id` `ur.roleId`,\r\n" + "    ur.`descp` `ur.descp`,\r\n"
+                + "    ur.`descp2` `ur.descp2`    \r\n" + "FROM\r\n" + "    `user` _user0 \r\n"
+                + "    JOIN `user_info` ui ON _user0.id = ui.user_id \r\n"
+                + "    JOIN `user_role` ur ON _user0.id = ur.user_id\r\n"
+                + "where  _user0.`id` = ?".replaceAll("`", jdbc.getDialect().getWrapSymbol());
+        Tuple3<User, UserInfo, UserRole> r = jdbc.queryUnique(sql, User.class, UserInfo.class, UserRole.class,
+                Tuples.of("_user0.", "ui.", "ur."), id);
+        assertEquals(r.get0().getId(), id);
+        assertEquals(r.get1().getUser().getId(), id);
+        assertEquals(r.get2().getUserId(), id);
+        assertNotNull(r.get0().getUsername());
+        assertNotNull(r.get1().getName());
+        assertNotNull(r.get2().getRoleId());
+
+        sql = sql.replace("?", ":id");
+        r = jdbc.queryUnique(sql, User.class, UserInfo.class, UserRole.class, Tuples.of("_user0.", "ui.", "ur."),
+                new ChainMapImpl<String, Object>().putChain("id", id));
+        assertEquals(r.get0().getId(), id);
+        assertEquals(r.get1().getUser().getId(), id);
+        assertEquals(r.get2().getUserId(), id);
+        assertNotNull(r.get0().getUsername());
+        assertNotNull(r.get1().getName());
+        assertNotNull(r.get2().getRoleId());
+    }
+
+    @Test
+    public void testQueryUniqueTuple4() {
+        Integer id = 1;
+        String sql = "SELECT\r\n" + "    _user0.`id` `_user0.id`,\r\n" + "    _user0.`username` `_user0.username`,\r\n"
+                + "    _user0.`password` `_user0.pwd`,\r\n" + "    _user0.`mobile_no` `_user0.mobileNo`,\r\n"
+                + "    _user0.`age` `_user0.age`,\r\n" + "    ui.`province` `ui.division.province`,\r\n"
+                + "    ui.`city` `ui.division.city`,\r\n" + "    ui.`district` `ui.division.district`,\r\n"
+                + "    ui.`id` `ui.id`,\r\n" + "    ui.`user_id` `ui.user.id`,\r\n" + "    ui.`name` `ui.name`,\r\n"
+                + "    ui.`descp` `ui.descp`,\r\n" + "    ur.`user_id` `ur.userId`,\r\n"
+                + "    ur.`role_id` `ur.roleId`,\r\n" + "    ur.`descp` `ur.descp`,\r\n"
+                + "    ur.`descp2` `ur.descp2`,\r\n" + "    r.`id` `r.id`,\r\n" + "    r.`name` `r.name`,\r\n"
+                + "    r.`descp` `r.descp`,\r\n" + "    r.`create_time` `r.createTime`\r\n" + "FROM\r\n"
+                + "    `user` _user0 \r\n" + "    JOIN `user_info` ui ON _user0.id = ui.user_id \r\n"
+                + "    JOIN `user_role` ur ON _user0.id = ur.user_id\r\n"
+                + "    JOIN `role` r ON ur.role_id = r.id where  _user0.`id` = ?".replaceAll("`",
+                        jdbc.getDialect().getWrapSymbol());
+        Tuple4<User, UserInfo, UserRole, Role> r = jdbc.queryUnique(sql, User.class, UserInfo.class, UserRole.class,
+                Role.class, Tuples.of("_user0.", "ui.", "ur.", "r."), id);
+        assertEquals(r.get0().getId(), id);
+        assertEquals(r.get1().getUser().getId(), id);
+        assertEquals(r.get2().getUserId(), id);
+        assertEquals(r.get2().getRoleId(), r.get3().getId());
+        assertNotNull(r.get0().getUsername());
+        assertNotNull(r.get1().getName());
+        assertNotNull(r.get2().getRoleId());
+        assertNotNull(r.get3().getName());
+
+        sql = sql.replace("?", ":id");
+        r = jdbc.queryUnique(sql, User.class, UserInfo.class, UserRole.class, Role.class,
+                Tuples.of("_user0.", "ui.", "ur.", "r."), new ChainMapImpl<String, Object>().putChain("id", id));
+        assertEquals(r.get0().getId(), id);
+        assertEquals(r.get1().getUser().getId(), id);
+        assertEquals(r.get2().getUserId(), id);
+        assertEquals(r.get2().getRoleId(), r.get3().getId());
+        assertNotNull(r.get0().getUsername());
+        assertNotNull(r.get1().getName());
+        assertNotNull(r.get2().getRoleId());
+        assertNotNull(r.get3().getName());
+    }
+
+    @Test
+    public void testQueryUniqueTuple5() {
+        Integer id = 1;
+        String sql = "SELECT\r\n" + "    _user0.`id` `_user0.id`,\r\n" + "    _user0.`username` `_user0.username`,\r\n"
+                + "    _user0.`password` `_user0.pwd`,\r\n" + "    _user0.`mobile_no` `_user0.mobileNo`,\r\n"
+                + "    _user0.`age` `_user0.age`,\r\n" + "    ui.`province` `ui.division.province`,\r\n"
+                + "    ui.`city` `ui.division.city`,\r\n" + "    ui.`district` `ui.division.district`,\r\n"
+                + "    ui.`id` `ui.id`,\r\n" + "    ui.`user_id` `ui.user.id`,\r\n" + "    ui.`name` `ui.name`,\r\n"
+                + "    ui.`descp` `ui.descp`,\r\n" + "    ur.`user_id` `ur.userId`,\r\n"
+                + "    ur.`role_id` `ur.roleId`,\r\n" + "    ur.`descp` `ur.descp`,\r\n"
+                + "    ur.`descp2` `ur.descp2`,\r\n" + "    r.`id` `r.id`,\r\n" + "    r.`name` `r.name`,\r\n"
+                + "    r.`descp` `r.descp`,\r\n" + "    r.`create_time` `r.createTime`,\r\n" + "    o.`id` `o.id`,\r\n"
+                + "    o.`app_id` `o.appId`,\r\n" + "    o.`create_user` `o.createUser.id`\r\n" + "FROM\r\n"
+                + "    `user` _user0 \r\n" + "    JOIN `user_info` ui ON _user0.id = ui.user_id \r\n"
+                + "    JOIN `user_role` ur ON _user0.id = ur.user_id\r\n" + "    JOIN `role` r ON ur.role_id = r.id\r\n"
+                + "    JOIN `order` o ON _user0.id = o.create_user\r\n"
+                + " where  _user0.`id` = ?".replaceAll("`", jdbc.getDialect().getWrapSymbol());
+        Tuple5<User, UserInfo, UserRole, Role, Order2> r = jdbc.queryUnique(sql, User.class, UserInfo.class,
+                UserRole.class, Role.class, Order2.class, Tuples.of("_user0.", "ui.", "ur.", "r.", "o."), id);
+        assertEquals(r.get0().getId(), id);
+        assertEquals(r.get1().getUser().getId(), id);
+        assertEquals(r.get2().getUserId(), id);
+        assertEquals(r.get2().getRoleId(), r.get3().getId());
+        assertEquals(r.get4().getCreateUser().getId(), id);
+        assertNotNull(r.get0().getUsername());
+        assertNotNull(r.get1().getName());
+        assertNotNull(r.get2().getRoleId());
+        assertNotNull(r.get3().getName());
+        assertNotNull(r.get4().getAppId());
+
+        sql = sql.replace("?", ":id");
+        r = jdbc.queryUnique(sql, User.class, UserInfo.class, UserRole.class, Role.class, Order2.class,
+                Tuples.of("_user0.", "ui.", "ur.", "r.", "o."), new ChainMapImpl<String, Object>().putChain("id", id));
+        assertEquals(r.get0().getId(), id);
+        assertEquals(r.get1().getUser().getId(), id);
+        assertEquals(r.get2().getUserId(), id);
+        assertEquals(r.get2().getRoleId(), r.get3().getId());
+        assertEquals(r.get4().getCreateUser().getId(), id);
+        assertNotNull(r.get0().getUsername());
+        assertNotNull(r.get1().getName());
+        assertNotNull(r.get2().getRoleId());
+        assertNotNull(r.get3().getName());
+        assertNotNull(r.get4().getAppId());
+    }
+
     @Test(expectedExceptions = JdbcException.class)
     public void testQueryUniqueException() {
         jdbc.queryUnique("select * from role", new Object[0]);

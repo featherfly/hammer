@@ -562,8 +562,86 @@ public abstract class AbstractJdbc implements Jdbc {
      * {@inheritDoc}
      */
     @Override
+    public <T1, T2> Tuple2<T1, T2> queryUnique(String sql, Class<T1> elementType1, Class<T2> elementType2,
+            Tuple2<String, String> prefixes, Map<String, Object> args) {
+        return nullableSingleResult(query(sql, elementType1, elementType2, prefixes, args));
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public <T1, T2, T3> Tuple3<T1, T2, T3> queryUnique(String sql, Class<T1> elementType1, Class<T2> elementType2,
+            Class<T3> elementType3, Tuple3<String, String, String> prefixes, Map<String, Object> args) {
+        return nullableSingleResult(query(sql, elementType1, elementType2, elementType3, prefixes, args));
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public <T1, T2, T3, T4> Tuple4<T1, T2, T3, T4> queryUnique(String sql, Class<T1> elementType1,
+            Class<T2> elementType2, Class<T3> elementType3, Class<T4> elementType4,
+            Tuple4<String, String, String, String> prefixes, Map<String, Object> args) {
+        return nullableSingleResult(query(sql, elementType1, elementType2, elementType3, elementType4, prefixes, args));
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public <T1, T2, T3, T4, T5> Tuple5<T1, T2, T3, T4, T5> queryUnique(String sql, Class<T1> elementType1,
+            Class<T2> elementType2, Class<T3> elementType3, Class<T4> elementType4, Class<T5> elementType5,
+            Tuple5<String, String, String, String, String> prefixes, Map<String, Object> args) {
+        return nullableSingleResult(
+                query(sql, elementType1, elementType2, elementType3, elementType4, elementType5, prefixes, args));
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
     public <T> T queryUnique(String sql, Class<T> elementType, Object... args) {
         return nullableSingleResult(query(sql, elementType, args));
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public <T1, T2> Tuple2<T1, T2> queryUnique(String sql, Class<T1> elementType1, Class<T2> elementType2,
+            Tuple2<String, String> prefixes, Object... args) {
+        return nullableSingleResult(query(sql, elementType1, elementType2, prefixes, args));
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public <T1, T2, T3> Tuple3<T1, T2, T3> queryUnique(String sql, Class<T1> elementType1, Class<T2> elementType2,
+            Class<T3> elementType3, Tuple3<String, String, String> prefixes, Object... args) {
+        return nullableSingleResult(query(sql, elementType1, elementType2, elementType3, prefixes, args));
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public <T1, T2, T3, T4> Tuple4<T1, T2, T3, T4> queryUnique(String sql, Class<T1> elementType1,
+            Class<T2> elementType2, Class<T3> elementType3, Class<T4> elementType4,
+            Tuple4<String, String, String, String> prefixes, Object... args) {
+        return nullableSingleResult(query(sql, elementType1, elementType2, elementType3, elementType4, prefixes, args));
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public <T1, T2, T3, T4, T5> Tuple5<T1, T2, T3, T4, T5> queryUnique(String sql, Class<T1> elementType1,
+            Class<T2> elementType2, Class<T3> elementType3, Class<T4> elementType4, Class<T5> elementType5,
+            Tuple5<String, String, String, String, String> prefixes, Object... args) {
+        return nullableSingleResult(
+                query(sql, elementType1, elementType2, elementType3, elementType4, elementType5, prefixes, args));
     }
 
     //    /**
