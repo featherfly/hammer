@@ -407,12 +407,12 @@ public abstract class AbstractSqlConditionExpression<L> implements SqlBuilder, P
         return ignorePolicy;
     }
 
-    /**
-     * Gets the conditions.
-     *
-     * @return the conditions
-     */
-    public List<Expression> getConditions() {
-        return conditions;
-    }
+    //    /**
+    //     * Gets the conditions.
+    //     *
+    //     * @return the conditions
+    //     */
+    //    public List<Expression> getConditions() {
+    //        return conditions;
+    //    }
 }

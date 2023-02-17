@@ -12,6 +12,8 @@ public interface EntityQueryEntity<E>
         extends EntityQuery<E>, EntityQueryEntityExpression<E, EntityQueryEntityProperties<E>,
                 EntityQueryConditionGroupExpression<E>, EntityQueryConditionGroupLogicExpression<E>> {
 
+    //    TypeQueryEntity compatiblity();
+
     /**
      * 结束当前条件并进入排序器
      *

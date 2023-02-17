@@ -1,29 +1,42 @@
 
 package cn.featherfly.hammer.sqldb.jdbc;
 
-import org.testng.annotations.BeforeClass;
+import static org.junit.Assert.assertNotNull;
 
+import org.testng.annotations.BeforeClass;
+import org.testng.annotations.Test;
+
+import cn.featherfly.constant.ConstantPool;
 import cn.featherfly.hammer.sqldb.config.SqlDbConfigurator;
+import cn.featherfly.hammer.sqldb.config.SqlDbConstant;
 
 /**
- * <p>
- * SqlOrmTest
- * </p>
+ * HammerJdbcTest2.
  *
  * @author zhongj
  */
 public class HammerJdbcTest2 extends HammerJdbcTest {
 
-    @Override
+    SqlDbConfigurator configurator;
+
     @BeforeClass
-    void before() {
-        hammer = SqlDbConfigurator.getDefault("hammer.yaml").getHammer();
+    void before2() {
+        //        hammer = SqlDbConfigurator.getDefault("hammer.yaml").getHammer();
+        configurator = SqlDbConfigurator.getDefault();
+        hammer = configurator.getHammer();
     }
 
-    @Override
-    @BeforeClass
-    public void initMysql() {
+    @Test
+    void testSqlDbConfigurator() {
+        assertNotNull(configurator.getHammer());
+        assertNotNull(configurator.getJdbc());
+    }
 
+    @Test
+    void testNotNull() {
+        SqlDbConstant sqlDbConstant = ConstantPool.getDefault().getConstant(SqlDbConstant.class);
+        assertNotNull(sqlDbConstant.getDataSource());
+        assertNotNull(sqlDbConstant.getDialect());
     }
 
 }

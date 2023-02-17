@@ -22,7 +22,6 @@ import cn.featherfly.common.db.metadata.DatabaseMetadataManager;
 import cn.featherfly.common.lang.ClassLoaderUtils;
 import cn.featherfly.common.lang.Randoms;
 import cn.featherfly.common.lang.UriUtils;
-import cn.featherfly.constant.ConstantConfigurator;
 import cn.featherfly.hammer.sqldb.jdbc.vo.Role;
 
 /**
@@ -80,7 +79,7 @@ public class DataSourceTestBase {
 
     //    @BeforeSuite(groups = "mysql", dependsOnMethods = "init")
     public void initMysql() throws IOException {
-        ConstantConfigurator.config();
+        //        ConstantConfigurator.config();
         //        ConstantConfigurator.config("constant.mysql.yaml");
 
         BasicDataSource dataSource = new BasicDataSource();
@@ -114,8 +113,7 @@ public class DataSourceTestBase {
 
     //    @BeforeSuite(groups = "postgresql", dependsOnMethods = "init")
     public void initPostgresql() throws IOException {
-        //        ConstantConfigurator.config(CONFIG_FILE);
-        ConstantConfigurator.config("constant.postgresql.yaml");
+        //        ConstantConfigurator.config("constant.postgresql.yaml");
 
         BasicDataSource dataSource = new BasicDataSource();
         dataSource.setUrl("jdbc:postgresql://localhost:5432/hammer_jdbc");
@@ -144,8 +142,7 @@ public class DataSourceTestBase {
 
     //    @BeforeSuite(groups = "sqlite", dependsOnMethods = "init")
     public void initSQLite() throws IOException {
-        //        ConstantConfigurator.config(CONFIG_FILE);
-        ConstantConfigurator.config("constant.sqlite.yaml");
+        //        ConstantConfigurator.config("constant.sqlite.yaml");
 
         String path = new File(UriUtils.linkUri(this.getClass().getResource("/").getFile(), "hammer.sqlite3.db"))
                 .getPath();

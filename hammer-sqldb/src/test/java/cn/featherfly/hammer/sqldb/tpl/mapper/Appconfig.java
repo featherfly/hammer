@@ -19,7 +19,6 @@ import cn.featherfly.common.db.mapping.JdbcMappingFactoryImpl;
 import cn.featherfly.common.db.metadata.DatabaseMetadata;
 import cn.featherfly.common.db.metadata.DatabaseMetadataManager;
 import cn.featherfly.common.lang.ClassLoaderUtils;
-import cn.featherfly.constant.ConstantConfigurator;
 import cn.featherfly.hammer.sqldb.SqldbHammerImpl;
 import cn.featherfly.hammer.sqldb.jdbc.Jdbc;
 import cn.featherfly.hammer.sqldb.jdbc.JdbcImpl;
@@ -71,7 +70,7 @@ public class Appconfig extends JdbcTestBase {
         DOMConfigurator.configure(ClassLoaderUtils.getResource("log4j.xml", JdbcTestBase.class));
 
         //        ConstantConfigurator.config(JdbcTestBase.configFile);
-        ConstantConfigurator.config();
+        //        ConstantConfigurator.config();
 
         Jdbc jdbc = new JdbcImpl(dataSource, Dialects.MYSQL);
         DatabaseMetadata metadata = DatabaseMetadataManager.getDefaultManager().create(dataSource);

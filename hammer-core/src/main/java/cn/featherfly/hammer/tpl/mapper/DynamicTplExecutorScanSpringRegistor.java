@@ -11,7 +11,7 @@ import cn.featherfly.common.io.ClassPathScanningProvider;
  * 自动注册配置信息到spring context
  * </p>
  *
- * @author 钟冀
+ * @author zhongj
  */
 public class DynamicTplExecutorScanSpringRegistor extends DynamicTplExecutorSpringRegistor {
 

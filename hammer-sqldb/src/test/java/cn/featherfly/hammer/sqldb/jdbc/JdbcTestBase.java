@@ -28,9 +28,6 @@ import cn.featherfly.common.db.metadata.DatabaseMetadataManager;
 import cn.featherfly.common.lang.ClassLoaderUtils;
 import cn.featherfly.common.lang.Randoms;
 import cn.featherfly.common.lang.UriUtils;
-import cn.featherfly.constant.ConstantConfigurator;
-import cn.featherfly.hammer.Hammer;
-import cn.featherfly.hammer.sqldb.SqldbHammerImpl;
 import cn.featherfly.hammer.sqldb.jdbc.vo.Role;
 import cn.featherfly.hammer.tpl.TplConfigFactory;
 import cn.featherfly.hammer.tpl.TplConfigFactoryImpl;
@@ -67,8 +64,6 @@ public class JdbcTestBase extends TestBase {
 
     protected static SqlTypeMappingManager sqlTypeMappingManager;
 
-    protected static Hammer hammer;
-
     @BeforeSuite
     @Parameters({ "dataBase" })
     public void init(@Optional("mysql") String dataBase) throws IOException {
@@ -84,7 +79,6 @@ public class JdbcTestBase extends TestBase {
         configFactory = new TplConfigFactoryImpl("tpl/", ".yaml.tpl", basePackages,
                 new FreemarkerTemplatePreProcessor());
 
-        hammer = new SqldbHammerImpl(jdbc, mappingFactory, configFactory);
     }
 
     public void initDataBase(String dataBase) throws IOException {
@@ -108,7 +102,7 @@ public class JdbcTestBase extends TestBase {
 
     //    @BeforeSuite(groups = "mysql", dependsOnMethods = "init")
     public void initMysql() throws IOException {
-        ConstantConfigurator.config();
+        //        ConstantConfigurator.config();
         //        ConstantConfigurator.config("constant.mysql.yaml");
 
         BasicDataSource ds = new BasicDataSource();
@@ -148,8 +142,7 @@ public class JdbcTestBase extends TestBase {
 
     //    @BeforeSuite(groups = "postgresql", dependsOnMethods = "init")
     public void initPostgresql() throws IOException {
-        //        ConstantConfigurator.config(CONFIG_FILE);
-        ConstantConfigurator.config("constant.postgresql.yaml");
+        //        ConstantConfigurator.config("constant.postgresql.yaml");
 
         BasicDataSource ds = new BasicDataSource();
         //        ds.setUrl("jdbc:postgresql://localhost:5432/hammer_jdbc");
@@ -182,8 +175,7 @@ public class JdbcTestBase extends TestBase {
 
     //    @BeforeSuite(groups = "sqlite", dependsOnMethods = "init")
     public void initSQLite() throws IOException {
-        //        ConstantConfigurator.config(CONFIG_FILE);
-        ConstantConfigurator.config("constant.sqlite.yaml");
+        //        ConstantConfigurator.config("constant.sqlite.yaml");
 
         String path = new File(UriUtils.linkUri(this.getClass().getResource("/").getFile(), "hammer.sqlite3.db"))
                 .getPath();

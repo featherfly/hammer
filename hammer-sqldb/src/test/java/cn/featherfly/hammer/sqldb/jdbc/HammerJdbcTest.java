@@ -912,7 +912,7 @@ public class HammerJdbcTest extends JdbcTestBase {
         int result = hammer.update("role").set("descp", updated).where().eq("id", id).execute();
         assertEquals(result, 1);
 
-        String descp = jdbc.queryString("select descp from role where  id = ?", id);
+        String descp = ((SqldbHammer) hammer).getJdbc().queryString("select descp from role where  id = ?", id);
         assertEquals(descp, updated);
     }
 

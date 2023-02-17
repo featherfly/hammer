@@ -109,6 +109,8 @@ public class NestedBeanPropertyRowMapper<T> implements cn.featherfly.common.repo
     @Nullable
     private MapperObjectFactory<T> mapperObjectFactory;
 
+    private String prefix;
+
     /**
      * Create a new {@code BeanPropertyRowMapper}, accepting unpopulated
      * properties in the target bean.
@@ -136,6 +138,19 @@ public class NestedBeanPropertyRowMapper<T> implements cn.featherfly.common.repo
     }
 
     /**
+     * Instantiates a new nested bean property row mapper.
+     *
+     * @param mappedClass         the mapped class
+     * @param prefix              the prefix
+     * @param manager             the manager
+     * @param checkFullyPopulated the check fully populated
+     */
+    public NestedBeanPropertyRowMapper(Class<T> mappedClass, String prefix, SqlTypeMappingManager manager,
+            boolean checkFullyPopulated) {
+        this(new ClassMapperObjectFactory<>(mappedClass), prefix, manager, checkFullyPopulated);
+    }
+
+    /**
      * Create a new {@code BeanPropertyRowMapper}, accepting unpopulated
      * properties in the target bean.
      * <p>
@@ -158,12 +173,28 @@ public class NestedBeanPropertyRowMapper<T> implements cn.featherfly.common.repo
      */
     public NestedBeanPropertyRowMapper(MapperObjectFactory<T> mapperObjectFactory, SqlTypeMappingManager manager,
             boolean checkFullyPopulated) {
+        this(mapperObjectFactory, null, manager, checkFullyPopulated);
+    }
+
+    /**
+     * Create a new {@code BeanPropertyRowMapper}.
+     *
+     * @param mapperObjectFactory the mapper object factory
+     * @param manager             the manager
+     * @param checkFullyPopulated whether we're strictly validating that all
+     *                            bean properties have been mapped from
+     *                            corresponding database fields
+     * @param prefix              the prefix
+     */
+    public NestedBeanPropertyRowMapper(MapperObjectFactory<T> mapperObjectFactory, String prefix,
+            SqlTypeMappingManager manager, boolean checkFullyPopulated) {
         //        if (mapperObjectFactory instanceof ClassMapperObjectFactory) {
         //            initialize(((ClassMapperObjectFactory<T>) mapperObjectFactory).getType());
         //        }
         this.manager = manager;
         this.mapperObjectFactory = mapperObjectFactory;
         this.checkFullyPopulated = checkFullyPopulated;
+        this.prefix = prefix;
     }
 
     //    /**
@@ -388,8 +419,17 @@ public class NestedBeanPropertyRowMapper<T> implements cn.featherfly.common.repo
                 mappings.add(mapping);
 
                 String column = JdbcUtils.lookupColumnName(rsmd, index);
+                if (prefix != null) {
+                    if (column.startsWith(prefix)) {
+                        column = org.apache.commons.lang3.StringUtils.removeStart(column, prefix);
+                    } else {
+                        // need match prefix, so ignore not matched
+                        continue;
+                    }
+                }
                 String field = lowerCaseName(org.springframework.util.StringUtils.delete(column, " "));
                 boolean nestedProperty = false;
+
                 if (field.contains(".")) {
                     nestedProperty = true;
                     field = org.apache.commons.lang3.StringUtils.substringBefore(field, ".");

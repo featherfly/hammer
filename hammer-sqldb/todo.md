@@ -149,24 +149,9 @@
   Role role = userRoleMap.get("r");  
   ```
 
-- [ ] 查询返回支持Tuple
-    类似Map，但是可以支持强类型，因为是强类型，所以返回数据的个数要与Tuple对象的个数匹配
+- [x] 查询返回支持Tuple对象映射类型
 
   > 例如
-
-  ```java
-  select u.name, u.age from ....
-    
-  Tuple2<String,Integer> userTuple = 
-  List<Tuple2<String,Integer>> userTupleList =     
-    
-  String name = userTuple.get0()
-  Integer age = userTuple.get1();
-  ```
-
-  
-
-  > 如果是多个对象类型，则对象的顺序以别名的顺序为准，例如
 
   ```java
   select u.name,u.age, r.name from ....
@@ -176,6 +161,20 @@
     
   User user = userRoleTuple.get0()
   Role role = userRoleTuple.get1();
+  ```
+
+- [ ] 查询返回支持Tuple值类型
+  
+  > 类似Map，但是可以支持强类型，因为是强类型，所以返回数据的个数要与Tuple对象的个数匹配，例如
+
+  ```java
+  select u.name, u.age from ....
+    
+  Tuple2<String,Integer> userTuple = 
+  List<Tuple2<String,Integer>> userTupleList =     
+    
+  String name = userTuple.get0()
+  Integer age = userTuple.get1();
   ```
 
 - [x] Jdbc执行sql加入intercptor
