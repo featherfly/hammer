@@ -81,33 +81,6 @@ public abstract class AbstractSqlConditionGroupExpression<C extends ConditionGro
     /**
      * Instantiates a new abstract sql condition group expression.
      *
-     * @param dialect         dialect
-     * @param sqlPageFactory  the sql page factory
-     * @param typeQueryEntity the type query entity
-     * @param ignorePolicy    the ignore policy
-     */
-    public AbstractSqlConditionGroupExpression(Dialect dialect, SqlPageFactory sqlPageFactory,
-            TypeQueryEntity typeQueryEntity, Predicate<Object> ignorePolicy) {
-        this(dialect, sqlPageFactory, null, typeQueryEntity, ignorePolicy);
-    }
-
-    /**
-     * Instantiates a new abstract sql condition group expression.
-     *
-     * @param dialect         dialect
-     * @param sqlPageFactory  the sql page factory
-     * @param queryAlias      queryAlias
-     * @param typeQueryEntity the type query entity
-     * @param ignorePolicy    the ignore policy
-     */
-    public AbstractSqlConditionGroupExpression(Dialect dialect, SqlPageFactory sqlPageFactory, String queryAlias,
-            TypeQueryEntity typeQueryEntity, Predicate<Object> ignorePolicy) {
-        this(null, dialect, sqlPageFactory, queryAlias, typeQueryEntity, ignorePolicy);
-    }
-
-    /**
-     * Instantiates a new abstract sql condition group expression.
-     *
      * @param parent          parent group
      * @param dialect         dialect
      * @param sqlPageFactory  the sql page factory
@@ -121,14 +94,6 @@ public abstract class AbstractSqlConditionGroupExpression<C extends ConditionGro
         this.queryAlias = queryAlias;
         this.sqlPageFactory = sqlPageFactory;
         this.typeQueryEntity = typeQueryEntity;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public String toString() {
-        return build();
     }
 
     //    /**
@@ -885,8 +850,9 @@ public abstract class AbstractSqlConditionGroupExpression<C extends ConditionGro
      */
     protected AbstractSqlConditionGroupExpression<C, L> getRoot() {
         L p = endGroup();
-        L p2 = p.endGroup();
-        while (p != p2) {
+        //        L p2 = p.endGroup();
+        //        while (p != p2) {
+        while (p != p.endGroup()) {
             p = p.endGroup();
         }
         return (AbstractSqlConditionGroupExpression<C, L>) p;

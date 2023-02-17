@@ -26,14 +26,9 @@ import cn.featherfly.hammer.sqldb.jdbc.vo.User;
 import cn.featherfly.hammer.sqldb.jdbc.vo.UserInfo;
 
 /**
- * <p>
- * 类的说明放这里
- * </p>
- * <p>
- * copyright cdthgk 2010-2020, all rights reserved.
- * </p>
+ * SqlDslExpressionTest.
  *
- * @author 钟冀
+ * @author zhongj
  */
 public class SqlDslExpressionTest extends JdbcTestBase {
 
@@ -65,7 +60,7 @@ public class SqlDslExpressionTest extends JdbcTestBase {
         System.out.println(builder.getParams());
 
         assertEquals("`name` = ? AND `pwd` = ? AND ( `sex` = ? OR `age` > ? )".replaceAll("`",
-                jdbc.getDialect().getWrapSign()), builder.build());
+                jdbc.getDialect().getWrapSymbol()), builder.build());
         assertEquals(params, builder.getParams());
     }
 
@@ -90,7 +85,7 @@ public class SqlDslExpressionTest extends JdbcTestBase {
         System.out.println(builder.getParams());
 
         assertEquals("`name` = ? AND `pwd` = ? AND ( `sex` = ? OR `age` > ? ) AND `mobile` = ?".replaceAll("`",
-                jdbc.getDialect().getWrapSign()), builder.build());
+                jdbc.getDialect().getWrapSymbol()), builder.build());
         assertEquals(params2, builder.getParams());
     }
 
@@ -104,7 +99,7 @@ public class SqlDslExpressionTest extends JdbcTestBase {
         System.out.println(del.getParams());
 
         assertEquals("DELETE FROM `user` WHERE `name` = ? AND `pwd` = ? AND ( `sex` = ? OR `age` > ? )".replaceAll("`",
-                jdbc.getDialect().getWrapSign()), del.build());
+                jdbc.getDialect().getWrapSymbol()), del.build());
         assertEquals(params, del.getParams());
 
     }
@@ -208,7 +203,7 @@ public class SqlDslExpressionTest extends JdbcTestBase {
 
         String sql = "UPDATE `user` SET `name` = ?, `pwd` = ?, `age` = `age` + ? WHERE `sex` = ?";
 
-        assertEquals(sql.replaceAll("`", jdbc.getDialect().getWrapSign()), e.toString());
+        assertEquals(sql.replaceAll("`", jdbc.getDialect().getWrapSymbol()), e.toString());
         assertEquals(params, e.getParams());
 
         e = (SqlConditionGroupExpression) updater.update(new SimpleRepository("user")).property("name").set(name)
@@ -218,7 +213,7 @@ public class SqlDslExpressionTest extends JdbcTestBase {
         System.out.println(e.getParams());
 
         assertEquals("UPDATE `user` SET `name` = ?, `pwd` = ?, `age` = `age` + ? WHERE `sex` = ?".replaceAll("`",
-                jdbc.getDialect().getWrapSign()), e.toString());
+                jdbc.getDialect().getWrapSymbol()), e.toString());
         assertEquals(params, e.getParams());
 
     }

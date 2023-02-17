@@ -99,24 +99,6 @@ public abstract class AbstractEntitySqlConditionGroupExpression<E, C extends Ent
     /**
      * Instantiates a new abstract sql condition group expression.
      *
-     * @param dialect        dialect
-     * @param sqlPageFactory the sql page factory
-     * @param queryAlias     queryAlias
-     * @param classMapping   classMapping
-     * @param factory        the factory
-     * @param aliasManager   the alias manager
-     * @param entityQuery    the entity query
-     * @param ignorePolicy   the ignore policy
-     */
-    protected AbstractEntitySqlConditionGroupExpression(Dialect dialect, SqlPageFactory sqlPageFactory,
-            String queryAlias, JdbcClassMapping<E> classMapping, JdbcMappingFactory factory, AliasManager aliasManager,
-            EntitySqlQuery<E> entityQuery, Predicate<Object> ignorePolicy) {
-        this(null, dialect, sqlPageFactory, queryAlias, classMapping, factory, aliasManager, entityQuery, ignorePolicy);
-    }
-
-    /**
-     * Instantiates a new abstract sql condition group expression.
-     *
      * @param parent         parent group
      * @param dialect        dialect
      * @param sqlPageFactory the sql page factory
@@ -137,14 +119,6 @@ public abstract class AbstractEntitySqlConditionGroupExpression<E, C extends Ent
         this.factory = factory;
         this.aliasManager = aliasManager;
         this.entityQuery = entityQuery;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public String toString() {
-        return build();
     }
 
     //      /**
@@ -793,8 +767,9 @@ public abstract class AbstractEntitySqlConditionGroupExpression<E, C extends Ent
      */
     protected AbstractEntitySqlConditionGroupExpression<E, C, L> getRoot() {
         L p = endGroup();
-        L p2 = p.endGroup();
-        while (p != p2) {
+        //        L p2 = p.endGroup();
+        //        while (p != p2) {
+        while (p != p.endGroup()) {
             p = p.endGroup();
         }
         return (AbstractEntitySqlConditionGroupExpression<E, C, L>) p;

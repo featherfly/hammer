@@ -22,7 +22,7 @@ import cn.featherfly.common.repository.IgnorePolicy;
 import cn.featherfly.common.repository.SimpleAliasRepository;
 import cn.featherfly.common.repository.SimpleRepository;
 import cn.featherfly.hammer.sqldb.SqldbHammerException;
-import cn.featherfly.hammer.sqldb.jdbc.JdbcTestBase;
+import cn.featherfly.hammer.sqldb.jdbc.HammerJdbcTestBase;
 import cn.featherfly.hammer.sqldb.jdbc.vo.Role;
 import cn.featherfly.hammer.sqldb.jdbc.vo.User;
 import cn.featherfly.hammer.sqldb.jdbc.vo.UserRole;
@@ -32,7 +32,7 @@ import cn.featherfly.hammer.sqldb.jdbc.vo.UserRole;
  *
  * @author zhongj
  */
-public class SqlDeleterTest extends JdbcTestBase {
+public class SqlDeleterTest extends HammerJdbcTestBase {
 
     /** The deleter. */
     SqlDeleter deleter;

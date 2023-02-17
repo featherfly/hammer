@@ -25,7 +25,7 @@ import cn.featherfly.common.lang.Randoms.CharType;
 import cn.featherfly.common.repository.IgnorePolicy;
 import cn.featherfly.common.repository.SimpleRepository;
 import cn.featherfly.hammer.sqldb.SqldbHammerException;
-import cn.featherfly.hammer.sqldb.jdbc.JdbcTestBase;
+import cn.featherfly.hammer.sqldb.jdbc.HammerJdbcTestBase;
 import cn.featherfly.hammer.sqldb.jdbc.vo.Role;
 import cn.featherfly.hammer.sqldb.jdbc.vo.User;
 import cn.featherfly.hammer.sqldb.jdbc.vo.UserInfo;
@@ -35,7 +35,7 @@ import cn.featherfly.hammer.sqldb.jdbc.vo.UserInfo;
  *
  * @author zhongj
  */
-public class SqlUpdaterTest extends JdbcTestBase {
+public class SqlUpdaterTest extends HammerJdbcTestBase {
 
     SqlUpdater sqlUpdater;
 

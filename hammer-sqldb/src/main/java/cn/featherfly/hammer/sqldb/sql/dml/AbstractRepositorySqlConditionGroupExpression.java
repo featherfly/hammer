@@ -89,33 +89,6 @@ public abstract class AbstractRepositorySqlConditionGroupExpression<C extends Re
     /**
      * Instantiates a new abstract repository sql condition group expression.
      *
-     * @param dialect        dialect
-     * @param aliasManager   aliasManager
-     * @param sqlPageFactory the sql page factory
-     * @param ignorePolicy   the ignore policy
-     */
-    protected AbstractRepositorySqlConditionGroupExpression(Dialect dialect, AliasManager aliasManager,
-            SqlPageFactory sqlPageFactory, Predicate<Object> ignorePolicy) {
-        this(dialect, aliasManager, null, sqlPageFactory, ignorePolicy);
-    }
-
-    /**
-     * Instantiates a new abstract repository sql condition group expression.
-     *
-     * @param dialect        dialect
-     * @param aliasManager   aliasManager
-     * @param queryAlias     queryAlias
-     * @param sqlPageFactory the sql page factory
-     * @param ignorePolicy   the ignore policy
-     */
-    protected AbstractRepositorySqlConditionGroupExpression(Dialect dialect, AliasManager aliasManager,
-            String queryAlias, SqlPageFactory sqlPageFactory, Predicate<Object> ignorePolicy) {
-        this(null, dialect, aliasManager, queryAlias, sqlPageFactory, ignorePolicy);
-    }
-
-    /**
-     * Instantiates a new abstract repository sql condition group expression.
-     *
      * @param parent         parent group
      * @param dialect        dialect
      * @param aliasManager   aliasManager
@@ -1232,8 +1205,9 @@ public abstract class AbstractRepositorySqlConditionGroupExpression<C extends Re
      */
     protected AbstractRepositorySqlConditionGroupExpression<C, L> getRoot() {
         L p = endGroup();
-        L p2 = p.endGroup();
-        while (p != p2) {
+        //        L p2 = p.endGroup();
+        //        while (p != p2) {
+        while (p != p.endGroup()) {
             p = p.endGroup();
         }
         return (AbstractRepositorySqlConditionGroupExpression<C, L>) p;

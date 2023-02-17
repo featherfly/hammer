@@ -29,6 +29,11 @@ import javax.sql.DataSource;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.speedment.common.tuple.Tuple2;
+import com.speedment.common.tuple.Tuple3;
+import com.speedment.common.tuple.Tuple4;
+import com.speedment.common.tuple.Tuple5;
+
 import cn.featherfly.common.bean.BeanProperty;
 import cn.featherfly.common.bean.BeanPropertyValue;
 import cn.featherfly.common.db.FieldValueOperator;
@@ -39,6 +44,7 @@ import cn.featherfly.common.db.dialect.Dialect;
 import cn.featherfly.common.db.dialect.SQLiteDialect;
 import cn.featherfly.common.db.mapping.SqlResultSet;
 import cn.featherfly.common.db.mapping.SqlTypeMappingManager;
+import cn.featherfly.common.lang.ArrayUtils;
 import cn.featherfly.common.lang.Lang;
 import cn.featherfly.common.lang.Strings;
 import cn.featherfly.common.lang.reflect.Type;
@@ -96,6 +102,14 @@ public abstract class AbstractJdbc implements Jdbc {
     @Override
     public DataSource getDataSource() {
         return dataSource;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public SqlTypeMappingManager getSqlTypeMappingManager() {
+        return manager;
     }
 
     /**
@@ -370,6 +384,61 @@ public abstract class AbstractJdbc implements Jdbc {
      * {@inheritDoc}
      */
     @Override
+    public <T1, T2> List<Tuple2<T1, T2>> query(String sql, Class<T1> elementType1, Class<T2> elementType2,
+            Tuple2<String, String> prefixes, Map<String, Object> args) {
+        logger.debug("sql -> {}, args -> {}, elementType1 -> {}, elementType2 -> {}", sql, args, elementType1,
+                elementType2);
+        Execution execution = SqlUtils.convertNamedParamSql(sql, args);
+        return query(execution.getExecution(), elementType1, elementType2, prefixes, execution.getParams());
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public <T1, T2, T3> List<Tuple3<T1, T2, T3>> query(String sql, Class<T1> elementType1, Class<T2> elementType2,
+            Class<T3> elementType3, Tuple3<String, String, String> prefixes, Map<String, Object> args) {
+        logger.debug("sql -> {}, args -> {}, elementType1 -> {}, elementType2 -> {}, elementType3 -> {}", sql, args,
+                elementType1, elementType2, elementType3);
+        Execution execution = SqlUtils.convertNamedParamSql(sql, args);
+        return query(execution.getExecution(), elementType1, elementType2, elementType3, prefixes,
+                execution.getParams());
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public <T1, T2, T3, T4> List<Tuple4<T1, T2, T3, T4>> query(String sql, Class<T1> elementType1,
+            Class<T2> elementType2, Class<T3> elementType3, Class<T4> elementType4,
+            Tuple4<String, String, String, String> prefixes, Map<String, Object> args) {
+        logger.debug(
+                "sql -> {}, args -> {}, elementType1 -> {}, elementType2 -> {}, elementType3 -> {}, elementType4 -> {}",
+                sql, args, elementType1, elementType2, elementType3, elementType4);
+        Execution execution = SqlUtils.convertNamedParamSql(sql, args);
+        return query(execution.getExecution(), elementType1, elementType2, elementType3, elementType4, prefixes,
+                execution.getParams());
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public <T1, T2, T3, T4, T5> List<Tuple5<T1, T2, T3, T4, T5>> query(String sql, Class<T1> elementType1,
+            Class<T2> elementType2, Class<T3> elementType3, Class<T4> elementType4, Class<T5> elementType5,
+            Tuple5<String, String, String, String, String> prefixes, Map<String, Object> args) {
+        logger.debug(
+                "sql -> {}, args -> {}, elementType1 -> {}, elementType2 -> {}, elementType3 -> {}, elementType4 -> {}, elementType5 -> {}",
+                sql, args, elementType1, elementType2, elementType3, elementType4, elementType5);
+        Execution execution = SqlUtils.convertNamedParamSql(sql, args);
+        return query(execution.getExecution(), elementType1, elementType2, elementType3, elementType4, elementType5,
+                prefixes, execution.getParams());
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
     public <T> List<T> query(String sql, Class<T> elementType, Object... args) {
         SQLType sqlType = manager.getSqlType(elementType);
         RowMapper<T> rowMapper = null;
@@ -379,6 +448,61 @@ public abstract class AbstractJdbc implements Jdbc {
             rowMapper = new SingleColumnRowMapper<>(elementType, manager);
         }
         return query(sql, rowMapper, args);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public <T1, T2> List<Tuple2<T1, T2>> query(String sql, Class<T1> elementType1, Class<T2> elementType2,
+            Tuple2<String, String> prefixes, Object... args) {
+        //        SQLType sqlType = manager.getSqlType(elementType);
+        //        RowMapper<T> rowMapper = null;
+        //        if (sqlType == null) {
+        //            rowMapper = new NestedBeanPropertyRowMapper<>(elementType, manager);
+        //        } else {
+        //            rowMapper = new SingleColumnRowMapper<>(elementType, manager);
+        //        }
+        //        return query(sql, rowMapper, args);
+        return query(sql, new TupleNestedBeanPropertyRowMapper<>(ArrayUtils.toList(elementType1, elementType2),
+                prefixes, manager), args);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public <T1, T2, T3> List<Tuple3<T1, T2, T3>> query(String sql, Class<T1> elementType1, Class<T2> elementType2,
+            Class<T3> elementType3, Tuple3<String, String, String> prefixes, Object... args) {
+        return query(sql, new TupleNestedBeanPropertyRowMapper<>(
+                ArrayUtils.toList(elementType1, elementType2, elementType3), prefixes, manager), args);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public <T1, T2, T3, T4> List<Tuple4<T1, T2, T3, T4>> query(String sql, Class<T1> elementType1,
+            Class<T2> elementType2, Class<T3> elementType3, Class<T4> elementType4,
+            Tuple4<String, String, String, String> prefixes, Object... args) {
+        return query(sql,
+                new TupleNestedBeanPropertyRowMapper<>(
+                        ArrayUtils.toList(elementType1, elementType2, elementType3, elementType4), prefixes, manager),
+                args);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public <T1, T2, T3, T4, T5> List<Tuple5<T1, T2, T3, T4, T5>> query(String sql, Class<T1> elementType1,
+            Class<T2> elementType2, Class<T3> elementType3, Class<T4> elementType4, Class<T5> elementType5,
+            Tuple5<String, String, String, String, String> prefixes, Object... args) {
+        return query(sql,
+                new TupleNestedBeanPropertyRowMapper<>(
+                        ArrayUtils.toList(elementType1, elementType2, elementType3, elementType4, elementType5),
+                        prefixes, manager),
+                args);
     }
 
     //    @Override
@@ -488,8 +612,86 @@ public abstract class AbstractJdbc implements Jdbc {
      * {@inheritDoc}
      */
     @Override
+    public <T1, T2> Tuple2<T1, T2> querySingle(String sql, Class<T1> elementType1, Class<T2> elementType2,
+            Tuple2<String, String> prefixes, Map<String, Object> args) {
+        return singleResult(query(sql, elementType1, elementType2, prefixes, args));
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public <T1, T2, T3> Tuple3<T1, T2, T3> querySingle(String sql, Class<T1> elementType1, Class<T2> elementType2,
+            Class<T3> elementType3, Tuple3<String, String, String> prefixes, Map<String, Object> args) {
+        return singleResult(query(sql, elementType1, elementType2, elementType3, prefixes, args));
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public <T1, T2, T3, T4> Tuple4<T1, T2, T3, T4> querySingle(String sql, Class<T1> elementType1,
+            Class<T2> elementType2, Class<T3> elementType3, Class<T4> elementType4,
+            Tuple4<String, String, String, String> prefixes, Map<String, Object> args) {
+        return singleResult(query(sql, elementType1, elementType2, elementType3, elementType4, prefixes, args));
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public <T1, T2, T3, T4, T5> Tuple5<T1, T2, T3, T4, T5> querySingle(String sql, Class<T1> elementType1,
+            Class<T2> elementType2, Class<T3> elementType3, Class<T4> elementType4, Class<T5> elementType5,
+            Tuple5<String, String, String, String, String> prefixes, Map<String, Object> args) {
+        return singleResult(
+                query(sql, elementType1, elementType2, elementType3, elementType4, elementType5, prefixes, args));
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
     public <T> T querySingle(String sql, Class<T> elementType, Object... args) {
         return singleResult(query(sql, elementType, args));
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public <T1, T2> Tuple2<T1, T2> querySingle(String sql, Class<T1> elementType1, Class<T2> elementType2,
+            Tuple2<String, String> prefixes, Object... args) {
+        return singleResult(query(sql, elementType1, elementType2, prefixes, args));
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public <T1, T2, T3> Tuple3<T1, T2, T3> querySingle(String sql, Class<T1> elementType1, Class<T2> elementType2,
+            Class<T3> elementType3, Tuple3<String, String, String> prefixes, Object... args) {
+        return singleResult(query(sql, elementType1, elementType2, elementType3, prefixes, args));
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public <T1, T2, T3, T4> Tuple4<T1, T2, T3, T4> querySingle(String sql, Class<T1> elementType1,
+            Class<T2> elementType2, Class<T3> elementType3, Class<T4> elementType4,
+            Tuple4<String, String, String, String> prefixes, Object... args) {
+        return singleResult(query(sql, elementType1, elementType2, elementType3, elementType4, prefixes, args));
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public <T1, T2, T3, T4, T5> Tuple5<T1, T2, T3, T4, T5> querySingle(String sql, Class<T1> elementType1,
+            Class<T2> elementType2, Class<T3> elementType3, Class<T4> elementType4, Class<T5> elementType5,
+            Tuple5<String, String, String, String, String> prefixes, Object... args) {
+        return singleResult(
+                query(sql, elementType1, elementType2, elementType3, elementType4, elementType5, prefixes, args));
     }
 
     //    /**

@@ -210,6 +210,16 @@ public class EntitySqlQueryEntityProperties<E>
                 selectBuilder, ignorePolicy).sort();
     }
 
+    //    /**
+    //     * {@inheritDoc}
+    //     */
+    //    @Override
+    //    public TypeQueryEntity compatiblity() {
+    //        return new TypeSqlQueryEntityProperties(jdbc, mappingFactory.getClassMapping(repositoryType), mappingFactory,
+    //                sqlPageFactory, new AliasManager(), IgnorePolicy.EMPTY);
+    //
+    //    }
+
     //    <T, R> EntitySqlQueryRelation<E, R> with(SerializableFunction<T, R> propertyName, int index) {
     //        if (index <= 0) {
     //            throw new SqldbHammerException("index must > 0");
