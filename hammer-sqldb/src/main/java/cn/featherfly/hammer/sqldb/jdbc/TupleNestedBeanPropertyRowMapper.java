@@ -1,8 +1,6 @@
 
 package cn.featherfly.hammer.sqldb.jdbc;
 
-import java.sql.ResultSet;
-import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -12,11 +10,7 @@ import org.slf4j.LoggerFactory;
 import com.speedment.common.tuple.Tuple;
 import com.speedment.common.tuple.Tuples;
 
-import cn.featherfly.common.db.JdbcException;
-import cn.featherfly.common.db.mapping.JdbcMappingException;
-import cn.featherfly.common.db.mapping.SqlResultSet;
 import cn.featherfly.common.db.mapping.SqlTypeMappingManager;
-import cn.featherfly.common.lang.AssertIllegalArgument;
 import cn.featherfly.common.lang.Lang;
 
 /**
@@ -66,40 +60,12 @@ public class TupleNestedBeanPropertyRowMapper<T extends Tuple>
     /**
      * {@inheritDoc}
      */
+    @SuppressWarnings("unchecked")
     @Override
     public T mapRow(cn.featherfly.common.repository.mapping.ResultSet res, int rowNum) {
-        ResultSet rs = null;
-        if (res instanceof SqlResultSet) {
-            SqlResultSet sqlrs = (SqlResultSet) res;
-            rs = sqlrs.getResultSet();
-            AssertIllegalArgument.isNotNull(rs, "java.sql.ResultSet");
-        } else {
-            throw new JdbcMappingException("ResultSet is not type of SqlResultSet");
-        }
-
-        try {
-            return mapRow(rs, rowNum);
-        } catch (SQLException e) {
-            throw new JdbcException(e);
-        }
-    }
-
-    /**
-     * Extract the values for all columns in the current row.
-     * <p>
-     * Utilizes public setters and result set meta-data.
-     *
-     * @param rs        the rs
-     * @param rowNumber the row number
-     * @return the t
-     * @throws SQLException the SQL exception
-     * @see java.sql.ResultSetMetaData
-     */
-    @SuppressWarnings("unchecked")
-    public T mapRow(ResultSet rs, int rowNumber) throws SQLException {
         List<Object> results = new ArrayList<>();
         for (NestedBeanPropertyRowMapper<?> rowMapper : rowMappers) {
-            results.add(rowMapper.mapRow(rs, rowNumber));
+            results.add(rowMapper.mapRow(res, rowNum));
         }
         return (T) Tuples.ofArray(results.toArray());
     }
