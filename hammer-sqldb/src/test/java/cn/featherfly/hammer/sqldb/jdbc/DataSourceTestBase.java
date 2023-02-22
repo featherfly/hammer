@@ -25,9 +25,7 @@ import cn.featherfly.common.lang.UriUtils;
 import cn.featherfly.hammer.sqldb.jdbc.vo.Role;
 
 /**
- * <p>
- * SqlOrmTest
- * </p>
+ * DataSourceTestBase.
  *
  * @author zhongj
  */
@@ -59,6 +57,8 @@ public class DataSourceTestBase {
     }
 
     public void initDataBase(String dataBase) throws IOException {
+        System.err.println("***********************************************");
+        System.err.println("***********************************************");
         configFile = String.format(CONFIG_FILE_PATTERN, dataBase);
         switch (dataBase) {
             case "mysql":
@@ -75,10 +75,13 @@ public class DataSourceTestBase {
                 configFile = String.format(CONFIG_FILE_PATTERN, "mysql");
                 break;
         }
+        System.err.println("***********************************************");
+        System.err.println("***********************************************");
     }
 
     //    @BeforeSuite(groups = "mysql", dependsOnMethods = "init")
     public void initMysql() throws IOException {
+        System.err.println("initMysql");
         //        ConstantConfigurator.config();
         //        ConstantConfigurator.config("constant.mysql.yaml");
 
@@ -113,10 +116,12 @@ public class DataSourceTestBase {
 
     //    @BeforeSuite(groups = "postgresql", dependsOnMethods = "init")
     public void initPostgresql() throws IOException {
+        System.err.println("postgresql");
         //        ConstantConfigurator.config("constant.postgresql.yaml");
 
         BasicDataSource dataSource = new BasicDataSource();
-        dataSource.setUrl("jdbc:postgresql://localhost:5432/hammer_jdbc");
+        //        dataSource.setUrl("jdbc:postgresql://localhost:5432/hammer_jdbc");
+        dataSource.setUrl("jdbc:postgresql://::1:5432/hammer_jdbc"); // install postgresql in wsl with docker
         dataSource.setDriverClassName("org.postgresql.Driver");
         dataSource.setUsername("postgres");
         dataSource.setPassword("123456");
@@ -142,6 +147,7 @@ public class DataSourceTestBase {
 
     //    @BeforeSuite(groups = "sqlite", dependsOnMethods = "init")
     public void initSQLite() throws IOException {
+        System.err.println("sqlite");
         //        ConstantConfigurator.config("constant.sqlite.yaml");
 
         String path = new File(UriUtils.linkUri(this.getClass().getResource("/").getFile(), "hammer.sqlite3.db"))
