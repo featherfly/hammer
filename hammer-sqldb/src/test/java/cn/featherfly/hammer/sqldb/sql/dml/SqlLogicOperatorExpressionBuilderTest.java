@@ -21,6 +21,7 @@ import cn.featherfly.common.operator.LogicOperator;
  *
  * @author zhongj
  */
+@Test(groups = { "dml-test" })
 public class SqlLogicOperatorExpressionBuilderTest {
 
     @Test
