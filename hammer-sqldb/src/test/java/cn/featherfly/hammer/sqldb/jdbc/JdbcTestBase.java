@@ -82,6 +82,8 @@ public class JdbcTestBase extends TestBase {
     }
 
     public void initDataBase(String dataBase) throws IOException {
+        System.err.println("***********************************************");
+        System.err.println("***********************************************");
         configFile = String.format(CONFIG_FILE_PATTERN, dataBase);
         switch (dataBase) {
             case "mysql":
@@ -98,10 +100,13 @@ public class JdbcTestBase extends TestBase {
                 configFile = String.format(CONFIG_FILE_PATTERN, "mysql");
                 break;
         }
+        System.err.println("***********************************************");
+        System.err.println("***********************************************");
     }
 
     //    @BeforeSuite(groups = "mysql", dependsOnMethods = "init")
     public void initMysql() throws IOException {
+        System.err.println("initMysql");
         //        ConstantConfigurator.config();
         //        ConstantConfigurator.config("constant.mysql.yaml");
 
@@ -142,11 +147,12 @@ public class JdbcTestBase extends TestBase {
 
     //    @BeforeSuite(groups = "postgresql", dependsOnMethods = "init")
     public void initPostgresql() throws IOException {
+        System.err.println("initPostgresql");
         //        ConstantConfigurator.config("constant.postgresql.yaml");
 
         BasicDataSource ds = new BasicDataSource();
         //        ds.setUrl("jdbc:postgresql://localhost:5432/hammer_jdbc");
-        ds.setUrl("jdbc:postgresql://::1:5432/hammer_jdbc");
+        ds.setUrl("jdbc:postgresql://::1:5432/hammer_jdbc"); // install postgresql in wsl with docker
         ds.setDriverClassName("org.postgresql.Driver");
         ds.setUsername("postgres");
         ds.setPassword("123456");
@@ -175,6 +181,7 @@ public class JdbcTestBase extends TestBase {
 
     //    @BeforeSuite(groups = "sqlite", dependsOnMethods = "init")
     public void initSQLite() throws IOException {
+        System.err.println("initSQLite");
         //        ConstantConfigurator.config("constant.sqlite.yaml");
 
         String path = new File(UriUtils.linkUri(this.getClass().getResource("/").getFile(), "hammer.sqlite3.db"))

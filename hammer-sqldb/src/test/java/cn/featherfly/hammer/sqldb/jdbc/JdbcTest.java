@@ -18,7 +18,6 @@ import java.util.concurrent.atomic.AtomicLong;
 import java.util.function.BiConsumer;
 
 import org.testng.annotations.BeforeClass;
-import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
 import com.speedment.common.tuple.Tuple2;
@@ -65,16 +64,6 @@ public class JdbcTest extends JdbcTestBase {
     final String title = "title";
     final String content = "content";
     final String[] columnNames = new String[] { id, title, content };
-
-    private String sql;
-
-    @BeforeMethod
-    void beforeMethod() {
-        System.out.println(Lang.getInvoker().getMethodName());
-        System.out.println(Lang.getInvoker(1).getMethodName());
-        System.out.println(Lang.getInvoker(2).getMethodName());
-        System.out.println(ClassLoaderUtils.getResource(Lang.getInvoker().getMethodName()));
-    }
 
     String getSql() {
         return getSql(Lang.getInvoker(2).getMethodName());

@@ -10,7 +10,7 @@ CREATE TABLE "public"."role" (
   "id" int4 NOT NULL DEFAULT nextval('globl_id_seq'),
   "name" varchar(20) COLLATE "pg_catalog"."default",
   "descp" varchar(36) COLLATE "pg_catalog"."default",
-  "create_time" timestamp COLLATE "pg_catalog"."default",
+  "create_time" timestamp,
   CONSTRAINT "role_pkey" PRIMARY KEY ("id")
 )
 ;
@@ -181,3 +181,48 @@ CREATE TABLE "app_version"  (
 
 INSERT INTO "app_version" VALUES (1, 1, 101, 1, '0.1.0', NULL, 'http://www.baidu.com', NULL, '2021-11-27 17:18:36');
 INSERT INTO "app_version" VALUES (2, 1, 101, 2, '0.2.0', NULL, 'http://www.baidu.com', NULL, '2021-11-29 15:18:36');
+
+
+
+DROP TABLE IF EXISTS "order";
+CREATE TABLE "order"  (
+"id" int4 NOT NULL DEFAULT nextval('globl_id_seq'),
+"no" varchar(255)  NOT NULL,
+"app_id" varchar(255)  NULL DEFAULT NULL,
+"app_key" varchar(255)  NULL DEFAULT NULL,
+"wx_package" varchar(255)  NULL DEFAULT NULL,
+"wx_package_expire_time" timestamp NULL DEFAULT NULL,
+"alipay_trade_no" varchar(255)  NULL DEFAULT NULL,
+"parent_id" int4 NULL DEFAULT NULL,
+"create_user" int4 NULL DEFAULT NULL,
+"update_user" int4 NULL DEFAULT NULL,
+"user1" int4 NULL DEFAULT NULL,
+"user2" int4 NULL DEFAULT NULL,
+"user3" int4 NULL DEFAULT NULL,
+"user_info" int4 NULL DEFAULT NULL,
+CONSTRAINT "order_pk" PRIMARY KEY ("id")
+);
+
+INSERT INTO "order" ("id", "no", "app_id", "app_key", "wx_package", "wx_package_expire_time", "alipay_trade_no", "parent_id", "create_user", "update_user", "user1", "user2", "user3", "user_info") 
+    VALUES (1, 'no:1', 'app_id', 'app_key', 'wx_package', now(), 'alipay_trade_no', null, 1, 1, 1, 1, 1, 1);
+INSERT INTO "order" ("id", "no", "app_id", "app_key", "wx_package", "wx_package_expire_time", "alipay_trade_no", "parent_id", "create_user", "update_user", "user1", "user2", "user3", "user_info") 
+    VALUES (2, 'no:2', 'app_id', 'app_key', 'wx_package', now(), 'alipay_trade_no', 1, 2, 2, 2, 2, 2, 2);
+
+DROP TABLE IF EXISTS "order_info";
+CREATE TABLE "order_info"  (
+"id" int4 NOT NULL DEFAULT nextval('globl_id_seq'),
+"descp" varchar(255)  NOT NULL,
+"order_id" int4 NULL DEFAULT NULL,
+"create_user" int4 NULL DEFAULT NULL,
+"update_user" int4 NULL DEFAULT NULL,
+"user1" int4 NULL DEFAULT NULL,
+"user2" int4 NULL DEFAULT NULL,
+"user3" int4 NULL DEFAULT NULL,
+"user_info" int4 NULL DEFAULT NULL,
+CONSTRAINT "order_info_pk" PRIMARY KEY ("id")
+);
+
+INSERT INTO "order_info" ("id", "descp", "order_id", "create_user", "update_user","user1", "user2", "user3", "user_info") 
+    VALUES (1, 'descp1', 1, 1, 1, 1, 1, 1, 1);
+INSERT INTO "order_info" ("id", "descp", "order_id", "create_user", "update_user","user1", "user2", "user3", "user_info") 
+    VALUES (2, 'descp2', 2, 2, 2, 2, 2, 2, 2);
