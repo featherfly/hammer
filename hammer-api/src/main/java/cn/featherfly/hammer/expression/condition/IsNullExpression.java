@@ -2,12 +2,10 @@
 package cn.featherfly.hammer.expression.condition;
 
 import cn.featherfly.common.lang.function.SerializableFunction;
+import cn.featherfly.common.repository.Field;
 
 /**
- * <p>
- * IsNullExpression
- * </p>
- * .
+ * IsNullExpression .
  *
  * @author zhongj
  * @param <C> the generic type
@@ -22,7 +20,31 @@ public interface IsNullExpression<C extends ConditionExpression, L extends Logic
      * @param name 参数名称
      * @return LogicExpression
      */
-    L isn(String name);
+    default L isn(Field name) {
+        return isn(name, true);
+    }
+
+    /**
+     * is null.
+     *
+     * @param name  参数名称
+     * @param value if true, is null; if false, is not null; if null, ignore
+     *              this operate
+     * @return LogicExpression
+     */
+    default L isn(Field name, Boolean value) {
+        return isn(name.name(), value);
+    }
+
+    /**
+     * is null.
+     *
+     * @param name 参数名称
+     * @return LogicExpression
+     */
+    default L isn(String name) {
+        return isn(name, true);
+    }
 
     /**
      * is null.
@@ -32,7 +54,9 @@ public interface IsNullExpression<C extends ConditionExpression, L extends Logic
      * @param name 参数名称
      * @return LogicExpression
      */
-    <T, R> L isn(SerializableFunction<T, R> name);
+    default <T, R> L isn(SerializableFunction<T, R> name) {
+        return isn(name, true);
+    }
 
     /**
      * is null.

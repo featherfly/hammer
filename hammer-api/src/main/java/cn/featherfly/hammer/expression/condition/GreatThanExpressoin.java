@@ -18,12 +18,10 @@ import cn.featherfly.common.lang.function.ReturnLocalTimeFunction;
 import cn.featherfly.common.lang.function.ReturnNumberFunction;
 import cn.featherfly.common.lang.function.ReturnStringFunction;
 import cn.featherfly.common.lang.function.StringSupplier;
+import cn.featherfly.common.repository.Field;
 
 /**
- * <p>
- * GreatThanExpressoin
- * </p>
- * .
+ * GreatThanExpressoin .
  *
  * @author zhongj
  * @param <C> the generic type
@@ -31,6 +29,18 @@ import cn.featherfly.common.lang.function.StringSupplier;
  */
 public interface GreatThanExpressoin<C extends ConditionExpression, L extends LogicExpression<C, L>>
         extends ConditionExpression {
+
+    /**
+     * 大于.
+     *
+     * @param <N>   number type
+     * @param name  参数名称
+     * @param value 参数值
+     * @return LogicExpression
+     */
+    default <N extends Number> L gt(Field name, N value) {
+        return gt(name.name(), value);
+    }
 
     /**
      * 大于.
@@ -52,6 +62,18 @@ public interface GreatThanExpressoin<C extends ConditionExpression, L extends Lo
      * @return LogicExpression
      */
     <T, N extends Number> L gt(ReturnNumberFunction<T, N> name, N value);
+
+    /**
+     * 大于.
+     *
+     * @param <N>   number type
+     * @param name  参数名称
+     * @param value 参数值
+     * @return LogicExpression
+     */
+    default <D extends Date> L gt(Field name, D value) {
+        return gt(name.name(), value);
+    }
 
     /**
      * 大于.
@@ -81,6 +103,17 @@ public interface GreatThanExpressoin<C extends ConditionExpression, L extends Lo
      * @param value 参数值
      * @return LogicExpression
      */
+    default L gt(Field name, LocalTime value) {
+        return gt(name.name(), value);
+    }
+
+    /**
+     * 大于.
+     *
+     * @param name  参数名称
+     * @param value 参数值
+     * @return LogicExpression
+     */
     L gt(String name, LocalTime value);
 
     /**
@@ -92,6 +125,17 @@ public interface GreatThanExpressoin<C extends ConditionExpression, L extends Lo
      * @return LogicExpression
      */
     <T> L gt(ReturnLocalTimeFunction<T> name, LocalTime value);
+
+    /**
+     * 大于.
+     *
+     * @param name  参数名称
+     * @param value 参数值
+     * @return LogicExpression
+     */
+    default L gt(Field name, LocalDate value) {
+        return gt(name.name(), value);
+    }
 
     /**
      * 大于.
@@ -119,6 +163,17 @@ public interface GreatThanExpressoin<C extends ConditionExpression, L extends Lo
      * @param value 参数值
      * @return LogicExpression
      */
+    default L gt(Field name, LocalDateTime value) {
+        return gt(name.name(), value);
+    }
+
+    /**
+     * 大于.
+     *
+     * @param name  参数名称
+     * @param value 参数值
+     * @return LogicExpression
+     */
     L gt(String name, LocalDateTime value);
 
     /**
@@ -130,6 +185,17 @@ public interface GreatThanExpressoin<C extends ConditionExpression, L extends Lo
      * @return LogicExpression
      */
     <T> L gt(ReturnLocalDateTimeFunction<T> name, LocalDateTime value);
+
+    /**
+     * 大于.
+     *
+     * @param name  参数名称
+     * @param value 参数值
+     * @return LogicExpression
+     */
+    default L gt(Field name, String value) {
+        return gt(name.name(), value);
+    }
 
     /**
      * 大于.

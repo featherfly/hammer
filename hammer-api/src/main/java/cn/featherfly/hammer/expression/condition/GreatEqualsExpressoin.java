@@ -18,12 +18,10 @@ import cn.featherfly.common.lang.function.ReturnLocalTimeFunction;
 import cn.featherfly.common.lang.function.ReturnNumberFunction;
 import cn.featherfly.common.lang.function.ReturnStringFunction;
 import cn.featherfly.common.lang.function.StringSupplier;
+import cn.featherfly.common.repository.Field;
 
 /**
- * <p>
- * GreatEqualsExpressoin
- * </p>
- * .
+ * GreatEqualsExpressoin .
  *
  * @author zhongj
  * @param <C> the generic type
@@ -31,6 +29,18 @@ import cn.featherfly.common.lang.function.StringSupplier;
  */
 public interface GreatEqualsExpressoin<C extends ConditionExpression, L extends LogicExpression<C, L>>
         extends ConditionExpression {
+
+    /**
+     * 大于等于.
+     *
+     * @param <N>   number type
+     * @param name  参数名称
+     * @param value 参数值
+     * @return LogicExpression
+     */
+    default <N extends Number> L ge(Field name, N value) {
+        return ge(name.name(), value);
+    }
 
     /**
      * 大于等于.
@@ -61,6 +71,18 @@ public interface GreatEqualsExpressoin<C extends ConditionExpression, L extends 
      * @param value 参数值
      * @return LogicExpression
      */
+    default <D extends Date> L ge(Field name, D value) {
+        return ge(name.name(), value);
+    }
+
+    /**
+     * 大于等于.
+     *
+     * @param <D>   date type
+     * @param name  参数名称
+     * @param value 参数值
+     * @return LogicExpression
+     */
     <D extends Date> L ge(String name, D value);
 
     /**
@@ -73,6 +95,17 @@ public interface GreatEqualsExpressoin<C extends ConditionExpression, L extends 
      * @return LogicExpression
      */
     <T, D extends Date> L ge(ReturnDateFunction<T, D> name, D value);
+
+    /**
+     * 大于等于.
+     *
+     * @param name  参数名称
+     * @param value 参数值
+     * @return LogicExpression
+     */
+    default L ge(Field name, LocalTime value) {
+        return ge(name.name(), value);
+    }
 
     /**
      * 大于等于.
@@ -100,6 +133,17 @@ public interface GreatEqualsExpressoin<C extends ConditionExpression, L extends 
      * @param value 参数值
      * @return LogicExpression
      */
+    default L ge(Field name, LocalDate value) {
+        return ge(name.name(), value);
+    }
+
+    /**
+     * 大于等于.
+     *
+     * @param name  参数名称
+     * @param value 参数值
+     * @return LogicExpression
+     */
     L ge(String name, LocalDate value);
 
     /**
@@ -119,6 +163,17 @@ public interface GreatEqualsExpressoin<C extends ConditionExpression, L extends 
      * @param value 参数值
      * @return LogicExpression
      */
+    default L ge(Field name, LocalDateTime value) {
+        return ge(name.name(), value);
+    }
+
+    /**
+     * 大于等于.
+     *
+     * @param name  参数名称
+     * @param value 参数值
+     * @return LogicExpression
+     */
     L ge(String name, LocalDateTime value);
 
     /**
@@ -130,6 +185,17 @@ public interface GreatEqualsExpressoin<C extends ConditionExpression, L extends 
      * @return LogicExpression
      */
     <T> L ge(ReturnLocalDateTimeFunction<T> name, LocalDateTime value);
+
+    /**
+     * 大于等于.
+     *
+     * @param name  参数名称
+     * @param value 参数值
+     * @return LogicExpression
+     */
+    default L ge(Field name, String value) {
+        return ge(name.name(), value);
+    }
 
     /**
      * 大于等于.

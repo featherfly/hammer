@@ -4,6 +4,7 @@ package cn.featherfly.hammer.expression.condition;
 import cn.featherfly.common.lang.function.SerializableFunction;
 import cn.featherfly.common.lang.function.SerializableSupplier;
 import cn.featherfly.common.operator.QueryOperator.QueryPolicy;
+import cn.featherfly.common.repository.Field;
 
 /**
  * NotEqualsExpressoin .
@@ -14,6 +15,29 @@ import cn.featherfly.common.operator.QueryOperator.QueryPolicy;
  */
 public interface NotEqualsExpression<C extends ConditionExpression, L extends LogicExpression<C, L>>
         extends ConditionExpression {
+
+    /**
+     * not equals. 不等于.
+     *
+     * @param name  参数名称
+     * @param value 参数值
+     * @return LogicExpression
+     */
+    default L ne(Field name, Object value) {
+        return ne(name, value, QueryPolicy.AUTO);
+    }
+
+    /**
+     * not equals. 不等于.
+     *
+     * @param name        参数名称
+     * @param value       参数值
+     * @param queryPolicy the query policy
+     * @return LogicExpression
+     */
+    default L ne(Field name, Object value, QueryPolicy queryPolicy) {
+        return ne(name.name(), value, QueryPolicy.AUTO);
+    }
 
     /**
      * not equals. 不等于.

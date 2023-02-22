@@ -18,12 +18,10 @@ import cn.featherfly.common.lang.function.ReturnLocalTimeFunction;
 import cn.featherfly.common.lang.function.ReturnNumberFunction;
 import cn.featherfly.common.lang.function.ReturnStringFunction;
 import cn.featherfly.common.lang.function.StringSupplier;
+import cn.featherfly.common.repository.Field;
 
 /**
- * <p>
- * LessEqualsExpressoin
- * </p>
- * .
+ * LessEqualsExpressoin .
  *
  * @author zhongj
  * @param <C> the generic type ConditionExpression
@@ -31,6 +29,18 @@ import cn.featherfly.common.lang.function.StringSupplier;
  */
 public interface LessEqualsExpressoin<C extends ConditionExpression, L extends LogicExpression<C, L>>
         extends ConditionExpression {
+
+    /**
+     * 小于等于.
+     *
+     * @param <N>   number type
+     * @param name  参数名称
+     * @param value 参数值
+     * @return LogicExpression
+     */
+    default <N extends Number> L le(Field name, N value) {
+        return le(name.name(), value);
+    }
 
     /**
      * 小于等于.
@@ -61,6 +71,18 @@ public interface LessEqualsExpressoin<C extends ConditionExpression, L extends L
      * @param value 参数值
      * @return LogicExpression
      */
+    default <D extends Date> L le(Field name, D value) {
+        return le(name.name(), value);
+    }
+
+    /**
+     * 小于等于.
+     *
+     * @param <D>   date type
+     * @param name  参数名称
+     * @param value 参数值
+     * @return LogicExpression
+     */
     <D extends Date> L le(String name, D value);
 
     /**
@@ -73,6 +95,17 @@ public interface LessEqualsExpressoin<C extends ConditionExpression, L extends L
      * @return LogicExpression
      */
     <T, D extends Date> L le(ReturnDateFunction<T, D> name, D value);
+
+    /**
+     * 小于等于.
+     *
+     * @param name  参数名称
+     * @param value 参数值
+     * @return LogicExpression
+     */
+    default L le(Field name, LocalTime value) {
+        return le(name.name(), value);
+    }
 
     /**
      * 小于等于.
@@ -100,6 +133,17 @@ public interface LessEqualsExpressoin<C extends ConditionExpression, L extends L
      * @param value 参数值
      * @return LogicExpression
      */
+    default L le(Field name, LocalDate value) {
+        return le(name.name(), value);
+    }
+
+    /**
+     * 小于等于.
+     *
+     * @param name  参数名称
+     * @param value 参数值
+     * @return LogicExpression
+     */
     L le(String name, LocalDate value);
 
     /**
@@ -119,6 +163,17 @@ public interface LessEqualsExpressoin<C extends ConditionExpression, L extends L
      * @param value 参数值
      * @return LogicExpression
      */
+    default L le(Field name, LocalDateTime value) {
+        return le(name.name(), value);
+    }
+
+    /**
+     * 小于等于.
+     *
+     * @param name  参数名称
+     * @param value 参数值
+     * @return LogicExpression
+     */
     L le(String name, LocalDateTime value);
 
     /**
@@ -130,6 +185,17 @@ public interface LessEqualsExpressoin<C extends ConditionExpression, L extends L
      * @return LogicExpression
      */
     <T> L le(ReturnLocalDateTimeFunction<T> name, LocalDateTime value);
+
+    /**
+     * 小于等于.
+     *
+     * @param name  参数名称
+     * @param value 参数值
+     * @return LogicExpression
+     */
+    default L le(Field name, String value) {
+        return le(name.name(), value);
+    }
 
     /**
      * 小于等于.
