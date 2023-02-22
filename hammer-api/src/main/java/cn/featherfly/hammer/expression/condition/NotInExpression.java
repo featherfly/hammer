@@ -3,12 +3,10 @@ package cn.featherfly.hammer.expression.condition;
 
 import cn.featherfly.common.lang.function.SerializableFunction;
 import cn.featherfly.common.lang.function.SerializableSupplier;
+import cn.featherfly.common.repository.Field;
 
 /**
- * <p>
- * NotInExpression
- * </p>
- * .
+ * NotInExpression .
  *
  * @author zhongj
  * @param <C> the generic type
@@ -16,6 +14,17 @@ import cn.featherfly.common.lang.function.SerializableSupplier;
  */
 public interface NotInExpression<C extends ConditionExpression, L extends LogicExpression<C, L>>
         extends ConditionExpression {
+
+    /**
+     * 不包含指定，sql中的not in.
+     *
+     * @param name  参数名称
+     * @param value 参数值
+     * @return LogicExpression
+     */
+    default L nin(Field name, Object value) {
+        return nin(name.name(), value);
+    }
 
     /**
      * 不包含指定，sql中的not in.

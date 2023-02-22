@@ -18,12 +18,10 @@ import cn.featherfly.common.lang.function.ReturnLocalTimeFunction;
 import cn.featherfly.common.lang.function.ReturnNumberFunction;
 import cn.featherfly.common.lang.function.ReturnStringFunction;
 import cn.featherfly.common.lang.function.StringSupplier;
+import cn.featherfly.common.repository.Field;
 
 /**
- * <p>
- * LessThanExpressoin
- * </p>
- * .
+ * LessThanExpressoin .
  *
  * @author zhongj
  * @param <C> the generic type
@@ -31,6 +29,18 @@ import cn.featherfly.common.lang.function.StringSupplier;
  */
 public interface LessThanExpressoin<C extends ConditionExpression, L extends LogicExpression<C, L>>
         extends ConditionExpression {
+
+    /**
+     * 小于.
+     *
+     * @param <N>   number type
+     * @param name  参数名称
+     * @param value 参数值
+     * @return LogicExpression
+     */
+    default <N extends Number> L lt(Field name, N value) {
+        return lt(name.name(), value);
+    }
 
     /**
      * 小于.
@@ -61,6 +71,18 @@ public interface LessThanExpressoin<C extends ConditionExpression, L extends Log
      * @param value 参数值
      * @return LogicExpression
      */
+    default <D extends Date> L lt(Field name, D value) {
+        return lt(name.name(), value);
+    }
+
+    /**
+     * 小于.
+     *
+     * @param <D>   date type
+     * @param name  参数名称
+     * @param value 参数值
+     * @return LogicExpression
+     */
     <D extends Date> L lt(String name, D value);
 
     /**
@@ -73,6 +95,17 @@ public interface LessThanExpressoin<C extends ConditionExpression, L extends Log
      * @return LogicExpression
      */
     <T, D extends Date> L lt(ReturnDateFunction<T, D> name, D value);
+
+    /**
+     * 小于.
+     *
+     * @param name  参数名称
+     * @param value 参数值
+     * @return LogicExpression
+     */
+    default L lt(Field name, LocalTime value) {
+        return lt(name.name(), value);
+    }
 
     /**
      * 小于.
@@ -100,6 +133,17 @@ public interface LessThanExpressoin<C extends ConditionExpression, L extends Log
      * @param value 参数值
      * @return LogicExpression
      */
+    default L lt(Field name, LocalDate value) {
+        return lt(name.name(), value);
+    }
+
+    /**
+     * 小于.
+     *
+     * @param name  参数名称
+     * @param value 参数值
+     * @return LogicExpression
+     */
     L lt(String name, LocalDate value);
 
     /**
@@ -119,6 +163,17 @@ public interface LessThanExpressoin<C extends ConditionExpression, L extends Log
      * @param value 参数值
      * @return LogicExpression
      */
+    default L lt(Field name, LocalDateTime value) {
+        return lt(name.name(), value);
+    }
+
+    /**
+     * 小于.
+     *
+     * @param name  参数名称
+     * @param value 参数值
+     * @return LogicExpression
+     */
     L lt(String name, LocalDateTime value);
 
     /**
@@ -130,6 +185,17 @@ public interface LessThanExpressoin<C extends ConditionExpression, L extends Log
      * @return LogicExpression
      */
     <T> L lt(ReturnLocalDateTimeFunction<T> name, LocalDateTime value);
+
+    /**
+     * 小于.
+     *
+     * @param name  参数名称
+     * @param value 参数值
+     * @return LogicExpression
+     */
+    default L lt(Field name, String value) {
+        return lt(name.name(), value);
+    }
 
     /**
      * 小于.

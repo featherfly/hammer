@@ -4,6 +4,7 @@ package cn.featherfly.hammer.expression.condition;
 import cn.featherfly.common.lang.function.ReturnStringFunction;
 import cn.featherfly.common.lang.function.StringSupplier;
 import cn.featherfly.common.operator.QueryOperator.QueryPolicy;
+import cn.featherfly.common.repository.Field;
 
 /**
  * LikeExpression.
@@ -14,6 +15,29 @@ import cn.featherfly.common.operator.QueryOperator.QueryPolicy;
  */
 public interface LikeExpression<C extends ConditionExpression, L extends LogicExpression<C, L>>
         extends ConditionExpression {
+
+    /**
+     * like value.
+     *
+     * @param name  参数名称
+     * @param value 参数值
+     * @return LogicExpression
+     */
+    default L lk(Field name, String value) {
+        return lk(name, value, QueryPolicy.AUTO);
+    }
+
+    /**
+     * like value.
+     *
+     * @param name        参数名称
+     * @param value       参数值
+     * @param queryPolicy the query policy
+     * @return LogicExpression
+     */
+    default L lk(Field name, String value, QueryPolicy queryPolicy) {
+        return lk(name.name(), value, queryPolicy);
+    }
 
     /**
      * like value.

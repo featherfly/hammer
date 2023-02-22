@@ -4,6 +4,7 @@ package cn.featherfly.hammer.expression.condition;
 import cn.featherfly.common.lang.function.ReturnStringFunction;
 import cn.featherfly.common.lang.function.StringSupplier;
 import cn.featherfly.common.operator.QueryOperator.QueryPolicy;
+import cn.featherfly.common.repository.Field;
 
 /**
  * ContainsExpression .
@@ -14,6 +15,29 @@ import cn.featherfly.common.operator.QueryOperator.QueryPolicy;
  */
 public interface ContainsExpression<C extends ConditionExpression, L extends LogicExpression<C, L>>
         extends ConditionExpression {
+
+    /**
+     * contains value. 包含value.
+     *
+     * @param name  参数名称
+     * @param value 参数值
+     * @return LogicExpression
+     */
+    default L co(Field name, String value) {
+        return co(name, value, QueryPolicy.AUTO);
+    }
+
+    /**
+     * contains value. 包含value.
+     *
+     * @param name        the name
+     * @param value       the value
+     * @param queryPolicy the query policy
+     * @return the l
+     */
+    default L co(Field name, String value, QueryPolicy queryPolicy) {
+        return co(name.name(), value, QueryPolicy.AUTO);
+    }
 
     /**
      * contains value. 包含value.
