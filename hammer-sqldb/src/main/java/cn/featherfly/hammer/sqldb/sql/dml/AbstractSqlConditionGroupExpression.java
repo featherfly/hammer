@@ -667,25 +667,9 @@ public abstract class AbstractSqlConditionGroupExpression<C extends ConditionGro
      * {@inheritDoc}
      */
     @Override
-    public L inn(String name) {
-        return inn(name, true);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
     public L inn(String name, Boolean value) {
         return (L) addCondition(
                 new SqlConditionExpressionBuilder(dialect, name, value, QueryOperator.INN, queryAlias, ignorePolicy));
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public L isn(String name) {
-        return isn(name, true);
     }
 
     /**
@@ -1059,24 +1043,8 @@ public abstract class AbstractSqlConditionGroupExpression<C extends ConditionGro
      * {@inheritDoc}
      */
     @Override
-    public <T, R> L inn(SerializableFunction<T, R> name) {
-        return inn(getPropertyName(name));
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
     public <T, R> L inn(SerializableFunction<T, R> name, Boolean value) {
         return inn(getPropertyName(name), value);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public <T, R> L isn(SerializableFunction<T, R> name) {
-        return isn(getPropertyName(name));
     }
 
     /**

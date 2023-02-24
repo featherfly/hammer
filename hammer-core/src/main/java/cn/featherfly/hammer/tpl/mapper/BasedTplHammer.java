@@ -9,6 +9,7 @@ import java.util.function.Function;
 
 import cn.featherfly.common.lang.function.SerializableFunction;
 import cn.featherfly.common.repository.IgnorePolicy;
+import cn.featherfly.common.repository.Repository;
 import cn.featherfly.common.structure.page.Page;
 import cn.featherfly.common.structure.page.PaginationResults;
 import cn.featherfly.hammer.Hammer;
@@ -366,6 +367,14 @@ public class BasedTplHammer implements Hammer {
      * {@inheritDoc}
      */
     @Override
+    public QueryEntity query(Repository repository) {
+        return hammer.query(repository);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
     public <E> int save(E entity) {
         return hammer.save(entity);
     }
@@ -672,5 +681,21 @@ public class BasedTplHammer implements Hammer {
     @Override
     public <E> E getLockUpdate(E entity, Function<E, E> updateFunction) {
         return hammer.getLockUpdate(entity, updateFunction);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public Update update(Repository repository) {
+        return hammer.update(repository);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public Delete delete(Repository repository) {
+        return hammer.delete(repository);
     }
 }

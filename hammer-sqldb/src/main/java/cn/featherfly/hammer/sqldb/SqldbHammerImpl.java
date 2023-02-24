@@ -26,6 +26,7 @@ import cn.featherfly.common.lang.ArrayUtils;
 import cn.featherfly.common.lang.Lang;
 import cn.featherfly.common.lang.function.SerializableFunction;
 import cn.featherfly.common.repository.IgnorePolicy;
+import cn.featherfly.common.repository.Repository;
 import cn.featherfly.common.structure.page.Page;
 import cn.featherfly.common.structure.page.PaginationResults;
 import cn.featherfly.hammer.dsl.execute.Delete;
@@ -675,6 +676,15 @@ public class SqldbHammerImpl implements SqldbHammer {
      * {@inheritDoc}
      */
     @Override
+    public QueryEntity query(Repository repository) {
+        SqlQuery query = new SqlQuery(jdbc, mappingFactory, sqlTplExecutor.getSqlPageFactory());
+        return query.find(repository);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
     public <E> EntityQueryEntity<E> query(Class<E> entityType) {
         SqlQuery query = new SqlQuery(jdbc, mappingFactory, sqlTplExecutor.getSqlPageFactory());
         return query.find(entityType);
@@ -702,7 +712,25 @@ public class SqldbHammerImpl implements SqldbHammer {
      * {@inheritDoc}
      */
     @Override
+    public Update update(Repository repository) {
+        SqlUpdater updater = new SqlUpdater(jdbc, mappingFactory);
+        return updater.update(repository);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
     public Delete delete(String repository) {
+        SqlDeleter deleter = new SqlDeleter(jdbc, mappingFactory);
+        return deleter.delete(repository);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public Delete delete(Repository repository) {
         SqlDeleter deleter = new SqlDeleter(jdbc, mappingFactory);
         return deleter.delete(repository);
     }
