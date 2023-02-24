@@ -21,7 +21,7 @@ allprojects {
     }
     
     ext {
-        sv = "5.3.22"
+        sv = "5.3.25"
     }
 }
 

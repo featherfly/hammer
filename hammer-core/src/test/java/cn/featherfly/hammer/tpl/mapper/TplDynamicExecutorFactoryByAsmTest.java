@@ -22,6 +22,7 @@ import cn.featherfly.common.lang.ClassLoaderUtils;
 import cn.featherfly.common.lang.ClassUtils;
 import cn.featherfly.common.lang.function.SerializableFunction;
 import cn.featherfly.common.repository.IgnorePolicy;
+import cn.featherfly.common.repository.Repository;
 import cn.featherfly.common.structure.page.Page;
 import cn.featherfly.common.structure.page.PaginationResults;
 import cn.featherfly.hammer.Hammer;
@@ -634,6 +635,24 @@ public class TplDynamicExecutorFactoryByAsmTest {
 
             @Override
             public <E> E getLockUpdate(E entity, Function<E, E> updateFunction) {
+                // YUFEI_TODO Auto-generated method stub
+                return null;
+            }
+
+            @Override
+            public QueryEntity query(Repository repository) {
+                // YUFEI_TODO Auto-generated method stub
+                return null;
+            }
+
+            @Override
+            public Update update(Repository repository) {
+                // YUFEI_TODO Auto-generated method stub
+                return null;
+            }
+
+            @Override
+            public Delete delete(Repository repository) {
                 // YUFEI_TODO Auto-generated method stub
                 return null;
             }

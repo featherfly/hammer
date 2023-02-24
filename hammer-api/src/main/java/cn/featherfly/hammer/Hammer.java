@@ -11,6 +11,7 @@ import cn.featherfly.common.lang.function.SerializableFunction;
 import cn.featherfly.common.lang.function.SerializableSupplier;
 import cn.featherfly.common.operator.LogicOperator;
 import cn.featherfly.common.repository.IgnorePolicy;
+import cn.featherfly.common.repository.Repository;
 import cn.featherfly.hammer.dsl.execute.Delete;
 import cn.featherfly.hammer.dsl.execute.EntityDelete;
 import cn.featherfly.hammer.dsl.execute.EntityUpdate;
@@ -262,7 +263,7 @@ public interface Hammer extends TplExecutor {
     <E> E get(E entity);
 
     /**
-     * load entity by id, the same logic with get(entity)
+     * load entity by id, the same logic with get(entity).
      *
      * @param <E>    entity generic type
      * @param entity entity with id value
@@ -393,6 +394,14 @@ public interface Hammer extends TplExecutor {
      */
     QueryEntity query(String repository);
 
+    /**
+     * create QueryEntity for repository.
+     *
+     * @param repository the repository
+     * @return the query entity
+     */
+    QueryEntity query(Repository repository);
+
     //    /**
     //     * create QueryEntity for type.
     //     *
@@ -421,6 +430,14 @@ public interface Hammer extends TplExecutor {
     Update update(String repository);
 
     /**
+     * create update for repository.
+     *
+     * @param repository repository name
+     * @return Update
+     */
+    Update update(Repository repository);
+
+    /**
      * create update for entityType.
      *
      * @param <E>        entity generic type
@@ -436,6 +453,14 @@ public interface Hammer extends TplExecutor {
      * @return Delete
      */
     Delete delete(String repository);
+
+    /**
+     * create delete for repository.
+     *
+     * @param repository repository name
+     * @return Delete
+     */
+    Delete delete(Repository repository);
 
     /**
      * create delete for entityType.
