@@ -1,6 +1,7 @@
 
 package cn.featherfly.hammer.sqldb.jdbc.dsl.execute;
 
+import cn.featherfly.common.db.Table;
 import cn.featherfly.common.db.mapping.JdbcMappingFactory;
 import cn.featherfly.common.repository.AliasRepository;
 import cn.featherfly.common.repository.Repository;
@@ -33,6 +34,16 @@ public class SqlDeleter implements Deleter {
     public SqlDeleter(Jdbc jdbc, JdbcMappingFactory mappingFactory) {
         this.jdbc = jdbc;
         this.mappingFactory = mappingFactory;
+    }
+
+    /**
+     * start delete dsl for table.
+     *
+     * @param table the table
+     * @return SqlDelete
+     */
+    public SqlDelete delete(Table table) {
+        return new SqlDelete(jdbc, table.getName());
     }
 
     /**
