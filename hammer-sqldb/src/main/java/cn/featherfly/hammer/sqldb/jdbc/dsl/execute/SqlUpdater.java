@@ -1,6 +1,7 @@
 
 package cn.featherfly.hammer.sqldb.jdbc.dsl.execute;
 
+import cn.featherfly.common.db.Table;
 import cn.featherfly.common.db.mapping.JdbcMappingFactory;
 import cn.featherfly.common.repository.AliasRepository;
 import cn.featherfly.common.repository.Repository;
@@ -38,6 +39,16 @@ public class SqlUpdater implements Updater {
         super();
         this.jdbc = jdbc;
         this.mappingFactory = mappingFactory;
+    }
+
+    /**
+     * start update dsl for the table.
+     *
+     * @param table the table
+     * @return Delete
+     */
+    public SqlUpdate update(Table table) {
+        return new SqlExecutableUpdate(table.getName(), jdbc);
     }
 
     /**

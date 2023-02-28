@@ -1,6 +1,7 @@
 
 package cn.featherfly.hammer.sqldb.jdbc.dsl.query;
 
+import cn.featherfly.common.db.Table;
 import cn.featherfly.common.db.mapping.JdbcClassMapping;
 import cn.featherfly.common.db.mapping.JdbcMappingFactory;
 import cn.featherfly.common.db.metadata.DatabaseMetadata;
@@ -61,6 +62,19 @@ public class SqlQuery implements Query {
         this.mappingFactory = mappingFactory;
         databaseMetadata = mappingFactory.getMetadata();
         this.sqlPageFactory = sqlPageFactory;
+    }
+
+    /**
+     * find table.
+     *
+     * @param table the table
+     * @return SqlQueryEntity
+     */
+    public SqlQueryEntity find(Table table) {
+        if (table == null) {
+            return null;
+        }
+        return find(table.getName());
     }
 
     /**

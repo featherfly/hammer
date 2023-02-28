@@ -20,6 +20,7 @@ import org.hibernate.validator.HibernateValidator;
 import cn.featherfly.common.bean.BeanDescriptor;
 import cn.featherfly.common.bean.BeanProperty;
 import cn.featherfly.common.constant.Chars;
+import cn.featherfly.common.db.Table;
 import cn.featherfly.common.db.mapping.JdbcClassMapping;
 import cn.featherfly.common.db.mapping.JdbcMappingFactory;
 import cn.featherfly.common.lang.ArrayUtils;
@@ -685,6 +686,15 @@ public class SqldbHammerImpl implements SqldbHammer {
      * {@inheritDoc}
      */
     @Override
+    public QueryEntity query(Table table) {
+        SqlQuery query = new SqlQuery(jdbc, mappingFactory, sqlTplExecutor.getSqlPageFactory());
+        return query.find(table);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
     public <E> EntityQueryEntity<E> query(Class<E> entityType) {
         SqlQuery query = new SqlQuery(jdbc, mappingFactory, sqlTplExecutor.getSqlPageFactory());
         return query.find(entityType);
@@ -721,6 +731,15 @@ public class SqldbHammerImpl implements SqldbHammer {
      * {@inheritDoc}
      */
     @Override
+    public Update update(Table table) {
+        SqlUpdater updater = new SqlUpdater(jdbc, mappingFactory);
+        return updater.update(table);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
     public Delete delete(String repository) {
         SqlDeleter deleter = new SqlDeleter(jdbc, mappingFactory);
         return deleter.delete(repository);
@@ -733,6 +752,15 @@ public class SqldbHammerImpl implements SqldbHammer {
     public Delete delete(Repository repository) {
         SqlDeleter deleter = new SqlDeleter(jdbc, mappingFactory);
         return deleter.delete(repository);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public Delete delete(Table table) {
+        SqlDeleter deleter = new SqlDeleter(jdbc, mappingFactory);
+        return deleter.delete(table);
     }
 
     /**
@@ -1176,5 +1204,4 @@ public class SqldbHammerImpl implements SqldbHammer {
     public JdbcMappingFactory getMappingFactory() {
         return mappingFactory;
     }
-
 }
