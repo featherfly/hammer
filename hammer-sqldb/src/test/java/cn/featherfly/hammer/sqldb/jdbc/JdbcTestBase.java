@@ -17,6 +17,7 @@ import org.testng.annotations.Optional;
 import org.testng.annotations.Parameters;
 
 import cn.featherfly.common.db.SqlExecutor;
+import cn.featherfly.common.db.SqlFile;
 import cn.featherfly.common.db.dialect.Dialect;
 import cn.featherfly.common.db.dialect.Dialects;
 import cn.featherfly.common.db.dialect.PostgreSQLDialect;
@@ -125,7 +126,7 @@ public class JdbcTestBase extends TestBase {
 
         // 初始化数据库
         SqlExecutor sqlExecutor = new SqlExecutor(ds);
-        sqlExecutor.execute(new File(ClassLoaderUtils.getResource("test.mysql.sql", JdbcTestBase.class).getFile()));
+        sqlExecutor.execute(SqlFile.read(ClassLoaderUtils.getResource("test.mysql.sql", JdbcTestBase.class)));
 
         dialect = Dialects.MYSQL;
 
@@ -164,8 +165,9 @@ public class JdbcTestBase extends TestBase {
 
         // 初始化数据库
         SqlExecutor sqlExecutor = new SqlExecutor(ds);
-        sqlExecutor
-                .execute(new File(ClassLoaderUtils.getResource("test.postgresql.sql", JdbcTestBase.class).getFile()));
+        //        sqlExecutor
+        //                .execute(new File(ClassLoaderUtils.getResource("test.postgresql.sql", JdbcTestBase.class).getFile()));
+        sqlExecutor.execute(SqlFile.read(ClassLoaderUtils.getResource("test.postgresql.sql", JdbcTestBase.class)));
 
         PostgreSQLDialect postgreSQLDialect = new PostgreSQLDialect();
         //        postgreSQLDialect.setTableAndColumnNameUppercase(StringConverter.UPPER_CASE);
@@ -196,7 +198,8 @@ public class JdbcTestBase extends TestBase {
 
         // 初始化数据库
         SqlExecutor sqlExecutor = new SqlExecutor(ds);
-        sqlExecutor.execute(new File(ClassLoaderUtils.getResource("test.sqlite.sql", JdbcTestBase.class).getFile()));
+        //        sqlExecutor.execute(new File(ClassLoaderUtils.getResource("test.sqlite.sql", JdbcTestBase.class).getFile()));
+        sqlExecutor.execute(SqlFile.read(ClassLoaderUtils.getResource("test.sqlite.sql", JdbcTestBase.class)));
 
         dialect = Dialects.SQLITE;
 

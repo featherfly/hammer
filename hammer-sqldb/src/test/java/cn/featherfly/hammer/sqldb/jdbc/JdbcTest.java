@@ -10,6 +10,7 @@ import java.io.File;
 import java.io.IOException;
 import java.math.BigDecimal;
 import java.nio.charset.StandardCharsets;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -30,9 +31,11 @@ import cn.featherfly.common.bean.BeanDescriptor;
 import cn.featherfly.common.bean.BeanPropertyValue;
 import cn.featherfly.common.db.JdbcException;
 import cn.featherfly.common.db.mapping.mappers.PlatformJavaSqlTypeMapper;
+import cn.featherfly.common.db.procedure.ProcedureOutParameter;
 import cn.featherfly.common.lang.ArrayUtils;
 import cn.featherfly.common.lang.ClassLoaderUtils;
 import cn.featherfly.common.lang.Lang;
+import cn.featherfly.common.lang.Randoms;
 import cn.featherfly.common.lang.Strings;
 import cn.featherfly.common.lang.reflect.ClassType;
 import cn.featherfly.common.lang.reflect.Type;
@@ -969,5 +972,59 @@ public class JdbcTest extends JdbcTestBase {
 
         str = jdbc.queryString(selectString);
         assertEquals(str, "yufei");
+    }
+
+    @Test
+    void testCallQuery() throws SQLException {
+        List<Map<String, Object>> list = jdbc.callQuery("call_query_user", "yufei%");
+        for (Map<String, Object> map : list) {
+            System.out.println(map);
+            assertTrue(map.get("username").toString().startsWith("yufei"));
+        }
+    }
+
+    @Test
+    void testCallQuery1() throws SQLException {
+        List<User> list = jdbc.callQuery("call_query_user", (res, rowNum) -> {
+            User user = new User();
+            user.setId(res.getInt("id"));
+            user.setUsername(res.getString("username"));
+            user.setPwd(res.getString("password"));
+            user.setMobileNo(res.getString("mobile_no"));
+            user.setAge(res.getInt("age"));
+            return user;
+        }, "yufei%");
+        for (User user : list) {
+            System.out.println(user);
+            assertTrue(user.getUsername().startsWith("yufei"));
+        }
+    }
+
+    @Test
+    void testCallQuery2() throws SQLException {
+        List<User> list = jdbc.callQuery("call_query_user", User.class, "yufei%");
+        for (User user : list) {
+            System.out.println(user);
+            assertTrue(user.getUsername().startsWith("yufei"));
+        }
+    }
+
+    @Test
+    void testCall() throws SQLException {
+        String newname = "featherfly_call" + Randoms.getInt(1000);
+        ProcedureOutParameter<Integer> param3 = new ProcedureOutParameter<>(0);
+        int result = jdbc.call("call_update_user_one", 13, newname, param3);
+        System.out.println("result = " + result);
+        assertTrue(param3.getValue() == 1);
+    }
+
+    @Test
+    void testCall2() throws SQLException {
+        String qname = "name_init%";
+        String newdescp = "call_update_batch_" + Randoms.getInt(1000);
+        ProcedureOutParameter<Integer> param3 = new ProcedureOutParameter<>(0);
+        int result = jdbc.call("call_update_role_more", qname, newdescp, param3);
+        System.out.println("result = " + result);
+        assertTrue(param3.getValue() == 3);
     }
 }

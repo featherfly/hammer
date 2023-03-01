@@ -11,6 +11,7 @@
 package cn.featherfly.hammer.sqldb.jdbc;
 
 import java.io.Serializable;
+import java.sql.CallableStatement;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -20,14 +21,21 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
 import java.util.function.Consumer;
 
 import javax.sql.DataSource;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import com.speedment.common.tuple.Tuple2;
+import com.speedment.common.tuple.Tuple3;
+import com.speedment.common.tuple.Tuple4;
+import com.speedment.common.tuple.Tuple5;
 
 import cn.featherfly.common.bean.BeanProperty;
 import cn.featherfly.common.bean.BeanPropertyValue;
@@ -39,6 +47,9 @@ import cn.featherfly.common.db.dialect.Dialect;
 import cn.featherfly.common.db.dialect.SQLiteDialect;
 import cn.featherfly.common.db.mapping.SqlResultSet;
 import cn.featherfly.common.db.mapping.SqlTypeMappingManager;
+import cn.featherfly.common.db.procedure.ProcedureOutParameter;
+import cn.featherfly.common.lang.ArrayUtils;
+import cn.featherfly.common.lang.AssertIllegalArgument;
 import cn.featherfly.common.lang.Lang;
 import cn.featherfly.common.lang.Strings;
 import cn.featherfly.common.lang.reflect.Type;
@@ -102,16 +113,30 @@ public abstract class AbstractJdbc implements Jdbc {
      * {@inheritDoc}
      */
     @Override
+    public SqlTypeMappingManager getSqlTypeMappingManager() {
+        return manager;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
     public Dialect getDialect() {
         return dialect;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public <T extends Serializable> int insert(String tableName, String[] columnNames, GeneratedKeyHolder<T> keyHolder,
             Object... args) {
         return update(getDialect().buildInsertSql(tableName, columnNames), keyHolder, args);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public int insertBatch(String tableName, String[] columnNames, int batchSize, Object... args) {
         if (args.length % columnNames.length != 0) {
@@ -130,6 +155,9 @@ public abstract class AbstractJdbc implements Jdbc {
         }
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public int upsert(String tableName, String[] columnNames, String[] uniqueColumns, Object... args) {
         return update(getDialect().buildUpsertSql(tableName, columnNames, uniqueColumns), args);
@@ -156,6 +184,9 @@ public abstract class AbstractJdbc implements Jdbc {
         return 0;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public <T extends Serializable> int updateBatch(String sql, int batchSize, GeneratedKeyHolder<T> keySupplier,
             Map<String, Object> args) {
@@ -370,6 +401,61 @@ public abstract class AbstractJdbc implements Jdbc {
      * {@inheritDoc}
      */
     @Override
+    public <T1, T2> List<Tuple2<T1, T2>> query(String sql, Class<T1> elementType1, Class<T2> elementType2,
+            Tuple2<String, String> prefixes, Map<String, Object> args) {
+        logger.debug("sql -> {}, args -> {}, elementType1 -> {}, elementType2 -> {}", sql, args, elementType1,
+                elementType2);
+        Execution execution = SqlUtils.convertNamedParamSql(sql, args);
+        return query(execution.getExecution(), elementType1, elementType2, prefixes, execution.getParams());
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public <T1, T2, T3> List<Tuple3<T1, T2, T3>> query(String sql, Class<T1> elementType1, Class<T2> elementType2,
+            Class<T3> elementType3, Tuple3<String, String, String> prefixes, Map<String, Object> args) {
+        logger.debug("sql -> {}, args -> {}, elementType1 -> {}, elementType2 -> {}, elementType3 -> {}", sql, args,
+                elementType1, elementType2, elementType3);
+        Execution execution = SqlUtils.convertNamedParamSql(sql, args);
+        return query(execution.getExecution(), elementType1, elementType2, elementType3, prefixes,
+                execution.getParams());
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public <T1, T2, T3, T4> List<Tuple4<T1, T2, T3, T4>> query(String sql, Class<T1> elementType1,
+            Class<T2> elementType2, Class<T3> elementType3, Class<T4> elementType4,
+            Tuple4<String, String, String, String> prefixes, Map<String, Object> args) {
+        logger.debug(
+                "sql -> {}, args -> {}, elementType1 -> {}, elementType2 -> {}, elementType3 -> {}, elementType4 -> {}",
+                sql, args, elementType1, elementType2, elementType3, elementType4);
+        Execution execution = SqlUtils.convertNamedParamSql(sql, args);
+        return query(execution.getExecution(), elementType1, elementType2, elementType3, elementType4, prefixes,
+                execution.getParams());
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public <T1, T2, T3, T4, T5> List<Tuple5<T1, T2, T3, T4, T5>> query(String sql, Class<T1> elementType1,
+            Class<T2> elementType2, Class<T3> elementType3, Class<T4> elementType4, Class<T5> elementType5,
+            Tuple5<String, String, String, String, String> prefixes, Map<String, Object> args) {
+        logger.debug(
+                "sql -> {}, args -> {}, elementType1 -> {}, elementType2 -> {}, elementType3 -> {}, elementType4 -> {}, elementType5 -> {}",
+                sql, args, elementType1, elementType2, elementType3, elementType4, elementType5);
+        Execution execution = SqlUtils.convertNamedParamSql(sql, args);
+        return query(execution.getExecution(), elementType1, elementType2, elementType3, elementType4, elementType5,
+                prefixes, execution.getParams());
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
     public <T> List<T> query(String sql, Class<T> elementType, Object... args) {
         SQLType sqlType = manager.getSqlType(elementType);
         RowMapper<T> rowMapper = null;
@@ -379,6 +465,61 @@ public abstract class AbstractJdbc implements Jdbc {
             rowMapper = new SingleColumnRowMapper<>(elementType, manager);
         }
         return query(sql, rowMapper, args);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public <T1, T2> List<Tuple2<T1, T2>> query(String sql, Class<T1> elementType1, Class<T2> elementType2,
+            Tuple2<String, String> prefixes, Object... args) {
+        //        SQLType sqlType = manager.getSqlType(elementType);
+        //        RowMapper<T> rowMapper = null;
+        //        if (sqlType == null) {
+        //            rowMapper = new NestedBeanPropertyRowMapper<>(elementType, manager);
+        //        } else {
+        //            rowMapper = new SingleColumnRowMapper<>(elementType, manager);
+        //        }
+        //        return query(sql, rowMapper, args);
+        return query(sql, new TupleNestedBeanPropertyRowMapper<>(ArrayUtils.toList(elementType1, elementType2),
+                prefixes, manager), args);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public <T1, T2, T3> List<Tuple3<T1, T2, T3>> query(String sql, Class<T1> elementType1, Class<T2> elementType2,
+            Class<T3> elementType3, Tuple3<String, String, String> prefixes, Object... args) {
+        return query(sql, new TupleNestedBeanPropertyRowMapper<>(
+                ArrayUtils.toList(elementType1, elementType2, elementType3), prefixes, manager), args);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public <T1, T2, T3, T4> List<Tuple4<T1, T2, T3, T4>> query(String sql, Class<T1> elementType1,
+            Class<T2> elementType2, Class<T3> elementType3, Class<T4> elementType4,
+            Tuple4<String, String, String, String> prefixes, Object... args) {
+        return query(sql,
+                new TupleNestedBeanPropertyRowMapper<>(
+                        ArrayUtils.toList(elementType1, elementType2, elementType3, elementType4), prefixes, manager),
+                args);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public <T1, T2, T3, T4, T5> List<Tuple5<T1, T2, T3, T4, T5>> query(String sql, Class<T1> elementType1,
+            Class<T2> elementType2, Class<T3> elementType3, Class<T4> elementType4, Class<T5> elementType5,
+            Tuple5<String, String, String, String, String> prefixes, Object... args) {
+        return query(sql,
+                new TupleNestedBeanPropertyRowMapper<>(
+                        ArrayUtils.toList(elementType1, elementType2, elementType3, elementType4, elementType5),
+                        prefixes, manager),
+                args);
     }
 
     //    @Override
@@ -488,8 +629,86 @@ public abstract class AbstractJdbc implements Jdbc {
      * {@inheritDoc}
      */
     @Override
+    public <T1, T2> Tuple2<T1, T2> querySingle(String sql, Class<T1> elementType1, Class<T2> elementType2,
+            Tuple2<String, String> prefixes, Map<String, Object> args) {
+        return singleResult(query(sql, elementType1, elementType2, prefixes, args));
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public <T1, T2, T3> Tuple3<T1, T2, T3> querySingle(String sql, Class<T1> elementType1, Class<T2> elementType2,
+            Class<T3> elementType3, Tuple3<String, String, String> prefixes, Map<String, Object> args) {
+        return singleResult(query(sql, elementType1, elementType2, elementType3, prefixes, args));
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public <T1, T2, T3, T4> Tuple4<T1, T2, T3, T4> querySingle(String sql, Class<T1> elementType1,
+            Class<T2> elementType2, Class<T3> elementType3, Class<T4> elementType4,
+            Tuple4<String, String, String, String> prefixes, Map<String, Object> args) {
+        return singleResult(query(sql, elementType1, elementType2, elementType3, elementType4, prefixes, args));
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public <T1, T2, T3, T4, T5> Tuple5<T1, T2, T3, T4, T5> querySingle(String sql, Class<T1> elementType1,
+            Class<T2> elementType2, Class<T3> elementType3, Class<T4> elementType4, Class<T5> elementType5,
+            Tuple5<String, String, String, String, String> prefixes, Map<String, Object> args) {
+        return singleResult(
+                query(sql, elementType1, elementType2, elementType3, elementType4, elementType5, prefixes, args));
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
     public <T> T querySingle(String sql, Class<T> elementType, Object... args) {
         return singleResult(query(sql, elementType, args));
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public <T1, T2> Tuple2<T1, T2> querySingle(String sql, Class<T1> elementType1, Class<T2> elementType2,
+            Tuple2<String, String> prefixes, Object... args) {
+        return singleResult(query(sql, elementType1, elementType2, prefixes, args));
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public <T1, T2, T3> Tuple3<T1, T2, T3> querySingle(String sql, Class<T1> elementType1, Class<T2> elementType2,
+            Class<T3> elementType3, Tuple3<String, String, String> prefixes, Object... args) {
+        return singleResult(query(sql, elementType1, elementType2, elementType3, prefixes, args));
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public <T1, T2, T3, T4> Tuple4<T1, T2, T3, T4> querySingle(String sql, Class<T1> elementType1,
+            Class<T2> elementType2, Class<T3> elementType3, Class<T4> elementType4,
+            Tuple4<String, String, String, String> prefixes, Object... args) {
+        return singleResult(query(sql, elementType1, elementType2, elementType3, elementType4, prefixes, args));
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public <T1, T2, T3, T4, T5> Tuple5<T1, T2, T3, T4, T5> querySingle(String sql, Class<T1> elementType1,
+            Class<T2> elementType2, Class<T3> elementType3, Class<T4> elementType4, Class<T5> elementType5,
+            Tuple5<String, String, String, String, String> prefixes, Object... args) {
+        return singleResult(
+                query(sql, elementType1, elementType2, elementType3, elementType4, elementType5, prefixes, args));
     }
 
     //    /**
@@ -699,37 +918,245 @@ public abstract class AbstractJdbc implements Jdbc {
         return nullableSingleResult(results);
     }
 
-    //    private <T> List<T> query(Consumer<PreparedStatement> setParams, String sql, RowMapper<T> rowMapper,
-    //            Object... args) {
-    //        List<T> list = new ArrayList<>();
-    //        if (Lang.isNotEmpty(sql)) {
-    //            sql = sql.trim();
-    //            JdbcExecution execution = preHandle(sql, args);
-    //            sql = execution.getExecution();
-    //            args = execution.getParams();
-    //            if (logger.isDebugEnabled()) { // TODO 后续移动到对应Intercepor中去
-    //                logger.debug("execute sql -> {} , params -> {}", sql, args);
-    //            }
-    //            Connection con = getConnection();
-    //            try (PreparedStatement prep = con.prepareStatement(sql)) {
-    //                setParams.accept(prep);
-    //                try (ResultSet rs = prep.executeQuery()) {
-    //                    int i = 0;
-    //                    while (rs.next()) {
-    //                        list.add(rowMapper.mapRow(new SqlResultSet(rs), i++));
-    //                    }
-    //                    return postHandle(execution.setOriginalResult(list), sql, args);
-    //                }
-    //            } catch (SQLException e) {
-    //                releaseConnection(con, getDataSource());
-    //                con = null;
-    //                throw new JdbcException(Strings.format("query: \nsql: {0} \nargs: {1}", sql, Arrays.toString(args)), e);
-    //            } finally {
-    //                releaseConnection(con, getDataSource());
-    //            }
+    /**
+     * {@inheritDoc}
+     */
+    @SuppressWarnings("rawtypes")
+    @Override
+    public int call(String name, Object... args) {
+        String procedure = getProcedure(name, args.length);
+        Connection con = getConnection(dataSource);
+        try (CallableStatement call = con.prepareCall(procedure)) {
+            Map<Integer, ProcedureOutParameter> outParams = setParams(call, args);
+            call.execute();
+            setOutParams(call, outParams);
+            return call.getUpdateCount();
+        } catch (SQLException e) {
+            releaseConnection(con, dataSource);
+            con = null;
+            throw new JdbcException(
+                    Strings.format("call procedure: \nprocedure: {0} \nargs: {1}", procedure, Arrays.toString(args)),
+                    e);
+        } finally {
+            releaseConnection(con, getDataSource());
+        }
+    }
+
+    //    /**
+    //     * {@inheritDoc}
+    //     */
+    //    @SuppressWarnings("rawtypes")
+    //    @Override
+    //    public int call(String name, Map<String, Object> args) {
+    //        String procedure = getProcedure(name, args.size());
+    //        Connection con = getConnection(dataSource);
+    //        try (CallableStatement call = con.prepareCall(procedure)) {
+    //            Map<String, ProcedureOutParameter> outParams = setParams(call, args);
+    //            call.execute();
+    //            setOutParams2(call, outParams);
+    //            return call.getUpdateCount();
+    //        } catch (SQLException e) {
+    //            releaseConnection(con, dataSource);
+    //            con = null;
+    //            throw new JdbcException(
+    //                    Strings.format("call procedure: \nprocedure: {0} \nargs: {1}", procedure, args.toString()), e);
+    //        } finally {
+    //            releaseConnection(con, getDataSource());
     //        }
-    //        return list;
     //    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @SuppressWarnings("rawtypes")
+    @Override
+    public List<Map<String, Object>> callQuery(String name, Object... args) {
+        String procedure = getProcedure(name, args.length);
+        Connection con = getConnection(dataSource);
+        try (CallableStatement call = con.prepareCall(procedure)) {
+            Map<Integer, ProcedureOutParameter> outParams = setParams(call, args);
+            setOutParams(call, outParams);
+            try (ResultSet rs = call.executeQuery()) {
+                return JdbcUtils.getResultSetMaps(rs, manager);
+                //                    return postHandle(execution.setOriginalResult(JdbcUtils.getResultSetMaps(rs, manager)), sql, args);
+            }
+        } catch (SQLException e) {
+            releaseConnection(con, dataSource);
+            con = null;
+            throw new JdbcException(Strings.format("call procedure query: \nprocedure: {0} \nargs: {1}", procedure,
+                    Arrays.toString(args)), e);
+        } finally {
+            releaseConnection(con, getDataSource());
+        }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @SuppressWarnings("rawtypes")
+    @Override
+    public <T> List<T> callQuery(String name, RowMapper<T> rowMapper, Object... args) {
+        AssertIllegalArgument.isNotBlank(name, "name");
+        String procedure = getProcedure(name, args.length);
+        Connection con = getConnection(dataSource);
+        try (CallableStatement call = con.prepareCall(procedure)) {
+            Map<Integer, ProcedureOutParameter> outParams = setParams(call, args);
+            try (ResultSet rs = call.executeQuery()) {
+                setOutParams(call, outParams);
+                List<T> list = new ArrayList<>();
+                int i = 0;
+                while (rs.next()) {
+                    list.add(rowMapper.mapRow(new SqlResultSet(rs), i++));
+                }
+                return list;
+            }
+        } catch (SQLException e) {
+            releaseConnection(con, dataSource);
+            con = null;
+            throw new JdbcException(Strings.format("call procedure query: \nprocedure: {0} \nargs: {1}", procedure,
+                    Arrays.toString(args)), e);
+        } finally {
+            releaseConnection(con, getDataSource());
+        }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public <T> List<T> callQuery(String name, Class<T> elementType, Object... args) {
+        SQLType sqlType = manager.getSqlType(elementType);
+        RowMapper<T> rowMapper = null;
+        if (sqlType == null) {
+            rowMapper = new NestedBeanPropertyRowMapper<>(elementType, manager);
+        } else {
+            rowMapper = new SingleColumnRowMapper<>(elementType, manager);
+        }
+        return callQuery(name, rowMapper, args);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public <T1, T2> List<Tuple2<T1, T2>> callQuery(String name, Class<T1> elementType1, Class<T2> elementType2,
+            Tuple2<String, String> prefixes, Object... args) {
+        return callQuery(name, new TupleNestedBeanPropertyRowMapper<>(ArrayUtils.toList(elementType1, elementType2),
+                prefixes, manager), args);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public <T1, T2, T3> List<Tuple3<T1, T2, T3>> callQuery(String name, Class<T1> elementType1, Class<T2> elementType2,
+            Class<T3> elementType3, Tuple3<String, String, String> prefixes, Object... args) {
+        return callQuery(name, new TupleNestedBeanPropertyRowMapper<>(
+                ArrayUtils.toList(elementType1, elementType2, elementType3), prefixes, manager), args);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public <T1, T2, T3, T4> List<Tuple4<T1, T2, T3, T4>> callQuery(String name, Class<T1> elementType1,
+            Class<T2> elementType2, Class<T3> elementType3, Class<T4> elementType4,
+            Tuple4<String, String, String, String> prefixes, Object... args) {
+        return callQuery(name,
+                new TupleNestedBeanPropertyRowMapper<>(
+                        ArrayUtils.toList(elementType1, elementType2, elementType3, elementType4), prefixes, manager),
+                args);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public <T1, T2, T3, T4, T5> List<Tuple5<T1, T2, T3, T4, T5>> callQuery(String name, Class<T1> elementType1,
+            Class<T2> elementType2, Class<T3> elementType3, Class<T4> elementType4, Class<T5> elementType5,
+            Tuple5<String, String, String, String, String> prefixes, Object... args) {
+        return callQuery(name,
+                new TupleNestedBeanPropertyRowMapper<>(
+                        ArrayUtils.toList(elementType1, elementType2, elementType3, elementType4, elementType5),
+                        prefixes, manager),
+                args);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public Map<String, Object> callQuerySingle(String name, Object... args) {
+        return singleResult(callQuery(name, args));
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public <T> T callQuerySingle(String name, RowMapper<T> rowMapper, Object... args) {
+        return singleResult(callQuery(name, rowMapper, args));
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public <T> T callQuerySingle(String name, Class<T> elementType, Object... args) {
+        return singleResult(callQuery(name, elementType, args));
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public <T1, T2> Tuple2<T1, T2> callQuerySingle(String name, Class<T1> elementType1, Class<T2> elementType2,
+            Tuple2<String, String> prefixes, Object... args) {
+        return singleResult(callQuery(name, elementType1, elementType2, prefixes, args));
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public <T1, T2, T3> Tuple3<T1, T2, T3> callQuerySingle(String name, Class<T1> elementType1, Class<T2> elementType2,
+            Class<T3> elementType3, Tuple3<String, String, String> prefixes, Object... args) {
+        return singleResult(callQuery(name, elementType1, elementType2, elementType3, prefixes, args));
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public <T1, T2, T3, T4> Tuple4<T1, T2, T3, T4> callQuerySingle(String name, Class<T1> elementType1,
+            Class<T2> elementType2, Class<T3> elementType3, Class<T4> elementType4,
+            Tuple4<String, String, String, String> prefixes, Object... args) {
+        return singleResult(callQuery(name, elementType1, elementType2, elementType3, elementType4, prefixes, args));
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public <T1, T2, T3, T4, T5> Tuple5<T1, T2, T3, T4, T5> callQuerySingle(String name, Class<T1> elementType1,
+            Class<T2> elementType2, Class<T3> elementType3, Class<T4> elementType4, Class<T5> elementType5,
+            Tuple5<String, String, String, String, String> prefixes, Object... args) {
+        return singleResult(
+                callQuery(name, elementType1, elementType2, elementType3, elementType4, elementType5, prefixes, args));
+    }
+
+    private String getProcedure(String name, int argnum) {
+        StringBuilder procedure = new StringBuilder("{call ");
+        procedure.append(name).append("(");
+        for (int i = 0; i < argnum; i++) {
+            procedure.append("?,");
+        }
+        if (argnum > 0) {
+            procedure.deleteCharAt(procedure.length() - 1);
+        }
+        procedure.append(")}");
+        return procedure.toString();
+    }
 
     /**
      * Sets the param.
@@ -775,6 +1202,53 @@ public abstract class AbstractJdbc implements Jdbc {
             @SuppressWarnings("unchecked")
             BeanProperty<Object> argBp = (BeanProperty<Object>) args[i].getBeanProperty();
             manager.set(prep, i + 1, args[i].getValue(), argBp);
+        }
+    }
+
+    /**
+     * Sets the params.
+     *
+     * @param call the CallableStatement
+     * @param args the args
+     * @return the map
+     */
+    @SuppressWarnings("rawtypes")
+    protected Map<Integer, ProcedureOutParameter> setParams(CallableStatement call, Object... args) {
+        Map<Integer, ProcedureOutParameter> outParamMap = new HashMap<>(0);
+        for (int i = 0; i < args.length; i++) {
+            Object arg = args[i];
+            if (arg instanceof ProcedureOutParameter) {
+                outParamMap.put(i + 1, (ProcedureOutParameter) arg);
+            } else {
+                setParam(call, i + 1, arg);
+            }
+        }
+        return outParamMap;
+    }
+
+    //    /**
+    //     * Sets the params.
+    //     *
+    //     * @param call the CallableStatement
+    //     * @param args the args
+    //     * @return the map
+    //     */
+    //    @SuppressWarnings("rawtypes")
+    //    protected Map<String, ProcedureOutParameter> setParams(CallableStatement call, Map<String, Object> args) {
+    //        return JdbcUtils.setParameters(call, args, manager.isEnumWithOrdinal());
+    //    }
+
+    /**
+     * Sets the params.
+     *
+     * @param call      the CallableStatement
+     * @param outParams the out params
+     */
+    @SuppressWarnings({ "rawtypes", "unchecked" })
+    protected void setOutParams(CallableStatement call, Map<Integer, ProcedureOutParameter> outParams) {
+        for (Entry<Integer, ProcedureOutParameter> entry : outParams.entrySet()) {
+            ProcedureOutParameter param = entry.getValue();
+            param.setValue(manager.get(call, entry.getKey(), param.getValue().getClass()));
         }
     }
 
