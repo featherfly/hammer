@@ -6,6 +6,7 @@
 4. 优化GetOperate的ForUpdate逻辑
 5. Jdbc实现查询返回Tuple2,List<Tuple2>,Tuple3,List<Tuple3>,Tuple4,List<Tuple4>,Tuple5,List<Tuple5>
 6. SqldbHammer加入QueryEntity query(Table table);Update update(Table table);Delete delete(Table table)方法
+7. Jdbc实现存储过程支持
 
 # 0.6.6 2022-08-26
 1. 修改L group(Consumer<C>)为L group(Function<C,L>)，
