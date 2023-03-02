@@ -1009,6 +1009,20 @@ public class JdbcTest extends JdbcTestBase {
     }
 
     @Test
+    void testCallQueryInOutParam() throws SQLException {
+        Integer id = 1;
+        Object[] params = new Object[] { id };
+
+        assertEquals(params[0], id);
+
+        User user = jdbc.callQuerySingle("call_query_user_by_id", User.class, params);
+
+        assertEquals(user.getId(), id);
+
+        assertEquals(params[0], id + 1);
+    }
+
+    @Test
     void testCall() throws SQLException {
         String newname = "featherfly_call" + Randoms.getInt(1000);
         Object[] params = new Object[] { 13, newname, 0 };
