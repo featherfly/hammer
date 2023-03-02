@@ -232,6 +232,13 @@ BEGIN
     select * from user where username like arg_username;
 END; 
 
+DROP PROCEDURE if EXISTS `call_query_user_by_id` ;
+CREATE DEFINER=`root`@`localhost` PROCEDURE `call_query_user_by_id`(INOUT `arg_id` varchar(255))
+BEGIN
+    select * from user where id = arg_id;
+    set arg_id = arg_id + 1;
+END;
+
 DROP PROCEDURE if EXISTS `call_update_user_one` ;
 CREATE DEFINER=`root`@`localhost` PROCEDURE `call_update_user_one`(IN `arg_id` int(0), IN `arg_username` varchar(255), OUT `out_row_count` int(0))
 BEGIN   
