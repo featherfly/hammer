@@ -13,6 +13,7 @@ package cn.featherfly.hammer.sqldb.jdbc;
 import java.io.Serializable;
 import java.sql.CallableStatement;
 import java.sql.Connection;
+import java.sql.ParameterMetaData;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -47,9 +48,9 @@ import cn.featherfly.common.db.dialect.Dialect;
 import cn.featherfly.common.db.dialect.SQLiteDialect;
 import cn.featherfly.common.db.mapping.SqlResultSet;
 import cn.featherfly.common.db.mapping.SqlTypeMappingManager;
-import cn.featherfly.common.db.procedure.ProcedureOutParameter;
 import cn.featherfly.common.lang.ArrayUtils;
 import cn.featherfly.common.lang.AssertIllegalArgument;
+import cn.featherfly.common.lang.ClassUtils;
 import cn.featherfly.common.lang.Lang;
 import cn.featherfly.common.lang.Strings;
 import cn.featherfly.common.lang.reflect.Type;
@@ -921,15 +922,14 @@ public abstract class AbstractJdbc implements Jdbc {
     /**
      * {@inheritDoc}
      */
-    @SuppressWarnings("rawtypes")
     @Override
     public int call(String name, Object... args) {
         String procedure = getProcedure(name, args.length);
         Connection con = getConnection(dataSource);
         try (CallableStatement call = con.prepareCall(procedure)) {
-            Map<Integer, ProcedureOutParameter> outParams = setParams(call, args);
+            Map<Integer, Class<?>> outParams = setParams(call, args);
             call.execute();
-            setOutParams(call, outParams);
+            setOutParams(call, outParams, args);
             return call.getUpdateCount();
         } catch (SQLException e) {
             releaseConnection(con, dataSource);
@@ -968,15 +968,14 @@ public abstract class AbstractJdbc implements Jdbc {
     /**
      * {@inheritDoc}
      */
-    @SuppressWarnings("rawtypes")
     @Override
     public List<Map<String, Object>> callQuery(String name, Object... args) {
         String procedure = getProcedure(name, args.length);
         Connection con = getConnection(dataSource);
         try (CallableStatement call = con.prepareCall(procedure)) {
-            Map<Integer, ProcedureOutParameter> outParams = setParams(call, args);
-            setOutParams(call, outParams);
+            Map<Integer, Class<?>> outParams = setParams(call, args);
             try (ResultSet rs = call.executeQuery()) {
+                setOutParams(call, outParams, args);
                 return JdbcUtils.getResultSetMaps(rs, manager);
                 //                    return postHandle(execution.setOriginalResult(JdbcUtils.getResultSetMaps(rs, manager)), sql, args);
             }
@@ -993,16 +992,15 @@ public abstract class AbstractJdbc implements Jdbc {
     /**
      * {@inheritDoc}
      */
-    @SuppressWarnings("rawtypes")
     @Override
     public <T> List<T> callQuery(String name, RowMapper<T> rowMapper, Object... args) {
         AssertIllegalArgument.isNotBlank(name, "name");
         String procedure = getProcedure(name, args.length);
         Connection con = getConnection(dataSource);
         try (CallableStatement call = con.prepareCall(procedure)) {
-            Map<Integer, ProcedureOutParameter> outParams = setParams(call, args);
+            Map<Integer, Class<?>> outParams = setParams(call, args);
             try (ResultSet rs = call.executeQuery()) {
-                setOutParams(call, outParams);
+                setOutParams(call, outParams, args);
                 List<T> list = new ArrayList<>();
                 int i = 0;
                 while (rs.next()) {
@@ -1206,24 +1204,45 @@ public abstract class AbstractJdbc implements Jdbc {
     }
 
     /**
-     * Sets the params.
+     * set call in inout params.
      *
      * @param call the CallableStatement
      * @param args the args
-     * @return the map
+     * @return the out parameter index and class map
      */
-    @SuppressWarnings("rawtypes")
-    protected Map<Integer, ProcedureOutParameter> setParams(CallableStatement call, Object... args) {
-        Map<Integer, ProcedureOutParameter> outParamMap = new HashMap<>(0);
-        for (int i = 0; i < args.length; i++) {
-            Object arg = args[i];
-            if (arg instanceof ProcedureOutParameter) {
-                outParamMap.put(i + 1, (ProcedureOutParameter) arg);
-            } else {
-                setParam(call, i + 1, arg);
+    protected Map<Integer, Class<?>> setParams(CallableStatement call, Object... args) {
+        Map<Integer, Class<?>> outParamMap = new HashMap<>(0);
+        try {
+            ParameterMetaData meta = call.getParameterMetaData();
+            if (meta.getParameterCount() != args.length) {
+                throw new JdbcException(Strings.format("procedure parameter count[{0}] not equals args length[{1}]",
+                        meta.getParameterCount(), args.length));
             }
+            for (int i = 1; i <= args.length; i++) {
+                Object arg = args[i - 1];
+                int mode = meta.getParameterMode(i);
+                if (mode == ParameterMetaData.parameterModeOut) {
+                    setOutParamMap(outParamMap, i, arg, meta);
+                } else if (mode == ParameterMetaData.parameterModeInOut) {
+                    setOutParamMap(outParamMap, i, arg, meta);
+                    setParam(call, i, arg);
+                } else {
+                    setParam(call, i, arg);
+                }
+            }
+        } catch (SQLException e) {
+            throw new JdbcException(e);
         }
         return outParamMap;
+    }
+
+    private void setOutParamMap(Map<Integer, Class<?>> outParamMap, int index, Object arg, ParameterMetaData meta)
+            throws SQLException {
+        if (arg == null) {
+            outParamMap.put(index, ClassUtils.forName(meta.getParameterClassName(index)));
+        } else {
+            outParamMap.put(index, arg.getClass());
+        }
     }
 
     //    /**
@@ -1244,11 +1263,10 @@ public abstract class AbstractJdbc implements Jdbc {
      * @param call      the CallableStatement
      * @param outParams the out params
      */
-    @SuppressWarnings({ "rawtypes", "unchecked" })
-    protected void setOutParams(CallableStatement call, Map<Integer, ProcedureOutParameter> outParams) {
-        for (Entry<Integer, ProcedureOutParameter> entry : outParams.entrySet()) {
-            ProcedureOutParameter param = entry.getValue();
-            param.setValue(manager.get(call, entry.getKey(), param.getValue().getClass()));
+    protected void setOutParams(CallableStatement call, Map<Integer, Class<?>> outParams, Object[] args) {
+        for (Entry<Integer, Class<?>> entry : outParams.entrySet()) {
+            int index = entry.getKey();
+            args[index - 1] = manager.getParam(call, index, entry.getValue());
         }
     }
 

@@ -47,9 +47,20 @@ public class JdbcNativeTest extends JdbcTestBase {
         //        call.registerOutParameter(3, JDBCType.INTEGER);
         //        call.registerOutParameter("out_row_count", JDBCType.INTEGER);
 
+        ParameterMetaData meta = call.getParameterMetaData();
+        System.out.println("meta.getParameterCount() = " + meta.getParameterCount());
+        for (int i = 1; i <= meta.getParameterCount(); i++) {
+            System.out.println("param:" + i);
+            System.out.println("meta.getParameterMode() = " + meta.getParameterMode(i));
+            System.out.println("meta.getParameterType() = " + meta.getParameterType(i));
+            System.out.println("meta.getParameterTypeName() = " + meta.getParameterTypeName(i));
+            System.out.println("meta.getParameterClassName() = " + meta.getParameterClassName(i));
+            System.out.println();
+        }
+
         boolean b = call.execute();
 
-        ParameterMetaData meta = call.getParameterMetaData();
+        //        ParameterMetaData meta = call.getParameterMetaData();
         System.out.println("meta.getParameterCount() = " + meta.getParameterCount());
         for (int i = 1; i <= meta.getParameterCount(); i++) {
             System.out.printf("meta.getParameterType(%d) = %s\n", i, JDBCType.valueOf(meta.getParameterType(i)));
