@@ -31,7 +31,6 @@ import cn.featherfly.common.bean.BeanDescriptor;
 import cn.featherfly.common.bean.BeanPropertyValue;
 import cn.featherfly.common.db.JdbcException;
 import cn.featherfly.common.db.mapping.mappers.PlatformJavaSqlTypeMapper;
-import cn.featherfly.common.db.procedure.ProcedureOutParameter;
 import cn.featherfly.common.lang.ArrayUtils;
 import cn.featherfly.common.lang.ClassLoaderUtils;
 import cn.featherfly.common.lang.Lang;
@@ -1012,19 +1011,26 @@ public class JdbcTest extends JdbcTestBase {
     @Test
     void testCall() throws SQLException {
         String newname = "featherfly_call" + Randoms.getInt(1000);
-        ProcedureOutParameter<Integer> param3 = new ProcedureOutParameter<>(0);
-        int result = jdbc.call("call_update_user_one", 13, newname, param3);
+        Object[] params = new Object[] { 13, newname, 0 };
+        int outparam = (Integer) params[2];
+        assertTrue(outparam == 0);
+
+        int result = jdbc.call("call_update_user_one", params);
         System.out.println("result = " + result);
-        assertTrue(param3.getValue() == 1);
+        outparam = (Integer) params[2];
+        assertTrue(outparam == 1);
     }
 
     @Test
     void testCall2() throws SQLException {
         String qname = "name_init%";
         String newdescp = "call_update_batch_" + Randoms.getInt(1000);
-        ProcedureOutParameter<Integer> param3 = new ProcedureOutParameter<>(0);
-        int result = jdbc.call("call_update_role_more", qname, newdescp, param3);
+        Object[] params = new Object[] { qname, newdescp, null };
+        assertNull(params[2]);
+
+        int result = jdbc.call("call_update_role_more", params);
         System.out.println("result = " + result);
-        assertTrue(param3.getValue() == 3);
+        int outparam = (Integer) params[2];
+        assertTrue(outparam == 3);
     }
 }

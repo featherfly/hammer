@@ -10,6 +10,7 @@
  */
 package cn.featherfly.hammer.sqldb.jdbc.mappingtype.sqltype;
 
+import java.sql.CallableStatement;
 import java.sql.JDBCType;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -64,6 +65,42 @@ public class ListToStringSqlTypeMapper extends AbstractGenericJavaSqlTypeMapper<
                 return list;
             }
             for (String v : rs.getString(columnIndex).split(",")) {
+                list.add(Long.valueOf(v));
+            }
+            //            return ArrayUtils.toNumbers(Long.class, rs.getString(columnIndex).split(","));
+            return list;
+        } catch (SQLException e) {
+            throw new JdbcException(e);
+        }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void set(CallableStatement call, String parameterName, List<?> value) {
+        StringBuilder sb = new StringBuilder();
+        for (Object object : value) {
+            sb.append(object.toString()).append(",");
+        }
+        if (sb.length() > 0) {
+            sb.deleteCharAt(sb.length() - 1);
+        }
+        JdbcUtils.setParameter(call, parameterName, sb.toString());
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public List<?> get(CallableStatement call, int paramIndex) {
+        try {
+            List<? super Object> list = new ArrayList<>();
+            String value = call.getString(paramIndex);
+            if (value == null) {
+                return list;
+            }
+            for (String v : call.getString(paramIndex).split(",")) {
                 list.add(Long.valueOf(v));
             }
             //            return ArrayUtils.toNumbers(Long.class, rs.getString(columnIndex).split(","));
