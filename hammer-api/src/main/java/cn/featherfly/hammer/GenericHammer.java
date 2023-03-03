@@ -36,7 +36,7 @@ public interface GenericHammer<E, ID extends Serializable> {
      * @param entities entity array to save
      * @return effect data row num
      */
-    int save(@SuppressWarnings("unchecked") E... entities);
+    int[] save(@SuppressWarnings("unchecked") E... entities);
 
     /**
      * save entities.
@@ -44,7 +44,7 @@ public interface GenericHammer<E, ID extends Serializable> {
      * @param entities entity list to save
      * @return effect data row num
      */
-    int save(List<E> entities);
+    int[] save(List<E> entities);
 
     /**
      * update entity, update all values. equal invoke method
@@ -64,7 +64,7 @@ public interface GenericHammer<E, ID extends Serializable> {
      * @param entities entity array to update
      * @return effect data row num
      */
-    int update(@SuppressWarnings("unchecked") E... entities);
+    int[] update(@SuppressWarnings("unchecked") E... entities);
 
     /**
      * update all values for each entity in entity list. equal invoke method
@@ -74,7 +74,18 @@ public interface GenericHammer<E, ID extends Serializable> {
      * @param entities entity list to update
      * @return effect data row num
      */
-    int update(List<E> entities);
+    int[] update(List<E> entities);
+
+    /**
+     * update all values for each entity in entity list. equal invoke method
+     * {@link #update(List, IgnorePolicy)} with params (entity,
+     * IgnorePolicy.NONE)
+     *
+     * @param entities  entity list to update
+     * @param batchSize the batch size
+     * @return effect data row num
+     */
+    int[] update(List<E> entities, int batchSize);
 
     /**
      * /** merge entity, update values ignore null or empty(string, array,
@@ -95,7 +106,7 @@ public interface GenericHammer<E, ID extends Serializable> {
      * @param ignorePolicy ignore value to update policy
      * @return effect data row num
      */
-    int update(List<E> entities, IgnorePolicy ignorePolicy);
+    int[] update(List<E> entities, IgnorePolicy ignorePolicy);
 
     /**
      * merge entity, update values ignore null or empty(string, list, map)
@@ -115,7 +126,7 @@ public interface GenericHammer<E, ID extends Serializable> {
      * @param entities entity array to merge
      * @return effect data row num
      */
-    int merge(@SuppressWarnings("unchecked") E... entities);
+    int[] merge(@SuppressWarnings("unchecked") E... entities);
 
     /**
      * update values ignore null or empty(string, array, collectoin, map) value
@@ -126,7 +137,7 @@ public interface GenericHammer<E, ID extends Serializable> {
      * @param entities entity list to merge
      * @return effect data row num
      */
-    int merge(List<E> entities);
+    int[] merge(List<E> entities);
 
     /**
      * delete entity.
@@ -142,7 +153,7 @@ public interface GenericHammer<E, ID extends Serializable> {
      * @param entities entity array to delete
      * @return effect data row num
      */
-    int delete(@SuppressWarnings("unchecked") E... entities);
+    int[] delete(@SuppressWarnings("unchecked") E... entities);
 
     /**
      * delete each entity in entity list.
@@ -150,7 +161,7 @@ public interface GenericHammer<E, ID extends Serializable> {
      * @param entities entity list to delete
      * @return effect data row num
      */
-    int delete(List<E> entities);
+    int[] delete(List<E> entities);
 
     /**
      * delete entity.
@@ -166,7 +177,7 @@ public interface GenericHammer<E, ID extends Serializable> {
      * @param ids entity id array
      * @return effect data row num
      */
-    int deleteIds(@SuppressWarnings("unchecked") ID... ids);
+    int[] deleteIds(@SuppressWarnings("unchecked") ID... ids);
 
     /**
      * delete each entity in entity id list.
@@ -174,7 +185,7 @@ public interface GenericHammer<E, ID extends Serializable> {
      * @param ids entity id list
      * @return effect data row num
      */
-    int deleteIds(List<ID> ids);
+    int[] deleteIds(List<ID> ids);
 
     /**
      * get entity by id.

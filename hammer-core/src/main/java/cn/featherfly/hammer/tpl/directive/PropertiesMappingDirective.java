@@ -18,7 +18,7 @@ public abstract class PropertiesMappingDirective implements TemplateDirective {
 
     protected static final String PARAM_NAME_MAPPING = "mapping";
 
-    protected MappingFactory mappingFactory;
+    protected MappingFactory<?> mappingFactory;
 
     protected Class<?> resultType;
 
@@ -28,7 +28,7 @@ public abstract class PropertiesMappingDirective implements TemplateDirective {
      * @param mappingFactory mappingFactory
      * @param resultType     resultType
      */
-    public PropertiesMappingDirective(MappingFactory mappingFactory, Class<?> resultType) {
+    public PropertiesMappingDirective(MappingFactory<?> mappingFactory, Class<?> resultType) {
         this(DEFAULT_PARAM_NAME_NAME, mappingFactory, resultType);
     }
 
@@ -37,7 +37,7 @@ public abstract class PropertiesMappingDirective implements TemplateDirective {
      * @param mappingFactory mappingFactory
      * @param resultType     resultType
      */
-    public PropertiesMappingDirective(String paramName, MappingFactory mappingFactory, Class<?> resultType) {
+    public PropertiesMappingDirective(String paramName, MappingFactory<?> mappingFactory, Class<?> resultType) {
         super();
         this.mappingFactory = mappingFactory;
         this.paramName = paramName;

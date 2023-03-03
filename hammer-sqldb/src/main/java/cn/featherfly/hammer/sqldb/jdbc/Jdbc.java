@@ -13,7 +13,6 @@ import com.speedment.common.tuple.Tuple3;
 import com.speedment.common.tuple.Tuple4;
 import com.speedment.common.tuple.Tuple5;
 
-import cn.featherfly.common.bean.BeanPropertyValue;
 import cn.featherfly.common.db.JdbcException;
 import cn.featherfly.common.db.dialect.Dialect;
 import cn.featherfly.common.db.mapping.SqlTypeMappingManager;
@@ -228,14 +227,14 @@ public interface Jdbc {
      */
     int update(String sql, Object... args);
 
-    /**
-     * Update.
-     *
-     * @param sql  the sql
-     * @param args the args
-     * @return the int
-     */
-    int update(String sql, BeanPropertyValue<?>... args);
+    //    /**
+    //     * Update.
+    //     *
+    //     * @param sql  the sql
+    //     * @param args the args
+    //     * @return the int
+    //     */
+    //    int update(String sql, BeanPropertyValue<?>... args);
 
     /**
      * Update.
@@ -257,17 +256,17 @@ public interface Jdbc {
      */
     <T extends Serializable> int update(String sql, GeneratedKeyHolder<T> generatedKeyHolder, Object... args);
 
-    /**
-     * Update.
-     *
-     * @param <T>                the generic type
-     * @param sql                the sql
-     * @param generatedKeyHolder the generated key holder
-     * @param args               the args
-     * @return the int
-     */
-    <T extends Serializable> int update(String sql, GeneratedKeyHolder<T> generatedKeyHolder,
-            BeanPropertyValue<?>... args);
+    //    /**
+    //     * Update.
+    //     *
+    //     * @param <T>                the generic type
+    //     * @param sql                the sql
+    //     * @param generatedKeyHolder the generated key holder
+    //     * @param args               the args
+    //     * @return the int
+    //     */
+    //    <T extends Serializable> int update(String sql, GeneratedKeyHolder<T> generatedKeyHolder,
+    //            BeanPropertyValue<?>... args);
 
     /**
      * Update.
@@ -281,7 +280,49 @@ public interface Jdbc {
     <T extends Serializable> int update(String sql, GeneratedKeyHolder<T> generatedKeyHolder, Map<String, Object> args);
 
     /**
-     * Update.
+     * batch update.
+     *
+     * @param sql      the sql
+     * @param argsList the batch args list
+     * @return the int
+     */
+    default <T extends Serializable> int[] updateBatch(String sql, List<Object[]> argsList) {
+        return updateBatch(sql, null, argsList);
+    }
+
+    /**
+     * batch update.
+     *
+     * @param sql      the sql
+     * @param argsList the batch args list
+     * @return the int
+     */
+    <T extends Serializable> int[] updateBatch(String sql, GeneratedKeyHolder<T> generatedKeyHolder,
+            List<Object[]> argsList);
+
+    /**
+     * batch update.
+     *
+     * @param sql       the sql
+     * @param batchArgs the batch args array
+     * @return the int
+     */
+    default <T extends Serializable> int[] updateBatch(String sql, Map<String, Object>[] batchArgs) {
+        return updateBatch(sql, null, batchArgs);
+    }
+
+    /**
+     * batch update.
+     *
+     * @param sql       the sql
+     * @param batchArgs the batch args array
+     * @return the int
+     */
+    <T extends Serializable> int[] updateBatch(String sql, GeneratedKeyHolder<T> generatedKeyHolder,
+            Map<String, Object>[] batchArgs);
+
+    /**
+     * batch update.
      *
      * @param <T>       the generic type
      * @param sql       sql
@@ -294,7 +335,7 @@ public interface Jdbc {
     }
 
     /**
-     * Update.
+     * batch update.
      *
      * @param sql       the sql
      * @param batchSize the batch size
@@ -306,7 +347,7 @@ public interface Jdbc {
     }
 
     /**
-     * Update.
+     * batch update.
      *
      * @param <T>                the generic type
      * @param sql                the sql

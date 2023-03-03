@@ -6,6 +6,7 @@ import com.speedment.common.tuple.Tuple3;
 
 import cn.featherfly.common.db.mapping.ClassMappingUtils;
 import cn.featherfly.common.db.mapping.JdbcClassMapping;
+import cn.featherfly.common.db.mapping.JdbcPropertyMapping;
 import cn.featherfly.common.db.mapping.SqlTypeMappingManager;
 import cn.featherfly.common.db.metadata.DatabaseMetadata;
 import cn.featherfly.hammer.sqldb.jdbc.Jdbc;
@@ -73,8 +74,8 @@ public class MergeOperate<T> extends AbstractOperate<T> implements ExecuteOperat
      * @return 操作影响的数据行数
      */
     public int execute(final T entity, boolean onlyNull) {
-        Tuple3<String, Map<Integer, String>, Integer> tuple = ClassMappingUtils.getMergeSqlAndParamPositions(entity,
-                classMapping, onlyNull, jdbc.getDialect());
+        Tuple3<String, Map<Integer, JdbcPropertyMapping>, Integer> tuple = ClassMappingUtils
+                .getMergeSqlAndParamPositions(entity, classMapping, onlyNull, jdbc.getDialect());
         // 如果需要更新的参数数量为0,表示不需要更新
         if (tuple.get2() == 0) {
             return 0;

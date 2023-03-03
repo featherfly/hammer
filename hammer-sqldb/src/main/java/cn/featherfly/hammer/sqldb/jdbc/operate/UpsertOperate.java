@@ -1,6 +1,7 @@
 package cn.featherfly.hammer.sqldb.jdbc.operate;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -93,7 +94,7 @@ public class UpsertOperate<T> extends AbstractBatchExecuteOperate<T> {
     @Override
     protected int doExecuteBatch(final List<T> entities) {
         List<JdbcPropertyMapping> pks = classMapping.getPrivaryKeyPropertyMappings();
-        Tuple2<String, Map<Integer, String>> tuple = ClassMappingUtils
+        Tuple2<String, Map<Integer, JdbcPropertyMapping>> tuple = ClassMappingUtils
                 .getUpsertBatchSqlAndParamPositions(entities.size(), classMapping, jdbc.getDialect());
         String sql = tuple.get0();
         return jdbc.updateBatch(sql, entities.size(), new GeneratedKeyHolder<Serializable>() {
@@ -182,9 +183,59 @@ public class UpsertOperate<T> extends AbstractBatchExecuteOperate<T> {
      * {@inheritDoc}
      */
     @Override
+    protected int[] doExecute(List<T> entities) {
+        List<JdbcPropertyMapping> pks = classMapping.getPrivaryKeyPropertyMappings();
+        List<Object[]> argsList = new ArrayList<>(entities.size());
+        for (T entity : entities) {
+            argsList.add(getParameters(entity));
+        }
+
+        int[] results;
+        if (pks.size() == 1) {
+            results = jdbc.updateBatch(sql, new GeneratedKeyHolder<Serializable>() {
+                @Override
+                public void acceptKey(Serializable key, int row) {
+                    // YUFEI_TODO 需要更多测试各种情况是否正确
+                    if (row < entities.size()) {
+                        // YUFEI_TODO 需要更多测试各种情况是否正确
+                        if (BeanUtils.getProperty(entities.get(row), pks.get(0).getPropertyName()) == null) {
+                            BeanUtils.setProperty(entities.get(row), pks.get(0).getPropertyName(), key);
+                        }
+                    }
+                }
+
+                @Override
+                public Type<Serializable> getType() {
+                    return BeanDescriptor.getBeanDescriptor(classMapping.getType())
+                            .getBeanProperty(pks.get(0).getPropertyName());
+                }
+
+                @Override
+                public void acceptKey(List<Serializable> keys) {
+                    if (keys.size() == entities.size()) {
+                        for (int i = 0; i < keys.size(); i++) {
+                            acceptKey(keys.get(i), i);
+                        }
+                    } else {
+                        logger.warn(
+                                "entities.size[{}] != genereteKeys.size[{}], can not set generate key to entity object",
+                                entities.size(), keys.size());
+                    }
+                }
+            }, argsList);
+        } else {
+            results = jdbc.updateBatch(sql, argsList);
+        }
+        return results;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
     protected void initSql() {
-        Tuple2<String, Map<Integer, String>> tuple = ClassMappingUtils.getUpsertSqlAndParamPositions(classMapping,
-                jdbc.getDialect());
+        Tuple2<String, Map<Integer, JdbcPropertyMapping>> tuple = ClassMappingUtils
+                .getUpsertSqlAndParamPositions(classMapping, jdbc.getDialect());
         sql = tuple.get0();
         propertyPositions.putAll(tuple.get1());
         logger.debug("sql: {}", sql);

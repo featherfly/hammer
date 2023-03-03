@@ -84,7 +84,7 @@ public class BasedTplHammer implements Hammer {
      * {@inheritDoc}
      */
     @Override
-    public <E> int delete(@SuppressWarnings("unchecked") E... entities) {
+    public <E> int[] delete(@SuppressWarnings("unchecked") E... entities) {
         return hammer.delete(entities);
     }
 
@@ -92,7 +92,7 @@ public class BasedTplHammer implements Hammer {
      * {@inheritDoc}
      */
     @Override
-    public <E> int delete(List<E> entities) {
+    public <E> int[] delete(List<E> entities) {
         return hammer.delete(entities);
     }
 
@@ -255,7 +255,7 @@ public class BasedTplHammer implements Hammer {
      * {@inheritDoc}
      */
     @Override
-    public <E> int merge(@SuppressWarnings("unchecked") E... entities) {
+    public <E> int[] merge(@SuppressWarnings("unchecked") E... entities) {
         return hammer.merge(entities);
     }
 
@@ -263,7 +263,7 @@ public class BasedTplHammer implements Hammer {
      * {@inheritDoc}
      */
     @Override
-    public <E> int merge(List<E> entities) {
+    public <E> int[] merge(List<E> entities) {
         return hammer.merge(entities);
     }
 
@@ -383,7 +383,7 @@ public class BasedTplHammer implements Hammer {
      * {@inheritDoc}
      */
     @Override
-    public <E> int save(@SuppressWarnings("unchecked") E... entities) {
+    public <E> int[] save(@SuppressWarnings("unchecked") E... entities) {
         return hammer.save(entities);
     }
 
@@ -391,7 +391,7 @@ public class BasedTplHammer implements Hammer {
      * {@inheritDoc}
      */
     @Override
-    public <E> int save(List<E> entities) {
+    public <E> int[] save(List<E> entities) {
         return hammer.save(entities);
     }
 
@@ -463,7 +463,7 @@ public class BasedTplHammer implements Hammer {
      * {@inheritDoc}
      */
     @Override
-    public <E> int update(@SuppressWarnings("unchecked") E... entities) {
+    public <E> int[] update(@SuppressWarnings("unchecked") E... entities) {
         return hammer.update(entities);
     }
 
@@ -479,7 +479,7 @@ public class BasedTplHammer implements Hammer {
      * {@inheritDoc}
      */
     @Override
-    public <E> int update(List<E> entities) {
+    public <E> int[] update(List<E> entities) {
         return hammer.update(entities);
     }
 
@@ -487,7 +487,15 @@ public class BasedTplHammer implements Hammer {
      * {@inheritDoc}
      */
     @Override
-    public <E> int update(List<E> entities, IgnorePolicy ignorePolicy) {
+    public <E> int[] update(List<E> entities, int batchSize) {
+        return hammer.update(entities, batchSize);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public <E> int[] update(List<E> entities, IgnorePolicy ignorePolicy) {
         return hammer.update(entities, ignorePolicy);
     }
 
@@ -623,7 +631,7 @@ public class BasedTplHammer implements Hammer {
      * {@inheritDoc}
      */
     @Override
-    public <E> int delete(Serializable[] ids, Class<E> entityType) {
+    public <E> int[] delete(Serializable[] ids, Class<E> entityType) {
         return hammer.delete(ids, entityType);
     }
 
@@ -631,7 +639,7 @@ public class BasedTplHammer implements Hammer {
      * {@inheritDoc}
      */
     @Override
-    public <E, ID extends Serializable> int delete(List<ID> ids, Class<E> entityType) {
+    public <E, ID extends Serializable> int[] delete(List<ID> ids, Class<E> entityType) {
         return hammer.delete(ids, entityType);
     }
 

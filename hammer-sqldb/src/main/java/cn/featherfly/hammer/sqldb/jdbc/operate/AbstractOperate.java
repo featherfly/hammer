@@ -13,8 +13,9 @@ import org.slf4j.LoggerFactory;
 
 import cn.featherfly.common.bean.BeanDescriptor;
 import cn.featherfly.common.bean.BeanProperty;
-import cn.featherfly.common.bean.BeanPropertyValue;
 import cn.featherfly.common.bean.BeanUtils;
+import cn.featherfly.common.db.FieldOperator;
+import cn.featherfly.common.db.FieldValueOperator;
 import cn.featherfly.common.db.mapping.JdbcClassMapping;
 import cn.featherfly.common.db.mapping.JdbcPropertyMapping;
 import cn.featherfly.common.db.mapping.SqlTypeMappingManager;
@@ -53,7 +54,7 @@ public abstract class AbstractOperate<T> {
     protected DatabaseMetadata meta;
 
     /** 属性在SQL中出现的位置，即SQL语句中每个问号对应的对象属性. */
-    protected Map<Integer, String> propertyPositions = new HashMap<>(0);
+    protected Map<Integer, JdbcPropertyMapping> propertyPositions = new HashMap<>(0);
 
     /** The pk properties. */
     protected List<BeanProperty<Serializable>> pkProperties = new ArrayList<>();
@@ -245,9 +246,12 @@ public abstract class AbstractOperate<T> {
      * @param entity the entity
      * @return the parameters
      */
-    public BeanPropertyValue<?>[] getParameters(T entity) {
+    public Object[] getParameters(T entity) {
         return getParameters(entity, propertyPositions);
     }
+    //    public BeanPropertyValue<?>[] getParameters(T entity) {
+    //        return getParameters(entity, propertyPositions);
+    //    }
 
     //    /**
     //     * Gets the parameters.
@@ -273,22 +277,40 @@ public abstract class AbstractOperate<T> {
      * @param propertyPositions the property positions
      * @return the parameters
      */
-    @SuppressWarnings({ "unchecked", "rawtypes" })
-    protected BeanPropertyValue<?>[] getParameters(T entity, Map<Integer, String> propertyPositions) {
-        /* TODO  这里后续可以优化为 BeanPropertyValue为EntityBeanPropertyValue,  EntityBeanPropertyValue带有已注册的Mapper
-                       然后sql执行时，直接绕过TypeManager不在去找java类型和sql类型的映射关系
-                       此举可以加速实体类型的数据库操作速度
-        */
-        BeanPropertyValue<?>[] bpvs = new BeanPropertyValue[propertyPositions.size()];
+    protected Object[] getParameters(T entity, Map<Integer, JdbcPropertyMapping> propertyPositions) {
         int i = 0;
-        for (Entry<Integer, String> propertyPosition : propertyPositions.entrySet()) {
-            // ENHANCE 下面这个逻辑后续可以用map优化，缓存下来
-            BeanProperty<?> bp = beanDescriptor.getBeanProperty(propertyPosition.getValue());
-            bpvs[i] = new BeanPropertyValue(bp, BeanUtils.getProperty(entity, propertyPosition.getValue()));
+        FieldOperator<?>[] operators = new FieldOperator[propertyPositions.size()];
+        for (Entry<Integer, JdbcPropertyMapping> propertyPosition : propertyPositions.entrySet()) {
+            operators[i] = FieldValueOperator.create(propertyPosition.getValue(),
+                    BeanUtils.getProperty(entity, propertyPosition.getValue().getPropertyFullName()));
             i++;
         }
-        return bpvs;
+        return operators;
     }
+
+    //    /**
+    //     * Gets the parameters.
+    //     *
+    //     * @param entity            the entity
+    //     * @param propertyPositions the property positions
+    //     * @return the parameters
+    //     */
+    //    @SuppressWarnings({ "unchecked", "rawtypes" })
+    //    protected BeanPropertyValue<?>[] getParameters2(T entity, Map<Integer, JdbcPropertyMapping> propertyPositions) {
+    //        /* TODO  这里后续可以优化为 BeanPropertyValue为FieldValueOperator,  FieldValueOperator带有已注册的Mapper
+    //                       然后sql执行时，直接绕过TypeManager不在去找java类型和sql类型的映射关系
+    //                       此举可以加速实体类型的数据库操作速度
+    //        */
+    //        BeanPropertyValue<?>[] bpvs = new BeanPropertyValue[propertyPositions.size()];
+    //        int i = 0;
+    //        for (Entry<Integer, String> propertyPosition : propertyPositions.entrySet()) {
+    //            // ENHANCE 下面这个逻辑后续可以用map优化，缓存下来
+    //            BeanProperty<?> bp = beanDescriptor.getBeanProperty(propertyPosition.getValue());
+    //            bpvs[i] = new BeanPropertyValue(bp, BeanUtils.getProperty(entity, propertyPosition.getValue()));
+    //            i++;
+    //        }
+    //        return bpvs;
+    //    }
 
     //    /**
     //     * 设置预编译参数 .

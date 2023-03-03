@@ -1,6 +1,7 @@
 package cn.featherfly.hammer.sqldb.jdbc.operate;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -83,10 +84,63 @@ public class InsertOperate<T> extends AbstractBatchExecuteOperate<T> {
     //        }
     //    }
 
+    //    /**
+    //     * {@inheritDoc}
+    //     */
+    //    @Override
+    //    public int executeBatch(final List<T> entities, int batchSize) {
+    //        if (Lang.isEmpty(entities)) {
+    //            return Chars.ZERO;
+    //        }
+    //        if (supportBatch()) {
+    //            return doExecuteBatch(entities, batchSize);
+    //        } else {
+    //            int size = 0;
+    //            List<JdbcPropertyMapping> pks = classMapping.getPrivaryKeyPropertyMappings();
+    //            List<Object[]> argsList = new ArrayList<>(entities.size());
+    //            for (T entity : entities) {
+    //                argsList.add(getParameters(entity));
+    //            }
+    //            GeneratedKeyHolder<Serializable> keyHolder = new GeneratedKeyHolder<Serializable>() {
+    //                @Override
+    //                public void acceptKey(Serializable key, int row) {
+    //                    // YUFEI_TODO 需要更多测试各种情况是否正确
+    //                    if (BeanUtils.getProperty(entities.get(row), pks.get(0).getPropertyName()) == null) {
+    //                        BeanUtils.setProperty(entities.get(row), pks.get(0).getPropertyName(), key);
+    //                    }
+    //                }
+    //
+    //                @Override
+    //                public Type<Serializable> getType() {
+    //                    return BeanDescriptor.getBeanDescriptor(classMapping.getType())
+    //                            .getBeanProperty(pks.get(0).getPropertyName());
+    //                }
+    //
+    //                @Override
+    //                public void acceptKey(List<Serializable> keys) {
+    //                    for (int i = 0; i < keys.size(); i++) {
+    //                        acceptKey(keys.get(i), i);
+    //                    }
+    //                }
+    //            };
+    //
+    //            int[] results;
+    //            if (pks.size() == 1) {
+    //                results = jdbc.updateBatch(sql, keyHolder, argsList);
+    //            } else {
+    //                results = jdbc.updateBatch(sql, argsList);
+    //            }
+    //            for (int r : results) {
+    //                size += r;
+    //            }
+    //            return size;
+    //        }
+    //    }
+
     @Override
     protected int doExecuteBatch(final List<T> entities) {
         List<JdbcPropertyMapping> pks = classMapping.getPrivaryKeyPropertyMappings();
-        Tuple2<String, Map<Integer, String>> tuple = ClassMappingUtils
+        Tuple2<String, Map<Integer, JdbcPropertyMapping>> tuple = ClassMappingUtils
                 .getInsertBatchSqlAndParamPositions(entities.size(), classMapping, jdbc.getDialect());
         String sql = tuple.get0();
         if (pks.size() == 1) {
@@ -173,9 +227,57 @@ public class InsertOperate<T> extends AbstractBatchExecuteOperate<T> {
      * {@inheritDoc}
      */
     @Override
+    protected int[] doExecute(List<T> entities) {
+        List<JdbcPropertyMapping> pks = classMapping.getPrivaryKeyPropertyMappings();
+        List<Object[]> argsList = new ArrayList<>(entities.size());
+        for (T entity : entities) {
+            argsList.add(getParameters(entity));
+        }
+        int[] results;
+        if (pks.size() == 1) {
+            results = jdbc.updateBatch(sql, new GeneratedKeyHolder<Serializable>() {
+                @Override
+                public void acceptKey(Serializable key, int row) {
+                    // YUFEI_TODO 需要更多测试各种情况是否正确
+                    if (BeanUtils.getProperty(entities.get(row), pks.get(0).getPropertyName()) == null) {
+                        BeanUtils.setProperty(entities.get(row), pks.get(0).getPropertyName(), key);
+                    }
+                }
+
+                @Override
+                public Type<Serializable> getType() {
+                    return BeanDescriptor.getBeanDescriptor(classMapping.getType())
+                            .getBeanProperty(pks.get(0).getPropertyName());
+                }
+
+                @Override
+                public void acceptKey(List<Serializable> keys) {
+                    for (int i = 0; i < keys.size(); i++) {
+                        acceptKey(keys.get(i), i);
+                    }
+                }
+            }, argsList);
+        } else {
+            results = jdbc.updateBatch(sql, argsList);
+        }
+        return results;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    protected boolean supportBatch() {
+        return jdbc.getDialect().supportInsertBatch();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
     protected void initSql() {
-        Tuple2<String, Map<Integer, String>> tuple = ClassMappingUtils.getInsertSqlAndParamPositions(classMapping,
-                jdbc.getDialect());
+        Tuple2<String, Map<Integer, JdbcPropertyMapping>> tuple = ClassMappingUtils
+                .getInsertSqlAndParamPositions(classMapping, jdbc.getDialect());
         sql = tuple.get0();
         propertyPositions.putAll(tuple.get1());
         logger.debug("sql: {}", sql);
@@ -204,12 +306,4 @@ public class InsertOperate<T> extends AbstractBatchExecuteOperate<T> {
     //        }
     //        return params;
     //    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    protected boolean supportBatch() {
-        return jdbc.getDialect().supportInsertBatch();
-    }
 }

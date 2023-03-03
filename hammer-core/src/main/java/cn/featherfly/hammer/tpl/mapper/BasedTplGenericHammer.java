@@ -56,7 +56,7 @@ public class BasedTplGenericHammer<E, ID extends Serializable> implements Generi
      * {@inheritDoc}
      */
     @Override
-    public int delete(@SuppressWarnings("unchecked") E... entities) {
+    public int[] delete(@SuppressWarnings("unchecked") E... entities) {
         return hammer.delete(entities);
     }
 
@@ -64,7 +64,7 @@ public class BasedTplGenericHammer<E, ID extends Serializable> implements Generi
      * {@inheritDoc}
      */
     @Override
-    public int delete(List<E> entities) {
+    public int[] delete(List<E> entities) {
         return hammer.delete(entities);
     }
 
@@ -80,7 +80,7 @@ public class BasedTplGenericHammer<E, ID extends Serializable> implements Generi
      * {@inheritDoc}
      */
     @Override
-    public int deleteIds(@SuppressWarnings("unchecked") ID... ids) {
+    public int[] deleteIds(@SuppressWarnings("unchecked") ID... ids) {
         return hammer.delete(ids, type);
     }
 
@@ -88,7 +88,7 @@ public class BasedTplGenericHammer<E, ID extends Serializable> implements Generi
      * {@inheritDoc}
      */
     @Override
-    public int deleteIds(List<ID> ids) {
+    public int[] deleteIds(List<ID> ids) {
         return hammer.delete(ids, type);
     }
 
@@ -144,7 +144,7 @@ public class BasedTplGenericHammer<E, ID extends Serializable> implements Generi
      * {@inheritDoc}
      */
     @Override
-    public int merge(@SuppressWarnings("unchecked") E... entities) {
+    public int[] merge(@SuppressWarnings("unchecked") E... entities) {
         return hammer.merge(entities);
     }
 
@@ -152,7 +152,7 @@ public class BasedTplGenericHammer<E, ID extends Serializable> implements Generi
      * {@inheritDoc}
      */
     @Override
-    public int merge(List<E> entities) {
+    public int[] merge(List<E> entities) {
         return hammer.merge(entities);
     }
 
@@ -176,7 +176,7 @@ public class BasedTplGenericHammer<E, ID extends Serializable> implements Generi
      * {@inheritDoc}
      */
     @Override
-    public int save(@SuppressWarnings("unchecked") E... entities) {
+    public int[] save(@SuppressWarnings("unchecked") E... entities) {
         return hammer.save(entities);
     }
 
@@ -184,7 +184,7 @@ public class BasedTplGenericHammer<E, ID extends Serializable> implements Generi
      * {@inheritDoc}
      */
     @Override
-    public int save(List<E> entities) {
+    public int[] save(List<E> entities) {
         return hammer.save(entities);
     }
 
@@ -208,7 +208,7 @@ public class BasedTplGenericHammer<E, ID extends Serializable> implements Generi
      * {@inheritDoc}
      */
     @Override
-    public int update(@SuppressWarnings("unchecked") E... entities) {
+    public int[] update(@SuppressWarnings("unchecked") E... entities) {
         return hammer.update(entities);
     }
 
@@ -224,7 +224,7 @@ public class BasedTplGenericHammer<E, ID extends Serializable> implements Generi
      * {@inheritDoc}
      */
     @Override
-    public int update(List<E> entities) {
+    public int[] update(List<E> entities) {
         return hammer.update(entities);
     }
 
@@ -232,7 +232,15 @@ public class BasedTplGenericHammer<E, ID extends Serializable> implements Generi
      * {@inheritDoc}
      */
     @Override
-    public int update(List<E> entities, IgnorePolicy ignorePolicy) {
+    public int[] update(List<E> entities, int batchSize) {
+        return hammer.update(entities, batchSize);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public int[] update(List<E> entities, IgnorePolicy ignorePolicy) {
         return hammer.update(entities, ignorePolicy);
     }
 
