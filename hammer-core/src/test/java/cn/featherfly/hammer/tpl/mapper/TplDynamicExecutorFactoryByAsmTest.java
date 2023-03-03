@@ -453,49 +453,13 @@ public class TplDynamicExecutorFactoryByAsmTest {
             }
 
             @Override
-            public <E> int update(List<E> entities, IgnorePolicy ignorePolicy) {
-
-                return 0;
-            }
-
-            @Override
             public <E> int update(E entity, IgnorePolicy ignorePolicy) {
 
                 return 0;
             }
 
             @Override
-            public <E> int update(List<E> entities) {
-
-                return 0;
-            }
-
-            @Override
-            public <E> int update(@SuppressWarnings("unchecked") E... entities) {
-
-                return 0;
-            }
-
-            @Override
             public <E> int update(E entity) {
-
-                return 0;
-            }
-
-            @Override
-            public <E> int save(List<E> entities) {
-
-                return 0;
-            }
-
-            @Override
-            public <E> int save(@SuppressWarnings("unchecked") E... entities) {
-
-                return 0;
-            }
-
-            @Override
-            public <E> int save(E entity) {
 
                 return 0;
             }
@@ -513,15 +477,15 @@ public class TplDynamicExecutorFactoryByAsmTest {
             }
 
             @Override
-            public <E> int merge(List<E> entities) {
+            public <E> int[] merge(List<E> entities) {
 
-                return 0;
+                return null;
             }
 
             @Override
-            public <E> int merge(@SuppressWarnings("unchecked") E... entities) {
+            public <E> int[] merge(@SuppressWarnings("unchecked") E... entities) {
 
-                return 0;
+                return null;
             }
 
             @Override
@@ -571,30 +535,6 @@ public class TplDynamicExecutorFactoryByAsmTest {
             public Delete delete(String repository) {
 
                 return null;
-            }
-
-            @Override
-            public <E> int delete(List<E> entities) {
-
-                return 0;
-            }
-
-            @Override
-            public <E> int delete(@SuppressWarnings("unchecked") E... entities) {
-
-                return 0;
-            }
-
-            @Override
-            public <E, ID extends Serializable> int delete(List<ID> ids, Class<E> entityType) {
-
-                return 0;
-            }
-
-            @Override
-            public <E> int delete(Serializable[] ids, Class<E> entityType) {
-
-                return 0;
             }
 
             @Override
@@ -653,6 +593,72 @@ public class TplDynamicExecutorFactoryByAsmTest {
 
             @Override
             public Delete delete(Repository repository) {
+                // YUFEI_TODO Auto-generated method stub
+                return null;
+            }
+
+            @Override
+            public <E> int[] update(List<E> entities, int batchSize) {
+                // YUFEI_TODO Auto-generated method stub
+                return null;
+            }
+
+            @Override
+            public <E> int[] update(E... entities) {
+                // YUFEI_TODO Auto-generated method stub
+                return null;
+            }
+
+            @Override
+            public <E> int[] update(List<E> entities) {
+                // YUFEI_TODO Auto-generated method stub
+                return null;
+            }
+
+            @Override
+            public <E> int[] update(List<E> entities, IgnorePolicy ignorePolicy) {
+                // YUFEI_TODO Auto-generated method stub
+                return null;
+            }
+
+            @Override
+            public <E> int save(E entity) {
+                // YUFEI_TODO Auto-generated method stub
+                return 0;
+            }
+
+            @Override
+            public <E> int[] save(E... entities) {
+                // YUFEI_TODO Auto-generated method stub
+                return null;
+            }
+
+            @Override
+            public <E> int[] save(List<E> entities) {
+                // YUFEI_TODO Auto-generated method stub
+                return null;
+            }
+
+            @Override
+            public <E> int[] delete(Serializable[] ids, Class<E> entityType) {
+                // YUFEI_TODO Auto-generated method stub
+                return null;
+            }
+
+            @Override
+            public <E, ID extends Serializable> int[] delete(List<ID> ids, Class<E> entityType) {
+                // YUFEI_TODO Auto-generated method stub
+                return null;
+            }
+
+            @Override
+            public <E> int[] delete(E... entities) {
+                // YUFEI_TODO Auto-generated method stub
+                return null;
+            }
+
+            @Override
+            public <E> int[] delete(List<E> entities) {
                 // YUFEI_TODO Auto-generated method stub
                 return null;
             }

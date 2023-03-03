@@ -26,6 +26,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
+import java.util.function.BiConsumer;
 import java.util.function.Consumer;
 
 import javax.sql.DataSource;
@@ -200,18 +201,18 @@ public abstract class AbstractJdbc implements Jdbc {
         return 0;
     }
 
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public <T extends Serializable> int update(String sql, GeneratedKeyHolder<T> keySupplier,
-            BeanPropertyValue<?>... args) {
-        if (Lang.isNotEmpty(sql)) {
-            sql = sql.trim();
-            return executeUpdate(sql, 1, keySupplier, args);
-        }
-        return 0;
-    }
+    //    /**
+    //     * {@inheritDoc}
+    //     */
+    //    @Override
+    //    public <T extends Serializable> int update(String sql, GeneratedKeyHolder<T> keySupplier,
+    //            BeanPropertyValue<?>... args) {
+    //        if (Lang.isNotEmpty(sql)) {
+    //            sql = sql.trim();
+    //            return executeUpdate(sql, 1, keySupplier, args);
+    //        }
+    //        return 0;
+    //    }
 
     /**
      * {@inheritDoc}
@@ -250,13 +251,46 @@ public abstract class AbstractJdbc implements Jdbc {
      * {@inheritDoc}
      */
     @Override
-    public int update(String sql, BeanPropertyValue<?>... args) {
+    public <T extends Serializable> int[] updateBatch(String sql, GeneratedKeyHolder<T> generatedKeyHolder,
+            List<Object[]> argsList) {
         if (Lang.isNotEmpty(sql)) {
             sql = sql.trim();
-            return executeUpdate(sql, 1, args);
+            return executeUpdateBatch((prep, args) -> setParams(prep, args), sql, generatedKeyHolder, argsList);
         }
-        return 0;
+        return ArrayUtils.EMPTY_INT_ARRAY;
     }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public <T extends Serializable> int[] updateBatch(String sql, GeneratedKeyHolder<T> generatedKeyHolder,
+            Map<String, Object>[] batchArgs) {
+        if (Lang.isNotEmpty(sql) && Lang.isNotEmpty(batchArgs)) {
+            logger.debug("sql -> {}", sql);
+            sql = sql.trim();
+            List<Object[]> argsList = new ArrayList<>(batchArgs.length);
+            Execution execution = null;
+            for (Map<String, Object> arg : batchArgs) {
+                execution = SqlUtils.convertNamedParamSql(sql, arg);
+                argsList.add(execution.getParams());
+            }
+            return updateBatch(execution.getExecution(), generatedKeyHolder, argsList);
+        }
+        return ArrayUtils.EMPTY_INT_ARRAY;
+    }
+
+    //    /**
+    //     * {@inheritDoc}
+    //     */
+    //    @Override
+    //    public int update(String sql, BeanPropertyValue<?>... args) {
+    //        if (Lang.isNotEmpty(sql)) {
+    //            sql = sql.trim();
+    //            return executeUpdate(sql, 1, args);
+    //        }
+    //        return 0;
+    //    }
 
     private int executeUpdate(String sql, int batchSize, Object... args) {
         return executeUpdate(sql, batchSize, null, args);
@@ -268,17 +302,25 @@ public abstract class AbstractJdbc implements Jdbc {
         return executeUpdate(prep -> setParams(prep, args), sql, batchSize, generatedKeyHolder, args);
     }
 
-    private int executeUpdate(String sql, int batchSize, BeanPropertyValue<?>... args) {
-        return executeUpdate(sql, batchSize, null, args);
-    }
+    //    private int executeUpdate(String sql, int batchSize, BeanPropertyValue<?>... args) {
+    //        return executeUpdate(sql, batchSize, null, args);
+    //    }
+    //
+    //    private <T extends Serializable> int executeUpdate(String sql, int batchSize,
+    //            GeneratedKeyHolder<T> generatedKeyHolder, BeanPropertyValue<?>... argsBp) {
+    //        logger.debug("sql -> {}, args -> {}", sql, argsBp);
+    //        return executeUpdate(prep -> setParams(prep, argsBp), sql, batchSize, generatedKeyHolder,
+    //                Arrays.stream(argsBp).map(arg -> arg.getValue()).toArray());
+    //    }
 
-    private <T extends Serializable> int executeUpdate(String sql, int batchSize,
-            GeneratedKeyHolder<T> generatedKeyHolder, BeanPropertyValue<?>... argsBp) {
-        logger.debug("sql -> {}, args -> {}", sql, argsBp);
-        return executeUpdate(prep -> setParams(prep, argsBp), sql, batchSize, generatedKeyHolder,
-                Arrays.stream(argsBp).map(arg -> arg.getValue()).toArray());
-    }
-
+    /**
+     * Gets the generete key.
+     *
+     * @param <T>  the generic type
+     * @param type the type
+     * @param res  the res
+     * @return the generete key
+     */
     private <T extends Serializable> T getGenereteKey(Type<T> type, ResultSet res) {
         T value;
         if (type instanceof BeanProperty) {
@@ -288,6 +330,75 @@ public abstract class AbstractJdbc implements Jdbc {
         }
         logger.debug("auto generated key: {}", value);
         return value;
+    }
+
+    private <T extends Serializable> int[] executeUpdateBatch(BiConsumer<PreparedStatement, Object[]> setParams,
+            String sql, GeneratedKeyHolder<T> generatedKeyHolder, List<Object[]> argsList) {
+        StringBuilder message = new StringBuilder();
+        if (logger.isDebugEnabled()) {
+            message.append("execute batch -> ").append(sql).append("\n").append("  batch size -> ")
+                    .append(argsList.size()).append("\n");
+        }
+        DataSource ds = getDataSource();
+        Connection connection = getConnection(ds);
+        try (PreparedStatement prep = generatedKeyHolder == null ? connection.prepareStatement(sql)
+                : connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
+            List<JdbcExecution> jdbcExecutions = new ArrayList<>(argsList.size());
+            for (Object[] args : argsList) {
+                JdbcExecution execution = preHandle(sql, args);
+                jdbcExecutions.add(execution);
+                if (logger.isDebugEnabled()) {
+                    message.append("    args -> ").append(Arrays.toString(execution.getParams())).append("\n");
+                }
+                setParams.accept(prep, args);
+                prep.addBatch();
+            }
+            if (logger.isDebugEnabled()) {
+                logger.debug(message.toString());
+            }
+            int[] results = prep.executeBatch();
+            // 不是查询操作，没有查询结果
+            for (JdbcExecution execution : jdbcExecutions) {
+                postHandle(execution, sql, execution.getParams());
+            }
+            if (generatedKeyHolder != null) {
+                try (ResultSet res = prep.getGeneratedKeys()) {
+                    int row = 0;
+                    if (dialect instanceof SQLiteDialect) { // res.isLast() not supported by sqlite
+                        while (res.next()) {
+                            T value = getGenereteKey(generatedKeyHolder.getType(), res);
+                            generatedKeyHolder.acceptKey(value, row++);
+                        }
+                    } else {
+                        if (res.next()) {
+                            if (res.isLast()) {
+                                T value = getGenereteKey(generatedKeyHolder.getType(), res);
+                                generatedKeyHolder.acceptKey(value, row);
+                            } else {
+                                List<T> keys = new ArrayList<>();
+                                keys.add(getGenereteKey(generatedKeyHolder.getType(), res));
+                                while (res.next()) {
+                                    keys.add(getGenereteKey(generatedKeyHolder.getType(), res));
+                                }
+                                generatedKeyHolder.acceptKey(keys);
+                            }
+                        }
+                    }
+                }
+            }
+            return results;
+        } catch (SQLException e) {
+            releaseConnection(connection, ds);
+            StringBuilder strArgs = new StringBuilder();
+            int index = 0;
+            for (Object[] args : argsList) {
+                strArgs.append("\n    batch[").append(index++).append("]: ").append(Arrays.toString(args));
+            }
+            throw new JdbcException(
+                    Strings.format("executeUpdateBatch: \n  sql: {0} \n  args: {1}", sql, strArgs.toString()), e);
+        } finally {
+            releaseConnection(connection, getDataSource());
+        }
     }
 
     private <T extends Serializable> int executeUpdate(Consumer<PreparedStatement> setParams, String sql, int batchSize,

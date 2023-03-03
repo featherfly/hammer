@@ -104,7 +104,7 @@ public class SqlEntityExecutableUpdate<E> extends AbstractSqlExecutableUpdate<Sq
         }
         String npn = getPropertyName(nestedProperty);
         JdbcPropertyMapping spm = pm.getPropertyMapping(npn);
-        return _set(spm, FieldValueOperator.craete(spm, value));
+        return _set(spm, FieldValueOperator.create(spm, value));
         //        if (spm != null) {
         //            return _set(spm, FieldValueOperator.craete(spm, value));
         //        } else {
@@ -221,18 +221,18 @@ public class SqlEntityExecutableUpdate<E> extends AbstractSqlExecutableUpdate<Sq
                 BeanDescriptor<?> bd = BeanDescriptor.getBeanDescriptor(value.getClass());
                 for (JdbcPropertyMapping spm : pm.getPropertyMappings()) {
                     Object ov = bd.getBeanProperty(spm.getPropertyName()).getValue(value);
-                    _set(spm, FieldValueOperator.craete(spm, ov));
+                    _set(spm, FieldValueOperator.create(spm, ov));
                 }
             } else {
                 for (JdbcPropertyMapping spm : pm.getPropertyMappings()) {
                     if (ClassUtils.isParent(spm.getPropertyType(), value.getClass())) {
-                        _set(spm, FieldValueOperator.craete(spm, value));
+                        _set(spm, FieldValueOperator.create(spm, value));
                     }
                 }
             }
             return this;
         } else {
-            return _set(pm.getRepositoryFieldName(), FieldValueOperator.craete(pm, value));
+            return _set(pm.getRepositoryFieldName(), FieldValueOperator.create(pm, value));
         }
     }
 }

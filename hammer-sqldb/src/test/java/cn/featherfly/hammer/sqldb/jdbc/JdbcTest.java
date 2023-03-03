@@ -15,6 +15,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicLong;
 import java.util.function.BiConsumer;
 
@@ -829,7 +830,7 @@ public class JdbcTest extends JdbcTestBase {
     }
 
     @Test
-    public void testUpdateBatch() {
+    public void testUpdateBatch() { // 一条sql影响多条数据
         int batchSize = 2;
         //        String batchInsertSql = jdbc.getDialect().buildInsertBatchSql(tableName, columnNames, batchSize);
 
@@ -865,6 +866,102 @@ public class JdbcTest extends JdbcTestBase {
 
         result = jdbc.updateBatch("", size, params);
         assertEquals(result, 0);
+    }
+
+    @Test
+    public void testUpdateBatchMulitiSql() { // 一条sql影响一条数据，批量执行
+        String insertSql = Strings.format(
+                "INSERT INTO {0}cms_article{0} ({0}id{0}, {0}title{0}, {0}content{0}) VALUES (?, ?, ?)",
+                jdbc.getDialect().getWrapSymbol());
+        List<Object[]> argsList = new ArrayList<>();
+        int batchSize = 5;
+
+        final AtomicInteger id = new AtomicInteger(0);
+        final List<Integer> ids = new ArrayList<>();
+
+        GeneratedKeyHolder<Integer> keyHolder = new GeneratedKeyHolder<Integer>() {
+
+            @Override
+            public void acceptKey(Integer key, int row) {
+                id.set(key);
+            }
+
+            @Override
+            public void acceptKey(List<Integer> keys) {
+                ids.addAll(keys);
+            }
+
+            @Override
+            public Type<Integer> getType() {
+                return new ClassType<>(Integer.class);
+            }
+        };
+
+        int result = jdbc.update(insertSql, keyHolder,
+                new Object[] { null, "title_batch_start", "content_batch_start" });
+
+        assertEquals(result, 1);
+
+        for (int i = 0; i < batchSize; i++) {
+            argsList.add(new Object[] { null, "title_batch_" + i, "content_batch_" + i });
+        }
+        int results[] = jdbc.updateBatch(insertSql, keyHolder, argsList);
+        assertEquals(results.length, batchSize);
+        for (int r : results) {
+            assertEquals(r, 1);
+        }
+        for (int i = 0; i < ids.size(); i++) {
+            assertTrue(ids.get(i) == id.intValue() + i + 1);
+        }
+    }
+
+    @Test
+    public void testUpdateBatchMulitiSql2() { // 一条sql影响一条数据，批量执行
+        String insertSql = Strings.format(
+                "INSERT INTO {0}cms_article{0} ({0}id{0}, {0}title{0}, {0}content{0}) VALUES (:id, :title, :content)",
+                jdbc.getDialect().getWrapSymbol());
+        int batchSize = 5;
+        @SuppressWarnings("unchecked")
+        Map<String, Object>[] argsArray = new Map[batchSize];
+
+        final AtomicInteger id = new AtomicInteger(0);
+        final List<Integer> ids = new ArrayList<>();
+
+        GeneratedKeyHolder<Integer> keyHolder = new GeneratedKeyHolder<Integer>() {
+
+            @Override
+            public void acceptKey(Integer key, int row) {
+                id.set(key);
+            }
+
+            @Override
+            public void acceptKey(List<Integer> keys) {
+                ids.addAll(keys);
+            }
+
+            @Override
+            public Type<Integer> getType() {
+                return new ClassType<>(Integer.class);
+            }
+        };
+
+        int result = jdbc.update(insertSql, keyHolder, new ChainMapImpl<String, Object>().putChain("id", null)
+                .putChain("title", "title_batch_start").putChain("content", "content_batch_start"));
+
+        assertEquals(result, 1);
+
+        for (int i = 0; i < batchSize; i++) {
+            argsArray[i] = new ChainMapImpl<String, Object>().putChain("id", null).putChain("title", "title_batch_" + i)
+                    .putChain("content", "content_batch_" + i);
+        }
+        int results[] = jdbc.updateBatch(insertSql, keyHolder, argsArray);
+        assertEquals(results.length, batchSize);
+        for (int r : results) {
+            assertEquals(r, 1);
+        }
+        for (int i = 0; i < ids.size(); i++) {
+            assertTrue(ids.get(i) == id.intValue() + i + 1);
+        }
     }
 
     @Test(expectedExceptions = JdbcException.class)

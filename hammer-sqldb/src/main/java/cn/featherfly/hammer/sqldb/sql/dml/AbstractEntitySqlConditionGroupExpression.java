@@ -2305,7 +2305,7 @@ public abstract class AbstractEntitySqlConditionGroupExpression<E, C extends Ent
     // ********************************************************************
 
     private <R> FieldValueOperator<R> getFieldValueOperator(JdbcPropertyMapping pm, R value) {
-        return value == null ? null : FieldValueOperator.craete(pm, value);
+        return value == null ? null : FieldValueOperator.create(pm, value);
     }
 
     private Object getInParam(JdbcPropertyMapping pm, Object value) {
@@ -2316,16 +2316,16 @@ public abstract class AbstractEntitySqlConditionGroupExpression<E, C extends Ent
                 param = Array.newInstance(FieldValueOperator.class, length);
                 for (int i = 0; i < length; i++) {
                     //                    Array.set(param, i, new FieldValueOperator(pm.getJavaTypeSqlTypeOperator(), Array.get(value, i)));
-                    Array.set(param, i, FieldValueOperator.craete(pm, Array.get(value, i)));
+                    Array.set(param, i, FieldValueOperator.create(pm, Array.get(value, i)));
                 }
             } else if (value instanceof Collection) {
                 param = new ArrayList<>();
                 for (Object op : (Collection<?>) value) {
-                    ((Collection<FieldValueOperator<?>>) param).add(FieldValueOperator.craete(pm, op));
+                    ((Collection<FieldValueOperator<?>>) param).add(FieldValueOperator.create(pm, op));
                     //                    .add(new FieldValueOperator(pm.getJavaTypeSqlTypeOperator(), op));
                 }
             } else if (!(value instanceof FieldValueOperator)) {
-                param = FieldValueOperator.craete(pm, value);
+                param = FieldValueOperator.create(pm, value);
             } else {
                 param = value;
             }

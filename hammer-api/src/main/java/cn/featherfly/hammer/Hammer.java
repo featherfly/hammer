@@ -45,7 +45,7 @@ public interface Hammer extends TplExecutor {
      * @param entities entity array to save
      * @return effect data row num
      */
-    <E> int save(@SuppressWarnings("unchecked") E... entities);
+    <E> int[] save(@SuppressWarnings("unchecked") E... entities);
 
     /**
      * batch save entity list.
@@ -54,7 +54,7 @@ public interface Hammer extends TplExecutor {
      * @param entities entity list to save
      * @return effect data row num
      */
-    <E> int save(List<E> entities);
+    <E> int[] save(List<E> entities);
 
     /**
      * update entity, update all values. equal invoke method
@@ -68,28 +68,6 @@ public interface Hammer extends TplExecutor {
     <E> int update(E entity);
 
     /**
-     * update all values for each entity in entity array. equal invoke method
-     * {@link #update(List, IgnorePolicy)} with params (entity,
-     * IgnorePolicy.NONE)
-     *
-     * @param <E>      generic type
-     * @param entities entity array to update
-     * @return effect data row num
-     */
-    <E> int update(@SuppressWarnings("unchecked") E... entities);
-
-    /**
-     * update all values for each entity in entity list. equal invoke method
-     * {@link #update(List, IgnorePolicy)} with params (entity,
-     * IgnorePolicy.NONE)
-     *
-     * @param <E>      generic type
-     * @param entities entity list to update
-     * @return effect data row num
-     */
-    <E> int update(List<E> entities);
-
-    /**
      * update entity, update values with ignorePolicy.
      *
      * @param <E>          generic type
@@ -100,6 +78,40 @@ public interface Hammer extends TplExecutor {
     <E> int update(E entity, IgnorePolicy ignorePolicy);
 
     /**
+     * update all values for each entity in entity array. equal invoke method
+     * {@link #update(List, IgnorePolicy)} with params (entity,
+     * IgnorePolicy.NONE)
+     *
+     * @param <E>      generic type
+     * @param entities entity array to update
+     * @return effect data row num
+     */
+    <E> int[] update(@SuppressWarnings("unchecked") E... entities);
+
+    /**
+     * update all values for each entity in entity list. equal invoke method
+     * {@link #update(List, IgnorePolicy)} with params (entity,
+     * IgnorePolicy.NONE)
+     *
+     * @param <E>      generic type
+     * @param entities entity list to update
+     * @return effect data row num
+     */
+    <E> int[] update(List<E> entities);
+
+    /**
+     * update all values for each entity in entity list. equal invoke method
+     * {@link #update(List, IgnorePolicy)} with params (entity,
+     * IgnorePolicy.NONE)
+     *
+     * @param <E>       generic type
+     * @param entities  entity list to update
+     * @param batchSize the batch size
+     * @return effect data row num
+     */
+    <E> int[] update(List<E> entities, int batchSize);
+
+    /**
      * update values with ignorePolicy for each entity in entity list.
      *
      * @param <E>          generic type
@@ -107,7 +119,7 @@ public interface Hammer extends TplExecutor {
      * @param ignorePolicy ignore value to update policy
      * @return effect data row num
      */
-    <E> int update(List<E> entities, IgnorePolicy ignorePolicy);
+    <E> int[] update(List<E> entities, IgnorePolicy ignorePolicy);
 
     /**
      * update values ignore null or empty(string, array, collectoin, map) value.
@@ -130,7 +142,7 @@ public interface Hammer extends TplExecutor {
      * @param entities entity array to merge
      * @return effect data row num
      */
-    <E> int merge(@SuppressWarnings("unchecked") E... entities);
+    <E> int[] merge(@SuppressWarnings("unchecked") E... entities);
 
     /**
      * update values ignore null or empty(string, array, collectoin, map) value
@@ -142,7 +154,7 @@ public interface Hammer extends TplExecutor {
      * @param entities entity list to merge
      * @return effect data row num
      */
-    <E> int merge(List<E> entities);
+    <E> int[] merge(List<E> entities);
 
     /**
      * save or update entity.
@@ -180,7 +192,7 @@ public interface Hammer extends TplExecutor {
      * @param entityType entity type
      * @return effect data row num
      */
-    <E> int delete(Serializable[] ids, Class<E> entityType);
+    <E> int[] delete(Serializable[] ids, Class<E> entityType);
 
     /**
      * delete entity by id list.
@@ -191,7 +203,7 @@ public interface Hammer extends TplExecutor {
      * @param entityType entity type
      * @return effect data row num
      */
-    <E, ID extends Serializable> int delete(List<ID> ids, Class<E> entityType);
+    <E, ID extends Serializable> int[] delete(List<ID> ids, Class<E> entityType);
 
     /**
      * delete each entity in entity list.
@@ -200,7 +212,7 @@ public interface Hammer extends TplExecutor {
      * @param entities entity array to delete
      * @return effect data row num
      */
-    <E> int delete(@SuppressWarnings("unchecked") E... entities);
+    <E> int[] delete(@SuppressWarnings("unchecked") E... entities);
 
     /**
      * delete each entity in entity list.
@@ -209,7 +221,7 @@ public interface Hammer extends TplExecutor {
      * @param entities entity list to delete
      * @return effect data row num
      */
-    <E> int delete(List<E> entities);
+    <E> int[] delete(List<E> entities);
 
     /**
      * get entity by id.

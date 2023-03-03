@@ -225,4 +225,13 @@ public class JdbcTestBase extends TestBase {
         }
         return roles;
     }
+
+    protected int sum(int array[]) {
+        int size = 0;
+        for (int i : array) {
+            size += i;
+        }
+        return size;
+    }
+
 }

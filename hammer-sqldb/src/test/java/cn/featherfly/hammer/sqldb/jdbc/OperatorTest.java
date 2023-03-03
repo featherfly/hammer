@@ -126,10 +126,10 @@ public class OperatorTest extends JdbcTestBase {
         assertInsertBatch(insert, delete, get, null);
         assertInsertBatch(insert, delete, get, 3);
 
-        int result = insert.executeBatch(new ArrayList<Role>());
-        assertEquals(result, 0);
-        result = insert.executeBatch(new Role[0]);
-        assertEquals(result, 0);
+        int results[] = insert.executeBatch(new ArrayList<Role>());
+        assertEquals(results.length, 0);
+        results = insert.executeBatch(new Role[0]);
+        assertEquals(results.length, 0);
     }
 
     private void assertInsertBatch(InsertOperate<Role> insert, DeleteOperate<Role> delete, GetOperate<Role> get,
@@ -138,11 +138,11 @@ public class OperatorTest extends JdbcTestBase {
         for (int i = 0; i < 6; i++) {
             roles.add(role());
         }
-        int size = -1;
+        int results[];
         if (batchSize == null) {
-            size = insert.executeBatch(roles);
+            results = insert.executeBatch(roles);
         } else {
-            size = insert.executeBatch(roles, batchSize);
+            results = insert.executeBatch(roles, batchSize);
         }
 
         for (Role role : roles) {
@@ -152,6 +152,10 @@ public class OperatorTest extends JdbcTestBase {
                 assertEquals(r.getName(), role.getName());
                 delete.delete(role.getId());
             }
+        }
+        int size = 0;
+        for (int i : results) {
+            size += i;
         }
         assertTrue(size == roles.size());
 
@@ -406,8 +410,8 @@ public class OperatorTest extends JdbcTestBase {
         }
         assertEquals(roles.size(), size);
         assertEquals(ids.size(), size);
-        int result = delete.deleteBatch(ids);
-        assertEquals(result, ids.size());
+        int results[] = delete.deleteBatch(ids);
+        assertEquals(results[0], ids.size());
         roles.forEach(r -> {
             assertNull(get.get(r));
         });
@@ -415,17 +419,17 @@ public class OperatorTest extends JdbcTestBase {
         roles = insertRoles.apply(size);
         assertEquals(roles.size(), size);
         assertEquals(ids.size(), size);
-        result = delete.executeBatch(roles, 2);
-        assertEquals(result, roles.size());
+        results = delete.executeBatch(roles, 2);
+        assertEquals(sum(results), roles.size());
         roles.forEach(r -> {
             assertNull(get.get(r));
         });
 
-        result = delete.deleteBatch(new ArrayList<>());
-        assertEquals(result, 0);
+        results = delete.deleteBatch(new ArrayList<>());
+        assertEquals(results.length, 0);
 
-        result = delete.executeBatch(new ArrayList<>(), 10);
-        assertEquals(result, 0);
+        results = delete.executeBatch(new ArrayList<>(), 10);
+        assertEquals(results.length, 0);
     }
 
     @Test
@@ -567,10 +571,10 @@ public class OperatorTest extends JdbcTestBase {
         //        a = get.get(a);
         //        assertNull(a);
 
-        int result = upsert.executeBatch(new ArrayList<App>());
-        assertEquals(result, 0);
-        result = upsert.executeBatch(new App[0]);
-        assertEquals(result, 0);
+        int results[] = upsert.executeBatch(new ArrayList<App>());
+        assertEquals(results.length, 0);
+        results = upsert.executeBatch(new App[0]);
+        assertEquals(results.length, 0);
     }
 
 }
