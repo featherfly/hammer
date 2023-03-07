@@ -1036,11 +1036,15 @@ public abstract class AbstractJdbc implements Jdbc {
     @Override
     public int call(String name, Object... args) {
         String procedure = getProcedure(name, args.length);
+        JdbcExecution execution = preHandle(procedure, args);
+        procedure = execution.getExecution();
+        args = execution.getParams();
         Connection con = getConnection(dataSource);
         try (CallableStatement call = con.prepareCall(procedure)) {
             Map<Integer, Class<?>> outParams = setParams(call, args);
             call.execute();
             setOutParams(call, outParams, args);
+            postHandle(execution, procedure, args);
             return call.getUpdateCount();
         } catch (SQLException e) {
             releaseConnection(con, dataSource);
@@ -1082,13 +1086,16 @@ public abstract class AbstractJdbc implements Jdbc {
     @Override
     public List<Map<String, Object>> callQuery(String name, Object... args) {
         String procedure = getProcedure(name, args.length);
+        JdbcExecution execution = preHandle(procedure, args);
+        procedure = execution.getExecution();
+        args = execution.getParams();
         Connection con = getConnection(dataSource);
         try (CallableStatement call = con.prepareCall(procedure)) {
             Map<Integer, Class<?>> outParams = setParams(call, args);
             try (ResultSet rs = call.executeQuery()) {
                 setOutParams(call, outParams, args);
-                return JdbcUtils.getResultSetMaps(rs, manager);
-                //                    return postHandle(execution.setOriginalResult(JdbcUtils.getResultSetMaps(rs, manager)), sql, args);
+                return postHandle(execution.setOriginalResult(JdbcUtils.getResultSetMaps(rs, manager)), procedure,
+                        args);
             }
         } catch (SQLException e) {
             releaseConnection(con, dataSource);
@@ -1105,19 +1112,22 @@ public abstract class AbstractJdbc implements Jdbc {
      */
     @Override
     public <T> List<T> callQuery(String name, RowMapper<T> rowMapper, Object... args) {
-        AssertIllegalArgument.isNotBlank(name, "name");
         String procedure = getProcedure(name, args.length);
+        JdbcExecution execution = preHandle(procedure, args);
+        procedure = execution.getExecution();
+        args = execution.getParams();
         Connection con = getConnection(dataSource);
         try (CallableStatement call = con.prepareCall(procedure)) {
             Map<Integer, Class<?>> outParams = setParams(call, args);
             try (ResultSet rs = call.executeQuery()) {
                 setOutParams(call, outParams, args);
+                postHandle(execution, procedure, args);
                 List<T> list = new ArrayList<>();
                 int i = 0;
                 while (rs.next()) {
                     list.add(rowMapper.mapRow(new SqlResultSet(rs), i++));
                 }
-                return list;
+                return postHandle(execution.setOriginalResult(list), procedure, args);
             }
         } catch (SQLException e) {
             releaseConnection(con, dataSource);
@@ -1255,6 +1265,7 @@ public abstract class AbstractJdbc implements Jdbc {
     }
 
     private String getProcedure(String name, int argnum) {
+        AssertIllegalArgument.isNotBlank(name, "procedureName");
         StringBuilder procedure = new StringBuilder("{call ");
         procedure.append(name).append("(");
         for (int i = 0; i < argnum; i++) {
