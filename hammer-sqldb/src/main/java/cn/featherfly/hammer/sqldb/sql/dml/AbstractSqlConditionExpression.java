@@ -30,6 +30,7 @@ import cn.featherfly.common.lang.Strings;
 import cn.featherfly.common.lang.function.SerializableFunction;
 import cn.featherfly.common.lang.function.SerializableSupplier;
 import cn.featherfly.common.repository.IgnorePolicy;
+import cn.featherfly.common.repository.Params;
 import cn.featherfly.common.repository.builder.BuilderException;
 import cn.featherfly.common.repository.builder.BuilderExceptionCode;
 import cn.featherfly.common.repository.mapping.PropertyMapping.Mode;
@@ -140,19 +141,21 @@ public abstract class AbstractSqlConditionExpression<L> implements SqlBuilder, P
         for (Expression condition : conditions) {
             if (condition instanceof ParamedExpression) {
                 Object param = ((ParamedExpression) condition).getParam();
-                if (!ignorePolicy.test(param)) {
-                    if (param == null) {
-                        params.add(param);
-                    } else if (param instanceof Collection) {
-                        params.addAll((Collection<?>) param);
-                    } else if (param.getClass().isArray()) {
-                        int length = Array.getLength(param);
-                        for (int i = 0; i < length; i++) {
-                            params.add(Array.get(param, i));
-                        }
-                    } else {
-                        params.add(param);
+                //                if (!ignorePolicy.test(param)) {
+                if (param == Params.NONE) {
+                    continue;
+                }
+                if (param == null) {
+                    params.add(param);
+                } else if (param instanceof Collection) {
+                    params.addAll((Collection<?>) param);
+                } else if (param.getClass().isArray()) {
+                    int length = Array.getLength(param);
+                    for (int i = 0; i < length; i++) {
+                        params.add(Array.get(param, i));
                     }
+                } else {
+                    params.add(param);
                 }
             }
         }

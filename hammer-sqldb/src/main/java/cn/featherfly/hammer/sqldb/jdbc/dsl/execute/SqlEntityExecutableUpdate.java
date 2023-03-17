@@ -24,6 +24,7 @@ import cn.featherfly.hammer.dsl.execute.EntityUpdateNumberValueImpl;
 import cn.featherfly.hammer.dsl.execute.EntityUpdateValueImpl;
 import cn.featherfly.hammer.expression.condition.ConditionGroupConfig;
 import cn.featherfly.hammer.expression.execute.EntityUpdateNumberValueExpression;
+import cn.featherfly.hammer.expression.execute.EntityUpdateSetExpression;
 import cn.featherfly.hammer.expression.execute.EntityUpdateValueExpression;
 import cn.featherfly.hammer.sqldb.jdbc.Jdbc;
 
@@ -125,7 +126,9 @@ public class SqlEntityExecutableUpdate<E> extends AbstractSqlExecutableUpdate<Sq
      * {@inheritDoc}
      */
     @Override
-    public EntityExecutableUpdate<E> set(Consumer<EntityExecutableUpdate<E>> consumer) {
+    //    public EntityExecutableUpdate<E> set(Consumer<EntityExecutableUpdate<E>> consumer) {
+    public EntityExecutableUpdate<E> set(Consumer<EntityUpdateSetExpression<E, EntityExecutableUpdate<E>,
+            EntityExecutableConditionGroupExpression<E>, EntityExecutableConditionGroupLogicExpression<E>>> consumer) {
         consumer.accept(this);
         return this;
     }

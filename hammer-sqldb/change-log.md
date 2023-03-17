@@ -7,6 +7,7 @@
 5. Jdbc实现查询返回Tuple2,List<Tuple2>,Tuple3,List<Tuple3>,Tuple4,List<Tuple4>,Tuple5,List<Tuple5>
 6. SqldbHammer加入QueryEntity query(Table table);Update update(Table table);Delete delete(Table table)方法
 7. Jdbc实现存储过程支持
+8. DSL EntityEqualsExpression,EntityNotEqualsExpression加入Consumer参数方法,加入带IgnorePolicy参数方法
 
 # 0.6.6 2022-08-26
 1. 修改L group(Consumer<C>)为L group(Function<C,L>)，
@@ -155,7 +156,7 @@
     /*name??*/ name like %:name%
     /*name??*/ name like %:name
     /*name??*/ name like :name%
-    ```
+   ```
 3. 修复where标签后换行直接跟order by语句没有空格符号导致最后的参数名称连接到order单词的问题
 
 # 0.5.8 2021-03-26
@@ -220,7 +221,7 @@ where().eq("name", name).and().eq("pwd", pwd).and().group(c -> c.eq("sex", sex).
 # 0.5.2 2020-11-30
 1. 预处理条件查询时，明确查询条件参数名称（可以加快执行效率，避免条件标签自动匹配查询条件参数名称）
 2. TplConfigFactoryImpl默认后缀参数从.yaml.tpl改为.yaml.sql
-    
+   
 # 0.5.1 2020-11-27
 1. 修复??把array和string判断写反了的问题
 
@@ -259,13 +260,13 @@ select <@prop alias='r'>*</@prop> from <@wrap>user</@wrap>
 </@where>
 </@sql id='roleFromTemplate'>
 ```
-    
+
 # 0.4.10 2020-11-25
 1. 修复Mapper参数是基本值类型(int,integer等)时报错的问题
-    
+   
 # 0.4.9 2020-11-24
 1. 使用ASM替换javassist修复自定义的Mapper继承GenericHammer接口并重载了get(Serializable)方法报错的问题
-    
+   
 # 0.4.8 2020-11-17
 1. Hammer加入delete(Ids,Class)方法,delete(Ids),delete(Entities)方法实现一条sql进行批量删除
 2. 升级common-core、common-db、common-model-repository
@@ -337,10 +338,10 @@ query.find(repo).property("price", AggregateFunction.SUM);
 
 # 0.2.5 2019-12-03
 1. 升级依赖
-    
+   
 # 0.2.4 2019-11-28
 1. Juorm和GenericJuorm加入多个重载的delete方法
-    
+   
 # 0.2.3 2019-11-21
 1. 升级constant版本，支持constant无配置文件的默认配置
 
@@ -358,7 +359,7 @@ query.find(repo).property("price", AggregateFunction.SUM);
 
 # 0.1.4 2019-9-18
 1. find(Class type)后的条件在执行时使用TypeExecutor，只能返回find时传入的对象
-    
+   
 # 0.1.3 2019-9-17
 1. 加入SQLiteDialect
 2. 加入SerializableFunction支持
@@ -366,12 +367,12 @@ query.find(repo).property("price", AggregateFunction.SUM);
 # 0.1.2 2019-9-3
 1. 加入SqlDbConfigurator，可以从配置直接获取可运行的JuormJdbcImpl
 2. Jdbc接口去掉spring依赖
-    
+   
 # 0.1.1 2019-8-21
 1. 升级依赖，解决版本导致出错问题
 2. tpl mapper interface加入default method支持
 3. tpl加入wrap模板方法 ${tpl_wrap("user")}
-    
+   
 # 0.1.0 2019-8-20
 1. 实现基本的crud
 2. 实现dsl风格的query,update,delete
