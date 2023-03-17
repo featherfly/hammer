@@ -1,6 +1,9 @@
 
 package cn.featherfly.hammer.expression.condition.type;
 
+import java.util.function.Consumer;
+import java.util.function.Predicate;
+
 import cn.featherfly.common.lang.function.SerializableFunction;
 import cn.featherfly.common.lang.function.SerializableSupplier;
 import cn.featherfly.common.operator.QueryOperator.QueryPolicy;
@@ -21,6 +24,15 @@ public interface EntityEqualsExpression<E, C extends ConditionExpression, L exte
     /**
      * equals. 等于.
      *
+     * @param <R>      the generic type
+     * @param consumer the consumer
+     * @return LogicExpression
+     */
+    <R> L eq(Consumer<EntityEqualsExpression<E, C, L>> consumer);
+
+    /**
+     * equals. 等于.
+     *
      * @param <R>   the generic type
      * @param name  参数名称
      * @param value 参数值
@@ -28,6 +40,19 @@ public interface EntityEqualsExpression<E, C extends ConditionExpression, L exte
      */
     default <R> L eq(SerializableFunction<E, R> name, R value) {
         return eq(name, value, QueryPolicy.AUTO);
+    }
+
+    /**
+     * equals. 等于.
+     *
+     * @param <R>          the generic type
+     * @param name         参数名称
+     * @param value        参数值
+     * @param ignorePolicy the ignore policy
+     * @return LogicExpression
+     */
+    default <R> L eq(SerializableFunction<E, R> name, R value, Predicate<Object> ignorePolicy) {
+        return eq(name, value, QueryPolicy.AUTO, ignorePolicy);
     }
 
     /**
@@ -44,6 +69,18 @@ public interface EntityEqualsExpression<E, C extends ConditionExpression, L exte
     /**
      * equals. 等于.
      *
+     * @param <R>          the generic type
+     * @param name         参数名称
+     * @param value        参数值
+     * @param queryPolicy  the query policy
+     * @param ignorePolicy the ignore policy
+     * @return LogicExpression
+     */
+    <R> L eq(SerializableFunction<E, R> name, R value, QueryPolicy queryPolicy, Predicate<Object> ignorePolicy);
+
+    /**
+     * equals. 等于.
+     *
      * @param <R>      the generic type
      * @param property 对象属性
      * @return LogicExpression
@@ -55,12 +92,35 @@ public interface EntityEqualsExpression<E, C extends ConditionExpression, L exte
     /**
      * equals. 等于.
      *
+     * @param <R>          the generic type
+     * @param property     对象属性
+     * @param ignorePolicy the ignore policy
+     * @return LogicExpression
+     */
+    default <R> L eq(SerializableSupplier<R> property, Predicate<Object> ignorePolicy) {
+        return eq(property, QueryPolicy.AUTO, ignorePolicy);
+    }
+
+    /**
+     * equals. 等于.
+     *
      * @param <R>         the generic type
      * @param property    对象属性
      * @param queryPolicy the query policy
      * @return LogicExpression
      */
     <R> L eq(SerializableSupplier<R> property, QueryPolicy queryPolicy);
+
+    /**
+     * equals. 等于.
+     *
+     * @param <R>          the generic type
+     * @param property     对象属性
+     * @param queryPolicy  the query policy
+     * @param ignorePolicy the ignore policy
+     * @return LogicExpression
+     */
+    <R> L eq(SerializableSupplier<R> property, QueryPolicy queryPolicy, Predicate<Object> ignorePolicy);
 
     /**
      * equals. 等于.
