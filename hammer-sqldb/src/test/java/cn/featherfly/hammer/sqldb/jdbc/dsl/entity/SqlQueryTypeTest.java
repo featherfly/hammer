@@ -14,6 +14,7 @@ import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.BeforeTest;
 import org.testng.annotations.Test;
 
+import cn.featherfly.common.lang.Lang;
 import cn.featherfly.common.repository.IgnorePolicy;
 import cn.featherfly.common.structure.page.SimplePage;
 import cn.featherfly.hammer.sqldb.SqldbHammerException;
@@ -107,6 +108,50 @@ public class SqlQueryTypeTest extends JdbcTestBase {
 
         users = query.find(User.class).where(c -> c.setIgnorePolicy(IgnorePolicy.NONE)).eq(User::getUsername, "")
                 .list();
+        assertTrue(users.size() == 0);
+    }
+
+    @Test
+    void testIgnorePolicy() {
+        List<User> users = null;
+        users = query.find(User.class).where().eq(User::getUsername, "", IgnorePolicy.EMPTY).list();
+        assertTrue(users.size() > 0);
+
+        users = query.find(User.class).where().eq(User::getUsername, "", IgnorePolicy.NULL).list();
+        assertTrue(users.size() == 0);
+
+        users = query.find(User.class).where().eq(User::getUsername, (String) null, IgnorePolicy.NULL).list();
+        assertTrue(users.size() > 0);
+
+        users = query.find(User.class).where().eq(User::getUsername, (String) null, IgnorePolicy.NONE).list();
+        assertTrue(users.size() == 0);
+
+        users = query.find(User.class).where().eq(User::getUsername, "", IgnorePolicy.NONE).list();
+        assertTrue(users.size() == 0);
+
+        users = query.find(User.class).where().eq(User::getUsername, "", t -> {
+            return Lang.isEmpty(t);
+        }).list();
+        assertTrue(users.size() > 0);
+
+        String name = "NoName12345";
+        users = query.find(User.class).where().eq(c -> {
+            if (name.equals("yufei")) {
+                c.eq(User::getUsername, name); // 这里还有IgnorePolicy会生效
+            }
+        }).list();
+        assertTrue(users.size() > 0);
+
+        users = query.find(User.class).where().eq(c -> {
+            if (name.equals(name)) {
+                c.eq(User::getUsername, name); // 这里还有IgnorePolicy会生效
+            }
+        }).list();
+        assertTrue(users.size() == 0);
+
+        users = query.find(User.class).where().eq(c -> {
+            c.eq(User::getUsername, name); // 这里还有IgnorePolicy会生效
+        }).list();
         assertTrue(users.size() == 0);
     }
 
