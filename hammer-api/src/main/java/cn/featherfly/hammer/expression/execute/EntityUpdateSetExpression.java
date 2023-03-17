@@ -57,7 +57,7 @@ public interface EntityUpdateSetExpression<E, U extends EntityUpdateSetExecutabl
      * @param consumer the consumer
      * @return the u
      */
-    U set(Consumer<U> consumer);
+    U set(Consumer<EntityUpdateSetExpression<E, U, C, L>> consumer);
 
     /**
      * increase value for property.

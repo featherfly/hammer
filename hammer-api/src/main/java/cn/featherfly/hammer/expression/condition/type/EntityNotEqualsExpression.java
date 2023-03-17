@@ -1,6 +1,9 @@
 
 package cn.featherfly.hammer.expression.condition.type;
 
+import java.util.function.Consumer;
+import java.util.function.Predicate;
+
 import cn.featherfly.common.lang.function.SerializableFunction;
 import cn.featherfly.common.lang.function.SerializableSupplier;
 import cn.featherfly.common.operator.QueryOperator.QueryPolicy;
@@ -21,6 +24,15 @@ public interface EntityNotEqualsExpression<E, C extends ConditionExpression, L e
     /**
      * not equals. 不等于.
      *
+     * @param <R>      the generic type
+     * @param consumer the consumer
+     * @return LogicExpression
+     */
+    <R> L ne(Consumer<EntityEqualsExpression<E, C, L>> consumer);
+
+    /**
+     * not equals. 不等于.
+     *
      * @param <R>   the generic type
      * @param name  参数名称
      * @param value 参数值
@@ -28,6 +40,19 @@ public interface EntityNotEqualsExpression<E, C extends ConditionExpression, L e
      */
     default <R> L ne(SerializableFunction<E, R> name, R value) {
         return ne(name, value, QueryPolicy.AUTO);
+    }
+
+    /**
+     * not equals. 不等于.
+     *
+     * @param <R>          the generic type
+     * @param name         参数名称
+     * @param value        参数值
+     * @param ignorePolicy the ignore policy
+     * @return LogicExpression
+     */
+    default <R> L ne(SerializableFunction<E, R> name, R value, Predicate<Object> ignorePolicy) {
+        return ne(name, value, QueryPolicy.AUTO, ignorePolicy);
     }
 
     /**
@@ -44,6 +69,18 @@ public interface EntityNotEqualsExpression<E, C extends ConditionExpression, L e
     /**
      * not equals. 不等于.
      *
+     * @param <R>          the generic type
+     * @param name         参数名称
+     * @param value        参数值
+     * @param queryPolicy  the query policy
+     * @param ignorePolicy the ignore policy
+     * @return LogicExpression
+     */
+    <R> L ne(SerializableFunction<E, R> name, R value, QueryPolicy queryPolicy, Predicate<Object> ignorePolicy);
+
+    /**
+     * not equals. 不等于.
+     *
      * @param <R>      the generic type
      * @param property 对象属性
      * @return LogicExpression
@@ -55,12 +92,35 @@ public interface EntityNotEqualsExpression<E, C extends ConditionExpression, L e
     /**
      * not equals. 不等于.
      *
+     * @param <R>          the generic type
+     * @param property     对象属性
+     * @param ignorePolicy the ignore policy
+     * @return LogicExpression
+     */
+    default <R> L ne(SerializableSupplier<R> property, Predicate<Object> ignorePolicy) {
+        return ne(property, QueryPolicy.AUTO, ignorePolicy);
+    }
+
+    /**
+     * not equals. 不等于.
+     *
      * @param <R>         the generic type
      * @param property    对象属性
      * @param queryPolicy the query policy
      * @return LogicExpression
      */
     <R> L ne(SerializableSupplier<R> property, QueryPolicy queryPolicy);
+
+    /**
+     * not equals. 不等于.
+     *
+     * @param <R>          the generic type
+     * @param property     对象属性
+     * @param queryPolicy  the query policy
+     * @param ignorePolicy the ignore policy
+     * @return LogicExpression
+     */
+    <R> L ne(SerializableSupplier<R> property, QueryPolicy queryPolicy, Predicate<Object> ignorePolicy);
 
     /**
      * not equals.不等于.
