@@ -1,6 +1,9 @@
 
 package cn.featherfly.hammer.expression.condition.type;
 
+import java.util.function.Consumer;
+import java.util.function.Predicate;
+
 import cn.featherfly.common.lang.function.SerializableFunction;
 import cn.featherfly.common.lang.function.SerializableSupplier;
 import cn.featherfly.common.lang.function.StringSupplier;
@@ -22,12 +25,32 @@ public interface EntityStartWithExpression<E, C extends ConditionExpression, L e
     /**
      * start with value. 以value开始.
      *
+     * @param consumer the consumer
+     * @return LogicExpression
+     */
+    L sw(Consumer<EntityStartWithExpression<E, C, L>> consumer);
+
+    /**
+     * start with value. 以value开始.
+     *
      * @param name  参数名称
      * @param value 参数值
      * @return LogicExpression
      */
     default L sw(SerializableFunction<E, String> name, String value) {
         return sw(name, value, QueryPolicy.AUTO);
+    }
+
+    /**
+     * start with value. 以value开始.
+     *
+     * @param name         参数名称
+     * @param value        参数值
+     * @param ignorePolicy the ignore policy
+     * @return LogicExpression
+     */
+    default L sw(SerializableFunction<E, String> name, String value, Predicate<String> ignorePolicy) {
+        return sw(name, value, QueryPolicy.AUTO, ignorePolicy);
     }
 
     /**
@@ -43,6 +66,17 @@ public interface EntityStartWithExpression<E, C extends ConditionExpression, L e
     /**
      * start with value. 以value开始.
      *
+     * @param name         the name
+     * @param value        the value
+     * @param queryPolicy  the query policy
+     * @param ignorePolicy the ignore policy
+     * @return the l
+     */
+    L sw(SerializableFunction<E, String> name, String value, QueryPolicy queryPolicy, Predicate<String> ignorePolicy);
+
+    /**
+     * start with value. 以value开始.
+     *
      * @param property 对象属性
      * @return LogicExpression
      */
@@ -53,11 +87,32 @@ public interface EntityStartWithExpression<E, C extends ConditionExpression, L e
     /**
      * start with value. 以value开始.
      *
+     * @param property     对象属性
+     * @param ignorePolicy the ignore policy
+     * @return LogicExpression
+     */
+    default L sw(StringSupplier property, Predicate<String> ignorePolicy) {
+        return sw(property, QueryPolicy.AUTO, ignorePolicy);
+    }
+
+    /**
+     * start with value. 以value开始.
+     *
      * @param property    the property
      * @param queryPolicy the query policy
      * @return the l
      */
     L sw(StringSupplier property, QueryPolicy queryPolicy);
+
+    /**
+     * start with value. 以value开始.
+     *
+     * @param property     the property
+     * @param queryPolicy  the query policy
+     * @param ignorePolicy the ignore policy
+     * @return the l
+     */
+    L sw(StringSupplier property, QueryPolicy queryPolicy, Predicate<String> ignorePolicy);
 
     /**
      * 以value开始.

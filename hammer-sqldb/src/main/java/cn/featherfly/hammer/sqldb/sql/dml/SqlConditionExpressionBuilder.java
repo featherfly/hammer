@@ -6,10 +6,10 @@ import java.util.function.Predicate;
 import cn.featherfly.common.db.builder.SqlBuilder;
 import cn.featherfly.common.db.builder.model.ConditionColumnElement;
 import cn.featherfly.common.db.dialect.Dialect;
-import cn.featherfly.common.repository.builder.BuilderException;
-import cn.featherfly.common.repository.builder.BuilderExceptionCode;
 import cn.featherfly.common.operator.QueryOperator;
 import cn.featherfly.common.operator.QueryOperator.QueryPolicy;
+import cn.featherfly.common.repository.builder.BuilderException;
+import cn.featherfly.common.repository.builder.BuilderExceptionCode;
 import cn.featherfly.hammer.expression.condition.ParamedExpression;
 
 /**
@@ -34,7 +34,7 @@ public class SqlConditionExpressionBuilder implements ParamedExpression, SqlBuil
      * @param ignorePolicy  the ignore policy
      */
     public SqlConditionExpressionBuilder(Dialect dialect, String name, Object value, QueryOperator queryOperator,
-            Predicate<Object> ignorePolicy) {
+            Predicate<?> ignorePolicy) {
         this(dialect, name, value, queryOperator, null, ignorePolicy);
     }
 
@@ -49,7 +49,7 @@ public class SqlConditionExpressionBuilder implements ParamedExpression, SqlBuil
      * @param ignorePolicy  the ignore policy
      */
     public SqlConditionExpressionBuilder(Dialect dialect, String name, Object value, QueryOperator queryOperator,
-            String queryAlias, Predicate<Object> ignorePolicy) {
+            String queryAlias, Predicate<?> ignorePolicy) {
         this(dialect, name, value, queryOperator, QueryPolicy.AUTO, queryAlias, ignorePolicy);
     }
 
@@ -64,13 +64,14 @@ public class SqlConditionExpressionBuilder implements ParamedExpression, SqlBuil
      * @param queryAlias    查询别名
      * @param ignorePolicy  the ignore policy
      */
+    @SuppressWarnings("unchecked")
     public SqlConditionExpressionBuilder(Dialect dialect, String name, Object value, QueryOperator queryOperator,
-            QueryPolicy queryPolicy, String queryAlias, Predicate<Object> ignorePolicy) {
+            QueryPolicy queryPolicy, String queryAlias, Predicate<?> ignorePolicy) {
         if (queryOperator == null) {
             throw new BuilderException(BuilderExceptionCode.createQueryOperatorNullCode());
         }
         conditionColumnElement = new ConditionColumnElement(dialect, name, value, queryOperator, queryPolicy,
-                queryAlias, ignorePolicy);
+                queryAlias, (Predicate<Object>) ignorePolicy);
     }
 
     /**

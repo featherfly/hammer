@@ -9,6 +9,7 @@ import static org.testng.Assert.assertTrue;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -878,9 +879,10 @@ public class HammerJdbcTest extends JdbcTestBase {
         Role r3 = role();
         Role r4 = role();
         hammer.save(r, r2, r3, r4);
-
-        hammer.delete(Role.class).where().in(Role::getId, ArrayUtils.toList(r.getId(), r2.getId())).or()
-                .eq(Role::getId, r3.getId()).or().ge(Role::getId, r4.getId()).execute();
+        Collection<Integer> ids = ArrayUtils.toList(r.getId(), r2.getId());
+        hammer.delete(Role.class).where()
+                //                .in(Role::getId, (Collection<Integer>) ArrayUtils.toList(r.getId(), r2.getId())).or()
+                .in(Role::getId, ids).or().eq(Role::getId, r3.getId()).or().ge(Role::getId, r4.getId()).execute();
 
         r = hammer.get(r);
         r2 = hammer.get(r2);
@@ -1127,8 +1129,8 @@ public class HammerJdbcTest extends JdbcTestBase {
             System.out.println(role);
         }
 
-        PaginationResults<
-                Role> rolePage = hammer.query(Role.class).where().le(Role::getId, 10).limit(2, 3).pagination();
+        PaginationResults<Role> rolePage = hammer.query(Role.class).where().le(Role::getId, 10).limit(2, 3)
+                .pagination();
         assertTrue(rolePage.getTotal() == 10);
         assertTrue(rolePage.getPageResults().size() == 3);
     }
