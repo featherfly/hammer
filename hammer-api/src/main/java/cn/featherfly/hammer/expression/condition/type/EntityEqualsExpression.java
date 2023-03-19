@@ -28,7 +28,7 @@ public interface EntityEqualsExpression<E, C extends ConditionExpression, L exte
      * @param consumer the consumer
      * @return LogicExpression
      */
-    <R> L eq(Consumer<EntityEqualsExpression<E, C, L>> consumer);
+    L eq(Consumer<EntityEqualsExpression<E, C, L>> consumer);
 
     /**
      * equals. 等于.

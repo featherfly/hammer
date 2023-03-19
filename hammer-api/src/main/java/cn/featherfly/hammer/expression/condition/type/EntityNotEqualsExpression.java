@@ -28,7 +28,7 @@ public interface EntityNotEqualsExpression<E, C extends ConditionExpression, L e
      * @param consumer the consumer
      * @return LogicExpression
      */
-    <R> L ne(Consumer<EntityEqualsExpression<E, C, L>> consumer);
+    L ne(Consumer<EntityEqualsExpression<E, C, L>> consumer);
 
     /**
      * not equals. 不等于.

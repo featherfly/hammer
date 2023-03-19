@@ -1,6 +1,7 @@
 
 package cn.featherfly.hammer.dml.builder.sql;
 
+import cn.featherfly.common.lang.function.StringSupplier;
 import cn.featherfly.common.operator.AggregateFunction;
 import cn.featherfly.common.repository.Repository;
 import cn.featherfly.common.repository.SimpleRepository;
@@ -125,8 +126,10 @@ public class DslTest {
 
         // 错误调用
         //        query.find(DslTest.class).where().eq(DslTest::getId, 1).and().eq(DslStaticTypeTest::toString, "").single();
-        query.find(DslTest.class).where().co(DslTest::getName, "").and().setIgnorePolicy(null).co(null).single();
-        query.find(DslTest.class).where().setIgnorePolicy(null).co(DslTest::toString, "").and().co(null).list();
+        query.find(DslTest.class).where().co(DslTest::getName, "").and().setIgnorePolicy(null).co((StringSupplier) null)
+                .single();
+        query.find(DslTest.class).where().setIgnorePolicy(null).co(DslTest::toString, "").and()
+                .co((StringSupplier) null).list();
 
         // TODO 如果后续加入编译期增强，则在使用注解标注泛型方法（例如find）
         // 目的是使得各种判断和类型匹配在编译期就处理完成，而不是在运行期就在获取
@@ -137,7 +140,7 @@ public class DslTest {
             此参数需要在编译期就搞好所有中间过程，即在jdbc设置时，不去使用SqlTypeMappingManager进行类型判断
          */
         DslTest test = query.<@Enhance DslTest>find(DslTest.class).where().co(DslTest::getName, "").and()
-                .setIgnorePolicy(null).co(null).single();
+                .setIgnorePolicy(null).co((StringSupplier) null).single();
     }
 
     public void testTypeQueryJoin() {

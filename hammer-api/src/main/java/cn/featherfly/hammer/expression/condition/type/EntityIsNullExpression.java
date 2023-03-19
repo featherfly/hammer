@@ -1,6 +1,8 @@
 
 package cn.featherfly.hammer.expression.condition.type;
 
+import java.util.function.Consumer;
+
 import cn.featherfly.common.lang.function.SerializableFunction;
 import cn.featherfly.hammer.expression.condition.ConditionExpression;
 import cn.featherfly.hammer.expression.condition.LogicExpression;
@@ -15,6 +17,14 @@ import cn.featherfly.hammer.expression.condition.LogicExpression;
  */
 public interface EntityIsNullExpression<E, C extends ConditionExpression, L extends LogicExpression<C, L>>
         extends ConditionExpression {
+
+    /**
+     * is null.
+     *
+     * @param consumer the consumer
+     * @return LogicExpression
+     */
+    L isn(Consumer<EntityIsNullExpression<E, C, L>> consumer);
 
     /**
      * is null.
