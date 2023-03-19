@@ -5,6 +5,8 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.Date;
+import java.util.function.Consumer;
+import java.util.function.Predicate;
 
 import cn.featherfly.common.lang.function.DateSupplier;
 import cn.featherfly.common.lang.function.LocalDateSupplier;
@@ -37,12 +39,31 @@ public interface EntityLessEqualsExpressoin<E, C extends ConditionExpression, L 
     /**
      * less and equals. 小于等于.
      *
+     * @param consumer the consumer
+     * @return LogicExpression
+     */
+    L le(Consumer<EntityLessEqualsExpressoin<E, C, L>> consumer);
+
+    /**
+     * less and equals. 小于等于.
+     *
      * @param <N>   number type
      * @param name  参数名称
      * @param value 参数值
      * @return LogicExpression
      */
     <N extends Number> L le(SerializableFunction<E, N> name, N value);
+
+    /**
+     * less and equals. 小于等于.
+     *
+     * @param <N>          number type
+     * @param name         参数名称
+     * @param value        参数值
+     * @param ignorePolicy the ignore policy
+     * @return LogicExpression
+     */
+    <N extends Number> L le(SerializableFunction<E, N> name, N value, Predicate<N> ignorePolicy);
 
     /**
      * less and equals. 小于等于.
@@ -57,11 +78,32 @@ public interface EntityLessEqualsExpressoin<E, C extends ConditionExpression, L 
     /**
      * less and equals. 小于等于.
      *
+     * @param <D>          date type
+     * @param name         参数名称
+     * @param value        参数值
+     * @param ignorePolicy the ignore policy
+     * @return LogicExpression
+     */
+    <D extends Date> L le(SerializableFunction<E, D> name, D value, Predicate<D> ignorePolicy);
+
+    /**
+     * less and equals. 小于等于.
+     *
      * @param name  参数名称
      * @param value 参数值
      * @return LogicExpression
      */
     L le(SerializableFunction<E, LocalTime> name, LocalTime value);
+
+    /**
+     * less and equals. 小于等于.
+     *
+     * @param name         参数名称
+     * @param value        参数值
+     * @param ignorePolicy the ignore policy
+     * @return LogicExpression
+     */
+    L le(SerializableFunction<E, LocalTime> name, LocalTime value, Predicate<LocalTime> ignorePolicy);
 
     /**
      * less and equals. 小于等于.
@@ -75,11 +117,31 @@ public interface EntityLessEqualsExpressoin<E, C extends ConditionExpression, L 
     /**
      * less and equals. 小于等于.
      *
+     * @param name         参数名称
+     * @param value        参数值
+     * @param ignorePolicy the ignore policy
+     * @return LogicExpression
+     */
+    L le(SerializableFunction<E, LocalDate> name, LocalDate value, Predicate<LocalDate> ignorePolicy);
+
+    /**
+     * less and equals. 小于等于.
+     *
      * @param name  参数名称
      * @param value 参数值
      * @return LogicExpression
      */
     L le(SerializableFunction<E, LocalDateTime> name, LocalDateTime value);
+
+    /**
+     * less and equals. 小于等于.
+     *
+     * @param name         参数名称
+     * @param value        参数值
+     * @param ignorePolicy the ignore policy
+     * @return LogicExpression
+     */
+    L le(SerializableFunction<E, LocalDateTime> name, LocalDateTime value, Predicate<LocalDateTime> ignorePolicy);
 
     /**
      * less and equals. 小于等于.
@@ -93,11 +155,31 @@ public interface EntityLessEqualsExpressoin<E, C extends ConditionExpression, L 
     /**
      * less and equals. 小于等于.
      *
+     * @param name         参数名称
+     * @param value        参数值
+     * @param ignorePolicy the ignore policy
+     * @return LogicExpression
+     */
+    L le(SerializableFunction<E, String> name, String value, Predicate<String> ignorePolicy);
+
+    /**
+     * less and equals. 小于等于.
+     *
      * @param <R>      the generic type
      * @param property 对象属性
      * @return LogicExpression
      */
     <R extends Date> L le(DateSupplier<R> property);
+
+    /**
+     * less and equals. 小于等于.
+     *
+     * @param <R>          the generic type
+     * @param property     对象属性
+     * @param ignorePolicy the ignore policy
+     * @return LogicExpression
+     */
+    <R extends Date> L le(DateSupplier<R> property, Predicate<R> ignorePolicy);
 
     /**
      * less and equals. 小于等于.
@@ -111,10 +193,29 @@ public interface EntityLessEqualsExpressoin<E, C extends ConditionExpression, L 
     /**
      * less and equals. 小于等于.
      *
+     * @param <R>          the generic type
+     * @param property     对象属性
+     * @param ignorePolicy the ignore policy
+     * @return LogicExpression
+     */
+    <R extends Number> L le(NumberSupplier<R> property, Predicate<R> ignorePolicy);
+
+    /**
+     * less and equals. 小于等于.
+     *
      * @param property 对象属性
      * @return LogicExpression
      */
     L le(LocalDateSupplier property);
+
+    /**
+     * less and equals. 小于等于.
+     *
+     * @param property     对象属性
+     * @param ignorePolicy the ignore policy
+     * @return LogicExpression
+     */
+    L le(LocalDateSupplier property, Predicate<LocalDate> ignorePolicy);
 
     /**
      * less and equals. 小于等于.
@@ -127,6 +228,15 @@ public interface EntityLessEqualsExpressoin<E, C extends ConditionExpression, L 
     /**
      * less and equals. 小于等于.
      *
+     * @param property     对象属性
+     * @param ignorePolicy the ignore policy
+     * @return LogicExpression
+     */
+    L le(LocalTimeSupplier property, Predicate<LocalTime> ignorePolicy);
+
+    /**
+     * less and equals. 小于等于.
+     *
      * @param property 对象属性
      * @return LogicExpression
      */
@@ -135,10 +245,28 @@ public interface EntityLessEqualsExpressoin<E, C extends ConditionExpression, L 
     /**
      * less and equals. 小于等于.
      *
+     * @param property     对象属性
+     * @param ignorePolicy the ignore policy
+     * @return LogicExpression
+     */
+    L le(LocalDateTimeSupplier property, Predicate<LocalDateTime> ignorePolicy);
+
+    /**
+     * less and equals. 小于等于.
+     *
      * @param property 对象属性
      * @return LogicExpression
      */
     L le(StringSupplier property);
+
+    /**
+     * less and equals. 小于等于.
+     *
+     * @param property     对象属性
+     * @param ignorePolicy the ignore policy
+     * @return LogicExpression
+     */
+    L le(StringSupplier property, Predicate<String> ignorePolicy);
 
     /**
      * less equals. 小于等于.

@@ -7,7 +7,8 @@
 5. Jdbc实现查询返回Tuple2,List<Tuple2>,Tuple3,List<Tuple3>,Tuple4,List<Tuple4>,Tuple5,List<Tuple5>
 6. SqldbHammer加入QueryEntity query(Table table);Update update(Table table);Delete delete(Table table)方法
 7. Jdbc实现存储过程支持
-8. DSL EntityEqualsExpression,EntityNotEqualsExpression加入Consumer参数方法,加入带IgnorePolicy参数方法
+8. Entity DSL加入Consumer参数方法,加入带IgnorePolicy参数方法
+   TODO property()后的条件查询还未加入Consumer参数方法,加入带IgnorePolicy参数方法
 
 # 0.6.6 2022-08-26
 1. 修改L group(Consumer<C>)为L group(Function<C,L>)，

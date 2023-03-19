@@ -2,8 +2,12 @@
 package cn.featherfly.hammer.expression.condition.type;
 
 import java.util.Collection;
+import java.util.function.Consumer;
+import java.util.function.Predicate;
 
 import cn.featherfly.common.lang.function.SerializableFunction;
+import cn.featherfly.common.lang.function.SerializableFunction1;
+import cn.featherfly.common.lang.function.SerializableFunction2;
 import cn.featherfly.common.lang.function.SerializableSupplier;
 import cn.featherfly.common.lang.function.SerializableSupplier1;
 import cn.featherfly.common.lang.function.SerializableSupplier2;
@@ -24,11 +28,29 @@ public interface EntityNotInExpression<E, C extends ConditionExpression, L exten
     /**
      * 不包含指定，sql中的not in.
      *
+     * @param consumer the consumer
+     * @return LogicExpression
+     */
+    L nin(Consumer<EntityNotInExpression<E, C, L>> consumer);
+
+    /**
+     * 不包含指定，sql中的not in.
+     *
      * @param name  参数名称
      * @param value 参数值
      * @return LogicExpression
      */
-    L nin(SerializableFunction<E, ?> name, Object value);
+    <R> L nin(SerializableFunction<E, R> name, Object value);
+
+    /**
+     * 不包含指定，sql中的not in.
+     *
+     * @param name         参数名称
+     * @param value        参数值
+     * @param ignorePolicy the ignore policy
+     * @return LogicExpression
+     */
+    <R> L nin(SerializableFunction<E, R> name, Object value, Predicate<Object> ignorePolicy);
 
     /**
      * 不包含指定，sql中的not in.
@@ -38,7 +60,18 @@ public interface EntityNotInExpression<E, C extends ConditionExpression, L exten
      * @param value 参数值
      * @return LogicExpression
      */
-    <R> L nin(SerializableFunction<E, R> name, R[] value);
+    <R> L nin(SerializableFunction1<E, R> name, R[] value);
+
+    /**
+     * 不包含指定，sql中的not in.
+     *
+     * @param <R>          the generic type
+     * @param name         参数名称
+     * @param value        参数值
+     * @param ignorePolicy the ignore policy
+     * @return LogicExpression
+     */
+    <R> L nin(SerializableFunction1<E, R> name, R[] value, Predicate<R[]> ignorePolicy);
 
     /**
      * 不包含指定，sql中的not in.
@@ -48,7 +81,18 @@ public interface EntityNotInExpression<E, C extends ConditionExpression, L exten
      * @param value 参数值
      * @return LogicExpression
      */
-    <R> L nin(SerializableFunction<E, R> name, Collection<R> value);
+    <R> L nin(SerializableFunction2<E, R> name, Collection<R> value);
+
+    /**
+     * 不包含指定，sql中的not in.
+     *
+     * @param <R>          the generic type
+     * @param name         参数名称
+     * @param value        参数值
+     * @param ignorePolicy the ignore policy
+     * @return LogicExpression
+     */
+    <R> L nin(SerializableFunction2<E, R> name, Collection<R> value, Predicate<Collection<R>> ignorePolicy);
 
     /**
      * 不包含指定，sql中的not in.
@@ -62,6 +106,16 @@ public interface EntityNotInExpression<E, C extends ConditionExpression, L exten
     /**
      * 不包含指定，sql中的not in.
      *
+     * @param <R>          the generic type
+     * @param property     对象属性
+     * @param ignorePolicy the ignore policy
+     * @return LogicExpression
+     */
+    <R> L nin(SerializableSupplier<R> property, Predicate<R> ignorePolicy);
+
+    /**
+     * 不包含指定，sql中的not in.
+     *
      * @param <R>      the generic type
      * @param property 对象属性
      * @return LogicExpression
@@ -71,11 +125,31 @@ public interface EntityNotInExpression<E, C extends ConditionExpression, L exten
     /**
      * 不包含指定，sql中的not in.
      *
+     * @param <R>          the generic type
+     * @param property     对象属性
+     * @param ignorePolicy the ignore policy
+     * @return LogicExpression
+     */
+    <R> L nin(SerializableSupplier1<R[]> property, Predicate<R[]> ignorePolicy);
+
+    /**
+     * 不包含指定，sql中的not in.
+     *
      * @param <R>      the generic type
      * @param property 对象属性
      * @return LogicExpression
      */
     <R> L nin(SerializableSupplier2<Collection<R>> property);
+
+    /**
+     * 不包含指定，sql中的not in.
+     *
+     * @param <R>          the generic type
+     * @param property     对象属性
+     * @param ignorePolicy the ignore policy
+     * @return LogicExpression
+     */
+    <R> L nin(SerializableSupplier2<Collection<R>> property, Predicate<Collection<R>> ignorePolicy);
 
     /**
      * 包含指定，sql中的in.

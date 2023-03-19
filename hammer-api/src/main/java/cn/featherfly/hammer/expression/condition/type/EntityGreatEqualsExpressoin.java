@@ -5,6 +5,8 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.Date;
+import java.util.function.Consumer;
+import java.util.function.Predicate;
 
 import cn.featherfly.common.lang.function.DateSupplier;
 import cn.featherfly.common.lang.function.LocalDateSupplier;
@@ -37,12 +39,31 @@ public interface EntityGreatEqualsExpressoin<E, C extends ConditionExpression, L
     /**
      * great and equals. 大于等于.
      *
+     * @param consumer the consumer
+     * @return LogicExpression
+     */
+    L ge(Consumer<EntityGreatEqualsExpressoin<E, C, L>> consumer);
+
+    /**
+     * great and equals. 大于等于.
+     *
      * @param <N>   number type
      * @param name  参数名称
      * @param value 参数值
      * @return LogicExpression
      */
     <N extends Number> L ge(SerializableFunction<E, N> name, N value);
+
+    /**
+     * great and equals. 大于等于.
+     *
+     * @param <N>          number type
+     * @param name         参数名称
+     * @param value        参数值
+     * @param ignorePolicy the ignore policy
+     * @return LogicExpression
+     */
+    <N extends Number> L ge(SerializableFunction<E, N> name, N value, Predicate<N> ignorePolicy);
 
     /**
      * great and equals. 大于等于.
@@ -57,11 +78,32 @@ public interface EntityGreatEqualsExpressoin<E, C extends ConditionExpression, L
     /**
      * great and equals. 大于等于.
      *
+     * @param <D>          date type
+     * @param name         参数名称
+     * @param value        参数值
+     * @param ignorePolicy the ignore policy
+     * @return LogicExpression
+     */
+    <D extends Date> L ge(SerializableFunction<E, D> name, D value, Predicate<D> ignorePolicy);
+
+    /**
+     * great and equals. 大于等于.
+     *
      * @param name  参数名称
      * @param value 参数值
      * @return LogicExpression
      */
     L ge(SerializableFunction<E, LocalTime> name, LocalTime value);
+
+    /**
+     * great and equals. 大于等于.
+     *
+     * @param name         参数名称
+     * @param value        参数值
+     * @param ignorePolicy the ignore policy
+     * @return LogicExpression
+     */
+    L ge(SerializableFunction<E, LocalTime> name, LocalTime value, Predicate<LocalTime> ignorePolicy);
 
     /**
      * great and equals. 大于等于.
@@ -75,11 +117,31 @@ public interface EntityGreatEqualsExpressoin<E, C extends ConditionExpression, L
     /**
      * great and equals. 大于等于.
      *
+     * @param name         参数名称
+     * @param value        参数值
+     * @param ignorePolicy the ignore policy
+     * @return LogicExpression
+     */
+    L ge(SerializableFunction<E, LocalDate> name, LocalDate value, Predicate<LocalDate> ignorePolicy);
+
+    /**
+     * great and equals. 大于等于.
+     *
      * @param name  参数名称
      * @param value 参数值
      * @return LogicExpression
      */
     L ge(SerializableFunction<E, LocalDateTime> name, LocalDateTime value);
+
+    /**
+     * great and equals. 大于等于.
+     *
+     * @param name         参数名称
+     * @param value        参数值
+     * @param ignorePolicy the ignore policy
+     * @return LogicExpression
+     */
+    L ge(SerializableFunction<E, LocalDateTime> name, LocalDateTime value, Predicate<LocalDateTime> ignorePolicy);
 
     /**
      * great and equals. 大于等于.
@@ -93,11 +155,31 @@ public interface EntityGreatEqualsExpressoin<E, C extends ConditionExpression, L
     /**
      * great and equals. 大于等于.
      *
+     * @param name         参数名称
+     * @param value        参数值
+     * @param ignorePolicy the ignore policy
+     * @return LogicExpression
+     */
+    L ge(SerializableFunction<E, String> name, String value, Predicate<String> ignorePolicy);
+
+    /**
+     * great and equals. 大于等于.
+     *
      * @param <R>      the generic type
      * @param property 对象属性
      * @return LogicExpression
      */
     <R extends Date> L ge(DateSupplier<R> property);
+
+    /**
+     * great and equals. 大于等于.
+     *
+     * @param <R>          the generic type
+     * @param property     对象属性
+     * @param ignorePolicy the ignore policy
+     * @return LogicExpression
+     */
+    <R extends Date> L ge(DateSupplier<R> property, Predicate<R> ignorePolicy);
 
     /**
      * great and equals. 大于等于.
@@ -111,10 +193,29 @@ public interface EntityGreatEqualsExpressoin<E, C extends ConditionExpression, L
     /**
      * great and equals. 大于等于.
      *
+     * @param <R>          the generic type
+     * @param property     对象属性
+     * @param ignorePolicy the ignore policy
+     * @return LogicExpression
+     */
+    <R extends Number> L ge(NumberSupplier<R> property, Predicate<R> ignorePolicy);
+
+    /**
+     * great and equals. 大于等于.
+     *
      * @param property 对象属性
      * @return LogicExpression
      */
     L ge(LocalDateSupplier property);
+
+    /**
+     * great and equals. 大于等于.
+     *
+     * @param property     对象属性
+     * @param ignorePolicy the ignore policy
+     * @return LogicExpression
+     */
+    L ge(LocalDateSupplier property, Predicate<LocalDate> ignorePolicy);
 
     /**
      * great and equals. 大于等于.
@@ -127,6 +228,15 @@ public interface EntityGreatEqualsExpressoin<E, C extends ConditionExpression, L
     /**
      * great and equals. 大于等于.
      *
+     * @param property     对象属性
+     * @param ignorePolicy the ignore policy
+     * @return LogicExpression
+     */
+    L ge(LocalTimeSupplier property, Predicate<LocalTime> ignorePolicy);
+
+    /**
+     * great and equals. 大于等于.
+     *
      * @param property 对象属性
      * @return LogicExpression
      */
@@ -135,10 +245,28 @@ public interface EntityGreatEqualsExpressoin<E, C extends ConditionExpression, L
     /**
      * great and equals. 大于等于.
      *
+     * @param property     对象属性
+     * @param ignorePolicy the ignore policy
+     * @return LogicExpression
+     */
+    L ge(LocalDateTimeSupplier property, Predicate<LocalDateTime> ignorePolicy);
+
+    /**
+     * great and equals. 大于等于.
+     *
      * @param property 对象属性
      * @return LogicExpression
      */
     L ge(StringSupplier property);
+
+    /**
+     * great and equals. 大于等于.
+     *
+     * @param property     对象属性
+     * @param ignorePolicy the ignore policy
+     * @return LogicExpression
+     */
+    L ge(StringSupplier property, Predicate<String> ignorePolicy);
 
     /**
      * great equals. 大于等于.
