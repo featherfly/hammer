@@ -1555,7 +1555,7 @@ public abstract class AbstractEntitySqlConditionGroupExpression<E, C extends Ent
      * {@inheritDoc}
      */
     @Override
-    public <R> L in(SerializableFunction1<E, R> name, R[] value) {
+    public <R> L in(SerializableFunction1<E, R> name, R... value) {
         return in(classMapping.getPropertyMapping(getPropertyName(name)), value, ignorePolicy);
     }
 
@@ -1672,7 +1672,7 @@ public abstract class AbstractEntitySqlConditionGroupExpression<E, C extends Ent
      * {@inheritDoc}
      */
     @Override
-    public <R> L nin(SerializableFunction1<E, R> name, R[] value) {
+    public <R> L nin(SerializableFunction1<E, R> name, R... value) {
         return nin(classMapping.getPropertyMapping(getPropertyName(name)), value, ignorePolicy);
     }
 
