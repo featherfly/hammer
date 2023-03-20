@@ -234,6 +234,9 @@ public class SqlDslExpressionTest extends JdbcTestBase {
         no = sqlUpdater.update(User.class).property(User::getPwd).set("222222").where()
                 .in(User::getId, new Integer[] { 4, 5 }).execute();
         assertTrue(no == 2);
+
+        no = sqlUpdater.update(User.class).property(User::getPwd).set("222222").where().in(User::getId, 4, 5).execute();
+        assertTrue(no == 2);
     }
 
     @Test
