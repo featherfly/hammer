@@ -126,6 +126,21 @@ public class SqlEntityExecutableUpdate<E> extends AbstractSqlExecutableUpdate<Sq
      * {@inheritDoc}
      */
     @Override
+    public <R, O> EntityExecutableUpdate<E> set(SerializableSupplier<R> property,
+            SerializableFunction<R, O> nestedProperty) {
+        JdbcPropertyMapping pm = classMapping.getPropertyMapping(getPropertyName(property));
+        if (property.get() == null) {
+            return _set(pm.getRepositoryFieldName(), property.get());
+        }
+        String npn = getPropertyName(nestedProperty);
+        JdbcPropertyMapping spm = pm.getPropertyMapping(npn);
+        return _set(spm, FieldValueOperator.create(spm, property.get()));
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
     //    public EntityExecutableUpdate<E> set(Consumer<EntityExecutableUpdate<E>> consumer) {
     public EntityExecutableUpdate<E> set(Consumer<EntityUpdateSetExpression<E, EntityExecutableUpdate<E>,
             EntityExecutableConditionGroupExpression<E>, EntityExecutableConditionGroupLogicExpression<E>>> consumer) {

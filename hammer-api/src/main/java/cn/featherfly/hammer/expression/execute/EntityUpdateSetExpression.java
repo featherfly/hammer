@@ -21,6 +21,14 @@ public interface EntityUpdateSetExpression<E, U extends EntityUpdateSetExecutabl
         C extends EntityConditionGroupExpression<E, C, L>, L extends EntityConditionGroupLogicExpression<E, C, L>> {
 
     /**
+     * Sets the.
+     *
+     * @param consumer the consumer
+     * @return the u
+     */
+    U set(Consumer<EntityUpdateSetExpression<E, U, C, L>> consumer);
+
+    /**
      * set value for property.
      *
      * @param <R>      the generic type
@@ -52,12 +60,15 @@ public interface EntityUpdateSetExpression<E, U extends EntityUpdateSetExecutabl
     <R> U set(SerializableSupplier<R> property);
 
     /**
-     * Sets the.
+     * set value for property.
      *
-     * @param consumer the consumer
-     * @return the u
+     * @param <R>            the generic type
+     * @param <O>            the generic type
+     * @param property       object property
+     * @param nestedProperty the nested property
+     * @return Update
      */
-    U set(Consumer<EntityUpdateSetExpression<E, U, C, L>> consumer);
+    <R, O> U set(SerializableSupplier<R> property, SerializableFunction<R, O> nestedProperty);
 
     /**
      * increase value for property.
