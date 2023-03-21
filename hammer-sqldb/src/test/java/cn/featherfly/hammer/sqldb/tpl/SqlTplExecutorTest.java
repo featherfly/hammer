@@ -11,6 +11,9 @@ import java.util.Map;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
+import com.speedment.common.tuple.Tuple2;
+import com.speedment.common.tuple.Tuples;
+
 import cn.featherfly.common.db.dialect.MySQLDialect;
 import cn.featherfly.common.lang.NumberUtils;
 import cn.featherfly.common.lang.Randoms;
@@ -559,5 +562,140 @@ public class SqlTplExecutorTest extends JdbcTestBase {
         // list
         users = executor.list("selectIn2", User.class, params);
         assertEquals(users.size(), resultSize);
+    }
+
+    @Test
+    void testSingleTuple2() {
+        Integer userId = 1;
+        // list
+        Tuple2<UserInfo, User> tuple2 = executor.single("selectUserInfoByUserId", UserInfo.class, User.class,
+                Tuples.of("ui.", "u."), new ChainMapImpl<String, Object>().putChain("userId", userId));
+
+        System.out.println(tuple2.get0());
+        System.out.println(tuple2.get1());
+
+        assertEquals(userId, tuple2.get0().getUser().getId());
+        assertEquals(userId, tuple2.get1().getId());
+    }
+
+    @Test
+    void testSingleTuple2_2() {
+        Integer userId = 1;
+        // list
+        Tuple2<UserInfo, User> tuple2 = executor.single("selectUserInfoByUserId", UserInfo.class, User.class,
+                new ChainMapImpl<String, Object>().putChain("userId", userId));
+
+        System.out.println(tuple2.get0());
+        System.out.println(tuple2.get1());
+
+        assertEquals(userId, tuple2.get0().getUser().getId());
+        assertEquals(userId, tuple2.get1().getId());
+    }
+
+    @Test
+    void testSingleTuple2List() {
+        // list
+        List<Tuple2<UserInfo, User>> list = executor.list("selectUserInfoAndUserList", UserInfo.class, User.class,
+                Tuples.of("ui.", "u."), new ChainMapImpl<String, Object>());
+        assertEquals(list.size(), 2);
+
+        for (Tuple2<UserInfo, User> tuple2 : list) {
+            System.out.println(tuple2.get0());
+            System.out.println(tuple2.get1());
+
+            assertEquals(tuple2.get0().getUser().getId(), tuple2.get1().getId());
+        }
+
+        list = executor.list("selectUserInfoAndUserList", UserInfo.class, User.class, Tuples.of("ui.", "u."),
+                new ChainMapImpl<String, Object>(), 0, 1);
+        assertEquals(list.size(), 1);
+
+        for (Tuple2<UserInfo, User> tuple2 : list) {
+            System.out.println(tuple2.get0());
+            System.out.println(tuple2.get1());
+
+            assertEquals(tuple2.get0().getUser().getId(), tuple2.get1().getId());
+        }
+    }
+
+    @Test
+    void testSingleTuple2List_2() {
+        // list
+        List<Tuple2<UserInfo, User>> list = executor.list("selectUserInfoAndUserList", UserInfo.class, User.class,
+                new ChainMapImpl<String, Object>());
+        assertEquals(list.size(), 2);
+
+        for (Tuple2<UserInfo, User> tuple2 : list) {
+            System.out.println(tuple2.get0());
+            System.out.println(tuple2.get1());
+
+            assertEquals(tuple2.get0().getUser().getId(), tuple2.get1().getId());
+        }
+
+        list = executor.list("selectUserInfoAndUserList", UserInfo.class, User.class,
+                new ChainMapImpl<String, Object>(), 0, 1);
+        assertEquals(list.size(), 1);
+
+        for (Tuple2<UserInfo, User> tuple2 : list) {
+            System.out.println(tuple2.get0());
+            System.out.println(tuple2.get1());
+
+            assertEquals(tuple2.get0().getUser().getId(), tuple2.get1().getId());
+        }
+    }
+
+    @Test
+    void testSingleTuple2Page() {
+        PaginationResults<Tuple2<UserInfo, User>> page = executor.pagination("selectUserInfoAndUserList",
+                UserInfo.class, User.class, Tuples.of("ui.", "u."), new ChainMapImpl<String, Object>(), 0, 10);
+        assertEquals(page.getTotal(), new Integer(2));
+        assertEquals(page.getPageResults().size(), 2);
+
+        for (Tuple2<UserInfo, User> tuple2 : page.getPageResults()) {
+            System.out.println(tuple2.get0());
+            System.out.println(tuple2.get1());
+
+            assertEquals(tuple2.get0().getUser().getId(), tuple2.get1().getId());
+        }
+
+        page = executor.pagination("selectUserInfoAndUserList", UserInfo.class, User.class, Tuples.of("ui.", "u."),
+                new ChainMapImpl<String, Object>(), 0, 1);
+        assertEquals(page.getTotal(), new Integer(2));
+        assertEquals(page.getPageResults().size(), 1);
+
+        for (Tuple2<UserInfo, User> tuple2 : page.getPageResults()) {
+            System.out.println(tuple2.get0());
+            System.out.println(tuple2.get1());
+
+            assertEquals(tuple2.get0().getUser().getId(), tuple2.get1().getId());
+        }
+    }
+
+    @Test
+    void testSingleTuple2Page_2() {
+        int pageSize = 2;
+        PaginationResults<Tuple2<UserInfo, User>> page = executor.pagination("selectUserInfoAndUserList",
+                UserInfo.class, User.class, new ChainMapImpl<String, Object>(), 0, pageSize);
+        assertEquals(page.getTotal(), new Integer(2));
+        assertEquals(page.getPageResults().size(), 2);
+
+        for (Tuple2<UserInfo, User> tuple2 : page.getPageResults()) {
+            System.out.println(tuple2.get0());
+            System.out.println(tuple2.get1());
+
+            assertEquals(tuple2.get0().getUser().getId(), tuple2.get1().getId());
+        }
+
+        page = executor.pagination("selectUserInfoAndUserList", UserInfo.class, User.class,
+                new ChainMapImpl<String, Object>(), 0, 1);
+        assertEquals(page.getSize(), new Integer(1));
+        assertEquals(page.getPageResults().size(), 1);
+
+        for (Tuple2<UserInfo, User> tuple2 : page.getPageResults()) {
+            System.out.println(tuple2.get0());
+            System.out.println(tuple2.get1());
+
+            assertEquals(tuple2.get0().getUser().getId(), tuple2.get1().getId());
+        }
     }
 }
