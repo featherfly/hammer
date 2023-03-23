@@ -5,10 +5,13 @@
 3. 实现upsert在全部是插入时为entity设置自动生成的主键（存在update时返回的key无法确定）
 4. 优化GetOperate的ForUpdate逻辑
 5. Jdbc实现查询返回Tuple2,List<Tuple2>,Tuple3,List<Tuple3>,Tuple4,List<Tuple4>,Tuple5,List<Tuple5>
-6. SqldbHammer加入QueryEntity query(Table table);Update update(Table table);Delete delete(Table table)方法
-7. Jdbc实现存储过程支持
-8. Entity DSL加入Consumer参数方法,加入带IgnorePolicy参数方法
+6. 模板sql支持返回一系列Tuple[2-5]、List<Tuple[2-5]>、PaginationResults<Tuple[2-5]>
+7. SqldbHammer加入QueryEntity query(Table table);Update update(Table table);Delete delete(Table table)方法
+8. Jdbc实现存储过程支持
+9. Entity DSL加入Consumer参数方法,加入带IgnorePolicy参数方法
    TODO property()后的条件查询还未加入Consumer参数方法,加入带IgnorePolicy参数方法
+TODO where支持多实体条件查询
+TODO EntityQuerySortExpression实现EntityQuerySortExpression1,EntityQuerySortExpression2这种带多个实体的用于完善join和where后的多实体进行排序
 
 # 0.6.6 2022-08-26
 1. 修改L group(Consumer<C>)为L group(Function<C,L>)，

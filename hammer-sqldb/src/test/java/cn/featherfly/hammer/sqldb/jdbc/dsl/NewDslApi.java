@@ -4,10 +4,16 @@ package cn.featherfly.hammer.sqldb.jdbc.dsl;
 import java.util.List;
 import java.util.function.Function;
 
+import org.testng.annotations.Test;
+
 import com.speedment.common.tuple.Tuple;
 import com.speedment.common.tuple.Tuple2;
+import com.speedment.common.tuple.Tuple3;
 import com.speedment.common.tuple.Tuples;
 
+import cn.featherfly.common.lang.function.SerializableFunction;
+import cn.featherfly.common.lang.function.SerializableFunction1;
+import cn.featherfly.common.lang.function.SerializableFunction2;
 import cn.featherfly.common.operator.AggregateFunction;
 import cn.featherfly.common.repository.Repository;
 import cn.featherfly.common.repository.SimpleRepository;
@@ -21,6 +27,60 @@ import cn.featherfly.hammer.sqldb.jdbc.vo.UserInfo;
  * @author zhongj
  */
 public class NewDslApi {
+
+    //    <R> void eq(Function<Tuple2<Class<UserInfo>, Class<User>>, Class<User>> find,
+    //            SerializableFunction<User, R> property, R value) {
+    //        System.out.println("eq SerializableFunction<User, UserInfo> property");
+    //    }
+
+    //    <R> void eq(Function<Tuple2<Class<UserInfo>, Class<User>>, Class<UserInfo>> find,
+    //            SerializableFunction1<UserInfo, R> property, R value) {
+    //        System.out.println("eq SerializableFunction<User, User> property");
+    //    }
+
+    <R> void eq(
+            Function<Tuple3<QueryEntityRepository<UserInfo>, QueryEntityRepository<User>, QueryEntityRepository<User>>,
+                    QueryEntityRepository<User>> find,
+            SerializableFunction<User, R> property, R value) {
+
+        System.out.println("eq SerializableFunction<User, R> property index = " + find
+                .apply(Tuples.of(new QueryEntityRepository<>(0, UserInfo.class),
+                        new QueryEntityRepository<>(1, User.class), new QueryEntityRepository<>(2, User.class)))
+                .getIndex());
+    }
+
+    <R> void eq(
+            Function<Tuple3<QueryEntityRepository<UserInfo>, QueryEntityRepository<User>, QueryEntityRepository<User>>,
+                    QueryEntityRepository<UserInfo>> find,
+            SerializableFunction1<UserInfo, R> property, R value) {
+        System.out.println("eq SerializableFunction1<UserInfo, R> property index = " + find
+                .apply(Tuples.of(new QueryEntityRepository<>(0, UserInfo.class),
+                        new QueryEntityRepository<>(1, User.class), new QueryEntityRepository<>(2, User.class)))
+                .getIndex());
+    }
+
+    <R> void eq(
+            Function<Tuple3<QueryEntityRepository<UserInfo>, QueryEntityRepository<User>, QueryEntityRepository<User>>,
+                    QueryEntityRepository<User>> find,
+            SerializableFunction2<User, R> property, R value) {
+        System.out.println("eq SerializableFunction2<User, R> property  index = " + find
+                .apply(Tuples.of(new QueryEntityRepository<>(0, UserInfo.class),
+                        new QueryEntityRepository<>(1, User.class), new QueryEntityRepository<>(2, User.class)))
+                .getIndex());
+    }
+
+    <R> void eq(SerializableFunction<UserInfo, R> property, R value) {
+        System.out.println("eq SerializableFunction<UserInfo, R> property");
+    }
+
+    @Test
+    void test() {
+        eq(querys -> querys.get1(), User::getAge, 1);
+        eq(querys -> querys.get2(), User::getAge, 1);
+        eq(querys -> querys.get0(), UserInfo::getName, "aaa");
+        eq(querys -> querys.get0(), UserInfo::getId, 1); // 等同 eq(UserInfo::getId, 1);
+        eq(UserInfo::getId, 1); // 等同 eq(querys -> querys.get0(), UserInfo::getId, 1);
+    }
 
     public static void main(String[] args) {
 
@@ -39,6 +99,7 @@ public class NewDslApi {
 
         Function<FindAndFetchManager<Tuple2<EntityRepository<UserInfo>, EntityRepository<UserInfo>>>,
                 Repository> f = (find) -> {
+                    find.getFindAndFetch();
                     return find.getFindAndFetch().get0();
                 };
 
@@ -46,14 +107,55 @@ public class NewDslApi {
             return tuple.get0();
         };
 
-        f2.apply(Tuples.of(new EntityRepository<UserInfo>(), new EntityRepository<User>()));
+        f2.apply(Tuples.of(new EntityRepository<>(UserInfo.class), new EntityRepository<>(User.class)));
     }
 }
 
 class EntityRepository<T> extends SimpleRepository {
-    public Class<T> type() {
-        return null;
+
+    private Class<T> type;
+
+    /**
+     * @param index
+     * @param type
+     */
+    public EntityRepository(Class<T> type) {
+        super();
+        this.type = type;
     }
+
+    /**
+     * get type value
+     *
+     * @return type
+     */
+    public Class<T> getType() {
+        return type;
+    }
+}
+
+class QueryEntityRepository<T> extends EntityRepository<T> {
+
+    private int index = 0;
+
+    /**
+     * @param index
+     * @param type
+     */
+    public QueryEntityRepository(int index, Class<T> type) {
+        super(type);
+        this.index = index;
+    }
+
+    /**
+     * get index value
+     *
+     * @return index
+     */
+    public int getIndex() {
+        return index;
+    }
+
 }
 
 class FindAndFetchManager<T extends Tuple> {

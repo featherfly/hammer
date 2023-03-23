@@ -24,82 +24,11 @@ public interface EntityQueryRelationEntityExpression<E, R1, Q extends EntityQuer
     QR fetch();
 
     //    /**
-    //     * relate to.
+    //     * 结束当前条件并进入排序器
     //     *
-    //     * @param the          generic type
-    //     * @param propertyName find type object property name
-    //     * @return TypeQueryWithOnExpression
+    //     * @return QuerySortExpression
     //     */
-    //    default QWE relate(SerializableFunction<E, R1> propertyName) {
-    //        return join(propertyName);
-    //    }
-    //
-    //    /**
-    //     * join on.
-    //     *
-    //     * @param the          generic type
-    //     * @param propertyName find type object property name
-    //     * @return TypeQueryWithOnExpression
-    //     */
-    //    QWE join(SerializableFunction<E, R1> propertyName);
-    //
-    //    /**
-    //     * relate to.
-    //     *
-    //     * @param the          generic type
-    //     * @param propertyName find type object property name
-    //     * @return TypeQueryWithOnExpression
-    //     */
-    //    default QWE relate(SerializableFunction2<R1, E> propertyName) {
-    //        return join(propertyName);
-    //    }
-    //
-    //    /**
-    //     * join on.
-    //     *
-    //     * @param the          generic type
-    //     * @param propertyName find type object property name
-    //     * @return TypeQueryWithOnExpression
-    //     */
-    //    QWE join(SerializableFunction2<R1, E> propertyName);
-    //
-    //    /**
-    //     * relate to.
-    //     *
-    //     * @param propertyName find type object property name
-    //     * @return TypeQueryWithOnExpression
-    //     */
-    //    default QWE relate(SerializableFunction3<E, E> propertyName) {
-    //        return join(propertyName);
-    //    }
-    //
-    //    /**
-    //     * join on.
-    //     *
-    //     * @param propertyName find type object property name
-    //     * @return TypeQueryWithOnExpression
-    //     */
-    //    QWE join(SerializableFunction3<E, E> propertyName);
-    //
-    //    /**
-    //     * relate to.
-    //     *
-    //     * @param the          generic type
-    //     * @param propertyName with type object property name
-    //     * @param index        with index
-    //     * @return TypeQueryWithOnExpression
-    //     */
-    //    default QWE relate(SerializableFunction<E, R1> propertyName, int index) {
-    //        return join(propertyName, index);
-    //    }
-    //
-    //    /**
-    //     * join on.
-    //     *
-    //     * @param the          generic type
-    //     * @param propertyName with type object property name
-    //     * @param index        with index
-    //     * @return TypeQueryWithOnExpression
-    //     */
-    //    QWE join(SerializableFunction<E, R1> propertyName, int index);
+    //       IMPLSOON  后续实现EntityQuerySortExpression带多个实体
+    //    EntityQuerySortExpression2<E, R1> sort();
+    //    EntityQuerySortExpression2<E, R1, R2> sort();
 }

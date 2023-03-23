@@ -15,6 +15,7 @@ import cn.featherfly.common.lang.WordUtils;
 import cn.featherfly.hammer.tpl.TplException;
 import cn.featherfly.hammer.tpl.directive.PropertiesMappingDirective;
 import cn.featherfly.hammer.tpl.freemarker.FreemarkerDirective;
+import cn.featherfly.hammer.tpl.supports.PropertiesMappingManager;
 import freemarker.core.Environment;
 import freemarker.template.TemplateDirectiveBody;
 import freemarker.template.TemplateException;
@@ -33,20 +34,28 @@ public class PropertiesMappingDirectiveModel extends PropertiesMappingDirective 
     private JdbcMappingFactory mappingFactory;
 
     /**
+     * Instantiates a new properties mapping directive model.
+     *
      * @param mappingFactory mappingFactory
-     * @param resultType     resultType
+     * @param manager        the manager
+     * @param resultTypes    the result types
      */
-    public PropertiesMappingDirectiveModel(JdbcMappingFactory mappingFactory, Class<?> resultType) {
-        this(DEFAULT_PARAM_NAME_NAME, mappingFactory, resultType);
+    public PropertiesMappingDirectiveModel(JdbcMappingFactory mappingFactory, PropertiesMappingManager manager,
+            Class<?>... resultTypes) {
+        this(DEFAULT_PARAM_NAME_NAME, mappingFactory, manager, resultTypes);
     }
 
     /**
+     * Instantiates a new properties mapping directive model.
+     *
      * @param paramName      paramName
      * @param mappingFactory mappingFactory
-     * @param resultType     resultType
+     * @param manager        the manager
+     * @param resultTypes    the result types
      */
-    public PropertiesMappingDirectiveModel(String paramName, JdbcMappingFactory mappingFactory, Class<?> resultType) {
-        super(paramName, mappingFactory, resultType);
+    public PropertiesMappingDirectiveModel(String paramName, JdbcMappingFactory mappingFactory,
+            PropertiesMappingManager manager, Class<?>... resultTypes) {
+        super(paramName, mappingFactory, manager, resultTypes);
         // FIXME 这里暂时还没有把接口抽出来，暂时只定义了一个接口符号，后续来改
         this.mappingFactory = mappingFactory;
     }
@@ -93,8 +102,12 @@ public class PropertiesMappingDirectiveModel extends PropertiesMappingDirective 
             }
         }
 
+        final boolean aliasIsEmpty = Lang.isEmpty(aliasParam);
+        final String alias = aliasParam;
+
         if (mappingType == null) {
-            mappingType = resultType;
+            mappingType = getResultType(manager.getIndex());
+            manager.addValue(new PropertiesMappingManager.Value(alias, mappingType, nameParam));
         }
 
         JdbcClassMapping<?> classMapping = null;
@@ -111,8 +124,6 @@ public class PropertiesMappingDirectiveModel extends PropertiesMappingDirective 
         // Do the actual directive execution:
 
         Writer out = env.getOut();
-        final boolean aliasIsEmpty = Lang.isEmpty(aliasParam);
-        final String alias = aliasParam;
         final StringBuilder result = new StringBuilder();
 
         if (classMapping == null) {
@@ -130,7 +141,7 @@ public class PropertiesMappingDirectiveModel extends PropertiesMappingDirective 
             }
             out.write(result.toString());
         } else {
-            out.write(ClassMappingUtils.getSelectColumnsSql(classMapping, alias, mappingFactory.getDialect()));
+            out.write(ClassMappingUtils.getSelectColumnsSql(classMapping, alias, alias, mappingFactory.getDialect()));
         }
 
     }

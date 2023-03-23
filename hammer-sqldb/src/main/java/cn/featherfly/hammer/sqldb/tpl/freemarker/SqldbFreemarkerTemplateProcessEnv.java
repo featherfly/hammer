@@ -40,7 +40,7 @@ public class SqldbFreemarkerTemplateProcessEnv extends SqlDbTemplateProcessEnv<F
      */
     @Override
     protected FreemarkerDirective createAndDirective() {
-        return new AndTemplateDirectiveModel(manager);
+        return new AndTemplateDirectiveModel(conditionParamsManager);
     }
 
     /**
@@ -48,7 +48,7 @@ public class SqldbFreemarkerTemplateProcessEnv extends SqlDbTemplateProcessEnv<F
      */
     @Override
     protected FreemarkerDirective createOrDirective() {
-        return new OrTemplateDirectiveModel(manager);
+        return new OrTemplateDirectiveModel(conditionParamsManager);
     }
 
     /**
@@ -56,8 +56,7 @@ public class SqldbFreemarkerTemplateProcessEnv extends SqlDbTemplateProcessEnv<F
      */
     @Override
     protected FreemarkerDirective createPropertiesDirective() {
-        return new PropertiesMappingDirectiveModel(mappingFactory, resultType);
-
+        return new PropertiesMappingDirectiveModel(mappingFactory, propertiesMappingManager, resultTypes);
     }
 
     /**
