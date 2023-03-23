@@ -176,4 +176,5 @@ public class TplDynamicExecutorSpringRegistorTest extends AbstractTestNGSpringCo
         }
         userService.saveBatch(list.toArray(new User[list.size()]));
     }
+
 }

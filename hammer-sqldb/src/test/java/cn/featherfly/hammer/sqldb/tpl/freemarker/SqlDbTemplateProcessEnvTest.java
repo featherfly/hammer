@@ -20,6 +20,7 @@ import cn.featherfly.hammer.sqldb.tpl.SqlDbTemplateProcessEnv;
 import cn.featherfly.hammer.tpl.freemarker.FreemarkerDirective;
 import cn.featherfly.hammer.tpl.freemarker.FreemarkerMethod;
 import cn.featherfly.hammer.tpl.supports.ConditionParamsManager;
+import cn.featherfly.hammer.tpl.supports.PropertiesMappingManager;
 
 /**
  * T.
@@ -35,20 +36,23 @@ public class SqlDbTemplateProcessEnvTest extends JdbcTestBase {
 
         assertNull(env.getConfigFactory());
         assertNull(env.getDialect());
-        assertNull(env.getManager());
+        assertNull(env.getConditionParamsManager());
+        assertNull(env.getPropertiesMappingManager());
         assertNull(env.getMappingFactory());
-        assertNull(env.getResultType());
+        assertNull(env.getResultTypes());
 
         env.setConfigFactory(configFactory);
         env.setDialect(jdbc.getDialect());
-        env.setManager(new ConditionParamsManager());
+        env.setConditionParamsManager(new ConditionParamsManager());
+        env.setPropertiesMappingManager(new PropertiesMappingManager());
         env.setMappingFactory(mappingFactory);
-        env.setResultType(String.class);
+        env.setResultTypes(String.class);
 
         assertNotNull(env.getConfigFactory());
         assertNotNull(env.getDialect());
-        assertNotNull(env.getManager());
+        assertNotNull(env.getConditionParamsManager());
+        assertNotNull(env.getPropertiesMappingManager());
         assertNotNull(env.getMappingFactory());
-        assertNotNull(env.getResultType());
+        assertNotNull(env.getResultTypes());
     }
 }
