@@ -37,10 +37,7 @@ import cn.featherfly.hammer.expression.condition.LogicOperatorExpression;
 import cn.featherfly.hammer.expression.condition.ParamedExpression;
 
 /**
- * <p>
- * sql condition group builder sql条件逻辑组构造器
- * </p>
- * .
+ * sql condition group builder sql条件逻辑组构造器 .
  *
  * @author zhongj
  * @param <L> the generic type
@@ -256,7 +253,7 @@ public abstract class AbstractSqlConditionExpression<L> implements SqlBuilder, P
                 return list;
             }
         }
-        list.add(Tuples.of(propertyName, Optional.of(value)));
+        list.add(Tuples.of(propertyName, Optional.ofNullable(value)));
         return list;
     }
 
