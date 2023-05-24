@@ -15,7 +15,9 @@ import cn.featherfly.common.db.mapping.SqlTypeMappingManager;
  *
  * @author zhongj
  */
-public class JdbcImpl extends AbstractJdbc {
+public class JdbcSpringImpl extends AbstractJdbc {
+
+    private DataSource dataSource;
 
     /**
      * Instantiates a new jdbc impl.
@@ -23,7 +25,7 @@ public class JdbcImpl extends AbstractJdbc {
      * @param dataSource dataSource
      * @param dialect    dialect
      */
-    public JdbcImpl(DataSource dataSource, Dialect dialect) {
+    public JdbcSpringImpl(DataSource dataSource, Dialect dialect) {
         this(dataSource, dialect, new SqlTypeMappingManager());
     }
 
@@ -34,15 +36,16 @@ public class JdbcImpl extends AbstractJdbc {
      * @param dialect               dialect
      * @param sqlTypeMappingManager the sql type mapping manager
      */
-    public JdbcImpl(DataSource dataSource, Dialect dialect, SqlTypeMappingManager sqlTypeMappingManager) {
-        super(dataSource, dialect, sqlTypeMappingManager);
+    public JdbcSpringImpl(DataSource dataSource, Dialect dialect, SqlTypeMappingManager sqlTypeMappingManager) {
+        super(dialect, sqlTypeMappingManager);
+        this.dataSource = dataSource;
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    protected Connection getConnection(DataSource dataSource) {
+    protected Connection getConnection() {
         return DataSourceUtils.getConnection(dataSource);
     }
 
@@ -50,7 +53,7 @@ public class JdbcImpl extends AbstractJdbc {
      * {@inheritDoc}
      */
     @Override
-    protected void releaseConnection(Connection connection, DataSource dataSource) {
+    protected void releaseConnection(Connection connection) {
         DataSourceUtils.releaseConnection(connection, dataSource);
     }
 }

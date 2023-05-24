@@ -15,7 +15,7 @@ import cn.featherfly.common.lang.ArrayUtils;
 import cn.featherfly.common.lang.Randoms;
 import cn.featherfly.hammer.Hammer;
 import cn.featherfly.hammer.sqldb.SqldbHammerImpl;
-import cn.featherfly.hammer.sqldb.jdbc.JdbcImpl;
+import cn.featherfly.hammer.sqldb.jdbc.JdbcSpringImpl;
 import cn.featherfly.hammer.sqldb.jdbc.JdbcTestBase;
 import cn.featherfly.hammer.sqldb.jdbc.mappingtype.sqltype.ArrayToStringSqlTypeMapper;
 import cn.featherfly.hammer.sqldb.jdbc.mappingtype.sqltype.ListToStringSqlTypeMapper;
@@ -33,7 +33,7 @@ public class HammerJdbcMappingTypeTest2 extends JdbcTestBase {
 
     @BeforeClass
     void be() {
-        jdbc = new JdbcImpl(dataSource, dialect, sqlTypeMappingManager);
+        jdbc = new JdbcSpringImpl(dataSource, dialect, sqlTypeMappingManager);
 
         Class<Article2> type = Article2.class;
 

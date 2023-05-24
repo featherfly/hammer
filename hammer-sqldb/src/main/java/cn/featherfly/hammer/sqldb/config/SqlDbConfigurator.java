@@ -11,7 +11,7 @@ import cn.featherfly.hammer.Hammer;
 import cn.featherfly.hammer.config.Configurator;
 import cn.featherfly.hammer.sqldb.SqldbHammerImpl;
 import cn.featherfly.hammer.sqldb.jdbc.Jdbc;
-import cn.featherfly.hammer.sqldb.jdbc.JdbcImpl;
+import cn.featherfly.hammer.sqldb.jdbc.JdbcSpringImpl;
 import cn.featherfly.hammer.sqldb.tpl.SqlDbTemplateEngine;
 import cn.featherfly.hammer.sqldb.tpl.freemarker.SqldbFreemarkerTemplateEngine;
 import cn.featherfly.hammer.tpl.TplConfigFactory;
@@ -72,7 +72,7 @@ public class SqlDbConfigurator implements Configurator {
                     //                        jdbc = new JdbcImpl(constant.getDataSource(), constant.getDialect(), sqlTypeMappingManager);
                     //                    }
 
-                    Jdbc jdbc = new JdbcImpl(constant.getDataSource(), constant.getDialect(),
+                    Jdbc jdbc = new JdbcSpringImpl(constant.getDataSource(), constant.getDialect(),
                             new SqlTypeMappingManager() /*TODO 后续加入配置*/);
 
                     @SuppressWarnings("rawtypes")
