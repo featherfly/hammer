@@ -6,8 +6,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 
-import javax.sql.DataSource;
-
 import com.speedment.common.tuple.Tuple2;
 import com.speedment.common.tuple.Tuple3;
 import com.speedment.common.tuple.Tuple4;
@@ -25,12 +23,12 @@ import cn.featherfly.common.repository.mapping.RowMapper;
  */
 public interface Jdbc {
 
-    /**
-     * Gets the data source.
-     *
-     * @return DataSource
-     */
-    DataSource getDataSource();
+    //    /**
+    //     * Gets the data source.
+    //     *
+    //     * @return DataSource
+    //     */
+    //    DataSource getDataSource();
 
     /**
      * 返回dialect.
@@ -45,6 +43,39 @@ public interface Jdbc {
      * @return the sql type mapping manager
      */
     SqlTypeMappingManager getSqlTypeMappingManager();
+
+    //    /**
+    //     * Adds the interceptor.
+    //     *
+    //     * @param interceptor the interceptor
+    //     */
+    //    void addInterceptor(JdbcExecutionInterceptor interceptor);
+    //
+    //    /**
+    //     * Adds the interceptor.
+    //     *
+    //     * @param interceptors the interceptors
+    //     */
+    //    default void addInterceptor(List<JdbcExecutionInterceptor> interceptors) {
+    //        if (interceptors != null) {
+    //            for (JdbcExecutionInterceptor jdbcExecutionInterceptor : interceptors) {
+    //                addInterceptor(jdbcExecutionInterceptor);
+    //            }
+    //        }
+    //    }
+    //
+    //    /**
+    //     * Adds the interceptor.
+    //     *
+    //     * @param interceptors the interceptors
+    //     */
+    //    default void addInterceptor(JdbcExecutionInterceptor... interceptors) {
+    //        if (interceptors != null) {
+    //            for (JdbcExecutionInterceptor jdbcExecutionInterceptor : interceptors) {
+    //                addInterceptor(jdbcExecutionInterceptor);
+    //            }
+    //        }
+    //    }
 
     /**
      * Insert.
