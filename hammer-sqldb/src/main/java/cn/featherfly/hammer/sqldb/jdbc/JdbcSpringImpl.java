@@ -11,7 +11,7 @@ import cn.featherfly.common.db.dialect.Dialect;
 import cn.featherfly.common.db.mapping.SqlTypeMappingManager;
 
 /**
- * Jdbc Impl.
+ * jdbc spring impl.
  *
  * @author zhongj
  */
