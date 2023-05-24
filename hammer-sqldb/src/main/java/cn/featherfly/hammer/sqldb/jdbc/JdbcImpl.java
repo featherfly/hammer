@@ -16,11 +16,11 @@ import cn.featherfly.common.db.dialect.Dialect;
 import cn.featherfly.common.db.mapping.SqlTypeMappingManager;
 
 /**
- * JdbcSimpleImpl.
+ * JdbcImpl.
  *
  * @author zhongj
  */
-public class JdbcSimpleImpl extends AbstractJdbc {
+public class JdbcImpl extends AbstractJdbc {
 
     private Connection connection;
 
@@ -29,7 +29,7 @@ public class JdbcSimpleImpl extends AbstractJdbc {
      * @param dialect
      * @param manager
      */
-    public JdbcSimpleImpl(Connection connection, Dialect dialect, SqlTypeMappingManager manager) {
+    public JdbcImpl(Connection connection, Dialect dialect, SqlTypeMappingManager manager) {
         super(dialect, manager);
         this.connection = connection;
     }
