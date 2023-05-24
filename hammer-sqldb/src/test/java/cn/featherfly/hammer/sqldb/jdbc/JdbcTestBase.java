@@ -3,6 +3,8 @@ package cn.featherfly.hammer.sqldb.jdbc;
 
 import java.io.File;
 import java.io.IOException;
+import java.sql.Connection;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
@@ -16,6 +18,7 @@ import org.testng.annotations.BeforeSuite;
 import org.testng.annotations.Optional;
 import org.testng.annotations.Parameters;
 
+import cn.featherfly.common.db.JdbcException;
 import cn.featherfly.common.db.SqlExecutor;
 import cn.featherfly.common.db.SqlFile;
 import cn.featherfly.common.db.dialect.Dialect;
@@ -65,6 +68,8 @@ public class JdbcTestBase extends TestBase {
 
     protected static SqlTypeMappingManager sqlTypeMappingManager;
 
+    protected static JdbcFactory jdbcFactory;
+
     @BeforeSuite
     @Parameters({ "dataBase" })
     public void init(@Optional("mysql") String dataBase) throws IOException {
@@ -79,6 +84,8 @@ public class JdbcTestBase extends TestBase {
 
         configFactory = new TplConfigFactoryImpl("tpl/", ".yaml.tpl", basePackages,
                 new FreemarkerTemplatePreProcessor());
+
+        jdbcFactory = new JdbcFactoryImpl(dialect, sqlTypeMappingManager);
 
     }
 
@@ -132,7 +139,7 @@ public class JdbcTestBase extends TestBase {
 
         //        jdbc = new SpringJdbcTemplateImpl(ds, dialect);
         //        jdbc = new JdbcImpl(ds, dialect, sqlTypeMappingManager);
-        jdbc = new JdbcImpl(ds, dialect, sqlTypeMappingManager);
+        jdbc = new JdbcSpringImpl(ds, dialect, sqlTypeMappingManager);
         metadata = DatabaseMetadataManager.getDefaultManager().create(ds);
 
         mappingFactory = new JdbcMappingFactoryImpl(metadata, dialect, sqlTypeMappingManager);
@@ -174,7 +181,7 @@ public class JdbcTestBase extends TestBase {
         dialect = postgreSQLDialect;
 
         //        jdbc = new SpringJdbcTemplateImpl(ds, dialect);
-        jdbc = new JdbcImpl(ds, dialect, sqlTypeMappingManager);
+        jdbc = new JdbcSpringImpl(ds, dialect, sqlTypeMappingManager);
         metadata = DatabaseMetadataManager.getDefaultManager().create(ds);
 
         mappingFactory = new JdbcMappingFactoryImpl(metadata, dialect, sqlTypeMappingManager);
@@ -204,7 +211,7 @@ public class JdbcTestBase extends TestBase {
         dialect = Dialects.SQLITE;
 
         //        jdbc = new SpringJdbcTemplateImpl(ds, dialect);
-        jdbc = new JdbcImpl(ds, dialect, sqlTypeMappingManager);
+        jdbc = new JdbcSpringImpl(ds, dialect, sqlTypeMappingManager);
         metadata = DatabaseMetadataManager.getDefaultManager().create(ds, "main");
 
         mappingFactory = new JdbcMappingFactoryImpl(metadata, dialect, sqlTypeMappingManager);
@@ -232,6 +239,14 @@ public class JdbcTestBase extends TestBase {
             size += i;
         }
         return size;
+    }
+
+    protected Connection getConnection() {
+        try {
+            return dataSource.getConnection();
+        } catch (SQLException e) {
+            throw new JdbcException(e);
+        }
     }
 
 }

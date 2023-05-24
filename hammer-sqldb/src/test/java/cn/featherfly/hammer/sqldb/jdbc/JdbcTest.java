@@ -545,7 +545,7 @@ public class JdbcTest extends JdbcTestBase {
 
     @Test
     public void testIntercepor() {
-        JdbcImpl jdbc = new JdbcImpl(dataSource, dialect, sqlTypeMappingManager);
+        JdbcSpringImpl jdbc = new JdbcSpringImpl(dataSource, dialect, sqlTypeMappingManager);
 
         jdbc.addInterceptor(new JdbcExecutionInterceptor() {
             @Override
@@ -584,7 +584,7 @@ public class JdbcTest extends JdbcTestBase {
 
     @Test
     public void testIntercepor2() {
-        JdbcImpl jdbc = new JdbcImpl(dataSource, dialect, sqlTypeMappingManager);
+        JdbcSpringImpl jdbc = new JdbcSpringImpl(dataSource, dialect, sqlTypeMappingManager);
 
         List<JdbcExecutionInterceptor> interceptors = new ArrayList<>();
 

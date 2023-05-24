@@ -25,7 +25,7 @@ public class JdbcNativeTest extends JdbcTestBase {
 
     @Test
     void testCallQuery() throws SQLException {
-        Connection conn = jdbc.getDataSource().getConnection();
+        Connection conn = dataSource.getConnection();
         CallableStatement call = conn.prepareCall("call call_query_user(?)");
         call.setString(1, "yufei%");
         boolean b = call.execute();
@@ -38,7 +38,7 @@ public class JdbcNativeTest extends JdbcTestBase {
 
     @Test
     void testCallOutArgu() throws SQLException {
-        Connection conn = jdbc.getDataSource().getConnection();
+        Connection conn = dataSource.getConnection();
 
         CallableStatement call = conn.prepareCall("call call_update_user_one(?,?,?)");
         call.setInt(1, 13);
@@ -75,7 +75,7 @@ public class JdbcNativeTest extends JdbcTestBase {
 
     @Test
     void testCallOutArgu2() throws SQLException {
-        Connection conn = jdbc.getDataSource().getConnection();
+        Connection conn = dataSource.getConnection();
 
         CallableStatement call = conn.prepareCall("call call_update_role_more(?,?,?)");
         call.setString(1, "name_init%");
@@ -90,7 +90,7 @@ public class JdbcNativeTest extends JdbcTestBase {
 
     @Test
     void testCallOutArgu3() throws SQLException {
-        Connection conn = jdbc.getDataSource().getConnection();
+        Connection conn = dataSource.getConnection();
         CallableStatement call = conn.prepareCall("call call_update_role_more(?,?,?)");
         call.setString("q_name", "name_init%");
         call.setString("u_descp", "call_update_batch_" + Randoms.getInt(1000));

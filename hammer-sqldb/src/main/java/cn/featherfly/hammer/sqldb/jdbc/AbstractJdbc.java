@@ -23,13 +23,13 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashMap;
+import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
+import java.util.Set;
 import java.util.function.BiConsumer;
 import java.util.function.Consumer;
-
-import javax.sql.DataSource;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -68,8 +68,8 @@ public abstract class AbstractJdbc implements Jdbc {
     /** The logger. */
     protected final Logger logger = LoggerFactory.getLogger(this.getClass());
 
-    /** The data source. */
-    protected DataSource dataSource;
+    //    /** The data source. */
+    //    protected DataSource dataSource;
 
     /** The dialect. */
     protected Dialect dialect;
@@ -78,7 +78,7 @@ public abstract class AbstractJdbc implements Jdbc {
     protected SqlTypeMappingManager manager;
 
     /** The interceptors. */
-    protected final List<JdbcExecutionInterceptor> interceptors = new ArrayList<>(0);
+    protected final Set<JdbcExecutionInterceptor> interceptors = new LinkedHashSet<>(0);
 
     /**
      * Instantiates a new abstract jdbc.
@@ -87,29 +87,41 @@ public abstract class AbstractJdbc implements Jdbc {
      * @param dialect    the dialect
      * @param manager    the manager
      */
-    protected AbstractJdbc(DataSource dataSource, Dialect dialect, SqlTypeMappingManager manager) {
+    protected AbstractJdbc(Dialect dialect, SqlTypeMappingManager manager) {
         super();
-        setDataSource(dataSource);
         this.dialect = dialect;
         this.manager = manager;
     }
+    //    /**
+    //     * Instantiates a new abstract jdbc.
+    //     *
+    //     * @param dataSource the data source
+    //     * @param dialect    the dialect
+    //     * @param manager    the manager
+    //     */
+    //    protected AbstractJdbc(DataSource dataSource, Dialect dialect, SqlTypeMappingManager manager) {
+    //        super();
+    //        setDataSource(dataSource);
+    //        this.dialect = dialect;
+    //        this.manager = manager;
+    //    }
 
-    /**
-     * set dataSource.
-     *
-     * @param dataSource dataSource
-     */
-    public void setDataSource(DataSource dataSource) {
-        this.dataSource = dataSource;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public DataSource getDataSource() {
-        return dataSource;
-    }
+    //    /**
+    //     * set dataSource.
+    //     *
+    //     * @param dataSource dataSource
+    //     */
+    //    public void setDataSource(DataSource dataSource) {
+    //        this.dataSource = dataSource;
+    //    }
+    //
+    //    /**
+    //     * {@inheritDoc}
+    //     */
+    //    @Override
+    //    public DataSource getDataSource() {
+    //        return dataSource;
+    //    }
 
     /**
      * {@inheritDoc}
@@ -339,8 +351,9 @@ public abstract class AbstractJdbc implements Jdbc {
             message.append("execute batch -> ").append(sql).append("\n").append("  batch size -> ")
                     .append(argsList.size()).append("\n");
         }
-        DataSource ds = getDataSource();
-        Connection connection = getConnection(ds);
+        //        DataSource ds = getDataSource();
+        //        Connection connection = getConnection(ds);
+        Connection connection = getConnection();
         try (PreparedStatement prep = generatedKeyHolder == null ? connection.prepareStatement(sql)
                 : connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
             List<JdbcExecution> jdbcExecutions = new ArrayList<>(argsList.size());
@@ -388,7 +401,8 @@ public abstract class AbstractJdbc implements Jdbc {
             }
             return results;
         } catch (SQLException e) {
-            releaseConnection(connection, ds);
+            //            releaseConnection(connection, ds);
+            releaseConnection(connection);
             StringBuilder strArgs = new StringBuilder();
             int index = 0;
             for (Object[] args : argsList) {
@@ -397,7 +411,8 @@ public abstract class AbstractJdbc implements Jdbc {
             throw new JdbcException(
                     Strings.format("executeUpdateBatch: \n  sql: {0} \n  args: {1}", sql, strArgs.toString()), e);
         } finally {
-            releaseConnection(connection, getDataSource());
+            //            releaseConnection(connection, getDataSource());
+            releaseConnection(connection);
         }
     }
 
@@ -407,8 +422,9 @@ public abstract class AbstractJdbc implements Jdbc {
         sql = execution.getExecution();
         args = execution.getParams();
         logger.debug("execute sql -> {}, args -> {}", sql, args);
-        DataSource ds = getDataSource();
-        Connection connection = getConnection(ds);
+        //        DataSource ds = getDataSource();
+        //        Connection connection = getConnection(ds);
+        Connection connection = getConnection();
         try (PreparedStatement prep = generatedKeyHolder == null ? connection.prepareStatement(sql)
                 : connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
             setParams.accept(prep);
@@ -442,11 +458,13 @@ public abstract class AbstractJdbc implements Jdbc {
             }
             return result;
         } catch (SQLException e) {
-            releaseConnection(connection, ds);
+            //            releaseConnection(connection, ds);
+            releaseConnection(connection);
             throw new JdbcException(Strings.format("executeUpdate: \nsql: {0} \nargs: {1}", sql, Arrays.toString(args)),
                     e);
         } finally {
-            releaseConnection(connection, getDataSource());
+            //            releaseConnection(connection, getDataSource());
+            releaseConnection(connection);
         }
     }
 
@@ -471,19 +489,22 @@ public abstract class AbstractJdbc implements Jdbc {
             sql = execution.getExecution();
             args = execution.getParams();
             logger.debug("execute sql -> {}, args -> {}", sql, args);
-            DataSource ds = getDataSource();
-            Connection con = getConnection(ds);
+            //            DataSource ds = getDataSource();
+            //            Connection con = getConnection(ds);
+            Connection con = getConnection();
             try (PreparedStatement prep = con.prepareStatement(sql)) {
                 setParams(prep, args);
                 try (ResultSet rs = prep.executeQuery()) {
                     return postHandle(execution.setOriginalResult(JdbcUtils.getResultSetMaps(rs, manager)), sql, args);
                 }
             } catch (SQLException e) {
-                releaseConnection(con, ds);
+                //                releaseConnection(con, ds);
+                releaseConnection(con);
                 con = null;
                 throw new JdbcException(Strings.format("query: \nsql: {0} \nargs: {1}", sql, Arrays.toString(args)), e);
             } finally {
-                releaseConnection(con, getDataSource());
+                //                releaseConnection(con, getDataSource());
+                releaseConnection(con);
             }
         }
         return new ArrayList<>();
@@ -658,8 +679,9 @@ public abstract class AbstractJdbc implements Jdbc {
             sql = execution.getExecution();
             args = execution.getParams();
             logger.debug("execute sql -> {}, args -> {}", sql, args);
-            DataSource ds = getDataSource();
-            Connection con = getConnection(ds);
+            //            DataSource ds = getDataSource();
+            //            Connection con = getConnection(ds);
+            Connection con = getConnection();
             try (PreparedStatement prep = con.prepareStatement(sql)) {
                 setParams(prep, args);
                 try (ResultSet rs = prep.executeQuery()) {
@@ -670,11 +692,13 @@ public abstract class AbstractJdbc implements Jdbc {
                     return postHandle(execution.setOriginalResult(list), sql, args);
                 }
             } catch (SQLException e) {
-                releaseConnection(con, ds);
+                //                releaseConnection(con, ds);
+                releaseConnection(con);
                 con = null;
                 throw new JdbcException(Strings.format("query: \nsql: {0} \nargs: {1}", sql, Arrays.toString(args)), e);
             } finally {
-                releaseConnection(con, getDataSource());
+                //                releaseConnection(con, getDataSource());
+                releaseConnection(con);
             }
         }
         return list;
@@ -1039,7 +1063,8 @@ public abstract class AbstractJdbc implements Jdbc {
         JdbcExecution execution = preHandle(procedure, args);
         procedure = execution.getExecution();
         args = execution.getParams();
-        Connection con = getConnection(dataSource);
+        //        Connection con = getConnection(dataSource);
+        Connection con = getConnection();
         try (CallableStatement call = con.prepareCall(procedure)) {
             Map<Integer, Class<?>> outParams = setParams(call, args);
             call.execute();
@@ -1047,13 +1072,15 @@ public abstract class AbstractJdbc implements Jdbc {
             postHandle(execution, procedure, args);
             return call.getUpdateCount();
         } catch (SQLException e) {
-            releaseConnection(con, dataSource);
+            //            releaseConnection(con, dataSource);
+            releaseConnection(con);
             con = null;
             throw new JdbcException(
                     Strings.format("call procedure: \nprocedure: {0} \nargs: {1}", procedure, Arrays.toString(args)),
                     e);
         } finally {
-            releaseConnection(con, getDataSource());
+            //            releaseConnection(con, getDataSource());
+            releaseConnection(con);
         }
     }
 
@@ -1089,7 +1116,8 @@ public abstract class AbstractJdbc implements Jdbc {
         JdbcExecution execution = preHandle(procedure, args);
         procedure = execution.getExecution();
         args = execution.getParams();
-        Connection con = getConnection(dataSource);
+        //        Connection con = getConnection(dataSource);
+        Connection con = getConnection();
         try (CallableStatement call = con.prepareCall(procedure)) {
             Map<Integer, Class<?>> outParams = setParams(call, args);
             try (ResultSet rs = call.executeQuery()) {
@@ -1098,12 +1126,14 @@ public abstract class AbstractJdbc implements Jdbc {
                         args);
             }
         } catch (SQLException e) {
-            releaseConnection(con, dataSource);
+            //            releaseConnection(con, dataSource);
+            releaseConnection(con);
             con = null;
             throw new JdbcException(Strings.format("call procedure query: \nprocedure: {0} \nargs: {1}", procedure,
                     Arrays.toString(args)), e);
         } finally {
-            releaseConnection(con, getDataSource());
+            //            releaseConnection(con, getDataSource());
+            releaseConnection(con);
         }
     }
 
@@ -1116,7 +1146,8 @@ public abstract class AbstractJdbc implements Jdbc {
         JdbcExecution execution = preHandle(procedure, args);
         procedure = execution.getExecution();
         args = execution.getParams();
-        Connection con = getConnection(dataSource);
+        //        Connection con = getConnection(dataSource);
+        Connection con = getConnection();
         try (CallableStatement call = con.prepareCall(procedure)) {
             Map<Integer, Class<?>> outParams = setParams(call, args);
             try (ResultSet rs = call.executeQuery()) {
@@ -1130,12 +1161,14 @@ public abstract class AbstractJdbc implements Jdbc {
                 return postHandle(execution.setOriginalResult(list), procedure, args);
             }
         } catch (SQLException e) {
-            releaseConnection(con, dataSource);
+            //            releaseConnection(con, dataSource);
+            releaseConnection(con);
             con = null;
             throw new JdbcException(Strings.format("call procedure query: \nprocedure: {0} \nargs: {1}", procedure,
                     Arrays.toString(args)), e);
         } finally {
-            releaseConnection(con, getDataSource());
+            //            releaseConnection(con, getDataSource());
+            releaseConnection(con);
         }
     }
 
@@ -1401,7 +1434,6 @@ public abstract class AbstractJdbc implements Jdbc {
         if (interceptor != null) {
             interceptors.add(interceptor);
         }
-
     }
 
     /**
@@ -1446,13 +1478,20 @@ public abstract class AbstractJdbc implements Jdbc {
         return (O) jdbcExecution.getResult();
     }
 
+    //    /**
+    //     * Release connection.
+    //     *
+    //     * @param connection the connection
+    //     * @param dataSource the data source
+    //     */
+    //    protected abstract void releaseConnection(Connection connection, DataSource dataSource);
     /**
      * Release connection.
      *
      * @param connection the connection
      * @param dataSource the data source
      */
-    protected abstract void releaseConnection(Connection connection, DataSource dataSource);
+    protected abstract void releaseConnection(Connection connection);
 
     /**
      * Gets the connection.
@@ -1460,5 +1499,5 @@ public abstract class AbstractJdbc implements Jdbc {
      * @param dataSource the data source
      * @return the connection
      */
-    protected abstract Connection getConnection(DataSource dataSource);
+    protected abstract Connection getConnection();
 }
