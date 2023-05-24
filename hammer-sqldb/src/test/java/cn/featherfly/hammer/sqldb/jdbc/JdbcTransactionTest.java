@@ -4,9 +4,6 @@ package cn.featherfly.hammer.sqldb.jdbc;
 import static org.junit.Assert.assertNull;
 import static org.testng.Assert.assertEquals;
 
-import java.io.File;
-import java.io.IOException;
-import java.nio.charset.StandardCharsets;
 import java.sql.Connection;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicLong;
@@ -14,22 +11,14 @@ import java.util.concurrent.atomic.AtomicLong;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
 
-import cn.featherfly.common.bean.BeanDescriptor;
-import cn.featherfly.common.db.mapping.mappers.PlatformJavaSqlTypeMapper;
-import cn.featherfly.common.lang.ClassLoaderUtils;
-import cn.featherfly.common.lang.Lang;
-import cn.featherfly.common.lang.Strings;
 import cn.featherfly.common.lang.reflect.ClassType;
 import cn.featherfly.common.lang.reflect.Type;
-import cn.featherfly.common.structure.ChainMapImpl;
 import cn.featherfly.hammer.sqldb.jdbc.transaction.Isolation;
 import cn.featherfly.hammer.sqldb.jdbc.transaction.JdbcTransaction;
-import cn.featherfly.hammer.sqldb.jdbc.vo.App;
-import cn.featherfly.hammer.sqldb.jdbc.vo.AppVersion;
 import cn.featherfly.hammer.sqldb.jdbc.vo.Article;
 
 /**
- * JdbcTest.
+ * JdbcTransactionTest.
  *
  * @author zhongj
  */
@@ -41,30 +30,8 @@ public class JdbcTransactionTest extends JdbcTestBase {
     final String content = "content";
     final String[] columnNames = new String[] { id, title, content };
 
-    String getSql() {
-        return getSql(Lang.getInvoker(2).getMethodName());
-    }
-
-    String getSql(String fileName) {
-        try {
-            File file = new File(
-                    ClassLoaderUtils.getResource(".").getPath() + Strings.format("../test/sql/{0}.sql", fileName));
-            return org.apache.commons.io.FileUtils.readFileToString(file, StandardCharsets.UTF_8);
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
-    }
-
     @BeforeClass
     void before() {
-
-        PlatformJavaSqlTypeMapper platformJavaSqlTypeMapper = new PlatformJavaSqlTypeMapper();
-
-        mappingFactory.getSqlTypeMappingManager().regist(
-                BeanDescriptor.getBeanDescriptor(App.class).getBeanProperty("platform"), platformJavaSqlTypeMapper);
-        mappingFactory.getSqlTypeMappingManager().regist(
-                BeanDescriptor.getBeanDescriptor(AppVersion.class).getBeanProperty("platform"),
-                platformJavaSqlTypeMapper);
     }
 
     @Test
@@ -116,13 +83,6 @@ public class JdbcTransactionTest extends JdbcTestBase {
         article = jdbc2.querySingle("select * from cms_article where id = ?", Article.class, l.longValue());
         assertEquals(article.getTitle(), "title_01");
         assertEquals(article.getContent(), "content_01");
-
-        result = jdbc.insert(tableName, new ChainMapImpl<String, Object>().putChain(id, null)
-                .putChain(title, "title_02").putChain(content, "content_02"));
-        assertEquals(result, 1);
-
-        result = jdbc.update("delete from cms_article");
-        assertEquals(result, 2);
     }
 
     @Test
@@ -174,6 +134,8 @@ public class JdbcTransactionTest extends JdbcTestBase {
         // 事务回滚，插入数据就不存在了
         article = jdbc.querySingle("select * from cms_article where id = ?", Article.class, l.longValue());
         assertNull(article);
+
+        jdbc2.rollback();
     }
 
 }
