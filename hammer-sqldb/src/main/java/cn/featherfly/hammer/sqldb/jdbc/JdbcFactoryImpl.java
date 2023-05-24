@@ -66,7 +66,7 @@ public class JdbcFactoryImpl implements JdbcFactory {
      */
     @Override
     public Jdbc create(Connection connection) {
-        return new JdbcSimpleImpl(connection, dialect, sqlTypeMappingManager);
+        return new JdbcImpl(connection, dialect, sqlTypeMappingManager);
     }
 
     /**
