@@ -43,6 +43,9 @@ public class SqlEntityUpdateExpression<E> extends SqlEntityConditionGroupExpress
      */
     @Override
     public String build() {
+        if (builder.getParams().isEmpty()) {
+            return null;
+        }
         String condition = super.build();
         if (Strings.isEmpty(condition)) {
             return builder.build();

@@ -6,6 +6,7 @@ import java.util.function.Predicate;
 import java.util.function.Supplier;
 
 import cn.featherfly.common.bean.BeanDescriptor;
+import cn.featherfly.common.bean.BeanUtils;
 import cn.featherfly.common.db.FieldValueOperator;
 import cn.featherfly.common.db.mapping.JdbcClassMapping;
 import cn.featherfly.common.db.mapping.JdbcMappingFactory;
@@ -183,7 +184,7 @@ public class SqlEntityExecutableUpdate<E> extends AbstractSqlExecutableUpdate<Sq
         }
         String npn = getPropertyName(nestedProperty);
         JdbcPropertyMapping spm = pm.getPropertyMapping(npn);
-        return _set(spm, FieldValueOperator.create(spm, property.get()));
+        return _set(spm, FieldValueOperator.create(spm, BeanUtils.getProperty(property.get(), npn)));
     }
 
     /**
