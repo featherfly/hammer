@@ -63,7 +63,12 @@ public class SqlConditionGroupExpression extends
         if (parent != null) {
             return parent.execute();
         } else {
-            return jdbc.update(build(), getParams().toArray());
+            String sql = build();
+            if (sql == null) {
+                return 0;
+            } else {
+                return jdbc.update(sql, getParams().toArray());
+            }
         }
     }
 
