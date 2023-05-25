@@ -1,16 +1,13 @@
 
 package cn.featherfly.hammer.expression.execute;
 
-import java.util.function.Consumer;
+import java.util.function.Supplier;
 
 import cn.featherfly.hammer.expression.ConditionGroupExpression;
 import cn.featherfly.hammer.expression.ConditionGroupLogicExpression;
 
 /**
- * <p>
- * update value
- * </p>
- * .
+ * update value .
  *
  * @author zhongj
  * @param <U>  the generic type
@@ -36,8 +33,9 @@ public interface UpdateValueExpression<U extends PropertyExecutableUpdateExpress
     /**
      * Sets the.
      *
-     * @param consumer the consumer
+     * @param whether the whether
+     * @param value   the value
      * @return the u
      */
-    U set(Consumer<UpdateValueExpression<U, C, L, T, V, VN>> consumer);
+    U set(Supplier<Boolean> whether, T value);
 }

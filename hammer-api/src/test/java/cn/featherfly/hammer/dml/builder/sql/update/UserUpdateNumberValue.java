@@ -1,11 +1,10 @@
 
 package cn.featherfly.hammer.dml.builder.sql.update;
 
-import java.util.function.Consumer;
+import java.util.function.Supplier;
 
 import cn.featherfly.hammer.dml.builder.sql.query.UserQueryConditionGroupExpression;
 import cn.featherfly.hammer.expression.execute.UpdateNumberValueExpression;
-import cn.featherfly.hammer.expression.execute.UpdateValueExpression;
 
 /**
  * <p>
@@ -14,8 +13,9 @@ import cn.featherfly.hammer.expression.execute.UpdateValueExpression;
  *
  * @author zhongj
  */
-public class UserUpdateNumberValue implements
-        UpdateNumberValueExpression<UserPropertiesUpdate, UserQueryConditionGroupExpression, UserQueryConditionGroupExpression, Number, UserUpdateValue, UserUpdateNumberValue> {
+public class UserUpdateNumberValue
+        implements UpdateNumberValueExpression<UserPropertiesUpdate, UserQueryConditionGroupExpression,
+                UserQueryConditionGroupExpression, Number, UserUpdateValue, UserUpdateNumberValue> {
 
     private UserUpdate update;
 
@@ -50,8 +50,16 @@ public class UserUpdateNumberValue implements
      * {@inheritDoc}
      */
     @Override
-    public UserPropertiesUpdate set(
-            Consumer<UpdateValueExpression<UserPropertiesUpdate, UserQueryConditionGroupExpression, UserQueryConditionGroupExpression, Number, UserUpdateValue, UserUpdateNumberValue>> consumer) {
+    public UserPropertiesUpdate set(Supplier<Boolean> whether, Number value) {
+        // YUFEI_TODO Auto-generated method stub
+        return null;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public UserPropertiesUpdate increase(Supplier<Boolean> whether, Number value) {
         // YUFEI_TODO Auto-generated method stub
         return null;
     }

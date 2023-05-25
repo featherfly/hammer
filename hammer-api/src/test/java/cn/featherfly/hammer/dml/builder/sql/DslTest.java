@@ -182,7 +182,7 @@ public class DslTest {
          query.find(Tree.class).join(Tree::getParent).join(t -> t.get1() , Tree::getParent);
          //  t为Tuple类型，有几个可以join的对象就是有几个对象的tuple
         //  这里表示和 tree t2 进行join，所以join tree t3 on t2.id = t3.parent_id
-
+        
         // IMPLSOON with join的api定义规则
         /*
          // select * from tree t1 join tree t2 on t1.id = t2.parent_id join tree t3 on t2.id = t3.parent_id
@@ -261,6 +261,8 @@ public class DslTest {
                 t.set(User::getUsername, name);
             }
         });
+
+        updater.update(User.class).set(() -> name.equals("yufei"), User::getUsername, name);
     }
 
     public void testPropertyUpdate() {

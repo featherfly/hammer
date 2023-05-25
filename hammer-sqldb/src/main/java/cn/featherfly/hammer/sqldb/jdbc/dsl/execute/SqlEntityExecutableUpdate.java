@@ -3,6 +3,7 @@ package cn.featherfly.hammer.sqldb.jdbc.dsl.execute;
 
 import java.util.function.Consumer;
 import java.util.function.Predicate;
+import java.util.function.Supplier;
 
 import cn.featherfly.common.bean.BeanDescriptor;
 import cn.featherfly.common.db.FieldValueOperator;
@@ -89,8 +90,31 @@ public class SqlEntityExecutableUpdate<E> extends AbstractSqlExecutableUpdate<Sq
      * {@inheritDoc}
      */
     @Override
+    //    public EntityExecutableUpdate<E> set(Consumer<EntityExecutableUpdate<E>> consumer) {
+    public EntityExecutableUpdate<E> set(Consumer<EntityUpdateSetExpression<E, EntityExecutableUpdate<E>,
+            EntityExecutableConditionGroupExpression<E>, EntityExecutableConditionGroupLogicExpression<E>>> consumer) {
+        consumer.accept(this);
+        return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
     public <R> EntityExecutableUpdate<E> set(SerializableFunction<E, R> name, R value) {
         return _set(classMapping.getPropertyMapping(getPropertyName(name)), value);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public <R> EntityExecutableUpdate<E> set(Supplier<Boolean> whether, SerializableFunction<E, R> property, R value) {
+        if (Lang.isTrue(whether.get())) {
+            return set(property, value);
+        } else {
+            return this;
+        }
     }
 
     /**
@@ -118,8 +142,33 @@ public class SqlEntityExecutableUpdate<E> extends AbstractSqlExecutableUpdate<Sq
      * {@inheritDoc}
      */
     @Override
+    public <R, O> EntityExecutableUpdate<E> set(Supplier<Boolean> whether, SerializableFunction<E, R> property,
+            SerializableFunction<R, O> nestedProperty, O value) {
+        if (Lang.isTrue(whether.get())) {
+            return set(property, nestedProperty, value);
+        } else {
+            return this;
+        }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
     public <R> EntityExecutableUpdate<E> set(SerializableSupplier<R> property) {
         return _set(classMapping.getPropertyMapping(getPropertyName(property)), property.get());
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public <R> EntityExecutableUpdate<E> set(Supplier<Boolean> whether, SerializableSupplier<R> property) {
+        if (Lang.isTrue(whether.get())) {
+            return set(property);
+        } else {
+            return this;
+        }
     }
 
     /**
@@ -141,11 +190,13 @@ public class SqlEntityExecutableUpdate<E> extends AbstractSqlExecutableUpdate<Sq
      * {@inheritDoc}
      */
     @Override
-    //    public EntityExecutableUpdate<E> set(Consumer<EntityExecutableUpdate<E>> consumer) {
-    public EntityExecutableUpdate<E> set(Consumer<EntityUpdateSetExpression<E, EntityExecutableUpdate<E>,
-            EntityExecutableConditionGroupExpression<E>, EntityExecutableConditionGroupLogicExpression<E>>> consumer) {
-        consumer.accept(this);
-        return this;
+    public <R, O> EntityExecutableUpdate<E> set(Supplier<Boolean> whether, SerializableSupplier<R> property,
+            SerializableFunction<R, O> nestedProperty) {
+        if (Lang.isTrue(whether.get())) {
+            return set(property, nestedProperty);
+        } else {
+            return this;
+        }
     }
 
     /**
@@ -162,10 +213,36 @@ public class SqlEntityExecutableUpdate<E> extends AbstractSqlExecutableUpdate<Sq
      * {@inheritDoc}
      */
     @Override
+    public <R extends Number> EntityExecutableUpdate<E> increase(Supplier<Boolean> whether,
+            SerializableFunction<E, R> property, R value) {
+        if (Lang.isTrue(whether.get())) {
+            return increase(property, value);
+        } else {
+            return this;
+        }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
     public <N extends Number> EntityExecutableUpdate<E> increase(SerializableSupplier<N> property) {
         // YUFEI_TODO 这里没有实现参数转换为FieldValueOperator
         JdbcPropertyMapping pm = classMapping.getPropertyMapping(getPropertyName(property));
         return _increase(pm.getRepositoryFieldName(), property.get());
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public <N extends Number> EntityExecutableUpdate<E> increase(Supplier<Boolean> whether,
+            SerializableSupplier<N> property) {
+        if (Lang.isTrue(whether.get())) {
+            return increase(property);
+        } else {
+            return this;
+        }
     }
 
     /**

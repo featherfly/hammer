@@ -2,6 +2,7 @@
 package cn.featherfly.hammer.dml.builder.sql.update;
 
 import java.util.function.Consumer;
+import java.util.function.Supplier;
 
 import cn.featherfly.common.lang.function.SerializableFunction;
 import cn.featherfly.common.lang.function.SerializableSupplier;
@@ -16,8 +17,8 @@ import cn.featherfly.hammer.expression.execute.ExecutableUpdateSetExpression;
  *
  * @author zhongj
  */
-public class UserUpdate implements UserPropertiesUpdate,
-        ExecutableUpdateSetExpression<UserUpdate, UserQueryConditionGroupExpression, UserQueryConditionGroupExpression> {
+public class UserUpdate implements UserPropertiesUpdate, ExecutableUpdateSetExpression<UserUpdate,
+        UserQueryConditionGroupExpression, UserQueryConditionGroupExpression> {
 
     /**
      * {@inheritDoc}
@@ -169,6 +170,61 @@ public class UserUpdate implements UserPropertiesUpdate,
     @Override
     public UserQueryConditionGroupExpression where(
             Consumer<ConditionGroupConfig<UserQueryConditionGroupExpression>> consumer) {
+        // YUFEI_TODO Auto-generated method stub
+        return null;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public UserUpdate set(Supplier<Boolean> whether, String name, Object value) {
+        // YUFEI_TODO Auto-generated method stub
+        return null;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public <N extends Number> UserUpdate increase(Supplier<Boolean> whether, String name, N value) {
+        // YUFEI_TODO Auto-generated method stub
+        return null;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public <T, R> UserUpdate set(Supplier<Boolean> whether, SerializableFunction<T, R> name, R value) {
+        // YUFEI_TODO Auto-generated method stub
+        return null;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public <R> UserUpdate set(Supplier<Boolean> whether, SerializableSupplier<R> property) {
+        // YUFEI_TODO Auto-generated method stub
+        return null;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public <T, R extends Number> UserUpdate increase(Supplier<Boolean> whether, SerializableFunction<T, R> name,
+            R value) {
+        // YUFEI_TODO Auto-generated method stub
+        return null;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public <N extends Number> UserUpdate increase(Supplier<Boolean> whether, SerializableSupplier<N> property) {
         // YUFEI_TODO Auto-generated method stub
         return null;
     }

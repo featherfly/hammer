@@ -1,9 +1,7 @@
 
 package cn.featherfly.hammer.dsl.execute;
 
-import java.util.function.Consumer;
-
-import cn.featherfly.hammer.expression.execute.UpdateValueExpression;
+import java.util.function.Supplier;
 
 /**
  * UpdateNumberValueImpl.
@@ -38,6 +36,14 @@ public class UpdateNumberValueImpl implements UpdateNumberValue {
      * {@inheritDoc}
      */
     @Override
+    public ExecutableUpdate increase(Supplier<Boolean> whether, Number value) {
+        return update.increase(whether, name, value);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
     public ExecutableUpdate set(Number value) {
         return update.set(name, value);
     }
@@ -46,10 +52,7 @@ public class UpdateNumberValueImpl implements UpdateNumberValue {
      * {@inheritDoc}
      */
     @Override
-    public ExecutableUpdate set(
-            Consumer<UpdateValueExpression<ExecutableUpdate, ExecutableConditionGroupExpression, ExecutableConditionGroupLogicExpression, Number, UpdateValue, UpdateNumberValue>> consumer) {
-        consumer.accept(this);
-        return update;
+    public ExecutableUpdate set(Supplier<Boolean> whether, Number value) {
+        return update.set(whether, name, value);
     }
-
 }
