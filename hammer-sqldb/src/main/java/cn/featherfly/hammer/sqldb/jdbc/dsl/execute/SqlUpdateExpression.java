@@ -34,6 +34,10 @@ public class SqlUpdateExpression extends SqlConditionGroupExpression {
      */
     @Override
     public String build() {
+        // YUFEI_TODO 后续加入策略
+        if (builder.getParams().isEmpty()) {
+            return null;
+        }
         String condition = super.build();
         if (Strings.isEmpty(condition)) {
             return builder.build();

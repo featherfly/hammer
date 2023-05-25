@@ -18,6 +18,7 @@ import java.util.List;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
 
+import cn.featherfly.common.db.model.SimpleTable;
 import cn.featherfly.common.repository.IgnorePolicy;
 import cn.featherfly.common.repository.SimpleAliasRepository;
 import cn.featherfly.common.repository.SimpleRepository;
@@ -65,6 +66,27 @@ public class SqlDeleterTest extends JdbcTestBase {
         assertEquals(load.getName(), role.getName());
 
         int result = deleter.delete("role").where().eq("id", role.getId()).execute();
+        assertEquals(result, 1);
+
+        load = hammer.get(role);
+        assertNull(load);
+    }
+
+    @Test
+    public void testDelete1() {
+        Role role = role();
+
+        hammer.save(role);
+
+        Role load = hammer.get(role);
+
+        assertEquals(load.getId(), role.getId());
+        assertEquals(load.getName(), role.getName());
+
+        SimpleTable table = new SimpleTable();
+        table.setName("role");
+
+        int result = deleter.delete(table).where().eq("id", role.getId()).execute();
         assertEquals(result, 1);
 
         load = hammer.get(role);
