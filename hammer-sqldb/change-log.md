@@ -12,7 +12,8 @@
    TODO property()后的条件查询还未加入Consumer参数方法,加入带IgnorePolicy参数方法
 TODO where支持多实体条件查询
 TODO EntityQuerySortExpression实现EntityQuerySortExpression1,EntityQuerySortExpression2这种带多个实体的用于完善join和where后的多实体进行排序
-10. 实现非spring环境下的Jdbc的功能
+10. Update DSL里的所有set、increase方法都新增了一个加入多一个参数Supplier<Boolean> whether的重载方法，用于判断此次方法调用是否设置值
+11. 实现非spring环境下的Jdbc的功能
     ```java
     // 原生jdbc事务
     Jdbc jdbc = jdbcFactory.create(conn);
@@ -31,7 +32,6 @@ TODO EntityQuerySortExpression实现EntityQuerySortExpression1,EntityQuerySortEx
     tran.close();
     // 使用详情参考JdbcTransactionTest.java
     ```
-   
 
 # 0.6.6 2022-08-26
 1. 修改L group(Consumer<C>)为L group(Function<C,L>)，

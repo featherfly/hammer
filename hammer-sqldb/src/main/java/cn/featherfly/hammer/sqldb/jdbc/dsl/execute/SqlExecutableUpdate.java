@@ -3,8 +3,10 @@ package cn.featherfly.hammer.sqldb.jdbc.dsl.execute;
 
 import java.util.function.Consumer;
 import java.util.function.Predicate;
+import java.util.function.Supplier;
 
 import cn.featherfly.common.lang.LambdaUtils;
+import cn.featherfly.common.lang.Lang;
 import cn.featherfly.common.lang.function.SerializableFunction;
 import cn.featherfly.common.lang.function.SerializableSupplier;
 import cn.featherfly.common.repository.AliasRepository;
@@ -114,6 +116,18 @@ public class SqlExecutableUpdate extends AbstractSqlExecutableUpdate<SqlExecutab
      * {@inheritDoc}
      */
     @Override
+    public ExecutableUpdate set(Supplier<Boolean> whether, String name, Object value) {
+        if (Lang.isTrue(whether.get())) {
+            return set(name, value);
+        } else {
+            return this;
+        }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
     public <T, R> ExecutableUpdate set(SerializableFunction<T, R> name, R value) {
         return _set(getPropertyName(name), value);
     }
@@ -122,8 +136,32 @@ public class SqlExecutableUpdate extends AbstractSqlExecutableUpdate<SqlExecutab
      * {@inheritDoc}
      */
     @Override
+    public <T, R> ExecutableUpdate set(Supplier<Boolean> whether, SerializableFunction<T, R> name, R value) {
+        if (Lang.isTrue(whether.get())) {
+            return set(name, value);
+        } else {
+            return this;
+        }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
     public <R> ExecutableUpdate set(SerializableSupplier<R> property) {
         return _set(getPropertyName(property), property.get());
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public <R> ExecutableUpdate set(Supplier<Boolean> whether, SerializableSupplier<R> property) {
+        if (Lang.isTrue(whether.get())) {
+            return set(property);
+        } else {
+            return this;
+        }
     }
 
     /**
@@ -147,6 +185,31 @@ public class SqlExecutableUpdate extends AbstractSqlExecutableUpdate<SqlExecutab
      * {@inheritDoc}
      */
     @Override
+    public <T, R extends Number> ExecutableUpdate increase(Supplier<Boolean> whether, SerializableFunction<T, R> name,
+            R value) {
+        if (Lang.isTrue(whether.get())) {
+            return increase(name, value);
+        } else {
+            return this;
+        }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public <N extends Number> ExecutableUpdate increase(Supplier<Boolean> whether, String name, N value) {
+        if (Lang.isTrue(whether.get())) {
+            return increase(name, value);
+        } else {
+            return this;
+        }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
     public <T, R extends Number> ExecutableUpdate increase(SerializableFunction<T, R> name, R value) {
         return _increase(getPropertyName(name), value);
     }
@@ -157,6 +220,18 @@ public class SqlExecutableUpdate extends AbstractSqlExecutableUpdate<SqlExecutab
     @Override
     public <N extends Number> ExecutableUpdate increase(SerializableSupplier<N> property) {
         return _increase(getPropertyName(property), property.get());
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public <N extends Number> ExecutableUpdate increase(Supplier<Boolean> whether, SerializableSupplier<N> property) {
+        if (Lang.isTrue(whether.get())) {
+            return increase(property);
+        } else {
+            return this;
+        }
     }
 
     /**
