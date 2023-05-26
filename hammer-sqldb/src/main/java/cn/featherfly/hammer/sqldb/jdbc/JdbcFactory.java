@@ -12,10 +12,10 @@ package cn.featherfly.hammer.sqldb.jdbc;
 
 import java.sql.Connection;
 
+import javax.sql.DataSource;
+
 import cn.featherfly.common.db.dialect.Dialect;
 import cn.featherfly.common.db.mapping.SqlTypeMappingManager;
-import cn.featherfly.hammer.sqldb.jdbc.transaction.Isolation;
-import cn.featherfly.hammer.sqldb.jdbc.transaction.JdbcTransaction;
 
 /**
  * JdbcFactory.
@@ -52,21 +52,20 @@ public interface JdbcFactory {
     Jdbc create(Connection connection);
 
     /**
-     * Begin transation. easy manage transaction with return JdbcTransaction
-     * object. <br/>
-     * note:
-     * <ul>
-     * <li>the return object method commit() will invoke param connection
-     * commit() method.
-     * <li>the return object method rollback() will invoke param connection
-     * rollback(savepoint) method.
-     * <li>the return object method close() will invoke param connection close()
-     * method.
-     * </ul>
+     * Creates jdbc session. <br/>
+     * the jdbc session object can start transation with beginTransation method.
      *
-     * @param connection the connection
-     * @param isolation  the isolation
+     * @param dataSource the data source
      * @return the jdbc transaction
      */
-    JdbcTransaction beginTransation(Connection connection, Isolation isolation);
+    JdbcSession createSession(DataSource dataSource);
+
+    /**
+     * Creates jdbc session. <br/>
+     * the jdbc session object can start transation with beginTransation method.
+     *
+     * @param connection the connection
+     * @return the jdbc transaction
+     */
+    JdbcSession createSession(Connection connection);
 }
