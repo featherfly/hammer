@@ -50,6 +50,7 @@
         </packages>
         <classes>
             <class name="cn.featherfly.hammer.sqldb.jdbc.JdbcTest" />
+            <class name="cn.featherfly.hammer.sqldb.jdbc.JdbcTransactionTest" />
         </classes>
     </test>
 

@@ -10,14 +10,12 @@
  */
 package cn.featherfly.hammer.sqldb.jdbc.transaction;
 
-import cn.featherfly.hammer.sqldb.jdbc.Jdbc;
-
 /**
  * JdbcSession.
  *
  * @author zhongj
  */
-public interface JdbcTransaction extends Jdbc {
+public interface JdbcTransaction {
 
     /**
      * Commit.
@@ -28,9 +26,4 @@ public interface JdbcTransaction extends Jdbc {
      * Rollback.
      */
     void rollback();
-
-    /**
-     * Close.
-     */
-    void close();
 }
