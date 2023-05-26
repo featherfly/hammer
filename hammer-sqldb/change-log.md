@@ -15,7 +15,7 @@ TODO EntityQuerySortExpression实现EntityQuerySortExpression1,EntityQuerySortEx
 10. Update DSL里的所有set、increase方法都新增了一个加入多一个参数Supplier<Boolean> whether的重载方法，用于判断此次方法调用是否设置值
 11. 实现非spring环境下的Jdbc的功能
     ```java
-    // 原生jdbc事务
+    // 使用原生jdbc管理事务
     Jdbc jdbc = jdbcFactory.create(conn);
     connection.setTransactionIsolation(Connection.TRANSACTION_READ_COMMITTED); //设置隔离级别
     connection.setAutoCommit(false); //启用事务
@@ -24,12 +24,13 @@ TODO EntityQuerySortExpression实现EntityQuerySortExpression1,EntityQuerySortEx
     conn.commit();// or jdbc.rollback();
     conn.close();
    
-    // 事务包装
-    JdbcTransaction tran = jdbcFactory.beginTransation(conn, Isolation.READ_COMMITTED); //设置隔离级别
+    // 使用包装管理事务
+    JdbcSession jdbc = jdbcFactory.createSession(conn);
+    JdbcTransaction tran = jdbc.beginTransation(Isolation.READ_COMMITTED); //设置隔离级别
     tran.update(sql)
     tran.update(sql2)
     tran.commit(); // or tran.rollback();
-    tran.close();
+    jdbc.close();
     // 使用详情参考JdbcTransactionTest.java
     ```
 

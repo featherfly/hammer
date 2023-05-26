@@ -13,7 +13,6 @@ import org.testng.annotations.Test;
 
 import cn.featherfly.common.lang.reflect.ClassType;
 import cn.featherfly.common.lang.reflect.Type;
-import cn.featherfly.hammer.sqldb.jdbc.transaction.Isolation;
 import cn.featherfly.hammer.sqldb.jdbc.transaction.JdbcTransaction;
 import cn.featherfly.hammer.sqldb.jdbc.vo.Article;
 
@@ -47,8 +46,10 @@ public class JdbcTransactionTest extends JdbcTestBase {
 
         Connection conn = getConnection();
         Connection conn2 = getConnection();
-        JdbcTransaction jdbc = jdbcFactory.beginTransation(conn, Isolation.READ_COMMITTED);
-        JdbcTransaction jdbc2 = jdbcFactory.beginTransation(conn2, Isolation.READ_COMMITTED);
+        JdbcSession jdbc = jdbcFactory.createSession(conn);
+        JdbcSession jdbc2 = jdbcFactory.createSession(conn2);
+
+        JdbcTransaction tran = jdbc.beginTransation();
 
         result = jdbc.update("delete from cms_article");
 
@@ -78,7 +79,7 @@ public class JdbcTransactionTest extends JdbcTestBase {
         article = jdbc2.querySingle("select * from cms_article where id = ?", Article.class, l.longValue());
         assertNull(article);
 
-        jdbc.commit();
+        tran.commit();
         // 事务提交，其他连接可以获取到数据
         article = jdbc2.querySingle("select * from cms_article where id = ?", Article.class, l.longValue());
         assertEquals(article.getTitle(), "title_01");
@@ -98,8 +99,11 @@ public class JdbcTransactionTest extends JdbcTestBase {
 
         Connection conn = getConnection();
         Connection conn2 = getConnection();
-        JdbcTransaction jdbc = jdbcFactory.beginTransation(conn, Isolation.READ_COMMITTED);
-        JdbcTransaction jdbc2 = jdbcFactory.beginTransation(conn2, Isolation.READ_COMMITTED);
+        JdbcSession jdbc = jdbcFactory.createSession(conn);
+        JdbcSession jdbc2 = jdbcFactory.createSession(conn2);
+
+        JdbcTransaction tran = jdbc.beginTransation();
+        JdbcTransaction tran2 = jdbc2.beginTransation();
 
         jdbc.update("delete from cms_article");
 
@@ -130,12 +134,14 @@ public class JdbcTransactionTest extends JdbcTestBase {
         article = jdbc2.querySingle("select * from cms_article where id = ?", Article.class, l.longValue());
         assertNull(article);
 
-        jdbc.rollback();
+        tran.rollback();
         // 事务回滚，插入数据就不存在了
         article = jdbc.querySingle("select * from cms_article where id = ?", Article.class, l.longValue());
         assertNull(article);
+        jdbc.close();
 
-        jdbc2.rollback();
+        tran2.rollback();
+        jdbc2.close();
     }
 
 }

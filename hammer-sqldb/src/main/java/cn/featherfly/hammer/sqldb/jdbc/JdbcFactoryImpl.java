@@ -11,14 +11,12 @@
 package cn.featherfly.hammer.sqldb.jdbc;
 
 import java.sql.Connection;
-import java.sql.SQLException;
 
-import cn.featherfly.common.db.JdbcException;
+import javax.sql.DataSource;
+
+import cn.featherfly.common.db.JdbcUtils;
 import cn.featherfly.common.db.dialect.Dialect;
 import cn.featherfly.common.db.mapping.SqlTypeMappingManager;
-import cn.featherfly.hammer.sqldb.jdbc.transaction.Isolation;
-import cn.featherfly.hammer.sqldb.jdbc.transaction.JdbcTransaction;
-import cn.featherfly.hammer.sqldb.jdbc.transaction.JdbcTransactionImpl;
 
 /**
  * JdbcFactoryImpl.
@@ -73,15 +71,30 @@ public class JdbcFactoryImpl implements JdbcFactory {
      * {@inheritDoc}
      */
     @Override
-    public JdbcTransaction beginTransation(Connection connection, Isolation isolation) {
-        try {
-            //设置隔离级别
-            connection.setTransactionIsolation(isolation.value());
-            //启用事务
-            connection.setAutoCommit(false);
-            return new JdbcTransactionImpl(connection.setSavepoint(), connection, dialect, sqlTypeMappingManager);
-        } catch (SQLException e) {
-            throw new JdbcException(e);
-        }
+    public JdbcSession createSession(DataSource dataSource) {
+        return createSession(JdbcUtils.getConnection(dataSource));
     }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JdbcSession createSession(Connection connection) {
+        return new JdbcImpl(connection, dialect, sqlTypeMappingManager);
+    }
+    //    /**
+    //     * {@inheritDoc}
+    //     */
+    //    @Override
+    //    public JdbcTransaction beginTransation(Connection connection, Isolation isolation) {
+    //        try {
+    //            //设置隔离级别
+    //            connection.setTransactionIsolation(isolation.value());
+    //            //启用事务
+    //            connection.setAutoCommit(false);
+    //            return new JdbcTransactionImpl(connection.setSavepoint(), connection, dialect, sqlTypeMappingManager);
+    //        } catch (SQLException e) {
+    //            throw new JdbcException(e);
+    //        }
+    //    }
 }

@@ -11,27 +11,52 @@
 package cn.featherfly.hammer.sqldb.jdbc;
 
 import java.sql.Connection;
+import java.sql.SQLException;
 
+import cn.featherfly.common.db.JdbcException;
+import cn.featherfly.common.db.JdbcUtils;
 import cn.featherfly.common.db.dialect.Dialect;
 import cn.featherfly.common.db.mapping.SqlTypeMappingManager;
+import cn.featherfly.hammer.sqldb.jdbc.transaction.Isolation;
+import cn.featherfly.hammer.sqldb.jdbc.transaction.JdbcTransaction;
+import cn.featherfly.hammer.sqldb.jdbc.transaction.JdbcTransactionImpl;
 
 /**
  * JdbcImpl.
  *
  * @author zhongj
  */
-public class JdbcImpl extends AbstractJdbc {
+public class JdbcImpl extends AbstractJdbc implements JdbcSession {
 
     private Connection connection;
 
+    private Isolation defaultIsolation = Isolation.READ_COMMITTED;
+
     /**
-     * @param dataSource
-     * @param dialect
-     * @param manager
+     * Instantiates a new jdbc impl.
+     *
+     * @param connection the connection
+     * @param dialect    the dialect
+     * @param manager    the manager
      */
     public JdbcImpl(Connection connection, Dialect dialect, SqlTypeMappingManager manager) {
+        this(connection, null, dialect, manager);
+    }
+
+    /**
+     * Instantiates a new jdbc impl.
+     *
+     * @param connection       the connection
+     * @param defaultIsolation the default isolation
+     * @param dialect          the dialect
+     * @param manager          the manager
+     */
+    public JdbcImpl(Connection connection, Isolation defaultIsolation, Dialect dialect, SqlTypeMappingManager manager) {
         super(dialect, manager);
         this.connection = connection;
+        if (defaultIsolation != null) {
+            this.defaultIsolation = defaultIsolation;
+        }
     }
 
     /**
@@ -48,5 +73,37 @@ public class JdbcImpl extends AbstractJdbc {
     @Override
     protected Connection getConnection() {
         return connection;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JdbcTransaction beginTransation() {
+        return beginTransation(defaultIsolation);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JdbcTransaction beginTransation(Isolation isolation) {
+        try {
+            //设置隔离级别
+            connection.setTransactionIsolation(isolation.value());
+            //启用事务
+            connection.setAutoCommit(false);
+            return new JdbcTransactionImpl(connection.setSavepoint(), connection);
+        } catch (SQLException e) {
+            throw new JdbcException(e);
+        }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void close() {
+        JdbcUtils.close(connection);
     }
 }
