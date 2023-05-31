@@ -61,12 +61,17 @@ public class NewDslApi {
 
     <R> void eq(
             Function<Tuple3<QueryEntityRepository<UserInfo>, QueryEntityRepository<User>, QueryEntityRepository<User>>,
-                    QueryEntityRepository<User>> find,
+                    QueryEntityRepository<User>> queryEntities,
             SerializableFunction2<User, R> property, R value) {
         System.out.println("eq SerializableFunction2<User, R> property  index = " + find
                 .apply(Tuples.of(new QueryEntityRepository<>(0, UserInfo.class),
                         new QueryEntityRepository<>(1, User.class), new QueryEntityRepository<>(2, User.class)))
                 .getIndex());
+    }
+
+    <R> void eq2(Function<Tuple3<UserInfo, User, User>, QueryEntityRepository<User>> find,
+            SerializableFunction2<User, R> property, R value) {
+
     }
 
     <R> void eq(SerializableFunction<UserInfo, R> property, R value) {
@@ -75,10 +80,11 @@ public class NewDslApi {
 
     @Test
     void test() {
-        eq(querys -> querys.get1(), User::getAge, 1);
-        eq(querys -> querys.get2(), User::getAge, 1);
-        eq(querys -> querys.get0(), UserInfo::getName, "aaa");
-        eq(querys -> querys.get0(), UserInfo::getId, 1); // 等同 eq(UserInfo::getId, 1);
+        eq(entities -> entities.get1(), User::getAge, 1);
+        eq(entities -> entities.get1(), User::getAge, 1);
+        eq(entities -> entities.get2(), User::getAge, 1);
+        eq(entities -> entities.get0(), UserInfo::getName, "aaa");
+        eq(entities -> entities.get0(), UserInfo::getId, 1); // 等同 eq(UserInfo::getId, 1);
         eq(UserInfo::getId, 1); // 等同 eq(querys -> querys.get0(), UserInfo::getId, 1);
     }
 
