@@ -1,8 +1,8 @@
 
 package cn.featherfly.hammer.sqldb.tpl;
 
-import static org.junit.Assert.assertTrue;
 import static org.testng.Assert.assertEquals;
+import static org.testng.Assert.assertTrue;
 
 import java.math.BigDecimal;
 import java.util.List;
@@ -23,9 +23,9 @@ import cn.featherfly.common.structure.page.SimplePagination;
 import cn.featherfly.hammer.HammerException;
 import cn.featherfly.hammer.sqldb.jdbc.JdbcTestBase;
 import cn.featherfly.hammer.sqldb.jdbc.SimpleSqlPageFactory;
-import cn.featherfly.hammer.sqldb.jdbc.vo.Role;
-import cn.featherfly.hammer.sqldb.jdbc.vo.User;
-import cn.featherfly.hammer.sqldb.jdbc.vo.UserInfo;
+import cn.featherfly.hammer.sqldb.jdbc.vo.r.Role;
+import cn.featherfly.hammer.sqldb.jdbc.vo.r.User;
+import cn.featherfly.hammer.sqldb.jdbc.vo.r.UserInfo;
 import cn.featherfly.hammer.sqldb.tpl.freemarker.SqldbFreemarkerTemplateEngine;
 import cn.featherfly.hammer.tpl.TplConfigFactoryImpl;
 import cn.featherfly.hammer.tpl.TplExecuteIdFileImpl;

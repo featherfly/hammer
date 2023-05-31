@@ -1,7 +1,6 @@
 
 package cn.featherfly.hammer.sqldb.jdbc.dsl.query;
 
-import java.math.BigDecimal;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Map;
@@ -21,7 +20,7 @@ import cn.featherfly.common.lang.Lang;
 import cn.featherfly.common.lang.function.SerializableFunction;
 import cn.featherfly.common.operator.AggregateFunction;
 import cn.featherfly.common.repository.builder.AliasManager;
-import cn.featherfly.hammer.dsl.query.type.EntityQueryEntityProperties;
+import cn.featherfly.hammer.dsl.query.type.EntityQueryFetchedProperty;
 import cn.featherfly.hammer.sqldb.jdbc.Jdbc;
 import cn.featherfly.hammer.sqldb.jdbc.SqlPageFactory;
 
@@ -33,7 +32,7 @@ import cn.featherfly.hammer.sqldb.jdbc.SqlPageFactory;
  * @param <P> the generic type
  */
 public abstract class AbstractEntitySqlQueryEntityProperties<E, P extends AbstractEntitySqlQueryEntityProperties<E, P>>
-        implements EntityQueryEntityProperties<E> {
+        implements EntityQueryFetchedProperty<E> {
 
     /** The jdbc. */
     protected Jdbc jdbc;
@@ -56,8 +55,8 @@ public abstract class AbstractEntitySqlQueryEntityProperties<E, P extends Abstra
     /** The alias manager. */
     protected AliasManager aliasManager;
 
-    /** The ignore policy. */
-    protected Predicate<Object> ignorePolicy;
+    /** The ignore strategy. */
+    protected Predicate<Object> ignoreStrategy;
 
     /** The table alias. */
     protected String tableAlias;
@@ -70,13 +69,13 @@ public abstract class AbstractEntitySqlQueryEntityProperties<E, P extends Abstra
      * @param factory        MappingFactory
      * @param sqlPageFactory the sql page factory
      * @param aliasManager   aliasManager
-     * @param ignorePolicy   the ignore policy
+     * @param ignoreStrategy the ignore strategy
      */
     public AbstractEntitySqlQueryEntityProperties(Jdbc jdbc, JdbcClassMapping<E> classMapping,
             JdbcMappingFactory factory, SqlPageFactory sqlPageFactory, AliasManager aliasManager,
-            Predicate<Object> ignorePolicy) {
-        AssertIllegalArgument.isNotNull(ignorePolicy, "ignorePolicy");
-        this.ignorePolicy = ignorePolicy;
+            Predicate<Object> ignoreStrategy) {
+        AssertIllegalArgument.isNotNull(ignoreStrategy, "ignoreStrategy");
+        this.ignoreStrategy = ignoreStrategy;
         this.jdbc = jdbc;
         this.classMapping = classMapping;
         this.factory = factory;
@@ -104,13 +103,13 @@ public abstract class AbstractEntitySqlQueryEntityProperties<E, P extends Abstra
     //     * @param factory          MappingFactory
     //     * @param sqlPageFactory   the sql page factory
     //     * @param aliasManager     aliasManager
-    //     * @param ignorePolicy     the ignore policy
+    //     * @param ignoreStrategy     the ignore strategy
     //     */
     //    public AbstractEntitySqlQueryEntityProperties(Jdbc jdbc, DatabaseMetadata databaseMetadata, String tableName,
     //            String tableAlias, JdbcMappingFactory factory, SqlPageFactory sqlPageFactory, AliasManager aliasManager,
-    //            Predicate<Object> ignorePolicy) {
-    //        AssertIllegalArgument.isNotNull(ignorePolicy, "ignorePolicy");
-    //        this.ignorePolicy = ignorePolicy;
+    //            Predicate<Object> ignoreStrategy) {
+    //        AssertIllegalArgument.isNotNull(ignoreStrategy, "ignoreStrategy");
+    //        this.ignoreStrategy = ignoreStrategy;
     //        this.jdbc = jdbc;
     //        this.factory = factory;
     //        this.sqlPageFactory = sqlPageFactory;
@@ -175,6 +174,7 @@ public abstract class AbstractEntitySqlQueryEntityProperties<E, P extends Abstra
      * @param propertyName      the property name
      * @return the e
      */
+    @Override
     public <R> P property(AggregateFunction aggregateFunction, boolean distinct,
             SerializableFunction<E, R> propertyName) {
         return property(aggregateFunction, distinct, LambdaUtils.getLambdaPropertyName(propertyName));
@@ -301,9 +301,9 @@ public abstract class AbstractEntitySqlQueryEntityProperties<E, P extends Abstra
      * @return the e
      */
     @Override
-    public Long count() {
+    public long count() {
         return new SqlQueryExpression(jdbc, sqlPageFactory,
-                selectBuilder.addColumn(AggregateFunction.COUNT, Chars.STAR), ignorePolicy).longInt();
+                selectBuilder.addColumn(AggregateFunction.COUNT, Chars.STAR), ignoreStrategy).longInt();
     }
 
     /**
@@ -311,39 +311,39 @@ public abstract class AbstractEntitySqlQueryEntityProperties<E, P extends Abstra
      */
     @Override
     public String string() {
-        return new SqlQueryExpression(jdbc, sqlPageFactory, selectBuilder, ignorePolicy).string();
+        return new SqlQueryExpression(jdbc, sqlPageFactory, selectBuilder, ignoreStrategy).string();
     }
 
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public Integer integer() {
-        return new SqlQueryExpression(jdbc, sqlPageFactory, selectBuilder, ignorePolicy).integer();
-    }
+    //    /**
+    //     * {@inheritDoc}
+    //     */
+    //    @Override
+    //    public Integer integer() {
+    //        return new SqlQueryExpression(jdbc, sqlPageFactory, selectBuilder, ignoreStrategy).integer();
+    //    }
+    //
+    //    /**
+    //     * {@inheritDoc}
+    //     */
+    //    @Override
+    //    public Long longInt() {
+    //        return new SqlQueryExpression(jdbc, sqlPageFactory, selectBuilder, ignoreStrategy).longInt();
+    //    }
 
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public Long longInt() {
-        return new SqlQueryExpression(jdbc, sqlPageFactory, selectBuilder, ignorePolicy).longInt();
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public BigDecimal decimal() {
-        return new SqlQueryExpression(jdbc, sqlPageFactory, selectBuilder, ignorePolicy).decimal();
-    }
+    //    /**
+    //     * {@inheritDoc}
+    //     */
+    //    @Override
+    //    public BigDecimal decimal() {
+    //        return new SqlQueryExpression(jdbc, sqlPageFactory, selectBuilder, ignoreStrategy).decimal();
+    //    }
 
     /**
      * {@inheritDoc}
      */
     @Override
     public <N extends Number> N number(Class<N> type) {
-        return new SqlQueryExpression(jdbc, sqlPageFactory, selectBuilder, ignorePolicy).number(type);
+        return new SqlQueryExpression(jdbc, sqlPageFactory, selectBuilder, ignoreStrategy).number(type);
     }
 
     /**

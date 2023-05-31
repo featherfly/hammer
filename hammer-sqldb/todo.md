@@ -1,5 +1,13 @@
 ## 新功能
 
+- [ ] hammer加入getLockSaveOrUpdate(saveOrUpdateFetch)、getLockUpdate(updateFetch)锁记录，修改，并返回修改后的信息
+
+  updateSaveFetch的原理，可以参见Java的Result Sets中检索和修改值的相关内容。只是当JDBC driver不支持ResultSet的并发更新时，框架需要一些降级的支持方法。
+  看的挺深的，updatesavefetch有降级方法，就是常规的锁load拿过来判断，产生两次交互
+  数据数据库（sql数据库一般都支持行锁）不支持（如elasticsearch, mongodb等暂时不确定这两是否有行锁，做相应实现时再查询期特性），使用内置的locker来实现
+
+- [ ] hammer加入update(entity, Predicate<BeanProperty> ignore)对在更新时需要忽略的对象属性进行帅选
+
 - [ ] TplExecutor各种方法中的TplTemplateId可以加入直接传入字符串模板的方式（用于jdk17的多行字符串），类似@Template(value = "sql template....")
     使用sha1把编码sql template，作为sql template的name进行模板注册，使用固定的
 
@@ -218,7 +226,7 @@
 
   > 例如
 
-  ```sql
+```sql
     select /*<<prop*/* from /*<<wrap*/user
     /*<where*/ where
         /*id?*/id = /*$=:id*/1
@@ -249,22 +257,27 @@
             )
         /*>?*/
     /*>where*/
+    
     -- include模板
     <@tpl id='roleFromTemplate2' namespace='tpl/role_common'/>
     select /*#prop $*/ *
         /*@ roleFromTemplate*/
+        
     select count(*)
         /*@ roleFromTemplate tpl/role_common*/
+        
     -- roleFromTemplate
     from /*<<wrap*/ role
     /*<where*/ where
     /*name??*/ name like :name
     /*>where*/
-  ```
+```
 
 - [ ] ~~定制专门为dml准备的简单模板实现，让模板sql更简洁更接近原生sql~~（已经以预编译的形式实现了特化模板，此项暂时不考虑）
 
 ## 优化
+
+- [ ] 为模板sql查询返回加入映射配置，能够对每一个返回值进行精确的类型映射（不用在handle manager 里查找）
 
 - [x] 优化NestedBeanPropertyRowMapper在查询列表时，只进行一次类型检测和映射元数据，后续的都使用映射元数据结果直接进行赋值（相当于预编译的概念）
 

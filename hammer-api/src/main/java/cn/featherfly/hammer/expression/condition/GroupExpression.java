@@ -8,7 +8,8 @@ import java.util.function.Function;
  *
  * @author zhongj
  */
-public interface GroupExpression<C, L> {
+public interface GroupExpression<C extends ConditionExpression, L extends LogicExpression<C, L>>
+        extends ConditionExpression {
 
     /**
      * 在当前内部开启一个新的条件逻辑组,需要手动调用endGroup回到上一级表达式.

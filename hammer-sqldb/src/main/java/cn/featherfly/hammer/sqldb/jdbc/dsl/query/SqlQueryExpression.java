@@ -7,7 +7,11 @@ import cn.featherfly.common.constant.Chars;
 import cn.featherfly.common.db.builder.dml.basic.SqlSelectBasicBuilder;
 import cn.featherfly.common.lang.Lang;
 import cn.featherfly.common.operator.AggregateFunction;
-import cn.featherfly.common.repository.IgnorePolicy;
+import cn.featherfly.common.operator.QueryOperator;
+import cn.featherfly.common.operator.QueryOperator.QueryPolicy;
+import cn.featherfly.common.repository.IgnoreStrategy;
+import cn.featherfly.common.repository.mapping.ClassMapping;
+import cn.featherfly.common.repository.mapping.PropertyMapping;
 import cn.featherfly.hammer.dsl.query.QueryConditionGroupExpression;
 import cn.featherfly.hammer.dsl.query.QueryConditionGroupLogicExpression;
 import cn.featherfly.hammer.dsl.query.TypeQueryEntity;
@@ -32,7 +36,7 @@ public class SqlQueryExpression extends SqlQueryConditionGroupExpression {
      * @param selectBuilder  the select builder
      */
     public SqlQueryExpression(Jdbc jdbc, SqlPageFactory sqlPageFactory, SqlSelectBasicBuilder selectBuilder) {
-        this(jdbc, sqlPageFactory, IgnorePolicy.EMPTY);
+        this(jdbc, sqlPageFactory, IgnoreStrategy.EMPTY);
     }
 
     /**
@@ -41,11 +45,11 @@ public class SqlQueryExpression extends SqlQueryConditionGroupExpression {
      * @param jdbc           the jdbc
      * @param sqlPageFactory the sql page factory
      * @param selectBuilder  the select builder
-     * @param ignorePolicy   the ignore policy
+     * @param ignoreStrategy   the ignore strategy
      */
     public SqlQueryExpression(Jdbc jdbc, SqlPageFactory sqlPageFactory, SqlSelectBasicBuilder selectBuilder,
-            Predicate<Object> ignorePolicy) {
-        super(jdbc, sqlPageFactory, selectBuilder.getDefaultTableAlias(), ignorePolicy);
+            Predicate<?> ignoreStrategy) {
+        super(jdbc, sqlPageFactory, selectBuilder.getDefaultTableAlias(), ignoreStrategy);
         this.selectBuilder = selectBuilder;
     }
 
@@ -56,11 +60,11 @@ public class SqlQueryExpression extends SqlQueryConditionGroupExpression {
      * @param jdbc           the jdbc
      * @param sqlPageFactory the sql page factory
      * @param queryAlias     the query alias
-     * @param ignorePolicy   the ignore policy
+     * @param ignoreStrategy   the ignore strategy
      */
     SqlQueryExpression(QueryConditionGroupLogicExpression parent, Jdbc jdbc, SqlPageFactory sqlPageFactory,
-            String queryAlias, Predicate<Object> ignorePolicy) {
-        super(parent, jdbc, sqlPageFactory, queryAlias, ignorePolicy);
+            String queryAlias, Predicate<?> ignoreStrategy) {
+        super(parent, jdbc, sqlPageFactory, queryAlias, ignoreStrategy);
     }
 
     /**
@@ -69,11 +73,10 @@ public class SqlQueryExpression extends SqlQueryConditionGroupExpression {
      * @param jdbc           the jdbc
      * @param sqlPageFactory the sql page factory
      * @param queryAlias     the query alias
-     * @param ignorePolicy   the ignore policy
+     * @param ignoreStrategy   the ignore strategy
      */
-    public SqlQueryExpression(Jdbc jdbc, SqlPageFactory sqlPageFactory, String queryAlias,
-            Predicate<Object> ignorePolicy) {
-        super(jdbc, sqlPageFactory, queryAlias, ignorePolicy);
+    public SqlQueryExpression(Jdbc jdbc, SqlPageFactory sqlPageFactory, String queryAlias, Predicate<?> ignoreStrategy) {
+        super(jdbc, sqlPageFactory, queryAlias, ignoreStrategy);
     }
 
     /**
@@ -81,10 +84,10 @@ public class SqlQueryExpression extends SqlQueryConditionGroupExpression {
      *
      * @param jdbc           jdbc
      * @param sqlPageFactory the sql page factory
-     * @param ignorePolicy   the ignore policy
+     * @param ignoreStrategy   the ignore strategy
      */
-    public SqlQueryExpression(Jdbc jdbc, SqlPageFactory sqlPageFactory, Predicate<Object> ignorePolicy) {
-        super(jdbc, sqlPageFactory, ignorePolicy);
+    public SqlQueryExpression(Jdbc jdbc, SqlPageFactory sqlPageFactory, Predicate<?> ignoreStrategy) {
+        super(jdbc, sqlPageFactory, ignoreStrategy);
     }
 
     /**
@@ -93,16 +96,16 @@ public class SqlQueryExpression extends SqlQueryConditionGroupExpression {
     @Override
     protected QueryConditionGroupExpression createGroup(QueryConditionGroupLogicExpression parent, String queryAlias,
             TypeQueryEntity typeQueryEntity) {
-        return new SqlQueryExpression(parent, jdbc, sqlPageFactory, queryAlias, ignorePolicy);
+        return new SqlQueryExpression(parent, jdbc, sqlPageFactory, queryAlias, ignoreStrategy);
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public Long count() {
+    public long count() {
         selectBuilder.addColumn(AggregateFunction.COUNT, Chars.STAR);
-        return longInt();
+        return longValue();
     }
 
     /**
@@ -123,5 +126,33 @@ public class SqlQueryExpression extends SqlQueryConditionGroupExpression {
             result = result + Chars.SPACE + condition;
         }
         return result;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public String getAlias(int index) {
+        // YUFEI_TODO Auto-generated method stub
+        return null;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public <CM extends ClassMapping<T, P>, T, P extends PropertyMapping<P>> CM getClassMapping(int index) {
+        // YUFEI_TODO Auto-generated method stub
+        return null;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    protected <T, R> QueryConditionGroupLogicExpression eq_ne(int index, QueryOperator queryOperator,
+            PropertyMapping<?> pm, R value, QueryPolicy queryPolicy, Predicate<?> ignoreStrategy) {
+        // YUFEI_TODO Auto-generated method stub
+        return null;
     }
 }

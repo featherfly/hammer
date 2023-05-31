@@ -11,9 +11,10 @@ import com.speedment.common.tuple.Tuple2;
 import com.speedment.common.tuple.Tuple3;
 import com.speedment.common.tuple.Tuple4;
 import com.speedment.common.tuple.Tuple5;
+import com.speedment.common.tuple.Tuple6;
 
 import cn.featherfly.common.lang.function.SerializableFunction;
-import cn.featherfly.common.repository.IgnorePolicy;
+import cn.featherfly.common.repository.IgnoreStrategy;
 import cn.featherfly.common.repository.Repository;
 import cn.featherfly.common.structure.page.PaginationResults;
 import cn.featherfly.hammer.Hammer;
@@ -22,7 +23,7 @@ import cn.featherfly.hammer.dsl.execute.EntityDelete;
 import cn.featherfly.hammer.dsl.execute.EntityUpdate;
 import cn.featherfly.hammer.dsl.execute.Update;
 import cn.featherfly.hammer.dsl.query.QueryEntity;
-import cn.featherfly.hammer.dsl.query.type.EntityQueryEntity;
+import cn.featherfly.hammer.dsl.query.type.EntityQueryFetch;
 import cn.featherfly.hammer.tpl.TplExecuteId;
 
 /**
@@ -767,7 +768,7 @@ public class BasedTplHammer implements Hammer {
      * {@inheritDoc}
      */
     @Override
-    public <E> EntityQueryEntity<E> query(Class<E> entityType) {
+    public <E> EntityQueryFetch<E> query(Class<E> entityType) {
         return hammer.query(entityType);
     }
 
@@ -1070,8 +1071,8 @@ public class BasedTplHammer implements Hammer {
      * {@inheritDoc}
      */
     @Override
-    public <E> int update(E entity, IgnorePolicy ignorePolicy) {
-        return hammer.update(entity, ignorePolicy);
+    public <E> int update(E entity, IgnoreStrategy ignoreStrategy) {
+        return hammer.update(entity, ignoreStrategy);
     }
 
     /**
@@ -1094,8 +1095,8 @@ public class BasedTplHammer implements Hammer {
      * {@inheritDoc}
      */
     @Override
-    public <E> int[] update(List<E> entities, IgnorePolicy ignorePolicy) {
-        return hammer.update(entities, ignorePolicy);
+    public <E> int[] update(List<E> entities, IgnoreStrategy ignoreStrategy) {
+        return hammer.update(entities, ignoreStrategy);
     }
 
     /**
@@ -1304,5 +1305,194 @@ public class BasedTplHammer implements Hammer {
     @Override
     public Delete delete(Repository repository) {
         return hammer.delete(repository);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public <R1, R2, R3, R4, R5, R6> Tuple6<R1, R2, R3, R4, R5, R6> single(String tplExecuteId, Class<R1> entityType1,
+            Class<R2> entityType2, Class<R3> entityType3, Class<R4> entityType4, Class<R5> entityType5,
+            Class<R6> entityType6, Map<String, Object> params) {
+        // YUFEI_TODO Auto-generated method stub
+        return null;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public <R1, R2, R3, R4, R5, R6> Tuple6<R1, R2, R3, R4, R5, R6> single(TplExecuteId tplExecuteId,
+            Class<R1> entityType1, Class<R2> entityType2, Class<R3> entityType3, Class<R4> entityType4,
+            Class<R5> entityType5, Class<R6> entityType6, Map<String, Object> params) {
+        // YUFEI_TODO Auto-generated method stub
+        return null;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public <R1, R2, R3, R4, R5, R6> Tuple6<R1, R2, R3, R4, R5, R6> single(String tplExecuteId, Class<R1> entityType1,
+            Class<R2> entityType2, Class<R3> entityType3, Class<R4> entityType4, Class<R5> entityType5,
+            Class<R6> entityType6, Tuple6<String, String, String, String, String, String> prefixes,
+            Map<String, Object> params) {
+        // YUFEI_TODO Auto-generated method stub
+        return null;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public <R1, R2, R3, R4, R5, R6> Tuple6<R1, R2, R3, R4, R5, R6> single(TplExecuteId tplExecuteId,
+            Class<R1> entityType1, Class<R2> entityType2, Class<R3> entityType3, Class<R4> entityType4,
+            Class<R5> entityType5, Class<R6> entityType6,
+            Tuple6<String, String, String, String, String, String> prefixes, Map<String, Object> params) {
+        // YUFEI_TODO Auto-generated method stub
+        return null;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public <R1, R2, R3, R4, R5, R6> List<Tuple6<R1, R2, R3, R4, R5, R6>> list(String tplExecuteId,
+            Class<R1> entityType1, Class<R2> entityType2, Class<R3> entityType3, Class<R4> entityType4,
+            Class<R5> entityType5, Class<R6> entityType6, Map<String, Object> params) {
+        // YUFEI_TODO Auto-generated method stub
+        return null;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public <R1, R2, R3, R4, R5, R6> List<Tuple6<R1, R2, R3, R4, R5, R6>> list(String tplExecuteId,
+            Class<R1> entityType1, Class<R2> entityType2, Class<R3> entityType3, Class<R4> entityType4,
+            Class<R5> entityType5, Class<R6> entityType6, Map<String, Object> params, int offset, int limit) {
+        // YUFEI_TODO Auto-generated method stub
+        return null;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public <R1, R2, R3, R4, R5, R6> List<Tuple6<R1, R2, R3, R4, R5, R6>> list(TplExecuteId tplExecuteId,
+            Class<R1> entityType1, Class<R2> entityType2, Class<R3> entityType3, Class<R4> entityType4,
+            Class<R5> entityType5, Class<R6> entityType6, Map<String, Object> params) {
+        // YUFEI_TODO Auto-generated method stub
+        return null;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public <R1, R2, R3, R4, R5, R6> List<Tuple6<R1, R2, R3, R4, R5, R6>> list(TplExecuteId tplExecuteId,
+            Class<R1> entityType1, Class<R2> entityType2, Class<R3> entityType3, Class<R4> entityType4,
+            Class<R5> entityType5, Class<R6> entityType6, Map<String, Object> params, int offset, int limit) {
+        // YUFEI_TODO Auto-generated method stub
+        return null;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public <R1, R2, R3, R4, R5, R6> List<Tuple6<R1, R2, R3, R4, R5, R6>> list(String tplExecuteId,
+            Class<R1> entityType1, Class<R2> entityType2, Class<R3> entityType3, Class<R4> entityType4,
+            Class<R5> entityType5, Class<R6> entityType6,
+            Tuple6<String, String, String, String, String, String> prefixes, Map<String, Object> params) {
+        // YUFEI_TODO Auto-generated method stub
+        return null;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public <R1, R2, R3, R4, R5, R6> List<Tuple6<R1, R2, R3, R4, R5, R6>> list(String tplExecuteId,
+            Class<R1> entityType1, Class<R2> entityType2, Class<R3> entityType3, Class<R4> entityType4,
+            Class<R5> entityType5, Class<R6> entityType6,
+            Tuple6<String, String, String, String, String, String> prefixes, Map<String, Object> params, int offset,
+            int limit) {
+        // YUFEI_TODO Auto-generated method stub
+        return null;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public <R1, R2, R3, R4, R5, R6> List<Tuple6<R1, R2, R3, R4, R5, R6>> list(TplExecuteId tplExecuteId,
+            Class<R1> entityType1, Class<R2> entityType2, Class<R3> entityType3, Class<R4> entityType4,
+            Class<R5> entityType5, Class<R6> entityType6,
+            Tuple6<String, String, String, String, String, String> prefixes, Map<String, Object> params) {
+        // YUFEI_TODO Auto-generated method stub
+        return null;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public <R1, R2, R3, R4, R5, R6> List<Tuple6<R1, R2, R3, R4, R5, R6>> list(TplExecuteId tplExecuteId,
+            Class<R1> entityType1, Class<R2> entityType2, Class<R3> entityType3, Class<R4> entityType4,
+            Class<R5> entityType5, Class<R6> entityType6,
+            Tuple6<String, String, String, String, String, String> prefixes, Map<String, Object> params, int offset,
+            int limit) {
+        // YUFEI_TODO Auto-generated method stub
+        return null;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public <R1, R2, R3, R4, R5, R6> PaginationResults<Tuple6<R1, R2, R3, R4, R5, R6>> pagination(String tplExecuteId,
+            Class<R1> entityType1, Class<R2> entityType2, Class<R3> entityType3, Class<R4> entityType4,
+            Class<R5> entityType5, Class<R6> entityType6, Map<String, Object> params, int offset, int limit) {
+        // YUFEI_TODO Auto-generated method stub
+        return null;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public <R1, R2, R3, R4, R5, R6> PaginationResults<Tuple6<R1, R2, R3, R4, R5, R6>> pagination(
+            TplExecuteId tplExecuteId, Class<R1> entityType1, Class<R2> entityType2, Class<R3> entityType3,
+            Class<R4> entityType4, Class<R5> entityType5, Class<R6> entityType6, Map<String, Object> params, int offset,
+            int limit) {
+        // YUFEI_TODO Auto-generated method stub
+        return null;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public <R1, R2, R3, R4, R5, R6> PaginationResults<Tuple6<R1, R2, R3, R4, R5, R6>> pagination(String tplExecuteId,
+            Class<R1> entityType1, Class<R2> entityType2, Class<R3> entityType3, Class<R4> entityType4,
+            Class<R5> entityType5, Class<R6> entityType6,
+            Tuple6<String, String, String, String, String, String> prefixes, Map<String, Object> params, int offset,
+            int limit) {
+        // YUFEI_TODO Auto-generated method stub
+        return null;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public <R1, R2, R3, R4, R5, R6> PaginationResults<Tuple6<R1, R2, R3, R4, R5, R6>> pagination(
+            TplExecuteId tplExecuteId, Class<R1> entityType1, Class<R2> entityType2, Class<R3> entityType3,
+            Class<R4> entityType4, Class<R5> entityType5, Class<R6> entityType6,
+            Tuple6<String, String, String, String, String, String> prefixes, Map<String, Object> params, int offset,
+            int limit) {
+        return hammer.pagination(tplExecuteId, entityType1, entityType2, entityType3, entityType4, entityType5,
+                entityType6, prefixes, params, offset, limit);
     }
 }

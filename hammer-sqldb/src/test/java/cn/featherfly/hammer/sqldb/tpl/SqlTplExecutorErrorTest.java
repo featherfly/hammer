@@ -7,7 +7,7 @@ import org.testng.annotations.Test;
 import cn.featherfly.common.structure.ChainMapImpl;
 import cn.featherfly.hammer.sqldb.jdbc.JdbcTestBase;
 import cn.featherfly.hammer.sqldb.jdbc.SimpleSqlPageFactory;
-import cn.featherfly.hammer.sqldb.jdbc.vo.User;
+import cn.featherfly.hammer.sqldb.jdbc.vo.r.User;
 import cn.featherfly.hammer.sqldb.tpl.freemarker.SqldbFreemarkerTemplateEngine;
 import cn.featherfly.hammer.tpl.TplConfigFactoryImpl;
 import cn.featherfly.hammer.tpl.TplException;

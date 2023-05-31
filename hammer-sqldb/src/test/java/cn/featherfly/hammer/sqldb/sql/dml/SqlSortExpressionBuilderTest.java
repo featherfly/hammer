@@ -8,7 +8,7 @@ import org.testng.annotations.Test;
 import cn.featherfly.common.db.dialect.Dialects;
 import cn.featherfly.common.lang.ArrayUtils;
 import cn.featherfly.hammer.sqldb.jdbc.TestBase;
-import cn.featherfly.hammer.sqldb.jdbc.vo.UserInfo;
+import cn.featherfly.hammer.sqldb.jdbc.vo.r.UserInfo;
 
 /**
  * SqlSortExpressionBuilderTest.

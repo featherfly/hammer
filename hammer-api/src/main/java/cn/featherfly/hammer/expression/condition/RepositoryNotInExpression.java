@@ -15,7 +15,7 @@ public interface RepositoryNotInExpression<C extends ConditionExpression, L exte
         extends NotInExpression<C, L> {
 
     /**
-     * 不包含指定，sql中的not in.
+     * values not in. 不包含指定，sql中的not in.
      *
      * @param repository 存储库
      * @param name       参数名称
@@ -25,7 +25,7 @@ public interface RepositoryNotInExpression<C extends ConditionExpression, L exte
     L nin(String repository, String name, Object value);
 
     /**
-     * 不包含指定，sql中的not in.
+     * values not in. 不包含指定，sql中的not in.
      *
      * @param <T>        the generic type
      * @param repository 存储库
@@ -36,7 +36,7 @@ public interface RepositoryNotInExpression<C extends ConditionExpression, L exte
     //    <T> L nin(Class<T> repository, String name, Object value);
 
     /**
-     * 不包含指定，sql中的not in.
+     * values not in. 不包含指定，sql中的not in.
      *
      * @param repositoryIndex repository index
      * @param name            参数名称

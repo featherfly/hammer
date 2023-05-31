@@ -21,7 +21,6 @@ import cn.featherfly.common.db.mapping.JdbcClassMapping;
 import cn.featherfly.common.db.mapping.JdbcMappingFactory;
 import cn.featherfly.common.db.mapping.JdbcPropertyMapping;
 import cn.featherfly.common.exception.UnsupportedException;
-import cn.featherfly.common.lang.AssertIllegalArgument;
 import cn.featherfly.common.lang.LambdaUtils;
 import cn.featherfly.common.lang.LambdaUtils.SerializableSupplierLambdaInfo;
 import cn.featherfly.common.lang.LambdaUtils.SerializedLambdaInfo;
@@ -29,14 +28,16 @@ import cn.featherfly.common.lang.Lang;
 import cn.featherfly.common.lang.Strings;
 import cn.featherfly.common.lang.function.SerializableFunction;
 import cn.featherfly.common.lang.function.SerializableSupplier;
-import cn.featherfly.common.repository.IgnorePolicy;
 import cn.featherfly.common.repository.Params;
 import cn.featherfly.common.repository.builder.BuilderException;
 import cn.featherfly.common.repository.builder.BuilderExceptionCode;
 import cn.featherfly.common.repository.mapping.PropertyMapping.Mode;
+import cn.featherfly.hammer.expression.condition.ConditionExpression;
 import cn.featherfly.hammer.expression.condition.Expression;
+import cn.featherfly.hammer.expression.condition.LogicExpression;
 import cn.featherfly.hammer.expression.condition.LogicOperatorExpression;
 import cn.featherfly.hammer.expression.condition.ParamedExpression;
+import cn.featherfly.hammer.sqldb.jdbc.dsl.entity.condition.AbstractMulitiEntityConditionExpression;
 
 /**
  * sql condition group builder sql条件逻辑组构造器.
@@ -44,18 +45,20 @@ import cn.featherfly.hammer.expression.condition.ParamedExpression;
  * @author zhongj
  * @param <L> the generic type
  */
-public abstract class AbstractSqlConditionExpression<L> implements SqlBuilder, ParamedExpression {
+public abstract class AbstractSqlConditionExpression<C extends ConditionExpression, L extends LogicExpression<C, L>>
+        extends AbstractMulitiEntityConditionExpression<C, L> implements SqlBuilder, ParamedExpression {
 
     /**
      * Instantiates a new abstract sql condition expression.
      *
-     * @param dialect      dialect
-     * @param ignorePolicy the ignore policy
-     * @param parent       parent group
+     * @param parent         parent group
+     * @param dialect        dialect
+     * @param ignoreStrategy the ignore strategy
      */
-    protected AbstractSqlConditionExpression(Dialect dialect, Predicate<Object> ignorePolicy, L parent) {
-        AssertIllegalArgument.isNotNull(ignorePolicy, "ignorePolicy");
-        this.ignorePolicy = ignorePolicy;
+    protected AbstractSqlConditionExpression(L parent, Dialect dialect, Predicate<?> ignoreStrategy) {
+        super(ignoreStrategy);
+        //        AssertIllegalArgument.isNotNull(ignoreStrategy, "ignoreStrategy");
+        //        this.ignoreStrategy = ignoreStrategy;
         this.dialect = dialect;
         this.parent = parent;
     }
@@ -65,6 +68,7 @@ public abstract class AbstractSqlConditionExpression<L> implements SqlBuilder, P
      */
     @Override
     public String build() {
+        //        String parentCondition = parent == null ? "" : ((Builder) parent).build();
         StringBuilder result = new StringBuilder();
         if (conditions.size() > 0) {
             Expression last = conditions.get(conditions.size() - 1);
@@ -141,7 +145,7 @@ public abstract class AbstractSqlConditionExpression<L> implements SqlBuilder, P
         for (Expression condition : conditions) {
             if (condition instanceof ParamedExpression) {
                 Object param = ((ParamedExpression) condition).getParam();
-                //                if (!ignorePolicy.test(param)) {
+                //                if (!ignoreStrategy.test(param)) {
                 if (param == Params.NONE) {
                     continue;
                 }
@@ -174,29 +178,15 @@ public abstract class AbstractSqlConditionExpression<L> implements SqlBuilder, P
     // protected method
     // ********************************************************************
 
-    /**
-     * Gets the property name.
-     *
-     * @param <T>  the generic type
-     * @param <R>  the generic type
-     * @param name the name
-     * @return the property name
-     */
-    protected <T, R> String getPropertyName(SerializableFunction<T, R> name) {
-        return LambdaUtils.getLambdaPropertyName(name);
-    }
-
     //    protected <T, R extends Number> String getPropertyName(ReturnNumberFunction<T, R> name) {
     //        return LambdaUtils.getLambdaPropertyName(name);
     //    }
 
     /**
-     * Adds the condition.
-     *
-     * @param condition the condition
-     * @return the object
+     * {@inheritDoc}
      */
-    protected Object addCondition(Expression condition) {
+    @Override
+    public Expression addCondition(Expression condition) {
         if (previousCondition != null) {
             if (previousCondition.getClass().isInstance(condition)) {
                 throw new BuilderException(
@@ -205,7 +195,7 @@ public abstract class AbstractSqlConditionExpression<L> implements SqlBuilder, P
         }
         //        if (condition instanceof ParamedExpression) {
         //            ParamedExpression paramedExpression = (ParamedExpression) condition;
-        //            if (ignorePolicy.test(paramedExpression.getParam())) { // 忽略带参数的条件表达式
+        //            if (ignoreStrategy.test(paramedExpression.getParam())) { // 忽略带参数的条件表达式
         //                // 移除逻辑表达式
         //                conditions.remove(conditions.size() - 1);
         //                if (conditions.isEmpty()) {
@@ -384,38 +374,44 @@ public abstract class AbstractSqlConditionExpression<L> implements SqlBuilder, P
     // property
     // ********************************************************************
 
-    /** The conditions. */
-    private List<Expression> conditions = new ArrayList<>();
-
     /** The parent. */
     protected L parent;
 
     /** The dialect. */
     protected Dialect dialect;
 
+    // The conditions.
+    private List<Expression> conditions = new ArrayList<>();
+
     private Expression previousCondition;
 
-    /** The ignore policy. */
-    /*
-     * 忽略策略
-     */
-    protected Predicate<Object> ignorePolicy = IgnorePolicy.EMPTY;
+    //    /** The ignore strategy. 忽略策略 */
+    //    protected Predicate<Object> ignoreStrategy = IgnoreStrategy.EMPTY;
+
+    //    /**
+    //     * get ignoreStrategy value.
+    //     *
+    //     * @return ignoreStrategy
+    //     */
+    //    @Override
+    //    public Predicate<?> getIgnorePolicy() {
+    //        return ignoreStrategy;
+    //    }
+
+    //    /**
+    //     * Gets the conditions.
+    //     *
+    //     * @return the conditions
+    //     */
+    //    public List<Expression> getConditions() {
+    //        return conditions;
+    //    }
 
     /**
-     * get ignorePolicy value.
-     *
-     * @return ignorePolicy
+     * {@inheritDoc}
      */
-    public Predicate<Object> getIgnorePolicy() {
-        return ignorePolicy;
-    }
-
-    /**
-     * Gets the conditions.
-     *
-     * @return the conditions
-     */
-    public List<Expression> getConditions() {
-        return conditions;
+    @Override
+    public Dialect getDialect() {
+        return dialect;
     }
 }

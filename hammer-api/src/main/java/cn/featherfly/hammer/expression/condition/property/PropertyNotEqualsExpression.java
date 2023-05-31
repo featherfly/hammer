@@ -6,7 +6,7 @@ import cn.featherfly.hammer.expression.condition.ConditionExpression;
 import cn.featherfly.hammer.expression.condition.LogicExpression;
 
 /**
- * NotEqualsExpressoin.
+ * NotEqualsExpression.
  *
  * @author zhongj
  */

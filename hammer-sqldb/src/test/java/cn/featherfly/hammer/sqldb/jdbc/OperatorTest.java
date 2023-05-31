@@ -1,7 +1,7 @@
 
 package cn.featherfly.hammer.sqldb.jdbc;
 
-import static org.junit.Assert.assertNull;
+import static org.testng.Assert.assertNull;
 import static org.testng.Assert.assertEquals;
 import static org.testng.Assert.assertNotNull;
 import static org.testng.Assert.assertTrue;
@@ -24,15 +24,13 @@ import cn.featherfly.hammer.sqldb.jdbc.operate.InsertOperate;
 import cn.featherfly.hammer.sqldb.jdbc.operate.MergeOperate;
 import cn.featherfly.hammer.sqldb.jdbc.operate.UpdateOperate;
 import cn.featherfly.hammer.sqldb.jdbc.operate.UpsertOperate;
-import cn.featherfly.hammer.sqldb.jdbc.vo.App;
-import cn.featherfly.hammer.sqldb.jdbc.vo.AppVersion;
-import cn.featherfly.hammer.sqldb.jdbc.vo.Role;
-import cn.featherfly.hammer.sqldb.jdbc.vo.UserRole;
+import cn.featherfly.hammer.sqldb.jdbc.vo.r.App;
+import cn.featherfly.hammer.sqldb.jdbc.vo.r.AppVersion;
+import cn.featherfly.hammer.sqldb.jdbc.vo.r.Role;
+import cn.featherfly.hammer.sqldb.jdbc.vo.r.UserRole;
 
 /**
- * <p>
- * OperatorTest
- * </p>
+ * OperatorTest.
  *
  * @author zhongj
  */

@@ -2,7 +2,7 @@
 package cn.featherfly.hammer.sqldb.tpl;
 
 import cn.featherfly.hammer.GenericHammer;
-import cn.featherfly.hammer.sqldb.jdbc.vo.User;
+import cn.featherfly.hammer.sqldb.jdbc.vo.r.User;
 import cn.featherfly.hammer.tpl.annotation.Mapper;
 
 /**

@@ -1,9 +1,9 @@
 
 package cn.featherfly.hammer.dsl.query;
 
-import cn.featherfly.hammer.expression.condition.SortExpression;
 import cn.featherfly.hammer.expression.query.TypeQueryConditionLimit;
 import cn.featherfly.hammer.expression.query.TypeQueryLimitExecutor;
+import cn.featherfly.hammer.expression.query.sort.SortExpression;
 
 /**
  * <p>

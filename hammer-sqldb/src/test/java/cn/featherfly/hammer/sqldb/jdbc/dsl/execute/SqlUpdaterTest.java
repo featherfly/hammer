@@ -10,8 +10,8 @@
  */
 package cn.featherfly.hammer.sqldb.jdbc.dsl.execute;
 
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertNull;
+import static org.testng.Assert.assertNotNull;
+import static org.testng.Assert.assertNull;
 import static org.testng.Assert.assertEquals;
 
 import java.util.Date;
@@ -24,20 +24,20 @@ import cn.featherfly.common.db.model.SimpleTable;
 import cn.featherfly.common.lang.Dates;
 import cn.featherfly.common.lang.Randoms;
 import cn.featherfly.common.lang.Randoms.CharType;
-import cn.featherfly.common.repository.IgnorePolicy;
+import cn.featherfly.common.repository.IgnoreStrategy;
 import cn.featherfly.common.repository.SimpleRepository;
 import cn.featherfly.hammer.sqldb.SqldbHammerException;
-import cn.featherfly.hammer.sqldb.jdbc.JdbcTestBase;
-import cn.featherfly.hammer.sqldb.jdbc.vo.Role;
-import cn.featherfly.hammer.sqldb.jdbc.vo.User;
-import cn.featherfly.hammer.sqldb.jdbc.vo.UserInfo;
+import cn.featherfly.hammer.sqldb.jdbc.HammerJdbcTestBase;
+import cn.featherfly.hammer.sqldb.jdbc.vo.r.Role;
+import cn.featherfly.hammer.sqldb.jdbc.vo.r.User;
+import cn.featherfly.hammer.sqldb.jdbc.vo.r.UserInfo;
 
 /**
  * SqlUpdaterTest.
  *
  * @author zhongj
  */
-public class SqlUpdaterTest extends JdbcTestBase {
+public class SqlUpdaterTest extends HammerJdbcTestBase {
 
     SqlUpdater sqlUpdater;
 
@@ -146,14 +146,14 @@ public class SqlUpdaterTest extends JdbcTestBase {
         String strDate = Dates.formatTime(new Date());
         Long count = hammer.query(Role.class).count();
         int result = sqlUpdater.update("role").set("create_time", strDate)
-                .where(c -> c.setIgnorePolicy(IgnorePolicy.EMPTY)).eq("id", null).execute();
+                .where(c -> c.setIgnoreStrategy(IgnoreStrategy.EMPTY)).eq("id", null).execute();
         assertEquals(result, count.intValue());
 
         String createTime = jdbc.queryString("select create_time from role where  id = ?", 1);
         assertEquals(createTime, strDate);
 
-        result = sqlUpdater.update("role").set("create_time", strDate).where(c -> c.setIgnorePolicy(IgnorePolicy.NONE))
-                .eq("id", null).execute();
+        result = sqlUpdater.update("role").set("create_time", strDate)
+                .where(c -> c.setIgnoreStrategy(IgnoreStrategy.NONE)).eq("id", null).execute();
         assertEquals(result, 0);
     }
 
@@ -359,6 +359,18 @@ public class SqlUpdaterTest extends JdbcTestBase {
         hammer.delete(user);
     }
 
+    //    @Test
+    //    public void test111() {
+    //        UserInfo ui = hammer.get(1, UserInfo.class);
+    //        assertNotNull(ui);
+    //        assertNotNull(ui.getUser());
+    //        assertNotNull(ui.getUser().getId());
+    //
+    //        int result = hammer.update(UserInfo.class).set(UserInfo::getUser, User::getId, null).where()
+    //                .eq(UserInfo::getId, ui.getId()).execute();
+    //        assertEquals(result, 1);
+    //    }
+
     @Test
     public void testUpdateEntitySetNestedProperty() {
         UserInfo ui = hammer.get(1, UserInfo.class);
@@ -474,14 +486,14 @@ public class SqlUpdaterTest extends JdbcTestBase {
         assertEquals(result, count.intValue());
 
         result = sqlUpdater.update(Role.class).set(Role::getCreateTime, strDate)
-                .where(c -> c.setIgnorePolicy(IgnorePolicy.EMPTY)).eq(Role::getId, null).execute();
+                .where(c -> c.setIgnoreStrategy(IgnoreStrategy.EMPTY)).eq(Role::getId, null).execute();
         assertEquals(result, count.intValue());
 
         String createTime = jdbc.queryString("select create_time from role where  id = ?", 1);
         assertEquals(createTime, strDate);
 
         result = sqlUpdater.update(Role.class).set(Role::getCreateTime, strDate)
-                .where(c -> c.setIgnorePolicy(IgnorePolicy.NONE)).eq(Role::getId, null).execute();
+                .where(c -> c.setIgnoreStrategy(IgnoreStrategy.NONE)).eq(Role::getId, null).execute();
         assertEquals(result, 0);
     }
 

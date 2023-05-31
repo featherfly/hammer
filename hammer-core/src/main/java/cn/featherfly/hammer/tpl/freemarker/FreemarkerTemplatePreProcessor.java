@@ -5,7 +5,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import cn.featherfly.hammer.tpl.TemplatePreprocessor;
-import cn.featherfly.hammer.tpl.freemarker.processor.AbstractElement;
 import cn.featherfly.hammer.tpl.freemarker.processor.Parser;
 
 /**
@@ -25,12 +24,12 @@ public class FreemarkerTemplatePreProcessor implements TemplatePreprocessor {
     @Override
     public String process(String value) {
         Parser parser = new Parser();
-        parser.parse(value);
-        StringBuilder result = new StringBuilder();
-        for (AbstractElement abstractElement : parser.getElements()) {
-            result.append(abstractElement.getValue());
-        }
-        String s = result.toString();
+        String s = parser.parse(value);
+        //        StringBuilder result = new StringBuilder();
+        //        for (AbstractElement abstractElement : parser.getElements()) {
+        //            result.append(abstractElement.getValue());
+        //        }
+        //        String s = result.toString();
         if (logger.isDebugEnabled()) {
             logger.debug("\nsource:\n{}\nresult:\n{}", String.format("    %s", value.replaceAll("\n", "\n        ")),
                     String.format("    %s", s.replaceAll("\n", "\n      ")));

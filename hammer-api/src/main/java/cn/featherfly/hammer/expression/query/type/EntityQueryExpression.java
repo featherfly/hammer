@@ -1,9 +1,11 @@
 
 package cn.featherfly.hammer.expression.query.type;
 
-import cn.featherfly.hammer.expression.EntityConditionGroupExpression;
-import cn.featherfly.hammer.expression.EntityConditionGroupLogicExpression;
-import cn.featherfly.hammer.expression.EntityWhereExpression;
+import cn.featherfly.hammer.expression.api.Queryable;
+import cn.featherfly.hammer.expression.entity.query.EntityQueryConditionGroupExpression;
+import cn.featherfly.hammer.expression.entity.query.EntityQueryConditionGroupLogicExpression;
+import cn.featherfly.hammer.expression.entity.query.EntityQuerySortExpression;
+import cn.featherfly.hammer.expression.entity.query.EntityQueryWhereExpression;
 import cn.featherfly.hammer.expression.query.QueryCountExecutor;
 
 /**
@@ -11,12 +13,12 @@ import cn.featherfly.hammer.expression.query.QueryCountExecutor;
  *
  * @author zhongj
  * @param <E> the query type
- * @param <Q> the generic type
  * @param <C> the generic type
  * @param <L> the generic type
+ * @param <S> the generic type
  */
-public interface EntityQueryExpression<E, Q extends EntityQueryEntityPropertiesExpression<E, Q, C, L>,
-        C extends EntityConditionGroupExpression<E, C, L>, L extends EntityConditionGroupLogicExpression<E, C, L>>
-        extends EntityWhereExpression<E, C, L>, EntityQueryListExecutor<E>, QueryCountExecutor,
-        EntityQueryConditionLimit<E> /*, EntityQueryRelationSimpleExpression<E, R1, Tuple2<E, R1>, QW, QWE>*/ {
+public interface EntityQueryExpression<E, C extends EntityQueryConditionGroupExpression<E, C, L, S>,
+        L extends EntityQueryConditionGroupLogicExpression<E, C, L, S>, S extends EntityQuerySortExpression<E>>
+        extends EntityQueryWhereExpression<E, C, L, S>, EntityQueryListExecutor<E>, QueryCountExecutor,
+        EntityQueryConditionLimit<E>, Queryable<S> {
 }

@@ -2,6 +2,7 @@
 package cn.featherfly.hammer.expression.condition.property;
 
 import cn.featherfly.common.lang.Lang;
+import cn.featherfly.common.operator.QueryOperator.QueryPolicy;
 import cn.featherfly.hammer.expression.condition.LogicExpression;
 import cn.featherfly.hammer.expression.condition.RepositoryConditionsExpression;
 
@@ -82,8 +83,14 @@ public class RepositorySimpleNumberExpression<N extends Number, C extends Reposi
      * {@inheritDoc}
      */
     @Override
-    public String expression() {
-        return expression.expression();
+    public L eq(N value, QueryPolicy queryPolicy) {
+        if (Lang.isNotEmpty(repository)) {
+            return expression.eq(repository, name, value, queryPolicy);
+        } else if (repositoryIndex > -1) {
+            return expression.eq(repositoryIndex, name, value, queryPolicy);
+        } else {
+            return expression.eq(name, value, queryPolicy);
+        }
     }
 
     /**
@@ -97,6 +104,20 @@ public class RepositorySimpleNumberExpression<N extends Number, C extends Reposi
             return expression.ne(repositoryIndex, name, value);
         } else {
             return expression.ne(name, value);
+        }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public L ne(N value, QueryPolicy queryPolicy) {
+        if (Lang.isNotEmpty(repository)) {
+            return expression.ne(repository, name, value, queryPolicy);
+        } else if (repositoryIndex > -1) {
+            return expression.ne(repositoryIndex, name, value, queryPolicy);
+        } else {
+            return expression.ne(name, value, queryPolicy);
         }
     }
 
@@ -238,5 +259,13 @@ public class RepositorySimpleNumberExpression<N extends Number, C extends Reposi
         } else {
             return expression.inn(name, value);
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public String expression() {
+        return expression.expression();
     }
 }

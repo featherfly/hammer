@@ -9,12 +9,12 @@ import cn.featherfly.common.lang.CollectionUtils;
 import cn.featherfly.common.lang.function.SerializableFunction;
 import cn.featherfly.common.lang.function.SerializableSupplier;
 import cn.featherfly.common.operator.LogicOperator;
-import cn.featherfly.common.repository.IgnorePolicy;
+import cn.featherfly.common.repository.IgnoreStrategy;
 import cn.featherfly.hammer.GenericHammer;
 import cn.featherfly.hammer.Hammer;
 import cn.featherfly.hammer.dsl.execute.EntityDelete;
 import cn.featherfly.hammer.dsl.execute.EntityUpdate;
-import cn.featherfly.hammer.dsl.query.type.EntityQueryEntity;
+import cn.featherfly.hammer.dsl.query.type.EntityQueryFetch;
 
 /**
  * BasedTplGenericHammer.
@@ -160,7 +160,7 @@ public class BasedTplGenericHammer<E, ID extends Serializable> implements Generi
      * {@inheritDoc}
      */
     @Override
-    public EntityQueryEntity<E> query() {
+    public EntityQueryFetch<E> query() {
         return hammer.query(type);
     }
 
@@ -216,8 +216,8 @@ public class BasedTplGenericHammer<E, ID extends Serializable> implements Generi
      * {@inheritDoc}
      */
     @Override
-    public int update(E entity, IgnorePolicy ignorePolicy) {
-        return hammer.update(entity, ignorePolicy);
+    public int update(E entity, IgnoreStrategy ignoreStrategy) {
+        return hammer.update(entity, ignoreStrategy);
     }
 
     /**
@@ -240,8 +240,8 @@ public class BasedTplGenericHammer<E, ID extends Serializable> implements Generi
      * {@inheritDoc}
      */
     @Override
-    public int[] update(List<E> entities, IgnorePolicy ignorePolicy) {
-        return hammer.update(entities, ignorePolicy);
+    public int[] update(List<E> entities, IgnoreStrategy ignoreStrategy) {
+        return hammer.update(entities, ignoreStrategy);
     }
 
     /**

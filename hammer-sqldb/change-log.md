@@ -4,13 +4,13 @@
 2. 实现TransverterManager
 3. 实现upsert在全部是插入时为entity设置自动生成的主键（存在update时返回的key无法确定）
 4. 优化GetOperate的ForUpdate逻辑
-5. Jdbc实现查询返回Tuple2,List<Tuple2>,Tuple3,List<Tuple3>,Tuple4,List<Tuple4>,Tuple5,List<Tuple5>
-6. 模板sql支持返回一系列Tuple[2-5]、List<Tuple[2-5]>、PaginationResults<Tuple[2-5]>
+5. Jdbc实现查询返回Tuple2,List<Tuple2>,Tuple3,List<Tuple3>,Tuple4,List<Tuple4>,Tuple5,List<Tuple5>,Tuple6,List<Tuple6>
+6. 模板sql支持返回一系列Tuple[2-6]、List<Tuple[2-6]>、PaginationResults<Tuple[2-6]>
 7. SqldbHammer加入QueryEntity query(Table table);Update update(Table table);Delete delete(Table table)方法
 8. Jdbc实现存储过程支持
 9. Entity DSL加入Consumer参数方法,加入带IgnorePolicy参数方法
 10. Update DSL里的所有set、increase方法都新增了一个加入多一个参数Supplier<Boolean> whether的重载方法，用于判断此次方法调用是否设置值
-11. 实现非spring环境下的Jdbc的功能
+11. 实现非spring环境下的Jdbc的功能和事务管理
     ```java
     // 使用原生jdbc管理事务
     Jdbc jdbc = jdbcFactory.create(conn);
@@ -18,7 +18,7 @@
     connection.setAutoCommit(false); //启用事务
     jdbc.update(sql)
     jdbc.update(sql2)
-    conn.commit();// or jdbc.rollback();
+    conn.commit();// or conn.rollback();
     conn.close();
    
     // 使用包装管理事务
@@ -30,10 +30,26 @@
     jdbc.close();
     // 使用详情参考JdbcTransactionTest.java
     ```
+12 where支持多实体条件查询
+13 实现多实体排序
     
 TODO property()后的条件查询还未加入Consumer参数方法,加入带IgnorePolicy参数方法  
-TODO where支持多实体条件查询  
-TODO EntityQuerySortExpression实现EntityQuerySortExpression1,EntityQuerySortExpression2这种带多个实体的用于完善join和where后的多实体进行排序  
+TODO dsl查询条件的表达式加入带运算的条件判断
+    ```
+    // 带运算的条件判断
+    where().property(Account::getAmount).subtract(10).ge(0)
+    where().exp(e -> e.property(Account::getAmount).subtract(10).ge(0))
+    // where acount.amount - 10 >= 0
+    where().value(10).subtract(Account::getAmount).ge(0)
+    where().exp(e -> e.value(10).subtract(Account::getAmount).ge(0))
+    // where 10 - acount.amount >= 0
+    where().property(Order::getPrice).subtract(10).ge(Order::getCharge)
+    where().exp(e -> e.property(Order::getPrice).subtract(10).ge(Order::getCharge))
+    // where order.price - 10 == order.charge
+    where().property(Order::getPrice).subtract(10).eq(e -> e.property(Order::getCharge).add(10))
+    where().exp(e -> e.property(Order::getPrice).subtract(10).eq(e -> e.property(Order::getCharge).add(10)))
+    // where order.price - 10 == order.charge + 10
+    ```
 
 # 0.6.6 2022-08-26
 1. 修改L group(Consumer<C>)为L group(Function<C,L>)，

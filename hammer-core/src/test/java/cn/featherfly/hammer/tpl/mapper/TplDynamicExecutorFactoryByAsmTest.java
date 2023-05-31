@@ -1,8 +1,8 @@
 
 package cn.featherfly.hammer.tpl.mapper;
 
-import static org.junit.Assert.assertNull;
 import static org.testng.Assert.assertEquals;
+import static org.testng.Assert.assertNull;
 
 import java.io.IOException;
 import java.io.Serializable;
@@ -26,7 +26,7 @@ import com.speedment.common.tuple.Tuple5;
 import cn.featherfly.common.lang.ClassLoaderUtils;
 import cn.featherfly.common.lang.ClassUtils;
 import cn.featherfly.common.lang.function.SerializableFunction;
-import cn.featherfly.common.repository.IgnorePolicy;
+import cn.featherfly.common.repository.IgnoreStrategy;
 import cn.featherfly.common.repository.Repository;
 import cn.featherfly.common.structure.page.Page;
 import cn.featherfly.common.structure.page.PaginationResults;
@@ -36,7 +36,7 @@ import cn.featherfly.hammer.dsl.execute.EntityDelete;
 import cn.featherfly.hammer.dsl.execute.EntityUpdate;
 import cn.featherfly.hammer.dsl.execute.Update;
 import cn.featherfly.hammer.dsl.query.QueryEntity;
-import cn.featherfly.hammer.dsl.query.type.EntityQueryEntity;
+import cn.featherfly.hammer.dsl.query.type.EntityQueryFetch;
 import cn.featherfly.hammer.tpl.TplExecuteId;
 
 /**
@@ -458,7 +458,7 @@ public class TplDynamicExecutorFactoryByAsmTest {
             }
 
             @Override
-            public <E> int update(E entity, IgnorePolicy ignorePolicy) {
+            public <E> int update(E entity, IgnoreStrategy ignoreStrategy) {
 
                 return 0;
             }
@@ -470,7 +470,7 @@ public class TplDynamicExecutorFactoryByAsmTest {
             }
 
             @Override
-            public <E> EntityQueryEntity<E> query(Class<E> entityType) {
+            public <E> EntityQueryFetch<E> query(Class<E> entityType) {
 
                 return null;
             }
@@ -621,7 +621,7 @@ public class TplDynamicExecutorFactoryByAsmTest {
             }
 
             @Override
-            public <E> int[] update(List<E> entities, IgnorePolicy ignorePolicy) {
+            public <E> int[] update(List<E> entities, IgnoreStrategy ignoreStrategy) {
                 // YUFEI_TODO Auto-generated method stub
                 return null;
             }

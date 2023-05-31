@@ -8,10 +8,10 @@ import java.util.function.Function;
 import cn.featherfly.common.lang.function.SerializableFunction;
 import cn.featherfly.common.lang.function.SerializableSupplier;
 import cn.featherfly.common.operator.LogicOperator;
-import cn.featherfly.common.repository.IgnorePolicy;
+import cn.featherfly.common.repository.IgnoreStrategy;
 import cn.featherfly.hammer.dsl.execute.EntityDelete;
 import cn.featherfly.hammer.dsl.execute.EntityUpdate;
-import cn.featherfly.hammer.dsl.query.type.EntityQueryEntity;
+import cn.featherfly.hammer.dsl.query.type.EntityQueryFetch;
 
 /**
  * GenericHammer .
@@ -93,20 +93,20 @@ public interface GenericHammer<E, ID extends Serializable> {
      * {@link #update(Object, IgnorePolicy)} with params (entity,
      * IgnorePolicy.EMPTY)
      *
-     * @param entity       entity to update
-     * @param ignorePolicy ignore value to update policy
+     * @param entity         entity to update
+     * @param ignoreStrategy ignore value to update strategy
      * @return effect data row num
      */
-    int update(E entity, IgnorePolicy ignorePolicy);
+    int update(E entity, IgnoreStrategy ignoreStrategy);
 
     /**
-     * update values with ignorePolicy for each entity in entity list.
+     * update values with ignoreStrategy for each entity in entity list.
      *
-     * @param entities     entity list to update
-     * @param ignorePolicy ignore value to update policy
+     * @param entities       entity list to update
+     * @param ignoreStrategy ignore value to update strategy
      * @return effect data row num
      */
-    int[] update(List<E> entities, IgnorePolicy ignorePolicy);
+    int[] update(List<E> entities, IgnoreStrategy ignoreStrategy);
 
     /**
      * merge entity, update values ignore null or empty(string, list, map)
@@ -277,7 +277,7 @@ public interface GenericHammer<E, ID extends Serializable> {
      *
      * @return QueryEntity
      */
-    EntityQueryEntity<E> query();
+    EntityQueryFetch<E> query();
 
     /**
      * create update for entityType.
