@@ -1,6 +1,7 @@
 
 package cn.featherfly.hammer.dsl.query.type;
 
+import cn.featherfly.hammer.expression.entity.query.EntityQuerySortExpression;
 import cn.featherfly.hammer.expression.query.type.EntityQueryExpression;
 
 /**
@@ -8,6 +9,6 @@ import cn.featherfly.hammer.expression.query.type.EntityQueryExpression;
  *
  * @author zhongj
  */
-public interface EntityQuery<E> extends
-        EntityQueryExpression<E, EntityQueryEntityProperties<E>, EntityQueryConditionGroupExpression<E>, EntityQueryConditionGroupLogicExpression<E>> {
+public interface EntityQuery<E> extends EntityQueryExpression<E, EntityQueryConditionGroup<E>,
+        EntityQueryConditionGroupLogic<E>, EntityQuerySortExpression<E>> {
 }

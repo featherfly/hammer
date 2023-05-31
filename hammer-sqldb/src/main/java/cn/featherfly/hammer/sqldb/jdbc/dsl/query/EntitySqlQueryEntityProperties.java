@@ -17,14 +17,14 @@ import cn.featherfly.common.lang.function.SerializableFunction2;
 import cn.featherfly.common.lang.function.SerializableFunction3;
 import cn.featherfly.common.repository.builder.AliasManager;
 import cn.featherfly.common.structure.page.Page;
-import cn.featherfly.hammer.dsl.query.type.EntityQueryConditionGroupExpression;
-import cn.featherfly.hammer.dsl.query.type.EntityQueryConditionGroupLogicExpression;
+import cn.featherfly.hammer.dsl.query.type.EntityQueryConditionGroup;
+import cn.featherfly.hammer.dsl.query.type.EntityQueryConditionGroupLogic;
 import cn.featherfly.hammer.dsl.query.type.EntityQueryEntityProperties;
-import cn.featherfly.hammer.dsl.query.type.EntityQueryRelation;
-import cn.featherfly.hammer.dsl.query.type.EntityQuerySortExpression;
+import cn.featherfly.hammer.dsl.query.type.EntityQueryRelate;
 import cn.featherfly.hammer.expression.condition.ConditionGroupConfig;
+import cn.featherfly.hammer.expression.entity.query.EntityQuerySortExpression;
 import cn.featherfly.hammer.expression.query.type.EntityQueryLimitExecutor;
-import cn.featherfly.hammer.expression.query.type.EntityQueryRelationEntityExpression;
+import cn.featherfly.hammer.expression.query.type.EntityQueryRelateExpression;
 import cn.featherfly.hammer.expression.query.type.EntityQueryRelationExpression;
 import cn.featherfly.hammer.sqldb.jdbc.Jdbc;
 import cn.featherfly.hammer.sqldb.jdbc.SqlPageFactory;
@@ -62,7 +62,7 @@ public class EntitySqlQueryEntityProperties<E>
      * {@inheritDoc}
      */
     @Override
-    public EntityQueryConditionGroupExpression<E> where() {
+    public EntityQueryConditionGroup<E> where() {
         return new EntitySqlQueryExpression<>(jdbc, classMapping, this, factory, sqlPageFactory, aliasManager,
                 selectBuilder, ignorePolicy);
     }
@@ -71,8 +71,8 @@ public class EntitySqlQueryEntityProperties<E>
      * {@inheritDoc}
      */
     @Override
-    public EntityQueryConditionGroupExpression<E> where(
-            Consumer<ConditionGroupConfig<EntityQueryConditionGroupExpression<E>>> consumer) {
+    public EntityQueryConditionGroup<E> where(
+            Consumer<ConditionGroupConfig<EntityQueryConditionGroup<E>>> consumer) {
         EntitySqlQueryExpression<E> entitySqlQueryExpression = new EntitySqlQueryExpression<>(jdbc, classMapping, this,
                 factory, sqlPageFactory, aliasManager, selectBuilder, ignorePolicy);
         if (consumer != null) {
@@ -141,17 +141,17 @@ public class EntitySqlQueryEntityProperties<E>
      */
     @SuppressWarnings("unchecked")
     @Override
-    public <RE extends EntityQueryRelationEntityExpression<E, R, EntityQueryEntityProperties<E>, QR,
-            EntityQueryConditionGroupExpression<E>, EntityQueryConditionGroupLogicExpression<E>>,
+    public <RE extends EntityQueryRelateExpression<E, R, EntityQueryEntityProperties<E>, QR,
+            EntityQueryConditionGroup<E>, EntityQueryConditionGroupLogic<E>>,
             QR extends EntityQueryRelationExpression<E, R, EntityQueryEntityProperties<E>,
-                    EntityQueryConditionGroupExpression<E>, EntityQueryConditionGroupLogicExpression<E>>,
+                    EntityQueryConditionGroup<E>, EntityQueryConditionGroupLogic<E>>,
             R> RE join(SerializableFunction<E, R> propertyName) {
         //    public <RE extends EntitySqlQueryRelation<E, R>, R> RE join(SerializableFunction<E, R> propertyName) {
         SerializedLambdaInfo info = LambdaUtils.getLambdaInfo(propertyName);
         JdbcClassMapping<R> joinTypeMapping = factory.getClassMapping((Class<R>) info.getPropertyType());
         JdbcPropertyMapping cpm = classMapping.getPropertyMapping(info.getPropertyName());
         // R(column) fk E(pk)
-        EntityQueryRelation<E, R> r = new EntitySqlQueryRelation<>(this, classMapping, tableAlias,
+        EntityQueryRelate<E, R> r = new EntitySqlQueryRelation<>(this, classMapping, tableAlias,
                 cpm.getRepositoryFieldName(), joinTypeMapping,
                 joinTypeMapping.getPrivaryKeyPropertyMappings().get(0).getRepositoryFieldName(), cpm.getPropertyName());
         return (RE) r;
@@ -162,16 +162,16 @@ public class EntitySqlQueryEntityProperties<E>
      */
     @SuppressWarnings("unchecked")
     @Override
-    public <RE extends EntityQueryRelationEntityExpression<E, R, EntityQueryEntityProperties<E>, QR,
-            EntityQueryConditionGroupExpression<E>, EntityQueryConditionGroupLogicExpression<E>>,
+    public <RE extends EntityQueryRelateExpression<E, R, EntityQueryEntityProperties<E>, QR,
+            EntityQueryConditionGroup<E>, EntityQueryConditionGroupLogic<E>>,
             QR extends EntityQueryRelationExpression<E, R, EntityQueryEntityProperties<E>,
-                    EntityQueryConditionGroupExpression<E>, EntityQueryConditionGroupLogicExpression<E>>,
+                    EntityQueryConditionGroup<E>, EntityQueryConditionGroupLogic<E>>,
             R> RE join(SerializableFunction2<R, E> propertyName) {
         SerializedLambdaInfo info = LambdaUtils.getLambdaInfo(propertyName);
         JdbcClassMapping<R> joinTypeMapping = factory
                 .getClassMapping((Class<R>) ClassUtils.forName(info.getMethodInstanceClassName()));
         // R(column) fk E(pk)
-        EntityQueryRelation<E,
+        EntityQueryRelate<E,
                 R> r = new EntitySqlQueryRelation<>(this, classMapping, tableAlias,
                         classMapping.getPrivaryKeyPropertyMappings().get(0).getRepositoryFieldName(), joinTypeMapping,
                         joinTypeMapping.getPropertyMapping(info.getPropertyName()).getRepositoryFieldName(), null
@@ -186,16 +186,16 @@ public class EntitySqlQueryEntityProperties<E>
      */
     @SuppressWarnings("unchecked")
     @Override
-    public <RE extends EntityQueryRelationEntityExpression<E, E, EntityQueryEntityProperties<E>, QR,
-            EntityQueryConditionGroupExpression<E>, EntityQueryConditionGroupLogicExpression<E>>,
+    public <RE extends EntityQueryRelateExpression<E, E, EntityQueryEntityProperties<E>, QR,
+            EntityQueryConditionGroup<E>, EntityQueryConditionGroupLogic<E>>,
             QR extends EntityQueryRelationExpression<E, E, EntityQueryEntityProperties<E>,
-                    EntityQueryConditionGroupExpression<E>, EntityQueryConditionGroupLogicExpression<E>>> RE join(
+                    EntityQueryConditionGroup<E>, EntityQueryConditionGroupLogic<E>>> RE join(
                             SerializableFunction3<E, E> propertyName) {
         SerializedLambdaInfo info = LambdaUtils.getLambdaInfo(propertyName);
         JdbcClassMapping<E> joinTypeMapping = classMapping;
         JdbcPropertyMapping cpm = classMapping.getPropertyMapping(info.getPropertyName());
         // E(column) fk E(pk)
-        EntityQueryRelation<E, E> r = new EntitySqlQueryRelation<>(this, classMapping, tableAlias,
+        EntityQueryRelate<E, E> r = new EntitySqlQueryRelation<>(this, classMapping, tableAlias,
                 cpm.getRepositoryFieldName(), joinTypeMapping,
                 joinTypeMapping.getPrivaryKeyPropertyMappings().get(0).getRepositoryFieldName(), cpm.getPropertyName());
         return (RE) r;

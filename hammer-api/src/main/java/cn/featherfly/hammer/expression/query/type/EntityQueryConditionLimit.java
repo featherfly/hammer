@@ -7,10 +7,12 @@ import cn.featherfly.common.structure.page.Page;
  * type query limit condition.
  *
  * @author zhongj
+ * @param <E> the element type
  */
 public interface EntityQueryConditionLimit<E> {
+
     /**
-     * limit
+     * limit.
      *
      * @param limit limit rows
      * @return TypeQueryExecutor
@@ -18,7 +20,7 @@ public interface EntityQueryConditionLimit<E> {
     EntityQueryLimitExecutor<E> limit(Integer limit);
 
     /**
-     * limit
+     * limit.
      *
      * @param offset start index offset
      * @param limit  limit rows
@@ -27,7 +29,7 @@ public interface EntityQueryConditionLimit<E> {
     EntityQueryLimitExecutor<E> limit(Integer offset, Integer limit);
 
     /**
-     * limit
+     * limit.
      *
      * @param page params for pagination
      * @return TypeQueryExecutor

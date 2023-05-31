@@ -68,6 +68,7 @@ import cn.featherfly.hammer.expression.condition.type.EntityLessEqualsExpressoin
 import cn.featherfly.hammer.expression.condition.type.EntityLessThanExpressoin;
 import cn.featherfly.hammer.expression.condition.type.EntityLikeExpression;
 import cn.featherfly.hammer.expression.condition.type.EntityNotInExpression;
+import cn.featherfly.hammer.expression.condition.type.EntitySortExpression;
 import cn.featherfly.hammer.expression.condition.type.EntityStartWithExpression;
 import cn.featherfly.hammer.expression.condition.type.property.EntityDatePropertyExpression;
 import cn.featherfly.hammer.expression.condition.type.property.EntityDatePropertyExpressionImpl;
@@ -96,9 +97,9 @@ import cn.featherfly.hammer.sqldb.jdbc.dsl.query.EntitySqlQuery;
  */
 @SuppressWarnings("unchecked")
 public abstract class AbstractEntitySqlConditionGroupExpression<E, C extends EntityConditionGroupExpression<E, C, L>,
-        L extends EntityConditionGroupLogicExpression<E, C, L>> extends AbstractSqlConditionExpression<L>
-        implements EntityConditionGroupExpression<E, C, L>, EntityConditionGroupLogicExpression<E, C, L>, SqlBuilder,
-        ParamedExpression {
+        L extends EntityConditionGroupLogicExpression<E, C, L, S>, S extends EntitySortExpression<E, S>>
+        extends AbstractSqlConditionExpression<L> implements EntityConditionGroupExpression<E, C, L>,
+        EntityConditionGroupLogicExpression<E, C, L, S>, SqlBuilder, ParamedExpression {
 
     /** The type query entity. */
     protected EntitySqlQuery<E> entityQuery;
@@ -1017,14 +1018,14 @@ public abstract class AbstractEntitySqlConditionGroupExpression<E, C extends Ent
      *
      * @return the root
      */
-    protected AbstractEntitySqlConditionGroupExpression<E, C, L> getRoot() {
+    protected AbstractEntitySqlConditionGroupExpression<E, C, L, S> getRoot() {
         L p = endGroup();
         //        L p2 = p.endGroup();
         //        while (p != p2) {
         while (p != p.endGroup()) {
             p = p.endGroup();
         }
-        return (AbstractEntitySqlConditionGroupExpression<E, C, L>) p;
+        return (AbstractEntitySqlConditionGroupExpression<E, C, L, S>) p;
     }
 
     /**
@@ -3190,8 +3191,8 @@ public abstract class AbstractEntitySqlConditionGroupExpression<E, C extends Ent
                         if (logic != null) {
                             condition = logic.and();
                         }
-                        logic = ((AbstractEntitySqlConditionGroupExpression<E, C, L>) condition).eq_ne0(queryOperator,
-                                spm, ov, queryPolicy, ignorePolicy);
+                        logic = ((AbstractEntitySqlConditionGroupExpression<E, C, L, S>) condition)
+                                .eq_ne0(queryOperator, spm, ov, queryPolicy, ignorePolicy);
                     }
 
                     //                    if (pm.getMode() == Mode.EMBEDDED) {

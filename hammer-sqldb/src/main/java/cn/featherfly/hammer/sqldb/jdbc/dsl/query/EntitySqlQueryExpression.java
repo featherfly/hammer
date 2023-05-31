@@ -10,7 +10,7 @@ import cn.featherfly.common.db.mapping.JdbcMappingFactory;
 import cn.featherfly.common.lang.Lang;
 import cn.featherfly.common.operator.AggregateFunction;
 import cn.featherfly.common.repository.builder.AliasManager;
-import cn.featherfly.hammer.dsl.query.type.EntityQueryConditionGroupLogicExpression;
+import cn.featherfly.hammer.dsl.query.type.EntityQueryConditionGroupLogic;
 import cn.featherfly.hammer.sqldb.jdbc.Jdbc;
 import cn.featherfly.hammer.sqldb.jdbc.SqlPageFactory;
 
@@ -60,7 +60,7 @@ public class EntitySqlQueryExpression<E> extends EntitySqlQueryConditionGroupExp
      * @param entityQueryEntity the entity query entity
      * @param ignorePolicy      the ignore policy
      */
-    EntitySqlQueryExpression(EntityQueryConditionGroupLogicExpression<E> parent, Jdbc jdbc, String queryAlias,
+    EntitySqlQueryExpression(EntityQueryConditionGroupLogic<E> parent, Jdbc jdbc, String queryAlias,
             JdbcClassMapping<E> classMapping, JdbcMappingFactory factory, SqlPageFactory sqlPageFactory,
             AliasManager aliasManager, EntitySqlQuery<E> entityQueryEntity, Predicate<Object> ignorePolicy) {
         super(parent, jdbc, queryAlias, classMapping, factory, sqlPageFactory, aliasManager, entityQueryEntity,
@@ -71,7 +71,7 @@ public class EntitySqlQueryExpression<E> extends EntitySqlQueryConditionGroupExp
      * {@inheritDoc}
      */
     @Override
-    protected EntitySqlQueryConditionGroupExpression<E> createGroup(EntityQueryConditionGroupLogicExpression<E> parent,
+    protected EntitySqlQueryConditionGroupExpression<E> createGroup(EntityQueryConditionGroupLogic<E> parent,
             String queryAlias, EntitySqlQuery<E> entityQueryEntity) {
         if (selectBuilder != null) {
             //      IMPLSOON 后续来实现，先让编译通过

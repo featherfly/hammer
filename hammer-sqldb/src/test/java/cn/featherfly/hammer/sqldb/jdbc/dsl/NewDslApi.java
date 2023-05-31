@@ -63,7 +63,7 @@ public class NewDslApi {
             Function<Tuple3<QueryEntityRepository<UserInfo>, QueryEntityRepository<User>, QueryEntityRepository<User>>,
                     QueryEntityRepository<User>> queryEntities,
             SerializableFunction2<User, R> property, R value) {
-        System.out.println("eq SerializableFunction2<User, R> property  index = " + find
+        System.out.println("eq SerializableFunction2<User, R> property  index = " + queryEntities
                 .apply(Tuples.of(new QueryEntityRepository<>(0, UserInfo.class),
                         new QueryEntityRepository<>(1, User.class), new QueryEntityRepository<>(2, User.class)))
                 .getIndex());

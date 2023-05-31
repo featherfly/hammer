@@ -17,8 +17,8 @@ import cn.featherfly.hammer.dsl.execute.EntityDelete;
 import cn.featherfly.hammer.dsl.execute.EntityUpdate;
 import cn.featherfly.hammer.dsl.execute.Update;
 import cn.featherfly.hammer.dsl.query.QueryEntity;
-import cn.featherfly.hammer.dsl.query.type.EntityQueryConditionGroupExpression;
-import cn.featherfly.hammer.dsl.query.type.EntityQueryConditionGroupLogicExpression;
+import cn.featherfly.hammer.dsl.query.type.EntityQueryConditionGroup;
+import cn.featherfly.hammer.dsl.query.type.EntityQueryConditionGroupLogic;
 import cn.featherfly.hammer.dsl.query.type.EntityQueryEntity;
 import cn.featherfly.hammer.tpl.TplExecutor;
 
@@ -341,8 +341,8 @@ public interface Hammer extends TplExecutor {
      */
     default <E> E querySingle(Class<E> type, SerializableSupplier<?>... propertyValues) {
         AssertIllegalArgument.isNotEmpty(propertyValues, "propertyValues");
-        EntityQueryConditionGroupExpression<E> queryCondition = query(type).where();
-        EntityQueryConditionGroupLogicExpression<E> queryLogic = null;
+        EntityQueryConditionGroup<E> queryCondition = query(type).where();
+        EntityQueryConditionGroupLogic<E> queryLogic = null;
         for (int i = 0; i < propertyValues.length; i++) {
             SerializableSupplier<?> propertyValue = propertyValues[i];
             if (i == 0) {
@@ -381,8 +381,8 @@ public interface Hammer extends TplExecutor {
         }
         AssertIllegalArgument.isNotNull(operator, "operator");
 
-        EntityQueryConditionGroupExpression<E> queryCondition = query(type).where();
-        EntityQueryConditionGroupLogicExpression<E> queryLogic = null;
+        EntityQueryConditionGroup<E> queryCondition = query(type).where();
+        EntityQueryConditionGroupLogic<E> queryLogic = null;
         for (int i = 0; i < propertyValues.length; i++) {
             SerializableSupplier<?> propertyValue = propertyValues[i];
             if (i == 0) {

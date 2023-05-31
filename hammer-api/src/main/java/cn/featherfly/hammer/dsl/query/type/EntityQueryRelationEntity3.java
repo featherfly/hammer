@@ -1,7 +1,7 @@
 
 package cn.featherfly.hammer.dsl.query.type;
 
-import cn.featherfly.hammer.expression.query.type.EntityQueryRelationEntityExpression3;
+import cn.featherfly.hammer.expression.query.type.EntityQueryRelateExpression3RR;
 
 /**
  * The Interface EntityQueryRelationEntity3.
@@ -13,5 +13,5 @@ import cn.featherfly.hammer.expression.query.type.EntityQueryRelationEntityExpre
  * @param <R3> the generic type
  */
 public interface EntityQueryRelationEntity3<E, R1, R2, R3> extends EntityQueryRelation3<E, R1, R2, R3>,
-        EntityQueryRelationEntityExpression3<E, R1, R2, R3, EntityQueryEntityProperties<E>, EntityQueryRelationEntity3<E, R1, R2, R3>, EntityQueryConditionGroupExpression<E>, EntityQueryConditionGroupLogicExpression<E>> {
+        EntityQueryRelateExpression3RR<E, R1, R2, R3, EntityQueryEntityProperties<E>, EntityQueryRelationEntity3<E, R1, R2, R3>, EntityQueryConditionGroup<E>, EntityQueryConditionGroupLogic<E>> {
 }
