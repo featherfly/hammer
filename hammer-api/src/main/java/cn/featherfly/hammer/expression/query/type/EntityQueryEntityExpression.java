@@ -1,39 +1,47 @@
 
 package cn.featherfly.hammer.expression.query.type;
 
+import com.speedment.common.tuple.Tuple2;
+
 import cn.featherfly.common.lang.function.SerializableFunction;
 import cn.featherfly.common.lang.function.SerializableFunction2;
 import cn.featherfly.common.lang.function.SerializableFunction3;
-import cn.featherfly.hammer.expression.EntityConditionGroupExpression;
-import cn.featherfly.hammer.expression.EntityConditionGroupLogicExpression;
+import cn.featherfly.hammer.expression.entity.query.EntityQueryConditionGroupExpression;
+import cn.featherfly.hammer.expression.entity.query.EntityQueryConditionGroupExpression2;
+import cn.featherfly.hammer.expression.entity.query.EntityQueryConditionGroupLogicExpression;
+import cn.featherfly.hammer.expression.entity.query.EntityQueryConditionGroupLogicExpression2;
+import cn.featherfly.hammer.expression.entity.query.EntityQuerySortExpression;
+import cn.featherfly.hammer.expression.entity.query.EntityQuerySortExpression2;
 
 /**
  * EntityQueryEntityExpression .
  *
  * @author zhongj
  * @param <E> the query type
- * @param <Q> the generic type
  * @param <C> the generic type
  * @param <L> the generic type
  */
-public interface EntityQueryEntityExpression<E, Q extends EntityQueryEntityPropertiesExpression<E, Q, C, L>,
-        C extends EntityConditionGroupExpression<E, C, L>, L extends EntityConditionGroupLogicExpression<E, C, L>>
-        extends EntityQueryExpression<E, Q, C, L>, EntityQueryPropertiesExpression<E, Q> {
+public interface EntityQueryEntityExpression<E, C extends EntityQueryConditionGroupExpression<E, C, L, S>,
+        L extends EntityQueryConditionGroupLogicExpression<E, C, L, S>, S extends EntityQuerySortExpression<E>>
+        extends EntityQueryExpression<E, C, L, S> {
 
-    /**
-     * relate to .
-     *
-     * @param <RE>         the generic type
-     * @param <QR>         the generic type
-     * @param <R>          the generic type
-     * @param propertyName find type object property name
-     * @return EntityQueryWithOnExpression
-     */
-    default <RE extends EntityQueryRelationEntityExpression<E, R, Q, QR, C, L>,
-            QR extends EntityQueryRelationExpression<E, R, Q, C, L>,
-            R> RE relate(SerializableFunction<E, R> propertyName) {
-        return join(propertyName);
-    }
+    //    /**
+    //     * relate to .
+    //     *
+    //     * @param <RE>         the generic type
+    //     * @param <QR>         the generic type
+    //     * @param <R>          the generic type
+    //     * @param propertyName find type object property name
+    //     * @return EntityQueryWithOnExpression
+    //     */
+    //    default <RE extends EntityQueryRelateExpression<E, R, QR, RC, RL, RS, R>,
+    //            RC extends EntityQueryConditionGroupExpression2<E, R, RC, RL, RS, R>,
+    //            RL extends EntityQueryConditionGroupLogicExpression2<E, R, RC, RL, RS, R>,
+    //            RS extends EntityQuerySortExpression2<E, R1, R>,
+    //            QR extends EntityQueryRelatedFetchedExpression<E, R, RC, RL, RS>, R1,
+    //            R> RE relate(SerializableFunction<E, R1> propertyName) {
+    //        return join(propertyName);
+    //    }
 
     /**
      * join on.
@@ -44,24 +52,33 @@ public interface EntityQueryEntityExpression<E, Q extends EntityQueryEntityPrope
      * @param propertyName find type object property name
      * @return EntityQueryWithOnExpression
      */
-    <RE extends EntityQueryRelationEntityExpression<E, R, Q, QR, C, L>,
-            QR extends EntityQueryRelationExpression<E, R, Q, C, L>,
+    <RE extends EntityQueryRelateExpression<E, R, RC, RL, RS, QR, FC, FL, FS>,
+            RC extends EntityQueryConditionGroupExpression2<E, R, RC, RL, RS, E>,
+            RL extends EntityQueryConditionGroupLogicExpression2<E, R, RC, RL, RS, E>,
+            RS extends EntityQuerySortExpression2<E, R, E>,
+            QR extends EntityQueryRelatedFetchedExpression<E, R, FC, FL, FS>,
+            FC extends EntityQueryConditionGroupExpression2<E, R, FC, FL, FS, Tuple2<E, R>>,
+            FL extends EntityQueryConditionGroupLogicExpression2<E, R, FC, FL, FS, Tuple2<E, R>>,
+            FS extends EntityQuerySortExpression2<E, R, Tuple2<E, R>>,
             R> RE join(SerializableFunction<E, R> propertyName);
 
-    /**
-     * relate to.
-     *
-     * @param <RE>         the generic type
-     * @param <QR>         the generic type
-     * @param <R>          the generic type
-     * @param propertyName find type object property name
-     * @return EntityQueryWithOnExpression
-     */
-    default <RE extends EntityQueryRelationEntityExpression<E, R, Q, QR, C, L>,
-            QR extends EntityQueryRelationExpression<E, R, Q, C, L>,
-            R> RE relate(SerializableFunction2<R, E> propertyName) {
-        return join(propertyName);
-    }
+    //    /**
+    //     * relate to.
+    //     *
+    //     * @param <RE>         the generic type
+    //     * @param <QR>         the generic type
+    //     * @param <R>          the generic type
+    //     * @param propertyName find type object property name
+    //     * @return EntityQueryWithOnExpression
+    //     */
+    //    default <RE extends EntityQueryRelateExpression<E, R, QR, RC, RL, RS>,
+    //            RC extends EntityQueryConditionGroupExpression2<E, R, RC, RL, RS>,
+    //            RL extends EntityQueryConditionGroupLogicExpression2<E, R, RC, RL, RS>,
+    //            RS extends EntitySortExpression2<E, R, RS>,
+    //            QR extends EntityQueryRelatedFetchedExpression<E, R, RC, RL, RS>,
+    //            R> RE relate(SerializableFunction2<R, E> propertyName) {
+    //        return join(propertyName);
+    //    }
 
     /**
      * join on.
@@ -72,23 +89,35 @@ public interface EntityQueryEntityExpression<E, Q extends EntityQueryEntityPrope
      * @param propertyName find type object property name
      * @return EntityQueryWithOnExpression
      */
-    <RE extends EntityQueryRelationEntityExpression<E, R, Q, QR, C, L>,
-            QR extends EntityQueryRelationExpression<E, R, Q, C, L>,
+    <RE extends EntityQueryRelateExpression<E, R, RC, RL, RS, QR, FC, FL, FS>,
+            RC extends EntityQueryConditionGroupExpression2<E, R, RC, RL, RS, E>,
+            RL extends EntityQueryConditionGroupLogicExpression2<E, R, RC, RL, RS, E>,
+            RS extends EntityQuerySortExpression2<E, R, E>,
+            QR extends EntityQueryRelatedFetchedExpression<E, R, FC, FL, FS>,
+            FC extends EntityQueryConditionGroupExpression2<E, R, FC, FL, FS, Tuple2<E, R>>,
+            FL extends EntityQueryConditionGroupLogicExpression2<E, R, FC, FL, FS, Tuple2<E, R>>,
+            FS extends EntityQuerySortExpression2<E, R, Tuple2<E, R>>,
             R> RE join(SerializableFunction2<R, E> propertyName);
 
-    /**
-     * relate to.
-     *
-     * @param <RE>         the generic type
-     * @param <QR>         the generic type
-     * @param propertyName find type object property name
-     * @return EntityQueryWithOnExpression
-     */
-    default <RE extends EntityQueryRelationEntityExpression<E, E, Q, QR, C, L>,
-            QR extends EntityQueryRelationExpression<E, E, Q, C, L>> RE relate(
-                    SerializableFunction3<E, E> propertyName) {
-        return join(propertyName);
-    }
+    //    /**
+    //     * relate to.
+    //     *
+    //     * @param <RE>         the generic type
+    //     * @param <QR>         the generic type
+    //     * @param propertyName find type object property name
+    //     * @return EntityQueryWithOnExpression
+    //     */
+    //    default <RE extends EntityQueryRelateExpression<E, E, QR, RC, RL, RS, FC, FL, FS>,
+    //            RC extends EntityQueryConditionGroupExpression2<E, E, RC, RL, RS, E>,
+    //            RL extends EntityQueryConditionGroupLogicExpression2<E, E, RC, RL, RS, E>,
+    //            RS extends EntityQuerySortExpression2<E, E, E>,
+    //            FC extends EntityQueryConditionGroupExpression2<E, E, FC, FL, FS, Tuple2<E, E>>,
+    //            FL extends EntityQueryConditionGroupLogicExpression2<E, E, FC, FL, FS, Tuple2<E, E>>,
+    //            FS extends EntityQuerySortExpression2<E, E, Tuple2<E, E>>,
+    //            QR extends EntityQueryRelatedFetchedExpression<E, E, FC, FL, FS>> RE relate(
+    //                    SerializableFunction3<E, E> propertyName) {
+    //        return join(propertyName);
+    //    }
 
     /**
      * join on.
@@ -98,8 +127,15 @@ public interface EntityQueryEntityExpression<E, Q extends EntityQueryEntityPrope
      * @param propertyName find type object property name
      * @return EntityQueryWithOnExpression
      */
-    <RE extends EntityQueryRelationEntityExpression<E, E, Q, QR, C, L>,
-            QR extends EntityQueryRelationExpression<E, E, Q, C, L>> RE join(SerializableFunction3<E, E> propertyName);
+    <RE extends EntityQueryRelateExpression<E, E, RC, RL, RS, QR, FC, FL, FS>,
+            RC extends EntityQueryConditionGroupExpression2<E, E, RC, RL, RS, E>,
+            RL extends EntityQueryConditionGroupLogicExpression2<E, E, RC, RL, RS, E>,
+            RS extends EntityQuerySortExpression2<E, E, E>,
+            QR extends EntityQueryRelatedFetchedExpression<E, E, FC, FL, FS>,
+            FC extends EntityQueryConditionGroupExpression2<E, E, FC, FL, FS, Tuple2<E, E>>,
+            FL extends EntityQueryConditionGroupLogicExpression2<E, E, FC, FL, FS, Tuple2<E, E>>,
+            FS extends EntityQuerySortExpression2<E, E, Tuple2<E, E>>> RE join(
+                    SerializableFunction3<E, E> propertyName);
 
     //    /**
     //     * relate to.

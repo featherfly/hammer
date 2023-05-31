@@ -10,7 +10,7 @@ import cn.featherfly.common.db.mapping.JdbcClassMapping;
 import cn.featherfly.common.db.mapping.JdbcMappingFactory;
 import cn.featherfly.common.lang.AssertIllegalArgument;
 import cn.featherfly.common.structure.page.Page;
-import cn.featherfly.hammer.dsl.query.type.EntityQueryConditionGroupExpression;
+import cn.featherfly.hammer.dsl.query.type.EntityQueryConditionGroup;
 import cn.featherfly.hammer.expression.condition.ConditionGroupConfig;
 import cn.featherfly.hammer.expression.query.type.EntityQueryLimitExecutor;
 
@@ -160,7 +160,7 @@ public class AbstractEntitySqlQueryRelation<E, R1, R2> implements EntitySqlQuery
      * {@inheritDoc}
      */
     @Override
-    public EntityQueryConditionGroupExpression<E> where() {
+    public EntityQueryConditionGroup<E> where() {
         return sqlQueryEntityProperties.where();
     }
 
@@ -168,8 +168,8 @@ public class AbstractEntitySqlQueryRelation<E, R1, R2> implements EntitySqlQuery
      * {@inheritDoc}
      */
     @Override
-    public EntityQueryConditionGroupExpression<E> where(
-            Consumer<ConditionGroupConfig<EntityQueryConditionGroupExpression<E>>> consumer) {
+    public EntityQueryConditionGroup<E> where(
+            Consumer<ConditionGroupConfig<EntityQueryConditionGroup<E>>> consumer) {
         return sqlQueryEntityProperties.where(consumer);
     }
 

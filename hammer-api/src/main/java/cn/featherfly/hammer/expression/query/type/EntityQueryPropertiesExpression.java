@@ -2,6 +2,9 @@
 package cn.featherfly.hammer.expression.query.type;
 
 import cn.featherfly.common.lang.function.SerializableFunction;
+import cn.featherfly.hammer.expression.entity.query.EntityQueryConditionGroupExpression;
+import cn.featherfly.hammer.expression.entity.query.EntityQueryConditionGroupLogicExpression;
+import cn.featherfly.hammer.expression.entity.query.EntityQuerySortExpression;
 
 /**
  * The Interface EntityQueryPropertiesExpression.
@@ -10,7 +13,10 @@ import cn.featherfly.common.lang.function.SerializableFunction;
  * @param <E> the query type
  * @param <Q> the generic type
  */
-public interface EntityQueryPropertiesExpression<E, Q extends EntityQueryPropertiesExpression<E, Q>> {
+public interface EntityQueryPropertiesExpression<E, Q extends EntityQueryPropertiesExpression<E, Q, C, L, S>,
+        C extends EntityQueryConditionGroupExpression<E, C, L, S>,
+        L extends EntityQueryConditionGroupLogicExpression<E, C, L, S>, S extends EntityQuerySortExpression<E>>
+        extends EntityQueryEntityExpression<E, C, L, S> {
 
     /**
      * 添加select的列 .

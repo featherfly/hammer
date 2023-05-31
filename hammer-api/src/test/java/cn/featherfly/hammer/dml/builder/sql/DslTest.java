@@ -165,6 +165,14 @@ public class DslTest {
         query.find(User.class).join(User::getUserInfo).join(User::getDevices).join(UserInfo::getUser); // 编译报错
         query.find(User.class).join(User::getUserInfo).join(UserInfo::getUser).join(User::getDevices);
 
+        // TODO join 多对象返回
+        //        Tuple2<User, UserInfo> list1 = query.find(User.class).join(User::getUserInfo).fetch().join(User::getDevices)
+        //                .join(User::getDevices).list();
+        //        Tuple2<User, Device> list2 = query.find(User.class).join(User::getUserInfo).join(User::getDevices).fetch()
+        //                .join(User::getDevices).list();
+        //        Tuple2<User, UserInfo, Device> list3 = query.find(User.class).join(User::getUserInfo).fetch()
+        //                .join(User::getDevices).fetch().join(User::getDevices).list();
+
         // select * from tree t1 join tree t2 on t1.id = t2.parent_id join tree t3 on t1.id = t3.parent_id
         query.find(Tree.class).join(Tree::getParent).join(Tree::getParent);
 

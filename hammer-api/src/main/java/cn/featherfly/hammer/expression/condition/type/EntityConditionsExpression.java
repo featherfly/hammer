@@ -7,6 +7,7 @@ import cn.featherfly.hammer.expression.condition.LogicExpression;
  * The Interface EntityConditionsExpression.
  *
  * @author zhongj
+ * @param <E> the element type
  * @param <C> the generic type
  * @param <L> the generic type
  */

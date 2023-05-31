@@ -12,5 +12,4 @@ import cn.featherfly.hammer.expression.condition.type.EntityLogicGroupExpression
  */
 public interface EntityConditionGroupLogicExpression<E, C extends EntityConditionGroupExpression<E, C, L>,
         L extends EntityConditionGroupLogicExpression<E, C, L>> extends EntityLogicGroupExpression<E, C, L> {
-
 }

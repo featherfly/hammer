@@ -20,9 +20,9 @@ import cn.featherfly.common.structure.page.Limit;
 import cn.featherfly.common.structure.page.Page;
 import cn.featherfly.common.structure.page.PaginationResults;
 import cn.featherfly.common.structure.page.SimplePaginationResults;
-import cn.featherfly.hammer.dsl.query.type.EntityQueryConditionGroupExpression;
-import cn.featherfly.hammer.dsl.query.type.EntityQueryConditionGroupLogicExpression;
-import cn.featherfly.hammer.dsl.query.type.EntityQuerySortExpression;
+import cn.featherfly.hammer.dsl.query.type.EntityQueryConditionGroup;
+import cn.featherfly.hammer.dsl.query.type.EntityQueryConditionGroupLogic;
+import cn.featherfly.hammer.expression.entity.query.EntityQuerySortExpression;
 import cn.featherfly.hammer.expression.query.type.EntityQueryLimitExecutor;
 import cn.featherfly.hammer.sqldb.jdbc.Jdbc;
 import cn.featherfly.hammer.sqldb.jdbc.SqlPageFactory;
@@ -35,9 +35,9 @@ import cn.featherfly.hammer.sqldb.sql.dml.AbstractEntitySqlConditionGroupExpress
  * @author zhongj
  */
 public abstract class EntitySqlQueryConditionGroupExpression<E> extends
-        AbstractEntitySqlConditionGroupExpression<E, EntityQueryConditionGroupExpression<E>,
-                EntityQueryConditionGroupLogicExpression<E>>
-        implements EntityQueryConditionGroupExpression<E>, EntityQueryConditionGroupLogicExpression<E>,
+        AbstractEntitySqlConditionGroupExpression<E, EntityQueryConditionGroup<E>,
+                EntityQueryConditionGroupLogic<E>>
+        implements EntityQueryConditionGroup<E>, EntityQueryConditionGroupLogic<E>,
         EntityQuerySortExpression<E> {
 
     /** The sort builder. */
@@ -95,7 +95,7 @@ public abstract class EntitySqlQueryConditionGroupExpression<E> extends
      * @param entityQueryEntity the entity query entity
      * @param ignorePolicy      the ignore policy
      */
-    EntitySqlQueryConditionGroupExpression(EntityQueryConditionGroupLogicExpression<E> parent, Jdbc jdbc,
+    EntitySqlQueryConditionGroupExpression(EntityQueryConditionGroupLogic<E> parent, Jdbc jdbc,
             String queryAlias, JdbcClassMapping<E> classMapping, JdbcMappingFactory factory,
             SqlPageFactory sqlPageFactory, AliasManager aliasManager, EntitySqlQuery<E> entityQueryEntity,
             Predicate<Object> ignorePolicy) {

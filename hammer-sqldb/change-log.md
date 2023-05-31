@@ -34,6 +34,18 @@
 TODO property()后的条件查询还未加入Consumer参数方法,加入带IgnorePolicy参数方法  
 TODO where支持多实体条件查询  
 TODO EntityQuerySortExpression实现EntityQuerySortExpression1,EntityQuerySortExpression2这种带多个实体的用于完善join和where后的多实体进行排序  
+TODO dsl查询条件的表达式加入带运算的条件判断
+    ```
+    // 带运算的条件判断
+    where().property(Account::getAmount).subtract(10).ge(0)
+    // where acount.amount - 10 >= 0
+    where().value(10).subtract(Account::getAmount).ge(0)
+    // where 10 - acount.amount >= 0
+    where().property(Order::getPrice).subtract(10).ge(Order::getCharge)
+    // where order.price - 10 == order.charge
+    where().property(Order::getPrice).subtract(10).eq(e -> e.property(Order::getCharge).add(10))
+    // where order.price - 10 == order.charge + 10
+    ```
 
 # 0.6.6 2022-08-26
 1. 修改L group(Consumer<C>)为L group(Function<C,L>)，
