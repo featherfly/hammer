@@ -12,9 +12,9 @@ import cn.featherfly.common.db.mapping.JdbcMappingException;
 import cn.featherfly.common.lang.Randoms;
 import cn.featherfly.hammer.Hammer;
 import cn.featherfly.hammer.sqldb.SqldbHammerImpl;
-import cn.featherfly.hammer.sqldb.jdbc.vo.order.AliPayOrder;
-import cn.featherfly.hammer.sqldb.jdbc.vo.order.Order;
-import cn.featherfly.hammer.sqldb.jdbc.vo.order.WechatPayOrder;
+import cn.featherfly.hammer.sqldb.jdbc.vo.r.order.AliPayOrder;
+import cn.featherfly.hammer.sqldb.jdbc.vo.r.order.Order;
+import cn.featherfly.hammer.sqldb.jdbc.vo.r.order.WechatPayOrder;
 
 /**
  * <p>

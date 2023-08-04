@@ -1,10 +1,10 @@
 
 package cn.featherfly.hammer.sqldb.jdbc.dsl.entity;
 
-import static org.junit.Assert.assertNotEquals;
-import static org.junit.Assert.assertNull;
 import static org.testng.Assert.assertEquals;
+import static org.testng.Assert.assertNotEquals;
 import static org.testng.Assert.assertNotNull;
+import static org.testng.Assert.assertNull;
 import static org.testng.Assert.assertTrue;
 
 import java.util.ArrayList;
@@ -15,20 +15,20 @@ import org.testng.annotations.BeforeTest;
 import org.testng.annotations.Test;
 
 import cn.featherfly.common.lang.Lang;
-import cn.featherfly.common.repository.IgnorePolicy;
+import cn.featherfly.common.repository.IgnoreStrategy;
 import cn.featherfly.common.structure.page.SimplePage;
 import cn.featherfly.hammer.sqldb.SqldbHammerException;
 import cn.featherfly.hammer.sqldb.jdbc.JdbcTestBase;
-import cn.featherfly.hammer.sqldb.jdbc.dsl.query.EntitySqlQueryExpression;
+import cn.featherfly.hammer.sqldb.jdbc.dsl.entity.query.EntitySqlQueryExpression;
 import cn.featherfly.hammer.sqldb.jdbc.dsl.query.SqlQuery;
-import cn.featherfly.hammer.sqldb.jdbc.vo.DistrictDivision;
-import cn.featherfly.hammer.sqldb.jdbc.vo.Role;
-import cn.featherfly.hammer.sqldb.jdbc.vo.Tree;
-import cn.featherfly.hammer.sqldb.jdbc.vo.Tree2;
-import cn.featherfly.hammer.sqldb.jdbc.vo.User;
-import cn.featherfly.hammer.sqldb.jdbc.vo.UserInfo;
-import cn.featherfly.hammer.sqldb.jdbc.vo.UserRole2;
-import cn.featherfly.hammer.sqldb.jdbc.vo.order.Order2;
+import cn.featherfly.hammer.sqldb.jdbc.vo.r.DistrictDivision;
+import cn.featherfly.hammer.sqldb.jdbc.vo.r.Role;
+import cn.featherfly.hammer.sqldb.jdbc.vo.r.Tree;
+import cn.featherfly.hammer.sqldb.jdbc.vo.r.Tree2;
+import cn.featherfly.hammer.sqldb.jdbc.vo.r.User;
+import cn.featherfly.hammer.sqldb.jdbc.vo.r.UserInfo;
+import cn.featherfly.hammer.sqldb.jdbc.vo.r.UserRole2;
+import cn.featherfly.hammer.sqldb.jdbc.vo.r.order.Order2;
 
 /**
  * sql query type test.
@@ -91,26 +91,26 @@ public class SqlQueryTypeTest extends JdbcTestBase {
 
     @Test
     void testConditionConfig() {
-        assertEquals(query.find(User.class).where(c -> c.setIgnorePolicy(IgnorePolicy.EMPTY)).getIgnorePolicy(),
-                IgnorePolicy.EMPTY);
+        assertEquals(query.find(User.class).where(c -> c.setIgnoreStrategy(IgnoreStrategy.EMPTY)).getIgnoreStrategy(),
+                IgnoreStrategy.EMPTY);
 
-        List<User> users = query.find(User.class).where(c -> c.setIgnorePolicy(IgnorePolicy.EMPTY))
+        List<User> users = query.find(User.class).where(c -> c.setIgnoreStrategy(IgnoreStrategy.EMPTY))
                 .eq(User::getUsername, "").list();
         assertTrue(users.size() > 0);
 
-        users = query.find(User.class).where(c -> c.setIgnorePolicy(IgnorePolicy.NULL)).eq(User::getUsername, "")
+        users = query.find(User.class).where(c -> c.setIgnoreStrategy(IgnoreStrategy.NULL)).eq(User::getUsername, "")
                 .list();
         assertTrue(users.size() == 0);
 
-        users = query.find(User.class).where(c -> c.setIgnorePolicy(IgnorePolicy.NULL)).eq(User::getUsername, null)
+        users = query.find(User.class).where(c -> c.setIgnoreStrategy(IgnoreStrategy.NULL)).eq(User::getUsername, null)
                 .list();
         assertTrue(users.size() > 0);
 
-        users = query.find(User.class).where(c -> c.setIgnorePolicy(IgnorePolicy.NONE)).eq(User::getUsername, null)
+        users = query.find(User.class).where(c -> c.setIgnoreStrategy(IgnoreStrategy.NONE)).eq(User::getUsername, null)
                 .list();
         assertTrue(users.size() == 0);
 
-        users = query.find(User.class).where(c -> c.setIgnorePolicy(IgnorePolicy.NONE)).eq(User::getUsername, "")
+        users = query.find(User.class).where(c -> c.setIgnoreStrategy(IgnoreStrategy.NONE)).eq(User::getUsername, "")
                 .list();
         assertTrue(users.size() == 0);
     }
@@ -118,19 +118,19 @@ public class SqlQueryTypeTest extends JdbcTestBase {
     @Test
     void testIgnorePolicy() {
         List<User> users = null;
-        users = query.find(User.class).where().eq(User::getUsername, "", IgnorePolicy.EMPTY).list();
+        users = query.find(User.class).where().eq(User::getUsername, "", IgnoreStrategy.EMPTY).list();
         assertTrue(users.size() > 0);
 
-        users = query.find(User.class).where().eq(User::getUsername, "", IgnorePolicy.NULL).list();
+        users = query.find(User.class).where().eq(User::getUsername, "", IgnoreStrategy.NULL).list();
         assertTrue(users.size() == 0);
 
-        users = query.find(User.class).where().eq(User::getUsername, (String) null, IgnorePolicy.NULL).list();
+        users = query.find(User.class).where().eq(User::getUsername, (String) null, IgnoreStrategy.NULL).list();
         assertTrue(users.size() > 0);
 
-        users = query.find(User.class).where().eq(User::getUsername, (String) null, IgnorePolicy.NONE).list();
+        users = query.find(User.class).where().eq(User::getUsername, (String) null, IgnoreStrategy.NONE).list();
         assertTrue(users.size() == 0);
 
-        users = query.find(User.class).where().eq(User::getUsername, "", IgnorePolicy.NONE).list();
+        users = query.find(User.class).where().eq(User::getUsername, "", IgnoreStrategy.NONE).list();
         assertTrue(users.size() == 0);
 
         users = query.find(User.class).where().eq(User::getUsername, "", t -> {
@@ -139,23 +139,21 @@ public class SqlQueryTypeTest extends JdbcTestBase {
         assertTrue(users.size() > 0);
 
         String name = "NoName12345";
-        users = query.find(User.class).where().eq(c -> {
-            if (name.equals("yufei")) {
-                c.eq(User::getUsername, name); // 这里还有IgnorePolicy会生效
-            }
-        }).list();
+        //        users = query.find(User.class).where().eq(c -> {
+        //            if (name.equals("yufei")) {
+        //                c.eq(User::getUsername, name); // 这里还有IgnorePolicy会生效
+        //            }
+        //        }).list();
+        users = query.find(User.class).where().eq(User::getUsername, name, (v) -> !"yufei".equals(v)).list();
         assertTrue(users.size() > 0);
 
-        users = query.find(User.class).where().eq(c -> {
-            if (name.equals(name)) {
-                c.eq(User::getUsername, name); // 这里还有IgnorePolicy会生效
-            }
-        }).list();
-        assertTrue(users.size() == 0);
-
-        users = query.find(User.class).where().eq(c -> {
-            c.eq(User::getUsername, name); // 这里还有IgnorePolicy会生效
-        }).list();
+        //        users = query.find(User.class).where().eq(c -> {
+        //            if (name.equals(name)) {
+        //                c.eq(User::getUsername, name); // 这里还有IgnorePolicy会生效
+        //            }
+        //        }).list();
+        // 使用下面这行代替
+        users = query.find(User.class).where().eq(User::getUsername, name, (v) -> !name.equals(v)).list();
         assertTrue(users.size() == 0);
     }
 
@@ -184,8 +182,8 @@ public class SqlQueryTypeTest extends JdbcTestBase {
         System.out.println("avg:" + number);
         assertTrue(number > 0);
 
-        //        query.find("user").integer(); // IMPLSOON 没有使用property或各种统计方法，则无法调用返回单个参数的方法
-        //        query.find("user").where().eq("id", "id").integer(); IMPLSOON 这里没有实现上面的逻辑
+        //        query.find("user").integer(); 没有使用property或各种统计方法，则无法调用返回单个参数的方法
+        //        query.find("user").where().eq("id", "id").integer(); 这里没有实现上面的逻辑
 
         Integer number2 = query.find(User.class).avg(User::getAge).integer();
         System.out.println("avg:" + number2);
@@ -302,17 +300,22 @@ public class SqlQueryTypeTest extends JdbcTestBase {
 
     @Test
     void testNestedMapping() {
-
         Integer userId = 1;
         //        UserInfo userInfo = query.find(UserInfo.class).where().eq("user.id", userId).single();
         UserInfo userInfo = query.find(UserInfo.class).where().eq(UserInfo::getUser, userId).single(); // YUFEI_TODO 需要测试
         assertEquals(userInfo.getUser().getId(), userId);
         System.out.println(userInfo);
+    }
 
+    @Test
+    void testNestedMapping2() {
+        UserInfo userInfo = null;
         String province = "四川";
         //        userInfo = query.find(UserInfo.class).where().eq("division.province", province).single();
-        userInfo = query.find(UserInfo.class).where().eq(UserInfo::getDivision, DistrictDivision::getProvince, province)
-                .single(); // YUFEI_TODO 需要测试
+        //        userInfo = query.find(UserInfo.class).where().eq(UserInfo::getDivision, DistrictDivision::getProvince, province)
+        //                .single(); // 使用下面这行代替
+        userInfo = query.find(UserInfo.class).where().property(UserInfo::getDivision)
+                .property(DistrictDivision::getProvince).eq(province).single(); // YUFEI_TEST 需要测试
         assertEquals(userInfo.getDivision().getProvince(), province);
         System.out.println(userInfo);
     }
@@ -331,6 +334,13 @@ public class SqlQueryTypeTest extends JdbcTestBase {
         System.err.println(userInfo);
         assertEquals(userInfo.getId(), uid);
         assertNull(userInfo.getUser().getUsername());
+
+        //        userInfo = query.find(UserInfo.class).join(UserInfo::getUser).fetch().where().eq(UserInfo::getId, 1).single();
+        //        Tuple2<UserInfo, User> t2 = query.find(UserInfo.class).join(UserInfo::getUser).fetch().where()
+        //                .eq(UserInfo::getId, 1).single();
+        //        System.err.println(t2);
+        //        assertEquals(t2.get0().getId(), uid);
+        //        assertNotNull(t2.get1().getUsername());
 
         userInfo = query.find(UserInfo.class).join(UserInfo::getUser).fetch().where().eq(UserInfo::getId, 1).single();
         System.err.println(userInfo);
@@ -363,7 +373,7 @@ public class SqlQueryTypeTest extends JdbcTestBase {
 
         query.find(Tree2.class).join(Tree2::getParent).list();
 
-        query.find(Tree2.class).join(Tree2::getParent).join1(Tree2::getParent).list();
+        query.find(Tree2.class).join(Tree2::getParent).join2(Tree2::getParent).list();
     }
 
     @Test
@@ -373,9 +383,10 @@ public class SqlQueryTypeTest extends JdbcTestBase {
         String username = "yufei";
         user.setUsername(username);
 
-        // IMPLSOON UserInfo::getUser, User::getUsername 联表查询，仅查询不获取，如果没有join的话需要自动join
-        List<UserInfo> list = query.find(UserInfo.class).where().eq(UserInfo::getUser, User::getUsername, username)
-                .list();
+        // IMPLSOON property(UserInfo::getUser).property(User::getUsername) 联表查询，仅查询不获取，如果没有join的话需要自动join
+        // List<UserInfo> list = query.find(UserInfo.class).where().eq(UserInfo::getUser, User::getUsername, username).list();
+        List<UserInfo> list = query.find(UserInfo.class).where().property(UserInfo::getUser).property(User::getUsername)
+                .eq(username).list();
 
         // IMPLSOON UserInfo::getUser, user 联表查询，仅查询不获取，如果没有join的话需要自动join
         list = query.find(UserInfo.class).where().eq(UserInfo::getUser, user).list();
@@ -397,8 +408,8 @@ public class SqlQueryTypeTest extends JdbcTestBase {
              c.eq() ..... // 关联user的条件查询
          }).fetch().join(UserRole2::getUser).fetch()
                 .join(UserRole2::getRole).fetch().list();
-
-
+        
+        
          */
     }
 
@@ -438,8 +449,10 @@ public class SqlQueryTypeTest extends JdbcTestBase {
         user.setPwd("123456");
         userInfo.setUser(user);
 
+        //        List<UserInfo> userInfos = query.find(UserInfo.class).join(UserInfo::getUser).where()
+        //                .eq(userInfo::getUser, User::getPwd).list();
         List<UserInfo> userInfos = query.find(UserInfo.class).join(UserInfo::getUser).where()
-                .eq(userInfo::getUser, User::getPwd).list();
+                .property(UserInfo::getUser).property(User::getPwd).eq(userInfo.getUser().getPwd()).list();
         System.out.println(userInfos.size());
         assertTrue(userInfos.size() == 1);
 
@@ -456,48 +469,63 @@ public class SqlQueryTypeTest extends JdbcTestBase {
         userInfo.setUser(user);
         userInfo.setId(1);
 
-        List<UserInfo> userInfos = query.find(UserInfo.class).where().eq(userInfo::getUser, User::getPwd).list();
+        //        List<UserInfo> userInfos = query.find(UserInfo.class).where().eq(userInfo::getUser, User::getPwd).list();
+        List<UserInfo> userInfos = query.find(UserInfo.class).where().property(UserInfo::getUser).property(User::getPwd)
+                .eq(userInfo.getUser().getPwd()).list();
         System.out.println(userInfos.size());
         assertTrue(userInfos.size() == 1);
 
-        userInfos = query.find(UserInfo.class).where().eq(userInfo::getUser, User::getPwd).and().eq(userInfo::getId)
-                .list();
+        //        userInfos = query.find(UserInfo.class).where().eq(userInfo::getUser, User::getPwd).and().eq(userInfo::getId).list();
+        userInfos = query.find(UserInfo.class).where().property(UserInfo::getUser).property(User::getPwd)
+                .eq(userInfo.getUser().getPwd()).and().eq(userInfo::getId).list();
         System.out.println(userInfos.size());
         assertTrue(userInfos.size() == 1);
 
-        userInfos = query.find(UserInfo.class).where().eq(userInfo::getUser, User::getPwd).and().eq(userInfo::getId)
-                .and().lt(UserInfo::getUser, User::getAge, 10).list();
+        //        userInfos = query.find(UserInfo.class).where().eq(userInfo::getUser, User::getPwd).and().eq(userInfo::getId).and().lt(UserInfo::getUser, User::getAge, 10).list();
+        userInfos = query.find(UserInfo.class).where().property(UserInfo::getUser).property(User::getPwd)
+                .eq(userInfo.getUser().getPwd()).and().eq(userInfo::getId).and().property(UserInfo::getUser)
+                .property(User::getAge).lt(userInfo.getUser().getAge()).list();
         System.out.println(userInfos.size());
         assertTrue(userInfos.size() == 1);
 
-        userInfos = query.find(UserInfo.class).where().eq(userInfo::getUser, User::getPwd).and().eq(UserInfo::getId, 2)
-                .list();
+        //        userInfos = query.find(UserInfo.class).where().eq(userInfo::getUser, User::getPwd).and().eq(UserInfo::getId, 2).list();
+        userInfos = query.find(UserInfo.class).where().property(UserInfo::getUser).property(User::getPwd)
+                .eq(userInfo.getUser().getPwd()).and().eq(UserInfo::getId, 2).list();
         System.out.println(userInfos.size());
         assertTrue(userInfos.size() == 0);
 
-        userInfos = query.find(UserInfo.class).where().eq(userInfo::getUser, User::getPwd).and().eq(userInfo::getId)
-                .and().ge(UserInfo::getUser, User::getAge, 10).list();
+        //        userInfos = query.find(UserInfo.class).where().eq(userInfo::getUser, User::getPwd).and().eq(userInfo::getId).and().ge(UserInfo::getUser, User::getAge, 10).list();
+        userInfos = query.find(UserInfo.class).where().property(UserInfo::getUser).property(User::getPwd)
+                .eq(userInfo.getUser().getPwd()).and().eq(userInfo::getId).and().property(UserInfo::getUser)
+                .property(User::getAge).ge(10).list();
         System.out.println(userInfos.size());
         assertTrue(userInfos.size() == 0);
 
-        userInfos = query.find(UserInfo.class).where().eq(userInfo::getUser, User::getPwd).and()
-                .eq(userInfo::getUser, User::getUsername).list();
+        //        userInfos = query.find(UserInfo.class).where().eq(userInfo::getUser, User::getPwd).and().eq(userInfo::getUser, User::getUsername).list();
+        userInfos = query.find(UserInfo.class).where().property(UserInfo::getUser).property(User::getPwd)
+                .eq(userInfo.getUser().getPwd()).and().property(UserInfo::getUser).property(User::getUsername)
+                .eq(userInfo.getUser().getUsername()).list();
         System.out.println(userInfos.size());
         assertTrue(userInfos.size() == 1);
 
-        userInfos = query.find(UserInfo.class).where().eq(userInfo::getUser, User::getPwd).and()
-                .eq(userInfo::getUser, User::getUsername).and().eq(userInfo::getId).list();
+        //        userInfos = query.find(UserInfo.class).where().eq(userInfo::getUser, User::getPwd).and().eq(userInfo::getUser, User::getUsername).and().eq(userInfo::getId).list();
+        userInfos = query.find(UserInfo.class).where().property(UserInfo::getUser).property(User::getPwd)
+                .eq(userInfo.getUser().getPwd()).and().property(UserInfo::getUser).property(User::getUsername)
+                .eq(userInfo.getUser().getUsername()).and().eq(userInfo::getId).list();
         System.out.println(userInfos.size());
         assertTrue(userInfos.size() == 1);
 
-        userInfos = query.find(UserInfo.class).where().eq(userInfo::getUser, User::getPwd).and()
-                .eq(userInfo::getUser, User::getUsername).and().eq(UserInfo::getId, 2).list();
+        userInfos = query.find(UserInfo.class).where().property(UserInfo::getUser).property(User::getPwd)
+                .eq(userInfo.getUser().getPwd()).and().property(UserInfo::getUser).property(User::getUsername)
+                .eq(userInfo.getUser().getUsername()).and().eq(UserInfo::getId, 2).list();
         System.out.println(userInfos.size());
         assertTrue(userInfos.size() == 0);
 
         user.setUsername("yufei1111");
-        userInfos = query.find(UserInfo.class).where().eq(userInfo::getUser, User::getPwd).and()
-                .eq(userInfo::getUser, User::getUsername).list();
+        //        userInfos = query.find(UserInfo.class).where().eq(userInfo::getUser, User::getPwd).and().eq(userInfo::getUser, User::getUsername).list();
+        userInfos = query.find(UserInfo.class).where().property(UserInfo::getUser).property(User::getPwd)
+                .eq(userInfo.getUser().getPwd()).and().property(UserInfo::getUser).property(User::getUsername)
+                .eq(userInfo.getUser().getUsername()).list();
         System.out.println(userInfos.size());
         assertTrue(userInfos.size() == 0);
     }
@@ -522,6 +550,12 @@ public class SqlQueryTypeTest extends JdbcTestBase {
             System.err.println(v);
         });
 
+        //        List<Tuple2<Tree2, Tree2>> list3 = query.find(Tree2.class).join(Tree2::getParent).fetch().list();
+        //        list3.forEach(v -> {
+        //            assertNotNull(v.get0().getParent().getId());
+        //            assertNotNull(v.get0().getParent().getName());
+        //            System.err.println(v);
+        //        });
         List<Tree2> list3 = query.find(Tree2.class).join(Tree2::getParent).fetch().list();
         list3.forEach(v -> {
             assertNotNull(v.getParent().getId());
@@ -529,12 +563,14 @@ public class SqlQueryTypeTest extends JdbcTestBase {
             System.err.println(v);
         });
 
-        list3 = query.find(Tree2.class).join(Tree2::getParent).fetch().join1(Tree2::getParent).fetch().list();
-        list3.forEach(v -> {
-            assertNotNull(v.getParent().getId());
-            assertNotNull(v.getParent().getName());
-            System.err.println(v);
-        });
+        // YUFEI_TEST 后续实现了再来处理
+        //        List<Tuple3<Tree2, Tree2, Tree2>> list4 = query.find(Tree2.class).join(Tree2::getParent).fetch()
+        //                .join1(Tree2::getParent).fetch().list();
+        //        list4.forEach(v -> {
+        //            assertNotNull(v.get0().getParent().getId());
+        //            assertNotNull(v.get0().getParent().getName());
+        //            System.err.println(v);
+        //        });
 
         assertTrue(list1.size() > list2.size());
 

@@ -10,7 +10,7 @@
  */
 package cn.featherfly.hammer.dsl.execute;
 
-import cn.featherfly.hammer.expression.execute.EntityDeleteExpression;
+import cn.featherfly.hammer.expression.entity.execute.EntityDeleteExpression;
 
 /**
  * EntityDelete.

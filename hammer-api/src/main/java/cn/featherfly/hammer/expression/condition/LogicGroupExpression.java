@@ -7,5 +7,5 @@ package cn.featherfly.hammer.expression.condition;
  * @author zhongj
  */
 public interface LogicGroupExpression<C extends ConditionsGroupExpression<C, L>, L extends LogicGroupExpression<C, L>>
-        extends LogicExpression<C, L>, GroupEndExpression<L> {
+        extends LogicExpression<C, L>, GroupEndExpression<C, L> {
 }

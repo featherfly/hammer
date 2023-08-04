@@ -35,13 +35,13 @@
 //     * @param sqlPageFactory  the sql page factory
 //     * @param aliasManager    the alias manager
 //     * @param selectBuilder   the select builder
-//     * @param ignorePolicy    the ignore policy
+//     * @param ignoreStrategy    the ignore strategy
 //     */
 //    public TypeSqlQueryExpression(Jdbc jdbc, JdbcClassMapping<?> classMapping, TypeQueryEntity typeQueryEntity,
 //            JdbcMappingFactory factory, SqlPageFactory sqlPageFactory, AliasManager aliasManager,
-//            SqlSelectBasicBuilder selectBuilder, Predicate<Object> ignorePolicy) {
+//            SqlSelectBasicBuilder selectBuilder, Predicate<Object> ignoreStrategy) {
 //        super(jdbc, selectBuilder.getTableAlias(), classMapping, factory, sqlPageFactory, aliasManager, typeQueryEntity,
-//                ignorePolicy);
+//                ignoreStrategy);
 //        this.selectBuilder = selectBuilder;
 //    }
 //
@@ -56,13 +56,13 @@
 //     * @param sqlPageFactory  the sql page factory
 //     * @param aliasManager    the alias manager
 //     * @param typeQueryEntity the type query entity
-//     * @param ignorePolicy    the ignore policy
+//     * @param ignoreStrategy    the ignore strategy
 //     */
 //    TypeSqlQueryExpression(TypeQueryConditionGroupLogicExpression parent, Jdbc jdbc, String queryAlias,
 //            JdbcClassMapping<?> classMapping, JdbcMappingFactory factory, SqlPageFactory sqlPageFactory,
-//            AliasManager aliasManager, TypeQueryEntity typeQueryEntity, Predicate<Object> ignorePolicy) {
+//            AliasManager aliasManager, TypeQueryEntity typeQueryEntity, Predicate<Object> ignoreStrategy) {
 //        super(parent, jdbc, queryAlias, classMapping, factory, sqlPageFactory, aliasManager, typeQueryEntity,
-//                ignorePolicy);
+//                ignoreStrategy);
 //    }
 //
 //    /**
@@ -75,7 +75,7 @@
 //            selectBuilder.setTableAlias(queryAlias);
 //        }
 //        return new TypeSqlQueryExpression(parent, jdbc, queryAlias, classMapping, factory, sqlPageFactory, aliasManager,
-//                typeQueryEntity, ignorePolicy);
+//                typeQueryEntity, ignoreStrategy);
 //    }
 //
 //    /**

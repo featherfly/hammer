@@ -52,12 +52,12 @@
 //     * @param aliasManager   aliasManager
 //     * @param sqlPageFactory the sql page factory
 //     * @param classMapping   classMapping
-//     * @param ignorePolicy   the ignore policy
+//     * @param ignoreStrategy   the ignore strategy
 //     */
 //    public RepositoryTypeSqlQueryConditionGroupExpression(Jdbc jdbc, JdbcMappingFactory factory,
 //            AliasManager aliasManager, SqlPageFactory sqlPageFactory, JdbcClassMapping<?> classMapping,
-//            Predicate<Object> ignorePolicy) {
-//        this(jdbc, factory, aliasManager, null, sqlPageFactory, classMapping, ignorePolicy);
+//            Predicate<Object> ignoreStrategy) {
+//        this(jdbc, factory, aliasManager, null, sqlPageFactory, classMapping, ignoreStrategy);
 //    }
 //
 //    /**
@@ -69,12 +69,12 @@
 //     * @param queryAlias     queryAlias
 //     * @param sqlPageFactory the sql page factory
 //     * @param classMapping   classMapping
-//     * @param ignorePolicy   the ignore policy
+//     * @param ignoreStrategy   the ignore strategy
 //     */
 //    public RepositoryTypeSqlQueryConditionGroupExpression(Jdbc jdbc, JdbcMappingFactory factory,
 //            AliasManager aliasManager, String queryAlias, SqlPageFactory sqlPageFactory,
-//            JdbcClassMapping<?> classMapping, Predicate<Object> ignorePolicy) {
-//        this(null, jdbc, factory, aliasManager, queryAlias, sqlPageFactory, classMapping, ignorePolicy);
+//            JdbcClassMapping<?> classMapping, Predicate<Object> ignoreStrategy) {
+//        this(null, jdbc, factory, aliasManager, queryAlias, sqlPageFactory, classMapping, ignoreStrategy);
 //    }
 //
 //    /**
@@ -87,12 +87,12 @@
 //     * @param queryAlias     queryAlias
 //     * @param sqlPageFactory the sql page factory
 //     * @param classMapping   classMapping
-//     * @param ignorePolicy   the ignore policy
+//     * @param ignoreStrategy   the ignore strategy
 //     */
 //    RepositoryTypeSqlQueryConditionGroupExpression(RepositoryTypeQueryConditionGroupLogicExpression parent, Jdbc jdbc,
 //            JdbcMappingFactory factory, AliasManager aliasManager, String queryAlias, SqlPageFactory sqlPageFactory,
-//            JdbcClassMapping<?> classMapping, Predicate<Object> ignorePolicy) {
-//        super(parent, jdbc.getDialect(), factory, aliasManager, queryAlias, sqlPageFactory, classMapping, ignorePolicy);
+//            JdbcClassMapping<?> classMapping, Predicate<Object> ignoreStrategy) {
+//        super(parent, jdbc.getDialect(), factory, aliasManager, queryAlias, sqlPageFactory, classMapping, ignoreStrategy);
 //        this.jdbc = jdbc;
 //    }
 //
@@ -110,7 +110,7 @@
 //    protected RepositoryTypeQueryConditionGroupExpression createGroup(
 //            RepositoryTypeQueryConditionGroupLogicExpression parent, String queryAlias) {
 //        return new RepositoryTypeSqlQueryConditionGroupExpression(parent, jdbc, factory, aliasManager, queryAlias,
-//                sqlPageFactory, classMapping, ignorePolicy);
+//                sqlPageFactory, classMapping, ignoreStrategy);
 //    }
 //
 //    /**

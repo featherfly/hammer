@@ -18,8 +18,8 @@ import cn.featherfly.common.operator.AggregateFunction;
 import cn.featherfly.common.repository.Repository;
 import cn.featherfly.common.repository.SimpleRepository;
 import cn.featherfly.hammer.sqldb.jdbc.dsl.query.SqlQuery;
-import cn.featherfly.hammer.sqldb.jdbc.vo.User;
-import cn.featherfly.hammer.sqldb.jdbc.vo.UserInfo;
+import cn.featherfly.hammer.sqldb.jdbc.vo.r.User;
+import cn.featherfly.hammer.sqldb.jdbc.vo.r.UserInfo;
 
 /**
  * NewDslApi.
@@ -94,8 +94,10 @@ public class NewDslApi {
 
         UserInfo userInfo = new UserInfo();
 
+        //        List<UserInfo> userInfos = query.find(UserInfo.class).join(UserInfo::getUser).where()
+        //                .eq(userInfo::getUser, User::getPwd).list();
         List<UserInfo> userInfos = query.find(UserInfo.class).join(UserInfo::getUser).where()
-                .eq(userInfo::getUser, User::getPwd).list();
+                .property(UserInfo::getUser).property(User::getPwd).eq(userInfo.getUser().getPwd()).list();
 
         // 实例对象可以获取property
         query.find(UserInfo.class).where().eq(userInfos.get(0)::getDescp);

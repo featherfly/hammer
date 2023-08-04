@@ -32,7 +32,7 @@ import cn.featherfly.common.db.metadata.DatabaseMetadataManager;
 import cn.featherfly.common.lang.ClassLoaderUtils;
 import cn.featherfly.common.lang.Randoms;
 import cn.featherfly.common.lang.UriUtils;
-import cn.featherfly.hammer.sqldb.jdbc.vo.Role;
+import cn.featherfly.hammer.sqldb.jdbc.vo.r.Role;
 import cn.featherfly.hammer.tpl.TplConfigFactory;
 import cn.featherfly.hammer.tpl.TplConfigFactoryImpl;
 import cn.featherfly.hammer.tpl.freemarker.FreemarkerTemplatePreProcessor;

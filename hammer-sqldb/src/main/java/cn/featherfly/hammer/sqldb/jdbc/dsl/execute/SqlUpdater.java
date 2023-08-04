@@ -8,6 +8,8 @@ import cn.featherfly.common.repository.Repository;
 import cn.featherfly.hammer.dsl.execute.Updater;
 import cn.featherfly.hammer.sqldb.SqldbHammerException;
 import cn.featherfly.hammer.sqldb.jdbc.Jdbc;
+import cn.featherfly.hammer.sqldb.jdbc.dsl.entity.execute.SqlEntityExecutableUpdate;
+import cn.featherfly.hammer.sqldb.jdbc.dsl.entity.execute.SqlEntityUpdate;
 
 /**
  * SqlUpdater .

@@ -1,9 +1,12 @@
 
 package cn.featherfly.hammer.dml.builder.sql.vo;
 
+import java.util.List;
+
 import javax.persistence.Column;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 /**
@@ -33,6 +36,9 @@ public class Tree {
     @Column(name = "parent_id")
     @ManyToOne
     private Tree parent;
+
+    @OneToMany
+    private List<Tree> children;
 
     @Column(name = "user_id")
     @ManyToOne
@@ -108,6 +114,24 @@ public class Tree {
      */
     public void setUser(User user) {
         this.user = user;
+    }
+
+    /**
+     * get children value
+     *
+     * @return children
+     */
+    public List<Tree> getChildren() {
+        return children;
+    }
+
+    /**
+     * set children value
+     *
+     * @param children children
+     */
+    public void setChildren(List<Tree> children) {
+        this.children = children;
     }
 
     /**

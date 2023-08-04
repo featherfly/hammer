@@ -66,16 +66,16 @@
 //     * {@inheritDoc}
 //     */
 //    @Override
-//    public int update(E entity, IgnorePolicy ignorePolicy) {
-//        return hammer.update(entity, ignorePolicy);
+//    public int update(E entity, IgnorePolicy ignoreStrategy) {
+//        return hammer.update(entity, ignoreStrategy);
 //    }
 //
 //    /**
 //     * {@inheritDoc}
 //     */
 //    @Override
-//    public int update(List<E> entities, IgnorePolicy ignorePolicy) {
-//        return hammer.update(entities, ignorePolicy);
+//    public int update(List<E> entities, IgnorePolicy ignoreStrategy) {
+//        return hammer.update(entities, ignoreStrategy);
 //    }
 //
 //    /**

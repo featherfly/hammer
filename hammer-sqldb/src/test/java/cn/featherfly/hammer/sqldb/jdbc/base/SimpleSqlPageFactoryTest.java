@@ -10,8 +10,8 @@
  */
 package cn.featherfly.hammer.sqldb.jdbc.base;
 
-import static org.junit.Assert.assertTrue;
 import static org.testng.Assert.assertEquals;
+import static org.testng.Assert.assertTrue;
 
 import java.util.List;
 import java.util.Map;
@@ -23,7 +23,7 @@ import cn.featherfly.common.structure.page.SimplePage;
 import cn.featherfly.hammer.sqldb.jdbc.JdbcTestBase;
 import cn.featherfly.hammer.sqldb.jdbc.SimpleSqlPageFactory;
 import cn.featherfly.hammer.sqldb.jdbc.SqlPageFactory.SqlPageQuery;
-import cn.featherfly.hammer.sqldb.jdbc.vo.Role;
+import cn.featherfly.hammer.sqldb.jdbc.vo.r.Role;
 
 /**
  * ClassMapperObjectFactoryTest.

@@ -6,7 +6,7 @@ import java.util.List;
 import cn.featherfly.common.structure.page.Page;
 import cn.featherfly.common.structure.page.PaginationResults;
 import cn.featherfly.hammer.GenericHammer;
-import cn.featherfly.hammer.sqldb.jdbc.vo.Role;
+import cn.featherfly.hammer.sqldb.jdbc.vo.r.Role;
 import cn.featherfly.hammer.tpl.TplType;
 import cn.featherfly.hammer.tpl.annotation.Mapper;
 import cn.featherfly.hammer.tpl.annotation.Param;

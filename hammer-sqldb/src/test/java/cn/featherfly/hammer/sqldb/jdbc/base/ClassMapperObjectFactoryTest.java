@@ -15,7 +15,7 @@ import static org.testng.Assert.assertEquals;
 import org.testng.annotations.Test;
 
 import cn.featherfly.hammer.sqldb.jdbc.ClassMapperObjectFactory;
-import cn.featherfly.hammer.sqldb.jdbc.vo.User;
+import cn.featherfly.hammer.sqldb.jdbc.vo.r.User;
 
 /**
  * ClassMapperObjectFactoryTest.

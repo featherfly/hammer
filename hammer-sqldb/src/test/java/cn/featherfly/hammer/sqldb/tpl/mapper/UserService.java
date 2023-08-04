@@ -14,7 +14,7 @@ import cn.featherfly.common.db.JdbcException;
 import cn.featherfly.common.db.JdbcUtils;
 import cn.featherfly.common.lang.ArrayUtils;
 import cn.featherfly.common.lang.Randoms;
-import cn.featherfly.hammer.sqldb.jdbc.vo.User;
+import cn.featherfly.hammer.sqldb.jdbc.vo.r.User;
 import cn.featherfly.hammer.sqldb.tpl.UserMapper3;
 
 /**

@@ -8,7 +8,7 @@ import org.springframework.stereotype.Repository;
 
 import cn.featherfly.common.structure.ChainMapImpl;
 import cn.featherfly.hammer.Hammer;
-import cn.featherfly.hammer.sqldb.jdbc.vo.UserInfo;
+import cn.featherfly.hammer.sqldb.jdbc.vo.r.UserInfo;
 
 /**
  * UserInfoMapper2.

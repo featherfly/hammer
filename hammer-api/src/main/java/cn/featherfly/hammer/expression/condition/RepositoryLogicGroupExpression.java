@@ -12,6 +12,6 @@ package cn.featherfly.hammer.expression.condition;
  * @param <L> the generic type
  */
 public interface RepositoryLogicGroupExpression<C extends RepositoryConditionsGroupExpression<C, L>,
-        L extends RepositoryLogicGroupExpression<C, L>> extends LogicExpression<C, L>, GroupEndExpression<L> {
+        L extends RepositoryLogicGroupExpression<C, L>> extends LogicExpression<C, L>, GroupEndExpression<C, L> {
 
 }

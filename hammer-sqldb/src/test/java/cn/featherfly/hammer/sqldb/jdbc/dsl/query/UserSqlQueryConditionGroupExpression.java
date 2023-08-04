@@ -3,7 +3,7 @@ package cn.featherfly.hammer.sqldb.jdbc.dsl.query;
 
 import cn.featherfly.hammer.sqldb.jdbc.dsl.type.StaticTypeQueryConditionGroupExpression;
 import cn.featherfly.hammer.sqldb.jdbc.dsl.type.StaticTypeStringExpression;
-import cn.featherfly.hammer.sqldb.jdbc.vo.User;
+import cn.featherfly.hammer.sqldb.jdbc.vo.r.User;
 
 /**
  * <p>

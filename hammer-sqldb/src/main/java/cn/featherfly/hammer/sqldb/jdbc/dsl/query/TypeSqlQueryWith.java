@@ -67,7 +67,7 @@
 //    protected String fetchPropertyAlias;
 //
 //    /** The ignore policy. */
-//    protected Predicate<Object> ignorePolicy;
+//    protected Predicate<Object> ignoreStrategy;
 //
 //    /**
 //     * Instantiates a new type sql query with.
@@ -81,14 +81,14 @@
 //     * @param conditionTableColumn      the condition table column
 //     * @param joinTypeClassMapping      the join type class mapping
 //     * @param joinTableColumn           the join table column
-//     * @param ignorePolicy              the ignore policy
+//     * @param ignoreStrategy              the ignore strategy
 //     */
 //    public TypeSqlQueryWith(TypeSqlQueryEntityProperties sqlQueryEntityProperties, AliasManager aliasManager,
 //            JdbcMappingFactory factory, SqlPageFactory sqlPageFactory, JdbcClassMapping<?> conditionTypeClassMapping,
 //            String conditionTableAlias, String conditionTableColumn, JdbcClassMapping<?> joinTypeClassMapping,
-//            String joinTableColumn, Predicate<Object> ignorePolicy) {
+//            String joinTableColumn, Predicate<Object> ignoreStrategy) {
 //        this(sqlQueryEntityProperties, aliasManager, factory, sqlPageFactory, conditionTypeClassMapping,
-//                conditionTableAlias, conditionTableColumn, joinTypeClassMapping, joinTableColumn, null, ignorePolicy);
+//                conditionTableAlias, conditionTableColumn, joinTypeClassMapping, joinTableColumn, null, ignoreStrategy);
 //    }
 //
 //    /**
@@ -104,12 +104,12 @@
 //     * @param joinTypeClassMapping      the join type class mapping
 //     * @param joinTableColumn           the join table column
 //     * @param fetchProperty             the fetch property
-//     * @param ignorePolicy              the ignore policy
+//     * @param ignoreStrategy              the ignore strategy
 //     */
 //    public TypeSqlQueryWith(TypeSqlQueryEntityProperties sqlQueryEntityProperties, AliasManager aliasManager,
 //            JdbcMappingFactory factory, SqlPageFactory sqlPageFactory, JdbcClassMapping<?> conditionTypeClassMapping,
 //            String conditionTableAlias, String conditionTableColumn, JdbcClassMapping<?> joinTypeClassMapping,
-//            String joinTableColumn, String fetchProperty, Predicate<Object> ignorePolicy) {
+//            String joinTableColumn, String fetchProperty, Predicate<Object> ignoreStrategy) {
 //        super();
 //        this.sqlQueryEntityProperties = sqlQueryEntityProperties;
 //        this.factory = factory;
@@ -122,8 +122,8 @@
 //        this.joinTypeClassMapping = joinTypeClassMapping;
 //        this.fetchProperty = fetchProperty;
 //        fetchPropertyAlias = joinTableAlias;
-//        AssertIllegalArgument.isNotNull(ignorePolicy, "ignorePolicy");
-//        this.ignorePolicy = ignorePolicy;
+//        AssertIllegalArgument.isNotNull(ignoreStrategy, "ignoreStrategy");
+//        this.ignoreStrategy = ignoreStrategy;
 //        on();
 //    }
 //
@@ -169,7 +169,7 @@
 //    public RepositoryTypeQueryConditionGroupExpression where() {
 //        return new RepositoryTypeSqlQueryExpression(sqlQueryEntityProperties.jdbc, factory, sqlPageFactory,
 //                sqlQueryEntityProperties.aliasManager, sqlQueryEntityProperties.classMapping,
-//                sqlQueryEntityProperties.selectBuilder, ignorePolicy);
+//                sqlQueryEntityProperties.selectBuilder, ignoreStrategy);
 //    }
 //
 //    /**
@@ -180,7 +180,7 @@
 //            Consumer<RepositoryTypeQueryConditionGroupExpression> consumer) {
 //        RepositoryTypeSqlQueryExpression repositorySqlQueryExpression = new RepositoryTypeSqlQueryExpression(
 //                sqlQueryEntityProperties.jdbc, factory, sqlPageFactory, sqlQueryEntityProperties.aliasManager,
-//                sqlQueryEntityProperties.classMapping, sqlQueryEntityProperties.selectBuilder, ignorePolicy);
+//                sqlQueryEntityProperties.classMapping, sqlQueryEntityProperties.selectBuilder, ignoreStrategy);
 //        if (consumer != null) {
 //            consumer.accept(repositorySqlQueryExpression);
 //        }

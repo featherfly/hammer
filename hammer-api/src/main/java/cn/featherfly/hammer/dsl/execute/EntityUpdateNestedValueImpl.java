@@ -4,7 +4,7 @@ package cn.featherfly.hammer.dsl.execute;
 import java.util.function.Consumer;
 
 import cn.featherfly.common.lang.function.SerializableFunction;
-import cn.featherfly.hammer.expression.execute.EntityUpdateValueExpression;
+import cn.featherfly.hammer.expression.entity.execute.EntityUpdateValueExpression;
 
 /**
  * EntityUpdateValueImpl.

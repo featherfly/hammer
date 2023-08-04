@@ -1,7 +1,7 @@
 
 package cn.featherfly.hammer.expression.entity.query;
 
-import cn.featherfly.hammer.expression.api.Where;
+import cn.featherfly.hammer.expression.entity.EntityWhereExpression7;
 
 /**
  * The Interface EntityQueryWhereExpression7.
@@ -17,9 +17,11 @@ import cn.featherfly.hammer.expression.api.Where;
  * @param <C>  the generic type
  * @param <L>  the generic type
  * @param <S>  the generic type
+ * @param <R>  the generic type
  */
 public interface EntityQueryWhereExpression7<E, E2, E3, E4, E5, E6, E7,
         C extends EntityQueryConditionGroupExpression7<E, E2, E3, E4, E5, E6, E7, C, L, S, R>,
         L extends EntityQueryConditionGroupLogicExpression7<E, E2, E3, E4, E5, E6, E7, C, L, S, R>,
-        S extends EntityQuerySortExpression7<E, E2, E3, E4, E5, E6, E7, R>, R> extends Where<C, L> {
+        S extends EntityQuerySortExpression7<E, E2, E3, E4, E5, E6, E7, R>, R>
+        extends EntityWhereExpression7<E, E2, E3, E4, E5, E6, E7, C, L> {
 }

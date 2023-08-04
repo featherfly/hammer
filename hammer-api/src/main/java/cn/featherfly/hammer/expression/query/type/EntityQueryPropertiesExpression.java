@@ -1,10 +1,10 @@
 
 package cn.featherfly.hammer.expression.query.type;
 
+import cn.featherfly.common.exception.UnsupportedException;
 import cn.featherfly.common.lang.function.SerializableFunction;
-import cn.featherfly.hammer.expression.entity.query.EntityQueryConditionGroupExpression;
-import cn.featherfly.hammer.expression.entity.query.EntityQueryConditionGroupLogicExpression;
-import cn.featherfly.hammer.expression.entity.query.EntityQuerySortExpression;
+import cn.featherfly.common.operator.AggregateFunction;
+import cn.featherfly.common.operator.Function;
 
 /**
  * The Interface EntityQueryPropertiesExpression.
@@ -13,10 +13,7 @@ import cn.featherfly.hammer.expression.entity.query.EntityQuerySortExpression;
  * @param <E> the query type
  * @param <Q> the generic type
  */
-public interface EntityQueryPropertiesExpression<E, Q extends EntityQueryPropertiesExpression<E, Q, C, L, S>,
-        C extends EntityQueryConditionGroupExpression<E, C, L, S>,
-        L extends EntityQueryConditionGroupLogicExpression<E, C, L, S>, S extends EntityQuerySortExpression<E>>
-        extends EntityQueryEntityExpression<E, C, L, S> {
+public interface EntityQueryPropertiesExpression<E, Q extends EntityQueryPropertiesExpression<E, Q>> {
 
     /**
      * 添加select的列 .
@@ -40,6 +37,131 @@ public interface EntityQueryPropertiesExpression<E, Q extends EntityQueryPropert
     <R> Q property(boolean distinct, SerializableFunction<E, R> propertyName);
 
     /**
+     * 批量添加select的列 .
+     *
+     * @param propertyNames propertyNames
+     * @return QueryEntityPropertiesExpression
+     */
+    Q property(@SuppressWarnings("unchecked") SerializableFunction<E, ?>... propertyNames);
+
+    /**
+     * 添加查询出来的属性.
+     *
+     * @param <T>          the generic type
+     * @param <R>          the generic type
+     * @param function     the function
+     * @param propertyName propertyName
+     * @return QueryEntityPropertiesExpression
+     */
+    default <R> Q property(Function function, SerializableFunction<E, R> propertyName) {
+        if (function instanceof AggregateFunction) {
+            return property((AggregateFunction) function, propertyName);
+        } else {
+            // TODO 后续实现了相关Function再来修改
+            throw new UnsupportedException();
+        }
+    }
+
+    /**
+     * 添加查询出来的属性.
+     *
+     * @param <T>               the generic type
+     * @param <R>               the generic type
+     * @param aggregateFunction aggregateFunction
+     * @param propertyName      propertyName
+     * @return QueryEntityPropertiesExpression
+     */
+    default <R> Q property(AggregateFunction aggregateFunction, SerializableFunction<E, R> propertyName) {
+        return property(aggregateFunction, false, propertyName);
+    }
+
+    /**
+     * 添加查询出来的属性.
+     *
+     * @param <T>               the generic type
+     * @param <R>               the generic type
+     * @param aggregateFunction aggregateFunction
+     * @param distinct          the distinct
+     * @param propertyName      propertyName
+     * @return QueryEntityPropertiesExpression
+     */
+    <R> Q property(AggregateFunction aggregateFunction, boolean distinct, SerializableFunction<E, R> propertyName);
+
+    /**
+     * 设置返回的属性..
+     *
+     * @param <R>          the generic type
+     * @param propertyName propertyName
+     * @return QueryEntityPropertiesExpression
+     */
+    default <R> Q fetch(SerializableFunction<E, R> propertyName) {
+        return fetch(false, propertyName);
+    }
+
+    /**
+     * 设置返回的属性..
+     *
+     * @param <R>          the generic type
+     * @param distinct     the distinct
+     * @param propertyName propertyName
+     * @return QueryEntityPropertiesExpression
+     */
+    default <R> Q fetch(boolean distinct, SerializableFunction<E, R> propertyName) {
+        return property(distinct, propertyName);
+    }
+
+    /**
+     * 批量设置返回的属性.
+     *
+     * @param propertyNames propertyNames
+     * @return QueryEntityPropertiesExpression
+     */
+    default Q fetch(@SuppressWarnings("unchecked") SerializableFunction<E, ?>... propertyNames) {
+        return property(propertyNames);
+    }
+
+    /**
+     * 添加查询出来的属性.
+     *
+     * @param <T>          the generic type
+     * @param <R>          the generic type
+     * @param function     the function
+     * @param propertyName propertyName
+     * @return QueryEntityPropertiesExpression
+     */
+    default <R> Q fetch(Function function, SerializableFunction<E, R> propertyName) {
+        return property(function, propertyName);
+    }
+
+    /**
+     * 添加查询出来的属性.
+     *
+     * @param <T>               the generic type
+     * @param <R>               the generic type
+     * @param aggregateFunction aggregateFunction
+     * @param propertyName      propertyName
+     * @return QueryEntityPropertiesExpression
+     */
+    default <R> Q fetch(AggregateFunction aggregateFunction, SerializableFunction<E, R> propertyName) {
+        return property(aggregateFunction, propertyName);
+    }
+
+    /**
+     * 添加查询出来的属性.
+     *
+     * @param <T>               the generic type
+     * @param <R>               the generic type
+     * @param aggregateFunction aggregateFunction
+     * @param distinct          the distinct
+     * @param propertyName      propertyName
+     * @return QueryEntityPropertiesExpression
+     */
+    default <R> Q fetch(AggregateFunction aggregateFunction, boolean distinct,
+            SerializableFunction<E, R> propertyName) {
+        return property(aggregateFunction, distinct, propertyName);
+    }
+
+    /**
      * Distinct.
      *
      * @param <R>          the generic type
@@ -49,14 +171,6 @@ public interface EntityQueryPropertiesExpression<E, Q extends EntityQueryPropert
     default <R> Q distinct(SerializableFunction<E, R> propertyName) {
         return property(true, propertyName);
     }
-
-    /**
-     * 批量添加select的列 .
-     *
-     * @param propertyNames propertyNames
-     * @return QueryEntityPropertiesExpression
-     */
-    Q property(@SuppressWarnings("unchecked") SerializableFunction<E, ?>... propertyNames);
 
     /**
      * Count.
@@ -77,7 +191,9 @@ public interface EntityQueryPropertiesExpression<E, Q extends EntityQueryPropert
      * @param propertyName the property name
      * @return the q
      */
-    <R> Q count(boolean distinct, SerializableFunction<E, R> propertyName);
+    default <R> Q count(boolean distinct, SerializableFunction<E, R> propertyName) {
+        return property(AggregateFunction.COUNT, distinct, propertyName);
+    }
 
     /**
      * Sum.
@@ -98,7 +214,9 @@ public interface EntityQueryPropertiesExpression<E, Q extends EntityQueryPropert
      * @param propertyName the property name
      * @return the q
      */
-    <R> Q sum(boolean distinct, SerializableFunction<E, R> propertyName);
+    default <R> Q sum(boolean distinct, SerializableFunction<E, R> propertyName) {
+        return property(AggregateFunction.SUM, distinct, propertyName);
+    }
 
     /**
      * Max.
@@ -119,7 +237,9 @@ public interface EntityQueryPropertiesExpression<E, Q extends EntityQueryPropert
      * @param propertyName the property name
      * @return the q
      */
-    <R> Q max(boolean distinct, SerializableFunction<E, R> propertyName);
+    default <R> Q max(boolean distinct, SerializableFunction<E, R> propertyName) {
+        return property(AggregateFunction.MAX, distinct, propertyName);
+    }
 
     /**
      * Min.
@@ -140,7 +260,9 @@ public interface EntityQueryPropertiesExpression<E, Q extends EntityQueryPropert
      * @param propertyName the property name
      * @return the q
      */
-    <R> Q min(boolean distinct, SerializableFunction<E, R> propertyName);
+    default <R> Q min(boolean distinct, SerializableFunction<E, R> propertyName) {
+        return property(AggregateFunction.MIN, distinct, propertyName);
+    }
 
     /**
      * Avg.
@@ -161,5 +283,7 @@ public interface EntityQueryPropertiesExpression<E, Q extends EntityQueryPropert
      * @param propertyName the property name
      * @return the q
      */
-    <R> Q avg(boolean distinct, SerializableFunction<E, R> propertyName);
+    default <R> Q avg(boolean distinct, SerializableFunction<E, R> propertyName) {
+        return property(AggregateFunction.AVG, distinct, propertyName);
+    }
 }

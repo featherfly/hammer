@@ -107,7 +107,7 @@ public abstract class AbstractOperate<T> {
             DatabaseMetadata databaseMetadata) {
         this.jdbc = jdbc;
         this.classMapping = classMapping;
-        this.meta = databaseMetadata;
+        meta = databaseMetadata;
         this.sqlTypeMappingManager = sqlTypeMappingManager;
         //        if (sqlTypeMappingManager == null) {
         //            this.sqlTypeMappingManager = new SqlTypeMappingManager();
@@ -117,9 +117,8 @@ public abstract class AbstractOperate<T> {
         init();
     }
 
-    @SuppressWarnings("unchecked")
     private void init() {
-        beanDescriptor = (BeanDescriptor<T>) BeanDescriptor.getBeanDescriptor(classMapping.getType());
+        beanDescriptor = BeanDescriptor.getBeanDescriptor(classMapping.getType());
         for (JdbcPropertyMapping pm : classMapping.getPrivaryKeyPropertyMappings()) {
             pkProperties.add(
                     BeanDescriptor.getBeanDescriptor(classMapping.getType()).getBeanProperty(pm.getPropertyFullName()));

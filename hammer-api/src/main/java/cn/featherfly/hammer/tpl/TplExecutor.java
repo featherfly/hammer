@@ -9,6 +9,7 @@ import com.speedment.common.tuple.Tuple2;
 import com.speedment.common.tuple.Tuple3;
 import com.speedment.common.tuple.Tuple4;
 import com.speedment.common.tuple.Tuple5;
+import com.speedment.common.tuple.Tuple6;
 
 import cn.featherfly.common.structure.page.Limit;
 import cn.featherfly.common.structure.page.Page;
@@ -553,6 +554,102 @@ public interface TplExecutor {
             Tuple5<String, String, String, String, String> prefixes, Map<String, Object> params);
 
     /**
+     * Single.
+     *
+     * @param <R1>         the generic type
+     * @param <R2>         the generic type
+     * @param <R3>         the generic type
+     * @param <R4>         the generic type
+     * @param <R5>         the generic type
+     * @param <R6>         the generic type
+     * @param tplExecuteId the tpl execute id
+     * @param entityType1  the entity type 1
+     * @param entityType2  the entity type 2
+     * @param entityType3  the entity type 3
+     * @param entityType4  the entity type 4
+     * @param entityType5  the entity type 5
+     * @param entityType6  the entity type 6
+     * @param params       the params
+     * @return the tuple 6
+     */
+    <R1, R2, R3, R4, R5, R6> Tuple6<R1, R2, R3, R4, R5, R6> single(String tplExecuteId, Class<R1> entityType1,
+            Class<R2> entityType2, Class<R3> entityType3, Class<R4> entityType4, Class<R5> entityType5,
+            Class<R6> entityType6, Map<String, Object> params);
+
+    /**
+     * Single.
+     *
+     * @param <R1>         the generic type
+     * @param <R2>         the generic type
+     * @param <R3>         the generic type
+     * @param <R4>         the generic type
+     * @param <R5>         the generic type
+     * @param <R6>         the generic type
+     * @param tplExecuteId the tpl execute id
+     * @param entityType1  the entity type 1
+     * @param entityType2  the entity type 2
+     * @param entityType3  the entity type 3
+     * @param entityType4  the entity type 4
+     * @param entityType5  the entity type 5
+     * @param entityType6  the entity type 6
+     * @param params       the params
+     * @return the tuple 6
+     */
+    <R1, R2, R3, R4, R5, R6> Tuple6<R1, R2, R3, R4, R5, R6> single(TplExecuteId tplExecuteId, Class<R1> entityType1,
+            Class<R2> entityType2, Class<R3> entityType3, Class<R4> entityType4, Class<R5> entityType5,
+            Class<R6> entityType6, Map<String, Object> params);
+
+    /**
+     * Single.
+     *
+     * @param <R1>         the generic type
+     * @param <R2>         the generic type
+     * @param <R3>         the generic type
+     * @param <R4>         the generic type
+     * @param <R5>         the generic type
+     * @param <R6>         the generic type
+     * @param tplExecuteId the tpl execute id
+     * @param entityType1  the entity type 1
+     * @param entityType2  the entity type 2
+     * @param entityType3  the entity type 3
+     * @param entityType4  the entity type 4
+     * @param entityType5  the entity type 5
+     * @param entityType6  the entity type 6
+     * @param prefixes     the prefixes
+     * @param params       the params
+     * @return the tuple 6
+     */
+    <R1, R2, R3, R4, R5, R6> Tuple6<R1, R2, R3, R4, R5, R6> single(String tplExecuteId, Class<R1> entityType1,
+            Class<R2> entityType2, Class<R3> entityType3, Class<R4> entityType4, Class<R5> entityType5,
+            Class<R6> entityType6, Tuple6<String, String, String, String, String, String> prefixes,
+            Map<String, Object> params);
+
+    /**
+     * Single.
+     *
+     * @param <R1>         the generic type
+     * @param <R2>         the generic type
+     * @param <R3>         the generic type
+     * @param <R4>         the generic type
+     * @param <R5>         the generic type
+     * @param <R6>         the generic type
+     * @param tplExecuteId the tpl execute id
+     * @param entityType1  the entity type 1
+     * @param entityType2  the entity type 2
+     * @param entityType3  the entity type 3
+     * @param entityType4  the entity type 4
+     * @param entityType5  the entity type 5
+     * @param entityType6  the entity type 6
+     * @param prefixes     the prefixes
+     * @param params       the params
+     * @return the tuple 6
+     */
+    <R1, R2, R3, R4, R5, R6> Tuple6<R1, R2, R3, R4, R5, R6> single(TplExecuteId tplExecuteId, Class<R1> entityType1,
+            Class<R2> entityType2, Class<R3> entityType3, Class<R4> entityType4, Class<R5> entityType5,
+            Class<R6> entityType6, Tuple6<String, String, String, String, String, String> prefixes,
+            Map<String, Object> params);
+
+    /**
      * query list, use query str in template find with executeId.
      *
      * @param tplExecuteId tpl execute id
@@ -936,9 +1033,9 @@ public interface TplExecutor {
      * @param entityType1  the entity type 1
      * @param entityType2  the entity type 2
      * @param entityType3  the entity type 3
-     * @param param        the param
+     * @param params       the params
      * @param offset       the offset
-     * @param limits       the limits
+     * @param limit        the limit
      * @return tuple3 list
      */
     <R1, R2, R3> List<Tuple3<R1, R2, R3>> list(String tplExecuteId, Class<R1> entityType1, Class<R2> entityType2,
@@ -1666,6 +1763,322 @@ public interface TplExecutor {
         Limit limit = new Limit(page);
         return list(tplExecuteId, entityType1, entityType2, entityType3, entityType4, entityType5, prefixes, params,
                 limit.getOffset(), limit.getLimit());
+    }
+
+    /**
+     * List.
+     *
+     * @param <R1>         the generic type
+     * @param <R2>         the generic type
+     * @param <R3>         the generic type
+     * @param <R4>         the generic type
+     * @param <R5>         the generic type
+     * @param <R6>         the generic type
+     * @param tplExecuteId the tpl execute id
+     * @param entityType1  the entity type 1
+     * @param entityType2  the entity type 2
+     * @param entityType3  the entity type 3
+     * @param entityType4  the entity type 4
+     * @param entityType5  the entity type 5
+     * @param entityType6  the entity type 6
+     * @param params       the params
+     * @return the list
+     */
+    <R1, R2, R3, R4, R5, R6> List<Tuple6<R1, R2, R3, R4, R5, R6>> list(String tplExecuteId, Class<R1> entityType1,
+            Class<R2> entityType2, Class<R3> entityType3, Class<R4> entityType4, Class<R5> entityType5,
+            Class<R6> entityType6, Map<String, Object> params);
+
+    /**
+     * List.
+     *
+     * @param <R1>         the generic type
+     * @param <R2>         the generic type
+     * @param <R3>         the generic type
+     * @param <R4>         the generic type
+     * @param <R5>         the generic type
+     * @param <R6>         the generic type
+     * @param tplExecuteId the tpl execute id
+     * @param entityType1  the entity type 1
+     * @param entityType2  the entity type 2
+     * @param entityType3  the entity type 3
+     * @param entityType4  the entity type 4
+     * @param entityType5  the entity type 5
+     * @param entityType6  the entity type 6
+     * @param params       the params
+     * @param offset       the offset
+     * @param limit        the limit
+     * @return the list
+     */
+    <R1, R2, R3, R4, R5, R6> List<Tuple6<R1, R2, R3, R4, R5, R6>> list(String tplExecuteId, Class<R1> entityType1,
+            Class<R2> entityType2, Class<R3> entityType3, Class<R4> entityType4, Class<R5> entityType5,
+            Class<R6> entityType6, Map<String, Object> params, int offset, int limit);
+
+    /**
+     * List.
+     *
+     * @param <R1>         the generic type
+     * @param <R2>         the generic type
+     * @param <R3>         the generic type
+     * @param <R4>         the generic type
+     * @param <R5>         the generic type
+     * @param <R6>         the generic type
+     * @param tplExecuteId the tpl execute id
+     * @param entityType1  the entity type 1
+     * @param entityType2  the entity type 2
+     * @param entityType3  the entity type 3
+     * @param entityType4  the entity type 4
+     * @param entityType5  the entity type 5
+     * @param entityType6  the entity type 6
+     * @param params       the params
+     * @param page         the page
+     * @return the list
+     */
+    default <R1, R2, R3, R4, R5, R6> List<Tuple6<R1, R2, R3, R4, R5, R6>> list(String tplExecuteId,
+            Class<R1> entityType1, Class<R2> entityType2, Class<R3> entityType3, Class<R4> entityType4,
+            Class<R5> entityType5, Class<R6> entityType6, Map<String, Object> params, Page page) {
+        Limit limit = new Limit(page);
+        return list(tplExecuteId, entityType1, entityType2, entityType3, entityType4, entityType5, entityType6, params,
+                limit.getOffset(), limit.getLimit());
+    }
+
+    /**
+     * List.
+     *
+     * @param <R1>         the generic type
+     * @param <R2>         the generic type
+     * @param <R3>         the generic type
+     * @param <R4>         the generic type
+     * @param <R5>         the generic type
+     * @param <R6>         the generic type
+     * @param tplExecuteId the tpl execute id
+     * @param entityType1  the entity type 1
+     * @param entityType2  the entity type 2
+     * @param entityType3  the entity type 3
+     * @param entityType4  the entity type 4
+     * @param entityType5  the entity type 5
+     * @param entityType6  the entity type 6
+     * @param params       the params
+     * @return the list
+     */
+    <R1, R2, R3, R4, R5, R6> List<Tuple6<R1, R2, R3, R4, R5, R6>> list(TplExecuteId tplExecuteId, Class<R1> entityType1,
+            Class<R2> entityType2, Class<R3> entityType3, Class<R4> entityType4, Class<R5> entityType5,
+            Class<R6> entityType6, Map<String, Object> params);
+
+    /**
+     * List.
+     *
+     * @param <R1>         the generic type
+     * @param <R2>         the generic type
+     * @param <R3>         the generic type
+     * @param <R4>         the generic type
+     * @param <R5>         the generic type
+     * @param <R6>         the generic type
+     * @param tplExecuteId the tpl execute id
+     * @param entityType1  the entity type 1
+     * @param entityType2  the entity type 2
+     * @param entityType3  the entity type 3
+     * @param entityType4  the entity type 4
+     * @param entityType5  the entity type 5
+     * @param entityType6  the entity type 6
+     * @param params       the params
+     * @param offset       the offset
+     * @param limit        the limit
+     * @return the list
+     */
+    <R1, R2, R3, R4, R5, R6> List<Tuple6<R1, R2, R3, R4, R5, R6>> list(TplExecuteId tplExecuteId, Class<R1> entityType1,
+            Class<R2> entityType2, Class<R3> entityType3, Class<R4> entityType4, Class<R5> entityType5,
+            Class<R6> entityType6, Map<String, Object> params, int offset, int limit);
+
+    /**
+     * List.
+     *
+     * @param <R1>         the generic type
+     * @param <R2>         the generic type
+     * @param <R3>         the generic type
+     * @param <R4>         the generic type
+     * @param <R5>         the generic type
+     * @param <R6>         the generic type
+     * @param tplExecuteId the tpl execute id
+     * @param entityType1  the entity type 1
+     * @param entityType2  the entity type 2
+     * @param entityType3  the entity type 3
+     * @param entityType4  the entity type 4
+     * @param entityType5  the entity type 5
+     * @param entityType6  the entity type 6
+     * @param params       the params
+     * @param page         the page
+     * @return the list
+     */
+    default <R1, R2, R3, R4, R5, R6> List<Tuple6<R1, R2, R3, R4, R5, R6>> list(TplExecuteId tplExecuteId,
+            Class<R1> entityType1, Class<R2> entityType2, Class<R3> entityType3, Class<R4> entityType4,
+            Class<R5> entityType5, Class<R6> entityType6, Map<String, Object> params, Page page) {
+        Limit limit = new Limit(page);
+        return list(tplExecuteId, entityType1, entityType2, entityType3, entityType4, entityType5, entityType6, params,
+                limit.getOffset(), limit.getLimit());
+    }
+
+    /**
+     * List.
+     *
+     * @param <R1>         the generic type
+     * @param <R2>         the generic type
+     * @param <R3>         the generic type
+     * @param <R4>         the generic type
+     * @param <R5>         the generic type
+     * @param <R6>         the generic type
+     * @param tplExecuteId the tpl execute id
+     * @param entityType1  the entity type 1
+     * @param entityType2  the entity type 2
+     * @param entityType3  the entity type 3
+     * @param entityType4  the entity type 4
+     * @param entityType5  the entity type 5
+     * @param entityType6  the entity type 6
+     * @param prefixes     the prefixes
+     * @param params       the params
+     * @return the list
+     */
+    <R1, R2, R3, R4, R5, R6> List<Tuple6<R1, R2, R3, R4, R5, R6>> list(String tplExecuteId, Class<R1> entityType1,
+            Class<R2> entityType2, Class<R3> entityType3, Class<R4> entityType4, Class<R5> entityType5,
+            Class<R6> entityType6, Tuple6<String, String, String, String, String, String> prefixes,
+            Map<String, Object> params);
+
+    /**
+     * List.
+     *
+     * @param <R1>         the generic type
+     * @param <R2>         the generic type
+     * @param <R3>         the generic type
+     * @param <R4>         the generic type
+     * @param <R5>         the generic type
+     * @param <R6>         the generic type
+     * @param tplExecuteId the tpl execute id
+     * @param entityType1  the entity type 1
+     * @param entityType2  the entity type 2
+     * @param entityType3  the entity type 3
+     * @param entityType4  the entity type 4
+     * @param entityType5  the entity type 5
+     * @param entityType6  the entity type 6
+     * @param prefixes     the prefixes
+     * @param params       the params
+     * @param offset       the offset
+     * @param limit        the limit
+     * @return the list
+     */
+    <R1, R2, R3, R4, R5, R6> List<Tuple6<R1, R2, R3, R4, R5, R6>> list(String tplExecuteId, Class<R1> entityType1,
+            Class<R2> entityType2, Class<R3> entityType3, Class<R4> entityType4, Class<R5> entityType5,
+            Class<R6> entityType6, Tuple6<String, String, String, String, String, String> prefixes,
+            Map<String, Object> params, int offset, int limit);
+
+    /**
+     * List.
+     *
+     * @param <R1>         the generic type
+     * @param <R2>         the generic type
+     * @param <R3>         the generic type
+     * @param <R4>         the generic type
+     * @param <R5>         the generic type
+     * @param <R6>         the generic type
+     * @param tplExecuteId the tpl execute id
+     * @param entityType1  the entity type 1
+     * @param entityType2  the entity type 2
+     * @param entityType3  the entity type 3
+     * @param entityType4  the entity type 4
+     * @param entityType5  the entity type 5
+     * @param entityType6  the entity type 6
+     * @param prefixes     the prefixes
+     * @param params       the params
+     * @param page         the page
+     * @return the list
+     */
+    default <R1, R2, R3, R4, R5, R6> List<Tuple6<R1, R2, R3, R4, R5, R6>> list(String tplExecuteId,
+            Class<R1> entityType1, Class<R2> entityType2, Class<R3> entityType3, Class<R4> entityType4,
+            Class<R5> entityType5, Class<R6> entityType6,
+            Tuple6<String, String, String, String, String, String> prefixes, Map<String, Object> params, Page page) {
+        Limit limit = new Limit(page);
+        return list(tplExecuteId, entityType1, entityType2, entityType3, entityType4, entityType5, entityType6,
+                prefixes, params, limit.getOffset(), limit.getLimit());
+    }
+
+    /**
+     * List.
+     *
+     * @param <R1>         the generic type
+     * @param <R2>         the generic type
+     * @param <R3>         the generic type
+     * @param <R4>         the generic type
+     * @param <R5>         the generic type
+     * @param <R6>         the generic type
+     * @param tplExecuteId the tpl execute id
+     * @param entityType1  the entity type 1
+     * @param entityType2  the entity type 2
+     * @param entityType3  the entity type 3
+     * @param entityType4  the entity type 4
+     * @param entityType5  the entity type 5
+     * @param entityType6  the entity type 6
+     * @param prefixes     the prefixes
+     * @param params       the params
+     * @return the list
+     */
+    <R1, R2, R3, R4, R5, R6> List<Tuple6<R1, R2, R3, R4, R5, R6>> list(TplExecuteId tplExecuteId, Class<R1> entityType1,
+            Class<R2> entityType2, Class<R3> entityType3, Class<R4> entityType4, Class<R5> entityType5,
+            Class<R6> entityType6, Tuple6<String, String, String, String, String, String> prefixes,
+            Map<String, Object> params);
+
+    /**
+     * List.
+     *
+     * @param <R1>         the generic type
+     * @param <R2>         the generic type
+     * @param <R3>         the generic type
+     * @param <R4>         the generic type
+     * @param <R5>         the generic type
+     * @param <R6>         the generic type
+     * @param tplExecuteId the tpl execute id
+     * @param entityType1  the entity type 1
+     * @param entityType2  the entity type 2
+     * @param entityType3  the entity type 3
+     * @param entityType4  the entity type 4
+     * @param entityType5  the entity type 5
+     * @param entityType6  the entity type 6
+     * @param prefixes     the prefixes
+     * @param params       the params
+     * @param offset       the offset
+     * @param limit        the limit
+     * @return the list
+     */
+    <R1, R2, R3, R4, R5, R6> List<Tuple6<R1, R2, R3, R4, R5, R6>> list(TplExecuteId tplExecuteId, Class<R1> entityType1,
+            Class<R2> entityType2, Class<R3> entityType3, Class<R4> entityType4, Class<R5> entityType5,
+            Class<R6> entityType6, Tuple6<String, String, String, String, String, String> prefixes,
+            Map<String, Object> params, int offset, int limit);
+
+    /**
+     * List.
+     *
+     * @param <R1>         the generic type
+     * @param <R2>         the generic type
+     * @param <R3>         the generic type
+     * @param <R4>         the generic type
+     * @param <R5>         the generic type
+     * @param <R6>         the generic type
+     * @param tplExecuteId the tpl execute id
+     * @param entityType1  the entity type 1
+     * @param entityType2  the entity type 2
+     * @param entityType3  the entity type 3
+     * @param entityType4  the entity type 4
+     * @param entityType5  the entity type 5
+     * @param entityType6  the entity type 6
+     * @param prefixes     the prefixes
+     * @param params       the params
+     * @param page         the page
+     * @return the list
+     */
+    default <R1, R2, R3, R4, R5, R6> List<Tuple6<R1, R2, R3, R4, R5, R6>> list(TplExecuteId tplExecuteId,
+            Class<R1> entityType1, Class<R2> entityType2, Class<R3> entityType3, Class<R4> entityType4,
+            Class<R5> entityType5, Class<R6> entityType6,
+            Tuple6<String, String, String, String, String, String> prefixes, Map<String, Object> params, Page page) {
+        Limit limit = new Limit(page);
+        return list(tplExecuteId, entityType1, entityType2, entityType3, entityType4, entityType5, entityType6,
+                prefixes, params, limit.getOffset(), limit.getLimit());
     }
 
     // /**
@@ -1975,9 +2388,9 @@ public interface TplExecutor {
      * @param entityType1  the entity type 1
      * @param entityType2  the entity type 2
      * @param entityType3  the entity type 3
-     * @param param        the param
+     * @param params       the params
      * @param offset       the offset
-     * @param limits       the limits
+     * @param limit        the limit
      * @return tuple3 pagination
      */
     <R1, R2, R3> PaginationResults<Tuple3<R1, R2, R3>> pagination(String tplExecuteId, Class<R1> entityType1,
@@ -2516,6 +2929,229 @@ public interface TplExecutor {
         Limit limit = new Limit(page);
         return pagination(tplExecuteId, entityType1, entityType2, entityType3, entityType4, entityType5, prefixes,
                 params, limit.getOffset(), limit.getLimit());
+    }
+
+    /**
+     * Pagination.
+     *
+     * @param <R1>         the generic type
+     * @param <R2>         the generic type
+     * @param <R3>         the generic type
+     * @param <R4>         the generic type
+     * @param <R5>         the generic type
+     * @param <R6>         the generic type
+     * @param tplExecuteId the tpl execute id
+     * @param entityType1  the entity type 1
+     * @param entityType2  the entity type 2
+     * @param entityType3  the entity type 3
+     * @param entityType4  the entity type 4
+     * @param entityType5  the entity type 5
+     * @param entityType6  the entity type 6
+     * @param params       the params
+     * @param offset       the offset
+     * @param limit        the limit
+     * @return the pagination results
+     */
+    <R1, R2, R3, R4, R5, R6> PaginationResults<Tuple6<R1, R2, R3, R4, R5, R6>> pagination(String tplExecuteId,
+            Class<R1> entityType1, Class<R2> entityType2, Class<R3> entityType3, Class<R4> entityType4,
+            Class<R5> entityType5, Class<R6> entityType6, Map<String, Object> params, int offset, int limit);
+
+    /**
+     * Pagination.
+     *
+     * @param <R1>         the generic type
+     * @param <R2>         the generic type
+     * @param <R3>         the generic type
+     * @param <R4>         the generic type
+     * @param <R5>         the generic type
+     * @param <R6>         the generic type
+     * @param tplExecuteId the tpl execute id
+     * @param entityType1  the entity type 1
+     * @param entityType2  the entity type 2
+     * @param entityType3  the entity type 3
+     * @param entityType4  the entity type 4
+     * @param entityType5  the entity type 5
+     * @param entityType6  the entity type 6
+     * @param params       the params
+     * @param page         the page
+     * @return the pagination results
+     */
+    default <R1, R2, R3, R4, R5, R6> PaginationResults<Tuple6<R1, R2, R3, R4, R5, R6>> pagination(String tplExecuteId,
+            Class<R1> entityType1, Class<R2> entityType2, Class<R3> entityType3, Class<R4> entityType4,
+            Class<R5> entityType5, Class<R6> entityType6, Map<String, Object> params, Page page) {
+        Limit limit = new Limit(page);
+        return pagination(tplExecuteId, entityType1, entityType2, entityType3, entityType4, entityType5, entityType6,
+                params, limit.getOffset(), limit.getLimit());
+    }
+
+    /**
+     * Pagination.
+     *
+     * @param <R1>         the generic type
+     * @param <R2>         the generic type
+     * @param <R3>         the generic type
+     * @param <R4>         the generic type
+     * @param <R5>         the generic type
+     * @param <R6>         the generic type
+     * @param tplExecuteId the tpl execute id
+     * @param entityType1  the entity type 1
+     * @param entityType2  the entity type 2
+     * @param entityType3  the entity type 3
+     * @param entityType4  the entity type 4
+     * @param entityType5  the entity type 5
+     * @param entityType6  the entity type 6
+     * @param params       the params
+     * @param offset       the offset
+     * @param limit        the limit
+     * @return the pagination results
+     */
+    <R1, R2, R3, R4, R5, R6> PaginationResults<Tuple6<R1, R2, R3, R4, R5, R6>> pagination(TplExecuteId tplExecuteId,
+            Class<R1> entityType1, Class<R2> entityType2, Class<R3> entityType3, Class<R4> entityType4,
+            Class<R5> entityType5, Class<R6> entityType6, Map<String, Object> params, int offset, int limit);
+
+    /**
+     * Pagination.
+     *
+     * @param <R1>         the generic type
+     * @param <R2>         the generic type
+     * @param <R3>         the generic type
+     * @param <R4>         the generic type
+     * @param <R5>         the generic type
+     * @param <R6>         the generic type
+     * @param tplExecuteId the tpl execute id
+     * @param entityType1  the entity type 1
+     * @param entityType2  the entity type 2
+     * @param entityType3  the entity type 3
+     * @param entityType4  the entity type 4
+     * @param entityType5  the entity type 5
+     * @param entityType6  the entity type 6
+     * @param params       the params
+     * @param page         the page
+     * @return the pagination results
+     */
+    default <R1, R2, R3, R4, R5, R6> PaginationResults<Tuple6<R1, R2, R3, R4, R5, R6>> pagination(
+            TplExecuteId tplExecuteId, Class<R1> entityType1, Class<R2> entityType2, Class<R3> entityType3,
+            Class<R4> entityType4, Class<R5> entityType5, Class<R6> entityType6, Map<String, Object> params,
+            Page page) {
+        Limit limit = new Limit(page);
+        return pagination(tplExecuteId, entityType1, entityType2, entityType3, entityType4, entityType5, entityType6,
+                params, limit.getOffset(), limit.getLimit());
+    }
+
+    /**
+     * Pagination.
+     *
+     * @param <R1>         the generic type
+     * @param <R2>         the generic type
+     * @param <R3>         the generic type
+     * @param <R4>         the generic type
+     * @param <R5>         the generic type
+     * @param <R6>         the generic type
+     * @param tplExecuteId the tpl execute id
+     * @param entityType1  the entity type 1
+     * @param entityType2  the entity type 2
+     * @param entityType3  the entity type 3
+     * @param entityType4  the entity type 4
+     * @param entityType5  the entity type 5
+     * @param entityType6  the entity type 6
+     * @param prefixes     the prefixes
+     * @param params       the params
+     * @param offset       the offset
+     * @param limit        the limit
+     * @return the pagination results
+     */
+    <R1, R2, R3, R4, R5, R6> PaginationResults<Tuple6<R1, R2, R3, R4, R5, R6>> pagination(String tplExecuteId,
+            Class<R1> entityType1, Class<R2> entityType2, Class<R3> entityType3, Class<R4> entityType4,
+            Class<R5> entityType5, Class<R6> entityType6,
+            Tuple6<String, String, String, String, String, String> prefixes, Map<String, Object> params, int offset,
+            int limit);
+
+    /**
+     * Pagination.
+     *
+     * @param <R1>         the generic type
+     * @param <R2>         the generic type
+     * @param <R3>         the generic type
+     * @param <R4>         the generic type
+     * @param <R5>         the generic type
+     * @param <R6>         the generic type
+     * @param tplExecuteId the tpl execute id
+     * @param entityType1  the entity type 1
+     * @param entityType2  the entity type 2
+     * @param entityType3  the entity type 3
+     * @param entityType4  the entity type 4
+     * @param entityType5  the entity type 5
+     * @param entityType6  the entity type 6
+     * @param prefixes     the prefixes
+     * @param params       the params
+     * @param page         the page
+     * @return the pagination results
+     */
+    default <R1, R2, R3, R4, R5, R6> PaginationResults<Tuple6<R1, R2, R3, R4, R5, R6>> pagination(String tplExecuteId,
+            Class<R1> entityType1, Class<R2> entityType2, Class<R3> entityType3, Class<R4> entityType4,
+            Class<R5> entityType5, Class<R6> entityType6,
+            Tuple6<String, String, String, String, String, String> prefixes, Map<String, Object> params, Page page) {
+        Limit limit = new Limit(page);
+        return pagination(tplExecuteId, entityType1, entityType2, entityType3, entityType4, entityType5, entityType6,
+                prefixes, params, limit.getOffset(), limit.getLimit());
+    }
+
+    /**
+     * Pagination.
+     *
+     * @param <R1>         the generic type
+     * @param <R2>         the generic type
+     * @param <R3>         the generic type
+     * @param <R4>         the generic type
+     * @param <R5>         the generic type
+     * @param <R6>         the generic type
+     * @param tplExecuteId the tpl execute id
+     * @param entityType1  the entity type 1
+     * @param entityType2  the entity type 2
+     * @param entityType3  the entity type 3
+     * @param entityType4  the entity type 4
+     * @param entityType5  the entity type 5
+     * @param entityType6  the entity type 6
+     * @param prefixes     the prefixes
+     * @param params       the params
+     * @param offset       the offset
+     * @param limit        the limit
+     * @return the list
+     */
+    <R1, R2, R3, R4, R5, R6> PaginationResults<Tuple6<R1, R2, R3, R4, R5, R6>> pagination(TplExecuteId tplExecuteId,
+            Class<R1> entityType1, Class<R2> entityType2, Class<R3> entityType3, Class<R4> entityType4,
+            Class<R5> entityType5, Class<R6> entityType6,
+            Tuple6<String, String, String, String, String, String> prefixes, Map<String, Object> params, int offset,
+            int limit);
+
+    /**
+     * Pagination.
+     *
+     * @param <R1>         the generic type
+     * @param <R2>         the generic type
+     * @param <R3>         the generic type
+     * @param <R4>         the generic type
+     * @param <R5>         the generic type
+     * @param <R6>         the generic type
+     * @param tplExecuteId the tpl execute id
+     * @param entityType1  the entity type 1
+     * @param entityType2  the entity type 2
+     * @param entityType3  the entity type 3
+     * @param entityType4  the entity type 4
+     * @param entityType5  the entity type 5
+     * @param entityType6  the entity type 6
+     * @param prefixes     the prefixes
+     * @param params       the params
+     * @param page         the page
+     * @return the list
+     */
+    default <R1, R2, R3, R4, R5, R6> PaginationResults<Tuple6<R1, R2, R3, R4, R5, R6>> pagination(
+            TplExecuteId tplExecuteId, Class<R1> entityType1, Class<R2> entityType2, Class<R3> entityType3,
+            Class<R4> entityType4, Class<R5> entityType5, Class<R6> entityType6,
+            Tuple6<String, String, String, String, String, String> prefixes, Map<String, Object> params, Page page) {
+        Limit limit = new Limit(page);
+        return pagination(tplExecuteId, entityType1, entityType2, entityType3, entityType4, entityType5, entityType6,
+                prefixes, params, limit.getOffset(), limit.getLimit());
     }
 
 }

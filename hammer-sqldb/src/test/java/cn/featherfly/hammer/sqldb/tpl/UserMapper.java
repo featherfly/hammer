@@ -6,7 +6,7 @@ import java.util.Map;
 
 import cn.featherfly.common.structure.page.Page;
 import cn.featherfly.common.structure.page.PaginationResults;
-import cn.featherfly.hammer.sqldb.jdbc.vo.User;
+import cn.featherfly.hammer.sqldb.jdbc.vo.r.User;
 import cn.featherfly.hammer.tpl.annotation.Mapper;
 import cn.featherfly.hammer.tpl.annotation.Param;
 import cn.featherfly.hammer.tpl.annotation.ParamType;

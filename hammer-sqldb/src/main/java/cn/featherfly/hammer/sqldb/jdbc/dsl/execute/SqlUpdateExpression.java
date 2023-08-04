@@ -25,7 +25,7 @@ public class SqlUpdateExpression extends SqlConditionGroupExpression {
      * @param builder the builder
      */
     public SqlUpdateExpression(Jdbc jdbc, SqlUpdateSetBasicBuilder builder) {
-        super(jdbc, builder.getAlias(), builder.getIgnorePolicy());
+        super(jdbc, builder.getAlias(), builder.getIgnoreStrategy());
         this.builder = builder;
     }
 

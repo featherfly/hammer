@@ -1,18 +1,18 @@
 
 package cn.featherfly.hammer.sqldb.jdbc.dsl.entity;
 
-import static org.junit.Assert.assertNull;
 import static org.testng.Assert.assertEquals;
 import static org.testng.Assert.assertNotNull;
+import static org.testng.Assert.assertNull;
 
 import org.testng.annotations.Test;
 
 import cn.featherfly.hammer.sqldb.SqldbHammerException;
-import cn.featherfly.hammer.sqldb.jdbc.vo.Tree2;
-import cn.featherfly.hammer.sqldb.jdbc.vo.User;
-import cn.featherfly.hammer.sqldb.jdbc.vo.UserInfo;
-import cn.featherfly.hammer.sqldb.jdbc.vo.UserRole2;
-import cn.featherfly.hammer.sqldb.jdbc.vo.order.Order2;
+import cn.featherfly.hammer.sqldb.jdbc.vo.r.Tree2;
+import cn.featherfly.hammer.sqldb.jdbc.vo.r.User;
+import cn.featherfly.hammer.sqldb.jdbc.vo.r.UserInfo;
+import cn.featherfly.hammer.sqldb.jdbc.vo.r.UserRole2;
+import cn.featherfly.hammer.sqldb.jdbc.vo.r.order.Order2;
 
 /**
  * sql query type test.

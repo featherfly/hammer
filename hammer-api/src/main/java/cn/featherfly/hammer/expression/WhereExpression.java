@@ -11,6 +11,6 @@ import cn.featherfly.hammer.expression.api.Where;
  * @param <L> the generic type
  */
 public interface WhereExpression<C extends ConditionGroupExpression<C, L>,
-        L extends ConditionGroupLogicExpression<C, L>> extends Where<C, L> {
+        L extends ConditionGroupLogicExpression<C, L>> extends Where<C> {
 
 }

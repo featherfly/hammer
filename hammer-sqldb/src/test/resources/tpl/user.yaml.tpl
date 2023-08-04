@@ -6,7 +6,7 @@ selectByUsernameAndPassword: >
     select username, password pwd from <@wrap value='user'/> where username = :username and password = :password
 selectUser: select username, password pwd from ${tpl_wrap('user')}
 selectUserList: >
-    select <@prop mapping='cn.featherfly.hammer.sqldb.jdbc.vo.User'/> from ${tpl_wrap('user')}
+    select <@prop mapping='cn.featherfly.hammer.sqldb.jdbc.vo.r.User'/> from ${tpl_wrap('user')}
 selectByAge: "select <@prop/> from ${tpl_wrap('user')} where age = :age"
 selectByAge2: >
     select <@prop/> from ${tpl_wrap('user')} where age = :age

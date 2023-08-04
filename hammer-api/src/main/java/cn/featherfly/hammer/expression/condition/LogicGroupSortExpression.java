@@ -1,6 +1,8 @@
 
 package cn.featherfly.hammer.expression.condition;
 
+import cn.featherfly.hammer.expression.query.sort.SortExpression;
+
 /**
  * <p>
  * 逻辑条件

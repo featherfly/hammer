@@ -1,6 +1,7 @@
 
 package cn.featherfly.hammer.expression.query.type;
 
+import cn.featherfly.hammer.expression.api.Queryable;
 import cn.featherfly.hammer.expression.entity.query.EntityQueryConditionGroupExpression4;
 import cn.featherfly.hammer.expression.entity.query.EntityQueryConditionGroupLogicExpression4;
 import cn.featherfly.hammer.expression.entity.query.EntityQuerySortExpression4;
@@ -25,5 +26,5 @@ public interface EntityQueryExpression4<E, E2, E3, E4,
         L extends EntityQueryConditionGroupLogicExpression4<E, E2, E3, E4, C, L, S, R>,
         S extends EntityQuerySortExpression4<E, E2, E3, E4, R>, R>
         extends EntityQueryWhereExpression4<E, E2, E3, E4, C, L, S, R>, EntityQueryListExecutor<R>, QueryCountExecutor,
-        EntityQueryConditionLimit<R> {
+        EntityQueryConditionLimit<R>, Queryable<S> {
 }

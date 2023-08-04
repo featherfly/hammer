@@ -76,12 +76,12 @@
 //     * @param sqlPageFactory  the sql page factory
 //     * @param aliasManager    the alias manager
 //     * @param typeQueryEntity the type query entity
-//     * @param ignorePolicy    the ignore policy
+//     * @param ignoreStrategy    the ignore strategy
 //     */
 //    public TypeSqlQueryConditionGroupExpression(Jdbc jdbc, JdbcClassMapping<?> classMapping, JdbcMappingFactory factory,
 //            SqlPageFactory sqlPageFactory, AliasManager aliasManager, TypeQueryEntity typeQueryEntity,
-//            Predicate<Object> ignorePolicy) {
-//        this(jdbc, null, classMapping, factory, sqlPageFactory, aliasManager, typeQueryEntity, ignorePolicy);
+//            Predicate<Object> ignoreStrategy) {
+//        this(jdbc, null, classMapping, factory, sqlPageFactory, aliasManager, typeQueryEntity, ignoreStrategy);
 //    }
 //
 //    /**
@@ -94,13 +94,13 @@
 //     * @param sqlPageFactory  the sql page factory
 //     * @param aliasManager    the alias manager
 //     * @param typeQueryEntity the type query entity
-//     * @param ignorePolicy    the ignore policy
+//     * @param ignoreStrategy    the ignore strategy
 //     */
 //    public TypeSqlQueryConditionGroupExpression(Jdbc jdbc, String queryAlias, JdbcClassMapping<?> classMapping,
 //            JdbcMappingFactory factory, SqlPageFactory sqlPageFactory, AliasManager aliasManager,
-//            TypeQueryEntity typeQueryEntity, Predicate<Object> ignorePolicy) {
+//            TypeQueryEntity typeQueryEntity, Predicate<Object> ignoreStrategy) {
 //        this(null, jdbc, queryAlias, classMapping, factory, sqlPageFactory, aliasManager, typeQueryEntity,
-//                ignorePolicy);
+//                ignoreStrategy);
 //    }
 //
 //    /**
@@ -114,12 +114,12 @@
 //     * @param sqlPageFactory  the sql page factory
 //     * @param aliasManager    the alias manager
 //     * @param typeQueryEntity the type query entity
-//     * @param ignorePolicy    the ignore policy
+//     * @param ignoreStrategy    the ignore strategy
 //     */
 //    TypeSqlQueryConditionGroupExpression(TypeQueryConditionGroupLogicExpression parent, Jdbc jdbc, String queryAlias,
 //            JdbcClassMapping<?> classMapping, JdbcMappingFactory factory, SqlPageFactory sqlPageFactory,
-//            AliasManager aliasManager, TypeQueryEntity typeQueryEntity, Predicate<Object> ignorePolicy) {
-//        super(parent, jdbc.getDialect(), sqlPageFactory, queryAlias, classMapping, typeQueryEntity, ignorePolicy);
+//            AliasManager aliasManager, TypeQueryEntity typeQueryEntity, Predicate<Object> ignoreStrategy) {
+//        super(parent, jdbc.getDialect(), sqlPageFactory, queryAlias, classMapping, typeQueryEntity, ignoreStrategy);
 //        this.jdbc = jdbc;
 //        this.factory = factory;
 //        this.aliasManager = aliasManager;
@@ -139,7 +139,7 @@
 //    protected TypeSqlQueryConditionGroupExpression createGroup(TypeQueryConditionGroupLogicExpression parent,
 //            String queryAlias, TypeQueryEntity typeQueryEntity) {
 //        return new TypeSqlQueryConditionGroupExpression(parent, jdbc, queryAlias, classMapping, factory, sqlPageFactory,
-//                aliasManager, typeQueryEntity, ignorePolicy);
+//                aliasManager, typeQueryEntity, ignoreStrategy);
 //    }
 //
 //    /**
@@ -383,7 +383,7 @@
 //        typeQueryEntity.with(repository);
 //        Tuple2<String, String> tuple = conditionResult(repository, property, value, factory);
 //        return (TypeQueryConditionGroupLogicExpression) addCondition(new SqlConditionExpressionBuilder(dialect,
-//                tuple.get1(), value, QueryOperator.CO, aliasManager.getAlias(tuple.get0()), ignorePolicy));
+//                tuple.get1(), value, QueryOperator.CO, aliasManager.getAlias(tuple.get0()), ignoreStrategy));
 //    }
 //
 //    /**
@@ -395,7 +395,7 @@
 //        typeQueryEntity.with(repository);
 //        Tuple3<String, String, Object> tuple = conditionResult(repository, property, factory);
 //        return (TypeQueryConditionGroupLogicExpression) addCondition(new SqlConditionExpressionBuilder(dialect,
-//                tuple.get1(), tuple.get2(), QueryOperator.CO, aliasManager.getAlias(tuple.get0()), ignorePolicy));
+//                tuple.get1(), tuple.get2(), QueryOperator.CO, aliasManager.getAlias(tuple.get0()), ignoreStrategy));
 //    }
 //
 //    /**
@@ -407,7 +407,7 @@
 //        typeQueryEntity.with(repository);
 //        Tuple2<String, String> tuple = conditionResult(repository, property, value, factory);
 //        return (TypeQueryConditionGroupLogicExpression) addCondition(new SqlConditionExpressionBuilder(dialect,
-//                tuple.get1(), value, QueryOperator.EW, aliasManager.getAlias(tuple.get0()), ignorePolicy));
+//                tuple.get1(), value, QueryOperator.EW, aliasManager.getAlias(tuple.get0()), ignoreStrategy));
 //    }
 //
 //    /**
@@ -419,7 +419,7 @@
 //        typeQueryEntity.with(repository);
 //        Tuple3<String, String, Object> tuple = conditionResult(repository, property, factory);
 //        return (TypeQueryConditionGroupLogicExpression) addCondition(new SqlConditionExpressionBuilder(dialect,
-//                tuple.get1(), tuple.get2(), QueryOperator.EW, aliasManager.getAlias(tuple.get0()), ignorePolicy));
+//                tuple.get1(), tuple.get2(), QueryOperator.EW, aliasManager.getAlias(tuple.get0()), ignoreStrategy));
 //    }
 //
 //    /**
@@ -431,7 +431,7 @@
 //        typeQueryEntity.with(repository);
 //        Tuple2<String, String> tuple = conditionResult(repository, property, value, factory);
 //        return (TypeQueryConditionGroupLogicExpression) addCondition(new SqlConditionExpressionBuilder(dialect,
-//                tuple.get1(), value, QueryOperator.EQ, aliasManager.getAlias(tuple.get0()), ignorePolicy));
+//                tuple.get1(), value, QueryOperator.EQ, aliasManager.getAlias(tuple.get0()), ignoreStrategy));
 //    }
 //
 //    /**
@@ -443,7 +443,7 @@
 //        typeQueryEntity.with(repository);
 //        Tuple3<String, String, Object> tuple = conditionResult(repository, property, factory);
 //        return (TypeQueryConditionGroupLogicExpression) addCondition(new SqlConditionExpressionBuilder(dialect,
-//                tuple.get1(), tuple.get2(), QueryOperator.EQ, aliasManager.getAlias(tuple.get0()), ignorePolicy));
+//                tuple.get1(), tuple.get2(), QueryOperator.EQ, aliasManager.getAlias(tuple.get0()), ignoreStrategy));
 //    }
 //
 //    /**
@@ -455,7 +455,7 @@
 //        typeQueryEntity.with(repository);
 //        Tuple2<String, String> tuple = conditionResult(repository, property, value, factory);
 //        return (TypeQueryConditionGroupLogicExpression) addCondition(new SqlConditionExpressionBuilder(dialect,
-//                tuple.get1(), value, QueryOperator.GE, aliasManager.getAlias(tuple.get0()), ignorePolicy));
+//                tuple.get1(), value, QueryOperator.GE, aliasManager.getAlias(tuple.get0()), ignoreStrategy));
 //    }
 //
 //    /**
@@ -467,7 +467,7 @@
 //        typeQueryEntity.with(repository);
 //        Tuple3<String, String, Object> tuple = conditionResult(repository, property, factory);
 //        return (TypeQueryConditionGroupLogicExpression) addCondition(new SqlConditionExpressionBuilder(dialect,
-//                tuple.get1(), tuple.get2(), QueryOperator.GE, aliasManager.getAlias(tuple.get0()), ignorePolicy));
+//                tuple.get1(), tuple.get2(), QueryOperator.GE, aliasManager.getAlias(tuple.get0()), ignoreStrategy));
 //    }
 //
 //    /**
@@ -479,7 +479,7 @@
 //        typeQueryEntity.with(repository);
 //        Tuple2<String, String> tuple = conditionResult(repository, property, value, factory);
 //        return (TypeQueryConditionGroupLogicExpression) addCondition(new SqlConditionExpressionBuilder(dialect,
-//                tuple.get1(), value, QueryOperator.GE, aliasManager.getAlias(tuple.get0()), ignorePolicy));
+//                tuple.get1(), value, QueryOperator.GE, aliasManager.getAlias(tuple.get0()), ignoreStrategy));
 //    }
 //
 //    /**
@@ -491,7 +491,7 @@
 //        typeQueryEntity.with(repository);
 //        Tuple3<String, String, Object> tuple = conditionResult(repository, property, factory);
 //        return (TypeQueryConditionGroupLogicExpression) addCondition(new SqlConditionExpressionBuilder(dialect,
-//                tuple.get1(), tuple.get2(), QueryOperator.GE, aliasManager.getAlias(tuple.get0()), ignorePolicy));
+//                tuple.get1(), tuple.get2(), QueryOperator.GE, aliasManager.getAlias(tuple.get0()), ignoreStrategy));
 //    }
 //
 //    /**
@@ -503,7 +503,7 @@
 //        typeQueryEntity.with(repository);
 //        Tuple2<String, String> tuple = conditionResult(repository, property, value, factory);
 //        return (TypeQueryConditionGroupLogicExpression) addCondition(new SqlConditionExpressionBuilder(dialect,
-//                tuple.get1(), value, QueryOperator.GE, aliasManager.getAlias(tuple.get0()), ignorePolicy));
+//                tuple.get1(), value, QueryOperator.GE, aliasManager.getAlias(tuple.get0()), ignoreStrategy));
 //    }
 //
 //    /**
@@ -515,7 +515,7 @@
 //        typeQueryEntity.with(repository);
 //        Tuple3<String, String, Object> tuple = conditionResult(repository, property, factory);
 //        return (TypeQueryConditionGroupLogicExpression) addCondition(new SqlConditionExpressionBuilder(dialect,
-//                tuple.get1(), tuple.get2(), QueryOperator.GE, aliasManager.getAlias(tuple.get0()), ignorePolicy));
+//                tuple.get1(), tuple.get2(), QueryOperator.GE, aliasManager.getAlias(tuple.get0()), ignoreStrategy));
 //    }
 //
 //    /**
@@ -527,7 +527,7 @@
 //        typeQueryEntity.with(repository);
 //        Tuple2<String, String> tuple = conditionResult(repository, property, value, factory);
 //        return (TypeQueryConditionGroupLogicExpression) addCondition(new SqlConditionExpressionBuilder(dialect,
-//                tuple.get1(), value, QueryOperator.GE, aliasManager.getAlias(tuple.get0()), ignorePolicy));
+//                tuple.get1(), value, QueryOperator.GE, aliasManager.getAlias(tuple.get0()), ignoreStrategy));
 //    }
 //
 //    /**
@@ -539,7 +539,7 @@
 //        typeQueryEntity.with(repository);
 //        Tuple3<String, String, Object> tuple = conditionResult(repository, property, factory);
 //        return (TypeQueryConditionGroupLogicExpression) addCondition(new SqlConditionExpressionBuilder(dialect,
-//                tuple.get1(), tuple.get2(), QueryOperator.GE, aliasManager.getAlias(tuple.get0()), ignorePolicy));
+//                tuple.get1(), tuple.get2(), QueryOperator.GE, aliasManager.getAlias(tuple.get0()), ignoreStrategy));
 //    }
 //
 //    /**
@@ -551,7 +551,7 @@
 //        typeQueryEntity.with(repository);
 //        Tuple2<String, String> tuple = conditionResult(repository, property, value, factory);
 //        return (TypeQueryConditionGroupLogicExpression) addCondition(new SqlConditionExpressionBuilder(dialect,
-//                tuple.get1(), value, QueryOperator.GE, aliasManager.getAlias(tuple.get0()), ignorePolicy));
+//                tuple.get1(), value, QueryOperator.GE, aliasManager.getAlias(tuple.get0()), ignoreStrategy));
 //    }
 //
 //    /**
@@ -563,7 +563,7 @@
 //        typeQueryEntity.with(repository);
 //        Tuple3<String, String, Object> tuple = conditionResult(repository, property, factory);
 //        return (TypeQueryConditionGroupLogicExpression) addCondition(new SqlConditionExpressionBuilder(dialect,
-//                tuple.get1(), tuple.get2(), QueryOperator.GE, aliasManager.getAlias(tuple.get0()), ignorePolicy));
+//                tuple.get1(), tuple.get2(), QueryOperator.GE, aliasManager.getAlias(tuple.get0()), ignoreStrategy));
 //    }
 //
 //    /**
@@ -575,7 +575,7 @@
 //        typeQueryEntity.with(repository);
 //        Tuple2<String, String> tuple = conditionResult(repository, property, value, factory);
 //        return (TypeQueryConditionGroupLogicExpression) addCondition(new SqlConditionExpressionBuilder(dialect,
-//                tuple.get1(), value, QueryOperator.GE, aliasManager.getAlias(tuple.get0()), ignorePolicy));
+//                tuple.get1(), value, QueryOperator.GE, aliasManager.getAlias(tuple.get0()), ignoreStrategy));
 //    }
 //
 //    /**
@@ -587,7 +587,7 @@
 //        typeQueryEntity.with(repository);
 //        Tuple3<String, String, Object> tuple = conditionResult(repository, property, factory);
 //        return (TypeQueryConditionGroupLogicExpression) addCondition(new SqlConditionExpressionBuilder(dialect,
-//                tuple.get1(), tuple.get2(), QueryOperator.GE, aliasManager.getAlias(tuple.get0()), ignorePolicy));
+//                tuple.get1(), tuple.get2(), QueryOperator.GE, aliasManager.getAlias(tuple.get0()), ignoreStrategy));
 //    }
 //
 //    /**
@@ -599,7 +599,7 @@
 //        typeQueryEntity.with(repository);
 //        Tuple2<String, String> tuple = conditionResult(repository, property, value, factory);
 //        return (TypeQueryConditionGroupLogicExpression) addCondition(new SqlConditionExpressionBuilder(dialect,
-//                tuple.get1(), value, QueryOperator.GT, aliasManager.getAlias(tuple.get0()), ignorePolicy));
+//                tuple.get1(), value, QueryOperator.GT, aliasManager.getAlias(tuple.get0()), ignoreStrategy));
 //    }
 //
 //    /**
@@ -611,7 +611,7 @@
 //        typeQueryEntity.with(repository);
 //        Tuple3<String, String, Object> tuple = conditionResult(repository, property, factory);
 //        return (TypeQueryConditionGroupLogicExpression) addCondition(new SqlConditionExpressionBuilder(dialect,
-//                tuple.get1(), tuple.get2(), QueryOperator.GT, aliasManager.getAlias(tuple.get0()), ignorePolicy));
+//                tuple.get1(), tuple.get2(), QueryOperator.GT, aliasManager.getAlias(tuple.get0()), ignoreStrategy));
 //    }
 //
 //    /**
@@ -623,7 +623,7 @@
 //        typeQueryEntity.with(repository);
 //        Tuple2<String, String> tuple = conditionResult(repository, property, value, factory);
 //        return (TypeQueryConditionGroupLogicExpression) addCondition(new SqlConditionExpressionBuilder(dialect,
-//                tuple.get1(), value, QueryOperator.GT, aliasManager.getAlias(tuple.get0()), ignorePolicy));
+//                tuple.get1(), value, QueryOperator.GT, aliasManager.getAlias(tuple.get0()), ignoreStrategy));
 //    }
 //
 //    /**
@@ -635,7 +635,7 @@
 //        typeQueryEntity.with(repository);
 //        Tuple3<String, String, Object> tuple = conditionResult(repository, property, factory);
 //        return (TypeQueryConditionGroupLogicExpression) addCondition(new SqlConditionExpressionBuilder(dialect,
-//                tuple.get1(), tuple.get2(), QueryOperator.GT, aliasManager.getAlias(tuple.get0()), ignorePolicy));
+//                tuple.get1(), tuple.get2(), QueryOperator.GT, aliasManager.getAlias(tuple.get0()), ignoreStrategy));
 //    }
 //
 //    /**
@@ -647,7 +647,7 @@
 //        typeQueryEntity.with(repository);
 //        Tuple2<String, String> tuple = conditionResult(repository, property, value, factory);
 //        return (TypeQueryConditionGroupLogicExpression) addCondition(new SqlConditionExpressionBuilder(dialect,
-//                tuple.get1(), value, QueryOperator.GT, aliasManager.getAlias(tuple.get0()), ignorePolicy));
+//                tuple.get1(), value, QueryOperator.GT, aliasManager.getAlias(tuple.get0()), ignoreStrategy));
 //    }
 //
 //    /**
@@ -659,7 +659,7 @@
 //        typeQueryEntity.with(repository);
 //        Tuple3<String, String, Object> tuple = conditionResult(repository, property, factory);
 //        return (TypeQueryConditionGroupLogicExpression) addCondition(new SqlConditionExpressionBuilder(dialect,
-//                tuple.get1(), tuple.get2(), QueryOperator.GT, aliasManager.getAlias(tuple.get0()), ignorePolicy));
+//                tuple.get1(), tuple.get2(), QueryOperator.GT, aliasManager.getAlias(tuple.get0()), ignoreStrategy));
 //    }
 //
 //    /**
@@ -671,7 +671,7 @@
 //        typeQueryEntity.with(repository);
 //        Tuple2<String, String> tuple = conditionResult(repository, property, value, factory);
 //        return (TypeQueryConditionGroupLogicExpression) addCondition(new SqlConditionExpressionBuilder(dialect,
-//                tuple.get1(), value, QueryOperator.GT, aliasManager.getAlias(tuple.get0()), ignorePolicy));
+//                tuple.get1(), value, QueryOperator.GT, aliasManager.getAlias(tuple.get0()), ignoreStrategy));
 //    }
 //
 //    /**
@@ -683,7 +683,7 @@
 //        typeQueryEntity.with(repository);
 //        Tuple3<String, String, Object> tuple = conditionResult(repository, property, factory);
 //        return (TypeQueryConditionGroupLogicExpression) addCondition(new SqlConditionExpressionBuilder(dialect,
-//                tuple.get1(), tuple.get2(), QueryOperator.GT, aliasManager.getAlias(tuple.get0()), ignorePolicy));
+//                tuple.get1(), tuple.get2(), QueryOperator.GT, aliasManager.getAlias(tuple.get0()), ignoreStrategy));
 //    }
 //
 //    /**
@@ -695,7 +695,7 @@
 //        typeQueryEntity.with(repository);
 //        Tuple2<String, String> tuple = conditionResult(repository, property, value, factory);
 //        return (TypeQueryConditionGroupLogicExpression) addCondition(new SqlConditionExpressionBuilder(dialect,
-//                tuple.get1(), value, QueryOperator.GT, aliasManager.getAlias(tuple.get0()), ignorePolicy));
+//                tuple.get1(), value, QueryOperator.GT, aliasManager.getAlias(tuple.get0()), ignoreStrategy));
 //    }
 //
 //    /**
@@ -707,7 +707,7 @@
 //        typeQueryEntity.with(repository);
 //        Tuple3<String, String, Object> tuple = conditionResult(repository, property, factory);
 //        return (TypeQueryConditionGroupLogicExpression) addCondition(new SqlConditionExpressionBuilder(dialect,
-//                tuple.get1(), tuple.get2(), QueryOperator.GT, aliasManager.getAlias(tuple.get0()), ignorePolicy));
+//                tuple.get1(), tuple.get2(), QueryOperator.GT, aliasManager.getAlias(tuple.get0()), ignoreStrategy));
 //    }
 //
 //    /**
@@ -719,7 +719,7 @@
 //        typeQueryEntity.with(repository);
 //        Tuple2<String, String> tuple = conditionResult(repository, property, value, factory);
 //        return (TypeQueryConditionGroupLogicExpression) addCondition(new SqlConditionExpressionBuilder(dialect,
-//                tuple.get1(), value, QueryOperator.GT, aliasManager.getAlias(tuple.get0()), ignorePolicy));
+//                tuple.get1(), value, QueryOperator.GT, aliasManager.getAlias(tuple.get0()), ignoreStrategy));
 //    }
 //
 //    /**
@@ -731,7 +731,7 @@
 //        typeQueryEntity.with(repository);
 //        Tuple3<String, String, Object> tuple = conditionResult(repository, property, factory);
 //        return (TypeQueryConditionGroupLogicExpression) addCondition(new SqlConditionExpressionBuilder(dialect,
-//                tuple.get1(), tuple.get2(), QueryOperator.GT, aliasManager.getAlias(tuple.get0()), ignorePolicy));
+//                tuple.get1(), tuple.get2(), QueryOperator.GT, aliasManager.getAlias(tuple.get0()), ignoreStrategy));
 //    }
 //
 //    /**
@@ -743,7 +743,7 @@
 //        typeQueryEntity.with(repository);
 //        Tuple2<String, String> tuple = conditionResult(repository, property, value, factory);
 //        return (TypeQueryConditionGroupLogicExpression) addCondition(new SqlConditionExpressionBuilder(dialect,
-//                tuple.get1(), value, QueryOperator.IN, aliasManager.getAlias(tuple.get0()), ignorePolicy));
+//                tuple.get1(), value, QueryOperator.IN, aliasManager.getAlias(tuple.get0()), ignoreStrategy));
 //    }
 //
 //    /**
@@ -755,7 +755,7 @@
 //        typeQueryEntity.with(repository);
 //        Tuple3<String, String, Object> tuple = conditionResult(repository, property, factory);
 //        return (TypeQueryConditionGroupLogicExpression) addCondition(new SqlConditionExpressionBuilder(dialect,
-//                tuple.get1(), tuple.get2(), QueryOperator.IN, aliasManager.getAlias(tuple.get0()), ignorePolicy));
+//                tuple.get1(), tuple.get2(), QueryOperator.IN, aliasManager.getAlias(tuple.get0()), ignoreStrategy));
 //    }
 //
 //    /**
@@ -776,7 +776,7 @@
 //        typeQueryEntity.with(repository);
 //        Tuple2<String, String> tuple = conditionResult(repository, property, value, factory);
 //        return (TypeQueryConditionGroupLogicExpression) addCondition(new SqlConditionExpressionBuilder(dialect,
-//                tuple.get1(), value, QueryOperator.INN, aliasManager.getAlias(tuple.get0()), ignorePolicy));
+//                tuple.get1(), value, QueryOperator.INN, aliasManager.getAlias(tuple.get0()), ignoreStrategy));
 //    }
 //
 //    /**
@@ -797,7 +797,7 @@
 //        typeQueryEntity.with(repository);
 //        Tuple2<String, String> tuple = conditionResult(repository, property, value, factory);
 //        return (TypeQueryConditionGroupLogicExpression) addCondition(new SqlConditionExpressionBuilder(dialect,
-//                tuple.get1(), value, QueryOperator.ISN, aliasManager.getAlias(tuple.get0()), ignorePolicy));
+//                tuple.get1(), value, QueryOperator.ISN, aliasManager.getAlias(tuple.get0()), ignoreStrategy));
 //    }
 //
 //    /**
@@ -809,7 +809,7 @@
 //        typeQueryEntity.with(repository);
 //        Tuple2<String, String> tuple = conditionResult(repository, property, value, factory);
 //        return (TypeQueryConditionGroupLogicExpression) addCondition(new SqlConditionExpressionBuilder(dialect,
-//                tuple.get1(), value, QueryOperator.LE, aliasManager.getAlias(tuple.get0()), ignorePolicy));
+//                tuple.get1(), value, QueryOperator.LE, aliasManager.getAlias(tuple.get0()), ignoreStrategy));
 //    }
 //
 //    /**
@@ -821,7 +821,7 @@
 //        typeQueryEntity.with(repository);
 //        Tuple3<String, String, Object> tuple = conditionResult(repository, property, factory);
 //        return (TypeQueryConditionGroupLogicExpression) addCondition(new SqlConditionExpressionBuilder(dialect,
-//                tuple.get1(), tuple.get2(), QueryOperator.LE, aliasManager.getAlias(tuple.get0()), ignorePolicy));
+//                tuple.get1(), tuple.get2(), QueryOperator.LE, aliasManager.getAlias(tuple.get0()), ignoreStrategy));
 //    }
 //
 //    /**
@@ -833,7 +833,7 @@
 //        typeQueryEntity.with(repository);
 //        Tuple2<String, String> tuple = conditionResult(repository, property, value, factory);
 //        return (TypeQueryConditionGroupLogicExpression) addCondition(new SqlConditionExpressionBuilder(dialect,
-//                tuple.get1(), value, QueryOperator.LE, aliasManager.getAlias(tuple.get0()), ignorePolicy));
+//                tuple.get1(), value, QueryOperator.LE, aliasManager.getAlias(tuple.get0()), ignoreStrategy));
 //    }
 //
 //    /**
@@ -845,7 +845,7 @@
 //        typeQueryEntity.with(repository);
 //        Tuple3<String, String, Object> tuple = conditionResult(repository, property, factory);
 //        return (TypeQueryConditionGroupLogicExpression) addCondition(new SqlConditionExpressionBuilder(dialect,
-//                tuple.get1(), tuple.get2(), QueryOperator.LE, aliasManager.getAlias(tuple.get0()), ignorePolicy));
+//                tuple.get1(), tuple.get2(), QueryOperator.LE, aliasManager.getAlias(tuple.get0()), ignoreStrategy));
 //    }
 //
 //    /**
@@ -857,7 +857,7 @@
 //        typeQueryEntity.with(repository);
 //        Tuple2<String, String> tuple = conditionResult(repository, property, value, factory);
 //        return (TypeQueryConditionGroupLogicExpression) addCondition(new SqlConditionExpressionBuilder(dialect,
-//                tuple.get1(), value, QueryOperator.LE, aliasManager.getAlias(tuple.get0()), ignorePolicy));
+//                tuple.get1(), value, QueryOperator.LE, aliasManager.getAlias(tuple.get0()), ignoreStrategy));
 //    }
 //
 //    /**
@@ -869,7 +869,7 @@
 //        typeQueryEntity.with(repository);
 //        Tuple3<String, String, Object> tuple = conditionResult(repository, property, factory);
 //        return (TypeQueryConditionGroupLogicExpression) addCondition(new SqlConditionExpressionBuilder(dialect,
-//                tuple.get1(), tuple.get2(), QueryOperator.LE, aliasManager.getAlias(tuple.get0()), ignorePolicy));
+//                tuple.get1(), tuple.get2(), QueryOperator.LE, aliasManager.getAlias(tuple.get0()), ignoreStrategy));
 //    }
 //
 //    /**
@@ -881,7 +881,7 @@
 //        typeQueryEntity.with(repository);
 //        Tuple2<String, String> tuple = conditionResult(repository, property, value, factory);
 //        return (TypeQueryConditionGroupLogicExpression) addCondition(new SqlConditionExpressionBuilder(dialect,
-//                tuple.get1(), value, QueryOperator.LE, aliasManager.getAlias(tuple.get0()), ignorePolicy));
+//                tuple.get1(), value, QueryOperator.LE, aliasManager.getAlias(tuple.get0()), ignoreStrategy));
 //    }
 //
 //    /**
@@ -893,7 +893,7 @@
 //        typeQueryEntity.with(repository);
 //        Tuple3<String, String, Object> tuple = conditionResult(repository, property, factory);
 //        return (TypeQueryConditionGroupLogicExpression) addCondition(new SqlConditionExpressionBuilder(dialect,
-//                tuple.get1(), tuple.get2(), QueryOperator.LE, aliasManager.getAlias(tuple.get0()), ignorePolicy));
+//                tuple.get1(), tuple.get2(), QueryOperator.LE, aliasManager.getAlias(tuple.get0()), ignoreStrategy));
 //    }
 //
 //    /**
@@ -905,7 +905,7 @@
 //        typeQueryEntity.with(repository);
 //        Tuple2<String, String> tuple = conditionResult(repository, property, value, factory);
 //        return (TypeQueryConditionGroupLogicExpression) addCondition(new SqlConditionExpressionBuilder(dialect,
-//                tuple.get1(), value, QueryOperator.LE, aliasManager.getAlias(tuple.get0()), ignorePolicy));
+//                tuple.get1(), value, QueryOperator.LE, aliasManager.getAlias(tuple.get0()), ignoreStrategy));
 //    }
 //
 //    /**
@@ -917,7 +917,7 @@
 //        typeQueryEntity.with(repository);
 //        Tuple3<String, String, Object> tuple = conditionResult(repository, property, factory);
 //        return (TypeQueryConditionGroupLogicExpression) addCondition(new SqlConditionExpressionBuilder(dialect,
-//                tuple.get1(), tuple.get2(), QueryOperator.LE, aliasManager.getAlias(tuple.get0()), ignorePolicy));
+//                tuple.get1(), tuple.get2(), QueryOperator.LE, aliasManager.getAlias(tuple.get0()), ignoreStrategy));
 //    }
 //
 //    /**
@@ -929,7 +929,7 @@
 //        typeQueryEntity.with(repository);
 //        Tuple2<String, String> tuple = conditionResult(repository, property, value, factory);
 //        return (TypeQueryConditionGroupLogicExpression) addCondition(new SqlConditionExpressionBuilder(dialect,
-//                tuple.get1(), value, QueryOperator.LE, aliasManager.getAlias(tuple.get0()), ignorePolicy));
+//                tuple.get1(), value, QueryOperator.LE, aliasManager.getAlias(tuple.get0()), ignoreStrategy));
 //    }
 //
 //    /**
@@ -941,7 +941,7 @@
 //        typeQueryEntity.with(repository);
 //        Tuple3<String, String, Object> tuple = conditionResult(repository, property, factory);
 //        return (TypeQueryConditionGroupLogicExpression) addCondition(new SqlConditionExpressionBuilder(dialect,
-//                tuple.get1(), tuple.get2(), QueryOperator.LE, aliasManager.getAlias(tuple.get0()), ignorePolicy));
+//                tuple.get1(), tuple.get2(), QueryOperator.LE, aliasManager.getAlias(tuple.get0()), ignoreStrategy));
 //    }
 //
 //    /**
@@ -953,7 +953,7 @@
 //        typeQueryEntity.with(repository);
 //        Tuple2<String, String> tuple = conditionResult(repository, property, value, factory);
 //        return (TypeQueryConditionGroupLogicExpression) addCondition(new SqlConditionExpressionBuilder(dialect,
-//                tuple.get1(), value, QueryOperator.LT, aliasManager.getAlias(tuple.get0()), ignorePolicy));
+//                tuple.get1(), value, QueryOperator.LT, aliasManager.getAlias(tuple.get0()), ignoreStrategy));
 //    }
 //
 //    /**
@@ -965,7 +965,7 @@
 //        typeQueryEntity.with(repository);
 //        Tuple3<String, String, Object> tuple = conditionResult(repository, property, factory);
 //        return (TypeQueryConditionGroupLogicExpression) addCondition(new SqlConditionExpressionBuilder(dialect,
-//                tuple.get1(), tuple.get2(), QueryOperator.LT, aliasManager.getAlias(tuple.get0()), ignorePolicy));
+//                tuple.get1(), tuple.get2(), QueryOperator.LT, aliasManager.getAlias(tuple.get0()), ignoreStrategy));
 //    }
 //
 //    /**
@@ -977,7 +977,7 @@
 //        typeQueryEntity.with(repository);
 //        Tuple2<String, String> tuple = conditionResult(repository, property, value, factory);
 //        return (TypeQueryConditionGroupLogicExpression) addCondition(new SqlConditionExpressionBuilder(dialect,
-//                tuple.get1(), value, QueryOperator.LT, aliasManager.getAlias(tuple.get0()), ignorePolicy));
+//                tuple.get1(), value, QueryOperator.LT, aliasManager.getAlias(tuple.get0()), ignoreStrategy));
 //    }
 //
 //    /**
@@ -989,7 +989,7 @@
 //        typeQueryEntity.with(repository);
 //        Tuple3<String, String, Object> tuple = conditionResult(repository, property, factory);
 //        return (TypeQueryConditionGroupLogicExpression) addCondition(new SqlConditionExpressionBuilder(dialect,
-//                tuple.get1(), tuple.get2(), QueryOperator.LT, aliasManager.getAlias(tuple.get0()), ignorePolicy));
+//                tuple.get1(), tuple.get2(), QueryOperator.LT, aliasManager.getAlias(tuple.get0()), ignoreStrategy));
 //    }
 //
 //    /**
@@ -1001,7 +1001,7 @@
 //        typeQueryEntity.with(repository);
 //        Tuple2<String, String> tuple = conditionResult(repository, property, value, factory);
 //        return (TypeQueryConditionGroupLogicExpression) addCondition(new SqlConditionExpressionBuilder(dialect,
-//                tuple.get1(), value, QueryOperator.LT, aliasManager.getAlias(tuple.get0()), ignorePolicy));
+//                tuple.get1(), value, QueryOperator.LT, aliasManager.getAlias(tuple.get0()), ignoreStrategy));
 //    }
 //
 //    /**
@@ -1013,7 +1013,7 @@
 //        typeQueryEntity.with(repository);
 //        Tuple3<String, String, Object> tuple = conditionResult(repository, property, factory);
 //        return (TypeQueryConditionGroupLogicExpression) addCondition(new SqlConditionExpressionBuilder(dialect,
-//                tuple.get1(), tuple.get2(), QueryOperator.LT, aliasManager.getAlias(tuple.get0()), ignorePolicy));
+//                tuple.get1(), tuple.get2(), QueryOperator.LT, aliasManager.getAlias(tuple.get0()), ignoreStrategy));
 //    }
 //
 //    /**
@@ -1025,7 +1025,7 @@
 //        typeQueryEntity.with(repository);
 //        Tuple2<String, String> tuple = conditionResult(repository, property, value, factory);
 //        return (TypeQueryConditionGroupLogicExpression) addCondition(new SqlConditionExpressionBuilder(dialect,
-//                tuple.get1(), value, QueryOperator.LT, aliasManager.getAlias(tuple.get0()), ignorePolicy));
+//                tuple.get1(), value, QueryOperator.LT, aliasManager.getAlias(tuple.get0()), ignoreStrategy));
 //    }
 //
 //    /**
@@ -1037,7 +1037,7 @@
 //        typeQueryEntity.with(repository);
 //        Tuple3<String, String, Object> tuple = conditionResult(repository, property, factory);
 //        return (TypeQueryConditionGroupLogicExpression) addCondition(new SqlConditionExpressionBuilder(dialect,
-//                tuple.get1(), tuple.get2(), QueryOperator.LT, aliasManager.getAlias(tuple.get0()), ignorePolicy));
+//                tuple.get1(), tuple.get2(), QueryOperator.LT, aliasManager.getAlias(tuple.get0()), ignoreStrategy));
 //    }
 //
 //    /**
@@ -1049,7 +1049,7 @@
 //        typeQueryEntity.with(repository);
 //        Tuple2<String, String> tuple = conditionResult(repository, property, value, factory);
 //        return (TypeQueryConditionGroupLogicExpression) addCondition(new SqlConditionExpressionBuilder(dialect,
-//                tuple.get1(), value, QueryOperator.LT, aliasManager.getAlias(tuple.get0()), ignorePolicy));
+//                tuple.get1(), value, QueryOperator.LT, aliasManager.getAlias(tuple.get0()), ignoreStrategy));
 //    }
 //
 //    /**
@@ -1061,7 +1061,7 @@
 //        typeQueryEntity.with(repository);
 //        Tuple3<String, String, Object> tuple = conditionResult(repository, property, factory);
 //        return (TypeQueryConditionGroupLogicExpression) addCondition(new SqlConditionExpressionBuilder(dialect,
-//                tuple.get1(), tuple.get2(), QueryOperator.LT, aliasManager.getAlias(tuple.get0()), ignorePolicy));
+//                tuple.get1(), tuple.get2(), QueryOperator.LT, aliasManager.getAlias(tuple.get0()), ignoreStrategy));
 //    }
 //
 //    /**
@@ -1073,7 +1073,7 @@
 //        typeQueryEntity.with(repository);
 //        Tuple2<String, String> tuple = conditionResult(repository, property, value, factory);
 //        return (TypeQueryConditionGroupLogicExpression) addCondition(new SqlConditionExpressionBuilder(dialect,
-//                tuple.get1(), value, QueryOperator.LT, aliasManager.getAlias(tuple.get0()), ignorePolicy));
+//                tuple.get1(), value, QueryOperator.LT, aliasManager.getAlias(tuple.get0()), ignoreStrategy));
 //    }
 //
 //    /**
@@ -1085,7 +1085,7 @@
 //        typeQueryEntity.with(repository);
 //        Tuple3<String, String, Object> tuple = conditionResult(repository, property, factory);
 //        return (TypeQueryConditionGroupLogicExpression) addCondition(new SqlConditionExpressionBuilder(dialect,
-//                tuple.get1(), tuple.get2(), QueryOperator.LT, aliasManager.getAlias(tuple.get0()), ignorePolicy));
+//                tuple.get1(), tuple.get2(), QueryOperator.LT, aliasManager.getAlias(tuple.get0()), ignoreStrategy));
 //    }
 //
 //    /**
@@ -1097,7 +1097,7 @@
 //        typeQueryEntity.with(repository);
 //        Tuple2<String, String> tuple = conditionResult(repository, property, value, factory);
 //        return (TypeQueryConditionGroupLogicExpression) addCondition(new SqlConditionExpressionBuilder(dialect,
-//                tuple.get1(), value, QueryOperator.EQ, aliasManager.getAlias(tuple.get0()), ignorePolicy));
+//                tuple.get1(), value, QueryOperator.EQ, aliasManager.getAlias(tuple.get0()), ignoreStrategy));
 //    }
 //
 //    /**
@@ -1109,7 +1109,7 @@
 //        typeQueryEntity.with(repository);
 //        Tuple3<String, String, Object> tuple = conditionResult(repository, property, factory);
 //        return (TypeQueryConditionGroupLogicExpression) addCondition(new SqlConditionExpressionBuilder(dialect,
-//                tuple.get1(), tuple.get2(), QueryOperator.NE, aliasManager.getAlias(tuple.get0()), ignorePolicy));
+//                tuple.get1(), tuple.get2(), QueryOperator.NE, aliasManager.getAlias(tuple.get0()), ignoreStrategy));
 //    }
 //
 //    /**
@@ -1121,7 +1121,7 @@
 //        typeQueryEntity.with(repository);
 //        Tuple2<String, String> tuple = conditionResult(repository, property, value, factory);
 //        return (TypeQueryConditionGroupLogicExpression) addCondition(new SqlConditionExpressionBuilder(dialect,
-//                tuple.get1(), value, QueryOperator.NIN, aliasManager.getAlias(tuple.get0()), ignorePolicy));
+//                tuple.get1(), value, QueryOperator.NIN, aliasManager.getAlias(tuple.get0()), ignoreStrategy));
 //    }
 //
 //    /**
@@ -1133,7 +1133,7 @@
 //        typeQueryEntity.with(repository);
 //        Tuple3<String, String, Object> tuple = conditionResult(repository, property, factory);
 //        return (TypeQueryConditionGroupLogicExpression) addCondition(new SqlConditionExpressionBuilder(dialect,
-//                tuple.get1(), tuple.get2(), QueryOperator.NE, aliasManager.getAlias(tuple.get0()), ignorePolicy));
+//                tuple.get1(), tuple.get2(), QueryOperator.NE, aliasManager.getAlias(tuple.get0()), ignoreStrategy));
 //    }
 //
 //    /**
@@ -1145,7 +1145,7 @@
 //        typeQueryEntity.with(repository);
 //        Tuple2<String, String> tuple = conditionResult(repository, property, value, factory);
 //        return (TypeQueryConditionGroupLogicExpression) addCondition(new SqlConditionExpressionBuilder(dialect,
-//                tuple.get1(), value, QueryOperator.SW, aliasManager.getAlias(tuple.get0()), ignorePolicy));
+//                tuple.get1(), value, QueryOperator.SW, aliasManager.getAlias(tuple.get0()), ignoreStrategy));
 //    }
 //
 //    /**
@@ -1157,7 +1157,7 @@
 //        typeQueryEntity.with(repository);
 //        Tuple3<String, String, Object> tuple = conditionResult(repository, property, factory);
 //        return (TypeQueryConditionGroupLogicExpression) addCondition(new SqlConditionExpressionBuilder(dialect,
-//                tuple.get1(), tuple.get2(), QueryOperator.SW, aliasManager.getAlias(tuple.get0()), ignorePolicy));
+//                tuple.get1(), tuple.get2(), QueryOperator.SW, aliasManager.getAlias(tuple.get0()), ignoreStrategy));
 //    }
 //
 //    /**
@@ -1169,7 +1169,7 @@
 //        typeQueryEntity.with(repository);
 //        Tuple2<String, String> tuple = conditionResult(repository, property, value, factory);
 //        return (TypeQueryConditionGroupLogicExpression) addCondition(new SqlConditionExpressionBuilder(dialect,
-//                tuple.get1(), value, QueryOperator.LK, aliasManager.getAlias(tuple.get0()), ignorePolicy));
+//                tuple.get1(), value, QueryOperator.LK, aliasManager.getAlias(tuple.get0()), ignoreStrategy));
 //    }
 //
 //    /**
@@ -1181,6 +1181,6 @@
 //        typeQueryEntity.with(repository);
 //        Tuple3<String, String, Object> tuple = conditionResult(repository, property, factory);
 //        return (TypeQueryConditionGroupLogicExpression) addCondition(new SqlConditionExpressionBuilder(dialect,
-//                tuple.get1(), tuple.get2(), QueryOperator.LK, aliasManager.getAlias(tuple.get0()), ignorePolicy));
+//                tuple.get1(), tuple.get2(), QueryOperator.LK, aliasManager.getAlias(tuple.get0()), ignoreStrategy));
 //    }
 //}

@@ -8,6 +8,7 @@ import cn.featherfly.common.repository.Repository;
 import cn.featherfly.hammer.dsl.execute.Deleter;
 import cn.featherfly.hammer.sqldb.SqldbHammerException;
 import cn.featherfly.hammer.sqldb.jdbc.Jdbc;
+import cn.featherfly.hammer.sqldb.jdbc.dsl.entity.execute.SqlEntityDelete;
 
 /**
  * SqlDeleter.

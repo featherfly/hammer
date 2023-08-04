@@ -56,7 +56,7 @@ public class SqlQueryWith implements QueryWith, SqlQueryWithOn, SqlQueryWithEnti
     /** The join. */
     private Join join;
 
-    private Predicate<Object> ignorePolicy;
+    private Predicate<Object> ignoreStrategy;
 
     /**
      * Instantiates a new sql query with.
@@ -68,13 +68,13 @@ public class SqlQueryWith implements QueryWith, SqlQueryWithOn, SqlQueryWithEnti
      * @param selectTableColumn        the select table column
      * @param joinTableName            the join table name
      * @param joinTableAlias           the join table alias
-     * @param ignorePolicy             the ignore policy
+     * @param ignoreStrategy             the ignore strategy
      */
     public SqlQueryWith(SqlQueryEntityProperties sqlQueryEntityProperties, AliasManager aliasManager,
             SqlPageFactory sqlPageFactory, String selectTableAlis, String selectTableColumn, String joinTableName,
-            String joinTableAlias, Predicate<Object> ignorePolicy) {
+            String joinTableAlias, Predicate<Object> ignoreStrategy) {
         this(sqlQueryEntityProperties, aliasManager, sqlPageFactory, selectTableAlis, selectTableColumn, joinTableName,
-                joinTableAlias, Join.INNER_JOIN, ignorePolicy);
+                joinTableAlias, Join.INNER_JOIN, ignoreStrategy);
     }
 
     /**
@@ -88,13 +88,13 @@ public class SqlQueryWith implements QueryWith, SqlQueryWithOn, SqlQueryWithEnti
      * @param joinTableName            the join table name
      * @param joinTableAlias           the join table alias
      * @param join                     the join
-     * @param ignorePolicy             the ignore policy
+     * @param ignoreStrategy             the ignore strategy
      */
     public SqlQueryWith(SqlQueryEntityProperties sqlQueryEntityProperties, AliasManager aliasManager,
             SqlPageFactory sqlPageFactory, String selectTableAlis, String selectTableColumn, String joinTableName,
-            String joinTableAlias, Join join, Predicate<Object> ignorePolicy) {
+            String joinTableAlias, Join join, Predicate<Object> ignoreStrategy) {
         super();
-        AssertIllegalArgument.isNotNull(ignorePolicy, "ignorePolicy");
+        AssertIllegalArgument.isNotNull(ignoreStrategy, "ignoreStrategy");
         this.sqlQueryEntityProperties = sqlQueryEntityProperties;
         this.aliasManager = aliasManager;
         this.sqlPageFactory = sqlPageFactory;
@@ -103,7 +103,7 @@ public class SqlQueryWith implements QueryWith, SqlQueryWithOn, SqlQueryWithEnti
         this.joinTableName = joinTableName;
         this.joinTableAlias = joinTableAlias;
         this.join = join;
-        this.ignorePolicy = ignorePolicy;
+        this.ignoreStrategy = ignoreStrategy;
     }
 
     /**
@@ -112,7 +112,7 @@ public class SqlQueryWith implements QueryWith, SqlQueryWithOn, SqlQueryWithEnti
     @Override
     public SqlQueryWithOn join(String repositoryName) {
         return new SqlQueryWith(sqlQueryEntityProperties, aliasManager, sqlPageFactory, selectTableAlis,
-                selectTableColumn, repositoryName, aliasManager.put(repositoryName), ignorePolicy);
+                selectTableColumn, repositoryName, aliasManager.put(repositoryName), ignoreStrategy);
     }
 
     /**
@@ -247,8 +247,10 @@ public class SqlQueryWith implements QueryWith, SqlQueryWithOn, SqlQueryWithEnti
      */
     @Override
     public RepositoryQueryConditionGroupExpression where() {
-        return new RepositorySqlQueryExpression(sqlQueryEntityProperties.jdbc, aliasManager,
-                sqlQueryEntityProperties.selectBuilder, sqlPageFactory, ignorePolicy);
+        // IMPLSOON 后续来实现，先让编译通过
+        return null;
+        //        return new RepositorySqlQueryExpression(sqlQueryEntityProperties.jdbc, aliasManager,
+        //                sqlQueryEntityProperties.selectBuilder, sqlPageFactory, ignoreStrategy);
     }
 
     /**
@@ -256,13 +258,15 @@ public class SqlQueryWith implements QueryWith, SqlQueryWithOn, SqlQueryWithEnti
      */
     @Override
     public RepositoryQueryConditionGroupExpression where(Consumer<RepositoryQueryConditionGroupExpression> consumer) {
-        RepositorySqlQueryExpression repositorySqlQueryExpression = new RepositorySqlQueryExpression(
-                sqlQueryEntityProperties.jdbc, aliasManager, sqlQueryEntityProperties.selectBuilder, sqlPageFactory,
-                ignorePolicy);
-        if (consumer != null) {
-            consumer.accept(repositorySqlQueryExpression);
-        }
-        return repositorySqlQueryExpression;
+        // IMPLSOON 后续来实现，先让编译通过
+        return null;
+        //        RepositorySqlQueryExpression repositorySqlQueryExpression = new RepositorySqlQueryExpression(
+        //                sqlQueryEntityProperties.jdbc, aliasManager, sqlQueryEntityProperties.selectBuilder, sqlPageFactory,
+        //                ignoreStrategy);
+        //        if (consumer != null) {
+        //            consumer.accept(repositorySqlQueryExpression);
+        //        }
+        //        return repositorySqlQueryExpression;
     }
 
     /**

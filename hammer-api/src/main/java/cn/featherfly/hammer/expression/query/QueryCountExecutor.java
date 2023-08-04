@@ -12,6 +12,5 @@ public interface QueryCountExecutor {
      *
      * @return count number
      */
-    // YUFEI_TODO 后续改为long
-    Long count();
+    long count();
 }

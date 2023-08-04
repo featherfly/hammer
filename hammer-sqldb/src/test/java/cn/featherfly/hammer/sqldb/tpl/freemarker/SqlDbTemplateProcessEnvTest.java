@@ -10,8 +10,8 @@
  */
 package cn.featherfly.hammer.sqldb.tpl.freemarker;
 
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertNull;
+import static org.testng.Assert.assertNotNull;
+import static org.testng.Assert.assertNull;
 
 import org.testng.annotations.Test;
 

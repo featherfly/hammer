@@ -6,8 +6,8 @@ import java.io.Serializable;
 import org.springframework.cache.annotation.Cacheable;
 
 import cn.featherfly.hammer.Hammer;
-import cn.featherfly.hammer.sqldb.jdbc.vo.User;
-import cn.featherfly.hammer.sqldb.jdbc.vo.UserInfo;
+import cn.featherfly.hammer.sqldb.jdbc.vo.r.User;
+import cn.featherfly.hammer.sqldb.jdbc.vo.r.UserInfo;
 import cn.featherfly.hammer.tpl.annotation.Mapper;
 import cn.featherfly.hammer.tpl.annotation.Param;
 

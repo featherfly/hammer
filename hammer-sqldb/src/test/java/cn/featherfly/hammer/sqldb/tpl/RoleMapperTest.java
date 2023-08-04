@@ -1,8 +1,8 @@
 
 package cn.featherfly.hammer.sqldb.tpl;
 
-import static org.junit.Assert.assertTrue;
 import static org.testng.Assert.assertEquals;
+import static org.testng.Assert.assertTrue;
 
 import java.util.HashSet;
 import java.util.List;
@@ -19,7 +19,7 @@ import cn.featherfly.common.structure.page.SimplePagination;
 import cn.featherfly.hammer.Hammer;
 import cn.featherfly.hammer.sqldb.SqldbHammerImpl;
 import cn.featherfly.hammer.sqldb.jdbc.JdbcTestBase;
-import cn.featherfly.hammer.sqldb.jdbc.vo.Role;
+import cn.featherfly.hammer.sqldb.jdbc.vo.r.Role;
 import cn.featherfly.hammer.tpl.TplConfigFactoryImpl;
 import cn.featherfly.hammer.tpl.mapper.TplDynamicExecutorFactory;
 

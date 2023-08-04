@@ -1,9 +1,7 @@
 
 package cn.featherfly.hammer.expression.entity.query;
 
-import cn.featherfly.hammer.expression.condition.type.EntitySortExpression;
-import cn.featherfly.hammer.expression.query.type.EntityQueryConditionLimit;
-import cn.featherfly.hammer.expression.query.type.EntityQueryLimitExecutor;
+import cn.featherfly.hammer.expression.entity.query.sort.EntitySortExpression;
 
 /**
  * The Interface EntityQuerySortExpression.
@@ -11,7 +9,6 @@ import cn.featherfly.hammer.expression.query.type.EntityQueryLimitExecutor;
  * @author zhongj
  * @param <E> the element type
  */
-public interface EntityQuerySortExpression<E> extends EntitySortExpression<E, EntityQuerySortExpression<E>>,
-        EntityQueryConditionLimit<E>, EntityQueryLimitExecutor<E> {
+public interface EntityQuerySortExpression<E> extends EntitySortExpression<E, EntityQuerySortedExpression<E>> {
 
 }

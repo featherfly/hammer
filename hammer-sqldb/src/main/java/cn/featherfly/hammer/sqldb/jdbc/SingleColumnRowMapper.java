@@ -13,6 +13,7 @@ import cn.featherfly.common.db.mapping.JdbcMappingException;
 import cn.featherfly.common.db.mapping.SqlResultSet;
 import cn.featherfly.common.db.mapping.SqlTypeMappingManager;
 import cn.featherfly.common.lang.AssertIllegalArgument;
+import cn.featherfly.common.lang.Strings;
 import cn.featherfly.common.repository.mapping.RowMapper;
 
 /**
@@ -51,6 +52,8 @@ public class SingleColumnRowMapper<T> implements cn.featherfly.common.repository
     @Nullable
     private SqlTypeMappingManager manager;
 
+    private String prefix;
+
     /**
      * Create a new {@code SingleColumnRowMapper}.
      *
@@ -58,8 +61,20 @@ public class SingleColumnRowMapper<T> implements cn.featherfly.common.repository
      * @param manager      the manager
      */
     public SingleColumnRowMapper(Class<T> requiredType, SqlTypeMappingManager manager) {
+        this(requiredType, null, manager);
+    }
+
+    /**
+     * Create a new {@code SingleColumnRowMapper}.
+     *
+     * @param requiredType the type that each result object is expected to match
+     * @param prefix       the prefix
+     * @param manager      the manager
+     */
+    public SingleColumnRowMapper(Class<T> requiredType, String prefix, SqlTypeMappingManager manager) {
         setRequiredType(requiredType);
         this.manager = manager;
+        this.prefix = prefix;
     }
 
     /**
@@ -115,14 +130,40 @@ public class SingleColumnRowMapper<T> implements cn.featherfly.common.repository
     public T mapRow(ResultSet rs, int rowNum) throws SQLException {
         // Validate column count.
         ResultSetMetaData rsmd = rs.getMetaData();
-        int nrOfColumns = rsmd.getColumnCount();
-        if (nrOfColumns != 1) {
-            throw new JdbcException("Incorrect column count: expected 1, actual " + nrOfColumns);
-            //            throw new IncorrectResultSetColumnCountException(1, nrOfColumns);
-        }
+        if (prefix == null) {
+            int nrOfColumns = rsmd.getColumnCount();
+            if (nrOfColumns != 1) {
+                throw new JdbcException("Incorrect column count: expected 1, actual " + nrOfColumns);
+                //            throw new IncorrectResultSetColumnCountException(1, nrOfColumns);
+            }
 
-        // Extract column value from JDBC ResultSet.
-        return (T) getColumnValue(rs, 1, this.requiredType);
+            // Extract column value from JDBC ResultSet.
+            return (T) getColumnValue(rs, 1, requiredType);
+        } else {
+            int matchIndex = -1;
+            if (rowNum == 0) {
+                int columnCount = rsmd.getColumnCount();
+                String matchFiled = null;
+                for (int index = 1; index <= columnCount; index++) {
+                    String fieldName = JdbcUtils.getColumnName(rs, index);
+                    if (fieldName.startsWith(prefix)) {
+                        if (matchFiled != null) {
+                            throw new JdbcException(
+                                    Strings.format("there is more than one column name [{0},{1}] with prefix {2}",
+                                            matchFiled, fieldName, prefix));
+                        }
+                        matchFiled = fieldName;
+                        matchIndex = index;
+                    }
+                }
+            }
+
+            if (matchIndex == -1) {
+                throw new JdbcException("there is no column name with prefix " + prefix);
+            }
+            // TODO 未测试
+            return (T) getColumnValue(rs, matchIndex, requiredType);
+        }
         //        Object result = getColumnValue(rs, 1, this.requiredType);
         //        if (result != null && this.requiredType != null && !this.requiredType.isInstance(result)) {
         //            // Extracted value does not match already: try to convert it.

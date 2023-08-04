@@ -9,7 +9,7 @@ import cn.featherfly.hammer.expression.entity.query.EntityQueryConditionGroupLog
 import cn.featherfly.hammer.expression.entity.query.EntityQuerySortExpression5;
 
 /**
- * type query relation entity expression.
+ * The Interface EntityQueryRelateExpression4RRR.
  *
  * @author zhongj
  * @param <E>  the element type

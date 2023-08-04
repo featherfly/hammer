@@ -7,7 +7,7 @@ import cn.featherfly.common.operator.QueryOperator.QueryPolicy;
 import cn.featherfly.common.repository.Field;
 
 /**
- * NotEqualsExpressoin .
+ * NotEqualsExpression .
  *
  * @author zhongj
  * @param <C> the generic type

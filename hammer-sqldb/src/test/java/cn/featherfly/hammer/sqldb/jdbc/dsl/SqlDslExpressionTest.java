@@ -12,7 +12,8 @@ import org.testng.annotations.Test;
 
 import cn.featherfly.common.db.builder.dml.basic.SqlDeleteFromBasicBuilder;
 import cn.featherfly.common.lang.UUIDGenerator;
-import cn.featherfly.common.repository.IgnorePolicy;
+import cn.featherfly.common.lang.function.SerializableFunction;
+import cn.featherfly.common.repository.IgnoreStrategy;
 import cn.featherfly.common.repository.SimpleAliasRepository;
 import cn.featherfly.common.repository.SimpleRepository;
 import cn.featherfly.hammer.sqldb.SqldbHammerImpl;
@@ -21,9 +22,9 @@ import cn.featherfly.hammer.sqldb.jdbc.dsl.execute.SqlConditionGroupExpression;
 import cn.featherfly.hammer.sqldb.jdbc.dsl.execute.SqlDeleteExpression;
 import cn.featherfly.hammer.sqldb.jdbc.dsl.execute.SqlDeleter;
 import cn.featherfly.hammer.sqldb.jdbc.dsl.execute.SqlUpdater;
-import cn.featherfly.hammer.sqldb.jdbc.vo.DistrictDivision;
-import cn.featherfly.hammer.sqldb.jdbc.vo.User;
-import cn.featherfly.hammer.sqldb.jdbc.vo.UserInfo;
+import cn.featherfly.hammer.sqldb.jdbc.vo.r.DistrictDivision;
+import cn.featherfly.hammer.sqldb.jdbc.vo.r.User;
+import cn.featherfly.hammer.sqldb.jdbc.vo.r.UserInfo;
 
 /**
  * SqlDslExpressionTest.
@@ -53,7 +54,7 @@ public class SqlDslExpressionTest extends JdbcTestBase {
 
     @Test
     public void testSqlConditionGroupExpressionBuilder() {
-        SqlConditionGroupExpression builder = new SqlConditionGroupExpression(jdbc, IgnorePolicy.EMPTY);
+        SqlConditionGroupExpression builder = new SqlConditionGroupExpression(jdbc, IgnoreStrategy.EMPTY);
         builder.eq("name", name).and().eq("pwd", pwd).and().group().eq("sex", sex).or().gt("age", age);
 
         System.out.println(builder.build());
@@ -66,7 +67,7 @@ public class SqlDslExpressionTest extends JdbcTestBase {
 
     @Test
     public void testSqlConditionGroupExpressionBuilder2() {
-        SqlConditionGroupExpression builder = new SqlConditionGroupExpression(jdbc, IgnorePolicy.EMPTY);
+        SqlConditionGroupExpression builder = new SqlConditionGroupExpression(jdbc, IgnoreStrategy.EMPTY);
         // 测试忽略策略为NONE
 
         String mobile = null;
@@ -77,7 +78,7 @@ public class SqlDslExpressionTest extends JdbcTestBase {
         params2.add(age);
         params2.add(mobile);
 
-        builder = new SqlConditionGroupExpression(jdbc, IgnorePolicy.NONE);
+        builder = new SqlConditionGroupExpression(jdbc, IgnoreStrategy.NONE);
         builder.eq("name", name).and().eq("pwd", pwd).and().group().eq("sex", sex).or().gt("age", age).endGroup().and()
                 .eq("mobile", mobile);
 
@@ -165,8 +166,10 @@ public class SqlDslExpressionTest extends JdbcTestBase {
             u.setDivision(division);
             hammer.save(u);
         }
-        no = sqlDeleter.delete(UserInfo.class).where()
-                .eq(UserInfo::getDivision, DistrictDivision::getProvince, province).execute();
+        //        no = sqlDeleter.delete(UserInfo.class).where()
+        //                .eq(UserInfo::getDivision, DistrictDivision::getProvince, province).execute();
+        no = sqlDeleter.delete(UserInfo.class).where().property(UserInfo::getDivision)
+                .property(DistrictDivision::getProvince).eq(province).execute();
         assertEquals(no, size);
 
         for (int i = 0; i < size; i++) {
@@ -183,7 +186,9 @@ public class SqlDslExpressionTest extends JdbcTestBase {
         query.setDivision(new DistrictDivision());
         query.getDivision().setProvince(province);
 
-        no = sqlDeleter.delete(UserInfo.class).where().eq(query::getDivision, DistrictDivision::getProvince).execute();
+        //        no = sqlDeleter.delete(UserInfo.class).where().eq(query::getDivision, DistrictDivision::getProvince).execute();
+        no = sqlDeleter.delete(UserInfo.class).where().property(UserInfo::getDivision)
+                .property(DistrictDivision::getProvince).eq(query.getDivision().getProvince()).execute();
         assertEquals(no, size);
     }
 
@@ -227,7 +232,7 @@ public class SqlDslExpressionTest extends JdbcTestBase {
         assertTrue(no == 1);
 
         no = sqlUpdater.update(User.class).property(User::getPwd).set("222222").where()
-                .in(User::getId, new Integer[] { 4, 5 }).execute();
+                .in((SerializableFunction<User, Integer>) User::getId, new Integer[] { 4, 5 }).execute();
         assertTrue(no == 2);
 
         no = sqlUpdater.update(User.class).property(User::getPwd).set("222222").where().in(User::getId, 4, 5).execute();

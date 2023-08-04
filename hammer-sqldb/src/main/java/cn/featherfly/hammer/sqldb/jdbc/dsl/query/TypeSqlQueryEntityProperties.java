@@ -47,11 +47,11 @@
 //     * @param factory        the factory
 //     * @param sqlPageFactory the sql page factory
 //     * @param aliasManager   aliasManager
-//     * @param ignorePolicy   the ignore policy
+//     * @param ignoreStrategy   the ignore strategy
 //     */
 //    public TypeSqlQueryEntityProperties(Jdbc jdbc, JdbcClassMapping<?> classMapping, JdbcMappingFactory factory,
-//            SqlPageFactory sqlPageFactory, AliasManager aliasManager, Predicate<Object> ignorePolicy) {
-//        super(jdbc, classMapping, factory, sqlPageFactory, aliasManager, ignorePolicy);
+//            SqlPageFactory sqlPageFactory, AliasManager aliasManager, Predicate<Object> ignoreStrategy) {
+//        super(jdbc, classMapping, factory, sqlPageFactory, aliasManager, ignoreStrategy);
 //    }
 //
 //    /**
@@ -60,7 +60,7 @@
 //    @Override
 //    public TypeQueryConditionGroupExpression where() {
 //        return new TypeSqlQueryExpression(jdbc, classMapping, this, factory, sqlPageFactory, aliasManager,
-//                selectBuilder, ignorePolicy);
+//                selectBuilder, ignoreStrategy);
 //    }
 //
 //    /**
@@ -70,7 +70,7 @@
 //    public TypeQueryConditionGroupExpression where(
 //            Consumer<ConditionGroupConfig<TypeQueryConditionGroupExpression>> consumer) {
 //        TypeSqlQueryExpression typeSqlQueryExpression = new TypeSqlQueryExpression(jdbc, classMapping, this, factory,
-//                sqlPageFactory, aliasManager, selectBuilder, ignorePolicy);
+//                sqlPageFactory, aliasManager, selectBuilder, ignoreStrategy);
 //        if (consumer != null) {
 //            consumer.accept(typeSqlQueryExpression);
 //        }
@@ -83,7 +83,7 @@
 //    @Override
 //    public <E> List<E> list() {
 //        return new TypeSqlQueryExpression(jdbc, classMapping, this, factory, sqlPageFactory, aliasManager,
-//                selectBuilder, ignorePolicy).list();
+//                selectBuilder, ignoreStrategy).list();
 //    }
 //
 //    /**
@@ -92,7 +92,7 @@
 //    @Override
 //    public TypeQueryLimitExecutor limit(Integer limit) {
 //        return new TypeSqlQueryExpression(jdbc, classMapping, this, factory, sqlPageFactory, aliasManager,
-//                selectBuilder, ignorePolicy).limit(limit);
+//                selectBuilder, ignoreStrategy).limit(limit);
 //    }
 //
 //    /**
@@ -101,7 +101,7 @@
 //    @Override
 //    public TypeQueryLimitExecutor limit(Integer offset, Integer limit) {
 //        return new TypeSqlQueryExpression(jdbc, classMapping, this, factory, sqlPageFactory, aliasManager,
-//                selectBuilder, ignorePolicy).limit(offset, limit);
+//                selectBuilder, ignoreStrategy).limit(offset, limit);
 //    }
 //
 //    /**
@@ -110,7 +110,7 @@
 //    @Override
 //    public TypeQueryLimitExecutor limit(Page page) {
 //        return new TypeSqlQueryExpression(jdbc, classMapping, this, factory, sqlPageFactory, aliasManager,
-//                selectBuilder, ignorePolicy).limit(page);
+//                selectBuilder, ignoreStrategy).limit(page);
 //    }
 //
 //    //    /**
@@ -119,7 +119,7 @@
 //    //    @Override
 //    //    public Long count() {
 //    //        return new SqlQueryExpression(jdbc, sqlPageFactory, classMapping,
-//    //                selectBuilder.addColumn(Chars.STAR, AggregateFunction.COUNT), ignorePolicy).longInt();
+//    //                selectBuilder.addColumn(Chars.STAR, AggregateFunction.COUNT), ignoreStrategy).longInt();
 //    //    }
 //
 //    /**
@@ -188,7 +188,7 @@
 //            PropertyMapping pm = cm.getPropertyMapping(name);
 //            TypeSqlQueryWith typeSqlQueryWith = new TypeSqlQueryWith(this, aliasManager, factory, sqlPageFactory, cm,
 //                    tableAlias, pm.getRepositoryFieldName(), joinClassMapping,
-//                    getPkMapping(joinClassMapping).getRepositoryFieldName(), name, ignorePolicy);
+//                    getPkMapping(joinClassMapping).getRepositoryFieldName(), name, ignoreStrategy);
 //            typeSqlQueryWiths.add(typeSqlQueryWith);
 //            return typeSqlQueryWith;
 //        } else if (ClassUtils.isParent(cm.getType(), joinInfo.getPropertyType())) {
@@ -198,7 +198,7 @@
 //            PropertyMapping pm = joinClassMapping.getPropertyMapping(name);
 //
 //            TypeSqlQueryWith typeSqlQueryWith = new TypeSqlQueryWith(this, aliasManager, factory, sqlPageFactory, cm,
-//                    tableAlias, getIdName(), joinClassMapping, pm.getRepositoryFieldName(), ignorePolicy);
+//                    tableAlias, getIdName(), joinClassMapping, pm.getRepositoryFieldName(), ignoreStrategy);
 //            typeSqlQueryWiths.add(typeSqlQueryWith);
 //            return typeSqlQueryWith;
 //        } else {

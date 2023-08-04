@@ -42,7 +42,7 @@ public interface QueryEntityExpression<Q extends QueryEntityPropertiesExpression
      * 设置id.
      *
      * @param propertyName the property name
-     * @return the q
+     * @return the query fetched expression
      */
     Q id(String propertyName);
 
@@ -52,7 +52,7 @@ public interface QueryEntityExpression<Q extends QueryEntityPropertiesExpression
      * @param <T>          the generic type
      * @param <R>          the generic type
      * @param propertyName the property name
-     * @return the q
+     * @return the query fetched expression
      */
     <T, R> Q id(SerializableFunction<T, R> propertyName);
 
@@ -65,7 +65,7 @@ public interface QueryEntityExpression<Q extends QueryEntityPropertiesExpression
      * Count.
      *
      * @param propertyName the property name
-     * @return the q
+     * @return the query fetched expression
      */
     default Q count(String propertyName) {
         return count(false, propertyName);
@@ -76,9 +76,11 @@ public interface QueryEntityExpression<Q extends QueryEntityPropertiesExpression
      *
      * @param distinct     the distinct
      * @param propertyName the property name
-     * @return the q
+     * @return the query fetched expression
      */
-    Q count(boolean distinct, String propertyName);
+    default Q count(boolean distinct, String propertyName) {
+        return property(AggregateFunction.COUNT, distinct, propertyName);
+    }
 
     /**
      * Count.
@@ -86,7 +88,7 @@ public interface QueryEntityExpression<Q extends QueryEntityPropertiesExpression
      * @param <T>          the generic type
      * @param <R>          the generic type
      * @param propertyName the property name
-     * @return the q
+     * @return the query fetched expression
      */
     default <T, R> Q count(SerializableFunction<T, R> propertyName) {
         return count(false, propertyName);
@@ -99,15 +101,17 @@ public interface QueryEntityExpression<Q extends QueryEntityPropertiesExpression
      * @param <R>          the generic type
      * @param distinct     the distinct
      * @param propertyName the property name
-     * @return the q
+     * @return the query fetched expression
      */
-    <T, R> Q count(boolean distinct, SerializableFunction<T, R> propertyName);
+    default <T, R> Q count(boolean distinct, SerializableFunction<T, R> propertyName) {
+        return property(AggregateFunction.COUNT, distinct, propertyName);
+    }
 
     /**
      * Sum.
      *
      * @param propertyName the property name
-     * @return the q
+     * @return the query fetched expression
      */
     default Q sum(String propertyName) {
         return sum(false, propertyName);
@@ -118,9 +122,11 @@ public interface QueryEntityExpression<Q extends QueryEntityPropertiesExpression
      *
      * @param distinct     the distinct
      * @param propertyName the property name
-     * @return the q
+     * @return the query fetched expression
      */
-    Q sum(boolean distinct, String propertyName);
+    default Q sum(boolean distinct, String propertyName) {
+        return property(AggregateFunction.SUM, distinct, propertyName);
+    }
 
     /**
      * Sum.
@@ -128,7 +134,7 @@ public interface QueryEntityExpression<Q extends QueryEntityPropertiesExpression
      * @param <T>          the generic type
      * @param <R>          the generic type
      * @param propertyName the property name
-     * @return the q
+     * @return the query fetched expression
      */
     default <T, R> Q sum(SerializableFunction<T, R> propertyName) {
         return sum(false, propertyName);
@@ -141,15 +147,17 @@ public interface QueryEntityExpression<Q extends QueryEntityPropertiesExpression
      * @param <R>          the generic type
      * @param distinct     the distinct
      * @param propertyName the property name
-     * @return the q
+     * @return the query fetched expression
      */
-    <T, R> Q sum(boolean distinct, SerializableFunction<T, R> propertyName);
+    default <T, R> Q sum(boolean distinct, SerializableFunction<T, R> propertyName) {
+        return property(AggregateFunction.SUM, distinct, propertyName);
+    }
 
     /**
      * Max.
      *
      * @param propertyName the property name
-     * @return the q
+     * @return the query fetched expression
      */
     default Q max(String propertyName) {
         return max(false, propertyName);
@@ -160,9 +168,11 @@ public interface QueryEntityExpression<Q extends QueryEntityPropertiesExpression
      *
      * @param distinct     the distinct
      * @param propertyName the property name
-     * @return the q
+     * @return the query fetched expression
      */
-    Q max(boolean distinct, String propertyName);
+    default Q max(boolean distinct, String propertyName) {
+        return property(AggregateFunction.MAX, distinct, propertyName);
+    }
 
     /**
      * Max.
@@ -170,7 +180,7 @@ public interface QueryEntityExpression<Q extends QueryEntityPropertiesExpression
      * @param <T>          the generic type
      * @param <R>          the generic type
      * @param propertyName the property name
-     * @return the q
+     * @return the query fetched expression
      */
     default <T, R> Q max(SerializableFunction<T, R> propertyName) {
         return max(false, propertyName);
@@ -183,15 +193,17 @@ public interface QueryEntityExpression<Q extends QueryEntityPropertiesExpression
      * @param <R>          the generic type
      * @param distinct     the distinct
      * @param propertyName the property name
-     * @return the q
+     * @return the query fetched expression
      */
-    <T, R> Q max(boolean distinct, SerializableFunction<T, R> propertyName);
+    default <T, R> Q max(boolean distinct, SerializableFunction<T, R> propertyName) {
+        return property(AggregateFunction.MAX, distinct, propertyName);
+    }
 
     /**
      * Min.
      *
      * @param propertyName the property name
-     * @return the q
+     * @return the query fetched expression
      */
     default Q min(String propertyName) {
         return min(false, propertyName);
@@ -202,9 +214,11 @@ public interface QueryEntityExpression<Q extends QueryEntityPropertiesExpression
      *
      * @param distinct     the distinct
      * @param propertyName the property name
-     * @return the q
+     * @return the query fetched expression
      */
-    Q min(boolean distinct, String propertyName);
+    default Q min(boolean distinct, String propertyName) {
+        return property(AggregateFunction.MIN, distinct, propertyName);
+    }
 
     /**
      * Min.
@@ -212,7 +226,7 @@ public interface QueryEntityExpression<Q extends QueryEntityPropertiesExpression
      * @param <T>          the generic type
      * @param <R>          the generic type
      * @param propertyName the property name
-     * @return the q
+     * @return the query fetched expression
      */
     default <T, R> Q min(SerializableFunction<T, R> propertyName) {
         return min(false, propertyName);
@@ -225,15 +239,17 @@ public interface QueryEntityExpression<Q extends QueryEntityPropertiesExpression
      * @param <R>          the generic type
      * @param distinct     the distinct
      * @param propertyName the property name
-     * @return the q
+     * @return the query fetched expression
      */
-    <T, R> Q min(boolean distinct, SerializableFunction<T, R> propertyName);
+    default <T, R> Q min(boolean distinct, SerializableFunction<T, R> propertyName) {
+        return property(AggregateFunction.MIN, distinct, propertyName);
+    }
 
     /**
      * Avg.
      *
      * @param propertyName the property name
-     * @return the q
+     * @return the query fetched expression
      */
     default Q avg(String propertyName) {
         return avg(false, propertyName);
@@ -244,9 +260,11 @@ public interface QueryEntityExpression<Q extends QueryEntityPropertiesExpression
      *
      * @param distinct     the distinct
      * @param propertyName the property name
-     * @return the q
+     * @return the query fetched expression
      */
-    Q avg(boolean distinct, String propertyName);
+    default Q avg(boolean distinct, String propertyName) {
+        return property(AggregateFunction.AVG, distinct, propertyName);
+    }
 
     /**
      * Avg.
@@ -254,7 +272,7 @@ public interface QueryEntityExpression<Q extends QueryEntityPropertiesExpression
      * @param <T>          the generic type
      * @param <R>          the generic type
      * @param propertyName the property name
-     * @return the q
+     * @return the query fetched expression
      */
     default <T, R> Q avg(SerializableFunction<T, R> propertyName) {
         return avg(false, propertyName);
@@ -267,17 +285,21 @@ public interface QueryEntityExpression<Q extends QueryEntityPropertiesExpression
      * @param <R>          the generic type
      * @param distinct     the distinct
      * @param propertyName the property name
-     * @return the q
+     * @return the query fetched expression
      */
-    <T, R> Q avg(boolean distinct, SerializableFunction<T, R> propertyName);
+    default <T, R> Q avg(boolean distinct, SerializableFunction<T, R> propertyName) {
+        return property(AggregateFunction.AVG, distinct, propertyName);
+    }
 
     /**
      * Distinct.
      *
      * @param propertyName the property name
-     * @return the q
+     * @return the query fetched expression
      */
-    Q distinct(String propertyName);
+    default Q distinct(String propertyName) {
+        return property(true, propertyName);
+    }
 
     /**
      * Distinct.
@@ -285,9 +307,11 @@ public interface QueryEntityExpression<Q extends QueryEntityPropertiesExpression
      * @param <T>          the generic type
      * @param <R>          the generic type
      * @param propertyName the property name
-     * @return the q
+     * @return the query fetched expression
      */
-    <T, R> Q distinct(SerializableFunction<T, R> propertyName);
+    default <T, R> Q distinct(SerializableFunction<T, R> propertyName) {
+        return property(true, propertyName);
+    }
 
     /**
      * 添加查询出来的属性.
@@ -453,11 +477,164 @@ public interface QueryEntityExpression<Q extends QueryEntityPropertiesExpression
     }
 
     /**
+     * 添加查询出来的属性.
+     *
+     * @param propertyName propertyName
+     * @return QueryEntityPropertiesExpression
+     */
+    default Q fetch(String propertyName) {
+        return property(propertyName);
+    }
+
+    /**
+     * 添加查询出来的属性.
+     *
+     * @param distinct     the distinct
+     * @param propertyName propertyName
+     * @return QueryEntityPropertiesExpression
+     */
+    default Q fetch(boolean distinct, String propertyName) {
+        return property(distinct, propertyName);
+    }
+
+    /**
+     * 添加查询出来的属性.
+     *
+     * @param function     the function
+     * @param propertyName propertyName
+     * @return QueryEntityPropertiesExpression
+     */
+    default Q fetch(Function function, String propertyName) {
+        return property(function, propertyName);
+    }
+
+    /**
+     * 添加查询出来的属性.
+     *
+     * @param aggregateFunction aggregateFunction
+     * @param propertyName      propertyName
+     * @return QueryEntityPropertiesExpression
+     */
+    default Q fetch(AggregateFunction aggregateFunction, String propertyName) {
+        return property(aggregateFunction, propertyName);
+    }
+
+    /**
+     * 添加查询出来的属性.
+     *
+     * @param aggregateFunction aggregateFunction
+     * @param distinct          the distinct
+     * @param propertyName      propertyName
+     * @return QueryEntityPropertiesExpression
+     */
+    default Q fetch(AggregateFunction aggregateFunction, boolean distinct, String propertyName) {
+        return property(aggregateFunction, distinct, propertyName);
+    }
+
+    /**
+     * 添加查询出来的属性 .
+     *
+     * @param propertyNames propertyNames
+     * @return QueryEntityPropertiesExpression
+     */
+    default Q fetch(String... propertyNames) {
+        return property(propertyNames);
+    }
+
+    /**
+     * 添加查询出来的属性.
+     *
+     * @param <T>          the generic type
+     * @param <R>          the generic type
+     * @param propertyName propertyName
+     * @return QueryEntityPropertiesExpression
+     */
+    default <T, R> Q fetch(SerializableFunction<T, R> propertyName) {
+        return property(propertyName);
+    }
+
+    /**
+     * 添加查询出来的属性 .
+     *
+     * @param <T>          the generic type
+     * @param <R>          the generic type
+     * @param distinct     the distinct
+     * @param propertyName propertyName
+     * @return QueryEntityPropertiesExpression
+     */
+    default <T, R> Q fetch(boolean distinct, SerializableFunction<T, R> propertyName) {
+        return property(distinct, propertyName);
+    }
+
+    /**
+     * 添加查询出来的属性.
+     *
+     * @param <T>          the generic type
+     * @param <R>          the generic type
+     * @param function     the function
+     * @param propertyName propertyName
+     * @return QueryEntityPropertiesExpression
+     */
+    default <T, R> Q fetch(Function function, SerializableFunction<T, R> propertyName) {
+        return property(function, propertyName);
+    }
+
+    /**
+     * 添加查询出来的属性.
+     *
+     * @param <T>               the generic type
+     * @param <R>               the generic type
+     * @param aggregateFunction aggregateFunction
+     * @param propertyName      propertyName
+     * @return QueryEntityPropertiesExpression
+     */
+    default <T, R> Q fetch(AggregateFunction aggregateFunction, SerializableFunction<T, R> propertyName) {
+        return property(aggregateFunction, propertyName);
+    }
+
+    /**
+     * 添加查询出来的属性.
+     *
+     * @param <T>               the generic type
+     * @param <R>               the generic type
+     * @param aggregateFunction aggregateFunction
+     * @param distinct          the distinct
+     * @param propertyName      propertyName
+     * @return QueryEntityPropertiesExpression
+     */
+    default <T, R> Q fetch(AggregateFunction aggregateFunction, boolean distinct,
+            SerializableFunction<T, R> propertyName) {
+        return property(aggregateFunction, distinct, propertyName);
+    }
+
+    /**
+     * 添加查询出来的属性 .
+     *
+     * @param <T>           the generic type
+     * @param <R>           the generic type
+     * @param propertyNames propertyNames
+     * @return QueryEntityPropertiesExpression
+     */
+    default <T, R> Q fetch(@SuppressWarnings("unchecked") SerializableFunction<T, R>... propertyNames) {
+        return property(propertyNames);
+    }
+
+    /**
+     * 添加查询出来的属性 .
+     *
+     * @param propertyNames propertyNames
+     * @return QueryEntityPropertiesExpression
+     */
+    default Q fetch(Collection<String> propertyNames) {
+        return property(propertyNames);
+    }
+
+    /**
      * Cast.
      *
      * @param <QI>                      the generic type
      * @param queryEntityExpressionType the query entity expression type
-     * @return the qi
+     * @return the query fetched expression
      */
     @SuppressWarnings("unchecked")
     default <QI> QI cast(Class<QI> queryEntityExpressionType) {

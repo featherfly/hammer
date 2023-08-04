@@ -1,15 +1,15 @@
 
 package cn.featherfly.hammer.sqldb.jdbc.dsl.entity;
 
-import static org.junit.Assert.assertNull;
+import static org.testng.Assert.assertNull;
 import static org.testng.Assert.assertEquals;
 import static org.testng.Assert.assertNotNull;
 
 import org.testng.annotations.Test;
 
-import cn.featherfly.hammer.sqldb.jdbc.vo.UserInfo;
-import cn.featherfly.hammer.sqldb.jdbc.vo.order.Order2;
-import cn.featherfly.hammer.sqldb.jdbc.vo.order.OrderInfo;
+import cn.featherfly.hammer.sqldb.jdbc.vo.r.UserInfo;
+import cn.featherfly.hammer.sqldb.jdbc.vo.r.order.Order2;
+import cn.featherfly.hammer.sqldb.jdbc.vo.r.order.OrderInfo;
 
 /**
  * sql query type test.

@@ -1,7 +1,7 @@
 
 package cn.featherfly.hammer.dsl.query;
 
-import cn.featherfly.hammer.dsl.query.type.EntityQueryEntity;
+import cn.featherfly.hammer.dsl.query.type.EntityQueryFetch;
 import cn.featherfly.hammer.expression.query.QueryExpression;
 
 /**
@@ -18,5 +18,5 @@ public interface Query extends
                 //                TypeQueryEntity, TypeQueryEntityProperties, TypeQueryWith, TypeQueryWithEntity, TypeQueryConditionGroupExpression,TypeQueryConditionGroupLogicExpression,
                 RepositoryTypeQueryConditionGroupExpression, RepositoryTypeQueryConditionGroupLogicExpression> {
 
-    <E> EntityQueryEntity<E> find(Class<E> repositoryType);
+    <E> EntityQueryFetch<E> find(Class<E> repositoryType);
 }

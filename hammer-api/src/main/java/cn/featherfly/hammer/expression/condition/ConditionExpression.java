@@ -13,4 +13,5 @@ public interface ConditionExpression extends Expression {
 
     @SuppressWarnings("unchecked")
     Map<String, Object> EMPTY_PARAMS = Collections.EMPTY_MAP;
+
 }

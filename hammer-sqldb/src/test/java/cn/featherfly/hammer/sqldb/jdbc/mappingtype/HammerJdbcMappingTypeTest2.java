@@ -19,8 +19,8 @@ import cn.featherfly.hammer.sqldb.jdbc.JdbcSpringImpl;
 import cn.featherfly.hammer.sqldb.jdbc.JdbcTestBase;
 import cn.featherfly.hammer.sqldb.jdbc.mappingtype.sqltype.ArrayToStringSqlTypeMapper;
 import cn.featherfly.hammer.sqldb.jdbc.mappingtype.sqltype.ListToStringSqlTypeMapper;
-import cn.featherfly.hammer.sqldb.jdbc.vo.Article2;
-import cn.featherfly.hammer.sqldb.jdbc.vo.Content;
+import cn.featherfly.hammer.sqldb.jdbc.vo.r.Article2;
+import cn.featherfly.hammer.sqldb.jdbc.vo.r.Content;
 
 /**
  * JdbcImplTest.

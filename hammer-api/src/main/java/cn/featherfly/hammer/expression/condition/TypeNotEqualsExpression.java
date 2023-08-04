@@ -6,7 +6,7 @@ import cn.featherfly.common.lang.function.SerializableSupplier;
 
 /**
  * <p>
- * NotEqualsExpressoin
+ * NotEqualsExpression
  * </p>
  * .
  *

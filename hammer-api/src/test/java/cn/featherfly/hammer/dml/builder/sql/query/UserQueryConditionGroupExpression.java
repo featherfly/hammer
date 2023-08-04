@@ -991,8 +991,8 @@ public class UserQueryConditionGroupExpression
      * {@inheritDoc}
      */
     @Override
-    public NumberExpression<Number, UserQueryConditionGroupExpression, UserQueryConditionGroupExpression> propertyNumber(
-            String name) {
+    public NumberExpression<Number, UserQueryConditionGroupExpression,
+            UserQueryConditionGroupExpression> propertyNumber(String name) {
         // YUFEI_TODO Auto-generated method stub
         return null;
     }
@@ -1031,9 +1031,8 @@ public class UserQueryConditionGroupExpression
      * {@inheritDoc}
      */
     @Override
-    public <T,
-            R extends Number> NumberExpression<R, UserQueryConditionGroupExpression, UserQueryConditionGroupExpression> property(
-                    ReturnNumberFunction<T, R> name) {
+    public <T, R extends Number> NumberExpression<R, UserQueryConditionGroupExpression,
+            UserQueryConditionGroupExpression> property(ReturnNumberFunction<T, R> name) {
         // YUFEI_TODO Auto-generated method stub
         return null;
     }
@@ -1042,9 +1041,8 @@ public class UserQueryConditionGroupExpression
      * {@inheritDoc}
      */
     @Override
-    public <T,
-            R extends Date> DateExpression<R, UserQueryConditionGroupExpression, UserQueryConditionGroupExpression> property(
-                    ReturnDateFunction<T, R> name) {
+    public <T, R extends Date> DateExpression<R, UserQueryConditionGroupExpression,
+            UserQueryConditionGroupExpression> property(ReturnDateFunction<T, R> name) {
         // YUFEI_TODO Auto-generated method stub
         return null;
     }
@@ -1143,16 +1141,7 @@ public class UserQueryConditionGroupExpression
      * {@inheritDoc}
      */
     @Override
-    public Predicate<Object> getIgnorePolicy() {
-        // YUFEI_TODO Auto-generated method stub
-        return null;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public UserQueryConditionGroupExpression setIgnorePolicy(Predicate<Object> ignorePolicy) {
+    public Predicate<Object> getIgnoreStrategy() {
         // YUFEI_TODO Auto-generated method stub
         return null;
     }
@@ -1395,8 +1384,8 @@ public class UserQueryConditionGroupExpression
      * {@inheritDoc}
      */
     @Override
-    public <R extends Enum<R>> EnumExpression<R, UserQueryConditionGroupExpression, UserQueryConditionGroupExpression> propertyEnum(
-            String name) {
+    public <R extends Enum<R>> EnumExpression<R, UserQueryConditionGroupExpression,
+            UserQueryConditionGroupExpression> propertyEnum(String name) {
         // YUFEI_TODO Auto-generated method stub
         return null;
     }
@@ -1405,9 +1394,17 @@ public class UserQueryConditionGroupExpression
      * {@inheritDoc}
      */
     @Override
-    public <T,
-            R extends Enum<R>> EnumExpression<R, UserQueryConditionGroupExpression, UserQueryConditionGroupExpression> property(
-                    ReturnEnumFunction<T, R> name) {
+    public <T, R extends Enum<R>> EnumExpression<R, UserQueryConditionGroupExpression,
+            UserQueryConditionGroupExpression> property(ReturnEnumFunction<T, R> name) {
+        // YUFEI_TODO Auto-generated method stub
+        return null;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public UserQueryConditionGroupExpression setIgnoreStrategy(Predicate<?> ignoreStrategy) {
         // YUFEI_TODO Auto-generated method stub
         return null;
     }

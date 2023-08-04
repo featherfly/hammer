@@ -1,10 +1,10 @@
 
 package cn.featherfly.hammer.sqldb.jdbc;
 
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertNull;
 import static org.testng.Assert.assertEquals;
 import static org.testng.Assert.assertNotEquals;
+import static org.testng.Assert.assertNotNull;
+import static org.testng.Assert.assertNull;
 import static org.testng.Assert.assertTrue;
 
 import java.io.Serializable;
@@ -20,20 +20,21 @@ import cn.featherfly.common.db.mapping.JdbcMappingException;
 import cn.featherfly.common.lang.ArrayUtils;
 import cn.featherfly.common.lang.CollectionUtils;
 import cn.featherfly.common.lang.Randoms;
+import cn.featherfly.common.lang.function.SerializableFunction;
 import cn.featherfly.common.operator.LogicOperator;
-import cn.featherfly.common.repository.IgnorePolicy;
+import cn.featherfly.common.repository.IgnoreStrategy;
 import cn.featherfly.common.structure.page.PaginationResults;
 import cn.featherfly.hammer.Hammer;
 import cn.featherfly.hammer.sqldb.SqldbHammer;
 import cn.featherfly.hammer.sqldb.SqldbHammerException;
 import cn.featherfly.hammer.sqldb.SqldbHammerImpl;
-import cn.featherfly.hammer.sqldb.jdbc.vo.Article;
-import cn.featherfly.hammer.sqldb.jdbc.vo.DistrictDivision;
-import cn.featherfly.hammer.sqldb.jdbc.vo.Role;
-import cn.featherfly.hammer.sqldb.jdbc.vo.User;
-import cn.featherfly.hammer.sqldb.jdbc.vo.UserInfo;
-import cn.featherfly.hammer.sqldb.jdbc.vo.UserRole;
-import cn.featherfly.hammer.sqldb.jdbc.vo.UserRole2;
+import cn.featherfly.hammer.sqldb.jdbc.vo.r.Article;
+import cn.featherfly.hammer.sqldb.jdbc.vo.r.DistrictDivision;
+import cn.featherfly.hammer.sqldb.jdbc.vo.r.Role;
+import cn.featherfly.hammer.sqldb.jdbc.vo.r.User;
+import cn.featherfly.hammer.sqldb.jdbc.vo.r.UserInfo;
+import cn.featherfly.hammer.sqldb.jdbc.vo.r.UserRole;
+import cn.featherfly.hammer.sqldb.jdbc.vo.r.UserRole2;
 
 /**
  * HammerJdbcTest.
@@ -406,26 +407,26 @@ public class HammerJdbcTest extends JdbcTestBase {
         //
         String name2 = "update_" + Randoms.getInt(100);
         r2.setName(name2);
-        hammer.update(r2, IgnorePolicy.NONE);
+        hammer.update(r2, IgnoreStrategy.NONE);
         r3 = hammer.get(r2);
         assertEquals(r3.getName(), r2.getName());
         assertNull(r3.getDescp());
 
         r2.setName("");
-        hammer.update(r2, IgnorePolicy.EMPTY);
+        hammer.update(r2, IgnoreStrategy.EMPTY);
         r3 = hammer.get(r2);
         assertEquals(r3.getName(), name2);
         assertNotEquals(r3.getName(), r2.getName());
         assertNull(r3.getDescp());
 
         r2.setName("");
-        hammer.update(r2, IgnorePolicy.NULL);
+        hammer.update(r2, IgnoreStrategy.NULL);
         r3 = hammer.get(r2);
         assertEquals(r3.getName(), r2.getName());
         assertNull(r3.getDescp());
 
         r2.setName(null);
-        hammer.update(r2, IgnorePolicy.NULL);
+        hammer.update(r2, IgnoreStrategy.NULL);
         r3 = hammer.get(r2);
         assertEquals(r3.getName(), "");
         assertNotEquals(r3.getName(), r2.getName());
@@ -548,7 +549,7 @@ public class HammerJdbcTest extends JdbcTestBase {
         for (Role role : roles) {
             role.setDescp(null);
         }
-        int results[] = hammer.update(roles, IgnorePolicy.NONE);
+        int results[] = hammer.update(roles, IgnoreStrategy.NONE);
         assertEquals(results.length, roles.size());
 
         roles = hammer.query(Role.class).list();
@@ -879,8 +880,16 @@ public class HammerJdbcTest extends JdbcTestBase {
         Role r4 = role();
         hammer.save(r, r2, r3, r4);
         //        Collection<Integer> ids = ArrayUtils.toList(r.getId(), r2.getId());
-        hammer.delete(Role.class).where().in(Role::getId, ArrayUtils.toList(r.getId(), r2.getId()))
-                //                .in(Role::getId, ids)
+        //        SerializableFunction<Role, Integer> roleGetId = Role::getId;
+        hammer.delete(Role.class).where()
+                // --------------------
+                //                .in(Role::getId, ArrayUtils.toList(r.getId(), r2.getId()))
+                //                .in((SerializableFunction<Role, Integer>) Role::getId, ArrayUtils.toList(r.getId(), r2.getId()))
+                //                .in(roleGetId, r.getId(), r2.getId())
+                //                .in(Role::getId, r.getId(), r2.getId())
+                .in((SerializableFunction<Role, Integer>) Role::getId, r.getId(), r2.getId())
+                //                .in((SerializableFunction<Role, Integer>) Role::getId, ids)
+                // --------------------
                 .or().eq(Role::getId, r3.getId()).or().ge(Role::getId, r4.getId()).execute();
 
         r = hammer.get(r);
@@ -902,7 +911,9 @@ public class HammerJdbcTest extends JdbcTestBase {
         Role r4 = role();
         hammer.save(r, r2, r3, r4);
 
-        hammer.delete(Role.class).where().in(Role::getId, new Integer[] { r.getId(), r2.getId() }).or()
+        hammer.delete(Role.class).where()
+                // ------
+                .in((SerializableFunction<Role, Integer>) Role::getId, new Integer[] { r.getId(), r2.getId() }).or()
                 .eq(Role::getId, r3.getId()).or().ge(Role::getId, r4.getId()).execute();
 
         r = hammer.get(r);

@@ -10,7 +10,7 @@
  */
 package cn.featherfly.hammer.sqldb.jdbc.dsl.execute;
 
-import static org.junit.Assert.assertNull;
+import static org.testng.Assert.assertNull;
 import static org.testng.Assert.assertEquals;
 
 import java.util.List;
@@ -19,14 +19,14 @@ import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
 
 import cn.featherfly.common.db.model.SimpleTable;
-import cn.featherfly.common.repository.IgnorePolicy;
+import cn.featherfly.common.repository.IgnoreStrategy;
 import cn.featherfly.common.repository.SimpleAliasRepository;
 import cn.featherfly.common.repository.SimpleRepository;
 import cn.featherfly.hammer.sqldb.SqldbHammerException;
 import cn.featherfly.hammer.sqldb.jdbc.HammerJdbcTestBase;
-import cn.featherfly.hammer.sqldb.jdbc.vo.Role;
-import cn.featherfly.hammer.sqldb.jdbc.vo.User;
-import cn.featherfly.hammer.sqldb.jdbc.vo.UserRole;
+import cn.featherfly.hammer.sqldb.jdbc.vo.r.Role;
+import cn.featherfly.hammer.sqldb.jdbc.vo.r.User;
+import cn.featherfly.hammer.sqldb.jdbc.vo.r.UserRole;
 
 /**
  * The Class SqlDeleterTest.
@@ -123,7 +123,7 @@ public class SqlDeleterTest extends HammerJdbcTestBase {
         assertEquals(load.getName(), role.getName());
 
         int result = deleter.delete(new SimpleAliasRepository("role", "r"))
-                .where(c -> c.setIgnorePolicy(IgnorePolicy.EMPTY)).eq("id", role.getId()).execute();
+                .where(c -> c.setIgnoreStrategy(IgnoreStrategy.EMPTY)).eq("id", role.getId()).execute();
         assertEquals(result, 1);
 
         load = hammer.get(role);
@@ -134,7 +134,7 @@ public class SqlDeleterTest extends HammerJdbcTestBase {
     public void testDeleteNoCondition() {
         List<UserRole> urs = hammer.query(UserRole.class).list();
 
-        int result = deleter.delete("user_role").where().setIgnorePolicy(IgnorePolicy.EMPTY).eq("user_id", null)
+        int result = deleter.delete("user_role").where().setIgnoreStrategy(IgnoreStrategy.EMPTY).eq("user_id", null)
                 .execute();
         assertEquals(result, urs.size());
 
@@ -170,7 +170,7 @@ public class SqlDeleterTest extends HammerJdbcTestBase {
         assertEquals(load.getId(), role.getId());
         assertEquals(load.getName(), role.getName());
 
-        int result = deleter.delete(Role.class).where(c -> c.setIgnorePolicy(IgnorePolicy.EMPTY))
+        int result = deleter.delete(Role.class).where(c -> c.setIgnoreStrategy(IgnoreStrategy.EMPTY))
                 .eq(Role::getId, role.getId()).execute();
         assertEquals(result, 1);
 
@@ -182,7 +182,7 @@ public class SqlDeleterTest extends HammerJdbcTestBase {
     public void testDeleteEntityNoCondition() {
         List<UserRole> urs = hammer.query(UserRole.class).list();
 
-        int result = deleter.delete(UserRole.class).where().setIgnorePolicy(IgnorePolicy.EMPTY)
+        int result = deleter.delete(UserRole.class).where().setIgnoreStrategy(IgnoreStrategy.EMPTY)
                 .eq(UserRole::getUserId, null).execute();
         assertEquals(result, urs.size());
 

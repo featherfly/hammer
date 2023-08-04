@@ -56,13 +56,13 @@ public class EntitySqlQueryRelationPart<R1, R2> {
     //     * @param conditionTableColumn      the condition table column
     //     * @param joinTypeClassMapping      the join type class mapping
     //     * @param joinTableColumn           the join table column
-    //     * @param ignorePolicy              the ignore policy
+    //     * @param ignoreStrategy              the ignore strategy
     //     */
     //    public AbstractEntitySqlQueryRelation(EntitySqlQueryEntityProperties<E> sqlQueryEntityProperties,
     //            JdbcClassMapping<E> conditionTypeClassMapping, String conditionTableAlias, String conditionTableColumn,
-    //            JdbcClassMapping<R1> joinTypeClassMapping, String joinTableColumn, Predicate<Object> ignorePolicy) {
+    //            JdbcClassMapping<R1> joinTypeClassMapping, String joinTableColumn, Predicate<Object> ignoreStrategy) {
     //        this(sqlQueryEntityProperties, conditionTypeClassMapping, conditionTableAlias, conditionTableColumn,
-    //                joinTypeClassMapping, joinTableColumn, null, ignorePolicy);
+    //                joinTypeClassMapping, joinTableColumn, null, ignoreStrategy);
     //    }
 
     /**

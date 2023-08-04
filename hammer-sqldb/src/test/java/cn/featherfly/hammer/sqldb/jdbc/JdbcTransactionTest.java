@@ -1,7 +1,7 @@
 
 package cn.featherfly.hammer.sqldb.jdbc;
 
-import static org.junit.Assert.assertNull;
+import static org.testng.Assert.assertNull;
 import static org.testng.Assert.assertEquals;
 
 import java.sql.Connection;
@@ -14,7 +14,7 @@ import org.testng.annotations.Test;
 import cn.featherfly.common.lang.reflect.ClassType;
 import cn.featherfly.common.lang.reflect.Type;
 import cn.featherfly.hammer.sqldb.jdbc.transaction.JdbcTransaction;
-import cn.featherfly.hammer.sqldb.jdbc.vo.Article;
+import cn.featherfly.hammer.sqldb.jdbc.vo.r.Article;
 
 /**
  * JdbcTransactionTest.

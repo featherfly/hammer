@@ -1,18 +1,17 @@
 
 package cn.featherfly.hammer.expression.entity.query;
 
-import cn.featherfly.hammer.expression.condition.type.EntitySortExpression2;
-import cn.featherfly.hammer.expression.query.type.EntityQueryConditionLimit;
-import cn.featherfly.hammer.expression.query.type.EntityQueryLimitExecutor;
+import cn.featherfly.hammer.expression.entity.query.sort.EntitySortExpression2;
 
 /**
- * The Interface EntityQuerySortExpression.
+ * The Interface EntityQuerySortedExpression2.
  *
  * @author zhongj
- * @param <E> the element type
+ * @param <E>  the element type
+ * @param <E2> the generic type
+ * @param <R>  the generic type
  */
 public interface EntityQuerySortExpression2<E, E2, R>
-        extends EntitySortExpression2<E, E2, EntityQuerySortExpression2<E, E2, R>>, EntityQueryConditionLimit<R>,
-        EntityQueryLimitExecutor<R> {
+        extends EntitySortExpression2<E, E2, EntityQuerySortedExpression2<E, E2, R>> {
 
 }

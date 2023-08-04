@@ -10,7 +10,7 @@ import cn.featherfly.common.lang.Lang;
 import cn.featherfly.common.lang.function.SerializableFunction;
 import cn.featherfly.common.lang.function.SerializableSupplier;
 import cn.featherfly.common.operator.LogicOperator;
-import cn.featherfly.common.repository.IgnorePolicy;
+import cn.featherfly.common.repository.IgnoreStrategy;
 import cn.featherfly.common.repository.Repository;
 import cn.featherfly.hammer.dsl.execute.Delete;
 import cn.featherfly.hammer.dsl.execute.EntityDelete;
@@ -19,7 +19,7 @@ import cn.featherfly.hammer.dsl.execute.Update;
 import cn.featherfly.hammer.dsl.query.QueryEntity;
 import cn.featherfly.hammer.dsl.query.type.EntityQueryConditionGroup;
 import cn.featherfly.hammer.dsl.query.type.EntityQueryConditionGroupLogic;
-import cn.featherfly.hammer.dsl.query.type.EntityQueryEntity;
+import cn.featherfly.hammer.dsl.query.type.EntityQueryFetch;
 import cn.featherfly.hammer.tpl.TplExecutor;
 
 /**
@@ -68,14 +68,14 @@ public interface Hammer extends TplExecutor {
     <E> int update(E entity);
 
     /**
-     * update entity, update values with ignorePolicy.
+     * update entity, update values with ignoreStrategy.
      *
-     * @param <E>          generic type
-     * @param entity       entity to update
-     * @param ignorePolicy ignore value to update policy
+     * @param <E>            generic type
+     * @param entity         entity to update
+     * @param ignoreStrategy ignore value to update strategy
      * @return effect data row num
      */
-    <E> int update(E entity, IgnorePolicy ignorePolicy);
+    <E> int update(E entity, IgnoreStrategy ignoreStrategy);
 
     /**
      * update all values for each entity in entity array. equal invoke method
@@ -112,14 +112,14 @@ public interface Hammer extends TplExecutor {
     <E> int[] update(List<E> entities, int batchSize);
 
     /**
-     * update values with ignorePolicy for each entity in entity list.
+     * update values with ignoreStrategy for each entity in entity list.
      *
-     * @param <E>          generic type
-     * @param entities     entity list to update
-     * @param ignorePolicy ignore value to update policy
+     * @param <E>            generic type
+     * @param entities       entity list to update
+     * @param ignoreStrategy ignore value to update strategy
      * @return effect data row num
      */
-    <E> int[] update(List<E> entities, IgnorePolicy ignorePolicy);
+    <E> int[] update(List<E> entities, IgnoreStrategy ignoreStrategy);
 
     /**
      * update values ignore null or empty(string, array, collectoin, map) value.
@@ -431,7 +431,7 @@ public interface Hammer extends TplExecutor {
      * @param entityType query for entity type
      * @return EntityQueryEntity
      */
-    <E> EntityQueryEntity<E> query(Class<E> entityType);
+    <E> EntityQueryFetch<E> query(Class<E> entityType);
 
     /**
      * create update for repository.

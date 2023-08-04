@@ -6,7 +6,7 @@ import java.util.function.Predicate;
 import cn.featherfly.common.constant.Chars;
 import cn.featherfly.common.db.builder.dml.basic.SqlDeleteFromBasicBuilder;
 import cn.featherfly.common.lang.Strings;
-import cn.featherfly.common.repository.IgnorePolicy;
+import cn.featherfly.common.repository.IgnoreStrategy;
 import cn.featherfly.hammer.sqldb.jdbc.Jdbc;
 
 /**
@@ -25,7 +25,7 @@ public class SqlDeleteExpression extends SqlConditionGroupExpression {
      * @param builder the builder
      */
     public SqlDeleteExpression(Jdbc jdbc, SqlDeleteFromBasicBuilder builder) {
-        this(jdbc, builder, IgnorePolicy.NONE);
+        this(jdbc, builder, IgnoreStrategy.NONE);
     }
 
     /**
@@ -33,10 +33,10 @@ public class SqlDeleteExpression extends SqlConditionGroupExpression {
      *
      * @param jdbc         the jdbc
      * @param builder      the builder
-     * @param ignorePolicy the ignore policy
+     * @param ignoreStrategy the ignore strategy
      */
-    public SqlDeleteExpression(Jdbc jdbc, SqlDeleteFromBasicBuilder builder, Predicate<Object> ignorePolicy) {
-        super(jdbc, builder.getTableAlias(), ignorePolicy);
+    public SqlDeleteExpression(Jdbc jdbc, SqlDeleteFromBasicBuilder builder, Predicate<Object> ignoreStrategy) {
+        super(jdbc, builder.getTableAlias(), ignoreStrategy);
         this.builder = builder;
     }
 

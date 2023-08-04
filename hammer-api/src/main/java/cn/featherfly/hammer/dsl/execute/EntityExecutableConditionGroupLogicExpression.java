@@ -1,7 +1,7 @@
 
 package cn.featherfly.hammer.dsl.execute;
 
-import cn.featherfly.hammer.expression.EntityConditionGroupLogicExpression;
+import cn.featherfly.hammer.expression.entity.EntityConditionGroupLogicExpression;
 import cn.featherfly.hammer.expression.execute.Executor;
 
 /**

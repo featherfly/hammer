@@ -8,13 +8,16 @@ import cn.featherfly.common.db.metadata.DatabaseMetadata;
 import cn.featherfly.common.lang.Lang;
 import cn.featherfly.common.lang.Strings;
 import cn.featherfly.common.repository.AliasRepository;
-import cn.featherfly.common.repository.IgnorePolicy;
+import cn.featherfly.common.repository.IgnoreStrategy;
 import cn.featherfly.common.repository.Repository;
 import cn.featherfly.common.repository.builder.AliasManager;
 import cn.featherfly.hammer.dsl.query.Query;
+import cn.featherfly.hammer.dsl.query.type.EntityQueryFetch;
 import cn.featherfly.hammer.sqldb.SqldbHammerException;
 import cn.featherfly.hammer.sqldb.jdbc.Jdbc;
 import cn.featherfly.hammer.sqldb.jdbc.SqlPageFactory;
+import cn.featherfly.hammer.sqldb.jdbc.dsl.entity.EntitySqlQueryRelation;
+import cn.featherfly.hammer.sqldb.jdbc.dsl.entity.query.EntitySqlQueryFetch;
 
 /**
  * SqlQuery .
@@ -118,15 +121,14 @@ public class SqlQuery implements Query {
             alias = aliasManager.put(tableName);
         }
         return new SqlQueryEntityProperties(jdbc, databaseMetadata, tableName, alias, sqlPageFactory, aliasManager,
-                IgnorePolicy.EMPTY);
+                IgnoreStrategy.EMPTY);
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    //    public <E> EntitySqlQueryEntityProperties<E> find(Class<E> repositoryType) {
-    public <E> EntitySqlQueryEntity<E> find(Class<E> entityType) {
+    public <E> EntityQueryFetch<E> find(Class<E> entityType) {
         if (mappingFactory == null) {
             throw new SqldbHammerException("mappingFactory is null");
         }
@@ -134,16 +136,34 @@ public class SqlQuery implements Query {
         if (mapping == null) {
             throw new SqldbHammerException(Strings.format("type {0} is not a entity"));
         }
-        return new EntitySqlQueryEntityProperties<>(jdbc, mapping, mappingFactory, sqlPageFactory, new AliasManager(),
-                IgnorePolicy.EMPTY);
+
+        EntitySqlQueryRelation queryRelation = new EntitySqlQueryRelation(jdbc, new AliasManager(),
+                IgnoreStrategy.EMPTY);
+        return new EntitySqlQueryFetch<>(mappingFactory, sqlPageFactory, queryRelation, mapping);
+
+        //        return new EntitySqlQueryEntityProperties<>(jdbc, mapping, mappingFactory, sqlPageFactory, new AliasManager(),
+        //                IgnoreStrategy.EMPTY);
     }
+
+    //    public <E> EntitySqlQueryEntityProperties<E> find(Class<E> repositoryType) {
+    //    public <E> EntitySqlQueryEntity<E> find(Class<E> entityType) {
+    //        if (mappingFactory == null) {
+    //            throw new SqldbHammerException("mappingFactory is null");
+    //        }
+    //        JdbcClassMapping<E> mapping = mappingFactory.getClassMapping(entityType);
+    //        if (mapping == null) {
+    //            throw new SqldbHammerException(Strings.format("type {0} is not a entity"));
+    //        }
+    //        return new EntitySqlQueryEntityProperties<>(jdbc, mapping, mappingFactory, sqlPageFactory, new AliasManager(),
+    //                IgnoreStrategy.EMPTY);
+    //    }
 
     //   public TypeSqlQueryEntityProperties find(Class<?> repositoryType) {
     //        if (mappingFactory == null) {
     //            throw new SqldbHammerException("mappingFactory is null");
     //        }
     //        return new TypeSqlQueryEntityProperties(jdbc, mappingFactory.getClassMapping(repositoryType), mappingFactory,
-    //                sqlPageFactory, new AliasManager(), IgnorePolicy.EMPTY);
+    //                sqlPageFactory, new AliasManager(), IgnoreStrategy.EMPTY);
     //    }
 
     // IMPLSOON 后续来实现select xxx from yy 模式的方法链

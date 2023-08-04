@@ -3,7 +3,7 @@ package cn.featherfly.hammer.dsl.execute;
 
 import cn.featherfly.common.lang.function.SerializableFunction;
 import cn.featherfly.common.lang.function.SerializableFunction2;
-import cn.featherfly.hammer.expression.execute.EntityPropertyUpdateExpression;
+import cn.featherfly.hammer.expression.entity.execute.EntityPropertyUpdateExpression;
 
 /**
  * entity property update.

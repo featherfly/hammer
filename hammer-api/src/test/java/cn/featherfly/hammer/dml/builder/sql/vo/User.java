@@ -1,8 +1,13 @@
 package cn.featherfly.hammer.dml.builder.sql.vo;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
+import javax.persistence.Embedded;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 
@@ -21,11 +26,44 @@ public class User {
 
     private Integer age;
 
+    private Date date;
+
+    private LocalDate localDate;
+
+    private LocalDateTime localDateTime;
+
+    private LocalTime localTime;
+
+    @Embedded
+    private Email email;
+
     @OneToOne
     private UserInfo userInfo;
 
     @OneToMany
     private List<Device> devices = new ArrayList<>();
+
+    /**
+     */
+    public User() {
+    }
+
+    /**
+     * @param id
+     */
+    public User(int id) {
+        super();
+        this.id = id;
+    }
+
+    public User username(String username) {
+        this.username = username;
+        return this;
+    }
+
+    public String testTwoArgu(Integer age, Integer id) {
+        return username;
+    }
 
     /**
      * get id value
@@ -135,4 +173,93 @@ public class User {
         this.age = age;
     }
 
+    /**
+     * get date value
+     *
+     * @return date
+     */
+    public Date getDate() {
+        return date;
+    }
+
+    /**
+     * set date value
+     *
+     * @param date date
+     */
+    public void setDate(Date date) {
+        this.date = date;
+    }
+
+    /**
+     * get localDate value
+     *
+     * @return localDate
+     */
+    public LocalDate getLocalDate() {
+        return localDate;
+    }
+
+    /**
+     * set localDate value
+     *
+     * @param localDate localDate
+     */
+    public void setLocalDate(LocalDate localDate) {
+        this.localDate = localDate;
+    }
+
+    /**
+     * get localDateTime value
+     *
+     * @return localDateTime
+     */
+    public LocalDateTime getLocalDateTime() {
+        return localDateTime;
+    }
+
+    /**
+     * set localDateTime value
+     *
+     * @param localDateTime localDateTime
+     */
+    public void setLocalDateTime(LocalDateTime localDateTime) {
+        this.localDateTime = localDateTime;
+    }
+
+    /**
+     * get localTime value
+     *
+     * @return localTime
+     */
+    public LocalTime getLocalTime() {
+        return localTime;
+    }
+
+    /**
+     * set localTime value
+     *
+     * @param localTime localTime
+     */
+    public void setLocalTime(LocalTime localTime) {
+        this.localTime = localTime;
+    }
+
+    /**
+     * get email value
+     *
+     * @return email
+     */
+    public Email getEmail() {
+        return email;
+    }
+
+    /**
+     * set email value
+     *
+     * @param email email
+     */
+    public void setEmail(Email email) {
+        this.email = email;
+    }
 }

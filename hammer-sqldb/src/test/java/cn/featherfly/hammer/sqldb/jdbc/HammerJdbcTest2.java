@@ -1,7 +1,7 @@
 
 package cn.featherfly.hammer.sqldb.jdbc;
 
-import static org.junit.Assert.assertNotNull;
+import static org.testng.Assert.assertNotNull;
 
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;

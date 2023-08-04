@@ -105,9 +105,10 @@ public class Parser {
      *
      * @param source the source
      */
-    public void parse(String source) {
+    public String parse(String source) {
         char c = 0;
         char c2 = 0;
+        elements.clear();
         AbstractElement element = null;
         for (int index = 0; index < source.length();) {
             c = source.charAt(index);
@@ -262,7 +263,11 @@ public class Parser {
             }
             index++;
         }
-
+        StringBuilder result = new StringBuilder();
+        for (AbstractElement abstractElement : elements) {
+            result.append(abstractElement.getValue());
+        }
+        return result.toString();
     }
 
     private Tuple2<Boolean, Boolean> isFuzzy(String paramContent) {

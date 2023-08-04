@@ -41,8 +41,8 @@ public abstract class AbstractSqlQueryEntityProperties<E extends AbstractSqlQuer
     /** The alias manager. */
     protected AliasManager aliasManager;
 
-    /** The ignore policy. */
-    protected Predicate<Object> ignorePolicy;
+    /** The ignore strategy. */
+    protected Predicate<Object> ignoreStrategy;
 
     /** The table alias. */
     protected String tableAlias;
@@ -56,13 +56,13 @@ public abstract class AbstractSqlQueryEntityProperties<E extends AbstractSqlQuer
      * @param tableAlias       tableAlias
      * @param sqlPageFactory   the sql page factory
      * @param aliasManager     aliasManager
-     * @param ignorePolicy     the ignore policy
+     * @param ignoreStrategy   the ignore strategy
      */
     protected AbstractSqlQueryEntityProperties(Jdbc jdbc, DatabaseMetadata databaseMetadata, String tableName,
             String tableAlias, SqlPageFactory sqlPageFactory, AliasManager aliasManager,
-            Predicate<Object> ignorePolicy) {
-        AssertIllegalArgument.isNotNull(ignorePolicy, "ignorePolicy");
-        this.ignorePolicy = ignorePolicy;
+            Predicate<Object> ignoreStrategy) {
+        AssertIllegalArgument.isNotNull(ignoreStrategy, "ignoreStrategy");
+        this.ignoreStrategy = ignoreStrategy;
         this.jdbc = jdbc;
         this.sqlPageFactory = sqlPageFactory;
         this.aliasManager = aliasManager;
@@ -294,152 +294,152 @@ public abstract class AbstractSqlQueryEntityProperties<E extends AbstractSqlQuer
      *
      * @return the e
      */
-    public Long count() {
+    public long count() {
         return new SqlQueryExpression(jdbc, sqlPageFactory,
-                selectBuilder.addColumn(AggregateFunction.COUNT, Chars.STAR), ignorePolicy).longInt();
+                selectBuilder.addColumn(AggregateFunction.COUNT, Chars.STAR), ignoreStrategy).longInt();
     }
 
-    /**
-     * Count.
-     *
-     * @param distinct   the distinct
-     * @param columnName the column name
-     * @return the e
-     */
-    public E count(boolean distinct, String columnName) {
-        return property(AggregateFunction.COUNT, distinct, columnName);
-    }
-
-    /**
-     * Count.
-     *
-     * @param <T>          the generic type
-     * @param <R>          the generic type
-     * @param distinct     the distinct
-     * @param propertyName the property name
-     * @return the e
-     */
-    public <T, R> E count(boolean distinct, SerializableFunction<T, R> propertyName) {
-        return count(distinct, LambdaUtils.getLambdaPropertyName(propertyName));
-    }
-
-    /**
-     * Sum.
-     *
-     * @param distinct     the distinct
-     * @param propertyName the property name
-     * @return the e
-     */
-    public E sum(boolean distinct, String propertyName) {
-        return property(AggregateFunction.SUM, distinct, propertyName);
-    }
-
-    /**
-     * Sum.
-     *
-     * @param <T>          the generic type
-     * @param <R>          the generic type
-     * @param distinct     the distinct
-     * @param propertyName the property name
-     * @return the e
-     */
-    public <T, R> E sum(boolean distinct, SerializableFunction<T, R> propertyName) {
-        return sum(distinct, LambdaUtils.getLambdaPropertyName(propertyName));
-    }
-
-    /**
-     * Max.
-     *
-     * @param distinct     the distinct
-     * @param propertyName the property name
-     * @return the e
-     */
-    public E max(boolean distinct, String propertyName) {
-        return property(AggregateFunction.MAX, distinct, propertyName);
-    }
-
-    /**
-     * Max.
-     *
-     * @param <T>          the generic type
-     * @param <R>          the generic type
-     * @param distinct     the distinct
-     * @param propertyName the property name
-     * @return the e
-     */
-    public <T, R> E max(boolean distinct, SerializableFunction<T, R> propertyName) {
-        return property(AggregateFunction.MAX, distinct, propertyName);
-    }
-
-    /**
-     * Min.
-     *
-     * @param distinct     the distinct
-     * @param propertyName the property name
-     * @return the e
-     */
-    public E min(boolean distinct, String propertyName) {
-        return property(AggregateFunction.MIN, distinct, propertyName);
-    }
-
-    /**
-     * Min.
-     *
-     * @param <T>          the generic type
-     * @param <R>          the generic type
-     * @param distinct     the distinct
-     * @param propertyName the property name
-     * @return the e
-     */
-    public <T, R> E min(boolean distinct, SerializableFunction<T, R> propertyName) {
-        return property(AggregateFunction.MIN, distinct, propertyName);
-    }
-
-    /**
-     * Avg.
-     *
-     * @param distinct     the distinct
-     * @param propertyName the property name
-     * @return the e
-     */
-    public E avg(boolean distinct, String propertyName) {
-        return property(AggregateFunction.AVG, distinct, propertyName);
-    }
-
-    /**
-     * Avg.
-     *
-     * @param <T>          the generic type
-     * @param <R>          the generic type
-     * @param distinct     the distinct
-     * @param propertyName the property name
-     * @return the e
-     */
-    public <T, R> E avg(boolean distinct, SerializableFunction<T, R> propertyName) {
-        return property(AggregateFunction.AVG, distinct, propertyName);
-    }
-
-    /**
-     * Distinct.
-     *
-     * @param propertyName the property name
-     * @return the e
-     */
-    public E distinct(String propertyName) {
-        return property(true, propertyName);
-    }
-
-    /**
-     * Distinct.
-     *
-     * @param <T>          the generic type
-     * @param <R>          the generic type
-     * @param propertyName the property name
-     * @return the e
-     */
-    public <T, R> E distinct(SerializableFunction<T, R> propertyName) {
-        return property(true, propertyName);
-    }
+    //    /**
+    //     * Count.
+    //     *
+    //     * @param distinct   the distinct
+    //     * @param columnName the column name
+    //     * @return the e
+    //     */
+    //    public E count(boolean distinct, String columnName) {
+    //        return property(AggregateFunction.COUNT, distinct, columnName);
+    //    }
+    //
+    //    /**
+    //     * Count.
+    //     *
+    //     * @param <T>          the generic type
+    //     * @param <R>          the generic type
+    //     * @param distinct     the distinct
+    //     * @param propertyName the property name
+    //     * @return the e
+    //     */
+    //    public <T, R> E count(boolean distinct, SerializableFunction<T, R> propertyName) {
+    //        return count(distinct, LambdaUtils.getLambdaPropertyName(propertyName));
+    //    }
+    //
+    //    /**
+    //     * Sum.
+    //     *
+    //     * @param distinct     the distinct
+    //     * @param propertyName the property name
+    //     * @return the e
+    //     */
+    //    public E sum(boolean distinct, String propertyName) {
+    //        return property(AggregateFunction.SUM, distinct, propertyName);
+    //    }
+    //
+    //    /**
+    //     * Sum.
+    //     *
+    //     * @param <T>          the generic type
+    //     * @param <R>          the generic type
+    //     * @param distinct     the distinct
+    //     * @param propertyName the property name
+    //     * @return the e
+    //     */
+    //    public <T, R> E sum(boolean distinct, SerializableFunction<T, R> propertyName) {
+    //        return sum(distinct, LambdaUtils.getLambdaPropertyName(propertyName));
+    //    }
+    //
+    //    /**
+    //     * Max.
+    //     *
+    //     * @param distinct     the distinct
+    //     * @param propertyName the property name
+    //     * @return the e
+    //     */
+    //    public E max(boolean distinct, String propertyName) {
+    //        return property(AggregateFunction.MAX, distinct, propertyName);
+    //    }
+    //
+    //    /**
+    //     * Max.
+    //     *
+    //     * @param <T>          the generic type
+    //     * @param <R>          the generic type
+    //     * @param distinct     the distinct
+    //     * @param propertyName the property name
+    //     * @return the e
+    //     */
+    //    public <T, R> E max(boolean distinct, SerializableFunction<T, R> propertyName) {
+    //        return property(AggregateFunction.MAX, distinct, propertyName);
+    //    }
+    //
+    //    /**
+    //     * Min.
+    //     *
+    //     * @param distinct     the distinct
+    //     * @param propertyName the property name
+    //     * @return the e
+    //     */
+    //    public E min(boolean distinct, String propertyName) {
+    //        return property(AggregateFunction.MIN, distinct, propertyName);
+    //    }
+    //
+    //    /**
+    //     * Min.
+    //     *
+    //     * @param <T>          the generic type
+    //     * @param <R>          the generic type
+    //     * @param distinct     the distinct
+    //     * @param propertyName the property name
+    //     * @return the e
+    //     */
+    //    public <T, R> E min(boolean distinct, SerializableFunction<T, R> propertyName) {
+    //        return property(AggregateFunction.MIN, distinct, propertyName);
+    //    }
+    //
+    //    /**
+    //     * Avg.
+    //     *
+    //     * @param distinct     the distinct
+    //     * @param propertyName the property name
+    //     * @return the e
+    //     */
+    //    public E avg(boolean distinct, String propertyName) {
+    //        return property(AggregateFunction.AVG, distinct, propertyName);
+    //    }
+    //
+    //    /**
+    //     * Avg.
+    //     *
+    //     * @param <T>          the generic type
+    //     * @param <R>          the generic type
+    //     * @param distinct     the distinct
+    //     * @param propertyName the property name
+    //     * @return the e
+    //     */
+    //    public <T, R> E avg(boolean distinct, SerializableFunction<T, R> propertyName) {
+    //        return property(AggregateFunction.AVG, distinct, propertyName);
+    //    }
+    //
+    //    /**
+    //     * Distinct.
+    //     *
+    //     * @param propertyName the property name
+    //     * @return the e
+    //     */
+    //    public E distinct(String propertyName) {
+    //        return property(true, propertyName);
+    //    }
+    //
+    //    /**
+    //     * Distinct.
+    //     *
+    //     * @param <T>          the generic type
+    //     * @param <R>          the generic type
+    //     * @param propertyName the property name
+    //     * @return the e
+    //     */
+    //    public <T, R> E distinct(SerializableFunction<T, R> propertyName) {
+    //        return property(true, propertyName);
+    //    }
 
     /**
      * Gets the id name.

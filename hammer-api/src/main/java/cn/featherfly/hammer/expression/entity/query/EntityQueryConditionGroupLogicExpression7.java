@@ -1,8 +1,9 @@
 
 package cn.featherfly.hammer.expression.entity.query;
 
-import cn.featherfly.hammer.expression.EntityConditionGroupLogicExpression7;
 import cn.featherfly.hammer.expression.api.Queryable;
+import cn.featherfly.hammer.expression.entity.EntityConditionGroupLogicExpression7;
+import cn.featherfly.hammer.expression.query.QueryCountExecutor;
 import cn.featherfly.hammer.expression.query.type.EntityQueryConditionLimit;
 import cn.featherfly.hammer.expression.query.type.EntityQueryLimitExecutor;
 
@@ -26,6 +27,6 @@ public interface EntityQueryConditionGroupLogicExpression7<E, E2, E3, E4, E5, E6
         L extends EntityQueryConditionGroupLogicExpression7<E, E2, E3, E4, E5, E6, E7, C, L, S, R>,
         S extends EntityQuerySortExpression7<E, E2, E3, E4, E5, E6, E7, R>, R>
         extends EntityConditionGroupLogicExpression7<E, E2, E3, E4, E5, E6, E7, C, L>, Queryable<S>,
-        EntityQueryConditionLimit<R>, EntityQueryLimitExecutor<R> {
+        EntityQueryConditionLimit<R>, EntityQueryLimitExecutor<R>, QueryCountExecutor {
 
 }

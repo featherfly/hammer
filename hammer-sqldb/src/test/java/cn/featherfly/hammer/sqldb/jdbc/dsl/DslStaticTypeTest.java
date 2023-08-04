@@ -6,7 +6,7 @@ import org.testng.annotations.Test;
 import cn.featherfly.hammer.sqldb.jdbc.JdbcTestBase;
 import cn.featherfly.hammer.sqldb.jdbc.dsl.query.SqlQuery;
 import cn.featherfly.hammer.sqldb.jdbc.dsl.query.UserSqlQuery;
-import cn.featherfly.hammer.sqldb.jdbc.vo.User;
+import cn.featherfly.hammer.sqldb.jdbc.vo.r.User;
 
 /**
  * <p>

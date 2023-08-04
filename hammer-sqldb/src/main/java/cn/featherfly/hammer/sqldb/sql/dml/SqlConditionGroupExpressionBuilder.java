@@ -14,6 +14,10 @@ package cn.featherfly.hammer.sqldb.sql.dml;
 import java.util.function.Predicate;
 
 import cn.featherfly.common.db.dialect.Dialect;
+import cn.featherfly.common.operator.QueryOperator;
+import cn.featherfly.common.operator.QueryOperator.QueryPolicy;
+import cn.featherfly.common.repository.mapping.ClassMapping;
+import cn.featherfly.common.repository.mapping.PropertyMapping;
 import cn.featherfly.hammer.dml.BuildableConditionGroupExpression;
 import cn.featherfly.hammer.dml.BuildableConditionGroupLogicExpression;
 import cn.featherfly.hammer.dsl.query.TypeQueryEntity;
@@ -36,11 +40,11 @@ public class SqlConditionGroupExpressionBuilder extends
      *
      * @param dialect        dialect
      * @param sqlPageFactory the sql page factory
-     * @param ignorePolicy   the ignore policy
+     * @param ignoreStrategy   the ignore strategy
      */
     public SqlConditionGroupExpressionBuilder(Dialect dialect, SqlPageFactory sqlPageFactory,
-            Predicate<Object> ignorePolicy) {
-        this(dialect, sqlPageFactory, null, ignorePolicy);
+            Predicate<Object> ignoreStrategy) {
+        this(dialect, sqlPageFactory, null, ignoreStrategy);
     }
 
     /**
@@ -49,11 +53,11 @@ public class SqlConditionGroupExpressionBuilder extends
      * @param dialect         dialect
      * @param sqlPageFactory  the sql page factory
      * @param typeQueryEntity the type query entity
-     * @param ignorePolicy    the ignore policy
+     * @param ignoreStrategy    the ignore strategy
      */
     public SqlConditionGroupExpressionBuilder(Dialect dialect, SqlPageFactory sqlPageFactory,
-            TypeQueryEntity typeQueryEntity, Predicate<Object> ignorePolicy) {
-        this(dialect, sqlPageFactory, null, typeQueryEntity, ignorePolicy);
+            TypeQueryEntity typeQueryEntity, Predicate<Object> ignoreStrategy) {
+        this(dialect, sqlPageFactory, null, typeQueryEntity, ignoreStrategy);
     }
 
     /**
@@ -63,11 +67,11 @@ public class SqlConditionGroupExpressionBuilder extends
      * @param sqlPageFactory  the sql page factory
      * @param queryAlias      queryAlias
      * @param typeQueryEntity the type query entity
-     * @param ignorePolicy    the ignore policy
+     * @param ignoreStrategy    the ignore strategy
      */
     public SqlConditionGroupExpressionBuilder(Dialect dialect, SqlPageFactory sqlPageFactory, String queryAlias,
-            TypeQueryEntity typeQueryEntity, Predicate<Object> ignorePolicy) {
-        this(null, dialect, sqlPageFactory, queryAlias, typeQueryEntity, ignorePolicy);
+            TypeQueryEntity typeQueryEntity, Predicate<Object> ignoreStrategy) {
+        this(null, dialect, sqlPageFactory, queryAlias, typeQueryEntity, ignoreStrategy);
     }
 
     /**
@@ -78,12 +82,12 @@ public class SqlConditionGroupExpressionBuilder extends
      * @param sqlPageFactory  the sql page factory
      * @param queryAlias      queryAlias
      * @param typeQueryEntity the type query entity
-     * @param ignorePolicy    the ignore policy
+     * @param ignoreStrategy    the ignore strategy
      */
     SqlConditionGroupExpressionBuilder(BuildableConditionGroupLogicExpression parent, Dialect dialect,
             SqlPageFactory sqlPageFactory, String queryAlias, TypeQueryEntity typeQueryEntity,
-            Predicate<Object> ignorePolicy) {
-        super(parent, dialect, sqlPageFactory, queryAlias, typeQueryEntity, ignorePolicy);
+            Predicate<?> ignoreStrategy) {
+        super(parent, dialect, sqlPageFactory, queryAlias, typeQueryEntity, ignoreStrategy);
     }
 
     /**
@@ -93,6 +97,34 @@ public class SqlConditionGroupExpressionBuilder extends
     protected BuildableConditionGroupExpression createGroup(BuildableConditionGroupLogicExpression parent,
             String queryAlias, TypeQueryEntity typeQueryEntity) {
         return new SqlConditionGroupExpressionBuilder(parent, dialect, sqlPageFactory, queryAlias, typeQueryEntity,
-                ignorePolicy);
+                ignoreStrategy);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public String getAlias(int index) {
+        // YUFEI_TODO Auto-generated method stub
+        return null;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public <CM extends ClassMapping<T, P>, T, P extends PropertyMapping<P>> CM getClassMapping(int index) {
+        // YUFEI_TODO Auto-generated method stub
+        return null;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    protected <T, R> BuildableConditionGroupLogicExpression eq_ne(int index, QueryOperator queryOperator,
+            PropertyMapping<?> pm, R value, QueryPolicy queryPolicy, Predicate<?> ignoreStrategy) {
+        // YUFEI_TODO Auto-generated method stub
+        return null;
     }
 }
