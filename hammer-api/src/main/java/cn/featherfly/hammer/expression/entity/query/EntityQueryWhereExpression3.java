@@ -1,7 +1,7 @@
 
 package cn.featherfly.hammer.expression.entity.query;
 
-import cn.featherfly.hammer.expression.EntityWhereExpression3;
+import cn.featherfly.hammer.expression.entity.EntityWhereExpression3;
 
 /**
  * The Interface EntityQueryWhereExpression3.

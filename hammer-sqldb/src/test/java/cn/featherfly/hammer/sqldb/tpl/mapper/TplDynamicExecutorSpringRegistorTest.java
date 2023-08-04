@@ -15,9 +15,9 @@ import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
 
 import cn.featherfly.common.lang.Randoms;
-import cn.featherfly.hammer.sqldb.jdbc.vo.User;
-import cn.featherfly.hammer.sqldb.jdbc.vo.UserInfo;
-import cn.featherfly.hammer.sqldb.jdbc.vo.UserInfo2;
+import cn.featherfly.hammer.sqldb.jdbc.vo.r.User;
+import cn.featherfly.hammer.sqldb.jdbc.vo.r.UserInfo;
+import cn.featherfly.hammer.sqldb.jdbc.vo.r.UserInfo2;
 import cn.featherfly.hammer.sqldb.tpl.UserMapper;
 
 /**

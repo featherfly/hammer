@@ -16,8 +16,8 @@ import cn.featherfly.hammer.expression.condition.LogicExpression;
  */
 public interface DateExpression<D extends Date, C extends ConditionExpression, L extends LogicExpression<C, L>>
         extends PropertyEqualsExpression<C, L, D>, PropertyNotEqualsExpression<C, L, D>, PropertyInExpression<C, L, D>,
-        PropertyNotInExpression<C, L, D>, PropertyLessEqualsExpressoin<C, L, D>, PropertyLessThanExpressoin<C, L, D>,
-        PropertyGreatEqualsExpressoin<C, L, D>, PropertyGreatThanExpressoin<C, L, D>, PropertyIsNullExpression<C, L>,
+        PropertyNotInExpression<C, L, D>, PropertyLessEqualsExpression<C, L, D>, PropertyLessThanExpression<C, L, D>,
+        PropertyGreatEqualsExpression<C, L, D>, PropertyGreatThanExpression<C, L, D>, PropertyIsNullExpression<C, L>,
         PropertyIsNotNullExpression<C, L> {
     /**
      * {@inheritDoc}

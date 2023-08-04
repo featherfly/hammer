@@ -54,13 +54,13 @@
 //     * @param aliasManager   aliasManager
 //     * @param classMapping   the class mapping
 //     * @param selectBuilder  the select builder
-//     * @param ignorePolicy   the ignore policy
+//     * @param ignoreStrategy   the ignore strategy
 //     */
 //    public RepositoryTypeSqlQueryExpression(Jdbc jdbc, JdbcMappingFactory factory, SqlPageFactory sqlPageFactory,
 //            AliasManager aliasManager, JdbcClassMapping<?> classMapping, SqlSelectBasicBuilder selectBuilder,
-//            Predicate<Object> ignorePolicy) {
-//        //        super(jdbc, factory, aliasManager, selectBuilder.getTableAlias(), sqlPageFactory, classMapping, ignorePolicy);
-//        super(jdbc, factory, aliasManager, "", sqlPageFactory, classMapping, ignorePolicy);
+//            Predicate<Object> ignoreStrategy) {
+//        //        super(jdbc, factory, aliasManager, selectBuilder.getTableAlias(), sqlPageFactory, classMapping, ignoreStrategy);
+//        super(jdbc, factory, aliasManager, "", sqlPageFactory, classMapping, ignoreStrategy);
 //        this.selectBuilder = selectBuilder;
 //    }
 //
@@ -74,12 +74,12 @@
 //     * @param queryAlias     the query alias
 //     * @param sqlPageFactory the sql page factory
 //     * @param classMapping   the class mapping
-//     * @param ignorePolicy   the ignore policy
+//     * @param ignoreStrategy   the ignore strategy
 //     */
 //    RepositoryTypeSqlQueryExpression(RepositoryTypeQueryConditionGroupLogicExpression parent, Jdbc jdbc,
 //            JdbcMappingFactory factory, AliasManager aliasManager, String queryAlias, SqlPageFactory sqlPageFactory,
-//            JdbcClassMapping<?> classMapping, Predicate<Object> ignorePolicy) {
-//        super(parent, jdbc, factory, aliasManager, queryAlias, sqlPageFactory, classMapping, ignorePolicy);
+//            JdbcClassMapping<?> classMapping, Predicate<Object> ignoreStrategy) {
+//        super(parent, jdbc, factory, aliasManager, queryAlias, sqlPageFactory, classMapping, ignoreStrategy);
 //    }
 //
 //    /**
@@ -90,7 +90,7 @@
 //            RepositoryTypeQueryConditionGroupLogicExpression parent, String queryAlias) {
 //        //        selectBuilder.setTableAlias(queryAlias);
 //        return new RepositoryTypeSqlQueryExpression(parent, jdbc, factory, aliasManager, queryAlias, sqlPageFactory,
-//                classMapping, ignorePolicy);
+//                classMapping, ignoreStrategy);
 //    }
 //
 //    /**
@@ -420,7 +420,7 @@
 //        Tuple2<String, String> tableNameAndColumnName = getTableAliasAndColumnName(name);
 //        return (RepositoryTypeQueryConditionGroupLogicExpression) addCondition(
 //                new SqlConditionExpressionBuilder(dialect, tableNameAndColumnName.get1(), value, queryOperator,
-//                        aliasManager.getAlias(tableNameAndColumnName.get0()), ignorePolicy));
+//                        aliasManager.getAlias(tableNameAndColumnName.get0()), ignoreStrategy));
 //    }
 //
 //    private <T, R> Tuple2<String, String> getTableAliasAndColumnName(SerializableFunction<T, R> name) {

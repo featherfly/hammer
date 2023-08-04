@@ -18,8 +18,8 @@ import cn.featherfly.hammer.dsl.query.QueryConditionGroupExpression;
 import cn.featherfly.hammer.dsl.query.QueryConditionGroupLogicExpression;
 import cn.featherfly.hammer.sqldb.jdbc.JdbcTestBase;
 import cn.featherfly.hammer.sqldb.jdbc.dsl.query.SqlQuery;
-import cn.featherfly.hammer.sqldb.jdbc.vo.Role;
-import cn.featherfly.hammer.sqldb.jdbc.vo.User;
+import cn.featherfly.hammer.sqldb.jdbc.vo.r.Role;
+import cn.featherfly.hammer.sqldb.jdbc.vo.r.User;
 
 /**
  * SqlQueryTest.
@@ -213,6 +213,9 @@ public class SqlQueryTest extends JdbcTestBase {
     void testJoin() {
         SqlQuery query = new SqlQuery(jdbc, mappingFactory, sqlPageFactory);
 
+        // YUFEI_TODO 修复泛型不正确的问题
+        // query.find("user") 返回 SqlQueryEntity
+        // query.find("user").property("username") 返回 QueryEntityProperties，应该返回SqlQueryEntity
         query.find("user").property("username", "password", "age").join("user_info").on("user_id").list();
 
         query.find("user").property("username", "password", "age").join("user_info").on("user_id").join("user_info")

@@ -33,6 +33,19 @@ public interface JdbcQueryValue {
      */
     <T> T queryValue(String sql, Class<T> valueType, Object... args);
 
+    //    /** IMPLSOON 后续来实现多个值得查询
+    //     * Query value.
+    //     *
+    //     * @param <T1>       the generic type
+    //     * @param <T2>       the generic type
+    //     * @param sql        the sql
+    //     * @param valueType1 the value type 1
+    //     * @param valueType2 the value type 2
+    //     * @param args       the args
+    //     * @return the t
+    //     */
+    //    <T1, T2> Tuple2<T1, T2> queryValue(String sql, Class<T1> valueType1, Class<T2> valueType2, Object... args);
+
     /**
      * Query value.
      *
@@ -67,24 +80,24 @@ public interface JdbcQueryValue {
     <T> T queryValue(String sql, RowMapper<T> rowMapper, Map<String, Object> args);
 
     /**
-     * queryInt.
+     * query Integer.
      *
      * @param sql  the sql
      * @param args the args
      * @return the integer
      */
-    default Integer queryInt(String sql, Object... args) {
+    default Integer queryInteger(String sql, Object... args) {
         return queryValue(sql, Integer.class, args);
     }
 
     /**
-     * Query int.
+     * query Integer.
      *
      * @param sql  the sql
      * @param args the args
      * @return the integer
      */
-    default Integer queryInt(String sql, Map<String, Object> args) {
+    default Integer queryInteger(String sql, Map<String, Object> args) {
         return queryValue(sql, Integer.class, args);
     }
 
@@ -95,7 +108,7 @@ public interface JdbcQueryValue {
      * @param args the args
      * @return the long
      */
-    default Long queryLong(String sql, Object... args) {
+    default Long queryLongWrapper(String sql, Object... args) {
         return queryValue(sql, Long.class, args);
     }
 
@@ -106,7 +119,7 @@ public interface JdbcQueryValue {
      * @param args the args
      * @return the long
      */
-    default Long queryLong(String sql, Map<String, Object> args) {
+    default Long queryLongWrapper(String sql, Map<String, Object> args) {
         return queryValue(sql, Long.class, args);
     }
 
@@ -117,7 +130,7 @@ public interface JdbcQueryValue {
      * @param args the args
      * @return the double
      */
-    default Double queryDouble(String sql, Object... args) {
+    default Double queryDoubleWrapper(String sql, Object... args) {
         return queryValue(sql, Double.class, args);
     }
 
@@ -128,7 +141,7 @@ public interface JdbcQueryValue {
      * @param args the args
      * @return the double
      */
-    default Double queryDouble(String sql, Map<String, Object> args) {
+    default Double queryDoubleWrapper(String sql, Map<String, Object> args) {
         return queryValue(sql, Double.class, args);
     }
 
@@ -176,4 +189,57 @@ public interface JdbcQueryValue {
         return queryValue(sql, String.class, args);
     }
 
+    /**
+     * query int.
+     *
+     * @param sql  the sql
+     * @param args the args
+     * @return the int value
+     */
+    int queryInt(String sql, Object... args);
+
+    /**
+     * Query int.
+     *
+     * @param sql  the sql
+     * @param args the args
+     * @return the int value
+     */
+    int queryInt(String sql, Map<String, Object> args);
+
+    /**
+     * query long.
+     *
+     * @param sql  the sql
+     * @param args the args
+     * @return the long value
+     */
+    long queryLong(String sql, Object... args);
+
+    /**
+     * query long.
+     *
+     * @param sql  the sql
+     * @param args the args
+     * @return the long value
+     */
+    long queryLong(String sql, Map<String, Object> args);
+
+    /**
+     * Query double.
+     *
+     * @param sql  the sql
+     * @param args the args
+     * @return the double
+     */
+    double queryDouble(String sql, Object... args);
+
+    /**
+     * Query double.
+     *
+     * @param sql  the sql
+     * @param args the args
+     * @return the double
+     */
+    double queryDouble(String sql, Map<String, Object> args);
 }

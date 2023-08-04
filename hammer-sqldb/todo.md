@@ -1,5 +1,11 @@
 ## 新功能
 
+- [ ] hammer加入getLockSaveOrUpdate(saveOrUpdateFetch)、getLockUpdate(updateFetch)锁记录，修改，并返回修改后的信息
+
+  updateSaveFetch的原理，可以参见Java的Result Sets中检索和修改值的相关内容。只是当JDBC driver不支持ResultSet的并发更新时，框架需要一些降级的支持方法。
+  看的挺深的，updatesavefetch有降级方法，就是常规的锁load拿过来判断，产生两次交互
+  数据数据库（sql数据库一般都支持行锁）不支持（如elasticsearch, mongodb等暂时不确定这两是否有行锁，做相应实现时再查询期特性），使用内置的locker来实现
+
 - [ ] hammer加入update(entity, Predicate<BeanProperty> ignore)对在更新时需要忽略的对象属性进行帅选
 
 - [ ] TplExecutor各种方法中的TplTemplateId可以加入直接传入字符串模板的方式（用于jdk17的多行字符串），类似@Template(value = "sql template....")

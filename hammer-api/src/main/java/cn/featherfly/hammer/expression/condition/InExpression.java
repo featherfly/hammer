@@ -16,7 +16,7 @@ public interface InExpression<C extends ConditionExpression, L extends LogicExpr
         extends ConditionExpression {
 
     /**
-     * 包含指定，sql中的in.
+     * values in. 包含指定，sql中的in.
      *
      * @param name  参数名称
      * @param value 参数值
@@ -27,7 +27,7 @@ public interface InExpression<C extends ConditionExpression, L extends LogicExpr
     }
 
     /**
-     * 包含指定，sql中的in.
+     * values in. 包含指定，sql中的in.
      *
      * @param name  参数名称
      * @param value 参数值
@@ -36,7 +36,7 @@ public interface InExpression<C extends ConditionExpression, L extends LogicExpr
     L in(String name, Object value);
 
     /**
-     * 包含指定，sql中的in.
+     * values in. 包含指定，sql中的in.
      *
      * @param <T>   the generic type
      * @param <R>   the generic type
@@ -47,7 +47,7 @@ public interface InExpression<C extends ConditionExpression, L extends LogicExpr
     <T, R> L in(SerializableFunction<T, R> name, Object value);
 
     /**
-     * 包含指定，sql中的in.
+     * values in. 包含指定，sql中的in.
      *
      * @param <R>      the generic type
      * @param property 对象属性

@@ -71,8 +71,7 @@ public abstract class AbstractQueryOperate<T> extends AbstractOperate<T> impleme
      * @return 映射后的对象
      */
     protected T mapRow(cn.featherfly.common.repository.mapping.ResultSet rs, int rowNumber) {
-        @SuppressWarnings("unchecked")
-        T mappedObject = (T) BeanUtils.instantiateClass(classMapping.getType());
+        T mappedObject = BeanUtils.instantiateClass(classMapping.getType());
         int index = 1;
         ResultSet resultSet = null;
         if (rs instanceof SqlResultSet) {

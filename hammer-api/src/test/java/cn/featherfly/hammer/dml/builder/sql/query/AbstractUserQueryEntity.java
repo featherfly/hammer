@@ -1,7 +1,6 @@
 
 package cn.featherfly.hammer.dml.builder.sql.query;
 
-import java.math.BigDecimal;
 import java.util.Collection;
 import java.util.List;
 import java.util.Map;
@@ -29,11 +28,16 @@ import cn.featherfly.hammer.expression.query.QueryRelateOnExpression;
  * @param <QWE> the generic type
  */
 public class AbstractUserQueryEntity<Q extends AbstractUserQueryEntity<Q, QW, QWO, QWE>,
-        QW extends QueryRelateExpression<QW, QWO, QWE, UserQueryRepositoryConditionGroupExpression, UserQueryRepositoryConditionGroupExpression>,
-        QWO extends QueryRelateOnExpression<QW, QWO, QWE, UserQueryRepositoryConditionGroupExpression, UserQueryRepositoryConditionGroupExpression>,
-        QWE extends QueryRelateEntityExpression<QW, QWO, QWE, UserQueryRepositoryConditionGroupExpression, UserQueryRepositoryConditionGroupExpression>>
+        QW extends QueryRelateExpression<QW, QWO, QWE, UserQueryRepositoryConditionGroupExpression,
+                UserQueryRepositoryConditionGroupExpression>,
+        QWO extends QueryRelateOnExpression<QW, QWO, QWE, UserQueryRepositoryConditionGroupExpression,
+                UserQueryRepositoryConditionGroupExpression>,
+        QWE extends QueryRelateEntityExpression<QW, QWO, QWE, UserQueryRepositoryConditionGroupExpression,
+                UserQueryRepositoryConditionGroupExpression>>
         implements
-        QueryEntityPropertiesExpression<Q, QW, QWO, QWE, UserQueryConditionGroupExpression, UserQueryConditionGroupExpression, UserQueryRepositoryConditionGroupExpression, UserQueryRepositoryConditionGroupExpression> {
+        QueryEntityPropertiesExpression<Q, QW, QWO, QWE, UserQueryConditionGroupExpression,
+                UserQueryConditionGroupExpression, UserQueryRepositoryConditionGroupExpression,
+                UserQueryRepositoryConditionGroupExpression> {
 
     /**
      * {@inheritDoc}
@@ -129,33 +133,6 @@ public class AbstractUserQueryEntity<Q extends AbstractUserQueryEntity<Q, QW, QW
      * {@inheritDoc}
      */
     @Override
-    public Integer integer() {
-
-        return null;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public Long longInt() {
-
-        return null;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public BigDecimal decimal() {
-
-        return null;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
     public <N extends Number> N number(Class<N> type) {
 
         return null;
@@ -166,7 +143,7 @@ public class AbstractUserQueryEntity<Q extends AbstractUserQueryEntity<Q, QW, QW
      */
     @Override
     public List<Map<String, Object>> list() {
-        // YUFEI_TODO Auto-generated method stub
+
         return null;
     }
 
@@ -176,7 +153,7 @@ public class AbstractUserQueryEntity<Q extends AbstractUserQueryEntity<Q, QW, QW
     @SuppressWarnings("unchecked")
     @Override
     public <T, R> Q property(SerializableFunction<T, R>... propertyNames) {
-        // YUFEI_TODO Auto-generated method stub
+
         return null;
     }
 
@@ -185,7 +162,7 @@ public class AbstractUserQueryEntity<Q extends AbstractUserQueryEntity<Q, QW, QW
      */
     @Override
     public <T, R> Q property(SerializableFunction<T, R> propertyName) {
-        // YUFEI_TODO Auto-generated method stub
+
         return null;
     }
 
@@ -194,7 +171,7 @@ public class AbstractUserQueryEntity<Q extends AbstractUserQueryEntity<Q, QW, QW
      */
     @Override
     public Q id(String propertyName) {
-        // YUFEI_TODO Auto-generated method stub
+
         return null;
     }
 
@@ -203,7 +180,7 @@ public class AbstractUserQueryEntity<Q extends AbstractUserQueryEntity<Q, QW, QW
      */
     @Override
     public <T, R> Q id(SerializableFunction<T, R> propertyName) {
-        // YUFEI_TODO Auto-generated method stub
+
         return null;
     }
 
@@ -212,7 +189,7 @@ public class AbstractUserQueryEntity<Q extends AbstractUserQueryEntity<Q, QW, QW
      */
     @Override
     public QuerySortExpression sort() {
-        // YUFEI_TODO Auto-generated method stub
+
         return null;
     }
 
@@ -220,8 +197,8 @@ public class AbstractUserQueryEntity<Q extends AbstractUserQueryEntity<Q, QW, QW
      * {@inheritDoc}
      */
     @Override
-    public Long count() {
-        // YUFEI_TODO Auto-generated method stub
+    public long count() {
+
         return 0l;
     }
 
@@ -230,7 +207,7 @@ public class AbstractUserQueryEntity<Q extends AbstractUserQueryEntity<Q, QW, QW
      */
     @Override
     public Q sum(String propertyName) {
-        // YUFEI_TODO Auto-generated method stub
+
         return null;
     }
 
@@ -239,7 +216,7 @@ public class AbstractUserQueryEntity<Q extends AbstractUserQueryEntity<Q, QW, QW
      */
     @Override
     public Q max(String propertyName) {
-        // YUFEI_TODO Auto-generated method stub
+
         return null;
     }
 
@@ -248,7 +225,7 @@ public class AbstractUserQueryEntity<Q extends AbstractUserQueryEntity<Q, QW, QW
      */
     @Override
     public Q min(String propertyName) {
-        // YUFEI_TODO Auto-generated method stub
+
         return null;
     }
 
@@ -257,16 +234,7 @@ public class AbstractUserQueryEntity<Q extends AbstractUserQueryEntity<Q, QW, QW
      */
     @Override
     public Q avg(String propertyName) {
-        // YUFEI_TODO Auto-generated method stub
-        return null;
-    }
 
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public Q distinct(String propertyName) {
-        // YUFEI_TODO Auto-generated method stub
         return null;
     }
 
@@ -275,7 +243,7 @@ public class AbstractUserQueryEntity<Q extends AbstractUserQueryEntity<Q, QW, QW
      */
     @Override
     public Q count(String propertyName) {
-        // YUFEI_TODO Auto-generated method stub
+
         return null;
     }
 
@@ -284,7 +252,7 @@ public class AbstractUserQueryEntity<Q extends AbstractUserQueryEntity<Q, QW, QW
      */
     @Override
     public <T, R> Q count(SerializableFunction<T, R> propertyName) {
-        // YUFEI_TODO Auto-generated method stub
+
         return null;
     }
 
@@ -293,7 +261,7 @@ public class AbstractUserQueryEntity<Q extends AbstractUserQueryEntity<Q, QW, QW
      */
     @Override
     public <T, R> Q sum(SerializableFunction<T, R> propertyName) {
-        // YUFEI_TODO Auto-generated method stub
+
         return null;
     }
 
@@ -302,7 +270,7 @@ public class AbstractUserQueryEntity<Q extends AbstractUserQueryEntity<Q, QW, QW
      */
     @Override
     public <T, R> Q max(SerializableFunction<T, R> propertyName) {
-        // YUFEI_TODO Auto-generated method stub
+
         return null;
     }
 
@@ -311,7 +279,7 @@ public class AbstractUserQueryEntity<Q extends AbstractUserQueryEntity<Q, QW, QW
      */
     @Override
     public <T, R> Q min(SerializableFunction<T, R> propertyName) {
-        // YUFEI_TODO Auto-generated method stub
+
         return null;
     }
 
@@ -320,7 +288,7 @@ public class AbstractUserQueryEntity<Q extends AbstractUserQueryEntity<Q, QW, QW
      */
     @Override
     public <T, R> Q avg(SerializableFunction<T, R> propertyName) {
-        // YUFEI_TODO Auto-generated method stub
+
         return null;
     }
 
@@ -329,7 +297,7 @@ public class AbstractUserQueryEntity<Q extends AbstractUserQueryEntity<Q, QW, QW
      */
     @Override
     public <T, R> Q distinct(SerializableFunction<T, R> propertyName) {
-        // YUFEI_TODO Auto-generated method stub
+
         return null;
     }
 
@@ -339,16 +307,7 @@ public class AbstractUserQueryEntity<Q extends AbstractUserQueryEntity<Q, QW, QW
     @Override
     public UserQueryConditionGroupExpression where(
             Consumer<ConditionGroupConfig<UserQueryConditionGroupExpression>> consumer) {
-        // YUFEI_TODO Auto-generated method stub
-        return null;
-    }
 
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public Q count(boolean distinct, String propertyName) {
-        // YUFEI_TODO Auto-generated method stub
         return null;
     }
 
@@ -357,7 +316,7 @@ public class AbstractUserQueryEntity<Q extends AbstractUserQueryEntity<Q, QW, QW
      */
     @Override
     public <T, R> Q count(boolean distinct, SerializableFunction<T, R> propertyName) {
-        // YUFEI_TODO Auto-generated method stub
+
         return null;
     }
 
@@ -366,7 +325,7 @@ public class AbstractUserQueryEntity<Q extends AbstractUserQueryEntity<Q, QW, QW
      */
     @Override
     public Q sum(boolean distinct, String propertyName) {
-        // YUFEI_TODO Auto-generated method stub
+
         return null;
     }
 
@@ -375,7 +334,7 @@ public class AbstractUserQueryEntity<Q extends AbstractUserQueryEntity<Q, QW, QW
      */
     @Override
     public <T, R> Q sum(boolean distinct, SerializableFunction<T, R> propertyName) {
-        // YUFEI_TODO Auto-generated method stub
+
         return null;
     }
 
@@ -384,7 +343,7 @@ public class AbstractUserQueryEntity<Q extends AbstractUserQueryEntity<Q, QW, QW
      */
     @Override
     public Q max(boolean distinct, String propertyName) {
-        // YUFEI_TODO Auto-generated method stub
+
         return null;
     }
 
@@ -393,7 +352,7 @@ public class AbstractUserQueryEntity<Q extends AbstractUserQueryEntity<Q, QW, QW
      */
     @Override
     public <T, R> Q max(boolean distinct, SerializableFunction<T, R> propertyName) {
-        // YUFEI_TODO Auto-generated method stub
+
         return null;
     }
 
@@ -402,7 +361,7 @@ public class AbstractUserQueryEntity<Q extends AbstractUserQueryEntity<Q, QW, QW
      */
     @Override
     public Q min(boolean distinct, String propertyName) {
-        // YUFEI_TODO Auto-generated method stub
+
         return null;
     }
 
@@ -411,7 +370,7 @@ public class AbstractUserQueryEntity<Q extends AbstractUserQueryEntity<Q, QW, QW
      */
     @Override
     public <T, R> Q min(boolean distinct, SerializableFunction<T, R> propertyName) {
-        // YUFEI_TODO Auto-generated method stub
+
         return null;
     }
 
@@ -420,7 +379,7 @@ public class AbstractUserQueryEntity<Q extends AbstractUserQueryEntity<Q, QW, QW
      */
     @Override
     public Q avg(boolean distinct, String propertyName) {
-        // YUFEI_TODO Auto-generated method stub
+
         return null;
     }
 
@@ -429,7 +388,7 @@ public class AbstractUserQueryEntity<Q extends AbstractUserQueryEntity<Q, QW, QW
      */
     @Override
     public <T, R> Q avg(boolean distinct, SerializableFunction<T, R> propertyName) {
-        // YUFEI_TODO Auto-generated method stub
+
         return null;
     }
 
@@ -447,7 +406,7 @@ public class AbstractUserQueryEntity<Q extends AbstractUserQueryEntity<Q, QW, QW
      */
     @Override
     public Q property(AggregateFunction aggregateFunction, boolean distinct, String propertyName) {
-        // YUFEI_TODO Auto-generated method stub
+
         return null;
     }
 
@@ -456,7 +415,7 @@ public class AbstractUserQueryEntity<Q extends AbstractUserQueryEntity<Q, QW, QW
      */
     @Override
     public <T, R> Q property(boolean distinct, SerializableFunction<T, R> propertyName) {
-        // YUFEI_TODO Auto-generated method stub
+
         return null;
     }
 
@@ -466,7 +425,7 @@ public class AbstractUserQueryEntity<Q extends AbstractUserQueryEntity<Q, QW, QW
     @Override
     public <T, R> Q property(AggregateFunction aggregateFunction, boolean distinct,
             SerializableFunction<T, R> propertyName) {
-        // YUFEI_TODO Auto-generated method stub
+
         return null;
     }
 
@@ -475,8 +434,26 @@ public class AbstractUserQueryEntity<Q extends AbstractUserQueryEntity<Q, QW, QW
      */
     @Override
     public QWO join(String repositoryName) {
-        // YUFEI_TODO Auto-generated method stub
+
         return null;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public int intValue() {
+        // YUFEI_TODO Auto-generated method stub
+        return 0;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public long longValue() {
+        // YUFEI_TODO Auto-generated method stub
+        return 0;
     }
 
 }

@@ -17,8 +17,8 @@ import cn.featherfly.common.structure.page.SimplePagination;
 import cn.featherfly.hammer.Hammer;
 import cn.featherfly.hammer.sqldb.SqldbHammerImpl;
 import cn.featherfly.hammer.sqldb.jdbc.DataSourceTestBase;
-import cn.featherfly.hammer.sqldb.jdbc.vo.Role;
-import cn.featherfly.hammer.sqldb.jdbc.vo.User;
+import cn.featherfly.hammer.sqldb.jdbc.vo.r.Role;
+import cn.featherfly.hammer.sqldb.jdbc.vo.r.User;
 import cn.featherfly.hammer.sqldb.tpl.RoleMapper;
 import cn.featherfly.hammer.sqldb.tpl.UserMapper;
 import cn.featherfly.hammer.tpl.TplConfigFactoryImpl;
@@ -116,7 +116,7 @@ public class SqlTplDynamicExecutorTest extends DataSourceTestBase {
     @Test
     void testMapperSingle() {
         String username = "yufei";
-        cn.featherfly.hammer.sqldb.jdbc.vo.User u = userMapper.selectByUsername(username);
+        cn.featherfly.hammer.sqldb.jdbc.vo.r.User u = userMapper.selectByUsername(username);
         System.out.println(u);
         assertEquals(u.getUsername(), username);
 

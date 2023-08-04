@@ -10,7 +10,7 @@ import cn.featherfly.common.lang.Lang;
 import cn.featherfly.common.lang.function.SerializableFunction;
 import cn.featherfly.common.lang.function.SerializableSupplier;
 import cn.featherfly.common.repository.AliasRepository;
-import cn.featherfly.common.repository.IgnorePolicy;
+import cn.featherfly.common.repository.IgnoreStrategy;
 import cn.featherfly.common.repository.Repository;
 import cn.featherfly.hammer.dsl.execute.ExecutableConditionGroupExpression;
 import cn.featherfly.hammer.dsl.execute.ExecutableUpdate;
@@ -36,7 +36,7 @@ public class SqlExecutableUpdate extends AbstractSqlExecutableUpdate<SqlExecutab
      * @param jdbc      jdbc
      */
     public SqlExecutableUpdate(String tableName, Jdbc jdbc) {
-        this(tableName, jdbc, IgnorePolicy.NONE);
+        this(tableName, jdbc, IgnoreStrategy.NONE);
     }
 
     /**
@@ -44,10 +44,10 @@ public class SqlExecutableUpdate extends AbstractSqlExecutableUpdate<SqlExecutab
      *
      * @param tableName    tableName
      * @param jdbc         jdbc
-     * @param ignorePolicy the ignore policy
+     * @param ignoreStrategy the ignore strategy
      */
-    public SqlExecutableUpdate(String tableName, Jdbc jdbc, Predicate<Object> ignorePolicy) {
-        super(tableName, jdbc, ignorePolicy);
+    public SqlExecutableUpdate(String tableName, Jdbc jdbc, Predicate<Object> ignoreStrategy) {
+        super(tableName, jdbc, ignoreStrategy);
     }
 
     /**
@@ -56,10 +56,10 @@ public class SqlExecutableUpdate extends AbstractSqlExecutableUpdate<SqlExecutab
      * @param tableName    tableName
      * @param tableAlias   the table alias
      * @param jdbc         jdbc
-     * @param ignorePolicy the ignore policy
+     * @param ignoreStrategy the ignore strategy
      */
-    public SqlExecutableUpdate(String tableName, String tableAlias, Jdbc jdbc, Predicate<Object> ignorePolicy) {
-        super(tableName, tableAlias, jdbc, ignorePolicy);
+    public SqlExecutableUpdate(String tableName, String tableAlias, Jdbc jdbc, Predicate<Object> ignoreStrategy) {
+        super(tableName, tableAlias, jdbc, ignoreStrategy);
     }
 
     /**
@@ -69,7 +69,7 @@ public class SqlExecutableUpdate extends AbstractSqlExecutableUpdate<SqlExecutab
      * @param jdbc       the jdbc
      */
     public SqlExecutableUpdate(Repository repository, Jdbc jdbc) {
-        this(repository, jdbc, IgnorePolicy.NONE);
+        this(repository, jdbc, IgnoreStrategy.NONE);
     }
 
     /**
@@ -77,10 +77,10 @@ public class SqlExecutableUpdate extends AbstractSqlExecutableUpdate<SqlExecutab
      *
      * @param repository   the repository
      * @param jdbc         the jdbc
-     * @param ignorePolicy the ignore policy
+     * @param ignoreStrategy the ignore strategy
      */
-    public SqlExecutableUpdate(Repository repository, Jdbc jdbc, Predicate<Object> ignorePolicy) {
-        this(repository.name(), jdbc, ignorePolicy);
+    public SqlExecutableUpdate(Repository repository, Jdbc jdbc, Predicate<Object> ignoreStrategy) {
+        this(repository.name(), jdbc, ignoreStrategy);
     }
 
     /**
@@ -90,7 +90,7 @@ public class SqlExecutableUpdate extends AbstractSqlExecutableUpdate<SqlExecutab
      * @param jdbc       the jdbc
      */
     public SqlExecutableUpdate(AliasRepository repository, Jdbc jdbc) {
-        this(repository, jdbc, IgnorePolicy.NONE);
+        this(repository, jdbc, IgnoreStrategy.NONE);
     }
 
     /**
@@ -98,10 +98,10 @@ public class SqlExecutableUpdate extends AbstractSqlExecutableUpdate<SqlExecutab
      *
      * @param repository   the repository
      * @param jdbc         the jdbc
-     * @param ignorePolicy the ignore policy
+     * @param ignoreStrategy the ignore strategy
      */
-    public SqlExecutableUpdate(AliasRepository repository, Jdbc jdbc, Predicate<Object> ignorePolicy) {
-        this(repository.name(), repository.alias(), jdbc, ignorePolicy);
+    public SqlExecutableUpdate(AliasRepository repository, Jdbc jdbc, Predicate<Object> ignoreStrategy) {
+        this(repository.name(), repository.alias(), jdbc, ignoreStrategy);
     }
 
     /**
@@ -109,6 +109,7 @@ public class SqlExecutableUpdate extends AbstractSqlExecutableUpdate<SqlExecutab
      */
     @Override
     public SqlExecutableUpdate set(String name, Object value) {
+        // YUFEI_TODO 后续使用FieldValueOperator，需要完善基础JavaTypeSqlTypeOperator类型
         return _set(name, value);
     }
 
@@ -129,6 +130,7 @@ public class SqlExecutableUpdate extends AbstractSqlExecutableUpdate<SqlExecutab
      */
     @Override
     public <T, R> ExecutableUpdate set(SerializableFunction<T, R> name, R value) {
+        // YUFEI_TODO 后续使用FieldValueOperator，需要完善基础JavaTypeSqlTypeOperator类型
         return _set(getPropertyName(name), value);
     }
 
@@ -149,6 +151,7 @@ public class SqlExecutableUpdate extends AbstractSqlExecutableUpdate<SqlExecutab
      */
     @Override
     public <R> ExecutableUpdate set(SerializableSupplier<R> property) {
+        // YUFEI_TODO 后续使用FieldValueOperator，需要完善基础JavaTypeSqlTypeOperator类型
         return _set(getPropertyName(property), property.get());
     }
 
@@ -178,6 +181,7 @@ public class SqlExecutableUpdate extends AbstractSqlExecutableUpdate<SqlExecutab
      */
     @Override
     public <N extends Number> SqlExecutableUpdate increase(String name, N value) {
+        // YUFEI_TODO 后续使用FieldValueOperator，需要完善基础JavaTypeSqlTypeOperator类型
         return _increase(name, value);
     }
 
@@ -211,6 +215,7 @@ public class SqlExecutableUpdate extends AbstractSqlExecutableUpdate<SqlExecutab
      */
     @Override
     public <T, R extends Number> ExecutableUpdate increase(SerializableFunction<T, R> name, R value) {
+        // YUFEI_TODO 后续使用FieldValueOperator，需要完善基础JavaTypeSqlTypeOperator类型
         return _increase(getPropertyName(name), value);
     }
 
@@ -219,6 +224,7 @@ public class SqlExecutableUpdate extends AbstractSqlExecutableUpdate<SqlExecutab
      */
     @Override
     public <N extends Number> ExecutableUpdate increase(SerializableSupplier<N> property) {
+        // YUFEI_TODO 后续使用FieldValueOperator，需要完善基础JavaTypeSqlTypeOperator类型
         return _increase(getPropertyName(property), property.get());
     }
 

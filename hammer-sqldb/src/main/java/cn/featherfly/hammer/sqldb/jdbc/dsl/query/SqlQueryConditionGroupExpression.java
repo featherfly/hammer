@@ -1,7 +1,6 @@
 
 package cn.featherfly.hammer.sqldb.jdbc.dsl.query;
 
-import java.math.BigDecimal;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
@@ -47,10 +46,10 @@ public abstract class SqlQueryConditionGroupExpression
      *
      * @param jdbc           jdbc
      * @param sqlPageFactory the sql page factory
-     * @param ignorePolicy   the ignore policy
+     * @param ignoreStrategy   the ignore strategy
      */
-    public SqlQueryConditionGroupExpression(Jdbc jdbc, SqlPageFactory sqlPageFactory, Predicate<Object> ignorePolicy) {
-        this(jdbc, sqlPageFactory, null, ignorePolicy);
+    public SqlQueryConditionGroupExpression(Jdbc jdbc, SqlPageFactory sqlPageFactory, Predicate<?> ignoreStrategy) {
+        this(jdbc, sqlPageFactory, null, ignoreStrategy);
     }
 
     /**
@@ -59,11 +58,11 @@ public abstract class SqlQueryConditionGroupExpression
      * @param jdbc           jdbc
      * @param sqlPageFactory the sql page factory
      * @param queryAlias     queryAlias
-     * @param ignorePolicy   the ignore policy
+     * @param ignoreStrategy   the ignore strategy
      */
     public SqlQueryConditionGroupExpression(Jdbc jdbc, SqlPageFactory sqlPageFactory, String queryAlias,
-            Predicate<Object> ignorePolicy) {
-        this(null, jdbc, sqlPageFactory, queryAlias, ignorePolicy);
+            Predicate<?> ignoreStrategy) {
+        this(null, jdbc, sqlPageFactory, queryAlias, ignoreStrategy);
     }
 
     /**
@@ -73,11 +72,11 @@ public abstract class SqlQueryConditionGroupExpression
      * @param jdbc           jdbc
      * @param sqlPageFactory the sql page factory
      * @param queryAlias     queryAlias
-     * @param ignorePolicy   the ignore policy
+     * @param ignoreStrategy   the ignore strategy
      */
     SqlQueryConditionGroupExpression(QueryConditionGroupLogicExpression parent, Jdbc jdbc,
-            SqlPageFactory sqlPageFactory, String queryAlias, Predicate<Object> ignorePolicy) {
-        super(parent, jdbc.getDialect(), sqlPageFactory, queryAlias, null, ignorePolicy);
+            SqlPageFactory sqlPageFactory, String queryAlias, Predicate<?> ignoreStrategy) {
+        super(parent, jdbc.getDialect(), sqlPageFactory, queryAlias, null, ignoreStrategy);
         this.jdbc = jdbc;
     }
 
@@ -94,7 +93,7 @@ public abstract class SqlQueryConditionGroupExpression
     //    @Override
     //    protected QueryConditionGroupExpression createGroup(QueryConditionGroupLogicExpression parent, String queryAlias,
     //            TypeQueryEntity typeQueryEntity) {
-    //        return new SqlQueryConditionGroupExpression(parent, jdbc, sqlPageFactory, queryAlias, ignorePolicy);
+    //        return new SqlQueryConditionGroupExpression(parent, jdbc, sqlPageFactory, queryAlias, ignoreStrategy);
     //    }
 
     /**
@@ -412,7 +411,7 @@ public abstract class SqlQueryConditionGroupExpression
      * {@inheritDoc}
      */
     @Override
-    public Integer integer() {
+    public int intValue() {
         return jdbc.queryInt(getRoot().expression(), getRoot().getParams().toArray());
     }
 
@@ -420,17 +419,33 @@ public abstract class SqlQueryConditionGroupExpression
      * {@inheritDoc}
      */
     @Override
-    public Long longInt() {
+    public long longValue() {
         return jdbc.queryLong(getRoot().expression(), getRoot().getParams().toArray());
     }
 
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public BigDecimal decimal() {
-        return jdbc.queryBigDecimal(getRoot().expression(), getRoot().getParams().toArray());
-    }
+    //    /**
+    //     * {@inheritDoc}
+    //     */
+    //    @Override
+    //    public Integer integer() {
+    //        return jdbc.queryInteger(getRoot().expression(), getRoot().getParams().toArray());
+    //    }
+    //
+    //    /**
+    //     * {@inheritDoc}
+    //     */
+    //    @Override
+    //    public Long longInt() {
+    //        return jdbc.queryLongWrapper(getRoot().expression(), getRoot().getParams().toArray());
+    //    }
+    //
+    //    /**
+    //     * {@inheritDoc}
+    //     */
+    //    @Override
+    //    public BigDecimal decimal() {
+    //        return jdbc.queryBigDecimal(getRoot().expression(), getRoot().getParams().toArray());
+    //    }
 
     /**
      * {@inheritDoc}

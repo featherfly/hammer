@@ -29,5 +29,5 @@ public interface EntityQueryRelatedFetchedExpression8RRRRRRRF<E, R1, R2, R3, R4,
         S extends EntityQuerySortExpression9<E, R1, R2, R3, R4, R5, R6, R7, R8, Tuple2<E, R8>>>
         //        extends EntityQueryRelationExpression8<E, R1, R2, R3, R4, R5, R6, R7, R8, C, L, Tuple9<E, R1, R2, R3, R4, R5, R6, R7, R8>>
         extends EntityQueryExpression9<E, R1, R2, R3, R4, R5, R6, R7, R8, C, L, S, Tuple2<E, R8>> {
-
+    // TODO 加入join方法
 }

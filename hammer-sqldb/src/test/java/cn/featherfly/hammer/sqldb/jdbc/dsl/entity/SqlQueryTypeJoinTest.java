@@ -1,8 +1,8 @@
 
 package cn.featherfly.hammer.sqldb.jdbc.dsl.entity;
 
-import static org.junit.Assert.assertNull;
-import static org.junit.Assert.assertTrue;
+import static org.testng.Assert.assertNull;
+import static org.testng.Assert.assertTrue;
 import static org.testng.Assert.assertEquals;
 import static org.testng.Assert.assertNotNull;
 
@@ -13,15 +13,15 @@ import org.testng.annotations.BeforeClass;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
-import cn.featherfly.common.repository.IgnorePolicy;
+import cn.featherfly.common.repository.IgnoreStrategy;
 import cn.featherfly.common.structure.page.SimplePage;
 import cn.featherfly.hammer.sqldb.jdbc.JdbcTestBase;
 import cn.featherfly.hammer.sqldb.jdbc.dsl.query.SqlQuery;
-import cn.featherfly.hammer.sqldb.jdbc.vo.Tree2;
-import cn.featherfly.hammer.sqldb.jdbc.vo.User;
-import cn.featherfly.hammer.sqldb.jdbc.vo.UserInfo;
-import cn.featherfly.hammer.sqldb.jdbc.vo.order.Order2;
-import cn.featherfly.hammer.sqldb.jdbc.vo.order.OrderInfo;
+import cn.featherfly.hammer.sqldb.jdbc.vo.r.Tree2;
+import cn.featherfly.hammer.sqldb.jdbc.vo.r.User;
+import cn.featherfly.hammer.sqldb.jdbc.vo.r.UserInfo;
+import cn.featherfly.hammer.sqldb.jdbc.vo.r.order.Order2;
+import cn.featherfly.hammer.sqldb.jdbc.vo.r.order.OrderInfo;
 
 /**
  * sql query type test.
@@ -72,7 +72,7 @@ public class SqlQueryTypeJoinTest extends JdbcTestBase {
 
     @Test
     void testJoin_where_condition() {
-        userInfo = query.find(UserInfo.class).join(UserInfo::getUser).where(t -> t.setIgnorePolicy(IgnorePolicy.NONE))
+        userInfo = query.find(UserInfo.class).join(UserInfo::getUser).where(t -> t.setIgnoreStrategy(IgnoreStrategy.NONE))
                 .eq(UserInfo::getId, null).single();
         assertNull(userInfo);
     }

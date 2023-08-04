@@ -31,11 +31,11 @@ public class SqlConditionExpressionBuilder implements ParamedExpression, SqlBuil
      * @param name          名称
      * @param value         值
      * @param queryOperator 查询运算符（查询类型）
-     * @param ignorePolicy  the ignore policy
+     * @param ignoreStrategy  the ignore strategy
      */
     public SqlConditionExpressionBuilder(Dialect dialect, String name, Object value, QueryOperator queryOperator,
-            Predicate<?> ignorePolicy) {
-        this(dialect, name, value, queryOperator, null, ignorePolicy);
+            Predicate<?> ignoreStrategy) {
+        this(dialect, name, value, queryOperator, null, ignoreStrategy);
     }
 
     /**
@@ -46,11 +46,11 @@ public class SqlConditionExpressionBuilder implements ParamedExpression, SqlBuil
      * @param value         值
      * @param queryOperator 查询运算符（查询类型）
      * @param queryAlias    查询别名
-     * @param ignorePolicy  the ignore policy
+     * @param ignoreStrategy  the ignore strategy
      */
     public SqlConditionExpressionBuilder(Dialect dialect, String name, Object value, QueryOperator queryOperator,
-            String queryAlias, Predicate<?> ignorePolicy) {
-        this(dialect, name, value, queryOperator, QueryPolicy.AUTO, queryAlias, ignorePolicy);
+            String queryAlias, Predicate<?> ignoreStrategy) {
+        this(dialect, name, value, queryOperator, QueryPolicy.AUTO, queryAlias, ignoreStrategy);
     }
 
     /**
@@ -62,16 +62,16 @@ public class SqlConditionExpressionBuilder implements ParamedExpression, SqlBuil
      * @param queryOperator 查询运算符（查询类型）
      * @param queryPolicy   the query policy
      * @param queryAlias    查询别名
-     * @param ignorePolicy  the ignore policy
+     * @param ignoreStrategy  the ignore strategy
      */
     @SuppressWarnings("unchecked")
     public SqlConditionExpressionBuilder(Dialect dialect, String name, Object value, QueryOperator queryOperator,
-            QueryPolicy queryPolicy, String queryAlias, Predicate<?> ignorePolicy) {
+            QueryPolicy queryPolicy, String queryAlias, Predicate<?> ignoreStrategy) {
         if (queryOperator == null) {
             throw new BuilderException(BuilderExceptionCode.createQueryOperatorNullCode());
         }
         conditionColumnElement = new ConditionColumnElement(dialect, name, value, queryOperator, queryPolicy,
-                queryAlias, (Predicate<Object>) ignorePolicy);
+                queryAlias, (Predicate<Object>) ignoreStrategy);
     }
 
     /**

@@ -38,6 +38,7 @@ import com.speedment.common.tuple.Tuple2;
 import com.speedment.common.tuple.Tuple3;
 import com.speedment.common.tuple.Tuple4;
 import com.speedment.common.tuple.Tuple5;
+import com.speedment.common.tuple.Tuple6;
 
 import cn.featherfly.common.bean.BeanProperty;
 import cn.featherfly.common.bean.BeanPropertyValue;
@@ -589,6 +590,22 @@ public abstract class AbstractJdbc implements Jdbc {
      * {@inheritDoc}
      */
     @Override
+    public <T1, T2, T3, T4, T5, T6> List<Tuple6<T1, T2, T3, T4, T5, T6>> query(String sql, Class<T1> elementType1,
+            Class<T2> elementType2, Class<T3> elementType3, Class<T4> elementType4, Class<T5> elementType5,
+            Class<T6> elementType6, Tuple6<String, String, String, String, String, String> prefixes,
+            Map<String, Object> args) {
+        logger.debug(
+                "sql -> {}, args -> {}, elementType1 -> {}, elementType2 -> {}, elementType3 -> {}, elementType4 -> {}, elementType5 -> {}, elementType6 -> {}",
+                sql, args, elementType1, elementType2, elementType3, elementType4, elementType5, elementType6);
+        Execution execution = SqlUtils.convertNamedParamSql(sql, args);
+        return query(execution.getExecution(), elementType1, elementType2, elementType3, elementType4, elementType5,
+                elementType6, prefixes, execution.getParams());
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
     public <T> List<T> query(String sql, Class<T> elementType, Object... args) {
         SQLType sqlType = manager.getSqlType(elementType);
         RowMapper<T> rowMapper = null;
@@ -653,6 +670,18 @@ public abstract class AbstractJdbc implements Jdbc {
                         ArrayUtils.toList(elementType1, elementType2, elementType3, elementType4, elementType5),
                         prefixes, manager),
                 args);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public <T1, T2, T3, T4, T5, T6> List<Tuple6<T1, T2, T3, T4, T5, T6>> query(String sql, Class<T1> elementType1,
+            Class<T2> elementType2, Class<T3> elementType3, Class<T4> elementType4, Class<T5> elementType5,
+            Class<T6> elementType6, Tuple6<String, String, String, String, String, String> prefixes, Object... args) {
+        return query(sql, new TupleNestedBeanPropertyRowMapper<>(
+                ArrayUtils.toList(elementType1, elementType2, elementType3, elementType4, elementType5, elementType6),
+                prefixes, manager), args);
     }
 
     //    @Override
@@ -804,6 +833,18 @@ public abstract class AbstractJdbc implements Jdbc {
      * {@inheritDoc}
      */
     @Override
+    public <T1, T2, T3, T4, T5, T6> Tuple6<T1, T2, T3, T4, T5, T6> queryUnique(String sql, Class<T1> elementType1,
+            Class<T2> elementType2, Class<T3> elementType3, Class<T4> elementType4, Class<T5> elementType5,
+            Class<T6> elementType6, Tuple6<String, String, String, String, String, String> prefixes,
+            Map<String, Object> args) {
+        return singleResult(query(sql, elementType1, elementType2, elementType3, elementType4, elementType5,
+                elementType6, prefixes, args));
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
     public <T> T querySingle(String sql, Class<T> elementType, Object... args) {
         return singleResult(query(sql, elementType, args));
     }
@@ -845,6 +886,18 @@ public abstract class AbstractJdbc implements Jdbc {
             Tuple5<String, String, String, String, String> prefixes, Object... args) {
         return singleResult(
                 query(sql, elementType1, elementType2, elementType3, elementType4, elementType5, prefixes, args));
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public <T1, T2, T3, T4, T5, T6> Tuple6<T1, T2, T3, T4, T5, T6> querySingle(String sql, Class<T1> elementType1,
+            Class<T2> elementType2, Class<T3> elementType3, Class<T4> elementType4, Class<T5> elementType5,
+            Class<T6> elementType6, Tuple6<String, String, String, String, String, String> prefixes,
+            Map<String, Object> args) {
+        return singleResult(query(sql, elementType1, elementType2, elementType3, elementType4, elementType5,
+                elementType6, prefixes, args));
     }
 
     //    /**
@@ -956,6 +1009,17 @@ public abstract class AbstractJdbc implements Jdbc {
      * {@inheritDoc}
      */
     @Override
+    public <T1, T2, T3, T4, T5, T6> Tuple6<T1, T2, T3, T4, T5, T6> querySingle(String sql, Class<T1> elementType1,
+            Class<T2> elementType2, Class<T3> elementType3, Class<T4> elementType4, Class<T5> elementType5,
+            Class<T6> elementType6, Tuple6<String, String, String, String, String, String> prefixes, Object... args) {
+        return nullableSingleResult(query(sql, elementType1, elementType2, elementType3, elementType4, elementType5,
+                elementType6, prefixes, args));
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
     public <T> T queryUnique(String sql, Class<T> elementType, Object... args) {
         return nullableSingleResult(query(sql, elementType, args));
     }
@@ -997,6 +1061,17 @@ public abstract class AbstractJdbc implements Jdbc {
             Tuple5<String, String, String, String, String> prefixes, Object... args) {
         return nullableSingleResult(
                 query(sql, elementType1, elementType2, elementType3, elementType4, elementType5, prefixes, args));
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public <T1, T2, T3, T4, T5, T6> Tuple6<T1, T2, T3, T4, T5, T6> queryUnique(String sql, Class<T1> elementType1,
+            Class<T2> elementType2, Class<T3> elementType3, Class<T4> elementType4, Class<T5> elementType5,
+            Class<T6> elementType6, Tuple6<String, String, String, String, String, String> prefixes, Object... args) {
+        return nullableSingleResult(query(sql, elementType1, elementType2, elementType3, elementType4, elementType5,
+                elementType6, prefixes, args));
     }
 
     //    /**
@@ -1053,6 +1128,162 @@ public abstract class AbstractJdbc implements Jdbc {
         List<T> results = query(sql, rowMapper, args);
         return nullableSingleResult(results);
     }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public int queryInt(String sql, Object... args) {
+        //        AtomicInteger res = new AtomicInteger(0);
+        //        queryPrimitiveValue(i -> res.set(i), null, null, sql, args);
+        //        return res.get();
+        int result = 0;
+        if (Lang.isNotEmpty(sql)) {
+            sql = sql.trim();
+            JdbcExecution execution = preHandle(sql, args);
+            sql = execution.getExecution();
+            args = execution.getParams();
+            logger.debug("execute sql -> {}, args -> {}", sql, args);
+            Connection con = getConnection();
+            try (PreparedStatement prep = con.prepareStatement(sql)) {
+                setParams(prep, args);
+                try (ResultSet rs = prep.executeQuery()) {
+                    int i = 0;
+                    while (rs.next()) {
+                        result = rs.getInt(1);
+                        i++;
+                    }
+                    if (i > 1) {
+                        throw new JdbcException(Strings.format("results size must be 1, but is {0}", i));
+                    }
+                    return postHandle(execution.setOriginalResult(result), sql, args);
+                }
+            } catch (SQLException e) {
+                releaseConnection(con);
+                con = null;
+                throw new JdbcException(Strings.format("query: \nsql: {0} \nargs: {1}", sql, Arrays.toString(args)), e);
+            } finally {
+                releaseConnection(con);
+            }
+        }
+        return result;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public int queryInt(String sql, Map<String, Object> args) {
+        logger.debug("sql -> {}, args -> {}, resultType -> {}", sql, args, int.class);
+        Execution execution = SqlUtils.convertNamedParamSql(sql, args);
+        return queryInt(execution.getExecution(), execution.getParams());
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public long queryLong(String sql, Object... args) {
+        //        AtomicLong res = new AtomicLong(0);
+        //        queryPrimitiveValue(null, i -> res.set(i), null, sql, args);
+        //        return res.get();
+
+        long result = 0;
+        if (Lang.isNotEmpty(sql)) {
+            sql = sql.trim();
+            JdbcExecution execution = preHandle(sql, args);
+            sql = execution.getExecution();
+            args = execution.getParams();
+            logger.debug("execute sql -> {}, args -> {}", sql, args);
+            Connection con = getConnection();
+            try (PreparedStatement prep = con.prepareStatement(sql)) {
+                setParams(prep, args);
+                try (ResultSet rs = prep.executeQuery()) {
+                    int i = 0;
+                    while (rs.next()) {
+                        result = rs.getLong(1);
+                        i++;
+                    }
+                    if (i > 1) {
+                        throw new JdbcException(Strings.format("results size must be 1, but is {0}", i));
+                    }
+                    return postHandle(execution.setOriginalResult(result), sql, args);
+                }
+            } catch (SQLException e) {
+                releaseConnection(con);
+                con = null;
+                throw new JdbcException(Strings.format("query: \nsql: {0} \nargs: {1}", sql, Arrays.toString(args)), e);
+            } finally {
+                releaseConnection(con);
+            }
+        }
+        return result;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public long queryLong(String sql, Map<String, Object> args) {
+        logger.debug("sql -> {}, args -> {}, resultType -> {}", sql, args, long.class);
+        Execution execution = SqlUtils.convertNamedParamSql(sql, args);
+        return queryLong(execution.getExecution(), execution.getParams());
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public double queryDouble(String sql, Object... args) {
+        //        BigDecimal res = new BigDecimal(0);
+        //        queryPrimitiveValue(null, null, i -> res.add(BigDecimal.valueOf(i)), sql, args);
+        //        return res.doubleValue();
+
+        double result = 0;
+        if (Lang.isNotEmpty(sql)) {
+            sql = sql.trim();
+            JdbcExecution execution = preHandle(sql, args);
+            sql = execution.getExecution();
+            args = execution.getParams();
+            logger.debug("execute sql -> {}, args -> {}", sql, args);
+            Connection con = getConnection();
+            try (PreparedStatement prep = con.prepareStatement(sql)) {
+                setParams(prep, args);
+                try (ResultSet rs = prep.executeQuery()) {
+                    int i = 0;
+                    while (rs.next()) {
+                        result = rs.getDouble(1);
+                        i++;
+                    }
+                    if (i > 1) {
+                        throw new JdbcException(Strings.format("results size must be 1, but is {0}", i));
+                    }
+                    return postHandle(execution.setOriginalResult(result), sql, args);
+                }
+            } catch (SQLException e) {
+                releaseConnection(con);
+                con = null;
+                throw new JdbcException(Strings.format("query: \nsql: {0} \nargs: {1}", sql, Arrays.toString(args)), e);
+            } finally {
+                releaseConnection(con);
+            }
+        }
+        return result;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public double queryDouble(String sql, Map<String, Object> args) {
+        logger.debug("sql -> {}, args -> {}, resultType -> {}", sql, args, double.class);
+        Execution execution = SqlUtils.convertNamedParamSql(sql, args);
+        return queryDouble(execution.getExecution(), execution.getParams());
+    }
+
+    // ****************************************************************************************************************
+    //	call
+    // ****************************************************************************************************************
 
     /**
      * {@inheritDoc}
@@ -1296,6 +1527,57 @@ public abstract class AbstractJdbc implements Jdbc {
         return singleResult(
                 callQuery(name, elementType1, elementType2, elementType3, elementType4, elementType5, prefixes, args));
     }
+
+    // ****************************************************************************************************************
+    //	private method
+    // ****************************************************************************************************************
+
+    //    private void queryPrimitiveValue(IntConsumer intConsumer, LongConsumer longConsumer, DoubleConsumer doubleConsumer,
+    //            String sql, Object... args) {
+    //        if (Lang.isNotEmpty(sql)) {
+    //            sql = sql.trim();
+    //            JdbcExecution execution = preHandle(sql, args);
+    //            sql = execution.getExecution();
+    //            args = execution.getParams();
+    //            logger.debug("execute sql -> {}, args -> {}", sql, args);
+    //            Connection con = getConnection();
+    //            try (PreparedStatement prep = con.prepareStatement(sql)) {
+    //                setParams(prep, args);
+    //                try (ResultSet rs = prep.executeQuery()) {
+    //                    int i = 0;
+    //                    Object result = null;
+    //                    while (rs.next()) {
+    //                        if (intConsumer != null) {
+    //                            int res = rs.getInt(i);
+    //                            result = res;
+    //                            intConsumer.accept(res);
+    //                        } else if (longConsumer != null) {
+    //                            long res = rs.getLong(i);
+    //                            result = res;
+    //                            longConsumer.accept(res);
+    //                        } else if (doubleConsumer != null) {
+    //                            double res = rs.getDouble(i);
+    //                            result = res;
+    //                            doubleConsumer.accept(res);
+    //                        } else {
+    //                            throw new JdbcException(Strings.format("only support primitive type[int long double]"));
+    //                        }
+    //                        i++;
+    //                    }
+    //                    if (i > 1) {
+    //                        throw new JdbcException(Strings.format("results size must be 1, but is {0}", i));
+    //                    }
+    //                    postHandle(execution.setOriginalResult(result), sql, args);
+    //                }
+    //            } catch (SQLException e) {
+    //                releaseConnection(con);
+    //                con = null;
+    //                throw new JdbcException(Strings.format("query: \nsql: {0} \nargs: {1}", sql, Arrays.toString(args)), e);
+    //            } finally {
+    //                releaseConnection(con);
+    //            }
+    //        }
+    //    }
 
     private String getProcedure(String name, int argnum) {
         AssertIllegalArgument.isNotBlank(name, "procedureName");

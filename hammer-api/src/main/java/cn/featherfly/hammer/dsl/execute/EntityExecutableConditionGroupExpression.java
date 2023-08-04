@@ -1,7 +1,7 @@
 
 package cn.featherfly.hammer.dsl.execute;
 
-import cn.featherfly.hammer.expression.EntityConditionGroupExpression;
+import cn.featherfly.hammer.expression.entity.EntityConditionGroupExpression;
 
 /**
  * entity executable condition group expression,.

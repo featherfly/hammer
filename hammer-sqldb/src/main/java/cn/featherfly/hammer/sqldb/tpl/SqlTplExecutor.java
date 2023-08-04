@@ -17,6 +17,7 @@ import com.speedment.common.tuple.Tuple2;
 import com.speedment.common.tuple.Tuple3;
 import com.speedment.common.tuple.Tuple4;
 import com.speedment.common.tuple.Tuple5;
+import com.speedment.common.tuple.Tuple6;
 import com.speedment.common.tuple.Tuples;
 
 import cn.featherfly.common.db.SqlUtils;
@@ -375,6 +376,64 @@ public class SqlTplExecutor implements TplExecutor {
         ConditionParamsManager manager = tuple4.get2();
         return jdbc.querySingle(sql, entityType1, entityType2, entityType3, entityType4, entityType5, prefixes,
                 getEffectiveParamMap(params, manager));
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public <R1, R2, R3, R4, R5, R6> Tuple6<R1, R2, R3, R4, R5, R6> single(String tplExecuteId, Class<R1> entityType1,
+            Class<R2> entityType2, Class<R3> entityType3, Class<R4> entityType4, Class<R5> entityType5,
+            Class<R6> entityType6, Map<String, Object> params) {
+        return single(new TplExecuteIdFileImpl(tplExecuteId), entityType1, entityType2, entityType3, entityType4,
+                entityType5, entityType6, params);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public <R1, R2, R3, R4, R5, R6> Tuple6<R1, R2, R3, R4, R5, R6> single(TplExecuteId tplExecuteId,
+            Class<R1> entityType1, Class<R2> entityType2, Class<R3> entityType3, Class<R4> entityType4,
+            Class<R5> entityType5, Class<R6> entityType6, Map<String, Object> params) {
+        Tuple4<String, TplExecuteConfig, ConditionParamsManager,
+                PropertiesMappingManager> tuple4 = getQueryExecution(tplExecuteId, params, entityType1, entityType2);
+        String sql = tuple4.get0();
+        ConditionParamsManager manager = tuple4.get2();
+        PropertiesMappingManager propManager = tuple4.get3();
+        return jdbc.querySingle(sql, entityType1, entityType2, entityType3, entityType4, entityType5, entityType6,
+                Tuples.of(propManager.getValue(0).getAlias() + ".", propManager.getValue(1).getAlias() + ".",
+                        propManager.getValue(2).getAlias() + ".", propManager.getValue(3).getAlias() + ".",
+                        propManager.getValue(4).getAlias() + ".", propManager.getValue(5).getAlias() + "."),
+                getEffectiveParamMap(params, manager));
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public <R1, R2, R3, R4, R5, R6> Tuple6<R1, R2, R3, R4, R5, R6> single(String tplExecuteId, Class<R1> entityType1,
+            Class<R2> entityType2, Class<R3> entityType3, Class<R4> entityType4, Class<R5> entityType5,
+            Class<R6> entityType6, Tuple6<String, String, String, String, String, String> prefixes,
+            Map<String, Object> params) {
+        return single(new TplExecuteIdFileImpl(tplExecuteId), entityType1, entityType2, entityType3, entityType4,
+                entityType5, entityType6, prefixes, params);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public <R1, R2, R3, R4, R5, R6> Tuple6<R1, R2, R3, R4, R5, R6> single(TplExecuteId tplExecuteId,
+            Class<R1> entityType1, Class<R2> entityType2, Class<R3> entityType3, Class<R4> entityType4,
+            Class<R5> entityType5, Class<R6> entityType6,
+            Tuple6<String, String, String, String, String, String> prefixes, Map<String, Object> params) {
+        Tuple4<String, TplExecuteConfig, ConditionParamsManager,
+                PropertiesMappingManager> tuple4 = getQueryExecution(tplExecuteId, params, entityType1, entityType2);
+        String sql = tuple4.get0();
+        ConditionParamsManager manager = tuple4.get2();
+        return jdbc.querySingle(sql, entityType1, entityType2, entityType3, entityType4, entityType5, entityType6,
+                prefixes, getEffectiveParamMap(params, manager));
     }
 
     /**
@@ -837,6 +896,100 @@ public class SqlTplExecutor implements TplExecutor {
      * {@inheritDoc}
      */
     @Override
+    public <R1, R2, R3, R4, R5, R6> List<Tuple6<R1, R2, R3, R4, R5, R6>> list(String tplExecuteId,
+            Class<R1> entityType1, Class<R2> entityType2, Class<R3> entityType3, Class<R4> entityType4,
+            Class<R5> entityType5, Class<R6> entityType6, Map<String, Object> params) {
+        return list(new TplExecuteIdFileImpl(tplExecuteId), entityType1, entityType2, entityType3, entityType4,
+                entityType5, entityType6, params);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public <R1, R2, R3, R4, R5, R6> List<Tuple6<R1, R2, R3, R4, R5, R6>> list(String tplExecuteId,
+            Class<R1> entityType1, Class<R2> entityType2, Class<R3> entityType3, Class<R4> entityType4,
+            Class<R5> entityType5, Class<R6> entityType6, Map<String, Object> params, int offset, int limit) {
+        return list(new TplExecuteIdFileImpl(tplExecuteId), entityType1, entityType2, entityType3, entityType4,
+                entityType5, entityType6, params, offset, limit);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public <R1, R2, R3, R4, R5, R6> List<Tuple6<R1, R2, R3, R4, R5, R6>> list(TplExecuteId tplExecuteId,
+            Class<R1> entityType1, Class<R2> entityType2, Class<R3> entityType3, Class<R4> entityType4,
+            Class<R5> entityType5, Class<R6> entityType6, Map<String, Object> params) {
+        // YUFEI_TODO Auto-generated method stub
+        return null;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public <R1, R2, R3, R4, R5, R6> List<Tuple6<R1, R2, R3, R4, R5, R6>> list(TplExecuteId tplExecuteId,
+            Class<R1> entityType1, Class<R2> entityType2, Class<R3> entityType3, Class<R4> entityType4,
+            Class<R5> entityType5, Class<R6> entityType6, Map<String, Object> params, int offset, int limit) {
+        return findList(tplExecuteId, entityType1, entityType2, entityType3, entityType4, entityType5, entityType6,
+                null, params, offset, limit).get0();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public <R1, R2, R3, R4, R5, R6> List<Tuple6<R1, R2, R3, R4, R5, R6>> list(String tplExecuteId,
+            Class<R1> entityType1, Class<R2> entityType2, Class<R3> entityType3, Class<R4> entityType4,
+            Class<R5> entityType5, Class<R6> entityType6,
+            Tuple6<String, String, String, String, String, String> prefixes, Map<String, Object> params) {
+        return list(new TplExecuteIdFileImpl(tplExecuteId), entityType1, entityType2, entityType3, entityType4,
+                entityType5, entityType6, prefixes, params);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public <R1, R2, R3, R4, R5, R6> List<Tuple6<R1, R2, R3, R4, R5, R6>> list(String tplExecuteId,
+            Class<R1> entityType1, Class<R2> entityType2, Class<R3> entityType3, Class<R4> entityType4,
+            Class<R5> entityType5, Class<R6> entityType6,
+            Tuple6<String, String, String, String, String, String> prefixes, Map<String, Object> params, int offset,
+            int limit) {
+        return list(new TplExecuteIdFileImpl(tplExecuteId), entityType1, entityType2, entityType3, entityType4,
+                entityType5, entityType6, prefixes, params, offset, limit);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public <R1, R2, R3, R4, R5, R6> List<Tuple6<R1, R2, R3, R4, R5, R6>> list(TplExecuteId tplExecuteId,
+            Class<R1> entityType1, Class<R2> entityType2, Class<R3> entityType3, Class<R4> entityType4,
+            Class<R5> entityType5, Class<R6> entityType6,
+            Tuple6<String, String, String, String, String, String> prefixes, Map<String, Object> params) {
+        // YUFEI_TODO Auto-generated method stub
+        return null;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public <R1, R2, R3, R4, R5, R6> List<Tuple6<R1, R2, R3, R4, R5, R6>> list(TplExecuteId tplExecuteId,
+            Class<R1> entityType1, Class<R2> entityType2, Class<R3> entityType3, Class<R4> entityType4,
+            Class<R5> entityType5, Class<R6> entityType6,
+            Tuple6<String, String, String, String, String, String> prefixes, Map<String, Object> params, int offset,
+            int limit) {
+        // YUFEI_TODO Auto-generated method stub
+        return null;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
     public PaginationResults<Map<String, Object>> pagination(String tplExecuteId, Map<String, Object> params,
             int offset, int limit) {
         return pagination(new TplExecuteIdFileImpl(tplExecuteId), params, offset, limit);
@@ -1081,8 +1234,8 @@ public class SqlTplExecutor implements TplExecutor {
     public <R1, R2, R3, R4, R5> PaginationResults<Tuple5<R1, R2, R3, R4, R5>> pagination(TplExecuteId tplExecuteId,
             Class<R1> entityType1, Class<R2> entityType2, Class<R3> entityType3, Class<R4> entityType4,
             Class<R5> entityType5, Map<String, Object> params, int offset, int limit) {
-        return pagination(tplExecuteId, entityType1, entityType2, entityType3, entityType4, entityType5, null, params,
-                offset, limit);
+        return pagination(tplExecuteId, entityType1, entityType2, entityType3, entityType4, entityType5,
+                (Tuple5<String, String, String, String, String>) null, params, offset, limit);
     }
 
     /**
@@ -1158,7 +1311,7 @@ public class SqlTplExecutor implements TplExecutor {
      */
     @Override
     public int intValue(String tplExecuteId, Map<String, Object> params) {
-        return numberInt(tplExecuteId, params);
+        return intValue(new TplExecuteIdFileImpl(tplExecuteId), params);
     }
 
     /**
@@ -1166,7 +1319,12 @@ public class SqlTplExecutor implements TplExecutor {
      */
     @Override
     public int intValue(TplExecuteId tplExecuteId, Map<String, Object> params) {
-        return numberInt(tplExecuteId, params);
+        Tuple4<String, TplExecuteConfig, ConditionParamsManager,
+                PropertiesMappingManager> tuple4 = getQueryExecution(tplExecuteId, params, int.class);
+        String sql = tuple4.get0();
+        ConditionParamsManager manager = tuple4.get2();
+        return jdbc.queryInt(sql, getEffectiveParamMap(params, manager));
+        //        return numberInt(tplExecuteId, params);
     }
 
     /**
@@ -1174,7 +1332,7 @@ public class SqlTplExecutor implements TplExecutor {
      */
     @Override
     public long longValue(String tplExecuteId, Map<String, Object> params) {
-        return numberLong(tplExecuteId, params);
+        return longValue(new TplExecuteIdFileImpl(tplExecuteId), params);
     }
 
     /**
@@ -1182,7 +1340,12 @@ public class SqlTplExecutor implements TplExecutor {
      */
     @Override
     public long longValue(TplExecuteId tplExecuteId, Map<String, Object> params) {
-        return numberLong(tplExecuteId, params);
+        Tuple4<String, TplExecuteConfig, ConditionParamsManager,
+                PropertiesMappingManager> tuple4 = getQueryExecution(tplExecuteId, params, long.class);
+        String sql = tuple4.get0();
+        ConditionParamsManager manager = tuple4.get2();
+        return jdbc.queryLong(sql, getEffectiveParamMap(params, manager));
+        //        return numberLong(tplExecuteId, params);
     }
 
     /**
@@ -1190,7 +1353,7 @@ public class SqlTplExecutor implements TplExecutor {
      */
     @Override
     public double doubleValue(String tplExecuteId, Map<String, Object> params) {
-        return numberDouble(tplExecuteId, params);
+        return doubleValue(new TplExecuteIdFileImpl(tplExecuteId), params);
     }
 
     /**
@@ -1198,7 +1361,12 @@ public class SqlTplExecutor implements TplExecutor {
      */
     @Override
     public double doubleValue(TplExecuteId tplExecuteId, Map<String, Object> params) {
-        return numberDouble(tplExecuteId, params);
+        Tuple4<String, TplExecuteConfig, ConditionParamsManager,
+                PropertiesMappingManager> tuple4 = getQueryExecution(tplExecuteId, params, double.class);
+        String sql = tuple4.get0();
+        ConditionParamsManager manager = tuple4.get2();
+        return jdbc.queryDouble(sql, getEffectiveParamMap(params, manager));
+        //        return numberDouble(tplExecuteId, params);
     }
 
     /**
@@ -1572,6 +1740,34 @@ public class SqlTplExecutor implements TplExecutor {
         return Tuples.of(list, sql, tuple3.get1(), manager, params);
     }
 
+    private <E1, E2, E3, E4, E5,
+            E6> Tuple5<List<Tuple6<E1, E2, E3, E4, E5, E6>>, String, TplExecuteConfig, ConditionParamsManager,
+                    Map<String, Object>> findList(TplExecuteId tplExecuteId, Class<E1> entityType1,
+                            Class<E2> entityType2, Class<E3> entityType3, Class<E4> entityType4, Class<E5> entityType5,
+                            Class<E6> entityType6, Tuple6<String, String, String, String, String, String> prefixes,
+                            Map<String, Object> params, int offset, int limit) {
+        Tuple4<String, TplExecuteConfig, ConditionParamsManager,
+                PropertiesMappingManager> tuple3 = getQueryExecution(tplExecuteId, params, entityType1, entityType2);
+        List<Tuple6<E1, E2, E3, E4, E5, E6>> list = null;
+        String sql = tuple3.get0();
+        ConditionParamsManager manager = tuple3.get2();
+        SqlPageQuery<Map<String, Object>> sqlPageQuery = sqlPageFactory.toPage(jdbc.getDialect(), sql, offset, limit,
+                getEffectiveParamMap(params, manager));
+        if (prefixes == null) {
+            PropertiesMappingManager propManager = tuple3.get3();
+            list = jdbc.query(sqlPageQuery.getSql(), entityType1, entityType2, entityType3, entityType4, entityType5,
+                    entityType6,
+                    Tuples.of(propManager.getValue(0).getAlias() + ".", propManager.getValue(1).getAlias() + ".",
+                            propManager.getValue(2).getAlias() + ".", propManager.getValue(3).getAlias() + ".",
+                            propManager.getValue(4).getAlias() + ".", propManager.getValue(5).getAlias() + "."),
+                    sqlPageQuery.getParams());
+        } else {
+            list = jdbc.query(sqlPageQuery.getSql(), entityType1, entityType2, entityType3, entityType4, entityType5,
+                    entityType6, prefixes, sqlPageQuery.getParams());
+        }
+        return Tuples.of(list, sql, tuple3.get1(), manager, params);
+    }
+
     private <T extends Tuple> int count(TplExecuteId tplExecuteId, String sql, Map<String, Object> params,
             Map<String, Object> paramsWithLimit, ConditionParamsManager conditionParamsManager,
             TplExecuteConfig config) {
@@ -1619,4 +1815,54 @@ public class SqlTplExecutor implements TplExecutor {
     public SqlPageFactory getSqlPageFactory() {
         return sqlPageFactory;
     }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public <R1, R2, R3, R4, R5, R6> PaginationResults<Tuple6<R1, R2, R3, R4, R5, R6>> pagination(String tplExecuteId,
+            Class<R1> entityType1, Class<R2> entityType2, Class<R3> entityType3, Class<R4> entityType4,
+            Class<R5> entityType5, Class<R6> entityType6, Map<String, Object> params, int offset, int limit) {
+        // YUFEI_TODO Auto-generated method stub
+        return null;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public <R1, R2, R3, R4, R5, R6> PaginationResults<Tuple6<R1, R2, R3, R4, R5, R6>> pagination(
+            TplExecuteId tplExecuteId, Class<R1> entityType1, Class<R2> entityType2, Class<R3> entityType3,
+            Class<R4> entityType4, Class<R5> entityType5, Class<R6> entityType6, Map<String, Object> params, int offset,
+            int limit) {
+        // YUFEI_TODO Auto-generated method stub
+        return null;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public <R1, R2, R3, R4, R5, R6> PaginationResults<Tuple6<R1, R2, R3, R4, R5, R6>> pagination(String tplExecuteId,
+            Class<R1> entityType1, Class<R2> entityType2, Class<R3> entityType3, Class<R4> entityType4,
+            Class<R5> entityType5, Class<R6> entityType6,
+            Tuple6<String, String, String, String, String, String> prefixes, Map<String, Object> params, int offset,
+            int limit) {
+        // YUFEI_TODO Auto-generated method stub
+        return null;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public <R1, R2, R3, R4, R5, R6> PaginationResults<Tuple6<R1, R2, R3, R4, R5, R6>> pagination(
+            TplExecuteId tplExecuteId, Class<R1> entityType1, Class<R2> entityType2, Class<R3> entityType3,
+            Class<R4> entityType4, Class<R5> entityType5, Class<R6> entityType6,
+            Tuple6<String, String, String, String, String, String> prefixes, Map<String, Object> params, int offset,
+            int limit) {
+        // YUFEI_TODO Auto-generated method stub
+        return null;
+    }
+
 }

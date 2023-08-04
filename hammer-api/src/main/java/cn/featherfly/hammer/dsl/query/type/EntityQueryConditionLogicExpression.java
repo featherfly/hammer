@@ -2,7 +2,7 @@
 package cn.featherfly.hammer.dsl.query.type;
 
 import cn.featherfly.hammer.expression.ConditionLogicExpression;
-import cn.featherfly.hammer.expression.entity.query.EntityQuerySortExpression;
+import cn.featherfly.hammer.expression.entity.query.EntityQuerySortedExpression;
 import cn.featherfly.hammer.expression.query.QueryCountExecutor;
 import cn.featherfly.hammer.expression.query.QueryValueExecutor;
 import cn.featherfly.hammer.expression.query.type.EntityQueryConditionLimit;
@@ -23,5 +23,5 @@ public interface EntityQueryConditionLogicExpression<E>
      *
      * @return QuerySortExpression
      */
-    EntityQuerySortExpression<E> sort();
+    EntityQuerySortedExpression<E> sort();
 }

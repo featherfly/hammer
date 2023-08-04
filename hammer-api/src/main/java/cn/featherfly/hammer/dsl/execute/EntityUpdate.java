@@ -1,7 +1,7 @@
 
 package cn.featherfly.hammer.dsl.execute;
 
-import cn.featherfly.hammer.expression.execute.EntityUpdateExpression;
+import cn.featherfly.hammer.expression.entity.execute.EntityUpdateExpression;
 
 /**
  * EntityUpdate.

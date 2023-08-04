@@ -16,7 +16,7 @@ public interface NotInExpression<C extends ConditionExpression, L extends LogicE
         extends ConditionExpression {
 
     /**
-     * 不包含指定，sql中的not in.
+     * values not in. 不包含指定，sql中的not in.
      *
      * @param name  参数名称
      * @param value 参数值
@@ -27,7 +27,7 @@ public interface NotInExpression<C extends ConditionExpression, L extends LogicE
     }
 
     /**
-     * 不包含指定，sql中的not in.
+     * values not in. 不包含指定，sql中的not in.
      *
      * @param name  参数名称
      * @param value 参数值
@@ -36,7 +36,7 @@ public interface NotInExpression<C extends ConditionExpression, L extends LogicE
     L nin(String name, Object value);
 
     /**
-     * 不包含指定，sql中的not in.
+     * values not in. 不包含指定，sql中的not in.
      *
      * @param <T>   the generic type
      * @param <R>   the generic type
@@ -47,7 +47,7 @@ public interface NotInExpression<C extends ConditionExpression, L extends LogicE
     <T, R> L nin(SerializableFunction<T, R> name, Object value);
 
     /**
-     * 不包含指定，sql中的not in.
+     * values not in. 不包含指定，sql中的not in.
      *
      * @param <R>      the generic type
      * @param property 对象属性

@@ -1,7 +1,7 @@
 
 package cn.featherfly.hammer.expression.entity.query;
 
-import cn.featherfly.hammer.expression.api.Where;
+import cn.featherfly.hammer.expression.entity.EntityWhereExpression9;
 
 /**
  * The Interface EntityQueryWhereExpression9.
@@ -23,5 +23,6 @@ import cn.featherfly.hammer.expression.api.Where;
 public interface EntityQueryWhereExpression9<E, E2, E3, E4, E5, E6, E7, E8, E9,
         C extends EntityQueryConditionGroupExpression9<E, E2, E3, E4, E5, E6, E7, E8, E9, C, L, S, R>,
         L extends EntityQueryConditionGroupLogicExpression9<E, E2, E3, E4, E5, E6, E7, E8, E9, C, L, S, R>,
-        S extends EntityQuerySortExpression9<E, E2, E3, E4, E5, E6, E7, E8, E9, R>, R> extends Where<C, L> {
+        S extends EntityQuerySortExpression9<E, E2, E3, E4, E5, E6, E7, E8, E9, R>, R>
+        extends EntityWhereExpression9<E, E2, E3, E4, E5, E6, E7, E8, E9, C, L> {
 }

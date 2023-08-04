@@ -12,7 +12,7 @@ import org.testng.annotations.Test;
 import cn.featherfly.common.db.dialect.Dialects;
 import cn.featherfly.common.operator.QueryOperator;
 import cn.featherfly.common.operator.QueryOperator.QueryPolicy;
-import cn.featherfly.common.repository.IgnorePolicy;
+import cn.featherfly.common.repository.IgnoreStrategy;
 import cn.featherfly.common.repository.builder.BuilderException;
 import cn.featherfly.hammer.sqldb.jdbc.SimpleSqlPageFactory;
 import cn.featherfly.hammer.sqldb.jdbc.SqlPageFactory;
@@ -49,7 +49,7 @@ public class SqlConditionGroupExpressionBuilderTest extends TestBase {
     @Test
     public void testSqlConditionExpressionBuilder() {
         SqlConditionExpressionBuilder builder = new SqlConditionExpressionBuilder(Dialects.MYSQL, "id", 1,
-                QueryOperator.EQ, IgnorePolicy.EMPTY);
+                QueryOperator.EQ, IgnoreStrategy.EMPTY);
         String result = builder.toString();
         assertEquals(result, "`id` = ?");
 
@@ -58,13 +58,13 @@ public class SqlConditionGroupExpressionBuilderTest extends TestBase {
 
     @Test(expectedExceptions = BuilderException.class)
     public void testSqlConditionExpressionBuilderException() {
-        new SqlConditionExpressionBuilder(Dialects.MYSQL, "id", 1, null, QueryPolicy.AUTO, "u", IgnorePolicy.EMPTY);
+        new SqlConditionExpressionBuilder(Dialects.MYSQL, "id", 1, null, QueryPolicy.AUTO, "u", IgnoreStrategy.EMPTY);
     }
 
     @Test
     public void testSqlConditionGroupExpressionBuilder() {
         SqlConditionGroupExpressionBuilder builder = new SqlConditionGroupExpressionBuilder(Dialects.MYSQL,
-                sqlPageFactory, IgnorePolicy.EMPTY);
+                sqlPageFactory, IgnoreStrategy.EMPTY);
         builder.eq("name", name).and().eq("pwd", pwd).and().group().eq("sex", sex).or().gt("age", age).endGroup().and()
                 .eq("username", username);
 
@@ -74,7 +74,7 @@ public class SqlConditionGroupExpressionBuilderTest extends TestBase {
         assertEquals(builder.build(), "`name` = ? AND `pwd` = ? AND ( `sex` = ? OR `age` > ? ) AND `username` = ?");
         assertEquals(builder.getParams(), params);
 
-        builder = new SqlConditionGroupExpressionBuilder(Dialects.MYSQL, sqlPageFactory, IgnorePolicy.EMPTY);
+        builder = new SqlConditionGroupExpressionBuilder(Dialects.MYSQL, sqlPageFactory, IgnoreStrategy.EMPTY);
         builder.eq("name", name).and().eq("pwd", pwd).and().group(c -> c.eq("sex", sex).or().gt("age", age)).and()
                 .eq("username", username);
 
@@ -84,7 +84,7 @@ public class SqlConditionGroupExpressionBuilderTest extends TestBase {
         assertEquals("`name` = ? AND `pwd` = ? AND ( `sex` = ? OR `age` > ? ) AND `username` = ?", builder.build());
         assertEquals(params, builder.getParams());
 
-        builder = new SqlConditionGroupExpressionBuilder(Dialects.MYSQL, sqlPageFactory, IgnorePolicy.EMPTY);
+        builder = new SqlConditionGroupExpressionBuilder(Dialects.MYSQL, sqlPageFactory, IgnoreStrategy.EMPTY);
         builder.eq("name", name).and().eq("pwd", pwd).and(c -> c.eq("sex", sex).or().gt("age", age)).and()
                 .eq("username", username);
 
@@ -98,7 +98,7 @@ public class SqlConditionGroupExpressionBuilderTest extends TestBase {
     @Test
     public void testSqlConditionGroupExpressionBuilderEmptyParam() {
         SqlConditionGroupExpressionBuilder builder = new SqlConditionGroupExpressionBuilder(Dialects.MYSQL,
-                sqlPageFactory, IgnorePolicy.EMPTY);
+                sqlPageFactory, IgnoreStrategy.EMPTY);
         Integer a = null;
 
         builder.eq("name", name).and().eq("pwd", null).and().eq("sex", sex).or().gt("age", a);
@@ -109,7 +109,7 @@ public class SqlConditionGroupExpressionBuilderTest extends TestBase {
         assertEquals("`name` = ? AND `sex` = ?", builder.build());
         //        assertEquals(params, builder.getParams());
 
-        builder = new SqlConditionGroupExpressionBuilder(Dialects.MYSQL, sqlPageFactory, IgnorePolicy.EMPTY);
+        builder = new SqlConditionGroupExpressionBuilder(Dialects.MYSQL, sqlPageFactory, IgnoreStrategy.EMPTY);
         builder.eq("name", name).and().eq("pwd", null).and().eq("sex", null).and().gt("age", a);
 
         System.out.println(builder.build());
@@ -117,7 +117,7 @@ public class SqlConditionGroupExpressionBuilderTest extends TestBase {
         assertEquals("`name` = ?", builder.build());
         //        assertEquals(params, builder.getParams());
 
-        builder = new SqlConditionGroupExpressionBuilder(Dialects.MYSQL, sqlPageFactory, IgnorePolicy.EMPTY);
+        builder = new SqlConditionGroupExpressionBuilder(Dialects.MYSQL, sqlPageFactory, IgnoreStrategy.EMPTY);
         builder.eq("name", null).and().eq("pwd", "1234").and().eq("sex", null).and().gt("age", a);
 
         System.out.println(builder.build());

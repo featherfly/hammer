@@ -1,7 +1,6 @@
 
 package cn.featherfly.hammer.expression.condition.property;
 
-import cn.featherfly.common.operator.QueryOperator.QueryPolicy;
 import cn.featherfly.hammer.expression.condition.ConditionExpression;
 import cn.featherfly.hammer.expression.condition.LogicExpression;
 
@@ -14,35 +13,34 @@ import cn.featherfly.hammer.expression.condition.LogicExpression;
  */
 public interface NumberExpression<N extends Number, C extends ConditionExpression, L extends LogicExpression<C, L>>
         extends PropertyEqualsExpression<C, L, N>, PropertyNotEqualsExpression<C, L, N>, PropertyInExpression<C, L, N>,
-        PropertyNotInExpression<C, L, N>, PropertyLessEqualsExpressoin<C, L, N>, PropertyLessThanExpressoin<C, L, N>,
-        PropertyGreatEqualsExpressoin<C, L, N>, PropertyGreatThanExpressoin<C, L, N>, PropertyIsNullExpression<C, L>,
+        PropertyNotInExpression<C, L, N>, PropertyLessEqualsExpression<C, L, N>, PropertyLessThanExpression<C, L, N>,
+        PropertyGreatEqualsExpression<C, L, N>, PropertyGreatThanExpression<C, L, N>, PropertyIsNullExpression<C, L>,
         PropertyIsNotNullExpression<C, L> {
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    L eq(N value);
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    default L eq(N value, QueryPolicy queryPolicy) {
-        return eq(value);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    L ne(N value);
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    default L ne(N value, QueryPolicy queryPolicy) {
-        return ne(value);
-    }
+    //    /**
+    //     * {@inheritDoc}
+    //     */
+    //    @Override
+    //    L eq(N value);
+    //
+    //    /**
+    //     * {@inheritDoc}
+    //     */
+    //    @Override
+    //    default L eq(N value, QueryPolicy queryPolicy) {
+    //        return eq(value);
+    //    }
+    //
+    //    /**
+    //     * {@inheritDoc}
+    //     */
+    //    @Override
+    //    L ne(N value);
+    //
+    //    /**
+    //     * {@inheritDoc}
+    //     */
+    //    @Override
+    //    default L ne(N value, QueryPolicy queryPolicy) {
+    //        return ne(value);
+    //    }
 }

@@ -19,7 +19,53 @@ public class UserInfo {
     private User user;
 
     /**
-     * get id value
+     * Instantiates a new user info.
+     */
+    public UserInfo() {
+    }
+
+    /**
+     * Instantiates a new user info.
+     *
+     * @param id the id
+     */
+    public UserInfo(int id) {
+        super();
+        this.id = id;
+    }
+
+    /**
+     * Instantiates a new user info.
+     *
+     * @param id   the id
+     * @param name the name
+     * @param age  the age
+     */
+    public UserInfo(int id, String name, int age) {
+        super();
+        this.id = id;
+        this.name = name;
+        this.age = age;
+    }
+
+    /**
+     * Instantiates a new user info.
+     *
+     * @param id   the id
+     * @param name the name
+     * @param age  the age
+     * @param user the user
+     */
+    public UserInfo(int id, String name, int age, User user) {
+        super();
+        this.id = id;
+        this.name = name;
+        this.age = age;
+        this.user = user;
+    }
+
+    /**
+     * get id value.
      *
      * @return id
      */
@@ -28,7 +74,7 @@ public class UserInfo {
     }
 
     /**
-     * set id value
+     * set id value.
      *
      * @param id id
      */
@@ -37,7 +83,7 @@ public class UserInfo {
     }
 
     /**
-     * get name value
+     * get name value.
      *
      * @return name
      */
@@ -46,7 +92,7 @@ public class UserInfo {
     }
 
     /**
-     * set name value
+     * set name value.
      *
      * @param name name
      */
@@ -55,7 +101,7 @@ public class UserInfo {
     }
 
     /**
-     * get age value
+     * get age value.
      *
      * @return age
      */
@@ -64,7 +110,7 @@ public class UserInfo {
     }
 
     /**
-     * set age value
+     * set age value.
      *
      * @param age age
      */
@@ -73,7 +119,7 @@ public class UserInfo {
     }
 
     /**
-     * get user value
+     * get user value.
      *
      * @return user
      */
@@ -82,7 +128,7 @@ public class UserInfo {
     }
 
     /**
-     * set user value
+     * set user value.
      *
      * @param user user
      */

@@ -1,7 +1,7 @@
 
 package cn.featherfly.hammer.sqldb.jdbc.dsl;
 
-import static org.junit.Assert.assertTrue;
+import static org.testng.Assert.assertTrue;
 import static org.testng.Assert.assertEquals;
 
 import org.testng.annotations.Test;
@@ -9,7 +9,7 @@ import org.testng.annotations.Test;
 import cn.featherfly.common.operator.QueryOperator.QueryPolicy;
 import cn.featherfly.hammer.sqldb.jdbc.JdbcTestBase;
 import cn.featherfly.hammer.sqldb.jdbc.dsl.query.SqlQuery;
-import cn.featherfly.hammer.sqldb.jdbc.vo.User;
+import cn.featherfly.hammer.sqldb.jdbc.vo.r.User;
 
 /**
  * SqlQueryTest.

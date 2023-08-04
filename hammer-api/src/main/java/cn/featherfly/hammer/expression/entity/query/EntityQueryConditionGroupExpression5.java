@@ -1,8 +1,8 @@
 
 package cn.featherfly.hammer.expression.entity.query;
 
-import cn.featherfly.hammer.expression.EntityConditionGroupExpression5;
 import cn.featherfly.hammer.expression.condition.ConditionGroupConfig;
+import cn.featherfly.hammer.expression.entity.EntityConditionGroupExpression5;
 
 /**
  * The Interface EntityConditionGroupExpression5.

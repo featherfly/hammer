@@ -21,6 +21,7 @@ import com.speedment.common.tuple.Tuple2;
 import com.speedment.common.tuple.Tuple3;
 import com.speedment.common.tuple.Tuple4;
 import com.speedment.common.tuple.Tuple5;
+import com.speedment.common.tuple.Tuple6;
 
 import cn.featherfly.common.bean.BeanDescriptor;
 import cn.featherfly.common.bean.BeanProperty;
@@ -30,7 +31,7 @@ import cn.featherfly.common.db.mapping.JdbcMappingFactory;
 import cn.featherfly.common.lang.ArrayUtils;
 import cn.featherfly.common.lang.Lang;
 import cn.featherfly.common.lang.function.SerializableFunction;
-import cn.featherfly.common.repository.IgnorePolicy;
+import cn.featherfly.common.repository.IgnoreStrategy;
 import cn.featherfly.common.repository.Repository;
 import cn.featherfly.common.structure.page.PaginationResults;
 import cn.featherfly.hammer.dsl.execute.Delete;
@@ -38,7 +39,7 @@ import cn.featherfly.hammer.dsl.execute.EntityDelete;
 import cn.featherfly.hammer.dsl.execute.EntityUpdate;
 import cn.featherfly.hammer.dsl.execute.Update;
 import cn.featherfly.hammer.dsl.query.QueryEntity;
-import cn.featherfly.hammer.dsl.query.type.EntityQueryEntity;
+import cn.featherfly.hammer.dsl.query.type.EntityQueryFetch;
 import cn.featherfly.hammer.sqldb.jdbc.Jdbc;
 import cn.featherfly.hammer.sqldb.jdbc.SimpleSqlPageFactory;
 import cn.featherfly.hammer.sqldb.jdbc.SqlPageFactory;
@@ -329,8 +330,8 @@ public class SqldbHammerImpl implements SqldbHammer {
      * {@inheritDoc}
      */
     @Override
-    public <E> int update(E entity, IgnorePolicy ignorePolicy) {
-        switch (ignorePolicy) {
+    public <E> int update(E entity, IgnoreStrategy ignoreStrategy) {
+        switch (ignoreStrategy) {
             case EMPTY:
                 return merge(entity);
             case NULL:
@@ -393,11 +394,11 @@ public class SqldbHammerImpl implements SqldbHammer {
      * {@inheritDoc}
      */
     @Override
-    public <E> int[] update(List<E> entities, IgnorePolicy ignorePolicy) {
+    public <E> int[] update(List<E> entities, IgnoreStrategy ignoreStrategy) {
         if (Lang.isNotEmpty(entities)) {
             int results[] = new int[entities.size()];
             for (int i = 0; i < entities.size(); i++) {
-                results[i] = update(entities.get(i), ignorePolicy);
+                results[i] = update(entities.get(i), ignoreStrategy);
             }
             return results;
         } else {
@@ -720,7 +721,7 @@ public class SqldbHammerImpl implements SqldbHammer {
      * {@inheritDoc}
      */
     @Override
-    public <E> EntityQueryEntity<E> query(Class<E> entityType) {
+    public <E> EntityQueryFetch<E> query(Class<E> entityType) {
         SqlQuery query = new SqlQuery(jdbc, mappingFactory, sqlTplExecutor.getSqlPageFactory());
         return query.find(entityType);
     }
@@ -1048,6 +1049,52 @@ public class SqldbHammerImpl implements SqldbHammer {
             Map<String, Object> params) {
         return sqlTplExecutor.single(tplExecuteId, entityType1, entityType2, entityType3, entityType4, entityType5,
                 params);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public <R1, R2, R3, R4, R5, R6> Tuple6<R1, R2, R3, R4, R5, R6> single(String tplExecuteId, Class<R1> entityType1,
+            Class<R2> entityType2, Class<R3> entityType3, Class<R4> entityType4, Class<R5> entityType5,
+            Class<R6> entityType6, Map<String, Object> params) {
+        return sqlTplExecutor.single(tplExecuteId, entityType1, entityType2, entityType3, entityType4, entityType5,
+                entityType6, params);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public <R1, R2, R3, R4, R5, R6> Tuple6<R1, R2, R3, R4, R5, R6> single(TplExecuteId tplExecuteId,
+            Class<R1> entityType1, Class<R2> entityType2, Class<R3> entityType3, Class<R4> entityType4,
+            Class<R5> entityType5, Class<R6> entityType6, Map<String, Object> params) {
+        return sqlTplExecutor.single(tplExecuteId, entityType1, entityType2, entityType3, entityType4, entityType5,
+                entityType6, params);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public <R1, R2, R3, R4, R5, R6> Tuple6<R1, R2, R3, R4, R5, R6> single(String tplExecuteId, Class<R1> entityType1,
+            Class<R2> entityType2, Class<R3> entityType3, Class<R4> entityType4, Class<R5> entityType5,
+            Class<R6> entityType6, Tuple6<String, String, String, String, String, String> prefixes,
+            Map<String, Object> params) {
+        return sqlTplExecutor.single(tplExecuteId, entityType1, entityType2, entityType3, entityType4, entityType5,
+                entityType6, prefixes, params);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public <R1, R2, R3, R4, R5, R6> Tuple6<R1, R2, R3, R4, R5, R6> single(TplExecuteId tplExecuteId,
+            Class<R1> entityType1, Class<R2> entityType2, Class<R3> entityType3, Class<R4> entityType4,
+            Class<R5> entityType5, Class<R6> entityType6,
+            Tuple6<String, String, String, String, String, String> prefixes, Map<String, Object> params) {
+        return sqlTplExecutor.single(tplExecuteId, entityType1, entityType2, entityType3, entityType4, entityType5,
+                entityType6, prefixes, params);
     }
 
     /**
@@ -1434,6 +1481,100 @@ public class SqldbHammerImpl implements SqldbHammer {
      * {@inheritDoc}
      */
     @Override
+    public <R1, R2, R3, R4, R5, R6> List<Tuple6<R1, R2, R3, R4, R5, R6>> list(String tplExecuteId,
+            Class<R1> entityType1, Class<R2> entityType2, Class<R3> entityType3, Class<R4> entityType4,
+            Class<R5> entityType5, Class<R6> entityType6, Map<String, Object> params) {
+        return sqlTplExecutor.list(tplExecuteId, entityType1, entityType2, entityType3, entityType4, entityType5,
+                entityType6, params);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public <R1, R2, R3, R4, R5, R6> List<Tuple6<R1, R2, R3, R4, R5, R6>> list(String tplExecuteId,
+            Class<R1> entityType1, Class<R2> entityType2, Class<R3> entityType3, Class<R4> entityType4,
+            Class<R5> entityType5, Class<R6> entityType6, Map<String, Object> params, int offset, int limit) {
+        return sqlTplExecutor.list(tplExecuteId, entityType1, entityType2, entityType3, entityType4, entityType5,
+                entityType6, params, offset, limit);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public <R1, R2, R3, R4, R5, R6> List<Tuple6<R1, R2, R3, R4, R5, R6>> list(TplExecuteId tplExecuteId,
+            Class<R1> entityType1, Class<R2> entityType2, Class<R3> entityType3, Class<R4> entityType4,
+            Class<R5> entityType5, Class<R6> entityType6, Map<String, Object> params) {
+        return sqlTplExecutor.list(tplExecuteId, entityType1, entityType2, entityType3, entityType4, entityType5,
+                entityType6, params);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public <R1, R2, R3, R4, R5, R6> List<Tuple6<R1, R2, R3, R4, R5, R6>> list(TplExecuteId tplExecuteId,
+            Class<R1> entityType1, Class<R2> entityType2, Class<R3> entityType3, Class<R4> entityType4,
+            Class<R5> entityType5, Class<R6> entityType6, Map<String, Object> params, int offset, int limit) {
+        return sqlTplExecutor.list(tplExecuteId, entityType1, entityType2, entityType3, entityType4, entityType5,
+                entityType6, params, offset, limit);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public <R1, R2, R3, R4, R5, R6> List<Tuple6<R1, R2, R3, R4, R5, R6>> list(String tplExecuteId,
+            Class<R1> entityType1, Class<R2> entityType2, Class<R3> entityType3, Class<R4> entityType4,
+            Class<R5> entityType5, Class<R6> entityType6,
+            Tuple6<String, String, String, String, String, String> prefixes, Map<String, Object> params) {
+        return sqlTplExecutor.list(tplExecuteId, entityType1, entityType2, entityType3, entityType4, entityType5,
+                entityType6, prefixes, params);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public <R1, R2, R3, R4, R5, R6> List<Tuple6<R1, R2, R3, R4, R5, R6>> list(String tplExecuteId,
+            Class<R1> entityType1, Class<R2> entityType2, Class<R3> entityType3, Class<R4> entityType4,
+            Class<R5> entityType5, Class<R6> entityType6,
+            Tuple6<String, String, String, String, String, String> prefixes, Map<String, Object> params, int offset,
+            int limit) {
+        return sqlTplExecutor.list(tplExecuteId, entityType1, entityType2, entityType3, entityType4, entityType5,
+                entityType6, prefixes, params, offset, limit);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public <R1, R2, R3, R4, R5, R6> List<Tuple6<R1, R2, R3, R4, R5, R6>> list(TplExecuteId tplExecuteId,
+            Class<R1> entityType1, Class<R2> entityType2, Class<R3> entityType3, Class<R4> entityType4,
+            Class<R5> entityType5, Class<R6> entityType6,
+            Tuple6<String, String, String, String, String, String> prefixes, Map<String, Object> params) {
+        return sqlTplExecutor.list(tplExecuteId, entityType1, entityType2, entityType3, entityType4, entityType5,
+                entityType6, prefixes, params);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public <R1, R2, R3, R4, R5, R6> List<Tuple6<R1, R2, R3, R4, R5, R6>> list(TplExecuteId tplExecuteId,
+            Class<R1> entityType1, Class<R2> entityType2, Class<R3> entityType3, Class<R4> entityType4,
+            Class<R5> entityType5, Class<R6> entityType6,
+            Tuple6<String, String, String, String, String, String> prefixes, Map<String, Object> params, int offset,
+            int limit) {
+        return sqlTplExecutor.list(tplExecuteId, entityType1, entityType2, entityType3, entityType4, entityType5,
+                entityType6, prefixes, params, offset, limit);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
     public PaginationResults<Map<String, Object>> pagination(String tplExecuteId, Map<String, Object> params,
             int offset, int limit) {
         return sqlTplExecutor.pagination(tplExecuteId, params, offset, limit);
@@ -1613,6 +1754,55 @@ public class SqldbHammerImpl implements SqldbHammer {
             int offset, int limit) {
         return sqlTplExecutor.pagination(tplExecuteId, entityType1, entityType2, entityType3, entityType4, entityType5,
                 prefixes, params, offset, limit);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public <R1, R2, R3, R4, R5, R6> PaginationResults<Tuple6<R1, R2, R3, R4, R5, R6>> pagination(String tplExecuteId,
+            Class<R1> entityType1, Class<R2> entityType2, Class<R3> entityType3, Class<R4> entityType4,
+            Class<R5> entityType5, Class<R6> entityType6, Map<String, Object> params, int offset, int limit) {
+        return sqlTplExecutor.pagination(tplExecuteId, entityType1, entityType2, entityType3, entityType4, entityType5,
+                entityType6, params, offset, limit);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public <R1, R2, R3, R4, R5, R6> PaginationResults<Tuple6<R1, R2, R3, R4, R5, R6>> pagination(
+            TplExecuteId tplExecuteId, Class<R1> entityType1, Class<R2> entityType2, Class<R3> entityType3,
+            Class<R4> entityType4, Class<R5> entityType5, Class<R6> entityType6, Map<String, Object> params, int offset,
+            int limit) {
+        return sqlTplExecutor.pagination(tplExecuteId, entityType1, entityType2, entityType3, entityType4, entityType5,
+                entityType6, params, offset, limit);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public <R1, R2, R3, R4, R5, R6> PaginationResults<Tuple6<R1, R2, R3, R4, R5, R6>> pagination(String tplExecuteId,
+            Class<R1> entityType1, Class<R2> entityType2, Class<R3> entityType3, Class<R4> entityType4,
+            Class<R5> entityType5, Class<R6> entityType6,
+            Tuple6<String, String, String, String, String, String> prefixes, Map<String, Object> params, int offset,
+            int limit) {
+        return sqlTplExecutor.pagination(tplExecuteId, entityType1, entityType2, entityType3, entityType4, entityType5,
+                entityType6, prefixes, params, offset, limit);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public <R1, R2, R3, R4, R5, R6> PaginationResults<Tuple6<R1, R2, R3, R4, R5, R6>> pagination(
+            TplExecuteId tplExecuteId, Class<R1> entityType1, Class<R2> entityType2, Class<R3> entityType3,
+            Class<R4> entityType4, Class<R5> entityType5, Class<R6> entityType6,
+            Tuple6<String, String, String, String, String, String> prefixes, Map<String, Object> params, int offset,
+            int limit) {
+        return sqlTplExecutor.pagination(tplExecuteId, entityType1, entityType2, entityType3, entityType4, entityType5,
+                entityType6, prefixes, params, offset, limit);
     }
 
     /**

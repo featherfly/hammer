@@ -1,6 +1,7 @@
 
 package cn.featherfly.hammer.expression.query.type;
 
+import cn.featherfly.common.structure.page.Limit;
 import cn.featherfly.common.structure.page.Page;
 
 /**
@@ -15,24 +16,38 @@ public interface EntityQueryConditionLimit<E> {
      * limit.
      *
      * @param limit limit rows
-     * @return TypeQueryExecutor
+     * @return EntityQueryLimitExecutor
      */
-    EntityQueryLimitExecutor<E> limit(Integer limit);
+    default EntityQueryLimitExecutor<E> limit(Integer limit) {
+        return limit(0, limit);
+    }
 
     /**
      * limit.
      *
      * @param offset start index offset
      * @param limit  limit rows
-     * @return TypeQueryExecutor
+     * @return EntityQueryLimitExecutor
      */
-    EntityQueryLimitExecutor<E> limit(Integer offset, Integer limit);
+    default EntityQueryLimitExecutor<E> limit(Integer offset, Integer limit) {
+        return limit(new Limit(offset, limit));
+    }
 
     /**
      * limit.
      *
      * @param page params for pagination
-     * @return TypeQueryExecutor
+     * @return EntityQueryLimitExecutor
      */
-    EntityQueryLimitExecutor<E> limit(Page page);
+    default EntityQueryLimitExecutor<E> limit(Page page) {
+        return limit(new Limit(page));
+    }
+
+    /**
+     * Limit.
+     *
+     * @param limit the limit
+     * @return EntityQueryLimitExecutor
+     */
+    EntityQueryLimitExecutor<E> limit(Limit limit);
 }
