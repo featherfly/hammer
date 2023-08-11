@@ -4,8 +4,8 @@ package cn.featherfly.hammer.sqldb.jdbc.dsl.entity.query;
 import java.util.function.Consumer;
 
 import cn.featherfly.common.db.mapping.JdbcMappingFactory;
-import cn.featherfly.hammer.dsl.query.type.EntityQueryFetchedProperty;
-import cn.featherfly.hammer.dsl.query.type.EntityQueryValueConditionGroup;
+import cn.featherfly.hammer.dsl.entity.query.EntityQueryFetchedProperty;
+import cn.featherfly.hammer.dsl.entity.query.EntityQueryValueConditionGroup;
 import cn.featherfly.hammer.expression.condition.ConditionGroupConfig;
 import cn.featherfly.hammer.expression.entity.query.EntityQuerySortExpression;
 import cn.featherfly.hammer.sqldb.jdbc.SqlPageFactory;
@@ -62,6 +62,7 @@ public class EntitySqlQueryFetchedProperty<E> extends AbstractEntitySqlQueryFetc
      */
     @Override
     public EntityQuerySortExpression<E> sort() {
+        // YUFEI_TODO 后续加入EntityQueryValueSortExpression
         return new EntitySqlQueryExpression<>(factory, sqlPageFactory, queryRelation);
     }
 }

@@ -9,6 +9,6 @@ import cn.featherfly.hammer.expression.execute.DeleteExpression;
  * @author zhongj
  */
 public interface Delete
-        extends DeleteExpression<ExecutableConditionGroupExpression, ExecutableConditionGroupLogicExpression> {
+        extends DeleteExpression<ExecutableConditionGroup, ExecutableConditionGroupLogic> {
 
 }

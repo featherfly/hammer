@@ -6,10 +6,13 @@ import cn.featherfly.common.db.mapping.JdbcMappingFactory;
 import cn.featherfly.common.repository.AliasRepository;
 import cn.featherfly.common.repository.Repository;
 import cn.featherfly.hammer.dsl.execute.Updater;
+import cn.featherfly.hammer.expression.entity.execute.EntityExecutableConditionGroupExpression;
+import cn.featherfly.hammer.expression.entity.execute.EntityExecutableConditionGroupLogicExpression;
+import cn.featherfly.hammer.expression.entity.execute.EntityExecutableUpdateExpression;
+import cn.featherfly.hammer.expression.entity.execute.EntityUpdateExpression;
 import cn.featherfly.hammer.sqldb.SqldbHammerException;
 import cn.featherfly.hammer.sqldb.jdbc.Jdbc;
 import cn.featherfly.hammer.sqldb.jdbc.dsl.entity.execute.SqlEntityExecutableUpdate;
-import cn.featherfly.hammer.sqldb.jdbc.dsl.entity.execute.SqlEntityUpdate;
 
 /**
  * SqlUpdater .
@@ -76,12 +79,15 @@ public class SqlUpdater implements Updater {
     /**
      * {@inheritDoc}
      */
+    @SuppressWarnings("unchecked")
     @Override
-    public <E> SqlEntityUpdate<E> update(Class<E> repositType) {
+    public <EUR extends EntityUpdateExpression<E, UU, UC, UL>,
+            UU extends EntityExecutableUpdateExpression<E, UU, UC, UL>,
+            UC extends EntityExecutableConditionGroupExpression<E, UC, UL>,
+            UL extends EntityExecutableConditionGroupLogicExpression<E, UC, UL>, E> EUR update(Class<E> entityType) {
         if (mappingFactory == null) {
             throw new SqldbHammerException("mappingFactory is null");
         }
-        // ENHANCE 删除暂时没有支持别名
-        return new SqlEntityExecutableUpdate<>(jdbc, mappingFactory.getClassMapping(repositType), mappingFactory);
+        return (EUR) new SqlEntityExecutableUpdate<>(jdbc, mappingFactory.getClassMapping(entityType), mappingFactory);
     }
 }

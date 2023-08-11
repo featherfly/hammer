@@ -16,7 +16,7 @@ import cn.featherfly.hammer.sqldb.jdbc.vo.r.order.OrderInfo;
  *
  * @author zhongj
  */
-public class SqlQueryTypeJoinRelation4Test extends SqlQueryTypeJoinTest {
+public class SqlQueryTypeJoinRelation4Test extends AbstractEntitySqlQueryJoinTest {
 
     @Test
     void testJoin_ER1_ER2_ER3_ER4_EE() {

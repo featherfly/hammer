@@ -6,8 +6,6 @@ import java.util.function.Supplier;
 
 import cn.featherfly.common.lang.function.SerializableFunction;
 import cn.featherfly.common.lang.function.SerializableSupplier;
-import cn.featherfly.hammer.expression.ConditionGroupExpression;
-import cn.featherfly.hammer.expression.ConditionGroupLogicExpression;
 
 /**
  * SetUpdateExpression.
@@ -18,7 +16,7 @@ import cn.featherfly.hammer.expression.ConditionGroupLogicExpression;
  * @param <L> the generic type
  */
 public interface UpdateSetExpression<U extends ExecutableUpdateSetExpression<U, C, L>,
-        C extends ConditionGroupExpression<C, L>, L extends ConditionGroupLogicExpression<C, L>> {
+        C extends ExecutableConditionGroupExpression<C, L>, L extends ExecutableConditionGroupLogicExpression<C, L>> {
 
     /**
      * set value for property.

@@ -14,7 +14,7 @@ import cn.featherfly.common.lang.LambdaUtils;
 import cn.featherfly.common.lang.Lang;
 import cn.featherfly.common.lang.function.SerializableFunction;
 import cn.featherfly.common.operator.AggregateFunction;
-import cn.featherfly.hammer.dsl.query.type.EntityQueryFetchedProperty;
+import cn.featherfly.hammer.dsl.entity.query.EntityQueryFetchedProperty;
 import cn.featherfly.hammer.expression.query.QueryValueExecutor;
 import cn.featherfly.hammer.sqldb.jdbc.SqlPageFactory;
 import cn.featherfly.hammer.sqldb.jdbc.dsl.entity.EntitySqlQueryRelation;
@@ -37,7 +37,7 @@ public abstract class AbstractEntitySqlQueryProperties<E, P extends EntityQueryF
      * @param entitySqlQueryRelation the entity sql query relation
      * @param classMapping           the class mapping
      */
-    public AbstractEntitySqlQueryProperties(JdbcMappingFactory factory, SqlPageFactory sqlPageFactory,
+    protected AbstractEntitySqlQueryProperties(JdbcMappingFactory factory, SqlPageFactory sqlPageFactory,
             EntitySqlQueryRelation entitySqlQueryRelation) {
         super(factory, sqlPageFactory, entitySqlQueryRelation);
     }

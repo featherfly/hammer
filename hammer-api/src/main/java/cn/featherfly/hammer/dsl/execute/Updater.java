@@ -8,15 +8,15 @@ import cn.featherfly.hammer.expression.execute.UpdaterExpression;
  *
  * @author zhongj
  */
-public interface Updater extends
-        UpdaterExpression<Update, ExecutableUpdate, ExecutableConditionGroupExpression, ExecutableConditionGroupLogicExpression, UpdateValue, UpdateNumberValue> {
+public interface Updater extends UpdaterExpression<Update, ExecutableUpdate, ExecutableConditionGroup,
+        ExecutableConditionGroupLogic, UpdateValue, UpdateNumberValue> {
 
-    /**
-     * start update dsl for the entity type.
-     *
-     * @param <E>        the element type
-     * @param entityType repositType
-     * @return Delete
-     */
-    <E> EntityUpdate<E> update(Class<E> entityType);
+    //    /**
+    //     * start update dsl for the entity type.
+    //     *
+    //     * @param <E>        the element type
+    //     * @param entityType repositType
+    //     * @return EntityUpdate
+    //     */
+    //    <E> EntityUpdate<E> update(Class<E> entityType);
 }

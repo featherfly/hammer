@@ -4,13 +4,13 @@ package cn.featherfly.hammer.expression.entity.condition.nin;
 import java.util.Collection;
 import java.util.Date;
 
-import cn.featherfly.common.lang.function.ReturnDateFunction;
-import cn.featherfly.common.lang.function.ReturnEnumFunction;
-import cn.featherfly.common.lang.function.ReturnLocalDateFunction;
-import cn.featherfly.common.lang.function.ReturnLocalDateTimeFunction;
-import cn.featherfly.common.lang.function.ReturnLocalTimeFunction;
-import cn.featherfly.common.lang.function.ReturnNumberFunction;
-import cn.featherfly.common.lang.function.ReturnStringFunction;
+import cn.featherfly.common.lang.function.SerializableToDateFunction;
+import cn.featherfly.common.lang.function.SerializableToEnumFunction;
+import cn.featherfly.common.lang.function.SerializableToLocalDateFunction;
+import cn.featherfly.common.lang.function.SerializableToLocalDateTimeFunction;
+import cn.featherfly.common.lang.function.SerializableToLocalTimeFunction;
+import cn.featherfly.common.lang.function.SerializableToNumberFunction;
+import cn.featherfly.common.lang.function.SerializableToStringFunction;
 import cn.featherfly.common.lang.function.SerializableFunction;
 import cn.featherfly.common.lang.function.SerializableToCollectionFunction;
 import cn.featherfly.common.lang.function.SerializableToDoubleFunction;
@@ -70,7 +70,7 @@ public interface NotInEntityPropertyExpression<E> {
      * @return entity not in function property expression.
      */
     <R extends Number> ConditionEntityExpressionNumberAndArrayPropertyExpression<R> property(
-            ReturnNumberFunction<E, R> name);
+            SerializableToNumberFunction<E, R> name);
 
     /**
      * entity not in function property expression.
@@ -79,7 +79,7 @@ public interface NotInEntityPropertyExpression<E> {
      * @param name the name
      * @return entity not in function property expression.
      */
-    <R extends Date> ConditionEntityExpressionDateAndArrayPropertyExpression<R> property(ReturnDateFunction<E, R> name);
+    <R extends Date> ConditionEntityExpressionDateAndArrayPropertyExpression<R> property(SerializableToDateFunction<E, R> name);
 
     /**
      * entity not in function property expression.
@@ -89,7 +89,7 @@ public interface NotInEntityPropertyExpression<E> {
      * @return entity not in function property expression.
      */
     <R extends Enum<R>> ConditionEntityExpressionEnumAndArrayPropertyExpression<R> property(
-            ReturnEnumFunction<E, R> name);
+            SerializableToEnumFunction<E, R> name);
 
     /**
      * entity not in function property expression.
@@ -97,7 +97,7 @@ public interface NotInEntityPropertyExpression<E> {
      * @param name the name
      * @return entity not in function property expression.
      */
-    ConditionEntityExpressionLocalDateTimeAndArrayPropertyExpression property(ReturnLocalDateTimeFunction<E> name);
+    ConditionEntityExpressionLocalDateTimeAndArrayPropertyExpression property(SerializableToLocalDateTimeFunction<E> name);
 
     /**
      * entity not in function property expression.
@@ -105,7 +105,7 @@ public interface NotInEntityPropertyExpression<E> {
      * @param name the name
      * @return entity not in function property expression.
      */
-    ConditionEntityExpressionLocalDateAndArrayPropertyExpression property(ReturnLocalDateFunction<E> name);
+    ConditionEntityExpressionLocalDateAndArrayPropertyExpression property(SerializableToLocalDateFunction<E> name);
 
     /**
      * entity not in function property expression.
@@ -113,7 +113,7 @@ public interface NotInEntityPropertyExpression<E> {
      * @param name the name
      * @return entity not in function property expression.
      */
-    ConditionEntityExpressionLocalTimeAndArrayPropertyExpression property(ReturnLocalTimeFunction<E> name);
+    ConditionEntityExpressionLocalTimeAndArrayPropertyExpression property(SerializableToLocalTimeFunction<E> name);
 
     /**
      * entity not in function property expression.
@@ -121,7 +121,7 @@ public interface NotInEntityPropertyExpression<E> {
      * @param name the name
      * @return entity not in function property expression.
      */
-    ConditionEntityExpressionStringAndArrayPropertyExpression property(ReturnStringFunction<E> name);
+    ConditionEntityExpressionStringAndArrayPropertyExpression property(SerializableToStringFunction<E> name);
 
     /**
      * entity not in function property expression.

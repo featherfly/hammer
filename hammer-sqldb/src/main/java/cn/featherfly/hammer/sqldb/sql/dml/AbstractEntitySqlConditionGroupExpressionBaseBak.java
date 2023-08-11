@@ -26,14 +26,14 @@
 //import cn.featherfly.common.lang.LambdaUtils;
 //import cn.featherfly.common.lang.LambdaUtils.SerializableSupplierLambdaInfo;
 //import cn.featherfly.common.lang.LambdaUtils.SerializedLambdaInfo;
-//import cn.featherfly.common.lang.function.DateSupplier;
-//import cn.featherfly.common.lang.function.LocalDateSupplier;
-//import cn.featherfly.common.lang.function.LocalDateTimeSupplier;
-//import cn.featherfly.common.lang.function.LocalTimeSupplier;
-//import cn.featherfly.common.lang.function.NumberSupplier;
+//import cn.featherfly.common.lang.function.SerializableDateSupplier;
+//import cn.featherfly.common.lang.function.SerializableLocalDateSupplier;
+//import cn.featherfly.common.lang.function.SerializableLocalDateTimeSupplier;
+//import cn.featherfly.common.lang.function.SerializableLocalTimeSupplier;
+//import cn.featherfly.common.lang.function.SerializableNumberSupplier;
 //import cn.featherfly.common.lang.function.SerializableFunction;
 //import cn.featherfly.common.lang.function.SerializableSupplier;
-//import cn.featherfly.common.lang.function.StringSupplier;
+//import cn.featherfly.common.lang.function.SerializableStringSupplier;
 //import cn.featherfly.common.operator.AggregateFunction;
 //import cn.featherfly.common.operator.LogicOperator;
 //import cn.featherfly.common.operator.QueryOperator;
@@ -302,7 +302,7 @@
 //     */
 //
 //    @Override
-//    public L lk(StringSupplier property, QueryPolicy queryPolicy) {
+//    public L lk(SerializableStringSupplier property, QueryPolicy queryPolicy) {
 //        //  YUFEI_TODO 未测试
 //        //        String value = property.get();
 //        //        SerializableSupplierLambdaInfo<String> info = LambdaUtils.getSerializableSupplierLambdaInfo(property);
@@ -323,7 +323,7 @@
 //     */
 //
 //    @Override
-//    public L lk(StringSupplier property, QueryPolicy queryPolicy, Predicate<String> ignoreStrategy) {
+//    public L lk(SerializableStringSupplier property, QueryPolicy queryPolicy, Predicate<String> ignoreStrategy) {
 //        //  YUFEI_TODO 未测试
 //        //        String value = property.get();
 //        //        SerializableSupplierLambdaInfo<String> info = LambdaUtils.getSerializableSupplierLambdaInfo(property);
@@ -379,7 +379,7 @@
 //     */
 //
 //    @Override
-//    public L sw(StringSupplier property, QueryPolicy queryPolicy) {
+//    public L sw(SerializableStringSupplier property, QueryPolicy queryPolicy) {
 //        //  YUFEI_TODO 未测试
 //        //        String value = property.get();
 //        //        SerializableSupplierLambdaInfo<String> info = LambdaUtils.getSerializableSupplierLambdaInfo(property);
@@ -400,7 +400,7 @@
 //     */
 //
 //    @Override
-//    public L sw(StringSupplier property, QueryPolicy queryPolicy, Predicate<String> ignoreStrategy) {
+//    public L sw(SerializableStringSupplier property, QueryPolicy queryPolicy, Predicate<String> ignoreStrategy) {
 //        //  YUFEI_TODO 未测试
 //        //        String value = property.get();
 //        //        SerializableSupplierLambdaInfo<String> info = LambdaUtils.getSerializableSupplierLambdaInfo(property);
@@ -456,7 +456,7 @@
 //     */
 //
 //    @Override
-//    public L ew(StringSupplier property, QueryPolicy queryPolicy) {
+//    public L ew(SerializableStringSupplier property, QueryPolicy queryPolicy) {
 //        //  YUFEI_TODO 未测试
 //        //        String value = property.get();
 //        //        SerializableSupplierLambdaInfo<String> info = LambdaUtils.getSerializableSupplierLambdaInfo(property);
@@ -477,7 +477,7 @@
 //     */
 //
 //    @Override
-//    public L ew(StringSupplier property, QueryPolicy queryPolicy, Predicate<String> ignoreStrategy) {
+//    public L ew(SerializableStringSupplier property, QueryPolicy queryPolicy, Predicate<String> ignoreStrategy) {
 //        //  YUFEI_TODO 未测试
 //        //        String value = property.get();
 //        //        SerializableSupplierLambdaInfo<String> info = LambdaUtils.getSerializableSupplierLambdaInfo(property);
@@ -533,7 +533,7 @@
 //     */
 //
 //    @Override
-//    public L co(StringSupplier property, QueryPolicy queryPolicy) {
+//    public L co(SerializableStringSupplier property, QueryPolicy queryPolicy) {
 //        //  YUFEI_TODO 未测试
 //        //        String value = property.get();
 //        //        SerializableSupplierLambdaInfo<String> info = LambdaUtils.getSerializableSupplierLambdaInfo(property);
@@ -554,7 +554,7 @@
 //     */
 //
 //    @Override
-//    public L co(StringSupplier property, QueryPolicy queryPolicy, Predicate<String> ignoreStrategy) {
+//    public L co(SerializableStringSupplier property, QueryPolicy queryPolicy, Predicate<String> ignoreStrategy) {
 //        //  YUFEI_TODO 未测试
 //        //        String value = property.get();
 //        //        SerializableSupplierLambdaInfo<String> info = LambdaUtils.getSerializableSupplierLambdaInfo(property);
@@ -1131,7 +1131,7 @@
 //     */
 //
 //    @Override
-//    public <R extends Date> L ge(DateSupplier<R> property) {
+//    public <R extends Date> L ge(SerializableDateSupplier<R> property) {
 //        return ge0(property, ignoreStrategy);
 //    }
 //
@@ -1140,7 +1140,7 @@
 //     */
 //
 //    @Override
-//    public <R extends Date> L ge(DateSupplier<R> property, Predicate<R> ignoreStrategy) {
+//    public <R extends Date> L ge(SerializableDateSupplier<R> property, Predicate<R> ignoreStrategy) {
 //        return ge0(property, ignoreStrategy);
 //    }
 //
@@ -1149,7 +1149,7 @@
 //     */
 //
 //    @Override
-//    public <R extends Number> L ge(NumberSupplier<R> property) {
+//    public <R extends Number> L ge(SerializableNumberSupplier<R> property) {
 //        return ge0(property, ignoreStrategy);
 //    }
 //
@@ -1158,7 +1158,7 @@
 //     */
 //
 //    @Override
-//    public <R extends Number> L ge(NumberSupplier<R> property, Predicate<R> ignoreStrategy) {
+//    public <R extends Number> L ge(SerializableNumberSupplier<R> property, Predicate<R> ignoreStrategy) {
 //        return ge0(property, ignoreStrategy);
 //    }
 //
@@ -1167,7 +1167,7 @@
 //     */
 //
 //    @Override
-//    public L ge(LocalDateSupplier property) {
+//    public L ge(SerializableLocalDateSupplier property) {
 //        return ge0(property, ignoreStrategy);
 //    }
 //
@@ -1176,7 +1176,7 @@
 //     */
 //
 //    @Override
-//    public L ge(LocalDateSupplier property, Predicate<LocalDate> ignoreStrategy) {
+//    public L ge(SerializableLocalDateSupplier property, Predicate<LocalDate> ignoreStrategy) {
 //        return ge0(property, ignoreStrategy);
 //    }
 //
@@ -1185,7 +1185,7 @@
 //     */
 //
 //    @Override
-//    public L ge(LocalTimeSupplier property) {
+//    public L ge(SerializableLocalTimeSupplier property) {
 //        return ge0(property, ignoreStrategy);
 //    }
 //
@@ -1194,7 +1194,7 @@
 //     */
 //
 //    @Override
-//    public L ge(LocalTimeSupplier property, Predicate<LocalTime> ignoreStrategy) {
+//    public L ge(SerializableLocalTimeSupplier property, Predicate<LocalTime> ignoreStrategy) {
 //        return ge0(property, ignoreStrategy);
 //    }
 //
@@ -1203,7 +1203,7 @@
 //     */
 //
 //    @Override
-//    public L ge(LocalDateTimeSupplier property) {
+//    public L ge(SerializableLocalDateTimeSupplier property) {
 //        return ge0(property, ignoreStrategy);
 //    }
 //
@@ -1212,7 +1212,7 @@
 //     */
 //
 //    @Override
-//    public L ge(LocalDateTimeSupplier property, Predicate<LocalDateTime> ignoreStrategy) {
+//    public L ge(SerializableLocalDateTimeSupplier property, Predicate<LocalDateTime> ignoreStrategy) {
 //        return ge0(property, ignoreStrategy);
 //    }
 //
@@ -1221,7 +1221,7 @@
 //     */
 //
 //    @Override
-//    public L ge(StringSupplier property) {
+//    public L ge(SerializableStringSupplier property) {
 //        return ge0(property, ignoreStrategy);
 //    }
 //
@@ -1230,7 +1230,7 @@
 //     */
 //
 //    @Override
-//    public L ge(StringSupplier property, Predicate<String> ignoreStrategy) {
+//    public L ge(SerializableStringSupplier property, Predicate<String> ignoreStrategy) {
 //        return ge0(property, ignoreStrategy);
 //    }
 //
@@ -1348,7 +1348,7 @@
 //     */
 //
 //    @Override
-//    public <R extends Number> L gt(NumberSupplier<R> property) {
+//    public <R extends Number> L gt(SerializableNumberSupplier<R> property) {
 //        return gt0(property, ignoreStrategy);
 //    }
 //
@@ -1357,7 +1357,7 @@
 //     */
 //
 //    @Override
-//    public <R extends Number> L gt(NumberSupplier<R> property, Predicate<R> ignoreStrategy) {
+//    public <R extends Number> L gt(SerializableNumberSupplier<R> property, Predicate<R> ignoreStrategy) {
 //        return gt0(property, ignoreStrategy);
 //    }
 //
@@ -1366,7 +1366,7 @@
 //     */
 //
 //    @Override
-//    public <R extends Date> L gt(DateSupplier<R> property) {
+//    public <R extends Date> L gt(SerializableDateSupplier<R> property) {
 //        return gt0(property, ignoreStrategy);
 //    }
 //
@@ -1375,7 +1375,7 @@
 //     */
 //
 //    @Override
-//    public <R extends Date> L gt(DateSupplier<R> property, Predicate<R> ignoreStrategy) {
+//    public <R extends Date> L gt(SerializableDateSupplier<R> property, Predicate<R> ignoreStrategy) {
 //        return gt0(property, ignoreStrategy);
 //    }
 //
@@ -1384,7 +1384,7 @@
 //     */
 //
 //    @Override
-//    public L gt(LocalDateSupplier property) {
+//    public L gt(SerializableLocalDateSupplier property) {
 //        return gt0(property, ignoreStrategy);
 //    }
 //
@@ -1393,7 +1393,7 @@
 //     */
 //
 //    @Override
-//    public L gt(LocalDateSupplier property, Predicate<LocalDate> ignoreStrategy) {
+//    public L gt(SerializableLocalDateSupplier property, Predicate<LocalDate> ignoreStrategy) {
 //        return gt0(property, ignoreStrategy);
 //    }
 //
@@ -1402,7 +1402,7 @@
 //     */
 //
 //    @Override
-//    public L gt(LocalTimeSupplier property) {
+//    public L gt(SerializableLocalTimeSupplier property) {
 //        return gt0(property, ignoreStrategy);
 //    }
 //
@@ -1411,7 +1411,7 @@
 //     */
 //
 //    @Override
-//    public L gt(LocalTimeSupplier property, Predicate<LocalTime> ignoreStrategy) {
+//    public L gt(SerializableLocalTimeSupplier property, Predicate<LocalTime> ignoreStrategy) {
 //        return gt0(property, ignoreStrategy);
 //    }
 //
@@ -1420,7 +1420,7 @@
 //     */
 //
 //    @Override
-//    public L gt(LocalDateTimeSupplier property) {
+//    public L gt(SerializableLocalDateTimeSupplier property) {
 //        return gt0(property, ignoreStrategy);
 //    }
 //
@@ -1429,7 +1429,7 @@
 //     */
 //
 //    @Override
-//    public L gt(LocalDateTimeSupplier property, Predicate<LocalDateTime> ignoreStrategy) {
+//    public L gt(SerializableLocalDateTimeSupplier property, Predicate<LocalDateTime> ignoreStrategy) {
 //        return gt0(property, ignoreStrategy);
 //    }
 //
@@ -1438,7 +1438,7 @@
 //     */
 //
 //    @Override
-//    public L gt(StringSupplier property) {
+//    public L gt(SerializableStringSupplier property) {
 //        return gt0(property, ignoreStrategy);
 //    }
 //
@@ -1447,7 +1447,7 @@
 //     */
 //
 //    @Override
-//    public L gt(StringSupplier property, Predicate<String> ignoreStrategy) {
+//    public L gt(SerializableStringSupplier property, Predicate<String> ignoreStrategy) {
 //        return gt0(property, ignoreStrategy);
 //    }
 //
@@ -1735,7 +1735,7 @@
 //     */
 //
 //    @Override
-//    public <R extends Date> L le(DateSupplier<R> property) {
+//    public <R extends Date> L le(SerializableDateSupplier<R> property) {
 //        return le0(property, ignoreStrategy);
 //    }
 //
@@ -1744,7 +1744,7 @@
 //     */
 //
 //    @Override
-//    public <R extends Date> L le(DateSupplier<R> property, Predicate<R> ignoreStrategy) {
+//    public <R extends Date> L le(SerializableDateSupplier<R> property, Predicate<R> ignoreStrategy) {
 //        return le0(property, ignoreStrategy);
 //    }
 //
@@ -1753,7 +1753,7 @@
 //     */
 //
 //    @Override
-//    public <R extends Number> L le(NumberSupplier<R> property) {
+//    public <R extends Number> L le(SerializableNumberSupplier<R> property) {
 //        return le0(property, ignoreStrategy);
 //    }
 //
@@ -1762,7 +1762,7 @@
 //     */
 //
 //    @Override
-//    public <R extends Number> L le(NumberSupplier<R> property, Predicate<R> ignoreStrategy) {
+//    public <R extends Number> L le(SerializableNumberSupplier<R> property, Predicate<R> ignoreStrategy) {
 //        return le0(property, ignoreStrategy);
 //    }
 //
@@ -1771,7 +1771,7 @@
 //     */
 //
 //    @Override
-//    public L le(LocalDateSupplier property) {
+//    public L le(SerializableLocalDateSupplier property) {
 //        return le0(property, ignoreStrategy);
 //    }
 //
@@ -1780,7 +1780,7 @@
 //     */
 //
 //    @Override
-//    public L le(LocalDateSupplier property, Predicate<LocalDate> ignoreStrategy) {
+//    public L le(SerializableLocalDateSupplier property, Predicate<LocalDate> ignoreStrategy) {
 //        return le0(property, ignoreStrategy);
 //    }
 //
@@ -1789,7 +1789,7 @@
 //     */
 //
 //    @Override
-//    public L le(LocalTimeSupplier property) {
+//    public L le(SerializableLocalTimeSupplier property) {
 //        return le0(property, ignoreStrategy);
 //    }
 //
@@ -1798,7 +1798,7 @@
 //     */
 //
 //    @Override
-//    public L le(LocalTimeSupplier property, Predicate<LocalTime> ignoreStrategy) {
+//    public L le(SerializableLocalTimeSupplier property, Predicate<LocalTime> ignoreStrategy) {
 //        return le0(property, ignoreStrategy);
 //    }
 //
@@ -1807,7 +1807,7 @@
 //     */
 //
 //    @Override
-//    public L le(LocalDateTimeSupplier property) {
+//    public L le(SerializableLocalDateTimeSupplier property) {
 //        return le0(property, ignoreStrategy);
 //    }
 //
@@ -1816,7 +1816,7 @@
 //     */
 //
 //    @Override
-//    public L le(LocalDateTimeSupplier property, Predicate<LocalDateTime> ignoreStrategy) {
+//    public L le(SerializableLocalDateTimeSupplier property, Predicate<LocalDateTime> ignoreStrategy) {
 //        return le0(property, ignoreStrategy);
 //    }
 //
@@ -1825,7 +1825,7 @@
 //     */
 //
 //    @Override
-//    public L le(StringSupplier property) {
+//    public L le(SerializableStringSupplier property) {
 //        return le0(property, ignoreStrategy);
 //    }
 //
@@ -1834,7 +1834,7 @@
 //     */
 //
 //    @Override
-//    public L le(StringSupplier property, Predicate<String> ignoreStrategy) {
+//    public L le(SerializableStringSupplier property, Predicate<String> ignoreStrategy) {
 //        return le0(property, ignoreStrategy);
 //    }
 //
@@ -1952,7 +1952,7 @@
 //     */
 //
 //    @Override
-//    public <R extends Number> L lt(NumberSupplier<R> property) {
+//    public <R extends Number> L lt(SerializableNumberSupplier<R> property) {
 //        return lt0(property, ignoreStrategy);
 //    }
 //
@@ -1961,7 +1961,7 @@
 //     */
 //
 //    @Override
-//    public <R extends Number> L lt(NumberSupplier<R> property, Predicate<R> ignoreStrategy) {
+//    public <R extends Number> L lt(SerializableNumberSupplier<R> property, Predicate<R> ignoreStrategy) {
 //        return lt0(property, ignoreStrategy);
 //    }
 //
@@ -1970,7 +1970,7 @@
 //     */
 //
 //    @Override
-//    public <R extends Date> L lt(DateSupplier<R> property) {
+//    public <R extends Date> L lt(SerializableDateSupplier<R> property) {
 //        return lt0(property, ignoreStrategy);
 //    }
 //
@@ -1979,7 +1979,7 @@
 //     */
 //
 //    @Override
-//    public <R extends Date> L lt(DateSupplier<R> property, Predicate<R> ignoreStrategy) {
+//    public <R extends Date> L lt(SerializableDateSupplier<R> property, Predicate<R> ignoreStrategy) {
 //        return lt0(property, ignoreStrategy);
 //    }
 //
@@ -1988,7 +1988,7 @@
 //     */
 //
 //    @Override
-//    public L lt(LocalDateSupplier property) {
+//    public L lt(SerializableLocalDateSupplier property) {
 //        return lt0(property, ignoreStrategy);
 //    }
 //
@@ -1997,7 +1997,7 @@
 //     */
 //
 //    @Override
-//    public L lt(LocalDateSupplier property, Predicate<LocalDate> ignoreStrategy) {
+//    public L lt(SerializableLocalDateSupplier property, Predicate<LocalDate> ignoreStrategy) {
 //        return lt0(property, ignoreStrategy);
 //    }
 //
@@ -2006,7 +2006,7 @@
 //     */
 //
 //    @Override
-//    public L lt(LocalTimeSupplier property) {
+//    public L lt(SerializableLocalTimeSupplier property) {
 //        return lt0(property, ignoreStrategy);
 //    }
 //
@@ -2015,7 +2015,7 @@
 //     */
 //
 //    @Override
-//    public L lt(LocalTimeSupplier property, Predicate<LocalTime> ignoreStrategy) {
+//    public L lt(SerializableLocalTimeSupplier property, Predicate<LocalTime> ignoreStrategy) {
 //        return lt0(property, ignoreStrategy);
 //    }
 //
@@ -2024,7 +2024,7 @@
 //     */
 //
 //    @Override
-//    public L lt(LocalDateTimeSupplier property) {
+//    public L lt(SerializableLocalDateTimeSupplier property) {
 //        return lt0(property, ignoreStrategy);
 //    }
 //
@@ -2033,7 +2033,7 @@
 //     */
 //
 //    @Override
-//    public L lt(LocalDateTimeSupplier property, Predicate<LocalDateTime> ignoreStrategy) {
+//    public L lt(SerializableLocalDateTimeSupplier property, Predicate<LocalDateTime> ignoreStrategy) {
 //        return lt0(property, ignoreStrategy);
 //    }
 //
@@ -2042,7 +2042,7 @@
 //     */
 //
 //    @Override
-//    public L lt(StringSupplier property) {
+//    public L lt(SerializableStringSupplier property) {
 //        return lt0(property, ignoreStrategy);
 //    }
 //
@@ -2051,7 +2051,7 @@
 //     */
 //
 //    @Override
-//    public L lt(StringSupplier property, Predicate<String> ignoreStrategy) {
+//    public L lt(SerializableStringSupplier property, Predicate<String> ignoreStrategy) {
 //        return lt0(property, ignoreStrategy);
 //    }
 //

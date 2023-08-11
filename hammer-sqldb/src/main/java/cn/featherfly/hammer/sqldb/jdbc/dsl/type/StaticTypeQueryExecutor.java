@@ -12,7 +12,7 @@ import cn.featherfly.hammer.expression.query.QueryExecutor;
  *
  * @author zhongj
  */
-public class StaticTypeQueryExecutor<E> implements cn.featherfly.hammer.expression.query.GenericTypeQueryExecutor<E> {
+public class StaticTypeQueryExecutor<E> implements cn.featherfly.hammer.expression.type.GenericTypeQueryExecutor<E> {
 
     private Class<E> type;
 

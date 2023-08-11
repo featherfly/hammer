@@ -7,9 +7,8 @@ import cn.featherfly.common.operator.QueryOperator;
 import cn.featherfly.common.operator.QueryOperator.QueryPolicy;
 import cn.featherfly.common.repository.mapping.ClassMapping;
 import cn.featherfly.common.repository.mapping.PropertyMapping;
-import cn.featherfly.hammer.dsl.execute.ExecutableConditionGroupExpression;
-import cn.featherfly.hammer.dsl.execute.ExecutableConditionGroupLogicExpression;
-import cn.featherfly.hammer.dsl.query.TypeQueryEntity;
+import cn.featherfly.hammer.dsl.execute.ExecutableConditionGroup;
+import cn.featherfly.hammer.dsl.execute.ExecutableConditionGroupLogic;
 import cn.featherfly.hammer.sqldb.jdbc.Jdbc;
 import cn.featherfly.hammer.sqldb.sql.dml.AbstractSqlConditionGroupExpression;
 
@@ -19,13 +18,13 @@ import cn.featherfly.hammer.sqldb.sql.dml.AbstractSqlConditionGroupExpression;
  * @author zhongj
  */
 public class SqlConditionGroupExpression extends
-        AbstractSqlConditionGroupExpression<ExecutableConditionGroupExpression, ExecutableConditionGroupLogicExpression>
-        implements ExecutableConditionGroupExpression, ExecutableConditionGroupLogicExpression {
+        AbstractSqlConditionGroupExpression<ExecutableConditionGroup, ExecutableConditionGroupLogic>
+        implements ExecutableConditionGroup, ExecutableConditionGroupLogic {
 
     /**
      * Instantiates a new sql condition group expression.
      *
-     * @param jdbc         jdbc
+     * @param jdbc           jdbc
      * @param ignoreStrategy the ignore strategy
      */
     public SqlConditionGroupExpression(Jdbc jdbc, Predicate<?> ignoreStrategy) {
@@ -35,8 +34,8 @@ public class SqlConditionGroupExpression extends
     /**
      * Instantiates a new sql condition group expression.
      *
-     * @param jdbc         jdbc
-     * @param queryAlias   queryAlias
+     * @param jdbc           jdbc
+     * @param queryAlias     queryAlias
      * @param ignoreStrategy the ignore strategy
      */
     public SqlConditionGroupExpression(Jdbc jdbc, String queryAlias, Predicate<?> ignoreStrategy) {
@@ -46,16 +45,16 @@ public class SqlConditionGroupExpression extends
     /**
      * Instantiates a new sql condition group expression.
      *
-     * @param jdbc         jdbc
-     * @param parent       parent group
-     * @param queryAlias   queryAlias
-     * @param classMapping classMapping
+     * @param jdbc           jdbc
+     * @param parent         parent group
+     * @param queryAlias     queryAlias
+     * @param classMapping   classMapping
      * @param ignoreStrategy the ignore strategy
      */
-    SqlConditionGroupExpression(ExecutableConditionGroupLogicExpression parent, Jdbc jdbc, String queryAlias,
+    SqlConditionGroupExpression(ExecutableConditionGroupLogic parent, Jdbc jdbc, String queryAlias,
             Predicate<?> ignoreStrategy) {
         // 删除，和更新不需要分页
-        super(parent, jdbc.getDialect(), null, queryAlias, null, ignoreStrategy);
+        super(parent, jdbc.getDialect(), null, queryAlias, ignoreStrategy);
         this.jdbc = jdbc;
     }
 
@@ -87,8 +86,8 @@ public class SqlConditionGroupExpression extends
      * {@inheritDoc}
      */
     @Override
-    protected ExecutableConditionGroupExpression createGroup(ExecutableConditionGroupLogicExpression parent,
-            String queryAlias, TypeQueryEntity typeQueryEntity) {
+    protected ExecutableConditionGroup createGroup(ExecutableConditionGroupLogic parent,
+            String queryAlias) {
         return new SqlConditionGroupExpression(parent, jdbc, queryAlias, ignoreStrategy);
     }
 
@@ -114,7 +113,7 @@ public class SqlConditionGroupExpression extends
      * {@inheritDoc}
      */
     @Override
-    protected <T, R> ExecutableConditionGroupLogicExpression eq_ne(int index, QueryOperator queryOperator,
+    protected <T, R> ExecutableConditionGroupLogic eq_ne(int index, QueryOperator queryOperator,
             PropertyMapping<?> pm, R value, QueryPolicy queryPolicy, Predicate<?> ignoreStrategy) {
         // IMPLSOON 后续来实现
         return null;

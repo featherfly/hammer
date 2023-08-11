@@ -3,7 +3,7 @@ package cn.featherfly.hammer.expression.entity.condition.co;
 
 import java.util.Collection;
 
-import cn.featherfly.common.lang.function.ReturnStringFunction;
+import cn.featherfly.common.lang.function.SerializableToStringFunction;
 import cn.featherfly.common.lang.function.SerializableFunction;
 import cn.featherfly.common.lang.function.SerializableToCollectionFunction;
 
@@ -42,5 +42,5 @@ public interface ContainsEntityPropertyExpression<E> {
      * @param name the name
      * @return entity contains function property expression
      */
-    <R> ContainsEntityPropertyValueExpression<E> property(ReturnStringFunction<E> name);
+    <R> ContainsEntityPropertyValueExpression<E> property(SerializableToStringFunction<E> name);
 }

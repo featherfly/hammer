@@ -183,9 +183,11 @@ CREATE TABLE `order`  (
 );
 
 INSERT INTO `order` (`id`, `no`, `app_id`, `app_key`, `wx_package`, `wx_package_expire_time`, `alipay_trade_no`, `parent_id`, `create_user`, `update_user`, `user1`, `user2`, `user3`, `user_info`) 
-    VALUES (1, 'no:1', 'app_id', 'app_key', 'wx_package', strftime('%s','now'), 'alipay_trade_no', null, 1, 1, 1, 1, 1, 1);
+    VALUES (1, 'no:1', 'app_id', 'app_key', 'wx_package', strftime('%s','now'), 'alipay_trade_no', null, 1, 1, 1, 2, 3, 1);
 INSERT INTO `order` (`id`, `no`, `app_id`, `app_key`, `wx_package`, `wx_package_expire_time`, `alipay_trade_no`, `parent_id`, `create_user`, `update_user`, `user1`, `user2`, `user3`, `user_info`) 
-    VALUES (2, 'no:2', 'app_id', 'app_key', 'wx_package', strftime('%s','now'), 'alipay_trade_no', 1, 2, 2, 2, 2, 2, 2);
+    VALUES (2, 'no:2', 'app_id', 'app_key', 'wx_package', strftime('%s','now'), 'alipay_trade_no', 1, 2, 2, 1, 2, 3, 2);
+INSERT INTO `order` (`id`, `no`, `app_id`, `app_key`, `wx_package`, `wx_package_expire_time`, `alipay_trade_no`, `parent_id`, `create_user`, `update_user`, `user1`, `user2`, `user3`, `user_info`) 
+    VALUES (3, 'no:3', 'app_id', 'app_key', 'wx_package', strftime('%s','now'), 'alipay_trade_no', 1, 2, 3, 4, 5, 6, 1);
 
 DROP TABLE IF EXISTS `order_info`;
 CREATE TABLE `order_info`  (
@@ -204,3 +206,5 @@ INSERT INTO `order_info` (`id`, `descp`, `order_id`, `create_user`, `update_user
     VALUES (1, 'descp1', 1, 1, 1, 1, 1, 1, 1);
 INSERT INTO `order_info` (`id`, `descp`, `order_id`, `create_user`, `update_user`,`user1`, `user2`, `user3`, `user_info`) 
     VALUES (2, 'descp2', 2, 2, 2, 2, 2, 2, 2);
+INSERT INTO `order_info` (`id`, `descp`, `order_id`, `create_user`, `update_user`,`user1`, `user2`, `user3`, `user_info`) 
+    VALUES (3, 'descp2', 3, 1, 2, 3, 4, 5, 6);

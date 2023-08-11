@@ -93,7 +93,7 @@ public interface EntityStartWithExpression5<E, E2, E3, E4, E5, C extends Conditi
     //    default L sw(
     //            Function<Tuple5<QueryEntityRepository<E>, QueryEntityRepository<E2>, QueryEntityRepository<E3>,
     //                    QueryEntityRepository<E4>, QueryEntityRepository<E5>>, QueryEntityRepository<E>> entities,
-    //            StringSupplier property) {
+    //            SerializableStringSupplier property) {
     //        return sw(entities, property, QueryPolicy.AUTO);
     //    }
     //
@@ -108,7 +108,7 @@ public interface EntityStartWithExpression5<E, E2, E3, E4, E5, C extends Conditi
     //    default L sw(
     //            Function<Tuple5<QueryEntityRepository<E>, QueryEntityRepository<E2>, QueryEntityRepository<E3>,
     //                    QueryEntityRepository<E4>, QueryEntityRepository<E5>>, QueryEntityRepository<E>> entities,
-    //            StringSupplier property, Predicate<String> ignoreStrategy) {
+    //            SerializableStringSupplier property, Predicate<String> ignoreStrategy) {
     //        return sw(entities, property, QueryPolicy.AUTO, ignoreStrategy);
     //    }
     //
@@ -122,7 +122,7 @@ public interface EntityStartWithExpression5<E, E2, E3, E4, E5, C extends Conditi
     //     */
     //    L sw(Function<Tuple5<QueryEntityRepository<E>, QueryEntityRepository<E2>, QueryEntityRepository<E3>,
     //            QueryEntityRepository<E4>, QueryEntityRepository<E5>>, QueryEntityRepository<E>> entities,
-    //            StringSupplier property, QueryPolicy queryPolicy);
+    //            SerializableStringSupplier property, QueryPolicy queryPolicy);
     //
     //    /**
     //     * start with value. 以value开始.
@@ -135,7 +135,7 @@ public interface EntityStartWithExpression5<E, E2, E3, E4, E5, C extends Conditi
     //     */
     //    L sw(Function<Tuple5<QueryEntityRepository<E>, QueryEntityRepository<E2>, QueryEntityRepository<E3>,
     //            QueryEntityRepository<E4>, QueryEntityRepository<E5>>, QueryEntityRepository<E>> entities,
-    //            StringSupplier property, QueryPolicy queryPolicy, Predicate<String> ignoreStrategy);
+    //            SerializableStringSupplier property, QueryPolicy queryPolicy, Predicate<String> ignoreStrategy);
     //
     //    /**
     //     * start with value. 以value开始.

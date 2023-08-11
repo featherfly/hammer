@@ -10,6 +10,8 @@
  */
 package cn.featherfly.hammer.expression.entity.query.sort;
 
+import java.util.function.Function;
+
 import cn.featherfly.common.lang.function.SerializableFunction;
 
 /**
@@ -19,16 +21,8 @@ import cn.featherfly.common.lang.function.SerializableFunction;
  * @param <E> the element type
  * @param <S> the generic type
  */
-public interface SortEntityExpression<E> {
-
-    /**
-     * apply sort(asc or desc) property.
-     *
-     * @param <R>  the generic type
-     * @param name 名称
-     * @return this
-     */
-    <R> SortEntityExpression<E> accept(SerializableFunction<E, R> name);
+@FunctionalInterface
+public interface SortEntityExpression<E> extends Function<SerializableFunction<E, ?>, SortEntityExpression<E>> {
 
     /**
      * apply sort(asc or desc) property .
@@ -36,5 +30,15 @@ public interface SortEntityExpression<E> {
      * @param names 名称
      * @return this
      */
-    SortEntityExpression<E> accept(@SuppressWarnings("unchecked") SerializableFunction<E, ?>... names);
+    default SortEntityExpression<E> apply(@SuppressWarnings("unchecked") SerializableFunction<E, ?>... names) {
+        SortEntityExpression<E> exp = null;
+        for (SerializableFunction<E, ?> name : names) {
+            if (exp == null) {
+                exp = apply(name);
+            } else {
+                exp = exp.apply(name);
+            }
+        }
+        return exp;
+    }
 }

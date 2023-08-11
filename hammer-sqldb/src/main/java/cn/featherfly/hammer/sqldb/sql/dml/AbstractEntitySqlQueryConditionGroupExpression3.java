@@ -35,28 +35,52 @@ import cn.featherfly.hammer.expression.entity.condition.co.EntityContainsExpress
 import cn.featherfly.hammer.expression.entity.condition.co.MulitiEntityContainsExpression;
 import cn.featherfly.hammer.expression.entity.condition.eq.EntityEqualsExpression3;
 import cn.featherfly.hammer.expression.entity.condition.eq.EqualsEntityExpression;
+import cn.featherfly.hammer.expression.entity.condition.eq.EqualsEntityExpressionImpl;
+import cn.featherfly.hammer.expression.entity.condition.eq.MulitiEntityEqualsExpression;
 import cn.featherfly.hammer.expression.entity.condition.ew.EndWithEntityExpression;
+import cn.featherfly.hammer.expression.entity.condition.ew.EndWithEntityExpressionImpl;
 import cn.featherfly.hammer.expression.entity.condition.ew.EntityEndWithExpression3;
+import cn.featherfly.hammer.expression.entity.condition.ew.MulitiEntityEndWithExpression;
 import cn.featherfly.hammer.expression.entity.condition.ge.EntityGreatEqualsExpression3;
 import cn.featherfly.hammer.expression.entity.condition.ge.GreatEqualsEntityExpression;
+import cn.featherfly.hammer.expression.entity.condition.ge.GreatEqualsEntityExpressionImpl;
+import cn.featherfly.hammer.expression.entity.condition.ge.MulitiEntityGreatEqualsExpression;
 import cn.featherfly.hammer.expression.entity.condition.gt.EntityGreatThanExpression3;
 import cn.featherfly.hammer.expression.entity.condition.gt.GreatThanEntityExpression;
+import cn.featherfly.hammer.expression.entity.condition.gt.GreatThanEntityExpressionImpl;
+import cn.featherfly.hammer.expression.entity.condition.gt.MulitiEntityGreatThanExpression;
 import cn.featherfly.hammer.expression.entity.condition.in.EntityInExpression3;
 import cn.featherfly.hammer.expression.entity.condition.in.InEntityExpression;
+import cn.featherfly.hammer.expression.entity.condition.in.InEntityExpressionImpl;
+import cn.featherfly.hammer.expression.entity.condition.in.MulitiEntityInExpression;
 import cn.featherfly.hammer.expression.entity.condition.inn.EntityIsNotNullExpression3;
 import cn.featherfly.hammer.expression.entity.condition.inn.IsNotNullEntityExpression;
+import cn.featherfly.hammer.expression.entity.condition.inn.IsNotNullEntityExpressionImpl;
+import cn.featherfly.hammer.expression.entity.condition.inn.MulitiEntityIsNotNullExpression;
 import cn.featherfly.hammer.expression.entity.condition.isn.EntityIsNullExpression3;
 import cn.featherfly.hammer.expression.entity.condition.isn.IsNullEntityExpression;
+import cn.featherfly.hammer.expression.entity.condition.isn.IsNullEntityExpressionImpl;
+import cn.featherfly.hammer.expression.entity.condition.isn.MulitiEntityIsNullExpression;
 import cn.featherfly.hammer.expression.entity.condition.le.EntityLessEqualsExpression3;
 import cn.featherfly.hammer.expression.entity.condition.le.LessEqualsEntityExpression;
+import cn.featherfly.hammer.expression.entity.condition.le.LessEqualsEntityExpressionImpl;
+import cn.featherfly.hammer.expression.entity.condition.le.MulitiEntityLessEqualsExpression;
 import cn.featherfly.hammer.expression.entity.condition.lk.EntityLikeExpression3;
 import cn.featherfly.hammer.expression.entity.condition.lk.LikeEntityExpression;
+import cn.featherfly.hammer.expression.entity.condition.lk.LikeEntityExpressionImpl;
+import cn.featherfly.hammer.expression.entity.condition.lk.MulitiEntityLikeExpression;
 import cn.featherfly.hammer.expression.entity.condition.lt.EntityLessThanExpression3;
 import cn.featherfly.hammer.expression.entity.condition.lt.LessThanEntityExpression;
+import cn.featherfly.hammer.expression.entity.condition.lt.LessThanEntityExpressionImpl;
+import cn.featherfly.hammer.expression.entity.condition.lt.MulitiEntityLessThanExpression;
 import cn.featherfly.hammer.expression.entity.condition.ne.EntityNotEqualsExpression3;
+import cn.featherfly.hammer.expression.entity.condition.ne.MulitiEntityNotEqualsExpression;
 import cn.featherfly.hammer.expression.entity.condition.ne.NotEqualsEntityExpression;
+import cn.featherfly.hammer.expression.entity.condition.ne.NotEqualsEntityExpressionImpl;
 import cn.featherfly.hammer.expression.entity.condition.nin.EntityNotInExpression3;
+import cn.featherfly.hammer.expression.entity.condition.nin.MulitiEntityNotInExpression;
 import cn.featherfly.hammer.expression.entity.condition.nin.NotInEntityExpression;
+import cn.featherfly.hammer.expression.entity.condition.nin.NotInEntityExpressionImpl;
 import cn.featherfly.hammer.expression.entity.condition.property.EntityPropertyFunction;
 import cn.featherfly.hammer.expression.entity.condition.sw.EntityStartWithExpression3;
 import cn.featherfly.hammer.expression.entity.condition.sw.MulitiEntityStartWithExpression;
@@ -64,13 +88,25 @@ import cn.featherfly.hammer.expression.entity.condition.sw.StartWithEntityExpres
 import cn.featherfly.hammer.expression.entity.condition.sw.StartWithEntityExpressionImpl;
 import cn.featherfly.hammer.expression.entity.query.EntityQueryConditionGroupExpression3;
 import cn.featherfly.hammer.expression.entity.query.EntityQueryConditionGroupLogicExpression3;
+import cn.featherfly.hammer.expression.entity.query.EntityQueryLimitExecutor;
 import cn.featherfly.hammer.expression.entity.query.EntityQuerySortExpression3;
 import cn.featherfly.hammer.expression.entity.query.EntityQuerySortedExpression3;
 import cn.featherfly.hammer.expression.entity.query.sort.SortEntityExpression;
-import cn.featherfly.hammer.expression.query.type.EntityQueryLimitExecutor;
 import cn.featherfly.hammer.sqldb.jdbc.SqlPageFactory;
 import cn.featherfly.hammer.sqldb.jdbc.dsl.entity.EntitySqlQueryRelation;
 import cn.featherfly.hammer.sqldb.jdbc.dsl.entity.condition.MulitiEntityContainsExpressionImpl;
+import cn.featherfly.hammer.sqldb.jdbc.dsl.entity.condition.MulitiEntityEndWithExpressionImpl;
+import cn.featherfly.hammer.sqldb.jdbc.dsl.entity.condition.MulitiEntityEqualsExpressionImpl;
+import cn.featherfly.hammer.sqldb.jdbc.dsl.entity.condition.MulitiEntityGreatEqualsExpressionImpl;
+import cn.featherfly.hammer.sqldb.jdbc.dsl.entity.condition.MulitiEntityGreatThanExpressionImpl;
+import cn.featherfly.hammer.sqldb.jdbc.dsl.entity.condition.MulitiEntityInExpressionImpl;
+import cn.featherfly.hammer.sqldb.jdbc.dsl.entity.condition.MulitiEntityIsNotNullExpressionImpl;
+import cn.featherfly.hammer.sqldb.jdbc.dsl.entity.condition.MulitiEntityIsNullExpressionImpl;
+import cn.featherfly.hammer.sqldb.jdbc.dsl.entity.condition.MulitiEntityLessEqualsExpressionImpl;
+import cn.featherfly.hammer.sqldb.jdbc.dsl.entity.condition.MulitiEntityLessThanExpressionImpl;
+import cn.featherfly.hammer.sqldb.jdbc.dsl.entity.condition.MulitiEntityLikeExpressionImpl;
+import cn.featherfly.hammer.sqldb.jdbc.dsl.entity.condition.MulitiEntityNotEqualsExpressionImpl;
+import cn.featherfly.hammer.sqldb.jdbc.dsl.entity.condition.MulitiEntityNotInExpressionImpl;
 import cn.featherfly.hammer.sqldb.jdbc.dsl.entity.condition.MulitiEntityStartWithExpressionImpl;
 
 /**
@@ -230,221 +266,309 @@ public abstract class AbstractEntitySqlQueryConditionGroupExpression3<E, E2, E3,
     /**
      * {@inheritDoc}
      */
+    @SuppressWarnings("unchecked")
     @Override
     public L ew(Consumer<Tuple3<EndWithEntityExpression<E>, EndWithEntityExpression<E2>,
             EndWithEntityExpression<E3>>> endWithEntityExpressions) {
-        // YUFEI_TODO Auto-generated method stub
-        return null;
+        MulitiEntityEndWithExpression<C, L> mulitiExpression = new MulitiEntityEndWithExpressionImpl<>(this);
+        endWithEntityExpressions.accept(Tuples.of(new EndWithEntityExpressionImpl<E, C, L>(0, mulitiExpression),
+                new EndWithEntityExpressionImpl<E2, C, L>(1, mulitiExpression),
+                new EndWithEntityExpressionImpl<E3, C, L>(2, mulitiExpression)));
+        return (L) this;
     }
 
     /**
      * {@inheritDoc}
      */
+    @SuppressWarnings("unchecked")
     @Override
     public L ew(ThreeArgusConsumer<EndWithEntityExpression<E>, EndWithEntityExpression<E2>,
             EndWithEntityExpression<E3>> endWithEntityExpressions) {
-        // YUFEI_TODO Auto-generated method stub
-        return null;
+        MulitiEntityEndWithExpression<C, L> mulitiExpression = new MulitiEntityEndWithExpressionImpl<>(this);
+        endWithEntityExpressions.accept(new EndWithEntityExpressionImpl<E, C, L>(0, mulitiExpression),
+                new EndWithEntityExpressionImpl<E2, C, L>(1, mulitiExpression),
+                new EndWithEntityExpressionImpl<E3, C, L>(2, mulitiExpression));
+        return (L) this;
     }
 
     /**
      * {@inheritDoc}
      */
+    @SuppressWarnings("unchecked")
     @Override
     public L eq(Consumer<Tuple3<EqualsEntityExpression<E>, EqualsEntityExpression<E2>,
             EqualsEntityExpression<E3>>> equalsEntityExpressions) {
-        // YUFEI_TODO Auto-generated method stub
-        return null;
+        MulitiEntityEqualsExpression<C, L> mulitiExpression = new MulitiEntityEqualsExpressionImpl<>(this);
+        equalsEntityExpressions.accept(Tuples.of(new EqualsEntityExpressionImpl<E, C, L>(0, mulitiExpression),
+                new EqualsEntityExpressionImpl<E2, C, L>(1, mulitiExpression),
+                new EqualsEntityExpressionImpl<E3, C, L>(2, mulitiExpression)));
+        return (L) this;
     }
 
     /**
      * {@inheritDoc}
      */
+    @SuppressWarnings("unchecked")
     @Override
     public L eq(ThreeArgusConsumer<EqualsEntityExpression<E>, EqualsEntityExpression<E2>,
             EqualsEntityExpression<E3>> equalsEntityExpressions) {
-        // YUFEI_TODO Auto-generated method stub
-        return null;
+        MulitiEntityEqualsExpression<C, L> mulitiExpression = new MulitiEntityEqualsExpressionImpl<>(this);
+        equalsEntityExpressions.accept(new EqualsEntityExpressionImpl<E, C, L>(0, mulitiExpression),
+                new EqualsEntityExpressionImpl<E2, C, L>(1, mulitiExpression),
+                new EqualsEntityExpressionImpl<E3, C, L>(2, mulitiExpression));
+        return (L) this;
     }
 
     /**
      * {@inheritDoc}
      */
+    @SuppressWarnings("unchecked")
     @Override
     public L ge(Consumer<Tuple3<GreatEqualsEntityExpression<E>, GreatEqualsEntityExpression<E2>,
             GreatEqualsEntityExpression<E3>>> greatEqualsEntityExpressions) {
-        // YUFEI_TODO Auto-generated method stub
-        return null;
+        MulitiEntityGreatEqualsExpression<C, L> mulitiExpression = new MulitiEntityGreatEqualsExpressionImpl<>(this);
+        greatEqualsEntityExpressions.accept(Tuples.of(new GreatEqualsEntityExpressionImpl<E, C, L>(0, mulitiExpression),
+                new GreatEqualsEntityExpressionImpl<E2, C, L>(1, mulitiExpression),
+                new GreatEqualsEntityExpressionImpl<E3, C, L>(2, mulitiExpression)));
+        return (L) this;
     }
 
     /**
      * {@inheritDoc}
      */
+    @SuppressWarnings("unchecked")
     @Override
     public L ge(ThreeArgusConsumer<GreatEqualsEntityExpression<E>, GreatEqualsEntityExpression<E2>,
             GreatEqualsEntityExpression<E3>> greatEqualsEntityExpressions) {
-        // YUFEI_TODO Auto-generated method stub
-        return null;
+        MulitiEntityGreatEqualsExpression<C, L> mulitiExpression = new MulitiEntityGreatEqualsExpressionImpl<>(this);
+        greatEqualsEntityExpressions.accept(new GreatEqualsEntityExpressionImpl<E, C, L>(0, mulitiExpression),
+                new GreatEqualsEntityExpressionImpl<E2, C, L>(1, mulitiExpression),
+                new GreatEqualsEntityExpressionImpl<E3, C, L>(2, mulitiExpression));
+        return (L) this;
     }
 
     /**
      * {@inheritDoc}
      */
+    @SuppressWarnings("unchecked")
     @Override
     public L gt(Consumer<Tuple3<GreatThanEntityExpression<E>, GreatThanEntityExpression<E2>,
             GreatThanEntityExpression<E3>>> greatThanEntityExpressions) {
-        // YUFEI_TODO Auto-generated method stub
-        return null;
+        MulitiEntityGreatThanExpression<C, L> mulitiExpression = new MulitiEntityGreatThanExpressionImpl<>(this);
+        greatThanEntityExpressions.accept(Tuples.of(new GreatThanEntityExpressionImpl<E, C, L>(0, mulitiExpression),
+                new GreatThanEntityExpressionImpl<E2, C, L>(1, mulitiExpression),
+                new GreatThanEntityExpressionImpl<E3, C, L>(2, mulitiExpression)));
+        return (L) this;
     }
 
     /**
      * {@inheritDoc}
      */
+    @SuppressWarnings("unchecked")
     @Override
     public L gt(ThreeArgusConsumer<GreatThanEntityExpression<E>, GreatThanEntityExpression<E2>,
             GreatThanEntityExpression<E3>> greatThanEntityExpressions) {
-        // YUFEI_TODO Auto-generated method stub
-        return null;
+        MulitiEntityGreatThanExpression<C, L> mulitiExpression = new MulitiEntityGreatThanExpressionImpl<>(this);
+        greatThanEntityExpressions.accept(new GreatThanEntityExpressionImpl<E, C, L>(0, mulitiExpression),
+                new GreatThanEntityExpressionImpl<E2, C, L>(1, mulitiExpression),
+                new GreatThanEntityExpressionImpl<E3, C, L>(2, mulitiExpression));
+        return (L) this;
     }
 
     /**
      * {@inheritDoc}
      */
+    @SuppressWarnings("unchecked")
     @Override
     public L in(Consumer<
             Tuple3<InEntityExpression<E>, InEntityExpression<E2>, InEntityExpression<E3>>> inEntityExpressions) {
-        // YUFEI_TODO Auto-generated method stub
-        return null;
+        MulitiEntityInExpression<C, L> mulitiExpression = new MulitiEntityInExpressionImpl<>(this);
+        inEntityExpressions.accept(Tuples.of(new InEntityExpressionImpl<E, C, L>(0, mulitiExpression),
+                new InEntityExpressionImpl<E2, C, L>(1, mulitiExpression),
+                new InEntityExpressionImpl<E3, C, L>(2, mulitiExpression)));
+        return (L) this;
     }
 
     /**
      * {@inheritDoc}
      */
+    @SuppressWarnings("unchecked")
     @Override
     public L in(ThreeArgusConsumer<InEntityExpression<E>, InEntityExpression<E2>,
             InEntityExpression<E3>> inEntityExpressions) {
-        // YUFEI_TODO Auto-generated method stub
-        return null;
+        MulitiEntityInExpression<C, L> mulitiExpression = new MulitiEntityInExpressionImpl<>(this);
+        inEntityExpressions.accept(new InEntityExpressionImpl<E, C, L>(0, mulitiExpression),
+                new InEntityExpressionImpl<E2, C, L>(1, mulitiExpression),
+                new InEntityExpressionImpl<E3, C, L>(2, mulitiExpression));
+        return (L) this;
     }
 
     /**
      * {@inheritDoc}
      */
+    @SuppressWarnings("unchecked")
     @Override
     public L inn(Consumer<Tuple3<IsNotNullEntityExpression<E>, IsNotNullEntityExpression<E2>,
             IsNotNullEntityExpression<E3>>> isNotNullEntityExpressions) {
-        // YUFEI_TODO Auto-generated method stub
-        return null;
+        MulitiEntityIsNotNullExpression<C, L> mulitiExpression = new MulitiEntityIsNotNullExpressionImpl<>(this);
+        isNotNullEntityExpressions.accept(Tuples.of(new IsNotNullEntityExpressionImpl<E, C, L>(0, mulitiExpression),
+                new IsNotNullEntityExpressionImpl<E2, C, L>(1, mulitiExpression),
+                new IsNotNullEntityExpressionImpl<E3, C, L>(2, mulitiExpression)));
+        return (L) this;
     }
 
     /**
      * {@inheritDoc}
      */
+    @SuppressWarnings("unchecked")
     @Override
     public L inn(ThreeArgusConsumer<IsNotNullEntityExpression<E>, IsNotNullEntityExpression<E2>,
             IsNotNullEntityExpression<E3>> isNotNullEntityExpressions) {
-        // YUFEI_TODO Auto-generated method stub
-        return null;
+        MulitiEntityIsNotNullExpression<C, L> mulitiExpression = new MulitiEntityIsNotNullExpressionImpl<>(this);
+        isNotNullEntityExpressions.accept(new IsNotNullEntityExpressionImpl<E, C, L>(0, mulitiExpression),
+                new IsNotNullEntityExpressionImpl<E2, C, L>(1, mulitiExpression),
+                new IsNotNullEntityExpressionImpl<E3, C, L>(2, mulitiExpression));
+        return (L) this;
     }
 
     /**
      * {@inheritDoc}
      */
+    @SuppressWarnings("unchecked")
     @Override
     public L isn(Consumer<Tuple3<IsNullEntityExpression<E>, IsNullEntityExpression<E2>,
             IsNullEntityExpression<E3>>> isNullEntityExpressions) {
-        // YUFEI_TODO Auto-generated method stub
-        return null;
+        MulitiEntityIsNullExpression<C, L> mulitiExpression = new MulitiEntityIsNullExpressionImpl<>(this);
+        isNullEntityExpressions.accept(Tuples.of(new IsNullEntityExpressionImpl<E, C, L>(0, mulitiExpression),
+                new IsNullEntityExpressionImpl<E2, C, L>(1, mulitiExpression),
+                new IsNullEntityExpressionImpl<E3, C, L>(2, mulitiExpression)));
+        return (L) this;
     }
 
     /**
      * {@inheritDoc}
      */
+    @SuppressWarnings("unchecked")
     @Override
     public L isn(ThreeArgusConsumer<IsNullEntityExpression<E>, IsNullEntityExpression<E2>,
             IsNullEntityExpression<E3>> isNullEntityExpressions) {
-        // YUFEI_TODO Auto-generated method stub
-        return null;
+        MulitiEntityIsNullExpression<C, L> mulitiExpression = new MulitiEntityIsNullExpressionImpl<>(this);
+        isNullEntityExpressions.accept(new IsNullEntityExpressionImpl<E, C, L>(0, mulitiExpression),
+                new IsNullEntityExpressionImpl<E2, C, L>(1, mulitiExpression),
+                new IsNullEntityExpressionImpl<E3, C, L>(2, mulitiExpression));
+        return (L) this;
     }
 
     /**
      * {@inheritDoc}
      */
+    @SuppressWarnings("unchecked")
     @Override
     public L le(Consumer<Tuple3<LessEqualsEntityExpression<E>, LessEqualsEntityExpression<E2>,
             LessEqualsEntityExpression<E3>>> lessEqualsEntityExpressions) {
-        // YUFEI_TODO Auto-generated method stub
-        return null;
+        MulitiEntityLessEqualsExpression<C, L> mulitiExpression = new MulitiEntityLessEqualsExpressionImpl<>(this);
+        lessEqualsEntityExpressions.accept(Tuples.of(new LessEqualsEntityExpressionImpl<E, C, L>(0, mulitiExpression),
+                new LessEqualsEntityExpressionImpl<E2, C, L>(1, mulitiExpression),
+                new LessEqualsEntityExpressionImpl<E3, C, L>(2, mulitiExpression)));
+        return (L) this;
     }
 
     /**
      * {@inheritDoc}
      */
+    @SuppressWarnings("unchecked")
     @Override
     public L le(ThreeArgusConsumer<LessEqualsEntityExpression<E>, LessEqualsEntityExpression<E2>,
             LessEqualsEntityExpression<E3>> lessEqualsEntityExpressions) {
-        // YUFEI_TODO Auto-generated method stub
-        return null;
+        MulitiEntityLessEqualsExpression<C, L> mulitiExpression = new MulitiEntityLessEqualsExpressionImpl<>(this);
+        lessEqualsEntityExpressions.accept(new LessEqualsEntityExpressionImpl<E, C, L>(0, mulitiExpression),
+                new LessEqualsEntityExpressionImpl<E2, C, L>(1, mulitiExpression),
+                new LessEqualsEntityExpressionImpl<E3, C, L>(2, mulitiExpression));
+        return (L) this;
     }
 
     /**
      * {@inheritDoc}
      */
+    @SuppressWarnings("unchecked")
     @Override
     public L lt(Consumer<Tuple3<LessThanEntityExpression<E>, LessThanEntityExpression<E2>,
             LessThanEntityExpression<E3>>> lessThanEntityExpressions) {
-        // YUFEI_TODO Auto-generated method stub
-        return null;
+        MulitiEntityLessThanExpression<C, L> mulitiExpression = new MulitiEntityLessThanExpressionImpl<>(this);
+        lessThanEntityExpressions.accept(Tuples.of(new LessThanEntityExpressionImpl<E, C, L>(0, mulitiExpression),
+                new LessThanEntityExpressionImpl<E2, C, L>(1, mulitiExpression),
+                new LessThanEntityExpressionImpl<E3, C, L>(2, mulitiExpression)));
+        return (L) this;
     }
 
     /**
      * {@inheritDoc}
      */
+    @SuppressWarnings("unchecked")
     @Override
     public L lt(ThreeArgusConsumer<LessThanEntityExpression<E>, LessThanEntityExpression<E2>,
             LessThanEntityExpression<E3>> lessThanEntityExpressions) {
-        // YUFEI_TODO Auto-generated method stub
-        return null;
+        MulitiEntityLessThanExpression<C, L> mulitiExpression = new MulitiEntityLessThanExpressionImpl<>(this);
+        lessThanEntityExpressions.accept(new LessThanEntityExpressionImpl<E, C, L>(0, mulitiExpression),
+                new LessThanEntityExpressionImpl<E2, C, L>(1, mulitiExpression),
+                new LessThanEntityExpressionImpl<E3, C, L>(2, mulitiExpression));
+        return (L) this;
     }
 
     /**
      * {@inheritDoc}
      */
+    @SuppressWarnings("unchecked")
     @Override
     public L ne(Consumer<Tuple3<NotEqualsEntityExpression<E>, NotEqualsEntityExpression<E2>,
             NotEqualsEntityExpression<E3>>> notEqualsEntityExpressions) {
-        // YUFEI_TODO Auto-generated method stub
-        return null;
+        MulitiEntityNotEqualsExpression<C, L> mulitiExpression = new MulitiEntityNotEqualsExpressionImpl<>(this);
+        notEqualsEntityExpressions.accept(Tuples.of(new NotEqualsEntityExpressionImpl<E, C, L>(0, mulitiExpression),
+                new NotEqualsEntityExpressionImpl<E2, C, L>(1, mulitiExpression),
+                new NotEqualsEntityExpressionImpl<E3, C, L>(2, mulitiExpression)));
+        return (L) this;
     }
 
     /**
      * {@inheritDoc}
      */
+    @SuppressWarnings("unchecked")
     @Override
     public L ne(ThreeArgusConsumer<NotEqualsEntityExpression<E>, NotEqualsEntityExpression<E2>,
             NotEqualsEntityExpression<E3>> notEqualsEntityExpressions) {
-        // YUFEI_TODO Auto-generated method stub
-        return null;
+        MulitiEntityNotEqualsExpression<C, L> mulitiExpression = new MulitiEntityNotEqualsExpressionImpl<>(this);
+        notEqualsEntityExpressions.accept(new NotEqualsEntityExpressionImpl<E, C, L>(0, mulitiExpression),
+                new NotEqualsEntityExpressionImpl<E2, C, L>(1, mulitiExpression),
+                new NotEqualsEntityExpressionImpl<E3, C, L>(2, mulitiExpression));
+        return (L) this;
     }
 
     /**
      * {@inheritDoc}
      */
+    @SuppressWarnings("unchecked")
     @Override
     public L nin(Consumer<Tuple3<NotInEntityExpression<E>, NotInEntityExpression<E2>,
             NotInEntityExpression<E3>>> notInEntityExpressions) {
-        // YUFEI_TODO Auto-generated method stub
-        return null;
+        MulitiEntityNotInExpression<C, L> mulitiExpression = new MulitiEntityNotInExpressionImpl<>(this);
+        notInEntityExpressions.accept(Tuples.of(new NotInEntityExpressionImpl<E, C, L>(0, mulitiExpression),
+                new NotInEntityExpressionImpl<E2, C, L>(1, mulitiExpression),
+                new NotInEntityExpressionImpl<E3, C, L>(2, mulitiExpression)));
+        return (L) this;
     }
 
     /**
      * {@inheritDoc}
      */
+    @SuppressWarnings("unchecked")
     @Override
     public L nin(ThreeArgusConsumer<NotInEntityExpression<E>, NotInEntityExpression<E2>,
             NotInEntityExpression<E3>> notInEntityExpressions) {
-        // YUFEI_TODO Auto-generated method stub
-        return null;
+        MulitiEntityNotInExpression<C, L> mulitiExpression = new MulitiEntityNotInExpressionImpl<>(this);
+        notInEntityExpressions.accept(new NotInEntityExpressionImpl<E, C, L>(0, mulitiExpression),
+                new NotInEntityExpressionImpl<E2, C, L>(1, mulitiExpression),
+                new NotInEntityExpressionImpl<E3, C, L>(2, mulitiExpression));
+        return (L) this;
     }
 
     /**
@@ -478,21 +602,29 @@ public abstract class AbstractEntitySqlQueryConditionGroupExpression3<E, E2, E3,
     /**
      * {@inheritDoc}
      */
+    @SuppressWarnings("unchecked")
     @Override
     public L lk(Consumer<Tuple3<LikeEntityExpression<E>, LikeEntityExpression<E2>,
             LikeEntityExpression<E3>>> likeEntityExpressions) {
-        // YUFEI_TODO Auto-generated method stub
-        return null;
+        MulitiEntityLikeExpression<C, L> mulitiExpression = new MulitiEntityLikeExpressionImpl<>(this);
+        likeEntityExpressions.accept(Tuples.of(new LikeEntityExpressionImpl<E, C, L>(0, mulitiExpression),
+                new LikeEntityExpressionImpl<E2, C, L>(1, mulitiExpression),
+                new LikeEntityExpressionImpl<E3, C, L>(2, mulitiExpression)));
+        return (L) this;
     }
 
     /**
      * {@inheritDoc}
      */
+    @SuppressWarnings("unchecked")
     @Override
     public L lk(ThreeArgusConsumer<LikeEntityExpression<E>, LikeEntityExpression<E2>,
             LikeEntityExpression<E3>> likeEntityExpressions) {
-        // YUFEI_TODO Auto-generated method stub
-        return null;
+        MulitiEntityLikeExpression<C, L> mulitiExpression = new MulitiEntityLikeExpressionImpl<>(this);
+        likeEntityExpressions.accept(new LikeEntityExpressionImpl<E, C, L>(0, mulitiExpression),
+                new LikeEntityExpressionImpl<E2, C, L>(1, mulitiExpression),
+                new LikeEntityExpressionImpl<E3, C, L>(2, mulitiExpression));
+        return (L) this;
     }
 
     // ****************************************************************************************************************

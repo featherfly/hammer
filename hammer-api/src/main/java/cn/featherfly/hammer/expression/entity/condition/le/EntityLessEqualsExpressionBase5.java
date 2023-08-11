@@ -7,11 +7,11 @@ import java.time.LocalTime;
 import java.util.Date;
 import java.util.function.Predicate;
 
-import cn.featherfly.common.lang.function.DateSupplier;
-import cn.featherfly.common.lang.function.LocalDateSupplier;
-import cn.featherfly.common.lang.function.LocalDateTimeSupplier;
-import cn.featherfly.common.lang.function.LocalTimeSupplier;
-import cn.featherfly.common.lang.function.NumberSupplier;
+import cn.featherfly.common.lang.function.SerializableDateSupplier;
+import cn.featherfly.common.lang.function.SerializableLocalDateSupplier;
+import cn.featherfly.common.lang.function.SerializableLocalDateTimeSupplier;
+import cn.featherfly.common.lang.function.SerializableLocalTimeSupplier;
+import cn.featherfly.common.lang.function.SerializableNumberSupplier;
 import cn.featherfly.common.lang.function.SerializableDoubleSupplier;
 import cn.featherfly.common.lang.function.SerializableFunction;
 import cn.featherfly.common.lang.function.SerializableIntSupplier;
@@ -19,7 +19,7 @@ import cn.featherfly.common.lang.function.SerializableLongSupplier;
 import cn.featherfly.common.lang.function.SerializableToDoubleFunction5;
 import cn.featherfly.common.lang.function.SerializableToIntFunction5;
 import cn.featherfly.common.lang.function.SerializableToLongFunction5;
-import cn.featherfly.common.lang.function.StringSupplier;
+import cn.featherfly.common.lang.function.SerializableStringSupplier;
 import cn.featherfly.hammer.expression.condition.ConditionExpression;
 import cn.featherfly.hammer.expression.condition.LogicExpression;
 
@@ -279,7 +279,7 @@ public interface EntityLessEqualsExpressionBase5<E, E2, E3, E4, E5, C extends Co
      * @param property 对象属性
      * @return LogicExpression
      */
-    <R extends Date> L le5(DateSupplier<R> property);
+    <R extends Date> L le5(SerializableDateSupplier<R> property);
 
     /**
      * less and equals. 小于等于.
@@ -289,7 +289,7 @@ public interface EntityLessEqualsExpressionBase5<E, E2, E3, E4, E5, C extends Co
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
-    <R extends Date> L le5(DateSupplier<R> property, Predicate<R> ignoreStrategy);
+    <R extends Date> L le5(SerializableDateSupplier<R> property, Predicate<R> ignoreStrategy);
 
     /**
      * less and equals. 小于等于.
@@ -298,7 +298,7 @@ public interface EntityLessEqualsExpressionBase5<E, E2, E3, E4, E5, C extends Co
      * @param property 对象属性
      * @return LogicExpression
      */
-    <R extends Number> L le5(NumberSupplier<R> property);
+    <R extends Number> L le5(SerializableNumberSupplier<R> property);
 
     /**
      * less and equals. 小于等于.
@@ -308,7 +308,7 @@ public interface EntityLessEqualsExpressionBase5<E, E2, E3, E4, E5, C extends Co
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
-    <R extends Number> L le5(NumberSupplier<R> property, Predicate<R> ignoreStrategy);
+    <R extends Number> L le5(SerializableNumberSupplier<R> property, Predicate<R> ignoreStrategy);
 
     /**
      * less and equals. 小于等于.
@@ -316,7 +316,7 @@ public interface EntityLessEqualsExpressionBase5<E, E2, E3, E4, E5, C extends Co
      * @param property 对象属性
      * @return LogicExpression
      */
-    L le5(LocalDateSupplier property);
+    L le5(SerializableLocalDateSupplier property);
 
     /**
      * less and equals. 小于等于.
@@ -325,7 +325,7 @@ public interface EntityLessEqualsExpressionBase5<E, E2, E3, E4, E5, C extends Co
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
-    L le5(LocalDateSupplier property, Predicate<LocalDate> ignoreStrategy);
+    L le5(SerializableLocalDateSupplier property, Predicate<LocalDate> ignoreStrategy);
 
     /**
      * less and equals. 小于等于.
@@ -333,7 +333,7 @@ public interface EntityLessEqualsExpressionBase5<E, E2, E3, E4, E5, C extends Co
      * @param property 对象属性
      * @return LogicExpression
      */
-    L le5(LocalTimeSupplier property);
+    L le5(SerializableLocalTimeSupplier property);
 
     /**
      * less and equals. 小于等于.
@@ -342,7 +342,7 @@ public interface EntityLessEqualsExpressionBase5<E, E2, E3, E4, E5, C extends Co
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
-    L le5(LocalTimeSupplier property, Predicate<LocalTime> ignoreStrategy);
+    L le5(SerializableLocalTimeSupplier property, Predicate<LocalTime> ignoreStrategy);
 
     /**
      * less and equals. 小于等于.
@@ -350,7 +350,7 @@ public interface EntityLessEqualsExpressionBase5<E, E2, E3, E4, E5, C extends Co
      * @param property 对象属性
      * @return LogicExpression
      */
-    L le5(LocalDateTimeSupplier property);
+    L le5(SerializableLocalDateTimeSupplier property);
 
     /**
      * less and equals. 小于等于.
@@ -359,7 +359,7 @@ public interface EntityLessEqualsExpressionBase5<E, E2, E3, E4, E5, C extends Co
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
-    L le5(LocalDateTimeSupplier property, Predicate<LocalDateTime> ignoreStrategy);
+    L le5(SerializableLocalDateTimeSupplier property, Predicate<LocalDateTime> ignoreStrategy);
 
     /**
      * less and equals. 小于等于.
@@ -367,7 +367,7 @@ public interface EntityLessEqualsExpressionBase5<E, E2, E3, E4, E5, C extends Co
      * @param property 对象属性
      * @return LogicExpression
      */
-    L le5(StringSupplier property);
+    L le5(SerializableStringSupplier property);
 
     /**
      * less and equals. 小于等于.
@@ -376,7 +376,7 @@ public interface EntityLessEqualsExpressionBase5<E, E2, E3, E4, E5, C extends Co
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
-    L le5(StringSupplier property, Predicate<String> ignoreStrategy);
+    L le5(SerializableStringSupplier property, Predicate<String> ignoreStrategy);
 
     // 嵌套属性使用property(U1::getU2).property(U2:getV).le(v)来设置
     //    /**
@@ -400,7 +400,7 @@ public interface EntityLessEqualsExpressionBase5<E, E2, E3, E4, E5, C extends Co
     //     * @param property   对象属性
     //     * @return LogicExpression
     //     */
-    //    <R, N extends Number> L le5(SerializableSupplier<R> repository, ReturnNumberFunction<R, N> property);
+    //    <R, N extends Number> L le5(SerializableSupplier<R> repository, SerializableToNumberFunction<R, N> property);
     //
     //    /**
     //     * less and equals. 小于等于.
@@ -423,7 +423,7 @@ public interface EntityLessEqualsExpressionBase5<E, E2, E3, E4, E5, C extends Co
     //     * @param property   对象属性
     //     * @return LogicExpression
     //     */
-    //    <R, D extends Date> L le5(SerializableSupplier<R> repository, ReturnDateFunction<R, D> property);
+    //    <R, D extends Date> L le5(SerializableSupplier<R> repository, SerializableToDateFunction<R, D> property);
     //
     //    /**
     //     * less and equals. 小于等于.
@@ -444,7 +444,7 @@ public interface EntityLessEqualsExpressionBase5<E, E2, E3, E4, E5, C extends Co
     //     * @param property   对象属性
     //     * @return LogicExpression
     //     */
-    //    <T> L le5(SerializableSupplier<T> repository, ReturnLocalTimeFunction<T> property);
+    //    <T> L le5(SerializableSupplier<T> repository, SerializableToLocalTimeFunction<T> property);
     //
     //    /**
     //     * less and equals. 小于等于.
@@ -465,7 +465,7 @@ public interface EntityLessEqualsExpressionBase5<E, E2, E3, E4, E5, C extends Co
     //     * @param property   对象属性
     //     * @return LogicExpression
     //     */
-    //    <T> L le5(SerializableSupplier<T> repository, ReturnLocalDateFunction<T> property);
+    //    <T> L le5(SerializableSupplier<T> repository, SerializableToLocalDateFunction<T> property);
     //
     //    /**
     //     * less and equals. 小于等于.
@@ -487,7 +487,7 @@ public interface EntityLessEqualsExpressionBase5<E, E2, E3, E4, E5, C extends Co
     //     * @param property   对象属性
     //     * @return LogicExpression
     //     */
-    //    <T> L le5(SerializableSupplier<T> repository, ReturnLocalDateTimeFunction<T> property);
+    //    <T> L le5(SerializableSupplier<T> repository, SerializableToLocalDateTimeFunction<T> property);
     //
     //    /**
     //     * less and equals. 小于等于.
@@ -508,5 +508,5 @@ public interface EntityLessEqualsExpressionBase5<E, E2, E3, E4, E5, C extends Co
     //     * @param property   对象属性
     //     * @return LogicExpression
     //     */
-    //    <T> L le5(SerializableSupplier<T> repository, ReturnStringFunction<T> property);
+    //    <T> L le5(SerializableSupplier<T> repository, SerializableToStringFunction<T> property);
 }

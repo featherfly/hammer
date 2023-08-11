@@ -26,7 +26,7 @@ public class SqlLogicOperatorExpressionBuilder extends LogicOperatorExpression i
      */
     @Override
     public String build() {
-        return getLogicOperator().toString();
+        return getLogicOperator().getSymbol();
     }
 
     /**

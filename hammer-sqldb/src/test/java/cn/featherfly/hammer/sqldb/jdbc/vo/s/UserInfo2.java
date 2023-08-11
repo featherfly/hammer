@@ -20,7 +20,7 @@ public class UserInfo2 {
     private String descp;
 
     @Column(name = "user_id")
-    private Long userId;
+    private Integer userId;
 
     private String city;
 
@@ -82,11 +82,11 @@ public class UserInfo2 {
         this.descp = descp;
     }
 
-    public Long getUserId() {
+    public Integer getUserId() {
         return userId;
     }
 
-    public void setUserId(Long userId) {
+    public void setUserId(Integer userId) {
         this.userId = userId;
     }
 

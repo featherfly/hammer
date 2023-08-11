@@ -3,10 +3,10 @@ package cn.featherfly.hammer.expression.condition;
 
 import java.util.Date;
 
-import cn.featherfly.common.lang.function.ReturnDateFunction;
-import cn.featherfly.common.lang.function.ReturnEnumFunction;
-import cn.featherfly.common.lang.function.ReturnNumberFunction;
-import cn.featherfly.common.lang.function.ReturnStringFunction;
+import cn.featherfly.common.lang.function.SerializableToDateFunction;
+import cn.featherfly.common.lang.function.SerializableToEnumFunction;
+import cn.featherfly.common.lang.function.SerializableToNumberFunction;
+import cn.featherfly.common.lang.function.SerializableToStringFunction;
 import cn.featherfly.common.lang.function.SerializableFunction;
 import cn.featherfly.hammer.expression.condition.property.DateExpression;
 import cn.featherfly.hammer.expression.condition.property.EnumExpression;
@@ -84,7 +84,7 @@ public interface PropertyExpression<C extends ConditionExpression, L extends Log
      * @param name the name
      * @return the string expression
      */
-    <T> StringExpression<C, L> property(ReturnStringFunction<T> name);
+    <T> StringExpression<C, L> property(SerializableToStringFunction<T> name);
 
     /**
      * Property number.
@@ -94,7 +94,7 @@ public interface PropertyExpression<C extends ConditionExpression, L extends Log
      * @param name the name
      * @return the number expression
      */
-    <T, R extends Number> NumberExpression<R, C, L> property(ReturnNumberFunction<T, R> name);
+    <T, R extends Number> NumberExpression<R, C, L> property(SerializableToNumberFunction<T, R> name);
 
     /**
      * Property date.
@@ -104,7 +104,7 @@ public interface PropertyExpression<C extends ConditionExpression, L extends Log
      * @param name the name
      * @return the date expression
      */
-    <T, R extends Date> DateExpression<R, C, L> property(ReturnDateFunction<T, R> name);
+    <T, R extends Date> DateExpression<R, C, L> property(SerializableToDateFunction<T, R> name);
 
     /**
      * Property enum.
@@ -114,5 +114,5 @@ public interface PropertyExpression<C extends ConditionExpression, L extends Log
      * @param name the name
      * @return the enum expression
      */
-    <T, R extends Enum<R>> EnumExpression<R, C, L> property(ReturnEnumFunction<T, R> name);
+    <T, R extends Enum<R>> EnumExpression<R, C, L> property(SerializableToEnumFunction<T, R> name);
 }

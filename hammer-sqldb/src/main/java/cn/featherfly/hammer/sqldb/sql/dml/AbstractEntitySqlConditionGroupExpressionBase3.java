@@ -11,21 +11,21 @@ import java.util.function.Predicate;
 import cn.featherfly.common.db.builder.SqlBuilder;
 import cn.featherfly.common.db.mapping.JdbcClassMapping;
 import cn.featherfly.common.db.mapping.JdbcMappingFactory;
-import cn.featherfly.common.lang.function.DateSupplier;
-import cn.featherfly.common.lang.function.LocalDateSupplier;
-import cn.featherfly.common.lang.function.LocalDateTimeSupplier;
-import cn.featherfly.common.lang.function.LocalTimeSupplier;
-import cn.featherfly.common.lang.function.NumberSupplier;
+import cn.featherfly.common.lang.function.SerializableDateSupplier;
 import cn.featherfly.common.lang.function.SerializableDoubleSupplier;
 import cn.featherfly.common.lang.function.SerializableFunction;
 import cn.featherfly.common.lang.function.SerializableIntSupplier;
+import cn.featherfly.common.lang.function.SerializableLocalDateSupplier;
+import cn.featherfly.common.lang.function.SerializableLocalDateTimeSupplier;
+import cn.featherfly.common.lang.function.SerializableLocalTimeSupplier;
 import cn.featherfly.common.lang.function.SerializableLongSupplier;
+import cn.featherfly.common.lang.function.SerializableNumberSupplier;
+import cn.featherfly.common.lang.function.SerializableStringSupplier;
 import cn.featherfly.common.lang.function.SerializableSupplier;
 import cn.featherfly.common.lang.function.SerializableSupplier3;
 import cn.featherfly.common.lang.function.SerializableToDoubleFunction3;
 import cn.featherfly.common.lang.function.SerializableToIntFunction3;
 import cn.featherfly.common.lang.function.SerializableToLongFunction3;
-import cn.featherfly.common.lang.function.StringSupplier;
 import cn.featherfly.common.operator.QueryOperator.QueryPolicy;
 import cn.featherfly.hammer.expression.condition.GroupEndExpression;
 import cn.featherfly.hammer.expression.condition.GroupExpression;
@@ -44,6 +44,7 @@ import cn.featherfly.hammer.expression.entity.condition.ne.EntityNotEqualsExpres
 import cn.featherfly.hammer.expression.entity.condition.nin.EntityNotInExpressionBase3;
 import cn.featherfly.hammer.expression.entity.condition.sw.EntityStartWithExpressionBase3;
 import cn.featherfly.hammer.sqldb.jdbc.dsl.entity.EntitySqlRelation;
+import cn.featherfly.hammer.sqldb.jdbc.dsl.entity.EntitySqlRelation.EntityRelationMapping;
 
 /**
  * sql condition group builder sql条件逻辑组构造器 .
@@ -82,206 +83,206 @@ public abstract class AbstractEntitySqlConditionGroupExpressionBase3<E, E2, E3, 
             ER entitySqlRelation) {
         super(parent, factory, entitySqlRelation);
 
-        classMapping3 = (JdbcClassMapping<E3>) entitySqlRelation.getEntityRelationMappingTuple().getOrNull3()
-                .getClassMapping();
-        queryAlias3 = entitySqlRelation.getEntityRelationMappingTuple().getOrNull3().getTableAlias();
+        EntityRelationMapping<?> erm = entitySqlRelation.getEntityRelationMappingTuple().getOrNull2();
+        classMapping3 = (JdbcClassMapping<E3>) erm.getClassMapping();
+        queryAlias3 = erm.getTableAlias();
     }
 
     @Override
     public <R> L eq3(SerializableFunction<E3, R> name, R value, QueryPolicy queryPolicy) {
-        return eq(name, value, getCurrentQueryAlias(), queryPolicy, ignoreStrategy);
+        return eq(classMapping3, name, value, queryAlias3, queryPolicy, ignoreStrategy);
     }
 
     @Override
     public <R> L eq3(SerializableFunction<E3, R> name, R value, QueryPolicy queryPolicy, Predicate<R> ignoreStrategy) {
-        return eq(name, value, getCurrentQueryAlias(), queryPolicy, ignoreStrategy);
+        return eq(classMapping3, name, value, queryAlias3, queryPolicy, ignoreStrategy);
     }
 
     @Override
     public <R> L eq3(SerializableSupplier3<R> property, QueryPolicy queryPolicy) {
-        return eq(property, getCurrentQueryAlias(), queryPolicy, ignoreStrategy);
+        return eq(classMapping3, property, queryAlias3, queryPolicy, ignoreStrategy);
     }
 
     @Override
     public <R> L eq3(SerializableSupplier3<R> property, QueryPolicy queryPolicy, Predicate<R> ignoreStrategy) {
-        return eq(property, getCurrentQueryAlias(), queryPolicy, ignoreStrategy);
+        return eq(classMapping3, property, queryAlias3, queryPolicy, ignoreStrategy);
     }
 
     // ****************************************************************************************************************
 
     @Override
     public <R> L ne3(SerializableFunction<E3, R> name, R value, QueryPolicy queryPolicy) {
-        return ne(name, value, getCurrentQueryAlias(), queryPolicy, ignoreStrategy);
+        return ne(classMapping3, name, value, queryAlias3, queryPolicy, ignoreStrategy);
     }
 
     @Override
     public <R> L ne3(SerializableFunction<E3, R> name, R value, QueryPolicy queryPolicy, Predicate<R> ignoreStrategy) {
-        return ne(name, value, getCurrentQueryAlias(), queryPolicy, ignoreStrategy);
+        return ne(classMapping3, name, value, queryAlias3, queryPolicy, ignoreStrategy);
     }
 
     @Override
     public <R> L ne3(SerializableSupplier3<R> property, QueryPolicy queryPolicy) {
-        return ne(property, getCurrentQueryAlias(), queryPolicy, ignoreStrategy);
+        return ne(classMapping3, property, queryAlias3, queryPolicy, ignoreStrategy);
     }
 
     @Override
     public <R> L ne3(SerializableSupplier3<R> property, QueryPolicy queryPolicy, Predicate<R> ignoreStrategy) {
-        return ne(property, getCurrentQueryAlias(), queryPolicy, ignoreStrategy);
+        return ne(classMapping3, property, queryAlias3, queryPolicy, ignoreStrategy);
     }
 
     // ****************************************************************************************************************
 
     @Override
     public L lk3(SerializableFunction<E3, String> name, String value, QueryPolicy queryPolicy) {
-        return lk(name, value, getCurrentQueryAlias(), queryPolicy, ignoreStrategy);
+        return lk(classMapping3, name, value, queryAlias3, queryPolicy, ignoreStrategy);
     }
 
     @Override
     public L lk3(SerializableFunction<E3, String> name, String value, QueryPolicy queryPolicy,
             Predicate<String> ignoreStrategy) {
-        return lk(name, value, getCurrentQueryAlias(), queryPolicy, ignoreStrategy);
+        return lk(classMapping3, name, value, queryAlias3, queryPolicy, ignoreStrategy);
     }
 
     @Override
-    public L lk3(StringSupplier property, QueryPolicy queryPolicy) {
-        return lk(property, getCurrentQueryAlias(), queryPolicy, ignoreStrategy);
+    public L lk3(SerializableStringSupplier property, QueryPolicy queryPolicy) {
+        return lk(classMapping3, property, queryAlias3, queryPolicy, ignoreStrategy);
     }
 
     @Override
-    public L lk3(StringSupplier property, QueryPolicy queryPolicy, Predicate<String> ignoreStrategy) {
-        return lk(property, getCurrentQueryAlias(), queryPolicy, ignoreStrategy);
+    public L lk3(SerializableStringSupplier property, QueryPolicy queryPolicy, Predicate<String> ignoreStrategy) {
+        return lk(classMapping3, property, queryAlias3, queryPolicy, ignoreStrategy);
     }
 
     // ****************************************************************************************************************
 
     @Override
     public L sw3(SerializableFunction<E3, String> name, String value, QueryPolicy queryPolicy) {
-        return sw(name, value, getCurrentQueryAlias(), queryPolicy, ignoreStrategy);
+        return sw(classMapping3, name, value, queryAlias3, queryPolicy, ignoreStrategy);
     }
 
     @Override
     public L sw3(SerializableFunction<E3, String> name, String value, QueryPolicy queryPolicy,
             Predicate<String> ignoreStrategy) {
-        return sw(name, value, getCurrentQueryAlias(), queryPolicy, ignoreStrategy);
+        return sw(classMapping3, name, value, queryAlias3, queryPolicy, ignoreStrategy);
     }
 
     @Override
-    public L sw3(StringSupplier property, QueryPolicy queryPolicy) {
-        return sw(property, getCurrentQueryAlias(), queryPolicy, ignoreStrategy);
+    public L sw3(SerializableStringSupplier property, QueryPolicy queryPolicy) {
+        return sw(classMapping3, property, queryAlias3, queryPolicy, ignoreStrategy);
     }
 
     @Override
-    public L sw3(StringSupplier property, QueryPolicy queryPolicy, Predicate<String> ignoreStrategy) {
-        return sw(property, getCurrentQueryAlias(), queryPolicy, ignoreStrategy);
+    public L sw3(SerializableStringSupplier property, QueryPolicy queryPolicy, Predicate<String> ignoreStrategy) {
+        return sw(classMapping3, property, queryAlias3, queryPolicy, ignoreStrategy);
     }
 
     // ****************************************************************************************************************
 
     @Override
     public L ew3(SerializableFunction<E3, String> name, String value, QueryPolicy queryPolicy) {
-        return ew(name, value, getCurrentQueryAlias(), queryPolicy, ignoreStrategy);
+        return ew(classMapping3, name, value, queryAlias3, queryPolicy, ignoreStrategy);
     }
 
     @Override
     public L ew3(SerializableFunction<E3, String> name, String value, QueryPolicy queryPolicy,
             Predicate<String> ignoreStrategy) {
-        return ew(name, value, getCurrentQueryAlias(), queryPolicy, ignoreStrategy);
+        return ew(classMapping3, name, value, queryAlias3, queryPolicy, ignoreStrategy);
     }
 
     @Override
-    public L ew3(StringSupplier property, QueryPolicy queryPolicy) {
-        return ew(property, getCurrentQueryAlias(), queryPolicy, ignoreStrategy);
+    public L ew3(SerializableStringSupplier property, QueryPolicy queryPolicy) {
+        return ew(classMapping3, property, queryAlias3, queryPolicy, ignoreStrategy);
     }
 
     @Override
-    public L ew3(StringSupplier property, QueryPolicy queryPolicy, Predicate<String> ignoreStrategy) {
-        return ew(property, getCurrentQueryAlias(), queryPolicy, ignoreStrategy);
+    public L ew3(SerializableStringSupplier property, QueryPolicy queryPolicy, Predicate<String> ignoreStrategy) {
+        return ew(classMapping3, property, queryAlias3, queryPolicy, ignoreStrategy);
     }
 
     // ****************************************************************************************************************
 
     @Override
     public L co3(SerializableFunction<E3, String> name, String value, QueryPolicy queryPolicy) {
-        return co(name, value, getCurrentQueryAlias(), queryPolicy, ignoreStrategy);
+        return co(classMapping3, name, value, queryAlias3, queryPolicy, ignoreStrategy);
     }
 
     @Override
     public L co3(SerializableFunction<E3, String> name, String value, QueryPolicy queryPolicy,
             Predicate<String> ignoreStrategy) {
-        return co(name, value, getCurrentQueryAlias(), queryPolicy, ignoreStrategy);
+        return co(classMapping3, name, value, queryAlias3, queryPolicy, ignoreStrategy);
     }
 
     @Override
-    public L co3(StringSupplier property, QueryPolicy queryPolicy) {
-        return co(property, getCurrentQueryAlias(), queryPolicy, ignoreStrategy);
+    public L co3(SerializableStringSupplier property, QueryPolicy queryPolicy) {
+        return co(classMapping3, property, queryAlias3, queryPolicy, ignoreStrategy);
     }
 
     @Override
-    public L co3(StringSupplier property, QueryPolicy queryPolicy, Predicate<String> ignoreStrategy) {
-        return co(property, getCurrentQueryAlias(), queryPolicy, ignoreStrategy);
+    public L co3(SerializableStringSupplier property, QueryPolicy queryPolicy, Predicate<String> ignoreStrategy) {
+        return co(classMapping3, property, queryAlias3, queryPolicy, ignoreStrategy);
     }
 
     // ****************************************************************************************************************
 
     @Override
     public <N extends Number> L ge3(SerializableFunction<E3, N> name, N value) {
-        return ge(name, value, getCurrentQueryAlias(), ignoreStrategy);
+        return ge(classMapping3, name, value, queryAlias3, ignoreStrategy);
     }
 
     @Override
     public <N extends Number> L ge3(SerializableFunction<E3, N> name, N value, Predicate<N> ignoreStrategy) {
-        return ge(name, value, getCurrentQueryAlias(), ignoreStrategy);
+        return ge(classMapping3, name, value, queryAlias3, ignoreStrategy);
     }
 
     @Override
     public <D extends Date> L ge3(SerializableFunction<E3, D> name, D value) {
-        return ge(name, value, getCurrentQueryAlias(), ignoreStrategy);
+        return ge(classMapping3, name, value, queryAlias3, ignoreStrategy);
     }
 
     @Override
     public <D extends Date> L ge3(SerializableFunction<E3, D> name, D value, Predicate<D> ignoreStrategy) {
-        return ge(name, value, getCurrentQueryAlias(), ignoreStrategy);
+        return ge(classMapping3, name, value, queryAlias3, ignoreStrategy);
     }
 
     @Override
     public L ge3(SerializableFunction<E3, LocalTime> name, LocalTime value) {
-        return ge(name, value, getCurrentQueryAlias(), ignoreStrategy);
+        return ge(classMapping3, name, value, queryAlias3, ignoreStrategy);
     }
 
     @Override
     public L ge3(SerializableFunction<E3, LocalTime> name, LocalTime value, Predicate<LocalTime> ignoreStrategy) {
-        return ge(name, value, getCurrentQueryAlias(), ignoreStrategy);
+        return ge(classMapping3, name, value, queryAlias3, ignoreStrategy);
     }
 
     @Override
     public L ge3(SerializableFunction<E3, LocalDate> name, LocalDate value) {
-        return ge(name, value, getCurrentQueryAlias(), ignoreStrategy);
+        return ge(classMapping3, name, value, queryAlias3, ignoreStrategy);
     }
 
     @Override
     public L ge3(SerializableFunction<E3, LocalDate> name, LocalDate value, Predicate<LocalDate> ignoreStrategy) {
-        return ge(name, value, getCurrentQueryAlias(), ignoreStrategy);
+        return ge(classMapping3, name, value, queryAlias3, ignoreStrategy);
     }
 
     @Override
     public L ge3(SerializableFunction<E3, LocalDateTime> name, LocalDateTime value) {
-        return ge(name, value, getCurrentQueryAlias(), ignoreStrategy);
+        return ge(classMapping3, name, value, queryAlias3, ignoreStrategy);
     }
 
     @Override
     public L ge3(SerializableFunction<E3, LocalDateTime> name, LocalDateTime value,
             Predicate<LocalDateTime> ignoreStrategy) {
-        return ge(name, value, getCurrentQueryAlias(), ignoreStrategy);
+        return ge(classMapping3, name, value, queryAlias3, ignoreStrategy);
     }
 
     @Override
     public L ge3(SerializableFunction<E3, String> name, String value) {
-        return ge(name, value, getCurrentQueryAlias(), ignoreStrategy);
+        return ge(classMapping3, name, value, queryAlias3, ignoreStrategy);
     }
 
     @Override
     public L ge3(SerializableFunction<E3, String> name, String value, Predicate<String> ignoreStrategy) {
-        return ge(name, value, getCurrentQueryAlias(), ignoreStrategy);
+        return ge(classMapping3, name, value, queryAlias3, ignoreStrategy);
     }
 
     /**
@@ -289,7 +290,7 @@ public abstract class AbstractEntitySqlConditionGroupExpressionBase3<E, E2, E3, 
      */
     @Override
     public L ge3(SerializableToIntFunction3<E3> name, int value) {
-        return ge(name, value, getCurrentQueryAlias(), ignoreStrategy);
+        return ge(classMapping3, name, value, queryAlias3, ignoreStrategy);
     }
 
     /**
@@ -297,7 +298,7 @@ public abstract class AbstractEntitySqlConditionGroupExpressionBase3<E, E2, E3, 
      */
     @Override
     public L ge3(SerializableToIntFunction3<E3> name, int value, Predicate<Integer> ignoreStrategy) {
-        return ge(name, value, getCurrentQueryAlias(), ignoreStrategy);
+        return ge(classMapping3, name, value, queryAlias3, ignoreStrategy);
     }
 
     /**
@@ -305,7 +306,7 @@ public abstract class AbstractEntitySqlConditionGroupExpressionBase3<E, E2, E3, 
      */
     @Override
     public L ge3(SerializableToLongFunction3<E3> name, long value) {
-        return ge(name, value, getCurrentQueryAlias(), ignoreStrategy);
+        return ge(classMapping3, name, value, queryAlias3, ignoreStrategy);
     }
 
     /**
@@ -313,7 +314,7 @@ public abstract class AbstractEntitySqlConditionGroupExpressionBase3<E, E2, E3, 
      */
     @Override
     public L ge3(SerializableToLongFunction3<E3> name, long value, Predicate<Long> ignoreStrategy) {
-        return ge(name, value, getCurrentQueryAlias(), ignoreStrategy);
+        return ge(classMapping3, name, value, queryAlias3, ignoreStrategy);
     }
 
     /**
@@ -321,7 +322,7 @@ public abstract class AbstractEntitySqlConditionGroupExpressionBase3<E, E2, E3, 
      */
     @Override
     public L ge3(SerializableToDoubleFunction3<E3> name, double value) {
-        return ge(name, value, getCurrentQueryAlias(), ignoreStrategy);
+        return ge(classMapping3, name, value, queryAlias3, ignoreStrategy);
     }
 
     /**
@@ -329,67 +330,67 @@ public abstract class AbstractEntitySqlConditionGroupExpressionBase3<E, E2, E3, 
      */
     @Override
     public L ge3(SerializableToDoubleFunction3<E3> name, double value, Predicate<Double> ignoreStrategy) {
-        return ge(name, value, getCurrentQueryAlias(), ignoreStrategy);
+        return ge(classMapping3, name, value, queryAlias3, ignoreStrategy);
     }
 
     @Override
-    public <R extends Date> L ge3(DateSupplier<R> property) {
-        return ge(property, getCurrentQueryAlias(), ignoreStrategy);
+    public <R extends Date> L ge3(SerializableDateSupplier<R> property) {
+        return ge(classMapping3, property, queryAlias3, ignoreStrategy);
     }
 
     @Override
-    public <R extends Date> L ge3(DateSupplier<R> property, Predicate<R> ignoreStrategy) {
-        return ge(property, getCurrentQueryAlias(), ignoreStrategy);
+    public <R extends Date> L ge3(SerializableDateSupplier<R> property, Predicate<R> ignoreStrategy) {
+        return ge(classMapping3, property, queryAlias3, ignoreStrategy);
     }
 
     @Override
-    public <R extends Number> L ge3(NumberSupplier<R> property) {
-        return ge(property, getCurrentQueryAlias(), ignoreStrategy);
+    public <R extends Number> L ge3(SerializableNumberSupplier<R> property) {
+        return ge(classMapping3, property, queryAlias3, ignoreStrategy);
     }
 
     @Override
-    public <R extends Number> L ge3(NumberSupplier<R> property, Predicate<R> ignoreStrategy) {
-        return ge(property, getCurrentQueryAlias(), ignoreStrategy);
+    public <R extends Number> L ge3(SerializableNumberSupplier<R> property, Predicate<R> ignoreStrategy) {
+        return ge(classMapping3, property, queryAlias3, ignoreStrategy);
     }
 
     @Override
-    public L ge3(LocalDateSupplier property) {
-        return ge(property, getCurrentQueryAlias(), ignoreStrategy);
+    public L ge3(SerializableLocalDateSupplier property) {
+        return ge(classMapping3, property, queryAlias3, ignoreStrategy);
     }
 
     @Override
-    public L ge3(LocalDateSupplier property, Predicate<LocalDate> ignoreStrategy) {
-        return ge(property, getCurrentQueryAlias(), ignoreStrategy);
+    public L ge3(SerializableLocalDateSupplier property, Predicate<LocalDate> ignoreStrategy) {
+        return ge(classMapping3, property, queryAlias3, ignoreStrategy);
     }
 
     @Override
-    public L ge3(LocalTimeSupplier property) {
-        return ge(property, getCurrentQueryAlias(), ignoreStrategy);
+    public L ge3(SerializableLocalTimeSupplier property) {
+        return ge(classMapping3, property, queryAlias3, ignoreStrategy);
     }
 
     @Override
-    public L ge3(LocalTimeSupplier property, Predicate<LocalTime> ignoreStrategy) {
-        return ge(property, getCurrentQueryAlias(), ignoreStrategy);
+    public L ge3(SerializableLocalTimeSupplier property, Predicate<LocalTime> ignoreStrategy) {
+        return ge(classMapping3, property, queryAlias3, ignoreStrategy);
     }
 
     @Override
-    public L ge3(LocalDateTimeSupplier property) {
-        return ge(property, getCurrentQueryAlias(), ignoreStrategy);
+    public L ge3(SerializableLocalDateTimeSupplier property) {
+        return ge(classMapping3, property, queryAlias3, ignoreStrategy);
     }
 
     @Override
-    public L ge3(LocalDateTimeSupplier property, Predicate<LocalDateTime> ignoreStrategy) {
-        return ge(property, getCurrentQueryAlias(), ignoreStrategy);
+    public L ge3(SerializableLocalDateTimeSupplier property, Predicate<LocalDateTime> ignoreStrategy) {
+        return ge(classMapping3, property, queryAlias3, ignoreStrategy);
     }
 
     @Override
-    public L ge3(StringSupplier property) {
-        return ge(property, getCurrentQueryAlias(), ignoreStrategy);
+    public L ge3(SerializableStringSupplier property) {
+        return ge(classMapping3, property, queryAlias3, ignoreStrategy);
     }
 
     @Override
-    public L ge3(StringSupplier property, Predicate<String> ignoreStrategy) {
-        return ge(property, getCurrentQueryAlias(), ignoreStrategy);
+    public L ge3(SerializableStringSupplier property, Predicate<String> ignoreStrategy) {
+        return ge(classMapping3, property, queryAlias3, ignoreStrategy);
     }
 
     /**
@@ -397,7 +398,7 @@ public abstract class AbstractEntitySqlConditionGroupExpressionBase3<E, E2, E3, 
      */
     @Override
     public L ge3(SerializableIntSupplier property) {
-        return ge(property, getCurrentQueryAlias(), ignoreStrategy);
+        return ge(classMapping3, property, queryAlias3, ignoreStrategy);
     }
 
     /**
@@ -405,7 +406,7 @@ public abstract class AbstractEntitySqlConditionGroupExpressionBase3<E, E2, E3, 
      */
     @Override
     public L ge3(SerializableIntSupplier property, Predicate<Integer> ignoreStrategy) {
-        return ge(property, getCurrentQueryAlias(), ignoreStrategy);
+        return ge(classMapping3, property, queryAlias3, ignoreStrategy);
     }
 
     /**
@@ -413,7 +414,7 @@ public abstract class AbstractEntitySqlConditionGroupExpressionBase3<E, E2, E3, 
      */
     @Override
     public L ge3(SerializableLongSupplier property) {
-        return ge(property, getCurrentQueryAlias(), ignoreStrategy);
+        return ge(classMapping3, property, queryAlias3, ignoreStrategy);
     }
 
     /**
@@ -421,7 +422,7 @@ public abstract class AbstractEntitySqlConditionGroupExpressionBase3<E, E2, E3, 
      */
     @Override
     public L ge3(SerializableLongSupplier property, Predicate<Long> ignoreStrategy) {
-        return ge(property, getCurrentQueryAlias(), ignoreStrategy);
+        return ge(classMapping3, property, queryAlias3, ignoreStrategy);
     }
 
     /**
@@ -429,7 +430,7 @@ public abstract class AbstractEntitySqlConditionGroupExpressionBase3<E, E2, E3, 
      */
     @Override
     public L ge3(SerializableDoubleSupplier property) {
-        return ge(property, getCurrentQueryAlias(), ignoreStrategy);
+        return ge(classMapping3, property, queryAlias3, ignoreStrategy);
     }
 
     /**
@@ -437,70 +438,70 @@ public abstract class AbstractEntitySqlConditionGroupExpressionBase3<E, E2, E3, 
      */
     @Override
     public L ge3(SerializableDoubleSupplier property, Predicate<Double> ignoreStrategy) {
-        return ge(property, getCurrentQueryAlias(), ignoreStrategy);
+        return ge(classMapping3, property, queryAlias3, ignoreStrategy);
     }
 
     // ****************************************************************************************************************
 
     @Override
     public <N extends Number> L gt3(SerializableFunction<E3, N> name, N value) {
-        return gt(name, value, getCurrentQueryAlias(), ignoreStrategy);
+        return gt(classMapping3, name, value, queryAlias3, ignoreStrategy);
     }
 
     @Override
     public <N extends Number> L gt3(SerializableFunction<E3, N> name, N value, Predicate<N> ignoreStrategy) {
-        return gt(name, value, getCurrentQueryAlias(), ignoreStrategy);
+        return gt(classMapping3, name, value, queryAlias3, ignoreStrategy);
     }
 
     @Override
     public <D extends Date> L gt3(SerializableFunction<E3, D> name, D value) {
-        return gt(name, value, getCurrentQueryAlias(), ignoreStrategy);
+        return gt(classMapping3, name, value, queryAlias3, ignoreStrategy);
     }
 
     @Override
     public <D extends Date> L gt3(SerializableFunction<E3, D> name, D value, Predicate<D> ignoreStrategy) {
-        return gt(name, value, getCurrentQueryAlias(), ignoreStrategy);
+        return gt(classMapping3, name, value, queryAlias3, ignoreStrategy);
     }
 
     @Override
     public L gt3(SerializableFunction<E3, LocalTime> name, LocalTime value) {
-        return gt(name, value, getCurrentQueryAlias(), ignoreStrategy);
+        return gt(classMapping3, name, value, queryAlias3, ignoreStrategy);
     }
 
     @Override
     public L gt3(SerializableFunction<E3, LocalTime> name, LocalTime value, Predicate<LocalTime> ignoreStrategy) {
-        return gt(name, value, getCurrentQueryAlias(), ignoreStrategy);
+        return gt(classMapping3, name, value, queryAlias3, ignoreStrategy);
     }
 
     @Override
     public L gt3(SerializableFunction<E3, LocalDate> name, LocalDate value) {
-        return gt(name, value, getCurrentQueryAlias(), ignoreStrategy);
+        return gt(classMapping3, name, value, queryAlias3, ignoreStrategy);
     }
 
     @Override
     public L gt3(SerializableFunction<E3, LocalDate> name, LocalDate value, Predicate<LocalDate> ignoreStrategy) {
-        return gt(name, value, getCurrentQueryAlias(), ignoreStrategy);
+        return gt(classMapping3, name, value, queryAlias3, ignoreStrategy);
     }
 
     @Override
     public L gt3(SerializableFunction<E3, LocalDateTime> name, LocalDateTime value) {
-        return gt(name, value, getCurrentQueryAlias(), ignoreStrategy);
+        return gt(classMapping3, name, value, queryAlias3, ignoreStrategy);
     }
 
     @Override
     public L gt3(SerializableFunction<E3, LocalDateTime> name, LocalDateTime value,
             Predicate<LocalDateTime> ignoreStrategy) {
-        return gt(name, value, getCurrentQueryAlias(), ignoreStrategy);
+        return gt(classMapping3, name, value, queryAlias3, ignoreStrategy);
     }
 
     @Override
     public L gt3(SerializableFunction<E3, String> name, String value) {
-        return gt(name, value, getCurrentQueryAlias(), ignoreStrategy);
+        return gt(classMapping3, name, value, queryAlias3, ignoreStrategy);
     }
 
     @Override
     public L gt3(SerializableFunction<E3, String> name, String value, Predicate<String> ignoreStrategy) {
-        return gt(name, value, getCurrentQueryAlias(), ignoreStrategy);
+        return gt(classMapping3, name, value, queryAlias3, ignoreStrategy);
     }
 
     /**
@@ -508,7 +509,7 @@ public abstract class AbstractEntitySqlConditionGroupExpressionBase3<E, E2, E3, 
      */
     @Override
     public L gt3(SerializableToIntFunction3<E3> name, int value) {
-        return gt(name, value, getCurrentQueryAlias(), ignoreStrategy);
+        return gt(classMapping3, name, value, queryAlias3, ignoreStrategy);
     }
 
     /**
@@ -516,7 +517,7 @@ public abstract class AbstractEntitySqlConditionGroupExpressionBase3<E, E2, E3, 
      */
     @Override
     public L gt3(SerializableToIntFunction3<E3> name, int value, Predicate<Integer> ignoreStrategy) {
-        return gt(name, value, getCurrentQueryAlias(), ignoreStrategy);
+        return gt(classMapping3, name, value, queryAlias3, ignoreStrategy);
     }
 
     /**
@@ -524,7 +525,7 @@ public abstract class AbstractEntitySqlConditionGroupExpressionBase3<E, E2, E3, 
      */
     @Override
     public L gt3(SerializableToLongFunction3<E3> name, long value) {
-        return gt(name, value, getCurrentQueryAlias(), ignoreStrategy);
+        return gt(classMapping3, name, value, queryAlias3, ignoreStrategy);
     }
 
     /**
@@ -532,7 +533,7 @@ public abstract class AbstractEntitySqlConditionGroupExpressionBase3<E, E2, E3, 
      */
     @Override
     public L gt3(SerializableToLongFunction3<E3> name, long value, Predicate<Long> ignoreStrategy) {
-        return gt(name, value, getCurrentQueryAlias(), ignoreStrategy);
+        return gt(classMapping3, name, value, queryAlias3, ignoreStrategy);
     }
 
     /**
@@ -540,7 +541,7 @@ public abstract class AbstractEntitySqlConditionGroupExpressionBase3<E, E2, E3, 
      */
     @Override
     public L gt3(SerializableToDoubleFunction3<E3> name, double value) {
-        return gt(name, value, getCurrentQueryAlias(), ignoreStrategy);
+        return gt(classMapping3, name, value, queryAlias3, ignoreStrategy);
     }
 
     /**
@@ -548,67 +549,67 @@ public abstract class AbstractEntitySqlConditionGroupExpressionBase3<E, E2, E3, 
      */
     @Override
     public L gt3(SerializableToDoubleFunction3<E3> name, double value, Predicate<Double> ignoreStrategy) {
-        return gt(name, value, getCurrentQueryAlias(), ignoreStrategy);
+        return gt(classMapping3, name, value, queryAlias3, ignoreStrategy);
     }
 
     @Override
-    public <R extends Number> L gt3(NumberSupplier<R> property) {
-        return gt(property, getCurrentQueryAlias(), ignoreStrategy);
+    public <R extends Number> L gt3(SerializableNumberSupplier<R> property) {
+        return gt(classMapping3, property, queryAlias3, ignoreStrategy);
     }
 
     @Override
-    public <R extends Number> L gt3(NumberSupplier<R> property, Predicate<R> ignoreStrategy) {
-        return gt(property, getCurrentQueryAlias(), ignoreStrategy);
+    public <R extends Number> L gt3(SerializableNumberSupplier<R> property, Predicate<R> ignoreStrategy) {
+        return gt(classMapping3, property, queryAlias3, ignoreStrategy);
     }
 
     @Override
-    public <R extends Date> L gt3(DateSupplier<R> property) {
-        return gt(property, getCurrentQueryAlias(), ignoreStrategy);
+    public <R extends Date> L gt3(SerializableDateSupplier<R> property) {
+        return gt(classMapping3, property, queryAlias3, ignoreStrategy);
     }
 
     @Override
-    public <R extends Date> L gt3(DateSupplier<R> property, Predicate<R> ignoreStrategy) {
-        return gt(property, getCurrentQueryAlias(), ignoreStrategy);
+    public <R extends Date> L gt3(SerializableDateSupplier<R> property, Predicate<R> ignoreStrategy) {
+        return gt(classMapping3, property, queryAlias3, ignoreStrategy);
     }
 
     @Override
-    public L gt3(LocalDateSupplier property) {
-        return gt(property, getCurrentQueryAlias(), ignoreStrategy);
+    public L gt3(SerializableLocalDateSupplier property) {
+        return gt(classMapping3, property, queryAlias3, ignoreStrategy);
     }
 
     @Override
-    public L gt3(LocalDateSupplier property, Predicate<LocalDate> ignoreStrategy) {
-        return gt(property, getCurrentQueryAlias(), ignoreStrategy);
+    public L gt3(SerializableLocalDateSupplier property, Predicate<LocalDate> ignoreStrategy) {
+        return gt(classMapping3, property, queryAlias3, ignoreStrategy);
     }
 
     @Override
-    public L gt3(LocalTimeSupplier property) {
-        return gt(property, getCurrentQueryAlias(), ignoreStrategy);
+    public L gt3(SerializableLocalTimeSupplier property) {
+        return gt(classMapping3, property, queryAlias3, ignoreStrategy);
     }
 
     @Override
-    public L gt3(LocalTimeSupplier property, Predicate<LocalTime> ignoreStrategy) {
-        return gt(property, getCurrentQueryAlias(), ignoreStrategy);
+    public L gt3(SerializableLocalTimeSupplier property, Predicate<LocalTime> ignoreStrategy) {
+        return gt(classMapping3, property, queryAlias3, ignoreStrategy);
     }
 
     @Override
-    public L gt3(LocalDateTimeSupplier property) {
-        return gt(property, getCurrentQueryAlias(), ignoreStrategy);
+    public L gt3(SerializableLocalDateTimeSupplier property) {
+        return gt(classMapping3, property, queryAlias3, ignoreStrategy);
     }
 
     @Override
-    public L gt3(LocalDateTimeSupplier property, Predicate<LocalDateTime> ignoreStrategy) {
-        return gt(property, getCurrentQueryAlias(), ignoreStrategy);
+    public L gt3(SerializableLocalDateTimeSupplier property, Predicate<LocalDateTime> ignoreStrategy) {
+        return gt(classMapping3, property, queryAlias3, ignoreStrategy);
     }
 
     @Override
-    public L gt3(StringSupplier property) {
-        return gt(property, getCurrentQueryAlias(), ignoreStrategy);
+    public L gt3(SerializableStringSupplier property) {
+        return gt(classMapping3, property, queryAlias3, ignoreStrategy);
     }
 
     @Override
-    public L gt3(StringSupplier property, Predicate<String> ignoreStrategy) {
-        return gt(property, getCurrentQueryAlias(), ignoreStrategy);
+    public L gt3(SerializableStringSupplier property, Predicate<String> ignoreStrategy) {
+        return gt(classMapping3, property, queryAlias3, ignoreStrategy);
     }
 
     /**
@@ -616,7 +617,7 @@ public abstract class AbstractEntitySqlConditionGroupExpressionBase3<E, E2, E3, 
      */
     @Override
     public L gt3(SerializableIntSupplier property) {
-        return gt(property, getCurrentQueryAlias(), ignoreStrategy);
+        return gt(classMapping3, property, queryAlias3, ignoreStrategy);
     }
 
     /**
@@ -624,7 +625,7 @@ public abstract class AbstractEntitySqlConditionGroupExpressionBase3<E, E2, E3, 
      */
     @Override
     public L gt3(SerializableIntSupplier property, Predicate<Integer> ignoreStrategy) {
-        return gt(property, getCurrentQueryAlias(), ignoreStrategy);
+        return gt(classMapping3, property, queryAlias3, ignoreStrategy);
     }
 
     /**
@@ -632,7 +633,7 @@ public abstract class AbstractEntitySqlConditionGroupExpressionBase3<E, E2, E3, 
      */
     @Override
     public L gt3(SerializableLongSupplier property) {
-        return gt(property, getCurrentQueryAlias(), ignoreStrategy);
+        return gt(classMapping3, property, queryAlias3, ignoreStrategy);
     }
 
     /**
@@ -640,7 +641,7 @@ public abstract class AbstractEntitySqlConditionGroupExpressionBase3<E, E2, E3, 
      */
     @Override
     public L gt3(SerializableLongSupplier property, Predicate<Long> ignoreStrategy) {
-        return gt(property, getCurrentQueryAlias(), ignoreStrategy);
+        return gt(classMapping3, property, queryAlias3, ignoreStrategy);
     }
 
     /**
@@ -648,7 +649,7 @@ public abstract class AbstractEntitySqlConditionGroupExpressionBase3<E, E2, E3, 
      */
     @Override
     public L gt3(SerializableDoubleSupplier property) {
-        return gt(property, getCurrentQueryAlias(), ignoreStrategy);
+        return gt(classMapping3, property, queryAlias3, ignoreStrategy);
     }
 
     /**
@@ -656,130 +657,130 @@ public abstract class AbstractEntitySqlConditionGroupExpressionBase3<E, E2, E3, 
      */
     @Override
     public L gt3(SerializableDoubleSupplier property, Predicate<Double> ignoreStrategy) {
-        return gt(property, getCurrentQueryAlias(), ignoreStrategy);
+        return gt(classMapping3, property, queryAlias3, ignoreStrategy);
     }
 
     // ****************************************************************************************************************
 
     @Override
     public <N extends Number> L le3(SerializableFunction<E3, N> name, N value) {
-        return le(name, value, getCurrentQueryAlias(), ignoreStrategy);
+        return le(classMapping3, name, value, queryAlias3, ignoreStrategy);
     }
 
     @Override
     public <N extends Number> L le3(SerializableFunction<E3, N> name, N value, Predicate<N> ignoreStrategy) {
-        return le(name, value, getCurrentQueryAlias(), ignoreStrategy);
+        return le(classMapping3, name, value, queryAlias3, ignoreStrategy);
     }
 
     @Override
     public <D extends Date> L le3(SerializableFunction<E3, D> name, D value) {
-        return le(name, value, getCurrentQueryAlias(), ignoreStrategy);
+        return le(classMapping3, name, value, queryAlias3, ignoreStrategy);
     }
 
     @Override
     public <D extends Date> L le3(SerializableFunction<E3, D> name, D value, Predicate<D> ignoreStrategy) {
-        return le(name, value, getCurrentQueryAlias(), ignoreStrategy);
+        return le(classMapping3, name, value, queryAlias3, ignoreStrategy);
     }
 
     @Override
     public L le3(SerializableFunction<E3, LocalTime> name, LocalTime value) {
-        return le(name, value, getCurrentQueryAlias(), ignoreStrategy);
+        return le(classMapping3, name, value, queryAlias3, ignoreStrategy);
     }
 
     @Override
     public L le3(SerializableFunction<E3, LocalTime> name, LocalTime value, Predicate<LocalTime> ignoreStrategy) {
-        return le(name, value, getCurrentQueryAlias(), ignoreStrategy);
+        return le(classMapping3, name, value, queryAlias3, ignoreStrategy);
     }
 
     @Override
     public L le3(SerializableFunction<E3, LocalDate> name, LocalDate value) {
-        return le(name, value, getCurrentQueryAlias(), ignoreStrategy);
+        return le(classMapping3, name, value, queryAlias3, ignoreStrategy);
     }
 
     @Override
     public L le3(SerializableFunction<E3, LocalDate> name, LocalDate value, Predicate<LocalDate> ignoreStrategy) {
-        return le(name, value, getCurrentQueryAlias(), ignoreStrategy);
+        return le(classMapping3, name, value, queryAlias3, ignoreStrategy);
     }
 
     @Override
     public L le3(SerializableFunction<E3, LocalDateTime> name, LocalDateTime value) {
-        return le(name, value, getCurrentQueryAlias(), ignoreStrategy);
+        return le(classMapping3, name, value, queryAlias3, ignoreStrategy);
     }
 
     @Override
     public L le3(SerializableFunction<E3, LocalDateTime> name, LocalDateTime value,
             Predicate<LocalDateTime> ignoreStrategy) {
-        return le(name, value, getCurrentQueryAlias(), ignoreStrategy);
+        return le(classMapping3, name, value, queryAlias3, ignoreStrategy);
     }
 
     @Override
     public L le3(SerializableFunction<E3, String> name, String value) {
-        return le(name, value, getCurrentQueryAlias(), ignoreStrategy);
+        return le(classMapping3, name, value, queryAlias3, ignoreStrategy);
     }
 
     @Override
     public L le3(SerializableFunction<E3, String> name, String value, Predicate<String> ignoreStrategy) {
-        return le(name, value, getCurrentQueryAlias(), ignoreStrategy);
+        return le(classMapping3, name, value, queryAlias3, ignoreStrategy);
     }
 
     @Override
-    public <R extends Date> L le3(DateSupplier<R> property) {
-        return le(property, getCurrentQueryAlias(), ignoreStrategy);
+    public <R extends Date> L le3(SerializableDateSupplier<R> property) {
+        return le(classMapping3, property, queryAlias3, ignoreStrategy);
     }
 
     @Override
-    public <R extends Date> L le3(DateSupplier<R> property, Predicate<R> ignoreStrategy) {
-        return le(property, getCurrentQueryAlias(), ignoreStrategy);
+    public <R extends Date> L le3(SerializableDateSupplier<R> property, Predicate<R> ignoreStrategy) {
+        return le(classMapping3, property, queryAlias3, ignoreStrategy);
     }
 
     @Override
-    public <R extends Number> L le3(NumberSupplier<R> property) {
-        return le(property, getCurrentQueryAlias(), ignoreStrategy);
+    public <R extends Number> L le3(SerializableNumberSupplier<R> property) {
+        return le(classMapping3, property, queryAlias3, ignoreStrategy);
     }
 
     @Override
-    public <R extends Number> L le3(NumberSupplier<R> property, Predicate<R> ignoreStrategy) {
-        return le(property, getCurrentQueryAlias(), ignoreStrategy);
+    public <R extends Number> L le3(SerializableNumberSupplier<R> property, Predicate<R> ignoreStrategy) {
+        return le(classMapping3, property, queryAlias3, ignoreStrategy);
     }
 
     @Override
-    public L le3(LocalDateSupplier property) {
-        return le(property, getCurrentQueryAlias(), ignoreStrategy);
+    public L le3(SerializableLocalDateSupplier property) {
+        return le(classMapping3, property, queryAlias3, ignoreStrategy);
     }
 
     @Override
-    public L le3(LocalDateSupplier property, Predicate<LocalDate> ignoreStrategy) {
-        return le(property, getCurrentQueryAlias(), ignoreStrategy);
+    public L le3(SerializableLocalDateSupplier property, Predicate<LocalDate> ignoreStrategy) {
+        return le(classMapping3, property, queryAlias3, ignoreStrategy);
     }
 
     @Override
-    public L le3(LocalTimeSupplier property) {
-        return le(property, getCurrentQueryAlias(), ignoreStrategy);
+    public L le3(SerializableLocalTimeSupplier property) {
+        return le(classMapping3, property, queryAlias3, ignoreStrategy);
     }
 
     @Override
-    public L le3(LocalTimeSupplier property, Predicate<LocalTime> ignoreStrategy) {
-        return le(property, getCurrentQueryAlias(), ignoreStrategy);
+    public L le3(SerializableLocalTimeSupplier property, Predicate<LocalTime> ignoreStrategy) {
+        return le(classMapping3, property, queryAlias3, ignoreStrategy);
     }
 
     @Override
-    public L le3(LocalDateTimeSupplier property) {
-        return le(property, getCurrentQueryAlias(), ignoreStrategy);
+    public L le3(SerializableLocalDateTimeSupplier property) {
+        return le(classMapping3, property, queryAlias3, ignoreStrategy);
     }
 
     @Override
-    public L le3(LocalDateTimeSupplier property, Predicate<LocalDateTime> ignoreStrategy) {
-        return le(property, getCurrentQueryAlias(), ignoreStrategy);
+    public L le3(SerializableLocalDateTimeSupplier property, Predicate<LocalDateTime> ignoreStrategy) {
+        return le(classMapping3, property, queryAlias3, ignoreStrategy);
     }
 
     @Override
-    public L le3(StringSupplier property) {
-        return le(property, getCurrentQueryAlias(), ignoreStrategy);
+    public L le3(SerializableStringSupplier property) {
+        return le(classMapping3, property, queryAlias3, ignoreStrategy);
     }
 
     @Override
-    public L le3(StringSupplier property, Predicate<String> ignoreStrategy) {
-        return le(property, getCurrentQueryAlias(), ignoreStrategy);
+    public L le3(SerializableStringSupplier property, Predicate<String> ignoreStrategy) {
+        return le(classMapping3, property, queryAlias3, ignoreStrategy);
     }
 
     /**
@@ -787,7 +788,7 @@ public abstract class AbstractEntitySqlConditionGroupExpressionBase3<E, E2, E3, 
      */
     @Override
     public L le3(SerializableToIntFunction3<E3> name, int value) {
-        return le(name, value, getCurrentQueryAlias(), ignoreStrategy);
+        return le(classMapping3, name, value, queryAlias3, ignoreStrategy);
     }
 
     /**
@@ -795,7 +796,7 @@ public abstract class AbstractEntitySqlConditionGroupExpressionBase3<E, E2, E3, 
      */
     @Override
     public L le3(SerializableToIntFunction3<E3> name, int value, Predicate<Integer> ignoreStrategy) {
-        return le(name, value, getCurrentQueryAlias(), ignoreStrategy);
+        return le(classMapping3, name, value, queryAlias3, ignoreStrategy);
     }
 
     /**
@@ -803,7 +804,7 @@ public abstract class AbstractEntitySqlConditionGroupExpressionBase3<E, E2, E3, 
      */
     @Override
     public L le3(SerializableToLongFunction3<E3> name, long value) {
-        return le(name, value, getCurrentQueryAlias(), ignoreStrategy);
+        return le(classMapping3, name, value, queryAlias3, ignoreStrategy);
     }
 
     /**
@@ -811,7 +812,7 @@ public abstract class AbstractEntitySqlConditionGroupExpressionBase3<E, E2, E3, 
      */
     @Override
     public L le3(SerializableToLongFunction3<E3> name, long value, Predicate<Long> ignoreStrategy) {
-        return le(name, value, getCurrentQueryAlias(), ignoreStrategy);
+        return le(classMapping3, name, value, queryAlias3, ignoreStrategy);
     }
 
     /**
@@ -819,7 +820,7 @@ public abstract class AbstractEntitySqlConditionGroupExpressionBase3<E, E2, E3, 
      */
     @Override
     public L le3(SerializableToDoubleFunction3<E3> name, double value) {
-        return le(name, value, getCurrentQueryAlias(), ignoreStrategy);
+        return le(classMapping3, name, value, queryAlias3, ignoreStrategy);
     }
 
     /**
@@ -827,7 +828,7 @@ public abstract class AbstractEntitySqlConditionGroupExpressionBase3<E, E2, E3, 
      */
     @Override
     public L le3(SerializableToDoubleFunction3<E3> name, double value, Predicate<Double> ignoreStrategy) {
-        return le(name, value, getCurrentQueryAlias(), ignoreStrategy);
+        return le(classMapping3, name, value, queryAlias3, ignoreStrategy);
     }
 
     /**
@@ -835,7 +836,7 @@ public abstract class AbstractEntitySqlConditionGroupExpressionBase3<E, E2, E3, 
      */
     @Override
     public L le3(SerializableIntSupplier property) {
-        return le(property, getCurrentQueryAlias(), ignoreStrategy);
+        return le(classMapping3, property, queryAlias3, ignoreStrategy);
     }
 
     /**
@@ -843,7 +844,7 @@ public abstract class AbstractEntitySqlConditionGroupExpressionBase3<E, E2, E3, 
      */
     @Override
     public L le3(SerializableIntSupplier property, Predicate<Integer> ignoreStrategy) {
-        return le(property, getCurrentQueryAlias(), ignoreStrategy);
+        return le(classMapping3, property, queryAlias3, ignoreStrategy);
     }
 
     /**
@@ -851,7 +852,7 @@ public abstract class AbstractEntitySqlConditionGroupExpressionBase3<E, E2, E3, 
      */
     @Override
     public L le3(SerializableLongSupplier property) {
-        return le(property, getCurrentQueryAlias(), ignoreStrategy);
+        return le(classMapping3, property, queryAlias3, ignoreStrategy);
     }
 
     /**
@@ -859,7 +860,7 @@ public abstract class AbstractEntitySqlConditionGroupExpressionBase3<E, E2, E3, 
      */
     @Override
     public L le3(SerializableLongSupplier property, Predicate<Long> ignoreStrategy) {
-        return le(property, getCurrentQueryAlias(), ignoreStrategy);
+        return le(classMapping3, property, queryAlias3, ignoreStrategy);
     }
 
     /**
@@ -867,7 +868,7 @@ public abstract class AbstractEntitySqlConditionGroupExpressionBase3<E, E2, E3, 
      */
     @Override
     public L le3(SerializableDoubleSupplier property) {
-        return le(property, getCurrentQueryAlias(), ignoreStrategy);
+        return le(classMapping3, property, queryAlias3, ignoreStrategy);
     }
 
     /**
@@ -875,130 +876,130 @@ public abstract class AbstractEntitySqlConditionGroupExpressionBase3<E, E2, E3, 
      */
     @Override
     public L le3(SerializableDoubleSupplier property, Predicate<Double> ignoreStrategy) {
-        return le(property, getCurrentQueryAlias(), ignoreStrategy);
+        return le(classMapping3, property, queryAlias3, ignoreStrategy);
     }
 
     // ****************************************************************************************************************
 
     @Override
     public <N extends Number> L lt3(SerializableFunction<E3, N> name, N value) {
-        return lt(name, value, getCurrentQueryAlias(), ignoreStrategy);
+        return lt(classMapping3, name, value, queryAlias3, ignoreStrategy);
     }
 
     @Override
     public <N extends Number> L lt3(SerializableFunction<E3, N> name, N value, Predicate<N> ignoreStrategy) {
-        return lt(name, value, getCurrentQueryAlias(), ignoreStrategy);
+        return lt(classMapping3, name, value, queryAlias3, ignoreStrategy);
     }
 
     @Override
     public <D extends Date> L lt3(SerializableFunction<E3, D> name, D value) {
-        return lt(name, value, getCurrentQueryAlias(), ignoreStrategy);
+        return lt(classMapping3, name, value, queryAlias3, ignoreStrategy);
     }
 
     @Override
     public <D extends Date> L lt3(SerializableFunction<E3, D> name, D value, Predicate<D> ignoreStrategy) {
-        return lt(name, value, getCurrentQueryAlias(), ignoreStrategy);
+        return lt(classMapping3, name, value, queryAlias3, ignoreStrategy);
     }
 
     @Override
     public L lt3(SerializableFunction<E3, LocalTime> name, LocalTime value) {
-        return lt(name, value, getCurrentQueryAlias(), ignoreStrategy);
+        return lt(classMapping3, name, value, queryAlias3, ignoreStrategy);
     }
 
     @Override
     public L lt3(SerializableFunction<E3, LocalTime> name, LocalTime value, Predicate<LocalTime> ignoreStrategy) {
-        return lt(name, value, getCurrentQueryAlias(), ignoreStrategy);
+        return lt(classMapping3, name, value, queryAlias3, ignoreStrategy);
     }
 
     @Override
     public L lt3(SerializableFunction<E3, LocalDate> name, LocalDate value) {
-        return lt(name, value, getCurrentQueryAlias(), ignoreStrategy);
+        return lt(classMapping3, name, value, queryAlias3, ignoreStrategy);
     }
 
     @Override
     public L lt3(SerializableFunction<E3, LocalDate> name, LocalDate value, Predicate<LocalDate> ignoreStrategy) {
-        return lt(name, value, getCurrentQueryAlias(), ignoreStrategy);
+        return lt(classMapping3, name, value, queryAlias3, ignoreStrategy);
     }
 
     @Override
     public L lt3(SerializableFunction<E3, LocalDateTime> name, LocalDateTime value) {
-        return lt(name, value, getCurrentQueryAlias(), ignoreStrategy);
+        return lt(classMapping3, name, value, queryAlias3, ignoreStrategy);
     }
 
     @Override
     public L lt3(SerializableFunction<E3, LocalDateTime> name, LocalDateTime value,
             Predicate<LocalDateTime> ignoreStrategy) {
-        return lt(name, value, getCurrentQueryAlias(), ignoreStrategy);
+        return lt(classMapping3, name, value, queryAlias3, ignoreStrategy);
     }
 
     @Override
     public L lt3(SerializableFunction<E3, String> name, String value) {
-        return lt(name, value, getCurrentQueryAlias(), ignoreStrategy);
+        return lt(classMapping3, name, value, queryAlias3, ignoreStrategy);
     }
 
     @Override
     public L lt3(SerializableFunction<E3, String> name, String value, Predicate<String> ignoreStrategy) {
-        return lt(name, value, getCurrentQueryAlias(), ignoreStrategy);
+        return lt(classMapping3, name, value, queryAlias3, ignoreStrategy);
     }
 
     @Override
-    public <R extends Number> L lt3(NumberSupplier<R> property) {
-        return lt(property, getCurrentQueryAlias(), ignoreStrategy);
+    public <R extends Number> L lt3(SerializableNumberSupplier<R> property) {
+        return lt(classMapping3, property, queryAlias3, ignoreStrategy);
     }
 
     @Override
-    public <R extends Number> L lt3(NumberSupplier<R> property, Predicate<R> ignoreStrategy) {
-        return lt(property, getCurrentQueryAlias(), ignoreStrategy);
+    public <R extends Number> L lt3(SerializableNumberSupplier<R> property, Predicate<R> ignoreStrategy) {
+        return lt(classMapping3, property, queryAlias3, ignoreStrategy);
     }
 
     @Override
-    public <R extends Date> L lt3(DateSupplier<R> property) {
-        return lt(property, getCurrentQueryAlias(), ignoreStrategy);
+    public <R extends Date> L lt3(SerializableDateSupplier<R> property) {
+        return lt(classMapping3, property, queryAlias3, ignoreStrategy);
     }
 
     @Override
-    public <R extends Date> L lt3(DateSupplier<R> property, Predicate<R> ignoreStrategy) {
-        return lt(property, getCurrentQueryAlias(), ignoreStrategy);
+    public <R extends Date> L lt3(SerializableDateSupplier<R> property, Predicate<R> ignoreStrategy) {
+        return lt(classMapping3, property, queryAlias3, ignoreStrategy);
     }
 
     @Override
-    public L lt3(LocalDateSupplier property) {
-        return lt(property, getCurrentQueryAlias(), ignoreStrategy);
+    public L lt3(SerializableLocalDateSupplier property) {
+        return lt(classMapping3, property, queryAlias3, ignoreStrategy);
     }
 
     @Override
-    public L lt3(LocalDateSupplier property, Predicate<LocalDate> ignoreStrategy) {
-        return lt(property, getCurrentQueryAlias(), ignoreStrategy);
+    public L lt3(SerializableLocalDateSupplier property, Predicate<LocalDate> ignoreStrategy) {
+        return lt(classMapping3, property, queryAlias3, ignoreStrategy);
     }
 
     @Override
-    public L lt3(LocalTimeSupplier property) {
-        return lt(property, getCurrentQueryAlias(), ignoreStrategy);
+    public L lt3(SerializableLocalTimeSupplier property) {
+        return lt(classMapping3, property, queryAlias3, ignoreStrategy);
     }
 
     @Override
-    public L lt3(LocalTimeSupplier property, Predicate<LocalTime> ignoreStrategy) {
-        return lt(property, getCurrentQueryAlias(), ignoreStrategy);
+    public L lt3(SerializableLocalTimeSupplier property, Predicate<LocalTime> ignoreStrategy) {
+        return lt(classMapping3, property, queryAlias3, ignoreStrategy);
     }
 
     @Override
-    public L lt3(LocalDateTimeSupplier property) {
-        return lt(property, getCurrentQueryAlias(), ignoreStrategy);
+    public L lt3(SerializableLocalDateTimeSupplier property) {
+        return lt(classMapping3, property, queryAlias3, ignoreStrategy);
     }
 
     @Override
-    public L lt3(LocalDateTimeSupplier property, Predicate<LocalDateTime> ignoreStrategy) {
-        return lt(property, getCurrentQueryAlias(), ignoreStrategy);
+    public L lt3(SerializableLocalDateTimeSupplier property, Predicate<LocalDateTime> ignoreStrategy) {
+        return lt(classMapping3, property, queryAlias3, ignoreStrategy);
     }
 
     @Override
-    public L lt3(StringSupplier property) {
-        return lt(property, getCurrentQueryAlias(), ignoreStrategy);
+    public L lt3(SerializableStringSupplier property) {
+        return lt(classMapping3, property, queryAlias3, ignoreStrategy);
     }
 
     @Override
-    public L lt3(StringSupplier property, Predicate<String> ignoreStrategy) {
-        return lt(property, getCurrentQueryAlias(), ignoreStrategy);
+    public L lt3(SerializableStringSupplier property, Predicate<String> ignoreStrategy) {
+        return lt(classMapping3, property, queryAlias3, ignoreStrategy);
     }
 
     /**
@@ -1006,7 +1007,7 @@ public abstract class AbstractEntitySqlConditionGroupExpressionBase3<E, E2, E3, 
      */
     @Override
     public L lt3(SerializableToIntFunction3<E3> name, int value) {
-        return lt(name, value, getCurrentQueryAlias(), ignoreStrategy);
+        return lt(classMapping3, name, value, queryAlias3, ignoreStrategy);
     }
 
     /**
@@ -1014,7 +1015,7 @@ public abstract class AbstractEntitySqlConditionGroupExpressionBase3<E, E2, E3, 
      */
     @Override
     public L lt3(SerializableToIntFunction3<E3> name, int value, Predicate<Integer> ignoreStrategy) {
-        return lt(name, value, getCurrentQueryAlias(), ignoreStrategy);
+        return lt(classMapping3, name, value, queryAlias3, ignoreStrategy);
     }
 
     /**
@@ -1022,7 +1023,7 @@ public abstract class AbstractEntitySqlConditionGroupExpressionBase3<E, E2, E3, 
      */
     @Override
     public L lt3(SerializableToLongFunction3<E3> name, long value) {
-        return lt(name, value, getCurrentQueryAlias(), ignoreStrategy);
+        return lt(classMapping3, name, value, queryAlias3, ignoreStrategy);
     }
 
     /**
@@ -1030,7 +1031,7 @@ public abstract class AbstractEntitySqlConditionGroupExpressionBase3<E, E2, E3, 
      */
     @Override
     public L lt3(SerializableToLongFunction3<E3> name, long value, Predicate<Long> ignoreStrategy) {
-        return lt(name, value, getCurrentQueryAlias(), ignoreStrategy);
+        return lt(classMapping3, name, value, queryAlias3, ignoreStrategy);
     }
 
     /**
@@ -1038,7 +1039,7 @@ public abstract class AbstractEntitySqlConditionGroupExpressionBase3<E, E2, E3, 
      */
     @Override
     public L lt3(SerializableToDoubleFunction3<E3> name, double value) {
-        return lt(name, value, getCurrentQueryAlias(), ignoreStrategy);
+        return lt(classMapping3, name, value, queryAlias3, ignoreStrategy);
     }
 
     /**
@@ -1046,7 +1047,7 @@ public abstract class AbstractEntitySqlConditionGroupExpressionBase3<E, E2, E3, 
      */
     @Override
     public L lt3(SerializableToDoubleFunction3<E3> name, double value, Predicate<Double> ignoreStrategy) {
-        return lt(name, value, getCurrentQueryAlias(), ignoreStrategy);
+        return lt(classMapping3, name, value, queryAlias3, ignoreStrategy);
     }
 
     /**
@@ -1054,7 +1055,7 @@ public abstract class AbstractEntitySqlConditionGroupExpressionBase3<E, E2, E3, 
      */
     @Override
     public L lt3(SerializableIntSupplier property) {
-        return lt(property, getCurrentQueryAlias(), ignoreStrategy);
+        return lt(classMapping3, property, queryAlias3, ignoreStrategy);
     }
 
     /**
@@ -1062,7 +1063,7 @@ public abstract class AbstractEntitySqlConditionGroupExpressionBase3<E, E2, E3, 
      */
     @Override
     public L lt3(SerializableIntSupplier property, Predicate<Integer> ignoreStrategy) {
-        return lt(property, getCurrentQueryAlias(), ignoreStrategy);
+        return lt(classMapping3, property, queryAlias3, ignoreStrategy);
     }
 
     /**
@@ -1070,7 +1071,7 @@ public abstract class AbstractEntitySqlConditionGroupExpressionBase3<E, E2, E3, 
      */
     @Override
     public L lt3(SerializableLongSupplier property) {
-        return lt(property, getCurrentQueryAlias(), ignoreStrategy);
+        return lt(classMapping3, property, queryAlias3, ignoreStrategy);
     }
 
     /**
@@ -1078,7 +1079,7 @@ public abstract class AbstractEntitySqlConditionGroupExpressionBase3<E, E2, E3, 
      */
     @Override
     public L lt3(SerializableLongSupplier property, Predicate<Long> ignoreStrategy) {
-        return lt(property, getCurrentQueryAlias(), ignoreStrategy);
+        return lt(classMapping3, property, queryAlias3, ignoreStrategy);
     }
 
     /**
@@ -1086,7 +1087,7 @@ public abstract class AbstractEntitySqlConditionGroupExpressionBase3<E, E2, E3, 
      */
     @Override
     public L lt3(SerializableDoubleSupplier property) {
-        return lt(property, getCurrentQueryAlias(), ignoreStrategy);
+        return lt(classMapping3, property, queryAlias3, ignoreStrategy);
     }
 
     /**
@@ -1094,49 +1095,49 @@ public abstract class AbstractEntitySqlConditionGroupExpressionBase3<E, E2, E3, 
      */
     @Override
     public L lt3(SerializableDoubleSupplier property, Predicate<Double> ignoreStrategy) {
-        return lt(property, getCurrentQueryAlias(), ignoreStrategy);
+        return lt(classMapping3, property, queryAlias3, ignoreStrategy);
     }
 
     // ****************************************************************************************************************
 
     @Override
     public <R> L in3(SerializableFunction<E3, R> name, R value) {
-        return in(name, value, getCurrentQueryAlias(), ignoreStrategy);
+        return in(classMapping3, name, value, queryAlias3, ignoreStrategy);
     }
 
     @Override
     public <R> L in3(SerializableFunction<E3, R> name, R value, Predicate<R> ignoreStrategy) {
-        return in(name, value, getCurrentQueryAlias(), ignoreStrategy);
+        return in(classMapping3, name, value, queryAlias3, ignoreStrategy);
     }
 
     @Override
     public <R> L in3(SerializableFunction<E3, R> name, @SuppressWarnings("unchecked") R... value) {
-        return in(name, value, getCurrentQueryAlias(), ignoreStrategy);
+        return in(classMapping3, name, value, queryAlias3, ignoreStrategy);
     }
 
     @Override
     public <R> L in3(SerializableFunction<E3, R> name, R[] value, Predicate<R[]> ignoreStrategy) {
-        return in(name, value, getCurrentQueryAlias(), ignoreStrategy);
+        return in(classMapping3, name, value, queryAlias3, ignoreStrategy);
     }
 
     @Override
     public <R> L in3(SerializableFunction<E3, R> name, Collection<R> value) {
-        return in(name, value, getCurrentQueryAlias(), ignoreStrategy);
+        return in(classMapping3, name, value, queryAlias3, ignoreStrategy);
     }
 
     @Override
     public <R> L in3(SerializableFunction<E3, R> name, Collection<R> value, Predicate<Collection<R>> ignoreStrategy) {
-        return in(name, value, getCurrentQueryAlias(), ignoreStrategy);
+        return in(classMapping3, name, value, queryAlias3, ignoreStrategy);
     }
 
     @Override
     public <R> L in3(SerializableSupplier<R> property) {
-        return in(property, getCurrentQueryAlias(), ignoreStrategy);
+        return in(classMapping3, property, queryAlias3, ignoreStrategy);
     }
 
     @Override
     public <R> L in3(SerializableSupplier<R> property, Predicate<R> ignoreStrategy) {
-        return in(property, getCurrentQueryAlias(), ignoreStrategy);
+        return in(classMapping3, property, queryAlias3, ignoreStrategy);
     }
 
     /**
@@ -1144,7 +1145,7 @@ public abstract class AbstractEntitySqlConditionGroupExpressionBase3<E, E2, E3, 
      */
     @Override
     public L in3(SerializableToIntFunction3<E3> name, int value) {
-        return in(name, value, getCurrentQueryAlias(), ignoreStrategy);
+        return in(classMapping3, name, value, queryAlias3, ignoreStrategy);
     }
 
     /**
@@ -1152,7 +1153,7 @@ public abstract class AbstractEntitySqlConditionGroupExpressionBase3<E, E2, E3, 
      */
     @Override
     public L in3(SerializableToIntFunction3<E3> name, int value, Predicate<Integer> ignoreStrategy) {
-        return in(name, value, getCurrentQueryAlias(), ignoreStrategy);
+        return in(classMapping3, name, value, queryAlias3, ignoreStrategy);
     }
 
     /**
@@ -1160,7 +1161,7 @@ public abstract class AbstractEntitySqlConditionGroupExpressionBase3<E, E2, E3, 
      */
     @Override
     public L in3(SerializableToLongFunction3<E3> name, long value) {
-        return in(name, value, getCurrentQueryAlias(), ignoreStrategy);
+        return in(classMapping3, name, value, queryAlias3, ignoreStrategy);
     }
 
     /**
@@ -1168,7 +1169,7 @@ public abstract class AbstractEntitySqlConditionGroupExpressionBase3<E, E2, E3, 
      */
     @Override
     public L in3(SerializableToLongFunction3<E3> name, long value, Predicate<Long> ignoreStrategy) {
-        return in(name, value, getCurrentQueryAlias(), ignoreStrategy);
+        return in(classMapping3, name, value, queryAlias3, ignoreStrategy);
     }
 
     /**
@@ -1176,7 +1177,7 @@ public abstract class AbstractEntitySqlConditionGroupExpressionBase3<E, E2, E3, 
      */
     @Override
     public L in3(SerializableToIntFunction3<E3> name, int... value) {
-        return in(name, value, getCurrentQueryAlias(), ignoreStrategy);
+        return in(classMapping3, name, value, queryAlias3, ignoreStrategy);
     }
 
     /**
@@ -1184,7 +1185,7 @@ public abstract class AbstractEntitySqlConditionGroupExpressionBase3<E, E2, E3, 
      */
     @Override
     public L in3(SerializableToLongFunction3<E3> name, long... value) {
-        return in(name, value, getCurrentQueryAlias(), ignoreStrategy);
+        return in(classMapping3, name, value, queryAlias3, ignoreStrategy);
     }
 
     /**
@@ -1192,7 +1193,7 @@ public abstract class AbstractEntitySqlConditionGroupExpressionBase3<E, E2, E3, 
      */
     @Override
     public L in3(SerializableToIntFunction3<E3> name, int[] value, Predicate<int[]> ignoreStrategy) {
-        return in(name, value, getCurrentQueryAlias(), ignoreStrategy);
+        return in(classMapping3, name, value, queryAlias3, ignoreStrategy);
     }
 
     /**
@@ -1200,7 +1201,7 @@ public abstract class AbstractEntitySqlConditionGroupExpressionBase3<E, E2, E3, 
      */
     @Override
     public L in3(SerializableToLongFunction3<E3> name, long[] value, Predicate<long[]> ignoreStrategy) {
-        return in(name, value, getCurrentQueryAlias(), ignoreStrategy);
+        return in(classMapping3, name, value, queryAlias3, ignoreStrategy);
     }
 
     /**
@@ -1208,7 +1209,7 @@ public abstract class AbstractEntitySqlConditionGroupExpressionBase3<E, E2, E3, 
      */
     @Override
     public <R> L in3(SerializableIntSupplier property) {
-        return in(property, getCurrentQueryAlias(), ignoreStrategy);
+        return in(classMapping3, property, queryAlias3, ignoreStrategy);
     }
 
     /**
@@ -1216,7 +1217,7 @@ public abstract class AbstractEntitySqlConditionGroupExpressionBase3<E, E2, E3, 
      */
     @Override
     public <R> L in3(SerializableIntSupplier property, Predicate<Integer> ignoreStrategy) {
-        return in(property, getCurrentQueryAlias(), ignoreStrategy);
+        return in(classMapping3, property, queryAlias3, ignoreStrategy);
     }
 
     /**
@@ -1224,7 +1225,7 @@ public abstract class AbstractEntitySqlConditionGroupExpressionBase3<E, E2, E3, 
      */
     @Override
     public <R> L in3(SerializableLongSupplier property) {
-        return in(property, getCurrentQueryAlias(), ignoreStrategy);
+        return in(classMapping3, property, queryAlias3, ignoreStrategy);
     }
 
     /**
@@ -1232,49 +1233,49 @@ public abstract class AbstractEntitySqlConditionGroupExpressionBase3<E, E2, E3, 
      */
     @Override
     public <R> L in3(SerializableLongSupplier property, Predicate<Long> ignoreStrategy) {
-        return in(property, getCurrentQueryAlias(), ignoreStrategy);
+        return in(classMapping3, property, queryAlias3, ignoreStrategy);
     }
 
     // ****************************************************************************************************************
 
     @Override
     public <R> L nin3(SerializableFunction<E3, R> name, R value) {
-        return nin(name, value, getCurrentQueryAlias(), ignoreStrategy);
+        return nin(classMapping3, name, value, queryAlias3, ignoreStrategy);
     }
 
     @Override
     public <R> L nin3(SerializableFunction<E3, R> name, R value, Predicate<R> ignoreStrategy) {
-        return nin(name, value, getCurrentQueryAlias(), ignoreStrategy);
+        return nin(classMapping3, name, value, queryAlias3, ignoreStrategy);
     }
 
     @Override
     public <R> L nin3(SerializableFunction<E3, R> name, @SuppressWarnings("unchecked") R... value) {
-        return nin(name, value, getCurrentQueryAlias(), ignoreStrategy);
+        return nin(classMapping3, name, value, queryAlias3, ignoreStrategy);
     }
 
     @Override
     public <R> L nin3(SerializableFunction<E3, R> name, R[] value, Predicate<R[]> ignoreStrategy) {
-        return nin(name, value, getCurrentQueryAlias(), ignoreStrategy);
+        return nin(classMapping3, name, value, queryAlias3, ignoreStrategy);
     }
 
     @Override
     public <R> L nin3(SerializableFunction<E3, R> name, Collection<R> value) {
-        return nin(name, value, getCurrentQueryAlias(), ignoreStrategy);
+        return nin(classMapping3, name, value, queryAlias3, ignoreStrategy);
     }
 
     @Override
     public <R> L nin3(SerializableFunction<E3, R> name, Collection<R> value, Predicate<Collection<R>> ignoreStrategy) {
-        return nin(name, value, getCurrentQueryAlias(), ignoreStrategy);
+        return nin(classMapping3, name, value, queryAlias3, ignoreStrategy);
     }
 
     @Override
     public <R> L nin3(SerializableSupplier<R> property) {
-        return nin(property, getCurrentQueryAlias(), ignoreStrategy);
+        return nin(classMapping3, property, queryAlias3, ignoreStrategy);
     }
 
     @Override
     public <R> L nin3(SerializableSupplier<R> property, Predicate<R> ignoreStrategy) {
-        return nin(property, getCurrentQueryAlias(), ignoreStrategy);
+        return nin(classMapping3, property, queryAlias3, ignoreStrategy);
     }
 
     /**
@@ -1282,7 +1283,7 @@ public abstract class AbstractEntitySqlConditionGroupExpressionBase3<E, E2, E3, 
      */
     @Override
     public L nin3(SerializableToIntFunction3<E3> name, int value) {
-        return nin(name, value, getCurrentQueryAlias(), ignoreStrategy);
+        return nin(classMapping3, name, value, queryAlias3, ignoreStrategy);
     }
 
     /**
@@ -1290,7 +1291,7 @@ public abstract class AbstractEntitySqlConditionGroupExpressionBase3<E, E2, E3, 
      */
     @Override
     public L nin3(SerializableToIntFunction3<E3> name, int value, Predicate<Integer> ignoreStrategy) {
-        return nin(name, value, getCurrentQueryAlias(), ignoreStrategy);
+        return nin(classMapping3, name, value, queryAlias3, ignoreStrategy);
     }
 
     /**
@@ -1298,7 +1299,7 @@ public abstract class AbstractEntitySqlConditionGroupExpressionBase3<E, E2, E3, 
      */
     @Override
     public L nin3(SerializableToLongFunction3<E3> name, long value) {
-        return nin(name, value, getCurrentQueryAlias(), ignoreStrategy);
+        return nin(classMapping3, name, value, queryAlias3, ignoreStrategy);
     }
 
     /**
@@ -1306,7 +1307,7 @@ public abstract class AbstractEntitySqlConditionGroupExpressionBase3<E, E2, E3, 
      */
     @Override
     public L nin3(SerializableToLongFunction3<E3> name, long value, Predicate<Long> ignoreStrategy) {
-        return nin(name, value, getCurrentQueryAlias(), ignoreStrategy);
+        return nin(classMapping3, name, value, queryAlias3, ignoreStrategy);
     }
 
     /**
@@ -1314,7 +1315,7 @@ public abstract class AbstractEntitySqlConditionGroupExpressionBase3<E, E2, E3, 
      */
     @Override
     public L nin3(SerializableToIntFunction3<E3> name, int... value) {
-        return nin(name, value, getCurrentQueryAlias(), ignoreStrategy);
+        return nin(classMapping3, name, value, queryAlias3, ignoreStrategy);
     }
 
     /**
@@ -1322,7 +1323,7 @@ public abstract class AbstractEntitySqlConditionGroupExpressionBase3<E, E2, E3, 
      */
     @Override
     public L nin3(SerializableToLongFunction3<E3> name, long... value) {
-        return nin(name, value, getCurrentQueryAlias(), ignoreStrategy);
+        return nin(classMapping3, name, value, queryAlias3, ignoreStrategy);
     }
 
     /**
@@ -1330,7 +1331,7 @@ public abstract class AbstractEntitySqlConditionGroupExpressionBase3<E, E2, E3, 
      */
     @Override
     public L nin3(SerializableToIntFunction3<E3> name, int[] value, Predicate<int[]> ignoreStrategy) {
-        return nin(name, value, getCurrentQueryAlias(), ignoreStrategy);
+        return nin(classMapping3, name, value, queryAlias3, ignoreStrategy);
     }
 
     /**
@@ -1338,7 +1339,7 @@ public abstract class AbstractEntitySqlConditionGroupExpressionBase3<E, E2, E3, 
      */
     @Override
     public L nin3(SerializableToLongFunction3<E3> name, long[] value, Predicate<long[]> ignoreStrategy) {
-        return nin(name, value, getCurrentQueryAlias(), ignoreStrategy);
+        return nin(classMapping3, name, value, queryAlias3, ignoreStrategy);
     }
 
     /**
@@ -1346,7 +1347,7 @@ public abstract class AbstractEntitySqlConditionGroupExpressionBase3<E, E2, E3, 
      */
     @Override
     public <R> L nin3(SerializableIntSupplier property) {
-        return nin(property, getCurrentQueryAlias(), ignoreStrategy);
+        return nin(classMapping3, property, queryAlias3, ignoreStrategy);
     }
 
     /**
@@ -1354,7 +1355,7 @@ public abstract class AbstractEntitySqlConditionGroupExpressionBase3<E, E2, E3, 
      */
     @Override
     public <R> L nin3(SerializableIntSupplier property, Predicate<Integer> ignoreStrategy) {
-        return nin(property, getCurrentQueryAlias(), ignoreStrategy);
+        return nin(classMapping3, property, queryAlias3, ignoreStrategy);
     }
 
     /**
@@ -1362,7 +1363,7 @@ public abstract class AbstractEntitySqlConditionGroupExpressionBase3<E, E2, E3, 
      */
     @Override
     public <R> L nin3(SerializableLongSupplier property) {
-        return nin(property, getCurrentQueryAlias(), ignoreStrategy);
+        return nin(classMapping3, property, queryAlias3, ignoreStrategy);
     }
 
     /**
@@ -1370,14 +1371,14 @@ public abstract class AbstractEntitySqlConditionGroupExpressionBase3<E, E2, E3, 
      */
     @Override
     public <R> L nin3(SerializableLongSupplier property, Predicate<Long> ignoreStrategy) {
-        return nin(property, getCurrentQueryAlias(), ignoreStrategy);
+        return nin(classMapping3, property, queryAlias3, ignoreStrategy);
     }
 
     // ****************************************************************************************************************
 
     @Override
     public <R> L inn3(SerializableFunction<E3, R> name, Boolean value) {
-        return inn(name, value, getCurrentQueryAlias());
+        return inn(classMapping3, name, value, queryAlias3);
     }
 
     /**
@@ -1385,7 +1386,7 @@ public abstract class AbstractEntitySqlConditionGroupExpressionBase3<E, E2, E3, 
      */
     @Override
     public <R> L isn3(SerializableFunction<E3, R> name, Boolean value) {
-        return isn(name, value, getCurrentQueryAlias());
+        return isn(classMapping3, name, value, queryAlias3);
     }
 
     // ********************************************************************
@@ -1396,20 +1397,4 @@ public abstract class AbstractEntitySqlConditionGroupExpressionBase3<E, E2, E3, 
     // protected method
     // ********************************************************************
 
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    protected String getCurrentQueryAlias() {
-        return queryAlias3;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @SuppressWarnings("unchecked")
-    @Override
-    protected <T> JdbcClassMapping<T> getCurrentClassMapping() {
-        return (JdbcClassMapping<T>) classMapping3;
-    }
 }

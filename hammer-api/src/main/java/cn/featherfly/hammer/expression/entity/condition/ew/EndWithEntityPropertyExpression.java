@@ -3,7 +3,7 @@ package cn.featherfly.hammer.expression.entity.condition.ew;
 
 import java.util.Collection;
 
-import cn.featherfly.common.lang.function.ReturnStringFunction;
+import cn.featherfly.common.lang.function.SerializableToStringFunction;
 import cn.featherfly.common.lang.function.SerializableFunction;
 import cn.featherfly.common.lang.function.SerializableToCollectionFunction;
 
@@ -42,5 +42,5 @@ public interface EndWithEntityPropertyExpression<E> {
      * @param name the name
      * @return entity end with function property expression
      */
-    <R> EndWithEntityPropertyValueExpression<E> property(ReturnStringFunction<E> name);
+    <R> EndWithEntityPropertyValueExpression<E> property(SerializableToStringFunction<E> name);
 }

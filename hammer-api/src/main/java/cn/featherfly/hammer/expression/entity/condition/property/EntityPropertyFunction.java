@@ -12,13 +12,13 @@ package cn.featherfly.hammer.expression.entity.condition.property;
 
 import java.util.Date;
 
-import cn.featherfly.common.lang.function.ReturnDateFunction;
-import cn.featherfly.common.lang.function.ReturnEnumFunction;
-import cn.featherfly.common.lang.function.ReturnLocalDateFunction;
-import cn.featherfly.common.lang.function.ReturnLocalDateTimeFunction;
-import cn.featherfly.common.lang.function.ReturnLocalTimeFunction;
-import cn.featherfly.common.lang.function.ReturnNumberFunction;
-import cn.featherfly.common.lang.function.ReturnStringFunction;
+import cn.featherfly.common.lang.function.SerializableToDateFunction;
+import cn.featherfly.common.lang.function.SerializableToEnumFunction;
+import cn.featherfly.common.lang.function.SerializableToLocalDateFunction;
+import cn.featherfly.common.lang.function.SerializableToLocalDateTimeFunction;
+import cn.featherfly.common.lang.function.SerializableToLocalTimeFunction;
+import cn.featherfly.common.lang.function.SerializableToNumberFunction;
+import cn.featherfly.common.lang.function.SerializableToStringFunction;
 import cn.featherfly.common.lang.function.SerializableToDoubleFunction;
 import cn.featherfly.common.lang.function.SerializableToIntFunction;
 import cn.featherfly.common.lang.function.SerializableToLongFunction;
@@ -63,7 +63,7 @@ public interface EntityPropertyFunction<E, C extends ConditionExpression, L exte
      * @param name the name
      * @return the string expression
      */
-    EntityStringPropertyExpression<E, C, L> apply(ReturnStringFunction<E> name);
+    EntityStringPropertyExpression<E, C, L> apply(SerializableToStringFunction<E> name);
 
     /**
      * Property number.
@@ -72,7 +72,7 @@ public interface EntityPropertyFunction<E, C extends ConditionExpression, L exte
      * @param name the name
      * @return the number expression
      */
-    <R extends Number> EntityNumberPropertyExpression<E, R, C, L> apply(ReturnNumberFunction<E, R> name);
+    <R extends Number> EntityNumberPropertyExpression<E, R, C, L> apply(SerializableToNumberFunction<E, R> name);
 
     /**
      * Property date.
@@ -81,7 +81,7 @@ public interface EntityPropertyFunction<E, C extends ConditionExpression, L exte
      * @param name the name
      * @return the date expression
      */
-    <R extends Date> EntityDatePropertyExpression<E, R, C, L> apply(ReturnDateFunction<E, R> name);
+    <R extends Date> EntityDatePropertyExpression<E, R, C, L> apply(SerializableToDateFunction<E, R> name);
 
     /**
      * Property LocalDate.
@@ -89,7 +89,7 @@ public interface EntityPropertyFunction<E, C extends ConditionExpression, L exte
      * @param name the name
      * @return the date expression
      */
-    EntityLocalDatePropertyExpression<E, C, L> apply(ReturnLocalDateFunction<E> name);
+    EntityLocalDatePropertyExpression<E, C, L> apply(SerializableToLocalDateFunction<E> name);
 
     /**
      * Property date.
@@ -97,7 +97,7 @@ public interface EntityPropertyFunction<E, C extends ConditionExpression, L exte
      * @param name the name
      * @return the date expression
      */
-    EntityLocalDateTimePropertyExpression<E, C, L> apply(ReturnLocalDateTimeFunction<E> name);
+    EntityLocalDateTimePropertyExpression<E, C, L> apply(SerializableToLocalDateTimeFunction<E> name);
 
     /**
      * Property date.
@@ -105,7 +105,7 @@ public interface EntityPropertyFunction<E, C extends ConditionExpression, L exte
      * @param name the name
      * @return the date expression
      */
-    EntityLocalTimePropertyExpression<E, C, L> apply(ReturnLocalTimeFunction<E> name);
+    EntityLocalTimePropertyExpression<E, C, L> apply(SerializableToLocalTimeFunction<E> name);
 
     /**
      * Property enum.
@@ -114,5 +114,5 @@ public interface EntityPropertyFunction<E, C extends ConditionExpression, L exte
      * @param name the name
      * @return the enum expression
      */
-    <R extends Enum<R>> EntityEnumPropertyExpression<E, R, C, L> apply(ReturnEnumFunction<E, R> name);
+    <R extends Enum<R>> EntityEnumPropertyExpression<E, R, C, L> apply(SerializableToEnumFunction<E, R> name);
 }

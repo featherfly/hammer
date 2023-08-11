@@ -9,5 +9,5 @@ import cn.featherfly.hammer.expression.execute.PropertyExecutableUpdateExpressio
  * @author zhongj
  */
 public interface PropertyExecutableUpdate extends
-        PropertyExecutableUpdateExpression<ExecutableUpdate, ExecutableConditionGroupExpression, ExecutableConditionGroupLogicExpression, UpdateValue, UpdateNumberValue> {
+        PropertyExecutableUpdateExpression<ExecutableUpdate, ExecutableConditionGroup, ExecutableConditionGroupLogic, UpdateValue, UpdateNumberValue> {
 }

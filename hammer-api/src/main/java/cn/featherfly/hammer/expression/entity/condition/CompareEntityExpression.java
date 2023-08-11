@@ -16,19 +16,19 @@ import java.time.LocalTime;
 import java.util.Date;
 import java.util.function.Predicate;
 
-import cn.featherfly.common.lang.function.DateSupplier;
-import cn.featherfly.common.lang.function.LocalDateSupplier;
-import cn.featherfly.common.lang.function.LocalDateTimeSupplier;
-import cn.featherfly.common.lang.function.LocalTimeSupplier;
-import cn.featherfly.common.lang.function.NumberSupplier;
+import cn.featherfly.common.lang.function.SerializableDateSupplier;
 import cn.featherfly.common.lang.function.SerializableDoubleSupplier;
 import cn.featherfly.common.lang.function.SerializableFunction;
 import cn.featherfly.common.lang.function.SerializableIntSupplier;
+import cn.featherfly.common.lang.function.SerializableLocalDateSupplier;
+import cn.featherfly.common.lang.function.SerializableLocalDateTimeSupplier;
+import cn.featherfly.common.lang.function.SerializableLocalTimeSupplier;
 import cn.featherfly.common.lang.function.SerializableLongSupplier;
+import cn.featherfly.common.lang.function.SerializableNumberSupplier;
+import cn.featherfly.common.lang.function.SerializableStringSupplier;
 import cn.featherfly.common.lang.function.SerializableToDoubleFunction;
 import cn.featherfly.common.lang.function.SerializableToIntFunction;
 import cn.featherfly.common.lang.function.SerializableToLongFunction;
-import cn.featherfly.common.lang.function.StringSupplier;
 
 /**
  * The Interface ConpareEntityExpression.
@@ -74,7 +74,7 @@ public interface CompareEntityExpression<E> {
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
-    void accept(SerializableToLongFunction<E> name, long value, Predicate<Integer> ignoreStrategy);
+    void accept(SerializableToLongFunction<E> name, long value, Predicate<Long> ignoreStrategy);
 
     /**
      * compare. 比较
@@ -272,7 +272,7 @@ public interface CompareEntityExpression<E> {
      * @param property 对象属性
      * @return LogicExpression
      */
-    <R extends Date> void accept(DateSupplier<R> property);
+    <R extends Date> void accept(SerializableDateSupplier<R> property);
 
     /**
      * compare. 比较
@@ -282,7 +282,7 @@ public interface CompareEntityExpression<E> {
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
-    <R extends Date> void accept(DateSupplier<R> property, Predicate<R> ignoreStrategy);
+    <R extends Date> void accept(SerializableDateSupplier<R> property, Predicate<R> ignoreStrategy);
 
     /**
      * compare. 比较
@@ -291,7 +291,7 @@ public interface CompareEntityExpression<E> {
      * @param property 对象属性
      * @return LogicExpression
      */
-    <R extends Number> void accept(NumberSupplier<R> property);
+    <R extends Number> void accept(SerializableNumberSupplier<R> property);
 
     /**
      * compare. 比较
@@ -301,7 +301,7 @@ public interface CompareEntityExpression<E> {
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
-    <R extends Number> void accept(NumberSupplier<R> property, Predicate<R> ignoreStrategy);
+    <R extends Number> void accept(SerializableNumberSupplier<R> property, Predicate<R> ignoreStrategy);
 
     /**
      * compare. 比较
@@ -309,7 +309,7 @@ public interface CompareEntityExpression<E> {
      * @param property 对象属性
      * @return LogicExpression
      */
-    void accept(LocalDateSupplier property);
+    void accept(SerializableLocalDateSupplier property);
 
     /**
      * compare. 比较
@@ -318,7 +318,7 @@ public interface CompareEntityExpression<E> {
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
-    void accept(LocalDateSupplier property, Predicate<LocalDate> ignoreStrategy);
+    void accept(SerializableLocalDateSupplier property, Predicate<LocalDate> ignoreStrategy);
 
     /**
      * compare. 比较
@@ -326,7 +326,7 @@ public interface CompareEntityExpression<E> {
      * @param property 对象属性
      * @return LogicExpression
      */
-    void accept(LocalTimeSupplier property);
+    void accept(SerializableLocalTimeSupplier property);
 
     /**
      * compare. 比较
@@ -335,7 +335,7 @@ public interface CompareEntityExpression<E> {
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
-    void accept(LocalTimeSupplier property, Predicate<LocalTime> ignoreStrategy);
+    void accept(SerializableLocalTimeSupplier property, Predicate<LocalTime> ignoreStrategy);
 
     /**
      * compare. 比较
@@ -343,7 +343,7 @@ public interface CompareEntityExpression<E> {
      * @param property 对象属性
      * @return LogicExpression
      */
-    void accept(LocalDateTimeSupplier property);
+    void accept(SerializableLocalDateTimeSupplier property);
 
     /**
      * compare. 比较
@@ -352,7 +352,7 @@ public interface CompareEntityExpression<E> {
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
-    void accept(LocalDateTimeSupplier property, Predicate<LocalDateTime> ignoreStrategy);
+    void accept(SerializableLocalDateTimeSupplier property, Predicate<LocalDateTime> ignoreStrategy);
 
     /**
      * compare. 比较
@@ -360,7 +360,7 @@ public interface CompareEntityExpression<E> {
      * @param property 对象属性
      * @return LogicExpression
      */
-    void accept(StringSupplier property);
+    void accept(SerializableStringSupplier property);
 
     /**
      * compare. 比较
@@ -369,5 +369,5 @@ public interface CompareEntityExpression<E> {
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
-    void accept(StringSupplier property, Predicate<String> ignoreStrategy);
+    void accept(SerializableStringSupplier property, Predicate<String> ignoreStrategy);
 }

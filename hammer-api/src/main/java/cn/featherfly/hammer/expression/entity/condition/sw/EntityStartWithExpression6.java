@@ -99,7 +99,7 @@ public interface EntityStartWithExpression6<E, E2, E3, E4, E5, E6, C extends Con
     //    default L sw(Function<
     //            Tuple6<QueryEntityRepository<E>, QueryEntityRepository<E2>, QueryEntityRepository<E3>,
     //                    QueryEntityRepository<E4>, QueryEntityRepository<E5>, QueryEntityRepository<E6>>,
-    //            QueryEntityRepository<E>> entities, StringSupplier property) {
+    //            QueryEntityRepository<E>> entities, SerializableStringSupplier property) {
     //        return sw(entities, property, QueryPolicy.AUTO);
     //    }
     //
@@ -114,7 +114,7 @@ public interface EntityStartWithExpression6<E, E2, E3, E4, E5, E6, C extends Con
     //    default L sw(Function<
     //            Tuple6<QueryEntityRepository<E>, QueryEntityRepository<E2>, QueryEntityRepository<E3>,
     //                    QueryEntityRepository<E4>, QueryEntityRepository<E5>, QueryEntityRepository<E6>>,
-    //            QueryEntityRepository<E>> entities, StringSupplier property, Predicate<String> ignoreStrategy) {
+    //            QueryEntityRepository<E>> entities, SerializableStringSupplier property, Predicate<String> ignoreStrategy) {
     //        return sw(entities, property, QueryPolicy.AUTO, ignoreStrategy);
     //    }
     //
@@ -129,7 +129,7 @@ public interface EntityStartWithExpression6<E, E2, E3, E4, E5, E6, C extends Con
     //    L sw(Function<
     //            Tuple6<QueryEntityRepository<E>, QueryEntityRepository<E2>, QueryEntityRepository<E3>,
     //                    QueryEntityRepository<E4>, QueryEntityRepository<E5>, QueryEntityRepository<E6>>,
-    //            QueryEntityRepository<E>> entities, StringSupplier property, QueryPolicy queryPolicy);
+    //            QueryEntityRepository<E>> entities, SerializableStringSupplier property, QueryPolicy queryPolicy);
     //
     //    /**
     //     * start with value. 以value开始.
@@ -143,7 +143,7 @@ public interface EntityStartWithExpression6<E, E2, E3, E4, E5, E6, C extends Con
     //    L sw(Function<
     //            Tuple6<QueryEntityRepository<E>, QueryEntityRepository<E2>, QueryEntityRepository<E3>,
     //                    QueryEntityRepository<E4>, QueryEntityRepository<E5>, QueryEntityRepository<E6>>,
-    //            QueryEntityRepository<E>> entities, StringSupplier property, QueryPolicy queryPolicy,
+    //            QueryEntityRepository<E>> entities, SerializableStringSupplier property, QueryPolicy queryPolicy,
     //            Predicate<String> ignoreStrategy);
     //
     //    /**

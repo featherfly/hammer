@@ -9,14 +9,14 @@ import cn.featherfly.hammer.expression.execute.DeleterExpression;
  * @author zhongj
  */
 public interface Deleter
-        extends DeleterExpression<Delete, ExecutableConditionGroupExpression, ExecutableConditionGroupLogicExpression> {
+        extends DeleterExpression<Delete, ExecutableConditionGroup, ExecutableConditionGroupLogic> {
 
-    /**
-     * start delete dsl for the reposited type.
-     *
-     * @param <E>        the entity type
-     * @param entityType the entity type
-     * @return EntityDeleteExpression
-     */
-    <E> EntityDelete<E> delete(Class<E> entityType);
+    //    /**
+    //     * start delete dsl for the entity type.
+    //     *
+    //     * @param <E>        the entity type
+    //     * @param entityType the entity type
+    //     * @return EntityDeleteExpression
+    //     */
+    //    <E> EntityDelete<E> delete(Class<E> entityType);
 }

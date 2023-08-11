@@ -7,7 +7,7 @@ import cn.featherfly.common.db.builder.dml.basic.SqlDeleteFromBasicBuilder;
 import cn.featherfly.common.repository.AliasRepository;
 import cn.featherfly.common.repository.Repository;
 import cn.featherfly.hammer.dsl.execute.Delete;
-import cn.featherfly.hammer.dsl.execute.ExecutableConditionGroupExpression;
+import cn.featherfly.hammer.dsl.execute.ExecutableConditionGroup;
 import cn.featherfly.hammer.expression.condition.ConditionGroupConfig;
 import cn.featherfly.hammer.sqldb.jdbc.Jdbc;
 
@@ -71,7 +71,7 @@ public class SqlDelete implements Delete {
      * {@inheritDoc}
      */
     @Override
-    public ExecutableConditionGroupExpression where() {
+    public ExecutableConditionGroup where() {
         return new SqlDeleteExpression(jdbc, new SqlDeleteFromBasicBuilder(jdbc.getDialect(), tableName, tableAlias));
     }
 
@@ -79,8 +79,8 @@ public class SqlDelete implements Delete {
      * {@inheritDoc}
      */
     @Override
-    public ExecutableConditionGroupExpression where(
-            Consumer<ConditionGroupConfig<ExecutableConditionGroupExpression>> consumer) {
+    public ExecutableConditionGroup where(
+            Consumer<ConditionGroupConfig<ExecutableConditionGroup>> consumer) {
         SqlDeleteExpression sqlDeleteExpression = new SqlDeleteExpression(jdbc,
                 new SqlDeleteFromBasicBuilder(jdbc.getDialect(), tableName, tableAlias));
         if (consumer != null) {

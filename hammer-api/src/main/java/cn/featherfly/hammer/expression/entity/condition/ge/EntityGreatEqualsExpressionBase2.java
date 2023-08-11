@@ -7,11 +7,11 @@ import java.time.LocalTime;
 import java.util.Date;
 import java.util.function.Predicate;
 
-import cn.featherfly.common.lang.function.DateSupplier;
-import cn.featherfly.common.lang.function.LocalDateSupplier;
-import cn.featherfly.common.lang.function.LocalDateTimeSupplier;
-import cn.featherfly.common.lang.function.LocalTimeSupplier;
-import cn.featherfly.common.lang.function.NumberSupplier;
+import cn.featherfly.common.lang.function.SerializableDateSupplier;
+import cn.featherfly.common.lang.function.SerializableLocalDateSupplier;
+import cn.featherfly.common.lang.function.SerializableLocalDateTimeSupplier;
+import cn.featherfly.common.lang.function.SerializableLocalTimeSupplier;
+import cn.featherfly.common.lang.function.SerializableNumberSupplier;
 import cn.featherfly.common.lang.function.SerializableDoubleSupplier;
 import cn.featherfly.common.lang.function.SerializableFunction;
 import cn.featherfly.common.lang.function.SerializableIntSupplier;
@@ -19,7 +19,7 @@ import cn.featherfly.common.lang.function.SerializableLongSupplier;
 import cn.featherfly.common.lang.function.SerializableToDoubleFunction2;
 import cn.featherfly.common.lang.function.SerializableToIntFunction2;
 import cn.featherfly.common.lang.function.SerializableToLongFunction2;
-import cn.featherfly.common.lang.function.StringSupplier;
+import cn.featherfly.common.lang.function.SerializableStringSupplier;
 import cn.featherfly.hammer.expression.condition.ConditionExpression;
 import cn.featherfly.hammer.expression.condition.LogicExpression;
 
@@ -285,7 +285,7 @@ public interface EntityGreatEqualsExpressionBase2<E, E2, C extends ConditionExpr
      * @param property 对象属性
      * @return LogicExpression
      */
-    <R extends Date> L ge2(DateSupplier<R> property);
+    <R extends Date> L ge2(SerializableDateSupplier<R> property);
 
     /**
      * great and equals. 大于等于.
@@ -295,7 +295,7 @@ public interface EntityGreatEqualsExpressionBase2<E, E2, C extends ConditionExpr
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
-    <R extends Date> L ge2(DateSupplier<R> property, Predicate<R> ignoreStrategy);
+    <R extends Date> L ge2(SerializableDateSupplier<R> property, Predicate<R> ignoreStrategy);
 
     /**
      * great and equals. 大于等于.
@@ -304,7 +304,7 @@ public interface EntityGreatEqualsExpressionBase2<E, E2, C extends ConditionExpr
      * @param property 对象属性
      * @return LogicExpression
      */
-    <R extends Number> L ge2(NumberSupplier<R> property);
+    <R extends Number> L ge2(SerializableNumberSupplier<R> property);
 
     /**
      * great and equals. 大于等于.
@@ -314,7 +314,7 @@ public interface EntityGreatEqualsExpressionBase2<E, E2, C extends ConditionExpr
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
-    <R extends Number> L ge2(NumberSupplier<R> property, Predicate<R> ignoreStrategy);
+    <R extends Number> L ge2(SerializableNumberSupplier<R> property, Predicate<R> ignoreStrategy);
 
     /**
      * great and equals. 大于等于.
@@ -322,7 +322,7 @@ public interface EntityGreatEqualsExpressionBase2<E, E2, C extends ConditionExpr
      * @param property 对象属性
      * @return LogicExpression
      */
-    L ge2(LocalDateSupplier property);
+    L ge2(SerializableLocalDateSupplier property);
 
     /**
      * great and equals. 大于等于.
@@ -331,7 +331,7 @@ public interface EntityGreatEqualsExpressionBase2<E, E2, C extends ConditionExpr
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
-    L ge2(LocalDateSupplier property, Predicate<LocalDate> ignoreStrategy);
+    L ge2(SerializableLocalDateSupplier property, Predicate<LocalDate> ignoreStrategy);
 
     /**
      * great and equals. 大于等于.
@@ -339,7 +339,7 @@ public interface EntityGreatEqualsExpressionBase2<E, E2, C extends ConditionExpr
      * @param property 对象属性
      * @return LogicExpression
      */
-    L ge2(LocalTimeSupplier property);
+    L ge2(SerializableLocalTimeSupplier property);
 
     /**
      * great and equals. 大于等于.
@@ -348,7 +348,7 @@ public interface EntityGreatEqualsExpressionBase2<E, E2, C extends ConditionExpr
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
-    L ge2(LocalTimeSupplier property, Predicate<LocalTime> ignoreStrategy);
+    L ge2(SerializableLocalTimeSupplier property, Predicate<LocalTime> ignoreStrategy);
 
     /**
      * great and equals. 大于等于.
@@ -356,7 +356,7 @@ public interface EntityGreatEqualsExpressionBase2<E, E2, C extends ConditionExpr
      * @param property 对象属性
      * @return LogicExpression
      */
-    L ge2(LocalDateTimeSupplier property);
+    L ge2(SerializableLocalDateTimeSupplier property);
 
     /**
      * great and equals. 大于等于.
@@ -365,7 +365,7 @@ public interface EntityGreatEqualsExpressionBase2<E, E2, C extends ConditionExpr
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
-    L ge2(LocalDateTimeSupplier property, Predicate<LocalDateTime> ignoreStrategy);
+    L ge2(SerializableLocalDateTimeSupplier property, Predicate<LocalDateTime> ignoreStrategy);
 
     /**
      * great and equals. 大于等于.
@@ -373,7 +373,7 @@ public interface EntityGreatEqualsExpressionBase2<E, E2, C extends ConditionExpr
      * @param property 对象属性
      * @return LogicExpression
      */
-    L ge2(StringSupplier property);
+    L ge2(SerializableStringSupplier property);
 
     /**
      * great and equals. 大于等于.
@@ -382,7 +382,7 @@ public interface EntityGreatEqualsExpressionBase2<E, E2, C extends ConditionExpr
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
-    L ge2(StringSupplier property, Predicate<String> ignoreStrategy);
+    L ge2(SerializableStringSupplier property, Predicate<String> ignoreStrategy);
 
     //  嵌套属性使用property(U1::getU2).property(U2:getV).ge(v)来设置
     //    /**
@@ -406,7 +406,7 @@ public interface EntityGreatEqualsExpressionBase2<E, E2, C extends ConditionExpr
     //     * @param property   对象属性
     //     * @return LogicExpression
     //     */
-    //    <R, N extends Number> L ge2(SerializableSupplier<R> repository, ReturnNumberFunction<R, N> property);
+    //    <R, N extends Number> L ge2(SerializableSupplier<R> repository, SerializableToNumberFunction<R, N> property);
     //
     //    /**
     //     * great equals. 大于等于.
@@ -429,7 +429,7 @@ public interface EntityGreatEqualsExpressionBase2<E, E2, C extends ConditionExpr
     //     * @param property   对象属性
     //     * @return LogicExpression
     //     */
-    //    <R, D extends Date> L ge2(SerializableSupplier<R> repository, ReturnDateFunction<R, D> property);
+    //    <R, D extends Date> L ge2(SerializableSupplier<R> repository, SerializableToDateFunction<R, D> property);
     //
     //    /**
     //     * great equals. 大于等于.
@@ -450,7 +450,7 @@ public interface EntityGreatEqualsExpressionBase2<E, E2, C extends ConditionExpr
     //     * @param property   对象属性
     //     * @return LogicExpression
     //     */
-    //    <T> L ge2(SerializableSupplier<T> repository, ReturnLocalTimeFunction<T> property);
+    //    <T> L ge2(SerializableSupplier<T> repository, SerializableToLocalTimeFunction<T> property);
     //
     //    /**
     //     * great equals. 大于等于.
@@ -471,7 +471,7 @@ public interface EntityGreatEqualsExpressionBase2<E, E2, C extends ConditionExpr
     //     * @param property   对象属性
     //     * @return LogicExpression
     //     */
-    //    <T> L ge2(SerializableSupplier<T> repository, ReturnLocalDateFunction<T> property);
+    //    <T> L ge2(SerializableSupplier<T> repository, SerializableToLocalDateFunction<T> property);
     //
     //    /**
     //     * great equals. 大于等于.
@@ -493,7 +493,7 @@ public interface EntityGreatEqualsExpressionBase2<E, E2, C extends ConditionExpr
     //     * @param property   对象属性
     //     * @return LogicExpression
     //     */
-    //    <T> L ge2(SerializableSupplier<T> repository, ReturnLocalDateTimeFunction<T> property);
+    //    <T> L ge2(SerializableSupplier<T> repository, SerializableToLocalDateTimeFunction<T> property);
     //
     //    /**
     //     * great equals. 大于等于.
@@ -514,5 +514,5 @@ public interface EntityGreatEqualsExpressionBase2<E, E2, C extends ConditionExpr
     //     * @param property   对象属性
     //     * @return LogicExpression
     //     */
-    //    <T> L ge2(SerializableSupplier<T> repository, ReturnStringFunction<T> property);
+    //    <T> L ge2(SerializableSupplier<T> repository, SerializableToStringFunction<T> property);
 }

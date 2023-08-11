@@ -1,7 +1,7 @@
 
 package cn.featherfly.hammer.expression.entity.condition.isn;
 
-import cn.featherfly.common.lang.function.SerializableFunction5;
+import cn.featherfly.common.lang.function.SerializableFunction;
 import cn.featherfly.hammer.expression.condition.ConditionExpression;
 import cn.featherfly.hammer.expression.condition.LogicExpression;
 
@@ -35,7 +35,7 @@ public interface EntityIsNullExpressionBase6<E, E2, E3, E4, E5, E6, C extends Co
      * @param name 参数名称
      * @return LogicExpression
      */
-    default <R> L isn6(SerializableFunction5<E5, R> name) {
+    default <R> L isn6(SerializableFunction<E6, R> name) {
         return isn6(name, true);
     }
 
@@ -48,7 +48,7 @@ public interface EntityIsNullExpressionBase6<E, E2, E3, E4, E5, E6, C extends Co
      *              this operate
      * @return LogicExpression
      */
-    <R> L isn6(SerializableFunction5<E5, R> name, Boolean value);
+    <R> L isn6(SerializableFunction<E6, R> name, Boolean value);
 
     // 嵌套属性使用property(U1::getU2).property(U2:getV).isn(v)来设置
     //    /**
@@ -60,7 +60,7 @@ public interface EntityIsNullExpressionBase6<E, E2, E3, E4, E5, E6, C extends Co
     //     * @param fetchEntityProperty the fetch entity property
     //     * @return LogicExpression
     //     */
-    //    default <R, V> L isn6(SerializableFunction5<E5, R> fetchEntity, SerializableFunction<R, V> fetchEntityProperty) {
+    //    default <R, V> L isn6(SerializableFunction6<E6, R> fetchEntity, SerializableFunction<R, V> fetchEntityProperty) {
     //        return isn6(fetchEntity, fetchEntityProperty, true);
     //    }
     //
@@ -75,6 +75,6 @@ public interface EntityIsNullExpressionBase6<E, E2, E3, E4, E5, E6, C extends Co
     //     *                            null, ignore this operate
     //     * @return LogicExpression
     //     */
-    //    <R, V> L isn6(SerializableFunction5<E5, R> fetchEntityValue, SerializableFunction<R, V> fetchEntityProperty,
+    //    <R, V> L isn6(SerializableFunction6<E6, R> fetchEntityValue, SerializableFunction<R, V> fetchEntityProperty,
     //            Boolean value);
 }

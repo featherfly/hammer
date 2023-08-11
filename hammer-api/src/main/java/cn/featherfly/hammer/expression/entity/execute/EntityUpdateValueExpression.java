@@ -3,9 +3,6 @@ package cn.featherfly.hammer.expression.entity.execute;
 
 import java.util.function.Consumer;
 
-import cn.featherfly.hammer.expression.entity.EntityConditionGroupExpression;
-import cn.featherfly.hammer.expression.entity.EntityConditionGroupLogicExpression;
-
 /**
  * EntityUpdateValueExpression .
  *
@@ -17,7 +14,8 @@ import cn.featherfly.hammer.expression.entity.EntityConditionGroupLogicExpressio
  * @param <L> the generic type
  */
 public interface EntityUpdateValueExpression<E, T, U extends EntityPropertyExecutableUpdateExpression<E, U, C, L>,
-        C extends EntityConditionGroupExpression<E, C, L>, L extends EntityConditionGroupLogicExpression<E, C, L>> {
+        C extends EntityExecutableConditionGroupExpression<E, C, L>,
+        L extends EntityExecutableConditionGroupLogicExpression<E, C, L>> {
 
     /**
      * Sets the.

@@ -5,12 +5,11 @@ import java.util.Collection;
 import java.util.function.Predicate;
 
 import cn.featherfly.common.lang.function.SerializableFunction;
-import cn.featherfly.common.lang.function.SerializableFunction1;
 import cn.featherfly.common.lang.function.SerializableIntSupplier;
 import cn.featherfly.common.lang.function.SerializableLongSupplier;
 import cn.featherfly.common.lang.function.SerializableSupplier;
 import cn.featherfly.common.lang.function.SerializableToIntFunction6;
-import cn.featherfly.common.lang.function.SerializableToLongFunction3;
+import cn.featherfly.common.lang.function.SerializableToLongFunction6;
 import cn.featherfly.hammer.expression.condition.ConditionExpression;
 import cn.featherfly.hammer.expression.condition.LogicExpression;
 
@@ -50,9 +49,9 @@ public interface EntityInExpressionBase6<E, E2, E3, E4, E5, E6, C extends Condit
     /**
      * values in. 包含指定，sql中的in.
      *
-     * @param <R>          the generic type
-     * @param name         参数名称
-     * @param value        参数值
+     * @param <R>            the generic type
+     * @param name           参数名称
+     * @param value          参数值
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
@@ -71,9 +70,9 @@ public interface EntityInExpressionBase6<E, E2, E3, E4, E5, E6, C extends Condit
     /**
      * values in. 包含指定，sql中的in.
      *
-     * @param <R>          the generic type
-     * @param name         参数名称
-     * @param value        参数值
+     * @param <R>            the generic type
+     * @param name           参数名称
+     * @param value          参数值
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
@@ -87,18 +86,18 @@ public interface EntityInExpressionBase6<E, E2, E3, E4, E5, E6, C extends Condit
      * @param value 参数值
      * @return LogicExpression
      */
-    L in6(SerializableToLongFunction3<E3> name, long value);
+    L in6(SerializableToLongFunction6<E6> name, long value);
 
     /**
      * values in. 包含指定，sql中的in.
      *
-     * @param <R>          the generic type
-     * @param name         参数名称
-     * @param value        参数值
+     * @param <R>            the generic type
+     * @param name           参数名称
+     * @param value          参数值
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
-    L in6(SerializableToLongFunction3<E3> name, long value, Predicate<Long> ignoreStrategy);
+    L in6(SerializableToLongFunction6<E6> name, long value, Predicate<Long> ignoreStrategy);
 
     /**
      * values in. 包含指定，sql中的in.
@@ -108,7 +107,7 @@ public interface EntityInExpressionBase6<E, E2, E3, E4, E5, E6, C extends Condit
      * @param value 参数值
      * @return LogicExpression
      */
-    <R> L in6(SerializableFunction1<E6, R> name, @SuppressWarnings("unchecked") R... value);
+    <R> L in6(SerializableFunction<E6, R> name, @SuppressWarnings("unchecked") R... value);
 
     /**
      * values in. 包含指定，sql中的in.
@@ -128,25 +127,25 @@ public interface EntityInExpressionBase6<E, E2, E3, E4, E5, E6, C extends Condit
      * @param value 参数值
      * @return LogicExpression
      */
-    L in6(SerializableToLongFunction3<E3> name, long... value);
+    L in6(SerializableToLongFunction6<E6> name, long... value);
 
     /**
      * values in. 包含指定，sql中的in.
      *
-     * @param <R>          the generic type
-     * @param name         参数名称
-     * @param value        参数值
+     * @param <R>            the generic type
+     * @param name           参数名称
+     * @param value          参数值
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
-    <R> L in6(SerializableFunction1<E6, R> name, R[] value, Predicate<R[]> ignoreStrategy);
+    <R> L in6(SerializableFunction<E6, R> name, R[] value, Predicate<R[]> ignoreStrategy);
 
     /**
      * values in. 包含指定，sql中的in.
      *
-     * @param <R>          the generic type
-     * @param name         参数名称
-     * @param value        参数值
+     * @param <R>            the generic type
+     * @param name           参数名称
+     * @param value          参数值
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
@@ -155,13 +154,13 @@ public interface EntityInExpressionBase6<E, E2, E3, E4, E5, E6, C extends Condit
     /**
      * values in. 包含指定，sql中的in.
      *
-     * @param <R>          the generic type
-     * @param name         参数名称
-     * @param value        参数值
+     * @param <R>            the generic type
+     * @param name           参数名称
+     * @param value          参数值
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
-    L in6(SerializableToLongFunction3<E3> name, long[] value, Predicate<long[]> ignoreStrategy);
+    L in6(SerializableToLongFunction6<E6> name, long[] value, Predicate<long[]> ignoreStrategy);
 
     /**
      * values in. 包含指定，sql中的in.
@@ -176,9 +175,9 @@ public interface EntityInExpressionBase6<E, E2, E3, E4, E5, E6, C extends Condit
     /**
      * values in. 包含指定，sql中的in.
      *
-     * @param <R>          the generic type
-     * @param name         参数名称
-     * @param value        参数值
+     * @param <R>            the generic type
+     * @param name           参数名称
+     * @param value          参数值
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
@@ -196,8 +195,8 @@ public interface EntityInExpressionBase6<E, E2, E3, E4, E5, E6, C extends Condit
     /**
      * values in. 包含指定，sql中的in.
      *
-     * @param <R>          the generic type
-     * @param property     对象属性
+     * @param <R>            the generic type
+     * @param property       对象属性
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
@@ -215,8 +214,8 @@ public interface EntityInExpressionBase6<E, E2, E3, E4, E5, E6, C extends Condit
     /**
      * values in. 包含指定，sql中的in.
      *
-     * @param <R>          the generic type
-     * @param property     对象属性
+     * @param <R>            the generic type
+     * @param property       对象属性
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
@@ -231,15 +230,15 @@ public interface EntityInExpressionBase6<E, E2, E3, E4, E5, E6, C extends Condit
      */
     <R> L in6(SerializableLongSupplier property);
 
-    //    /**
-    //     * values in. 包含指定，sql中的in.
-    //     *
-    //     * @param <R>          the generic type
-    //     * @param property     对象属性
-    //     * @param ignoreStrategy the ignore strategy
-    //     * @return LogicExpression
-    //     */
-    //    <R> L in6(SerializableLongSupplier property, Predicate<Long> ignoreStrategy);
+    /**
+     * values in. 包含指定，sql中的in.
+     *
+     * @param <R>            the generic type
+     * @param property       对象属性
+     * @param ignoreStrategy the ignore strategy
+     * @return LogicExpression
+     */
+    <R> L in6(SerializableLongSupplier property, Predicate<Long> ignoreStrategy);
     //
     //    /**
     //     * values in. 包含指定，sql中的in.

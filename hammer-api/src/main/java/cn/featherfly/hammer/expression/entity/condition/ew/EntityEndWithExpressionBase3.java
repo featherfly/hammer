@@ -4,7 +4,7 @@ package cn.featherfly.hammer.expression.entity.condition.ew;
 import java.util.function.Predicate;
 
 import cn.featherfly.common.lang.function.SerializableFunction;
-import cn.featherfly.common.lang.function.StringSupplier;
+import cn.featherfly.common.lang.function.SerializableStringSupplier;
 import cn.featherfly.common.operator.QueryOperator.QueryPolicy;
 import cn.featherfly.hammer.expression.condition.ConditionExpression;
 import cn.featherfly.hammer.expression.condition.LogicExpression;
@@ -73,7 +73,7 @@ public interface EntityEndWithExpressionBase3<E, E2, E3, C extends ConditionExpr
      * @param property 对象属性
      * @return LogicExpression
      */
-    default L ew3(StringSupplier property) {
+    default L ew3(SerializableStringSupplier property) {
         return ew3(property, QueryPolicy.AUTO);
     }
 
@@ -84,7 +84,7 @@ public interface EntityEndWithExpressionBase3<E, E2, E3, C extends ConditionExpr
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
-    default L ew3(StringSupplier property, Predicate<String> ignoreStrategy) {
+    default L ew3(SerializableStringSupplier property, Predicate<String> ignoreStrategy) {
         return ew3(property, QueryPolicy.AUTO, ignoreStrategy);
     }
 
@@ -95,7 +95,7 @@ public interface EntityEndWithExpressionBase3<E, E2, E3, C extends ConditionExpr
      * @param queryPolicy the query policy
      * @return LogicExpression
      */
-    L ew3(StringSupplier property, QueryPolicy queryPolicy);
+    L ew3(SerializableStringSupplier property, QueryPolicy queryPolicy);
 
     /**
      * end with value. 以value结尾.
@@ -105,7 +105,7 @@ public interface EntityEndWithExpressionBase3<E, E2, E3, C extends ConditionExpr
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
-    L ew3(StringSupplier property, QueryPolicy queryPolicy, Predicate<String> ignoreStrategy);
+    L ew3(SerializableStringSupplier property, QueryPolicy queryPolicy, Predicate<String> ignoreStrategy);
 
     //  嵌套属性使用property(U1::getU2).property(U2:getV).ew(v)来设置
     //    /**

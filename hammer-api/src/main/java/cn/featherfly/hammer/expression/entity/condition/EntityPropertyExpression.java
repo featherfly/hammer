@@ -4,13 +4,13 @@ package cn.featherfly.hammer.expression.entity.condition;
 import java.util.Collection;
 import java.util.Date;
 
-import cn.featherfly.common.lang.function.ReturnDateFunction;
-import cn.featherfly.common.lang.function.ReturnEnumFunction;
-import cn.featherfly.common.lang.function.ReturnLocalDateFunction;
-import cn.featherfly.common.lang.function.ReturnLocalDateTimeFunction;
-import cn.featherfly.common.lang.function.ReturnLocalTimeFunction;
-import cn.featherfly.common.lang.function.ReturnNumberFunction;
-import cn.featherfly.common.lang.function.ReturnStringFunction;
+import cn.featherfly.common.lang.function.SerializableToDateFunction;
+import cn.featherfly.common.lang.function.SerializableToEnumFunction;
+import cn.featherfly.common.lang.function.SerializableToLocalDateFunction;
+import cn.featherfly.common.lang.function.SerializableToLocalDateTimeFunction;
+import cn.featherfly.common.lang.function.SerializableToLocalTimeFunction;
+import cn.featherfly.common.lang.function.SerializableToNumberFunction;
+import cn.featherfly.common.lang.function.SerializableToStringFunction;
 import cn.featherfly.common.lang.function.SerializableFunction;
 import cn.featherfly.common.lang.function.SerializableToCollectionFunction;
 import cn.featherfly.common.lang.function.SerializableToDoubleFunction;
@@ -88,7 +88,7 @@ public interface EntityPropertyExpression<E, C extends ConditionExpression, L ex
      * @param name the name
      * @return the string expression
      */
-    EntityStringPropertyExpression<E, C, L> property(ReturnStringFunction<E> name);
+    EntityStringPropertyExpression<E, C, L> property(SerializableToStringFunction<E> name);
 
     /**
      * Property number.
@@ -97,7 +97,7 @@ public interface EntityPropertyExpression<E, C extends ConditionExpression, L ex
      * @param name the name
      * @return the number expression
      */
-    <R extends Number> EntityNumberPropertyExpression<E, R, C, L> property(ReturnNumberFunction<E, R> name);
+    <R extends Number> EntityNumberPropertyExpression<E, R, C, L> property(SerializableToNumberFunction<E, R> name);
 
     /**
      * Property date.
@@ -106,7 +106,7 @@ public interface EntityPropertyExpression<E, C extends ConditionExpression, L ex
      * @param name the name
      * @return the date expression
      */
-    <R extends Date> EntityDatePropertyExpression<E, R, C, L> property(ReturnDateFunction<E, R> name);
+    <R extends Date> EntityDatePropertyExpression<E, R, C, L> property(SerializableToDateFunction<E, R> name);
 
     /**
      * Property LocalDate.
@@ -114,7 +114,7 @@ public interface EntityPropertyExpression<E, C extends ConditionExpression, L ex
      * @param name the name
      * @return the date expression
      */
-    EntityLocalDatePropertyExpression<E, C, L> property(ReturnLocalDateFunction<E> name);
+    EntityLocalDatePropertyExpression<E, C, L> property(SerializableToLocalDateFunction<E> name);
 
     /**
      * Property date.
@@ -122,7 +122,7 @@ public interface EntityPropertyExpression<E, C extends ConditionExpression, L ex
      * @param name the name
      * @return the date expression
      */
-    EntityLocalDateTimePropertyExpression<E, C, L> property(ReturnLocalDateTimeFunction<E> name);
+    EntityLocalDateTimePropertyExpression<E, C, L> property(SerializableToLocalDateTimeFunction<E> name);
 
     /**
      * Property date.
@@ -130,7 +130,7 @@ public interface EntityPropertyExpression<E, C extends ConditionExpression, L ex
      * @param name the name
      * @return the date expression
      */
-    EntityLocalTimePropertyExpression<E, C, L> property(ReturnLocalTimeFunction<E> name);
+    EntityLocalTimePropertyExpression<E, C, L> property(SerializableToLocalTimeFunction<E> name);
 
     /**
      * Property enum.
@@ -139,5 +139,5 @@ public interface EntityPropertyExpression<E, C extends ConditionExpression, L ex
      * @param name the name
      * @return the enum expression
      */
-    <R extends Enum<R>> EntityEnumPropertyExpression<E, R, C, L> property(ReturnEnumFunction<E, R> name);
+    <R extends Enum<R>> EntityEnumPropertyExpression<E, R, C, L> property(SerializableToEnumFunction<E, R> name);
 }

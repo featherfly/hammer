@@ -4,7 +4,7 @@ package cn.featherfly.hammer.expression.entity.condition.lk;
 import java.util.function.Predicate;
 
 import cn.featherfly.common.lang.function.SerializableFunction;
-import cn.featherfly.common.lang.function.StringSupplier;
+import cn.featherfly.common.lang.function.SerializableStringSupplier;
 import cn.featherfly.common.operator.QueryOperator.QueryPolicy;
 import cn.featherfly.hammer.expression.condition.ConditionExpression;
 import cn.featherfly.hammer.expression.condition.LogicExpression;
@@ -77,7 +77,7 @@ public interface EntityLikeExpression<E, C extends ConditionExpression, L extend
      * @param property 对象属性
      * @return LogicExpression
      */
-    default L lk(StringSupplier property) {
+    default L lk(SerializableStringSupplier property) {
         return lk(property, QueryPolicy.AUTO);
     }
 
@@ -88,7 +88,7 @@ public interface EntityLikeExpression<E, C extends ConditionExpression, L extend
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
-    default L lk(StringSupplier property, Predicate<String> ignoreStrategy) {
+    default L lk(SerializableStringSupplier property, Predicate<String> ignoreStrategy) {
         return lk(property, QueryPolicy.AUTO, ignoreStrategy);
     }
 
@@ -99,7 +99,7 @@ public interface EntityLikeExpression<E, C extends ConditionExpression, L extend
      * @param queryPolicy the query policy
      * @return the l
      */
-    L lk(StringSupplier property, QueryPolicy queryPolicy);
+    L lk(SerializableStringSupplier property, QueryPolicy queryPolicy);
 
     /**
      * like value.
@@ -109,7 +109,7 @@ public interface EntityLikeExpression<E, C extends ConditionExpression, L extend
      * @param ignoreStrategy the ignore strategy
      * @return the l
      */
-    L lk(StringSupplier property, QueryPolicy queryPolicy, Predicate<String> ignoreStrategy);
+    L lk(SerializableStringSupplier property, QueryPolicy queryPolicy, Predicate<String> ignoreStrategy);
 
     //  嵌套属性使用property(U1::getU2).property(U2:getV).lk(v)来设置
     //    /**

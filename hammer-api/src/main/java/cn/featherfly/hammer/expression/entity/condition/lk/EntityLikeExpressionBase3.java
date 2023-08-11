@@ -4,7 +4,7 @@ package cn.featherfly.hammer.expression.entity.condition.lk;
 import java.util.function.Predicate;
 
 import cn.featherfly.common.lang.function.SerializableFunction;
-import cn.featherfly.common.lang.function.StringSupplier;
+import cn.featherfly.common.lang.function.SerializableStringSupplier;
 import cn.featherfly.common.operator.QueryOperator.QueryPolicy;
 import cn.featherfly.hammer.expression.condition.ConditionExpression;
 import cn.featherfly.hammer.expression.condition.LogicExpression;
@@ -73,7 +73,7 @@ public interface EntityLikeExpressionBase3<E, E2, E3, C extends ConditionExpress
      * @param property 对象属性
      * @return LogicExpression
      */
-    default L lk3(StringSupplier property) {
+    default L lk3(SerializableStringSupplier property) {
         return lk3(property, QueryPolicy.AUTO);
     }
 
@@ -84,7 +84,7 @@ public interface EntityLikeExpressionBase3<E, E2, E3, C extends ConditionExpress
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
-    default L lk3(StringSupplier property, Predicate<String> ignoreStrategy) {
+    default L lk3(SerializableStringSupplier property, Predicate<String> ignoreStrategy) {
         return lk3(property, QueryPolicy.AUTO, ignoreStrategy);
     }
 
@@ -95,7 +95,7 @@ public interface EntityLikeExpressionBase3<E, E2, E3, C extends ConditionExpress
      * @param queryPolicy the query policy
      * @return LogicExpression
      */
-    L lk3(StringSupplier property, QueryPolicy queryPolicy);
+    L lk3(SerializableStringSupplier property, QueryPolicy queryPolicy);
 
     /**
      * like value.
@@ -105,7 +105,7 @@ public interface EntityLikeExpressionBase3<E, E2, E3, C extends ConditionExpress
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
-    L lk3(StringSupplier property, QueryPolicy queryPolicy, Predicate<String> ignoreStrategy);
+    L lk3(SerializableStringSupplier property, QueryPolicy queryPolicy, Predicate<String> ignoreStrategy);
 
     //  嵌套属性使用property(U1::getU2).property(U2:getV).lk(v)来设置
     //    /**

@@ -12,8 +12,8 @@ package cn.featherfly.hammer.expression.entity.condition.ew;
 
 import java.util.function.Predicate;
 
-import cn.featherfly.common.lang.function.ReturnStringFunction;
 import cn.featherfly.common.lang.function.SerializableSupplier;
+import cn.featherfly.common.lang.function.SerializableToStringFunction;
 import cn.featherfly.common.operator.QueryOperator.QueryPolicy;
 
 /**
@@ -42,7 +42,7 @@ public interface EndWithEntityExpression<E>
      * @param value    the value
      * @return the l
      */
-    void accept(ReturnStringFunction<E> property, String value);
+    void accept(SerializableToStringFunction<E> property, String value);
 
     /**
      * end with value. 以value结尾.
@@ -52,28 +52,28 @@ public interface EndWithEntityExpression<E>
      * @param queryPolicy the query policy
      * @return the l
      */
-    void accept(ReturnStringFunction<E> property, String value, QueryPolicy queryPolicy);
+    void accept(SerializableToStringFunction<E> property, String value, QueryPolicy queryPolicy);
 
     /**
      * end with value. 以value结尾.
      *
-     * @param property     the property
-     * @param value        the value
+     * @param property       the property
+     * @param value          the value
      * @param ignoreStrategy the ignore strategy
      * @return the l
      */
-    void accept(ReturnStringFunction<E> property, String value, Predicate<String> ignoreStrategy);
+    void accept(SerializableToStringFunction<E> property, String value, Predicate<String> ignoreStrategy);
 
     /**
      * end with value. 以value结尾.
      *
-     * @param property     the property
-     * @param value        the value
-     * @param queryPolicy  the query policy
+     * @param property       the property
+     * @param value          the value
+     * @param queryPolicy    the query policy
      * @param ignoreStrategy the ignore strategy
      * @return the l
      */
-    void accept(ReturnStringFunction<E> property, String value, QueryPolicy queryPolicy,
+    void accept(SerializableToStringFunction<E> property, String value, QueryPolicy queryPolicy,
             Predicate<String> ignoreStrategy);
 
     /**
@@ -87,8 +87,8 @@ public interface EndWithEntityExpression<E>
     /**
      * end with value. 以value结尾.
      *
-     * @param propertyValue the property value
-     * @param ignoreStrategy  the ignore strategy
+     * @param propertyValue  the property value
+     * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
     void accept(SerializableSupplier<String> propertyValue, Predicate<String> ignoreStrategy);
@@ -105,9 +105,9 @@ public interface EndWithEntityExpression<E>
     /**
      * end with value. 以value结尾.
      *
-     * @param propertyValue the property value
-     * @param queryPolicy   the query policy
-     * @param ignoreStrategy  the ignore strategy
+     * @param propertyValue  the property value
+     * @param queryPolicy    the query policy
+     * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
     void accept(SerializableSupplier<String> propertyValue, QueryPolicy queryPolicy, Predicate<String> ignoreStrategy);

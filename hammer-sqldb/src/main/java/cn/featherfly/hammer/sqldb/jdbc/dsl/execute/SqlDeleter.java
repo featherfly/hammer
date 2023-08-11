@@ -6,6 +6,9 @@ import cn.featherfly.common.db.mapping.JdbcMappingFactory;
 import cn.featherfly.common.repository.AliasRepository;
 import cn.featherfly.common.repository.Repository;
 import cn.featherfly.hammer.dsl.execute.Deleter;
+import cn.featherfly.hammer.expression.entity.execute.EntityDeleteExpression;
+import cn.featherfly.hammer.expression.entity.execute.EntityExecutableConditionGroupExpression;
+import cn.featherfly.hammer.expression.entity.execute.EntityExecutableConditionGroupLogicExpression;
 import cn.featherfly.hammer.sqldb.SqldbHammerException;
 import cn.featherfly.hammer.sqldb.jdbc.Jdbc;
 import cn.featherfly.hammer.sqldb.jdbc.dsl.entity.execute.SqlEntityDelete;
@@ -70,12 +73,15 @@ public class SqlDeleter implements Deleter {
     /**
      * {@inheritDoc}
      */
+    @SuppressWarnings("unchecked")
     @Override
-    public <E> SqlEntityDelete<E> delete(Class<E> repositType) {
+    public <ED extends EntityDeleteExpression<E, EQC, EQL>,
+            EQC extends EntityExecutableConditionGroupExpression<E, EQC, EQL>,
+            EQL extends EntityExecutableConditionGroupLogicExpression<E, EQC, EQL>, E> ED delete(Class<E> entityType) {
         if (mappingFactory == null) {
             throw new SqldbHammerException("mappingFactory is null");
         }
         // ENHANCE 删除暂时没有支持别名
-        return new SqlEntityDelete<>(jdbc, mappingFactory, mappingFactory.getClassMapping(repositType));
+        return (ED) new SqlEntityDelete<>(jdbc, mappingFactory, mappingFactory.getClassMapping(entityType));
     }
 }

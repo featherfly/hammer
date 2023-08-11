@@ -19,13 +19,13 @@ import cn.featherfly.hammer.sqldb.jdbc.vo.r.order.Order2;
  *
  * @author zhongj
  */
-public class SqlQueryTypeJoinRelationTest extends SqlQueryTypeJoinTest {
+public class SqlQueryTypeJoinRelationTest extends AbstractEntitySqlQueryJoinTest {
 
     @Test
     void testJoin_ER() {
-        userInfo = query.find(UserInfo.class).join(UserInfo::getUser).where().eq(UserInfo::getId, uid).single();
+        userInfo = query.find(UserInfo.class).join(UserInfo::getUser).where().eq(UserInfo::getId, uid1).single();
         System.err.println(userInfo);
-        assertEquals(userInfo.getId(), uid);
+        assertEquals(userInfo.getId(), uid1);
         assertNotNull(userInfo.getUser().getId());
         assertNull(userInfo.getUser().getUsername());
         /*
@@ -34,9 +34,10 @@ public class SqlQueryTypeJoinRelationTest extends SqlQueryTypeJoinTest {
          JOIN `user` _user0 ON _user0.`id` = _user_info0.`user_id` WHERE _user_info0.`id` = ?
          */
 
-        userInfo = query.find(UserInfo.class).join(UserInfo::getUser).fetch().where().eq(UserInfo::getId, uid).single();
+        userInfo = query.find(UserInfo.class).join(UserInfo::getUser).fetch().where().eq(UserInfo::getId, uid1)
+                .single();
         System.err.println(userInfo);
-        assertEquals(userInfo.getId(), uid);
+        assertEquals(userInfo.getId(), uid1);
         assertNotNull(userInfo.getUser().getId());
         assertNotNull(userInfo.getUser().getUsername());
     }
@@ -81,9 +82,9 @@ public class SqlQueryTypeJoinRelationTest extends SqlQueryTypeJoinTest {
     @Test
     void testJoin_ER1_R2E() {
         userInfo = query.find(UserInfo.class).join(UserInfo::getUser).join(Order2::getUserInoInfo).where()
-                .eq(UserInfo::getId, uid).single();
+                .eq(UserInfo::getId, uid1).single();
         System.err.println(userInfo);
-        assertEquals(userInfo.getId(), uid);
+        assertEquals(userInfo.getId(), uid1);
         assertNotNull(userInfo.getUser().getId());
         assertNull(userInfo.getUser().getUsername());
         /*
@@ -113,9 +114,9 @@ public class SqlQueryTypeJoinRelationTest extends SqlQueryTypeJoinTest {
 
     @Test
     void testJoin_RE() {
-        user = query.find(User.class).join(UserInfo::getUser).where().eq(User::getId, uid).single();
+        user = query.find(User.class).join(UserInfo::getUser).where().eq(User::getId, uid1).single();
         System.err.println(user);
-        assertEquals(user.getId(), uid);
+        assertEquals(user.getId(), uid1);
         /*
          SELECT _user0.`id` `id`, _user0.`username` `username`, _user0.`password` `pwd`, _user0.`mobile_no` `mobileNo`, _user0.`age` `age`
          FROM `user` _user0
@@ -125,14 +126,14 @@ public class SqlQueryTypeJoinRelationTest extends SqlQueryTypeJoinTest {
 
     @Test(expectedExceptions = SqldbHammerException.class)
     void testJoin_RE_Exception() {
-        user = query.find(User.class).join(UserInfo::getUser).fetch().where().eq(User::getId, uid).single();
+        user = query.find(User.class).join(UserInfo::getUser).fetch().where().eq(User::getId, uid1).single();
         // 因为User没有映射UserInfo,所以fetch()方法无法把返回内容映射进User对象，抛出异常
 
         //      userInfo = query.find(UserInfo.class).join(UserInfo::getUser).fetch().join1(UserRole2::getUser).fetch().where()
         userInfo = query.find(UserInfo.class).join(UserInfo::getUser).fetch().join1(UserRole2::getUser).fetch().where()
-                .eq(UserInfo::getId, uid).single();
+                .eq(UserInfo::getId, uid1).single();
         System.err.println(userInfo);
-        assertEquals(userInfo.getId(), uid);
+        assertEquals(userInfo.getId(), uid1);
         assertNotNull(userInfo.getUser().getId());
         assertNotNull(userInfo.getUser().getUsername());
     }
@@ -140,9 +141,9 @@ public class SqlQueryTypeJoinRelationTest extends SqlQueryTypeJoinTest {
     @Test
     void testJoin1_ER1_R2E() {
         userInfo = query.find(UserInfo.class).join(UserInfo::getUser).join1(UserRole2::getUser).where()
-                .eq(UserInfo::getId, uid).single();
+                .eq(UserInfo::getId, uid1).single();
         System.err.println(userInfo);
-        assertEquals(userInfo.getId(), uid);
+        assertEquals(userInfo.getId(), uid1);
         assertNotNull(userInfo.getUser().getId());
         assertNull(userInfo.getUser().getUsername());
         /*

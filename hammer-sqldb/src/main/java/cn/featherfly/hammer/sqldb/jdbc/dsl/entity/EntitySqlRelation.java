@@ -240,10 +240,11 @@ public abstract class EntitySqlRelation<R extends EntitySqlRelation<R, B>, B ext
             super();
             this.classMapping = classMapping;
 
-            String tableAlias = aliasManager.getAlias(classMapping.getRepositoryName());
-            if (tableAlias == null) {
-                tableAlias = aliasManager.put(classMapping.getRepositoryName());
-            }
+            //            String tableAlias = aliasManager.getAlias(classMapping.getRepositoryName());
+            //            if (tableAlias == null) {
+            //                tableAlias = aliasManager.put(classMapping.getRepositoryName());
+            //            }
+            String tableAlias = aliasManager.put(classMapping.getRepositoryName());
             this.tableAlias = tableAlias;
 
             if (classMapping.getPrivaryKeyPropertyMappings().size() == 1) {

@@ -12,7 +12,7 @@ package cn.featherfly.hammer.expression.entity.condition.sw;
 
 import java.util.function.Predicate;
 
-import cn.featherfly.common.lang.function.ReturnStringFunction;
+import cn.featherfly.common.lang.function.SerializableToStringFunction;
 import cn.featherfly.common.lang.function.SerializableSupplier;
 import cn.featherfly.common.operator.QueryOperator.QueryPolicy;
 
@@ -40,7 +40,7 @@ public interface StartWithEntityExpression<E> extends StartWithEntityPropertyExp
      * @param value    the value
      * @return the l
      */
-    void accept(ReturnStringFunction<E> property, String value);
+    void accept(SerializableToStringFunction<E> property, String value);
 
     /**
      * start with value. 以value开始.
@@ -50,7 +50,7 @@ public interface StartWithEntityExpression<E> extends StartWithEntityPropertyExp
      * @param queryPolicy the query policy
      * @return the l
      */
-    void accept(ReturnStringFunction<E> property, String value, QueryPolicy queryPolicy);
+    void accept(SerializableToStringFunction<E> property, String value, QueryPolicy queryPolicy);
 
     /**
      * start with value. 以value开始.
@@ -60,7 +60,7 @@ public interface StartWithEntityExpression<E> extends StartWithEntityPropertyExp
      * @param ignoreStrategy the ignore strategy
      * @return the l
      */
-    void accept(ReturnStringFunction<E> property, String value, Predicate<String> ignoreStrategy);
+    void accept(SerializableToStringFunction<E> property, String value, Predicate<String> ignoreStrategy);
 
     /**
      * start with value. 以value开始.
@@ -71,7 +71,7 @@ public interface StartWithEntityExpression<E> extends StartWithEntityPropertyExp
      * @param ignoreStrategy the ignore strategy
      * @return the l
      */
-    void accept(ReturnStringFunction<E> property, String value, QueryPolicy queryPolicy,
+    void accept(SerializableToStringFunction<E> property, String value, QueryPolicy queryPolicy,
             Predicate<String> ignoreStrategy);
 
     /**

@@ -7,11 +7,11 @@ import java.time.LocalTime;
 import java.util.Date;
 import java.util.function.Predicate;
 
-import cn.featherfly.common.lang.function.DateSupplier;
-import cn.featherfly.common.lang.function.LocalDateSupplier;
-import cn.featherfly.common.lang.function.LocalDateTimeSupplier;
-import cn.featherfly.common.lang.function.LocalTimeSupplier;
-import cn.featherfly.common.lang.function.NumberSupplier;
+import cn.featherfly.common.lang.function.SerializableDateSupplier;
+import cn.featherfly.common.lang.function.SerializableLocalDateSupplier;
+import cn.featherfly.common.lang.function.SerializableLocalDateTimeSupplier;
+import cn.featherfly.common.lang.function.SerializableLocalTimeSupplier;
+import cn.featherfly.common.lang.function.SerializableNumberSupplier;
 import cn.featherfly.common.lang.function.SerializableDoubleSupplier;
 import cn.featherfly.common.lang.function.SerializableFunction;
 import cn.featherfly.common.lang.function.SerializableIntSupplier;
@@ -19,7 +19,7 @@ import cn.featherfly.common.lang.function.SerializableLongSupplier;
 import cn.featherfly.common.lang.function.SerializableToDoubleFunction;
 import cn.featherfly.common.lang.function.SerializableToIntFunction;
 import cn.featherfly.common.lang.function.SerializableToLongFunction;
-import cn.featherfly.common.lang.function.StringSupplier;
+import cn.featherfly.common.lang.function.SerializableStringSupplier;
 import cn.featherfly.hammer.expression.condition.ConditionExpression;
 import cn.featherfly.hammer.expression.condition.LogicExpression;
 
@@ -284,7 +284,7 @@ public interface EntityGreatThanExpression<E, C extends ConditionExpression, L e
      * @param property 对象属性
      * @return LogicExpression
      */
-    <R extends Number> L gt(NumberSupplier<R> property);
+    <R extends Number> L gt(SerializableNumberSupplier<R> property);
 
     /**
      * great than. 大于.
@@ -294,7 +294,7 @@ public interface EntityGreatThanExpression<E, C extends ConditionExpression, L e
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
-    <R extends Number> L gt(NumberSupplier<R> property, Predicate<R> ignoreStrategy);
+    <R extends Number> L gt(SerializableNumberSupplier<R> property, Predicate<R> ignoreStrategy);
 
     /**
      * great than. 大于.
@@ -303,7 +303,7 @@ public interface EntityGreatThanExpression<E, C extends ConditionExpression, L e
      * @param property 对象属性
      * @return LogicExpression
      */
-    <R extends Date> L gt(DateSupplier<R> property);
+    <R extends Date> L gt(SerializableDateSupplier<R> property);
 
     /**
      * great than. 大于.
@@ -313,7 +313,7 @@ public interface EntityGreatThanExpression<E, C extends ConditionExpression, L e
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
-    <R extends Date> L gt(DateSupplier<R> property, Predicate<R> ignoreStrategy);
+    <R extends Date> L gt(SerializableDateSupplier<R> property, Predicate<R> ignoreStrategy);
 
     /**
      * great than. 大于.
@@ -321,7 +321,7 @@ public interface EntityGreatThanExpression<E, C extends ConditionExpression, L e
      * @param property 对象属性
      * @return LogicExpression
      */
-    L gt(LocalDateSupplier property);
+    L gt(SerializableLocalDateSupplier property);
 
     /**
      * great than. 大于.
@@ -330,7 +330,7 @@ public interface EntityGreatThanExpression<E, C extends ConditionExpression, L e
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
-    L gt(LocalDateSupplier property, Predicate<LocalDate> ignoreStrategy);
+    L gt(SerializableLocalDateSupplier property, Predicate<LocalDate> ignoreStrategy);
 
     /**
      * great than. 大于.
@@ -338,7 +338,7 @@ public interface EntityGreatThanExpression<E, C extends ConditionExpression, L e
      * @param property 对象属性
      * @return LogicExpression
      */
-    L gt(LocalTimeSupplier property);
+    L gt(SerializableLocalTimeSupplier property);
 
     /**
      * great than. 大于.
@@ -347,7 +347,7 @@ public interface EntityGreatThanExpression<E, C extends ConditionExpression, L e
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
-    L gt(LocalTimeSupplier property, Predicate<LocalTime> ignoreStrategy);
+    L gt(SerializableLocalTimeSupplier property, Predicate<LocalTime> ignoreStrategy);
 
     /**
      * great than. 大于.
@@ -355,7 +355,7 @@ public interface EntityGreatThanExpression<E, C extends ConditionExpression, L e
      * @param property 对象属性
      * @return LogicExpression
      */
-    L gt(LocalDateTimeSupplier property);
+    L gt(SerializableLocalDateTimeSupplier property);
 
     /**
      * great than. 大于.
@@ -364,7 +364,7 @@ public interface EntityGreatThanExpression<E, C extends ConditionExpression, L e
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
-    L gt(LocalDateTimeSupplier property, Predicate<LocalDateTime> ignoreStrategy);
+    L gt(SerializableLocalDateTimeSupplier property, Predicate<LocalDateTime> ignoreStrategy);
 
     /**
      * great than. 大于.
@@ -372,7 +372,7 @@ public interface EntityGreatThanExpression<E, C extends ConditionExpression, L e
      * @param property 对象属性
      * @return LogicExpression
      */
-    L gt(StringSupplier property);
+    L gt(SerializableStringSupplier property);
 
     /**
      * great than. 大于.
@@ -381,7 +381,7 @@ public interface EntityGreatThanExpression<E, C extends ConditionExpression, L e
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
-    L gt(StringSupplier property, Predicate<String> ignoreStrategy);
+    L gt(SerializableStringSupplier property, Predicate<String> ignoreStrategy);
 
     //  嵌套属性使用property(U1::getU2).property(U2:getV).ge(v)来设置
     //    /**
@@ -405,7 +405,7 @@ public interface EntityGreatThanExpression<E, C extends ConditionExpression, L e
     //     * @param property   对象属性
     //     * @return LogicExpression
     //     */
-    //    <R, N extends Number> L gt(SerializableSupplier<R> repository, ReturnNumberFunction<R, N> property);
+    //    <R, N extends Number> L gt(SerializableSupplier<R> repository, SerializableToNumberFunction<R, N> property);
     //
     //    /**
     //     * great than. 大于.
@@ -428,7 +428,7 @@ public interface EntityGreatThanExpression<E, C extends ConditionExpression, L e
     //     * @param property   对象属性
     //     * @return LogicExpression
     //     */
-    //    <R, D extends Date> L gt(SerializableSupplier<R> repository, ReturnDateFunction<R, D> property);
+    //    <R, D extends Date> L gt(SerializableSupplier<R> repository, SerializableToDateFunction<R, D> property);
     //
     //    /**
     //     * great than. 大于.
@@ -449,7 +449,7 @@ public interface EntityGreatThanExpression<E, C extends ConditionExpression, L e
     //     * @param property   对象属性
     //     * @return LogicExpression
     //     */
-    //    <R> L gt(SerializableSupplier<R> repository, ReturnLocalTimeFunction<R> property);
+    //    <R> L gt(SerializableSupplier<R> repository, SerializableToLocalTimeFunction<R> property);
     //
     //    /**
     //     * great than. 大于.
@@ -470,7 +470,7 @@ public interface EntityGreatThanExpression<E, C extends ConditionExpression, L e
     //     * @param property   对象属性
     //     * @return LogicExpression
     //     */
-    //    <R> L gt(SerializableSupplier<R> repository, ReturnLocalDateFunction<R> property);
+    //    <R> L gt(SerializableSupplier<R> repository, SerializableToLocalDateFunction<R> property);
     //
     //    /**
     //     * great than. 大于.
@@ -492,7 +492,7 @@ public interface EntityGreatThanExpression<E, C extends ConditionExpression, L e
     //     * @param property   对象属性
     //     * @return LogicExpression
     //     */
-    //    <R> L gt(SerializableSupplier<R> repository, ReturnLocalDateTimeFunction<R> property);
+    //    <R> L gt(SerializableSupplier<R> repository, SerializableToLocalDateTimeFunction<R> property);
     //
     //    /**
     //     * great than. 大于.
@@ -513,5 +513,5 @@ public interface EntityGreatThanExpression<E, C extends ConditionExpression, L e
     //     * @param property   对象属性
     //     * @return LogicExpression
     //     */
-    //    <R> L gt(SerializableSupplier<R> repository, ReturnStringFunction<R> property);
+    //    <R> L gt(SerializableSupplier<R> repository, SerializableToStringFunction<R> property);
 }

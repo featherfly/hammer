@@ -7,11 +7,11 @@ import java.time.LocalTime;
 import java.util.Date;
 import java.util.function.Predicate;
 
-import cn.featherfly.common.lang.function.DateSupplier;
-import cn.featherfly.common.lang.function.LocalDateSupplier;
-import cn.featherfly.common.lang.function.LocalDateTimeSupplier;
-import cn.featherfly.common.lang.function.LocalTimeSupplier;
-import cn.featherfly.common.lang.function.NumberSupplier;
+import cn.featherfly.common.lang.function.SerializableDateSupplier;
+import cn.featherfly.common.lang.function.SerializableLocalDateSupplier;
+import cn.featherfly.common.lang.function.SerializableLocalDateTimeSupplier;
+import cn.featherfly.common.lang.function.SerializableLocalTimeSupplier;
+import cn.featherfly.common.lang.function.SerializableNumberSupplier;
 import cn.featherfly.common.lang.function.SerializableDoubleSupplier;
 import cn.featherfly.common.lang.function.SerializableFunction;
 import cn.featherfly.common.lang.function.SerializableIntSupplier;
@@ -19,7 +19,7 @@ import cn.featherfly.common.lang.function.SerializableLongSupplier;
 import cn.featherfly.common.lang.function.SerializableToDoubleFunction3;
 import cn.featherfly.common.lang.function.SerializableToIntFunction3;
 import cn.featherfly.common.lang.function.SerializableToLongFunction3;
-import cn.featherfly.common.lang.function.StringSupplier;
+import cn.featherfly.common.lang.function.SerializableStringSupplier;
 import cn.featherfly.hammer.expression.condition.ConditionExpression;
 import cn.featherfly.hammer.expression.condition.LogicExpression;
 
@@ -277,7 +277,7 @@ public interface EntityLessThanExpressionBase3<E, E2, E3, C extends ConditionExp
      * @param property 对象属性
      * @return LogicExpression
      */
-    <R extends Date> L lt3(DateSupplier<R> property);
+    <R extends Date> L lt3(SerializableDateSupplier<R> property);
 
     /**
      * less than. 小于.
@@ -287,7 +287,7 @@ public interface EntityLessThanExpressionBase3<E, E2, E3, C extends ConditionExp
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
-    <R extends Date> L lt3(DateSupplier<R> property, Predicate<R> ignoreStrategy);
+    <R extends Date> L lt3(SerializableDateSupplier<R> property, Predicate<R> ignoreStrategy);
 
     /**
      * less than. 小于.
@@ -296,7 +296,7 @@ public interface EntityLessThanExpressionBase3<E, E2, E3, C extends ConditionExp
      * @param property 对象属性
      * @return LogicExpression
      */
-    <R extends Number> L lt3(NumberSupplier<R> property);
+    <R extends Number> L lt3(SerializableNumberSupplier<R> property);
 
     /**
      * less than. 小于.
@@ -306,7 +306,7 @@ public interface EntityLessThanExpressionBase3<E, E2, E3, C extends ConditionExp
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
-    <R extends Number> L lt3(NumberSupplier<R> property, Predicate<R> ignoreStrategy);
+    <R extends Number> L lt3(SerializableNumberSupplier<R> property, Predicate<R> ignoreStrategy);
 
     /**
      * less than. 小于.
@@ -314,7 +314,7 @@ public interface EntityLessThanExpressionBase3<E, E2, E3, C extends ConditionExp
      * @param property 对象属性
      * @return LogicExpression
      */
-    L lt3(LocalDateSupplier property);
+    L lt3(SerializableLocalDateSupplier property);
 
     /**
      * less than. 小于.
@@ -323,7 +323,7 @@ public interface EntityLessThanExpressionBase3<E, E2, E3, C extends ConditionExp
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
-    L lt3(LocalDateSupplier property, Predicate<LocalDate> ignoreStrategy);
+    L lt3(SerializableLocalDateSupplier property, Predicate<LocalDate> ignoreStrategy);
 
     /**
      * less than. 小于.
@@ -331,7 +331,7 @@ public interface EntityLessThanExpressionBase3<E, E2, E3, C extends ConditionExp
      * @param property 对象属性
      * @return LogicExpression
      */
-    L lt3(LocalTimeSupplier property);
+    L lt3(SerializableLocalTimeSupplier property);
 
     /**
      * less than. 小于.
@@ -340,7 +340,7 @@ public interface EntityLessThanExpressionBase3<E, E2, E3, C extends ConditionExp
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
-    L lt3(LocalTimeSupplier property, Predicate<LocalTime> ignoreStrategy);
+    L lt3(SerializableLocalTimeSupplier property, Predicate<LocalTime> ignoreStrategy);
 
     /**
      * less than. 小于.
@@ -348,7 +348,7 @@ public interface EntityLessThanExpressionBase3<E, E2, E3, C extends ConditionExp
      * @param property 对象属性
      * @return LogicExpression
      */
-    L lt3(LocalDateTimeSupplier property);
+    L lt3(SerializableLocalDateTimeSupplier property);
 
     /**
      * less than. 小于.
@@ -357,7 +357,7 @@ public interface EntityLessThanExpressionBase3<E, E2, E3, C extends ConditionExp
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
-    L lt3(LocalDateTimeSupplier property, Predicate<LocalDateTime> ignoreStrategy);
+    L lt3(SerializableLocalDateTimeSupplier property, Predicate<LocalDateTime> ignoreStrategy);
 
     /**
      * less than. 小于.
@@ -365,7 +365,7 @@ public interface EntityLessThanExpressionBase3<E, E2, E3, C extends ConditionExp
      * @param property 对象属性
      * @return LogicExpression
      */
-    L lt3(StringSupplier property);
+    L lt3(SerializableStringSupplier property);
 
     /**
      * less than. 小于.
@@ -374,7 +374,7 @@ public interface EntityLessThanExpressionBase3<E, E2, E3, C extends ConditionExp
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
-    L lt3(StringSupplier property, Predicate<String> ignoreStrategy);
+    L lt3(SerializableStringSupplier property, Predicate<String> ignoreStrategy);
 
     // 嵌套属性使用property(U1::getU2).property(U2:getV).lt(v)来设置
     //    /**
@@ -398,7 +398,7 @@ public interface EntityLessThanExpressionBase3<E, E2, E3, C extends ConditionExp
     //     * @param property   对象属性
     //     * @return LogicExpression
     //     */
-    //    <R, N extends Number> L lt3(SerializableSupplier<R> repository, ReturnNumberFunction<R, N> property);
+    //    <R, N extends Number> L lt3(SerializableSupplier<R> repository, SerializableToNumberFunction<R, N> property);
     //
     //    /**
     //     * less than. 小于.
@@ -421,7 +421,7 @@ public interface EntityLessThanExpressionBase3<E, E2, E3, C extends ConditionExp
     //     * @param property   对象属性
     //     * @return LogicExpression
     //     */
-    //    <R, D extends Date> L lt3(SerializableSupplier<R> repository, ReturnDateFunction<R, D> property);
+    //    <R, D extends Date> L lt3(SerializableSupplier<R> repository, SerializableToDateFunction<R, D> property);
     //
     //    /**
     //     * less than. 小于.
@@ -442,7 +442,7 @@ public interface EntityLessThanExpressionBase3<E, E2, E3, C extends ConditionExp
     //     * @param property   对象属性
     //     * @return LogicExpression
     //     */
-    //    <T> L lt3(SerializableSupplier<T> repository, ReturnLocalTimeFunction<T> property);
+    //    <T> L lt3(SerializableSupplier<T> repository, SerializableToLocalTimeFunction<T> property);
     //
     //    /**
     //     * less than. 小于.
@@ -463,7 +463,7 @@ public interface EntityLessThanExpressionBase3<E, E2, E3, C extends ConditionExp
     //     * @param property   对象属性
     //     * @return LogicExpression
     //     */
-    //    <T> L lt3(SerializableSupplier<T> repository, ReturnLocalDateFunction<T> property);
+    //    <T> L lt3(SerializableSupplier<T> repository, SerializableToLocalDateFunction<T> property);
     //
     //    /**
     //     * less than. 小于.
@@ -485,7 +485,7 @@ public interface EntityLessThanExpressionBase3<E, E2, E3, C extends ConditionExp
     //     * @param property   对象属性
     //     * @return LogicExpression
     //     */
-    //    <T> L lt3(SerializableSupplier<T> repository, ReturnLocalDateTimeFunction<T> property);
+    //    <T> L lt3(SerializableSupplier<T> repository, SerializableToLocalDateTimeFunction<T> property);
     //
     //    /**
     //     * less than. 小于.
@@ -506,5 +506,5 @@ public interface EntityLessThanExpressionBase3<E, E2, E3, C extends ConditionExp
     //     * @param property   对象属性
     //     * @return LogicExpression
     //     */
-    //    <T> L lt3(SerializableSupplier<T> repository, ReturnStringFunction<T> property);
+    //    <T> L lt3(SerializableSupplier<T> repository, SerializableToStringFunction<T> property);
 }

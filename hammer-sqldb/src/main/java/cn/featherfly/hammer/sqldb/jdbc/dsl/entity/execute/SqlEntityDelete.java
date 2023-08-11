@@ -7,8 +7,8 @@ import cn.featherfly.common.db.mapping.JdbcClassMapping;
 import cn.featherfly.common.db.mapping.JdbcMappingFactory;
 import cn.featherfly.common.repository.IgnoreStrategy;
 import cn.featherfly.common.repository.builder.AliasManager;
-import cn.featherfly.hammer.dsl.execute.EntityDelete;
-import cn.featherfly.hammer.dsl.execute.EntityExecutableConditionGroupExpression;
+import cn.featherfly.hammer.dsl.entity.execute.EntityDelete;
+import cn.featherfly.hammer.dsl.entity.execute.EntityExecutableConditionGroup;
 import cn.featherfly.hammer.expression.condition.ConditionGroupConfig;
 import cn.featherfly.hammer.sqldb.jdbc.Jdbc;
 import cn.featherfly.hammer.sqldb.jdbc.dsl.entity.EntitySqlDeleteRelation;
@@ -66,7 +66,7 @@ public class SqlEntityDelete<E> implements EntityDelete<E> {
      * {@inheritDoc}
      */
     @Override
-    public EntityExecutableConditionGroupExpression<E> where() {
+    public EntityExecutableConditionGroup<E> where() {
         return createSqlDeleteExpression();
     }
 
@@ -74,8 +74,8 @@ public class SqlEntityDelete<E> implements EntityDelete<E> {
      * {@inheritDoc}
      */
     @Override
-    public EntityExecutableConditionGroupExpression<E> where(
-            Consumer<ConditionGroupConfig<EntityExecutableConditionGroupExpression<E>>> consumer) {
+    public EntityExecutableConditionGroup<E> where(
+            Consumer<ConditionGroupConfig<EntityExecutableConditionGroup<E>>> consumer) {
         SqlEntityDeleteExpression<E> sqlDeleteExpression = createSqlDeleteExpression();
 
         if (consumer != null) {

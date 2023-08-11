@@ -1,8 +1,8 @@
 
 package cn.featherfly.hammer.expression.condition;
 
-import cn.featherfly.common.lang.function.ReturnStringFunction;
-import cn.featherfly.common.lang.function.StringSupplier;
+import cn.featherfly.common.lang.function.SerializableToStringFunction;
+import cn.featherfly.common.lang.function.SerializableStringSupplier;
 import cn.featherfly.common.operator.QueryOperator.QueryPolicy;
 import cn.featherfly.common.repository.Field;
 
@@ -68,7 +68,7 @@ public interface LikeExpression<C extends ConditionExpression, L extends LogicEx
      * @param value 参数值
      * @return LogicExpression
      */
-    default <T> L lk(ReturnStringFunction<T> name, String value) {
+    default <T> L lk(SerializableToStringFunction<T> name, String value) {
         return lk(name, value, QueryPolicy.AUTO);
     }
 
@@ -81,7 +81,7 @@ public interface LikeExpression<C extends ConditionExpression, L extends LogicEx
      * @param queryPolicy the query policy
      * @return the l
      */
-    <T> L lk(ReturnStringFunction<T> name, String value, QueryPolicy queryPolicy);
+    <T> L lk(SerializableToStringFunction<T> name, String value, QueryPolicy queryPolicy);
 
     /**
      * like value.
@@ -89,7 +89,7 @@ public interface LikeExpression<C extends ConditionExpression, L extends LogicEx
      * @param property 对象属性
      * @return LogicExpression
      */
-    default L lk(StringSupplier property) {
+    default L lk(SerializableStringSupplier property) {
         return lk(property, QueryPolicy.AUTO);
     }
 
@@ -100,5 +100,5 @@ public interface LikeExpression<C extends ConditionExpression, L extends LogicEx
      * @param queryPolicy the query policy
      * @return the l
      */
-    L lk(StringSupplier property, QueryPolicy queryPolicy);
+    L lk(SerializableStringSupplier property, QueryPolicy queryPolicy);
 }

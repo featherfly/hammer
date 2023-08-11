@@ -1,23 +1,23 @@
-
-package cn.featherfly.hammer.expression.query;
-
-import java.util.List;
-
-/**
- * <p>
- * dsl for query list executor
- * </p>
- * .
- *
- * @author zhongj
- */
-public interface TypeQueryListExecutor {
-
-    /**
-     * query for list.
-     *
-     * @param <E> the element type
-     * @return list
-     */
-    <E> List<E> list();
-}
+//
+//package cn.featherfly.hammer.expression.query;
+//
+//import java.util.List;
+//
+///**
+// * <p>
+// * dsl for query list executor
+// * </p>
+// * .
+// *
+// * @author zhongj
+// */
+//public interface TypeQueryListExecutor {
+//
+//    /**
+//     * query for list.
+//     *
+//     * @param <E> the element type
+//     * @return list
+//     */
+//    <E> List<E> list();
+//}

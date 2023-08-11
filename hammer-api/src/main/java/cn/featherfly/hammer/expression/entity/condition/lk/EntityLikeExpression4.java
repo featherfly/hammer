@@ -89,7 +89,7 @@ public interface EntityLikeExpression4<E, E2, E3, E4, C extends ConditionExpress
     //     * @return LogicExpression
     //     */
     //    default L lk(Function<Tuple4<QueryEntityRepository<E>, QueryEntityRepository<E2>, QueryEntityRepository<E3>,
-    //            QueryEntityRepository<E4>>, QueryEntityRepository<E>> entities, StringSupplier property) {
+    //            QueryEntityRepository<E4>>, QueryEntityRepository<E>> entities, SerializableStringSupplier property) {
     //        return lk(entities, property, QueryPolicy.AUTO);
     //    }
     //
@@ -104,7 +104,7 @@ public interface EntityLikeExpression4<E, E2, E3, E4, C extends ConditionExpress
     //    default L lk(
     //            Function<Tuple4<QueryEntityRepository<E>, QueryEntityRepository<E2>, QueryEntityRepository<E3>,
     //                    QueryEntityRepository<E4>>, QueryEntityRepository<E>> entities,
-    //            StringSupplier property, Predicate<String> ignoreStrategy) {
+    //            SerializableStringSupplier property, Predicate<String> ignoreStrategy) {
     //        return lk(entities, property, QueryPolicy.AUTO, ignoreStrategy);
     //    }
     //
@@ -117,7 +117,7 @@ public interface EntityLikeExpression4<E, E2, E3, E4, C extends ConditionExpress
     //     * @return the l
     //     */
     //    L lk(Function<Tuple4<QueryEntityRepository<E>, QueryEntityRepository<E2>, QueryEntityRepository<E3>,
-    //            QueryEntityRepository<E4>>, QueryEntityRepository<E>> entities, StringSupplier property,
+    //            QueryEntityRepository<E4>>, QueryEntityRepository<E>> entities, SerializableStringSupplier property,
     //            QueryPolicy queryPolicy);
     //
     //    /**
@@ -130,7 +130,7 @@ public interface EntityLikeExpression4<E, E2, E3, E4, C extends ConditionExpress
     //     * @return the l
     //     */
     //    L lk(Function<Tuple4<QueryEntityRepository<E>, QueryEntityRepository<E2>, QueryEntityRepository<E3>,
-    //            QueryEntityRepository<E4>>, QueryEntityRepository<E>> entities, StringSupplier property,
+    //            QueryEntityRepository<E4>>, QueryEntityRepository<E>> entities, SerializableStringSupplier property,
     //            QueryPolicy queryPolicy, Predicate<String> ignoreStrategy);
     //
     //    /**

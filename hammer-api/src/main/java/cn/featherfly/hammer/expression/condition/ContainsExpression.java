@@ -1,8 +1,8 @@
 
 package cn.featherfly.hammer.expression.condition;
 
-import cn.featherfly.common.lang.function.ReturnStringFunction;
-import cn.featherfly.common.lang.function.StringSupplier;
+import cn.featherfly.common.lang.function.SerializableToStringFunction;
+import cn.featherfly.common.lang.function.SerializableStringSupplier;
 import cn.featherfly.common.operator.QueryOperator.QueryPolicy;
 import cn.featherfly.common.repository.Field;
 
@@ -68,7 +68,7 @@ public interface ContainsExpression<C extends ConditionExpression, L extends Log
      * @param value 参数值
      * @return LogicExpression
      */
-    default <T> L co(ReturnStringFunction<T> name, String value) {
+    default <T> L co(SerializableToStringFunction<T> name, String value) {
         return co(name, value, QueryPolicy.AUTO);
     }
 
@@ -81,7 +81,7 @@ public interface ContainsExpression<C extends ConditionExpression, L extends Log
      * @param queryPolicy the query policy
      * @return the l
      */
-    <T> L co(ReturnStringFunction<T> name, String value, QueryPolicy queryPolicy);
+    <T> L co(SerializableToStringFunction<T> name, String value, QueryPolicy queryPolicy);
 
     /**
      * contains value. 包含value.
@@ -89,7 +89,7 @@ public interface ContainsExpression<C extends ConditionExpression, L extends Log
      * @param property 对象属性
      * @return LogicExpression
      */
-    default L co(StringSupplier property) {
+    default L co(SerializableStringSupplier property) {
         return co(property, QueryPolicy.AUTO);
     }
 
@@ -100,5 +100,5 @@ public interface ContainsExpression<C extends ConditionExpression, L extends Log
      * @param queryPolicy the query policy
      * @return the l
      */
-    L co(StringSupplier property, QueryPolicy queryPolicy);
+    L co(SerializableStringSupplier property, QueryPolicy queryPolicy);
 }

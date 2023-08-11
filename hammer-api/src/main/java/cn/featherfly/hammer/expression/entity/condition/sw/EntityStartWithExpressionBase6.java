@@ -4,7 +4,7 @@ package cn.featherfly.hammer.expression.entity.condition.sw;
 import java.util.function.Predicate;
 
 import cn.featherfly.common.lang.function.SerializableFunction;
-import cn.featherfly.common.lang.function.StringSupplier;
+import cn.featherfly.common.lang.function.SerializableStringSupplier;
 import cn.featherfly.common.operator.QueryOperator.QueryPolicy;
 import cn.featherfly.hammer.expression.condition.ConditionExpression;
 import cn.featherfly.hammer.expression.condition.LogicExpression;
@@ -76,7 +76,7 @@ public interface EntityStartWithExpressionBase6<E, E2, E3, E4, E5, E6, C extends
      * @param property 对象属性
      * @return LogicExpression
      */
-    default L sw6(StringSupplier property) {
+    default L sw6(SerializableStringSupplier property) {
         return sw6(property, QueryPolicy.AUTO);
     }
 
@@ -87,7 +87,7 @@ public interface EntityStartWithExpressionBase6<E, E2, E3, E4, E5, E6, C extends
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
-    default L sw6(StringSupplier property, Predicate<String> ignoreStrategy) {
+    default L sw6(SerializableStringSupplier property, Predicate<String> ignoreStrategy) {
         return sw6(property, QueryPolicy.AUTO, ignoreStrategy);
     }
 
@@ -98,7 +98,7 @@ public interface EntityStartWithExpressionBase6<E, E2, E3, E4, E5, E6, C extends
      * @param queryPolicy the query policy
      * @return LogicExpression
      */
-    L sw6(StringSupplier property, QueryPolicy queryPolicy);
+    L sw6(SerializableStringSupplier property, QueryPolicy queryPolicy);
 
     /**
      * start with value. 以value开始.
@@ -108,7 +108,7 @@ public interface EntityStartWithExpressionBase6<E, E2, E3, E4, E5, E6, C extends
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
-    L sw6(StringSupplier property, QueryPolicy queryPolicy, Predicate<String> ignoreStrategy);
+    L sw6(SerializableStringSupplier property, QueryPolicy queryPolicy, Predicate<String> ignoreStrategy);
 
     // 嵌套属性使用property(U1::getU2).property(U2:getV).sw(v)来设置
     //    /**

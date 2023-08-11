@@ -4,7 +4,7 @@ package cn.featherfly.hammer.expression.entity.condition.co;
 import java.util.function.Predicate;
 
 import cn.featherfly.common.lang.function.SerializableFunction;
-import cn.featherfly.common.lang.function.StringSupplier;
+import cn.featherfly.common.lang.function.SerializableStringSupplier;
 import cn.featherfly.common.operator.QueryOperator.QueryPolicy;
 import cn.featherfly.hammer.expression.condition.ConditionExpression;
 import cn.featherfly.hammer.expression.condition.LogicExpression;
@@ -71,7 +71,7 @@ public interface EntityContainsExpressionBase2<E, E2, C extends ConditionExpress
      * @param property 对象属性
      * @return LogicExpression
      */
-    default L co2(StringSupplier property) {
+    default L co2(SerializableStringSupplier property) {
         return co2(property, QueryPolicy.AUTO);
     }
 
@@ -82,7 +82,7 @@ public interface EntityContainsExpressionBase2<E, E2, C extends ConditionExpress
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
-    default L co2(StringSupplier property, Predicate<String> ignoreStrategy) {
+    default L co2(SerializableStringSupplier property, Predicate<String> ignoreStrategy) {
         return co2(property, QueryPolicy.AUTO, ignoreStrategy);
     }
 
@@ -93,7 +93,7 @@ public interface EntityContainsExpressionBase2<E, E2, C extends ConditionExpress
      * @param queryPolicy the query policy
      * @return LogicExpression
      */
-    L co2(StringSupplier property, QueryPolicy queryPolicy);
+    L co2(SerializableStringSupplier property, QueryPolicy queryPolicy);
 
     /**
      * contains value. 包含value.
@@ -103,7 +103,7 @@ public interface EntityContainsExpressionBase2<E, E2, C extends ConditionExpress
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
-    L co2(StringSupplier property, QueryPolicy queryPolicy, Predicate<String> ignoreStrategy);
+    L co2(SerializableStringSupplier property, QueryPolicy queryPolicy, Predicate<String> ignoreStrategy);
 
     // 嵌套属性使用property(U1::getU2).property(U2:getV).co(v)来设置
     //    /**
