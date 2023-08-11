@@ -20,7 +20,7 @@ import cn.featherfly.common.lang.Lang;
 import cn.featherfly.common.lang.function.SerializableFunction;
 import cn.featherfly.common.operator.AggregateFunction;
 import cn.featherfly.common.repository.builder.AliasManager;
-import cn.featherfly.hammer.dsl.query.type.EntityQueryFetchedProperty;
+import cn.featherfly.hammer.dsl.entity.query.EntityQueryFetchedProperty;
 import cn.featherfly.hammer.sqldb.jdbc.Jdbc;
 import cn.featherfly.hammer.sqldb.jdbc.SqlPageFactory;
 

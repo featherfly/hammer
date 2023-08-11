@@ -1,7 +1,7 @@
 
 package cn.featherfly.hammer.expression.condition;
 
-import cn.featherfly.common.lang.function.ReturnStringFunction;
+import cn.featherfly.common.lang.function.SerializableToStringFunction;
 import cn.featherfly.common.lang.function.SerializableFunction;
 import cn.featherfly.common.lang.function.SerializableSupplier;
 
@@ -28,7 +28,7 @@ public interface TypeEndWithExpression<C extends ConditionExpression, L extends 
      * @param value      参数值
      * @return LogicExpression
      */
-    <T, R> L ew(SerializableFunction<T, R> repository, ReturnStringFunction<R> property, Object value);
+    <T, R> L ew(SerializableFunction<T, R> repository, SerializableToStringFunction<R> property, Object value);
 
     /**
      * 以value结尾.
@@ -39,5 +39,5 @@ public interface TypeEndWithExpression<C extends ConditionExpression, L extends 
      * @param property   对象属性
      * @return LogicExpression
      */
-    <T, R> L ew(SerializableSupplier<T> repository, ReturnStringFunction<T> property);
+    <T, R> L ew(SerializableSupplier<T> repository, SerializableToStringFunction<T> property);
 }

@@ -24,21 +24,21 @@
 //import cn.featherfly.common.lang.LambdaUtils;
 //import cn.featherfly.common.lang.LambdaUtils.SerializableSupplierLambdaInfo;
 //import cn.featherfly.common.lang.LambdaUtils.SerializedLambdaInfo;
-//import cn.featherfly.common.lang.function.DateSupplier;
-//import cn.featherfly.common.lang.function.LocalDateSupplier;
-//import cn.featherfly.common.lang.function.LocalDateTimeSupplier;
-//import cn.featherfly.common.lang.function.LocalTimeSupplier;
-//import cn.featherfly.common.lang.function.NumberSupplier;
-//import cn.featherfly.common.lang.function.ReturnDateFunction;
-//import cn.featherfly.common.lang.function.ReturnEnumFunction;
-//import cn.featherfly.common.lang.function.ReturnLocalDateFunction;
-//import cn.featherfly.common.lang.function.ReturnLocalDateTimeFunction;
-//import cn.featherfly.common.lang.function.ReturnLocalTimeFunction;
-//import cn.featherfly.common.lang.function.ReturnNumberFunction;
-//import cn.featherfly.common.lang.function.ReturnStringFunction;
+//import cn.featherfly.common.lang.function.SerializableDateSupplier;
+//import cn.featherfly.common.lang.function.SerializableLocalDateSupplier;
+//import cn.featherfly.common.lang.function.SerializableLocalDateTimeSupplier;
+//import cn.featherfly.common.lang.function.SerializableLocalTimeSupplier;
+//import cn.featherfly.common.lang.function.SerializableNumberSupplier;
+//import cn.featherfly.common.lang.function.SerializableToDateFunction;
+//import cn.featherfly.common.lang.function.SerializableToEnumFunction;
+//import cn.featherfly.common.lang.function.SerializableToLocalDateFunction;
+//import cn.featherfly.common.lang.function.SerializableToLocalDateTimeFunction;
+//import cn.featherfly.common.lang.function.SerializableToLocalTimeFunction;
+//import cn.featherfly.common.lang.function.SerializableToNumberFunction;
+//import cn.featherfly.common.lang.function.SerializableToStringFunction;
 //import cn.featherfly.common.lang.function.SerializableFunction;
 //import cn.featherfly.common.lang.function.SerializableSupplier;
-//import cn.featherfly.common.lang.function.StringSupplier;
+//import cn.featherfly.common.lang.function.SerializableStringSupplier;
 //import cn.featherfly.common.operator.LogicOperator;
 //import cn.featherfly.common.operator.QueryOperator;
 //import cn.featherfly.common.operator.QueryOperator.QueryPolicy;
@@ -527,7 +527,7 @@
 //    //     * {@inheritDoc}
 //    //     */
 //    //    @Override
-//    //    public <T> L lk(ReturnStringFunction<T> name, String value) {
+//    //    public <T> L lk(SerializableToStringFunction<T> name, String value) {
 //    //        return lk(getPropertyName(name), value);
 //    //    }
 //    //
@@ -535,7 +535,7 @@
 //    //     * {@inheritDoc}
 //    //     */
 //    //    @Override
-//    //    public L lk(StringSupplier property) {
+//    //    public L lk(SerializableStringSupplier property) {
 //    //        SerializableSupplierLambdaInfo<String> info = LambdaUtils.getSerializableSupplierLambdaInfo(property);
 //    //        return lk(info.getSerializedLambdaInfo().getPropertyName(), info.getValue());
 //    //    }
@@ -553,7 +553,7 @@
 //     * {@inheritDoc}
 //     */
 //    @Override
-//    public <T> L lk(ReturnStringFunction<T> name, String value, QueryPolicy queryPolicy) {
+//    public <T> L lk(SerializableToStringFunction<T> name, String value, QueryPolicy queryPolicy) {
 //        return lk(getPropertyName(name), value, queryPolicy);
 //    }
 //
@@ -561,7 +561,7 @@
 //     * {@inheritDoc}
 //     */
 //    @Override
-//    public L lk(StringSupplier property, QueryPolicy queryPolicy) {
+//    public L lk(SerializableStringSupplier property, QueryPolicy queryPolicy) {
 //        SerializableSupplierLambdaInfo<String> info = LambdaUtils.getSerializableSupplierLambdaInfo(property);
 //        return lk(info.getSerializedLambdaInfo().getPropertyName(), info.getValue(), queryPolicy);
 //    }
@@ -631,14 +631,14 @@
 //    //     * {@inheritDoc}
 //    //     */
 //    //    @Override
-//    //    public <T> L sw(ReturnStringFunction<T> name, String value) {
+//    //    public <T> L sw(SerializableToStringFunction<T> name, String value) {
 //    //        return sw(getPropertyName(name), value);
 //    //    }
 //    //    /**
 //    //     * {@inheritDoc}
 //    //     */
 //    //    @Override
-//    //    public L sw(StringSupplier property) {
+//    //    public L sw(SerializableStringSupplier property) {
 //    //        SerializableSupplierLambdaInfo<String> info = LambdaUtils.getSerializableSupplierLambdaInfo(property);
 //    //        return sw(info.getSerializedLambdaInfo().getPropertyName(), info.getValue());
 //    //    }
@@ -656,7 +656,7 @@
 //     * {@inheritDoc}
 //     */
 //    @Override
-//    public <T> L sw(ReturnStringFunction<T> name, String value, QueryPolicy queryPolicy) {
+//    public <T> L sw(SerializableToStringFunction<T> name, String value, QueryPolicy queryPolicy) {
 //        return sw(getPropertyName(name), value, queryPolicy);
 //    }
 //
@@ -664,7 +664,7 @@
 //     * {@inheritDoc}
 //     */
 //    @Override
-//    public L sw(StringSupplier property, QueryPolicy queryPolicy) {
+//    public L sw(SerializableStringSupplier property, QueryPolicy queryPolicy) {
 //        SerializableSupplierLambdaInfo<String> info = LambdaUtils.getSerializableSupplierLambdaInfo(property);
 //        return sw(info.getSerializedLambdaInfo().getPropertyName(), info.getValue());
 //    }
@@ -734,14 +734,14 @@
 //    //     * {@inheritDoc}
 //    //     */
 //    //    @Override
-//    //    public <T> L ew(ReturnStringFunction<T> name, String value) {
+//    //    public <T> L ew(SerializableToStringFunction<T> name, String value) {
 //    //        return ew(getPropertyName(name), value);
 //    //    }
 //    //    /**
 //    //     * {@inheritDoc}
 //    //     */
 //    //    @Override
-//    //    public L ew(StringSupplier property) {
+//    //    public L ew(SerializableStringSupplier property) {
 //    //        SerializableSupplierLambdaInfo<String> info = LambdaUtils.getSerializableSupplierLambdaInfo(property);
 //    //        return co(info.getSerializedLambdaInfo().getPropertyName(), info.getValue());
 //    //    }
@@ -759,7 +759,7 @@
 //     * {@inheritDoc}
 //     */
 //    @Override
-//    public <T> L ew(ReturnStringFunction<T> name, String value, QueryPolicy queryPolicy) {
+//    public <T> L ew(SerializableToStringFunction<T> name, String value, QueryPolicy queryPolicy) {
 //        return ew(getPropertyName(name), value, queryPolicy);
 //    }
 //
@@ -767,7 +767,7 @@
 //     * {@inheritDoc}
 //     */
 //    @Override
-//    public L ew(StringSupplier property, QueryPolicy queryPolicy) {
+//    public L ew(SerializableStringSupplier property, QueryPolicy queryPolicy) {
 //        SerializableSupplierLambdaInfo<String> info = LambdaUtils.getSerializableSupplierLambdaInfo(property);
 //        return co(info.getSerializedLambdaInfo().getPropertyName(), info.getValue(), queryPolicy);
 //    }
@@ -839,14 +839,14 @@
 //    //     * {@inheritDoc}
 //    //     */
 //    //    @Override
-//    //    public <T> L co(ReturnStringFunction<T> name, String value) {
+//    //    public <T> L co(SerializableToStringFunction<T> name, String value) {
 //    //        return co(getPropertyName(name), value);
 //    //    }
 //    //    /**
 //    //     * {@inheritDoc}
 //    //     */
 //    //    @Override
-//    //    public L co(StringSupplier property) {
+//    //    public L co(SerializableStringSupplier property) {
 //    //        SerializableSupplierLambdaInfo<String> info = LambdaUtils.getSerializableSupplierLambdaInfo(property);
 //    //        return co(info.getSerializedLambdaInfo().getPropertyName(), info.getValue());
 //    //    }
@@ -864,7 +864,7 @@
 //     * {@inheritDoc}
 //     */
 //    @Override
-//    public <T> L co(ReturnStringFunction<T> name, String value, QueryPolicy queryPolicy) {
+//    public <T> L co(SerializableToStringFunction<T> name, String value, QueryPolicy queryPolicy) {
 //        return co(getPropertyName(name), value, queryPolicy);
 //    }
 //
@@ -872,7 +872,7 @@
 //     * {@inheritDoc}
 //     */
 //    @Override
-//    public L co(StringSupplier property, QueryPolicy queryPolicy) {
+//    public L co(SerializableStringSupplier property, QueryPolicy queryPolicy) {
 //        SerializableSupplierLambdaInfo<String> info = LambdaUtils.getSerializableSupplierLambdaInfo(property);
 //        return co(info.getSerializedLambdaInfo().getPropertyName(), info.getValue(), queryPolicy);
 //    }
@@ -1037,7 +1037,7 @@
 //     * {@inheritDoc}
 //     */
 //    @Override
-//    public <T, D extends Date> L ge(ReturnDateFunction<T, D> name, D value) {
+//    public <T, D extends Date> L ge(SerializableToDateFunction<T, D> name, D value) {
 //        return ge(getPropertyName(name), value);
 //    }
 //
@@ -1045,7 +1045,7 @@
 //     * {@inheritDoc}
 //     */
 //    @Override
-//    public <T> L ge(ReturnLocalDateFunction<T> name, LocalDate value) {
+//    public <T> L ge(SerializableToLocalDateFunction<T> name, LocalDate value) {
 //        return ge(getPropertyName(name), value);
 //    }
 //
@@ -1053,7 +1053,7 @@
 //     * {@inheritDoc}
 //     */
 //    @Override
-//    public <T> L ge(ReturnLocalDateTimeFunction<T> name, LocalDateTime value) {
+//    public <T> L ge(SerializableToLocalDateTimeFunction<T> name, LocalDateTime value) {
 //        return ge(getPropertyName(name), value);
 //    }
 //
@@ -1061,7 +1061,7 @@
 //     * {@inheritDoc}
 //     */
 //    @Override
-//    public <T> L ge(ReturnLocalTimeFunction<T> name, LocalTime value) {
+//    public <T> L ge(SerializableToLocalTimeFunction<T> name, LocalTime value) {
 //        return ge(getPropertyName(name), value);
 //    }
 //
@@ -1069,7 +1069,7 @@
 //     * {@inheritDoc}
 //     */
 //    @Override
-//    public <T, N extends Number> L ge(ReturnNumberFunction<T, N> name, N value) {
+//    public <T, N extends Number> L ge(SerializableToNumberFunction<T, N> name, N value) {
 //        return ge(getPropertyName(name), value);
 //    }
 //
@@ -1077,7 +1077,7 @@
 //     * {@inheritDoc}
 //     */
 //    @Override
-//    public <T> L ge(ReturnStringFunction<T> name, String value) {
+//    public <T> L ge(SerializableToStringFunction<T> name, String value) {
 //        return ge(getPropertyName(name), value);
 //    }
 //
@@ -1319,7 +1319,7 @@
 //     * {@inheritDoc}
 //     */
 //    @Override
-//    public <T, D extends Date> L gt(ReturnDateFunction<T, D> name, D value) {
+//    public <T, D extends Date> L gt(SerializableToDateFunction<T, D> name, D value) {
 //        return gt(getPropertyName(name), value);
 //    }
 //
@@ -1327,7 +1327,7 @@
 //     * {@inheritDoc}
 //     */
 //    @Override
-//    public <T> L gt(ReturnLocalDateFunction<T> name, LocalDate value) {
+//    public <T> L gt(SerializableToLocalDateFunction<T> name, LocalDate value) {
 //        return gt(getPropertyName(name), value);
 //    }
 //
@@ -1335,7 +1335,7 @@
 //     * {@inheritDoc}
 //     */
 //    @Override
-//    public <T> L gt(ReturnLocalDateTimeFunction<T> name, LocalDateTime value) {
+//    public <T> L gt(SerializableToLocalDateTimeFunction<T> name, LocalDateTime value) {
 //        return gt(getPropertyName(name), value);
 //    }
 //
@@ -1343,7 +1343,7 @@
 //     * {@inheritDoc}
 //     */
 //    @Override
-//    public <T> L gt(ReturnLocalTimeFunction<T> name, LocalTime value) {
+//    public <T> L gt(SerializableToLocalTimeFunction<T> name, LocalTime value) {
 //        return gt(getPropertyName(name), value);
 //    }
 //
@@ -1351,7 +1351,7 @@
 //     * {@inheritDoc}
 //     */
 //    @Override
-//    public <T, N extends Number> L gt(ReturnNumberFunction<T, N> name, N value) {
+//    public <T, N extends Number> L gt(SerializableToNumberFunction<T, N> name, N value) {
 //        return gt(getPropertyName(name), value);
 //    }
 //
@@ -1359,7 +1359,7 @@
 //     * {@inheritDoc}
 //     */
 //    @Override
-//    public <T> L gt(ReturnStringFunction<T> name, String value) {
+//    public <T> L gt(SerializableToStringFunction<T> name, String value) {
 //        return gt(getPropertyName(name), value);
 //    }
 //
@@ -1786,7 +1786,7 @@
 //     * {@inheritDoc}
 //     */
 //    @Override
-//    public <T, D extends Date> L le(ReturnDateFunction<T, D> name, D value) {
+//    public <T, D extends Date> L le(SerializableToDateFunction<T, D> name, D value) {
 //        return le(getPropertyName(name), value);
 //    }
 //
@@ -1794,7 +1794,7 @@
 //     * {@inheritDoc}
 //     */
 //    @Override
-//    public <T> L le(ReturnLocalDateFunction<T> name, LocalDate value) {
+//    public <T> L le(SerializableToLocalDateFunction<T> name, LocalDate value) {
 //        return le(getPropertyName(name), value);
 //    }
 //
@@ -1802,7 +1802,7 @@
 //     * {@inheritDoc}
 //     */
 //    @Override
-//    public <T> L le(ReturnLocalDateTimeFunction<T> name, LocalDateTime value) {
+//    public <T> L le(SerializableToLocalDateTimeFunction<T> name, LocalDateTime value) {
 //        return le(getPropertyName(name), value);
 //    }
 //
@@ -1810,7 +1810,7 @@
 //     * {@inheritDoc}
 //     */
 //    @Override
-//    public <T> L le(ReturnLocalTimeFunction<T> name, LocalTime value) {
+//    public <T> L le(SerializableToLocalTimeFunction<T> name, LocalTime value) {
 //        return le(getPropertyName(name), value);
 //    }
 //
@@ -1818,7 +1818,7 @@
 //     * {@inheritDoc}
 //     */
 //    @Override
-//    public <T, N extends Number> L le(ReturnNumberFunction<T, N> name, N value) {
+//    public <T, N extends Number> L le(SerializableToNumberFunction<T, N> name, N value) {
 //        return le(getPropertyName(name), value);
 //    }
 //
@@ -1826,7 +1826,7 @@
 //     * {@inheritDoc}
 //     */
 //    @Override
-//    public <T> L le(ReturnStringFunction<T> name, String value) {
+//    public <T> L le(SerializableToStringFunction<T> name, String value) {
 //        return le(getPropertyName(name), value);
 //    }
 //
@@ -2044,7 +2044,7 @@
 //     * {@inheritDoc}
 //     */
 //    @Override
-//    public <T, D extends Date> L lt(ReturnDateFunction<T, D> name, D value) {
+//    public <T, D extends Date> L lt(SerializableToDateFunction<T, D> name, D value) {
 //        return lt(getPropertyName(name), value);
 //    }
 //
@@ -2052,7 +2052,7 @@
 //     * {@inheritDoc}
 //     */
 //    @Override
-//    public <T> L lt(ReturnLocalDateFunction<T> name, LocalDate value) {
+//    public <T> L lt(SerializableToLocalDateFunction<T> name, LocalDate value) {
 //        return lt(getPropertyName(name), value);
 //    }
 //
@@ -2060,7 +2060,7 @@
 //     * {@inheritDoc}
 //     */
 //    @Override
-//    public <T> L lt(ReturnLocalDateTimeFunction<T> name, LocalDateTime value) {
+//    public <T> L lt(SerializableToLocalDateTimeFunction<T> name, LocalDateTime value) {
 //        return lt(getPropertyName(name), value);
 //    }
 //
@@ -2068,7 +2068,7 @@
 //     * {@inheritDoc}
 //     */
 //    @Override
-//    public <T> L lt(ReturnLocalTimeFunction<T> name, LocalTime value) {
+//    public <T> L lt(SerializableToLocalTimeFunction<T> name, LocalTime value) {
 //        return lt(getPropertyName(name), value);
 //    }
 //
@@ -2076,7 +2076,7 @@
 //     * {@inheritDoc}
 //     */
 //    @Override
-//    public <T, N extends Number> L lt(ReturnNumberFunction<T, N> name, N value) {
+//    public <T, N extends Number> L lt(SerializableToNumberFunction<T, N> name, N value) {
 //        return lt(getPropertyName(name), value);
 //    }
 //
@@ -2084,7 +2084,7 @@
 //     * {@inheritDoc}
 //     */
 //    @Override
-//    public <T> L lt(ReturnStringFunction<T> name, String value) {
+//    public <T> L lt(SerializableToStringFunction<T> name, String value) {
 //        return lt(getPropertyName(name), value);
 //    }
 //
@@ -2411,7 +2411,7 @@
 //     * {@inheritDoc}
 //     */
 //    @Override
-//    public <T> StringExpression<C, L> property(ReturnStringFunction<T> name) {
+//    public <T> StringExpression<C, L> property(SerializableToStringFunction<T> name) {
 //        return propertyString(getPropertyName(name));
 //    }
 //
@@ -2419,7 +2419,7 @@
 //     * {@inheritDoc}
 //     */
 //    @Override
-//    public <T, R extends Number> NumberExpression<R, C, L> property(ReturnNumberFunction<T, R> name) {
+//    public <T, R extends Number> NumberExpression<R, C, L> property(SerializableToNumberFunction<T, R> name) {
 //        return (NumberExpression<R, C, L>) propertyNumber(getPropertyName(name));
 //    }
 //
@@ -2427,7 +2427,7 @@
 //     * {@inheritDoc}
 //     */
 //    @Override
-//    public <T, R extends Date> DateExpression<R, C, L> property(ReturnDateFunction<T, R> name) {
+//    public <T, R extends Date> DateExpression<R, C, L> property(SerializableToDateFunction<T, R> name) {
 //        return propertyDate(getPropertyName(name));
 //    }
 //
@@ -2435,7 +2435,7 @@
 //     * {@inheritDoc}
 //     */
 //    @Override
-//    public <T, R extends Enum<R>> EnumExpression<R, C, L> property(ReturnEnumFunction<T, R> name) {
+//    public <T, R extends Enum<R>> EnumExpression<R, C, L> property(SerializableToEnumFunction<T, R> name) {
 //        return propertyEnum(getPropertyName(name));
 //    }
 //
@@ -2474,7 +2474,7 @@
 //     * {@inheritDoc}
 //     */
 //    @Override
-//    public <R extends Date> L ge(DateSupplier<R> property) {
+//    public <R extends Date> L ge(SerializableDateSupplier<R> property) {
 //        SerializableSupplierLambdaInfo<R> info = LambdaUtils.getSerializableSupplierLambdaInfo(property);
 //        return ge(info.getSerializedLambdaInfo().getPropertyName(), info.getValue());
 //    }
@@ -2483,7 +2483,7 @@
 //     * {@inheritDoc}
 //     */
 //    @Override
-//    public <R extends Number> L ge(NumberSupplier<R> property) {
+//    public <R extends Number> L ge(SerializableNumberSupplier<R> property) {
 //        SerializableSupplierLambdaInfo<R> info = LambdaUtils.getSerializableSupplierLambdaInfo(property);
 //        return ge(info.getSerializedLambdaInfo().getPropertyName(), info.getValue());
 //    }
@@ -2492,7 +2492,7 @@
 //     * {@inheritDoc}
 //     */
 //    @Override
-//    public L ge(LocalDateSupplier property) {
+//    public L ge(SerializableLocalDateSupplier property) {
 //        SerializableSupplierLambdaInfo<LocalDate> info = LambdaUtils.getSerializableSupplierLambdaInfo(property);
 //        return ge(info.getSerializedLambdaInfo().getPropertyName(), info.getValue());
 //    }
@@ -2501,7 +2501,7 @@
 //     * {@inheritDoc}
 //     */
 //    @Override
-//    public L ge(LocalTimeSupplier property) {
+//    public L ge(SerializableLocalTimeSupplier property) {
 //        SerializableSupplierLambdaInfo<LocalTime> info = LambdaUtils.getSerializableSupplierLambdaInfo(property);
 //        return ge(info.getSerializedLambdaInfo().getPropertyName(), info.getValue());
 //    }
@@ -2510,7 +2510,7 @@
 //     * {@inheritDoc}
 //     */
 //    @Override
-//    public L ge(LocalDateTimeSupplier property) {
+//    public L ge(SerializableLocalDateTimeSupplier property) {
 //        SerializableSupplierLambdaInfo<LocalDateTime> info = LambdaUtils.getSerializableSupplierLambdaInfo(property);
 //        return ge(info.getSerializedLambdaInfo().getPropertyName(), info.getValue());
 //    }
@@ -2519,7 +2519,7 @@
 //     * {@inheritDoc}
 //     */
 //    @Override
-//    public L ge(StringSupplier property) {
+//    public L ge(SerializableStringSupplier property) {
 //        SerializableSupplierLambdaInfo<String> info = LambdaUtils.getSerializableSupplierLambdaInfo(property);
 //        return ge(info.getSerializedLambdaInfo().getPropertyName(), info.getValue());
 //    }
@@ -2528,7 +2528,7 @@
 //     * {@inheritDoc}
 //     */
 //    @Override
-//    public <R extends Number> L gt(NumberSupplier<R> property) {
+//    public <R extends Number> L gt(SerializableNumberSupplier<R> property) {
 //        SerializableSupplierLambdaInfo<R> info = LambdaUtils.getSerializableSupplierLambdaInfo(property);
 //        return gt(info.getSerializedLambdaInfo().getPropertyName(), info.getValue());
 //    }
@@ -2537,7 +2537,7 @@
 //     * {@inheritDoc}
 //     */
 //    @Override
-//    public <R extends Date> L gt(DateSupplier<R> property) {
+//    public <R extends Date> L gt(SerializableDateSupplier<R> property) {
 //        SerializableSupplierLambdaInfo<R> info = LambdaUtils.getSerializableSupplierLambdaInfo(property);
 //        return gt(info.getSerializedLambdaInfo().getPropertyName(), info.getValue());
 //    }
@@ -2546,7 +2546,7 @@
 //     * {@inheritDoc}
 //     */
 //    @Override
-//    public L gt(LocalDateSupplier property) {
+//    public L gt(SerializableLocalDateSupplier property) {
 //        SerializableSupplierLambdaInfo<LocalDate> info = LambdaUtils.getSerializableSupplierLambdaInfo(property);
 //        return gt(info.getSerializedLambdaInfo().getPropertyName(), info.getValue());
 //    }
@@ -2555,7 +2555,7 @@
 //     * {@inheritDoc}
 //     */
 //    @Override
-//    public L gt(LocalTimeSupplier property) {
+//    public L gt(SerializableLocalTimeSupplier property) {
 //        SerializableSupplierLambdaInfo<LocalTime> info = LambdaUtils.getSerializableSupplierLambdaInfo(property);
 //        return gt(info.getSerializedLambdaInfo().getPropertyName(), info.getValue());
 //    }
@@ -2564,7 +2564,7 @@
 //     * {@inheritDoc}
 //     */
 //    @Override
-//    public L gt(LocalDateTimeSupplier property) {
+//    public L gt(SerializableLocalDateTimeSupplier property) {
 //        SerializableSupplierLambdaInfo<LocalDateTime> info = LambdaUtils.getSerializableSupplierLambdaInfo(property);
 //        return gt(info.getSerializedLambdaInfo().getPropertyName(), info.getValue());
 //    }
@@ -2573,7 +2573,7 @@
 //     * {@inheritDoc}
 //     */
 //    @Override
-//    public L gt(StringSupplier property) {
+//    public L gt(SerializableStringSupplier property) {
 //        SerializableSupplierLambdaInfo<String> info = LambdaUtils.getSerializableSupplierLambdaInfo(property);
 //        return gt(info.getSerializedLambdaInfo().getPropertyName(), info.getValue());
 //    }
@@ -2582,7 +2582,7 @@
 //     * {@inheritDoc}
 //     */
 //    @Override
-//    public <R extends Date> L le(DateSupplier<R> property) {
+//    public <R extends Date> L le(SerializableDateSupplier<R> property) {
 //        SerializableSupplierLambdaInfo<R> info = LambdaUtils.getSerializableSupplierLambdaInfo(property);
 //        return le(info.getSerializedLambdaInfo().getPropertyName(), info.getValue());
 //    }
@@ -2591,7 +2591,7 @@
 //     * {@inheritDoc}
 //     */
 //    @Override
-//    public <R extends Number> L le(NumberSupplier<R> property) {
+//    public <R extends Number> L le(SerializableNumberSupplier<R> property) {
 //        SerializableSupplierLambdaInfo<R> info = LambdaUtils.getSerializableSupplierLambdaInfo(property);
 //        return le(info.getSerializedLambdaInfo().getPropertyName(), info.getValue());
 //    }
@@ -2600,7 +2600,7 @@
 //     * {@inheritDoc}
 //     */
 //    @Override
-//    public L le(LocalDateSupplier property) {
+//    public L le(SerializableLocalDateSupplier property) {
 //        SerializableSupplierLambdaInfo<LocalDate> info = LambdaUtils.getSerializableSupplierLambdaInfo(property);
 //        return le(info.getSerializedLambdaInfo().getPropertyName(), info.getValue());
 //    }
@@ -2609,7 +2609,7 @@
 //     * {@inheritDoc}
 //     */
 //    @Override
-//    public L le(LocalTimeSupplier property) {
+//    public L le(SerializableLocalTimeSupplier property) {
 //        SerializableSupplierLambdaInfo<LocalTime> info = LambdaUtils.getSerializableSupplierLambdaInfo(property);
 //        return le(info.getSerializedLambdaInfo().getPropertyName(), info.getValue());
 //    }
@@ -2618,7 +2618,7 @@
 //     * {@inheritDoc}
 //     */
 //    @Override
-//    public L le(LocalDateTimeSupplier property) {
+//    public L le(SerializableLocalDateTimeSupplier property) {
 //        SerializableSupplierLambdaInfo<LocalDateTime> info = LambdaUtils.getSerializableSupplierLambdaInfo(property);
 //        return le(info.getSerializedLambdaInfo().getPropertyName(), info.getValue());
 //    }
@@ -2627,7 +2627,7 @@
 //     * {@inheritDoc}
 //     */
 //    @Override
-//    public L le(StringSupplier property) {
+//    public L le(SerializableStringSupplier property) {
 //        SerializableSupplierLambdaInfo<String> info = LambdaUtils.getSerializableSupplierLambdaInfo(property);
 //        return le(info.getSerializedLambdaInfo().getPropertyName(), info.getValue());
 //    }
@@ -2636,7 +2636,7 @@
 //     * {@inheritDoc}
 //     */
 //    @Override
-//    public <R extends Number> L lt(NumberSupplier<R> property) {
+//    public <R extends Number> L lt(SerializableNumberSupplier<R> property) {
 //        SerializableSupplierLambdaInfo<R> info = LambdaUtils.getSerializableSupplierLambdaInfo(property);
 //        return lt(info.getSerializedLambdaInfo().getPropertyName(), info.getValue());
 //    }
@@ -2645,7 +2645,7 @@
 //     * {@inheritDoc}
 //     */
 //    @Override
-//    public <R extends Date> L lt(DateSupplier<R> property) {
+//    public <R extends Date> L lt(SerializableDateSupplier<R> property) {
 //        SerializableSupplierLambdaInfo<R> info = LambdaUtils.getSerializableSupplierLambdaInfo(property);
 //        return lt(info.getSerializedLambdaInfo().getPropertyName(), info.getValue());
 //    }
@@ -2654,7 +2654,7 @@
 //     * {@inheritDoc}
 //     */
 //    @Override
-//    public L lt(LocalDateSupplier property) {
+//    public L lt(SerializableLocalDateSupplier property) {
 //        SerializableSupplierLambdaInfo<LocalDate> info = LambdaUtils.getSerializableSupplierLambdaInfo(property);
 //        return lt(info.getSerializedLambdaInfo().getPropertyName(), info.getValue());
 //    }
@@ -2663,7 +2663,7 @@
 //     * {@inheritDoc}
 //     */
 //    @Override
-//    public L lt(LocalTimeSupplier property) {
+//    public L lt(SerializableLocalTimeSupplier property) {
 //        SerializableSupplierLambdaInfo<LocalTime> info = LambdaUtils.getSerializableSupplierLambdaInfo(property);
 //        return lt(info.getSerializedLambdaInfo().getPropertyName(), info.getValue());
 //    }
@@ -2672,7 +2672,7 @@
 //     * {@inheritDoc}
 //     */
 //    @Override
-//    public L lt(LocalDateTimeSupplier property) {
+//    public L lt(SerializableLocalDateTimeSupplier property) {
 //        SerializableSupplierLambdaInfo<LocalDateTime> info = LambdaUtils.getSerializableSupplierLambdaInfo(property);
 //        return lt(info.getSerializedLambdaInfo().getPropertyName(), info.getValue());
 //    }
@@ -2681,7 +2681,7 @@
 //     * {@inheritDoc}
 //     */
 //    @Override
-//    public L lt(StringSupplier property) {
+//    public L lt(SerializableStringSupplier property) {
 //        SerializableSupplierLambdaInfo<String> info = LambdaUtils.getSerializableSupplierLambdaInfo(property);
 //        return lt(info.getSerializedLambdaInfo().getPropertyName(), info.getValue());
 //    }

@@ -10,7 +10,6 @@ import cn.featherfly.common.db.builder.dml.basic.SqlSelectBasicBuilder;
 import cn.featherfly.common.db.mapping.ClassMappingUtils;
 import cn.featherfly.common.db.mapping.JdbcMappingFactory;
 import cn.featherfly.common.lang.LambdaUtils;
-import cn.featherfly.common.lang.Lang;
 import cn.featherfly.common.lang.function.SerializableFunction;
 import cn.featherfly.common.operator.AggregateFunction;
 import cn.featherfly.common.repository.builder.dml.SortBuilder;
@@ -18,9 +17,9 @@ import cn.featherfly.common.structure.page.Limit;
 import cn.featherfly.common.structure.page.PaginationResults;
 import cn.featherfly.hammer.expression.entity.query.EntityQueryConditionGroupExpression;
 import cn.featherfly.hammer.expression.entity.query.EntityQueryConditionGroupLogicExpression;
+import cn.featherfly.hammer.expression.entity.query.EntityQueryLimitExecutor;
 import cn.featherfly.hammer.expression.entity.query.EntityQuerySortExpression;
 import cn.featherfly.hammer.expression.entity.query.EntityQuerySortedExpression;
-import cn.featherfly.hammer.expression.query.type.EntityQueryLimitExecutor;
 import cn.featherfly.hammer.sqldb.jdbc.SqlPageFactory;
 import cn.featherfly.hammer.sqldb.jdbc.dsl.entity.EntitySqlQueryRelation;
 
@@ -66,23 +65,23 @@ public abstract class AbstractEntitySqlQueryConditionGroupExpression<E,
                 entityRelation);
     }
 
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public String build() {
-        StringBuilder result = new StringBuilder(super.build());
-        String sort = sortBuilder.build();
-        if (result.length() > 0) {
-            if (Lang.isNotEmpty(sort)) {
-                return result.append(Chars.SPACE).append(sort).toString();
-            } else {
-                return result.toString();
-            }
-        } else {
-            return sort;
-        }
-    }
+    //    /**
+    //     * {@inheritDoc}
+    //     */
+    //    @Override
+    //    public String build() {
+    //        StringBuilder result = new StringBuilder(super.build());
+    //        String sort = sortBuilder.build();
+    //        if (result.length() > 0) {
+    //            if (Lang.isNotEmpty(sort)) {
+    //                return result.append(Chars.SPACE).append(sort).toString();
+    //            } else {
+    //                return result.toString();
+    //            }
+    //        } else {
+    //            return sort;
+    //        }
+    //    }
 
     @Override
     public EntityQueryLimitExecutor<E> limit(Limit limit) {
@@ -314,7 +313,7 @@ public abstract class AbstractEntitySqlQueryConditionGroupExpression<E,
     //	private method
     // ****************************************************************************************************************
 
-    private SortBuilder getRootSortBuilder() {
+    protected SortBuilder getRootSortBuilder() {
         return ((AbstractEntitySqlQueryConditionGroupExpression<E, C, L>) getRoot()).sortBuilder;
     }
 }

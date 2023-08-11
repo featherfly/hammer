@@ -6,6 +6,13 @@ import cn.featherfly.hammer.expression.ConditionGroupExpression;
 import cn.featherfly.hammer.expression.ConditionGroupLogicExpression;
 import cn.featherfly.hammer.expression.RepositoryConditionGroupLogicExpression;
 import cn.featherfly.hammer.expression.condition.RepositoryConditionsGroupExpression;
+import cn.featherfly.hammer.expression.entity.query.EntityQueryConditionGroupExpression;
+import cn.featherfly.hammer.expression.entity.query.EntityQueryConditionGroupLogicExpression;
+import cn.featherfly.hammer.expression.entity.query.EntityQueryFetchExpression;
+import cn.featherfly.hammer.expression.entity.query.EntityQueryFetchedPropertyExpression;
+import cn.featherfly.hammer.expression.entity.query.EntityQuerySortExpression;
+import cn.featherfly.hammer.expression.entity.query.EntityQueryValueConditionGroupExpression;
+import cn.featherfly.hammer.expression.entity.query.EntityQueryValueConditionGroupLogicExpression;
 
 /**
  * dsl for query.
@@ -29,14 +36,15 @@ public interface QueryExpression<Q extends QueryEntityExpression<QP, QW, QWO, QW
         QWO extends QueryRelateOnExpression<QW, QWO, QWE, RC, RL>,
         QWE extends QueryRelateEntityExpression<QW, QWO, QWE, RC, RL>, C extends ConditionGroupExpression<C, L>,
         L extends ConditionGroupLogicExpression<C, L>, RC extends RepositoryConditionsGroupExpression<RC, RL>,
-        RL extends RepositoryConditionGroupLogicExpression<RC, RL>,
-        //        TQ extends TypeQueryEntityExpression<TQP, TQW, TQWE, TC, TL, RTC, RTL>,
-        //        TQP extends TypeQueryEntityPropertiesExpression<TQP, TQW, TQWE, TC, TL, RTC, RTL>,
-        //        TQW extends TypeQueryWithExpression<TQW, TQWE, RTC, RTL>,
-        //        TQWE extends TypeQueryWithEntityExpression<TQW, TQWE, RTC, RTL>,
-        //        TC extends TypeConditionGroupExpression<TC, TL>, TL extends TypeConditionGroupLogicExpression<TC, TL>,
-        RTC extends RepositoryConditionsGroupExpression<RTC, RTL>,
-        RTL extends RepositoryConditionGroupLogicExpression<RTC, RTL>
+        RL extends RepositoryConditionGroupLogicExpression<RC, RL>
+//,
+//        TQ extends TypeQueryEntityExpression<TQP, TQW, TQWE, TC, TL, RTC, RTL>,
+//        TQP extends TypeQueryEntityPropertiesExpression<TQP, TQW, TQWE, TC, TL, RTC, RTL>,
+//        TQW extends TypeQueryWithExpression<TQW, TQWE, RTC, RTL>,
+//        TQWE extends TypeQueryWithEntityExpression<TQW, TQWE, RTC, RTL>,
+//        TC extends TypeConditionGroupExpression<TC, TL>, TL extends TypeConditionGroupLogicExpression<TC, TL>,
+//        RTC extends RepositoryConditionsGroupExpression<RTC, RTL>,
+//        RTL extends RepositoryConditionGroupLogicExpression<RTC, RTL>
 //        ,
 //        EQ extends EntityQueryEntityExpression<?, EQP, EQW, EQWE, EC, EL>,
 //        EQP extends EntityQueryEntityPropertiesExpression<?, EQP, EQW, EQWE, EC, EL>,
@@ -46,28 +54,42 @@ public interface QueryExpression<Q extends QueryEntityExpression<QP, QW, QWO, QW
 > {
 
     /**
-     * find repository.
+     * start query dsl for repository.
      *
      * @param repository repository
-     * @return QueryEntity
+     * @return generic type of QueryEntityExpression
      */
     Q find(Repository repository);
 
-    // /**
-    // * find repository
-    // *
-    // * @param repository repository
-    // * @return QueryEntity
-    // */
-    // <T, R> Q find(SerializableFunction<T, R> repository);
-
     /**
-     * find repository.
+     * start query dsl for repository.
      *
      * @param repository repository
-     * @return QueryEntity
+     * @return generic type of QueryEntityExpression
      */
     Q find(String repository);
+
+    /**
+     * start query dsl for repository.
+     *
+     * @param <EQF>      the generic type
+     * @param <E>        the element type
+     * @param <EQC>      the generic type
+     * @param <EQL>      the generic type
+     * @param <EQFP>     the generic type
+     * @param <EQVC>     the generic type
+     * @param <EQVL>     the generic type
+     * @param <RS>       the generic type
+     * @param entityType the entity type
+     * @return generic type of EntityQueryFetchExpression
+     */
+    <EQF extends EntityQueryFetchExpression<E, EQC, EQL, EQFP, EQVC, EQVL, RS>, E,
+            EQC extends EntityQueryConditionGroupExpression<E, EQC, EQL, RS>,
+            EQL extends EntityQueryConditionGroupLogicExpression<E, EQC, EQL, RS>,
+            EQFP extends EntityQueryFetchedPropertyExpression<E, EQVC, EQVL, EQFP, RS>,
+            EQVC extends EntityQueryValueConditionGroupExpression<E, EQVC, EQVL, RS>,
+            EQVL extends EntityQueryValueConditionGroupLogicExpression<E, EQVC, EQVL, RS>,
+            RS extends EntityQuerySortExpression<E>> EQF find(Class<E> entityType);
 
     //    /**
     //     * find repository type.

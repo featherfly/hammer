@@ -4,8 +4,8 @@ package cn.featherfly.hammer.sqldb.jdbc.dsl.entity.query;
 import cn.featherfly.common.constant.Chars;
 import cn.featherfly.common.db.mapping.JdbcMappingFactory;
 import cn.featherfly.common.lang.Lang;
-import cn.featherfly.hammer.dsl.query.type.EntityQueryConditionGroup3;
-import cn.featherfly.hammer.dsl.query.type.EntityQueryConditionGroupLogic3;
+import cn.featherfly.hammer.dsl.entity.query.EntityQueryConditionGroup3;
+import cn.featherfly.hammer.dsl.entity.query.EntityQueryConditionGroupLogic3;
 import cn.featherfly.hammer.sqldb.jdbc.SqlPageFactory;
 import cn.featherfly.hammer.sqldb.jdbc.dsl.entity.EntitySqlQueryRelation;
 import cn.featherfly.hammer.sqldb.sql.dml.AbstractEntitySqlQueryConditionGroupExpression3;
@@ -55,10 +55,6 @@ public class EntitySqlQueryExpression3<E, E2, E3, RS> extends
     @Override
     protected EntityQueryConditionGroup3<E, E2, E3, RS> createGroup(
             EntityQueryConditionGroupLogic3<E, E2, E3, RS> parent) {
-        //      IMPLSOON 后续来实现，先让编译通过
-        //        if (selectBuilder != null) {
-        //            selectBuilder.setTableAlias(queryAlias);
-        //        }
         return new EntitySqlQueryExpression3<>(parent, factory, sqlPageFactory, entityRelation);
     }
 
@@ -67,19 +63,15 @@ public class EntitySqlQueryExpression3<E, E2, E3, RS> extends
      */
     @Override
     public String build() {
-        //        String result = entityRelation.buildSelectSql();
-        //        String condition = super.build();
-        //        if (Lang.isNotEmpty(condition)) {
-        //            result = result + Chars.SPACE + dialect.getKeywords().where() + Chars.SPACE + condition;
-        //        }
-        //        return result;
-        String result = entityRelation.buildSelectSql();
         String condition = super.build();
         if (parent == null) {
+            String result = entityRelation.buildSelectSql();
+            String sort = getRootSortBuilder().build();
             if (Lang.isEmpty(condition)) {
-                return result;
+                return result + Chars.SPACE + sort;
             } else {
-                return result + Chars.SPACE + dialect.getKeywords().where() + Chars.SPACE + condition;
+                return result + Chars.SPACE + dialect.getKeywords().where() + Chars.SPACE + condition + Chars.SPACE
+                        + sort;
             }
         } else {
             return condition;

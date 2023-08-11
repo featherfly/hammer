@@ -12,7 +12,7 @@ import cn.featherfly.common.lang.function.SerializableSupplier;
 import cn.featherfly.common.repository.AliasRepository;
 import cn.featherfly.common.repository.IgnoreStrategy;
 import cn.featherfly.common.repository.Repository;
-import cn.featherfly.hammer.dsl.execute.ExecutableConditionGroupExpression;
+import cn.featherfly.hammer.dsl.execute.ExecutableConditionGroup;
 import cn.featherfly.hammer.dsl.execute.ExecutableUpdate;
 import cn.featherfly.hammer.dsl.execute.UpdateNumberValue;
 import cn.featherfly.hammer.dsl.execute.UpdateNumberValueImpl;
@@ -276,7 +276,7 @@ public class SqlExecutableUpdate extends AbstractSqlExecutableUpdate<SqlExecutab
      * {@inheritDoc}
      */
     @Override
-    public ExecutableConditionGroupExpression where() {
+    public ExecutableConditionGroup where() {
         return new SqlUpdateExpression(jdbc, builder);
     }
 
@@ -284,8 +284,8 @@ public class SqlExecutableUpdate extends AbstractSqlExecutableUpdate<SqlExecutab
      * {@inheritDoc}
      */
     @Override
-    public ExecutableConditionGroupExpression where(
-            Consumer<ConditionGroupConfig<ExecutableConditionGroupExpression>> consumer) {
+    public ExecutableConditionGroup where(
+            Consumer<ConditionGroupConfig<ExecutableConditionGroup>> consumer) {
         SqlUpdateExpression sqlUpdateExpression = new SqlUpdateExpression(jdbc, builder);
         if (consumer != null) {
             consumer.accept(sqlUpdateExpression);

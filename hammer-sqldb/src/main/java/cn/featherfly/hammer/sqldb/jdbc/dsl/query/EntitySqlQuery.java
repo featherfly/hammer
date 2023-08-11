@@ -1,7 +1,7 @@
 
 package cn.featherfly.hammer.sqldb.jdbc.dsl.query;
 
-import cn.featherfly.hammer.dsl.query.type.EntityQuery;
+import cn.featherfly.hammer.dsl.entity.query.EntityQuery;
 
 /**
  * The Interface EntitySqlQueryEntity.

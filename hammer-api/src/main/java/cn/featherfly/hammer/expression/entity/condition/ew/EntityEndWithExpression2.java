@@ -85,7 +85,7 @@ public interface EntityEndWithExpression2<E, E2, C extends ConditionExpression, 
     //     */
     //    default L ew(
     //            Function<Tuple2<QueryEntityRepository<E>, QueryEntityRepository<E2>>, QueryEntityRepository<E>> entities,
-    //            StringSupplier property) {
+    //            SerializableStringSupplier property) {
     //        return ew(entities, property, QueryPolicy.AUTO);
     //    }
     //
@@ -99,7 +99,7 @@ public interface EntityEndWithExpression2<E, E2, C extends ConditionExpression, 
     //     */
     //    default L ew(
     //            Function<Tuple2<QueryEntityRepository<E>, QueryEntityRepository<E2>>, QueryEntityRepository<E>> entities,
-    //            StringSupplier property, Predicate<String> ignoreStrategy) {
+    //            SerializableStringSupplier property, Predicate<String> ignoreStrategy) {
     //        return ew(entities, property, QueryPolicy.AUTO, ignoreStrategy);
     //    }
     //
@@ -112,7 +112,7 @@ public interface EntityEndWithExpression2<E, E2, C extends ConditionExpression, 
     //     * @return LogicExpression
     //     */
     //    L ew(Function<Tuple2<QueryEntityRepository<E>, QueryEntityRepository<E2>>, QueryEntityRepository<E>> entities,
-    //            StringSupplier property, QueryPolicy queryPolicy);
+    //            SerializableStringSupplier property, QueryPolicy queryPolicy);
     //
     //    /**
     //     * end with value. 以value结尾.
@@ -124,7 +124,7 @@ public interface EntityEndWithExpression2<E, E2, C extends ConditionExpression, 
     //     * @return LogicExpression
     //     */
     //    L ew(Function<Tuple2<QueryEntityRepository<E>, QueryEntityRepository<E2>>, QueryEntityRepository<E>> entities,
-    //            StringSupplier property, QueryPolicy queryPolicy, Predicate<String> ignoreStrategy);
+    //            SerializableStringSupplier property, QueryPolicy queryPolicy, Predicate<String> ignoreStrategy);
     //
     //    /**
     //     * end with value. 以value结尾.

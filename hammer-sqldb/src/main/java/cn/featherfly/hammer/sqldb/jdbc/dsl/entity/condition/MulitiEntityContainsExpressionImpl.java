@@ -2,7 +2,7 @@
 /*
  * All rights Reserved, Designed By zhongj
  * @Title: MulitiEntityContainsExpressionImpl.java
- * @Package cn.featherfly.hammer.expression.entity.condition.co
+ * @Package cn.featherfly.hammer.sqldb.jdbc.dsl.entity.condition
  * @Description: MulitiEntityContainsExpressionImpl
  * @author: zhongj
  * @date: 2023-07-28 16:58:28

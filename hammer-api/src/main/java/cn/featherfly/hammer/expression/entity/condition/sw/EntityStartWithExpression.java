@@ -4,7 +4,7 @@ package cn.featherfly.hammer.expression.entity.condition.sw;
 import java.util.function.Predicate;
 
 import cn.featherfly.common.lang.function.SerializableFunction;
-import cn.featherfly.common.lang.function.StringSupplier;
+import cn.featherfly.common.lang.function.SerializableStringSupplier;
 import cn.featherfly.common.operator.QueryOperator.QueryPolicy;
 import cn.featherfly.hammer.expression.condition.ConditionExpression;
 import cn.featherfly.hammer.expression.condition.LogicExpression;
@@ -78,7 +78,7 @@ public interface EntityStartWithExpression<E, C extends ConditionExpression, L e
      * @param property 对象属性
      * @return LogicExpression
      */
-    default L sw(StringSupplier property) {
+    default L sw(SerializableStringSupplier property) {
         return sw(property, QueryPolicy.AUTO);
     }
 
@@ -89,7 +89,7 @@ public interface EntityStartWithExpression<E, C extends ConditionExpression, L e
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
-    default L sw(StringSupplier property, Predicate<String> ignoreStrategy) {
+    default L sw(SerializableStringSupplier property, Predicate<String> ignoreStrategy) {
         return sw(property, QueryPolicy.AUTO, ignoreStrategy);
     }
 
@@ -100,7 +100,7 @@ public interface EntityStartWithExpression<E, C extends ConditionExpression, L e
      * @param queryPolicy the query policy
      * @return the l
      */
-    L sw(StringSupplier property, QueryPolicy queryPolicy);
+    L sw(SerializableStringSupplier property, QueryPolicy queryPolicy);
 
     /**
      * start with value. 以value开始.
@@ -110,7 +110,7 @@ public interface EntityStartWithExpression<E, C extends ConditionExpression, L e
      * @param ignoreStrategy the ignore strategy
      * @return the l
      */
-    L sw(StringSupplier property, QueryPolicy queryPolicy, Predicate<String> ignoreStrategy);
+    L sw(SerializableStringSupplier property, QueryPolicy queryPolicy, Predicate<String> ignoreStrategy);
 
     //  嵌套属性使用property(U1::getU2).property(U2:getV).sw(v)来设置
     //    /**

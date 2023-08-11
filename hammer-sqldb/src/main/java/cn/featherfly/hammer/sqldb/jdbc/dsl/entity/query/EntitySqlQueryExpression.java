@@ -4,8 +4,8 @@ package cn.featherfly.hammer.sqldb.jdbc.dsl.entity.query;
 import cn.featherfly.common.constant.Chars;
 import cn.featherfly.common.db.mapping.JdbcMappingFactory;
 import cn.featherfly.common.lang.Lang;
-import cn.featherfly.hammer.dsl.query.type.EntityQueryConditionGroup;
-import cn.featherfly.hammer.dsl.query.type.EntityQueryConditionGroupLogic;
+import cn.featherfly.hammer.dsl.entity.query.EntityQueryConditionGroup;
+import cn.featherfly.hammer.dsl.entity.query.EntityQueryConditionGroupLogic;
 import cn.featherfly.hammer.sqldb.jdbc.SqlPageFactory;
 import cn.featherfly.hammer.sqldb.jdbc.dsl.entity.EntitySqlQueryRelation;
 import cn.featherfly.hammer.sqldb.sql.dml.AbstractEntitySqlQueryConditionGroupExpression;
@@ -51,10 +51,6 @@ public class EntitySqlQueryExpression<E> extends
      */
     @Override
     protected EntitySqlQueryExpression<E> createGroup(EntityQueryConditionGroupLogic<E> parent) {
-        //      IMPLSOON 后续来实现，先让编译通过
-        //        if (selectBuilder != null) {
-        //            selectBuilder.setTableAlias(queryAlias);
-        //        }
         return new EntitySqlQueryExpression<>(parent, factory, sqlPageFactory, entityRelation);
     }
 
@@ -79,13 +75,27 @@ public class EntitySqlQueryExpression<E> extends
         //        }
         //        return result;
 
-        String result = entityRelation.buildSelectSql();
+        //        String result = entityRelation.buildSelectSql();
+        //        String condition = super.build();
+        //        if (parent == null) {
+        //            if (Lang.isEmpty(condition)) {
+        //                return result;
+        //            } else {
+        //                return result + Chars.SPACE + dialect.getKeywords().where() + Chars.SPACE + condition;
+        //            }
+        //        } else {
+        //            return condition;
+        //        }
+
         String condition = super.build();
         if (parent == null) {
+            String result = entityRelation.buildSelectSql();
+            String sort = getRootSortBuilder().build();
             if (Lang.isEmpty(condition)) {
-                return result;
+                return result + Chars.SPACE + sort;
             } else {
-                return result + Chars.SPACE + dialect.getKeywords().where() + Chars.SPACE + condition;
+                return result + Chars.SPACE + dialect.getKeywords().where() + Chars.SPACE + condition + Chars.SPACE
+                        + sort;
             }
         } else {
             return condition;

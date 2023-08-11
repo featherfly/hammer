@@ -12,9 +12,10 @@ import com.speedment.common.tuple.Tuples;
 
 import cn.featherfly.common.lang.CollectionUtils;
 import cn.featherfly.common.lang.function.SerializableFunction;
+import cn.featherfly.common.lang.function.SerializableFunction2;
 import cn.featherfly.common.lang.function.SerializableFunction4;
+import cn.featherfly.common.lang.function.SerializableStringSupplier;
 import cn.featherfly.common.lang.function.SerializableSupplier;
-import cn.featherfly.common.lang.function.StringSupplier;
 import cn.featherfly.common.operator.AggregateFunction;
 import cn.featherfly.common.repository.IgnoreStrategy;
 import cn.featherfly.common.repository.Repository;
@@ -27,13 +28,13 @@ import cn.featherfly.hammer.dml.builder.sql.vo.User;
 import cn.featherfly.hammer.dml.builder.sql.vo.User2;
 import cn.featherfly.hammer.dml.builder.sql.vo.UserInfo;
 import cn.featherfly.hammer.dml.builder.sql.vo.UserInfo2;
+import cn.featherfly.hammer.dsl.entity.query.EntityQueryConditionGroup;
+import cn.featherfly.hammer.dsl.entity.query.EntityQueryConditionGroup2;
+import cn.featherfly.hammer.dsl.entity.query.EntityQueryConditionGroupLogic;
+import cn.featherfly.hammer.dsl.entity.query.EntityQueryConditionGroupLogic2;
 import cn.featherfly.hammer.dsl.execute.Deleter;
 import cn.featherfly.hammer.dsl.execute.Updater;
 import cn.featherfly.hammer.dsl.query.Query;
-import cn.featherfly.hammer.dsl.query.type.EntityQueryConditionGroup;
-import cn.featherfly.hammer.dsl.query.type.EntityQueryConditionGroup2;
-import cn.featherfly.hammer.dsl.query.type.EntityQueryConditionGroupLogic;
-import cn.featherfly.hammer.dsl.query.type.EntityQueryConditionGroupLogic2;
 import cn.featherfly.hammer.expression.entity.condition.EntityPropertyExpression;
 import cn.featherfly.hammer.expression.entity.condition.EntityPropertyExpression2;
 
@@ -231,10 +232,10 @@ public class DslTest {
 
         // 错误调用
         //        query.find(User.class).where().eq(User::getId, 1).and().eq(DslStaticTypeTest::toString, "").single();
-        query.find(User.class).where().co(User::getUsername, "").and().setIgnoreStrategy(null).co((StringSupplier) null)
-                .single();
-        query.find(User.class).where().setIgnoreStrategy(null).co(User::toString, "").and().co((StringSupplier) null)
-                .list();
+        query.find(User.class).where().co(User::getUsername, "").and().setIgnoreStrategy(null)
+                .co((SerializableStringSupplier) null).single();
+        query.find(User.class).where().setIgnoreStrategy(null).co(User::toString, "").and()
+                .co((SerializableStringSupplier) null).list();
 
         // TODO 如果后续加入编译期增强，则在使用注解标注泛型方法（例如find）
         // 目的是使得各种判断和类型匹配在编译期就处理完成，而不是在运行期就在获取
@@ -245,7 +246,7 @@ public class DslTest {
             此参数需要在编译期就搞好所有中间过程，即在jdbc设置时，不去使用SqlTypeMappingManager进行类型判断
          */
         user = query.<@Enhance User>find(User.class).where().co(User::getUsername, "").and().setIgnoreStrategy(null)
-                .co((StringSupplier) null).single();
+                .co((SerializableStringSupplier) null).single();
     }
 
     public void testEntityQueryJoinOrm() {
@@ -354,10 +355,10 @@ public class DslTest {
 
         query.find(Tree.class).join(Tree::getParent).join(Tree::getParent).join(Tree::getParent);
 
-        // YUFEI_TODO 目前强类型关联查询先实现5级join
-        //        query.find(Tree.class).join(Tree::getParent).join(Tree::getParent).join(Tree::getParent).join(Tree::getParent)
-        //                .join(Tree::getParent).join(Tree::getParent).join(Tree::getParent).join(Tree::getParent)
-        //                .join(Tree::getParent);
+        // 目前强类型关联查询先实现5级join
+        query.find(Tree.class).join(Tree::getParent).join(Tree::getParent).join(Tree::getParent).join(Tree::getParent)
+                //                .join(Tree::getParent).join(Tree::getParent).join(Tree::getParent).join(Tree::getParent)
+                .join(Tree::getParent);
 
         // with join的api定义规则
         /*
@@ -367,16 +368,17 @@ public class DslTest {
         //  这里表示和 tree t2 进行join，所以join tree t3 on t2.id = t3.parent_id
         // 这种实现可能会导致编译出错（例如自关联 Tree::getParent这种）
         // 所以就算实现了相应的方法，也要保留join join1 join2这种不会导致编译报错的方法实现
-
-        // IMPLSOON with join的api定义规则
+        
+        // join的api定义规则，此方案应该是不能实现，因为传入参数无法区分，所以返回参数也无法确定
         /*
          // select * from tree t1 join tree t2 on t1.id = t2.parent_id join tree t3 on t2.id = t3.parent_id
-         query.find(Tree.class).join(Tree::getParent).join(t -> {
+         query.find(Tree.class).join(Tree::getParent).join(es -> {
              //  t为Tuple类型，有几个可以join的对象就是有几个对象的tuple
              //  这里表示和 tree t2 进行join，所以join tree t3 on t2.id = t3.parent_id
-             t.get1().join(Tree::getParent);
+             es.get1().join(Tree::getParent);
          });
-         // IMPLSOON 可以先实现下面这种方式，因为这种方式不需要多个返回结果类型，在现有结构上就能实现
+        
+         // 可以先实现下面这种方式，因为这种方式不需要多个返回结果类型，在现有结构上就能实现，废案
          query.find(Tree.class).join(Tree::getParent, t -> {
            //  这里表示和 tree t2 进行join，所以join tree t3 on t2.id = t3.parent_id
            // 也就是t2有多个关联可以在这里进行全部操作
@@ -396,86 +398,111 @@ public class DslTest {
         Tuple3<Tree2, Tree2, Tree2> tuple3Tree2 = null;
         Tuple4<Tree2, Tree2, Tree2, Tree2> tuple4Tree2 = null;
 
+        // join on
+        user = query.find(User2.class).join(UserInfo2.class).on(UserInfo2::getUserId).limit(1).single();
+        tupleUserUserInfo = query.find(User2.class).join(UserInfo2.class).on(UserInfo2::getUserId).fetch().limit(1)
+                .single();
+
         //  join 多对象返回
-        ui = query.find(UserInfo2.class).join(UserInfo2::getUserId, User2.class).limit(1).single();
-        ui = query.find(UserInfo2.class).join(UserInfo2::getUserId, User2::getId).limit(1).single();
+        ui = query.find(UserInfo2.class).join(User2.class).on(UserInfo2::getUserId).limit(1).single();
+        ui = query.find(UserInfo2.class).join(User2.class).on(UserInfo2::getUserId, User2::getId).limit(1).single();
         //        ui = query.find(UserInfo2.class).join(UserInfo2::getUserId, User2.class, User2::getId).limit(1).single();
 
-        tupleUserInfoUser = query.find(UserInfo2.class).join(UserInfo2::getUserId, User2.class).fetch().limit(1)
+        tupleUserInfoUser = query.find(UserInfo2.class).join(User2.class).on(UserInfo2::getUserId).fetch().limit(1)
                 .single();
-        tupleUserInfoUser = query.find(UserInfo2.class).join(UserInfo2::getUserId, User2::getId).fetch().limit(1)
-                .single();
+        tupleUserInfoUser = query.find(UserInfo2.class).join(User2.class).on(UserInfo2::getUserId, User2::getId).fetch()
+                .limit(1).single();
 
-        tree = query.find(Tree2.class).join(Tree2::getParentId, Tree2.class).limit(1).single();
-        tree = query.find(Tree2.class).join(Tree2::getParentId, Tree2::getId).limit(1).single();
+        tree = query.find(Tree2.class).join(Tree2.class).on(Tree2::getId, Tree2::getParentId).limit(1).single();
+        tree = query.find(Tree2.class).join(Tree2.class).on(Tree2::getParentId, Tree2::getId).limit(1).single();
         // 这里会调用join(SerializableFunction3<E, E> propertyName),所以需要强制类型转换
-        tree = query.find(Tree2.class).join((SerializableFunction4<Tree2, Integer>) Tree2::getParentId).limit(1)
-                .single();
+        //        tree = query.find(Tree2.class).join(Tree2.class).on(Tree2::getId,Tree2::getParentId).limit(1)
+        //                .single();
 
         // 2
-        tree = query.find(Tree2.class).join(Tree2::getParentId, Tree2.class).join(Tree2::getParentId, Tree2.class)
-                .limit(1).single();
-        tree = query.find(Tree2.class).join(Tree2::getParentId, Tree2.class).join2(Tree2::getParentId, Tree2.class)
-                .limit(1).single();
-        tree = query.find(Tree2.class).join(Tree2::getParentId, Tree2::getId).join(Tree2::getParentId, Tree2::getId)
-                .limit(1).single();
-        tree = query.find(Tree2.class).join(Tree2::getParentId, Tree2::getId).join2(Tree2::getParentId, Tree2::getId)
-                .limit(1).single();
-        tree = query.find(Tree2.class).join(Tree2::getParentId).join(Tree2::getParentId).limit(1).single();
-        tree = query.find(Tree2.class).join(Tree2::getParentId).join2(Tree2::getParentId).limit(1).single();
+        tree = query.find(Tree2.class).join(Tree2.class).on(Tree2::getId, Tree2::getParentId).join(Tree2.class)
+                .on(Tree2::getId, Tree2::getParentId).limit(1).single();
+        tree = query.find(Tree2.class).join(Tree2.class).on(Tree2::getId, Tree2::getParentId).join2(Tree2.class)
+                .on(Tree2::getId, Tree2::getParentId).limit(1).single();
+        tree = query.find(Tree2.class).join(Tree2.class).on(Tree2::getId, Tree2::getParentId).join2(Tree2.class)
+                .on(Tree2::getId, Tree2::getParentId).limit(1).single();
+        tree = query.find(Tree2.class).join(Tree2.class).on(Tree2::getId, Tree2::getParentId).join(Tree2.class)
+                .on(Tree2::getParentId, Tree2::getId).limit(1).single();
+        tree = query.find(Tree2.class).join(Tree2.class).on(Tree2::getId, Tree2::getParentId).join(Tree2.class)
+                .on((SerializableFunction2<Tree2, Integer>) Tree2::getParentId).limit(1).single();
+        tree = query.find(Tree2.class).join(Tree2.class).on(Tree2::getId, Tree2::getParentId).join2(Tree2.class)
+                .on((SerializableFunction2<Tree2, Integer>) Tree2::getParentId).limit(1).single();
 
-        tuple2Tree2 = query.find(Tree2.class).join(Tree2::getParentId, Tree2.class).fetch().limit(1).single();
-        tuple2Tree2 = query.find(Tree2.class).join(Tree2::getParentId, Tree2::getId).fetch().limit(1).single();
+        tuple2Tree2 = query.find(Tree2.class).join(Tree2.class).on(Tree2::getId, Tree2::getParentId).fetch().limit(1)
+                .single();
+        tuple2Tree2 = query.find(Tree2.class).join(Tree2.class).on(Tree2::getId, Tree2::getParentId).fetch().limit(1)
+                .single();
         // 这里会调用join(SerializableFunction3<E, E> propertyName),所以需要强制类型转换
-        tuple2Tree2 = query.find(Tree2.class).join((SerializableFunction4<Tree2, Integer>) Tree2::getParentId).fetch()
-                .limit(1).single();
+        tuple2Tree2 = query.find(Tree2.class).join(Tree2.class).on(Tree2::getId, Tree2::getParentId).fetch().limit(1)
+                .single();
 
-        tuple3Tree2 = query.find(Tree2.class).join(Tree2::getParentId, Tree2.class).fetch()
-                .join(Tree2::getParentId, Tree2.class).fetch().limit(1).single();
-        tuple3Tree2 = query.find(Tree2.class).join(Tree2::getParentId, Tree2.class).fetch()
-                .join2(Tree2::getParentId, Tree2.class).fetch().limit(1).single();
-        tuple3Tree2 = query.find(Tree2.class).join(Tree2::getParentId, Tree2::getId).fetch()
-                .join(Tree2::getParentId, Tree2::getId).fetch().limit(1).single();
-        tuple3Tree2 = query.find(Tree2.class).join(Tree2::getParentId, Tree2::getId).fetch()
-                .join2(Tree2::getParentId, Tree2::getId).fetch().limit(1).single();
-        tuple3Tree2 = query.find(Tree2.class).join((SerializableFunction4<Tree2, Integer>) Tree2::getParentId).fetch()
-                .join((SerializableFunction4<Tree2, Integer>) Tree2::getParentId).fetch().limit(1).single();
-        tuple3Tree2 = query.find(Tree2.class).join((SerializableFunction4<Tree2, Integer>) Tree2::getParentId).fetch()
-                .join2((SerializableFunction4<Tree2, Integer>) Tree2::getParentId).fetch().limit(1).single();
+        tuple3Tree2 = query.find(Tree2.class).join(Tree2.class).on(Tree2::getId, Tree2::getParentId).fetch()
+                .join(Tree2.class).on(Tree2::getId, Tree2::getParentId).fetch().limit(1).single();
+        tuple3Tree2 = query.find(Tree2.class).join(Tree2.class).on(Tree2::getId, Tree2::getParentId).fetch()
+                .join(Tree2.class).on(Tree2::getId, Tree2::getParentId).fetch().limit(1).single();
+        tuple3Tree2 = query.find(Tree2.class).join(Tree2.class).on(Tree2::getId, Tree2::getParentId).fetch()
+                .join2(Tree2.class).on(Tree2::getId, Tree2::getParentId).fetch().limit(1).single();
+        tuple3Tree2 = query.find(Tree2.class).join(Tree2.class).on(Tree2::getId, Tree2::getParentId).fetch()
+                .join(Tree2.class).on(Tree2::getParentId, Tree2::getId).fetch().limit(1).single();
+        tuple3Tree2 = query.find(Tree2.class).join(Tree2.class).on(Tree2::getId, Tree2::getParentId).fetch()
+                .join(Tree2.class).on((SerializableFunction2<Tree2, Integer>) Tree2::getParentId).fetch().limit(1)
+                .single();
+        tuple3Tree2 = query.find(Tree2.class).join(Tree2.class).on(Tree2::getId, Tree2::getParentId).fetch()
+                .join2(Tree2.class).on((SerializableFunction2<Tree2, Integer>) Tree2::getParentId).fetch().limit(1)
+                .single();
 
         // 3
-        tree = query.find(Tree2.class).join(Tree2::getParentId, Tree2.class).join(Tree2::getParentId, Tree2.class)
-                .join(Tree2::getParentId, Tree2.class).limit(1).single();
-        tree = query.find(Tree2.class).join(Tree2::getParentId, Tree2.class).join(Tree2::getParentId, Tree2.class)
-                .join2(Tree2::getParentId, Tree2.class).limit(1).single();
-        tree = query.find(Tree2.class).join(Tree2::getParentId, Tree2::getId).join2(Tree2::getParentId, Tree2::getId)
-                .join(Tree2::getParentId, Tree2::getId).limit(1).single();
-        tree = query.find(Tree2.class).join(Tree2::getParentId, Tree2::getId).join2(Tree2::getParentId, Tree2::getId)
-                .join2(Tree2::getParentId, Tree2::getId).limit(1).single();
+        tree = query.find(Tree2.class).join(Tree2.class).on(Tree2::getId, Tree2::getParentId).join(Tree2.class)
+                .on(Tree2::getId, Tree2::getParentId).join(Tree2.class).on(Tree2::getId, Tree2::getParentId).limit(1)
+                .single();
+        tree = query.find(Tree2.class).join(Tree2.class).on(Tree2::getId, Tree2::getParentId).join(Tree2.class)
+                .on(Tree2::getId, Tree2::getParentId).join(Tree2.class).on(Tree2::getId, Tree2::getParentId).limit(1)
+                .single();
+        tree = query.find(Tree2.class).join(Tree2.class).on(Tree2::getId, Tree2::getParentId).join(Tree2.class)
+                .on(Tree2::getParentId, Tree2::getId).join2(Tree2.class).on(Tree2::getId, Tree2::getParentId).limit(1)
+                .single();
+        tree = query.find(Tree2.class).join(Tree2.class).on(Tree2::getId, Tree2::getParentId).join(Tree2.class)
+                .on(Tree2::getParentId, Tree2::getId).join(Tree2.class).on(Tree2::getParentId, Tree2::getId).limit(1)
+                .single();
 
-        tree = query.find(Tree2.class).join(Tree2::getParentId).join(Tree2::getParentId).join(Tree2::getParentId)
+        tree = query.find(Tree2.class) //
+                .join(Tree2.class).on(Tree2::getId, Tree2::getParentId) //
+                .join(Tree2.class).on((SerializableFunction2<Tree2, Integer>) Tree2::getParentId) //
+                .join(Tree2.class).on((SerializableFunction2<Tree2, Integer>) Tree2::getParentId) //
                 .limit(1).single();
-        tree = query.find(Tree2.class).join(Tree2::getParentId).join2(Tree2::getParentId).join2(Tree2::getParentId)
+        tree = query.find(Tree2.class)//
+                .join(Tree2.class).on(Tree2::getId, Tree2::getParentId)//
+                .join2(Tree2.class).on((SerializableFunction2<Tree2, Integer>) Tree2::getParentId) //
+                .join2(Tree2.class).on((SerializableFunction2<Tree2, Integer>) Tree2::getParentId) //
                 .limit(1).single();
 
-        tuple4Tree2 = query.find(Tree2.class).join(Tree2::getParentId, Tree2.class).fetch()
-                .join(Tree2::getParentId, Tree2.class).fetch().join(Tree2::getParentId, Tree2.class).fetch().limit(1)
-                .single();
-        tuple4Tree2 = query.find(Tree2.class).join(Tree2::getParentId, Tree2.class).fetch()
-                .join2(Tree2::getParentId, Tree2.class).fetch().join2(Tree2::getParentId, Tree2.class).fetch().limit(1)
-                .single();
-        tuple4Tree2 = query.find(Tree2.class).join(Tree2::getParentId, Tree2::getId).fetch()
-                .join(Tree2::getParentId, Tree2::getId).fetch().join(Tree2::getParentId, Tree2::getId).fetch().limit(1)
-                .single();
-        tuple4Tree2 = query.find(Tree2.class).join(Tree2::getParentId, Tree2::getId).fetch()
-                .join2(Tree2::getParentId, Tree2::getId).fetch().join2(Tree2::getParentId, Tree2::getId).fetch()
+        tuple4Tree2 = query.find(Tree2.class).join(Tree2.class).on(Tree2::getId, Tree2::getParentId).fetch()
+                .join(Tree2.class).on(Tree2::getId, Tree2::getParentId).fetch().join(Tree2.class)
+                .on(Tree2::getId, Tree2::getParentId).fetch().limit(1).single();
+        tuple4Tree2 = query.find(Tree2.class).join(Tree2.class).on(Tree2::getId, Tree2::getParentId).fetch()
+                .join(Tree2.class).on(Tree2::getId, Tree2::getParentId).fetch().join(Tree2.class)
+                .on(Tree2::getId, Tree2::getParentId).fetch().limit(1).single();
+        tuple4Tree2 = query.find(Tree2.class).join(Tree2.class).on(Tree2::getId, Tree2::getParentId).fetch()
+                .join2(Tree2.class).on(Tree2::getId, Tree2::getParentId).fetch().join2(Tree2.class)
+                .on(Tree2::getId, Tree2::getParentId).fetch().limit(1).single();
+        tuple4Tree2 = query.find(Tree2.class).join(Tree2.class).on(Tree2::getId, Tree2::getParentId).fetch()
+                .join(Tree2.class).on(Tree2::getParentId, Tree2::getId).fetch().join(Tree2.class)
+                .on(Tree2::getParentId, Tree2::getId).fetch().limit(1).single();
+        tuple4Tree2 = query.find(Tree2.class) //
+                .join(Tree2.class).on(Tree2::getId, Tree2::getParentId).fetch() //
+                .join(Tree2.class).on((SerializableFunction2<Tree2, Integer>) Tree2::getParentId).fetch() //
+                .join(Tree2.class).on((SerializableFunction2<Tree2, Integer>) Tree2::getParentId).fetch() //
                 .limit(1).single();
-        tuple4Tree2 = query.find(Tree2.class).join((SerializableFunction4<Tree2, Integer>) Tree2::getParentId).fetch()
-                .join((SerializableFunction4<Tree2, Integer>) Tree2::getParentId).fetch()
-                .join((SerializableFunction4<Tree2, Integer>) Tree2::getParentId).fetch().limit(1).single();
-        tuple4Tree2 = query.find(Tree2.class).join((SerializableFunction4<Tree2, Integer>) Tree2::getParentId).fetch()
-                .join2((SerializableFunction4<Tree2, Integer>) Tree2::getParentId).fetch()
-                .join2((SerializableFunction4<Tree2, Integer>) Tree2::getParentId).fetch().limit(1).single();
+        tuple4Tree2 = query.find(Tree2.class) //
+                .join(Tree2.class).on(Tree2::getId, Tree2::getParentId).fetch() //
+                .join2(Tree2.class).on((SerializableFunction2<Tree2, Integer>) Tree2::getParentId).fetch() //
+                .join2(Tree2.class).on((SerializableFunction2<Tree2, Integer>) Tree2::getParentId).fetch() //
+                .limit(1).single();
 
         //        tupleTreeTree = query.find(Tree2.class).join(Tree2::getParentId, Tree2.class, Tree2::getId).fetch().limit(1).single();
 
@@ -484,30 +511,38 @@ public class DslTest {
         //        tupleUserUserInfo = query.find(User2.class).join(UserInfo2::getUserId, User2.class).fetch().limit(1).single();
         //        tupleUserUserInfo = query.find(User2.class).join(UserInfo2::getUserId, User2.class, User2::getId).fetch()
         //                .limit(1).single();
-        user = query.find(User2.class).join(UserInfo2::getUserId).limit(1).single();
-        tupleUserUserInfo = query.find(User2.class).join(User2::getId, UserInfo2::getUserId).fetch().limit(1).single();
-        tupleUserUserInfo = query.find(User2.class).join(UserInfo2::getUserId).fetch().limit(1).single();
+        user = query.find(User2.class).join(UserInfo2.class).on(UserInfo2::getUserId).limit(1).single();
+        tupleUserUserInfo = query.find(User2.class) //
+                .join(UserInfo2.class).on(User2::getId, UserInfo2::getUserId).fetch() //
+                .limit(1).single();
+        tupleUserUserInfo = query.find(User2.class).join(UserInfo2.class).on(UserInfo2::getUserId).fetch().limit(1)
+                .single();
 
         User u = query.find(User.class).join(UserInfo::getUser).fetch().limit(1).single();
 
-        query.find(User2.class).join(UserInfo2::getUserId).fetch().where().eq(es -> es.get0().accept(User2::getId, 1))
-                .and().eq(es -> es.get1().accept(UserInfo2::getName, "yufei")).list();
+        query.find(User2.class).join(UserInfo2.class).on(UserInfo2::getUserId).fetch().where()
+                .eq(es -> es.get0().accept(User2::getId, 1)).and()
+                .eq(es -> es.get1().accept(UserInfo2::getName, "yufei")).list();
 
-        query.find(User2.class).join(UserInfo2::getUserId).fetch().where().eq((e0, e1) -> e0.accept(User2::getId, 1))
-                .and().eq((e0, e1) -> e1.accept(UserInfo2::getName, "yufei")).list();
-
-        query.find(Tree2.class).join((SerializableFunction4<Tree2, Integer>) Tree2::getParentId).fetch()
-                .join2((SerializableFunction4<Tree2, Integer>) Tree2::getParentId).fetch()
-                .join2((SerializableFunction4<Tree2, Integer>) Tree2::getParentId).fetch().where()
-                .eq(es -> es.get0().accept(Tree2::getId, 1)).and().eq((e0, e1, e2, e3) -> e3.accept(Tree2::getId, 1))
+        query.find(User2.class).join(UserInfo2.class).on(UserInfo2::getUserId).fetch().where()
+                .eq((e0, e1) -> e0.accept(User2::getId, 1)).and().eq((e0, e1) -> e1.accept(UserInfo2::getName, "yufei"))
                 .list();
 
-        query.find(User2.class).join(UserInfo2::getUserId).where().eq(User2::getId, 1).single();
+        query.find(Tree2.class) //
+                .join(Tree2.class).on(Tree2::getId, Tree2::getParentId).fetch() //
+                .join2(Tree2.class).on((SerializableFunction2<Tree2, Integer>) Tree2::getParentId).fetch() //
+                .join2(Tree2.class).on((SerializableFunction2<Tree2, Integer>) Tree2::getParentId).fetch() //
+                .where() //
+                .eq(es -> es.get0().accept(Tree2::getId, 1)) //
+                .and() //
+                .eq((e0, e1, e2, e3) -> e3.accept(Tree2::getId, 1)) //
+                .list();
+
+        query.find(User2.class).join(UserInfo2.class).on(UserInfo2::getUserId).where().eq(User2::getId, 1).single();
 
         query.find(User2.class).fetch(User2::getUsername).where().eq(User2::getId, 1).string();
         // IMPLSOON join以后就没有单值返回了
         // query.find(User2.class).fetch(User2::getUsername).join(UserInfo2::getUserId).where().eq(User2::getId, 1).string();
-
     }
 
     public void testEntityQuerySort() {
@@ -519,43 +554,45 @@ public class DslTest {
         query.find(User2.class).sort().desc(User2::getAge).desc(User2::getId);
         query.find(User2.class).sort().desc(User2::getAge, User2::getId);
 
-        query.find(User2.class).join(UserInfo2::getUserId).sort().asc(es -> es.get0(), User2::getAge);
-        query.find(User2.class).join(UserInfo2::getUserId).sort().asc(User2::getAge);
+        query.find(User2.class).join(UserInfo2.class).on(UserInfo2::getUserId).sort().asc(es -> es.get0(),
+                User2::getAge);
+        query.find(User2.class).join(UserInfo2.class).on(UserInfo2::getUserId).sort().asc(User2::getAge);
 
-        query.find(User2.class).join(UserInfo2::getUserId).sort().asc(es -> es.get1(), UserInfo2::getAge);
-        query.find(User2.class).join(UserInfo2::getUserId).sort().asc2(UserInfo2::getAge);
+        query.find(User2.class).join(UserInfo2.class).on(UserInfo2::getUserId).sort().asc(es -> es.get1(),
+                UserInfo2::getAge);
+        query.find(User2.class).join(UserInfo2.class).on(UserInfo2::getUserId).sort().asc2(UserInfo2::getAge);
 
-        query.find(Student2.class).join(Student2::getUserId, User.class).join2(User::getUserInfo).sort()
+        query.find(Student2.class).join(User.class).on(Student2::getUserId).join2(User::getUserInfo).sort()
                 .asc(Student2::getId).asc(qs -> qs.get1(), User::getAge);
-        query.find(Student2.class).join(Student2::getUserId, User.class).join2(User::getUserInfo).sort()
+        query.find(Student2.class).join(User.class).on(Student2::getUserId).join2(User::getUserInfo).sort()
                 .asc(Student2::getId).asc2(User::getAge);
 
         //                query.find(User.class).join(Student2::getUserId).fetch().join2(User::getUserInfo).fetch().list();
 
-        query.find(Student2.class).join(Student2::getUserId, User.class).join2(User::getUserInfo).sort()
+        query.find(Student2.class).join(User.class).on(Student2::getUserId).join2(User::getUserInfo).sort()
                 .asc(Student2::getId).asc(qs -> qs.get2(), UserInfo::getAge);
-        query.find(Student2.class).join(Student2::getUserId, User.class).fetch().join2(User::getUserInfo).fetch().sort()
-                .asc(Student2::getId).asc(qs -> qs.get2(), UserInfo::getAge);
-        query.find(Student2.class).join(Student2::getUserId, User.class).join2(User::getUserInfo).sort()
+        query.find(Student2.class).join(User.class).on(Student2::getUserId).fetch().join2(User::getUserInfo).fetch()
+                .sort().asc(Student2::getId).asc(qs -> qs.get2(), UserInfo::getAge);
+        query.find(Student2.class).join(User.class).on(Student2::getUserId).join2(User::getUserInfo).sort()
                 .asc(Student2::getId).asc3(UserInfo::getAge);
-        query.find(Student2.class).join(Student2::getUserId, User.class).fetch().join2(User::getUserInfo).fetch().sort()
-                .asc(Student2::getId).asc3(UserInfo::getAge);
+        query.find(Student2.class).join(User.class).on(Student2::getUserId).fetch().join2(User::getUserInfo).fetch()
+                .sort().asc(Student2::getId).asc3(UserInfo::getAge);
 
-        query.find(Student2.class).join(Student2::getUserId, User.class).join2(User::getUserInfo).sort()
+        query.find(Student2.class).join(User.class).on(Student2::getUserId).join2(User::getUserInfo).sort()
                 .asc(qs -> qs.get2(), UserInfo::getAge).asc(Student2::getId);
-        query.find(Student2.class).join(Student2::getUserId, User.class).join2(User::getUserInfo).sort()
+        query.find(Student2.class).join(User.class).on(Student2::getUserId).join2(User::getUserInfo).sort()
                 .asc3(UserInfo::getAge).asc(Student2::getId);
 
-        query.find(Student2.class).join(Student2::getUserId, User.class).join2(User::getUserInfo).sort()
+        query.find(Student2.class).join(User.class).on(Student2::getUserId).join2(User::getUserInfo).sort()
                 .asc(qs -> qs.get2(), UserInfo::getAge, UserInfo::getName).asc(Student2::getId);
 
-        query.find(Student2.class).join(Student2::getUserId, User.class).sort().asc(qs -> qs.get1(), User::getId)
-                .asc((e0, e1) -> e0.accept(Student2::getId).accept(Student2::getName, Student2::getTeacherId))
-                .desc((e0, e1) -> e0.accept(Student2::getId).accept(Student2::getName, Student2::getTeacherId))
+        query.find(Student2.class).join(User.class).on(Student2::getUserId).sort().asc(qs -> qs.get1(), User::getId)
+                .asc((e0, e1) -> e0.apply(Student2::getId).apply(Student2::getName, Student2::getTeacherId))
+                .desc((e0, e1) -> e0.apply(Student2::getId).apply(Student2::getName, Student2::getTeacherId))
                 .asc2(User::getUsername);
 
         query.find(Tree.class).join(Tree::getParent).join(Tree::getParent).join(Tree::getParent).join(Tree::getParent)
-                .sort().asc((e0, e1, e2, e3, e4) -> e0.accept(Tree::getId)).asc5(Tree::getName);
+                .sort().asc((e0, e1, e2, e3, e4) -> e0.apply(Tree::getId)).asc5(Tree::getName);
 
         // IMPLSOON 目前join只能join4次，第五次的接口还未加入join方法
         //        query.find(Tree.class).join(Tree::getParent).join(Tree::getParent).join(Tree::getParent).join(Tree::getParent)
@@ -609,9 +646,14 @@ public class DslTest {
             if (name.equals("yufei")) {
                 t.set(User::getUsername, name);
             }
-        });
+        }).execute();
+        updater.update(User.class).set(() -> name.equals("yufei"), User::getUsername, name).execute();
 
-        updater.update(User.class).set(() -> name.equals("yufei"), User::getUsername, name);
+        updater.update(User.class).set(User::getUsername, name).execute();
+        updater.update(User.class).set(User::getUsername, name).where().eq(User::getId, 1).execute();
+
+        updater.update(User.class).increase(User::getAge, 1).execute();
+        updater.update(User.class).increase(User::getAge, 1).where().eq(User::getId, 1).execute();
     }
 
     public void testPropertyUpdate() {
@@ -634,7 +676,6 @@ public class DslTest {
 
         deleter.delete(User.class).where().eq(User::getId, 18).execute();
         deleter.delete(User.class).where().property(User::getId).eq(18).execute();
-
     }
 
     //    void testJoinApiStyle() {

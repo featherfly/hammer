@@ -1,9 +1,9 @@
 
 package cn.featherfly.hammer.sqldb.jdbc.dsl.entity;
 
-import static org.testng.Assert.assertNull;
 import static org.testng.Assert.assertEquals;
 import static org.testng.Assert.assertNotNull;
+import static org.testng.Assert.assertNull;
 
 import org.testng.annotations.Test;
 
@@ -16,7 +16,7 @@ import cn.featherfly.hammer.sqldb.jdbc.vo.r.order.OrderInfo;
  *
  * @author zhongj
  */
-public class SqlQueryTypeJoinRelation3Test extends SqlQueryTypeJoinTest {
+public class SqlQueryTypeJoinRelation3Test extends AbstractEntitySqlQueryJoinTest {
 
     @Test
     void testJoin_ER1_ER2_ER3_EE() {

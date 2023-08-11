@@ -14,7 +14,6 @@ import cn.featherfly.common.repository.mapping.ClassMapping;
 import cn.featherfly.common.repository.mapping.PropertyMapping;
 import cn.featherfly.hammer.dsl.query.QueryConditionGroupExpression;
 import cn.featherfly.hammer.dsl.query.QueryConditionGroupLogicExpression;
-import cn.featherfly.hammer.dsl.query.TypeQueryEntity;
 import cn.featherfly.hammer.sqldb.jdbc.Jdbc;
 import cn.featherfly.hammer.sqldb.jdbc.SqlPageFactory;
 
@@ -45,7 +44,7 @@ public class SqlQueryExpression extends SqlQueryConditionGroupExpression {
      * @param jdbc           the jdbc
      * @param sqlPageFactory the sql page factory
      * @param selectBuilder  the select builder
-     * @param ignoreStrategy   the ignore strategy
+     * @param ignoreStrategy the ignore strategy
      */
     public SqlQueryExpression(Jdbc jdbc, SqlPageFactory sqlPageFactory, SqlSelectBasicBuilder selectBuilder,
             Predicate<?> ignoreStrategy) {
@@ -60,7 +59,7 @@ public class SqlQueryExpression extends SqlQueryConditionGroupExpression {
      * @param jdbc           the jdbc
      * @param sqlPageFactory the sql page factory
      * @param queryAlias     the query alias
-     * @param ignoreStrategy   the ignore strategy
+     * @param ignoreStrategy the ignore strategy
      */
     SqlQueryExpression(QueryConditionGroupLogicExpression parent, Jdbc jdbc, SqlPageFactory sqlPageFactory,
             String queryAlias, Predicate<?> ignoreStrategy) {
@@ -73,9 +72,10 @@ public class SqlQueryExpression extends SqlQueryConditionGroupExpression {
      * @param jdbc           the jdbc
      * @param sqlPageFactory the sql page factory
      * @param queryAlias     the query alias
-     * @param ignoreStrategy   the ignore strategy
+     * @param ignoreStrategy the ignore strategy
      */
-    public SqlQueryExpression(Jdbc jdbc, SqlPageFactory sqlPageFactory, String queryAlias, Predicate<?> ignoreStrategy) {
+    public SqlQueryExpression(Jdbc jdbc, SqlPageFactory sqlPageFactory, String queryAlias,
+            Predicate<?> ignoreStrategy) {
         super(jdbc, sqlPageFactory, queryAlias, ignoreStrategy);
     }
 
@@ -84,7 +84,7 @@ public class SqlQueryExpression extends SqlQueryConditionGroupExpression {
      *
      * @param jdbc           jdbc
      * @param sqlPageFactory the sql page factory
-     * @param ignoreStrategy   the ignore strategy
+     * @param ignoreStrategy the ignore strategy
      */
     public SqlQueryExpression(Jdbc jdbc, SqlPageFactory sqlPageFactory, Predicate<?> ignoreStrategy) {
         super(jdbc, sqlPageFactory, ignoreStrategy);
@@ -94,8 +94,7 @@ public class SqlQueryExpression extends SqlQueryConditionGroupExpression {
      * {@inheritDoc}
      */
     @Override
-    protected QueryConditionGroupExpression createGroup(QueryConditionGroupLogicExpression parent, String queryAlias,
-            TypeQueryEntity typeQueryEntity) {
+    protected QueryConditionGroupExpression createGroup(QueryConditionGroupLogicExpression parent, String queryAlias) {
         return new SqlQueryExpression(parent, jdbc, sqlPageFactory, queryAlias, ignoreStrategy);
     }
 

@@ -253,7 +253,7 @@ public interface GreatThanEntityExpression<E> extends CompareEntityExpression<E>
     //     * @param property 对象属性
     //     * @return LogicExpression
     //     */
-    //    <R extends Date> void accept(DateSupplier<R> property);
+    //    <R extends Date> void accept(SerializableDateSupplier<R> property);
     //
     //    /**
     //     * great than. 大于.
@@ -263,7 +263,7 @@ public interface GreatThanEntityExpression<E> extends CompareEntityExpression<E>
     //     * @param ignoreStrategy the ignore strategy
     //     * @return LogicExpression
     //     */
-    //    <R extends Date> void accept(DateSupplier<R> property, Predicate<R> ignoreStrategy);
+    //    <R extends Date> void accept(SerializableDateSupplier<R> property, Predicate<R> ignoreStrategy);
     //
     //    /**
     //     * great than. 大于.
@@ -272,7 +272,7 @@ public interface GreatThanEntityExpression<E> extends CompareEntityExpression<E>
     //     * @param property 对象属性
     //     * @return LogicExpression
     //     */
-    //    <R extends Number> void accept(NumberSupplier<R> property);
+    //    <R extends Number> void accept(SerializableNumberSupplier<R> property);
     //
     //    /**
     //     * great than. 大于.
@@ -282,7 +282,7 @@ public interface GreatThanEntityExpression<E> extends CompareEntityExpression<E>
     //     * @param ignoreStrategy the ignore strategy
     //     * @return LogicExpression
     //     */
-    //    <R extends Number> void accept(NumberSupplier<R> property, Predicate<R> ignoreStrategy);
+    //    <R extends Number> void accept(SerializableNumberSupplier<R> property, Predicate<R> ignoreStrategy);
     //
     //    /**
     //     * great than. 大于.
@@ -290,7 +290,7 @@ public interface GreatThanEntityExpression<E> extends CompareEntityExpression<E>
     //     * @param property 对象属性
     //     * @return LogicExpression
     //     */
-    //    void accept(LocalDateSupplier property);
+    //    void accept(SerializableLocalDateSupplier property);
     //
     //    /**
     //     * great than. 大于.
@@ -299,7 +299,7 @@ public interface GreatThanEntityExpression<E> extends CompareEntityExpression<E>
     //     * @param ignoreStrategy the ignore strategy
     //     * @return LogicExpression
     //     */
-    //    void accept(LocalDateSupplier property, Predicate<LocalDate> ignoreStrategy);
+    //    void accept(SerializableLocalDateSupplier property, Predicate<LocalDate> ignoreStrategy);
     //
     //    /**
     //     * great than. 大于.
@@ -307,7 +307,7 @@ public interface GreatThanEntityExpression<E> extends CompareEntityExpression<E>
     //     * @param property 对象属性
     //     * @return LogicExpression
     //     */
-    //    void accept(LocalTimeSupplier property);
+    //    void accept(SerializableLocalTimeSupplier property);
     //
     //    /**
     //     * great than. 大于.
@@ -316,7 +316,7 @@ public interface GreatThanEntityExpression<E> extends CompareEntityExpression<E>
     //     * @param ignoreStrategy the ignore strategy
     //     * @return LogicExpression
     //     */
-    //    void accept(LocalTimeSupplier property, Predicate<LocalTime> ignoreStrategy);
+    //    void accept(SerializableLocalTimeSupplier property, Predicate<LocalTime> ignoreStrategy);
     //
     //    /**
     //     * great than. 大于.
@@ -324,7 +324,7 @@ public interface GreatThanEntityExpression<E> extends CompareEntityExpression<E>
     //     * @param property 对象属性
     //     * @return LogicExpression
     //     */
-    //    void accept(LocalDateTimeSupplier property);
+    //    void accept(SerializableLocalDateTimeSupplier property);
     //
     //    /**
     //     * great than. 大于.
@@ -333,7 +333,7 @@ public interface GreatThanEntityExpression<E> extends CompareEntityExpression<E>
     //     * @param ignoreStrategy the ignore strategy
     //     * @return LogicExpression
     //     */
-    //    void accept(LocalDateTimeSupplier property, Predicate<LocalDateTime> ignoreStrategy);
+    //    void accept(SerializableLocalDateTimeSupplier property, Predicate<LocalDateTime> ignoreStrategy);
     //
     //    /**
     //     * great than. 大于.
@@ -341,7 +341,7 @@ public interface GreatThanEntityExpression<E> extends CompareEntityExpression<E>
     //     * @param property 对象属性
     //     * @return LogicExpression
     //     */
-    //    void accept(StringSupplier property);
+    //    void accept(SerializableStringSupplier property);
     //
     //    /**
     //     * great than. 大于.
@@ -350,5 +350,5 @@ public interface GreatThanEntityExpression<E> extends CompareEntityExpression<E>
     //     * @param ignoreStrategy the ignore strategy
     //     * @return LogicExpression
     //     */
-    //    void accept(StringSupplier property, Predicate<String> ignoreStrategy);
+    //    void accept(SerializableStringSupplier property, Predicate<String> ignoreStrategy);
 }

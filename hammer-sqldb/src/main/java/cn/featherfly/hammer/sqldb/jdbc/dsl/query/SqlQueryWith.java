@@ -68,7 +68,7 @@ public class SqlQueryWith implements QueryWith, SqlQueryWithOn, SqlQueryWithEnti
      * @param selectTableColumn        the select table column
      * @param joinTableName            the join table name
      * @param joinTableAlias           the join table alias
-     * @param ignoreStrategy             the ignore strategy
+     * @param ignoreStrategy           the ignore strategy
      */
     public SqlQueryWith(SqlQueryEntityProperties sqlQueryEntityProperties, AliasManager aliasManager,
             SqlPageFactory sqlPageFactory, String selectTableAlis, String selectTableColumn, String joinTableName,
@@ -88,7 +88,7 @@ public class SqlQueryWith implements QueryWith, SqlQueryWithOn, SqlQueryWithEnti
      * @param joinTableName            the join table name
      * @param joinTableAlias           the join table alias
      * @param join                     the join
-     * @param ignoreStrategy             the ignore strategy
+     * @param ignoreStrategy           the ignore strategy
      */
     public SqlQueryWith(SqlQueryEntityProperties sqlQueryEntityProperties, AliasManager aliasManager,
             SqlPageFactory sqlPageFactory, String selectTableAlis, String selectTableColumn, String joinTableName,

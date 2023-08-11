@@ -12,8 +12,8 @@ package cn.featherfly.hammer.sqldb.sql.dml;
 
 import cn.featherfly.common.db.builder.SqlBuilder;
 import cn.featherfly.common.db.mapping.JdbcMappingFactory;
-import cn.featherfly.hammer.dsl.execute.EntityExecutableConditionGroupExpression;
-import cn.featherfly.hammer.dsl.execute.EntityExecutableConditionGroupLogicExpression;
+import cn.featherfly.hammer.dsl.entity.execute.EntityExecutableConditionGroup;
+import cn.featherfly.hammer.dsl.entity.execute.EntityExecutableConditionGroupLogic;
 import cn.featherfly.hammer.sqldb.jdbc.dsl.entity.EntitySqlRelation;
 
 /**
@@ -27,11 +27,11 @@ import cn.featherfly.hammer.sqldb.jdbc.dsl.entity.EntitySqlRelation;
  * @param <L>  the generic type
  */
 public abstract class AbstractEntitySqlExecutableConditionGroupExpression<E, ER extends EntitySqlRelation<ER, B>,
-        B extends SqlBuilder, C extends EntityExecutableConditionGroupExpression<E>,
-        L extends EntityExecutableConditionGroupLogicExpression<E>> extends
-        AbstractEntitySqlConditionGroupExpressionBase<E, ER, B, EntityExecutableConditionGroupExpression<E>,
-                EntityExecutableConditionGroupLogicExpression<E>>
-        implements EntityExecutableConditionGroupExpression<E>, EntityExecutableConditionGroupLogicExpression<E> {
+        B extends SqlBuilder, C extends EntityExecutableConditionGroup<E>,
+        L extends EntityExecutableConditionGroupLogic<E>> extends
+        AbstractEntitySqlConditionGroupExpressionBase<E, ER, B, EntityExecutableConditionGroup<E>,
+                EntityExecutableConditionGroupLogic<E>>
+        implements EntityExecutableConditionGroup<E>, EntityExecutableConditionGroupLogic<E> {
 
     /**
      * Instantiates a new abstract entity sql executable condition group

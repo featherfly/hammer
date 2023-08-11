@@ -8,8 +8,8 @@ import cn.featherfly.common.constant.Chars;
 import cn.featherfly.common.db.builder.dml.basic.SqlUpdateSetBasicBuilder;
 import cn.featherfly.common.db.mapping.JdbcMappingFactory;
 import cn.featherfly.common.lang.Lang;
-import cn.featherfly.hammer.dsl.execute.EntityExecutableConditionGroupExpression;
-import cn.featherfly.hammer.dsl.execute.EntityExecutableConditionGroupLogicExpression;
+import cn.featherfly.hammer.dsl.entity.execute.EntityExecutableConditionGroup;
+import cn.featherfly.hammer.dsl.entity.execute.EntityExecutableConditionGroupLogic;
 import cn.featherfly.hammer.sqldb.jdbc.dsl.entity.EntitySqlUpdateRelation;
 
 /**
@@ -39,7 +39,7 @@ public class SqlEntityUpdateExpression<E> extends
      * @param factory        the factory
      * @param entityRelation the entity relation
      */
-    SqlEntityUpdateExpression(EntityExecutableConditionGroupLogicExpression<E> parent, JdbcMappingFactory factory,
+    SqlEntityUpdateExpression(EntityExecutableConditionGroupLogic<E> parent, JdbcMappingFactory factory,
             EntitySqlUpdateRelation entityRelation) {
         super(parent, factory, entityRelation);
     }
@@ -86,8 +86,8 @@ public class SqlEntityUpdateExpression<E> extends
      * {@inheritDoc}
      */
     @Override
-    protected EntityExecutableConditionGroupExpression<E> createGroup(
-            EntityExecutableConditionGroupLogicExpression<E> parent) {
+    protected EntityExecutableConditionGroup<E> createGroup(
+            EntityExecutableConditionGroupLogic<E> parent) {
         return new SqlEntityUpdateExpression<>(parent, factory, entityRelation);
     }
 }

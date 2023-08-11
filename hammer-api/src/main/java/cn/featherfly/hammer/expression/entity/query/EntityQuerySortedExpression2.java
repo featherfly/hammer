@@ -2,8 +2,6 @@
 package cn.featherfly.hammer.expression.entity.query;
 
 import cn.featherfly.hammer.expression.entity.query.sort.EntitySortedExpression2;
-import cn.featherfly.hammer.expression.query.type.EntityQueryConditionLimit;
-import cn.featherfly.hammer.expression.query.type.EntityQueryLimitExecutor;
 
 /**
  * The Interface EntityQuerySortedExpression2.

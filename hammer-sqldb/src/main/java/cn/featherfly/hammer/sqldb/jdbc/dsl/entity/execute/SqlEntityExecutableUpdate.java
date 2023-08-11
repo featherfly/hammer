@@ -18,12 +18,12 @@ import cn.featherfly.common.lang.function.SerializableFunction2;
 import cn.featherfly.common.lang.function.SerializableSupplier;
 import cn.featherfly.common.repository.IgnoreStrategy;
 import cn.featherfly.common.repository.builder.AliasManager;
-import cn.featherfly.hammer.dsl.execute.EntityExecutableConditionGroupExpression;
-import cn.featherfly.hammer.dsl.execute.EntityExecutableConditionGroupLogicExpression;
-import cn.featherfly.hammer.dsl.execute.EntityExecutableUpdate;
-import cn.featherfly.hammer.dsl.execute.EntityUpdateNestedValueImpl;
-import cn.featherfly.hammer.dsl.execute.EntityUpdateNumberValueImpl;
-import cn.featherfly.hammer.dsl.execute.EntityUpdateValueImpl;
+import cn.featherfly.hammer.dsl.entity.execute.EntityExecutableConditionGroup;
+import cn.featherfly.hammer.dsl.entity.execute.EntityExecutableConditionGroupLogic;
+import cn.featherfly.hammer.dsl.entity.execute.EntityExecutableUpdate;
+import cn.featherfly.hammer.dsl.entity.execute.EntityUpdateNestedValueImpl;
+import cn.featherfly.hammer.dsl.entity.execute.EntityUpdateNumberValueImpl;
+import cn.featherfly.hammer.dsl.entity.execute.EntityUpdateValueImpl;
 import cn.featherfly.hammer.expression.condition.ConditionGroupConfig;
 import cn.featherfly.hammer.expression.entity.execute.EntityUpdateNumberValueExpression;
 import cn.featherfly.hammer.expression.entity.execute.EntityUpdateSetExpression;
@@ -117,7 +117,7 @@ public class SqlEntityExecutableUpdate<E> extends AbstractSqlExecutableUpdate<Sq
     @Override
     //    public EntityExecutableUpdate<E> set(Consumer<EntityExecutableUpdate<E>> consumer) {
     public EntityExecutableUpdate<E> set(Consumer<EntityUpdateSetExpression<E, EntityExecutableUpdate<E>,
-            EntityExecutableConditionGroupExpression<E>, EntityExecutableConditionGroupLogicExpression<E>>> consumer) {
+            EntityExecutableConditionGroup<E>, EntityExecutableConditionGroupLogic<E>>> consumer) {
         consumer.accept(this);
         return this;
     }
@@ -272,8 +272,8 @@ public class SqlEntityExecutableUpdate<E> extends AbstractSqlExecutableUpdate<Sq
      * {@inheritDoc}
      */
     @Override
-    public <R> EntityUpdateValueExpression<E, R, EntityExecutableUpdate<E>, EntityExecutableConditionGroupExpression<E>,
-            EntityExecutableConditionGroupLogicExpression<E>> property(SerializableFunction<E, R> property) {
+    public <R> EntityUpdateValueExpression<E, R, EntityExecutableUpdate<E>, EntityExecutableConditionGroup<E>,
+            EntityExecutableConditionGroupLogic<E>> property(SerializableFunction<E, R> property) {
         return new EntityUpdateValueImpl<>(property, this);
     }
 
@@ -282,8 +282,8 @@ public class SqlEntityExecutableUpdate<E> extends AbstractSqlExecutableUpdate<Sq
      */
     @Override
     public <R,
-            O> EntityUpdateValueExpression<E, O, EntityExecutableUpdate<E>, EntityExecutableConditionGroupExpression<E>,
-                    EntityExecutableConditionGroupLogicExpression<E>> property(SerializableFunction<E, R> property,
+            O> EntityUpdateValueExpression<E, O, EntityExecutableUpdate<E>, EntityExecutableConditionGroup<E>,
+                    EntityExecutableConditionGroupLogic<E>> property(SerializableFunction<E, R> property,
                             SerializableFunction<R, O> nestedProperty) {
         return new EntityUpdateNestedValueImpl<>(property, nestedProperty, this);
     }
@@ -293,7 +293,7 @@ public class SqlEntityExecutableUpdate<E> extends AbstractSqlExecutableUpdate<Sq
      */
     @Override
     public <R extends Number> EntityUpdateNumberValueExpression<E, R, EntityExecutableUpdate<E>,
-            EntityExecutableConditionGroupExpression<E>, EntityExecutableConditionGroupLogicExpression<E>> property(
+            EntityExecutableConditionGroup<E>, EntityExecutableConditionGroupLogic<E>> property(
                     SerializableFunction2<E, R> name) {
         return new EntityUpdateNumberValueImpl<>(name, this);
     }
@@ -302,7 +302,7 @@ public class SqlEntityExecutableUpdate<E> extends AbstractSqlExecutableUpdate<Sq
      * {@inheritDoc}
      */
     @Override
-    public EntityExecutableConditionGroupExpression<E> where() {
+    public EntityExecutableConditionGroup<E> where() {
         return createSqlUpdateExpression();
     }
 
@@ -310,8 +310,8 @@ public class SqlEntityExecutableUpdate<E> extends AbstractSqlExecutableUpdate<Sq
      * {@inheritDoc}
      */
     @Override
-    public EntityExecutableConditionGroupExpression<E> where(
-            Consumer<ConditionGroupConfig<EntityExecutableConditionGroupExpression<E>>> consumer) {
+    public EntityExecutableConditionGroup<E> where(
+            Consumer<ConditionGroupConfig<EntityExecutableConditionGroup<E>>> consumer) {
         SqlEntityUpdateExpression<E> sqlUpdateExpression = createSqlUpdateExpression();
         if (consumer != null) {
             consumer.accept(sqlUpdateExpression);

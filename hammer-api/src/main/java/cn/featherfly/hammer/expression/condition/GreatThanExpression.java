@@ -6,18 +6,18 @@ import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.Date;
 
-import cn.featherfly.common.lang.function.DateSupplier;
-import cn.featherfly.common.lang.function.LocalDateSupplier;
-import cn.featherfly.common.lang.function.LocalDateTimeSupplier;
-import cn.featherfly.common.lang.function.LocalTimeSupplier;
-import cn.featherfly.common.lang.function.NumberSupplier;
-import cn.featherfly.common.lang.function.ReturnDateFunction;
-import cn.featherfly.common.lang.function.ReturnLocalDateFunction;
-import cn.featherfly.common.lang.function.ReturnLocalDateTimeFunction;
-import cn.featherfly.common.lang.function.ReturnLocalTimeFunction;
-import cn.featherfly.common.lang.function.ReturnNumberFunction;
-import cn.featherfly.common.lang.function.ReturnStringFunction;
-import cn.featherfly.common.lang.function.StringSupplier;
+import cn.featherfly.common.lang.function.SerializableDateSupplier;
+import cn.featherfly.common.lang.function.SerializableLocalDateSupplier;
+import cn.featherfly.common.lang.function.SerializableLocalDateTimeSupplier;
+import cn.featherfly.common.lang.function.SerializableLocalTimeSupplier;
+import cn.featherfly.common.lang.function.SerializableNumberSupplier;
+import cn.featherfly.common.lang.function.SerializableToDateFunction;
+import cn.featherfly.common.lang.function.SerializableToLocalDateFunction;
+import cn.featherfly.common.lang.function.SerializableToLocalDateTimeFunction;
+import cn.featherfly.common.lang.function.SerializableToLocalTimeFunction;
+import cn.featherfly.common.lang.function.SerializableToNumberFunction;
+import cn.featherfly.common.lang.function.SerializableToStringFunction;
+import cn.featherfly.common.lang.function.SerializableStringSupplier;
 import cn.featherfly.common.repository.Field;
 
 /**
@@ -61,7 +61,7 @@ public interface GreatThanExpression<C extends ConditionExpression, L extends Lo
      * @param value 参数值
      * @return LogicExpression
      */
-    <T, N extends Number> L gt(ReturnNumberFunction<T, N> name, N value);
+    <T, N extends Number> L gt(SerializableToNumberFunction<T, N> name, N value);
 
     /**
      * 大于.
@@ -94,7 +94,7 @@ public interface GreatThanExpression<C extends ConditionExpression, L extends Lo
      * @param value 参数值
      * @return LogicExpression
      */
-    <T, D extends Date> L gt(ReturnDateFunction<T, D> name, D value);
+    <T, D extends Date> L gt(SerializableToDateFunction<T, D> name, D value);
 
     /**
      * 大于.
@@ -124,7 +124,7 @@ public interface GreatThanExpression<C extends ConditionExpression, L extends Lo
      * @param value 参数值
      * @return LogicExpression
      */
-    <T> L gt(ReturnLocalTimeFunction<T> name, LocalTime value);
+    <T> L gt(SerializableToLocalTimeFunction<T> name, LocalTime value);
 
     /**
      * 大于.
@@ -154,7 +154,7 @@ public interface GreatThanExpression<C extends ConditionExpression, L extends Lo
      * @param value 参数值
      * @return LogicExpression
      */
-    <T> L gt(ReturnLocalDateFunction<T> name, LocalDate value);
+    <T> L gt(SerializableToLocalDateFunction<T> name, LocalDate value);
 
     /**
      * 大于.
@@ -184,7 +184,7 @@ public interface GreatThanExpression<C extends ConditionExpression, L extends Lo
      * @param value 参数值
      * @return LogicExpression
      */
-    <T> L gt(ReturnLocalDateTimeFunction<T> name, LocalDateTime value);
+    <T> L gt(SerializableToLocalDateTimeFunction<T> name, LocalDateTime value);
 
     /**
      * 大于.
@@ -214,7 +214,7 @@ public interface GreatThanExpression<C extends ConditionExpression, L extends Lo
      * @param value 参数值
      * @return LogicExpression
      */
-    <T> L gt(ReturnStringFunction<T> name, String value);
+    <T> L gt(SerializableToStringFunction<T> name, String value);
 
     /**
      * 大于.
@@ -223,7 +223,7 @@ public interface GreatThanExpression<C extends ConditionExpression, L extends Lo
      * @param property 对象属性
      * @return LogicExpression
      */
-    <R extends Number> L gt(NumberSupplier<R> property);
+    <R extends Number> L gt(SerializableNumberSupplier<R> property);
 
     /**
      * 大于.
@@ -232,7 +232,7 @@ public interface GreatThanExpression<C extends ConditionExpression, L extends Lo
      * @param property 对象属性
      * @return LogicExpression
      */
-    <R extends Date> L gt(DateSupplier<R> property);
+    <R extends Date> L gt(SerializableDateSupplier<R> property);
 
     /**
      * 大于.
@@ -240,7 +240,7 @@ public interface GreatThanExpression<C extends ConditionExpression, L extends Lo
      * @param property 对象属性
      * @return LogicExpression
      */
-    L gt(LocalDateSupplier property);
+    L gt(SerializableLocalDateSupplier property);
 
     /**
      * 大于.
@@ -248,7 +248,7 @@ public interface GreatThanExpression<C extends ConditionExpression, L extends Lo
      * @param property 对象属性
      * @return LogicExpression
      */
-    L gt(LocalTimeSupplier property);
+    L gt(SerializableLocalTimeSupplier property);
 
     /**
      * 大于.
@@ -256,7 +256,7 @@ public interface GreatThanExpression<C extends ConditionExpression, L extends Lo
      * @param property 对象属性
      * @return LogicExpression
      */
-    L gt(LocalDateTimeSupplier property);
+    L gt(SerializableLocalDateTimeSupplier property);
 
     /**
      * 大于.
@@ -264,5 +264,5 @@ public interface GreatThanExpression<C extends ConditionExpression, L extends Lo
      * @param property 对象属性
      * @return LogicExpression
      */
-    L gt(StringSupplier property);
+    L gt(SerializableStringSupplier property);
 }

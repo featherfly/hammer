@@ -178,7 +178,7 @@ public abstract class AbstractSqlConditionExpression<C extends ConditionExpressi
     // protected method
     // ********************************************************************
 
-    //    protected <T, R extends Number> String getPropertyName(ReturnNumberFunction<T, R> name) {
+    //    protected <T, R extends Number> String getPropertyName(SerializableToNumberFunction<T, R> name) {
     //        return LambdaUtils.getLambdaPropertyName(name);
     //    }
 

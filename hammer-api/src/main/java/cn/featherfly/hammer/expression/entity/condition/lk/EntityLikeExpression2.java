@@ -85,7 +85,7 @@ public interface EntityLikeExpression2<E, E2, C extends ConditionExpression, L e
     //     */
     //    default L lk(
     //            Function<Tuple2<QueryEntityRepository<E>, QueryEntityRepository<E2>>, QueryEntityRepository<E>> entities,
-    //            StringSupplier property) {
+    //            SerializableStringSupplier property) {
     //        return lk(entities, property, QueryPolicy.AUTO);
     //    }
     //
@@ -99,7 +99,7 @@ public interface EntityLikeExpression2<E, E2, C extends ConditionExpression, L e
     //     */
     //    default L lk(
     //            Function<Tuple2<QueryEntityRepository<E>, QueryEntityRepository<E2>>, QueryEntityRepository<E>> entities,
-    //            StringSupplier property, Predicate<String> ignoreStrategy) {
+    //            SerializableStringSupplier property, Predicate<String> ignoreStrategy) {
     //        return lk(entities, property, QueryPolicy.AUTO, ignoreStrategy);
     //    }
     //
@@ -112,7 +112,7 @@ public interface EntityLikeExpression2<E, E2, C extends ConditionExpression, L e
     //     * @return LogicExpression
     //     */
     //    L lk(Function<Tuple2<QueryEntityRepository<E>, QueryEntityRepository<E2>>, QueryEntityRepository<E>> entities,
-    //            StringSupplier property, QueryPolicy queryPolicy);
+    //            SerializableStringSupplier property, QueryPolicy queryPolicy);
     //
     //    /**
     //     * like value.
@@ -124,7 +124,7 @@ public interface EntityLikeExpression2<E, E2, C extends ConditionExpression, L e
     //     * @return LogicExpression
     //     */
     //    L lk(Function<Tuple2<QueryEntityRepository<E>, QueryEntityRepository<E2>>, QueryEntityRepository<E>> entities,
-    //            StringSupplier property, QueryPolicy queryPolicy, Predicate<String> ignoreStrategy);
+    //            SerializableStringSupplier property, QueryPolicy queryPolicy, Predicate<String> ignoreStrategy);
     //
     //    /**
     //     * like value.

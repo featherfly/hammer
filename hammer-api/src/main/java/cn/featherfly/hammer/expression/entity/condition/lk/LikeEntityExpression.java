@@ -12,7 +12,7 @@ package cn.featherfly.hammer.expression.entity.condition.lk;
 
 import java.util.function.Predicate;
 
-import cn.featherfly.common.lang.function.ReturnStringFunction;
+import cn.featherfly.common.lang.function.SerializableToStringFunction;
 import cn.featherfly.common.lang.function.SerializableSupplier;
 import cn.featherfly.common.operator.QueryOperator.QueryPolicy;
 
@@ -40,7 +40,7 @@ public interface LikeEntityExpression<E> extends LikeEntityPropertyExpression<E>
      * @param value    the value
      * @return the l
      */
-    void accept(ReturnStringFunction<E> property, String value);
+    void accept(SerializableToStringFunction<E> property, String value);
 
     /**
      * like value.
@@ -50,7 +50,7 @@ public interface LikeEntityExpression<E> extends LikeEntityPropertyExpression<E>
      * @param queryPolicy the query policy
      * @return the l
      */
-    void accept(ReturnStringFunction<E> property, String value, QueryPolicy queryPolicy);
+    void accept(SerializableToStringFunction<E> property, String value, QueryPolicy queryPolicy);
 
     /**
      * like value.
@@ -60,7 +60,7 @@ public interface LikeEntityExpression<E> extends LikeEntityPropertyExpression<E>
      * @param ignoreStrategy the ignore strategy
      * @return the l
      */
-    void accept(ReturnStringFunction<E> property, String value, Predicate<String> ignoreStrategy);
+    void accept(SerializableToStringFunction<E> property, String value, Predicate<String> ignoreStrategy);
 
     /**
      * like value.
@@ -71,7 +71,7 @@ public interface LikeEntityExpression<E> extends LikeEntityPropertyExpression<E>
      * @param ignoreStrategy the ignore strategy
      * @return the l
      */
-    void accept(ReturnStringFunction<E> property, String value, QueryPolicy queryPolicy,
+    void accept(SerializableToStringFunction<E> property, String value, QueryPolicy queryPolicy,
             Predicate<String> ignoreStrategy);
 
     /**

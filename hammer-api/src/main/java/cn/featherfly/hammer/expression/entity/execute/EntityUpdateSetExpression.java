@@ -6,8 +6,6 @@ import java.util.function.Supplier;
 
 import cn.featherfly.common.lang.function.SerializableFunction;
 import cn.featherfly.common.lang.function.SerializableSupplier;
-import cn.featherfly.hammer.expression.entity.EntityConditionGroupExpression;
-import cn.featherfly.hammer.expression.entity.EntityConditionGroupLogicExpression;
 
 /**
  * EntityUpdateSetExpression.
@@ -19,7 +17,8 @@ import cn.featherfly.hammer.expression.entity.EntityConditionGroupLogicExpressio
  * @param <L> the generic type
  */
 public interface EntityUpdateSetExpression<E, U extends EntityUpdateSetExecutableExpression<E, U, C, L>,
-        C extends EntityConditionGroupExpression<E, C, L>, L extends EntityConditionGroupLogicExpression<E, C, L>> {
+        C extends EntityExecutableConditionGroupExpression<E, C, L>,
+        L extends EntityExecutableConditionGroupLogicExpression<E, C, L>> {
 
     /**
      * Sets the.

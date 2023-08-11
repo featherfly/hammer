@@ -1,8 +1,8 @@
 
 package cn.featherfly.hammer.expression.condition;
 
-import cn.featherfly.common.lang.function.ReturnStringFunction;
-import cn.featherfly.common.lang.function.StringSupplier;
+import cn.featherfly.common.lang.function.SerializableToStringFunction;
+import cn.featherfly.common.lang.function.SerializableStringSupplier;
 import cn.featherfly.common.operator.QueryOperator.QueryPolicy;
 import cn.featherfly.common.repository.Field;
 
@@ -68,7 +68,7 @@ public interface EndWithExpression<C extends ConditionExpression, L extends Logi
      * @param value 参数值
      * @return LogicExpression
      */
-    default <T> L ew(ReturnStringFunction<T> name, String value) {
+    default <T> L ew(SerializableToStringFunction<T> name, String value) {
         return ew(name, value, QueryPolicy.AUTO);
     }
 
@@ -81,7 +81,7 @@ public interface EndWithExpression<C extends ConditionExpression, L extends Logi
      * @param queryPolicy the query policy
      * @return the l
      */
-    <T> L ew(ReturnStringFunction<T> name, String value, QueryPolicy queryPolicy);
+    <T> L ew(SerializableToStringFunction<T> name, String value, QueryPolicy queryPolicy);
 
     /**
      * end with value. 以value结尾.
@@ -89,7 +89,7 @@ public interface EndWithExpression<C extends ConditionExpression, L extends Logi
      * @param property 对象属性
      * @return LogicExpression
      */
-    default L ew(StringSupplier property) {
+    default L ew(SerializableStringSupplier property) {
         return ew(property, QueryPolicy.AUTO);
     }
 
@@ -100,5 +100,5 @@ public interface EndWithExpression<C extends ConditionExpression, L extends Logi
      * @param queryPolicy the query policy
      * @return the l
      */
-    L ew(StringSupplier property, QueryPolicy queryPolicy);
+    L ew(SerializableStringSupplier property, QueryPolicy queryPolicy);
 }

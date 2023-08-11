@@ -9,7 +9,7 @@ import cn.featherfly.hammer.expression.query.sort.BaseSortExpression;
  * @param <E> the entity type
  * @param <S> the EntitySortedExpression type
  */
-public interface EntityCompatibleSortExpression<E, S extends EntityEntityCompatibleSortExpression<E, S>>
+public interface EntityCompatibleSortExpression<E, S extends EntitySortedCompatibleExpression<E, S>>
         extends EntitySortExpression<E, S>, BaseSortExpression<S> {
 
 }

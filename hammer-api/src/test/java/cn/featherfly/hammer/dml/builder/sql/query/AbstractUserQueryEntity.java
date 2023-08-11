@@ -443,7 +443,6 @@ public class AbstractUserQueryEntity<Q extends AbstractUserQueryEntity<Q, QW, QW
      */
     @Override
     public int intValue() {
-        // YUFEI_TODO Auto-generated method stub
         return 0;
     }
 
@@ -452,7 +451,6 @@ public class AbstractUserQueryEntity<Q extends AbstractUserQueryEntity<Q, QW, QW
      */
     @Override
     public long longValue() {
-        // YUFEI_TODO Auto-generated method stub
         return 0;
     }
 

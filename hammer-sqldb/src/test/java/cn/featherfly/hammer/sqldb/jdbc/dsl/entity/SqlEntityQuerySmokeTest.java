@@ -62,12 +62,13 @@ public class SqlEntityQuerySmokeTest extends JdbcTestBase {
         trees = new ArrayList<>();
     }
 
-    /**
-     * Test sort.
-     */
     @Test
-    void testSort() {
-        List<User> users = query.find(User.class).join(UserInfo::getUser).sort().asc2(UserInfo::getId).limit(2).list();
+    void testEntityOrmSort() {
+        List<User> users = query.find(User.class)//
+                .join(UserInfo::getUser)//
+                .sort()//
+                .asc2(UserInfo::getId)//
+                .limit(2).list();
         assertTrue(users.size() == 2);
         assertTrue(users.get(0).getId() < users.get(1).getId());
 
@@ -81,7 +82,18 @@ public class SqlEntityQuerySmokeTest extends JdbcTestBase {
      */
     @Test
     void testJoin() {
-        List<User2> users = query.find(User2.class).join(UserInfo2::getUserId).list();
+        List<User2> users = query.find(User2.class).join(UserInfo2.class).on(UserInfo2::getUserId).list();
+        System.out.println(users);
+    }
+
+    @Test
+    void testJoinConditions() {
+        List<User2> users = query.find(User2.class).join(UserInfo2.class).on(UserInfo2::getUserId)//
+                .where()//
+                .gt(User2::getId, 0).and().lt(User2::getId, 20).and()//
+                .group().gt2(UserInfo2::getId, 0).or().lt2(UserInfo2::getId, 20).endGroup()//
+                .and().ge(User2::getAge, 0).and().le(User2::getAge, 50)//
+                .list();
         System.out.println(users);
     }
 
@@ -90,7 +102,8 @@ public class SqlEntityQuerySmokeTest extends JdbcTestBase {
      */
     @Test
     void testJoinFetchList() {
-        List<Tuple2<User2, UserInfo2>> users = query.find(User2.class).join(UserInfo2::getUserId).fetch().list();
+        List<Tuple2<User2, UserInfo2>> users = query.find(User2.class).join(UserInfo2.class).on(UserInfo2::getUserId)
+                .fetch().list();
         System.out.println(users);
     }
 
@@ -99,7 +112,8 @@ public class SqlEntityQuerySmokeTest extends JdbcTestBase {
      */
     @Test
     void testJoinFetchSingle() {
-        Tuple2<User2, UserInfo2> tuple = query.find(User2.class).join(UserInfo2::getUserId).fetch().limit(1).single();
+        Tuple2<User2, UserInfo2> tuple = query.find(User2.class).join(UserInfo2.class).on(UserInfo2::getUserId).fetch()
+                .limit(1).single();
         System.out.println(tuple);
     }
 
@@ -108,7 +122,8 @@ public class SqlEntityQuerySmokeTest extends JdbcTestBase {
      */
     @Test
     void testJoinFetchUnique() {
-        Tuple2<User2, UserInfo2> tuple = query.find(User2.class).join(UserInfo2::getUserId).fetch().limit(1).unique();
+        Tuple2<User2, UserInfo2> tuple = query.find(User2.class).join(UserInfo2.class).on(UserInfo2::getUserId).fetch()
+                .limit(1).unique();
         System.out.println(tuple);
     }
 
@@ -117,8 +132,8 @@ public class SqlEntityQuerySmokeTest extends JdbcTestBase {
      */
     @Test
     void testJoinFetchPagination() {
-        PaginationResults<Tuple2<User2, UserInfo2>> page = query.find(User2.class).join(UserInfo2::getUserId).fetch()
-                .limit(1).pagination();
+        PaginationResults<Tuple2<User2, UserInfo2>> page = query.find(User2.class).join(UserInfo2.class)
+                .on(UserInfo2::getUserId).fetch().limit(1).pagination();
         System.out.println(page);
     }
 }

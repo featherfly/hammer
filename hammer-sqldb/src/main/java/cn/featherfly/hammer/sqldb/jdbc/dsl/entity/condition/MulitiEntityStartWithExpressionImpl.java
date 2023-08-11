@@ -1,9 +1,9 @@
 
 /*
  * All rights Reserved, Designed By zhongj
- * @Title: MulitiEntityContainsExpressionImpl.java
- * @Package cn.featherfly.hammer.expression.entity.swndition.sw
- * @Description: MulitiEntityContainsExpressionImpl
+ * @Title: MulitiEntityStartWithExpressionImpl.java
+ * @Package cn.featherfly.hammer.sqldb.jdbc.dsl.entity.condition
+ * @Description: MulitiEntityStartWithExpressionImpl
  * @author: zhongj
  * @date: 2023-07-28 16:58:28
  * @Copyright: 2023 www.featherfly.cn Inc. All rights reserved.

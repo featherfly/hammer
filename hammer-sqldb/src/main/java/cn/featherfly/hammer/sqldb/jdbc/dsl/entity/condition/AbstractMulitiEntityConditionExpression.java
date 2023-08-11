@@ -1,11 +1,10 @@
-
 /*
  * All rights Reserved, Designed By zhongj
- * @Title: MulitiEntityContainsExpressionImpl.java
- * @Package cn.featherfly.hammer.expression.entity.condition.co
- * @Description: MulitiEntityContainsExpressionImpl
+ * @Title: AbstractMulitiEntityConditionExpression.java
+ * @Package cn.featherfly.hammer.sqldb.jdbc.dsl.entity.condition
+ * @Description: AbstractMulitiEntityConditionExpression
  * @author: zhongj
- * @date: 2023-07-28 16:58:28
+ * @date: 2023-08-07 17:33:07
  * @Copyright: 2023 www.featherfly.cn Inc. All rights reserved.
  */
 package cn.featherfly.hammer.sqldb.jdbc.dsl.entity.condition;
