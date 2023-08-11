@@ -20,7 +20,6 @@ import cn.featherfly.common.repository.mapping.ClassMapping;
 import cn.featherfly.common.repository.mapping.PropertyMapping;
 import cn.featherfly.hammer.dml.BuildableConditionGroupExpression;
 import cn.featherfly.hammer.dml.BuildableConditionGroupLogicExpression;
-import cn.featherfly.hammer.dsl.query.TypeQueryEntity;
 import cn.featherfly.hammer.sqldb.jdbc.SqlPageFactory;
 
 /**
@@ -40,7 +39,7 @@ public class SqlConditionGroupExpressionBuilder extends
      *
      * @param dialect        dialect
      * @param sqlPageFactory the sql page factory
-     * @param ignoreStrategy   the ignore strategy
+     * @param ignoreStrategy the ignore strategy
      */
     public SqlConditionGroupExpressionBuilder(Dialect dialect, SqlPageFactory sqlPageFactory,
             Predicate<Object> ignoreStrategy) {
@@ -50,44 +49,28 @@ public class SqlConditionGroupExpressionBuilder extends
     /**
      * Instantiates a new sql condition group expression builder.
      *
-     * @param dialect         dialect
-     * @param sqlPageFactory  the sql page factory
-     * @param typeQueryEntity the type query entity
-     * @param ignoreStrategy    the ignore strategy
-     */
-    public SqlConditionGroupExpressionBuilder(Dialect dialect, SqlPageFactory sqlPageFactory,
-            TypeQueryEntity typeQueryEntity, Predicate<Object> ignoreStrategy) {
-        this(dialect, sqlPageFactory, null, typeQueryEntity, ignoreStrategy);
-    }
-
-    /**
-     * Instantiates a new sql condition group expression builder.
-     *
-     * @param dialect         dialect
-     * @param sqlPageFactory  the sql page factory
-     * @param queryAlias      queryAlias
-     * @param typeQueryEntity the type query entity
-     * @param ignoreStrategy    the ignore strategy
+     * @param dialect        dialect
+     * @param sqlPageFactory the sql page factory
+     * @param queryAlias     queryAlias
+     * @param ignoreStrategy the ignore strategy
      */
     public SqlConditionGroupExpressionBuilder(Dialect dialect, SqlPageFactory sqlPageFactory, String queryAlias,
-            TypeQueryEntity typeQueryEntity, Predicate<Object> ignoreStrategy) {
-        this(null, dialect, sqlPageFactory, queryAlias, typeQueryEntity, ignoreStrategy);
+            Predicate<?> ignoreStrategy) {
+        this(null, dialect, sqlPageFactory, queryAlias, ignoreStrategy);
     }
 
     /**
      * Instantiates a new sql condition group expression builder.
      *
-     * @param parent          parent group
-     * @param dialect         dialect
-     * @param sqlPageFactory  the sql page factory
-     * @param queryAlias      queryAlias
-     * @param typeQueryEntity the type query entity
-     * @param ignoreStrategy    the ignore strategy
+     * @param parent         parent group
+     * @param dialect        dialect
+     * @param sqlPageFactory the sql page factory
+     * @param queryAlias     queryAlias
+     * @param ignoreStrategy the ignore strategy
      */
     SqlConditionGroupExpressionBuilder(BuildableConditionGroupLogicExpression parent, Dialect dialect,
-            SqlPageFactory sqlPageFactory, String queryAlias, TypeQueryEntity typeQueryEntity,
-            Predicate<?> ignoreStrategy) {
-        super(parent, dialect, sqlPageFactory, queryAlias, typeQueryEntity, ignoreStrategy);
+            SqlPageFactory sqlPageFactory, String queryAlias, Predicate<?> ignoreStrategy) {
+        super(parent, dialect, sqlPageFactory, queryAlias, ignoreStrategy);
     }
 
     /**
@@ -95,9 +78,8 @@ public class SqlConditionGroupExpressionBuilder extends
      */
     @Override
     protected BuildableConditionGroupExpression createGroup(BuildableConditionGroupLogicExpression parent,
-            String queryAlias, TypeQueryEntity typeQueryEntity) {
-        return new SqlConditionGroupExpressionBuilder(parent, dialect, sqlPageFactory, queryAlias, typeQueryEntity,
-                ignoreStrategy);
+            String queryAlias) {
+        return new SqlConditionGroupExpressionBuilder(parent, dialect, sqlPageFactory, queryAlias, ignoreStrategy);
     }
 
     /**

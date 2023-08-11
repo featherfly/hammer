@@ -3,8 +3,8 @@ package cn.featherfly.hammer.sqldb.jdbc.dsl.entity.execute;
 
 import cn.featherfly.common.db.builder.SqlBuilder;
 import cn.featherfly.common.db.mapping.JdbcMappingFactory;
-import cn.featherfly.hammer.dsl.execute.EntityExecutableConditionGroupExpression;
-import cn.featherfly.hammer.dsl.execute.EntityExecutableConditionGroupLogicExpression;
+import cn.featherfly.hammer.dsl.entity.execute.EntityExecutableConditionGroup;
+import cn.featherfly.hammer.dsl.entity.execute.EntityExecutableConditionGroupLogic;
 import cn.featherfly.hammer.sqldb.jdbc.dsl.entity.EntitySqlRelation;
 import cn.featherfly.hammer.sqldb.sql.dml.AbstractEntitySqlExecutableConditionGroupExpression;
 
@@ -20,9 +20,9 @@ public abstract class AbstractSqlEntityExecutableConditionGroupExpression<E, ER 
         B extends SqlBuilder> extends
         //        AbstractEntitySqlConditionGroupExpression<E, EntityExecutableConditionGroupExpression<E>,
         //                EntityExecutableConditionGroupLogicExpression<E>>
-        AbstractEntitySqlExecutableConditionGroupExpression<E, ER, B, EntityExecutableConditionGroupExpression<E>,
-                EntityExecutableConditionGroupLogicExpression<E>>
-        implements EntityExecutableConditionGroupExpression<E>, EntityExecutableConditionGroupLogicExpression<E> {
+        AbstractEntitySqlExecutableConditionGroupExpression<E, ER, B, EntityExecutableConditionGroup<E>,
+                EntityExecutableConditionGroupLogic<E>>
+        implements EntityExecutableConditionGroup<E>, EntityExecutableConditionGroupLogic<E> {
 
     /**
      * Instantiates a new sql entity condition group expression.
@@ -41,7 +41,7 @@ public abstract class AbstractSqlEntityExecutableConditionGroupExpression<E, ER 
      * @param factory        the factory
      * @param entityRelation the entity relation
      */
-    AbstractSqlEntityExecutableConditionGroupExpression(EntityExecutableConditionGroupLogicExpression<E> parent,
+    AbstractSqlEntityExecutableConditionGroupExpression(EntityExecutableConditionGroupLogic<E> parent,
             JdbcMappingFactory factory, ER entityRelation) {
         // 删除，和更新不需要分页
         super(parent, factory, entityRelation);

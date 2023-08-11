@@ -19,12 +19,12 @@
 //import cn.featherfly.common.lang.LambdaUtils;
 //import cn.featherfly.common.lang.LambdaUtils.SerializedLambdaInfo;
 //import cn.featherfly.common.lang.Lang;
-//import cn.featherfly.common.lang.function.ReturnDateFunction;
-//import cn.featherfly.common.lang.function.ReturnLocalDateFunction;
-//import cn.featherfly.common.lang.function.ReturnLocalDateTimeFunction;
-//import cn.featherfly.common.lang.function.ReturnLocalTimeFunction;
-//import cn.featherfly.common.lang.function.ReturnNumberFunction;
-//import cn.featherfly.common.lang.function.ReturnStringFunction;
+//import cn.featherfly.common.lang.function.SerializableToDateFunction;
+//import cn.featherfly.common.lang.function.SerializableToLocalDateFunction;
+//import cn.featherfly.common.lang.function.SerializableToLocalDateTimeFunction;
+//import cn.featherfly.common.lang.function.SerializableToLocalTimeFunction;
+//import cn.featherfly.common.lang.function.SerializableToNumberFunction;
+//import cn.featherfly.common.lang.function.SerializableToStringFunction;
 //import cn.featherfly.common.lang.function.SerializableFunction;
 //import cn.featherfly.common.operator.QueryOperator;
 //import cn.featherfly.common.repository.builder.AliasManager;
@@ -129,7 +129,7 @@
 //     * {@inheritDoc}
 //     */
 //    @Override
-//    public <T> RepositoryTypeQueryConditionGroupLogicExpression sw(ReturnStringFunction<T> name, String value) {
+//    public <T> RepositoryTypeQueryConditionGroupLogicExpression sw(SerializableToStringFunction<T> name, String value) {
 //        return addCondition(name, value, QueryOperator.SW);
 //    }
 //
@@ -137,7 +137,7 @@
 //     * {@inheritDoc}
 //     */
 //    @Override
-//    public <T> RepositoryTypeQueryConditionGroupLogicExpression ew(ReturnStringFunction<T> name, String value) {
+//    public <T> RepositoryTypeQueryConditionGroupLogicExpression ew(SerializableToStringFunction<T> name, String value) {
 //        return addCondition(name, value, QueryOperator.EW);
 //    }
 //
@@ -145,7 +145,7 @@
 //     * {@inheritDoc}
 //     */
 //    @Override
-//    public <T> RepositoryTypeQueryConditionGroupLogicExpression co(ReturnStringFunction<T> name, String value) {
+//    public <T> RepositoryTypeQueryConditionGroupLogicExpression co(SerializableToStringFunction<T> name, String value) {
 //        return addCondition(name, value, QueryOperator.CO);
 //    }
 //
@@ -153,7 +153,7 @@
 //     * {@inheritDoc}
 //     */
 //    @Override
-//    public <T, D extends Date> RepositoryTypeQueryConditionGroupLogicExpression ge(ReturnDateFunction<T, D> name,
+//    public <T, D extends Date> RepositoryTypeQueryConditionGroupLogicExpression ge(SerializableToDateFunction<T, D> name,
 //            D value) {
 //        return addCondition(name, value, QueryOperator.GE);
 //    }
@@ -162,7 +162,7 @@
 //     * {@inheritDoc}
 //     */
 //    @Override
-//    public <T> RepositoryTypeQueryConditionGroupLogicExpression ge(ReturnLocalDateFunction<T> name, LocalDate value) {
+//    public <T> RepositoryTypeQueryConditionGroupLogicExpression ge(SerializableToLocalDateFunction<T> name, LocalDate value) {
 //        return addCondition(name, value, QueryOperator.GE);
 //    }
 //
@@ -170,7 +170,7 @@
 //     * {@inheritDoc}
 //     */
 //    @Override
-//    public <T> RepositoryTypeQueryConditionGroupLogicExpression ge(ReturnLocalDateTimeFunction<T> name,
+//    public <T> RepositoryTypeQueryConditionGroupLogicExpression ge(SerializableToLocalDateTimeFunction<T> name,
 //            LocalDateTime value) {
 //        return addCondition(name, value, QueryOperator.GE);
 //    }
@@ -179,7 +179,7 @@
 //     * {@inheritDoc}
 //     */
 //    @Override
-//    public <T> RepositoryTypeQueryConditionGroupLogicExpression ge(ReturnLocalTimeFunction<T> name, LocalTime value) {
+//    public <T> RepositoryTypeQueryConditionGroupLogicExpression ge(SerializableToLocalTimeFunction<T> name, LocalTime value) {
 //        return addCondition(name, value, QueryOperator.GE);
 //    }
 //
@@ -187,7 +187,7 @@
 //     * {@inheritDoc}
 //     */
 //    @Override
-//    public <T, N extends Number> RepositoryTypeQueryConditionGroupLogicExpression ge(ReturnNumberFunction<T, N> name,
+//    public <T, N extends Number> RepositoryTypeQueryConditionGroupLogicExpression ge(SerializableToNumberFunction<T, N> name,
 //            N value) {
 //        return addCondition(name, value, QueryOperator.GE);
 //    }
@@ -196,7 +196,7 @@
 //     * {@inheritDoc}
 //     */
 //    @Override
-//    public <T> RepositoryTypeQueryConditionGroupLogicExpression ge(ReturnStringFunction<T> name, String value) {
+//    public <T> RepositoryTypeQueryConditionGroupLogicExpression ge(SerializableToStringFunction<T> name, String value) {
 //        return addCondition(name, value, QueryOperator.GE);
 //    }
 //
@@ -204,7 +204,7 @@
 //     * {@inheritDoc}
 //     */
 //    @Override
-//    public <T, D extends Date> RepositoryTypeQueryConditionGroupLogicExpression gt(ReturnDateFunction<T, D> name,
+//    public <T, D extends Date> RepositoryTypeQueryConditionGroupLogicExpression gt(SerializableToDateFunction<T, D> name,
 //            D value) {
 //        return addCondition(name, value, QueryOperator.GT);
 //    }
@@ -213,7 +213,7 @@
 //     * {@inheritDoc}
 //     */
 //    @Override
-//    public <T> RepositoryTypeQueryConditionGroupLogicExpression gt(ReturnLocalDateFunction<T> name, LocalDate value) {
+//    public <T> RepositoryTypeQueryConditionGroupLogicExpression gt(SerializableToLocalDateFunction<T> name, LocalDate value) {
 //        return addCondition(name, value, QueryOperator.GT);
 //    }
 //
@@ -221,7 +221,7 @@
 //     * {@inheritDoc}
 //     */
 //    @Override
-//    public <T> RepositoryTypeQueryConditionGroupLogicExpression gt(ReturnLocalDateTimeFunction<T> name,
+//    public <T> RepositoryTypeQueryConditionGroupLogicExpression gt(SerializableToLocalDateTimeFunction<T> name,
 //            LocalDateTime value) {
 //        return addCondition(name, value, QueryOperator.GT);
 //    }
@@ -230,7 +230,7 @@
 //     * {@inheritDoc}
 //     */
 //    @Override
-//    public <T> RepositoryTypeQueryConditionGroupLogicExpression gt(ReturnLocalTimeFunction<T> name, LocalTime value) {
+//    public <T> RepositoryTypeQueryConditionGroupLogicExpression gt(SerializableToLocalTimeFunction<T> name, LocalTime value) {
 //        return addCondition(name, value, QueryOperator.GT);
 //    }
 //
@@ -238,7 +238,7 @@
 //     * {@inheritDoc}
 //     */
 //    @Override
-//    public <T, N extends Number> RepositoryTypeQueryConditionGroupLogicExpression gt(ReturnNumberFunction<T, N> name,
+//    public <T, N extends Number> RepositoryTypeQueryConditionGroupLogicExpression gt(SerializableToNumberFunction<T, N> name,
 //            N value) {
 //        return addCondition(name, value, QueryOperator.GT);
 //    }
@@ -247,7 +247,7 @@
 //     * {@inheritDoc}
 //     */
 //    @Override
-//    public <T> RepositoryTypeQueryConditionGroupLogicExpression gt(ReturnStringFunction<T> name, String value) {
+//    public <T> RepositoryTypeQueryConditionGroupLogicExpression gt(SerializableToStringFunction<T> name, String value) {
 //        return addCondition(name, value, QueryOperator.GT);
 //    }
 //
@@ -295,7 +295,7 @@
 //     * {@inheritDoc}
 //     */
 //    @Override
-//    public <T, D extends Date> RepositoryTypeQueryConditionGroupLogicExpression le(ReturnDateFunction<T, D> name,
+//    public <T, D extends Date> RepositoryTypeQueryConditionGroupLogicExpression le(SerializableToDateFunction<T, D> name,
 //            D value) {
 //        return addCondition(name, value, QueryOperator.LE);
 //    }
@@ -304,7 +304,7 @@
 //     * {@inheritDoc}
 //     */
 //    @Override
-//    public <T> RepositoryTypeQueryConditionGroupLogicExpression le(ReturnLocalDateFunction<T> name, LocalDate value) {
+//    public <T> RepositoryTypeQueryConditionGroupLogicExpression le(SerializableToLocalDateFunction<T> name, LocalDate value) {
 //        return addCondition(name, value, QueryOperator.LE);
 //    }
 //
@@ -312,7 +312,7 @@
 //     * {@inheritDoc}
 //     */
 //    @Override
-//    public <T> RepositoryTypeQueryConditionGroupLogicExpression le(ReturnLocalDateTimeFunction<T> name,
+//    public <T> RepositoryTypeQueryConditionGroupLogicExpression le(SerializableToLocalDateTimeFunction<T> name,
 //            LocalDateTime value) {
 //        return addCondition(name, value, QueryOperator.LE);
 //    }
@@ -321,7 +321,7 @@
 //     * {@inheritDoc}
 //     */
 //    @Override
-//    public <T> RepositoryTypeQueryConditionGroupLogicExpression le(ReturnLocalTimeFunction<T> name, LocalTime value) {
+//    public <T> RepositoryTypeQueryConditionGroupLogicExpression le(SerializableToLocalTimeFunction<T> name, LocalTime value) {
 //        return addCondition(name, value, QueryOperator.LE);
 //    }
 //
@@ -329,7 +329,7 @@
 //     * {@inheritDoc}
 //     */
 //    @Override
-//    public <T, N extends Number> RepositoryTypeQueryConditionGroupLogicExpression le(ReturnNumberFunction<T, N> name,
+//    public <T, N extends Number> RepositoryTypeQueryConditionGroupLogicExpression le(SerializableToNumberFunction<T, N> name,
 //            N value) {
 //        return addCondition(name, value, QueryOperator.LE);
 //    }
@@ -338,7 +338,7 @@
 //     * {@inheritDoc}
 //     */
 //    @Override
-//    public <T> RepositoryTypeQueryConditionGroupLogicExpression le(ReturnStringFunction<T> name, String value) {
+//    public <T> RepositoryTypeQueryConditionGroupLogicExpression le(SerializableToStringFunction<T> name, String value) {
 //        return addCondition(name, value, QueryOperator.LE);
 //    }
 //
@@ -346,7 +346,7 @@
 //     * {@inheritDoc}
 //     */
 //    @Override
-//    public <T, D extends Date> RepositoryTypeQueryConditionGroupLogicExpression lt(ReturnDateFunction<T, D> name,
+//    public <T, D extends Date> RepositoryTypeQueryConditionGroupLogicExpression lt(SerializableToDateFunction<T, D> name,
 //            D value) {
 //        return addCondition(name, value, QueryOperator.LT);
 //    }
@@ -355,7 +355,7 @@
 //     * {@inheritDoc}
 //     */
 //    @Override
-//    public <T> RepositoryTypeQueryConditionGroupLogicExpression lt(ReturnLocalDateFunction<T> name, LocalDate value) {
+//    public <T> RepositoryTypeQueryConditionGroupLogicExpression lt(SerializableToLocalDateFunction<T> name, LocalDate value) {
 //        return addCondition(name, value, QueryOperator.LT);
 //    }
 //
@@ -363,7 +363,7 @@
 //     * {@inheritDoc}
 //     */
 //    @Override
-//    public <T> RepositoryTypeQueryConditionGroupLogicExpression lt(ReturnLocalDateTimeFunction<T> name,
+//    public <T> RepositoryTypeQueryConditionGroupLogicExpression lt(SerializableToLocalDateTimeFunction<T> name,
 //            LocalDateTime value) {
 //        return addCondition(name, value, QueryOperator.LT);
 //    }
@@ -372,7 +372,7 @@
 //     * {@inheritDoc}
 //     */
 //    @Override
-//    public <T> RepositoryTypeQueryConditionGroupLogicExpression lt(ReturnLocalTimeFunction<T> name, LocalTime value) {
+//    public <T> RepositoryTypeQueryConditionGroupLogicExpression lt(SerializableToLocalTimeFunction<T> name, LocalTime value) {
 //        return addCondition(name, value, QueryOperator.LT);
 //    }
 //
@@ -380,7 +380,7 @@
 //     * {@inheritDoc}
 //     */
 //    @Override
-//    public <T, N extends Number> RepositoryTypeQueryConditionGroupLogicExpression lt(ReturnNumberFunction<T, N> name,
+//    public <T, N extends Number> RepositoryTypeQueryConditionGroupLogicExpression lt(SerializableToNumberFunction<T, N> name,
 //            N value) {
 //        return addCondition(name, value, QueryOperator.LT);
 //    }
@@ -389,7 +389,7 @@
 //     * {@inheritDoc}
 //     */
 //    @Override
-//    public <T> RepositoryTypeQueryConditionGroupLogicExpression lt(ReturnStringFunction<T> name, String value) {
+//    public <T> RepositoryTypeQueryConditionGroupLogicExpression lt(SerializableToStringFunction<T> name, String value) {
 //        return addCondition(name, value, QueryOperator.LT);
 //    }
 //

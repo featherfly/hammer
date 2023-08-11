@@ -6,12 +6,12 @@ import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.Date;
 
-import cn.featherfly.common.lang.function.ReturnDateFunction;
-import cn.featherfly.common.lang.function.ReturnLocalDateFunction;
-import cn.featherfly.common.lang.function.ReturnLocalDateTimeFunction;
-import cn.featherfly.common.lang.function.ReturnLocalTimeFunction;
-import cn.featherfly.common.lang.function.ReturnNumberFunction;
-import cn.featherfly.common.lang.function.ReturnStringFunction;
+import cn.featherfly.common.lang.function.SerializableToDateFunction;
+import cn.featherfly.common.lang.function.SerializableToLocalDateFunction;
+import cn.featherfly.common.lang.function.SerializableToLocalDateTimeFunction;
+import cn.featherfly.common.lang.function.SerializableToLocalTimeFunction;
+import cn.featherfly.common.lang.function.SerializableToNumberFunction;
+import cn.featherfly.common.lang.function.SerializableToStringFunction;
 import cn.featherfly.common.lang.function.SerializableFunction;
 import cn.featherfly.common.lang.function.SerializableSupplier;
 
@@ -36,7 +36,7 @@ public interface TypeLessEqualsExpression<C extends ConditionExpression, L exten
      * @param value      参数值
      * @return LogicExpression
      */
-    <T, R, N extends Number> L le(SerializableFunction<T, R> repository, ReturnNumberFunction<R, N> property, N value);
+    <T, R, N extends Number> L le(SerializableFunction<T, R> repository, SerializableToNumberFunction<R, N> property, N value);
 
     /**
      * less equals. 小于等于.
@@ -47,7 +47,7 @@ public interface TypeLessEqualsExpression<C extends ConditionExpression, L exten
      * @param property   对象属性
      * @return LogicExpression
      */
-    <T, N extends Number> L le(SerializableSupplier<T> repository, ReturnNumberFunction<T, N> property);
+    <T, N extends Number> L le(SerializableSupplier<T> repository, SerializableToNumberFunction<T, N> property);
 
     /**
      * less equals. 小于等于.
@@ -60,7 +60,7 @@ public interface TypeLessEqualsExpression<C extends ConditionExpression, L exten
      * @param value      参数值
      * @return LogicExpression
      */
-    <T, R, D extends Date> L le(SerializableFunction<T, R> repository, ReturnDateFunction<R, D> property, D value);
+    <T, R, D extends Date> L le(SerializableFunction<T, R> repository, SerializableToDateFunction<R, D> property, D value);
 
     /**
      * less equals. 小于等于.
@@ -71,7 +71,7 @@ public interface TypeLessEqualsExpression<C extends ConditionExpression, L exten
      * @param property   对象属性
      * @return LogicExpression
      */
-    <T, D extends Date> L le(SerializableSupplier<T> repository, ReturnDateFunction<T, D> property);
+    <T, D extends Date> L le(SerializableSupplier<T> repository, SerializableToDateFunction<T, D> property);
 
     /**
      * less equals. 小于等于.
@@ -83,7 +83,7 @@ public interface TypeLessEqualsExpression<C extends ConditionExpression, L exten
      * @param value      参数值
      * @return LogicExpression
      */
-    <T, R> L le(SerializableFunction<T, R> repository, ReturnLocalTimeFunction<R> property, LocalTime value);
+    <T, R> L le(SerializableFunction<T, R> repository, SerializableToLocalTimeFunction<R> property, LocalTime value);
 
     /**
      * less equals. 小于等于.
@@ -93,7 +93,7 @@ public interface TypeLessEqualsExpression<C extends ConditionExpression, L exten
      * @param property   对象属性
      * @return LogicExpression
      */
-    <T> L le(SerializableSupplier<T> repository, ReturnLocalTimeFunction<T> property);
+    <T> L le(SerializableSupplier<T> repository, SerializableToLocalTimeFunction<T> property);
 
     /**
      * less equals. 小于等于.
@@ -105,7 +105,7 @@ public interface TypeLessEqualsExpression<C extends ConditionExpression, L exten
      * @param value      参数值
      * @return LogicExpression
      */
-    <T, R> L le(SerializableFunction<T, R> repository, ReturnLocalDateFunction<R> property, LocalDate value);
+    <T, R> L le(SerializableFunction<T, R> repository, SerializableToLocalDateFunction<R> property, LocalDate value);
 
     /**
      * less equals. 小于等于.
@@ -115,7 +115,7 @@ public interface TypeLessEqualsExpression<C extends ConditionExpression, L exten
      * @param property   对象属性
      * @return LogicExpression
      */
-    <T> L le(SerializableSupplier<T> repository, ReturnLocalDateFunction<T> property);
+    <T> L le(SerializableSupplier<T> repository, SerializableToLocalDateFunction<T> property);
 
     /**
      * less equals. 小于等于.
@@ -127,7 +127,7 @@ public interface TypeLessEqualsExpression<C extends ConditionExpression, L exten
      * @param value      参数值
      * @return LogicExpression
      */
-    <T, R> L le(SerializableFunction<T, R> repository, ReturnLocalDateTimeFunction<R> property, LocalDateTime value);
+    <T, R> L le(SerializableFunction<T, R> repository, SerializableToLocalDateTimeFunction<R> property, LocalDateTime value);
 
     /**
      * less equals. 小于等于.
@@ -137,7 +137,7 @@ public interface TypeLessEqualsExpression<C extends ConditionExpression, L exten
      * @param property   对象属性
      * @return LogicExpression
      */
-    <T> L le(SerializableSupplier<T> repository, ReturnLocalDateTimeFunction<T> property);
+    <T> L le(SerializableSupplier<T> repository, SerializableToLocalDateTimeFunction<T> property);
 
     /**
      * less equals. 小于等于.
@@ -149,7 +149,7 @@ public interface TypeLessEqualsExpression<C extends ConditionExpression, L exten
      * @param value      参数值
      * @return LogicExpression
      */
-    <T, R> L le(SerializableFunction<T, R> repository, ReturnStringFunction<R> property, String value);
+    <T, R> L le(SerializableFunction<T, R> repository, SerializableToStringFunction<R> property, String value);
 
     /**
      * less equals. 小于等于.
@@ -159,5 +159,5 @@ public interface TypeLessEqualsExpression<C extends ConditionExpression, L exten
      * @param property   对象属性
      * @return LogicExpression
      */
-    <T> L le(SerializableSupplier<T> repository, ReturnStringFunction<T> property);
+    <T> L le(SerializableSupplier<T> repository, SerializableToStringFunction<T> property);
 }

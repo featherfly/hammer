@@ -99,7 +99,7 @@ public interface EntityContainsExpression6<E, E2, E3, E4, E5, E6, C extends Cond
     //    default L co(Function<
     //            Tuple6<QueryEntityRepository<E>, QueryEntityRepository<E2>, QueryEntityRepository<E3>,
     //                    QueryEntityRepository<E4>, QueryEntityRepository<E5>, QueryEntityRepository<E6>>,
-    //            QueryEntityRepository<E>> entities, StringSupplier property) {
+    //            QueryEntityRepository<E>> entities, SerializableStringSupplier property) {
     //        return co(entities, property, QueryPolicy.AUTO);
     //    }
     //
@@ -114,7 +114,7 @@ public interface EntityContainsExpression6<E, E2, E3, E4, E5, E6, C extends Cond
     //    default L co(Function<
     //            Tuple6<QueryEntityRepository<E>, QueryEntityRepository<E2>, QueryEntityRepository<E3>,
     //                    QueryEntityRepository<E4>, QueryEntityRepository<E5>, QueryEntityRepository<E6>>,
-    //            QueryEntityRepository<E>> entities, StringSupplier property, Predicate<String> ignoreStrategy) {
+    //            QueryEntityRepository<E>> entities, SerializableStringSupplier property, Predicate<String> ignoreStrategy) {
     //        return co(entities, property, QueryPolicy.AUTO, ignoreStrategy);
     //    }
     //
@@ -129,7 +129,7 @@ public interface EntityContainsExpression6<E, E2, E3, E4, E5, E6, C extends Cond
     //    L co(Function<
     //            Tuple6<QueryEntityRepository<E>, QueryEntityRepository<E2>, QueryEntityRepository<E3>,
     //                    QueryEntityRepository<E4>, QueryEntityRepository<E5>, QueryEntityRepository<E6>>,
-    //            QueryEntityRepository<E>> entities, StringSupplier property, QueryPolicy queryPolicy);
+    //            QueryEntityRepository<E>> entities, SerializableStringSupplier property, QueryPolicy queryPolicy);
     //
     //    /**
     //     * contains value. 包含value.
@@ -143,7 +143,7 @@ public interface EntityContainsExpression6<E, E2, E3, E4, E5, E6, C extends Cond
     //    L co(Function<
     //            Tuple6<QueryEntityRepository<E>, QueryEntityRepository<E2>, QueryEntityRepository<E3>,
     //                    QueryEntityRepository<E4>, QueryEntityRepository<E5>, QueryEntityRepository<E6>>,
-    //            QueryEntityRepository<E>> entities, StringSupplier property, QueryPolicy queryPolicy,
+    //            QueryEntityRepository<E>> entities, SerializableStringSupplier property, QueryPolicy queryPolicy,
     //            Predicate<String> ignoreStrategy);
     //
     //    /**

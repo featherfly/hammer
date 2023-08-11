@@ -81,7 +81,7 @@ public class SqlEntityQuerySmokeTest extends JdbcTestBase {
      */
     @Test
     void testJoin() {
-        List<User2> users = query.find(User2.class).join(UserInfo2::getUserId).list();
+        List<User2> users = query.find(User2.class).join(UserInfo2.class).on(UserInfo2::getUserId).list();
         System.out.println(users);
     }
 
@@ -90,7 +90,8 @@ public class SqlEntityQuerySmokeTest extends JdbcTestBase {
      */
     @Test
     void testJoinFetchList() {
-        List<Tuple2<User2, UserInfo2>> users = query.find(User2.class).join(UserInfo2::getUserId).fetch().list();
+        List<Tuple2<User2, UserInfo2>> users = query.find(User2.class).join(UserInfo2.class).on(UserInfo2::getUserId)
+                .fetch().list();
         System.out.println(users);
     }
 
@@ -99,7 +100,8 @@ public class SqlEntityQuerySmokeTest extends JdbcTestBase {
      */
     @Test
     void testJoinFetchSingle() {
-        Tuple2<User2, UserInfo2> tuple = query.find(User2.class).join(UserInfo2::getUserId).fetch().limit(1).single();
+        Tuple2<User2, UserInfo2> tuple = query.find(User2.class).join(UserInfo2.class).on(UserInfo2::getUserId).fetch()
+                .limit(1).single();
         System.out.println(tuple);
     }
 
@@ -108,7 +110,8 @@ public class SqlEntityQuerySmokeTest extends JdbcTestBase {
      */
     @Test
     void testJoinFetchUnique() {
-        Tuple2<User2, UserInfo2> tuple = query.find(User2.class).join(UserInfo2::getUserId).fetch().limit(1).unique();
+        Tuple2<User2, UserInfo2> tuple = query.find(User2.class).join(UserInfo2.class).on(UserInfo2::getUserId).fetch()
+                .limit(1).unique();
         System.out.println(tuple);
     }
 
@@ -117,8 +120,8 @@ public class SqlEntityQuerySmokeTest extends JdbcTestBase {
      */
     @Test
     void testJoinFetchPagination() {
-        PaginationResults<Tuple2<User2, UserInfo2>> page = query.find(User2.class).join(UserInfo2::getUserId).fetch()
-                .limit(1).pagination();
+        PaginationResults<Tuple2<User2, UserInfo2>> page = query.find(User2.class).join(UserInfo2.class)
+                .on(UserInfo2::getUserId).fetch().limit(1).pagination();
         System.out.println(page);
     }
 }

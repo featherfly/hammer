@@ -46,7 +46,7 @@ public abstract class SqlQueryConditionGroupExpression
      *
      * @param jdbc           jdbc
      * @param sqlPageFactory the sql page factory
-     * @param ignoreStrategy   the ignore strategy
+     * @param ignoreStrategy the ignore strategy
      */
     public SqlQueryConditionGroupExpression(Jdbc jdbc, SqlPageFactory sqlPageFactory, Predicate<?> ignoreStrategy) {
         this(jdbc, sqlPageFactory, null, ignoreStrategy);
@@ -58,7 +58,7 @@ public abstract class SqlQueryConditionGroupExpression
      * @param jdbc           jdbc
      * @param sqlPageFactory the sql page factory
      * @param queryAlias     queryAlias
-     * @param ignoreStrategy   the ignore strategy
+     * @param ignoreStrategy the ignore strategy
      */
     public SqlQueryConditionGroupExpression(Jdbc jdbc, SqlPageFactory sqlPageFactory, String queryAlias,
             Predicate<?> ignoreStrategy) {
@@ -72,11 +72,11 @@ public abstract class SqlQueryConditionGroupExpression
      * @param jdbc           jdbc
      * @param sqlPageFactory the sql page factory
      * @param queryAlias     queryAlias
-     * @param ignoreStrategy   the ignore strategy
+     * @param ignoreStrategy the ignore strategy
      */
     SqlQueryConditionGroupExpression(QueryConditionGroupLogicExpression parent, Jdbc jdbc,
             SqlPageFactory sqlPageFactory, String queryAlias, Predicate<?> ignoreStrategy) {
-        super(parent, jdbc.getDialect(), sqlPageFactory, queryAlias, null, ignoreStrategy);
+        super(parent, jdbc.getDialect(), sqlPageFactory, queryAlias, ignoreStrategy);
         this.jdbc = jdbc;
     }
 

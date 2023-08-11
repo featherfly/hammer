@@ -3,7 +3,7 @@ package cn.featherfly.hammer.expression.entity.condition.lk;
 
 import java.util.Collection;
 
-import cn.featherfly.common.lang.function.ReturnStringFunction;
+import cn.featherfly.common.lang.function.SerializableToStringFunction;
 import cn.featherfly.common.lang.function.SerializableFunction;
 import cn.featherfly.common.lang.function.SerializableToCollectionFunction;
 
@@ -42,6 +42,6 @@ public interface LikeEntityPropertyExpression<E> {
      * @param name the name
      * @return entity like function property value expression
      */
-    <R> LikeEntityPropertyValueExpression<E> property(ReturnStringFunction<E> name);
+    <R> LikeEntityPropertyValueExpression<E> property(SerializableToStringFunction<E> name);
 
 }

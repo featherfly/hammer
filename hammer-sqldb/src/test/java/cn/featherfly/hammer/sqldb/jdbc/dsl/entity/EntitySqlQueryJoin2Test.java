@@ -1,0 +1,149 @@
+
+package cn.featherfly.hammer.sqldb.jdbc.dsl.entity;
+
+import static org.testng.Assert.assertEquals;
+import static org.testng.Assert.assertNotNull;
+import static org.testng.Assert.assertNull;
+
+import org.testng.annotations.Test;
+
+import com.speedment.common.tuple.Tuple2;
+import com.speedment.common.tuple.Tuple3;
+
+import cn.featherfly.common.lang.function.SerializableToNumberFunction1;
+import cn.featherfly.hammer.sqldb.jdbc.vo.s.Order2;
+import cn.featherfly.hammer.sqldb.jdbc.vo.s.User2;
+import cn.featherfly.hammer.sqldb.jdbc.vo.s.UserInfo2;
+
+/**
+ * sql query type test.
+ *
+ * @author zhongj
+ */
+public class EntitySqlQueryJoin2Test extends AbstractEntitySqlQueryJoinTest {
+
+    @Test
+    void testJoin_ER_TYPE_ER_TYPE() {
+        Order2 order = query.find(Order2.class).join(User2.class).on(Order2::getUser1).join(User2.class)
+                .on(Order2::getUser2).where().eq(Order2::getId, oid1).single();
+        assertNotNull(order);
+        assertEquals(order.getId(), oid1);
+
+        //        order = query.find(Order2.class).join(User2.class).on(Order2::getUser1)
+        //                .join((e1, e2) -> e1, Order2::getUser2, User2.class).where().eq(Order2::getId, oid1).single();
+        //        assertNotNull(order);
+        //        assertEquals(order.getId(), oid1);
+
+        Tuple2<Order2, User2> orderUser = query.find(Order2.class).join(User2.class).on(Order2::getUser1).fetch()
+                .join(User2.class).on(Order2::getUser2).where().eq(Order2::getId, oid1).single();
+        assertNotNull(orderUser);
+        assertEquals(orderUser.get0().getId(), oid1);
+        assertEquals(orderUser.get1().getId(), orderUser.get0().getUser1());
+
+        orderUser = query.find(Order2.class).join(User2.class).on(Order2::getUser1).join(User2.class)
+                .on(Order2::getUser2).fetch().where().eq(Order2::getId, oid1).single();
+        assertNotNull(orderUser);
+        assertEquals(orderUser.get0().getId(), oid1);
+        assertEquals(orderUser.get1().getId(), orderUser.get0().getUser2());
+
+        Tuple3<Order2, User2, User2> orderUserUser = query.find(Order2.class).join(User2.class).on(Order2::getUser1)
+                .fetch().join(User2.class).on(Order2::getUser2).fetch().where().eq(Order2::getId, oid1).single();
+        assertNotNull(orderUserUser);
+        assertEquals(orderUserUser.get0().getId(), oid1);
+        assertEquals(orderUserUser.get1().getId(), orderUserUser.get0().getUser1());
+        assertEquals(orderUserUser.get2().getId(), orderUserUser.get0().getUser2());
+    }
+
+    @Test
+    void testJoin_ER_RJ_ER_RJ() {
+        Order2 order = query.find(Order2.class).join(User2.class).on(Order2::getUser1, User2::getId).join(User2.class)
+                .on(Order2::getUser2, User2::getId).where().eq(Order2::getId, oid1).single();
+        assertNotNull(order);
+        assertEquals(order.getId(), oid1);
+
+        order = query.find(Order2.class).join(User2.class).on(Order2::getUser1, User2::getId)
+                .join((e1, e2) -> e1, Order2::getUser2, User2::getId).where().eq(Order2::getId, oid1).single();
+        assertNotNull(order);
+        assertEquals(order.getId(), oid1);
+
+        // ****************************************************************************************************************
+
+        //        Tuple2<Order2, User2> orderUser = query.find(Order2.class).join(Order2::getCreateUser, User2::getId).fetch()
+        //                .where().eq(Order2::getId, oid1).single();
+        //        assertNotNull(orderUser);
+        //        assertEquals(orderUser.get0().getId(), oid1);
+        //        assertEquals(orderUser.get1().getId(), uid1);
+    }
+
+    @Test
+    void testJoin_RJ_RJ() {
+        User2 user = query.find(User2.class).join(Order2.class).on(Order2::getUser1).join(Order2.class)
+                .on(Order2::getUser2).where().eq2(Order2::getId, oid1).single();
+        assertNull(user);
+
+        user = query.find(User2.class).join(Order2.class).on(Order2::getUser1).join(Order2.class)
+                .on(Order2::getCreateUser).where().eq2(Order2::getId, oid1).single();
+        assertNotNull(user);
+        assertEquals(user.getId(), uid1);
+
+        user = query.find(User2.class).join(Order2.class).on(Order2::getUser1).join(UserInfo2.class)
+                .on(UserInfo2::getUserId).where().eq2(Order2::getId, oid1).single();
+        assertNotNull(user);
+        assertEquals(user.getId(), uid1);
+
+        user = query.find(User2.class).join(Order2.class).on(Order2::getUser1)
+                //
+                .join((e1, e2) -> e1, (SerializableToNumberFunction1<UserInfo2, Integer>) UserInfo2::getUserId)
+                //                .join((e1, e2) -> e1, UserInfo2::getUserId)
+                //
+                .where().eq2(Order2::getId, oid1).single();
+        assertNotNull(user);
+        assertEquals(user.getId(), uid1);
+
+        //        user = query.find(User2.class).join(Order2::getUser1)
+        //                //
+        //                //                        .join(es -> es.get0(), UserInfo2::getUserId)
+        //                .join(es -> es.get0(), (SerializableToNumberFunction1<UserInfo2, Integer>) UserInfo2::getUserId)
+        //                //
+        //                .where().eq2(Order2::getId, oid1).single();
+        //        assertNotNull(user);
+        //        assertEquals(user.getId(), uid1);
+
+        user = query.find(User2.class).join(Order2.class).on(Order2::getUser1).join2(UserInfo2.class)
+                .on(UserInfo2::getUserId).where().eq2(Order2::getId, oid1).single();
+        assertNotNull(user);
+        assertEquals(user.getId(), uid1);
+
+        user = query.find(User2.class).join(Order2.class).on(Order2::getUser1)
+                .join((e1, e2) -> e2, Order2::getUserInfo, UserInfo2.class).where().eq2(Order2::getId, oid1).single();
+        assertNotNull(user);
+        assertEquals(user.getId(), uid1);
+
+        //        user = query.find(User2.class).join(Order2::getUser1)
+        //                .join(es -> es.get1(), Order2::getUserInfo, UserInfo2.class).where().eq2(Order2::getId, oid1).single();
+        //        assertNotNull(user);
+        //        assertEquals(user.getId(), uid1);
+
+        // ****************************************************************************************************************
+
+        Tuple2<User2, Order2> userOrder = query.find(User2.class).join(Order2.class).on(Order2::getUser1).fetch()
+                .join(UserInfo2.class).on(UserInfo2::getUserId).where().eq2(Order2::getId, oid1).single();
+        assertNotNull(userOrder);
+        assertEquals(userOrder.get0().getId(), userOrder.get1().getUser1());
+        assertEquals(userOrder.get1().getId(), oid1);
+
+        Tuple2<User2, UserInfo2> userUserInfo = query.find(User2.class).join(Order2.class).on(Order2::getUser1)
+                .join(UserInfo2.class).on(UserInfo2::getUserId).fetch().where().eq2(Order2::getId, oid1).single();
+        assertNotNull(userUserInfo);
+        assertEquals(userUserInfo.get0().getId(), userUserInfo.get1().getUserId());
+
+        Tuple3<User2, Order2,
+                UserInfo2> userOrderUserInfo = query.find(User2.class).join(Order2.class).on(Order2::getUser1).fetch()
+                        .join(UserInfo2.class).on(UserInfo2::getUserId).fetch().where().eq2(Order2::getId, oid1)
+                        .single();
+        assertNotNull(userOrderUserInfo);
+        assertEquals(userOrderUserInfo.get1().getId(), oid1);
+        assertEquals(userOrderUserInfo.get0().getId(), userOrderUserInfo.get1().getUser1());
+        assertEquals(userOrderUserInfo.get0().getId(), userOrderUserInfo.get2().getUserId());
+    }
+}

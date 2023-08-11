@@ -8,21 +8,21 @@ import java.util.Date;
 import java.util.Map;
 import java.util.function.Function;
 
-import cn.featherfly.common.lang.function.DateSupplier;
-import cn.featherfly.common.lang.function.LocalDateSupplier;
-import cn.featherfly.common.lang.function.LocalDateTimeSupplier;
-import cn.featherfly.common.lang.function.LocalTimeSupplier;
-import cn.featherfly.common.lang.function.NumberSupplier;
-import cn.featherfly.common.lang.function.ReturnDateFunction;
-import cn.featherfly.common.lang.function.ReturnEnumFunction;
-import cn.featherfly.common.lang.function.ReturnLocalDateFunction;
-import cn.featherfly.common.lang.function.ReturnLocalDateTimeFunction;
-import cn.featherfly.common.lang.function.ReturnLocalTimeFunction;
-import cn.featherfly.common.lang.function.ReturnNumberFunction;
-import cn.featherfly.common.lang.function.ReturnStringFunction;
+import cn.featherfly.common.lang.function.SerializableDateSupplier;
+import cn.featherfly.common.lang.function.SerializableLocalDateSupplier;
+import cn.featherfly.common.lang.function.SerializableLocalDateTimeSupplier;
+import cn.featherfly.common.lang.function.SerializableLocalTimeSupplier;
+import cn.featherfly.common.lang.function.SerializableNumberSupplier;
+import cn.featherfly.common.lang.function.SerializableToDateFunction;
+import cn.featherfly.common.lang.function.SerializableToEnumFunction;
+import cn.featherfly.common.lang.function.SerializableToLocalDateFunction;
+import cn.featherfly.common.lang.function.SerializableToLocalDateTimeFunction;
+import cn.featherfly.common.lang.function.SerializableToLocalTimeFunction;
+import cn.featherfly.common.lang.function.SerializableToNumberFunction;
+import cn.featherfly.common.lang.function.SerializableToStringFunction;
 import cn.featherfly.common.lang.function.SerializableFunction;
 import cn.featherfly.common.lang.function.SerializableSupplier;
-import cn.featherfly.common.lang.function.StringSupplier;
+import cn.featherfly.common.lang.function.SerializableStringSupplier;
 import cn.featherfly.common.operator.LogicOperator;
 import cn.featherfly.common.operator.QueryOperator.QueryPolicy;
 import cn.featherfly.hammer.expression.RepositoryConditionGroupLogicExpression;
@@ -108,7 +108,7 @@ public class UserQueryRepositoryConditionGroupExpression implements
      * {@inheritDoc}
      */
     @Override
-    public <T> UserQueryRepositoryConditionGroupExpression co(ReturnStringFunction<T> name, String value,
+    public <T> UserQueryRepositoryConditionGroupExpression co(SerializableToStringFunction<T> name, String value,
             QueryPolicy queryPolicy) {
         // YUFEI_TODO Auto-generated method stub
         return null;
@@ -118,7 +118,7 @@ public class UserQueryRepositoryConditionGroupExpression implements
      * {@inheritDoc}
      */
     @Override
-    public UserQueryRepositoryConditionGroupExpression co(StringSupplier property, QueryPolicy queryPolicy) {
+    public UserQueryRepositoryConditionGroupExpression co(SerializableStringSupplier property, QueryPolicy queryPolicy) {
         // YUFEI_TODO Auto-generated method stub
         return null;
     }
@@ -165,7 +165,7 @@ public class UserQueryRepositoryConditionGroupExpression implements
      * {@inheritDoc}
      */
     @Override
-    public <T> UserQueryRepositoryConditionGroupExpression ew(ReturnStringFunction<T> name, String value,
+    public <T> UserQueryRepositoryConditionGroupExpression ew(SerializableToStringFunction<T> name, String value,
             QueryPolicy queryPolicy) {
         // YUFEI_TODO Auto-generated method stub
         return null;
@@ -175,7 +175,7 @@ public class UserQueryRepositoryConditionGroupExpression implements
      * {@inheritDoc}
      */
     @Override
-    public UserQueryRepositoryConditionGroupExpression ew(StringSupplier property, QueryPolicy queryPolicy) {
+    public UserQueryRepositoryConditionGroupExpression ew(SerializableStringSupplier property, QueryPolicy queryPolicy) {
         // YUFEI_TODO Auto-generated method stub
         return null;
     }
@@ -371,7 +371,7 @@ public class UserQueryRepositoryConditionGroupExpression implements
      * {@inheritDoc}
      */
     @Override
-    public <T, N extends Number> UserQueryRepositoryConditionGroupExpression ge(ReturnNumberFunction<T, N> name,
+    public <T, N extends Number> UserQueryRepositoryConditionGroupExpression ge(SerializableToNumberFunction<T, N> name,
             N value) {
         // YUFEI_TODO Auto-generated method stub
         return null;
@@ -390,7 +390,7 @@ public class UserQueryRepositoryConditionGroupExpression implements
      * {@inheritDoc}
      */
     @Override
-    public <T, D extends Date> UserQueryRepositoryConditionGroupExpression ge(ReturnDateFunction<T, D> name, D value) {
+    public <T, D extends Date> UserQueryRepositoryConditionGroupExpression ge(SerializableToDateFunction<T, D> name, D value) {
         // YUFEI_TODO Auto-generated method stub
         return null;
     }
@@ -408,7 +408,7 @@ public class UserQueryRepositoryConditionGroupExpression implements
      * {@inheritDoc}
      */
     @Override
-    public <T> UserQueryRepositoryConditionGroupExpression ge(ReturnLocalTimeFunction<T> name, LocalTime value) {
+    public <T> UserQueryRepositoryConditionGroupExpression ge(SerializableToLocalTimeFunction<T> name, LocalTime value) {
         // YUFEI_TODO Auto-generated method stub
         return null;
     }
@@ -426,7 +426,7 @@ public class UserQueryRepositoryConditionGroupExpression implements
      * {@inheritDoc}
      */
     @Override
-    public <T> UserQueryRepositoryConditionGroupExpression ge(ReturnLocalDateFunction<T> name, LocalDate value) {
+    public <T> UserQueryRepositoryConditionGroupExpression ge(SerializableToLocalDateFunction<T> name, LocalDate value) {
         // YUFEI_TODO Auto-generated method stub
         return null;
     }
@@ -444,7 +444,7 @@ public class UserQueryRepositoryConditionGroupExpression implements
      * {@inheritDoc}
      */
     @Override
-    public <T> UserQueryRepositoryConditionGroupExpression ge(ReturnLocalDateTimeFunction<T> name,
+    public <T> UserQueryRepositoryConditionGroupExpression ge(SerializableToLocalDateTimeFunction<T> name,
             LocalDateTime value) {
         // YUFEI_TODO Auto-generated method stub
         return null;
@@ -463,7 +463,7 @@ public class UserQueryRepositoryConditionGroupExpression implements
      * {@inheritDoc}
      */
     @Override
-    public <T> UserQueryRepositoryConditionGroupExpression ge(ReturnStringFunction<T> name, String value) {
+    public <T> UserQueryRepositoryConditionGroupExpression ge(SerializableToStringFunction<T> name, String value) {
         // YUFEI_TODO Auto-generated method stub
         return null;
     }
@@ -472,7 +472,7 @@ public class UserQueryRepositoryConditionGroupExpression implements
      * {@inheritDoc}
      */
     @Override
-    public <R extends Date> UserQueryRepositoryConditionGroupExpression ge(DateSupplier<R> property) {
+    public <R extends Date> UserQueryRepositoryConditionGroupExpression ge(SerializableDateSupplier<R> property) {
         // YUFEI_TODO Auto-generated method stub
         return null;
     }
@@ -481,7 +481,7 @@ public class UserQueryRepositoryConditionGroupExpression implements
      * {@inheritDoc}
      */
     @Override
-    public <R extends Number> UserQueryRepositoryConditionGroupExpression ge(NumberSupplier<R> property) {
+    public <R extends Number> UserQueryRepositoryConditionGroupExpression ge(SerializableNumberSupplier<R> property) {
         // YUFEI_TODO Auto-generated method stub
         return null;
     }
@@ -490,7 +490,7 @@ public class UserQueryRepositoryConditionGroupExpression implements
      * {@inheritDoc}
      */
     @Override
-    public UserQueryRepositoryConditionGroupExpression ge(LocalDateSupplier property) {
+    public UserQueryRepositoryConditionGroupExpression ge(SerializableLocalDateSupplier property) {
         // YUFEI_TODO Auto-generated method stub
         return null;
     }
@@ -499,7 +499,7 @@ public class UserQueryRepositoryConditionGroupExpression implements
      * {@inheritDoc}
      */
     @Override
-    public UserQueryRepositoryConditionGroupExpression ge(LocalTimeSupplier property) {
+    public UserQueryRepositoryConditionGroupExpression ge(SerializableLocalTimeSupplier property) {
         // YUFEI_TODO Auto-generated method stub
         return null;
     }
@@ -508,7 +508,7 @@ public class UserQueryRepositoryConditionGroupExpression implements
      * {@inheritDoc}
      */
     @Override
-    public UserQueryRepositoryConditionGroupExpression ge(LocalDateTimeSupplier property) {
+    public UserQueryRepositoryConditionGroupExpression ge(SerializableLocalDateTimeSupplier property) {
         // YUFEI_TODO Auto-generated method stub
         return null;
     }
@@ -517,7 +517,7 @@ public class UserQueryRepositoryConditionGroupExpression implements
      * {@inheritDoc}
      */
     @Override
-    public UserQueryRepositoryConditionGroupExpression ge(StringSupplier property) {
+    public UserQueryRepositoryConditionGroupExpression ge(SerializableStringSupplier property) {
         // YUFEI_TODO Auto-generated method stub
         return null;
     }
@@ -644,7 +644,7 @@ public class UserQueryRepositoryConditionGroupExpression implements
      * {@inheritDoc}
      */
     @Override
-    public <T, N extends Number> UserQueryRepositoryConditionGroupExpression gt(ReturnNumberFunction<T, N> name,
+    public <T, N extends Number> UserQueryRepositoryConditionGroupExpression gt(SerializableToNumberFunction<T, N> name,
             N value) {
         // YUFEI_TODO Auto-generated method stub
         return null;
@@ -663,7 +663,7 @@ public class UserQueryRepositoryConditionGroupExpression implements
      * {@inheritDoc}
      */
     @Override
-    public <T, D extends Date> UserQueryRepositoryConditionGroupExpression gt(ReturnDateFunction<T, D> name, D value) {
+    public <T, D extends Date> UserQueryRepositoryConditionGroupExpression gt(SerializableToDateFunction<T, D> name, D value) {
         // YUFEI_TODO Auto-generated method stub
         return null;
     }
@@ -681,7 +681,7 @@ public class UserQueryRepositoryConditionGroupExpression implements
      * {@inheritDoc}
      */
     @Override
-    public <T> UserQueryRepositoryConditionGroupExpression gt(ReturnLocalTimeFunction<T> name, LocalTime value) {
+    public <T> UserQueryRepositoryConditionGroupExpression gt(SerializableToLocalTimeFunction<T> name, LocalTime value) {
         // YUFEI_TODO Auto-generated method stub
         return null;
     }
@@ -699,7 +699,7 @@ public class UserQueryRepositoryConditionGroupExpression implements
      * {@inheritDoc}
      */
     @Override
-    public <T> UserQueryRepositoryConditionGroupExpression gt(ReturnLocalDateFunction<T> name, LocalDate value) {
+    public <T> UserQueryRepositoryConditionGroupExpression gt(SerializableToLocalDateFunction<T> name, LocalDate value) {
         // YUFEI_TODO Auto-generated method stub
         return null;
     }
@@ -717,7 +717,7 @@ public class UserQueryRepositoryConditionGroupExpression implements
      * {@inheritDoc}
      */
     @Override
-    public <T> UserQueryRepositoryConditionGroupExpression gt(ReturnLocalDateTimeFunction<T> name,
+    public <T> UserQueryRepositoryConditionGroupExpression gt(SerializableToLocalDateTimeFunction<T> name,
             LocalDateTime value) {
         // YUFEI_TODO Auto-generated method stub
         return null;
@@ -736,7 +736,7 @@ public class UserQueryRepositoryConditionGroupExpression implements
      * {@inheritDoc}
      */
     @Override
-    public <T> UserQueryRepositoryConditionGroupExpression gt(ReturnStringFunction<T> name, String value) {
+    public <T> UserQueryRepositoryConditionGroupExpression gt(SerializableToStringFunction<T> name, String value) {
         // YUFEI_TODO Auto-generated method stub
         return null;
     }
@@ -745,7 +745,7 @@ public class UserQueryRepositoryConditionGroupExpression implements
      * {@inheritDoc}
      */
     @Override
-    public <R extends Number> UserQueryRepositoryConditionGroupExpression gt(NumberSupplier<R> property) {
+    public <R extends Number> UserQueryRepositoryConditionGroupExpression gt(SerializableNumberSupplier<R> property) {
         // YUFEI_TODO Auto-generated method stub
         return null;
     }
@@ -754,7 +754,7 @@ public class UserQueryRepositoryConditionGroupExpression implements
      * {@inheritDoc}
      */
     @Override
-    public <R extends Date> UserQueryRepositoryConditionGroupExpression gt(DateSupplier<R> property) {
+    public <R extends Date> UserQueryRepositoryConditionGroupExpression gt(SerializableDateSupplier<R> property) {
         // YUFEI_TODO Auto-generated method stub
         return null;
     }
@@ -763,7 +763,7 @@ public class UserQueryRepositoryConditionGroupExpression implements
      * {@inheritDoc}
      */
     @Override
-    public UserQueryRepositoryConditionGroupExpression gt(LocalDateSupplier property) {
+    public UserQueryRepositoryConditionGroupExpression gt(SerializableLocalDateSupplier property) {
         // YUFEI_TODO Auto-generated method stub
         return null;
     }
@@ -772,7 +772,7 @@ public class UserQueryRepositoryConditionGroupExpression implements
      * {@inheritDoc}
      */
     @Override
-    public UserQueryRepositoryConditionGroupExpression gt(LocalTimeSupplier property) {
+    public UserQueryRepositoryConditionGroupExpression gt(SerializableLocalTimeSupplier property) {
         // YUFEI_TODO Auto-generated method stub
         return null;
     }
@@ -781,7 +781,7 @@ public class UserQueryRepositoryConditionGroupExpression implements
      * {@inheritDoc}
      */
     @Override
-    public UserQueryRepositoryConditionGroupExpression gt(LocalDateTimeSupplier property) {
+    public UserQueryRepositoryConditionGroupExpression gt(SerializableLocalDateTimeSupplier property) {
         // YUFEI_TODO Auto-generated method stub
         return null;
     }
@@ -790,7 +790,7 @@ public class UserQueryRepositoryConditionGroupExpression implements
      * {@inheritDoc}
      */
     @Override
-    public UserQueryRepositoryConditionGroupExpression gt(StringSupplier property) {
+    public UserQueryRepositoryConditionGroupExpression gt(SerializableStringSupplier property) {
         // YUFEI_TODO Auto-generated method stub
         return null;
     }
@@ -1106,7 +1106,7 @@ public class UserQueryRepositoryConditionGroupExpression implements
      * {@inheritDoc}
      */
     @Override
-    public <T, N extends Number> UserQueryRepositoryConditionGroupExpression le(ReturnNumberFunction<T, N> name,
+    public <T, N extends Number> UserQueryRepositoryConditionGroupExpression le(SerializableToNumberFunction<T, N> name,
             N value) {
         // YUFEI_TODO Auto-generated method stub
         return null;
@@ -1125,7 +1125,7 @@ public class UserQueryRepositoryConditionGroupExpression implements
      * {@inheritDoc}
      */
     @Override
-    public <T, D extends Date> UserQueryRepositoryConditionGroupExpression le(ReturnDateFunction<T, D> name, D value) {
+    public <T, D extends Date> UserQueryRepositoryConditionGroupExpression le(SerializableToDateFunction<T, D> name, D value) {
         // YUFEI_TODO Auto-generated method stub
         return null;
     }
@@ -1143,7 +1143,7 @@ public class UserQueryRepositoryConditionGroupExpression implements
      * {@inheritDoc}
      */
     @Override
-    public <T> UserQueryRepositoryConditionGroupExpression le(ReturnLocalTimeFunction<T> name, LocalTime value) {
+    public <T> UserQueryRepositoryConditionGroupExpression le(SerializableToLocalTimeFunction<T> name, LocalTime value) {
         // YUFEI_TODO Auto-generated method stub
         return null;
     }
@@ -1161,7 +1161,7 @@ public class UserQueryRepositoryConditionGroupExpression implements
      * {@inheritDoc}
      */
     @Override
-    public <T> UserQueryRepositoryConditionGroupExpression le(ReturnLocalDateFunction<T> name, LocalDate value) {
+    public <T> UserQueryRepositoryConditionGroupExpression le(SerializableToLocalDateFunction<T> name, LocalDate value) {
         // YUFEI_TODO Auto-generated method stub
         return null;
     }
@@ -1179,7 +1179,7 @@ public class UserQueryRepositoryConditionGroupExpression implements
      * {@inheritDoc}
      */
     @Override
-    public <T> UserQueryRepositoryConditionGroupExpression le(ReturnLocalDateTimeFunction<T> name,
+    public <T> UserQueryRepositoryConditionGroupExpression le(SerializableToLocalDateTimeFunction<T> name,
             LocalDateTime value) {
         // YUFEI_TODO Auto-generated method stub
         return null;
@@ -1198,7 +1198,7 @@ public class UserQueryRepositoryConditionGroupExpression implements
      * {@inheritDoc}
      */
     @Override
-    public <T> UserQueryRepositoryConditionGroupExpression le(ReturnStringFunction<T> name, String value) {
+    public <T> UserQueryRepositoryConditionGroupExpression le(SerializableToStringFunction<T> name, String value) {
         // YUFEI_TODO Auto-generated method stub
         return null;
     }
@@ -1207,7 +1207,7 @@ public class UserQueryRepositoryConditionGroupExpression implements
      * {@inheritDoc}
      */
     @Override
-    public <R extends Date> UserQueryRepositoryConditionGroupExpression le(DateSupplier<R> property) {
+    public <R extends Date> UserQueryRepositoryConditionGroupExpression le(SerializableDateSupplier<R> property) {
         // YUFEI_TODO Auto-generated method stub
         return null;
     }
@@ -1216,7 +1216,7 @@ public class UserQueryRepositoryConditionGroupExpression implements
      * {@inheritDoc}
      */
     @Override
-    public <R extends Number> UserQueryRepositoryConditionGroupExpression le(NumberSupplier<R> property) {
+    public <R extends Number> UserQueryRepositoryConditionGroupExpression le(SerializableNumberSupplier<R> property) {
         // YUFEI_TODO Auto-generated method stub
         return null;
     }
@@ -1225,7 +1225,7 @@ public class UserQueryRepositoryConditionGroupExpression implements
      * {@inheritDoc}
      */
     @Override
-    public UserQueryRepositoryConditionGroupExpression le(LocalDateSupplier property) {
+    public UserQueryRepositoryConditionGroupExpression le(SerializableLocalDateSupplier property) {
         // YUFEI_TODO Auto-generated method stub
         return null;
     }
@@ -1234,7 +1234,7 @@ public class UserQueryRepositoryConditionGroupExpression implements
      * {@inheritDoc}
      */
     @Override
-    public UserQueryRepositoryConditionGroupExpression le(LocalTimeSupplier property) {
+    public UserQueryRepositoryConditionGroupExpression le(SerializableLocalTimeSupplier property) {
         // YUFEI_TODO Auto-generated method stub
         return null;
     }
@@ -1243,7 +1243,7 @@ public class UserQueryRepositoryConditionGroupExpression implements
      * {@inheritDoc}
      */
     @Override
-    public UserQueryRepositoryConditionGroupExpression le(LocalDateTimeSupplier property) {
+    public UserQueryRepositoryConditionGroupExpression le(SerializableLocalDateTimeSupplier property) {
         // YUFEI_TODO Auto-generated method stub
         return null;
     }
@@ -1252,7 +1252,7 @@ public class UserQueryRepositoryConditionGroupExpression implements
      * {@inheritDoc}
      */
     @Override
-    public UserQueryRepositoryConditionGroupExpression le(StringSupplier property) {
+    public UserQueryRepositoryConditionGroupExpression le(SerializableStringSupplier property) {
         // YUFEI_TODO Auto-generated method stub
         return null;
     }
@@ -1379,7 +1379,7 @@ public class UserQueryRepositoryConditionGroupExpression implements
      * {@inheritDoc}
      */
     @Override
-    public <T, N extends Number> UserQueryRepositoryConditionGroupExpression lt(ReturnNumberFunction<T, N> name,
+    public <T, N extends Number> UserQueryRepositoryConditionGroupExpression lt(SerializableToNumberFunction<T, N> name,
             N value) {
         // YUFEI_TODO Auto-generated method stub
         return null;
@@ -1398,7 +1398,7 @@ public class UserQueryRepositoryConditionGroupExpression implements
      * {@inheritDoc}
      */
     @Override
-    public <T, D extends Date> UserQueryRepositoryConditionGroupExpression lt(ReturnDateFunction<T, D> name, D value) {
+    public <T, D extends Date> UserQueryRepositoryConditionGroupExpression lt(SerializableToDateFunction<T, D> name, D value) {
         // YUFEI_TODO Auto-generated method stub
         return null;
     }
@@ -1416,7 +1416,7 @@ public class UserQueryRepositoryConditionGroupExpression implements
      * {@inheritDoc}
      */
     @Override
-    public <T> UserQueryRepositoryConditionGroupExpression lt(ReturnLocalTimeFunction<T> name, LocalTime value) {
+    public <T> UserQueryRepositoryConditionGroupExpression lt(SerializableToLocalTimeFunction<T> name, LocalTime value) {
         // YUFEI_TODO Auto-generated method stub
         return null;
     }
@@ -1434,7 +1434,7 @@ public class UserQueryRepositoryConditionGroupExpression implements
      * {@inheritDoc}
      */
     @Override
-    public <T> UserQueryRepositoryConditionGroupExpression lt(ReturnLocalDateFunction<T> name, LocalDate value) {
+    public <T> UserQueryRepositoryConditionGroupExpression lt(SerializableToLocalDateFunction<T> name, LocalDate value) {
         // YUFEI_TODO Auto-generated method stub
         return null;
     }
@@ -1452,7 +1452,7 @@ public class UserQueryRepositoryConditionGroupExpression implements
      * {@inheritDoc}
      */
     @Override
-    public <T> UserQueryRepositoryConditionGroupExpression lt(ReturnLocalDateTimeFunction<T> name,
+    public <T> UserQueryRepositoryConditionGroupExpression lt(SerializableToLocalDateTimeFunction<T> name,
             LocalDateTime value) {
         // YUFEI_TODO Auto-generated method stub
         return null;
@@ -1471,7 +1471,7 @@ public class UserQueryRepositoryConditionGroupExpression implements
      * {@inheritDoc}
      */
     @Override
-    public <T> UserQueryRepositoryConditionGroupExpression lt(ReturnStringFunction<T> name, String value) {
+    public <T> UserQueryRepositoryConditionGroupExpression lt(SerializableToStringFunction<T> name, String value) {
         // YUFEI_TODO Auto-generated method stub
         return null;
     }
@@ -1480,7 +1480,7 @@ public class UserQueryRepositoryConditionGroupExpression implements
      * {@inheritDoc}
      */
     @Override
-    public <R extends Date> UserQueryRepositoryConditionGroupExpression lt(DateSupplier<R> property) {
+    public <R extends Date> UserQueryRepositoryConditionGroupExpression lt(SerializableDateSupplier<R> property) {
         // YUFEI_TODO Auto-generated method stub
         return null;
     }
@@ -1489,7 +1489,7 @@ public class UserQueryRepositoryConditionGroupExpression implements
      * {@inheritDoc}
      */
     @Override
-    public <R extends Number> UserQueryRepositoryConditionGroupExpression lt(NumberSupplier<R> property) {
+    public <R extends Number> UserQueryRepositoryConditionGroupExpression lt(SerializableNumberSupplier<R> property) {
         // YUFEI_TODO Auto-generated method stub
         return null;
     }
@@ -1498,7 +1498,7 @@ public class UserQueryRepositoryConditionGroupExpression implements
      * {@inheritDoc}
      */
     @Override
-    public UserQueryRepositoryConditionGroupExpression lt(LocalDateSupplier property) {
+    public UserQueryRepositoryConditionGroupExpression lt(SerializableLocalDateSupplier property) {
         // YUFEI_TODO Auto-generated method stub
         return null;
     }
@@ -1507,7 +1507,7 @@ public class UserQueryRepositoryConditionGroupExpression implements
      * {@inheritDoc}
      */
     @Override
-    public UserQueryRepositoryConditionGroupExpression lt(LocalTimeSupplier property) {
+    public UserQueryRepositoryConditionGroupExpression lt(SerializableLocalTimeSupplier property) {
         // YUFEI_TODO Auto-generated method stub
         return null;
     }
@@ -1516,7 +1516,7 @@ public class UserQueryRepositoryConditionGroupExpression implements
      * {@inheritDoc}
      */
     @Override
-    public UserQueryRepositoryConditionGroupExpression lt(LocalDateTimeSupplier property) {
+    public UserQueryRepositoryConditionGroupExpression lt(SerializableLocalDateTimeSupplier property) {
         // YUFEI_TODO Auto-generated method stub
         return null;
     }
@@ -1525,7 +1525,7 @@ public class UserQueryRepositoryConditionGroupExpression implements
      * {@inheritDoc}
      */
     @Override
-    public UserQueryRepositoryConditionGroupExpression lt(StringSupplier property) {
+    public UserQueryRepositoryConditionGroupExpression lt(SerializableStringSupplier property) {
         // YUFEI_TODO Auto-generated method stub
         return null;
     }
@@ -1677,7 +1677,7 @@ public class UserQueryRepositoryConditionGroupExpression implements
      * {@inheritDoc}
      */
     @Override
-    public <T> UserQueryRepositoryConditionGroupExpression sw(ReturnStringFunction<T> name, String value,
+    public <T> UserQueryRepositoryConditionGroupExpression sw(SerializableToStringFunction<T> name, String value,
             QueryPolicy queryPolicy) {
         // YUFEI_TODO Auto-generated method stub
         return null;
@@ -1687,7 +1687,7 @@ public class UserQueryRepositoryConditionGroupExpression implements
      * {@inheritDoc}
      */
     @Override
-    public UserQueryRepositoryConditionGroupExpression sw(StringSupplier property, QueryPolicy queryPolicy) {
+    public UserQueryRepositoryConditionGroupExpression sw(SerializableStringSupplier property, QueryPolicy queryPolicy) {
         // YUFEI_TODO Auto-generated method stub
         return null;
     }
@@ -1725,7 +1725,7 @@ public class UserQueryRepositoryConditionGroupExpression implements
      * {@inheritDoc}
      */
     @Override
-    public <T> UserQueryRepositoryConditionGroupExpression lk(ReturnStringFunction<T> name, String value,
+    public <T> UserQueryRepositoryConditionGroupExpression lk(SerializableToStringFunction<T> name, String value,
             QueryPolicy queryPolicy) {
         // YUFEI_TODO Auto-generated method stub
         return null;
@@ -1735,7 +1735,7 @@ public class UserQueryRepositoryConditionGroupExpression implements
      * {@inheritDoc}
      */
     @Override
-    public UserQueryRepositoryConditionGroupExpression lk(StringSupplier property, QueryPolicy queryPolicy) {
+    public UserQueryRepositoryConditionGroupExpression lk(SerializableStringSupplier property, QueryPolicy queryPolicy) {
         // YUFEI_TODO Auto-generated method stub
         return null;
     }
@@ -1906,7 +1906,7 @@ public class UserQueryRepositoryConditionGroupExpression implements
      */
     @Override
     public <T> StringExpression<UserQueryRepositoryConditionGroupExpression, UserQueryRepositoryConditionGroupExpression> property(
-            ReturnStringFunction<T> name) {
+            SerializableToStringFunction<T> name) {
         // YUFEI_TODO Auto-generated method stub
         return null;
     }
@@ -1917,7 +1917,7 @@ public class UserQueryRepositoryConditionGroupExpression implements
     @Override
     public <T,
             R extends Number> NumberExpression<R, UserQueryRepositoryConditionGroupExpression, UserQueryRepositoryConditionGroupExpression> property(
-                    ReturnNumberFunction<T, R> name) {
+                    SerializableToNumberFunction<T, R> name) {
         // YUFEI_TODO Auto-generated method stub
         return null;
     }
@@ -1928,7 +1928,7 @@ public class UserQueryRepositoryConditionGroupExpression implements
     @Override
     public <T,
             R extends Date> DateExpression<R, UserQueryRepositoryConditionGroupExpression, UserQueryRepositoryConditionGroupExpression> property(
-                    ReturnDateFunction<T, R> name) {
+                    SerializableToDateFunction<T, R> name) {
         // YUFEI_TODO Auto-generated method stub
         return null;
     }
@@ -1939,7 +1939,7 @@ public class UserQueryRepositoryConditionGroupExpression implements
     @Override
     public <T,
             R extends Enum<R>> EnumExpression<R, UserQueryRepositoryConditionGroupExpression, UserQueryRepositoryConditionGroupExpression> property(
-                    ReturnEnumFunction<T, R> name) {
+                    SerializableToEnumFunction<T, R> name) {
         // YUFEI_TODO Auto-generated method stub
         return null;
     }

@@ -11,10 +11,9 @@ import cn.featherfly.hammer.expression.condition.LogicExpression;
 import cn.featherfly.hammer.expression.entity.condition.MulitiEntityConditionExpression;
 
 /**
- * The Interface EntityContainsExpression.
+ * The Interface MulitiEntityContainsExpression.
  *
  * @author zhongj
- * @param <E> the element type
  * @param <C> the generic type
  * @param <L> the generic type
  */
@@ -32,6 +31,8 @@ public interface MulitiEntityContainsExpression<C extends ConditionExpression, L
     /**
      * contains value. 包含value.
      *
+     * @param <E>   the element type
+     * @param index the index
      * @param name  参数名称
      * @param value 参数值
      * @return LogicExpression
@@ -43,8 +44,10 @@ public interface MulitiEntityContainsExpression<C extends ConditionExpression, L
     /**
      * contains value. 包含value.
      *
-     * @param name         参数名称
-     * @param value        参数值
+     * @param <E>            the element type
+     * @param index          the index
+     * @param name           参数名称
+     * @param value          参数值
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
@@ -55,6 +58,8 @@ public interface MulitiEntityContainsExpression<C extends ConditionExpression, L
     /**
      * contains value. 包含value.
      *
+     * @param <E>         the element type
+     * @param index       the index
      * @param name        the name
      * @param value       the value
      * @param queryPolicy the query policy
@@ -65,9 +70,11 @@ public interface MulitiEntityContainsExpression<C extends ConditionExpression, L
     /**
      * contains value. 包含value.
      *
-     * @param name         the name
-     * @param value        the value
-     * @param queryPolicy  the query policy
+     * @param <E>            the element type
+     * @param index          the index
+     * @param name           the name
+     * @param value          the value
+     * @param queryPolicy    the query policy
      * @param ignoreStrategy the ignore strategy
      * @return the l
      */
@@ -77,6 +84,7 @@ public interface MulitiEntityContainsExpression<C extends ConditionExpression, L
     /**
      * contains value. 包含value.
      *
+     * @param index    the index
      * @param property 对象属性
      * @return LogicExpression
      */
@@ -87,7 +95,8 @@ public interface MulitiEntityContainsExpression<C extends ConditionExpression, L
     /**
      * contains value. 包含value.
      *
-     * @param property     对象属性
+     * @param index          the index
+     * @param property       对象属性
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
@@ -98,6 +107,7 @@ public interface MulitiEntityContainsExpression<C extends ConditionExpression, L
     /**
      * contains value. 包含value.
      *
+     * @param index       the index
      * @param property    the property
      * @param queryPolicy the query policy
      * @return the l
@@ -107,8 +117,9 @@ public interface MulitiEntityContainsExpression<C extends ConditionExpression, L
     /**
      * contains value. 包含value.
      *
-     * @param property     the property
-     * @param queryPolicy  the query policy
+     * @param index          the index
+     * @param property       the property
+     * @param queryPolicy    the query policy
      * @param ignoreStrategy the ignore strategy
      * @return the l
      */

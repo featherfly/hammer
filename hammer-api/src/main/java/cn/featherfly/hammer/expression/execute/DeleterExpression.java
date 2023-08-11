@@ -2,24 +2,23 @@
 package cn.featherfly.hammer.expression.execute;
 
 import cn.featherfly.common.repository.Repository;
-import cn.featherfly.hammer.expression.ConditionGroupExpression;
-import cn.featherfly.hammer.expression.ConditionGroupLogicExpression;
+import cn.featherfly.hammer.expression.entity.execute.EntityDeleteExpression;
+import cn.featherfly.hammer.expression.entity.execute.EntityExecutableConditionGroupExpression;
+import cn.featherfly.hammer.expression.entity.execute.EntityExecutableConditionGroupLogicExpression;
 
 /**
- * <p>
- * Deleter
- * </p>
+ * Deleter.
  *
  * @author zhongj
  */
-public interface DeleterExpression<D extends DeleteExpression<C, L>, C extends ConditionGroupExpression<C, L>,
-        L extends ConditionGroupLogicExpression<C, L>> {
+public interface DeleterExpression<D extends DeleteExpression<C, L>, C extends ExecutableConditionGroupExpression<C, L>,
+        L extends ExecutableConditionGroupLogicExpression<C, L>> {
 
     /**
      * start delete dsl for repository
      *
      * @param repository repository
-     * @return DeleteExpression
+     * @return generic type of DeleteExpression
      */
     D delete(String repository);
 
@@ -27,7 +26,20 @@ public interface DeleterExpression<D extends DeleteExpression<C, L>, C extends C
      * start delete dsl for repository
      *
      * @param repository repository
-     * @return DeleteExpression
+     * @return generic type of DeleteExpression
      */
     D delete(Repository repository);
+
+    /**
+     * start delete dsl for the entity type.
+     *
+     * @param <EDR>      the generic type
+     * @param <DC>       the generic type
+     * @param <DL>       the generic type
+     * @param <E>        the entity type
+     * @param entityType the entity type
+     * @return generic type of EntityDeleteExpression
+     */
+    <EDR extends EntityDeleteExpression<E, DC, DL>, DC extends EntityExecutableConditionGroupExpression<E, DC, DL>,
+            DL extends EntityExecutableConditionGroupLogicExpression<E, DC, DL>, E> EDR delete(Class<E> entityType);
 }

@@ -13,7 +13,7 @@ package cn.featherfly.hammer.expression.entity.condition.co;
 import java.util.Collection;
 import java.util.function.Predicate;
 
-import cn.featherfly.common.lang.function.ReturnStringFunction;
+import cn.featherfly.common.lang.function.SerializableToStringFunction;
 import cn.featherfly.common.lang.function.SerializableFunction;
 import cn.featherfly.common.lang.function.SerializableSupplier;
 import cn.featherfly.common.lang.function.SerializableToCollectionFunction;
@@ -66,7 +66,7 @@ public class ContainsEntityExpressionImpl<E, C extends ConditionExpression, L ex
      * {@inheritDoc}
      */
     @Override
-    public <R> ContainsEntityPropertyValueExpression<E> property(ReturnStringFunction<E> name) {
+    public <R> ContainsEntityPropertyValueExpression<E> property(SerializableToStringFunction<E> name) {
         // YUFEI_TODO Auto-generated method stub
         return null;
     }
@@ -75,7 +75,7 @@ public class ContainsEntityExpressionImpl<E, C extends ConditionExpression, L ex
      * {@inheritDoc}
      */
     @Override
-    public void accept(ReturnStringFunction<E> property, String value) {
+    public void accept(SerializableToStringFunction<E> property, String value) {
         expression.co(index, property, value);
     }
 
@@ -83,7 +83,7 @@ public class ContainsEntityExpressionImpl<E, C extends ConditionExpression, L ex
      * {@inheritDoc}
      */
     @Override
-    public void accept(ReturnStringFunction<E> property, String value, QueryPolicy queryPolicy) {
+    public void accept(SerializableToStringFunction<E> property, String value, QueryPolicy queryPolicy) {
         expression.co(index, property, value, queryPolicy);
     }
 
@@ -91,7 +91,7 @@ public class ContainsEntityExpressionImpl<E, C extends ConditionExpression, L ex
      * {@inheritDoc}
      */
     @Override
-    public void accept(ReturnStringFunction<E> property, String value, Predicate<String> ignoreStrategy) {
+    public void accept(SerializableToStringFunction<E> property, String value, Predicate<String> ignoreStrategy) {
         expression.co(index, property, value, ignoreStrategy);
     }
 
@@ -99,7 +99,7 @@ public class ContainsEntityExpressionImpl<E, C extends ConditionExpression, L ex
      * {@inheritDoc}
      */
     @Override
-    public void accept(ReturnStringFunction<E> property, String value, QueryPolicy queryPolicy,
+    public void accept(SerializableToStringFunction<E> property, String value, QueryPolicy queryPolicy,
             Predicate<String> ignoreStrategy) {
         expression.co(index, property, value, queryPolicy, ignoreStrategy);
 

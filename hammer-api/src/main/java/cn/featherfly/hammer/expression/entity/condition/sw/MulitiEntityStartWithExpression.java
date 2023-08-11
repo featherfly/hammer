@@ -11,10 +11,9 @@ import cn.featherfly.hammer.expression.condition.LogicExpression;
 import cn.featherfly.hammer.expression.entity.condition.MulitiEntityConditionExpression;
 
 /**
- * The Interface EntityStartWithExpression.
+ * The Interface MulitiEntityStartWithExpression.
  *
  * @author zhongj
- * @param <E> the element type
  * @param <C> the generic type
  * @param <L> the generic type
  */
@@ -32,6 +31,8 @@ public interface MulitiEntityStartWithExpression<C extends ConditionExpression, 
     /**
      * start with value. 以value开始.
      *
+     * @param <E>   the element type
+     * @param index the index
      * @param name  参数名称
      * @param value 参数值
      * @return LogicExpression
@@ -43,8 +44,10 @@ public interface MulitiEntityStartWithExpression<C extends ConditionExpression, 
     /**
      * start with value. 以value开始.
      *
-     * @param name         参数名称
-     * @param value        参数值
+     * @param <E>            the element type
+     * @param index          the index
+     * @param name           参数名称
+     * @param value          参数值
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
@@ -55,6 +58,8 @@ public interface MulitiEntityStartWithExpression<C extends ConditionExpression, 
     /**
      * start with value. 以value开始.
      *
+     * @param <E>         the element type
+     * @param index       the index
      * @param name        the name
      * @param value       the value
      * @param queryPolicy the query policy
@@ -65,9 +70,11 @@ public interface MulitiEntityStartWithExpression<C extends ConditionExpression, 
     /**
      * start with value. 以value开始.
      *
-     * @param name         the name
-     * @param value        the value
-     * @param queryPolicy  the query policy
+     * @param <E>            the element type
+     * @param index          the index
+     * @param name           the name
+     * @param value          the value
+     * @param queryPolicy    the query policy
      * @param ignoreStrategy the ignore strategy
      * @return the l
      */
@@ -77,6 +84,7 @@ public interface MulitiEntityStartWithExpression<C extends ConditionExpression, 
     /**
      * start with value. 以value开始.
      *
+     * @param index    the index
      * @param property 对象属性
      * @return LogicExpression
      */
@@ -87,7 +95,8 @@ public interface MulitiEntityStartWithExpression<C extends ConditionExpression, 
     /**
      * start with value. 以value开始.
      *
-     * @param property     对象属性
+     * @param index          the index
+     * @param property       对象属性
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
@@ -98,6 +107,7 @@ public interface MulitiEntityStartWithExpression<C extends ConditionExpression, 
     /**
      * start with value. 以value开始.
      *
+     * @param index       the index
      * @param property    the property
      * @param queryPolicy the query policy
      * @return the l
@@ -107,8 +117,9 @@ public interface MulitiEntityStartWithExpression<C extends ConditionExpression, 
     /**
      * start with value. 以value开始.
      *
-     * @param property     the property
-     * @param queryPolicy  the query policy
+     * @param index          the index
+     * @param property       the property
+     * @param queryPolicy    the query policy
      * @param ignoreStrategy the ignore strategy
      * @return the l
      */

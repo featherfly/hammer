@@ -4,13 +4,12 @@ package cn.featherfly.hammer.expression.entity.condition.nin;
 import java.util.Collection;
 import java.util.function.Predicate;
 
-import cn.featherfly.common.lang.function.SerializableFunction1;
 import cn.featherfly.common.lang.function.SerializableFunction;
 import cn.featherfly.common.lang.function.SerializableIntSupplier;
 import cn.featherfly.common.lang.function.SerializableLongSupplier;
 import cn.featherfly.common.lang.function.SerializableSupplier;
-import cn.featherfly.common.lang.function.SerializableToIntFunction;
-import cn.featherfly.common.lang.function.SerializableToLongFunction;
+import cn.featherfly.common.lang.function.SerializableToIntFunction6;
+import cn.featherfly.common.lang.function.SerializableToLongFunction6;
 import cn.featherfly.hammer.expression.condition.ConditionExpression;
 import cn.featherfly.hammer.expression.condition.LogicExpression;
 
@@ -50,9 +49,9 @@ public interface EntityNotInExpressionBase6<E, E2, E3, E4, E5, E6, C extends Con
     /**
      * values not in. 不包含指定，sql中的not in.
      *
-     * @param <R>          the generic type
-     * @param name         参数名称
-     * @param value        参数值
+     * @param <R>            the generic type
+     * @param name           参数名称
+     * @param value          参数值
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
@@ -65,17 +64,17 @@ public interface EntityNotInExpressionBase6<E, E2, E3, E4, E5, E6, C extends Con
      * @param value 参数值
      * @return LogicExpression
      */
-    L nin6(SerializableToIntFunction<E> name, int value);
+    L nin6(SerializableToIntFunction6<E6> name, int value);
 
     /**
      * values not in. 不包含指定，sql中的not in.
      *
-     * @param name         参数名称
-     * @param value        参数值
+     * @param name           参数名称
+     * @param value          参数值
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
-    L nin6(SerializableToIntFunction<E> name, int value, Predicate<Integer> ignoreStrategy);
+    L nin6(SerializableToIntFunction6<E6> name, int value, Predicate<Integer> ignoreStrategy);
 
     /**
      * values not in. 不包含指定，sql中的not in.
@@ -84,17 +83,17 @@ public interface EntityNotInExpressionBase6<E, E2, E3, E4, E5, E6, C extends Con
      * @param value 参数值
      * @return LogicExpression
      */
-    L nin6(SerializableToLongFunction<E> name, long value);
+    L nin6(SerializableToLongFunction6<E6> name, long value);
 
     /**
      * values not in. 不包含指定，sql中的not in.
      *
-     * @param name         参数名称
-     * @param value        参数值
+     * @param name           参数名称
+     * @param value          参数值
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
-    L nin6(SerializableToLongFunction<E> name, long value, Predicate<Long> ignoreStrategy);
+    L nin6(SerializableToLongFunction6<E6> name, long value, Predicate<Long> ignoreStrategy);
 
     /**
      * values not in. 不包含指定，sql中的not in.
@@ -104,7 +103,7 @@ public interface EntityNotInExpressionBase6<E, E2, E3, E4, E5, E6, C extends Con
      * @param value 参数值
      * @return LogicExpression
      */
-    <R> L nin6(SerializableFunction1<E6, R> name, @SuppressWarnings("unchecked") R... value);
+    <R> L nin6(SerializableFunction<E6, R> name, @SuppressWarnings("unchecked") R... value);
 
     /**
      * values not in. 不包含指定，sql中的not in.
@@ -114,7 +113,7 @@ public interface EntityNotInExpressionBase6<E, E2, E3, E4, E5, E6, C extends Con
      * @param value 参数值
      * @return LogicExpression
      */
-    L nin6(SerializableToIntFunction<E> name, int... value);
+    L nin6(SerializableToIntFunction6<E6> name, int... value);
 
     /**
      * values not in. 不包含指定，sql中的not in.
@@ -124,40 +123,40 @@ public interface EntityNotInExpressionBase6<E, E2, E3, E4, E5, E6, C extends Con
      * @param value 参数值
      * @return LogicExpression
      */
-    L nin6(SerializableToLongFunction<E> name, long... value);
+    L nin6(SerializableToLongFunction6<E6> name, long... value);
 
     /**
      * values not in. 不包含指定，sql中的not in.
      *
-     * @param <R>          the generic type
-     * @param name         参数名称
-     * @param value        参数值
+     * @param <R>            the generic type
+     * @param name           参数名称
+     * @param value          参数值
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
-    <R> L nin6(SerializableFunction1<E6, R> name, R[] value, Predicate<R[]> ignoreStrategy);
+    <R> L nin6(SerializableFunction<E6, R> name, R[] value, Predicate<R[]> ignoreStrategy);
 
     /**
      * values not in. 不包含指定，sql中的not in.
      *
-     * @param <R>          the generic type
-     * @param name         参数名称
-     * @param value        参数值
+     * @param <R>            the generic type
+     * @param name           参数名称
+     * @param value          参数值
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
-    L nin6(SerializableToIntFunction<E> name, int[] value, Predicate<int[]> ignoreStrategy);
+    L nin6(SerializableToIntFunction6<E6> name, int[] value, Predicate<int[]> ignoreStrategy);
 
     /**
      * values not in. 不包含指定，sql中的not in.
      *
-     * @param <R>          the generic type
-     * @param name         参数名称
-     * @param value        参数值
+     * @param <R>            the generic type
+     * @param name           参数名称
+     * @param value          参数值
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
-    L nin6(SerializableToLongFunction<E> name, long[] value, Predicate<long[]> ignoreStrategy);
+    L nin6(SerializableToLongFunction6<E6> name, long[] value, Predicate<long[]> ignoreStrategy);
 
     /**
      * values not in. 不包含指定，sql中的not in.
@@ -172,9 +171,9 @@ public interface EntityNotInExpressionBase6<E, E2, E3, E4, E5, E6, C extends Con
     /**
      * values not in. 不包含指定，sql中的not in.
      *
-     * @param <R>          the generic type
-     * @param name         参数名称
-     * @param value        参数值
+     * @param <R>            the generic type
+     * @param name           参数名称
+     * @param value          参数值
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
@@ -192,8 +191,8 @@ public interface EntityNotInExpressionBase6<E, E2, E3, E4, E5, E6, C extends Con
     /**
      * values not in. 不包含指定，sql中的not in.
      *
-     * @param <R>          the generic type
-     * @param property     对象属性
+     * @param <R>            the generic type
+     * @param property       对象属性
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
@@ -211,8 +210,8 @@ public interface EntityNotInExpressionBase6<E, E2, E3, E4, E5, E6, C extends Con
     /**
      * values not in. 不包含指定，sql中的not in.
      *
-     * @param <R>          the generic type
-     * @param property     对象属性
+     * @param <R>            the generic type
+     * @param property       对象属性
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
@@ -230,8 +229,8 @@ public interface EntityNotInExpressionBase6<E, E2, E3, E4, E5, E6, C extends Con
     /**
      * values not in. 不包含指定，sql中的not in.
      *
-     * @param <R>          the generic type
-     * @param property     对象属性
+     * @param <R>            the generic type
+     * @param property       对象属性
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */

@@ -1,7 +1,7 @@
 
 package cn.featherfly.hammer.sqldb.jdbc.dsl.entity.execute;
 
-import cn.featherfly.hammer.dsl.execute.EntityUpdate;
+import cn.featherfly.hammer.dsl.entity.execute.EntityUpdate;
 
 /**
  * sql entity update.

@@ -45,7 +45,7 @@ public interface GreatEqualsEntityValuePropertyExpression<E> extends CompareEnti
     //     * @param name the name
     //     * @return entity great equals function property expression.
     //     */
-    //    <R extends Date> EntityConditionFunctionDatePropertyExpression<R, C, L> property(ReturnDateFunction<E, R> name);
+    //    <R extends Date> EntityConditionFunctionDatePropertyExpression<R, C, L> property(SerializableToDateFunction<E, R> name);
     //
     //    /**
     //     * entity great equals function property expression.
@@ -53,7 +53,7 @@ public interface GreatEqualsEntityValuePropertyExpression<E> extends CompareEnti
     //     * @param name the name
     //     * @return entity great equals function property expression.
     //     */
-    //    EntityConditionFunctionLocalDatePropertyExpression<C, L> property(ReturnLocalDateFunction<E> name);
+    //    EntityConditionFunctionLocalDatePropertyExpression<C, L> property(SerializableToLocalDateFunction<E> name);
     //
     //    /**
     //     * entity great equals function property expression.
@@ -61,7 +61,7 @@ public interface GreatEqualsEntityValuePropertyExpression<E> extends CompareEnti
     //     * @param name the name
     //     * @return entity great equals function property expression.
     //     */
-    //    EntityConditionFunctionLocalTimePropertyExpression<C, L> property(ReturnLocalTimeFunction<E> name);
+    //    EntityConditionFunctionLocalTimePropertyExpression<C, L> property(SerializableToLocalTimeFunction<E> name);
     //
     //    /**
     //     * entity great equals function property expression.
@@ -69,7 +69,7 @@ public interface GreatEqualsEntityValuePropertyExpression<E> extends CompareEnti
     //     * @param name the name
     //     * @return entity great equals function property expression.
     //     */
-    //    EntityConditionFunctionLocalDateTimePropertyExpression<C, L> property(ReturnLocalDateTimeFunction<E> name);
+    //    EntityConditionFunctionLocalDateTimePropertyExpression<C, L> property(SerializableToLocalDateTimeFunction<E> name);
     //
     //    /**
     //     * entity great equals function property expression.
@@ -79,7 +79,7 @@ public interface GreatEqualsEntityValuePropertyExpression<E> extends CompareEnti
     //     * @return entity great equals function property expression.
     //     */
     //    <R extends Number> EntityConditionFunctionNumberPropertyExpression<R, C, L> property(
-    //            ReturnNumberFunction<E, R> name);
+    //            SerializableToNumberFunction<E, R> name);
     //
     //    /**
     //     * entity great equals function property expression.
@@ -88,7 +88,7 @@ public interface GreatEqualsEntityValuePropertyExpression<E> extends CompareEnti
     //     * @param name the name
     //     * @return entity great equals function property expression.
     //     */
-    //    <R extends Enum<R>> EntityConditionFunctionEnumPropertyExpression<R, C, L> property(ReturnEnumFunction<E, R> name);
+    //    <R extends Enum<R>> EntityConditionFunctionEnumPropertyExpression<R, C, L> property(SerializableToEnumFunction<E, R> name);
     //
     //    /**
     //     * entity great equals function property expression.
@@ -96,5 +96,5 @@ public interface GreatEqualsEntityValuePropertyExpression<E> extends CompareEnti
     //     * @param name the name
     //     * @return entity great equals function property expression.
     //     */
-    //    EntityConditionFunctionStringPropertyExpression<C, L> property(ReturnStringFunction<E> name);
+    //    EntityConditionFunctionStringPropertyExpression<C, L> property(SerializableToStringFunction<E> name);
 }

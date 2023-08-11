@@ -3,9 +3,6 @@ package cn.featherfly.hammer.expression.execute;
 
 import java.util.function.Supplier;
 
-import cn.featherfly.hammer.expression.ConditionGroupExpression;
-import cn.featherfly.hammer.expression.ConditionGroupLogicExpression;
-
 /**
  * update value .
  *
@@ -18,7 +15,7 @@ import cn.featherfly.hammer.expression.ConditionGroupLogicExpression;
  * @param <VN> the generic type
  */
 public interface UpdateValueExpression<U extends PropertyExecutableUpdateExpression<U, C, L, V, VN>,
-        C extends ConditionGroupExpression<C, L>, L extends ConditionGroupLogicExpression<C, L>, T,
+        C extends ExecutableConditionGroupExpression<C, L>, L extends ExecutableConditionGroupLogicExpression<C, L>, T,
         V extends UpdateValueExpression<U, C, L, Object, V, VN>,
         VN extends UpdateNumberValueExpression<U, C, L, Number, V, VN>> {
 
