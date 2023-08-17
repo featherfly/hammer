@@ -11,7 +11,7 @@ package cn.featherfly.hammer.expression.entity.query.relation;
 
 import cn.featherfly.common.lang.function.SerializableFunction1;
 import cn.featherfly.common.lang.function.SerializableFunction2;
-import cn.featherfly.hammer.expression.api.entity.EntityQueryRelate;
+import cn.featherfly.hammer.expression.api.entity.QueryRelate;
 
 /**
  * EntityQueryRelatedExpression.
@@ -22,7 +22,7 @@ import cn.featherfly.hammer.expression.api.entity.EntityQueryRelate;
  * @param <QR>  the generic type
  * @param <QRF> the generic type
  */
-public interface EntityQueryRelatedExpression<J1, J2, QR extends EntityQueryRelate<QRF>, QRF> {
+public interface EntityQueryRelatedExpression<J1, J2, QR extends QueryRelate<QRF>, QRF> {
 
     /**
      * On.

@@ -12,7 +12,7 @@ import cn.featherfly.common.lang.function.SerializableFunction4;
 import cn.featherfly.common.lang.function.SerializableFunction5;
 import cn.featherfly.common.lang.function.SerializableFunction6;
 import cn.featherfly.hammer.dsl.QueryEntityRepository;
-import cn.featherfly.hammer.expression.api.entity.EntityQueryRelate;
+import cn.featherfly.hammer.expression.api.entity.QueryRelate;
 import cn.featherfly.hammer.expression.entity.query.EntityQueryConditionGroupExpression2;
 import cn.featherfly.hammer.expression.entity.query.EntityQueryConditionGroupExpression3;
 import cn.featherfly.hammer.expression.entity.query.EntityQueryConditionGroupLogicExpression2;
@@ -35,7 +35,7 @@ import cn.featherfly.hammer.expression.entity.query.EntityQuerySortExpression3;
 public interface EntityQueryRelateExpression1P<E, R1, C extends EntityQueryConditionGroupExpression2<E, R1, C, L, S, E>,
         L extends EntityQueryConditionGroupLogicExpression2<E, R1, C, L, S, E>,
         S extends EntityQuerySortExpression2<E, R1, E>, F extends EntityQueryRelatedFetchedExpression1P<E, R1, C, L, S>>
-        extends EntityQueryExpression2<E, R1, C, L, S, E>, EntityQueryRelate<F> {
+        extends EntityQueryExpression2<E, R1, C, L, S, E>, QueryRelate<F> {
 
     /**
      * join on.

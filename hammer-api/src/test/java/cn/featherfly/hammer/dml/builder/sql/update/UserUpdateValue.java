@@ -40,7 +40,6 @@ public class UserUpdateValue implements UpdateValueExpression<UserPropertiesUpda
      */
     @Override
     public UserPropertiesUpdate set(Supplier<Boolean> whether, Object value) {
-        // YUFEI_TODO Auto-generated method stub
-        return null;
+        return update.set(whether, name, value);
     }
 }

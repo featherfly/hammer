@@ -106,7 +106,7 @@ public class UserUpdate implements UserPropertiesUpdate, ExecutableUpdateSetExpr
      */
     @Override
     public <T, R> UserUpdateValue property(SerializableFunction<T, R> name) {
-        // YUFEI_TODO Auto-generated method stub
+
         return null;
     }
 
@@ -115,7 +115,7 @@ public class UserUpdate implements UserPropertiesUpdate, ExecutableUpdateSetExpr
      */
     @Override
     public <T, R> UserUpdate set(SerializableFunction<T, R> name, R value) {
-        // YUFEI_TODO Auto-generated method stub
+
         return null;
     }
 
@@ -124,7 +124,7 @@ public class UserUpdate implements UserPropertiesUpdate, ExecutableUpdateSetExpr
      */
     @Override
     public <T, R extends Number> UserUpdateNumberValue propertyNumber(SerializableFunction<T, R> name) {
-        // YUFEI_TODO Auto-generated method stub
+
         return null;
     }
 
@@ -133,7 +133,7 @@ public class UserUpdate implements UserPropertiesUpdate, ExecutableUpdateSetExpr
      */
     @Override
     public <T, R extends Number> UserUpdate increase(SerializableFunction<T, R> name, R value) {
-        // YUFEI_TODO Auto-generated method stub
+
         return null;
     }
 
@@ -142,7 +142,7 @@ public class UserUpdate implements UserPropertiesUpdate, ExecutableUpdateSetExpr
      */
     @Override
     public <R> UserUpdate set(SerializableSupplier<R> property) {
-        // YUFEI_TODO Auto-generated method stub
+
         return null;
     }
 
@@ -151,7 +151,7 @@ public class UserUpdate implements UserPropertiesUpdate, ExecutableUpdateSetExpr
      */
     @Override
     public <N extends Number> UserUpdate increase(SerializableSupplier<N> property) {
-        // YUFEI_TODO Auto-generated method stub
+
         return null;
     }
 
@@ -160,7 +160,7 @@ public class UserUpdate implements UserPropertiesUpdate, ExecutableUpdateSetExpr
      */
     @Override
     public UserUpdate set(Consumer<UserUpdate> consumer) {
-        // YUFEI_TODO Auto-generated method stub
+
         return null;
     }
 
@@ -170,7 +170,7 @@ public class UserUpdate implements UserPropertiesUpdate, ExecutableUpdateSetExpr
     @Override
     public UserQueryConditionGroupExpression where(
             Consumer<ConditionGroupConfig<UserQueryConditionGroupExpression>> consumer) {
-        // YUFEI_TODO Auto-generated method stub
+
         return null;
     }
 
@@ -179,7 +179,7 @@ public class UserUpdate implements UserPropertiesUpdate, ExecutableUpdateSetExpr
      */
     @Override
     public UserUpdate set(Supplier<Boolean> whether, String name, Object value) {
-        // YUFEI_TODO Auto-generated method stub
+
         return null;
     }
 
@@ -188,7 +188,7 @@ public class UserUpdate implements UserPropertiesUpdate, ExecutableUpdateSetExpr
      */
     @Override
     public <N extends Number> UserUpdate increase(Supplier<Boolean> whether, String name, N value) {
-        // YUFEI_TODO Auto-generated method stub
+
         return null;
     }
 
@@ -197,7 +197,7 @@ public class UserUpdate implements UserPropertiesUpdate, ExecutableUpdateSetExpr
      */
     @Override
     public <T, R> UserUpdate set(Supplier<Boolean> whether, SerializableFunction<T, R> name, R value) {
-        // YUFEI_TODO Auto-generated method stub
+
         return null;
     }
 
@@ -206,7 +206,7 @@ public class UserUpdate implements UserPropertiesUpdate, ExecutableUpdateSetExpr
      */
     @Override
     public <R> UserUpdate set(Supplier<Boolean> whether, SerializableSupplier<R> property) {
-        // YUFEI_TODO Auto-generated method stub
+
         return null;
     }
 
@@ -216,7 +216,7 @@ public class UserUpdate implements UserPropertiesUpdate, ExecutableUpdateSetExpr
     @Override
     public <T, R extends Number> UserUpdate increase(Supplier<Boolean> whether, SerializableFunction<T, R> name,
             R value) {
-        // YUFEI_TODO Auto-generated method stub
+
         return null;
     }
 
@@ -225,7 +225,7 @@ public class UserUpdate implements UserPropertiesUpdate, ExecutableUpdateSetExpr
      */
     @Override
     public <N extends Number> UserUpdate increase(Supplier<Boolean> whether, SerializableSupplier<N> property) {
-        // YUFEI_TODO Auto-generated method stub
+
         return null;
     }
 

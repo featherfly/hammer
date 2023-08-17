@@ -27,5 +27,5 @@
 //        S extends EntityQuerySortExpression7<E, R1, R2, R3, R4, R5, R6, Tuple2<E, R6>>>
 //        //        extends EntityQueryRelationExpression6<E, R1, R2, R3, R4, R5, R6, C, L, Tuple2<E, R6>> {
 //        extends EntityQueryExpression7<E, R1, R2, R3, R4, R5, R6, C, L, S, Tuple2<E, R6>> {
-//    // TODO 加入join方法
+//    // 目前就实现5次关联（join）
 //}

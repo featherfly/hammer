@@ -93,7 +93,7 @@ public class EntitySqlQueryRelate4RRR<E, R1, R2, R3, R4> extends AbstractEntityS
             QRL extends EntityQueryConditionGroupLogicExpression6<E, R1, R2, R3, R4, R5, QRC, QRL, QRS, Tuple2<E, R5>>,
             QRS extends EntityQuerySortExpression6<E, R1, R2, R3, R4, R5, Tuple2<E, R5>>,
             R5> RE join(SerializableFunction1<E, R5> propertyName) {
-        // YUFEI_TODO Auto-generated method stub
+        // IMPLSOON 后续来实现实体关系（ManyToOne、OneToOne、OneToMany）关联
         return null;
     }
 
@@ -110,7 +110,7 @@ public class EntitySqlQueryRelate4RRR<E, R1, R2, R3, R4> extends AbstractEntityS
             QRL extends EntityQueryConditionGroupLogicExpression6<E, R1, R2, R3, R4, R5, QRC, QRL, QRS, Tuple2<E, R5>>,
             QRS extends EntityQuerySortExpression6<E, R1, R2, R3, R4, R5, Tuple2<E, R5>>,
             R5> RE join(SerializableFunction2<R5, E> propertyName) {
-        // YUFEI_TODO Auto-generated method stub
+        // IMPLSOON 后续来实现实体关系（ManyToOne、OneToOne、OneToMany）关联
         return null;
     }
 
@@ -127,7 +127,7 @@ public class EntitySqlQueryRelate4RRR<E, R1, R2, R3, R4> extends AbstractEntityS
             QRL extends EntityQueryConditionGroupLogicExpression6<E, R1, R2, R3, R4, E, QRC, QRL, QRS, Tuple2<E, E>>,
             QRS extends EntityQuerySortExpression6<E, R1, R2, R3, R4, E, Tuple2<E, E>>> RE join(
                     SerializableFunction3<E, E> propertyName) {
-        // YUFEI_TODO Auto-generated method stub
+        // IMPLSOON 后续来实现实体关系（ManyToOne、OneToOne、OneToMany）关联
         return null;
     }
 
@@ -166,7 +166,7 @@ public class EntitySqlQueryRelate4RRR<E, R1, R2, R3, R4> extends AbstractEntityS
             QRL extends EntityQueryConditionGroupLogicExpression6<E, R1, R2, R3, R4, R5, QRC, QRL, QRS, Tuple2<E, R5>>,
             QRS extends EntityQuerySortExpression6<E, R1, R2, R3, R4, R5, Tuple2<E, R5>>,
             R5> RE join2(SerializableFunction1<R1, R5> propertyName) {
-        // YUFEI_TODO Auto-generated method stub
+        // IMPLSOON 后续来实现实体关系（ManyToOne、OneToOne、OneToMany）关联
         return null;
     }
 
@@ -183,7 +183,7 @@ public class EntitySqlQueryRelate4RRR<E, R1, R2, R3, R4> extends AbstractEntityS
             QRL extends EntityQueryConditionGroupLogicExpression6<E, R1, R2, R3, R4, R5, QRC, QRL, QRS, Tuple2<E, R5>>,
             QRS extends EntityQuerySortExpression6<E, R1, R2, R3, R4, R5, Tuple2<E, R5>>,
             R5> RE join2(SerializableFunction2<R5, R1> propertyName) {
-        // YUFEI_TODO Auto-generated method stub
+        // IMPLSOON 后续来实现实体关系（ManyToOne、OneToOne、OneToMany）关联
         return null;
     }
 
@@ -200,7 +200,7 @@ public class EntitySqlQueryRelate4RRR<E, R1, R2, R3, R4> extends AbstractEntityS
             QRL extends EntityQueryConditionGroupLogicExpression6<E, R1, R2, R3, R4, R1, QRC, QRL, QRS, Tuple2<E, R1>>,
             QRS extends EntityQuerySortExpression6<E, R1, R2, R3, R4, R1, Tuple2<E, R1>>> RE join2(
                     SerializableFunction3<R1, R1> propertyName) {
-        // YUFEI_TODO Auto-generated method stub
+        // IMPLSOON 后续来实现实体关系（ManyToOne、OneToOne、OneToMany）关联
         return null;
     }
 
@@ -239,7 +239,7 @@ public class EntitySqlQueryRelate4RRR<E, R1, R2, R3, R4> extends AbstractEntityS
             QRL extends EntityQueryConditionGroupLogicExpression6<E, R1, R2, R3, R4, R5, QRC, QRL, QRS, Tuple2<E, R5>>,
             QRS extends EntityQuerySortExpression6<E, R1, R2, R3, R4, R5, Tuple2<E, R5>>,
             R5> RE join3(SerializableFunction1<R2, R5> propertyName) {
-        // YUFEI_TODO Auto-generated method stub
+        // IMPLSOON 后续来实现实体关系（ManyToOne、OneToOne、OneToMany）关联
         return null;
     }
 
@@ -256,7 +256,7 @@ public class EntitySqlQueryRelate4RRR<E, R1, R2, R3, R4> extends AbstractEntityS
             QRL extends EntityQueryConditionGroupLogicExpression6<E, R1, R2, R3, R4, R5, QRC, QRL, QRS, Tuple2<E, R5>>,
             QRS extends EntityQuerySortExpression6<E, R1, R2, R3, R4, R5, Tuple2<E, R5>>,
             R5> RE join3(SerializableFunction2<R5, R2> propertyName) {
-        // YUFEI_TODO Auto-generated method stub
+        // IMPLSOON 后续来实现实体关系（ManyToOne、OneToOne、OneToMany）关联
         return null;
     }
 
@@ -273,7 +273,7 @@ public class EntitySqlQueryRelate4RRR<E, R1, R2, R3, R4> extends AbstractEntityS
             QRL extends EntityQueryConditionGroupLogicExpression6<E, R1, R2, R3, R4, R2, QRC, QRL, QRS, Tuple2<E, R2>>,
             QRS extends EntityQuerySortExpression6<E, R1, R2, R3, R4, R2, Tuple2<E, R2>>> RE join3(
                     SerializableFunction3<R2, R2> propertyName) {
-        // YUFEI_TODO Auto-generated method stub
+        // IMPLSOON 后续来实现实体关系（ManyToOne、OneToOne、OneToMany）关联
         return null;
     }
 
@@ -312,7 +312,7 @@ public class EntitySqlQueryRelate4RRR<E, R1, R2, R3, R4> extends AbstractEntityS
             QRL extends EntityQueryConditionGroupLogicExpression6<E, R1, R2, R3, R4, R5, QRC, QRL, QRS, Tuple2<E, R5>>,
             QRS extends EntityQuerySortExpression6<E, R1, R2, R3, R4, R5, Tuple2<E, R5>>,
             R5> RE join4(SerializableFunction1<R3, R5> propertyName) {
-        // YUFEI_TODO Auto-generated method stub
+        // IMPLSOON 后续来实现实体关系（ManyToOne、OneToOne、OneToMany）关联
         return null;
     }
 
@@ -329,7 +329,7 @@ public class EntitySqlQueryRelate4RRR<E, R1, R2, R3, R4> extends AbstractEntityS
             QRL extends EntityQueryConditionGroupLogicExpression6<E, R1, R2, R3, R4, R5, QRC, QRL, QRS, Tuple2<E, R5>>,
             QRS extends EntityQuerySortExpression6<E, R1, R2, R3, R4, R5, Tuple2<E, R5>>,
             R5> RE join4(SerializableFunction2<R5, R3> propertyName) {
-        // YUFEI_TODO Auto-generated method stub
+        // IMPLSOON 后续来实现实体关系（ManyToOne、OneToOne、OneToMany）关联
         return null;
     }
 
@@ -346,7 +346,7 @@ public class EntitySqlQueryRelate4RRR<E, R1, R2, R3, R4> extends AbstractEntityS
             QRL extends EntityQueryConditionGroupLogicExpression6<E, R1, R2, R3, R4, R3, QRC, QRL, QRS, Tuple2<E, R3>>,
             QRS extends EntityQuerySortExpression6<E, R1, R2, R3, R4, R3, Tuple2<E, R3>>> RE join4(
                     SerializableFunction3<R3, R3> propertyName) {
-        // YUFEI_TODO Auto-generated method stub
+        // IMPLSOON 后续来实现实体关系（ManyToOne、OneToOne、OneToMany）关联
         return null;
     }
 
@@ -385,7 +385,7 @@ public class EntitySqlQueryRelate4RRR<E, R1, R2, R3, R4> extends AbstractEntityS
             QRL extends EntityQueryConditionGroupLogicExpression6<E, R1, R2, R3, R4, R5, QRC, QRL, QRS, Tuple2<E, R5>>,
             QRS extends EntityQuerySortExpression6<E, R1, R2, R3, R4, R5, Tuple2<E, R5>>,
             R5> RE join5(SerializableFunction1<R4, R5> propertyName) {
-        // YUFEI_TODO Auto-generated method stub
+        // IMPLSOON 后续来实现实体关系（ManyToOne、OneToOne、OneToMany）关联
         return null;
     }
 
@@ -402,7 +402,7 @@ public class EntitySqlQueryRelate4RRR<E, R1, R2, R3, R4> extends AbstractEntityS
             QRL extends EntityQueryConditionGroupLogicExpression6<E, R1, R2, R3, R4, R5, QRC, QRL, QRS, Tuple2<E, R5>>,
             QRS extends EntityQuerySortExpression6<E, R1, R2, R3, R4, R5, Tuple2<E, R5>>,
             R5> RE join5(SerializableFunction2<R5, R4> propertyName) {
-        // YUFEI_TODO Auto-generated method stub
+        // IMPLSOON 后续来实现实体关系（ManyToOne、OneToOne、OneToMany）关联
         return null;
     }
 
@@ -419,7 +419,7 @@ public class EntitySqlQueryRelate4RRR<E, R1, R2, R3, R4> extends AbstractEntityS
             QRL extends EntityQueryConditionGroupLogicExpression6<E, R1, R2, R3, R4, R4, QRC, QRL, QRS, Tuple2<E, R4>>,
             QRS extends EntityQuerySortExpression6<E, R1, R2, R3, R4, R4, Tuple2<E, R4>>> RE join5(
                     SerializableFunction3<R4, R4> propertyName) {
-        // YUFEI_TODO Auto-generated method stub
+        // IMPLSOON 后续来实现实体关系（ManyToOne、OneToOne、OneToMany）关联
         return null;
     }
 

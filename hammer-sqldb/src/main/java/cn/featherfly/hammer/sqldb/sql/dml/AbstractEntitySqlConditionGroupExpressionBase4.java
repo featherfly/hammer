@@ -69,7 +69,7 @@ public abstract class AbstractEntitySqlConditionGroupExpressionBase4<E, E2, E3, 
     /** The class mapping. */
     protected JdbcClassMapping<E4> classMapping4;
 
-    private String queryAlias4;
+    protected String queryAlias4;
 
     /**
      * Instantiates a new abstract entity sql condition group expression base 4.

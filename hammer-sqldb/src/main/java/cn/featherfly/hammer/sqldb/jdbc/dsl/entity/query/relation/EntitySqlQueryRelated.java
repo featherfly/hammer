@@ -17,7 +17,7 @@ import cn.featherfly.common.lang.LambdaUtils;
 import cn.featherfly.common.lang.LambdaUtils.SerializedLambdaInfo;
 import cn.featherfly.common.lang.function.SerializableFunction1;
 import cn.featherfly.common.lang.function.SerializableFunction2;
-import cn.featherfly.hammer.expression.api.entity.EntityQueryRelate;
+import cn.featherfly.hammer.expression.api.entity.QueryRelate;
 import cn.featherfly.hammer.expression.entity.query.relation.EntityQueryRelatedExpression;
 import cn.featherfly.hammer.sqldb.jdbc.dsl.entity.EntitySqlQueryRelation;
 
@@ -30,7 +30,7 @@ import cn.featherfly.hammer.sqldb.jdbc.dsl.entity.EntitySqlQueryRelation;
  * @param <QR>  the generic type
  * @param <QRF> the generic type
  */
-public class EntitySqlQueryRelated<E, R, QR extends EntityQueryRelate<QRF>, QRF>
+public class EntitySqlQueryRelated<E, R, QR extends QueryRelate<QRF>, QRF>
         //        extends AbstractEntitySqlQueryRelated<E, R>
         implements EntityQueryRelatedExpression<E, R, QR, QRF> {
 

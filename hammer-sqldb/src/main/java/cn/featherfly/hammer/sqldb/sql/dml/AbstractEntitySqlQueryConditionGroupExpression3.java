@@ -4,7 +4,6 @@ package cn.featherfly.hammer.sqldb.sql.dml;
 import java.util.Arrays;
 import java.util.List;
 import java.util.function.Consumer;
-import java.util.function.Function;
 
 import com.speedment.common.tuple.Tuple3;
 import com.speedment.common.tuple.Tuples;
@@ -18,15 +17,12 @@ import cn.featherfly.common.db.mapping.JdbcMappingFactory;
 import cn.featherfly.common.function.ThreeArgusConsumer;
 import cn.featherfly.common.function.ThreeArgusFunction;
 import cn.featherfly.common.lang.LambdaUtils;
-import cn.featherfly.common.lang.Lang;
 import cn.featherfly.common.lang.function.SerializableFunction;
-import cn.featherfly.common.lang.function.SerializableFunction1;
-import cn.featherfly.common.lang.function.SerializableFunction2;
 import cn.featherfly.common.operator.AggregateFunction;
+import cn.featherfly.common.operator.SortOperator;
 import cn.featherfly.common.repository.builder.dml.SortBuilder;
 import cn.featherfly.common.structure.page.Limit;
 import cn.featherfly.common.structure.page.PaginationResults;
-import cn.featherfly.hammer.dsl.QueryEntityRepository;
 import cn.featherfly.hammer.expression.condition.ParamedExpression;
 import cn.featherfly.hammer.expression.entity.condition.EntityPropertyExpression3;
 import cn.featherfly.hammer.expression.entity.condition.co.ContainsEntityExpression;
@@ -108,6 +104,7 @@ import cn.featherfly.hammer.sqldb.jdbc.dsl.entity.condition.MulitiEntityLikeExpr
 import cn.featherfly.hammer.sqldb.jdbc.dsl.entity.condition.MulitiEntityNotEqualsExpressionImpl;
 import cn.featherfly.hammer.sqldb.jdbc.dsl.entity.condition.MulitiEntityNotInExpressionImpl;
 import cn.featherfly.hammer.sqldb.jdbc.dsl.entity.condition.MulitiEntityStartWithExpressionImpl;
+import cn.featherfly.hammer.sqldb.jdbc.dsl.entity.query.sort.SqlSortEntity;
 
 /**
  * sql condition group expression3. 条件逻辑组构造器3.
@@ -164,23 +161,23 @@ public abstract class AbstractEntitySqlQueryConditionGroupExpression3<E, E2, E3,
 
     // ****************************************************************************************************************
 
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public String build() {
-        StringBuilder result = new StringBuilder(super.build());
-        String sort = sortBuilder.build();
-        if (result.length() > 0) {
-            if (Lang.isNotEmpty(sort)) {
-                return result.append(Chars.SPACE).append(sort).toString();
-            } else {
-                return result.toString();
-            }
-        } else {
-            return sort;
-        }
-    }
+    //    /**
+    //     * {@inheritDoc}
+    //     */
+    //    @Override
+    //    public String build() {
+    //        StringBuilder result = new StringBuilder(super.build());
+    //        String sort = sortBuilder.build();
+    //        if (result.length() > 0) {
+    //            if (Lang.isNotEmpty(sort)) {
+    //                return result.append(Chars.SPACE).append(sort).toString();
+    //            } else {
+    //                return result.toString();
+    //            }
+    //        } else {
+    //            return sort;
+    //        }
+    //    }
 
     /**
      * Limit.
@@ -635,7 +632,7 @@ public abstract class AbstractEntitySqlQueryConditionGroupExpression3<E, E2, E3,
     @Override
     public L property(ThreeArgusFunction<EntityPropertyFunction<E, C, L>, EntityPropertyFunction<E2, C, L>,
             EntityPropertyFunction<E3, C, L>, L> entitiesPropertyFunction) {
-        // YUFEI_TODO Auto-generated method stub
+        // IMPLSOON 后续来实现property 多实体
         return null;
     }
 
@@ -651,37 +648,53 @@ public abstract class AbstractEntitySqlQueryConditionGroupExpression3<E, E2, E3,
         return this;
     }
 
-    /**
-     * Asc.
-     *
-     * @param names the names
-     * @return the entity query sorted expression
-     */
-    //        @Override
+    // ****************************************************************************************************************
+
     public EntityQuerySortedExpression3<E, E2, E3, RS> asc(String... names) {
         getRootSortBuilder().asc(ClassMappingUtils.getColumnNames(classMapping, names));
         return this;
     }
 
-    /**
-     * Asc.
-     *
-     * @param names the names
-     * @return the entity query sorted expression
-     */
-    //        @Override
-    public EntityQuerySortedExpression3<E, E2, E3, RS> asc(List<String> names) {
-        // YUFEI_TODO asc desc 需要和强类型绑定
-        getRootSortBuilder().asc(ClassMappingUtils.getColumnNames(classMapping, names));
+    public EntityQuerySortedExpression3<E, E2, E3, RS> asc2(String... names) {
+        for (String name : names) {
+            getRootSortBuilder().asc(queryAlias2, () -> name);
+        }
         return this;
     }
+
+    public EntityQuerySortedExpression3<E, E2, E3, RS> asc3(String... names) {
+        for (String name : names) {
+            getRootSortBuilder().asc(queryAlias3, () -> name);
+        }
+        return this;
+    }
+
+    public EntityQuerySortedExpression3<E, E2, E3, RS> desc(String... names) {
+        getRootSortBuilder().desc(ClassMappingUtils.getColumnNames(classMapping, names));
+        return this;
+    }
+
+    public EntityQuerySortedExpression3<E, E2, E3, RS> desc2(String... names) {
+        for (String name : names) {
+            getRootSortBuilder().desc(queryAlias2, () -> name);
+        }
+        return this;
+    }
+
+    public EntityQuerySortedExpression3<E, E2, E3, RS> desc3(String... names) {
+        for (String name : names) {
+            getRootSortBuilder().desc(queryAlias3, () -> name);
+        }
+        return this;
+    }
+
+    // ****************************************************************************************************************
 
     /**
      * {@inheritDoc}
      */
     @Override
     public <P> EntityQuerySortedExpression3<E, E2, E3, RS> asc(SerializableFunction<E, P> name) {
-        // YUFEI_TODO asc desc 需要和强类型绑定
         return asc(getPropertyName(name));
     }
 
@@ -694,36 +707,6 @@ public abstract class AbstractEntitySqlQueryConditionGroupExpression3<E, E2, E3,
         String[] nameArray = Arrays.stream(names).map(LambdaUtils::getLambdaPropertyName)
                 .toArray(value -> new String[value]);
         return asc(nameArray);
-    }
-
-    //    /**
-    //     * {@inheritDoc}
-    //     */
-    /**
-     * Desc.
-     *
-     * @param names the names
-     * @return the entity query sorted expression
-     */
-    //    @Override
-    public EntityQuerySortedExpression3<E, E2, E3, RS> desc(String... names) {
-        getRootSortBuilder().desc(ClassMappingUtils.getColumnNames(classMapping, names));
-        return this;
-    }
-
-    //    /**
-    //     * {@inheritDoc}
-    //     */
-    /**
-     * Desc.
-     *
-     * @param names the names
-     * @return the entity query sorted expression
-     */
-    //    @Override
-    public EntityQuerySortedExpression3<E, E2, E3, RS> desc(List<String> names) {
-        getRootSortBuilder().desc(ClassMappingUtils.getColumnNames(classMapping, names));
-        return this;
     }
 
     /**
@@ -751,8 +734,11 @@ public abstract class AbstractEntitySqlQueryConditionGroupExpression3<E, E2, E3,
     @Override
     public EntityQuerySortedExpression3<E, E2, E3, RS> asc(ThreeArgusConsumer<SortEntityExpression<E>,
             SortEntityExpression<E2>, SortEntityExpression<E3>> sortEntityExpressions) {
-        // YUFEI_TODO Auto-generated method stub
-        return null;
+        sortEntityExpressions.accept(
+                new SqlSortEntity<>(getRootSortBuilder(), queryAlias, SortOperator.ASC, classMapping),
+                new SqlSortEntity<>(getRootSortBuilder(), queryAlias2, SortOperator.ASC, classMapping2),
+                new SqlSortEntity<>(getRootSortBuilder(), queryAlias3, SortOperator.ASC, classMapping3));
+        return this;
     }
 
     /**
@@ -761,152 +747,11 @@ public abstract class AbstractEntitySqlQueryConditionGroupExpression3<E, E2, E3,
     @Override
     public EntityQuerySortedExpression3<E, E2, E3, RS> desc(ThreeArgusConsumer<SortEntityExpression<E>,
             SortEntityExpression<E2>, SortEntityExpression<E3>> sortEntityExpressions) {
-        // YUFEI_TODO Auto-generated method stub
-        return null;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public <R> EntityQuerySortedExpression3<E, E2, E3, RS> asc(
-            Function<Tuple3<QueryEntityRepository<E>, QueryEntityRepository<E2>, QueryEntityRepository<E3>>,
-                    QueryEntityRepository<E>> entities,
-            SerializableFunction<E, R> name) {
-        // YUFEI_TODO Auto-generated method stub
-        return null;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public EntityQuerySortedExpression3<E, E2, E3, RS> asc(
-            Function<Tuple3<QueryEntityRepository<E>, QueryEntityRepository<E2>, QueryEntityRepository<E3>>,
-                    QueryEntityRepository<E>> entities,
-            SerializableFunction<E, ?>... names) {
-        // YUFEI_TODO Auto-generated method stub
-        return null;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public <R> EntityQuerySortedExpression3<E, E2, E3, RS> asc(
-            Function<Tuple3<QueryEntityRepository<E>, QueryEntityRepository<E2>, QueryEntityRepository<E3>>,
-                    QueryEntityRepository<E2>> entities,
-            SerializableFunction1<E2, R> name) {
-        // YUFEI_TODO Auto-generated method stub
-        return null;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public EntityQuerySortedExpression3<E, E2, E3, RS> asc(
-            Function<Tuple3<QueryEntityRepository<E>, QueryEntityRepository<E2>, QueryEntityRepository<E3>>,
-                    QueryEntityRepository<E2>> entities,
-            SerializableFunction1<E2, ?>... names) {
-        // YUFEI_TODO Auto-generated method stub
-        return null;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public <R> EntityQuerySortedExpression3<E, E2, E3, RS> asc(
-            Function<Tuple3<QueryEntityRepository<E>, QueryEntityRepository<E2>, QueryEntityRepository<E3>>,
-                    QueryEntityRepository<E3>> entities,
-            SerializableFunction2<E3, R> name) {
-        // YUFEI_TODO Auto-generated method stub
-        return null;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public EntityQuerySortedExpression3<E, E2, E3, RS> asc(
-            Function<Tuple3<QueryEntityRepository<E>, QueryEntityRepository<E2>, QueryEntityRepository<E3>>,
-                    QueryEntityRepository<E3>> entities,
-            SerializableFunction2<E3, ?>... names) {
-        // YUFEI_TODO Auto-generated method stub
-        return null;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public <R> EntityQuerySortedExpression3<E, E2, E3, RS> desc(
-            Function<Tuple3<QueryEntityRepository<E>, QueryEntityRepository<E2>, QueryEntityRepository<E3>>,
-                    QueryEntityRepository<E>> entities,
-            SerializableFunction<E, R> name) {
-        // YUFEI_TODO Auto-generated method stub
-        return null;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public EntityQuerySortedExpression3<E, E2, E3, RS> desc(
-            Function<Tuple3<QueryEntityRepository<E>, QueryEntityRepository<E2>, QueryEntityRepository<E3>>,
-                    QueryEntityRepository<E>> entities,
-            SerializableFunction<E, ?>... names) {
-        // YUFEI_TODO Auto-generated method stub
-        return null;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public <R> EntityQuerySortedExpression3<E, E2, E3, RS> desc(
-            Function<Tuple3<QueryEntityRepository<E>, QueryEntityRepository<E2>, QueryEntityRepository<E3>>,
-                    QueryEntityRepository<E2>> entities,
-            SerializableFunction1<E2, R> name) {
-        // YUFEI_TODO Auto-generated method stub
-        return null;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public EntityQuerySortedExpression3<E, E2, E3, RS> desc(
-            Function<Tuple3<QueryEntityRepository<E>, QueryEntityRepository<E2>, QueryEntityRepository<E3>>,
-                    QueryEntityRepository<E2>> entities,
-            SerializableFunction1<E2, ?>... names) {
-        // YUFEI_TODO Auto-generated method stub
-        return null;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public <R> EntityQuerySortedExpression3<E, E2, E3, RS> desc(
-            Function<Tuple3<QueryEntityRepository<E>, QueryEntityRepository<E2>, QueryEntityRepository<E3>>,
-                    QueryEntityRepository<E3>> entities,
-            SerializableFunction2<E3, R> name) {
-        // YUFEI_TODO Auto-generated method stub
-        return null;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public EntityQuerySortedExpression3<E, E2, E3, RS> desc(
-            Function<Tuple3<QueryEntityRepository<E>, QueryEntityRepository<E2>, QueryEntityRepository<E3>>,
-                    QueryEntityRepository<E3>> entities,
-            SerializableFunction2<E3, ?>... names) {
-        // YUFEI_TODO Auto-generated method stub
-        return null;
+        sortEntityExpressions.accept(
+                new SqlSortEntity<>(getRootSortBuilder(), queryAlias, SortOperator.DESC, classMapping),
+                new SqlSortEntity<>(getRootSortBuilder(), queryAlias2, SortOperator.DESC, classMapping2),
+                new SqlSortEntity<>(getRootSortBuilder(), queryAlias3, SortOperator.DESC, classMapping3));
+        return this;
     }
 
     /**
@@ -914,17 +759,18 @@ public abstract class AbstractEntitySqlQueryConditionGroupExpression3<E, E2, E3,
      */
     @Override
     public <R> EntityQuerySortedExpression3<E, E2, E3, RS> asc3(SerializableFunction<E3, R> name) {
-        // YUFEI_TODO Auto-generated method stub
-        return null;
+        return asc3(getPropertyName(name));
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public EntityQuerySortedExpression3<E, E2, E3, RS> asc3(SerializableFunction<E3, ?>... names) {
-        // YUFEI_TODO Auto-generated method stub
-        return null;
+    public EntityQuerySortedExpression3<E, E2, E3, RS> asc3(
+            @SuppressWarnings("unchecked") SerializableFunction<E3, ?>... names) {
+        String[] nameArray = Arrays.stream(names).map(LambdaUtils::getLambdaPropertyName)
+                .toArray(value -> new String[value]);
+        return asc3(nameArray);
     }
 
     /**
@@ -932,17 +778,18 @@ public abstract class AbstractEntitySqlQueryConditionGroupExpression3<E, E2, E3,
      */
     @Override
     public <R> EntityQuerySortedExpression3<E, E2, E3, RS> desc3(SerializableFunction<E3, R> name) {
-        // YUFEI_TODO Auto-generated method stub
-        return null;
+        return desc3(getPropertyName(name));
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public EntityQuerySortedExpression3<E, E2, E3, RS> desc3(SerializableFunction<E3, ?>... names) {
-        // YUFEI_TODO Auto-generated method stub
-        return null;
+    public EntityQuerySortedExpression3<E, E2, E3, RS> desc3(
+            @SuppressWarnings("unchecked") SerializableFunction<E3, ?>... names) {
+        String[] nameArray = Arrays.stream(names).map(LambdaUtils::getLambdaPropertyName)
+                .toArray(value -> new String[value]);
+        return desc3(nameArray);
     }
 
     /**
@@ -950,17 +797,18 @@ public abstract class AbstractEntitySqlQueryConditionGroupExpression3<E, E2, E3,
      */
     @Override
     public <R> EntityQuerySortedExpression3<E, E2, E3, RS> asc2(SerializableFunction<E2, R> name) {
-        // YUFEI_TODO Auto-generated method stub
-        return null;
+        return asc2(getPropertyName(name));
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public EntityQuerySortedExpression3<E, E2, E3, RS> asc2(SerializableFunction<E2, ?>... names) {
-        // YUFEI_TODO Auto-generated method stub
-        return null;
+    public EntityQuerySortedExpression3<E, E2, E3, RS> asc2(
+            @SuppressWarnings("unchecked") SerializableFunction<E2, ?>... names) {
+        String[] nameArray = Arrays.stream(names).map(LambdaUtils::getLambdaPropertyName)
+                .toArray(value -> new String[value]);
+        return asc2(nameArray);
     }
 
     /**
@@ -968,17 +816,18 @@ public abstract class AbstractEntitySqlQueryConditionGroupExpression3<E, E2, E3,
      */
     @Override
     public <R> EntityQuerySortedExpression3<E, E2, E3, RS> desc2(SerializableFunction<E2, R> name) {
-        // YUFEI_TODO Auto-generated method stub
-        return null;
+        return desc2(getPropertyName(name));
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public EntityQuerySortedExpression3<E, E2, E3, RS> desc2(SerializableFunction<E2, ?>... names) {
-        // YUFEI_TODO Auto-generated method stub
-        return null;
+    public EntityQuerySortedExpression3<E, E2, E3, RS> desc2(
+            @SuppressWarnings("unchecked") SerializableFunction<E2, ?>... names) {
+        String[] nameArray = Arrays.stream(names).map(LambdaUtils::getLambdaPropertyName)
+                .toArray(value -> new String[value]);
+        return desc2(nameArray);
     }
 
     // ****************************************************************************************************************
@@ -986,7 +835,7 @@ public abstract class AbstractEntitySqlQueryConditionGroupExpression3<E, E2, E3,
     // ****************************************************************************************************************
 
     @SuppressWarnings("unchecked")
-    private SortBuilder getRootSortBuilder() {
+    protected SortBuilder getRootSortBuilder() {
         return ((AbstractEntitySqlQueryConditionGroupExpression3<E, E2, E3, RS, C, L>) getRoot()).sortBuilder;
     }
 }

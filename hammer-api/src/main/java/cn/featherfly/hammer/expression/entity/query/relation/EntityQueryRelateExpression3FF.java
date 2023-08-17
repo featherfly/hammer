@@ -7,7 +7,7 @@ import com.speedment.common.tuple.Tuple4;
 import cn.featherfly.common.lang.function.SerializableFunction1;
 import cn.featherfly.common.lang.function.SerializableFunction2;
 import cn.featherfly.common.lang.function.SerializableFunction3;
-import cn.featherfly.hammer.expression.api.entity.EntityQueryRelate;
+import cn.featherfly.hammer.expression.api.entity.QueryRelate;
 import cn.featherfly.hammer.expression.entity.query.EntityQueryConditionGroupExpression4;
 import cn.featherfly.hammer.expression.entity.query.EntityQueryConditionGroupExpression5;
 import cn.featherfly.hammer.expression.entity.query.EntityQueryConditionGroupLogicExpression4;
@@ -40,7 +40,7 @@ public interface EntityQueryRelateExpression3FF<E, R1, R2, R3,
         FC extends EntityQueryConditionGroupExpression4<E, R1, R2, R3, FC, FL, FS, Tuple4<E, R1, R2, R3>>,
         FL extends EntityQueryConditionGroupLogicExpression4<E, R1, R2, R3, FC, FL, FS, Tuple4<E, R1, R2, R3>>,
         FS extends EntityQuerySortExpression4<E, R1, R2, R3, Tuple4<E, R1, R2, R3>>>
-        extends EntityQueryExpression4<E, R1, R2, R3, C, L, S, Tuple3<E, R1, R2>>, EntityQueryRelate<F> {
+        extends EntityQueryExpression4<E, R1, R2, R3, C, L, S, Tuple3<E, R1, R2>>, QueryRelate<F> {
 
     /**
      * join.

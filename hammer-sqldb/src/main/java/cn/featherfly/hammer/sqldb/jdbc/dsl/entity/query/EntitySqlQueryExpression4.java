@@ -56,10 +56,6 @@ public class EntitySqlQueryExpression4<E, E2, E3, E4, RS> extends
     @Override
     protected EntityQueryConditionGroup4<E, E2, E3, E4, RS> createGroup(
             EntityQueryConditionGroupLogic4<E, E2, E3, E4, RS> parent) {
-        //      IMPLSOON 后续来实现，先让编译通过
-        //        if (selectBuilder != null) {
-        //            selectBuilder.setTableAlias(queryAlias);
-        //        }
         return new EntitySqlQueryExpression4<>(parent, factory, sqlPageFactory, entityRelation);
     }
 
@@ -68,19 +64,15 @@ public class EntitySqlQueryExpression4<E, E2, E3, E4, RS> extends
      */
     @Override
     public String build() {
-        //        String result = entityRelation.buildSelectSql();
-        //        String condition = super.build();
-        //        if (Lang.isNotEmpty(condition)) {
-        //            result = result + Chars.SPACE + dialect.getKeywords().where() + Chars.SPACE + condition;
-        //        }
-        //        return result;
-        String result = entityRelation.buildSelectSql();
         String condition = super.build();
         if (parent == null) {
+            String result = entityRelation.buildSelectSql();
+            String sort = getRootSortBuilder().build();
             if (Lang.isEmpty(condition)) {
-                return result;
+                return result + Chars.SPACE + sort;
             } else {
-                return result + Chars.SPACE + dialect.getKeywords().where() + Chars.SPACE + condition;
+                return result + Chars.SPACE + dialect.getKeywords().where() + Chars.SPACE + condition + Chars.SPACE
+                        + sort;
             }
         } else {
             return condition;

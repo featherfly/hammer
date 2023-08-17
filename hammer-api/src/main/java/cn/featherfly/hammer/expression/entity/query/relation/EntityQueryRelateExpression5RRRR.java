@@ -3,7 +3,7 @@ package cn.featherfly.hammer.expression.entity.query.relation;
 
 import com.speedment.common.tuple.Tuple2;
 
-import cn.featherfly.hammer.expression.api.entity.EntityQueryRelate;
+import cn.featherfly.hammer.expression.api.entity.QueryRelate;
 import cn.featherfly.hammer.expression.entity.query.EntityQueryConditionGroupExpression6;
 import cn.featherfly.hammer.expression.entity.query.EntityQueryConditionGroupLogicExpression6;
 import cn.featherfly.hammer.expression.entity.query.EntityQueryExpression6;
@@ -36,6 +36,6 @@ public interface EntityQueryRelateExpression5RRRR<E, R1, R2, R3, R4, R5,
         FL extends EntityQueryConditionGroupLogicExpression6<E, R1, R2, R3, R4, R5, FC, FL, FS, Tuple2<E, R5>>,
         FS extends EntityQuerySortExpression6<E, R1, R2, R3, R4, R5, Tuple2<E, R5>>>
         //        extends EntityQueryRelationExpression5<E, R1, R2, R3, R4, R5, C, L, R>, EntityQueryRelate<QR> {
-        extends EntityQueryExpression6<E, R1, R2, R3, R4, R5, C, L, S, E>, EntityQueryRelate<F> {
-    // TODO 加入join方法
+        extends EntityQueryExpression6<E, R1, R2, R3, R4, R5, C, L, S, E>, QueryRelate<F> {
+    // 目前就实现5次关联（join）
 }

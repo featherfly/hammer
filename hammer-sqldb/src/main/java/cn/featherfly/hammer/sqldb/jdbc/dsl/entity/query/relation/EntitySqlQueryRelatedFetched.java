@@ -137,7 +137,7 @@ public class EntitySqlQueryRelatedFetched<E, R1> extends AbstractEntitySqlQueryF
             FL extends EntityQueryConditionGroupLogicExpression3<E, R1, R2, FC, FL, FS, Tuple3<E, R1, R2>>,
             FS extends EntityQuerySortExpression3<E, R1, R2, Tuple3<E, R1, R2>>,
             R2> RE join(SerializableFunction1<E, R2> propertyName) {
-        // YUFEI_TODO Auto-generated method stub
+        // IMPLSOON 后续来实现实体关系（ManyToOne、OneToOne、OneToMany）关联
         return null;
     }
 
@@ -154,7 +154,7 @@ public class EntitySqlQueryRelatedFetched<E, R1> extends AbstractEntitySqlQueryF
             FL extends EntityQueryConditionGroupLogicExpression3<E, R1, R2, FC, FL, FS, Tuple3<E, R1, R2>>,
             FS extends EntityQuerySortExpression3<E, R1, R2, Tuple3<E, R1, R2>>,
             R2> RE join(SerializableFunction2<R2, E> propertyName) {
-        // YUFEI_TODO Auto-generated method stub
+        // IMPLSOON 后续来实现实体关系（ManyToOne、OneToOne、OneToMany）关联
         return null;
     }
 
@@ -171,7 +171,7 @@ public class EntitySqlQueryRelatedFetched<E, R1> extends AbstractEntitySqlQueryF
             FL extends EntityQueryConditionGroupLogicExpression3<E, R1, E, FC, FL, FS, Tuple3<E, R1, E>>,
             FS extends EntityQuerySortExpression3<E, R1, E, Tuple3<E, R1, E>>> RE join(
                     SerializableFunction3<E, E> propertyName) {
-        // YUFEI_TODO Auto-generated method stub
+        // IMPLSOON 后续来实现实体关系（ManyToOne、OneToOne、OneToMany）关联
         return null;
     }
 
@@ -210,7 +210,7 @@ public class EntitySqlQueryRelatedFetched<E, R1> extends AbstractEntitySqlQueryF
             FL extends EntityQueryConditionGroupLogicExpression3<E, R1, R2, FC, FL, FS, Tuple3<E, R1, R2>>,
             FS extends EntityQuerySortExpression3<E, R1, R2, Tuple3<E, R1, R2>>,
             R2> RE join2(SerializableFunction1<R1, R2> propertyName) {
-        // YUFEI_TODO Auto-generated method stub
+        // IMPLSOON 后续来实现实体关系（ManyToOne、OneToOne、OneToMany）关联
         return null;
     }
 
@@ -227,7 +227,7 @@ public class EntitySqlQueryRelatedFetched<E, R1> extends AbstractEntitySqlQueryF
             FL extends EntityQueryConditionGroupLogicExpression3<E, R1, R2, FC, FL, FS, Tuple3<E, R1, R2>>,
             FS extends EntityQuerySortExpression3<E, R1, R2, Tuple3<E, R1, R2>>,
             R2> RE join2(SerializableFunction2<R2, R1> propertyName) {
-        // YUFEI_TODO Auto-generated method stub
+        // IMPLSOON 后续来实现实体关系（ManyToOne、OneToOne、OneToMany）关联
         return null;
     }
 
@@ -244,7 +244,7 @@ public class EntitySqlQueryRelatedFetched<E, R1> extends AbstractEntitySqlQueryF
             FL extends EntityQueryConditionGroupLogicExpression3<E, R1, R1, FC, FL, FS, Tuple3<E, R1, R1>>,
             FS extends EntityQuerySortExpression3<E, R1, R1, Tuple3<E, R1, R1>>> RE join2(
                     SerializableFunction3<R1, R1> propertyName) {
-        // YUFEI_TODO Auto-generated method stub
+        // IMPLSOON 后续来实现实体关系（ManyToOne、OneToOne、OneToMany）关联
         return null;
     }
 
