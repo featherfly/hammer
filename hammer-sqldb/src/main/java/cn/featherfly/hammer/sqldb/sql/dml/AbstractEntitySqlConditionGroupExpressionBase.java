@@ -122,25 +122,25 @@ public abstract class AbstractEntitySqlConditionGroupExpressionBase<E, ER extend
     //        return queryRelation.getJdbc().queryLong(getRoot().expression(), getRoot().getParams().toArray());
     //    }
 
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public String build() {
-        return super.build();
-        //        String condition = super.build();
-        //        if (parent == null) {
-        //            if (Lang.isNotEmpty(condition)) {
-        //                //                return dialect.getKeywords().where() + Chars.SPACE + super.build() + Chars.SPACE + sortBuilder.build();
-        //                return dialect.getKeywords().where() + Chars.SPACE + condition;
-        //            } else {
-        //                //                return super.build() + Chars.SPACE + sortBuilder.build();
-        //                return condition;
-        //            }
-        //        } else {
-        //            return ((AbstractEntitySqlConditionExpressionBase<E, ER, B, C, L>) parent).build();
-        //        }
-    }
+    //    /**
+    //     * {@inheritDoc}
+    //     */
+    //    @Override
+    //    public String build() {
+    //        return super.build();
+    //        //        String condition = super.build();
+    //        //        if (parent == null) {
+    //        //            if (Lang.isNotEmpty(condition)) {
+    //        //                //                return dialect.getKeywords().where() + Chars.SPACE + super.build() + Chars.SPACE + sortBuilder.build();
+    //        //                return dialect.getKeywords().where() + Chars.SPACE + condition;
+    //        //            } else {
+    //        //                //                return super.build() + Chars.SPACE + sortBuilder.build();
+    //        //                return condition;
+    //        //            }
+    //        //        } else {
+    //        //            return ((AbstractEntitySqlConditionExpressionBase<E, ER, B, C, L>) parent).build();
+    //        //        }
+    //    }
 
     // ********************************************************************
     // private method

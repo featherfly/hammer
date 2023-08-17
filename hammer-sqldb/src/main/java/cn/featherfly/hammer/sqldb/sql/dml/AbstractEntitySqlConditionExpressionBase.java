@@ -113,7 +113,7 @@ public abstract class AbstractEntitySqlConditionExpressionBase<E, ER extends Ent
     protected Predicate<?> ignoreStrategy;
 
     /** The query alias. */
-    private String queryAlias;
+    protected String queryAlias;
 
     /** The entity sql relation. */
     protected ER entityRelation;

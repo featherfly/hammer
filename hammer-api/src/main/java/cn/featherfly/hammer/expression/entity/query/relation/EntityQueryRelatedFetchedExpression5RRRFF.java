@@ -27,5 +27,5 @@ public interface EntityQueryRelatedFetchedExpression5RRRFF<E, R1, R2, R3, R4, R5
         L extends EntityQueryConditionGroupLogicExpression6<E, R1, R2, R3, R4, R5, C, L, S, Tuple3<E, R4, R5>>,
         S extends EntityQuerySortExpression6<E, R1, R2, R3, R4, R5, Tuple3<E, R4, R5>>>
         extends EntityQueryExpression6<E, R1, R2, R3, R4, R5, C, L, S, Tuple3<E, R4, R5>> {
-    // TODO 加入join方法
+    // 目前就实现5次关联（join）
 }

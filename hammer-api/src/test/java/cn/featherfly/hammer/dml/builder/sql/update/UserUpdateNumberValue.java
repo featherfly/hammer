@@ -51,7 +51,7 @@ public class UserUpdateNumberValue
      */
     @Override
     public UserPropertiesUpdate set(Supplier<Boolean> whether, Number value) {
-        // YUFEI_TODO Auto-generated method stub
+
         return null;
     }
 
@@ -60,7 +60,7 @@ public class UserUpdateNumberValue
      */
     @Override
     public UserPropertiesUpdate increase(Supplier<Boolean> whether, Number value) {
-        // YUFEI_TODO Auto-generated method stub
+
         return null;
     }
 }

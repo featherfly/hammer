@@ -219,7 +219,7 @@ public class EntitySqlQueryRelate<E, R1> extends AbstractEntitySqlQueryFetch2<E,
             QRS extends EntityQuerySortExpression3<E, R1, R2, Tuple2<E, R2>>,
             QR extends EntityQueryRelatedFetchedExpression2RF<E, R1, R2, QRC, QRL, QRS>,
             R2> RE join(SerializableFunction1<E, R2> propertyName) {
-        // YUFEI_TODO Auto-generated method stub
+        // IMPLSOON 后续来实现实体关系（ManyToOne、OneToOne、OneToMany）关联
         return null;
     }
 
@@ -236,7 +236,7 @@ public class EntitySqlQueryRelate<E, R1> extends AbstractEntitySqlQueryFetch2<E,
             QRS extends EntityQuerySortExpression3<E, R1, R2, Tuple2<E, R2>>,
             QR extends EntityQueryRelatedFetchedExpression2RF<E, R1, R2, QRC, QRL, QRS>,
             R2> RE join(SerializableFunction2<R2, E> propertyName) {
-        // YUFEI_TODO Auto-generated method stub
+        // IMPLSOON 后续来实现实体关系（ManyToOne、OneToOne、OneToMany）关联
         return null;
     }
 
@@ -253,7 +253,7 @@ public class EntitySqlQueryRelate<E, R1> extends AbstractEntitySqlQueryFetch2<E,
             QRS extends EntityQuerySortExpression3<E, R1, E, Tuple2<E, E>>,
             QR extends EntityQueryRelatedFetchedExpression2RF<E, R1, E, QRC, QRL, QRS>> RE join(
                     SerializableFunction3<E, E> propertyName) {
-        // YUFEI_TODO Auto-generated method stub
+        // IMPLSOON 后续来实现实体关系（ManyToOne、OneToOne、OneToMany）关联
         return null;
     }
 
@@ -392,7 +392,7 @@ public class EntitySqlQueryRelate<E, R1> extends AbstractEntitySqlQueryFetch2<E,
             QRS extends EntityQuerySortExpression3<E, R1, R2, Tuple2<E, R2>>,
             QR extends EntityQueryRelatedFetchedExpression2RF<E, R1, R2, QRC, QRL, QRS>,
             R2> RE join2(SerializableFunction1<R1, R2> propertyName) {
-        // YUFEI_TODO Auto-generated method stub
+        // IMPLSOON 后续来实现实体关系（ManyToOne、OneToOne、OneToMany）关联
         return null;
     }
 
@@ -409,7 +409,7 @@ public class EntitySqlQueryRelate<E, R1> extends AbstractEntitySqlQueryFetch2<E,
             QRS extends EntityQuerySortExpression3<E, R1, R2, Tuple2<E, R2>>,
             QR extends EntityQueryRelatedFetchedExpression2RF<E, R1, R2, QRC, QRL, QRS>,
             R2> RE join2(SerializableFunction2<R2, R1> propertyName) {
-        // YUFEI_TODO Auto-generated method stub
+        // IMPLSOON 后续来实现实体关系（ManyToOne、OneToOne、OneToMany）关联
         return null;
     }
 
@@ -426,7 +426,7 @@ public class EntitySqlQueryRelate<E, R1> extends AbstractEntitySqlQueryFetch2<E,
             QRS extends EntityQuerySortExpression3<E, R1, R1, Tuple2<E, R1>>,
             QR extends EntityQueryRelatedFetchedExpression2RF<E, R1, R1, QRC, QRL, QRS>> RE join2(
                     SerializableFunction3<R1, R1> propertyName) {
-        // YUFEI_TODO Auto-generated method stub
+        // IMPLSOON 后续来实现实体关系（ManyToOne、OneToOne、OneToMany）关联
         return null;
     }
 
@@ -637,7 +637,7 @@ public class EntitySqlQueryRelate<E, R1> extends AbstractEntitySqlQueryFetch2<E,
             QR extends EntityQueryRelatedFetchedExpression2RF<E, R1, R2, QRC, QRL, QRS>, R2> RE join(
                     BiFunction<QueryEntityRepository<E>, QueryEntityRepository<R1>, QueryEntityRepository<E>> entities,
                     SerializableFunction1<E, R2> propertyName) {
-        // YUFEI_TODO Auto-generated method stub
+        // IMPLSOON 后续来实现实体关系（ManyToOne、OneToOne、OneToMany）关联
         return null;
     }
 
@@ -655,7 +655,7 @@ public class EntitySqlQueryRelate<E, R1> extends AbstractEntitySqlQueryFetch2<E,
     //            QR extends EntityQueryRelatedFetchedExpression2RF<E, R1, R2, QRC, QRL, QRS>, R2> RE join(Function<
     //                    Tuple2<QueryEntityRepository<E>, QueryEntityRepository<R1>>, QueryEntityRepository<E>> entities,
     //                    SerializableFunction1<E, R2> propertyName) {
-    //        // YUFEI_TODO Auto-generated method stub
+    //        // IMPLSOON 后续来实现实体关系（ManyToOne、OneToOne、OneToMany）关联
     //        return null;
     //    }
 
@@ -673,7 +673,7 @@ public class EntitySqlQueryRelate<E, R1> extends AbstractEntitySqlQueryFetch2<E,
             QR extends EntityQueryRelatedFetchedExpression2RF<E, R1, R2, QRC, QRL, QRS>, R2> RE join(
                     BiFunction<QueryEntityRepository<E>, QueryEntityRepository<R1>, QueryEntityRepository<E>> entities,
                     SerializableFunction2<R2, E> propertyName) {
-        // YUFEI_TODO Auto-generated method stub
+        // IMPLSOON 后续来实现实体关系（ManyToOne、OneToOne、OneToMany）关联
         return null;
     }
 
@@ -691,7 +691,7 @@ public class EntitySqlQueryRelate<E, R1> extends AbstractEntitySqlQueryFetch2<E,
     //            QR extends EntityQueryRelatedFetchedExpression2RF<E, R1, R2, QRC, QRL, QRS>, R2> RE join(Function<
     //                    Tuple2<QueryEntityRepository<E>, QueryEntityRepository<R1>>, QueryEntityRepository<E>> entities,
     //                    SerializableFunction2<R2, E> propertyName) {
-    //        // YUFEI_TODO Auto-generated method stub
+    //        // IMPLSOON 后续来实现实体关系（ManyToOne、OneToOne、OneToMany）关联
     //        return null;
     //    }
 
@@ -709,7 +709,7 @@ public class EntitySqlQueryRelate<E, R1> extends AbstractEntitySqlQueryFetch2<E,
             QR extends EntityQueryRelatedFetchedExpression2RF<E, R1, E, QRC, QRL, QRS>> RE join(
                     BiFunction<QueryEntityRepository<E>, QueryEntityRepository<R1>, QueryEntityRepository<E>> entities,
                     SerializableFunction3<E, E> propertyName) {
-        // YUFEI_TODO Auto-generated method stub
+        // IMPLSOON 后续来实现实体关系（ManyToOne、OneToOne、OneToMany）关联
         return null;
     }
 
@@ -727,7 +727,7 @@ public class EntitySqlQueryRelate<E, R1> extends AbstractEntitySqlQueryFetch2<E,
     //            QR extends EntityQueryRelatedFetchedExpression2RF<E, R1, E, QRC, QRL, QRS>> RE join(Function<
     //                    Tuple2<QueryEntityRepository<E>, QueryEntityRepository<R1>>, QueryEntityRepository<E>> entities,
     //                    SerializableFunction3<E, E> propertyName) {
-    //        // YUFEI_TODO Auto-generated method stub
+    //        // IMPLSOON 后续来实现实体关系（ManyToOne、OneToOne、OneToMany）关联
     //        return null;
     //    }
 
@@ -938,7 +938,7 @@ public class EntitySqlQueryRelate<E, R1> extends AbstractEntitySqlQueryFetch2<E,
             QR extends EntityQueryRelatedFetchedExpression2RF<E, R1, R2, QRC, QRL, QRS>, R2> RE join(
                     BiFunction<QueryEntityRepository<E>, QueryEntityRepository<R1>, QueryEntityRepository<R1>> entities,
                     SerializableFunction4<R1, R2> propertyName) {
-        // YUFEI_TODO Auto-generated method stub
+        // IMPLSOON 后续来实现实体关系（ManyToOne、OneToOne、OneToMany）关联
         return null;
     }
 
@@ -956,7 +956,7 @@ public class EntitySqlQueryRelate<E, R1> extends AbstractEntitySqlQueryFetch2<E,
     //            QR extends EntityQueryRelatedFetchedExpression2RF<E, R1, R2, QRC, QRL, QRS>, R2> RE join(Function<
     //                    Tuple2<QueryEntityRepository<E>, QueryEntityRepository<R1>>, QueryEntityRepository<R1>> entities,
     //                    SerializableFunction4<R1, R2> propertyName) {
-    //        // YUFEI_TODO Auto-generated method stub
+    //        // IMPLSOON 后续来实现实体关系（ManyToOne、OneToOne、OneToMany）关联
     //        return null;
     //    }
 
@@ -974,7 +974,7 @@ public class EntitySqlQueryRelate<E, R1> extends AbstractEntitySqlQueryFetch2<E,
             QR extends EntityQueryRelatedFetchedExpression2RF<E, R1, R2, QRC, QRL, QRS>, R2> RE join(
                     BiFunction<QueryEntityRepository<E>, QueryEntityRepository<R1>, QueryEntityRepository<R1>> entities,
                     SerializableFunction5<R2, R1> propertyName) {
-        // YUFEI_TODO Auto-generated method stub
+        // IMPLSOON 后续来实现实体关系（ManyToOne、OneToOne、OneToMany）关联
         return null;
     }
 
@@ -992,7 +992,7 @@ public class EntitySqlQueryRelate<E, R1> extends AbstractEntitySqlQueryFetch2<E,
     //            QR extends EntityQueryRelatedFetchedExpression2RF<E, R1, R2, QRC, QRL, QRS>, R2> RE join(Function<
     //                    Tuple2<QueryEntityRepository<E>, QueryEntityRepository<R1>>, QueryEntityRepository<R1>> entities,
     //                    SerializableFunction5<R2, R1> propertyName) {
-    //        // YUFEI_TODO Auto-generated method stub
+    //        // IMPLSOON 后续来实现实体关系（ManyToOne、OneToOne、OneToMany）关联
     //        return null;
     //    }
 
@@ -1010,7 +1010,7 @@ public class EntitySqlQueryRelate<E, R1> extends AbstractEntitySqlQueryFetch2<E,
             QR extends EntityQueryRelatedFetchedExpression2RF<E, R1, R1, QRC, QRL, QRS>> RE join(
                     BiFunction<QueryEntityRepository<E>, QueryEntityRepository<R1>, QueryEntityRepository<R1>> entities,
                     SerializableFunction6<R1, R1> propertyName) {
-        // YUFEI_TODO Auto-generated method stub
+        // IMPLSOON 后续来实现实体关系（ManyToOne、OneToOne、OneToMany）关联
         return null;
     }
 
@@ -1028,7 +1028,7 @@ public class EntitySqlQueryRelate<E, R1> extends AbstractEntitySqlQueryFetch2<E,
     //            QR extends EntityQueryRelatedFetchedExpression2RF<E, R1, R1, QRC, QRL, QRS>> RE join(Function<
     //                    Tuple2<QueryEntityRepository<E>, QueryEntityRepository<R1>>, QueryEntityRepository<R1>> entities,
     //                    SerializableFunction6<R1, R1> propertyName) {
-    //        // YUFEI_TODO Auto-generated method stub
+    //        // IMPLSOON 后续来实现实体关系（ManyToOne、OneToOne、OneToMany）关联
     //        return null;
     //    }
 

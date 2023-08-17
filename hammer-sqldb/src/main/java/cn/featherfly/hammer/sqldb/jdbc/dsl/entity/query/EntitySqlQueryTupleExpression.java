@@ -44,7 +44,6 @@
 //            AliasManager aliasManager, SqlSelectBasicBuilder selectBuilder, Predicate<Object> ignoreStrategy) {
 //        //        super(jdbc, selectBuilder.getTableAlias(), classMapping, factory, sqlPageFactory, aliasManager,
 //        //                entityQueryEntity, ignoreStrategy);
-//        //      IMPLSOON 后续来实现，先让编译通过
 //        super(jdbc, aliasManager.getAlias(0), classMapping, factory, sqlPageFactory, aliasManager, entityQueryEntity,
 //                ignoreStrategy);
 //        this.selectBuilder = selectBuilder;

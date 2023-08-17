@@ -17,15 +17,15 @@ import cn.featherfly.hammer.expression.query.QueryRelateExpression;
  *
  * @author zhongj
  */
-public class UserQueryWith implements
-        QueryRelateExpression<UserQueryWith, UserQueryWithOn, UserQueryWithEntity, UserQueryRepositoryConditionGroupExpression, UserQueryRepositoryConditionGroupExpression> {
+public class UserQueryWith implements QueryRelateExpression<UserQueryWith, UserQueryWithOn, UserQueryWithEntity,
+        UserQueryRepositoryConditionGroupExpression, UserQueryRepositoryConditionGroupExpression> {
 
     /**
      * {@inheritDoc}
      */
     @Override
     public UserQueryRepositoryConditionGroupExpression where() {
-        // YUFEI_TODO Auto-generated method stub
+
         return null;
     }
 
@@ -34,7 +34,7 @@ public class UserQueryWith implements
      */
     @Override
     public List<Map<String, Object>> list() {
-        // YUFEI_TODO Auto-generated method stub
+
         return null;
     }
 
@@ -43,7 +43,7 @@ public class UserQueryWith implements
      */
     @Override
     public <E> List<E> list(Class<E> type) {
-        // YUFEI_TODO Auto-generated method stub
+
         return null;
     }
 
@@ -52,7 +52,7 @@ public class UserQueryWith implements
      */
     @Override
     public <E> List<E> list(RowMapper<E> rowMapper) {
-        // YUFEI_TODO Auto-generated method stub
+
         return null;
     }
 
@@ -61,7 +61,7 @@ public class UserQueryWith implements
      */
     @Override
     public QueryLimitExecutor limit(Integer limit) {
-        // YUFEI_TODO Auto-generated method stub
+
         return null;
     }
 
@@ -70,7 +70,7 @@ public class UserQueryWith implements
      */
     @Override
     public QueryLimitExecutor limit(Integer offset, Integer limit) {
-        // YUFEI_TODO Auto-generated method stub
+
         return null;
     }
 
@@ -79,7 +79,7 @@ public class UserQueryWith implements
      */
     @Override
     public QueryLimitExecutor limit(Page page) {
-        // YUFEI_TODO Auto-generated method stub
+
         return null;
     }
 
@@ -89,7 +89,7 @@ public class UserQueryWith implements
     @Override
     public UserQueryRepositoryConditionGroupExpression where(
             Consumer<UserQueryRepositoryConditionGroupExpression> consumer) {
-        // YUFEI_TODO Auto-generated method stub
+
         return null;
     }
 
@@ -98,7 +98,7 @@ public class UserQueryWith implements
      */
     @Override
     public UserQueryWithOn join(String repositoryName) {
-        // YUFEI_TODO Auto-generated method stub
+
         return null;
     }
 

@@ -20,7 +20,7 @@ import cn.featherfly.hammer.expression.condition.LogicExpression;
 public interface EntityEqualsExpressionBase<E, C extends ConditionExpression, L extends LogicExpression<C, L>>
         extends ConditionExpression {
 
-    // TODO 和 <R> L eq(Function<Tuple2<Entities<E, C, L>, Entities<E2, C, L>>, L> entities)冲突了
+    // 和 <R> L eq(Consumer<Tuple2<EqualsEntityExpression<E>, EqualsEntityExpression<E2>>> equalsEntityExpressions)冲突了
     //    /**
     //     * equals. 等于.
     //     *

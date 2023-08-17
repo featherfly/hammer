@@ -39,5 +39,5 @@
 //        FS extends EntityQuerySortExpression8<E, R1, R2, R3, R4, R5, R6, R7, Tuple2<E, R7>>>
 //        //        extends EntityQueryRelationExpression7<E, R1, R2, R3, R4, R5, R6, R7, C, L, R>, EntityQueryRelate<QR> {
 //        extends EntityQueryExpression8<E, R1, R2, R3, R4, R5, R6, R7, C, L, S, E>, EntityQueryRelate<F> {
-//    // TODO 加入join方法
+//    // 目前就实现5次关联（join）
 //}

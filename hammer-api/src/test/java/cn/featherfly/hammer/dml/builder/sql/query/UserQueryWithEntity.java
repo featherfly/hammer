@@ -17,15 +17,15 @@ import cn.featherfly.hammer.expression.query.QueryRelateEntityExpression;
  *
  * @author zhongj
  */
-public class UserQueryWithEntity implements
-        QueryRelateEntityExpression<UserQueryWith, UserQueryWithOn, UserQueryWithEntity, UserQueryRepositoryConditionGroupExpression, UserQueryRepositoryConditionGroupExpression> {
+public class UserQueryWithEntity implements QueryRelateEntityExpression<UserQueryWith, UserQueryWithOn,
+        UserQueryWithEntity, UserQueryRepositoryConditionGroupExpression, UserQueryRepositoryConditionGroupExpression> {
 
     /**
      * {@inheritDoc}
      */
     @Override
     public UserQueryRepositoryConditionGroupExpression where() {
-        // YUFEI_TODO Auto-generated method stub
+
         return null;
     }
 
@@ -34,7 +34,7 @@ public class UserQueryWithEntity implements
      */
     @Override
     public UserQueryWith fetch() {
-        // YUFEI_TODO Auto-generated method stub
+
         return null;
     }
 
@@ -43,7 +43,7 @@ public class UserQueryWithEntity implements
      */
     @Override
     public UserQueryWithEntity fetch(String propertyName) {
-        // YUFEI_TODO Auto-generated method stub
+
         return null;
     }
 
@@ -52,7 +52,7 @@ public class UserQueryWithEntity implements
      */
     @Override
     public UserQueryWithEntity fetch(String... propertyNames) {
-        // YUFEI_TODO Auto-generated method stub
+
         return null;
     }
 
@@ -61,7 +61,7 @@ public class UserQueryWithEntity implements
      */
     @Override
     public <T, R> UserQueryWithEntity fetch(SerializableFunction<T, R> propertyName) {
-        // YUFEI_TODO Auto-generated method stub
+
         return null;
     }
 
@@ -71,7 +71,7 @@ public class UserQueryWithEntity implements
     @Override
     public <T,
             R> UserQueryWithEntity fetch(@SuppressWarnings("unchecked") SerializableFunction<T, R>... propertyNames) {
-        // YUFEI_TODO Auto-generated method stub
+
         return null;
     }
 
@@ -80,7 +80,7 @@ public class UserQueryWithEntity implements
      */
     @Override
     public UserQueryWithEntity fetch(Collection<String> propertyNames) {
-        // YUFEI_TODO Auto-generated method stub
+
         return null;
     }
 
@@ -89,7 +89,7 @@ public class UserQueryWithEntity implements
      */
     @Override
     public List<Map<String, Object>> list() {
-        // YUFEI_TODO Auto-generated method stub
+
         return null;
     }
 
@@ -98,7 +98,7 @@ public class UserQueryWithEntity implements
      */
     @Override
     public <E> List<E> list(Class<E> type) {
-        // YUFEI_TODO Auto-generated method stub
+
         return null;
     }
 
@@ -107,7 +107,7 @@ public class UserQueryWithEntity implements
      */
     @Override
     public <E> List<E> list(RowMapper<E> rowMapper) {
-        // YUFEI_TODO Auto-generated method stub
+
         return null;
     }
 
@@ -116,7 +116,7 @@ public class UserQueryWithEntity implements
      */
     @Override
     public QueryLimitExecutor limit(Integer limit) {
-        // YUFEI_TODO Auto-generated method stub
+
         return null;
     }
 
@@ -125,7 +125,7 @@ public class UserQueryWithEntity implements
      */
     @Override
     public QueryLimitExecutor limit(Integer offset, Integer limit) {
-        // YUFEI_TODO Auto-generated method stub
+
         return null;
     }
 
@@ -134,7 +134,7 @@ public class UserQueryWithEntity implements
      */
     @Override
     public QueryLimitExecutor limit(Page page) {
-        // YUFEI_TODO Auto-generated method stub
+
         return null;
     }
 
@@ -144,7 +144,7 @@ public class UserQueryWithEntity implements
     @Override
     public UserQueryRepositoryConditionGroupExpression where(
             Consumer<UserQueryRepositoryConditionGroupExpression> consumer) {
-        // YUFEI_TODO Auto-generated method stub
+
         return null;
     }
 
@@ -153,7 +153,7 @@ public class UserQueryWithEntity implements
      */
     @Override
     public UserQueryWithOn join(String repositoryName) {
-        // YUFEI_TODO Auto-generated method stub
+
         return null;
     }
 

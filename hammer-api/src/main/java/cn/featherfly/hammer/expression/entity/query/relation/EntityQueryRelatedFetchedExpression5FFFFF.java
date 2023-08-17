@@ -28,5 +28,5 @@ public interface EntityQueryRelatedFetchedExpression5FFFFF<E, R1, R2, R3, R4, R5
                 Tuple6<E, R1, R2, R3, R4, R5>>,
         S extends EntityQuerySortExpression6<E, R1, R2, R3, R4, R5, Tuple6<E, R1, R2, R3, R4, R5>>>
         extends EntityQueryExpression6<E, R1, R2, R3, R4, R5, C, L, S, Tuple6<E, R1, R2, R3, R4, R5>> {
-    // TODO 加入join方法
+    // 目前就实现5次关联（join）
 }

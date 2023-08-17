@@ -54,10 +54,6 @@ public class EntitySqlQueryValueExpression<E> extends
      */
     @Override
     protected EntitySqlQueryValueExpression<E> createGroup(EntityQueryValueConditionGroupLogic<E> parent) {
-        //      IMPLSOON 后续来实现，先让编译通过
-        //        if (selectBuilder != null) {
-        //            selectBuilder.setTableAlias(queryAlias);
-        //        }
         return new EntitySqlQueryValueExpression<>(parent, factory, sqlPageFactory, entityRelation);
     }
 

@@ -24,7 +24,6 @@ import cn.featherfly.hammer.expression.entity.condition.sw.EntityStartWithExpres
  * @param <C> the generic type
  * @param <L> the generic type
  */
-// TODO 未实现
 public interface EntityConditionsExpression5<E, E2, E3, E4, E5,
         C extends EntityConditionsExpression5<E, E2, E3, E4, E5, C, L>, L extends LogicExpression<C, L>>
         extends EntityContainsExpression5<E, E2, E3, E4, E5, C, L>, EntityEndWithExpression5<E, E2, E3, E4, E5, C, L>,
