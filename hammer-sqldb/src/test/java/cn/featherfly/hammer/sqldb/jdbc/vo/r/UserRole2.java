@@ -7,9 +7,7 @@ import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 /**
- * <p>
- * User
- * </p>
+ * The Class UserRole2.
  *
  * @author zhongj
  */
@@ -30,8 +28,8 @@ public class UserRole2 {
     private String descp2;
 
     /**
-     * 返回descp2
-     * 
+     * 返回descp2.
+     *
      * @return descp2
      */
     public String getDescp2() {
@@ -39,8 +37,8 @@ public class UserRole2 {
     }
 
     /**
-     * 设置descp2
-     * 
+     * 设置descp2.
+     *
      * @param descp2 descp2
      */
     public void setDescp2(String descp2) {
@@ -48,7 +46,7 @@ public class UserRole2 {
     }
 
     /**
-     * 返回user
+     * 返回user.
      *
      * @return user
      */
@@ -57,7 +55,7 @@ public class UserRole2 {
     }
 
     /**
-     * 设置user
+     * 设置user.
      *
      * @param user user
      */
@@ -66,7 +64,7 @@ public class UserRole2 {
     }
 
     /**
-     * 返回role
+     * 返回role.
      *
      * @return role
      */
@@ -75,7 +73,7 @@ public class UserRole2 {
     }
 
     /**
-     * 设置role
+     * 设置role.
      *
      * @param role role
      */
@@ -84,7 +82,7 @@ public class UserRole2 {
     }
 
     /**
-     * 返回descp
+     * 返回descp.
      *
      * @return descp
      */
@@ -93,7 +91,7 @@ public class UserRole2 {
     }
 
     /**
-     * 设置descp
+     * 设置descp.
      *
      * @param descp descp
      */

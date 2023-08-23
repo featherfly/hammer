@@ -101,7 +101,7 @@ public class UpsertOperate<T> extends AbstractBatchExecuteOperate<T> {
             @Override
             public void acceptKey(Serializable key, int row) {
                 if (row < entities.size()) {
-                    // YUFEI_TODO 需要更多测试各种情况是否正确
+                    // YUFEI_TEST 需要更多测试各种情况是否正确
                     if (BeanUtils.getProperty(entities.get(row), pks.get(0).getPropertyName()) == null) {
                         BeanUtils.setProperty(entities.get(row), pks.get(0).getPropertyName(), key);
                     }
@@ -157,7 +157,7 @@ public class UpsertOperate<T> extends AbstractBatchExecuteOperate<T> {
             return jdbc.update(sql, new GeneratedKeyHolder<Serializable>() {
                 @Override
                 public void acceptKey(Serializable key, int row) {
-                    // YUFEI_TODO 需要更多测试各种情况是否正确
+                    // YUFEI_TEST 需要更多测试各种情况是否正确
                     if (BeanUtils.getProperty(entity, pks.get(0).getPropertyName()) == null) {
                         BeanUtils.setProperty(entity, pks.get(0).getPropertyName(), key);
                     }
@@ -195,9 +195,9 @@ public class UpsertOperate<T> extends AbstractBatchExecuteOperate<T> {
             results = jdbc.updateBatch(sql, new GeneratedKeyHolder<Serializable>() {
                 @Override
                 public void acceptKey(Serializable key, int row) {
-                    // YUFEI_TODO 需要更多测试各种情况是否正确
+                    // YUFEI_TEST 需要更多测试各种情况是否正确
                     if (row < entities.size()) {
-                        // YUFEI_TODO 需要更多测试各种情况是否正确
+                        // YUFEI_TEST 需要更多测试各种情况是否正确
                         if (BeanUtils.getProperty(entities.get(row), pks.get(0).getPropertyName()) == null) {
                             BeanUtils.setProperty(entities.get(row), pks.get(0).getPropertyName(), key);
                         }

@@ -25,8 +25,8 @@ public abstract class AbstractSqlExecutableUpdate<U extends AbstractSqlExecutabl
     /**
      * Instantiates a new sql executable update.
      *
-     * @param tableName    tableName
-     * @param jdbc         jdbc
+     * @param tableName      tableName
+     * @param jdbc           jdbc
      * @param ignoreStrategy the ignore strategy
      */
     public AbstractSqlExecutableUpdate(String tableName, Jdbc jdbc, Predicate<?> ignoreStrategy) {
@@ -36,9 +36,9 @@ public abstract class AbstractSqlExecutableUpdate<U extends AbstractSqlExecutabl
     /**
      * Instantiates a new sql executable update.
      *
-     * @param tableName    tableName
-     * @param tableAlias   the table alias
-     * @param jdbc         jdbc
+     * @param tableName      tableName
+     * @param tableAlias     the table alias
+     * @param jdbc           jdbc
      * @param ignoreStrategy the ignore strategy
      */
     public AbstractSqlExecutableUpdate(String tableName, String tableAlias, Jdbc jdbc, Predicate<?> ignoreStrategy) {
@@ -54,7 +54,7 @@ public abstract class AbstractSqlExecutableUpdate<U extends AbstractSqlExecutabl
 
     @SuppressWarnings("unchecked")
     protected U _set(String name, Object value) {
-        // YUFEI_TODO 后续完善了基础类型FieldValueOperator后，需要删除此方法
+        // ENHANCE 后续完善了基础类型FieldValueOperator后，需要删除此方法
         builder.setValue(name, value);
         return (U) this;
     }
@@ -67,7 +67,7 @@ public abstract class AbstractSqlExecutableUpdate<U extends AbstractSqlExecutabl
 
     @SuppressWarnings("unchecked")
     protected <N extends Number> U _increase(String name, N value) {
-        // YUFEI_TODO 后续完善了基础类型FieldValueOperator后，需要删除此方法
+        // ENHANCE 后续完善了基础类型FieldValueOperator后，需要删除此方法
         builder.setValue(name, value, SetType.INCR);
         return (U) this;
     }

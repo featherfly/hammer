@@ -1,4 +1,4 @@
-package cn.featherfly.hammer.sqldb.jdbc.vo.r.order;
+package cn.featherfly.hammer.sqldb.jdbc.vo.r;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -12,11 +12,7 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 
-import cn.featherfly.hammer.sqldb.jdbc.vo.r.User;
-import cn.featherfly.hammer.sqldb.jdbc.vo.r.User1;
-import cn.featherfly.hammer.sqldb.jdbc.vo.r.User2;
-import cn.featherfly.hammer.sqldb.jdbc.vo.r.User3;
-import cn.featherfly.hammer.sqldb.jdbc.vo.r.UserInfo;
+import cn.featherfly.hammer.sqldb.jdbc.vo.r.order.OrderInfo;
 
 /**
  * The type Order.
@@ -24,7 +20,7 @@ import cn.featherfly.hammer.sqldb.jdbc.vo.r.UserInfo;
  * @author zhongj
  */
 @Table(name = "order")
-public class Order2 {
+public class Order {
 
     @Id
     private Long id;
@@ -52,7 +48,7 @@ public class Order2 {
 
     @ManyToOne
     @Column(name = "parent_id")
-    private Order2 parent;
+    private Order parent;
 
     @ManyToOne
     @Column(name = "create_user")
@@ -348,7 +344,7 @@ public class Order2 {
      *
      * @return parent
      */
-    public Order2 getParent() {
+    public Order getParent() {
         return parent;
     }
 
@@ -357,7 +353,7 @@ public class Order2 {
      *
      * @param parent parent
      */
-    public void setParent(Order2 parent) {
+    public void setParent(Order parent) {
         this.parent = parent;
     }
 

@@ -11,6 +11,7 @@ import java.util.stream.Collectors;
 
 import cn.featherfly.common.db.builder.dml.basic.SqlSelectJoinOnBasicBuilder;
 import cn.featherfly.common.db.dialect.Join;
+import cn.featherfly.common.exception.NotImplementedException;
 import cn.featherfly.common.lang.AssertIllegalArgument;
 import cn.featherfly.common.lang.LambdaUtils;
 import cn.featherfly.common.lang.function.SerializableFunction;
@@ -248,7 +249,7 @@ public class SqlQueryWith implements QueryWith, SqlQueryWithOn, SqlQueryWithEnti
     @Override
     public RepositoryQueryConditionGroupExpression where() {
         // IMPLSOON 后续来实现，先让编译通过
-        return null;
+        throw new NotImplementedException();
         //        return new RepositorySqlQueryExpression(sqlQueryEntityProperties.jdbc, aliasManager,
         //                sqlQueryEntityProperties.selectBuilder, sqlPageFactory, ignoreStrategy);
     }
@@ -259,7 +260,7 @@ public class SqlQueryWith implements QueryWith, SqlQueryWithOn, SqlQueryWithEnti
     @Override
     public RepositoryQueryConditionGroupExpression where(Consumer<RepositoryQueryConditionGroupExpression> consumer) {
         // IMPLSOON 后续来实现，先让编译通过
-        return null;
+        throw new NotImplementedException();
         //        RepositorySqlQueryExpression repositorySqlQueryExpression = new RepositorySqlQueryExpression(
         //                sqlQueryEntityProperties.jdbc, aliasManager, sqlQueryEntityProperties.selectBuilder, sqlPageFactory,
         //                ignoreStrategy);

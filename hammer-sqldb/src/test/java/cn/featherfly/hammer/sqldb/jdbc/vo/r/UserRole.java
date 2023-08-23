@@ -5,9 +5,7 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 
 /**
- * <p>
- * User
- * </p>
+ * The Class UserRole.
  *
  * @author zhongj
  */
@@ -24,7 +22,7 @@ public class UserRole {
     private String descp2;
 
     /**
-     * 返回userId
+     * 返回userId.
      *
      * @return userId
      */
@@ -33,7 +31,7 @@ public class UserRole {
     }
 
     /**
-     * 设置userId
+     * 设置userId.
      *
      * @param userId userId
      */
@@ -42,7 +40,7 @@ public class UserRole {
     }
 
     /**
-     * 返回roleId
+     * 返回roleId.
      *
      * @return roleId
      */
@@ -51,7 +49,7 @@ public class UserRole {
     }
 
     /**
-     * 设置roleId
+     * 设置roleId.
      *
      * @param roleId roleId
      */
@@ -60,7 +58,7 @@ public class UserRole {
     }
 
     /**
-     * 返回descp
+     * 返回descp.
      *
      * @return descp
      */
@@ -69,7 +67,7 @@ public class UserRole {
     }
 
     /**
-     * 设置descp
+     * 设置descp.
      *
      * @param descp descp
      */
@@ -78,8 +76,8 @@ public class UserRole {
     }
 
     /**
-     * 返回descp2
-     * 
+     * 返回descp2.
+     *
      * @return descp2
      */
     public String getDescp2() {
@@ -87,8 +85,8 @@ public class UserRole {
     }
 
     /**
-     * 设置descp2
-     * 
+     * 设置descp2.
+     *
      * @param descp2 descp2
      */
     public void setDescp2(String descp2) {

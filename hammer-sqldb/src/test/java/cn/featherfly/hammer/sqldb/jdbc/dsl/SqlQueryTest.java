@@ -7,15 +7,21 @@ import static org.testng.Assert.assertTrue;
 import java.util.List;
 import java.util.Map;
 
+import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
 
+import cn.featherfly.common.db.Table;
+import cn.featherfly.common.db.mapping.JdbcMappingException;
 import cn.featherfly.common.lang.Strings;
+import cn.featherfly.common.repository.AliasRepository;
+import cn.featherfly.common.repository.Repository;
 import cn.featherfly.common.repository.SimpleAliasRepository;
 import cn.featherfly.common.repository.SimpleRepository;
 import cn.featherfly.common.repository.builder.BuilderException;
 import cn.featherfly.common.structure.page.PaginationResults;
 import cn.featherfly.hammer.dsl.query.QueryConditionGroupExpression;
 import cn.featherfly.hammer.dsl.query.QueryConditionGroupLogicExpression;
+import cn.featherfly.hammer.sqldb.SqldbHammerException;
 import cn.featherfly.hammer.sqldb.jdbc.JdbcTestBase;
 import cn.featherfly.hammer.sqldb.jdbc.dsl.query.SqlQuery;
 import cn.featherfly.hammer.sqldb.jdbc.vo.r.Role;
@@ -28,9 +34,15 @@ import cn.featherfly.hammer.sqldb.jdbc.vo.r.User;
  */
 public class SqlQueryTest extends JdbcTestBase {
 
+    SqlQuery query;
+
+    @BeforeClass
+    void beforeClass() {
+        query = new SqlQuery(jdbc, mappingFactory, sqlPageFactory);
+    }
+
     @Test
     void testNull() {
-        SqlQuery query = new SqlQuery(jdbc, metadata, sqlPageFactory);
         List<Map<String, Object>> list = query.find("user").where().eq("a", null).and().eq("b", null).and()
                 .sw("username", "yufei").and().eq("d", null).list();
         for (Map<String, Object> map : list) {
@@ -42,7 +54,6 @@ public class SqlQueryTest extends JdbcTestBase {
 
     @Test
     void testFunction() {
-        SqlQuery query = new SqlQuery(jdbc, metadata, sqlPageFactory);
 
         Object result = null;
 
@@ -86,7 +97,7 @@ public class SqlQueryTest extends JdbcTestBase {
 
     @Test
     void test0() {
-        SqlQuery query = new SqlQuery(jdbc, metadata, sqlPageFactory);
+
         List<Map<String, Object>> list = query.find("user").property("username", "password", "age").sort().asc("age")
                 .list();
         int age = Integer.MIN_VALUE;
@@ -118,7 +129,7 @@ public class SqlQueryTest extends JdbcTestBase {
 
     @Test
     void test1() {
-        SqlQuery query = new SqlQuery(jdbc, metadata, sqlPageFactory);
+
         query.find("user").list(User.class);
         query.find("user").property("username", "password", "age").list(User.class);
         query.find("user").property("username", "password", "age").where().eq("username", "yufei").and()
@@ -131,29 +142,34 @@ public class SqlQueryTest extends JdbcTestBase {
 
     @Test
     void test2() {
-        SqlQuery query = new SqlQuery(jdbc, metadata, sqlPageFactory);
+
         query.find("user").property("username", "password", "age").where().eq("username", "yufei").and()
                 .eq("password", "123456").and().group().gt("age", 18).and().lt("age", 60).list(User.class);
     }
 
     @Test
     void test3() {
-        SqlQuery query = new SqlQuery(jdbc, metadata, sqlPageFactory);
+
         query.find(new SimpleAliasRepository("user", "u")).where().eq("username", "yufei").and()
                 .eq("password", "123456").and().group().gt("age", 18).and().lt("age", 60).list(User.class);
     }
 
     @Test
     void test4() {
-        SqlQuery query = new SqlQuery(jdbc, metadata, sqlPageFactory);
+
         query.find(new SimpleAliasRepository("user", "u")).property("username", "password", "age").where()
                 .eq("username", "yufei").and().eq("password", "123456").and().group().gt("age", 18).and().lt("age", 60)
                 .list(User.class);
+
+        Repository repository = new SimpleAliasRepository("user", "u");
+
+        query.find(repository).property("username", "password", "age").where().eq("username", "yufei").and()
+                .eq("password", "123456").and().group().gt("age", 18).and().lt("age", 60).list(User.class);
     }
 
     @Test(expectedExceptions = BuilderException.class)
     void testConditionException() {
-        SqlQuery query = new SqlQuery(jdbc, metadata, sqlPageFactory);
+
         QueryConditionGroupExpression condition = query.find(new SimpleAliasRepository("user", "u")).where();
         condition.eq("id", 1);
         condition.eq("id", 2).list();
@@ -161,7 +177,7 @@ public class SqlQueryTest extends JdbcTestBase {
 
     @Test(expectedExceptions = BuilderException.class)
     void testConditionException2() {
-        SqlQuery query = new SqlQuery(jdbc, metadata, sqlPageFactory);
+
         QueryConditionGroupExpression condition = query.find(new SimpleAliasRepository("user", "u")).where();
         QueryConditionGroupLogicExpression logic = condition.eq("id", 1);
         logic.and();
@@ -170,7 +186,7 @@ public class SqlQueryTest extends JdbcTestBase {
 
     @Test
     void testCount() {
-        SqlQuery query = new SqlQuery(jdbc, mappingFactory, sqlPageFactory);
+
         Long number = query.find("user").count();
         System.out.println("count:" + number);
         assertTrue(number > 0);
@@ -178,7 +194,7 @@ public class SqlQueryTest extends JdbcTestBase {
 
     @Test
     void testLimit() {
-        SqlQuery query = new SqlQuery(jdbc, metadata, sqlPageFactory);
+
         int pageSize = 3;
         Integer total = 10;
         List<Role> roleList = query.find(new SimpleRepository("role")).where().le("id", total).limit(2, pageSize)
@@ -211,9 +227,7 @@ public class SqlQueryTest extends JdbcTestBase {
 
     @Test
     void testJoin() {
-        SqlQuery query = new SqlQuery(jdbc, mappingFactory, sqlPageFactory);
 
-        // YUFEI_TODO 修复泛型不正确的问题
         // query.find("user") 返回 SqlQueryEntity
         // query.find("user").property("username") 返回 QueryEntityProperties，应该返回SqlQueryEntity
         query.find("user").property("username", "password", "age").join("user_info").on("user_id").list();
@@ -252,10 +266,11 @@ public class SqlQueryTest extends JdbcTestBase {
 
     @Test
     void testJoinCondition() {
-        SqlQuery query = new SqlQuery(jdbc, mappingFactory, sqlPageFactory);
 
-        List<Map<String, Object>> list = query.find("user").property("username", "password", "age").join("user_info")
-                .on("user_id").where().eq("user_info", "name", "羽飞").list();
+        List<Map<String, Object>> list = query.find("user").property("username", "password", "age") //
+                .join("user_info").on("user_id") //
+                .where().eq("user_info", "name", "羽飞") //
+                .list();
         assertEquals(list.size(), 1);
 
         list = query.find("user").property("username", "password", "age").join("user_info").on("user_id").where()
@@ -269,5 +284,36 @@ public class SqlQueryTest extends JdbcTestBase {
         list = query.find("user").property("username", "password", "age").join("user_info").on("user_id").where()
                 .property(1, "name").eq("羽飞").list();
         assertEquals(list.size(), 1);
+    }
+
+    @Test(expectedExceptions = IllegalArgumentException.class)
+    void testQueryNull() {
+        query.find((Repository) null);
+    }
+
+    @Test(expectedExceptions = IllegalArgumentException.class)
+    void testQueryNull2() {
+        query.find((AliasRepository) null);
+    }
+
+    @Test(expectedExceptions = IllegalArgumentException.class)
+    void testQueryNull3() {
+        query.find((Table) null);
+    }
+
+    @Test(expectedExceptions = IllegalArgumentException.class)
+    void testQueryNull4() {
+        query.find((String) null);
+    }
+
+    @Test(expectedExceptions = SqldbHammerException.class)
+    void testQueryClassMappingFactorNull() {
+        SqlQuery query = new SqlQuery(jdbc, metadata, sqlPageFactory);
+        query.find(User.class);
+    }
+
+    @Test(expectedExceptions = JdbcMappingException.class)
+    void testQueryNotEntityNull() {
+        query.find(String.class);
     }
 }

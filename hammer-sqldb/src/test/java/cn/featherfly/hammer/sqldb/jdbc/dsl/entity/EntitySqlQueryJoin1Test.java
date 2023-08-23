@@ -8,6 +8,7 @@ import org.testng.annotations.Test;
 
 import com.speedment.common.tuple.Tuple2;
 
+import cn.featherfly.common.repository.IgnoreStrategy;
 import cn.featherfly.hammer.sqldb.jdbc.vo.s.Order2;
 import cn.featherfly.hammer.sqldb.jdbc.vo.s.User2;
 
@@ -19,9 +20,20 @@ import cn.featherfly.hammer.sqldb.jdbc.vo.s.User2;
 public class EntitySqlQueryJoin1Test extends AbstractEntitySqlQueryJoinTest {
 
     @Test
-    void testJoin_ER_TYPE() {
-        Order2 order = query.find(Order2.class).join(User2.class).on(Order2::getCreateUser).where()
-                .eq(Order2::getId, oid1).single();
+    void testJoin_E_R1_on1() {
+        Order2 order = query.find(Order2.class) //
+                .join(User2.class).on(Order2::getCreateUser) //
+                .where() //
+                .eq(Order2::getId, oid1) //
+                .single();
+        assertNotNull(order);
+        assertEquals(order.getId(), oid1);
+
+        order = query.find(Order2.class) //
+                .join(User2.class).on(Order2::getCreateUser) //
+                .where(c -> c.setIgnoreStrategy(IgnoreStrategy.EMPTY)) //
+                .eq(Order2::getId, oid1) //
+                .single();
         assertNotNull(order);
         assertEquals(order.getId(), oid1);
 
@@ -33,7 +45,7 @@ public class EntitySqlQueryJoin1Test extends AbstractEntitySqlQueryJoinTest {
     }
 
     @Test
-    void testJoin_ER_RJ() {
+    void testJoin_E_R1_on3() {
         Order2 order = query.find(Order2.class).join(User2.class).on(Order2::getCreateUser, User2::getId).where()
                 .eq(Order2::getId, oid1).single();
         assertNotNull(order);
@@ -54,7 +66,7 @@ public class EntitySqlQueryJoin1Test extends AbstractEntitySqlQueryJoinTest {
     }
 
     @Test
-    void testJoin_RJ() {
+    void testJoin_E_R1_on2() {
         User2 user = query.find(User2.class).join(Order2.class).on(Order2::getCreateUser).where()
                 .eq2(Order2::getId, oid1).single();
         assertNotNull(user);
