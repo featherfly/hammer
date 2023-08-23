@@ -1,45 +1,28 @@
 
-package cn.featherfly.hammer.sqldb.jdbc.vo.r;
+package cn.featherfly.hammer.sqldb.jdbc.vo.s;
 
 import javax.persistence.Column;
 import javax.persistence.Id;
-import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 /**
- * <p>
- * User
- * </p>
+ * The Class Tree.
  *
  * @author zhongj
  */
-@Table(name = "tree")
+@Table
 public class Tree2 {
 
     @Id
     private Integer id;
 
+    @Column
     private String name;
 
-    /**
-     */
-    public Tree2() {
-    }
+    private String parentId;
 
     /**
-     * @param id
-     */
-    public Tree2(Integer id) {
-        super();
-        this.id = id;
-    }
-
-    @Column(name = "parent_id")
-    @ManyToOne
-    private Tree2 parent;
-
-    /**
-     * 返回id
+     * 返回id.
      *
      * @return id
      */
@@ -48,7 +31,7 @@ public class Tree2 {
     }
 
     /**
-     * 设置id
+     * 设置id.
      *
      * @param id id
      */
@@ -57,7 +40,7 @@ public class Tree2 {
     }
 
     /**
-     * 返回name
+     * 返回name.
      *
      * @return name
      */
@@ -66,7 +49,7 @@ public class Tree2 {
     }
 
     /**
-     * 设置name
+     * 设置name.
      *
      * @param name name
      */
@@ -75,21 +58,21 @@ public class Tree2 {
     }
 
     /**
-     * 返回parent
+     * 返回parentId.
      *
-     * @return parent
+     * @return parentId
      */
-    public Tree2 getParent() {
-        return parent;
+    public String getParentId() {
+        return parentId;
     }
 
     /**
-     * 设置parent
+     * 设置parentId.
      *
-     * @param parent parent
+     * @param parentId parentId
      */
-    public void setParent(Tree2 parent) {
-        this.parent = parent;
+    public void setParentId(String parentId) {
+        this.parentId = parentId;
     }
 
     /**
@@ -97,7 +80,6 @@ public class Tree2 {
      */
     @Override
     public String toString() {
-        return "Tree2 [id=" + id + ", name=" + name + ", parent=" + parent + "]";
+        return "Tree [id=" + id + ", name=" + name + ", parentId=" + parentId + "]";
     }
-
 }

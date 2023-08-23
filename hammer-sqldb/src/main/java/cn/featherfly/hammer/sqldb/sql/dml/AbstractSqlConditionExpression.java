@@ -20,6 +20,7 @@ import cn.featherfly.common.db.mapping.ClassMappingUtils;
 import cn.featherfly.common.db.mapping.JdbcClassMapping;
 import cn.featherfly.common.db.mapping.JdbcMappingFactory;
 import cn.featherfly.common.db.mapping.JdbcPropertyMapping;
+import cn.featherfly.common.exception.NotImplementedException;
 import cn.featherfly.common.exception.UnsupportedException;
 import cn.featherfly.common.lang.LambdaUtils;
 import cn.featherfly.common.lang.LambdaUtils.SerializableSupplierLambdaInfo;
@@ -309,10 +310,10 @@ public abstract class AbstractSqlConditionExpression<C extends ConditionExpressi
             }
         } else if (pm.getMode() == Mode.ONE_TO_MANY) {
             // FIXME 未实现
-            throw new UnsupportedException();
+            throw new NotImplementedException();
         } else if (pm.getMode() == Mode.SINGLE) {
             // FIXME 未实现
-            throw new UnsupportedException();
+            throw new NotImplementedException();
         } else if (pm.getMode() == Mode.MANY_TO_ONE) {
             JdbcPropertyMapping spm = pm.getPropertyMapping(pn);
             if (spm != null) {
@@ -347,7 +348,7 @@ public abstract class AbstractSqlConditionExpression<C extends ConditionExpressi
      */
     protected <O, T, R> Tuple3<String, String, Object> conditionResult(SerializableSupplier<T> repository,
             SerializableFunction<T, R> property, JdbcClassMapping<O> classMapping, JdbcMappingFactory factory) {
-        // IMPLSOON 这里为测试
+        // IMPLSOON 这里未测试
         SerializableSupplierLambdaInfo<T> repositoryInfo = LambdaUtils.getSerializableSupplierLambdaInfo(repository);
         SerializedLambdaInfo propertyInfo = LambdaUtils.getLambdaInfo(property);
         String pn = propertyInfo.getPropertyName();

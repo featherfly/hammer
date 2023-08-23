@@ -65,7 +65,7 @@ public class EntitySqlQueryRelation extends EntitySqlRelation<EntitySqlQueryRela
 
     public EntitySqlQueryRelation join(int sourceIndex, String propertyName, JdbcClassMapping<?> joinClassMapping) {
         if (joinClassMapping.getPrivaryKeyPropertyMappings().size() == 1) {
-            addFilterable(joinClassMapping);
+            addFilterable(joinClassMapping, propertyName, null);
             EntityRelationMapping<?> erm = getEntityRelationMapping(sourceIndex);
             EntityRelationMapping<?> jerm = getEntityRelationMapping(index - 1);
             SqlSelectJoinOnBasicBuilder selectJoinOnBasicBuilder = join0(erm.getTableAlias(),
@@ -86,7 +86,7 @@ public class EntitySqlQueryRelation extends EntitySqlRelation<EntitySqlQueryRela
 
     public EntitySqlQueryRelation join(int sourceIndex, String propertyName, JdbcClassMapping<?> joinClassMapping,
             String joinPropertyName) {
-        addFilterable(joinClassMapping);
+        addFilterable(joinClassMapping, propertyName, joinPropertyName);
         EntityRelationMapping<?> erm = getEntityRelationMapping(sourceIndex);
         EntityRelationMapping<?> jerm = getEntityRelationMapping(index - 1);
         SqlSelectJoinOnBasicBuilder selectJoinOnBasicBuilder = join0(erm.getTableAlias(),
@@ -124,6 +124,18 @@ public class EntitySqlQueryRelation extends EntitySqlRelation<EntitySqlQueryRela
             erm.selectJoinOnBasicBuilder.fetch();
         }
 
+        return this;
+    }
+
+    public EntitySqlQueryRelation fetchProperty(int index) {
+        AssertIllegalArgument.isGe(index, 0, "fetch entity index");
+        AssertIllegalArgument.isLt(index, entityFilterableMappingTuple.degree(), "fetch entity index");
+        EntityRelationMapping<?> erm = getEntityRelationMapping(index);
+
+        queryFetchAlias.add(erm.getTableAlias());
+        if (index > 0) {
+            erm.selectJoinOnBasicBuilder.fetch(erm.getJoinFromPropertyName());
+        }
         return this;
     }
 
@@ -177,7 +189,7 @@ public class EntitySqlQueryRelation extends EntitySqlRelation<EntitySqlQueryRela
     //    }
 
     public String buildSelectSql() {
-        return selectBuilder.setColumnAliasPrefix(isReturnTuple())
+        return selectBuilder.setColumnAliasPrefixTableAlias(isReturnTuple())
                 .build((tableName, tableAlias) -> queryFetchAlias.contains(tableAlias));
     }
 

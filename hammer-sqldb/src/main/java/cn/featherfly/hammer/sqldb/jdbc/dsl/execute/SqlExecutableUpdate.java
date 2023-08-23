@@ -42,8 +42,8 @@ public class SqlExecutableUpdate extends AbstractSqlExecutableUpdate<SqlExecutab
     /**
      * Instantiates a new sql executable update.
      *
-     * @param tableName    tableName
-     * @param jdbc         jdbc
+     * @param tableName      tableName
+     * @param jdbc           jdbc
      * @param ignoreStrategy the ignore strategy
      */
     public SqlExecutableUpdate(String tableName, Jdbc jdbc, Predicate<Object> ignoreStrategy) {
@@ -53,9 +53,9 @@ public class SqlExecutableUpdate extends AbstractSqlExecutableUpdate<SqlExecutab
     /**
      * Instantiates a new sql executable update.
      *
-     * @param tableName    tableName
-     * @param tableAlias   the table alias
-     * @param jdbc         jdbc
+     * @param tableName      tableName
+     * @param tableAlias     the table alias
+     * @param jdbc           jdbc
      * @param ignoreStrategy the ignore strategy
      */
     public SqlExecutableUpdate(String tableName, String tableAlias, Jdbc jdbc, Predicate<Object> ignoreStrategy) {
@@ -75,8 +75,8 @@ public class SqlExecutableUpdate extends AbstractSqlExecutableUpdate<SqlExecutab
     /**
      * Instantiates a new sql executable update.
      *
-     * @param repository   the repository
-     * @param jdbc         the jdbc
+     * @param repository     the repository
+     * @param jdbc           the jdbc
      * @param ignoreStrategy the ignore strategy
      */
     public SqlExecutableUpdate(Repository repository, Jdbc jdbc, Predicate<Object> ignoreStrategy) {
@@ -96,8 +96,8 @@ public class SqlExecutableUpdate extends AbstractSqlExecutableUpdate<SqlExecutab
     /**
      * Instantiates a new sql executable update.
      *
-     * @param repository   the repository
-     * @param jdbc         the jdbc
+     * @param repository     the repository
+     * @param jdbc           the jdbc
      * @param ignoreStrategy the ignore strategy
      */
     public SqlExecutableUpdate(AliasRepository repository, Jdbc jdbc, Predicate<Object> ignoreStrategy) {
@@ -109,7 +109,7 @@ public class SqlExecutableUpdate extends AbstractSqlExecutableUpdate<SqlExecutab
      */
     @Override
     public SqlExecutableUpdate set(String name, Object value) {
-        // YUFEI_TODO 后续使用FieldValueOperator，需要完善基础JavaTypeSqlTypeOperator类型
+        // ENHANCE 后续使用FieldValueOperator，需要完善基础JavaTypeSqlTypeOperator类型
         return _set(name, value);
     }
 
@@ -130,7 +130,7 @@ public class SqlExecutableUpdate extends AbstractSqlExecutableUpdate<SqlExecutab
      */
     @Override
     public <T, R> ExecutableUpdate set(SerializableFunction<T, R> name, R value) {
-        // YUFEI_TODO 后续使用FieldValueOperator，需要完善基础JavaTypeSqlTypeOperator类型
+        // ENHANCE 后续使用FieldValueOperator，需要完善基础JavaTypeSqlTypeOperator类型
         return _set(getPropertyName(name), value);
     }
 
@@ -151,7 +151,7 @@ public class SqlExecutableUpdate extends AbstractSqlExecutableUpdate<SqlExecutab
      */
     @Override
     public <R> ExecutableUpdate set(SerializableSupplier<R> property) {
-        // YUFEI_TODO 后续使用FieldValueOperator，需要完善基础JavaTypeSqlTypeOperator类型
+        // ENHANCE 后续使用FieldValueOperator，需要完善基础JavaTypeSqlTypeOperator类型
         return _set(getPropertyName(property), property.get());
     }
 
@@ -181,7 +181,7 @@ public class SqlExecutableUpdate extends AbstractSqlExecutableUpdate<SqlExecutab
      */
     @Override
     public <N extends Number> SqlExecutableUpdate increase(String name, N value) {
-        // YUFEI_TODO 后续使用FieldValueOperator，需要完善基础JavaTypeSqlTypeOperator类型
+        // ENHANCE 后续使用FieldValueOperator，需要完善基础JavaTypeSqlTypeOperator类型
         return _increase(name, value);
     }
 
@@ -215,7 +215,7 @@ public class SqlExecutableUpdate extends AbstractSqlExecutableUpdate<SqlExecutab
      */
     @Override
     public <T, R extends Number> ExecutableUpdate increase(SerializableFunction<T, R> name, R value) {
-        // YUFEI_TODO 后续使用FieldValueOperator，需要完善基础JavaTypeSqlTypeOperator类型
+        // ENHANCE 后续使用FieldValueOperator，需要完善基础JavaTypeSqlTypeOperator类型
         return _increase(getPropertyName(name), value);
     }
 
@@ -224,7 +224,7 @@ public class SqlExecutableUpdate extends AbstractSqlExecutableUpdate<SqlExecutab
      */
     @Override
     public <N extends Number> ExecutableUpdate increase(SerializableSupplier<N> property) {
-        // YUFEI_TODO 后续使用FieldValueOperator，需要完善基础JavaTypeSqlTypeOperator类型
+        // ENHANCE 后续使用FieldValueOperator，需要完善基础JavaTypeSqlTypeOperator类型
         return _increase(getPropertyName(property), property.get());
     }
 
@@ -284,8 +284,7 @@ public class SqlExecutableUpdate extends AbstractSqlExecutableUpdate<SqlExecutab
      * {@inheritDoc}
      */
     @Override
-    public ExecutableConditionGroup where(
-            Consumer<ConditionGroupConfig<ExecutableConditionGroup>> consumer) {
+    public ExecutableConditionGroup where(Consumer<ConditionGroupConfig<ExecutableConditionGroup>> consumer) {
         SqlUpdateExpression sqlUpdateExpression = new SqlUpdateExpression(jdbc, builder);
         if (consumer != null) {
             consumer.accept(sqlUpdateExpression);

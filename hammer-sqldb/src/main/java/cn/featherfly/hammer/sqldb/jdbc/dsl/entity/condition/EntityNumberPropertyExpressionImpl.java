@@ -1,10 +1,11 @@
 
-package cn.featherfly.hammer.expression.entity.condition.property;
+package cn.featherfly.hammer.sqldb.jdbc.dsl.entity.condition;
 
 import cn.featherfly.common.lang.function.SerializableFunction;
 import cn.featherfly.common.operator.QueryOperator.QueryPolicy;
+import cn.featherfly.hammer.expression.condition.ConditionExpression;
 import cn.featherfly.hammer.expression.condition.LogicExpression;
-import cn.featherfly.hammer.expression.entity.condition.EntityConditionsExpression;
+import cn.featherfly.hammer.expression.entity.condition.property.EntityNumberPropertyExpression;
 
 /**
  * The Class TypeNumberExpression.
@@ -15,26 +16,21 @@ import cn.featherfly.hammer.expression.entity.condition.EntityConditionsExpressi
  * @param <C> the generic type
  * @param <L> the generic type
  */
-public class EntityNumberPropertyExpressionImpl<E, N extends Number, C extends EntityConditionsExpression<E, C, L>,
-        L extends LogicExpression<C, L>> extends AbstractEntityPropertyExpression<E, N, SerializableFunction<E, N>, C, L>
+public class EntityNumberPropertyExpressionImpl<E, N extends Number, C extends ConditionExpression,
+        L extends LogicExpression<C, L>>
+        extends AbstractMulitiEntityPropertyExpression<E, N, SerializableFunction<E, N>, C, L>
         implements EntityNumberPropertyExpression<E, N, C, L> {
 
     /**
-     * Instantiates a new type number expression.
+     * Instantiates a new entity number property expression impl.
      *
+     * @param index      the index
      * @param name       the name
      * @param expression the expression
      */
-    public EntityNumberPropertyExpressionImpl(SerializableFunction<E, N> name, EntityConditionsExpression<E, C, L> expression) {
-        super(name, expression);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public L eq(N value) {
-        return expression.eq(name, value);
+    public EntityNumberPropertyExpressionImpl(int index, SerializableFunction<E, N> name,
+            AbstractMulitiEntityConditionExpression<C, L> expression) {
+        super(index, name, expression);
     }
 
     /**
@@ -49,16 +45,8 @@ public class EntityNumberPropertyExpressionImpl<E, N extends Number, C extends E
      * {@inheritDoc}
      */
     @Override
-    public L ne(N value) {
-        return expression.ne(name, value);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
     public L in(N value) {
-        return expression.in(name, value);
+        return expression.in0(index, name, value, expression.getIgnoreStrategy());
     }
 
     /**
@@ -66,7 +54,7 @@ public class EntityNumberPropertyExpressionImpl<E, N extends Number, C extends E
      */
     @Override
     public L nin(N value) {
-        return expression.nin(name, value);
+        return expression.nin0(index, name, value, expression.getIgnoreStrategy());
     }
 
     /**
@@ -74,7 +62,7 @@ public class EntityNumberPropertyExpressionImpl<E, N extends Number, C extends E
      */
     @Override
     public L le(N value) {
-        return expression.le(name, value);
+        return expression.le0(index, name, value, expression.getIgnoreStrategy());
     }
 
     /**
@@ -82,7 +70,7 @@ public class EntityNumberPropertyExpressionImpl<E, N extends Number, C extends E
      */
     @Override
     public L lt(N value) {
-        return expression.lt(name, value);
+        return expression.lt0(index, name, value, expression.getIgnoreStrategy());
     }
 
     /**
@@ -90,7 +78,7 @@ public class EntityNumberPropertyExpressionImpl<E, N extends Number, C extends E
      */
     @Override
     public L ge(N value) {
-        return expression.ge(name, value);
+        return expression.ge0(index, name, value, expression.getIgnoreStrategy());
     }
 
     /**
@@ -98,23 +86,7 @@ public class EntityNumberPropertyExpressionImpl<E, N extends Number, C extends E
      */
     @Override
     public L gt(N value) {
-        return expression.gt(name, value);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public L isn() {
-        return expression.isn(name);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public L inn() {
-        return expression.inn(name);
+        return expression.gt0(index, name, value, expression.getIgnoreStrategy());
     }
 
     /**
@@ -122,7 +94,7 @@ public class EntityNumberPropertyExpressionImpl<E, N extends Number, C extends E
      */
     @Override
     public L isn(Boolean value) {
-        return expression.isn(name, value);
+        return expression.isn0(index, name, value);
     }
 
     /**
@@ -130,7 +102,7 @@ public class EntityNumberPropertyExpressionImpl<E, N extends Number, C extends E
      */
     @Override
     public L inn(Boolean value) {
-        return expression.inn(name, value);
+        return expression.inn0(index, name, value);
     }
 
     /**
@@ -138,7 +110,7 @@ public class EntityNumberPropertyExpressionImpl<E, N extends Number, C extends E
      */
     @Override
     public L eq(N value, QueryPolicy queryPolicy) {
-        return expression.eq(name, value, queryPolicy);
+        return expression.eq0(index, name, value, queryPolicy, expression.getIgnoreStrategy());
     }
 
     /**
@@ -146,6 +118,6 @@ public class EntityNumberPropertyExpressionImpl<E, N extends Number, C extends E
      */
     @Override
     public L ne(N value, QueryPolicy queryPolicy) {
-        return expression.ne(name, value, queryPolicy);
+        return expression.ne0(index, name, value, queryPolicy, expression.getIgnoreStrategy());
     }
 }

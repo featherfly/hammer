@@ -8,11 +8,11 @@ import static org.testng.Assert.assertNull;
 import org.testng.annotations.Test;
 
 import cn.featherfly.hammer.sqldb.SqldbHammerException;
-import cn.featherfly.hammer.sqldb.jdbc.vo.r.Tree2;
+import cn.featherfly.hammer.sqldb.jdbc.vo.r.Order;
+import cn.featherfly.hammer.sqldb.jdbc.vo.r.Tree;
 import cn.featherfly.hammer.sqldb.jdbc.vo.r.User;
 import cn.featherfly.hammer.sqldb.jdbc.vo.r.UserInfo;
 import cn.featherfly.hammer.sqldb.jdbc.vo.r.UserRole2;
-import cn.featherfly.hammer.sqldb.jdbc.vo.r.order.Order2;
 
 /**
  * sql query type test.
@@ -44,8 +44,8 @@ public class SqlQueryTypeJoinRelationTest extends AbstractEntitySqlQueryJoinTest
 
     @Test
     void testJoin_ER1_ER2() {
-        order = query.find(Order2.class).join(Order2::getCreateUser).join(Order2::getUpdateUser).where()
-                .eq(Order2::getId, id1).single();
+        order = query.find(Order.class).join(Order::getCreateUser).join(Order::getUpdateUser).where()
+                .eq(Order::getId, id1).single();
 
         assertEquals(order.getId(), id1);
         assertNotNull(order.getCreateUser().getId());
@@ -60,8 +60,8 @@ public class SqlQueryTypeJoinRelationTest extends AbstractEntitySqlQueryJoinTest
         WHERE _order0.`id` = ?
          */
 
-        order = query.find(Order2.class).join(Order2::getCreateUser).fetch().join(Order2::getUpdateUser).where()
-                .eq(Order2::getId, id1).single();
+        order = query.find(Order.class).join(Order::getCreateUser).fetch().join(Order::getUpdateUser).where()
+                .eq(Order::getId, id1).single();
 
         assertEquals(order.getId(), id1);
         assertNotNull(order.getCreateUser().getId());
@@ -69,8 +69,8 @@ public class SqlQueryTypeJoinRelationTest extends AbstractEntitySqlQueryJoinTest
         assertNotNull(order.getUpdateUser().getId());
         assertNull(order.getUpdateUser().getUsername());
 
-        order = query.find(Order2.class).join(Order2::getCreateUser).fetch().join(Order2::getUpdateUser).fetch().where()
-                .eq(Order2::getId, id1).single();
+        order = query.find(Order.class).join(Order::getCreateUser).fetch().join(Order::getUpdateUser).fetch().where()
+                .eq(Order::getId, id1).single();
 
         assertEquals(order.getId(), id1);
         assertNotNull(order.getCreateUser().getId());
@@ -81,7 +81,7 @@ public class SqlQueryTypeJoinRelationTest extends AbstractEntitySqlQueryJoinTest
 
     @Test
     void testJoin_ER1_R2E() {
-        userInfo = query.find(UserInfo.class).join(UserInfo::getUser).join(Order2::getUserInoInfo).where()
+        userInfo = query.find(UserInfo.class).join(UserInfo::getUser).join(Order::getUserInoInfo).where()
                 .eq(UserInfo::getId, uid1).single();
         System.err.println(userInfo);
         assertEquals(userInfo.getId(), uid1);
@@ -99,13 +99,13 @@ public class SqlQueryTypeJoinRelationTest extends AbstractEntitySqlQueryJoinTest
 
     @Test
     void testJoin_EE() {
-        order = query.find(Order2.class).join(Order2::getParent).where().eq(Order2::getId, id2).single();
+        order = query.find(Order.class).join(Order::getParent).where().eq(Order::getId, id2).single();
         assertEquals(order.getId(), id2);
         assertNotNull(order.getParent().getId());
         assertEquals(order.getParent().getId(), id1);
         assertNull(order.getParent().getNo());
 
-        order = query.find(Order2.class).join(Order2::getParent).fetch().where().eq(Order2::getId, id2).single();
+        order = query.find(Order.class).join(Order::getParent).fetch().where().eq(Order::getId, id2).single();
         assertEquals(order.getId(), id2);
         assertNotNull(order.getParent().getId());
         assertEquals(order.getParent().getId(), id1);
@@ -129,8 +129,8 @@ public class SqlQueryTypeJoinRelationTest extends AbstractEntitySqlQueryJoinTest
         user = query.find(User.class).join(UserInfo::getUser).fetch().where().eq(User::getId, uid1).single();
         // 因为User没有映射UserInfo,所以fetch()方法无法把返回内容映射进User对象，抛出异常
 
-        //      userInfo = query.find(UserInfo.class).join(UserInfo::getUser).fetch().join1(UserRole2::getUser).fetch().where()
-        userInfo = query.find(UserInfo.class).join(UserInfo::getUser).fetch().join1(UserRole2::getUser).fetch().where()
+        //      userInfo = query.find(UserInfo.class).join(UserInfo::getUser).fetch().join2(UserRole2::getUser).fetch().where()
+        userInfo = query.find(UserInfo.class).join(UserInfo::getUser).fetch().join2(UserRole2::getUser).fetch().where()
                 .eq(UserInfo::getId, uid1).single();
         System.err.println(userInfo);
         assertEquals(userInfo.getId(), uid1);
@@ -140,7 +140,7 @@ public class SqlQueryTypeJoinRelationTest extends AbstractEntitySqlQueryJoinTest
 
     @Test
     void testJoin1_ER1_R2E() {
-        userInfo = query.find(UserInfo.class).join(UserInfo::getUser).join1(UserRole2::getUser).where()
+        userInfo = query.find(UserInfo.class).join(UserInfo::getUser).join2(UserRole2::getUser).where()
                 .eq(UserInfo::getId, uid1).single();
         System.err.println(userInfo);
         assertEquals(userInfo.getId(), uid1);
@@ -157,16 +157,16 @@ public class SqlQueryTypeJoinRelationTest extends AbstractEntitySqlQueryJoinTest
 
     @Test
     void testJoin1_ER1_R1R2() {
-        order = query.find(Order2.class).join(Order2::getUserInoInfo).join1(UserInfo::getUser).where()
-                .eq(Order2::getId, id1).single();
+        order = query.find(Order.class).join(Order::getUserInoInfo).join2(UserInfo::getUser).where()
+                .eq(Order::getId, id1).single();
 
         assertEquals(order.getId(), id1);
         assertNotNull(order.getUserInoInfo().getId());
         assertNull(order.getUserInoInfo().getName());
         assertNull(order.getUserInoInfo().getUser());
 
-        order = query.find(Order2.class).join(Order2::getUserInoInfo).fetch().join1(UserInfo::getUser).where()
-                .eq(Order2::getId, id1).single();
+        order = query.find(Order.class).join(Order::getUserInoInfo).fetch().join2(UserInfo::getUser).where()
+                .eq(Order::getId, id1).single();
 
         assertEquals(order.getId(), id1);
         assertNotNull(order.getUserInoInfo().getId());
@@ -174,8 +174,8 @@ public class SqlQueryTypeJoinRelationTest extends AbstractEntitySqlQueryJoinTest
         assertNotNull(order.getUserInoInfo().getUser().getId());
         assertNull(order.getUserInoInfo().getUser().getUsername());
 
-        order = query.find(Order2.class).join(Order2::getUserInoInfo).fetch().join1(UserInfo::getUser).fetch().where()
-                .eq(Order2::getId, id1).single();
+        order = query.find(Order.class).join(Order::getUserInoInfo).fetch().join2(UserInfo::getUser).fetch().where()
+                .eq(Order::getId, id1).single();
 
         assertEquals(order.getId(), id1);
         assertNotNull(order.getUserInoInfo().getId());
@@ -187,8 +187,8 @@ public class SqlQueryTypeJoinRelationTest extends AbstractEntitySqlQueryJoinTest
     @Test
     void testJoin1_EE_EE_() {
         // EE1_E1E2_E2E3
-        tree = query.find(Tree2.class).join(Tree2::getParent).fetch().join1(Tree2::getParent).fetch()
-                .join2(Tree2::getParent).fetch().where().eq(Tree2::getId, tid).single();
+        tree = query.find(Tree.class).join(Tree::getParent).fetch().join2(Tree::getParent).fetch()
+                .join3(Tree::getParent).fetch().where().eq(Tree::getId, tid).single();
         /*
         SELECT _tree0.`id` `id`, _tree0.`parent_id` `parent.id`, _tree0.`name` `name`,
                 _tree1.`parent_id` `parent.parent.id`, _tree1.`name` `parent.name`,
@@ -201,7 +201,7 @@ public class SqlQueryTypeJoinRelationTest extends AbstractEntitySqlQueryJoinTest
         WHERE _tree0.`id` = 7
          */
 
-        //        query.find(UserInfo.class).join(UserInfo::getUser).join1(UserRole2::getUser);
+        //        query.find(UserInfo.class).join(UserInfo::getUser).join2(UserRole2::getUser);
         //        query.find(User.class).join(UserInfo::getUser).join(UserRole2::getUser);
         //            .join(User::getDevices).join(UserInfo::getUser);
 
@@ -216,7 +216,7 @@ public class SqlQueryTypeJoinRelationTest extends AbstractEntitySqlQueryJoinTest
         JOIN `tree` _tree1 ON _tree1.`id` = _tree0.`parent_id`
         JOIN `tree` _tree2 ON _tree2.`id` = _tree1.`parent_id`
          */
-        tree = query.find(Tree2.class).join(Tree2::getParent).join1(Tree2::getParent).where().eq(Tree2::getId, tid)
+        tree = query.find(Tree.class).join(Tree::getParent).join2(Tree::getParent).where().eq(Tree::getId, tid)
                 .single();
         assertTree(tree, false);
         assertNull(tree.getParent().getParent());
@@ -228,8 +228,8 @@ public class SqlQueryTypeJoinRelationTest extends AbstractEntitySqlQueryJoinTest
         JOIN `tree` _tree1 ON _tree1.`id` = _tree0.`parent_id`
         JOIN `tree` _tree2 ON _tree2.`id` = _tree1.`parent_id`
          */
-        tree = query.find(Tree2.class).join(Tree2::getParent).fetch().join1(Tree2::getParent).where()
-                .eq(Tree2::getId, tid).single();
+        tree = query.find(Tree.class).join(Tree::getParent).fetch().join2(Tree::getParent).where()
+                .eq(Tree::getId, tid).single();
         assertTree(tree, true);
         assertTree(tree.getParent(), false);
         assertNull(tree.getParent().getParent().getParent());
@@ -242,16 +242,16 @@ public class SqlQueryTypeJoinRelationTest extends AbstractEntitySqlQueryJoinTest
         JOIN `tree` _tree1 ON _tree1.`id` = _tree0.`parent_id`
         JOIN `tree` _tree2 ON _tree2.`id` = _tree1.`parent_id`
          */
-        tree = query.find(Tree2.class).join(Tree2::getParent).fetch().join1(Tree2::getParent).fetch().where()
-                .eq(Tree2::getId, tid).single();
+        tree = query.find(Tree.class).join(Tree::getParent).fetch().join2(Tree::getParent).fetch().where()
+                .eq(Tree::getId, tid).single();
         assertTree(tree, true);
         assertTree(tree.getParent(), true);
         assertNotNull(tree.getParent().getParent().getParent());
         assertNull(tree.getParent().getParent().getParent().getParent());
 
         // EE1_E1E2
-        tree = query.find(Tree2.class).join(Tree2::getParent).fetch().join1(Tree2::getParent).fetch()
-                .join2(Tree2::getParent).fetch().where().eq(Tree2::getId, tid).single();
+        tree = query.find(Tree.class).join(Tree::getParent).fetch().join2(Tree::getParent).fetch()
+                .join3(Tree::getParent).fetch().where().eq(Tree::getId, tid).single();
 
         assertTree(tree, true);
         assertTree(tree.getParent(), true);
@@ -259,7 +259,7 @@ public class SqlQueryTypeJoinRelationTest extends AbstractEntitySqlQueryJoinTest
         assertNotNull(tree.getParent().getParent().getParent().getParent());
 
         // EE1_EE2
-        trees = query.find(Tree2.class).join(Tree2::getParent).join(Tree2::getParent).list();
+        trees = query.find(Tree.class).join(Tree::getParent).join(Tree::getParent).list();
         /*
         SELECT _tree0.`id` `id`, _tree0.`parent_id` `parent.id`, _tree0.`name` `name`
         FROM `tree` _tree0

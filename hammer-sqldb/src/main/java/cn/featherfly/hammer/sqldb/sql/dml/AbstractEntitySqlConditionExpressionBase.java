@@ -20,6 +20,7 @@ import cn.featherfly.common.db.builder.SqlBuilder;
 import cn.featherfly.common.db.mapping.JdbcClassMapping;
 import cn.featherfly.common.db.mapping.JdbcMappingFactory;
 import cn.featherfly.common.db.mapping.JdbcPropertyMapping;
+import cn.featherfly.common.exception.NotImplementedException;
 import cn.featherfly.common.lang.AssertIllegalArgument;
 import cn.featherfly.common.lang.LambdaUtils;
 import cn.featherfly.common.lang.LambdaUtils.SerializableSupplierLambdaInfo;
@@ -78,6 +79,14 @@ import cn.featherfly.hammer.expression.entity.condition.property.EntityStringPro
 import cn.featherfly.hammer.expression.entity.condition.sw.EntityStartWithExpression;
 import cn.featherfly.hammer.sqldb.jdbc.dsl.entity.EntitySqlRelation;
 import cn.featherfly.hammer.sqldb.jdbc.dsl.entity.EntitySqlRelation.EntityRelationMapping;
+import cn.featherfly.hammer.sqldb.jdbc.dsl.entity.condition.EntityDatePropertyExpressionImpl;
+import cn.featherfly.hammer.sqldb.jdbc.dsl.entity.condition.EntityEnumPropertyExpressionImpl;
+import cn.featherfly.hammer.sqldb.jdbc.dsl.entity.condition.EntityLocalDatePropertyExpressionImpl;
+import cn.featherfly.hammer.sqldb.jdbc.dsl.entity.condition.EntityLocalDateTimePropertyExpressionImpl;
+import cn.featherfly.hammer.sqldb.jdbc.dsl.entity.condition.EntityLocalTimePropertyExpressionImpl;
+import cn.featherfly.hammer.sqldb.jdbc.dsl.entity.condition.EntityNumberPropertyExpressionImpl;
+import cn.featherfly.hammer.sqldb.jdbc.dsl.entity.condition.EntityPropertyTypeExpressionImpl;
+import cn.featherfly.hammer.sqldb.jdbc.dsl.entity.condition.EntityStringPropertyExpressionImpl;
 
 /**
  * sql condition group builder sql条件逻辑组构造器 .
@@ -90,12 +99,12 @@ import cn.featherfly.hammer.sqldb.jdbc.dsl.entity.EntitySqlRelation.EntityRelati
 @SuppressWarnings("unchecked")
 public abstract class AbstractEntitySqlConditionExpressionBase<E, ER extends EntitySqlRelation<ER, B>,
         B extends SqlBuilder, C extends ConditionExpression, L extends LogicExpression<C, L>>
-        extends AbstractSqlConditionExpression<C, L>
-        implements EntityContainsExpression<E, C, L>, EntityEndWithExpression<E, C, L>, EntityEqualsExpression<E, C, L>,
-        EntityGreatEqualsExpression<E, C, L>, EntityGreatThanExpression<E, C, L>, EntityInExpression<E, C, L>,
-        EntityIsNotNullExpression<E, C, L>, EntityIsNullExpression<E, C, L>, EntityLessEqualsExpression<E, C, L>,
-        EntityLessThanExpression<E, C, L>, EntityNotEqualsExpression<E, C, L>, EntityNotInExpression<E, C, L>,
-        EntityStartWithExpression<E, C, L>, EntityLikeExpression<E, C, L>, EntityPropertyExpression<E, C, L> {
+        extends AbstractSqlConditionExpression<C, L> implements ConditionExpression, EntityContainsExpression<E, C, L>,
+        EntityEndWithExpression<E, C, L>, EntityEqualsExpression<E, C, L>, EntityGreatEqualsExpression<E, C, L>,
+        EntityGreatThanExpression<E, C, L>, EntityInExpression<E, C, L>, EntityIsNotNullExpression<E, C, L>,
+        EntityIsNullExpression<E, C, L>, EntityLessEqualsExpression<E, C, L>, EntityLessThanExpression<E, C, L>,
+        EntityNotEqualsExpression<E, C, L>, EntityNotInExpression<E, C, L>, EntityStartWithExpression<E, C, L>,
+        EntityLikeExpression<E, C, L>, EntityPropertyExpression<E, C, L> {
 
     //    /** The type query entity. */
     //    protected EntitySqlQuery<E> entityQuery;
@@ -302,15 +311,6 @@ public abstract class AbstractEntitySqlConditionExpressionBase<E, ER extends Ent
      */
     @Override
     public L lk(SerializableFunction<E, String> name, String value, QueryPolicy queryPolicy) {
-        // YUFEI_TODO 未测试
-        //        JdbcPropertyMapping pm = classMapping.getPropertyMapping(getPropertyName(name));
-        //        return (L) addCondition(
-        //                new SqlConditionExpressionBuilder(dialect, pm.getRepositoryFieldName(),
-        //                        value == null ? null
-        //                                : new FieldValueOperator<>(
-        //                                        (JavaTypeSqlTypeOperator<String>) pm.getJavaTypeSqlTypeOperator(), value),
-        //                        QueryOperator.LK, queryPolicy, queryAlias, ignoreStrategy));
-        //        return lk(classMapping.getPropertyMapping(getPropertyName(name)), value, queryAlias, queryPolicy, ignoreStrategy);
         return lk(classMapping, name, value, queryAlias, queryPolicy, ignoreStrategy);
     }
 
@@ -320,15 +320,6 @@ public abstract class AbstractEntitySqlConditionExpressionBase<E, ER extends Ent
     @Override
     public L lk(SerializableFunction<E, String> name, String value, QueryPolicy queryPolicy,
             Predicate<String> ignoreStrategy) {
-        // YUFEI_TODO 未测试
-        //        JdbcPropertyMapping pm = classMapping.getPropertyMapping(getPropertyName(name));
-        //        return (L) addCondition(
-        //                new SqlConditionExpressionBuilder(dialect, pm.getRepositoryFieldName(),
-        //                        value == null ? null
-        //                                : new FieldValueOperator<>(
-        //                                        (JavaTypeSqlTypeOperator<String>) pm.getJavaTypeSqlTypeOperator(), value),
-        //                        QueryOperator.LK, queryPolicy, queryAlias, ignoreStrategy));
-        //        return lk(classMapping.getPropertyMapping(getPropertyName(name)), value, queryAlias, queryPolicy, ignoreStrategy);
         return lk(classMapping, name, value, queryAlias, queryPolicy, ignoreStrategy);
     }
 
@@ -337,20 +328,6 @@ public abstract class AbstractEntitySqlConditionExpressionBase<E, ER extends Ent
      */
     @Override
     public L lk(SerializableStringSupplier property, QueryPolicy queryPolicy) {
-        //  YUFEI_TODO 未测试
-        //        String value = property.get();
-        //        SerializableSupplierLambdaInfo<String> info = LambdaUtils.getSerializableSupplierLambdaInfo(property);
-        //        JdbcPropertyMapping pm = classMapping.getPropertyMapping(info.getSerializedLambdaInfo().getPropertyName());
-        //        return (L) addCondition(
-        //                new SqlConditionExpressionBuilder(dialect, pm.getRepositoryFieldName(),
-        //                        value == null ? null
-        //                                : new FieldValueOperator<>(
-        //                                        (JavaTypeSqlTypeOperator<String>) pm.getJavaTypeSqlTypeOperator(), value),
-        //                        QueryOperator.LK, queryPolicy, queryAlias, ignoreStrategy));
-        //        return lk(
-        //                classMapping.getPropertyMapping(LambdaUtils.getSerializableSupplierLambdaInfo(property)
-        //                        .getSerializedLambdaInfo().getPropertyName()),
-        //                property.get(), queryAlias, queryPolicy, ignoreStrategy);
         return lk(classMapping, property, queryAlias, queryPolicy, ignoreStrategy);
     }
 
@@ -359,20 +336,6 @@ public abstract class AbstractEntitySqlConditionExpressionBase<E, ER extends Ent
      */
     @Override
     public L lk(SerializableStringSupplier property, QueryPolicy queryPolicy, Predicate<String> ignoreStrategy) {
-        //  YUFEI_TODO 未测试
-        //        String value = property.get();
-        //        SerializableSupplierLambdaInfo<String> info = LambdaUtils.getSerializableSupplierLambdaInfo(property);
-        //        JdbcPropertyMapping pm = classMapping.getPropertyMapping(info.getSerializedLambdaInfo().getPropertyName());
-        //        return (L) addCondition(
-        //                new SqlConditionExpressionBuilder(dialect, pm.getRepositoryFieldName(),
-        //                        value == null ? null
-        //                                : new FieldValueOperator<>(
-        //                                        (JavaTypeSqlTypeOperator<String>) pm.getJavaTypeSqlTypeOperator(), value),
-        //                        QueryOperator.LK, queryPolicy, queryAlias, ignoreStrategy));
-        //        return lk(
-        //                classMapping.getPropertyMapping(LambdaUtils.getSerializableSupplierLambdaInfo(property)
-        //                        .getSerializedLambdaInfo().getPropertyName()),
-        //                property.get(), queryAlias, queryPolicy, ignoreStrategy);
         return lk(classMapping, property, queryAlias, queryPolicy, ignoreStrategy);
     }
 
@@ -381,15 +344,6 @@ public abstract class AbstractEntitySqlConditionExpressionBase<E, ER extends Ent
      */
     @Override
     public L sw(SerializableFunction<E, String> name, String value, QueryPolicy queryPolicy) {
-        // YUFEI_TODO 未测试
-        //        JdbcPropertyMapping pm = classMapping.getPropertyMapping(getPropertyName(name));
-        //        return (L) addCondition(
-        //                new SqlConditionExpressionBuilder(dialect, pm.getRepositoryFieldName(),
-        //                        value == null ? null
-        //                                : new FieldValueOperator<>(
-        //                                        (JavaTypeSqlTypeOperator<String>) pm.getJavaTypeSqlTypeOperator(), value),
-        //                        QueryOperator.SW, queryPolicy, queryAlias, ignoreStrategy));
-        //        return sw(classMapping.getPropertyMapping(getPropertyName(name)), value, queryAlias, queryPolicy, ignoreStrategy);
         return sw(classMapping, name, value, queryAlias, queryPolicy, ignoreStrategy);
     }
 
@@ -399,15 +353,6 @@ public abstract class AbstractEntitySqlConditionExpressionBase<E, ER extends Ent
     @Override
     public L sw(SerializableFunction<E, String> name, String value, QueryPolicy queryPolicy,
             Predicate<String> ignoreStrategy) {
-        // YUFEI_TODO 未测试
-        //        JdbcPropertyMapping pm = classMapping.getPropertyMapping(getPropertyName(name));
-        //        return (L) addCondition(
-        //                new SqlConditionExpressionBuilder(dialect, pm.getRepositoryFieldName(),
-        //                        value == null ? null
-        //                                : new FieldValueOperator<>(
-        //                                        (JavaTypeSqlTypeOperator<String>) pm.getJavaTypeSqlTypeOperator(), value),
-        //                        QueryOperator.SW, queryPolicy, queryAlias, ignoreStrategy));
-        //        return sw(classMapping.getPropertyMapping(getPropertyName(name)), value, queryAlias, queryPolicy, ignoreStrategy);
         return sw(classMapping, name, value, queryAlias, queryPolicy, ignoreStrategy);
     }
 
@@ -416,20 +361,6 @@ public abstract class AbstractEntitySqlConditionExpressionBase<E, ER extends Ent
      */
     @Override
     public L sw(SerializableStringSupplier property, QueryPolicy queryPolicy) {
-        //  YUFEI_TODO 未测试
-        //        String value = property.get();
-        //        SerializableSupplierLambdaInfo<String> info = LambdaUtils.getSerializableSupplierLambdaInfo(property);
-        //        JdbcPropertyMapping pm = classMapping.getPropertyMapping(info.getSerializedLambdaInfo().getPropertyName());
-        //        return (L) addCondition(
-        //                new SqlConditionExpressionBuilder(dialect, pm.getRepositoryFieldName(),
-        //                        value == null ? null
-        //                                : new FieldValueOperator<>(
-        //                                        (JavaTypeSqlTypeOperator<String>) pm.getJavaTypeSqlTypeOperator(), value),
-        //                        QueryOperator.SW, queryPolicy, queryAlias, ignoreStrategy));
-        //        return sw(
-        //                classMapping.getPropertyMapping(LambdaUtils.getSerializableSupplierLambdaInfo(property)
-        //                        .getSerializedLambdaInfo().getPropertyName()),
-        //                property.get(), queryAlias, queryPolicy, ignoreStrategy);
         return sw(classMapping, property, queryAlias, queryPolicy, ignoreStrategy);
     }
 
@@ -438,20 +369,6 @@ public abstract class AbstractEntitySqlConditionExpressionBase<E, ER extends Ent
      */
     @Override
     public L sw(SerializableStringSupplier property, QueryPolicy queryPolicy, Predicate<String> ignoreStrategy) {
-        //  YUFEI_TODO 未测试
-        //        String value = property.get();
-        //        SerializableSupplierLambdaInfo<String> info = LambdaUtils.getSerializableSupplierLambdaInfo(property);
-        //        JdbcPropertyMapping pm = classMapping.getPropertyMapping(info.getSerializedLambdaInfo().getPropertyName());
-        //        return (L) addCondition(
-        //                new SqlConditionExpressionBuilder(dialect, pm.getRepositoryFieldName(),
-        //                        value == null ? null
-        //                                : new FieldValueOperator<>(
-        //                                        (JavaTypeSqlTypeOperator<String>) pm.getJavaTypeSqlTypeOperator(), value),
-        //                        QueryOperator.SW, queryPolicy, queryAlias, ignoreStrategy));
-        //        return sw(
-        //                classMapping.getPropertyMapping(LambdaUtils.getSerializableSupplierLambdaInfo(property)
-        //                        .getSerializedLambdaInfo().getPropertyName()),
-        //                property.get(), queryAlias, queryPolicy, ignoreStrategy);
         return sw(classMapping, property, queryAlias, queryPolicy, ignoreStrategy);
     }
 
@@ -462,16 +379,7 @@ public abstract class AbstractEntitySqlConditionExpressionBase<E, ER extends Ent
      */
     @Override
     public L ew(SerializableFunction<E, String> name, String value, QueryPolicy queryPolicy) {
-        // YUFEI_TODO 未测试
-        //        JdbcPropertyMapping pm = classMapping.getPropertyMapping(getPropertyName(name));
-        //        return (L) addCondition(
-        //                new SqlConditionExpressionBuilder(dialect, pm.getRepositoryFieldName(),
-        //                        value == null ? null
-        //                                : new FieldValueOperator<>(
-        //                                        (JavaTypeSqlTypeOperator<String>) pm.getJavaTypeSqlTypeOperator(), value),
-        //                        QueryOperator.EW, queryPolicy, queryAlias, ignoreStrategy));
-        //        return ew(classMapping.getPropertyMapping(getPropertyName(name)), value, queryAlias, queryPolicy, ignoreStrategy);
-        return sw(classMapping, name, value, queryAlias, queryPolicy, ignoreStrategy);
+        return ew(classMapping, name, value, queryAlias, queryPolicy, ignoreStrategy);
     }
 
     /**
@@ -480,16 +388,7 @@ public abstract class AbstractEntitySqlConditionExpressionBase<E, ER extends Ent
     @Override
     public L ew(SerializableFunction<E, String> name, String value, QueryPolicy queryPolicy,
             Predicate<String> ignoreStrategy) {
-        // YUFEI_TODO 未测试
-        //        JdbcPropertyMapping pm = classMapping.getPropertyMapping(getPropertyName(name));
-        //        return (L) addCondition(
-        //                new SqlConditionExpressionBuilder(dialect, pm.getRepositoryFieldName(),
-        //                        value == null ? null
-        //                                : new FieldValueOperator<>(
-        //                                        (JavaTypeSqlTypeOperator<String>) pm.getJavaTypeSqlTypeOperator(), value),
-        //                        QueryOperator.EW, queryPolicy, queryAlias, ignoreStrategy));
-        //        return ew(classMapping.getPropertyMapping(getPropertyName(name)), value, queryAlias, queryPolicy, ignoreStrategy);
-        return sw(classMapping, name, value, queryAlias, queryPolicy, ignoreStrategy);
+        return ew(classMapping, name, value, queryAlias, queryPolicy, ignoreStrategy);
     }
 
     /**
@@ -497,21 +396,7 @@ public abstract class AbstractEntitySqlConditionExpressionBase<E, ER extends Ent
      */
     @Override
     public L ew(SerializableStringSupplier property, QueryPolicy queryPolicy) {
-        //  YUFEI_TODO 未测试
-        //        String value = property.get();
-        //        SerializableSupplierLambdaInfo<String> info = LambdaUtils.getSerializableSupplierLambdaInfo(property);
-        //        JdbcPropertyMapping pm = classMapping.getPropertyMapping(info.getSerializedLambdaInfo().getPropertyName());
-        //        return (L) addCondition(
-        //                new SqlConditionExpressionBuilder(dialect, pm.getRepositoryFieldName(),
-        //                        value == null ? null
-        //                                : new FieldValueOperator<>(
-        //                                        (JavaTypeSqlTypeOperator<String>) pm.getJavaTypeSqlTypeOperator(), value),
-        //                        QueryOperator.EW, queryPolicy, queryAlias, ignoreStrategy));
-        //        return ew(
-        //                classMapping.getPropertyMapping(LambdaUtils.getSerializableSupplierLambdaInfo(property)
-        //                        .getSerializedLambdaInfo().getPropertyName()),
-        //                property.get(), queryAlias, queryPolicy, ignoreStrategy);
-        return sw(classMapping, property, queryAlias, queryPolicy, ignoreStrategy);
+        return ew(classMapping, property, queryAlias, queryPolicy, ignoreStrategy);
     }
 
     /**
@@ -519,21 +404,7 @@ public abstract class AbstractEntitySqlConditionExpressionBase<E, ER extends Ent
      */
     @Override
     public L ew(SerializableStringSupplier property, QueryPolicy queryPolicy, Predicate<String> ignoreStrategy) {
-        //  YUFEI_TODO 未测试
-        //        String value = property.get();
-        //        SerializableSupplierLambdaInfo<String> info = LambdaUtils.getSerializableSupplierLambdaInfo(property);
-        //        JdbcPropertyMapping pm = classMapping.getPropertyMapping(info.getSerializedLambdaInfo().getPropertyName());
-        //        return (L) addCondition(
-        //                new SqlConditionExpressionBuilder(dialect, pm.getRepositoryFieldName(),
-        //                        value == null ? null
-        //                                : new FieldValueOperator<>(
-        //                                        (JavaTypeSqlTypeOperator<String>) pm.getJavaTypeSqlTypeOperator(), value),
-        //                        QueryOperator.EW, queryPolicy, queryAlias, ignoreStrategy));
-        //        return ew(
-        //                classMapping.getPropertyMapping(LambdaUtils.getSerializableSupplierLambdaInfo(property)
-        //                        .getSerializedLambdaInfo().getPropertyName()),
-        //                property.get(), queryAlias, queryPolicy, ignoreStrategy);
-        return sw(classMapping, property, queryAlias, queryPolicy, ignoreStrategy);
+        return ew(classMapping, property, queryAlias, queryPolicy, ignoreStrategy);
     }
 
     // ****************************************************************************************************************
@@ -543,15 +414,6 @@ public abstract class AbstractEntitySqlConditionExpressionBase<E, ER extends Ent
      */
     @Override
     public L co(SerializableFunction<E, String> name, String value, QueryPolicy queryPolicy) {
-        // YUFEI_TODO 未测试
-        //        JdbcPropertyMapping pm = classMapping.getPropertyMapping(getPropertyName(name));
-        //        return (L) addCondition(
-        //                new SqlConditionExpressionBuilder(dialect, pm.getRepositoryFieldName(),
-        //                        value == null ? null
-        //                                : new FieldValueOperator<>(
-        //                                        (JavaTypeSqlTypeOperator<String>) pm.getJavaTypeSqlTypeOperator(), value),
-        //                        QueryOperator.CO, queryPolicy, queryAlias, ignoreStrategy));
-        //        return co(classMapping.getPropertyMapping(getPropertyName(name)), value, queryAlias, queryPolicy, ignoreStrategy);
         return co(classMapping, name, value, queryAlias, queryPolicy, ignoreStrategy);
     }
 
@@ -561,15 +423,6 @@ public abstract class AbstractEntitySqlConditionExpressionBase<E, ER extends Ent
     @Override
     public L co(SerializableFunction<E, String> name, String value, QueryPolicy queryPolicy,
             Predicate<String> ignoreStrategy) {
-        // YUFEI_TODO 未测试
-        //        JdbcPropertyMapping pm = classMapping.getPropertyMapping(getPropertyName(name));
-        //        return (L) addCondition(
-        //                new SqlConditionExpressionBuilder(dialect, pm.getRepositoryFieldName(),
-        //                        value == null ? null
-        //                                : new FieldValueOperator<>(
-        //                                        (JavaTypeSqlTypeOperator<String>) pm.getJavaTypeSqlTypeOperator(), value),
-        //                        QueryOperator.CO, queryPolicy, queryAlias, ignoreStrategy));
-        //        return co(classMapping.getPropertyMapping(getPropertyName(name)), value, queryAlias, queryPolicy, ignoreStrategy);
         return co(classMapping, name, value, queryAlias, queryPolicy, ignoreStrategy);
     }
 
@@ -578,20 +431,6 @@ public abstract class AbstractEntitySqlConditionExpressionBase<E, ER extends Ent
      */
     @Override
     public L co(SerializableStringSupplier property, QueryPolicy queryPolicy) {
-        //  YUFEI_TODO 未测试
-        //        String value = property.get();
-        //        SerializableSupplierLambdaInfo<String> info = LambdaUtils.getSerializableSupplierLambdaInfo(property);
-        //        JdbcPropertyMapping pm = classMapping.getPropertyMapping(info.getSerializedLambdaInfo().getPropertyName());
-        //        return (L) addCondition(
-        //                new SqlConditionExpressionBuilder(dialect, pm.getRepositoryFieldName(),
-        //                        value == null ? null
-        //                                : new FieldValueOperator<>(
-        //                                        (JavaTypeSqlTypeOperator<String>) pm.getJavaTypeSqlTypeOperator(), value),
-        //                        QueryOperator.CO, queryPolicy, queryAlias, ignoreStrategy));
-        //        return co(
-        //                classMapping.getPropertyMapping(LambdaUtils.getSerializableSupplierLambdaInfo(property)
-        //                        .getSerializedLambdaInfo().getPropertyName()),
-        //                property.get(), queryAlias, queryPolicy, ignoreStrategy);
         return co(classMapping, property, queryAlias, queryPolicy, ignoreStrategy);
     }
 
@@ -600,20 +439,6 @@ public abstract class AbstractEntitySqlConditionExpressionBase<E, ER extends Ent
      */
     @Override
     public L co(SerializableStringSupplier property, QueryPolicy queryPolicy, Predicate<String> ignoreStrategy) {
-        //  YUFEI_TODO 未测试
-        //        String value = property.get();
-        //        SerializableSupplierLambdaInfo<String> info = LambdaUtils.getSerializableSupplierLambdaInfo(property);
-        //        JdbcPropertyMapping pm = classMapping.getPropertyMapping(info.getSerializedLambdaInfo().getPropertyName());
-        //        return (L) addCondition(
-        //                new SqlConditionExpressionBuilder(dialect, pm.getRepositoryFieldName(),
-        //                        value == null ? null
-        //                                : new FieldValueOperator<>(
-        //                                        (JavaTypeSqlTypeOperator<String>) pm.getJavaTypeSqlTypeOperator(), value),
-        //                        QueryOperator.CO, queryPolicy, queryAlias, ignoreStrategy));
-        //        return co(
-        //                classMapping.getPropertyMapping(LambdaUtils.getSerializableSupplierLambdaInfo(property)
-        //                        .getSerializedLambdaInfo().getPropertyName()),
-        //                property.get(), queryAlias, queryPolicy, ignoreStrategy);
         return co(classMapping, property, queryAlias, queryPolicy, ignoreStrategy);
     }
 
@@ -2442,7 +2267,7 @@ public abstract class AbstractEntitySqlConditionExpressionBase<E, ER extends Ent
     }
 
     // ****************************************************************************************************************
-
+    // property
     // ****************************************************************************************************************
 
     /**
@@ -2450,8 +2275,8 @@ public abstract class AbstractEntitySqlConditionExpressionBase<E, ER extends Ent
      */
     @Override
     public <R> EntityPropertyTypeExpression<R, C, L> property(SerializableFunction<E, R> name) {
-        // IMPLSOON 后续来实现
-        return null;
+        // IMPLSOON 后续来实现property
+        return new EntityPropertyTypeExpressionImpl<>(0, name, this);
     }
 
     /**
@@ -2460,8 +2285,8 @@ public abstract class AbstractEntitySqlConditionExpressionBase<E, ER extends Ent
     @Override
     public <R extends Collection<RE>,
             RE> EntityPropertyTypeExpression<RE, C, L> property(SerializableToCollectionFunction<E, R, RE> name) {
-        // IMPLSOON 后续来实现
-        return null;
+        // IMPLSOON 后续来实现集合类型property
+        throw new NotImplementedException();
     }
 
     /**
@@ -2469,8 +2294,8 @@ public abstract class AbstractEntitySqlConditionExpressionBase<E, ER extends Ent
      */
     @Override
     public EntityNumberPropertyExpression<E, Integer, C, L> property(SerializableToIntFunction<E> name) {
-        // IMPLSOON 后续来实现
-        return null;
+        // IMPLSOON 后续来实现基本类型property
+        throw new NotImplementedException();
     }
 
     /**
@@ -2478,8 +2303,8 @@ public abstract class AbstractEntitySqlConditionExpressionBase<E, ER extends Ent
      */
     @Override
     public EntityNumberPropertyExpression<E, Long, C, L> property(SerializableToLongFunction<E> name) {
-        // IMPLSOON 后续来实现
-        return null;
+        // IMPLSOON 后续来实现基本类型property
+        throw new NotImplementedException();
     }
 
     /**
@@ -2487,17 +2312,8 @@ public abstract class AbstractEntitySqlConditionExpressionBase<E, ER extends Ent
      */
     @Override
     public EntityNumberPropertyExpression<E, Double, C, L> property(SerializableToDoubleFunction<E> name) {
-        // IMPLSOON 后续来实现
-        return null;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public EntityStringPropertyExpression<E, C, L> property(SerializableToStringFunction<E> name) {
-        // IMPLSOON 后续来实现
-        return null;
+        // IMPLSOON 后续来实现基本类型property
+        throw new NotImplementedException();
     }
 
     /**
@@ -2506,8 +2322,15 @@ public abstract class AbstractEntitySqlConditionExpressionBase<E, ER extends Ent
     @Override
     public <R extends Number> EntityNumberPropertyExpression<E, R, C, L> property(
             SerializableToNumberFunction<E, R> name) {
-        // IMPLSOON 后续来实现
-        return null;
+        return new EntityNumberPropertyExpressionImpl<>(0, name, this);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public EntityStringPropertyExpression<E, C, L> property(SerializableToStringFunction<E> name) {
+        return new EntityStringPropertyExpressionImpl<>(0, name, this);
     }
 
     /**
@@ -2515,8 +2338,7 @@ public abstract class AbstractEntitySqlConditionExpressionBase<E, ER extends Ent
      */
     @Override
     public <R extends Date> EntityDatePropertyExpression<E, R, C, L> property(SerializableToDateFunction<E, R> name) {
-        // IMPLSOON 后续来实现
-        return null;
+        return new EntityDatePropertyExpressionImpl<>(0, name, this);
     }
 
     /**
@@ -2524,8 +2346,7 @@ public abstract class AbstractEntitySqlConditionExpressionBase<E, ER extends Ent
      */
     @Override
     public EntityLocalDatePropertyExpression<E, C, L> property(SerializableToLocalDateFunction<E> name) {
-        // IMPLSOON 后续来实现
-        return null;
+        return new EntityLocalDatePropertyExpressionImpl<>(0, name, this);
     }
 
     /**
@@ -2533,8 +2354,7 @@ public abstract class AbstractEntitySqlConditionExpressionBase<E, ER extends Ent
      */
     @Override
     public EntityLocalDateTimePropertyExpression<E, C, L> property(SerializableToLocalDateTimeFunction<E> name) {
-        // IMPLSOON 后续来实现
-        return null;
+        return new EntityLocalDateTimePropertyExpressionImpl<>(0, name, this);
     }
 
     /**
@@ -2542,8 +2362,7 @@ public abstract class AbstractEntitySqlConditionExpressionBase<E, ER extends Ent
      */
     @Override
     public EntityLocalTimePropertyExpression<E, C, L> property(SerializableToLocalTimeFunction<E> name) {
-        // IMPLSOON 后续来实现
-        return null;
+        return new EntityLocalTimePropertyExpressionImpl<>(0, name, this);
     }
 
     /**
@@ -2552,8 +2371,7 @@ public abstract class AbstractEntitySqlConditionExpressionBase<E, ER extends Ent
     @Override
     public <R extends Enum<R>> EntityEnumPropertyExpression<E, R, C, L> property(
             SerializableToEnumFunction<E, R> name) {
-        // IMPLSOON 后续来实现
-        return null;
+        return new EntityEnumPropertyExpressionImpl<>(0, name, this);
     }
 
     // ****************************************************************************************************************
@@ -2649,7 +2467,16 @@ public abstract class AbstractEntitySqlConditionExpressionBase<E, ER extends Ent
     //    }
 
     // ********************************************************************
-    // private method
+    // protected method
+    // ********************************************************************
+
+    //    protected abstract <EC extends EntityConditionsExpression<E, EC, EL>,
+    //            EL extends LogicExpression<EC, EL>> EntityConditionsExpression<E, EC, EL> getEntityConditionsExpression();
+    //
+    //    protected abstract <EC extends EntityConditionsExpression<E, EC, EL>,
+    //            EL extends LogicExpression<EC, EL>> EntityConditionsExpression<E, EC,
+    //                    EL> createEntityEnumPropertyExpression();
+
     // ********************************************************************
 
     /**

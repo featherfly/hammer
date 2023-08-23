@@ -5,7 +5,7 @@ import javax.persistence.Column;
 import javax.persistence.Table;
 
 /**
- * User.
+ * The Class UserNoPk.
  *
  * @author zhongj
  */
@@ -24,12 +24,15 @@ public class UserNoPk {
     private Integer age;
 
     /**
+     * Instantiates a new user no pk.
      */
     public UserNoPk() {
     }
 
     /**
-     * @param id
+     * Instantiates a new user no pk.
+     *
+     * @param id the id
      */
     public UserNoPk(Integer id) {
         super();
@@ -37,7 +40,7 @@ public class UserNoPk {
     }
 
     /**
-     * 返回id
+     * 返回id.
      *
      * @return id
      */
@@ -46,7 +49,7 @@ public class UserNoPk {
     }
 
     /**
-     * 设置id
+     * 设置id.
      *
      * @param id id
      */
@@ -55,7 +58,7 @@ public class UserNoPk {
     }
 
     /**
-     * 返回username
+     * 返回username.
      *
      * @return username
      */
@@ -64,7 +67,7 @@ public class UserNoPk {
     }
 
     /**
-     * 设置username
+     * 设置username.
      *
      * @param username username
      */
@@ -73,7 +76,7 @@ public class UserNoPk {
     }
 
     /**
-     * 返回pwd
+     * 返回pwd.
      *
      * @return pwd
      */
@@ -82,7 +85,7 @@ public class UserNoPk {
     }
 
     /**
-     * 设置pwd
+     * 设置pwd.
      *
      * @param pwd pwd
      */
@@ -91,7 +94,7 @@ public class UserNoPk {
     }
 
     /**
-     * 返回mobileNo
+     * 返回mobileNo.
      *
      * @return mobileNo
      */
@@ -100,7 +103,7 @@ public class UserNoPk {
     }
 
     /**
-     * 设置mobileNo
+     * 设置mobileNo.
      *
      * @param mobileNo mobileNo
      */
@@ -109,7 +112,7 @@ public class UserNoPk {
     }
 
     /**
-     * 返回age
+     * 返回age.
      *
      * @return age
      */
@@ -118,7 +121,7 @@ public class UserNoPk {
     }
 
     /**
-     * 设置age
+     * 设置age.
      *
      * @param age age
      */

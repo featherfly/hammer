@@ -3,6 +3,7 @@ package cn.featherfly.hammer.sqldb.jdbc.vo.r;
 
 import javax.persistence.Column;
 import javax.persistence.Id;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 /**
@@ -12,16 +13,30 @@ import javax.persistence.Table;
  *
  * @author zhongj
  */
-@Table
+@Table(name = "tree")
 public class Tree {
 
     @Id
     private Integer id;
 
-    @Column
     private String name;
 
-    private String parentId;
+    /**
+     */
+    public Tree() {
+    }
+
+    /**
+     * @param id
+     */
+    public Tree(Integer id) {
+        super();
+        this.id = id;
+    }
+
+    @Column(name = "parent_id")
+    @ManyToOne
+    private Tree parent;
 
     /**
      * 返回id
@@ -60,21 +75,21 @@ public class Tree {
     }
 
     /**
-     * 返回parentId
+     * 返回parent
      *
-     * @return parentId
+     * @return parent
      */
-    public String getParentId() {
-        return parentId;
+    public Tree getParent() {
+        return parent;
     }
 
     /**
-     * 设置parentId
+     * 设置parent
      *
-     * @param parentId parentId
+     * @param parent parent
      */
-    public void setParentId(String parentId) {
-        this.parentId = parentId;
+    public void setParent(Tree parent) {
+        this.parent = parent;
     }
 
     /**
@@ -82,6 +97,7 @@ public class Tree {
      */
     @Override
     public String toString() {
-        return "Tree [id=" + id + ", name=" + name + ", parentId=" + parentId + "]";
+        return "Tree2 [id=" + id + ", name=" + name + ", parent=" + parent + "]";
     }
+
 }

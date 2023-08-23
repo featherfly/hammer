@@ -11,6 +11,7 @@ import java.util.function.Predicate;
 import cn.featherfly.common.db.builder.SqlBuilder;
 import cn.featherfly.common.db.mapping.JdbcClassMapping;
 import cn.featherfly.common.db.mapping.JdbcMappingFactory;
+import cn.featherfly.common.function.FourArgusFunction;
 import cn.featherfly.common.lang.function.SerializableDateSupplier;
 import cn.featherfly.common.lang.function.SerializableDoubleSupplier;
 import cn.featherfly.common.lang.function.SerializableFunction;
@@ -29,6 +30,7 @@ import cn.featherfly.common.lang.function.SerializableToLongFunction4;
 import cn.featherfly.common.operator.QueryOperator.QueryPolicy;
 import cn.featherfly.hammer.expression.condition.GroupEndExpression;
 import cn.featherfly.hammer.expression.condition.GroupExpression;
+import cn.featherfly.hammer.expression.entity.condition.EntityPropertyExpression4;
 import cn.featherfly.hammer.expression.entity.condition.co.EntityContainsExpressionBase4;
 import cn.featherfly.hammer.expression.entity.condition.eq.EntityEqualsExpressionBase4;
 import cn.featherfly.hammer.expression.entity.condition.ew.EntityEndWithExpressionBase4;
@@ -42,9 +44,11 @@ import cn.featherfly.hammer.expression.entity.condition.lk.EntityLikeExpressionB
 import cn.featherfly.hammer.expression.entity.condition.lt.EntityLessThanExpressionBase4;
 import cn.featherfly.hammer.expression.entity.condition.ne.EntityNotEqualsExpressionBase4;
 import cn.featherfly.hammer.expression.entity.condition.nin.EntityNotInExpressionBase4;
+import cn.featherfly.hammer.expression.entity.condition.property.EntityPropertyFunction;
 import cn.featherfly.hammer.expression.entity.condition.sw.EntityStartWithExpressionBase4;
 import cn.featherfly.hammer.sqldb.jdbc.dsl.entity.EntitySqlRelation;
 import cn.featherfly.hammer.sqldb.jdbc.dsl.entity.EntitySqlRelation.EntityRelationMapping;
+import cn.featherfly.hammer.sqldb.jdbc.dsl.entity.condition.EntityPropertyFunctionImpl;
 
 /**
  * sql condition group builder sql条件逻辑组构造器 .
@@ -57,14 +61,15 @@ import cn.featherfly.hammer.sqldb.jdbc.dsl.entity.EntitySqlRelation.EntityRelati
  */
 public abstract class AbstractEntitySqlConditionGroupExpressionBase4<E, E2, E3, E4, ER extends EntitySqlRelation<ER, B>,
         B extends SqlBuilder, C extends GroupExpression<C, L>, L extends GroupEndExpression<C, L>>
-        extends AbstractEntitySqlConditionGroupExpressionBase3<E, E2, E3, ER, B, C, L> implements
-        EntityContainsExpressionBase4<E, E2, E3, E4, C, L>, EntityEndWithExpressionBase4<E, E2, E3, E4, C, L>,
-        EntityEqualsExpressionBase4<E, E2, E3, E4, C, L>, EntityGreatEqualsExpressionBase4<E, E2, E3, E4, C, L>,
-        EntityGreatThanExpressionBase4<E, E2, E3, E4, C, L>, EntityInExpressionBase4<E, E2, E3, E4, C, L>,
-        EntityIsNotNullExpressionBase4<E, E2, E3, E4, C, L>, EntityIsNullExpressionBase4<E, E2, E3, E4, C, L>,
-        EntityLessEqualsExpressionBase4<E, E2, E3, E4, C, L>, EntityLessThanExpressionBase4<E, E2, E3, E4, C, L>,
-        EntityNotEqualsExpressionBase4<E, E2, E3, E4, C, L>, EntityNotInExpressionBase4<E, E2, E3, E4, C, L>,
-        EntityStartWithExpressionBase4<E, E2, E3, E4, C, L>, EntityLikeExpressionBase4<E, E2, E3, E4, C, L> {
+        extends AbstractEntitySqlConditionGroupExpressionBase3<E, E2, E3, ER, B, C, L>
+        implements EntityContainsExpressionBase4<E, E2, E3, E4, C, L>,
+        EntityEndWithExpressionBase4<E, E2, E3, E4, C, L>, EntityEqualsExpressionBase4<E, E2, E3, E4, C, L>,
+        EntityGreatEqualsExpressionBase4<E, E2, E3, E4, C, L>, EntityGreatThanExpressionBase4<E, E2, E3, E4, C, L>,
+        EntityInExpressionBase4<E, E2, E3, E4, C, L>, EntityIsNotNullExpressionBase4<E, E2, E3, E4, C, L>,
+        EntityIsNullExpressionBase4<E, E2, E3, E4, C, L>, EntityLessEqualsExpressionBase4<E, E2, E3, E4, C, L>,
+        EntityLessThanExpressionBase4<E, E2, E3, E4, C, L>, EntityNotEqualsExpressionBase4<E, E2, E3, E4, C, L>,
+        EntityNotInExpressionBase4<E, E2, E3, E4, C, L>, EntityStartWithExpressionBase4<E, E2, E3, E4, C, L>,
+        EntityLikeExpressionBase4<E, E2, E3, E4, C, L>, EntityPropertyExpression4<E, E2, E3, E4, C, L> {
 
     /** The class mapping. */
     protected JdbcClassMapping<E4> classMapping4;
@@ -1387,6 +1392,19 @@ public abstract class AbstractEntitySqlConditionGroupExpressionBase4<E, E2, E3, 
     @Override
     public <R> L isn4(SerializableFunction<E4, R> name, Boolean value) {
         return isn(classMapping4, name, value, queryAlias4);
+    }
+
+    // ****************************************************************************************************************
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public L property(FourArgusFunction<EntityPropertyFunction<E, C, L>, EntityPropertyFunction<E2, C, L>,
+            EntityPropertyFunction<E3, C, L>, EntityPropertyFunction<E4, C, L>, L> entitiesPropertyFunction) {
+        return entitiesPropertyFunction.apply(new EntityPropertyFunctionImpl<E, C, L>(0, this),
+                new EntityPropertyFunctionImpl<E2, C, L>(1, this), new EntityPropertyFunctionImpl<E3, C, L>(2, this),
+                new EntityPropertyFunctionImpl<E4, C, L>(3, this));
     }
 
     // ********************************************************************

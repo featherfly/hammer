@@ -1,12 +1,11 @@
 
 package cn.featherfly.hammer.sqldb.jdbc.dsl.query;
 
-import cn.featherfly.common.db.Table;
 import cn.featherfly.common.db.mapping.JdbcClassMapping;
 import cn.featherfly.common.db.mapping.JdbcMappingFactory;
 import cn.featherfly.common.db.metadata.DatabaseMetadata;
+import cn.featherfly.common.lang.AssertIllegalArgument;
 import cn.featherfly.common.lang.Lang;
-import cn.featherfly.common.lang.Strings;
 import cn.featherfly.common.repository.AliasRepository;
 import cn.featherfly.common.repository.IgnoreStrategy;
 import cn.featherfly.common.repository.Repository;
@@ -73,18 +72,16 @@ public class SqlQuery implements Query {
         this.sqlPageFactory = sqlPageFactory;
     }
 
-    /**
-     * find table.
-     *
-     * @param table the table
-     * @return SqlQueryEntity
-     */
-    public SqlQueryEntity find(Table table) {
-        if (table == null) {
-            return null;
-        }
-        return find(table.getName());
-    }
+    //    /**
+    //     * find table.
+    //     *
+    //     * @param table the table
+    //     * @return SqlQueryEntity
+    //     */
+    //    public SqlQueryEntity find(Table table) {
+    //        AssertIllegalArgument.isNotNull(table, "table");
+    //        return find(table.getName());
+    //    }
 
     /**
      * {@inheritDoc}
@@ -92,20 +89,16 @@ public class SqlQuery implements Query {
     @Override
     //    public SqlQueryEntityProperties find(Repository repository) {
     public SqlQueryEntity find(Repository repository) {
-        if (repository == null) {
-            return null;
-        }
         if (repository instanceof AliasRepository) {
             return find((AliasRepository) repository);
         } else {
+            AssertIllegalArgument.isNotNull(repository, "repository");
             return find(repository.name());
         }
     }
 
     public SqlQueryEntity find(AliasRepository repository) {
-        if (repository == null) {
-            return null;
-        }
+        AssertIllegalArgument.isNotNull(repository, "repository");
         return find(repository.name(), repository.alias());
     }
 
@@ -119,6 +112,7 @@ public class SqlQuery implements Query {
     }
 
     public SqlQueryEntity find(String tableName, String tableAlias) {
+        AssertIllegalArgument.isNotNull(tableName, "tableName");
         AliasManager aliasManager = new AliasManager();
         String alias = tableAlias;
         if (Lang.isNotEmpty(alias)) {
@@ -167,9 +161,9 @@ public class SqlQuery implements Query {
             throw new SqldbHammerException("mappingFactory is null");
         }
         JdbcClassMapping<E> mapping = mappingFactory.getClassMapping(entityType);
-        if (mapping == null) {
-            throw new SqldbHammerException(Strings.format("type {0} is not a entity"));
-        }
+        //        if (mapping == null) { // 不存在的映射类型在mappingFactory就抛出异常了
+        //            throw new SqldbHammerException(Strings.format("type {0} is not a entity"));
+        //        }
 
         EntitySqlQueryRelation queryRelation = new EntitySqlQueryRelation(jdbc, new AliasManager(),
                 IgnoreStrategy.EMPTY);
