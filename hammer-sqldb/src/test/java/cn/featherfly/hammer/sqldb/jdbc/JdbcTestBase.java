@@ -73,7 +73,7 @@ public class JdbcTestBase extends TestBase {
     @BeforeSuite
     @Parameters({ "dataBase" })
     public void init(@Optional("mysql") String dataBase) throws IOException {
-        DOMConfigurator.configure(ClassLoaderUtils.getResource("log4j.xml", JdbcTestBase.class));
+        DOMConfigurator.configure(ClassLoaderUtils.getResource("log4j_dev.xml", this.getClass()));
 
         sqlTypeMappingManager = new SqlTypeMappingManager();
 
@@ -133,7 +133,7 @@ public class JdbcTestBase extends TestBase {
 
         // 初始化数据库
         SqlExecutor sqlExecutor = new SqlExecutor(ds);
-        sqlExecutor.execute(SqlFile.read(ClassLoaderUtils.getResource("test.mysql.sql", JdbcTestBase.class)));
+        sqlExecutor.execute(SqlFile.read(ClassLoaderUtils.getResource("test.mysql.sql", this.getClass())));
 
         dialect = Dialects.MYSQL;
 
@@ -173,8 +173,8 @@ public class JdbcTestBase extends TestBase {
         // 初始化数据库
         SqlExecutor sqlExecutor = new SqlExecutor(ds);
         //        sqlExecutor
-        //                .execute(new File(ClassLoaderUtils.getResource("test.postgresql.sql", JdbcTestBase.class).getFile()));
-        sqlExecutor.execute(SqlFile.read(ClassLoaderUtils.getResource("test.postgresql.sql", JdbcTestBase.class)));
+        //                .execute(new File(ClassLoaderUtils.getResource("test.postgresql.sql", this.getClass()).getFile()));
+        sqlExecutor.execute(SqlFile.read(ClassLoaderUtils.getResource("test.postgresql.sql", this.getClass())));
 
         PostgreSQLDialect postgreSQLDialect = new PostgreSQLDialect();
         //        postgreSQLDialect.setTableAndColumnNameUppercase(StringConverter.UPPER_CASE);
@@ -205,8 +205,8 @@ public class JdbcTestBase extends TestBase {
 
         // 初始化数据库
         SqlExecutor sqlExecutor = new SqlExecutor(ds);
-        //        sqlExecutor.execute(new File(ClassLoaderUtils.getResource("test.sqlite.sql", JdbcTestBase.class).getFile()));
-        sqlExecutor.execute(SqlFile.read(ClassLoaderUtils.getResource("test.sqlite.sql", JdbcTestBase.class)));
+        //        sqlExecutor.execute(new File(ClassLoaderUtils.getResource("test.sqlite.sql", this.getClass()).getFile()));
+        sqlExecutor.execute(SqlFile.read(ClassLoaderUtils.getResource("test.sqlite.sql", this.getClass())));
 
         dialect = Dialects.SQLITE;
 

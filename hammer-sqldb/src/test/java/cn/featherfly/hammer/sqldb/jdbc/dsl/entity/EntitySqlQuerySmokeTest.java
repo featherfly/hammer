@@ -15,7 +15,7 @@ import com.speedment.common.tuple.Tuple2;
 import cn.featherfly.common.structure.page.PaginationResults;
 import cn.featherfly.hammer.sqldb.jdbc.JdbcTestBase;
 import cn.featherfly.hammer.sqldb.jdbc.dsl.query.SqlQuery;
-import cn.featherfly.hammer.sqldb.jdbc.vo.r.Tree2;
+import cn.featherfly.hammer.sqldb.jdbc.vo.r.Tree;
 import cn.featherfly.hammer.sqldb.jdbc.vo.r.User;
 import cn.featherfly.hammer.sqldb.jdbc.vo.r.UserInfo;
 import cn.featherfly.hammer.sqldb.jdbc.vo.s.User2;
@@ -26,7 +26,7 @@ import cn.featherfly.hammer.sqldb.jdbc.vo.s.UserInfo2;
  *
  * @author zhongj
  */
-public class SqlEntityQuerySmokeTest extends JdbcTestBase {
+public class EntitySqlQuerySmokeTest extends JdbcTestBase {
 
     /** The query. */
     SqlQuery query;
@@ -41,7 +41,7 @@ public class SqlEntityQuerySmokeTest extends JdbcTestBase {
     Integer uid = 1;
 
     /** The trees. */
-    List<Tree2> trees = new ArrayList<>();
+    List<Tree> trees = new ArrayList<>();
 
     /**
      * Setup test.

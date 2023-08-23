@@ -4,7 +4,6 @@ package cn.featherfly.hammer.sqldb.jdbc.dsl.entity;
 import java.util.function.Predicate;
 
 import cn.featherfly.common.db.builder.dml.basic.SqlUpdateSetBasicBuilder;
-import cn.featherfly.common.repository.IgnoreStrategy;
 import cn.featherfly.common.repository.builder.AliasManager;
 import cn.featherfly.hammer.sqldb.jdbc.Jdbc;
 
@@ -19,23 +18,23 @@ public class EntitySqlUpdateRelation extends EntitySqlRelation<EntitySqlUpdateRe
 
     private Predicate<Object> setIgnoreStrategy;
 
-    /**
-     * Instantiates a new abstract sql query entity properties.
-     *
-     * @param jdbc         the jdbc
-     * @param aliasManager aliasManager
-     * @param ignoreStrategy the ignore strategy
-     */
-    public EntitySqlUpdateRelation(Jdbc jdbc, AliasManager aliasManager, Predicate<?> ignoreStrategy) {
-        this(jdbc, aliasManager, ignoreStrategy, IgnoreStrategy.NONE);
-    }
+    //    /**
+    //     * Instantiates a new abstract sql query entity properties.
+    //     *
+    //     * @param jdbc         the jdbc
+    //     * @param aliasManager aliasManager
+    //     * @param ignoreStrategy the ignore strategy
+    //     */
+    //    public EntitySqlUpdateRelation(Jdbc jdbc, AliasManager aliasManager, Predicate<?> ignoreStrategy) {
+    //        this(jdbc, aliasManager, ignoreStrategy, IgnoreStrategy.NONE);
+    //    }
 
     /**
      * Instantiates a new abstract sql query entity properties.
      *
      * @param jdbc              the jdbc
      * @param aliasManager      aliasManager
-     * @param ignoreStrategy      the ignore strategy
+     * @param ignoreStrategy    the ignore strategy
      * @param setIgnoreStrategy the set ignore strategy
      */
     @SuppressWarnings("unchecked")

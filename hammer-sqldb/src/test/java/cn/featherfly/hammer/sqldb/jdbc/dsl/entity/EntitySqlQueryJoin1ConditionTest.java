@@ -19,34 +19,65 @@ import cn.featherfly.hammer.sqldb.jdbc.vo.s.User2;
 public class EntitySqlQueryJoin1ConditionTest extends AbstractEntitySqlQueryJoinTest {
 
     @Test
-    void testJoin_ER_TYPE() {
-        Order2 order = query.find(Order2.class).join(User2.class).on(Order2::getCreateUser).where()
-                .eq((e1, e2) -> e1.accept(Order2::getId, oid1)).single();
+    void testJoin_E_R1_on1() {
+        Order2 order = query.find(Order2.class).join(User2.class).on(Order2::getCreateUser).where() //
+                .eq((e1, e2) -> e1.accept(Order2::getId, oid1)) //
+                .single();
         assertNotNull(order);
         assertEquals(order.getId(), oid1);
 
-        order = query.find(Order2.class).join(User2.class).on(Order2::getCreateUser).where()
-                .eq((e1, e2) -> e2.accept(User2::getId, uid1)).single();
+        order = query.find(Order2.class).join(User2.class).on(Order2::getCreateUser).where() //
+                .property((e1, e2) -> e1.apply(Order2::getId).eq(oid1)) //
+                .single();
+        assertNotNull(order);
+        assertEquals(order.getId(), oid1);
+
+        order = query.find(Order2.class).join(User2.class).on(Order2::getCreateUser).where() //
+                .eq((e1, e2) -> e2.accept(User2::getId, uid1)) //
+                .single();
+        assertNotNull(order);
+        assertEquals(order.getId(), oid1);
+
+        order = query.find(Order2.class).join(User2.class).on(Order2::getCreateUser).where() //
+                .property((e1, e2) -> e2.apply(User2::getId).eq(uid1)) //
+                .single();
         assertNotNull(order);
         assertEquals(order.getId(), oid1);
 
         // ****************************************************************************************************************
 
-        Tuple2<Order2, User2> orderUser = query.find(Order2.class).join(User2.class).on(Order2::getCreateUser).fetch()
-                .where().eq((e1, e2) -> e1.accept(Order2::getId, oid1)).single();
+        Tuple2<Order2, User2> orderUser = query.find(Order2.class).join(User2.class).on(Order2::getCreateUser).fetch() //
+                .where() //
+                .eq((e1, e2) -> e1.accept(Order2::getId, oid1)) //
+                .single();
         assertNotNull(orderUser);
         assertEquals(orderUser.get0().getId(), oid1);
         assertEquals(orderUser.get1().getId(), orderUser.get0().getCreateUser());
 
-        orderUser = query.find(Order2.class).join(User2.class).on(Order2::getCreateUser).fetch().where()
-                .eq((e1, e2) -> e2.accept(User2::getId, uid1)).single();
+        orderUser = query.find(Order2.class).join(User2.class).on(Order2::getCreateUser).fetch().where() //
+                .property((e1, e2) -> e1.apply(Order2::getId).eq(oid1)) //
+                .single();
+        assertNotNull(orderUser);
+        assertEquals(orderUser.get0().getId(), oid1);
+        assertEquals(orderUser.get1().getId(), orderUser.get0().getCreateUser());
+
+        orderUser = query.find(Order2.class).join(User2.class).on(Order2::getCreateUser).fetch().where() //
+                .eq((e1, e2) -> e2.accept(User2::getId, uid1)) //
+                .single();
+        assertNotNull(orderUser);
+        assertEquals(orderUser.get0().getId(), oid1);
+        assertEquals(orderUser.get1().getId(), orderUser.get0().getCreateUser());
+
+        orderUser = query.find(Order2.class).join(User2.class).on(Order2::getCreateUser).fetch().where() //
+                .property((e1, e2) -> e2.apply(User2::getId).eq(uid1)) //
+                .single();
         assertNotNull(orderUser);
         assertEquals(orderUser.get0().getId(), oid1);
         assertEquals(orderUser.get1().getId(), orderUser.get0().getCreateUser());
     }
 
     @Test
-    void testJoin_ER_RJ() {
+    void testJoin_E_R1_on3() {
         Order2 order = query.find(Order2.class).join(User2.class).on(Order2::getCreateUser, User2::getId).where()
                 .eq((e1, e2) -> e1.accept(Order2::getId, oid1)).single();
         assertNotNull(order);
@@ -74,7 +105,7 @@ public class EntitySqlQueryJoin1ConditionTest extends AbstractEntitySqlQueryJoin
     }
 
     @Test
-    void testJoin_RJ() {
+    void testJoin_E_R1_on2() {
         User2 user = query.find(User2.class).join(Order2.class).on(Order2::getCreateUser).where()
                 .eq((e1, e2) -> e2.accept(Order2::getId, oid1)).single();
         assertNotNull(user);

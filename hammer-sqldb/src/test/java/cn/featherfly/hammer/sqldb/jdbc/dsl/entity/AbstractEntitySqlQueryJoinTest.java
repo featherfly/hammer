@@ -11,12 +11,12 @@ import org.testng.annotations.BeforeClass;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
-import cn.featherfly.hammer.sqldb.jdbc.JdbcTestBase;
+import cn.featherfly.hammer.sqldb.jdbc.HammerJdbcTestBase;
 import cn.featherfly.hammer.sqldb.jdbc.dsl.query.SqlQuery;
-import cn.featherfly.hammer.sqldb.jdbc.vo.r.Tree2;
+import cn.featherfly.hammer.sqldb.jdbc.vo.r.Order;
+import cn.featherfly.hammer.sqldb.jdbc.vo.r.Tree;
 import cn.featherfly.hammer.sqldb.jdbc.vo.r.User;
 import cn.featherfly.hammer.sqldb.jdbc.vo.r.UserInfo;
-import cn.featherfly.hammer.sqldb.jdbc.vo.r.order.Order2;
 import cn.featherfly.hammer.sqldb.jdbc.vo.r.order.OrderInfo;
 
 /**
@@ -25,7 +25,7 @@ import cn.featherfly.hammer.sqldb.jdbc.vo.r.order.OrderInfo;
  * @author zhongj
  */
 @Test(groups = "TypeJoin")
-public class AbstractEntitySqlQueryJoinTest extends JdbcTestBase {
+public class AbstractEntitySqlQueryJoinTest extends HammerJdbcTestBase {
 
     SqlQuery query;
 
@@ -39,9 +39,11 @@ public class AbstractEntitySqlQueryJoinTest extends JdbcTestBase {
     Long oid2 = 2L;
     Long oid3 = 3L;
     Integer tid = 7;
-    List<Tree2> trees = new ArrayList<>();
-    Tree2 tree;
-    Order2 order;
+    Integer tid1 = 1;
+    Integer tid2 = 2;
+    List<Tree> trees = new ArrayList<>();
+    Tree tree;
+    Order order;
     OrderInfo orderInfo;
 
     @BeforeClass
@@ -60,7 +62,7 @@ public class AbstractEntitySqlQueryJoinTest extends JdbcTestBase {
         trees = new ArrayList<>();
     }
 
-    void assertTree(Tree2 tree, boolean fetched) {
+    void assertTree(Tree tree, boolean fetched) {
         assertNotNull(tree.getParent());
         assertNotNull(tree.getParent().getId());
         if (fetched) {

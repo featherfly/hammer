@@ -22,27 +22,27 @@ import cn.featherfly.hammer.sqldb.jdbc.JdbcTestBase;
 import cn.featherfly.hammer.sqldb.jdbc.dsl.entity.query.EntitySqlQueryExpression;
 import cn.featherfly.hammer.sqldb.jdbc.dsl.query.SqlQuery;
 import cn.featherfly.hammer.sqldb.jdbc.vo.r.DistrictDivision;
+import cn.featherfly.hammer.sqldb.jdbc.vo.r.Order;
 import cn.featherfly.hammer.sqldb.jdbc.vo.r.Role;
 import cn.featherfly.hammer.sqldb.jdbc.vo.r.Tree;
-import cn.featherfly.hammer.sqldb.jdbc.vo.r.Tree2;
 import cn.featherfly.hammer.sqldb.jdbc.vo.r.User;
 import cn.featherfly.hammer.sqldb.jdbc.vo.r.UserInfo;
 import cn.featherfly.hammer.sqldb.jdbc.vo.r.UserRole2;
-import cn.featherfly.hammer.sqldb.jdbc.vo.r.order.Order2;
+import cn.featherfly.hammer.sqldb.jdbc.vo.s.Tree2;
 
 /**
  * sql query type test.
  *
  * @author zhongj
  */
-public class SqlQueryTypeTest extends JdbcTestBase {
+public class EntitySqlQueryTest extends JdbcTestBase {
 
     SqlQuery query;
 
     UserInfo userInfo = null;
     User user = null;
     Integer uid = 1;
-    List<Tree2> trees = new ArrayList<>();
+    List<Tree> trees = new ArrayList<>();
 
     @BeforeTest
     void setupTest() {
@@ -59,7 +59,7 @@ public class SqlQueryTypeTest extends JdbcTestBase {
 
     @Test
     void testList() {
-        List<Order2> list = query.find(Order2.class).list();
+        List<Order> list = query.find(Order.class).list();
         assertTrue(list.size() > 0);
     }
 
@@ -302,7 +302,7 @@ public class SqlQueryTypeTest extends JdbcTestBase {
     void testNestedMapping() {
         Integer userId = 1;
         //        UserInfo userInfo = query.find(UserInfo.class).where().eq("user.id", userId).single();
-        UserInfo userInfo = query.find(UserInfo.class).where().eq(UserInfo::getUser, userId).single(); // YUFEI_TODO 需要测试
+        UserInfo userInfo = query.find(UserInfo.class).where().eq(UserInfo::getUser, userId).single();
         assertEquals(userInfo.getUser().getId(), userId);
         System.out.println(userInfo);
     }
@@ -371,9 +371,9 @@ public class SqlQueryTypeTest extends JdbcTestBase {
         //                .join(UserRole2::getRole).list();
         //        System.out.println(list.size());
 
-        query.find(Tree2.class).join(Tree2::getParent).list();
+        query.find(Tree.class).join(Tree::getParent).list();
 
-        query.find(Tree2.class).join(Tree2::getParent).join2(Tree2::getParent).list();
+        query.find(Tree.class).join(Tree::getParent).join2(Tree::getParent).list();
     }
 
     @Test
@@ -408,8 +408,8 @@ public class SqlQueryTypeTest extends JdbcTestBase {
              c.eq() ..... // 关联user的条件查询
          }).fetch().join(UserRole2::getUser).fetch()
                 .join(UserRole2::getRole).fetch().list();
-        
-        
+
+
          */
     }
 
@@ -533,18 +533,18 @@ public class SqlQueryTypeTest extends JdbcTestBase {
     @Test
     void testJoinMulity() {
 
-        List<Tree2> list1 = query.find(Tree2.class).list();
+        List<Tree> list1 = query.find(Tree.class).list();
         list1.forEach(v -> {
             System.err.println(v);
         });
 
-        List<Tree2> list2 = query.find(Tree2.class).join(Tree2::getParent).list();
+        List<Tree> list2 = query.find(Tree.class).join(Tree::getParent).list();
         list2.forEach(v -> {
             assertNotNull(v.getParent().getId());
             System.err.println(v);
         });
 
-        list2 = query.find(Tree2.class).join(Tree2::getParent).join(Tree2::getParent).list();
+        list2 = query.find(Tree.class).join(Tree::getParent).join(Tree::getParent).list();
         list2.forEach(v -> {
             assertNotNull(v.getParent().getId());
             System.err.println(v);
@@ -556,7 +556,7 @@ public class SqlQueryTypeTest extends JdbcTestBase {
         //            assertNotNull(v.get0().getParent().getName());
         //            System.err.println(v);
         //        });
-        List<Tree2> list3 = query.find(Tree2.class).join(Tree2::getParent).fetch().list();
+        List<Tree> list3 = query.find(Tree.class).join(Tree::getParent).fetch().list();
         list3.forEach(v -> {
             assertNotNull(v.getParent().getId());
             assertNotNull(v.getParent().getName());
@@ -594,9 +594,9 @@ public class SqlQueryTypeTest extends JdbcTestBase {
     void testManyToOne() {
 
         int parent = 1;
-        List<Tree2> list = query.find(Tree2.class).where().eq(Tree2::getParent, parent).list();
+        List<Tree> list = query.find(Tree.class).where().eq(Tree::getParent, parent).list();
         System.out.println(list);
-        for (Tree2 t : list) {
+        for (Tree t : list) {
             assertTrue(parent == t.getParent().getId());
         }
     }
@@ -605,11 +605,11 @@ public class SqlQueryTypeTest extends JdbcTestBase {
     void testManyToOne2() {
 
         int parent = 1;
-        Tree2 tree2 = new Tree2();
-        tree2.setParent(new Tree2(parent));
-        List<Tree2> list = query.find(Tree2.class).where().eq(tree2::getParent).list();
+        Tree tree2 = new Tree();
+        tree2.setParent(new Tree(parent));
+        List<Tree> list = query.find(Tree.class).where().eq(tree2::getParent).list();
         System.out.println(list);
-        for (Tree2 t : list) {
+        for (Tree t : list) {
             assertTrue(1 == t.getParent().getId());
         }
     }

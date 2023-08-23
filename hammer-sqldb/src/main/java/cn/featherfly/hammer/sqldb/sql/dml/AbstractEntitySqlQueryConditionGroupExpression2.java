@@ -4,7 +4,6 @@ package cn.featherfly.hammer.sqldb.sql.dml;
 import java.util.Arrays;
 import java.util.List;
 import java.util.function.BiConsumer;
-import java.util.function.BiFunction;
 import java.util.function.Consumer;
 
 import com.speedment.common.tuple.Tuple2;
@@ -24,7 +23,6 @@ import cn.featherfly.common.repository.builder.dml.SortBuilder;
 import cn.featherfly.common.structure.page.Limit;
 import cn.featherfly.common.structure.page.PaginationResults;
 import cn.featherfly.hammer.expression.condition.ParamedExpression;
-import cn.featherfly.hammer.expression.entity.condition.EntityPropertyExpression2;
 import cn.featherfly.hammer.expression.entity.condition.co.ContainsEntityExpression;
 import cn.featherfly.hammer.expression.entity.condition.co.ContainsEntityExpressionImpl;
 import cn.featherfly.hammer.expression.entity.condition.co.EntityContainsExpression2;
@@ -77,7 +75,6 @@ import cn.featherfly.hammer.expression.entity.condition.nin.EntityNotInExpressio
 import cn.featherfly.hammer.expression.entity.condition.nin.MulitiEntityNotInExpression;
 import cn.featherfly.hammer.expression.entity.condition.nin.NotInEntityExpression;
 import cn.featherfly.hammer.expression.entity.condition.nin.NotInEntityExpressionImpl;
-import cn.featherfly.hammer.expression.entity.condition.property.EntityPropertyFunction;
 import cn.featherfly.hammer.expression.entity.condition.sw.EntityStartWithExpression2;
 import cn.featherfly.hammer.expression.entity.condition.sw.MulitiEntityStartWithExpression;
 import cn.featherfly.hammer.expression.entity.condition.sw.StartWithEntityExpression;
@@ -130,8 +127,7 @@ public abstract class AbstractEntitySqlQueryConditionGroupExpression2<E, E2, RS,
         EntityLessEqualsExpression2<E, E2, C, L>, EntityLessThanExpression2<E, E2, C, L>,
         EntityNotEqualsExpression2<E, E2, C, L>, EntityNotInExpression2<E, E2, C, L>,
         EntityStartWithExpression2<E, E2, C, L>, EntityLikeExpression2<E, E2, C, L>,
-        EntityPropertyExpression2<E, E2, C, L>, EntityQuerySortExpression2<E, E2, RS>,
-        EntityQuerySortedExpression2<E, E2, RS> {
+        EntityQuerySortExpression2<E, E2, RS>, EntityQuerySortedExpression2<E, E2, RS> {
 
     private SqlSortBuilder sortBuilder;
 
@@ -573,18 +569,6 @@ public abstract class AbstractEntitySqlQueryConditionGroupExpression2<E, E2, RS,
         likeEntityExpressions.accept(new LikeEntityExpressionImpl<E, C, L>(0, mulitiExpression),
                 new LikeEntityExpressionImpl<E2, C, L>(1, mulitiExpression));
         return (L) this;
-    }
-
-    // ****************************************************************************************************************
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public L property(
-            BiFunction<EntityPropertyFunction<E, C, L>, EntityPropertyFunction<E2, C, L>, L> entitiesPropertyFunction) {
-        // IMPLSOON 后续来实现property 多实体
-        return null;
     }
 
     // ****************************************************************************************************************

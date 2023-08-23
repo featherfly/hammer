@@ -8,9 +8,7 @@ import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 /**
- * <p>
- * User
- * </p>
+ * The Class UserInfo2.
  *
  * @author zhongj
  */
@@ -33,7 +31,7 @@ public class UserInfo2 {
     private DistrictDivision division;
 
     /**
-     * 返回id
+     * 返回id.
      *
      * @return id
      */
@@ -42,7 +40,7 @@ public class UserInfo2 {
     }
 
     /**
-     * 设置id
+     * 设置id.
      *
      * @param id id
      */
@@ -51,7 +49,7 @@ public class UserInfo2 {
     }
 
     /**
-     * 返回name
+     * 返回name.
      *
      * @return name
      */
@@ -60,7 +58,7 @@ public class UserInfo2 {
     }
 
     /**
-     * 设置name
+     * 设置name.
      *
      * @param name name
      */
@@ -69,7 +67,7 @@ public class UserInfo2 {
     }
 
     /**
-     * 返回descp
+     * 返回descp.
      *
      * @return descp
      */
@@ -78,7 +76,7 @@ public class UserInfo2 {
     }
 
     /**
-     * 设置descp
+     * 设置descp.
      *
      * @param descp descp
      */
@@ -87,7 +85,7 @@ public class UserInfo2 {
     }
 
     /**
-     * 返回user
+     * 返回user.
      *
      * @return user
      */
@@ -96,7 +94,7 @@ public class UserInfo2 {
     }
 
     /**
-     * 设置user
+     * 设置user.
      *
      * @param user user
      */
@@ -105,7 +103,7 @@ public class UserInfo2 {
     }
 
     /**
-     * 返回division
+     * 返回division.
      *
      * @return division
      */
@@ -114,7 +112,7 @@ public class UserInfo2 {
     }
 
     /**
-     * 设置division
+     * 设置division.
      *
      * @param division division
      */

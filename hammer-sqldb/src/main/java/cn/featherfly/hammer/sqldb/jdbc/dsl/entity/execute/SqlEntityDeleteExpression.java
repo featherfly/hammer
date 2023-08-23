@@ -26,7 +26,7 @@ public class SqlEntityDeleteExpression<E> extends
      */
     public SqlEntityDeleteExpression(JdbcMappingFactory factory, EntitySqlDeleteRelation entityRelation) {
         // ENHANCE 删除暂时没有支持别名
-        super(null, factory, entityRelation);
+        this(null, factory, entityRelation);
     }
 
     /**
@@ -75,8 +75,7 @@ public class SqlEntityDeleteExpression<E> extends
      * {@inheritDoc}
      */
     @Override
-    protected EntityExecutableConditionGroup<E> createGroup(
-            EntityExecutableConditionGroupLogic<E> parent) {
+    protected EntityExecutableConditionGroup<E> createGroup(EntityExecutableConditionGroupLogic<E> parent) {
         return new SqlEntityDeleteExpression<>(parent, factory, entityRelation);
     }
 }

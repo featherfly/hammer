@@ -5,6 +5,7 @@ import java.util.function.Predicate;
 
 import cn.featherfly.common.constant.Chars;
 import cn.featherfly.common.db.builder.dml.basic.SqlSelectBasicBuilder;
+import cn.featherfly.common.exception.NotImplementedException;
 import cn.featherfly.common.lang.Lang;
 import cn.featherfly.common.operator.AggregateFunction;
 import cn.featherfly.common.operator.QueryOperator;
@@ -132,8 +133,8 @@ public class SqlQueryExpression extends SqlQueryConditionGroupExpression {
      */
     @Override
     public String getAlias(int index) {
-        // YUFEI_TODO Auto-generated method stub
-        return null;
+        // IMPLSOON 未实现
+        throw new NotImplementedException();
     }
 
     /**
@@ -141,8 +142,8 @@ public class SqlQueryExpression extends SqlQueryConditionGroupExpression {
      */
     @Override
     public <CM extends ClassMapping<T, P>, T, P extends PropertyMapping<P>> CM getClassMapping(int index) {
-        // YUFEI_TODO Auto-generated method stub
-        return null;
+        // IMPLSOON 未实现
+        throw new NotImplementedException();
     }
 
     /**
@@ -151,7 +152,7 @@ public class SqlQueryExpression extends SqlQueryConditionGroupExpression {
     @Override
     protected <T, R> QueryConditionGroupLogicExpression eq_ne(int index, QueryOperator queryOperator,
             PropertyMapping<?> pm, R value, QueryPolicy queryPolicy, Predicate<?> ignoreStrategy) {
-        // YUFEI_TODO Auto-generated method stub
-        return null;
+        // IMPLSOON 未实现
+        throw new NotImplementedException();
     }
 }

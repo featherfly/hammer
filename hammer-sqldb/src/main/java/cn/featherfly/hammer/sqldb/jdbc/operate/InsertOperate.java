@@ -65,78 +65,6 @@ public class InsertOperate<T> extends AbstractBatchExecuteOperate<T> {
         super(jdbc, classMapping, sqlTypeMappingManager, databaseMetadata);
     }
 
-    //    /**
-    //     * {@inheritDoc}
-    //     */
-    //    @Override
-    //    public int executeBatch(final List<T> entities, int batchSize) {
-    //        if (Lang.isEmpty(entities)) {
-    //            return Chars.ZERO;
-    //        }
-    //        if (jdbc.getDialect().supportInsertBatch()) {
-    //            return _executeBatch(entities, batchSize);
-    //        } else {
-    //            int size = 0;
-    //            for (T entity : entities) {
-    //                size += execute(entity);
-    //            }
-    //            return size;
-    //        }
-    //    }
-
-    //    /**
-    //     * {@inheritDoc}
-    //     */
-    //    @Override
-    //    public int executeBatch(final List<T> entities, int batchSize) {
-    //        if (Lang.isEmpty(entities)) {
-    //            return Chars.ZERO;
-    //        }
-    //        if (supportBatch()) {
-    //            return doExecuteBatch(entities, batchSize);
-    //        } else {
-    //            int size = 0;
-    //            List<JdbcPropertyMapping> pks = classMapping.getPrivaryKeyPropertyMappings();
-    //            List<Object[]> argsList = new ArrayList<>(entities.size());
-    //            for (T entity : entities) {
-    //                argsList.add(getParameters(entity));
-    //            }
-    //            GeneratedKeyHolder<Serializable> keyHolder = new GeneratedKeyHolder<Serializable>() {
-    //                @Override
-    //                public void acceptKey(Serializable key, int row) {
-    //                    // YUFEI_TODO 需要更多测试各种情况是否正确
-    //                    if (BeanUtils.getProperty(entities.get(row), pks.get(0).getPropertyName()) == null) {
-    //                        BeanUtils.setProperty(entities.get(row), pks.get(0).getPropertyName(), key);
-    //                    }
-    //                }
-    //
-    //                @Override
-    //                public Type<Serializable> getType() {
-    //                    return BeanDescriptor.getBeanDescriptor(classMapping.getType())
-    //                            .getBeanProperty(pks.get(0).getPropertyName());
-    //                }
-    //
-    //                @Override
-    //                public void acceptKey(List<Serializable> keys) {
-    //                    for (int i = 0; i < keys.size(); i++) {
-    //                        acceptKey(keys.get(i), i);
-    //                    }
-    //                }
-    //            };
-    //
-    //            int[] results;
-    //            if (pks.size() == 1) {
-    //                results = jdbc.updateBatch(sql, keyHolder, argsList);
-    //            } else {
-    //                results = jdbc.updateBatch(sql, argsList);
-    //            }
-    //            for (int r : results) {
-    //                size += r;
-    //            }
-    //            return size;
-    //        }
-    //    }
-
     @Override
     protected int doExecuteBatch(final List<T> entities) {
         List<JdbcPropertyMapping> pks = classMapping.getPrivaryKeyPropertyMappings();
@@ -147,7 +75,7 @@ public class InsertOperate<T> extends AbstractBatchExecuteOperate<T> {
             return jdbc.updateBatch(sql, entities.size(), new GeneratedKeyHolder<Serializable>() {
                 @Override
                 public void acceptKey(Serializable key, int row) {
-                    // YUFEI_TODO 需要更多测试各种情况是否正确
+                    // YUFEI_TEST 需要更多测试各种情况是否正确
                     if (BeanUtils.getProperty(entities.get(row), pks.get(0).getPropertyName()) == null) {
                         BeanUtils.setProperty(entities.get(row), pks.get(0).getPropertyName(), key);
                     }
@@ -199,7 +127,7 @@ public class InsertOperate<T> extends AbstractBatchExecuteOperate<T> {
             return jdbc.update(sql, new GeneratedKeyHolder<Serializable>() {
                 @Override
                 public void acceptKey(Serializable key, int row) {
-                    // YUFEI_TODO 需要更多测试各种情况是否正确
+                    // YUFEI_TEST 需要更多测试各种情况是否正确
                     if (BeanUtils.getProperty(entity, pks.get(0).getPropertyName()) == null) {
                         BeanUtils.setProperty(entity, pks.get(0).getPropertyName(), key);
                     }
@@ -238,7 +166,7 @@ public class InsertOperate<T> extends AbstractBatchExecuteOperate<T> {
             results = jdbc.updateBatch(sql, new GeneratedKeyHolder<Serializable>() {
                 @Override
                 public void acceptKey(Serializable key, int row) {
-                    // YUFEI_TODO 需要更多测试各种情况是否正确
+                    // YUFEI_TEST 需要更多测试各种情况是否正确
                     if (BeanUtils.getProperty(entities.get(row), pks.get(0).getPropertyName()) == null) {
                         BeanUtils.setProperty(entities.get(row), pks.get(0).getPropertyName(), key);
                     }

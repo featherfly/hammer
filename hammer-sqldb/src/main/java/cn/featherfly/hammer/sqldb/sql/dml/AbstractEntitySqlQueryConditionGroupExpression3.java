@@ -15,7 +15,6 @@ import cn.featherfly.common.db.builder.dml.basic.SqlSelectBasicBuilder;
 import cn.featherfly.common.db.mapping.ClassMappingUtils;
 import cn.featherfly.common.db.mapping.JdbcMappingFactory;
 import cn.featherfly.common.function.ThreeArgusConsumer;
-import cn.featherfly.common.function.ThreeArgusFunction;
 import cn.featherfly.common.lang.LambdaUtils;
 import cn.featherfly.common.lang.function.SerializableFunction;
 import cn.featherfly.common.operator.AggregateFunction;
@@ -24,7 +23,6 @@ import cn.featherfly.common.repository.builder.dml.SortBuilder;
 import cn.featherfly.common.structure.page.Limit;
 import cn.featherfly.common.structure.page.PaginationResults;
 import cn.featherfly.hammer.expression.condition.ParamedExpression;
-import cn.featherfly.hammer.expression.entity.condition.EntityPropertyExpression3;
 import cn.featherfly.hammer.expression.entity.condition.co.ContainsEntityExpression;
 import cn.featherfly.hammer.expression.entity.condition.co.ContainsEntityExpressionImpl;
 import cn.featherfly.hammer.expression.entity.condition.co.EntityContainsExpression3;
@@ -77,7 +75,6 @@ import cn.featherfly.hammer.expression.entity.condition.nin.EntityNotInExpressio
 import cn.featherfly.hammer.expression.entity.condition.nin.MulitiEntityNotInExpression;
 import cn.featherfly.hammer.expression.entity.condition.nin.NotInEntityExpression;
 import cn.featherfly.hammer.expression.entity.condition.nin.NotInEntityExpressionImpl;
-import cn.featherfly.hammer.expression.entity.condition.property.EntityPropertyFunction;
 import cn.featherfly.hammer.expression.entity.condition.sw.EntityStartWithExpression3;
 import cn.featherfly.hammer.expression.entity.condition.sw.MulitiEntityStartWithExpression;
 import cn.featherfly.hammer.expression.entity.condition.sw.StartWithEntityExpression;
@@ -132,8 +129,8 @@ public abstract class AbstractEntitySqlQueryConditionGroupExpression3<E, E2, E3,
         EntityIsNullExpression3<E, E2, E3, C, L>, EntityLessEqualsExpression3<E, E2, E3, C, L>,
         EntityLessThanExpression3<E, E2, E3, C, L>, EntityNotEqualsExpression3<E, E2, E3, C, L>,
         EntityNotInExpression3<E, E2, E3, C, L>, EntityStartWithExpression3<E, E2, E3, C, L>,
-        EntityLikeExpression3<E, E2, E3, C, L>, EntityPropertyExpression3<E, E2, E3, C, L>,
-        EntityQuerySortExpression3<E, E2, E3, RS>, EntityQuerySortedExpression3<E, E2, E3, RS> {
+        EntityLikeExpression3<E, E2, E3, C, L>, EntityQuerySortExpression3<E, E2, E3, RS>,
+        EntityQuerySortedExpression3<E, E2, E3, RS> {
 
     private SqlSortBuilder sortBuilder;
 
@@ -622,18 +619,6 @@ public abstract class AbstractEntitySqlQueryConditionGroupExpression3<E, E2, E3,
                 new LikeEntityExpressionImpl<E2, C, L>(1, mulitiExpression),
                 new LikeEntityExpressionImpl<E3, C, L>(2, mulitiExpression));
         return (L) this;
-    }
-
-    // ****************************************************************************************************************
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public L property(ThreeArgusFunction<EntityPropertyFunction<E, C, L>, EntityPropertyFunction<E2, C, L>,
-            EntityPropertyFunction<E3, C, L>, L> entitiesPropertyFunction) {
-        // IMPLSOON 后续来实现property 多实体
-        return null;
     }
 
     // ****************************************************************************************************************

@@ -15,7 +15,6 @@ import cn.featherfly.common.db.builder.dml.basic.SqlSelectBasicBuilder;
 import cn.featherfly.common.db.mapping.ClassMappingUtils;
 import cn.featherfly.common.db.mapping.JdbcMappingFactory;
 import cn.featherfly.common.function.FourArgusConsumer;
-import cn.featherfly.common.function.FourArgusFunction;
 import cn.featherfly.common.lang.LambdaUtils;
 import cn.featherfly.common.lang.function.SerializableFunction;
 import cn.featherfly.common.operator.AggregateFunction;
@@ -24,7 +23,6 @@ import cn.featherfly.common.repository.builder.dml.SortBuilder;
 import cn.featherfly.common.structure.page.Limit;
 import cn.featherfly.common.structure.page.PaginationResults;
 import cn.featherfly.hammer.expression.condition.ParamedExpression;
-import cn.featherfly.hammer.expression.entity.condition.EntityPropertyExpression4;
 import cn.featherfly.hammer.expression.entity.condition.co.ContainsEntityExpression;
 import cn.featherfly.hammer.expression.entity.condition.co.ContainsEntityExpressionImpl;
 import cn.featherfly.hammer.expression.entity.condition.co.EntityContainsExpression4;
@@ -77,7 +75,6 @@ import cn.featherfly.hammer.expression.entity.condition.nin.EntityNotInExpressio
 import cn.featherfly.hammer.expression.entity.condition.nin.MulitiEntityNotInExpression;
 import cn.featherfly.hammer.expression.entity.condition.nin.NotInEntityExpression;
 import cn.featherfly.hammer.expression.entity.condition.nin.NotInEntityExpressionImpl;
-import cn.featherfly.hammer.expression.entity.condition.property.EntityPropertyFunction;
 import cn.featherfly.hammer.expression.entity.condition.sw.EntityStartWithExpression4;
 import cn.featherfly.hammer.expression.entity.condition.sw.MulitiEntityStartWithExpression;
 import cn.featherfly.hammer.expression.entity.condition.sw.StartWithEntityExpression;
@@ -137,8 +134,8 @@ public abstract class AbstractEntitySqlQueryConditionGroupExpression4<E, E2, E3,
         EntityIsNullExpression4<E, E2, E3, E4, C, L>, EntityLessEqualsExpression4<E, E2, E3, E4, C, L>,
         EntityLessThanExpression4<E, E2, E3, E4, C, L>, EntityNotEqualsExpression4<E, E2, E3, E4, C, L>,
         EntityNotInExpression4<E, E2, E3, E4, C, L>, EntityStartWithExpression4<E, E2, E3, E4, C, L>,
-        EntityLikeExpression4<E, E2, E3, E4, C, L>, EntityPropertyExpression4<E, E2, E3, E4, C, L>,
-        EntityQuerySortExpression4<E, E2, E3, E4, RS>, EntityQuerySortedExpression4<E, E2, E3, E4, RS> {
+        EntityLikeExpression4<E, E2, E3, E4, C, L>, EntityQuerySortExpression4<E, E2, E3, E4, RS>,
+        EntityQuerySortedExpression4<E, E2, E3, E4, RS> {
 
     private SqlSortBuilder sortBuilder;
 
@@ -657,18 +654,6 @@ public abstract class AbstractEntitySqlQueryConditionGroupExpression4<E, E2, E3,
                 new ContainsEntityExpressionImpl<E3, C, L>(2, mulitiEntityContainsExpression),
                 new ContainsEntityExpressionImpl<E4, C, L>(3, mulitiEntityContainsExpression));
         return (L) this;
-    }
-
-    // ****************************************************************************************************************
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public L property(FourArgusFunction<EntityPropertyFunction<E, C, L>, EntityPropertyFunction<E2, C, L>,
-            EntityPropertyFunction<E3, C, L>, EntityPropertyFunction<E4, C, L>, L> entitiesPropertyFunction) {
-        // IMPLSOON 后续来实现property 多实体
-        return null;
     }
 
     // ****************************************************************************************************************

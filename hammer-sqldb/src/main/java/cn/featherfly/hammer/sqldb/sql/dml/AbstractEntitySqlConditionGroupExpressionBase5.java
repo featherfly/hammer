@@ -11,6 +11,7 @@ import java.util.function.Predicate;
 import cn.featherfly.common.db.builder.SqlBuilder;
 import cn.featherfly.common.db.mapping.JdbcClassMapping;
 import cn.featherfly.common.db.mapping.JdbcMappingFactory;
+import cn.featherfly.common.function.FiveArgusFunction;
 import cn.featherfly.common.lang.function.SerializableDateSupplier;
 import cn.featherfly.common.lang.function.SerializableDoubleSupplier;
 import cn.featherfly.common.lang.function.SerializableFunction;
@@ -29,6 +30,7 @@ import cn.featherfly.common.lang.function.SerializableToLongFunction5;
 import cn.featherfly.common.operator.QueryOperator.QueryPolicy;
 import cn.featherfly.hammer.expression.condition.GroupEndExpression;
 import cn.featherfly.hammer.expression.condition.GroupExpression;
+import cn.featherfly.hammer.expression.entity.condition.EntityPropertyExpression5;
 import cn.featherfly.hammer.expression.entity.condition.co.EntityContainsExpressionBase5;
 import cn.featherfly.hammer.expression.entity.condition.eq.EntityEqualsExpressionBase5;
 import cn.featherfly.hammer.expression.entity.condition.ew.EntityEndWithExpressionBase5;
@@ -42,9 +44,11 @@ import cn.featherfly.hammer.expression.entity.condition.lk.EntityLikeExpressionB
 import cn.featherfly.hammer.expression.entity.condition.lt.EntityLessThanExpressionBase5;
 import cn.featherfly.hammer.expression.entity.condition.ne.EntityNotEqualsExpressionBase5;
 import cn.featherfly.hammer.expression.entity.condition.nin.EntityNotInExpressionBase5;
+import cn.featherfly.hammer.expression.entity.condition.property.EntityPropertyFunction;
 import cn.featherfly.hammer.expression.entity.condition.sw.EntityStartWithExpressionBase5;
 import cn.featherfly.hammer.sqldb.jdbc.dsl.entity.EntitySqlRelation;
 import cn.featherfly.hammer.sqldb.jdbc.dsl.entity.EntitySqlRelation.EntityRelationMapping;
+import cn.featherfly.hammer.sqldb.jdbc.dsl.entity.condition.EntityPropertyFunctionImpl;
 
 /**
  * sql condition group builder sql条件逻辑组构造器 .
@@ -66,7 +70,7 @@ public abstract class AbstractEntitySqlConditionGroupExpressionBase5<E, E2, E3, 
         EntityLessEqualsExpressionBase5<E, E2, E3, E4, E5, C, L>,
         EntityLessThanExpressionBase5<E, E2, E3, E4, E5, C, L>, EntityNotEqualsExpressionBase5<E, E2, E3, E4, E5, C, L>,
         EntityNotInExpressionBase5<E, E2, E3, E4, E5, C, L>, EntityStartWithExpressionBase5<E, E2, E3, E4, E5, C, L>,
-        EntityLikeExpressionBase5<E, E2, E3, E4, E5, C, L> {
+        EntityLikeExpressionBase5<E, E2, E3, E4, E5, C, L>, EntityPropertyExpression5<E, E2, E3, E4, E5, C, L> {
 
     /** The class mapping. */
     protected JdbcClassMapping<E5> classMapping5;
@@ -1389,6 +1393,20 @@ public abstract class AbstractEntitySqlConditionGroupExpressionBase5<E, E2, E3, 
     @Override
     public <R> L isn5(SerializableFunction<E5, R> name, Boolean value) {
         return isn(classMapping5, name, value, queryAlias5);
+    }
+
+    // ****************************************************************************************************************
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public L property(FiveArgusFunction<EntityPropertyFunction<E, C, L>, EntityPropertyFunction<E2, C, L>,
+            EntityPropertyFunction<E3, C, L>, EntityPropertyFunction<E4, C, L>, EntityPropertyFunction<E5, C, L>,
+            L> entitiesPropertyFunction) {
+        return entitiesPropertyFunction.apply(new EntityPropertyFunctionImpl<E, C, L>(0, this),
+                new EntityPropertyFunctionImpl<E2, C, L>(1, this), new EntityPropertyFunctionImpl<E3, C, L>(2, this),
+                new EntityPropertyFunctionImpl<E4, C, L>(3, this), new EntityPropertyFunctionImpl<E5, C, L>(4, this));
     }
 
     // ********************************************************************

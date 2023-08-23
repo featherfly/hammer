@@ -1,13 +1,11 @@
 
 package cn.featherfly.hammer.sqldb.jdbc.dsl.entity.query;
 
-import java.io.Serializable;
 import java.util.List;
 
 import cn.featherfly.common.constant.Chars;
 import cn.featherfly.common.db.mapping.JdbcMappingFactory;
 import cn.featherfly.common.lang.AssertIllegalArgument;
-import cn.featherfly.common.lang.LambdaUtils;
 import cn.featherfly.common.operator.AggregateFunction;
 import cn.featherfly.common.structure.page.Limit;
 import cn.featherfly.common.structure.page.PaginationResults;
@@ -98,7 +96,7 @@ public abstract class AbstractEntitySqlQuery<R>
                 queryRelation.getIgnorePolicy()).longInt();
     }
 
-    protected String getPropertyName(Serializable property) {
-        return LambdaUtils.getLambdaPropertyName(property);
-    }
+    //    protected String getPropertyName(Serializable property) {
+    //        return LambdaUtils.getLambdaPropertyName(property);
+    //    }
 }

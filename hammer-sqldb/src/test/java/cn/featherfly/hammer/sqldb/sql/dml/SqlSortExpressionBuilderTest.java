@@ -23,20 +23,20 @@ public class SqlSortExpressionBuilderTest extends TestBase {
         SqlSortExpressionBuilder builder = new SqlSortExpressionBuilder(Dialects.MYSQL);
         String result = builder.asc("id", "name").build();
         System.out.println(result);
-        assertEquals(result, " ORDER BY `id` ASC, `name` ASC");
+        assertEquals(result, "ORDER BY `id` ASC, `name` ASC");
         assertEquals(builder.expression(), result);
         System.out.println(builder.toString());
 
         builder = new SqlSortExpressionBuilder(Dialects.MYSQL, "u");
         result = builder.asc(ArrayUtils.toList("id", "name")).build();
         System.out.println(result);
-        assertEquals(result, " ORDER BY u.`id` ASC, u.`name` ASC");
+        assertEquals(result, "ORDER BY u.`id` ASC, u.`name` ASC");
         assertEquals(builder.expression(), result);
 
         builder = new SqlSortExpressionBuilder(Dialects.MYSQL);
         result = builder.desc("id", "name").build();
         System.out.println(result);
-        assertEquals(result, " ORDER BY `id` DESC, `name` DESC");
+        assertEquals(result, "ORDER BY `id` DESC, `name` DESC");
         assertEquals(builder.expression(), result);
 
         builder = new SqlSortExpressionBuilder(Dialects.MYSQL);
@@ -44,14 +44,14 @@ public class SqlSortExpressionBuilderTest extends TestBase {
         assertEquals(builder.getTableAlias(), "u");
         result = builder.desc(ArrayUtils.toList("id", "name")).build();
         System.out.println(result);
-        assertEquals(result, " ORDER BY u.`id` DESC, u.`name` DESC");
+        assertEquals(result, "ORDER BY u.`id` DESC, u.`name` DESC");
         assertEquals(builder.expression(), result);
 
         builder = new SqlSortExpressionBuilder(Dialects.MYSQL, "u");
         result = builder.asc("id", "name").desc("age", "password").asc("email").desc("mobile").build();
         System.out.println(result);
         assertEquals(result,
-                " ORDER BY u.`id` ASC, u.`name` ASC, u.`age` DESC, u.`password` DESC, u.`email` ASC, u.`mobile` DESC");
+                "ORDER BY u.`id` ASC, u.`name` ASC, u.`age` DESC, u.`password` DESC, u.`email` ASC, u.`mobile` DESC");
         assertEquals(builder.expression(), result);
     }
 
@@ -61,27 +61,27 @@ public class SqlSortExpressionBuilderTest extends TestBase {
         SqlSortExpressionBuilder builder = new SqlSortExpressionBuilder(Dialects.MYSQL);
         String result = builder.asc(UserInfo::getId).build();
         System.out.println(result);
-        assertEquals(result, " ORDER BY `id` ASC");
+        assertEquals(result, "ORDER BY `id` ASC");
         assertEquals(builder.expression(), result);
         System.out.println(builder.toString());
 
         builder = new SqlSortExpressionBuilder(Dialects.MYSQL, "u");
         result = builder.asc(UserInfo::getId, UserInfo::getName).build();
         System.out.println(result);
-        assertEquals(result, " ORDER BY u.`id` ASC, u.`name` ASC");
+        assertEquals(result, "ORDER BY u.`id` ASC, u.`name` ASC");
         assertEquals(builder.expression(), result);
 
         builder = new SqlSortExpressionBuilder(Dialects.MYSQL);
         result = builder.desc(UserInfo::getId).build();
         System.out.println(result);
-        assertEquals(result, " ORDER BY `id` DESC");
+        assertEquals(result, "ORDER BY `id` DESC");
         assertEquals(builder.expression(), result);
         System.out.println(builder.toString());
 
         builder = new SqlSortExpressionBuilder(Dialects.MYSQL, "u");
         result = builder.desc(UserInfo::getId, UserInfo::getName).build();
         System.out.println(result);
-        assertEquals(result, " ORDER BY u.`id` DESC, u.`name` DESC");
+        assertEquals(result, "ORDER BY u.`id` DESC, u.`name` DESC");
         assertEquals(builder.expression(), result);
 
     }

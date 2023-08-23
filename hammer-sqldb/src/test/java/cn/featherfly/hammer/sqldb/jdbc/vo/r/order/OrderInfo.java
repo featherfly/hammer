@@ -5,6 +5,7 @@ import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
+import cn.featherfly.hammer.sqldb.jdbc.vo.r.Order;
 import cn.featherfly.hammer.sqldb.jdbc.vo.r.User;
 import cn.featherfly.hammer.sqldb.jdbc.vo.r.User1;
 import cn.featherfly.hammer.sqldb.jdbc.vo.r.User2;
@@ -26,7 +27,7 @@ public class OrderInfo {
 
     @ManyToOne
     @Column(name = "order_id")
-    private Order2 order;
+    private Order order;
 
     @ManyToOne
     @Column(name = "create_user")
@@ -93,7 +94,7 @@ public class OrderInfo {
      *
      * @return order
      */
-    public Order2 getOrder() {
+    public Order getOrder() {
         return order;
     }
 
@@ -102,7 +103,7 @@ public class OrderInfo {
      *
      * @param order order
      */
-    public void setOrder(Order2 order) {
+    public void setOrder(Order order) {
         this.order = order;
     }
 

@@ -3,6 +3,7 @@ package cn.featherfly.hammer.sqldb.jdbc.dsl.execute;
 
 import java.util.function.Predicate;
 
+import cn.featherfly.common.exception.NotImplementedException;
 import cn.featherfly.common.operator.QueryOperator;
 import cn.featherfly.common.operator.QueryOperator.QueryPolicy;
 import cn.featherfly.common.repository.mapping.ClassMapping;
@@ -17,8 +18,8 @@ import cn.featherfly.hammer.sqldb.sql.dml.AbstractSqlConditionGroupExpression;
  *
  * @author zhongj
  */
-public class SqlConditionGroupExpression extends
-        AbstractSqlConditionGroupExpression<ExecutableConditionGroup, ExecutableConditionGroupLogic>
+public class SqlConditionGroupExpression
+        extends AbstractSqlConditionGroupExpression<ExecutableConditionGroup, ExecutableConditionGroupLogic>
         implements ExecutableConditionGroup, ExecutableConditionGroupLogic {
 
     /**
@@ -86,8 +87,7 @@ public class SqlConditionGroupExpression extends
      * {@inheritDoc}
      */
     @Override
-    protected ExecutableConditionGroup createGroup(ExecutableConditionGroupLogic parent,
-            String queryAlias) {
+    protected ExecutableConditionGroup createGroup(ExecutableConditionGroupLogic parent, String queryAlias) {
         return new SqlConditionGroupExpression(parent, jdbc, queryAlias, ignoreStrategy);
     }
 
@@ -96,8 +96,8 @@ public class SqlConditionGroupExpression extends
      */
     @Override
     public String getAlias(int index) {
-        // IMPLSOON 后续来实现
-        return null;
+        // IMPLSOON 未实现
+        throw new NotImplementedException();
     }
 
     /**
@@ -105,17 +105,17 @@ public class SqlConditionGroupExpression extends
      */
     @Override
     public <CM extends ClassMapping<T, P>, T, P extends PropertyMapping<P>> CM getClassMapping(int index) {
-        // IMPLSOON 后续来实现
-        return null;
+        // IMPLSOON 未实现
+        throw new NotImplementedException();
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    protected <T, R> ExecutableConditionGroupLogic eq_ne(int index, QueryOperator queryOperator,
-            PropertyMapping<?> pm, R value, QueryPolicy queryPolicy, Predicate<?> ignoreStrategy) {
-        // IMPLSOON 后续来实现
-        return null;
+    protected <T, R> ExecutableConditionGroupLogic eq_ne(int index, QueryOperator queryOperator, PropertyMapping<?> pm,
+            R value, QueryPolicy queryPolicy, Predicate<?> ignoreStrategy) {
+        // IMPLSOON 未实现
+        throw new NotImplementedException();
     }
 }

@@ -45,11 +45,11 @@ import cn.featherfly.common.structure.ChainMapImpl;
 import cn.featherfly.hammer.sqldb.jdbc.vo.r.App;
 import cn.featherfly.hammer.sqldb.jdbc.vo.r.AppVersion;
 import cn.featherfly.hammer.sqldb.jdbc.vo.r.Article;
+import cn.featherfly.hammer.sqldb.jdbc.vo.r.Order;
 import cn.featherfly.hammer.sqldb.jdbc.vo.r.Role;
 import cn.featherfly.hammer.sqldb.jdbc.vo.r.User;
 import cn.featherfly.hammer.sqldb.jdbc.vo.r.UserInfo;
 import cn.featherfly.hammer.sqldb.jdbc.vo.r.UserRole;
-import cn.featherfly.hammer.sqldb.jdbc.vo.r.order.Order2;
 
 /**
  * JdbcTest.
@@ -216,9 +216,9 @@ public class JdbcTest extends JdbcTestBase {
     @Test
     public void testQueryTuple5() {
         String sql = getSql().replaceAll("`", jdbc.getDialect().getWrapSymbol());
-        List<Tuple5<User, UserInfo, UserRole, Role, Order2>> list = jdbc.query(sql, User.class, UserInfo.class,
-                UserRole.class, Role.class, Order2.class, Tuples.of("_user0.", "ui.", "ur.", "r.", "o."));
-        for (Tuple5<User, UserInfo, UserRole, Role, Order2> r : list) {
+        List<Tuple5<User, UserInfo, UserRole, Role, Order>> list = jdbc.query(sql, User.class, UserInfo.class,
+                UserRole.class, Role.class, Order.class, Tuples.of("_user0.", "ui.", "ur.", "r.", "o."));
+        for (Tuple5<User, UserInfo, UserRole, Role, Order> r : list) {
             assertEquals(r.get1().getUser().getId(), r.get1().getUser().getId());
             assertEquals(r.get1().getUser().getId(), r.get2().getUserId());
             assertEquals(r.get2().getRoleId(), r.get3().getId());
@@ -231,9 +231,9 @@ public class JdbcTest extends JdbcTestBase {
         }
 
         sql = sql.replace("?", ":id");
-        list = jdbc.query(sql, User.class, UserInfo.class, UserRole.class, Role.class, Order2.class,
+        list = jdbc.query(sql, User.class, UserInfo.class, UserRole.class, Role.class, Order.class,
                 Tuples.of("_user0.", "ui.", "ur.", "r.", "o."), new ChainMapImpl<String, Object>());
-        for (Tuple5<User, UserInfo, UserRole, Role, Order2> r : list) {
+        for (Tuple5<User, UserInfo, UserRole, Role, Order> r : list) {
             assertEquals(r.get1().getUser().getId(), r.get1().getUser().getId());
             assertEquals(r.get1().getUser().getId(), r.get2().getUserId());
             assertEquals(r.get2().getRoleId(), r.get3().getId());
@@ -344,8 +344,8 @@ public class JdbcTest extends JdbcTestBase {
     public void testQuerySingleTuple5() {
         Integer id = 1;
         String sql = getSql().replaceAll("`", jdbc.getDialect().getWrapSymbol());
-        Tuple5<User, UserInfo, UserRole, Role, Order2> r = jdbc.querySingle(sql, User.class, UserInfo.class,
-                UserRole.class, Role.class, Order2.class, Tuples.of("_user0.", "ui.", "ur.", "r.", "o."), id);
+        Tuple5<User, UserInfo, UserRole, Role, Order> r = jdbc.querySingle(sql, User.class, UserInfo.class,
+                UserRole.class, Role.class, Order.class, Tuples.of("_user0.", "ui.", "ur.", "r.", "o."), id);
         assertEquals(r.get0().getId(), id);
         assertEquals(r.get1().getUser().getId(), id);
         assertEquals(r.get2().getUserId(), id);
@@ -358,7 +358,7 @@ public class JdbcTest extends JdbcTestBase {
         assertNotNull(r.get4().getAppId());
 
         sql = sql.replace("?", ":id");
-        r = jdbc.querySingle(sql, User.class, UserInfo.class, UserRole.class, Role.class, Order2.class,
+        r = jdbc.querySingle(sql, User.class, UserInfo.class, UserRole.class, Role.class, Order.class,
                 Tuples.of("_user0.", "ui.", "ur.", "r.", "o."), new ChainMapImpl<String, Object>().putChain("id", id));
         assertEquals(r.get0().getId(), id);
         assertEquals(r.get1().getUser().getId(), id);
@@ -483,8 +483,8 @@ public class JdbcTest extends JdbcTestBase {
     public void testQueryUniqueTuple5() {
         Integer id = 1;
         String sql = getSql("testQuerySingleTuple5").replaceAll("`", jdbc.getDialect().getWrapSymbol());
-        Tuple5<User, UserInfo, UserRole, Role, Order2> r = jdbc.queryUnique(sql, User.class, UserInfo.class,
-                UserRole.class, Role.class, Order2.class, Tuples.of("_user0.", "ui.", "ur.", "r.", "o."), id);
+        Tuple5<User, UserInfo, UserRole, Role, Order> r = jdbc.queryUnique(sql, User.class, UserInfo.class,
+                UserRole.class, Role.class, Order.class, Tuples.of("_user0.", "ui.", "ur.", "r.", "o."), id);
         assertEquals(r.get0().getId(), id);
         assertEquals(r.get1().getUser().getId(), id);
         assertEquals(r.get2().getUserId(), id);
@@ -497,7 +497,7 @@ public class JdbcTest extends JdbcTestBase {
         assertNotNull(r.get4().getAppId());
 
         sql = sql.replace("?", ":id");
-        r = jdbc.queryUnique(sql, User.class, UserInfo.class, UserRole.class, Role.class, Order2.class,
+        r = jdbc.queryUnique(sql, User.class, UserInfo.class, UserRole.class, Role.class, Order.class,
                 Tuples.of("_user0.", "ui.", "ur.", "r.", "o."), new ChainMapImpl<String, Object>().putChain("id", id));
         assertEquals(r.get0().getId(), id);
         assertEquals(r.get1().getUser().getId(), id);

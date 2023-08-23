@@ -91,9 +91,17 @@ public abstract class AbstractMulitiEntityConditionExpression<C extends Conditio
 
     // ********************************************************************
 
+    protected <R> L eq0(int index, SerializableSupplier<R> property, Predicate<?> ignoreStrategy) {
+        return eq0(index, property, property.get(), QueryPolicy.AUTO, ignoreStrategy);
+    }
+
     protected <R> L eq0(int index, SerializableSupplier<R> property, QueryPolicy queryPolicy,
             Predicate<?> ignoreStrategy) {
         return eq0(index, property, property.get(), queryPolicy, ignoreStrategy);
+    }
+
+    protected <T, R> L eq0(int index, Serializable property, R value, Predicate<?> ignoreStrategy) {
+        return eq0(index, property, value, QueryPolicy.AUTO, ignoreStrategy);
     }
 
     protected <T, R> L eq0(int index, Serializable property, R value, QueryPolicy queryPolicy,
@@ -102,9 +110,17 @@ public abstract class AbstractMulitiEntityConditionExpression<C extends Conditio
                 value, queryPolicy, ignoreStrategy);
     }
 
+    protected <R> L ne0(int index, SerializableSupplier<R> property, Predicate<?> ignoreStrategy) {
+        return ne0(index, property, property.get(), QueryPolicy.AUTO, ignoreStrategy);
+    }
+
     protected <R> L ne0(int index, SerializableSupplier<R> property, QueryPolicy queryPolicy,
             Predicate<?> ignoreStrategy) {
         return ne0(index, property, property.get(), queryPolicy, ignoreStrategy);
+    }
+
+    protected <T, R> L ne0(int index, Serializable property, R value, Predicate<?> ignoreStrategy) {
+        return ne0(index, property, value, QueryPolicy.AUTO, ignoreStrategy);
     }
 
     protected <T, R> L ne0(int index, Serializable property, R value, QueryPolicy queryPolicy,

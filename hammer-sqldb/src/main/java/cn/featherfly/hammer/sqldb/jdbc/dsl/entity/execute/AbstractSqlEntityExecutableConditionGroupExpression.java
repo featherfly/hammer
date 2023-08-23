@@ -24,15 +24,15 @@ public abstract class AbstractSqlEntityExecutableConditionGroupExpression<E, ER 
                 EntityExecutableConditionGroupLogic<E>>
         implements EntityExecutableConditionGroup<E>, EntityExecutableConditionGroupLogic<E> {
 
-    /**
-     * Instantiates a new sql entity condition group expression.
-     *
-     * @param factory        the factory
-     * @param entityRelation the entity relation
-     */
-    public AbstractSqlEntityExecutableConditionGroupExpression(JdbcMappingFactory factory, ER entityRelation) {
-        this(null, factory, entityRelation);
-    }
+    //    /**
+    //     * Instantiates a new sql entity condition group expression.
+    //     *
+    //     * @param factory        the factory
+    //     * @param entityRelation the entity relation
+    //     */
+    //    protected AbstractSqlEntityExecutableConditionGroupExpression(JdbcMappingFactory factory, ER entityRelation) {
+    //        this(null, factory, entityRelation);
+    //    }
 
     /**
      * Instantiates a new sql entity condition group expression.
@@ -41,7 +41,7 @@ public abstract class AbstractSqlEntityExecutableConditionGroupExpression<E, ER 
      * @param factory        the factory
      * @param entityRelation the entity relation
      */
-    AbstractSqlEntityExecutableConditionGroupExpression(EntityExecutableConditionGroupLogic<E> parent,
+    protected AbstractSqlEntityExecutableConditionGroupExpression(EntityExecutableConditionGroupLogic<E> parent,
             JdbcMappingFactory factory, ER entityRelation) {
         // 删除，和更新不需要分页
         super(parent, factory, entityRelation);
