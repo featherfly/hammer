@@ -1,7 +1,7 @@
 
 package cn.featherfly.hammer.expression.condition.property;
 
-import cn.featherfly.common.operator.QueryOperator.QueryPolicy;
+import cn.featherfly.common.operator.ComparisonOperator.MatchStrategy;
 import cn.featherfly.hammer.expression.condition.ConditionsExpression;
 import cn.featherfly.hammer.expression.condition.LogicExpression;
 
@@ -159,7 +159,7 @@ public class SimpleStringExpression<C extends ConditionsExpression<C, L>, L exte
      * {@inheritDoc}
      */
     @Override
-    public L eq(String value, QueryPolicy queryPolicy) {
+    public L eq(String value, MatchStrategy queryPolicy) {
         return expression.eq(name, value, queryPolicy);
     }
 
@@ -167,7 +167,7 @@ public class SimpleStringExpression<C extends ConditionsExpression<C, L>, L exte
      * {@inheritDoc}
      */
     @Override
-    public L ne(String value, QueryPolicy queryPolicy) {
+    public L ne(String value, MatchStrategy queryPolicy) {
         return expression.ne(name, value, queryPolicy);
     }
 
@@ -175,7 +175,7 @@ public class SimpleStringExpression<C extends ConditionsExpression<C, L>, L exte
      * {@inheritDoc}
      */
     @Override
-    public L sw(String value, QueryPolicy queryPolicy) {
+    public L sw(String value, MatchStrategy queryPolicy) {
         return expression.sw(name, value, queryPolicy);
     }
 
@@ -183,7 +183,7 @@ public class SimpleStringExpression<C extends ConditionsExpression<C, L>, L exte
      * {@inheritDoc}
      */
     @Override
-    public L co(String value, QueryPolicy queryPolicy) {
+    public L co(String value, MatchStrategy queryPolicy) {
         return expression.co(name, value, queryPolicy);
     }
 
@@ -191,7 +191,7 @@ public class SimpleStringExpression<C extends ConditionsExpression<C, L>, L exte
      * {@inheritDoc}
      */
     @Override
-    public L ew(String value, QueryPolicy queryPolicy) {
+    public L ew(String value, MatchStrategy queryPolicy) {
         return expression.ew(name, value, queryPolicy);
     }
 
@@ -199,7 +199,7 @@ public class SimpleStringExpression<C extends ConditionsExpression<C, L>, L exte
      * {@inheritDoc}
      */
     @Override
-    public L lk(String value, QueryPolicy queryPolicy) {
+    public L lk(String value, MatchStrategy queryPolicy) {
         return expression.lk(name, value, queryPolicy);
     }
 }

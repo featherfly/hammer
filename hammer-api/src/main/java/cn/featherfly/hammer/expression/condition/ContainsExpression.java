@@ -1,9 +1,9 @@
 
 package cn.featherfly.hammer.expression.condition;
 
-import cn.featherfly.common.lang.function.SerializableToStringFunction;
-import cn.featherfly.common.lang.function.SerializableStringSupplier;
-import cn.featherfly.common.operator.QueryOperator.QueryPolicy;
+import cn.featherfly.common.function.serializable.SerializableStringSupplier;
+import cn.featherfly.common.function.serializable.SerializableToStringFunction;
+import cn.featherfly.common.operator.ComparisonOperator.MatchStrategy;
 import cn.featherfly.common.repository.Field;
 
 /**
@@ -24,7 +24,7 @@ public interface ContainsExpression<C extends ConditionExpression, L extends Log
      * @return LogicExpression
      */
     default L co(Field name, String value) {
-        return co(name, value, QueryPolicy.AUTO);
+        return co(name, value, MatchStrategy.AUTO);
     }
 
     /**
@@ -35,8 +35,8 @@ public interface ContainsExpression<C extends ConditionExpression, L extends Log
      * @param queryPolicy the query policy
      * @return the l
      */
-    default L co(Field name, String value, QueryPolicy queryPolicy) {
-        return co(name.name(), value, QueryPolicy.AUTO);
+    default L co(Field name, String value, MatchStrategy queryPolicy) {
+        return co(name.name(), value, MatchStrategy.AUTO);
     }
 
     /**
@@ -47,7 +47,7 @@ public interface ContainsExpression<C extends ConditionExpression, L extends Log
      * @return LogicExpression
      */
     default L co(String name, String value) {
-        return co(name, value, QueryPolicy.AUTO);
+        return co(name, value, MatchStrategy.AUTO);
     }
 
     /**
@@ -58,7 +58,7 @@ public interface ContainsExpression<C extends ConditionExpression, L extends Log
      * @param queryPolicy the query policy
      * @return the l
      */
-    L co(String name, String value, QueryPolicy queryPolicy);
+    L co(String name, String value, MatchStrategy queryPolicy);
 
     /**
      * contains value. 包含value.
@@ -69,7 +69,7 @@ public interface ContainsExpression<C extends ConditionExpression, L extends Log
      * @return LogicExpression
      */
     default <T> L co(SerializableToStringFunction<T> name, String value) {
-        return co(name, value, QueryPolicy.AUTO);
+        return co(name, value, MatchStrategy.AUTO);
     }
 
     /**
@@ -81,7 +81,7 @@ public interface ContainsExpression<C extends ConditionExpression, L extends Log
      * @param queryPolicy the query policy
      * @return the l
      */
-    <T> L co(SerializableToStringFunction<T> name, String value, QueryPolicy queryPolicy);
+    <T> L co(SerializableToStringFunction<T> name, String value, MatchStrategy queryPolicy);
 
     /**
      * contains value. 包含value.
@@ -90,7 +90,7 @@ public interface ContainsExpression<C extends ConditionExpression, L extends Log
      * @return LogicExpression
      */
     default L co(SerializableStringSupplier property) {
-        return co(property, QueryPolicy.AUTO);
+        return co(property, MatchStrategy.AUTO);
     }
 
     /**
@@ -100,5 +100,5 @@ public interface ContainsExpression<C extends ConditionExpression, L extends Log
      * @param queryPolicy the query policy
      * @return the l
      */
-    L co(SerializableStringSupplier property, QueryPolicy queryPolicy);
+    L co(SerializableStringSupplier property, MatchStrategy queryPolicy);
 }

@@ -19,14 +19,14 @@
 //import cn.featherfly.common.lang.LambdaUtils;
 //import cn.featherfly.common.lang.LambdaUtils.SerializedLambdaInfo;
 //import cn.featherfly.common.lang.Lang;
-//import cn.featherfly.common.lang.function.SerializableToDateFunction;
-//import cn.featherfly.common.lang.function.SerializableToLocalDateFunction;
-//import cn.featherfly.common.lang.function.SerializableToLocalDateTimeFunction;
-//import cn.featherfly.common.lang.function.SerializableToLocalTimeFunction;
-//import cn.featherfly.common.lang.function.SerializableToNumberFunction;
-//import cn.featherfly.common.lang.function.SerializableToStringFunction;
-//import cn.featherfly.common.lang.function.SerializableFunction;
-//import cn.featherfly.common.operator.QueryOperator;
+//import cn.featherfly.common.function.serializable.SerializableToDateFunction;
+//import cn.featherfly.common.function.serializable.SerializableToLocalDateFunction;
+//import cn.featherfly.common.function.serializable.SerializableToLocalDateTimeFunction;
+//import cn.featherfly.common.function.serializable.SerializableToLocalTimeFunction;
+//import cn.featherfly.common.function.serializable.SerializableToNumberFunction;
+//import cn.featherfly.common.function.serializable.SerializableToStringFunction;
+//import cn.featherfly.common.function.serializable.SerializableFunction;
+//import cn.featherfly.common.operator.ComparisonOperator;
 //import cn.featherfly.common.repository.builder.AliasManager;
 //import cn.featherfly.hammer.dsl.query.RepositoryTypeQueryConditionGroupExpression;
 //import cn.featherfly.hammer.dsl.query.RepositoryTypeQueryConditionGroupLogicExpression;
@@ -114,7 +114,7 @@
 //     */
 //    @Override
 //    public <T, R> RepositoryTypeQueryConditionGroupLogicExpression eq(SerializableFunction<T, R> name, R value) {
-//        return addCondition(name, value, QueryOperator.EQ);
+//        return addCondition(name, value, ComparisonOperator.EQ);
 //    }
 //
 //    /**
@@ -122,7 +122,7 @@
 //     */
 //    @Override
 //    public <T, R> RepositoryTypeQueryConditionGroupLogicExpression ne(SerializableFunction<T, R> name, R value) {
-//        return addCondition(name, value, QueryOperator.NE);
+//        return addCondition(name, value, ComparisonOperator.NE);
 //    }
 //
 //    /**
@@ -130,7 +130,7 @@
 //     */
 //    @Override
 //    public <T> RepositoryTypeQueryConditionGroupLogicExpression sw(SerializableToStringFunction<T> name, String value) {
-//        return addCondition(name, value, QueryOperator.SW);
+//        return addCondition(name, value, ComparisonOperator.SW);
 //    }
 //
 //    /**
@@ -138,7 +138,7 @@
 //     */
 //    @Override
 //    public <T> RepositoryTypeQueryConditionGroupLogicExpression ew(SerializableToStringFunction<T> name, String value) {
-//        return addCondition(name, value, QueryOperator.EW);
+//        return addCondition(name, value, ComparisonOperator.EW);
 //    }
 //
 //    /**
@@ -146,7 +146,7 @@
 //     */
 //    @Override
 //    public <T> RepositoryTypeQueryConditionGroupLogicExpression co(SerializableToStringFunction<T> name, String value) {
-//        return addCondition(name, value, QueryOperator.CO);
+//        return addCondition(name, value, ComparisonOperator.CO);
 //    }
 //
 //    /**
@@ -155,7 +155,7 @@
 //    @Override
 //    public <T, D extends Date> RepositoryTypeQueryConditionGroupLogicExpression ge(SerializableToDateFunction<T, D> name,
 //            D value) {
-//        return addCondition(name, value, QueryOperator.GE);
+//        return addCondition(name, value, ComparisonOperator.GE);
 //    }
 //
 //    /**
@@ -163,7 +163,7 @@
 //     */
 //    @Override
 //    public <T> RepositoryTypeQueryConditionGroupLogicExpression ge(SerializableToLocalDateFunction<T> name, LocalDate value) {
-//        return addCondition(name, value, QueryOperator.GE);
+//        return addCondition(name, value, ComparisonOperator.GE);
 //    }
 //
 //    /**
@@ -172,7 +172,7 @@
 //    @Override
 //    public <T> RepositoryTypeQueryConditionGroupLogicExpression ge(SerializableToLocalDateTimeFunction<T> name,
 //            LocalDateTime value) {
-//        return addCondition(name, value, QueryOperator.GE);
+//        return addCondition(name, value, ComparisonOperator.GE);
 //    }
 //
 //    /**
@@ -180,7 +180,7 @@
 //     */
 //    @Override
 //    public <T> RepositoryTypeQueryConditionGroupLogicExpression ge(SerializableToLocalTimeFunction<T> name, LocalTime value) {
-//        return addCondition(name, value, QueryOperator.GE);
+//        return addCondition(name, value, ComparisonOperator.GE);
 //    }
 //
 //    /**
@@ -189,7 +189,7 @@
 //    @Override
 //    public <T, N extends Number> RepositoryTypeQueryConditionGroupLogicExpression ge(SerializableToNumberFunction<T, N> name,
 //            N value) {
-//        return addCondition(name, value, QueryOperator.GE);
+//        return addCondition(name, value, ComparisonOperator.GE);
 //    }
 //
 //    /**
@@ -197,7 +197,7 @@
 //     */
 //    @Override
 //    public <T> RepositoryTypeQueryConditionGroupLogicExpression ge(SerializableToStringFunction<T> name, String value) {
-//        return addCondition(name, value, QueryOperator.GE);
+//        return addCondition(name, value, ComparisonOperator.GE);
 //    }
 //
 //    /**
@@ -206,7 +206,7 @@
 //    @Override
 //    public <T, D extends Date> RepositoryTypeQueryConditionGroupLogicExpression gt(SerializableToDateFunction<T, D> name,
 //            D value) {
-//        return addCondition(name, value, QueryOperator.GT);
+//        return addCondition(name, value, ComparisonOperator.GT);
 //    }
 //
 //    /**
@@ -214,7 +214,7 @@
 //     */
 //    @Override
 //    public <T> RepositoryTypeQueryConditionGroupLogicExpression gt(SerializableToLocalDateFunction<T> name, LocalDate value) {
-//        return addCondition(name, value, QueryOperator.GT);
+//        return addCondition(name, value, ComparisonOperator.GT);
 //    }
 //
 //    /**
@@ -223,7 +223,7 @@
 //    @Override
 //    public <T> RepositoryTypeQueryConditionGroupLogicExpression gt(SerializableToLocalDateTimeFunction<T> name,
 //            LocalDateTime value) {
-//        return addCondition(name, value, QueryOperator.GT);
+//        return addCondition(name, value, ComparisonOperator.GT);
 //    }
 //
 //    /**
@@ -231,7 +231,7 @@
 //     */
 //    @Override
 //    public <T> RepositoryTypeQueryConditionGroupLogicExpression gt(SerializableToLocalTimeFunction<T> name, LocalTime value) {
-//        return addCondition(name, value, QueryOperator.GT);
+//        return addCondition(name, value, ComparisonOperator.GT);
 //    }
 //
 //    /**
@@ -240,7 +240,7 @@
 //    @Override
 //    public <T, N extends Number> RepositoryTypeQueryConditionGroupLogicExpression gt(SerializableToNumberFunction<T, N> name,
 //            N value) {
-//        return addCondition(name, value, QueryOperator.GT);
+//        return addCondition(name, value, ComparisonOperator.GT);
 //    }
 //
 //    /**
@@ -248,7 +248,7 @@
 //     */
 //    @Override
 //    public <T> RepositoryTypeQueryConditionGroupLogicExpression gt(SerializableToStringFunction<T> name, String value) {
-//        return addCondition(name, value, QueryOperator.GT);
+//        return addCondition(name, value, ComparisonOperator.GT);
 //    }
 //
 //    /**
@@ -256,7 +256,7 @@
 //     */
 //    @Override
 //    public <T, R> RepositoryTypeQueryConditionGroupLogicExpression in(SerializableFunction<T, R> name, Object value) {
-//        return addCondition(name, value, QueryOperator.IN);
+//        return addCondition(name, value, ComparisonOperator.IN);
 //    }
 //
 //    /**
@@ -272,7 +272,7 @@
 //     */
 //    @Override
 //    public <T, R> RepositoryTypeQueryConditionGroupLogicExpression inn(SerializableFunction<T, R> name, Boolean value) {
-//        return addCondition(name, value, QueryOperator.INN);
+//        return addCondition(name, value, ComparisonOperator.INN);
 //    }
 //
 //    /**
@@ -288,7 +288,7 @@
 //     */
 //    @Override
 //    public <T, R> RepositoryTypeQueryConditionGroupLogicExpression isn(SerializableFunction<T, R> name, Boolean value) {
-//        return addCondition(name, value, QueryOperator.ISN);
+//        return addCondition(name, value, ComparisonOperator.ISN);
 //    }
 //
 //    /**
@@ -297,7 +297,7 @@
 //    @Override
 //    public <T, D extends Date> RepositoryTypeQueryConditionGroupLogicExpression le(SerializableToDateFunction<T, D> name,
 //            D value) {
-//        return addCondition(name, value, QueryOperator.LE);
+//        return addCondition(name, value, ComparisonOperator.LE);
 //    }
 //
 //    /**
@@ -305,7 +305,7 @@
 //     */
 //    @Override
 //    public <T> RepositoryTypeQueryConditionGroupLogicExpression le(SerializableToLocalDateFunction<T> name, LocalDate value) {
-//        return addCondition(name, value, QueryOperator.LE);
+//        return addCondition(name, value, ComparisonOperator.LE);
 //    }
 //
 //    /**
@@ -314,7 +314,7 @@
 //    @Override
 //    public <T> RepositoryTypeQueryConditionGroupLogicExpression le(SerializableToLocalDateTimeFunction<T> name,
 //            LocalDateTime value) {
-//        return addCondition(name, value, QueryOperator.LE);
+//        return addCondition(name, value, ComparisonOperator.LE);
 //    }
 //
 //    /**
@@ -322,7 +322,7 @@
 //     */
 //    @Override
 //    public <T> RepositoryTypeQueryConditionGroupLogicExpression le(SerializableToLocalTimeFunction<T> name, LocalTime value) {
-//        return addCondition(name, value, QueryOperator.LE);
+//        return addCondition(name, value, ComparisonOperator.LE);
 //    }
 //
 //    /**
@@ -331,7 +331,7 @@
 //    @Override
 //    public <T, N extends Number> RepositoryTypeQueryConditionGroupLogicExpression le(SerializableToNumberFunction<T, N> name,
 //            N value) {
-//        return addCondition(name, value, QueryOperator.LE);
+//        return addCondition(name, value, ComparisonOperator.LE);
 //    }
 //
 //    /**
@@ -339,7 +339,7 @@
 //     */
 //    @Override
 //    public <T> RepositoryTypeQueryConditionGroupLogicExpression le(SerializableToStringFunction<T> name, String value) {
-//        return addCondition(name, value, QueryOperator.LE);
+//        return addCondition(name, value, ComparisonOperator.LE);
 //    }
 //
 //    /**
@@ -348,7 +348,7 @@
 //    @Override
 //    public <T, D extends Date> RepositoryTypeQueryConditionGroupLogicExpression lt(SerializableToDateFunction<T, D> name,
 //            D value) {
-//        return addCondition(name, value, QueryOperator.LT);
+//        return addCondition(name, value, ComparisonOperator.LT);
 //    }
 //
 //    /**
@@ -356,7 +356,7 @@
 //     */
 //    @Override
 //    public <T> RepositoryTypeQueryConditionGroupLogicExpression lt(SerializableToLocalDateFunction<T> name, LocalDate value) {
-//        return addCondition(name, value, QueryOperator.LT);
+//        return addCondition(name, value, ComparisonOperator.LT);
 //    }
 //
 //    /**
@@ -365,7 +365,7 @@
 //    @Override
 //    public <T> RepositoryTypeQueryConditionGroupLogicExpression lt(SerializableToLocalDateTimeFunction<T> name,
 //            LocalDateTime value) {
-//        return addCondition(name, value, QueryOperator.LT);
+//        return addCondition(name, value, ComparisonOperator.LT);
 //    }
 //
 //    /**
@@ -373,7 +373,7 @@
 //     */
 //    @Override
 //    public <T> RepositoryTypeQueryConditionGroupLogicExpression lt(SerializableToLocalTimeFunction<T> name, LocalTime value) {
-//        return addCondition(name, value, QueryOperator.LT);
+//        return addCondition(name, value, ComparisonOperator.LT);
 //    }
 //
 //    /**
@@ -382,7 +382,7 @@
 //    @Override
 //    public <T, N extends Number> RepositoryTypeQueryConditionGroupLogicExpression lt(SerializableToNumberFunction<T, N> name,
 //            N value) {
-//        return addCondition(name, value, QueryOperator.LT);
+//        return addCondition(name, value, ComparisonOperator.LT);
 //    }
 //
 //    /**
@@ -390,7 +390,7 @@
 //     */
 //    @Override
 //    public <T> RepositoryTypeQueryConditionGroupLogicExpression lt(SerializableToStringFunction<T> name, String value) {
-//        return addCondition(name, value, QueryOperator.LT);
+//        return addCondition(name, value, ComparisonOperator.LT);
 //    }
 //
 //    /**
@@ -398,7 +398,7 @@
 //     */
 //    @Override
 //    public <T, R> RepositoryTypeQueryConditionGroupLogicExpression nin(SerializableFunction<T, R> name, Object value) {
-//        return addCondition(name, value, QueryOperator.NIN);
+//        return addCondition(name, value, ComparisonOperator.NIN);
 //    }
 //
 //    /**
@@ -416,10 +416,10 @@
 //    // ***********************************************************************************
 //
 //    private <T, R> RepositoryTypeQueryConditionGroupLogicExpression addCondition(SerializableFunction<T, R> name,
-//            Object value, QueryOperator queryOperator) {
+//            Object value, ComparisonOperator comparisonOperator) {
 //        Tuple2<String, String> tableNameAndColumnName = getTableAliasAndColumnName(name);
 //        return (RepositoryTypeQueryConditionGroupLogicExpression) addCondition(
-//                new SqlConditionExpressionBuilder(dialect, tableNameAndColumnName.get1(), value, queryOperator,
+//                new SqlConditionExpressionBuilder(dialect, tableNameAndColumnName.get1(), value, comparisonOperator,
 //                        aliasManager.getAlias(tableNameAndColumnName.get0()), ignoreStrategy));
 //    }
 //

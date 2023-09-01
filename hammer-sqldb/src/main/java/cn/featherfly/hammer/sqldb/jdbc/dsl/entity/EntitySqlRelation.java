@@ -1,3 +1,13 @@
+/*
+ * All rights Reserved, Designed By zhongj
+ * @Title: EntitySqlRelation.java
+ * @Package cn.featherfly.hammer.sqldb.jdbc.dsl.entity
+ * @Description: todo (用一句话描述该文件做什么)
+ * @author: zhongj
+ * @date: 2023年8月25日 下午6:07:01
+ * @version V1.0
+ * @Copyright: 2023 www.featherfly.cn Inc. All rights reserved.
+ */
 
 package cn.featherfly.hammer.sqldb.jdbc.dsl.entity;
 
@@ -19,9 +29,12 @@ import cn.featherfly.hammer.sqldb.jdbc.Jdbc;
  * abstract entity sql query entity properties.
  *
  * @author zhongj
+ * @param <R> the generic type
+ * @param <B> the generic type
  */
 public abstract class EntitySqlRelation<R extends EntitySqlRelation<R, B>, B extends SqlBuilder> {
 
+    /** The jdbc. */
     protected Jdbc jdbc;
 
     /** The alias manager. */
@@ -30,8 +43,10 @@ public abstract class EntitySqlRelation<R extends EntitySqlRelation<R, B>, B ext
     /** The ignore strategy. */
     protected Predicate<?> ignoreStrategy;
 
+    /** The index. */
     protected int index;
 
+    /** The entity filterable mapping tuple. */
     protected MutableTuple9<EntityRelationMapping<?>, EntityRelationMapping<?>, EntityRelationMapping<?>,
             EntityRelationMapping<?>, EntityRelationMapping<?>, EntityRelationMapping<?>, EntityRelationMapping<?>,
             EntityRelationMapping<?>, EntityRelationMapping<?>> entityFilterableMappingTuple = MutableTuples.create9();
@@ -64,59 +79,61 @@ public abstract class EntitySqlRelation<R extends EntitySqlRelation<R, B>, B ext
      * @return the this
      */
     public R addFilterable(JdbcClassMapping<?> classMapping) {
-        return addFilterable(classMapping, null, null);
+        return addFilterable(0, null, classMapping, null);
     }
 
     /**
      * Adds the filterable.
      *
-     * @param classMapping     the class mapping
+     * @param joinClassMapping the join class mapping
+     * @param propertyName     the property name
      * @param joinPropertyName the join property name
      * @return the this
      */
     @SuppressWarnings("unchecked")
-    public R addFilterable(JdbcClassMapping<?> classMapping, String joinFromPropertyName, String joinPropertyName) {
+    public R addFilterable(int sourceIndex, String propertyName, JdbcClassMapping<?> joinClassMapping,
+            String joinPropertyName) {
         AssertIllegalArgument.isGe(index, 0, "entity index");
         AssertIllegalArgument.isLt(index, entityFilterableMappingTuple.degree(), "entity index");
         switch (index) {
             case 0:
-                EntityRelationMapping<
-                        ?> eqm = createEntityRelationMapping(classMapping, joinFromPropertyName, joinPropertyName);
+                EntityRelationMapping<?> eqm = createEntityRelationMapping(sourceIndex, propertyName, joinClassMapping,
+                        joinPropertyName);
                 entityFilterableMappingTuple.set0(eqm);
                 //                selectBuilder = new SqlSelectBasicBuilder(jdbc.getDialect(), classMapping, eqm.tableAlias);
                 initBuilder(eqm);
                 break;
             case 1:
-                entityFilterableMappingTuple
-                        .set1(createEntityRelationMapping(classMapping, joinFromPropertyName, joinPropertyName));
+                entityFilterableMappingTuple.set1(
+                        createEntityRelationMapping(sourceIndex, propertyName, joinClassMapping, joinPropertyName));
                 break;
             case 2:
-                entityFilterableMappingTuple
-                        .set2(createEntityRelationMapping(classMapping, joinFromPropertyName, joinPropertyName));
+                entityFilterableMappingTuple.set2(
+                        createEntityRelationMapping(sourceIndex, propertyName, joinClassMapping, joinPropertyName));
                 break;
             case 3:
-                entityFilterableMappingTuple
-                        .set3(createEntityRelationMapping(classMapping, joinFromPropertyName, joinPropertyName));
+                entityFilterableMappingTuple.set3(
+                        createEntityRelationMapping(sourceIndex, propertyName, joinClassMapping, joinPropertyName));
                 break;
             case 4:
-                entityFilterableMappingTuple
-                        .set4(createEntityRelationMapping(classMapping, joinFromPropertyName, joinPropertyName));
+                entityFilterableMappingTuple.set4(
+                        createEntityRelationMapping(sourceIndex, propertyName, joinClassMapping, joinPropertyName));
                 break;
             case 5:
-                entityFilterableMappingTuple
-                        .set5(createEntityRelationMapping(classMapping, joinFromPropertyName, joinPropertyName));
+                entityFilterableMappingTuple.set5(
+                        createEntityRelationMapping(sourceIndex, propertyName, joinClassMapping, joinPropertyName));
                 break;
             case 6:
-                entityFilterableMappingTuple
-                        .set6(createEntityRelationMapping(classMapping, joinFromPropertyName, joinPropertyName));
+                entityFilterableMappingTuple.set6(
+                        createEntityRelationMapping(sourceIndex, propertyName, joinClassMapping, joinPropertyName));
                 break;
             case 7:
-                entityFilterableMappingTuple
-                        .set7(createEntityRelationMapping(classMapping, joinFromPropertyName, joinPropertyName));
+                entityFilterableMappingTuple.set7(
+                        createEntityRelationMapping(sourceIndex, propertyName, joinClassMapping, joinPropertyName));
                 break;
             case 8:
-                entityFilterableMappingTuple
-                        .set8(createEntityRelationMapping(classMapping, joinFromPropertyName, joinPropertyName));
+                entityFilterableMappingTuple.set8(
+                        createEntityRelationMapping(sourceIndex, propertyName, joinClassMapping, joinPropertyName));
                 break;
             default:
                 break;
@@ -125,6 +142,11 @@ public abstract class EntitySqlRelation<R extends EntitySqlRelation<R, B>, B ext
         return (R) this;
     }
 
+    /**
+     * Inits the builder.
+     *
+     * @param erm the erm
+     */
     protected abstract void initBuilder(EntityRelationMapping<?> erm);
 
     /**
@@ -207,9 +229,19 @@ public abstract class EntitySqlRelation<R extends EntitySqlRelation<R, B>, B ext
     //
     // ****************************************************************************************************************
 
-    protected EntityRelationMapping<?> createEntityRelationMapping(JdbcClassMapping<?> classMapping,
-            String joinFromPropertyName, String joinPropertyName) {
-        return new EntityRelationMapping<>(classMapping, joinFromPropertyName, joinPropertyName, aliasManager);
+    /**
+     * Creates the entity relation mapping.
+     *
+     * @param <E>              the element type
+     * @param sourceIndex      the source index
+     * @param propertyName     the property name
+     * @param joinClassMapping the join class mapping
+     * @param joinPropertyName the join property name
+     * @return the entity relation mapping
+     */
+    protected <E> EntityRelationMapping<E> createEntityRelationMapping(int sourceIndex, String propertyName,
+            JdbcClassMapping<E> joinClassMapping, String joinPropertyName) {
+        return new EntityRelationMapping<>(joinClassMapping, joinPropertyName, sourceIndex, propertyName, aliasManager);
     }
 
     // ********************************************************************
@@ -225,28 +257,37 @@ public abstract class EntitySqlRelation<R extends EntitySqlRelation<R, B>, B ext
     public static class EntityRelationMapping<E> {
 
         /**
-         * @param classMapping the class mapping
-         * @param aliasManager the alias manager
+         * Instantiates a new entity relation mapping.
+         *
+         * @param classMapping         the class mapping
+         * @param joinPropertyName     the join property name
+         * @param joinFromIndex        the join from index
+         * @param joinFromPropertyName the join from property name
+         * @param aliasManager         the alias manager
          */
-        public EntityRelationMapping(JdbcClassMapping<E> classMapping, String joinFromPropertyName,
-                String joinPropertyName, AliasManager aliasManager) {
-            this(classMapping, joinFromPropertyName, joinPropertyName, aliasManager, null);
+        public EntityRelationMapping(JdbcClassMapping<E> classMapping, String joinPropertyName, int joinFromIndex,
+                String joinFromPropertyName, AliasManager aliasManager) {
+            this(classMapping, joinPropertyName, joinFromIndex, joinFromPropertyName, aliasManager, null);
         }
 
         /**
          * Instantiates a new entity relation mapping.
          *
          * @param classMapping             the class mapping
+         * @param joinPropertyName         the join property name
+         * @param joinFromIndex            the join from index
+         * @param joinFromPropertyName     the join from property name
          * @param aliasManager             the alias manager
          * @param selectJoinOnBasicBuilder the select join on basic builder
          */
-        public EntityRelationMapping(JdbcClassMapping<E> classMapping, String joinFromPropertyName,
-                String joinPropertyName, AliasManager aliasManager,
+        public EntityRelationMapping(JdbcClassMapping<E> classMapping, String joinPropertyName, int joinFromIndex,
+                String joinFromPropertyName, AliasManager aliasManager,
                 SqlSelectJoinOnBasicBuilder selectJoinOnBasicBuilder) {
             super();
             this.classMapping = classMapping;
             this.joinPropertyName = joinPropertyName;
             this.joinFromPropertyName = joinFromPropertyName;
+            this.joinFromIndex = joinFromIndex;
 
             //            String tableAlias = aliasManager.getAlias(classMapping.getRepositoryName());
             //            if (tableAlias == null) {
@@ -266,10 +307,14 @@ public abstract class EntitySqlRelation<R extends EntitySqlRelation<R, B>, B ext
             this.selectJoinOnBasicBuilder = selectJoinOnBasicBuilder;
         }
 
+        /** The select join on basic builder. */
         SqlSelectJoinOnBasicBuilder selectJoinOnBasicBuilder;
 
         /** The class mapping. */
         JdbcClassMapping<E> classMapping;
+
+        /** The join property name. */
+        String joinPropertyName;
 
         /** The table alias. */
         String tableAlias;
@@ -277,8 +322,10 @@ public abstract class EntitySqlRelation<R extends EntitySqlRelation<R, B>, B ext
         /** The id name. */
         String idName;
 
-        String joinPropertyName;
+        /** The join from index. */
+        int joinFromIndex;
 
+        /** The join from property name. */
         String joinFromPropertyName;
 
         /**
@@ -309,7 +356,7 @@ public abstract class EntitySqlRelation<R extends EntitySqlRelation<R, B>, B ext
         }
 
         /**
-         * set idName value
+         * set idName value.
          *
          * @param idName idName
          */
@@ -318,7 +365,7 @@ public abstract class EntitySqlRelation<R extends EntitySqlRelation<R, B>, B ext
         }
 
         /**
-         * get joinPropertyName value
+         * get joinPropertyName value.
          *
          * @return joinPropertyName
          */
@@ -327,13 +374,21 @@ public abstract class EntitySqlRelation<R extends EntitySqlRelation<R, B>, B ext
         }
 
         /**
-         * get joinFromPropertyName value
+         * get joinFromPropertyName value.
          *
          * @return joinFromPropertyName
          */
         public String getJoinFromPropertyName() {
             return joinFromPropertyName;
         }
-    }
 
+        /**
+         * Gets the join from index.
+         *
+         * @return the join from index
+         */
+        public int getJoinFromIndex() {
+            return joinFromIndex;
+        }
+    }
 }

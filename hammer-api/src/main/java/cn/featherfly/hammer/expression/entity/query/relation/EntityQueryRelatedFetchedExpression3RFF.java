@@ -3,9 +3,9 @@ package cn.featherfly.hammer.expression.entity.query.relation;
 import com.speedment.common.tuple.Tuple3;
 import com.speedment.common.tuple.Tuple4;
 
-import cn.featherfly.common.lang.function.SerializableFunction1;
-import cn.featherfly.common.lang.function.SerializableFunction2;
-import cn.featherfly.common.lang.function.SerializableFunction3;
+import cn.featherfly.common.function.serializable.SerializableFunction1;
+import cn.featherfly.common.function.serializable.SerializableFunction2;
+import cn.featherfly.common.function.serializable.SerializableUnaryOperator1;
 import cn.featherfly.hammer.expression.entity.query.EntityQueryConditionGroupExpression4;
 import cn.featherfly.hammer.expression.entity.query.EntityQueryConditionGroupExpression5;
 import cn.featherfly.hammer.expression.entity.query.EntityQueryConditionGroupLogicExpression4;
@@ -46,9 +46,10 @@ public interface EntityQueryRelatedFetchedExpression3RFF<E, R1, R2, R3,
      * @param <QRS>    the generic type
      * @param <R4>     the generic type
      * @param joinType the join type
-     * @return EntityQueryRelateExpression4RFF
+     * @return the entity query related expression
+     *         EntityQueryRelateExpression4RFFR
      */
-    <QR extends EntityQueryRelateExpression4RFF<E, R1, R2, R3, R4, RC, RL, RS, QRF, QRC, QRL, QRS>,
+    <QR extends EntityQueryRelateExpression4RFFR<E, R1, R2, R3, R4, RC, RL, RS, QRF, QRC, QRL, QRS>,
             RC extends EntityQueryConditionGroupExpression5<E, R1, R2, R3, R4, RC, RL, RS, Tuple3<E, R2, R3>>,
             RL extends EntityQueryConditionGroupLogicExpression5<E, R1, R2, R3, R4, RC, RL, RS, Tuple3<E, R2, R3>>,
             RS extends EntityQuerySortExpression5<E, R1, R2, R3, R4, Tuple3<E, R2, R3>>,
@@ -59,89 +60,6 @@ public interface EntityQueryRelatedFetchedExpression3RFF<E, R1, R2, R3,
             QRS extends EntityQuerySortExpression5<E, R1, R2, R3, R4, Tuple4<E, R2, R3, R4>>,
             R4> EntityQueryRelatedExpression<E, R4, QR, QRF> join(Class<R4> joinType);
 
-    //    /**
-    //     * join on.
-    //     *
-    //     * @param <RE>         the generic type
-    //     * @param <RC>         the generic type
-    //     * @param <RL>         the generic type
-    //     * @param <RS>         the generic type
-    //     * @param <QR>         the generic type
-    //     * @param <QRC>        the generic type
-    //     * @param <QRL>        the generic type
-    //     * @param <QRS>        the generic type
-    //     * @param <R4>         the generic type
-    //     * @param <J>          the generic type
-    //     * @param propertyName find type object property name
-    //     * @param joinType     the join type
-    //     * @return EntityQueryRelateExpression4RFF
-    //     */
-    //    <RE extends EntityQueryRelateExpression4RFF<E, R1, R2, R3, R4, RC, RL, RS, QR, QRC, QRL, QRS>,
-    //            RC extends EntityQueryConditionGroupExpression5<E, R1, R2, R3, R4, RC, RL, RS, Tuple3<E, R2, R3>>,
-    //            RL extends EntityQueryConditionGroupLogicExpression5<E, R1, R2, R3, R4, RC, RL, RS, Tuple3<E, R2, R3>>,
-    //            RS extends EntityQuerySortExpression5<E, R1, R2, R3, R4, Tuple3<E, R2, R3>>,
-    //            QR extends EntityQueryRelatedFetchedExpression4RFFF<E, R1, R2, R3, R4, QRC, QRL, QRS>,
-    //            QRC extends EntityQueryConditionGroupExpression5<E, R1, R2, R3, R4, QRC, QRL, QRS, Tuple4<E, R2, R3, R4>>,
-    //            QRL extends EntityQueryConditionGroupLogicExpression5<E, R1, R2, R3, R4, QRC, QRL, QRS,
-    //                    Tuple4<E, R2, R3, R4>>,
-    //            QRS extends EntityQuerySortExpression5<E, R1, R2, R3, R4, Tuple4<E, R2, R3, R4>>, R4,
-    //            J> RE join(SerializableFunction1<E, J> propertyName, Class<R4> joinType);
-    //
-    //    /**
-    //     * join on.
-    //     *
-    //     * @param <RE>                 the generic type
-    //     * @param <RC>                 the generic type
-    //     * @param <RL>                 the generic type
-    //     * @param <RS>                 the generic type
-    //     * @param <QR>                 the generic type
-    //     * @param <QRC>                the generic type
-    //     * @param <QRL>                the generic type
-    //     * @param <QRS>                the generic type
-    //     * @param <R4>                 the generic type
-    //     * @param <J>                  the generic type
-    //     * @param propertyName         find type object property name
-    //     * @param joinTypePropertyName the join type property name
-    //     * @return EntityQueryRelateExpression4RFF
-    //     */
-    //    <RE extends EntityQueryRelateExpression4RFF<E, R1, R2, R3, R4, RC, RL, RS, QR, QRC, QRL, QRS>,
-    //            RC extends EntityQueryConditionGroupExpression5<E, R1, R2, R3, R4, RC, RL, RS, Tuple3<E, R2, R3>>,
-    //            RL extends EntityQueryConditionGroupLogicExpression5<E, R1, R2, R3, R4, RC, RL, RS, Tuple3<E, R2, R3>>,
-    //            RS extends EntityQuerySortExpression5<E, R1, R2, R3, R4, Tuple3<E, R2, R3>>,
-    //            QR extends EntityQueryRelatedFetchedExpression4RFFF<E, R1, R2, R3, R4, QRC, QRL, QRS>,
-    //            QRC extends EntityQueryConditionGroupExpression5<E, R1, R2, R3, R4, QRC, QRL, QRS, Tuple4<E, R2, R3, R4>>,
-    //            QRL extends EntityQueryConditionGroupLogicExpression5<E, R1, R2, R3, R4, QRC, QRL, QRS,
-    //                    Tuple4<E, R2, R3, R4>>,
-    //            QRS extends EntityQuerySortExpression5<E, R1, R2, R3, R4, Tuple4<E, R2, R3, R4>>, R4,
-    //            J> RE join(SerializableFunction1<E, J> propertyName, SerializableFunction1<R4, J> joinTypePropertyName);
-    //
-    //    /**
-    //     * join on.
-    //     *
-    //     * @param <RE>                 the generic type
-    //     * @param <RC>                 the generic type
-    //     * @param <RL>                 the generic type
-    //     * @param <RS>                 the generic type
-    //     * @param <QR>                 the generic type
-    //     * @param <QRC>                the generic type
-    //     * @param <QRL>                the generic type
-    //     * @param <QRS>                the generic type
-    //     * @param <R4>                 the generic type
-    //     * @param <J>                  the generic type
-    //     * @param joinTypePropertyName the join type property name
-    //     * @return EntityQueryRelateExpression4RFF
-    //     */
-    //    <RE extends EntityQueryRelateExpression4RFF<E, R1, R2, R3, R4, RC, RL, RS, QR, QRC, QRL, QRS>,
-    //            RC extends EntityQueryConditionGroupExpression5<E, R1, R2, R3, R4, RC, RL, RS, Tuple3<E, R2, R3>>,
-    //            RL extends EntityQueryConditionGroupLogicExpression5<E, R1, R2, R3, R4, RC, RL, RS, Tuple3<E, R2, R3>>,
-    //            RS extends EntityQuerySortExpression5<E, R1, R2, R3, R4, Tuple3<E, R2, R3>>,
-    //            QR extends EntityQueryRelatedFetchedExpression4RFFF<E, R1, R2, R3, R4, QRC, QRL, QRS>,
-    //            QRC extends EntityQueryConditionGroupExpression5<E, R1, R2, R3, R4, QRC, QRL, QRS, Tuple4<E, R2, R3, R4>>,
-    //            QRL extends EntityQueryConditionGroupLogicExpression5<E, R1, R2, R3, R4, QRC, QRL, QRS,
-    //                    Tuple4<E, R2, R3, R4>>,
-    //            QRS extends EntityQuerySortExpression5<E, R1, R2, R3, R4, Tuple4<E, R2, R3, R4>>, R4,
-    //            J> RE join(SerializableFunction4<R4, J> joinTypePropertyName);
-
     /**
      * join on.
      *
@@ -155,35 +73,9 @@ public interface EntityQueryRelatedFetchedExpression3RFF<E, R1, R2, R3,
      * @param <QRS>        the generic type
      * @param <R4>         the generic type
      * @param propertyName find type object property name
-     * @return EntityQueryRelateExpression4RFF
+     * @return EntityQueryRelateExpression4RFFR
      */
-    <RE extends EntityQueryRelateExpression4RFF<E, R1, R2, R3, R4, RC, RL, RS, QR, QRC, QRL, QRS>,
-            RC extends EntityQueryConditionGroupExpression5<E, R1, R2, R3, R4, RC, RL, RS, Tuple3<E, R2, R3>>,
-            RL extends EntityQueryConditionGroupLogicExpression5<E, R1, R2, R3, R4, RC, RL, RS, Tuple3<E, R2, R3>>,
-            RS extends EntityQuerySortExpression5<E, R1, R2, R3, R4, Tuple3<E, R2, R3>>,
-            QR extends EntityQueryRelatedFetchedExpression4RFFF<E, R1, R2, R3, R4, QRC, QRL, QRS>,
-            QRC extends EntityQueryConditionGroupExpression5<E, R1, R2, R3, R4, QRC, QRL, QRS, Tuple4<E, R2, R3, R4>>,
-            QRL extends EntityQueryConditionGroupLogicExpression5<E, R1, R2, R3, R4, QRC, QRL, QRS,
-                    Tuple4<E, R2, R3, R4>>,
-            QRS extends EntityQuerySortExpression5<E, R1, R2, R3, R4, Tuple4<E, R2, R3, R4>>,
-            R4> RE join(SerializableFunction1<E, R4> propertyName);
-
-    /**
-     * join on.
-     *
-     * @param <RE>         the generic type
-     * @param <RC>         the generic type
-     * @param <RL>         the generic type
-     * @param <RS>         the generic type
-     * @param <QR>         the generic type
-     * @param <QRC>        the generic type
-     * @param <QRL>        the generic type
-     * @param <QRS>        the generic type
-     * @param <R4>         the generic type
-     * @param propertyName find type object property name
-     * @return EntityQueryRelateExpression4RFF
-     */
-    <RE extends EntityQueryRelateExpression4RFF<E, R1, R2, R3, R4, RC, RL, RS, QR, QRC, QRL, QRS>,
+    <RE extends EntityQueryRelateExpression4RFFR<E, R1, R2, R3, R4, RC, RL, RS, QR, QRC, QRL, QRS>,
             RC extends EntityQueryConditionGroupExpression5<E, R1, R2, R3, R4, RC, RL, RS, Tuple3<E, R2, R3>>,
             RL extends EntityQueryConditionGroupLogicExpression5<E, R1, R2, R3, R4, RC, RL, RS, Tuple3<E, R2, R3>>,
             RS extends EntityQuerySortExpression5<E, R1, R2, R3, R4, Tuple3<E, R2, R3>>,
@@ -202,22 +94,34 @@ public interface EntityQueryRelatedFetchedExpression3RFF<E, R1, R2, R3,
      * @param <RL>         the generic type
      * @param <RS>         the generic type
      * @param <QR>         the generic type
-     * @param <QRC>        the generic type
-     * @param <QRL>        the generic type
-     * @param <QRS>        the generic type
+     * @param <R4>         the generic type
      * @param propertyName find type object property name
-     * @return EntityQueryRelateExpression4RFF
+     * @return EntityQueryRelateExpression4RFFP
      */
-    <RE extends EntityQueryRelateExpression4RFF<E, R1, R2, R3, E, RC, RL, RS, QR, QRC, QRL, QRS>,
+    <RE extends EntityQueryRelateExpression4RFFP<E, R1, R2, R3, R4, RC, RL, RS, QR>,
+            RC extends EntityQueryConditionGroupExpression5<E, R1, R2, R3, R4, RC, RL, RS, Tuple3<E, R2, R3>>,
+            RL extends EntityQueryConditionGroupLogicExpression5<E, R1, R2, R3, R4, RC, RL, RS, Tuple3<E, R2, R3>>,
+            RS extends EntityQuerySortExpression5<E, R1, R2, R3, R4, Tuple3<E, R2, R3>>,
+            QR extends EntityQueryRelatedFetchedExpression4RFFP<E, R1, R2, R3, R4, RC, RL, RS>,
+            R4> RE join(SerializableFunction1<E, R4> propertyName);
+
+    /**
+     * join on.
+     *
+     * @param <RE>         the generic type
+     * @param <RC>         the generic type
+     * @param <RL>         the generic type
+     * @param <RS>         the generic type
+     * @param <QR>         the generic type
+     * @param propertyName find type object property name
+     * @return EntityQueryRelateExpression4RFFP
+     */
+    <RE extends EntityQueryRelateExpression4RFFP<E, R1, R2, R3, E, RC, RL, RS, QR>,
             RC extends EntityQueryConditionGroupExpression5<E, R1, R2, R3, E, RC, RL, RS, Tuple3<E, R2, R3>>,
             RL extends EntityQueryConditionGroupLogicExpression5<E, R1, R2, R3, E, RC, RL, RS, Tuple3<E, R2, R3>>,
             RS extends EntityQuerySortExpression5<E, R1, R2, R3, E, Tuple3<E, R2, R3>>,
-            QR extends EntityQueryRelatedFetchedExpression4RFFF<E, R1, R2, R3, E, QRC, QRL, QRS>,
-            QRC extends EntityQueryConditionGroupExpression5<E, R1, R2, R3, E, QRC, QRL, QRS, Tuple4<E, R2, R3, E>>,
-            QRL extends EntityQueryConditionGroupLogicExpression5<E, R1, R2, R3, E, QRC, QRL, QRS,
-                    Tuple4<E, R2, R3, E>>,
-            QRS extends EntityQuerySortExpression5<E, R1, R2, R3, E, Tuple4<E, R2, R3, E>>> RE join(
-                    SerializableFunction3<E, E> propertyName);
+            QR extends EntityQueryRelatedFetchedExpression4RFFP<E, R1, R2, R3, E, RC, RL, RS>> RE join(
+                    SerializableUnaryOperator1<E> propertyName);
 
     // ********************************************************************
     //	2
@@ -236,9 +140,10 @@ public interface EntityQueryRelatedFetchedExpression3RFF<E, R1, R2, R3,
      * @param <QRS>    the generic type
      * @param <R4>     the generic type
      * @param joinType the join type
-     * @return EntityQueryRelateExpression4RFF
+     * @return the entity query related expression
+     *         EntityQueryRelateExpression4RFFR
      */
-    <QR extends EntityQueryRelateExpression4RFF<E, R1, R2, R3, R4, RC, RL, RS, QRF, QRC, QRL, QRS>,
+    <QR extends EntityQueryRelateExpression4RFFR<E, R1, R2, R3, R4, RC, RL, RS, QRF, QRC, QRL, QRS>,
             RC extends EntityQueryConditionGroupExpression5<E, R1, R2, R3, R4, RC, RL, RS, Tuple3<E, R2, R3>>,
             RL extends EntityQueryConditionGroupLogicExpression5<E, R1, R2, R3, R4, RC, RL, RS, Tuple3<E, R2, R3>>,
             RS extends EntityQuerySortExpression5<E, R1, R2, R3, R4, Tuple3<E, R2, R3>>,
@@ -249,89 +154,6 @@ public interface EntityQueryRelatedFetchedExpression3RFF<E, R1, R2, R3,
             QRS extends EntityQuerySortExpression5<E, R1, R2, R3, R4, Tuple4<E, R2, R3, R4>>,
             R4> EntityQueryRelatedExpression<R1, R4, QR, QRF> join2(Class<R4> joinType);
 
-    //    /**
-    //     * join on.
-    //     *
-    //     * @param <RE>         the generic type
-    //     * @param <RC>         the generic type
-    //     * @param <RL>         the generic type
-    //     * @param <RS>         the generic type
-    //     * @param <QR>         the generic type
-    //     * @param <QRC>        the generic type
-    //     * @param <QRL>        the generic type
-    //     * @param <QRS>        the generic type
-    //     * @param <R4>         the generic type
-    //     * @param <J>          the generic type
-    //     * @param propertyName find type object property name
-    //     * @param joinType     the join type
-    //     * @return EntityQueryRelateExpression4RFF
-    //     */
-    //    <RE extends EntityQueryRelateExpression4RFF<E, R1, R2, R3, R4, RC, RL, RS, QR, QRC, QRL, QRS>,
-    //            RC extends EntityQueryConditionGroupExpression5<E, R1, R2, R3, R4, RC, RL, RS, Tuple3<E, R2, R3>>,
-    //            RL extends EntityQueryConditionGroupLogicExpression5<E, R1, R2, R3, R4, RC, RL, RS, Tuple3<E, R2, R3>>,
-    //            RS extends EntityQuerySortExpression5<E, R1, R2, R3, R4, Tuple3<E, R2, R3>>,
-    //            QR extends EntityQueryRelatedFetchedExpression4RFFF<E, R1, R2, R3, R4, QRC, QRL, QRS>,
-    //            QRC extends EntityQueryConditionGroupExpression5<E, R1, R2, R3, R4, QRC, QRL, QRS, Tuple4<E, R2, R3, R4>>,
-    //            QRL extends EntityQueryConditionGroupLogicExpression5<E, R1, R2, R3, R4, QRC, QRL, QRS,
-    //                    Tuple4<E, R2, R3, R4>>,
-    //            QRS extends EntityQuerySortExpression5<E, R1, R2, R3, R4, Tuple4<E, R2, R3, R4>>, R4,
-    //            J> RE join2(SerializableFunction1<R1, J> propertyName, Class<R4> joinType);
-    //
-    //    /**
-    //     * join on.
-    //     *
-    //     * @param <RE>                 the generic type
-    //     * @param <RC>                 the generic type
-    //     * @param <RL>                 the generic type
-    //     * @param <RS>                 the generic type
-    //     * @param <QR>                 the generic type
-    //     * @param <QRC>                the generic type
-    //     * @param <QRL>                the generic type
-    //     * @param <QRS>                the generic type
-    //     * @param <R4>                 the generic type
-    //     * @param <J>                  the generic type
-    //     * @param propertyName         find type object property name
-    //     * @param joinTypePropertyName the join type property name
-    //     * @return EntityQueryRelateExpression4RFF
-    //     */
-    //    <RE extends EntityQueryRelateExpression4RFF<E, R1, R2, R3, R4, RC, RL, RS, QR, QRC, QRL, QRS>,
-    //            RC extends EntityQueryConditionGroupExpression5<E, R1, R2, R3, R4, RC, RL, RS, Tuple3<E, R2, R3>>,
-    //            RL extends EntityQueryConditionGroupLogicExpression5<E, R1, R2, R3, R4, RC, RL, RS, Tuple3<E, R2, R3>>,
-    //            RS extends EntityQuerySortExpression5<E, R1, R2, R3, R4, Tuple3<E, R2, R3>>,
-    //            QR extends EntityQueryRelatedFetchedExpression4RFFF<E, R1, R2, R3, R4, QRC, QRL, QRS>,
-    //            QRC extends EntityQueryConditionGroupExpression5<E, R1, R2, R3, R4, QRC, QRL, QRS, Tuple4<E, R2, R3, R4>>,
-    //            QRL extends EntityQueryConditionGroupLogicExpression5<E, R1, R2, R3, R4, QRC, QRL, QRS,
-    //                    Tuple4<E, R2, R3, R4>>,
-    //            QRS extends EntityQuerySortExpression5<E, R1, R2, R3, R4, Tuple4<E, R2, R3, R4>>, R4,
-    //            J> RE join2(SerializableFunction1<R1, J> propertyName, SerializableFunction1<R4, J> joinTypePropertyName);
-    //
-    //    /**
-    //     * join on.
-    //     *
-    //     * @param <RE>                 the generic type
-    //     * @param <RC>                 the generic type
-    //     * @param <RL>                 the generic type
-    //     * @param <RS>                 the generic type
-    //     * @param <QR>                 the generic type
-    //     * @param <QRC>                the generic type
-    //     * @param <QRL>                the generic type
-    //     * @param <QRS>                the generic type
-    //     * @param <R4>                 the generic type
-    //     * @param <J>                  the generic type
-    //     * @param joinTypePropertyName the join type property name
-    //     * @return EntityQueryRelateExpression4RFF
-    //     */
-    //    <RE extends EntityQueryRelateExpression4RFF<E, R1, R2, R3, R4, RC, RL, RS, QR, QRC, QRL, QRS>,
-    //            RC extends EntityQueryConditionGroupExpression5<E, R1, R2, R3, R4, RC, RL, RS, Tuple3<E, R2, R3>>,
-    //            RL extends EntityQueryConditionGroupLogicExpression5<E, R1, R2, R3, R4, RC, RL, RS, Tuple3<E, R2, R3>>,
-    //            RS extends EntityQuerySortExpression5<E, R1, R2, R3, R4, Tuple3<E, R2, R3>>,
-    //            QR extends EntityQueryRelatedFetchedExpression4RFFF<E, R1, R2, R3, R4, QRC, QRL, QRS>,
-    //            QRC extends EntityQueryConditionGroupExpression5<E, R1, R2, R3, R4, QRC, QRL, QRS, Tuple4<E, R2, R3, R4>>,
-    //            QRL extends EntityQueryConditionGroupLogicExpression5<E, R1, R2, R3, R4, QRC, QRL, QRS,
-    //                    Tuple4<E, R2, R3, R4>>,
-    //            QRS extends EntityQuerySortExpression5<E, R1, R2, R3, R4, Tuple4<E, R2, R3, R4>>, R4,
-    //            J> RE join2(SerializableFunction4<R4, J> joinTypePropertyName);
-
     /**
      * join on.
      *
@@ -345,35 +167,9 @@ public interface EntityQueryRelatedFetchedExpression3RFF<E, R1, R2, R3,
      * @param <QRS>        the generic type
      * @param <R4>         the generic type
      * @param propertyName find type object property name
-     * @return EntityQueryRelateExpression4RFF
+     * @return EntityQueryRelateExpression4RFFR
      */
-    <RE extends EntityQueryRelateExpression4RFF<E, R1, R2, R3, R4, RC, RL, RS, QR, QRC, QRL, QRS>,
-            RC extends EntityQueryConditionGroupExpression5<E, R1, R2, R3, R4, RC, RL, RS, Tuple3<E, R2, R3>>,
-            RL extends EntityQueryConditionGroupLogicExpression5<E, R1, R2, R3, R4, RC, RL, RS, Tuple3<E, R2, R3>>,
-            RS extends EntityQuerySortExpression5<E, R1, R2, R3, R4, Tuple3<E, R2, R3>>,
-            QR extends EntityQueryRelatedFetchedExpression4RFFF<E, R1, R2, R3, R4, QRC, QRL, QRS>,
-            QRC extends EntityQueryConditionGroupExpression5<E, R1, R2, R3, R4, QRC, QRL, QRS, Tuple4<E, R2, R3, R4>>,
-            QRL extends EntityQueryConditionGroupLogicExpression5<E, R1, R2, R3, R4, QRC, QRL, QRS,
-                    Tuple4<E, R2, R3, R4>>,
-            QRS extends EntityQuerySortExpression5<E, R1, R2, R3, R4, Tuple4<E, R2, R3, R4>>,
-            R4> RE join2(SerializableFunction1<R1, R4> propertyName);
-
-    /**
-     * join on.
-     *
-     * @param <RE>         the generic type
-     * @param <RC>         the generic type
-     * @param <RL>         the generic type
-     * @param <RS>         the generic type
-     * @param <QR>         the generic type
-     * @param <QRC>        the generic type
-     * @param <QRL>        the generic type
-     * @param <QRS>        the generic type
-     * @param <R4>         the generic type
-     * @param propertyName find type object property name
-     * @return EntityQueryRelateExpression4RFF
-     */
-    <RE extends EntityQueryRelateExpression4RFF<E, R1, R2, R3, R4, RC, RL, RS, QR, QRC, QRL, QRS>,
+    <RE extends EntityQueryRelateExpression4RFFR<E, R1, R2, R3, R4, RC, RL, RS, QR, QRC, QRL, QRS>,
             RC extends EntityQueryConditionGroupExpression5<E, R1, R2, R3, R4, RC, RL, RS, Tuple3<E, R2, R3>>,
             RL extends EntityQueryConditionGroupLogicExpression5<E, R1, R2, R3, R4, RC, RL, RS, Tuple3<E, R2, R3>>,
             RS extends EntityQuerySortExpression5<E, R1, R2, R3, R4, Tuple3<E, R2, R3>>,
@@ -392,22 +188,34 @@ public interface EntityQueryRelatedFetchedExpression3RFF<E, R1, R2, R3,
      * @param <RL>         the generic type
      * @param <RS>         the generic type
      * @param <QR>         the generic type
-     * @param <QRC>        the generic type
-     * @param <QRL>        the generic type
-     * @param <QRS>        the generic type
+     * @param <R4>         the generic type
      * @param propertyName find type object property name
-     * @return EntityQueryRelateExpression4RFF
+     * @return EntityQueryRelateExpression4RFFP
      */
-    <RE extends EntityQueryRelateExpression4RFF<E, R1, R2, R3, R1, RC, RL, RS, QR, QRC, QRL, QRS>,
+    <RE extends EntityQueryRelateExpression4RFFP<E, R1, R2, R3, R4, RC, RL, RS, QR>,
+            RC extends EntityQueryConditionGroupExpression5<E, R1, R2, R3, R4, RC, RL, RS, Tuple3<E, R2, R3>>,
+            RL extends EntityQueryConditionGroupLogicExpression5<E, R1, R2, R3, R4, RC, RL, RS, Tuple3<E, R2, R3>>,
+            RS extends EntityQuerySortExpression5<E, R1, R2, R3, R4, Tuple3<E, R2, R3>>,
+            QR extends EntityQueryRelatedFetchedExpression4RFFP<E, R1, R2, R3, R4, RC, RL, RS>,
+            R4> RE join2(SerializableFunction1<R1, R4> propertyName);
+
+    /**
+     * join on.
+     *
+     * @param <RE>         the generic type
+     * @param <RC>         the generic type
+     * @param <RL>         the generic type
+     * @param <RS>         the generic type
+     * @param <QR>         the generic type
+     * @param propertyName find type object property name
+     * @return EntityQueryRelateExpression4RFFP
+     */
+    <RE extends EntityQueryRelateExpression4RFFP<E, R1, R2, R3, R1, RC, RL, RS, QR>,
             RC extends EntityQueryConditionGroupExpression5<E, R1, R2, R3, R1, RC, RL, RS, Tuple3<E, R2, R3>>,
             RL extends EntityQueryConditionGroupLogicExpression5<E, R1, R2, R3, R1, RC, RL, RS, Tuple3<E, R2, R3>>,
             RS extends EntityQuerySortExpression5<E, R1, R2, R3, R1, Tuple3<E, R2, R3>>,
-            QR extends EntityQueryRelatedFetchedExpression4RFFF<E, R1, R2, R3, R1, QRC, QRL, QRS>,
-            QRC extends EntityQueryConditionGroupExpression5<E, R1, R2, R3, R1, QRC, QRL, QRS, Tuple4<E, R2, R3, R1>>,
-            QRL extends EntityQueryConditionGroupLogicExpression5<E, R1, R2, R3, R1, QRC, QRL, QRS,
-                    Tuple4<E, R2, R3, R1>>,
-            QRS extends EntityQuerySortExpression5<E, R1, R2, R3, R1, Tuple4<E, R2, R3, R1>>> RE join2(
-                    SerializableFunction3<R1, R1> propertyName);
+            QR extends EntityQueryRelatedFetchedExpression4RFFP<E, R1, R2, R3, R1, RC, RL, RS>> RE join2(
+                    SerializableUnaryOperator1<R1> propertyName);
 
     // ********************************************************************
     // 3
@@ -426,9 +234,10 @@ public interface EntityQueryRelatedFetchedExpression3RFF<E, R1, R2, R3,
      * @param <QRS>    the generic type
      * @param <R4>     the generic type
      * @param joinType the join type
-     * @return EntityQueryRelateExpression4RFF
+     * @return the entity query related expression
+     *         EntityQueryRelateExpression4RFFR
      */
-    <QR extends EntityQueryRelateExpression4RFF<E, R1, R2, R3, R4, RC, RL, RS, QRF, QRC, QRL, QRS>,
+    <QR extends EntityQueryRelateExpression4RFFR<E, R1, R2, R3, R4, RC, RL, RS, QRF, QRC, QRL, QRS>,
             RC extends EntityQueryConditionGroupExpression5<E, R1, R2, R3, R4, RC, RL, RS, Tuple3<E, R2, R3>>,
             RL extends EntityQueryConditionGroupLogicExpression5<E, R1, R2, R3, R4, RC, RL, RS, Tuple3<E, R2, R3>>,
             RS extends EntityQuerySortExpression5<E, R1, R2, R3, R4, Tuple3<E, R2, R3>>,
@@ -439,89 +248,6 @@ public interface EntityQueryRelatedFetchedExpression3RFF<E, R1, R2, R3,
             QRS extends EntityQuerySortExpression5<E, R1, R2, R3, R4, Tuple4<E, R2, R3, R4>>,
             R4> EntityQueryRelatedExpression<R2, R4, QR, QRF> join3(Class<R4> joinType);
 
-    //    /**
-    //     * join on.
-    //     *
-    //     * @param <RE>         the generic type
-    //     * @param <RC>         the generic type
-    //     * @param <RL>         the generic type
-    //     * @param <RS>         the generic type
-    //     * @param <QR>         the generic type
-    //     * @param <QRC>        the generic type
-    //     * @param <QRL>        the generic type
-    //     * @param <QRS>        the generic type
-    //     * @param <R4>         the generic type
-    //     * @param <J>          the generic type
-    //     * @param propertyName find type object property name
-    //     * @param joinType     the join type
-    //     * @return EntityQueryRelateExpression4RFF
-    //     */
-    //    <RE extends EntityQueryRelateExpression4RFF<E, R1, R2, R3, R4, RC, RL, RS, QR, QRC, QRL, QRS>,
-    //            RC extends EntityQueryConditionGroupExpression5<E, R1, R2, R3, R4, RC, RL, RS, Tuple3<E, R2, R3>>,
-    //            RL extends EntityQueryConditionGroupLogicExpression5<E, R1, R2, R3, R4, RC, RL, RS, Tuple3<E, R2, R3>>,
-    //            RS extends EntityQuerySortExpression5<E, R1, R2, R3, R4, Tuple3<E, R2, R3>>,
-    //            QR extends EntityQueryRelatedFetchedExpression4RFFF<E, R1, R2, R3, R4, QRC, QRL, QRS>,
-    //            QRC extends EntityQueryConditionGroupExpression5<E, R1, R2, R3, R4, QRC, QRL, QRS, Tuple4<E, R2, R3, R4>>,
-    //            QRL extends EntityQueryConditionGroupLogicExpression5<E, R1, R2, R3, R4, QRC, QRL, QRS,
-    //                    Tuple4<E, R2, R3, R4>>,
-    //            QRS extends EntityQuerySortExpression5<E, R1, R2, R3, R4, Tuple4<E, R2, R3, R4>>, R4,
-    //            J> RE join3(SerializableFunction1<R2, J> propertyName, Class<R4> joinType);
-    //
-    //    /**
-    //     * join on.
-    //     *
-    //     * @param <RE>                 the generic type
-    //     * @param <RC>                 the generic type
-    //     * @param <RL>                 the generic type
-    //     * @param <RS>                 the generic type
-    //     * @param <QR>                 the generic type
-    //     * @param <QRC>                the generic type
-    //     * @param <QRL>                the generic type
-    //     * @param <QRS>                the generic type
-    //     * @param <R4>                 the generic type
-    //     * @param <J>                  the generic type
-    //     * @param propertyName         find type object property name
-    //     * @param joinTypePropertyName the join type property name
-    //     * @return EntityQueryRelateExpression4RFF
-    //     */
-    //    <RE extends EntityQueryRelateExpression4RFF<E, R1, R2, R3, R4, RC, RL, RS, QR, QRC, QRL, QRS>,
-    //            RC extends EntityQueryConditionGroupExpression5<E, R1, R2, R3, R4, RC, RL, RS, Tuple3<E, R2, R3>>,
-    //            RL extends EntityQueryConditionGroupLogicExpression5<E, R1, R2, R3, R4, RC, RL, RS, Tuple3<E, R2, R3>>,
-    //            RS extends EntityQuerySortExpression5<E, R1, R2, R3, R4, Tuple3<E, R2, R3>>,
-    //            QR extends EntityQueryRelatedFetchedExpression4RFFF<E, R1, R2, R3, R4, QRC, QRL, QRS>,
-    //            QRC extends EntityQueryConditionGroupExpression5<E, R1, R2, R3, R4, QRC, QRL, QRS, Tuple4<E, R2, R3, R4>>,
-    //            QRL extends EntityQueryConditionGroupLogicExpression5<E, R1, R2, R3, R4, QRC, QRL, QRS,
-    //                    Tuple4<E, R2, R3, R4>>,
-    //            QRS extends EntityQuerySortExpression5<E, R1, R2, R3, R4, Tuple4<E, R2, R3, R4>>, R4,
-    //            J> RE join3(SerializableFunction1<R2, J> propertyName, SerializableFunction1<R4, J> joinTypePropertyName);
-    //
-    //    /**
-    //     * join on.
-    //     *
-    //     * @param <RE>                 the generic type
-    //     * @param <RC>                 the generic type
-    //     * @param <RL>                 the generic type
-    //     * @param <RS>                 the generic type
-    //     * @param <QR>                 the generic type
-    //     * @param <QRC>                the generic type
-    //     * @param <QRL>                the generic type
-    //     * @param <QRS>                the generic type
-    //     * @param <R4>                 the generic type
-    //     * @param <J>                  the generic type
-    //     * @param joinTypePropertyName the join type property name
-    //     * @return EntityQueryRelateExpression4RFF
-    //     */
-    //    <RE extends EntityQueryRelateExpression4RFF<E, R1, R2, R3, R4, RC, RL, RS, QR, QRC, QRL, QRS>,
-    //            RC extends EntityQueryConditionGroupExpression5<E, R1, R2, R3, R4, RC, RL, RS, Tuple3<E, R2, R3>>,
-    //            RL extends EntityQueryConditionGroupLogicExpression5<E, R1, R2, R3, R4, RC, RL, RS, Tuple3<E, R2, R3>>,
-    //            RS extends EntityQuerySortExpression5<E, R1, R2, R3, R4, Tuple3<E, R2, R3>>,
-    //            QR extends EntityQueryRelatedFetchedExpression4RFFF<E, R1, R2, R3, R4, QRC, QRL, QRS>,
-    //            QRC extends EntityQueryConditionGroupExpression5<E, R1, R2, R3, R4, QRC, QRL, QRS, Tuple4<E, R2, R3, R4>>,
-    //            QRL extends EntityQueryConditionGroupLogicExpression5<E, R1, R2, R3, R4, QRC, QRL, QRS,
-    //                    Tuple4<E, R2, R3, R4>>,
-    //            QRS extends EntityQuerySortExpression5<E, R1, R2, R3, R4, Tuple4<E, R2, R3, R4>>, R4,
-    //            J> RE join3(SerializableFunction4<R4, J> joinTypePropertyName);
-
     /**
      * join on.
      *
@@ -535,35 +261,9 @@ public interface EntityQueryRelatedFetchedExpression3RFF<E, R1, R2, R3,
      * @param <QRS>        the generic type
      * @param <R4>         the generic type
      * @param propertyName find type object property name
-     * @return EntityQueryRelateExpression4RFF
+     * @return EntityQueryRelateExpression4RFFR
      */
-    <RE extends EntityQueryRelateExpression4RFF<E, R1, R2, R3, R4, RC, RL, RS, QR, QRC, QRL, QRS>,
-            RC extends EntityQueryConditionGroupExpression5<E, R1, R2, R3, R4, RC, RL, RS, Tuple3<E, R2, R3>>,
-            RL extends EntityQueryConditionGroupLogicExpression5<E, R1, R2, R3, R4, RC, RL, RS, Tuple3<E, R2, R3>>,
-            RS extends EntityQuerySortExpression5<E, R1, R2, R3, R4, Tuple3<E, R2, R3>>,
-            QR extends EntityQueryRelatedFetchedExpression4RFFF<E, R1, R2, R3, R4, QRC, QRL, QRS>,
-            QRC extends EntityQueryConditionGroupExpression5<E, R1, R2, R3, R4, QRC, QRL, QRS, Tuple4<E, R2, R3, R4>>,
-            QRL extends EntityQueryConditionGroupLogicExpression5<E, R1, R2, R3, R4, QRC, QRL, QRS,
-                    Tuple4<E, R2, R3, R4>>,
-            QRS extends EntityQuerySortExpression5<E, R1, R2, R3, R4, Tuple4<E, R2, R3, R4>>,
-            R4> RE join3(SerializableFunction1<R2, R4> propertyName);
-
-    /**
-     * join on.
-     *
-     * @param <RE>         the generic type
-     * @param <RC>         the generic type
-     * @param <RL>         the generic type
-     * @param <RS>         the generic type
-     * @param <QR>         the generic type
-     * @param <QRC>        the generic type
-     * @param <QRL>        the generic type
-     * @param <QRS>        the generic type
-     * @param <R4>         the generic type
-     * @param propertyName find type object property name
-     * @return EntityQueryRelateExpression4RFF
-     */
-    <RE extends EntityQueryRelateExpression4RFF<E, R1, R2, R3, R4, RC, RL, RS, QR, QRC, QRL, QRS>,
+    <RE extends EntityQueryRelateExpression4RFFR<E, R1, R2, R3, R4, RC, RL, RS, QR, QRC, QRL, QRS>,
             RC extends EntityQueryConditionGroupExpression5<E, R1, R2, R3, R4, RC, RL, RS, Tuple3<E, R2, R3>>,
             RL extends EntityQueryConditionGroupLogicExpression5<E, R1, R2, R3, R4, RC, RL, RS, Tuple3<E, R2, R3>>,
             RS extends EntityQuerySortExpression5<E, R1, R2, R3, R4, Tuple3<E, R2, R3>>,
@@ -582,22 +282,34 @@ public interface EntityQueryRelatedFetchedExpression3RFF<E, R1, R2, R3,
      * @param <RL>         the generic type
      * @param <RS>         the generic type
      * @param <QR>         the generic type
-     * @param <QRC>        the generic type
-     * @param <QRL>        the generic type
-     * @param <QRS>        the generic type
+     * @param <R4>         the generic type
      * @param propertyName find type object property name
-     * @return EntityQueryRelateExpression4RFF
+     * @return EntityQueryRelateExpression4RFFP
      */
-    <RE extends EntityQueryRelateExpression4RFF<E, R1, R2, R3, R2, RC, RL, RS, QR, QRC, QRL, QRS>,
+    <RE extends EntityQueryRelateExpression4RFFP<E, R1, R2, R3, R4, RC, RL, RS, QR>,
+            RC extends EntityQueryConditionGroupExpression5<E, R1, R2, R3, R4, RC, RL, RS, Tuple3<E, R2, R3>>,
+            RL extends EntityQueryConditionGroupLogicExpression5<E, R1, R2, R3, R4, RC, RL, RS, Tuple3<E, R2, R3>>,
+            RS extends EntityQuerySortExpression5<E, R1, R2, R3, R4, Tuple3<E, R2, R3>>,
+            QR extends EntityQueryRelatedFetchedExpression4RFFP<E, R1, R2, R3, R4, RC, RL, RS>,
+            R4> RE join3(SerializableFunction1<R2, R4> propertyName);
+
+    /**
+     * join on.
+     *
+     * @param <RE>         the generic type
+     * @param <RC>         the generic type
+     * @param <RL>         the generic type
+     * @param <RS>         the generic type
+     * @param <QR>         the generic type
+     * @param propertyName find type object property name
+     * @return EntityQueryRelateExpression4RFFP
+     */
+    <RE extends EntityQueryRelateExpression4RFFP<E, R1, R2, R3, R2, RC, RL, RS, QR>,
             RC extends EntityQueryConditionGroupExpression5<E, R1, R2, R3, R2, RC, RL, RS, Tuple3<E, R2, R3>>,
             RL extends EntityQueryConditionGroupLogicExpression5<E, R1, R2, R3, R2, RC, RL, RS, Tuple3<E, R2, R3>>,
             RS extends EntityQuerySortExpression5<E, R1, R2, R3, R2, Tuple3<E, R2, R3>>,
-            QR extends EntityQueryRelatedFetchedExpression4RFFF<E, R1, R2, R3, R2, QRC, QRL, QRS>,
-            QRC extends EntityQueryConditionGroupExpression5<E, R1, R2, R3, R2, QRC, QRL, QRS, Tuple4<E, R2, R3, R2>>,
-            QRL extends EntityQueryConditionGroupLogicExpression5<E, R1, R2, R3, R2, QRC, QRL, QRS,
-                    Tuple4<E, R2, R3, R2>>,
-            QRS extends EntityQuerySortExpression5<E, R1, R2, R3, R2, Tuple4<E, R2, R3, R2>>> RE join3(
-                    SerializableFunction3<R2, R2> propertyName);
+            QR extends EntityQueryRelatedFetchedExpression4RFFP<E, R1, R2, R3, R2, RC, RL, RS>> RE join3(
+                    SerializableUnaryOperator1<R2> propertyName);
 
     // ********************************************************************
     // 4
@@ -616,9 +328,10 @@ public interface EntityQueryRelatedFetchedExpression3RFF<E, R1, R2, R3,
      * @param <QRS>    the generic type
      * @param <R4>     the generic type
      * @param joinType the join type
-     * @return EntityQueryRelateExpression4RFF
+     * @return the entity query related expression
+     *         EntityQueryRelateExpression4RFFR
      */
-    <QR extends EntityQueryRelateExpression4RFF<E, R1, R2, R3, R4, RC, RL, RS, QRF, QRC, QRL, QRS>,
+    <QR extends EntityQueryRelateExpression4RFFR<E, R1, R2, R3, R4, RC, RL, RS, QRF, QRC, QRL, QRS>,
             RC extends EntityQueryConditionGroupExpression5<E, R1, R2, R3, R4, RC, RL, RS, Tuple3<E, R2, R3>>,
             RL extends EntityQueryConditionGroupLogicExpression5<E, R1, R2, R3, R4, RC, RL, RS, Tuple3<E, R2, R3>>,
             RS extends EntityQuerySortExpression5<E, R1, R2, R3, R4, Tuple3<E, R2, R3>>,
@@ -629,89 +342,6 @@ public interface EntityQueryRelatedFetchedExpression3RFF<E, R1, R2, R3,
             QRS extends EntityQuerySortExpression5<E, R1, R2, R3, R4, Tuple4<E, R2, R3, R4>>,
             R4> EntityQueryRelatedExpression<R3, R4, QR, QRF> join4(Class<R4> joinType);
 
-    //    /**
-    //     * join on.
-    //     *
-    //     * @param <RE>         the generic type
-    //     * @param <RC>         the generic type
-    //     * @param <RL>         the generic type
-    //     * @param <RS>         the generic type
-    //     * @param <QR>         the generic type
-    //     * @param <QRC>        the generic type
-    //     * @param <QRL>        the generic type
-    //     * @param <QRS>        the generic type
-    //     * @param <R4>         the generic type
-    //     * @param <J>          the generic type
-    //     * @param propertyName find type object property name
-    //     * @param joinType     the join type
-    //     * @return EntityQueryRelateExpression4RFF
-    //     */
-    //    <RE extends EntityQueryRelateExpression4RFF<E, R1, R2, R3, R4, RC, RL, RS, QR, QRC, QRL, QRS>,
-    //            RC extends EntityQueryConditionGroupExpression5<E, R1, R2, R3, R4, RC, RL, RS, Tuple3<E, R2, R3>>,
-    //            RL extends EntityQueryConditionGroupLogicExpression5<E, R1, R2, R3, R4, RC, RL, RS, Tuple3<E, R2, R3>>,
-    //            RS extends EntityQuerySortExpression5<E, R1, R2, R3, R4, Tuple3<E, R2, R3>>,
-    //            QR extends EntityQueryRelatedFetchedExpression4RFFF<E, R1, R2, R3, R4, QRC, QRL, QRS>,
-    //            QRC extends EntityQueryConditionGroupExpression5<E, R1, R2, R3, R4, QRC, QRL, QRS, Tuple4<E, R2, R3, R4>>,
-    //            QRL extends EntityQueryConditionGroupLogicExpression5<E, R1, R2, R3, R4, QRC, QRL, QRS,
-    //                    Tuple4<E, R2, R3, R4>>,
-    //            QRS extends EntityQuerySortExpression5<E, R1, R2, R3, R4, Tuple4<E, R2, R3, R4>>, R4,
-    //            J> RE join4(SerializableFunction1<R3, J> propertyName, Class<R4> joinType);
-    //
-    //    /**
-    //     * join on.
-    //     *
-    //     * @param <RE>                 the generic type
-    //     * @param <RC>                 the generic type
-    //     * @param <RL>                 the generic type
-    //     * @param <RS>                 the generic type
-    //     * @param <QR>                 the generic type
-    //     * @param <QRC>                the generic type
-    //     * @param <QRL>                the generic type
-    //     * @param <QRS>                the generic type
-    //     * @param <R4>                 the generic type
-    //     * @param <J>                  the generic type
-    //     * @param propertyName         find type object property name
-    //     * @param joinTypePropertyName the join type property name
-    //     * @return EntityQueryRelateExpression4RFF
-    //     */
-    //    <RE extends EntityQueryRelateExpression4RFF<E, R1, R2, R3, R4, RC, RL, RS, QR, QRC, QRL, QRS>,
-    //            RC extends EntityQueryConditionGroupExpression5<E, R1, R2, R3, R4, RC, RL, RS, Tuple3<E, R2, R3>>,
-    //            RL extends EntityQueryConditionGroupLogicExpression5<E, R1, R2, R3, R4, RC, RL, RS, Tuple3<E, R2, R3>>,
-    //            RS extends EntityQuerySortExpression5<E, R1, R2, R3, R4, Tuple3<E, R2, R3>>,
-    //            QR extends EntityQueryRelatedFetchedExpression4RFFF<E, R1, R2, R3, R4, QRC, QRL, QRS>,
-    //            QRC extends EntityQueryConditionGroupExpression5<E, R1, R2, R3, R4, QRC, QRL, QRS, Tuple4<E, R2, R3, R4>>,
-    //            QRL extends EntityQueryConditionGroupLogicExpression5<E, R1, R2, R3, R4, QRC, QRL, QRS,
-    //                    Tuple4<E, R2, R3, R4>>,
-    //            QRS extends EntityQuerySortExpression5<E, R1, R2, R3, R4, Tuple4<E, R2, R3, R4>>, R4,
-    //            J> RE join4(SerializableFunction1<R3, J> propertyName, SerializableFunction1<R4, J> joinTypePropertyName);
-    //
-    //    /**
-    //     * join on.
-    //     *
-    //     * @param <RE>                 the generic type
-    //     * @param <RC>                 the generic type
-    //     * @param <RL>                 the generic type
-    //     * @param <RS>                 the generic type
-    //     * @param <QR>                 the generic type
-    //     * @param <QRC>                the generic type
-    //     * @param <QRL>                the generic type
-    //     * @param <QRS>                the generic type
-    //     * @param <R4>                 the generic type
-    //     * @param <J>                  the generic type
-    //     * @param joinTypePropertyName the join type property name
-    //     * @return EntityQueryRelateExpression4RFF
-    //     */
-    //    <RE extends EntityQueryRelateExpression4RFF<E, R1, R2, R3, R4, RC, RL, RS, QR, QRC, QRL, QRS>,
-    //            RC extends EntityQueryConditionGroupExpression5<E, R1, R2, R3, R4, RC, RL, RS, Tuple3<E, R2, R3>>,
-    //            RL extends EntityQueryConditionGroupLogicExpression5<E, R1, R2, R3, R4, RC, RL, RS, Tuple3<E, R2, R3>>,
-    //            RS extends EntityQuerySortExpression5<E, R1, R2, R3, R4, Tuple3<E, R2, R3>>,
-    //            QR extends EntityQueryRelatedFetchedExpression4RFFF<E, R1, R2, R3, R4, QRC, QRL, QRS>,
-    //            QRC extends EntityQueryConditionGroupExpression5<E, R1, R2, R3, R4, QRC, QRL, QRS, Tuple4<E, R2, R3, R4>>,
-    //            QRL extends EntityQueryConditionGroupLogicExpression5<E, R1, R2, R3, R4, QRC, QRL, QRS,
-    //                    Tuple4<E, R2, R3, R4>>,
-    //            QRS extends EntityQuerySortExpression5<E, R1, R2, R3, R4, Tuple4<E, R2, R3, R4>>, R4,
-    //            J> RE join4(SerializableFunction4<R4, J> joinTypePropertyName);
-
     /**
      * join on.
      *
@@ -725,35 +355,9 @@ public interface EntityQueryRelatedFetchedExpression3RFF<E, R1, R2, R3,
      * @param <QRS>        the generic type
      * @param <R4>         the generic type
      * @param propertyName find type object property name
-     * @return EntityQueryRelateExpression4RFF
+     * @return EntityQueryRelateExpression4RFFR
      */
-    <RE extends EntityQueryRelateExpression4RFF<E, R1, R2, R3, R4, RC, RL, RS, QR, QRC, QRL, QRS>,
-            RC extends EntityQueryConditionGroupExpression5<E, R1, R2, R3, R4, RC, RL, RS, Tuple3<E, R2, R3>>,
-            RL extends EntityQueryConditionGroupLogicExpression5<E, R1, R2, R3, R4, RC, RL, RS, Tuple3<E, R2, R3>>,
-            RS extends EntityQuerySortExpression5<E, R1, R2, R3, R4, Tuple3<E, R2, R3>>,
-            QR extends EntityQueryRelatedFetchedExpression4RFFF<E, R1, R2, R3, R4, QRC, QRL, QRS>,
-            QRC extends EntityQueryConditionGroupExpression5<E, R1, R2, R3, R4, QRC, QRL, QRS, Tuple4<E, R2, R3, R4>>,
-            QRL extends EntityQueryConditionGroupLogicExpression5<E, R1, R2, R3, R4, QRC, QRL, QRS,
-                    Tuple4<E, R2, R3, R4>>,
-            QRS extends EntityQuerySortExpression5<E, R1, R2, R3, R4, Tuple4<E, R2, R3, R4>>,
-            R4> RE join4(SerializableFunction1<R3, R4> propertyName);
-
-    /**
-     * join on.
-     *
-     * @param <RE>         the generic type
-     * @param <RC>         the generic type
-     * @param <RL>         the generic type
-     * @param <RS>         the generic type
-     * @param <QR>         the generic type
-     * @param <QRC>        the generic type
-     * @param <QRL>        the generic type
-     * @param <QRS>        the generic type
-     * @param <R4>         the generic type
-     * @param propertyName find type object property name
-     * @return EntityQueryRelateExpression4RFF
-     */
-    <RE extends EntityQueryRelateExpression4RFF<E, R1, R2, R3, R4, RC, RL, RS, QR, QRC, QRL, QRS>,
+    <RE extends EntityQueryRelateExpression4RFFR<E, R1, R2, R3, R4, RC, RL, RS, QR, QRC, QRL, QRS>,
             RC extends EntityQueryConditionGroupExpression5<E, R1, R2, R3, R4, RC, RL, RS, Tuple3<E, R2, R3>>,
             RL extends EntityQueryConditionGroupLogicExpression5<E, R1, R2, R3, R4, RC, RL, RS, Tuple3<E, R2, R3>>,
             RS extends EntityQuerySortExpression5<E, R1, R2, R3, R4, Tuple3<E, R2, R3>>,
@@ -772,20 +376,32 @@ public interface EntityQueryRelatedFetchedExpression3RFF<E, R1, R2, R3,
      * @param <RL>         the generic type
      * @param <RS>         the generic type
      * @param <QR>         the generic type
-     * @param <QRC>        the generic type
-     * @param <QRL>        the generic type
-     * @param <QRS>        the generic type
+     * @param <R4>         the generic type
      * @param propertyName find type object property name
-     * @return EntityQueryRelateExpression4RFF
+     * @return EntityQueryRelateExpression4RFFP
      */
-    <RE extends EntityQueryRelateExpression4RFF<E, R1, R2, R3, R3, RC, RL, RS, QR, QRC, QRL, QRS>,
+    <RE extends EntityQueryRelateExpression4RFFP<E, R1, R2, R3, R4, RC, RL, RS, QR>,
+            RC extends EntityQueryConditionGroupExpression5<E, R1, R2, R3, R4, RC, RL, RS, Tuple3<E, R2, R3>>,
+            RL extends EntityQueryConditionGroupLogicExpression5<E, R1, R2, R3, R4, RC, RL, RS, Tuple3<E, R2, R3>>,
+            RS extends EntityQuerySortExpression5<E, R1, R2, R3, R4, Tuple3<E, R2, R3>>,
+            QR extends EntityQueryRelatedFetchedExpression4RFFP<E, R1, R2, R3, R4, RC, RL, RS>,
+            R4> RE join4(SerializableFunction1<R3, R4> propertyName);
+
+    /**
+     * join on.
+     *
+     * @param <RE>         the generic type
+     * @param <RC>         the generic type
+     * @param <RL>         the generic type
+     * @param <RS>         the generic type
+     * @param <QR>         the generic type
+     * @param propertyName find type object property name
+     * @return EntityQueryRelateExpression4RFFP
+     */
+    <RE extends EntityQueryRelateExpression4RFFP<E, R1, R2, R3, R3, RC, RL, RS, QR>,
             RC extends EntityQueryConditionGroupExpression5<E, R1, R2, R3, R3, RC, RL, RS, Tuple3<E, R2, R3>>,
             RL extends EntityQueryConditionGroupLogicExpression5<E, R1, R2, R3, R3, RC, RL, RS, Tuple3<E, R2, R3>>,
             RS extends EntityQuerySortExpression5<E, R1, R2, R3, R3, Tuple3<E, R2, R3>>,
-            QR extends EntityQueryRelatedFetchedExpression4RFFF<E, R1, R2, R3, R3, QRC, QRL, QRS>,
-            QRC extends EntityQueryConditionGroupExpression5<E, R1, R2, R3, R3, QRC, QRL, QRS, Tuple4<E, R2, R3, R3>>,
-            QRL extends EntityQueryConditionGroupLogicExpression5<E, R1, R2, R3, R3, QRC, QRL, QRS,
-                    Tuple4<E, R2, R3, R3>>,
-            QRS extends EntityQuerySortExpression5<E, R1, R2, R3, R3, Tuple4<E, R2, R3, R3>>> RE join4(
-                    SerializableFunction3<R3, R3> propertyName);
+            QR extends EntityQueryRelatedFetchedExpression4RFFP<E, R1, R2, R3, R3, RC, RL, RS>> RE join4(
+                    SerializableUnaryOperator1<R3> propertyName);
 }

@@ -4,18 +4,18 @@ package cn.featherfly.hammer.expression.entity.condition;
 import java.util.Collection;
 import java.util.Date;
 
-import cn.featherfly.common.lang.function.SerializableToDateFunction;
-import cn.featherfly.common.lang.function.SerializableToEnumFunction;
-import cn.featherfly.common.lang.function.SerializableToLocalDateFunction;
-import cn.featherfly.common.lang.function.SerializableToLocalDateTimeFunction;
-import cn.featherfly.common.lang.function.SerializableToLocalTimeFunction;
-import cn.featherfly.common.lang.function.SerializableToNumberFunction;
-import cn.featherfly.common.lang.function.SerializableToStringFunction;
-import cn.featherfly.common.lang.function.SerializableFunction;
-import cn.featherfly.common.lang.function.SerializableToCollectionFunction;
-import cn.featherfly.common.lang.function.SerializableToDoubleFunction;
-import cn.featherfly.common.lang.function.SerializableToIntFunction;
-import cn.featherfly.common.lang.function.SerializableToLongFunction;
+import cn.featherfly.common.function.serializable.SerializableFunction;
+import cn.featherfly.common.function.serializable.SerializableToCollectionFunction;
+import cn.featherfly.common.function.serializable.SerializableToDateFunction;
+import cn.featherfly.common.function.serializable.SerializableToDoubleFunction;
+import cn.featherfly.common.function.serializable.SerializableToEnumFunction;
+import cn.featherfly.common.function.serializable.SerializableToIntFunction;
+import cn.featherfly.common.function.serializable.SerializableToLocalDateFunction;
+import cn.featherfly.common.function.serializable.SerializableToLocalDateTimeFunction;
+import cn.featherfly.common.function.serializable.SerializableToLocalTimeFunction;
+import cn.featherfly.common.function.serializable.SerializableToLongFunction;
+import cn.featherfly.common.function.serializable.SerializableToNumberFunction;
+import cn.featherfly.common.function.serializable.SerializableToStringFunction;
 import cn.featherfly.hammer.expression.condition.ConditionExpression;
 import cn.featherfly.hammer.expression.condition.LogicExpression;
 import cn.featherfly.hammer.expression.entity.condition.property.EntityDatePropertyExpression;
@@ -83,14 +83,6 @@ public interface EntityPropertyExpression<E, C extends ConditionExpression, L ex
     EntityNumberPropertyExpression<E, Double, C, L> property(SerializableToDoubleFunction<E> name);
 
     /**
-     * Property string.
-     *
-     * @param name the name
-     * @return the string expression
-     */
-    EntityStringPropertyExpression<E, C, L> property(SerializableToStringFunction<E> name);
-
-    /**
      * Property number.
      *
      * @param <R>  the number type
@@ -107,6 +99,14 @@ public interface EntityPropertyExpression<E, C extends ConditionExpression, L ex
      * @return the date expression
      */
     <R extends Date> EntityDatePropertyExpression<E, R, C, L> property(SerializableToDateFunction<E, R> name);
+
+    /**
+     * Property string.
+     *
+     * @param name the name
+     * @return the string expression
+     */
+    EntityStringPropertyExpression<E, C, L> property(SerializableToStringFunction<E> name);
 
     /**
      * Property LocalDate.

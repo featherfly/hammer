@@ -4,8 +4,8 @@ package cn.featherfly.hammer.sqldb.jdbc.dsl.execute;
 import java.util.function.Predicate;
 
 import cn.featherfly.common.exception.NotImplementedException;
-import cn.featherfly.common.operator.QueryOperator;
-import cn.featherfly.common.operator.QueryOperator.QueryPolicy;
+import cn.featherfly.common.operator.ComparisonOperator;
+import cn.featherfly.common.operator.ComparisonOperator.MatchStrategy;
 import cn.featherfly.common.repository.mapping.ClassMapping;
 import cn.featherfly.common.repository.mapping.PropertyMapping;
 import cn.featherfly.hammer.dsl.execute.ExecutableConditionGroup;
@@ -113,8 +113,8 @@ public class SqlConditionGroupExpression
      * {@inheritDoc}
      */
     @Override
-    protected <T, R> ExecutableConditionGroupLogic eq_ne(int index, QueryOperator queryOperator, PropertyMapping<?> pm,
-            R value, QueryPolicy queryPolicy, Predicate<?> ignoreStrategy) {
+    protected <T, R> ExecutableConditionGroupLogic eq_ne(int index, ComparisonOperator comparisonOperator, PropertyMapping<?> pm,
+            R value, MatchStrategy queryPolicy, Predicate<?> ignoreStrategy) {
         // IMPLSOON 未实现
         throw new NotImplementedException();
     }

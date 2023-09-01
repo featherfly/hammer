@@ -3,9 +3,9 @@ package cn.featherfly.hammer.expression.entity.condition.lk;
 
 import java.util.function.Predicate;
 
-import cn.featherfly.common.lang.function.SerializableFunction;
-import cn.featherfly.common.lang.function.SerializableStringSupplier;
-import cn.featherfly.common.operator.QueryOperator.QueryPolicy;
+import cn.featherfly.common.function.serializable.SerializableFunction;
+import cn.featherfly.common.function.serializable.SerializableStringSupplier;
+import cn.featherfly.common.operator.ComparisonOperator.MatchStrategy;
 import cn.featherfly.hammer.expression.condition.ConditionExpression;
 import cn.featherfly.hammer.expression.condition.LogicExpression;
 
@@ -35,7 +35,7 @@ public interface EntityLikeExpression<E, C extends ConditionExpression, L extend
      * @return LogicExpression
      */
     default L lk(SerializableFunction<E, String> name, String value) {
-        return lk(name, value, QueryPolicy.AUTO);
+        return lk(name, value, MatchStrategy.AUTO);
     }
 
     /**
@@ -47,7 +47,7 @@ public interface EntityLikeExpression<E, C extends ConditionExpression, L extend
      * @return LogicExpression
      */
     default L lk(SerializableFunction<E, String> name, String value, Predicate<String> ignoreStrategy) {
-        return lk(name, value, QueryPolicy.AUTO, ignoreStrategy);
+        return lk(name, value, MatchStrategy.AUTO, ignoreStrategy);
     }
 
     /**
@@ -58,7 +58,7 @@ public interface EntityLikeExpression<E, C extends ConditionExpression, L extend
      * @param queryPolicy the query policy
      * @return the l
      */
-    L lk(SerializableFunction<E, String> name, String value, QueryPolicy queryPolicy);
+    L lk(SerializableFunction<E, String> name, String value, MatchStrategy queryPolicy);
 
     /**
      * like value.
@@ -69,7 +69,7 @@ public interface EntityLikeExpression<E, C extends ConditionExpression, L extend
      * @param ignoreStrategy the ignore strategy
      * @return the l
      */
-    L lk(SerializableFunction<E, String> name, String value, QueryPolicy queryPolicy, Predicate<String> ignoreStrategy);
+    L lk(SerializableFunction<E, String> name, String value, MatchStrategy queryPolicy, Predicate<String> ignoreStrategy);
 
     /**
      * like value.
@@ -78,7 +78,7 @@ public interface EntityLikeExpression<E, C extends ConditionExpression, L extend
      * @return LogicExpression
      */
     default L lk(SerializableStringSupplier property) {
-        return lk(property, QueryPolicy.AUTO);
+        return lk(property, MatchStrategy.AUTO);
     }
 
     /**
@@ -89,7 +89,7 @@ public interface EntityLikeExpression<E, C extends ConditionExpression, L extend
      * @return LogicExpression
      */
     default L lk(SerializableStringSupplier property, Predicate<String> ignoreStrategy) {
-        return lk(property, QueryPolicy.AUTO, ignoreStrategy);
+        return lk(property, MatchStrategy.AUTO, ignoreStrategy);
     }
 
     /**
@@ -99,7 +99,7 @@ public interface EntityLikeExpression<E, C extends ConditionExpression, L extend
      * @param queryPolicy the query policy
      * @return the l
      */
-    L lk(SerializableStringSupplier property, QueryPolicy queryPolicy);
+    L lk(SerializableStringSupplier property, MatchStrategy queryPolicy);
 
     /**
      * like value.
@@ -109,7 +109,7 @@ public interface EntityLikeExpression<E, C extends ConditionExpression, L extend
      * @param ignoreStrategy the ignore strategy
      * @return the l
      */
-    L lk(SerializableStringSupplier property, QueryPolicy queryPolicy, Predicate<String> ignoreStrategy);
+    L lk(SerializableStringSupplier property, MatchStrategy queryPolicy, Predicate<String> ignoreStrategy);
 
     //  嵌套属性使用property(U1::getU2).property(U2:getV).lk(v)来设置
     //    /**

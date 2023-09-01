@@ -1,7 +1,6 @@
 package cn.featherfly.hammer.sqldb.jdbc.operate;
 
 import java.io.Serializable;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -14,6 +13,7 @@ import cn.featherfly.common.db.mapping.JdbcClassMapping;
 import cn.featherfly.common.db.mapping.JdbcPropertyMapping;
 import cn.featherfly.common.db.mapping.SqlTypeMappingManager;
 import cn.featherfly.common.db.metadata.DatabaseMetadata;
+import cn.featherfly.common.lang.Lang;
 import cn.featherfly.common.lang.reflect.Type;
 import cn.featherfly.hammer.sqldb.jdbc.GeneratedKeyHolder;
 import cn.featherfly.hammer.sqldb.jdbc.Jdbc;
@@ -157,10 +157,12 @@ public class InsertOperate<T> extends AbstractBatchExecuteOperate<T> {
     @Override
     protected int[] doExecute(List<T> entities) {
         List<JdbcPropertyMapping> pks = classMapping.getPrivaryKeyPropertyMappings();
-        List<Object[]> argsList = new ArrayList<>(entities.size());
-        for (T entity : entities) {
-            argsList.add(getParameters(entity));
-        }
+        //        List<Object[]> argsList = new ArrayList<>(entities.size());
+        //        for (T entity : entities) {
+        //            argsList.add(getParameters(entity));
+        //        }
+        Object[][] argsList = new Object[entities.size()][];
+        Lang.each(entities, (e, i) -> argsList[i] = getParameters(e));
         int[] results;
         if (pks.size() == 1) {
             results = jdbc.updateBatch(sql, new GeneratedKeyHolder<Serializable>() {

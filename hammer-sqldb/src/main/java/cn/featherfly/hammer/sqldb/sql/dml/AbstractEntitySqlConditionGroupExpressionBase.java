@@ -10,8 +10,8 @@ import cn.featherfly.common.db.mapping.JdbcMappingFactory;
 import cn.featherfly.common.lang.AssertIllegalArgument;
 import cn.featherfly.common.lang.ClassUtils;
 import cn.featherfly.common.operator.LogicOperator;
-import cn.featherfly.common.operator.QueryOperator;
-import cn.featherfly.common.operator.QueryOperator.QueryPolicy;
+import cn.featherfly.common.operator.ComparisonOperator;
+import cn.featherfly.common.operator.ComparisonOperator.MatchStrategy;
 import cn.featherfly.common.repository.mapping.PropertyMapping;
 import cn.featherfly.common.repository.mapping.PropertyMapping.Mode;
 import cn.featherfly.hammer.expression.condition.GroupEndExpression;
@@ -150,14 +150,14 @@ public abstract class AbstractEntitySqlConditionGroupExpressionBase<E, ER extend
      * {@inheritDoc}
      */
     @Override
-    protected <T, R> L eq_ne(int index, QueryOperator queryOperator, PropertyMapping<?> pm, R value,
-            QueryPolicy queryPolicy, Predicate<?> ignoreStrategy) {
-        return eq_ne(queryOperator, pm, value, getAlias(index), queryPolicy, ignoreStrategy);
+    protected <T, R> L eq_ne(int index, ComparisonOperator comparisonOperator, PropertyMapping<?> pm, R value,
+            MatchStrategy queryPolicy, Predicate<?> ignoreStrategy) {
+        return eq_ne(comparisonOperator, pm, value, getAlias(index), queryPolicy, ignoreStrategy);
     }
 
     @Override
-    protected <T, R> L eq_ne(QueryOperator queryOperator, PropertyMapping<?> pm, R value, String queryAlias,
-            QueryPolicy queryPolicy, Predicate<?> ignoreStrategy) {
+    protected <T, R> L eq_ne(ComparisonOperator comparisonOperator, PropertyMapping<?> pm, R value, String queryAlias,
+            MatchStrategy queryPolicy, Predicate<?> ignoreStrategy) {
         AssertIllegalArgument.isNotNull(ignoreStrategy, "ignoreStrategy");
         if (value != null) {
             //            if (Lang.isNotEmpty(pm.getPropertyMappings())) {
@@ -177,7 +177,7 @@ public abstract class AbstractEntitySqlConditionGroupExpressionBase<E, ER extend
                             condition = logic.and();
                         }
                         logic = ((AbstractEntitySqlConditionExpressionBase<E, ER, B, C, L>) condition)
-                                .eq_ne(queryOperator, spm, ov, queryAlias, queryPolicy, ignoreStrategy);
+                                .eq_ne(comparisonOperator, spm, ov, queryAlias, queryPolicy, ignoreStrategy);
                     }
 
                     //                    if (pm.getMode() == Mode.EMBEDDED) {
@@ -187,7 +187,7 @@ public abstract class AbstractEntitySqlConditionGroupExpressionBase<E, ER extend
                     //                                condition = logic.and();
                     //                            }
                     //                            logic = ((AbstractEntitySqlConditionGroupExpression<E, C, L>) condition)
-                    //                                    .eq_ne0(queryOperator, spm, ov, queryPolicy);
+                    //                                    .eq_ne0(comparisonOperator, spm, ov, queryPolicy);
                     //                        }
                     //                    } else if (pm.getMode() == Mode.MANY_TO_ONE) {
                     //                        JdbcClassMapping<?> cm = factory.getClassMapping(pm.getPropertyType());
@@ -198,7 +198,7 @@ public abstract class AbstractEntitySqlConditionGroupExpressionBase<E, ER extend
                     //                                condition = logic.and();
                     //                            }
                     //                            logic = ((AbstractEntitySqlConditionGroupExpression<E, C, L>) condition)
-                    //                                    .eq_ne0(queryOperator, "", cpm, ov, queryPolicy);
+                    //                                    .eq_ne0(comparisonOperator, "", cpm, ov, queryPolicy);
                     //                        }
                     //                    } else {
                     //                        // FIXME 后续来实现
@@ -211,20 +211,20 @@ public abstract class AbstractEntitySqlConditionGroupExpressionBase<E, ER extend
                 } else {
                     for (PropertyMapping<?> spm : pm.getPropertyMappings()) {
                         if (ClassUtils.isParent(spm.getPropertyType(), value.getClass())) {
-                            return eq_ne(queryOperator, spm, value, queryAlias, queryPolicy, ignoreStrategy);
+                            return eq_ne(comparisonOperator, spm, value, queryAlias, queryPolicy, ignoreStrategy);
                         }
                     }
                 }
             }
         }
 
-        return eq_ne0(queryOperator, pm, value, queryAlias, queryPolicy, ignoreStrategy);
+        return eq_ne0(comparisonOperator, pm, value, queryAlias, queryPolicy, ignoreStrategy);
     }
 
-    private <T, R> L eq_ne0(QueryOperator queryOperator, PropertyMapping<?> pm, R value, String queryAlias,
-            QueryPolicy queryPolicy, Predicate<?> ignoreStrategy) {
+    private <T, R> L eq_ne0(ComparisonOperator comparisonOperator, PropertyMapping<?> pm, R value, String queryAlias,
+            MatchStrategy queryPolicy, Predicate<?> ignoreStrategy) {
         return (L) addCondition(new SqlConditionExpressionBuilder(dialect, pm.getRepositoryFieldName(),
-                getFieldValueOperator(pm, value), queryOperator, queryPolicy, queryAlias, ignoreStrategy));
+                getFieldValueOperator(pm, value), comparisonOperator, queryPolicy, queryAlias, ignoreStrategy));
     }
 
     // ********************************************************************

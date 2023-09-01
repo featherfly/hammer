@@ -4,13 +4,13 @@ import java.util.function.Function;
 
 import com.speedment.common.tuple.Tuple7;
 
-import cn.featherfly.common.lang.function.SerializableFunction;
-import cn.featherfly.common.lang.function.SerializableFunction1;
-import cn.featherfly.common.lang.function.SerializableFunction2;
-import cn.featherfly.common.lang.function.SerializableFunction3;
-import cn.featherfly.common.lang.function.SerializableFunction4;
-import cn.featherfly.common.lang.function.SerializableFunction5;
-import cn.featherfly.common.lang.function.SerializableFunction6;
+import cn.featherfly.common.function.serializable.SerializableFunction;
+import cn.featherfly.common.function.serializable.SerializableFunction1;
+import cn.featherfly.common.function.serializable.SerializableFunction2;
+import cn.featherfly.common.function.serializable.SerializableFunction3;
+import cn.featherfly.common.function.serializable.SerializableFunction4;
+import cn.featherfly.common.function.serializable.SerializableFunction5;
+import cn.featherfly.common.function.serializable.SerializableFunction6;
 import cn.featherfly.hammer.dsl.QueryEntityRepository;
 
 /**

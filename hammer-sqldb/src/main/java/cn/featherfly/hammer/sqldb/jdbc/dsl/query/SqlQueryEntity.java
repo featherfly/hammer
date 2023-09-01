@@ -4,7 +4,7 @@ package cn.featherfly.hammer.sqldb.jdbc.dsl.query;
 import java.util.Map;
 
 import cn.featherfly.common.db.dialect.Join;
-import cn.featherfly.common.lang.function.SerializableFunction;
+import cn.featherfly.common.function.serializable.SerializableFunction;
 import cn.featherfly.hammer.dsl.query.QueryEntity;
 import cn.featherfly.hammer.dsl.query.QueryEntityProperties;
 

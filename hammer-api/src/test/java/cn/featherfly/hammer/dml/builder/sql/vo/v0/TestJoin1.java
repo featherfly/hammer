@@ -10,9 +10,9 @@
  */
 package cn.featherfly.hammer.dml.builder.sql.vo.v0;
 
-import cn.featherfly.common.lang.function.SerializableFunction;
-import cn.featherfly.common.lang.function.SerializableFunction1;
-import cn.featherfly.common.lang.function.SerializableFunction2;
+import cn.featherfly.common.function.serializable.SerializableFunction;
+import cn.featherfly.common.function.serializable.SerializableFunction1;
+import cn.featherfly.common.function.serializable.SerializableFunction2;
 
 /**
  * TestJoin1.

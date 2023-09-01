@@ -1,6 +1,5 @@
 package cn.featherfly.hammer.sqldb.jdbc.operate;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -12,6 +11,7 @@ import cn.featherfly.common.db.mapping.JdbcPropertyMapping;
 import cn.featherfly.common.db.mapping.SqlTypeMappingManager;
 import cn.featherfly.common.db.metadata.DatabaseMetadata;
 import cn.featherfly.common.exception.UnsupportedException;
+import cn.featherfly.common.lang.Lang;
 import cn.featherfly.hammer.sqldb.jdbc.Jdbc;
 
 /**
@@ -93,10 +93,12 @@ public class UpdateOperate<T> extends AbstractBatchExecuteOperate<T> {
      */
     @Override
     protected int[] doExecute(List<T> entities) {
-        List<Object[]> argsList = new ArrayList<>(entities.size());
-        for (T entity : entities) {
-            argsList.add(getParameters(entity));
-        }
+        //        List<Object[]> argsList = new ArrayList<>(entities.size());
+        //        for (T entity : entities) {
+        //            argsList.add(getParameters(entity));
+        //        }
+        Object[][] argsList = new Object[entities.size()][];
+        Lang.each(entities, (e, i) -> argsList[i] = getParameters(e));
         return jdbc.updateBatch(sql, argsList);
     }
 }

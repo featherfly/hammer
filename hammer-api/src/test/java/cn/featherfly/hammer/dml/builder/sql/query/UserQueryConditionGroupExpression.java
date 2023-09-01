@@ -9,23 +9,23 @@ import java.util.Map;
 import java.util.function.Function;
 import java.util.function.Predicate;
 
-import cn.featherfly.common.lang.function.SerializableDateSupplier;
-import cn.featherfly.common.lang.function.SerializableFunction;
-import cn.featherfly.common.lang.function.SerializableLocalDateSupplier;
-import cn.featherfly.common.lang.function.SerializableLocalDateTimeSupplier;
-import cn.featherfly.common.lang.function.SerializableLocalTimeSupplier;
-import cn.featherfly.common.lang.function.SerializableNumberSupplier;
-import cn.featherfly.common.lang.function.SerializableStringSupplier;
-import cn.featherfly.common.lang.function.SerializableSupplier;
-import cn.featherfly.common.lang.function.SerializableToDateFunction;
-import cn.featherfly.common.lang.function.SerializableToEnumFunction;
-import cn.featherfly.common.lang.function.SerializableToLocalDateFunction;
-import cn.featherfly.common.lang.function.SerializableToLocalDateTimeFunction;
-import cn.featherfly.common.lang.function.SerializableToLocalTimeFunction;
-import cn.featherfly.common.lang.function.SerializableToNumberFunction;
-import cn.featherfly.common.lang.function.SerializableToStringFunction;
+import cn.featherfly.common.function.serializable.SerializableDateSupplier;
+import cn.featherfly.common.function.serializable.SerializableFunction;
+import cn.featherfly.common.function.serializable.SerializableLocalDateSupplier;
+import cn.featherfly.common.function.serializable.SerializableLocalDateTimeSupplier;
+import cn.featherfly.common.function.serializable.SerializableLocalTimeSupplier;
+import cn.featherfly.common.function.serializable.SerializableNumberSupplier;
+import cn.featherfly.common.function.serializable.SerializableStringSupplier;
+import cn.featherfly.common.function.serializable.SerializableSupplier;
+import cn.featherfly.common.function.serializable.SerializableToDateFunction;
+import cn.featherfly.common.function.serializable.SerializableToEnumFunction;
+import cn.featherfly.common.function.serializable.SerializableToLocalDateFunction;
+import cn.featherfly.common.function.serializable.SerializableToLocalDateTimeFunction;
+import cn.featherfly.common.function.serializable.SerializableToLocalTimeFunction;
+import cn.featherfly.common.function.serializable.SerializableToNumberFunction;
+import cn.featherfly.common.function.serializable.SerializableToStringFunction;
 import cn.featherfly.common.operator.LogicOperator;
-import cn.featherfly.common.operator.QueryOperator.QueryPolicy;
+import cn.featherfly.common.operator.ComparisonOperator.MatchStrategy;
 import cn.featherfly.hammer.expression.condition.property.DateExpression;
 import cn.featherfly.hammer.expression.condition.property.EnumExpression;
 import cn.featherfly.hammer.expression.condition.property.NumberExpression;
@@ -1190,7 +1190,7 @@ public class UserQueryConditionGroupExpression implements
      * {@inheritDoc}
      */
     @Override
-    public UserQueryConditionGroupExpression eq(String name, Object value, QueryPolicy queryPolicy) {
+    public UserQueryConditionGroupExpression eq(String name, Object value, MatchStrategy queryPolicy) {
 
         return null;
     }
@@ -1200,7 +1200,7 @@ public class UserQueryConditionGroupExpression implements
      */
     @Override
     public <T, R> UserQueryConditionGroupExpression eq(SerializableFunction<T, R> name, R value,
-            QueryPolicy queryPolicy) {
+            MatchStrategy queryPolicy) {
 
         return null;
     }
@@ -1209,7 +1209,7 @@ public class UserQueryConditionGroupExpression implements
      * {@inheritDoc}
      */
     @Override
-    public <R> UserQueryConditionGroupExpression eq(SerializableSupplier<R> property, QueryPolicy queryPolicy) {
+    public <R> UserQueryConditionGroupExpression eq(SerializableSupplier<R> property, MatchStrategy queryPolicy) {
 
         return null;
     }
@@ -1218,7 +1218,7 @@ public class UserQueryConditionGroupExpression implements
      * {@inheritDoc}
      */
     @Override
-    public UserQueryConditionGroupExpression ne(String name, Object value, QueryPolicy queryPolicy) {
+    public UserQueryConditionGroupExpression ne(String name, Object value, MatchStrategy queryPolicy) {
 
         return null;
     }
@@ -1228,7 +1228,7 @@ public class UserQueryConditionGroupExpression implements
      */
     @Override
     public <T, R> UserQueryConditionGroupExpression ne(SerializableFunction<T, R> name, R value,
-            QueryPolicy queryPolicy) {
+            MatchStrategy queryPolicy) {
 
         return null;
     }
@@ -1237,7 +1237,7 @@ public class UserQueryConditionGroupExpression implements
      * {@inheritDoc}
      */
     @Override
-    public <R> UserQueryConditionGroupExpression ne(SerializableSupplier<R> property, QueryPolicy queryPolicy) {
+    public <R> UserQueryConditionGroupExpression ne(SerializableSupplier<R> property, MatchStrategy queryPolicy) {
 
         return null;
     }
@@ -1246,7 +1246,7 @@ public class UserQueryConditionGroupExpression implements
      * {@inheritDoc}
      */
     @Override
-    public UserQueryConditionGroupExpression lk(String name, String value, QueryPolicy queryPolicy) {
+    public UserQueryConditionGroupExpression lk(String name, String value, MatchStrategy queryPolicy) {
 
         return null;
     }
@@ -1256,7 +1256,7 @@ public class UserQueryConditionGroupExpression implements
      */
     @Override
     public <T> UserQueryConditionGroupExpression lk(SerializableToStringFunction<T> name, String value,
-            QueryPolicy queryPolicy) {
+            MatchStrategy queryPolicy) {
 
         return null;
     }
@@ -1265,7 +1265,7 @@ public class UserQueryConditionGroupExpression implements
      * {@inheritDoc}
      */
     @Override
-    public UserQueryConditionGroupExpression lk(SerializableStringSupplier property, QueryPolicy queryPolicy) {
+    public UserQueryConditionGroupExpression lk(SerializableStringSupplier property, MatchStrategy queryPolicy) {
 
         return null;
     }
@@ -1274,7 +1274,7 @@ public class UserQueryConditionGroupExpression implements
      * {@inheritDoc}
      */
     @Override
-    public UserQueryConditionGroupExpression co(String name, String value, QueryPolicy queryPolicy) {
+    public UserQueryConditionGroupExpression co(String name, String value, MatchStrategy queryPolicy) {
 
         return null;
     }
@@ -1284,7 +1284,7 @@ public class UserQueryConditionGroupExpression implements
      */
     @Override
     public <T> UserQueryConditionGroupExpression co(SerializableToStringFunction<T> name, String value,
-            QueryPolicy queryPolicy) {
+            MatchStrategy queryPolicy) {
 
         return null;
     }
@@ -1293,7 +1293,7 @@ public class UserQueryConditionGroupExpression implements
      * {@inheritDoc}
      */
     @Override
-    public UserQueryConditionGroupExpression co(SerializableStringSupplier property, QueryPolicy queryPolicy) {
+    public UserQueryConditionGroupExpression co(SerializableStringSupplier property, MatchStrategy queryPolicy) {
 
         return null;
     }
@@ -1302,7 +1302,7 @@ public class UserQueryConditionGroupExpression implements
      * {@inheritDoc}
      */
     @Override
-    public UserQueryConditionGroupExpression ew(String name, String value, QueryPolicy queryPolicy) {
+    public UserQueryConditionGroupExpression ew(String name, String value, MatchStrategy queryPolicy) {
 
         return null;
     }
@@ -1312,7 +1312,7 @@ public class UserQueryConditionGroupExpression implements
      */
     @Override
     public <T> UserQueryConditionGroupExpression ew(SerializableToStringFunction<T> name, String value,
-            QueryPolicy queryPolicy) {
+            MatchStrategy queryPolicy) {
 
         return null;
     }
@@ -1321,7 +1321,7 @@ public class UserQueryConditionGroupExpression implements
      * {@inheritDoc}
      */
     @Override
-    public UserQueryConditionGroupExpression ew(SerializableStringSupplier property, QueryPolicy queryPolicy) {
+    public UserQueryConditionGroupExpression ew(SerializableStringSupplier property, MatchStrategy queryPolicy) {
 
         return null;
     }
@@ -1330,7 +1330,7 @@ public class UserQueryConditionGroupExpression implements
      * {@inheritDoc}
      */
     @Override
-    public UserQueryConditionGroupExpression sw(String name, String value, QueryPolicy queryPolicy) {
+    public UserQueryConditionGroupExpression sw(String name, String value, MatchStrategy queryPolicy) {
 
         return null;
     }
@@ -1340,7 +1340,7 @@ public class UserQueryConditionGroupExpression implements
      */
     @Override
     public <T> UserQueryConditionGroupExpression sw(SerializableToStringFunction<T> name, String value,
-            QueryPolicy queryPolicy) {
+            MatchStrategy queryPolicy) {
 
         return null;
     }
@@ -1349,7 +1349,7 @@ public class UserQueryConditionGroupExpression implements
      * {@inheritDoc}
      */
     @Override
-    public UserQueryConditionGroupExpression sw(SerializableStringSupplier property, QueryPolicy queryPolicy) {
+    public UserQueryConditionGroupExpression sw(SerializableStringSupplier property, MatchStrategy queryPolicy) {
 
         return null;
     }

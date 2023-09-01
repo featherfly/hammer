@@ -13,7 +13,7 @@ import com.speedment.common.tuple.Tuple4;
 import com.speedment.common.tuple.Tuple5;
 import com.speedment.common.tuple.Tuple6;
 
-import cn.featherfly.common.lang.function.SerializableFunction;
+import cn.featherfly.common.function.serializable.SerializableFunction;
 import cn.featherfly.common.repository.IgnoreStrategy;
 import cn.featherfly.common.repository.Repository;
 import cn.featherfly.common.structure.page.PaginationResults;
@@ -1314,8 +1314,8 @@ public class BasedTplHammer implements Hammer {
     public <R1, R2, R3, R4, R5, R6> Tuple6<R1, R2, R3, R4, R5, R6> single(String tplExecuteId, Class<R1> entityType1,
             Class<R2> entityType2, Class<R3> entityType3, Class<R4> entityType4, Class<R5> entityType5,
             Class<R6> entityType6, Map<String, Object> params) {
-        // YUFEI_TODO Auto-generated method stub
-        return null;
+        return hammer.single(tplExecuteId, entityType1, entityType2, entityType3, entityType4, entityType5, entityType6,
+                params);
     }
 
     /**
@@ -1325,8 +1325,8 @@ public class BasedTplHammer implements Hammer {
     public <R1, R2, R3, R4, R5, R6> Tuple6<R1, R2, R3, R4, R5, R6> single(TplExecuteId tplExecuteId,
             Class<R1> entityType1, Class<R2> entityType2, Class<R3> entityType3, Class<R4> entityType4,
             Class<R5> entityType5, Class<R6> entityType6, Map<String, Object> params) {
-        // YUFEI_TODO Auto-generated method stub
-        return null;
+        return hammer.single(tplExecuteId, entityType1, entityType2, entityType3, entityType4, entityType5, entityType6,
+                params);
     }
 
     /**
@@ -1337,8 +1337,8 @@ public class BasedTplHammer implements Hammer {
             Class<R2> entityType2, Class<R3> entityType3, Class<R4> entityType4, Class<R5> entityType5,
             Class<R6> entityType6, Tuple6<String, String, String, String, String, String> prefixes,
             Map<String, Object> params) {
-        // YUFEI_TODO Auto-generated method stub
-        return null;
+        return hammer.single(tplExecuteId, entityType1, entityType2, entityType3, entityType4, entityType5, entityType6,
+                prefixes, params);
     }
 
     /**
@@ -1349,8 +1349,8 @@ public class BasedTplHammer implements Hammer {
             Class<R1> entityType1, Class<R2> entityType2, Class<R3> entityType3, Class<R4> entityType4,
             Class<R5> entityType5, Class<R6> entityType6,
             Tuple6<String, String, String, String, String, String> prefixes, Map<String, Object> params) {
-        // YUFEI_TODO Auto-generated method stub
-        return null;
+        return hammer.single(tplExecuteId, entityType1, entityType2, entityType3, entityType4, entityType5, entityType6,
+                prefixes, params);
     }
 
     /**
@@ -1360,8 +1360,8 @@ public class BasedTplHammer implements Hammer {
     public <R1, R2, R3, R4, R5, R6> List<Tuple6<R1, R2, R3, R4, R5, R6>> list(String tplExecuteId,
             Class<R1> entityType1, Class<R2> entityType2, Class<R3> entityType3, Class<R4> entityType4,
             Class<R5> entityType5, Class<R6> entityType6, Map<String, Object> params) {
-        // YUFEI_TODO Auto-generated method stub
-        return null;
+        return hammer.list(tplExecuteId, entityType1, entityType2, entityType3, entityType4, entityType5, entityType6,
+                params);
     }
 
     /**
@@ -1371,8 +1371,8 @@ public class BasedTplHammer implements Hammer {
     public <R1, R2, R3, R4, R5, R6> List<Tuple6<R1, R2, R3, R4, R5, R6>> list(String tplExecuteId,
             Class<R1> entityType1, Class<R2> entityType2, Class<R3> entityType3, Class<R4> entityType4,
             Class<R5> entityType5, Class<R6> entityType6, Map<String, Object> params, int offset, int limit) {
-        // YUFEI_TODO Auto-generated method stub
-        return null;
+        return hammer.list(tplExecuteId, entityType1, entityType2, entityType3, entityType4, entityType5, entityType6,
+                params, offset, limit);
     }
 
     /**
@@ -1382,8 +1382,8 @@ public class BasedTplHammer implements Hammer {
     public <R1, R2, R3, R4, R5, R6> List<Tuple6<R1, R2, R3, R4, R5, R6>> list(TplExecuteId tplExecuteId,
             Class<R1> entityType1, Class<R2> entityType2, Class<R3> entityType3, Class<R4> entityType4,
             Class<R5> entityType5, Class<R6> entityType6, Map<String, Object> params) {
-        // YUFEI_TODO Auto-generated method stub
-        return null;
+        return hammer.list(tplExecuteId, entityType1, entityType2, entityType3, entityType4, entityType5, entityType6,
+                params);
     }
 
     /**
@@ -1393,8 +1393,8 @@ public class BasedTplHammer implements Hammer {
     public <R1, R2, R3, R4, R5, R6> List<Tuple6<R1, R2, R3, R4, R5, R6>> list(TplExecuteId tplExecuteId,
             Class<R1> entityType1, Class<R2> entityType2, Class<R3> entityType3, Class<R4> entityType4,
             Class<R5> entityType5, Class<R6> entityType6, Map<String, Object> params, int offset, int limit) {
-        // YUFEI_TODO Auto-generated method stub
-        return null;
+        return hammer.list(tplExecuteId, entityType1, entityType2, entityType3, entityType4, entityType5, entityType6,
+                params, offset, limit);
     }
 
     /**
@@ -1405,8 +1405,8 @@ public class BasedTplHammer implements Hammer {
             Class<R1> entityType1, Class<R2> entityType2, Class<R3> entityType3, Class<R4> entityType4,
             Class<R5> entityType5, Class<R6> entityType6,
             Tuple6<String, String, String, String, String, String> prefixes, Map<String, Object> params) {
-        // YUFEI_TODO Auto-generated method stub
-        return null;
+        return hammer.list(tplExecuteId, entityType1, entityType2, entityType3, entityType4, entityType5, entityType6,
+                prefixes, params);
     }
 
     /**
@@ -1418,8 +1418,8 @@ public class BasedTplHammer implements Hammer {
             Class<R5> entityType5, Class<R6> entityType6,
             Tuple6<String, String, String, String, String, String> prefixes, Map<String, Object> params, int offset,
             int limit) {
-        // YUFEI_TODO Auto-generated method stub
-        return null;
+        return hammer.list(tplExecuteId, entityType1, entityType2, entityType3, entityType4, entityType5, entityType6,
+                prefixes, params, offset, limit);
     }
 
     /**
@@ -1430,8 +1430,8 @@ public class BasedTplHammer implements Hammer {
             Class<R1> entityType1, Class<R2> entityType2, Class<R3> entityType3, Class<R4> entityType4,
             Class<R5> entityType5, Class<R6> entityType6,
             Tuple6<String, String, String, String, String, String> prefixes, Map<String, Object> params) {
-        // YUFEI_TODO Auto-generated method stub
-        return null;
+        return hammer.list(tplExecuteId, entityType1, entityType2, entityType3, entityType4, entityType5, entityType6,
+                prefixes, params);
     }
 
     /**
@@ -1443,8 +1443,8 @@ public class BasedTplHammer implements Hammer {
             Class<R5> entityType5, Class<R6> entityType6,
             Tuple6<String, String, String, String, String, String> prefixes, Map<String, Object> params, int offset,
             int limit) {
-        // YUFEI_TODO Auto-generated method stub
-        return null;
+        return hammer.list(tplExecuteId, entityType1, entityType2, entityType3, entityType4, entityType5, entityType6,
+                prefixes, params, offset, limit);
     }
 
     /**
@@ -1454,8 +1454,8 @@ public class BasedTplHammer implements Hammer {
     public <R1, R2, R3, R4, R5, R6> PaginationResults<Tuple6<R1, R2, R3, R4, R5, R6>> pagination(String tplExecuteId,
             Class<R1> entityType1, Class<R2> entityType2, Class<R3> entityType3, Class<R4> entityType4,
             Class<R5> entityType5, Class<R6> entityType6, Map<String, Object> params, int offset, int limit) {
-        // YUFEI_TODO Auto-generated method stub
-        return null;
+        return hammer.pagination(tplExecuteId, entityType1, entityType2, entityType3, entityType4, entityType5,
+                entityType6, params, offset, limit);
     }
 
     /**
@@ -1466,8 +1466,8 @@ public class BasedTplHammer implements Hammer {
             TplExecuteId tplExecuteId, Class<R1> entityType1, Class<R2> entityType2, Class<R3> entityType3,
             Class<R4> entityType4, Class<R5> entityType5, Class<R6> entityType6, Map<String, Object> params, int offset,
             int limit) {
-        // YUFEI_TODO Auto-generated method stub
-        return null;
+        return hammer.pagination(tplExecuteId, entityType1, entityType2, entityType3, entityType4, entityType5,
+                entityType6, params, offset, limit);
     }
 
     /**
@@ -1479,8 +1479,8 @@ public class BasedTplHammer implements Hammer {
             Class<R5> entityType5, Class<R6> entityType6,
             Tuple6<String, String, String, String, String, String> prefixes, Map<String, Object> params, int offset,
             int limit) {
-        // YUFEI_TODO Auto-generated method stub
-        return null;
+        return hammer.pagination(tplExecuteId, entityType1, entityType2, entityType3, entityType4, entityType5,
+                entityType6, prefixes, params, offset, limit);
     }
 
     /**

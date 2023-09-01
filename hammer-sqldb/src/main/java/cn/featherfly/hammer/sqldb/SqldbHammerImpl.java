@@ -28,9 +28,9 @@ import cn.featherfly.common.bean.BeanProperty;
 import cn.featherfly.common.db.Table;
 import cn.featherfly.common.db.mapping.JdbcClassMapping;
 import cn.featherfly.common.db.mapping.JdbcMappingFactory;
+import cn.featherfly.common.function.serializable.SerializableFunction;
 import cn.featherfly.common.lang.ArrayUtils;
 import cn.featherfly.common.lang.Lang;
-import cn.featherfly.common.lang.function.SerializableFunction;
 import cn.featherfly.common.repository.IgnoreStrategy;
 import cn.featherfly.common.repository.Repository;
 import cn.featherfly.common.structure.page.PaginationResults;
@@ -636,9 +636,8 @@ public class SqldbHammerImpl implements SqldbHammer {
         }
         // ENHANCE 后续再来优化，先用两次查询实现
         // TODO 只实现了多对一或者一对一的获取，没有实现一对多的获取
-        BeanProperty<R> bp = BeanDescriptor.getBeanDescriptor(type).getBeanProperty(fetchProperty);
-        @SuppressWarnings("unchecked")
-        R fetchObj = get((R) bp.getValue(entity));
+        BeanProperty<E, R> bp = BeanDescriptor.getBeanDescriptor(type).getBeanProperty(fetchProperty);
+        R fetchObj = get(bp.getValue(entity));
         bp.setValue(entity, fetchObj);
         return entity;
     }

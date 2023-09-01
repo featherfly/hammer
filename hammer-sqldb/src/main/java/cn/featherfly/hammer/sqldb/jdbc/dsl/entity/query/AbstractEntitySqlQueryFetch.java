@@ -4,24 +4,25 @@ package cn.featherfly.hammer.sqldb.jdbc.dsl.entity.query;
 import com.speedment.common.tuple.Tuple2;
 
 import cn.featherfly.common.db.mapping.JdbcMappingFactory;
+import cn.featherfly.common.function.serializable.SerializableFunction1;
+import cn.featherfly.common.function.serializable.SerializableFunction2;
+import cn.featherfly.common.function.serializable.SerializableUnaryOperator1;
+import cn.featherfly.common.lang.ClassUtils;
 import cn.featherfly.common.lang.LambdaUtils;
 import cn.featherfly.common.lang.LambdaUtils.SerializedLambdaInfo;
-import cn.featherfly.common.lang.function.SerializableFunction1;
-import cn.featherfly.common.lang.function.SerializableFunction2;
-import cn.featherfly.common.lang.function.SerializableFunction3;
 import cn.featherfly.hammer.dsl.entity.query.EntityQueryFetchedProperty;
 import cn.featherfly.hammer.expression.entity.query.EntityQueryConditionGroupExpression2;
 import cn.featherfly.hammer.expression.entity.query.EntityQueryConditionGroupLogicExpression2;
 import cn.featherfly.hammer.expression.entity.query.EntityQuerySortExpression2;
-import cn.featherfly.hammer.expression.entity.query.relation.EntityQueryRelateExpression;
 import cn.featherfly.hammer.expression.entity.query.relation.EntityQueryRelateExpression1P;
+import cn.featherfly.hammer.expression.entity.query.relation.EntityQueryRelateExpression1R;
 import cn.featherfly.hammer.expression.entity.query.relation.EntityQueryRelatedExpression;
-import cn.featherfly.hammer.expression.entity.query.relation.EntityQueryRelatedFetchedExpression;
+import cn.featherfly.hammer.expression.entity.query.relation.EntityQueryRelatedFetchedExpression1F;
 import cn.featherfly.hammer.expression.entity.query.relation.EntityQueryRelatedFetchedExpression1P;
 import cn.featherfly.hammer.sqldb.jdbc.SqlPageFactory;
 import cn.featherfly.hammer.sqldb.jdbc.dsl.entity.EntitySqlQueryRelation;
-import cn.featherfly.hammer.sqldb.jdbc.dsl.entity.query.relation.EntitySqlQueryRelate;
 import cn.featherfly.hammer.sqldb.jdbc.dsl.entity.query.relation.EntitySqlQueryRelate1P;
+import cn.featherfly.hammer.sqldb.jdbc.dsl.entity.query.relation.EntitySqlQueryRelate1R;
 import cn.featherfly.hammer.sqldb.jdbc.dsl.entity.query.relation.EntitySqlQueryRelated;
 
 /**
@@ -47,16 +48,16 @@ public abstract class AbstractEntitySqlQueryFetch<E, P extends EntityQueryFetche
     }
 
     @SuppressWarnings("unchecked")
-    public <QR extends EntityQueryRelateExpression<E, R, RC, RL, RS, QRF, FC, FL, FS>,
+    public <QR extends EntityQueryRelateExpression1R<E, R, RC, RL, RS, QRF, FC, FL, FS>,
             RC extends EntityQueryConditionGroupExpression2<E, R, RC, RL, RS, E>,
             RL extends EntityQueryConditionGroupLogicExpression2<E, R, RC, RL, RS, E>,
             RS extends EntityQuerySortExpression2<E, R, E>,
-            QRF extends EntityQueryRelatedFetchedExpression<E, R, FC, FL, FS>,
+            QRF extends EntityQueryRelatedFetchedExpression1F<E, R, FC, FL, FS>,
             FC extends EntityQueryConditionGroupExpression2<E, R, FC, FL, FS, Tuple2<E, R>>,
             FL extends EntityQueryConditionGroupLogicExpression2<E, R, FC, FL, FS, Tuple2<E, R>>,
             FS extends EntityQuerySortExpression2<E, R, Tuple2<E, R>>,
             R> EntityQueryRelatedExpression<E, R, QR, QRF> join(Class<R> joinType) {
-        return new EntitySqlQueryRelated<>((QR) new EntitySqlQueryRelate<>(factory, sqlPageFactory, queryRelation),
+        return new EntitySqlQueryRelated<>((QR) new EntitySqlQueryRelate1R<>(factory, sqlPageFactory, queryRelation),
                 factory, queryRelation, joinType, 0);
     }
 
@@ -147,25 +148,25 @@ public abstract class AbstractEntitySqlQueryFetch<E, P extends EntityQueryFetche
             RS extends EntityQuerySortExpression2<E, R, E>,
             QR extends EntityQueryRelatedFetchedExpression1P<E, R, RC, RL, RS>,
             R> RE join(SerializableFunction1<E, R> propertyName) {
-        // YUFEI_TEST Auto-generated method stub
         SerializedLambdaInfo info = LambdaUtils.getLambdaInfo(propertyName);
         queryRelation.join(0, info.getPropertyName(), factory.getClassMapping(info.getPropertyType()));
         return (RE) new EntitySqlQueryRelate1P<>(factory, sqlPageFactory, queryRelation);
     }
 
     @SuppressWarnings("unchecked")
-    public <RE extends EntityQueryRelateExpression<E, R, RC, RL, RS, QRF, FC, FL, FS>,
+    public <RE extends EntityQueryRelateExpression1R<E, R, RC, RL, RS, QRF, FC, FL, FS>,
             RC extends EntityQueryConditionGroupExpression2<E, R, RC, RL, RS, E>,
             RL extends EntityQueryConditionGroupLogicExpression2<E, R, RC, RL, RS, E>,
             RS extends EntityQuerySortExpression2<E, R, E>,
-            QRF extends EntityQueryRelatedFetchedExpression<E, R, FC, FL, FS>,
+            QRF extends EntityQueryRelatedFetchedExpression1F<E, R, FC, FL, FS>,
             FC extends EntityQueryConditionGroupExpression2<E, R, FC, FL, FS, Tuple2<E, R>>,
             FL extends EntityQueryConditionGroupLogicExpression2<E, R, FC, FL, FS, Tuple2<E, R>>,
             FS extends EntityQuerySortExpression2<E, R, Tuple2<E, R>>,
             R> RE join(SerializableFunction2<R, E> propertyName) {
         SerializedLambdaInfo info = LambdaUtils.getLambdaInfo(propertyName);
-        queryRelation.join(0, factory.getClassMapping(info.getPropertyType()), info.getPropertyName());
-        return (RE) new EntitySqlQueryRelate<>(factory, sqlPageFactory, queryRelation);
+        queryRelation.join(0, queryRelation.getEntityRelationMapping(0).getIdName(),
+                factory.getClassMapping(ClassUtils.forName(info.getMethodInstanceClassName())), info.getPropertyName());
+        return (RE) new EntitySqlQueryRelate1R<>(factory, sqlPageFactory, queryRelation);
     }
 
     @SuppressWarnings("unchecked")
@@ -174,7 +175,7 @@ public abstract class AbstractEntitySqlQueryFetch<E, P extends EntityQueryFetche
             RL extends EntityQueryConditionGroupLogicExpression2<E, E, RC, RL, RS, E>,
             RS extends EntityQuerySortExpression2<E, E, E>,
             QR extends EntityQueryRelatedFetchedExpression1P<E, E, RC, RL, RS>> RE join(
-                    SerializableFunction3<E, E> propertyName) {
+                    SerializableUnaryOperator1<E> propertyName) {
         SerializedLambdaInfo info = LambdaUtils.getLambdaInfo(propertyName);
         queryRelation.join(0, info.getPropertyName(), factory.getClassMapping(info.getPropertyType()));
         return (RE) new EntitySqlQueryRelate1P<>(factory, sqlPageFactory, queryRelation);

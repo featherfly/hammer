@@ -8,7 +8,7 @@
 //import cn.featherfly.common.db.builder.dml.basic.SqlSelectJoinOnBasicBuilder;
 //import cn.featherfly.common.lang.AssertIllegalArgument;
 //import cn.featherfly.common.lang.Lang;
-//import cn.featherfly.common.lang.function.SerializableFunction;
+//import cn.featherfly.common.function.serializable.SerializableFunction;
 //import cn.featherfly.common.repository.builder.AliasManager;
 //import cn.featherfly.common.repository.mapping.ClassMapping;
 //import cn.featherfly.common.repository.mapping.MappingFactory;

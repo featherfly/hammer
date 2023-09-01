@@ -58,7 +58,7 @@ public interface EntityNotEqualsExpression6<E, E2, E3, E4, E5, E6, C extends Con
     //            Tuple6<QueryEntityRepository<E>, QueryEntityRepository<E2>, QueryEntityRepository<E3>,
     //                    QueryEntityRepository<E4>, QueryEntityRepository<E5>, QueryEntityRepository<E6>>,
     //            QueryEntityRepository<E>> entities, SerializableFunction<E, R> name, R value) {
-    //        return ne(entities, name, value, QueryPolicy.AUTO);
+    //        return ne(entities, name, value, MatchStrategy.AUTO);
     //    }
     //
     //    /**
@@ -77,7 +77,7 @@ public interface EntityNotEqualsExpression6<E, E2, E3, E4, E5, E6, C extends Con
     //                            QueryEntityRepository<E4>, QueryEntityRepository<E5>, QueryEntityRepository<E6>>,
     //                    QueryEntityRepository<E>> entities,
     //            SerializableFunction<E, R> name, R value, Predicate<Object> ignoreStrategy) {
-    //        return ne(entities, name, value, QueryPolicy.AUTO, ignoreStrategy);
+    //        return ne(entities, name, value, MatchStrategy.AUTO, ignoreStrategy);
     //    }
     //
     //    /**
@@ -95,7 +95,7 @@ public interface EntityNotEqualsExpression6<E, E2, E3, E4, E5, E6, C extends Con
     //                    Tuple6<QueryEntityRepository<E>, QueryEntityRepository<E2>, QueryEntityRepository<E3>,
     //                            QueryEntityRepository<E4>, QueryEntityRepository<E5>, QueryEntityRepository<E6>>,
     //                    QueryEntityRepository<E>> entities,
-    //            SerializableFunction<E, R> name, R value, QueryPolicy queryPolicy);
+    //            SerializableFunction<E, R> name, R value, MatchStrategy queryPolicy);
     //
     //    /**
     //     * equals. 等于.
@@ -113,7 +113,7 @@ public interface EntityNotEqualsExpression6<E, E2, E3, E4, E5, E6, C extends Con
     //                    Tuple6<QueryEntityRepository<E>, QueryEntityRepository<E2>, QueryEntityRepository<E3>,
     //                            QueryEntityRepository<E4>, QueryEntityRepository<E5>, QueryEntityRepository<E6>>,
     //                    QueryEntityRepository<E>> entities,
-    //            SerializableFunction<E, R> name, R value, QueryPolicy queryPolicy, Predicate<Object> ignoreStrategy);
+    //            SerializableFunction<E, R> name, R value, MatchStrategy queryPolicy, Predicate<Object> ignoreStrategy);
     //
     //    /**
     //     * equals. 等于.
@@ -127,7 +127,7 @@ public interface EntityNotEqualsExpression6<E, E2, E3, E4, E5, E6, C extends Con
     //            Tuple6<QueryEntityRepository<E>, QueryEntityRepository<E2>, QueryEntityRepository<E3>,
     //                    QueryEntityRepository<E4>, QueryEntityRepository<E5>, QueryEntityRepository<E6>>,
     //            QueryEntityRepository<E>> entities, SerializableSupplier<R> property) {
-    //        return ne(entities, property, QueryPolicy.AUTO);
+    //        return ne(entities, property, MatchStrategy.AUTO);
     //    }
     //
     //    /**
@@ -145,7 +145,7 @@ public interface EntityNotEqualsExpression6<E, E2, E3, E4, E5, E6, C extends Con
     //                            QueryEntityRepository<E4>, QueryEntityRepository<E5>, QueryEntityRepository<E6>>,
     //                    QueryEntityRepository<E>> entities,
     //            SerializableSupplier<R> property, Predicate<Object> ignoreStrategy) {
-    //        return ne(entities, property, QueryPolicy.AUTO, ignoreStrategy);
+    //        return ne(entities, property, MatchStrategy.AUTO, ignoreStrategy);
     //    }
     //
     //    /**
@@ -160,7 +160,7 @@ public interface EntityNotEqualsExpression6<E, E2, E3, E4, E5, E6, C extends Con
     //    <R> L ne(Function<
     //            Tuple6<QueryEntityRepository<E>, QueryEntityRepository<E2>, QueryEntityRepository<E3>,
     //                    QueryEntityRepository<E4>, QueryEntityRepository<E5>, QueryEntityRepository<E6>>,
-    //            QueryEntityRepository<E>> entities, SerializableSupplier<R> property, QueryPolicy queryPolicy);
+    //            QueryEntityRepository<E>> entities, SerializableSupplier<R> property, MatchStrategy queryPolicy);
     //
     //    /**
     //     * equals. 等于.
@@ -177,7 +177,7 @@ public interface EntityNotEqualsExpression6<E, E2, E3, E4, E5, E6, C extends Con
     //                    Tuple6<QueryEntityRepository<E>, QueryEntityRepository<E2>, QueryEntityRepository<E3>,
     //                            QueryEntityRepository<E4>, QueryEntityRepository<E5>, QueryEntityRepository<E6>>,
     //                    QueryEntityRepository<E>> entities,
-    //            SerializableSupplier<R> property, QueryPolicy queryPolicy, Predicate<Object> ignoreStrategy);
+    //            SerializableSupplier<R> property, MatchStrategy queryPolicy, Predicate<Object> ignoreStrategy);
     //
     //    /**
     //     * equals. 等于.
@@ -231,7 +231,7 @@ public interface EntityNotEqualsExpression6<E, E2, E3, E4, E5, E6, C extends Con
     //            Tuple6<QueryEntityRepository<E>, QueryEntityRepository<E2>, QueryEntityRepository<E3>,
     //                    QueryEntityRepository<E4>, QueryEntityRepository<E5>, QueryEntityRepository<E6>>,
     //            QueryEntityRepository<E2>> entities, SerializableFunction2<E2, R> name, R value) {
-    //        return ne(entities, name, value, QueryPolicy.AUTO);
+    //        return ne(entities, name, value, MatchStrategy.AUTO);
     //    }
     //
     //    /**
@@ -250,7 +250,7 @@ public interface EntityNotEqualsExpression6<E, E2, E3, E4, E5, E6, C extends Con
     //                            QueryEntityRepository<E4>, QueryEntityRepository<E5>, QueryEntityRepository<E6>>,
     //                    QueryEntityRepository<E2>> entities,
     //            SerializableFunction2<E2, R> name, R value, Predicate<Object> ignoreStrategy) {
-    //        return ne(entities, name, value, QueryPolicy.AUTO, ignoreStrategy);
+    //        return ne(entities, name, value, MatchStrategy.AUTO, ignoreStrategy);
     //    }
     //
     //    /**
@@ -268,7 +268,7 @@ public interface EntityNotEqualsExpression6<E, E2, E3, E4, E5, E6, C extends Con
     //                    Tuple6<QueryEntityRepository<E>, QueryEntityRepository<E2>, QueryEntityRepository<E3>,
     //                            QueryEntityRepository<E4>, QueryEntityRepository<E5>, QueryEntityRepository<E6>>,
     //                    QueryEntityRepository<E2>> entities,
-    //            SerializableFunction2<E2, R> name, R value, QueryPolicy queryPolicy);
+    //            SerializableFunction2<E2, R> name, R value, MatchStrategy queryPolicy);
     //
     //    /**
     //     * equals. 等于.
@@ -286,7 +286,7 @@ public interface EntityNotEqualsExpression6<E, E2, E3, E4, E5, E6, C extends Con
     //                    Tuple6<QueryEntityRepository<E>, QueryEntityRepository<E2>, QueryEntityRepository<E3>,
     //                            QueryEntityRepository<E4>, QueryEntityRepository<E5>, QueryEntityRepository<E6>>,
     //                    QueryEntityRepository<E2>> entities,
-    //            SerializableFunction2<E2, R> name, R value, QueryPolicy queryPolicy, Predicate<Object> ignoreStrategy);
+    //            SerializableFunction2<E2, R> name, R value, MatchStrategy queryPolicy, Predicate<Object> ignoreStrategy);
     //
     //    /**
     //     * equals. 等于.
@@ -300,7 +300,7 @@ public interface EntityNotEqualsExpression6<E, E2, E3, E4, E5, E6, C extends Con
     //            Tuple6<QueryEntityRepository<E>, QueryEntityRepository<E2>, QueryEntityRepository<E3>,
     //                    QueryEntityRepository<E4>, QueryEntityRepository<E5>, QueryEntityRepository<E6>>,
     //            QueryEntityRepository<E2>> entities, SerializableSupplier2<R> property) {
-    //        return ne(entities, property, QueryPolicy.AUTO);
+    //        return ne(entities, property, MatchStrategy.AUTO);
     //    }
     //
     //    /**
@@ -318,7 +318,7 @@ public interface EntityNotEqualsExpression6<E, E2, E3, E4, E5, E6, C extends Con
     //                            QueryEntityRepository<E4>, QueryEntityRepository<E5>, QueryEntityRepository<E6>>,
     //                    QueryEntityRepository<E2>> entities,
     //            SerializableSupplier2<R> property, Predicate<Object> ignoreStrategy) {
-    //        return ne(entities, property, QueryPolicy.AUTO, ignoreStrategy);
+    //        return ne(entities, property, MatchStrategy.AUTO, ignoreStrategy);
     //    }
     //
     //    /**
@@ -333,7 +333,7 @@ public interface EntityNotEqualsExpression6<E, E2, E3, E4, E5, E6, C extends Con
     //    <R> L ne(Function<
     //            Tuple6<QueryEntityRepository<E>, QueryEntityRepository<E2>, QueryEntityRepository<E3>,
     //                    QueryEntityRepository<E4>, QueryEntityRepository<E5>, QueryEntityRepository<E6>>,
-    //            QueryEntityRepository<E2>> entities, SerializableSupplier2<R> property, QueryPolicy queryPolicy);
+    //            QueryEntityRepository<E2>> entities, SerializableSupplier2<R> property, MatchStrategy queryPolicy);
     //
     //    /**
     //     * equals. 等于.
@@ -350,7 +350,7 @@ public interface EntityNotEqualsExpression6<E, E2, E3, E4, E5, E6, C extends Con
     //                    Tuple6<QueryEntityRepository<E>, QueryEntityRepository<E2>, QueryEntityRepository<E3>,
     //                            QueryEntityRepository<E4>, QueryEntityRepository<E5>, QueryEntityRepository<E6>>,
     //                    QueryEntityRepository<E2>> entities,
-    //            SerializableSupplier2<R> property, QueryPolicy queryPolicy, Predicate<Object> ignoreStrategy);
+    //            SerializableSupplier2<R> property, MatchStrategy queryPolicy, Predicate<Object> ignoreStrategy);
     //
     //    /**
     //     * equals. 等于.
@@ -404,7 +404,7 @@ public interface EntityNotEqualsExpression6<E, E2, E3, E4, E5, E6, C extends Con
     //            Tuple6<QueryEntityRepository<E>, QueryEntityRepository<E2>, QueryEntityRepository<E3>,
     //                    QueryEntityRepository<E4>, QueryEntityRepository<E5>, QueryEntityRepository<E6>>,
     //            QueryEntityRepository<E3>> entities, SerializableFunction3<E3, R> name, R value) {
-    //        return ne(entities, name, value, QueryPolicy.AUTO);
+    //        return ne(entities, name, value, MatchStrategy.AUTO);
     //    }
     //
     //    /**
@@ -423,7 +423,7 @@ public interface EntityNotEqualsExpression6<E, E2, E3, E4, E5, E6, C extends Con
     //                            QueryEntityRepository<E4>, QueryEntityRepository<E5>, QueryEntityRepository<E6>>,
     //                    QueryEntityRepository<E3>> entities,
     //            SerializableFunction3<E3, R> name, R value, Predicate<Object> ignoreStrategy) {
-    //        return ne(entities, name, value, QueryPolicy.AUTO, ignoreStrategy);
+    //        return ne(entities, name, value, MatchStrategy.AUTO, ignoreStrategy);
     //    }
     //
     //    /**
@@ -441,7 +441,7 @@ public interface EntityNotEqualsExpression6<E, E2, E3, E4, E5, E6, C extends Con
     //                    Tuple6<QueryEntityRepository<E>, QueryEntityRepository<E2>, QueryEntityRepository<E3>,
     //                            QueryEntityRepository<E4>, QueryEntityRepository<E5>, QueryEntityRepository<E6>>,
     //                    QueryEntityRepository<E3>> entities,
-    //            SerializableFunction3<E3, R> name, R value, QueryPolicy queryPolicy);
+    //            SerializableFunction3<E3, R> name, R value, MatchStrategy queryPolicy);
     //
     //    /**
     //     * equals. 等于.
@@ -459,7 +459,7 @@ public interface EntityNotEqualsExpression6<E, E2, E3, E4, E5, E6, C extends Con
     //                    Tuple6<QueryEntityRepository<E>, QueryEntityRepository<E2>, QueryEntityRepository<E3>,
     //                            QueryEntityRepository<E4>, QueryEntityRepository<E5>, QueryEntityRepository<E6>>,
     //                    QueryEntityRepository<E3>> entities,
-    //            SerializableFunction3<E3, R> name, R value, QueryPolicy queryPolicy, Predicate<Object> ignoreStrategy);
+    //            SerializableFunction3<E3, R> name, R value, MatchStrategy queryPolicy, Predicate<Object> ignoreStrategy);
     //
     //    /**
     //     * equals. 等于.
@@ -473,7 +473,7 @@ public interface EntityNotEqualsExpression6<E, E2, E3, E4, E5, E6, C extends Con
     //            Tuple6<QueryEntityRepository<E>, QueryEntityRepository<E2>, QueryEntityRepository<E3>,
     //                    QueryEntityRepository<E4>, QueryEntityRepository<E5>, QueryEntityRepository<E6>>,
     //            QueryEntityRepository<E3>> entities, SerializableSupplier3<R> property) {
-    //        return ne(entities, property, QueryPolicy.AUTO);
+    //        return ne(entities, property, MatchStrategy.AUTO);
     //    }
     //
     //    /**
@@ -491,7 +491,7 @@ public interface EntityNotEqualsExpression6<E, E2, E3, E4, E5, E6, C extends Con
     //                            QueryEntityRepository<E4>, QueryEntityRepository<E5>, QueryEntityRepository<E6>>,
     //                    QueryEntityRepository<E3>> entities,
     //            SerializableSupplier3<R> property, Predicate<Object> ignoreStrategy) {
-    //        return ne(entities, property, QueryPolicy.AUTO, ignoreStrategy);
+    //        return ne(entities, property, MatchStrategy.AUTO, ignoreStrategy);
     //    }
     //
     //    /**
@@ -506,7 +506,7 @@ public interface EntityNotEqualsExpression6<E, E2, E3, E4, E5, E6, C extends Con
     //    <R> L ne(Function<
     //            Tuple6<QueryEntityRepository<E>, QueryEntityRepository<E2>, QueryEntityRepository<E3>,
     //                    QueryEntityRepository<E4>, QueryEntityRepository<E5>, QueryEntityRepository<E6>>,
-    //            QueryEntityRepository<E3>> entities, SerializableSupplier3<R> property, QueryPolicy queryPolicy);
+    //            QueryEntityRepository<E3>> entities, SerializableSupplier3<R> property, MatchStrategy queryPolicy);
     //
     //    /**
     //     * equals. 等于.
@@ -523,7 +523,7 @@ public interface EntityNotEqualsExpression6<E, E2, E3, E4, E5, E6, C extends Con
     //                    Tuple6<QueryEntityRepository<E>, QueryEntityRepository<E2>, QueryEntityRepository<E3>,
     //                            QueryEntityRepository<E4>, QueryEntityRepository<E5>, QueryEntityRepository<E6>>,
     //                    QueryEntityRepository<E3>> entities,
-    //            SerializableSupplier3<R> property, QueryPolicy queryPolicy, Predicate<Object> ignoreStrategy);
+    //            SerializableSupplier3<R> property, MatchStrategy queryPolicy, Predicate<Object> ignoreStrategy);
     //
     //    /**
     //     * equals. 等于.
@@ -577,7 +577,7 @@ public interface EntityNotEqualsExpression6<E, E2, E3, E4, E5, E6, C extends Con
     //            Tuple6<QueryEntityRepository<E>, QueryEntityRepository<E2>, QueryEntityRepository<E3>,
     //                    QueryEntityRepository<E4>, QueryEntityRepository<E5>, QueryEntityRepository<E6>>,
     //            QueryEntityRepository<E4>> entities, SerializableFunction4<E4, R> name, R value) {
-    //        return ne(entities, name, value, QueryPolicy.AUTO);
+    //        return ne(entities, name, value, MatchStrategy.AUTO);
     //    }
     //
     //    /**
@@ -596,7 +596,7 @@ public interface EntityNotEqualsExpression6<E, E2, E3, E4, E5, E6, C extends Con
     //                            QueryEntityRepository<E4>, QueryEntityRepository<E5>, QueryEntityRepository<E6>>,
     //                    QueryEntityRepository<E4>> entities,
     //            SerializableFunction4<E4, R> name, R value, Predicate<Object> ignoreStrategy) {
-    //        return ne(entities, name, value, QueryPolicy.AUTO, ignoreStrategy);
+    //        return ne(entities, name, value, MatchStrategy.AUTO, ignoreStrategy);
     //    }
     //
     //    /**
@@ -614,7 +614,7 @@ public interface EntityNotEqualsExpression6<E, E2, E3, E4, E5, E6, C extends Con
     //                    Tuple6<QueryEntityRepository<E>, QueryEntityRepository<E2>, QueryEntityRepository<E3>,
     //                            QueryEntityRepository<E4>, QueryEntityRepository<E5>, QueryEntityRepository<E6>>,
     //                    QueryEntityRepository<E4>> entities,
-    //            SerializableFunction4<E4, R> name, R value, QueryPolicy queryPolicy);
+    //            SerializableFunction4<E4, R> name, R value, MatchStrategy queryPolicy);
     //
     //    /**
     //     * equals. 等于.
@@ -632,7 +632,7 @@ public interface EntityNotEqualsExpression6<E, E2, E3, E4, E5, E6, C extends Con
     //                    Tuple6<QueryEntityRepository<E>, QueryEntityRepository<E2>, QueryEntityRepository<E3>,
     //                            QueryEntityRepository<E4>, QueryEntityRepository<E5>, QueryEntityRepository<E6>>,
     //                    QueryEntityRepository<E4>> entities,
-    //            SerializableFunction4<E4, R> name, R value, QueryPolicy queryPolicy, Predicate<Object> ignoreStrategy);
+    //            SerializableFunction4<E4, R> name, R value, MatchStrategy queryPolicy, Predicate<Object> ignoreStrategy);
     //
     //    /**
     //     * equals. 等于.
@@ -646,7 +646,7 @@ public interface EntityNotEqualsExpression6<E, E2, E3, E4, E5, E6, C extends Con
     //            Tuple6<QueryEntityRepository<E>, QueryEntityRepository<E2>, QueryEntityRepository<E3>,
     //                    QueryEntityRepository<E4>, QueryEntityRepository<E5>, QueryEntityRepository<E6>>,
     //            QueryEntityRepository<E4>> entities, SerializableSupplier4<R> property) {
-    //        return ne(entities, property, QueryPolicy.AUTO);
+    //        return ne(entities, property, MatchStrategy.AUTO);
     //    }
     //
     //    /**
@@ -664,7 +664,7 @@ public interface EntityNotEqualsExpression6<E, E2, E3, E4, E5, E6, C extends Con
     //                            QueryEntityRepository<E4>, QueryEntityRepository<E5>, QueryEntityRepository<E6>>,
     //                    QueryEntityRepository<E4>> entities,
     //            SerializableSupplier4<R> property, Predicate<Object> ignoreStrategy) {
-    //        return ne(entities, property, QueryPolicy.AUTO, ignoreStrategy);
+    //        return ne(entities, property, MatchStrategy.AUTO, ignoreStrategy);
     //    }
     //
     //    /**
@@ -679,7 +679,7 @@ public interface EntityNotEqualsExpression6<E, E2, E3, E4, E5, E6, C extends Con
     //    <R> L ne(Function<
     //            Tuple6<QueryEntityRepository<E>, QueryEntityRepository<E2>, QueryEntityRepository<E3>,
     //                    QueryEntityRepository<E4>, QueryEntityRepository<E5>, QueryEntityRepository<E6>>,
-    //            QueryEntityRepository<E4>> entities, SerializableSupplier4<R> property, QueryPolicy queryPolicy);
+    //            QueryEntityRepository<E4>> entities, SerializableSupplier4<R> property, MatchStrategy queryPolicy);
     //
     //    /**
     //     * equals. 等于.
@@ -696,7 +696,7 @@ public interface EntityNotEqualsExpression6<E, E2, E3, E4, E5, E6, C extends Con
     //                    Tuple6<QueryEntityRepository<E>, QueryEntityRepository<E2>, QueryEntityRepository<E3>,
     //                            QueryEntityRepository<E4>, QueryEntityRepository<E5>, QueryEntityRepository<E6>>,
     //                    QueryEntityRepository<E4>> entities,
-    //            SerializableSupplier4<R> property, QueryPolicy queryPolicy, Predicate<Object> ignoreStrategy);
+    //            SerializableSupplier4<R> property, MatchStrategy queryPolicy, Predicate<Object> ignoreStrategy);
     //
     //    /**
     //     * equals. 等于.
@@ -750,7 +750,7 @@ public interface EntityNotEqualsExpression6<E, E2, E3, E4, E5, E6, C extends Con
     //            Tuple6<QueryEntityRepository<E>, QueryEntityRepository<E2>, QueryEntityRepository<E3>,
     //                    QueryEntityRepository<E4>, QueryEntityRepository<E5>, QueryEntityRepository<E6>>,
     //            QueryEntityRepository<E5>> entities, SerializableFunction5<E5, R> name, R value) {
-    //        return ne(entities, name, value, QueryPolicy.AUTO);
+    //        return ne(entities, name, value, MatchStrategy.AUTO);
     //    }
     //
     //    /**
@@ -769,7 +769,7 @@ public interface EntityNotEqualsExpression6<E, E2, E3, E4, E5, E6, C extends Con
     //                            QueryEntityRepository<E4>, QueryEntityRepository<E5>, QueryEntityRepository<E6>>,
     //                    QueryEntityRepository<E5>> entities,
     //            SerializableFunction5<E5, R> name, R value, Predicate<Object> ignoreStrategy) {
-    //        return ne(entities, name, value, QueryPolicy.AUTO, ignoreStrategy);
+    //        return ne(entities, name, value, MatchStrategy.AUTO, ignoreStrategy);
     //    }
     //
     //    /**
@@ -787,7 +787,7 @@ public interface EntityNotEqualsExpression6<E, E2, E3, E4, E5, E6, C extends Con
     //                    Tuple6<QueryEntityRepository<E>, QueryEntityRepository<E2>, QueryEntityRepository<E3>,
     //                            QueryEntityRepository<E4>, QueryEntityRepository<E5>, QueryEntityRepository<E6>>,
     //                    QueryEntityRepository<E5>> entities,
-    //            SerializableFunction5<E5, R> name, R value, QueryPolicy queryPolicy);
+    //            SerializableFunction5<E5, R> name, R value, MatchStrategy queryPolicy);
     //
     //    /**
     //     * equals. 等于.
@@ -805,7 +805,7 @@ public interface EntityNotEqualsExpression6<E, E2, E3, E4, E5, E6, C extends Con
     //                    Tuple6<QueryEntityRepository<E>, QueryEntityRepository<E2>, QueryEntityRepository<E3>,
     //                            QueryEntityRepository<E4>, QueryEntityRepository<E5>, QueryEntityRepository<E6>>,
     //                    QueryEntityRepository<E5>> entities,
-    //            SerializableFunction5<E5, R> name, R value, QueryPolicy queryPolicy, Predicate<Object> ignoreStrategy);
+    //            SerializableFunction5<E5, R> name, R value, MatchStrategy queryPolicy, Predicate<Object> ignoreStrategy);
     //
     //    /**
     //     * equals. 等于.
@@ -819,7 +819,7 @@ public interface EntityNotEqualsExpression6<E, E2, E3, E4, E5, E6, C extends Con
     //            Tuple6<QueryEntityRepository<E>, QueryEntityRepository<E2>, QueryEntityRepository<E3>,
     //                    QueryEntityRepository<E4>, QueryEntityRepository<E5>, QueryEntityRepository<E6>>,
     //            QueryEntityRepository<E5>> entities, SerializableSupplier5<R> property) {
-    //        return ne(entities, property, QueryPolicy.AUTO);
+    //        return ne(entities, property, MatchStrategy.AUTO);
     //    }
     //
     //    /**
@@ -837,7 +837,7 @@ public interface EntityNotEqualsExpression6<E, E2, E3, E4, E5, E6, C extends Con
     //                            QueryEntityRepository<E4>, QueryEntityRepository<E5>, QueryEntityRepository<E6>>,
     //                    QueryEntityRepository<E5>> entities,
     //            SerializableSupplier5<R> property, Predicate<Object> ignoreStrategy) {
-    //        return ne(entities, property, QueryPolicy.AUTO, ignoreStrategy);
+    //        return ne(entities, property, MatchStrategy.AUTO, ignoreStrategy);
     //    }
     //
     //    /**
@@ -852,7 +852,7 @@ public interface EntityNotEqualsExpression6<E, E2, E3, E4, E5, E6, C extends Con
     //    <R> L ne(Function<
     //            Tuple6<QueryEntityRepository<E>, QueryEntityRepository<E2>, QueryEntityRepository<E3>,
     //                    QueryEntityRepository<E4>, QueryEntityRepository<E5>, QueryEntityRepository<E6>>,
-    //            QueryEntityRepository<E5>> entities, SerializableSupplier5<R> property, QueryPolicy queryPolicy);
+    //            QueryEntityRepository<E5>> entities, SerializableSupplier5<R> property, MatchStrategy queryPolicy);
     //
     //    /**
     //     * equals. 等于.
@@ -869,7 +869,7 @@ public interface EntityNotEqualsExpression6<E, E2, E3, E4, E5, E6, C extends Con
     //                    Tuple6<QueryEntityRepository<E>, QueryEntityRepository<E2>, QueryEntityRepository<E3>,
     //                            QueryEntityRepository<E4>, QueryEntityRepository<E5>, QueryEntityRepository<E6>>,
     //                    QueryEntityRepository<E5>> entities,
-    //            SerializableSupplier5<R> property, QueryPolicy queryPolicy, Predicate<Object> ignoreStrategy);
+    //            SerializableSupplier5<R> property, MatchStrategy queryPolicy, Predicate<Object> ignoreStrategy);
     //
     //    /**
     //     * equals. 等于.
@@ -923,7 +923,7 @@ public interface EntityNotEqualsExpression6<E, E2, E3, E4, E5, E6, C extends Con
     //            Tuple6<QueryEntityRepository<E>, QueryEntityRepository<E2>, QueryEntityRepository<E3>,
     //                    QueryEntityRepository<E4>, QueryEntityRepository<E5>, QueryEntityRepository<E6>>,
     //            QueryEntityRepository<E6>> entities, SerializableFunction6<E6, R> name, R value) {
-    //        return ne(entities, name, value, QueryPolicy.AUTO);
+    //        return ne(entities, name, value, MatchStrategy.AUTO);
     //    }
     //
     //    /**
@@ -942,7 +942,7 @@ public interface EntityNotEqualsExpression6<E, E2, E3, E4, E5, E6, C extends Con
     //                            QueryEntityRepository<E4>, QueryEntityRepository<E5>, QueryEntityRepository<E6>>,
     //                    QueryEntityRepository<E6>> entities,
     //            SerializableFunction6<E6, R> name, R value, Predicate<Object> ignoreStrategy) {
-    //        return ne(entities, name, value, QueryPolicy.AUTO, ignoreStrategy);
+    //        return ne(entities, name, value, MatchStrategy.AUTO, ignoreStrategy);
     //    }
     //
     //    /**
@@ -960,7 +960,7 @@ public interface EntityNotEqualsExpression6<E, E2, E3, E4, E5, E6, C extends Con
     //                    Tuple6<QueryEntityRepository<E>, QueryEntityRepository<E2>, QueryEntityRepository<E3>,
     //                            QueryEntityRepository<E4>, QueryEntityRepository<E5>, QueryEntityRepository<E6>>,
     //                    QueryEntityRepository<E6>> entities,
-    //            SerializableFunction6<E6, R> name, R value, QueryPolicy queryPolicy);
+    //            SerializableFunction6<E6, R> name, R value, MatchStrategy queryPolicy);
     //
     //    /**
     //     * equals. 等于.
@@ -978,7 +978,7 @@ public interface EntityNotEqualsExpression6<E, E2, E3, E4, E5, E6, C extends Con
     //                    Tuple6<QueryEntityRepository<E>, QueryEntityRepository<E2>, QueryEntityRepository<E3>,
     //                            QueryEntityRepository<E4>, QueryEntityRepository<E5>, QueryEntityRepository<E6>>,
     //                    QueryEntityRepository<E6>> entities,
-    //            SerializableFunction6<E6, R> name, R value, QueryPolicy queryPolicy, Predicate<Object> ignoreStrategy);
+    //            SerializableFunction6<E6, R> name, R value, MatchStrategy queryPolicy, Predicate<Object> ignoreStrategy);
     //
     //    /**
     //     * equals. 等于.
@@ -992,7 +992,7 @@ public interface EntityNotEqualsExpression6<E, E2, E3, E4, E5, E6, C extends Con
     //            Tuple6<QueryEntityRepository<E>, QueryEntityRepository<E2>, QueryEntityRepository<E3>,
     //                    QueryEntityRepository<E4>, QueryEntityRepository<E5>, QueryEntityRepository<E6>>,
     //            QueryEntityRepository<E6>> entities, SerializableSupplier6<R> property) {
-    //        return ne(entities, property, QueryPolicy.AUTO);
+    //        return ne(entities, property, MatchStrategy.AUTO);
     //    }
     //
     //    /**
@@ -1010,7 +1010,7 @@ public interface EntityNotEqualsExpression6<E, E2, E3, E4, E5, E6, C extends Con
     //                            QueryEntityRepository<E4>, QueryEntityRepository<E5>, QueryEntityRepository<E6>>,
     //                    QueryEntityRepository<E6>> entities,
     //            SerializableSupplier6<R> property, Predicate<Object> ignoreStrategy) {
-    //        return ne(entities, property, QueryPolicy.AUTO, ignoreStrategy);
+    //        return ne(entities, property, MatchStrategy.AUTO, ignoreStrategy);
     //    }
     //
     //    /**
@@ -1025,7 +1025,7 @@ public interface EntityNotEqualsExpression6<E, E2, E3, E4, E5, E6, C extends Con
     //    <R> L ne(Function<
     //            Tuple6<QueryEntityRepository<E>, QueryEntityRepository<E2>, QueryEntityRepository<E3>,
     //                    QueryEntityRepository<E4>, QueryEntityRepository<E5>, QueryEntityRepository<E6>>,
-    //            QueryEntityRepository<E6>> entities, SerializableSupplier6<R> property, QueryPolicy queryPolicy);
+    //            QueryEntityRepository<E6>> entities, SerializableSupplier6<R> property, MatchStrategy queryPolicy);
     //
     //    /**
     //     * equals. 等于.
@@ -1042,7 +1042,7 @@ public interface EntityNotEqualsExpression6<E, E2, E3, E4, E5, E6, C extends Con
     //                    Tuple6<QueryEntityRepository<E>, QueryEntityRepository<E2>, QueryEntityRepository<E3>,
     //                            QueryEntityRepository<E4>, QueryEntityRepository<E5>, QueryEntityRepository<E6>>,
     //                    QueryEntityRepository<E6>> entities,
-    //            SerializableSupplier6<R> property, QueryPolicy queryPolicy, Predicate<Object> ignoreStrategy);
+    //            SerializableSupplier6<R> property, MatchStrategy queryPolicy, Predicate<Object> ignoreStrategy);
     //
     //    /**
     //     * equals. 等于.

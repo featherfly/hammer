@@ -82,19 +82,30 @@ public interface JdbcUpdate {
     <T extends Serializable> int update(String sql, GeneratedKeyHolder<T> generatedKeyHolder, Map<String, Object> args);
 
     /**
-     * batch update.
+     * batch update. use jdbc batch execute.
      *
-     * @param <T>      the generic type
+     * @param <T>       the generic type
+     * @param sql       the sql
+     * @param argsArray the batch args array
+     * @return the int
+     */
+    default <T extends Serializable> int[] updateBatch(String sql, Object[]... argsArray) {
+        return updateBatch(sql, (GeneratedKeyHolder<T>) null, argsArray);
+    }
+
+    /**
+     * batch update. use jdbc batch execute.
+     *
      * @param sql      the sql
      * @param argsList the batch args list
      * @return the int
      */
-    default <T extends Serializable> int[] updateBatch(String sql, List<Object[]> argsList) {
+    default int[] updateBatch(String sql, List<Object[]> argsList) {
         return updateBatch(sql, null, argsList);
     }
 
     /**
-     * batch update.
+     * batch update. use jdbc batch execute.
      *
      * @param <T>                the generic type
      * @param sql                the sql
@@ -103,10 +114,24 @@ public interface JdbcUpdate {
      * @return the int
      */
     <T extends Serializable> int[] updateBatch(String sql, GeneratedKeyHolder<T> generatedKeyHolder,
-            List<Object[]> argsList);
+            Object[]... argsList);
 
     /**
-     * batch update.
+     * batch update. use jdbc batch execute.
+     *
+     * @param <T>                the generic type
+     * @param sql                the sql
+     * @param generatedKeyHolder the generated key holder
+     * @param argsList           the batch args list
+     * @return the int
+     */
+    default <T extends Serializable> int[] updateBatch(String sql, GeneratedKeyHolder<T> generatedKeyHolder,
+            List<Object[]> argsList) {
+        return updateBatch(sql, generatedKeyHolder, argsList.toArray(new Object[argsList.size()][]));
+    }
+
+    /**
+     * batch update. use jdbc batch execute.
      *
      * @param <T>       the generic type
      * @param sql       the sql
@@ -118,7 +143,7 @@ public interface JdbcUpdate {
     }
 
     /**
-     * batch update.
+     * batch update. use jdbc batch execute.
      *
      * @param <T>                the generic type
      * @param sql                the sql

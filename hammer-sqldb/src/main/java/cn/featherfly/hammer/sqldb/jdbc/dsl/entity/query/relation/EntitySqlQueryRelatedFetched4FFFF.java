@@ -14,16 +14,21 @@ import com.speedment.common.tuple.Tuple5;
 import com.speedment.common.tuple.Tuple6;
 
 import cn.featherfly.common.db.mapping.JdbcMappingFactory;
-import cn.featherfly.common.lang.function.SerializableFunction1;
-import cn.featherfly.common.lang.function.SerializableFunction2;
-import cn.featherfly.common.lang.function.SerializableFunction3;
+import cn.featherfly.common.function.serializable.SerializableFunction1;
+import cn.featherfly.common.function.serializable.SerializableFunction2;
+import cn.featherfly.common.function.serializable.SerializableUnaryOperator1;
+import cn.featherfly.common.lang.ClassUtils;
+import cn.featherfly.common.lang.LambdaUtils;
+import cn.featherfly.common.lang.LambdaUtils.SerializedLambdaInfo;
 import cn.featherfly.hammer.dsl.entity.query.relation.EntityQueryRelatedFetched4FFFF;
 import cn.featherfly.hammer.expression.entity.query.EntityQueryConditionGroupExpression6;
 import cn.featherfly.hammer.expression.entity.query.EntityQueryConditionGroupLogicExpression6;
 import cn.featherfly.hammer.expression.entity.query.EntityQuerySortExpression6;
-import cn.featherfly.hammer.expression.entity.query.relation.EntityQueryRelateExpression5FFFF;
+import cn.featherfly.hammer.expression.entity.query.relation.EntityQueryRelateExpression5FFFFP;
+import cn.featherfly.hammer.expression.entity.query.relation.EntityQueryRelateExpression5FFFFR;
 import cn.featherfly.hammer.expression.entity.query.relation.EntityQueryRelatedExpression;
 import cn.featherfly.hammer.expression.entity.query.relation.EntityQueryRelatedFetchedExpression5FFFFF;
+import cn.featherfly.hammer.expression.entity.query.relation.EntityQueryRelatedFetchedExpression5FFFFP;
 import cn.featherfly.hammer.sqldb.jdbc.SqlPageFactory;
 import cn.featherfly.hammer.sqldb.jdbc.dsl.entity.EntitySqlQueryRelation;
 import cn.featherfly.hammer.sqldb.jdbc.dsl.entity.query.AbstractEntitySqlQueryFetch5;
@@ -59,7 +64,7 @@ public class EntitySqlQueryRelatedFetched4FFFF<E, R1, R2, R3, R4>
      */
     @SuppressWarnings("unchecked")
     @Override
-    public <QR extends EntityQueryRelateExpression5FFFF<E, R1, R2, R3, R4, R5, RC, RL, RS, QRF, QRC, QRL, QRS>,
+    public <QR extends EntityQueryRelateExpression5FFFFR<E, R1, R2, R3, R4, R5, RC, RL, RS, QRF, QRC, QRL, QRS>,
             RC extends EntityQueryConditionGroupExpression6<E, R1, R2, R3, R4, R5, RC, RL, RS,
                     Tuple5<E, R1, R2, R3, R4>>,
             RL extends EntityQueryConditionGroupLogicExpression6<E, R1, R2, R3, R4, R5, RC, RL, RS,
@@ -72,71 +77,9 @@ public class EntitySqlQueryRelatedFetched4FFFF<E, R1, R2, R3, R4>
                     Tuple6<E, R1, R2, R3, R4, R5>>,
             QRS extends EntityQuerySortExpression6<E, R1, R2, R3, R4, R5, Tuple6<E, R1, R2, R3, R4, R5>>,
             R5> EntityQueryRelatedExpression<E, R5, QR, QRF> join(Class<R5> joinType) {
-        return new EntitySqlQueryRelated<>((QR) new EntitySqlQueryRelate5FFFF<>(factory, sqlPageFactory, queryRelation),
-                factory, queryRelation, joinType, 0);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public <RE extends EntityQueryRelateExpression5FFFF<E, R1, R2, R3, R4, R5, RC, RL, RS, QR, QRC, QRL, QRS>,
-            RC extends EntityQueryConditionGroupExpression6<E, R1, R2, R3, R4, R5, RC, RL, RS,
-                    Tuple5<E, R1, R2, R3, R4>>,
-            RL extends EntityQueryConditionGroupLogicExpression6<E, R1, R2, R3, R4, R5, RC, RL, RS,
-                    Tuple5<E, R1, R2, R3, R4>>,
-            RS extends EntityQuerySortExpression6<E, R1, R2, R3, R4, R5, Tuple5<E, R1, R2, R3, R4>>,
-            QR extends EntityQueryRelatedFetchedExpression5FFFFF<E, R1, R2, R3, R4, R5, QRC, QRL, QRS>,
-            QRC extends EntityQueryConditionGroupExpression6<E, R1, R2, R3, R4, R5, QRC, QRL, QRS,
-                    Tuple6<E, R1, R2, R3, R4, R5>>,
-            QRL extends EntityQueryConditionGroupLogicExpression6<E, R1, R2, R3, R4, R5, QRC, QRL, QRS,
-                    Tuple6<E, R1, R2, R3, R4, R5>>,
-            QRS extends EntityQuerySortExpression6<E, R1, R2, R3, R4, R5, Tuple6<E, R1, R2, R3, R4, R5>>,
-            R5> RE join(SerializableFunction1<E, R5> propertyName) {
-        // YUFEI_TODO Auto-generated method stub
-        return null;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public <RE extends EntityQueryRelateExpression5FFFF<E, R1, R2, R3, R4, R5, RC, RL, RS, QR, QRC, QRL, QRS>,
-            RC extends EntityQueryConditionGroupExpression6<E, R1, R2, R3, R4, R5, RC, RL, RS,
-                    Tuple5<E, R1, R2, R3, R4>>,
-            RL extends EntityQueryConditionGroupLogicExpression6<E, R1, R2, R3, R4, R5, RC, RL, RS,
-                    Tuple5<E, R1, R2, R3, R4>>,
-            RS extends EntityQuerySortExpression6<E, R1, R2, R3, R4, R5, Tuple5<E, R1, R2, R3, R4>>,
-            QR extends EntityQueryRelatedFetchedExpression5FFFFF<E, R1, R2, R3, R4, R5, QRC, QRL, QRS>,
-            QRC extends EntityQueryConditionGroupExpression6<E, R1, R2, R3, R4, R5, QRC, QRL, QRS,
-                    Tuple6<E, R1, R2, R3, R4, R5>>,
-            QRL extends EntityQueryConditionGroupLogicExpression6<E, R1, R2, R3, R4, R5, QRC, QRL, QRS,
-                    Tuple6<E, R1, R2, R3, R4, R5>>,
-            QRS extends EntityQuerySortExpression6<E, R1, R2, R3, R4, R5, Tuple6<E, R1, R2, R3, R4, R5>>,
-            R5> RE join(SerializableFunction2<R5, Tuple5<E, R1, R2, R3, R4>> propertyName) {
-        // YUFEI_TODO Auto-generated method stub
-        return null;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public <RE extends EntityQueryRelateExpression5FFFF<E, R1, R2, R3, R4, E, RC, RL, RS, QR, QRC, QRL, QRS>,
-            RC extends EntityQueryConditionGroupExpression6<E, R1, R2, R3, R4, E, RC, RL, RS,
-                    Tuple5<E, R1, R2, R3, R4>>,
-            RL extends EntityQueryConditionGroupLogicExpression6<E, R1, R2, R3, R4, E, RC, RL, RS,
-                    Tuple5<E, R1, R2, R3, R4>>,
-            RS extends EntityQuerySortExpression6<E, R1, R2, R3, R4, E, Tuple5<E, R1, R2, R3, R4>>,
-            QR extends EntityQueryRelatedFetchedExpression5FFFFF<E, R1, R2, R3, R4, E, QRC, QRL, QRS>,
-            QRC extends EntityQueryConditionGroupExpression6<E, R1, R2, R3, R4, E, QRC, QRL, QRS,
-                    Tuple6<E, R1, R2, R3, R4, E>>,
-            QRL extends EntityQueryConditionGroupLogicExpression6<E, R1, R2, R3, R4, E, QRC, QRL, QRS,
-                    Tuple6<E, R1, R2, R3, R4, E>>,
-            QRS extends EntityQuerySortExpression6<E, R1, R2, R3, R4, E, Tuple6<E, R1, R2, R3, R4, E>>> RE join(
-                    SerializableFunction3<E, E> propertyName) {
-        // YUFEI_TODO Auto-generated method stub
-        return null;
+        return new EntitySqlQueryRelated<>(
+                (QR) new EntitySqlQueryRelate5FFFFR<>(factory, sqlPageFactory, queryRelation), factory, queryRelation,
+                joinType, 0);
     }
 
     /**
@@ -144,7 +87,71 @@ public class EntitySqlQueryRelatedFetched4FFFF<E, R1, R2, R3, R4>
      */
     @SuppressWarnings("unchecked")
     @Override
-    public <QR extends EntityQueryRelateExpression5FFFF<E, R1, R2, R3, R4, R5, RC, RL, RS, QRF, QRC, QRL, QRS>,
+    public <RE extends EntityQueryRelateExpression5FFFFR<E, R1, R2, R3, R4, R5, RC, RL, RS, QR, QRC, QRL, QRS>,
+            RC extends EntityQueryConditionGroupExpression6<E, R1, R2, R3, R4, R5, RC, RL, RS,
+                    Tuple5<E, R1, R2, R3, R4>>,
+            RL extends EntityQueryConditionGroupLogicExpression6<E, R1, R2, R3, R4, R5, RC, RL, RS,
+                    Tuple5<E, R1, R2, R3, R4>>,
+            RS extends EntityQuerySortExpression6<E, R1, R2, R3, R4, R5, Tuple5<E, R1, R2, R3, R4>>,
+            QR extends EntityQueryRelatedFetchedExpression5FFFFF<E, R1, R2, R3, R4, R5, QRC, QRL, QRS>,
+            QRC extends EntityQueryConditionGroupExpression6<E, R1, R2, R3, R4, R5, QRC, QRL, QRS,
+                    Tuple6<E, R1, R2, R3, R4, R5>>,
+            QRL extends EntityQueryConditionGroupLogicExpression6<E, R1, R2, R3, R4, R5, QRC, QRL, QRS,
+                    Tuple6<E, R1, R2, R3, R4, R5>>,
+            QRS extends EntityQuerySortExpression6<E, R1, R2, R3, R4, R5, Tuple6<E, R1, R2, R3, R4, R5>>,
+            R5> RE join(SerializableFunction2<R5, E> propertyName) {
+        SerializedLambdaInfo info = LambdaUtils.getLambdaInfo(propertyName);
+        queryRelation.join(0, queryRelation.getEntityRelationMapping(0).getIdName(),
+                factory.getClassMapping(ClassUtils.forName(info.getMethodInstanceClassName())), info.getPropertyName());
+        return (RE) new EntitySqlQueryRelate5FFFFR<>(factory, sqlPageFactory, queryRelation);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @SuppressWarnings("unchecked")
+    @Override
+    public <RE extends EntityQueryRelateExpression5FFFFP<E, R1, R2, R3, R4, R5, RC, RL, RS, QR>,
+            RC extends EntityQueryConditionGroupExpression6<E, R1, R2, R3, R4, R5, RC, RL, RS,
+                    Tuple5<E, R1, R2, R3, R4>>,
+            RL extends EntityQueryConditionGroupLogicExpression6<E, R1, R2, R3, R4, R5, RC, RL, RS,
+                    Tuple5<E, R1, R2, R3, R4>>,
+            RS extends EntityQuerySortExpression6<E, R1, R2, R3, R4, R5, Tuple5<E, R1, R2, R3, R4>>,
+            QR extends EntityQueryRelatedFetchedExpression5FFFFP<E, R1, R2, R3, R4, R5, RC, RL, RS>,
+            R5> RE join(SerializableFunction1<E, R5> propertyName) {
+        SerializedLambdaInfo info = LambdaUtils.getLambdaInfo(propertyName);
+        queryRelation.join(0, info.getPropertyName(), factory.getClassMapping(info.getPropertyType()));
+        return (RE) new EntitySqlQueryRelate5FFFFP<>(factory, sqlPageFactory, queryRelation);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @SuppressWarnings("unchecked")
+    @Override
+    public <RE extends EntityQueryRelateExpression5FFFFP<E, R1, R2, R3, R4, E, RC, RL, RS, QR>,
+            RC extends EntityQueryConditionGroupExpression6<E, R1, R2, R3, R4, E, RC, RL, RS,
+                    Tuple5<E, R1, R2, R3, R4>>,
+            RL extends EntityQueryConditionGroupLogicExpression6<E, R1, R2, R3, R4, E, RC, RL, RS,
+                    Tuple5<E, R1, R2, R3, R4>>,
+            RS extends EntityQuerySortExpression6<E, R1, R2, R3, R4, E, Tuple5<E, R1, R2, R3, R4>>,
+            QR extends EntityQueryRelatedFetchedExpression5FFFFP<E, R1, R2, R3, R4, E, RC, RL, RS>> RE join(
+                    SerializableUnaryOperator1<E> propertyName) {
+        SerializedLambdaInfo info = LambdaUtils.getLambdaInfo(propertyName);
+        queryRelation.join(0, info.getPropertyName(), factory.getClassMapping(info.getPropertyType()));
+        return (RE) new EntitySqlQueryRelate5FFFFP<>(factory, sqlPageFactory, queryRelation);
+    }
+
+    // ****************************************************************************************************************
+    //	2
+    // ****************************************************************************************************************
+
+    /**
+     * {@inheritDoc}
+     */
+    @SuppressWarnings("unchecked")
+    @Override
+    public <QR extends EntityQueryRelateExpression5FFFFR<E, R1, R2, R3, R4, R5, RC, RL, RS, QRF, QRC, QRL, QRS>,
             RC extends EntityQueryConditionGroupExpression6<E, R1, R2, R3, R4, R5, RC, RL, RS,
                     Tuple5<E, R1, R2, R3, R4>>,
             RL extends EntityQueryConditionGroupLogicExpression6<E, R1, R2, R3, R4, R5, RC, RL, RS,
@@ -157,36 +164,17 @@ public class EntitySqlQueryRelatedFetched4FFFF<E, R1, R2, R3, R4>
                     Tuple6<E, R1, R2, R3, R4, R5>>,
             QRS extends EntityQuerySortExpression6<E, R1, R2, R3, R4, R5, Tuple6<E, R1, R2, R3, R4, R5>>,
             R5> EntityQueryRelatedExpression<R1, R5, QR, QRF> join2(Class<R5> joinType) {
-        return new EntitySqlQueryRelated<>((QR) new EntitySqlQueryRelate5FFFF<>(factory, sqlPageFactory, queryRelation),
-                factory, queryRelation, joinType, 1);
+        return new EntitySqlQueryRelated<>(
+                (QR) new EntitySqlQueryRelate5FFFFR<>(factory, sqlPageFactory, queryRelation), factory, queryRelation,
+                joinType, 1);
     }
 
     /**
      * {@inheritDoc}
      */
+    @SuppressWarnings("unchecked")
     @Override
-    public <RE extends EntityQueryRelateExpression5FFFF<E, R1, R2, R3, R4, R5, RC, RL, RS, QR, QRC, QRL, QRS>,
-            RC extends EntityQueryConditionGroupExpression6<E, R1, R2, R3, R4, R5, RC, RL, RS,
-                    Tuple5<E, R1, R2, R3, R4>>,
-            RL extends EntityQueryConditionGroupLogicExpression6<E, R1, R2, R3, R4, R5, RC, RL, RS,
-                    Tuple5<E, R1, R2, R3, R4>>,
-            RS extends EntityQuerySortExpression6<E, R1, R2, R3, R4, R5, Tuple5<E, R1, R2, R3, R4>>,
-            QR extends EntityQueryRelatedFetchedExpression5FFFFF<E, R1, R2, R3, R4, R5, QRC, QRL, QRS>,
-            QRC extends EntityQueryConditionGroupExpression6<E, R1, R2, R3, R4, R5, QRC, QRL, QRS,
-                    Tuple6<E, R1, R2, R3, R4, R5>>,
-            QRL extends EntityQueryConditionGroupLogicExpression6<E, R1, R2, R3, R4, R5, QRC, QRL, QRS,
-                    Tuple6<E, R1, R2, R3, R4, R5>>,
-            QRS extends EntityQuerySortExpression6<E, R1, R2, R3, R4, R5, Tuple6<E, R1, R2, R3, R4, R5>>,
-            R5> RE join2(SerializableFunction1<R1, R5> propertyName) {
-        // YUFEI_TODO Auto-generated method stub
-        return null;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public <RE extends EntityQueryRelateExpression5FFFF<E, R1, R2, R3, R4, R5, RC, RL, RS, QR, QRC, QRL, QRS>,
+    public <RE extends EntityQueryRelateExpression5FFFFR<E, R1, R2, R3, R4, R5, RC, RL, RS, QR, QRC, QRL, QRS>,
             RC extends EntityQueryConditionGroupExpression6<E, R1, R2, R3, R4, R5, RC, RL, RS,
                     Tuple5<E, R1, R2, R3, R4>>,
             RL extends EntityQueryConditionGroupLogicExpression6<E, R1, R2, R3, R4, R5, RC, RL, RS,
@@ -199,29 +187,10 @@ public class EntitySqlQueryRelatedFetched4FFFF<E, R1, R2, R3, R4>
                     Tuple6<E, R1, R2, R3, R4, R5>>,
             QRS extends EntityQuerySortExpression6<E, R1, R2, R3, R4, R5, Tuple6<E, R1, R2, R3, R4, R5>>,
             R5> RE join2(SerializableFunction2<R5, R1> propertyName) {
-        // YUFEI_TODO Auto-generated method stub
-        return null;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public <RE extends EntityQueryRelateExpression5FFFF<E, R1, R2, R3, R4, R1, RC, RL, RS, QR, QRC, QRL, QRS>,
-            RC extends EntityQueryConditionGroupExpression6<E, R1, R2, R3, R4, R1, RC, RL, RS,
-                    Tuple5<E, R1, R2, R3, R4>>,
-            RL extends EntityQueryConditionGroupLogicExpression6<E, R1, R2, R3, R4, R1, RC, RL, RS,
-                    Tuple5<E, R1, R2, R3, R4>>,
-            RS extends EntityQuerySortExpression6<E, R1, R2, R3, R4, R1, Tuple5<E, R1, R2, R3, R4>>,
-            QR extends EntityQueryRelatedFetchedExpression5FFFFF<E, R1, R2, R3, R4, R1, QRC, QRL, QRS>,
-            QRC extends EntityQueryConditionGroupExpression6<E, R1, R2, R3, R4, R1, QRC, QRL, QRS,
-                    Tuple6<E, R1, R2, R3, R4, R1>>,
-            QRL extends EntityQueryConditionGroupLogicExpression6<E, R1, R2, R3, R4, R1, QRC, QRL, QRS,
-                    Tuple6<E, R1, R2, R3, R4, R1>>,
-            QRS extends EntityQuerySortExpression6<E, R1, R2, R3, R4, R1, Tuple6<E, R1, R2, R3, R4, R1>>> RE join2(
-                    SerializableFunction3<R1, R1> propertyName) {
-        // YUFEI_TODO Auto-generated method stub
-        return null;
+        SerializedLambdaInfo info = LambdaUtils.getLambdaInfo(propertyName);
+        queryRelation.join(1, queryRelation.getEntityRelationMapping(0).getIdName(),
+                factory.getClassMapping(ClassUtils.forName(info.getMethodInstanceClassName())), info.getPropertyName());
+        return (RE) new EntitySqlQueryRelate5FFFFR<>(factory, sqlPageFactory, queryRelation);
     }
 
     /**
@@ -229,7 +198,47 @@ public class EntitySqlQueryRelatedFetched4FFFF<E, R1, R2, R3, R4>
      */
     @SuppressWarnings("unchecked")
     @Override
-    public <QR extends EntityQueryRelateExpression5FFFF<E, R1, R2, R3, R4, R5, RC, RL, RS, QRF, QRC, QRL, QRS>,
+    public <RE extends EntityQueryRelateExpression5FFFFP<E, R1, R2, R3, R4, R5, RC, RL, RS, QR>,
+            RC extends EntityQueryConditionGroupExpression6<E, R1, R2, R3, R4, R5, RC, RL, RS,
+                    Tuple5<E, R1, R2, R3, R4>>,
+            RL extends EntityQueryConditionGroupLogicExpression6<E, R1, R2, R3, R4, R5, RC, RL, RS,
+                    Tuple5<E, R1, R2, R3, R4>>,
+            RS extends EntityQuerySortExpression6<E, R1, R2, R3, R4, R5, Tuple5<E, R1, R2, R3, R4>>,
+            QR extends EntityQueryRelatedFetchedExpression5FFFFP<E, R1, R2, R3, R4, R5, RC, RL, RS>,
+            R5> RE join2(SerializableFunction1<R1, R5> propertyName) {
+        SerializedLambdaInfo info = LambdaUtils.getLambdaInfo(propertyName);
+        queryRelation.join(1, info.getPropertyName(), factory.getClassMapping(info.getPropertyType()));
+        return (RE) new EntitySqlQueryRelate5FFFFP<>(factory, sqlPageFactory, queryRelation);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @SuppressWarnings("unchecked")
+    @Override
+    public <RE extends EntityQueryRelateExpression5FFFFP<E, R1, R2, R3, R4, R1, RC, RL, RS, QR>,
+            RC extends EntityQueryConditionGroupExpression6<E, R1, R2, R3, R4, R1, RC, RL, RS,
+                    Tuple5<E, R1, R2, R3, R4>>,
+            RL extends EntityQueryConditionGroupLogicExpression6<E, R1, R2, R3, R4, R1, RC, RL, RS,
+                    Tuple5<E, R1, R2, R3, R4>>,
+            RS extends EntityQuerySortExpression6<E, R1, R2, R3, R4, R1, Tuple5<E, R1, R2, R3, R4>>,
+            QR extends EntityQueryRelatedFetchedExpression5FFFFP<E, R1, R2, R3, R4, R1, RC, RL, RS>> RE join2(
+                    SerializableUnaryOperator1<R1> propertyName) {
+        SerializedLambdaInfo info = LambdaUtils.getLambdaInfo(propertyName);
+        queryRelation.join(1, info.getPropertyName(), factory.getClassMapping(info.getPropertyType()));
+        return (RE) new EntitySqlQueryRelate5FFFFP<>(factory, sqlPageFactory, queryRelation);
+    }
+
+    // ****************************************************************************************************************
+    //	3
+    // ****************************************************************************************************************
+
+    /**
+     * {@inheritDoc}
+     */
+    @SuppressWarnings("unchecked")
+    @Override
+    public <QR extends EntityQueryRelateExpression5FFFFR<E, R1, R2, R3, R4, R5, RC, RL, RS, QRF, QRC, QRL, QRS>,
             RC extends EntityQueryConditionGroupExpression6<E, R1, R2, R3, R4, R5, RC, RL, RS,
                     Tuple5<E, R1, R2, R3, R4>>,
             RL extends EntityQueryConditionGroupLogicExpression6<E, R1, R2, R3, R4, R5, RC, RL, RS,
@@ -242,36 +251,17 @@ public class EntitySqlQueryRelatedFetched4FFFF<E, R1, R2, R3, R4>
                     Tuple6<E, R1, R2, R3, R4, R5>>,
             QRS extends EntityQuerySortExpression6<E, R1, R2, R3, R4, R5, Tuple6<E, R1, R2, R3, R4, R5>>,
             R5> EntityQueryRelatedExpression<R2, R5, QR, QRF> join3(Class<R5> joinType) {
-        return new EntitySqlQueryRelated<>((QR) new EntitySqlQueryRelate5FFFF<>(factory, sqlPageFactory, queryRelation),
-                factory, queryRelation, joinType, 2);
+        return new EntitySqlQueryRelated<>(
+                (QR) new EntitySqlQueryRelate5FFFFR<>(factory, sqlPageFactory, queryRelation), factory, queryRelation,
+                joinType, 2);
     }
 
     /**
      * {@inheritDoc}
      */
+    @SuppressWarnings("unchecked")
     @Override
-    public <RE extends EntityQueryRelateExpression5FFFF<E, R1, R2, R3, R4, R5, RC, RL, RS, QR, QRC, QRL, QRS>,
-            RC extends EntityQueryConditionGroupExpression6<E, R1, R2, R3, R4, R5, RC, RL, RS,
-                    Tuple5<E, R1, R2, R3, R4>>,
-            RL extends EntityQueryConditionGroupLogicExpression6<E, R1, R2, R3, R4, R5, RC, RL, RS,
-                    Tuple5<E, R1, R2, R3, R4>>,
-            RS extends EntityQuerySortExpression6<E, R1, R2, R3, R4, R5, Tuple5<E, R1, R2, R3, R4>>,
-            QR extends EntityQueryRelatedFetchedExpression5FFFFF<E, R1, R2, R3, R4, R5, QRC, QRL, QRS>,
-            QRC extends EntityQueryConditionGroupExpression6<E, R1, R2, R3, R4, R5, QRC, QRL, QRS,
-                    Tuple6<E, R1, R2, R3, R4, R5>>,
-            QRL extends EntityQueryConditionGroupLogicExpression6<E, R1, R2, R3, R4, R5, QRC, QRL, QRS,
-                    Tuple6<E, R1, R2, R3, R4, R5>>,
-            QRS extends EntityQuerySortExpression6<E, R1, R2, R3, R4, R5, Tuple6<E, R1, R2, R3, R4, R5>>,
-            R5> RE join3(SerializableFunction1<R2, R5> propertyName) {
-        // YUFEI_TODO Auto-generated method stub
-        return null;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public <RE extends EntityQueryRelateExpression5FFFF<E, R1, R2, R3, R4, R5, RC, RL, RS, QR, QRC, QRL, QRS>,
+    public <RE extends EntityQueryRelateExpression5FFFFR<E, R1, R2, R3, R4, R5, RC, RL, RS, QR, QRC, QRL, QRS>,
             RC extends EntityQueryConditionGroupExpression6<E, R1, R2, R3, R4, R5, RC, RL, RS,
                     Tuple5<E, R1, R2, R3, R4>>,
             RL extends EntityQueryConditionGroupLogicExpression6<E, R1, R2, R3, R4, R5, RC, RL, RS,
@@ -284,29 +274,10 @@ public class EntitySqlQueryRelatedFetched4FFFF<E, R1, R2, R3, R4>
                     Tuple6<E, R1, R2, R3, R4, R5>>,
             QRS extends EntityQuerySortExpression6<E, R1, R2, R3, R4, R5, Tuple6<E, R1, R2, R3, R4, R5>>,
             R5> RE join3(SerializableFunction2<R5, R2> propertyName) {
-        // YUFEI_TODO Auto-generated method stub
-        return null;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public <RE extends EntityQueryRelateExpression5FFFF<E, R1, R2, R3, R4, R2, RC, RL, RS, QR, QRC, QRL, QRS>,
-            RC extends EntityQueryConditionGroupExpression6<E, R1, R2, R3, R4, R2, RC, RL, RS,
-                    Tuple5<E, R1, R2, R3, R4>>,
-            RL extends EntityQueryConditionGroupLogicExpression6<E, R1, R2, R3, R4, R2, RC, RL, RS,
-                    Tuple5<E, R1, R2, R3, R4>>,
-            RS extends EntityQuerySortExpression6<E, R1, R2, R3, R4, R2, Tuple5<E, R1, R2, R3, R4>>,
-            QR extends EntityQueryRelatedFetchedExpression5FFFFF<E, R1, R2, R3, R4, R2, QRC, QRL, QRS>,
-            QRC extends EntityQueryConditionGroupExpression6<E, R1, R2, R3, R4, R2, QRC, QRL, QRS,
-                    Tuple6<E, R1, R2, R3, R4, R2>>,
-            QRL extends EntityQueryConditionGroupLogicExpression6<E, R1, R2, R3, R4, R2, QRC, QRL, QRS,
-                    Tuple6<E, R1, R2, R3, R4, R2>>,
-            QRS extends EntityQuerySortExpression6<E, R1, R2, R3, R4, R2, Tuple6<E, R1, R2, R3, R4, R2>>> RE join3(
-                    SerializableFunction3<R2, R2> propertyName) {
-        // YUFEI_TODO Auto-generated method stub
-        return null;
+        SerializedLambdaInfo info = LambdaUtils.getLambdaInfo(propertyName);
+        queryRelation.join(2, queryRelation.getEntityRelationMapping(0).getIdName(),
+                factory.getClassMapping(ClassUtils.forName(info.getMethodInstanceClassName())), info.getPropertyName());
+        return (RE) new EntitySqlQueryRelate5FFFFR<>(factory, sqlPageFactory, queryRelation);
     }
 
     /**
@@ -314,7 +285,47 @@ public class EntitySqlQueryRelatedFetched4FFFF<E, R1, R2, R3, R4>
      */
     @SuppressWarnings("unchecked")
     @Override
-    public <QR extends EntityQueryRelateExpression5FFFF<E, R1, R2, R3, R4, R5, RC, RL, RS, QRF, QRC, QRL, QRS>,
+    public <RE extends EntityQueryRelateExpression5FFFFP<E, R1, R2, R3, R4, R5, RC, RL, RS, QR>,
+            RC extends EntityQueryConditionGroupExpression6<E, R1, R2, R3, R4, R5, RC, RL, RS,
+                    Tuple5<E, R1, R2, R3, R4>>,
+            RL extends EntityQueryConditionGroupLogicExpression6<E, R1, R2, R3, R4, R5, RC, RL, RS,
+                    Tuple5<E, R1, R2, R3, R4>>,
+            RS extends EntityQuerySortExpression6<E, R1, R2, R3, R4, R5, Tuple5<E, R1, R2, R3, R4>>,
+            QR extends EntityQueryRelatedFetchedExpression5FFFFP<E, R1, R2, R3, R4, R5, RC, RL, RS>,
+            R5> RE join3(SerializableFunction1<R2, R5> propertyName) {
+        SerializedLambdaInfo info = LambdaUtils.getLambdaInfo(propertyName);
+        queryRelation.join(2, info.getPropertyName(), factory.getClassMapping(info.getPropertyType()));
+        return (RE) new EntitySqlQueryRelate5FFFFP<>(factory, sqlPageFactory, queryRelation);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @SuppressWarnings("unchecked")
+    @Override
+    public <RE extends EntityQueryRelateExpression5FFFFP<E, R1, R2, R3, R4, R2, RC, RL, RS, QR>,
+            RC extends EntityQueryConditionGroupExpression6<E, R1, R2, R3, R4, R2, RC, RL, RS,
+                    Tuple5<E, R1, R2, R3, R4>>,
+            RL extends EntityQueryConditionGroupLogicExpression6<E, R1, R2, R3, R4, R2, RC, RL, RS,
+                    Tuple5<E, R1, R2, R3, R4>>,
+            RS extends EntityQuerySortExpression6<E, R1, R2, R3, R4, R2, Tuple5<E, R1, R2, R3, R4>>,
+            QR extends EntityQueryRelatedFetchedExpression5FFFFP<E, R1, R2, R3, R4, R2, RC, RL, RS>> RE join3(
+                    SerializableUnaryOperator1<R2> propertyName) {
+        SerializedLambdaInfo info = LambdaUtils.getLambdaInfo(propertyName);
+        queryRelation.join(2, info.getPropertyName(), factory.getClassMapping(info.getPropertyType()));
+        return (RE) new EntitySqlQueryRelate5FFFFP<>(factory, sqlPageFactory, queryRelation);
+    }
+
+    // ****************************************************************************************************************
+    //	4
+    // ****************************************************************************************************************
+
+    /**
+     * {@inheritDoc}
+     */
+    @SuppressWarnings("unchecked")
+    @Override
+    public <QR extends EntityQueryRelateExpression5FFFFR<E, R1, R2, R3, R4, R5, RC, RL, RS, QRF, QRC, QRL, QRS>,
             RC extends EntityQueryConditionGroupExpression6<E, R1, R2, R3, R4, R5, RC, RL, RS,
                     Tuple5<E, R1, R2, R3, R4>>,
             RL extends EntityQueryConditionGroupLogicExpression6<E, R1, R2, R3, R4, R5, RC, RL, RS,
@@ -327,36 +338,17 @@ public class EntitySqlQueryRelatedFetched4FFFF<E, R1, R2, R3, R4>
                     Tuple6<E, R1, R2, R3, R4, R5>>,
             QRS extends EntityQuerySortExpression6<E, R1, R2, R3, R4, R5, Tuple6<E, R1, R2, R3, R4, R5>>,
             R5> EntityQueryRelatedExpression<R3, R5, QR, QRF> join4(Class<R5> joinType) {
-        return new EntitySqlQueryRelated<>((QR) new EntitySqlQueryRelate5FFFF<>(factory, sqlPageFactory, queryRelation),
-                factory, queryRelation, joinType, 3);
+        return new EntitySqlQueryRelated<>(
+                (QR) new EntitySqlQueryRelate5FFFFR<>(factory, sqlPageFactory, queryRelation), factory, queryRelation,
+                joinType, 3);
     }
 
     /**
      * {@inheritDoc}
      */
+    @SuppressWarnings("unchecked")
     @Override
-    public <RE extends EntityQueryRelateExpression5FFFF<E, R1, R2, R3, R4, R5, RC, RL, RS, QR, QRC, QRL, QRS>,
-            RC extends EntityQueryConditionGroupExpression6<E, R1, R2, R3, R4, R5, RC, RL, RS,
-                    Tuple5<E, R1, R2, R3, R4>>,
-            RL extends EntityQueryConditionGroupLogicExpression6<E, R1, R2, R3, R4, R5, RC, RL, RS,
-                    Tuple5<E, R1, R2, R3, R4>>,
-            RS extends EntityQuerySortExpression6<E, R1, R2, R3, R4, R5, Tuple5<E, R1, R2, R3, R4>>,
-            QR extends EntityQueryRelatedFetchedExpression5FFFFF<E, R1, R2, R3, R4, R5, QRC, QRL, QRS>,
-            QRC extends EntityQueryConditionGroupExpression6<E, R1, R2, R3, R4, R5, QRC, QRL, QRS,
-                    Tuple6<E, R1, R2, R3, R4, R5>>,
-            QRL extends EntityQueryConditionGroupLogicExpression6<E, R1, R2, R3, R4, R5, QRC, QRL, QRS,
-                    Tuple6<E, R1, R2, R3, R4, R5>>,
-            QRS extends EntityQuerySortExpression6<E, R1, R2, R3, R4, R5, Tuple6<E, R1, R2, R3, R4, R5>>,
-            R5> RE join4(SerializableFunction1<R3, R5> propertyName) {
-        // YUFEI_TODO Auto-generated method stub
-        return null;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public <RE extends EntityQueryRelateExpression5FFFF<E, R1, R2, R3, R4, R5, RC, RL, RS, QR, QRC, QRL, QRS>,
+    public <RE extends EntityQueryRelateExpression5FFFFR<E, R1, R2, R3, R4, R5, RC, RL, RS, QR, QRC, QRL, QRS>,
             RC extends EntityQueryConditionGroupExpression6<E, R1, R2, R3, R4, R5, RC, RL, RS,
                     Tuple5<E, R1, R2, R3, R4>>,
             RL extends EntityQueryConditionGroupLogicExpression6<E, R1, R2, R3, R4, R5, RC, RL, RS,
@@ -369,29 +361,10 @@ public class EntitySqlQueryRelatedFetched4FFFF<E, R1, R2, R3, R4>
                     Tuple6<E, R1, R2, R3, R4, R5>>,
             QRS extends EntityQuerySortExpression6<E, R1, R2, R3, R4, R5, Tuple6<E, R1, R2, R3, R4, R5>>,
             R5> RE join4(SerializableFunction2<R5, R3> propertyName) {
-        // YUFEI_TODO Auto-generated method stub
-        return null;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public <RE extends EntityQueryRelateExpression5FFFF<E, R1, R2, R3, R4, R3, RC, RL, RS, QR, QRC, QRL, QRS>,
-            RC extends EntityQueryConditionGroupExpression6<E, R1, R2, R3, R4, R3, RC, RL, RS,
-                    Tuple5<E, R1, R2, R3, R4>>,
-            RL extends EntityQueryConditionGroupLogicExpression6<E, R1, R2, R3, R4, R3, RC, RL, RS,
-                    Tuple5<E, R1, R2, R3, R4>>,
-            RS extends EntityQuerySortExpression6<E, R1, R2, R3, R4, R3, Tuple5<E, R1, R2, R3, R4>>,
-            QR extends EntityQueryRelatedFetchedExpression5FFFFF<E, R1, R2, R3, R4, R3, QRC, QRL, QRS>,
-            QRC extends EntityQueryConditionGroupExpression6<E, R1, R2, R3, R4, R3, QRC, QRL, QRS,
-                    Tuple6<E, R1, R2, R3, R4, R3>>,
-            QRL extends EntityQueryConditionGroupLogicExpression6<E, R1, R2, R3, R4, R3, QRC, QRL, QRS,
-                    Tuple6<E, R1, R2, R3, R4, R3>>,
-            QRS extends EntityQuerySortExpression6<E, R1, R2, R3, R4, R3, Tuple6<E, R1, R2, R3, R4, R3>>> RE join4(
-                    SerializableFunction3<R3, R3> propertyName) {
-        // YUFEI_TODO Auto-generated method stub
-        return null;
+        SerializedLambdaInfo info = LambdaUtils.getLambdaInfo(propertyName);
+        queryRelation.join(3, queryRelation.getEntityRelationMapping(0).getIdName(),
+                factory.getClassMapping(ClassUtils.forName(info.getMethodInstanceClassName())), info.getPropertyName());
+        return (RE) new EntitySqlQueryRelate5FFFFR<>(factory, sqlPageFactory, queryRelation);
     }
 
     /**
@@ -399,7 +372,47 @@ public class EntitySqlQueryRelatedFetched4FFFF<E, R1, R2, R3, R4>
      */
     @SuppressWarnings("unchecked")
     @Override
-    public <QR extends EntityQueryRelateExpression5FFFF<E, R1, R2, R3, R4, R5, RC, RL, RS, QRF, QRC, QRL, QRS>,
+    public <RE extends EntityQueryRelateExpression5FFFFP<E, R1, R2, R3, R4, R5, RC, RL, RS, QR>,
+            RC extends EntityQueryConditionGroupExpression6<E, R1, R2, R3, R4, R5, RC, RL, RS,
+                    Tuple5<E, R1, R2, R3, R4>>,
+            RL extends EntityQueryConditionGroupLogicExpression6<E, R1, R2, R3, R4, R5, RC, RL, RS,
+                    Tuple5<E, R1, R2, R3, R4>>,
+            RS extends EntityQuerySortExpression6<E, R1, R2, R3, R4, R5, Tuple5<E, R1, R2, R3, R4>>,
+            QR extends EntityQueryRelatedFetchedExpression5FFFFP<E, R1, R2, R3, R4, R5, RC, RL, RS>,
+            R5> RE join4(SerializableFunction1<R3, R5> propertyName) {
+        SerializedLambdaInfo info = LambdaUtils.getLambdaInfo(propertyName);
+        queryRelation.join(3, info.getPropertyName(), factory.getClassMapping(info.getPropertyType()));
+        return (RE) new EntitySqlQueryRelate5FFFFP<>(factory, sqlPageFactory, queryRelation);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @SuppressWarnings("unchecked")
+    @Override
+    public <RE extends EntityQueryRelateExpression5FFFFP<E, R1, R2, R3, R4, R3, RC, RL, RS, QR>,
+            RC extends EntityQueryConditionGroupExpression6<E, R1, R2, R3, R4, R3, RC, RL, RS,
+                    Tuple5<E, R1, R2, R3, R4>>,
+            RL extends EntityQueryConditionGroupLogicExpression6<E, R1, R2, R3, R4, R3, RC, RL, RS,
+                    Tuple5<E, R1, R2, R3, R4>>,
+            RS extends EntityQuerySortExpression6<E, R1, R2, R3, R4, R3, Tuple5<E, R1, R2, R3, R4>>,
+            QR extends EntityQueryRelatedFetchedExpression5FFFFP<E, R1, R2, R3, R4, R3, RC, RL, RS>> RE join4(
+                    SerializableUnaryOperator1<R3> propertyName) {
+        SerializedLambdaInfo info = LambdaUtils.getLambdaInfo(propertyName);
+        queryRelation.join(3, info.getPropertyName(), factory.getClassMapping(info.getPropertyType()));
+        return (RE) new EntitySqlQueryRelate5FFFFP<>(factory, sqlPageFactory, queryRelation);
+    }
+
+    // ****************************************************************************************************************
+    //	5
+    // ****************************************************************************************************************
+
+    /**
+     * {@inheritDoc}
+     */
+    @SuppressWarnings("unchecked")
+    @Override
+    public <QR extends EntityQueryRelateExpression5FFFFR<E, R1, R2, R3, R4, R5, RC, RL, RS, QRF, QRC, QRL, QRS>,
             RC extends EntityQueryConditionGroupExpression6<E, R1, R2, R3, R4, R5, RC, RL, RS,
                     Tuple5<E, R1, R2, R3, R4>>,
             RL extends EntityQueryConditionGroupLogicExpression6<E, R1, R2, R3, R4, R5, RC, RL, RS,
@@ -412,36 +425,17 @@ public class EntitySqlQueryRelatedFetched4FFFF<E, R1, R2, R3, R4>
                     Tuple6<E, R1, R2, R3, R4, R5>>,
             QRS extends EntityQuerySortExpression6<E, R1, R2, R3, R4, R5, Tuple6<E, R1, R2, R3, R4, R5>>,
             R5> EntityQueryRelatedExpression<R4, R5, QR, QRF> join5(Class<R5> joinType) {
-        return new EntitySqlQueryRelated<>((QR) new EntitySqlQueryRelate5FFFF<>(factory, sqlPageFactory, queryRelation),
-                factory, queryRelation, joinType, 4);
+        return new EntitySqlQueryRelated<>(
+                (QR) new EntitySqlQueryRelate5FFFFR<>(factory, sqlPageFactory, queryRelation), factory, queryRelation,
+                joinType, 4);
     }
 
     /**
      * {@inheritDoc}
      */
+    @SuppressWarnings("unchecked")
     @Override
-    public <RE extends EntityQueryRelateExpression5FFFF<E, R1, R2, R3, R4, R5, RC, RL, RS, QR, QRC, QRL, QRS>,
-            RC extends EntityQueryConditionGroupExpression6<E, R1, R2, R3, R4, R5, RC, RL, RS,
-                    Tuple5<E, R1, R2, R3, R4>>,
-            RL extends EntityQueryConditionGroupLogicExpression6<E, R1, R2, R3, R4, R5, RC, RL, RS,
-                    Tuple5<E, R1, R2, R3, R4>>,
-            RS extends EntityQuerySortExpression6<E, R1, R2, R3, R4, R5, Tuple5<E, R1, R2, R3, R4>>,
-            QR extends EntityQueryRelatedFetchedExpression5FFFFF<E, R1, R2, R3, R4, R5, QRC, QRL, QRS>,
-            QRC extends EntityQueryConditionGroupExpression6<E, R1, R2, R3, R4, R5, QRC, QRL, QRS,
-                    Tuple6<E, R1, R2, R3, R4, R5>>,
-            QRL extends EntityQueryConditionGroupLogicExpression6<E, R1, R2, R3, R4, R5, QRC, QRL, QRS,
-                    Tuple6<E, R1, R2, R3, R4, R5>>,
-            QRS extends EntityQuerySortExpression6<E, R1, R2, R3, R4, R5, Tuple6<E, R1, R2, R3, R4, R5>>,
-            R5> RE join5(SerializableFunction1<R4, R5> propertyName) {
-        // YUFEI_TODO Auto-generated method stub
-        return null;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public <RE extends EntityQueryRelateExpression5FFFF<E, R1, R2, R3, R4, R5, RC, RL, RS, QR, QRC, QRL, QRS>,
+    public <RE extends EntityQueryRelateExpression5FFFFR<E, R1, R2, R3, R4, R5, RC, RL, RS, QR, QRC, QRL, QRS>,
             RC extends EntityQueryConditionGroupExpression6<E, R1, R2, R3, R4, R5, RC, RL, RS,
                     Tuple5<E, R1, R2, R3, R4>>,
             RL extends EntityQueryConditionGroupLogicExpression6<E, R1, R2, R3, R4, R5, RC, RL, RS,
@@ -454,28 +448,46 @@ public class EntitySqlQueryRelatedFetched4FFFF<E, R1, R2, R3, R4>
                     Tuple6<E, R1, R2, R3, R4, R5>>,
             QRS extends EntityQuerySortExpression6<E, R1, R2, R3, R4, R5, Tuple6<E, R1, R2, R3, R4, R5>>,
             R5> RE join5(SerializableFunction2<R5, R4> propertyName) {
-        // YUFEI_TODO Auto-generated method stub
-        return null;
+        SerializedLambdaInfo info = LambdaUtils.getLambdaInfo(propertyName);
+        queryRelation.join(4, queryRelation.getEntityRelationMapping(0).getIdName(),
+                factory.getClassMapping(ClassUtils.forName(info.getMethodInstanceClassName())), info.getPropertyName());
+        return (RE) new EntitySqlQueryRelate5FFFFR<>(factory, sqlPageFactory, queryRelation);
     }
 
     /**
      * {@inheritDoc}
      */
+    @SuppressWarnings("unchecked")
     @Override
-    public <RE extends EntityQueryRelateExpression5FFFF<E, R1, R2, R3, R4, R4, RC, RL, RS, QR, QRC, QRL, QRS>,
+    public <RE extends EntityQueryRelateExpression5FFFFP<E, R1, R2, R3, R4, R5, RC, RL, RS, QR>,
+            RC extends EntityQueryConditionGroupExpression6<E, R1, R2, R3, R4, R5, RC, RL, RS,
+                    Tuple5<E, R1, R2, R3, R4>>,
+            RL extends EntityQueryConditionGroupLogicExpression6<E, R1, R2, R3, R4, R5, RC, RL, RS,
+                    Tuple5<E, R1, R2, R3, R4>>,
+            RS extends EntityQuerySortExpression6<E, R1, R2, R3, R4, R5, Tuple5<E, R1, R2, R3, R4>>,
+            QR extends EntityQueryRelatedFetchedExpression5FFFFP<E, R1, R2, R3, R4, R5, RC, RL, RS>,
+            R5> RE join5(SerializableFunction1<R4, R5> propertyName) {
+        SerializedLambdaInfo info = LambdaUtils.getLambdaInfo(propertyName);
+        queryRelation.join(4, info.getPropertyName(), factory.getClassMapping(info.getPropertyType()));
+        return (RE) new EntitySqlQueryRelate5FFFFP<>(factory, sqlPageFactory, queryRelation);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @SuppressWarnings("unchecked")
+    @Override
+    public <RE extends EntityQueryRelateExpression5FFFFP<E, R1, R2, R3, R4, R4, RC, RL, RS, QR>,
             RC extends EntityQueryConditionGroupExpression6<E, R1, R2, R3, R4, R4, RC, RL, RS,
                     Tuple5<E, R1, R2, R3, R4>>,
             RL extends EntityQueryConditionGroupLogicExpression6<E, R1, R2, R3, R4, R4, RC, RL, RS,
                     Tuple5<E, R1, R2, R3, R4>>,
             RS extends EntityQuerySortExpression6<E, R1, R2, R3, R4, R4, Tuple5<E, R1, R2, R3, R4>>,
-            QR extends EntityQueryRelatedFetchedExpression5FFFFF<E, R1, R2, R3, R4, R4, QRC, QRL, QRS>,
-            QRC extends EntityQueryConditionGroupExpression6<E, R1, R2, R3, R4, R4, QRC, QRL, QRS,
-                    Tuple6<E, R1, R2, R3, R4, R4>>,
-            QRL extends EntityQueryConditionGroupLogicExpression6<E, R1, R2, R3, R4, R4, QRC, QRL, QRS,
-                    Tuple6<E, R1, R2, R3, R4, R4>>,
-            QRS extends EntityQuerySortExpression6<E, R1, R2, R3, R4, R4, Tuple6<E, R1, R2, R3, R4, R4>>> RE join5(
-                    SerializableFunction3<R4, R4> propertyName) {
-        // YUFEI_TODO Auto-generated method stub
-        return null;
+            QR extends EntityQueryRelatedFetchedExpression5FFFFP<E, R1, R2, R3, R4, R4, RC, RL, RS>> RE join5(
+                    SerializableUnaryOperator1<R4> propertyName) {
+        SerializedLambdaInfo info = LambdaUtils.getLambdaInfo(propertyName);
+        queryRelation.join(4, info.getPropertyName(), factory.getClassMapping(info.getPropertyType()));
+        return (RE) new EntitySqlQueryRelate5FFFFP<>(factory, sqlPageFactory, queryRelation);
     }
+
 }

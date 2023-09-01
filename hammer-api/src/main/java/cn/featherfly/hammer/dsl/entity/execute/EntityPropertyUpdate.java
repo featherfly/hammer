@@ -1,8 +1,8 @@
 
 package cn.featherfly.hammer.dsl.entity.execute;
 
-import cn.featherfly.common.lang.function.SerializableFunction;
-import cn.featherfly.common.lang.function.SerializableFunction2;
+import cn.featherfly.common.function.serializable.SerializableFunction;
+import cn.featherfly.common.function.serializable.SerializableToNumberFunction;
 import cn.featherfly.hammer.expression.entity.execute.EntityPropertyUpdateExpression;
 
 /**
@@ -10,8 +10,8 @@ import cn.featherfly.hammer.expression.entity.execute.EntityPropertyUpdateExpres
  *
  * @author zhongj
  */
-public interface EntityPropertyUpdate<E> extends
-        EntityPropertyUpdateExpression<E, EntityExecutableUpdate<E>, EntityExecutableConditionGroup<E>, EntityExecutableConditionGroupLogic<E>> {
+public interface EntityPropertyUpdate<E> extends EntityPropertyUpdateExpression<E, EntityExecutableUpdate<E>,
+        EntityExecutableConditionGroup<E>, EntityExecutableConditionGroupLogic<E>> {
 
     /**
      * {@inheritDoc}
@@ -23,5 +23,5 @@ public interface EntityPropertyUpdate<E> extends
      * {@inheritDoc}
      */
     @Override
-    <R extends Number> EntityUpdateNumberValue<E, R> property(SerializableFunction2<E, R> name);
+    <R extends Number> EntityUpdateNumberValue<E, R> property(SerializableToNumberFunction<E, R> name);
 }

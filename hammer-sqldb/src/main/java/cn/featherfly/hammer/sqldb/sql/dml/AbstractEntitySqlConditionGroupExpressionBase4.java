@@ -12,22 +12,22 @@ import cn.featherfly.common.db.builder.SqlBuilder;
 import cn.featherfly.common.db.mapping.JdbcClassMapping;
 import cn.featherfly.common.db.mapping.JdbcMappingFactory;
 import cn.featherfly.common.function.FourArgusFunction;
-import cn.featherfly.common.lang.function.SerializableDateSupplier;
-import cn.featherfly.common.lang.function.SerializableDoubleSupplier;
-import cn.featherfly.common.lang.function.SerializableFunction;
-import cn.featherfly.common.lang.function.SerializableIntSupplier;
-import cn.featherfly.common.lang.function.SerializableLocalDateSupplier;
-import cn.featherfly.common.lang.function.SerializableLocalDateTimeSupplier;
-import cn.featherfly.common.lang.function.SerializableLocalTimeSupplier;
-import cn.featherfly.common.lang.function.SerializableLongSupplier;
-import cn.featherfly.common.lang.function.SerializableNumberSupplier;
-import cn.featherfly.common.lang.function.SerializableStringSupplier;
-import cn.featherfly.common.lang.function.SerializableSupplier;
-import cn.featherfly.common.lang.function.SerializableSupplier4;
-import cn.featherfly.common.lang.function.SerializableToDoubleFunction4;
-import cn.featherfly.common.lang.function.SerializableToIntFunction4;
-import cn.featherfly.common.lang.function.SerializableToLongFunction4;
-import cn.featherfly.common.operator.QueryOperator.QueryPolicy;
+import cn.featherfly.common.function.serializable.SerializableDateSupplier;
+import cn.featherfly.common.function.serializable.SerializableDoubleSupplier;
+import cn.featherfly.common.function.serializable.SerializableFunction;
+import cn.featherfly.common.function.serializable.SerializableIntSupplier;
+import cn.featherfly.common.function.serializable.SerializableLocalDateSupplier;
+import cn.featherfly.common.function.serializable.SerializableLocalDateTimeSupplier;
+import cn.featherfly.common.function.serializable.SerializableLocalTimeSupplier;
+import cn.featherfly.common.function.serializable.SerializableLongSupplier;
+import cn.featherfly.common.function.serializable.SerializableNumberSupplier;
+import cn.featherfly.common.function.serializable.SerializableStringSupplier;
+import cn.featherfly.common.function.serializable.SerializableSupplier;
+import cn.featherfly.common.function.serializable.SerializableSupplier4;
+import cn.featherfly.common.function.serializable.SerializableToDoubleFunction4;
+import cn.featherfly.common.function.serializable.SerializableToIntFunction4;
+import cn.featherfly.common.function.serializable.SerializableToLongFunction4;
+import cn.featherfly.common.operator.ComparisonOperator.MatchStrategy;
 import cn.featherfly.hammer.expression.condition.GroupEndExpression;
 import cn.featherfly.hammer.expression.condition.GroupExpression;
 import cn.featherfly.hammer.expression.entity.condition.EntityPropertyExpression4;
@@ -94,136 +94,136 @@ public abstract class AbstractEntitySqlConditionGroupExpressionBase4<E, E2, E3, 
     }
 
     @Override
-    public <R> L eq4(SerializableFunction<E4, R> name, R value, QueryPolicy queryPolicy) {
+    public <R> L eq4(SerializableFunction<E4, R> name, R value, MatchStrategy queryPolicy) {
         return eq(classMapping4, name, value, queryAlias4, queryPolicy, ignoreStrategy);
     }
 
     @Override
-    public <R> L eq4(SerializableFunction<E4, R> name, R value, QueryPolicy queryPolicy, Predicate<R> ignoreStrategy) {
+    public <R> L eq4(SerializableFunction<E4, R> name, R value, MatchStrategy queryPolicy, Predicate<R> ignoreStrategy) {
         return eq(classMapping4, name, value, queryAlias4, queryPolicy, ignoreStrategy);
     }
 
     @Override
-    public <R> L eq4(SerializableSupplier4<R> property, QueryPolicy queryPolicy) {
+    public <R> L eq4(SerializableSupplier4<R> property, MatchStrategy queryPolicy) {
         return eq(classMapping4, property, queryAlias4, queryPolicy, ignoreStrategy);
     }
 
     @Override
-    public <R> L eq4(SerializableSupplier4<R> property, QueryPolicy queryPolicy, Predicate<R> ignoreStrategy) {
+    public <R> L eq4(SerializableSupplier4<R> property, MatchStrategy queryPolicy, Predicate<R> ignoreStrategy) {
         return eq(classMapping4, property, queryAlias4, queryPolicy, ignoreStrategy);
     }
 
     // ****************************************************************************************************************
 
     @Override
-    public <R> L ne4(SerializableFunction<E4, R> name, R value, QueryPolicy queryPolicy) {
+    public <R> L ne4(SerializableFunction<E4, R> name, R value, MatchStrategy queryPolicy) {
         return ne(classMapping4, name, value, queryAlias4, queryPolicy, ignoreStrategy);
     }
 
     @Override
-    public <R> L ne4(SerializableFunction<E4, R> name, R value, QueryPolicy queryPolicy, Predicate<R> ignoreStrategy) {
+    public <R> L ne4(SerializableFunction<E4, R> name, R value, MatchStrategy queryPolicy, Predicate<R> ignoreStrategy) {
         return ne(classMapping4, name, value, queryAlias4, queryPolicy, ignoreStrategy);
     }
 
     @Override
-    public <R> L ne4(SerializableSupplier4<R> property, QueryPolicy queryPolicy) {
+    public <R> L ne4(SerializableSupplier4<R> property, MatchStrategy queryPolicy) {
         return ne(classMapping4, property, queryAlias4, queryPolicy, ignoreStrategy);
     }
 
     @Override
-    public <R> L ne4(SerializableSupplier4<R> property, QueryPolicy queryPolicy, Predicate<R> ignoreStrategy) {
+    public <R> L ne4(SerializableSupplier4<R> property, MatchStrategy queryPolicy, Predicate<R> ignoreStrategy) {
         return ne(classMapping4, property, queryAlias4, queryPolicy, ignoreStrategy);
     }
 
     // ****************************************************************************************************************
 
     @Override
-    public L lk4(SerializableFunction<E4, String> name, String value, QueryPolicy queryPolicy) {
+    public L lk4(SerializableFunction<E4, String> name, String value, MatchStrategy queryPolicy) {
         return lk(classMapping4, name, value, queryAlias4, queryPolicy, ignoreStrategy);
     }
 
     @Override
-    public L lk4(SerializableFunction<E4, String> name, String value, QueryPolicy queryPolicy,
+    public L lk4(SerializableFunction<E4, String> name, String value, MatchStrategy queryPolicy,
             Predicate<String> ignoreStrategy) {
         return lk(classMapping4, name, value, queryAlias4, queryPolicy, ignoreStrategy);
     }
 
     @Override
-    public L lk4(SerializableStringSupplier property, QueryPolicy queryPolicy) {
+    public L lk4(SerializableStringSupplier property, MatchStrategy queryPolicy) {
         return lk(classMapping4, property, queryAlias4, queryPolicy, ignoreStrategy);
     }
 
     @Override
-    public L lk4(SerializableStringSupplier property, QueryPolicy queryPolicy, Predicate<String> ignoreStrategy) {
+    public L lk4(SerializableStringSupplier property, MatchStrategy queryPolicy, Predicate<String> ignoreStrategy) {
         return lk(classMapping4, property, queryAlias4, queryPolicy, ignoreStrategy);
     }
 
     // ****************************************************************************************************************
 
     @Override
-    public L sw4(SerializableFunction<E4, String> name, String value, QueryPolicy queryPolicy) {
+    public L sw4(SerializableFunction<E4, String> name, String value, MatchStrategy queryPolicy) {
         return sw(classMapping4, name, value, queryAlias4, queryPolicy, ignoreStrategy);
     }
 
     @Override
-    public L sw4(SerializableFunction<E4, String> name, String value, QueryPolicy queryPolicy,
+    public L sw4(SerializableFunction<E4, String> name, String value, MatchStrategy queryPolicy,
             Predicate<String> ignoreStrategy) {
         return sw(classMapping4, name, value, queryAlias4, queryPolicy, ignoreStrategy);
     }
 
     @Override
-    public L sw4(SerializableStringSupplier property, QueryPolicy queryPolicy) {
+    public L sw4(SerializableStringSupplier property, MatchStrategy queryPolicy) {
         return sw(classMapping4, property, queryAlias4, queryPolicy, ignoreStrategy);
     }
 
     @Override
-    public L sw4(SerializableStringSupplier property, QueryPolicy queryPolicy, Predicate<String> ignoreStrategy) {
+    public L sw4(SerializableStringSupplier property, MatchStrategy queryPolicy, Predicate<String> ignoreStrategy) {
         return sw(classMapping4, property, queryAlias4, queryPolicy, ignoreStrategy);
     }
 
     // ****************************************************************************************************************
 
     @Override
-    public L ew4(SerializableFunction<E4, String> name, String value, QueryPolicy queryPolicy) {
+    public L ew4(SerializableFunction<E4, String> name, String value, MatchStrategy queryPolicy) {
         return ew(classMapping4, name, value, queryAlias4, queryPolicy, ignoreStrategy);
     }
 
     @Override
-    public L ew4(SerializableFunction<E4, String> name, String value, QueryPolicy queryPolicy,
+    public L ew4(SerializableFunction<E4, String> name, String value, MatchStrategy queryPolicy,
             Predicate<String> ignoreStrategy) {
         return ew(classMapping4, name, value, queryAlias4, queryPolicy, ignoreStrategy);
     }
 
     @Override
-    public L ew4(SerializableStringSupplier property, QueryPolicy queryPolicy) {
+    public L ew4(SerializableStringSupplier property, MatchStrategy queryPolicy) {
         return ew(classMapping4, property, queryAlias4, queryPolicy, ignoreStrategy);
     }
 
     @Override
-    public L ew4(SerializableStringSupplier property, QueryPolicy queryPolicy, Predicate<String> ignoreStrategy) {
+    public L ew4(SerializableStringSupplier property, MatchStrategy queryPolicy, Predicate<String> ignoreStrategy) {
         return ew(classMapping4, property, queryAlias4, queryPolicy, ignoreStrategy);
     }
 
     // ****************************************************************************************************************
 
     @Override
-    public L co4(SerializableFunction<E4, String> name, String value, QueryPolicy queryPolicy) {
+    public L co4(SerializableFunction<E4, String> name, String value, MatchStrategy queryPolicy) {
         return co(classMapping4, name, value, queryAlias4, queryPolicy, ignoreStrategy);
     }
 
     @Override
-    public L co4(SerializableFunction<E4, String> name, String value, QueryPolicy queryPolicy,
+    public L co4(SerializableFunction<E4, String> name, String value, MatchStrategy queryPolicy,
             Predicate<String> ignoreStrategy) {
         return co(classMapping4, name, value, queryAlias4, queryPolicy, ignoreStrategy);
     }
 
     @Override
-    public L co4(SerializableStringSupplier property, QueryPolicy queryPolicy) {
+    public L co4(SerializableStringSupplier property, MatchStrategy queryPolicy) {
         return co(classMapping4, property, queryAlias4, queryPolicy, ignoreStrategy);
     }
 
     @Override
-    public L co4(SerializableStringSupplier property, QueryPolicy queryPolicy, Predicate<String> ignoreStrategy) {
+    public L co4(SerializableStringSupplier property, MatchStrategy queryPolicy, Predicate<String> ignoreStrategy) {
         return co(classMapping4, property, queryAlias4, queryPolicy, ignoreStrategy);
     }
 

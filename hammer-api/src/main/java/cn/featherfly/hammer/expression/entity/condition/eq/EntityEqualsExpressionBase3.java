@@ -3,9 +3,9 @@ package cn.featherfly.hammer.expression.entity.condition.eq;
 
 import java.util.function.Predicate;
 
-import cn.featherfly.common.lang.function.SerializableFunction;
-import cn.featherfly.common.lang.function.SerializableSupplier3;
-import cn.featherfly.common.operator.QueryOperator.QueryPolicy;
+import cn.featherfly.common.function.serializable.SerializableFunction;
+import cn.featherfly.common.function.serializable.SerializableSupplier3;
+import cn.featherfly.common.operator.ComparisonOperator.MatchStrategy;
 import cn.featherfly.hammer.expression.condition.ConditionExpression;
 import cn.featherfly.hammer.expression.condition.LogicExpression;
 
@@ -37,7 +37,7 @@ public interface EntityEqualsExpressionBase3<E, E2, E3, C extends ConditionExpre
      * @return LogicExpression
      */
     default <R> L eq3(SerializableFunction<E3, R> name, R value) {
-        return eq3(name, value, QueryPolicy.AUTO);
+        return eq3(name, value, MatchStrategy.AUTO);
     }
 
     /**
@@ -50,7 +50,7 @@ public interface EntityEqualsExpressionBase3<E, E2, E3, C extends ConditionExpre
      * @return LogicExpression
      */
     default <R> L eq3(SerializableFunction<E3, R> name, R value, Predicate<R> ignoreStrategy) {
-        return eq3(name, value, QueryPolicy.AUTO, ignoreStrategy);
+        return eq3(name, value, MatchStrategy.AUTO, ignoreStrategy);
     }
 
     /**
@@ -62,7 +62,7 @@ public interface EntityEqualsExpressionBase3<E, E2, E3, C extends ConditionExpre
      * @param queryPolicy the query policy
      * @return LogicExpression
      */
-    <R> L eq3(SerializableFunction<E3, R> name, R value, QueryPolicy queryPolicy);
+    <R> L eq3(SerializableFunction<E3, R> name, R value, MatchStrategy queryPolicy);
 
     /**
      * equals. 等于.
@@ -74,7 +74,7 @@ public interface EntityEqualsExpressionBase3<E, E2, E3, C extends ConditionExpre
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
-    <R> L eq3(SerializableFunction<E3, R> name, R value, QueryPolicy queryPolicy, Predicate<R> ignoreStrategy);
+    <R> L eq3(SerializableFunction<E3, R> name, R value, MatchStrategy queryPolicy, Predicate<R> ignoreStrategy);
 
     /**
      * equals. 等于.
@@ -84,7 +84,7 @@ public interface EntityEqualsExpressionBase3<E, E2, E3, C extends ConditionExpre
      * @return LogicExpression
      */
     default <R> L eq3(SerializableSupplier3<R> property) {
-        return eq3(property, QueryPolicy.AUTO);
+        return eq3(property, MatchStrategy.AUTO);
     }
 
     /**
@@ -96,7 +96,7 @@ public interface EntityEqualsExpressionBase3<E, E2, E3, C extends ConditionExpre
      * @return LogicExpression
      */
     default <R> L eq3(SerializableSupplier3<R> property, Predicate<R> ignoreStrategy) {
-        return eq3(property, QueryPolicy.AUTO, ignoreStrategy);
+        return eq3(property, MatchStrategy.AUTO, ignoreStrategy);
     }
 
     /**
@@ -107,7 +107,7 @@ public interface EntityEqualsExpressionBase3<E, E2, E3, C extends ConditionExpre
      * @param queryPolicy the query policy
      * @return LogicExpression
      */
-    <R> L eq3(SerializableSupplier3<R> property, QueryPolicy queryPolicy);
+    <R> L eq3(SerializableSupplier3<R> property, MatchStrategy queryPolicy);
 
     /**
      * equals. 等于.
@@ -118,7 +118,7 @@ public interface EntityEqualsExpressionBase3<E, E2, E3, C extends ConditionExpre
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
-    <R> L eq3(SerializableSupplier3<R> property, QueryPolicy queryPolicy, Predicate<R> ignoreStrategy);
+    <R> L eq3(SerializableSupplier3<R> property, MatchStrategy queryPolicy, Predicate<R> ignoreStrategy);
 
     //    /**
     //     * equals. 等于.

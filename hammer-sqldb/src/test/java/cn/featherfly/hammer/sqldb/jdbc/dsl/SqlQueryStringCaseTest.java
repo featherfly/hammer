@@ -6,7 +6,7 @@ import static org.testng.Assert.assertEquals;
 
 import org.testng.annotations.Test;
 
-import cn.featherfly.common.operator.QueryOperator.QueryPolicy;
+import cn.featherfly.common.operator.ComparisonOperator.MatchStrategy;
 import cn.featherfly.hammer.sqldb.jdbc.JdbcTestBase;
 import cn.featherfly.hammer.sqldb.jdbc.dsl.query.SqlQuery;
 import cn.featherfly.hammer.sqldb.jdbc.vo.r.User;
@@ -33,15 +33,15 @@ public class SqlQueryStringCaseTest extends JdbcTestBase {
 
         assertEquals(count, one);
 
-        count = query.find(User.class).where().eq(User::getUsername, "yufei", QueryPolicy.CASE_SENSITIVE).count();
+        count = query.find(User.class).where().eq(User::getUsername, "yufei", MatchStrategy.CASE_SENSITIVE).count();
 
         assertEquals(count, one);
 
-        count = query.find(User.class).where().eq(User::getUsername, "YUfei", QueryPolicy.CASE_INSENSITIVE).count();
+        count = query.find(User.class).where().eq(User::getUsername, "YUfei", MatchStrategy.CASE_INSENSITIVE).count();
 
         assertEquals(count, one);
 
-        count = query.find(User.class).where().eq(User::getUsername, "YUfei", QueryPolicy.CASE_SENSITIVE).count();
+        count = query.find(User.class).where().eq(User::getUsername, "YUfei", MatchStrategy.CASE_SENSITIVE).count();
 
         assertEquals(count, zero);
 
@@ -55,17 +55,17 @@ public class SqlQueryStringCaseTest extends JdbcTestBase {
 
         assertEquals(count, one);
 
-        count = query.find(User.class).where().property(User::getUsername).eq("yufei", QueryPolicy.CASE_SENSITIVE)
+        count = query.find(User.class).where().property(User::getUsername).eq("yufei", MatchStrategy.CASE_SENSITIVE)
                 .count();
 
         assertEquals(count, one);
 
-        count = query.find(User.class).where().property(User::getUsername).eq("YUfei", QueryPolicy.CASE_INSENSITIVE)
+        count = query.find(User.class).where().property(User::getUsername).eq("YUfei", MatchStrategy.CASE_INSENSITIVE)
                 .count();
 
         assertEquals(count, one);
 
-        count = query.find(User.class).where().property(User::getUsername).eq("YUfei", QueryPolicy.CASE_SENSITIVE)
+        count = query.find(User.class).where().property(User::getUsername).eq("YUfei", MatchStrategy.CASE_SENSITIVE)
                 .count();
 
         assertEquals(count, zero);
@@ -86,15 +86,15 @@ public class SqlQueryStringCaseTest extends JdbcTestBase {
 
         assertTrue(count > zero);
 
-        count = query.find(User.class).where().lk(User::getUsername, "y%", QueryPolicy.CASE_SENSITIVE).count();
+        count = query.find(User.class).where().lk(User::getUsername, "y%", MatchStrategy.CASE_SENSITIVE).count();
 
         assertTrue(count > zero);
 
-        count = query.find(User.class).where().lk(User::getUsername, "Y%", QueryPolicy.CASE_SENSITIVE).count();
+        count = query.find(User.class).where().lk(User::getUsername, "Y%", MatchStrategy.CASE_SENSITIVE).count();
 
         assertTrue(count == zero);
 
-        count = query.find(User.class).where().lk(User::getUsername, "Y%", QueryPolicy.CASE_INSENSITIVE).count();
+        count = query.find(User.class).where().lk(User::getUsername, "Y%", MatchStrategy.CASE_INSENSITIVE).count();
 
         assertTrue(count > zero);
 
@@ -108,15 +108,15 @@ public class SqlQueryStringCaseTest extends JdbcTestBase {
 
         assertTrue(count > zero);
 
-        count = query.find(User.class).where().property(User::getUsername).lk("y%", QueryPolicy.CASE_SENSITIVE).count();
+        count = query.find(User.class).where().property(User::getUsername).lk("y%", MatchStrategy.CASE_SENSITIVE).count();
 
         assertTrue(count > zero);
 
-        count = query.find(User.class).where().property(User::getUsername).lk("Y%", QueryPolicy.CASE_SENSITIVE).count();
+        count = query.find(User.class).where().property(User::getUsername).lk("Y%", MatchStrategy.CASE_SENSITIVE).count();
 
         assertTrue(count == zero);
 
-        count = query.find(User.class).where().property(User::getUsername).lk("Y%", QueryPolicy.CASE_INSENSITIVE)
+        count = query.find(User.class).where().property(User::getUsername).lk("Y%", MatchStrategy.CASE_INSENSITIVE)
                 .count();
 
         assertTrue(count > zero);
@@ -137,15 +137,15 @@ public class SqlQueryStringCaseTest extends JdbcTestBase {
 
         assertTrue(count > zero);
 
-        count = query.find(User.class).where().sw(User::getUsername, "y", QueryPolicy.CASE_SENSITIVE).count();
+        count = query.find(User.class).where().sw(User::getUsername, "y", MatchStrategy.CASE_SENSITIVE).count();
 
         assertTrue(count > zero);
 
-        count = query.find(User.class).where().sw(User::getUsername, "Y", QueryPolicy.CASE_SENSITIVE).count();
+        count = query.find(User.class).where().sw(User::getUsername, "Y", MatchStrategy.CASE_SENSITIVE).count();
 
         assertTrue(count == zero);
 
-        count = query.find(User.class).where().sw(User::getUsername, "Y", QueryPolicy.CASE_INSENSITIVE).count();
+        count = query.find(User.class).where().sw(User::getUsername, "Y", MatchStrategy.CASE_INSENSITIVE).count();
 
         assertTrue(count > zero);
 
@@ -159,15 +159,15 @@ public class SqlQueryStringCaseTest extends JdbcTestBase {
 
         assertTrue(count > zero);
 
-        count = query.find(User.class).where().property(User::getUsername).sw("y", QueryPolicy.CASE_SENSITIVE).count();
+        count = query.find(User.class).where().property(User::getUsername).sw("y", MatchStrategy.CASE_SENSITIVE).count();
 
         assertTrue(count > zero);
 
-        count = query.find(User.class).where().property(User::getUsername).sw("Y", QueryPolicy.CASE_SENSITIVE).count();
+        count = query.find(User.class).where().property(User::getUsername).sw("Y", MatchStrategy.CASE_SENSITIVE).count();
 
         assertTrue(count == zero);
 
-        count = query.find(User.class).where().property(User::getUsername).sw("Y", QueryPolicy.CASE_INSENSITIVE)
+        count = query.find(User.class).where().property(User::getUsername).sw("Y", MatchStrategy.CASE_INSENSITIVE)
                 .count();
 
         assertTrue(count > zero);
@@ -188,15 +188,15 @@ public class SqlQueryStringCaseTest extends JdbcTestBase {
 
         assertTrue(count > zero);
 
-        count = query.find(User.class).where().ew(User::getUsername, "ei", QueryPolicy.CASE_SENSITIVE).count();
+        count = query.find(User.class).where().ew(User::getUsername, "ei", MatchStrategy.CASE_SENSITIVE).count();
 
         assertTrue(count > zero);
 
-        count = query.find(User.class).where().ew(User::getUsername, "EI", QueryPolicy.CASE_SENSITIVE).count();
+        count = query.find(User.class).where().ew(User::getUsername, "EI", MatchStrategy.CASE_SENSITIVE).count();
 
         assertTrue(count == zero);
 
-        count = query.find(User.class).where().ew(User::getUsername, "EI", QueryPolicy.CASE_INSENSITIVE).count();
+        count = query.find(User.class).where().ew(User::getUsername, "EI", MatchStrategy.CASE_INSENSITIVE).count();
 
         assertTrue(count > zero);
 
@@ -210,15 +210,15 @@ public class SqlQueryStringCaseTest extends JdbcTestBase {
 
         assertTrue(count > zero);
 
-        count = query.find(User.class).where().property(User::getUsername).ew("ei", QueryPolicy.CASE_SENSITIVE).count();
+        count = query.find(User.class).where().property(User::getUsername).ew("ei", MatchStrategy.CASE_SENSITIVE).count();
 
         assertTrue(count > zero);
 
-        count = query.find(User.class).where().property(User::getUsername).ew("EI", QueryPolicy.CASE_SENSITIVE).count();
+        count = query.find(User.class).where().property(User::getUsername).ew("EI", MatchStrategy.CASE_SENSITIVE).count();
 
         assertTrue(count == zero);
 
-        count = query.find(User.class).where().property(User::getUsername).ew("EI", QueryPolicy.CASE_INSENSITIVE)
+        count = query.find(User.class).where().property(User::getUsername).ew("EI", MatchStrategy.CASE_INSENSITIVE)
                 .count();
 
         assertTrue(count > zero);
@@ -238,15 +238,15 @@ public class SqlQueryStringCaseTest extends JdbcTestBase {
 
         assertTrue(count > zero);
 
-        count = query.find(User.class).where().co(User::getUsername, "uf", QueryPolicy.CASE_SENSITIVE).count();
+        count = query.find(User.class).where().co(User::getUsername, "uf", MatchStrategy.CASE_SENSITIVE).count();
 
         assertTrue(count > zero);
 
-        count = query.find(User.class).where().co(User::getUsername, "UF", QueryPolicy.CASE_SENSITIVE).count();
+        count = query.find(User.class).where().co(User::getUsername, "UF", MatchStrategy.CASE_SENSITIVE).count();
 
         assertTrue(count == zero);
 
-        count = query.find(User.class).where().co(User::getUsername, "UF", QueryPolicy.CASE_INSENSITIVE).count();
+        count = query.find(User.class).where().co(User::getUsername, "UF", MatchStrategy.CASE_INSENSITIVE).count();
 
         assertTrue(count > zero);
 
@@ -260,15 +260,15 @@ public class SqlQueryStringCaseTest extends JdbcTestBase {
 
         assertTrue(count > zero);
 
-        count = query.find(User.class).where().property(User::getUsername).co("uf", QueryPolicy.CASE_SENSITIVE).count();
+        count = query.find(User.class).where().property(User::getUsername).co("uf", MatchStrategy.CASE_SENSITIVE).count();
 
         assertTrue(count > zero);
 
-        count = query.find(User.class).where().property(User::getUsername).co("UF", QueryPolicy.CASE_SENSITIVE).count();
+        count = query.find(User.class).where().property(User::getUsername).co("UF", MatchStrategy.CASE_SENSITIVE).count();
 
         assertTrue(count == zero);
 
-        count = query.find(User.class).where().property(User::getUsername).co("UF", QueryPolicy.CASE_INSENSITIVE)
+        count = query.find(User.class).where().property(User::getUsername).co("UF", MatchStrategy.CASE_INSENSITIVE)
                 .count();
 
         assertTrue(count > zero);

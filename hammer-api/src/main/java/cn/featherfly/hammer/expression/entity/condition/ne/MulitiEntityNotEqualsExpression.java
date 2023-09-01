@@ -3,9 +3,9 @@ package cn.featherfly.hammer.expression.entity.condition.ne;
 
 import java.util.function.Predicate;
 
-import cn.featherfly.common.lang.function.SerializableFunction;
-import cn.featherfly.common.lang.function.SerializableSupplier;
-import cn.featherfly.common.operator.QueryOperator.QueryPolicy;
+import cn.featherfly.common.function.serializable.SerializableFunction;
+import cn.featherfly.common.function.serializable.SerializableSupplier;
+import cn.featherfly.common.operator.ComparisonOperator.MatchStrategy;
 import cn.featherfly.hammer.expression.condition.ConditionExpression;
 import cn.featherfly.hammer.expression.condition.LogicExpression;
 import cn.featherfly.hammer.expression.entity.condition.MulitiEntityConditionExpression;
@@ -31,7 +31,7 @@ public interface MulitiEntityNotEqualsExpression<C extends ConditionExpression, 
      * @return LogicExpression
      */
     default <E, R> L ne(int index, SerializableFunction<E, R> name, R value) {
-        return ne(index, name, value, QueryPolicy.AUTO);
+        return ne(index, name, value, MatchStrategy.AUTO);
     }
 
     /**
@@ -46,7 +46,7 @@ public interface MulitiEntityNotEqualsExpression<C extends ConditionExpression, 
      * @return LogicExpression
      */
     default <E, R> L ne(int index, SerializableFunction<E, R> name, R value, Predicate<R> ignoreStrategy) {
-        return ne(index, name, value, QueryPolicy.AUTO, ignoreStrategy);
+        return ne(index, name, value, MatchStrategy.AUTO, ignoreStrategy);
     }
 
     /**
@@ -60,7 +60,7 @@ public interface MulitiEntityNotEqualsExpression<C extends ConditionExpression, 
      * @param queryPolicy the query policy
      * @return LogicExpression
      */
-    <E, R> L ne(int index, SerializableFunction<E, R> name, R value, QueryPolicy queryPolicy);
+    <E, R> L ne(int index, SerializableFunction<E, R> name, R value, MatchStrategy queryPolicy);
 
     /**
      * not equals. 不等于.
@@ -74,7 +74,7 @@ public interface MulitiEntityNotEqualsExpression<C extends ConditionExpression, 
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
-    <E, R> L ne(int index, SerializableFunction<E, R> name, R value, QueryPolicy queryPolicy,
+    <E, R> L ne(int index, SerializableFunction<E, R> name, R value, MatchStrategy queryPolicy,
             Predicate<R> ignoreStrategy);
 
     /**
@@ -87,7 +87,7 @@ public interface MulitiEntityNotEqualsExpression<C extends ConditionExpression, 
      * @return LogicExpression
      */
     default <E, R> L ne(int index, SerializableSupplier<R> property) {
-        return ne(index, property, QueryPolicy.AUTO);
+        return ne(index, property, MatchStrategy.AUTO);
     }
 
     /**
@@ -100,7 +100,7 @@ public interface MulitiEntityNotEqualsExpression<C extends ConditionExpression, 
      * @return LogicExpression
      */
     default <R> L ne(int index, SerializableSupplier<R> property, Predicate<R> ignoreStrategy) {
-        return ne(index, property, QueryPolicy.AUTO, ignoreStrategy);
+        return ne(index, property, MatchStrategy.AUTO, ignoreStrategy);
     }
 
     /**
@@ -112,7 +112,7 @@ public interface MulitiEntityNotEqualsExpression<C extends ConditionExpression, 
      * @param queryPolicy the query policy
      * @return LogicExpression
      */
-    <R> L ne(int index, SerializableSupplier<R> property, QueryPolicy queryPolicy);
+    <R> L ne(int index, SerializableSupplier<R> property, MatchStrategy queryPolicy);
 
     /**
      * not equals. 不等于.
@@ -124,5 +124,5 @@ public interface MulitiEntityNotEqualsExpression<C extends ConditionExpression, 
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
-    <R> L ne(int index, SerializableSupplier<R> property, QueryPolicy queryPolicy, Predicate<R> ignoreStrategy);
+    <R> L ne(int index, SerializableSupplier<R> property, MatchStrategy queryPolicy, Predicate<R> ignoreStrategy);
 }

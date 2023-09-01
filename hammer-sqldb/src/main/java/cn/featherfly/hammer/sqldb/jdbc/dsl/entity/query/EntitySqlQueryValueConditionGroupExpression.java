@@ -10,7 +10,7 @@
 //import cn.featherfly.common.db.mapping.ClassMappingUtils;
 //import cn.featherfly.common.db.mapping.JdbcMappingFactory;
 //import cn.featherfly.common.lang.LambdaUtils;
-//import cn.featherfly.common.lang.function.SerializableFunction;
+//import cn.featherfly.common.function.serializable.SerializableFunction;
 //import cn.featherfly.common.structure.page.Limit;
 //import cn.featherfly.common.structure.page.PaginationResults;
 //import cn.featherfly.common.structure.page.SimplePaginationResults;

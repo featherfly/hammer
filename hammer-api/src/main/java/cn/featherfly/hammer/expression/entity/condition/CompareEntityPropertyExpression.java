@@ -3,8 +3,8 @@ package cn.featherfly.hammer.expression.entity.condition;
 
 import java.util.Collection;
 
-import cn.featherfly.common.lang.function.SerializableFunction;
-import cn.featherfly.common.lang.function.SerializableToCollectionFunction;
+import cn.featherfly.common.function.serializable.SerializableFunction;
+import cn.featherfly.common.function.serializable.SerializableToCollectionFunction;
 
 /**
  * The Interface ConpareEntityPropertyExpression.
