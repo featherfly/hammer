@@ -3,9 +3,9 @@ package cn.featherfly.hammer.expression.entity.condition.co;
 
 import java.util.function.Predicate;
 
-import cn.featherfly.common.lang.function.SerializableFunction;
-import cn.featherfly.common.lang.function.SerializableStringSupplier;
-import cn.featherfly.common.operator.QueryOperator.QueryPolicy;
+import cn.featherfly.common.function.serializable.SerializableFunction;
+import cn.featherfly.common.function.serializable.SerializableStringSupplier;
+import cn.featherfly.common.operator.ComparisonOperator.MatchStrategy;
 import cn.featherfly.hammer.expression.condition.ConditionExpression;
 import cn.featherfly.hammer.expression.condition.LogicExpression;
 
@@ -36,7 +36,7 @@ public interface EntityContainsExpression<E, C extends ConditionExpression, L ex
      * @return LogicExpression
      */
     default L co(SerializableFunction<E, String> name, String value) {
-        return co(name, value, QueryPolicy.AUTO);
+        return co(name, value, MatchStrategy.AUTO);
     }
 
     /**
@@ -48,7 +48,7 @@ public interface EntityContainsExpression<E, C extends ConditionExpression, L ex
      * @return LogicExpression
      */
     default L co(SerializableFunction<E, String> name, String value, Predicate<String> ignoreStrategy) {
-        return co(name, value, QueryPolicy.AUTO, ignoreStrategy);
+        return co(name, value, MatchStrategy.AUTO, ignoreStrategy);
     }
 
     /**
@@ -59,7 +59,7 @@ public interface EntityContainsExpression<E, C extends ConditionExpression, L ex
      * @param queryPolicy the query policy
      * @return the l
      */
-    L co(SerializableFunction<E, String> name, String value, QueryPolicy queryPolicy);
+    L co(SerializableFunction<E, String> name, String value, MatchStrategy queryPolicy);
 
     /**
      * contains value. 包含value.
@@ -70,7 +70,7 @@ public interface EntityContainsExpression<E, C extends ConditionExpression, L ex
      * @param ignoreStrategy the ignore strategy
      * @return the l
      */
-    L co(SerializableFunction<E, String> name, String value, QueryPolicy queryPolicy, Predicate<String> ignoreStrategy);
+    L co(SerializableFunction<E, String> name, String value, MatchStrategy queryPolicy, Predicate<String> ignoreStrategy);
 
     /**
      * contains value. 包含value.
@@ -79,7 +79,7 @@ public interface EntityContainsExpression<E, C extends ConditionExpression, L ex
      * @return LogicExpression
      */
     default L co(SerializableStringSupplier property) {
-        return co(property, QueryPolicy.AUTO);
+        return co(property, MatchStrategy.AUTO);
     }
 
     /**
@@ -90,7 +90,7 @@ public interface EntityContainsExpression<E, C extends ConditionExpression, L ex
      * @return LogicExpression
      */
     default L co(SerializableStringSupplier property, Predicate<String> ignoreStrategy) {
-        return co(property, QueryPolicy.AUTO, ignoreStrategy);
+        return co(property, MatchStrategy.AUTO, ignoreStrategy);
     }
 
     /**
@@ -100,7 +100,7 @@ public interface EntityContainsExpression<E, C extends ConditionExpression, L ex
      * @param queryPolicy the query policy
      * @return the l
      */
-    L co(SerializableStringSupplier property, QueryPolicy queryPolicy);
+    L co(SerializableStringSupplier property, MatchStrategy queryPolicy);
 
     /**
      * contains value. 包含value.
@@ -110,7 +110,7 @@ public interface EntityContainsExpression<E, C extends ConditionExpression, L ex
      * @param ignoreStrategy the ignore strategy
      * @return the l
      */
-    L co(SerializableStringSupplier property, QueryPolicy queryPolicy, Predicate<String> ignoreStrategy);
+    L co(SerializableStringSupplier property, MatchStrategy queryPolicy, Predicate<String> ignoreStrategy);
 
     //    嵌套属性使用property(U1::getU2).property(U2:getV).co(v)来设置
     //    /**

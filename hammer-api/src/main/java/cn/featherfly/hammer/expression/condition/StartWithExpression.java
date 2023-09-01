@@ -1,9 +1,9 @@
 
 package cn.featherfly.hammer.expression.condition;
 
-import cn.featherfly.common.lang.function.SerializableToStringFunction;
-import cn.featherfly.common.lang.function.SerializableStringSupplier;
-import cn.featherfly.common.operator.QueryOperator.QueryPolicy;
+import cn.featherfly.common.function.serializable.SerializableToStringFunction;
+import cn.featherfly.common.function.serializable.SerializableStringSupplier;
+import cn.featherfly.common.operator.ComparisonOperator.MatchStrategy;
 
 /**
  * StartWithExpression .
@@ -23,7 +23,7 @@ public interface StartWithExpression<C extends ConditionExpression, L extends Lo
      * @return LogicExpression
      */
     default L sw(String name, String value) {
-        return sw(name, value, QueryPolicy.AUTO);
+        return sw(name, value, MatchStrategy.AUTO);
     }
 
     /**
@@ -34,7 +34,7 @@ public interface StartWithExpression<C extends ConditionExpression, L extends Lo
      * @param queryPolicy the query policy
      * @return the l
      */
-    L sw(String name, String value, QueryPolicy queryPolicy);
+    L sw(String name, String value, MatchStrategy queryPolicy);
 
     /**
      * start with value. 以value开始.
@@ -45,7 +45,7 @@ public interface StartWithExpression<C extends ConditionExpression, L extends Lo
      * @return LogicExpression
      */
     default <T> L sw(SerializableToStringFunction<T> name, String value) {
-        return sw(name, value, QueryPolicy.AUTO);
+        return sw(name, value, MatchStrategy.AUTO);
     }
 
     /**
@@ -57,7 +57,7 @@ public interface StartWithExpression<C extends ConditionExpression, L extends Lo
      * @param queryPolicy the query policy
      * @return the l
      */
-    <T> L sw(SerializableToStringFunction<T> name, String value, QueryPolicy queryPolicy);
+    <T> L sw(SerializableToStringFunction<T> name, String value, MatchStrategy queryPolicy);
 
     /**
      * start with value. 以value开始.
@@ -66,7 +66,7 @@ public interface StartWithExpression<C extends ConditionExpression, L extends Lo
      * @return LogicExpression
      */
     default L sw(SerializableStringSupplier property) {
-        return sw(property, QueryPolicy.AUTO);
+        return sw(property, MatchStrategy.AUTO);
     }
 
     /**
@@ -76,6 +76,6 @@ public interface StartWithExpression<C extends ConditionExpression, L extends Lo
      * @param queryPolicy the query policy
      * @return the l
      */
-    L sw(SerializableStringSupplier property, QueryPolicy queryPolicy);
+    L sw(SerializableStringSupplier property, MatchStrategy queryPolicy);
 
 }

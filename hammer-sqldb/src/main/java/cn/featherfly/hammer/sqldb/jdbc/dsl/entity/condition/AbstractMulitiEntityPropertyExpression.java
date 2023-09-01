@@ -1,7 +1,7 @@
 
 package cn.featherfly.hammer.sqldb.jdbc.dsl.entity.condition;
 
-import cn.featherfly.common.lang.function.SerializableFunction;
+import cn.featherfly.common.function.serializable.SerializableFunction;
 import cn.featherfly.hammer.expression.condition.ConditionExpression;
 import cn.featherfly.hammer.expression.condition.LogicExpression;
 

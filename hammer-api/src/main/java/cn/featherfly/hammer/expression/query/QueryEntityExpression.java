@@ -7,7 +7,7 @@ import java.util.stream.Collectors;
 
 import cn.featherfly.common.exception.UnsupportedException;
 import cn.featherfly.common.lang.LambdaUtils;
-import cn.featherfly.common.lang.function.SerializableFunction;
+import cn.featherfly.common.function.serializable.SerializableFunction;
 import cn.featherfly.common.operator.AggregateFunction;
 import cn.featherfly.common.operator.Function;
 import cn.featherfly.hammer.dsl.query.QuerySortExpression;

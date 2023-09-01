@@ -19,8 +19,8 @@ public class EntitySqlDeleteRelation extends EntitySqlRelation<EntitySqlDeleteRe
     /**
      * Instantiates a new abstract sql query entity properties.
      *
-     * @param dialect      the dialect
-     * @param aliasManager aliasManager
+     * @param dialect        the dialect
+     * @param aliasManager   aliasManager
      * @param ignoreStrategy the ignore strategy
      */
     public EntitySqlDeleteRelation(Jdbc jdbc, AliasManager aliasManager, Predicate<?> ignoreStrategy) {

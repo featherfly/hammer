@@ -243,7 +243,7 @@ public class NestedBeanPropertyRowMapper<T> implements cn.featherfly.common.repo
      * @return true, if is check fully populated
      */
     public boolean isCheckFullyPopulated() {
-        return this.checkFullyPopulated;
+        return checkFullyPopulated;
     }
 
     /**
@@ -267,7 +267,7 @@ public class NestedBeanPropertyRowMapper<T> implements cn.featherfly.common.repo
      * @return true, if is primitives defaulted for null value
      */
     public boolean isPrimitivesDefaultedForNullValue() {
-        return this.primitivesDefaultedForNullValue;
+        return primitivesDefaultedForNullValue;
     }
 
     /**
@@ -295,7 +295,7 @@ public class NestedBeanPropertyRowMapper<T> implements cn.featherfly.common.repo
      */
     @Nullable
     public ConversionService getConversionService() {
-        return this.conversionService;
+        return conversionService;
     }
 
     /**
@@ -306,17 +306,17 @@ public class NestedBeanPropertyRowMapper<T> implements cn.featherfly.common.repo
     protected void initialize(Class<T> mappedClass) {
         AssertIllegalArgument.isNotNull(mappedClass, "mappedClass");
         this.mappedClass = mappedClass;
-        this.mappedFields = new HashMap<>();
-        this.mappedProperties = new HashSet<>();
+        mappedFields = new HashMap<>();
+        mappedProperties = new HashSet<>();
         PropertyDescriptor[] pds = BeanUtils.getPropertyDescriptors(mappedClass);
         for (PropertyDescriptor pd : pds) {
             if (pd.getWriteMethod() != null) {
-                this.mappedFields.put(lowerCaseName(pd.getName()), pd);
+                mappedFields.put(lowerCaseName(pd.getName()), pd);
                 String underscoredName = underscoreName(pd.getName());
                 if (!lowerCaseName(pd.getName()).equals(underscoredName)) {
-                    this.mappedFields.put(underscoredName, pd);
+                    mappedFields.put(underscoredName, pd);
                 }
-                this.mappedProperties.add(pd.getName());
+                mappedProperties.add(pd.getName());
             }
         }
     }
@@ -437,10 +437,10 @@ public class NestedBeanPropertyRowMapper<T> implements cn.featherfly.common.repo
                 mapping.column = rsmd.getColumnName(index);
                 mapping.columnAs = column;
 
-                PropertyDescriptor pd = this.mappedFields != null ? this.mappedFields.get(field) : null;
+                PropertyDescriptor pd = mappedFields != null ? mappedFields.get(field) : null;
                 mapping.propertyDescriptor = pd;
                 if (pd != null) {
-                    BeanProperty<?> bp;
+                    BeanProperty<?, ?> bp;
                     if (nestedProperty) {
                         // 嵌套设值，所以直接使用SQL查询出来列的别名
                         bp = beanDescriptor.getChildBeanProperty(column);
@@ -486,7 +486,7 @@ public class NestedBeanPropertyRowMapper<T> implements cn.featherfly.common.repo
             }
         }
 
-        Assert.state(this.mappedClass != null, "Mapped class was not specified");
+        Assert.state(mappedClass != null, "Mapped class was not specified");
 
         for (int index = 1; index <= mappings.size(); index++) {
             BeanDescriptor<T> beanDescriptor = BeanDescriptor.getBeanDescriptor(mappedClass);
@@ -502,7 +502,7 @@ public class NestedBeanPropertyRowMapper<T> implements cn.featherfly.common.repo
                         try {
                             bw.setPropertyValue(mapping.propertyDescriptor.getName(), value);
                         } catch (TypeMismatchException ex) {
-                            if (value == null && this.primitivesDefaultedForNullValue) {
+                            if (value == null && primitivesDefaultedForNullValue) {
                                 if (logger.isDebugEnabled()) {
                                     logger.debug("Intercepted TypeMismatchException for row " + rowNumber
                                             + " and column '" + mapping.columnAs
@@ -524,10 +524,9 @@ public class NestedBeanPropertyRowMapper<T> implements cn.featherfly.common.repo
             }
         }
 
-        if (populatedProperties != null && !populatedProperties.equals(this.mappedProperties)) {
-            throw new InvalidDataAccessApiUsageException(
-                    "Given ResultSet does not contain all fields " + "necessary to populate object of class ["
-                            + this.mappedClass.getName() + "]: " + this.mappedProperties);
+        if (populatedProperties != null && !populatedProperties.equals(mappedProperties)) {
+            throw new InvalidDataAccessApiUsageException("Given ResultSet does not contain all fields "
+                    + "necessary to populate object of class [" + mappedClass.getName() + "]: " + mappedProperties);
         }
 
         return mappedObject;
@@ -593,7 +592,7 @@ public class NestedBeanPropertyRowMapper<T> implements cn.featherfly.common.repo
         String propertyTypeName;
 
         /** The bean property. */
-        BeanProperty<?> beanProperty;
+        BeanProperty<?, ?> beanProperty;
 
         private PropertyDescriptor propertyDescriptor;
 

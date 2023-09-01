@@ -1,7 +1,7 @@
 
 package cn.featherfly.hammer.expression.condition;
 
-import cn.featherfly.common.operator.QueryOperator.QueryPolicy;
+import cn.featherfly.common.operator.ComparisonOperator.MatchStrategy;
 
 /**
  * The Interface RepositoryStartWithExpression.
@@ -22,7 +22,7 @@ public interface RepositoryStartWithExpression<C extends ConditionExpression, L 
      * @return LogicExpression
      */
     default L sw(String repository, String name, String value) {
-        return sw(repository, name, value, QueryPolicy.AUTO);
+        return sw(repository, name, value, MatchStrategy.AUTO);
     }
 
     /**
@@ -34,7 +34,7 @@ public interface RepositoryStartWithExpression<C extends ConditionExpression, L 
      * @param queryPolicy the query policy
      * @return LogicExpression
      */
-    L sw(String repository, String name, String value, QueryPolicy queryPolicy);
+    L sw(String repository, String name, String value, MatchStrategy queryPolicy);
 
     /**
      * start with value. 以value开始.
@@ -46,7 +46,7 @@ public interface RepositoryStartWithExpression<C extends ConditionExpression, L 
      * @return LogicExpression
      */
     //    default <T> L sw(Class<T> repository, String name, String value) {
-    //        return sw(repository, name, value, QueryPolicy.AUTO);
+    //        return sw(repository, name, value, MatchStrategy.AUTO);
     //    }
 
     /**
@@ -59,7 +59,7 @@ public interface RepositoryStartWithExpression<C extends ConditionExpression, L 
      * @param queryPolicy the query policy
      * @return LogicExpression
      */
-    //    <T> L sw(Class<T> repository, String name, String value, QueryPolicy queryPolicy);
+    //    <T> L sw(Class<T> repository, String name, String value, MatchStrategy queryPolicy);
 
     /**
      * start with value. 以value开始.
@@ -70,7 +70,7 @@ public interface RepositoryStartWithExpression<C extends ConditionExpression, L 
      * @return LogicExpression
      */
     default L sw(int repositoryIndex, String name, String value) {
-        return sw(repositoryIndex, name, value, QueryPolicy.AUTO);
+        return sw(repositoryIndex, name, value, MatchStrategy.AUTO);
     }
 
     /**
@@ -82,6 +82,6 @@ public interface RepositoryStartWithExpression<C extends ConditionExpression, L 
      * @param queryPolicy     the query policy
      * @return LogicExpression
      */
-    L sw(int repositoryIndex, String name, String value, QueryPolicy queryPolicy);
+    L sw(int repositoryIndex, String name, String value, MatchStrategy queryPolicy);
 
 }

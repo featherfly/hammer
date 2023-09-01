@@ -1,9 +1,9 @@
 
 package cn.featherfly.hammer.expression.condition;
 
-import cn.featherfly.common.lang.function.SerializableFunction;
-import cn.featherfly.common.lang.function.SerializableSupplier;
-import cn.featherfly.common.operator.QueryOperator.QueryPolicy;
+import cn.featherfly.common.function.serializable.SerializableFunction;
+import cn.featherfly.common.function.serializable.SerializableSupplier;
+import cn.featherfly.common.operator.ComparisonOperator.MatchStrategy;
 import cn.featherfly.common.repository.Field;
 
 /**
@@ -24,7 +24,7 @@ public interface EqualsExpression<C extends ConditionExpression, L extends Logic
      * @return LogicExpression
      */
     default L eq(Field name, Object value) {
-        return eq(name, value, QueryPolicy.AUTO);
+        return eq(name, value, MatchStrategy.AUTO);
     }
 
     /**
@@ -35,8 +35,8 @@ public interface EqualsExpression<C extends ConditionExpression, L extends Logic
      * @param queryPolicy the query policy
      * @return LogicExpression
      */
-    default L eq(Field name, Object value, QueryPolicy queryPolicy) {
-        return eq(name.name(), value, QueryPolicy.AUTO);
+    default L eq(Field name, Object value, MatchStrategy queryPolicy) {
+        return eq(name.name(), value, MatchStrategy.AUTO);
     }
 
     /**
@@ -47,7 +47,7 @@ public interface EqualsExpression<C extends ConditionExpression, L extends Logic
      * @return LogicExpression
      */
     default L eq(String name, Object value) {
-        return eq(name, value, QueryPolicy.AUTO);
+        return eq(name, value, MatchStrategy.AUTO);
     }
 
     /**
@@ -58,7 +58,7 @@ public interface EqualsExpression<C extends ConditionExpression, L extends Logic
      * @param queryPolicy the query policy
      * @return LogicExpression
      */
-    L eq(String name, Object value, QueryPolicy queryPolicy);
+    L eq(String name, Object value, MatchStrategy queryPolicy);
 
     /**
      * equals. 等于.
@@ -70,7 +70,7 @@ public interface EqualsExpression<C extends ConditionExpression, L extends Logic
      * @return LogicExpression
      */
     default <T, R> L eq(SerializableFunction<T, R> name, R value) {
-        return eq(name, value, QueryPolicy.AUTO);
+        return eq(name, value, MatchStrategy.AUTO);
     }
 
     /**
@@ -83,7 +83,7 @@ public interface EqualsExpression<C extends ConditionExpression, L extends Logic
      * @param queryPolicy the query policy
      * @return LogicExpression
      */
-    <T, R> L eq(SerializableFunction<T, R> name, R value, QueryPolicy queryPolicy);
+    <T, R> L eq(SerializableFunction<T, R> name, R value, MatchStrategy queryPolicy);
 
     /**
      * equals. 等于.
@@ -93,7 +93,7 @@ public interface EqualsExpression<C extends ConditionExpression, L extends Logic
      * @return LogicExpression
      */
     default <R> L eq(SerializableSupplier<R> property) {
-        return eq(property, QueryPolicy.AUTO);
+        return eq(property, MatchStrategy.AUTO);
     }
 
     /**
@@ -104,5 +104,5 @@ public interface EqualsExpression<C extends ConditionExpression, L extends Logic
      * @param queryPolicy the query policy
      * @return LogicExpression
      */
-    <R> L eq(SerializableSupplier<R> property, QueryPolicy queryPolicy);
+    <R> L eq(SerializableSupplier<R> property, MatchStrategy queryPolicy);
 }

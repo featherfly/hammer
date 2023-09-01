@@ -1,7 +1,7 @@
 //
 //package cn.featherfly.hammer.expression.query;
 //
-//import cn.featherfly.common.lang.function.SerializableFunction;
+//import cn.featherfly.common.function.serializable.SerializableFunction;
 //import cn.featherfly.hammer.expression.RepositoryConditionGroupLogicExpression;
 //import cn.featherfly.hammer.expression.RepositoryWhereExpression;
 //import cn.featherfly.hammer.expression.condition.RepositoryConditionsGroupExpression;

@@ -3,9 +3,9 @@ package cn.featherfly.hammer.expression.entity.condition.sw;
 
 import java.util.function.Predicate;
 
-import cn.featherfly.common.lang.function.SerializableFunction;
-import cn.featherfly.common.lang.function.SerializableStringSupplier;
-import cn.featherfly.common.operator.QueryOperator.QueryPolicy;
+import cn.featherfly.common.function.serializable.SerializableFunction;
+import cn.featherfly.common.function.serializable.SerializableStringSupplier;
+import cn.featherfly.common.operator.ComparisonOperator.MatchStrategy;
 import cn.featherfly.hammer.expression.condition.ConditionExpression;
 import cn.featherfly.hammer.expression.condition.LogicExpression;
 
@@ -32,7 +32,7 @@ public interface EntityStartWithExpressionBase5<E, E2, E3, E4, E5, C extends Con
      * @return LogicExpression
      */
     default L sw5(SerializableFunction<E5, String> name, String value) {
-        return sw5(name, value, QueryPolicy.AUTO);
+        return sw5(name, value, MatchStrategy.AUTO);
     }
 
     /**
@@ -44,7 +44,7 @@ public interface EntityStartWithExpressionBase5<E, E2, E3, E4, E5, C extends Con
      * @return LogicExpression
      */
     default L sw5(SerializableFunction<E5, String> name, String value, Predicate<String> ignoreStrategy) {
-        return sw5(name, value, QueryPolicy.AUTO, ignoreStrategy);
+        return sw5(name, value, MatchStrategy.AUTO, ignoreStrategy);
     }
 
     /**
@@ -55,7 +55,7 @@ public interface EntityStartWithExpressionBase5<E, E2, E3, E4, E5, C extends Con
      * @param queryPolicy the query policy
      * @return LogicExpression
      */
-    L sw5(SerializableFunction<E5, String> name, String value, QueryPolicy queryPolicy);
+    L sw5(SerializableFunction<E5, String> name, String value, MatchStrategy queryPolicy);
 
     /**
      * start with value. 以value开始.
@@ -66,7 +66,7 @@ public interface EntityStartWithExpressionBase5<E, E2, E3, E4, E5, C extends Con
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
-    L sw5(SerializableFunction<E5, String> name, String value, QueryPolicy queryPolicy,
+    L sw5(SerializableFunction<E5, String> name, String value, MatchStrategy queryPolicy,
             Predicate<String> ignoreStrategy);
 
     /**
@@ -76,7 +76,7 @@ public interface EntityStartWithExpressionBase5<E, E2, E3, E4, E5, C extends Con
      * @return LogicExpression
      */
     default L sw5(SerializableStringSupplier property) {
-        return sw5(property, QueryPolicy.AUTO);
+        return sw5(property, MatchStrategy.AUTO);
     }
 
     /**
@@ -87,7 +87,7 @@ public interface EntityStartWithExpressionBase5<E, E2, E3, E4, E5, C extends Con
      * @return LogicExpression
      */
     default L sw5(SerializableStringSupplier property, Predicate<String> ignoreStrategy) {
-        return sw5(property, QueryPolicy.AUTO, ignoreStrategy);
+        return sw5(property, MatchStrategy.AUTO, ignoreStrategy);
     }
 
     /**
@@ -97,7 +97,7 @@ public interface EntityStartWithExpressionBase5<E, E2, E3, E4, E5, C extends Con
      * @param queryPolicy the query policy
      * @return LogicExpression
      */
-    L sw5(SerializableStringSupplier property, QueryPolicy queryPolicy);
+    L sw5(SerializableStringSupplier property, MatchStrategy queryPolicy);
 
     /**
      * start with value. 以value开始.
@@ -107,7 +107,7 @@ public interface EntityStartWithExpressionBase5<E, E2, E3, E4, E5, C extends Con
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
-    L sw5(SerializableStringSupplier property, QueryPolicy queryPolicy, Predicate<String> ignoreStrategy);
+    L sw5(SerializableStringSupplier property, MatchStrategy queryPolicy, Predicate<String> ignoreStrategy);
 
     // 嵌套属性使用property(U1::getU2).property(U2:getV).sw(v)来设置
     //    /**

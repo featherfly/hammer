@@ -3,9 +3,9 @@ package cn.featherfly.hammer.expression.entity.condition.ne;
 
 import java.util.function.Predicate;
 
-import cn.featherfly.common.lang.function.SerializableFunction;
-import cn.featherfly.common.lang.function.SerializableSupplier2;
-import cn.featherfly.common.operator.QueryOperator.QueryPolicy;
+import cn.featherfly.common.function.serializable.SerializableFunction;
+import cn.featherfly.common.function.serializable.SerializableSupplier2;
+import cn.featherfly.common.operator.ComparisonOperator.MatchStrategy;
 import cn.featherfly.hammer.expression.condition.ConditionExpression;
 import cn.featherfly.hammer.expression.condition.LogicExpression;
 
@@ -37,7 +37,7 @@ public interface EntityNotEqualsExpressionBase2<E, E2, C extends ConditionExpres
      * @return LogicExpression
      */
     default <R> L ne2(SerializableFunction<E2, R> name, R value) {
-        return ne2(name, value, QueryPolicy.AUTO);
+        return ne2(name, value, MatchStrategy.AUTO);
     }
 
     /**
@@ -50,7 +50,7 @@ public interface EntityNotEqualsExpressionBase2<E, E2, C extends ConditionExpres
      * @return LogicExpression
      */
     default <R> L ne2(SerializableFunction<E2, R> name, R value, Predicate<R> ignoreStrategy) {
-        return ne2(name, value, QueryPolicy.AUTO, ignoreStrategy);
+        return ne2(name, value, MatchStrategy.AUTO, ignoreStrategy);
     }
 
     /**
@@ -62,7 +62,7 @@ public interface EntityNotEqualsExpressionBase2<E, E2, C extends ConditionExpres
      * @param queryPolicy the query policy
      * @return LogicExpression
      */
-    <R> L ne2(SerializableFunction<E2, R> name, R value, QueryPolicy queryPolicy);
+    <R> L ne2(SerializableFunction<E2, R> name, R value, MatchStrategy queryPolicy);
 
     /**
      * equals. 等于.
@@ -74,7 +74,7 @@ public interface EntityNotEqualsExpressionBase2<E, E2, C extends ConditionExpres
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
-    <R> L ne2(SerializableFunction<E2, R> name, R value, QueryPolicy queryPolicy, Predicate<R> ignoreStrategy);
+    <R> L ne2(SerializableFunction<E2, R> name, R value, MatchStrategy queryPolicy, Predicate<R> ignoreStrategy);
 
     /**
      * equals. 等于.
@@ -84,7 +84,7 @@ public interface EntityNotEqualsExpressionBase2<E, E2, C extends ConditionExpres
      * @return LogicExpression
      */
     default <R> L ne2(SerializableSupplier2<R> property) {
-        return ne2(property, QueryPolicy.AUTO);
+        return ne2(property, MatchStrategy.AUTO);
     }
 
     /**
@@ -96,7 +96,7 @@ public interface EntityNotEqualsExpressionBase2<E, E2, C extends ConditionExpres
      * @return LogicExpression
      */
     default <R> L ne2(SerializableSupplier2<R> property, Predicate<R> ignoreStrategy) {
-        return ne2(property, QueryPolicy.AUTO, ignoreStrategy);
+        return ne2(property, MatchStrategy.AUTO, ignoreStrategy);
     }
 
     /**
@@ -107,7 +107,7 @@ public interface EntityNotEqualsExpressionBase2<E, E2, C extends ConditionExpres
      * @param queryPolicy the query policy
      * @return LogicExpression
      */
-    <R> L ne2(SerializableSupplier2<R> property, QueryPolicy queryPolicy);
+    <R> L ne2(SerializableSupplier2<R> property, MatchStrategy queryPolicy);
 
     /**
      * equals. 等于.
@@ -118,7 +118,7 @@ public interface EntityNotEqualsExpressionBase2<E, E2, C extends ConditionExpres
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
-    <R> L ne2(SerializableSupplier2<R> property, QueryPolicy queryPolicy, Predicate<R> ignoreStrategy);
+    <R> L ne2(SerializableSupplier2<R> property, MatchStrategy queryPolicy, Predicate<R> ignoreStrategy);
 
     //    嵌套属性使用property(U1::getU2).property(U2:getV).ne(v)来设置
     //    /**

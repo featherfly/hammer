@@ -4,7 +4,6 @@
 package cn.featherfly.hammer.sqldb.jdbc.operate;
 
 import java.io.Serializable;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
@@ -206,10 +205,12 @@ public class DeleteOperate<T> extends AbstractBatchExecuteOperate<T> implements 
      */
     @Override
     protected int[] doExecute(List<T> entities) {
-        List<Object[]> argsList = new ArrayList<>(entities.size());
-        for (T entity : entities) {
-            argsList.add(getParameters(entity));
-        }
+        //        List<Object[]> argsList = new ArrayList<>(entities.size());
+        //        for (T entity : entities) {
+        //            argsList.add(getParameters(entity));
+        //        }
+        Object[][] argsList = new Object[entities.size()][];
+        Lang.each(entities, (e, i) -> argsList[i] = getParameters(e));
         return jdbc.updateBatch(sql, argsList);
     }
 }

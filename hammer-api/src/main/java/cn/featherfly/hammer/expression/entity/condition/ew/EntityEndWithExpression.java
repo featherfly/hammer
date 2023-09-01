@@ -3,9 +3,9 @@ package cn.featherfly.hammer.expression.entity.condition.ew;
 
 import java.util.function.Predicate;
 
-import cn.featherfly.common.lang.function.SerializableFunction;
-import cn.featherfly.common.lang.function.SerializableStringSupplier;
-import cn.featherfly.common.operator.QueryOperator.QueryPolicy;
+import cn.featherfly.common.function.serializable.SerializableFunction;
+import cn.featherfly.common.function.serializable.SerializableStringSupplier;
+import cn.featherfly.common.operator.ComparisonOperator.MatchStrategy;
 import cn.featherfly.hammer.expression.condition.ConditionExpression;
 import cn.featherfly.hammer.expression.condition.LogicExpression;
 
@@ -35,7 +35,7 @@ public interface EntityEndWithExpression<E, C extends ConditionExpression, L ext
      * @return LogicExpression
      */
     default L ew(SerializableFunction<E, String> name, String value) {
-        return ew(name, value, QueryPolicy.AUTO);
+        return ew(name, value, MatchStrategy.AUTO);
     }
 
     /**
@@ -47,7 +47,7 @@ public interface EntityEndWithExpression<E, C extends ConditionExpression, L ext
      * @return LogicExpression
      */
     default L ew(SerializableFunction<E, String> name, String value, Predicate<String> ignoreStrategy) {
-        return ew(name, value, QueryPolicy.AUTO, ignoreStrategy);
+        return ew(name, value, MatchStrategy.AUTO, ignoreStrategy);
     }
 
     /**
@@ -58,7 +58,7 @@ public interface EntityEndWithExpression<E, C extends ConditionExpression, L ext
      * @param queryPolicy the query policy
      * @return LogicExpression
      */
-    L ew(SerializableFunction<E, String> name, String value, QueryPolicy queryPolicy);
+    L ew(SerializableFunction<E, String> name, String value, MatchStrategy queryPolicy);
 
     /**
      * end with value. 以value结尾.
@@ -69,7 +69,7 @@ public interface EntityEndWithExpression<E, C extends ConditionExpression, L ext
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
-    L ew(SerializableFunction<E, String> name, String value, QueryPolicy queryPolicy, Predicate<String> ignoreStrategy);
+    L ew(SerializableFunction<E, String> name, String value, MatchStrategy queryPolicy, Predicate<String> ignoreStrategy);
 
     /**
      * end with value. 以value结尾.
@@ -78,7 +78,7 @@ public interface EntityEndWithExpression<E, C extends ConditionExpression, L ext
      * @return LogicExpression
      */
     default L ew(SerializableStringSupplier property) {
-        return ew(property, QueryPolicy.AUTO);
+        return ew(property, MatchStrategy.AUTO);
     }
 
     /**
@@ -89,7 +89,7 @@ public interface EntityEndWithExpression<E, C extends ConditionExpression, L ext
      * @return LogicExpression
      */
     default L ew(SerializableStringSupplier property, Predicate<String> ignoreStrategy) {
-        return ew(property, QueryPolicy.AUTO, ignoreStrategy);
+        return ew(property, MatchStrategy.AUTO, ignoreStrategy);
     }
 
     /**
@@ -99,7 +99,7 @@ public interface EntityEndWithExpression<E, C extends ConditionExpression, L ext
      * @param queryPolicy the query policy
      * @return LogicExpression
      */
-    L ew(SerializableStringSupplier property, QueryPolicy queryPolicy);
+    L ew(SerializableStringSupplier property, MatchStrategy queryPolicy);
 
     /**
      * end with value. 以value结尾.
@@ -109,7 +109,7 @@ public interface EntityEndWithExpression<E, C extends ConditionExpression, L ext
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
-    L ew(SerializableStringSupplier property, QueryPolicy queryPolicy, Predicate<String> ignoreStrategy);
+    L ew(SerializableStringSupplier property, MatchStrategy queryPolicy, Predicate<String> ignoreStrategy);
 
     //  嵌套属性使用property(U1::getU2).property(U2:getV).ew(v)来设置
     //    /**

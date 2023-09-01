@@ -7,8 +7,8 @@ import cn.featherfly.common.db.FieldValueOperator;
 import cn.featherfly.common.db.builder.dml.basic.SqlUpdateSetBasicBuilder;
 import cn.featherfly.common.db.builder.model.UpdateColumnElement.SetType;
 import cn.featherfly.common.lang.LambdaUtils;
-import cn.featherfly.common.lang.function.SerializableFunction;
-import cn.featherfly.common.lang.function.SerializableSupplier;
+import cn.featherfly.common.function.serializable.SerializableFunction;
+import cn.featherfly.common.function.serializable.SerializableSupplier;
 import cn.featherfly.hammer.sqldb.jdbc.Jdbc;
 
 /**

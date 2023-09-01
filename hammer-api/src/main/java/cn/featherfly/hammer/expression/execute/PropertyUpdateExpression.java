@@ -1,7 +1,7 @@
 
 package cn.featherfly.hammer.expression.execute;
 
-import cn.featherfly.common.lang.function.SerializableFunction;
+import cn.featherfly.common.function.serializable.SerializableFunction;
 
 /**
  * The Interface PropertyUpdateExpression.

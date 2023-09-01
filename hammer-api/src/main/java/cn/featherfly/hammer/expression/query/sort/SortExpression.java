@@ -1,6 +1,6 @@
 package cn.featherfly.hammer.expression.query.sort;
 
-import cn.featherfly.common.lang.function.SerializableFunction;
+import cn.featherfly.common.function.serializable.SerializableFunction;
 
 /**
  * 排序构建接口.

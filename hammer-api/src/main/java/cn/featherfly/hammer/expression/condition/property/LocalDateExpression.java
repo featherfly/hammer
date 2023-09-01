@@ -3,7 +3,7 @@ package cn.featherfly.hammer.expression.condition.property;
 
 import java.time.LocalDate;
 
-import cn.featherfly.common.operator.QueryOperator.QueryPolicy;
+import cn.featherfly.common.operator.ComparisonOperator.MatchStrategy;
 import cn.featherfly.hammer.expression.condition.ConditionExpression;
 import cn.featherfly.hammer.expression.condition.LogicExpression;
 
@@ -30,7 +30,7 @@ public interface LocalDateExpression<C extends ConditionExpression, L extends Lo
      * {@inheritDoc}
      */
     @Override
-    default L eq(LocalDate value, QueryPolicy queryPolicy) {
+    default L eq(LocalDate value, MatchStrategy queryPolicy) {
         return eq(value);
     }
 
@@ -44,7 +44,7 @@ public interface LocalDateExpression<C extends ConditionExpression, L extends Lo
      * {@inheritDoc}
      */
     @Override
-    default L ne(LocalDate value, QueryPolicy queryPolicy) {
+    default L ne(LocalDate value, MatchStrategy queryPolicy) {
         return ne(value);
     }
 }

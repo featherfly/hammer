@@ -3,9 +3,9 @@ package cn.featherfly.hammer.expression.entity.condition.ne;
 
 import java.util.function.Predicate;
 
-import cn.featherfly.common.lang.function.SerializableFunction;
-import cn.featherfly.common.lang.function.SerializableSupplier;
-import cn.featherfly.common.operator.QueryOperator.QueryPolicy;
+import cn.featherfly.common.function.serializable.SerializableFunction;
+import cn.featherfly.common.function.serializable.SerializableSupplier;
+import cn.featherfly.common.operator.ComparisonOperator.MatchStrategy;
 import cn.featherfly.hammer.expression.condition.ConditionExpression;
 import cn.featherfly.hammer.expression.condition.LogicExpression;
 
@@ -38,7 +38,7 @@ public interface EntityNotEqualsExpression<E, C extends ConditionExpression, L e
      * @return LogicExpression
      */
     default <R> L ne(SerializableFunction<E, R> name, R value) {
-        return ne(name, value, QueryPolicy.AUTO);
+        return ne(name, value, MatchStrategy.AUTO);
     }
 
     /**
@@ -51,7 +51,7 @@ public interface EntityNotEqualsExpression<E, C extends ConditionExpression, L e
      * @return LogicExpression
      */
     default <R> L ne(SerializableFunction<E, R> name, R value, Predicate<R> ignoreStrategy) {
-        return ne(name, value, QueryPolicy.AUTO, ignoreStrategy);
+        return ne(name, value, MatchStrategy.AUTO, ignoreStrategy);
     }
 
     /**
@@ -63,7 +63,7 @@ public interface EntityNotEqualsExpression<E, C extends ConditionExpression, L e
      * @param queryPolicy the query policy
      * @return LogicExpression
      */
-    <R> L ne(SerializableFunction<E, R> name, R value, QueryPolicy queryPolicy);
+    <R> L ne(SerializableFunction<E, R> name, R value, MatchStrategy queryPolicy);
 
     /**
      * not equals. 不等于.
@@ -75,7 +75,7 @@ public interface EntityNotEqualsExpression<E, C extends ConditionExpression, L e
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
-    <R> L ne(SerializableFunction<E, R> name, R value, QueryPolicy queryPolicy, Predicate<R> ignoreStrategy);
+    <R> L ne(SerializableFunction<E, R> name, R value, MatchStrategy queryPolicy, Predicate<R> ignoreStrategy);
 
     /**
      * not equals. 不等于.
@@ -85,7 +85,7 @@ public interface EntityNotEqualsExpression<E, C extends ConditionExpression, L e
      * @return LogicExpression
      */
     default <R> L ne(SerializableSupplier<R> property) {
-        return ne(property, QueryPolicy.AUTO);
+        return ne(property, MatchStrategy.AUTO);
     }
 
     /**
@@ -97,7 +97,7 @@ public interface EntityNotEqualsExpression<E, C extends ConditionExpression, L e
      * @return LogicExpression
      */
     default <R> L ne(SerializableSupplier<R> property, Predicate<R> ignoreStrategy) {
-        return ne(property, QueryPolicy.AUTO, ignoreStrategy);
+        return ne(property, MatchStrategy.AUTO, ignoreStrategy);
     }
 
     /**
@@ -108,7 +108,7 @@ public interface EntityNotEqualsExpression<E, C extends ConditionExpression, L e
      * @param queryPolicy the query policy
      * @return LogicExpression
      */
-    <R> L ne(SerializableSupplier<R> property, QueryPolicy queryPolicy);
+    <R> L ne(SerializableSupplier<R> property, MatchStrategy queryPolicy);
 
     /**
      * not equals. 不等于.
@@ -119,7 +119,7 @@ public interface EntityNotEqualsExpression<E, C extends ConditionExpression, L e
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
-    <R> L ne(SerializableSupplier<R> property, QueryPolicy queryPolicy, Predicate<R> ignoreStrategy);
+    <R> L ne(SerializableSupplier<R> property, MatchStrategy queryPolicy, Predicate<R> ignoreStrategy);
 
     //    嵌套属性使用property(U1::getU2).property(U2:getV).ne(v)来设置
     //    /**

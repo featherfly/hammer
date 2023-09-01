@@ -3,7 +3,7 @@ package cn.featherfly.hammer.dsl.entity.execute;
 
 import java.util.function.Consumer;
 
-import cn.featherfly.common.lang.function.SerializableFunction;
+import cn.featherfly.common.function.serializable.SerializableFunction;
 import cn.featherfly.hammer.expression.entity.execute.EntityUpdateValueExpression;
 
 /**
@@ -49,8 +49,8 @@ public class EntityUpdateNestedValueImpl<E, T, O> implements EntityUpdateValue<E
      * {@inheritDoc}
      */
     @Override
-    public EntityExecutableUpdate<E> set(
-            Consumer<EntityUpdateValueExpression<E, O, EntityExecutableUpdate<E>, EntityExecutableConditionGroup<E>, EntityExecutableConditionGroupLogic<E>>> consumer) {
+    public EntityExecutableUpdate<E> set(Consumer<EntityUpdateValueExpression<E, O, EntityExecutableUpdate<E>,
+            EntityExecutableConditionGroup<E>, EntityExecutableConditionGroupLogic<E>>> consumer) {
         consumer.accept(this);
         return update;
     }

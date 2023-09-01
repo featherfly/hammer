@@ -1,9 +1,9 @@
 
 package cn.featherfly.hammer.sqldb.jdbc.dsl.entity.condition;
 
-import cn.featherfly.common.lang.function.SerializableFunction;
-import cn.featherfly.common.lang.function.SerializableToStringFunction;
-import cn.featherfly.common.operator.QueryOperator.QueryPolicy;
+import cn.featherfly.common.function.serializable.SerializableFunction;
+import cn.featherfly.common.function.serializable.SerializableToStringFunction;
+import cn.featherfly.common.operator.ComparisonOperator.MatchStrategy;
 import cn.featherfly.hammer.expression.condition.ConditionExpression;
 import cn.featherfly.hammer.expression.condition.LogicExpression;
 import cn.featherfly.hammer.expression.entity.condition.property.EntityStringPropertyExpression;
@@ -57,7 +57,7 @@ public class EntityStringPropertyExpressionImpl<E, C extends ConditionExpression
      * {@inheritDoc}
      */
     @Override
-    public L eq(String value, QueryPolicy queryPolicy) {
+    public L eq(String value, MatchStrategy queryPolicy) {
         return expression.eq0(index, name, value, queryPolicy, expression.getIgnoreStrategy());
     }
 
@@ -145,7 +145,7 @@ public class EntityStringPropertyExpressionImpl<E, C extends ConditionExpression
      * {@inheritDoc}
      */
     @Override
-    public L ne(String value, QueryPolicy queryPolicy) {
+    public L ne(String value, MatchStrategy queryPolicy) {
         return expression.ne0(index, name, value, queryPolicy, expression.getIgnoreStrategy());
     }
 
@@ -153,7 +153,7 @@ public class EntityStringPropertyExpressionImpl<E, C extends ConditionExpression
      * {@inheritDoc}
      */
     @Override
-    public L sw(String value, QueryPolicy queryPolicy) {
+    public L sw(String value, MatchStrategy queryPolicy) {
         return expression.sw0(index, name, value, queryPolicy, expression.getIgnoreStrategy());
     }
 
@@ -161,7 +161,7 @@ public class EntityStringPropertyExpressionImpl<E, C extends ConditionExpression
      * {@inheritDoc}
      */
     @Override
-    public L co(String value, QueryPolicy queryPolicy) {
+    public L co(String value, MatchStrategy queryPolicy) {
         return expression.co0(index, name, value, queryPolicy, expression.getIgnoreStrategy());
     }
 
@@ -169,7 +169,7 @@ public class EntityStringPropertyExpressionImpl<E, C extends ConditionExpression
      * {@inheritDoc}
      */
     @Override
-    public L ew(String value, QueryPolicy queryPolicy) {
+    public L ew(String value, MatchStrategy queryPolicy) {
         return expression.ew0(index, name, value, queryPolicy, expression.getIgnoreStrategy());
     }
 
@@ -177,7 +177,7 @@ public class EntityStringPropertyExpressionImpl<E, C extends ConditionExpression
      * {@inheritDoc}
      */
     @Override
-    public L lk(String value, QueryPolicy queryPolicy) {
+    public L lk(String value, MatchStrategy queryPolicy) {
         return expression.lk0(index, name, value, queryPolicy, expression.getIgnoreStrategy());
     }
 }

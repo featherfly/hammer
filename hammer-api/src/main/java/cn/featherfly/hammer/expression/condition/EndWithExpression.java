@@ -1,9 +1,9 @@
 
 package cn.featherfly.hammer.expression.condition;
 
-import cn.featherfly.common.lang.function.SerializableToStringFunction;
-import cn.featherfly.common.lang.function.SerializableStringSupplier;
-import cn.featherfly.common.operator.QueryOperator.QueryPolicy;
+import cn.featherfly.common.function.serializable.SerializableToStringFunction;
+import cn.featherfly.common.function.serializable.SerializableStringSupplier;
+import cn.featherfly.common.operator.ComparisonOperator.MatchStrategy;
 import cn.featherfly.common.repository.Field;
 
 /**
@@ -24,7 +24,7 @@ public interface EndWithExpression<C extends ConditionExpression, L extends Logi
      * @return LogicExpression
      */
     default L ew(Field name, String value) {
-        return ew(name, value, QueryPolicy.AUTO);
+        return ew(name, value, MatchStrategy.AUTO);
     }
 
     /**
@@ -35,8 +35,8 @@ public interface EndWithExpression<C extends ConditionExpression, L extends Logi
      * @param queryPolicy the query policy
      * @return the l
      */
-    default L ew(Field name, String value, QueryPolicy queryPolicy) {
-        return ew(name.name(), value, QueryPolicy.AUTO);
+    default L ew(Field name, String value, MatchStrategy queryPolicy) {
+        return ew(name.name(), value, MatchStrategy.AUTO);
     }
 
     /**
@@ -47,7 +47,7 @@ public interface EndWithExpression<C extends ConditionExpression, L extends Logi
      * @return LogicExpression
      */
     default L ew(String name, String value) {
-        return ew(name, value, QueryPolicy.AUTO);
+        return ew(name, value, MatchStrategy.AUTO);
     }
 
     /**
@@ -58,7 +58,7 @@ public interface EndWithExpression<C extends ConditionExpression, L extends Logi
      * @param queryPolicy the query policy
      * @return the l
      */
-    L ew(String name, String value, QueryPolicy queryPolicy);
+    L ew(String name, String value, MatchStrategy queryPolicy);
 
     /**
      * end with value. 以value结尾.
@@ -69,7 +69,7 @@ public interface EndWithExpression<C extends ConditionExpression, L extends Logi
      * @return LogicExpression
      */
     default <T> L ew(SerializableToStringFunction<T> name, String value) {
-        return ew(name, value, QueryPolicy.AUTO);
+        return ew(name, value, MatchStrategy.AUTO);
     }
 
     /**
@@ -81,7 +81,7 @@ public interface EndWithExpression<C extends ConditionExpression, L extends Logi
      * @param queryPolicy the query policy
      * @return the l
      */
-    <T> L ew(SerializableToStringFunction<T> name, String value, QueryPolicy queryPolicy);
+    <T> L ew(SerializableToStringFunction<T> name, String value, MatchStrategy queryPolicy);
 
     /**
      * end with value. 以value结尾.
@@ -90,7 +90,7 @@ public interface EndWithExpression<C extends ConditionExpression, L extends Logi
      * @return LogicExpression
      */
     default L ew(SerializableStringSupplier property) {
-        return ew(property, QueryPolicy.AUTO);
+        return ew(property, MatchStrategy.AUTO);
     }
 
     /**
@@ -100,5 +100,5 @@ public interface EndWithExpression<C extends ConditionExpression, L extends Logi
      * @param queryPolicy the query policy
      * @return the l
      */
-    L ew(SerializableStringSupplier property, QueryPolicy queryPolicy);
+    L ew(SerializableStringSupplier property, MatchStrategy queryPolicy);
 }

@@ -10,10 +10,11 @@ import cn.featherfly.hammer.expression.entity.condition.EntityPropertyExpression
  * EntityPropertyTypeExpression.
  *
  * @author zhongj
- * @param <C> the generic type
- * @param <L> the generic type
+ * @param <PT> the property generic type
+ * @param <C>  the ConditionExpression generic type
+ * @param <L>  the LogicExpression generic type
  */
-public interface EntityPropertyTypeExpression<E, C extends ConditionExpression, L extends LogicExpression<C, L>>
-        extends EntityPropertyExpression<E, C, L>, TypeExpression<E, C, L> {
+public interface EntityPropertyTypeExpression<PT, C extends ConditionExpression, L extends LogicExpression<C, L>>
+        extends EntityPropertyExpression<PT, C, L>, TypeExpression<PT, C, L> {
 
 }

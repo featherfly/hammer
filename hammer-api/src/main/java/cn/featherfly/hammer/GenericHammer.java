@@ -5,8 +5,8 @@ import java.io.Serializable;
 import java.util.List;
 import java.util.function.Function;
 
-import cn.featherfly.common.lang.function.SerializableFunction;
-import cn.featherfly.common.lang.function.SerializableSupplier;
+import cn.featherfly.common.function.serializable.SerializableFunction;
+import cn.featherfly.common.function.serializable.SerializableSupplier;
 import cn.featherfly.common.operator.LogicOperator;
 import cn.featherfly.common.repository.IgnoreStrategy;
 import cn.featherfly.hammer.dsl.entity.execute.EntityDelete;
@@ -222,14 +222,6 @@ public interface GenericHammer<E, ID extends Serializable> {
     List<E> get(List<ID> ids);
 
     /**
-     * get entity by id.
-     *
-     * @param entity entity with id value
-     * @return entity
-     */
-    E load(E entity);
-
-    /**
      * query id of type then lock and update.
      *
      * @param id             entity id
@@ -237,6 +229,14 @@ public interface GenericHammer<E, ID extends Serializable> {
      * @return updated entity
      */
     E getLockUpdate(Serializable id, Function<E, E> updateFunction);
+
+    /**
+     * get entity by id.
+     *
+     * @param entity entity with id value
+     * @return entity
+     */
+    E load(E entity);
 
     /**
      * query id of entity then lock and update.

@@ -2,9 +2,7 @@
 package cn.featherfly.hammer.expression.condition;
 
 /**
- * <p>
- * 表达式
- * </p>
+ * 表达式.
  *
  * @author zhongj
  */

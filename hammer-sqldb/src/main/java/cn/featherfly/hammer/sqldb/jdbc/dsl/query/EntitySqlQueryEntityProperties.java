@@ -12,9 +12,9 @@
 //import cn.featherfly.common.lang.ClassUtils;
 //import cn.featherfly.common.lang.LambdaUtils;
 //import cn.featherfly.common.lang.LambdaUtils.SerializedLambdaInfo;
-//import cn.featherfly.common.lang.function.SerializableFunction;
-//import cn.featherfly.common.lang.function.SerializableFunction2;
-//import cn.featherfly.common.lang.function.SerializableFunction3;
+//import cn.featherfly.common.function.serializable.SerializableFunction;
+//import cn.featherfly.common.function.serializable.SerializableFunction2;
+//import cn.featherfly.common.function.serializable.SerializableFunction3;
 //import cn.featherfly.common.repository.builder.AliasManager;
 //import cn.featherfly.common.structure.page.Page;
 //import cn.featherfly.hammer.dsl.query.type.EntityQueryConditionGroup;
@@ -190,7 +190,7 @@
 //            EntityQueryConditionGroup<E>, EntityQueryConditionGroupLogic<E>>,
 //            QR extends EntityQueryRelationExpression<E, E, EntityQueryFetchedProperty<E>,
 //                    EntityQueryConditionGroup<E>, EntityQueryConditionGroupLogic<E>>> RE join(
-//                            SerializableFunction3<E, E> propertyName) {
+//                            SerializableUnaryOperator1<E> propertyName) {
 //        SerializedLambdaInfo info = LambdaUtils.getLambdaInfo(propertyName);
 //        JdbcClassMapping<E> joinTypeMapping = classMapping;
 //        JdbcPropertyMapping cpm = classMapping.getPropertyMapping(info.getPropertyName());

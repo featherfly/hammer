@@ -1,7 +1,7 @@
 
 package cn.featherfly.hammer.expression.condition;
 
-import cn.featherfly.common.operator.QueryOperator.QueryPolicy;
+import cn.featherfly.common.operator.ComparisonOperator.MatchStrategy;
 
 /**
  * RepositoryLikeExpression.
@@ -22,7 +22,7 @@ public interface RepositoryLikeExpression<C extends ConditionExpression, L exten
      * @return LogicExpression
      */
     default L lk(String repository, String name, String value) {
-        return lk(repository, name, value, QueryPolicy.AUTO);
+        return lk(repository, name, value, MatchStrategy.AUTO);
     }
 
     /**
@@ -34,7 +34,7 @@ public interface RepositoryLikeExpression<C extends ConditionExpression, L exten
      * @param queryPolicy the query policy
      * @return LogicExpression
      */
-    L lk(String repository, String name, String value, QueryPolicy queryPolicy);
+    L lk(String repository, String name, String value, MatchStrategy queryPolicy);
 
     /**
      * like value.
@@ -46,7 +46,7 @@ public interface RepositoryLikeExpression<C extends ConditionExpression, L exten
      * @return LogicExpression
      */
     //    default <T> L lk(Class<T> repository, String name, String value) {
-    //        return lk(repository, name, value, QueryPolicy.AUTO);
+    //        return lk(repository, name, value, MatchStrategy.AUTO);
     //    }
 
     /**
@@ -59,7 +59,7 @@ public interface RepositoryLikeExpression<C extends ConditionExpression, L exten
      * @param queryPolicy the query policy
      * @return LogicExpression
      */
-    //    <T> L lk(Class<T> repository, String name, String value, QueryPolicy queryPolicy);
+    //    <T> L lk(Class<T> repository, String name, String value, MatchStrategy queryPolicy);
 
     /**
      * like value.
@@ -70,7 +70,7 @@ public interface RepositoryLikeExpression<C extends ConditionExpression, L exten
      * @return LogicExpression
      */
     default L lk(int repositoryIndex, String name, String value) {
-        return lk(repositoryIndex, name, value, QueryPolicy.AUTO);
+        return lk(repositoryIndex, name, value, MatchStrategy.AUTO);
     }
 
     /**
@@ -82,6 +82,6 @@ public interface RepositoryLikeExpression<C extends ConditionExpression, L exten
      * @param queryPolicy     the query policy
      * @return LogicExpression
      */
-    L lk(int repositoryIndex, String name, String value, QueryPolicy queryPolicy);
+    L lk(int repositoryIndex, String name, String value, MatchStrategy queryPolicy);
 
 }

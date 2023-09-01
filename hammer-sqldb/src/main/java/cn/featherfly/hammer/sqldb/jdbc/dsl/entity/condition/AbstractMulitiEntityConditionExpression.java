@@ -18,12 +18,12 @@ import java.util.function.Predicate;
 import cn.featherfly.common.db.FieldValueOperator;
 import cn.featherfly.common.db.dialect.Dialect;
 import cn.featherfly.common.db.mapping.JdbcPropertyMapping;
-import cn.featherfly.common.lang.function.SerializableDoubleSupplier;
-import cn.featherfly.common.lang.function.SerializableIntSupplier;
-import cn.featherfly.common.lang.function.SerializableLongSupplier;
-import cn.featherfly.common.lang.function.SerializableSupplier;
-import cn.featherfly.common.operator.QueryOperator;
-import cn.featherfly.common.operator.QueryOperator.QueryPolicy;
+import cn.featherfly.common.function.serializable.SerializableDoubleSupplier;
+import cn.featherfly.common.function.serializable.SerializableIntSupplier;
+import cn.featherfly.common.function.serializable.SerializableLongSupplier;
+import cn.featherfly.common.function.serializable.SerializableSupplier;
+import cn.featherfly.common.operator.ComparisonOperator;
+import cn.featherfly.common.operator.ComparisonOperator.MatchStrategy;
 import cn.featherfly.common.repository.mapping.PropertyMapping;
 import cn.featherfly.hammer.expression.condition.AbstractMulitiConditionExpression;
 import cn.featherfly.hammer.expression.condition.ConditionExpression;
@@ -92,130 +92,130 @@ public abstract class AbstractMulitiEntityConditionExpression<C extends Conditio
     // ********************************************************************
 
     protected <R> L eq0(int index, SerializableSupplier<R> property, Predicate<?> ignoreStrategy) {
-        return eq0(index, property, property.get(), QueryPolicy.AUTO, ignoreStrategy);
+        return eq0(index, property, property.get(), MatchStrategy.AUTO, ignoreStrategy);
     }
 
-    protected <R> L eq0(int index, SerializableSupplier<R> property, QueryPolicy queryPolicy,
+    protected <R> L eq0(int index, SerializableSupplier<R> property, MatchStrategy queryPolicy,
             Predicate<?> ignoreStrategy) {
         return eq0(index, property, property.get(), queryPolicy, ignoreStrategy);
     }
 
     protected <T, R> L eq0(int index, Serializable property, R value, Predicate<?> ignoreStrategy) {
-        return eq0(index, property, value, QueryPolicy.AUTO, ignoreStrategy);
+        return eq0(index, property, value, MatchStrategy.AUTO, ignoreStrategy);
     }
 
-    protected <T, R> L eq0(int index, Serializable property, R value, QueryPolicy queryPolicy,
+    protected <T, R> L eq0(int index, Serializable property, R value, MatchStrategy queryPolicy,
             Predicate<?> ignoreStrategy) {
-        return eq_ne(index, QueryOperator.EQ, getClassMapping(index).getPropertyMapping(getPropertyName(property)),
+        return eq_ne(index, ComparisonOperator.EQ, getClassMapping(index).getPropertyMapping(getPropertyName(property)),
                 value, queryPolicy, ignoreStrategy);
     }
 
     protected <R> L ne0(int index, SerializableSupplier<R> property, Predicate<?> ignoreStrategy) {
-        return ne0(index, property, property.get(), QueryPolicy.AUTO, ignoreStrategy);
+        return ne0(index, property, property.get(), MatchStrategy.AUTO, ignoreStrategy);
     }
 
-    protected <R> L ne0(int index, SerializableSupplier<R> property, QueryPolicy queryPolicy,
+    protected <R> L ne0(int index, SerializableSupplier<R> property, MatchStrategy queryPolicy,
             Predicate<?> ignoreStrategy) {
         return ne0(index, property, property.get(), queryPolicy, ignoreStrategy);
     }
 
     protected <T, R> L ne0(int index, Serializable property, R value, Predicate<?> ignoreStrategy) {
-        return ne0(index, property, value, QueryPolicy.AUTO, ignoreStrategy);
+        return ne0(index, property, value, MatchStrategy.AUTO, ignoreStrategy);
     }
 
-    protected <T, R> L ne0(int index, Serializable property, R value, QueryPolicy queryPolicy,
+    protected <T, R> L ne0(int index, Serializable property, R value, MatchStrategy queryPolicy,
             Predicate<?> ignoreStrategy) {
-        return eq_ne(index, QueryOperator.NE, getClassMapping(index).getPropertyMapping(getPropertyName(property)),
+        return eq_ne(index, ComparisonOperator.NE, getClassMapping(index).getPropertyMapping(getPropertyName(property)),
                 value, queryPolicy, ignoreStrategy);
     }
 
-    protected abstract <T, R> L eq_ne(int index, QueryOperator queryOperator, PropertyMapping<?> pm, R value,
-            QueryPolicy queryPolicy, Predicate<?> ignoreStrategy);
+    protected abstract <T, R> L eq_ne(int index, ComparisonOperator comparisonOperator, PropertyMapping<?> pm, R value,
+            MatchStrategy queryPolicy, Predicate<?> ignoreStrategy);
 
-    //    protected <T, R> L eq_ne(QueryOperator queryOperator, PropertyMapping<?> pm, R value,
-    //            QueryPolicy queryPolicy, Predicate<R> ignoreStrategy) {
+    //    protected <T, R> L eq_ne(ComparisonOperator comparisonOperator, PropertyMapping<?> pm, R value,
+    //            MatchStrategy queryPolicy, Predicate<R> ignoreStrategy) {
     //        return (L) addCondition(new SqlConditionExpressionBuilder(getDialect(), pm.getRepositoryFieldName(),
-    //                getFieldValueOperator(pm, value), queryOperator, queryPolicy,  ignoreStrategy));
+    //                getFieldValueOperator(pm, value), comparisonOperator, queryPolicy,  ignoreStrategy));
     //    }
 
     // ****************************************************************************************************************
 
-    protected L sw0(int index, SerializableSupplier<String> property, QueryPolicy queryPolicy,
+    protected L sw0(int index, SerializableSupplier<String> property, MatchStrategy queryPolicy,
             Predicate<?> ignoreStrategy) {
         return sw0(index, property, property.get(), queryPolicy, ignoreStrategy);
     }
 
-    protected <T, R> L sw0(int index, Serializable property, String value, QueryPolicy queryPolicy,
+    protected <T, R> L sw0(int index, Serializable property, String value, MatchStrategy queryPolicy,
             Predicate<?> ignoreStrategy) {
         return sw0(index, getClassMapping(index).getPropertyMapping(getPropertyName(property)), value, queryPolicy,
                 ignoreStrategy);
     }
 
     @SuppressWarnings("unchecked")
-    protected <T> L sw0(int index, PropertyMapping<?> pm, String value, QueryPolicy queryPolicy,
+    protected <T> L sw0(int index, PropertyMapping<?> pm, String value, MatchStrategy queryPolicy,
             Predicate<?> ignoreStrategy) {
         return (L) addCondition(new SqlConditionExpressionBuilder(getDialect(), pm.getRepositoryFieldName(),
-                getFieldValueOperator(pm, value), QueryOperator.SW, queryPolicy, getAlias(index), ignoreStrategy));
+                getFieldValueOperator(pm, value), ComparisonOperator.SW, queryPolicy, getAlias(index), ignoreStrategy));
     }
 
     // ****************************************************************************************************************
 
-    protected L co0(int index, SerializableSupplier<String> property, QueryPolicy queryPolicy,
+    protected L co0(int index, SerializableSupplier<String> property, MatchStrategy queryPolicy,
             Predicate<?> ignoreStrategy) {
         return co0(index, property, property.get(), queryPolicy, ignoreStrategy);
     }
 
-    protected <T, R> L co0(int index, Serializable property, String value, QueryPolicy queryPolicy,
+    protected <T, R> L co0(int index, Serializable property, String value, MatchStrategy queryPolicy,
             Predicate<?> ignoreStrategy) {
         return co0(index, getClassMapping(index).getPropertyMapping(getPropertyName(property)), value, queryPolicy,
                 ignoreStrategy);
     }
 
     @SuppressWarnings("unchecked")
-    protected <T> L co0(int index, PropertyMapping<?> pm, String value, QueryPolicy queryPolicy,
+    protected <T> L co0(int index, PropertyMapping<?> pm, String value, MatchStrategy queryPolicy,
             Predicate<?> ignoreStrategy) {
         return (L) addCondition(new SqlConditionExpressionBuilder(getDialect(), pm.getRepositoryFieldName(),
-                getFieldValueOperator(pm, value), QueryOperator.CO, queryPolicy, getAlias(index), ignoreStrategy));
+                getFieldValueOperator(pm, value), ComparisonOperator.CO, queryPolicy, getAlias(index), ignoreStrategy));
     }
 
     // ****************************************************************************************************************
 
-    protected L ew0(int index, SerializableSupplier<String> property, QueryPolicy queryPolicy,
+    protected L ew0(int index, SerializableSupplier<String> property, MatchStrategy queryPolicy,
             Predicate<?> ignoreStrategy) {
         return ew0(index, property, property.get(), queryPolicy, ignoreStrategy);
     }
 
-    protected <T, R> L ew0(int index, Serializable property, String value, QueryPolicy queryPolicy,
+    protected <T, R> L ew0(int index, Serializable property, String value, MatchStrategy queryPolicy,
             Predicate<?> ignoreStrategy) {
         return ew0(index, getClassMapping(index).getPropertyMapping(getPropertyName(property)), value, queryPolicy,
                 ignoreStrategy);
     }
 
     @SuppressWarnings("unchecked")
-    protected <T> L ew0(int index, PropertyMapping<?> pm, String value, QueryPolicy queryPolicy,
+    protected <T> L ew0(int index, PropertyMapping<?> pm, String value, MatchStrategy queryPolicy,
             Predicate<?> ignoreStrategy) {
         return (L) addCondition(new SqlConditionExpressionBuilder(getDialect(), pm.getRepositoryFieldName(),
-                getFieldValueOperator(pm, value), QueryOperator.EW, queryPolicy, getAlias(index), ignoreStrategy));
+                getFieldValueOperator(pm, value), ComparisonOperator.EW, queryPolicy, getAlias(index), ignoreStrategy));
     }
 
     // ****************************************************************************************************************
 
-    protected L lk0(int index, SerializableSupplier<String> property, QueryPolicy queryPolicy,
+    protected L lk0(int index, SerializableSupplier<String> property, MatchStrategy queryPolicy,
             Predicate<?> ignoreStrategy) {
         return lk0(index, property, property.get(), queryPolicy, ignoreStrategy);
     }
 
-    protected <T, R> L lk0(int index, Serializable property, String value, QueryPolicy queryPolicy,
+    protected <T, R> L lk0(int index, Serializable property, String value, MatchStrategy queryPolicy,
             Predicate<?> ignoreStrategy) {
         return lk0(index, getClassMapping(index).getPropertyMapping(getPropertyName(property)), value, queryPolicy,
                 ignoreStrategy);
     }
 
     @SuppressWarnings("unchecked")
-    protected <T> L lk0(int index, PropertyMapping<?> pm, String value, QueryPolicy queryPolicy,
+    protected <T> L lk0(int index, PropertyMapping<?> pm, String value, MatchStrategy queryPolicy,
             Predicate<?> ignoreStrategy) {
         return (L) addCondition(new SqlConditionExpressionBuilder(getDialect(), pm.getRepositoryFieldName(),
-                getFieldValueOperator(pm, value), QueryOperator.LK, queryPolicy, getAlias(index), ignoreStrategy));
+                getFieldValueOperator(pm, value), ComparisonOperator.LK, queryPolicy, getAlias(index), ignoreStrategy));
     }
 
     // ****************************************************************************************************************
@@ -243,7 +243,7 @@ public abstract class AbstractMulitiEntityConditionExpression<C extends Conditio
     @SuppressWarnings("unchecked")
     protected <T, R> L in0(int index, PropertyMapping<?> pm, R value, Predicate<?> ignoreStrategy) {
         return (L) addCondition(new SqlConditionExpressionBuilder(getDialect(), pm.getRepositoryFieldName(),
-                getInParam(pm, value), QueryOperator.IN, getAlias(index), ignoreStrategy));
+                getInParam(pm, value), ComparisonOperator.IN, getAlias(index), ignoreStrategy));
     }
 
     // ****************************************************************************************************************
@@ -271,7 +271,7 @@ public abstract class AbstractMulitiEntityConditionExpression<C extends Conditio
     @SuppressWarnings("unchecked")
     protected <R> L nin0(int index, PropertyMapping<?> pm, R value, Predicate<?> ignoreStrategy) {
         return (L) addCondition(new SqlConditionExpressionBuilder(getDialect(), pm.getRepositoryFieldName(),
-                getInParam(pm, value), QueryOperator.NIN, getAlias(index), ignoreStrategy));
+                getInParam(pm, value), ComparisonOperator.NIN, getAlias(index), ignoreStrategy));
     }
 
     protected <T, R> L isn0(int index, Serializable property, Boolean value) {
@@ -281,7 +281,7 @@ public abstract class AbstractMulitiEntityConditionExpression<C extends Conditio
     @SuppressWarnings("unchecked")
     protected L isn0(int index, PropertyMapping<?> pm, Boolean value) {
         return (L) addCondition(new SqlConditionExpressionBuilder(getDialect(), pm.getRepositoryFieldName(), value,
-                QueryOperator.ISN, getAlias(index), null));
+                ComparisonOperator.ISN, getAlias(index), null));
     }
 
     protected <T, R> L inn0(int index, Serializable property, Boolean value) {
@@ -291,7 +291,7 @@ public abstract class AbstractMulitiEntityConditionExpression<C extends Conditio
     @SuppressWarnings("unchecked")
     protected L inn0(int index, PropertyMapping<?> pm, Boolean value) {
         return (L) addCondition(new SqlConditionExpressionBuilder(getDialect(), pm.getRepositoryFieldName(), value,
-                QueryOperator.INN, getAlias(index), null));
+                ComparisonOperator.INN, getAlias(index), null));
     }
 
     // ********************************************************************
@@ -319,7 +319,7 @@ public abstract class AbstractMulitiEntityConditionExpression<C extends Conditio
     @SuppressWarnings("unchecked")
     protected <V> L ge0(int index, PropertyMapping<?> pm, V value, Predicate<?> ignoreStrategy) {
         return (L) addCondition(new SqlConditionExpressionBuilder(getDialect(), pm.getRepositoryFieldName(),
-                getFieldValueOperator(pm, value), QueryOperator.GE, getAlias(index), ignoreStrategy));
+                getFieldValueOperator(pm, value), ComparisonOperator.GE, getAlias(index), ignoreStrategy));
     }
 
     // ********************************************************************
@@ -347,7 +347,7 @@ public abstract class AbstractMulitiEntityConditionExpression<C extends Conditio
     @SuppressWarnings("unchecked")
     protected <V> L gt0(int index, PropertyMapping<?> pm, V value, Predicate<?> ignoreStrategy) {
         return (L) addCondition(new SqlConditionExpressionBuilder(getDialect(), pm.getRepositoryFieldName(),
-                getFieldValueOperator(pm, value), QueryOperator.GT, getAlias(index), ignoreStrategy));
+                getFieldValueOperator(pm, value), ComparisonOperator.GT, getAlias(index), ignoreStrategy));
     }
 
     // ********************************************************************
@@ -375,7 +375,7 @@ public abstract class AbstractMulitiEntityConditionExpression<C extends Conditio
     @SuppressWarnings("unchecked")
     protected <V> L le0(int index, PropertyMapping<?> pm, V value, Predicate<?> ignoreStrategy) {
         return (L) addCondition(new SqlConditionExpressionBuilder(getDialect(), pm.getRepositoryFieldName(),
-                getFieldValueOperator(pm, value), QueryOperator.LE, getAlias(index), ignoreStrategy));
+                getFieldValueOperator(pm, value), ComparisonOperator.LE, getAlias(index), ignoreStrategy));
     }
 
     // ****************************************************************************************************************
@@ -403,7 +403,7 @@ public abstract class AbstractMulitiEntityConditionExpression<C extends Conditio
     @SuppressWarnings("unchecked")
     protected <V> L lt0(int index, PropertyMapping<?> pm, V value, Predicate<?> ignoreStrategy) {
         return (L) addCondition(new SqlConditionExpressionBuilder(getDialect(), pm.getRepositoryFieldName(),
-                getFieldValueOperator(pm, value), QueryOperator.LT, getAlias(index), ignoreStrategy));
+                getFieldValueOperator(pm, value), ComparisonOperator.LT, getAlias(index), ignoreStrategy));
     }
 
     // ****************************************************************************************************************

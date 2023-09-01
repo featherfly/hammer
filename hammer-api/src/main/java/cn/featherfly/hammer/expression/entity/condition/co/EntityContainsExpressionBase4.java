@@ -3,9 +3,9 @@ package cn.featherfly.hammer.expression.entity.condition.co;
 
 import java.util.function.Predicate;
 
-import cn.featherfly.common.lang.function.SerializableFunction;
-import cn.featherfly.common.lang.function.SerializableStringSupplier;
-import cn.featherfly.common.operator.QueryOperator.QueryPolicy;
+import cn.featherfly.common.function.serializable.SerializableFunction;
+import cn.featherfly.common.function.serializable.SerializableStringSupplier;
+import cn.featherfly.common.operator.ComparisonOperator.MatchStrategy;
 import cn.featherfly.hammer.expression.condition.ConditionExpression;
 import cn.featherfly.hammer.expression.condition.LogicExpression;
 
@@ -31,7 +31,7 @@ public interface EntityContainsExpressionBase4<E, E2, E3, E4, C extends Conditio
      * @return LogicExpression
      */
     default L co4(SerializableFunction<E4, String> name, String value) {
-        return co4(name, value, QueryPolicy.AUTO);
+        return co4(name, value, MatchStrategy.AUTO);
     }
 
     /**
@@ -43,7 +43,7 @@ public interface EntityContainsExpressionBase4<E, E2, E3, E4, C extends Conditio
      * @return LogicExpression
      */
     default L co4(SerializableFunction<E4, String> name, String value, Predicate<String> ignoreStrategy) {
-        return co4(name, value, QueryPolicy.AUTO, ignoreStrategy);
+        return co4(name, value, MatchStrategy.AUTO, ignoreStrategy);
     }
 
     /**
@@ -54,7 +54,7 @@ public interface EntityContainsExpressionBase4<E, E2, E3, E4, C extends Conditio
      * @param queryPolicy the query policy
      * @return LogicExpression
      */
-    L co4(SerializableFunction<E4, String> name, String value, QueryPolicy queryPolicy);
+    L co4(SerializableFunction<E4, String> name, String value, MatchStrategy queryPolicy);
 
     /**
      * contains value. 包含value.
@@ -65,7 +65,7 @@ public interface EntityContainsExpressionBase4<E, E2, E3, E4, C extends Conditio
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
-    L co4(SerializableFunction<E4, String> name, String value, QueryPolicy queryPolicy, Predicate<String> ignoreStrategy);
+    L co4(SerializableFunction<E4, String> name, String value, MatchStrategy queryPolicy, Predicate<String> ignoreStrategy);
 
     /**
      * contains value. 包含value.
@@ -74,7 +74,7 @@ public interface EntityContainsExpressionBase4<E, E2, E3, E4, C extends Conditio
      * @return LogicExpression
      */
     default L co4(SerializableStringSupplier property) {
-        return co4(property, QueryPolicy.AUTO);
+        return co4(property, MatchStrategy.AUTO);
     }
 
     /**
@@ -85,7 +85,7 @@ public interface EntityContainsExpressionBase4<E, E2, E3, E4, C extends Conditio
      * @return LogicExpression
      */
     default L co4(SerializableStringSupplier property, Predicate<String> ignoreStrategy) {
-        return co4(property, QueryPolicy.AUTO, ignoreStrategy);
+        return co4(property, MatchStrategy.AUTO, ignoreStrategy);
     }
 
     /**
@@ -95,7 +95,7 @@ public interface EntityContainsExpressionBase4<E, E2, E3, E4, C extends Conditio
      * @param queryPolicy the query policy
      * @return LogicExpression
      */
-    L co4(SerializableStringSupplier property, QueryPolicy queryPolicy);
+    L co4(SerializableStringSupplier property, MatchStrategy queryPolicy);
 
     /**
      * contains value. 包含value.
@@ -105,7 +105,7 @@ public interface EntityContainsExpressionBase4<E, E2, E3, E4, C extends Conditio
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
-    L co4(SerializableStringSupplier property, QueryPolicy queryPolicy, Predicate<String> ignoreStrategy);
+    L co4(SerializableStringSupplier property, MatchStrategy queryPolicy, Predicate<String> ignoreStrategy);
 
     // 嵌套属性使用property(U1::getU2).property(U2:getV).co(v)来设置
     //    /**

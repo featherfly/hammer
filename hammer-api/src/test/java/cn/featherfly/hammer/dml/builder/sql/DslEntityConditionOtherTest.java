@@ -6,9 +6,9 @@ import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.Date;
 
-import cn.featherfly.common.lang.function.SerializableFunction;
-import cn.featherfly.common.lang.function.SerializableFunction2;
-import cn.featherfly.common.lang.function.SerializableToIntFunction;
+import cn.featherfly.common.function.serializable.SerializableFunction;
+import cn.featherfly.common.function.serializable.SerializableFunction2;
+import cn.featherfly.common.function.serializable.SerializableToIntFunction;
 import cn.featherfly.common.repository.Repository;
 import cn.featherfly.hammer.dml.builder.sql.vo.Device;
 import cn.featherfly.hammer.dml.builder.sql.vo.Email;

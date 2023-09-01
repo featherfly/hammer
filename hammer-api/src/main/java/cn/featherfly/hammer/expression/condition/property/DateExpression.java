@@ -3,7 +3,7 @@ package cn.featherfly.hammer.expression.condition.property;
 
 import java.util.Date;
 
-import cn.featherfly.common.operator.QueryOperator.QueryPolicy;
+import cn.featherfly.common.operator.ComparisonOperator.MatchStrategy;
 import cn.featherfly.hammer.expression.condition.ConditionExpression;
 import cn.featherfly.hammer.expression.condition.LogicExpression;
 
@@ -29,7 +29,7 @@ public interface DateExpression<D extends Date, C extends ConditionExpression, L
      * {@inheritDoc}
      */
     @Override
-    default L eq(D value, QueryPolicy queryPolicy) {
+    default L eq(D value, MatchStrategy queryPolicy) {
         return eq(value);
     }
 
@@ -43,7 +43,7 @@ public interface DateExpression<D extends Date, C extends ConditionExpression, L
      * {@inheritDoc}
      */
     @Override
-    default L ne(D value, QueryPolicy queryPolicy) {
+    default L ne(D value, MatchStrategy queryPolicy) {
         return ne(value);
     }
 }

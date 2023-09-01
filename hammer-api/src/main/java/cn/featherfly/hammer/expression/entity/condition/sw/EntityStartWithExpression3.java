@@ -32,7 +32,7 @@ public interface EntityStartWithExpression3<E, E2, E3, C extends ConditionExpres
     //     */
     //    default L sw(Function<Tuple3<QueryEntityRepository<E>, QueryEntityRepository<E2>, QueryEntityRepository<E3>>,
     //            QueryEntityRepository<E>> entities, SerializableFunction<E, String> name, String value) {
-    //        return sw(entities, name, value, QueryPolicy.AUTO);
+    //        return sw(entities, name, value, MatchStrategy.AUTO);
     //    }
     //
     //    /**
@@ -48,7 +48,7 @@ public interface EntityStartWithExpression3<E, E2, E3, C extends ConditionExpres
     //            Function<Tuple3<QueryEntityRepository<E>, QueryEntityRepository<E2>, QueryEntityRepository<E3>>,
     //                    QueryEntityRepository<E>> entities,
     //            SerializableFunction<E, String> name, String value, Predicate<String> ignoreStrategy) {
-    //        return sw(entities, name, value, QueryPolicy.AUTO, ignoreStrategy);
+    //        return sw(entities, name, value, MatchStrategy.AUTO, ignoreStrategy);
     //    }
     //
     //    /**
@@ -62,7 +62,7 @@ public interface EntityStartWithExpression3<E, E2, E3, C extends ConditionExpres
     //     */
     //    L sw(Function<Tuple3<QueryEntityRepository<E>, QueryEntityRepository<E2>, QueryEntityRepository<E3>>,
     //            QueryEntityRepository<E>> entities, SerializableFunction<E, String> name, String value,
-    //            QueryPolicy queryPolicy);
+    //            MatchStrategy queryPolicy);
     //
     //    /**
     //     * start with value. 以value开始.
@@ -76,7 +76,7 @@ public interface EntityStartWithExpression3<E, E2, E3, C extends ConditionExpres
     //     */
     //    L sw(Function<Tuple3<QueryEntityRepository<E>, QueryEntityRepository<E2>, QueryEntityRepository<E3>>,
     //            QueryEntityRepository<E>> entities, SerializableFunction<E, String> name, String value,
-    //            QueryPolicy queryPolicy, Predicate<String> ignoreStrategy);
+    //            MatchStrategy queryPolicy, Predicate<String> ignoreStrategy);
     //
     //    /**
     //     * start with value. 以value开始.
@@ -87,7 +87,7 @@ public interface EntityStartWithExpression3<E, E2, E3, C extends ConditionExpres
     //     */
     //    default L sw(Function<Tuple3<QueryEntityRepository<E>, QueryEntityRepository<E2>, QueryEntityRepository<E3>>,
     //            QueryEntityRepository<E>> entities, SerializableStringSupplier property) {
-    //        return sw(entities, property, QueryPolicy.AUTO);
+    //        return sw(entities, property, MatchStrategy.AUTO);
     //    }
     //
     //    /**
@@ -100,7 +100,7 @@ public interface EntityStartWithExpression3<E, E2, E3, C extends ConditionExpres
     //     */
     //    default L sw(Function<Tuple3<QueryEntityRepository<E>, QueryEntityRepository<E2>, QueryEntityRepository<E3>>,
     //            QueryEntityRepository<E>> entities, SerializableStringSupplier property, Predicate<String> ignoreStrategy) {
-    //        return sw(entities, property, QueryPolicy.AUTO, ignoreStrategy);
+    //        return sw(entities, property, MatchStrategy.AUTO, ignoreStrategy);
     //    }
     //
     //    /**
@@ -112,7 +112,7 @@ public interface EntityStartWithExpression3<E, E2, E3, C extends ConditionExpres
     //     * @return the l
     //     */
     //    L sw(Function<Tuple3<QueryEntityRepository<E>, QueryEntityRepository<E2>, QueryEntityRepository<E3>>,
-    //            QueryEntityRepository<E>> entities, SerializableStringSupplier property, QueryPolicy queryPolicy);
+    //            QueryEntityRepository<E>> entities, SerializableStringSupplier property, MatchStrategy queryPolicy);
     //
     //    /**
     //     * start with value. 以value开始.
@@ -124,7 +124,7 @@ public interface EntityStartWithExpression3<E, E2, E3, C extends ConditionExpres
     //     * @return the l
     //     */
     //    L sw(Function<Tuple3<QueryEntityRepository<E>, QueryEntityRepository<E2>, QueryEntityRepository<E3>>,
-    //            QueryEntityRepository<E>> entities, SerializableStringSupplier property, QueryPolicy queryPolicy,
+    //            QueryEntityRepository<E>> entities, SerializableStringSupplier property, MatchStrategy queryPolicy,
     //            Predicate<String> ignoreStrategy);
     //
     //    /**
@@ -170,7 +170,7 @@ public interface EntityStartWithExpression3<E, E2, E3, C extends ConditionExpres
     //     */
     //    default L sw(Function<Tuple3<QueryEntityRepository<E>, QueryEntityRepository<E2>, QueryEntityRepository<E3>>,
     //            QueryEntityRepository<E2>> entities, SerializableFunction2<E2, String> name, String value) {
-    //        return sw(entities, name, value, QueryPolicy.AUTO);
+    //        return sw(entities, name, value, MatchStrategy.AUTO);
     //    }
     //
     //    /**
@@ -186,7 +186,7 @@ public interface EntityStartWithExpression3<E, E2, E3, C extends ConditionExpres
     //            Function<Tuple3<QueryEntityRepository<E>, QueryEntityRepository<E2>, QueryEntityRepository<E3>>,
     //                    QueryEntityRepository<E2>> entities,
     //            SerializableFunction2<E2, String> name, String value, Predicate<String> ignoreStrategy) {
-    //        return sw(entities, name, value, QueryPolicy.AUTO, ignoreStrategy);
+    //        return sw(entities, name, value, MatchStrategy.AUTO, ignoreStrategy);
     //    }
     //
     //    /**
@@ -200,7 +200,7 @@ public interface EntityStartWithExpression3<E, E2, E3, C extends ConditionExpres
     //     */
     //    L sw(Function<Tuple3<QueryEntityRepository<E>, QueryEntityRepository<E2>, QueryEntityRepository<E3>>,
     //            QueryEntityRepository<E2>> entities, SerializableFunction2<E2, String> name, String value,
-    //            QueryPolicy queryPolicy);
+    //            MatchStrategy queryPolicy);
     //
     //    /**
     //     * start with value. 以value开始.
@@ -214,7 +214,7 @@ public interface EntityStartWithExpression3<E, E2, E3, C extends ConditionExpres
     //     */
     //    L sw(Function<Tuple3<QueryEntityRepository<E>, QueryEntityRepository<E2>, QueryEntityRepository<E3>>,
     //            QueryEntityRepository<E2>> entities, SerializableFunction2<E2, String> name, String value,
-    //            QueryPolicy queryPolicy, Predicate<String> ignoreStrategy);
+    //            MatchStrategy queryPolicy, Predicate<String> ignoreStrategy);
     //
     //    /**
     //     * start with value. 以value开始.
@@ -225,7 +225,7 @@ public interface EntityStartWithExpression3<E, E2, E3, C extends ConditionExpres
     //     */
     //    default L sw(Function<Tuple3<QueryEntityRepository<E>, QueryEntityRepository<E2>, QueryEntityRepository<E3>>,
     //            QueryEntityRepository<E2>> entities, SerializableSupplier2<String> property) {
-    //        return sw(entities, property, QueryPolicy.AUTO);
+    //        return sw(entities, property, MatchStrategy.AUTO);
     //    }
     //
     //    /**
@@ -240,7 +240,7 @@ public interface EntityStartWithExpression3<E, E2, E3, C extends ConditionExpres
     //            Function<Tuple3<QueryEntityRepository<E>, QueryEntityRepository<E2>, QueryEntityRepository<E3>>,
     //                    QueryEntityRepository<E2>> entities,
     //            SerializableSupplier2<String> property, Predicate<String> ignoreStrategy) {
-    //        return sw(entities, property, QueryPolicy.AUTO, ignoreStrategy);
+    //        return sw(entities, property, MatchStrategy.AUTO, ignoreStrategy);
     //    }
     //
     //    /**
@@ -252,7 +252,7 @@ public interface EntityStartWithExpression3<E, E2, E3, C extends ConditionExpres
     //     * @return the l
     //     */
     //    L sw(Function<Tuple3<QueryEntityRepository<E>, QueryEntityRepository<E2>, QueryEntityRepository<E3>>,
-    //            QueryEntityRepository<E2>> entities, SerializableSupplier2<String> property, QueryPolicy queryPolicy);
+    //            QueryEntityRepository<E2>> entities, SerializableSupplier2<String> property, MatchStrategy queryPolicy);
     //
     //    /**
     //     * start with value. 以value开始.
@@ -264,7 +264,7 @@ public interface EntityStartWithExpression3<E, E2, E3, C extends ConditionExpres
     //     * @return the l
     //     */
     //    L sw(Function<Tuple3<QueryEntityRepository<E>, QueryEntityRepository<E2>, QueryEntityRepository<E3>>,
-    //            QueryEntityRepository<E2>> entities, SerializableSupplier2<String> property, QueryPolicy queryPolicy,
+    //            QueryEntityRepository<E2>> entities, SerializableSupplier2<String> property, MatchStrategy queryPolicy,
     //            Predicate<String> ignoreStrategy);
     //
     //    /**
@@ -311,7 +311,7 @@ public interface EntityStartWithExpression3<E, E2, E3, C extends ConditionExpres
     //     */
     //    default L sw(Function<Tuple3<QueryEntityRepository<E>, QueryEntityRepository<E2>, QueryEntityRepository<E3>>,
     //            QueryEntityRepository<E3>> entities, SerializableFunction3<E3, String> name, String value) {
-    //        return sw(entities, name, value, QueryPolicy.AUTO);
+    //        return sw(entities, name, value, MatchStrategy.AUTO);
     //    }
     //
     //    /**
@@ -327,7 +327,7 @@ public interface EntityStartWithExpression3<E, E2, E3, C extends ConditionExpres
     //            Function<Tuple3<QueryEntityRepository<E>, QueryEntityRepository<E2>, QueryEntityRepository<E3>>,
     //                    QueryEntityRepository<E3>> entities,
     //            SerializableFunction3<E3, String> name, String value, Predicate<String> ignoreStrategy) {
-    //        return sw(entities, name, value, QueryPolicy.AUTO, ignoreStrategy);
+    //        return sw(entities, name, value, MatchStrategy.AUTO, ignoreStrategy);
     //    }
     //
     //    /**
@@ -341,7 +341,7 @@ public interface EntityStartWithExpression3<E, E2, E3, C extends ConditionExpres
     //     */
     //    L sw(Function<Tuple3<QueryEntityRepository<E>, QueryEntityRepository<E2>, QueryEntityRepository<E3>>,
     //            QueryEntityRepository<E3>> entities, SerializableFunction3<E3, String> name, String value,
-    //            QueryPolicy queryPolicy);
+    //            MatchStrategy queryPolicy);
     //
     //    /**
     //     * start with value. 以value开始.
@@ -355,7 +355,7 @@ public interface EntityStartWithExpression3<E, E2, E3, C extends ConditionExpres
     //     */
     //    L sw(Function<Tuple3<QueryEntityRepository<E>, QueryEntityRepository<E2>, QueryEntityRepository<E3>>,
     //            QueryEntityRepository<E3>> entities, SerializableFunction3<E3, String> name, String value,
-    //            QueryPolicy queryPolicy, Predicate<String> ignoreStrategy);
+    //            MatchStrategy queryPolicy, Predicate<String> ignoreStrategy);
     //
     //    /**
     //     * start with value. 以value开始.
@@ -366,7 +366,7 @@ public interface EntityStartWithExpression3<E, E2, E3, C extends ConditionExpres
     //     */
     //    default L sw(Function<Tuple3<QueryEntityRepository<E>, QueryEntityRepository<E2>, QueryEntityRepository<E3>>,
     //            QueryEntityRepository<E3>> entities, SerializableSupplier3<String> property) {
-    //        return sw(entities, property, QueryPolicy.AUTO);
+    //        return sw(entities, property, MatchStrategy.AUTO);
     //    }
     //
     //    /**
@@ -381,7 +381,7 @@ public interface EntityStartWithExpression3<E, E2, E3, C extends ConditionExpres
     //            Function<Tuple3<QueryEntityRepository<E>, QueryEntityRepository<E2>, QueryEntityRepository<E3>>,
     //                    QueryEntityRepository<E3>> entities,
     //            SerializableSupplier3<String> property, Predicate<String> ignoreStrategy) {
-    //        return sw(entities, property, QueryPolicy.AUTO, ignoreStrategy);
+    //        return sw(entities, property, MatchStrategy.AUTO, ignoreStrategy);
     //    }
     //
     //    /**
@@ -393,7 +393,7 @@ public interface EntityStartWithExpression3<E, E2, E3, C extends ConditionExpres
     //     * @return the l
     //     */
     //    L sw(Function<Tuple3<QueryEntityRepository<E>, QueryEntityRepository<E2>, QueryEntityRepository<E3>>,
-    //            QueryEntityRepository<E3>> entities, SerializableSupplier3<String> property, QueryPolicy queryPolicy);
+    //            QueryEntityRepository<E3>> entities, SerializableSupplier3<String> property, MatchStrategy queryPolicy);
     //
     //    /**
     //     * start with value. 以value开始.
@@ -405,7 +405,7 @@ public interface EntityStartWithExpression3<E, E2, E3, C extends ConditionExpres
     //     * @return the l
     //     */
     //    L sw(Function<Tuple3<QueryEntityRepository<E>, QueryEntityRepository<E2>, QueryEntityRepository<E3>>,
-    //            QueryEntityRepository<E3>> entities, SerializableSupplier3<String> property, QueryPolicy queryPolicy,
+    //            QueryEntityRepository<E3>> entities, SerializableSupplier3<String> property, MatchStrategy queryPolicy,
     //            Predicate<String> ignoreStrategy);
     //
     //    /**

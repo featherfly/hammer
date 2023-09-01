@@ -10,12 +10,11 @@ import com.speedment.common.tuple.Tuple4;
 import com.speedment.common.tuple.TupleBuilder;
 import com.speedment.common.tuple.Tuples;
 
+import cn.featherfly.common.function.serializable.SerializableFunction;
+import cn.featherfly.common.function.serializable.SerializableFunction2;
+import cn.featherfly.common.function.serializable.SerializableStringSupplier;
+import cn.featherfly.common.function.serializable.SerializableSupplier;
 import cn.featherfly.common.lang.CollectionUtils;
-import cn.featherfly.common.lang.function.SerializableFunction;
-import cn.featherfly.common.lang.function.SerializableFunction2;
-import cn.featherfly.common.lang.function.SerializableFunction4;
-import cn.featherfly.common.lang.function.SerializableStringSupplier;
-import cn.featherfly.common.lang.function.SerializableSupplier;
 import cn.featherfly.common.operator.AggregateFunction;
 import cn.featherfly.common.repository.IgnoreStrategy;
 import cn.featherfly.common.repository.Repository;
@@ -32,6 +31,7 @@ import cn.featherfly.hammer.dsl.entity.query.EntityQueryConditionGroup;
 import cn.featherfly.hammer.dsl.entity.query.EntityQueryConditionGroup2;
 import cn.featherfly.hammer.dsl.entity.query.EntityQueryConditionGroupLogic;
 import cn.featherfly.hammer.dsl.entity.query.EntityQueryConditionGroupLogic2;
+import cn.featherfly.hammer.dsl.entity.query.EntityQueryFetch;
 import cn.featherfly.hammer.dsl.execute.Deleter;
 import cn.featherfly.hammer.dsl.execute.Updater;
 import cn.featherfly.hammer.dsl.query.Query;
@@ -109,8 +109,11 @@ public class DslTest {
         query.find(data).where().eq("", 1).and().lt("age", 18).and().group().gt("score", 80).sort().asc("name")
                 .list(User.class);
 
-        query.find(data).where().eq("", 1).and().lt("age", 18).and().group().gt("score", 80).sort().asc("name").limit(2)
-                .list(User.class);
+        User user = null;
+        user = query.find(data).where().eq("", 1).and().lt("age", 18).and().group().gt("score", 80).sort().asc("name")
+                .limit(1).single(User.class);
+        user = query.find(data).where().eq("", 1).and().lt("age", 18).and().group().gt("score", 80).sort().asc("name")
+                .limit(1).<@Enhance User>single(User.class);
     }
 
     public void testQueryJoin() {
@@ -245,8 +248,13 @@ public class DslTest {
          3. co(User::getName, "")替换为co(RepositoryFieldValue)
             此参数需要在编译期就搞好所有中间过程，即在jdbc设置时，不去使用SqlTypeMappingManager进行类型判断
          */
-        user = query.<@Enhance User>find(User.class).where().co(User::getUsername, "").and().setIgnoreStrategy(null)
+        user = query.<@Enhance EntityQueryFetch<User>>find(User.class).where().co(User::getUsername, "").and()
+                .setIgnoreStrategy(null).co((SerializableStringSupplier) null).single();
+        user = query.find(User.class).where().co(User::getUsername, "").and().setIgnoreStrategy(null)
                 .co((SerializableStringSupplier) null).single();
+
+        //        Function<Class<User>, EntityQueryFetchExpression> f = @Enhance query::find;
+        //        f.apply(User.class).where().co(User::getUsername, "").and().co((SerializableStringSupplier) null).single();
     }
 
     public void testEntityQueryJoinOrm() {
@@ -271,8 +279,9 @@ public class DslTest {
         query.find(User.class).join(User::getUserInfo).join(User::getDevices).join(UserInfo::getUser);
         query.find(User.class).join(User::getUserInfo).join(UserInfo::getUser).join(User::getDevices);
 
-        query.find(User.class).join(User::getUserInfo).join(es -> es.get1(),
-                (SerializableFunction4<UserInfo, User>) UserInfo::getUser); // 编译无法确定参数，需要使用强制类型转换
+        //        TODO 暂时先取消了join()多条件的重载方法
+        //        query.find(User.class).join(User::getUserInfo).join(es -> es.get1(),  
+        //                (SerializableFunction4<UserInfo, User>) UserInfo::getUser); // 编译无法确定参数，需要使用强制类型转换
         query.find(User.class).join(User::getUserInfo).join2(UserInfo::getUser); // 使用join[number]不会出现类型无法匹配的情况
 
         //        query.find(User.class).join(User::getUserInfo).join(es -> es.get1().apply(UserInfo::getUser)); // IMPLSOON 后续加入这种方式
@@ -293,9 +302,9 @@ public class DslTest {
         //      .and().eq(es -> es.get1(), User::getId, 1).single();
         //      userInfo = query.find(UserInfo.class).join(User::getUserInfo).where().eq(UserInfo::getId, 1).and()
         //      .eq(es -> es.get1(), User::getId, 1).single();
-        UserInfo userInfo = query.find(UserInfo.class).join(User::getUserInfo).fetch().where().eq(UserInfo::getId, 1)
-                .and().eq(es -> es.get1().accept(User::getId, 1)).single();
-        userInfo = query.find(UserInfo.class).join(User::getUserInfo).where().eq(UserInfo::getId, 1).and()
+        Tuple2<UserInfo, User> tuple2 = query.find(UserInfo.class).join(User::getUserInfo).fetch().where()
+                .eq(UserInfo::getId, 1).and().eq(es -> es.get1().accept(User::getId, 1)).single();
+        UserInfo userInfo = query.find(UserInfo.class).join(User::getUserInfo).where().eq(UserInfo::getId, 1).and()
                 .eq(es -> es.get1().accept(User::getId, 1)).single();
         userInfo = query.find(UserInfo.class).join(User::getUserInfo).where().eq(UserInfo::getId, 1).and()
                 .eq2(User::getId, 1).single();
@@ -368,7 +377,7 @@ public class DslTest {
         //  这里表示和 tree t2 进行join，所以join tree t3 on t2.id = t3.parent_id
         // 这种实现可能会导致编译出错（例如自关联 Tree::getParent这种）
         // 所以就算实现了相应的方法，也要保留join join1 join2这种不会导致编译报错的方法实现
-        
+
         // join的api定义规则，此方案应该是不能实现，因为传入参数无法区分，所以返回参数也无法确定
         /*
          // select * from tree t1 join tree t2 on t1.id = t2.parent_id join tree t3 on t2.id = t3.parent_id
@@ -377,7 +386,7 @@ public class DslTest {
              //  这里表示和 tree t2 进行join，所以join tree t3 on t2.id = t3.parent_id
              es.get1().join(Tree::getParent);
          });
-        
+
          // 可以先实现下面这种方式，因为这种方式不需要多个返回结果类型，在现有结构上就能实现，废案
          query.find(Tree.class).join(Tree::getParent, t -> {
            //  这里表示和 tree t2 进行join，所以join tree t3 on t2.id = t3.parent_id
@@ -415,7 +424,7 @@ public class DslTest {
 
         tree = query.find(Tree2.class).join(Tree2.class).on(Tree2::getId, Tree2::getParentId).limit(1).single();
         tree = query.find(Tree2.class).join(Tree2.class).on(Tree2::getParentId, Tree2::getId).limit(1).single();
-        // 这里会调用join(SerializableFunction3<E, E> propertyName),所以需要强制类型转换
+        // 这里会调用join(SerializableUnaryOperator1<E> propertyName),所以需要强制类型转换
         //        tree = query.find(Tree2.class).join(Tree2.class).on(Tree2::getId,Tree2::getParentId).limit(1)
         //                .single();
 
@@ -437,7 +446,7 @@ public class DslTest {
                 .single();
         tuple2Tree2 = query.find(Tree2.class).join(Tree2.class).on(Tree2::getId, Tree2::getParentId).fetch().limit(1)
                 .single();
-        // 这里会调用join(SerializableFunction3<E, E> propertyName),所以需要强制类型转换
+        // 这里会调用join(SerializableUnaryOperator1<E> propertyName),所以需要强制类型转换
         tuple2Tree2 = query.find(Tree2.class).join(Tree2.class).on(Tree2::getId, Tree2::getParentId).fetch().limit(1)
                 .single();
 
@@ -518,7 +527,7 @@ public class DslTest {
         tupleUserUserInfo = query.find(User2.class).join(UserInfo2.class).on(UserInfo2::getUserId).fetch().limit(1)
                 .single();
 
-        User u = query.find(User.class).join(UserInfo::getUser).fetch().limit(1).single();
+        Tuple2<User, UserInfo> tuple2 = query.find(User.class).join(UserInfo::getUser).fetch().limit(1).single();
 
         query.find(User2.class).join(UserInfo2.class).on(UserInfo2::getUserId).fetch().where()
                 .eq(es -> es.get0().accept(User2::getId, 1)).and()
@@ -543,6 +552,9 @@ public class DslTest {
         query.find(User2.class).fetch(User2::getUsername).where().eq(User2::getId, 1).string();
         // IMPLSOON join以后就没有单值返回了
         // query.find(User2.class).fetch(User2::getUsername).join(UserInfo2::getUserId).where().eq(User2::getId, 1).string();
+
+        // TODO 后续实现on的其他条件判断（如a<>b, a<b and c>d）
+        //        tree = query.find(Tree2.class).join(Tree2.class).on(Tree2::getId,  Tree2::getParentId)
     }
 
     public void testEntityQuerySort() {
@@ -554,39 +566,58 @@ public class DslTest {
         query.find(User2.class).sort().desc(User2::getAge).desc(User2::getId);
         query.find(User2.class).sort().desc(User2::getAge, User2::getId);
 
-        query.find(User2.class).join(UserInfo2.class).on(UserInfo2::getUserId).sort().asc(es -> es.get0(),
-                User2::getAge);
+        //        query.find(User2.class).join(UserInfo2.class).on(UserInfo2::getUserId).sort().asc(es -> es.get0(), User2::getAge);
+        query.find(User2.class).join(UserInfo2.class).on(UserInfo2::getUserId).sort()
+                .asc((e1, e2) -> e1.apply(User2::getAge));
         query.find(User2.class).join(UserInfo2.class).on(UserInfo2::getUserId).sort().asc(User2::getAge);
 
-        query.find(User2.class).join(UserInfo2.class).on(UserInfo2::getUserId).sort().asc(es -> es.get1(),
-                UserInfo2::getAge);
+        //        query.find(User2.class).join(UserInfo2.class).on(UserInfo2::getUserId).sort().asc(es -> es.get1(), UserInfo2::getAge);
+        query.find(User2.class).join(UserInfo2.class).on(UserInfo2::getUserId).sort()
+                .asc((e1, e2) -> e2.apply(UserInfo2::getAge));
         query.find(User2.class).join(UserInfo2.class).on(UserInfo2::getUserId).sort().asc2(UserInfo2::getAge);
 
+        //        query.find(Student2.class).join(User.class).on(Student2::getUserId).join2(User::getUserInfo).sort()
+        //        .asc(Student2::getId).asc(qs -> qs.get1(), User::getAge);
         query.find(Student2.class).join(User.class).on(Student2::getUserId).join2(User::getUserInfo).sort()
-                .asc(Student2::getId).asc(qs -> qs.get1(), User::getAge);
+                .asc(Student2::getId).asc((e1, e2, e3) -> e3.apply(UserInfo::getAge));
         query.find(Student2.class).join(User.class).on(Student2::getUserId).join2(User::getUserInfo).sort()
                 .asc(Student2::getId).asc2(User::getAge);
 
         //                query.find(User.class).join(Student2::getUserId).fetch().join2(User::getUserInfo).fetch().list();
 
+        //        query.find(Student2.class).join(User.class).on(Student2::getUserId).join2(User::getUserInfo).sort()
+        //                .asc(Student2::getId).asc(qs -> qs.get2(), UserInfo::getAge);
         query.find(Student2.class).join(User.class).on(Student2::getUserId).join2(User::getUserInfo).sort()
-                .asc(Student2::getId).asc(qs -> qs.get2(), UserInfo::getAge);
+                .asc(Student2::getId).asc((e1, e2, e3) -> e3.apply(UserInfo::getAge));
+        //        query.find(Student2.class).join(User.class).on(Student2::getUserId).fetch().join2(User::getUserInfo).fetch()
+        //                .sort().asc(Student2::getId).asc(qs -> qs.get2(), UserInfo::getAge);
         query.find(Student2.class).join(User.class).on(Student2::getUserId).fetch().join2(User::getUserInfo).fetch()
-                .sort().asc(Student2::getId).asc(qs -> qs.get2(), UserInfo::getAge);
+                .sort().asc(Student2::getId).asc((e1, e2, e3) -> e3.apply(UserInfo::getAge));
         query.find(Student2.class).join(User.class).on(Student2::getUserId).join2(User::getUserInfo).sort()
                 .asc(Student2::getId).asc3(UserInfo::getAge);
         query.find(Student2.class).join(User.class).on(Student2::getUserId).fetch().join2(User::getUserInfo).fetch()
                 .sort().asc(Student2::getId).asc3(UserInfo::getAge);
 
+        //        query.find(Student2.class).join(User.class).on(Student2::getUserId).join2(User::getUserInfo).sort()
+        //                .asc(qs -> qs.get2(), UserInfo::getAge).asc(Student2::getId);
         query.find(Student2.class).join(User.class).on(Student2::getUserId).join2(User::getUserInfo).sort()
-                .asc(qs -> qs.get2(), UserInfo::getAge).asc(Student2::getId);
+                .asc((e1, e2, e3) -> e3.apply(UserInfo::getAge)).asc(Student2::getId);
         query.find(Student2.class).join(User.class).on(Student2::getUserId).join2(User::getUserInfo).sort()
                 .asc3(UserInfo::getAge).asc(Student2::getId);
 
+        //        query.find(Student2.class).join(User.class).on(Student2::getUserId).join2(User::getUserInfo).sort()
+        //                .asc(qs -> qs.get2(), UserInfo::getAge, UserInfo::getName).asc(Student2::getId);
         query.find(Student2.class).join(User.class).on(Student2::getUserId).join2(User::getUserInfo).sort()
-                .asc(qs -> qs.get2(), UserInfo::getAge, UserInfo::getName).asc(Student2::getId);
+                .asc((e1, e2, e3) -> e3.apply(UserInfo::getAge, UserInfo::getName)).asc(Student2::getId);
+        query.find(Student2.class).join(User.class).on(Student2::getUserId).join2(User::getUserInfo).sort()
+                .asc((e1, e2, e3) -> e3.apply(UserInfo::getAge).apply(UserInfo::getName)).asc(Student2::getId);
 
-        query.find(Student2.class).join(User.class).on(Student2::getUserId).sort().asc(qs -> qs.get1(), User::getId)
+        //        query.find(Student2.class).join(User.class).on(Student2::getUserId).sort().asc(qs -> qs.get1(), User::getId)
+        //                .asc((e0, e1) -> e0.apply(Student2::getId).apply(Student2::getName, Student2::getTeacherId))
+        //                .desc((e0, e1) -> e0.apply(Student2::getId).apply(Student2::getName, Student2::getTeacherId))
+        //                .asc2(User::getUsername);
+        query.find(Student2.class).join(User.class).on(Student2::getUserId).sort()
+                .asc((e1, e2) -> e2.apply(User::getId))
                 .asc((e0, e1) -> e0.apply(Student2::getId).apply(Student2::getName, Student2::getTeacherId))
                 .desc((e0, e1) -> e0.apply(Student2::getId).apply(Student2::getName, Student2::getTeacherId))
                 .asc2(User::getUsername);
@@ -775,7 +806,7 @@ public class DslTest {
             Tuple2<Function<SerializableFunction<User, ?>, QueryEntityRepository<User>>,
                     Function<SerializableFunction<UserInfo, ?>, QueryEntityRepository<UserInfo>>>,
             QueryEntityRepository<User>> join) {
-    
+
     }
     void join(Function<
             Tuple2<Function<SerializableFunction<User, ?>, QueryEntityRepository<User>>,

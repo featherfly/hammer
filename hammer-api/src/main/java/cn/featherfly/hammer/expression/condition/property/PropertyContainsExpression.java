@@ -1,7 +1,7 @@
 
 package cn.featherfly.hammer.expression.condition.property;
 
-import cn.featherfly.common.operator.QueryOperator.QueryPolicy;
+import cn.featherfly.common.operator.ComparisonOperator.MatchStrategy;
 import cn.featherfly.hammer.expression.condition.ConditionExpression;
 import cn.featherfly.hammer.expression.condition.LogicExpression;
 
@@ -22,7 +22,7 @@ public interface PropertyContainsExpression<C extends ConditionExpression, L ext
      * @return LogicExpression
      */
     default L co(String value) {
-        return co(value, QueryPolicy.AUTO);
+        return co(value, MatchStrategy.AUTO);
     }
 
     /**
@@ -32,5 +32,5 @@ public interface PropertyContainsExpression<C extends ConditionExpression, L ext
      * @param queryPolicy the query policy
      * @return the l
      */
-    L co(String value, QueryPolicy queryPolicy);
+    L co(String value, MatchStrategy queryPolicy);
 }

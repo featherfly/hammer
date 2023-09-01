@@ -2,7 +2,7 @@
 package cn.featherfly.hammer.expression.entity.query;
 
 import cn.featherfly.common.exception.UnsupportedException;
-import cn.featherfly.common.lang.function.SerializableFunction;
+import cn.featherfly.common.function.serializable.SerializableFunction;
 import cn.featherfly.common.operator.AggregateFunction;
 import cn.featherfly.common.operator.Function;
 

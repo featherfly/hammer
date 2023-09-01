@@ -72,7 +72,7 @@ public class EntitySqlQuerySmokeTest extends JdbcTestBase {
         assertTrue(users.size() == 2);
         assertTrue(users.get(0).getId() < users.get(1).getId());
 
-        users = query.find(User.class).join(UserInfo::getUser).sort().asc2(UserInfo::getId).limit(2).list();
+        users = query.find(User.class).join(UserInfo::getUser).sort().desc2(UserInfo::getId).limit(2).list();
         assertTrue(users.size() == 2);
         assertTrue(users.get(0).getId() > users.get(1).getId());
     }

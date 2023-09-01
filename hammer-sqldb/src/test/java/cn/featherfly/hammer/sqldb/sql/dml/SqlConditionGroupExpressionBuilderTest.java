@@ -10,8 +10,8 @@ import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
 
 import cn.featherfly.common.db.dialect.Dialects;
-import cn.featherfly.common.operator.QueryOperator;
-import cn.featherfly.common.operator.QueryOperator.QueryPolicy;
+import cn.featherfly.common.operator.ComparisonOperator;
+import cn.featherfly.common.operator.ComparisonOperator.MatchStrategy;
 import cn.featherfly.common.repository.IgnoreStrategy;
 import cn.featherfly.common.repository.builder.BuilderException;
 import cn.featherfly.hammer.sqldb.jdbc.SimpleSqlPageFactory;
@@ -49,7 +49,7 @@ public class SqlConditionGroupExpressionBuilderTest extends TestBase {
     @Test
     public void testSqlConditionExpressionBuilder() {
         SqlConditionExpressionBuilder builder = new SqlConditionExpressionBuilder(Dialects.MYSQL, "id", 1,
-                QueryOperator.EQ, IgnoreStrategy.EMPTY);
+                ComparisonOperator.EQ, IgnoreStrategy.EMPTY);
         String result = builder.toString();
         assertEquals(result, "`id` = ?");
 
@@ -58,7 +58,7 @@ public class SqlConditionGroupExpressionBuilderTest extends TestBase {
 
     @Test(expectedExceptions = BuilderException.class)
     public void testSqlConditionExpressionBuilderException() {
-        new SqlConditionExpressionBuilder(Dialects.MYSQL, "id", 1, null, QueryPolicy.AUTO, "u", IgnoreStrategy.EMPTY);
+        new SqlConditionExpressionBuilder(Dialects.MYSQL, "id", 1, null, MatchStrategy.AUTO, "u", IgnoreStrategy.EMPTY);
     }
 
     @Test

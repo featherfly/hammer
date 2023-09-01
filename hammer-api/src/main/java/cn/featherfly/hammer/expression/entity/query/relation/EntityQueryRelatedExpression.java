@@ -9,8 +9,8 @@
  */
 package cn.featherfly.hammer.expression.entity.query.relation;
 
-import cn.featherfly.common.lang.function.SerializableFunction1;
-import cn.featherfly.common.lang.function.SerializableFunction2;
+import cn.featherfly.common.function.serializable.SerializableFunction1;
+import cn.featherfly.common.function.serializable.SerializableFunction2;
 import cn.featherfly.hammer.expression.api.entity.QueryRelate;
 
 /**

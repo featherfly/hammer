@@ -1,8 +1,8 @@
 
 package cn.featherfly.hammer.sqldb.jdbc.dsl.entity.condition;
 
-import cn.featherfly.common.lang.function.SerializableFunction;
-import cn.featherfly.common.operator.QueryOperator.QueryPolicy;
+import cn.featherfly.common.function.serializable.SerializableFunction;
+import cn.featherfly.common.operator.ComparisonOperator.MatchStrategy;
 import cn.featherfly.hammer.expression.condition.ConditionExpression;
 import cn.featherfly.hammer.expression.condition.LogicExpression;
 import cn.featherfly.hammer.expression.entity.condition.property.EntityNumberPropertyExpression;
@@ -109,7 +109,7 @@ public class EntityNumberPropertyExpressionImpl<E, N extends Number, C extends C
      * {@inheritDoc}
      */
     @Override
-    public L eq(N value, QueryPolicy queryPolicy) {
+    public L eq(N value, MatchStrategy queryPolicy) {
         return expression.eq0(index, name, value, queryPolicy, expression.getIgnoreStrategy());
     }
 
@@ -117,7 +117,7 @@ public class EntityNumberPropertyExpressionImpl<E, N extends Number, C extends C
      * {@inheritDoc}
      */
     @Override
-    public L ne(N value, QueryPolicy queryPolicy) {
+    public L ne(N value, MatchStrategy queryPolicy) {
         return expression.ne0(index, name, value, queryPolicy, expression.getIgnoreStrategy());
     }
 }

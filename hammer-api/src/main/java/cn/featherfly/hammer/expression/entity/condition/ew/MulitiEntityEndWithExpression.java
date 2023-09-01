@@ -3,9 +3,9 @@ package cn.featherfly.hammer.expression.entity.condition.ew;
 
 import java.util.function.Predicate;
 
-import cn.featherfly.common.lang.function.SerializableFunction;
-import cn.featherfly.common.lang.function.SerializableSupplier;
-import cn.featherfly.common.operator.QueryOperator.QueryPolicy;
+import cn.featherfly.common.function.serializable.SerializableFunction;
+import cn.featherfly.common.function.serializable.SerializableSupplier;
+import cn.featherfly.common.operator.ComparisonOperator.MatchStrategy;
 import cn.featherfly.hammer.expression.condition.ConditionExpression;
 import cn.featherfly.hammer.expression.condition.LogicExpression;
 import cn.featherfly.hammer.expression.entity.condition.MulitiEntityConditionExpression;
@@ -38,7 +38,7 @@ public interface MulitiEntityEndWithExpression<C extends ConditionExpression, L 
      * @return LogicExpression
      */
     default <E> L ew(int index, SerializableFunction<E, String> name, String value) {
-        return ew(index, name, value, QueryPolicy.AUTO);
+        return ew(index, name, value, MatchStrategy.AUTO);
     }
 
     /**
@@ -52,7 +52,7 @@ public interface MulitiEntityEndWithExpression<C extends ConditionExpression, L 
      * @return LogicExpression
      */
     default <E> L ew(int index, SerializableFunction<E, String> name, String value, Predicate<String> ignoreStrategy) {
-        return ew(index, name, value, QueryPolicy.AUTO, ignoreStrategy);
+        return ew(index, name, value, MatchStrategy.AUTO, ignoreStrategy);
     }
 
     /**
@@ -65,7 +65,7 @@ public interface MulitiEntityEndWithExpression<C extends ConditionExpression, L 
      * @param queryPolicy the query policy
      * @return the l
      */
-    <E> L ew(int index, SerializableFunction<E, String> name, String value, QueryPolicy queryPolicy);
+    <E> L ew(int index, SerializableFunction<E, String> name, String value, MatchStrategy queryPolicy);
 
     /**
      * end with value. 以value结尾.
@@ -78,7 +78,7 @@ public interface MulitiEntityEndWithExpression<C extends ConditionExpression, L 
      * @param ignoreStrategy the ignore strategy
      * @return the l
      */
-    <E> L ew(int index, SerializableFunction<E, String> name, String value, QueryPolicy queryPolicy,
+    <E> L ew(int index, SerializableFunction<E, String> name, String value, MatchStrategy queryPolicy,
             Predicate<String> ignoreStrategy);
 
     /**
@@ -89,7 +89,7 @@ public interface MulitiEntityEndWithExpression<C extends ConditionExpression, L 
      * @return LogicExpression
      */
     default L ew(int index, SerializableSupplier<String> property) {
-        return ew(index, property, QueryPolicy.AUTO);
+        return ew(index, property, MatchStrategy.AUTO);
     }
 
     /**
@@ -101,7 +101,7 @@ public interface MulitiEntityEndWithExpression<C extends ConditionExpression, L 
      * @return LogicExpression
      */
     default L ew(int index, SerializableSupplier<String> property, Predicate<String> ignoreStrategy) {
-        return ew(index, property, QueryPolicy.AUTO, ignoreStrategy);
+        return ew(index, property, MatchStrategy.AUTO, ignoreStrategy);
     }
 
     /**
@@ -112,7 +112,7 @@ public interface MulitiEntityEndWithExpression<C extends ConditionExpression, L 
      * @param queryPolicy the query policy
      * @return the l
      */
-    L ew(int index, SerializableSupplier<String> property, QueryPolicy queryPolicy);
+    L ew(int index, SerializableSupplier<String> property, MatchStrategy queryPolicy);
 
     /**
      * end with value. 以value结尾.
@@ -123,7 +123,7 @@ public interface MulitiEntityEndWithExpression<C extends ConditionExpression, L 
      * @param ignoreStrategy the ignore strategy
      * @return the l
      */
-    L ew(int index, SerializableSupplier<String> property, QueryPolicy queryPolicy, Predicate<String> ignoreStrategy);
+    L ew(int index, SerializableSupplier<String> property, MatchStrategy queryPolicy, Predicate<String> ignoreStrategy);
 
     //  嵌套属性使用property(U1::getU2).property(U2:getV).ew(v)来设置
     //    /**

@@ -55,7 +55,7 @@ public interface EntityLikeExpression6<E, E2, E3, E4, E5, E6, C extends Conditio
     //            Tuple6<QueryEntityRepository<E>, QueryEntityRepository<E2>, QueryEntityRepository<E3>,
     //                    QueryEntityRepository<E4>, QueryEntityRepository<E5>, QueryEntityRepository<E6>>,
     //            QueryEntityRepository<E>> entities, SerializableFunction<E, String> name, String value) {
-    //        return lk(entities, name, value, QueryPolicy.AUTO);
+    //        return lk(entities, name, value, MatchStrategy.AUTO);
     //    }
     //
     //    /**
@@ -73,7 +73,7 @@ public interface EntityLikeExpression6<E, E2, E3, E4, E5, E6, C extends Conditio
     //                            QueryEntityRepository<E4>, QueryEntityRepository<E5>, QueryEntityRepository<E6>>,
     //                    QueryEntityRepository<E>> entities,
     //            SerializableFunction<E, String> name, String value, Predicate<String> ignoreStrategy) {
-    //        return lk(entities, name, value, QueryPolicy.AUTO, ignoreStrategy);
+    //        return lk(entities, name, value, MatchStrategy.AUTO, ignoreStrategy);
     //    }
     //
     //    /**
@@ -89,7 +89,7 @@ public interface EntityLikeExpression6<E, E2, E3, E4, E5, E6, C extends Conditio
     //            Tuple6<QueryEntityRepository<E>, QueryEntityRepository<E2>, QueryEntityRepository<E3>,
     //                    QueryEntityRepository<E4>, QueryEntityRepository<E5>, QueryEntityRepository<E6>>,
     //            QueryEntityRepository<E>> entities, SerializableFunction<E, String> name, String value,
-    //            QueryPolicy queryPolicy);
+    //            MatchStrategy queryPolicy);
     //
     //    /**
     //     * like value.
@@ -105,7 +105,7 @@ public interface EntityLikeExpression6<E, E2, E3, E4, E5, E6, C extends Conditio
     //            Tuple6<QueryEntityRepository<E>, QueryEntityRepository<E2>, QueryEntityRepository<E3>,
     //                    QueryEntityRepository<E4>, QueryEntityRepository<E5>, QueryEntityRepository<E6>>,
     //            QueryEntityRepository<E>> entities, SerializableFunction<E, String> name, String value,
-    //            QueryPolicy queryPolicy, Predicate<String> ignoreStrategy);
+    //            MatchStrategy queryPolicy, Predicate<String> ignoreStrategy);
     //
     //    /**
     //     * like value.
@@ -118,7 +118,7 @@ public interface EntityLikeExpression6<E, E2, E3, E4, E5, E6, C extends Conditio
     //            Tuple6<QueryEntityRepository<E>, QueryEntityRepository<E2>, QueryEntityRepository<E3>,
     //                    QueryEntityRepository<E4>, QueryEntityRepository<E5>, QueryEntityRepository<E6>>,
     //            QueryEntityRepository<E>> entities, SerializableStringSupplier property) {
-    //        return lk(entities, property, QueryPolicy.AUTO);
+    //        return lk(entities, property, MatchStrategy.AUTO);
     //    }
     //
     //    /**
@@ -133,7 +133,7 @@ public interface EntityLikeExpression6<E, E2, E3, E4, E5, E6, C extends Conditio
     //            Tuple6<QueryEntityRepository<E>, QueryEntityRepository<E2>, QueryEntityRepository<E3>,
     //                    QueryEntityRepository<E4>, QueryEntityRepository<E5>, QueryEntityRepository<E6>>,
     //            QueryEntityRepository<E>> entities, SerializableStringSupplier property, Predicate<String> ignoreStrategy) {
-    //        return lk(entities, property, QueryPolicy.AUTO, ignoreStrategy);
+    //        return lk(entities, property, MatchStrategy.AUTO, ignoreStrategy);
     //    }
     //
     //    /**
@@ -147,7 +147,7 @@ public interface EntityLikeExpression6<E, E2, E3, E4, E5, E6, C extends Conditio
     //    L lk(Function<
     //            Tuple6<QueryEntityRepository<E>, QueryEntityRepository<E2>, QueryEntityRepository<E3>,
     //                    QueryEntityRepository<E4>, QueryEntityRepository<E5>, QueryEntityRepository<E6>>,
-    //            QueryEntityRepository<E>> entities, SerializableStringSupplier property, QueryPolicy queryPolicy);
+    //            QueryEntityRepository<E>> entities, SerializableStringSupplier property, MatchStrategy queryPolicy);
     //
     //    /**
     //     * like value.
@@ -161,7 +161,7 @@ public interface EntityLikeExpression6<E, E2, E3, E4, E5, E6, C extends Conditio
     //    L lk(Function<
     //            Tuple6<QueryEntityRepository<E>, QueryEntityRepository<E2>, QueryEntityRepository<E3>,
     //                    QueryEntityRepository<E4>, QueryEntityRepository<E5>, QueryEntityRepository<E6>>,
-    //            QueryEntityRepository<E>> entities, SerializableStringSupplier property, QueryPolicy queryPolicy,
+    //            QueryEntityRepository<E>> entities, SerializableStringSupplier property, MatchStrategy queryPolicy,
     //            Predicate<String> ignoreStrategy);
     //
     //    /**
@@ -213,7 +213,7 @@ public interface EntityLikeExpression6<E, E2, E3, E4, E5, E6, C extends Conditio
     //            Tuple6<QueryEntityRepository<E>, QueryEntityRepository<E2>, QueryEntityRepository<E3>,
     //                    QueryEntityRepository<E4>, QueryEntityRepository<E5>, QueryEntityRepository<E6>>,
     //            QueryEntityRepository<E2>> entities, SerializableFunction2<E2, String> name, String value) {
-    //        return lk(entities, name, value, QueryPolicy.AUTO);
+    //        return lk(entities, name, value, MatchStrategy.AUTO);
     //    }
     //
     //    /**
@@ -231,7 +231,7 @@ public interface EntityLikeExpression6<E, E2, E3, E4, E5, E6, C extends Conditio
     //                            QueryEntityRepository<E4>, QueryEntityRepository<E5>, QueryEntityRepository<E6>>,
     //                    QueryEntityRepository<E2>> entities,
     //            SerializableFunction2<E2, String> name, String value, Predicate<String> ignoreStrategy) {
-    //        return lk(entities, name, value, QueryPolicy.AUTO, ignoreStrategy);
+    //        return lk(entities, name, value, MatchStrategy.AUTO, ignoreStrategy);
     //    }
     //
     //    /**
@@ -247,7 +247,7 @@ public interface EntityLikeExpression6<E, E2, E3, E4, E5, E6, C extends Conditio
     //            Tuple6<QueryEntityRepository<E>, QueryEntityRepository<E2>, QueryEntityRepository<E3>,
     //                    QueryEntityRepository<E4>, QueryEntityRepository<E5>, QueryEntityRepository<E6>>,
     //            QueryEntityRepository<E2>> entities, SerializableFunction2<E2, String> name, String value,
-    //            QueryPolicy queryPolicy);
+    //            MatchStrategy queryPolicy);
     //
     //    /**
     //     * like value.
@@ -263,7 +263,7 @@ public interface EntityLikeExpression6<E, E2, E3, E4, E5, E6, C extends Conditio
     //            Tuple6<QueryEntityRepository<E>, QueryEntityRepository<E2>, QueryEntityRepository<E3>,
     //                    QueryEntityRepository<E4>, QueryEntityRepository<E5>, QueryEntityRepository<E6>>,
     //            QueryEntityRepository<E2>> entities, SerializableFunction2<E2, String> name, String value,
-    //            QueryPolicy queryPolicy, Predicate<String> ignoreStrategy);
+    //            MatchStrategy queryPolicy, Predicate<String> ignoreStrategy);
     //
     //    /**
     //     * like value.
@@ -276,7 +276,7 @@ public interface EntityLikeExpression6<E, E2, E3, E4, E5, E6, C extends Conditio
     //            Tuple6<QueryEntityRepository<E>, QueryEntityRepository<E2>, QueryEntityRepository<E3>,
     //                    QueryEntityRepository<E4>, QueryEntityRepository<E5>, QueryEntityRepository<E6>>,
     //            QueryEntityRepository<E2>> entities, SerializableSupplier2<String> property) {
-    //        return lk(entities, property, QueryPolicy.AUTO);
+    //        return lk(entities, property, MatchStrategy.AUTO);
     //    }
     //
     //    /**
@@ -293,7 +293,7 @@ public interface EntityLikeExpression6<E, E2, E3, E4, E5, E6, C extends Conditio
     //                            QueryEntityRepository<E4>, QueryEntityRepository<E5>, QueryEntityRepository<E6>>,
     //                    QueryEntityRepository<E2>> entities,
     //            SerializableSupplier2<String> property, Predicate<String> ignoreStrategy) {
-    //        return lk(entities, property, QueryPolicy.AUTO, ignoreStrategy);
+    //        return lk(entities, property, MatchStrategy.AUTO, ignoreStrategy);
     //    }
     //
     //    /**
@@ -307,7 +307,7 @@ public interface EntityLikeExpression6<E, E2, E3, E4, E5, E6, C extends Conditio
     //    L lk(Function<
     //            Tuple6<QueryEntityRepository<E>, QueryEntityRepository<E2>, QueryEntityRepository<E3>,
     //                    QueryEntityRepository<E4>, QueryEntityRepository<E5>, QueryEntityRepository<E6>>,
-    //            QueryEntityRepository<E2>> entities, SerializableSupplier2<String> property, QueryPolicy queryPolicy);
+    //            QueryEntityRepository<E2>> entities, SerializableSupplier2<String> property, MatchStrategy queryPolicy);
     //
     //    /**
     //     * like value.
@@ -321,7 +321,7 @@ public interface EntityLikeExpression6<E, E2, E3, E4, E5, E6, C extends Conditio
     //    L lk(Function<
     //            Tuple6<QueryEntityRepository<E>, QueryEntityRepository<E2>, QueryEntityRepository<E3>,
     //                    QueryEntityRepository<E4>, QueryEntityRepository<E5>, QueryEntityRepository<E6>>,
-    //            QueryEntityRepository<E2>> entities, SerializableSupplier2<String> property, QueryPolicy queryPolicy,
+    //            QueryEntityRepository<E2>> entities, SerializableSupplier2<String> property, MatchStrategy queryPolicy,
     //            Predicate<String> ignoreStrategy);
     //
     //    /**
@@ -374,7 +374,7 @@ public interface EntityLikeExpression6<E, E2, E3, E4, E5, E6, C extends Conditio
     //            Tuple6<QueryEntityRepository<E>, QueryEntityRepository<E2>, QueryEntityRepository<E3>,
     //                    QueryEntityRepository<E4>, QueryEntityRepository<E5>, QueryEntityRepository<E6>>,
     //            QueryEntityRepository<E3>> entities, SerializableFunction3<E3, String> name, String value) {
-    //        return lk(entities, name, value, QueryPolicy.AUTO);
+    //        return lk(entities, name, value, MatchStrategy.AUTO);
     //    }
     //
     //    /**
@@ -392,7 +392,7 @@ public interface EntityLikeExpression6<E, E2, E3, E4, E5, E6, C extends Conditio
     //                            QueryEntityRepository<E4>, QueryEntityRepository<E5>, QueryEntityRepository<E6>>,
     //                    QueryEntityRepository<E3>> entities,
     //            SerializableFunction3<E3, String> name, String value, Predicate<String> ignoreStrategy) {
-    //        return lk(entities, name, value, QueryPolicy.AUTO, ignoreStrategy);
+    //        return lk(entities, name, value, MatchStrategy.AUTO, ignoreStrategy);
     //    }
     //
     //    /**
@@ -408,7 +408,7 @@ public interface EntityLikeExpression6<E, E2, E3, E4, E5, E6, C extends Conditio
     //            Tuple6<QueryEntityRepository<E>, QueryEntityRepository<E2>, QueryEntityRepository<E3>,
     //                    QueryEntityRepository<E4>, QueryEntityRepository<E5>, QueryEntityRepository<E6>>,
     //            QueryEntityRepository<E3>> entities, SerializableFunction3<E3, String> name, String value,
-    //            QueryPolicy queryPolicy);
+    //            MatchStrategy queryPolicy);
     //
     //    /**
     //     * like value.
@@ -424,7 +424,7 @@ public interface EntityLikeExpression6<E, E2, E3, E4, E5, E6, C extends Conditio
     //            Tuple6<QueryEntityRepository<E>, QueryEntityRepository<E2>, QueryEntityRepository<E3>,
     //                    QueryEntityRepository<E4>, QueryEntityRepository<E5>, QueryEntityRepository<E6>>,
     //            QueryEntityRepository<E3>> entities, SerializableFunction3<E3, String> name, String value,
-    //            QueryPolicy queryPolicy, Predicate<String> ignoreStrategy);
+    //            MatchStrategy queryPolicy, Predicate<String> ignoreStrategy);
     //
     //    /**
     //     * like value.
@@ -437,7 +437,7 @@ public interface EntityLikeExpression6<E, E2, E3, E4, E5, E6, C extends Conditio
     //            Tuple6<QueryEntityRepository<E>, QueryEntityRepository<E2>, QueryEntityRepository<E3>,
     //                    QueryEntityRepository<E4>, QueryEntityRepository<E5>, QueryEntityRepository<E6>>,
     //            QueryEntityRepository<E3>> entities, SerializableSupplier3<String> property) {
-    //        return lk(entities, property, QueryPolicy.AUTO);
+    //        return lk(entities, property, MatchStrategy.AUTO);
     //    }
     //
     //    /**
@@ -454,7 +454,7 @@ public interface EntityLikeExpression6<E, E2, E3, E4, E5, E6, C extends Conditio
     //                            QueryEntityRepository<E4>, QueryEntityRepository<E5>, QueryEntityRepository<E6>>,
     //                    QueryEntityRepository<E3>> entities,
     //            SerializableSupplier3<String> property, Predicate<String> ignoreStrategy) {
-    //        return lk(entities, property, QueryPolicy.AUTO, ignoreStrategy);
+    //        return lk(entities, property, MatchStrategy.AUTO, ignoreStrategy);
     //    }
     //
     //    /**
@@ -468,7 +468,7 @@ public interface EntityLikeExpression6<E, E2, E3, E4, E5, E6, C extends Conditio
     //    L lk(Function<
     //            Tuple6<QueryEntityRepository<E>, QueryEntityRepository<E2>, QueryEntityRepository<E3>,
     //                    QueryEntityRepository<E4>, QueryEntityRepository<E5>, QueryEntityRepository<E6>>,
-    //            QueryEntityRepository<E3>> entities, SerializableSupplier3<String> property, QueryPolicy queryPolicy);
+    //            QueryEntityRepository<E3>> entities, SerializableSupplier3<String> property, MatchStrategy queryPolicy);
     //
     //    /**
     //     * like value.
@@ -482,7 +482,7 @@ public interface EntityLikeExpression6<E, E2, E3, E4, E5, E6, C extends Conditio
     //    L lk(Function<
     //            Tuple6<QueryEntityRepository<E>, QueryEntityRepository<E2>, QueryEntityRepository<E3>,
     //                    QueryEntityRepository<E4>, QueryEntityRepository<E5>, QueryEntityRepository<E6>>,
-    //            QueryEntityRepository<E3>> entities, SerializableSupplier3<String> property, QueryPolicy queryPolicy,
+    //            QueryEntityRepository<E3>> entities, SerializableSupplier3<String> property, MatchStrategy queryPolicy,
     //            Predicate<String> ignoreStrategy);
     //
     //    /**
@@ -535,7 +535,7 @@ public interface EntityLikeExpression6<E, E2, E3, E4, E5, E6, C extends Conditio
     //            Tuple6<QueryEntityRepository<E>, QueryEntityRepository<E2>, QueryEntityRepository<E3>,
     //                    QueryEntityRepository<E4>, QueryEntityRepository<E5>, QueryEntityRepository<E6>>,
     //            QueryEntityRepository<E4>> entities, SerializableFunction4<E4, String> name, String value) {
-    //        return lk(entities, name, value, QueryPolicy.AUTO);
+    //        return lk(entities, name, value, MatchStrategy.AUTO);
     //    }
     //
     //    /**
@@ -553,7 +553,7 @@ public interface EntityLikeExpression6<E, E2, E3, E4, E5, E6, C extends Conditio
     //                            QueryEntityRepository<E4>, QueryEntityRepository<E5>, QueryEntityRepository<E6>>,
     //                    QueryEntityRepository<E4>> entities,
     //            SerializableFunction4<E4, String> name, String value, Predicate<String> ignoreStrategy) {
-    //        return lk(entities, name, value, QueryPolicy.AUTO, ignoreStrategy);
+    //        return lk(entities, name, value, MatchStrategy.AUTO, ignoreStrategy);
     //    }
     //
     //    /**
@@ -569,7 +569,7 @@ public interface EntityLikeExpression6<E, E2, E3, E4, E5, E6, C extends Conditio
     //            Tuple6<QueryEntityRepository<E>, QueryEntityRepository<E2>, QueryEntityRepository<E3>,
     //                    QueryEntityRepository<E4>, QueryEntityRepository<E5>, QueryEntityRepository<E6>>,
     //            QueryEntityRepository<E4>> entities, SerializableFunction4<E4, String> name, String value,
-    //            QueryPolicy queryPolicy);
+    //            MatchStrategy queryPolicy);
     //
     //    /**
     //     * like value.
@@ -585,7 +585,7 @@ public interface EntityLikeExpression6<E, E2, E3, E4, E5, E6, C extends Conditio
     //            Tuple6<QueryEntityRepository<E>, QueryEntityRepository<E2>, QueryEntityRepository<E3>,
     //                    QueryEntityRepository<E4>, QueryEntityRepository<E5>, QueryEntityRepository<E6>>,
     //            QueryEntityRepository<E4>> entities, SerializableFunction4<E4, String> name, String value,
-    //            QueryPolicy queryPolicy, Predicate<String> ignoreStrategy);
+    //            MatchStrategy queryPolicy, Predicate<String> ignoreStrategy);
     //
     //    /**
     //     * like value.
@@ -598,7 +598,7 @@ public interface EntityLikeExpression6<E, E2, E3, E4, E5, E6, C extends Conditio
     //            Tuple6<QueryEntityRepository<E>, QueryEntityRepository<E2>, QueryEntityRepository<E3>,
     //                    QueryEntityRepository<E4>, QueryEntityRepository<E5>, QueryEntityRepository<E6>>,
     //            QueryEntityRepository<E4>> entities, SerializableSupplier4<String> property) {
-    //        return lk(entities, property, QueryPolicy.AUTO);
+    //        return lk(entities, property, MatchStrategy.AUTO);
     //    }
     //
     //    /**
@@ -615,7 +615,7 @@ public interface EntityLikeExpression6<E, E2, E3, E4, E5, E6, C extends Conditio
     //                            QueryEntityRepository<E4>, QueryEntityRepository<E5>, QueryEntityRepository<E6>>,
     //                    QueryEntityRepository<E4>> entities,
     //            SerializableSupplier4<String> property, Predicate<String> ignoreStrategy) {
-    //        return lk(entities, property, QueryPolicy.AUTO, ignoreStrategy);
+    //        return lk(entities, property, MatchStrategy.AUTO, ignoreStrategy);
     //    }
     //
     //    /**
@@ -629,7 +629,7 @@ public interface EntityLikeExpression6<E, E2, E3, E4, E5, E6, C extends Conditio
     //    L lk(Function<
     //            Tuple6<QueryEntityRepository<E>, QueryEntityRepository<E2>, QueryEntityRepository<E3>,
     //                    QueryEntityRepository<E4>, QueryEntityRepository<E5>, QueryEntityRepository<E6>>,
-    //            QueryEntityRepository<E4>> entities, SerializableSupplier4<String> property, QueryPolicy queryPolicy);
+    //            QueryEntityRepository<E4>> entities, SerializableSupplier4<String> property, MatchStrategy queryPolicy);
     //
     //    /**
     //     * like value.
@@ -643,7 +643,7 @@ public interface EntityLikeExpression6<E, E2, E3, E4, E5, E6, C extends Conditio
     //    L lk(Function<
     //            Tuple6<QueryEntityRepository<E>, QueryEntityRepository<E2>, QueryEntityRepository<E3>,
     //                    QueryEntityRepository<E4>, QueryEntityRepository<E5>, QueryEntityRepository<E6>>,
-    //            QueryEntityRepository<E4>> entities, SerializableSupplier4<String> property, QueryPolicy queryPolicy,
+    //            QueryEntityRepository<E4>> entities, SerializableSupplier4<String> property, MatchStrategy queryPolicy,
     //            Predicate<String> ignoreStrategy);
     //
     //    /**
@@ -696,7 +696,7 @@ public interface EntityLikeExpression6<E, E2, E3, E4, E5, E6, C extends Conditio
     //            Tuple6<QueryEntityRepository<E>, QueryEntityRepository<E2>, QueryEntityRepository<E3>,
     //                    QueryEntityRepository<E4>, QueryEntityRepository<E5>, QueryEntityRepository<E6>>,
     //            QueryEntityRepository<E5>> entities, SerializableFunction5<E5, String> name, String value) {
-    //        return lk(entities, name, value, QueryPolicy.AUTO);
+    //        return lk(entities, name, value, MatchStrategy.AUTO);
     //    }
     //
     //    /**
@@ -714,7 +714,7 @@ public interface EntityLikeExpression6<E, E2, E3, E4, E5, E6, C extends Conditio
     //                            QueryEntityRepository<E4>, QueryEntityRepository<E5>, QueryEntityRepository<E6>>,
     //                    QueryEntityRepository<E5>> entities,
     //            SerializableFunction5<E5, String> name, String value, Predicate<String> ignoreStrategy) {
-    //        return lk(entities, name, value, QueryPolicy.AUTO, ignoreStrategy);
+    //        return lk(entities, name, value, MatchStrategy.AUTO, ignoreStrategy);
     //    }
     //
     //    /**
@@ -730,7 +730,7 @@ public interface EntityLikeExpression6<E, E2, E3, E4, E5, E6, C extends Conditio
     //            Tuple6<QueryEntityRepository<E>, QueryEntityRepository<E2>, QueryEntityRepository<E3>,
     //                    QueryEntityRepository<E4>, QueryEntityRepository<E5>, QueryEntityRepository<E6>>,
     //            QueryEntityRepository<E5>> entities, SerializableFunction5<E5, String> name, String value,
-    //            QueryPolicy queryPolicy);
+    //            MatchStrategy queryPolicy);
     //
     //    /**
     //     * like value.
@@ -746,7 +746,7 @@ public interface EntityLikeExpression6<E, E2, E3, E4, E5, E6, C extends Conditio
     //            Tuple6<QueryEntityRepository<E>, QueryEntityRepository<E2>, QueryEntityRepository<E3>,
     //                    QueryEntityRepository<E4>, QueryEntityRepository<E5>, QueryEntityRepository<E6>>,
     //            QueryEntityRepository<E5>> entities, SerializableFunction5<E5, String> name, String value,
-    //            QueryPolicy queryPolicy, Predicate<String> ignoreStrategy);
+    //            MatchStrategy queryPolicy, Predicate<String> ignoreStrategy);
     //
     //    /**
     //     * like value.
@@ -759,7 +759,7 @@ public interface EntityLikeExpression6<E, E2, E3, E4, E5, E6, C extends Conditio
     //            Tuple6<QueryEntityRepository<E>, QueryEntityRepository<E2>, QueryEntityRepository<E3>,
     //                    QueryEntityRepository<E4>, QueryEntityRepository<E5>, QueryEntityRepository<E6>>,
     //            QueryEntityRepository<E5>> entities, SerializableSupplier5<String> property) {
-    //        return lk(entities, property, QueryPolicy.AUTO);
+    //        return lk(entities, property, MatchStrategy.AUTO);
     //    }
     //
     //    /**
@@ -776,7 +776,7 @@ public interface EntityLikeExpression6<E, E2, E3, E4, E5, E6, C extends Conditio
     //                            QueryEntityRepository<E4>, QueryEntityRepository<E5>, QueryEntityRepository<E6>>,
     //                    QueryEntityRepository<E5>> entities,
     //            SerializableSupplier5<String> property, Predicate<String> ignoreStrategy) {
-    //        return lk(entities, property, QueryPolicy.AUTO, ignoreStrategy);
+    //        return lk(entities, property, MatchStrategy.AUTO, ignoreStrategy);
     //    }
     //
     //    /**
@@ -790,7 +790,7 @@ public interface EntityLikeExpression6<E, E2, E3, E4, E5, E6, C extends Conditio
     //    L lk(Function<
     //            Tuple6<QueryEntityRepository<E>, QueryEntityRepository<E2>, QueryEntityRepository<E3>,
     //                    QueryEntityRepository<E4>, QueryEntityRepository<E5>, QueryEntityRepository<E6>>,
-    //            QueryEntityRepository<E5>> entities, SerializableSupplier5<String> property, QueryPolicy queryPolicy);
+    //            QueryEntityRepository<E5>> entities, SerializableSupplier5<String> property, MatchStrategy queryPolicy);
     //
     //    /**
     //     * like value.
@@ -804,7 +804,7 @@ public interface EntityLikeExpression6<E, E2, E3, E4, E5, E6, C extends Conditio
     //    L lk(Function<
     //            Tuple6<QueryEntityRepository<E>, QueryEntityRepository<E2>, QueryEntityRepository<E3>,
     //                    QueryEntityRepository<E4>, QueryEntityRepository<E5>, QueryEntityRepository<E6>>,
-    //            QueryEntityRepository<E5>> entities, SerializableSupplier5<String> property, QueryPolicy queryPolicy,
+    //            QueryEntityRepository<E5>> entities, SerializableSupplier5<String> property, MatchStrategy queryPolicy,
     //            Predicate<String> ignoreStrategy);
     //
     //    /**
@@ -857,7 +857,7 @@ public interface EntityLikeExpression6<E, E2, E3, E4, E5, E6, C extends Conditio
     //            Tuple6<QueryEntityRepository<E>, QueryEntityRepository<E2>, QueryEntityRepository<E3>,
     //                    QueryEntityRepository<E4>, QueryEntityRepository<E5>, QueryEntityRepository<E6>>,
     //            QueryEntityRepository<E6>> entities, SerializableFunction6<E6, String> name, String value) {
-    //        return lk(entities, name, value, QueryPolicy.AUTO);
+    //        return lk(entities, name, value, MatchStrategy.AUTO);
     //    }
     //
     //    /**
@@ -875,7 +875,7 @@ public interface EntityLikeExpression6<E, E2, E3, E4, E5, E6, C extends Conditio
     //                            QueryEntityRepository<E4>, QueryEntityRepository<E5>, QueryEntityRepository<E6>>,
     //                    QueryEntityRepository<E6>> entities,
     //            SerializableFunction6<E6, String> name, String value, Predicate<String> ignoreStrategy) {
-    //        return lk(entities, name, value, QueryPolicy.AUTO, ignoreStrategy);
+    //        return lk(entities, name, value, MatchStrategy.AUTO, ignoreStrategy);
     //    }
     //
     //    /**
@@ -891,7 +891,7 @@ public interface EntityLikeExpression6<E, E2, E3, E4, E5, E6, C extends Conditio
     //            Tuple6<QueryEntityRepository<E>, QueryEntityRepository<E2>, QueryEntityRepository<E3>,
     //                    QueryEntityRepository<E4>, QueryEntityRepository<E5>, QueryEntityRepository<E6>>,
     //            QueryEntityRepository<E6>> entities, SerializableFunction6<E6, String> name, String value,
-    //            QueryPolicy queryPolicy);
+    //            MatchStrategy queryPolicy);
     //
     //    /**
     //     * like value.
@@ -907,7 +907,7 @@ public interface EntityLikeExpression6<E, E2, E3, E4, E5, E6, C extends Conditio
     //            Tuple6<QueryEntityRepository<E>, QueryEntityRepository<E2>, QueryEntityRepository<E3>,
     //                    QueryEntityRepository<E4>, QueryEntityRepository<E5>, QueryEntityRepository<E6>>,
     //            QueryEntityRepository<E6>> entities, SerializableFunction6<E6, String> name, String value,
-    //            QueryPolicy queryPolicy, Predicate<String> ignoreStrategy);
+    //            MatchStrategy queryPolicy, Predicate<String> ignoreStrategy);
     //
     //    /**
     //     * like value.
@@ -920,7 +920,7 @@ public interface EntityLikeExpression6<E, E2, E3, E4, E5, E6, C extends Conditio
     //            Tuple6<QueryEntityRepository<E>, QueryEntityRepository<E2>, QueryEntityRepository<E3>,
     //                    QueryEntityRepository<E4>, QueryEntityRepository<E5>, QueryEntityRepository<E6>>,
     //            QueryEntityRepository<E6>> entities, SerializableSupplier6<String> property) {
-    //        return lk(entities, property, QueryPolicy.AUTO);
+    //        return lk(entities, property, MatchStrategy.AUTO);
     //    }
     //
     //    /**
@@ -937,7 +937,7 @@ public interface EntityLikeExpression6<E, E2, E3, E4, E5, E6, C extends Conditio
     //                            QueryEntityRepository<E4>, QueryEntityRepository<E5>, QueryEntityRepository<E6>>,
     //                    QueryEntityRepository<E6>> entities,
     //            SerializableSupplier6<String> property, Predicate<String> ignoreStrategy) {
-    //        return lk(entities, property, QueryPolicy.AUTO, ignoreStrategy);
+    //        return lk(entities, property, MatchStrategy.AUTO, ignoreStrategy);
     //    }
     //
     //    /**
@@ -951,7 +951,7 @@ public interface EntityLikeExpression6<E, E2, E3, E4, E5, E6, C extends Conditio
     //    L lk(Function<
     //            Tuple6<QueryEntityRepository<E>, QueryEntityRepository<E2>, QueryEntityRepository<E3>,
     //                    QueryEntityRepository<E4>, QueryEntityRepository<E5>, QueryEntityRepository<E6>>,
-    //            QueryEntityRepository<E6>> entities, SerializableSupplier6<String> property, QueryPolicy queryPolicy);
+    //            QueryEntityRepository<E6>> entities, SerializableSupplier6<String> property, MatchStrategy queryPolicy);
     //
     //    /**
     //     * like value.
@@ -965,7 +965,7 @@ public interface EntityLikeExpression6<E, E2, E3, E4, E5, E6, C extends Conditio
     //    L lk(Function<
     //            Tuple6<QueryEntityRepository<E>, QueryEntityRepository<E2>, QueryEntityRepository<E3>,
     //                    QueryEntityRepository<E4>, QueryEntityRepository<E5>, QueryEntityRepository<E6>>,
-    //            QueryEntityRepository<E6>> entities, SerializableSupplier6<String> property, QueryPolicy queryPolicy,
+    //            QueryEntityRepository<E6>> entities, SerializableSupplier6<String> property, MatchStrategy queryPolicy,
     //            Predicate<String> ignoreStrategy);
     //
     //    /**

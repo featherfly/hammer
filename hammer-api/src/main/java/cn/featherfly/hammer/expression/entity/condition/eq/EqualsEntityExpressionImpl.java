@@ -13,10 +13,10 @@ package cn.featherfly.hammer.expression.entity.condition.eq;
 import java.util.Collection;
 import java.util.function.Predicate;
 
-import cn.featherfly.common.lang.function.SerializableFunction;
-import cn.featherfly.common.lang.function.SerializableSupplier;
-import cn.featherfly.common.lang.function.SerializableToCollectionFunction;
-import cn.featherfly.common.operator.QueryOperator.QueryPolicy;
+import cn.featherfly.common.function.serializable.SerializableFunction;
+import cn.featherfly.common.function.serializable.SerializableSupplier;
+import cn.featherfly.common.function.serializable.SerializableToCollectionFunction;
+import cn.featherfly.common.operator.ComparisonOperator.MatchStrategy;
 import cn.featherfly.hammer.expression.condition.ConditionExpression;
 import cn.featherfly.hammer.expression.condition.LogicExpression;
 import cn.featherfly.hammer.expression.entity.condition.AbstractConditionEntityExpression;
@@ -73,7 +73,7 @@ public class EqualsEntityExpressionImpl<E, C extends ConditionExpression, L exte
      * {@inheritDoc}
      */
     @Override
-    public <R> void accept(SerializableFunction<E, R> property, R value, QueryPolicy queryPolicy) {
+    public <R> void accept(SerializableFunction<E, R> property, R value, MatchStrategy queryPolicy) {
         expression.eq(index, property, value, queryPolicy);
     }
 
@@ -89,7 +89,7 @@ public class EqualsEntityExpressionImpl<E, C extends ConditionExpression, L exte
      * {@inheritDoc}
      */
     @Override
-    public <R> void accept(SerializableFunction<E, R> property, R value, QueryPolicy queryPolicy,
+    public <R> void accept(SerializableFunction<E, R> property, R value, MatchStrategy queryPolicy,
             Predicate<R> ignoreStrategy) {
         expression.eq(index, property, value, queryPolicy, ignoreStrategy);
     }
@@ -114,7 +114,7 @@ public class EqualsEntityExpressionImpl<E, C extends ConditionExpression, L exte
      * {@inheritDoc}
      */
     @Override
-    public <R> void accept(SerializableSupplier<R> property, QueryPolicy queryPolicy) {
+    public <R> void accept(SerializableSupplier<R> property, MatchStrategy queryPolicy) {
         expression.eq(index, property, queryPolicy);
     }
 
@@ -122,7 +122,7 @@ public class EqualsEntityExpressionImpl<E, C extends ConditionExpression, L exte
      * {@inheritDoc}
      */
     @Override
-    public <R> void accept(SerializableSupplier<R> property, QueryPolicy queryPolicy, Predicate<R> ignoreStrategy) {
+    public <R> void accept(SerializableSupplier<R> property, MatchStrategy queryPolicy, Predicate<R> ignoreStrategy) {
         expression.eq(index, property, queryPolicy, ignoreStrategy);
     }
 

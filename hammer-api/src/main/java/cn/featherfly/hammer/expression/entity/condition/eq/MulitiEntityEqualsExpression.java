@@ -3,9 +3,9 @@ package cn.featherfly.hammer.expression.entity.condition.eq;
 
 import java.util.function.Predicate;
 
-import cn.featherfly.common.lang.function.SerializableFunction;
-import cn.featherfly.common.lang.function.SerializableSupplier;
-import cn.featherfly.common.operator.QueryOperator.QueryPolicy;
+import cn.featherfly.common.function.serializable.SerializableFunction;
+import cn.featherfly.common.function.serializable.SerializableSupplier;
+import cn.featherfly.common.operator.ComparisonOperator.MatchStrategy;
 import cn.featherfly.hammer.expression.condition.ConditionExpression;
 import cn.featherfly.hammer.expression.condition.LogicExpression;
 import cn.featherfly.hammer.expression.entity.condition.MulitiEntityConditionExpression;
@@ -31,7 +31,7 @@ public interface MulitiEntityEqualsExpression<C extends ConditionExpression, L e
      * @return LogicExpression
      */
     default <E, R> L eq(int index, SerializableFunction<E, R> name, R value) {
-        return eq(index, name, value, QueryPolicy.AUTO);
+        return eq(index, name, value, MatchStrategy.AUTO);
     }
 
     /**
@@ -46,7 +46,7 @@ public interface MulitiEntityEqualsExpression<C extends ConditionExpression, L e
      * @return LogicExpression
      */
     default <E, R> L eq(int index, SerializableFunction<E, R> name, R value, Predicate<R> ignoreStrategy) {
-        return eq(index, name, value, QueryPolicy.AUTO, ignoreStrategy);
+        return eq(index, name, value, MatchStrategy.AUTO, ignoreStrategy);
     }
 
     /**
@@ -60,7 +60,7 @@ public interface MulitiEntityEqualsExpression<C extends ConditionExpression, L e
      * @param queryPolicy the query policy
      * @return LogicExpression
      */
-    <E, R> L eq(int index, SerializableFunction<E, R> name, R value, QueryPolicy queryPolicy);
+    <E, R> L eq(int index, SerializableFunction<E, R> name, R value, MatchStrategy queryPolicy);
 
     /**
      * equals. 等于.
@@ -74,7 +74,7 @@ public interface MulitiEntityEqualsExpression<C extends ConditionExpression, L e
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
-    <E, R> L eq(int index, SerializableFunction<E, R> name, R value, QueryPolicy queryPolicy,
+    <E, R> L eq(int index, SerializableFunction<E, R> name, R value, MatchStrategy queryPolicy,
             Predicate<R> ignoreStrategy);
 
     /**
@@ -87,7 +87,7 @@ public interface MulitiEntityEqualsExpression<C extends ConditionExpression, L e
      * @return LogicExpression
      */
     default <E, R> L eq(int index, SerializableSupplier<R> property) {
-        return eq(index, property, QueryPolicy.AUTO);
+        return eq(index, property, MatchStrategy.AUTO);
     }
 
     /**
@@ -100,7 +100,7 @@ public interface MulitiEntityEqualsExpression<C extends ConditionExpression, L e
      * @return LogicExpression
      */
     default <R> L eq(int index, SerializableSupplier<R> property, Predicate<R> ignoreStrategy) {
-        return eq(index, property, QueryPolicy.AUTO, ignoreStrategy);
+        return eq(index, property, MatchStrategy.AUTO, ignoreStrategy);
     }
 
     /**
@@ -112,7 +112,7 @@ public interface MulitiEntityEqualsExpression<C extends ConditionExpression, L e
      * @param queryPolicy the query policy
      * @return LogicExpression
      */
-    <R> L eq(int index, SerializableSupplier<R> property, QueryPolicy queryPolicy);
+    <R> L eq(int index, SerializableSupplier<R> property, MatchStrategy queryPolicy);
 
     /**
      * equals. 等于.
@@ -124,5 +124,5 @@ public interface MulitiEntityEqualsExpression<C extends ConditionExpression, L e
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
-    <R> L eq(int index, SerializableSupplier<R> property, QueryPolicy queryPolicy, Predicate<R> ignoreStrategy);
+    <R> L eq(int index, SerializableSupplier<R> property, MatchStrategy queryPolicy, Predicate<R> ignoreStrategy);
 }

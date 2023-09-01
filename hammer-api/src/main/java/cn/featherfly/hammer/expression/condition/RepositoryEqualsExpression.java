@@ -1,9 +1,9 @@
 
 package cn.featherfly.hammer.expression.condition;
 
-import cn.featherfly.common.lang.function.SerializableFunction;
-import cn.featherfly.common.lang.function.SerializableSupplier;
-import cn.featherfly.common.operator.QueryOperator.QueryPolicy;
+import cn.featherfly.common.function.serializable.SerializableFunction;
+import cn.featherfly.common.function.serializable.SerializableSupplier;
+import cn.featherfly.common.operator.ComparisonOperator.MatchStrategy;
 
 /**
  * The Interface RepositoryEqualsExpression.
@@ -24,7 +24,7 @@ public interface RepositoryEqualsExpression<C extends ConditionExpression, L ext
      * @return LogicExpression
      */
     default L eq(String repository, String name, Object value) {
-        return eq(repository, name, value, QueryPolicy.AUTO);
+        return eq(repository, name, value, MatchStrategy.AUTO);
     }
 
     /**
@@ -36,7 +36,7 @@ public interface RepositoryEqualsExpression<C extends ConditionExpression, L ext
      * @param queryPolicy the query policy
      * @return LogicExpression
      */
-    L eq(String repository, String name, Object value, QueryPolicy queryPolicy);
+    L eq(String repository, String name, Object value, MatchStrategy queryPolicy);
 
     /**
      * equals. 等于.
@@ -48,7 +48,7 @@ public interface RepositoryEqualsExpression<C extends ConditionExpression, L ext
      * @return LogicExpression
      */
     //    default <T> L eq(Class<T> repository, String name, Object value) {
-    //        return eq(repository, name, value, QueryPolicy.AUTO);
+    //        return eq(repository, name, value, MatchStrategy.AUTO);
     //    }
 
     /**
@@ -61,7 +61,7 @@ public interface RepositoryEqualsExpression<C extends ConditionExpression, L ext
      * @param queryPolicy the query policy
      * @return LogicExpression
      */
-    //    <T> L eq(Class<T> repository, String name, Object value, QueryPolicy queryPolicy);
+    //    <T> L eq(Class<T> repository, String name, Object value, MatchStrategy queryPolicy);
 
     /**
      * equals. 等于.
@@ -72,7 +72,7 @@ public interface RepositoryEqualsExpression<C extends ConditionExpression, L ext
      * @return LogicExpression
      */
     default L eq(int repositoryIndex, String name, Object value) {
-        return eq(repositoryIndex, name, value, QueryPolicy.AUTO);
+        return eq(repositoryIndex, name, value, MatchStrategy.AUTO);
     }
 
     /**
@@ -84,7 +84,7 @@ public interface RepositoryEqualsExpression<C extends ConditionExpression, L ext
      * @param queryPolicy     the query policy
      * @return LogicExpression
      */
-    L eq(int repositoryIndex, String name, Object value, QueryPolicy queryPolicy);
+    L eq(int repositoryIndex, String name, Object value, MatchStrategy queryPolicy);
 
     /**
      * equals. 等于.
@@ -97,7 +97,7 @@ public interface RepositoryEqualsExpression<C extends ConditionExpression, L ext
      * @return LogicExpression
      */
     default <T, R> L eq(SerializableFunction<T, R> repository, SerializableFunction<T, R> property, R value) {
-        return eq(repository, property, value, QueryPolicy.AUTO);
+        return eq(repository, property, value, MatchStrategy.AUTO);
     }
 
     /**
@@ -112,7 +112,7 @@ public interface RepositoryEqualsExpression<C extends ConditionExpression, L ext
      * @return LogicExpression
      */
     <T, R> L eq(SerializableFunction<T, R> repository, SerializableFunction<T, R> property, R value,
-            QueryPolicy queryPolicy);
+            MatchStrategy queryPolicy);
 
     /**
      * equals. 等于.
@@ -124,7 +124,7 @@ public interface RepositoryEqualsExpression<C extends ConditionExpression, L ext
      * @return LogicExpression
      */
     default <T, R> L eq(SerializableSupplier<T> repository, SerializableFunction<T, R> property) {
-        return eq(repository, property, QueryPolicy.AUTO);
+        return eq(repository, property, MatchStrategy.AUTO);
     }
 
     /**
@@ -137,6 +137,6 @@ public interface RepositoryEqualsExpression<C extends ConditionExpression, L ext
      * @param queryPolicy the query policy
      * @return LogicExpression
      */
-    <T, R> L eq(SerializableSupplier<T> repository, SerializableFunction<T, R> property, QueryPolicy queryPolicy);
+    <T, R> L eq(SerializableSupplier<T> repository, SerializableFunction<T, R> property, MatchStrategy queryPolicy);
 
 }

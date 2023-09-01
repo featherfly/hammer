@@ -56,15 +56,15 @@ public class DslStaticTypeTest {
 
     <T, V> void s2(BeanPropertySupplier<T, V> c) {
         System.out.println(c.getClass().getName());
-        System.out.println(c.getBeanType());
-        System.out.println(c.getPropertyName());
+        System.out.println(c.getInstanceType());
+        System.out.println(c.getName());
         System.out.println(c.get());
     }
 
     <V> void s3(BeanPropertySupplier<User, V> c) {
         System.out.println(c.getClass().getName());
-        System.out.println(c.getBeanType());
-        System.out.println(c.getPropertyName());
+        System.out.println(c.getInstanceType());
+        System.out.println(c.getName());
         System.out.println(c.get());
     }
 
@@ -113,7 +113,7 @@ public class DslStaticTypeTest {
         System.out.println("---------------------------------------------------------------");
         System.out.println("---------------------------------------------------------------");
 
-        s2(new BeanPropertySupplierImpl<>(User.class, user.getUsername(), "username"));
+        s2(new BeanPropertySupplierImpl<>(User.class, String.class, user.getUsername(), "username"));
 
         System.out.println("---------------------------------------------------------------");
         System.out.println("---------------------------------------------------------------");
@@ -125,12 +125,12 @@ public class DslStaticTypeTest {
             private String value = user.getUsername();
 
             @Override
-            public Class<User> getBeanType() {
+            public Class<User> getInstanceType() {
                 return User.class;
             }
 
             @Override
-            public String getPropertyName() {
+            public String getName() {
                 return "username";
             }
 

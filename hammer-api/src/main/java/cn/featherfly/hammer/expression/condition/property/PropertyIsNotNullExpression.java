@@ -19,7 +19,9 @@ public interface PropertyIsNotNullExpression<C extends ConditionExpression, L ex
      *
      * @return LogicExpression
      */
-    L inn();
+    default L inn() {
+        return inn(true);
+    }
 
     /**
      * is not null.

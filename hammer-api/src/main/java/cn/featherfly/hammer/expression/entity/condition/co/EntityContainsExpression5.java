@@ -36,7 +36,7 @@ public interface EntityContainsExpression5<E, E2, E3, E4, E5, C extends Conditio
     //            Function<Tuple5<QueryEntityRepository<E>, QueryEntityRepository<E2>, QueryEntityRepository<E3>,
     //                    QueryEntityRepository<E4>, QueryEntityRepository<E5>>, QueryEntityRepository<E>> entities,
     //            SerializableFunction<E, String> name, String value) {
-    //        return co(entities, name, value, QueryPolicy.AUTO);
+    //        return co(entities, name, value, MatchStrategy.AUTO);
     //    }
     //
     //    /**
@@ -52,7 +52,7 @@ public interface EntityContainsExpression5<E, E2, E3, E4, E5, C extends Conditio
     //            Function<Tuple5<QueryEntityRepository<E>, QueryEntityRepository<E2>, QueryEntityRepository<E3>,
     //                    QueryEntityRepository<E4>, QueryEntityRepository<E5>>, QueryEntityRepository<E>> entities,
     //            SerializableFunction<E, String> name, String value, Predicate<String> ignoreStrategy) {
-    //        return co(entities, name, value, QueryPolicy.AUTO, ignoreStrategy);
+    //        return co(entities, name, value, MatchStrategy.AUTO, ignoreStrategy);
     //    }
     //
     //    /**
@@ -66,7 +66,7 @@ public interface EntityContainsExpression5<E, E2, E3, E4, E5, C extends Conditio
     //     */
     //    L co(Function<Tuple5<QueryEntityRepository<E>, QueryEntityRepository<E2>, QueryEntityRepository<E3>,
     //            QueryEntityRepository<E4>, QueryEntityRepository<E5>>, QueryEntityRepository<E>> entities,
-    //            SerializableFunction<E, String> name, String value, QueryPolicy queryPolicy);
+    //            SerializableFunction<E, String> name, String value, MatchStrategy queryPolicy);
     //
     //    /**
     //     * contains value. 包含value.
@@ -80,7 +80,7 @@ public interface EntityContainsExpression5<E, E2, E3, E4, E5, C extends Conditio
     //     */
     //    L co(Function<Tuple5<QueryEntityRepository<E>, QueryEntityRepository<E2>, QueryEntityRepository<E3>,
     //            QueryEntityRepository<E4>, QueryEntityRepository<E5>>, QueryEntityRepository<E>> entities,
-    //            SerializableFunction<E, String> name, String value, QueryPolicy queryPolicy,
+    //            SerializableFunction<E, String> name, String value, MatchStrategy queryPolicy,
     //            Predicate<String> ignoreStrategy);
     //
     //    /**
@@ -94,7 +94,7 @@ public interface EntityContainsExpression5<E, E2, E3, E4, E5, C extends Conditio
     //            Function<Tuple5<QueryEntityRepository<E>, QueryEntityRepository<E2>, QueryEntityRepository<E3>,
     //                    QueryEntityRepository<E4>, QueryEntityRepository<E5>>, QueryEntityRepository<E>> entities,
     //            SerializableStringSupplier property) {
-    //        return co(entities, property, QueryPolicy.AUTO);
+    //        return co(entities, property, MatchStrategy.AUTO);
     //    }
     //
     //    /**
@@ -109,7 +109,7 @@ public interface EntityContainsExpression5<E, E2, E3, E4, E5, C extends Conditio
     //            Function<Tuple5<QueryEntityRepository<E>, QueryEntityRepository<E2>, QueryEntityRepository<E3>,
     //                    QueryEntityRepository<E4>, QueryEntityRepository<E5>>, QueryEntityRepository<E>> entities,
     //            SerializableStringSupplier property, Predicate<String> ignoreStrategy) {
-    //        return co(entities, property, QueryPolicy.AUTO, ignoreStrategy);
+    //        return co(entities, property, MatchStrategy.AUTO, ignoreStrategy);
     //    }
     //
     //    /**
@@ -122,7 +122,7 @@ public interface EntityContainsExpression5<E, E2, E3, E4, E5, C extends Conditio
     //     */
     //    L co(Function<Tuple5<QueryEntityRepository<E>, QueryEntityRepository<E2>, QueryEntityRepository<E3>,
     //            QueryEntityRepository<E4>, QueryEntityRepository<E5>>, QueryEntityRepository<E>> entities,
-    //            SerializableStringSupplier property, QueryPolicy queryPolicy);
+    //            SerializableStringSupplier property, MatchStrategy queryPolicy);
     //
     //    /**
     //     * contains value. 包含value.
@@ -135,7 +135,7 @@ public interface EntityContainsExpression5<E, E2, E3, E4, E5, C extends Conditio
     //     */
     //    L co(Function<Tuple5<QueryEntityRepository<E>, QueryEntityRepository<E2>, QueryEntityRepository<E3>,
     //            QueryEntityRepository<E4>, QueryEntityRepository<E5>>, QueryEntityRepository<E>> entities,
-    //            SerializableStringSupplier property, QueryPolicy queryPolicy, Predicate<String> ignoreStrategy);
+    //            SerializableStringSupplier property, MatchStrategy queryPolicy, Predicate<String> ignoreStrategy);
     //
     //    /**
     //     * contains value. 包含value.
@@ -182,7 +182,7 @@ public interface EntityContainsExpression5<E, E2, E3, E4, E5, C extends Conditio
     //            Function<Tuple5<QueryEntityRepository<E>, QueryEntityRepository<E2>, QueryEntityRepository<E3>,
     //                    QueryEntityRepository<E4>, QueryEntityRepository<E5>>, QueryEntityRepository<E2>> entities,
     //            SerializableFunction2<E2, String> name, String value) {
-    //        return co(entities, name, value, QueryPolicy.AUTO);
+    //        return co(entities, name, value, MatchStrategy.AUTO);
     //    }
     //
     //    /**
@@ -198,7 +198,7 @@ public interface EntityContainsExpression5<E, E2, E3, E4, E5, C extends Conditio
     //            Function<Tuple5<QueryEntityRepository<E>, QueryEntityRepository<E2>, QueryEntityRepository<E3>,
     //                    QueryEntityRepository<E4>, QueryEntityRepository<E5>>, QueryEntityRepository<E2>> entities,
     //            SerializableFunction2<E2, String> name, String value, Predicate<String> ignoreStrategy) {
-    //        return co(entities, name, value, QueryPolicy.AUTO, ignoreStrategy);
+    //        return co(entities, name, value, MatchStrategy.AUTO, ignoreStrategy);
     //    }
     //
     //    /**
@@ -212,7 +212,7 @@ public interface EntityContainsExpression5<E, E2, E3, E4, E5, C extends Conditio
     //     */
     //    L co(Function<Tuple5<QueryEntityRepository<E>, QueryEntityRepository<E2>, QueryEntityRepository<E3>,
     //            QueryEntityRepository<E4>, QueryEntityRepository<E5>>, QueryEntityRepository<E2>> entities,
-    //            SerializableFunction2<E2, String> name, String value, QueryPolicy queryPolicy);
+    //            SerializableFunction2<E2, String> name, String value, MatchStrategy queryPolicy);
     //
     //    /**
     //     * contains value. 包含value.
@@ -226,7 +226,7 @@ public interface EntityContainsExpression5<E, E2, E3, E4, E5, C extends Conditio
     //     */
     //    L co(Function<Tuple5<QueryEntityRepository<E>, QueryEntityRepository<E2>, QueryEntityRepository<E3>,
     //            QueryEntityRepository<E4>, QueryEntityRepository<E5>>, QueryEntityRepository<E2>> entities,
-    //            SerializableFunction2<E2, String> name, String value, QueryPolicy queryPolicy,
+    //            SerializableFunction2<E2, String> name, String value, MatchStrategy queryPolicy,
     //            Predicate<String> ignoreStrategy);
     //
     //    /**
@@ -240,7 +240,7 @@ public interface EntityContainsExpression5<E, E2, E3, E4, E5, C extends Conditio
     //            Function<Tuple5<QueryEntityRepository<E>, QueryEntityRepository<E2>, QueryEntityRepository<E3>,
     //                    QueryEntityRepository<E4>, QueryEntityRepository<E5>>, QueryEntityRepository<E2>> entities,
     //            SerializableSupplier2<String> property) {
-    //        return co(entities, property, QueryPolicy.AUTO);
+    //        return co(entities, property, MatchStrategy.AUTO);
     //    }
     //
     //    /**
@@ -255,7 +255,7 @@ public interface EntityContainsExpression5<E, E2, E3, E4, E5, C extends Conditio
     //            Function<Tuple5<QueryEntityRepository<E>, QueryEntityRepository<E2>, QueryEntityRepository<E3>,
     //                    QueryEntityRepository<E4>, QueryEntityRepository<E5>>, QueryEntityRepository<E2>> entities,
     //            SerializableSupplier2<String> property, Predicate<String> ignoreStrategy) {
-    //        return co(entities, property, QueryPolicy.AUTO, ignoreStrategy);
+    //        return co(entities, property, MatchStrategy.AUTO, ignoreStrategy);
     //    }
     //
     //    /**
@@ -268,7 +268,7 @@ public interface EntityContainsExpression5<E, E2, E3, E4, E5, C extends Conditio
     //     */
     //    L co(Function<Tuple5<QueryEntityRepository<E>, QueryEntityRepository<E2>, QueryEntityRepository<E3>,
     //            QueryEntityRepository<E4>, QueryEntityRepository<E5>>, QueryEntityRepository<E2>> entities,
-    //            SerializableSupplier2<String> property, QueryPolicy queryPolicy);
+    //            SerializableSupplier2<String> property, MatchStrategy queryPolicy);
     //
     //    /**
     //     * contains value. 包含value.
@@ -281,7 +281,7 @@ public interface EntityContainsExpression5<E, E2, E3, E4, E5, C extends Conditio
     //     */
     //    L co(Function<Tuple5<QueryEntityRepository<E>, QueryEntityRepository<E2>, QueryEntityRepository<E3>,
     //            QueryEntityRepository<E4>, QueryEntityRepository<E5>>, QueryEntityRepository<E2>> entities,
-    //            SerializableSupplier2<String> property, QueryPolicy queryPolicy, Predicate<String> ignoreStrategy);
+    //            SerializableSupplier2<String> property, MatchStrategy queryPolicy, Predicate<String> ignoreStrategy);
     //
     //    /**
     //     * contains value. 包含value.
@@ -329,7 +329,7 @@ public interface EntityContainsExpression5<E, E2, E3, E4, E5, C extends Conditio
     //            Function<Tuple5<QueryEntityRepository<E>, QueryEntityRepository<E2>, QueryEntityRepository<E3>,
     //                    QueryEntityRepository<E4>, QueryEntityRepository<E5>>, QueryEntityRepository<E3>> entities,
     //            SerializableFunction3<E3, String> name, String value) {
-    //        return co(entities, name, value, QueryPolicy.AUTO);
+    //        return co(entities, name, value, MatchStrategy.AUTO);
     //    }
     //
     //    /**
@@ -345,7 +345,7 @@ public interface EntityContainsExpression5<E, E2, E3, E4, E5, C extends Conditio
     //            Function<Tuple5<QueryEntityRepository<E>, QueryEntityRepository<E2>, QueryEntityRepository<E3>,
     //                    QueryEntityRepository<E4>, QueryEntityRepository<E5>>, QueryEntityRepository<E3>> entities,
     //            SerializableFunction3<E3, String> name, String value, Predicate<String> ignoreStrategy) {
-    //        return co(entities, name, value, QueryPolicy.AUTO, ignoreStrategy);
+    //        return co(entities, name, value, MatchStrategy.AUTO, ignoreStrategy);
     //    }
     //
     //    /**
@@ -359,7 +359,7 @@ public interface EntityContainsExpression5<E, E2, E3, E4, E5, C extends Conditio
     //     */
     //    L co(Function<Tuple5<QueryEntityRepository<E>, QueryEntityRepository<E2>, QueryEntityRepository<E3>,
     //            QueryEntityRepository<E4>, QueryEntityRepository<E5>>, QueryEntityRepository<E3>> entities,
-    //            SerializableFunction3<E3, String> name, String value, QueryPolicy queryPolicy);
+    //            SerializableFunction3<E3, String> name, String value, MatchStrategy queryPolicy);
     //
     //    /**
     //     * contains value. 包含value.
@@ -373,7 +373,7 @@ public interface EntityContainsExpression5<E, E2, E3, E4, E5, C extends Conditio
     //     */
     //    L co(Function<Tuple5<QueryEntityRepository<E>, QueryEntityRepository<E2>, QueryEntityRepository<E3>,
     //            QueryEntityRepository<E4>, QueryEntityRepository<E5>>, QueryEntityRepository<E3>> entities,
-    //            SerializableFunction3<E3, String> name, String value, QueryPolicy queryPolicy,
+    //            SerializableFunction3<E3, String> name, String value, MatchStrategy queryPolicy,
     //            Predicate<String> ignoreStrategy);
     //
     //    /**
@@ -387,7 +387,7 @@ public interface EntityContainsExpression5<E, E2, E3, E4, E5, C extends Conditio
     //            Function<Tuple5<QueryEntityRepository<E>, QueryEntityRepository<E2>, QueryEntityRepository<E3>,
     //                    QueryEntityRepository<E4>, QueryEntityRepository<E5>>, QueryEntityRepository<E3>> entities,
     //            SerializableSupplier3<String> property) {
-    //        return co(entities, property, QueryPolicy.AUTO);
+    //        return co(entities, property, MatchStrategy.AUTO);
     //    }
     //
     //    /**
@@ -402,7 +402,7 @@ public interface EntityContainsExpression5<E, E2, E3, E4, E5, C extends Conditio
     //            Function<Tuple5<QueryEntityRepository<E>, QueryEntityRepository<E2>, QueryEntityRepository<E3>,
     //                    QueryEntityRepository<E4>, QueryEntityRepository<E5>>, QueryEntityRepository<E3>> entities,
     //            SerializableSupplier3<String> property, Predicate<String> ignoreStrategy) {
-    //        return co(entities, property, QueryPolicy.AUTO, ignoreStrategy);
+    //        return co(entities, property, MatchStrategy.AUTO, ignoreStrategy);
     //    }
     //
     //    /**
@@ -415,7 +415,7 @@ public interface EntityContainsExpression5<E, E2, E3, E4, E5, C extends Conditio
     //     */
     //    L co(Function<Tuple5<QueryEntityRepository<E>, QueryEntityRepository<E2>, QueryEntityRepository<E3>,
     //            QueryEntityRepository<E4>, QueryEntityRepository<E5>>, QueryEntityRepository<E3>> entities,
-    //            SerializableSupplier3<String> property, QueryPolicy queryPolicy);
+    //            SerializableSupplier3<String> property, MatchStrategy queryPolicy);
     //
     //    /**
     //     * contains value. 包含value.
@@ -428,7 +428,7 @@ public interface EntityContainsExpression5<E, E2, E3, E4, E5, C extends Conditio
     //     */
     //    L co(Function<Tuple5<QueryEntityRepository<E>, QueryEntityRepository<E2>, QueryEntityRepository<E3>,
     //            QueryEntityRepository<E4>, QueryEntityRepository<E5>>, QueryEntityRepository<E3>> entities,
-    //            SerializableSupplier3<String> property, QueryPolicy queryPolicy, Predicate<String> ignoreStrategy);
+    //            SerializableSupplier3<String> property, MatchStrategy queryPolicy, Predicate<String> ignoreStrategy);
     //
     //    /**
     //     * contains value. 包含value.
@@ -476,7 +476,7 @@ public interface EntityContainsExpression5<E, E2, E3, E4, E5, C extends Conditio
     //            Function<Tuple5<QueryEntityRepository<E>, QueryEntityRepository<E2>, QueryEntityRepository<E3>,
     //                    QueryEntityRepository<E4>, QueryEntityRepository<E5>>, QueryEntityRepository<E4>> entities,
     //            SerializableFunction4<E4, String> name, String value) {
-    //        return co(entities, name, value, QueryPolicy.AUTO);
+    //        return co(entities, name, value, MatchStrategy.AUTO);
     //    }
     //
     //    /**
@@ -492,7 +492,7 @@ public interface EntityContainsExpression5<E, E2, E3, E4, E5, C extends Conditio
     //            Function<Tuple5<QueryEntityRepository<E>, QueryEntityRepository<E2>, QueryEntityRepository<E3>,
     //                    QueryEntityRepository<E4>, QueryEntityRepository<E5>>, QueryEntityRepository<E4>> entities,
     //            SerializableFunction4<E4, String> name, String value, Predicate<String> ignoreStrategy) {
-    //        return co(entities, name, value, QueryPolicy.AUTO, ignoreStrategy);
+    //        return co(entities, name, value, MatchStrategy.AUTO, ignoreStrategy);
     //    }
     //
     //    /**
@@ -506,7 +506,7 @@ public interface EntityContainsExpression5<E, E2, E3, E4, E5, C extends Conditio
     //     */
     //    L co(Function<Tuple5<QueryEntityRepository<E>, QueryEntityRepository<E2>, QueryEntityRepository<E3>,
     //            QueryEntityRepository<E4>, QueryEntityRepository<E5>>, QueryEntityRepository<E4>> entities,
-    //            SerializableFunction4<E4, String> name, String value, QueryPolicy queryPolicy);
+    //            SerializableFunction4<E4, String> name, String value, MatchStrategy queryPolicy);
     //
     //    /**
     //     * contains value. 包含value.
@@ -520,7 +520,7 @@ public interface EntityContainsExpression5<E, E2, E3, E4, E5, C extends Conditio
     //     */
     //    L co(Function<Tuple5<QueryEntityRepository<E>, QueryEntityRepository<E2>, QueryEntityRepository<E3>,
     //            QueryEntityRepository<E4>, QueryEntityRepository<E5>>, QueryEntityRepository<E4>> entities,
-    //            SerializableFunction4<E4, String> name, String value, QueryPolicy queryPolicy,
+    //            SerializableFunction4<E4, String> name, String value, MatchStrategy queryPolicy,
     //            Predicate<String> ignoreStrategy);
     //
     //    /**
@@ -534,7 +534,7 @@ public interface EntityContainsExpression5<E, E2, E3, E4, E5, C extends Conditio
     //            Function<Tuple5<QueryEntityRepository<E>, QueryEntityRepository<E2>, QueryEntityRepository<E3>,
     //                    QueryEntityRepository<E4>, QueryEntityRepository<E5>>, QueryEntityRepository<E4>> entities,
     //            SerializableSupplier4<String> property) {
-    //        return co(entities, property, QueryPolicy.AUTO);
+    //        return co(entities, property, MatchStrategy.AUTO);
     //    }
     //
     //    /**
@@ -549,7 +549,7 @@ public interface EntityContainsExpression5<E, E2, E3, E4, E5, C extends Conditio
     //            Function<Tuple5<QueryEntityRepository<E>, QueryEntityRepository<E2>, QueryEntityRepository<E3>,
     //                    QueryEntityRepository<E4>, QueryEntityRepository<E5>>, QueryEntityRepository<E4>> entities,
     //            SerializableSupplier4<String> property, Predicate<String> ignoreStrategy) {
-    //        return co(entities, property, QueryPolicy.AUTO, ignoreStrategy);
+    //        return co(entities, property, MatchStrategy.AUTO, ignoreStrategy);
     //    }
     //
     //    /**
@@ -562,7 +562,7 @@ public interface EntityContainsExpression5<E, E2, E3, E4, E5, C extends Conditio
     //     */
     //    L co(Function<Tuple5<QueryEntityRepository<E>, QueryEntityRepository<E2>, QueryEntityRepository<E3>,
     //            QueryEntityRepository<E4>, QueryEntityRepository<E5>>, QueryEntityRepository<E4>> entities,
-    //            SerializableSupplier4<String> property, QueryPolicy queryPolicy);
+    //            SerializableSupplier4<String> property, MatchStrategy queryPolicy);
     //
     //    /**
     //     * contains value. 包含value.
@@ -575,7 +575,7 @@ public interface EntityContainsExpression5<E, E2, E3, E4, E5, C extends Conditio
     //     */
     //    L co(Function<Tuple5<QueryEntityRepository<E>, QueryEntityRepository<E2>, QueryEntityRepository<E3>,
     //            QueryEntityRepository<E4>, QueryEntityRepository<E5>>, QueryEntityRepository<E4>> entities,
-    //            SerializableSupplier4<String> property, QueryPolicy queryPolicy, Predicate<String> ignoreStrategy);
+    //            SerializableSupplier4<String> property, MatchStrategy queryPolicy, Predicate<String> ignoreStrategy);
     //
     //    /**
     //     * contains value. 包含value.
@@ -623,7 +623,7 @@ public interface EntityContainsExpression5<E, E2, E3, E4, E5, C extends Conditio
     //            Function<Tuple5<QueryEntityRepository<E>, QueryEntityRepository<E2>, QueryEntityRepository<E3>,
     //                    QueryEntityRepository<E4>, QueryEntityRepository<E5>>, QueryEntityRepository<E5>> entities,
     //            SerializableFunction5<E5, String> name, String value) {
-    //        return co(entities, name, value, QueryPolicy.AUTO);
+    //        return co(entities, name, value, MatchStrategy.AUTO);
     //    }
     //
     //    /**
@@ -639,7 +639,7 @@ public interface EntityContainsExpression5<E, E2, E3, E4, E5, C extends Conditio
     //            Function<Tuple5<QueryEntityRepository<E>, QueryEntityRepository<E2>, QueryEntityRepository<E3>,
     //                    QueryEntityRepository<E4>, QueryEntityRepository<E5>>, QueryEntityRepository<E5>> entities,
     //            SerializableFunction5<E5, String> name, String value, Predicate<String> ignoreStrategy) {
-    //        return co(entities, name, value, QueryPolicy.AUTO, ignoreStrategy);
+    //        return co(entities, name, value, MatchStrategy.AUTO, ignoreStrategy);
     //    }
     //
     //    /**
@@ -653,7 +653,7 @@ public interface EntityContainsExpression5<E, E2, E3, E4, E5, C extends Conditio
     //     */
     //    L co(Function<Tuple5<QueryEntityRepository<E>, QueryEntityRepository<E2>, QueryEntityRepository<E3>,
     //            QueryEntityRepository<E4>, QueryEntityRepository<E5>>, QueryEntityRepository<E5>> entities,
-    //            SerializableFunction5<E5, String> name, String value, QueryPolicy queryPolicy);
+    //            SerializableFunction5<E5, String> name, String value, MatchStrategy queryPolicy);
     //
     //    /**
     //     * contains value. 包含value.
@@ -667,7 +667,7 @@ public interface EntityContainsExpression5<E, E2, E3, E4, E5, C extends Conditio
     //     */
     //    L co(Function<Tuple5<QueryEntityRepository<E>, QueryEntityRepository<E2>, QueryEntityRepository<E3>,
     //            QueryEntityRepository<E4>, QueryEntityRepository<E5>>, QueryEntityRepository<E5>> entities,
-    //            SerializableFunction5<E5, String> name, String value, QueryPolicy queryPolicy,
+    //            SerializableFunction5<E5, String> name, String value, MatchStrategy queryPolicy,
     //            Predicate<String> ignoreStrategy);
     //
     //    /**
@@ -681,7 +681,7 @@ public interface EntityContainsExpression5<E, E2, E3, E4, E5, C extends Conditio
     //            Function<Tuple5<QueryEntityRepository<E>, QueryEntityRepository<E2>, QueryEntityRepository<E3>,
     //                    QueryEntityRepository<E4>, QueryEntityRepository<E5>>, QueryEntityRepository<E5>> entities,
     //            SerializableSupplier5<String> property) {
-    //        return co(entities, property, QueryPolicy.AUTO);
+    //        return co(entities, property, MatchStrategy.AUTO);
     //    }
     //
     //    /**
@@ -696,7 +696,7 @@ public interface EntityContainsExpression5<E, E2, E3, E4, E5, C extends Conditio
     //            Function<Tuple5<QueryEntityRepository<E>, QueryEntityRepository<E2>, QueryEntityRepository<E3>,
     //                    QueryEntityRepository<E4>, QueryEntityRepository<E5>>, QueryEntityRepository<E5>> entities,
     //            SerializableSupplier5<String> property, Predicate<String> ignoreStrategy) {
-    //        return co(entities, property, QueryPolicy.AUTO, ignoreStrategy);
+    //        return co(entities, property, MatchStrategy.AUTO, ignoreStrategy);
     //    }
     //
     //    /**
@@ -709,7 +709,7 @@ public interface EntityContainsExpression5<E, E2, E3, E4, E5, C extends Conditio
     //     */
     //    L co(Function<Tuple5<QueryEntityRepository<E>, QueryEntityRepository<E2>, QueryEntityRepository<E3>,
     //            QueryEntityRepository<E4>, QueryEntityRepository<E5>>, QueryEntityRepository<E5>> entities,
-    //            SerializableSupplier5<String> property, QueryPolicy queryPolicy);
+    //            SerializableSupplier5<String> property, MatchStrategy queryPolicy);
     //
     //    /**
     //     * contains value. 包含value.
@@ -722,7 +722,7 @@ public interface EntityContainsExpression5<E, E2, E3, E4, E5, C extends Conditio
     //     */
     //    L co(Function<Tuple5<QueryEntityRepository<E>, QueryEntityRepository<E2>, QueryEntityRepository<E3>,
     //            QueryEntityRepository<E4>, QueryEntityRepository<E5>>, QueryEntityRepository<E5>> entities,
-    //            SerializableSupplier5<String> property, QueryPolicy queryPolicy, Predicate<String> ignoreStrategy);
+    //            SerializableSupplier5<String> property, MatchStrategy queryPolicy, Predicate<String> ignoreStrategy);
     //
     //    /**
     //     * contains value. 包含value.

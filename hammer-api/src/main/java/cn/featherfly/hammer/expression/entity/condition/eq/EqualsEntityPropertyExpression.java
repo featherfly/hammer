@@ -4,9 +4,9 @@ package cn.featherfly.hammer.expression.entity.condition.eq;
 import java.util.Collection;
 import java.util.function.Predicate;
 
-import cn.featherfly.common.lang.function.SerializableFunction;
-import cn.featherfly.common.lang.function.SerializableToCollectionFunction;
-import cn.featherfly.common.operator.QueryOperator.QueryPolicy;
+import cn.featherfly.common.function.serializable.SerializableFunction;
+import cn.featherfly.common.function.serializable.SerializableToCollectionFunction;
+import cn.featherfly.common.operator.ComparisonOperator.MatchStrategy;
 
 /**
  * The Interface EqualsEntityPropertyExpression.
@@ -51,7 +51,7 @@ public interface EqualsEntityPropertyExpression<V> {
      * @param queryPolicy the query policy
      * @return LogicExpression
      */
-    void value(V value, QueryPolicy queryPolicy);
+    void value(V value, MatchStrategy queryPolicy);
 
     /**
      * Value.
@@ -70,5 +70,5 @@ public interface EqualsEntityPropertyExpression<V> {
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
-    void value(V value, QueryPolicy queryPolicy, Predicate<V> ignoreStrategy);
+    void value(V value, MatchStrategy queryPolicy, Predicate<V> ignoreStrategy);
 }

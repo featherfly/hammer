@@ -1,7 +1,7 @@
 
 package cn.featherfly.hammer.expression.condition.property;
 
-import cn.featherfly.common.operator.QueryOperator.QueryPolicy;
+import cn.featherfly.common.operator.ComparisonOperator.MatchStrategy;
 import cn.featherfly.hammer.expression.condition.ConditionExpression;
 import cn.featherfly.hammer.expression.condition.LogicExpression;
 
@@ -26,7 +26,7 @@ public interface EnumExpression<E extends Enum<E>, C extends ConditionExpression
      * {@inheritDoc}
      */
     @Override
-    default L eq(E value, QueryPolicy queryPolicy) {
+    default L eq(E value, MatchStrategy queryPolicy) {
         return eq(value);
     }
 
@@ -40,7 +40,7 @@ public interface EnumExpression<E extends Enum<E>, C extends ConditionExpression
      * {@inheritDoc}
      */
     @Override
-    default L ne(E value, QueryPolicy queryPolicy) {
+    default L ne(E value, MatchStrategy queryPolicy) {
         return ne(value);
     }
 }

@@ -22,24 +22,24 @@ import cn.featherfly.common.lang.AssertIllegalArgument;
 import cn.featherfly.common.lang.LambdaUtils;
 import cn.featherfly.common.lang.LambdaUtils.SerializableSupplierLambdaInfo;
 import cn.featherfly.common.lang.LambdaUtils.SerializedLambdaInfo;
-import cn.featherfly.common.lang.function.SerializableDateSupplier;
-import cn.featherfly.common.lang.function.SerializableFunction;
-import cn.featherfly.common.lang.function.SerializableLocalDateSupplier;
-import cn.featherfly.common.lang.function.SerializableLocalDateTimeSupplier;
-import cn.featherfly.common.lang.function.SerializableLocalTimeSupplier;
-import cn.featherfly.common.lang.function.SerializableNumberSupplier;
-import cn.featherfly.common.lang.function.SerializableStringSupplier;
-import cn.featherfly.common.lang.function.SerializableSupplier;
-import cn.featherfly.common.lang.function.SerializableToDateFunction;
-import cn.featherfly.common.lang.function.SerializableToEnumFunction;
-import cn.featherfly.common.lang.function.SerializableToLocalDateFunction;
-import cn.featherfly.common.lang.function.SerializableToLocalDateTimeFunction;
-import cn.featherfly.common.lang.function.SerializableToLocalTimeFunction;
-import cn.featherfly.common.lang.function.SerializableToNumberFunction;
-import cn.featherfly.common.lang.function.SerializableToStringFunction;
+import cn.featherfly.common.function.serializable.SerializableDateSupplier;
+import cn.featherfly.common.function.serializable.SerializableFunction;
+import cn.featherfly.common.function.serializable.SerializableLocalDateSupplier;
+import cn.featherfly.common.function.serializable.SerializableLocalDateTimeSupplier;
+import cn.featherfly.common.function.serializable.SerializableLocalTimeSupplier;
+import cn.featherfly.common.function.serializable.SerializableNumberSupplier;
+import cn.featherfly.common.function.serializable.SerializableStringSupplier;
+import cn.featherfly.common.function.serializable.SerializableSupplier;
+import cn.featherfly.common.function.serializable.SerializableToDateFunction;
+import cn.featherfly.common.function.serializable.SerializableToEnumFunction;
+import cn.featherfly.common.function.serializable.SerializableToLocalDateFunction;
+import cn.featherfly.common.function.serializable.SerializableToLocalDateTimeFunction;
+import cn.featherfly.common.function.serializable.SerializableToLocalTimeFunction;
+import cn.featherfly.common.function.serializable.SerializableToNumberFunction;
+import cn.featherfly.common.function.serializable.SerializableToStringFunction;
 import cn.featherfly.common.operator.LogicOperator;
-import cn.featherfly.common.operator.QueryOperator;
-import cn.featherfly.common.operator.QueryOperator.QueryPolicy;
+import cn.featherfly.common.operator.ComparisonOperator;
+import cn.featherfly.common.operator.ComparisonOperator.MatchStrategy;
 import cn.featherfly.common.repository.Execution;
 import cn.featherfly.hammer.expression.ConditionGroupExpression;
 import cn.featherfly.hammer.expression.ConditionGroupLogicExpression;
@@ -97,7 +97,7 @@ public abstract class AbstractSqlConditionGroupExpression<C extends ConditionGro
     //    public L eq(String name, Object value) {
     //        return (L) addCondition(
     //                new SqlConditionExpressionBuilder(dialect, name, value,
-    //                        QueryOperator.EQ, queryAlias, ignoreStrategy));
+    //                        ComparisonOperator.EQ, queryAlias, ignoreStrategy));
     //    }
 
     //    /**
@@ -153,8 +153,8 @@ public abstract class AbstractSqlConditionGroupExpression<C extends ConditionGro
      * {@inheritDoc}
      */
     @Override
-    public L eq(String name, Object value, QueryPolicy queryPolicy) {
-        return (L) addCondition(new SqlConditionExpressionBuilder(dialect, name, value, QueryOperator.EQ, queryPolicy,
+    public L eq(String name, Object value, MatchStrategy queryPolicy) {
+        return (L) addCondition(new SqlConditionExpressionBuilder(dialect, name, value, ComparisonOperator.EQ, queryPolicy,
                 queryAlias, ignoreStrategy));
     }
 
@@ -162,7 +162,7 @@ public abstract class AbstractSqlConditionGroupExpression<C extends ConditionGro
      * {@inheritDoc}
      */
     @Override
-    public <T, R> L eq(SerializableFunction<T, R> name, R value, QueryPolicy queryPolicy) {
+    public <T, R> L eq(SerializableFunction<T, R> name, R value, MatchStrategy queryPolicy) {
         SerializedLambdaInfo lambdaInfo = LambdaUtils.getLambdaInfo(name);
         if (value == null) {
             return eq(lambdaInfo.getPropertyName(), value, queryPolicy);
@@ -189,7 +189,7 @@ public abstract class AbstractSqlConditionGroupExpression<C extends ConditionGro
      * {@inheritDoc}
      */
     @Override
-    public <R> L eq(SerializableSupplier<R> property, QueryPolicy queryPolicy) {
+    public <R> L eq(SerializableSupplier<R> property, MatchStrategy queryPolicy) {
         SerializableSupplierLambdaInfo<R> lambdaInfo = LambdaUtils.getSerializableSupplierLambdaInfo(property);
         if (property.get() == null) {
             return eq(lambdaInfo.getSerializedLambdaInfo().getPropertyName(), property.get(), queryPolicy);
@@ -219,7 +219,7 @@ public abstract class AbstractSqlConditionGroupExpression<C extends ConditionGro
     //    public L ne(String name, Object value) {
     //        return (L) addCondition(
     //                new SqlConditionExpressionBuilder(dialect, name, value,
-    //                        QueryOperator.NE, queryAlias, ignoreStrategy));
+    //                        ComparisonOperator.NE, queryAlias, ignoreStrategy));
     //    }
     //
     //    /**
@@ -275,8 +275,8 @@ public abstract class AbstractSqlConditionGroupExpression<C extends ConditionGro
      * {@inheritDoc}
      */
     @Override
-    public L ne(String name, Object value, QueryPolicy queryPolicy) {
-        return (L) addCondition(new SqlConditionExpressionBuilder(dialect, name, value, QueryOperator.NE, queryPolicy,
+    public L ne(String name, Object value, MatchStrategy queryPolicy) {
+        return (L) addCondition(new SqlConditionExpressionBuilder(dialect, name, value, ComparisonOperator.NE, queryPolicy,
                 queryAlias, ignoreStrategy));
     }
 
@@ -284,7 +284,7 @@ public abstract class AbstractSqlConditionGroupExpression<C extends ConditionGro
      * {@inheritDoc}
      */
     @Override
-    public <T, R> L ne(SerializableFunction<T, R> name, R value, QueryPolicy queryPolicy) {
+    public <T, R> L ne(SerializableFunction<T, R> name, R value, MatchStrategy queryPolicy) {
         SerializedLambdaInfo lambdaInfo = LambdaUtils.getLambdaInfo(name);
         if (value == null) {
             return ne(lambdaInfo.getPropertyName(), value, queryPolicy);
@@ -311,7 +311,7 @@ public abstract class AbstractSqlConditionGroupExpression<C extends ConditionGro
      * {@inheritDoc}
      */
     @Override
-    public <R> L ne(SerializableSupplier<R> property, QueryPolicy queryPolicy) {
+    public <R> L ne(SerializableSupplier<R> property, MatchStrategy queryPolicy) {
         SerializableSupplierLambdaInfo<R> lambdaInfo = LambdaUtils.getSerializableSupplierLambdaInfo(property);
         if (property.get() == null) {
             return ne(lambdaInfo.getSerializedLambdaInfo().getPropertyName(), property.get(), queryPolicy);
@@ -341,7 +341,7 @@ public abstract class AbstractSqlConditionGroupExpression<C extends ConditionGro
     //    public L lk(String name, String value) {
     //        return (L) addCondition(
     //                new SqlConditionExpressionBuilder(dialect, name, value,
-    //                        QueryOperator.LK, queryAlias, ignoreStrategy));
+    //                        ComparisonOperator.LK, queryAlias, ignoreStrategy));
     //    }
     //
     //    /**
@@ -365,8 +365,8 @@ public abstract class AbstractSqlConditionGroupExpression<C extends ConditionGro
      * {@inheritDoc}
      */
     @Override
-    public L lk(String name, String value, QueryPolicy queryPolicy) {
-        return (L) addCondition(new SqlConditionExpressionBuilder(dialect, name, value, QueryOperator.LK, queryPolicy,
+    public L lk(String name, String value, MatchStrategy queryPolicy) {
+        return (L) addCondition(new SqlConditionExpressionBuilder(dialect, name, value, ComparisonOperator.LK, queryPolicy,
                 queryAlias, ignoreStrategy));
     }
 
@@ -374,7 +374,7 @@ public abstract class AbstractSqlConditionGroupExpression<C extends ConditionGro
      * {@inheritDoc}
      */
     @Override
-    public <T> L lk(SerializableToStringFunction<T> name, String value, QueryPolicy queryPolicy) {
+    public <T> L lk(SerializableToStringFunction<T> name, String value, MatchStrategy queryPolicy) {
         return lk(getPropertyName(name), value, queryPolicy);
     }
 
@@ -382,7 +382,7 @@ public abstract class AbstractSqlConditionGroupExpression<C extends ConditionGro
      * {@inheritDoc}
      */
     @Override
-    public L lk(SerializableStringSupplier property, QueryPolicy queryPolicy) {
+    public L lk(SerializableStringSupplier property, MatchStrategy queryPolicy) {
         SerializableSupplierLambdaInfo<String> info = LambdaUtils.getSerializableSupplierLambdaInfo(property);
         return lk(info.getSerializedLambdaInfo().getPropertyName(), info.getValue(), queryPolicy);
     }
@@ -394,7 +394,7 @@ public abstract class AbstractSqlConditionGroupExpression<C extends ConditionGro
     //    public L sw(String name, String value) {
     //        return (L) addCondition(
     //                new SqlConditionExpressionBuilder(dialect, name, value,
-    //                        QueryOperator.SW, queryAlias, ignoreStrategy));
+    //                        ComparisonOperator.SW, queryAlias, ignoreStrategy));
     //    }
     //    /**
     //     * {@inheritDoc}
@@ -416,8 +416,8 @@ public abstract class AbstractSqlConditionGroupExpression<C extends ConditionGro
      * {@inheritDoc}
      */
     @Override
-    public L sw(String name, String value, QueryPolicy queryPolicy) {
-        return (L) addCondition(new SqlConditionExpressionBuilder(dialect, name, value, QueryOperator.SW, queryPolicy,
+    public L sw(String name, String value, MatchStrategy queryPolicy) {
+        return (L) addCondition(new SqlConditionExpressionBuilder(dialect, name, value, ComparisonOperator.SW, queryPolicy,
                 queryAlias, ignoreStrategy));
     }
 
@@ -425,7 +425,7 @@ public abstract class AbstractSqlConditionGroupExpression<C extends ConditionGro
      * {@inheritDoc}
      */
     @Override
-    public <T> L sw(SerializableToStringFunction<T> name, String value, QueryPolicy queryPolicy) {
+    public <T> L sw(SerializableToStringFunction<T> name, String value, MatchStrategy queryPolicy) {
         return sw(getPropertyName(name), value, queryPolicy);
     }
 
@@ -433,7 +433,7 @@ public abstract class AbstractSqlConditionGroupExpression<C extends ConditionGro
      * {@inheritDoc}
      */
     @Override
-    public L sw(SerializableStringSupplier property, QueryPolicy queryPolicy) {
+    public L sw(SerializableStringSupplier property, MatchStrategy queryPolicy) {
         SerializableSupplierLambdaInfo<String> info = LambdaUtils.getSerializableSupplierLambdaInfo(property);
         return sw(info.getSerializedLambdaInfo().getPropertyName(), info.getValue());
     }
@@ -445,7 +445,7 @@ public abstract class AbstractSqlConditionGroupExpression<C extends ConditionGro
     //    public L ew(String name, String value) {
     //        return (L) addCondition(
     //                new SqlConditionExpressionBuilder(dialect, name, value,
-    //                        QueryOperator.EW, queryAlias, ignoreStrategy));
+    //                        ComparisonOperator.EW, queryAlias, ignoreStrategy));
     //    }
     //    /**
     //     * {@inheritDoc}
@@ -467,8 +467,8 @@ public abstract class AbstractSqlConditionGroupExpression<C extends ConditionGro
      * {@inheritDoc}
      */
     @Override
-    public L ew(String name, String value, QueryPolicy queryPolicy) {
-        return (L) addCondition(new SqlConditionExpressionBuilder(dialect, name, value, QueryOperator.EW, queryPolicy,
+    public L ew(String name, String value, MatchStrategy queryPolicy) {
+        return (L) addCondition(new SqlConditionExpressionBuilder(dialect, name, value, ComparisonOperator.EW, queryPolicy,
                 queryAlias, ignoreStrategy));
     }
 
@@ -476,7 +476,7 @@ public abstract class AbstractSqlConditionGroupExpression<C extends ConditionGro
      * {@inheritDoc}
      */
     @Override
-    public <T> L ew(SerializableToStringFunction<T> name, String value, QueryPolicy queryPolicy) {
+    public <T> L ew(SerializableToStringFunction<T> name, String value, MatchStrategy queryPolicy) {
         return ew(getPropertyName(name), value, queryPolicy);
     }
 
@@ -484,7 +484,7 @@ public abstract class AbstractSqlConditionGroupExpression<C extends ConditionGro
      * {@inheritDoc}
      */
     @Override
-    public L ew(SerializableStringSupplier property, QueryPolicy queryPolicy) {
+    public L ew(SerializableStringSupplier property, MatchStrategy queryPolicy) {
         SerializableSupplierLambdaInfo<String> info = LambdaUtils.getSerializableSupplierLambdaInfo(property);
         return ew(info.getSerializedLambdaInfo().getPropertyName(), info.getValue(), queryPolicy);
     }
@@ -496,7 +496,7 @@ public abstract class AbstractSqlConditionGroupExpression<C extends ConditionGro
     //    public L co(String name, String value) {
     //        return (L) addCondition(
     //                new SqlConditionExpressionBuilder(dialect, name, value,
-    //                        QueryOperator.CO, queryAlias, ignoreStrategy));
+    //                        ComparisonOperator.CO, queryAlias, ignoreStrategy));
     //    }
     //    /**
     //     * {@inheritDoc}
@@ -518,8 +518,8 @@ public abstract class AbstractSqlConditionGroupExpression<C extends ConditionGro
      * {@inheritDoc}
      */
     @Override
-    public L co(String name, String value, QueryPolicy queryPolicy) {
-        return (L) addCondition(new SqlConditionExpressionBuilder(dialect, name, value, QueryOperator.CO, queryPolicy,
+    public L co(String name, String value, MatchStrategy queryPolicy) {
+        return (L) addCondition(new SqlConditionExpressionBuilder(dialect, name, value, ComparisonOperator.CO, queryPolicy,
                 queryAlias, ignoreStrategy));
     }
 
@@ -527,7 +527,7 @@ public abstract class AbstractSqlConditionGroupExpression<C extends ConditionGro
      * {@inheritDoc}
      */
     @Override
-    public <T> L co(SerializableToStringFunction<T> name, String value, QueryPolicy queryPolicy) {
+    public <T> L co(SerializableToStringFunction<T> name, String value, MatchStrategy queryPolicy) {
         return co(getPropertyName(name), value, queryPolicy);
     }
 
@@ -535,7 +535,7 @@ public abstract class AbstractSqlConditionGroupExpression<C extends ConditionGro
      * {@inheritDoc}
      */
     @Override
-    public L co(SerializableStringSupplier property, QueryPolicy queryPolicy) {
+    public L co(SerializableStringSupplier property, MatchStrategy queryPolicy) {
         SerializableSupplierLambdaInfo<String> info = LambdaUtils.getSerializableSupplierLambdaInfo(property);
         return co(info.getSerializedLambdaInfo().getPropertyName(), info.getValue(), queryPolicy);
     }
@@ -546,7 +546,7 @@ public abstract class AbstractSqlConditionGroupExpression<C extends ConditionGro
     @Override
     public <N extends Number> L ge(String name, N value) {
         return (L) addCondition(
-                new SqlConditionExpressionBuilder(dialect, name, value, QueryOperator.GE, queryAlias, ignoreStrategy));
+                new SqlConditionExpressionBuilder(dialect, name, value, ComparisonOperator.GE, queryAlias, ignoreStrategy));
     }
 
     /**
@@ -555,7 +555,7 @@ public abstract class AbstractSqlConditionGroupExpression<C extends ConditionGro
     @Override
     public <D extends Date> L ge(String name, D value) {
         return (L) addCondition(
-                new SqlConditionExpressionBuilder(dialect, name, value, QueryOperator.GE, queryAlias, ignoreStrategy));
+                new SqlConditionExpressionBuilder(dialect, name, value, ComparisonOperator.GE, queryAlias, ignoreStrategy));
     }
 
     /**
@@ -564,7 +564,7 @@ public abstract class AbstractSqlConditionGroupExpression<C extends ConditionGro
     @Override
     public L ge(String name, LocalTime value) {
         return (L) addCondition(
-                new SqlConditionExpressionBuilder(dialect, name, value, QueryOperator.GE, queryAlias, ignoreStrategy));
+                new SqlConditionExpressionBuilder(dialect, name, value, ComparisonOperator.GE, queryAlias, ignoreStrategy));
     }
 
     /**
@@ -573,7 +573,7 @@ public abstract class AbstractSqlConditionGroupExpression<C extends ConditionGro
     @Override
     public L ge(String name, LocalDate value) {
         return (L) addCondition(
-                new SqlConditionExpressionBuilder(dialect, name, value, QueryOperator.GE, queryAlias, ignoreStrategy));
+                new SqlConditionExpressionBuilder(dialect, name, value, ComparisonOperator.GE, queryAlias, ignoreStrategy));
     }
 
     /**
@@ -582,7 +582,7 @@ public abstract class AbstractSqlConditionGroupExpression<C extends ConditionGro
     @Override
     public L ge(String name, LocalDateTime value) {
         return (L) addCondition(
-                new SqlConditionExpressionBuilder(dialect, name, value, QueryOperator.GE, queryAlias, ignoreStrategy));
+                new SqlConditionExpressionBuilder(dialect, name, value, ComparisonOperator.GE, queryAlias, ignoreStrategy));
     }
 
     /**
@@ -591,7 +591,7 @@ public abstract class AbstractSqlConditionGroupExpression<C extends ConditionGro
     @Override
     public L ge(String name, String value) {
         return (L) addCondition(
-                new SqlConditionExpressionBuilder(dialect, name, value, QueryOperator.GE, queryAlias, ignoreStrategy));
+                new SqlConditionExpressionBuilder(dialect, name, value, ComparisonOperator.GE, queryAlias, ignoreStrategy));
     }
 
     /**
@@ -600,7 +600,7 @@ public abstract class AbstractSqlConditionGroupExpression<C extends ConditionGro
     @Override
     public <N extends Number> L gt(String name, N value) {
         return (L) addCondition(
-                new SqlConditionExpressionBuilder(dialect, name, value, QueryOperator.GT, queryAlias, ignoreStrategy));
+                new SqlConditionExpressionBuilder(dialect, name, value, ComparisonOperator.GT, queryAlias, ignoreStrategy));
     }
 
     /**
@@ -609,7 +609,7 @@ public abstract class AbstractSqlConditionGroupExpression<C extends ConditionGro
     @Override
     public <D extends Date> L gt(String name, D value) {
         return (L) addCondition(
-                new SqlConditionExpressionBuilder(dialect, name, value, QueryOperator.GT, queryAlias, ignoreStrategy));
+                new SqlConditionExpressionBuilder(dialect, name, value, ComparisonOperator.GT, queryAlias, ignoreStrategy));
     }
 
     /**
@@ -618,7 +618,7 @@ public abstract class AbstractSqlConditionGroupExpression<C extends ConditionGro
     @Override
     public L gt(String name, LocalTime value) {
         return (L) addCondition(
-                new SqlConditionExpressionBuilder(dialect, name, value, QueryOperator.GT, queryAlias, ignoreStrategy));
+                new SqlConditionExpressionBuilder(dialect, name, value, ComparisonOperator.GT, queryAlias, ignoreStrategy));
     }
 
     /**
@@ -627,7 +627,7 @@ public abstract class AbstractSqlConditionGroupExpression<C extends ConditionGro
     @Override
     public L gt(String name, LocalDate value) {
         return (L) addCondition(
-                new SqlConditionExpressionBuilder(dialect, name, value, QueryOperator.GT, queryAlias, ignoreStrategy));
+                new SqlConditionExpressionBuilder(dialect, name, value, ComparisonOperator.GT, queryAlias, ignoreStrategy));
     }
 
     /**
@@ -636,7 +636,7 @@ public abstract class AbstractSqlConditionGroupExpression<C extends ConditionGro
     @Override
     public L gt(String name, LocalDateTime value) {
         return (L) addCondition(
-                new SqlConditionExpressionBuilder(dialect, name, value, QueryOperator.GT, queryAlias, ignoreStrategy));
+                new SqlConditionExpressionBuilder(dialect, name, value, ComparisonOperator.GT, queryAlias, ignoreStrategy));
     }
 
     /**
@@ -645,7 +645,7 @@ public abstract class AbstractSqlConditionGroupExpression<C extends ConditionGro
     @Override
     public L gt(String name, String value) {
         return (L) addCondition(
-                new SqlConditionExpressionBuilder(dialect, name, value, QueryOperator.GT, queryAlias, ignoreStrategy));
+                new SqlConditionExpressionBuilder(dialect, name, value, ComparisonOperator.GT, queryAlias, ignoreStrategy));
     }
 
     /**
@@ -654,7 +654,7 @@ public abstract class AbstractSqlConditionGroupExpression<C extends ConditionGro
     @Override
     public L in(String name, Object value) {
         return (L) addCondition(
-                new SqlConditionExpressionBuilder(dialect, name, value, QueryOperator.IN, queryAlias, ignoreStrategy));
+                new SqlConditionExpressionBuilder(dialect, name, value, ComparisonOperator.IN, queryAlias, ignoreStrategy));
     }
 
     /**
@@ -663,7 +663,7 @@ public abstract class AbstractSqlConditionGroupExpression<C extends ConditionGro
     @Override
     public L inn(String name, Boolean value) {
         return (L) addCondition(
-                new SqlConditionExpressionBuilder(dialect, name, value, QueryOperator.INN, queryAlias, ignoreStrategy));
+                new SqlConditionExpressionBuilder(dialect, name, value, ComparisonOperator.INN, queryAlias, ignoreStrategy));
     }
 
     /**
@@ -672,7 +672,7 @@ public abstract class AbstractSqlConditionGroupExpression<C extends ConditionGro
     @Override
     public L isn(String name, Boolean value) {
         return (L) addCondition(
-                new SqlConditionExpressionBuilder(dialect, name, value, QueryOperator.ISN, queryAlias, ignoreStrategy));
+                new SqlConditionExpressionBuilder(dialect, name, value, ComparisonOperator.ISN, queryAlias, ignoreStrategy));
     }
 
     /**
@@ -681,7 +681,7 @@ public abstract class AbstractSqlConditionGroupExpression<C extends ConditionGro
     @Override
     public <N extends Number> L le(String name, N value) {
         return (L) addCondition(
-                new SqlConditionExpressionBuilder(dialect, name, value, QueryOperator.LE, queryAlias, ignoreStrategy));
+                new SqlConditionExpressionBuilder(dialect, name, value, ComparisonOperator.LE, queryAlias, ignoreStrategy));
     }
 
     /**
@@ -690,7 +690,7 @@ public abstract class AbstractSqlConditionGroupExpression<C extends ConditionGro
     @Override
     public <D extends Date> L le(String name, D value) {
         return (L) addCondition(
-                new SqlConditionExpressionBuilder(dialect, name, value, QueryOperator.LE, queryAlias, ignoreStrategy));
+                new SqlConditionExpressionBuilder(dialect, name, value, ComparisonOperator.LE, queryAlias, ignoreStrategy));
     }
 
     /**
@@ -699,7 +699,7 @@ public abstract class AbstractSqlConditionGroupExpression<C extends ConditionGro
     @Override
     public L le(String name, LocalTime value) {
         return (L) addCondition(
-                new SqlConditionExpressionBuilder(dialect, name, value, QueryOperator.LE, queryAlias, ignoreStrategy));
+                new SqlConditionExpressionBuilder(dialect, name, value, ComparisonOperator.LE, queryAlias, ignoreStrategy));
     }
 
     /**
@@ -708,7 +708,7 @@ public abstract class AbstractSqlConditionGroupExpression<C extends ConditionGro
     @Override
     public L le(String name, LocalDate value) {
         return (L) addCondition(
-                new SqlConditionExpressionBuilder(dialect, name, value, QueryOperator.LE, queryAlias, ignoreStrategy));
+                new SqlConditionExpressionBuilder(dialect, name, value, ComparisonOperator.LE, queryAlias, ignoreStrategy));
     }
 
     /**
@@ -717,7 +717,7 @@ public abstract class AbstractSqlConditionGroupExpression<C extends ConditionGro
     @Override
     public L le(String name, LocalDateTime value) {
         return (L) addCondition(
-                new SqlConditionExpressionBuilder(dialect, name, value, QueryOperator.LE, queryAlias, ignoreStrategy));
+                new SqlConditionExpressionBuilder(dialect, name, value, ComparisonOperator.LE, queryAlias, ignoreStrategy));
     }
 
     /**
@@ -726,7 +726,7 @@ public abstract class AbstractSqlConditionGroupExpression<C extends ConditionGro
     @Override
     public L le(String name, String value) {
         return (L) addCondition(
-                new SqlConditionExpressionBuilder(dialect, name, value, QueryOperator.LE, queryAlias, ignoreStrategy));
+                new SqlConditionExpressionBuilder(dialect, name, value, ComparisonOperator.LE, queryAlias, ignoreStrategy));
     }
 
     /**
@@ -735,7 +735,7 @@ public abstract class AbstractSqlConditionGroupExpression<C extends ConditionGro
     @Override
     public <N extends Number> L lt(String name, N value) {
         return (L) addCondition(
-                new SqlConditionExpressionBuilder(dialect, name, value, QueryOperator.LT, queryAlias, ignoreStrategy));
+                new SqlConditionExpressionBuilder(dialect, name, value, ComparisonOperator.LT, queryAlias, ignoreStrategy));
     }
 
     /**
@@ -744,7 +744,7 @@ public abstract class AbstractSqlConditionGroupExpression<C extends ConditionGro
     @Override
     public <D extends Date> L lt(String name, D value) {
         return (L) addCondition(
-                new SqlConditionExpressionBuilder(dialect, name, value, QueryOperator.LT, queryAlias, ignoreStrategy));
+                new SqlConditionExpressionBuilder(dialect, name, value, ComparisonOperator.LT, queryAlias, ignoreStrategy));
     }
 
     /**
@@ -753,7 +753,7 @@ public abstract class AbstractSqlConditionGroupExpression<C extends ConditionGro
     @Override
     public L lt(String name, LocalTime value) {
         return (L) addCondition(
-                new SqlConditionExpressionBuilder(dialect, name, value, QueryOperator.LT, queryAlias, ignoreStrategy));
+                new SqlConditionExpressionBuilder(dialect, name, value, ComparisonOperator.LT, queryAlias, ignoreStrategy));
     }
 
     /**
@@ -762,7 +762,7 @@ public abstract class AbstractSqlConditionGroupExpression<C extends ConditionGro
     @Override
     public L lt(String name, LocalDate value) {
         return (L) addCondition(
-                new SqlConditionExpressionBuilder(dialect, name, value, QueryOperator.LT, queryAlias, ignoreStrategy));
+                new SqlConditionExpressionBuilder(dialect, name, value, ComparisonOperator.LT, queryAlias, ignoreStrategy));
     }
 
     /**
@@ -771,7 +771,7 @@ public abstract class AbstractSqlConditionGroupExpression<C extends ConditionGro
     @Override
     public L lt(String name, LocalDateTime value) {
         return (L) addCondition(
-                new SqlConditionExpressionBuilder(dialect, name, value, QueryOperator.LT, queryAlias, ignoreStrategy));
+                new SqlConditionExpressionBuilder(dialect, name, value, ComparisonOperator.LT, queryAlias, ignoreStrategy));
     }
 
     /**
@@ -780,7 +780,7 @@ public abstract class AbstractSqlConditionGroupExpression<C extends ConditionGro
     @Override
     public L lt(String name, String value) {
         return (L) addCondition(
-                new SqlConditionExpressionBuilder(dialect, name, value, QueryOperator.LT, queryAlias, ignoreStrategy));
+                new SqlConditionExpressionBuilder(dialect, name, value, ComparisonOperator.LT, queryAlias, ignoreStrategy));
     }
 
     /**
@@ -789,7 +789,7 @@ public abstract class AbstractSqlConditionGroupExpression<C extends ConditionGro
     @Override
     public L nin(String name, Object value) {
         return (L) addCondition(
-                new SqlConditionExpressionBuilder(dialect, name, value, QueryOperator.NIN, queryAlias, ignoreStrategy));
+                new SqlConditionExpressionBuilder(dialect, name, value, ComparisonOperator.NIN, queryAlias, ignoreStrategy));
     }
 
     /**

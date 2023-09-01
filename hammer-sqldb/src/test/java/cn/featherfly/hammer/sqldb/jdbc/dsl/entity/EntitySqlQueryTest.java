@@ -698,52 +698,52 @@ public class EntitySqlQueryTest extends JdbcTestBase {
 
         long total = query.find(Tree.class).count();
 
-        long count = query.find(Tree.class).where().isn(Tree::getParentId).count();
+        long count = query.find(Tree2.class).where().isn(Tree2::getParentId).count();
         assertEquals(count, nullNum);
 
-        count = query.find(Tree.class).where().isn(Tree::getParentId, true).count();
+        count = query.find(Tree2.class).where().isn(Tree2::getParentId, true).count();
         assertEquals(count, nullNum);
 
-        count = query.find(Tree.class).where().isn(Tree::getParentId, false).count();
+        count = query.find(Tree2.class).where().isn(Tree2::getParentId, false).count();
         assertTrue(nullNum < count);
 
-        count = query.find(Tree.class).where().isn(Tree::getParentId, (Boolean) null).count();
+        count = query.find(Tree2.class).where().isn(Tree2::getParentId, (Boolean) null).count();
         assertTrue(count == total);
 
-        count = query.find(Tree.class).where().isn(Tree::getParentId).count();
+        count = query.find(Tree2.class).where().isn(Tree2::getParentId).count();
         assertEquals(count, nullNum);
 
-        count = query.find(Tree.class).where().isn(Tree::getParentId, true).count();
+        count = query.find(Tree2.class).where().isn(Tree2::getParentId, true).count();
         assertEquals(count, nullNum);
 
-        count = query.find(Tree.class).where().isn(Tree::getParentId, false).count();
+        count = query.find(Tree2.class).where().isn(Tree2::getParentId, false).count();
         assertTrue(nullNum < count);
 
-        count = query.find(Tree.class).where().isn(Tree::getParentId, (Boolean) null).count();
+        count = query.find(Tree2.class).where().isn(Tree2::getParentId, (Boolean) null).count();
         assertTrue(count == total);
 
-        count = query.find(Tree.class).where().inn(Tree::getParentId).count();
+        count = query.find(Tree2.class).where().inn(Tree2::getParentId).count();
         assertTrue(nullNum < count);
 
-        count = query.find(Tree.class).where().inn(Tree::getParentId, true).count();
+        count = query.find(Tree2.class).where().inn(Tree2::getParentId, true).count();
         assertTrue(nullNum < count);
 
-        count = query.find(Tree.class).where().inn(Tree::getParentId, false).count();
+        count = query.find(Tree2.class).where().inn(Tree2::getParentId, false).count();
         assertEquals(count, nullNum);
 
-        count = query.find(Tree.class).where().inn(Tree::getParentId, (Boolean) null).count();
+        count = query.find(Tree2.class).where().inn(Tree2::getParentId, (Boolean) null).count();
         assertTrue(count == total);
 
-        count = query.find(Tree.class).where().inn(Tree::getParentId).count();
+        count = query.find(Tree2.class).where().inn(Tree2::getParentId).count();
         assertTrue(nullNum < count);
 
-        count = query.find(Tree.class).where().inn(Tree::getParentId, true).count();
+        count = query.find(Tree2.class).where().inn(Tree2::getParentId, true).count();
         assertTrue(nullNum < count);
 
-        count = query.find(Tree.class).where().inn(Tree::getParentId, false).count();
+        count = query.find(Tree2.class).where().inn(Tree2::getParentId, false).count();
         assertEquals(count, nullNum);
 
-        count = query.find(Tree.class).where().inn(Tree::getParentId, (Boolean) null).count();
+        count = query.find(Tree2.class).where().inn(Tree2::getParentId, (Boolean) null).count();
         assertTrue(count == total);
     }
 

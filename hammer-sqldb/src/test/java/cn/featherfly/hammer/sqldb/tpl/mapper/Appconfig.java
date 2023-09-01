@@ -67,7 +67,7 @@ public class Appconfig extends JdbcTestBase {
 
     @Bean
     public SqldbHammerImpl hammer(DataSource dataSource) {
-        DOMConfigurator.configure(ClassLoaderUtils.getResource("log4j.xml", JdbcTestBase.class));
+        DOMConfigurator.configure(ClassLoaderUtils.getResource("log4j_dev.xml", JdbcTestBase.class));
 
         //        ConstantConfigurator.config(JdbcTestBase.configFile);
         //        ConstantConfigurator.config();

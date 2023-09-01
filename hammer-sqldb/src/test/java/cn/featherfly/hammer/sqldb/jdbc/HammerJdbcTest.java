@@ -20,7 +20,7 @@ import cn.featherfly.common.db.mapping.JdbcMappingException;
 import cn.featherfly.common.lang.ArrayUtils;
 import cn.featherfly.common.lang.CollectionUtils;
 import cn.featherfly.common.lang.Randoms;
-import cn.featherfly.common.lang.function.SerializableFunction;
+import cn.featherfly.common.function.serializable.SerializableFunction;
 import cn.featherfly.common.operator.LogicOperator;
 import cn.featherfly.common.repository.IgnoreStrategy;
 import cn.featherfly.common.structure.page.PaginationResults;

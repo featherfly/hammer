@@ -11,11 +11,11 @@ import cn.featherfly.common.db.FieldValueOperator;
 import cn.featherfly.common.db.mapping.JdbcClassMapping;
 import cn.featherfly.common.db.mapping.JdbcMappingFactory;
 import cn.featherfly.common.db.mapping.JdbcPropertyMapping;
+import cn.featherfly.common.function.serializable.SerializableFunction;
+import cn.featherfly.common.function.serializable.SerializableSupplier;
+import cn.featherfly.common.function.serializable.SerializableToNumberFunction;
 import cn.featherfly.common.lang.ClassUtils;
 import cn.featherfly.common.lang.Lang;
-import cn.featherfly.common.lang.function.SerializableFunction;
-import cn.featherfly.common.lang.function.SerializableFunction2;
-import cn.featherfly.common.lang.function.SerializableSupplier;
 import cn.featherfly.common.repository.IgnoreStrategy;
 import cn.featherfly.common.repository.builder.AliasManager;
 import cn.featherfly.hammer.dsl.entity.execute.EntityExecutableConditionGroup;
@@ -294,7 +294,7 @@ public class SqlEntityExecutableUpdate<E> extends AbstractSqlExecutableUpdate<Sq
     @Override
     public <R extends Number> EntityUpdateNumberValueExpression<E, R, EntityExecutableUpdate<E>,
             EntityExecutableConditionGroup<E>, EntityExecutableConditionGroupLogic<E>> property(
-                    SerializableFunction2<E, R> name) {
+                    SerializableToNumberFunction<E, R> name) {
         return new EntityUpdateNumberValueImpl<>(name, this);
     }
 
