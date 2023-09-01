@@ -13,11 +13,11 @@ package cn.featherfly.hammer.expression.entity.condition.sw;
 import java.util.Collection;
 import java.util.function.Predicate;
 
-import cn.featherfly.common.lang.function.SerializableToStringFunction;
-import cn.featherfly.common.lang.function.SerializableFunction;
-import cn.featherfly.common.lang.function.SerializableSupplier;
-import cn.featherfly.common.lang.function.SerializableToCollectionFunction;
-import cn.featherfly.common.operator.QueryOperator.QueryPolicy;
+import cn.featherfly.common.function.serializable.SerializableFunction;
+import cn.featherfly.common.function.serializable.SerializableSupplier;
+import cn.featherfly.common.function.serializable.SerializableToCollectionFunction;
+import cn.featherfly.common.function.serializable.SerializableToStringFunction;
+import cn.featherfly.common.operator.ComparisonOperator.MatchStrategy;
 import cn.featherfly.hammer.expression.condition.ConditionExpression;
 import cn.featherfly.hammer.expression.condition.LogicExpression;
 import cn.featherfly.hammer.expression.entity.condition.AbstractConditionEntityExpression;
@@ -84,7 +84,7 @@ public class StartWithEntityExpressionImpl<E, C extends ConditionExpression, L e
      * {@inheritDoc}
      */
     @Override
-    public void accept(SerializableToStringFunction<E> property, String value, QueryPolicy queryPolicy) {
+    public void accept(SerializableToStringFunction<E> property, String value, MatchStrategy queryPolicy) {
         expression.sw(index, property, value, queryPolicy);
     }
 
@@ -100,7 +100,7 @@ public class StartWithEntityExpressionImpl<E, C extends ConditionExpression, L e
      * {@inheritDoc}
      */
     @Override
-    public void accept(SerializableToStringFunction<E> property, String value, QueryPolicy queryPolicy,
+    public void accept(SerializableToStringFunction<E> property, String value, MatchStrategy queryPolicy,
             Predicate<String> ignoreStrategy) {
         expression.sw(index, property, value, queryPolicy, ignoreStrategy);
 
@@ -126,7 +126,7 @@ public class StartWithEntityExpressionImpl<E, C extends ConditionExpression, L e
      * {@inheritDoc}
      */
     @Override
-    public void accept(SerializableSupplier<String> propertyValue, QueryPolicy queryPolicy) {
+    public void accept(SerializableSupplier<String> propertyValue, MatchStrategy queryPolicy) {
         expression.sw(index, propertyValue, queryPolicy);
     }
 
@@ -134,7 +134,7 @@ public class StartWithEntityExpressionImpl<E, C extends ConditionExpression, L e
      * {@inheritDoc}
      */
     @Override
-    public void accept(SerializableSupplier<String> propertyValue, QueryPolicy queryPolicy,
+    public void accept(SerializableSupplier<String> propertyValue, MatchStrategy queryPolicy,
             Predicate<String> ignoreStrategy) {
         expression.sw(index, propertyValue, queryPolicy, ignoreStrategy);
     }

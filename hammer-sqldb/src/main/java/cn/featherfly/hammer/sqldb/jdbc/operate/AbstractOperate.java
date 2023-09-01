@@ -57,7 +57,7 @@ public abstract class AbstractOperate<T> {
     protected Map<Integer, JdbcPropertyMapping> propertyPositions = new HashMap<>(0);
 
     /** The pk properties. */
-    protected List<BeanProperty<Serializable>> pkProperties = new ArrayList<>();
+    protected List<BeanProperty<T, Serializable>> pkProperties = new ArrayList<>();
 
     //    /**
     //     * 使用给定数据源以及给定对象映射生成其相应的操作.

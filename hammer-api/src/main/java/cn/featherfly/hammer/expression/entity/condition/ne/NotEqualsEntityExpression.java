@@ -13,10 +13,10 @@ package cn.featherfly.hammer.expression.entity.condition.ne;
 import java.util.Collection;
 import java.util.function.Predicate;
 
-import cn.featherfly.common.lang.function.SerializableFunction;
-import cn.featherfly.common.lang.function.SerializableSupplier;
-import cn.featherfly.common.lang.function.SerializableToCollectionFunction;
-import cn.featherfly.common.operator.QueryOperator.QueryPolicy;
+import cn.featherfly.common.function.serializable.SerializableFunction;
+import cn.featherfly.common.function.serializable.SerializableSupplier;
+import cn.featherfly.common.function.serializable.SerializableToCollectionFunction;
+import cn.featherfly.common.operator.ComparisonOperator.MatchStrategy;
 
 /**
  * The Interface NotEqualsEntityExpression.
@@ -67,7 +67,7 @@ public interface NotEqualsEntityExpression<E> {
      * @param queryPolicy the query policy
      * @return the l
      */
-    <R> void accept(SerializableFunction<E, R> property, R value, QueryPolicy queryPolicy);
+    <R> void accept(SerializableFunction<E, R> property, R value, MatchStrategy queryPolicy);
 
     /**
      * not equals. 不等于.
@@ -90,7 +90,7 @@ public interface NotEqualsEntityExpression<E> {
      * @param ignoreStrategy the ignore strategy
      * @return the l
      */
-    <R> void accept(SerializableFunction<E, R> property, R value, QueryPolicy queryPolicy, Predicate<R> ignoreStrategy);
+    <R> void accept(SerializableFunction<E, R> property, R value, MatchStrategy queryPolicy, Predicate<R> ignoreStrategy);
 
     /**
      * not equals. 不等于.
@@ -119,7 +119,7 @@ public interface NotEqualsEntityExpression<E> {
      * @param queryPolicy the query policy
      * @return LogicExpression
      */
-    <R> void accept(SerializableSupplier<R> property, QueryPolicy queryPolicy);
+    <R> void accept(SerializableSupplier<R> property, MatchStrategy queryPolicy);
 
     /**
      * not equals. 不等于.
@@ -130,5 +130,5 @@ public interface NotEqualsEntityExpression<E> {
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
-    <R> void accept(SerializableSupplier<R> property, QueryPolicy queryPolicy, Predicate<R> ignoreStrategy);
+    <R> void accept(SerializableSupplier<R> property, MatchStrategy queryPolicy, Predicate<R> ignoreStrategy);
 }

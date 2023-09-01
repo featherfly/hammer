@@ -26,7 +26,7 @@ public interface NumberExpression<N extends Number, C extends ConditionExpressio
     //     * {@inheritDoc}
     //     */
     //    @Override
-    //    default L eq(N value, QueryPolicy queryPolicy) {
+    //    default L eq(N value, MatchStrategy queryPolicy) {
     //        return eq(value);
     //    }
     //
@@ -40,7 +40,7 @@ public interface NumberExpression<N extends Number, C extends ConditionExpressio
     //     * {@inheritDoc}
     //     */
     //    @Override
-    //    default L ne(N value, QueryPolicy queryPolicy) {
+    //    default L ne(N value, MatchStrategy queryPolicy) {
     //        return ne(value);
     //    }
 }

@@ -26,7 +26,7 @@ import com.speedment.common.tuple.Tuple6;
 
 import cn.featherfly.common.lang.ClassLoaderUtils;
 import cn.featherfly.common.lang.ClassUtils;
-import cn.featherfly.common.lang.function.SerializableFunction;
+import cn.featherfly.common.function.serializable.SerializableFunction;
 import cn.featherfly.common.repository.IgnoreStrategy;
 import cn.featherfly.common.repository.Repository;
 import cn.featherfly.common.structure.page.Page;

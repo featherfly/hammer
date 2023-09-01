@@ -1,9 +1,9 @@
 
 package cn.featherfly.hammer.expression.condition;
 
-import cn.featherfly.common.lang.function.SerializableToStringFunction;
-import cn.featherfly.common.lang.function.SerializableStringSupplier;
-import cn.featherfly.common.operator.QueryOperator.QueryPolicy;
+import cn.featherfly.common.function.serializable.SerializableToStringFunction;
+import cn.featherfly.common.function.serializable.SerializableStringSupplier;
+import cn.featherfly.common.operator.ComparisonOperator.MatchStrategy;
 import cn.featherfly.common.repository.Field;
 
 /**
@@ -24,7 +24,7 @@ public interface LikeExpression<C extends ConditionExpression, L extends LogicEx
      * @return LogicExpression
      */
     default L lk(Field name, String value) {
-        return lk(name, value, QueryPolicy.AUTO);
+        return lk(name, value, MatchStrategy.AUTO);
     }
 
     /**
@@ -35,7 +35,7 @@ public interface LikeExpression<C extends ConditionExpression, L extends LogicEx
      * @param queryPolicy the query policy
      * @return LogicExpression
      */
-    default L lk(Field name, String value, QueryPolicy queryPolicy) {
+    default L lk(Field name, String value, MatchStrategy queryPolicy) {
         return lk(name.name(), value, queryPolicy);
     }
 
@@ -47,7 +47,7 @@ public interface LikeExpression<C extends ConditionExpression, L extends LogicEx
      * @return LogicExpression
      */
     default L lk(String name, String value) {
-        return lk(name, value, QueryPolicy.AUTO);
+        return lk(name, value, MatchStrategy.AUTO);
     }
 
     /**
@@ -58,7 +58,7 @@ public interface LikeExpression<C extends ConditionExpression, L extends LogicEx
      * @param queryPolicy the query policy
      * @return LogicExpression
      */
-    L lk(String name, String value, QueryPolicy queryPolicy);
+    L lk(String name, String value, MatchStrategy queryPolicy);
 
     /**
      * like value.
@@ -69,7 +69,7 @@ public interface LikeExpression<C extends ConditionExpression, L extends LogicEx
      * @return LogicExpression
      */
     default <T> L lk(SerializableToStringFunction<T> name, String value) {
-        return lk(name, value, QueryPolicy.AUTO);
+        return lk(name, value, MatchStrategy.AUTO);
     }
 
     /**
@@ -81,7 +81,7 @@ public interface LikeExpression<C extends ConditionExpression, L extends LogicEx
      * @param queryPolicy the query policy
      * @return the l
      */
-    <T> L lk(SerializableToStringFunction<T> name, String value, QueryPolicy queryPolicy);
+    <T> L lk(SerializableToStringFunction<T> name, String value, MatchStrategy queryPolicy);
 
     /**
      * like value.
@@ -90,7 +90,7 @@ public interface LikeExpression<C extends ConditionExpression, L extends LogicEx
      * @return LogicExpression
      */
     default L lk(SerializableStringSupplier property) {
-        return lk(property, QueryPolicy.AUTO);
+        return lk(property, MatchStrategy.AUTO);
     }
 
     /**
@@ -100,5 +100,5 @@ public interface LikeExpression<C extends ConditionExpression, L extends LogicEx
      * @param queryPolicy the query policy
      * @return the l
      */
-    L lk(SerializableStringSupplier property, QueryPolicy queryPolicy);
+    L lk(SerializableStringSupplier property, MatchStrategy queryPolicy);
 }

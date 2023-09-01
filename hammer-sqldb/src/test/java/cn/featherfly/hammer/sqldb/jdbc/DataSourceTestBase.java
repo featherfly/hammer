@@ -52,7 +52,7 @@ public class DataSourceTestBase {
     @BeforeSuite
     @Parameters({ "dataBase" })
     public void init(@Optional("mysql") String dataBase) throws IOException {
-        DOMConfigurator.configure(ClassLoaderUtils.getResource("log4j.xml", DataSourceTestBase.class));
+        DOMConfigurator.configure(ClassLoaderUtils.getResource("log4j_dev.xml", DataSourceTestBase.class));
         initDataBase(dataBase);
     }
 

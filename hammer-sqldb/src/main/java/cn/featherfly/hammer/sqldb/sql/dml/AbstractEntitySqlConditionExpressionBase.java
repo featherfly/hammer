@@ -25,30 +25,30 @@ import cn.featherfly.common.lang.AssertIllegalArgument;
 import cn.featherfly.common.lang.LambdaUtils;
 import cn.featherfly.common.lang.LambdaUtils.SerializableSupplierLambdaInfo;
 import cn.featherfly.common.lang.LambdaUtils.SerializedLambdaInfo;
-import cn.featherfly.common.lang.function.SerializableDateSupplier;
-import cn.featherfly.common.lang.function.SerializableDoubleSupplier;
-import cn.featherfly.common.lang.function.SerializableFunction;
-import cn.featherfly.common.lang.function.SerializableIntSupplier;
-import cn.featherfly.common.lang.function.SerializableLocalDateSupplier;
-import cn.featherfly.common.lang.function.SerializableLocalDateTimeSupplier;
-import cn.featherfly.common.lang.function.SerializableLocalTimeSupplier;
-import cn.featherfly.common.lang.function.SerializableLongSupplier;
-import cn.featherfly.common.lang.function.SerializableNumberSupplier;
-import cn.featherfly.common.lang.function.SerializableStringSupplier;
-import cn.featherfly.common.lang.function.SerializableSupplier;
-import cn.featherfly.common.lang.function.SerializableToCollectionFunction;
-import cn.featherfly.common.lang.function.SerializableToDateFunction;
-import cn.featherfly.common.lang.function.SerializableToDoubleFunction;
-import cn.featherfly.common.lang.function.SerializableToEnumFunction;
-import cn.featherfly.common.lang.function.SerializableToIntFunction;
-import cn.featherfly.common.lang.function.SerializableToLocalDateFunction;
-import cn.featherfly.common.lang.function.SerializableToLocalDateTimeFunction;
-import cn.featherfly.common.lang.function.SerializableToLocalTimeFunction;
-import cn.featherfly.common.lang.function.SerializableToLongFunction;
-import cn.featherfly.common.lang.function.SerializableToNumberFunction;
-import cn.featherfly.common.lang.function.SerializableToStringFunction;
-import cn.featherfly.common.operator.QueryOperator;
-import cn.featherfly.common.operator.QueryOperator.QueryPolicy;
+import cn.featherfly.common.function.serializable.SerializableDateSupplier;
+import cn.featherfly.common.function.serializable.SerializableDoubleSupplier;
+import cn.featherfly.common.function.serializable.SerializableFunction;
+import cn.featherfly.common.function.serializable.SerializableIntSupplier;
+import cn.featherfly.common.function.serializable.SerializableLocalDateSupplier;
+import cn.featherfly.common.function.serializable.SerializableLocalDateTimeSupplier;
+import cn.featherfly.common.function.serializable.SerializableLocalTimeSupplier;
+import cn.featherfly.common.function.serializable.SerializableLongSupplier;
+import cn.featherfly.common.function.serializable.SerializableNumberSupplier;
+import cn.featherfly.common.function.serializable.SerializableStringSupplier;
+import cn.featherfly.common.function.serializable.SerializableSupplier;
+import cn.featherfly.common.function.serializable.SerializableToCollectionFunction;
+import cn.featherfly.common.function.serializable.SerializableToDateFunction;
+import cn.featherfly.common.function.serializable.SerializableToDoubleFunction;
+import cn.featherfly.common.function.serializable.SerializableToEnumFunction;
+import cn.featherfly.common.function.serializable.SerializableToIntFunction;
+import cn.featherfly.common.function.serializable.SerializableToLocalDateFunction;
+import cn.featherfly.common.function.serializable.SerializableToLocalDateTimeFunction;
+import cn.featherfly.common.function.serializable.SerializableToLocalTimeFunction;
+import cn.featherfly.common.function.serializable.SerializableToLongFunction;
+import cn.featherfly.common.function.serializable.SerializableToNumberFunction;
+import cn.featherfly.common.function.serializable.SerializableToStringFunction;
+import cn.featherfly.common.operator.ComparisonOperator;
+import cn.featherfly.common.operator.ComparisonOperator.MatchStrategy;
 import cn.featherfly.common.repository.builder.AliasManager;
 import cn.featherfly.common.repository.mapping.ClassMapping;
 import cn.featherfly.common.repository.mapping.PropertyMapping;
@@ -192,7 +192,7 @@ public abstract class AbstractEntitySqlConditionExpressionBase<E, ER extends Ent
      * {@inheritDoc}
      */
     @Override
-    public <R> L eq(SerializableFunction<E, R> name, R value, QueryPolicy queryPolicy) {
+    public <R> L eq(SerializableFunction<E, R> name, R value, MatchStrategy queryPolicy) {
         return eq(classMapping, name, value, queryAlias, queryPolicy, ignoreStrategy);
     }
 
@@ -200,7 +200,7 @@ public abstract class AbstractEntitySqlConditionExpressionBase<E, ER extends Ent
      * {@inheritDoc}
      */
     @Override
-    public <R> L eq(SerializableFunction<E, R> name, R value, QueryPolicy queryPolicy, Predicate<R> ignoreStrategy) {
+    public <R> L eq(SerializableFunction<E, R> name, R value, MatchStrategy queryPolicy, Predicate<R> ignoreStrategy) {
         return eq(classMapping, name, value, queryAlias, queryPolicy, ignoreStrategy);
     }
 
@@ -208,7 +208,7 @@ public abstract class AbstractEntitySqlConditionExpressionBase<E, ER extends Ent
      * {@inheritDoc}
      */
     @Override
-    public <R> L eq(SerializableSupplier<R> property, QueryPolicy queryPolicy) {
+    public <R> L eq(SerializableSupplier<R> property, MatchStrategy queryPolicy) {
         return eq(classMapping, property, queryAlias, queryPolicy, ignoreStrategy);
     }
 
@@ -216,7 +216,7 @@ public abstract class AbstractEntitySqlConditionExpressionBase<E, ER extends Ent
      * {@inheritDoc}
      */
     @Override
-    public <R> L eq(SerializableSupplier<R> property, QueryPolicy queryPolicy, Predicate<R> ignoreStrategy) {
+    public <R> L eq(SerializableSupplier<R> property, MatchStrategy queryPolicy, Predicate<R> ignoreStrategy) {
         return eq(classMapping, property, queryAlias, queryPolicy, ignoreStrategy);
     }
 
@@ -276,7 +276,7 @@ public abstract class AbstractEntitySqlConditionExpressionBase<E, ER extends Ent
      * {@inheritDoc}
      */
     @Override
-    public <R> L ne(SerializableFunction<E, R> name, R value, QueryPolicy queryPolicy) {
+    public <R> L ne(SerializableFunction<E, R> name, R value, MatchStrategy queryPolicy) {
         return ne(classMapping, name, value, queryAlias, queryPolicy, ignoreStrategy);
     }
 
@@ -284,7 +284,7 @@ public abstract class AbstractEntitySqlConditionExpressionBase<E, ER extends Ent
      * {@inheritDoc}
      */
     @Override
-    public <R> L ne(SerializableFunction<E, R> name, R value, QueryPolicy queryPolicy, Predicate<R> ignoreStrategy) {
+    public <R> L ne(SerializableFunction<E, R> name, R value, MatchStrategy queryPolicy, Predicate<R> ignoreStrategy) {
         return ne(classMapping, name, value, queryAlias, queryPolicy, ignoreStrategy);
     }
 
@@ -292,7 +292,7 @@ public abstract class AbstractEntitySqlConditionExpressionBase<E, ER extends Ent
      * {@inheritDoc}
      */
     @Override
-    public <R> L ne(SerializableSupplier<R> property, QueryPolicy queryPolicy) {
+    public <R> L ne(SerializableSupplier<R> property, MatchStrategy queryPolicy) {
         return ne(classMapping, property, queryAlias, queryPolicy, ignoreStrategy);
     }
 
@@ -300,7 +300,7 @@ public abstract class AbstractEntitySqlConditionExpressionBase<E, ER extends Ent
      * {@inheritDoc}
      */
     @Override
-    public <R> L ne(SerializableSupplier<R> property, QueryPolicy queryPolicy, Predicate<R> ignoreStrategy) {
+    public <R> L ne(SerializableSupplier<R> property, MatchStrategy queryPolicy, Predicate<R> ignoreStrategy) {
         return ne(classMapping, property, queryAlias, queryPolicy, ignoreStrategy);
     }
 
@@ -310,7 +310,7 @@ public abstract class AbstractEntitySqlConditionExpressionBase<E, ER extends Ent
      * {@inheritDoc}
      */
     @Override
-    public L lk(SerializableFunction<E, String> name, String value, QueryPolicy queryPolicy) {
+    public L lk(SerializableFunction<E, String> name, String value, MatchStrategy queryPolicy) {
         return lk(classMapping, name, value, queryAlias, queryPolicy, ignoreStrategy);
     }
 
@@ -318,7 +318,7 @@ public abstract class AbstractEntitySqlConditionExpressionBase<E, ER extends Ent
      * {@inheritDoc}
      */
     @Override
-    public L lk(SerializableFunction<E, String> name, String value, QueryPolicy queryPolicy,
+    public L lk(SerializableFunction<E, String> name, String value, MatchStrategy queryPolicy,
             Predicate<String> ignoreStrategy) {
         return lk(classMapping, name, value, queryAlias, queryPolicy, ignoreStrategy);
     }
@@ -327,7 +327,7 @@ public abstract class AbstractEntitySqlConditionExpressionBase<E, ER extends Ent
      * {@inheritDoc}
      */
     @Override
-    public L lk(SerializableStringSupplier property, QueryPolicy queryPolicy) {
+    public L lk(SerializableStringSupplier property, MatchStrategy queryPolicy) {
         return lk(classMapping, property, queryAlias, queryPolicy, ignoreStrategy);
     }
 
@@ -335,7 +335,7 @@ public abstract class AbstractEntitySqlConditionExpressionBase<E, ER extends Ent
      * {@inheritDoc}
      */
     @Override
-    public L lk(SerializableStringSupplier property, QueryPolicy queryPolicy, Predicate<String> ignoreStrategy) {
+    public L lk(SerializableStringSupplier property, MatchStrategy queryPolicy, Predicate<String> ignoreStrategy) {
         return lk(classMapping, property, queryAlias, queryPolicy, ignoreStrategy);
     }
 
@@ -343,7 +343,7 @@ public abstract class AbstractEntitySqlConditionExpressionBase<E, ER extends Ent
      * {@inheritDoc}
      */
     @Override
-    public L sw(SerializableFunction<E, String> name, String value, QueryPolicy queryPolicy) {
+    public L sw(SerializableFunction<E, String> name, String value, MatchStrategy queryPolicy) {
         return sw(classMapping, name, value, queryAlias, queryPolicy, ignoreStrategy);
     }
 
@@ -351,7 +351,7 @@ public abstract class AbstractEntitySqlConditionExpressionBase<E, ER extends Ent
      * {@inheritDoc}
      */
     @Override
-    public L sw(SerializableFunction<E, String> name, String value, QueryPolicy queryPolicy,
+    public L sw(SerializableFunction<E, String> name, String value, MatchStrategy queryPolicy,
             Predicate<String> ignoreStrategy) {
         return sw(classMapping, name, value, queryAlias, queryPolicy, ignoreStrategy);
     }
@@ -360,7 +360,7 @@ public abstract class AbstractEntitySqlConditionExpressionBase<E, ER extends Ent
      * {@inheritDoc}
      */
     @Override
-    public L sw(SerializableStringSupplier property, QueryPolicy queryPolicy) {
+    public L sw(SerializableStringSupplier property, MatchStrategy queryPolicy) {
         return sw(classMapping, property, queryAlias, queryPolicy, ignoreStrategy);
     }
 
@@ -368,7 +368,7 @@ public abstract class AbstractEntitySqlConditionExpressionBase<E, ER extends Ent
      * {@inheritDoc}
      */
     @Override
-    public L sw(SerializableStringSupplier property, QueryPolicy queryPolicy, Predicate<String> ignoreStrategy) {
+    public L sw(SerializableStringSupplier property, MatchStrategy queryPolicy, Predicate<String> ignoreStrategy) {
         return sw(classMapping, property, queryAlias, queryPolicy, ignoreStrategy);
     }
 
@@ -378,7 +378,7 @@ public abstract class AbstractEntitySqlConditionExpressionBase<E, ER extends Ent
      * {@inheritDoc}
      */
     @Override
-    public L ew(SerializableFunction<E, String> name, String value, QueryPolicy queryPolicy) {
+    public L ew(SerializableFunction<E, String> name, String value, MatchStrategy queryPolicy) {
         return ew(classMapping, name, value, queryAlias, queryPolicy, ignoreStrategy);
     }
 
@@ -386,7 +386,7 @@ public abstract class AbstractEntitySqlConditionExpressionBase<E, ER extends Ent
      * {@inheritDoc}
      */
     @Override
-    public L ew(SerializableFunction<E, String> name, String value, QueryPolicy queryPolicy,
+    public L ew(SerializableFunction<E, String> name, String value, MatchStrategy queryPolicy,
             Predicate<String> ignoreStrategy) {
         return ew(classMapping, name, value, queryAlias, queryPolicy, ignoreStrategy);
     }
@@ -395,7 +395,7 @@ public abstract class AbstractEntitySqlConditionExpressionBase<E, ER extends Ent
      * {@inheritDoc}
      */
     @Override
-    public L ew(SerializableStringSupplier property, QueryPolicy queryPolicy) {
+    public L ew(SerializableStringSupplier property, MatchStrategy queryPolicy) {
         return ew(classMapping, property, queryAlias, queryPolicy, ignoreStrategy);
     }
 
@@ -403,7 +403,7 @@ public abstract class AbstractEntitySqlConditionExpressionBase<E, ER extends Ent
      * {@inheritDoc}
      */
     @Override
-    public L ew(SerializableStringSupplier property, QueryPolicy queryPolicy, Predicate<String> ignoreStrategy) {
+    public L ew(SerializableStringSupplier property, MatchStrategy queryPolicy, Predicate<String> ignoreStrategy) {
         return ew(classMapping, property, queryAlias, queryPolicy, ignoreStrategy);
     }
 
@@ -413,7 +413,7 @@ public abstract class AbstractEntitySqlConditionExpressionBase<E, ER extends Ent
      * {@inheritDoc}
      */
     @Override
-    public L co(SerializableFunction<E, String> name, String value, QueryPolicy queryPolicy) {
+    public L co(SerializableFunction<E, String> name, String value, MatchStrategy queryPolicy) {
         return co(classMapping, name, value, queryAlias, queryPolicy, ignoreStrategy);
     }
 
@@ -421,7 +421,7 @@ public abstract class AbstractEntitySqlConditionExpressionBase<E, ER extends Ent
      * {@inheritDoc}
      */
     @Override
-    public L co(SerializableFunction<E, String> name, String value, QueryPolicy queryPolicy,
+    public L co(SerializableFunction<E, String> name, String value, MatchStrategy queryPolicy,
             Predicate<String> ignoreStrategy) {
         return co(classMapping, name, value, queryAlias, queryPolicy, ignoreStrategy);
     }
@@ -430,7 +430,7 @@ public abstract class AbstractEntitySqlConditionExpressionBase<E, ER extends Ent
      * {@inheritDoc}
      */
     @Override
-    public L co(SerializableStringSupplier property, QueryPolicy queryPolicy) {
+    public L co(SerializableStringSupplier property, MatchStrategy queryPolicy) {
         return co(classMapping, property, queryAlias, queryPolicy, ignoreStrategy);
     }
 
@@ -438,7 +438,7 @@ public abstract class AbstractEntitySqlConditionExpressionBase<E, ER extends Ent
      * {@inheritDoc}
      */
     @Override
-    public L co(SerializableStringSupplier property, QueryPolicy queryPolicy, Predicate<String> ignoreStrategy) {
+    public L co(SerializableStringSupplier property, MatchStrategy queryPolicy, Predicate<String> ignoreStrategy) {
         return co(classMapping, property, queryAlias, queryPolicy, ignoreStrategy);
     }
 
@@ -449,7 +449,7 @@ public abstract class AbstractEntitySqlConditionExpressionBase<E, ER extends Ent
     //    public <N extends Number> L ge(String name, N value) {
     //        return (L) addCondition(
     //                new SqlConditionExpressionBuilder(dialect, ClassMappingUtils.getColumnName(name, classMapping), value,
-    //                        QueryOperator.GE, queryAlias, ignoreStrategy));
+    //                        ComparisonOperator.GE, queryAlias, ignoreStrategy));
     //    }
 
     //
@@ -460,7 +460,7 @@ public abstract class AbstractEntitySqlConditionExpressionBase<E, ER extends Ent
     //    public <D extends Date> L ge(String name, D value) {
     //        return (L) addCondition(
     //                new SqlConditionExpressionBuilder(dialect, ClassMappingUtils.getColumnName(name, classMapping), value,
-    //                        QueryOperator.GE, queryAlias, ignoreStrategy));
+    //                        ComparisonOperator.GE, queryAlias, ignoreStrategy));
     //    }
 
     //
@@ -471,7 +471,7 @@ public abstract class AbstractEntitySqlConditionExpressionBase<E, ER extends Ent
     //    public L ge(String name, LocalTime value) {
     //        return (L) addCondition(
     //                new SqlConditionExpressionBuilder(dialect, ClassMappingUtils.getColumnName(name, classMapping), value,
-    //                        QueryOperator.GE, queryAlias, ignoreStrategy));
+    //                        ComparisonOperator.GE, queryAlias, ignoreStrategy));
     //    }
 
     //
@@ -482,7 +482,7 @@ public abstract class AbstractEntitySqlConditionExpressionBase<E, ER extends Ent
     //    public L ge(String name, LocalDate value) {
     //        return (L) addCondition(
     //                new SqlConditionExpressionBuilder(dialect, ClassMappingUtils.getColumnName(name, classMapping), value,
-    //                        QueryOperator.GE, queryAlias, ignoreStrategy));
+    //                        ComparisonOperator.GE, queryAlias, ignoreStrategy));
     //    }
 
     //
@@ -493,7 +493,7 @@ public abstract class AbstractEntitySqlConditionExpressionBase<E, ER extends Ent
     //    public L ge(String name, LocalDateTime value) {
     //        return (L) addCondition(
     //                new SqlConditionExpressionBuilder(dialect, ClassMappingUtils.getColumnName(name, classMapping), value,
-    //                        QueryOperator.GE, queryAlias, ignoreStrategy));
+    //                        ComparisonOperator.GE, queryAlias, ignoreStrategy));
     //    }
 
     //
@@ -504,7 +504,7 @@ public abstract class AbstractEntitySqlConditionExpressionBase<E, ER extends Ent
     //    public L ge(String name, String value) {
     //        return (L) addCondition(
     //                new SqlConditionExpressionBuilder(dialect, ClassMappingUtils.getColumnName(name, classMapping), value,
-    //                        QueryOperator.GE, queryAlias, ignoreStrategy));
+    //                        ComparisonOperator.GE, queryAlias, ignoreStrategy));
     //    }
 
     //
@@ -515,7 +515,7 @@ public abstract class AbstractEntitySqlConditionExpressionBase<E, ER extends Ent
     //    public <N extends Number> L gt(String name, N value) {
     //        return (L) addCondition(
     //                new SqlConditionExpressionBuilder(dialect, ClassMappingUtils.getColumnName(name, classMapping), value,
-    //                        QueryOperator.GT, queryAlias, ignoreStrategy));
+    //                        ComparisonOperator.GT, queryAlias, ignoreStrategy));
     //    }
 
     //    /**
@@ -525,7 +525,7 @@ public abstract class AbstractEntitySqlConditionExpressionBase<E, ER extends Ent
     //    public <D extends Date> L gt(String name, D value) {
     //        return (L) addCondition(
     //                new SqlConditionExpressionBuilder(dialect, ClassMappingUtils.getColumnName(name, classMapping), value,
-    //                        QueryOperator.GT, queryAlias, ignoreStrategy));
+    //                        ComparisonOperator.GT, queryAlias, ignoreStrategy));
     //    }
 
     //    /**
@@ -535,7 +535,7 @@ public abstract class AbstractEntitySqlConditionExpressionBase<E, ER extends Ent
     //    public L gt(String name, LocalTime value) {
     //        return (L) addCondition(
     //                new SqlConditionExpressionBuilder(dialect, ClassMappingUtils.getColumnName(name, classMapping), value,
-    //                        QueryOperator.GT, queryAlias, ignoreStrategy));
+    //                        ComparisonOperator.GT, queryAlias, ignoreStrategy));
     //    }
 
     //    /**
@@ -545,7 +545,7 @@ public abstract class AbstractEntitySqlConditionExpressionBase<E, ER extends Ent
     //    public L gt(String name, LocalDate value) {
     //        return (L) addCondition(
     //                new SqlConditionExpressionBuilder(dialect, ClassMappingUtils.getColumnName(name, classMapping), value,
-    //                        QueryOperator.GT, queryAlias, ignoreStrategy));
+    //                        ComparisonOperator.GT, queryAlias, ignoreStrategy));
     //    }
 
     //    /**
@@ -555,7 +555,7 @@ public abstract class AbstractEntitySqlConditionExpressionBase<E, ER extends Ent
     //    public L gt(String name, LocalDateTime value) {
     //        return (L) addCondition(
     //                new SqlConditionExpressionBuilder(dialect, ClassMappingUtils.getColumnName(name, classMapping), value,
-    //                        QueryOperator.GT, queryAlias, ignoreStrategy));
+    //                        ComparisonOperator.GT, queryAlias, ignoreStrategy));
     //    }
 
     //    /**
@@ -565,7 +565,7 @@ public abstract class AbstractEntitySqlConditionExpressionBase<E, ER extends Ent
     //    public L gt(String name, String value) {
     //        return (L) addCondition(
     //                new SqlConditionExpressionBuilder(dialect, ClassMappingUtils.getColumnName(name, classMapping), value,
-    //                        QueryOperator.GT, queryAlias, ignoreStrategy));
+    //                        ComparisonOperator.GT, queryAlias, ignoreStrategy));
     //    }
 
     //    /**
@@ -575,7 +575,7 @@ public abstract class AbstractEntitySqlConditionExpressionBase<E, ER extends Ent
     //    public L in(String name, Object value) {
     //        return (L) addCondition(
     //                new SqlConditionExpressionBuilder(dialect, ClassMappingUtils.getColumnName(name, classMapping), value,
-    //                        QueryOperator.IN, queryAlias, ignoreStrategy));
+    //                        ComparisonOperator.IN, queryAlias, ignoreStrategy));
     //    }
 
     //    /**
@@ -593,7 +593,7 @@ public abstract class AbstractEntitySqlConditionExpressionBase<E, ER extends Ent
     //    public L inn(String name, Boolean value) {
     //        return (L) addCondition(
     //                new SqlConditionExpressionBuilder(dialect, ClassMappingUtils.getColumnName(name, classMapping), value,
-    //                        QueryOperator.INN, queryAlias, ignoreStrategy));
+    //                        ComparisonOperator.INN, queryAlias, ignoreStrategy));
     //    }
 
     //    /**
@@ -611,7 +611,7 @@ public abstract class AbstractEntitySqlConditionExpressionBase<E, ER extends Ent
     //    public L isn(String name, Boolean value) {
     //        return (L) addCondition(
     //                new SqlConditionExpressionBuilder(dialect, ClassMappingUtils.getColumnName(name, classMapping), value,
-    //                        QueryOperator.ISN, queryAlias, ignoreStrategy));
+    //                        ComparisonOperator.ISN, queryAlias, ignoreStrategy));
     //    }
 
     //    /**
@@ -621,7 +621,7 @@ public abstract class AbstractEntitySqlConditionExpressionBase<E, ER extends Ent
     //    public <N extends Number> L le(String name, N value) {
     //        return (L) addCondition(
     //                new SqlConditionExpressionBuilder(dialect, ClassMappingUtils.getColumnName(name, classMapping), value,
-    //                        QueryOperator.LE, queryAlias, ignoreStrategy));
+    //                        ComparisonOperator.LE, queryAlias, ignoreStrategy));
     //    }
 
     //    /**
@@ -631,7 +631,7 @@ public abstract class AbstractEntitySqlConditionExpressionBase<E, ER extends Ent
     //    public <D extends Date> L le(String name, D value) {
     //        return (L) addCondition(
     //                new SqlConditionExpressionBuilder(dialect, ClassMappingUtils.getColumnName(name, classMapping), value,
-    //                        QueryOperator.LE, queryAlias, ignoreStrategy));
+    //                        ComparisonOperator.LE, queryAlias, ignoreStrategy));
     //    }
 
     //    /**
@@ -641,7 +641,7 @@ public abstract class AbstractEntitySqlConditionExpressionBase<E, ER extends Ent
     //    public L le(String name, LocalTime value) {
     //        return (L) addCondition(
     //                new SqlConditionExpressionBuilder(dialect, ClassMappingUtils.getColumnName(name, classMapping), value,
-    //                        QueryOperator.LE, queryAlias, ignoreStrategy));
+    //                        ComparisonOperator.LE, queryAlias, ignoreStrategy));
     //    }
 
     //    /**
@@ -651,7 +651,7 @@ public abstract class AbstractEntitySqlConditionExpressionBase<E, ER extends Ent
     //    public L le(String name, LocalDate value) {
     //        return (L) addCondition(
     //                new SqlConditionExpressionBuilder(dialect, ClassMappingUtils.getColumnName(name, classMapping), value,
-    //                        QueryOperator.LE, queryAlias, ignoreStrategy));
+    //                        ComparisonOperator.LE, queryAlias, ignoreStrategy));
     //    }
 
     //    /**
@@ -661,7 +661,7 @@ public abstract class AbstractEntitySqlConditionExpressionBase<E, ER extends Ent
     //    public L le(String name, LocalDateTime value) {
     //        return (L) addCondition(
     //                new SqlConditionExpressionBuilder(dialect, ClassMappingUtils.getColumnName(name, classMapping), value,
-    //                        QueryOperator.LE, queryAlias, ignoreStrategy));
+    //                        ComparisonOperator.LE, queryAlias, ignoreStrategy));
     //    }
 
     //    /**
@@ -671,7 +671,7 @@ public abstract class AbstractEntitySqlConditionExpressionBase<E, ER extends Ent
     //    public L le(String name, String value) {
     //        return (L) addCondition(
     //                new SqlConditionExpressionBuilder(dialect, ClassMappingUtils.getColumnName(name, classMapping), value,
-    //                        QueryOperator.LE, queryAlias, ignoreStrategy));
+    //                        ComparisonOperator.LE, queryAlias, ignoreStrategy));
     //    }
 
     //    /**
@@ -681,7 +681,7 @@ public abstract class AbstractEntitySqlConditionExpressionBase<E, ER extends Ent
     //    public <N extends Number> L lt(String name, N value) {
     //        return (L) addCondition(
     //                new SqlConditionExpressionBuilder(dialect, ClassMappingUtils.getColumnName(name, classMapping), value,
-    //                        QueryOperator.LT, queryAlias, ignoreStrategy));
+    //                        ComparisonOperator.LT, queryAlias, ignoreStrategy));
     //    }
 
     //    /**
@@ -691,7 +691,7 @@ public abstract class AbstractEntitySqlConditionExpressionBase<E, ER extends Ent
     //    public <D extends Date> L lt(String name, D value) {
     //        return (L) addCondition(
     //                new SqlConditionExpressionBuilder(dialect, ClassMappingUtils.getColumnName(name, classMapping), value,
-    //                        QueryOperator.LT, queryAlias, ignoreStrategy));
+    //                        ComparisonOperator.LT, queryAlias, ignoreStrategy));
     //    }
 
     //    /**
@@ -701,7 +701,7 @@ public abstract class AbstractEntitySqlConditionExpressionBase<E, ER extends Ent
     //    public L lt(String name, LocalTime value) {
     //        return (L) addCondition(
     //                new SqlConditionExpressionBuilder(dialect, ClassMappingUtils.getColumnName(name, classMapping), value,
-    //                        QueryOperator.LT, queryAlias, ignoreStrategy));
+    //                        ComparisonOperator.LT, queryAlias, ignoreStrategy));
     //    }
 
     //    /**
@@ -711,7 +711,7 @@ public abstract class AbstractEntitySqlConditionExpressionBase<E, ER extends Ent
     //    public L lt(String name, LocalDate value) {
     //        return (L) addCondition(
     //                new SqlConditionExpressionBuilder(dialect, ClassMappingUtils.getColumnName(name, classMapping), value,
-    //                        QueryOperator.LT, queryAlias, ignoreStrategy));
+    //                        ComparisonOperator.LT, queryAlias, ignoreStrategy));
     //    }
 
     //    /**
@@ -721,7 +721,7 @@ public abstract class AbstractEntitySqlConditionExpressionBase<E, ER extends Ent
     //    public L lt(String name, LocalDateTime value) {
     //        return (L) addCondition(
     //                new SqlConditionExpressionBuilder(dialect, ClassMappingUtils.getColumnName(name, classMapping), value,
-    //                        QueryOperator.LT, queryAlias, ignoreStrategy));
+    //                        ComparisonOperator.LT, queryAlias, ignoreStrategy));
     //    }
 
     //    /**
@@ -731,7 +731,7 @@ public abstract class AbstractEntitySqlConditionExpressionBase<E, ER extends Ent
     //    public L lt(String name, String value) {
     //        return (L) addCondition(
     //                new SqlConditionExpressionBuilder(dialect, ClassMappingUtils.getColumnName(name, classMapping), value,
-    //                        QueryOperator.LT, queryAlias, ignoreStrategy));
+    //                        ComparisonOperator.LT, queryAlias, ignoreStrategy));
     //    }
 
     //    /**
@@ -741,7 +741,7 @@ public abstract class AbstractEntitySqlConditionExpressionBase<E, ER extends Ent
     //    public L nin(String name, Object value) {
     //        return (L) addCondition(
     //                new SqlConditionExpressionBuilder(dialect, ClassMappingUtils.getColumnName(name, classMapping), value,
-    //                        QueryOperator.NIN, queryAlias, ignoreStrategy));
+    //                        ComparisonOperator.NIN, queryAlias, ignoreStrategy));
     //    }
 
     /**
@@ -2526,110 +2526,110 @@ public abstract class AbstractEntitySqlConditionExpressionBase<E, ER extends Ent
     // ********************************************************************
 
     protected <R> L eq(JdbcClassMapping<?> classMapping, SerializableSupplier<R> property, String queryAlias,
-            QueryPolicy queryPolicy, Predicate<?> ignoreStrategy) {
+            MatchStrategy queryPolicy, Predicate<?> ignoreStrategy) {
         return eq(classMapping, property, property.get(), queryAlias, queryPolicy, ignoreStrategy);
     }
 
     protected <R> L eq(JdbcClassMapping<?> classMapping, Serializable property, R value, String queryAlias,
-            QueryPolicy queryPolicy, Predicate<?> ignoreStrategy) {
-        return eq_ne(QueryOperator.EQ, classMapping.getPropertyMapping(getPropertyName(property)), value, queryAlias,
+            MatchStrategy queryPolicy, Predicate<?> ignoreStrategy) {
+        return eq_ne(ComparisonOperator.EQ, classMapping.getPropertyMapping(getPropertyName(property)), value, queryAlias,
                 queryPolicy, ignoreStrategy);
     }
 
     protected <R> L ne(JdbcClassMapping<?> classMapping, SerializableSupplier<R> property, String queryAlias,
-            QueryPolicy queryPolicy, Predicate<?> ignoreStrategy) {
+            MatchStrategy queryPolicy, Predicate<?> ignoreStrategy) {
         return ne(classMapping, property, property.get(), queryAlias, queryPolicy, ignoreStrategy);
     }
 
     protected <R> L ne(JdbcClassMapping<?> classMapping, Serializable property, R value, String queryAlias,
-            QueryPolicy queryPolicy, Predicate<?> ignoreStrategy) {
-        return eq_ne(QueryOperator.NE, classMapping.getPropertyMapping(getPropertyName(property)), value, queryAlias,
+            MatchStrategy queryPolicy, Predicate<?> ignoreStrategy) {
+        return eq_ne(ComparisonOperator.NE, classMapping.getPropertyMapping(getPropertyName(property)), value, queryAlias,
                 queryPolicy, ignoreStrategy);
     }
 
-    protected abstract <T, R> L eq_ne(QueryOperator queryOperator, PropertyMapping<?> pm, R value, String queryAlias,
-            QueryPolicy queryPolicy, Predicate<?> ignoreStrategy);
+    protected abstract <T, R> L eq_ne(ComparisonOperator comparisonOperator, PropertyMapping<?> pm, R value, String queryAlias,
+            MatchStrategy queryPolicy, Predicate<?> ignoreStrategy);
 
-    //    protected <T, R> L eq_ne(QueryOperator queryOperator, JdbcPropertyMapping pm, R value, String queryAlias,
-    //            QueryPolicy queryPolicy, Predicate<R> ignoreStrategy) {
+    //    protected <T, R> L eq_ne(ComparisonOperator comparisonOperator, JdbcPropertyMapping pm, R value, String queryAlias,
+    //            MatchStrategy queryPolicy, Predicate<R> ignoreStrategy) {
     //        return (L) addCondition(new SqlConditionExpressionBuilder(dialect, pm.getRepositoryFieldName(),
-    //                getFieldValueOperator(pm, value), queryOperator, queryPolicy, queryAlias, ignoreStrategy));
+    //                getFieldValueOperator(pm, value), comparisonOperator, queryPolicy, queryAlias, ignoreStrategy));
     //    }
 
     // ****************************************************************************************************************
 
     protected L sw(JdbcClassMapping<?> classMapping, SerializableSupplier<String> property, String queryAlias,
-            QueryPolicy queryPolicy, Predicate<?> ignoreStrategy) {
+            MatchStrategy queryPolicy, Predicate<?> ignoreStrategy) {
         return sw(classMapping, property, property.get(), queryAlias, queryPolicy, ignoreStrategy);
     }
 
     protected <T, R> L sw(JdbcClassMapping<?> classMapping, Serializable property, String value, String queryAlias,
-            QueryPolicy queryPolicy, Predicate<?> ignoreStrategy) {
+            MatchStrategy queryPolicy, Predicate<?> ignoreStrategy) {
         return sw(classMapping.getPropertyMapping(getPropertyName(property)), value, queryAlias, queryPolicy,
                 ignoreStrategy);
     }
 
-    protected <T> L sw(JdbcPropertyMapping pm, String value, String queryAlias, QueryPolicy queryPolicy,
+    protected <T> L sw(JdbcPropertyMapping pm, String value, String queryAlias, MatchStrategy queryPolicy,
             Predicate<?> ignoreStrategy) {
         return (L) addCondition(new SqlConditionExpressionBuilder(dialect, pm.getRepositoryFieldName(),
-                getFieldValueOperator(pm, value), QueryOperator.SW, queryPolicy, queryAlias, ignoreStrategy));
+                getFieldValueOperator(pm, value), ComparisonOperator.SW, queryPolicy, queryAlias, ignoreStrategy));
     }
 
     // ****************************************************************************************************************
 
     protected L co(JdbcClassMapping<?> classMapping, SerializableSupplier<String> property, String queryAlias,
-            QueryPolicy queryPolicy, Predicate<?> ignoreStrategy) {
+            MatchStrategy queryPolicy, Predicate<?> ignoreStrategy) {
         return co(classMapping, property, property.get(), queryAlias, queryPolicy, ignoreStrategy);
     }
 
     protected <T, R> L co(JdbcClassMapping<?> classMapping, Serializable property, String value, String queryAlias,
-            QueryPolicy queryPolicy, Predicate<?> ignoreStrategy) {
+            MatchStrategy queryPolicy, Predicate<?> ignoreStrategy) {
         return co(classMapping.getPropertyMapping(getPropertyName(property)), value, queryAlias, queryPolicy,
                 ignoreStrategy);
     }
 
-    protected <T> L co(JdbcPropertyMapping pm, String value, String queryAlias, QueryPolicy queryPolicy,
+    protected <T> L co(JdbcPropertyMapping pm, String value, String queryAlias, MatchStrategy queryPolicy,
             Predicate<?> ignoreStrategy) {
         return (L) addCondition(new SqlConditionExpressionBuilder(dialect, pm.getRepositoryFieldName(),
-                getFieldValueOperator(pm, value), QueryOperator.CO, queryPolicy, queryAlias, ignoreStrategy));
+                getFieldValueOperator(pm, value), ComparisonOperator.CO, queryPolicy, queryAlias, ignoreStrategy));
     }
 
     // ****************************************************************************************************************
 
     protected L ew(JdbcClassMapping<?> classMapping, SerializableSupplier<String> property, String queryAlias,
-            QueryPolicy queryPolicy, Predicate<?> ignoreStrategy) {
+            MatchStrategy queryPolicy, Predicate<?> ignoreStrategy) {
         return ew(classMapping, property, property.get(), queryAlias, queryPolicy, ignoreStrategy);
     }
 
     protected <T, R> L ew(JdbcClassMapping<?> classMapping, Serializable property, String value, String queryAlias,
-            QueryPolicy queryPolicy, Predicate<?> ignoreStrategy) {
+            MatchStrategy queryPolicy, Predicate<?> ignoreStrategy) {
         return ew(classMapping.getPropertyMapping(getPropertyName(property)), value, queryAlias, queryPolicy,
                 ignoreStrategy);
     }
 
-    protected <T> L ew(JdbcPropertyMapping pm, String value, String queryAlias, QueryPolicy queryPolicy,
+    protected <T> L ew(JdbcPropertyMapping pm, String value, String queryAlias, MatchStrategy queryPolicy,
             Predicate<?> ignoreStrategy) {
         return (L) addCondition(new SqlConditionExpressionBuilder(dialect, pm.getRepositoryFieldName(),
-                getFieldValueOperator(pm, value), QueryOperator.EW, queryPolicy, queryAlias, ignoreStrategy));
+                getFieldValueOperator(pm, value), ComparisonOperator.EW, queryPolicy, queryAlias, ignoreStrategy));
     }
 
     // ****************************************************************************************************************
 
     protected L lk(JdbcClassMapping<?> classMapping, SerializableSupplier<String> property, String queryAlias,
-            QueryPolicy queryPolicy, Predicate<?> ignoreStrategy) {
+            MatchStrategy queryPolicy, Predicate<?> ignoreStrategy) {
         return lk(classMapping, property, property.get(), queryAlias, queryPolicy, ignoreStrategy);
     }
 
     protected <T, R> L lk(JdbcClassMapping<?> classMapping, Serializable property, String value, String queryAlias,
-            QueryPolicy queryPolicy, Predicate<?> ignoreStrategy) {
+            MatchStrategy queryPolicy, Predicate<?> ignoreStrategy) {
         return lk(classMapping.getPropertyMapping(getPropertyName(property)), value, queryAlias, queryPolicy,
                 ignoreStrategy);
     }
 
-    protected <T> L lk(JdbcPropertyMapping pm, String value, String queryAlias, QueryPolicy queryPolicy,
+    protected <T> L lk(JdbcPropertyMapping pm, String value, String queryAlias, MatchStrategy queryPolicy,
             Predicate<?> ignoreStrategy) {
         return (L) addCondition(new SqlConditionExpressionBuilder(dialect, pm.getRepositoryFieldName(),
-                getFieldValueOperator(pm, value), QueryOperator.LK, queryPolicy, queryAlias, ignoreStrategy));
+                getFieldValueOperator(pm, value), ComparisonOperator.LK, queryPolicy, queryAlias, ignoreStrategy));
     }
 
     // ****************************************************************************************************************
@@ -2682,13 +2682,13 @@ public abstract class AbstractEntitySqlConditionExpressionBase<E, ER extends Ent
 
     protected <T, R> L in(JdbcPropertyMapping pm, R value, String queryAlias, Predicate<?> ignoreStrategy) {
         return (L) addCondition(new SqlConditionExpressionBuilder(dialect, pm.getRepositoryFieldName(),
-                getInParam(pm, value), QueryOperator.IN, queryAlias, ignoreStrategy));
+                getInParam(pm, value), ComparisonOperator.IN, queryAlias, ignoreStrategy));
     }
 
     //    protected <T, R> L in_nin(boolean in, JdbcPropertyMapping pm, R value, String queryAlias,
     //            Predicate<?> ignoreStrategy) {
     //        return (L) addCondition(new SqlConditionExpressionBuilder(dialect, pm.getRepositoryFieldName(),
-    //                getInParam(pm, value), in ? QueryOperator.IN : QueryOperator.NIN, queryAlias, ignoreStrategy));
+    //                getInParam(pm, value), in ? ComparisonOperator.IN : ComparisonOperator.NIN, queryAlias, ignoreStrategy));
     //    }
 
     // ****************************************************************************************************************
@@ -2720,7 +2720,7 @@ public abstract class AbstractEntitySqlConditionExpressionBase<E, ER extends Ent
 
     protected <R> L nin(JdbcPropertyMapping pm, R value, String queryAlias, Predicate<?> ignoreStrategy) {
         return (L) addCondition(new SqlConditionExpressionBuilder(dialect, pm.getRepositoryFieldName(),
-                getInParam(pm, value), QueryOperator.NIN, queryAlias, ignoreStrategy));
+                getInParam(pm, value), ComparisonOperator.NIN, queryAlias, ignoreStrategy));
     }
 
     protected <T, R> L isn(JdbcClassMapping<?> classMapping, Serializable property, Boolean value, String queryAlias) {
@@ -2729,7 +2729,7 @@ public abstract class AbstractEntitySqlConditionExpressionBase<E, ER extends Ent
 
     protected L isn(JdbcPropertyMapping pm, Boolean value, String queryAlias) {
         return (L) addCondition(new SqlConditionExpressionBuilder(dialect, pm.getRepositoryFieldName(), value,
-                QueryOperator.ISN, queryAlias, ignoreStrategy));
+                ComparisonOperator.ISN, queryAlias, ignoreStrategy));
     }
 
     protected <T, R> L inn(JdbcClassMapping<?> classMapping, Serializable property, Boolean value, String queryAlias) {
@@ -2738,7 +2738,7 @@ public abstract class AbstractEntitySqlConditionExpressionBase<E, ER extends Ent
 
     protected L inn(JdbcPropertyMapping pm, Boolean value, String queryAlias) {
         return (L) addCondition(new SqlConditionExpressionBuilder(dialect, pm.getRepositoryFieldName(), value,
-                QueryOperator.INN, queryAlias, ignoreStrategy));
+                ComparisonOperator.INN, queryAlias, ignoreStrategy));
     }
 
     // ********************************************************************
@@ -2787,7 +2787,7 @@ public abstract class AbstractEntitySqlConditionExpressionBase<E, ER extends Ent
 
     protected <V> L ge(JdbcPropertyMapping pm, V value, String queryAlias, Predicate<?> ignoreStrategy) {
         return (L) addCondition(new SqlConditionExpressionBuilder(dialect, pm.getRepositoryFieldName(),
-                getFieldValueOperator(pm, value), QueryOperator.GE, queryAlias, ignoreStrategy));
+                getFieldValueOperator(pm, value), ComparisonOperator.GE, queryAlias, ignoreStrategy));
     }
 
     // ********************************************************************
@@ -2836,7 +2836,7 @@ public abstract class AbstractEntitySqlConditionExpressionBase<E, ER extends Ent
 
     protected <V> L gt(JdbcPropertyMapping pm, V value, String queryAlias, Predicate<?> ignoreStrategy) {
         return (L) addCondition(new SqlConditionExpressionBuilder(dialect, pm.getRepositoryFieldName(),
-                getFieldValueOperator(pm, value), QueryOperator.GT, queryAlias, ignoreStrategy));
+                getFieldValueOperator(pm, value), ComparisonOperator.GT, queryAlias, ignoreStrategy));
     }
 
     // ********************************************************************
@@ -2885,7 +2885,7 @@ public abstract class AbstractEntitySqlConditionExpressionBase<E, ER extends Ent
 
     protected <V> L le(JdbcPropertyMapping pm, V value, String queryAlias, Predicate<?> ignoreStrategy) {
         return (L) addCondition(new SqlConditionExpressionBuilder(dialect, pm.getRepositoryFieldName(),
-                getFieldValueOperator(pm, value), QueryOperator.LE, queryAlias, ignoreStrategy));
+                getFieldValueOperator(pm, value), ComparisonOperator.LE, queryAlias, ignoreStrategy));
     }
 
     // ****************************************************************************************************************
@@ -2934,7 +2934,7 @@ public abstract class AbstractEntitySqlConditionExpressionBase<E, ER extends Ent
 
     protected <V> L lt(JdbcPropertyMapping pm, V value, String queryAlias, Predicate<?> ignoreStrategy) {
         return (L) addCondition(new SqlConditionExpressionBuilder(dialect, pm.getRepositoryFieldName(),
-                getFieldValueOperator(pm, value), QueryOperator.LT, queryAlias, ignoreStrategy));
+                getFieldValueOperator(pm, value), ComparisonOperator.LT, queryAlias, ignoreStrategy));
     }
 
     // ****************************************************************************************************************

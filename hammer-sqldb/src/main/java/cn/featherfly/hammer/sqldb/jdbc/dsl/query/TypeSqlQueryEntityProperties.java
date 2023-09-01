@@ -9,8 +9,8 @@
 //import cn.featherfly.common.lang.ClassUtils;
 //import cn.featherfly.common.lang.LambdaUtils;
 //import cn.featherfly.common.lang.LambdaUtils.SerializedLambdaInfo;
-//import cn.featherfly.common.lang.function.SerializableFunction;
-//import cn.featherfly.common.lang.function.SerializableSupplier;
+//import cn.featherfly.common.function.serializable.SerializableFunction;
+//import cn.featherfly.common.function.serializable.SerializableSupplier;
 //import cn.featherfly.common.repository.builder.AliasManager;
 //import cn.featherfly.common.repository.mapping.ClassMapping;
 //import cn.featherfly.common.repository.mapping.MappingFactory;

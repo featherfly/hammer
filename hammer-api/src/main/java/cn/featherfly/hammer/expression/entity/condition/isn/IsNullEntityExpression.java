@@ -10,7 +10,7 @@
  */
 package cn.featherfly.hammer.expression.entity.condition.isn;
 
-import cn.featherfly.common.lang.function.SerializableFunction;
+import cn.featherfly.common.function.serializable.SerializableFunction;
 
 /**
  * The Interface IsNullEntityExpression.

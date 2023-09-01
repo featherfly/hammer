@@ -13,12 +13,12 @@ package cn.featherfly.hammer.expression.condition;
 import java.io.Serializable;
 import java.util.function.Predicate;
 
+import cn.featherfly.common.function.serializable.SerializableFunction;
+import cn.featherfly.common.function.serializable.SerializableToDoubleFunction;
+import cn.featherfly.common.function.serializable.SerializableToIntFunction;
+import cn.featherfly.common.function.serializable.SerializableToLongFunction;
 import cn.featherfly.common.lang.AssertIllegalArgument;
 import cn.featherfly.common.lang.LambdaUtils;
-import cn.featherfly.common.lang.function.SerializableFunction;
-import cn.featherfly.common.lang.function.SerializableToDoubleFunction;
-import cn.featherfly.common.lang.function.SerializableToIntFunction;
-import cn.featherfly.common.lang.function.SerializableToLongFunction;
 import cn.featherfly.common.repository.mapping.PropertyMapping;
 
 /**

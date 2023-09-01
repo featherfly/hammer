@@ -11,9 +11,9 @@ package cn.featherfly.hammer.sqldb.jdbc.dsl.entity.condition;
 
 import java.util.function.Predicate;
 
-import cn.featherfly.common.lang.function.SerializableFunction;
-import cn.featherfly.common.lang.function.SerializableSupplier;
-import cn.featherfly.common.operator.QueryOperator.QueryPolicy;
+import cn.featherfly.common.function.serializable.SerializableFunction;
+import cn.featherfly.common.function.serializable.SerializableSupplier;
+import cn.featherfly.common.operator.ComparisonOperator.MatchStrategy;
 import cn.featherfly.hammer.expression.condition.ConditionExpression;
 import cn.featherfly.hammer.expression.condition.LogicExpression;
 import cn.featherfly.hammer.expression.entity.condition.ne.MulitiEntityNotEqualsExpression;
@@ -41,7 +41,7 @@ public class MulitiEntityNotEqualsExpressionImpl<C extends ConditionExpression, 
      * {@inheritDoc}
      */
     @Override
-    public <E, R> L ne(int index, SerializableFunction<E, R> name, R value, QueryPolicy queryPolicy) {
+    public <E, R> L ne(int index, SerializableFunction<E, R> name, R value, MatchStrategy queryPolicy) {
         return proxy.ne0(index, name, value, queryPolicy, ignoreStrategy);
     }
 
@@ -49,7 +49,7 @@ public class MulitiEntityNotEqualsExpressionImpl<C extends ConditionExpression, 
      * {@inheritDoc}
      */
     @Override
-    public <E, R> L ne(int index, SerializableFunction<E, R> name, R value, QueryPolicy queryPolicy,
+    public <E, R> L ne(int index, SerializableFunction<E, R> name, R value, MatchStrategy queryPolicy,
             Predicate<R> ignoreStrategy) {
         return proxy.ne0(index, name, value, queryPolicy, ignoreStrategy);
     }
@@ -58,7 +58,7 @@ public class MulitiEntityNotEqualsExpressionImpl<C extends ConditionExpression, 
      * {@inheritDoc}
      */
     @Override
-    public <R> L ne(int index, SerializableSupplier<R> property, QueryPolicy queryPolicy) {
+    public <R> L ne(int index, SerializableSupplier<R> property, MatchStrategy queryPolicy) {
         return proxy.ne0(index, property, queryPolicy, ignoreStrategy);
     }
 
@@ -66,7 +66,7 @@ public class MulitiEntityNotEqualsExpressionImpl<C extends ConditionExpression, 
      * {@inheritDoc}
      */
     @Override
-    public <R> L ne(int index, SerializableSupplier<R> property, QueryPolicy queryPolicy, Predicate<R> ignoreStrategy) {
+    public <R> L ne(int index, SerializableSupplier<R> property, MatchStrategy queryPolicy, Predicate<R> ignoreStrategy) {
         return proxy.ne0(index, property, queryPolicy, ignoreStrategy);
     }
 

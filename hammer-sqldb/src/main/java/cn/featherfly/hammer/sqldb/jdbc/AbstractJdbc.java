@@ -265,7 +265,7 @@ public abstract class AbstractJdbc implements Jdbc {
      */
     @Override
     public <T extends Serializable> int[] updateBatch(String sql, GeneratedKeyHolder<T> generatedKeyHolder,
-            List<Object[]> argsList) {
+            Object[]... argsList) {
         if (Lang.isNotEmpty(sql)) {
             sql = sql.trim();
             return executeUpdateBatch((prep, args) -> setParams(prep, args), sql, generatedKeyHolder, argsList);
@@ -337,7 +337,7 @@ public abstract class AbstractJdbc implements Jdbc {
     private <T extends Serializable> T getGenereteKey(Type<T> type, ResultSet res) {
         T value;
         if (type instanceof BeanProperty) {
-            value = manager.get(res, 1, (BeanProperty<T>) type);
+            value = manager.get(res, 1, (BeanProperty<?, T>) type);
         } else {
             value = manager.get(res, 1, type.getType());
         }
@@ -346,19 +346,19 @@ public abstract class AbstractJdbc implements Jdbc {
     }
 
     private <T extends Serializable> int[] executeUpdateBatch(BiConsumer<PreparedStatement, Object[]> setParams,
-            String sql, GeneratedKeyHolder<T> generatedKeyHolder, List<Object[]> argsList) {
+            String sql, GeneratedKeyHolder<T> generatedKeyHolder, Object[][] batchArgs) {
         StringBuilder message = new StringBuilder();
         if (logger.isDebugEnabled()) {
             message.append("execute batch -> ").append(sql).append("\n").append("  batch size -> ")
-                    .append(argsList.size()).append("\n");
+                    .append(batchArgs.length).append("\n");
         }
         //        DataSource ds = getDataSource();
         //        Connection connection = getConnection(ds);
         Connection connection = getConnection();
         try (PreparedStatement prep = generatedKeyHolder == null ? connection.prepareStatement(sql)
                 : connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
-            List<JdbcExecution> jdbcExecutions = new ArrayList<>(argsList.size());
-            for (Object[] args : argsList) {
+            List<JdbcExecution> jdbcExecutions = new ArrayList<>(batchArgs.length);
+            for (Object[] args : batchArgs) {
                 JdbcExecution execution = preHandle(sql, args);
                 jdbcExecutions.add(execution);
                 if (logger.isDebugEnabled()) {
@@ -406,7 +406,7 @@ public abstract class AbstractJdbc implements Jdbc {
             releaseConnection(connection);
             StringBuilder strArgs = new StringBuilder();
             int index = 0;
-            for (Object[] args : argsList) {
+            for (Object[] args : batchArgs) {
                 strArgs.append("\n    batch[").append(index++).append("]: ").append(Arrays.toString(args));
             }
             throw new JdbcException(
@@ -1605,8 +1605,8 @@ public abstract class AbstractJdbc implements Jdbc {
             ((FieldValueOperator<?>) argu).set(prep, index);
         } else if (argu instanceof BeanPropertyValue) {
             @SuppressWarnings("unchecked")
-            BeanPropertyValue<Object> bpv = (BeanPropertyValue<Object>) argu;
-            BeanProperty<Object> bp = bpv.getBeanProperty();
+            BeanPropertyValue<?, Object> bpv = (BeanPropertyValue<?, Object>) argu;
+            BeanProperty<?, Object> bp = bpv.getBeanProperty();
             manager.set(prep, index, bpv.getValue(), bp);
         } else {
             manager.set(prep, index, argu);
@@ -1632,10 +1632,10 @@ public abstract class AbstractJdbc implements Jdbc {
      * @param prep the prep
      * @param args the args
      */
-    protected void setParams(PreparedStatement prep, BeanPropertyValue<?>... args) {
+    protected void setParams(PreparedStatement prep, BeanPropertyValue<?, ?>... args) {
         for (int i = 0; i < args.length; i++) {
             @SuppressWarnings("unchecked")
-            BeanProperty<Object> argBp = (BeanProperty<Object>) args[i].getBeanProperty();
+            BeanProperty<?, Object> argBp = (BeanProperty<?, Object>) args[i].getBeanProperty();
             manager.set(prep, i + 1, args[i].getValue(), argBp);
         }
     }

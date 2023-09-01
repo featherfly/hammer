@@ -13,8 +13,8 @@ package cn.featherfly.hammer.sqldb.jdbc.dsl.entity.condition;
 import java.util.function.Predicate;
 
 import cn.featherfly.common.db.dialect.Dialect;
-import cn.featherfly.common.operator.QueryOperator;
-import cn.featherfly.common.operator.QueryOperator.QueryPolicy;
+import cn.featherfly.common.operator.ComparisonOperator;
+import cn.featherfly.common.operator.ComparisonOperator.MatchStrategy;
 import cn.featherfly.common.repository.mapping.ClassMapping;
 import cn.featherfly.common.repository.mapping.PropertyMapping;
 import cn.featherfly.hammer.expression.condition.ConditionExpression;
@@ -55,9 +55,9 @@ public class MulitiEntityConditionExpressionProxy<C extends ConditionExpression,
      * {@inheritDoc}
      */
     @Override
-    protected <T, R> L eq_ne(int index, QueryOperator queryOperator, PropertyMapping<?> pm, R value,
-            QueryPolicy queryPolicy, Predicate<?> ignoreStrategy) {
-        return proxy.eq_ne(index, queryOperator, pm, value, queryPolicy, ignoreStrategy);
+    protected <T, R> L eq_ne(int index, ComparisonOperator comparisonOperator, PropertyMapping<?> pm, R value,
+            MatchStrategy queryPolicy, Predicate<?> ignoreStrategy) {
+        return proxy.eq_ne(index, comparisonOperator, pm, value, queryPolicy, ignoreStrategy);
     }
 
     /**

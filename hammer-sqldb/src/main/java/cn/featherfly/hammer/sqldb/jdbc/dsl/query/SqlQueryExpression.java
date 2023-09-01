@@ -8,8 +8,8 @@ import cn.featherfly.common.db.builder.dml.basic.SqlSelectBasicBuilder;
 import cn.featherfly.common.exception.NotImplementedException;
 import cn.featherfly.common.lang.Lang;
 import cn.featherfly.common.operator.AggregateFunction;
-import cn.featherfly.common.operator.QueryOperator;
-import cn.featherfly.common.operator.QueryOperator.QueryPolicy;
+import cn.featherfly.common.operator.ComparisonOperator;
+import cn.featherfly.common.operator.ComparisonOperator.MatchStrategy;
 import cn.featherfly.common.repository.IgnoreStrategy;
 import cn.featherfly.common.repository.mapping.ClassMapping;
 import cn.featherfly.common.repository.mapping.PropertyMapping;
@@ -150,8 +150,8 @@ public class SqlQueryExpression extends SqlQueryConditionGroupExpression {
      * {@inheritDoc}
      */
     @Override
-    protected <T, R> QueryConditionGroupLogicExpression eq_ne(int index, QueryOperator queryOperator,
-            PropertyMapping<?> pm, R value, QueryPolicy queryPolicy, Predicate<?> ignoreStrategy) {
+    protected <T, R> QueryConditionGroupLogicExpression eq_ne(int index, ComparisonOperator comparisonOperator,
+            PropertyMapping<?> pm, R value, MatchStrategy queryPolicy, Predicate<?> ignoreStrategy) {
         // IMPLSOON 未实现
         throw new NotImplementedException();
     }

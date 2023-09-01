@@ -3,9 +3,9 @@ package cn.featherfly.hammer.expression.entity.condition.co;
 
 import java.util.function.Predicate;
 
-import cn.featherfly.common.lang.function.SerializableFunction;
-import cn.featherfly.common.lang.function.SerializableStringSupplier;
-import cn.featherfly.common.operator.QueryOperator.QueryPolicy;
+import cn.featherfly.common.function.serializable.SerializableFunction;
+import cn.featherfly.common.function.serializable.SerializableStringSupplier;
+import cn.featherfly.common.operator.ComparisonOperator.MatchStrategy;
 import cn.featherfly.hammer.expression.condition.ConditionExpression;
 import cn.featherfly.hammer.expression.condition.LogicExpression;
 
@@ -32,7 +32,7 @@ public interface EntityContainsExpressionBase5<E, E2, E3, E4, E5, C extends Cond
      * @return LogicExpression
      */
     default L co5(SerializableFunction<E5, String> name, String value) {
-        return co5(name, value, QueryPolicy.AUTO);
+        return co5(name, value, MatchStrategy.AUTO);
     }
 
     /**
@@ -44,7 +44,7 @@ public interface EntityContainsExpressionBase5<E, E2, E3, E4, E5, C extends Cond
      * @return LogicExpression
      */
     default L co5(SerializableFunction<E5, String> name, String value, Predicate<String> ignoreStrategy) {
-        return co5(name, value, QueryPolicy.AUTO, ignoreStrategy);
+        return co5(name, value, MatchStrategy.AUTO, ignoreStrategy);
     }
 
     /**
@@ -55,7 +55,7 @@ public interface EntityContainsExpressionBase5<E, E2, E3, E4, E5, C extends Cond
      * @param queryPolicy the query policy
      * @return LogicExpression
      */
-    L co5(SerializableFunction<E5, String> name, String value, QueryPolicy queryPolicy);
+    L co5(SerializableFunction<E5, String> name, String value, MatchStrategy queryPolicy);
 
     /**
      * contains value. 包含value.
@@ -66,7 +66,7 @@ public interface EntityContainsExpressionBase5<E, E2, E3, E4, E5, C extends Cond
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
-    L co5(SerializableFunction<E5, String> name, String value, QueryPolicy queryPolicy, Predicate<String> ignoreStrategy);
+    L co5(SerializableFunction<E5, String> name, String value, MatchStrategy queryPolicy, Predicate<String> ignoreStrategy);
 
     /**
      * contains value. 包含value.
@@ -75,7 +75,7 @@ public interface EntityContainsExpressionBase5<E, E2, E3, E4, E5, C extends Cond
      * @return LogicExpression
      */
     default L co5(SerializableStringSupplier property) {
-        return co5(property, QueryPolicy.AUTO);
+        return co5(property, MatchStrategy.AUTO);
     }
 
     /**
@@ -86,7 +86,7 @@ public interface EntityContainsExpressionBase5<E, E2, E3, E4, E5, C extends Cond
      * @return LogicExpression
      */
     default L co5(SerializableStringSupplier property, Predicate<String> ignoreStrategy) {
-        return co5(property, QueryPolicy.AUTO, ignoreStrategy);
+        return co5(property, MatchStrategy.AUTO, ignoreStrategy);
     }
 
     /**
@@ -96,7 +96,7 @@ public interface EntityContainsExpressionBase5<E, E2, E3, E4, E5, C extends Cond
      * @param queryPolicy the query policy
      * @return LogicExpression
      */
-    L co5(SerializableStringSupplier property, QueryPolicy queryPolicy);
+    L co5(SerializableStringSupplier property, MatchStrategy queryPolicy);
 
     /**
      * contains value. 包含value.
@@ -106,7 +106,7 @@ public interface EntityContainsExpressionBase5<E, E2, E3, E4, E5, C extends Cond
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
-    L co5(SerializableStringSupplier property, QueryPolicy queryPolicy, Predicate<String> ignoreStrategy);
+    L co5(SerializableStringSupplier property, MatchStrategy queryPolicy, Predicate<String> ignoreStrategy);
 
     // 嵌套属性使用property(U1::getU2).property(U2:getV).co(v)来设置
     //    /**

@@ -4,19 +4,19 @@ package cn.featherfly.hammer.sqldb.jdbc.dsl.entity.condition;
 import java.util.Collection;
 import java.util.Date;
 
-import cn.featherfly.common.lang.function.SerializableFunction;
-import cn.featherfly.common.lang.function.SerializableToCollectionFunction;
-import cn.featherfly.common.lang.function.SerializableToDateFunction;
-import cn.featherfly.common.lang.function.SerializableToDoubleFunction;
-import cn.featherfly.common.lang.function.SerializableToEnumFunction;
-import cn.featherfly.common.lang.function.SerializableToIntFunction;
-import cn.featherfly.common.lang.function.SerializableToLocalDateFunction;
-import cn.featherfly.common.lang.function.SerializableToLocalDateTimeFunction;
-import cn.featherfly.common.lang.function.SerializableToLocalTimeFunction;
-import cn.featherfly.common.lang.function.SerializableToLongFunction;
-import cn.featherfly.common.lang.function.SerializableToNumberFunction;
-import cn.featherfly.common.lang.function.SerializableToStringFunction;
-import cn.featherfly.common.operator.QueryOperator.QueryPolicy;
+import cn.featherfly.common.function.serializable.SerializableFunction;
+import cn.featherfly.common.function.serializable.SerializableToCollectionFunction;
+import cn.featherfly.common.function.serializable.SerializableToDateFunction;
+import cn.featherfly.common.function.serializable.SerializableToDoubleFunction;
+import cn.featherfly.common.function.serializable.SerializableToEnumFunction;
+import cn.featherfly.common.function.serializable.SerializableToIntFunction;
+import cn.featherfly.common.function.serializable.SerializableToLocalDateFunction;
+import cn.featherfly.common.function.serializable.SerializableToLocalDateTimeFunction;
+import cn.featherfly.common.function.serializable.SerializableToLocalTimeFunction;
+import cn.featherfly.common.function.serializable.SerializableToLongFunction;
+import cn.featherfly.common.function.serializable.SerializableToNumberFunction;
+import cn.featherfly.common.function.serializable.SerializableToStringFunction;
+import cn.featherfly.common.operator.ComparisonOperator.MatchStrategy;
 import cn.featherfly.hammer.expression.condition.ConditionExpression;
 import cn.featherfly.hammer.expression.condition.LogicExpression;
 import cn.featherfly.hammer.expression.entity.condition.property.EntityDatePropertyExpression;
@@ -185,7 +185,7 @@ public class EntityPropertyTypeExpressionImpl<E, P, F extends SerializableFuncti
      * {@inheritDoc}
      */
     @Override
-    public L eq(P value, QueryPolicy queryPolicy) {
+    public L eq(P value, MatchStrategy queryPolicy) {
         return expression.eq0(index, name, value, queryPolicy, expression.getIgnoreStrategy());
     }
 
@@ -193,7 +193,7 @@ public class EntityPropertyTypeExpressionImpl<E, P, F extends SerializableFuncti
      * {@inheritDoc}
      */
     @Override
-    public L ne(P value, QueryPolicy queryPolicy) {
+    public L ne(P value, MatchStrategy queryPolicy) {
         return expression.ne0(index, name, value, queryPolicy, expression.getIgnoreStrategy());
     }
 
@@ -254,7 +254,7 @@ public class EntityPropertyTypeExpressionImpl<E, P, F extends SerializableFuncti
      */
 
     @Override
-    public L sw(String value, QueryPolicy queryPolicy) {
+    public L sw(String value, MatchStrategy queryPolicy) {
         return expression.sw0(index, name, value, queryPolicy, expression.getIgnoreStrategy());
     }
 
@@ -263,7 +263,7 @@ public class EntityPropertyTypeExpressionImpl<E, P, F extends SerializableFuncti
      */
 
     @Override
-    public L co(String value, QueryPolicy queryPolicy) {
+    public L co(String value, MatchStrategy queryPolicy) {
         return expression.co0(index, name, value, queryPolicy, expression.getIgnoreStrategy());
     }
 
@@ -272,7 +272,7 @@ public class EntityPropertyTypeExpressionImpl<E, P, F extends SerializableFuncti
      */
 
     @Override
-    public L ew(String value, QueryPolicy queryPolicy) {
+    public L ew(String value, MatchStrategy queryPolicy) {
         return expression.ew0(index, name, value, queryPolicy, expression.getIgnoreStrategy());
     }
 
@@ -280,7 +280,7 @@ public class EntityPropertyTypeExpressionImpl<E, P, F extends SerializableFuncti
      * {@inheritDoc}
      */
     @Override
-    public L lk(String value, QueryPolicy queryPolicy) {
+    public L lk(String value, MatchStrategy queryPolicy) {
         return expression.lk0(index, name, value, queryPolicy, expression.getIgnoreStrategy());
     }
 

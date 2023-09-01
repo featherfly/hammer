@@ -10,8 +10,8 @@
  */
 package cn.featherfly.hammer.sqldb.jdbc.dsl.execute;
 
-import static org.testng.Assert.assertNull;
 import static org.testng.Assert.assertEquals;
+import static org.testng.Assert.assertNull;
 
 import java.util.List;
 
@@ -182,8 +182,10 @@ public class SqlDeleterTest extends HammerJdbcTestBase {
     public void testDeleteEntityNoCondition() {
         List<UserRole> urs = hammer.query(UserRole.class).list();
 
+        // YUFEI_TEST 没有参数，返回的0
         int result = deleter.delete(UserRole.class).where().setIgnoreStrategy(IgnoreStrategy.EMPTY)
-                .eq(UserRole::getUserId, null).execute();
+                .eq(UserRole::getUserId, null) //
+                .execute();
         assertEquals(result, urs.size());
 
         hammer.save(urs);

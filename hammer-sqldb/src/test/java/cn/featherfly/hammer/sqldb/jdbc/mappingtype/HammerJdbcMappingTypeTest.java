@@ -79,16 +79,16 @@ public class HammerJdbcMappingTypeTest extends JdbcTestBase {
 
         BeanDescriptor<Article2> bd = BeanDescriptor.getBeanDescriptor(type);
 
-        BeanProperty<Content> contentProperty = bd.getBeanProperty("content");
+        BeanProperty<Article2, Content> contentProperty = bd.getBeanProperty("content");
         sqlTypeMappingManager.regist(contentProperty, new ArrayToStringSqlTypeMapper());
 
-        BeanProperty<Content> contentProperty2 = bd.getBeanProperty("content2");
+        BeanProperty<Article2, Content> contentProperty2 = bd.getBeanProperty("content2");
         sqlTypeMappingManager.regist(contentProperty2, new ObjectToJsonMapper<>(contentProperty2));
 
-        BeanProperty<Content> contentProperty3 = bd.getBeanProperty("content3");
+        BeanProperty<Article2, Content> contentProperty3 = bd.getBeanProperty("content3");
         sqlTypeMappingManager.regist(contentProperty3, new ObjectToJsonMapper<>(contentProperty3));
 
-        BeanProperty<Content> contentProperty4 = bd.getBeanProperty("content4");
+        BeanProperty<Article2, Content> contentProperty4 = bd.getBeanProperty("content4");
         sqlTypeMappingManager.regist(contentProperty4, new ListToStringSqlTypeMapper());
         //        sqlTypeMappingManager.regist(new ListToStringSqlTypeMapper());
 

@@ -1,7 +1,7 @@
 
 package cn.featherfly.hammer.expression.query;
 
-import cn.featherfly.common.lang.function.SerializableFunction;
+import cn.featherfly.common.function.serializable.SerializableFunction;
 
 /**
  * dsl for query count number executor.

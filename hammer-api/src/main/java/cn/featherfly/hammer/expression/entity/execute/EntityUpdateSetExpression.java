@@ -4,8 +4,8 @@ package cn.featherfly.hammer.expression.entity.execute;
 import java.util.function.Consumer;
 import java.util.function.Supplier;
 
-import cn.featherfly.common.lang.function.SerializableFunction;
-import cn.featherfly.common.lang.function.SerializableSupplier;
+import cn.featherfly.common.function.serializable.SerializableFunction;
+import cn.featherfly.common.function.serializable.SerializableSupplier;
 
 /**
  * EntityUpdateSetExpression.

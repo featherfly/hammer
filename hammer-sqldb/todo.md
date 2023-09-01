@@ -123,6 +123,8 @@
 
 - [x] dsl api （eq,ne,co,sw,ew,lk）加入查询大小写敏感的支持（即 = 和 like 支持区分大小写）
 
+- [ ] dsl api join on 目前只支持a=b，后续加入其他条件判断（如a<>b, a<b and c>d）
+
 - [ ] dsl api 加入gourp by和having支持 
 
   ```sql

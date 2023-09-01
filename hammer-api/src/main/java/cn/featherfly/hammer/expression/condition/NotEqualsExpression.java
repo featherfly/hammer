@@ -1,9 +1,9 @@
 
 package cn.featherfly.hammer.expression.condition;
 
-import cn.featherfly.common.lang.function.SerializableFunction;
-import cn.featherfly.common.lang.function.SerializableSupplier;
-import cn.featherfly.common.operator.QueryOperator.QueryPolicy;
+import cn.featherfly.common.function.serializable.SerializableFunction;
+import cn.featherfly.common.function.serializable.SerializableSupplier;
+import cn.featherfly.common.operator.ComparisonOperator.MatchStrategy;
 import cn.featherfly.common.repository.Field;
 
 /**
@@ -24,7 +24,7 @@ public interface NotEqualsExpression<C extends ConditionExpression, L extends Lo
      * @return LogicExpression
      */
     default L ne(Field name, Object value) {
-        return ne(name, value, QueryPolicy.AUTO);
+        return ne(name, value, MatchStrategy.AUTO);
     }
 
     /**
@@ -35,8 +35,8 @@ public interface NotEqualsExpression<C extends ConditionExpression, L extends Lo
      * @param queryPolicy the query policy
      * @return LogicExpression
      */
-    default L ne(Field name, Object value, QueryPolicy queryPolicy) {
-        return ne(name.name(), value, QueryPolicy.AUTO);
+    default L ne(Field name, Object value, MatchStrategy queryPolicy) {
+        return ne(name.name(), value, MatchStrategy.AUTO);
     }
 
     /**
@@ -47,7 +47,7 @@ public interface NotEqualsExpression<C extends ConditionExpression, L extends Lo
      * @return LogicExpression
      */
     default L ne(String name, Object value) {
-        return ne(name, value, QueryPolicy.AUTO);
+        return ne(name, value, MatchStrategy.AUTO);
     }
 
     /**
@@ -58,7 +58,7 @@ public interface NotEqualsExpression<C extends ConditionExpression, L extends Lo
      * @param queryPolicy the query policy
      * @return LogicExpression
      */
-    L ne(String name, Object value, QueryPolicy queryPolicy);
+    L ne(String name, Object value, MatchStrategy queryPolicy);
 
     /**
      * not equals. 不等于.
@@ -70,7 +70,7 @@ public interface NotEqualsExpression<C extends ConditionExpression, L extends Lo
      * @return LogicExpression
      */
     default <T, R> L ne(SerializableFunction<T, R> name, R value) {
-        return ne(name, value, QueryPolicy.AUTO);
+        return ne(name, value, MatchStrategy.AUTO);
     }
 
     /**
@@ -83,7 +83,7 @@ public interface NotEqualsExpression<C extends ConditionExpression, L extends Lo
      * @param queryPolicy the query policy
      * @return LogicExpression
      */
-    <T, R> L ne(SerializableFunction<T, R> name, R value, QueryPolicy queryPolicy);
+    <T, R> L ne(SerializableFunction<T, R> name, R value, MatchStrategy queryPolicy);
 
     /**
      * not equals. 不等于.
@@ -93,7 +93,7 @@ public interface NotEqualsExpression<C extends ConditionExpression, L extends Lo
      * @return LogicExpression
      */
     default <R> L ne(SerializableSupplier<R> property) {
-        return ne(property, QueryPolicy.AUTO);
+        return ne(property, MatchStrategy.AUTO);
     }
 
     /**
@@ -104,5 +104,5 @@ public interface NotEqualsExpression<C extends ConditionExpression, L extends Lo
      * @param queryPolicy the query policy
      * @return LogicExpression
      */
-    <R> L ne(SerializableSupplier<R> property, QueryPolicy queryPolicy);
+    <R> L ne(SerializableSupplier<R> property, MatchStrategy queryPolicy);
 }

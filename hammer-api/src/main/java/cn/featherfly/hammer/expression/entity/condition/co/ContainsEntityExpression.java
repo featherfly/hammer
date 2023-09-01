@@ -12,9 +12,9 @@ package cn.featherfly.hammer.expression.entity.condition.co;
 
 import java.util.function.Predicate;
 
-import cn.featherfly.common.lang.function.SerializableToStringFunction;
-import cn.featherfly.common.lang.function.SerializableSupplier;
-import cn.featherfly.common.operator.QueryOperator.QueryPolicy;
+import cn.featherfly.common.function.serializable.SerializableToStringFunction;
+import cn.featherfly.common.function.serializable.SerializableSupplier;
+import cn.featherfly.common.operator.ComparisonOperator.MatchStrategy;
 
 /**
  * The Interface ContainsEntityExpression.
@@ -50,7 +50,7 @@ public interface ContainsEntityExpression<E> extends ContainsEntityPropertyExpre
      * @param queryPolicy the query policy
      * @return the l
      */
-    void accept(SerializableToStringFunction<E> property, String value, QueryPolicy queryPolicy);
+    void accept(SerializableToStringFunction<E> property, String value, MatchStrategy queryPolicy);
 
     /**
      * contains value. 包含value.
@@ -71,7 +71,7 @@ public interface ContainsEntityExpression<E> extends ContainsEntityPropertyExpre
      * @param ignoreStrategy the ignore strategy
      * @return the l
      */
-    void accept(SerializableToStringFunction<E> property, String value, QueryPolicy queryPolicy,
+    void accept(SerializableToStringFunction<E> property, String value, MatchStrategy queryPolicy,
             Predicate<String> ignoreStrategy);
 
     /**
@@ -98,7 +98,7 @@ public interface ContainsEntityExpression<E> extends ContainsEntityPropertyExpre
      * @param queryPolicy   the query policy
      * @return LogicExpression
      */
-    void accept(SerializableSupplier<String> propertyValue, QueryPolicy queryPolicy);
+    void accept(SerializableSupplier<String> propertyValue, MatchStrategy queryPolicy);
 
     /**
      * contains value. 包含value.
@@ -108,5 +108,5 @@ public interface ContainsEntityExpression<E> extends ContainsEntityPropertyExpre
      * @param ignoreStrategy  the ignore strategy
      * @return LogicExpression
      */
-    void accept(SerializableSupplier<String> propertyValue, QueryPolicy queryPolicy, Predicate<String> ignoreStrategy);
+    void accept(SerializableSupplier<String> propertyValue, MatchStrategy queryPolicy, Predicate<String> ignoreStrategy);
 }

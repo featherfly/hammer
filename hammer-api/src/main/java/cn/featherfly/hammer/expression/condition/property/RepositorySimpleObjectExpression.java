@@ -7,7 +7,7 @@ import java.time.LocalTime;
 import java.util.Date;
 
 import cn.featherfly.common.lang.Lang;
-import cn.featherfly.common.operator.QueryOperator.QueryPolicy;
+import cn.featherfly.common.operator.ComparisonOperator.MatchStrategy;
 import cn.featherfly.hammer.HammerException;
 import cn.featherfly.hammer.expression.condition.ContainsExpression;
 import cn.featherfly.hammer.expression.condition.EndWithExpression;
@@ -418,7 +418,7 @@ public class RepositorySimpleObjectExpression<C extends RepositoryConditionsExpr
      * {@inheritDoc}
      */
     @Override
-    public L eq(Object value, QueryPolicy queryPolicy) {
+    public L eq(Object value, MatchStrategy queryPolicy) {
         if (Lang.isNotEmpty(repository)) {
             return expression.eq(repository, name, value, queryPolicy);
         } else if (repositoryIndex > -1) {
@@ -432,7 +432,7 @@ public class RepositorySimpleObjectExpression<C extends RepositoryConditionsExpr
      * {@inheritDoc}
      */
     @Override
-    public L ne(Object value, QueryPolicy queryPolicy) {
+    public L ne(Object value, MatchStrategy queryPolicy) {
         if (Lang.isNotEmpty(repository)) {
             return expression.ne(repository, name, value, queryPolicy);
         } else if (repositoryIndex > -1) {
@@ -446,7 +446,7 @@ public class RepositorySimpleObjectExpression<C extends RepositoryConditionsExpr
      * {@inheritDoc}
      */
     @Override
-    public L sw(String value, QueryPolicy queryPolicy) {
+    public L sw(String value, MatchStrategy queryPolicy) {
         if (Lang.isNotEmpty(repository)) {
             return expression.sw(repository, name, value, queryPolicy);
         } else if (repositoryIndex > -1) {
@@ -460,7 +460,7 @@ public class RepositorySimpleObjectExpression<C extends RepositoryConditionsExpr
      * {@inheritDoc}
      */
     @Override
-    public L co(String value, QueryPolicy queryPolicy) {
+    public L co(String value, MatchStrategy queryPolicy) {
         if (Lang.isNotEmpty(repository)) {
             return expression.co(repository, name, value, queryPolicy);
         } else if (repositoryIndex > -1) {
@@ -474,7 +474,7 @@ public class RepositorySimpleObjectExpression<C extends RepositoryConditionsExpr
      * {@inheritDoc}
      */
     @Override
-    public L ew(String value, QueryPolicy queryPolicy) {
+    public L ew(String value, MatchStrategy queryPolicy) {
         if (Lang.isNotEmpty(repository)) {
             return expression.ew(repository, name, value, queryPolicy);
         } else if (repositoryIndex > -1) {
@@ -488,7 +488,7 @@ public class RepositorySimpleObjectExpression<C extends RepositoryConditionsExpr
      * {@inheritDoc}
      */
     @Override
-    public L lk(String value, QueryPolicy queryPolicy) {
+    public L lk(String value, MatchStrategy queryPolicy) {
         if (Lang.isNotEmpty(repository)) {
             return expression.lk(repository, name, value, queryPolicy);
         } else if (repositoryIndex > -1) {

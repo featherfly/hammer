@@ -12,20 +12,23 @@ package cn.featherfly.hammer.expression.entity.condition.property;
 
 import java.util.Date;
 
-import cn.featherfly.common.lang.function.SerializableToDateFunction;
-import cn.featherfly.common.lang.function.SerializableToEnumFunction;
-import cn.featherfly.common.lang.function.SerializableToLocalDateFunction;
-import cn.featherfly.common.lang.function.SerializableToLocalDateTimeFunction;
-import cn.featherfly.common.lang.function.SerializableToLocalTimeFunction;
-import cn.featherfly.common.lang.function.SerializableToNumberFunction;
-import cn.featherfly.common.lang.function.SerializableToStringFunction;
-import cn.featherfly.common.lang.function.SerializableToDoubleFunction;
-import cn.featherfly.common.lang.function.SerializableToIntFunction;
-import cn.featherfly.common.lang.function.SerializableToLongFunction;
+import cn.featherfly.common.function.serializable.SerializableFunction;
+import cn.featherfly.common.function.serializable.SerializableToDateFunction;
+import cn.featherfly.common.function.serializable.SerializableToDoubleFunction;
+import cn.featherfly.common.function.serializable.SerializableToEnumFunction;
+import cn.featherfly.common.function.serializable.SerializableToIntFunction;
+import cn.featherfly.common.function.serializable.SerializableToLocalDateFunction;
+import cn.featherfly.common.function.serializable.SerializableToLocalDateTimeFunction;
+import cn.featherfly.common.function.serializable.SerializableToLocalTimeFunction;
+import cn.featherfly.common.function.serializable.SerializableToLongFunction;
+import cn.featherfly.common.function.serializable.SerializableToNumberFunction;
+import cn.featherfly.common.function.serializable.SerializableToStringFunction;
 import cn.featherfly.hammer.expression.condition.ConditionExpression;
 import cn.featherfly.hammer.expression.condition.LogicExpression;
 
 /**
+ * The Interface EntityPropertyFunction.
+ *
  * @author zhongj
  * @param <E> the element type
  * @param <C> the generic type
@@ -115,4 +118,13 @@ public interface EntityPropertyFunction<E, C extends ConditionExpression, L exte
      * @return the enum expression
      */
     <R extends Enum<R>> EntityEnumPropertyExpression<E, R, C, L> apply(SerializableToEnumFunction<E, R> name);
+
+    /**
+     * Property object type.
+     *
+     * @param <R>  the generic type
+     * @param name the name
+     * @return the entity property type expression
+     */
+    <R> EntityPropertyTypeExpression<R, C, L> apply(SerializableFunction<E, R> name);
 }

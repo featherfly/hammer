@@ -3,9 +3,9 @@ package cn.featherfly.hammer.expression.entity.condition.eq;
 
 import java.util.function.Predicate;
 
-import cn.featherfly.common.lang.function.SerializableFunction;
-import cn.featherfly.common.lang.function.SerializableSupplier6;
-import cn.featherfly.common.operator.QueryOperator.QueryPolicy;
+import cn.featherfly.common.function.serializable.SerializableFunction;
+import cn.featherfly.common.function.serializable.SerializableSupplier6;
+import cn.featherfly.common.operator.ComparisonOperator.MatchStrategy;
 import cn.featherfly.hammer.expression.condition.ConditionExpression;
 import cn.featherfly.hammer.expression.condition.LogicExpression;
 
@@ -37,7 +37,7 @@ public interface EntityEqualsExpressionBase6<E, E2, E3, E4, E5, E6, C extends Co
      * @return LogicExpression
      */
     default <R> L eq6(SerializableFunction<E6, R> name, R value) {
-        return eq6(name, value, QueryPolicy.AUTO);
+        return eq6(name, value, MatchStrategy.AUTO);
     }
 
     /**
@@ -50,7 +50,7 @@ public interface EntityEqualsExpressionBase6<E, E2, E3, E4, E5, E6, C extends Co
      * @return LogicExpression
      */
     default <R> L eq6(SerializableFunction<E6, R> name, R value, Predicate<R> ignoreStrategy) {
-        return eq6(name, value, QueryPolicy.AUTO, ignoreStrategy);
+        return eq6(name, value, MatchStrategy.AUTO, ignoreStrategy);
     }
 
     /**
@@ -62,7 +62,7 @@ public interface EntityEqualsExpressionBase6<E, E2, E3, E4, E5, E6, C extends Co
      * @param queryPolicy the query policy
      * @return LogicExpression
      */
-    <R> L eq6(SerializableFunction<E6, R> name, R value, QueryPolicy queryPolicy);
+    <R> L eq6(SerializableFunction<E6, R> name, R value, MatchStrategy queryPolicy);
 
     /**
      * equals. 等于.
@@ -74,7 +74,7 @@ public interface EntityEqualsExpressionBase6<E, E2, E3, E4, E5, E6, C extends Co
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
-    <R> L eq6(SerializableFunction<E6, R> name, R value, QueryPolicy queryPolicy, Predicate<R> ignoreStrategy);
+    <R> L eq6(SerializableFunction<E6, R> name, R value, MatchStrategy queryPolicy, Predicate<R> ignoreStrategy);
 
     /**
      * equals. 等于.
@@ -84,7 +84,7 @@ public interface EntityEqualsExpressionBase6<E, E2, E3, E4, E5, E6, C extends Co
      * @return LogicExpression
      */
     default <R> L eq6(SerializableSupplier6<R> property) {
-        return eq6(property, QueryPolicy.AUTO);
+        return eq6(property, MatchStrategy.AUTO);
     }
 
     /**
@@ -96,7 +96,7 @@ public interface EntityEqualsExpressionBase6<E, E2, E3, E4, E5, E6, C extends Co
      * @return LogicExpression
      */
     default <R> L eq6(SerializableSupplier6<R> property, Predicate<R> ignoreStrategy) {
-        return eq6(property, QueryPolicy.AUTO, ignoreStrategy);
+        return eq6(property, MatchStrategy.AUTO, ignoreStrategy);
     }
 
     /**
@@ -107,7 +107,7 @@ public interface EntityEqualsExpressionBase6<E, E2, E3, E4, E5, E6, C extends Co
      * @param queryPolicy the query policy
      * @return LogicExpression
      */
-    <R> L eq6(SerializableSupplier6<R> property, QueryPolicy queryPolicy);
+    <R> L eq6(SerializableSupplier6<R> property, MatchStrategy queryPolicy);
 
     /**
      * equals. 等于.
@@ -118,7 +118,7 @@ public interface EntityEqualsExpressionBase6<E, E2, E3, E4, E5, E6, C extends Co
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
-    <R> L eq6(SerializableSupplier6<R> property, QueryPolicy queryPolicy, Predicate<R> ignoreStrategy);
+    <R> L eq6(SerializableSupplier6<R> property, MatchStrategy queryPolicy, Predicate<R> ignoreStrategy);
 
     //    /**
     //     * equals. 等于.

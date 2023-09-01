@@ -2,7 +2,7 @@
 package cn.featherfly.hammer.expression.condition.property;
 
 import cn.featherfly.common.lang.Lang;
-import cn.featherfly.common.operator.QueryOperator.QueryPolicy;
+import cn.featherfly.common.operator.ComparisonOperator.MatchStrategy;
 import cn.featherfly.hammer.expression.condition.LogicExpression;
 import cn.featherfly.hammer.expression.condition.RepositoryConditionsExpression;
 
@@ -83,7 +83,7 @@ public class RepositorySimpleNumberExpression<N extends Number, C extends Reposi
      * {@inheritDoc}
      */
     @Override
-    public L eq(N value, QueryPolicy queryPolicy) {
+    public L eq(N value, MatchStrategy queryPolicy) {
         if (Lang.isNotEmpty(repository)) {
             return expression.eq(repository, name, value, queryPolicy);
         } else if (repositoryIndex > -1) {
@@ -111,7 +111,7 @@ public class RepositorySimpleNumberExpression<N extends Number, C extends Reposi
      * {@inheritDoc}
      */
     @Override
-    public L ne(N value, QueryPolicy queryPolicy) {
+    public L ne(N value, MatchStrategy queryPolicy) {
         if (Lang.isNotEmpty(repository)) {
             return expression.ne(repository, name, value, queryPolicy);
         } else if (repositoryIndex > -1) {

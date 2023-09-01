@@ -1,8 +1,8 @@
 
 package cn.featherfly.hammer.expression.entity.execute;
 
-import cn.featherfly.common.lang.function.SerializableFunction;
-import cn.featherfly.common.lang.function.SerializableFunction2;
+import cn.featherfly.common.function.serializable.SerializableFunction;
+import cn.featherfly.common.function.serializable.SerializableToNumberFunction;
 
 /**
  * EntityPropertyUpdateExpression.
@@ -46,5 +46,5 @@ public interface EntityPropertyUpdateExpression<E, U extends EntityPropertyExecu
      * @return the entity update number value expression
      */
     <R extends Number> EntityUpdateNumberValueExpression<E, R, U, C, L> property(
-            SerializableFunction2<E, R> propertyValue);
+            SerializableToNumberFunction<E, R> propertyValue);
 }

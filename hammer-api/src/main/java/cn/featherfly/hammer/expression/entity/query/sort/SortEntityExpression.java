@@ -12,7 +12,7 @@ package cn.featherfly.hammer.expression.entity.query.sort;
 
 import java.util.function.Function;
 
-import cn.featherfly.common.lang.function.SerializableFunction;
+import cn.featherfly.common.function.serializable.SerializableFunction;
 
 /**
  * The Interface SortEntityExpression.

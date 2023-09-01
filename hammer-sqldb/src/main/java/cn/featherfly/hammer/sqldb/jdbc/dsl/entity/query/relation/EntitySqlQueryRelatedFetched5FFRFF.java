@@ -34,7 +34,7 @@ public class EntitySqlQueryRelatedFetched5FFRFF<E, R1, R2, R3, R4, R5>
         implements EntityQueryRelatedFetched5FFRFF<E, R1, R2, R3, R4, R5> {
 
     /**
-     * Instantiates a new entity sql query related fetched 4 FFFF.
+     * Instantiates a new entity sql query related fetched 5 FFRFF.
      *
      * @param factory                the factory
      * @param sqlPageFactory         the sql page factory

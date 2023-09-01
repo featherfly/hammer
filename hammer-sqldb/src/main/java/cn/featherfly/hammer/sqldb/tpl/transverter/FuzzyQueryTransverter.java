@@ -15,7 +15,7 @@ import java.util.Set;
 
 import cn.featherfly.common.lang.CollectionUtils;
 import cn.featherfly.common.lang.Strings;
-import cn.featherfly.common.operator.QueryOperator;
+import cn.featherfly.common.operator.ComparisonOperator;
 import cn.featherfly.hammer.sqldb.SqldbHammerException;
 import cn.featherfly.hammer.tpl.AutoRegistTransverter;
 
@@ -46,10 +46,10 @@ public class FuzzyQueryTransverter implements AutoRegistTransverter {
         super();
         this.upperCase = upperCase;
         if (upperCase) {
-            CollectionUtils.addAll(supports, QueryOperator.CO.name(), QueryOperator.SW.name(), QueryOperator.EW.name());
+            CollectionUtils.addAll(supports, ComparisonOperator.CO.name(), ComparisonOperator.SW.name(), ComparisonOperator.EW.name());
         } else {
-            CollectionUtils.addAll(supports, QueryOperator.CO.name().toLowerCase(),
-                    QueryOperator.SW.name().toLowerCase(), QueryOperator.EW.name().toLowerCase());
+            CollectionUtils.addAll(supports, ComparisonOperator.CO.name().toLowerCase(),
+                    ComparisonOperator.SW.name().toLowerCase(), ComparisonOperator.EW.name().toLowerCase());
         }
     }
 
@@ -67,11 +67,11 @@ public class FuzzyQueryTransverter implements AutoRegistTransverter {
     @Override
     public Object transvert(String operator, Object value) {
         //        if (Lang.isNotEmpty(operator)) {
-        if (QueryOperator.CO.name().equals(operator)) {
+        if (ComparisonOperator.CO.name().equals(operator)) {
             return "%" + value + "%";
-        } else if (QueryOperator.SW.name().equals(operator)) {
+        } else if (ComparisonOperator.SW.name().equals(operator)) {
             return value + "%";
-        } else if (QueryOperator.EW.name().equals(operator)) {
+        } else if (ComparisonOperator.EW.name().equals(operator)) {
             return "%" + value;
         } else {
             throw new SqldbHammerException(Strings.format("{0} can not transvert value with operator {1}",

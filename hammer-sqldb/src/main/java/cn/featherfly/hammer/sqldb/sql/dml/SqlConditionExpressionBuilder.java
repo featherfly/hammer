@@ -6,8 +6,8 @@ import java.util.function.Predicate;
 import cn.featherfly.common.db.builder.SqlBuilder;
 import cn.featherfly.common.db.builder.model.ConditionColumnElement;
 import cn.featherfly.common.db.dialect.Dialect;
-import cn.featherfly.common.operator.QueryOperator;
-import cn.featherfly.common.operator.QueryOperator.QueryPolicy;
+import cn.featherfly.common.operator.ComparisonOperator;
+import cn.featherfly.common.operator.ComparisonOperator.MatchStrategy;
 import cn.featherfly.common.repository.builder.BuilderException;
 import cn.featherfly.common.repository.builder.BuilderExceptionCode;
 import cn.featherfly.hammer.expression.condition.ParamedExpression;
@@ -27,50 +27,51 @@ public class SqlConditionExpressionBuilder implements ParamedExpression, SqlBuil
     /**
      * Instantiates a new sql condition expression builder.
      *
-     * @param dialect       dialect
-     * @param name          名称
-     * @param value         值
-     * @param queryOperator 查询运算符（查询类型）
-     * @param ignoreStrategy  the ignore strategy
+     * @param dialect            dialect
+     * @param name               名称
+     * @param value              值
+     * @param comparisonOperator 查询运算符（查询类型）
+     * @param ignoreStrategy     the ignore strategy
      */
-    public SqlConditionExpressionBuilder(Dialect dialect, String name, Object value, QueryOperator queryOperator,
-            Predicate<?> ignoreStrategy) {
-        this(dialect, name, value, queryOperator, null, ignoreStrategy);
+    public SqlConditionExpressionBuilder(Dialect dialect, String name, Object value,
+            ComparisonOperator comparisonOperator, Predicate<?> ignoreStrategy) {
+        this(dialect, name, value, comparisonOperator, null, ignoreStrategy);
     }
 
     /**
      * Instantiates a new sql condition expression builder.
      *
-     * @param dialect       dialect
-     * @param name          名称
-     * @param value         值
-     * @param queryOperator 查询运算符（查询类型）
-     * @param queryAlias    查询别名
-     * @param ignoreStrategy  the ignore strategy
+     * @param dialect            dialect
+     * @param name               名称
+     * @param value              值
+     * @param comparisonOperator 查询运算符（查询类型）
+     * @param queryAlias         查询别名
+     * @param ignoreStrategy     the ignore strategy
      */
-    public SqlConditionExpressionBuilder(Dialect dialect, String name, Object value, QueryOperator queryOperator,
-            String queryAlias, Predicate<?> ignoreStrategy) {
-        this(dialect, name, value, queryOperator, QueryPolicy.AUTO, queryAlias, ignoreStrategy);
+    public SqlConditionExpressionBuilder(Dialect dialect, String name, Object value,
+            ComparisonOperator comparisonOperator, String queryAlias, Predicate<?> ignoreStrategy) {
+        this(dialect, name, value, comparisonOperator, MatchStrategy.AUTO, queryAlias, ignoreStrategy);
     }
 
     /**
      * Instantiates a new sql condition expression builder.
      *
-     * @param dialect       dialect
-     * @param name          名称
-     * @param value         值
-     * @param queryOperator 查询运算符（查询类型）
-     * @param queryPolicy   the query policy
-     * @param queryAlias    查询别名
-     * @param ignoreStrategy  the ignore strategy
+     * @param dialect            dialect
+     * @param name               名称
+     * @param value              值
+     * @param comparisonOperator 查询运算符（查询类型）
+     * @param matchStrategy      the match strategy
+     * @param queryAlias         查询别名
+     * @param ignoreStrategy     the ignore strategy
      */
     @SuppressWarnings("unchecked")
-    public SqlConditionExpressionBuilder(Dialect dialect, String name, Object value, QueryOperator queryOperator,
-            QueryPolicy queryPolicy, String queryAlias, Predicate<?> ignoreStrategy) {
-        if (queryOperator == null) {
+    public SqlConditionExpressionBuilder(Dialect dialect, String name, Object value,
+            ComparisonOperator comparisonOperator, MatchStrategy matchStrategy, String queryAlias,
+            Predicate<?> ignoreStrategy) {
+        if (comparisonOperator == null) {
             throw new BuilderException(BuilderExceptionCode.createQueryOperatorNullCode());
         }
-        conditionColumnElement = new ConditionColumnElement(dialect, name, value, queryOperator, queryPolicy,
+        conditionColumnElement = new ConditionColumnElement(dialect, name, value, comparisonOperator, matchStrategy,
                 queryAlias, (Predicate<Object>) ignoreStrategy);
     }
 

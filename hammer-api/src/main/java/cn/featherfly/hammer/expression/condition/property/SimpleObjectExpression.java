@@ -6,7 +6,7 @@ import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.Date;
 
-import cn.featherfly.common.operator.QueryOperator.QueryPolicy;
+import cn.featherfly.common.operator.ComparisonOperator.MatchStrategy;
 import cn.featherfly.hammer.HammerException;
 import cn.featherfly.hammer.expression.condition.ConditionsExpression;
 import cn.featherfly.hammer.expression.condition.LogicExpression;
@@ -233,7 +233,7 @@ public class SimpleObjectExpression<C extends ConditionsExpression<C, L>, L exte
      * {@inheritDoc}
      */
     @Override
-    public L eq(Object value, QueryPolicy queryPolicy) {
+    public L eq(Object value, MatchStrategy queryPolicy) {
         return expression.eq(name, value, queryPolicy);
     }
 
@@ -241,7 +241,7 @@ public class SimpleObjectExpression<C extends ConditionsExpression<C, L>, L exte
      * {@inheritDoc}
      */
     @Override
-    public L ne(Object value, QueryPolicy queryPolicy) {
+    public L ne(Object value, MatchStrategy queryPolicy) {
         return expression.ne(name, value, queryPolicy);
     }
 
@@ -249,7 +249,7 @@ public class SimpleObjectExpression<C extends ConditionsExpression<C, L>, L exte
      * {@inheritDoc}
      */
     @Override
-    public L sw(String value, QueryPolicy queryPolicy) {
+    public L sw(String value, MatchStrategy queryPolicy) {
         return expression.sw(name, value, queryPolicy);
     }
 
@@ -257,7 +257,7 @@ public class SimpleObjectExpression<C extends ConditionsExpression<C, L>, L exte
      * {@inheritDoc}
      */
     @Override
-    public L co(String value, QueryPolicy queryPolicy) {
+    public L co(String value, MatchStrategy queryPolicy) {
         return expression.co(name, value, queryPolicy);
     }
 
@@ -265,7 +265,7 @@ public class SimpleObjectExpression<C extends ConditionsExpression<C, L>, L exte
      * {@inheritDoc}
      */
     @Override
-    public L ew(String value, QueryPolicy queryPolicy) {
+    public L ew(String value, MatchStrategy queryPolicy) {
         return expression.ew(name, value, queryPolicy);
     }
 
@@ -273,7 +273,7 @@ public class SimpleObjectExpression<C extends ConditionsExpression<C, L>, L exte
      * {@inheritDoc}
      */
     @Override
-    public L lk(String value, QueryPolicy queryPolicy) {
+    public L lk(String value, MatchStrategy queryPolicy) {
         return expression.lk(name, value, queryPolicy);
     }
 

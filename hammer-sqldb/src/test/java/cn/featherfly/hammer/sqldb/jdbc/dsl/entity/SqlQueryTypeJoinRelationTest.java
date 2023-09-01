@@ -7,6 +7,8 @@ import static org.testng.Assert.assertNull;
 
 import org.testng.annotations.Test;
 
+import com.speedment.common.tuple.Tuple2;
+
 import cn.featherfly.hammer.sqldb.SqldbHammerException;
 import cn.featherfly.hammer.sqldb.jdbc.vo.r.Order;
 import cn.featherfly.hammer.sqldb.jdbc.vo.r.Tree;
@@ -126,12 +128,14 @@ public class SqlQueryTypeJoinRelationTest extends AbstractEntitySqlQueryJoinTest
 
     @Test(expectedExceptions = SqldbHammerException.class)
     void testJoin_RE_Exception() {
-        user = query.find(User.class).join(UserInfo::getUser).fetch().where().eq(User::getId, uid1).single();
-        // 因为User没有映射UserInfo,所以fetch()方法无法把返回内容映射进User对象，抛出异常
+        Tuple2<User, UserInfo> tupleUserUserInfo = query.find(User.class).join(UserInfo::getUser).fetch().where()
+                .eq(User::getId, uid1).single();
 
         //      userInfo = query.find(UserInfo.class).join(UserInfo::getUser).fetch().join2(UserRole2::getUser).fetch().where()
-        userInfo = query.find(UserInfo.class).join(UserInfo::getUser).fetch().join2(UserRole2::getUser).fetch().where()
-                .eq(UserInfo::getId, uid1).single();
+        Tuple2<UserInfo, UserRole2> tupleUserInfoRole2 = query.find(UserInfo.class).join(UserInfo::getUser).fetch()
+                .join2(UserRole2::getUser).fetch().where().eq(UserInfo::getId, uid1).single();
+        System.err.println(tupleUserInfoRole2);
+        userInfo = tupleUserInfoRole2.get0();
         System.err.println(userInfo);
         assertEquals(userInfo.getId(), uid1);
         assertNotNull(userInfo.getUser().getId());
@@ -228,8 +232,8 @@ public class SqlQueryTypeJoinRelationTest extends AbstractEntitySqlQueryJoinTest
         JOIN `tree` _tree1 ON _tree1.`id` = _tree0.`parent_id`
         JOIN `tree` _tree2 ON _tree2.`id` = _tree1.`parent_id`
          */
-        tree = query.find(Tree.class).join(Tree::getParent).fetch().join2(Tree::getParent).where()
-                .eq(Tree::getId, tid).single();
+        tree = query.find(Tree.class).join(Tree::getParent).fetch().join2(Tree::getParent).where().eq(Tree::getId, tid)
+                .single();
         assertTree(tree, true);
         assertTree(tree.getParent(), false);
         assertNull(tree.getParent().getParent().getParent());

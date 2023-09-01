@@ -12,9 +12,9 @@ package cn.featherfly.hammer.sqldb.jdbc.dsl.entity.condition;
 
 import java.util.function.Predicate;
 
-import cn.featherfly.common.lang.function.SerializableFunction;
-import cn.featherfly.common.lang.function.SerializableSupplier;
-import cn.featherfly.common.operator.QueryOperator.QueryPolicy;
+import cn.featherfly.common.function.serializable.SerializableFunction;
+import cn.featherfly.common.function.serializable.SerializableSupplier;
+import cn.featherfly.common.operator.ComparisonOperator.MatchStrategy;
 import cn.featherfly.hammer.expression.condition.ConditionExpression;
 import cn.featherfly.hammer.expression.condition.LogicExpression;
 import cn.featherfly.hammer.expression.entity.condition.sw.MulitiEntityStartWithExpression;
@@ -41,7 +41,7 @@ public class MulitiEntityStartWithExpressionImpl<C extends ConditionExpression, 
      * {@inheritDoc}
      */
     @Override
-    public <E> L sw(int index, SerializableFunction<E, String> name, String value, QueryPolicy queryPolicy) {
+    public <E> L sw(int index, SerializableFunction<E, String> name, String value, MatchStrategy queryPolicy) {
         return proxy.sw0(index, name, value, queryPolicy, ignoreStrategy);
     }
 
@@ -49,7 +49,7 @@ public class MulitiEntityStartWithExpressionImpl<C extends ConditionExpression, 
      * {@inheritDoc}
      */
     @Override
-    public <E> L sw(int index, SerializableFunction<E, String> name, String value, QueryPolicy queryPolicy,
+    public <E> L sw(int index, SerializableFunction<E, String> name, String value, MatchStrategy queryPolicy,
             Predicate<String> ignoreStrategy) {
         return proxy.sw0(index, name, value, queryPolicy, ignoreStrategy);
     }
@@ -58,7 +58,7 @@ public class MulitiEntityStartWithExpressionImpl<C extends ConditionExpression, 
      * {@inheritDoc}
      */
     @Override
-    public L sw(int index, SerializableSupplier<String> property, QueryPolicy queryPolicy) {
+    public L sw(int index, SerializableSupplier<String> property, MatchStrategy queryPolicy) {
         return proxy.sw0(index, property, queryPolicy, ignoreStrategy);
     }
 
@@ -66,7 +66,7 @@ public class MulitiEntityStartWithExpressionImpl<C extends ConditionExpression, 
      * {@inheritDoc}
      */
     @Override
-    public L sw(int index, SerializableSupplier<String> property, QueryPolicy queryPolicy,
+    public L sw(int index, SerializableSupplier<String> property, MatchStrategy queryPolicy,
             Predicate<String> ignoreStrategy) {
         return proxy.sw0(index, property, queryPolicy, ignoreStrategy);
     }

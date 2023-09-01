@@ -1,7 +1,7 @@
 
 package cn.featherfly.hammer.expression.condition.property;
 
-import cn.featherfly.common.operator.QueryOperator.QueryPolicy;
+import cn.featherfly.common.operator.ComparisonOperator.MatchStrategy;
 import cn.featherfly.hammer.expression.condition.ConditionsExpression;
 import cn.featherfly.hammer.expression.condition.LogicExpression;
 
@@ -140,7 +140,7 @@ public class SimpleNumberExpression<N extends Number, C extends ConditionsExpres
      * {@inheritDoc}
      */
     @Override
-    public L eq(N value, QueryPolicy queryPolicy) {
+    public L eq(N value, MatchStrategy queryPolicy) {
         return expression.eq(name, value, queryPolicy);
     }
 
@@ -148,7 +148,7 @@ public class SimpleNumberExpression<N extends Number, C extends ConditionsExpres
      * {@inheritDoc}
      */
     @Override
-    public L ne(N value, QueryPolicy queryPolicy) {
+    public L ne(N value, MatchStrategy queryPolicy) {
         return expression.ne(name, value, queryPolicy);
     }
 }

@@ -12,7 +12,7 @@ package cn.featherfly.hammer.expression.entity.condition;
 
 import java.util.function.Predicate;
 
-import cn.featherfly.common.operator.QueryOperator.QueryPolicy;
+import cn.featherfly.common.operator.ComparisonOperator.MatchStrategy;
 
 /**
  * The Interface ConditionEntityExpressionStringFuzzyQueryPropertyExpression.
@@ -29,7 +29,7 @@ public interface ConditionEntityExpressionStringFuzzyQueryPropertyExpression
      * @param queryPolicy the query policy
      * @return LogicExpression
      */
-    void value(String value, QueryPolicy queryPolicy);
+    void value(String value, MatchStrategy queryPolicy);
 
     /**
      * Value.
@@ -39,5 +39,5 @@ public interface ConditionEntityExpressionStringFuzzyQueryPropertyExpression
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
-    void value(String value, QueryPolicy queryPolicy, Predicate<String> ignoreStrategy);
+    void value(String value, MatchStrategy queryPolicy, Predicate<String> ignoreStrategy);
 }
