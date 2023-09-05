@@ -182,7 +182,7 @@ public class SqlDeleterTest extends HammerJdbcTestBase {
     public void testDeleteEntityNoCondition() {
         List<UserRole> urs = hammer.query(UserRole.class).list();
 
-        // YUFEI_TEST 没有参数，返回的0
+        // YUFEI_TEST 没有参数，返回的0，后续设置没有参数的行为策略
         int result = deleter.delete(UserRole.class).where().setIgnoreStrategy(IgnoreStrategy.EMPTY)
                 .eq(UserRole::getUserId, null) //
                 .execute();
