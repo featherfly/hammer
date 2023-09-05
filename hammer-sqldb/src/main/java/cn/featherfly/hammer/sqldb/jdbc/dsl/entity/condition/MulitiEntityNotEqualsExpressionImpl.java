@@ -41,33 +41,34 @@ public class MulitiEntityNotEqualsExpressionImpl<C extends ConditionExpression, 
      * {@inheritDoc}
      */
     @Override
-    public <E, R> L ne(int index, SerializableFunction<E, R> name, R value, MatchStrategy queryPolicy) {
-        return proxy.ne0(index, name, value, queryPolicy, ignoreStrategy);
+    public <E, R> L ne(int index, SerializableFunction<E, R> name, R value, MatchStrategy matchStrategy) {
+        return proxy.ne0(index, name, value, matchStrategy, ignoreStrategy);
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public <E, R> L ne(int index, SerializableFunction<E, R> name, R value, MatchStrategy queryPolicy,
+    public <E, R> L ne(int index, SerializableFunction<E, R> name, R value, MatchStrategy matchStrategy,
             Predicate<R> ignoreStrategy) {
-        return proxy.ne0(index, name, value, queryPolicy, ignoreStrategy);
+        return proxy.ne0(index, name, value, matchStrategy, ignoreStrategy);
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public <R> L ne(int index, SerializableSupplier<R> property, MatchStrategy queryPolicy) {
-        return proxy.ne0(index, property, queryPolicy, ignoreStrategy);
+    public <R> L ne(int index, SerializableSupplier<R> property, MatchStrategy matchStrategy) {
+        return proxy.ne0(index, property, matchStrategy, ignoreStrategy);
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public <R> L ne(int index, SerializableSupplier<R> property, MatchStrategy queryPolicy, Predicate<R> ignoreStrategy) {
-        return proxy.ne0(index, property, queryPolicy, ignoreStrategy);
+    public <R> L ne(int index, SerializableSupplier<R> property, MatchStrategy matchStrategy,
+            Predicate<R> ignoreStrategy) {
+        return proxy.ne0(index, property, matchStrategy, ignoreStrategy);
     }
 
 }

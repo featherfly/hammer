@@ -3,11 +3,11 @@ package cn.featherfly.hammer.expression.condition;
 
 import java.util.Date;
 
-import cn.featherfly.hammer.expression.condition.property.DateExpression;
-import cn.featherfly.hammer.expression.condition.property.EnumExpression;
-import cn.featherfly.hammer.expression.condition.property.NumberExpression;
-import cn.featherfly.hammer.expression.condition.property.ObjectExpression;
-import cn.featherfly.hammer.expression.condition.property.StringExpression;
+import cn.featherfly.hammer.expression.condition.property.DatePropertyExpression;
+import cn.featherfly.hammer.expression.condition.property.EnumPropertyExpression;
+import cn.featherfly.hammer.expression.condition.property.NumberPropertyExpression;
+import cn.featherfly.hammer.expression.condition.property.ObjectPropertyExpression;
+import cn.featherfly.hammer.expression.condition.property.StringPropertyExpression;
 
 /**
  * RepositoryPropertyConditionsExpression.
@@ -26,7 +26,7 @@ public interface RepositoryPropertyConditionsExpression<C extends RepositoryCond
      * @param name       the name
      * @return the object expression
      */
-    ObjectExpression<C, L> property(String repository, String name);
+    ObjectPropertyExpression<C, L> property(String repository, String name);
 
     /**
      * Property string.
@@ -35,7 +35,7 @@ public interface RepositoryPropertyConditionsExpression<C extends RepositoryCond
      * @param name       the name
      * @return the string expression
      */
-    StringExpression<C, L> propertyString(String repository, String name);
+    StringPropertyExpression<C, L> propertyString(String repository, String name);
 
     /**
      * Property number.
@@ -45,7 +45,7 @@ public interface RepositoryPropertyConditionsExpression<C extends RepositoryCond
      * @param name       the name
      * @return the number expression
      */
-    <N extends Number> NumberExpression<N, C, L> propertyNumber(String repository, String name);
+    <N extends Number> NumberPropertyExpression<N, C, L> propertyNumber(String repository, String name);
 
     /**
      * Property date.
@@ -55,7 +55,7 @@ public interface RepositoryPropertyConditionsExpression<C extends RepositoryCond
      * @param name       the name
      * @return the date expression
      */
-    <D extends Date> DateExpression<D, C, L> propertyDate(String repository, String name);
+    <D extends Date> DatePropertyExpression<D, C, L> propertyDate(String repository, String name);
 
     /**
      * Property enum.
@@ -65,7 +65,7 @@ public interface RepositoryPropertyConditionsExpression<C extends RepositoryCond
      * @param name       the name
      * @return the enum expression
      */
-    <E extends Enum<E>> EnumExpression<E, C, L> propertyEnum(String repository, String name);
+    <E extends Enum<E>> EnumPropertyExpression<E, C, L> propertyEnum(String repository, String name);
 
     /**
      * Property.
@@ -125,7 +125,7 @@ public interface RepositoryPropertyConditionsExpression<C extends RepositoryCond
      * @param name            the name
      * @return the object expression
      */
-    ObjectExpression<C, L> property(int repositoryIndex, String name);
+    ObjectPropertyExpression<C, L> property(int repositoryIndex, String name);
 
     /**
      * Property string.
@@ -134,7 +134,7 @@ public interface RepositoryPropertyConditionsExpression<C extends RepositoryCond
      * @param name            the name
      * @return the string expression
      */
-    StringExpression<C, L> propertyString(int repositoryIndex, String name);
+    StringPropertyExpression<C, L> propertyString(int repositoryIndex, String name);
 
     /**
      * Property number.
@@ -144,7 +144,7 @@ public interface RepositoryPropertyConditionsExpression<C extends RepositoryCond
      * @param name            the name
      * @return the number expression
      */
-    <N extends Number> NumberExpression<N, C, L> propertyNumber(int repositoryIndex, String name);
+    <N extends Number> NumberPropertyExpression<N, C, L> propertyNumber(int repositoryIndex, String name);
 
     /**
      * Property date.
@@ -154,7 +154,7 @@ public interface RepositoryPropertyConditionsExpression<C extends RepositoryCond
      * @param name            the name
      * @return the date expression
      */
-    <D extends Date> DateExpression<D, C, L> propertyDate(int repositoryIndex, String name);
+    <D extends Date> DatePropertyExpression<D, C, L> propertyDate(int repositoryIndex, String name);
 
     /**
      * Property enum.
@@ -164,5 +164,5 @@ public interface RepositoryPropertyConditionsExpression<C extends RepositoryCond
      * @param name            the name
      * @return the enum expression
      */
-    <E extends Enum<E>> EnumExpression<E, C, L> propertyEnum(int repositoryIndex, String name);
+    <E extends Enum<E>> EnumPropertyExpression<E, C, L> propertyEnum(int repositoryIndex, String name);
 }

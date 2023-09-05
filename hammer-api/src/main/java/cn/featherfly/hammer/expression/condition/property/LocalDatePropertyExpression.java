@@ -2,19 +2,20 @@
 package cn.featherfly.hammer.expression.condition.property;
 
 import java.time.LocalDate;
+import java.util.function.Predicate;
 
 import cn.featherfly.common.operator.ComparisonOperator.MatchStrategy;
 import cn.featherfly.hammer.expression.condition.ConditionExpression;
 import cn.featherfly.hammer.expression.condition.LogicExpression;
 
 /**
- * LocalDateExpression.
+ * LocalDate property expression.
  *
  * @author zhongj
  * @param <C> the generic type
  * @param <L> the generic type
  */
-public interface LocalDateExpression<C extends ConditionExpression, L extends LogicExpression<C, L>>
+public interface LocalDatePropertyExpression<C extends ConditionExpression, L extends LogicExpression<C, L>>
         extends PropertyEqualsExpression<C, L, LocalDate>, PropertyNotEqualsExpression<C, L, LocalDate>,
         PropertyInExpression<C, L, LocalDate>, PropertyNotInExpression<C, L, LocalDate>,
         PropertyLessEqualsExpression<C, L, LocalDate>, PropertyLessThanExpression<C, L, LocalDate>,
@@ -30,8 +31,24 @@ public interface LocalDateExpression<C extends ConditionExpression, L extends Lo
      * {@inheritDoc}
      */
     @Override
-    default L eq(LocalDate value, MatchStrategy queryPolicy) {
+    L eq(LocalDate value, Predicate<LocalDate> ignoreStrategy);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    default L eq(LocalDate value, MatchStrategy matchStrategy) {
+        // MatchStrategy only support for String
         return eq(value);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    default L eq(LocalDate value, MatchStrategy matchStrategy, Predicate<LocalDate> ignoreStrategy) {
+        // MatchStrategy only support for String
+        return eq(value, ignoreStrategy);
     }
 
     /**
@@ -44,7 +61,23 @@ public interface LocalDateExpression<C extends ConditionExpression, L extends Lo
      * {@inheritDoc}
      */
     @Override
-    default L ne(LocalDate value, MatchStrategy queryPolicy) {
+    L ne(LocalDate value, Predicate<LocalDate> ignoreStrategy);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    default L ne(LocalDate value, MatchStrategy matchStrategy) {
+        // MatchStrategy only support for String
         return ne(value);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    default L ne(LocalDate value, MatchStrategy matchStrategy, Predicate<LocalDate> ignoreStrategy) {
+        // MatchStrategy only support for String
+        return ne(value, ignoreStrategy);
     }
 }

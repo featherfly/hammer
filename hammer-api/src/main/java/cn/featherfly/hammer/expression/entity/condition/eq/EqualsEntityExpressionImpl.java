@@ -13,6 +13,7 @@ package cn.featherfly.hammer.expression.entity.condition.eq;
 import java.util.Collection;
 import java.util.function.Predicate;
 
+import cn.featherfly.common.exception.NotImplementedException;
 import cn.featherfly.common.function.serializable.SerializableFunction;
 import cn.featherfly.common.function.serializable.SerializableSupplier;
 import cn.featherfly.common.function.serializable.SerializableToCollectionFunction;
@@ -47,8 +48,8 @@ public class EqualsEntityExpressionImpl<E, C extends ConditionExpression, L exte
      */
     @Override
     public <R> EqualsEntityPropertyExpression<R> property(SerializableFunction<E, R> name) {
-        // YUFEI_TODO Auto-generated method stub
-        return null;
+        // IMPLSOON 未实现property
+        throw new NotImplementedException();
     }
 
     /**
@@ -57,8 +58,8 @@ public class EqualsEntityExpressionImpl<E, C extends ConditionExpression, L exte
     @Override
     public <R extends Collection<RE>,
             RE> EqualsEntityPropertyExpression<RE> property(SerializableToCollectionFunction<E, R, RE> name) {
-        // YUFEI_TODO Auto-generated method stub
-        return null;
+        // IMPLSOON 未实现property
+        throw new NotImplementedException();
     }
 
     /**
@@ -73,8 +74,8 @@ public class EqualsEntityExpressionImpl<E, C extends ConditionExpression, L exte
      * {@inheritDoc}
      */
     @Override
-    public <R> void accept(SerializableFunction<E, R> property, R value, MatchStrategy queryPolicy) {
-        expression.eq(index, property, value, queryPolicy);
+    public <R> void accept(SerializableFunction<E, R> property, R value, MatchStrategy matchStrategy) {
+        expression.eq(index, property, value, matchStrategy);
     }
 
     /**
@@ -89,9 +90,9 @@ public class EqualsEntityExpressionImpl<E, C extends ConditionExpression, L exte
      * {@inheritDoc}
      */
     @Override
-    public <R> void accept(SerializableFunction<E, R> property, R value, MatchStrategy queryPolicy,
+    public <R> void accept(SerializableFunction<E, R> property, R value, MatchStrategy matchStrategy,
             Predicate<R> ignoreStrategy) {
-        expression.eq(index, property, value, queryPolicy, ignoreStrategy);
+        expression.eq(index, property, value, matchStrategy, ignoreStrategy);
     }
 
     /**
@@ -114,16 +115,16 @@ public class EqualsEntityExpressionImpl<E, C extends ConditionExpression, L exte
      * {@inheritDoc}
      */
     @Override
-    public <R> void accept(SerializableSupplier<R> property, MatchStrategy queryPolicy) {
-        expression.eq(index, property, queryPolicy);
+    public <R> void accept(SerializableSupplier<R> property, MatchStrategy matchStrategy) {
+        expression.eq(index, property, matchStrategy);
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public <R> void accept(SerializableSupplier<R> property, MatchStrategy queryPolicy, Predicate<R> ignoreStrategy) {
-        expression.eq(index, property, queryPolicy, ignoreStrategy);
+    public <R> void accept(SerializableSupplier<R> property, MatchStrategy matchStrategy, Predicate<R> ignoreStrategy) {
+        expression.eq(index, property, matchStrategy, ignoreStrategy);
     }
 
 }

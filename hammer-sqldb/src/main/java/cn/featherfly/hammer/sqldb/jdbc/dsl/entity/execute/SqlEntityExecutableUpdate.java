@@ -1,9 +1,9 @@
 
 package cn.featherfly.hammer.sqldb.jdbc.dsl.entity.execute;
 
+import java.util.function.BooleanSupplier;
 import java.util.function.Consumer;
 import java.util.function.Predicate;
-import java.util.function.Supplier;
 
 import cn.featherfly.common.bean.BeanDescriptor;
 import cn.featherfly.common.bean.BeanUtils;
@@ -134,8 +134,8 @@ public class SqlEntityExecutableUpdate<E> extends AbstractSqlExecutableUpdate<Sq
      * {@inheritDoc}
      */
     @Override
-    public <R> EntityExecutableUpdate<E> set(Supplier<Boolean> whether, SerializableFunction<E, R> property, R value) {
-        if (Lang.isTrue(whether.get())) {
+    public <R> EntityExecutableUpdate<E> set(BooleanSupplier setable, SerializableFunction<E, R> property, R value) {
+        if (setable.getAsBoolean()) {
             return set(property, value);
         } else {
             return this;
@@ -167,9 +167,9 @@ public class SqlEntityExecutableUpdate<E> extends AbstractSqlExecutableUpdate<Sq
      * {@inheritDoc}
      */
     @Override
-    public <R, O> EntityExecutableUpdate<E> set(Supplier<Boolean> whether, SerializableFunction<E, R> property,
+    public <R, O> EntityExecutableUpdate<E> set(BooleanSupplier setable, SerializableFunction<E, R> property,
             SerializableFunction<R, O> nestedProperty, O value) {
-        if (Lang.isTrue(whether.get())) {
+        if (setable.getAsBoolean()) {
             return set(property, nestedProperty, value);
         } else {
             return this;
@@ -188,8 +188,8 @@ public class SqlEntityExecutableUpdate<E> extends AbstractSqlExecutableUpdate<Sq
      * {@inheritDoc}
      */
     @Override
-    public <R> EntityExecutableUpdate<E> set(Supplier<Boolean> whether, SerializableSupplier<R> property) {
-        if (Lang.isTrue(whether.get())) {
+    public <R> EntityExecutableUpdate<E> set(BooleanSupplier setable, SerializableSupplier<R> property) {
+        if (setable.getAsBoolean()) {
             return set(property);
         } else {
             return this;
@@ -215,9 +215,9 @@ public class SqlEntityExecutableUpdate<E> extends AbstractSqlExecutableUpdate<Sq
      * {@inheritDoc}
      */
     @Override
-    public <R, O> EntityExecutableUpdate<E> set(Supplier<Boolean> whether, SerializableSupplier<R> property,
+    public <R, O> EntityExecutableUpdate<E> set(BooleanSupplier setable, SerializableSupplier<R> property,
             SerializableFunction<R, O> nestedProperty) {
-        if (Lang.isTrue(whether.get())) {
+        if (setable.getAsBoolean()) {
             return set(property, nestedProperty);
         } else {
             return this;
@@ -237,9 +237,9 @@ public class SqlEntityExecutableUpdate<E> extends AbstractSqlExecutableUpdate<Sq
      * {@inheritDoc}
      */
     @Override
-    public <R extends Number> EntityExecutableUpdate<E> increase(Supplier<Boolean> whether,
+    public <R extends Number> EntityExecutableUpdate<E> increase(BooleanSupplier increaseable,
             SerializableFunction<E, R> property, R value) {
-        if (Lang.isTrue(whether.get())) {
+        if (increaseable.getAsBoolean()) {
             return increase(property, value);
         } else {
             return this;
@@ -259,9 +259,9 @@ public class SqlEntityExecutableUpdate<E> extends AbstractSqlExecutableUpdate<Sq
      * {@inheritDoc}
      */
     @Override
-    public <N extends Number> EntityExecutableUpdate<E> increase(Supplier<Boolean> whether,
+    public <N extends Number> EntityExecutableUpdate<E> increase(BooleanSupplier increaseable,
             SerializableSupplier<N> property) {
-        if (Lang.isTrue(whether.get())) {
+        if (increaseable.getAsBoolean()) {
             return increase(property);
         } else {
             return this;

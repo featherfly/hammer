@@ -41,33 +41,33 @@ public class MulitiEntityLikeExpressionImpl<C extends ConditionExpression, L ext
      * {@inheritDoc}
      */
     @Override
-    public <E> L lk(int index, SerializableFunction<E, String> name, String value, MatchStrategy queryPolicy) {
-        return proxy.lk0(index, name, value, queryPolicy, ignoreStrategy);
+    public <E> L lk(int index, SerializableFunction<E, String> name, String value, MatchStrategy matchStrategy) {
+        return proxy.lk0(index, name, value, matchStrategy, ignoreStrategy);
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public <E> L lk(int index, SerializableFunction<E, String> name, String value, MatchStrategy queryPolicy,
+    public <E> L lk(int index, SerializableFunction<E, String> name, String value, MatchStrategy matchStrategy,
             Predicate<String> ignoreStrategy) {
-        return proxy.lk0(index, name, value, queryPolicy, ignoreStrategy);
+        return proxy.lk0(index, name, value, matchStrategy, ignoreStrategy);
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public L lk(int index, SerializableSupplier<String> property, MatchStrategy queryPolicy) {
-        return proxy.lk0(index, property, queryPolicy, ignoreStrategy);
+    public L lk(int index, SerializableSupplier<String> property, MatchStrategy matchStrategy) {
+        return proxy.lk0(index, property, matchStrategy, ignoreStrategy);
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public L lk(int index, SerializableSupplier<String> property, MatchStrategy queryPolicy,
+    public L lk(int index, SerializableSupplier<String> property, MatchStrategy matchStrategy,
             Predicate<String> ignoreStrategy) {
-        return proxy.lk0(index, property, queryPolicy, ignoreStrategy);
+        return proxy.lk0(index, property, matchStrategy, ignoreStrategy);
     }
 }

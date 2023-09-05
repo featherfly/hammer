@@ -2,6 +2,7 @@
 package cn.featherfly.hammer.expression.condition.property;
 
 import java.util.Date;
+import java.util.function.Predicate;
 
 import cn.featherfly.common.lang.Lang;
 import cn.featherfly.hammer.expression.condition.LogicExpression;
@@ -15,7 +16,7 @@ import cn.featherfly.hammer.expression.condition.RepositoryConditionsExpression;
  * @param <L> the generic type
  */
 public class RepositorySimpleDateExpression<D extends Date, C extends RepositoryConditionsExpression<C, L>,
-        L extends LogicExpression<C, L>> implements DateExpression<D, C, L> {
+        L extends LogicExpression<C, L>> implements DatePropertyExpression<D, C, L> {
 
     private String name;
 
@@ -239,5 +240,77 @@ public class RepositorySimpleDateExpression<D extends Date, C extends Repository
         } else {
             return expression.inn(name, value);
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public L in(D[] value) {
+        // YUFEI_TODO Auto-generated method stub
+        return null;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public L in(D value, Predicate<D> ignoreStrategy) {
+        // YUFEI_TODO Auto-generated method stub
+        return null;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public L in(D[] value, Predicate<D[]> ignoreStrategy) {
+        // YUFEI_TODO Auto-generated method stub
+        return null;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public L nin(D[] value) {
+        // YUFEI_TODO Auto-generated method stub
+        return null;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public L nin(D value, Predicate<D> ignoreStrategy) {
+        // YUFEI_TODO Auto-generated method stub
+        return null;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public L nin(D[] value, Predicate<D[]> ignoreStrategy) {
+        // YUFEI_TODO Auto-generated method stub
+        return null;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public L eq(D value, Predicate<D> ignoreStrategy) {
+        // YUFEI_TODO Auto-generated method stub
+        return null;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public L ne(D value, Predicate<D> ignoreStrategy) {
+        // YUFEI_TODO Auto-generated method stub
+        return null;
     }
 }

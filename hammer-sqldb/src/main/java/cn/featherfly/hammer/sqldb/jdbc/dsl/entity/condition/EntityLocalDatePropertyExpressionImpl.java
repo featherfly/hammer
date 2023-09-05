@@ -1,15 +1,19 @@
 
 package cn.featherfly.hammer.sqldb.jdbc.dsl.entity.condition;
 
+import java.io.Serializable;
 import java.time.LocalDate;
+import java.util.List;
+import java.util.function.Predicate;
 
+import cn.featherfly.common.db.mapping.JdbcMappingFactory;
 import cn.featherfly.common.function.serializable.SerializableFunction;
 import cn.featherfly.hammer.expression.condition.ConditionExpression;
 import cn.featherfly.hammer.expression.condition.LogicExpression;
 import cn.featherfly.hammer.expression.entity.condition.property.EntityLocalDatePropertyExpression;
 
 /**
- * The Class TypeDateExpression.
+ * entity LocalDate property expression implements.
  *
  * @author zhongj
  * @param <E> the element type
@@ -17,8 +21,21 @@ import cn.featherfly.hammer.expression.entity.condition.property.EntityLocalDate
  * @param <L> the generic type
  */
 public class EntityLocalDatePropertyExpressionImpl<E, C extends ConditionExpression, L extends LogicExpression<C, L>>
-        extends AbstractMulitiEntityPropertyExpression<E, LocalDate, SerializableFunction<E, LocalDate>, C, L>
+        extends AbstractMulitiEntityGenericPropertyExpression<E, LocalDate, SerializableFunction<E, LocalDate>, C, L>
         implements EntityLocalDatePropertyExpression<E, C, L> {
+
+    /**
+     * Instantiates a new entity local date property expression impl.
+     *
+     * @param index        the index
+     * @param propertyList the property list
+     * @param expression   the expression
+     * @param factory      the factory
+     */
+    public EntityLocalDatePropertyExpressionImpl(int index, List<Serializable> propertyList,
+            AbstractMulitiEntityConditionExpression<C, L> expression, JdbcMappingFactory factory) {
+        super(index, propertyList, expression, factory);
+    }
 
     /**
      * Instantiates a new entity local date property expression impl.
@@ -26,10 +43,11 @@ public class EntityLocalDatePropertyExpressionImpl<E, C extends ConditionExpress
      * @param index      the index
      * @param name       the name
      * @param expression the expression
+     * @param factory    the factory
      */
     public EntityLocalDatePropertyExpressionImpl(int index, SerializableFunction<E, LocalDate> name,
-            AbstractMulitiEntityConditionExpression<C, L> expression) {
-        super(index, name, expression);
+            AbstractMulitiEntityConditionExpression<C, L> expression, JdbcMappingFactory factory) {
+        super(index, name, expression, factory);
     }
 
     /**
@@ -37,7 +55,15 @@ public class EntityLocalDatePropertyExpressionImpl<E, C extends ConditionExpress
      */
     @Override
     public L eq(LocalDate value) {
-        return expression.eq0(index, name, value, expression.getIgnoreStrategy());
+        return expression.eq0(index, getPropertyMapping(value), value, expression.getIgnoreStrategy());
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public L eq(LocalDate value, Predicate<LocalDate> ignoreStrategy) {
+        return expression.eq0(index, getPropertyMapping(value), value, ignoreStrategy);
     }
 
     /**
@@ -53,7 +79,15 @@ public class EntityLocalDatePropertyExpressionImpl<E, C extends ConditionExpress
      */
     @Override
     public L ne(LocalDate value) {
-        return expression.ne0(index, name, value, expression.getIgnoreStrategy());
+        return expression.ne0(index, getPropertyMapping(value), value, expression.getIgnoreStrategy());
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public L ne(LocalDate value, Predicate<LocalDate> ignoreStrategy) {
+        return expression.ne0(index, getPropertyMapping(value), value, ignoreStrategy);
     }
 
     /**
@@ -61,7 +95,31 @@ public class EntityLocalDatePropertyExpressionImpl<E, C extends ConditionExpress
      */
     @Override
     public L in(LocalDate value) {
-        return expression.in0(index, name, value, expression.getIgnoreStrategy());
+        return expression.in0(index, getPropertyMapping(value), value, expression.getIgnoreStrategy());
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public L in(LocalDate[] value) {
+        return expression.in0(index, getPropertyMapping(value), value, expression.getIgnoreStrategy());
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public L in(LocalDate value, Predicate<LocalDate> ignoreStrategy) {
+        return expression.in0(index, getPropertyMapping(value), value, ignoreStrategy);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public L in(LocalDate[] value, Predicate<LocalDate[]> ignoreStrategy) {
+        return expression.in0(index, getPropertyMapping(value), value, ignoreStrategy);
     }
 
     /**
@@ -69,7 +127,31 @@ public class EntityLocalDatePropertyExpressionImpl<E, C extends ConditionExpress
      */
     @Override
     public L nin(LocalDate value) {
-        return expression.nin0(index, name, value, expression.getIgnoreStrategy());
+        return expression.nin0(index, getPropertyMapping(value), value, expression.getIgnoreStrategy());
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public L nin(LocalDate[] value) {
+        return expression.nin0(index, getPropertyMapping(value), value, expression.getIgnoreStrategy());
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public L nin(LocalDate value, Predicate<LocalDate> ignoreStrategy) {
+        return expression.nin0(index, getPropertyMapping(value), value, ignoreStrategy);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public L nin(LocalDate[] value, Predicate<LocalDate[]> ignoreStrategy) {
+        return expression.nin0(index, getPropertyMapping(value), value, ignoreStrategy);
     }
 
     /**
@@ -77,7 +159,7 @@ public class EntityLocalDatePropertyExpressionImpl<E, C extends ConditionExpress
      */
     @Override
     public L le(LocalDate value) {
-        return expression.le0(index, name, value, expression.getIgnoreStrategy());
+        return expression.le0(index, getPropertyMapping(value), value, expression.getIgnoreStrategy());
     }
 
     /**
@@ -85,7 +167,7 @@ public class EntityLocalDatePropertyExpressionImpl<E, C extends ConditionExpress
      */
     @Override
     public L lt(LocalDate value) {
-        return expression.lt0(index, name, value, expression.getIgnoreStrategy());
+        return expression.lt0(index, getPropertyMapping(value), value, expression.getIgnoreStrategy());
     }
 
     /**
@@ -93,7 +175,7 @@ public class EntityLocalDatePropertyExpressionImpl<E, C extends ConditionExpress
      */
     @Override
     public L ge(LocalDate value) {
-        return expression.ge0(index, name, value, expression.getIgnoreStrategy());
+        return expression.ge0(index, getPropertyMapping(value), value, expression.getIgnoreStrategy());
     }
 
     /**
@@ -101,7 +183,7 @@ public class EntityLocalDatePropertyExpressionImpl<E, C extends ConditionExpress
      */
     @Override
     public L gt(LocalDate value) {
-        return expression.gt0(index, name, value, expression.getIgnoreStrategy());
+        return expression.gt0(index, getPropertyMapping(value), value, expression.getIgnoreStrategy());
     }
 
     /**
@@ -109,7 +191,7 @@ public class EntityLocalDatePropertyExpressionImpl<E, C extends ConditionExpress
      */
     @Override
     public L isn(Boolean value) {
-        return expression.isn0(index, name, value);
+        return expression.isn0(index, getPropertyMapping(value), value);
     }
 
     /**
@@ -117,6 +199,6 @@ public class EntityLocalDatePropertyExpressionImpl<E, C extends ConditionExpress
      */
     @Override
     public L inn(Boolean value) {
-        return expression.inn0(index, name, value);
+        return expression.inn0(index, getPropertyMapping(value), value);
     }
 }

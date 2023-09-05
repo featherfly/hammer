@@ -248,26 +248,6 @@ public abstract class AbstractOperate<T> {
     public Object[] getParameters(T entity) {
         return getParameters(entity, propertyPositions);
     }
-    //    public BeanPropertyValue<?>[] getParameters(T entity) {
-    //        return getParameters(entity, propertyPositions);
-    //    }
-
-    //    /**
-    //     * Gets the parameters.
-    //     *
-    //     * @param entity            the entity
-    //     * @param propertyPositions the property positions
-    //     * @return the parameters
-    //     */
-    //    protected Object[] getParameters(T entity, Map<Integer, String> propertyPositions) {
-    //        Object[] params = new Object[propertyPositions.size()];
-    //        int i = 0;
-    //        for (Entry<Integer, String> propertyPosition : propertyPositions.entrySet()) {
-    //            params[i] = BeanUtils.getProperty(entity, propertyPosition.getValue());
-    //            i++;
-    //        }
-    //        return params;
-    //    }
 
     /**
      * Gets the parameters.
@@ -286,60 +266,6 @@ public abstract class AbstractOperate<T> {
         }
         return operators;
     }
-
-    //    /**
-    //     * Gets the parameters.
-    //     *
-    //     * @param entity            the entity
-    //     * @param propertyPositions the property positions
-    //     * @return the parameters
-    //     */
-    //    @SuppressWarnings({ "unchecked", "rawtypes" })
-    //    protected BeanPropertyValue<?>[] getParameters2(T entity, Map<Integer, JdbcPropertyMapping> propertyPositions) {
-    //        /* TODO  这里后续可以优化为 BeanPropertyValue为FieldValueOperator,  FieldValueOperator带有已注册的Mapper
-    //                       然后sql执行时，直接绕过TypeManager不在去找java类型和sql类型的映射关系
-    //                       此举可以加速实体类型的数据库操作速度
-    //        */
-    //        BeanPropertyValue<?>[] bpvs = new BeanPropertyValue[propertyPositions.size()];
-    //        int i = 0;
-    //        for (Entry<Integer, String> propertyPosition : propertyPositions.entrySet()) {
-    //            // ENHANCE 下面这个逻辑后续可以用map优化，缓存下来
-    //            BeanProperty<?> bp = beanDescriptor.getBeanProperty(propertyPosition.getValue());
-    //            bpvs[i] = new BeanPropertyValue(bp, BeanUtils.getProperty(entity, propertyPosition.getValue()));
-    //            i++;
-    //        }
-    //        return bpvs;
-    //    }
-
-    //    /**
-    //     * 设置预编译参数 .
-    //     *
-    //     * @param prep    执行SQL的PreparedStatementWrapper
-    //     * @param id      主键
-    //     * @param manager the manager
-    //     */
-    //    protected void setParameter(PreparedStatement prep, Serializable id, SqlTypeMappingManager manager) {
-    //        manager.set(prep, 1, id, pkProperties.get(0));
-    //        //        JdbcUtils.setParameter(prep, 1, id);
-    //    }
-
-    //    /**
-    //     * 设置预编译参数
-    //     * .
-    //     *
-    //     * @param prep    执行SQL的PreparedStatementWrapper
-    //     * @param ids     主键列表
-    //     * @param manager the manager
-    //     */
-    //    protected void setParameter(PreparedStatement prep, java.util.List<Serializable> ids,
-    //            SqlTypeMappingManager manager) {
-    //        int i = 0;
-    //        for (Serializable id : ids) {
-    //            i++;
-    //            manager.set(prep, i, id, pkProperties.get(i - 1));
-    //            //            JdbcUtils.setParameter(prep, i, id);
-    //        }
-    //    }
 
     /**
      * 初始化SQL，由具体的实现类来实现.

@@ -24,13 +24,13 @@ import cn.featherfly.common.function.serializable.SerializableToLocalDateTimeFun
 import cn.featherfly.common.function.serializable.SerializableToLocalTimeFunction;
 import cn.featherfly.common.function.serializable.SerializableToNumberFunction;
 import cn.featherfly.common.function.serializable.SerializableToStringFunction;
-import cn.featherfly.common.operator.LogicOperator;
 import cn.featherfly.common.operator.ComparisonOperator.MatchStrategy;
-import cn.featherfly.hammer.expression.condition.property.DateExpression;
-import cn.featherfly.hammer.expression.condition.property.EnumExpression;
-import cn.featherfly.hammer.expression.condition.property.NumberExpression;
-import cn.featherfly.hammer.expression.condition.property.ObjectExpression;
-import cn.featherfly.hammer.expression.condition.property.StringExpression;
+import cn.featherfly.common.operator.LogicOperator;
+import cn.featherfly.hammer.expression.condition.property.DatePropertyExpression;
+import cn.featherfly.hammer.expression.condition.property.EnumPropertyExpression;
+import cn.featherfly.hammer.expression.condition.property.NumberPropertyExpression;
+import cn.featherfly.hammer.expression.condition.property.ObjectPropertyExpression;
+import cn.featherfly.hammer.expression.condition.property.StringPropertyExpression;
 import cn.featherfly.hammer.expression.execute.ExecutableConditionGroupExpression;
 import cn.featherfly.hammer.expression.execute.ExecutableConditionGroupLogicExpression;
 
@@ -54,7 +54,7 @@ public class UserQueryConditionGroupExpression implements
      *
      * @return the string expression
      */
-    public StringExpression<UserQueryConditionGroupExpression, UserQueryConditionGroupExpression> name() {
+    public StringPropertyExpression<UserQueryConditionGroupExpression, UserQueryConditionGroupExpression> name() {
         return propertyString("name");
     }
 
@@ -63,7 +63,8 @@ public class UserQueryConditionGroupExpression implements
      *
      * @return the number expression
      */
-    public NumberExpression<Number, UserQueryConditionGroupExpression, UserQueryConditionGroupExpression> age() {
+    public NumberPropertyExpression<Number, UserQueryConditionGroupExpression,
+            UserQueryConditionGroupExpression> age() {
         return propertyNumber("age");
     }
 
@@ -72,7 +73,7 @@ public class UserQueryConditionGroupExpression implements
      *
      * @return the string expression
      */
-    public StringExpression<UserQueryConditionGroupExpression, UserQueryConditionGroupExpression> pwd() {
+    public StringPropertyExpression<UserQueryConditionGroupExpression, UserQueryConditionGroupExpression> pwd() {
         return propertyString("pwd");
     }
 
@@ -975,7 +976,7 @@ public class UserQueryConditionGroupExpression implements
      * {@inheritDoc}
      */
     @Override
-    public ObjectExpression<UserQueryConditionGroupExpression, UserQueryConditionGroupExpression> property(
+    public ObjectPropertyExpression<UserQueryConditionGroupExpression, UserQueryConditionGroupExpression> property(
             String name) {
 
         return null;
@@ -985,8 +986,8 @@ public class UserQueryConditionGroupExpression implements
      * {@inheritDoc}
      */
     @Override
-    public StringExpression<UserQueryConditionGroupExpression, UserQueryConditionGroupExpression> propertyString(
-            String name) {
+    public StringPropertyExpression<UserQueryConditionGroupExpression,
+            UserQueryConditionGroupExpression> propertyString(String name) {
 
         return null;
     }
@@ -995,7 +996,7 @@ public class UserQueryConditionGroupExpression implements
      * {@inheritDoc}
      */
     @Override
-    public NumberExpression<Number, UserQueryConditionGroupExpression,
+    public NumberPropertyExpression<Number, UserQueryConditionGroupExpression,
             UserQueryConditionGroupExpression> propertyNumber(String name) {
 
         return null;
@@ -1005,8 +1006,8 @@ public class UserQueryConditionGroupExpression implements
      * {@inheritDoc}
      */
     @Override
-    public DateExpression<Date, UserQueryConditionGroupExpression, UserQueryConditionGroupExpression> propertyDate(
-            String name) {
+    public DatePropertyExpression<Date, UserQueryConditionGroupExpression,
+            UserQueryConditionGroupExpression> propertyDate(String name) {
 
         return null;
     }
@@ -1015,8 +1016,9 @@ public class UserQueryConditionGroupExpression implements
      * {@inheritDoc}
      */
     @Override
-    public <T, R> ObjectExpression<UserQueryConditionGroupExpression, UserQueryConditionGroupExpression> property(
-            SerializableFunction<T, R> name) {
+    public <T,
+            R> ObjectPropertyExpression<UserQueryConditionGroupExpression, UserQueryConditionGroupExpression> property(
+                    SerializableFunction<T, R> name) {
 
         return null;
     }
@@ -1025,7 +1027,7 @@ public class UserQueryConditionGroupExpression implements
      * {@inheritDoc}
      */
     @Override
-    public <T> StringExpression<UserQueryConditionGroupExpression, UserQueryConditionGroupExpression> property(
+    public <T> StringPropertyExpression<UserQueryConditionGroupExpression, UserQueryConditionGroupExpression> property(
             SerializableToStringFunction<T> name) {
 
         return null;
@@ -1035,7 +1037,7 @@ public class UserQueryConditionGroupExpression implements
      * {@inheritDoc}
      */
     @Override
-    public <T, R extends Number> NumberExpression<R, UserQueryConditionGroupExpression,
+    public <T, R extends Number> NumberPropertyExpression<R, UserQueryConditionGroupExpression,
             UserQueryConditionGroupExpression> property(SerializableToNumberFunction<T, R> name) {
 
         return null;
@@ -1045,7 +1047,7 @@ public class UserQueryConditionGroupExpression implements
      * {@inheritDoc}
      */
     @Override
-    public <T, R extends Date> DateExpression<R, UserQueryConditionGroupExpression,
+    public <T, R extends Date> DatePropertyExpression<R, UserQueryConditionGroupExpression,
             UserQueryConditionGroupExpression> property(SerializableToDateFunction<T, R> name) {
 
         return null;
@@ -1190,7 +1192,7 @@ public class UserQueryConditionGroupExpression implements
      * {@inheritDoc}
      */
     @Override
-    public UserQueryConditionGroupExpression eq(String name, Object value, MatchStrategy queryPolicy) {
+    public UserQueryConditionGroupExpression eq(String name, Object value, MatchStrategy matchStrategy) {
 
         return null;
     }
@@ -1200,7 +1202,7 @@ public class UserQueryConditionGroupExpression implements
      */
     @Override
     public <T, R> UserQueryConditionGroupExpression eq(SerializableFunction<T, R> name, R value,
-            MatchStrategy queryPolicy) {
+            MatchStrategy matchStrategy) {
 
         return null;
     }
@@ -1209,7 +1211,7 @@ public class UserQueryConditionGroupExpression implements
      * {@inheritDoc}
      */
     @Override
-    public <R> UserQueryConditionGroupExpression eq(SerializableSupplier<R> property, MatchStrategy queryPolicy) {
+    public <R> UserQueryConditionGroupExpression eq(SerializableSupplier<R> property, MatchStrategy matchStrategy) {
 
         return null;
     }
@@ -1218,7 +1220,7 @@ public class UserQueryConditionGroupExpression implements
      * {@inheritDoc}
      */
     @Override
-    public UserQueryConditionGroupExpression ne(String name, Object value, MatchStrategy queryPolicy) {
+    public UserQueryConditionGroupExpression ne(String name, Object value, MatchStrategy matchStrategy) {
 
         return null;
     }
@@ -1228,7 +1230,7 @@ public class UserQueryConditionGroupExpression implements
      */
     @Override
     public <T, R> UserQueryConditionGroupExpression ne(SerializableFunction<T, R> name, R value,
-            MatchStrategy queryPolicy) {
+            MatchStrategy matchStrategy) {
 
         return null;
     }
@@ -1237,7 +1239,7 @@ public class UserQueryConditionGroupExpression implements
      * {@inheritDoc}
      */
     @Override
-    public <R> UserQueryConditionGroupExpression ne(SerializableSupplier<R> property, MatchStrategy queryPolicy) {
+    public <R> UserQueryConditionGroupExpression ne(SerializableSupplier<R> property, MatchStrategy matchStrategy) {
 
         return null;
     }
@@ -1246,7 +1248,7 @@ public class UserQueryConditionGroupExpression implements
      * {@inheritDoc}
      */
     @Override
-    public UserQueryConditionGroupExpression lk(String name, String value, MatchStrategy queryPolicy) {
+    public UserQueryConditionGroupExpression lk(String name, String value, MatchStrategy matchStrategy) {
 
         return null;
     }
@@ -1256,7 +1258,7 @@ public class UserQueryConditionGroupExpression implements
      */
     @Override
     public <T> UserQueryConditionGroupExpression lk(SerializableToStringFunction<T> name, String value,
-            MatchStrategy queryPolicy) {
+            MatchStrategy matchStrategy) {
 
         return null;
     }
@@ -1265,7 +1267,7 @@ public class UserQueryConditionGroupExpression implements
      * {@inheritDoc}
      */
     @Override
-    public UserQueryConditionGroupExpression lk(SerializableStringSupplier property, MatchStrategy queryPolicy) {
+    public UserQueryConditionGroupExpression lk(SerializableStringSupplier property, MatchStrategy matchStrategy) {
 
         return null;
     }
@@ -1274,7 +1276,7 @@ public class UserQueryConditionGroupExpression implements
      * {@inheritDoc}
      */
     @Override
-    public UserQueryConditionGroupExpression co(String name, String value, MatchStrategy queryPolicy) {
+    public UserQueryConditionGroupExpression co(String name, String value, MatchStrategy matchStrategy) {
 
         return null;
     }
@@ -1284,7 +1286,7 @@ public class UserQueryConditionGroupExpression implements
      */
     @Override
     public <T> UserQueryConditionGroupExpression co(SerializableToStringFunction<T> name, String value,
-            MatchStrategy queryPolicy) {
+            MatchStrategy matchStrategy) {
 
         return null;
     }
@@ -1293,7 +1295,7 @@ public class UserQueryConditionGroupExpression implements
      * {@inheritDoc}
      */
     @Override
-    public UserQueryConditionGroupExpression co(SerializableStringSupplier property, MatchStrategy queryPolicy) {
+    public UserQueryConditionGroupExpression co(SerializableStringSupplier property, MatchStrategy matchStrategy) {
 
         return null;
     }
@@ -1302,7 +1304,7 @@ public class UserQueryConditionGroupExpression implements
      * {@inheritDoc}
      */
     @Override
-    public UserQueryConditionGroupExpression ew(String name, String value, MatchStrategy queryPolicy) {
+    public UserQueryConditionGroupExpression ew(String name, String value, MatchStrategy matchStrategy) {
 
         return null;
     }
@@ -1312,7 +1314,7 @@ public class UserQueryConditionGroupExpression implements
      */
     @Override
     public <T> UserQueryConditionGroupExpression ew(SerializableToStringFunction<T> name, String value,
-            MatchStrategy queryPolicy) {
+            MatchStrategy matchStrategy) {
 
         return null;
     }
@@ -1321,7 +1323,7 @@ public class UserQueryConditionGroupExpression implements
      * {@inheritDoc}
      */
     @Override
-    public UserQueryConditionGroupExpression ew(SerializableStringSupplier property, MatchStrategy queryPolicy) {
+    public UserQueryConditionGroupExpression ew(SerializableStringSupplier property, MatchStrategy matchStrategy) {
 
         return null;
     }
@@ -1330,7 +1332,7 @@ public class UserQueryConditionGroupExpression implements
      * {@inheritDoc}
      */
     @Override
-    public UserQueryConditionGroupExpression sw(String name, String value, MatchStrategy queryPolicy) {
+    public UserQueryConditionGroupExpression sw(String name, String value, MatchStrategy matchStrategy) {
 
         return null;
     }
@@ -1340,7 +1342,7 @@ public class UserQueryConditionGroupExpression implements
      */
     @Override
     public <T> UserQueryConditionGroupExpression sw(SerializableToStringFunction<T> name, String value,
-            MatchStrategy queryPolicy) {
+            MatchStrategy matchStrategy) {
 
         return null;
     }
@@ -1349,7 +1351,7 @@ public class UserQueryConditionGroupExpression implements
      * {@inheritDoc}
      */
     @Override
-    public UserQueryConditionGroupExpression sw(SerializableStringSupplier property, MatchStrategy queryPolicy) {
+    public UserQueryConditionGroupExpression sw(SerializableStringSupplier property, MatchStrategy matchStrategy) {
 
         return null;
     }
@@ -1388,7 +1390,7 @@ public class UserQueryConditionGroupExpression implements
      * {@inheritDoc}
      */
     @Override
-    public <R extends Enum<R>> EnumExpression<R, UserQueryConditionGroupExpression,
+    public <R extends Enum<R>> EnumPropertyExpression<R, UserQueryConditionGroupExpression,
             UserQueryConditionGroupExpression> propertyEnum(String name) {
 
         return null;
@@ -1398,7 +1400,7 @@ public class UserQueryConditionGroupExpression implements
      * {@inheritDoc}
      */
     @Override
-    public <T, R extends Enum<R>> EnumExpression<R, UserQueryConditionGroupExpression,
+    public <T, R extends Enum<R>> EnumPropertyExpression<R, UserQueryConditionGroupExpression,
             UserQueryConditionGroupExpression> property(SerializableToEnumFunction<T, R> name) {
 
         return null;
@@ -1420,6 +1422,417 @@ public class UserQueryConditionGroupExpression implements
     public int execute() {
 
         return 0;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public UserQueryConditionGroupExpression co(String name, String value, MatchStrategy matchStrategy,
+            Predicate<String> ignoreStrategy) {
+        // YUFEI_TODO Auto-generated method stub
+        return null;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public <T> UserQueryConditionGroupExpression co(SerializableToStringFunction<T> name, String value,
+            MatchStrategy matchStrategy, Predicate<String> ignoreStrategy) {
+        // YUFEI_TODO Auto-generated method stub
+        return null;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public UserQueryConditionGroupExpression co(SerializableStringSupplier propertyValue, MatchStrategy matchStrategy,
+            Predicate<String> ignoreStrategy) {
+        // YUFEI_TODO Auto-generated method stub
+        return null;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public UserQueryConditionGroupExpression ew(String name, String value, MatchStrategy matchStrategy,
+            Predicate<String> ignoreStrategy) {
+        // YUFEI_TODO Auto-generated method stub
+        return null;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public <T> UserQueryConditionGroupExpression ew(SerializableToStringFunction<T> name, String value,
+            MatchStrategy matchStrategy, Predicate<String> ignoreStrategy) {
+        // YUFEI_TODO Auto-generated method stub
+        return null;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public UserQueryConditionGroupExpression ew(SerializableStringSupplier propertyValue, MatchStrategy matchStrategy,
+            Predicate<String> ignoreStrategy) {
+        // YUFEI_TODO Auto-generated method stub
+        return null;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public <R> UserQueryConditionGroupExpression eq(String name, R value, MatchStrategy matchStrategy,
+            Predicate<R> ignoreStrategy) {
+        // YUFEI_TODO Auto-generated method stub
+        return null;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public <T, R> UserQueryConditionGroupExpression eq(SerializableFunction<T, R> name, R value,
+            MatchStrategy matchStrategy, Predicate<R> ignoreStrategy) {
+        // YUFEI_TODO Auto-generated method stub
+        return null;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public <R> UserQueryConditionGroupExpression eq(SerializableSupplier<R> property, MatchStrategy matchStrategy,
+            Predicate<R> ignoreStrategy) {
+        // YUFEI_TODO Auto-generated method stub
+        return null;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public <R> UserQueryConditionGroupExpression in(SerializableSupplier<R> property, Predicate<R> ignoreStrategy) {
+        // YUFEI_TODO Auto-generated method stub
+        return null;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public <N extends Number> UserQueryConditionGroupExpression le(String name, N value, Predicate<N> ignoreStrategy) {
+        // YUFEI_TODO Auto-generated method stub
+        return null;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public <T, N extends Number> UserQueryConditionGroupExpression le(SerializableToNumberFunction<T, N> name, N value,
+            Predicate<N> ignoreStrategy) {
+        // YUFEI_TODO Auto-generated method stub
+        return null;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public <D extends Date> UserQueryConditionGroupExpression le(String name, D value, Predicate<D> ignoreStrategy) {
+        // YUFEI_TODO Auto-generated method stub
+        return null;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public <T, D extends Date> UserQueryConditionGroupExpression le(SerializableToDateFunction<T, D> name, D value,
+            Predicate<D> ignoreStrategy) {
+        // YUFEI_TODO Auto-generated method stub
+        return null;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public UserQueryConditionGroupExpression le(String name, LocalTime value, Predicate<LocalTime> ignoreStrategy) {
+        // YUFEI_TODO Auto-generated method stub
+        return null;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public <T> UserQueryConditionGroupExpression le(SerializableToLocalTimeFunction<T> name, LocalTime value,
+            Predicate<LocalTime> ignoreStrategy) {
+        // YUFEI_TODO Auto-generated method stub
+        return null;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public UserQueryConditionGroupExpression le(String name, LocalDate value, Predicate<LocalDate> ignoreStrategy) {
+        // YUFEI_TODO Auto-generated method stub
+        return null;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public <T> UserQueryConditionGroupExpression le(SerializableToLocalDateFunction<T> name, LocalDate value,
+            Predicate<LocalDate> ignoreStrategy) {
+        // YUFEI_TODO Auto-generated method stub
+        return null;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public UserQueryConditionGroupExpression le(String name, LocalDateTime value,
+            Predicate<LocalDateTime> ignoreStrategy) {
+        // YUFEI_TODO Auto-generated method stub
+        return null;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public <T> UserQueryConditionGroupExpression le(SerializableToLocalDateTimeFunction<T> name, LocalDateTime value,
+            Predicate<LocalDateTime> ignoreStrategy) {
+        // YUFEI_TODO Auto-generated method stub
+        return null;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public UserQueryConditionGroupExpression le(String name, String value, Predicate<String> ignoreStrategy) {
+        // YUFEI_TODO Auto-generated method stub
+        return null;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public <T> UserQueryConditionGroupExpression le(SerializableToStringFunction<T> name, String value,
+            Predicate<String> ignoreStrategy) {
+        // YUFEI_TODO Auto-generated method stub
+        return null;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public <R extends Date> UserQueryConditionGroupExpression le(SerializableDateSupplier<R> propertyValue,
+            Predicate<R> ignoreStrategy) {
+        // YUFEI_TODO Auto-generated method stub
+        return null;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public <R extends Number> UserQueryConditionGroupExpression le(SerializableNumberSupplier<R> propertyValue,
+            Predicate<R> ignoreStrategy) {
+        // YUFEI_TODO Auto-generated method stub
+        return null;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public UserQueryConditionGroupExpression le(SerializableLocalDateSupplier propertyValue,
+            Predicate<LocalDate> ignoreStrategy) {
+        // YUFEI_TODO Auto-generated method stub
+        return null;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public UserQueryConditionGroupExpression le(SerializableLocalTimeSupplier propertyValue,
+            Predicate<LocalTime> ignoreStrategy) {
+        // YUFEI_TODO Auto-generated method stub
+        return null;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public UserQueryConditionGroupExpression le(SerializableLocalDateTimeSupplier propertyValue,
+            Predicate<LocalDateTime> ignoreStrategy) {
+        // YUFEI_TODO Auto-generated method stub
+        return null;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public UserQueryConditionGroupExpression le(SerializableStringSupplier propertyValue,
+            Predicate<String> ignoreStrategy) {
+        // YUFEI_TODO Auto-generated method stub
+        return null;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public <R> UserQueryConditionGroupExpression ne(String name, R value, MatchStrategy matchStrategy,
+            Predicate<R> ignoreStrategy) {
+        // YUFEI_TODO Auto-generated method stub
+        return null;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public <T, R> UserQueryConditionGroupExpression ne(SerializableFunction<T, R> name, R value,
+            MatchStrategy matchStrategy, Predicate<R> ignoreStrategy) {
+        // YUFEI_TODO Auto-generated method stub
+        return null;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public <R> UserQueryConditionGroupExpression ne(SerializableSupplier<R> property, MatchStrategy matchStrategy,
+            Predicate<R> ignoreStrategy) {
+        // YUFEI_TODO Auto-generated method stub
+        return null;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public <R> UserQueryConditionGroupExpression nin(SerializableSupplier<R> property, Predicate<R> ignoreStrategy) {
+        // YUFEI_TODO Auto-generated method stub
+        return null;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public UserQueryConditionGroupExpression sw(String name, String value, MatchStrategy matchStrategy,
+            Predicate<String> ignoreStrategy) {
+        // YUFEI_TODO Auto-generated method stub
+        return null;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public <T> UserQueryConditionGroupExpression sw(SerializableToStringFunction<T> propertyName, String value,
+            MatchStrategy matchStrategy, Predicate<String> ignoreStrategy) {
+        // YUFEI_TODO Auto-generated method stub
+        return null;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public UserQueryConditionGroupExpression sw(SerializableStringSupplier propertyValue, MatchStrategy matchStrategy,
+            Predicate<String> ignoreStrategy) {
+        // YUFEI_TODO Auto-generated method stub
+        return null;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public UserQueryConditionGroupExpression lk(String name, String value, MatchStrategy matchStrategy,
+            Predicate<String> ignoreStrategy) {
+        // YUFEI_TODO Auto-generated method stub
+        return null;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public <T> UserQueryConditionGroupExpression lk(SerializableToStringFunction<T> name, String value,
+            MatchStrategy matchStrategy, Predicate<String> ignoreStrategy) {
+        // YUFEI_TODO Auto-generated method stub
+        return null;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public UserQueryConditionGroupExpression lk(SerializableStringSupplier property, MatchStrategy matchStrategy,
+            Predicate<String> ignoreStrategy) {
+        // YUFEI_TODO Auto-generated method stub
+        return null;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public UserQueryConditionGroupExpression in(String name, Object value, Predicate<Object> ignoreStrategy) {
+        // YUFEI_TODO Auto-generated method stub
+        return null;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public <T, R> UserQueryConditionGroupExpression in(SerializableFunction<T, R> name, Object value,
+            Predicate<Object> ignoreStrategy) {
+        // YUFEI_TODO Auto-generated method stub
+        return null;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public UserQueryConditionGroupExpression nin(String name, Object value, Predicate<Object> ignoreStrategy) {
+        // YUFEI_TODO Auto-generated method stub
+        return null;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public <T, R> UserQueryConditionGroupExpression nin(SerializableFunction<T, R> name, Object value,
+            Predicate<Object> ignoreStrategy) {
+        // YUFEI_TODO Auto-generated method stub
+        return null;
     }
 
 }

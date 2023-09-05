@@ -59,7 +59,7 @@ public interface EntityContainsExpression<E, C extends ConditionExpression, L ex
      * @param queryPolicy the query policy
      * @return the l
      */
-    L co(SerializableFunction<E, String> name, String value, MatchStrategy queryPolicy);
+    L co(SerializableFunction<E, String> name, String value, MatchStrategy matchStrategy);
 
     /**
      * contains value. 包含value.
@@ -70,7 +70,7 @@ public interface EntityContainsExpression<E, C extends ConditionExpression, L ex
      * @param ignoreStrategy the ignore strategy
      * @return the l
      */
-    L co(SerializableFunction<E, String> name, String value, MatchStrategy queryPolicy, Predicate<String> ignoreStrategy);
+    L co(SerializableFunction<E, String> name, String value, MatchStrategy matchStrategy, Predicate<String> ignoreStrategy);
 
     /**
      * contains value. 包含value.
@@ -100,7 +100,7 @@ public interface EntityContainsExpression<E, C extends ConditionExpression, L ex
      * @param queryPolicy the query policy
      * @return the l
      */
-    L co(SerializableStringSupplier property, MatchStrategy queryPolicy);
+    L co(SerializableStringSupplier property, MatchStrategy matchStrategy);
 
     /**
      * contains value. 包含value.
@@ -110,7 +110,7 @@ public interface EntityContainsExpression<E, C extends ConditionExpression, L ex
      * @param ignoreStrategy the ignore strategy
      * @return the l
      */
-    L co(SerializableStringSupplier property, MatchStrategy queryPolicy, Predicate<String> ignoreStrategy);
+    L co(SerializableStringSupplier property, MatchStrategy matchStrategy, Predicate<String> ignoreStrategy);
 
     //    嵌套属性使用property(U1::getU2).property(U2:getV).co(v)来设置
     //    /**

@@ -36,7 +36,7 @@ public interface RepositoryNotEqualsExpression<C extends ConditionExpression, L 
      * @param queryPolicy the query policy
      * @return LogicExpression
      */
-    L ne(String repository, String name, Object value, MatchStrategy queryPolicy);
+    L ne(String repository, String name, Object value, MatchStrategy matchStrategy);
 
     /**
      * not equals.不等于
@@ -61,7 +61,7 @@ public interface RepositoryNotEqualsExpression<C extends ConditionExpression, L 
      * @param queryPolicy the query policy
      * @return LogicExpression
      */
-    //    <T> L ne(Class<T> repository, String name, Object value, MatchStrategy queryPolicy);
+    //    <T> L ne(Class<T> repository, String name, Object value, MatchStrategy matchStrategy);
 
     /**
      * not equals.不等于
@@ -84,7 +84,7 @@ public interface RepositoryNotEqualsExpression<C extends ConditionExpression, L 
      * @param queryPolicy     the query policy
      * @return LogicExpression
      */
-    L ne(int repositoryIndex, String name, Object value, MatchStrategy queryPolicy);
+    L ne(int repositoryIndex, String name, Object value, MatchStrategy matchStrategy);
 
     /**
      * not equals.不等于.
@@ -112,7 +112,7 @@ public interface RepositoryNotEqualsExpression<C extends ConditionExpression, L 
      * @return LogicExpression
      */
     <T, R> L ne(SerializableFunction<T, R> repository, SerializableFunction<T, R> property, R value,
-            MatchStrategy queryPolicy);
+            MatchStrategy matchStrategy);
 
     /**
      * not equals.不等于.
@@ -137,6 +137,6 @@ public interface RepositoryNotEqualsExpression<C extends ConditionExpression, L 
      * @param queryPolicy the query policy
      * @return LogicExpression
      */
-    <T, R> L ne(SerializableSupplier<T> repository, SerializableFunction<T, R> property, MatchStrategy queryPolicy);
+    <T, R> L ne(SerializableSupplier<T> repository, SerializableFunction<T, R> property, MatchStrategy matchStrategy);
 
 }

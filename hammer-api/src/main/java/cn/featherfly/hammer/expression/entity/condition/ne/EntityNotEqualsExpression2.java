@@ -64,7 +64,7 @@ public interface EntityNotEqualsExpression2<E, E2, C extends ConditionExpression
     //     */
     //    default <R> L ne(
     //            Function<Tuple2<QueryEntityRepository<E>, QueryEntityRepository<E2>>, QueryEntityRepository<E>> entities,
-    //            SerializableFunction<E, R> name, R value, Predicate<Object> ignoreStrategy) {
+    //            SerializableFunction<E, R> name, R value, Predicate<?> ignoreStrategy) {
     //        return ne(entities, name, value, MatchStrategy.AUTO, ignoreStrategy);
     //    }
     //
@@ -79,7 +79,7 @@ public interface EntityNotEqualsExpression2<E, E2, C extends ConditionExpression
     //     * @return LogicExpression
     //     */
     //    <R> L ne(Function<Tuple2<QueryEntityRepository<E>, QueryEntityRepository<E2>>, QueryEntityRepository<E>> entities,
-    //            SerializableFunction<E, R> name, R value, MatchStrategy queryPolicy);
+    //            SerializableFunction<E, R> name, R value, MatchStrategy matchStrategy);
     //
     //    /**
     //     * equals. 等于.
@@ -93,7 +93,7 @@ public interface EntityNotEqualsExpression2<E, E2, C extends ConditionExpression
     //     * @return LogicExpression
     //     */
     //    <R> L ne(Function<Tuple2<QueryEntityRepository<E>, QueryEntityRepository<E2>>, QueryEntityRepository<E>> entities,
-    //            SerializableFunction<E, R> name, R value, MatchStrategy queryPolicy, Predicate<Object> ignoreStrategy);
+    //            SerializableFunction<E, R> name, R value, MatchStrategy matchStrategy, Predicate<?> ignoreStrategy);
     //
     //    /**
     //     * equals. 等于.
@@ -120,7 +120,7 @@ public interface EntityNotEqualsExpression2<E, E2, C extends ConditionExpression
     //     */
     //    default <R> L ne(
     //            Function<Tuple2<QueryEntityRepository<E>, QueryEntityRepository<E2>>, QueryEntityRepository<E>> entities,
-    //            SerializableSupplier<R> property, Predicate<Object> ignoreStrategy) {
+    //            SerializableSupplier<R> property, Predicate<?> ignoreStrategy) {
     //        return ne(entities, property, MatchStrategy.AUTO, ignoreStrategy);
     //    }
     //
@@ -134,7 +134,7 @@ public interface EntityNotEqualsExpression2<E, E2, C extends ConditionExpression
     //     * @return LogicExpression
     //     */
     //    <R> L ne(Function<Tuple2<QueryEntityRepository<E>, QueryEntityRepository<E2>>, QueryEntityRepository<E>> entities,
-    //            SerializableSupplier<R> property, MatchStrategy queryPolicy);
+    //            SerializableSupplier<R> property, MatchStrategy matchStrategy);
     //
     //    /**
     //     * equals. 等于.
@@ -147,7 +147,7 @@ public interface EntityNotEqualsExpression2<E, E2, C extends ConditionExpression
     //     * @return LogicExpression
     //     */
     //    <R> L ne(Function<Tuple2<QueryEntityRepository<E>, QueryEntityRepository<E2>>, QueryEntityRepository<E>> entities,
-    //            SerializableSupplier<R> property, MatchStrategy queryPolicy, Predicate<Object> ignoreStrategy);
+    //            SerializableSupplier<R> property, MatchStrategy matchStrategy, Predicate<?> ignoreStrategy);
     //
     //    /**
     //     * equals. 等于.
@@ -209,7 +209,7 @@ public interface EntityNotEqualsExpression2<E, E2, C extends ConditionExpression
     //     */
     //    default <R> L ne(
     //            Function<Tuple2<QueryEntityRepository<E>, QueryEntityRepository<E2>>, QueryEntityRepository<E2>> entities,
-    //            SerializableFunction2<E2, R> name, R value, Predicate<Object> ignoreStrategy) {
+    //            SerializableFunction2<E2, R> name, R value, Predicate<?> ignoreStrategy) {
     //        return ne(entities, name, value, MatchStrategy.AUTO, ignoreStrategy);
     //    }
     //
@@ -224,7 +224,7 @@ public interface EntityNotEqualsExpression2<E, E2, C extends ConditionExpression
     //     * @return LogicExpression
     //     */
     //    <R> L ne(Function<Tuple2<QueryEntityRepository<E>, QueryEntityRepository<E2>>, QueryEntityRepository<E2>> entities,
-    //            SerializableFunction2<E2, R> name, R value, MatchStrategy queryPolicy);
+    //            SerializableFunction2<E2, R> name, R value, MatchStrategy matchStrategy);
     //
     //    /**
     //     * equals. 等于.
@@ -238,7 +238,7 @@ public interface EntityNotEqualsExpression2<E, E2, C extends ConditionExpression
     //     * @return LogicExpression
     //     */
     //    <R> L ne(Function<Tuple2<QueryEntityRepository<E>, QueryEntityRepository<E2>>, QueryEntityRepository<E2>> entities,
-    //            SerializableFunction2<E2, R> name, R value, MatchStrategy queryPolicy, Predicate<Object> ignoreStrategy);
+    //            SerializableFunction2<E2, R> name, R value, MatchStrategy matchStrategy, Predicate<?> ignoreStrategy);
     //
     //    /**
     //     * equals. 等于.
@@ -265,7 +265,7 @@ public interface EntityNotEqualsExpression2<E, E2, C extends ConditionExpression
     //     */
     //    default <R> L ne(
     //            Function<Tuple2<QueryEntityRepository<E>, QueryEntityRepository<E2>>, QueryEntityRepository<E2>> entities,
-    //            SerializableSupplier2<R> property, Predicate<Object> ignoreStrategy) {
+    //            SerializableSupplier2<R> property, Predicate<?> ignoreStrategy) {
     //        return ne(entities, property, MatchStrategy.AUTO, ignoreStrategy);
     //    }
     //
@@ -279,7 +279,7 @@ public interface EntityNotEqualsExpression2<E, E2, C extends ConditionExpression
     //     * @return LogicExpression
     //     */
     //    <R> L ne(Function<Tuple2<QueryEntityRepository<E>, QueryEntityRepository<E2>>, QueryEntityRepository<E2>> entities,
-    //            SerializableSupplier2<R> property, MatchStrategy queryPolicy);
+    //            SerializableSupplier2<R> property, MatchStrategy matchStrategy);
     //
     //    /**
     //     * equals. 等于.
@@ -292,7 +292,7 @@ public interface EntityNotEqualsExpression2<E, E2, C extends ConditionExpression
     //     * @return LogicExpression
     //     */
     //    <R> L ne(Function<Tuple2<QueryEntityRepository<E>, QueryEntityRepository<E2>>, QueryEntityRepository<E2>> entities,
-    //            SerializableSupplier2<R> property, MatchStrategy queryPolicy, Predicate<Object> ignoreStrategy);
+    //            SerializableSupplier2<R> property, MatchStrategy matchStrategy, Predicate<?> ignoreStrategy);
     //
     //    /**
     //     * equals. 等于.

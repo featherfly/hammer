@@ -104,15 +104,15 @@ public class SqlQueryTypeJoinRelation3Test extends AbstractEntitySqlQueryJoinTes
         //        assertEquals(order.getId(), id2);
         //        assertNotNull(order.getUserInoInfo().getId());
         //        assertNull(order.getUserInoInfo().getName());
-        //        assertNotNull(order.getUserInoInfo().getUser().getId()); // FIXME 没有fetch UserInfo会缺少UserInfo.id
+        //        assertNotNull(order.getUserInoInfo().getUser().getId()); 
         //        assertNotNull(order.getUserInoInfo().getUser().getUsername());
         //        assertNotNull(order.getUser2().getId());
         //        assertNull(order.getUser2().getUsername());
         //        assertNotNull(order.getUser3().getId());
         //        assertNull(order.getUser3().getUsername());
 
-        order = query.find(Order.class).join(Order::getUserInoInfo).fetch().join(Order::getUser2)
-                .join(Order::getUser3).join2(UserInfo::getUser).fetch().where().eq(Order::getId, id2).single();
+        order = query.find(Order.class).join(Order::getUserInoInfo).fetch().join(Order::getUser2).join(Order::getUser3)
+                .join2(UserInfo::getUser).fetch().where().eq(Order::getId, id2).single();
         assertEquals(order.getId(), id2);
         assertNotNull(order.getUserInoInfo().getId());
         assertNotNull(order.getUserInoInfo().getName());
@@ -156,7 +156,7 @@ public class SqlQueryTypeJoinRelation3Test extends AbstractEntitySqlQueryJoinTes
         //        assertEquals(orderInfo.getId(), id2);
         //        assertNotNull(orderInfo.getOrder().getId());
         //        assertNull(orderInfo.getOrder().getNo());
-        //        assertNotNull(orderInfo.getOrder().getParent().getId()); // FIXME 没有fetch Order会缺少Order.id
+        //        assertNotNull(orderInfo.getOrder().getParent().getId());
         //        assertNotNull(orderInfo.getOrder().getParent().getNo());
         //        assertNotNull(orderInfo.getCreateUser().getId());
         //        assertNull(orderInfo.getCreateUser().getUsername());
@@ -194,15 +194,15 @@ public class SqlQueryTypeJoinRelation3Test extends AbstractEntitySqlQueryJoinTes
         //        assertEquals(order.getId(), id2);
         //        assertNotNull(order.getUserInoInfo().getId());
         //        assertNull(order.getUserInoInfo().getName());
-        //        assertNotNull(order.getUserInoInfo().getUser().getId()); // FIXME 没有fetch UserInfo会缺少UserInfo.id
+        //        assertNotNull(order.getUserInoInfo().getUser().getId()); 
         //        assertNotNull(order.getUserInoInfo().getUser().getUsername());
         //        assertNotNull(order.getUser2().getId());
         //        assertNull(order.getUser2().getUsername());
         //        assertNotNull(order.getUser3().getId());
         //        assertNull(order.getUser3().getUsername());
 
-        order = query.find(Order.class).join(Order::getUser2).join(Order::getUserInoInfo).fetch()
-                .join(Order::getUser3).join3(UserInfo::getUser).fetch().where().eq(Order::getId, id2).single();
+        order = query.find(Order.class).join(Order::getUser2).join(Order::getUserInoInfo).fetch().join(Order::getUser3)
+                .join3(UserInfo::getUser).fetch().where().eq(Order::getId, id2).single();
         assertEquals(order.getId(), id2);
         assertNotNull(order.getUserInoInfo().getId());
         assertNotNull(order.getUserInoInfo().getName());
@@ -245,7 +245,7 @@ public class SqlQueryTypeJoinRelation3Test extends AbstractEntitySqlQueryJoinTes
         //        assertEquals(orderInfo.getId(), id2);
         //        assertNotNull(orderInfo.getOrder().getId());
         //        assertNull(orderInfo.getOrder().getNo());
-        //        assertNotNull(orderInfo.getOrder().getParent().getId()); // FIXME 没有fetch Order会缺少Order.id
+        //        assertNotNull(orderInfo.getOrder().getParent().getId());
         //        assertNotNull(orderInfo.getOrder().getParent().getNo());
         //        assertNotNull(orderInfo.getCreateUser().getId());
         //        assertNull(orderInfo.getCreateUser().getUsername());
@@ -283,15 +283,15 @@ public class SqlQueryTypeJoinRelation3Test extends AbstractEntitySqlQueryJoinTes
         //        assertEquals(order.getId(), id2);
         //        assertNotNull(order.getUserInoInfo().getId());
         //        assertNull(order.getUserInoInfo().getName());
-        //        assertNotNull(order.getUserInoInfo().getUser().getId()); // FIXME 没有fetch UserInfo会缺少UserInfo.id
+        //        assertNotNull(order.getUserInoInfo().getUser().getId()); 
         //        assertNotNull(order.getUserInoInfo().getUser().getUsername());
         //        assertNotNull(order.getUser2().getId());
         //        assertNull(order.getUser2().getUsername());
         //        assertNotNull(order.getUser3().getId());
         //        assertNull(order.getUser3().getUsername());
 
-        order = query.find(Order.class).join(Order::getUser2).join(Order::getUser3).join(Order::getUserInoInfo)
-                .fetch().join4(UserInfo::getUser).fetch().where().eq(Order::getId, id2).single();
+        order = query.find(Order.class).join(Order::getUser2).join(Order::getUser3).join(Order::getUserInoInfo).fetch()
+                .join4(UserInfo::getUser).fetch().where().eq(Order::getId, id2).single();
         assertEquals(order.getId(), id2);
         assertNotNull(order.getUserInoInfo().getId());
         assertNotNull(order.getUserInoInfo().getName());
@@ -334,7 +334,7 @@ public class SqlQueryTypeJoinRelation3Test extends AbstractEntitySqlQueryJoinTes
         //        assertEquals(orderInfo.getId(), id2);
         //        assertNotNull(orderInfo.getOrder().getId());
         //        assertNull(orderInfo.getOrder().getNo());
-        //        assertNotNull(orderInfo.getOrder().getParent().getId()); // FIXME 没有fetch Order会缺少Order.id
+        //        assertNotNull(orderInfo.getOrder().getParent().getId());
         //        assertNotNull(orderInfo.getOrder().getParent().getNo());
         //        assertNotNull(orderInfo.getCreateUser().getId());
         //        assertNull(orderInfo.getCreateUser().getUsername());

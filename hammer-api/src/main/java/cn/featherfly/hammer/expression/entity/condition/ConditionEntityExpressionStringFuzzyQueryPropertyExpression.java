@@ -29,7 +29,7 @@ public interface ConditionEntityExpressionStringFuzzyQueryPropertyExpression
      * @param queryPolicy the query policy
      * @return LogicExpression
      */
-    void value(String value, MatchStrategy queryPolicy);
+    void value(String value, MatchStrategy matchStrategy);
 
     /**
      * Value.
@@ -39,5 +39,5 @@ public interface ConditionEntityExpressionStringFuzzyQueryPropertyExpression
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
-    void value(String value, MatchStrategy queryPolicy, Predicate<String> ignoreStrategy);
+    void value(String value, MatchStrategy matchStrategy, Predicate<String> ignoreStrategy);
 }

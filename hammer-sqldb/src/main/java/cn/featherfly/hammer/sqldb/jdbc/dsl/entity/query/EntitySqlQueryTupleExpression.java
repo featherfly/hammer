@@ -41,7 +41,7 @@
 //     */
 //    public EntitySqlQueryTupleExpression(Jdbc jdbc, JdbcClassMapping<E> classMapping,
 //            EntitySqlQuery<E> entityQueryEntity, JdbcMappingFactory factory, SqlPageFactory sqlPageFactory,
-//            AliasManager aliasManager, SqlSelectBasicBuilder selectBuilder, Predicate<Object> ignoreStrategy) {
+//            AliasManager aliasManager, SqlSelectBasicBuilder selectBuilder, Predicate<?> ignoreStrategy) {
 //        //        super(jdbc, selectBuilder.getTableAlias(), classMapping, factory, sqlPageFactory, aliasManager,
 //        //                entityQueryEntity, ignoreStrategy);
 //        super(jdbc, aliasManager.getAlias(0), classMapping, factory, sqlPageFactory, aliasManager, entityQueryEntity,
@@ -64,7 +64,7 @@
 //     */
 //    EntitySqlQueryTupleExpression(EntityQueryConditionGroupLogic<E> parent, Jdbc jdbc, String queryAlias,
 //            JdbcClassMapping<E> classMapping, JdbcMappingFactory factory, SqlPageFactory sqlPageFactory,
-//            AliasManager aliasManager, EntitySqlQuery<E> entityQueryEntity, Predicate<Object> ignoreStrategy) {
+//            AliasManager aliasManager, EntitySqlQuery<E> entityQueryEntity, Predicate<?> ignoreStrategy) {
 //        super(parent, jdbc, queryAlias, classMapping, factory, sqlPageFactory, aliasManager, entityQueryEntity,
 //                ignoreStrategy);
 //    }

@@ -10,7 +10,7 @@ import javax.persistence.Table;
  *
  * @author zhongj
  */
-@Table
+@Table(name = "tree")
 public class Tree2 {
 
     @Id

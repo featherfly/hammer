@@ -39,7 +39,7 @@
 //     */
 //    public TypeSqlQueryExpression(Jdbc jdbc, JdbcClassMapping<?> classMapping, TypeQueryEntity typeQueryEntity,
 //            JdbcMappingFactory factory, SqlPageFactory sqlPageFactory, AliasManager aliasManager,
-//            SqlSelectBasicBuilder selectBuilder, Predicate<Object> ignoreStrategy) {
+//            SqlSelectBasicBuilder selectBuilder, Predicate<?> ignoreStrategy) {
 //        super(jdbc, selectBuilder.getTableAlias(), classMapping, factory, sqlPageFactory, aliasManager, typeQueryEntity,
 //                ignoreStrategy);
 //        this.selectBuilder = selectBuilder;
@@ -60,7 +60,7 @@
 //     */
 //    TypeSqlQueryExpression(TypeQueryConditionGroupLogicExpression parent, Jdbc jdbc, String queryAlias,
 //            JdbcClassMapping<?> classMapping, JdbcMappingFactory factory, SqlPageFactory sqlPageFactory,
-//            AliasManager aliasManager, TypeQueryEntity typeQueryEntity, Predicate<Object> ignoreStrategy) {
+//            AliasManager aliasManager, TypeQueryEntity typeQueryEntity, Predicate<?> ignoreStrategy) {
 //        super(parent, jdbc, queryAlias, classMapping, factory, sqlPageFactory, aliasManager, typeQueryEntity,
 //                ignoreStrategy);
 //    }

@@ -1,6 +1,11 @@
 
 package cn.featherfly.hammer.sqldb.jdbc.dsl.entity.condition;
 
+import java.io.Serializable;
+import java.util.List;
+import java.util.function.Predicate;
+
+import cn.featherfly.common.db.mapping.JdbcMappingFactory;
 import cn.featherfly.common.function.serializable.SerializableFunction;
 import cn.featherfly.common.function.serializable.SerializableToStringFunction;
 import cn.featherfly.common.operator.ComparisonOperator.MatchStrategy;
@@ -9,7 +14,7 @@ import cn.featherfly.hammer.expression.condition.LogicExpression;
 import cn.featherfly.hammer.expression.entity.condition.property.EntityStringPropertyExpression;
 
 /**
- * The Class RepositorySimpleStringExpression.
+ * entity String property expression implements.
  *
  * @author zhongj
  * @param <E> the element type
@@ -17,32 +22,94 @@ import cn.featherfly.hammer.expression.entity.condition.property.EntityStringPro
  * @param <L> the generic type
  */
 public class EntityStringPropertyExpressionImpl<E, C extends ConditionExpression, L extends LogicExpression<C, L>>
-        extends AbstractMulitiEntityPropertyExpression<E, String, SerializableFunction<E, String>, C, L>
+        extends AbstractMulitiEntityGenericPropertyExpression<E, String, SerializableFunction<E, String>, C, L>
         implements EntityStringPropertyExpression<E, C, L> {
 
     /**
      * Instantiates a new entity string property expression impl.
      *
-     * @param index                          the index
-     * @param name                           the name
-     * @param expression.getIgnoreStrategy() the ignore strategy
-     * @param expression                     the expression
+     * @param index        the index
+     * @param propertyList the property list
+     * @param expression   the expression
+     * @param factory      the factory
      */
-    public EntityStringPropertyExpressionImpl(int index, SerializableFunction<E, String> name,
-            AbstractMulitiEntityConditionExpression<C, L> expression) {
-        super(index, name, expression);
+    public EntityStringPropertyExpressionImpl(int index, List<Serializable> propertyList,
+            AbstractMulitiEntityConditionExpression<C, L> expression, JdbcMappingFactory factory) {
+        super(index, propertyList, expression, factory);
     }
 
     /**
-     * Instantiates a new type string expression.
+     * Instantiates a new entity string property expression impl.
      *
      * @param index      the index
      * @param name       the name
      * @param expression the expression
+     * @param factory    the factory
+     */
+    public EntityStringPropertyExpressionImpl(int index, SerializableFunction<E, String> name,
+            AbstractMulitiEntityConditionExpression<C, L> expression, JdbcMappingFactory factory) {
+        super(index, name, expression, factory);
+    }
+
+    /**
+     * Instantiates a new entity string property expression impl.
+     *
+     * @param index      the index
+     * @param name       the name
+     * @param expression the expression
+     * @param factory    the factory
      */
     public EntityStringPropertyExpressionImpl(int index, SerializableToStringFunction<E> name,
-            AbstractMulitiEntityConditionExpression<C, L> expression) {
-        super(index, name, expression);
+            AbstractMulitiEntityConditionExpression<C, L> expression, JdbcMappingFactory factory) {
+        super(index, name, expression, factory);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public L co(String value, MatchStrategy matchStrategy) {
+        return expression.co0(index, getPropertyMapping(value), value, matchStrategy, expression.getIgnoreStrategy());
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public L co(String value, MatchStrategy matchStrategy, Predicate<String> ignoreStrategy) {
+        return expression.co0(index, getPropertyMapping(value), value, matchStrategy, ignoreStrategy);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public L eq(String value, MatchStrategy matchStrategy) {
+        return expression.eq0(index, getPropertyMapping(value), value, matchStrategy, expression.getIgnoreStrategy());
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public L eq(String value, MatchStrategy matchStrategy, Predicate<String> ignoreStrategy) {
+        return expression.eq0(index, getPropertyMapping(value), value, matchStrategy, ignoreStrategy);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public L ew(String value, MatchStrategy matchStrategy) {
+        return expression.ew0(index, getPropertyMapping(value), value, matchStrategy, expression.getIgnoreStrategy());
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public L ew(String value, MatchStrategy matchStrategy, Predicate<String> ignoreStrategy) {
+        return expression.ew0(index, getPropertyMapping(value), value, matchStrategy, ignoreStrategy);
     }
 
     /**
@@ -57,48 +124,8 @@ public class EntityStringPropertyExpressionImpl<E, C extends ConditionExpression
      * {@inheritDoc}
      */
     @Override
-    public L eq(String value, MatchStrategy queryPolicy) {
-        return expression.eq0(index, name, value, queryPolicy, expression.getIgnoreStrategy());
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public L in(String value) {
-        return expression.in0(index, name, value, expression.getIgnoreStrategy());
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public L nin(String value) {
-        return expression.nin0(index, name, value, expression.getIgnoreStrategy());
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public L le(String value) {
-        return expression.le0(index, name, value, expression.getIgnoreStrategy());
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public L lt(String value) {
-        return expression.lt0(index, name, value, expression.getIgnoreStrategy());
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
     public L ge(String value) {
-        return expression.ge0(index, name, value, expression.getIgnoreStrategy());
+        return expression.ge0(index, getPropertyMapping(value), value, expression.getIgnoreStrategy());
     }
 
     /**
@@ -106,31 +133,39 @@ public class EntityStringPropertyExpressionImpl<E, C extends ConditionExpression
      */
     @Override
     public L gt(String value) {
-        return expression.gt0(index, name, value, expression.getIgnoreStrategy());
+        return expression.gt0(index, getPropertyMapping(value), value, expression.getIgnoreStrategy());
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public L isn() {
-        return expression.isn0(index, name, null);
+    public L in(String value) {
+        return expression.in0(index, getPropertyMapping(value), value, expression.getIgnoreStrategy());
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public L inn() {
-        return expression.inn0(index, name, null);
+    public L in(String value, Predicate<String> ignoreStrategy) {
+        return expression.in0(index, getPropertyMapping(value), value, ignoreStrategy);
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public L isn(Boolean value) {
-        return expression.isn0(index, name, value);
+    public L in(String[] value) {
+        return expression.in0(index, getPropertyMapping(value), value, expression.getIgnoreStrategy());
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public L in(String[] value, Predicate<String[]> ignoreStrategy) {
+        return expression.in0(index, getPropertyMapping(value), value, ignoreStrategy);
     }
 
     /**
@@ -138,46 +173,111 @@ public class EntityStringPropertyExpressionImpl<E, C extends ConditionExpression
      */
     @Override
     public L inn(Boolean value) {
-        return expression.inn0(index, name, value);
+        return expression.inn0(index, getPropertyMapping(value), value);
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public L ne(String value, MatchStrategy queryPolicy) {
-        return expression.ne0(index, name, value, queryPolicy, expression.getIgnoreStrategy());
+    public L isn(Boolean value) {
+        return expression.isn0(index, getPropertyMapping(value), value);
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public L sw(String value, MatchStrategy queryPolicy) {
-        return expression.sw0(index, name, value, queryPolicy, expression.getIgnoreStrategy());
+    public L le(String value) {
+        return expression.le0(index, getPropertyMapping(value), value, expression.getIgnoreStrategy());
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public L co(String value, MatchStrategy queryPolicy) {
-        return expression.co0(index, name, value, queryPolicy, expression.getIgnoreStrategy());
+    public L lk(String value, MatchStrategy matchStrategy) {
+        return expression.lk0(index, getPropertyMapping(value), value, matchStrategy, expression.getIgnoreStrategy());
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public L ew(String value, MatchStrategy queryPolicy) {
-        return expression.ew0(index, name, value, queryPolicy, expression.getIgnoreStrategy());
+    public L lk(String value, MatchStrategy matchStrategy, Predicate<String> ignoreStrategy) {
+        return expression.lk0(index, getPropertyMapping(value), value, matchStrategy, ignoreStrategy);
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public L lk(String value, MatchStrategy queryPolicy) {
-        return expression.lk0(index, name, value, queryPolicy, expression.getIgnoreStrategy());
+    public L lt(String value) {
+        return expression.lt0(index, getPropertyMapping(value), value, expression.getIgnoreStrategy());
     }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public L ne(String value, MatchStrategy matchStrategy) {
+        return expression.ne0(index, getPropertyMapping(value), value, matchStrategy, expression.getIgnoreStrategy());
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public L ne(String value, MatchStrategy matchStrategy, Predicate<String> ignoreStrategy) {
+        return expression.ne0(index, getPropertyMapping(value), value, matchStrategy, ignoreStrategy);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public L nin(String value) {
+        return expression.nin0(index, getPropertyMapping(value), value, expression.getIgnoreStrategy());
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public L nin(String value, Predicate<String> ignoreStrategy) {
+        return expression.nin0(index, getPropertyMapping(value), value, ignoreStrategy);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public L nin(String[] value) {
+        return expression.nin0(index, getPropertyMapping(value), value, expression.getIgnoreStrategy());
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public L nin(String[] value, Predicate<String[]> ignoreStrategy) {
+        return expression.nin0(index, getPropertyMapping(value), value, ignoreStrategy);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public L sw(String value, MatchStrategy matchStrategy) {
+        return expression.sw0(index, getPropertyMapping(value), value, matchStrategy, expression.getIgnoreStrategy());
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public L sw(String value, MatchStrategy matchStrategy, Predicate<String> ignoreStrategy) {
+        return expression.sw0(index, getPropertyMapping(value), value, matchStrategy, ignoreStrategy);
+    }
+
 }

@@ -5,6 +5,7 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.Date;
+import java.util.function.Predicate;
 
 import cn.featherfly.common.operator.ComparisonOperator.MatchStrategy;
 import cn.featherfly.hammer.HammerException;
@@ -12,12 +13,12 @@ import cn.featherfly.hammer.expression.condition.ConditionsExpression;
 import cn.featherfly.hammer.expression.condition.LogicExpression;
 
 /**
- * SimpleObjectExpression.
+ * simple object property expression.
  *
  * @author zhongj
  */
-public class SimpleObjectExpression<C extends ConditionsExpression<C, L>, L extends LogicExpression<C, L>>
-        implements ObjectExpression<C, L> {
+public class SimpleObjectPropertyExpression<C extends ConditionsExpression<C, L>, L extends LogicExpression<C, L>>
+        implements ObjectPropertyExpression<C, L> {
 
     private String name;
 
@@ -27,7 +28,7 @@ public class SimpleObjectExpression<C extends ConditionsExpression<C, L>, L exte
      * @param name       name
      * @param expression expression
      */
-    public SimpleObjectExpression(String name, ConditionsExpression<C, L> expression) {
+    public SimpleObjectPropertyExpression(String name, ConditionsExpression<C, L> expression) {
         super();
         this.name = name;
         this.expression = expression;
@@ -37,8 +38,16 @@ public class SimpleObjectExpression<C extends ConditionsExpression<C, L>, L exte
      * {@inheritDoc}
      */
     @Override
-    public L eq(Object value) {
-        return expression.eq(name, value);
+    public L eq(Object value, MatchStrategy matchStrategy) {
+        return expression.eq(name, value, matchStrategy);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public L eq(Object value, MatchStrategy matchStrategy, Predicate<Object> ignoreStrategy) {
+        return expression.eq(name, value, matchStrategy, ignoreStrategy);
     }
 
     /**
@@ -53,14 +62,6 @@ public class SimpleObjectExpression<C extends ConditionsExpression<C, L>, L exte
      * {@inheritDoc}
      */
     @Override
-    public L ne(Object value) {
-        return expression.ne(name, value);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
     public L in(Object value) {
         return expression.in(name, value);
     }
@@ -69,8 +70,72 @@ public class SimpleObjectExpression<C extends ConditionsExpression<C, L>, L exte
      * {@inheritDoc}
      */
     @Override
+    public L in(Object[] value) {
+        return expression.in(name, value);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public L in(Object value, Predicate<Object> ignoreStrategy) {
+        return expression.in(name, value, ignoreStrategy);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public L in(Object[] value, Predicate<Object[]> ignoreStrategy) {
+        return expression.in(name, value, (v) -> ignoreStrategy.test((Object[]) v));
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public L ne(Object value, MatchStrategy matchStrategy) {
+        return expression.ne(name, value, matchStrategy);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public L ne(Object value, MatchStrategy matchStrategy, Predicate<Object> ignoreStrategy) {
+        return expression.ne(name, value, matchStrategy, ignoreStrategy);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
     public L nin(Object value) {
         return expression.nin(name, value);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public L nin(Object[] value) {
+        return expression.nin(name, value);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public L nin(Object value, Predicate<Object> ignoreStrategy) {
+        return expression.nin(name, value, ignoreStrategy);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public L nin(Object[] value, Predicate<Object[]> ignoreStrategy) {
+        return expression.nin(name, value, (v) -> ignoreStrategy.test((Object[]) v));
     }
 
     /**
@@ -177,16 +242,16 @@ public class SimpleObjectExpression<C extends ConditionsExpression<C, L>, L exte
      * {@inheritDoc}
      */
     @Override
-    public L sw(String value) {
-        return expression.sw(name, value);
+    public L co(String value, MatchStrategy matchStrategy) {
+        return expression.co(name, value, matchStrategy);
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public L co(String value) {
-        return expression.co(name, value);
+    public L co(String value, MatchStrategy matchStrategy, Predicate<String> ignoreStrategy) {
+        return expression.co(name, value, matchStrategy, ignoreStrategy);
     }
 
     /**
@@ -195,6 +260,22 @@ public class SimpleObjectExpression<C extends ConditionsExpression<C, L>, L exte
     @Override
     public L ew(String value) {
         return expression.ew(name, value);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public L ew(String value, MatchStrategy matchStrategy) {
+        return expression.ew(name, value, matchStrategy);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public L ew(String value, MatchStrategy matchStrategy, Predicate<String> ignoreStrategy) {
+        return expression.ew(name, value, matchStrategy, ignoreStrategy);
     }
 
     /**
@@ -233,48 +314,31 @@ public class SimpleObjectExpression<C extends ConditionsExpression<C, L>, L exte
      * {@inheritDoc}
      */
     @Override
-    public L eq(Object value, MatchStrategy queryPolicy) {
-        return expression.eq(name, value, queryPolicy);
+    public L sw(String value, MatchStrategy matchStrategy) {
+        return expression.sw(name, value, matchStrategy);
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public L ne(Object value, MatchStrategy queryPolicy) {
-        return expression.ne(name, value, queryPolicy);
+    public L sw(String value, MatchStrategy matchStrategy, Predicate<String> ignoreStrategy) {
+        return expression.sw(name, value, matchStrategy, ignoreStrategy);
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public L sw(String value, MatchStrategy queryPolicy) {
-        return expression.sw(name, value, queryPolicy);
+    public L lk(String value, MatchStrategy matchStrategy) {
+        return expression.lk(name, value, matchStrategy);
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public L co(String value, MatchStrategy queryPolicy) {
-        return expression.co(name, value, queryPolicy);
+    public L lk(String value, MatchStrategy matchStrategy, Predicate<String> ignoreStrategy) {
+        return expression.lk(name, value, matchStrategy, ignoreStrategy);
     }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public L ew(String value, MatchStrategy queryPolicy) {
-        return expression.ew(name, value, queryPolicy);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public L lk(String value, MatchStrategy queryPolicy) {
-        return expression.lk(name, value, queryPolicy);
-    }
-
 }

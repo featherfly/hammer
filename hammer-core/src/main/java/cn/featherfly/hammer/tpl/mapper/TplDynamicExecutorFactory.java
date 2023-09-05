@@ -35,6 +35,7 @@ import com.speedment.common.tuple.Tuple2;
 import com.speedment.common.tuple.Tuple3;
 import com.speedment.common.tuple.Tuple4;
 import com.speedment.common.tuple.Tuple5;
+import com.speedment.common.tuple.Tuple6;
 
 import cn.featherfly.common.asm.Asm;
 import cn.featherfly.common.constant.Chars;
@@ -139,6 +140,14 @@ public class TplDynamicExecutorFactory extends ClassLoader implements Opcodes {
 
     private final String paginationTuple5LimitMethodDescriptor;
 
+    private final Method paginationTuple6Method;
+
+    private final String paginationTuple6MethodDescriptor;
+
+    private final Method paginationTuple6LimitMethod;
+
+    private final String paginationTuple6LimitMethodDescriptor;
+
     private final Method listTypeMethod;
 
     private final String listTypeMethodDescriptor;
@@ -199,6 +208,18 @@ public class TplDynamicExecutorFactory extends ClassLoader implements Opcodes {
 
     private final String listTuple5PageMethodDescriptor;
 
+    private final Method listTuple6Method;
+
+    private final String listTuple6MethodDescriptor;
+
+    private final Method listTuple6LimitMethod;
+
+    private final String listTuple6LimitMethodDescriptor;
+
+    private final Method listTuple6PageMethod;
+
+    private final String listTuple6PageMethodDescriptor;
+
     private final Method listMapMethod;
 
     private final String listMapMethodDescriptor;
@@ -234,6 +255,10 @@ public class TplDynamicExecutorFactory extends ClassLoader implements Opcodes {
     private final Method singleTuple5Method;
 
     private final String singleTuple5MethodDescriptor;
+
+    private final Method singleTuple6Method;
+
+    private final String singleTuple6MethodDescriptor;
 
     private final Method stringMethod;
 
@@ -313,11 +338,11 @@ public class TplDynamicExecutorFactory extends ClassLoader implements Opcodes {
             listTuple4MethodDescriptor = Type.getMethodDescriptor(listTuple4Method);
 
             listTuple4PageMethod = Hammer.class.getMethod("list", TplExecuteId.class, Class.class, Class.class,
-                    Class.class, Map.class, Page.class);
+                    Class.class, Class.class, Map.class, Page.class);
             listTuple4PageMethodDescriptor = Type.getMethodDescriptor(listTuple4PageMethod);
 
             listTuple4LimitMethod = Hammer.class.getMethod("list", TplExecuteId.class, Class.class, Class.class,
-                    Class.class, Map.class, int.class, int.class);
+                    Class.class, Class.class, Map.class, int.class, int.class);
             listTuple4LimitMethodDescriptor = Type.getMethodDescriptor(listTuple4LimitMethod);
 
             listTuple5Method = Hammer.class.getMethod("list", TplExecuteId.class, Class.class, Class.class, Class.class,
@@ -325,12 +350,24 @@ public class TplDynamicExecutorFactory extends ClassLoader implements Opcodes {
             listTuple5MethodDescriptor = Type.getMethodDescriptor(listTuple5Method);
 
             listTuple5PageMethod = Hammer.class.getMethod("list", TplExecuteId.class, Class.class, Class.class,
-                    Class.class, Map.class, Page.class);
+                    Class.class, Class.class, Class.class, Map.class, Page.class);
             listTuple5PageMethodDescriptor = Type.getMethodDescriptor(listTuple5PageMethod);
 
             listTuple5LimitMethod = Hammer.class.getMethod("list", TplExecuteId.class, Class.class, Class.class,
-                    Class.class, Map.class, int.class, int.class);
+                    Class.class, Class.class, Class.class, Map.class, int.class, int.class);
             listTuple5LimitMethodDescriptor = Type.getMethodDescriptor(listTuple5LimitMethod);
+
+            listTuple6Method = Hammer.class.getMethod("list", TplExecuteId.class, Class.class, Class.class, Class.class,
+                    Class.class, Class.class, Class.class, Map.class);
+            listTuple6MethodDescriptor = Type.getMethodDescriptor(listTuple5Method);
+
+            listTuple6PageMethod = Hammer.class.getMethod("list", TplExecuteId.class, Class.class, Class.class,
+                    Class.class, Class.class, Class.class, Class.class, Map.class, Page.class);
+            listTuple6PageMethodDescriptor = Type.getMethodDescriptor(listTuple5PageMethod);
+
+            listTuple6LimitMethod = Hammer.class.getMethod("list", TplExecuteId.class, Class.class, Class.class,
+                    Class.class, Class.class, Class.class, Class.class, Map.class, int.class, int.class);
+            listTuple6LimitMethodDescriptor = Type.getMethodDescriptor(listTuple5LimitMethod);
 
             listMapMethod = Hammer.class.getMethod("list", TplExecuteId.class, Map.class);
             listMapMethodDescriptor = Type.getMethodDescriptor(listMapMethod);
@@ -383,6 +420,13 @@ public class TplDynamicExecutorFactory extends ClassLoader implements Opcodes {
                     Class.class, Class.class, Class.class, Class.class, Map.class, int.class, int.class);
             paginationTuple5LimitMethodDescriptor = Type.getMethodDescriptor(paginationTuple5LimitMethod);
 
+            paginationTuple6Method = Hammer.class.getMethod("pagination", TplExecuteId.class, Class.class, Class.class,
+                    Class.class, Class.class, Class.class, Class.class, Map.class, Page.class);
+            paginationTuple6MethodDescriptor = Type.getMethodDescriptor(paginationTuple6Method);
+            paginationTuple6LimitMethod = Hammer.class.getMethod("pagination", TplExecuteId.class, Class.class,
+                    Class.class, Class.class, Class.class, Class.class, Class.class, Map.class, int.class, int.class);
+            paginationTuple6LimitMethodDescriptor = Type.getMethodDescriptor(paginationTuple6LimitMethod);
+
             singleTypeMethod = Hammer.class.getMethod("single", TplExecuteId.class, Class.class, Map.class);
             singleTypeMethodDescriptor = Type.getMethodDescriptor(singleTypeMethod);
 
@@ -401,6 +445,10 @@ public class TplDynamicExecutorFactory extends ClassLoader implements Opcodes {
             singleTuple5Method = Hammer.class.getMethod("single", TplExecuteId.class, Class.class, Class.class,
                     Class.class, Class.class, Class.class, Map.class);
             singleTuple5MethodDescriptor = Type.getMethodDescriptor(singleTuple5Method);
+
+            singleTuple6Method = Hammer.class.getMethod("single", TplExecuteId.class, Class.class, Class.class,
+                    Class.class, Class.class, Class.class, Class.class, Map.class);
+            singleTuple6MethodDescriptor = Type.getMethodDescriptor(singleTuple5Method);
 
             singleMapMethod = Hammer.class.getMethod("single", TplExecuteId.class, Map.class);
             singleMapMethodDescriptor = Type.getMethodDescriptor(singleMapMethod);
@@ -757,8 +805,19 @@ public class TplDynamicExecutorFactory extends ClassLoader implements Opcodes {
                                 methodNode.visitMethodInsn(INVOKEINTERFACE, hammerName, listTuple5Method.getName(),
                                         listTuple5MethodDescriptor, true);
                             }
+                        } else if (ClassUtils.isParent(Tuple6.class, elementType.getType())) {
+                            if (position.limitParamPosition > 0) {
+                                methodNode.visitMethodInsn(INVOKEINTERFACE, hammerName, listTuple6LimitMethod.getName(),
+                                        listTuple6LimitMethodDescriptor, true);
+                            } else if (position.pageParamPosition > 0) {
+                                methodNode.visitMethodInsn(INVOKEINTERFACE, hammerName, listTuple6PageMethod.getName(),
+                                        listTuple6PageMethodDescriptor, true);
+                            } else {
+                                methodNode.visitMethodInsn(INVOKEINTERFACE, hammerName, listTuple6Method.getName(),
+                                        listTuple6MethodDescriptor, true);
+                            }
                         } else {
-                            throw new HammerException("only support Tuple2...Tuple5");
+                            throw new HammerException("only support Tuple2...Tuple6");
                         }
                         methodNode.visitInsn(ARETURN);
                         methodNode.visitMaxs(stackSize, localeSize);
@@ -844,8 +903,17 @@ public class TplDynamicExecutorFactory extends ClassLoader implements Opcodes {
                                 methodNode.visitMethodInsn(INVOKEINTERFACE, hammerName,
                                         paginationTuple5Method.getName(), paginationTuple5MethodDescriptor, true);
                             }
+                        } else if (ClassUtils.isParent(Tuple6.class, elementType.getType())) {
+                            if (position.limitParamPosition > 0) {
+                                methodNode.visitMethodInsn(INVOKEINTERFACE, hammerName,
+                                        paginationTuple6LimitMethod.getName(), paginationTuple6LimitMethodDescriptor,
+                                        true);
+                            } else {
+                                methodNode.visitMethodInsn(INVOKEINTERFACE, hammerName,
+                                        paginationTuple6Method.getName(), paginationTuple6MethodDescriptor, true);
+                            }
                         } else {
-                            throw new HammerException("only support Tuple2...Tuple5");
+                            throw new HammerException("only support Tuple2...Tuple6");
                         }
                         methodNode.visitInsn(ARETURN);
                         methodNode.visitMaxs(stackSize, localeSize);
@@ -942,8 +1010,11 @@ public class TplDynamicExecutorFactory extends ClassLoader implements Opcodes {
                     } else if (ClassUtils.isParent(Tuple5.class, method.getReturnType())) {
                         methodNode.visitMethodInsn(INVOKEINTERFACE, hammerName, singleTuple5Method.getName(),
                                 singleTuple5MethodDescriptor, true);
+                    } else if (ClassUtils.isParent(Tuple6.class, method.getReturnType())) {
+                        methodNode.visitMethodInsn(INVOKEINTERFACE, hammerName, singleTuple6Method.getName(),
+                                singleTuple6MethodDescriptor, true);
                     } else {
-                        throw new HammerException("only support Tuple2...Tuple5");
+                        throw new HammerException("only support Tuple2...Tuple6");
                     }
                     methodNode.visitTypeInsn(CHECKCAST, Type.getInternalName(method.getReturnType()));
                     methodNode.visitInsn(ARETURN);

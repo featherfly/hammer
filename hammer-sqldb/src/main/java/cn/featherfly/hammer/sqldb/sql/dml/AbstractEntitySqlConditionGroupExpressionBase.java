@@ -9,9 +9,9 @@ import cn.featherfly.common.db.builder.SqlBuilder;
 import cn.featherfly.common.db.mapping.JdbcMappingFactory;
 import cn.featherfly.common.lang.AssertIllegalArgument;
 import cn.featherfly.common.lang.ClassUtils;
-import cn.featherfly.common.operator.LogicOperator;
 import cn.featherfly.common.operator.ComparisonOperator;
 import cn.featherfly.common.operator.ComparisonOperator.MatchStrategy;
+import cn.featherfly.common.operator.LogicOperator;
 import cn.featherfly.common.repository.mapping.PropertyMapping;
 import cn.featherfly.common.repository.mapping.PropertyMapping.Mode;
 import cn.featherfly.hammer.expression.condition.GroupEndExpression;
@@ -151,13 +151,13 @@ public abstract class AbstractEntitySqlConditionGroupExpressionBase<E, ER extend
      */
     @Override
     protected <T, R> L eq_ne(int index, ComparisonOperator comparisonOperator, PropertyMapping<?> pm, R value,
-            MatchStrategy queryPolicy, Predicate<?> ignoreStrategy) {
-        return eq_ne(comparisonOperator, pm, value, getAlias(index), queryPolicy, ignoreStrategy);
+            MatchStrategy matchStrategy, Predicate<?> ignoreStrategy) {
+        return eq_ne(comparisonOperator, pm, value, getAlias(index), matchStrategy, ignoreStrategy);
     }
 
     @Override
     protected <T, R> L eq_ne(ComparisonOperator comparisonOperator, PropertyMapping<?> pm, R value, String queryAlias,
-            MatchStrategy queryPolicy, Predicate<?> ignoreStrategy) {
+            MatchStrategy matchStrategy, Predicate<?> ignoreStrategy) {
         AssertIllegalArgument.isNotNull(ignoreStrategy, "ignoreStrategy");
         if (value != null) {
             //            if (Lang.isNotEmpty(pm.getPropertyMappings())) {
@@ -177,7 +177,7 @@ public abstract class AbstractEntitySqlConditionGroupExpressionBase<E, ER extend
                             condition = logic.and();
                         }
                         logic = ((AbstractEntitySqlConditionExpressionBase<E, ER, B, C, L>) condition)
-                                .eq_ne(comparisonOperator, spm, ov, queryAlias, queryPolicy, ignoreStrategy);
+                                .eq_ne(comparisonOperator, spm, ov, queryAlias, matchStrategy, ignoreStrategy);
                     }
 
                     //                    if (pm.getMode() == Mode.EMBEDDED) {
@@ -187,7 +187,7 @@ public abstract class AbstractEntitySqlConditionGroupExpressionBase<E, ER extend
                     //                                condition = logic.and();
                     //                            }
                     //                            logic = ((AbstractEntitySqlConditionGroupExpression<E, C, L>) condition)
-                    //                                    .eq_ne0(comparisonOperator, spm, ov, queryPolicy);
+                    //                                    .eq_ne0(comparisonOperator, spm, ov, matchStrategy);
                     //                        }
                     //                    } else if (pm.getMode() == Mode.MANY_TO_ONE) {
                     //                        JdbcClassMapping<?> cm = factory.getClassMapping(pm.getPropertyType());
@@ -198,7 +198,7 @@ public abstract class AbstractEntitySqlConditionGroupExpressionBase<E, ER extend
                     //                                condition = logic.and();
                     //                            }
                     //                            logic = ((AbstractEntitySqlConditionGroupExpression<E, C, L>) condition)
-                    //                                    .eq_ne0(comparisonOperator, "", cpm, ov, queryPolicy);
+                    //                                    .eq_ne0(comparisonOperator, "", cpm, ov, matchStrategy);
                     //                        }
                     //                    } else {
                     //                        // FIXME 后续来实现
@@ -211,20 +211,20 @@ public abstract class AbstractEntitySqlConditionGroupExpressionBase<E, ER extend
                 } else {
                     for (PropertyMapping<?> spm : pm.getPropertyMappings()) {
                         if (ClassUtils.isParent(spm.getPropertyType(), value.getClass())) {
-                            return eq_ne(comparisonOperator, spm, value, queryAlias, queryPolicy, ignoreStrategy);
+                            return eq_ne(comparisonOperator, spm, value, queryAlias, matchStrategy, ignoreStrategy);
                         }
                     }
                 }
             }
         }
 
-        return eq_ne0(comparisonOperator, pm, value, queryAlias, queryPolicy, ignoreStrategy);
+        return eq_ne0(comparisonOperator, pm, value, queryAlias, matchStrategy, ignoreStrategy);
     }
 
     private <T, R> L eq_ne0(ComparisonOperator comparisonOperator, PropertyMapping<?> pm, R value, String queryAlias,
-            MatchStrategy queryPolicy, Predicate<?> ignoreStrategy) {
+            MatchStrategy matchStrategy, Predicate<?> ignoreStrategy) {
         return (L) addCondition(new SqlConditionExpressionBuilder(dialect, pm.getRepositoryFieldName(),
-                getFieldValueOperator(pm, value), comparisonOperator, queryPolicy, queryAlias, ignoreStrategy));
+                getFieldValueOperator(pm, value), comparisonOperator, matchStrategy, queryAlias, ignoreStrategy));
     }
 
     // ********************************************************************

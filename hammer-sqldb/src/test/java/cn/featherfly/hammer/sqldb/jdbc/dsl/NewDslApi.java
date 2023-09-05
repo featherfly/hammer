@@ -170,6 +170,14 @@ class FindAndFetchManager<T extends Tuple> {
 
     private T tuple;
 
+    /**
+     * @param tuple
+     */
+    public FindAndFetchManager(T tuple) {
+        super();
+        this.tuple = tuple;
+    }
+
     public T getFindAndFetch() {
         return tuple;
     }

@@ -58,7 +58,7 @@ public interface EntityEndWithExpression<E, C extends ConditionExpression, L ext
      * @param queryPolicy the query policy
      * @return LogicExpression
      */
-    L ew(SerializableFunction<E, String> name, String value, MatchStrategy queryPolicy);
+    L ew(SerializableFunction<E, String> name, String value, MatchStrategy matchStrategy);
 
     /**
      * end with value. 以value结尾.
@@ -69,7 +69,7 @@ public interface EntityEndWithExpression<E, C extends ConditionExpression, L ext
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
-    L ew(SerializableFunction<E, String> name, String value, MatchStrategy queryPolicy, Predicate<String> ignoreStrategy);
+    L ew(SerializableFunction<E, String> name, String value, MatchStrategy matchStrategy, Predicate<String> ignoreStrategy);
 
     /**
      * end with value. 以value结尾.
@@ -99,7 +99,7 @@ public interface EntityEndWithExpression<E, C extends ConditionExpression, L ext
      * @param queryPolicy the query policy
      * @return LogicExpression
      */
-    L ew(SerializableStringSupplier property, MatchStrategy queryPolicy);
+    L ew(SerializableStringSupplier property, MatchStrategy matchStrategy);
 
     /**
      * end with value. 以value结尾.
@@ -109,7 +109,7 @@ public interface EntityEndWithExpression<E, C extends ConditionExpression, L ext
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
-    L ew(SerializableStringSupplier property, MatchStrategy queryPolicy, Predicate<String> ignoreStrategy);
+    L ew(SerializableStringSupplier property, MatchStrategy matchStrategy, Predicate<String> ignoreStrategy);
 
     //  嵌套属性使用property(U1::getU2).property(U2:getV).ew(v)来设置
     //    /**

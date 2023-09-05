@@ -1,7 +1,7 @@
 
 package cn.featherfly.hammer.expression.execute;
 
-import java.util.function.Supplier;
+import java.util.function.BooleanSupplier;
 
 /**
  * update number value .
@@ -24,16 +24,16 @@ public interface UpdateNumberValueExpression<U extends PropertyExecutableUpdateE
      * Increase.
      *
      * @param value the value
-     * @return the u
+     * @return the PropertyExecutableUpdateExpression
      */
     U increase(T value);
 
     /**
      * Increase.
      *
-     * @param whether the whether
-     * @param value   the value
-     * @return the u
+     * @param increaseable the increaseable
+     * @param value        the value
+     * @return the PropertyExecutableUpdateExpression
      */
-    U increase(Supplier<Boolean> whether, T value);
+    U increase(BooleanSupplier increaseable, T value);
 }

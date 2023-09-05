@@ -14,21 +14,22 @@ import java.util.Collection;
 import java.util.Date;
 import java.util.function.Predicate;
 
-import cn.featherfly.common.function.serializable.SerializableToDateFunction;
-import cn.featherfly.common.function.serializable.SerializableToEnumFunction;
-import cn.featherfly.common.function.serializable.SerializableToLocalDateFunction;
-import cn.featherfly.common.function.serializable.SerializableToLocalDateTimeFunction;
-import cn.featherfly.common.function.serializable.SerializableToLocalTimeFunction;
-import cn.featherfly.common.function.serializable.SerializableToNumberFunction;
-import cn.featherfly.common.function.serializable.SerializableToStringFunction;
+import cn.featherfly.common.exception.NotImplementedException;
 import cn.featherfly.common.function.serializable.SerializableFunction;
 import cn.featherfly.common.function.serializable.SerializableIntSupplier;
 import cn.featherfly.common.function.serializable.SerializableLongSupplier;
 import cn.featherfly.common.function.serializable.SerializableSupplier;
 import cn.featherfly.common.function.serializable.SerializableToCollectionFunction;
+import cn.featherfly.common.function.serializable.SerializableToDateFunction;
 import cn.featherfly.common.function.serializable.SerializableToDoubleFunction;
+import cn.featherfly.common.function.serializable.SerializableToEnumFunction;
 import cn.featherfly.common.function.serializable.SerializableToIntFunction;
+import cn.featherfly.common.function.serializable.SerializableToLocalDateFunction;
+import cn.featherfly.common.function.serializable.SerializableToLocalDateTimeFunction;
+import cn.featherfly.common.function.serializable.SerializableToLocalTimeFunction;
 import cn.featherfly.common.function.serializable.SerializableToLongFunction;
+import cn.featherfly.common.function.serializable.SerializableToNumberFunction;
+import cn.featherfly.common.function.serializable.SerializableToStringFunction;
 import cn.featherfly.hammer.expression.condition.ConditionExpression;
 import cn.featherfly.hammer.expression.condition.LogicExpression;
 import cn.featherfly.hammer.expression.entity.condition.AbstractConditionEntityExpression;
@@ -69,8 +70,8 @@ public class NotInEntityExpressionImpl<E, C extends ConditionExpression, L exten
      */
     @Override
     public <R> ConditionEntityExpressionIntAndArrayPropertyExpression property(SerializableToIntFunction<E> name) {
-        // YUFEI_TODO Auto-generated method stub
-        return null;
+        // IMPLSOON 未实现property
+        throw new NotImplementedException();
     }
 
     /**
@@ -78,8 +79,8 @@ public class NotInEntityExpressionImpl<E, C extends ConditionExpression, L exten
      */
     @Override
     public <R> ConditionEntityExpressionLongAndArrayPropertyExpression property(SerializableToLongFunction<E> name) {
-        // YUFEI_TODO Auto-generated method stub
-        return null;
+        // IMPLSOON 未实现property
+        throw new NotImplementedException();
     }
 
     /**
@@ -88,8 +89,8 @@ public class NotInEntityExpressionImpl<E, C extends ConditionExpression, L exten
     @Override
     public <R> ConditionEntityExpressionDoubleAndArrayPropertyExpression property(
             SerializableToDoubleFunction<E> name) {
-        // YUFEI_TODO Auto-generated method stub
-        return null;
+        // IMPLSOON 未实现property
+        throw new NotImplementedException();
     }
 
     /**
@@ -98,8 +99,8 @@ public class NotInEntityExpressionImpl<E, C extends ConditionExpression, L exten
     @Override
     public <R extends Number> ConditionEntityExpressionNumberAndArrayPropertyExpression<R> property(
             SerializableToNumberFunction<E, R> name) {
-        // YUFEI_TODO Auto-generated method stub
-        return null;
+        // IMPLSOON 未实现property
+        throw new NotImplementedException();
     }
 
     /**
@@ -108,8 +109,8 @@ public class NotInEntityExpressionImpl<E, C extends ConditionExpression, L exten
     @Override
     public <R extends Date> ConditionEntityExpressionDateAndArrayPropertyExpression<R> property(
             SerializableToDateFunction<E, R> name) {
-        // YUFEI_TODO Auto-generated method stub
-        return null;
+        // IMPLSOON 未实现property
+        throw new NotImplementedException();
     }
 
     /**
@@ -118,8 +119,8 @@ public class NotInEntityExpressionImpl<E, C extends ConditionExpression, L exten
     @Override
     public <R extends Enum<R>> ConditionEntityExpressionEnumAndArrayPropertyExpression<R> property(
             SerializableToEnumFunction<E, R> name) {
-        // YUFEI_TODO Auto-generated method stub
-        return null;
+        // IMPLSOON 未实现property
+        throw new NotImplementedException();
     }
 
     /**
@@ -128,26 +129,28 @@ public class NotInEntityExpressionImpl<E, C extends ConditionExpression, L exten
     @Override
     public ConditionEntityExpressionLocalDateTimeAndArrayPropertyExpression property(
             SerializableToLocalDateTimeFunction<E> name) {
-        // YUFEI_TODO Auto-generated method stub
-        return null;
+        // IMPLSOON 未实现property
+        throw new NotImplementedException();
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public ConditionEntityExpressionLocalDateAndArrayPropertyExpression property(SerializableToLocalDateFunction<E> name) {
-        // YUFEI_TODO Auto-generated method stub
-        return null;
+    public ConditionEntityExpressionLocalDateAndArrayPropertyExpression property(
+            SerializableToLocalDateFunction<E> name) {
+        // IMPLSOON 未实现property
+        throw new NotImplementedException();
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public ConditionEntityExpressionLocalTimeAndArrayPropertyExpression property(SerializableToLocalTimeFunction<E> name) {
-        // YUFEI_TODO Auto-generated method stub
-        return null;
+    public ConditionEntityExpressionLocalTimeAndArrayPropertyExpression property(
+            SerializableToLocalTimeFunction<E> name) {
+        // IMPLSOON 未实现property
+        throw new NotImplementedException();
     }
 
     /**
@@ -155,8 +158,8 @@ public class NotInEntityExpressionImpl<E, C extends ConditionExpression, L exten
      */
     @Override
     public ConditionEntityExpressionStringAndArrayPropertyExpression property(SerializableToStringFunction<E> name) {
-        // YUFEI_TODO Auto-generated method stub
-        return null;
+        // IMPLSOON 未实现property
+        throw new NotImplementedException();
     }
 
     /**
@@ -164,8 +167,8 @@ public class NotInEntityExpressionImpl<E, C extends ConditionExpression, L exten
      */
     @Override
     public <R> NotInEntityPropertyExpression<R> property(SerializableFunction<E, R> name) {
-        // YUFEI_TODO Auto-generated method stub
-        return null;
+        // IMPLSOON 未实现property
+        throw new NotImplementedException();
     }
 
     /**
@@ -174,8 +177,8 @@ public class NotInEntityExpressionImpl<E, C extends ConditionExpression, L exten
     @Override
     public <R extends Collection<RE>,
             RE> NotInEntityPropertyExpression<RE> property(SerializableToCollectionFunction<E, R, RE> name) {
-        // YUFEI_TODO Auto-generated method stub
-        return null;
+        // IMPLSOON 未实现property
+        throw new NotImplementedException();
     }
 
     /**
