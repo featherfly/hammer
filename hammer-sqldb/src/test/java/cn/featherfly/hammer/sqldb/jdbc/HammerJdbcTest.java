@@ -13,14 +13,16 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
+import javax.annotation.Nullable;
+
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
 
 import cn.featherfly.common.db.mapping.JdbcMappingException;
+import cn.featherfly.common.function.serializable.SerializableFunction;
 import cn.featherfly.common.lang.ArrayUtils;
 import cn.featherfly.common.lang.CollectionUtils;
 import cn.featherfly.common.lang.Randoms;
-import cn.featherfly.common.function.serializable.SerializableFunction;
 import cn.featherfly.common.operator.LogicOperator;
 import cn.featherfly.common.repository.IgnoreStrategy;
 import cn.featherfly.common.structure.page.PaginationResults;
@@ -45,7 +47,8 @@ public class HammerJdbcTest extends JdbcTestBase {
 
     protected Hammer hammer;
 
-    Serializable nullObject;
+    @Nullable
+    Serializable nullObject = null;
     List<Serializable> emptyList = new ArrayList<>();
     Serializable[] emptyArray = new Serializable[0];
 

@@ -34,7 +34,7 @@ public interface RepositoryLikeExpression<C extends ConditionExpression, L exten
      * @param queryPolicy the query policy
      * @return LogicExpression
      */
-    L lk(String repository, String name, String value, MatchStrategy queryPolicy);
+    L lk(String repository, String name, String value, MatchStrategy matchStrategy);
 
     /**
      * like value.
@@ -59,7 +59,7 @@ public interface RepositoryLikeExpression<C extends ConditionExpression, L exten
      * @param queryPolicy the query policy
      * @return LogicExpression
      */
-    //    <T> L lk(Class<T> repository, String name, String value, MatchStrategy queryPolicy);
+    //    <T> L lk(Class<T> repository, String name, String value, MatchStrategy matchStrategy);
 
     /**
      * like value.
@@ -82,6 +82,6 @@ public interface RepositoryLikeExpression<C extends ConditionExpression, L exten
      * @param queryPolicy     the query policy
      * @return LogicExpression
      */
-    L lk(int repositoryIndex, String name, String value, MatchStrategy queryPolicy);
+    L lk(int repositoryIndex, String name, String value, MatchStrategy matchStrategy);
 
 }

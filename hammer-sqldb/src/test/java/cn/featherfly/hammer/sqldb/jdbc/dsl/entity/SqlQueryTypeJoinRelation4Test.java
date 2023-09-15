@@ -60,8 +60,7 @@ public class SqlQueryTypeJoinRelation4Test extends AbstractEntitySqlQueryJoinTes
         assertNull(order.getUserInoInfo().getName());
 
         order = query.find(Order.class).join(Order::getUser1).join(Order::getUser2).join(Order::getUser3)
-                .join(Order::getCreateUser).join(Order::getUserInoInfo).fetch().where().eq(Order::getId, id2)
-                .single();
+                .join(Order::getCreateUser).join(Order::getUserInoInfo).fetch().where().eq(Order::getId, id2).single();
         assertEquals(order.getId(), id2);
         assertNotNull(order.getUser1().getId());
         assertNull(order.getUser1().getUsername());
@@ -106,7 +105,7 @@ public class SqlQueryTypeJoinRelation4Test extends AbstractEntitySqlQueryJoinTes
         //        assertEquals(orderInfo.getId(), id2);
         //        assertNotNull(orderInfo.getOrder().getId());
         //        assertNull(orderInfo.getOrder().getNo());
-        //        assertNotNull(orderInfo.getOrder().getParent().getId()); // FIXME 没有fetch Order会缺少Order.id
+        //        assertNotNull(orderInfo.getOrder().getParent().getId());
         //        assertNotNull(orderInfo.getOrder().getParent().getNo());
         //        assertNotNull(orderInfo.getCreateUser().getId());
         //        assertNull(orderInfo.getCreateUser().getUsername());
@@ -158,14 +157,13 @@ public class SqlQueryTypeJoinRelation4Test extends AbstractEntitySqlQueryJoinTes
         //        assertNull(order.getUser2().getUsername());
         //        assertNotNull(order.getUser3().getId());
         //        assertNull(order.getUser3().getUsername());
-        //        assertNotNull(order.getUserInoInfo().getId()); // FIXME 没有fetch UserInfo会缺少UserInfo.id
+        //        assertNotNull(order.getUserInoInfo().getId()); 
         //        assertNotNull(order.getUserInoInfo().getName());
         //        assertNotNull(order.getUserInoInfo().getUser().getId());
         //        assertNotNull(order.getUserInoInfo().getUser().getUsername());
 
-        order = query.find(Order.class).join(Order::getUserInoInfo).fetch().join(Order::getUser1)
-                .join(Order::getUser2).join(Order::getUser3).join2(UserInfo::getUser).fetch().where()
-                .eq(Order::getId, id2).single();
+        order = query.find(Order.class).join(Order::getUserInoInfo).fetch().join(Order::getUser1).join(Order::getUser2)
+                .join(Order::getUser3).join2(UserInfo::getUser).fetch().where().eq(Order::getId, id2).single();
         assertEquals(order.getId(), id2);
         assertNotNull(order.getUser1().getId());
         assertNull(order.getUser1().getUsername());
@@ -215,7 +213,7 @@ public class SqlQueryTypeJoinRelation4Test extends AbstractEntitySqlQueryJoinTes
         //        assertEquals(orderInfo.getId(), id2);
         //        assertNotNull(orderInfo.getOrder().getId());
         //        assertNull(orderInfo.getOrder().getNo());
-        //        assertNotNull(orderInfo.getOrder().getParent().getId()); // FIXME 没有fetch Order会缺少Order.id
+        //        assertNotNull(orderInfo.getOrder().getParent().getId());
         //        assertNotNull(orderInfo.getOrder().getParent().getNo());
         //        assertNotNull(orderInfo.getCreateUser().getId());
         //        assertNull(orderInfo.getCreateUser().getUsername());
@@ -267,14 +265,13 @@ public class SqlQueryTypeJoinRelation4Test extends AbstractEntitySqlQueryJoinTes
         //        assertNull(order.getUser2().getUsername());
         //        assertNotNull(order.getUser3().getId());
         //        assertNull(order.getUser3().getUsername());
-        //        assertNotNull(order.getUserInoInfo().getId()); // FIXME 没有fetch UserInfo会缺少UserInfo.id
+        //        assertNotNull(order.getUserInoInfo().getId()); 
         //        assertNotNull(order.getUserInoInfo().getName());
         //        assertNotNull(order.getUserInoInfo().getUser().getId());
         //        assertNotNull(order.getUserInoInfo().getUser().getUsername());
 
-        order = query.find(Order.class).join(Order::getUser1).join(Order::getUserInoInfo).fetch()
-                .join(Order::getUser2).join(Order::getUser3).join3(UserInfo::getUser).fetch().where()
-                .eq(Order::getId, id2).single();
+        order = query.find(Order.class).join(Order::getUser1).join(Order::getUserInoInfo).fetch().join(Order::getUser2)
+                .join(Order::getUser3).join3(UserInfo::getUser).fetch().where().eq(Order::getId, id2).single();
         assertEquals(order.getId(), id2);
         assertNotNull(order.getUser1().getId());
         assertNull(order.getUser1().getUsername());
@@ -323,7 +320,7 @@ public class SqlQueryTypeJoinRelation4Test extends AbstractEntitySqlQueryJoinTes
         //        assertEquals(orderInfo.getId(), id2);
         //        assertNotNull(orderInfo.getOrder().getId());
         //        assertNull(orderInfo.getOrder().getNo());
-        //        assertNotNull(orderInfo.getOrder().getParent().getId()); // FIXME 没有fetch Order会缺少Order.id
+        //        assertNotNull(orderInfo.getOrder().getParent().getId());
         //        assertNotNull(orderInfo.getOrder().getParent().getNo());
         //        assertNotNull(orderInfo.getCreateUser().getId());
         //        assertNull(orderInfo.getCreateUser().getUsername());
@@ -375,14 +372,13 @@ public class SqlQueryTypeJoinRelation4Test extends AbstractEntitySqlQueryJoinTes
         //        assertNull(order.getUser2().getUsername());
         //        assertNotNull(order.getUser3().getId());
         //        assertNull(order.getUser3().getUsername());
-        //        assertNotNull(order.getUserInoInfo().getId()); // FIXME 没有fetch UserInfo会缺少UserInfo.id
+        //        assertNotNull(order.getUserInoInfo().getId()); 
         //        assertNotNull(order.getUserInoInfo().getName());
         //        assertNotNull(order.getUserInoInfo().getUser().getId());
         //        assertNotNull(order.getUserInoInfo().getUser().getUsername());
 
-        order = query.find(Order.class).join(Order::getUser1).join(Order::getUser2).join(Order::getUserInoInfo)
-                .fetch().join(Order::getUser3).join4(UserInfo::getUser).fetch().where().eq(Order::getId, id2)
-                .single();
+        order = query.find(Order.class).join(Order::getUser1).join(Order::getUser2).join(Order::getUserInoInfo).fetch()
+                .join(Order::getUser3).join4(UserInfo::getUser).fetch().where().eq(Order::getId, id2).single();
         assertEquals(order.getId(), id2);
         assertNotNull(order.getUser1().getId());
         assertNull(order.getUser1().getUsername());
@@ -431,7 +427,7 @@ public class SqlQueryTypeJoinRelation4Test extends AbstractEntitySqlQueryJoinTes
         //        assertEquals(orderInfo.getId(), id2);
         //        assertNotNull(orderInfo.getOrder().getId());
         //        assertNull(orderInfo.getOrder().getNo());
-        //        assertNotNull(orderInfo.getOrder().getParent().getId()); // FIXME 没有fetch Order会缺少Order.id
+        //        assertNotNull(orderInfo.getOrder().getParent().getId());
         //        assertNotNull(orderInfo.getOrder().getParent().getNo());
         //        assertNotNull(orderInfo.getCreateUser().getId());
         //        assertNull(orderInfo.getCreateUser().getUsername());
@@ -483,7 +479,7 @@ public class SqlQueryTypeJoinRelation4Test extends AbstractEntitySqlQueryJoinTes
         //        assertNull(order.getUser2().getUsername());
         //        assertNotNull(order.getUser3().getId());
         //        assertNull(order.getUser3().getUsername());
-        //        assertNotNull(order.getUserInoInfo().getId()); // FIXME 没有fetch UserInfo会缺少UserInfo.id
+        //        assertNotNull(order.getUserInoInfo().getId()); 
         //        assertNotNull(order.getUserInoInfo().getName());
         //        assertNotNull(order.getUserInoInfo().getUser().getId());
         //        assertNotNull(order.getUserInoInfo().getUser().getUsername());

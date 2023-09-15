@@ -14,7 +14,7 @@ import java.util.Date;
 
 import cn.featherfly.hammer.expression.condition.ConditionExpression;
 import cn.featherfly.hammer.expression.condition.LogicExpression;
-import cn.featherfly.hammer.expression.condition.property.DateExpression;
+import cn.featherfly.hammer.expression.condition.property.DatePropertyExpression;
 
 /**
  * EntityDateExpression.
@@ -26,6 +26,6 @@ import cn.featherfly.hammer.expression.condition.property.DateExpression;
  * @param <L> the generic type
  */
 public interface EntityDatePropertyExpression<E, D extends Date, C extends ConditionExpression,
-        L extends LogicExpression<C, L>> extends DateExpression<D, C, L> {
+        L extends LogicExpression<C, L>> extends DatePropertyExpression<D, C, L> {
 
 }

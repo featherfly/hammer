@@ -222,19 +222,45 @@ public class SqldbHammerImpl implements SqldbHammer {
         return insert.execute(entity);
     }
 
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public <E> int[] save(@SuppressWarnings("unchecked") E... entities) {
-        return save(ArrayUtils.toList(entities));
-    }
+    //    /**
+    //     * {@inheritDoc}
+    //     */
+    //    @Override
+    //    public <E> int[] save(@SuppressWarnings("unchecked") E... entities) {
+    //        return save(ArrayUtils.toList(entities));
+    //    }
+    //
+    //    /**
+    //     * {@inheritDoc}
+    //     */
+    //    @Override
+    //    public <E> int[] save(E[] entities, int batchSize) {
+    //        return save(ArrayUtils.toList(entities), batchSize);
+    //    }
+    //
+    //    /**
+    //     * {@inheritDoc}
+    //     */
+    //    @Override
+    //    public <E> int[] save(List<E> entities) {
+    //        if (Lang.isEmpty(entities)) {
+    //            return ArrayUtils.EMPTY_INT_ARRAY;
+    //        }
+    //        InsertOperate<E> insert = null;
+    //        for (E entity : entities) {
+    //            if (insert == null) {
+    //                insert = getInsert(entity);
+    //            }
+    //            validate(entity);
+    //        }
+    //        return insert.executeBatch(entities);
+    //    }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public <E> int[] save(List<E> entities) {
+    public <E> int[] save(List<E> entities, int batchSize) {
         if (Lang.isEmpty(entities)) {
             return ArrayUtils.EMPTY_INT_ARRAY;
         }
@@ -245,7 +271,7 @@ public class SqldbHammerImpl implements SqldbHammer {
             }
             validate(entity);
         }
-        return insert.executeBatch(entities);
+        return insert.executeBatch(entities, batchSize);
     }
 
     /**
@@ -262,12 +288,29 @@ public class SqldbHammerImpl implements SqldbHammer {
         } else {
             @SuppressWarnings("unchecked")
             GetOperate<E> get = (GetOperate<E>) getOperate(entity.getClass());
-            Serializable id = get.getId(entity);
-            // FIXME 这里没有处理复合主键的情况
-            if (id == null) {
-                return save(entity);
+            List<Serializable> ids = get.getIds(entity);
+            if (ids.size() == 1) {
+                Serializable id = ids.get(0);
+                // FIXME 当前的逻辑在手动设置id值的时候会有问题
+                if (id == null) {
+                    return save(entity);
+                } else {
+                    return update(entity);
+                }
+            } else if (ids.size() > 1) {
+                boolean insertable = false;
+                for (Serializable id : ids) {
+                    if (id == null) { // 只要有一个id为空，则表示需要插入数据
+                        insertable = true;
+                    }
+                }
+                if (insertable) {
+                    return save(entity);
+                } else {
+                    return update(entity);
+                }
             } else {
-                return update(entity);
+                throw new SqldbHammerException("no pk mapping");
             }
         }
     }
@@ -603,7 +646,7 @@ public class SqldbHammerImpl implements SqldbHammer {
             return list;
         }
         for (Serializable id : ids) {
-            // TODO 后续优化为支持一条sql获取多个的实现
+            // ENHANCE 后续优化为支持一条sql获取多个的实现
             list.add(get(id, type));
         }
         return list;

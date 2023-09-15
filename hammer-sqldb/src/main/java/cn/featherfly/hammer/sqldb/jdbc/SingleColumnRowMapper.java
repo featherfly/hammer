@@ -4,6 +4,8 @@ import java.sql.ResultSet;
 import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
 
+import javax.annotation.Nonnull;
+
 import org.springframework.lang.Nullable;
 import org.springframework.util.ClassUtils;
 
@@ -43,13 +45,11 @@ import cn.featherfly.common.repository.mapping.RowMapper;
  */
 public class SingleColumnRowMapper<T> implements cn.featherfly.common.repository.mapping.RowMapper<T> {
 
-    @Nullable
     private Class<?> requiredType;
 
     //    @Nullable
     //    private ConversionService conversionService = DefaultConversionService.getSharedInstance();
 
-    @Nullable
     private SqlTypeMappingManager manager;
 
     private String prefix;
@@ -61,17 +61,20 @@ public class SingleColumnRowMapper<T> implements cn.featherfly.common.repository
      * @param manager      the manager
      */
     public SingleColumnRowMapper(Class<T> requiredType, SqlTypeMappingManager manager) {
-        this(requiredType, null, manager);
+        this(requiredType, manager, null);
     }
 
     /**
      * Create a new {@code SingleColumnRowMapper}.
      *
      * @param requiredType the type that each result object is expected to match
-     * @param prefix       the prefix
      * @param manager      the manager
+     * @param prefix       the prefix
      */
-    public SingleColumnRowMapper(Class<T> requiredType, String prefix, SqlTypeMappingManager manager) {
+    public SingleColumnRowMapper(@Nonnull Class<T> requiredType, @Nonnull SqlTypeMappingManager manager,
+            String prefix) {
+        AssertIllegalArgument.isNotNull(requiredType, "requiredType");
+        AssertIllegalArgument.isNotNull(manager, "sqlTypeMappingManager");
         setRequiredType(requiredType);
         this.manager = manager;
         this.prefix = prefix;

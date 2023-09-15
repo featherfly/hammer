@@ -81,7 +81,7 @@ public abstract class AbstractQueryOperate<T> extends AbstractOperate<T> impleme
         MappingDebugMessage mappingDebugMessage = new MappingDebugMessage();
         for (JdbcPropertyMapping propertyMapping : classMapping.getPropertyMappings()) {
             if (propertyMapping.getPropertyMappings().isEmpty()) {
-                // YUFEI_TODO 后续来测试
+                // YUFEI_TEST 后续来测试
                 Object value = propertyMapping.getJavaTypeSqlTypeOperator().get(resultSet, index);
                 index = setProperty(rowNumber, mappedObject, index, propertyMapping, value, mappingDebugMessage);
                 //                BeanProperty<?> bp = getBeanProperty(propertyMapping, rowNumber);
@@ -89,12 +89,12 @@ public abstract class AbstractQueryOperate<T> extends AbstractOperate<T> impleme
                 //                index = setProperty(rowNumber, mappedObject, index, propertyMapping, value, mappingDebugMessage);
             } else {
                 for (JdbcPropertyMapping subPropertyMapping : propertyMapping.getPropertyMappings()) {
-                    // TODO 还没有测试
+                    // YUFEI_TEST 还没有测试
                     //                    BeanProperty<?> bp = getBeanProperty(subPropertyMapping, rowNumber);
                     //                    Object value = sqlTypeMappingManager.get(resultSet, index, bp);
                     //                    //                    Object value = getColumnValue(rs, index, subPropertyMapping.getPropertyType());
                     //                    index = setProperty(rowNumber, mappedObject, index, subPropertyMapping, value, mappingDebugMessage);
-                    // YUFEI_TODO 后续来测试
+                    // YUFEI_TEST 后续来测试
                     Object value = subPropertyMapping.getJavaTypeSqlTypeOperator().get(resultSet, index);
                     index = setProperty(rowNumber, mappedObject, index, subPropertyMapping, value, mappingDebugMessage);
                 }

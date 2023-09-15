@@ -3,7 +3,7 @@ package cn.featherfly.hammer.sqldb.jdbc.dsl.type;
 
 import cn.featherfly.hammer.dsl.query.QueryConditionGroupExpression;
 import cn.featherfly.hammer.dsl.query.QueryConditionGroupLogicExpression;
-import cn.featherfly.hammer.expression.condition.property.EnumExpression;
+import cn.featherfly.hammer.expression.condition.property.EnumPropertyExpression;
 
 /**
  * <p>
@@ -18,7 +18,7 @@ import cn.featherfly.hammer.expression.condition.property.EnumExpression;
 public class StaticTypeEnumExpression<T, E extends Enum<E>, Q extends StaticTypeQueryConditionGroupExpression<T, Q>> {
 
     /** The expression. */
-    private EnumExpression<E, QueryConditionGroupExpression, QueryConditionGroupLogicExpression> expression;
+    private EnumPropertyExpression<E, QueryConditionGroupExpression, QueryConditionGroupLogicExpression> expression;
 
     /** The type expression. */
     private Q typeExpression;
@@ -30,7 +30,7 @@ public class StaticTypeEnumExpression<T, E extends Enum<E>, Q extends StaticType
      * @param typeExpression the type expression
      */
     public StaticTypeEnumExpression(
-            EnumExpression<E, QueryConditionGroupExpression, QueryConditionGroupLogicExpression> expression,
+            EnumPropertyExpression<E, QueryConditionGroupExpression, QueryConditionGroupLogicExpression> expression,
             Q typeExpression) {
         super();
         this.expression = expression;

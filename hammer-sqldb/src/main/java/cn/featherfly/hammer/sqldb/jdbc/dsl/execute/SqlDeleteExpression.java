@@ -35,7 +35,7 @@ public class SqlDeleteExpression extends SqlConditionGroupExpression {
      * @param builder      the builder
      * @param ignoreStrategy the ignore strategy
      */
-    public SqlDeleteExpression(Jdbc jdbc, SqlDeleteFromBasicBuilder builder, Predicate<Object> ignoreStrategy) {
+    public SqlDeleteExpression(Jdbc jdbc, SqlDeleteFromBasicBuilder builder, Predicate<?> ignoreStrategy) {
         super(jdbc, builder.getTableAlias(), ignoreStrategy);
         this.builder = builder;
     }

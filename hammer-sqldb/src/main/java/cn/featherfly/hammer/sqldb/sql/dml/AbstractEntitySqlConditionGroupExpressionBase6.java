@@ -101,137 +101,139 @@ public abstract class AbstractEntitySqlConditionGroupExpressionBase6<E, E2, E3, 
     }
 
     @Override
-    public <R> L eq6(SerializableFunction<E6, R> name, R value, MatchStrategy queryPolicy) {
-        return eq(classMapping6, name, value, queryAlias6, queryPolicy, ignoreStrategy);
+    public <R> L eq6(SerializableFunction<E6, R> name, R value, MatchStrategy matchStrategy) {
+        return eq(classMapping6, name, value, queryAlias6, matchStrategy, ignoreStrategy);
     }
 
     @Override
-    public <R> L eq6(SerializableFunction<E6, R> name, R value, MatchStrategy queryPolicy, Predicate<R> ignoreStrategy) {
-        return eq(classMapping6, name, value, queryAlias6, queryPolicy, ignoreStrategy);
+    public <R> L eq6(SerializableFunction<E6, R> name, R value, MatchStrategy matchStrategy,
+            Predicate<R> ignoreStrategy) {
+        return eq(classMapping6, name, value, queryAlias6, matchStrategy, ignoreStrategy);
     }
 
     @Override
-    public <R> L eq6(SerializableSupplier6<R> property, MatchStrategy queryPolicy) {
-        return eq(classMapping6, property, queryAlias6, queryPolicy, ignoreStrategy);
+    public <R> L eq6(SerializableSupplier6<R> property, MatchStrategy matchStrategy) {
+        return eq(classMapping6, property, queryAlias6, matchStrategy, ignoreStrategy);
     }
 
     @Override
-    public <R> L eq6(SerializableSupplier6<R> property, MatchStrategy queryPolicy, Predicate<R> ignoreStrategy) {
-        return eq(classMapping6, property, queryAlias6, queryPolicy, ignoreStrategy);
-    }
-
-    // ****************************************************************************************************************
-
-    @Override
-    public <R> L ne6(SerializableFunction<E6, R> name, R value, MatchStrategy queryPolicy) {
-        return ne(classMapping6, name, value, queryAlias6, queryPolicy, ignoreStrategy);
-    }
-
-    @Override
-    public <R> L ne6(SerializableFunction<E6, R> name, R value, MatchStrategy queryPolicy, Predicate<R> ignoreStrategy) {
-        return ne(classMapping6, name, value, queryAlias6, queryPolicy, ignoreStrategy);
-    }
-
-    @Override
-    public <R> L ne6(SerializableSupplier6<R> property, MatchStrategy queryPolicy) {
-        return ne(classMapping6, property, queryAlias6, queryPolicy, ignoreStrategy);
-    }
-
-    @Override
-    public <R> L ne6(SerializableSupplier6<R> property, MatchStrategy queryPolicy, Predicate<R> ignoreStrategy) {
-        return ne(classMapping6, property, queryAlias6, queryPolicy, ignoreStrategy);
+    public <R> L eq6(SerializableSupplier6<R> property, MatchStrategy matchStrategy, Predicate<R> ignoreStrategy) {
+        return eq(classMapping6, property, queryAlias6, matchStrategy, ignoreStrategy);
     }
 
     // ****************************************************************************************************************
 
     @Override
-    public L lk6(SerializableFunction<E6, String> name, String value, MatchStrategy queryPolicy) {
-        return lk(classMapping6, name, value, queryAlias6, queryPolicy, ignoreStrategy);
+    public <R> L ne6(SerializableFunction<E6, R> name, R value, MatchStrategy matchStrategy) {
+        return ne(classMapping6, name, value, queryAlias6, matchStrategy, ignoreStrategy);
     }
 
     @Override
-    public L lk6(SerializableFunction<E6, String> name, String value, MatchStrategy queryPolicy,
+    public <R> L ne6(SerializableFunction<E6, R> name, R value, MatchStrategy matchStrategy,
+            Predicate<R> ignoreStrategy) {
+        return ne(classMapping6, name, value, queryAlias6, matchStrategy, ignoreStrategy);
+    }
+
+    @Override
+    public <R> L ne6(SerializableSupplier6<R> property, MatchStrategy matchStrategy) {
+        return ne(classMapping6, property, queryAlias6, matchStrategy, ignoreStrategy);
+    }
+
+    @Override
+    public <R> L ne6(SerializableSupplier6<R> property, MatchStrategy matchStrategy, Predicate<R> ignoreStrategy) {
+        return ne(classMapping6, property, queryAlias6, matchStrategy, ignoreStrategy);
+    }
+
+    // ****************************************************************************************************************
+
+    @Override
+    public L lk6(SerializableFunction<E6, String> name, String value, MatchStrategy matchStrategy) {
+        return lk(classMapping6, name, value, queryAlias6, matchStrategy, ignoreStrategy);
+    }
+
+    @Override
+    public L lk6(SerializableFunction<E6, String> name, String value, MatchStrategy matchStrategy,
             Predicate<String> ignoreStrategy) {
-        return lk(classMapping6, name, value, queryAlias6, queryPolicy, ignoreStrategy);
+        return lk(classMapping6, name, value, queryAlias6, matchStrategy, ignoreStrategy);
     }
 
     @Override
-    public L lk6(SerializableStringSupplier property, MatchStrategy queryPolicy) {
-        return lk(classMapping6, property, queryAlias6, queryPolicy, ignoreStrategy);
+    public L lk6(SerializableStringSupplier property, MatchStrategy matchStrategy) {
+        return lk(classMapping6, property, queryAlias6, matchStrategy, ignoreStrategy);
     }
 
     @Override
-    public L lk6(SerializableStringSupplier property, MatchStrategy queryPolicy, Predicate<String> ignoreStrategy) {
-        return lk(classMapping6, property, queryAlias6, queryPolicy, ignoreStrategy);
-    }
-
-    // ****************************************************************************************************************
-
-    @Override
-    public L sw6(SerializableFunction<E6, String> name, String value, MatchStrategy queryPolicy) {
-        return sw(classMapping6, name, value, queryAlias6, queryPolicy, ignoreStrategy);
-    }
-
-    @Override
-    public L sw6(SerializableFunction<E6, String> name, String value, MatchStrategy queryPolicy,
-            Predicate<String> ignoreStrategy) {
-        return sw(classMapping6, name, value, queryAlias6, queryPolicy, ignoreStrategy);
-    }
-
-    @Override
-    public L sw6(SerializableStringSupplier property, MatchStrategy queryPolicy) {
-        return sw(classMapping6, property, queryAlias6, queryPolicy, ignoreStrategy);
-    }
-
-    @Override
-    public L sw6(SerializableStringSupplier property, MatchStrategy queryPolicy, Predicate<String> ignoreStrategy) {
-        return sw(classMapping6, property, queryAlias6, queryPolicy, ignoreStrategy);
+    public L lk6(SerializableStringSupplier property, MatchStrategy matchStrategy, Predicate<String> ignoreStrategy) {
+        return lk(classMapping6, property, queryAlias6, matchStrategy, ignoreStrategy);
     }
 
     // ****************************************************************************************************************
 
     @Override
-    public L ew6(SerializableFunction<E6, String> name, String value, MatchStrategy queryPolicy) {
-        return ew(classMapping6, name, value, queryAlias6, queryPolicy, ignoreStrategy);
+    public L sw6(SerializableFunction<E6, String> name, String value, MatchStrategy matchStrategy) {
+        return sw(classMapping6, name, value, queryAlias6, matchStrategy, ignoreStrategy);
     }
 
     @Override
-    public L ew6(SerializableFunction<E6, String> name, String value, MatchStrategy queryPolicy,
+    public L sw6(SerializableFunction<E6, String> name, String value, MatchStrategy matchStrategy,
             Predicate<String> ignoreStrategy) {
-        return ew(classMapping6, name, value, queryAlias6, queryPolicy, ignoreStrategy);
+        return sw(classMapping6, name, value, queryAlias6, matchStrategy, ignoreStrategy);
     }
 
     @Override
-    public L ew6(SerializableStringSupplier property, MatchStrategy queryPolicy) {
-        return ew(classMapping6, property, queryAlias6, queryPolicy, ignoreStrategy);
+    public L sw6(SerializableStringSupplier property, MatchStrategy matchStrategy) {
+        return sw(classMapping6, property, queryAlias6, matchStrategy, ignoreStrategy);
     }
 
     @Override
-    public L ew6(SerializableStringSupplier property, MatchStrategy queryPolicy, Predicate<String> ignoreStrategy) {
-        return ew(classMapping6, property, queryAlias6, queryPolicy, ignoreStrategy);
+    public L sw6(SerializableStringSupplier property, MatchStrategy matchStrategy, Predicate<String> ignoreStrategy) {
+        return sw(classMapping6, property, queryAlias6, matchStrategy, ignoreStrategy);
     }
 
     // ****************************************************************************************************************
 
     @Override
-    public L co6(SerializableFunction<E6, String> name, String value, MatchStrategy queryPolicy) {
-        return co(classMapping6, name, value, queryAlias6, queryPolicy, ignoreStrategy);
+    public L ew6(SerializableFunction<E6, String> name, String value, MatchStrategy matchStrategy) {
+        return ew(classMapping6, name, value, queryAlias6, matchStrategy, ignoreStrategy);
     }
 
     @Override
-    public L co6(SerializableFunction<E6, String> name, String value, MatchStrategy queryPolicy,
+    public L ew6(SerializableFunction<E6, String> name, String value, MatchStrategy matchStrategy,
             Predicate<String> ignoreStrategy) {
-        return co(classMapping6, name, value, queryAlias6, queryPolicy, ignoreStrategy);
+        return ew(classMapping6, name, value, queryAlias6, matchStrategy, ignoreStrategy);
     }
 
     @Override
-    public L co6(SerializableStringSupplier property, MatchStrategy queryPolicy) {
-        return co(classMapping6, property, queryAlias6, queryPolicy, ignoreStrategy);
+    public L ew6(SerializableStringSupplier property, MatchStrategy matchStrategy) {
+        return ew(classMapping6, property, queryAlias6, matchStrategy, ignoreStrategy);
     }
 
     @Override
-    public L co6(SerializableStringSupplier property, MatchStrategy queryPolicy, Predicate<String> ignoreStrategy) {
-        return co(classMapping6, property, queryAlias6, queryPolicy, ignoreStrategy);
+    public L ew6(SerializableStringSupplier property, MatchStrategy matchStrategy, Predicate<String> ignoreStrategy) {
+        return ew(classMapping6, property, queryAlias6, matchStrategy, ignoreStrategy);
+    }
+
+    // ****************************************************************************************************************
+
+    @Override
+    public L co6(SerializableFunction<E6, String> name, String value, MatchStrategy matchStrategy) {
+        return co(classMapping6, name, value, queryAlias6, matchStrategy, ignoreStrategy);
+    }
+
+    @Override
+    public L co6(SerializableFunction<E6, String> name, String value, MatchStrategy matchStrategy,
+            Predicate<String> ignoreStrategy) {
+        return co(classMapping6, name, value, queryAlias6, matchStrategy, ignoreStrategy);
+    }
+
+    @Override
+    public L co6(SerializableStringSupplier property, MatchStrategy matchStrategy) {
+        return co(classMapping6, property, queryAlias6, matchStrategy, ignoreStrategy);
+    }
+
+    @Override
+    public L co6(SerializableStringSupplier property, MatchStrategy matchStrategy, Predicate<String> ignoreStrategy) {
+        return co(classMapping6, property, queryAlias6, matchStrategy, ignoreStrategy);
     }
 
     // ****************************************************************************************************************
@@ -1410,10 +1412,10 @@ public abstract class AbstractEntitySqlConditionGroupExpressionBase6<E, E2, E3, 
     public L property(SixArgusFunction<EntityPropertyFunction<E, C, L>, EntityPropertyFunction<E2, C, L>,
             EntityPropertyFunction<E3, C, L>, EntityPropertyFunction<E4, C, L>, EntityPropertyFunction<E5, C, L>,
             EntityPropertyFunction<E6, C, L>, L> entitiesPropertyFunction) {
-        return entitiesPropertyFunction.apply(new EntityPropertyFunctionImpl<E, C, L>(0, this),
-                new EntityPropertyFunctionImpl<E2, C, L>(1, this), new EntityPropertyFunctionImpl<E3, C, L>(2, this),
-                new EntityPropertyFunctionImpl<E4, C, L>(3, this), new EntityPropertyFunctionImpl<E5, C, L>(4, this),
-                new EntityPropertyFunctionImpl<E6, C, L>(5, this));
+        return entitiesPropertyFunction.apply(new EntityPropertyFunctionImpl<>(0, this, factory),
+                new EntityPropertyFunctionImpl<>(1, this, factory), new EntityPropertyFunctionImpl<>(2, this, factory),
+                new EntityPropertyFunctionImpl<>(3, this, factory), new EntityPropertyFunctionImpl<>(4, this, factory),
+                new EntityPropertyFunctionImpl<>(5, this, factory));
     }
 
     // ********************************************************************

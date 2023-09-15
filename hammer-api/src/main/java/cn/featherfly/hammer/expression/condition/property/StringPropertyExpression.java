@@ -5,13 +5,13 @@ import cn.featherfly.hammer.expression.condition.ConditionExpression;
 import cn.featherfly.hammer.expression.condition.LogicExpression;
 
 /**
- * StringExpression.
+ * String property expression.
  *
  * @author zhongj
  * @param <C> the generic type
  * @param <L> the generic type
  */
-public interface StringExpression<C extends ConditionExpression, L extends LogicExpression<C, L>>
+public interface StringPropertyExpression<C extends ConditionExpression, L extends LogicExpression<C, L>>
         extends PropertyEqualsExpression<C, L, String>, PropertyNotEqualsExpression<C, L, String>,
         PropertyInExpression<C, L, String>, PropertyNotInExpression<C, L, String>,
         PropertyLessEqualsExpression<C, L, String>, PropertyLessThanExpression<C, L, String>,

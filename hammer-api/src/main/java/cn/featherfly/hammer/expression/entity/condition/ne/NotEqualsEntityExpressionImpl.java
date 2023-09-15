@@ -12,6 +12,7 @@ package cn.featherfly.hammer.expression.entity.condition.ne;
 import java.util.Collection;
 import java.util.function.Predicate;
 
+import cn.featherfly.common.exception.NotImplementedException;
 import cn.featherfly.common.function.serializable.SerializableFunction;
 import cn.featherfly.common.function.serializable.SerializableSupplier;
 import cn.featherfly.common.function.serializable.SerializableToCollectionFunction;
@@ -47,8 +48,8 @@ public class NotEqualsEntityExpressionImpl<E, C extends ConditionExpression, L e
      */
     @Override
     public <R> NotEqualsEntityPropertyExpression<R> property(SerializableFunction<E, R> name) {
-        // YUFEI_TODO Auto-generated method stub
-        return null;
+        // IMPLSOON 未实现property
+        throw new NotImplementedException();
     }
 
     /**
@@ -57,8 +58,8 @@ public class NotEqualsEntityExpressionImpl<E, C extends ConditionExpression, L e
     @Override
     public <R extends Collection<RE>,
             RE> NotEqualsEntityPropertyExpression<RE> property(SerializableToCollectionFunction<E, R, RE> name) {
-        // YUFEI_TODO Auto-generated method stub
-        return null;
+        // IMPLSOON 未实现property
+        throw new NotImplementedException();
     }
 
     /**
@@ -73,8 +74,8 @@ public class NotEqualsEntityExpressionImpl<E, C extends ConditionExpression, L e
      * {@inheritDoc}
      */
     @Override
-    public <R> void accept(SerializableFunction<E, R> property, R value, MatchStrategy queryPolicy) {
-        expression.ne(index, property, value, queryPolicy);
+    public <R> void accept(SerializableFunction<E, R> property, R value, MatchStrategy matchStrategy) {
+        expression.ne(index, property, value, matchStrategy);
     }
 
     /**
@@ -89,9 +90,9 @@ public class NotEqualsEntityExpressionImpl<E, C extends ConditionExpression, L e
      * {@inheritDoc}
      */
     @Override
-    public <R> void accept(SerializableFunction<E, R> property, R value, MatchStrategy queryPolicy,
+    public <R> void accept(SerializableFunction<E, R> property, R value, MatchStrategy matchStrategy,
             Predicate<R> ignoreStrategy) {
-        expression.ne(index, property, value, queryPolicy, ignoreStrategy);
+        expression.ne(index, property, value, matchStrategy, ignoreStrategy);
     }
 
     /**
@@ -114,16 +115,16 @@ public class NotEqualsEntityExpressionImpl<E, C extends ConditionExpression, L e
      * {@inheritDoc}
      */
     @Override
-    public <R> void accept(SerializableSupplier<R> property, MatchStrategy queryPolicy) {
-        expression.ne(index, property, queryPolicy);
+    public <R> void accept(SerializableSupplier<R> property, MatchStrategy matchStrategy) {
+        expression.ne(index, property, matchStrategy);
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public <R> void accept(SerializableSupplier<R> property, MatchStrategy queryPolicy, Predicate<R> ignoreStrategy) {
-        expression.ne(index, property, queryPolicy, ignoreStrategy);
+    public <R> void accept(SerializableSupplier<R> property, MatchStrategy matchStrategy, Predicate<R> ignoreStrategy) {
+        expression.ne(index, property, matchStrategy, ignoreStrategy);
     }
 
 }

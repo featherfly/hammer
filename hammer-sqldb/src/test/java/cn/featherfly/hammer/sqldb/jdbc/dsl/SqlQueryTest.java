@@ -14,6 +14,7 @@ import cn.featherfly.common.db.Table;
 import cn.featherfly.common.db.mapping.JdbcMappingException;
 import cn.featherfly.common.lang.Strings;
 import cn.featherfly.common.repository.AliasRepository;
+import cn.featherfly.common.repository.IgnoreStrategy;
 import cn.featherfly.common.repository.Repository;
 import cn.featherfly.common.repository.SimpleAliasRepository;
 import cn.featherfly.common.repository.SimpleRepository;
@@ -230,7 +231,10 @@ public class SqlQueryTest extends JdbcTestBase {
 
         // query.find("user") 返回 SqlQueryEntity
         // query.find("user").property("username") 返回 QueryEntityProperties，应该返回SqlQueryEntity
-        query.find("user").property("username", "password", "age").join("user_info").on("user_id").list();
+        query.find("user").property("username", "password", "age") //
+                .join("user_info") //
+                .on("user_id") //
+                .list();
 
         query.find("user").property("username", "password", "age").join("user_info").on("user_id").join("user_info")
                 .on("user_id").list();
@@ -284,6 +288,57 @@ public class SqlQueryTest extends JdbcTestBase {
         list = query.find("user").property("username", "password", "age").join("user_info").on("user_id").where()
                 .property(1, "name").eq("羽飞").list();
         assertEquals(list.size(), 1);
+    }
+
+    @Test
+    void testJoinCondition_in() {
+        int[] ids = new int[] { 1, 2 };
+        List<Map<String, Object>> list = query.find("user") //
+                .where() //
+                .in("id", ids) //
+                .list();
+        assertEquals(list.size(), ids.length);
+
+        list = query.find("user") //
+                .where() //
+                .in("id", null) //
+                .list();
+        long total = query.find("user").count();
+        assertEquals(list.size(), total);
+
+        long c1 = query.find("user") //
+                .where() //
+                .in("id", null, IgnoreStrategy.NONE)// 不忽略空值
+                .count();
+        assertEquals(c1, 0);
+    }
+
+    @Test
+    void testJoinCondition_eq() {
+        int id = 1;
+        int userId = query.find("user").property("id") //
+                .where() //
+                .eq("id", id) //
+                .intValue();
+        assertEquals(userId, id);
+
+        long c1 = query.find("user") //
+                .where() //
+                .eq("id", null) //
+                .count();
+        long total = query.find("user").count();
+        assertEquals(c1, total);
+
+        long c2 = query.find("user") //
+                .where() //
+                .eq("id", null, IgnoreStrategy.NONE) // 不忽略空值
+                .count();
+        assertEquals(c2, 0);
+        c2 = query.find("user") //
+                .where() //
+                .eq("id", null, v -> false) // 不忽略空值
+                .count();
+        assertEquals(c2, 0);
     }
 
     @Test(expectedExceptions = IllegalArgumentException.class)

@@ -38,7 +38,7 @@ public class SqlQueryEntityProperties extends AbstractSqlQueryEntityProperties<S
      * @param ignoreStrategy     the ignore strategy
      */
     public SqlQueryEntityProperties(Jdbc jdbc, DatabaseMetadata databaseMetadata, String tableName,
-            SqlPageFactory sqlPageFactory, AliasManager aliasManager, Predicate<Object> ignoreStrategy) {
+            SqlPageFactory sqlPageFactory, AliasManager aliasManager, Predicate<?> ignoreStrategy) {
         this(jdbc, databaseMetadata, tableName, aliasManager.put(tableName), sqlPageFactory, aliasManager,
                 ignoreStrategy);
     }
@@ -55,7 +55,7 @@ public class SqlQueryEntityProperties extends AbstractSqlQueryEntityProperties<S
      * @param ignoreStrategy     the ignore strategy
      */
     public SqlQueryEntityProperties(Jdbc jdbc, DatabaseMetadata databaseMetadata, String tableName, String tableAlias,
-            SqlPageFactory sqlPageFactory, AliasManager aliasManager, Predicate<Object> ignoreStrategy) {
+            SqlPageFactory sqlPageFactory, AliasManager aliasManager, Predicate<?> ignoreStrategy) {
         super(jdbc, databaseMetadata, tableName, tableAlias, sqlPageFactory, aliasManager, ignoreStrategy);
     }
 
@@ -202,7 +202,7 @@ public class SqlQueryEntityProperties extends AbstractSqlQueryEntityProperties<S
         //                repositoryName, aliasManager.put(repositoryName), join, ignoreStrategy);
         //        SqlQueryEntityProperties sqlQueryEntityProperties, AliasManager aliasManager,
         //        SqlPageFactory sqlPageFactory, String selectTableAlis, String selectTableColumn, String joinTableName,
-        //        String joinTableAlias, Join join, Predicate<Object> ignoreStrategy
+        //        String joinTableAlias, Join join, Predicate<?> ignoreStrategy
         return new SqlQueryWith(this, aliasManager, sqlPageFactory, tableAlias, getIdName(), repositoryName,
                 aliasManager.put(repositoryName), join, ignoreStrategy);
     }

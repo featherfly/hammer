@@ -65,7 +65,7 @@ public interface MulitiEntityLikeExpression<C extends ConditionExpression, L ext
      * @param queryPolicy the query policy
      * @return the l
      */
-    <E> L lk(int index, SerializableFunction<E, String> name, String value, MatchStrategy queryPolicy);
+    <E> L lk(int index, SerializableFunction<E, String> name, String value, MatchStrategy matchStrategy);
 
     /**
      * end with value. 以value结尾.
@@ -78,7 +78,7 @@ public interface MulitiEntityLikeExpression<C extends ConditionExpression, L ext
      * @param ignoreStrategy the ignore strategy
      * @return the l
      */
-    <E> L lk(int index, SerializableFunction<E, String> name, String value, MatchStrategy queryPolicy,
+    <E> L lk(int index, SerializableFunction<E, String> name, String value, MatchStrategy matchStrategy,
             Predicate<String> ignoreStrategy);
 
     /**
@@ -112,7 +112,7 @@ public interface MulitiEntityLikeExpression<C extends ConditionExpression, L ext
      * @param queryPolicy the query policy
      * @return the l
      */
-    L lk(int index, SerializableSupplier<String> property, MatchStrategy queryPolicy);
+    L lk(int index, SerializableSupplier<String> property, MatchStrategy matchStrategy);
 
     /**
      * end with value. 以value结尾.
@@ -123,7 +123,7 @@ public interface MulitiEntityLikeExpression<C extends ConditionExpression, L ext
      * @param ignoreStrategy the ignore strategy
      * @return the l
      */
-    L lk(int index, SerializableSupplier<String> property, MatchStrategy queryPolicy, Predicate<String> ignoreStrategy);
+    L lk(int index, SerializableSupplier<String> property, MatchStrategy matchStrategy, Predicate<String> ignoreStrategy);
 
     //  嵌套属性使用property(U1::getU2).property(U2:getV).lk(v)来设置
     //    /**

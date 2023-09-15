@@ -256,3 +256,5 @@ BEGIN
     update role set `descp` = u_descp where `name` like q_name;
     set out_row_count = ROW_COUNT();
 END;
+
+SET FOREIGN_KEY_CHECKS=0;

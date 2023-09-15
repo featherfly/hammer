@@ -59,7 +59,7 @@ public interface EntityStartWithExpression<E, C extends ConditionExpression, L e
      * @param queryPolicy the query policy
      * @return the l
      */
-    L sw(SerializableFunction<E, String> name, String value, MatchStrategy queryPolicy);
+    L sw(SerializableFunction<E, String> name, String value, MatchStrategy matchStrategy);
 
     /**
      * start with value. 以value开始.
@@ -70,7 +70,7 @@ public interface EntityStartWithExpression<E, C extends ConditionExpression, L e
      * @param ignoreStrategy the ignore strategy
      * @return the l
      */
-    L sw(SerializableFunction<E, String> name, String value, MatchStrategy queryPolicy, Predicate<String> ignoreStrategy);
+    L sw(SerializableFunction<E, String> name, String value, MatchStrategy matchStrategy, Predicate<String> ignoreStrategy);
 
     /**
      * start with value. 以value开始.
@@ -100,7 +100,7 @@ public interface EntityStartWithExpression<E, C extends ConditionExpression, L e
      * @param queryPolicy the query policy
      * @return the l
      */
-    L sw(SerializableStringSupplier property, MatchStrategy queryPolicy);
+    L sw(SerializableStringSupplier property, MatchStrategy matchStrategy);
 
     /**
      * start with value. 以value开始.
@@ -110,7 +110,7 @@ public interface EntityStartWithExpression<E, C extends ConditionExpression, L e
      * @param ignoreStrategy the ignore strategy
      * @return the l
      */
-    L sw(SerializableStringSupplier property, MatchStrategy queryPolicy, Predicate<String> ignoreStrategy);
+    L sw(SerializableStringSupplier property, MatchStrategy matchStrategy, Predicate<String> ignoreStrategy);
 
     //  嵌套属性使用property(U1::getU2).property(U2:getV).sw(v)来设置
     //    /**

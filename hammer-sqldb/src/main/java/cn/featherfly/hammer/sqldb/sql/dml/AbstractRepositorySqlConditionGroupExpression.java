@@ -97,7 +97,7 @@
 //     * @param ignoreStrategy   the ignore strategy
 //     */
 //    protected AbstractRepositorySqlConditionGroupExpression(L parent, Dialect dialect, AliasManager aliasManager,
-//            String queryAlias, SqlPageFactory sqlPageFactory, Predicate<Object> ignoreStrategy) {
+//            String queryAlias, SqlPageFactory sqlPageFactory, Predicate<?> ignoreStrategy) {
 //        super(dialect, ignoreStrategy, parent);
 //        this.queryAlias = queryAlias;
 //        this.aliasManager = aliasManager;
@@ -231,7 +231,7 @@
 //     * {@inheritDoc}
 //     */
 //    @Override
-//    public L eq(String name, Object value, MatchStrategy queryPolicy) {
+//    public L eq(String name, Object value, MatchStrategy matchStrategy) {
 //        return (L) addCondition(new SqlConditionExpressionBuilder(dialect, name, value, ComparisonOperator.EQ, queryPolicy,
 //                queryAlias, ignoreStrategy));
 //    }
@@ -240,7 +240,7 @@
 //     * {@inheritDoc}
 //     */
 //    @Override
-//    public <T, R> L eq(SerializableFunction<T, R> name, R value, MatchStrategy queryPolicy) {
+//    public <T, R> L eq(SerializableFunction<T, R> name, R value, MatchStrategy matchStrategy) {
 //        // FIXME value 空指针异常
 //        List<Tuple2<String, Optional<R>>> tuples = supplier(LambdaUtils.getLambdaInfo(name), value);
 //        L logic = null;
@@ -264,7 +264,7 @@
 //     * {@inheritDoc}
 //     */
 //    @Override
-//    public <R> L eq(SerializableSupplier<R> property, MatchStrategy queryPolicy) {
+//    public <R> L eq(SerializableSupplier<R> property, MatchStrategy matchStrategy) {
 //        // FIXME value 空指针异常
 //        List<Tuple2<String, Optional<R>>> tuples = supplier(LambdaUtils.getSerializableSupplierLambdaInfo(property));
 //        L l = null;
@@ -329,7 +329,7 @@
 //     * {@inheritDoc}
 //     */
 //    @Override
-//    public L eq(String repository, String name, Object value, MatchStrategy queryPolicy) {
+//    public L eq(String repository, String name, Object value, MatchStrategy matchStrategy) {
 //        return (L) addCondition(new SqlConditionExpressionBuilder(dialect, name, value, ComparisonOperator.EQ, queryPolicy,
 //                aliasManager.getAlias(repository), ignoreStrategy));
 //    }
@@ -338,7 +338,7 @@
 //    //     * {@inheritDoc}
 //    //     */
 //    //    @Override
-//    //    public <T> L eq(Class<T> repository, String name, Object value, MatchStrategy queryPolicy) {
+//    //    public <T> L eq(Class<T> repository, String name, Object value, MatchStrategy matchStrategy) {
 //    //        return eq(getTableName(repository), name, value, queryPolicy);
 //    //    }
 //
@@ -346,7 +346,7 @@
 //     * {@inheritDoc}
 //     */
 //    @Override
-//    public L eq(int repositoryIndex, String name, Object value, MatchStrategy queryPolicy) {
+//    public L eq(int repositoryIndex, String name, Object value, MatchStrategy matchStrategy) {
 //        return (L) addCondition(new SqlConditionExpressionBuilder(dialect, name, value, ComparisonOperator.EQ, queryPolicy,
 //                aliasManager.getAlias(repositoryIndex), ignoreStrategy));
 //    }
@@ -356,7 +356,7 @@
 //     */
 //    @Override
 //    public <T, R> L eq(SerializableFunction<T, R> repository, SerializableFunction<T, R> property, R value,
-//            MatchStrategy queryPolicy) {
+//            MatchStrategy matchStrategy) {
 //        return eq(getPropertyName(repository), getPropertyName(property), value, queryPolicy);
 //    }
 //
@@ -365,7 +365,7 @@
 //     */
 //    @Override
 //    public <T, R> L eq(SerializableSupplier<T> repository, SerializableFunction<T, R> property,
-//            MatchStrategy queryPolicy) {
+//            MatchStrategy matchStrategy) {
 //        Tuple3<String, String, Object> tuple = conditionResult(repository, property);
 //        return eq(tuple.get0(), tuple.get1(), tuple.get2(), queryPolicy);
 //    }
@@ -374,7 +374,7 @@
 //     * {@inheritDoc}
 //     */
 //    @Override
-//    public L ne(String name, Object value, MatchStrategy queryPolicy) {
+//    public L ne(String name, Object value, MatchStrategy matchStrategy) {
 //        return (L) addCondition(new SqlConditionExpressionBuilder(dialect, name, value, ComparisonOperator.NE, queryPolicy,
 //                queryAlias, ignoreStrategy));
 //    }
@@ -383,7 +383,7 @@
 //     * {@inheritDoc}
 //     */
 //    @Override
-//    public <T, R> L ne(SerializableFunction<T, R> name, R value, MatchStrategy queryPolicy) {
+//    public <T, R> L ne(SerializableFunction<T, R> name, R value, MatchStrategy matchStrategy) {
 //        // FIXME value 空指针异常
 //        List<Tuple2<String, Optional<R>>> tuples = supplier(LambdaUtils.getLambdaInfo(name), value);
 //        L l = null;
@@ -407,7 +407,7 @@
 //     * {@inheritDoc}
 //     */
 //    @Override
-//    public <R> L ne(SerializableSupplier<R> property, MatchStrategy queryPolicy) {
+//    public <R> L ne(SerializableSupplier<R> property, MatchStrategy matchStrategy) {
 //        // FIXME value 空指针异常
 //        List<Tuple2<String, Optional<R>>> tuples = supplier(LambdaUtils.getSerializableSupplierLambdaInfo(property));
 //        L l = null;
@@ -472,7 +472,7 @@
 //     * {@inheritDoc}
 //     */
 //    @Override
-//    public L ne(String repository, String name, Object value, MatchStrategy queryPolicy) {
+//    public L ne(String repository, String name, Object value, MatchStrategy matchStrategy) {
 //        return (L) addCondition(new SqlConditionExpressionBuilder(dialect, name, value, ComparisonOperator.NE, queryPolicy,
 //                aliasManager.getAlias(repository), ignoreStrategy));
 //    }
@@ -481,7 +481,7 @@
 //    //     * {@inheritDoc}
 //    //     */
 //    //    @Override
-//    //    public <T> L ne(Class<T> repository, String name, Object value, MatchStrategy queryPolicy) {
+//    //    public <T> L ne(Class<T> repository, String name, Object value, MatchStrategy matchStrategy) {
 //    //        return ne(getTableName(repository), name, value, queryPolicy);
 //    //    }
 //
@@ -489,7 +489,7 @@
 //     * {@inheritDoc}
 //     */
 //    @Override
-//    public L ne(int repositoryIndex, String name, Object value, MatchStrategy queryPolicy) {
+//    public L ne(int repositoryIndex, String name, Object value, MatchStrategy matchStrategy) {
 //        return (L) addCondition(new SqlConditionExpressionBuilder(dialect, name, value, ComparisonOperator.NE, queryPolicy,
 //                aliasManager.getAlias(repositoryIndex), ignoreStrategy));
 //    }
@@ -499,7 +499,7 @@
 //     */
 //    @Override
 //    public <T, R> L ne(SerializableFunction<T, R> repository, SerializableFunction<T, R> property, R value,
-//            MatchStrategy queryPolicy) {
+//            MatchStrategy matchStrategy) {
 //        return eq(getPropertyName(repository), getPropertyName(property), value, queryPolicy);
 //    }
 //
@@ -508,7 +508,7 @@
 //     */
 //    @Override
 //    public <T, R> L ne(SerializableSupplier<T> repository, SerializableFunction<T, R> property,
-//            MatchStrategy queryPolicy) {
+//            MatchStrategy matchStrategy) {
 //        Tuple3<String, String, Object> tuple = conditionResult(repository, property);
 //        return eq(tuple.get0(), tuple.get1(), tuple.get2(), queryPolicy);
 //    }
@@ -544,7 +544,7 @@
 //     * {@inheritDoc}
 //     */
 //    @Override
-//    public L lk(String name, String value, MatchStrategy queryPolicy) {
+//    public L lk(String name, String value, MatchStrategy matchStrategy) {
 //        return (L) addCondition(new SqlConditionExpressionBuilder(dialect, name, value, ComparisonOperator.LK, queryPolicy,
 //                queryAlias, ignoreStrategy));
 //    }
@@ -553,7 +553,7 @@
 //     * {@inheritDoc}
 //     */
 //    @Override
-//    public <T> L lk(SerializableToStringFunction<T> name, String value, MatchStrategy queryPolicy) {
+//    public <T> L lk(SerializableToStringFunction<T> name, String value, MatchStrategy matchStrategy) {
 //        return lk(getPropertyName(name), value, queryPolicy);
 //    }
 //
@@ -561,7 +561,7 @@
 //     * {@inheritDoc}
 //     */
 //    @Override
-//    public L lk(SerializableStringSupplier property, MatchStrategy queryPolicy) {
+//    public L lk(SerializableStringSupplier property, MatchStrategy matchStrategy) {
 //        SerializableSupplierLambdaInfo<String> info = LambdaUtils.getSerializableSupplierLambdaInfo(property);
 //        return lk(info.getSerializedLambdaInfo().getPropertyName(), info.getValue(), queryPolicy);
 //    }
@@ -596,7 +596,7 @@
 //     * {@inheritDoc}
 //     */
 //    @Override
-//    public L lk(String repository, String name, String value, MatchStrategy queryPolicy) {
+//    public L lk(String repository, String name, String value, MatchStrategy matchStrategy) {
 //        return (L) addCondition(new SqlConditionExpressionBuilder(dialect, name, value, ComparisonOperator.LK, queryPolicy,
 //                aliasManager.getAlias(repository), ignoreStrategy));
 //    }
@@ -605,7 +605,7 @@
 //    //     * {@inheritDoc}
 //    //     */
 //    //    @Override
-//    //    public <T> L lk(Class<T> repository, String name, String value, MatchStrategy queryPolicy) {
+//    //    public <T> L lk(Class<T> repository, String name, String value, MatchStrategy matchStrategy) {
 //    //        return lk(getTableName(repository), name, value, queryPolicy);
 //    //    }
 //
@@ -613,7 +613,7 @@
 //     * {@inheritDoc}
 //     */
 //    @Override
-//    public L lk(int repositoryIndex, String name, String value, MatchStrategy queryPolicy) {
+//    public L lk(int repositoryIndex, String name, String value, MatchStrategy matchStrategy) {
 //        return (L) addCondition(new SqlConditionExpressionBuilder(dialect, name, value, ComparisonOperator.LK, queryPolicy,
 //                aliasManager.getAlias(repositoryIndex), ignoreStrategy));
 //    }
@@ -647,7 +647,7 @@
 //     * {@inheritDoc}
 //     */
 //    @Override
-//    public L sw(String name, String value, MatchStrategy queryPolicy) {
+//    public L sw(String name, String value, MatchStrategy matchStrategy) {
 //        return (L) addCondition(new SqlConditionExpressionBuilder(dialect, name, value, ComparisonOperator.SW, queryPolicy,
 //                queryAlias, ignoreStrategy));
 //    }
@@ -656,7 +656,7 @@
 //     * {@inheritDoc}
 //     */
 //    @Override
-//    public <T> L sw(SerializableToStringFunction<T> name, String value, MatchStrategy queryPolicy) {
+//    public <T> L sw(SerializableToStringFunction<T> name, String value, MatchStrategy matchStrategy) {
 //        return sw(getPropertyName(name), value, queryPolicy);
 //    }
 //
@@ -664,7 +664,7 @@
 //     * {@inheritDoc}
 //     */
 //    @Override
-//    public L sw(SerializableStringSupplier property, MatchStrategy queryPolicy) {
+//    public L sw(SerializableStringSupplier property, MatchStrategy matchStrategy) {
 //        SerializableSupplierLambdaInfo<String> info = LambdaUtils.getSerializableSupplierLambdaInfo(property);
 //        return sw(info.getSerializedLambdaInfo().getPropertyName(), info.getValue());
 //    }
@@ -699,7 +699,7 @@
 //     * {@inheritDoc}
 //     */
 //    @Override
-//    public L sw(String repository, String name, String value, MatchStrategy queryPolicy) {
+//    public L sw(String repository, String name, String value, MatchStrategy matchStrategy) {
 //        return (L) addCondition(new SqlConditionExpressionBuilder(dialect, name, value, ComparisonOperator.SW, queryPolicy,
 //                aliasManager.getAlias(repository), ignoreStrategy));
 //    }
@@ -708,7 +708,7 @@
 //    //     * {@inheritDoc}
 //    //     */
 //    //    @Override
-//    //    public <T> L sw(Class<T> repository, String name, String value, MatchStrategy queryPolicy) {
+//    //    public <T> L sw(Class<T> repository, String name, String value, MatchStrategy matchStrategy) {
 //    //        return sw(getTableName(repository), name, value, queryPolicy);
 //    //    }
 //
@@ -716,7 +716,7 @@
 //     * {@inheritDoc}
 //     */
 //    @Override
-//    public L sw(int repositoryIndex, String name, String value, MatchStrategy queryPolicy) {
+//    public L sw(int repositoryIndex, String name, String value, MatchStrategy matchStrategy) {
 //        return (L) addCondition(new SqlConditionExpressionBuilder(dialect, name, value, ComparisonOperator.SW, queryPolicy,
 //                aliasManager.getAlias(repositoryIndex), ignoreStrategy));
 //    }
@@ -750,7 +750,7 @@
 //     * {@inheritDoc}
 //     */
 //    @Override
-//    public L ew(String name, String value, MatchStrategy queryPolicy) {
+//    public L ew(String name, String value, MatchStrategy matchStrategy) {
 //        return (L) addCondition(new SqlConditionExpressionBuilder(dialect, name, value, ComparisonOperator.EW, queryPolicy,
 //                queryAlias, ignoreStrategy));
 //    }
@@ -759,7 +759,7 @@
 //     * {@inheritDoc}
 //     */
 //    @Override
-//    public <T> L ew(SerializableToStringFunction<T> name, String value, MatchStrategy queryPolicy) {
+//    public <T> L ew(SerializableToStringFunction<T> name, String value, MatchStrategy matchStrategy) {
 //        return ew(getPropertyName(name), value, queryPolicy);
 //    }
 //
@@ -767,7 +767,7 @@
 //     * {@inheritDoc}
 //     */
 //    @Override
-//    public L ew(SerializableStringSupplier property, MatchStrategy queryPolicy) {
+//    public L ew(SerializableStringSupplier property, MatchStrategy matchStrategy) {
 //        SerializableSupplierLambdaInfo<String> info = LambdaUtils.getSerializableSupplierLambdaInfo(property);
 //        return co(info.getSerializedLambdaInfo().getPropertyName(), info.getValue(), queryPolicy);
 //    }
@@ -804,7 +804,7 @@
 //     * {@inheritDoc}
 //     */
 //    @Override
-//    public L ew(String repository, String name, String value, MatchStrategy queryPolicy) {
+//    public L ew(String repository, String name, String value, MatchStrategy matchStrategy) {
 //        return (L) addCondition(new SqlConditionExpressionBuilder(dialect, name, value, ComparisonOperator.EW, queryPolicy,
 //                aliasManager.getAlias(repository), ignoreStrategy));
 //    }
@@ -813,7 +813,7 @@
 //    //     * {@inheritDoc}
 //    //     */
 //    //    @Override
-//    //    public <T> L ew(Class<T> repository, String name, String value, MatchStrategy queryPolicy) {
+//    //    public <T> L ew(Class<T> repository, String name, String value, MatchStrategy matchStrategy) {
 //    //        return ew(getTableName(repository), name, value, queryPolicy);
 //    //    }
 //
@@ -821,7 +821,7 @@
 //     * {@inheritDoc}
 //     */
 //    @Override
-//    public L ew(int repositoryIndex, String name, String value, MatchStrategy queryPolicy) {
+//    public L ew(int repositoryIndex, String name, String value, MatchStrategy matchStrategy) {
 //        return (L) addCondition(new SqlConditionExpressionBuilder(dialect, name, value, ComparisonOperator.EW, queryPolicy,
 //                aliasManager.getAlias(repositoryIndex), ignoreStrategy));
 //    }
@@ -855,7 +855,7 @@
 //     * {@inheritDoc}
 //     */
 //    @Override
-//    public L co(String name, String value, MatchStrategy queryPolicy) {
+//    public L co(String name, String value, MatchStrategy matchStrategy) {
 //        return (L) addCondition(new SqlConditionExpressionBuilder(dialect, name, value, ComparisonOperator.CO, queryPolicy,
 //                queryAlias, ignoreStrategy));
 //    }
@@ -864,7 +864,7 @@
 //     * {@inheritDoc}
 //     */
 //    @Override
-//    public <T> L co(SerializableToStringFunction<T> name, String value, MatchStrategy queryPolicy) {
+//    public <T> L co(SerializableToStringFunction<T> name, String value, MatchStrategy matchStrategy) {
 //        return co(getPropertyName(name), value, queryPolicy);
 //    }
 //
@@ -872,7 +872,7 @@
 //     * {@inheritDoc}
 //     */
 //    @Override
-//    public L co(SerializableStringSupplier property, MatchStrategy queryPolicy) {
+//    public L co(SerializableStringSupplier property, MatchStrategy matchStrategy) {
 //        SerializableSupplierLambdaInfo<String> info = LambdaUtils.getSerializableSupplierLambdaInfo(property);
 //        return co(info.getSerializedLambdaInfo().getPropertyName(), info.getValue(), queryPolicy);
 //    }
@@ -909,7 +909,7 @@
 //     * {@inheritDoc}
 //     */
 //    @Override
-//    public L co(String repository, String name, String value, MatchStrategy queryPolicy) {
+//    public L co(String repository, String name, String value, MatchStrategy matchStrategy) {
 //        return (L) addCondition(new SqlConditionExpressionBuilder(dialect, name, value, ComparisonOperator.CO, queryPolicy,
 //                aliasManager.getAlias(repository), ignoreStrategy));
 //    }
@@ -918,7 +918,7 @@
 //    //     * {@inheritDoc}
 //    //     */
 //    //    @Override
-//    //    public <T> L co(Class<T> repository, String name, String value, MatchStrategy queryPolicy) {
+//    //    public <T> L co(Class<T> repository, String name, String value, MatchStrategy matchStrategy) {
 //    //        return co(getTableName(repository), name, value, queryPolicy);
 //    //    }
 //
@@ -926,7 +926,7 @@
 //     * {@inheritDoc}
 //     */
 //    @Override
-//    public L co(int repositoryIndex, String name, String value, MatchStrategy queryPolicy) {
+//    public L co(int repositoryIndex, String name, String value, MatchStrategy matchStrategy) {
 //        return (L) addCondition(new SqlConditionExpressionBuilder(dialect, name, value, ComparisonOperator.CO, queryPolicy,
 //                aliasManager.getAlias(repositoryIndex), ignoreStrategy));
 //    }
@@ -2718,7 +2718,7 @@
 //    //     * {@inheritDoc}
 //    //     */
 //    //    @Override
-//    //    public C setIgnorePolicy(Predicate<Object> ignoreStrategy) {
+//    //    public C setIgnorePolicy(Predicate<?> ignoreStrategy) {
 //    //        AssertIllegalArgument.isNotNull(ignoreStrategy, "ignoreStrategy");
 //    //        this.ignoreStrategy = ignoreStrategy;
 //    //        return (C) this;

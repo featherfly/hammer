@@ -56,7 +56,7 @@
 //     */
 //    public RepositoryTypeSqlQueryConditionGroupExpression(Jdbc jdbc, JdbcMappingFactory factory,
 //            AliasManager aliasManager, SqlPageFactory sqlPageFactory, JdbcClassMapping<?> classMapping,
-//            Predicate<Object> ignoreStrategy) {
+//            Predicate<?> ignoreStrategy) {
 //        this(jdbc, factory, aliasManager, null, sqlPageFactory, classMapping, ignoreStrategy);
 //    }
 //
@@ -73,7 +73,7 @@
 //     */
 //    public RepositoryTypeSqlQueryConditionGroupExpression(Jdbc jdbc, JdbcMappingFactory factory,
 //            AliasManager aliasManager, String queryAlias, SqlPageFactory sqlPageFactory,
-//            JdbcClassMapping<?> classMapping, Predicate<Object> ignoreStrategy) {
+//            JdbcClassMapping<?> classMapping, Predicate<?> ignoreStrategy) {
 //        this(null, jdbc, factory, aliasManager, queryAlias, sqlPageFactory, classMapping, ignoreStrategy);
 //    }
 //
@@ -91,7 +91,7 @@
 //     */
 //    RepositoryTypeSqlQueryConditionGroupExpression(RepositoryTypeQueryConditionGroupLogicExpression parent, Jdbc jdbc,
 //            JdbcMappingFactory factory, AliasManager aliasManager, String queryAlias, SqlPageFactory sqlPageFactory,
-//            JdbcClassMapping<?> classMapping, Predicate<Object> ignoreStrategy) {
+//            JdbcClassMapping<?> classMapping, Predicate<?> ignoreStrategy) {
 //        super(parent, jdbc.getDialect(), factory, aliasManager, queryAlias, sqlPageFactory, classMapping, ignoreStrategy);
 //        this.jdbc = jdbc;
 //    }

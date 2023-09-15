@@ -193,7 +193,7 @@ public class JdbcTestBase extends TestBase {
         System.err.println("initSQLite");
         //        ConstantConfigurator.config("constant.sqlite.yaml");
 
-        String path = new File(UriUtils.linkUri(this.getClass().getResource("/").getFile(), "hammer.sqlite3.db"))
+        String path = new File(UriUtils.linkUri(JdbcTestBase.class.getResource("/").getFile(), "hammer.sqlite3.db"))
                 .getPath();
         System.out.println(path);
         BasicDataSource ds = new BasicDataSource();

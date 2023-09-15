@@ -17,6 +17,7 @@ import java.util.Collection;
 import java.util.Date;
 import java.util.function.Predicate;
 
+import cn.featherfly.common.exception.NotImplementedException;
 import cn.featherfly.common.function.serializable.SerializableDateSupplier;
 import cn.featherfly.common.function.serializable.SerializableDoubleSupplier;
 import cn.featherfly.common.function.serializable.SerializableFunction;
@@ -369,8 +370,8 @@ public class GreatThanEntityExpressionImpl<E, C extends ConditionExpression, L e
      */
     @Override
     public <R> CompareEntityPropertyExpression<R> property(SerializableFunction<E, R> name) {
-        // YUFEI_TODO Auto-generated method stub
-        return null;
+        // IMPLSOON 未实现property
+        throw new NotImplementedException();
     }
 
     /**
@@ -379,8 +380,8 @@ public class GreatThanEntityExpressionImpl<E, C extends ConditionExpression, L e
     @Override
     public <R extends Collection<RE>,
             RE> CompareEntityPropertyExpression<RE> property(SerializableToCollectionFunction<E, R, RE> name) {
-        // YUFEI_TODO Auto-generated method stub
-        return null;
+        // IMPLSOON 未实现property
+        throw new NotImplementedException();
     }
 
     /**
@@ -388,8 +389,8 @@ public class GreatThanEntityExpressionImpl<E, C extends ConditionExpression, L e
      */
     @Override
     public <R> ConditionEntityExpressionIntPropertyExpression property(SerializableToIntFunction<E> name) {
-        // YUFEI_TODO Auto-generated method stub
-        return null;
+        // IMPLSOON 未实现property
+        throw new NotImplementedException();
     }
 
     /**
@@ -397,8 +398,8 @@ public class GreatThanEntityExpressionImpl<E, C extends ConditionExpression, L e
      */
     @Override
     public <R> ConditionEntityExpressionLongPropertyExpression property(SerializableToLongFunction<E> name) {
-        // YUFEI_TODO Auto-generated method stub
-        return null;
+        // IMPLSOON 未实现property
+        throw new NotImplementedException();
     }
 
     /**
@@ -406,8 +407,8 @@ public class GreatThanEntityExpressionImpl<E, C extends ConditionExpression, L e
      */
     @Override
     public <R> ConditionEntityExpressionDoublePropertyExpression property(SerializableToDoubleFunction<E> name) {
-        // YUFEI_TODO Auto-generated method stub
-        return null;
+        // IMPLSOON 未实现property
+        throw new NotImplementedException();
     }
 
     /**
@@ -416,8 +417,8 @@ public class GreatThanEntityExpressionImpl<E, C extends ConditionExpression, L e
     @Override
     public <R extends Date> ConditionEntityExpressionDatePropertyExpression<R> property(
             SerializableToDateFunction<E, R> name) {
-        // YUFEI_TODO Auto-generated method stub
-        return null;
+        // IMPLSOON 未实现property
+        throw new NotImplementedException();
     }
 
     /**
@@ -425,8 +426,8 @@ public class GreatThanEntityExpressionImpl<E, C extends ConditionExpression, L e
      */
     @Override
     public ConditionEntityExpressionLocalDatePropertyExpression property(SerializableToLocalDateFunction<E> name) {
-        // YUFEI_TODO Auto-generated method stub
-        return null;
+        // IMPLSOON 未实现property
+        throw new NotImplementedException();
     }
 
     /**
@@ -434,8 +435,8 @@ public class GreatThanEntityExpressionImpl<E, C extends ConditionExpression, L e
      */
     @Override
     public ConditionEntityExpressionLocalTimePropertyExpression property(SerializableToLocalTimeFunction<E> name) {
-        // YUFEI_TODO Auto-generated method stub
-        return null;
+        // IMPLSOON 未实现property
+        throw new NotImplementedException();
     }
 
     /**
@@ -444,8 +445,8 @@ public class GreatThanEntityExpressionImpl<E, C extends ConditionExpression, L e
     @Override
     public ConditionEntityExpressionLocalDateTimePropertyExpression property(
             SerializableToLocalDateTimeFunction<E> name) {
-        // YUFEI_TODO Auto-generated method stub
-        return null;
+        // IMPLSOON 未实现property
+        throw new NotImplementedException();
     }
 
     /**
@@ -454,8 +455,8 @@ public class GreatThanEntityExpressionImpl<E, C extends ConditionExpression, L e
     @Override
     public <R extends Number> ConditionEntityExpressionNumberPropertyExpression<R> property(
             SerializableToNumberFunction<E, R> name) {
-        // YUFEI_TODO Auto-generated method stub
-        return null;
+        // IMPLSOON 未实现property
+        throw new NotImplementedException();
     }
 
     /**
@@ -464,8 +465,8 @@ public class GreatThanEntityExpressionImpl<E, C extends ConditionExpression, L e
     @Override
     public <R extends Enum<R>> ConditionEntityExpressionEnumPropertyExpression<R> property(
             SerializableToEnumFunction<E, R> name) {
-        // YUFEI_TODO Auto-generated method stub
-        return null;
+        // IMPLSOON 未实现property
+        throw new NotImplementedException();
     }
 
     /**
@@ -473,8 +474,8 @@ public class GreatThanEntityExpressionImpl<E, C extends ConditionExpression, L e
      */
     @Override
     public ConditionEntityExpressionStringPropertyExpression property(SerializableToStringFunction<E> name) {
-        // YUFEI_TODO Auto-generated method stub
-        return null;
+        // IMPLSOON 未实现property
+        throw new NotImplementedException();
     }
 
 }

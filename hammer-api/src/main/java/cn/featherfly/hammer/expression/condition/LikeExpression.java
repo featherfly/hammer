@@ -1,8 +1,10 @@
 
 package cn.featherfly.hammer.expression.condition;
 
-import cn.featherfly.common.function.serializable.SerializableToStringFunction;
+import java.util.function.Predicate;
+
 import cn.featherfly.common.function.serializable.SerializableStringSupplier;
+import cn.featherfly.common.function.serializable.SerializableToStringFunction;
 import cn.featherfly.common.operator.ComparisonOperator.MatchStrategy;
 import cn.featherfly.common.repository.Field;
 
@@ -24,19 +26,44 @@ public interface LikeExpression<C extends ConditionExpression, L extends LogicEx
      * @return LogicExpression
      */
     default L lk(Field name, String value) {
-        return lk(name, value, MatchStrategy.AUTO);
+        return lk(name.name(), value);
     }
 
     /**
      * like value.
      *
-     * @param name        参数名称
-     * @param value       参数值
-     * @param queryPolicy the query policy
+     * @param name           参数名称
+     * @param value          参数值
+     * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
-    default L lk(Field name, String value, MatchStrategy queryPolicy) {
-        return lk(name.name(), value, queryPolicy);
+    default L lk(Field name, String value, Predicate<String> ignoreStrategy) {
+        return lk(name.name(), value, ignoreStrategy);
+    }
+
+    /**
+     * like value.
+     *
+     * @param name          参数名称
+     * @param value         参数值
+     * @param matchStrategy the match strategy
+     * @return LogicExpression
+     */
+    default L lk(Field name, String value, MatchStrategy matchStrategy) {
+        return lk(name.name(), value, matchStrategy);
+    }
+
+    /**
+     * like value.
+     *
+     * @param name           参数名称
+     * @param value          参数值
+     * @param matchStrategy  the match strategy
+     * @param ignoreStrategy the ignore strategy
+     * @return LogicExpression
+     */
+    default L lk(Field name, String value, MatchStrategy matchStrategy, Predicate<String> ignoreStrategy) {
+        return lk(name.name(), value, matchStrategy, ignoreStrategy);
     }
 
     /**
@@ -53,12 +80,35 @@ public interface LikeExpression<C extends ConditionExpression, L extends LogicEx
     /**
      * like value.
      *
-     * @param name        参数名称
-     * @param value       参数值
-     * @param queryPolicy the query policy
+     * @param name           参数名称
+     * @param value          参数值
+     * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
-    L lk(String name, String value, MatchStrategy queryPolicy);
+    default L lk(String name, String value, Predicate<String> ignoreStrategy) {
+        return lk(name, value, MatchStrategy.AUTO, ignoreStrategy);
+    }
+
+    /**
+     * like value.
+     *
+     * @param name          参数名称
+     * @param value         参数值
+     * @param matchStrategy the match strategy
+     * @return LogicExpression
+     */
+    L lk(String name, String value, MatchStrategy matchStrategy);
+
+    /**
+     * like value.
+     *
+     * @param name           参数名称
+     * @param value          参数值
+     * @param matchStrategy  the match strategy
+     * @param ignoreStrategy the ignore strategy
+     * @return LogicExpression
+     */
+    L lk(String name, String value, MatchStrategy matchStrategy, Predicate<String> ignoreStrategy);
 
     /**
      * like value.
@@ -73,15 +123,41 @@ public interface LikeExpression<C extends ConditionExpression, L extends LogicEx
     }
 
     /**
+     * like value.
+     *
+     * @param <T>            the generic type
+     * @param name           参数名称
+     * @param value          参数值
+     * @param ignoreStrategy the ignore strategy
+     * @return LogicExpression
+     */
+    default <T> L lk(SerializableToStringFunction<T> name, String value, Predicate<String> ignoreStrategy) {
+        return lk(name, value, MatchStrategy.AUTO, ignoreStrategy);
+    }
+
+    /**
      * Lk.
      *
-     * @param <T>         the generic type
-     * @param name        the name 参数名称
-     * @param value       the value
-     * @param queryPolicy the query policy
+     * @param <T>           the generic type
+     * @param name          the name 参数名称
+     * @param value         the value
+     * @param matchStrategy the match strategy
      * @return the l
      */
-    <T> L lk(SerializableToStringFunction<T> name, String value, MatchStrategy queryPolicy);
+    <T> L lk(SerializableToStringFunction<T> name, String value, MatchStrategy matchStrategy);
+
+    /**
+     * Lk.
+     *
+     * @param <T>            the generic type
+     * @param name           the name 参数名称
+     * @param value          the value
+     * @param matchStrategy  the match strategy
+     * @param ignoreStrategy the ignore strategy
+     * @return the l
+     */
+    <T> L lk(SerializableToStringFunction<T> name, String value, MatchStrategy matchStrategy,
+            Predicate<String> ignoreStrategy);
 
     /**
      * like value.
@@ -94,11 +170,32 @@ public interface LikeExpression<C extends ConditionExpression, L extends LogicEx
     }
 
     /**
+     * like value.
+     *
+     * @param property       对象属性
+     * @param ignoreStrategy the ignore strategy
+     * @return LogicExpression
+     */
+    default L lk(SerializableStringSupplier property, Predicate<String> ignoreStrategy) {
+        return lk(property, MatchStrategy.AUTO, ignoreStrategy);
+    }
+
+    /**
      * Lk.
      *
-     * @param property    the property 对象属性
-     * @param queryPolicy the query policy
+     * @param property      the property 对象属性
+     * @param matchStrategy the match strategy
      * @return the l
      */
-    L lk(SerializableStringSupplier property, MatchStrategy queryPolicy);
+    L lk(SerializableStringSupplier property, MatchStrategy matchStrategy);
+
+    /**
+     * Lk.
+     *
+     * @param property       the property 对象属性
+     * @param matchStrategy  the match strategy
+     * @param ignoreStrategy the ignore strategy
+     * @return the l
+     */
+    L lk(SerializableStringSupplier property, MatchStrategy matchStrategy, Predicate<String> ignoreStrategy);
 }

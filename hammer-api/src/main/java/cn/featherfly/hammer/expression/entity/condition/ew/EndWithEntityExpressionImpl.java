@@ -13,10 +13,11 @@ package cn.featherfly.hammer.expression.entity.condition.ew;
 import java.util.Collection;
 import java.util.function.Predicate;
 
-import cn.featherfly.common.function.serializable.SerializableToStringFunction;
+import cn.featherfly.common.exception.NotImplementedException;
 import cn.featherfly.common.function.serializable.SerializableFunction;
 import cn.featherfly.common.function.serializable.SerializableSupplier;
 import cn.featherfly.common.function.serializable.SerializableToCollectionFunction;
+import cn.featherfly.common.function.serializable.SerializableToStringFunction;
 import cn.featherfly.common.operator.ComparisonOperator.MatchStrategy;
 import cn.featherfly.hammer.expression.condition.ConditionExpression;
 import cn.featherfly.hammer.expression.condition.LogicExpression;
@@ -48,8 +49,8 @@ public class EndWithEntityExpressionImpl<E, C extends ConditionExpression, L ext
      */
     @Override
     public <R> EndWithEntityPropertyExpression<R> property(SerializableFunction<E, R> name) {
-        // YUFEI_TODO Auto-generated method stub
-        return null;
+        // IMPLSOON 未实现property
+        throw new NotImplementedException();
     }
 
     /**
@@ -58,8 +59,8 @@ public class EndWithEntityExpressionImpl<E, C extends ConditionExpression, L ext
     @Override
     public <R extends Collection<RE>,
             RE> EndWithEntityPropertyExpression<RE> property(SerializableToCollectionFunction<E, R, RE> name) {
-        // YUFEI_TODO Auto-generated method stub
-        return null;
+        // IMPLSOON 未实现property
+        throw new NotImplementedException();
     }
 
     /**
@@ -67,8 +68,8 @@ public class EndWithEntityExpressionImpl<E, C extends ConditionExpression, L ext
      */
     @Override
     public <R> EndWithEntityPropertyValueExpression<E> property(SerializableToStringFunction<E> name) {
-        // YUFEI_TODO Auto-generated method stub
-        return null;
+        // IMPLSOON 未实现property
+        throw new NotImplementedException();
     }
 
     /**
@@ -83,8 +84,8 @@ public class EndWithEntityExpressionImpl<E, C extends ConditionExpression, L ext
      * {@inheritDoc}
      */
     @Override
-    public void accept(SerializableToStringFunction<E> property, String value, MatchStrategy queryPolicy) {
-        expression.ew(index, property, value, queryPolicy);
+    public void accept(SerializableToStringFunction<E> property, String value, MatchStrategy matchStrategy) {
+        expression.ew(index, property, value, matchStrategy);
     }
 
     /**
@@ -99,9 +100,9 @@ public class EndWithEntityExpressionImpl<E, C extends ConditionExpression, L ext
      * {@inheritDoc}
      */
     @Override
-    public void accept(SerializableToStringFunction<E> property, String value, MatchStrategy queryPolicy,
+    public void accept(SerializableToStringFunction<E> property, String value, MatchStrategy matchStrategy,
             Predicate<String> ignoreStrategy) {
-        expression.ew(index, property, value, queryPolicy, ignoreStrategy);
+        expression.ew(index, property, value, matchStrategy, ignoreStrategy);
 
     }
 
@@ -125,17 +126,17 @@ public class EndWithEntityExpressionImpl<E, C extends ConditionExpression, L ext
      * {@inheritDoc}
      */
     @Override
-    public void accept(SerializableSupplier<String> propertyValue, MatchStrategy queryPolicy) {
-        expression.ew(index, propertyValue, queryPolicy);
+    public void accept(SerializableSupplier<String> propertyValue, MatchStrategy matchStrategy) {
+        expression.ew(index, propertyValue, matchStrategy);
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public void accept(SerializableSupplier<String> propertyValue, MatchStrategy queryPolicy,
+    public void accept(SerializableSupplier<String> propertyValue, MatchStrategy matchStrategy,
             Predicate<String> ignoreStrategy) {
-        expression.ew(index, propertyValue, queryPolicy, ignoreStrategy);
+        expression.ew(index, propertyValue, matchStrategy, ignoreStrategy);
     }
 
 }

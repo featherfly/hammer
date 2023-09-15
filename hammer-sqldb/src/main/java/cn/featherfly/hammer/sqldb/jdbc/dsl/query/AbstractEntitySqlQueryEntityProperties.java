@@ -56,7 +56,7 @@ public abstract class AbstractEntitySqlQueryEntityProperties<E, P extends Abstra
     protected AliasManager aliasManager;
 
     /** The ignore strategy. */
-    protected Predicate<Object> ignoreStrategy;
+    protected Predicate<?> ignoreStrategy;
 
     /** The table alias. */
     protected String tableAlias;
@@ -73,7 +73,7 @@ public abstract class AbstractEntitySqlQueryEntityProperties<E, P extends Abstra
      */
     public AbstractEntitySqlQueryEntityProperties(Jdbc jdbc, JdbcClassMapping<E> classMapping,
             JdbcMappingFactory factory, SqlPageFactory sqlPageFactory, AliasManager aliasManager,
-            Predicate<Object> ignoreStrategy) {
+            Predicate<?> ignoreStrategy) {
         AssertIllegalArgument.isNotNull(ignoreStrategy, "ignoreStrategy");
         this.ignoreStrategy = ignoreStrategy;
         this.jdbc = jdbc;
@@ -107,7 +107,7 @@ public abstract class AbstractEntitySqlQueryEntityProperties<E, P extends Abstra
     //     */
     //    public AbstractEntitySqlQueryEntityProperties(Jdbc jdbc, DatabaseMetadata databaseMetadata, String tableName,
     //            String tableAlias, JdbcMappingFactory factory, SqlPageFactory sqlPageFactory, AliasManager aliasManager,
-    //            Predicate<Object> ignoreStrategy) {
+    //            Predicate<?> ignoreStrategy) {
     //        AssertIllegalArgument.isNotNull(ignoreStrategy, "ignoreStrategy");
     //        this.ignoreStrategy = ignoreStrategy;
     //        this.jdbc = jdbc;
