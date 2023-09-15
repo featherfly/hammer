@@ -60,7 +60,7 @@ public interface EntityContainsExpression2<E, E2, C extends ConditionExpression,
     //     * @return LogicExpression
     //     */
     //    L co(Function<Tuple2<QueryEntityRepository<E>, QueryEntityRepository<E2>>, QueryEntityRepository<E>> entities,
-    //            SerializableFunction<E, String> name, String value, MatchStrategy queryPolicy);
+    //            SerializableFunction<E, String> name, String value, MatchStrategy matchStrategy);
     //
     //    /**
     //     * contains value. 包含value.
@@ -73,7 +73,7 @@ public interface EntityContainsExpression2<E, E2, C extends ConditionExpression,
     //     * @return LogicExpression
     //     */
     //    L co(Function<Tuple2<QueryEntityRepository<E>, QueryEntityRepository<E2>>, QueryEntityRepository<E>> entities,
-    //            SerializableFunction<E, String> name, String value, MatchStrategy queryPolicy,
+    //            SerializableFunction<E, String> name, String value, MatchStrategy matchStrategy,
     //            Predicate<String> ignoreStrategy);
     //
     //    /**
@@ -112,7 +112,7 @@ public interface EntityContainsExpression2<E, E2, C extends ConditionExpression,
     //     * @return LogicExpression
     //     */
     //    L co(Function<Tuple2<QueryEntityRepository<E>, QueryEntityRepository<E2>>, QueryEntityRepository<E>> entities,
-    //            SerializableStringSupplier property, MatchStrategy queryPolicy);
+    //            SerializableStringSupplier property, MatchStrategy matchStrategy);
     //
     //    /**
     //     * contains value. 包含value.
@@ -124,7 +124,7 @@ public interface EntityContainsExpression2<E, E2, C extends ConditionExpression,
     //     * @return LogicExpression
     //     */
     //    L co(Function<Tuple2<QueryEntityRepository<E>, QueryEntityRepository<E2>>, QueryEntityRepository<E>> entities,
-    //            SerializableStringSupplier property, MatchStrategy queryPolicy, Predicate<String> ignoreStrategy);
+    //            SerializableStringSupplier property, MatchStrategy matchStrategy, Predicate<String> ignoreStrategy);
     //
     //    /**
     //     * contains value. 包含value.
@@ -194,7 +194,7 @@ public interface EntityContainsExpression2<E, E2, C extends ConditionExpression,
     //     * @return LogicExpression
     //     */
     //    L co(Function<Tuple2<QueryEntityRepository<E>, QueryEntityRepository<E2>>, QueryEntityRepository<E2>> entities,
-    //            SerializableFunction2<E2, String> name, String value, MatchStrategy queryPolicy);
+    //            SerializableFunction2<E2, String> name, String value, MatchStrategy matchStrategy);
     //
     //    /**
     //     * contains value. 包含value.
@@ -207,7 +207,7 @@ public interface EntityContainsExpression2<E, E2, C extends ConditionExpression,
     //     * @return LogicExpression
     //     */
     //    L co(Function<Tuple2<QueryEntityRepository<E>, QueryEntityRepository<E2>>, QueryEntityRepository<E2>> entities,
-    //            SerializableFunction2<E2, String> name, String value, MatchStrategy queryPolicy,
+    //            SerializableFunction2<E2, String> name, String value, MatchStrategy matchStrategy,
     //            Predicate<String> ignoreStrategy);
     //
     //    /**
@@ -246,7 +246,7 @@ public interface EntityContainsExpression2<E, E2, C extends ConditionExpression,
     //     * @return LogicExpression
     //     */
     //    L co(Function<Tuple2<QueryEntityRepository<E>, QueryEntityRepository<E2>>, QueryEntityRepository<E2>> entities,
-    //            SerializableSupplier2<String> property, MatchStrategy queryPolicy);
+    //            SerializableSupplier2<String> property, MatchStrategy matchStrategy);
     //
     //    /**
     //     * contains value. 包含value.
@@ -258,7 +258,7 @@ public interface EntityContainsExpression2<E, E2, C extends ConditionExpression,
     //     * @return LogicExpression
     //     */
     //    L co(Function<Tuple2<QueryEntityRepository<E>, QueryEntityRepository<E2>>, QueryEntityRepository<E2>> entities,
-    //            SerializableSupplier2<String> property, MatchStrategy queryPolicy, Predicate<String> ignoreStrategy);
+    //            SerializableSupplier2<String> property, MatchStrategy matchStrategy, Predicate<String> ignoreStrategy);
     //
     //    /**
     //     * contains value. 包含value.

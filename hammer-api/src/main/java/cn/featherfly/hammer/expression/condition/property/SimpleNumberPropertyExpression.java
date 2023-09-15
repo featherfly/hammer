@@ -1,20 +1,21 @@
 
 package cn.featherfly.hammer.expression.condition.property;
 
-import cn.featherfly.common.operator.ComparisonOperator.MatchStrategy;
+import java.util.function.Predicate;
+
 import cn.featherfly.hammer.expression.condition.ConditionsExpression;
 import cn.featherfly.hammer.expression.condition.LogicExpression;
 
 /**
- * SimpleObjectExpression.
+ * simple number property expression.
  *
  * @author zhongj
  * @param <N> the number type
  * @param <C> the generic type
  * @param <L> the generic type
  */
-public class SimpleNumberExpression<N extends Number, C extends ConditionsExpression<C, L>,
-        L extends LogicExpression<C, L>> implements NumberExpression<N, C, L> {
+public class SimpleNumberPropertyExpression<N extends Number, C extends ConditionsExpression<C, L>,
+        L extends LogicExpression<C, L>> implements NumberPropertyExpression<N, C, L> {
 
     private String name;
 
@@ -26,7 +27,7 @@ public class SimpleNumberExpression<N extends Number, C extends ConditionsExpres
      * @param name       name
      * @param expression expression
      */
-    public SimpleNumberExpression(String name, ConditionsExpression<C, L> expression) {
+    public SimpleNumberPropertyExpression(String name, ConditionsExpression<C, L> expression) {
         super();
         this.name = name;
         this.expression = expression;
@@ -38,6 +39,14 @@ public class SimpleNumberExpression<N extends Number, C extends ConditionsExpres
     @Override
     public L eq(N value) {
         return expression.eq(name, value);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public L eq(N value, Predicate<N> ignoreStrategy) {
+        return expression.eq(name, value, ignoreStrategy);
     }
 
     /**
@@ -60,6 +69,14 @@ public class SimpleNumberExpression<N extends Number, C extends ConditionsExpres
      * {@inheritDoc}
      */
     @Override
+    public L ne(N value, Predicate<N> ignoreStrategy) {
+        return expression.ne(name, value, ignoreStrategy);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
     public L in(N value) {
         return expression.in(name, value);
     }
@@ -68,8 +85,60 @@ public class SimpleNumberExpression<N extends Number, C extends ConditionsExpres
      * {@inheritDoc}
      */
     @Override
+    public L in(N[] value) {
+        return expression.in(name, value);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @SuppressWarnings("unchecked")
+    @Override
+    public L in(N value, Predicate<N> ignoreStrategy) {
+        return expression.in(name, value, (v) -> ignoreStrategy.test((N) v));
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @SuppressWarnings("unchecked")
+    @Override
+    public L in(N[] value, Predicate<N[]> ignoreStrategy) {
+        return expression.in(name, value, (v) -> ignoreStrategy.test((N[]) v));
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
     public L nin(N value) {
         return expression.nin(name, value);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public L nin(N[] value) {
+        return expression.nin(name, value);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @SuppressWarnings("unchecked")
+    @Override
+    public L nin(N value, Predicate<N> ignoreStrategy) {
+        return expression.nin(name, value, (v) -> ignoreStrategy.test((N) v));
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @SuppressWarnings("unchecked")
+    @Override
+    public L nin(N[] value, Predicate<N[]> ignoreStrategy) {
+        return expression.nin(name, value, (v) -> ignoreStrategy.test((N[]) v));
     }
 
     /**
@@ -136,19 +205,4 @@ public class SimpleNumberExpression<N extends Number, C extends ConditionsExpres
         return expression.inn(name, value);
     }
 
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public L eq(N value, MatchStrategy queryPolicy) {
-        return expression.eq(name, value, queryPolicy);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public L ne(N value, MatchStrategy queryPolicy) {
-        return expression.ne(name, value, queryPolicy);
-    }
 }

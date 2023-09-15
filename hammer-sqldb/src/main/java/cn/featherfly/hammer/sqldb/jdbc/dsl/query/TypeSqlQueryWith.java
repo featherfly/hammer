@@ -67,7 +67,7 @@
 //    protected String fetchPropertyAlias;
 //
 //    /** The ignore policy. */
-//    protected Predicate<Object> ignoreStrategy;
+//    protected Predicate<?> ignoreStrategy;
 //
 //    /**
 //     * Instantiates a new type sql query with.
@@ -86,7 +86,7 @@
 //    public TypeSqlQueryWith(TypeSqlQueryEntityProperties sqlQueryEntityProperties, AliasManager aliasManager,
 //            JdbcMappingFactory factory, SqlPageFactory sqlPageFactory, JdbcClassMapping<?> conditionTypeClassMapping,
 //            String conditionTableAlias, String conditionTableColumn, JdbcClassMapping<?> joinTypeClassMapping,
-//            String joinTableColumn, Predicate<Object> ignoreStrategy) {
+//            String joinTableColumn, Predicate<?> ignoreStrategy) {
 //        this(sqlQueryEntityProperties, aliasManager, factory, sqlPageFactory, conditionTypeClassMapping,
 //                conditionTableAlias, conditionTableColumn, joinTypeClassMapping, joinTableColumn, null, ignoreStrategy);
 //    }
@@ -109,7 +109,7 @@
 //    public TypeSqlQueryWith(TypeSqlQueryEntityProperties sqlQueryEntityProperties, AliasManager aliasManager,
 //            JdbcMappingFactory factory, SqlPageFactory sqlPageFactory, JdbcClassMapping<?> conditionTypeClassMapping,
 //            String conditionTableAlias, String conditionTableColumn, JdbcClassMapping<?> joinTypeClassMapping,
-//            String joinTableColumn, String fetchProperty, Predicate<Object> ignoreStrategy) {
+//            String joinTableColumn, String fetchProperty, Predicate<?> ignoreStrategy) {
 //        super();
 //        this.sqlQueryEntityProperties = sqlQueryEntityProperties;
 //        this.factory = factory;

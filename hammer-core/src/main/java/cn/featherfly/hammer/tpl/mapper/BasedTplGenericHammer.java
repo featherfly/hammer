@@ -5,9 +5,9 @@ import java.io.Serializable;
 import java.util.List;
 import java.util.function.Function;
 
-import cn.featherfly.common.lang.CollectionUtils;
 import cn.featherfly.common.function.serializable.SerializableFunction;
 import cn.featherfly.common.function.serializable.SerializableSupplier;
+import cn.featherfly.common.lang.CollectionUtils;
 import cn.featherfly.common.operator.LogicOperator;
 import cn.featherfly.common.repository.IgnoreStrategy;
 import cn.featherfly.hammer.GenericHammer;
@@ -184,8 +184,24 @@ public class BasedTplGenericHammer<E, ID extends Serializable> implements Generi
      * {@inheritDoc}
      */
     @Override
+    public int[] save(E[] entities, int batchSize) {
+        return hammer.save(entities, batchSize);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
     public int[] save(List<E> entities) {
         return hammer.save(entities);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public int[] save(List<E> entities, int batchSize) {
+        return hammer.save(entities, batchSize);
     }
 
     /**

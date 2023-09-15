@@ -21,7 +21,7 @@ public interface IsNullExpression<C extends ConditionExpression, L extends Logic
      * @return LogicExpression
      */
     default L isn(Field name) {
-        return isn(name, true);
+        return isn(name.name());
     }
 
     /**
@@ -49,6 +49,16 @@ public interface IsNullExpression<C extends ConditionExpression, L extends Logic
     /**
      * is null.
      *
+     * @param name  参数名称
+     * @param value if true, is null; if false, is not null; if null, ignore
+     *              this operate
+     * @return LogicExpression
+     */
+    L isn(String name, Boolean value);
+
+    /**
+     * is null.
+     *
      * @param <T>  the generic type
      * @param <R>  the generic type
      * @param name 参数名称
@@ -57,16 +67,6 @@ public interface IsNullExpression<C extends ConditionExpression, L extends Logic
     default <T, R> L isn(SerializableFunction<T, R> name) {
         return isn(name, true);
     }
-
-    /**
-     * is null.
-     *
-     * @param name  参数名称
-     * @param value if true, is null; if false, is not null; if null, ignore
-     *              this operate
-     * @return LogicExpression
-     */
-    L isn(String name, Boolean value);
 
     /**
      * is null.

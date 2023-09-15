@@ -2,13 +2,14 @@
 package cn.featherfly.hammer.expression.condition.property;
 
 import java.time.LocalDateTime;
+import java.util.function.Predicate;
 
 import cn.featherfly.common.operator.ComparisonOperator.MatchStrategy;
 import cn.featherfly.hammer.expression.condition.ConditionExpression;
 import cn.featherfly.hammer.expression.condition.LogicExpression;
 
 /**
- * LocalDateTimeExpression.
+ * LocalDateTime property expression.
  *
  * @author zhongj
  * @param <C> the generic type
@@ -30,8 +31,24 @@ public interface LocalDateTimeExpression<C extends ConditionExpression, L extend
      * {@inheritDoc}
      */
     @Override
-    default L eq(LocalDateTime value, MatchStrategy queryPolicy) {
+    L eq(LocalDateTime value, Predicate<LocalDateTime> ignoreStrategy);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    default L eq(LocalDateTime value, MatchStrategy matchStrategy) {
+        // MatchStrategy only support for String
         return eq(value);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    default L eq(LocalDateTime value, MatchStrategy matchStrategy, Predicate<LocalDateTime> ignoreStrategy) {
+        // MatchStrategy only support for String
+        return eq(value, ignoreStrategy);
     }
 
     /**
@@ -44,7 +61,23 @@ public interface LocalDateTimeExpression<C extends ConditionExpression, L extend
      * {@inheritDoc}
      */
     @Override
-    default L ne(LocalDateTime value, MatchStrategy queryPolicy) {
+    L ne(LocalDateTime value, Predicate<LocalDateTime> ignoreStrategy);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    default L ne(LocalDateTime value, MatchStrategy matchStrategy) {
+        // MatchStrategy only support for String
         return ne(value);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    default L ne(LocalDateTime value, MatchStrategy matchStrategy, Predicate<LocalDateTime> ignoreStrategy) {
+        // MatchStrategy only support for String
+        return ne(value, ignoreStrategy);
     }
 }

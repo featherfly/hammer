@@ -1,8 +1,8 @@
 
 package cn.featherfly.hammer.expression.entity.execute;
 
+import java.util.function.BooleanSupplier;
 import java.util.function.Consumer;
-import java.util.function.Supplier;
 
 import cn.featherfly.common.function.serializable.SerializableFunction;
 import cn.featherfly.common.function.serializable.SerializableSupplier;
@@ -42,12 +42,12 @@ public interface EntityUpdateSetExpression<E, U extends EntityUpdateSetExecutabl
      * set value for property.
      *
      * @param <R>      the generic type
-     * @param whether  the whether
+     * @param setable  the setable
      * @param property the property
      * @param value    property value
      * @return Update
      */
-    <R> U set(Supplier<Boolean> whether, SerializableFunction<E, R> property, R value);
+    <R> U set(BooleanSupplier setable, SerializableFunction<E, R> property, R value);
 
     /**
      * set value for property.
@@ -66,13 +66,13 @@ public interface EntityUpdateSetExpression<E, U extends EntityUpdateSetExecutabl
      *
      * @param <R>            the generic type
      * @param <O>            the generic type
-     * @param whether        the whether
+     * @param setable        the setable
      * @param property       the property
      * @param nestedProperty the nested property
      * @param value          property value
      * @return Update
      */
-    <R, O> U set(Supplier<Boolean> whether, SerializableFunction<E, R> property,
+    <R, O> U set(BooleanSupplier setable, SerializableFunction<E, R> property,
             SerializableFunction<R, O> nestedProperty, O value);
 
     /**
@@ -88,11 +88,11 @@ public interface EntityUpdateSetExpression<E, U extends EntityUpdateSetExecutabl
      * set value for property.
      *
      * @param <R>      the generic type
-     * @param whether  the whether
+     * @param setable  the setable
      * @param property the property
      * @return the u
      */
-    <R> U set(Supplier<Boolean> whether, SerializableSupplier<R> property);
+    <R> U set(BooleanSupplier setable, SerializableSupplier<R> property);
 
     /**
      * set value for property.
@@ -110,13 +110,12 @@ public interface EntityUpdateSetExpression<E, U extends EntityUpdateSetExecutabl
      *
      * @param <R>            the generic type
      * @param <O>            the generic type
-     * @param whether        the whether
+     * @param setable        the setable
      * @param property       object property
      * @param nestedProperty the nested property
      * @return Update
      */
-    <R, O> U set(Supplier<Boolean> whether, SerializableSupplier<R> property,
-            SerializableFunction<R, O> nestedProperty);
+    <R, O> U set(BooleanSupplier setable, SerializableSupplier<R> property, SerializableFunction<R, O> nestedProperty);
 
     /**
      * increase value for property.
@@ -131,13 +130,13 @@ public interface EntityUpdateSetExpression<E, U extends EntityUpdateSetExecutabl
     /**
      * increase value for property.
      *
-     * @param <R>      the generic number type
-     * @param whether  the whether
-     * @param property the property name
-     * @param value    property value
+     * @param <R>          the generic number type
+     * @param increaseable the increaseable
+     * @param property     the property name
+     * @param value        property value
      * @return Update
      */
-    <R extends Number> U increase(Supplier<Boolean> whether, SerializableFunction<E, R> property, R value);
+    <R extends Number> U increase(BooleanSupplier increaseable, SerializableFunction<E, R> property, R value);
 
     /**
      * increase value for property.
@@ -151,10 +150,10 @@ public interface EntityUpdateSetExpression<E, U extends EntityUpdateSetExecutabl
     /**
      * increase value for property.
      *
-     * @param <N>      number type
-     * @param whether  the whether
-     * @param property object property
+     * @param <N>          number type
+     * @param increaseable the increaseable
+     * @param property     object property
      * @return Update
      */
-    <N extends Number> U increase(Supplier<Boolean> whether, SerializableSupplier<N> property);
+    <N extends Number> U increase(BooleanSupplier increaseable, SerializableSupplier<N> property);
 }

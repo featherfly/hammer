@@ -1,7 +1,7 @@
 
 package cn.featherfly.hammer.dml.builder.sql.update;
 
-import java.util.function.Supplier;
+import java.util.function.BooleanSupplier;
 
 import cn.featherfly.hammer.dml.builder.sql.query.UserQueryConditionGroupExpression;
 import cn.featherfly.hammer.expression.execute.UpdateValueExpression;
@@ -39,7 +39,7 @@ public class UserUpdateValue implements UpdateValueExpression<UserPropertiesUpda
      * {@inheritDoc}
      */
     @Override
-    public UserPropertiesUpdate set(Supplier<Boolean> whether, Object value) {
+    public UserPropertiesUpdate set(BooleanSupplier whether, Object value) {
         return update.set(whether, name, value);
     }
 }

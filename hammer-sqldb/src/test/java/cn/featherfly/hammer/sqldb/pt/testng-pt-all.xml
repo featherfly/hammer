@@ -2,6 +2,9 @@
 <!DOCTYPE suite SYSTEM "https://testng.org/testng-1.0.dtd" >
 <suite name="Benchmark Test Suite All" parallel="tests"
 	thread-count="1">
+	<parameter name="times" value="2000" />
+	<parameter name="batchSize" value="1000" />
+	<parameter name="batchTimes" value="2" />
     <suite-files>
        <suite-file path="testng-pt-jdbc.xml"/>
        <suite-file path="testng-pt-hammer.xml"/>

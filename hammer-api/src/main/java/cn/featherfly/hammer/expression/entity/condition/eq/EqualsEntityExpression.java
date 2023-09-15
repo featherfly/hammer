@@ -66,7 +66,7 @@ public interface EqualsEntityExpression<E> {
      * @param queryPolicy the query policy
      * @return the l
      */
-    <R> void accept(SerializableFunction<E, R> property, R value, MatchStrategy queryPolicy);
+    <R> void accept(SerializableFunction<E, R> property, R value, MatchStrategy matchStrategy);
 
     /**
      * equals. 等于.
@@ -89,7 +89,7 @@ public interface EqualsEntityExpression<E> {
      * @param ignoreStrategy the ignore strategy
      * @return the l
      */
-    <R> void accept(SerializableFunction<E, R> property, R value, MatchStrategy queryPolicy, Predicate<R> ignoreStrategy);
+    <R> void accept(SerializableFunction<E, R> property, R value, MatchStrategy matchStrategy, Predicate<R> ignoreStrategy);
 
     /**
      * equals. 等于.
@@ -118,7 +118,7 @@ public interface EqualsEntityExpression<E> {
      * @param queryPolicy the query policy
      * @return LogicExpression
      */
-    <R> void accept(SerializableSupplier<R> property, MatchStrategy queryPolicy);
+    <R> void accept(SerializableSupplier<R> property, MatchStrategy matchStrategy);
 
     /**
      * equals. 等于.
@@ -129,5 +129,5 @@ public interface EqualsEntityExpression<E> {
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
-    <R> void accept(SerializableSupplier<R> property, MatchStrategy queryPolicy, Predicate<R> ignoreStrategy);
+    <R> void accept(SerializableSupplier<R> property, MatchStrategy matchStrategy, Predicate<R> ignoreStrategy);
 }

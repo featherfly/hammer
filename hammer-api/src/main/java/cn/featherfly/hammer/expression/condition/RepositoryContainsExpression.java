@@ -34,7 +34,7 @@ public interface RepositoryContainsExpression<C extends ConditionExpression, L e
      * @param queryPolicy the query policy
      * @return LogicExpression
      */
-    L co(String repository, String name, String value, MatchStrategy queryPolicy);
+    L co(String repository, String name, String value, MatchStrategy matchStrategy);
 
     /**
      * contains value .包含value.
@@ -59,7 +59,7 @@ public interface RepositoryContainsExpression<C extends ConditionExpression, L e
      * @param queryPolicy the query policy
      * @return LogicExpression
      */
-    //    <T> L co(Class<T> repository, String name, String value, MatchStrategy queryPolicy);
+    //    <T> L co(Class<T> repository, String name, String value, MatchStrategy matchStrategy);
 
     /**
      * contains value .包含value.
@@ -82,6 +82,6 @@ public interface RepositoryContainsExpression<C extends ConditionExpression, L e
      * @param queryPolicy     the query policy
      * @return LogicExpression
      */
-    L co(int repositoryIndex, String name, String value, MatchStrategy queryPolicy);
+    L co(int repositoryIndex, String name, String value, MatchStrategy matchStrategy);
 
 }

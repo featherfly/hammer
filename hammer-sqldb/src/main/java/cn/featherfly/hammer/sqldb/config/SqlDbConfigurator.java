@@ -26,7 +26,7 @@ public class SqlDbConfigurator implements Configurator {
 
     public static final String DEFAULT_FILE_NAME = "hammer.yaml";
 
-    private static SqlDbConfigurator DEFAULT;
+    private volatile static SqlDbConfigurator DEFAULT;
 
     private SqldbHammerImpl sqldbHammer;
 

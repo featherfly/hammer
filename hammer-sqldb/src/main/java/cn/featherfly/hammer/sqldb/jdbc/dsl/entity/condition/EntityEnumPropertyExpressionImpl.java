@@ -1,13 +1,18 @@
 
 package cn.featherfly.hammer.sqldb.jdbc.dsl.entity.condition;
 
+import java.io.Serializable;
+import java.util.List;
+import java.util.function.Predicate;
+
+import cn.featherfly.common.db.mapping.JdbcMappingFactory;
 import cn.featherfly.common.function.serializable.SerializableFunction;
 import cn.featherfly.hammer.expression.condition.ConditionExpression;
 import cn.featherfly.hammer.expression.condition.LogicExpression;
 import cn.featherfly.hammer.expression.entity.condition.property.EntityEnumPropertyExpression;
 
 /**
- * The Class TypeEnumExpression.
+ * entity enum property expression implements.
  *
  * @author zhongj
  * @param <E> the element type
@@ -17,7 +22,7 @@ import cn.featherfly.hammer.expression.entity.condition.property.EntityEnumPrope
  */
 public class EntityEnumPropertyExpressionImpl<E, T extends Enum<T>, C extends ConditionExpression,
         L extends LogicExpression<C, L>>
-        extends AbstractMulitiEntityPropertyExpression<E, T, SerializableFunction<E, T>, C, L>
+        extends AbstractMulitiEntityGenericPropertyExpression<E, T, SerializableFunction<E, T>, C, L>
         implements EntityEnumPropertyExpression<E, T, C, L> {
 
     /**
@@ -26,10 +31,24 @@ public class EntityEnumPropertyExpressionImpl<E, T extends Enum<T>, C extends Co
      * @param index      the index
      * @param name       the name
      * @param expression the expression
+     * @param factory    the factory
      */
     public EntityEnumPropertyExpressionImpl(int index, SerializableFunction<E, T> name,
-            AbstractMulitiEntityConditionExpression<C, L> expression) {
-        super(index, name, expression);
+            AbstractMulitiEntityConditionExpression<C, L> expression, JdbcMappingFactory factory) {
+        super(index, name, expression, factory);
+    }
+
+    /**
+     * Instantiates a new entity enum property expression impl.
+     *
+     * @param index        the index
+     * @param propertyList the property list
+     * @param expression   the expression
+     * @param factory      the factory
+     */
+    public EntityEnumPropertyExpressionImpl(int index, List<Serializable> propertyList,
+            AbstractMulitiEntityConditionExpression<C, L> expression, JdbcMappingFactory factory) {
+        super(index, propertyList, expression, factory);
     }
 
     /**
@@ -37,7 +56,15 @@ public class EntityEnumPropertyExpressionImpl<E, T extends Enum<T>, C extends Co
      */
     @Override
     public L eq(T value) {
-        return expression.eq0(index, name, value, expression.getIgnoreStrategy());
+        return expression.eq0(index, getPropertyMapping(value), value, expression.getIgnoreStrategy());
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public L eq(T value, Predicate<T> ignoreStrategy) {
+        return expression.eq0(index, getPropertyMapping(value), value, ignoreStrategy);
     }
 
     /**
@@ -53,7 +80,15 @@ public class EntityEnumPropertyExpressionImpl<E, T extends Enum<T>, C extends Co
      */
     @Override
     public L ne(T value) {
-        return expression.ne0(index, name, value, expression.getIgnoreStrategy());
+        return expression.ne0(index, getPropertyMapping(value), value, expression.getIgnoreStrategy());
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public L ne(T value, Predicate<T> ignoreStrategy) {
+        return expression.ne0(index, getPropertyMapping(value), value, ignoreStrategy);
     }
 
     /**
@@ -61,7 +96,31 @@ public class EntityEnumPropertyExpressionImpl<E, T extends Enum<T>, C extends Co
      */
     @Override
     public L in(T value) {
-        return expression.in0(index, name, value, expression.getIgnoreStrategy());
+        return expression.in0(index, getPropertyMapping(value), value, expression.getIgnoreStrategy());
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public L in(T[] value) {
+        return expression.in0(index, getPropertyMapping(value), value, expression.getIgnoreStrategy());
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public L in(T value, Predicate<T> ignoreStrategy) {
+        return expression.in0(index, getPropertyMapping(value), value, ignoreStrategy);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public L in(T[] value, Predicate<T[]> ignoreStrategy) {
+        return expression.in0(index, getPropertyMapping(value), value, ignoreStrategy);
     }
 
     /**
@@ -69,7 +128,31 @@ public class EntityEnumPropertyExpressionImpl<E, T extends Enum<T>, C extends Co
      */
     @Override
     public L nin(T value) {
-        return expression.nin0(index, name, value, expression.getIgnoreStrategy());
+        return expression.nin0(index, getPropertyMapping(value), value, expression.getIgnoreStrategy());
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public L nin(T[] value) {
+        return expression.nin0(index, getPropertyMapping(value), value, expression.getIgnoreStrategy());
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public L nin(T value, Predicate<T> ignoreStrategy) {
+        return expression.nin0(index, getPropertyMapping(value), value, ignoreStrategy);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public L nin(T[] value, Predicate<T[]> ignoreStrategy) {
+        return expression.nin0(index, getPropertyMapping(value), value, ignoreStrategy);
     }
 
     /**
@@ -77,7 +160,7 @@ public class EntityEnumPropertyExpressionImpl<E, T extends Enum<T>, C extends Co
      */
     @Override
     public L isn(Boolean value) {
-        return expression.isn0(index, name, value);
+        return expression.isn0(index, getPropertyMapping(value), value);
     }
 
     /**
@@ -85,6 +168,7 @@ public class EntityEnumPropertyExpressionImpl<E, T extends Enum<T>, C extends Co
      */
     @Override
     public L inn(Boolean value) {
-        return expression.inn0(index, name, value);
+        return expression.inn0(index, getPropertyMapping(value), value);
     }
+
 }

@@ -14,6 +14,7 @@ package cn.featherfly.hammer.sqldb.sql.dml;
 import java.util.function.Predicate;
 
 import cn.featherfly.common.db.dialect.Dialect;
+import cn.featherfly.common.exception.NotImplementedException;
 import cn.featherfly.common.operator.ComparisonOperator;
 import cn.featherfly.common.operator.ComparisonOperator.MatchStrategy;
 import cn.featherfly.common.repository.mapping.ClassMapping;
@@ -42,7 +43,7 @@ public class SqlConditionGroupExpressionBuilder extends
      * @param ignoreStrategy the ignore strategy
      */
     public SqlConditionGroupExpressionBuilder(Dialect dialect, SqlPageFactory sqlPageFactory,
-            Predicate<Object> ignoreStrategy) {
+            Predicate<?> ignoreStrategy) {
         this(dialect, sqlPageFactory, null, ignoreStrategy);
     }
 
@@ -87,8 +88,8 @@ public class SqlConditionGroupExpressionBuilder extends
      */
     @Override
     public String getAlias(int index) {
-        // YUFEI_TODO Auto-generated method stub
-        return null;
+        // IMPLSOON 未实现
+        throw new NotImplementedException();
     }
 
     /**
@@ -96,8 +97,8 @@ public class SqlConditionGroupExpressionBuilder extends
      */
     @Override
     public <CM extends ClassMapping<T, P>, T, P extends PropertyMapping<P>> CM getClassMapping(int index) {
-        // YUFEI_TODO Auto-generated method stub
-        return null;
+        // IMPLSOON 未实现
+        throw new NotImplementedException();
     }
 
     /**
@@ -105,8 +106,8 @@ public class SqlConditionGroupExpressionBuilder extends
      */
     @Override
     protected <T, R> BuildableConditionGroupLogicExpression eq_ne(int index, ComparisonOperator comparisonOperator,
-            PropertyMapping<?> pm, R value, MatchStrategy queryPolicy, Predicate<?> ignoreStrategy) {
-        // YUFEI_TODO Auto-generated method stub
-        return null;
+            PropertyMapping<?> pm, R value, MatchStrategy matchStrategy, Predicate<?> ignoreStrategy) {
+        // IMPLSOON 未实现
+        throw new NotImplementedException();
     }
 }

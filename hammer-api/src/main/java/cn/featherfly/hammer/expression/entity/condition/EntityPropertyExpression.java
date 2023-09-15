@@ -19,12 +19,15 @@ import cn.featherfly.common.function.serializable.SerializableToStringFunction;
 import cn.featherfly.hammer.expression.condition.ConditionExpression;
 import cn.featherfly.hammer.expression.condition.LogicExpression;
 import cn.featherfly.hammer.expression.entity.condition.property.EntityDatePropertyExpression;
+import cn.featherfly.hammer.expression.entity.condition.property.EntityDoublePropertyExpression;
 import cn.featherfly.hammer.expression.entity.condition.property.EntityEnumPropertyExpression;
+import cn.featherfly.hammer.expression.entity.condition.property.EntityIntPropertyExpression;
 import cn.featherfly.hammer.expression.entity.condition.property.EntityLocalDatePropertyExpression;
 import cn.featherfly.hammer.expression.entity.condition.property.EntityLocalDateTimePropertyExpression;
 import cn.featherfly.hammer.expression.entity.condition.property.EntityLocalTimePropertyExpression;
+import cn.featherfly.hammer.expression.entity.condition.property.EntityLongPropertyExpression;
 import cn.featherfly.hammer.expression.entity.condition.property.EntityNumberPropertyExpression;
-import cn.featherfly.hammer.expression.entity.condition.property.EntityPropertyTypeExpression;
+import cn.featherfly.hammer.expression.entity.condition.property.EntityTypePropertyExpression;
 import cn.featherfly.hammer.expression.entity.condition.property.EntityStringPropertyExpression;
 
 /**
@@ -45,7 +48,7 @@ public interface EntityPropertyExpression<E, C extends ConditionExpression, L ex
      * @param name the name
      * @return the object expression
      */
-    <R> EntityPropertyTypeExpression<R, C, L> property(SerializableFunction<E, R> name);
+    <R> EntityTypePropertyExpression<R, C, L> property(SerializableFunction<E, R> name);
 
     /**
      * Property Collection.
@@ -56,7 +59,7 @@ public interface EntityPropertyExpression<E, C extends ConditionExpression, L ex
      * @return the object expression
      */
     <R extends Collection<RE>,
-            RE> EntityPropertyTypeExpression<RE, C, L> property(SerializableToCollectionFunction<E, R, RE> name);
+            RE> EntityTypePropertyExpression<RE, C, L> property(SerializableToCollectionFunction<E, R, RE> name);
 
     /**
      * int property.
@@ -64,7 +67,7 @@ public interface EntityPropertyExpression<E, C extends ConditionExpression, L ex
      * @param name the name
      * @return the string expression
      */
-    EntityNumberPropertyExpression<E, Integer, C, L> property(SerializableToIntFunction<E> name);
+    EntityIntPropertyExpression<E, C, L> property(SerializableToIntFunction<E> name);
 
     /**
      * long property.
@@ -72,7 +75,7 @@ public interface EntityPropertyExpression<E, C extends ConditionExpression, L ex
      * @param name the name
      * @return the string expression
      */
-    EntityNumberPropertyExpression<E, Long, C, L> property(SerializableToLongFunction<E> name);
+    EntityLongPropertyExpression<E, C, L> property(SerializableToLongFunction<E> name);
 
     /**
      * double property.
@@ -80,7 +83,7 @@ public interface EntityPropertyExpression<E, C extends ConditionExpression, L ex
      * @param name the name
      * @return the string expression
      */
-    EntityNumberPropertyExpression<E, Double, C, L> property(SerializableToDoubleFunction<E> name);
+    EntityDoublePropertyExpression<E, C, L> property(SerializableToDoubleFunction<E> name);
 
     /**
      * Property number.

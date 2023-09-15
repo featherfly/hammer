@@ -5,7 +5,7 @@ import java.util.Date;
 
 import cn.featherfly.hammer.dsl.query.QueryConditionGroupExpression;
 import cn.featherfly.hammer.dsl.query.QueryConditionGroupLogicExpression;
-import cn.featherfly.hammer.expression.condition.property.DateExpression;
+import cn.featherfly.hammer.expression.condition.property.DatePropertyExpression;
 
 /**
  * <p>
@@ -20,7 +20,7 @@ import cn.featherfly.hammer.expression.condition.property.DateExpression;
 public class StaticTypeDateExpression<E, D extends Date, Q extends StaticTypeQueryConditionGroupExpression<E, Q>> {
 
     /** The expression. */
-    private DateExpression<D, QueryConditionGroupExpression, QueryConditionGroupLogicExpression> expression;
+    private DatePropertyExpression<D, QueryConditionGroupExpression, QueryConditionGroupLogicExpression> expression;
 
     /** The type expression. */
     private Q typeExpression;
@@ -32,7 +32,7 @@ public class StaticTypeDateExpression<E, D extends Date, Q extends StaticTypeQue
      * @param typeExpression the type expression
      */
     public StaticTypeDateExpression(
-            DateExpression<D, QueryConditionGroupExpression, QueryConditionGroupLogicExpression> expression,
+            DatePropertyExpression<D, QueryConditionGroupExpression, QueryConditionGroupLogicExpression> expression,
             Q typeExpression) {
         super();
         this.expression = expression;

@@ -5,10 +5,11 @@ import java.io.Serializable;
 import java.util.List;
 import java.util.function.Function;
 
-import cn.featherfly.common.lang.AssertIllegalArgument;
-import cn.featherfly.common.lang.Lang;
 import cn.featherfly.common.function.serializable.SerializableFunction;
 import cn.featherfly.common.function.serializable.SerializableSupplier;
+import cn.featherfly.common.lang.ArrayUtils;
+import cn.featherfly.common.lang.AssertIllegalArgument;
+import cn.featherfly.common.lang.Lang;
 import cn.featherfly.common.operator.LogicOperator;
 import cn.featherfly.common.repository.IgnoreStrategy;
 import cn.featherfly.common.repository.Repository;
@@ -39,13 +40,35 @@ public interface Hammer extends TplExecutor {
     <E> int save(E entity);
 
     /**
-     * batch save entity list.
+     * batch save entity array.
      *
      * @param <E>      generic type
      * @param entities entity array to save
      * @return effect data row num
      */
-    <E> int[] save(@SuppressWarnings("unchecked") E... entities);
+    default <E> int[] save(@SuppressWarnings("unchecked") E... entities) {
+        if (Lang.isEmpty(entities)) {
+            return ArrayUtils.EMPTY_INT_ARRAY;
+        } else {
+            return save(ArrayUtils.toList(entities), entities.length);
+        }
+    }
+
+    /**
+     * batch save entity array.
+     *
+     * @param <E>       generic type
+     * @param entities  entity array to save
+     * @param batchSize the batch size
+     * @return effect data row num
+     */
+    default <E> int[] save(E[] entities, int batchSize) {
+        if (Lang.isEmpty(entities)) {
+            return ArrayUtils.EMPTY_INT_ARRAY;
+        } else {
+            return save(ArrayUtils.toList(entities), batchSize);
+        }
+    }
 
     /**
      * batch save entity list.
@@ -54,7 +77,23 @@ public interface Hammer extends TplExecutor {
      * @param entities entity list to save
      * @return effect data row num
      */
-    <E> int[] save(List<E> entities);
+    default <E> int[] save(List<E> entities) {
+        if (Lang.isEmpty(entities)) {
+            return ArrayUtils.EMPTY_INT_ARRAY;
+        } else {
+            return save(entities, entities.size());
+        }
+    }
+
+    /**
+     * batch save entity list.
+     *
+     * @param <E>       generic type
+     * @param entities  entity list to save
+     * @param batchSize the batch size
+     * @return effect data row num
+     */
+    <E> int[] save(List<E> entities, int batchSize);
 
     /**
      * update entity, update all values. equal invoke method

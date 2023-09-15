@@ -60,7 +60,7 @@ public interface MulitiEntityEqualsExpression<C extends ConditionExpression, L e
      * @param queryPolicy the query policy
      * @return LogicExpression
      */
-    <E, R> L eq(int index, SerializableFunction<E, R> name, R value, MatchStrategy queryPolicy);
+    <E, R> L eq(int index, SerializableFunction<E, R> name, R value, MatchStrategy matchStrategy);
 
     /**
      * equals. 等于.
@@ -74,7 +74,7 @@ public interface MulitiEntityEqualsExpression<C extends ConditionExpression, L e
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
-    <E, R> L eq(int index, SerializableFunction<E, R> name, R value, MatchStrategy queryPolicy,
+    <E, R> L eq(int index, SerializableFunction<E, R> name, R value, MatchStrategy matchStrategy,
             Predicate<R> ignoreStrategy);
 
     /**
@@ -112,7 +112,7 @@ public interface MulitiEntityEqualsExpression<C extends ConditionExpression, L e
      * @param queryPolicy the query policy
      * @return LogicExpression
      */
-    <R> L eq(int index, SerializableSupplier<R> property, MatchStrategy queryPolicy);
+    <R> L eq(int index, SerializableSupplier<R> property, MatchStrategy matchStrategy);
 
     /**
      * equals. 等于.
@@ -124,5 +124,5 @@ public interface MulitiEntityEqualsExpression<C extends ConditionExpression, L e
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
-    <R> L eq(int index, SerializableSupplier<R> property, MatchStrategy queryPolicy, Predicate<R> ignoreStrategy);
+    <R> L eq(int index, SerializableSupplier<R> property, MatchStrategy matchStrategy, Predicate<R> ignoreStrategy);
 }

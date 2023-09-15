@@ -65,7 +65,7 @@ public interface EntityEqualsExpressionBase<E, C extends ConditionExpression, L 
      * @param queryPolicy the query policy
      * @return LogicExpression
      */
-    <R> L eq(SerializableFunction<E, R> name, R value, MatchStrategy queryPolicy);
+    <R> L eq(SerializableFunction<E, R> name, R value, MatchStrategy matchStrategy);
 
     /**
      * equals. 等于.
@@ -77,7 +77,7 @@ public interface EntityEqualsExpressionBase<E, C extends ConditionExpression, L 
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
-    <R> L eq(SerializableFunction<E, R> name, R value, MatchStrategy queryPolicy, Predicate<R> ignoreStrategy);
+    <R> L eq(SerializableFunction<E, R> name, R value, MatchStrategy matchStrategy, Predicate<R> ignoreStrategy);
 
     /**
      * equals. 等于.
@@ -110,7 +110,7 @@ public interface EntityEqualsExpressionBase<E, C extends ConditionExpression, L 
      * @param queryPolicy the query policy
      * @return LogicExpression
      */
-    <R> L eq(SerializableSupplier<R> property, MatchStrategy queryPolicy);
+    <R> L eq(SerializableSupplier<R> property, MatchStrategy matchStrategy);
 
     /**
      * equals. 等于.
@@ -121,7 +121,7 @@ public interface EntityEqualsExpressionBase<E, C extends ConditionExpression, L 
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
-    <R> L eq(SerializableSupplier<R> property, MatchStrategy queryPolicy, Predicate<R> ignoreStrategy);
+    <R> L eq(SerializableSupplier<R> property, MatchStrategy matchStrategy, Predicate<R> ignoreStrategy);
 
     //    嵌套属性使用property(U1::getU2).property(U2:getV).eq(v)来设置
     //    /**

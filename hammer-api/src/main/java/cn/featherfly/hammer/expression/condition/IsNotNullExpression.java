@@ -21,7 +21,7 @@ public interface IsNotNullExpression<C extends ConditionExpression, L extends Lo
      * @return LogicExpression
      */
     default L inn(Field name) {
-        return inn(name, true);
+        return inn(name.name());
     }
 
     /**

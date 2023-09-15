@@ -1,10 +1,10 @@
 
 package cn.featherfly.hammer.sqldb.jdbc;
 
+import static org.testng.Assert.assertEquals;
 import static org.testng.Assert.assertNotNull;
 import static org.testng.Assert.assertNull;
 import static org.testng.Assert.assertTrue;
-import static org.testng.Assert.assertEquals;
 
 import java.io.File;
 import java.io.IOException;
@@ -777,19 +777,14 @@ public class JdbcTest extends JdbcTestBase {
 
             @Override
             public void acceptKey(Long key, int row) {
-                // YUFEI_TODO Auto-generated method stub
-
             }
 
             @Override
             public void acceptKey(List<Long> keys) {
-                // YUFEI_TODO Auto-generated method stub
-
             }
 
             @Override
             public Type<Long> getType() {
-                // YUFEI_TODO Auto-generated method stub
                 return null;
             }
         });
@@ -799,19 +794,14 @@ public class JdbcTest extends JdbcTestBase {
 
             @Override
             public void acceptKey(Long key, int row) {
-                // YUFEI_TODO Auto-generated method stub
-
             }
 
             @Override
             public void acceptKey(List<Long> keys) {
-                // YUFEI_TODO Auto-generated method stub
-
             }
 
             @Override
             public Type<Long> getType() {
-                // YUFEI_TODO Auto-generated method stub
                 return null;
             }
         }, new HashMap<String, Object>());
@@ -820,7 +810,8 @@ public class JdbcTest extends JdbcTestBase {
         result = jdbc.update("", new Object[0]);
         assertEquals(result, 0);
 
-        result = jdbc.update("", new BeanPropertyValue[0]);
+        result = jdbc.update("", new Object[] { new BeanPropertyValue<>(
+                BeanDescriptor.getBeanDescriptor(User.class).getBeanProperty(User::getId), 1) });
         assertEquals(result, 0);
     }
 

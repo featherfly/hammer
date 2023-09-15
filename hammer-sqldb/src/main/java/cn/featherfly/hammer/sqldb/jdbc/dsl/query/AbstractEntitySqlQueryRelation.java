@@ -78,7 +78,7 @@
 //    //    protected String fetchProperty;
 //
 //    /** The ignore policy. */
-//    //    protected Predicate<Object> ignoreStrategy;
+//    //    protected Predicate<?> ignoreStrategy;
 //
 //    //    /**
 //    //     * Instantiates a new type sql query with.
@@ -93,7 +93,7 @@
 //    //     */
 //    //    public AbstractEntitySqlQueryRelation(EntitySqlQueryEntityProperties<E> sqlQueryEntityProperties,
 //    //            JdbcClassMapping<E> conditionTypeClassMapping, String conditionTableAlias, String conditionTableColumn,
-//    //            JdbcClassMapping<R1> joinTypeClassMapping, String joinTableColumn, Predicate<Object> ignoreStrategy) {
+//    //            JdbcClassMapping<R1> joinTypeClassMapping, String joinTableColumn, Predicate<?> ignoreStrategy) {
 //    //        this(sqlQueryEntityProperties, conditionTypeClassMapping, conditionTableAlias, conditionTableColumn,
 //    //                joinTypeClassMapping, joinTableColumn, null, ignoreStrategy);
 //    //    }

@@ -58,7 +58,7 @@
 //     */
 //    public RepositoryTypeSqlQueryExpression(Jdbc jdbc, JdbcMappingFactory factory, SqlPageFactory sqlPageFactory,
 //            AliasManager aliasManager, JdbcClassMapping<?> classMapping, SqlSelectBasicBuilder selectBuilder,
-//            Predicate<Object> ignoreStrategy) {
+//            Predicate<?> ignoreStrategy) {
 //        //        super(jdbc, factory, aliasManager, selectBuilder.getTableAlias(), sqlPageFactory, classMapping, ignoreStrategy);
 //        super(jdbc, factory, aliasManager, "", sqlPageFactory, classMapping, ignoreStrategy);
 //        this.selectBuilder = selectBuilder;
@@ -78,7 +78,7 @@
 //     */
 //    RepositoryTypeSqlQueryExpression(RepositoryTypeQueryConditionGroupLogicExpression parent, Jdbc jdbc,
 //            JdbcMappingFactory factory, AliasManager aliasManager, String queryAlias, SqlPageFactory sqlPageFactory,
-//            JdbcClassMapping<?> classMapping, Predicate<Object> ignoreStrategy) {
+//            JdbcClassMapping<?> classMapping, Predicate<?> ignoreStrategy) {
 //        super(parent, jdbc, factory, aliasManager, queryAlias, sqlPageFactory, classMapping, ignoreStrategy);
 //    }
 //

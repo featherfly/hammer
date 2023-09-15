@@ -1,8 +1,8 @@
 
 package cn.featherfly.hammer.expression.execute;
 
+import java.util.function.BooleanSupplier;
 import java.util.function.Consumer;
-import java.util.function.Supplier;
 
 import cn.featherfly.common.function.serializable.SerializableFunction;
 import cn.featherfly.common.function.serializable.SerializableSupplier;
@@ -30,12 +30,12 @@ public interface UpdateSetExpression<U extends ExecutableUpdateSetExpression<U, 
     /**
      * set value for property.
      *
-     * @param whether the whether
+     * @param setable the setable
      * @param name    property name
      * @param value   property value
      * @return Update
      */
-    U set(Supplier<Boolean> whether, String name, Object value);
+    U set(BooleanSupplier setable, String name, Object value);
 
     /**
      * increase value for property.
@@ -51,12 +51,12 @@ public interface UpdateSetExpression<U extends ExecutableUpdateSetExpression<U, 
      * increase value for property.
      *
      * @param <N>     number type
-     * @param whether the whether
+     * @param setable the setable
      * @param name    property name
      * @param value   property value
      * @return Update
      */
-    <N extends Number> U increase(Supplier<Boolean> whether, String name, N value);
+    <N extends Number> U increase(BooleanSupplier setable, String name, N value);
 
     /**
      * set value for property.
@@ -74,12 +74,12 @@ public interface UpdateSetExpression<U extends ExecutableUpdateSetExpression<U, 
      *
      * @param <T>     the generic type
      * @param <R>     the generic type
-     * @param whether the whether
+     * @param setable the setable
      * @param name    property name
      * @param value   property value
      * @return Update
      */
-    <T, R> U set(Supplier<Boolean> whether, SerializableFunction<T, R> name, R value);
+    <T, R> U set(BooleanSupplier setable, SerializableFunction<T, R> name, R value);
 
     /**
      * set value for property.
@@ -94,11 +94,11 @@ public interface UpdateSetExpression<U extends ExecutableUpdateSetExpression<U, 
      * set value for property.
      *
      * @param <R>      the generic type
-     * @param whether  the whether
+     * @param setable  the setable
      * @param property object property
      * @return Update
      */
-    <R> U set(Supplier<Boolean> whether, SerializableSupplier<R> property);
+    <R> U set(BooleanSupplier setable, SerializableSupplier<R> property);
 
     /**
      * Sets the.
@@ -124,12 +124,12 @@ public interface UpdateSetExpression<U extends ExecutableUpdateSetExpression<U, 
      *
      * @param <T>     the generic type
      * @param <R>     the generic number type
-     * @param whether the whether
+     * @param setable the setable
      * @param name    property name
      * @param value   property value
      * @return Update
      */
-    <T, R extends Number> U increase(Supplier<Boolean> whether, SerializableFunction<T, R> name, R value);
+    <T, R extends Number> U increase(BooleanSupplier setable, SerializableFunction<T, R> name, R value);
 
     /**
      * increase value for property.
@@ -144,9 +144,9 @@ public interface UpdateSetExpression<U extends ExecutableUpdateSetExpression<U, 
      * increase value for property.
      *
      * @param <N>      number type
-     * @param whether  the whether
+     * @param setable  the setable
      * @param property object property
      * @return Update
      */
-    <N extends Number> U increase(Supplier<Boolean> whether, SerializableSupplier<N> property);
+    <N extends Number> U increase(BooleanSupplier setable, SerializableSupplier<N> property);
 }

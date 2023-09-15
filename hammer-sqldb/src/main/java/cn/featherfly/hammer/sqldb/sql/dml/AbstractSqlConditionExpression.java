@@ -22,13 +22,13 @@ import cn.featherfly.common.db.mapping.JdbcMappingFactory;
 import cn.featherfly.common.db.mapping.JdbcPropertyMapping;
 import cn.featherfly.common.exception.NotImplementedException;
 import cn.featherfly.common.exception.UnsupportedException;
+import cn.featherfly.common.function.serializable.SerializableFunction;
+import cn.featherfly.common.function.serializable.SerializableSupplier;
 import cn.featherfly.common.lang.LambdaUtils;
 import cn.featherfly.common.lang.LambdaUtils.SerializableSupplierLambdaInfo;
 import cn.featherfly.common.lang.LambdaUtils.SerializedLambdaInfo;
 import cn.featherfly.common.lang.Lang;
 import cn.featherfly.common.lang.Strings;
-import cn.featherfly.common.function.serializable.SerializableFunction;
-import cn.featherfly.common.function.serializable.SerializableSupplier;
 import cn.featherfly.common.repository.Params;
 import cn.featherfly.common.repository.builder.BuilderException;
 import cn.featherfly.common.repository.builder.BuilderExceptionCode;
@@ -387,7 +387,7 @@ public abstract class AbstractSqlConditionExpression<C extends ConditionExpressi
     private Expression previousCondition;
 
     //    /** The ignore strategy. 忽略策略 */
-    //    protected Predicate<Object> ignoreStrategy = IgnoreStrategy.EMPTY;
+    //    protected Predicate<?> ignoreStrategy = IgnoreStrategy.EMPTY;
 
     //    /**
     //     * get ignoreStrategy value.

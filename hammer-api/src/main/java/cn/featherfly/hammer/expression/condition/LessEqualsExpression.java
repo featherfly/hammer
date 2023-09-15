@@ -5,19 +5,20 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.Date;
+import java.util.function.Predicate;
 
 import cn.featherfly.common.function.serializable.SerializableDateSupplier;
 import cn.featherfly.common.function.serializable.SerializableLocalDateSupplier;
 import cn.featherfly.common.function.serializable.SerializableLocalDateTimeSupplier;
 import cn.featherfly.common.function.serializable.SerializableLocalTimeSupplier;
 import cn.featherfly.common.function.serializable.SerializableNumberSupplier;
+import cn.featherfly.common.function.serializable.SerializableStringSupplier;
 import cn.featherfly.common.function.serializable.SerializableToDateFunction;
 import cn.featherfly.common.function.serializable.SerializableToLocalDateFunction;
 import cn.featherfly.common.function.serializable.SerializableToLocalDateTimeFunction;
 import cn.featherfly.common.function.serializable.SerializableToLocalTimeFunction;
 import cn.featherfly.common.function.serializable.SerializableToNumberFunction;
 import cn.featherfly.common.function.serializable.SerializableToStringFunction;
-import cn.featherfly.common.function.serializable.SerializableStringSupplier;
 import cn.featherfly.common.repository.Field;
 
 /**
@@ -31,7 +32,7 @@ public interface LessEqualsExpression<C extends ConditionExpression, L extends L
         extends ConditionExpression {
 
     /**
-     * 小于等于.
+     * less equals. 小于等于.
      *
      * @param <N>   number type
      * @param name  参数名称
@@ -43,7 +44,20 @@ public interface LessEqualsExpression<C extends ConditionExpression, L extends L
     }
 
     /**
-     * 小于等于.
+     * less equals. 小于等于.
+     *
+     * @param <N>            number type
+     * @param name           参数名称
+     * @param value          参数值
+     * @param ignoreStrategy the ignore strategy
+     * @return LogicExpression
+     */
+    default <N extends Number> L le(Field name, N value, Predicate<N> ignoreStrategy) {
+        return le(name.name(), value, ignoreStrategy);
+    }
+
+    /**
+     * less equals. 小于等于.
      *
      * @param <N>   number type
      * @param name  参数名称
@@ -53,7 +67,18 @@ public interface LessEqualsExpression<C extends ConditionExpression, L extends L
     <N extends Number> L le(String name, N value);
 
     /**
-     * 小于等于.
+     * less equals. 小于等于.
+     *
+     * @param <N>            number type
+     * @param name           参数名称
+     * @param value          参数值
+     * @param ignoreStrategy the ignore strategy
+     * @return LogicExpression
+     */
+    <N extends Number> L le(String name, N value, Predicate<N> ignoreStrategy);
+
+    /**
+     * less equals. 小于等于.
      *
      * @param <T>   the generic type
      * @param <N>   number type
@@ -64,7 +89,19 @@ public interface LessEqualsExpression<C extends ConditionExpression, L extends L
     <T, N extends Number> L le(SerializableToNumberFunction<T, N> name, N value);
 
     /**
-     * 小于等于.
+     * less equals. 小于等于.
+     *
+     * @param <T>            the generic type
+     * @param <N>            number type
+     * @param name           参数名称
+     * @param value          参数值
+     * @param ignoreStrategy the ignore strategy
+     * @return LogicExpression
+     */
+    <T, N extends Number> L le(SerializableToNumberFunction<T, N> name, N value, Predicate<N> ignoreStrategy);
+
+    /**
+     * less equals. 小于等于.
      *
      * @param <D>   date type
      * @param name  参数名称
@@ -76,7 +113,20 @@ public interface LessEqualsExpression<C extends ConditionExpression, L extends L
     }
 
     /**
-     * 小于等于.
+     * less equals. 小于等于.
+     *
+     * @param <D>            date type
+     * @param name           参数名称
+     * @param value          参数值
+     * @param ignoreStrategy the ignore strategy
+     * @return LogicExpression
+     */
+    default <D extends Date> L le(Field name, D value, Predicate<D> ignoreStrategy) {
+        return le(name.name(), value, ignoreStrategy);
+    }
+
+    /**
+     * less equals. 小于等于.
      *
      * @param <D>   date type
      * @param name  参数名称
@@ -86,7 +136,18 @@ public interface LessEqualsExpression<C extends ConditionExpression, L extends L
     <D extends Date> L le(String name, D value);
 
     /**
-     * 小于等于.
+     * less equals. 小于等于.
+     *
+     * @param <D>            date type
+     * @param name           参数名称
+     * @param value          参数值
+     * @param ignoreStrategy the ignore strategy
+     * @return LogicExpression
+     */
+    <D extends Date> L le(String name, D value, Predicate<D> ignoreStrategy);
+
+    /**
+     * less equals. 小于等于.
      *
      * @param <T>   the generic type
      * @param <D>   date type
@@ -97,7 +158,19 @@ public interface LessEqualsExpression<C extends ConditionExpression, L extends L
     <T, D extends Date> L le(SerializableToDateFunction<T, D> name, D value);
 
     /**
-     * 小于等于.
+     * less equals. 小于等于.
+     *
+     * @param <T>            the generic type
+     * @param <D>            date type
+     * @param name           参数名称
+     * @param value          参数值
+     * @param ignoreStrategy the ignore strategy
+     * @return LogicExpression
+     */
+    <T, D extends Date> L le(SerializableToDateFunction<T, D> name, D value, Predicate<D> ignoreStrategy);
+
+    /**
+     * less equals. 小于等于.
      *
      * @param name  参数名称
      * @param value 参数值
@@ -108,7 +181,19 @@ public interface LessEqualsExpression<C extends ConditionExpression, L extends L
     }
 
     /**
-     * 小于等于.
+     * less equals. 小于等于.
+     *
+     * @param name           参数名称
+     * @param value          参数值
+     * @param ignoreStrategy the ignore strategy
+     * @return LogicExpression
+     */
+    default L le(Field name, LocalTime value, Predicate<LocalTime> ignoreStrategy) {
+        return le(name.name(), value, ignoreStrategy);
+    }
+
+    /**
+     * less equals. 小于等于.
      *
      * @param name  参数名称
      * @param value 参数值
@@ -117,7 +202,17 @@ public interface LessEqualsExpression<C extends ConditionExpression, L extends L
     L le(String name, LocalTime value);
 
     /**
-     * 小于等于.
+     * less equals. 小于等于.
+     *
+     * @param name           参数名称
+     * @param value          参数值
+     * @param ignoreStrategy the ignore strategy
+     * @return LogicExpression
+     */
+    L le(String name, LocalTime value, Predicate<LocalTime> ignoreStrategy);
+
+    /**
+     * less equals. 小于等于.
      *
      * @param <T>   the generic type
      * @param name  参数名称
@@ -127,7 +222,18 @@ public interface LessEqualsExpression<C extends ConditionExpression, L extends L
     <T> L le(SerializableToLocalTimeFunction<T> name, LocalTime value);
 
     /**
-     * 小于等于.
+     * less equals. 小于等于.
+     *
+     * @param <T>            the generic type
+     * @param name           参数名称
+     * @param value          参数值
+     * @param ignoreStrategy the ignore strategy
+     * @return LogicExpression
+     */
+    <T> L le(SerializableToLocalTimeFunction<T> name, LocalTime value, Predicate<LocalTime> ignoreStrategy);
+
+    /**
+     * less equals. 小于等于.
      *
      * @param name  参数名称
      * @param value 参数值
@@ -138,7 +244,19 @@ public interface LessEqualsExpression<C extends ConditionExpression, L extends L
     }
 
     /**
-     * 小于等于.
+     * less equals. 小于等于.
+     *
+     * @param name           参数名称
+     * @param value          参数值
+     * @param ignoreStrategy the ignore strategy
+     * @return LogicExpression
+     */
+    default L le(Field name, LocalDate value, Predicate<LocalDate> ignoreStrategy) {
+        return le(name.name(), value, ignoreStrategy);
+    }
+
+    /**
+     * less equals. 小于等于.
      *
      * @param name  参数名称
      * @param value 参数值
@@ -147,7 +265,17 @@ public interface LessEqualsExpression<C extends ConditionExpression, L extends L
     L le(String name, LocalDate value);
 
     /**
-     * 小于等于.
+     * less equals. 小于等于.
+     *
+     * @param name           参数名称
+     * @param value          参数值
+     * @param ignoreStrategy the ignore strategy
+     * @return LogicExpression
+     */
+    L le(String name, LocalDate value, Predicate<LocalDate> ignoreStrategy);
+
+    /**
+     * less equals. 小于等于.
      *
      * @param <T>   the generic type
      * @param name  参数名称
@@ -157,7 +285,18 @@ public interface LessEqualsExpression<C extends ConditionExpression, L extends L
     <T> L le(SerializableToLocalDateFunction<T> name, LocalDate value);
 
     /**
-     * 小于等于.
+     * less equals. 小于等于.
+     *
+     * @param <T>            the generic type
+     * @param name           参数名称
+     * @param value          参数值
+     * @param ignoreStrategy the ignore strategy
+     * @return LogicExpression
+     */
+    <T> L le(SerializableToLocalDateFunction<T> name, LocalDate value, Predicate<LocalDate> ignoreStrategy);
+
+    /**
+     * less equals. 小于等于.
      *
      * @param name  参数名称
      * @param value 参数值
@@ -168,7 +307,19 @@ public interface LessEqualsExpression<C extends ConditionExpression, L extends L
     }
 
     /**
-     * 小于等于.
+     * less equals. 小于等于.
+     *
+     * @param name           参数名称
+     * @param value          参数值
+     * @param ignoreStrategy the ignore strategy
+     * @return LogicExpression
+     */
+    default L le(Field name, LocalDateTime value, Predicate<LocalDateTime> ignoreStrategy) {
+        return le(name.name(), value, ignoreStrategy);
+    }
+
+    /**
+     * less equals. 小于等于.
      *
      * @param name  参数名称
      * @param value 参数值
@@ -177,7 +328,17 @@ public interface LessEqualsExpression<C extends ConditionExpression, L extends L
     L le(String name, LocalDateTime value);
 
     /**
-     * 小于等于.
+     * less equals. 小于等于.
+     *
+     * @param name           参数名称
+     * @param value          参数值
+     * @param ignoreStrategy the ignore strategy
+     * @return LogicExpression
+     */
+    L le(String name, LocalDateTime value, Predicate<LocalDateTime> ignoreStrategy);
+
+    /**
+     * less equals. 小于等于.
      *
      * @param <T>   the generic type
      * @param name  参数名称
@@ -187,7 +348,18 @@ public interface LessEqualsExpression<C extends ConditionExpression, L extends L
     <T> L le(SerializableToLocalDateTimeFunction<T> name, LocalDateTime value);
 
     /**
-     * 小于等于.
+     * less equals. 小于等于.
+     *
+     * @param <T>            the generic type
+     * @param name           参数名称
+     * @param value          参数值
+     * @param ignoreStrategy the ignore strategy
+     * @return LogicExpression
+     */
+    <T> L le(SerializableToLocalDateTimeFunction<T> name, LocalDateTime value, Predicate<LocalDateTime> ignoreStrategy);
+
+    /**
+     * less equals. 小于等于.
      *
      * @param name  参数名称
      * @param value 参数值
@@ -198,7 +370,19 @@ public interface LessEqualsExpression<C extends ConditionExpression, L extends L
     }
 
     /**
-     * 小于等于.
+     * less equals. 小于等于.
+     *
+     * @param name           参数名称
+     * @param value          参数值
+     * @param ignoreStrategy the ignore strategy
+     * @return LogicExpression
+     */
+    default L le(Field name, String value, Predicate<String> ignoreStrategy) {
+        return le(name.name(), value, ignoreStrategy);
+    }
+
+    /**
+     * less equals. 小于等于.
      *
      * @param name  参数名称
      * @param value 参数值
@@ -207,7 +391,17 @@ public interface LessEqualsExpression<C extends ConditionExpression, L extends L
     L le(String name, String value);
 
     /**
-     * 小于等于.
+     * less equals. 小于等于.
+     *
+     * @param name           参数名称
+     * @param value          参数值
+     * @param ignoreStrategy the ignore strategy
+     * @return LogicExpression
+     */
+    L le(String name, String value, Predicate<String> ignoreStrategy);
+
+    /**
+     * less equals. 小于等于.
      *
      * @param <T>   the generic type
      * @param name  参数名称
@@ -217,52 +411,119 @@ public interface LessEqualsExpression<C extends ConditionExpression, L extends L
     <T> L le(SerializableToStringFunction<T> name, String value);
 
     /**
-     * 小于等于.
+     * less equals. 小于等于.
      *
-     * @param <R>      the generic type
-     * @param property 对象属性
+     * @param <T>            the generic type
+     * @param name           参数名称
+     * @param value          参数值
+     * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
-    <R extends Date> L le(SerializableDateSupplier<R> property);
+    <T> L le(SerializableToStringFunction<T> name, String value, Predicate<String> ignoreStrategy);
 
     /**
-     * 小于等于.
+     * less equals. 小于等于.
      *
-     * @param <R>      the generic type
-     * @param property 对象属性
+     * @param <R>           the generic type
+     * @param propertyValue the property value
      * @return LogicExpression
      */
-    <R extends Number> L le(SerializableNumberSupplier<R> property);
+    <R extends Date> L le(SerializableDateSupplier<R> propertyValue);
 
     /**
-     * 小于等于.
+     * less equals. 小于等于.
      *
-     * @param property 对象属性
+     * @param <R>            the generic type
+     * @param propertyValue  the property value
+     * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
-    L le(SerializableLocalDateSupplier property);
+    <R extends Date> L le(SerializableDateSupplier<R> propertyValue, Predicate<R> ignoreStrategy);
 
     /**
-     * 小于等于.
+     * less equals. 小于等于.
      *
-     * @param property 对象属性
+     * @param <R>           the generic type
+     * @param propertyValue the property value
      * @return LogicExpression
      */
-    L le(SerializableLocalTimeSupplier property);
+    <R extends Number> L le(SerializableNumberSupplier<R> propertyValue);
 
     /**
-     * 小于等于.
+     * less equals. 小于等于.
      *
-     * @param property 对象属性
+     * @param <R>            the generic type
+     * @param propertyValue  the property value
+     * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
-    L le(SerializableLocalDateTimeSupplier property);
+    <R extends Number> L le(SerializableNumberSupplier<R> propertyValue, Predicate<R> ignoreStrategy);
 
     /**
-     * 小于等于.
+     * less equals. 小于等于.
      *
-     * @param property 对象属性
+     * @param propertyValue the property value
      * @return LogicExpression
      */
-    L le(SerializableStringSupplier property);
+    L le(SerializableLocalDateSupplier propertyValue);
+
+    /**
+     * less equals. 小于等于.
+     *
+     * @param propertyValue  the property value
+     * @param ignoreStrategy the ignore strategy
+     * @return LogicExpression
+     */
+    L le(SerializableLocalDateSupplier propertyValue, Predicate<LocalDate> ignoreStrategy);
+
+    /**
+     * less equals. 小于等于.
+     *
+     * @param propertyValue the property value
+     * @return LogicExpression
+     */
+    L le(SerializableLocalTimeSupplier propertyValue);
+
+    /**
+     * less equals. 小于等于.
+     *
+     * @param propertyValue  the property value
+     * @param ignoreStrategy the ignore strategy
+     * @return LogicExpression
+     */
+    L le(SerializableLocalTimeSupplier propertyValue, Predicate<LocalTime> ignoreStrategy);
+
+    /**
+     * less equals. 小于等于.
+     *
+     * @param propertyValue the property value
+     * @return LogicExpression
+     */
+    L le(SerializableLocalDateTimeSupplier propertyValue);
+
+    /**
+     * less equals. 小于等于.
+     *
+     * @param propertyValue  the property value
+     * @param ignoreStrategy the ignore strategy
+     * @return LogicExpression
+     */
+    L le(SerializableLocalDateTimeSupplier propertyValue, Predicate<LocalDateTime> ignoreStrategy);
+
+    /**
+     * less equals. 小于等于.
+     *
+     * @param propertyValue the property value
+     * @return LogicExpression
+     */
+    L le(SerializableStringSupplier propertyValue);
+
+    /**
+     * less equals. 小于等于.
+     *
+     * @param propertyValue  the property value
+     * @param ignoreStrategy the ignore strategy
+     * @return LogicExpression
+     */
+    L le(SerializableStringSupplier propertyValue, Predicate<String> ignoreStrategy);
 }

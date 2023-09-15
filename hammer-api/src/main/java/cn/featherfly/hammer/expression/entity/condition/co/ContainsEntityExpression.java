@@ -50,7 +50,7 @@ public interface ContainsEntityExpression<E> extends ContainsEntityPropertyExpre
      * @param queryPolicy the query policy
      * @return the l
      */
-    void accept(SerializableToStringFunction<E> property, String value, MatchStrategy queryPolicy);
+    void accept(SerializableToStringFunction<E> property, String value, MatchStrategy matchStrategy);
 
     /**
      * contains value. 包含value.
@@ -71,7 +71,7 @@ public interface ContainsEntityExpression<E> extends ContainsEntityPropertyExpre
      * @param ignoreStrategy the ignore strategy
      * @return the l
      */
-    void accept(SerializableToStringFunction<E> property, String value, MatchStrategy queryPolicy,
+    void accept(SerializableToStringFunction<E> property, String value, MatchStrategy matchStrategy,
             Predicate<String> ignoreStrategy);
 
     /**
@@ -98,7 +98,7 @@ public interface ContainsEntityExpression<E> extends ContainsEntityPropertyExpre
      * @param queryPolicy   the query policy
      * @return LogicExpression
      */
-    void accept(SerializableSupplier<String> propertyValue, MatchStrategy queryPolicy);
+    void accept(SerializableSupplier<String> propertyValue, MatchStrategy matchStrategy);
 
     /**
      * contains value. 包含value.
@@ -108,5 +108,5 @@ public interface ContainsEntityExpression<E> extends ContainsEntityPropertyExpre
      * @param ignoreStrategy  the ignore strategy
      * @return LogicExpression
      */
-    void accept(SerializableSupplier<String> propertyValue, MatchStrategy queryPolicy, Predicate<String> ignoreStrategy);
+    void accept(SerializableSupplier<String> propertyValue, MatchStrategy matchStrategy, Predicate<String> ignoreStrategy);
 }

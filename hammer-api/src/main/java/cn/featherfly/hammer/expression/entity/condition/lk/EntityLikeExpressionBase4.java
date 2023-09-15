@@ -54,7 +54,7 @@ public interface EntityLikeExpressionBase4<E, E2, E3, E4, C extends ConditionExp
      * @param queryPolicy the query policy
      * @return LogicExpression
      */
-    L lk4(SerializableFunction<E4, String> name, String value, MatchStrategy queryPolicy);
+    L lk4(SerializableFunction<E4, String> name, String value, MatchStrategy matchStrategy);
 
     /**
      * like value.
@@ -65,7 +65,7 @@ public interface EntityLikeExpressionBase4<E, E2, E3, E4, C extends ConditionExp
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
-    L lk4(SerializableFunction<E4, String> name, String value, MatchStrategy queryPolicy,
+    L lk4(SerializableFunction<E4, String> name, String value, MatchStrategy matchStrategy,
             Predicate<String> ignoreStrategy);
 
     /**
@@ -96,7 +96,7 @@ public interface EntityLikeExpressionBase4<E, E2, E3, E4, C extends ConditionExp
      * @param queryPolicy the query policy
      * @return LogicExpression
      */
-    L lk4(SerializableStringSupplier property, MatchStrategy queryPolicy);
+    L lk4(SerializableStringSupplier property, MatchStrategy matchStrategy);
 
     /**
      * like value.
@@ -106,7 +106,7 @@ public interface EntityLikeExpressionBase4<E, E2, E3, E4, C extends ConditionExp
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
-    L lk4(SerializableStringSupplier property, MatchStrategy queryPolicy, Predicate<String> ignoreStrategy);
+    L lk4(SerializableStringSupplier property, MatchStrategy matchStrategy, Predicate<String> ignoreStrategy);
 
     //  嵌套属性使用property(U1::getU2).property(U2:getV).lk(v)来设置
     //    /**

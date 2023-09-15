@@ -2,18 +2,18 @@
 package cn.featherfly.hammer.expression.condition.property;
 
 import java.util.Date;
+import java.util.function.Predicate;
 
-import cn.featherfly.common.operator.ComparisonOperator.MatchStrategy;
 import cn.featherfly.hammer.expression.condition.ConditionsExpression;
 import cn.featherfly.hammer.expression.condition.LogicExpression;
 
 /**
- * SimpleObjectExpression.
+ * simple date property expression.
  *
  * @author zhongj
  */
-public class SimpleDateExpression<D extends Date, C extends ConditionsExpression<C, L>, L extends LogicExpression<C, L>>
-        implements DateExpression<D, C, L> {
+public class SimpleDatePropertyExpression<D extends Date, C extends ConditionsExpression<C, L>,
+        L extends LogicExpression<C, L>> implements DatePropertyExpression<D, C, L> {
 
     private String name;
 
@@ -23,7 +23,7 @@ public class SimpleDateExpression<D extends Date, C extends ConditionsExpression
      * @param name       name
      * @param expression expression
      */
-    public SimpleDateExpression(String name, ConditionsExpression<C, L> expression) {
+    public SimpleDatePropertyExpression(String name, ConditionsExpression<C, L> expression) {
         super();
         this.name = name;
         this.expression = expression;
@@ -33,8 +33,16 @@ public class SimpleDateExpression<D extends Date, C extends ConditionsExpression
      * {@inheritDoc}
      */
     @Override
-    public L eq(Date value) {
+    public L eq(D value) {
         return expression.eq(name, value);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public L eq(D value, Predicate<D> ignoreStrategy) {
+        return expression.eq(name, value, ignoreStrategy);
     }
 
     /**
@@ -57,8 +65,42 @@ public class SimpleDateExpression<D extends Date, C extends ConditionsExpression
      * {@inheritDoc}
      */
     @Override
+    public L ne(D value, Predicate<D> ignoreStrategy) {
+        return expression.ne(name, value, ignoreStrategy);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
     public L in(Date value) {
         return expression.in(name, value);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @SuppressWarnings("unchecked")
+    @Override
+    public L in(D value, Predicate<D> ignoreStrategy) {
+        return expression.in(name, value, (v) -> ignoreStrategy.test((D) v));
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public L in(D[] value) {
+        return expression.in(name, value);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @SuppressWarnings("unchecked")
+    @Override
+    public L in(D[] value, Predicate<D[]> ignoreStrategy) {
+        return expression.nin(name, value, (v) -> ignoreStrategy.test((D[]) v));
     }
 
     /**
@@ -67,6 +109,32 @@ public class SimpleDateExpression<D extends Date, C extends ConditionsExpression
     @Override
     public L nin(Date value) {
         return expression.nin(name, value);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @SuppressWarnings("unchecked")
+    @Override
+    public L nin(D value, Predicate<D> ignoreStrategy) {
+        return expression.nin(name, value, (v) -> ignoreStrategy.test((D) v));
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public L nin(D[] value) {
+        return expression.nin(name, value);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @SuppressWarnings("unchecked")
+    @Override
+    public L nin(D[] value, Predicate<D[]> ignoreStrategy) {
+        return expression.nin(name, value, (v) -> ignoreStrategy.test((D[]) v));
     }
 
     /**
@@ -133,19 +201,4 @@ public class SimpleDateExpression<D extends Date, C extends ConditionsExpression
         return expression.inn(name, value);
     }
 
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public L eq(Date value, MatchStrategy queryPolicy) {
-        return expression.eq(name, value, queryPolicy);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public L ne(Date value, MatchStrategy queryPolicy) {
-        return expression.ne(name, value, queryPolicy);
-    }
 }

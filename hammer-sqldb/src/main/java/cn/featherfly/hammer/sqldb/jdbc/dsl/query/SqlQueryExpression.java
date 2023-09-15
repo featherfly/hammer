@@ -151,7 +151,7 @@ public class SqlQueryExpression extends SqlQueryConditionGroupExpression {
      */
     @Override
     protected <T, R> QueryConditionGroupLogicExpression eq_ne(int index, ComparisonOperator comparisonOperator,
-            PropertyMapping<?> pm, R value, MatchStrategy queryPolicy, Predicate<?> ignoreStrategy) {
+            PropertyMapping<?> pm, R value, MatchStrategy matchStrategy, Predicate<?> ignoreStrategy) {
         // IMPLSOON 未实现
         throw new NotImplementedException();
     }

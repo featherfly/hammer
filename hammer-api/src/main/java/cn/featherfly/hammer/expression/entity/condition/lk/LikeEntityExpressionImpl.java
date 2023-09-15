@@ -13,10 +13,11 @@ package cn.featherfly.hammer.expression.entity.condition.lk;
 import java.util.Collection;
 import java.util.function.Predicate;
 
-import cn.featherfly.common.function.serializable.SerializableToStringFunction;
+import cn.featherfly.common.exception.NotImplementedException;
 import cn.featherfly.common.function.serializable.SerializableFunction;
 import cn.featherfly.common.function.serializable.SerializableSupplier;
 import cn.featherfly.common.function.serializable.SerializableToCollectionFunction;
+import cn.featherfly.common.function.serializable.SerializableToStringFunction;
 import cn.featherfly.common.operator.ComparisonOperator.MatchStrategy;
 import cn.featherfly.hammer.expression.condition.ConditionExpression;
 import cn.featherfly.hammer.expression.condition.LogicExpression;
@@ -48,8 +49,8 @@ public class LikeEntityExpressionImpl<E, C extends ConditionExpression, L extend
      */
     @Override
     public <R> LikeEntityPropertyExpression<R> property(SerializableFunction<E, R> name) {
-        // YUFEI_TODO Auto-generated method stub
-        return null;
+        // IMPLSOON 未实现property
+        throw new NotImplementedException();
     }
 
     /**
@@ -58,8 +59,8 @@ public class LikeEntityExpressionImpl<E, C extends ConditionExpression, L extend
     @Override
     public <R extends Collection<RE>,
             RE> LikeEntityPropertyExpression<RE> property(SerializableToCollectionFunction<E, R, RE> name) {
-        // YUFEI_TODO Auto-generated method stub
-        return null;
+        // IMPLSOON 未实现property
+        throw new NotImplementedException();
     }
 
     /**
@@ -67,8 +68,8 @@ public class LikeEntityExpressionImpl<E, C extends ConditionExpression, L extend
      */
     @Override
     public <R> LikeEntityPropertyValueExpression<E> property(SerializableToStringFunction<E> name) {
-        // YUFEI_TODO Auto-generated method stub
-        return null;
+        // IMPLSOON 未实现property
+        throw new NotImplementedException();
     }
 
     /**
@@ -83,8 +84,8 @@ public class LikeEntityExpressionImpl<E, C extends ConditionExpression, L extend
      * {@inheritDoc}
      */
     @Override
-    public void accept(SerializableToStringFunction<E> property, String value, MatchStrategy queryPolicy) {
-        expression.lk(index, property, value, queryPolicy);
+    public void accept(SerializableToStringFunction<E> property, String value, MatchStrategy matchStrategy) {
+        expression.lk(index, property, value, matchStrategy);
     }
 
     /**
@@ -99,9 +100,9 @@ public class LikeEntityExpressionImpl<E, C extends ConditionExpression, L extend
      * {@inheritDoc}
      */
     @Override
-    public void accept(SerializableToStringFunction<E> property, String value, MatchStrategy queryPolicy,
+    public void accept(SerializableToStringFunction<E> property, String value, MatchStrategy matchStrategy,
             Predicate<String> ignoreStrategy) {
-        expression.lk(index, property, value, queryPolicy, ignoreStrategy);
+        expression.lk(index, property, value, matchStrategy, ignoreStrategy);
 
     }
 
@@ -125,17 +126,17 @@ public class LikeEntityExpressionImpl<E, C extends ConditionExpression, L extend
      * {@inheritDoc}
      */
     @Override
-    public void accept(SerializableSupplier<String> propertyValue, MatchStrategy queryPolicy) {
-        expression.lk(index, propertyValue, queryPolicy);
+    public void accept(SerializableSupplier<String> propertyValue, MatchStrategy matchStrategy) {
+        expression.lk(index, propertyValue, matchStrategy);
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public void accept(SerializableSupplier<String> propertyValue, MatchStrategy queryPolicy,
+    public void accept(SerializableSupplier<String> propertyValue, MatchStrategy matchStrategy,
             Predicate<String> ignoreStrategy) {
-        expression.lk(index, propertyValue, queryPolicy, ignoreStrategy);
+        expression.lk(index, propertyValue, matchStrategy, ignoreStrategy);
     }
 
 }

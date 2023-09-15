@@ -1,7 +1,7 @@
 
 package cn.featherfly.hammer.dsl.execute;
 
-import java.util.function.Supplier;
+import java.util.function.BooleanSupplier;
 
 /**
  * UpdateNumberValueImpl.
@@ -36,8 +36,8 @@ public class UpdateNumberValueImpl implements UpdateNumberValue {
      * {@inheritDoc}
      */
     @Override
-    public ExecutableUpdate increase(Supplier<Boolean> whether, Number value) {
-        return update.increase(whether, name, value);
+    public ExecutableUpdate increase(BooleanSupplier increaseable, Number value) {
+        return update.increase(increaseable, name, value);
     }
 
     /**
@@ -52,7 +52,7 @@ public class UpdateNumberValueImpl implements UpdateNumberValue {
      * {@inheritDoc}
      */
     @Override
-    public ExecutableUpdate set(Supplier<Boolean> whether, Number value) {
-        return update.set(whether, name, value);
+    public ExecutableUpdate set(BooleanSupplier setable, Number value) {
+        return update.set(setable, name, value);
     }
 }

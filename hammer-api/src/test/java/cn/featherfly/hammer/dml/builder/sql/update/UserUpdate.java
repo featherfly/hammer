@@ -1,8 +1,8 @@
 
 package cn.featherfly.hammer.dml.builder.sql.update;
 
+import java.util.function.BooleanSupplier;
 import java.util.function.Consumer;
-import java.util.function.Supplier;
 
 import cn.featherfly.common.function.serializable.SerializableFunction;
 import cn.featherfly.common.function.serializable.SerializableSupplier;
@@ -178,7 +178,7 @@ public class UserUpdate implements UserPropertiesUpdate, ExecutableUpdateSetExpr
      * {@inheritDoc}
      */
     @Override
-    public UserUpdate set(Supplier<Boolean> whether, String name, Object value) {
+    public UserUpdate set(BooleanSupplier whether, String name, Object value) {
 
         return null;
     }
@@ -187,7 +187,7 @@ public class UserUpdate implements UserPropertiesUpdate, ExecutableUpdateSetExpr
      * {@inheritDoc}
      */
     @Override
-    public <N extends Number> UserUpdate increase(Supplier<Boolean> whether, String name, N value) {
+    public <N extends Number> UserUpdate increase(BooleanSupplier whether, String name, N value) {
 
         return null;
     }
@@ -196,7 +196,7 @@ public class UserUpdate implements UserPropertiesUpdate, ExecutableUpdateSetExpr
      * {@inheritDoc}
      */
     @Override
-    public <T, R> UserUpdate set(Supplier<Boolean> whether, SerializableFunction<T, R> name, R value) {
+    public <T, R> UserUpdate set(BooleanSupplier whether, SerializableFunction<T, R> name, R value) {
 
         return null;
     }
@@ -205,7 +205,7 @@ public class UserUpdate implements UserPropertiesUpdate, ExecutableUpdateSetExpr
      * {@inheritDoc}
      */
     @Override
-    public <R> UserUpdate set(Supplier<Boolean> whether, SerializableSupplier<R> property) {
+    public <R> UserUpdate set(BooleanSupplier whether, SerializableSupplier<R> property) {
 
         return null;
     }
@@ -214,7 +214,7 @@ public class UserUpdate implements UserPropertiesUpdate, ExecutableUpdateSetExpr
      * {@inheritDoc}
      */
     @Override
-    public <T, R extends Number> UserUpdate increase(Supplier<Boolean> whether, SerializableFunction<T, R> name,
+    public <T, R extends Number> UserUpdate increase(BooleanSupplier whether, SerializableFunction<T, R> name,
             R value) {
 
         return null;
@@ -224,7 +224,7 @@ public class UserUpdate implements UserPropertiesUpdate, ExecutableUpdateSetExpr
      * {@inheritDoc}
      */
     @Override
-    public <N extends Number> UserUpdate increase(Supplier<Boolean> whether, SerializableSupplier<N> property) {
+    public <N extends Number> UserUpdate increase(BooleanSupplier whether, SerializableSupplier<N> property) {
 
         return null;
     }

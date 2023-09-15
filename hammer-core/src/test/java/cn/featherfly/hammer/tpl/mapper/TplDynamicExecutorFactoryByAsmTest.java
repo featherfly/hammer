@@ -24,9 +24,9 @@ import com.speedment.common.tuple.Tuple4;
 import com.speedment.common.tuple.Tuple5;
 import com.speedment.common.tuple.Tuple6;
 
+import cn.featherfly.common.function.serializable.SerializableFunction;
 import cn.featherfly.common.lang.ClassLoaderUtils;
 import cn.featherfly.common.lang.ClassUtils;
-import cn.featherfly.common.function.serializable.SerializableFunction;
 import cn.featherfly.common.repository.IgnoreStrategy;
 import cn.featherfly.common.repository.Repository;
 import cn.featherfly.common.structure.page.Page;
@@ -1559,6 +1559,12 @@ public class TplDynamicExecutorFactoryByAsmTest {
                     Class<R4> entityType4, Class<R5> entityType5, Class<R6> entityType6,
                     Tuple6<String, String, String, String, String, String> prefixes, Map<String, Object> params,
                     int offset, int limit) {
+                // YUFEI_TODO Auto-generated method stub
+                return null;
+            }
+
+            @Override
+            public <E> int[] save(List<E> entities, int batchSize) {
                 // YUFEI_TODO Auto-generated method stub
                 return null;
             }

@@ -808,8 +808,24 @@ public class BasedTplHammer implements Hammer {
      * {@inheritDoc}
      */
     @Override
+    public <E> int[] save(E[] entities, int batchSize) {
+        return hammer.save(entities, batchSize);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
     public <E> int[] save(List<E> entities) {
         return hammer.save(entities);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public <E> int[] save(List<E> entities, int batchSize) {
+        return hammer.save(entities, batchSize);
     }
 
     /**
@@ -978,19 +994,21 @@ public class BasedTplHammer implements Hammer {
     }
 
     /**
-     * @param <R1>
-     * @param <R2>
-     * @param <R3>
-     * @param <R4>
-     * @param <R5>
-     * @param tplExecuteId
-     * @param entityType1
-     * @param entityType2
-     * @param entityType3
-     * @param entityType4
-     * @param entityType5
-     * @param params
-     * @return
+     * Single.
+     *
+     * @param <R1>         the generic type
+     * @param <R2>         the generic type
+     * @param <R3>         the generic type
+     * @param <R4>         the generic type
+     * @param <R5>         the generic type
+     * @param tplExecuteId the tpl execute id
+     * @param entityType1  the entity type 1
+     * @param entityType2  the entity type 2
+     * @param entityType3  the entity type 3
+     * @param entityType4  the entity type 4
+     * @param entityType5  the entity type 5
+     * @param params       the params
+     * @return the tuple 5
      * @see cn.featherfly.hammer.tpl.TplExecutor#single(java.lang.String,
      *      java.lang.Class, java.lang.Class, java.lang.Class, java.lang.Class,
      *      java.lang.Class, java.util.Map)
@@ -1003,19 +1021,21 @@ public class BasedTplHammer implements Hammer {
     }
 
     /**
-     * @param <R1>
-     * @param <R2>
-     * @param <R3>
-     * @param <R4>
-     * @param <R5>
-     * @param tplExecuteId
-     * @param entityType1
-     * @param entityType2
-     * @param entityType3
-     * @param entityType4
-     * @param entityType5
-     * @param params
-     * @return
+     * Single.
+     *
+     * @param <R1>         the generic type
+     * @param <R2>         the generic type
+     * @param <R3>         the generic type
+     * @param <R4>         the generic type
+     * @param <R5>         the generic type
+     * @param tplExecuteId the tpl execute id
+     * @param entityType1  the entity type 1
+     * @param entityType2  the entity type 2
+     * @param entityType3  the entity type 3
+     * @param entityType4  the entity type 4
+     * @param entityType5  the entity type 5
+     * @param params       the params
+     * @return the tuple 5
      * @see cn.featherfly.hammer.tpl.TplExecutor#single(cn.featherfly.hammer.tpl.TplExecuteId,
      *      java.lang.Class, java.lang.Class, java.lang.Class, java.lang.Class,
      *      java.lang.Class, java.util.Map)

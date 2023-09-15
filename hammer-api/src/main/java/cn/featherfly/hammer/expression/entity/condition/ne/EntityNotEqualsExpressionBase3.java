@@ -62,7 +62,7 @@ public interface EntityNotEqualsExpressionBase3<E, E2, E3, C extends ConditionEx
      * @param queryPolicy the query policy
      * @return LogicExpression
      */
-    <R> L ne3(SerializableFunction<E3, R> name, R value, MatchStrategy queryPolicy);
+    <R> L ne3(SerializableFunction<E3, R> name, R value, MatchStrategy matchStrategy);
 
     /**
      * equals. 等于.
@@ -74,7 +74,7 @@ public interface EntityNotEqualsExpressionBase3<E, E2, E3, C extends ConditionEx
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
-    <R> L ne3(SerializableFunction<E3, R> name, R value, MatchStrategy queryPolicy, Predicate<R> ignoreStrategy);
+    <R> L ne3(SerializableFunction<E3, R> name, R value, MatchStrategy matchStrategy, Predicate<R> ignoreStrategy);
 
     /**
      * equals. 等于.
@@ -107,7 +107,7 @@ public interface EntityNotEqualsExpressionBase3<E, E2, E3, C extends ConditionEx
      * @param queryPolicy the query policy
      * @return LogicExpression
      */
-    <R> L ne3(SerializableSupplier3<R> property, MatchStrategy queryPolicy);
+    <R> L ne3(SerializableSupplier3<R> property, MatchStrategy matchStrategy);
 
     /**
      * equals. 等于.
@@ -118,7 +118,7 @@ public interface EntityNotEqualsExpressionBase3<E, E2, E3, C extends ConditionEx
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
-    <R> L ne3(SerializableSupplier3<R> property, MatchStrategy queryPolicy, Predicate<R> ignoreStrategy);
+    <R> L ne3(SerializableSupplier3<R> property, MatchStrategy matchStrategy, Predicate<R> ignoreStrategy);
 
     //    嵌套属性使用property(U1::getU2).property(U2:getV).ne(v)来设置
     //    /**

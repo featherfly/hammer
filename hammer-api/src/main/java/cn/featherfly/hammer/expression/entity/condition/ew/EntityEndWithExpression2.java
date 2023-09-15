@@ -60,7 +60,7 @@ public interface EntityEndWithExpression2<E, E2, C extends ConditionExpression, 
     //     * @return LogicExpression
     //     */
     //    L ew(Function<Tuple2<QueryEntityRepository<E>, QueryEntityRepository<E2>>, QueryEntityRepository<E>> entities,
-    //            SerializableFunction<E, String> name, String value, MatchStrategy queryPolicy);
+    //            SerializableFunction<E, String> name, String value, MatchStrategy matchStrategy);
     //
     //    /**
     //     * end with value. 以value结尾.
@@ -73,7 +73,7 @@ public interface EntityEndWithExpression2<E, E2, C extends ConditionExpression, 
     //     * @return LogicExpression
     //     */
     //    L ew(Function<Tuple2<QueryEntityRepository<E>, QueryEntityRepository<E2>>, QueryEntityRepository<E>> entities,
-    //            SerializableFunction<E, String> name, String value, MatchStrategy queryPolicy,
+    //            SerializableFunction<E, String> name, String value, MatchStrategy matchStrategy,
     //            Predicate<String> ignoreStrategy);
     //
     //    /**
@@ -112,7 +112,7 @@ public interface EntityEndWithExpression2<E, E2, C extends ConditionExpression, 
     //     * @return LogicExpression
     //     */
     //    L ew(Function<Tuple2<QueryEntityRepository<E>, QueryEntityRepository<E2>>, QueryEntityRepository<E>> entities,
-    //            SerializableStringSupplier property, MatchStrategy queryPolicy);
+    //            SerializableStringSupplier property, MatchStrategy matchStrategy);
     //
     //    /**
     //     * end with value. 以value结尾.
@@ -124,7 +124,7 @@ public interface EntityEndWithExpression2<E, E2, C extends ConditionExpression, 
     //     * @return LogicExpression
     //     */
     //    L ew(Function<Tuple2<QueryEntityRepository<E>, QueryEntityRepository<E2>>, QueryEntityRepository<E>> entities,
-    //            SerializableStringSupplier property, MatchStrategy queryPolicy, Predicate<String> ignoreStrategy);
+    //            SerializableStringSupplier property, MatchStrategy matchStrategy, Predicate<String> ignoreStrategy);
     //
     //    /**
     //     * end with value. 以value结尾.
@@ -194,7 +194,7 @@ public interface EntityEndWithExpression2<E, E2, C extends ConditionExpression, 
     //     * @return LogicExpression
     //     */
     //    L ew(Function<Tuple2<QueryEntityRepository<E>, QueryEntityRepository<E2>>, QueryEntityRepository<E2>> entities,
-    //            SerializableFunction2<E2, String> name, String value, MatchStrategy queryPolicy);
+    //            SerializableFunction2<E2, String> name, String value, MatchStrategy matchStrategy);
     //
     //    /**
     //     * end with value. 以value结尾.
@@ -207,7 +207,7 @@ public interface EntityEndWithExpression2<E, E2, C extends ConditionExpression, 
     //     * @return LogicExpression
     //     */
     //    L ew(Function<Tuple2<QueryEntityRepository<E>, QueryEntityRepository<E2>>, QueryEntityRepository<E2>> entities,
-    //            SerializableFunction2<E2, String> name, String value, MatchStrategy queryPolicy,
+    //            SerializableFunction2<E2, String> name, String value, MatchStrategy matchStrategy,
     //            Predicate<String> ignoreStrategy);
     //
     //    /**
@@ -246,7 +246,7 @@ public interface EntityEndWithExpression2<E, E2, C extends ConditionExpression, 
     //     * @return LogicExpression
     //     */
     //    L ew(Function<Tuple2<QueryEntityRepository<E>, QueryEntityRepository<E2>>, QueryEntityRepository<E2>> entities,
-    //            SerializableSupplier2<String> property, MatchStrategy queryPolicy);
+    //            SerializableSupplier2<String> property, MatchStrategy matchStrategy);
     //
     //    /**
     //     * end with value. 以value结尾.
@@ -258,7 +258,7 @@ public interface EntityEndWithExpression2<E, E2, C extends ConditionExpression, 
     //     * @return LogicExpression
     //     */
     //    L ew(Function<Tuple2<QueryEntityRepository<E>, QueryEntityRepository<E2>>, QueryEntityRepository<E2>> entities,
-    //            SerializableSupplier2<String> property, MatchStrategy queryPolicy, Predicate<String> ignoreStrategy);
+    //            SerializableSupplier2<String> property, MatchStrategy matchStrategy, Predicate<String> ignoreStrategy);
     //
     //    /**
     //     * end with value. 以value结尾.

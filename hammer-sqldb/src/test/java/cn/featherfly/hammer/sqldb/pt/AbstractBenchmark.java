@@ -1,11 +1,15 @@
 
 package cn.featherfly.hammer.sqldb.pt;
 
+import java.io.IOException;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
+import org.testng.annotations.BeforeClass;
+import org.testng.annotations.Optional;
+import org.testng.annotations.Parameters;
 import org.testng.annotations.Test;
 
 import cn.featherfly.common.lang.Randoms;
@@ -24,13 +28,22 @@ public abstract class AbstractBenchmark extends BenchmarkTestBase implements Ben
 
     protected abstract void doInsertOne(UserInfo2 userInfo);
 
-    protected abstract void doInsertOne(List<UserInfo2> userInfos);
+    //    protected abstract void doInsertOne(List<UserInfo2> userInfos);
 
     protected abstract void doInsertBatch(List<UserInfo2> userInfos);
 
     protected abstract UserInfo2 doSelectById(Serializable id);
 
     protected abstract List<UserInfo2> doSelectById(Serializable... ids);
+
+    @BeforeClass
+    @Parameters({ "times", "batchSize", "batchTimes" })
+    public void init(@Optional("1000") int times, @Optional("1000") int batchSize, @Optional("1") int batchTimes)
+            throws IOException {
+        this.times = times;
+        this.batchSize = batchSize;
+        this.batchTimes = batchTimes;
+    }
 
     @Test
     @Override
@@ -80,7 +93,10 @@ public abstract class AbstractBenchmark extends BenchmarkTestBase implements Ben
             list.add(userInfo);
         }
         Timer timer = start();
-        doInsertOne(list);
+        //        doInsertOne(list);
+        for (UserInfo2 userInfo : list) {
+            doInsertOne(userInfo);
+        }
         long time = timer.stop();
         System.out.println(Strings.format("{0} testInsertOneMulitiTimes use {1} {2} with {3} loop times", getName(),
                 time, unit, times));
@@ -110,6 +126,7 @@ public abstract class AbstractBenchmark extends BenchmarkTestBase implements Ben
 
         Timer timer = start();
         for (List<UserInfo2> userInfos : list) {
+            //            System.out.println("doInsertBatch");
             doInsertBatch(userInfos);
         }
         long time = timer.stop();

@@ -57,7 +57,7 @@ public class SqlQueryWith implements QueryWith, SqlQueryWithOn, SqlQueryWithEnti
     /** The join. */
     private Join join;
 
-    private Predicate<Object> ignoreStrategy;
+    private Predicate<?> ignoreStrategy;
 
     /**
      * Instantiates a new sql query with.
@@ -73,7 +73,7 @@ public class SqlQueryWith implements QueryWith, SqlQueryWithOn, SqlQueryWithEnti
      */
     public SqlQueryWith(SqlQueryEntityProperties sqlQueryEntityProperties, AliasManager aliasManager,
             SqlPageFactory sqlPageFactory, String selectTableAlis, String selectTableColumn, String joinTableName,
-            String joinTableAlias, Predicate<Object> ignoreStrategy) {
+            String joinTableAlias, Predicate<?> ignoreStrategy) {
         this(sqlQueryEntityProperties, aliasManager, sqlPageFactory, selectTableAlis, selectTableColumn, joinTableName,
                 joinTableAlias, Join.INNER_JOIN, ignoreStrategy);
     }
@@ -93,7 +93,7 @@ public class SqlQueryWith implements QueryWith, SqlQueryWithOn, SqlQueryWithEnti
      */
     public SqlQueryWith(SqlQueryEntityProperties sqlQueryEntityProperties, AliasManager aliasManager,
             SqlPageFactory sqlPageFactory, String selectTableAlis, String selectTableColumn, String joinTableName,
-            String joinTableAlias, Join join, Predicate<Object> ignoreStrategy) {
+            String joinTableAlias, Join join, Predicate<?> ignoreStrategy) {
         super();
         AssertIllegalArgument.isNotNull(ignoreStrategy, "ignoreStrategy");
         this.sqlQueryEntityProperties = sqlQueryEntityProperties;

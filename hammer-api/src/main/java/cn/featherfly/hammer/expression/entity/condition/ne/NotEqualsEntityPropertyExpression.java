@@ -51,7 +51,7 @@ public interface NotEqualsEntityPropertyExpression<V> {
      * @param queryPolicy the query policy
      * @return LogicExpression
      */
-    void value(V value, MatchStrategy queryPolicy);
+    void value(V value, MatchStrategy matchStrategy);
 
     /**
      * Value.
@@ -70,5 +70,5 @@ public interface NotEqualsEntityPropertyExpression<V> {
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
-    void value(V value, MatchStrategy queryPolicy, Predicate<V> ignoreStrategy);
+    void value(V value, MatchStrategy matchStrategy, Predicate<V> ignoreStrategy);
 }

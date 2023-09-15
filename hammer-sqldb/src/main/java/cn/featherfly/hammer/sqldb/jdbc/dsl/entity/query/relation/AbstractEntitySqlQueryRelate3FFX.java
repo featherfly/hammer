@@ -113,18 +113,16 @@ public abstract class AbstractEntitySqlQueryRelate3FFX<E, R1, R2, R3, RES>
         return (RE) new EntitySqlQueryRelate4FFRP<>(factory, sqlPageFactory, queryRelation);
     }
 
-    /**
-     * {@inheritDoc}
-     */
-
+    @SuppressWarnings("unchecked")
     public <RE extends EntityQueryRelateExpression4FFRP<E, R1, R2, R3, E, RC, RL, RS, QR>,
             RC extends EntityQueryConditionGroupExpression5<E, R1, R2, R3, E, RC, RL, RS, Tuple3<E, R1, R2>>,
             RL extends EntityQueryConditionGroupLogicExpression5<E, R1, R2, R3, E, RC, RL, RS, Tuple3<E, R1, R2>>,
             RS extends EntityQuerySortExpression5<E, R1, R2, R3, E, Tuple3<E, R1, R2>>,
             QR extends EntityQueryRelatedFetchedExpression4FFRP<E, R1, R2, R3, E, RC, RL, RS>> RE join(
                     SerializableUnaryOperator1<E> propertyName) {
-        // YUFEI_TODO Auto-generated method stub
-        return null;
+        SerializedLambdaInfo info = LambdaUtils.getLambdaInfo(propertyName);
+        queryRelation.join(0, info.getPropertyName(), factory.getClassMapping(info.getPropertyType()));
+        return (RE) new EntitySqlQueryRelate4FFRP<>(factory, sqlPageFactory, queryRelation);
     }
 
     // ****************************************************************************************************************

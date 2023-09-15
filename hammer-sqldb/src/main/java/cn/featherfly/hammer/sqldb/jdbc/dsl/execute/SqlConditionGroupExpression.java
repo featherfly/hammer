@@ -114,7 +114,7 @@ public class SqlConditionGroupExpression
      */
     @Override
     protected <T, R> ExecutableConditionGroupLogic eq_ne(int index, ComparisonOperator comparisonOperator, PropertyMapping<?> pm,
-            R value, MatchStrategy queryPolicy, Predicate<?> ignoreStrategy) {
+            R value, MatchStrategy matchStrategy, Predicate<?> ignoreStrategy) {
         // IMPLSOON 未实现
         throw new NotImplementedException();
     }

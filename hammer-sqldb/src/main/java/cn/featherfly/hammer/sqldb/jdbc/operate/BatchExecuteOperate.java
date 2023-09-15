@@ -31,6 +31,7 @@ public interface BatchExecuteOperate<T> {
      * @return the execute success row num
      */
     default int[] executeBatch(final List<T> entities) {
+        // ENHANCE 后续加入batchSize配置
         return executeBatch(entities, entities.size());
     }
 

@@ -13,6 +13,8 @@ import java.util.Locale;
 import java.util.Map;
 import java.util.Set;
 
+import javax.annotation.Nonnull;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeanUtils;
@@ -82,7 +84,6 @@ public class NestedBeanPropertyRowMapper<T> implements cn.featherfly.common.repo
     protected final Logger logger = LoggerFactory.getLogger(getClass());
 
     /** The class we are mapping to. */
-    @Nullable
     private Class<T> mappedClass;
 
     /** Whether we're strictly validating. */
@@ -103,10 +104,8 @@ public class NestedBeanPropertyRowMapper<T> implements cn.featherfly.common.repo
     @Nullable
     private Set<String> mappedProperties;
 
-    @Nullable
     private SqlTypeMappingManager manager;
 
-    @Nullable
     private MapperObjectFactory<T> mapperObjectFactory;
 
     private String prefix;
@@ -141,13 +140,13 @@ public class NestedBeanPropertyRowMapper<T> implements cn.featherfly.common.repo
      * Instantiates a new nested bean property row mapper.
      *
      * @param mappedClass         the mapped class
-     * @param prefix              the prefix
      * @param manager             the manager
+     * @param prefix              the prefix
      * @param checkFullyPopulated the check fully populated
      */
-    public NestedBeanPropertyRowMapper(Class<T> mappedClass, String prefix, SqlTypeMappingManager manager,
+    public NestedBeanPropertyRowMapper(Class<T> mappedClass, SqlTypeMappingManager manager, String prefix,
             boolean checkFullyPopulated) {
-        this(new ClassMapperObjectFactory<>(mappedClass), prefix, manager, checkFullyPopulated);
+        this(new ClassMapperObjectFactory<>(mappedClass), manager, prefix, checkFullyPopulated);
     }
 
     /**
@@ -173,7 +172,7 @@ public class NestedBeanPropertyRowMapper<T> implements cn.featherfly.common.repo
      */
     public NestedBeanPropertyRowMapper(MapperObjectFactory<T> mapperObjectFactory, SqlTypeMappingManager manager,
             boolean checkFullyPopulated) {
-        this(mapperObjectFactory, null, manager, checkFullyPopulated);
+        this(mapperObjectFactory, manager, null, checkFullyPopulated);
     }
 
     /**
@@ -181,20 +180,24 @@ public class NestedBeanPropertyRowMapper<T> implements cn.featherfly.common.repo
      *
      * @param mapperObjectFactory the mapper object factory
      * @param manager             the manager
+     * @param prefix              the prefix
      * @param checkFullyPopulated whether we're strictly validating that all
      *                            bean properties have been mapped from
      *                            corresponding database fields
-     * @param prefix              the prefix
      */
-    public NestedBeanPropertyRowMapper(MapperObjectFactory<T> mapperObjectFactory, String prefix,
-            SqlTypeMappingManager manager, boolean checkFullyPopulated) {
+    public NestedBeanPropertyRowMapper(@Nonnull MapperObjectFactory<T> mapperObjectFactory,
+            @Nonnull SqlTypeMappingManager manager, String prefix, boolean checkFullyPopulated) {
         //        if (mapperObjectFactory instanceof ClassMapperObjectFactory) {
         //            initialize(((ClassMapperObjectFactory<T>) mapperObjectFactory).getType());
         //        }
+        AssertIllegalArgument.isNotNull(mapperObjectFactory, "MapperObjectFactory");
+        AssertIllegalArgument.isNotNull(manager, "SqlTypeMappingManager");
         this.manager = manager;
         this.mapperObjectFactory = mapperObjectFactory;
         this.checkFullyPopulated = checkFullyPopulated;
         this.prefix = prefix;
+
+        initialize(mapperObjectFactory.getMappedClass());
     }
 
     //    /**
@@ -409,9 +412,9 @@ public class NestedBeanPropertyRowMapper<T> implements cn.featherfly.common.repo
 
         if (rowNumber == 0) {
             mappings = new ArrayList<>();
-            @SuppressWarnings("unchecked")
-            Class<T> mappedType = (Class<T>) mappedObject.getClass();
-            initialize(mappedType);
+            //            @SuppressWarnings("unchecked")
+            //            Class<T> mappedType = (Class<T>) mappedObject.getClass();
+            //            initialize(mappedType);
             BeanDescriptor<T> beanDescriptor = BeanDescriptor.getBeanDescriptor(mappedClass);
 
             for (int index = 1; index <= columnCount; index++) {

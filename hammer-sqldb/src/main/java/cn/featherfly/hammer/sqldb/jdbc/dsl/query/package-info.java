@@ -1,7 +1,5 @@
 /**
- * <p>
- * dsl execute impl. SqlQuery
- * </p>
+ * dsl query impl. SqlQuery.
  *
  * @author zhongj
  */

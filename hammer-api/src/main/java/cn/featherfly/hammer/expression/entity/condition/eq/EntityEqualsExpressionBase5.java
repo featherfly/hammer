@@ -62,7 +62,7 @@ public interface EntityEqualsExpressionBase5<E, E2, E3, E4, E5, C extends Condit
      * @param queryPolicy the query policy
      * @return LogicExpression
      */
-    <R> L eq5(SerializableFunction<E5, R> name, R value, MatchStrategy queryPolicy);
+    <R> L eq5(SerializableFunction<E5, R> name, R value, MatchStrategy matchStrategy);
 
     /**
      * equals. 等于.
@@ -74,7 +74,7 @@ public interface EntityEqualsExpressionBase5<E, E2, E3, E4, E5, C extends Condit
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
-    <R> L eq5(SerializableFunction<E5, R> name, R value, MatchStrategy queryPolicy, Predicate<R> ignoreStrategy);
+    <R> L eq5(SerializableFunction<E5, R> name, R value, MatchStrategy matchStrategy, Predicate<R> ignoreStrategy);
 
     /**
      * equals. 等于.
@@ -107,7 +107,7 @@ public interface EntityEqualsExpressionBase5<E, E2, E3, E4, E5, C extends Condit
      * @param queryPolicy the query policy
      * @return LogicExpression
      */
-    <R> L eq5(SerializableSupplier5<R> property, MatchStrategy queryPolicy);
+    <R> L eq5(SerializableSupplier5<R> property, MatchStrategy matchStrategy);
 
     /**
      * equals. 等于.
@@ -118,7 +118,7 @@ public interface EntityEqualsExpressionBase5<E, E2, E3, E4, E5, C extends Condit
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
-    <R> L eq5(SerializableSupplier5<R> property, MatchStrategy queryPolicy, Predicate<R> ignoreStrategy);
+    <R> L eq5(SerializableSupplier5<R> property, MatchStrategy matchStrategy, Predicate<R> ignoreStrategy);
 
     //    /**
     //     * equals. 等于.

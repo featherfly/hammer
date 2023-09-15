@@ -47,7 +47,7 @@
 //     * @param ignoreStrategy   the ignore strategy
 //     */
 //    public RepositorySqlQueryExpression(Jdbc jdbc, AliasManager aliasManager, SqlSelectBasicBuilder selectBuilder,
-//            SqlPageFactory sqlPageFactory, Predicate<Object> ignoreStrategy) {
+//            SqlPageFactory sqlPageFactory, Predicate<?> ignoreStrategy) {
 //        //        super(jdbc, factory, aliasManager, selectBuilder.getTableAlias(), sqlPageFactory, ignoreStrategy);
 //        super(jdbc, aliasManager, selectBuilder.getDefaultTableAlias(), sqlPageFactory, ignoreStrategy);
 //        this.selectBuilder = selectBuilder;
@@ -63,7 +63,7 @@
 //     * @param ignoreStrategy   the ignore strategy
 //     */
 //    public RepositorySqlQueryExpression(Jdbc jdbc, AliasManager aliasManager, String queryAlias,
-//            SqlPageFactory sqlPageFactory, Predicate<Object> ignoreStrategy) {
+//            SqlPageFactory sqlPageFactory, Predicate<?> ignoreStrategy) {
 //        super(jdbc, aliasManager, queryAlias, sqlPageFactory, ignoreStrategy);
 //    }
 //
@@ -76,7 +76,7 @@
 //     * @param ignoreStrategy   the ignore strategy
 //     */
 //    public RepositorySqlQueryExpression(Jdbc jdbc, AliasManager aliasManager, SqlPageFactory sqlPageFactory,
-//            Predicate<Object> ignoreStrategy) {
+//            Predicate<?> ignoreStrategy) {
 //        super(jdbc, aliasManager, sqlPageFactory, ignoreStrategy);
 //    }
 //
@@ -92,7 +92,7 @@
 //     */
 //    RepositorySqlQueryExpression(RepositoryQueryConditionGroupLogicExpression parent, Jdbc jdbc,
 //            AliasManager aliasManager, String queryAlias, SqlPageFactory sqlPageFactory,
-//            Predicate<Object> ignoreStrategy) {
+//            Predicate<?> ignoreStrategy) {
 //        super(parent, jdbc, aliasManager, queryAlias, sqlPageFactory, ignoreStrategy);
 //    }
 //

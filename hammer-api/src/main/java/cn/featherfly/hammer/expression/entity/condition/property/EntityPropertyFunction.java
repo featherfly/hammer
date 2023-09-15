@@ -42,7 +42,7 @@ public interface EntityPropertyFunction<E, C extends ConditionExpression, L exte
      * @param name the name
      * @return the string expression
      */
-    EntityNumberPropertyExpression<E, Integer, C, L> apply(SerializableToIntFunction<E> name);
+    EntityIntPropertyExpression<E, C, L> apply(SerializableToIntFunction<E> name);
 
     /**
      * long property.
@@ -50,7 +50,7 @@ public interface EntityPropertyFunction<E, C extends ConditionExpression, L exte
      * @param name the name
      * @return the string expression
      */
-    EntityNumberPropertyExpression<E, Long, C, L> apply(SerializableToLongFunction<E> name);
+    EntityLongPropertyExpression<E, C, L> apply(SerializableToLongFunction<E> name);
 
     /**
      * double property.
@@ -58,7 +58,7 @@ public interface EntityPropertyFunction<E, C extends ConditionExpression, L exte
      * @param name the name
      * @return the string expression
      */
-    EntityNumberPropertyExpression<E, Double, C, L> apply(SerializableToDoubleFunction<E> name);
+    EntityDoublePropertyExpression<E, C, L> apply(SerializableToDoubleFunction<E> name);
 
     /**
      * Property string.
@@ -126,5 +126,5 @@ public interface EntityPropertyFunction<E, C extends ConditionExpression, L exte
      * @param name the name
      * @return the entity property type expression
      */
-    <R> EntityPropertyTypeExpression<R, C, L> apply(SerializableFunction<E, R> name);
+    <R> EntityTypePropertyExpression<R, C, L> apply(SerializableFunction<E, R> name);
 }

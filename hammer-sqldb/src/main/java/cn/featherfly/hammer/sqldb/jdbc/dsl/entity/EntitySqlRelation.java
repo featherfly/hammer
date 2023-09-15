@@ -293,15 +293,21 @@ public abstract class EntitySqlRelation<R extends EntitySqlRelation<R, B>, B ext
             //            if (tableAlias == null) {
             //                tableAlias = aliasManager.put(classMapping.getRepositoryName());
             //            }
-            String tableAlias = aliasManager.put(classMapping.getRepositoryName());
-            this.tableAlias = tableAlias;
+
+            tableAlias = aliasManager.put(classMapping.getRepositoryName());
 
             if (classMapping.getPrivaryKeyPropertyMappings().size() == 1) {
                 idName = classMapping.getPrivaryKeyPropertyMappings().get(0).getRepositoryFieldName();
             }
 
             if (Lang.isEmpty(joinPropertyName)) {
-                joinPropertyName = idName;
+                if (Lang.isEmpty(idName)) {
+                    if (Lang.isNotEmpty(joinFromPropertyName)) {
+                        throw new SqldbHammerException("joinPropertyName and idName are all empty");
+                    }
+                } else {
+                    this.joinPropertyName = idName;
+                }
             }
 
             this.selectJoinOnBasicBuilder = selectJoinOnBasicBuilder;

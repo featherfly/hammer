@@ -27,6 +27,6 @@ public class ClassMapperObjectFactoryTest {
     @Test
     public void testCoverage() {
         ClassMapperObjectFactory<User> f = new ClassMapperObjectFactory<>(User.class);
-        assertEquals(f.getType(), User.class);
+        assertEquals(f.getMappedClass(), User.class);
     }
 }

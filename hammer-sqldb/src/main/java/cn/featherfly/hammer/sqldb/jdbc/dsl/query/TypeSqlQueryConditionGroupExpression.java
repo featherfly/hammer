@@ -80,7 +80,7 @@
 //     */
 //    public TypeSqlQueryConditionGroupExpression(Jdbc jdbc, JdbcClassMapping<?> classMapping, JdbcMappingFactory factory,
 //            SqlPageFactory sqlPageFactory, AliasManager aliasManager, TypeQueryEntity typeQueryEntity,
-//            Predicate<Object> ignoreStrategy) {
+//            Predicate<?> ignoreStrategy) {
 //        this(jdbc, null, classMapping, factory, sqlPageFactory, aliasManager, typeQueryEntity, ignoreStrategy);
 //    }
 //
@@ -98,7 +98,7 @@
 //     */
 //    public TypeSqlQueryConditionGroupExpression(Jdbc jdbc, String queryAlias, JdbcClassMapping<?> classMapping,
 //            JdbcMappingFactory factory, SqlPageFactory sqlPageFactory, AliasManager aliasManager,
-//            TypeQueryEntity typeQueryEntity, Predicate<Object> ignoreStrategy) {
+//            TypeQueryEntity typeQueryEntity, Predicate<?> ignoreStrategy) {
 //        this(null, jdbc, queryAlias, classMapping, factory, sqlPageFactory, aliasManager, typeQueryEntity,
 //                ignoreStrategy);
 //    }
@@ -118,7 +118,7 @@
 //     */
 //    TypeSqlQueryConditionGroupExpression(TypeQueryConditionGroupLogicExpression parent, Jdbc jdbc, String queryAlias,
 //            JdbcClassMapping<?> classMapping, JdbcMappingFactory factory, SqlPageFactory sqlPageFactory,
-//            AliasManager aliasManager, TypeQueryEntity typeQueryEntity, Predicate<Object> ignoreStrategy) {
+//            AliasManager aliasManager, TypeQueryEntity typeQueryEntity, Predicate<?> ignoreStrategy) {
 //        super(parent, jdbc.getDialect(), sqlPageFactory, queryAlias, classMapping, typeQueryEntity, ignoreStrategy);
 //        this.jdbc = jdbc;
 //        this.factory = factory;

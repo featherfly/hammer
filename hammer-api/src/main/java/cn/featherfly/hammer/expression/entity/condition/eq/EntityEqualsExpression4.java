@@ -69,7 +69,7 @@ public interface EntityEqualsExpression4<E, E2, E3, E4, C extends ConditionExpre
     //    <R> L eq(
     //            Function<Tuple4<QueryEntityRepository<E>, QueryEntityRepository<E2>, QueryEntityRepository<E3>,
     //                    QueryEntityRepository<E4>>, QueryEntityRepository<E>> entities,
-    //            SerializableFunction<E, R> name, R value, MatchStrategy queryPolicy);
+    //            SerializableFunction<E, R> name, R value, MatchStrategy matchStrategy);
     //
     //    /**
     //     * equals. 等于.
@@ -85,7 +85,7 @@ public interface EntityEqualsExpression4<E, E2, E3, E4, C extends ConditionExpre
     //    <R> L eq(
     //            Function<Tuple4<QueryEntityRepository<E>, QueryEntityRepository<E2>, QueryEntityRepository<E3>,
     //                    QueryEntityRepository<E4>>, QueryEntityRepository<E>> entities,
-    //            SerializableFunction<E, R> name, R value, MatchStrategy queryPolicy, Predicate<R> ignoreStrategy);
+    //            SerializableFunction<E, R> name, R value, MatchStrategy matchStrategy, Predicate<R> ignoreStrategy);
     //
     //    /**
     //     * equals. 等于.
@@ -128,7 +128,7 @@ public interface EntityEqualsExpression4<E, E2, E3, E4, C extends ConditionExpre
     //    <R> L eq(
     //            Function<Tuple4<QueryEntityRepository<E>, QueryEntityRepository<E2>, QueryEntityRepository<E3>,
     //                    QueryEntityRepository<E4>>, QueryEntityRepository<E>> entities,
-    //            SerializableSupplier<R> property, MatchStrategy queryPolicy);
+    //            SerializableSupplier<R> property, MatchStrategy matchStrategy);
     //
     //    /**
     //     * equals. 等于.
@@ -143,7 +143,7 @@ public interface EntityEqualsExpression4<E, E2, E3, E4, C extends ConditionExpre
     //    <R> L eq(
     //            Function<Tuple4<QueryEntityRepository<E>, QueryEntityRepository<E2>, QueryEntityRepository<E3>,
     //                    QueryEntityRepository<E4>>, QueryEntityRepository<E>> entities,
-    //            SerializableSupplier<R> property, MatchStrategy queryPolicy, Predicate<R> ignoreStrategy);
+    //            SerializableSupplier<R> property, MatchStrategy matchStrategy, Predicate<R> ignoreStrategy);
     //
     //    /**
     //     * equals. 等于.
@@ -226,7 +226,7 @@ public interface EntityEqualsExpression4<E, E2, E3, E4, C extends ConditionExpre
     //    <R> L eq(
     //            Function<Tuple4<QueryEntityRepository<E>, QueryEntityRepository<E2>, QueryEntityRepository<E3>,
     //                    QueryEntityRepository<E4>>, QueryEntityRepository<E2>> entities,
-    //            SerializableFunction2<E2, R> name, R value, MatchStrategy queryPolicy);
+    //            SerializableFunction2<E2, R> name, R value, MatchStrategy matchStrategy);
     //
     //    /**
     //     * equals. 等于.
@@ -242,7 +242,7 @@ public interface EntityEqualsExpression4<E, E2, E3, E4, C extends ConditionExpre
     //    <R> L eq(
     //            Function<Tuple4<QueryEntityRepository<E>, QueryEntityRepository<E2>, QueryEntityRepository<E3>,
     //                    QueryEntityRepository<E4>>, QueryEntityRepository<E2>> entities,
-    //            SerializableFunction2<E2, R> name, R value, MatchStrategy queryPolicy, Predicate<R> ignoreStrategy);
+    //            SerializableFunction2<E2, R> name, R value, MatchStrategy matchStrategy, Predicate<R> ignoreStrategy);
     //
     //    /**
     //     * equals. 等于.
@@ -287,7 +287,7 @@ public interface EntityEqualsExpression4<E, E2, E3, E4, C extends ConditionExpre
     //    <R> L eq(
     //            Function<Tuple4<QueryEntityRepository<E>, QueryEntityRepository<E2>, QueryEntityRepository<E3>,
     //                    QueryEntityRepository<E4>>, QueryEntityRepository<E2>> entities,
-    //            SerializableSupplier2<R> property, MatchStrategy queryPolicy);
+    //            SerializableSupplier2<R> property, MatchStrategy matchStrategy);
     //
     //    /**
     //     * equals. 等于.
@@ -302,7 +302,7 @@ public interface EntityEqualsExpression4<E, E2, E3, E4, C extends ConditionExpre
     //    <R> L eq(
     //            Function<Tuple4<QueryEntityRepository<E>, QueryEntityRepository<E2>, QueryEntityRepository<E3>,
     //                    QueryEntityRepository<E4>>, QueryEntityRepository<E2>> entities,
-    //            SerializableSupplier2<R> property, MatchStrategy queryPolicy, Predicate<R> ignoreStrategy);
+    //            SerializableSupplier2<R> property, MatchStrategy matchStrategy, Predicate<R> ignoreStrategy);
     //
     //    /**
     //     * equals. 等于.
@@ -385,7 +385,7 @@ public interface EntityEqualsExpression4<E, E2, E3, E4, C extends ConditionExpre
     //    <R> L eq(
     //            Function<Tuple4<QueryEntityRepository<E>, QueryEntityRepository<E2>, QueryEntityRepository<E3>,
     //                    QueryEntityRepository<E4>>, QueryEntityRepository<E3>> entities,
-    //            SerializableFunction3<E3, R> name, R value, MatchStrategy queryPolicy);
+    //            SerializableFunction3<E3, R> name, R value, MatchStrategy matchStrategy);
     //
     //    /**
     //     * equals. 等于.
@@ -401,7 +401,7 @@ public interface EntityEqualsExpression4<E, E2, E3, E4, C extends ConditionExpre
     //    <R> L eq(
     //            Function<Tuple4<QueryEntityRepository<E>, QueryEntityRepository<E2>, QueryEntityRepository<E3>,
     //                    QueryEntityRepository<E4>>, QueryEntityRepository<E3>> entities,
-    //            SerializableFunction3<E3, R> name, R value, MatchStrategy queryPolicy, Predicate<R> ignoreStrategy);
+    //            SerializableFunction3<E3, R> name, R value, MatchStrategy matchStrategy, Predicate<R> ignoreStrategy);
     //
     //    /**
     //     * equals. 等于.
@@ -446,7 +446,7 @@ public interface EntityEqualsExpression4<E, E2, E3, E4, C extends ConditionExpre
     //    <R> L eq(
     //            Function<Tuple4<QueryEntityRepository<E>, QueryEntityRepository<E2>, QueryEntityRepository<E3>,
     //                    QueryEntityRepository<E4>>, QueryEntityRepository<E3>> entities,
-    //            SerializableSupplier3<R> property, MatchStrategy queryPolicy);
+    //            SerializableSupplier3<R> property, MatchStrategy matchStrategy);
     //
     //    /**
     //     * equals. 等于.
@@ -461,7 +461,7 @@ public interface EntityEqualsExpression4<E, E2, E3, E4, C extends ConditionExpre
     //    <R> L eq(
     //            Function<Tuple4<QueryEntityRepository<E>, QueryEntityRepository<E2>, QueryEntityRepository<E3>,
     //                    QueryEntityRepository<E4>>, QueryEntityRepository<E3>> entities,
-    //            SerializableSupplier3<R> property, MatchStrategy queryPolicy, Predicate<R> ignoreStrategy);
+    //            SerializableSupplier3<R> property, MatchStrategy matchStrategy, Predicate<R> ignoreStrategy);
     //
     //    /**
     //     * equals. 等于.
@@ -544,7 +544,7 @@ public interface EntityEqualsExpression4<E, E2, E3, E4, C extends ConditionExpre
     //    <R> L eq(
     //            Function<Tuple4<QueryEntityRepository<E>, QueryEntityRepository<E2>, QueryEntityRepository<E3>,
     //                    QueryEntityRepository<E4>>, QueryEntityRepository<E4>> entities,
-    //            SerializableFunction4<E4, R> name, R value, MatchStrategy queryPolicy);
+    //            SerializableFunction4<E4, R> name, R value, MatchStrategy matchStrategy);
     //
     //    /**
     //     * equals. 等于.
@@ -560,7 +560,7 @@ public interface EntityEqualsExpression4<E, E2, E3, E4, C extends ConditionExpre
     //    <R> L eq(
     //            Function<Tuple4<QueryEntityRepository<E>, QueryEntityRepository<E2>, QueryEntityRepository<E3>,
     //                    QueryEntityRepository<E4>>, QueryEntityRepository<E4>> entities,
-    //            SerializableFunction4<E4, R> name, R value, MatchStrategy queryPolicy, Predicate<R> ignoreStrategy);
+    //            SerializableFunction4<E4, R> name, R value, MatchStrategy matchStrategy, Predicate<R> ignoreStrategy);
     //
     //    /**
     //     * equals. 等于.
@@ -605,7 +605,7 @@ public interface EntityEqualsExpression4<E, E2, E3, E4, C extends ConditionExpre
     //    <R> L eq(
     //            Function<Tuple4<QueryEntityRepository<E>, QueryEntityRepository<E2>, QueryEntityRepository<E3>,
     //                    QueryEntityRepository<E4>>, QueryEntityRepository<E4>> entities,
-    //            SerializableSupplier4<R> property, MatchStrategy queryPolicy);
+    //            SerializableSupplier4<R> property, MatchStrategy matchStrategy);
     //
     //    /**
     //     * equals. 等于.
@@ -620,7 +620,7 @@ public interface EntityEqualsExpression4<E, E2, E3, E4, C extends ConditionExpre
     //    <R> L eq(
     //            Function<Tuple4<QueryEntityRepository<E>, QueryEntityRepository<E2>, QueryEntityRepository<E3>,
     //                    QueryEntityRepository<E4>>, QueryEntityRepository<E4>> entities,
-    //            SerializableSupplier4<R> property, MatchStrategy queryPolicy, Predicate<R> ignoreStrategy);
+    //            SerializableSupplier4<R> property, MatchStrategy matchStrategy, Predicate<R> ignoreStrategy);
     //
     //    /**
     //     * equals. 等于.

@@ -34,7 +34,7 @@ public interface RepositoryEndWithExpression<C extends ConditionExpression, L ex
      * @param queryPolicy the query policy
      * @return LogicExpression
      */
-    L ew(String repository, String name, String value, MatchStrategy queryPolicy);
+    L ew(String repository, String name, String value, MatchStrategy matchStrategy);
 
     /**
      * end with value. 以value结尾.
@@ -59,7 +59,7 @@ public interface RepositoryEndWithExpression<C extends ConditionExpression, L ex
      * @param queryPolicy the query policy
      * @return LogicExpression
      */
-    //    <T> L ew(Class<T> repository, String name, String value, MatchStrategy queryPolicy);
+    //    <T> L ew(Class<T> repository, String name, String value, MatchStrategy matchStrategy);
 
     /**
      * end with value. 以value结尾.
@@ -82,5 +82,5 @@ public interface RepositoryEndWithExpression<C extends ConditionExpression, L ex
      * @param queryPolicy     the query policy
      * @return LogicExpression
      */
-    L ew(int repositoryIndex, String name, String value, MatchStrategy queryPolicy);
+    L ew(int repositoryIndex, String name, String value, MatchStrategy matchStrategy);
 }

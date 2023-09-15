@@ -1,14 +1,19 @@
 
 package cn.featherfly.hammer.expression.condition.property;
 
+import java.util.function.Predicate;
+
 import cn.featherfly.common.operator.ComparisonOperator.MatchStrategy;
 import cn.featherfly.hammer.expression.condition.ConditionExpression;
 import cn.featherfly.hammer.expression.condition.LogicExpression;
 
 /**
- * NotEqualsExpression.
+ * property not equals expression.
  *
  * @author zhongj
+ * @param <C> the generic type
+ * @param <L> the generic type
+ * @param <V> the value type
  */
 public interface PropertyNotEqualsExpression<C extends ConditionExpression, L extends LogicExpression<C, L>, V>
         extends ConditionExpression {
@@ -26,9 +31,30 @@ public interface PropertyNotEqualsExpression<C extends ConditionExpression, L ex
     /**
      * not equals. 不等于.
      *
-     * @param value       参数值
-     * @param queryPolicy the query policy
+     * @param value          参数值
+     * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
-    L ne(V value, MatchStrategy queryPolicy);
+    default L ne(V value, Predicate<V> ignoreStrategy) {
+        return ne(value, MatchStrategy.AUTO, ignoreStrategy);
+    }
+
+    /**
+     * not equals. 不等于.
+     *
+     * @param value         参数值
+     * @param matchStrategy the match strategy
+     * @return LogicExpression
+     */
+    L ne(V value, MatchStrategy matchStrategy);
+
+    /**
+     * not equals. 不等于.
+     *
+     * @param value          参数值
+     * @param matchStrategy  the match strategy
+     * @param ignoreStrategy the ignore strategy
+     * @return LogicExpression
+     */
+    L ne(V value, MatchStrategy matchStrategy, Predicate<V> ignoreStrategy);
 }

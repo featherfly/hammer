@@ -31,20 +31,42 @@ public interface GenericHammer<E, ID extends Serializable> {
     int save(E entity);
 
     /**
-     * save entities.
+     * batch save entity array.
      *
+     * @param <E>      generic type
      * @param entities entity array to save
      * @return effect data row num
      */
     int[] save(@SuppressWarnings("unchecked") E... entities);
 
     /**
-     * save entities.
+     * batch save entity array.
      *
+     * @param <E>       generic type
+     * @param entities  entity array to save
+     * @param batchSize the batch size
+     * @return effect data row num
+     */
+    int[] save(E[] entities, int batchSize);
+
+    /**
+     * batch save entity list.
+     *
+     * @param <E>      generic type
      * @param entities entity list to save
      * @return effect data row num
      */
     int[] save(List<E> entities);
+
+    /**
+     * batch save entity list.
+     *
+     * @param <E>       generic type
+     * @param entities  entity list to save
+     * @param batchSize the batch size
+     * @return effect data row num
+     */
+    int[] save(List<E> entities, int batchSize);
 
     /**
      * update entity, update all values. equal invoke method

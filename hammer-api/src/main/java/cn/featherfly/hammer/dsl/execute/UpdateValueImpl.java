@@ -1,7 +1,7 @@
 
 package cn.featherfly.hammer.dsl.execute;
 
-import java.util.function.Supplier;
+import java.util.function.BooleanSupplier;
 
 /**
  * UpdateValueImpl.
@@ -36,7 +36,7 @@ public class UpdateValueImpl implements UpdateValue {
      * {@inheritDoc}
      */
     @Override
-    public ExecutableUpdate set(Supplier<Boolean> whether, Object value) {
-        return update.set(whether, name, value);
+    public ExecutableUpdate set(BooleanSupplier setable, Object value) {
+        return update.set(setable, name, value);
     }
 }

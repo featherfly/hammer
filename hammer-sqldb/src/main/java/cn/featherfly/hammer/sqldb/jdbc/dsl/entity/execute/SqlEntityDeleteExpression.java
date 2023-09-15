@@ -46,7 +46,7 @@ public class SqlEntityDeleteExpression<E> extends
      */
     @Override
     public String build() {
-        // FIXME 后续加入设置参数，是否允许无条件筛选参数的删除操作（因为无条件帅选参数删除是危险操作），默认为不允许
+        // TODO 后续加入设置参数，是否允许无条件筛选参数的删除操作（因为无条件帅选参数删除是危险操作），默认为不允许
         // 当前没有参数返回的0
         if (Lang.isEmpty(getParams())) {
             return null;

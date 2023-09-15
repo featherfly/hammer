@@ -34,11 +34,10 @@ public class ClassMapperObjectFactory<T> implements MapperObjectFactory<T> {
     }
 
     /**
-     * get type value
-     *
-     * @return type
+     * {@inheritDoc}
      */
-    public Class<T> getType() {
+    @Override
+    public Class<T> getMappedClass() {
         return type;
     }
 }

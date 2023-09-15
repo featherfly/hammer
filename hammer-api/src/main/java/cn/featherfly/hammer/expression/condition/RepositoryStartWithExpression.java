@@ -34,7 +34,7 @@ public interface RepositoryStartWithExpression<C extends ConditionExpression, L 
      * @param queryPolicy the query policy
      * @return LogicExpression
      */
-    L sw(String repository, String name, String value, MatchStrategy queryPolicy);
+    L sw(String repository, String name, String value, MatchStrategy matchStrategy);
 
     /**
      * start with value. 以value开始.
@@ -59,7 +59,7 @@ public interface RepositoryStartWithExpression<C extends ConditionExpression, L 
      * @param queryPolicy the query policy
      * @return LogicExpression
      */
-    //    <T> L sw(Class<T> repository, String name, String value, MatchStrategy queryPolicy);
+    //    <T> L sw(Class<T> repository, String name, String value, MatchStrategy matchStrategy);
 
     /**
      * start with value. 以value开始.
@@ -82,6 +82,6 @@ public interface RepositoryStartWithExpression<C extends ConditionExpression, L 
      * @param queryPolicy     the query policy
      * @return LogicExpression
      */
-    L sw(int repositoryIndex, String name, String value, MatchStrategy queryPolicy);
+    L sw(int repositoryIndex, String name, String value, MatchStrategy matchStrategy);
 
 }

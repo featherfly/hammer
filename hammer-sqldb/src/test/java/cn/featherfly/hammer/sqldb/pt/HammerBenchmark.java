@@ -75,15 +75,15 @@ public class HammerBenchmark extends AbstractBenchmark {
         hammer.save(userInfo);
     }
 
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    protected void doInsertOne(List<UserInfo2> userInfos) {
-        for (UserInfo2 userInfo : userInfos) {
-            hammer.save(userInfo);
-        }
-    }
+    //    /**
+    //     * {@inheritDoc}
+    //     */
+    //    @Override
+    //    protected void doInsertOne(List<UserInfo2> userInfos) {
+    //        for (UserInfo2 userInfo : userInfos) {
+    //            doInsertOne(userInfo);
+    //        }
+    //    }
 
     /**
      * {@inheritDoc}

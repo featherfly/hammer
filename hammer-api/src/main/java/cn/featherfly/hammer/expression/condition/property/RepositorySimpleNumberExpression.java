@@ -1,6 +1,8 @@
 
 package cn.featherfly.hammer.expression.condition.property;
 
+import java.util.function.Predicate;
+
 import cn.featherfly.common.lang.Lang;
 import cn.featherfly.common.operator.ComparisonOperator.MatchStrategy;
 import cn.featherfly.hammer.expression.condition.LogicExpression;
@@ -15,7 +17,7 @@ import cn.featherfly.hammer.expression.condition.RepositoryConditionsExpression;
  * @param <L> the generic type
  */
 public class RepositorySimpleNumberExpression<N extends Number, C extends RepositoryConditionsExpression<C, L>,
-        L extends LogicExpression<C, L>> implements NumberExpression<N, C, L> {
+        L extends LogicExpression<C, L>> implements NumberPropertyExpression<N, C, L> {
 
     private String repository;
 
@@ -83,13 +85,13 @@ public class RepositorySimpleNumberExpression<N extends Number, C extends Reposi
      * {@inheritDoc}
      */
     @Override
-    public L eq(N value, MatchStrategy queryPolicy) {
+    public L eq(N value, MatchStrategy matchStrategy) {
         if (Lang.isNotEmpty(repository)) {
-            return expression.eq(repository, name, value, queryPolicy);
+            return expression.eq(repository, name, value, matchStrategy);
         } else if (repositoryIndex > -1) {
-            return expression.eq(repositoryIndex, name, value, queryPolicy);
+            return expression.eq(repositoryIndex, name, value, matchStrategy);
         } else {
-            return expression.eq(name, value, queryPolicy);
+            return expression.eq(name, value, matchStrategy);
         }
     }
 
@@ -111,13 +113,13 @@ public class RepositorySimpleNumberExpression<N extends Number, C extends Reposi
      * {@inheritDoc}
      */
     @Override
-    public L ne(N value, MatchStrategy queryPolicy) {
+    public L ne(N value, MatchStrategy matchStrategy) {
         if (Lang.isNotEmpty(repository)) {
-            return expression.ne(repository, name, value, queryPolicy);
+            return expression.ne(repository, name, value, matchStrategy);
         } else if (repositoryIndex > -1) {
-            return expression.ne(repositoryIndex, name, value, queryPolicy);
+            return expression.ne(repositoryIndex, name, value, matchStrategy);
         } else {
-            return expression.ne(name, value, queryPolicy);
+            return expression.ne(name, value, matchStrategy);
         }
     }
 
@@ -267,5 +269,77 @@ public class RepositorySimpleNumberExpression<N extends Number, C extends Reposi
     @Override
     public String expression() {
         return expression.expression();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public L in(N[] value) {
+        // YUFEI_TODO Auto-generated method stub
+        return null;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public L in(N value, Predicate<N> ignoreStrategy) {
+        // YUFEI_TODO Auto-generated method stub
+        return null;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public L in(N[] value, Predicate<N[]> ignoreStrategy) {
+        // YUFEI_TODO Auto-generated method stub
+        return null;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public L nin(N[] value) {
+        // YUFEI_TODO Auto-generated method stub
+        return null;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public L nin(N value, Predicate<N> ignoreStrategy) {
+        // YUFEI_TODO Auto-generated method stub
+        return null;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public L nin(N[] value, Predicate<N[]> ignoreStrategy) {
+        // YUFEI_TODO Auto-generated method stub
+        return null;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public L eq(N value, Predicate<N> ignoreStrategy) {
+        // YUFEI_TODO Auto-generated method stub
+        return null;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public L ne(N value, Predicate<N> ignoreStrategy) {
+        // YUFEI_TODO Auto-generated method stub
+        return null;
     }
 }

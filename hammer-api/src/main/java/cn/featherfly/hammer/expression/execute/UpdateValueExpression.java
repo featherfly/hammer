@@ -1,7 +1,7 @@
 
 package cn.featherfly.hammer.expression.execute;
 
-import java.util.function.Supplier;
+import java.util.function.BooleanSupplier;
 
 /**
  * update value .
@@ -30,9 +30,9 @@ public interface UpdateValueExpression<U extends PropertyExecutableUpdateExpress
     /**
      * Sets the.
      *
-     * @param whether the whether
+     * @param setable the setable
      * @param value   the value
      * @return the u
      */
-    U set(Supplier<Boolean> whether, T value);
+    U set(BooleanSupplier setable, T value);
 }

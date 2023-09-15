@@ -88,7 +88,7 @@ public class TupleNestedBeanPropertyRowMapper<T extends Tuple>
                 //                    IMPLSOON 值映射的混合映射未实现
                 //                }
                 // IMPLSOON 后续来实现对象映射和值映射的混合模式
-                rowMappers.add(new NestedBeanPropertyRowMapper<>(mappedClass, (String) prefixes.get(index), manager,
+                rowMappers.add(new NestedBeanPropertyRowMapper<>(mappedClass, manager, (String) prefixes.get(index),
                         checkFullyPopulated));
             });
         } else {
@@ -135,15 +135,12 @@ public class TupleNestedBeanPropertyRowMapper<T extends Tuple>
                 }
 
                 Lang.each(prefixes, (prefix, index) -> {
-                    rowMappers.add(new NestedBeanPropertyRowMapper<>(mappedClasses.get(index), prefix + ".", manager,
+                    rowMappers.add(new NestedBeanPropertyRowMapper<>(mappedClasses.get(index), manager, prefix + ".",
                             checkFullyPopulated));
                 });
 
                 // rowMappers 初始化完成，重新进行mapRow
                 mapRow(res, rowNum);
-
-                // TODO 功能实现，还未进行测试
-
             } catch (SQLException e) {
                 throw new JdbcMappingException(e);
             }

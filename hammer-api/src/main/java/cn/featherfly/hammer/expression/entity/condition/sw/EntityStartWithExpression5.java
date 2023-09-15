@@ -66,7 +66,7 @@ public interface EntityStartWithExpression5<E, E2, E3, E4, E5, C extends Conditi
     //     */
     //    L sw(Function<Tuple5<QueryEntityRepository<E>, QueryEntityRepository<E2>, QueryEntityRepository<E3>,
     //            QueryEntityRepository<E4>, QueryEntityRepository<E5>>, QueryEntityRepository<E>> entities,
-    //            SerializableFunction<E, String> name, String value, MatchStrategy queryPolicy);
+    //            SerializableFunction<E, String> name, String value, MatchStrategy matchStrategy);
     //
     //    /**
     //     * start with value. 以value开始.
@@ -80,7 +80,7 @@ public interface EntityStartWithExpression5<E, E2, E3, E4, E5, C extends Conditi
     //     */
     //    L sw(Function<Tuple5<QueryEntityRepository<E>, QueryEntityRepository<E2>, QueryEntityRepository<E3>,
     //            QueryEntityRepository<E4>, QueryEntityRepository<E5>>, QueryEntityRepository<E>> entities,
-    //            SerializableFunction<E, String> name, String value, MatchStrategy queryPolicy,
+    //            SerializableFunction<E, String> name, String value, MatchStrategy matchStrategy,
     //            Predicate<String> ignoreStrategy);
     //
     //    /**
@@ -122,7 +122,7 @@ public interface EntityStartWithExpression5<E, E2, E3, E4, E5, C extends Conditi
     //     */
     //    L sw(Function<Tuple5<QueryEntityRepository<E>, QueryEntityRepository<E2>, QueryEntityRepository<E3>,
     //            QueryEntityRepository<E4>, QueryEntityRepository<E5>>, QueryEntityRepository<E>> entities,
-    //            SerializableStringSupplier property, MatchStrategy queryPolicy);
+    //            SerializableStringSupplier property, MatchStrategy matchStrategy);
     //
     //    /**
     //     * start with value. 以value开始.
@@ -135,7 +135,7 @@ public interface EntityStartWithExpression5<E, E2, E3, E4, E5, C extends Conditi
     //     */
     //    L sw(Function<Tuple5<QueryEntityRepository<E>, QueryEntityRepository<E2>, QueryEntityRepository<E3>,
     //            QueryEntityRepository<E4>, QueryEntityRepository<E5>>, QueryEntityRepository<E>> entities,
-    //            SerializableStringSupplier property, MatchStrategy queryPolicy, Predicate<String> ignoreStrategy);
+    //            SerializableStringSupplier property, MatchStrategy matchStrategy, Predicate<String> ignoreStrategy);
     //
     //    /**
     //     * start with value. 以value开始.
@@ -212,7 +212,7 @@ public interface EntityStartWithExpression5<E, E2, E3, E4, E5, C extends Conditi
     //     */
     //    L sw(Function<Tuple5<QueryEntityRepository<E>, QueryEntityRepository<E2>, QueryEntityRepository<E3>,
     //            QueryEntityRepository<E4>, QueryEntityRepository<E5>>, QueryEntityRepository<E2>> entities,
-    //            SerializableFunction2<E2, String> name, String value, MatchStrategy queryPolicy);
+    //            SerializableFunction2<E2, String> name, String value, MatchStrategy matchStrategy);
     //
     //    /**
     //     * start with value. 以value开始.
@@ -226,7 +226,7 @@ public interface EntityStartWithExpression5<E, E2, E3, E4, E5, C extends Conditi
     //     */
     //    L sw(Function<Tuple5<QueryEntityRepository<E>, QueryEntityRepository<E2>, QueryEntityRepository<E3>,
     //            QueryEntityRepository<E4>, QueryEntityRepository<E5>>, QueryEntityRepository<E2>> entities,
-    //            SerializableFunction2<E2, String> name, String value, MatchStrategy queryPolicy,
+    //            SerializableFunction2<E2, String> name, String value, MatchStrategy matchStrategy,
     //            Predicate<String> ignoreStrategy);
     //
     //    /**
@@ -268,7 +268,7 @@ public interface EntityStartWithExpression5<E, E2, E3, E4, E5, C extends Conditi
     //     */
     //    L sw(Function<Tuple5<QueryEntityRepository<E>, QueryEntityRepository<E2>, QueryEntityRepository<E3>,
     //            QueryEntityRepository<E4>, QueryEntityRepository<E5>>, QueryEntityRepository<E2>> entities,
-    //            SerializableSupplier2<String> property, MatchStrategy queryPolicy);
+    //            SerializableSupplier2<String> property, MatchStrategy matchStrategy);
     //
     //    /**
     //     * start with value. 以value开始.
@@ -281,7 +281,7 @@ public interface EntityStartWithExpression5<E, E2, E3, E4, E5, C extends Conditi
     //     */
     //    L sw(Function<Tuple5<QueryEntityRepository<E>, QueryEntityRepository<E2>, QueryEntityRepository<E3>,
     //            QueryEntityRepository<E4>, QueryEntityRepository<E5>>, QueryEntityRepository<E2>> entities,
-    //            SerializableSupplier2<String> property, MatchStrategy queryPolicy, Predicate<String> ignoreStrategy);
+    //            SerializableSupplier2<String> property, MatchStrategy matchStrategy, Predicate<String> ignoreStrategy);
     //
     //    /**
     //     * start with value. 以value开始.
@@ -359,7 +359,7 @@ public interface EntityStartWithExpression5<E, E2, E3, E4, E5, C extends Conditi
     //     */
     //    L sw(Function<Tuple5<QueryEntityRepository<E>, QueryEntityRepository<E2>, QueryEntityRepository<E3>,
     //            QueryEntityRepository<E4>, QueryEntityRepository<E5>>, QueryEntityRepository<E3>> entities,
-    //            SerializableFunction3<E3, String> name, String value, MatchStrategy queryPolicy);
+    //            SerializableFunction3<E3, String> name, String value, MatchStrategy matchStrategy);
     //
     //    /**
     //     * start with value. 以value开始.
@@ -373,7 +373,7 @@ public interface EntityStartWithExpression5<E, E2, E3, E4, E5, C extends Conditi
     //     */
     //    L sw(Function<Tuple5<QueryEntityRepository<E>, QueryEntityRepository<E2>, QueryEntityRepository<E3>,
     //            QueryEntityRepository<E4>, QueryEntityRepository<E5>>, QueryEntityRepository<E3>> entities,
-    //            SerializableFunction3<E3, String> name, String value, MatchStrategy queryPolicy,
+    //            SerializableFunction3<E3, String> name, String value, MatchStrategy matchStrategy,
     //            Predicate<String> ignoreStrategy);
     //
     //    /**
@@ -415,7 +415,7 @@ public interface EntityStartWithExpression5<E, E2, E3, E4, E5, C extends Conditi
     //     */
     //    L sw(Function<Tuple5<QueryEntityRepository<E>, QueryEntityRepository<E2>, QueryEntityRepository<E3>,
     //            QueryEntityRepository<E4>, QueryEntityRepository<E5>>, QueryEntityRepository<E3>> entities,
-    //            SerializableSupplier3<String> property, MatchStrategy queryPolicy);
+    //            SerializableSupplier3<String> property, MatchStrategy matchStrategy);
     //
     //    /**
     //     * start with value. 以value开始.
@@ -428,7 +428,7 @@ public interface EntityStartWithExpression5<E, E2, E3, E4, E5, C extends Conditi
     //     */
     //    L sw(Function<Tuple5<QueryEntityRepository<E>, QueryEntityRepository<E2>, QueryEntityRepository<E3>,
     //            QueryEntityRepository<E4>, QueryEntityRepository<E5>>, QueryEntityRepository<E3>> entities,
-    //            SerializableSupplier3<String> property, MatchStrategy queryPolicy, Predicate<String> ignoreStrategy);
+    //            SerializableSupplier3<String> property, MatchStrategy matchStrategy, Predicate<String> ignoreStrategy);
     //
     //    /**
     //     * start with value. 以value开始.
@@ -506,7 +506,7 @@ public interface EntityStartWithExpression5<E, E2, E3, E4, E5, C extends Conditi
     //     */
     //    L sw(Function<Tuple5<QueryEntityRepository<E>, QueryEntityRepository<E2>, QueryEntityRepository<E3>,
     //            QueryEntityRepository<E4>, QueryEntityRepository<E5>>, QueryEntityRepository<E4>> entities,
-    //            SerializableFunction4<E4, String> name, String value, MatchStrategy queryPolicy);
+    //            SerializableFunction4<E4, String> name, String value, MatchStrategy matchStrategy);
     //
     //    /**
     //     * start with value. 以value开始.
@@ -520,7 +520,7 @@ public interface EntityStartWithExpression5<E, E2, E3, E4, E5, C extends Conditi
     //     */
     //    L sw(Function<Tuple5<QueryEntityRepository<E>, QueryEntityRepository<E2>, QueryEntityRepository<E3>,
     //            QueryEntityRepository<E4>, QueryEntityRepository<E5>>, QueryEntityRepository<E4>> entities,
-    //            SerializableFunction4<E4, String> name, String value, MatchStrategy queryPolicy,
+    //            SerializableFunction4<E4, String> name, String value, MatchStrategy matchStrategy,
     //            Predicate<String> ignoreStrategy);
     //
     //    /**
@@ -562,7 +562,7 @@ public interface EntityStartWithExpression5<E, E2, E3, E4, E5, C extends Conditi
     //     */
     //    L sw(Function<Tuple5<QueryEntityRepository<E>, QueryEntityRepository<E2>, QueryEntityRepository<E3>,
     //            QueryEntityRepository<E4>, QueryEntityRepository<E5>>, QueryEntityRepository<E4>> entities,
-    //            SerializableSupplier4<String> property, MatchStrategy queryPolicy);
+    //            SerializableSupplier4<String> property, MatchStrategy matchStrategy);
     //
     //    /**
     //     * start with value. 以value开始.
@@ -575,7 +575,7 @@ public interface EntityStartWithExpression5<E, E2, E3, E4, E5, C extends Conditi
     //     */
     //    L sw(Function<Tuple5<QueryEntityRepository<E>, QueryEntityRepository<E2>, QueryEntityRepository<E3>,
     //            QueryEntityRepository<E4>, QueryEntityRepository<E5>>, QueryEntityRepository<E4>> entities,
-    //            SerializableSupplier4<String> property, MatchStrategy queryPolicy, Predicate<String> ignoreStrategy);
+    //            SerializableSupplier4<String> property, MatchStrategy matchStrategy, Predicate<String> ignoreStrategy);
     //
     //    /**
     //     * start with value. 以value开始.
@@ -653,7 +653,7 @@ public interface EntityStartWithExpression5<E, E2, E3, E4, E5, C extends Conditi
     //     */
     //    L sw(Function<Tuple5<QueryEntityRepository<E>, QueryEntityRepository<E2>, QueryEntityRepository<E3>,
     //            QueryEntityRepository<E4>, QueryEntityRepository<E5>>, QueryEntityRepository<E5>> entities,
-    //            SerializableFunction5<E5, String> name, String value, MatchStrategy queryPolicy);
+    //            SerializableFunction5<E5, String> name, String value, MatchStrategy matchStrategy);
     //
     //    /**
     //     * start with value. 以value开始.
@@ -667,7 +667,7 @@ public interface EntityStartWithExpression5<E, E2, E3, E4, E5, C extends Conditi
     //     */
     //    L sw(Function<Tuple5<QueryEntityRepository<E>, QueryEntityRepository<E2>, QueryEntityRepository<E3>,
     //            QueryEntityRepository<E4>, QueryEntityRepository<E5>>, QueryEntityRepository<E5>> entities,
-    //            SerializableFunction5<E5, String> name, String value, MatchStrategy queryPolicy,
+    //            SerializableFunction5<E5, String> name, String value, MatchStrategy matchStrategy,
     //            Predicate<String> ignoreStrategy);
     //
     //    /**
@@ -709,7 +709,7 @@ public interface EntityStartWithExpression5<E, E2, E3, E4, E5, C extends Conditi
     //     */
     //    L sw(Function<Tuple5<QueryEntityRepository<E>, QueryEntityRepository<E2>, QueryEntityRepository<E3>,
     //            QueryEntityRepository<E4>, QueryEntityRepository<E5>>, QueryEntityRepository<E5>> entities,
-    //            SerializableSupplier5<String> property, MatchStrategy queryPolicy);
+    //            SerializableSupplier5<String> property, MatchStrategy matchStrategy);
     //
     //    /**
     //     * start with value. 以value开始.
@@ -722,7 +722,7 @@ public interface EntityStartWithExpression5<E, E2, E3, E4, E5, C extends Conditi
     //     */
     //    L sw(Function<Tuple5<QueryEntityRepository<E>, QueryEntityRepository<E2>, QueryEntityRepository<E3>,
     //            QueryEntityRepository<E4>, QueryEntityRepository<E5>>, QueryEntityRepository<E5>> entities,
-    //            SerializableSupplier5<String> property, MatchStrategy queryPolicy, Predicate<String> ignoreStrategy);
+    //            SerializableSupplier5<String> property, MatchStrategy matchStrategy, Predicate<String> ignoreStrategy);
     //
     //    /**
     //     * start with value. 以value开始.

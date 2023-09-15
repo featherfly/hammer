@@ -55,7 +55,7 @@
 //     * @param ignoreStrategy   the ignore strategy
 //     */
 //    public RepositorySqlQueryConditionGroupExpression(Jdbc jdbc, AliasManager aliasManager,
-//            SqlPageFactory sqlPageFactory, Predicate<Object> ignoreStrategy) {
+//            SqlPageFactory sqlPageFactory, Predicate<?> ignoreStrategy) {
 //        this(jdbc, aliasManager, null, sqlPageFactory, ignoreStrategy);
 //    }
 //
@@ -69,7 +69,7 @@
 //     * @param ignoreStrategy   the ignore strategy
 //     */
 //    public RepositorySqlQueryConditionGroupExpression(Jdbc jdbc, AliasManager aliasManager, String queryAlias,
-//            SqlPageFactory sqlPageFactory, Predicate<Object> ignoreStrategy) {
+//            SqlPageFactory sqlPageFactory, Predicate<?> ignoreStrategy) {
 //        this(null, jdbc, aliasManager, queryAlias, sqlPageFactory, ignoreStrategy);
 //    }
 //
@@ -85,7 +85,7 @@
 //     */
 //    RepositorySqlQueryConditionGroupExpression(RepositoryQueryConditionGroupLogicExpression parent, Jdbc jdbc,
 //            AliasManager aliasManager, String queryAlias, SqlPageFactory sqlPageFactory,
-//            Predicate<Object> ignoreStrategy) {
+//            Predicate<?> ignoreStrategy) {
 //        super(parent, jdbc.getDialect(), aliasManager, queryAlias, sqlPageFactory, ignoreStrategy);
 //        this.jdbc = jdbc;
 //    }

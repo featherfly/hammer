@@ -10,6 +10,7 @@
  */
 package cn.featherfly.hammer.expression.entity.condition.isn;
 
+import cn.featherfly.common.exception.NotImplementedException;
 import cn.featherfly.common.function.serializable.SerializableFunction;
 import cn.featherfly.hammer.expression.condition.ConditionExpression;
 import cn.featherfly.hammer.expression.condition.LogicExpression;
@@ -41,8 +42,8 @@ public class IsNullEntityExpressionImpl<E, C extends ConditionExpression, L exte
      */
     @Override
     public <R> IsNullEntityPropertyExpression<E, R> property(SerializableFunction<E, R> name) {
-        // YUFEI_TODO Auto-generated method stub
-        return null;
+        // IMPLSOON 未实现property
+        throw new NotImplementedException();
     }
 
     /**

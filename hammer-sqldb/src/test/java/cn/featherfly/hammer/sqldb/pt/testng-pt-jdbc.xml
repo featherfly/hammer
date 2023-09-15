@@ -3,6 +3,7 @@
 <suite name="JDBC Benchmark Test Suite With Mysql" parallel="tests"
 	thread-count="1">
     <parameter name="dataBase" value="mysql" />
+<!--     <parameter name="times" value="3000" /> -->
     <test name="Benchmark test">
          <classes>
             <class name="cn.featherfly.hammer.sqldb.pt.JdbcBenchmark" />

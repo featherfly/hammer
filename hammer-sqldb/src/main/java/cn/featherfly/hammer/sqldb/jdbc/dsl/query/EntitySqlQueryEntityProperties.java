@@ -54,7 +54,7 @@
 //     * @param ignoreStrategy   the ignore strategy
 //     */
 //    public EntitySqlQueryEntityProperties(Jdbc jdbc, JdbcClassMapping<E> classMapping, JdbcMappingFactory factory,
-//            SqlPageFactory sqlPageFactory, AliasManager aliasManager, Predicate<Object> ignoreStrategy) {
+//            SqlPageFactory sqlPageFactory, AliasManager aliasManager, Predicate<?> ignoreStrategy) {
 //        super(jdbc, classMapping, factory, sqlPageFactory, aliasManager, ignoreStrategy);
 //    }
 //

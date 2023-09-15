@@ -1,15 +1,19 @@
 
 package cn.featherfly.hammer.sqldb.jdbc.dsl.entity.condition;
 
+import java.io.Serializable;
 import java.util.Date;
+import java.util.List;
+import java.util.function.Predicate;
 
+import cn.featherfly.common.db.mapping.JdbcMappingFactory;
 import cn.featherfly.common.function.serializable.SerializableFunction;
 import cn.featherfly.hammer.expression.condition.ConditionExpression;
 import cn.featherfly.hammer.expression.condition.LogicExpression;
 import cn.featherfly.hammer.expression.entity.condition.property.EntityDatePropertyExpression;
 
 /**
- * The Class EntityDateExpressionImpl.
+ * entity date property expression implements.
  *
  * @author zhongj
  * @param <E> the element type
@@ -19,7 +23,7 @@ import cn.featherfly.hammer.expression.entity.condition.property.EntityDatePrope
  */
 public class EntityDatePropertyExpressionImpl<E, D extends Date, C extends ConditionExpression,
         L extends LogicExpression<C, L>>
-        extends AbstractMulitiEntityPropertyExpression<E, D, SerializableFunction<E, D>, C, L>
+        extends AbstractMulitiEntityGenericPropertyExpression<E, D, SerializableFunction<E, D>, C, L>
         implements EntityDatePropertyExpression<E, D, C, L> {
 
     /**
@@ -28,10 +32,24 @@ public class EntityDatePropertyExpressionImpl<E, D extends Date, C extends Condi
      * @param index      the index
      * @param name       the name
      * @param expression the expression
+     * @param factory    the factory
      */
     public EntityDatePropertyExpressionImpl(int index, SerializableFunction<E, D> name,
-            AbstractMulitiEntityConditionExpression<C, L> expression) {
-        super(index, name, expression);
+            AbstractMulitiEntityConditionExpression<C, L> expression, JdbcMappingFactory factory) {
+        super(index, name, expression, factory);
+    }
+
+    /**
+     * Instantiates a new entity date property expression impl.
+     *
+     * @param index        the index
+     * @param propertyList the property list
+     * @param expression   the expression
+     * @param factory      the factory
+     */
+    public EntityDatePropertyExpressionImpl(int index, List<Serializable> propertyList,
+            AbstractMulitiEntityConditionExpression<C, L> expression, JdbcMappingFactory factory) {
+        super(index, propertyList, expression, factory);
     }
 
     /**
@@ -39,7 +57,15 @@ public class EntityDatePropertyExpressionImpl<E, D extends Date, C extends Condi
      */
     @Override
     public L eq(D value) {
-        return expression.eq0(index, name, value, expression.getIgnoreStrategy());
+        return expression.eq0(index, getPropertyMapping(value), value, expression.getIgnoreStrategy());
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public L eq(D value, Predicate<D> ignoreStrategy) {
+        return expression.eq0(index, getPropertyMapping(value), value, ignoreStrategy);
     }
 
     /**
@@ -55,7 +81,15 @@ public class EntityDatePropertyExpressionImpl<E, D extends Date, C extends Condi
      */
     @Override
     public L ne(D value) {
-        return expression.ne0(index, name, value, expression.getIgnoreStrategy());
+        return expression.ne0(index, getPropertyMapping(value), value, expression.getIgnoreStrategy());
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public L ne(D value, Predicate<D> ignoreStrategy) {
+        return expression.ne0(index, getPropertyMapping(value), value, ignoreStrategy);
     }
 
     /**
@@ -63,7 +97,31 @@ public class EntityDatePropertyExpressionImpl<E, D extends Date, C extends Condi
      */
     @Override
     public L in(D value) {
-        return expression.in0(index, name, value, expression.getIgnoreStrategy());
+        return expression.in0(index, getPropertyMapping(value), value, expression.getIgnoreStrategy());
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public L in(D[] value) {
+        return expression.in0(index, getPropertyMapping(value), value, expression.getIgnoreStrategy());
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public L in(D value, Predicate<D> ignoreStrategy) {
+        return expression.in0(index, getPropertyMapping(value), value, ignoreStrategy);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public L in(D[] value, Predicate<D[]> ignoreStrategy) {
+        return expression.in0(index, getPropertyMapping(value), value, ignoreStrategy);
     }
 
     /**
@@ -71,7 +129,31 @@ public class EntityDatePropertyExpressionImpl<E, D extends Date, C extends Condi
      */
     @Override
     public L nin(D value) {
-        return expression.nin0(index, name, value, expression.getIgnoreStrategy());
+        return expression.nin0(index, getPropertyMapping(value), value, expression.getIgnoreStrategy());
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public L nin(D[] value) {
+        return expression.nin0(index, getPropertyMapping(value), value, expression.getIgnoreStrategy());
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public L nin(D value, Predicate<D> ignoreStrategy) {
+        return expression.nin0(index, getPropertyMapping(value), value, ignoreStrategy);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public L nin(D[] value, Predicate<D[]> ignoreStrategy) {
+        return expression.nin0(index, getPropertyMapping(value), value, ignoreStrategy);
     }
 
     /**
@@ -79,7 +161,7 @@ public class EntityDatePropertyExpressionImpl<E, D extends Date, C extends Condi
      */
     @Override
     public L le(D value) {
-        return expression.le0(index, name, value, expression.getIgnoreStrategy());
+        return expression.le0(index, getPropertyMapping(value), value, expression.getIgnoreStrategy());
     }
 
     /**
@@ -87,7 +169,7 @@ public class EntityDatePropertyExpressionImpl<E, D extends Date, C extends Condi
      */
     @Override
     public L lt(D value) {
-        return expression.lt0(index, name, value, expression.getIgnoreStrategy());
+        return expression.lt0(index, getPropertyMapping(value), value, expression.getIgnoreStrategy());
     }
 
     /**
@@ -95,7 +177,7 @@ public class EntityDatePropertyExpressionImpl<E, D extends Date, C extends Condi
      */
     @Override
     public L ge(D value) {
-        return expression.ge0(index, name, value, expression.getIgnoreStrategy());
+        return expression.ge0(index, getPropertyMapping(value), value, expression.getIgnoreStrategy());
     }
 
     /**
@@ -103,7 +185,7 @@ public class EntityDatePropertyExpressionImpl<E, D extends Date, C extends Condi
      */
     @Override
     public L gt(D value) {
-        return expression.gt0(index, name, value, expression.getIgnoreStrategy());
+        return expression.gt0(index, getPropertyMapping(value), value, expression.getIgnoreStrategy());
     }
 
     /**
@@ -111,7 +193,7 @@ public class EntityDatePropertyExpressionImpl<E, D extends Date, C extends Condi
      */
     @Override
     public L isn(Boolean value) {
-        return expression.isn0(index, name, value);
+        return expression.isn0(index, getPropertyMapping(value), value);
     }
 
     /**
@@ -119,6 +201,7 @@ public class EntityDatePropertyExpressionImpl<E, D extends Date, C extends Condi
      */
     @Override
     public L inn(Boolean value) {
-        return expression.inn0(index, name, value);
+        return expression.inn0(index, getPropertyMapping(value), value);
     }
+
 }

@@ -1,14 +1,13 @@
 
 package cn.featherfly.hammer.sqldb.jdbc.dsl.execute;
 
+import java.util.function.BooleanSupplier;
 import java.util.function.Consumer;
 import java.util.function.Predicate;
-import java.util.function.Supplier;
 
-import cn.featherfly.common.lang.LambdaUtils;
-import cn.featherfly.common.lang.Lang;
 import cn.featherfly.common.function.serializable.SerializableFunction;
 import cn.featherfly.common.function.serializable.SerializableSupplier;
+import cn.featherfly.common.lang.LambdaUtils;
 import cn.featherfly.common.repository.AliasRepository;
 import cn.featherfly.common.repository.IgnoreStrategy;
 import cn.featherfly.common.repository.Repository;
@@ -46,7 +45,7 @@ public class SqlExecutableUpdate extends AbstractSqlExecutableUpdate<SqlExecutab
      * @param jdbc           jdbc
      * @param ignoreStrategy the ignore strategy
      */
-    public SqlExecutableUpdate(String tableName, Jdbc jdbc, Predicate<Object> ignoreStrategy) {
+    public SqlExecutableUpdate(String tableName, Jdbc jdbc, Predicate<?> ignoreStrategy) {
         super(tableName, jdbc, ignoreStrategy);
     }
 
@@ -58,7 +57,7 @@ public class SqlExecutableUpdate extends AbstractSqlExecutableUpdate<SqlExecutab
      * @param jdbc           jdbc
      * @param ignoreStrategy the ignore strategy
      */
-    public SqlExecutableUpdate(String tableName, String tableAlias, Jdbc jdbc, Predicate<Object> ignoreStrategy) {
+    public SqlExecutableUpdate(String tableName, String tableAlias, Jdbc jdbc, Predicate<?> ignoreStrategy) {
         super(tableName, tableAlias, jdbc, ignoreStrategy);
     }
 
@@ -79,7 +78,7 @@ public class SqlExecutableUpdate extends AbstractSqlExecutableUpdate<SqlExecutab
      * @param jdbc           the jdbc
      * @param ignoreStrategy the ignore strategy
      */
-    public SqlExecutableUpdate(Repository repository, Jdbc jdbc, Predicate<Object> ignoreStrategy) {
+    public SqlExecutableUpdate(Repository repository, Jdbc jdbc, Predicate<?> ignoreStrategy) {
         this(repository.name(), jdbc, ignoreStrategy);
     }
 
@@ -100,7 +99,7 @@ public class SqlExecutableUpdate extends AbstractSqlExecutableUpdate<SqlExecutab
      * @param jdbc           the jdbc
      * @param ignoreStrategy the ignore strategy
      */
-    public SqlExecutableUpdate(AliasRepository repository, Jdbc jdbc, Predicate<Object> ignoreStrategy) {
+    public SqlExecutableUpdate(AliasRepository repository, Jdbc jdbc, Predicate<?> ignoreStrategy) {
         this(repository.name(), repository.alias(), jdbc, ignoreStrategy);
     }
 
@@ -117,8 +116,8 @@ public class SqlExecutableUpdate extends AbstractSqlExecutableUpdate<SqlExecutab
      * {@inheritDoc}
      */
     @Override
-    public ExecutableUpdate set(Supplier<Boolean> whether, String name, Object value) {
-        if (Lang.isTrue(whether.get())) {
+    public ExecutableUpdate set(BooleanSupplier setable, String name, Object value) {
+        if (setable.getAsBoolean()) {
             return set(name, value);
         } else {
             return this;
@@ -138,8 +137,8 @@ public class SqlExecutableUpdate extends AbstractSqlExecutableUpdate<SqlExecutab
      * {@inheritDoc}
      */
     @Override
-    public <T, R> ExecutableUpdate set(Supplier<Boolean> whether, SerializableFunction<T, R> name, R value) {
-        if (Lang.isTrue(whether.get())) {
+    public <T, R> ExecutableUpdate set(BooleanSupplier setable, SerializableFunction<T, R> name, R value) {
+        if (setable.getAsBoolean()) {
             return set(name, value);
         } else {
             return this;
@@ -159,8 +158,8 @@ public class SqlExecutableUpdate extends AbstractSqlExecutableUpdate<SqlExecutab
      * {@inheritDoc}
      */
     @Override
-    public <R> ExecutableUpdate set(Supplier<Boolean> whether, SerializableSupplier<R> property) {
-        if (Lang.isTrue(whether.get())) {
+    public <R> ExecutableUpdate set(BooleanSupplier setable, SerializableSupplier<R> property) {
+        if (setable.getAsBoolean()) {
             return set(property);
         } else {
             return this;
@@ -189,9 +188,9 @@ public class SqlExecutableUpdate extends AbstractSqlExecutableUpdate<SqlExecutab
      * {@inheritDoc}
      */
     @Override
-    public <T, R extends Number> ExecutableUpdate increase(Supplier<Boolean> whether, SerializableFunction<T, R> name,
+    public <T, R extends Number> ExecutableUpdate increase(BooleanSupplier setable, SerializableFunction<T, R> name,
             R value) {
-        if (Lang.isTrue(whether.get())) {
+        if (setable.getAsBoolean()) {
             return increase(name, value);
         } else {
             return this;
@@ -202,8 +201,8 @@ public class SqlExecutableUpdate extends AbstractSqlExecutableUpdate<SqlExecutab
      * {@inheritDoc}
      */
     @Override
-    public <N extends Number> ExecutableUpdate increase(Supplier<Boolean> whether, String name, N value) {
-        if (Lang.isTrue(whether.get())) {
+    public <N extends Number> ExecutableUpdate increase(BooleanSupplier increaseable, String name, N value) {
+        if (increaseable.getAsBoolean()) {
             return increase(name, value);
         } else {
             return this;
@@ -232,8 +231,9 @@ public class SqlExecutableUpdate extends AbstractSqlExecutableUpdate<SqlExecutab
      * {@inheritDoc}
      */
     @Override
-    public <N extends Number> ExecutableUpdate increase(Supplier<Boolean> whether, SerializableSupplier<N> property) {
-        if (Lang.isTrue(whether.get())) {
+    public <N extends Number> ExecutableUpdate increase(BooleanSupplier increaseable,
+            SerializableSupplier<N> property) {
+        if (increaseable.getAsBoolean()) {
             return increase(property);
         } else {
             return this;
