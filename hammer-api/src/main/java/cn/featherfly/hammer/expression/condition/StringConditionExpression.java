@@ -12,6 +12,8 @@ package cn.featherfly.hammer.expression.condition;
 
 import java.util.Map;
 
+import cn.featherfly.common.lang.ArrayUtils;
+
 /**
  * StringConditionExpression.
  *
@@ -29,7 +31,7 @@ public interface StringConditionExpression<C extends ConditionExpression, L exte
      * @return the l
      */
     default L expression(String expression) {
-        return expression(expression, EMPTY_PARAMS);
+        return expression(expression, ArrayUtils.EMPTY_OBJECT_ARRAY);
     }
 
     /**

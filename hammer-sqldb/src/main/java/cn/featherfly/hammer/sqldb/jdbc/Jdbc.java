@@ -18,6 +18,7 @@ import java.util.Map.Entry;
 import cn.featherfly.common.db.JdbcException;
 import cn.featherfly.common.db.dialect.Dialect;
 import cn.featherfly.common.db.mapping.SqlTypeMappingManager;
+import cn.featherfly.common.lang.Lang;
 
 /**
  * Jdbc.
@@ -161,20 +162,26 @@ public interface Jdbc extends JdbcQuery, JdbcProcedure, JdbcUpdate {
      * @return the int
      */
     default int insertBatch(String tableName, List<Map<String, Object>> columnParams) {
-        if (columnParams.size() == 0) {
+        if (Lang.isEmpty(columnParams)) {
             return 0;
         }
-        int i = 0;
+
         int columnLen = columnParams.get(0).size();
         int paramLen = columnLen * columnParams.size();
         String[] columns = new String[columnLen];
         Object[] params = new Object[paramLen];
-        for (Map.Entry<String, Object> entry : columnParams.get(0).entrySet()) {
-            columns[i] = entry.getKey();
-            i++;
-        }
 
-        i = 0;
+        //        int i = 0;
+        //        for (Map.Entry<String, Object> entry : columnParams.get(0).entrySet()) {
+        //            columns[i] = entry.getKey();
+        //            i++;
+        //        }
+
+        Lang.each(columnParams.get(0).entrySet(), (entry, index) -> {
+            columns[index] = entry.getKey();
+        });
+
+        int i = 0;
         for (Map<String, Object> cp : columnParams) {
             for (Map.Entry<String, Object> entry : cp.entrySet()) {
                 params[i] = entry.getValue();

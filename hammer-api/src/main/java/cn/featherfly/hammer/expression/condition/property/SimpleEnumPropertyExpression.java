@@ -3,6 +3,7 @@ package cn.featherfly.hammer.expression.condition.property;
 
 import java.util.function.Predicate;
 
+import cn.featherfly.common.repository.IgnoreStrategy;
 import cn.featherfly.hammer.expression.condition.ConditionsExpression;
 import cn.featherfly.hammer.expression.condition.LogicExpression;
 
@@ -40,6 +41,14 @@ public class SimpleEnumPropertyExpression<E extends Enum<E>, C extends Condition
      * {@inheritDoc}
      */
     @Override
+    public L eq(E value, IgnoreStrategy ignoreStrategy) {
+        return expression.eq(name, value, ignoreStrategy);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
     public L eq(E value, Predicate<E> ignoreStrategy) {
         return expression.eq(name, value, ignoreStrategy);
     }
@@ -64,6 +73,14 @@ public class SimpleEnumPropertyExpression<E extends Enum<E>, C extends Condition
      * {@inheritDoc}
      */
     @Override
+    public L ne(E value, IgnoreStrategy ignoreStrategy) {
+        return expression.ne(name, value, ignoreStrategy);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
     public L ne(E value, Predicate<E> ignoreStrategy) {
         return expression.ne(name, value, ignoreStrategy);
     }
@@ -80,8 +97,8 @@ public class SimpleEnumPropertyExpression<E extends Enum<E>, C extends Condition
      * {@inheritDoc}
      */
     @Override
-    public L in(E[] value) {
-        return expression.in(name, value);
+    public L in(E value, IgnoreStrategy ignoreStrategy) {
+        return expression.in(name, value, ignoreStrategy);
     }
 
     /**
@@ -91,6 +108,22 @@ public class SimpleEnumPropertyExpression<E extends Enum<E>, C extends Condition
     @Override
     public L in(E value, Predicate<E> ignoreStrategy) {
         return expression.in(name, value, (v) -> ignoreStrategy.test((E) v));
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public L in(E[] value) {
+        return expression.in(name, value);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public L in(E[] value, IgnoreStrategy ignoreStrategy) {
+        return expression.in(name, value, ignoreStrategy);
     }
 
     /**
@@ -114,8 +147,8 @@ public class SimpleEnumPropertyExpression<E extends Enum<E>, C extends Condition
      * {@inheritDoc}
      */
     @Override
-    public L nin(E[] value) {
-        return expression.nin(name, value);
+    public L nin(E value, IgnoreStrategy ignoreStrategy) {
+        return expression.nin(name, value, ignoreStrategy);
     }
 
     /**
@@ -125,6 +158,22 @@ public class SimpleEnumPropertyExpression<E extends Enum<E>, C extends Condition
     @Override
     public L nin(E value, Predicate<E> ignoreStrategy) {
         return expression.nin(name, value, (v) -> ignoreStrategy.test((E) v));
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public L nin(E[] value) {
+        return expression.nin(name, value);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public L nin(E[] value, IgnoreStrategy ignoreStrategy) {
+        return expression.nin(name, value, ignoreStrategy);
     }
 
     /**

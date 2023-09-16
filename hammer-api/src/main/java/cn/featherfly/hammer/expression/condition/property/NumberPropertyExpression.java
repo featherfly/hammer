@@ -4,6 +4,7 @@ package cn.featherfly.hammer.expression.condition.property;
 import java.util.function.Predicate;
 
 import cn.featherfly.common.operator.ComparisonOperator.MatchStrategy;
+import cn.featherfly.common.repository.IgnoreStrategy;
 import cn.featherfly.hammer.expression.condition.ConditionExpression;
 import cn.featherfly.hammer.expression.condition.LogicExpression;
 
@@ -30,6 +31,12 @@ public interface NumberPropertyExpression<N extends Number, C extends ConditionE
      * {@inheritDoc}
      */
     @Override
+    L eq(N value, IgnoreStrategy ignoreStrategy);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
     L eq(N value, Predicate<N> ignoreStrategy);
 
     /**
@@ -39,6 +46,15 @@ public interface NumberPropertyExpression<N extends Number, C extends ConditionE
     default L eq(N value, MatchStrategy matchStrategy) {
         // MatchStrategy only support for String
         return eq(value);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    default L eq(N value, MatchStrategy matchStrategy, IgnoreStrategy ignoreStrategy) {
+        // MatchStrategy only support for String
+        return eq(value, ignoreStrategy);
     }
 
     /**
@@ -60,6 +76,12 @@ public interface NumberPropertyExpression<N extends Number, C extends ConditionE
      * {@inheritDoc}
      */
     @Override
+    L ne(N value, IgnoreStrategy ignoreStrategy);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
     L ne(N value, Predicate<N> ignoreStrategy);
 
     /**
@@ -69,6 +91,15 @@ public interface NumberPropertyExpression<N extends Number, C extends ConditionE
     default L ne(N value, MatchStrategy matchStrategy) {
         // MatchStrategy only support for String
         return ne(value);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    default L ne(N value, MatchStrategy matchStrategy, IgnoreStrategy ignoreStrategy) {
+        // MatchStrategy only support for String
+        return ne(value, ignoreStrategy);
     }
 
     /**

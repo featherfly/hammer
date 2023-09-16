@@ -8,6 +8,7 @@ import java.util.function.Predicate;
 
 import cn.featherfly.common.db.mapping.JdbcMappingFactory;
 import cn.featherfly.common.function.serializable.SerializableFunction;
+import cn.featherfly.common.repository.IgnoreStrategy;
 import cn.featherfly.hammer.expression.condition.ConditionExpression;
 import cn.featherfly.hammer.expression.condition.LogicExpression;
 import cn.featherfly.hammer.expression.entity.condition.property.EntityDatePropertyExpression;
@@ -64,6 +65,14 @@ public class EntityDatePropertyExpressionImpl<E, D extends Date, C extends Condi
      * {@inheritDoc}
      */
     @Override
+    public L eq(D value, IgnoreStrategy ignoreStrategy) {
+        return expression.eq0(index, getPropertyMapping(value), value, ignoreStrategy);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
     public L eq(D value, Predicate<D> ignoreStrategy) {
         return expression.eq0(index, getPropertyMapping(value), value, ignoreStrategy);
     }
@@ -88,6 +97,14 @@ public class EntityDatePropertyExpressionImpl<E, D extends Date, C extends Condi
      * {@inheritDoc}
      */
     @Override
+    public L ne(D value, IgnoreStrategy ignoreStrategy) {
+        return expression.ne0(index, getPropertyMapping(value), value, ignoreStrategy);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
     public L ne(D value, Predicate<D> ignoreStrategy) {
         return expression.ne0(index, getPropertyMapping(value), value, ignoreStrategy);
     }
@@ -104,6 +121,22 @@ public class EntityDatePropertyExpressionImpl<E, D extends Date, C extends Condi
      * {@inheritDoc}
      */
     @Override
+    public L in(D value, IgnoreStrategy ignoreStrategy) {
+        return expression.in0(index, getPropertyMapping(value), value, ignoreStrategy);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public L in(D value, Predicate<D> ignoreStrategy) {
+        return expression.in0(index, getPropertyMapping(value), value, ignoreStrategy);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
     public L in(D[] value) {
         return expression.in0(index, getPropertyMapping(value), value, expression.getIgnoreStrategy());
     }
@@ -112,7 +145,7 @@ public class EntityDatePropertyExpressionImpl<E, D extends Date, C extends Condi
      * {@inheritDoc}
      */
     @Override
-    public L in(D value, Predicate<D> ignoreStrategy) {
+    public L in(D[] value, IgnoreStrategy ignoreStrategy) {
         return expression.in0(index, getPropertyMapping(value), value, ignoreStrategy);
     }
 
@@ -136,6 +169,22 @@ public class EntityDatePropertyExpressionImpl<E, D extends Date, C extends Condi
      * {@inheritDoc}
      */
     @Override
+    public L nin(D value, IgnoreStrategy ignoreStrategy) {
+        return expression.nin0(index, getPropertyMapping(value), value, ignoreStrategy);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public L nin(D value, Predicate<D> ignoreStrategy) {
+        return expression.nin0(index, getPropertyMapping(value), value, ignoreStrategy);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
     public L nin(D[] value) {
         return expression.nin0(index, getPropertyMapping(value), value, expression.getIgnoreStrategy());
     }
@@ -144,7 +193,7 @@ public class EntityDatePropertyExpressionImpl<E, D extends Date, C extends Condi
      * {@inheritDoc}
      */
     @Override
-    public L nin(D value, Predicate<D> ignoreStrategy) {
+    public L nin(D[] value, IgnoreStrategy ignoreStrategy) {
         return expression.nin0(index, getPropertyMapping(value), value, ignoreStrategy);
     }
 
@@ -168,8 +217,40 @@ public class EntityDatePropertyExpressionImpl<E, D extends Date, C extends Condi
      * {@inheritDoc}
      */
     @Override
+    public L le(D value, IgnoreStrategy ignoreStrategy) {
+        return expression.le0(index, getPropertyMapping(value), value, ignoreStrategy);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public L le(D value, Predicate<D> ignoreStrategy) {
+        return expression.le0(index, getPropertyMapping(value), value, ignoreStrategy);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
     public L lt(D value) {
         return expression.lt0(index, getPropertyMapping(value), value, expression.getIgnoreStrategy());
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public L lt(D value, IgnoreStrategy ignoreStrategy) {
+        return expression.lt0(index, getPropertyMapping(value), value, ignoreStrategy);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public L lt(D value, Predicate<D> ignoreStrategy) {
+        return expression.lt0(index, getPropertyMapping(value), value, ignoreStrategy);
     }
 
     /**
@@ -184,8 +265,40 @@ public class EntityDatePropertyExpressionImpl<E, D extends Date, C extends Condi
      * {@inheritDoc}
      */
     @Override
+    public L ge(D value, IgnoreStrategy ignoreStrategy) {
+        return expression.ge0(index, getPropertyMapping(value), value, ignoreStrategy);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public L ge(D value, Predicate<D> ignoreStrategy) {
+        return expression.ge0(index, getPropertyMapping(value), value, ignoreStrategy);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
     public L gt(D value) {
         return expression.gt0(index, getPropertyMapping(value), value, expression.getIgnoreStrategy());
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public L gt(D value, IgnoreStrategy ignoreStrategy) {
+        return expression.gt0(index, getPropertyMapping(value), value, ignoreStrategy);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public L gt(D value, Predicate<D> ignoreStrategy) {
+        return expression.gt0(index, getPropertyMapping(value), value, ignoreStrategy);
     }
 
     /**

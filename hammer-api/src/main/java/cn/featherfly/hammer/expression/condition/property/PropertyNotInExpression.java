@@ -3,6 +3,7 @@ package cn.featherfly.hammer.expression.condition.property;
 
 import java.util.function.Predicate;
 
+import cn.featherfly.common.repository.IgnoreStrategy;
 import cn.featherfly.hammer.expression.condition.ConditionExpression;
 import cn.featherfly.hammer.expression.condition.LogicExpression;
 
@@ -40,7 +41,25 @@ public interface PropertyNotInExpression<C extends ConditionExpression, L extend
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
+    L nin(V value, IgnoreStrategy ignoreStrategy);
+
+    /**
+     * 不包含指定，sql中的not in.
+     *
+     * @param value          参数值
+     * @param ignoreStrategy the ignore strategy
+     * @return LogicExpression
+     */
     L nin(V value, Predicate<V> ignoreStrategy);
+
+    /**
+     * 不包含指定，sql中的not in.
+     *
+     * @param value          参数值
+     * @param ignoreStrategy the ignore strategy
+     * @return LogicExpression
+     */
+    L nin(V[] value, IgnoreStrategy ignoreStrategy);
 
     /**
      * 不包含指定，sql中的not in.

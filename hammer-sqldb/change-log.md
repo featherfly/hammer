@@ -32,8 +32,8 @@
     ```
 12 where支持多实体条件查询
 13 实现多实体排序
-    
-TODO property()后的条件查询还未加入Consumer参数方法,加入带IgnorePolicy参数方法  
+14. where().property()后的各种条件筛选方法加入带Predicate和IgnoreStrategy的重载方法
+      
 TODO dsl查询条件的表达式加入带运算的条件判断
     ```
     // 带运算的条件判断

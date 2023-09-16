@@ -22,6 +22,7 @@ import cn.featherfly.common.function.serializable.SerializableToLongFunction;
 import cn.featherfly.common.function.serializable.SerializableToNumberFunction;
 import cn.featherfly.common.function.serializable.SerializableToStringFunction;
 import cn.featherfly.common.operator.ComparisonOperator.MatchStrategy;
+import cn.featherfly.common.repository.IgnoreStrategy;
 import cn.featherfly.hammer.expression.condition.ConditionExpression;
 import cn.featherfly.hammer.expression.condition.LogicExpression;
 import cn.featherfly.hammer.expression.entity.condition.property.EntityDatePropertyExpression;
@@ -231,6 +232,22 @@ public class EntityTypePropertyExpressionImpl<E, P, F extends SerializableFuncti
      * {@inheritDoc}
      */
     @Override
+    public L in(P value, Predicate<P> ignoreStrategy) {
+        return expression.in0(index, getPropertyMapping(value), value, ignoreStrategy);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public L in(P value, IgnoreStrategy ignoreStrategy) {
+        return expression.in0(index, getPropertyMapping(value), value, ignoreStrategy);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
     public L in(P[] value) {
         return expression.in0(index, getPropertyMapping(value), value, expression.getIgnoreStrategy());
     }
@@ -239,7 +256,15 @@ public class EntityTypePropertyExpressionImpl<E, P, F extends SerializableFuncti
      * {@inheritDoc}
      */
     @Override
-    public L in(P value, Predicate<P> ignoreStrategy) {
+    public L in(P[] value, IgnoreStrategy ignoreStrategy) {
+        return expression.in0(index, getPropertyMapping(value), value, ignoreStrategy);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public L in(P[] value, Predicate<P[]> ignoreStrategy) {
         return expression.in0(index, getPropertyMapping(value), value, ignoreStrategy);
     }
 
@@ -255,6 +280,22 @@ public class EntityTypePropertyExpressionImpl<E, P, F extends SerializableFuncti
      * {@inheritDoc}
      */
     @Override
+    public L nin(P value, IgnoreStrategy ignoreStrategy) {
+        return expression.nin0(index, getPropertyMapping(value), value, ignoreStrategy);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public L nin(P value, Predicate<P> ignoreStrategy) {
+        return expression.nin0(index, getPropertyMapping(value), value, ignoreStrategy);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
     public L nin(P[] value) {
         return expression.nin0(index, getPropertyMapping(value), value, expression.getIgnoreStrategy());
     }
@@ -263,7 +304,7 @@ public class EntityTypePropertyExpressionImpl<E, P, F extends SerializableFuncti
      * {@inheritDoc}
      */
     @Override
-    public L nin(P value, Predicate<P> ignoreStrategy) {
+    public L nin(P[] value, IgnoreStrategy ignoreStrategy) {
         return expression.nin0(index, getPropertyMapping(value), value, ignoreStrategy);
     }
 
@@ -287,6 +328,22 @@ public class EntityTypePropertyExpressionImpl<E, P, F extends SerializableFuncti
     /**
      * {@inheritDoc}
      */
+    @Override
+    public L le(P value, IgnoreStrategy ignoreStrategy) {
+        return expression.le0(index, getPropertyMapping(value), value, ignoreStrategy);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public L le(P value, Predicate<P> ignoreStrategy) {
+        return expression.le0(index, getPropertyMapping(value), value, ignoreStrategy);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
 
     @Override
     public L lt(P value) {
@@ -296,10 +353,42 @@ public class EntityTypePropertyExpressionImpl<E, P, F extends SerializableFuncti
     /**
      * {@inheritDoc}
      */
+    @Override
+    public L lt(P value, IgnoreStrategy ignoreStrategy) {
+        return expression.lt0(index, getPropertyMapping(value), value, ignoreStrategy);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public L lt(P value, Predicate<P> ignoreStrategy) {
+        return expression.lt0(index, getPropertyMapping(value), value, ignoreStrategy);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
 
     @Override
     public L ge(P value) {
         return expression.ge0(index, getPropertyMapping(value), value, expression.getIgnoreStrategy());
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public L ge(P value, IgnoreStrategy ignoreStrategy) {
+        return expression.ge0(index, getPropertyMapping(value), value, ignoreStrategy);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public L ge(P value, Predicate<P> ignoreStrategy) {
+        return expression.ge0(index, getPropertyMapping(value), value, ignoreStrategy);
     }
 
     /**
@@ -315,8 +404,32 @@ public class EntityTypePropertyExpressionImpl<E, P, F extends SerializableFuncti
      * {@inheritDoc}
      */
     @Override
+    public L gt(P value, IgnoreStrategy ignoreStrategy) {
+        return expression.gt0(index, getPropertyMapping(value), value, ignoreStrategy);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public L gt(P value, Predicate<P> ignoreStrategy) {
+        return expression.gt0(index, getPropertyMapping(value), value, ignoreStrategy);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
     public L sw(String value, MatchStrategy matchStrategy) {
         return expression.sw0(index, getPropertyMapping(value), value, matchStrategy, expression.getIgnoreStrategy());
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public L sw(String value, MatchStrategy matchStrategy, IgnoreStrategy ignoreStrategy) {
+        return expression.sw0(index, getPropertyMapping(value), value, matchStrategy, ignoreStrategy);
     }
 
     /**
@@ -339,6 +452,14 @@ public class EntityTypePropertyExpressionImpl<E, P, F extends SerializableFuncti
      * {@inheritDoc}
      */
     @Override
+    public L co(String value, MatchStrategy matchStrategy, IgnoreStrategy ignoreStrategy) {
+        return expression.co0(index, getPropertyMapping(value), value, matchStrategy, ignoreStrategy);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
     public L co(String value, MatchStrategy matchStrategy, Predicate<String> ignoreStrategy) {
         return expression.co0(index, getPropertyMapping(value), value, matchStrategy, ignoreStrategy);
     }
@@ -355,6 +476,14 @@ public class EntityTypePropertyExpressionImpl<E, P, F extends SerializableFuncti
      * {@inheritDoc}
      */
     @Override
+    public L ew(String value, MatchStrategy matchStrategy, IgnoreStrategy ignoreStrategy) {
+        return expression.ew0(index, getPropertyMapping(value), value, matchStrategy, ignoreStrategy);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
     public L ew(String value, MatchStrategy matchStrategy, Predicate<String> ignoreStrategy) {
         return expression.ew0(index, getPropertyMapping(value), value, matchStrategy, ignoreStrategy);
     }
@@ -365,6 +494,14 @@ public class EntityTypePropertyExpressionImpl<E, P, F extends SerializableFuncti
     @Override
     public L lk(String value, MatchStrategy matchStrategy) {
         return expression.lk0(index, getPropertyMapping(value), value, matchStrategy, expression.getIgnoreStrategy());
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public L lk(String value, MatchStrategy matchStrategy, IgnoreStrategy ignoreStrategy) {
+        return expression.lk0(index, getPropertyMapping(value), value, matchStrategy, ignoreStrategy);
     }
 
     /**
@@ -395,6 +532,14 @@ public class EntityTypePropertyExpressionImpl<E, P, F extends SerializableFuncti
      * {@inheritDoc}
      */
     @Override
+    public L eq(P value, MatchStrategy matchStrategy, IgnoreStrategy ignoreStrategy) {
+        return expression.eq0(index, getPropertyMapping(value), value, matchStrategy, ignoreStrategy);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
     public L eq(P value, MatchStrategy matchStrategy, Predicate<P> ignoreStrategy) {
         return expression.eq0(index, getPropertyMapping(value), value, matchStrategy, ignoreStrategy);
     }
@@ -403,7 +548,7 @@ public class EntityTypePropertyExpressionImpl<E, P, F extends SerializableFuncti
      * {@inheritDoc}
      */
     @Override
-    public L ne(P value, MatchStrategy matchStrategy, Predicate<P> ignoreStrategy) {
+    public L ne(P value, MatchStrategy matchStrategy, IgnoreStrategy ignoreStrategy) {
         return expression.ne0(index, getPropertyMapping(value), value, matchStrategy, ignoreStrategy);
     }
 
@@ -411,8 +556,8 @@ public class EntityTypePropertyExpressionImpl<E, P, F extends SerializableFuncti
      * {@inheritDoc}
      */
     @Override
-    public L in(P[] value, Predicate<P[]> ignoreStrategy) {
-        return expression.in0(index, getPropertyMapping(value), value, ignoreStrategy);
+    public L ne(P value, MatchStrategy matchStrategy, Predicate<P> ignoreStrategy) {
+        return expression.ne0(index, getPropertyMapping(value), value, matchStrategy, ignoreStrategy);
     }
 
 }

@@ -7,6 +7,7 @@ import cn.featherfly.common.function.serializable.SerializableStringSupplier;
 import cn.featherfly.common.function.serializable.SerializableToStringFunction;
 import cn.featherfly.common.operator.ComparisonOperator.MatchStrategy;
 import cn.featherfly.common.repository.Field;
+import cn.featherfly.common.repository.IgnoreStrategy;
 
 /**
  * LikeExpression.
@@ -27,6 +28,18 @@ public interface LikeExpression<C extends ConditionExpression, L extends LogicEx
      */
     default L lk(Field name, String value) {
         return lk(name.name(), value);
+    }
+
+    /**
+     * like value.
+     *
+     * @param name           参数名称
+     * @param value          参数值
+     * @param ignoreStrategy the ignore strategy
+     * @return LogicExpression
+     */
+    default L lk(Field name, String value, IgnoreStrategy ignoreStrategy) {
+        return lk(name.name(), value, ignoreStrategy);
     }
 
     /**
@@ -62,6 +75,19 @@ public interface LikeExpression<C extends ConditionExpression, L extends LogicEx
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
+    default L lk(Field name, String value, MatchStrategy matchStrategy, IgnoreStrategy ignoreStrategy) {
+        return lk(name.name(), value, matchStrategy, ignoreStrategy);
+    }
+
+    /**
+     * like value.
+     *
+     * @param name           参数名称
+     * @param value          参数值
+     * @param matchStrategy  the match strategy
+     * @param ignoreStrategy the ignore strategy
+     * @return LogicExpression
+     */
     default L lk(Field name, String value, MatchStrategy matchStrategy, Predicate<String> ignoreStrategy) {
         return lk(name.name(), value, matchStrategy, ignoreStrategy);
     }
@@ -75,6 +101,18 @@ public interface LikeExpression<C extends ConditionExpression, L extends LogicEx
      */
     default L lk(String name, String value) {
         return lk(name, value, MatchStrategy.AUTO);
+    }
+
+    /**
+     * like value.
+     *
+     * @param name           参数名称
+     * @param value          参数值
+     * @param ignoreStrategy the ignore strategy
+     * @return LogicExpression
+     */
+    default L lk(String name, String value, IgnoreStrategy ignoreStrategy) {
+        return lk(name, value, MatchStrategy.AUTO, ignoreStrategy);
     }
 
     /**
@@ -108,6 +146,17 @@ public interface LikeExpression<C extends ConditionExpression, L extends LogicEx
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
+    L lk(String name, String value, MatchStrategy matchStrategy, IgnoreStrategy ignoreStrategy);
+
+    /**
+     * like value.
+     *
+     * @param name           参数名称
+     * @param value          参数值
+     * @param matchStrategy  the match strategy
+     * @param ignoreStrategy the ignore strategy
+     * @return LogicExpression
+     */
     L lk(String name, String value, MatchStrategy matchStrategy, Predicate<String> ignoreStrategy);
 
     /**
@@ -120,6 +169,19 @@ public interface LikeExpression<C extends ConditionExpression, L extends LogicEx
      */
     default <T> L lk(SerializableToStringFunction<T> name, String value) {
         return lk(name, value, MatchStrategy.AUTO);
+    }
+
+    /**
+     * like value.
+     *
+     * @param <T>            the generic type
+     * @param name           参数名称
+     * @param value          参数值
+     * @param ignoreStrategy the ignore strategy
+     * @return LogicExpression
+     */
+    default <T> L lk(SerializableToStringFunction<T> name, String value, IgnoreStrategy ignoreStrategy) {
+        return lk(name, value, MatchStrategy.AUTO, ignoreStrategy);
     }
 
     /**
@@ -157,6 +219,19 @@ public interface LikeExpression<C extends ConditionExpression, L extends LogicEx
      * @return the l
      */
     <T> L lk(SerializableToStringFunction<T> name, String value, MatchStrategy matchStrategy,
+            IgnoreStrategy ignoreStrategy);
+
+    /**
+     * Lk.
+     *
+     * @param <T>            the generic type
+     * @param name           the name 参数名称
+     * @param value          the value
+     * @param matchStrategy  the match strategy
+     * @param ignoreStrategy the ignore strategy
+     * @return the l
+     */
+    <T> L lk(SerializableToStringFunction<T> name, String value, MatchStrategy matchStrategy,
             Predicate<String> ignoreStrategy);
 
     /**
@@ -167,6 +242,17 @@ public interface LikeExpression<C extends ConditionExpression, L extends LogicEx
      */
     default L lk(SerializableStringSupplier property) {
         return lk(property, MatchStrategy.AUTO);
+    }
+
+    /**
+     * like value.
+     *
+     * @param property       对象属性
+     * @param ignoreStrategy the ignore strategy
+     * @return LogicExpression
+     */
+    default L lk(SerializableStringSupplier property, IgnoreStrategy ignoreStrategy) {
+        return lk(property, MatchStrategy.AUTO, ignoreStrategy);
     }
 
     /**
@@ -188,6 +274,16 @@ public interface LikeExpression<C extends ConditionExpression, L extends LogicEx
      * @return the l
      */
     L lk(SerializableStringSupplier property, MatchStrategy matchStrategy);
+
+    /**
+     * Lk.
+     *
+     * @param property       the property 对象属性
+     * @param matchStrategy  the match strategy
+     * @param ignoreStrategy the ignore strategy
+     * @return the l
+     */
+    L lk(SerializableStringSupplier property, MatchStrategy matchStrategy, IgnoreStrategy ignoreStrategy);
 
     /**
      * Lk.

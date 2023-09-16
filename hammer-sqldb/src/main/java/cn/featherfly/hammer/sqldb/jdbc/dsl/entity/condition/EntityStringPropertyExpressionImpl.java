@@ -9,6 +9,7 @@ import cn.featherfly.common.db.mapping.JdbcMappingFactory;
 import cn.featherfly.common.function.serializable.SerializableFunction;
 import cn.featherfly.common.function.serializable.SerializableToStringFunction;
 import cn.featherfly.common.operator.ComparisonOperator.MatchStrategy;
+import cn.featherfly.common.repository.IgnoreStrategy;
 import cn.featherfly.hammer.expression.condition.ConditionExpression;
 import cn.featherfly.hammer.expression.condition.LogicExpression;
 import cn.featherfly.hammer.expression.entity.condition.property.EntityStringPropertyExpression;
@@ -76,6 +77,14 @@ public class EntityStringPropertyExpressionImpl<E, C extends ConditionExpression
      * {@inheritDoc}
      */
     @Override
+    public L co(String value, MatchStrategy matchStrategy, IgnoreStrategy ignoreStrategy) {
+        return expression.co0(index, getPropertyMapping(value), value, matchStrategy, ignoreStrategy);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
     public L co(String value, MatchStrategy matchStrategy, Predicate<String> ignoreStrategy) {
         return expression.co0(index, getPropertyMapping(value), value, matchStrategy, ignoreStrategy);
     }
@@ -92,6 +101,14 @@ public class EntityStringPropertyExpressionImpl<E, C extends ConditionExpression
      * {@inheritDoc}
      */
     @Override
+    public L eq(String value, MatchStrategy matchStrategy, IgnoreStrategy ignoreStrategy) {
+        return expression.eq0(index, getPropertyMapping(value), value, matchStrategy, ignoreStrategy);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
     public L eq(String value, MatchStrategy matchStrategy, Predicate<String> ignoreStrategy) {
         return expression.eq0(index, getPropertyMapping(value), value, matchStrategy, ignoreStrategy);
     }
@@ -102,6 +119,14 @@ public class EntityStringPropertyExpressionImpl<E, C extends ConditionExpression
     @Override
     public L ew(String value, MatchStrategy matchStrategy) {
         return expression.ew0(index, getPropertyMapping(value), value, matchStrategy, expression.getIgnoreStrategy());
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public L ew(String value, MatchStrategy matchStrategy, IgnoreStrategy ignoreStrategy) {
+        return expression.ew0(index, getPropertyMapping(value), value, matchStrategy, ignoreStrategy);
     }
 
     /**
@@ -132,6 +157,22 @@ public class EntityStringPropertyExpressionImpl<E, C extends ConditionExpression
      * {@inheritDoc}
      */
     @Override
+    public L ge(String value, IgnoreStrategy ignoreStrategy) {
+        return expression.ge0(index, getPropertyMapping(value), value, ignoreStrategy);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public L ge(String value, Predicate<String> ignoreStrategy) {
+        return expression.ge0(index, getPropertyMapping(value), value, ignoreStrategy);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
     public L gt(String value) {
         return expression.gt0(index, getPropertyMapping(value), value, expression.getIgnoreStrategy());
     }
@@ -140,8 +181,32 @@ public class EntityStringPropertyExpressionImpl<E, C extends ConditionExpression
      * {@inheritDoc}
      */
     @Override
+    public L gt(String value, IgnoreStrategy ignoreStrategy) {
+        return expression.gt0(index, getPropertyMapping(value), value, ignoreStrategy);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public L gt(String value, Predicate<String> ignoreStrategy) {
+        return expression.gt0(index, getPropertyMapping(value), value, ignoreStrategy);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
     public L in(String value) {
         return expression.in0(index, getPropertyMapping(value), value, expression.getIgnoreStrategy());
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public L in(String value, IgnoreStrategy ignoreStrategy) {
+        return expression.in0(index, getPropertyMapping(value), value, ignoreStrategy);
     }
 
     /**
@@ -158,6 +223,14 @@ public class EntityStringPropertyExpressionImpl<E, C extends ConditionExpression
     @Override
     public L in(String[] value) {
         return expression.in0(index, getPropertyMapping(value), value, expression.getIgnoreStrategy());
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public L in(String[] value, IgnoreStrategy ignoreStrategy) {
+        return expression.in0(index, getPropertyMapping(value), value, ignoreStrategy);
     }
 
     /**
@@ -196,8 +269,32 @@ public class EntityStringPropertyExpressionImpl<E, C extends ConditionExpression
      * {@inheritDoc}
      */
     @Override
+    public L le(String value, IgnoreStrategy ignoreStrategy) {
+        return expression.le0(index, getPropertyMapping(value), value, ignoreStrategy);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public L le(String value, Predicate<String> ignoreStrategy) {
+        return expression.le0(index, getPropertyMapping(value), value, ignoreStrategy);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
     public L lk(String value, MatchStrategy matchStrategy) {
         return expression.lk0(index, getPropertyMapping(value), value, matchStrategy, expression.getIgnoreStrategy());
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public L lk(String value, MatchStrategy matchStrategy, IgnoreStrategy ignoreStrategy) {
+        return expression.lk0(index, getPropertyMapping(value), value, matchStrategy, ignoreStrategy);
     }
 
     /**
@@ -220,8 +317,32 @@ public class EntityStringPropertyExpressionImpl<E, C extends ConditionExpression
      * {@inheritDoc}
      */
     @Override
+    public L lt(String value, IgnoreStrategy ignoreStrategy) {
+        return expression.lt0(index, getPropertyMapping(value), value, ignoreStrategy);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public L lt(String value, Predicate<String> ignoreStrategy) {
+        return expression.lt0(index, getPropertyMapping(value), value, ignoreStrategy);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
     public L ne(String value, MatchStrategy matchStrategy) {
         return expression.ne0(index, getPropertyMapping(value), value, matchStrategy, expression.getIgnoreStrategy());
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public L ne(String value, MatchStrategy matchStrategy, IgnoreStrategy ignoreStrategy) {
+        return expression.ne0(index, getPropertyMapping(value), value, matchStrategy, ignoreStrategy);
     }
 
     /**
@@ -244,6 +365,14 @@ public class EntityStringPropertyExpressionImpl<E, C extends ConditionExpression
      * {@inheritDoc}
      */
     @Override
+    public L nin(String value, IgnoreStrategy ignoreStrategy) {
+        return expression.nin0(index, getPropertyMapping(value), value, ignoreStrategy);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
     public L nin(String value, Predicate<String> ignoreStrategy) {
         return expression.nin0(index, getPropertyMapping(value), value, ignoreStrategy);
     }
@@ -260,6 +389,14 @@ public class EntityStringPropertyExpressionImpl<E, C extends ConditionExpression
      * {@inheritDoc}
      */
     @Override
+    public L nin(String[] value, IgnoreStrategy ignoreStrategy) {
+        return expression.nin0(index, getPropertyMapping(value), value, ignoreStrategy);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
     public L nin(String[] value, Predicate<String[]> ignoreStrategy) {
         return expression.nin0(index, getPropertyMapping(value), value, ignoreStrategy);
     }
@@ -270,6 +407,14 @@ public class EntityStringPropertyExpressionImpl<E, C extends ConditionExpression
     @Override
     public L sw(String value, MatchStrategy matchStrategy) {
         return expression.sw0(index, getPropertyMapping(value), value, matchStrategy, expression.getIgnoreStrategy());
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public L sw(String value, MatchStrategy matchStrategy, IgnoreStrategy ignoreStrategy) {
+        return expression.sw0(index, getPropertyMapping(value), value, matchStrategy, ignoreStrategy);
     }
 
     /**

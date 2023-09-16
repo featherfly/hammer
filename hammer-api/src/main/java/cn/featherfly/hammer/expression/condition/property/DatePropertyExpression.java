@@ -5,6 +5,7 @@ import java.util.Date;
 import java.util.function.Predicate;
 
 import cn.featherfly.common.operator.ComparisonOperator.MatchStrategy;
+import cn.featherfly.common.repository.IgnoreStrategy;
 import cn.featherfly.hammer.expression.condition.ConditionExpression;
 import cn.featherfly.hammer.expression.condition.LogicExpression;
 
@@ -30,6 +31,12 @@ public interface DatePropertyExpression<D extends Date, C extends ConditionExpre
      * {@inheritDoc}
      */
     @Override
+    L eq(D value, IgnoreStrategy ignoreStrategy);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
     L eq(D value, Predicate<D> ignoreStrategy);
 
     /**
@@ -39,6 +46,15 @@ public interface DatePropertyExpression<D extends Date, C extends ConditionExpre
     default L eq(D value, MatchStrategy matchStrategy) {
         // MatchStrategy only support for String
         return eq(value);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    default L eq(D value, MatchStrategy matchStrategy, IgnoreStrategy ignoreStrategy) {
+        // MatchStrategy only support for String
+        return eq(value, ignoreStrategy);
     }
 
     /**
@@ -66,9 +82,24 @@ public interface DatePropertyExpression<D extends Date, C extends ConditionExpre
      * {@inheritDoc}
      */
     @Override
+    L ne(D value, IgnoreStrategy ignoreStrategy);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
     default L ne(D value, MatchStrategy matchStrategy) {
         // MatchStrategy only support for String
         return ne(value);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    default L ne(D value, MatchStrategy matchStrategy, IgnoreStrategy ignoreStrategy) {
+        // MatchStrategy only support for String
+        return ne(value, ignoreStrategy);
     }
 
     /**
