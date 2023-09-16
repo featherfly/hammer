@@ -4,6 +4,7 @@ package cn.featherfly.hammer.expression.condition.property;
 import java.util.function.Predicate;
 
 import cn.featherfly.common.operator.ComparisonOperator.MatchStrategy;
+import cn.featherfly.common.repository.IgnoreStrategy;
 import cn.featherfly.hammer.expression.condition.ConditionExpression;
 import cn.featherfly.hammer.expression.condition.LogicExpression;
 
@@ -35,6 +36,17 @@ public interface PropertyEqualsExpression<C extends ConditionExpression, L exten
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
+    default L eq(V value, IgnoreStrategy ignoreStrategy) {
+        return eq(value, MatchStrategy.AUTO, ignoreStrategy);
+    }
+
+    /**
+     * equals. 等于.
+     *
+     * @param value          参数值
+     * @param ignoreStrategy the ignore strategy
+     * @return LogicExpression
+     */
     default L eq(V value, Predicate<V> ignoreStrategy) {
         return eq(value, MatchStrategy.AUTO, ignoreStrategy);
     }
@@ -47,6 +59,16 @@ public interface PropertyEqualsExpression<C extends ConditionExpression, L exten
      * @return LogicExpression
      */
     L eq(V value, MatchStrategy matchStrategy);
+
+    /**
+     * equals. 等于.
+     *
+     * @param value          参数值
+     * @param matchStrategy  the match strategy
+     * @param ignoreStrategy the ignore strategy
+     * @return LogicExpression
+     */
+    L eq(V value, MatchStrategy matchStrategy, IgnoreStrategy ignoreStrategy);
 
     /**
      * equals. 等于.

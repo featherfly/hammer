@@ -3,6 +3,7 @@ package cn.featherfly.hammer.expression.condition.property;
 
 import java.util.function.Predicate;
 
+import cn.featherfly.common.repository.IgnoreStrategy;
 import cn.featherfly.hammer.expression.condition.ConditionsExpression;
 import cn.featherfly.hammer.expression.condition.LogicExpression;
 
@@ -45,6 +46,14 @@ public class SimpleNumberPropertyExpression<N extends Number, C extends Conditio
      * {@inheritDoc}
      */
     @Override
+    public L eq(N value, IgnoreStrategy ignoreStrategy) {
+        return expression.eq(name, value, ignoreStrategy);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
     public L eq(N value, Predicate<N> ignoreStrategy) {
         return expression.eq(name, value, ignoreStrategy);
     }
@@ -69,6 +78,14 @@ public class SimpleNumberPropertyExpression<N extends Number, C extends Conditio
      * {@inheritDoc}
      */
     @Override
+    public L ne(N value, IgnoreStrategy ignoreStrategy) {
+        return expression.ne(name, value, ignoreStrategy);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
     public L ne(N value, Predicate<N> ignoreStrategy) {
         return expression.ne(name, value, ignoreStrategy);
     }
@@ -85,8 +102,8 @@ public class SimpleNumberPropertyExpression<N extends Number, C extends Conditio
      * {@inheritDoc}
      */
     @Override
-    public L in(N[] value) {
-        return expression.in(name, value);
+    public L in(N value, IgnoreStrategy ignoreStrategy) {
+        return expression.in(name, value, ignoreStrategy);
     }
 
     /**
@@ -96,6 +113,22 @@ public class SimpleNumberPropertyExpression<N extends Number, C extends Conditio
     @Override
     public L in(N value, Predicate<N> ignoreStrategy) {
         return expression.in(name, value, (v) -> ignoreStrategy.test((N) v));
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public L in(N[] value) {
+        return expression.in(name, value);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public L in(N[] value, IgnoreStrategy ignoreStrategy) {
+        return expression.in(name, value, ignoreStrategy);
     }
 
     /**
@@ -118,6 +151,23 @@ public class SimpleNumberPropertyExpression<N extends Number, C extends Conditio
     /**
      * {@inheritDoc}
      */
+    @SuppressWarnings("unchecked")
+    @Override
+    public L nin(N value, Predicate<N> ignoreStrategy) {
+        return expression.nin(name, value, (v) -> ignoreStrategy.test((N) v));
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public L nin(N value, IgnoreStrategy ignoreStrategy) {
+        return expression.nin(name, value, ignoreStrategy);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public L nin(N[] value) {
         return expression.nin(name, value);
@@ -126,10 +176,9 @@ public class SimpleNumberPropertyExpression<N extends Number, C extends Conditio
     /**
      * {@inheritDoc}
      */
-    @SuppressWarnings("unchecked")
     @Override
-    public L nin(N value, Predicate<N> ignoreStrategy) {
-        return expression.nin(name, value, (v) -> ignoreStrategy.test((N) v));
+    public L nin(N[] value, IgnoreStrategy ignoreStrategy) {
+        return expression.nin(name, value, ignoreStrategy);
     }
 
     /**
@@ -153,8 +202,40 @@ public class SimpleNumberPropertyExpression<N extends Number, C extends Conditio
      * {@inheritDoc}
      */
     @Override
+    public L le(N value, IgnoreStrategy ignoreStrategy) {
+        return expression.le(name, value, ignoreStrategy);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public L le(N value, Predicate<N> ignoreStrategy) {
+        return expression.le(name, value, ignoreStrategy);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
     public L lt(N value) {
         return expression.lt(name, value);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public L lt(N value, IgnoreStrategy ignoreStrategy) {
+        return expression.lt(name, value, ignoreStrategy);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public L lt(N value, Predicate<N> ignoreStrategy) {
+        return expression.lt(name, value, ignoreStrategy);
     }
 
     /**
@@ -169,8 +250,40 @@ public class SimpleNumberPropertyExpression<N extends Number, C extends Conditio
      * {@inheritDoc}
      */
     @Override
+    public L ge(N value, IgnoreStrategy ignoreStrategy) {
+        return expression.ge(name, value, ignoreStrategy);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public L ge(N value, Predicate<N> ignoreStrategy) {
+        return expression.ge(name, value, ignoreStrategy);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
     public L gt(N value) {
         return expression.gt(name, value);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public L gt(N value, IgnoreStrategy ignoreStrategy) {
+        return expression.gt(name, value, ignoreStrategy);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public L gt(N value, Predicate<N> ignoreStrategy) {
+        return expression.gt(name, value, ignoreStrategy);
     }
 
     /**

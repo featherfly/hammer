@@ -4,6 +4,7 @@ package cn.featherfly.hammer.expression.condition.property;
 import java.util.function.Predicate;
 
 import cn.featherfly.common.operator.ComparisonOperator.MatchStrategy;
+import cn.featherfly.common.repository.IgnoreStrategy;
 import cn.featherfly.hammer.expression.condition.ConditionExpression;
 import cn.featherfly.hammer.expression.condition.LogicExpression;
 
@@ -34,6 +35,17 @@ public interface PropertyEndWithExpression<C extends ConditionExpression, L exte
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
+    default L ew(String value, IgnoreStrategy ignoreStrategy) {
+        return ew(value, MatchStrategy.AUTO, ignoreStrategy);
+    }
+
+    /**
+     * end with value.以value结尾.
+     *
+     * @param value          the value
+     * @param ignoreStrategy the ignore strategy
+     * @return LogicExpression
+     */
     default L ew(String value, Predicate<String> ignoreStrategy) {
         return ew(value, MatchStrategy.AUTO, ignoreStrategy);
     }
@@ -46,6 +58,16 @@ public interface PropertyEndWithExpression<C extends ConditionExpression, L exte
      * @return the l
      */
     L ew(String value, MatchStrategy matchStrategy);
+
+    /**
+     * end with value.以value结尾.
+     *
+     * @param value          the value
+     * @param matchStrategy  the match strategy
+     * @param ignoreStrategy the ignore strategy
+     * @return LogicExpression
+     */
+    L ew(String value, MatchStrategy matchStrategy, IgnoreStrategy ignoreStrategy);
 
     /**
      * end with value.以value结尾.

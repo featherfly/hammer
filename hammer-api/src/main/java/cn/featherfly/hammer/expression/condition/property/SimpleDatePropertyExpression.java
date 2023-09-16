@@ -4,6 +4,7 @@ package cn.featherfly.hammer.expression.condition.property;
 import java.util.Date;
 import java.util.function.Predicate;
 
+import cn.featherfly.common.repository.IgnoreStrategy;
 import cn.featherfly.hammer.expression.condition.ConditionsExpression;
 import cn.featherfly.hammer.expression.condition.LogicExpression;
 
@@ -41,6 +42,14 @@ public class SimpleDatePropertyExpression<D extends Date, C extends ConditionsEx
      * {@inheritDoc}
      */
     @Override
+    public L eq(D value, IgnoreStrategy ignoreStrategy) {
+        return expression.eq(name, value, ignoreStrategy);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
     public L eq(D value, Predicate<D> ignoreStrategy) {
         return expression.eq(name, value, ignoreStrategy);
     }
@@ -65,6 +74,14 @@ public class SimpleDatePropertyExpression<D extends Date, C extends ConditionsEx
      * {@inheritDoc}
      */
     @Override
+    public L ne(D value, IgnoreStrategy ignoreStrategy) {
+        return expression.ne(name, value, ignoreStrategy);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
     public L ne(D value, Predicate<D> ignoreStrategy) {
         return expression.ne(name, value, ignoreStrategy);
     }
@@ -75,6 +92,14 @@ public class SimpleDatePropertyExpression<D extends Date, C extends ConditionsEx
     @Override
     public L in(Date value) {
         return expression.in(name, value);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public L in(D value, IgnoreStrategy ignoreStrategy) {
+        return expression.in(name, value, ignoreStrategy);
     }
 
     /**
@@ -97,6 +122,14 @@ public class SimpleDatePropertyExpression<D extends Date, C extends ConditionsEx
     /**
      * {@inheritDoc}
      */
+    @Override
+    public L in(D[] value, IgnoreStrategy ignoreStrategy) {
+        return expression.in(name, value, ignoreStrategy);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
     @SuppressWarnings("unchecked")
     @Override
     public L in(D[] value, Predicate<D[]> ignoreStrategy) {
@@ -114,6 +147,14 @@ public class SimpleDatePropertyExpression<D extends Date, C extends ConditionsEx
     /**
      * {@inheritDoc}
      */
+    @Override
+    public L nin(D value, IgnoreStrategy ignoreStrategy) {
+        return expression.nin(name, value, ignoreStrategy);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
     @SuppressWarnings("unchecked")
     @Override
     public L nin(D value, Predicate<D> ignoreStrategy) {
@@ -126,6 +167,14 @@ public class SimpleDatePropertyExpression<D extends Date, C extends ConditionsEx
     @Override
     public L nin(D[] value) {
         return expression.nin(name, value);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public L nin(D[] value, IgnoreStrategy ignoreStrategy) {
+        return expression.nin(name, value, ignoreStrategy);
     }
 
     /**
@@ -149,8 +198,40 @@ public class SimpleDatePropertyExpression<D extends Date, C extends ConditionsEx
      * {@inheritDoc}
      */
     @Override
+    public L le(D value, IgnoreStrategy ignoreStrategy) {
+        return expression.le(name, value, ignoreStrategy);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public L le(D value, Predicate<D> ignoreStrategy) {
+        return expression.le(name, value, ignoreStrategy);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
     public L lt(Date value) {
         return expression.lt(name, value);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public L lt(D value, IgnoreStrategy ignoreStrategy) {
+        return expression.lt(name, value, ignoreStrategy);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public L lt(D value, Predicate<D> ignoreStrategy) {
+        return expression.lt(name, value, ignoreStrategy);
     }
 
     /**
@@ -165,8 +246,40 @@ public class SimpleDatePropertyExpression<D extends Date, C extends ConditionsEx
      * {@inheritDoc}
      */
     @Override
+    public L ge(D value, IgnoreStrategy ignoreStrategy) {
+        return expression.ge(name, value, ignoreStrategy);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public L ge(D value, Predicate<D> ignoreStrategy) {
+        return expression.ge(name, value, ignoreStrategy);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
     public L gt(Date value) {
         return expression.gt(name, value);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public L gt(D value, IgnoreStrategy ignoreStrategy) {
+        return expression.gt(name, value, ignoreStrategy);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public L gt(D value, Predicate<D> ignoreStrategy) {
+        return expression.gt(name, value, ignoreStrategy);
     }
 
     /**

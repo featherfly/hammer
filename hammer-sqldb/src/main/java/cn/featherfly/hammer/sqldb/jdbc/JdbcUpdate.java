@@ -15,7 +15,7 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * The Interface JdbcUpdate.
+ * jdbc update.
  *
  * @author zhongj
  */

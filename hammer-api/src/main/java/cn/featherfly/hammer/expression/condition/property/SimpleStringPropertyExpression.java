@@ -4,6 +4,7 @@ package cn.featherfly.hammer.expression.condition.property;
 import java.util.function.Predicate;
 
 import cn.featherfly.common.operator.ComparisonOperator.MatchStrategy;
+import cn.featherfly.common.repository.IgnoreStrategy;
 import cn.featherfly.hammer.expression.condition.ConditionsExpression;
 import cn.featherfly.hammer.expression.condition.LogicExpression;
 
@@ -49,6 +50,14 @@ public class SimpleStringPropertyExpression<C extends ConditionsExpression<C, L>
      * {@inheritDoc}
      */
     @Override
+    public L eq(String value, MatchStrategy matchStrategy, IgnoreStrategy ignoreStrategy) {
+        return expression.eq(name, value, matchStrategy, ignoreStrategy);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
     public L eq(String value, MatchStrategy matchStrategy, Predicate<String> ignoreStrategy) {
         return expression.eq(name, value, matchStrategy, ignoreStrategy);
     }
@@ -81,6 +90,14 @@ public class SimpleStringPropertyExpression<C extends ConditionsExpression<C, L>
      * {@inheritDoc}
      */
     @Override
+    public L ne(String value, MatchStrategy matchStrategy, IgnoreStrategy ignoreStrategy) {
+        return expression.ne(name, value, matchStrategy, ignoreStrategy);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
     public L ne(String value, MatchStrategy matchStrategy, Predicate<String> ignoreStrategy) {
         return expression.ne(name, value, matchStrategy, ignoreStrategy);
     }
@@ -97,8 +114,8 @@ public class SimpleStringPropertyExpression<C extends ConditionsExpression<C, L>
      * {@inheritDoc}
      */
     @Override
-    public L in(String[] value) {
-        return expression.in(name, value);
+    public L in(String value, IgnoreStrategy ignoreStrategy) {
+        return expression.in(name, value, ignoreStrategy);
     }
 
     /**
@@ -107,6 +124,22 @@ public class SimpleStringPropertyExpression<C extends ConditionsExpression<C, L>
     @Override
     public L in(String value, Predicate<String> ignoreStrategy) {
         return expression.in(name, value, (v) -> ignoreStrategy.test((String) v));
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public L in(String[] value) {
+        return expression.in(name, value);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public L in(String[] value, IgnoreStrategy ignoreStrategy) {
+        return expression.in(name, value, ignoreStrategy);
     }
 
     /**
@@ -129,8 +162,8 @@ public class SimpleStringPropertyExpression<C extends ConditionsExpression<C, L>
      * {@inheritDoc}
      */
     @Override
-    public L nin(String[] value) {
-        return expression.nin(name, value);
+    public L nin(String value, IgnoreStrategy ignoreStrategy) {
+        return expression.nin(name, value, ignoreStrategy);
     }
 
     /**
@@ -139,6 +172,22 @@ public class SimpleStringPropertyExpression<C extends ConditionsExpression<C, L>
     @Override
     public L nin(String value, Predicate<String> ignoreStrategy) {
         return expression.nin(name, value, (v) -> ignoreStrategy.test((String) v));
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public L nin(String[] value) {
+        return expression.nin(name, value);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public L nin(String[] value, IgnoreStrategy ignoreStrategy) {
+        return expression.nin(name, value, ignoreStrategy);
     }
 
     /**
@@ -161,8 +210,40 @@ public class SimpleStringPropertyExpression<C extends ConditionsExpression<C, L>
      * {@inheritDoc}
      */
     @Override
+    public L le(String value, IgnoreStrategy ignoreStrategy) {
+        return expression.le(name, value, ignoreStrategy);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public L le(String value, Predicate<String> ignoreStrategy) {
+        return expression.le(name, value, ignoreStrategy);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
     public L lt(String value) {
         return expression.lt(name, value);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public L lt(String value, IgnoreStrategy ignoreStrategy) {
+        return expression.lt(name, value, ignoreStrategy);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public L lt(String value, Predicate<String> ignoreStrategy) {
+        return expression.lt(name, value, ignoreStrategy);
     }
 
     /**
@@ -177,8 +258,40 @@ public class SimpleStringPropertyExpression<C extends ConditionsExpression<C, L>
      * {@inheritDoc}
      */
     @Override
+    public L ge(String value, IgnoreStrategy ignoreStrategy) {
+        return expression.ge(name, value, ignoreStrategy);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public L ge(String value, Predicate<String> ignoreStrategy) {
+        return expression.ge(name, value, ignoreStrategy);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
     public L gt(String value) {
         return expression.gt(name, value);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public L gt(String value, IgnoreStrategy ignoreStrategy) {
+        return expression.gt(name, value, ignoreStrategy);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public L gt(String value, Predicate<String> ignoreStrategy) {
+        return expression.gt(name, value, ignoreStrategy);
     }
 
     /**
@@ -195,6 +308,14 @@ public class SimpleStringPropertyExpression<C extends ConditionsExpression<C, L>
     @Override
     public L sw(String value, MatchStrategy matchStrategy) {
         return expression.sw(name, value, matchStrategy);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public L sw(String value, MatchStrategy matchStrategy, IgnoreStrategy ignoreStrategy) {
+        return expression.sw(name, value, matchStrategy, ignoreStrategy);
     }
 
     /**
@@ -225,6 +346,14 @@ public class SimpleStringPropertyExpression<C extends ConditionsExpression<C, L>
      * {@inheritDoc}
      */
     @Override
+    public L co(String value, MatchStrategy matchStrategy, IgnoreStrategy ignoreStrategy) {
+        return expression.co(name, value, matchStrategy, ignoreStrategy);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
     public L co(String value, MatchStrategy matchStrategy, Predicate<String> ignoreStrategy) {
         return expression.co(name, value, matchStrategy, ignoreStrategy);
     }
@@ -243,6 +372,14 @@ public class SimpleStringPropertyExpression<C extends ConditionsExpression<C, L>
     @Override
     public L ew(String value, MatchStrategy matchStrategy) {
         return expression.ew(name, value, matchStrategy);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public L ew(String value, MatchStrategy matchStrategy, IgnoreStrategy ignoreStrategy) {
+        return expression.ew(name, value, matchStrategy, ignoreStrategy);
     }
 
     /**
@@ -297,7 +434,16 @@ public class SimpleStringPropertyExpression<C extends ConditionsExpression<C, L>
      * {@inheritDoc}
      */
     @Override
+    public L lk(String value, MatchStrategy matchStrategy, IgnoreStrategy ignoreStrategy) {
+        return expression.lk(name, value, matchStrategy, ignoreStrategy);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
     public L lk(String value, MatchStrategy matchStrategy, Predicate<String> ignoreStrategy) {
         return expression.lk(name, value, matchStrategy, ignoreStrategy);
     }
+
 }

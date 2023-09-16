@@ -7,6 +7,7 @@ import java.util.function.Predicate;
 
 import cn.featherfly.common.db.mapping.JdbcMappingFactory;
 import cn.featherfly.common.function.serializable.SerializableToIntFunction;
+import cn.featherfly.common.repository.IgnoreStrategy;
 import cn.featherfly.hammer.expression.condition.ConditionExpression;
 import cn.featherfly.hammer.expression.condition.LogicExpression;
 import cn.featherfly.hammer.expression.entity.condition.property.EntityIntPropertyExpression;
@@ -68,6 +69,22 @@ public class EntityIntPropertyExpressionImpl<E, C extends ConditionExpression, L
      * {@inheritDoc}
      */
     @Override
+    public L in(Integer value, IgnoreStrategy ignoreStrategy) {
+        return expression.in0(index, getPropertyMapping(value), value, ignoreStrategy);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public L in(Integer value, Predicate<Integer> ignoreStrategy) {
+        return expression.in0(index, getPropertyMapping(value), value, ignoreStrategy);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
     public L in(Integer[] value) {
         return expression.in0(index, getPropertyMapping(value), value, expression.getIgnoreStrategy());
     }
@@ -76,7 +93,7 @@ public class EntityIntPropertyExpressionImpl<E, C extends ConditionExpression, L
      * {@inheritDoc}
      */
     @Override
-    public L in(Integer value, Predicate<Integer> ignoreStrategy) {
+    public L in(Integer[] value, IgnoreStrategy ignoreStrategy) {
         return expression.in0(index, getPropertyMapping(value), value, ignoreStrategy);
     }
 
@@ -100,6 +117,22 @@ public class EntityIntPropertyExpressionImpl<E, C extends ConditionExpression, L
      * {@inheritDoc}
      */
     @Override
+    public L nin(Integer value, IgnoreStrategy ignoreStrategy) {
+        return expression.nin0(index, getPropertyMapping(value), value, ignoreStrategy);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public L nin(Integer value, Predicate<Integer> ignoreStrategy) {
+        return expression.nin0(index, getPropertyMapping(value), value, ignoreStrategy);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
     public L nin(Integer[] value) {
         return expression.nin0(index, getPropertyMapping(value), value, expression.getIgnoreStrategy());
     }
@@ -108,7 +141,7 @@ public class EntityIntPropertyExpressionImpl<E, C extends ConditionExpression, L
      * {@inheritDoc}
      */
     @Override
-    public L nin(Integer value, Predicate<Integer> ignoreStrategy) {
+    public L nin(Integer[] value, IgnoreStrategy ignoreStrategy) {
         return expression.nin0(index, getPropertyMapping(value), value, ignoreStrategy);
     }
 
@@ -132,8 +165,40 @@ public class EntityIntPropertyExpressionImpl<E, C extends ConditionExpression, L
      * {@inheritDoc}
      */
     @Override
+    public L le(Integer value, IgnoreStrategy ignoreStrategy) {
+        return expression.le0(index, getPropertyMapping(value), value, ignoreStrategy);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public L le(Integer value, Predicate<Integer> ignoreStrategy) {
+        return expression.le0(index, getPropertyMapping(value), value, ignoreStrategy);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
     public L lt(Integer value) {
         return expression.lt0(index, getPropertyMapping(value), value, expression.getIgnoreStrategy());
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public L lt(Integer value, IgnoreStrategy ignoreStrategy) {
+        return expression.lt0(index, getPropertyMapping(value), value, ignoreStrategy);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public L lt(Integer value, Predicate<Integer> ignoreStrategy) {
+        return expression.lt0(index, getPropertyMapping(value), value, ignoreStrategy);
     }
 
     /**
@@ -148,8 +213,40 @@ public class EntityIntPropertyExpressionImpl<E, C extends ConditionExpression, L
      * {@inheritDoc}
      */
     @Override
+    public L ge(Integer value, IgnoreStrategy ignoreStrategy) {
+        return expression.ge0(index, getPropertyMapping(value), value, ignoreStrategy);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public L ge(Integer value, Predicate<Integer> ignoreStrategy) {
+        return expression.ge0(index, getPropertyMapping(value), value, ignoreStrategy);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
     public L gt(Integer value) {
         return expression.gt0(index, getPropertyMapping(value), value, expression.getIgnoreStrategy());
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public L gt(Integer value, IgnoreStrategy ignoreStrategy) {
+        return expression.gt0(index, getPropertyMapping(value), value, ignoreStrategy);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public L gt(Integer value, Predicate<Integer> ignoreStrategy) {
+        return expression.gt0(index, getPropertyMapping(value), value, ignoreStrategy);
     }
 
     /**
@@ -180,6 +277,14 @@ public class EntityIntPropertyExpressionImpl<E, C extends ConditionExpression, L
      * {@inheritDoc}
      */
     @Override
+    public L eq(Integer value, IgnoreStrategy ignoreStrategy) {
+        return expression.eq0(index, getPropertyMapping(value), value, ignoreStrategy);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
     public L eq(Integer value, Predicate<Integer> ignoreStrategy) {
         return expression.eq0(index, getPropertyMapping(value), value, ignoreStrategy);
     }
@@ -196,7 +301,16 @@ public class EntityIntPropertyExpressionImpl<E, C extends ConditionExpression, L
      * {@inheritDoc}
      */
     @Override
+    public L ne(Integer value, IgnoreStrategy ignoreStrategy) {
+        return expression.ne0(index, getPropertyMapping(value), value, ignoreStrategy);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
     public L ne(Integer value, Predicate<Integer> ignoreStrategy) {
         return expression.ne0(index, getPropertyMapping(value), value, ignoreStrategy);
     }
+
 }

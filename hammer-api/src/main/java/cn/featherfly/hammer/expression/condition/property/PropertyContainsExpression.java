@@ -4,6 +4,7 @@ package cn.featherfly.hammer.expression.condition.property;
 import java.util.function.Predicate;
 
 import cn.featherfly.common.operator.ComparisonOperator.MatchStrategy;
+import cn.featherfly.common.repository.IgnoreStrategy;
 import cn.featherfly.hammer.expression.condition.ConditionExpression;
 import cn.featherfly.hammer.expression.condition.LogicExpression;
 
@@ -34,6 +35,17 @@ public interface PropertyContainsExpression<C extends ConditionExpression, L ext
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
+    default L co(String value, IgnoreStrategy ignoreStrategy) {
+        return co(value, MatchStrategy.AUTO, ignoreStrategy);
+    }
+
+    /**
+     * contains value. 包含value.
+     *
+     * @param value          the value
+     * @param ignoreStrategy the ignore strategy
+     * @return LogicExpression
+     */
     default L co(String value, Predicate<String> ignoreStrategy) {
         return co(value, MatchStrategy.AUTO, ignoreStrategy);
     }
@@ -46,6 +58,16 @@ public interface PropertyContainsExpression<C extends ConditionExpression, L ext
      * @return the l
      */
     L co(String value, MatchStrategy matchStrategy);
+
+    /**
+     * contains value. 包含value.
+     *
+     * @param value          the value
+     * @param matchStrategy  the match strategy
+     * @param ignoreStrategy the ignore strategy
+     * @return LogicExpression
+     */
+    L co(String value, MatchStrategy matchStrategy, IgnoreStrategy ignoreStrategy);
 
     /**
      * contains value. 包含value.

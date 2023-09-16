@@ -7,6 +7,7 @@ import java.util.function.Predicate;
 
 import cn.featherfly.common.db.mapping.JdbcMappingFactory;
 import cn.featherfly.common.function.serializable.SerializableToLongFunction;
+import cn.featherfly.common.repository.IgnoreStrategy;
 import cn.featherfly.hammer.expression.condition.ConditionExpression;
 import cn.featherfly.hammer.expression.condition.LogicExpression;
 import cn.featherfly.hammer.expression.entity.condition.property.EntityLongPropertyExpression;
@@ -68,6 +69,22 @@ public class EntityLongPropertyExpressionImpl<E, C extends ConditionExpression, 
      * {@inheritDoc}
      */
     @Override
+    public L in(Long value, IgnoreStrategy ignoreStrategy) {
+        return expression.in0(index, getPropertyMapping(value), value, ignoreStrategy);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public L in(Long value, Predicate<Long> ignoreStrategy) {
+        return expression.in0(index, getPropertyMapping(value), value, ignoreStrategy);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
     public L in(Long[] value) {
         return expression.in0(index, getPropertyMapping(value), value, expression.getIgnoreStrategy());
     }
@@ -76,7 +93,7 @@ public class EntityLongPropertyExpressionImpl<E, C extends ConditionExpression, 
      * {@inheritDoc}
      */
     @Override
-    public L in(Long value, Predicate<Long> ignoreStrategy) {
+    public L in(Long[] value, IgnoreStrategy ignoreStrategy) {
         return expression.in0(index, getPropertyMapping(value), value, ignoreStrategy);
     }
 
@@ -100,6 +117,22 @@ public class EntityLongPropertyExpressionImpl<E, C extends ConditionExpression, 
      * {@inheritDoc}
      */
     @Override
+    public L nin(Long value, IgnoreStrategy ignoreStrategy) {
+        return expression.nin0(index, getPropertyMapping(value), value, ignoreStrategy);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public L nin(Long value, Predicate<Long> ignoreStrategy) {
+        return expression.nin0(index, getPropertyMapping(value), value, ignoreStrategy);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
     public L nin(Long[] value) {
         return expression.nin0(index, getPropertyMapping(value), value, expression.getIgnoreStrategy());
     }
@@ -108,7 +141,7 @@ public class EntityLongPropertyExpressionImpl<E, C extends ConditionExpression, 
      * {@inheritDoc}
      */
     @Override
-    public L nin(Long value, Predicate<Long> ignoreStrategy) {
+    public L nin(Long[] value, IgnoreStrategy ignoreStrategy) {
         return expression.nin0(index, getPropertyMapping(value), value, ignoreStrategy);
     }
 
@@ -132,8 +165,40 @@ public class EntityLongPropertyExpressionImpl<E, C extends ConditionExpression, 
      * {@inheritDoc}
      */
     @Override
+    public L le(Long value, IgnoreStrategy ignoreStrategy) {
+        return expression.le0(index, getPropertyMapping(value), value, ignoreStrategy);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public L le(Long value, Predicate<Long> ignoreStrategy) {
+        return expression.le0(index, getPropertyMapping(value), value, ignoreStrategy);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
     public L lt(Long value) {
         return expression.lt0(index, getPropertyMapping(value), value, expression.getIgnoreStrategy());
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public L lt(Long value, IgnoreStrategy ignoreStrategy) {
+        return expression.lt0(index, getPropertyMapping(value), value, ignoreStrategy);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public L lt(Long value, Predicate<Long> ignoreStrategy) {
+        return expression.lt0(index, getPropertyMapping(value), value, ignoreStrategy);
     }
 
     /**
@@ -148,8 +213,40 @@ public class EntityLongPropertyExpressionImpl<E, C extends ConditionExpression, 
      * {@inheritDoc}
      */
     @Override
+    public L ge(Long value, IgnoreStrategy ignoreStrategy) {
+        return expression.ge0(index, getPropertyMapping(value), value, ignoreStrategy);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public L ge(Long value, Predicate<Long> ignoreStrategy) {
+        return expression.ge0(index, getPropertyMapping(value), value, ignoreStrategy);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
     public L gt(Long value) {
         return expression.gt0(index, getPropertyMapping(value), value, expression.getIgnoreStrategy());
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public L gt(Long value, IgnoreStrategy ignoreStrategy) {
+        return expression.gt0(index, getPropertyMapping(value), value, ignoreStrategy);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public L gt(Long value, Predicate<Long> ignoreStrategy) {
+        return expression.gt0(index, getPropertyMapping(value), value, ignoreStrategy);
     }
 
     /**
@@ -180,6 +277,14 @@ public class EntityLongPropertyExpressionImpl<E, C extends ConditionExpression, 
      * {@inheritDoc}
      */
     @Override
+    public L eq(Long value, IgnoreStrategy ignoreStrategy) {
+        return expression.eq0(index, getPropertyMapping(value), value, ignoreStrategy);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
     public L eq(Long value, Predicate<Long> ignoreStrategy) {
         return expression.eq0(index, getPropertyMapping(value), value, ignoreStrategy);
     }
@@ -196,7 +301,16 @@ public class EntityLongPropertyExpressionImpl<E, C extends ConditionExpression, 
      * {@inheritDoc}
      */
     @Override
+    public L ne(Long value, IgnoreStrategy ignoreStrategy) {
+        return expression.ne0(index, getPropertyMapping(value), value, ignoreStrategy);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
     public L ne(Long value, Predicate<Long> ignoreStrategy) {
         return expression.ne0(index, getPropertyMapping(value), value, ignoreStrategy);
     }
+
 }
