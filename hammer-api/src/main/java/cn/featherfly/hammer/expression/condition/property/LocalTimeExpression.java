@@ -5,6 +5,7 @@ import java.time.LocalTime;
 import java.util.function.Predicate;
 
 import cn.featherfly.common.operator.ComparisonOperator.MatchStrategy;
+import cn.featherfly.common.repository.IgnoreStrategy;
 import cn.featherfly.hammer.expression.condition.ConditionExpression;
 import cn.featherfly.hammer.expression.condition.LogicExpression;
 
@@ -31,6 +32,12 @@ public interface LocalTimeExpression<C extends ConditionExpression, L extends Lo
      * {@inheritDoc}
      */
     @Override
+    L eq(LocalTime value, IgnoreStrategy ignoreStrategy);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
     L eq(LocalTime value, Predicate<LocalTime> ignoreStrategy);
 
     /**
@@ -40,6 +47,15 @@ public interface LocalTimeExpression<C extends ConditionExpression, L extends Lo
     default L eq(LocalTime value, MatchStrategy matchStrategy) {
         // MatchStrategy only support for String
         return eq(value);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    default L eq(LocalTime value, MatchStrategy matchStrategy, IgnoreStrategy ignoreStrategy) {
+        // MatchStrategy only support for String
+        return eq(value, ignoreStrategy);
     }
 
     /**
@@ -61,6 +77,12 @@ public interface LocalTimeExpression<C extends ConditionExpression, L extends Lo
      * {@inheritDoc}
      */
     @Override
+    L ne(LocalTime value, IgnoreStrategy ignoreStrategy);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
     L ne(LocalTime value, Predicate<LocalTime> ignoreStrategy);
 
     /**
@@ -70,6 +92,15 @@ public interface LocalTimeExpression<C extends ConditionExpression, L extends Lo
     default L ne(LocalTime value, MatchStrategy matchStrategy) {
         // MatchStrategy only support for String
         return ne(value);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    default L ne(LocalTime value, MatchStrategy matchStrategy, IgnoreStrategy ignoreStrategy) {
+        // MatchStrategy only support for String
+        return ne(value, ignoreStrategy);
     }
 
     /**

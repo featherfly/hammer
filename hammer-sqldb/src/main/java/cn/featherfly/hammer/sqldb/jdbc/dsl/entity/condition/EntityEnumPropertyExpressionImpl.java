@@ -7,6 +7,7 @@ import java.util.function.Predicate;
 
 import cn.featherfly.common.db.mapping.JdbcMappingFactory;
 import cn.featherfly.common.function.serializable.SerializableFunction;
+import cn.featherfly.common.repository.IgnoreStrategy;
 import cn.featherfly.hammer.expression.condition.ConditionExpression;
 import cn.featherfly.hammer.expression.condition.LogicExpression;
 import cn.featherfly.hammer.expression.entity.condition.property.EntityEnumPropertyExpression;
@@ -63,6 +64,14 @@ public class EntityEnumPropertyExpressionImpl<E, T extends Enum<T>, C extends Co
      * {@inheritDoc}
      */
     @Override
+    public L eq(T value, IgnoreStrategy ignoreStrategy) {
+        return expression.eq0(index, getPropertyMapping(value), value, ignoreStrategy);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
     public L eq(T value, Predicate<T> ignoreStrategy) {
         return expression.eq0(index, getPropertyMapping(value), value, ignoreStrategy);
     }
@@ -87,6 +96,14 @@ public class EntityEnumPropertyExpressionImpl<E, T extends Enum<T>, C extends Co
      * {@inheritDoc}
      */
     @Override
+    public L ne(T value, IgnoreStrategy ignoreStrategy) {
+        return expression.ne0(index, getPropertyMapping(value), value, ignoreStrategy);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
     public L ne(T value, Predicate<T> ignoreStrategy) {
         return expression.ne0(index, getPropertyMapping(value), value, ignoreStrategy);
     }
@@ -103,6 +120,22 @@ public class EntityEnumPropertyExpressionImpl<E, T extends Enum<T>, C extends Co
      * {@inheritDoc}
      */
     @Override
+    public L in(T value, IgnoreStrategy ignoreStrategy) {
+        return expression.in0(index, getPropertyMapping(value), value, ignoreStrategy);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public L in(T value, Predicate<T> ignoreStrategy) {
+        return expression.in0(index, getPropertyMapping(value), value, ignoreStrategy);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
     public L in(T[] value) {
         return expression.in0(index, getPropertyMapping(value), value, expression.getIgnoreStrategy());
     }
@@ -111,7 +144,7 @@ public class EntityEnumPropertyExpressionImpl<E, T extends Enum<T>, C extends Co
      * {@inheritDoc}
      */
     @Override
-    public L in(T value, Predicate<T> ignoreStrategy) {
+    public L in(T[] value, IgnoreStrategy ignoreStrategy) {
         return expression.in0(index, getPropertyMapping(value), value, ignoreStrategy);
     }
 
@@ -135,6 +168,22 @@ public class EntityEnumPropertyExpressionImpl<E, T extends Enum<T>, C extends Co
      * {@inheritDoc}
      */
     @Override
+    public L nin(T value, IgnoreStrategy ignoreStrategy) {
+        return expression.nin0(index, getPropertyMapping(value), value, ignoreStrategy);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public L nin(T value, Predicate<T> ignoreStrategy) {
+        return expression.nin0(index, getPropertyMapping(value), value, ignoreStrategy);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
     public L nin(T[] value) {
         return expression.nin0(index, getPropertyMapping(value), value, expression.getIgnoreStrategy());
     }
@@ -143,7 +192,7 @@ public class EntityEnumPropertyExpressionImpl<E, T extends Enum<T>, C extends Co
      * {@inheritDoc}
      */
     @Override
-    public L nin(T value, Predicate<T> ignoreStrategy) {
+    public L nin(T[] value, IgnoreStrategy ignoreStrategy) {
         return expression.nin0(index, getPropertyMapping(value), value, ignoreStrategy);
     }
 

@@ -7,6 +7,7 @@ import java.util.function.Predicate;
 
 import cn.featherfly.common.db.mapping.JdbcMappingFactory;
 import cn.featherfly.common.function.serializable.SerializableToDoubleFunction;
+import cn.featherfly.common.repository.IgnoreStrategy;
 import cn.featherfly.hammer.expression.condition.ConditionExpression;
 import cn.featherfly.hammer.expression.condition.LogicExpression;
 import cn.featherfly.hammer.expression.entity.condition.property.EntityDoublePropertyExpression;
@@ -68,6 +69,22 @@ public class EntityDoublePropertyExpressionImpl<E, C extends ConditionExpression
      * {@inheritDoc}
      */
     @Override
+    public L in(Double value, IgnoreStrategy ignoreStrategy) {
+        return expression.in0(index, getPropertyMapping(value), value, ignoreStrategy);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public L in(Double value, Predicate<Double> ignoreStrategy) {
+        return expression.in0(index, getPropertyMapping(value), value, ignoreStrategy);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
     public L in(Double[] value) {
         return expression.in0(index, getPropertyMapping(value), value, expression.getIgnoreStrategy());
     }
@@ -76,7 +93,7 @@ public class EntityDoublePropertyExpressionImpl<E, C extends ConditionExpression
      * {@inheritDoc}
      */
     @Override
-    public L in(Double value, Predicate<Double> ignoreStrategy) {
+    public L in(Double[] value, IgnoreStrategy ignoreStrategy) {
         return expression.in0(index, getPropertyMapping(value), value, ignoreStrategy);
     }
 
@@ -100,6 +117,22 @@ public class EntityDoublePropertyExpressionImpl<E, C extends ConditionExpression
      * {@inheritDoc}
      */
     @Override
+    public L nin(Double value, IgnoreStrategy ignoreStrategy) {
+        return expression.nin0(index, getPropertyMapping(value), value, ignoreStrategy);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public L nin(Double value, Predicate<Double> ignoreStrategy) {
+        return expression.nin0(index, getPropertyMapping(value), value, ignoreStrategy);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
     public L nin(Double[] value) {
         return expression.nin0(index, getPropertyMapping(value), value, expression.getIgnoreStrategy());
     }
@@ -108,7 +141,7 @@ public class EntityDoublePropertyExpressionImpl<E, C extends ConditionExpression
      * {@inheritDoc}
      */
     @Override
-    public L nin(Double value, Predicate<Double> ignoreStrategy) {
+    public L nin(Double[] value, IgnoreStrategy ignoreStrategy) {
         return expression.nin0(index, getPropertyMapping(value), value, ignoreStrategy);
     }
 
@@ -132,8 +165,40 @@ public class EntityDoublePropertyExpressionImpl<E, C extends ConditionExpression
      * {@inheritDoc}
      */
     @Override
+    public L le(Double value, IgnoreStrategy ignoreStrategy) {
+        return expression.le0(index, getPropertyMapping(value), value, ignoreStrategy);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public L le(Double value, Predicate<Double> ignoreStrategy) {
+        return expression.le0(index, getPropertyMapping(value), value, ignoreStrategy);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
     public L lt(Double value) {
         return expression.lt0(index, getPropertyMapping(value), value, expression.getIgnoreStrategy());
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public L lt(Double value, IgnoreStrategy ignoreStrategy) {
+        return expression.lt0(index, getPropertyMapping(value), value, ignoreStrategy);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public L lt(Double value, Predicate<Double> ignoreStrategy) {
+        return expression.lt0(index, getPropertyMapping(value), value, ignoreStrategy);
     }
 
     /**
@@ -148,8 +213,40 @@ public class EntityDoublePropertyExpressionImpl<E, C extends ConditionExpression
      * {@inheritDoc}
      */
     @Override
+    public L ge(Double value, IgnoreStrategy ignoreStrategy) {
+        return expression.ge0(index, getPropertyMapping(value), value, ignoreStrategy);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public L ge(Double value, Predicate<Double> ignoreStrategy) {
+        return expression.ge0(index, getPropertyMapping(value), value, ignoreStrategy);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
     public L gt(Double value) {
         return expression.gt0(index, getPropertyMapping(value), value, expression.getIgnoreStrategy());
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public L gt(Double value, IgnoreStrategy ignoreStrategy) {
+        return expression.gt0(index, getPropertyMapping(value), value, ignoreStrategy);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public L gt(Double value, Predicate<Double> ignoreStrategy) {
+        return expression.gt0(index, getPropertyMapping(value), value, ignoreStrategy);
     }
 
     /**
@@ -180,8 +277,16 @@ public class EntityDoublePropertyExpressionImpl<E, C extends ConditionExpression
      * {@inheritDoc}
      */
     @Override
+    public L eq(Double value, IgnoreStrategy ignoreStrategy) {
+        return expression.eq0(index, getPropertyMapping(value), value, ignoreStrategy);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
     public L eq(Double value, Predicate<Double> ignoreStrategy) {
-        return expression.eq0(index, getPropertyMapping(value), value, expression.getIgnoreStrategy());
+        return expression.eq0(index, getPropertyMapping(value), value, ignoreStrategy);
     }
 
     /**
@@ -196,8 +301,16 @@ public class EntityDoublePropertyExpressionImpl<E, C extends ConditionExpression
      * {@inheritDoc}
      */
     @Override
+    public L ne(Double value, IgnoreStrategy ignoreStrategy) {
+        return expression.ne0(index, getPropertyMapping(value), value, ignoreStrategy);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
     public L ne(Double value, Predicate<Double> ignoreStrategy) {
-        return expression.ne0(index, getPropertyMapping(value), value, expression.getIgnoreStrategy());
+        return expression.ne0(index, getPropertyMapping(value), value, ignoreStrategy);
     }
 
 }

@@ -1,6 +1,9 @@
 
 package cn.featherfly.hammer.expression.condition.property;
 
+import java.util.function.Predicate;
+
+import cn.featherfly.common.repository.IgnoreStrategy;
 import cn.featherfly.hammer.expression.condition.ConditionExpression;
 import cn.featherfly.hammer.expression.condition.LogicExpression;
 
@@ -16,10 +19,26 @@ public interface PropertyLessEqualsExpression<C extends ConditionExpression, L e
         extends ConditionExpression {
 
     /**
-     * 小于等于.
+     * less equals. 小于等于.
      *
      * @param value 参数值
      * @return LogicExpression
      */
     L le(V value);
+
+    /**
+     * less equals. 小于等于.
+     *
+     * @param value 参数值
+     * @return LogicExpression
+     */
+    L le(V value, IgnoreStrategy ignoreStrategy);
+
+    /**
+     * less equals. 小于等于.
+     *
+     * @param value 参数值
+     * @return LogicExpression
+     */
+    L le(V value, Predicate<V> ignoreStrategy);
 }

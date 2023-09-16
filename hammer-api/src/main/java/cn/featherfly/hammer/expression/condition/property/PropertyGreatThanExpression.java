@@ -1,6 +1,9 @@
 
 package cn.featherfly.hammer.expression.condition.property;
 
+import java.util.function.Predicate;
+
+import cn.featherfly.common.repository.IgnoreStrategy;
 import cn.featherfly.hammer.expression.condition.ConditionExpression;
 import cn.featherfly.hammer.expression.condition.LogicExpression;
 
@@ -22,4 +25,22 @@ public interface PropertyGreatThanExpression<C extends ConditionExpression, L ex
      * @return LogicExpression
      */
     L gt(V value);
+
+    /**
+     * 大于.
+     *
+     * @param value          参数值
+     * @param ignoreStrategy the ignore strategy
+     * @return LogicExpression
+     */
+    L gt(V value, IgnoreStrategy ignoreStrategy);
+
+    /**
+     * 大于.
+     *
+     * @param value          参数值
+     * @param ignoreStrategy the ignore strategy
+     * @return LogicExpression
+     */
+    L gt(V value, Predicate<V> ignoreStrategy);
 }

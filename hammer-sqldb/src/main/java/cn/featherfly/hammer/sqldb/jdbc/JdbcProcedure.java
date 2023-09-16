@@ -21,7 +21,7 @@ import com.speedment.common.tuple.Tuple5;
 import cn.featherfly.common.repository.mapping.RowMapper;
 
 /**
- * JdbcQuery.
+ * jdbc procedure.
  *
  * @author zhongj
  */

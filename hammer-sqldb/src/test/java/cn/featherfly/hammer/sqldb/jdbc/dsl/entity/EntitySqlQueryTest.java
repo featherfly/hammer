@@ -345,6 +345,280 @@ public class EntitySqlQueryTest extends JdbcTestBase {
     }
 
     @Test
+    void testProperty_eq() {
+        long c = query.find(User.class) //
+                .where() //
+                .property(User::getId).eq(null, v -> false) // 不忽略
+                .count();
+        assertEquals(c, 0);
+
+        c = query.find(User.class) //
+                .where() //
+                .property(User::getId).eq(null, IgnoreStrategy.NONE) // 不忽略
+                .count();
+        assertEquals(c, 0);
+
+        c = query.find(User.class) //
+                .where() //
+                .property(User::getUsername).eq(null, IgnoreStrategy.NONE) // 不忽略
+                .count();
+        assertEquals(c, 0);
+    }
+
+    @Test
+    void testProperty_ne() {
+        long c = query.find(User.class) //
+                .where() //
+                .property(User::getId).ne(null, v -> false) // 不忽略
+                .count();
+        assertEquals(c, 0);
+
+        c = query.find(User.class) //
+                .where() //
+                .property(User::getId).ne(null, IgnoreStrategy.NONE) // 不忽略
+                .count();
+        assertEquals(c, 0);
+
+        c = query.find(User.class) //
+                .where() //
+                .property(User::getUsername).ne(null, IgnoreStrategy.NONE) // 不忽略
+                .count();
+        assertEquals(c, 0);
+    }
+
+    @Test
+    void testProperty_in() {
+        Integer id = null;
+        Integer[] ids = null;
+        String username = null;
+        String[] usernames = null;
+
+        long c = query.find(User.class) //
+                .where() //
+                .property(User::getId).in(id, v -> false) // 不忽略
+                .count();
+        assertEquals(c, 0);
+
+        c = query.find(User.class) //
+                .where() //
+                .property(User::getUsername).in(username, v -> false) // 不忽略
+                .count();
+        assertEquals(c, 0);
+
+        c = query.find(User.class) //
+                .where() //
+                .property(User::getId).in(id, IgnoreStrategy.NONE) // 不忽略
+                .count();
+        assertEquals(c, 0);
+
+        c = query.find(User.class) //
+                .where() //
+                .property(User::getUsername).in(username, IgnoreStrategy.NONE) // 不忽略
+                .count();
+        assertEquals(c, 0);
+
+        c = query.find(User.class) //
+                .where() //
+                .property(User::getId).in(ids, IgnoreStrategy.NONE) // 不忽略
+                .count();
+        assertEquals(c, 0);
+
+        c = query.find(User.class) //
+                .where() //
+                .property(User::getUsername).in(usernames, IgnoreStrategy.NONE) // 不忽略
+                .count();
+        assertEquals(c, 0);
+    }
+
+    @Test
+    void testProperty_nin() {
+        Integer id = null;
+        Integer[] ids = null;
+        String username = null;
+        String[] usernames = null;
+
+        long c = query.find(User.class) //
+                .where() //
+                .property(User::getId).nin(id, v -> false) // 不忽略
+                .count();
+        assertEquals(c, 0);
+
+        c = query.find(User.class) //
+                .where() //
+                .property(User::getUsername).nin(username, v -> false) // 不忽略
+                .count();
+        assertEquals(c, 0);
+
+        c = query.find(User.class) //
+                .where() //
+                .property(User::getId).nin(id, IgnoreStrategy.NONE) // 不忽略
+                .count();
+        assertEquals(c, 0);
+
+        c = query.find(User.class) //
+                .where() //
+                .property(User::getUsername).nin(username, IgnoreStrategy.NONE) // 不忽略
+                .count();
+        assertEquals(c, 0);
+
+        c = query.find(User.class) //
+                .where() //
+                .property(User::getId).nin(ids, IgnoreStrategy.NONE) // 不忽略
+                .count();
+        assertEquals(c, 0);
+
+        c = query.find(User.class) //
+                .where() //
+                .property(User::getUsername).nin(usernames, IgnoreStrategy.NONE) // 不忽略
+                .count();
+        assertEquals(c, 0);
+    }
+
+    @Test
+    void testProperty_ge() {
+        int qa = 40;
+        List<User> users = query.find(User.class) //
+                .where() //
+                .property(User::getAge).ge(qa, v -> false) // 不忽略
+                .list();
+        for (User user : users) {
+            assertTrue(user.getAge() >= qa);
+        }
+
+        long c = query.find(User.class) //
+                .where() //
+                .property(User::getId).ge(null, v -> false) // 不忽略
+                .count();
+        assertEquals(c, 0);
+
+        c = query.find(User.class) //
+                .where() //
+                .property(User::getId).ge(null, IgnoreStrategy.NONE) // 不忽略
+                .count();
+        assertEquals(c, 0);
+
+        c = query.find(User.class) //
+                .where() //
+                .property(User::getUsername).ge(null, v -> false) // 不忽略
+                .count();
+        assertEquals(c, 0);
+
+        c = query.find(User.class) //
+                .where() //
+                .property(User::getUsername).ge(null, IgnoreStrategy.NONE) // 不忽略
+                .count();
+        assertEquals(c, 0);
+    }
+
+    @Test
+    void testProperty_gt() {
+        int qa = 40;
+        List<User> users = query.find(User.class) //
+                .where() //
+                .property(User::getAge).gt(qa, v -> false) // 不忽略
+                .list();
+        for (User user : users) {
+            assertTrue(user.getAge() > qa);
+        }
+
+        long c = query.find(User.class) //
+                .where() //
+                .property(User::getId).gt(null, v -> false) // 不忽略
+                .count();
+        assertEquals(c, 0);
+
+        c = query.find(User.class) //
+                .where() //
+                .property(User::getId).gt(null, IgnoreStrategy.NONE) // 不忽略
+                .count();
+        assertEquals(c, 0);
+
+        c = query.find(User.class) //
+                .where() //
+                .property(User::getUsername).gt(null, v -> false) // 不忽略
+                .count();
+        assertEquals(c, 0);
+
+        c = query.find(User.class) //
+                .where() //
+                .property(User::getUsername).gt(null, IgnoreStrategy.NONE) // 不忽略
+                .count();
+        assertEquals(c, 0);
+    }
+
+    @Test
+    void testProperty_le() {
+        int qa = 40;
+        List<User> users = query.find(User.class) //
+                .where() //
+                .property(User::getAge).le(qa, v -> false) // 不忽略
+                .list();
+        for (User user : users) {
+            assertTrue(user.getAge() <= qa);
+        }
+
+        long c = query.find(User.class) //
+                .where() //
+                .property(User::getId).le(null, v -> false) // 不忽略
+                .count();
+        assertEquals(c, 0);
+
+        c = query.find(User.class) //
+                .where() //
+                .property(User::getId).le(null, IgnoreStrategy.NONE) // 不忽略
+                .count();
+        assertEquals(c, 0);
+
+        c = query.find(User.class) //
+                .where() //
+                .property(User::getUsername).le(null, v -> false) // 不忽略
+                .count();
+        assertEquals(c, 0);
+
+        c = query.find(User.class) //
+                .where() //
+                .property(User::getUsername).le(null, IgnoreStrategy.NONE) // 不忽略
+                .count();
+        assertEquals(c, 0);
+    }
+
+    @Test
+    void testProperty_lt() {
+        int qa = 40;
+        List<User> users = query.find(User.class) //
+                .where() //
+                .property(User::getAge).lt(qa, v -> false) // 不忽略
+                .list();
+        for (User user : users) {
+            assertTrue(user.getAge() < qa);
+        }
+
+        long c = query.find(User.class) //
+                .where() //
+                .property(User::getId).lt(null, v -> false) // 不忽略
+                .count();
+        assertEquals(c, 0);
+
+        c = query.find(User.class) //
+                .where() //
+                .property(User::getId).lt(null, IgnoreStrategy.NONE) // 不忽略
+                .count();
+        assertEquals(c, 0);
+
+        c = query.find(User.class) //
+                .where() //
+                .property(User::getUsername).lt(null, v -> false) // 不忽略
+                .count();
+        assertEquals(c, 0);
+
+        c = query.find(User.class) //
+                .where() //
+                .property(User::getUsername).lt(null, IgnoreStrategy.NONE) // 不忽略
+                .count();
+        assertEquals(c, 0);
+    }
+
+    @Test
     void testNestedProperty() {
 
         UserRole2 userRole2 = new UserRole2();
@@ -504,7 +778,7 @@ public class EntitySqlQueryTest extends JdbcTestBase {
 
         List<UserRole2> list = query.find(UserRole2.class) //
                 .where() //
-                .property(UserRole2::getRole).property(Role::getName).eq(role.getName()) //
+                .property(UserRole2::getRole).property(Role::getName).eq(role.getName()) // TODO 还未实现自动进行关联查询
                 .list();
 
         for (UserRole2 ur : list) {

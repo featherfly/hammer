@@ -4,6 +4,7 @@ package cn.featherfly.hammer.expression.condition.property;
 import java.util.function.Predicate;
 
 import cn.featherfly.common.operator.ComparisonOperator.MatchStrategy;
+import cn.featherfly.common.repository.IgnoreStrategy;
 import cn.featherfly.hammer.expression.condition.ConditionExpression;
 import cn.featherfly.hammer.expression.condition.LogicExpression;
 
@@ -29,6 +30,12 @@ public interface EnumPropertyExpression<E extends Enum<E>, C extends ConditionEx
      * {@inheritDoc}
      */
     @Override
+    L eq(E value, IgnoreStrategy ignoreStrategy);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
     L eq(E value, Predicate<E> ignoreStrategy);
 
     /**
@@ -38,6 +45,15 @@ public interface EnumPropertyExpression<E extends Enum<E>, C extends ConditionEx
     default L eq(E value, MatchStrategy matchStrategy) {
         // MatchStrategy only support for String
         return eq(value);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    default L eq(E value, MatchStrategy matchStrategy, IgnoreStrategy ignoreStrategy) {
+        // MatchStrategy only support for String
+        return eq(value, ignoreStrategy);
     }
 
     /**
@@ -59,6 +75,12 @@ public interface EnumPropertyExpression<E extends Enum<E>, C extends ConditionEx
      * {@inheritDoc}
      */
     @Override
+    L ne(E value, IgnoreStrategy ignoreStrategy);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
     L ne(E value, Predicate<E> ignoreStrategy);
 
     /**
@@ -68,6 +90,15 @@ public interface EnumPropertyExpression<E extends Enum<E>, C extends ConditionEx
     default L ne(E value, MatchStrategy matchStrategy) {
         // MatchStrategy only support for String
         return ne(value);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    default L ne(E value, MatchStrategy matchStrategy, IgnoreStrategy ignoreStrategy) {
+        // MatchStrategy only support for String
+        return ne(value, ignoreStrategy);
     }
 
     /**
