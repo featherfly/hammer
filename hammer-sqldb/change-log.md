@@ -8,8 +8,8 @@
 6. 模板sql支持返回一系列Tuple[2-6]、List<Tuple[2-6]>、PaginationResults<Tuple[2-6]>
 7. SqldbHammer加入QueryEntity query(Table table);Update update(Table table);Delete delete(Table table)方法
 8. Jdbc实现存储过程支持
-9. Entity DSL加入Consumer参数方法,加入带IgnorePolicy参数方法
-10. Update DSL里的所有set、increase方法都新增了一个加入多一个参数Supplier<Boolean> whether的重载方法，用于判断此次方法调用是否设置值
+9. Entity DSL加入Consumer参数方法,加入带IgnoreStrategy|Predicate参数方法
+10. Update DSL里的所有set、increase方法都新增了一个加入多一个参数Supplier<Boolean> setable的重载方法，用于判断此次方法调用是否设置值
 11. 实现非spring环境下的Jdbc的功能和事务管理
     ```java
     // 使用原生jdbc管理事务
@@ -20,7 +20,7 @@
     jdbc.update(sql2)
     conn.commit();// or conn.rollback();
     conn.close();
-   
+      
     // 使用包装管理事务
     JdbcSession jdbc = jdbcFactory.createSession(conn);
     JdbcTransaction tran = jdbc.beginTransation(Isolation.READ_COMMITTED); //设置隔离级别
@@ -30,12 +30,13 @@
     jdbc.close();
     // 使用详情参考JdbcTransactionTest.java
     ```
-12 where支持多实体条件查询
-13 实现多实体排序
+12. where支持多实体条件查询
+13. 实现多实体排序
 14. where().property()后的各种条件筛选方法加入带Predicate和IgnoreStrategy的重载方法
-      
+    
+
 TODO dsl查询条件的表达式加入带运算的条件判断
-    ```
+    ```java
     // 带运算的条件判断
     where().property(Account::getAmount).subtract(10).ge(0)
     where().exp(e -> e.property(Account::getAmount).subtract(10).ge(0))
@@ -51,7 +52,22 @@ TODO dsl查询条件的表达式加入带运算的条件判断
     // where order.price - 10 == order.charge + 10
     ```
 
+TODO dsl join on 加入表达式支持
+
+```java
+find(User.class).join(UserInfo.class).on(e-> e.property(User::getId).eq(UserInfo::getUserId));
+// 等价 find(User.class).join(UserInfo.class).on(User::getId, UserInfo::getUserId)
+// select * from user u join user_info ui on u.id = ui.user_id
+find(User.class).join(UserInfo.class).on(e-> e.property(User::getId).eq(UserInfo::getUserId).and().property(UserInfo::getSex).eq(Gender.MALE));
+// select * from user u join user_info ui on u.id = ui.user_id and ui.gender = ? ['male']
+find(User.class).join(UserInfo.class).on(e-> e.property(User::getId).gt(UserInfo::getUserId));
+// select * from user u join user_info ui on u.id > ui.user_id
+```
+
+
+
 # 0.6.6 2022-08-26
+
 1. 修改L group(Consumer<C>)为L group(Function<C,L>)，
 2. 修复分组多次调用分组层次不对的问题
 
