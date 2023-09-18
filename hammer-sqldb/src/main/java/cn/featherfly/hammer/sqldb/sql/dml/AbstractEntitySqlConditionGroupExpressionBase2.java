@@ -7,6 +7,7 @@ import java.time.LocalTime;
 import java.util.Collection;
 import java.util.Date;
 import java.util.function.BiFunction;
+import java.util.function.BiPredicate;
 import java.util.function.Predicate;
 
 import cn.featherfly.common.db.builder.SqlBuilder;
@@ -24,13 +25,17 @@ import cn.featherfly.common.function.serializable.SerializableNumberSupplier;
 import cn.featherfly.common.function.serializable.SerializableStringSupplier;
 import cn.featherfly.common.function.serializable.SerializableSupplier;
 import cn.featherfly.common.function.serializable.SerializableSupplier2;
+import cn.featherfly.common.function.serializable.SerializableToDoubleFunction;
 import cn.featherfly.common.function.serializable.SerializableToDoubleFunction2;
+import cn.featherfly.common.function.serializable.SerializableToIntFunction;
 import cn.featherfly.common.function.serializable.SerializableToIntFunction2;
+import cn.featherfly.common.function.serializable.SerializableToLongFunction;
 import cn.featherfly.common.function.serializable.SerializableToLongFunction2;
 import cn.featherfly.common.operator.ComparisonOperator.MatchStrategy;
 import cn.featherfly.hammer.expression.condition.GroupEndExpression;
 import cn.featherfly.hammer.expression.condition.GroupExpression;
 import cn.featherfly.hammer.expression.entity.condition.EntityPropertyExpression2;
+import cn.featherfly.hammer.expression.entity.condition.ba.EntityBetweenExpressionBase2;
 import cn.featherfly.hammer.expression.entity.condition.co.EntityContainsExpressionBase2;
 import cn.featherfly.hammer.expression.entity.condition.eq.EntityEqualsExpressionBase2;
 import cn.featherfly.hammer.expression.entity.condition.ew.EntityEndWithExpressionBase2;
@@ -42,8 +47,13 @@ import cn.featherfly.hammer.expression.entity.condition.isn.EntityIsNullExpressi
 import cn.featherfly.hammer.expression.entity.condition.le.EntityLessEqualsExpressionBase2;
 import cn.featherfly.hammer.expression.entity.condition.lk.EntityLikeExpressionBase2;
 import cn.featherfly.hammer.expression.entity.condition.lt.EntityLessThanExpressionBase2;
+import cn.featherfly.hammer.expression.entity.condition.nba.EntityNotBetweenExpressionBase2;
+import cn.featherfly.hammer.expression.entity.condition.nco.EntityNotContainsExpressionBase2;
 import cn.featherfly.hammer.expression.entity.condition.ne.EntityNotEqualsExpressionBase2;
-import cn.featherfly.hammer.expression.entity.condition.nin.EntityNotInExpressionBase2;
+import cn.featherfly.hammer.expression.entity.condition.newv.EntityNotEndWithExpressionBase2;
+import cn.featherfly.hammer.expression.entity.condition.ni.EntityNotInExpressionBase2;
+import cn.featherfly.hammer.expression.entity.condition.nl.EntityNotLikeExpressionBase2;
+import cn.featherfly.hammer.expression.entity.condition.nsw.EntityNotStartWithExpressionBase2;
 import cn.featherfly.hammer.expression.entity.condition.property.EntityPropertyFunction;
 import cn.featherfly.hammer.expression.entity.condition.sw.EntityStartWithExpressionBase2;
 import cn.featherfly.hammer.sqldb.jdbc.dsl.entity.EntitySqlRelation;
@@ -62,14 +72,17 @@ import cn.featherfly.hammer.sqldb.jdbc.dsl.entity.condition.EntityPropertyFuncti
 public abstract class AbstractEntitySqlConditionGroupExpressionBase2<E, E2, ER extends EntitySqlRelation<ER, B>,
         B extends SqlBuilder, C extends GroupExpression<C, L>, L extends GroupEndExpression<C, L>>
         extends AbstractEntitySqlConditionGroupExpressionBase<E, ER, B, C, L>
-        implements EntityContainsExpressionBase2<E, E2, C, L>, EntityEndWithExpressionBase2<E, E2, C, L>,
-        EntityEqualsExpressionBase2<E, E2, C, L>, EntityGreatEqualsExpressionBase2<E, E2, C, L>,
-        EntityGreatThanExpressionBase2<E, E2, C, L>, EntityInExpressionBase2<E, E2, C, L>,
-        EntityIsNotNullExpressionBase2<E, E2, C, L>, EntityIsNullExpressionBase2<E, E2, C, L>,
-        EntityLessEqualsExpressionBase2<E, E2, C, L>, EntityLessThanExpressionBase2<E, E2, C, L>,
-        EntityNotEqualsExpressionBase2<E, E2, C, L>, EntityNotInExpressionBase2<E, E2, C, L>,
-        EntityStartWithExpressionBase2<E, E2, C, L>, EntityLikeExpressionBase2<E, E2, C, L>,
-        EntityPropertyExpression2<E, E2, C, L> {
+        implements EntityBetweenExpressionBase2<E, E2, C, L>, EntityNotBetweenExpressionBase2<E, E2, C, L> //
+        , EntityContainsExpressionBase2<E, E2, C, L>, EntityNotContainsExpressionBase2<E, E2, C, L> //
+        , EntityEndWithExpressionBase2<E, E2, C, L>, EntityNotEndWithExpressionBase2<E, E2, C, L>//
+        , EntityEqualsExpressionBase2<E, E2, C, L>, EntityNotEqualsExpressionBase2<E, E2, C, L> //
+        , EntityGreatEqualsExpressionBase2<E, E2, C, L>, EntityGreatThanExpressionBase2<E, E2, C, L> //
+        , EntityInExpressionBase2<E, E2, C, L>, EntityNotInExpressionBase2<E, E2, C, L> //
+        , EntityIsNotNullExpressionBase2<E, E2, C, L>, EntityIsNullExpressionBase2<E, E2, C, L> //
+        , EntityLessEqualsExpressionBase2<E, E2, C, L>, EntityLessThanExpressionBase2<E, E2, C, L> //
+        , EntityStartWithExpressionBase2<E, E2, C, L>, EntityNotStartWithExpressionBase2<E, E2, C, L> //
+        , EntityLikeExpressionBase2<E, E2, C, L>, EntityNotLikeExpressionBase2<E, E2, C, L> //
+        , EntityPropertyExpression2<E, E2, C, L> {
 
     /** The class mapping. */
     protected JdbcClassMapping<E2> classMapping2;
@@ -163,6 +176,41 @@ public abstract class AbstractEntitySqlConditionGroupExpressionBase2<E, E2, ER e
 
     // ****************************************************************************************************************
 
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public L nl2(SerializableFunction<E2, String> name, String value, MatchStrategy matchStrategy) {
+        return nl(classMapping, name, value, queryAlias2, matchStrategy, ignoreStrategy);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public L nl2(SerializableFunction<E2, String> name, String value, MatchStrategy matchStrategy,
+            Predicate<String> ignoreStrategy) {
+        return nl(classMapping, name, value, queryAlias2, matchStrategy, ignoreStrategy);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public L nl2(SerializableStringSupplier property, MatchStrategy matchStrategy) {
+        return nl(classMapping, property, queryAlias2, matchStrategy, ignoreStrategy);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public L nl2(SerializableStringSupplier property, MatchStrategy matchStrategy, Predicate<String> ignoreStrategy) {
+        return nl(classMapping, property, queryAlias2, matchStrategy, ignoreStrategy);
+    }
+
+    // ****************************************************************************************************************
+
     @Override
     public L sw2(SerializableFunction<E2, String> name, String value, MatchStrategy matchStrategy) {
         return sw(classMapping2, name, value, queryAlias2, matchStrategy, ignoreStrategy);
@@ -182,6 +230,41 @@ public abstract class AbstractEntitySqlConditionGroupExpressionBase2<E, E2, ER e
     @Override
     public L sw2(SerializableStringSupplier property, MatchStrategy matchStrategy, Predicate<String> ignoreStrategy) {
         return sw(classMapping2, property, queryAlias2, matchStrategy, ignoreStrategy);
+    }
+
+    // ****************************************************************************************************************
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public L nsw2(SerializableFunction<E2, String> name, String value, MatchStrategy matchStrategy) {
+        return nsw(classMapping, name, value, queryAlias2, matchStrategy, ignoreStrategy);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public L nsw2(SerializableFunction<E2, String> name, String value, MatchStrategy matchStrategy,
+            Predicate<String> ignoreStrategy) {
+        return nsw(classMapping, name, value, queryAlias2, matchStrategy, ignoreStrategy);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public L nsw2(SerializableStringSupplier property, MatchStrategy matchStrategy) {
+        return nsw(classMapping, property, queryAlias2, matchStrategy, ignoreStrategy);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public L nsw2(SerializableStringSupplier property, MatchStrategy matchStrategy, Predicate<String> ignoreStrategy) {
+        return nsw(classMapping, property, queryAlias2, matchStrategy, ignoreStrategy);
     }
 
     // ****************************************************************************************************************
@@ -209,6 +292,41 @@ public abstract class AbstractEntitySqlConditionGroupExpressionBase2<E, E2, ER e
 
     // ****************************************************************************************************************
 
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public L new2(SerializableFunction<E2, String> name, String value, MatchStrategy matchStrategy) {
+        return newv(classMapping, name, value, queryAlias2, matchStrategy, ignoreStrategy);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public L new2(SerializableFunction<E2, String> name, String value, MatchStrategy matchStrategy,
+            Predicate<String> ignoreStrategy) {
+        return newv(classMapping, name, value, queryAlias2, matchStrategy, ignoreStrategy);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public L new2(SerializableStringSupplier property, MatchStrategy matchStrategy) {
+        return newv(classMapping, property, queryAlias2, matchStrategy, ignoreStrategy);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public L new2(SerializableStringSupplier property, MatchStrategy matchStrategy, Predicate<String> ignoreStrategy) {
+        return newv(classMapping, property, queryAlias2, matchStrategy, ignoreStrategy);
+    }
+
+    // ****************************************************************************************************************
+
     @Override
     public L co2(SerializableFunction<E2, String> name, String value, MatchStrategy matchStrategy) {
         return co(classMapping2, name, value, queryAlias2, matchStrategy, ignoreStrategy);
@@ -228,6 +346,41 @@ public abstract class AbstractEntitySqlConditionGroupExpressionBase2<E, E2, ER e
     @Override
     public L co2(SerializableStringSupplier property, MatchStrategy matchStrategy, Predicate<String> ignoreStrategy) {
         return co(classMapping2, property, queryAlias2, matchStrategy, ignoreStrategy);
+    }
+
+    // ****************************************************************************************************************
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public L nco2(SerializableFunction<E2, String> name, String value, MatchStrategy matchStrategy) {
+        return nco(classMapping, name, value, queryAlias2, matchStrategy, ignoreStrategy);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public L nco2(SerializableFunction<E2, String> name, String value, MatchStrategy matchStrategy,
+            Predicate<String> ignoreStrategy) {
+        return nco(classMapping, name, value, queryAlias2, matchStrategy, ignoreStrategy);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public L nco2(SerializableStringSupplier property, MatchStrategy matchStrategy) {
+        return nco(classMapping, property, queryAlias2, matchStrategy, ignoreStrategy);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public L nco2(SerializableStringSupplier property, MatchStrategy matchStrategy, Predicate<String> ignoreStrategy) {
+        return nco(classMapping, property, queryAlias2, matchStrategy, ignoreStrategy);
     }
 
     // ****************************************************************************************************************
@@ -1247,139 +1400,441 @@ public abstract class AbstractEntitySqlConditionGroupExpressionBase2<E, E2, ER e
     // ****************************************************************************************************************
 
     @Override
-    public <R> L nin2(SerializableFunction<E2, R> name, R value) {
-        return nin(classMapping2, name, value, queryAlias2, ignoreStrategy);
+    public <R> L ni2(SerializableFunction<E2, R> name, R value) {
+        return ni(classMapping2, name, value, queryAlias2, ignoreStrategy);
     }
 
     @Override
-    public <R> L nin2(SerializableFunction<E2, R> name, R value, Predicate<R> ignoreStrategy) {
-        return nin(classMapping2, name, value, queryAlias2, ignoreStrategy);
+    public <R> L ni2(SerializableFunction<E2, R> name, R value, Predicate<R> ignoreStrategy) {
+        return ni(classMapping2, name, value, queryAlias2, ignoreStrategy);
     }
 
     @Override
-    public <R> L nin2(SerializableFunction<E2, R> name, @SuppressWarnings("unchecked") R... value) {
-        return nin(classMapping2, name, value, queryAlias2, ignoreStrategy);
+    public <R> L ni2(SerializableFunction<E2, R> name, @SuppressWarnings("unchecked") R... value) {
+        return ni(classMapping2, name, value, queryAlias2, ignoreStrategy);
     }
 
     @Override
-    public <R> L nin2(SerializableFunction<E2, R> name, R[] value, Predicate<R[]> ignoreStrategy) {
-        return nin(classMapping2, name, value, queryAlias2, ignoreStrategy);
+    public <R> L ni2(SerializableFunction<E2, R> name, R[] value, Predicate<R[]> ignoreStrategy) {
+        return ni(classMapping2, name, value, queryAlias2, ignoreStrategy);
     }
 
     @Override
-    public <R> L nin2(SerializableFunction<E2, R> name, Collection<R> value) {
-        return nin(classMapping2, name, value, queryAlias2, ignoreStrategy);
+    public <R> L ni2(SerializableFunction<E2, R> name, Collection<R> value) {
+        return ni(classMapping2, name, value, queryAlias2, ignoreStrategy);
     }
 
     @Override
-    public <R> L nin2(SerializableFunction<E2, R> name, Collection<R> value, Predicate<Collection<R>> ignoreStrategy) {
-        return nin(classMapping2, name, value, queryAlias2, ignoreStrategy);
+    public <R> L ni2(SerializableFunction<E2, R> name, Collection<R> value, Predicate<Collection<R>> ignoreStrategy) {
+        return ni(classMapping2, name, value, queryAlias2, ignoreStrategy);
     }
 
     @Override
-    public <R> L nin2(SerializableSupplier<R> property) {
-        return nin(classMapping2, property, queryAlias2, ignoreStrategy);
+    public <R> L ni2(SerializableSupplier<R> property) {
+        return ni(classMapping2, property, queryAlias2, ignoreStrategy);
     }
 
     @Override
-    public <R> L nin2(SerializableSupplier<R> property, Predicate<R> ignoreStrategy) {
-        return nin(classMapping2, property, queryAlias2, ignoreStrategy);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public L nin2(SerializableToIntFunction2<E2> name, int value) {
-        return nin(classMapping2, name, value, queryAlias2, ignoreStrategy);
+    public <R> L ni2(SerializableSupplier<R> property, Predicate<R> ignoreStrategy) {
+        return ni(classMapping2, property, queryAlias2, ignoreStrategy);
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public L nin2(SerializableToIntFunction2<E2> name, int value, Predicate<Integer> ignoreStrategy) {
-        return nin(classMapping2, name, value, queryAlias2, ignoreStrategy);
+    public L ni2(SerializableToIntFunction2<E2> name, int value) {
+        return ni(classMapping2, name, value, queryAlias2, ignoreStrategy);
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public L nin2(SerializableToLongFunction2<E2> name, long value) {
-        return nin(classMapping2, name, value, queryAlias2, ignoreStrategy);
+    public L ni2(SerializableToIntFunction2<E2> name, int value, Predicate<Integer> ignoreStrategy) {
+        return ni(classMapping2, name, value, queryAlias2, ignoreStrategy);
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public L nin2(SerializableToLongFunction2<E2> name, long value, Predicate<Long> ignoreStrategy) {
-        return nin(classMapping2, name, value, queryAlias2, ignoreStrategy);
+    public L ni2(SerializableToLongFunction2<E2> name, long value) {
+        return ni(classMapping2, name, value, queryAlias2, ignoreStrategy);
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public L nin2(SerializableToIntFunction2<E2> name, int... value) {
-        return nin(classMapping2, name, value, queryAlias2, ignoreStrategy);
+    public L ni2(SerializableToLongFunction2<E2> name, long value, Predicate<Long> ignoreStrategy) {
+        return ni(classMapping2, name, value, queryAlias2, ignoreStrategy);
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public L nin2(SerializableToLongFunction2<E2> name, long... value) {
-        return nin(classMapping2, name, value, queryAlias2, ignoreStrategy);
+    public L ni2(SerializableToIntFunction2<E2> name, int... value) {
+        return ni(classMapping2, name, value, queryAlias2, ignoreStrategy);
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public L nin2(SerializableToIntFunction2<E2> name, int[] value, Predicate<int[]> ignoreStrategy) {
-        return nin(classMapping2, name, value, queryAlias2, ignoreStrategy);
+    public L ni2(SerializableToLongFunction2<E2> name, long... value) {
+        return ni(classMapping2, name, value, queryAlias2, ignoreStrategy);
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public L nin2(SerializableToLongFunction2<E2> name, long[] value, Predicate<long[]> ignoreStrategy) {
-        return nin(classMapping2, name, value, queryAlias2, ignoreStrategy);
+    public L ni2(SerializableToIntFunction2<E2> name, int[] value, Predicate<int[]> ignoreStrategy) {
+        return ni(classMapping2, name, value, queryAlias2, ignoreStrategy);
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public <R> L nin2(SerializableIntSupplier property) {
-        return nin(classMapping2, property, queryAlias2, ignoreStrategy);
+    public L ni2(SerializableToLongFunction2<E2> name, long[] value, Predicate<long[]> ignoreStrategy) {
+        return ni(classMapping2, name, value, queryAlias2, ignoreStrategy);
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public <R> L nin2(SerializableIntSupplier property, Predicate<Integer> ignoreStrategy) {
-        return nin(classMapping2, property, queryAlias2, ignoreStrategy);
+    public <R> L ni2(SerializableIntSupplier property) {
+        return ni(classMapping2, property, queryAlias2, ignoreStrategy);
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public <R> L nin2(SerializableLongSupplier property) {
-        return nin(classMapping2, property, queryAlias2, ignoreStrategy);
+    public <R> L ni2(SerializableIntSupplier property, Predicate<Integer> ignoreStrategy) {
+        return ni(classMapping2, property, queryAlias2, ignoreStrategy);
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public <R> L nin2(SerializableLongSupplier property, Predicate<Long> ignoreStrategy) {
-        return nin(classMapping2, property, queryAlias2, ignoreStrategy);
+    public <R> L ni2(SerializableLongSupplier property) {
+        return ni(classMapping2, property, queryAlias2, ignoreStrategy);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public <R> L ni2(SerializableLongSupplier property, Predicate<Long> ignoreStrategy) {
+        return ni(classMapping2, property, queryAlias2, ignoreStrategy);
+    }
+
+    // ****************************************************************************************************************
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public L ba2(SerializableToIntFunction<E2> name, int min, int max) {
+        return ba(classMapping, name, min, max, queryAlias2, ignoreStrategy);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public L ba2(SerializableToIntFunction<E2> name, int min, int max, BiPredicate<Integer, Integer> ignoreStrategy) {
+        return ba(classMapping, name, min, max, queryAlias2, ignoreStrategy);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public L ba2(SerializableToLongFunction<E2> name, long min, long max) {
+        return ba(classMapping, name, min, max, queryAlias2, ignoreStrategy);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public L ba2(SerializableToLongFunction<E2> name, long min, long max, BiPredicate<Long, Long> ignoreStrategy) {
+        return ba(classMapping, name, min, max, queryAlias2, ignoreStrategy);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public L ba2(SerializableToDoubleFunction<E2> name, double min, double max) {
+        return ba(classMapping, name, min, max, queryAlias2, ignoreStrategy);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public L ba2(SerializableToDoubleFunction<E2> name, double min, double max,
+            BiPredicate<Double, Double> ignoreStrategy) {
+        return ba(classMapping, name, min, max, queryAlias2, ignoreStrategy);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public <N extends Number> L ba2(SerializableFunction<E2, N> name, N min, N max) {
+        return ba(classMapping, name, min, max, queryAlias2, ignoreStrategy);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public <N extends Number> L ba2(SerializableFunction<E2, N> name, N min, N max, BiPredicate<N, N> ignoreStrategy) {
+        return ba(classMapping, name, min, max, queryAlias2, ignoreStrategy);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public <D extends Date> L ba2(SerializableFunction<E2, D> name, D min, D max) {
+        return ba(classMapping, name, min, max, queryAlias2, ignoreStrategy);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public <D extends Date> L ba2(SerializableFunction<E2, D> name, D min, D max, BiPredicate<D, D> ignoreStrategy) {
+        return ba(classMapping, name, min, max, queryAlias2, ignoreStrategy);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public L ba2(SerializableFunction<E2, LocalTime> name, LocalTime min, LocalTime max) {
+        return ba(classMapping, name, min, max, queryAlias2, ignoreStrategy);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public L ba2(SerializableFunction<E2, LocalTime> name, LocalTime min, LocalTime max,
+            BiPredicate<LocalTime, LocalTime> ignoreStrategy) {
+        return ba(classMapping, name, min, max, queryAlias2, ignoreStrategy);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public L ba2(SerializableFunction<E2, LocalDate> name, LocalDate min, LocalDate max) {
+        return ba(classMapping, name, min, max, queryAlias2, ignoreStrategy);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public L ba2(SerializableFunction<E2, LocalDate> name, LocalDate min, LocalDate max,
+            BiPredicate<LocalDate, LocalDate> ignoreStrategy) {
+        return ba(classMapping, name, min, max, queryAlias2, ignoreStrategy);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public L ba2(SerializableFunction<E2, LocalDateTime> name, LocalDateTime min, LocalDateTime max) {
+        return ba(classMapping, name, min, max, queryAlias2, ignoreStrategy);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public L ba2(SerializableFunction<E2, LocalDateTime> name, LocalDateTime min, LocalDateTime max,
+            BiPredicate<LocalDateTime, LocalDateTime> ignoreStrategy) {
+        return ba(classMapping, name, min, max, queryAlias2, ignoreStrategy);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public L ba2(SerializableFunction<E2, String> name, String min, String max) {
+        return ba(classMapping, name, min, max, queryAlias2, ignoreStrategy);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public L ba2(SerializableFunction<E2, String> name, String min, String max,
+            BiPredicate<String, String> ignoreStrategy) {
+        return ba(classMapping, name, min, max, queryAlias2, ignoreStrategy);
+    }
+
+    // ****************************************************************************************************************
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public L nba2(SerializableToIntFunction<E2> name, int min, int max) {
+        return nba(classMapping, name, min, max, queryAlias2, ignoreStrategy);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public L nba2(SerializableToIntFunction<E2> name, int min, int max, BiPredicate<Integer, Integer> ignoreStrategy) {
+        return nba(classMapping, name, min, max, queryAlias2, ignoreStrategy);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public L nba2(SerializableToLongFunction<E2> name, long min, long max) {
+        return nba(classMapping, name, min, max, queryAlias2, ignoreStrategy);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public L nba2(SerializableToLongFunction<E2> name, long min, long max, BiPredicate<Long, Long> ignoreStrategy) {
+        return nba(classMapping, name, min, max, queryAlias2, ignoreStrategy);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public L nba2(SerializableToDoubleFunction<E2> name, double min, double max) {
+        return nba(classMapping, name, min, max, queryAlias2, ignoreStrategy);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public L nba2(SerializableToDoubleFunction<E2> name, double min, double max,
+            BiPredicate<Double, Double> ignoreStrategy) {
+        return nba(classMapping, name, min, max, queryAlias2, ignoreStrategy);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public <N extends Number> L nba2(SerializableFunction<E2, N> name, N min, N max) {
+        return nba(classMapping, name, min, max, queryAlias2, ignoreStrategy);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public <N extends Number> L nba2(SerializableFunction<E2, N> name, N min, N max, BiPredicate<N, N> ignoreStrategy) {
+        return nba(classMapping, name, min, max, queryAlias2, ignoreStrategy);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public <D extends Date> L nba2(SerializableFunction<E2, D> name, D min, D max) {
+        return nba(classMapping, name, min, max, queryAlias2, ignoreStrategy);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public <D extends Date> L nba2(SerializableFunction<E2, D> name, D min, D max, BiPredicate<D, D> ignoreStrategy) {
+        return nba(classMapping, name, min, max, queryAlias2, ignoreStrategy);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public L nba2(SerializableFunction<E2, LocalTime> name, LocalTime min, LocalTime max) {
+        return nba(classMapping, name, min, max, queryAlias2, ignoreStrategy);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public L nba2(SerializableFunction<E2, LocalTime> name, LocalTime min, LocalTime max,
+            BiPredicate<LocalTime, LocalTime> ignoreStrategy) {
+        return nba(classMapping, name, min, max, queryAlias2, ignoreStrategy);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public L nba2(SerializableFunction<E2, LocalDate> name, LocalDate min, LocalDate max) {
+        return nba(classMapping, name, min, max, queryAlias2, ignoreStrategy);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public L nba2(SerializableFunction<E2, LocalDate> name, LocalDate min, LocalDate max,
+            BiPredicate<LocalDate, LocalDate> ignoreStrategy) {
+        return nba(classMapping, name, min, max, queryAlias2, ignoreStrategy);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public L nba2(SerializableFunction<E2, LocalDateTime> name, LocalDateTime min, LocalDateTime max) {
+        return nba(classMapping, name, min, max, queryAlias2, ignoreStrategy);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public L nba2(SerializableFunction<E2, LocalDateTime> name, LocalDateTime min, LocalDateTime max,
+            BiPredicate<LocalDateTime, LocalDateTime> ignoreStrategy) {
+        return nba(classMapping, name, min, max, queryAlias2, ignoreStrategy);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public L nba2(SerializableFunction<E2, String> name, String min, String max) {
+        return nba(classMapping, name, min, max, queryAlias2, ignoreStrategy);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public L nba2(SerializableFunction<E2, String> name, String min, String max,
+            BiPredicate<String, String> ignoreStrategy) {
+        return nba(classMapping, name, min, max, queryAlias2, ignoreStrategy);
     }
 
     // ****************************************************************************************************************

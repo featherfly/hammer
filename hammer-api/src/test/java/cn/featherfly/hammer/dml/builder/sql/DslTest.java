@@ -280,7 +280,7 @@ public class DslTest {
         query.find(User.class).join(User::getUserInfo).join(UserInfo::getUser).join(User::getDevices);
 
         //        TODO 暂时先取消了join()多条件的重载方法
-        //        query.find(User.class).join(User::getUserInfo).join(es -> es.get1(),  
+        //        query.find(User.class).join(User::getUserInfo).join(es -> es.get1(),
         //                (SerializableFunction4<UserInfo, User>) UserInfo::getUser); // 编译无法确定参数，需要使用强制类型转换
         query.find(User.class).join(User::getUserInfo).join2(UserInfo::getUser); // 使用join[number]不会出现类型无法匹配的情况
 
@@ -550,6 +550,15 @@ public class DslTest {
         query.find(User2.class).join(UserInfo2.class).on(UserInfo2::getUserId).where().eq(User2::getId, 1).single();
 
         query.find(User2.class).fetch(User2::getUsername).where().eq(User2::getId, 1).string();
+
+        query.find(User2.class).join(UserInfo2.class).on(UserInfo2::getUserId).fetch().where()
+                .ba((e0, e1) -> e0.accept(User2::getAge, 18, 22)).and()
+                .ba((e0, e1) -> e1.property(UserInfo2::getAge).value(18, 22, (min, max) -> false)).list();
+
+        // 多查询对象，使用property IMPLSOON 未实现
+        ui = query.find(UserInfo2.class).join(User2.class).on(UserInfo2::getUserId, User2::getId).where()
+                .eq((e1, e2) -> e1.property(UserInfo2::getName).value("name")).single();
+
         // IMPLSOON join以后就没有单值返回了
         // query.find(User2.class).fetch(User2::getUsername).join(UserInfo2::getUserId).where().eq(User2::getId, 1).string();
 

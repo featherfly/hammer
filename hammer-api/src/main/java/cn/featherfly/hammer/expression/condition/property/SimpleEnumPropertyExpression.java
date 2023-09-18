@@ -139,41 +139,16 @@ public class SimpleEnumPropertyExpression<E extends Enum<E>, C extends Condition
      * {@inheritDoc}
      */
     @Override
-    public L nin(E value) {
-        return expression.nin(name, value);
+    public L ni(E value) {
+        return expression.ni(name, value);
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public L nin(E value, IgnoreStrategy ignoreStrategy) {
-        return expression.nin(name, value, ignoreStrategy);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @SuppressWarnings("unchecked")
-    @Override
-    public L nin(E value, Predicate<E> ignoreStrategy) {
-        return expression.nin(name, value, (v) -> ignoreStrategy.test((E) v));
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public L nin(E[] value) {
-        return expression.nin(name, value);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public L nin(E[] value, IgnoreStrategy ignoreStrategy) {
-        return expression.nin(name, value, ignoreStrategy);
+    public L ni(E value, IgnoreStrategy ignoreStrategy) {
+        return expression.ni(name, value, ignoreStrategy);
     }
 
     /**
@@ -181,8 +156,33 @@ public class SimpleEnumPropertyExpression<E extends Enum<E>, C extends Condition
      */
     @SuppressWarnings("unchecked")
     @Override
-    public L nin(E[] value, Predicate<E[]> ignoreStrategy) {
-        return expression.nin(name, value, (v) -> ignoreStrategy.test((E[]) v));
+    public L ni(E value, Predicate<E> ignoreStrategy) {
+        return expression.ni(name, value, (v) -> ignoreStrategy.test((E) v));
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public L ni(E[] value) {
+        return expression.ni(name, value);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public L ni(E[] value, IgnoreStrategy ignoreStrategy) {
+        return expression.ni(name, value, ignoreStrategy);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @SuppressWarnings("unchecked")
+    @Override
+    public L ni(E[] value, Predicate<E[]> ignoreStrategy) {
+        return expression.ni(name, value, (v) -> ignoreStrategy.test((E[]) v));
     }
 
     /**

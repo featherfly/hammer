@@ -99,13 +99,13 @@ public class RepositorySimpleStringExpression<C extends RepositoryConditionsExpr
      * {@inheritDoc}
      */
     @Override
-    public L nin(String value) {
+    public L ni(String value) {
         if (Lang.isNotEmpty(repository)) {
             return expression.nin(repository, name, value);
         } else if (repositoryIndex > -1) {
             return expression.nin(repositoryIndex, name, value);
         } else {
-            return expression.nin(name, value);
+            return expression.ni(name, value);
         }
     }
 
@@ -354,7 +354,7 @@ public class RepositorySimpleStringExpression<C extends RepositoryConditionsExpr
      * {@inheritDoc}
      */
     @Override
-    public L nin(String[] value) {
+    public L ni(String[] value) {
         // YUFEI_TODO Auto-generated method stub
         return null;
     }
@@ -363,7 +363,7 @@ public class RepositorySimpleStringExpression<C extends RepositoryConditionsExpr
      * {@inheritDoc}
      */
     @Override
-    public L nin(String value, Predicate<String> ignoreStrategy) {
+    public L ni(String value, Predicate<String> ignoreStrategy) {
         // YUFEI_TODO Auto-generated method stub
         return null;
     }
@@ -372,7 +372,7 @@ public class RepositorySimpleStringExpression<C extends RepositoryConditionsExpr
      * {@inheritDoc}
      */
     @Override
-    public L nin(String[] value, Predicate<String[]> ignoreStrategy) {
+    public L ni(String[] value, Predicate<String[]> ignoreStrategy) {
         // YUFEI_TODO Auto-generated method stub
         return null;
     }
@@ -453,7 +453,7 @@ public class RepositorySimpleStringExpression<C extends RepositoryConditionsExpr
      * {@inheritDoc}
      */
     @Override
-    public L nin(String value, IgnoreStrategy ignoreStrategy) {
+    public L ni(String value, IgnoreStrategy ignoreStrategy) {
         // YUFEI_TODO Auto-generated method stub
         return null;
     }
@@ -462,7 +462,7 @@ public class RepositorySimpleStringExpression<C extends RepositoryConditionsExpr
      * {@inheritDoc}
      */
     @Override
-    public L nin(String[] value, IgnoreStrategy ignoreStrategy) {
+    public L ni(String[] value, IgnoreStrategy ignoreStrategy) {
         // YUFEI_TODO Auto-generated method stub
         return null;
     }

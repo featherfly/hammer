@@ -13,6 +13,7 @@ import java.io.Serializable;
 import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.function.BiPredicate;
 import java.util.function.Predicate;
 
 import cn.featherfly.common.db.FieldValueOperator;
@@ -87,6 +88,53 @@ public abstract class AbstractMulitiEntityConditionExpression<C extends Conditio
      */
     protected <R> FieldValueOperator<R> getFieldValueOperator(PropertyMapping<?> pm, R value) {
         return value == null ? null : FieldValueOperator.create((JdbcPropertyMapping) pm, value);
+    }
+
+    // ********************************************************************
+
+    protected <T, V> L ba0(int index, Serializable name, V min, V max, BiPredicate<V, V> ignoreStrategy) {
+        return ba0(index, getClassMapping(index).getPropertyMapping(getPropertyName(name)), min, max,
+                p -> ignoreStrategy.test(min, max));
+        //        return ba0(index, getClassMapping(index).getPropertyMapping(getPropertyName(name)), min, max, p -> {
+        //            Object[] ps = (Object[]) p;
+        //            return ignoreStrategy.test((V) ps[0], (V) ps[1]);
+        //        });
+    }
+
+    protected <T, V> L ba0(int index, Serializable name, V min, V max, Predicate<?> ignoreStrategy) {
+        return ba0(index, getClassMapping(index).getPropertyMapping(getPropertyName(name)), min, max, ignoreStrategy);
+    }
+
+    @SuppressWarnings("unchecked")
+    protected <V> L ba0(int index, PropertyMapping<?> pm, V min, V max, Predicate<?> ignoreStrategy) {
+        return (L) addCondition(new SqlConditionExpressionBuilder(getDialect(), pm.getRepositoryFieldName(),
+                new FieldValueOperator[] { getFieldValueOperator(pm, min), getFieldValueOperator(pm, max) },
+                ComparisonOperator.BA, getAlias(index), ignoreStrategy));
+        //        return (L) addCondition(new SqlConditionExpressionBuilder(getDialect(), pm.getRepositoryFieldName(),
+        //                getFieldValueOperator(pm, new Object[] { min, max }), ComparisonOperator.BA, getAlias(index),
+        //                ignoreStrategy));
+    }
+
+    // ********************************************************************
+
+    protected <T, V> L nba0(int index, Serializable name, V min, V max, BiPredicate<V, V> ignoreStrategy) {
+        return nba0(index, getClassMapping(index).getPropertyMapping(getPropertyName(name)), min, max,
+                p -> ignoreStrategy.test(min, max));
+        //        return nba0(index, getClassMapping(index).getPropertyMapping(getPropertyName(name)), min, max, p -> {
+        //            Object[] ps = (Object[]) p;
+        //            return ignoreStrategy.test((V) ps[0], (V) ps[1]);
+        //        });
+    }
+
+    protected <T, V> L nba0(int index, Serializable name, V min, V max, Predicate<?> ignoreStrategy) {
+        return ba0(index, getClassMapping(index).getPropertyMapping(getPropertyName(name)), min, max, ignoreStrategy);
+    }
+
+    @SuppressWarnings("unchecked")
+    protected <V> L nba0(int index, PropertyMapping<?> pm, V min, V max, Predicate<?> ignoreStrategy) {
+        return (L) addCondition(new SqlConditionExpressionBuilder(getDialect(), pm.getRepositoryFieldName(),
+                new FieldValueOperator[] { getFieldValueOperator(pm, min), getFieldValueOperator(pm, max) },
+                ComparisonOperator.NBA, getAlias(index), ignoreStrategy));
     }
 
     // ********************************************************************
@@ -179,6 +227,27 @@ public abstract class AbstractMulitiEntityConditionExpression<C extends Conditio
 
     // ****************************************************************************************************************
 
+    protected L nsw0(int index, SerializableSupplier<String> property, MatchStrategy matchStrategy,
+            Predicate<?> ignoreStrategy) {
+        return nsw0(index, property, property.get(), matchStrategy, ignoreStrategy);
+    }
+
+    protected <T, R> L nsw0(int index, Serializable property, String value, MatchStrategy matchStrategy,
+            Predicate<?> ignoreStrategy) {
+        return nsw0(index, getClassMapping(index).getPropertyMapping(getPropertyName(property)), value, matchStrategy,
+                ignoreStrategy);
+    }
+
+    @SuppressWarnings("unchecked")
+    protected <T> L nsw0(int index, PropertyMapping<?> pm, String value, MatchStrategy matchStrategy,
+            Predicate<?> ignoreStrategy) {
+        return (L) addCondition(new SqlConditionExpressionBuilder(getDialect(), pm.getRepositoryFieldName(),
+                getFieldValueOperator(pm, value), ComparisonOperator.NSW, matchStrategy, getAlias(index),
+                ignoreStrategy));
+    }
+
+    // ****************************************************************************************************************
+
     protected L co0(int index, SerializableSupplier<String> property, MatchStrategy matchStrategy,
             Predicate<?> ignoreStrategy) {
         return co0(index, property, property.get(), matchStrategy, ignoreStrategy);
@@ -195,6 +264,27 @@ public abstract class AbstractMulitiEntityConditionExpression<C extends Conditio
             Predicate<?> ignoreStrategy) {
         return (L) addCondition(new SqlConditionExpressionBuilder(getDialect(), pm.getRepositoryFieldName(),
                 getFieldValueOperator(pm, value), ComparisonOperator.CO, matchStrategy, getAlias(index),
+                ignoreStrategy));
+    }
+
+    // ****************************************************************************************************************
+
+    protected L nco0(int index, SerializableSupplier<String> property, MatchStrategy matchStrategy,
+            Predicate<?> ignoreStrategy) {
+        return nco0(index, property, property.get(), matchStrategy, ignoreStrategy);
+    }
+
+    protected <T, R> L nco0(int index, Serializable property, String value, MatchStrategy matchStrategy,
+            Predicate<?> ignoreStrategy) {
+        return nco0(index, getClassMapping(index).getPropertyMapping(getPropertyName(property)), value, matchStrategy,
+                ignoreStrategy);
+    }
+
+    @SuppressWarnings("unchecked")
+    protected <T> L nco0(int index, PropertyMapping<?> pm, String value, MatchStrategy matchStrategy,
+            Predicate<?> ignoreStrategy) {
+        return (L) addCondition(new SqlConditionExpressionBuilder(getDialect(), pm.getRepositoryFieldName(),
+                getFieldValueOperator(pm, value), ComparisonOperator.NCO, matchStrategy, getAlias(index),
                 ignoreStrategy));
     }
 
@@ -221,6 +311,27 @@ public abstract class AbstractMulitiEntityConditionExpression<C extends Conditio
 
     // ****************************************************************************************************************
 
+    protected L new0(int index, SerializableSupplier<String> property, MatchStrategy matchStrategy,
+            Predicate<?> ignoreStrategy) {
+        return new0(index, property, property.get(), matchStrategy, ignoreStrategy);
+    }
+
+    protected <T, R> L new0(int index, Serializable property, String value, MatchStrategy matchStrategy,
+            Predicate<?> ignoreStrategy) {
+        return new0(index, getClassMapping(index).getPropertyMapping(getPropertyName(property)), value, matchStrategy,
+                ignoreStrategy);
+    }
+
+    @SuppressWarnings("unchecked")
+    protected <T> L new0(int index, PropertyMapping<?> pm, String value, MatchStrategy matchStrategy,
+            Predicate<?> ignoreStrategy) {
+        return (L) addCondition(new SqlConditionExpressionBuilder(getDialect(), pm.getRepositoryFieldName(),
+                getFieldValueOperator(pm, value), ComparisonOperator.NEW, matchStrategy, getAlias(index),
+                ignoreStrategy));
+    }
+
+    // ****************************************************************************************************************
+
     protected L lk0(int index, SerializableSupplier<String> property, MatchStrategy matchStrategy,
             Predicate<?> ignoreStrategy) {
         return lk0(index, property, property.get(), matchStrategy, ignoreStrategy);
@@ -237,6 +348,26 @@ public abstract class AbstractMulitiEntityConditionExpression<C extends Conditio
             Predicate<?> ignoreStrategy) {
         return (L) addCondition(new SqlConditionExpressionBuilder(getDialect(), pm.getRepositoryFieldName(),
                 getFieldValueOperator(pm, value), ComparisonOperator.LK, matchStrategy, getAlias(index),
+                ignoreStrategy));
+    }
+    // ****************************************************************************************************************
+
+    protected L nl0(int index, SerializableSupplier<String> property, MatchStrategy matchStrategy,
+            Predicate<?> ignoreStrategy) {
+        return nl0(index, property, property.get(), matchStrategy, ignoreStrategy);
+    }
+
+    protected <T, R> L nl0(int index, Serializable property, String value, MatchStrategy matchStrategy,
+            Predicate<?> ignoreStrategy) {
+        return nl0(index, getClassMapping(index).getPropertyMapping(getPropertyName(property)), value, matchStrategy,
+                ignoreStrategy);
+    }
+
+    @SuppressWarnings("unchecked")
+    protected <T> L nl0(int index, PropertyMapping<?> pm, String value, MatchStrategy matchStrategy,
+            Predicate<?> ignoreStrategy) {
+        return (L) addCondition(new SqlConditionExpressionBuilder(getDialect(), pm.getRepositoryFieldName(),
+                getFieldValueOperator(pm, value), ComparisonOperator.NL, matchStrategy, getAlias(index),
                 ignoreStrategy));
     }
 
@@ -293,7 +424,7 @@ public abstract class AbstractMulitiEntityConditionExpression<C extends Conditio
     @SuppressWarnings("unchecked")
     protected <R> L nin0(int index, PropertyMapping<?> pm, R value, Predicate<?> ignoreStrategy) {
         return (L) addCondition(new SqlConditionExpressionBuilder(getDialect(), pm.getRepositoryFieldName(),
-                getInParam(pm, value), ComparisonOperator.NIN, getAlias(index), ignoreStrategy));
+                getInParam(pm, value), ComparisonOperator.NI, getAlias(index), ignoreStrategy));
     }
 
     protected <T, R> L isn0(int index, Serializable property, Boolean value) {

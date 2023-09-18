@@ -78,8 +78,8 @@ public class StaticTypeDateExpression<E, D extends Date, Q extends StaticTypeQue
      * @param value the value
      * @return the q
      */
-    public Q nin(D value) {
-        expression.nin(value);
+    public Q ni(D value) {
+        expression.ni(value);
         return typeExpression;
     }
 

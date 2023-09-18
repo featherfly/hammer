@@ -12,10 +12,10 @@ import cn.featherfly.common.function.serializable.SerializableToIntFunction;
 import cn.featherfly.common.function.serializable.SerializableToLongFunction;
 import cn.featherfly.hammer.expression.condition.ConditionExpression;
 import cn.featherfly.hammer.expression.condition.LogicExpression;
-import cn.featherfly.hammer.expression.entity.condition.nin.MulitiEntityNotInExpression;
+import cn.featherfly.hammer.expression.entity.condition.ni.MulitiEntityNotInExpression;
 
 /**
- * The Class MulitiEntityIsNullExpressionImpl.
+ * The Class MulitiEntityNotInExpressionImpl.
  *
  * @author zhongj
  * @param <C> the generic type

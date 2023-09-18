@@ -431,7 +431,7 @@ public class EntitySqlQueryTest extends JdbcTestBase {
     }
 
     @Test
-    void testProperty_nin() {
+    void testProperty_ni() {
         Integer id = null;
         Integer[] ids = null;
         String username = null;
@@ -439,37 +439,37 @@ public class EntitySqlQueryTest extends JdbcTestBase {
 
         long c = query.find(User.class) //
                 .where() //
-                .property(User::getId).nin(id, v -> false) // 不忽略
+                .property(User::getId).ni(id, v -> false) // 不忽略
                 .count();
         assertEquals(c, 0);
 
         c = query.find(User.class) //
                 .where() //
-                .property(User::getUsername).nin(username, v -> false) // 不忽略
+                .property(User::getUsername).ni(username, v -> false) // 不忽略
                 .count();
         assertEquals(c, 0);
 
         c = query.find(User.class) //
                 .where() //
-                .property(User::getId).nin(id, IgnoreStrategy.NONE) // 不忽略
+                .property(User::getId).ni(id, IgnoreStrategy.NONE) // 不忽略
                 .count();
         assertEquals(c, 0);
 
         c = query.find(User.class) //
                 .where() //
-                .property(User::getUsername).nin(username, IgnoreStrategy.NONE) // 不忽略
+                .property(User::getUsername).ni(username, IgnoreStrategy.NONE) // 不忽略
                 .count();
         assertEquals(c, 0);
 
         c = query.find(User.class) //
                 .where() //
-                .property(User::getId).nin(ids, IgnoreStrategy.NONE) // 不忽略
+                .property(User::getId).ni(ids, IgnoreStrategy.NONE) // 不忽略
                 .count();
         assertEquals(c, 0);
 
         c = query.find(User.class) //
                 .where() //
-                .property(User::getUsername).nin(usernames, IgnoreStrategy.NONE) // 不忽略
+                .property(User::getUsername).ni(usernames, IgnoreStrategy.NONE) // 不忽略
                 .count();
         assertEquals(c, 0);
     }
