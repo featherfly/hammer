@@ -33,6 +33,7 @@
 12. where支持多实体条件查询
 13. 实现多实体排序
 14. where().property()后的各种条件筛选方法加入带Predicate和IgnoreStrategy的重载方法
+15. Jdbc实现queryStream，主要用于大数据查询导出，不会依次把内容都加载到内存中，而是迭代的时候依次获取，需要调用者处理连接
     
 
 TODO dsl查询条件的表达式加入带运算的条件判断

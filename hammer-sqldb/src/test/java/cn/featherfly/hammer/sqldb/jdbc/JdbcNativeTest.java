@@ -7,6 +7,8 @@ import java.sql.CallableStatement;
 import java.sql.Connection;
 import java.sql.JDBCType;
 import java.sql.ParameterMetaData;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.List;
 import java.util.Map;
@@ -100,5 +102,15 @@ public class JdbcNativeTest extends JdbcTestBase {
         System.out.println("call.getInt(\"out_row_count\") = " + call.getInt("out_row_count"));
 
         assertEquals(call.getInt(3), call.getUpdateCount());
+    }
+
+    @Test
+    void testClose() throws SQLException {
+        Connection conn = dataSource.getConnection();
+        PreparedStatement prep = conn.prepareStatement("select * from user");
+        ResultSet set = prep.executeQuery();
+
+        conn.close();
+        System.out.println("conn.close()");
     }
 }

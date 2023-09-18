@@ -110,7 +110,7 @@ public class JdbcTest extends JdbcTestBase {
         idList = jdbc.query("", Long.class);
         assertEquals(idList.size(), 0);
 
-        idList = jdbc.query("", Long.class, new HashMap<String, Object>());
+        idList = jdbc.query("", Long.class, new HashMap<>());
         assertEquals(idList.size(), 0);
     }
 
@@ -130,7 +130,7 @@ public class JdbcTest extends JdbcTestBase {
         idList = jdbc.query("", m);
         assertEquals(idList.size(), 0);
 
-        idList = jdbc.query("", m, new HashMap<String, Object>());
+        idList = jdbc.query("", m, new HashMap<>());
         assertEquals(idList.size(), 0);
 
         List<Map<String, Object>> mapList = null;
@@ -150,8 +150,7 @@ public class JdbcTest extends JdbcTestBase {
         }
 
         sql = sql.replace("?", ":id");
-        list = jdbc.query(sql, User.class, UserInfo.class, Tuples.of("_user0.", "ui."),
-                new ChainMapImpl<String, Object>());
+        list = jdbc.query(sql, User.class, UserInfo.class, Tuples.of("_user0.", "ui."), new ChainMapImpl<>());
         for (Tuple2<User, UserInfo> tuple : list) {
             assertEquals(tuple.get0().getId(), tuple.get1().getUser().getId());
             assertNotNull(tuple.get0().getUsername());
@@ -174,7 +173,7 @@ public class JdbcTest extends JdbcTestBase {
 
         sql = sql.replace("?", ":id");
         list = jdbc.query(sql, User.class, UserInfo.class, UserRole.class, Tuples.of("_user0.", "ui.", "ur."),
-                new ChainMapImpl<String, Object>());
+                new ChainMapImpl<>());
         for (Tuple3<User, UserInfo, UserRole> r : list) {
             assertEquals(r.get1().getUser().getId(), r.get1().getUser().getId());
             assertEquals(r.get1().getUser().getId(), r.get2().getUserId());
@@ -201,7 +200,7 @@ public class JdbcTest extends JdbcTestBase {
 
         sql = sql.replace("?", ":id");
         list = jdbc.query(sql, User.class, UserInfo.class, UserRole.class, Role.class,
-                Tuples.of("_user0.", "ui.", "ur.", "r."), new ChainMapImpl<String, Object>());
+                Tuples.of("_user0.", "ui.", "ur.", "r."), new ChainMapImpl<>());
         for (Tuple4<User, UserInfo, UserRole, Role> r : list) {
             assertEquals(r.get1().getUser().getId(), r.get1().getUser().getId());
             assertEquals(r.get1().getUser().getId(), r.get2().getUserId());
@@ -232,7 +231,7 @@ public class JdbcTest extends JdbcTestBase {
 
         sql = sql.replace("?", ":id");
         list = jdbc.query(sql, User.class, UserInfo.class, UserRole.class, Role.class, Order.class,
-                Tuples.of("_user0.", "ui.", "ur.", "r.", "o."), new ChainMapImpl<String, Object>());
+                Tuples.of("_user0.", "ui.", "ur.", "r.", "o."), new ChainMapImpl<>());
         for (Tuple5<User, UserInfo, UserRole, Role, Order> r : list) {
             assertEquals(r.get1().getUser().getId(), r.get1().getUser().getId());
             assertEquals(r.get1().getUser().getId(), r.get2().getUserId());
@@ -804,7 +803,7 @@ public class JdbcTest extends JdbcTestBase {
             public Type<Long> getType() {
                 return null;
             }
-        }, new HashMap<String, Object>());
+        }, new HashMap<>());
         assertEquals(result, 0);
 
         result = jdbc.update("", new Object[0]);
@@ -1027,7 +1026,7 @@ public class JdbcTest extends JdbcTestBase {
 
     @Test
     void testLongValue() {
-        Long avg = jdbc.queryLong(selectAvg, new ChainMapImpl<String, Object>());
+        Long avg = jdbc.queryLong(selectAvg, new ChainMapImpl<>());
         assertTrue(avg > 20);
 
         avg = jdbc.queryLong(selectAvg);
@@ -1036,7 +1035,7 @@ public class JdbcTest extends JdbcTestBase {
 
     @Test
     void testDoubleValue() {
-        Double avg = jdbc.queryDouble(selectAvg, new ChainMapImpl<String, Object>());
+        Double avg = jdbc.queryDouble(selectAvg, new ChainMapImpl<>());
         assertTrue(avg > 20);
 
         avg = jdbc.queryDouble(selectAvg);
@@ -1045,7 +1044,7 @@ public class JdbcTest extends JdbcTestBase {
 
     @Test
     void testBigDecimalValue() {
-        BigDecimal avg = jdbc.queryBigDecimal(selectAvg, new ChainMapImpl<String, Object>());
+        BigDecimal avg = jdbc.queryBigDecimal(selectAvg, new ChainMapImpl<>());
         assertTrue(avg.doubleValue() > 20);
 
         avg = jdbc.queryBigDecimal(selectAvg);
@@ -1054,7 +1053,7 @@ public class JdbcTest extends JdbcTestBase {
 
     @Test
     void testStringValue() {
-        String str = jdbc.queryString(selectString, new ChainMapImpl<String, Object>());
+        String str = jdbc.queryString(selectString, new ChainMapImpl<>());
         assertEquals(str, "yufei");
 
         str = jdbc.queryString(selectString);

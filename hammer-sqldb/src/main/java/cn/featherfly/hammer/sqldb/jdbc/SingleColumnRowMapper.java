@@ -92,19 +92,6 @@ public class SingleColumnRowMapper<T> implements cn.featherfly.common.repository
         this.requiredType = ClassUtils.resolvePrimitiveIfNecessary(requiredType);
     }
 
-    //    /**
-    //     * Set a {@link ConversionService} for converting a fetched value.
-    //     * <p>
-    //     * Default is the {@link DefaultConversionService}.
-    //     *
-    //     * @param conversionService the new conversion service
-    //     * @see DefaultConversionService#getSharedInstance
-    //     * @since 5.0.4
-    //     */
-    //    public void setConversionService(@Nullable ConversionService conversionService) {
-    //        this.conversionService = conversionService;
-    //    }
-
     /**
      * {@inheritDoc}
      */
@@ -126,9 +113,6 @@ public class SingleColumnRowMapper<T> implements cn.featherfly.common.repository
         }
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @SuppressWarnings("unchecked")
     public T mapRow(ResultSet rs, int rowNum) throws SQLException {
         // Validate column count.
@@ -200,16 +184,5 @@ public class SingleColumnRowMapper<T> implements cn.featherfly.common.repository
     protected Object getColumnValue(ResultSet rs, int index, @Nullable Class<?> requiredType) {
         return manager.get(rs, index, requiredType);
         // requiredType 不会为null
-        //        if (requiredType != null) {
-        //            return manager.get(rs, index, requiredType);
-        //        } else {
-        //            SQLType sqlType = JDBCType.valueOf(rs.getMetaData().getColumnType(index));
-        //            Class<?> type = manager.getJavaType(sqlType);
-        //            if (type != null) {
-        //                return manager.get(rs, index, type);
-        //            } else {
-        //                return JdbcUtils.getResultSetValue(rs, index);
-        //            }
-        //        }
     }
 }

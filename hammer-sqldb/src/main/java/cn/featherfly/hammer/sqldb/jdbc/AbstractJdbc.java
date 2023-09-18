@@ -50,6 +50,7 @@ import cn.featherfly.common.db.dialect.Dialect;
 import cn.featherfly.common.db.dialect.SQLiteDialect;
 import cn.featherfly.common.db.mapping.SqlResultSet;
 import cn.featherfly.common.db.mapping.SqlTypeMappingManager;
+import cn.featherfly.common.db.wrapper.AutoCloseConnection;
 import cn.featherfly.common.lang.ArrayUtils;
 import cn.featherfly.common.lang.AssertIllegalArgument;
 import cn.featherfly.common.lang.ClassUtils;
@@ -731,6 +732,262 @@ public abstract class AbstractJdbc implements Jdbc {
             }
         }
         return list;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public Iterable<Map<String, Object>> queryStream(String sql, Map<String, Object> args) {
+        logger.debug("sql -> {}, args -> {}", sql, args);
+        Execution execution = SqlUtils.convertNamedParamSql(sql, args);
+        return queryStream(execution.getExecution(), execution.getParams());
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public Iterable<Map<String, Object>> queryStream(String sql, Object... args) {
+        return queryStream(sql, new MapRowMapper(manager), args);
+        //        if (Lang.isNotEmpty(sql)) {
+        //            sql = sql.trim();
+        //            JdbcExecution execution = preHandle(sql, args);
+        //            sql = execution.getExecution();
+        //            args = execution.getParams();
+        //            logger.debug("execute sql -> {}, args -> {}", sql, args);
+        //            // 由于数据获取在迭代器里依次获取，这里不能关闭ResultSet,PreparedStatement
+        //            // 使用AutoCloseConnection，调用其close()方法会自动close其创建的各种中间操作对象
+        //            // 最后由事务管理器来处理Connection的关闭
+        //            Connection con = new AutoCloseConnection(getConnection());
+        //            //                try (PreparedStatement prep = con.prepareStatement(sql, ResultSet.TYPE_FORWARD_ONLY,
+        //            //                        ResultSet.CONCUR_READ_ONLY)) {
+        //            try {
+        //                PreparedStatement prep = con.prepareStatement(sql);
+        //                //                prep.setFetchSize(Integer.MIN_VALUE);
+        //                setParams(prep, args);
+        //                ResultSet rs = prep.executeQuery();
+        //                // 这里是并没有获取数据，需要外部迭代RowIterable才会去获取数据
+        //                return new RowIterable<>(new SqlResultSet(rs), new MapRowMapper(manager));
+        //                //                    return postHandle(execution.setOriginalResult(JdbcUtils.getResultSetMaps(rs, manager)), sql, args);
+        //            } catch (SQLException e) {
+        //                releaseConnection(con);
+        //                con = null;
+        //                throw new JdbcException(
+        //                        Strings.format("queryStream: \nsql: {0} \nargs: {1}", sql, Arrays.toString(args)), e);
+        //            } finally {
+        //                releaseConnection(con);
+        //            }
+        //        }
+        //        return new RowIterable<>(null, new MapRowMapper(manager));
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public <T> Iterable<T> queryStream(String sql, RowMapper<T> rowMapper, Map<String, Object> args) {
+        logger.debug("sql -> {}, args -> {}", sql, args);
+        Execution execution = SqlUtils.convertNamedParamSql(sql, args);
+        return queryStream(execution.getExecution(), rowMapper, execution.getParams());
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public <T> Iterable<T> queryStream(String sql, Class<T> elementType, Map<String, Object> args) {
+        logger.debug("sql -> {}, args -> {}, elementType -> {}", sql, args, elementType);
+        Execution execution = SqlUtils.convertNamedParamSql(sql, args);
+        return queryStream(execution.getExecution(), elementType, execution.getParams());
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public <T1, T2> Iterable<Tuple2<T1, T2>> queryStream(String sql, Class<T1> elementType1, Class<T2> elementType2,
+            Tuple2<String, String> prefixes, Map<String, Object> args) {
+        logger.debug("sql -> {}, args -> {}, elementType1 -> {}, elementType2 -> {}", sql, args, elementType1,
+                elementType2);
+        Execution execution = SqlUtils.convertNamedParamSql(sql, args);
+        return queryStream(execution.getExecution(), elementType1, elementType2, prefixes, execution.getParams());
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public <T1, T2, T3> Iterable<Tuple3<T1, T2, T3>> queryStream(String sql, Class<T1> elementType1,
+            Class<T2> elementType2, Class<T3> elementType3, Tuple3<String, String, String> prefixes,
+            Map<String, Object> args) {
+        logger.debug("sql -> {}, args -> {}, elementType1 -> {}, elementType2 -> {}, elementType3 -> {}", sql, args,
+                elementType1, elementType2, elementType3);
+        Execution execution = SqlUtils.convertNamedParamSql(sql, args);
+        return queryStream(execution.getExecution(), elementType1, elementType2, elementType3, prefixes,
+                execution.getParams());
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public <T1, T2, T3, T4> Iterable<Tuple4<T1, T2, T3, T4>> queryStream(String sql, Class<T1> elementType1,
+            Class<T2> elementType2, Class<T3> elementType3, Class<T4> elementType4,
+            Tuple4<String, String, String, String> prefixes, Map<String, Object> args) {
+        logger.debug(
+                "sql -> {}, args -> {}, elementType1 -> {}, elementType2 -> {}, elementType3 -> {}, elementType4 -> {}",
+                sql, args, elementType1, elementType2, elementType3, elementType4);
+        Execution execution = SqlUtils.convertNamedParamSql(sql, args);
+        return queryStream(execution.getExecution(), elementType1, elementType2, elementType3, elementType4, prefixes,
+                execution.getParams());
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public <T1, T2, T3, T4, T5> Iterable<Tuple5<T1, T2, T3, T4, T5>> queryStream(String sql, Class<T1> elementType1,
+            Class<T2> elementType2, Class<T3> elementType3, Class<T4> elementType4, Class<T5> elementType5,
+            Tuple5<String, String, String, String, String> prefixes, Map<String, Object> args) {
+        logger.debug(
+                "sql -> {}, args -> {}, elementType1 -> {}, elementType2 -> {}, elementType3 -> {}, elementType4 -> {}, elementType5 -> {}",
+                sql, args, elementType1, elementType2, elementType3, elementType4, elementType5);
+        Execution execution = SqlUtils.convertNamedParamSql(sql, args);
+        return queryStream(execution.getExecution(), elementType1, elementType2, elementType3, elementType4,
+                elementType5, prefixes, execution.getParams());
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public <T1, T2, T3, T4, T5, T6> Iterable<Tuple6<T1, T2, T3, T4, T5, T6>> queryStream(String sql,
+            Class<T1> elementType1, Class<T2> elementType2, Class<T3> elementType3, Class<T4> elementType4,
+            Class<T5> elementType5, Class<T6> elementType6,
+            Tuple6<String, String, String, String, String, String> prefixes, Map<String, Object> args) {
+        logger.debug(
+                "sql -> {}, args -> {}, elementType1 -> {}, elementType2 -> {}, elementType3 -> {}, elementType4 -> {}, elementType5 -> {}, elementType6 -> {}",
+                sql, args, elementType1, elementType2, elementType3, elementType4, elementType5, elementType6);
+        Execution execution = SqlUtils.convertNamedParamSql(sql, args);
+        return queryStream(execution.getExecution(), elementType1, elementType2, elementType3, elementType4,
+                elementType5, elementType6, prefixes, execution.getParams());
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public <T> Iterable<T> queryStream(String sql, Class<T> elementType, Object... args) {
+        SQLType sqlType = manager.getSqlType(elementType);
+        RowMapper<T> rowMapper = null;
+        if (sqlType == null) {
+            rowMapper = new NestedBeanPropertyRowMapper<>(elementType, manager);
+        } else {
+            rowMapper = new SingleColumnRowMapper<>(elementType, manager);
+        }
+        return queryStream(sql, rowMapper, args);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public <T1, T2> Iterable<Tuple2<T1, T2>> queryStream(String sql, Class<T1> elementType1, Class<T2> elementType2,
+            Tuple2<String, String> prefixes, Object... args) {
+        return queryStream(sql, new TupleNestedBeanPropertyRowMapper<>(ArrayUtils.toList(elementType1, elementType2),
+                prefixes, manager), args);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public <T1, T2, T3> Iterable<Tuple3<T1, T2, T3>> queryStream(String sql, Class<T1> elementType1,
+            Class<T2> elementType2, Class<T3> elementType3, Tuple3<String, String, String> prefixes, Object... args) {
+        return queryStream(sql, new TupleNestedBeanPropertyRowMapper<>(
+                ArrayUtils.toList(elementType1, elementType2, elementType3), prefixes, manager), args);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public <T1, T2, T3, T4> Iterable<Tuple4<T1, T2, T3, T4>> queryStream(String sql, Class<T1> elementType1,
+            Class<T2> elementType2, Class<T3> elementType3, Class<T4> elementType4,
+            Tuple4<String, String, String, String> prefixes, Object... args) {
+        return queryStream(sql,
+                new TupleNestedBeanPropertyRowMapper<>(
+                        ArrayUtils.toList(elementType1, elementType2, elementType3, elementType4), prefixes, manager),
+                args);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public <T1, T2, T3, T4, T5> Iterable<Tuple5<T1, T2, T3, T4, T5>> queryStream(String sql, Class<T1> elementType1,
+            Class<T2> elementType2, Class<T3> elementType3, Class<T4> elementType4, Class<T5> elementType5,
+            Tuple5<String, String, String, String, String> prefixes, Object... args) {
+        return queryStream(sql,
+                new TupleNestedBeanPropertyRowMapper<>(
+                        ArrayUtils.toList(elementType1, elementType2, elementType3, elementType4, elementType5),
+                        prefixes, manager),
+                args);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public <T1, T2, T3, T4, T5, T6> Iterable<Tuple6<T1, T2, T3, T4, T5, T6>> queryStream(String sql,
+            Class<T1> elementType1, Class<T2> elementType2, Class<T3> elementType3, Class<T4> elementType4,
+            Class<T5> elementType5, Class<T6> elementType6,
+            Tuple6<String, String, String, String, String, String> prefixes, Object... args) {
+        return queryStream(sql, new TupleNestedBeanPropertyRowMapper<>(
+                ArrayUtils.toList(elementType1, elementType2, elementType3, elementType4, elementType5, elementType6),
+                prefixes, manager), args);
+    }
+
+    //    @Override
+    //    public <T> Iterable<T> queryStream(String sql, Class<T> elementType, BeanPropertyValue<?>... args) {
+    //        SQLType sqlType = manager.getSqlType(elementType);
+    //        RowMapper<T> rowMapper = null;
+    //        if (sqlType == null) {
+    //            rowMapper = new NestedBeanPropertyRowMapper<>(elementType, manager);
+    //        } else {
+    //            rowMapper = new SingleColumnRowMapper<>(elementType, manager);
+    //        }
+    //        return queryStream(sql, rowMapper, args);
+    //    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public <T> Iterable<T> queryStream(String sql, RowMapper<T> rowMapper, Object... args) {
+        if (Lang.isNotEmpty(sql)) {
+            sql = sql.trim();
+            JdbcExecution execution = preHandle(sql, args);
+            sql = execution.getExecution();
+            args = execution.getParams();
+            logger.debug("execute sql -> {}, args -> {}", sql, args);
+            Connection con = new AutoCloseConnection(getConnection());
+            try {
+                PreparedStatement prep = con.prepareStatement(sql);
+                setParams(prep, args);
+                ResultSet rs = prep.executeQuery();
+                return new RowIterable<>(new SqlResultSet(rs), rowMapper);
+                //                return postHandle(execution.setOriginalResult(list), sql, args);
+            } catch (SQLException e) {
+                releaseConnection(con);
+                throw new JdbcException(
+                        Strings.format("queryStream: \nsql: {0} \nargs: {1}", sql, Arrays.toString(args)), e);
+            } finally {
+                releaseConnection(con);
+            }
+        }
+        return new RowIterable<>(null, rowMapper);
     }
 
     //    /**
