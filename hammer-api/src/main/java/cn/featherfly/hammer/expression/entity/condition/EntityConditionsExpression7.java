@@ -14,7 +14,7 @@ import cn.featherfly.hammer.expression.entity.condition.le.EntityLessEqualsExpre
 import cn.featherfly.hammer.expression.entity.condition.lk.EntityLikeExpression;
 import cn.featherfly.hammer.expression.entity.condition.lt.EntityLessThanExpression;
 import cn.featherfly.hammer.expression.entity.condition.ne.EntityNotEqualsExpression;
-import cn.featherfly.hammer.expression.entity.condition.nin.EntityNotInExpression;
+import cn.featherfly.hammer.expression.entity.condition.ni.EntityNotInExpression;
 import cn.featherfly.hammer.expression.entity.condition.sw.EntityStartWithExpression;
 
 /**

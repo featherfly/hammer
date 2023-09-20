@@ -2346,8 +2346,8 @@ public abstract class AbstractSqlConditionGroupExpression<C extends ConditionGro
      */
     @Override
     public L le(SerializableLocalDateTimeSupplier propertyValue, IgnoreStrategy ignoreStrategy) {
-        SerializableSupplierLambdaInfo<LocalDateTime> info = LambdaUtils
-                .getSerializableSupplierLambdaInfo(propertyValue);
+        SerializableSupplierLambdaInfo<
+                LocalDateTime> info = LambdaUtils.getSerializableSupplierLambdaInfo(propertyValue);
         return le(info.getSerializedLambdaInfo().getPropertyName(), info.getValue(), ignoreStrategy);
     }
 
@@ -2356,8 +2356,8 @@ public abstract class AbstractSqlConditionGroupExpression<C extends ConditionGro
      */
     @Override
     public L le(SerializableLocalDateTimeSupplier propertyValue, Predicate<LocalDateTime> ignoreStrategy) {
-        SerializableSupplierLambdaInfo<LocalDateTime> info = LambdaUtils
-                .getSerializableSupplierLambdaInfo(propertyValue);
+        SerializableSupplierLambdaInfo<
+                LocalDateTime> info = LambdaUtils.getSerializableSupplierLambdaInfo(propertyValue);
         return le(info.getSerializedLambdaInfo().getPropertyName(), info.getValue(), ignoreStrategy);
     }
 
@@ -2926,8 +2926,8 @@ public abstract class AbstractSqlConditionGroupExpression<C extends ConditionGro
      * {@inheritDoc}
      */
     @Override
-    public L nin(String name, Object value) {
-        return nin(name, value, (Predicate<Object>) ignoreStrategy);
+    public L ni(String name, Object value) {
+        return ni(name, value, (Predicate<Object>) ignoreStrategy);
         //        return (L) addCondition(new SqlConditionExpressionBuilder(dialect, name, value, ComparisonOperator.NIN,
         //                queryAlias, ignoreStrategy));
     }
@@ -2936,8 +2936,8 @@ public abstract class AbstractSqlConditionGroupExpression<C extends ConditionGro
      * {@inheritDoc}
      */
     @Override
-    public L nin(String name, Object value, Predicate<Object> ignoreStrategy) {
-        return (L) addCondition(new SqlConditionExpressionBuilder(dialect, name, value, ComparisonOperator.NIN,
+    public L ni(String name, Object value, Predicate<Object> ignoreStrategy) {
+        return (L) addCondition(new SqlConditionExpressionBuilder(dialect, name, value, ComparisonOperator.NI,
                 queryAlias, ignoreStrategy));
     }
 
@@ -2945,35 +2945,35 @@ public abstract class AbstractSqlConditionGroupExpression<C extends ConditionGro
      * {@inheritDoc}
      */
     @Override
-    public <T, R> L nin(SerializableFunction<T, R> name, Object value) {
-        return nin(name, value, (Predicate<Object>) ignoreStrategy);
+    public <T, R> L ni(SerializableFunction<T, R> name, Object value) {
+        return ni(name, value, (Predicate<Object>) ignoreStrategy);
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public <T, R> L nin(SerializableFunction<T, R> name, Object value, Predicate<Object> ignoreStrategy) {
-        return nin(getPropertyName(name), value, ignoreStrategy);
+    public <T, R> L ni(SerializableFunction<T, R> name, Object value, Predicate<Object> ignoreStrategy) {
+        return ni(getPropertyName(name), value, ignoreStrategy);
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public <R> L nin(SerializableSupplier<R> property) {
-        return nin(property, (Predicate<R>) ignoreStrategy);
+    public <R> L ni(SerializableSupplier<R> property) {
+        return ni(property, (Predicate<R>) ignoreStrategy);
         //        SerializableSupplierLambdaInfo<R> info = LambdaUtils.getSerializableSupplierLambdaInfo(property);
-        //        return nin(info.getSerializedLambdaInfo().getPropertyName(), info.getValue());
+        //        return ni(info.getSerializedLambdaInfo().getPropertyName(), info.getValue());
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public <R> L nin(SerializableSupplier<R> property, Predicate<R> ignoreStrategy) {
+    public <R> L ni(SerializableSupplier<R> property, Predicate<R> ignoreStrategy) {
         SerializableSupplierLambdaInfo<R> info = LambdaUtils.getSerializableSupplierLambdaInfo(property);
-        return nin(info.getSerializedLambdaInfo().getPropertyName(), info.getValue(),
+        return ni(info.getSerializedLambdaInfo().getPropertyName(), info.getValue(),
                 (Predicate<Object>) ignoreStrategy);
     }
 

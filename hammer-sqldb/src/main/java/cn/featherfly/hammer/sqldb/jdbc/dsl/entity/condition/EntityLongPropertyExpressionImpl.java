@@ -109,7 +109,7 @@ public class EntityLongPropertyExpressionImpl<E, C extends ConditionExpression, 
      * {@inheritDoc}
      */
     @Override
-    public L nin(Long value) {
+    public L ni(Long value) {
         return expression.nin0(index, getPropertyMapping(value), value, expression.getIgnoreStrategy());
     }
 
@@ -117,7 +117,7 @@ public class EntityLongPropertyExpressionImpl<E, C extends ConditionExpression, 
      * {@inheritDoc}
      */
     @Override
-    public L nin(Long value, IgnoreStrategy ignoreStrategy) {
+    public L ni(Long value, IgnoreStrategy ignoreStrategy) {
         return expression.nin0(index, getPropertyMapping(value), value, ignoreStrategy);
     }
 
@@ -125,7 +125,7 @@ public class EntityLongPropertyExpressionImpl<E, C extends ConditionExpression, 
      * {@inheritDoc}
      */
     @Override
-    public L nin(Long value, Predicate<Long> ignoreStrategy) {
+    public L ni(Long value, Predicate<Long> ignoreStrategy) {
         return expression.nin0(index, getPropertyMapping(value), value, ignoreStrategy);
     }
 
@@ -133,7 +133,7 @@ public class EntityLongPropertyExpressionImpl<E, C extends ConditionExpression, 
      * {@inheritDoc}
      */
     @Override
-    public L nin(Long[] value) {
+    public L ni(Long[] value) {
         return expression.nin0(index, getPropertyMapping(value), value, expression.getIgnoreStrategy());
     }
 
@@ -141,7 +141,7 @@ public class EntityLongPropertyExpressionImpl<E, C extends ConditionExpression, 
      * {@inheritDoc}
      */
     @Override
-    public L nin(Long[] value, IgnoreStrategy ignoreStrategy) {
+    public L ni(Long[] value, IgnoreStrategy ignoreStrategy) {
         return expression.nin0(index, getPropertyMapping(value), value, ignoreStrategy);
     }
 
@@ -149,7 +149,7 @@ public class EntityLongPropertyExpressionImpl<E, C extends ConditionExpression, 
      * {@inheritDoc}
      */
     @Override
-    public L nin(Long[] value, Predicate<Long[]> ignoreStrategy) {
+    public L ni(Long[] value, Predicate<Long[]> ignoreStrategy) {
         return expression.nin0(index, getPropertyMapping(value), value, ignoreStrategy);
     }
 

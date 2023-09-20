@@ -160,7 +160,7 @@ public class EntityEnumPropertyExpressionImpl<E, T extends Enum<T>, C extends Co
      * {@inheritDoc}
      */
     @Override
-    public L nin(T value) {
+    public L ni(T value) {
         return expression.nin0(index, getPropertyMapping(value), value, expression.getIgnoreStrategy());
     }
 
@@ -168,7 +168,7 @@ public class EntityEnumPropertyExpressionImpl<E, T extends Enum<T>, C extends Co
      * {@inheritDoc}
      */
     @Override
-    public L nin(T value, IgnoreStrategy ignoreStrategy) {
+    public L ni(T value, IgnoreStrategy ignoreStrategy) {
         return expression.nin0(index, getPropertyMapping(value), value, ignoreStrategy);
     }
 
@@ -176,7 +176,7 @@ public class EntityEnumPropertyExpressionImpl<E, T extends Enum<T>, C extends Co
      * {@inheritDoc}
      */
     @Override
-    public L nin(T value, Predicate<T> ignoreStrategy) {
+    public L ni(T value, Predicate<T> ignoreStrategy) {
         return expression.nin0(index, getPropertyMapping(value), value, ignoreStrategy);
     }
 
@@ -184,7 +184,7 @@ public class EntityEnumPropertyExpressionImpl<E, T extends Enum<T>, C extends Co
      * {@inheritDoc}
      */
     @Override
-    public L nin(T[] value) {
+    public L ni(T[] value) {
         return expression.nin0(index, getPropertyMapping(value), value, expression.getIgnoreStrategy());
     }
 
@@ -192,7 +192,7 @@ public class EntityEnumPropertyExpressionImpl<E, T extends Enum<T>, C extends Co
      * {@inheritDoc}
      */
     @Override
-    public L nin(T[] value, IgnoreStrategy ignoreStrategy) {
+    public L ni(T[] value, IgnoreStrategy ignoreStrategy) {
         return expression.nin0(index, getPropertyMapping(value), value, ignoreStrategy);
     }
 
@@ -200,7 +200,7 @@ public class EntityEnumPropertyExpressionImpl<E, T extends Enum<T>, C extends Co
      * {@inheritDoc}
      */
     @Override
-    public L nin(T[] value, Predicate<T[]> ignoreStrategy) {
+    public L ni(T[] value, Predicate<T[]> ignoreStrategy) {
         return expression.nin0(index, getPropertyMapping(value), value, ignoreStrategy);
     }
 

@@ -1642,7 +1642,7 @@ public class UserQueryRepositoryConditionGroupExpression implements
      * {@inheritDoc}
      */
     @Override
-    public UserQueryRepositoryConditionGroupExpression nin(String name, Object value) {
+    public UserQueryRepositoryConditionGroupExpression ni(String name, Object value) {
 
         return null;
     }
@@ -1651,7 +1651,7 @@ public class UserQueryRepositoryConditionGroupExpression implements
      * {@inheritDoc}
      */
     @Override
-    public <T, R> UserQueryRepositoryConditionGroupExpression nin(SerializableFunction<T, R> name, Object value) {
+    public <T, R> UserQueryRepositoryConditionGroupExpression ni(SerializableFunction<T, R> name, Object value) {
 
         return null;
     }
@@ -1660,7 +1660,7 @@ public class UserQueryRepositoryConditionGroupExpression implements
      * {@inheritDoc}
      */
     @Override
-    public <R> UserQueryRepositoryConditionGroupExpression nin(SerializableSupplier<R> property) {
+    public <R> UserQueryRepositoryConditionGroupExpression ni(SerializableSupplier<R> property) {
 
         return null;
     }
@@ -2369,7 +2369,7 @@ public class UserQueryRepositoryConditionGroupExpression implements
      * {@inheritDoc}
      */
     @Override
-    public <R> UserQueryRepositoryConditionGroupExpression nin(SerializableSupplier<R> property,
+    public <R> UserQueryRepositoryConditionGroupExpression ni(SerializableSupplier<R> property,
             Predicate<R> ignoreStrategy) {
         // YUFEI_TODO Auto-generated method stub
         return null;
@@ -2458,8 +2458,7 @@ public class UserQueryRepositoryConditionGroupExpression implements
      * {@inheritDoc}
      */
     @Override
-    public UserQueryRepositoryConditionGroupExpression nin(String name, Object value,
-            Predicate<Object> ignoreStrategy) {
+    public UserQueryRepositoryConditionGroupExpression ni(String name, Object value, Predicate<Object> ignoreStrategy) {
         // YUFEI_TODO Auto-generated method stub
         return null;
     }
@@ -2468,7 +2467,7 @@ public class UserQueryRepositoryConditionGroupExpression implements
      * {@inheritDoc}
      */
     @Override
-    public <T, R> UserQueryRepositoryConditionGroupExpression nin(SerializableFunction<T, R> name, Object value,
+    public <T, R> UserQueryRepositoryConditionGroupExpression ni(SerializableFunction<T, R> name, Object value,
             Predicate<Object> ignoreStrategy) {
         // YUFEI_TODO Auto-generated method stub
         return null;

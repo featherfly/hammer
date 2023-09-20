@@ -30,7 +30,7 @@ import cn.featherfly.common.repository.IgnoreStrategy;
  * @param <L> the generic type
  */
 public interface LessThanExpression<C extends ConditionExpression, L extends LogicExpression<C, L>>
-        extends ConditionExpression {
+        extends StringLessThanExpression<C, L> {
 
     /**
      * less than. 小于.
@@ -78,6 +78,7 @@ public interface LessThanExpression<C extends ConditionExpression, L extends Log
      * @param value 参数值
      * @return LogicExpression
      */
+    @Override
     <N extends Number> L lt(String name, N value);
 
     /**
@@ -89,6 +90,7 @@ public interface LessThanExpression<C extends ConditionExpression, L extends Log
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
+    @Override
     <N extends Number> L lt(String name, N value, IgnoreStrategy ignoreStrategy);
 
     /**
@@ -100,6 +102,7 @@ public interface LessThanExpression<C extends ConditionExpression, L extends Log
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
+    @Override
     <N extends Number> L lt(String name, N value, Predicate<N> ignoreStrategy);
 
     /**
@@ -214,6 +217,7 @@ public interface LessThanExpression<C extends ConditionExpression, L extends Log
      * @param value 参数值
      * @return LogicExpression
      */
+    @Override
     <D extends Date> L lt(String name, D value);
 
     /**
@@ -225,6 +229,7 @@ public interface LessThanExpression<C extends ConditionExpression, L extends Log
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
+    @Override
     <D extends Date> L lt(String name, D value, IgnoreStrategy ignoreStrategy);
 
     /**
@@ -236,6 +241,7 @@ public interface LessThanExpression<C extends ConditionExpression, L extends Log
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
+    @Override
     <D extends Date> L lt(String name, D value, Predicate<D> ignoreStrategy);
 
     /**
@@ -346,6 +352,7 @@ public interface LessThanExpression<C extends ConditionExpression, L extends Log
      * @param value 参数值
      * @return LogicExpression
      */
+    @Override
     L lt(String name, LocalTime value);
 
     /**
@@ -356,6 +363,7 @@ public interface LessThanExpression<C extends ConditionExpression, L extends Log
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
+    @Override
     L lt(String name, LocalTime value, IgnoreStrategy ignoreStrategy);
 
     /**
@@ -366,6 +374,7 @@ public interface LessThanExpression<C extends ConditionExpression, L extends Log
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
+    @Override
     L lt(String name, LocalTime value, Predicate<LocalTime> ignoreStrategy);
 
     /**
@@ -470,6 +479,7 @@ public interface LessThanExpression<C extends ConditionExpression, L extends Log
      * @param value 参数值
      * @return LogicExpression
      */
+    @Override
     L lt(String name, LocalDate value);
 
     /**
@@ -480,6 +490,7 @@ public interface LessThanExpression<C extends ConditionExpression, L extends Log
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
+    @Override
     L lt(String name, LocalDate value, IgnoreStrategy ignoreStrategy);
 
     /**
@@ -490,6 +501,7 @@ public interface LessThanExpression<C extends ConditionExpression, L extends Log
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
+    @Override
     L lt(String name, LocalDate value, Predicate<LocalDate> ignoreStrategy);
 
     /**
@@ -594,6 +606,7 @@ public interface LessThanExpression<C extends ConditionExpression, L extends Log
      * @param value 参数值
      * @return LogicExpression
      */
+    @Override
     L lt(String name, LocalDateTime value);
 
     /**
@@ -604,6 +617,7 @@ public interface LessThanExpression<C extends ConditionExpression, L extends Log
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
+    @Override
     L lt(String name, LocalDateTime value, IgnoreStrategy ignoreStrategy);
 
     /**
@@ -614,6 +628,7 @@ public interface LessThanExpression<C extends ConditionExpression, L extends Log
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
+    @Override
     L lt(String name, LocalDateTime value, Predicate<LocalDateTime> ignoreStrategy);
 
     /**
@@ -718,6 +733,7 @@ public interface LessThanExpression<C extends ConditionExpression, L extends Log
      * @param value 参数值
      * @return LogicExpression
      */
+    @Override
     L lt(String name, String value);
 
     /**
@@ -728,6 +744,7 @@ public interface LessThanExpression<C extends ConditionExpression, L extends Log
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
+    @Override
     L lt(String name, String value, IgnoreStrategy ignoreStrategy);
 
     /**
@@ -738,6 +755,7 @@ public interface LessThanExpression<C extends ConditionExpression, L extends Log
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
+    @Override
     L lt(String name, String value, Predicate<String> ignoreStrategy);
 
     /**

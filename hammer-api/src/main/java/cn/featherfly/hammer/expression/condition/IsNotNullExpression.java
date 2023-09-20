@@ -12,7 +12,7 @@ import cn.featherfly.common.repository.Field;
  * @param <L> the generic type
  */
 public interface IsNotNullExpression<C extends ConditionExpression, L extends LogicExpression<C, L>>
-        extends ConditionExpression {
+        extends StringIsNotNullExpression<C, L> {
 
     /**
      * is not null.
@@ -42,6 +42,7 @@ public interface IsNotNullExpression<C extends ConditionExpression, L extends Lo
      * @param name 参数名称
      * @return LogicExpression
      */
+    @Override
     default L inn(String name) {
         return inn(name, true);
     }
@@ -54,6 +55,7 @@ public interface IsNotNullExpression<C extends ConditionExpression, L extends Lo
      *              this operate
      * @return LogicExpression
      */
+    @Override
     L inn(String name, Boolean value);
 
     /**

@@ -144,8 +144,8 @@ public class SimpleNumberPropertyExpression<N extends Number, C extends Conditio
      * {@inheritDoc}
      */
     @Override
-    public L nin(N value) {
-        return expression.nin(name, value);
+    public L ni(N value) {
+        return expression.ni(name, value);
     }
 
     /**
@@ -153,32 +153,32 @@ public class SimpleNumberPropertyExpression<N extends Number, C extends Conditio
      */
     @SuppressWarnings("unchecked")
     @Override
-    public L nin(N value, Predicate<N> ignoreStrategy) {
-        return expression.nin(name, value, (v) -> ignoreStrategy.test((N) v));
+    public L ni(N value, Predicate<N> ignoreStrategy) {
+        return expression.ni(name, value, (v) -> ignoreStrategy.test((N) v));
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public L nin(N value, IgnoreStrategy ignoreStrategy) {
-        return expression.nin(name, value, ignoreStrategy);
+    public L ni(N value, IgnoreStrategy ignoreStrategy) {
+        return expression.ni(name, value, ignoreStrategy);
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public L nin(N[] value) {
-        return expression.nin(name, value);
+    public L ni(N[] value) {
+        return expression.ni(name, value);
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public L nin(N[] value, IgnoreStrategy ignoreStrategy) {
-        return expression.nin(name, value, ignoreStrategy);
+    public L ni(N[] value, IgnoreStrategy ignoreStrategy) {
+        return expression.ni(name, value, ignoreStrategy);
     }
 
     /**
@@ -186,8 +186,8 @@ public class SimpleNumberPropertyExpression<N extends Number, C extends Conditio
      */
     @SuppressWarnings("unchecked")
     @Override
-    public L nin(N[] value, Predicate<N[]> ignoreStrategy) {
-        return expression.nin(name, value, (v) -> ignoreStrategy.test((N[]) v));
+    public L ni(N[] value, Predicate<N[]> ignoreStrategy) {
+        return expression.ni(name, value, (v) -> ignoreStrategy.test((N[]) v));
     }
 
     /**
