@@ -160,7 +160,7 @@ public class EntityLocalDateTimePropertyExpressionImpl<E, C extends ConditionExp
      * {@inheritDoc}
      */
     @Override
-    public L nin(LocalDateTime value) {
+    public L ni(LocalDateTime value) {
         return expression.nin0(index, getPropertyMapping(value), value, expression.getIgnoreStrategy());
     }
 
@@ -168,7 +168,7 @@ public class EntityLocalDateTimePropertyExpressionImpl<E, C extends ConditionExp
      * {@inheritDoc}
      */
     @Override
-    public L nin(LocalDateTime value, IgnoreStrategy ignoreStrategy) {
+    public L ni(LocalDateTime value, IgnoreStrategy ignoreStrategy) {
         return expression.nin0(index, getPropertyMapping(value), value, ignoreStrategy);
     }
 
@@ -176,7 +176,7 @@ public class EntityLocalDateTimePropertyExpressionImpl<E, C extends ConditionExp
      * {@inheritDoc}
      */
     @Override
-    public L nin(LocalDateTime value, Predicate<LocalDateTime> ignoreStrategy) {
+    public L ni(LocalDateTime value, Predicate<LocalDateTime> ignoreStrategy) {
         return expression.nin0(index, getPropertyMapping(value), value, ignoreStrategy);
     }
 
@@ -184,7 +184,7 @@ public class EntityLocalDateTimePropertyExpressionImpl<E, C extends ConditionExp
      * {@inheritDoc}
      */
     @Override
-    public L nin(LocalDateTime[] value) {
+    public L ni(LocalDateTime[] value) {
         return expression.nin0(index, getPropertyMapping(value), value, expression.getIgnoreStrategy());
     }
 
@@ -192,7 +192,7 @@ public class EntityLocalDateTimePropertyExpressionImpl<E, C extends ConditionExp
      * {@inheritDoc}
      */
     @Override
-    public L nin(LocalDateTime[] value, IgnoreStrategy ignoreStrategy) {
+    public L ni(LocalDateTime[] value, IgnoreStrategy ignoreStrategy) {
         return expression.nin0(index, getPropertyMapping(value), value, ignoreStrategy);
     }
 
@@ -200,7 +200,7 @@ public class EntityLocalDateTimePropertyExpressionImpl<E, C extends ConditionExp
      * {@inheritDoc}
      */
     @Override
-    public L nin(LocalDateTime[] value, Predicate<LocalDateTime[]> ignoreStrategy) {
+    public L ni(LocalDateTime[] value, Predicate<LocalDateTime[]> ignoreStrategy) {
         return expression.nin0(index, getPropertyMapping(value), value, ignoreStrategy);
     }
 

@@ -21,7 +21,7 @@ public interface MulitiEntityLikeExpression<C extends ConditionExpression, L ext
         extends MulitiEntityConditionExpression {
 
     //    /**
-    //     * end with value. 以value结尾.
+    //     * like value.
     //     *
     //     * @param consumer the consumer
     //     * @return LogicExpression
@@ -29,7 +29,7 @@ public interface MulitiEntityLikeExpression<C extends ConditionExpression, L ext
     //    L lk(Consumer<EntityStartWithExpression<E, C, L>> consumer);
 
     /**
-     * end with value. 以value结尾.
+     * like value.
      *
      * @param <E>   the element type
      * @param index the index
@@ -42,7 +42,7 @@ public interface MulitiEntityLikeExpression<C extends ConditionExpression, L ext
     }
 
     /**
-     * end with value. 以value结尾.
+     * like value.
      *
      * @param <E>            the element type
      * @param index          the index
@@ -56,7 +56,7 @@ public interface MulitiEntityLikeExpression<C extends ConditionExpression, L ext
     }
 
     /**
-     * end with value. 以value结尾.
+     * like value.
      *
      * @param <E>         the element type
      * @param index       the index
@@ -68,7 +68,7 @@ public interface MulitiEntityLikeExpression<C extends ConditionExpression, L ext
     <E> L lk(int index, SerializableFunction<E, String> name, String value, MatchStrategy matchStrategy);
 
     /**
-     * end with value. 以value结尾.
+     * like value.
      *
      * @param <E>            the element type
      * @param index          the index
@@ -82,7 +82,7 @@ public interface MulitiEntityLikeExpression<C extends ConditionExpression, L ext
             Predicate<String> ignoreStrategy);
 
     /**
-     * end with value. 以value结尾.
+     * like value.
      *
      * @param index    the index
      * @param property 对象属性
@@ -93,7 +93,7 @@ public interface MulitiEntityLikeExpression<C extends ConditionExpression, L ext
     }
 
     /**
-     * end with value. 以value结尾.
+     * like value.
      *
      * @param index          the index
      * @param property       对象属性
@@ -105,7 +105,7 @@ public interface MulitiEntityLikeExpression<C extends ConditionExpression, L ext
     }
 
     /**
-     * end with value. 以value结尾.
+     * like value.
      *
      * @param index       the index
      * @param property    the property
@@ -115,7 +115,7 @@ public interface MulitiEntityLikeExpression<C extends ConditionExpression, L ext
     L lk(int index, SerializableSupplier<String> property, MatchStrategy matchStrategy);
 
     /**
-     * end with value. 以value结尾.
+     * like value.
      *
      * @param index          the index
      * @param property       the property
@@ -123,7 +123,8 @@ public interface MulitiEntityLikeExpression<C extends ConditionExpression, L ext
      * @param ignoreStrategy the ignore strategy
      * @return the l
      */
-    L lk(int index, SerializableSupplier<String> property, MatchStrategy matchStrategy, Predicate<String> ignoreStrategy);
+    L lk(int index, SerializableSupplier<String> property, MatchStrategy matchStrategy,
+            Predicate<String> ignoreStrategy);
 
     //  嵌套属性使用property(U1::getU2).property(U2:getV).lk(v)来设置
     //    /**

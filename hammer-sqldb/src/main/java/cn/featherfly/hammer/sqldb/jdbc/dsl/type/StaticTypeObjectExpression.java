@@ -76,8 +76,8 @@ public class StaticTypeObjectExpression<E, Q extends StaticTypeQueryConditionGro
      * @param value the value
      * @return the q
      */
-    public Q nin(Object value) {
-        expression.nin(value);
+    public Q ni(Object value) {
+        expression.ni(value);
         return typeExpression;
     }
 

@@ -15,7 +15,7 @@ import cn.featherfly.common.repository.Field;
  * @param <L> the generic type
  */
 public interface InExpression<C extends ConditionExpression, L extends LogicExpression<C, L>>
-        extends ConditionExpression {
+        extends StringInExpression<C, L> {
 
     /**
      * values in. 包含指定，sql中的in.
@@ -39,25 +39,6 @@ public interface InExpression<C extends ConditionExpression, L extends LogicExpr
     default L in(Field name, Object value, Predicate<Object> ignoreStrategy) {
         return in(name.name(), value, ignoreStrategy);
     }
-
-    /**
-     * values in. 包含指定，sql中的in.
-     *
-     * @param name  参数名称
-     * @param value 参数值
-     * @return LogicExpression
-     */
-    L in(String name, Object value);
-
-    /**
-     * values in. 包含指定，sql中的in.
-     *
-     * @param name           参数名称
-     * @param value          参数值
-     * @param ignoreStrategy the ignore strategy
-     * @return LogicExpression
-     */
-    L in(String name, Object value, Predicate<Object> ignoreStrategy);
 
     /**
      * values in. 包含指定，sql中的in.

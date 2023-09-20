@@ -17,7 +17,7 @@ import cn.featherfly.common.repository.IgnoreStrategy;
  * @param <L> the generic type
  */
 public interface LikeExpression<C extends ConditionExpression, L extends LogicExpression<C, L>>
-        extends ConditionExpression {
+        extends StringLikeExpression<C, L> {
 
     /**
      * like value.
@@ -91,73 +91,6 @@ public interface LikeExpression<C extends ConditionExpression, L extends LogicEx
     default L lk(Field name, String value, MatchStrategy matchStrategy, Predicate<String> ignoreStrategy) {
         return lk(name.name(), value, matchStrategy, ignoreStrategy);
     }
-
-    /**
-     * like value.
-     *
-     * @param name  参数名称
-     * @param value 参数值
-     * @return LogicExpression
-     */
-    default L lk(String name, String value) {
-        return lk(name, value, MatchStrategy.AUTO);
-    }
-
-    /**
-     * like value.
-     *
-     * @param name           参数名称
-     * @param value          参数值
-     * @param ignoreStrategy the ignore strategy
-     * @return LogicExpression
-     */
-    default L lk(String name, String value, IgnoreStrategy ignoreStrategy) {
-        return lk(name, value, MatchStrategy.AUTO, ignoreStrategy);
-    }
-
-    /**
-     * like value.
-     *
-     * @param name           参数名称
-     * @param value          参数值
-     * @param ignoreStrategy the ignore strategy
-     * @return LogicExpression
-     */
-    default L lk(String name, String value, Predicate<String> ignoreStrategy) {
-        return lk(name, value, MatchStrategy.AUTO, ignoreStrategy);
-    }
-
-    /**
-     * like value.
-     *
-     * @param name          参数名称
-     * @param value         参数值
-     * @param matchStrategy the match strategy
-     * @return LogicExpression
-     */
-    L lk(String name, String value, MatchStrategy matchStrategy);
-
-    /**
-     * like value.
-     *
-     * @param name           参数名称
-     * @param value          参数值
-     * @param matchStrategy  the match strategy
-     * @param ignoreStrategy the ignore strategy
-     * @return LogicExpression
-     */
-    L lk(String name, String value, MatchStrategy matchStrategy, IgnoreStrategy ignoreStrategy);
-
-    /**
-     * like value.
-     *
-     * @param name           参数名称
-     * @param value          参数值
-     * @param matchStrategy  the match strategy
-     * @param ignoreStrategy the ignore strategy
-     * @return LogicExpression
-     */
-    L lk(String name, String value, MatchStrategy matchStrategy, Predicate<String> ignoreStrategy);
 
     /**
      * like value.

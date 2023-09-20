@@ -12,7 +12,7 @@ import cn.featherfly.common.repository.Field;
  * @param <L> the generic type
  */
 public interface IsNullExpression<C extends ConditionExpression, L extends LogicExpression<C, L>>
-        extends ConditionExpression {
+        extends StringIsNullExpression<C, L> {
 
     /**
      * is null.
@@ -35,26 +35,6 @@ public interface IsNullExpression<C extends ConditionExpression, L extends Logic
     default L isn(Field name, Boolean value) {
         return isn(name.name(), value);
     }
-
-    /**
-     * is null.
-     *
-     * @param name 参数名称
-     * @return LogicExpression
-     */
-    default L isn(String name) {
-        return isn(name, true);
-    }
-
-    /**
-     * is null.
-     *
-     * @param name  参数名称
-     * @param value if true, is null; if false, is not null; if null, ignore
-     *              this operate
-     * @return LogicExpression
-     */
-    L isn(String name, Boolean value);
 
     /**
      * is null.

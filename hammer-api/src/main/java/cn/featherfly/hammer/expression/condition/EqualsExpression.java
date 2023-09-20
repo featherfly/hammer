@@ -16,7 +16,7 @@ import cn.featherfly.common.repository.Field;
  * @param <L> the generic type
  */
 public interface EqualsExpression<C extends ConditionExpression, L extends LogicExpression<C, L>>
-        extends ConditionExpression {
+        extends StringEqualsExpression<C, L> {
 
     /**
      * equals. 等于.
@@ -67,52 +67,6 @@ public interface EqualsExpression<C extends ConditionExpression, L extends Logic
     default <R> L eq(Field name, R value, MatchStrategy matchStrategy, Predicate<R> ignoreStrategy) {
         return eq(name.name(), value, matchStrategy, ignoreStrategy);
     }
-
-    /**
-     * equals. 等于.
-     *
-     * @param name  参数名称
-     * @param value 参数值
-     * @return LogicExpression
-     */
-    default L eq(String name, Object value) {
-        return eq(name, value, MatchStrategy.AUTO);
-    }
-
-    /**
-     * equals. 等于.
-     *
-     * @param <R>            the generic type
-     * @param name           参数名称
-     * @param value          参数值
-     * @param ignoreStrategy the ignore strategy
-     * @return LogicExpression
-     */
-    default <R> L eq(String name, R value, Predicate<R> ignoreStrategy) {
-        return eq(name, value, MatchStrategy.AUTO, ignoreStrategy);
-    }
-
-    /**
-     * equals. 等于.
-     *
-     * @param name          参数名称
-     * @param value         参数值
-     * @param matchStrategy the match strategy
-     * @return LogicExpression
-     */
-    L eq(String name, Object value, MatchStrategy matchStrategy);
-
-    /**
-     * equals. 等于.
-     *
-     * @param <R>            the generic type
-     * @param name           参数名称
-     * @param value          参数值
-     * @param matchStrategy  the match strategy
-     * @param ignoreStrategy the ignore strategy
-     * @return LogicExpression
-     */
-    <R> L eq(String name, R value, MatchStrategy matchStrategy, Predicate<R> ignoreStrategy);
 
     /**
      * equals. 等于.

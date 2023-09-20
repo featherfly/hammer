@@ -121,13 +121,13 @@ public class RepositorySimpleEnumExpression<E extends Enum<E>, C extends Reposit
      * {@inheritDoc}
      */
     @Override
-    public L nin(E value) {
+    public L ni(E value) {
         if (Lang.isNotEmpty(repository)) {
             return expression.nin(repository, name, value);
         } else if (repositoryIndex > -1) {
             return expression.nin(repositoryIndex, name, value);
         } else {
-            return expression.nin(name, value);
+            return expression.ni(name, value);
         }
     }
 
@@ -218,7 +218,7 @@ public class RepositorySimpleEnumExpression<E extends Enum<E>, C extends Reposit
      * {@inheritDoc}
      */
     @Override
-    public L nin(E[] value) {
+    public L ni(E[] value) {
         // YUFEI_TODO Auto-generated method stub
         return null;
     }
@@ -227,7 +227,7 @@ public class RepositorySimpleEnumExpression<E extends Enum<E>, C extends Reposit
      * {@inheritDoc}
      */
     @Override
-    public L nin(E value, Predicate<E> ignoreStrategy) {
+    public L ni(E value, Predicate<E> ignoreStrategy) {
         // YUFEI_TODO Auto-generated method stub
         return null;
     }
@@ -236,7 +236,7 @@ public class RepositorySimpleEnumExpression<E extends Enum<E>, C extends Reposit
      * {@inheritDoc}
      */
     @Override
-    public L nin(E[] value, Predicate<E[]> ignoreStrategy) {
+    public L ni(E[] value, Predicate<E[]> ignoreStrategy) {
         // YUFEI_TODO Auto-generated method stub
         return null;
     }
@@ -308,7 +308,7 @@ public class RepositorySimpleEnumExpression<E extends Enum<E>, C extends Reposit
      * {@inheritDoc}
      */
     @Override
-    public L nin(E value, IgnoreStrategy ignoreStrategy) {
+    public L ni(E value, IgnoreStrategy ignoreStrategy) {
         // YUFEI_TODO Auto-generated method stub
         return null;
     }
@@ -317,7 +317,7 @@ public class RepositorySimpleEnumExpression<E extends Enum<E>, C extends Reposit
      * {@inheritDoc}
      */
     @Override
-    public L nin(E[] value, IgnoreStrategy ignoreStrategy) {
+    public L ni(E[] value, IgnoreStrategy ignoreStrategy) {
         // YUFEI_TODO Auto-generated method stub
         return null;
     }

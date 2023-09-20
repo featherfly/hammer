@@ -143,48 +143,48 @@ public class SimpleObjectPropertyExpression<C extends ConditionsExpression<C, L>
      * {@inheritDoc}
      */
     @Override
-    public L nin(Object value) {
-        return expression.nin(name, value);
+    public L ni(Object value) {
+        return expression.ni(name, value);
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public L nin(Object value, IgnoreStrategy ignoreStrategy) {
-        return expression.nin(name, value, ignoreStrategy);
+    public L ni(Object value, IgnoreStrategy ignoreStrategy) {
+        return expression.ni(name, value, ignoreStrategy);
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public L nin(Object value, Predicate<Object> ignoreStrategy) {
-        return expression.nin(name, value, ignoreStrategy);
+    public L ni(Object value, Predicate<Object> ignoreStrategy) {
+        return expression.ni(name, value, ignoreStrategy);
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public L nin(Object[] value) {
-        return expression.nin(name, value);
+    public L ni(Object[] value) {
+        return expression.ni(name, value);
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public L nin(Object[] value, IgnoreStrategy ignoreStrategy) {
-        return expression.nin(name, value, ignoreStrategy);
+    public L ni(Object[] value, IgnoreStrategy ignoreStrategy) {
+        return expression.ni(name, value, ignoreStrategy);
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public L nin(Object[] value, Predicate<Object[]> ignoreStrategy) {
-        return expression.nin(name, value, (v) -> ignoreStrategy.test((Object[]) v));
+    public L ni(Object[] value, Predicate<Object[]> ignoreStrategy) {
+        return expression.ni(name, value, (v) -> ignoreStrategy.test((Object[]) v));
     }
 
     /**

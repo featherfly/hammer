@@ -24,7 +24,7 @@ public interface PropertyNotInExpression<C extends ConditionExpression, L extend
      * @param value 参数值
      * @return LogicExpression
      */
-    L nin(V value);
+    L ni(V value);
 
     /**
      * 不包含指定，sql中的not in.
@@ -32,7 +32,7 @@ public interface PropertyNotInExpression<C extends ConditionExpression, L extend
      * @param value 参数值
      * @return LogicExpression
      */
-    L nin(V[] value);
+    L ni(V[] value);
 
     /**
      * 不包含指定，sql中的not in.
@@ -41,7 +41,7 @@ public interface PropertyNotInExpression<C extends ConditionExpression, L extend
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
-    L nin(V value, IgnoreStrategy ignoreStrategy);
+    L ni(V value, IgnoreStrategy ignoreStrategy);
 
     /**
      * 不包含指定，sql中的not in.
@@ -50,7 +50,7 @@ public interface PropertyNotInExpression<C extends ConditionExpression, L extend
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
-    L nin(V value, Predicate<V> ignoreStrategy);
+    L ni(V value, Predicate<V> ignoreStrategy);
 
     /**
      * 不包含指定，sql中的not in.
@@ -59,7 +59,7 @@ public interface PropertyNotInExpression<C extends ConditionExpression, L extend
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
-    L nin(V[] value, IgnoreStrategy ignoreStrategy);
+    L ni(V[] value, IgnoreStrategy ignoreStrategy);
 
     /**
      * 不包含指定，sql中的not in.
@@ -68,5 +68,5 @@ public interface PropertyNotInExpression<C extends ConditionExpression, L extend
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
-    L nin(V[] value, Predicate<V[]> ignoreStrategy);
+    L ni(V[] value, Predicate<V[]> ignoreStrategy);
 }

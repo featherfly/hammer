@@ -76,8 +76,8 @@ public class StaticTypeNumberExpression<N extends Number, E, Q extends StaticTyp
      * @param value the value
      * @return the q
      */
-    public Q nin(N value) {
-        expression.nin(value);
+    public Q ni(N value) {
+        expression.ni(value);
         return typeExpression;
     }
 

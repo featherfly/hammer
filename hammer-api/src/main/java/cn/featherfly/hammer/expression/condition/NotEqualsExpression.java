@@ -16,7 +16,7 @@ import cn.featherfly.common.repository.Field;
  * @param <L> the generic type
  */
 public interface NotEqualsExpression<C extends ConditionExpression, L extends LogicExpression<C, L>>
-        extends ConditionExpression {
+        extends StringNotEqualsExpression<C, L> {
 
     /**
      * not equals. 不等于.
@@ -67,52 +67,6 @@ public interface NotEqualsExpression<C extends ConditionExpression, L extends Lo
     default <R> L ne(Field name, R value, MatchStrategy matchStrategy, Predicate<R> ignoreStrategy) {
         return ne(name.name(), value, matchStrategy, ignoreStrategy);
     }
-
-    /**
-     * not equals. 不等于.
-     *
-     * @param name  参数名称
-     * @param value 参数值
-     * @return LogicExpression
-     */
-    default L ne(String name, Object value) {
-        return ne(name, value, MatchStrategy.AUTO);
-    }
-
-    /**
-     * not equals. 不等于.
-     *
-     * @param <R>            the generic type
-     * @param name           参数名称
-     * @param value          参数值
-     * @param ignoreStrategy the ignore strategy
-     * @return LogicExpression
-     */
-    default <R> L ne(String name, R value, Predicate<R> ignoreStrategy) {
-        return ne(name, value, MatchStrategy.AUTO, ignoreStrategy);
-    }
-
-    /**
-     * not equals. 不等于.
-     *
-     * @param name          参数名称
-     * @param value         参数值
-     * @param matchStrategy the query policy
-     * @return LogicExpression
-     */
-    L ne(String name, Object value, MatchStrategy matchStrategy);
-
-    /**
-     * not equals. 不等于.
-     *
-     * @param <R>            the generic type
-     * @param name           参数名称
-     * @param value          参数值
-     * @param matchStrategy  the match strategy
-     * @param ignoreStrategy the ignore strategy
-     * @return LogicExpression
-     */
-    <R> L ne(String name, R value, MatchStrategy matchStrategy, Predicate<R> ignoreStrategy);
 
     /**
      * not equals. 不等于.

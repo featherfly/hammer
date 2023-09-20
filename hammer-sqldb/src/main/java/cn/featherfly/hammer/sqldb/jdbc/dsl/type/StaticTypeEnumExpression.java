@@ -76,8 +76,8 @@ public class StaticTypeEnumExpression<T, E extends Enum<E>, Q extends StaticType
      * @param value the value
      * @return the q
      */
-    public Q nin(E value) {
-        expression.nin(value);
+    public Q ni(E value) {
+        expression.ni(value);
         return typeExpression;
     }
 

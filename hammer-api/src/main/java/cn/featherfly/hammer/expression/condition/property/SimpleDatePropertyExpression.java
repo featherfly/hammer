@@ -133,48 +133,23 @@ public class SimpleDatePropertyExpression<D extends Date, C extends ConditionsEx
     @SuppressWarnings("unchecked")
     @Override
     public L in(D[] value, Predicate<D[]> ignoreStrategy) {
-        return expression.nin(name, value, (v) -> ignoreStrategy.test((D[]) v));
+        return expression.ni(name, value, (v) -> ignoreStrategy.test((D[]) v));
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public L nin(Date value) {
-        return expression.nin(name, value);
+    public L ni(Date value) {
+        return expression.ni(name, value);
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public L nin(D value, IgnoreStrategy ignoreStrategy) {
-        return expression.nin(name, value, ignoreStrategy);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @SuppressWarnings("unchecked")
-    @Override
-    public L nin(D value, Predicate<D> ignoreStrategy) {
-        return expression.nin(name, value, (v) -> ignoreStrategy.test((D) v));
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public L nin(D[] value) {
-        return expression.nin(name, value);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public L nin(D[] value, IgnoreStrategy ignoreStrategy) {
-        return expression.nin(name, value, ignoreStrategy);
+    public L ni(D value, IgnoreStrategy ignoreStrategy) {
+        return expression.ni(name, value, ignoreStrategy);
     }
 
     /**
@@ -182,8 +157,33 @@ public class SimpleDatePropertyExpression<D extends Date, C extends ConditionsEx
      */
     @SuppressWarnings("unchecked")
     @Override
-    public L nin(D[] value, Predicate<D[]> ignoreStrategy) {
-        return expression.nin(name, value, (v) -> ignoreStrategy.test((D[]) v));
+    public L ni(D value, Predicate<D> ignoreStrategy) {
+        return expression.ni(name, value, (v) -> ignoreStrategy.test((D) v));
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public L ni(D[] value) {
+        return expression.ni(name, value);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public L ni(D[] value, IgnoreStrategy ignoreStrategy) {
+        return expression.ni(name, value, ignoreStrategy);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @SuppressWarnings("unchecked")
+    @Override
+    public L ni(D[] value, Predicate<D[]> ignoreStrategy) {
+        return expression.ni(name, value, (v) -> ignoreStrategy.test((D[]) v));
     }
 
     /**

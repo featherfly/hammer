@@ -154,48 +154,48 @@ public class SimpleStringPropertyExpression<C extends ConditionsExpression<C, L>
      * {@inheritDoc}
      */
     @Override
-    public L nin(String value) {
-        return expression.nin(name, value);
+    public L ni(String value) {
+        return expression.ni(name, value);
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public L nin(String value, IgnoreStrategy ignoreStrategy) {
-        return expression.nin(name, value, ignoreStrategy);
+    public L ni(String value, IgnoreStrategy ignoreStrategy) {
+        return expression.ni(name, value, ignoreStrategy);
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public L nin(String value, Predicate<String> ignoreStrategy) {
-        return expression.nin(name, value, (v) -> ignoreStrategy.test((String) v));
+    public L ni(String value, Predicate<String> ignoreStrategy) {
+        return expression.ni(name, value, (v) -> ignoreStrategy.test((String) v));
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public L nin(String[] value) {
-        return expression.nin(name, value);
+    public L ni(String[] value) {
+        return expression.ni(name, value);
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public L nin(String[] value, IgnoreStrategy ignoreStrategy) {
-        return expression.nin(name, value, ignoreStrategy);
+    public L ni(String[] value, IgnoreStrategy ignoreStrategy) {
+        return expression.ni(name, value, ignoreStrategy);
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public L nin(String[] value, Predicate<String[]> ignoreStrategy) {
-        return expression.nin(name, value, (v) -> ignoreStrategy.test((String[]) v));
+    public L ni(String[] value, Predicate<String[]> ignoreStrategy) {
+        return expression.ni(name, value, (v) -> ignoreStrategy.test((String[]) v));
     }
 
     /**
