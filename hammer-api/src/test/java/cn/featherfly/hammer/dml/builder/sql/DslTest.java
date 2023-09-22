@@ -551,10 +551,6 @@ public class DslTest {
 
         query.find(User2.class).fetch(User2::getUsername).where().eq(User2::getId, 1).string();
 
-        query.find(User2.class).join(UserInfo2.class).on(UserInfo2::getUserId).fetch().where()
-                .ba((e0, e1) -> e0.accept(User2::getAge, 18, 22)).and()
-                .ba((e0, e1) -> e1.property(UserInfo2::getAge).value(18, 22, (min, max) -> false)).list();
-
         // 多查询对象，使用property IMPLSOON 未实现
         ui = query.find(UserInfo2.class).join(User2.class).on(UserInfo2::getUserId, User2::getId).where()
                 .eq((e1, e2) -> e1.property(UserInfo2::getName).value("name")).single();
@@ -634,9 +630,191 @@ public class DslTest {
         query.find(Tree.class).join(Tree::getParent).join(Tree::getParent).join(Tree::getParent).join(Tree::getParent)
                 .sort().asc((e0, e1, e2, e3, e4) -> e0.apply(Tree::getId)).asc5(Tree::getName);
 
+        query.find(User2.class).join(UserInfo2.class).on(UserInfo2::getUserId).fetch() //
+                .where() //
+                .ba((e0, e1) -> e0.accept(User2::getAge, 18, 22)) //
+                .and() //
+                .ba((e0, e1) -> e1.property(UserInfo2::getAge).value(18, 22, (min, max) -> false)) //
+                .and() //
+                .ba((e0, e1) -> e1.property(UserInfo2::getAge).value(18, 22, (min, max) -> false)) //
+                .list();
+
         // IMPLSOON 目前join只能join4次，第五次的接口还未加入join方法
         //        query.find(Tree.class).join(Tree::getParent).join(Tree::getParent).join(Tree::getParent).join(Tree::getParent)
         //                .join(Tree::getParent).sort().asc((e0, e1, e2, e3, e4) -> e0.accept(Tree::getId)).asc5(Tree::getName);
+    }
+
+    public void testEntityQueryJoin2() {
+
+        query.find(UserInfo.class) //
+                .join(UserInfo::getUser) //
+                .where() //
+                .ba((e0, e1) -> e1.accept(User::getAge, 18, 22)) //
+                .and() //
+                .ba((e0, e1) -> e1.property(User::getAge).value(18, 22)) //
+                .and() //
+                .ba((e0, e1) -> e0.property(UserInfo::getUser).accept(User::getAge, 18, 22)) //
+                .and() //
+                .ba((e0, e1) -> e0.property(UserInfo::getUser).value(18, 22)) //
+                .and() //
+                .ba((e0, e1) -> e0.property(UserInfo::getUser).property(User::getAge).value(18, 22)) //
+                .list();
+
+        query.find(UserInfo.class) //
+                .join(UserInfo::getUser) //
+                .where() //
+                .nba((e0, e1) -> e1.accept(User::getAge, 18, 22)) //
+                .and() //
+                .nba((e0, e1) -> e1.property(User::getAge).value(18, 22)) //
+                .and() //
+                .nba((e0, e1) -> e0.property(UserInfo::getUser).accept(User::getAge, 18, 22)) //
+                .and() //
+                .nba((e0, e1) -> e0.property(UserInfo::getUser).property(User::getAge).value(18, 22)) //
+                .list();
+
+        query.find(UserInfo.class).join(UserInfo::getUser).where() //
+                .ge((e0, e1) -> e1.accept(User::getAge, 18)) //
+                .and() //
+                .ge((e0, e1) -> e1.property(User::getAge).value(18)) //
+                .and() //
+                .ge((e0, e1) -> e0.property(UserInfo::getUser).accept(User::getAge, 18)) //
+                .and() //
+                .ge((e0, e1) -> e0.property(UserInfo::getUser).value(18)) //
+                .and() //
+                .ge((e0, e1) -> e0.property(UserInfo::getUser).property(User::getAge).value(8)) //
+                .list();
+
+        query.find(UserInfo.class).join(UserInfo::getUser).where() //
+                .gt((e0, e1) -> e1.accept(User::getAge, 18)) //
+                .and() //
+                .gt((e0, e1) -> e1.property(User::getAge).value(18)) //
+                .and() //
+                .gt((e0, e1) -> e0.property(UserInfo::getUser).accept(User::getAge, 18)) //
+                .and() //
+                .gt((e0, e1) -> e0.property(UserInfo::getUser).property(User::getAge).value(8)) //
+                .list();
+
+        query.find(UserInfo.class).join(UserInfo::getUser).where() //
+                .le((e0, e1) -> e1.accept(User::getAge, 18)) //
+                .and() //
+                .le((e0, e1) -> e1.property(User::getAge).value(18)) //
+                .and() //
+                .le((e0, e1) -> e0.property(UserInfo::getUser).accept(User::getAge, 18)) //
+                .and() //
+                .le((e0, e1) -> e0.property(UserInfo::getUser).property(User::getAge).value(8)) //
+                .list();
+
+        query.find(UserInfo.class).join(UserInfo::getUser).where() //
+                .lt((e0, e1) -> e1.accept(User::getAge, 18)) //
+                .and() //
+                .lt((e0, e1) -> e1.property(User::getAge).value(18)) //
+                .and() //
+                .lt((e0, e1) -> e0.property(UserInfo::getUser).accept(User::getAge, 18)) //
+                .and() //
+                .lt((e0, e1) -> e0.property(UserInfo::getUser).property(User::getAge).value(8)) //
+                .list();
+
+        query.find(UserInfo.class).join(UserInfo::getUser).where() //
+                .co((e0, e1) -> e1.accept(User::getUsername, "")) //
+                .and() //
+                .co((e0, e1) -> e1.property(User::getUsername).value("")) //
+                .and() //
+                .co((e0, e1) -> e0.property(UserInfo::getUser).accept(User::getUsername, "")) //
+                .and() //
+                .co((e0, e1) -> e0.property(UserInfo::getUser).value("")) //
+                .and() //
+                .co((e0, e1) -> e0.property(UserInfo::getUser).property(User::getUsername).value("")) //
+                .list();
+
+        query.find(UserInfo.class).join(UserInfo::getUser).where() //
+                .nco((e0, e1) -> e1.accept(User::getUsername, "")) //
+                .and() //
+                .nco((e0, e1) -> e1.property(User::getUsername).value("")) //
+                .and() //
+                .nco((e0, e1) -> e0.property(UserInfo::getUser).accept(User::getUsername, "")) //
+                .and() //
+                .nco((e0, e1) -> e0.property(UserInfo::getUser).property(User::getUsername).value("")) //
+                .list();
+
+        query.find(UserInfo.class).join(UserInfo::getUser).where() //
+                .sw((e0, e1) -> e1.accept(User::getUsername, "")) //
+                .and() //
+                .sw((e0, e1) -> e1.property(User::getUsername).value("")) //
+                .and() //
+                .sw((e0, e1) -> e0.property(UserInfo::getUser).accept(User::getUsername, "")) //
+                .and() //
+                .sw((e0, e1) -> e0.property(UserInfo::getUser).property(User::getUsername).value("")) //
+                .list();
+
+        query.find(UserInfo.class).join(UserInfo::getUser).where() //
+                .nsw((e0, e1) -> e1.accept(User::getUsername, "")) //
+                .and() //
+                .nsw((e0, e1) -> e1.property(User::getUsername).value("")) //
+                .and() //
+                .nsw((e0, e1) -> e0.property(UserInfo::getUser).accept(User::getUsername, "")) //
+                .and() //
+                .nsw((e0, e1) -> e0.property(UserInfo::getUser).property(User::getUsername).value("")) //
+                .list();
+
+        query.find(UserInfo.class).join(UserInfo::getUser).where() //
+                .ew((e0, e1) -> e1.accept(User::getUsername, "")) //
+                .and() //
+                .ew((e0, e1) -> e1.property(User::getUsername).value("")) //
+                .and() //
+                .ew((e0, e1) -> e0.property(UserInfo::getUser).accept(User::getUsername, "")) //
+                .and() //
+                .ew((e0, e1) -> e0.property(UserInfo::getUser).property(User::getUsername).value("")) //
+                .list();
+
+        query.find(UserInfo.class).join(UserInfo::getUser).where() //
+                .newv((e0, e1) -> e1.accept(User::getUsername, "")) //
+                .and() //
+                .newv((e0, e1) -> e1.property(User::getUsername).value("")) //
+                .and() //
+                .newv((e0, e1) -> e0.property(UserInfo::getUser).accept(User::getUsername, "")) //
+                .and() //
+                .newv((e0, e1) -> e0.property(UserInfo::getUser).property(User::getUsername).value("")) //
+                .list();
+
+        query.find(UserInfo.class).join(UserInfo::getUser).where() //
+                .lk((e0, e1) -> e1.accept(User::getUsername, "")) //
+                .and() //
+                .lk((e0, e1) -> e1.property(User::getUsername).value("")) //
+                .and() //
+                .lk((e0, e1) -> e0.property(UserInfo::getUser).accept(User::getUsername, "")) //
+                .and() //
+                .lk((e0, e1) -> e0.property(UserInfo::getUser).property(User::getUsername).value("")) //
+                .list();
+
+        query.find(UserInfo.class).join(UserInfo::getUser).where() //
+                .nl((e0, e1) -> e1.accept(User::getUsername, "")) //
+                .and() //
+                .nl((e0, e1) -> e1.property(User::getUsername).value("")) //
+                .and() //
+                .nl((e0, e1) -> e0.property(UserInfo::getUser).accept(User::getUsername, "")) //
+                .and() //
+                .nl((e0, e1) -> e0.property(UserInfo::getUser).property(User::getUsername).value("")) //
+                .list();
+
+        query.find(UserInfo.class).join(UserInfo::getUser).where() //
+                .eq((e0, e1) -> e1.accept(User::getUsername, "")) //
+                .and() //
+                .eq((e0, e1) -> e1.property(User::getUsername).value("")) //
+                .and() //
+                .eq((e0, e1) -> e0.property(UserInfo::getUser).accept(User::getUsername, "")) //
+                .and() //
+                .eq((e0, e1) -> e0.property(UserInfo::getUser).property(User::getUsername).value("")) //
+                .list();
+
+        query.find(UserInfo.class).join(UserInfo::getUser).where() //
+                .ne((e0, e1) -> e1.accept(User::getUsername, "")) //
+                .and() //
+                .ne((e0, e1) -> e1.property(User::getUsername).value("")) //
+                .and() //
+                .ne((e0, e1) -> e0.property(UserInfo::getUser).accept(User::getUsername, "")) //
+                .and() //
+                .ne((e0, e1) -> e0.property(UserInfo::getUser).property(User::getUsername).value("")) //
+                .list();
     }
 
     public void testUpdate() {

@@ -7,10 +7,16 @@ import java.time.LocalTime;
 import java.util.Date;
 import java.util.function.BiPredicate;
 
-import cn.featherfly.common.function.serializable.SerializableFunction;
+import cn.featherfly.common.function.serializable.SerializableToDateFunction;
 import cn.featherfly.common.function.serializable.SerializableToDoubleFunction;
+import cn.featherfly.common.function.serializable.SerializableToEnumFunction;
 import cn.featherfly.common.function.serializable.SerializableToIntFunction;
+import cn.featherfly.common.function.serializable.SerializableToLocalDateFunction;
+import cn.featherfly.common.function.serializable.SerializableToLocalDateTimeFunction;
+import cn.featherfly.common.function.serializable.SerializableToLocalTimeFunction;
 import cn.featherfly.common.function.serializable.SerializableToLongFunction;
+import cn.featherfly.common.function.serializable.SerializableToNumberFunction;
+import cn.featherfly.common.function.serializable.SerializableToStringFunction;
 import cn.featherfly.hammer.expression.condition.ConditionExpression;
 import cn.featherfly.hammer.expression.condition.LogicExpression;
 import cn.featherfly.hammer.expression.entity.condition.MulitiEntityConditionExpression;
@@ -28,9 +34,11 @@ public interface MulitiEntityNotBetweenExpression<C extends ConditionExpression,
     /**
      * not between and.
      *
-     * @param <N>   number type
+     * @param <E>   the element type
+     * @param index the index
      * @param name  参数名称
-     * @param value 参数值
+     * @param min   the min
+     * @param max   the max
      * @return LogicExpression
      */
     <E> L nba(int index, SerializableToIntFunction<E> name, int min, int max);
@@ -38,9 +46,12 @@ public interface MulitiEntityNotBetweenExpression<C extends ConditionExpression,
     /**
      * not between and.
      *
-     * @param <N>   number type
-     * @param name  参数名称
-     * @param value 参数值
+     * @param <E>            the element type
+     * @param index          the index
+     * @param name           参数名称
+     * @param min            the min
+     * @param max            the max
+     * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
     <E> L nba(int index, SerializableToIntFunction<E> name, int min, int max,
@@ -49,9 +60,11 @@ public interface MulitiEntityNotBetweenExpression<C extends ConditionExpression,
     /**
      * not between and.
      *
-     * @param <N>   number type
+     * @param <E>   the element type
+     * @param index the index
      * @param name  参数名称
-     * @param value 参数值
+     * @param min   the min
+     * @param max   the max
      * @return LogicExpression
      */
     <E> L nba(int index, SerializableToLongFunction<E> name, long min, long max);
@@ -59,9 +72,12 @@ public interface MulitiEntityNotBetweenExpression<C extends ConditionExpression,
     /**
      * not between and.
      *
-     * @param <N>   number type
-     * @param name  参数名称
-     * @param value 参数值
+     * @param <E>            the element type
+     * @param index          the index
+     * @param name           参数名称
+     * @param min            the min
+     * @param max            the max
+     * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
     <E> L nba(int index, SerializableToLongFunction<E> name, long min, long max,
@@ -70,9 +86,11 @@ public interface MulitiEntityNotBetweenExpression<C extends ConditionExpression,
     /**
      * not between and.
      *
-     * @param <N>   number type
+     * @param <E>   the element type
+     * @param index the index
      * @param name  参数名称
-     * @param value 参数值
+     * @param min   the min
+     * @param max   the max
      * @return LogicExpression
      */
     <E> L nba(int index, SerializableToDoubleFunction<E> name, double min, double max);
@@ -80,9 +98,12 @@ public interface MulitiEntityNotBetweenExpression<C extends ConditionExpression,
     /**
      * not between and.
      *
-     * @param <N>   number type
-     * @param name  参数名称
-     * @param value 参数值
+     * @param <E>            the element type
+     * @param index          the index
+     * @param name           参数名称
+     * @param min            the min
+     * @param max            the max
+     * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
     <E> L nba(int index, SerializableToDoubleFunction<E> name, double min, double max,
@@ -91,125 +112,189 @@ public interface MulitiEntityNotBetweenExpression<C extends ConditionExpression,
     /**
      * not between and.
      *
+     * @param <E>   the element type
      * @param <N>   number type
+     * @param index the index
      * @param name  参数名称
-     * @param value 参数值
+     * @param min   the min
+     * @param max   the max
      * @return LogicExpression
      */
-    <E, N extends Number> L nba(int index, SerializableFunction<E, N> name, N min, N max);
+    <E, N extends Number> L nba(int index, SerializableToNumberFunction<E, N> name, N min, N max);
 
     /**
      * not between and.
      *
+     * @param <E>            the element type
      * @param <N>            number type
+     * @param index          the index
      * @param name           参数名称
-     * @param value          参数值
+     * @param min            the min
+     * @param max            the max
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
-    <E, N extends Number> L nba(int index, SerializableFunction<E, N> name, N min, N max,
+    <E, N extends Number> L nba(int index, SerializableToNumberFunction<E, N> name, N min, N max,
             BiPredicate<N, N> ignoreStrategy);
 
     /**
      * not between and.
      *
+     * @param <E>   the element type
      * @param <D>   date type
+     * @param index the index
      * @param name  参数名称
-     * @param value 参数值
+     * @param min   the min
+     * @param max   the max
      * @return LogicExpression
      */
-    <E, D extends Date> L nba(int index, SerializableFunction<E, D> name, D min, D max);
+    <E, D extends Date> L nba(int index, SerializableToDateFunction<E, D> name, D min, D max);
 
     /**
      * not between and.
      *
+     * @param <E>            the element type
      * @param <D>            date type
+     * @param index          the index
      * @param name           参数名称
-     * @param value          参数值
+     * @param min            the min
+     * @param max            the max
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
-    <E, D extends Date> L nba(int index, SerializableFunction<E, D> name, D min, D max,
+    <E, D extends Date> L nba(int index, SerializableToDateFunction<E, D> name, D min, D max,
             BiPredicate<D, D> ignoreStrategy);
 
     /**
      * not between and.
      *
+     * @param <T>   the generic type
+     * @param <E>   the enum type
+     * @param index the index
      * @param name  参数名称
-     * @param value 参数值
+     * @param min   the min
+     * @param max   the max
      * @return LogicExpression
      */
-    <E> L nba(int index, SerializableFunction<E, LocalTime> name, LocalTime min, LocalTime max);
+    <T, E extends Enum<E>> L nba(int index, SerializableToEnumFunction<T, E> name, E min, E max);
 
     /**
      * not between and.
      *
+     * @param <T>            the generic type
+     * @param <E>            the enum type
+     * @param index          the index
      * @param name           参数名称
-     * @param value          参数值
+     * @param min            the min
+     * @param max            the max
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
-    <E> L nba(int index, SerializableFunction<E, LocalTime> name, LocalTime min, LocalTime max,
+    <T, E extends Enum<E>> L nba(int index, SerializableToEnumFunction<T, E> name, E min, E max,
+            BiPredicate<E, E> ignoreStrategy);
+
+    /**
+     * not between and.
+     *
+     * @param <E>   the element type
+     * @param index the index
+     * @param name  参数名称
+     * @param min   the min
+     * @param max   the max
+     * @return LogicExpression
+     */
+    <E> L nba(int index, SerializableToLocalTimeFunction<E> name, LocalTime min, LocalTime max);
+
+    /**
+     * not between and.
+     *
+     * @param <E>            the element type
+     * @param index          the index
+     * @param name           参数名称
+     * @param min            the min
+     * @param max            the max
+     * @param ignoreStrategy the ignore strategy
+     * @return LogicExpression
+     */
+    <E> L nba(int index, SerializableToLocalTimeFunction<E> name, LocalTime min, LocalTime max,
             BiPredicate<LocalTime, LocalTime> ignoreStrategy);
 
     /**
      * not between and.
      *
+     * @param <E>   the element type
+     * @param index the index
      * @param name  参数名称
-     * @param value 参数值
+     * @param min   the min
+     * @param max   the max
      * @return LogicExpression
      */
-    <E> L nba(int index, SerializableFunction<E, LocalDate> name, LocalDate min, LocalDate max);
+    <E> L nba(int index, SerializableToLocalDateFunction<E> name, LocalDate min, LocalDate max);
 
     /**
      * not between and.
      *
+     * @param <E>            the element type
+     * @param index          the index
      * @param name           参数名称
-     * @param value          参数值
+     * @param min            the min
+     * @param max            the max
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
-    <E> L nba(int index, SerializableFunction<E, LocalDate> name, LocalDate min, LocalDate max,
+    <E> L nba(int index, SerializableToLocalDateFunction<E> name, LocalDate min, LocalDate max,
             BiPredicate<LocalDate, LocalDate> ignoreStrategy);
 
     /**
      * not between and.
      *
+     * @param <E>   the element type
+     * @param index the index
      * @param name  参数名称
-     * @param value 参数值
+     * @param min   the min
+     * @param max   the max
      * @return LogicExpression
      */
-    <E> L nba(int index, SerializableFunction<E, LocalDateTime> name, LocalDateTime min, LocalDateTime max);
+    <E> L nba(int index, SerializableToLocalDateTimeFunction<E> name, LocalDateTime min, LocalDateTime max);
 
     /**
      * not between and.
      *
+     * @param <E>            the element type
+     * @param index          the index
      * @param name           参数名称
-     * @param value          参数值
+     * @param min            the min
+     * @param max            the max
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
-    <E> L nba(int index, SerializableFunction<E, LocalDateTime> name, LocalDateTime min, LocalDateTime max,
+    <E> L nba(int index, SerializableToLocalDateTimeFunction<E> name, LocalDateTime min, LocalDateTime max,
             BiPredicate<LocalDateTime, LocalDateTime> ignoreStrategy);
 
     /**
      * not between and.
      *
+     * @param <E>   the element type
+     * @param index the index
      * @param name  参数名称
-     * @param value 参数值
+     * @param min   the min
+     * @param max   the max
      * @return LogicExpression
      */
-    <E> L nba(int index, SerializableFunction<E, String> name, String min, String max);
+    <E> L nba(int index, SerializableToStringFunction<E> name, String min, String max);
 
     /**
      * not between and.
      *
+     * @param <E>            the element type
+     * @param index          the index
      * @param name           参数名称
-     * @param value          参数值
+     * @param min            the min
+     * @param max            the max
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
-    <E> L nba(int index, SerializableFunction<E, String> name, String min, String max,
+    <E> L nba(int index, SerializableToStringFunction<E> name, String min, String max,
             BiPredicate<String, String> ignoreStrategy);
 
     //    /**

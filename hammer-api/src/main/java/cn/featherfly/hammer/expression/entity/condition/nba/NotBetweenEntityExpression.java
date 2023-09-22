@@ -10,7 +10,7 @@
  */
 package cn.featherfly.hammer.expression.entity.condition.nba;
 
-import cn.featherfly.hammer.expression.entity.condition.BetweenAndEntityExpression;
+import cn.featherfly.hammer.expression.entity.condition.BetweenAndEntityPropertyExpression;
 
 /**
  * The Interface NotBetweenEntityExpression.
@@ -18,6 +18,5 @@ import cn.featherfly.hammer.expression.entity.condition.BetweenAndEntityExpressi
  * @author zhongj
  * @param <E> the element type
  */
-public interface NotBetweenEntityExpression<E>
-        extends BetweenAndEntityExpression<E>, NotBetweenEntityPropertyExpression<E> {
+public interface NotBetweenEntityExpression<E> extends BetweenAndEntityPropertyExpression<E> {
 }

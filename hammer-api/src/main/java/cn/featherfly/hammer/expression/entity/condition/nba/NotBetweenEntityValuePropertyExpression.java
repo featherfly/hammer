@@ -7,7 +7,7 @@ import cn.featherfly.hammer.expression.entity.condition.BetweenAndEntityValuePro
  * The Interface NotBetweenEntityValuePropertyExpression.
  *
  * @author zhongj
- * @param <E> the element type
+ * @param <V> the value type
  */
-public interface NotBetweenEntityValuePropertyExpression<E> extends BetweenAndEntityValuePropertyExpression<E> {
+public interface NotBetweenEntityValuePropertyExpression<V> extends BetweenAndEntityValuePropertyExpression<V> {
 }

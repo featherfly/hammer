@@ -10,95 +10,14 @@
  */
 package cn.featherfly.hammer.expression.entity.condition.nco;
 
-import java.util.function.Predicate;
-
-import cn.featherfly.common.function.serializable.SerializableSupplier;
-import cn.featherfly.common.function.serializable.SerializableToStringFunction;
-import cn.featherfly.common.operator.ComparisonOperator.MatchStrategy;
+import cn.featherfly.hammer.expression.entity.condition.MatchStringEntityPropertyExpression;
 
 /**
- * The Interface ContainsEntityExpression.
+ * The Interface NotContainsEntityExpression.
  *
  * @author zhongj
  * @param <E> the element type
  */
-public interface NotContainsEntityExpression<E> extends NotContainsEntityPropertyExpression<E> {
+public interface NotContainsEntityExpression<E> extends MatchStringEntityPropertyExpression<E> {
 
-    /**
-     * not contains value. 不包含value.
-     *
-     * @param property the property
-     * @param value    the value
-     * @return the l
-     */
-    void accept(SerializableToStringFunction<E> property, String value);
-
-    /**
-     * not contains value. 不包含value.
-     *
-     * @param property    the property
-     * @param value       the value
-     * @param queryPolicy the query policy
-     * @return the l
-     */
-    void accept(SerializableToStringFunction<E> property, String value, MatchStrategy matchStrategy);
-
-    /**
-     * not contains value. 不包含value.
-     *
-     * @param property       the property
-     * @param value          the value
-     * @param ignoreStrategy the ignore strategy
-     * @return the l
-     */
-    void accept(SerializableToStringFunction<E> property, String value, Predicate<String> ignoreStrategy);
-
-    /**
-     * not contains value. 不包含value.
-     *
-     * @param property       the property
-     * @param value          the value
-     * @param queryPolicy    the query policy
-     * @param ignoreStrategy the ignore strategy
-     * @return the l
-     */
-    void accept(SerializableToStringFunction<E> property, String value, MatchStrategy matchStrategy,
-            Predicate<String> ignoreStrategy);
-
-    /**
-     * not contains value. 不包含value.
-     *
-     * @param propertyValue the property value
-     * @return LogicExpression
-     */
-    void accept(SerializableSupplier<String> propertyValue);
-
-    /**
-     * not contains value. 不包含value.
-     *
-     * @param propertyValue  the property value
-     * @param ignoreStrategy the ignore strategy
-     * @return LogicExpression
-     */
-    void accept(SerializableSupplier<String> propertyValue, Predicate<String> ignoreStrategy);
-
-    /**
-     * not contains value. 不包含value.
-     *
-     * @param propertyValue the property value
-     * @param queryPolicy   the query policy
-     * @return LogicExpression
-     */
-    void accept(SerializableSupplier<String> propertyValue, MatchStrategy matchStrategy);
-
-    /**
-     * not contains value. 不包含value.
-     *
-     * @param propertyValue  the property value
-     * @param queryPolicy    the query policy
-     * @param ignoreStrategy the ignore strategy
-     * @return LogicExpression
-     */
-    void accept(SerializableSupplier<String> propertyValue, MatchStrategy matchStrategy,
-            Predicate<String> ignoreStrategy);
 }

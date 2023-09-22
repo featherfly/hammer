@@ -101,6 +101,8 @@ CREATE TABLE `user_info` (
   `province` varchar(255) DEFAULT NULL,
   `city` varchar(255) DEFAULT NULL,
   `district` varchar(255) DEFAULT NULL,
+  `street` varchar(255) DEFAULT NULL,
+  `street_no` int DEFAULT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 ;
 
@@ -108,8 +110,10 @@ CREATE TABLE `user_info` (
 -- Table structure for user_role
 -- ----------------------------
 
-INSERT INTO `user_info` (`ID`, `user_id`, `name`, `descp`, `province`, `city`, `district`) VALUES ('1', '1', '羽飞', '羽飞描述', '四川', '成都', '金牛');
-INSERT INTO `user_info` (`ID`, `user_id`, `name`, `descp`, `province`, `city`, `district`) VALUES ('2', '2', '翼', '翼描述', '广东', '深圳', '罗湖');
+INSERT INTO `user_info` (`id`, `user_id`, `name`, `descp`, `province`, `city`, `district`, `street`, `street_no`) VALUES (1, 1, '羽飞', '羽飞描述', '四川', '成都', '金牛', '沙湾路', 66);
+INSERT INTO `user_info` (`id`, `user_id`, `name`, `descp`, `province`, `city`, `district`, `street`, `street_no`) VALUES (2, 2, '翼', '翼描述', '广东', '深圳', '罗湖', '测试地址', 112);
+INSERT INTO `user_info` (`id`, `user_id`, `name`, `descp`, `province`, `city`, `district`, `street`, `street_no`) VALUES (3, 3, '飞', '飞描述', '四川', '成都', '武侯', '天府三街', 88);
+INSERT INTO `user_info` (`id`, `user_id`, `name`, `descp`, `province`, `city`, `district`, `street`, `street_no`) VALUES (4, 4, '张三', '张三描述', '四川', '成都', '武侯', '天府三街', 99);
 
 DROP TABLE IF EXISTS `cms_article`;
 CREATE TABLE `cms_article` (

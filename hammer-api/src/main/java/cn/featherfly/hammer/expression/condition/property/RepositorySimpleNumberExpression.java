@@ -1,6 +1,7 @@
 
 package cn.featherfly.hammer.expression.condition.property;
 
+import java.util.function.BiPredicate;
 import java.util.function.Predicate;
 
 import cn.featherfly.common.lang.Lang;
@@ -474,8 +475,63 @@ public class RepositorySimpleNumberExpression<N extends Number, C extends Reposi
      * {@inheritDoc}
      */
     @Override
+    public L ba(N min, N max) {
+        // YUFEI_TODO Auto-generated method stub
+        return null;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public L ba(N min, N max, IgnoreStrategy ignoreStrategy) {
+        // YUFEI_TODO Auto-generated method stub
+        return null;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public L ba(N min, N max, BiPredicate<N, N> ignoreStrategy) {
+        // YUFEI_TODO Auto-generated method stub
+        return null;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public L nba(N min, N max) {
+        // YUFEI_TODO Auto-generated method stub
+        return null;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public L nba(N min, N max, IgnoreStrategy ignoreStrategy) {
+        // YUFEI_TODO Auto-generated method stub
+        return null;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public L nba(N min, N max, BiPredicate<N, N> ignoreStrategy) {
+        // YUFEI_TODO Auto-generated method stub
+        return null;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
     public L gt(N value, Predicate<N> ignoreStrategy) {
         // YUFEI_TODO Auto-generated method stub
         return null;
     }
+
 }

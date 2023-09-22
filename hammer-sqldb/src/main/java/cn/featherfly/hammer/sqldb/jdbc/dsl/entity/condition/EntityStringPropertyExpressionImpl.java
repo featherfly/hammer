@@ -3,11 +3,13 @@ package cn.featherfly.hammer.sqldb.jdbc.dsl.entity.condition;
 
 import java.io.Serializable;
 import java.util.List;
+import java.util.function.BiPredicate;
 import java.util.function.Predicate;
 
 import cn.featherfly.common.db.mapping.JdbcMappingFactory;
 import cn.featherfly.common.function.serializable.SerializableFunction;
 import cn.featherfly.common.function.serializable.SerializableToStringFunction;
+import cn.featherfly.common.lang.Lang;
 import cn.featherfly.common.operator.ComparisonOperator.MatchStrategy;
 import cn.featherfly.common.repository.IgnoreStrategy;
 import cn.featherfly.hammer.expression.condition.ConditionExpression;
@@ -423,6 +425,151 @@ public class EntityStringPropertyExpressionImpl<E, C extends ConditionExpression
     @Override
     public L sw(String value, MatchStrategy matchStrategy, Predicate<String> ignoreStrategy) {
         return expression.sw0(index, getPropertyMapping(value), value, matchStrategy, ignoreStrategy);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public L ba(String min, String max) {
+        return expression.ba0(index, getPropertyMapping(Lang.pick(min, max)), min, max, expression.getIgnoreStrategy());
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public L ba(String min, String max, IgnoreStrategy ignoreStrategy) {
+        return expression.ba0(index, getPropertyMapping(Lang.pick(min, max)), min, max, ignoreStrategy);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public L ba(String min, String max, BiPredicate<String, String> ignoreStrategy) {
+        return expression.ba0(index, getPropertyMapping(Lang.pick(min, max)), min, max, ignoreStrategy);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public L nba(String min, String max) {
+        return expression.nba0(index, getPropertyMapping(Lang.pick(min, max)), min, max,
+                expression.getIgnoreStrategy());
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public L nba(String min, String max, IgnoreStrategy ignoreStrategy) {
+        return expression.nba0(index, getPropertyMapping(Lang.pick(min, max)), min, max, ignoreStrategy);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public L nba(String min, String max, BiPredicate<String, String> ignoreStrategy) {
+        return expression.nba0(index, getPropertyMapping(Lang.pick(min, max)), min, max, ignoreStrategy);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public L nsw(String value, MatchStrategy matchStrategy) {
+        return expression.nsw0(index, getPropertyMapping(value), value, matchStrategy, expression.getIgnoreStrategy());
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public L nsw(String value, MatchStrategy matchStrategy, IgnoreStrategy ignoreStrategy) {
+        return expression.nsw0(index, getPropertyMapping(value), value, matchStrategy, ignoreStrategy);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public L nsw(String value, MatchStrategy matchStrategy, Predicate<String> ignoreStrategy) {
+        return expression.nsw0(index, getPropertyMapping(value), value, matchStrategy, ignoreStrategy);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public L nco(String value, MatchStrategy matchStrategy) {
+        return expression.nco0(index, getPropertyMapping(value), value, matchStrategy, expression.getIgnoreStrategy());
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public L nco(String value, MatchStrategy matchStrategy, IgnoreStrategy ignoreStrategy) {
+        return expression.nco0(index, getPropertyMapping(value), value, matchStrategy, ignoreStrategy);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public L nco(String value, MatchStrategy matchStrategy, Predicate<String> ignoreStrategy) {
+        return expression.nco0(index, getPropertyMapping(value), value, matchStrategy, ignoreStrategy);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public L newv(String value, MatchStrategy matchStrategy) {
+        return expression.new0(index, getPropertyMapping(value), value, matchStrategy, expression.getIgnoreStrategy());
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public L newv(String value, MatchStrategy matchStrategy, IgnoreStrategy ignoreStrategy) {
+        return expression.new0(index, getPropertyMapping(value), value, matchStrategy, ignoreStrategy);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public L newv(String value, MatchStrategy matchStrategy, Predicate<String> ignoreStrategy) {
+        return expression.new0(index, getPropertyMapping(value), value, matchStrategy, ignoreStrategy);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public L nl(String value, MatchStrategy matchStrategy) {
+        return expression.nl0(index, getPropertyMapping(value), value, matchStrategy, expression.getIgnoreStrategy());
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public L nl(String value, MatchStrategy matchStrategy, IgnoreStrategy ignoreStrategy) {
+        return expression.nl0(index, getPropertyMapping(value), value, matchStrategy, ignoreStrategy);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public L nl(String value, MatchStrategy matchStrategy, Predicate<String> ignoreStrategy) {
+        return expression.nl0(index, getPropertyMapping(value), value, matchStrategy, ignoreStrategy);
     }
 
 }

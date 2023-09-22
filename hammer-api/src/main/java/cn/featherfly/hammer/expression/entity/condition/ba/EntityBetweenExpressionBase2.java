@@ -7,10 +7,16 @@ import java.time.LocalTime;
 import java.util.Date;
 import java.util.function.BiPredicate;
 
-import cn.featherfly.common.function.serializable.SerializableFunction;
+import cn.featherfly.common.function.serializable.SerializableToDateFunction;
 import cn.featherfly.common.function.serializable.SerializableToDoubleFunction;
+import cn.featherfly.common.function.serializable.SerializableToEnumFunction;
 import cn.featherfly.common.function.serializable.SerializableToIntFunction;
+import cn.featherfly.common.function.serializable.SerializableToLocalDateFunction;
+import cn.featherfly.common.function.serializable.SerializableToLocalDateTimeFunction;
+import cn.featherfly.common.function.serializable.SerializableToLocalTimeFunction;
 import cn.featherfly.common.function.serializable.SerializableToLongFunction;
+import cn.featherfly.common.function.serializable.SerializableToNumberFunction;
+import cn.featherfly.common.function.serializable.SerializableToStringFunction;
 import cn.featherfly.hammer.expression.condition.ConditionExpression;
 import cn.featherfly.hammer.expression.condition.LogicExpression;
 
@@ -18,13 +24,13 @@ import cn.featherfly.hammer.expression.condition.LogicExpression;
  * The Interface EntityBetweenExpressionBase2.
  *
  * @author zhongj
- * @param <E>  the element type
- * @param <E2> the generic type
+ * @param <T>  the element type
+ * @param <T2> the generic type
  * @param <C>  the generic type
  * @param <L>  the generic type
  */
-public interface EntityBetweenExpressionBase2<E, E2, C extends ConditionExpression, L extends LogicExpression<C, L>>
-        extends EntityBetweenExpression<E, C, L> {
+public interface EntityBetweenExpressionBase2<T, T2, C extends ConditionExpression, L extends LogicExpression<C, L>>
+        extends EntityBetweenExpression<T, C, L> {
 
     /**
      * between and.
@@ -34,7 +40,7 @@ public interface EntityBetweenExpressionBase2<E, E2, C extends ConditionExpressi
      * @param value 参数值
      * @return LogicExpression
      */
-    L ba2(SerializableToIntFunction<E2> name, int min, int max);
+    L ba2(SerializableToIntFunction<T2> name, int min, int max);
 
     /**
      * between and.
@@ -44,7 +50,7 @@ public interface EntityBetweenExpressionBase2<E, E2, C extends ConditionExpressi
      * @param value 参数值
      * @return LogicExpression
      */
-    L ba2(SerializableToIntFunction<E2> name, int min, int max, BiPredicate<Integer, Integer> ignoreStrategy);
+    L ba2(SerializableToIntFunction<T2> name, int min, int max, BiPredicate<Integer, Integer> ignoreStrategy);
 
     /**
      * between and.
@@ -54,7 +60,7 @@ public interface EntityBetweenExpressionBase2<E, E2, C extends ConditionExpressi
      * @param value 参数值
      * @return LogicExpression
      */
-    L ba2(SerializableToLongFunction<E2> name, long min, long max);
+    L ba2(SerializableToLongFunction<T2> name, long min, long max);
 
     /**
      * between and.
@@ -64,7 +70,7 @@ public interface EntityBetweenExpressionBase2<E, E2, C extends ConditionExpressi
      * @param value 参数值
      * @return LogicExpression
      */
-    L ba2(SerializableToLongFunction<E2> name, long min, long max, BiPredicate<Long, Long> ignoreStrategy);
+    L ba2(SerializableToLongFunction<T2> name, long min, long max, BiPredicate<Long, Long> ignoreStrategy);
 
     /**
      * between and.
@@ -74,7 +80,7 @@ public interface EntityBetweenExpressionBase2<E, E2, C extends ConditionExpressi
      * @param value 参数值
      * @return LogicExpression
      */
-    L ba2(SerializableToDoubleFunction<E2> name, double min, double max);
+    L ba2(SerializableToDoubleFunction<T2> name, double min, double max);
 
     /**
      * between and.
@@ -84,7 +90,7 @@ public interface EntityBetweenExpressionBase2<E, E2, C extends ConditionExpressi
      * @param value 参数值
      * @return LogicExpression
      */
-    L ba2(SerializableToDoubleFunction<E2> name, double min, double max, BiPredicate<Double, Double> ignoreStrategy);
+    L ba2(SerializableToDoubleFunction<T2> name, double min, double max, BiPredicate<Double, Double> ignoreStrategy);
 
     /**
      * between and.
@@ -94,7 +100,7 @@ public interface EntityBetweenExpressionBase2<E, E2, C extends ConditionExpressi
      * @param value 参数值
      * @return LogicExpression
      */
-    <N extends Number> L ba2(SerializableFunction<E2, N> name, N min, N max);
+    <N extends Number> L ba2(SerializableToNumberFunction<T2, N> name, N min, N max);
 
     /**
      * between and.
@@ -105,7 +111,7 @@ public interface EntityBetweenExpressionBase2<E, E2, C extends ConditionExpressi
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
-    <N extends Number> L ba2(SerializableFunction<E2, N> name, N min, N max, BiPredicate<N, N> ignoreStrategy);
+    <N extends Number> L ba2(SerializableToNumberFunction<T2, N> name, N min, N max, BiPredicate<N, N> ignoreStrategy);
 
     /**
      * between and.
@@ -115,7 +121,7 @@ public interface EntityBetweenExpressionBase2<E, E2, C extends ConditionExpressi
      * @param value 参数值
      * @return LogicExpression
      */
-    <D extends Date> L ba2(SerializableFunction<E2, D> name, D min, D max);
+    <D extends Date> L ba2(SerializableToDateFunction<T2, D> name, D min, D max);
 
     /**
      * between and.
@@ -126,7 +132,28 @@ public interface EntityBetweenExpressionBase2<E, E2, C extends ConditionExpressi
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
-    <D extends Date> L ba2(SerializableFunction<E2, D> name, D min, D max, BiPredicate<D, D> ignoreStrategy);
+    <D extends Date> L ba2(SerializableToDateFunction<T2, D> name, D min, D max, BiPredicate<D, D> ignoreStrategy);
+
+    /**
+     * between and.
+     *
+     * @param <E>   enum type
+     * @param name  参数名称
+     * @param value 参数值
+     * @return LogicExpression
+     */
+    <E extends Enum<E>> L ba2(SerializableToEnumFunction<T2, E> name, E min, E max);
+
+    /**
+     * between and.
+     *
+     * @param <E>            enum type
+     * @param name           参数名称
+     * @param value          参数值
+     * @param ignoreStrategy the ignore strategy
+     * @return LogicExpression
+     */
+    <E extends Enum<E>> L ba2(SerializableToEnumFunction<T2, E> name, E min, E max, BiPredicate<E, E> ignoreStrategy);
 
     /**
      * between and.
@@ -135,7 +162,7 @@ public interface EntityBetweenExpressionBase2<E, E2, C extends ConditionExpressi
      * @param value 参数值
      * @return LogicExpression
      */
-    L ba2(SerializableFunction<E2, LocalTime> name, LocalTime min, LocalTime max);
+    L ba2(SerializableToLocalTimeFunction<T2> name, LocalTime min, LocalTime max);
 
     /**
      * between and.
@@ -145,7 +172,7 @@ public interface EntityBetweenExpressionBase2<E, E2, C extends ConditionExpressi
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
-    L ba2(SerializableFunction<E2, LocalTime> name, LocalTime min, LocalTime max,
+    L ba2(SerializableToLocalTimeFunction<T2> name, LocalTime min, LocalTime max,
             BiPredicate<LocalTime, LocalTime> ignoreStrategy);
 
     /**
@@ -155,7 +182,7 @@ public interface EntityBetweenExpressionBase2<E, E2, C extends ConditionExpressi
      * @param value 参数值
      * @return LogicExpression
      */
-    L ba2(SerializableFunction<E2, LocalDate> name, LocalDate min, LocalDate max);
+    L ba2(SerializableToLocalDateFunction<T2> name, LocalDate min, LocalDate max);
 
     /**
      * between and.
@@ -165,7 +192,7 @@ public interface EntityBetweenExpressionBase2<E, E2, C extends ConditionExpressi
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
-    L ba2(SerializableFunction<E2, LocalDate> name, LocalDate min, LocalDate max,
+    L ba2(SerializableToLocalDateFunction<T2> name, LocalDate min, LocalDate max,
             BiPredicate<LocalDate, LocalDate> ignoreStrategy);
 
     /**
@@ -175,7 +202,7 @@ public interface EntityBetweenExpressionBase2<E, E2, C extends ConditionExpressi
      * @param value 参数值
      * @return LogicExpression
      */
-    L ba2(SerializableFunction<E2, LocalDateTime> name, LocalDateTime min, LocalDateTime max);
+    L ba2(SerializableToLocalDateTimeFunction<T2> name, LocalDateTime min, LocalDateTime max);
 
     /**
      * between and.
@@ -185,7 +212,7 @@ public interface EntityBetweenExpressionBase2<E, E2, C extends ConditionExpressi
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
-    L ba2(SerializableFunction<E2, LocalDateTime> name, LocalDateTime min, LocalDateTime max,
+    L ba2(SerializableToLocalDateTimeFunction<T2> name, LocalDateTime min, LocalDateTime max,
             BiPredicate<LocalDateTime, LocalDateTime> ignoreStrategy);
 
     /**
@@ -195,7 +222,7 @@ public interface EntityBetweenExpressionBase2<E, E2, C extends ConditionExpressi
      * @param value 参数值
      * @return LogicExpression
      */
-    L ba2(SerializableFunction<E2, String> name, String min, String max);
+    L ba2(SerializableToStringFunction<T2> name, String min, String max);
 
     /**
      * between and.
@@ -205,7 +232,7 @@ public interface EntityBetweenExpressionBase2<E, E2, C extends ConditionExpressi
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
-    L ba2(SerializableFunction<E2, String> name, String min, String max, BiPredicate<String, String> ignoreStrategy);
+    L ba2(SerializableToStringFunction<T2> name, String min, String max, BiPredicate<String, String> ignoreStrategy);
 
     //    /**
     //     * between and.

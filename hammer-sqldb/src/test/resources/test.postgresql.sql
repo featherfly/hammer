@@ -112,6 +112,8 @@ CREATE TABLE "user_info" (
   "province" varchar(255) ,
   "city" varchar(255) ,
   "district" varchar(255) ,
+  "street" varchar(255) ,
+  "street_no" int4 ,
   CONSTRAINT "user_info_pkey" PRIMARY KEY ("id")
 ) ;
 
@@ -119,8 +121,10 @@ CREATE TABLE "user_info" (
 -- Table structure for user_role
 -- ----------------------------
 
-INSERT INTO "user_info" ("id", "user_id", "name", "descp", "province", "city", "district") VALUES ('1', '1', '羽飞', '羽飞描述', '四川', '成都', '金牛');
-INSERT INTO "user_info" ("id", "user_id", "name", "descp", "province", "city", "district") VALUES ('2', '2', '翼', '翼描述', '广东', '深圳', '罗湖');
+INSERT INTO "user_info" ("id", "user_id", "name", "descp", "province", "city", "district", "street", "street_no") VALUES ('1', '1', '羽飞', '羽飞描述', '四川', '成都', '金牛', '沙湾路', 66);
+INSERT INTO "user_info" ("id", "user_id", "name", "descp", "province", "city", "district", "street", "street_no") VALUES ('2', '2', '翼', '翼描述', '广东', '深圳', '罗湖', '沙湾路', 66);
+INSERT INTO "user_info" ("id", "user_id", "name", "descp", "province", "city", "district", "street", "street_no") VALUES ('3', '3', '飞', '飞描述', '四川', '成都', '武侯', '天府三街', 88);
+INSERT INTO "user_info" ("id", "user_id", "name", "descp", "province", "city", "district", "street", "street_no") VALUES (4, 4, '张三', '张三描述', '四川', '成都', '武侯', '天府三街', 99);
 
 DROP TABLE IF EXISTS "cms_article" CASCADE;
 CREATE TABLE "cms_article" (

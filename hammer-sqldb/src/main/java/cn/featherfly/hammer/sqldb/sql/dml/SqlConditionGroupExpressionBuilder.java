@@ -24,10 +24,7 @@ import cn.featherfly.hammer.dml.BuildableConditionGroupLogicExpression;
 import cn.featherfly.hammer.sqldb.jdbc.SqlPageFactory;
 
 /**
- * <p>
- * sql condition group builder sql条件逻辑组构造器
- * </p>
- * .
+ * sql condition group builder. sql条件逻辑组构造器.
  *
  * @author zhongj
  */
@@ -105,7 +102,7 @@ public class SqlConditionGroupExpressionBuilder extends
      * {@inheritDoc}
      */
     @Override
-    protected <T, R> BuildableConditionGroupLogicExpression eq_ne(int index, ComparisonOperator comparisonOperator,
+    protected <R> BuildableConditionGroupLogicExpression eq_ne(int index, ComparisonOperator comparisonOperator,
             PropertyMapping<?> pm, R value, MatchStrategy matchStrategy, Predicate<?> ignoreStrategy) {
         // IMPLSOON 未实现
         throw new NotImplementedException();

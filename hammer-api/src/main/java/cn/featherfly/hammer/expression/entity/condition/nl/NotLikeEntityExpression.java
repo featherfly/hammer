@@ -10,11 +10,7 @@
  */
 package cn.featherfly.hammer.expression.entity.condition.nl;
 
-import java.util.function.Predicate;
-
-import cn.featherfly.common.function.serializable.SerializableSupplier;
-import cn.featherfly.common.function.serializable.SerializableToStringFunction;
-import cn.featherfly.common.operator.ComparisonOperator.MatchStrategy;
+import cn.featherfly.hammer.expression.entity.condition.MatchStringEntityPropertyExpression;
 
 /**
  * The Interface NotLikeEntityExpression.
@@ -22,83 +18,6 @@ import cn.featherfly.common.operator.ComparisonOperator.MatchStrategy;
  * @author zhongj
  * @param <E> the element type
  */
-public interface NotLikeEntityExpression<E> extends NotLikeEntityPropertyExpression<E> {
+public interface NotLikeEntityExpression<E> extends MatchStringEntityPropertyExpression<E> {
 
-    /**
-     * not like value.
-     *
-     * @param property the property
-     * @param value    the value
-     * @return the l
-     */
-    void accept(SerializableToStringFunction<E> property, String value);
-
-    /**
-     * not like value.
-     *
-     * @param property    the property
-     * @param value       the value
-     * @param queryPolicy the query policy
-     * @return the l
-     */
-    void accept(SerializableToStringFunction<E> property, String value, MatchStrategy matchStrategy);
-
-    /**
-     * not like value.
-     *
-     * @param property       the property
-     * @param value          the value
-     * @param ignoreStrategy the ignore strategy
-     * @return the l
-     */
-    void accept(SerializableToStringFunction<E> property, String value, Predicate<String> ignoreStrategy);
-
-    /**
-     * not like value.
-     *
-     * @param property       the property
-     * @param value          the value
-     * @param queryPolicy    the query policy
-     * @param ignoreStrategy the ignore strategy
-     * @return the l
-     */
-    void accept(SerializableToStringFunction<E> property, String value, MatchStrategy matchStrategy,
-            Predicate<String> ignoreStrategy);
-
-    /**
-     * not like value.
-     *
-     * @param propertyValue the property value
-     * @return LogicExpression
-     */
-    void accept(SerializableSupplier<String> propertyValue);
-
-    /**
-     * not like value.
-     *
-     * @param propertyValue  the property value
-     * @param ignoreStrategy the ignore strategy
-     * @return LogicExpression
-     */
-    void accept(SerializableSupplier<String> propertyValue, Predicate<String> ignoreStrategy);
-
-    /**
-     * not like value.
-     *
-     * @param propertyValue the property value
-     * @param queryPolicy   the query policy
-     * @return LogicExpression
-     */
-    void accept(SerializableSupplier<String> propertyValue, MatchStrategy matchStrategy);
-
-    /**
-     * not like value.
-     *
-     * @param propertyValue  the property value
-     * @param queryPolicy    the query policy
-     * @param ignoreStrategy the ignore strategy
-     * @return LogicExpression
-     */
-    void accept(SerializableSupplier<String> propertyValue, MatchStrategy matchStrategy,
-            Predicate<String> ignoreStrategy);
 }

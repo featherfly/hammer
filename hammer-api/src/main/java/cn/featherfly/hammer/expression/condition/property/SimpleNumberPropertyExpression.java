@@ -1,6 +1,7 @@
 
 package cn.featherfly.hammer.expression.condition.property;
 
+import java.util.function.BiPredicate;
 import java.util.function.Predicate;
 
 import cn.featherfly.common.repository.IgnoreStrategy;
@@ -112,7 +113,7 @@ public class SimpleNumberPropertyExpression<N extends Number, C extends Conditio
     @SuppressWarnings("unchecked")
     @Override
     public L in(N value, Predicate<N> ignoreStrategy) {
-        return expression.in(name, value, (v) -> ignoreStrategy.test((N) v));
+        return expression.in(name, value, v -> ignoreStrategy.test((N) v));
     }
 
     /**
@@ -137,7 +138,7 @@ public class SimpleNumberPropertyExpression<N extends Number, C extends Conditio
     @SuppressWarnings("unchecked")
     @Override
     public L in(N[] value, Predicate<N[]> ignoreStrategy) {
-        return expression.in(name, value, (v) -> ignoreStrategy.test((N[]) v));
+        return expression.in(name, value, v -> ignoreStrategy.test((N[]) v));
     }
 
     /**
@@ -154,7 +155,7 @@ public class SimpleNumberPropertyExpression<N extends Number, C extends Conditio
     @SuppressWarnings("unchecked")
     @Override
     public L ni(N value, Predicate<N> ignoreStrategy) {
-        return expression.ni(name, value, (v) -> ignoreStrategy.test((N) v));
+        return expression.ni(name, value, v -> ignoreStrategy.test((N) v));
     }
 
     /**
@@ -187,7 +188,7 @@ public class SimpleNumberPropertyExpression<N extends Number, C extends Conditio
     @SuppressWarnings("unchecked")
     @Override
     public L ni(N[] value, Predicate<N[]> ignoreStrategy) {
-        return expression.ni(name, value, (v) -> ignoreStrategy.test((N[]) v));
+        return expression.ni(name, value, v -> ignoreStrategy.test((N[]) v));
     }
 
     /**
@@ -316,6 +317,54 @@ public class SimpleNumberPropertyExpression<N extends Number, C extends Conditio
     @Override
     public L inn(Boolean value) {
         return expression.inn(name, value);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public L ba(N min, N max) {
+        return expression.ba(name, min, max);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public L ba(N min, N max, IgnoreStrategy ignoreStrategy) {
+        return expression.ba(name, min, max, ignoreStrategy);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public L ba(N min, N max, BiPredicate<N, N> ignoreStrategy) {
+        return expression.ba(name, min, max, ignoreStrategy);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public L nba(N min, N max) {
+        return expression.nba(name, min, max);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public L nba(N min, N max, IgnoreStrategy ignoreStrategy) {
+        return expression.ba(name, min, max, ignoreStrategy);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public L nba(N min, N max, BiPredicate<N, N> ignoreStrategy) {
+        return expression.ba(name, min, max, ignoreStrategy);
     }
 
 }

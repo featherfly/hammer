@@ -17,10 +17,12 @@ import cn.featherfly.hammer.expression.condition.LogicExpression;
  */
 public interface NumberPropertyExpression<N extends Number, C extends ConditionExpression,
         L extends LogicExpression<C, L>>
-        extends PropertyEqualsExpression<C, L, N>, PropertyNotEqualsExpression<C, L, N>, PropertyInExpression<C, L, N>,
-        PropertyNotInExpression<C, L, N>, PropertyLessEqualsExpression<C, L, N>, PropertyLessThanExpression<C, L, N>,
-        PropertyGreatEqualsExpression<C, L, N>, PropertyGreatThanExpression<C, L, N>, PropertyIsNullExpression<C, L>,
-        PropertyIsNotNullExpression<C, L> {
+        extends PropertyBetweenExpression<C, L, N>, PropertyNotBetweenExpression<C, L, N> //
+        , PropertyEqualsExpression<C, L, N>, PropertyNotEqualsExpression<C, L, N> //
+        , PropertyInExpression<C, L, N>, PropertyNotInExpression<C, L, N> //
+        , PropertyLessEqualsExpression<C, L, N>, PropertyLessThanExpression<C, L, N> //
+        , PropertyGreatEqualsExpression<C, L, N>, PropertyGreatThanExpression<C, L, N> //
+        , PropertyIsNullExpression<C, L>, PropertyIsNotNullExpression<C, L> {
     /**
      * {@inheritDoc}
      */

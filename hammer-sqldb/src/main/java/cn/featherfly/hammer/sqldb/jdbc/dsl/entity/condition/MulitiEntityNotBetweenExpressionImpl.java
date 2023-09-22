@@ -7,10 +7,16 @@ import java.time.LocalTime;
 import java.util.Date;
 import java.util.function.BiPredicate;
 
-import cn.featherfly.common.function.serializable.SerializableFunction;
+import cn.featherfly.common.function.serializable.SerializableToDateFunction;
 import cn.featherfly.common.function.serializable.SerializableToDoubleFunction;
+import cn.featherfly.common.function.serializable.SerializableToEnumFunction;
 import cn.featherfly.common.function.serializable.SerializableToIntFunction;
+import cn.featherfly.common.function.serializable.SerializableToLocalDateFunction;
+import cn.featherfly.common.function.serializable.SerializableToLocalDateTimeFunction;
+import cn.featherfly.common.function.serializable.SerializableToLocalTimeFunction;
 import cn.featherfly.common.function.serializable.SerializableToLongFunction;
+import cn.featherfly.common.function.serializable.SerializableToNumberFunction;
+import cn.featherfly.common.function.serializable.SerializableToStringFunction;
 import cn.featherfly.hammer.expression.condition.ConditionExpression;
 import cn.featherfly.hammer.expression.condition.LogicExpression;
 import cn.featherfly.hammer.expression.entity.condition.nba.MulitiEntityNotBetweenExpression;
@@ -89,7 +95,7 @@ public class MulitiEntityNotBetweenExpressionImpl<C extends ConditionExpression,
      * {@inheritDoc}
      */
     @Override
-    public <E, N extends Number> L nba(int index, SerializableFunction<E, N> name, N min, N max) {
+    public <E, N extends Number> L nba(int index, SerializableToNumberFunction<E, N> name, N min, N max) {
         return proxy.nba0(index, name, min, max, ignoreStrategy);
     }
 
@@ -97,7 +103,7 @@ public class MulitiEntityNotBetweenExpressionImpl<C extends ConditionExpression,
      * {@inheritDoc}
      */
     @Override
-    public <E, N extends Number> L nba(int index, SerializableFunction<E, N> name, N min, N max,
+    public <E, N extends Number> L nba(int index, SerializableToNumberFunction<E, N> name, N min, N max,
             BiPredicate<N, N> ignoreStrategy) {
         return proxy.nba0(index, name, min, max, ignoreStrategy);
     }
@@ -106,7 +112,7 @@ public class MulitiEntityNotBetweenExpressionImpl<C extends ConditionExpression,
      * {@inheritDoc}
      */
     @Override
-    public <E, D extends Date> L nba(int index, SerializableFunction<E, D> name, D min, D max) {
+    public <E, D extends Date> L nba(int index, SerializableToDateFunction<E, D> name, D min, D max) {
         return proxy.nba0(index, name, min, max, ignoreStrategy);
     }
 
@@ -114,7 +120,7 @@ public class MulitiEntityNotBetweenExpressionImpl<C extends ConditionExpression,
      * {@inheritDoc}
      */
     @Override
-    public <E, D extends Date> L nba(int index, SerializableFunction<E, D> name, D min, D max,
+    public <E, D extends Date> L nba(int index, SerializableToDateFunction<E, D> name, D min, D max,
             BiPredicate<D, D> ignoreStrategy) {
         return proxy.nba0(index, name, min, max, ignoreStrategy);
     }
@@ -123,7 +129,7 @@ public class MulitiEntityNotBetweenExpressionImpl<C extends ConditionExpression,
      * {@inheritDoc}
      */
     @Override
-    public <E> L nba(int index, SerializableFunction<E, LocalTime> name, LocalTime min, LocalTime max) {
+    public <E> L nba(int index, SerializableToLocalTimeFunction<E> name, LocalTime min, LocalTime max) {
         return proxy.nba0(index, name, min, max, ignoreStrategy);
     }
 
@@ -131,7 +137,7 @@ public class MulitiEntityNotBetweenExpressionImpl<C extends ConditionExpression,
      * {@inheritDoc}
      */
     @Override
-    public <E> L nba(int index, SerializableFunction<E, LocalTime> name, LocalTime min, LocalTime max,
+    public <E> L nba(int index, SerializableToLocalTimeFunction<E> name, LocalTime min, LocalTime max,
             BiPredicate<LocalTime, LocalTime> ignoreStrategy) {
         return proxy.nba0(index, name, min, max, ignoreStrategy);
     }
@@ -140,7 +146,7 @@ public class MulitiEntityNotBetweenExpressionImpl<C extends ConditionExpression,
      * {@inheritDoc}
      */
     @Override
-    public <E> L nba(int index, SerializableFunction<E, LocalDate> name, LocalDate min, LocalDate max) {
+    public <E> L nba(int index, SerializableToLocalDateFunction<E> name, LocalDate min, LocalDate max) {
         return proxy.nba0(index, name, min, max, ignoreStrategy);
     }
 
@@ -148,7 +154,7 @@ public class MulitiEntityNotBetweenExpressionImpl<C extends ConditionExpression,
      * {@inheritDoc}
      */
     @Override
-    public <E> L nba(int index, SerializableFunction<E, LocalDate> name, LocalDate min, LocalDate max,
+    public <E> L nba(int index, SerializableToLocalDateFunction<E> name, LocalDate min, LocalDate max,
             BiPredicate<LocalDate, LocalDate> ignoreStrategy) {
         return proxy.nba0(index, name, min, max, ignoreStrategy);
     }
@@ -157,7 +163,7 @@ public class MulitiEntityNotBetweenExpressionImpl<C extends ConditionExpression,
      * {@inheritDoc}
      */
     @Override
-    public <E> L nba(int index, SerializableFunction<E, LocalDateTime> name, LocalDateTime min, LocalDateTime max) {
+    public <E> L nba(int index, SerializableToLocalDateTimeFunction<E> name, LocalDateTime min, LocalDateTime max) {
         return proxy.nba0(index, name, min, max, ignoreStrategy);
     }
 
@@ -165,7 +171,7 @@ public class MulitiEntityNotBetweenExpressionImpl<C extends ConditionExpression,
      * {@inheritDoc}
      */
     @Override
-    public <E> L nba(int index, SerializableFunction<E, LocalDateTime> name, LocalDateTime min, LocalDateTime max,
+    public <E> L nba(int index, SerializableToLocalDateTimeFunction<E> name, LocalDateTime min, LocalDateTime max,
             BiPredicate<LocalDateTime, LocalDateTime> ignoreStrategy) {
         return proxy.nba0(index, name, min, max, ignoreStrategy);
     }
@@ -174,7 +180,7 @@ public class MulitiEntityNotBetweenExpressionImpl<C extends ConditionExpression,
      * {@inheritDoc}
      */
     @Override
-    public <E> L nba(int index, SerializableFunction<E, String> name, String min, String max) {
+    public <E> L nba(int index, SerializableToStringFunction<E> name, String min, String max) {
         return proxy.nba0(index, name, min, max, ignoreStrategy);
     }
 
@@ -182,8 +188,25 @@ public class MulitiEntityNotBetweenExpressionImpl<C extends ConditionExpression,
      * {@inheritDoc}
      */
     @Override
-    public <E> L nba(int index, SerializableFunction<E, String> name, String min, String max,
+    public <E> L nba(int index, SerializableToStringFunction<E> name, String min, String max,
             BiPredicate<String, String> ignoreStrategy) {
+        return proxy.nba0(index, name, min, max, ignoreStrategy);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public <T, E extends Enum<E>> L nba(int index, SerializableToEnumFunction<T, E> name, E min, E max) {
+        return proxy.nba0(index, name, min, max, ignoreStrategy);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public <T, E extends Enum<E>> L nba(int index, SerializableToEnumFunction<T, E> name, E min, E max,
+            BiPredicate<E, E> ignoreStrategy) {
         return proxy.nba0(index, name, min, max, ignoreStrategy);
     }
 
