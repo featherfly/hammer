@@ -107,7 +107,7 @@ public class SimpleEnumPropertyExpression<E extends Enum<E>, C extends Condition
     @SuppressWarnings("unchecked")
     @Override
     public L in(E value, Predicate<E> ignoreStrategy) {
-        return expression.in(name, value, (v) -> ignoreStrategy.test((E) v));
+        return expression.in(name, value, v -> ignoreStrategy.test((E) v));
     }
 
     /**
@@ -132,7 +132,7 @@ public class SimpleEnumPropertyExpression<E extends Enum<E>, C extends Condition
     @SuppressWarnings("unchecked")
     @Override
     public L in(E[] value, Predicate<E[]> ignoreStrategy) {
-        return expression.in(name, value, (v) -> ignoreStrategy.test((E[]) v));
+        return expression.in(name, value, v -> ignoreStrategy.test((E[]) v));
     }
 
     /**
@@ -157,7 +157,7 @@ public class SimpleEnumPropertyExpression<E extends Enum<E>, C extends Condition
     @SuppressWarnings("unchecked")
     @Override
     public L ni(E value, Predicate<E> ignoreStrategy) {
-        return expression.ni(name, value, (v) -> ignoreStrategy.test((E) v));
+        return expression.ni(name, value, v -> ignoreStrategy.test((E) v));
     }
 
     /**
@@ -182,7 +182,7 @@ public class SimpleEnumPropertyExpression<E extends Enum<E>, C extends Condition
     @SuppressWarnings("unchecked")
     @Override
     public L ni(E[] value, Predicate<E[]> ignoreStrategy) {
-        return expression.ni(name, value, (v) -> ignoreStrategy.test((E[]) v));
+        return expression.ni(name, value, v -> ignoreStrategy.test((E[]) v));
     }
 
     /**

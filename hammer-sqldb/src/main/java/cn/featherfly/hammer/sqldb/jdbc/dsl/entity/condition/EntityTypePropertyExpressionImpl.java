@@ -5,6 +5,7 @@ import java.io.Serializable;
 import java.util.Collection;
 import java.util.Date;
 import java.util.List;
+import java.util.function.BiPredicate;
 import java.util.function.Predicate;
 
 import cn.featherfly.common.db.mapping.JdbcMappingFactory;
@@ -21,6 +22,7 @@ import cn.featherfly.common.function.serializable.SerializableToLocalTimeFunctio
 import cn.featherfly.common.function.serializable.SerializableToLongFunction;
 import cn.featherfly.common.function.serializable.SerializableToNumberFunction;
 import cn.featherfly.common.function.serializable.SerializableToStringFunction;
+import cn.featherfly.common.lang.Lang;
 import cn.featherfly.common.operator.ComparisonOperator.MatchStrategy;
 import cn.featherfly.common.repository.IgnoreStrategy;
 import cn.featherfly.hammer.expression.condition.ConditionExpression;
@@ -558,6 +560,55 @@ public class EntityTypePropertyExpressionImpl<E, P, F extends SerializableFuncti
     @Override
     public L ne(P value, MatchStrategy matchStrategy, Predicate<P> ignoreStrategy) {
         return expression.ne0(index, getPropertyMapping(value), value, matchStrategy, ignoreStrategy);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public L ba(P min, P max) {
+        return expression.ba0(index, getPropertyMapping(Lang.pick(min, max)), min, max, expression.getIgnoreStrategy());
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public L ba(P min, P max, IgnoreStrategy ignoreStrategy) {
+        return expression.ba0(index, getPropertyMapping(Lang.pick(min, max)), min, max, ignoreStrategy);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public L ba(P min, P max, BiPredicate<P, P> ignoreStrategy) {
+        return expression.ba0(index, getPropertyMapping(Lang.pick(min, max)), min, max, ignoreStrategy);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public L nba(P min, P max) {
+        return expression.nba0(index, getPropertyMapping(Lang.pick(min, max)), min, max,
+                expression.getIgnoreStrategy());
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public L nba(P min, P max, IgnoreStrategy ignoreStrategy) {
+        return expression.nba0(index, getPropertyMapping(Lang.pick(min, max)), min, max, ignoreStrategy);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public L nba(P min, P max, BiPredicate<P, P> ignoreStrategy) {
+        return expression.nba0(index, getPropertyMapping(Lang.pick(min, max)), min, max, ignoreStrategy);
     }
 
 }

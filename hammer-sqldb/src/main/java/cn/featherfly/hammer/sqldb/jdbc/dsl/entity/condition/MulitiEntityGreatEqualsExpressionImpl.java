@@ -334,5 +334,4 @@ public class MulitiEntityGreatEqualsExpressionImpl<C extends ConditionExpression
     public L ge(int index, SerializableStringSupplier property, Predicate<String> ignoreStrategy) {
         return proxy.ge0(index, property, ignoreStrategy);
     }
-
 }

@@ -55,7 +55,7 @@ public class MulitiEntityConditionExpressionProxy<C extends ConditionExpression,
      * {@inheritDoc}
      */
     @Override
-    protected <T, R> L eq_ne(int index, ComparisonOperator comparisonOperator, PropertyMapping<?> pm, R value,
+    protected <R> L eq_ne(int index, ComparisonOperator comparisonOperator, PropertyMapping<?> pm, R value,
             MatchStrategy matchStrategy, Predicate<?> ignoreStrategy) {
         return proxy.eq_ne(index, comparisonOperator, pm, value, matchStrategy, ignoreStrategy);
     }

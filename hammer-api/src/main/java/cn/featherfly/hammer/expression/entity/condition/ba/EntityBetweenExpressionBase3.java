@@ -7,10 +7,16 @@ import java.time.LocalTime;
 import java.util.Date;
 import java.util.function.BiPredicate;
 
-import cn.featherfly.common.function.serializable.SerializableFunction;
+import cn.featherfly.common.function.serializable.SerializableToDateFunction;
 import cn.featherfly.common.function.serializable.SerializableToDoubleFunction;
+import cn.featherfly.common.function.serializable.SerializableToEnumFunction;
 import cn.featherfly.common.function.serializable.SerializableToIntFunction;
+import cn.featherfly.common.function.serializable.SerializableToLocalDateFunction;
+import cn.featherfly.common.function.serializable.SerializableToLocalDateTimeFunction;
+import cn.featherfly.common.function.serializable.SerializableToLocalTimeFunction;
 import cn.featherfly.common.function.serializable.SerializableToLongFunction;
+import cn.featherfly.common.function.serializable.SerializableToNumberFunction;
+import cn.featherfly.common.function.serializable.SerializableToStringFunction;
 import cn.featherfly.hammer.expression.condition.ConditionExpression;
 import cn.featherfly.hammer.expression.condition.LogicExpression;
 
@@ -18,14 +24,14 @@ import cn.featherfly.hammer.expression.condition.LogicExpression;
  * The Interface EntityBetweenExpressionBase3.
  *
  * @author zhongj
- * @param <E>  the element type
- * @param <E2> the generic type
- * @param <E3> the generic type
+ * @param <T>  the element type
+ * @param <T2> the generic type
+ * @param <T3> the generic type
  * @param <C>  the generic type
  * @param <L>  the generic type
  */
-public interface EntityBetweenExpressionBase3<E, E2, E3, C extends ConditionExpression, L extends LogicExpression<C, L>>
-        extends EntityBetweenExpressionBase2<E, E2, C, L> {
+public interface EntityBetweenExpressionBase3<T, T2, T3, C extends ConditionExpression, L extends LogicExpression<C, L>>
+        extends EntityBetweenExpressionBase2<T, T2, C, L> {
 
     /**
      * between and.
@@ -35,7 +41,7 @@ public interface EntityBetweenExpressionBase3<E, E2, E3, C extends ConditionExpr
      * @param value 参数值
      * @return LogicExpression
      */
-    L ba3(SerializableToIntFunction<E3> name, int min, int max);
+    L ba3(SerializableToIntFunction<T3> name, int min, int max);
 
     /**
      * between and.
@@ -45,7 +51,7 @@ public interface EntityBetweenExpressionBase3<E, E2, E3, C extends ConditionExpr
      * @param value 参数值
      * @return LogicExpression
      */
-    L ba3(SerializableToIntFunction<E3> name, int min, int max, BiPredicate<Integer, Integer> ignoreStrategy);
+    L ba3(SerializableToIntFunction<T3> name, int min, int max, BiPredicate<Integer, Integer> ignoreStrategy);
 
     /**
      * between and.
@@ -55,7 +61,7 @@ public interface EntityBetweenExpressionBase3<E, E2, E3, C extends ConditionExpr
      * @param value 参数值
      * @return LogicExpression
      */
-    L ba3(SerializableToLongFunction<E3> name, long min, long max);
+    L ba3(SerializableToLongFunction<T3> name, long min, long max);
 
     /**
      * between and.
@@ -65,7 +71,7 @@ public interface EntityBetweenExpressionBase3<E, E2, E3, C extends ConditionExpr
      * @param value 参数值
      * @return LogicExpression
      */
-    L ba3(SerializableToLongFunction<E3> name, long min, long max, BiPredicate<Long, Long> ignoreStrategy);
+    L ba3(SerializableToLongFunction<T3> name, long min, long max, BiPredicate<Long, Long> ignoreStrategy);
 
     /**
      * between and.
@@ -75,7 +81,7 @@ public interface EntityBetweenExpressionBase3<E, E2, E3, C extends ConditionExpr
      * @param value 参数值
      * @return LogicExpression
      */
-    L ba3(SerializableToDoubleFunction<E3> name, double min, double max);
+    L ba3(SerializableToDoubleFunction<T3> name, double min, double max);
 
     /**
      * between and.
@@ -85,7 +91,7 @@ public interface EntityBetweenExpressionBase3<E, E2, E3, C extends ConditionExpr
      * @param value 参数值
      * @return LogicExpression
      */
-    L ba3(SerializableToDoubleFunction<E3> name, double min, double max, BiPredicate<Double, Double> ignoreStrategy);
+    L ba3(SerializableToDoubleFunction<T3> name, double min, double max, BiPredicate<Double, Double> ignoreStrategy);
 
     /**
      * between and.
@@ -95,7 +101,7 @@ public interface EntityBetweenExpressionBase3<E, E2, E3, C extends ConditionExpr
      * @param value 参数值
      * @return LogicExpression
      */
-    <N extends Number> L ba3(SerializableFunction<E3, N> name, N min, N max);
+    <N extends Number> L ba3(SerializableToNumberFunction<T3, N> name, N min, N max);
 
     /**
      * between and.
@@ -106,7 +112,7 @@ public interface EntityBetweenExpressionBase3<E, E2, E3, C extends ConditionExpr
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
-    <N extends Number> L ba3(SerializableFunction<E3, N> name, N min, N max, BiPredicate<N, N> ignoreStrategy);
+    <N extends Number> L ba3(SerializableToNumberFunction<T3, N> name, N min, N max, BiPredicate<N, N> ignoreStrategy);
 
     /**
      * between and.
@@ -116,7 +122,7 @@ public interface EntityBetweenExpressionBase3<E, E2, E3, C extends ConditionExpr
      * @param value 参数值
      * @return LogicExpression
      */
-    <D extends Date> L ba3(SerializableFunction<E3, D> name, D min, D max);
+    <D extends Date> L ba3(SerializableToDateFunction<T3, D> name, D min, D max);
 
     /**
      * between and.
@@ -127,7 +133,28 @@ public interface EntityBetweenExpressionBase3<E, E2, E3, C extends ConditionExpr
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
-    <D extends Date> L ba3(SerializableFunction<E3, D> name, D min, D max, BiPredicate<D, D> ignoreStrategy);
+    <D extends Date> L ba3(SerializableToDateFunction<T3, D> name, D min, D max, BiPredicate<D, D> ignoreStrategy);
+
+    /**
+     * between and.
+     *
+     * @param <E>   enum type
+     * @param name  参数名称
+     * @param value 参数值
+     * @return LogicExpression
+     */
+    <E extends Enum<E>> L ba3(SerializableToEnumFunction<T3, E> name, E min, E max);
+
+    /**
+     * between and.
+     *
+     * @param <E>            enum type
+     * @param name           参数名称
+     * @param value          参数值
+     * @param ignoreStrategy the ignore strategy
+     * @return LogicExpression
+     */
+    <E extends Enum<E>> L ba3(SerializableToEnumFunction<T3, E> name, E min, E max, BiPredicate<E, E> ignoreStrategy);
 
     /**
      * between and.
@@ -136,7 +163,7 @@ public interface EntityBetweenExpressionBase3<E, E2, E3, C extends ConditionExpr
      * @param value 参数值
      * @return LogicExpression
      */
-    L ba3(SerializableFunction<E3, LocalTime> name, LocalTime min, LocalTime max);
+    L ba3(SerializableToLocalTimeFunction<T3> name, LocalTime min, LocalTime max);
 
     /**
      * between and.
@@ -146,7 +173,7 @@ public interface EntityBetweenExpressionBase3<E, E2, E3, C extends ConditionExpr
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
-    L ba3(SerializableFunction<E3, LocalTime> name, LocalTime min, LocalTime max,
+    L ba3(SerializableToLocalTimeFunction<T3> name, LocalTime min, LocalTime max,
             BiPredicate<LocalTime, LocalTime> ignoreStrategy);
 
     /**
@@ -156,7 +183,7 @@ public interface EntityBetweenExpressionBase3<E, E2, E3, C extends ConditionExpr
      * @param value 参数值
      * @return LogicExpression
      */
-    L ba3(SerializableFunction<E3, LocalDate> name, LocalDate min, LocalDate max);
+    L ba3(SerializableToLocalDateFunction<T3> name, LocalDate min, LocalDate max);
 
     /**
      * between and.
@@ -166,7 +193,7 @@ public interface EntityBetweenExpressionBase3<E, E2, E3, C extends ConditionExpr
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
-    L ba3(SerializableFunction<E3, LocalDate> name, LocalDate min, LocalDate max,
+    L ba3(SerializableToLocalDateFunction<T3> name, LocalDate min, LocalDate max,
             BiPredicate<LocalDate, LocalDate> ignoreStrategy);
 
     /**
@@ -176,7 +203,7 @@ public interface EntityBetweenExpressionBase3<E, E2, E3, C extends ConditionExpr
      * @param value 参数值
      * @return LogicExpression
      */
-    L ba3(SerializableFunction<E3, LocalDateTime> name, LocalDateTime min, LocalDateTime max);
+    L ba3(SerializableToLocalDateTimeFunction<T3> name, LocalDateTime min, LocalDateTime max);
 
     /**
      * between and.
@@ -186,7 +213,7 @@ public interface EntityBetweenExpressionBase3<E, E2, E3, C extends ConditionExpr
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
-    L ba3(SerializableFunction<E3, LocalDateTime> name, LocalDateTime min, LocalDateTime max,
+    L ba3(SerializableToLocalDateTimeFunction<T3> name, LocalDateTime min, LocalDateTime max,
             BiPredicate<LocalDateTime, LocalDateTime> ignoreStrategy);
 
     /**
@@ -196,7 +223,7 @@ public interface EntityBetweenExpressionBase3<E, E2, E3, C extends ConditionExpr
      * @param value 参数值
      * @return LogicExpression
      */
-    L ba3(SerializableFunction<E3, String> name, String min, String max);
+    L ba3(SerializableToStringFunction<T3> name, String min, String max);
 
     /**
      * between and.
@@ -206,7 +233,7 @@ public interface EntityBetweenExpressionBase3<E, E2, E3, C extends ConditionExpr
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
-    L ba3(SerializableFunction<E3, String> name, String min, String max, BiPredicate<String, String> ignoreStrategy);
+    L ba3(SerializableToStringFunction<T3> name, String min, String max, BiPredicate<String, String> ignoreStrategy);
 
     //    /**
     //     * between and.

@@ -12,7 +12,8 @@ import cn.featherfly.common.function.serializable.SerializableToCollectionFuncti
  * @author zhongj
  * @param <V> the value type
  */
-public interface CompareEntityPropertyExpression<V> extends CompareEntityValuePropertyExpression<V> {
+public interface CompareEntityPropertyExpression<V>
+        extends CompareEntityValuePropertyExpression<V>, CompareEntityExpression<V> {
 
     /**
      * entity great than function property expression.

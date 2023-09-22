@@ -12,7 +12,8 @@ import cn.featherfly.common.function.serializable.SerializableToCollectionFuncti
  * @author zhongj
  * @param <V> the value type
  */
-public interface BetweenAndEntityPropertyExpression<V> extends BetweenAndEntityValuePropertyExpression<V> {
+public interface BetweenAndEntityPropertyExpression<V>
+        extends BetweenAndEntityExpression<V>, BetweenAndEntityValuePropertyExpression<V> {
 
     /**
      * entity great than function property expression.

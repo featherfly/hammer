@@ -1,6 +1,7 @@
 
 package cn.featherfly.hammer.expression.condition.property;
 
+import java.util.function.BiPredicate;
 import java.util.function.Predicate;
 
 import cn.featherfly.common.operator.ComparisonOperator.MatchStrategy;
@@ -123,7 +124,7 @@ public class SimpleStringPropertyExpression<C extends ConditionsExpression<C, L>
      */
     @Override
     public L in(String value, Predicate<String> ignoreStrategy) {
-        return expression.in(name, value, (v) -> ignoreStrategy.test((String) v));
+        return expression.in(name, value, v -> ignoreStrategy.test((String) v));
     }
 
     /**
@@ -147,7 +148,7 @@ public class SimpleStringPropertyExpression<C extends ConditionsExpression<C, L>
      */
     @Override
     public L in(String[] value, Predicate<String[]> ignoreStrategy) {
-        return expression.in(name, value, (v) -> ignoreStrategy.test((String[]) v));
+        return expression.in(name, value, v -> ignoreStrategy.test((String[]) v));
     }
 
     /**
@@ -171,7 +172,7 @@ public class SimpleStringPropertyExpression<C extends ConditionsExpression<C, L>
      */
     @Override
     public L ni(String value, Predicate<String> ignoreStrategy) {
-        return expression.ni(name, value, (v) -> ignoreStrategy.test((String) v));
+        return expression.ni(name, value, v -> ignoreStrategy.test((String) v));
     }
 
     /**
@@ -195,7 +196,7 @@ public class SimpleStringPropertyExpression<C extends ConditionsExpression<C, L>
      */
     @Override
     public L ni(String[] value, Predicate<String[]> ignoreStrategy) {
-        return expression.ni(name, value, (v) -> ignoreStrategy.test((String[]) v));
+        return expression.ni(name, value, v -> ignoreStrategy.test((String[]) v));
     }
 
     /**
@@ -444,6 +445,150 @@ public class SimpleStringPropertyExpression<C extends ConditionsExpression<C, L>
     @Override
     public L lk(String value, MatchStrategy matchStrategy, Predicate<String> ignoreStrategy) {
         return expression.lk(name, value, matchStrategy, ignoreStrategy);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public L ba(String min, String max) {
+        return expression.ba(name, min, max);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public L ba(String min, String max, IgnoreStrategy ignoreStrategy) {
+        return expression.ba(name, min, max, ignoreStrategy);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public L ba(String min, String max, BiPredicate<String, String> ignoreStrategy) {
+        return expression.ba(name, min, max, ignoreStrategy);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public L nba(String min, String max) {
+        return expression.nba(name, min, max);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public L nba(String min, String max, IgnoreStrategy ignoreStrategy) {
+        return expression.nba(name, min, max, ignoreStrategy);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public L nba(String min, String max, BiPredicate<String, String> ignoreStrategy) {
+        return expression.nba(name, min, max, ignoreStrategy);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public L nsw(String value, MatchStrategy matchStrategy) {
+        return expression.nsw(name, value, matchStrategy);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public L nsw(String value, MatchStrategy matchStrategy, IgnoreStrategy ignoreStrategy) {
+        return expression.nsw(name, value, matchStrategy, ignoreStrategy);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public L nsw(String value, MatchStrategy matchStrategy, Predicate<String> ignoreStrategy) {
+        return expression.nsw(name, value, matchStrategy, ignoreStrategy);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public L nco(String value, MatchStrategy matchStrategy) {
+        return expression.nco(name, value, matchStrategy);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public L nco(String value, MatchStrategy matchStrategy, IgnoreStrategy ignoreStrategy) {
+        return expression.nco(name, value, matchStrategy, ignoreStrategy);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public L nco(String value, MatchStrategy matchStrategy, Predicate<String> ignoreStrategy) {
+        return expression.nco(name, value, matchStrategy, ignoreStrategy);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public L newv(String value, MatchStrategy matchStrategy) {
+        return expression.newv(name, value, matchStrategy);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public L newv(String value, MatchStrategy matchStrategy, IgnoreStrategy ignoreStrategy) {
+        return expression.newv(name, value, matchStrategy, ignoreStrategy);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public L newv(String value, MatchStrategy matchStrategy, Predicate<String> ignoreStrategy) {
+        return expression.newv(name, value, matchStrategy, ignoreStrategy);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public L nl(String value, MatchStrategy matchStrategy) {
+        return expression.nl(name, value, matchStrategy);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public L nl(String value, MatchStrategy matchStrategy, IgnoreStrategy ignoreStrategy) {
+        return expression.nl(name, value, matchStrategy, ignoreStrategy);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public L nl(String value, MatchStrategy matchStrategy, Predicate<String> ignoreStrategy) {
+        return expression.nl(name, value, matchStrategy, ignoreStrategy);
     }
 
 }

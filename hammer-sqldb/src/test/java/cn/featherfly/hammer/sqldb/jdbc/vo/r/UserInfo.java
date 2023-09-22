@@ -30,6 +30,9 @@ public class UserInfo {
     @Embedded
     private DistrictDivision division;
 
+    @Embedded
+    private Address address;
+
     /**
      */
     public UserInfo() {
@@ -134,11 +137,29 @@ public class UserInfo {
     }
 
     /**
+     * get address value
+     *
+     * @return address
+     */
+    public Address getAddress() {
+        return address;
+    }
+
+    /**
+     * set address value
+     *
+     * @param address address
+     */
+    public void setAddress(Address address) {
+        this.address = address;
+    }
+
+    /**
      * {@inheritDoc}
      */
     @Override
     public String toString() {
         return "UserInfo [id=" + id + ", name=" + name + ", descp=" + descp + ", user=" + user + ", division="
-                + division + "]";
+                + division + ", address=" + address + "]";
     }
 }

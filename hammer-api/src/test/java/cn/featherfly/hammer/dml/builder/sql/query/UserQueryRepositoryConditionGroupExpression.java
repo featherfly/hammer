@@ -6,6 +6,7 @@ import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.Date;
 import java.util.Map;
+import java.util.function.BiPredicate;
 import java.util.function.Function;
 import java.util.function.Predicate;
 
@@ -3834,6 +3835,1070 @@ public class UserQueryRepositoryConditionGroupExpression implements
     @Override
     public UserQueryRepositoryConditionGroupExpression lk(SerializableStringSupplier property,
             MatchStrategy matchStrategy, IgnoreStrategy ignoreStrategy) {
+        // YUFEI_TODO Auto-generated method stub
+        return null;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public <N extends Number> UserQueryRepositoryConditionGroupExpression ba(String name, N min, N max) {
+        // YUFEI_TODO Auto-generated method stub
+        return null;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public <N extends Number> UserQueryRepositoryConditionGroupExpression ba(String name, N min, N max,
+            IgnoreStrategy ignoreStrategy) {
+        // YUFEI_TODO Auto-generated method stub
+        return null;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public <N extends Number> UserQueryRepositoryConditionGroupExpression ba(String name, N min, N max,
+            BiPredicate<N, N> ignoreStrategy) {
+        // YUFEI_TODO Auto-generated method stub
+        return null;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public <T, N extends Number> UserQueryRepositoryConditionGroupExpression ba(SerializableToNumberFunction<T, N> name,
+            N min, N max) {
+        // YUFEI_TODO Auto-generated method stub
+        return null;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public <T, N extends Number> UserQueryRepositoryConditionGroupExpression ba(SerializableToNumberFunction<T, N> name,
+            N min, N max, IgnoreStrategy ignoreStrategy) {
+        // YUFEI_TODO Auto-generated method stub
+        return null;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public <T, N extends Number> UserQueryRepositoryConditionGroupExpression ba(SerializableToNumberFunction<T, N> name,
+            N min, N max, BiPredicate<N, N> ignoreStrategy) {
+        // YUFEI_TODO Auto-generated method stub
+        return null;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public <D extends Date> UserQueryRepositoryConditionGroupExpression ba(String name, D min, D max) {
+        // YUFEI_TODO Auto-generated method stub
+        return null;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public <D extends Date> UserQueryRepositoryConditionGroupExpression ba(String name, D min, D max,
+            IgnoreStrategy ignoreStrategy) {
+        // YUFEI_TODO Auto-generated method stub
+        return null;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public <D extends Date> UserQueryRepositoryConditionGroupExpression ba(String name, D min, D max,
+            BiPredicate<D, D> ignoreStrategy) {
+        // YUFEI_TODO Auto-generated method stub
+        return null;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public <T, D extends Date> UserQueryRepositoryConditionGroupExpression ba(SerializableToDateFunction<T, D> name,
+            D min, D max) {
+        // YUFEI_TODO Auto-generated method stub
+        return null;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public <T, D extends Date> UserQueryRepositoryConditionGroupExpression ba(SerializableToDateFunction<T, D> name,
+            D min, D max, IgnoreStrategy ignoreStrategy) {
+        // YUFEI_TODO Auto-generated method stub
+        return null;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public <T, D extends Date> UserQueryRepositoryConditionGroupExpression ba(SerializableToDateFunction<T, D> name,
+            D min, D max, BiPredicate<D, D> ignoreStrategy) {
+        // YUFEI_TODO Auto-generated method stub
+        return null;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public UserQueryRepositoryConditionGroupExpression ba(String name, LocalTime min, LocalTime max) {
+        // YUFEI_TODO Auto-generated method stub
+        return null;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public UserQueryRepositoryConditionGroupExpression ba(String name, LocalTime min, LocalTime max,
+            IgnoreStrategy ignoreStrategy) {
+        // YUFEI_TODO Auto-generated method stub
+        return null;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public UserQueryRepositoryConditionGroupExpression ba(String name, LocalTime min, LocalTime max,
+            BiPredicate<LocalTime, LocalTime> ignoreStrategy) {
+        // YUFEI_TODO Auto-generated method stub
+        return null;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public <T> UserQueryRepositoryConditionGroupExpression ba(SerializableToLocalTimeFunction<T> name, LocalTime min,
+            LocalTime max) {
+        // YUFEI_TODO Auto-generated method stub
+        return null;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public <T> UserQueryRepositoryConditionGroupExpression ba(SerializableToLocalTimeFunction<T> name, LocalTime min,
+            LocalTime max, IgnoreStrategy ignoreStrategy) {
+        // YUFEI_TODO Auto-generated method stub
+        return null;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public <T> UserQueryRepositoryConditionGroupExpression ba(SerializableToLocalTimeFunction<T> name, LocalTime min,
+            LocalTime max, BiPredicate<LocalTime, LocalTime> ignoreStrategy) {
+        // YUFEI_TODO Auto-generated method stub
+        return null;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public UserQueryRepositoryConditionGroupExpression ba(String name, LocalDate min, LocalDate max) {
+        // YUFEI_TODO Auto-generated method stub
+        return null;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public UserQueryRepositoryConditionGroupExpression ba(String name, LocalDate min, LocalDate max,
+            IgnoreStrategy ignoreStrategy) {
+        // YUFEI_TODO Auto-generated method stub
+        return null;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public UserQueryRepositoryConditionGroupExpression ba(String name, LocalDate min, LocalDate max,
+            BiPredicate<LocalDate, LocalDate> ignoreStrategy) {
+        // YUFEI_TODO Auto-generated method stub
+        return null;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public <T> UserQueryRepositoryConditionGroupExpression ba(SerializableToLocalDateFunction<T> name, LocalDate min,
+            LocalDate max) {
+        // YUFEI_TODO Auto-generated method stub
+        return null;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public <T> UserQueryRepositoryConditionGroupExpression ba(SerializableToLocalDateFunction<T> name, LocalDate min,
+            LocalDate max, IgnoreStrategy ignoreStrategy) {
+        // YUFEI_TODO Auto-generated method stub
+        return null;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public <T> UserQueryRepositoryConditionGroupExpression ba(SerializableToLocalDateFunction<T> name, LocalDate min,
+            LocalDate max, BiPredicate<LocalDate, LocalDate> ignoreStrategy) {
+        // YUFEI_TODO Auto-generated method stub
+        return null;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public UserQueryRepositoryConditionGroupExpression ba(String name, LocalDateTime min, LocalDateTime max) {
+        // YUFEI_TODO Auto-generated method stub
+        return null;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public UserQueryRepositoryConditionGroupExpression ba(String name, LocalDateTime min, LocalDateTime max,
+            IgnoreStrategy ignoreStrategy) {
+        // YUFEI_TODO Auto-generated method stub
+        return null;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public UserQueryRepositoryConditionGroupExpression ba(String name, LocalDateTime min, LocalDateTime max,
+            BiPredicate<LocalDateTime, LocalDateTime> ignoreStrategy) {
+        // YUFEI_TODO Auto-generated method stub
+        return null;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public <T> UserQueryRepositoryConditionGroupExpression ba(SerializableToLocalDateTimeFunction<T> name,
+            LocalDateTime min, LocalDateTime max) {
+        // YUFEI_TODO Auto-generated method stub
+        return null;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public <T> UserQueryRepositoryConditionGroupExpression ba(SerializableToLocalDateTimeFunction<T> name,
+            LocalDateTime min, LocalDateTime max, IgnoreStrategy ignoreStrategy) {
+        // YUFEI_TODO Auto-generated method stub
+        return null;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public <T> UserQueryRepositoryConditionGroupExpression ba(SerializableToLocalDateTimeFunction<T> name,
+            LocalDateTime min, LocalDateTime max, BiPredicate<LocalDateTime, LocalDateTime> ignoreStrategy) {
+        // YUFEI_TODO Auto-generated method stub
+        return null;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public UserQueryRepositoryConditionGroupExpression ba(String name, String min, String max) {
+        // YUFEI_TODO Auto-generated method stub
+        return null;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public UserQueryRepositoryConditionGroupExpression ba(String name, String min, String max,
+            IgnoreStrategy ignoreStrategy) {
+        // YUFEI_TODO Auto-generated method stub
+        return null;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public UserQueryRepositoryConditionGroupExpression ba(String name, String min, String max,
+            BiPredicate<String, String> ignoreStrategy) {
+        // YUFEI_TODO Auto-generated method stub
+        return null;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public <T> UserQueryRepositoryConditionGroupExpression ba(SerializableToStringFunction<T> name, String min,
+            String max) {
+        // YUFEI_TODO Auto-generated method stub
+        return null;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public <T> UserQueryRepositoryConditionGroupExpression ba(SerializableToStringFunction<T> name, String min,
+            String max, IgnoreStrategy ignoreStrategy) {
+        // YUFEI_TODO Auto-generated method stub
+        return null;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public <T> UserQueryRepositoryConditionGroupExpression ba(SerializableToStringFunction<T> name, String min,
+            String max, BiPredicate<String, String> ignoreStrategy) {
+        // YUFEI_TODO Auto-generated method stub
+        return null;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public <N extends Number> UserQueryRepositoryConditionGroupExpression nba(String name, N min, N max) {
+        // YUFEI_TODO Auto-generated method stub
+        return null;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public <N extends Number> UserQueryRepositoryConditionGroupExpression nba(String name, N min, N max,
+            IgnoreStrategy ignoreStrategy) {
+        // YUFEI_TODO Auto-generated method stub
+        return null;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public <N extends Number> UserQueryRepositoryConditionGroupExpression nba(String name, N min, N max,
+            BiPredicate<N, N> ignoreStrategy) {
+        // YUFEI_TODO Auto-generated method stub
+        return null;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public <T, N extends Number> UserQueryRepositoryConditionGroupExpression nba(
+            SerializableToNumberFunction<T, N> name, N min, N max) {
+        // YUFEI_TODO Auto-generated method stub
+        return null;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public <T, N extends Number> UserQueryRepositoryConditionGroupExpression nba(
+            SerializableToNumberFunction<T, N> name, N min, N max, IgnoreStrategy ignoreStrategy) {
+        // YUFEI_TODO Auto-generated method stub
+        return null;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public <T, N extends Number> UserQueryRepositoryConditionGroupExpression nba(
+            SerializableToNumberFunction<T, N> name, N min, N max, BiPredicate<N, N> ignoreStrategy) {
+        // YUFEI_TODO Auto-generated method stub
+        return null;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public <D extends Date> UserQueryRepositoryConditionGroupExpression nba(String name, D min, D max) {
+        // YUFEI_TODO Auto-generated method stub
+        return null;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public <D extends Date> UserQueryRepositoryConditionGroupExpression nba(String name, D min, D max,
+            IgnoreStrategy ignoreStrategy) {
+        // YUFEI_TODO Auto-generated method stub
+        return null;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public <D extends Date> UserQueryRepositoryConditionGroupExpression nba(String name, D min, D max,
+            BiPredicate<D, D> ignoreStrategy) {
+        // YUFEI_TODO Auto-generated method stub
+        return null;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public <T, D extends Date> UserQueryRepositoryConditionGroupExpression nba(SerializableToDateFunction<T, D> name,
+            D min, D max) {
+        // YUFEI_TODO Auto-generated method stub
+        return null;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public <T, D extends Date> UserQueryRepositoryConditionGroupExpression nba(SerializableToDateFunction<T, D> name,
+            D min, D max, IgnoreStrategy ignoreStrategy) {
+        // YUFEI_TODO Auto-generated method stub
+        return null;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public <T, D extends Date> UserQueryRepositoryConditionGroupExpression nba(SerializableToDateFunction<T, D> name,
+            D min, D max, BiPredicate<D, D> ignoreStrategy) {
+        // YUFEI_TODO Auto-generated method stub
+        return null;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public UserQueryRepositoryConditionGroupExpression nba(String name, LocalTime min, LocalTime max) {
+        // YUFEI_TODO Auto-generated method stub
+        return null;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public UserQueryRepositoryConditionGroupExpression nba(String name, LocalTime min, LocalTime max,
+            IgnoreStrategy ignoreStrategy) {
+        // YUFEI_TODO Auto-generated method stub
+        return null;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public UserQueryRepositoryConditionGroupExpression nba(String name, LocalTime min, LocalTime max,
+            BiPredicate<LocalTime, LocalTime> ignoreStrategy) {
+        // YUFEI_TODO Auto-generated method stub
+        return null;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public <T> UserQueryRepositoryConditionGroupExpression nba(SerializableToLocalTimeFunction<T> name, LocalTime min,
+            LocalTime max) {
+        // YUFEI_TODO Auto-generated method stub
+        return null;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public <T> UserQueryRepositoryConditionGroupExpression nba(SerializableToLocalTimeFunction<T> name, LocalTime min,
+            LocalTime max, IgnoreStrategy ignoreStrategy) {
+        // YUFEI_TODO Auto-generated method stub
+        return null;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public <T> UserQueryRepositoryConditionGroupExpression nba(SerializableToLocalTimeFunction<T> name, LocalTime min,
+            LocalTime max, BiPredicate<LocalTime, LocalTime> ignoreStrategy) {
+        // YUFEI_TODO Auto-generated method stub
+        return null;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public UserQueryRepositoryConditionGroupExpression nba(String name, LocalDate min, LocalDate max) {
+        // YUFEI_TODO Auto-generated method stub
+        return null;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public UserQueryRepositoryConditionGroupExpression nba(String name, LocalDate min, LocalDate max,
+            IgnoreStrategy ignoreStrategy) {
+        // YUFEI_TODO Auto-generated method stub
+        return null;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public UserQueryRepositoryConditionGroupExpression nba(String name, LocalDate min, LocalDate max,
+            BiPredicate<LocalDate, LocalDate> ignoreStrategy) {
+        // YUFEI_TODO Auto-generated method stub
+        return null;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public <T> UserQueryRepositoryConditionGroupExpression nba(SerializableToLocalDateFunction<T> name, LocalDate min,
+            LocalDate max) {
+        // YUFEI_TODO Auto-generated method stub
+        return null;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public <T> UserQueryRepositoryConditionGroupExpression nba(SerializableToLocalDateFunction<T> name, LocalDate min,
+            LocalDate max, IgnoreStrategy ignoreStrategy) {
+        // YUFEI_TODO Auto-generated method stub
+        return null;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public <T> UserQueryRepositoryConditionGroupExpression nba(SerializableToLocalDateFunction<T> name, LocalDate min,
+            LocalDate max, BiPredicate<LocalDate, LocalDate> ignoreStrategy) {
+        // YUFEI_TODO Auto-generated method stub
+        return null;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public UserQueryRepositoryConditionGroupExpression nba(String name, LocalDateTime min, LocalDateTime max) {
+        // YUFEI_TODO Auto-generated method stub
+        return null;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public UserQueryRepositoryConditionGroupExpression nba(String name, LocalDateTime min, LocalDateTime max,
+            IgnoreStrategy ignoreStrategy) {
+        // YUFEI_TODO Auto-generated method stub
+        return null;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public UserQueryRepositoryConditionGroupExpression nba(String name, LocalDateTime min, LocalDateTime max,
+            BiPredicate<LocalDateTime, LocalDateTime> ignoreStrategy) {
+        // YUFEI_TODO Auto-generated method stub
+        return null;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public <T> UserQueryRepositoryConditionGroupExpression nba(SerializableToLocalDateTimeFunction<T> name,
+            LocalDateTime min, LocalDateTime max) {
+        // YUFEI_TODO Auto-generated method stub
+        return null;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public <T> UserQueryRepositoryConditionGroupExpression nba(SerializableToLocalDateTimeFunction<T> name,
+            LocalDateTime min, LocalDateTime max, IgnoreStrategy ignoreStrategy) {
+        // YUFEI_TODO Auto-generated method stub
+        return null;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public <T> UserQueryRepositoryConditionGroupExpression nba(SerializableToLocalDateTimeFunction<T> name,
+            LocalDateTime min, LocalDateTime max, BiPredicate<LocalDateTime, LocalDateTime> ignoreStrategy) {
+        // YUFEI_TODO Auto-generated method stub
+        return null;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public UserQueryRepositoryConditionGroupExpression nba(String name, String min, String max) {
+        // YUFEI_TODO Auto-generated method stub
+        return null;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public UserQueryRepositoryConditionGroupExpression nba(String name, String min, String max,
+            IgnoreStrategy ignoreStrategy) {
+        // YUFEI_TODO Auto-generated method stub
+        return null;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public UserQueryRepositoryConditionGroupExpression nba(String name, String min, String max,
+            BiPredicate<String, String> ignoreStrategy) {
+        // YUFEI_TODO Auto-generated method stub
+        return null;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public <T> UserQueryRepositoryConditionGroupExpression nba(SerializableToStringFunction<T> name, String min,
+            String max) {
+        // YUFEI_TODO Auto-generated method stub
+        return null;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public <T> UserQueryRepositoryConditionGroupExpression nba(SerializableToStringFunction<T> name, String min,
+            String max, IgnoreStrategy ignoreStrategy) {
+        // YUFEI_TODO Auto-generated method stub
+        return null;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public <T> UserQueryRepositoryConditionGroupExpression nba(SerializableToStringFunction<T> name, String min,
+            String max, BiPredicate<String, String> ignoreStrategy) {
+        // YUFEI_TODO Auto-generated method stub
+        return null;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public <T> UserQueryRepositoryConditionGroupExpression nco(SerializableToStringFunction<T> name, String value,
+            MatchStrategy matchStrategy) {
+        // YUFEI_TODO Auto-generated method stub
+        return null;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public <T> UserQueryRepositoryConditionGroupExpression nco(SerializableToStringFunction<T> name, String value,
+            MatchStrategy matchStrategy, IgnoreStrategy ignoreStrategy) {
+        // YUFEI_TODO Auto-generated method stub
+        return null;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public <T> UserQueryRepositoryConditionGroupExpression nco(SerializableToStringFunction<T> name, String value,
+            MatchStrategy matchStrategy, Predicate<String> ignoreStrategy) {
+        // YUFEI_TODO Auto-generated method stub
+        return null;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public UserQueryRepositoryConditionGroupExpression nco(SerializableStringSupplier propertyValue,
+            MatchStrategy matchStrategy) {
+        // YUFEI_TODO Auto-generated method stub
+        return null;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public UserQueryRepositoryConditionGroupExpression nco(SerializableStringSupplier propertyValue,
+            MatchStrategy matchStrategy, IgnoreStrategy ignoreStrategy) {
+        // YUFEI_TODO Auto-generated method stub
+        return null;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public UserQueryRepositoryConditionGroupExpression nco(SerializableStringSupplier propertyValue,
+            MatchStrategy matchStrategy, Predicate<String> ignoreStrategy) {
+        // YUFEI_TODO Auto-generated method stub
+        return null;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public UserQueryRepositoryConditionGroupExpression nco(String name, String value, MatchStrategy matchStrategy) {
+        // YUFEI_TODO Auto-generated method stub
+        return null;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public UserQueryRepositoryConditionGroupExpression nco(String name, String value, MatchStrategy matchStrategy,
+            IgnoreStrategy ignoreStrategy) {
+        // YUFEI_TODO Auto-generated method stub
+        return null;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public UserQueryRepositoryConditionGroupExpression nco(String name, String value, MatchStrategy matchStrategy,
+            Predicate<String> ignoreStrategy) {
+        // YUFEI_TODO Auto-generated method stub
+        return null;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public <T> UserQueryRepositoryConditionGroupExpression newv(SerializableToStringFunction<T> name, String value,
+            MatchStrategy matchStrategy) {
+        // YUFEI_TODO Auto-generated method stub
+        return null;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public <T> UserQueryRepositoryConditionGroupExpression newv(SerializableToStringFunction<T> name, String value,
+            MatchStrategy matchStrategy, IgnoreStrategy ignoreStrategy) {
+        // YUFEI_TODO Auto-generated method stub
+        return null;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public <T> UserQueryRepositoryConditionGroupExpression newv(SerializableToStringFunction<T> name, String value,
+            MatchStrategy matchStrategy, Predicate<String> ignoreStrategy) {
+        // YUFEI_TODO Auto-generated method stub
+        return null;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public UserQueryRepositoryConditionGroupExpression newv(SerializableStringSupplier propertyValue,
+            MatchStrategy matchStrategy) {
+        // YUFEI_TODO Auto-generated method stub
+        return null;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public UserQueryRepositoryConditionGroupExpression newv(SerializableStringSupplier propertyValue,
+            MatchStrategy matchStrategy, IgnoreStrategy ignoreStrategy) {
+        // YUFEI_TODO Auto-generated method stub
+        return null;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public UserQueryRepositoryConditionGroupExpression newv(SerializableStringSupplier propertyValue,
+            MatchStrategy matchStrategy, Predicate<String> ignoreStrategy) {
+        // YUFEI_TODO Auto-generated method stub
+        return null;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public UserQueryRepositoryConditionGroupExpression newv(String name, String value, MatchStrategy matchStrategy) {
+        // YUFEI_TODO Auto-generated method stub
+        return null;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public UserQueryRepositoryConditionGroupExpression newv(String name, String value, MatchStrategy matchStrategy,
+            IgnoreStrategy ignoreStrategy) {
+        // YUFEI_TODO Auto-generated method stub
+        return null;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public UserQueryRepositoryConditionGroupExpression newv(String name, String value, MatchStrategy matchStrategy,
+            Predicate<String> ignoreStrategy) {
+        // YUFEI_TODO Auto-generated method stub
+        return null;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public <T> UserQueryRepositoryConditionGroupExpression nsw(SerializableToStringFunction<T> propertyName,
+            String value, MatchStrategy matchStrategy) {
+        // YUFEI_TODO Auto-generated method stub
+        return null;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public <T> UserQueryRepositoryConditionGroupExpression nsw(SerializableToStringFunction<T> propertyName,
+            String value, MatchStrategy matchStrategy, IgnoreStrategy ignoreStrategy) {
+        // YUFEI_TODO Auto-generated method stub
+        return null;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public <T> UserQueryRepositoryConditionGroupExpression nsw(SerializableToStringFunction<T> propertyName,
+            String value, MatchStrategy matchStrategy, Predicate<String> ignoreStrategy) {
+        // YUFEI_TODO Auto-generated method stub
+        return null;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public UserQueryRepositoryConditionGroupExpression nsw(SerializableStringSupplier propertyValue,
+            MatchStrategy matchStrategy) {
+        // YUFEI_TODO Auto-generated method stub
+        return null;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public UserQueryRepositoryConditionGroupExpression nsw(SerializableStringSupplier propertyValue,
+            MatchStrategy matchStrategy, IgnoreStrategy ignoreStrategy) {
+        // YUFEI_TODO Auto-generated method stub
+        return null;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public UserQueryRepositoryConditionGroupExpression nsw(SerializableStringSupplier propertyValue,
+            MatchStrategy matchStrategy, Predicate<String> ignoreStrategy) {
+        // YUFEI_TODO Auto-generated method stub
+        return null;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public UserQueryRepositoryConditionGroupExpression nsw(String name, String value, MatchStrategy matchStrategy) {
+        // YUFEI_TODO Auto-generated method stub
+        return null;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public UserQueryRepositoryConditionGroupExpression nsw(String name, String value, MatchStrategy matchStrategy,
+            IgnoreStrategy ignoreStrategy) {
+        // YUFEI_TODO Auto-generated method stub
+        return null;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public UserQueryRepositoryConditionGroupExpression nsw(String name, String value, MatchStrategy matchStrategy,
+            Predicate<String> ignoreStrategy) {
+        // YUFEI_TODO Auto-generated method stub
+        return null;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public <T> UserQueryRepositoryConditionGroupExpression nl(SerializableToStringFunction<T> name, String value,
+            MatchStrategy matchStrategy) {
+        // YUFEI_TODO Auto-generated method stub
+        return null;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public <T> UserQueryRepositoryConditionGroupExpression nl(SerializableToStringFunction<T> name, String value,
+            MatchStrategy matchStrategy, IgnoreStrategy ignoreStrategy) {
+        // YUFEI_TODO Auto-generated method stub
+        return null;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public <T> UserQueryRepositoryConditionGroupExpression nl(SerializableToStringFunction<T> name, String value,
+            MatchStrategy matchStrategy, Predicate<String> ignoreStrategy) {
+        // YUFEI_TODO Auto-generated method stub
+        return null;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public UserQueryRepositoryConditionGroupExpression nl(SerializableStringSupplier property,
+            MatchStrategy matchStrategy) {
+        // YUFEI_TODO Auto-generated method stub
+        return null;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public UserQueryRepositoryConditionGroupExpression nl(SerializableStringSupplier property,
+            MatchStrategy matchStrategy, IgnoreStrategy ignoreStrategy) {
+        // YUFEI_TODO Auto-generated method stub
+        return null;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public UserQueryRepositoryConditionGroupExpression nl(SerializableStringSupplier property,
+            MatchStrategy matchStrategy, Predicate<String> ignoreStrategy) {
+        // YUFEI_TODO Auto-generated method stub
+        return null;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public UserQueryRepositoryConditionGroupExpression nl(String name, String value, MatchStrategy matchStrategy) {
+        // YUFEI_TODO Auto-generated method stub
+        return null;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public UserQueryRepositoryConditionGroupExpression nl(String name, String value, MatchStrategy matchStrategy,
+            IgnoreStrategy ignoreStrategy) {
+        // YUFEI_TODO Auto-generated method stub
+        return null;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public UserQueryRepositoryConditionGroupExpression nl(String name, String value, MatchStrategy matchStrategy,
+            Predicate<String> ignoreStrategy) {
         // YUFEI_TODO Auto-generated method stub
         return null;
     }

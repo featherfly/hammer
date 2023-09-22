@@ -12,7 +12,8 @@ import cn.featherfly.hammer.expression.condition.LogicExpression;
  * @param <L> the generic type
  */
 public interface TypePropertyExpression<T, C extends ConditionExpression, L extends LogicExpression<C, L>>
-        extends PropertyEqualsExpression<C, L, T>, PropertyNotEqualsExpression<C, L, T>, PropertyInExpression<C, L, T>,
+        extends PropertyBetweenExpression<C, L, T>, PropertyNotBetweenExpression<C, L, T> //
+        , PropertyEqualsExpression<C, L, T>, PropertyNotEqualsExpression<C, L, T>, PropertyInExpression<C, L, T>,
         PropertyNotInExpression<C, L, T>, PropertyLessEqualsExpression<C, L, T>, PropertyLessThanExpression<C, L, T>,
         PropertyGreatEqualsExpression<C, L, T>, PropertyGreatThanExpression<C, L, T>, PropertyStartWithExpression<C, L>,
         PropertyContainsExpression<C, L>, PropertyEndWithExpression<C, L>, PropertyLikeExpression<C, L>,

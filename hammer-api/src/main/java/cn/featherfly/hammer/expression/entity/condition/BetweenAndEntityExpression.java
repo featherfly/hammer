@@ -16,18 +16,24 @@ import java.time.LocalTime;
 import java.util.Date;
 import java.util.function.BiPredicate;
 
-import cn.featherfly.common.function.serializable.SerializableFunction;
+import cn.featherfly.common.function.serializable.SerializableToDateFunction;
 import cn.featherfly.common.function.serializable.SerializableToDoubleFunction;
+import cn.featherfly.common.function.serializable.SerializableToEnumFunction;
 import cn.featherfly.common.function.serializable.SerializableToIntFunction;
+import cn.featherfly.common.function.serializable.SerializableToLocalDateFunction;
+import cn.featherfly.common.function.serializable.SerializableToLocalDateTimeFunction;
+import cn.featherfly.common.function.serializable.SerializableToLocalTimeFunction;
 import cn.featherfly.common.function.serializable.SerializableToLongFunction;
+import cn.featherfly.common.function.serializable.SerializableToNumberFunction;
+import cn.featherfly.common.function.serializable.SerializableToStringFunction;
 
 /**
  * The Interface BetweenAndEntityExpression.
  *
  * @author zhongj
- * @param <E> the element type
+ * @param <T> the element type
  */
-public interface BetweenAndEntityExpression<E> {
+public interface BetweenAndEntityExpression<T> {
 
     /**
      * between and.
@@ -37,7 +43,7 @@ public interface BetweenAndEntityExpression<E> {
      * @param value 参数值
      * @return LogicExpression
      */
-    void accept(SerializableToIntFunction<E> name, int min, int max);
+    void accept(SerializableToIntFunction<T> name, int min, int max);
 
     /**
      * between and.
@@ -47,7 +53,7 @@ public interface BetweenAndEntityExpression<E> {
      * @param value 参数值
      * @return LogicExpression
      */
-    void accept(SerializableToIntFunction<E> name, int min, int max, BiPredicate<Integer, Integer> ignoreStrategy);
+    void accept(SerializableToIntFunction<T> name, int min, int max, BiPredicate<Integer, Integer> ignoreStrategy);
 
     /**
      * between and.
@@ -57,7 +63,7 @@ public interface BetweenAndEntityExpression<E> {
      * @param value 参数值
      * @return LogicExpression
      */
-    void accept(SerializableToLongFunction<E> name, long min, long max);
+    void accept(SerializableToLongFunction<T> name, long min, long max);
 
     /**
      * between and.
@@ -67,7 +73,7 @@ public interface BetweenAndEntityExpression<E> {
      * @param value 参数值
      * @return LogicExpression
      */
-    void accept(SerializableToLongFunction<E> name, long min, long max, BiPredicate<Long, Long> ignoreStrategy);
+    void accept(SerializableToLongFunction<T> name, long min, long max, BiPredicate<Long, Long> ignoreStrategy);
 
     /**
      * between and.
@@ -77,7 +83,7 @@ public interface BetweenAndEntityExpression<E> {
      * @param value 参数值
      * @return LogicExpression
      */
-    void accept(SerializableToDoubleFunction<E> name, double min, double max);
+    void accept(SerializableToDoubleFunction<T> name, double min, double max);
 
     /**
      * between and.
@@ -87,7 +93,7 @@ public interface BetweenAndEntityExpression<E> {
      * @param value 参数值
      * @return LogicExpression
      */
-    void accept(SerializableToDoubleFunction<E> name, double min, double max,
+    void accept(SerializableToDoubleFunction<T> name, double min, double max,
             BiPredicate<Double, Double> ignoreStrategy);
 
     /**
@@ -98,7 +104,7 @@ public interface BetweenAndEntityExpression<E> {
      * @param value 参数值
      * @return LogicExpression
      */
-    <N extends Number> void accept(SerializableFunction<E, N> name, N min, N max);
+    <N extends Number> void accept(SerializableToNumberFunction<T, N> name, N min, N max);
 
     /**
      * between and.
@@ -109,7 +115,8 @@ public interface BetweenAndEntityExpression<E> {
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
-    <N extends Number> void accept(SerializableFunction<E, N> name, N min, N max, BiPredicate<N, N> ignoreStrategy);
+    <N extends Number> void accept(SerializableToNumberFunction<T, N> name, N min, N max,
+            BiPredicate<N, N> ignoreStrategy);
 
     /**
      * between and.
@@ -119,7 +126,7 @@ public interface BetweenAndEntityExpression<E> {
      * @param value 参数值
      * @return LogicExpression
      */
-    <D extends Date> void accept(SerializableFunction<E, D> name, D min, D max);
+    <D extends Date> void accept(SerializableToDateFunction<T, D> name, D min, D max);
 
     /**
      * between and.
@@ -130,7 +137,29 @@ public interface BetweenAndEntityExpression<E> {
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
-    <D extends Date> void accept(SerializableFunction<E, D> name, D min, D max, BiPredicate<D, D> ignoreStrategy);
+    <D extends Date> void accept(SerializableToDateFunction<T, D> name, D min, D max, BiPredicate<D, D> ignoreStrategy);
+
+    /**
+     * between and.
+     *
+     * @param <D>   date type
+     * @param name  参数名称
+     * @param value 参数值
+     * @return LogicExpression
+     */
+    <E extends Enum<E>> void accept(SerializableToEnumFunction<T, E> name, E min, E max);
+
+    /**
+     * between and.
+     *
+     * @param <D>            date type
+     * @param name           参数名称
+     * @param value          参数值
+     * @param ignoreStrategy the ignore strategy
+     * @return LogicExpression
+     */
+    <E extends Enum<E>> void accept(SerializableToEnumFunction<T, E> name, E min, E max,
+            BiPredicate<E, E> ignoreStrategy);
 
     /**
      * between and.
@@ -139,7 +168,7 @@ public interface BetweenAndEntityExpression<E> {
      * @param value 参数值
      * @return LogicExpression
      */
-    void accept(SerializableFunction<E, LocalTime> name, LocalTime min, LocalTime max);
+    void accept(SerializableToLocalTimeFunction<T> name, LocalTime min, LocalTime max);
 
     /**
      * between and.
@@ -149,7 +178,7 @@ public interface BetweenAndEntityExpression<E> {
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
-    void accept(SerializableFunction<E, LocalTime> name, LocalTime min, LocalTime max,
+    void accept(SerializableToLocalTimeFunction<T> name, LocalTime min, LocalTime max,
             BiPredicate<LocalTime, LocalTime> ignoreStrategy);
 
     /**
@@ -159,7 +188,7 @@ public interface BetweenAndEntityExpression<E> {
      * @param value 参数值
      * @return LogicExpression
      */
-    void accept(SerializableFunction<E, LocalDate> name, LocalDate min, LocalDate max);
+    void accept(SerializableToLocalDateFunction<T> name, LocalDate min, LocalDate max);
 
     /**
      * between and.
@@ -169,7 +198,7 @@ public interface BetweenAndEntityExpression<E> {
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
-    void accept(SerializableFunction<E, LocalDate> name, LocalDate min, LocalDate max,
+    void accept(SerializableToLocalDateFunction<T> name, LocalDate min, LocalDate max,
             BiPredicate<LocalDate, LocalDate> ignoreStrategy);
 
     /**
@@ -179,7 +208,7 @@ public interface BetweenAndEntityExpression<E> {
      * @param value 参数值
      * @return LogicExpression
      */
-    void accept(SerializableFunction<E, LocalDateTime> name, LocalDateTime min, LocalDateTime max);
+    void accept(SerializableToLocalDateTimeFunction<T> name, LocalDateTime min, LocalDateTime max);
 
     /**
      * between and.
@@ -189,7 +218,7 @@ public interface BetweenAndEntityExpression<E> {
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
-    void accept(SerializableFunction<E, LocalDateTime> name, LocalDateTime min, LocalDateTime max,
+    void accept(SerializableToLocalDateTimeFunction<T> name, LocalDateTime min, LocalDateTime max,
             BiPredicate<LocalDateTime, LocalDateTime> ignoreStrategy);
 
     /**
@@ -199,7 +228,7 @@ public interface BetweenAndEntityExpression<E> {
      * @param value 参数值
      * @return LogicExpression
      */
-    void accept(SerializableFunction<E, String> name, String min, String max);
+    void accept(SerializableToStringFunction<T> name, String min, String max);
 
     /**
      * between and.
@@ -209,7 +238,7 @@ public interface BetweenAndEntityExpression<E> {
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
-    void accept(SerializableFunction<E, String> name, String min, String max,
+    void accept(SerializableToStringFunction<T> name, String min, String max,
             BiPredicate<String, String> ignoreStrategy);
 
     //    /**

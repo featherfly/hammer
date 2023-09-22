@@ -105,25 +105,25 @@ import cn.featherfly.hammer.sqldb.jdbc.dsl.entity.condition.EntityTypePropertyEx
  * sql condition group builder sql条件逻辑组构造器 .
  *
  * @author zhongj
- * @param <E> the element type
+ * @param <T> the element type
  * @param <C> the generic type
  * @param <L> the generic type
  */
 @SuppressWarnings("unchecked")
-public abstract class AbstractEntitySqlConditionExpressionBase<E, ER extends EntitySqlRelation<ER, B>,
+public abstract class AbstractEntitySqlConditionExpressionBase<T, ER extends EntitySqlRelation<ER, B>,
         B extends SqlBuilder, C extends ConditionExpression, L extends LogicExpression<C, L>>
         extends AbstractSqlConditionExpression<C, L> implements ConditionExpression //
-        , EntityBetweenExpression<E, C, L>, EntityNotBetweenExpression<E, C, L> //
-        , EntityContainsExpression<E, C, L>, EntityNotContainsExpression<E, C, L>//
-        , EntityEndWithExpression<E, C, L>, EntityNotEndWithExpression<E, C, L> //
-        , EntityEqualsExpression<E, C, L>, EntityIsNotNullExpression<E, C, L>//
-        , EntityGreatEqualsExpression<E, C, L>, EntityGreatThanExpression<E, C, L> //
-        , EntityInExpression<E, C, L>, EntityNotInExpression<E, C, L>//
-        , EntityIsNullExpression<E, C, L>, EntityNotEqualsExpression<E, C, L> //
-        , EntityLessEqualsExpression<E, C, L>, EntityLessThanExpression<E, C, L> //
-        , EntityStartWithExpression<E, C, L>, EntityNotStartWithExpression<E, C, L>//
-        , EntityLikeExpression<E, C, L>, EntityNotLikeExpression<E, C, L>//
-        , EntityPropertyExpression<E, C, L> {
+        , EntityBetweenExpression<T, C, L>, EntityNotBetweenExpression<T, C, L> //
+        , EntityContainsExpression<T, C, L>, EntityNotContainsExpression<T, C, L>//
+        , EntityEndWithExpression<T, C, L>, EntityNotEndWithExpression<T, C, L> //
+        , EntityEqualsExpression<T, C, L>, EntityIsNotNullExpression<T, C, L>//
+        , EntityGreatEqualsExpression<T, C, L>, EntityGreatThanExpression<T, C, L> //
+        , EntityInExpression<T, C, L>, EntityNotInExpression<T, C, L>//
+        , EntityIsNullExpression<T, C, L>, EntityNotEqualsExpression<T, C, L> //
+        , EntityLessEqualsExpression<T, C, L>, EntityLessThanExpression<T, C, L> //
+        , EntityStartWithExpression<T, C, L>, EntityNotStartWithExpression<T, C, L>//
+        , EntityLikeExpression<T, C, L>, EntityNotLikeExpression<T, C, L>//
+        , EntityPropertyExpression<T, C, L> {
 
     //    /** The type query entity. */
     //    protected EntitySqlQuery<E> entityQuery;
@@ -135,7 +135,7 @@ public abstract class AbstractEntitySqlConditionExpressionBase<E, ER extends Ent
     protected AliasManager aliasManager;
 
     /** The class mapping. */
-    protected JdbcClassMapping<E> classMapping;
+    protected JdbcClassMapping<T> classMapping;
 
     /** The query alias. */
     protected String queryAlias;
@@ -154,7 +154,7 @@ public abstract class AbstractEntitySqlConditionExpressionBase<E, ER extends Ent
         super(parent, entityRelation.getJdbc().getDialect(), entityRelation.getIgnorePolicy());
         this.factory = factory;
         EntityRelationMapping<
-                E> erm = (EntityRelationMapping<E>) entityRelation.getEntityRelationMappingTuple().getOrNull0();
+                T> erm = (EntityRelationMapping<T>) entityRelation.getEntityRelationMappingTuple().getOrNull0();
         queryAlias = erm.getTableAlias();
         classMapping = erm.getClassMapping();
         aliasManager = entityRelation.getAliasManager();
@@ -184,7 +184,7 @@ public abstract class AbstractEntitySqlConditionExpressionBase<E, ER extends Ent
      * {@inheritDoc}
      */
     @Override
-    public <R> L eq(SerializableFunction<E, R> name, R value, MatchStrategy matchStrategy) {
+    public <R> L eq(SerializableFunction<T, R> name, R value, MatchStrategy matchStrategy) {
         return eq(classMapping, name, value, queryAlias, matchStrategy, ignoreStrategy);
     }
 
@@ -192,7 +192,7 @@ public abstract class AbstractEntitySqlConditionExpressionBase<E, ER extends Ent
      * {@inheritDoc}
      */
     @Override
-    public <R> L eq(SerializableFunction<E, R> name, R value, MatchStrategy matchStrategy,
+    public <R> L eq(SerializableFunction<T, R> name, R value, MatchStrategy matchStrategy,
             Predicate<R> ignoreStrategy) {
         return eq(classMapping, name, value, queryAlias, matchStrategy, ignoreStrategy);
     }
@@ -269,7 +269,7 @@ public abstract class AbstractEntitySqlConditionExpressionBase<E, ER extends Ent
      * {@inheritDoc}
      */
     @Override
-    public <R> L ne(SerializableFunction<E, R> name, R value, MatchStrategy matchStrategy) {
+    public <R> L ne(SerializableFunction<T, R> name, R value, MatchStrategy matchStrategy) {
         return ne(classMapping, name, value, queryAlias, matchStrategy, ignoreStrategy);
     }
 
@@ -277,7 +277,7 @@ public abstract class AbstractEntitySqlConditionExpressionBase<E, ER extends Ent
      * {@inheritDoc}
      */
     @Override
-    public <R> L ne(SerializableFunction<E, R> name, R value, MatchStrategy matchStrategy,
+    public <R> L ne(SerializableFunction<T, R> name, R value, MatchStrategy matchStrategy,
             Predicate<R> ignoreStrategy) {
         return ne(classMapping, name, value, queryAlias, matchStrategy, ignoreStrategy);
     }
@@ -304,7 +304,7 @@ public abstract class AbstractEntitySqlConditionExpressionBase<E, ER extends Ent
      * {@inheritDoc}
      */
     @Override
-    public L lk(SerializableFunction<E, String> name, String value, MatchStrategy matchStrategy) {
+    public L lk(SerializableFunction<T, String> name, String value, MatchStrategy matchStrategy) {
         return lk(classMapping, name, value, queryAlias, matchStrategy, ignoreStrategy);
     }
 
@@ -312,7 +312,7 @@ public abstract class AbstractEntitySqlConditionExpressionBase<E, ER extends Ent
      * {@inheritDoc}
      */
     @Override
-    public L lk(SerializableFunction<E, String> name, String value, MatchStrategy matchStrategy,
+    public L lk(SerializableFunction<T, String> name, String value, MatchStrategy matchStrategy,
             Predicate<String> ignoreStrategy) {
         return lk(classMapping, name, value, queryAlias, matchStrategy, ignoreStrategy);
     }
@@ -339,7 +339,7 @@ public abstract class AbstractEntitySqlConditionExpressionBase<E, ER extends Ent
      * {@inheritDoc}
      */
     @Override
-    public L nl(SerializableFunction<E, String> name, String value, MatchStrategy matchStrategy) {
+    public L nl(SerializableFunction<T, String> name, String value, MatchStrategy matchStrategy) {
         return nl(classMapping, name, value, queryAlias, matchStrategy, ignoreStrategy);
     }
 
@@ -347,7 +347,7 @@ public abstract class AbstractEntitySqlConditionExpressionBase<E, ER extends Ent
      * {@inheritDoc}
      */
     @Override
-    public L nl(SerializableFunction<E, String> name, String value, MatchStrategy matchStrategy,
+    public L nl(SerializableFunction<T, String> name, String value, MatchStrategy matchStrategy,
             Predicate<String> ignoreStrategy) {
         return nl(classMapping, name, value, queryAlias, matchStrategy, ignoreStrategy);
     }
@@ -374,7 +374,7 @@ public abstract class AbstractEntitySqlConditionExpressionBase<E, ER extends Ent
      * {@inheritDoc}
      */
     @Override
-    public L sw(SerializableFunction<E, String> name, String value, MatchStrategy matchStrategy) {
+    public L sw(SerializableFunction<T, String> name, String value, MatchStrategy matchStrategy) {
         return sw(classMapping, name, value, queryAlias, matchStrategy, ignoreStrategy);
     }
 
@@ -382,7 +382,7 @@ public abstract class AbstractEntitySqlConditionExpressionBase<E, ER extends Ent
      * {@inheritDoc}
      */
     @Override
-    public L sw(SerializableFunction<E, String> name, String value, MatchStrategy matchStrategy,
+    public L sw(SerializableFunction<T, String> name, String value, MatchStrategy matchStrategy,
             Predicate<String> ignoreStrategy) {
         return sw(classMapping, name, value, queryAlias, matchStrategy, ignoreStrategy);
     }
@@ -409,7 +409,7 @@ public abstract class AbstractEntitySqlConditionExpressionBase<E, ER extends Ent
      * {@inheritDoc}
      */
     @Override
-    public L nsw(SerializableFunction<E, String> name, String value, MatchStrategy matchStrategy) {
+    public L nsw(SerializableFunction<T, String> name, String value, MatchStrategy matchStrategy) {
         return nsw(classMapping, name, value, queryAlias, matchStrategy, ignoreStrategy);
     }
 
@@ -417,7 +417,7 @@ public abstract class AbstractEntitySqlConditionExpressionBase<E, ER extends Ent
      * {@inheritDoc}
      */
     @Override
-    public L nsw(SerializableFunction<E, String> name, String value, MatchStrategy matchStrategy,
+    public L nsw(SerializableFunction<T, String> name, String value, MatchStrategy matchStrategy,
             Predicate<String> ignoreStrategy) {
         return nsw(classMapping, name, value, queryAlias, matchStrategy, ignoreStrategy);
     }
@@ -444,7 +444,7 @@ public abstract class AbstractEntitySqlConditionExpressionBase<E, ER extends Ent
      * {@inheritDoc}
      */
     @Override
-    public L ew(SerializableFunction<E, String> name, String value, MatchStrategy matchStrategy) {
+    public L ew(SerializableFunction<T, String> name, String value, MatchStrategy matchStrategy) {
         return ew(classMapping, name, value, queryAlias, matchStrategy, ignoreStrategy);
     }
 
@@ -452,7 +452,7 @@ public abstract class AbstractEntitySqlConditionExpressionBase<E, ER extends Ent
      * {@inheritDoc}
      */
     @Override
-    public L ew(SerializableFunction<E, String> name, String value, MatchStrategy matchStrategy,
+    public L ew(SerializableFunction<T, String> name, String value, MatchStrategy matchStrategy,
             Predicate<String> ignoreStrategy) {
         return ew(classMapping, name, value, queryAlias, matchStrategy, ignoreStrategy);
     }
@@ -479,7 +479,7 @@ public abstract class AbstractEntitySqlConditionExpressionBase<E, ER extends Ent
      * {@inheritDoc}
      */
     @Override
-    public L newv(SerializableFunction<E, String> name, String value, MatchStrategy matchStrategy) {
+    public L newv(SerializableFunction<T, String> name, String value, MatchStrategy matchStrategy) {
         return newv(classMapping, name, value, queryAlias, matchStrategy, ignoreStrategy);
     }
 
@@ -487,7 +487,7 @@ public abstract class AbstractEntitySqlConditionExpressionBase<E, ER extends Ent
      * {@inheritDoc}
      */
     @Override
-    public L newv(SerializableFunction<E, String> name, String value, MatchStrategy matchStrategy,
+    public L newv(SerializableFunction<T, String> name, String value, MatchStrategy matchStrategy,
             Predicate<String> ignoreStrategy) {
         return newv(classMapping, name, value, queryAlias, matchStrategy, ignoreStrategy);
     }
@@ -514,7 +514,7 @@ public abstract class AbstractEntitySqlConditionExpressionBase<E, ER extends Ent
      * {@inheritDoc}
      */
     @Override
-    public L co(SerializableFunction<E, String> name, String value, MatchStrategy matchStrategy) {
+    public L co(SerializableFunction<T, String> name, String value, MatchStrategy matchStrategy) {
         return co(classMapping, name, value, queryAlias, matchStrategy, ignoreStrategy);
     }
 
@@ -522,7 +522,7 @@ public abstract class AbstractEntitySqlConditionExpressionBase<E, ER extends Ent
      * {@inheritDoc}
      */
     @Override
-    public L co(SerializableFunction<E, String> name, String value, MatchStrategy matchStrategy,
+    public L co(SerializableFunction<T, String> name, String value, MatchStrategy matchStrategy,
             Predicate<String> ignoreStrategy) {
         return co(classMapping, name, value, queryAlias, matchStrategy, ignoreStrategy);
     }
@@ -549,7 +549,7 @@ public abstract class AbstractEntitySqlConditionExpressionBase<E, ER extends Ent
      * {@inheritDoc}
      */
     @Override
-    public L nco(SerializableFunction<E, String> name, String value, MatchStrategy matchStrategy) {
+    public L nco(SerializableFunction<T, String> name, String value, MatchStrategy matchStrategy) {
         return nco(classMapping, name, value, queryAlias, matchStrategy, ignoreStrategy);
     }
 
@@ -557,7 +557,7 @@ public abstract class AbstractEntitySqlConditionExpressionBase<E, ER extends Ent
      * {@inheritDoc}
      */
     @Override
-    public L nco(SerializableFunction<E, String> name, String value, MatchStrategy matchStrategy,
+    public L nco(SerializableFunction<T, String> name, String value, MatchStrategy matchStrategy,
             Predicate<String> ignoreStrategy) {
         return nco(classMapping, name, value, queryAlias, matchStrategy, ignoreStrategy);
     }
@@ -886,7 +886,7 @@ public abstract class AbstractEntitySqlConditionExpressionBase<E, ER extends Ent
      * {@inheritDoc}
      */
     @Override
-    public <N extends Number> L ge(SerializableFunction<E, N> name, N value) {
+    public <N extends Number> L ge(SerializableFunction<T, N> name, N value) {
         return ge(classMapping, name, value, queryAlias, ignoreStrategy);
     }
 
@@ -894,7 +894,7 @@ public abstract class AbstractEntitySqlConditionExpressionBase<E, ER extends Ent
      * {@inheritDoc}
      */
     @Override
-    public <N extends Number> L ge(SerializableFunction<E, N> name, N value, Predicate<N> ignoreStrategy) {
+    public <N extends Number> L ge(SerializableFunction<T, N> name, N value, Predicate<N> ignoreStrategy) {
         return ge(classMapping, name, value, queryAlias, ignoreStrategy);
     }
 
@@ -902,7 +902,7 @@ public abstract class AbstractEntitySqlConditionExpressionBase<E, ER extends Ent
      * {@inheritDoc}
      */
     @Override
-    public <D extends Date> L ge(SerializableFunction<E, D> name, D value) {
+    public <D extends Date> L ge(SerializableFunction<T, D> name, D value) {
         return ge(classMapping, name, value, queryAlias, ignoreStrategy);
     }
 
@@ -910,7 +910,7 @@ public abstract class AbstractEntitySqlConditionExpressionBase<E, ER extends Ent
      * {@inheritDoc}
      */
     @Override
-    public <D extends Date> L ge(SerializableFunction<E, D> name, D value, Predicate<D> ignoreStrategy) {
+    public <D extends Date> L ge(SerializableFunction<T, D> name, D value, Predicate<D> ignoreStrategy) {
         return ge(classMapping, name, value, queryAlias, ignoreStrategy);
     }
 
@@ -918,7 +918,7 @@ public abstract class AbstractEntitySqlConditionExpressionBase<E, ER extends Ent
      * {@inheritDoc}
      */
     @Override
-    public L ge(SerializableFunction<E, LocalTime> name, LocalTime value) {
+    public L ge(SerializableFunction<T, LocalTime> name, LocalTime value) {
         return ge(classMapping, name, value, queryAlias, ignoreStrategy);
     }
 
@@ -926,7 +926,7 @@ public abstract class AbstractEntitySqlConditionExpressionBase<E, ER extends Ent
      * {@inheritDoc}
      */
     @Override
-    public L ge(SerializableFunction<E, LocalTime> name, LocalTime value, Predicate<LocalTime> ignoreStrategy) {
+    public L ge(SerializableFunction<T, LocalTime> name, LocalTime value, Predicate<LocalTime> ignoreStrategy) {
         return ge(classMapping, name, value, queryAlias, ignoreStrategy);
     }
 
@@ -934,7 +934,7 @@ public abstract class AbstractEntitySqlConditionExpressionBase<E, ER extends Ent
      * {@inheritDoc}
      */
     @Override
-    public L ge(SerializableFunction<E, LocalDate> name, LocalDate value) {
+    public L ge(SerializableFunction<T, LocalDate> name, LocalDate value) {
         return ge(classMapping, name, value, queryAlias, ignoreStrategy);
     }
 
@@ -942,7 +942,7 @@ public abstract class AbstractEntitySqlConditionExpressionBase<E, ER extends Ent
      * {@inheritDoc}
      */
     @Override
-    public L ge(SerializableFunction<E, LocalDate> name, LocalDate value, Predicate<LocalDate> ignoreStrategy) {
+    public L ge(SerializableFunction<T, LocalDate> name, LocalDate value, Predicate<LocalDate> ignoreStrategy) {
         return ge(classMapping, name, value, queryAlias, ignoreStrategy);
     }
 
@@ -950,7 +950,7 @@ public abstract class AbstractEntitySqlConditionExpressionBase<E, ER extends Ent
      * {@inheritDoc}
      */
     @Override
-    public L ge(SerializableFunction<E, LocalDateTime> name, LocalDateTime value) {
+    public L ge(SerializableFunction<T, LocalDateTime> name, LocalDateTime value) {
         return ge(classMapping, name, value, queryAlias, ignoreStrategy);
     }
 
@@ -958,7 +958,7 @@ public abstract class AbstractEntitySqlConditionExpressionBase<E, ER extends Ent
      * {@inheritDoc}
      */
     @Override
-    public L ge(SerializableFunction<E, LocalDateTime> name, LocalDateTime value,
+    public L ge(SerializableFunction<T, LocalDateTime> name, LocalDateTime value,
             Predicate<LocalDateTime> ignoreStrategy) {
         return ge(classMapping, name, value, queryAlias, ignoreStrategy);
     }
@@ -967,7 +967,7 @@ public abstract class AbstractEntitySqlConditionExpressionBase<E, ER extends Ent
      * {@inheritDoc}
      */
     @Override
-    public L ge(SerializableFunction<E, String> name, String value) {
+    public L ge(SerializableFunction<T, String> name, String value) {
         return ge(classMapping, name, value, queryAlias, ignoreStrategy);
     }
 
@@ -975,7 +975,7 @@ public abstract class AbstractEntitySqlConditionExpressionBase<E, ER extends Ent
      * {@inheritDoc}
      */
     @Override
-    public L ge(SerializableFunction<E, String> name, String value, Predicate<String> ignoreStrategy) {
+    public L ge(SerializableFunction<T, String> name, String value, Predicate<String> ignoreStrategy) {
         return ge(classMapping, name, value, queryAlias, ignoreStrategy);
     }
 
@@ -1079,7 +1079,7 @@ public abstract class AbstractEntitySqlConditionExpressionBase<E, ER extends Ent
      * {@inheritDoc}
      */
     @Override
-    public L ge(SerializableToIntFunction<E> name, int value) {
+    public L ge(SerializableToIntFunction<T> name, int value) {
         return ge(name, value, (Predicate<Integer>) ignoreStrategy);
     }
 
@@ -1087,7 +1087,7 @@ public abstract class AbstractEntitySqlConditionExpressionBase<E, ER extends Ent
      * {@inheritDoc}
      */
     @Override
-    public L ge(SerializableToIntFunction<E> name, int value, Predicate<Integer> ignoreStrategy) {
+    public L ge(SerializableToIntFunction<T> name, int value, Predicate<Integer> ignoreStrategy) {
         return ge(classMapping, name, value, queryAlias, ignoreStrategy);
     }
 
@@ -1095,7 +1095,7 @@ public abstract class AbstractEntitySqlConditionExpressionBase<E, ER extends Ent
      * {@inheritDoc}
      */
     @Override
-    public L ge(SerializableToLongFunction<E> name, long value) {
+    public L ge(SerializableToLongFunction<T> name, long value) {
         return ge(name, value, (Predicate<Long>) ignoreStrategy);
     }
 
@@ -1103,7 +1103,7 @@ public abstract class AbstractEntitySqlConditionExpressionBase<E, ER extends Ent
      * {@inheritDoc}
      */
     @Override
-    public L ge(SerializableToLongFunction<E> name, long value, Predicate<Long> ignoreStrategy) {
+    public L ge(SerializableToLongFunction<T> name, long value, Predicate<Long> ignoreStrategy) {
         return ge(classMapping, name, value, queryAlias, ignoreStrategy);
     }
 
@@ -1111,7 +1111,7 @@ public abstract class AbstractEntitySqlConditionExpressionBase<E, ER extends Ent
      * {@inheritDoc}
      */
     @Override
-    public L ge(SerializableToDoubleFunction<E> name, double value) {
+    public L ge(SerializableToDoubleFunction<T> name, double value) {
         return ge(name, value, (Predicate<Double>) ignoreStrategy);
     }
 
@@ -1119,7 +1119,7 @@ public abstract class AbstractEntitySqlConditionExpressionBase<E, ER extends Ent
      * {@inheritDoc}
      */
     @Override
-    public L ge(SerializableToDoubleFunction<E> name, double value, Predicate<Double> ignoreStrategy) {
+    public L ge(SerializableToDoubleFunction<T> name, double value, Predicate<Double> ignoreStrategy) {
         return ge(classMapping, name, value, queryAlias, ignoreStrategy);
     }
 
@@ -1177,7 +1177,7 @@ public abstract class AbstractEntitySqlConditionExpressionBase<E, ER extends Ent
      * {@inheritDoc}
      */
     @Override
-    public <N extends Number> L gt(SerializableFunction<E, N> name, N value) {
+    public <N extends Number> L gt(SerializableFunction<T, N> name, N value) {
         return gt(classMapping, name, value, queryAlias, ignoreStrategy);
     }
 
@@ -1185,7 +1185,7 @@ public abstract class AbstractEntitySqlConditionExpressionBase<E, ER extends Ent
      * {@inheritDoc}
      */
     @Override
-    public <N extends Number> L gt(SerializableFunction<E, N> name, N value, Predicate<N> ignoreStrategy) {
+    public <N extends Number> L gt(SerializableFunction<T, N> name, N value, Predicate<N> ignoreStrategy) {
         return gt(classMapping, name, value, queryAlias, ignoreStrategy);
     }
 
@@ -1193,7 +1193,7 @@ public abstract class AbstractEntitySqlConditionExpressionBase<E, ER extends Ent
      * {@inheritDoc}
      */
     @Override
-    public <D extends Date> L gt(SerializableFunction<E, D> name, D value) {
+    public <D extends Date> L gt(SerializableFunction<T, D> name, D value) {
         return gt(classMapping, name, value, queryAlias, ignoreStrategy);
     }
 
@@ -1201,7 +1201,7 @@ public abstract class AbstractEntitySqlConditionExpressionBase<E, ER extends Ent
      * {@inheritDoc}
      */
     @Override
-    public <D extends Date> L gt(SerializableFunction<E, D> name, D value, Predicate<D> ignoreStrategy) {
+    public <D extends Date> L gt(SerializableFunction<T, D> name, D value, Predicate<D> ignoreStrategy) {
         return gt(classMapping, name, value, queryAlias, ignoreStrategy);
     }
 
@@ -1209,7 +1209,7 @@ public abstract class AbstractEntitySqlConditionExpressionBase<E, ER extends Ent
      * {@inheritDoc}
      */
     @Override
-    public L gt(SerializableFunction<E, LocalTime> name, LocalTime value) {
+    public L gt(SerializableFunction<T, LocalTime> name, LocalTime value) {
         return gt(classMapping, name, value, queryAlias, ignoreStrategy);
     }
 
@@ -1217,7 +1217,7 @@ public abstract class AbstractEntitySqlConditionExpressionBase<E, ER extends Ent
      * {@inheritDoc}
      */
     @Override
-    public L gt(SerializableFunction<E, LocalTime> name, LocalTime value, Predicate<LocalTime> ignoreStrategy) {
+    public L gt(SerializableFunction<T, LocalTime> name, LocalTime value, Predicate<LocalTime> ignoreStrategy) {
         return gt(classMapping, name, value, queryAlias, ignoreStrategy);
     }
 
@@ -1225,7 +1225,7 @@ public abstract class AbstractEntitySqlConditionExpressionBase<E, ER extends Ent
      * {@inheritDoc}
      */
     @Override
-    public L gt(SerializableFunction<E, LocalDate> name, LocalDate value) {
+    public L gt(SerializableFunction<T, LocalDate> name, LocalDate value) {
         return gt(classMapping, name, value, queryAlias, ignoreStrategy);
     }
 
@@ -1233,7 +1233,7 @@ public abstract class AbstractEntitySqlConditionExpressionBase<E, ER extends Ent
      * {@inheritDoc}
      */
     @Override
-    public L gt(SerializableFunction<E, LocalDate> name, LocalDate value, Predicate<LocalDate> ignoreStrategy) {
+    public L gt(SerializableFunction<T, LocalDate> name, LocalDate value, Predicate<LocalDate> ignoreStrategy) {
         return gt(classMapping, name, value, queryAlias, ignoreStrategy);
     }
 
@@ -1241,7 +1241,7 @@ public abstract class AbstractEntitySqlConditionExpressionBase<E, ER extends Ent
      * {@inheritDoc}
      */
     @Override
-    public L gt(SerializableFunction<E, LocalDateTime> name, LocalDateTime value) {
+    public L gt(SerializableFunction<T, LocalDateTime> name, LocalDateTime value) {
         return gt(classMapping, name, value, queryAlias, ignoreStrategy);
     }
 
@@ -1249,7 +1249,7 @@ public abstract class AbstractEntitySqlConditionExpressionBase<E, ER extends Ent
      * {@inheritDoc}
      */
     @Override
-    public L gt(SerializableFunction<E, LocalDateTime> name, LocalDateTime value,
+    public L gt(SerializableFunction<T, LocalDateTime> name, LocalDateTime value,
             Predicate<LocalDateTime> ignoreStrategy) {
         return gt(classMapping, name, value, queryAlias, ignoreStrategy);
     }
@@ -1258,7 +1258,7 @@ public abstract class AbstractEntitySqlConditionExpressionBase<E, ER extends Ent
      * {@inheritDoc}
      */
     @Override
-    public L gt(SerializableFunction<E, String> name, String value) {
+    public L gt(SerializableFunction<T, String> name, String value) {
         return gt(classMapping, name, value, queryAlias, ignoreStrategy);
     }
 
@@ -1266,7 +1266,7 @@ public abstract class AbstractEntitySqlConditionExpressionBase<E, ER extends Ent
      * {@inheritDoc}
      */
     @Override
-    public L gt(SerializableFunction<E, String> name, String value, Predicate<String> ignoreStrategy) {
+    public L gt(SerializableFunction<T, String> name, String value, Predicate<String> ignoreStrategy) {
         return gt(classMapping, name, value, queryAlias, ignoreStrategy);
     }
 
@@ -1370,7 +1370,7 @@ public abstract class AbstractEntitySqlConditionExpressionBase<E, ER extends Ent
      * {@inheritDoc}
      */
     @Override
-    public L gt(SerializableToIntFunction<E> name, int value) {
+    public L gt(SerializableToIntFunction<T> name, int value) {
         return gt(name, value, (Predicate<Integer>) ignoreStrategy);
     }
 
@@ -1378,7 +1378,7 @@ public abstract class AbstractEntitySqlConditionExpressionBase<E, ER extends Ent
      * {@inheritDoc}
      */
     @Override
-    public L gt(SerializableToIntFunction<E> name, int value, Predicate<Integer> ignoreStrategy) {
+    public L gt(SerializableToIntFunction<T> name, int value, Predicate<Integer> ignoreStrategy) {
         return gt(classMapping, name, value, queryAlias, ignoreStrategy);
     }
 
@@ -1386,7 +1386,7 @@ public abstract class AbstractEntitySqlConditionExpressionBase<E, ER extends Ent
      * {@inheritDoc}
      */
     @Override
-    public L gt(SerializableToLongFunction<E> name, long value) {
+    public L gt(SerializableToLongFunction<T> name, long value) {
         return gt(name, value, (Predicate<Long>) ignoreStrategy);
     }
 
@@ -1394,7 +1394,7 @@ public abstract class AbstractEntitySqlConditionExpressionBase<E, ER extends Ent
      * {@inheritDoc}
      */
     @Override
-    public L gt(SerializableToLongFunction<E> name, long value, Predicate<Long> ignoreStrategy) {
+    public L gt(SerializableToLongFunction<T> name, long value, Predicate<Long> ignoreStrategy) {
         return gt(classMapping, name, value, queryAlias, ignoreStrategy);
     }
 
@@ -1402,7 +1402,7 @@ public abstract class AbstractEntitySqlConditionExpressionBase<E, ER extends Ent
      * {@inheritDoc}
      */
     @Override
-    public L gt(SerializableToDoubleFunction<E> name, double value) {
+    public L gt(SerializableToDoubleFunction<T> name, double value) {
         return gt(name, value, (Predicate<Double>) ignoreStrategy);
     }
 
@@ -1410,7 +1410,7 @@ public abstract class AbstractEntitySqlConditionExpressionBase<E, ER extends Ent
      * {@inheritDoc}
      */
     @Override
-    public L gt(SerializableToDoubleFunction<E> name, double value, Predicate<Double> ignoreStrategy) {
+    public L gt(SerializableToDoubleFunction<T> name, double value, Predicate<Double> ignoreStrategy) {
         return gt(classMapping, name, value, queryAlias, ignoreStrategy);
     }
 
@@ -1468,7 +1468,7 @@ public abstract class AbstractEntitySqlConditionExpressionBase<E, ER extends Ent
      * {@inheritDoc}
      */
     @Override
-    public <R> L in(SerializableFunction<E, R> name, R value) {
+    public <R> L in(SerializableFunction<T, R> name, R value) {
         //        return in(classMapping, name, value, queryAlias, ignoreStrategy);
         return in(classMapping.getPropertyMapping(getPropertyName(name)), value, queryAlias, ignoreStrategy);
     }
@@ -1477,7 +1477,7 @@ public abstract class AbstractEntitySqlConditionExpressionBase<E, ER extends Ent
      * {@inheritDoc}
      */
     @Override
-    public <R> L in(SerializableFunction<E, R> name, R value, Predicate<R> ignoreStrategy) {
+    public <R> L in(SerializableFunction<T, R> name, R value, Predicate<R> ignoreStrategy) {
         //        return in(classMapping, name, value, queryAlias, ignoreStrategy);
         return in(classMapping.getPropertyMapping(getPropertyName(name)), value, queryAlias, ignoreStrategy);
     }
@@ -1486,7 +1486,7 @@ public abstract class AbstractEntitySqlConditionExpressionBase<E, ER extends Ent
      * {@inheritDoc}
      */
     @Override
-    public <R> L in(SerializableFunction<E, R> name, R... value) {
+    public <R> L in(SerializableFunction<T, R> name, R... value) {
         return in(classMapping.getPropertyMapping(getPropertyName(name)), value, queryAlias, ignoreStrategy);
     }
 
@@ -1494,7 +1494,7 @@ public abstract class AbstractEntitySqlConditionExpressionBase<E, ER extends Ent
      * {@inheritDoc}
      */
     @Override
-    public <R> L in(SerializableFunction<E, R> name, R[] value, Predicate<R[]> ignoreStrategy) {
+    public <R> L in(SerializableFunction<T, R> name, R[] value, Predicate<R[]> ignoreStrategy) {
         return in(classMapping.getPropertyMapping(getPropertyName(name)), value, queryAlias, ignoreStrategy);
     }
 
@@ -1502,7 +1502,7 @@ public abstract class AbstractEntitySqlConditionExpressionBase<E, ER extends Ent
      * {@inheritDoc}
      */
     @Override
-    public <R> L in(SerializableFunction<E, R> name, Collection<R> value) {
+    public <R> L in(SerializableFunction<T, R> name, Collection<R> value) {
         return in(classMapping.getPropertyMapping(getPropertyName(name)), value, queryAlias, ignoreStrategy);
     }
 
@@ -1510,7 +1510,7 @@ public abstract class AbstractEntitySqlConditionExpressionBase<E, ER extends Ent
      * {@inheritDoc}
      */
     @Override
-    public <R> L in(SerializableFunction<E, R> name, Collection<R> value, Predicate<Collection<R>> ignoreStrategy) {
+    public <R> L in(SerializableFunction<T, R> name, Collection<R> value, Predicate<Collection<R>> ignoreStrategy) {
         return in(classMapping.getPropertyMapping(getPropertyName(name)), value, queryAlias, ignoreStrategy);
     }
 
@@ -1538,7 +1538,7 @@ public abstract class AbstractEntitySqlConditionExpressionBase<E, ER extends Ent
      * {@inheritDoc}
      */
     @Override
-    public L in(SerializableToIntFunction<E> name, int value) {
+    public L in(SerializableToIntFunction<T> name, int value) {
         //        return in(classMapping, name, value, (Predicate<Integer>) ignoreStrategy);
         return in(classMapping, name, value, queryAlias, ignoreStrategy);
     }
@@ -1547,7 +1547,7 @@ public abstract class AbstractEntitySqlConditionExpressionBase<E, ER extends Ent
      * {@inheritDoc}
      */
     @Override
-    public L in(SerializableToIntFunction<E> name, int value, Predicate<Integer> ignoreStrategy) {
+    public L in(SerializableToIntFunction<T> name, int value, Predicate<Integer> ignoreStrategy) {
         return in(classMapping, name, value, queryAlias, ignoreStrategy);
     }
 
@@ -1555,7 +1555,7 @@ public abstract class AbstractEntitySqlConditionExpressionBase<E, ER extends Ent
      * {@inheritDoc}
      */
     @Override
-    public L in(SerializableToLongFunction<E> name, long value) {
+    public L in(SerializableToLongFunction<T> name, long value) {
         //        return in(classMapping, name, value, (Predicate<Long>) ignoreStrategy);
         return in(classMapping, name, value, queryAlias, ignoreStrategy);
     }
@@ -1564,7 +1564,7 @@ public abstract class AbstractEntitySqlConditionExpressionBase<E, ER extends Ent
      * {@inheritDoc}
      */
     @Override
-    public L in(SerializableToLongFunction<E> name, long value, Predicate<Long> ignoreStrategy) {
+    public L in(SerializableToLongFunction<T> name, long value, Predicate<Long> ignoreStrategy) {
         return in(classMapping, name, value, queryAlias, ignoreStrategy);
     }
 
@@ -1572,7 +1572,7 @@ public abstract class AbstractEntitySqlConditionExpressionBase<E, ER extends Ent
      * {@inheritDoc}
      */
     @Override
-    public L in(SerializableToIntFunction<E> name, int... value) {
+    public L in(SerializableToIntFunction<T> name, int... value) {
         //        return in(classMapping, name, value, (Predicate<int[]>) ignoreStrategy);
         return in(classMapping, name, value, queryAlias, ignoreStrategy);
     }
@@ -1581,7 +1581,7 @@ public abstract class AbstractEntitySqlConditionExpressionBase<E, ER extends Ent
      * {@inheritDoc}
      */
     @Override
-    public L in(SerializableToLongFunction<E> name, long... value) {
+    public L in(SerializableToLongFunction<T> name, long... value) {
         //        return in(classMapping, name, value, (Predicate<long[]>) ignoreStrategy);
         return in(classMapping, name, value, queryAlias, ignoreStrategy);
     }
@@ -1590,7 +1590,7 @@ public abstract class AbstractEntitySqlConditionExpressionBase<E, ER extends Ent
      * {@inheritDoc}
      */
     @Override
-    public L in(SerializableToIntFunction<E> name, int[] value, Predicate<int[]> ignoreStrategy) {
+    public L in(SerializableToIntFunction<T> name, int[] value, Predicate<int[]> ignoreStrategy) {
         return in(classMapping, name, value, queryAlias, ignoreStrategy);
     }
 
@@ -1598,7 +1598,7 @@ public abstract class AbstractEntitySqlConditionExpressionBase<E, ER extends Ent
      * {@inheritDoc}
      */
     @Override
-    public L in(SerializableToLongFunction<E> name, long[] value, Predicate<long[]> ignoreStrategy) {
+    public L in(SerializableToLongFunction<T> name, long[] value, Predicate<long[]> ignoreStrategy) {
         return in(classMapping, name, value, queryAlias, ignoreStrategy);
     }
 
@@ -1640,7 +1640,7 @@ public abstract class AbstractEntitySqlConditionExpressionBase<E, ER extends Ent
      * {@inheritDoc}
      */
     @Override
-    public <R> L ni(SerializableFunction<E, R> name, R value) {
+    public <R> L ni(SerializableFunction<T, R> name, R value) {
         return ni(classMapping.getPropertyMapping(getPropertyName(name)), value, queryAlias, ignoreStrategy);
     }
 
@@ -1648,7 +1648,7 @@ public abstract class AbstractEntitySqlConditionExpressionBase<E, ER extends Ent
      * {@inheritDoc}
      */
     @Override
-    public <R> L ni(SerializableFunction<E, R> name, R value, Predicate<R> ignoreStrategy) {
+    public <R> L ni(SerializableFunction<T, R> name, R value, Predicate<R> ignoreStrategy) {
         return ni(classMapping.getPropertyMapping(getPropertyName(name)), value, queryAlias, ignoreStrategy);
     }
 
@@ -1656,7 +1656,7 @@ public abstract class AbstractEntitySqlConditionExpressionBase<E, ER extends Ent
      * {@inheritDoc}
      */
     @Override
-    public <R> L ni(SerializableFunction<E, R> name, R... value) {
+    public <R> L ni(SerializableFunction<T, R> name, R... value) {
         return ni(classMapping.getPropertyMapping(getPropertyName(name)), value, queryAlias, ignoreStrategy);
     }
 
@@ -1664,7 +1664,7 @@ public abstract class AbstractEntitySqlConditionExpressionBase<E, ER extends Ent
      * {@inheritDoc}
      */
     @Override
-    public <R> L ni(SerializableFunction<E, R> name, R[] value, Predicate<R[]> ignoreStrategy) {
+    public <R> L ni(SerializableFunction<T, R> name, R[] value, Predicate<R[]> ignoreStrategy) {
         return ni(classMapping.getPropertyMapping(getPropertyName(name)), value, queryAlias, ignoreStrategy);
     }
 
@@ -1672,7 +1672,7 @@ public abstract class AbstractEntitySqlConditionExpressionBase<E, ER extends Ent
      * {@inheritDoc}
      */
     @Override
-    public <R> L ni(SerializableFunction<E, R> name, Collection<R> value) {
+    public <R> L ni(SerializableFunction<T, R> name, Collection<R> value) {
         return ni(classMapping.getPropertyMapping(getPropertyName(name)), value, queryAlias, ignoreStrategy);
     }
 
@@ -1680,7 +1680,7 @@ public abstract class AbstractEntitySqlConditionExpressionBase<E, ER extends Ent
      * {@inheritDoc}
      */
     @Override
-    public <R> L ni(SerializableFunction<E, R> name, Collection<R> value, Predicate<Collection<R>> ignoreStrategy) {
+    public <R> L ni(SerializableFunction<T, R> name, Collection<R> value, Predicate<Collection<R>> ignoreStrategy) {
         return ni(classMapping.getPropertyMapping(getPropertyName(name)), value, queryAlias, ignoreStrategy);
     }
 
@@ -1708,7 +1708,7 @@ public abstract class AbstractEntitySqlConditionExpressionBase<E, ER extends Ent
      * {@inheritDoc}
      */
     @Override
-    public L ni(SerializableToIntFunction<E> name, int value) {
+    public L ni(SerializableToIntFunction<T> name, int value) {
         //        return ni(classMapping, name, value, (Predicate<Integer>) ignoreStrategy);
         return ni(classMapping, name, value, queryAlias, ignoreStrategy);
     }
@@ -1717,7 +1717,7 @@ public abstract class AbstractEntitySqlConditionExpressionBase<E, ER extends Ent
      * {@inheritDoc}
      */
     @Override
-    public L ni(SerializableToIntFunction<E> name, int value, Predicate<Integer> ignoreStrategy) {
+    public L ni(SerializableToIntFunction<T> name, int value, Predicate<Integer> ignoreStrategy) {
         return ni(classMapping, name, value, queryAlias, ignoreStrategy);
     }
 
@@ -1725,7 +1725,7 @@ public abstract class AbstractEntitySqlConditionExpressionBase<E, ER extends Ent
      * {@inheritDoc}
      */
     @Override
-    public L ni(SerializableToLongFunction<E> name, long value) {
+    public L ni(SerializableToLongFunction<T> name, long value) {
         //        return ni(classMapping, name, value, (Predicate<Long>) ignoreStrategy);
         return ni(classMapping, name, value, queryAlias, ignoreStrategy);
     }
@@ -1734,7 +1734,7 @@ public abstract class AbstractEntitySqlConditionExpressionBase<E, ER extends Ent
      * {@inheritDoc}
      */
     @Override
-    public L ni(SerializableToLongFunction<E> name, long value, Predicate<Long> ignoreStrategy) {
+    public L ni(SerializableToLongFunction<T> name, long value, Predicate<Long> ignoreStrategy) {
         return ni(classMapping, name, value, queryAlias, ignoreStrategy);
     }
 
@@ -1742,7 +1742,7 @@ public abstract class AbstractEntitySqlConditionExpressionBase<E, ER extends Ent
      * {@inheritDoc}
      */
     @Override
-    public L ni(SerializableToIntFunction<E> name, int... value) {
+    public L ni(SerializableToIntFunction<T> name, int... value) {
         //        return ni(classMapping, name, value, (Predicate<int[]>) ignoreStrategy);
         return ni(classMapping, name, value, queryAlias, ignoreStrategy);
     }
@@ -1751,7 +1751,7 @@ public abstract class AbstractEntitySqlConditionExpressionBase<E, ER extends Ent
      * {@inheritDoc}
      */
     @Override
-    public L ni(SerializableToLongFunction<E> name, long... value) {
+    public L ni(SerializableToLongFunction<T> name, long... value) {
         //        return ni(classMapping, name, value, (Predicate<long[]>) ignoreStrategy);
         return ni(classMapping, name, value, queryAlias, ignoreStrategy);
     }
@@ -1760,7 +1760,7 @@ public abstract class AbstractEntitySqlConditionExpressionBase<E, ER extends Ent
      * {@inheritDoc}
      */
     @Override
-    public L ni(SerializableToIntFunction<E> name, int[] value, Predicate<int[]> ignoreStrategy) {
+    public L ni(SerializableToIntFunction<T> name, int[] value, Predicate<int[]> ignoreStrategy) {
         return ni(classMapping, name, value, queryAlias, ignoreStrategy);
     }
 
@@ -1768,7 +1768,7 @@ public abstract class AbstractEntitySqlConditionExpressionBase<E, ER extends Ent
      * {@inheritDoc}
      */
     @Override
-    public L ni(SerializableToLongFunction<E> name, long[] value, Predicate<long[]> ignoreStrategy) {
+    public L ni(SerializableToLongFunction<T> name, long[] value, Predicate<long[]> ignoreStrategy) {
         return ni(classMapping, name, value, queryAlias, ignoreStrategy);
     }
 
@@ -1810,7 +1810,7 @@ public abstract class AbstractEntitySqlConditionExpressionBase<E, ER extends Ent
      * {@inheritDoc}
      */
     @Override
-    public <R> L inn(SerializableFunction<E, R> name, Boolean value) {
+    public <R> L inn(SerializableFunction<T, R> name, Boolean value) {
         return inn(classMapping.getPropertyMapping(getPropertyName(name)), value, queryAlias);
     }
 
@@ -1818,7 +1818,7 @@ public abstract class AbstractEntitySqlConditionExpressionBase<E, ER extends Ent
      * {@inheritDoc}
      */
     @Override
-    public <R> L isn(SerializableFunction<E, R> name, Boolean value) {
+    public <R> L isn(SerializableFunction<T, R> name, Boolean value) {
         return isn(classMapping.getPropertyMapping(getPropertyName(name)), value, queryAlias);
     }
 
@@ -1828,7 +1828,7 @@ public abstract class AbstractEntitySqlConditionExpressionBase<E, ER extends Ent
      * {@inheritDoc}
      */
     @Override
-    public <N extends Number> L le(SerializableFunction<E, N> name, N value) {
+    public <N extends Number> L le(SerializableFunction<T, N> name, N value) {
         return le(classMapping, name, value, queryAlias, ignoreStrategy);
     }
 
@@ -1836,7 +1836,7 @@ public abstract class AbstractEntitySqlConditionExpressionBase<E, ER extends Ent
      * {@inheritDoc}
      */
     @Override
-    public <N extends Number> L le(SerializableFunction<E, N> name, N value, Predicate<N> ignoreStrategy) {
+    public <N extends Number> L le(SerializableFunction<T, N> name, N value, Predicate<N> ignoreStrategy) {
         return le(classMapping, name, value, queryAlias, ignoreStrategy);
     }
 
@@ -1844,7 +1844,7 @@ public abstract class AbstractEntitySqlConditionExpressionBase<E, ER extends Ent
      * {@inheritDoc}
      */
     @Override
-    public <D extends Date> L le(SerializableFunction<E, D> name, D value) {
+    public <D extends Date> L le(SerializableFunction<T, D> name, D value) {
         return le(classMapping, name, value, queryAlias, ignoreStrategy);
     }
 
@@ -1852,7 +1852,7 @@ public abstract class AbstractEntitySqlConditionExpressionBase<E, ER extends Ent
      * {@inheritDoc}
      */
     @Override
-    public <D extends Date> L le(SerializableFunction<E, D> name, D value, Predicate<D> ignoreStrategy) {
+    public <D extends Date> L le(SerializableFunction<T, D> name, D value, Predicate<D> ignoreStrategy) {
         return le(classMapping, name, value, queryAlias, ignoreStrategy);
     }
 
@@ -1860,7 +1860,7 @@ public abstract class AbstractEntitySqlConditionExpressionBase<E, ER extends Ent
      * {@inheritDoc}
      */
     @Override
-    public L le(SerializableFunction<E, LocalTime> name, LocalTime value) {
+    public L le(SerializableFunction<T, LocalTime> name, LocalTime value) {
         return le(classMapping, name, value, queryAlias, ignoreStrategy);
     }
 
@@ -1868,7 +1868,7 @@ public abstract class AbstractEntitySqlConditionExpressionBase<E, ER extends Ent
      * {@inheritDoc}
      */
     @Override
-    public L le(SerializableFunction<E, LocalTime> name, LocalTime value, Predicate<LocalTime> ignoreStrategy) {
+    public L le(SerializableFunction<T, LocalTime> name, LocalTime value, Predicate<LocalTime> ignoreStrategy) {
         return le(classMapping, name, value, queryAlias, ignoreStrategy);
     }
 
@@ -1876,7 +1876,7 @@ public abstract class AbstractEntitySqlConditionExpressionBase<E, ER extends Ent
      * {@inheritDoc}
      */
     @Override
-    public L le(SerializableFunction<E, LocalDate> name, LocalDate value) {
+    public L le(SerializableFunction<T, LocalDate> name, LocalDate value) {
         return le(classMapping, name, value, queryAlias, ignoreStrategy);
     }
 
@@ -1884,7 +1884,7 @@ public abstract class AbstractEntitySqlConditionExpressionBase<E, ER extends Ent
      * {@inheritDoc}
      */
     @Override
-    public L le(SerializableFunction<E, LocalDate> name, LocalDate value, Predicate<LocalDate> ignoreStrategy) {
+    public L le(SerializableFunction<T, LocalDate> name, LocalDate value, Predicate<LocalDate> ignoreStrategy) {
         return le(classMapping, name, value, queryAlias, ignoreStrategy);
     }
 
@@ -1892,7 +1892,7 @@ public abstract class AbstractEntitySqlConditionExpressionBase<E, ER extends Ent
      * {@inheritDoc}
      */
     @Override
-    public L le(SerializableFunction<E, LocalDateTime> name, LocalDateTime value) {
+    public L le(SerializableFunction<T, LocalDateTime> name, LocalDateTime value) {
         return le(classMapping, name, value, queryAlias, ignoreStrategy);
     }
 
@@ -1900,7 +1900,7 @@ public abstract class AbstractEntitySqlConditionExpressionBase<E, ER extends Ent
      * {@inheritDoc}
      */
     @Override
-    public L le(SerializableFunction<E, LocalDateTime> name, LocalDateTime value,
+    public L le(SerializableFunction<T, LocalDateTime> name, LocalDateTime value,
             Predicate<LocalDateTime> ignoreStrategy) {
         return le(classMapping, name, value, queryAlias, ignoreStrategy);
     }
@@ -1909,7 +1909,7 @@ public abstract class AbstractEntitySqlConditionExpressionBase<E, ER extends Ent
      * {@inheritDoc}
      */
     @Override
-    public L le(SerializableFunction<E, String> name, String value) {
+    public L le(SerializableFunction<T, String> name, String value) {
         return le(classMapping, name, value, queryAlias, ignoreStrategy);
     }
 
@@ -1917,7 +1917,7 @@ public abstract class AbstractEntitySqlConditionExpressionBase<E, ER extends Ent
      * {@inheritDoc}
      */
     @Override
-    public L le(SerializableFunction<E, String> name, String value, Predicate<String> ignoreStrategy) {
+    public L le(SerializableFunction<T, String> name, String value, Predicate<String> ignoreStrategy) {
         return le(classMapping, name, value, queryAlias, ignoreStrategy);
     }
 
@@ -2021,7 +2021,7 @@ public abstract class AbstractEntitySqlConditionExpressionBase<E, ER extends Ent
      * {@inheritDoc}
      */
     @Override
-    public L le(SerializableToIntFunction<E> name, int value) {
+    public L le(SerializableToIntFunction<T> name, int value) {
         return le(name, value, (Predicate<Integer>) ignoreStrategy);
     }
 
@@ -2029,7 +2029,7 @@ public abstract class AbstractEntitySqlConditionExpressionBase<E, ER extends Ent
      * {@inheritDoc}
      */
     @Override
-    public L le(SerializableToIntFunction<E> name, int value, Predicate<Integer> ignoreStrategy) {
+    public L le(SerializableToIntFunction<T> name, int value, Predicate<Integer> ignoreStrategy) {
         return le(classMapping, name, value, queryAlias, ignoreStrategy);
     }
 
@@ -2037,7 +2037,7 @@ public abstract class AbstractEntitySqlConditionExpressionBase<E, ER extends Ent
      * {@inheritDoc}
      */
     @Override
-    public L le(SerializableToLongFunction<E> name, long value) {
+    public L le(SerializableToLongFunction<T> name, long value) {
         return le(name, value, (Predicate<Long>) ignoreStrategy);
     }
 
@@ -2045,7 +2045,7 @@ public abstract class AbstractEntitySqlConditionExpressionBase<E, ER extends Ent
      * {@inheritDoc}
      */
     @Override
-    public L le(SerializableToLongFunction<E> name, long value, Predicate<Long> ignoreStrategy) {
+    public L le(SerializableToLongFunction<T> name, long value, Predicate<Long> ignoreStrategy) {
         return le(classMapping, name, value, queryAlias, ignoreStrategy);
     }
 
@@ -2053,7 +2053,7 @@ public abstract class AbstractEntitySqlConditionExpressionBase<E, ER extends Ent
      * {@inheritDoc}
      */
     @Override
-    public L le(SerializableToDoubleFunction<E> name, double value) {
+    public L le(SerializableToDoubleFunction<T> name, double value) {
         return le(name, value, (Predicate<Double>) ignoreStrategy);
     }
 
@@ -2061,7 +2061,7 @@ public abstract class AbstractEntitySqlConditionExpressionBase<E, ER extends Ent
      * {@inheritDoc}
      */
     @Override
-    public L le(SerializableToDoubleFunction<E> name, double value, Predicate<Double> ignoreStrategy) {
+    public L le(SerializableToDoubleFunction<T> name, double value, Predicate<Double> ignoreStrategy) {
         return le(classMapping, name, value, queryAlias, ignoreStrategy);
     }
 
@@ -2119,7 +2119,7 @@ public abstract class AbstractEntitySqlConditionExpressionBase<E, ER extends Ent
      * {@inheritDoc}
      */
     @Override
-    public <N extends Number> L lt(SerializableFunction<E, N> name, N value) {
+    public <N extends Number> L lt(SerializableFunction<T, N> name, N value) {
         return lt(classMapping, name, value, queryAlias, ignoreStrategy);
     }
 
@@ -2127,7 +2127,7 @@ public abstract class AbstractEntitySqlConditionExpressionBase<E, ER extends Ent
      * {@inheritDoc}
      */
     @Override
-    public <N extends Number> L lt(SerializableFunction<E, N> name, N value, Predicate<N> ignoreStrategy) {
+    public <N extends Number> L lt(SerializableFunction<T, N> name, N value, Predicate<N> ignoreStrategy) {
         return lt(classMapping, name, value, queryAlias, ignoreStrategy);
     }
 
@@ -2135,7 +2135,7 @@ public abstract class AbstractEntitySqlConditionExpressionBase<E, ER extends Ent
      * {@inheritDoc}
      */
     @Override
-    public <D extends Date> L lt(SerializableFunction<E, D> name, D value) {
+    public <D extends Date> L lt(SerializableFunction<T, D> name, D value) {
         return lt(classMapping, name, value, queryAlias, ignoreStrategy);
     }
 
@@ -2143,7 +2143,7 @@ public abstract class AbstractEntitySqlConditionExpressionBase<E, ER extends Ent
      * {@inheritDoc}
      */
     @Override
-    public <D extends Date> L lt(SerializableFunction<E, D> name, D value, Predicate<D> ignoreStrategy) {
+    public <D extends Date> L lt(SerializableFunction<T, D> name, D value, Predicate<D> ignoreStrategy) {
         return lt(classMapping, name, value, queryAlias, ignoreStrategy);
     }
 
@@ -2151,7 +2151,7 @@ public abstract class AbstractEntitySqlConditionExpressionBase<E, ER extends Ent
      * {@inheritDoc}
      */
     @Override
-    public L lt(SerializableFunction<E, LocalTime> name, LocalTime value) {
+    public L lt(SerializableFunction<T, LocalTime> name, LocalTime value) {
         return lt(classMapping, name, value, queryAlias, ignoreStrategy);
     }
 
@@ -2159,7 +2159,7 @@ public abstract class AbstractEntitySqlConditionExpressionBase<E, ER extends Ent
      * {@inheritDoc}
      */
     @Override
-    public L lt(SerializableFunction<E, LocalTime> name, LocalTime value, Predicate<LocalTime> ignoreStrategy) {
+    public L lt(SerializableFunction<T, LocalTime> name, LocalTime value, Predicate<LocalTime> ignoreStrategy) {
         return lt(classMapping, name, value, queryAlias, ignoreStrategy);
     }
 
@@ -2167,7 +2167,7 @@ public abstract class AbstractEntitySqlConditionExpressionBase<E, ER extends Ent
      * {@inheritDoc}
      */
     @Override
-    public L lt(SerializableFunction<E, LocalDate> name, LocalDate value) {
+    public L lt(SerializableFunction<T, LocalDate> name, LocalDate value) {
         return lt(classMapping, name, value, queryAlias, ignoreStrategy);
     }
 
@@ -2175,7 +2175,7 @@ public abstract class AbstractEntitySqlConditionExpressionBase<E, ER extends Ent
      * {@inheritDoc}
      */
     @Override
-    public L lt(SerializableFunction<E, LocalDate> name, LocalDate value, Predicate<LocalDate> ignoreStrategy) {
+    public L lt(SerializableFunction<T, LocalDate> name, LocalDate value, Predicate<LocalDate> ignoreStrategy) {
         return lt(classMapping, name, value, queryAlias, ignoreStrategy);
     }
 
@@ -2183,7 +2183,7 @@ public abstract class AbstractEntitySqlConditionExpressionBase<E, ER extends Ent
      * {@inheritDoc}
      */
     @Override
-    public L lt(SerializableFunction<E, LocalDateTime> name, LocalDateTime value) {
+    public L lt(SerializableFunction<T, LocalDateTime> name, LocalDateTime value) {
         return lt(classMapping, name, value, queryAlias, ignoreStrategy);
     }
 
@@ -2191,7 +2191,7 @@ public abstract class AbstractEntitySqlConditionExpressionBase<E, ER extends Ent
      * {@inheritDoc}
      */
     @Override
-    public L lt(SerializableFunction<E, LocalDateTime> name, LocalDateTime value,
+    public L lt(SerializableFunction<T, LocalDateTime> name, LocalDateTime value,
             Predicate<LocalDateTime> ignoreStrategy) {
         return lt(classMapping, name, value, queryAlias, ignoreStrategy);
     }
@@ -2200,7 +2200,7 @@ public abstract class AbstractEntitySqlConditionExpressionBase<E, ER extends Ent
      * {@inheritDoc}
      */
     @Override
-    public L lt(SerializableFunction<E, String> name, String value) {
+    public L lt(SerializableFunction<T, String> name, String value) {
         return lt(classMapping, name, value, queryAlias, ignoreStrategy);
     }
 
@@ -2208,7 +2208,7 @@ public abstract class AbstractEntitySqlConditionExpressionBase<E, ER extends Ent
      * {@inheritDoc}
      */
     @Override
-    public L lt(SerializableFunction<E, String> name, String value, Predicate<String> ignoreStrategy) {
+    public L lt(SerializableFunction<T, String> name, String value, Predicate<String> ignoreStrategy) {
         return lt(classMapping, name, value, queryAlias, ignoreStrategy);
     }
 
@@ -2312,7 +2312,7 @@ public abstract class AbstractEntitySqlConditionExpressionBase<E, ER extends Ent
      * {@inheritDoc}
      */
     @Override
-    public L lt(SerializableToIntFunction<E> name, int value) {
+    public L lt(SerializableToIntFunction<T> name, int value) {
         return lt(name, value, (Predicate<Integer>) ignoreStrategy);
     }
 
@@ -2320,7 +2320,7 @@ public abstract class AbstractEntitySqlConditionExpressionBase<E, ER extends Ent
      * {@inheritDoc}
      */
     @Override
-    public L lt(SerializableToIntFunction<E> name, int value, Predicate<Integer> ignoreStrategy) {
+    public L lt(SerializableToIntFunction<T> name, int value, Predicate<Integer> ignoreStrategy) {
         return lt(classMapping, name, value, queryAlias, ignoreStrategy);
     }
 
@@ -2328,7 +2328,7 @@ public abstract class AbstractEntitySqlConditionExpressionBase<E, ER extends Ent
      * {@inheritDoc}
      */
     @Override
-    public L lt(SerializableToLongFunction<E> name, long value) {
+    public L lt(SerializableToLongFunction<T> name, long value) {
         return lt(name, value, (Predicate<Long>) ignoreStrategy);
     }
 
@@ -2336,7 +2336,7 @@ public abstract class AbstractEntitySqlConditionExpressionBase<E, ER extends Ent
      * {@inheritDoc}
      */
     @Override
-    public L lt(SerializableToLongFunction<E> name, long value, Predicate<Long> ignoreStrategy) {
+    public L lt(SerializableToLongFunction<T> name, long value, Predicate<Long> ignoreStrategy) {
         return lt(classMapping, name, value, queryAlias, ignoreStrategy);
     }
 
@@ -2344,7 +2344,7 @@ public abstract class AbstractEntitySqlConditionExpressionBase<E, ER extends Ent
      * {@inheritDoc}
      */
     @Override
-    public L lt(SerializableToDoubleFunction<E> name, double value) {
+    public L lt(SerializableToDoubleFunction<T> name, double value) {
         return lt(name, value, (Predicate<Double>) ignoreStrategy);
     }
 
@@ -2352,7 +2352,7 @@ public abstract class AbstractEntitySqlConditionExpressionBase<E, ER extends Ent
      * {@inheritDoc}
      */
     @Override
-    public L lt(SerializableToDoubleFunction<E> name, double value, Predicate<Double> ignoreStrategy) {
+    public L lt(SerializableToDoubleFunction<T> name, double value, Predicate<Double> ignoreStrategy) {
         return lt(classMapping, name, value, queryAlias, ignoreStrategy);
     }
 
@@ -2410,7 +2410,7 @@ public abstract class AbstractEntitySqlConditionExpressionBase<E, ER extends Ent
      * {@inheritDoc}
      */
     @Override
-    public L ba(SerializableToIntFunction<E> name, int min, int max) {
+    public L ba(SerializableToIntFunction<T> name, int min, int max) {
         return ba(classMapping, name, min, max, queryAlias, ignoreStrategy);
     }
 
@@ -2418,7 +2418,7 @@ public abstract class AbstractEntitySqlConditionExpressionBase<E, ER extends Ent
      * {@inheritDoc}
      */
     @Override
-    public L ba(SerializableToIntFunction<E> name, int min, int max, BiPredicate<Integer, Integer> ignoreStrategy) {
+    public L ba(SerializableToIntFunction<T> name, int min, int max, BiPredicate<Integer, Integer> ignoreStrategy) {
         return ba(classMapping, name, min, max, queryAlias, ignoreStrategy);
     }
 
@@ -2426,7 +2426,7 @@ public abstract class AbstractEntitySqlConditionExpressionBase<E, ER extends Ent
      * {@inheritDoc}
      */
     @Override
-    public L ba(SerializableToLongFunction<E> name, long min, long max) {
+    public L ba(SerializableToLongFunction<T> name, long min, long max) {
         return ba(classMapping, name, min, max, queryAlias, ignoreStrategy);
     }
 
@@ -2434,7 +2434,7 @@ public abstract class AbstractEntitySqlConditionExpressionBase<E, ER extends Ent
      * {@inheritDoc}
      */
     @Override
-    public L ba(SerializableToLongFunction<E> name, long min, long max, BiPredicate<Long, Long> ignoreStrategy) {
+    public L ba(SerializableToLongFunction<T> name, long min, long max, BiPredicate<Long, Long> ignoreStrategy) {
         return ba(classMapping, name, min, max, queryAlias, ignoreStrategy);
     }
 
@@ -2442,7 +2442,7 @@ public abstract class AbstractEntitySqlConditionExpressionBase<E, ER extends Ent
      * {@inheritDoc}
      */
     @Override
-    public L ba(SerializableToDoubleFunction<E> name, double min, double max) {
+    public L ba(SerializableToDoubleFunction<T> name, double min, double max) {
         return ba(classMapping, name, min, max, queryAlias, ignoreStrategy);
     }
 
@@ -2450,7 +2450,7 @@ public abstract class AbstractEntitySqlConditionExpressionBase<E, ER extends Ent
      * {@inheritDoc}
      */
     @Override
-    public L ba(SerializableToDoubleFunction<E> name, double min, double max,
+    public L ba(SerializableToDoubleFunction<T> name, double min, double max,
             BiPredicate<Double, Double> ignoreStrategy) {
         return ba(classMapping, name, min, max, queryAlias, ignoreStrategy);
     }
@@ -2459,7 +2459,7 @@ public abstract class AbstractEntitySqlConditionExpressionBase<E, ER extends Ent
      * {@inheritDoc}
      */
     @Override
-    public <N extends Number> L ba(SerializableFunction<E, N> name, N min, N max) {
+    public <N extends Number> L ba(SerializableToNumberFunction<T, N> name, N min, N max) {
         return ba(classMapping, name, min, max, queryAlias, ignoreStrategy);
     }
 
@@ -2467,7 +2467,8 @@ public abstract class AbstractEntitySqlConditionExpressionBase<E, ER extends Ent
      * {@inheritDoc}
      */
     @Override
-    public <N extends Number> L ba(SerializableFunction<E, N> name, N min, N max, BiPredicate<N, N> ignoreStrategy) {
+    public <N extends Number> L ba(SerializableToNumberFunction<T, N> name, N min, N max,
+            BiPredicate<N, N> ignoreStrategy) {
         return ba(classMapping, name, min, max, queryAlias, ignoreStrategy);
     }
 
@@ -2475,7 +2476,7 @@ public abstract class AbstractEntitySqlConditionExpressionBase<E, ER extends Ent
      * {@inheritDoc}
      */
     @Override
-    public <D extends Date> L ba(SerializableFunction<E, D> name, D min, D max) {
+    public <D extends Date> L ba(SerializableToDateFunction<T, D> name, D min, D max) {
         return ba(classMapping, name, min, max, queryAlias, ignoreStrategy);
     }
 
@@ -2483,7 +2484,8 @@ public abstract class AbstractEntitySqlConditionExpressionBase<E, ER extends Ent
      * {@inheritDoc}
      */
     @Override
-    public <D extends Date> L ba(SerializableFunction<E, D> name, D min, D max, BiPredicate<D, D> ignoreStrategy) {
+    public <D extends Date> L ba(SerializableToDateFunction<T, D> name, D min, D max,
+            BiPredicate<D, D> ignoreStrategy) {
         return ba(classMapping, name, min, max, queryAlias, ignoreStrategy);
     }
 
@@ -2491,7 +2493,7 @@ public abstract class AbstractEntitySqlConditionExpressionBase<E, ER extends Ent
      * {@inheritDoc}
      */
     @Override
-    public L ba(SerializableFunction<E, LocalTime> name, LocalTime min, LocalTime max) {
+    public <E extends Enum<E>> L ba(SerializableToEnumFunction<T, E> name, E min, E max) {
         return ba(classMapping, name, min, max, queryAlias, ignoreStrategy);
     }
 
@@ -2499,7 +2501,24 @@ public abstract class AbstractEntitySqlConditionExpressionBase<E, ER extends Ent
      * {@inheritDoc}
      */
     @Override
-    public L ba(SerializableFunction<E, LocalTime> name, LocalTime min, LocalTime max,
+    public <E extends Enum<E>> L ba(SerializableToEnumFunction<T, E> name, E min, E max,
+            BiPredicate<E, E> ignoreStrategy) {
+        return ba(classMapping, name, min, max, queryAlias, ignoreStrategy);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public L ba(SerializableToLocalTimeFunction<T> name, LocalTime min, LocalTime max) {
+        return ba(classMapping, name, min, max, queryAlias, ignoreStrategy);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public L ba(SerializableToLocalTimeFunction<T> name, LocalTime min, LocalTime max,
             BiPredicate<LocalTime, LocalTime> ignoreStrategy) {
         return ba(classMapping, name, min, max, queryAlias, ignoreStrategy);
     }
@@ -2508,7 +2527,7 @@ public abstract class AbstractEntitySqlConditionExpressionBase<E, ER extends Ent
      * {@inheritDoc}
      */
     @Override
-    public L ba(SerializableFunction<E, LocalDate> name, LocalDate min, LocalDate max) {
+    public L ba(SerializableToLocalDateFunction<T> name, LocalDate min, LocalDate max) {
         return ba(classMapping, name, min, max, queryAlias, ignoreStrategy);
     }
 
@@ -2516,7 +2535,7 @@ public abstract class AbstractEntitySqlConditionExpressionBase<E, ER extends Ent
      * {@inheritDoc}
      */
     @Override
-    public L ba(SerializableFunction<E, LocalDate> name, LocalDate min, LocalDate max,
+    public L ba(SerializableToLocalDateFunction<T> name, LocalDate min, LocalDate max,
             BiPredicate<LocalDate, LocalDate> ignoreStrategy) {
         return ba(classMapping, name, min, max, queryAlias, ignoreStrategy);
     }
@@ -2525,7 +2544,7 @@ public abstract class AbstractEntitySqlConditionExpressionBase<E, ER extends Ent
      * {@inheritDoc}
      */
     @Override
-    public L ba(SerializableFunction<E, LocalDateTime> name, LocalDateTime min, LocalDateTime max) {
+    public L ba(SerializableToLocalDateTimeFunction<T> name, LocalDateTime min, LocalDateTime max) {
         return ba(classMapping, name, min, max, queryAlias, ignoreStrategy);
     }
 
@@ -2533,7 +2552,7 @@ public abstract class AbstractEntitySqlConditionExpressionBase<E, ER extends Ent
      * {@inheritDoc}
      */
     @Override
-    public L ba(SerializableFunction<E, LocalDateTime> name, LocalDateTime min, LocalDateTime max,
+    public L ba(SerializableToLocalDateTimeFunction<T> name, LocalDateTime min, LocalDateTime max,
             BiPredicate<LocalDateTime, LocalDateTime> ignoreStrategy) {
         return ba(classMapping, name, min, max, queryAlias, ignoreStrategy);
     }
@@ -2542,7 +2561,7 @@ public abstract class AbstractEntitySqlConditionExpressionBase<E, ER extends Ent
      * {@inheritDoc}
      */
     @Override
-    public L ba(SerializableFunction<E, String> name, String min, String max) {
+    public L ba(SerializableToStringFunction<T> name, String min, String max) {
         return ba(classMapping, name, min, max, queryAlias, ignoreStrategy);
     }
 
@@ -2550,7 +2569,7 @@ public abstract class AbstractEntitySqlConditionExpressionBase<E, ER extends Ent
      * {@inheritDoc}
      */
     @Override
-    public L ba(SerializableFunction<E, String> name, String min, String max,
+    public L ba(SerializableToStringFunction<T> name, String min, String max,
             BiPredicate<String, String> ignoreStrategy) {
         return ba(classMapping, name, min, max, queryAlias, ignoreStrategy);
     }
@@ -2561,7 +2580,7 @@ public abstract class AbstractEntitySqlConditionExpressionBase<E, ER extends Ent
      * {@inheritDoc}
      */
     @Override
-    public L nba(SerializableToIntFunction<E> name, int min, int max) {
+    public L nba(SerializableToIntFunction<T> name, int min, int max) {
         return nba(classMapping, name, min, max, queryAlias, ignoreStrategy);
     }
 
@@ -2569,7 +2588,7 @@ public abstract class AbstractEntitySqlConditionExpressionBase<E, ER extends Ent
      * {@inheritDoc}
      */
     @Override
-    public L nba(SerializableToIntFunction<E> name, int min, int max, BiPredicate<Integer, Integer> ignoreStrategy) {
+    public L nba(SerializableToIntFunction<T> name, int min, int max, BiPredicate<Integer, Integer> ignoreStrategy) {
         return nba(classMapping, name, min, max, queryAlias, ignoreStrategy);
     }
 
@@ -2577,7 +2596,7 @@ public abstract class AbstractEntitySqlConditionExpressionBase<E, ER extends Ent
      * {@inheritDoc}
      */
     @Override
-    public L nba(SerializableToLongFunction<E> name, long min, long max) {
+    public L nba(SerializableToLongFunction<T> name, long min, long max) {
         return nba(classMapping, name, min, max, queryAlias, ignoreStrategy);
     }
 
@@ -2585,7 +2604,7 @@ public abstract class AbstractEntitySqlConditionExpressionBase<E, ER extends Ent
      * {@inheritDoc}
      */
     @Override
-    public L nba(SerializableToLongFunction<E> name, long min, long max, BiPredicate<Long, Long> ignoreStrategy) {
+    public L nba(SerializableToLongFunction<T> name, long min, long max, BiPredicate<Long, Long> ignoreStrategy) {
         return nba(classMapping, name, min, max, queryAlias, ignoreStrategy);
     }
 
@@ -2593,7 +2612,7 @@ public abstract class AbstractEntitySqlConditionExpressionBase<E, ER extends Ent
      * {@inheritDoc}
      */
     @Override
-    public L nba(SerializableToDoubleFunction<E> name, double min, double max) {
+    public L nba(SerializableToDoubleFunction<T> name, double min, double max) {
         return nba(classMapping, name, min, max, queryAlias, ignoreStrategy);
     }
 
@@ -2601,7 +2620,7 @@ public abstract class AbstractEntitySqlConditionExpressionBase<E, ER extends Ent
      * {@inheritDoc}
      */
     @Override
-    public L nba(SerializableToDoubleFunction<E> name, double min, double max,
+    public L nba(SerializableToDoubleFunction<T> name, double min, double max,
             BiPredicate<Double, Double> ignoreStrategy) {
         return nba(classMapping, name, min, max, queryAlias, ignoreStrategy);
     }
@@ -2610,7 +2629,7 @@ public abstract class AbstractEntitySqlConditionExpressionBase<E, ER extends Ent
      * {@inheritDoc}
      */
     @Override
-    public <N extends Number> L nba(SerializableFunction<E, N> name, N min, N max) {
+    public <N extends Number> L nba(SerializableToNumberFunction<T, N> name, N min, N max) {
         return nba(classMapping, name, min, max, queryAlias, ignoreStrategy);
     }
 
@@ -2618,7 +2637,8 @@ public abstract class AbstractEntitySqlConditionExpressionBase<E, ER extends Ent
      * {@inheritDoc}
      */
     @Override
-    public <N extends Number> L nba(SerializableFunction<E, N> name, N min, N max, BiPredicate<N, N> ignoreStrategy) {
+    public <N extends Number> L nba(SerializableToNumberFunction<T, N> name, N min, N max,
+            BiPredicate<N, N> ignoreStrategy) {
         return nba(classMapping, name, min, max, queryAlias, ignoreStrategy);
     }
 
@@ -2626,7 +2646,7 @@ public abstract class AbstractEntitySqlConditionExpressionBase<E, ER extends Ent
      * {@inheritDoc}
      */
     @Override
-    public <D extends Date> L nba(SerializableFunction<E, D> name, D min, D max) {
+    public <D extends Date> L nba(SerializableToDateFunction<T, D> name, D min, D max) {
         return nba(classMapping, name, min, max, queryAlias, ignoreStrategy);
     }
 
@@ -2634,7 +2654,8 @@ public abstract class AbstractEntitySqlConditionExpressionBase<E, ER extends Ent
      * {@inheritDoc}
      */
     @Override
-    public <D extends Date> L nba(SerializableFunction<E, D> name, D min, D max, BiPredicate<D, D> ignoreStrategy) {
+    public <D extends Date> L nba(SerializableToDateFunction<T, D> name, D min, D max,
+            BiPredicate<D, D> ignoreStrategy) {
         return nba(classMapping, name, min, max, queryAlias, ignoreStrategy);
     }
 
@@ -2642,7 +2663,7 @@ public abstract class AbstractEntitySqlConditionExpressionBase<E, ER extends Ent
      * {@inheritDoc}
      */
     @Override
-    public L nba(SerializableFunction<E, LocalTime> name, LocalTime min, LocalTime max) {
+    public <E extends Enum<E>> L nba(SerializableToEnumFunction<T, E> name, E min, E max) {
         return nba(classMapping, name, min, max, queryAlias, ignoreStrategy);
     }
 
@@ -2650,7 +2671,24 @@ public abstract class AbstractEntitySqlConditionExpressionBase<E, ER extends Ent
      * {@inheritDoc}
      */
     @Override
-    public L nba(SerializableFunction<E, LocalTime> name, LocalTime min, LocalTime max,
+    public <E extends Enum<E>> L nba(SerializableToEnumFunction<T, E> name, E min, E max,
+            BiPredicate<E, E> ignoreStrategy) {
+        return nba(classMapping, name, min, max, queryAlias, ignoreStrategy);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public L nba(SerializableToLocalTimeFunction<T> name, LocalTime min, LocalTime max) {
+        return nba(classMapping, name, min, max, queryAlias, ignoreStrategy);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public L nba(SerializableToLocalTimeFunction<T> name, LocalTime min, LocalTime max,
             BiPredicate<LocalTime, LocalTime> ignoreStrategy) {
         return nba(classMapping, name, min, max, queryAlias, ignoreStrategy);
     }
@@ -2659,7 +2697,7 @@ public abstract class AbstractEntitySqlConditionExpressionBase<E, ER extends Ent
      * {@inheritDoc}
      */
     @Override
-    public L nba(SerializableFunction<E, LocalDate> name, LocalDate min, LocalDate max) {
+    public L nba(SerializableToLocalDateFunction<T> name, LocalDate min, LocalDate max) {
         return nba(classMapping, name, min, max, queryAlias, ignoreStrategy);
     }
 
@@ -2667,7 +2705,7 @@ public abstract class AbstractEntitySqlConditionExpressionBase<E, ER extends Ent
      * {@inheritDoc}
      */
     @Override
-    public L nba(SerializableFunction<E, LocalDate> name, LocalDate min, LocalDate max,
+    public L nba(SerializableToLocalDateFunction<T> name, LocalDate min, LocalDate max,
             BiPredicate<LocalDate, LocalDate> ignoreStrategy) {
         return nba(classMapping, name, min, max, queryAlias, ignoreStrategy);
     }
@@ -2676,7 +2714,7 @@ public abstract class AbstractEntitySqlConditionExpressionBase<E, ER extends Ent
      * {@inheritDoc}
      */
     @Override
-    public L nba(SerializableFunction<E, LocalDateTime> name, LocalDateTime min, LocalDateTime max) {
+    public L nba(SerializableToLocalDateTimeFunction<T> name, LocalDateTime min, LocalDateTime max) {
         return nba(classMapping, name, min, max, queryAlias, ignoreStrategy);
     }
 
@@ -2684,7 +2722,7 @@ public abstract class AbstractEntitySqlConditionExpressionBase<E, ER extends Ent
      * {@inheritDoc}
      */
     @Override
-    public L nba(SerializableFunction<E, LocalDateTime> name, LocalDateTime min, LocalDateTime max,
+    public L nba(SerializableToLocalDateTimeFunction<T> name, LocalDateTime min, LocalDateTime max,
             BiPredicate<LocalDateTime, LocalDateTime> ignoreStrategy) {
         return nba(classMapping, name, min, max, queryAlias, ignoreStrategy);
     }
@@ -2693,7 +2731,7 @@ public abstract class AbstractEntitySqlConditionExpressionBase<E, ER extends Ent
      * {@inheritDoc}
      */
     @Override
-    public L nba(SerializableFunction<E, String> name, String min, String max) {
+    public L nba(SerializableToStringFunction<T> name, String min, String max) {
         return nba(classMapping, name, min, max, queryAlias, ignoreStrategy);
     }
 
@@ -2701,7 +2739,7 @@ public abstract class AbstractEntitySqlConditionExpressionBase<E, ER extends Ent
      * {@inheritDoc}
      */
     @Override
-    public L nba(SerializableFunction<E, String> name, String min, String max,
+    public L nba(SerializableToStringFunction<T> name, String min, String max,
             BiPredicate<String, String> ignoreStrategy) {
         return nba(classMapping, name, min, max, queryAlias, ignoreStrategy);
     }
@@ -2714,7 +2752,7 @@ public abstract class AbstractEntitySqlConditionExpressionBase<E, ER extends Ent
      * {@inheritDoc}
      */
     @Override
-    public <R> EntityTypePropertyExpression<R, C, L> property(SerializableFunction<E, R> name) {
+    public <R> EntityTypePropertyExpression<R, C, L> property(SerializableFunction<T, R> name) {
         return new EntityTypePropertyExpressionImpl<>(0, name, this, factory);
     }
 
@@ -2723,7 +2761,7 @@ public abstract class AbstractEntitySqlConditionExpressionBase<E, ER extends Ent
      */
     @Override
     public <R extends Collection<RE>,
-            RE> EntityTypePropertyExpression<RE, C, L> property(SerializableToCollectionFunction<E, R, RE> name) {
+            RE> EntityTypePropertyExpression<RE, C, L> property(SerializableToCollectionFunction<T, R, RE> name) {
         // IMPLSOON 后续来实现集合类型property
         throw new NotImplementedException();
     }
@@ -2732,7 +2770,7 @@ public abstract class AbstractEntitySqlConditionExpressionBase<E, ER extends Ent
      * {@inheritDoc}
      */
     @Override
-    public EntityIntPropertyExpression<E, C, L> property(SerializableToIntFunction<E> name) {
+    public EntityIntPropertyExpression<T, C, L> property(SerializableToIntFunction<T> name) {
         return new EntityIntPropertyExpressionImpl<>(0, name, this, factory);
     }
 
@@ -2740,7 +2778,7 @@ public abstract class AbstractEntitySqlConditionExpressionBase<E, ER extends Ent
      * {@inheritDoc}
      */
     @Override
-    public EntityLongPropertyExpression<E, C, L> property(SerializableToLongFunction<E> name) {
+    public EntityLongPropertyExpression<T, C, L> property(SerializableToLongFunction<T> name) {
         return new EntityLongPropertyExpressionImpl<>(0, name, this, factory);
     }
 
@@ -2748,7 +2786,7 @@ public abstract class AbstractEntitySqlConditionExpressionBase<E, ER extends Ent
      * {@inheritDoc}
      */
     @Override
-    public EntityDoublePropertyExpression<E, C, L> property(SerializableToDoubleFunction<E> name) {
+    public EntityDoublePropertyExpression<T, C, L> property(SerializableToDoubleFunction<T> name) {
         return new EntityDoublePropertyExpressionImpl<>(0, name, this, factory);
     }
 
@@ -2756,8 +2794,8 @@ public abstract class AbstractEntitySqlConditionExpressionBase<E, ER extends Ent
      * {@inheritDoc}
      */
     @Override
-    public <R extends Number> EntityNumberPropertyExpression<E, R, C, L> property(
-            SerializableToNumberFunction<E, R> name) {
+    public <R extends Number> EntityNumberPropertyExpression<T, R, C, L> property(
+            SerializableToNumberFunction<T, R> name) {
         return new EntityNumberPropertyExpressionImpl<>(0, name, this, factory);
     }
 
@@ -2765,7 +2803,7 @@ public abstract class AbstractEntitySqlConditionExpressionBase<E, ER extends Ent
      * {@inheritDoc}
      */
     @Override
-    public EntityStringPropertyExpression<E, C, L> property(SerializableToStringFunction<E> name) {
+    public EntityStringPropertyExpression<T, C, L> property(SerializableToStringFunction<T> name) {
         return new EntityStringPropertyExpressionImpl<>(0, name, this, factory);
     }
 
@@ -2773,7 +2811,7 @@ public abstract class AbstractEntitySqlConditionExpressionBase<E, ER extends Ent
      * {@inheritDoc}
      */
     @Override
-    public <R extends Date> EntityDatePropertyExpression<E, R, C, L> property(SerializableToDateFunction<E, R> name) {
+    public <R extends Date> EntityDatePropertyExpression<T, R, C, L> property(SerializableToDateFunction<T, R> name) {
         return new EntityDatePropertyExpressionImpl<>(0, name, this, factory);
     }
 
@@ -2781,7 +2819,7 @@ public abstract class AbstractEntitySqlConditionExpressionBase<E, ER extends Ent
      * {@inheritDoc}
      */
     @Override
-    public EntityLocalDatePropertyExpression<E, C, L> property(SerializableToLocalDateFunction<E> name) {
+    public EntityLocalDatePropertyExpression<T, C, L> property(SerializableToLocalDateFunction<T> name) {
         return new EntityLocalDatePropertyExpressionImpl<>(0, name, this, factory);
     }
 
@@ -2789,7 +2827,7 @@ public abstract class AbstractEntitySqlConditionExpressionBase<E, ER extends Ent
      * {@inheritDoc}
      */
     @Override
-    public EntityLocalDateTimePropertyExpression<E, C, L> property(SerializableToLocalDateTimeFunction<E> name) {
+    public EntityLocalDateTimePropertyExpression<T, C, L> property(SerializableToLocalDateTimeFunction<T> name) {
         return new EntityLocalDateTimePropertyExpressionImpl<>(0, name, this, factory);
     }
 
@@ -2797,7 +2835,7 @@ public abstract class AbstractEntitySqlConditionExpressionBase<E, ER extends Ent
      * {@inheritDoc}
      */
     @Override
-    public EntityLocalTimePropertyExpression<E, C, L> property(SerializableToLocalTimeFunction<E> name) {
+    public EntityLocalTimePropertyExpression<T, C, L> property(SerializableToLocalTimeFunction<T> name) {
         return new EntityLocalTimePropertyExpressionImpl<>(0, name, this, factory);
     }
 
@@ -2805,8 +2843,8 @@ public abstract class AbstractEntitySqlConditionExpressionBase<E, ER extends Ent
      * {@inheritDoc}
      */
     @Override
-    public <R extends Enum<R>> EntityEnumPropertyExpression<E, R, C, L> property(
-            SerializableToEnumFunction<E, R> name) {
+    public <R extends Enum<R>> EntityEnumPropertyExpression<T, R, C, L> property(
+            SerializableToEnumFunction<T, R> name) {
         return new EntityEnumPropertyExpressionImpl<>(0, name, this, factory);
     }
 
@@ -2983,7 +3021,7 @@ public abstract class AbstractEntitySqlConditionExpressionBase<E, ER extends Ent
                 queryAlias, matchStrategy, ignoreStrategy);
     }
 
-    protected abstract <T, R> L eq_ne(ComparisonOperator comparisonOperator, PropertyMapping<?> pm, R value,
+    protected abstract <R> L eq_ne(ComparisonOperator comparisonOperator, PropertyMapping<?> pm, R value,
             String queryAlias, MatchStrategy matchStrategy, Predicate<?> ignoreStrategy);
 
     //    protected <T, R> L eq_ne(ComparisonOperator comparisonOperator, JdbcPropertyMapping pm, R value, String queryAlias,
@@ -2999,13 +3037,13 @@ public abstract class AbstractEntitySqlConditionExpressionBase<E, ER extends Ent
         return sw(classMapping, property, property.get(), queryAlias, matchStrategy, ignoreStrategy);
     }
 
-    protected <T, R> L sw(JdbcClassMapping<?> classMapping, Serializable property, String value, String queryAlias,
+    protected <R> L sw(JdbcClassMapping<?> classMapping, Serializable property, String value, String queryAlias,
             MatchStrategy matchStrategy, Predicate<?> ignoreStrategy) {
         return sw(classMapping.getPropertyMapping(getPropertyName(property)), value, queryAlias, matchStrategy,
                 ignoreStrategy);
     }
 
-    protected <T> L sw(JdbcPropertyMapping pm, String value, String queryAlias, MatchStrategy matchStrategy,
+    protected L sw(JdbcPropertyMapping pm, String value, String queryAlias, MatchStrategy matchStrategy,
             Predicate<?> ignoreStrategy) {
         return (L) addCondition(new SqlConditionExpressionBuilder(dialect, pm.getRepositoryFieldName(),
                 getFieldValueOperator(pm, value), ComparisonOperator.SW, matchStrategy, queryAlias, ignoreStrategy));
@@ -3018,13 +3056,13 @@ public abstract class AbstractEntitySqlConditionExpressionBase<E, ER extends Ent
         return nsw(classMapping, property, property.get(), queryAlias, matchStrategy, ignoreStrategy);
     }
 
-    protected <T, R> L nsw(JdbcClassMapping<?> classMapping, Serializable property, String value, String queryAlias,
+    protected <R> L nsw(JdbcClassMapping<?> classMapping, Serializable property, String value, String queryAlias,
             MatchStrategy matchStrategy, Predicate<?> ignoreStrategy) {
         return nsw(classMapping.getPropertyMapping(getPropertyName(property)), value, queryAlias, matchStrategy,
                 ignoreStrategy);
     }
 
-    protected <T> L nsw(JdbcPropertyMapping pm, String value, String queryAlias, MatchStrategy matchStrategy,
+    protected L nsw(JdbcPropertyMapping pm, String value, String queryAlias, MatchStrategy matchStrategy,
             Predicate<?> ignoreStrategy) {
         return (L) addCondition(new SqlConditionExpressionBuilder(dialect, pm.getRepositoryFieldName(),
                 getFieldValueOperator(pm, value), ComparisonOperator.NSW, matchStrategy, queryAlias, ignoreStrategy));
@@ -3037,13 +3075,13 @@ public abstract class AbstractEntitySqlConditionExpressionBase<E, ER extends Ent
         return co(classMapping, property, property.get(), queryAlias, matchStrategy, ignoreStrategy);
     }
 
-    protected <T, R> L co(JdbcClassMapping<?> classMapping, Serializable property, String value, String queryAlias,
+    protected <R> L co(JdbcClassMapping<?> classMapping, Serializable property, String value, String queryAlias,
             MatchStrategy matchStrategy, Predicate<?> ignoreStrategy) {
         return co(classMapping.getPropertyMapping(getPropertyName(property)), value, queryAlias, matchStrategy,
                 ignoreStrategy);
     }
 
-    protected <T> L co(JdbcPropertyMapping pm, String value, String queryAlias, MatchStrategy matchStrategy,
+    protected L co(JdbcPropertyMapping pm, String value, String queryAlias, MatchStrategy matchStrategy,
             Predicate<?> ignoreStrategy) {
         return (L) addCondition(new SqlConditionExpressionBuilder(dialect, pm.getRepositoryFieldName(),
                 getFieldValueOperator(pm, value), ComparisonOperator.CO, matchStrategy, queryAlias, ignoreStrategy));
@@ -3056,13 +3094,13 @@ public abstract class AbstractEntitySqlConditionExpressionBase<E, ER extends Ent
         return nco(classMapping, property, property.get(), queryAlias, matchStrategy, ignoreStrategy);
     }
 
-    protected <T, R> L nco(JdbcClassMapping<?> classMapping, Serializable property, String value, String queryAlias,
+    protected <R> L nco(JdbcClassMapping<?> classMapping, Serializable property, String value, String queryAlias,
             MatchStrategy matchStrategy, Predicate<?> ignoreStrategy) {
         return nco(classMapping.getPropertyMapping(getPropertyName(property)), value, queryAlias, matchStrategy,
                 ignoreStrategy);
     }
 
-    protected <T> L nco(JdbcPropertyMapping pm, String value, String queryAlias, MatchStrategy matchStrategy,
+    protected L nco(JdbcPropertyMapping pm, String value, String queryAlias, MatchStrategy matchStrategy,
             Predicate<?> ignoreStrategy) {
         return (L) addCondition(new SqlConditionExpressionBuilder(dialect, pm.getRepositoryFieldName(),
                 getFieldValueOperator(pm, value), ComparisonOperator.NCO, matchStrategy, queryAlias, ignoreStrategy));
@@ -3075,13 +3113,13 @@ public abstract class AbstractEntitySqlConditionExpressionBase<E, ER extends Ent
         return ew(classMapping, property, property.get(), queryAlias, matchStrategy, ignoreStrategy);
     }
 
-    protected <T, R> L ew(JdbcClassMapping<?> classMapping, Serializable property, String value, String queryAlias,
+    protected <R> L ew(JdbcClassMapping<?> classMapping, Serializable property, String value, String queryAlias,
             MatchStrategy matchStrategy, Predicate<?> ignoreStrategy) {
         return ew(classMapping.getPropertyMapping(getPropertyName(property)), value, queryAlias, matchStrategy,
                 ignoreStrategy);
     }
 
-    protected <T> L ew(JdbcPropertyMapping pm, String value, String queryAlias, MatchStrategy matchStrategy,
+    protected L ew(JdbcPropertyMapping pm, String value, String queryAlias, MatchStrategy matchStrategy,
             Predicate<?> ignoreStrategy) {
         return (L) addCondition(new SqlConditionExpressionBuilder(dialect, pm.getRepositoryFieldName(),
                 getFieldValueOperator(pm, value), ComparisonOperator.EW, matchStrategy, queryAlias, ignoreStrategy));
@@ -3094,13 +3132,13 @@ public abstract class AbstractEntitySqlConditionExpressionBase<E, ER extends Ent
         return newv(classMapping, property, property.get(), queryAlias, matchStrategy, ignoreStrategy);
     }
 
-    protected <T, R> L newv(JdbcClassMapping<?> classMapping, Serializable property, String value, String queryAlias,
+    protected <R> L newv(JdbcClassMapping<?> classMapping, Serializable property, String value, String queryAlias,
             MatchStrategy matchStrategy, Predicate<?> ignoreStrategy) {
         return newv(classMapping.getPropertyMapping(getPropertyName(property)), value, queryAlias, matchStrategy,
                 ignoreStrategy);
     }
 
-    protected <T> L newv(JdbcPropertyMapping pm, String value, String queryAlias, MatchStrategy matchStrategy,
+    protected L newv(JdbcPropertyMapping pm, String value, String queryAlias, MatchStrategy matchStrategy,
             Predicate<?> ignoreStrategy) {
         return (L) addCondition(new SqlConditionExpressionBuilder(dialect, pm.getRepositoryFieldName(),
                 getFieldValueOperator(pm, value), ComparisonOperator.NEW, matchStrategy, queryAlias, ignoreStrategy));
@@ -3167,17 +3205,17 @@ public abstract class AbstractEntitySqlConditionExpressionBase<E, ER extends Ent
     //        return in(classMapping.getPropertyMapping(getPropertyName(name)), value, queryAlias, ignoreStrategy);
     //    }
 
-    protected <T> L in(JdbcClassMapping<?> classMapping, SerializableIntSupplier property, String queryAlias,
+    protected L in(JdbcClassMapping<?> classMapping, SerializableIntSupplier property, String queryAlias,
             Predicate<?> ignoreStrategy) {
         return in(classMapping, property, property.getAsInt(), queryAlias, ignoreStrategy);
     }
 
-    protected <T> L in(JdbcClassMapping<?> classMapping, SerializableLongSupplier property, String queryAlias,
+    protected L in(JdbcClassMapping<?> classMapping, SerializableLongSupplier property, String queryAlias,
             Predicate<?> ignoreStrategy) {
         return in(classMapping, property, property.getAsLong(), queryAlias, ignoreStrategy);
     }
 
-    protected <T> L in(JdbcClassMapping<?> classMapping, SerializableDoubleSupplier property, String queryAlias,
+    protected L in(JdbcClassMapping<?> classMapping, SerializableDoubleSupplier property, String queryAlias,
             Predicate<?> ignoreStrategy) {
         return in(classMapping, property, property.getAsDouble(), queryAlias, ignoreStrategy);
     }
@@ -3187,12 +3225,12 @@ public abstract class AbstractEntitySqlConditionExpressionBase<E, ER extends Ent
         return in(classMapping, property, property.get(), queryAlias, ignoreStrategy);
     }
 
-    protected <T, R> L in(JdbcClassMapping<?> classMapping, Serializable property, R value, String queryAlias,
+    protected <R> L in(JdbcClassMapping<?> classMapping, Serializable property, R value, String queryAlias,
             Predicate<?> ignoreStrategy) {
         return in(classMapping.getPropertyMapping(getPropertyName(property)), value, queryAlias, ignoreStrategy);
     }
 
-    protected <T, R> L in(JdbcPropertyMapping pm, R value, String queryAlias, Predicate<?> ignoreStrategy) {
+    protected <R> L in(JdbcPropertyMapping pm, R value, String queryAlias, Predicate<?> ignoreStrategy) {
         return (L) addCondition(new SqlConditionExpressionBuilder(dialect, pm.getRepositoryFieldName(),
                 getInParam(pm, value), ComparisonOperator.IN, queryAlias, ignoreStrategy));
     }
@@ -3205,17 +3243,17 @@ public abstract class AbstractEntitySqlConditionExpressionBase<E, ER extends Ent
 
     // ****************************************************************************************************************
 
-    protected <T> L ni(JdbcClassMapping<?> classMapping, SerializableIntSupplier property, String queryAlias,
+    protected L ni(JdbcClassMapping<?> classMapping, SerializableIntSupplier property, String queryAlias,
             Predicate<?> ignoreStrategy) {
         return ni(classMapping, property, property.getAsInt(), queryAlias, ignoreStrategy);
     }
 
-    protected <T> L ni(JdbcClassMapping<?> classMapping, SerializableLongSupplier property, String queryAlias,
+    protected L ni(JdbcClassMapping<?> classMapping, SerializableLongSupplier property, String queryAlias,
             Predicate<?> ignoreStrategy) {
         return ni(classMapping, property, property.getAsLong(), queryAlias, ignoreStrategy);
     }
 
-    protected <T> L ni(JdbcClassMapping<?> classMapping, SerializableDoubleSupplier property, String queryAlias,
+    protected L ni(JdbcClassMapping<?> classMapping, SerializableDoubleSupplier property, String queryAlias,
             Predicate<?> ignoreStrategy) {
         return ni(classMapping, property, property.getAsDouble(), queryAlias, ignoreStrategy);
     }
@@ -3225,7 +3263,7 @@ public abstract class AbstractEntitySqlConditionExpressionBase<E, ER extends Ent
         return ni(classMapping, property, property.get(), queryAlias, ignoreStrategy);
     }
 
-    protected <T, R> L ni(JdbcClassMapping<?> classMapping, Serializable property, R value, String queryAlias,
+    protected <R> L ni(JdbcClassMapping<?> classMapping, Serializable property, R value, String queryAlias,
             Predicate<?> ignoreStrategy) {
         return ni(classMapping.getPropertyMapping(getPropertyName(property)), value, queryAlias, ignoreStrategy);
     }
@@ -3235,7 +3273,7 @@ public abstract class AbstractEntitySqlConditionExpressionBase<E, ER extends Ent
                 getInParam(pm, value), ComparisonOperator.NI, queryAlias, ignoreStrategy));
     }
 
-    protected <T, R> L isn(JdbcClassMapping<?> classMapping, Serializable property, Boolean value, String queryAlias) {
+    protected <R> L isn(JdbcClassMapping<?> classMapping, Serializable property, Boolean value, String queryAlias) {
         return isn(classMapping.getPropertyMapping(getPropertyName(property)), value, queryAlias);
     }
 
@@ -3244,7 +3282,7 @@ public abstract class AbstractEntitySqlConditionExpressionBase<E, ER extends Ent
                 ComparisonOperator.ISN, queryAlias, ignoreStrategy));
     }
 
-    protected <T, R> L inn(JdbcClassMapping<?> classMapping, Serializable property, Boolean value, String queryAlias) {
+    protected <R> L inn(JdbcClassMapping<?> classMapping, Serializable property, Boolean value, String queryAlias) {
         return inn(classMapping.getPropertyMapping(getPropertyName(property)), value, queryAlias);
     }
 
@@ -3292,7 +3330,7 @@ public abstract class AbstractEntitySqlConditionExpressionBase<E, ER extends Ent
         return ge(classMapping, property, property.get(), queryAlias, ignoreStrategy);
     }
 
-    protected <T, V> L ge(JdbcClassMapping<?> classMapping, Serializable name, V value, String queryAlias,
+    protected <V> L ge(JdbcClassMapping<?> classMapping, Serializable name, V value, String queryAlias,
             Predicate<?> ignoreStrategy) {
         return ge(classMapping.getPropertyMapping(getPropertyName(name)), value, queryAlias, ignoreStrategy);
     }
@@ -3304,7 +3342,7 @@ public abstract class AbstractEntitySqlConditionExpressionBase<E, ER extends Ent
 
     // ********************************************************************
 
-    protected <T, V> L ba(JdbcClassMapping<?> classMapping, Serializable name, V min, V max, String queryAlias,
+    protected <V> L ba(JdbcClassMapping<?> classMapping, Serializable name, V min, V max, String queryAlias,
             BiPredicate<V, V> ignoreStrategy) {
         return ba(classMapping.getPropertyMapping(getPropertyName(name)), min, max, queryAlias,
                 p -> ignoreStrategy.test(min, max));
@@ -3314,7 +3352,7 @@ public abstract class AbstractEntitySqlConditionExpressionBase<E, ER extends Ent
         //        });
     }
 
-    protected <T, V> L ba(JdbcClassMapping<?> classMapping, Serializable name, V min, V max, String queryAlias,
+    protected <V> L ba(JdbcClassMapping<?> classMapping, Serializable name, V min, V max, String queryAlias,
             Predicate<?> ignoreStrategy) {
         return ba(classMapping.getPropertyMapping(getPropertyName(name)), min, max, queryAlias, ignoreStrategy);
     }
@@ -3327,7 +3365,7 @@ public abstract class AbstractEntitySqlConditionExpressionBase<E, ER extends Ent
 
     // ********************************************************************
 
-    protected <T, V> L nba(JdbcClassMapping<?> classMapping, Serializable name, V min, V max, String queryAlias,
+    protected <V> L nba(JdbcClassMapping<?> classMapping, Serializable name, V min, V max, String queryAlias,
             BiPredicate<V, V> ignoreStrategy) {
         return nba(classMapping.getPropertyMapping(getPropertyName(name)), min, max, queryAlias,
                 p -> ignoreStrategy.test(min, max));
@@ -3337,7 +3375,7 @@ public abstract class AbstractEntitySqlConditionExpressionBase<E, ER extends Ent
         //        });
     }
 
-    protected <T, V> L nba(JdbcClassMapping<?> classMapping, Serializable name, V min, V max, String queryAlias,
+    protected <V> L nba(JdbcClassMapping<?> classMapping, Serializable name, V min, V max, String queryAlias,
             Predicate<?> ignoreStrategy) {
         return nba(classMapping.getPropertyMapping(getPropertyName(name)), min, max, queryAlias, ignoreStrategy);
     }
@@ -3387,7 +3425,7 @@ public abstract class AbstractEntitySqlConditionExpressionBase<E, ER extends Ent
         return gt(classMapping, property, property.get(), queryAlias, ignoreStrategy);
     }
 
-    protected <T, V> L gt(JdbcClassMapping<?> classMapping, Serializable name, V value, String queryAlias,
+    protected <V> L gt(JdbcClassMapping<?> classMapping, Serializable name, V value, String queryAlias,
             Predicate<?> ignoreStrategy) {
         return gt(classMapping.getPropertyMapping(getPropertyName(name)), value, queryAlias, ignoreStrategy);
     }
@@ -3436,7 +3474,7 @@ public abstract class AbstractEntitySqlConditionExpressionBase<E, ER extends Ent
         return le(classMapping, property, property.get(), queryAlias, ignoreStrategy);
     }
 
-    protected <T, V> L le(JdbcClassMapping<?> classMapping, Serializable name, V value, String queryAlias,
+    protected <V> L le(JdbcClassMapping<?> classMapping, Serializable name, V value, String queryAlias,
             Predicate<?> ignoreStrategy) {
         return le(classMapping.getPropertyMapping(getPropertyName(name)), value, queryAlias, ignoreStrategy);
     }
@@ -3485,7 +3523,7 @@ public abstract class AbstractEntitySqlConditionExpressionBase<E, ER extends Ent
         return lt(classMapping, property, property.get(), queryAlias, ignoreStrategy);
     }
 
-    protected <T, V> L lt(JdbcClassMapping<?> classMapping, Serializable name, V value, String queryAlias,
+    protected <V> L lt(JdbcClassMapping<?> classMapping, Serializable name, V value, String queryAlias,
             Predicate<?> ignoreStrategy) {
         return lt(classMapping.getPropertyMapping(getPropertyName(name)), value, queryAlias, ignoreStrategy);
     }

@@ -7,8 +7,7 @@ import cn.featherfly.hammer.expression.entity.condition.BetweenAndEntityProperty
  * The Interface BetweenEntityPropertyExpression.
  *
  * @author zhongj
- * @param <V> the value type
+ * @param <E> the element type
  */
-public interface BetweenEntityPropertyExpression<V>
-        extends BetweenAndEntityPropertyExpression<V>, BetweenEntityValuePropertyExpression<V> {
+public interface BetweenEntityPropertyExpression<E> extends BetweenAndEntityPropertyExpression<E> {
 }

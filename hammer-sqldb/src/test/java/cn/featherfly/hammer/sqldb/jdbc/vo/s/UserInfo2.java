@@ -28,6 +28,10 @@ public class UserInfo2 {
 
     private String district;
 
+    private String street;
+
+    private Integer streetNo;
+
     /**
      * get id value
      *
@@ -145,12 +149,49 @@ public class UserInfo2 {
     }
 
     /**
+     * get street value
+     *
+     * @return street
+     */
+    public String getStreet() {
+        return street;
+    }
+
+    /**
+     * set street value
+     *
+     * @param street street
+     */
+    public void setStreet(String street) {
+        this.street = street;
+    }
+
+    /**
+     * get streetNo value
+     *
+     * @return streetNo
+     */
+    public Integer getStreetNo() {
+        return streetNo;
+    }
+
+    /**
+     * set streetNo value
+     *
+     * @param streetNo streetNo
+     */
+    public void setStreetNo(Integer streetNo) {
+        this.streetNo = streetNo;
+    }
+
+    /**
      * {@inheritDoc}
      */
     @Override
     public String toString() {
         return "UserInfo2 [id=" + id + ", name=" + name + ", descp=" + descp + ", userId=" + userId + ", city=" + city
-                + ", province=" + province + ", district=" + district + "]";
+                + ", province=" + province + ", district=" + district + ", street=" + street + ", streetNo=" + streetNo
+                + "]";
     }
 
 }

@@ -5,14 +5,8 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.Date;
-import java.util.function.Predicate;
+import java.util.function.BiPredicate;
 
-import cn.featherfly.common.function.serializable.SerializableDateSupplier;
-import cn.featherfly.common.function.serializable.SerializableLocalDateSupplier;
-import cn.featherfly.common.function.serializable.SerializableLocalDateTimeSupplier;
-import cn.featherfly.common.function.serializable.SerializableLocalTimeSupplier;
-import cn.featherfly.common.function.serializable.SerializableNumberSupplier;
-import cn.featherfly.common.function.serializable.SerializableStringSupplier;
 import cn.featherfly.common.function.serializable.SerializableToDateFunction;
 import cn.featherfly.common.function.serializable.SerializableToLocalDateFunction;
 import cn.featherfly.common.function.serializable.SerializableToLocalDateTimeFunction;
@@ -69,7 +63,7 @@ public interface BetweenExpression<C extends ConditionExpression, L extends Logi
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
-    default <N extends Number> L ba(Field name, N min, N max, Predicate<N> ignoreStrategy) {
+    default <N extends Number> L ba(Field name, N min, N max, BiPredicate<N, N> ignoreStrategy) {
         return ba(name.name(), min, max, ignoreStrategy);
     }
 
@@ -109,7 +103,7 @@ public interface BetweenExpression<C extends ConditionExpression, L extends Logi
      * @return LogicExpression
      */
     @Override
-    <N extends Number> L ba(String name, N min, N max, Predicate<N> ignoreStrategy);
+    <N extends Number> L ba(String name, N min, N max, BiPredicate<N, N> ignoreStrategy);
 
     /**
      * between and.
@@ -147,36 +141,7 @@ public interface BetweenExpression<C extends ConditionExpression, L extends Logi
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
-    <T, N extends Number> L ba(SerializableToNumberFunction<T, N> name, N min, N max, Predicate<N> ignoreStrategy);
-
-    /**
-     * between and.
-     *
-     * @param <N>      the number type
-     * @param property 对象属性
-     * @return LogicExpression
-     */
-    <N extends Number> L ba(SerializableNumberSupplier<N> property);
-
-    /**
-     * between and.
-     *
-     * @param <N>            the number type
-     * @param property       对象属性
-     * @param ignoreStrategy the ignore strategy
-     * @return LogicExpression
-     */
-    <N extends Number> L ba(SerializableNumberSupplier<N> property, IgnoreStrategy ignoreStrategy);
-
-    /**
-     * between and.
-     *
-     * @param <N>            the number type
-     * @param property       对象属性
-     * @param ignoreStrategy the ignore strategy
-     * @return LogicExpression
-     */
-    <N extends Number> L ba(SerializableNumberSupplier<N> property, Predicate<N> ignoreStrategy);
+    <T, N extends Number> L ba(SerializableToNumberFunction<T, N> name, N min, N max, BiPredicate<N, N> ignoreStrategy);
 
     // **************************************************************************************************************
 
@@ -217,7 +182,7 @@ public interface BetweenExpression<C extends ConditionExpression, L extends Logi
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
-    default <D extends Date> L ba(Field name, D min, D max, Predicate<D> ignoreStrategy) {
+    default <D extends Date> L ba(Field name, D min, D max, BiPredicate<D, D> ignoreStrategy) {
         return ba(name.name(), min, max, ignoreStrategy);
     }
 
@@ -257,7 +222,7 @@ public interface BetweenExpression<C extends ConditionExpression, L extends Logi
      * @return LogicExpression
      */
     @Override
-    <D extends Date> L ba(String name, D min, D max, Predicate<D> ignoreStrategy);
+    <D extends Date> L ba(String name, D min, D max, BiPredicate<D, D> ignoreStrategy);
 
     /**
      * between and.
@@ -295,36 +260,7 @@ public interface BetweenExpression<C extends ConditionExpression, L extends Logi
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
-    <T, D extends Date> L ba(SerializableToDateFunction<T, D> name, D min, D max, Predicate<D> ignoreStrategy);
-
-    /**
-     * between and.
-     *
-     * @param <D>      the generic type
-     * @param property 对象属性
-     * @return LogicExpression
-     */
-    <D extends Date> L ba(SerializableDateSupplier<D> property);
-
-    /**
-     * between and.
-     *
-     * @param <D>            the generic type
-     * @param property       对象属性
-     * @param ignoreStrategy the ignore strategy
-     * @return LogicExpression
-     */
-    <D extends Date> L ba(SerializableDateSupplier<D> property, IgnoreStrategy ignoreStrategy);
-
-    /**
-     * between and.
-     *
-     * @param <D>            the generic type
-     * @param property       对象属性
-     * @param ignoreStrategy the ignore strategy
-     * @return LogicExpression
-     */
-    <D extends Date> L ba(SerializableDateSupplier<D> property, Predicate<D> ignoreStrategy);
+    <T, D extends Date> L ba(SerializableToDateFunction<T, D> name, D min, D max, BiPredicate<D, D> ignoreStrategy);
 
     // **************************************************************************************************************
 
@@ -362,7 +298,7 @@ public interface BetweenExpression<C extends ConditionExpression, L extends Logi
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
-    default L ba(Field name, LocalTime min, LocalTime max, Predicate<LocalTime> ignoreStrategy) {
+    default L ba(Field name, LocalTime min, LocalTime max, BiPredicate<LocalTime, LocalTime> ignoreStrategy) {
         return ba(name.name(), min, max, ignoreStrategy);
     }
 
@@ -399,7 +335,7 @@ public interface BetweenExpression<C extends ConditionExpression, L extends Logi
      * @return LogicExpression
      */
     @Override
-    L ba(String name, LocalTime min, LocalTime max, Predicate<LocalTime> ignoreStrategy);
+    L ba(String name, LocalTime min, LocalTime max, BiPredicate<LocalTime, LocalTime> ignoreStrategy);
 
     /**
      * between and.
@@ -435,33 +371,7 @@ public interface BetweenExpression<C extends ConditionExpression, L extends Logi
      * @return LogicExpression
      */
     <T> L ba(SerializableToLocalTimeFunction<T> name, LocalTime min, LocalTime max,
-            Predicate<LocalTime> ignoreStrategy);
-
-    /**
-     * between and.
-     *
-     * @param property 对象属性
-     * @return LogicExpression
-     */
-    L ba(SerializableLocalTimeSupplier property);
-
-    /**
-     * between and.
-     *
-     * @param property       对象属性
-     * @param ignoreStrategy the ignore strategy
-     * @return LogicExpression
-     */
-    L ba(SerializableLocalTimeSupplier property, IgnoreStrategy ignoreStrategy);
-
-    /**
-     * between and.
-     *
-     * @param property       对象属性
-     * @param ignoreStrategy the ignore strategy
-     * @return LogicExpression
-     */
-    L ba(SerializableLocalTimeSupplier property, Predicate<LocalTime> ignoreStrategy);
+            BiPredicate<LocalTime, LocalTime> ignoreStrategy);
 
     // **************************************************************************************************************
 
@@ -499,7 +409,7 @@ public interface BetweenExpression<C extends ConditionExpression, L extends Logi
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
-    default L ba(Field name, LocalDate min, LocalDate max, Predicate<LocalDate> ignoreStrategy) {
+    default L ba(Field name, LocalDate min, LocalDate max, BiPredicate<LocalDate, LocalDate> ignoreStrategy) {
         return ba(name.name(), min, max, ignoreStrategy);
     }
 
@@ -536,7 +446,7 @@ public interface BetweenExpression<C extends ConditionExpression, L extends Logi
      * @return LogicExpression
      */
     @Override
-    L ba(String name, LocalDate min, LocalDate max, Predicate<LocalDate> ignoreStrategy);
+    L ba(String name, LocalDate min, LocalDate max, BiPredicate<LocalDate, LocalDate> ignoreStrategy);
 
     /**
      * between and.
@@ -572,33 +482,7 @@ public interface BetweenExpression<C extends ConditionExpression, L extends Logi
      * @return LogicExpression
      */
     <T> L ba(SerializableToLocalDateFunction<T> name, LocalDate min, LocalDate max,
-            Predicate<LocalDate> ignoreStrategy);
-
-    /**
-     * between and.
-     *
-     * @param property 对象属性
-     * @return LogicExpression
-     */
-    L ba(SerializableLocalDateSupplier property);
-
-    /**
-     * between and.
-     *
-     * @param property       对象属性
-     * @param ignoreStrategy the ignore strategy
-     * @return LogicExpression
-     */
-    L ba(SerializableLocalDateSupplier property, IgnoreStrategy ignoreStrategy);
-
-    /**
-     * between and.
-     *
-     * @param property       对象属性
-     * @param ignoreStrategy the ignore strategy
-     * @return LogicExpression
-     */
-    L ba(SerializableLocalDateSupplier property, Predicate<LocalDate> ignoreStrategy);
+            BiPredicate<LocalDate, LocalDate> ignoreStrategy);
 
     // **************************************************************************************************************
 
@@ -636,7 +520,8 @@ public interface BetweenExpression<C extends ConditionExpression, L extends Logi
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
-    default L ba(Field name, LocalDateTime min, LocalDateTime max, Predicate<LocalDateTime> ignoreStrategy) {
+    default L ba(Field name, LocalDateTime min, LocalDateTime max,
+            BiPredicate<LocalDateTime, LocalDateTime> ignoreStrategy) {
         return ba(name.name(), min, max, ignoreStrategy);
     }
 
@@ -673,7 +558,7 @@ public interface BetweenExpression<C extends ConditionExpression, L extends Logi
      * @return LogicExpression
      */
     @Override
-    L ba(String name, LocalDateTime min, LocalDateTime max, Predicate<LocalDateTime> ignoreStrategy);
+    L ba(String name, LocalDateTime min, LocalDateTime max, BiPredicate<LocalDateTime, LocalDateTime> ignoreStrategy);
 
     /**
      * between and.
@@ -710,33 +595,7 @@ public interface BetweenExpression<C extends ConditionExpression, L extends Logi
      * @return LogicExpression
      */
     <T> L ba(SerializableToLocalDateTimeFunction<T> name, LocalDateTime min, LocalDateTime max,
-            Predicate<LocalDateTime> ignoreStrategy);
-
-    /**
-     * between and.
-     *
-     * @param property 对象属性
-     * @return LogicExpression
-     */
-    L ba(SerializableLocalDateTimeSupplier property);
-
-    /**
-     * between and.
-     *
-     * @param property       对象属性
-     * @param ignoreStrategy the ignore strategy
-     * @return LogicExpression
-     */
-    L ba(SerializableLocalDateTimeSupplier property, IgnoreStrategy ignoreStrategy);
-
-    /**
-     * between and.
-     *
-     * @param property       对象属性
-     * @param ignoreStrategy the ignore strategy
-     * @return LogicExpression
-     */
-    L ba(SerializableLocalDateTimeSupplier property, Predicate<LocalDateTime> ignoreStrategy);
+            BiPredicate<LocalDateTime, LocalDateTime> ignoreStrategy);
 
     // **************************************************************************************************************
 
@@ -774,7 +633,7 @@ public interface BetweenExpression<C extends ConditionExpression, L extends Logi
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
-    default L ba(Field name, String min, String max, Predicate<String> ignoreStrategy) {
+    default L ba(Field name, String min, String max, BiPredicate<String, String> ignoreStrategy) {
         return ba(name.name(), min, max);
     }
 
@@ -811,7 +670,7 @@ public interface BetweenExpression<C extends ConditionExpression, L extends Logi
      * @return LogicExpression
      */
     @Override
-    L ba(String name, String min, String max, Predicate<String> ignoreStrategy);
+    L ba(String name, String min, String max, BiPredicate<String, String> ignoreStrategy);
 
     /**
      * between and.
@@ -846,31 +705,6 @@ public interface BetweenExpression<C extends ConditionExpression, L extends Logi
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
-    <T> L ba(SerializableToStringFunction<T> name, String min, String max, Predicate<String> ignoreStrategy);
+    <T> L ba(SerializableToStringFunction<T> name, String min, String max, BiPredicate<String, String> ignoreStrategy);
 
-    /**
-     * between and.
-     *
-     * @param property 对象属性
-     * @return LogicExpression
-     */
-    L ba(SerializableStringSupplier property);
-
-    /**
-     * between and.
-     *
-     * @param property       对象属性
-     * @param ignoreStrategy the ignore strategy
-     * @return LogicExpression
-     */
-    L ba(SerializableStringSupplier property, IgnoreStrategy ignoreStrategy);
-
-    /**
-     * between and.
-     *
-     * @param property       对象属性
-     * @param ignoreStrategy the ignore strategy
-     * @return LogicExpression
-     */
-    L ba(SerializableStringSupplier property, Predicate<String> ignoreStrategy);
 }

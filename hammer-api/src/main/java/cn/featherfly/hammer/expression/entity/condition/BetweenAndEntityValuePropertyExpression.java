@@ -110,4 +110,183 @@ public interface BetweenAndEntityValuePropertyExpression<E> {
      * @return entity great than function property expression.
      */
     ConditionEntityExpressionStringPropertyExpression2 property(SerializableToStringFunction<E> name);
+
+    // ****************************************************************************************************************
+    //	value
+    // ****************************************************************************************************************
+
+    //    /**
+    //     * min and max value.
+    //     *
+    //     * @param min the min
+    //     * @param max the max
+    //     * @return LogicExpression
+    //     */
+    //    void value(int min, int max);
+    //
+    //    /**
+    //     * min and max value.
+    //     *
+    //     * @param min            the min
+    //     * @param max            the max
+    //     * @param ignoreStrategy the ignore strategy
+    //     * @return LogicExpression
+    //     */
+    //    void value(int min, int max, BiPredicate<Integer, Integer> ignoreStrategy);
+    //
+    //    /**
+    //     * min and max value.
+    //     *
+    //     * @param min the min
+    //     * @param max the max
+    //     * @return LogicExpression
+    //     */
+    //    void value(long min, long max);
+    //
+    //    /**
+    //     * min and max value.
+    //     *
+    //     * @param min            the min
+    //     * @param max            the max
+    //     * @param ignoreStrategy the ignore strategy
+    //     * @return LogicExpression
+    //     */
+    //    void value(long min, long max, BiPredicate<Long, Long> ignoreStrategy);
+    //
+    //    /**
+    //     * min and max value.
+    //     *
+    //     * @param min the min
+    //     * @param max the max
+    //     * @return LogicExpression
+    //     */
+    //    void value(double min, double max);
+    //
+    //    /**
+    //     * min and max value.
+    //     *
+    //     * @param min            the min
+    //     * @param max            the max
+    //     * @param ignoreStrategy the ignore strategy
+    //     * @return LogicExpression
+    //     */
+    //    void value(double min, double max, BiPredicate<Double, Double> ignoreStrategy);
+    //
+    //    /**
+    //     * min and max value.
+    //     *
+    //     * @param <N> number type
+    //     * @param min the min
+    //     * @param max the max
+    //     * @return LogicExpression
+    //     */
+    //    <N extends Number> void value(N min, N max);
+    //
+    //    /**
+    //     * min and max value.
+    //     *
+    //     * @param <N>            number type
+    //     * @param min            the min
+    //     * @param max            the max
+    //     * @param ignoreStrategy the ignore strategy
+    //     * @return LogicExpression
+    //     */
+    //    <N extends Number> void value(N min, N max, BiPredicate<N, N> ignoreStrategy);
+    //
+    //    /**
+    //     * min and max value.
+    //     *
+    //     * @param <D> date type
+    //     * @param min the min
+    //     * @param max the max
+    //     * @return LogicExpression
+    //     */
+    //    <D extends Date> void value(D min, D max);
+    //
+    //    /**
+    //     * min and max value.
+    //     *
+    //     * @param <D>            date type
+    //     * @param min            the min
+    //     * @param max            the max
+    //     * @param ignoreStrategy the ignore strategy
+    //     * @return LogicExpression
+    //     */
+    //    <D extends Date> void value(D min, D max, BiPredicate<D, D> ignoreStrategy);
+    //
+    //    /**
+    //     * min and max value.
+    //     *
+    //     * @param min the min
+    //     * @param max the max
+    //     * @return LogicExpression
+    //     */
+    //    void value(LocalTime min, LocalTime max);
+    //
+    //    /**
+    //     * min and max value.
+    //     *
+    //     * @param min            the min
+    //     * @param max            the max
+    //     * @param ignoreStrategy the ignore strategy
+    //     * @return LogicExpression
+    //     */
+    //    void value(LocalTime min, LocalTime max, BiPredicate<LocalTime, LocalTime> ignoreStrategy);
+    //
+    //    /**
+    //     * min and max value.
+    //     *
+    //     * @param min the min
+    //     * @param max the max
+    //     * @return LogicExpression
+    //     */
+    //    void value(LocalDate min, LocalDate max);
+    //
+    //    /**
+    //     * min and max value.
+    //     *
+    //     * @param min            the min
+    //     * @param max            the max
+    //     * @param ignoreStrategy the ignore strategy
+    //     * @return LogicExpression
+    //     */
+    //    void value(LocalDate min, LocalDate max, BiPredicate<LocalDate, LocalDate> ignoreStrategy);
+    //
+    //    /**
+    //     * min and max value.
+    //     *
+    //     * @param min the min
+    //     * @param max the max
+    //     * @return LogicExpression
+    //     */
+    //    void value(LocalDateTime min, LocalDateTime max);
+    //
+    //    /**
+    //     * min and max value.
+    //     *
+    //     * @param min            the min
+    //     * @param max            the max
+    //     * @param ignoreStrategy the ignore strategy
+    //     * @return LogicExpression
+    //     */
+    //    void value(LocalDateTime min, LocalDateTime max, BiPredicate<LocalDateTime, LocalDateTime> ignoreStrategy);
+    //
+    //    /**
+    //     * min and max value.
+    //     *
+    //     * @param min the min
+    //     * @param max the max
+    //     * @return LogicExpression
+    //     */
+    //    void value(String min, String max);
+    //
+    //    /**
+    //     * min and max value.
+    //     *
+    //     * @param min            the min
+    //     * @param max            the max
+    //     * @param ignoreStrategy the ignore strategy
+    //     * @return LogicExpression
+    //     */
+    //    void value(String min, String max, BiPredicate<String, String> ignoreStrategy);
 }

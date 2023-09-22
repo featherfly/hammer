@@ -1,6 +1,7 @@
 
 package cn.featherfly.hammer.sqldb.sql.dml;
 
+import java.io.Serializable;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
@@ -9,6 +10,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.function.BiPredicate;
 import java.util.function.Function;
 import java.util.function.Predicate;
 
@@ -585,6 +587,86 @@ public abstract class AbstractSqlConditionGroupExpression<C extends ConditionGro
         return lk(info.getSerializedLambdaInfo().getPropertyName(), info.getValue(), matchStrategy, ignoreStrategy);
     }
 
+    // ****************************************************************************************************************
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public L nl(String name, String value, MatchStrategy matchStrategy) {
+        return nl(name, value, matchStrategy, (Predicate<String>) ignoreStrategy);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public <T> L nl(SerializableToStringFunction<T> name, String value, MatchStrategy matchStrategy) {
+        return nl(name, value, matchStrategy, (Predicate<String>) ignoreStrategy);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public L nl(SerializableStringSupplier property, MatchStrategy matchStrategy) {
+        return nl(property, matchStrategy, (Predicate<String>) ignoreStrategy);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public L nl(String name, String value, MatchStrategy matchStrategy, IgnoreStrategy ignoreStrategy) {
+        return (L) addCondition(new SqlConditionExpressionBuilder(dialect, name, value, ComparisonOperator.LK,
+                matchStrategy, queryAlias, ignoreStrategy));
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public L nl(String name, String value, MatchStrategy matchStrategy, Predicate<String> ignoreStrategy) {
+        return (L) addCondition(new SqlConditionExpressionBuilder(dialect, name, value, ComparisonOperator.LK,
+                matchStrategy, queryAlias, ignoreStrategy));
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public <T> L nl(SerializableToStringFunction<T> name, String value, MatchStrategy matchStrategy,
+            IgnoreStrategy ignoreStrategy) {
+        return nl(getPropertyName(name), value, matchStrategy, ignoreStrategy);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public <T> L nl(SerializableToStringFunction<T> name, String value, MatchStrategy matchStrategy,
+            Predicate<String> ignoreStrategy) {
+        return nl(getPropertyName(name), value, matchStrategy, ignoreStrategy);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public L nl(SerializableStringSupplier property, MatchStrategy matchStrategy, IgnoreStrategy ignoreStrategy) {
+        SerializableSupplierLambdaInfo<String> info = LambdaUtils.getSerializableSupplierLambdaInfo(property);
+        return nl(info.getSerializedLambdaInfo().getPropertyName(), info.getValue(), matchStrategy, ignoreStrategy);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public L nl(SerializableStringSupplier property, MatchStrategy matchStrategy, Predicate<String> ignoreStrategy) {
+        SerializableSupplierLambdaInfo<String> info = LambdaUtils.getSerializableSupplierLambdaInfo(property);
+        return nl(info.getSerializedLambdaInfo().getPropertyName(), info.getValue(), matchStrategy, ignoreStrategy);
+    }
+
     //  /**
     //     * {@inheritDoc}
     //     */
@@ -719,6 +801,89 @@ public abstract class AbstractSqlConditionGroupExpression<C extends ConditionGro
     //        return co(info.getSerializedLambdaInfo().getPropertyName(), info.getValue());
     //    }
 
+    // ****************************************************************************************************************
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public L nsw(String name, String value, MatchStrategy matchStrategy) {
+        return nsw(name, value, matchStrategy, (Predicate<String>) ignoreStrategy);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public <T> L nsw(SerializableToStringFunction<T> name, String value, MatchStrategy matchStrategy) {
+        return nsw(name, value, matchStrategy, (Predicate<String>) ignoreStrategy);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public L nsw(SerializableStringSupplier property, MatchStrategy matchStrategy) {
+        return nsw(property, matchStrategy, (Predicate<String>) ignoreStrategy);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public L nsw(String name, String value, MatchStrategy matchStrategy, IgnoreStrategy ignoreStrategy) {
+        return (L) addCondition(new SqlConditionExpressionBuilder(dialect, name, value, ComparisonOperator.SW,
+                matchStrategy, queryAlias, ignoreStrategy));
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public L nsw(String name, String value, MatchStrategy matchStrategy, Predicate<String> ignoreStrategy) {
+        return (L) addCondition(new SqlConditionExpressionBuilder(dialect, name, value, ComparisonOperator.SW,
+                matchStrategy, queryAlias, ignoreStrategy));
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public <T> L nsw(SerializableToStringFunction<T> propertyName, String value, MatchStrategy matchStrategy,
+            IgnoreStrategy ignoreStrategy) {
+        return nsw(getPropertyName(propertyName), value, matchStrategy, ignoreStrategy);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public <T> L nsw(SerializableToStringFunction<T> propertyName, String value, MatchStrategy matchStrategy,
+            Predicate<String> ignoreStrategy) {
+        return nsw(getPropertyName(propertyName), value, matchStrategy, ignoreStrategy);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public L nsw(SerializableStringSupplier propertyValue, MatchStrategy matchStrategy, IgnoreStrategy ignoreStrategy) {
+        SerializableSupplierLambdaInfo<String> info = LambdaUtils.getSerializableSupplierLambdaInfo(propertyValue);
+        return nsw(info.getSerializedLambdaInfo().getPropertyName(), info.getValue(), matchStrategy, ignoreStrategy);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public L nsw(SerializableStringSupplier propertyValue, MatchStrategy matchStrategy,
+            Predicate<String> ignoreStrategy) {
+        SerializableSupplierLambdaInfo<String> info = LambdaUtils.getSerializableSupplierLambdaInfo(propertyValue);
+        return nsw(info.getSerializedLambdaInfo().getPropertyName(), info.getValue(), matchStrategy, ignoreStrategy);
+    }
+
+    // ****************************************************************************************************************
+
     /**
      * {@inheritDoc}
      */
@@ -798,6 +963,90 @@ public abstract class AbstractSqlConditionGroupExpression<C extends ConditionGro
             Predicate<String> ignoreStrategy) {
         SerializableSupplierLambdaInfo<String> info = LambdaUtils.getSerializableSupplierLambdaInfo(propertyValue);
         return ew(info.getSerializedLambdaInfo().getPropertyName(), info.getValue(), matchStrategy, ignoreStrategy);
+    }
+
+    // ****************************************************************************************************************
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public L newv(String name, String value, MatchStrategy matchStrategy) {
+        return (L) addCondition(new SqlConditionExpressionBuilder(dialect, name, value, ComparisonOperator.EW,
+                matchStrategy, queryAlias, ignoreStrategy));
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public <T> L newv(SerializableToStringFunction<T> name, String value, MatchStrategy matchStrategy) {
+        return newv(getPropertyName(name), value, matchStrategy);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public L newv(SerializableStringSupplier property, MatchStrategy matchStrategy) {
+        SerializableSupplierLambdaInfo<String> info = LambdaUtils.getSerializableSupplierLambdaInfo(property);
+        return newv(info.getSerializedLambdaInfo().getPropertyName(), info.getValue(), matchStrategy);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public L newv(String name, String value, MatchStrategy matchStrategy, IgnoreStrategy ignoreStrategy) {
+        return (L) addCondition(new SqlConditionExpressionBuilder(dialect, name, value, ComparisonOperator.EW,
+                matchStrategy, queryAlias, ignoreStrategy));
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public L newv(String name, String value, MatchStrategy matchStrategy, Predicate<String> ignoreStrategy) {
+        return (L) addCondition(new SqlConditionExpressionBuilder(dialect, name, value, ComparisonOperator.EW,
+                matchStrategy, queryAlias, ignoreStrategy));
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public <T> L newv(SerializableToStringFunction<T> name, String value, MatchStrategy matchStrategy,
+            IgnoreStrategy ignoreStrategy) {
+        return newv(getPropertyName(name), value, matchStrategy, ignoreStrategy);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public <T> L newv(SerializableToStringFunction<T> name, String value, MatchStrategy matchStrategy,
+            Predicate<String> ignoreStrategy) {
+        return newv(getPropertyName(name), value, matchStrategy, ignoreStrategy);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public L newv(SerializableStringSupplier propertyValue, MatchStrategy matchStrategy,
+            IgnoreStrategy ignoreStrategy) {
+        SerializableSupplierLambdaInfo<String> info = LambdaUtils.getSerializableSupplierLambdaInfo(propertyValue);
+        return newv(info.getSerializedLambdaInfo().getPropertyName(), info.getValue(), matchStrategy, ignoreStrategy);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public L newv(SerializableStringSupplier propertyValue, MatchStrategy matchStrategy,
+            Predicate<String> ignoreStrategy) {
+        SerializableSupplierLambdaInfo<String> info = LambdaUtils.getSerializableSupplierLambdaInfo(propertyValue);
+        return newv(info.getSerializedLambdaInfo().getPropertyName(), info.getValue(), matchStrategy, ignoreStrategy);
     }
 
     //    /**
@@ -905,6 +1154,91 @@ public abstract class AbstractSqlConditionGroupExpression<C extends ConditionGro
         SerializableSupplierLambdaInfo<String> info = LambdaUtils.getSerializableSupplierLambdaInfo(propertyValue);
         return co(info.getSerializedLambdaInfo().getPropertyName(), info.getValue(), matchStrategy, ignoreStrategy);
     }
+
+    // ****************************************************************************************************************
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public L nco(String name, String value, MatchStrategy matchStrategy) {
+        return (L) addCondition(new SqlConditionExpressionBuilder(dialect, name, value, ComparisonOperator.CO,
+                matchStrategy, queryAlias, ignoreStrategy));
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public <T> L nco(SerializableToStringFunction<T> name, String value, MatchStrategy matchStrategy) {
+        return nco(getPropertyName(name), value, matchStrategy);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public L nco(SerializableStringSupplier property, MatchStrategy matchStrategy) {
+        SerializableSupplierLambdaInfo<String> info = LambdaUtils.getSerializableSupplierLambdaInfo(property);
+        return nco(info.getSerializedLambdaInfo().getPropertyName(), info.getValue(), matchStrategy);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public L nco(String name, String value, MatchStrategy matchStrategy, IgnoreStrategy ignoreStrategy) {
+        return (L) addCondition(new SqlConditionExpressionBuilder(dialect, name, value, ComparisonOperator.CO,
+                matchStrategy, queryAlias, ignoreStrategy));
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public L nco(String name, String value, MatchStrategy matchStrategy, Predicate<String> ignoreStrategy) {
+        return (L) addCondition(new SqlConditionExpressionBuilder(dialect, name, value, ComparisonOperator.CO,
+                matchStrategy, queryAlias, ignoreStrategy));
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public <T> L nco(SerializableToStringFunction<T> name, String value, MatchStrategy matchStrategy,
+            IgnoreStrategy ignoreStrategy) {
+        return nco(getPropertyName(name), value, matchStrategy, ignoreStrategy);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public <T> L nco(SerializableToStringFunction<T> name, String value, MatchStrategy matchStrategy,
+            Predicate<String> ignoreStrategy) {
+        return nco(getPropertyName(name), value, matchStrategy, ignoreStrategy);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public L nco(SerializableStringSupplier propertyValue, MatchStrategy matchStrategy, IgnoreStrategy ignoreStrategy) {
+        SerializableSupplierLambdaInfo<String> info = LambdaUtils.getSerializableSupplierLambdaInfo(propertyValue);
+        return nco(info.getSerializedLambdaInfo().getPropertyName(), info.getValue(), matchStrategy, ignoreStrategy);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public L nco(SerializableStringSupplier propertyValue, MatchStrategy matchStrategy,
+            Predicate<String> ignoreStrategy) {
+        SerializableSupplierLambdaInfo<String> info = LambdaUtils.getSerializableSupplierLambdaInfo(propertyValue);
+        return nco(info.getSerializedLambdaInfo().getPropertyName(), info.getValue(), matchStrategy, ignoreStrategy);
+    }
+
+    // ****************************************************************************************************************
 
     /**
      * {@inheritDoc}
@@ -2976,6 +3310,660 @@ public abstract class AbstractSqlConditionGroupExpression<C extends ConditionGro
         return ni(info.getSerializedLambdaInfo().getPropertyName(), info.getValue(),
                 (Predicate<Object>) ignoreStrategy);
     }
+
+    // ****************************************************************************************************************
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public <N extends Number> L ba(String name, N min, N max) {
+        return ba0(name, min, max, ignoreStrategy);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public <N extends Number> L ba(String name, N min, N max, IgnoreStrategy ignoreStrategy) {
+        return ba0(name, min, max, ignoreStrategy);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public <N extends Number> L ba(String name, N min, N max, BiPredicate<N, N> ignoreStrategy) {
+        return ba0(name, min, max, ignoreStrategy);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public <T, N extends Number> L ba(SerializableToNumberFunction<T, N> name, N min, N max) {
+        return ba0(name, min, max, ignoreStrategy);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public <T, N extends Number> L ba(SerializableToNumberFunction<T, N> name, N min, N max,
+            IgnoreStrategy ignoreStrategy) {
+        return ba0(name, min, max, ignoreStrategy);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public <T, N extends Number> L ba(SerializableToNumberFunction<T, N> name, N min, N max,
+            BiPredicate<N, N> ignoreStrategy) {
+        return ba0(name, min, max, ignoreStrategy);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public <D extends Date> L ba(String name, D min, D max) {
+        return ba0(name, min, max, ignoreStrategy);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public <D extends Date> L ba(String name, D min, D max, IgnoreStrategy ignoreStrategy) {
+        return ba0(name, min, max, ignoreStrategy);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public <D extends Date> L ba(String name, D min, D max, BiPredicate<D, D> ignoreStrategy) {
+        return ba0(name, min, max, ignoreStrategy);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public <T, D extends Date> L ba(SerializableToDateFunction<T, D> name, D min, D max) {
+        return ba0(name, min, max, ignoreStrategy);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public <T, D extends Date> L ba(SerializableToDateFunction<T, D> name, D min, D max,
+            IgnoreStrategy ignoreStrategy) {
+        return ba0(name, min, max, ignoreStrategy);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public <T, D extends Date> L ba(SerializableToDateFunction<T, D> name, D min, D max,
+            BiPredicate<D, D> ignoreStrategy) {
+        return ba0(name, min, max, ignoreStrategy);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public L ba(String name, LocalTime min, LocalTime max) {
+        return ba0(name, min, max, ignoreStrategy);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public L ba(String name, LocalTime min, LocalTime max, IgnoreStrategy ignoreStrategy) {
+        return ba0(name, min, max, ignoreStrategy);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public L ba(String name, LocalTime min, LocalTime max, BiPredicate<LocalTime, LocalTime> ignoreStrategy) {
+        return ba0(name, min, max, ignoreStrategy);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public <T> L ba(SerializableToLocalTimeFunction<T> name, LocalTime min, LocalTime max) {
+        return ba0(name, min, max, ignoreStrategy);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public <T> L ba(SerializableToLocalTimeFunction<T> name, LocalTime min, LocalTime max,
+            IgnoreStrategy ignoreStrategy) {
+        return ba0(name, min, max, ignoreStrategy);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public <T> L ba(SerializableToLocalTimeFunction<T> name, LocalTime min, LocalTime max,
+            BiPredicate<LocalTime, LocalTime> ignoreStrategy) {
+        return ba0(name, min, max, ignoreStrategy);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public L ba(String name, LocalDate min, LocalDate max) {
+        return ba0(name, min, max, ignoreStrategy);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public L ba(String name, LocalDate min, LocalDate max, IgnoreStrategy ignoreStrategy) {
+        return ba0(name, min, max, ignoreStrategy);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public L ba(String name, LocalDate min, LocalDate max, BiPredicate<LocalDate, LocalDate> ignoreStrategy) {
+        return ba0(name, min, max, ignoreStrategy);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public <T> L ba(SerializableToLocalDateFunction<T> name, LocalDate min, LocalDate max) {
+        return ba0(name, min, max, ignoreStrategy);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public <T> L ba(SerializableToLocalDateFunction<T> name, LocalDate min, LocalDate max,
+            IgnoreStrategy ignoreStrategy) {
+        return ba0(name, min, max, ignoreStrategy);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public <T> L ba(SerializableToLocalDateFunction<T> name, LocalDate min, LocalDate max,
+            BiPredicate<LocalDate, LocalDate> ignoreStrategy) {
+        return ba0(name, min, max, ignoreStrategy);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public L ba(String name, LocalDateTime min, LocalDateTime max) {
+        return ba0(name, min, max, ignoreStrategy);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public L ba(String name, LocalDateTime min, LocalDateTime max, IgnoreStrategy ignoreStrategy) {
+        return ba0(name, min, max, ignoreStrategy);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public L ba(String name, LocalDateTime min, LocalDateTime max,
+            BiPredicate<LocalDateTime, LocalDateTime> ignoreStrategy) {
+        return ba0(name, min, max, ignoreStrategy);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public <T> L ba(SerializableToLocalDateTimeFunction<T> name, LocalDateTime min, LocalDateTime max) {
+        return ba0(name, min, max, ignoreStrategy);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public <T> L ba(SerializableToLocalDateTimeFunction<T> name, LocalDateTime min, LocalDateTime max,
+            IgnoreStrategy ignoreStrategy) {
+        return ba0(name, min, max, ignoreStrategy);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public <T> L ba(SerializableToLocalDateTimeFunction<T> name, LocalDateTime min, LocalDateTime max,
+            BiPredicate<LocalDateTime, LocalDateTime> ignoreStrategy) {
+        return ba0(name, min, max, ignoreStrategy);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public L ba(String name, String min, String max) {
+        return ba0(name, min, max, ignoreStrategy);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public L ba(String name, String min, String max, IgnoreStrategy ignoreStrategy) {
+        return ba0(name, min, max, ignoreStrategy);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public L ba(String name, String min, String max, BiPredicate<String, String> ignoreStrategy) {
+        return ba0(name, min, max, ignoreStrategy);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public <T> L ba(SerializableToStringFunction<T> name, String min, String max) {
+        return ba0(name, min, max, ignoreStrategy);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public <T> L ba(SerializableToStringFunction<T> name, String min, String max, IgnoreStrategy ignoreStrategy) {
+        return ba0(name, min, max, ignoreStrategy);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public <T> L ba(SerializableToStringFunction<T> name, String min, String max,
+            BiPredicate<String, String> ignoreStrategy) {
+        return ba0(name, min, max, ignoreStrategy);
+    }
+
+    // ****************************************************************************************************************
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public <N extends Number> L nba(String name, N min, N max) {
+        return nba0(name, min, max, ignoreStrategy);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public <N extends Number> L nba(String name, N min, N max, IgnoreStrategy ignoreStrategy) {
+        return nba0(name, min, max, ignoreStrategy);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public <N extends Number> L nba(String name, N min, N max, BiPredicate<N, N> ignoreStrategy) {
+        return nba0(name, min, max, ignoreStrategy);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public <T, N extends Number> L nba(SerializableToNumberFunction<T, N> name, N min, N max) {
+        return nba0(name, min, max, ignoreStrategy);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public <T, N extends Number> L nba(SerializableToNumberFunction<T, N> name, N min, N max,
+            IgnoreStrategy ignoreStrategy) {
+        return nba0(name, min, max, ignoreStrategy);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public <T, N extends Number> L nba(SerializableToNumberFunction<T, N> name, N min, N max,
+            BiPredicate<N, N> ignoreStrategy) {
+        return nba0(name, min, max, ignoreStrategy);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public <D extends Date> L nba(String name, D min, D max) {
+        return nba0(name, min, max, ignoreStrategy);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public <D extends Date> L nba(String name, D min, D max, IgnoreStrategy ignoreStrategy) {
+        return nba0(name, min, max, ignoreStrategy);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public <D extends Date> L nba(String name, D min, D max, BiPredicate<D, D> ignoreStrategy) {
+        return nba0(name, min, max, ignoreStrategy);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public <T, D extends Date> L nba(SerializableToDateFunction<T, D> name, D min, D max) {
+        return nba0(name, min, max, ignoreStrategy);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public <T, D extends Date> L nba(SerializableToDateFunction<T, D> name, D min, D max,
+            IgnoreStrategy ignoreStrategy) {
+        return nba0(name, min, max, ignoreStrategy);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public <T, D extends Date> L nba(SerializableToDateFunction<T, D> name, D min, D max,
+            BiPredicate<D, D> ignoreStrategy) {
+        return nba0(name, min, max, ignoreStrategy);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public L nba(String name, LocalTime min, LocalTime max) {
+        return nba0(name, min, max, ignoreStrategy);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public L nba(String name, LocalTime min, LocalTime max, IgnoreStrategy ignoreStrategy) {
+        return nba0(name, min, max, ignoreStrategy);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public L nba(String name, LocalTime min, LocalTime max, BiPredicate<LocalTime, LocalTime> ignoreStrategy) {
+        return nba0(name, min, max, ignoreStrategy);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public <T> L nba(SerializableToLocalTimeFunction<T> name, LocalTime min, LocalTime max) {
+        return nba0(name, min, max, ignoreStrategy);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public <T> L nba(SerializableToLocalTimeFunction<T> name, LocalTime min, LocalTime max,
+            IgnoreStrategy ignoreStrategy) {
+        return nba0(name, min, max, ignoreStrategy);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public <T> L nba(SerializableToLocalTimeFunction<T> name, LocalTime min, LocalTime max,
+            BiPredicate<LocalTime, LocalTime> ignoreStrategy) {
+        return nba0(name, min, max, ignoreStrategy);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public L nba(String name, LocalDate min, LocalDate max) {
+        return nba0(name, min, max, ignoreStrategy);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public L nba(String name, LocalDate min, LocalDate max, IgnoreStrategy ignoreStrategy) {
+        return nba0(name, min, max, ignoreStrategy);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public L nba(String name, LocalDate min, LocalDate max, BiPredicate<LocalDate, LocalDate> ignoreStrategy) {
+        return nba0(name, min, max, ignoreStrategy);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public <T> L nba(SerializableToLocalDateFunction<T> name, LocalDate min, LocalDate max) {
+        return nba0(name, min, max, ignoreStrategy);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public <T> L nba(SerializableToLocalDateFunction<T> name, LocalDate min, LocalDate max,
+            IgnoreStrategy ignoreStrategy) {
+        return nba0(name, min, max, ignoreStrategy);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public <T> L nba(SerializableToLocalDateFunction<T> name, LocalDate min, LocalDate max,
+            BiPredicate<LocalDate, LocalDate> ignoreStrategy) {
+        return nba0(name, min, max, ignoreStrategy);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public L nba(String name, LocalDateTime min, LocalDateTime max) {
+        return nba0(name, min, max, ignoreStrategy);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public L nba(String name, LocalDateTime min, LocalDateTime max, IgnoreStrategy ignoreStrategy) {
+        return nba0(name, min, max, ignoreStrategy);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public L nba(String name, LocalDateTime min, LocalDateTime max,
+            BiPredicate<LocalDateTime, LocalDateTime> ignoreStrategy) {
+        return nba0(name, min, max, ignoreStrategy);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public <T> L nba(SerializableToLocalDateTimeFunction<T> name, LocalDateTime min, LocalDateTime max) {
+        return nba0(name, min, max, ignoreStrategy);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public <T> L nba(SerializableToLocalDateTimeFunction<T> name, LocalDateTime min, LocalDateTime max,
+            IgnoreStrategy ignoreStrategy) {
+        return nba0(name, min, max, ignoreStrategy);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public <T> L nba(SerializableToLocalDateTimeFunction<T> name, LocalDateTime min, LocalDateTime max,
+            BiPredicate<LocalDateTime, LocalDateTime> ignoreStrategy) {
+        return nba0(name, min, max, ignoreStrategy);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public L nba(String name, String min, String max) {
+        return nba0(name, min, max, ignoreStrategy);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public L nba(String name, String min, String max, IgnoreStrategy ignoreStrategy) {
+        return nba0(name, min, max, ignoreStrategy);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public L nba(String name, String min, String max, BiPredicate<String, String> ignoreStrategy) {
+        return nba0(name, min, max, ignoreStrategy);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public <T> L nba(SerializableToStringFunction<T> name, String min, String max) {
+        return nba0(name, min, max, ignoreStrategy);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public <T> L nba(SerializableToStringFunction<T> name, String min, String max, IgnoreStrategy ignoreStrategy) {
+        return nba0(name, min, max, ignoreStrategy);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public <T> L nba(SerializableToStringFunction<T> name, String min, String max,
+            BiPredicate<String, String> ignoreStrategy) {
+        return nba0(name, min, max, ignoreStrategy);
+    }
+
+    // ****************************************************************************************************************
+
+    private L ba0(Serializable name, Object min, Object max, BiPredicate<?, ?> ignoreStrategy) {
+        return ba0(getPropertyName(name), min, max, v -> {
+            Object[] params = (Object[]) v;
+            return ((BiPredicate<Object, Object>) ignoreStrategy).test(params[0], params[1]);
+        });
+    }
+
+    private L ba0(Serializable name, Object min, Object max, Predicate<?> ignoreStrategy) {
+        return ba0(getPropertyName(name), min, max, ignoreStrategy);
+    }
+
+    private L ba0(String name, Object min, Object max, BiPredicate<?, ?> ignoreStrategy) {
+        return ba0(name, min, max, v -> {
+            Object[] params = (Object[]) v;
+            return ((BiPredicate<Object, Object>) ignoreStrategy).test(params[0], params[1]);
+        });
+    }
+
+    private L ba0(String name, Object min, Object max, Predicate<?> ignoreStrategy) {
+        return (L) addCondition(new SqlConditionExpressionBuilder(dialect, name, new Object[] { min, max },
+                ComparisonOperator.BA, queryAlias, ignoreStrategy));
+    }
+
+    private L nba0(Serializable name, Object min, Object max, BiPredicate<?, ?> ignoreStrategy) {
+        return nba0(getPropertyName(name), min, max, v -> {
+            Object[] params = (Object[]) v;
+            return ((BiPredicate<Object, Object>) ignoreStrategy).test(params[0], params[1]);
+        });
+    }
+
+    private L nba0(Serializable name, Object min, Object max, Predicate<?> ignoreStrategy) {
+        return nba0(getPropertyName(name), min, max, ignoreStrategy);
+    }
+
+    private L nba0(String name, Object min, Object max, BiPredicate<?, ?> ignoreStrategy) {
+        return nba0(name, min, max, v -> {
+            Object[] params = (Object[]) v;
+            return ((BiPredicate<Object, Object>) ignoreStrategy).test(params[0], params[1]);
+        });
+    }
+
+    private L nba0(String name, Object min, Object max, Predicate<?> ignoreStrategy) {
+        return (L) addCondition(new SqlConditionExpressionBuilder(dialect, name, new Object[] { min, max },
+                ComparisonOperator.NBA, queryAlias, ignoreStrategy));
+    }
+
+    // ****************************************************************************************************************
 
     /**
      * {@inheritDoc}

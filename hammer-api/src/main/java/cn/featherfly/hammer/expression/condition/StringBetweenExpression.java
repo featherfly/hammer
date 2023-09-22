@@ -5,7 +5,7 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.Date;
-import java.util.function.Predicate;
+import java.util.function.BiPredicate;
 
 import cn.featherfly.common.repository.IgnoreStrategy;
 
@@ -52,7 +52,7 @@ public interface StringBetweenExpression<C extends ConditionExpression, L extend
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
-    <N extends Number> L ba(String name, N min, N max, Predicate<N> ignoreStrategy);
+    <N extends Number> L ba(String name, N min, N max, BiPredicate<N, N> ignoreStrategy);
 
     // **************************************************************************************************************
 
@@ -89,7 +89,7 @@ public interface StringBetweenExpression<C extends ConditionExpression, L extend
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
-    <D extends Date> L ba(String name, D min, D max, Predicate<D> ignoreStrategy);
+    <D extends Date> L ba(String name, D min, D max, BiPredicate<D, D> ignoreStrategy);
 
     // **************************************************************************************************************
 
@@ -123,7 +123,7 @@ public interface StringBetweenExpression<C extends ConditionExpression, L extend
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
-    L ba(String name, LocalTime min, LocalTime max, Predicate<LocalTime> ignoreStrategy);
+    L ba(String name, LocalTime min, LocalTime max, BiPredicate<LocalTime, LocalTime> ignoreStrategy);
 
     // **************************************************************************************************************
 
@@ -157,7 +157,7 @@ public interface StringBetweenExpression<C extends ConditionExpression, L extend
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
-    L ba(String name, LocalDate min, LocalDate max, Predicate<LocalDate> ignoreStrategy);
+    L ba(String name, LocalDate min, LocalDate max, BiPredicate<LocalDate, LocalDate> ignoreStrategy);
 
     // **************************************************************************************************************
 
@@ -191,7 +191,7 @@ public interface StringBetweenExpression<C extends ConditionExpression, L extend
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
-    L ba(String name, LocalDateTime min, LocalDateTime max, Predicate<LocalDateTime> ignoreStrategy);
+    L ba(String name, LocalDateTime min, LocalDateTime max, BiPredicate<LocalDateTime, LocalDateTime> ignoreStrategy);
 
     // **************************************************************************************************************
 
@@ -225,5 +225,5 @@ public interface StringBetweenExpression<C extends ConditionExpression, L extend
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
-    L ba(String name, String min, String max, Predicate<String> ignoreStrategy);
+    L ba(String name, String min, String max, BiPredicate<String, String> ignoreStrategy);
 }
