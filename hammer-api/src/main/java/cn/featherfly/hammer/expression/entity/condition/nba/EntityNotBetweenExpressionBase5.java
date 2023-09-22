@@ -7,10 +7,16 @@ import java.time.LocalTime;
 import java.util.Date;
 import java.util.function.BiPredicate;
 
-import cn.featherfly.common.function.serializable.SerializableFunction;
+import cn.featherfly.common.function.serializable.SerializableToDateFunction;
 import cn.featherfly.common.function.serializable.SerializableToDoubleFunction;
+import cn.featherfly.common.function.serializable.SerializableToEnumFunction;
 import cn.featherfly.common.function.serializable.SerializableToIntFunction;
+import cn.featherfly.common.function.serializable.SerializableToLocalDateFunction;
+import cn.featherfly.common.function.serializable.SerializableToLocalDateTimeFunction;
+import cn.featherfly.common.function.serializable.SerializableToLocalTimeFunction;
 import cn.featherfly.common.function.serializable.SerializableToLongFunction;
+import cn.featherfly.common.function.serializable.SerializableToNumberFunction;
+import cn.featherfly.common.function.serializable.SerializableToStringFunction;
 import cn.featherfly.hammer.expression.condition.ConditionExpression;
 import cn.featherfly.hammer.expression.condition.LogicExpression;
 
@@ -18,16 +24,16 @@ import cn.featherfly.hammer.expression.condition.LogicExpression;
  * The Interface EntityNotBetweenExpressionBase5.
  *
  * @author zhongj
- * @param <E>  the element type
- * @param <E2> the generic type
- * @param <E3> the generic type
- * @param <E4> the generic type
- * @param <E5> the generic type
+ * @param <T>  the element type
+ * @param <T2> the generic type
+ * @param <T3> the generic type
+ * @param <T4> the generic type
+ * @param <T5> the generic type
  * @param <C>  the generic type
  * @param <L>  the generic type
  */
-public interface EntityNotBetweenExpressionBase5<E, E2, E3, E4, E5, C extends ConditionExpression,
-        L extends LogicExpression<C, L>> extends EntityNotBetweenExpressionBase4<E, E2, E3, E4, C, L> {
+public interface EntityNotBetweenExpressionBase5<T, T2, T3, T4, T5, C extends ConditionExpression,
+        L extends LogicExpression<C, L>> extends EntityNotBetweenExpressionBase4<T, T2, T3, T4, C, L> {
 
     /**
      * not between and.
@@ -37,7 +43,7 @@ public interface EntityNotBetweenExpressionBase5<E, E2, E3, E4, E5, C extends Co
      * @param value 参数值
      * @return LogicExpression
      */
-    L nba5(SerializableToIntFunction<E5> name, int min, int max);
+    L nba5(SerializableToIntFunction<T5> name, int min, int max);
 
     /**
      * not between and.
@@ -47,7 +53,7 @@ public interface EntityNotBetweenExpressionBase5<E, E2, E3, E4, E5, C extends Co
      * @param value 参数值
      * @return LogicExpression
      */
-    L nba5(SerializableToIntFunction<E5> name, int min, int max, BiPredicate<Integer, Integer> ignoreStrategy);
+    L nba5(SerializableToIntFunction<T5> name, int min, int max, BiPredicate<Integer, Integer> ignoreStrategy);
 
     /**
      * not between and.
@@ -57,7 +63,7 @@ public interface EntityNotBetweenExpressionBase5<E, E2, E3, E4, E5, C extends Co
      * @param value 参数值
      * @return LogicExpression
      */
-    L nba5(SerializableToLongFunction<E5> name, long min, long max);
+    L nba5(SerializableToLongFunction<T5> name, long min, long max);
 
     /**
      * not between and.
@@ -67,7 +73,7 @@ public interface EntityNotBetweenExpressionBase5<E, E2, E3, E4, E5, C extends Co
      * @param value 参数值
      * @return LogicExpression
      */
-    L nba5(SerializableToLongFunction<E5> name, long min, long max, BiPredicate<Long, Long> ignoreStrategy);
+    L nba5(SerializableToLongFunction<T5> name, long min, long max, BiPredicate<Long, Long> ignoreStrategy);
 
     /**
      * not between and.
@@ -77,7 +83,7 @@ public interface EntityNotBetweenExpressionBase5<E, E2, E3, E4, E5, C extends Co
      * @param value 参数值
      * @return LogicExpression
      */
-    L nba5(SerializableToDoubleFunction<E5> name, double min, double max);
+    L nba5(SerializableToDoubleFunction<T5> name, double min, double max);
 
     /**
      * not between and.
@@ -87,7 +93,7 @@ public interface EntityNotBetweenExpressionBase5<E, E2, E3, E4, E5, C extends Co
      * @param value 参数值
      * @return LogicExpression
      */
-    L nba5(SerializableToDoubleFunction<E5> name, double min, double max, BiPredicate<Double, Double> ignoreStrategy);
+    L nba5(SerializableToDoubleFunction<T5> name, double min, double max, BiPredicate<Double, Double> ignoreStrategy);
 
     /**
      * not between and.
@@ -97,7 +103,7 @@ public interface EntityNotBetweenExpressionBase5<E, E2, E3, E4, E5, C extends Co
      * @param value 参数值
      * @return LogicExpression
      */
-    <N extends Number> L nba5(SerializableFunction<E5, N> name, N min, N max);
+    <N extends Number> L nba5(SerializableToNumberFunction<T5, N> name, N min, N max);
 
     /**
      * not between and.
@@ -108,7 +114,7 @@ public interface EntityNotBetweenExpressionBase5<E, E2, E3, E4, E5, C extends Co
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
-    <N extends Number> L nba5(SerializableFunction<E5, N> name, N min, N max, BiPredicate<N, N> ignoreStrategy);
+    <N extends Number> L nba5(SerializableToNumberFunction<T5, N> name, N min, N max, BiPredicate<N, N> ignoreStrategy);
 
     /**
      * not between and.
@@ -118,7 +124,7 @@ public interface EntityNotBetweenExpressionBase5<E, E2, E3, E4, E5, C extends Co
      * @param value 参数值
      * @return LogicExpression
      */
-    <D extends Date> L nba5(SerializableFunction<E5, D> name, D min, D max);
+    <D extends Date> L nba5(SerializableToDateFunction<T5, D> name, D min, D max);
 
     /**
      * not between and.
@@ -129,7 +135,28 @@ public interface EntityNotBetweenExpressionBase5<E, E2, E3, E4, E5, C extends Co
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
-    <D extends Date> L nba5(SerializableFunction<E5, D> name, D min, D max, BiPredicate<D, D> ignoreStrategy);
+    <D extends Date> L nba5(SerializableToDateFunction<T5, D> name, D min, D max, BiPredicate<D, D> ignoreStrategy);
+
+    /**
+     * between and.
+     *
+     * @param <E>   enum type
+     * @param name  参数名称
+     * @param value 参数值
+     * @return LogicExpression
+     */
+    <E extends Enum<E>> L nba5(SerializableToEnumFunction<T5, E> name, E min, E max);
+
+    /**
+     * between and.
+     *
+     * @param <E>            enum type
+     * @param name           参数名称
+     * @param value          参数值
+     * @param ignoreStrategy the ignore strategy
+     * @return LogicExpression
+     */
+    <E extends Enum<E>> L nba5(SerializableToEnumFunction<T5, E> name, E min, E max, BiPredicate<E, E> ignoreStrategy);
 
     /**
      * not between and.
@@ -138,7 +165,7 @@ public interface EntityNotBetweenExpressionBase5<E, E2, E3, E4, E5, C extends Co
      * @param value 参数值
      * @return LogicExpression
      */
-    L nba5(SerializableFunction<E5, LocalTime> name, LocalTime min, LocalTime max);
+    L nba5(SerializableToLocalTimeFunction<T5> name, LocalTime min, LocalTime max);
 
     /**
      * not between and.
@@ -148,7 +175,7 @@ public interface EntityNotBetweenExpressionBase5<E, E2, E3, E4, E5, C extends Co
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
-    L nba5(SerializableFunction<E5, LocalTime> name, LocalTime min, LocalTime max,
+    L nba5(SerializableToLocalTimeFunction<T5> name, LocalTime min, LocalTime max,
             BiPredicate<LocalTime, LocalTime> ignoreStrategy);
 
     /**
@@ -158,7 +185,7 @@ public interface EntityNotBetweenExpressionBase5<E, E2, E3, E4, E5, C extends Co
      * @param value 参数值
      * @return LogicExpression
      */
-    L nba5(SerializableFunction<E5, LocalDate> name, LocalDate min, LocalDate max);
+    L nba5(SerializableToLocalDateFunction<T5> name, LocalDate min, LocalDate max);
 
     /**
      * not between and.
@@ -168,7 +195,7 @@ public interface EntityNotBetweenExpressionBase5<E, E2, E3, E4, E5, C extends Co
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
-    L nba5(SerializableFunction<E5, LocalDate> name, LocalDate min, LocalDate max,
+    L nba5(SerializableToLocalDateFunction<T5> name, LocalDate min, LocalDate max,
             BiPredicate<LocalDate, LocalDate> ignoreStrategy);
 
     /**
@@ -178,7 +205,7 @@ public interface EntityNotBetweenExpressionBase5<E, E2, E3, E4, E5, C extends Co
      * @param value 参数值
      * @return LogicExpression
      */
-    L nba5(SerializableFunction<E5, LocalDateTime> name, LocalDateTime min, LocalDateTime max);
+    L nba5(SerializableToLocalDateTimeFunction<T5> name, LocalDateTime min, LocalDateTime max);
 
     /**
      * not between and.
@@ -188,7 +215,7 @@ public interface EntityNotBetweenExpressionBase5<E, E2, E3, E4, E5, C extends Co
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
-    L nba5(SerializableFunction<E5, LocalDateTime> name, LocalDateTime min, LocalDateTime max,
+    L nba5(SerializableToLocalDateTimeFunction<T5> name, LocalDateTime min, LocalDateTime max,
             BiPredicate<LocalDateTime, LocalDateTime> ignoreStrategy);
 
     /**
@@ -198,7 +225,7 @@ public interface EntityNotBetweenExpressionBase5<E, E2, E3, E4, E5, C extends Co
      * @param value 参数值
      * @return LogicExpression
      */
-    L nba5(SerializableFunction<E5, String> name, String min, String max);
+    L nba5(SerializableToStringFunction<T5> name, String min, String max);
 
     /**
      * not between and.
@@ -208,7 +235,7 @@ public interface EntityNotBetweenExpressionBase5<E, E2, E3, E4, E5, C extends Co
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
-    L nba5(SerializableFunction<E5, String> name, String min, String max, BiPredicate<String, String> ignoreStrategy);
+    L nba5(SerializableToStringFunction<T5> name, String min, String max, BiPredicate<String, String> ignoreStrategy);
 
     //    /**
     //     * not between and.

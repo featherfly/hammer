@@ -41,8 +41,8 @@ public interface EntityLikeExpression<E, C extends ConditionExpression, L extend
     /**
      * like value.
      *
-     * @param name         参数名称
-     * @param value        参数值
+     * @param name           参数名称
+     * @param value          参数值
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
@@ -63,13 +63,14 @@ public interface EntityLikeExpression<E, C extends ConditionExpression, L extend
     /**
      * like value.
      *
-     * @param name         the name 参数名称
-     * @param value        the value
-     * @param queryPolicy  the query policy
+     * @param name           the name 参数名称
+     * @param value          the value
+     * @param queryPolicy    the query policy
      * @param ignoreStrategy the ignore strategy
      * @return the l
      */
-    L lk(SerializableFunction<E, String> name, String value, MatchStrategy matchStrategy, Predicate<String> ignoreStrategy);
+    L lk(SerializableFunction<E, String> name, String value, MatchStrategy matchStrategy,
+            Predicate<String> ignoreStrategy);
 
     /**
      * like value.
@@ -84,7 +85,7 @@ public interface EntityLikeExpression<E, C extends ConditionExpression, L extend
     /**
      * like value.
      *
-     * @param property     对象属性
+     * @param property       对象属性
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
@@ -104,8 +105,8 @@ public interface EntityLikeExpression<E, C extends ConditionExpression, L extend
     /**
      * like value.
      *
-     * @param property     the property 对象属性
-     * @param queryPolicy  the query policy
+     * @param property       the property 对象属性
+     * @param queryPolicy    the query policy
      * @param ignoreStrategy the ignore strategy
      * @return the l
      */

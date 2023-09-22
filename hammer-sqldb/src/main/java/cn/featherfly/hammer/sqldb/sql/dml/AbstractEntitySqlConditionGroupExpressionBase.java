@@ -150,13 +150,13 @@ public abstract class AbstractEntitySqlConditionGroupExpressionBase<E, ER extend
      * {@inheritDoc}
      */
     @Override
-    protected <T, R> L eq_ne(int index, ComparisonOperator comparisonOperator, PropertyMapping<?> pm, R value,
+    protected <R> L eq_ne(int index, ComparisonOperator comparisonOperator, PropertyMapping<?> pm, R value,
             MatchStrategy matchStrategy, Predicate<?> ignoreStrategy) {
         return eq_ne(comparisonOperator, pm, value, getAlias(index), matchStrategy, ignoreStrategy);
     }
 
     @Override
-    protected <T, R> L eq_ne(ComparisonOperator comparisonOperator, PropertyMapping<?> pm, R value, String queryAlias,
+    protected <R> L eq_ne(ComparisonOperator comparisonOperator, PropertyMapping<?> pm, R value, String queryAlias,
             MatchStrategy matchStrategy, Predicate<?> ignoreStrategy) {
         AssertIllegalArgument.isNotNull(ignoreStrategy, "ignoreStrategy");
         if (value != null) {

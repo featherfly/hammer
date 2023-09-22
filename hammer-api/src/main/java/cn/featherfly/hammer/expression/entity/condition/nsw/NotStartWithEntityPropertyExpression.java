@@ -1,11 +1,7 @@
 
 package cn.featherfly.hammer.expression.entity.condition.nsw;
 
-import java.util.Collection;
-
-import cn.featherfly.common.function.serializable.SerializableFunction;
-import cn.featherfly.common.function.serializable.SerializableToCollectionFunction;
-import cn.featherfly.common.function.serializable.SerializableToStringFunction;
+import cn.featherfly.hammer.expression.entity.condition.MatchStringEntityPropertyExpression;
 
 /**
  * The Interface NotStartWithEntityPropertyExpression.
@@ -13,34 +9,6 @@ import cn.featherfly.common.function.serializable.SerializableToStringFunction;
  * @author zhongj
  * @param <E> the element type
  */
-public interface NotStartWithEntityPropertyExpression<E> {
+public interface NotStartWithEntityPropertyExpression<E> extends MatchStringEntityPropertyExpression<E> {
 
-    /**
-     * entity start with function property expression.
-     *
-     * @param <R>  the generic type
-     * @param name the name
-     * @return entity start with function property expression
-     */
-    <R> NotStartWithEntityPropertyExpression<R> property(SerializableFunction<E, R> name);
-
-    /**
-     * entity start with function property expression.
-     *
-     * @param <R>  the generic type
-     * @param <RE> the generic type
-     * @param name the name
-     * @return entity start with function property expression
-     */
-    <R extends Collection<RE>,
-            RE> NotStartWithEntityPropertyExpression<RE> property(SerializableToCollectionFunction<E, R, RE> name);
-
-    /**
-     * entity start with function property expression.
-     *
-     * @param <R>  the generic type
-     * @param name the name
-     * @return entity start with function property expression
-     */
-    <R> NotStartWithEntityPropertyValueExpression<E> property(SerializableToStringFunction<E> name);
 }

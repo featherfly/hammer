@@ -4,10 +4,12 @@ package cn.featherfly.hammer.sqldb.jdbc.dsl.entity.condition;
 import java.io.Serializable;
 import java.time.LocalDate;
 import java.util.List;
+import java.util.function.BiPredicate;
 import java.util.function.Predicate;
 
 import cn.featherfly.common.db.mapping.JdbcMappingFactory;
 import cn.featherfly.common.function.serializable.SerializableFunction;
+import cn.featherfly.common.lang.Lang;
 import cn.featherfly.common.repository.IgnoreStrategy;
 import cn.featherfly.hammer.expression.condition.ConditionExpression;
 import cn.featherfly.hammer.expression.condition.LogicExpression;
@@ -315,4 +317,52 @@ public class EntityLocalDatePropertyExpressionImpl<E, C extends ConditionExpress
         return expression.inn0(index, getPropertyMapping(value), value);
     }
 
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public L ba(LocalDate min, LocalDate max) {
+        return expression.ba0(index, getPropertyMapping(Lang.pick(min, max)), min, max, expression.getIgnoreStrategy());
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public L ba(LocalDate min, LocalDate max, IgnoreStrategy ignoreStrategy) {
+        return expression.ba0(index, getPropertyMapping(Lang.pick(min, max)), min, max, ignoreStrategy);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public L ba(LocalDate min, LocalDate max, BiPredicate<LocalDate, LocalDate> ignoreStrategy) {
+        return expression.ba0(index, getPropertyMapping(Lang.pick(min, max)), min, max, ignoreStrategy);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public L nba(LocalDate min, LocalDate max) {
+        return expression.nba0(index, getPropertyMapping(Lang.pick(min, max)), min, max,
+                expression.getIgnoreStrategy());
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public L nba(LocalDate min, LocalDate max, IgnoreStrategy ignoreStrategy) {
+        return expression.nba0(index, getPropertyMapping(Lang.pick(min, max)), min, max, ignoreStrategy);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public L nba(LocalDate min, LocalDate max, BiPredicate<LocalDate, LocalDate> ignoreStrategy) {
+        return expression.nba0(index, getPropertyMapping(Lang.pick(min, max)), min, max, ignoreStrategy);
+    }
 }

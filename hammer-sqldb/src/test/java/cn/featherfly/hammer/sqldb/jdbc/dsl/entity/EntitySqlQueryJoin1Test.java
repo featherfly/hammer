@@ -37,8 +37,11 @@ public class EntitySqlQueryJoin1Test extends AbstractEntitySqlQueryJoinTest {
         assertNotNull(order);
         assertEquals(order.getId(), oid1);
 
-        Tuple2<Order2, User2> orderUser = query.find(Order2.class).join(User2.class).on(Order2::getCreateUser).fetch()
-                .where().eq(Order2::getId, oid1).single();
+        Tuple2<Order2, User2> orderUser = query.find(Order2.class) //
+                .join(User2.class).on(Order2::getCreateUser).fetch() //
+                .where() //
+                .eq(Order2::getId, oid1) //
+                .single();
         assertNotNull(orderUser);
         assertEquals(orderUser.get0().getId(), oid1);
         assertEquals(orderUser.get1().getId(), orderUser.get0().getCreateUser());

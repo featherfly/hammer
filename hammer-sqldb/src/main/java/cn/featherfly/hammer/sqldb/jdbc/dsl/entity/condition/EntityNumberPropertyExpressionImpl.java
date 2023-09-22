@@ -3,10 +3,12 @@ package cn.featherfly.hammer.sqldb.jdbc.dsl.entity.condition;
 
 import java.io.Serializable;
 import java.util.List;
+import java.util.function.BiPredicate;
 import java.util.function.Predicate;
 
 import cn.featherfly.common.db.mapping.JdbcMappingFactory;
 import cn.featherfly.common.function.serializable.SerializableFunction;
+import cn.featherfly.common.lang.Lang;
 import cn.featherfly.common.repository.IgnoreStrategy;
 import cn.featherfly.hammer.expression.condition.ConditionExpression;
 import cn.featherfly.hammer.expression.condition.LogicExpression;
@@ -314,6 +316,55 @@ public class EntityNumberPropertyExpressionImpl<E, N extends Number, C extends C
     @Override
     public L ne(N value, Predicate<N> ignoreStrategy) {
         return expression.ne0(index, getPropertyMapping(value), value, ignoreStrategy);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public L ba(N min, N max) {
+        return expression.ba0(index, getPropertyMapping(Lang.pick(min, max)), min, max, expression.getIgnoreStrategy());
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public L ba(N min, N max, IgnoreStrategy ignoreStrategy) {
+        return expression.ba0(index, getPropertyMapping(Lang.pick(min, max)), min, max, ignoreStrategy);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public L ba(N min, N max, BiPredicate<N, N> ignoreStrategy) {
+        return expression.ba0(index, getPropertyMapping(Lang.pick(min, max)), min, max, ignoreStrategy);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public L nba(N min, N max) {
+        return expression.nba0(index, getPropertyMapping(Lang.pick(min, max)), min, max,
+                expression.getIgnoreStrategy());
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public L nba(N min, N max, IgnoreStrategy ignoreStrategy) {
+        return expression.nba0(index, getPropertyMapping(Lang.pick(min, max)), min, max, ignoreStrategy);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public L nba(N min, N max, BiPredicate<N, N> ignoreStrategy) {
+        return expression.nba0(index, getPropertyMapping(Lang.pick(min, max)), min, max, ignoreStrategy);
     }
 
 }
