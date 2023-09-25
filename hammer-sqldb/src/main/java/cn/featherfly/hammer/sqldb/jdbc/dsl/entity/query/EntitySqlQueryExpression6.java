@@ -14,18 +14,20 @@ import cn.featherfly.hammer.sqldb.sql.dml.AbstractEntitySqlQueryConditionGroupEx
  * The Class EntitySqlQueryExpression4.
  *
  * @author zhongj
- * @param <E>  the element type
- * @param <E2> the generic type
- * @param <E3> the generic type
- * @param <E4> the generic type
+ * @param <T1> the element type
+ * @param <T2> the generic type
+ * @param <T3> the generic type
+ * @param <T4> the generic type
+ * @param <T5> the generic type
+ * @param <T6> the generic type
  * @param <RS> the query result type
  */
-public class EntitySqlQueryExpression6<E, E2, E3, E4, E5, E6, RS> extends
-        AbstractEntitySqlQueryConditionGroupExpression6<E, E2, E3, E4, E5, E6, RS,
-                EntityQueryConditionGroup6<E, E2, E3, E4, E5, E6, RS>,
-                EntityQueryConditionGroupLogic6<E, E2, E3, E4, E5, E6, RS>>
-        implements EntityQueryConditionGroup6<E, E2, E3, E4, E5, E6, RS>,
-        EntityQueryConditionGroupLogic6<E, E2, E3, E4, E5, E6, RS> {
+public class EntitySqlQueryExpression6<T1, T2, T3, T4, T5, T6, RS> extends
+        AbstractEntitySqlQueryConditionGroupExpression6<T1, T2, T3, T4, T5, T6, RS,
+                EntityQueryConditionGroup6<T1, T2, T3, T4, T5, T6, RS>,
+                EntityQueryConditionGroupLogic6<T1, T2, T3, T4, T5, T6, RS>>
+        implements EntityQueryConditionGroup6<T1, T2, T3, T4, T5, T6, RS>,
+        EntityQueryConditionGroupLogic6<T1, T2, T3, T4, T5, T6, RS> {
 
     /**
      * Instantiates a new entity sql query expression.
@@ -47,7 +49,7 @@ public class EntitySqlQueryExpression6<E, E2, E3, E4, E5, E6, RS> extends
      * @param sqlPageFactory the sql page factory
      * @param queryRelation  the query relation
      */
-    EntitySqlQueryExpression6(EntityQueryConditionGroupLogic6<E, E2, E3, E4, E5, E6, RS> parent,
+    EntitySqlQueryExpression6(EntityQueryConditionGroupLogic6<T1, T2, T3, T4, T5, T6, RS> parent,
             JdbcMappingFactory factory, SqlPageFactory sqlPageFactory, EntitySqlQueryRelation queryRelation) {
         super(parent, factory, sqlPageFactory, queryRelation);
     }
@@ -56,8 +58,8 @@ public class EntitySqlQueryExpression6<E, E2, E3, E4, E5, E6, RS> extends
      * {@inheritDoc}
      */
     @Override
-    protected EntityQueryConditionGroup6<E, E2, E3, E4, E5, E6, RS> createGroup(
-            EntityQueryConditionGroupLogic6<E, E2, E3, E4, E5, E6, RS> parent) {
+    protected EntityQueryConditionGroup6<T1, T2, T3, T4, T5, T6, RS> createGroup(
+            EntityQueryConditionGroupLogic6<T1, T2, T3, T4, T5, T6, RS> parent) {
         return new EntitySqlQueryExpression6<>(parent, factory, sqlPageFactory, entityRelation);
     }
 

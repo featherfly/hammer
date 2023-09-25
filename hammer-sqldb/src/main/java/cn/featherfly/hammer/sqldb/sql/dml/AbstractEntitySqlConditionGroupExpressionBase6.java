@@ -7,6 +7,9 @@ import java.time.LocalTime;
 import java.util.Collection;
 import java.util.Date;
 import java.util.function.BiPredicate;
+import java.util.function.DoublePredicate;
+import java.util.function.IntPredicate;
+import java.util.function.LongPredicate;
 import java.util.function.Predicate;
 
 import cn.featherfly.common.db.builder.SqlBuilder;
@@ -71,39 +74,47 @@ import cn.featherfly.hammer.sqldb.jdbc.dsl.entity.condition.EntityPropertyFuncti
  * sql condition group builder sql条件逻辑组构造器 .
  *
  * @author zhongj
- * @param <T>  the element type
+ * @param <T1> the element type
  * @param <T2> the generic type
+ * @param <T3> the generic type
+ * @param <T4> the generic type
+ * @param <T5> the generic type
+ * @param <T6> the generic type
+ * @param <ER> the generic type
+ * @param <B>  the generic type
  * @param <C>  the generic type
  * @param <L>  the generic type
  */
-public abstract class AbstractEntitySqlConditionGroupExpressionBase6<T, T2, T3, T4, T5, T6,
+public abstract class AbstractEntitySqlConditionGroupExpressionBase6<T1, T2, T3, T4, T5, T6,
         ER extends EntitySqlRelation<ER, B>, B extends SqlBuilder, C extends GroupExpression<C, L>,
         L extends GroupEndExpression<C, L>>
-        extends AbstractEntitySqlConditionGroupExpressionBase5<T, T2, T3, T4, T5, ER, B, C, L>
-        implements EntityBetweenExpressionBase6<T, T2, T3, T4, T5, T6, C, L>,
-        EntityNotBetweenExpressionBase6<T, T2, T3, T4, T5, T6, C, L> //
-        , EntityContainsExpressionBase6<T, T2, T3, T4, T5, T6, C, L>,
-        EntityNotContainsExpressionBase6<T, T2, T3, T4, T5, T6, C, L> //
-        , EntityEndWithExpressionBase6<T, T2, T3, T4, T5, T6, C, L>,
-        EntityNotEndWithExpressionBase6<T, T2, T3, T4, T5, T6, C, L> //
-        , EntityEqualsExpressionBase6<T, T2, T3, T4, T5, T6, C, L>,
-        EntityNotEqualsExpressionBase6<T, T2, T3, T4, T5, T6, C, L> //
-        , EntityGreatEqualsExpressionBase6<T, T2, T3, T4, T5, T6, C, L>,
-        EntityGreatThanExpressionBase6<T, T2, T3, T4, T5, T6, C, L> //
-        , EntityInExpressionBase6<T, T2, T3, T4, T5, T6, C, L>, EntityNotInExpressionBase6<T, T2, T3, T4, T5, T6, C, L> //
-        , EntityIsNotNullExpressionBase6<T, T2, T3, T4, T5, T6, C, L>,
-        EntityIsNullExpressionBase6<T, T2, T3, T4, T5, T6, C, L> //
-        , EntityLessEqualsExpressionBase6<T, T2, T3, T4, T5, T6, C, L>,
-        EntityLessThanExpressionBase6<T, T2, T3, T4, T5, T6, C, L> //
-        , EntityStartWithExpressionBase6<T, T2, T3, T4, T5, T6, C, L>,
-        EntityNotStartWithExpressionBase6<T, T2, T3, T4, T5, T6, C, L> //
-        , EntityLikeExpressionBase6<T, T2, T3, T4, T5, T6, C, L>,
-        EntityNotLikeExpressionBase6<T, T2, T3, T4, T5, T6, C, L> //
-        , EntityPropertyExpression6<T, T2, T3, T4, T5, T6, C, L> {
+        extends AbstractEntitySqlConditionGroupExpressionBase5<T1, T2, T3, T4, T5, ER, B, C, L>
+        implements EntityBetweenExpressionBase6<T1, T2, T3, T4, T5, T6, C, L>,
+        EntityNotBetweenExpressionBase6<T1, T2, T3, T4, T5, T6, C, L> //
+        , EntityContainsExpressionBase6<T1, T2, T3, T4, T5, T6, C, L>,
+        EntityNotContainsExpressionBase6<T1, T2, T3, T4, T5, T6, C, L> //
+        , EntityEndWithExpressionBase6<T1, T2, T3, T4, T5, T6, C, L>,
+        EntityNotEndWithExpressionBase6<T1, T2, T3, T4, T5, T6, C, L> //
+        , EntityEqualsExpressionBase6<T1, T2, T3, T4, T5, T6, C, L>,
+        EntityNotEqualsExpressionBase6<T1, T2, T3, T4, T5, T6, C, L> //
+        , EntityGreatEqualsExpressionBase6<T1, T2, T3, T4, T5, T6, C, L>,
+        EntityGreatThanExpressionBase6<T1, T2, T3, T4, T5, T6, C, L> //
+        , EntityInExpressionBase6<T1, T2, T3, T4, T5, T6, C, L>,
+        EntityNotInExpressionBase6<T1, T2, T3, T4, T5, T6, C, L> //
+        , EntityIsNotNullExpressionBase6<T1, T2, T3, T4, T5, T6, C, L>,
+        EntityIsNullExpressionBase6<T1, T2, T3, T4, T5, T6, C, L> //
+        , EntityLessEqualsExpressionBase6<T1, T2, T3, T4, T5, T6, C, L>,
+        EntityLessThanExpressionBase6<T1, T2, T3, T4, T5, T6, C, L> //
+        , EntityStartWithExpressionBase6<T1, T2, T3, T4, T5, T6, C, L>,
+        EntityNotStartWithExpressionBase6<T1, T2, T3, T4, T5, T6, C, L> //
+        , EntityLikeExpressionBase6<T1, T2, T3, T4, T5, T6, C, L>,
+        EntityNotLikeExpressionBase6<T1, T2, T3, T4, T5, T6, C, L> //
+        , EntityPropertyExpression6<T1, T2, T3, T4, T5, T6, C, L> {
 
     /** The class mapping. */
     protected JdbcClassMapping<T6> classMapping6;
 
+    /** The query alias 6. */
     protected String queryAlias6;
 
     /**
@@ -123,22 +134,34 @@ public abstract class AbstractEntitySqlConditionGroupExpressionBase6<T, T2, T3, 
         queryAlias6 = erm.getTableAlias();
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public <R> L eq6(SerializableFunction<T6, R> name, R value, MatchStrategy matchStrategy) {
         return eq(classMapping6, name, value, queryAlias6, matchStrategy, ignoreStrategy);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public <R> L eq6(SerializableFunction<T6, R> name, R value, MatchStrategy matchStrategy,
             Predicate<R> ignoreStrategy) {
         return eq(classMapping6, name, value, queryAlias6, matchStrategy, ignoreStrategy);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public <R> L eq6(SerializableSupplier6<R> property, MatchStrategy matchStrategy) {
         return eq(classMapping6, property, queryAlias6, matchStrategy, ignoreStrategy);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public <R> L eq6(SerializableSupplier6<R> property, MatchStrategy matchStrategy, Predicate<R> ignoreStrategy) {
         return eq(classMapping6, property, queryAlias6, matchStrategy, ignoreStrategy);
@@ -146,22 +169,34 @@ public abstract class AbstractEntitySqlConditionGroupExpressionBase6<T, T2, T3, 
 
     // ****************************************************************************************************************
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public <R> L ne6(SerializableFunction<T6, R> name, R value, MatchStrategy matchStrategy) {
         return ne(classMapping6, name, value, queryAlias6, matchStrategy, ignoreStrategy);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public <R> L ne6(SerializableFunction<T6, R> name, R value, MatchStrategy matchStrategy,
             Predicate<R> ignoreStrategy) {
         return ne(classMapping6, name, value, queryAlias6, matchStrategy, ignoreStrategy);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public <R> L ne6(SerializableSupplier6<R> property, MatchStrategy matchStrategy) {
         return ne(classMapping6, property, queryAlias6, matchStrategy, ignoreStrategy);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public <R> L ne6(SerializableSupplier6<R> property, MatchStrategy matchStrategy, Predicate<R> ignoreStrategy) {
         return ne(classMapping6, property, queryAlias6, matchStrategy, ignoreStrategy);
@@ -169,22 +204,34 @@ public abstract class AbstractEntitySqlConditionGroupExpressionBase6<T, T2, T3, 
 
     // ****************************************************************************************************************
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public L lk6(SerializableFunction<T6, String> name, String value, MatchStrategy matchStrategy) {
         return lk(classMapping6, name, value, queryAlias6, matchStrategy, ignoreStrategy);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public L lk6(SerializableFunction<T6, String> name, String value, MatchStrategy matchStrategy,
             Predicate<String> ignoreStrategy) {
         return lk(classMapping6, name, value, queryAlias6, matchStrategy, ignoreStrategy);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public L lk6(SerializableStringSupplier property, MatchStrategy matchStrategy) {
         return lk(classMapping6, property, queryAlias6, matchStrategy, ignoreStrategy);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public L lk6(SerializableStringSupplier property, MatchStrategy matchStrategy, Predicate<String> ignoreStrategy) {
         return lk(classMapping6, property, queryAlias6, matchStrategy, ignoreStrategy);
@@ -192,22 +239,34 @@ public abstract class AbstractEntitySqlConditionGroupExpressionBase6<T, T2, T3, 
 
     // ****************************************************************************************************************
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public L nl6(SerializableFunction<T6, String> name, String value, MatchStrategy matchStrategy) {
         return nl(classMapping6, name, value, queryAlias6, matchStrategy, ignoreStrategy);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public L nl6(SerializableFunction<T6, String> name, String value, MatchStrategy matchStrategy,
             Predicate<String> ignoreStrategy) {
         return nl(classMapping6, name, value, queryAlias6, matchStrategy, ignoreStrategy);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public L nl6(SerializableStringSupplier property, MatchStrategy matchStrategy) {
         return nl(classMapping6, property, queryAlias6, matchStrategy, ignoreStrategy);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public L nl6(SerializableStringSupplier property, MatchStrategy matchStrategy, Predicate<String> ignoreStrategy) {
         return nl(classMapping6, property, queryAlias6, matchStrategy, ignoreStrategy);
@@ -215,22 +274,34 @@ public abstract class AbstractEntitySqlConditionGroupExpressionBase6<T, T2, T3, 
 
     // ****************************************************************************************************************
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public L sw6(SerializableFunction<T6, String> name, String value, MatchStrategy matchStrategy) {
         return sw(classMapping6, name, value, queryAlias6, matchStrategy, ignoreStrategy);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public L sw6(SerializableFunction<T6, String> name, String value, MatchStrategy matchStrategy,
             Predicate<String> ignoreStrategy) {
         return sw(classMapping6, name, value, queryAlias6, matchStrategy, ignoreStrategy);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public L sw6(SerializableStringSupplier property, MatchStrategy matchStrategy) {
         return sw(classMapping6, property, queryAlias6, matchStrategy, ignoreStrategy);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public L sw6(SerializableStringSupplier property, MatchStrategy matchStrategy, Predicate<String> ignoreStrategy) {
         return sw(classMapping6, property, queryAlias6, matchStrategy, ignoreStrategy);
@@ -238,22 +309,34 @@ public abstract class AbstractEntitySqlConditionGroupExpressionBase6<T, T2, T3, 
 
     // ****************************************************************************************************************
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public L nsw6(SerializableFunction<T6, String> name, String value, MatchStrategy matchStrategy) {
         return nsw(classMapping6, name, value, queryAlias6, matchStrategy, ignoreStrategy);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public L nsw6(SerializableFunction<T6, String> name, String value, MatchStrategy matchStrategy,
             Predicate<String> ignoreStrategy) {
         return nsw(classMapping6, name, value, queryAlias6, matchStrategy, ignoreStrategy);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public L nsw6(SerializableStringSupplier property, MatchStrategy matchStrategy) {
         return nsw(classMapping6, property, queryAlias6, matchStrategy, ignoreStrategy);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public L nsw6(SerializableStringSupplier property, MatchStrategy matchStrategy, Predicate<String> ignoreStrategy) {
         return nsw(classMapping6, property, queryAlias6, matchStrategy, ignoreStrategy);
@@ -261,22 +344,34 @@ public abstract class AbstractEntitySqlConditionGroupExpressionBase6<T, T2, T3, 
 
     // ****************************************************************************************************************
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public L ew6(SerializableFunction<T6, String> name, String value, MatchStrategy matchStrategy) {
         return ew(classMapping6, name, value, queryAlias6, matchStrategy, ignoreStrategy);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public L ew6(SerializableFunction<T6, String> name, String value, MatchStrategy matchStrategy,
             Predicate<String> ignoreStrategy) {
         return ew(classMapping6, name, value, queryAlias6, matchStrategy, ignoreStrategy);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public L ew6(SerializableStringSupplier property, MatchStrategy matchStrategy) {
         return ew(classMapping6, property, queryAlias6, matchStrategy, ignoreStrategy);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public L ew6(SerializableStringSupplier property, MatchStrategy matchStrategy, Predicate<String> ignoreStrategy) {
         return ew(classMapping6, property, queryAlias6, matchStrategy, ignoreStrategy);
@@ -284,22 +379,34 @@ public abstract class AbstractEntitySqlConditionGroupExpressionBase6<T, T2, T3, 
 
     // ****************************************************************************************************************
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public L new6(SerializableFunction<T6, String> name, String value, MatchStrategy matchStrategy) {
         return newv(classMapping6, name, value, queryAlias6, matchStrategy, ignoreStrategy);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public L new6(SerializableFunction<T6, String> name, String value, MatchStrategy matchStrategy,
             Predicate<String> ignoreStrategy) {
         return newv(classMapping6, name, value, queryAlias6, matchStrategy, ignoreStrategy);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public L new6(SerializableStringSupplier property, MatchStrategy matchStrategy) {
         return newv(classMapping6, property, queryAlias6, matchStrategy, ignoreStrategy);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public L new6(SerializableStringSupplier property, MatchStrategy matchStrategy, Predicate<String> ignoreStrategy) {
         return newv(classMapping6, property, queryAlias6, matchStrategy, ignoreStrategy);
@@ -307,22 +414,34 @@ public abstract class AbstractEntitySqlConditionGroupExpressionBase6<T, T2, T3, 
 
     // ****************************************************************************************************************
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public L co6(SerializableFunction<T6, String> name, String value, MatchStrategy matchStrategy) {
         return co(classMapping6, name, value, queryAlias6, matchStrategy, ignoreStrategy);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public L co6(SerializableFunction<T6, String> name, String value, MatchStrategy matchStrategy,
             Predicate<String> ignoreStrategy) {
         return co(classMapping6, name, value, queryAlias6, matchStrategy, ignoreStrategy);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public L co6(SerializableStringSupplier property, MatchStrategy matchStrategy) {
         return co(classMapping6, property, queryAlias6, matchStrategy, ignoreStrategy);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public L co6(SerializableStringSupplier property, MatchStrategy matchStrategy, Predicate<String> ignoreStrategy) {
         return co(classMapping6, property, queryAlias6, matchStrategy, ignoreStrategy);
@@ -330,22 +449,34 @@ public abstract class AbstractEntitySqlConditionGroupExpressionBase6<T, T2, T3, 
 
     // ****************************************************************************************************************
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public L nco6(SerializableFunction<T6, String> name, String value, MatchStrategy matchStrategy) {
         return nco(classMapping6, name, value, queryAlias6, matchStrategy, ignoreStrategy);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public L nco6(SerializableFunction<T6, String> name, String value, MatchStrategy matchStrategy,
             Predicate<String> ignoreStrategy) {
         return nco(classMapping6, name, value, queryAlias6, matchStrategy, ignoreStrategy);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public L nco6(SerializableStringSupplier property, MatchStrategy matchStrategy) {
         return nco(classMapping6, property, queryAlias6, matchStrategy, ignoreStrategy);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public L nco6(SerializableStringSupplier property, MatchStrategy matchStrategy, Predicate<String> ignoreStrategy) {
         return nco(classMapping6, property, queryAlias6, matchStrategy, ignoreStrategy);
@@ -353,62 +484,98 @@ public abstract class AbstractEntitySqlConditionGroupExpressionBase6<T, T2, T3, 
 
     // ****************************************************************************************************************
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public <N extends Number> L ge6(SerializableFunction<T6, N> name, N value) {
         return ge(classMapping6, name, value, queryAlias6, ignoreStrategy);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public <N extends Number> L ge6(SerializableFunction<T6, N> name, N value, Predicate<N> ignoreStrategy) {
         return ge(classMapping6, name, value, queryAlias6, ignoreStrategy);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public <D extends Date> L ge6(SerializableFunction<T6, D> name, D value) {
         return ge(classMapping6, name, value, queryAlias6, ignoreStrategy);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public <D extends Date> L ge6(SerializableFunction<T6, D> name, D value, Predicate<D> ignoreStrategy) {
         return ge(classMapping6, name, value, queryAlias6, ignoreStrategy);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public L ge6(SerializableFunction<T6, LocalTime> name, LocalTime value) {
         return ge(classMapping6, name, value, queryAlias6, ignoreStrategy);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public L ge6(SerializableFunction<T6, LocalTime> name, LocalTime value, Predicate<LocalTime> ignoreStrategy) {
         return ge(classMapping6, name, value, queryAlias6, ignoreStrategy);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public L ge6(SerializableFunction<T6, LocalDate> name, LocalDate value) {
         return ge(classMapping6, name, value, queryAlias6, ignoreStrategy);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public L ge6(SerializableFunction<T6, LocalDate> name, LocalDate value, Predicate<LocalDate> ignoreStrategy) {
         return ge(classMapping6, name, value, queryAlias6, ignoreStrategy);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public L ge6(SerializableFunction<T6, LocalDateTime> name, LocalDateTime value) {
         return ge(classMapping6, name, value, queryAlias6, ignoreStrategy);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public L ge6(SerializableFunction<T6, LocalDateTime> name, LocalDateTime value,
             Predicate<LocalDateTime> ignoreStrategy) {
         return ge(classMapping6, name, value, queryAlias6, ignoreStrategy);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public L ge6(SerializableFunction<T6, String> name, String value) {
         return ge(classMapping6, name, value, queryAlias6, ignoreStrategy);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public L ge6(SerializableFunction<T6, String> name, String value, Predicate<String> ignoreStrategy) {
         return ge(classMapping6, name, value, queryAlias6, ignoreStrategy);
@@ -426,7 +593,7 @@ public abstract class AbstractEntitySqlConditionGroupExpressionBase6<T, T2, T3, 
      * {@inheritDoc}
      */
     @Override
-    public L ge6(SerializableToIntFunction6<T6> name, int value, Predicate<Integer> ignoreStrategy) {
+    public L ge6(SerializableToIntFunction6<T6> name, int value, IntPredicate ignoreStrategy) {
         return ge(classMapping6, name, value, queryAlias6, ignoreStrategy);
     }
 
@@ -442,7 +609,7 @@ public abstract class AbstractEntitySqlConditionGroupExpressionBase6<T, T2, T3, 
      * {@inheritDoc}
      */
     @Override
-    public L ge6(SerializableToLongFunction6<T6> name, long value, Predicate<Long> ignoreStrategy) {
+    public L ge6(SerializableToLongFunction6<T6> name, long value, LongPredicate ignoreStrategy) {
         return ge(classMapping6, name, value, queryAlias6, ignoreStrategy);
     }
 
@@ -458,65 +625,101 @@ public abstract class AbstractEntitySqlConditionGroupExpressionBase6<T, T2, T3, 
      * {@inheritDoc}
      */
     @Override
-    public L ge6(SerializableToDoubleFunction6<T6> name, double value, Predicate<Double> ignoreStrategy) {
+    public L ge6(SerializableToDoubleFunction6<T6> name, double value, DoublePredicate ignoreStrategy) {
         return ge(classMapping6, name, value, queryAlias6, ignoreStrategy);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public <R extends Date> L ge6(SerializableDateSupplier<R> property) {
         return ge(classMapping6, property, queryAlias6, ignoreStrategy);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public <R extends Date> L ge6(SerializableDateSupplier<R> property, Predicate<R> ignoreStrategy) {
         return ge(classMapping6, property, queryAlias6, ignoreStrategy);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public <R extends Number> L ge6(SerializableNumberSupplier<R> property) {
         return ge(classMapping6, property, queryAlias6, ignoreStrategy);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public <R extends Number> L ge6(SerializableNumberSupplier<R> property, Predicate<R> ignoreStrategy) {
         return ge(classMapping6, property, queryAlias6, ignoreStrategy);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public L ge6(SerializableLocalDateSupplier property) {
         return ge(classMapping6, property, queryAlias6, ignoreStrategy);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public L ge6(SerializableLocalDateSupplier property, Predicate<LocalDate> ignoreStrategy) {
         return ge(classMapping6, property, queryAlias6, ignoreStrategy);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public L ge6(SerializableLocalTimeSupplier property) {
         return ge(classMapping6, property, queryAlias6, ignoreStrategy);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public L ge6(SerializableLocalTimeSupplier property, Predicate<LocalTime> ignoreStrategy) {
         return ge(classMapping6, property, queryAlias6, ignoreStrategy);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public L ge6(SerializableLocalDateTimeSupplier property) {
         return ge(classMapping6, property, queryAlias6, ignoreStrategy);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public L ge6(SerializableLocalDateTimeSupplier property, Predicate<LocalDateTime> ignoreStrategy) {
         return ge(classMapping6, property, queryAlias6, ignoreStrategy);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public L ge6(SerializableStringSupplier property) {
         return ge(classMapping6, property, queryAlias6, ignoreStrategy);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public L ge6(SerializableStringSupplier property, Predicate<String> ignoreStrategy) {
         return ge(classMapping6, property, queryAlias6, ignoreStrategy);
@@ -534,7 +737,7 @@ public abstract class AbstractEntitySqlConditionGroupExpressionBase6<T, T2, T3, 
      * {@inheritDoc}
      */
     @Override
-    public L ge6(SerializableIntSupplier property, Predicate<Integer> ignoreStrategy) {
+    public L ge6(SerializableIntSupplier property, IntPredicate ignoreStrategy) {
         return ge(classMapping6, property, queryAlias6, ignoreStrategy);
     }
 
@@ -550,7 +753,7 @@ public abstract class AbstractEntitySqlConditionGroupExpressionBase6<T, T2, T3, 
      * {@inheritDoc}
      */
     @Override
-    public L ge6(SerializableLongSupplier property, Predicate<Long> ignoreStrategy) {
+    public L ge6(SerializableLongSupplier property, LongPredicate ignoreStrategy) {
         return ge(classMapping6, property, queryAlias6, ignoreStrategy);
     }
 
@@ -566,68 +769,104 @@ public abstract class AbstractEntitySqlConditionGroupExpressionBase6<T, T2, T3, 
      * {@inheritDoc}
      */
     @Override
-    public L ge6(SerializableDoubleSupplier property, Predicate<Double> ignoreStrategy) {
+    public L ge6(SerializableDoubleSupplier property, DoublePredicate ignoreStrategy) {
         return ge(classMapping6, property, queryAlias6, ignoreStrategy);
     }
 
     // ****************************************************************************************************************
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public <N extends Number> L gt6(SerializableFunction<T6, N> name, N value) {
         return gt(classMapping6, name, value, queryAlias6, ignoreStrategy);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public <N extends Number> L gt6(SerializableFunction<T6, N> name, N value, Predicate<N> ignoreStrategy) {
         return gt(classMapping6, name, value, queryAlias6, ignoreStrategy);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public <D extends Date> L gt6(SerializableFunction<T6, D> name, D value) {
         return gt(classMapping6, name, value, queryAlias6, ignoreStrategy);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public <D extends Date> L gt6(SerializableFunction<T6, D> name, D value, Predicate<D> ignoreStrategy) {
         return gt(classMapping6, name, value, queryAlias6, ignoreStrategy);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public L gt6(SerializableFunction<T6, LocalTime> name, LocalTime value) {
         return gt(classMapping6, name, value, queryAlias6, ignoreStrategy);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public L gt6(SerializableFunction<T6, LocalTime> name, LocalTime value, Predicate<LocalTime> ignoreStrategy) {
         return gt(classMapping6, name, value, queryAlias6, ignoreStrategy);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public L gt6(SerializableFunction<T6, LocalDate> name, LocalDate value) {
         return gt(classMapping6, name, value, queryAlias6, ignoreStrategy);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public L gt6(SerializableFunction<T6, LocalDate> name, LocalDate value, Predicate<LocalDate> ignoreStrategy) {
         return gt(classMapping6, name, value, queryAlias6, ignoreStrategy);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public L gt6(SerializableFunction<T6, LocalDateTime> name, LocalDateTime value) {
         return gt(classMapping6, name, value, queryAlias6, ignoreStrategy);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public L gt6(SerializableFunction<T6, LocalDateTime> name, LocalDateTime value,
             Predicate<LocalDateTime> ignoreStrategy) {
         return gt(classMapping6, name, value, queryAlias6, ignoreStrategy);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public L gt6(SerializableFunction<T6, String> name, String value) {
         return gt(classMapping6, name, value, queryAlias6, ignoreStrategy);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public L gt6(SerializableFunction<T6, String> name, String value, Predicate<String> ignoreStrategy) {
         return gt(classMapping6, name, value, queryAlias6, ignoreStrategy);
@@ -645,7 +884,7 @@ public abstract class AbstractEntitySqlConditionGroupExpressionBase6<T, T2, T3, 
      * {@inheritDoc}
      */
     @Override
-    public L gt6(SerializableToIntFunction6<T6> name, int value, Predicate<Integer> ignoreStrategy) {
+    public L gt6(SerializableToIntFunction6<T6> name, int value, IntPredicate ignoreStrategy) {
         return gt(classMapping6, name, value, queryAlias6, ignoreStrategy);
     }
 
@@ -661,7 +900,7 @@ public abstract class AbstractEntitySqlConditionGroupExpressionBase6<T, T2, T3, 
      * {@inheritDoc}
      */
     @Override
-    public L gt6(SerializableToLongFunction6<T6> name, long value, Predicate<Long> ignoreStrategy) {
+    public L gt6(SerializableToLongFunction6<T6> name, long value, LongPredicate ignoreStrategy) {
         return gt(classMapping6, name, value, queryAlias6, ignoreStrategy);
     }
 
@@ -677,65 +916,101 @@ public abstract class AbstractEntitySqlConditionGroupExpressionBase6<T, T2, T3, 
      * {@inheritDoc}
      */
     @Override
-    public L gt6(SerializableToDoubleFunction6<T6> name, double value, Predicate<Double> ignoreStrategy) {
+    public L gt6(SerializableToDoubleFunction6<T6> name, double value, DoublePredicate ignoreStrategy) {
         return gt(classMapping6, name, value, queryAlias6, ignoreStrategy);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public <R extends Number> L gt6(SerializableNumberSupplier<R> property) {
         return gt(classMapping6, property, queryAlias6, ignoreStrategy);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public <R extends Number> L gt6(SerializableNumberSupplier<R> property, Predicate<R> ignoreStrategy) {
         return gt(classMapping6, property, queryAlias6, ignoreStrategy);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public <R extends Date> L gt6(SerializableDateSupplier<R> property) {
         return gt(classMapping6, property, queryAlias6, ignoreStrategy);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public <R extends Date> L gt6(SerializableDateSupplier<R> property, Predicate<R> ignoreStrategy) {
         return gt(classMapping6, property, queryAlias6, ignoreStrategy);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public L gt6(SerializableLocalDateSupplier property) {
         return gt(classMapping6, property, queryAlias6, ignoreStrategy);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public L gt6(SerializableLocalDateSupplier property, Predicate<LocalDate> ignoreStrategy) {
         return gt(classMapping6, property, queryAlias6, ignoreStrategy);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public L gt6(SerializableLocalTimeSupplier property) {
         return gt(classMapping6, property, queryAlias6, ignoreStrategy);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public L gt6(SerializableLocalTimeSupplier property, Predicate<LocalTime> ignoreStrategy) {
         return gt(classMapping6, property, queryAlias6, ignoreStrategy);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public L gt6(SerializableLocalDateTimeSupplier property) {
         return gt(classMapping6, property, queryAlias6, ignoreStrategy);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public L gt6(SerializableLocalDateTimeSupplier property, Predicate<LocalDateTime> ignoreStrategy) {
         return gt(classMapping6, property, queryAlias6, ignoreStrategy);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public L gt6(SerializableStringSupplier property) {
         return gt(classMapping6, property, queryAlias6, ignoreStrategy);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public L gt6(SerializableStringSupplier property, Predicate<String> ignoreStrategy) {
         return gt(classMapping6, property, queryAlias6, ignoreStrategy);
@@ -753,7 +1028,7 @@ public abstract class AbstractEntitySqlConditionGroupExpressionBase6<T, T2, T3, 
      * {@inheritDoc}
      */
     @Override
-    public L gt6(SerializableIntSupplier property, Predicate<Integer> ignoreStrategy) {
+    public L gt6(SerializableIntSupplier property, IntPredicate ignoreStrategy) {
         return gt(classMapping6, property, queryAlias6, ignoreStrategy);
     }
 
@@ -769,7 +1044,7 @@ public abstract class AbstractEntitySqlConditionGroupExpressionBase6<T, T2, T3, 
      * {@inheritDoc}
      */
     @Override
-    public L gt6(SerializableLongSupplier property, Predicate<Long> ignoreStrategy) {
+    public L gt6(SerializableLongSupplier property, LongPredicate ignoreStrategy) {
         return gt(classMapping6, property, queryAlias6, ignoreStrategy);
     }
 
@@ -785,128 +1060,200 @@ public abstract class AbstractEntitySqlConditionGroupExpressionBase6<T, T2, T3, 
      * {@inheritDoc}
      */
     @Override
-    public L gt6(SerializableDoubleSupplier property, Predicate<Double> ignoreStrategy) {
+    public L gt6(SerializableDoubleSupplier property, DoublePredicate ignoreStrategy) {
         return gt(classMapping6, property, queryAlias6, ignoreStrategy);
     }
 
     // ****************************************************************************************************************
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public <N extends Number> L le6(SerializableFunction<T6, N> name, N value) {
         return le(classMapping6, name, value, queryAlias6, ignoreStrategy);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public <N extends Number> L le6(SerializableFunction<T6, N> name, N value, Predicate<N> ignoreStrategy) {
         return le(classMapping6, name, value, queryAlias6, ignoreStrategy);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public <D extends Date> L le6(SerializableFunction<T6, D> name, D value) {
         return le(classMapping6, name, value, queryAlias6, ignoreStrategy);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public <D extends Date> L le6(SerializableFunction<T6, D> name, D value, Predicate<D> ignoreStrategy) {
         return le(classMapping6, name, value, queryAlias6, ignoreStrategy);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public L le6(SerializableFunction<T6, LocalTime> name, LocalTime value) {
         return le(classMapping6, name, value, queryAlias6, ignoreStrategy);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public L le6(SerializableFunction<T6, LocalTime> name, LocalTime value, Predicate<LocalTime> ignoreStrategy) {
         return le(classMapping6, name, value, queryAlias6, ignoreStrategy);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public L le6(SerializableFunction<T6, LocalDate> name, LocalDate value) {
         return le(classMapping6, name, value, queryAlias6, ignoreStrategy);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public L le6(SerializableFunction<T6, LocalDate> name, LocalDate value, Predicate<LocalDate> ignoreStrategy) {
         return le(classMapping6, name, value, queryAlias6, ignoreStrategy);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public L le6(SerializableFunction<T6, LocalDateTime> name, LocalDateTime value) {
         return le(classMapping6, name, value, queryAlias6, ignoreStrategy);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public L le6(SerializableFunction<T6, LocalDateTime> name, LocalDateTime value,
             Predicate<LocalDateTime> ignoreStrategy) {
         return le(classMapping6, name, value, queryAlias6, ignoreStrategy);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public L le6(SerializableFunction<T6, String> name, String value) {
         return le(classMapping6, name, value, queryAlias6, ignoreStrategy);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public L le6(SerializableFunction<T6, String> name, String value, Predicate<String> ignoreStrategy) {
         return le(classMapping6, name, value, queryAlias6, ignoreStrategy);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public <R extends Date> L le6(SerializableDateSupplier<R> property) {
         return le(classMapping6, property, queryAlias6, ignoreStrategy);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public <R extends Date> L le6(SerializableDateSupplier<R> property, Predicate<R> ignoreStrategy) {
         return le(classMapping6, property, queryAlias6, ignoreStrategy);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public <R extends Number> L le6(SerializableNumberSupplier<R> property) {
         return le(classMapping6, property, queryAlias6, ignoreStrategy);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public <R extends Number> L le6(SerializableNumberSupplier<R> property, Predicate<R> ignoreStrategy) {
         return le(classMapping6, property, queryAlias6, ignoreStrategy);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public L le6(SerializableLocalDateSupplier property) {
         return le(classMapping6, property, queryAlias6, ignoreStrategy);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public L le6(SerializableLocalDateSupplier property, Predicate<LocalDate> ignoreStrategy) {
         return le(classMapping6, property, queryAlias6, ignoreStrategy);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public L le6(SerializableLocalTimeSupplier property) {
         return le(classMapping6, property, queryAlias6, ignoreStrategy);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public L le6(SerializableLocalTimeSupplier property, Predicate<LocalTime> ignoreStrategy) {
         return le(classMapping6, property, queryAlias6, ignoreStrategy);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public L le6(SerializableLocalDateTimeSupplier property) {
         return le(classMapping6, property, queryAlias6, ignoreStrategy);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public L le6(SerializableLocalDateTimeSupplier property, Predicate<LocalDateTime> ignoreStrategy) {
         return le(classMapping6, property, queryAlias6, ignoreStrategy);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public L le6(SerializableStringSupplier property) {
         return le(classMapping6, property, queryAlias6, ignoreStrategy);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public L le6(SerializableStringSupplier property, Predicate<String> ignoreStrategy) {
         return le(classMapping6, property, queryAlias6, ignoreStrategy);
@@ -924,7 +1271,7 @@ public abstract class AbstractEntitySqlConditionGroupExpressionBase6<T, T2, T3, 
      * {@inheritDoc}
      */
     @Override
-    public L le6(SerializableToIntFunction6<T6> name, int value, Predicate<Integer> ignoreStrategy) {
+    public L le6(SerializableToIntFunction6<T6> name, int value, IntPredicate ignoreStrategy) {
         return le(classMapping6, name, value, queryAlias6, ignoreStrategy);
     }
 
@@ -940,7 +1287,7 @@ public abstract class AbstractEntitySqlConditionGroupExpressionBase6<T, T2, T3, 
      * {@inheritDoc}
      */
     @Override
-    public L le6(SerializableToLongFunction6<T6> name, long value, Predicate<Long> ignoreStrategy) {
+    public L le6(SerializableToLongFunction6<T6> name, long value, LongPredicate ignoreStrategy) {
         return le(classMapping6, name, value, queryAlias6, ignoreStrategy);
     }
 
@@ -956,7 +1303,7 @@ public abstract class AbstractEntitySqlConditionGroupExpressionBase6<T, T2, T3, 
      * {@inheritDoc}
      */
     @Override
-    public L le6(SerializableToDoubleFunction6<T6> name, double value, Predicate<Double> ignoreStrategy) {
+    public L le6(SerializableToDoubleFunction6<T6> name, double value, DoublePredicate ignoreStrategy) {
         return le(classMapping6, name, value, queryAlias6, ignoreStrategy);
     }
 
@@ -972,7 +1319,7 @@ public abstract class AbstractEntitySqlConditionGroupExpressionBase6<T, T2, T3, 
      * {@inheritDoc}
      */
     @Override
-    public L le6(SerializableIntSupplier property, Predicate<Integer> ignoreStrategy) {
+    public L le6(SerializableIntSupplier property, IntPredicate ignoreStrategy) {
         return le(classMapping6, property, queryAlias6, ignoreStrategy);
     }
 
@@ -988,7 +1335,7 @@ public abstract class AbstractEntitySqlConditionGroupExpressionBase6<T, T2, T3, 
      * {@inheritDoc}
      */
     @Override
-    public L le6(SerializableLongSupplier property, Predicate<Long> ignoreStrategy) {
+    public L le6(SerializableLongSupplier property, LongPredicate ignoreStrategy) {
         return le(classMapping6, property, queryAlias6, ignoreStrategy);
     }
 
@@ -1004,128 +1351,200 @@ public abstract class AbstractEntitySqlConditionGroupExpressionBase6<T, T2, T3, 
      * {@inheritDoc}
      */
     @Override
-    public L le6(SerializableDoubleSupplier property, Predicate<Double> ignoreStrategy) {
+    public L le6(SerializableDoubleSupplier property, DoublePredicate ignoreStrategy) {
         return le(classMapping6, property, queryAlias6, ignoreStrategy);
     }
 
     // ****************************************************************************************************************
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public <N extends Number> L lt6(SerializableFunction<T6, N> name, N value) {
         return lt(classMapping6, name, value, queryAlias6, ignoreStrategy);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public <N extends Number> L lt6(SerializableFunction<T6, N> name, N value, Predicate<N> ignoreStrategy) {
         return lt(classMapping6, name, value, queryAlias6, ignoreStrategy);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public <D extends Date> L lt6(SerializableFunction<T6, D> name, D value) {
         return lt(classMapping6, name, value, queryAlias6, ignoreStrategy);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public <D extends Date> L lt6(SerializableFunction<T6, D> name, D value, Predicate<D> ignoreStrategy) {
         return lt(classMapping6, name, value, queryAlias6, ignoreStrategy);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public L lt6(SerializableFunction<T6, LocalTime> name, LocalTime value) {
         return lt(classMapping6, name, value, queryAlias6, ignoreStrategy);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public L lt6(SerializableFunction<T6, LocalTime> name, LocalTime value, Predicate<LocalTime> ignoreStrategy) {
         return lt(classMapping6, name, value, queryAlias6, ignoreStrategy);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public L lt6(SerializableFunction<T6, LocalDate> name, LocalDate value) {
         return lt(classMapping6, name, value, queryAlias6, ignoreStrategy);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public L lt6(SerializableFunction<T6, LocalDate> name, LocalDate value, Predicate<LocalDate> ignoreStrategy) {
         return lt(classMapping6, name, value, queryAlias6, ignoreStrategy);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public L lt6(SerializableFunction<T6, LocalDateTime> name, LocalDateTime value) {
         return lt(classMapping6, name, value, queryAlias6, ignoreStrategy);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public L lt6(SerializableFunction<T6, LocalDateTime> name, LocalDateTime value,
             Predicate<LocalDateTime> ignoreStrategy) {
         return lt(classMapping6, name, value, queryAlias6, ignoreStrategy);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public L lt6(SerializableFunction<T6, String> name, String value) {
         return lt(classMapping6, name, value, queryAlias6, ignoreStrategy);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public L lt6(SerializableFunction<T6, String> name, String value, Predicate<String> ignoreStrategy) {
         return lt(classMapping6, name, value, queryAlias6, ignoreStrategy);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public <R extends Number> L lt6(SerializableNumberSupplier<R> property) {
         return lt(classMapping6, property, queryAlias6, ignoreStrategy);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public <R extends Number> L lt6(SerializableNumberSupplier<R> property, Predicate<R> ignoreStrategy) {
         return lt(classMapping6, property, queryAlias6, ignoreStrategy);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public <R extends Date> L lt6(SerializableDateSupplier<R> property) {
         return lt(classMapping6, property, queryAlias6, ignoreStrategy);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public <R extends Date> L lt6(SerializableDateSupplier<R> property, Predicate<R> ignoreStrategy) {
         return lt(classMapping6, property, queryAlias6, ignoreStrategy);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public L lt6(SerializableLocalDateSupplier property) {
         return lt(classMapping6, property, queryAlias6, ignoreStrategy);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public L lt6(SerializableLocalDateSupplier property, Predicate<LocalDate> ignoreStrategy) {
         return lt(classMapping6, property, queryAlias6, ignoreStrategy);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public L lt6(SerializableLocalTimeSupplier property) {
         return lt(classMapping6, property, queryAlias6, ignoreStrategy);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public L lt6(SerializableLocalTimeSupplier property, Predicate<LocalTime> ignoreStrategy) {
         return lt(classMapping6, property, queryAlias6, ignoreStrategy);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public L lt6(SerializableLocalDateTimeSupplier property) {
         return lt(classMapping6, property, queryAlias6, ignoreStrategy);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public L lt6(SerializableLocalDateTimeSupplier property, Predicate<LocalDateTime> ignoreStrategy) {
         return lt(classMapping6, property, queryAlias6, ignoreStrategy);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public L lt6(SerializableStringSupplier property) {
         return lt(classMapping6, property, queryAlias6, ignoreStrategy);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public L lt6(SerializableStringSupplier property, Predicate<String> ignoreStrategy) {
         return lt(classMapping6, property, queryAlias6, ignoreStrategy);
@@ -1143,7 +1562,7 @@ public abstract class AbstractEntitySqlConditionGroupExpressionBase6<T, T2, T3, 
      * {@inheritDoc}
      */
     @Override
-    public L lt6(SerializableToIntFunction6<T6> name, int value, Predicate<Integer> ignoreStrategy) {
+    public L lt6(SerializableToIntFunction6<T6> name, int value, IntPredicate ignoreStrategy) {
         return lt(classMapping6, name, value, queryAlias6, ignoreStrategy);
     }
 
@@ -1159,7 +1578,7 @@ public abstract class AbstractEntitySqlConditionGroupExpressionBase6<T, T2, T3, 
      * {@inheritDoc}
      */
     @Override
-    public L lt6(SerializableToLongFunction6<T6> name, long value, Predicate<Long> ignoreStrategy) {
+    public L lt6(SerializableToLongFunction6<T6> name, long value, LongPredicate ignoreStrategy) {
         return lt(classMapping6, name, value, queryAlias6, ignoreStrategy);
     }
 
@@ -1175,7 +1594,7 @@ public abstract class AbstractEntitySqlConditionGroupExpressionBase6<T, T2, T3, 
      * {@inheritDoc}
      */
     @Override
-    public L lt6(SerializableToDoubleFunction6<T6> name, double value, Predicate<Double> ignoreStrategy) {
+    public L lt6(SerializableToDoubleFunction6<T6> name, double value, DoublePredicate ignoreStrategy) {
         return lt(classMapping6, name, value, queryAlias6, ignoreStrategy);
     }
 
@@ -1191,7 +1610,7 @@ public abstract class AbstractEntitySqlConditionGroupExpressionBase6<T, T2, T3, 
      * {@inheritDoc}
      */
     @Override
-    public L lt6(SerializableIntSupplier property, Predicate<Integer> ignoreStrategy) {
+    public L lt6(SerializableIntSupplier property, IntPredicate ignoreStrategy) {
         return lt(classMapping6, property, queryAlias6, ignoreStrategy);
     }
 
@@ -1207,7 +1626,7 @@ public abstract class AbstractEntitySqlConditionGroupExpressionBase6<T, T2, T3, 
      * {@inheritDoc}
      */
     @Override
-    public L lt6(SerializableLongSupplier property, Predicate<Long> ignoreStrategy) {
+    public L lt6(SerializableLongSupplier property, LongPredicate ignoreStrategy) {
         return lt(classMapping6, property, queryAlias6, ignoreStrategy);
     }
 
@@ -1223,47 +1642,71 @@ public abstract class AbstractEntitySqlConditionGroupExpressionBase6<T, T2, T3, 
      * {@inheritDoc}
      */
     @Override
-    public L lt6(SerializableDoubleSupplier property, Predicate<Double> ignoreStrategy) {
+    public L lt6(SerializableDoubleSupplier property, DoublePredicate ignoreStrategy) {
         return lt(classMapping6, property, queryAlias6, ignoreStrategy);
     }
 
     // ****************************************************************************************************************
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public <R> L in6(SerializableFunction<T6, R> name, R value) {
         return in(classMapping6, name, value, queryAlias6, ignoreStrategy);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public <R> L in6(SerializableFunction<T6, R> name, R value, Predicate<R> ignoreStrategy) {
         return in(classMapping6, name, value, queryAlias6, ignoreStrategy);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public <R> L in6(SerializableFunction<T6, R> name, @SuppressWarnings("unchecked") R... value) {
         return in(classMapping6, name, value, queryAlias6, ignoreStrategy);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public <R> L in6(SerializableFunction<T6, R> name, R[] value, Predicate<R[]> ignoreStrategy) {
         return in(classMapping6, name, value, queryAlias6, ignoreStrategy);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public <R> L in6(SerializableFunction<T6, R> name, Collection<R> value) {
         return in(classMapping6, name, value, queryAlias6, ignoreStrategy);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public <R> L in6(SerializableFunction<T6, R> name, Collection<R> value, Predicate<Collection<R>> ignoreStrategy) {
         return in(classMapping6, name, value, queryAlias6, ignoreStrategy);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public <R> L in6(SerializableSupplier<R> property) {
         return in(classMapping6, property, queryAlias6, ignoreStrategy);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public <R> L in6(SerializableSupplier<R> property, Predicate<R> ignoreStrategy) {
         return in(classMapping6, property, queryAlias6, ignoreStrategy);
@@ -1281,7 +1724,7 @@ public abstract class AbstractEntitySqlConditionGroupExpressionBase6<T, T2, T3, 
      * {@inheritDoc}
      */
     @Override
-    public L in6(SerializableToIntFunction6<T6> name, int value, Predicate<Integer> ignoreStrategy) {
+    public L in6(SerializableToIntFunction6<T6> name, int value, IntPredicate ignoreStrategy) {
         return in(classMapping6, name, value, queryAlias6, ignoreStrategy);
     }
 
@@ -1297,7 +1740,39 @@ public abstract class AbstractEntitySqlConditionGroupExpressionBase6<T, T2, T3, 
      * {@inheritDoc}
      */
     @Override
-    public L in6(SerializableToLongFunction6<T6> name, long value, Predicate<Long> ignoreStrategy) {
+    public L in6(SerializableToLongFunction6<T6> name, long value, LongPredicate ignoreStrategy) {
+        return in(classMapping6, name, value, queryAlias6, ignoreStrategy);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public L in6(SerializableToDoubleFunction<T6> name, double value) {
+        return in(classMapping6, name, value, queryAlias6, ignoreStrategy);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public L in6(SerializableToDoubleFunction<T6> name, double value, DoublePredicate ignoreStrategy) {
+        return in(classMapping6, name, value, queryAlias6, ignoreStrategy);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public L in6(SerializableToDoubleFunction6<T6> name, double... value) {
+        return in(classMapping6, name, value, queryAlias6, ignoreStrategy);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public L in6(SerializableToDoubleFunction6<T6> name, double[] value, Predicate<double[]> ignoreStrategy) {
         return in(classMapping6, name, value, queryAlias6, ignoreStrategy);
     }
 
@@ -1337,7 +1812,7 @@ public abstract class AbstractEntitySqlConditionGroupExpressionBase6<T, T2, T3, 
      * {@inheritDoc}
      */
     @Override
-    public <R> L in6(SerializableIntSupplier property) {
+    public L in6(SerializableIntSupplier property) {
         return in(classMapping6, property, queryAlias6, ignoreStrategy);
     }
 
@@ -1345,7 +1820,7 @@ public abstract class AbstractEntitySqlConditionGroupExpressionBase6<T, T2, T3, 
      * {@inheritDoc}
      */
     @Override
-    public <R> L in6(SerializableIntSupplier property, Predicate<Integer> ignoreStrategy) {
+    public L in6(SerializableIntSupplier property, IntPredicate ignoreStrategy) {
         return in(classMapping6, property, queryAlias6, ignoreStrategy);
     }
 
@@ -1353,7 +1828,7 @@ public abstract class AbstractEntitySqlConditionGroupExpressionBase6<T, T2, T3, 
      * {@inheritDoc}
      */
     @Override
-    public <R> L in6(SerializableLongSupplier property) {
+    public L in6(SerializableLongSupplier property) {
         return in(classMapping6, property, queryAlias6, ignoreStrategy);
     }
 
@@ -1361,47 +1836,87 @@ public abstract class AbstractEntitySqlConditionGroupExpressionBase6<T, T2, T3, 
      * {@inheritDoc}
      */
     @Override
-    public <R> L in6(SerializableLongSupplier property, Predicate<Long> ignoreStrategy) {
+    public L in6(SerializableLongSupplier property, LongPredicate ignoreStrategy) {
+        return in(classMapping6, property, queryAlias6, ignoreStrategy);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public L in6(SerializableDoubleSupplier property) {
+        return in(classMapping6, property, queryAlias6, ignoreStrategy);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public L in6(SerializableDoubleSupplier property, DoublePredicate ignoreStrategy) {
         return in(classMapping6, property, queryAlias6, ignoreStrategy);
     }
 
     // ****************************************************************************************************************
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public <R> L ni6(SerializableFunction<T6, R> name, R value) {
         return ni(classMapping6, name, value, queryAlias6, ignoreStrategy);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public <R> L ni6(SerializableFunction<T6, R> name, R value, Predicate<R> ignoreStrategy) {
         return ni(classMapping6, name, value, queryAlias6, ignoreStrategy);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public <R> L ni6(SerializableFunction<T6, R> name, @SuppressWarnings("unchecked") R... value) {
         return ni(classMapping6, name, value, queryAlias6, ignoreStrategy);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public <R> L ni6(SerializableFunction<T6, R> name, R[] value, Predicate<R[]> ignoreStrategy) {
         return ni(classMapping6, name, value, queryAlias6, ignoreStrategy);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public <R> L ni6(SerializableFunction<T6, R> name, Collection<R> value) {
         return ni(classMapping6, name, value, queryAlias6, ignoreStrategy);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public <R> L ni6(SerializableFunction<T6, R> name, Collection<R> value, Predicate<Collection<R>> ignoreStrategy) {
         return ni(classMapping6, name, value, queryAlias6, ignoreStrategy);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public <R> L ni6(SerializableSupplier<R> property) {
         return ni(classMapping6, property, queryAlias6, ignoreStrategy);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public <R> L ni6(SerializableSupplier<R> property, Predicate<R> ignoreStrategy) {
         return ni(classMapping6, property, queryAlias6, ignoreStrategy);
@@ -1419,7 +1934,7 @@ public abstract class AbstractEntitySqlConditionGroupExpressionBase6<T, T2, T3, 
      * {@inheritDoc}
      */
     @Override
-    public L ni6(SerializableToIntFunction6<T6> name, int value, Predicate<Integer> ignoreStrategy) {
+    public L ni6(SerializableToIntFunction6<T6> name, int value, IntPredicate ignoreStrategy) {
         return ni(classMapping6, name, value, queryAlias6, ignoreStrategy);
     }
 
@@ -1435,7 +1950,39 @@ public abstract class AbstractEntitySqlConditionGroupExpressionBase6<T, T2, T3, 
      * {@inheritDoc}
      */
     @Override
-    public L ni6(SerializableToLongFunction6<T6> name, long value, Predicate<Long> ignoreStrategy) {
+    public L ni6(SerializableToLongFunction6<T6> name, long value, LongPredicate ignoreStrategy) {
+        return ni(classMapping6, name, value, queryAlias6, ignoreStrategy);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public L ni6(SerializableToDoubleFunction<T6> name, double value) {
+        return ni(classMapping6, name, value, queryAlias6, ignoreStrategy);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public L ni6(SerializableToDoubleFunction<T6> name, double value, DoublePredicate ignoreStrategy) {
+        return ni(classMapping6, name, value, queryAlias6, ignoreStrategy);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public L ni6(SerializableToDoubleFunction6<T6> name, double... value) {
+        return ni(classMapping6, name, value, queryAlias6, ignoreStrategy);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public L ni6(SerializableToDoubleFunction6<T6> name, double[] value, Predicate<double[]> ignoreStrategy) {
         return ni(classMapping6, name, value, queryAlias6, ignoreStrategy);
     }
 
@@ -1475,7 +2022,7 @@ public abstract class AbstractEntitySqlConditionGroupExpressionBase6<T, T2, T3, 
      * {@inheritDoc}
      */
     @Override
-    public <R> L ni6(SerializableIntSupplier property) {
+    public L ni6(SerializableIntSupplier property) {
         return ni(classMapping6, property, queryAlias6, ignoreStrategy);
     }
 
@@ -1483,7 +2030,7 @@ public abstract class AbstractEntitySqlConditionGroupExpressionBase6<T, T2, T3, 
      * {@inheritDoc}
      */
     @Override
-    public <R> L ni6(SerializableIntSupplier property, Predicate<Integer> ignoreStrategy) {
+    public L ni6(SerializableIntSupplier property, IntPredicate ignoreStrategy) {
         return ni(classMapping6, property, queryAlias6, ignoreStrategy);
     }
 
@@ -1491,7 +2038,7 @@ public abstract class AbstractEntitySqlConditionGroupExpressionBase6<T, T2, T3, 
      * {@inheritDoc}
      */
     @Override
-    public <R> L ni6(SerializableLongSupplier property) {
+    public L ni6(SerializableLongSupplier property) {
         return ni(classMapping6, property, queryAlias6, ignoreStrategy);
     }
 
@@ -1499,12 +2046,31 @@ public abstract class AbstractEntitySqlConditionGroupExpressionBase6<T, T2, T3, 
      * {@inheritDoc}
      */
     @Override
-    public <R> L ni6(SerializableLongSupplier property, Predicate<Long> ignoreStrategy) {
+    public L ni6(SerializableLongSupplier property, LongPredicate ignoreStrategy) {
+        return ni(classMapping6, property, queryAlias6, ignoreStrategy);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public L ni6(SerializableDoubleSupplier property) {
+        return ni(classMapping6, property, queryAlias6, ignoreStrategy);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public L ni6(SerializableDoubleSupplier property, DoublePredicate ignoreStrategy) {
         return ni(classMapping6, property, queryAlias6, ignoreStrategy);
     }
 
     // ****************************************************************************************************************
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public <R> L inn6(SerializableFunction<T6, R> name, Boolean value) {
         return inn(classMapping6, name, value, queryAlias6);
@@ -1864,7 +2430,7 @@ public abstract class AbstractEntitySqlConditionGroupExpressionBase6<T, T2, T3, 
      * {@inheritDoc}
      */
     @Override
-    public L property(SixArgusFunction<EntityPropertyFunction<T, C, L>, EntityPropertyFunction<T2, C, L>,
+    public L property(SixArgusFunction<EntityPropertyFunction<T1, C, L>, EntityPropertyFunction<T2, C, L>,
             EntityPropertyFunction<T3, C, L>, EntityPropertyFunction<T4, C, L>, EntityPropertyFunction<T5, C, L>,
             EntityPropertyFunction<T6, C, L>, L> entitiesPropertyFunction) {
         return entitiesPropertyFunction.apply(new EntityPropertyFunctionImpl<>(0, this, factory),

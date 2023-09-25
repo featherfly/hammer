@@ -360,7 +360,7 @@ public class EntityStringPropertyExpressionImpl<E, C extends ConditionExpression
      */
     @Override
     public L ni(String value) {
-        return expression.nin0(index, getPropertyMapping(value), value, expression.getIgnoreStrategy());
+        return expression.ni0(index, getPropertyMapping(value), value, expression.getIgnoreStrategy());
     }
 
     /**
@@ -368,7 +368,7 @@ public class EntityStringPropertyExpressionImpl<E, C extends ConditionExpression
      */
     @Override
     public L ni(String value, IgnoreStrategy ignoreStrategy) {
-        return expression.nin0(index, getPropertyMapping(value), value, ignoreStrategy);
+        return expression.ni0(index, getPropertyMapping(value), value, ignoreStrategy);
     }
 
     /**
@@ -376,7 +376,7 @@ public class EntityStringPropertyExpressionImpl<E, C extends ConditionExpression
      */
     @Override
     public L ni(String value, Predicate<String> ignoreStrategy) {
-        return expression.nin0(index, getPropertyMapping(value), value, ignoreStrategy);
+        return expression.ni0(index, getPropertyMapping(value), value, ignoreStrategy);
     }
 
     /**
@@ -384,7 +384,7 @@ public class EntityStringPropertyExpressionImpl<E, C extends ConditionExpression
      */
     @Override
     public L ni(String[] value) {
-        return expression.nin0(index, getPropertyMapping(value), value, expression.getIgnoreStrategy());
+        return expression.ni0(index, getPropertyMapping(value), value, expression.getIgnoreStrategy());
     }
 
     /**
@@ -392,7 +392,7 @@ public class EntityStringPropertyExpressionImpl<E, C extends ConditionExpression
      */
     @Override
     public L ni(String[] value, IgnoreStrategy ignoreStrategy) {
-        return expression.nin0(index, getPropertyMapping(value), value, ignoreStrategy);
+        return expression.ni0(index, getPropertyMapping(value), value, ignoreStrategy);
     }
 
     /**
@@ -400,7 +400,7 @@ public class EntityStringPropertyExpressionImpl<E, C extends ConditionExpression
      */
     @Override
     public L ni(String[] value, Predicate<String[]> ignoreStrategy) {
-        return expression.nin0(index, getPropertyMapping(value), value, ignoreStrategy);
+        return expression.ni0(index, getPropertyMapping(value), value, ignoreStrategy);
     }
 
     /**

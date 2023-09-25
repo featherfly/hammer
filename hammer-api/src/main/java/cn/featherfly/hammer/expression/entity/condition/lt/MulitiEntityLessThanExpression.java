@@ -5,6 +5,9 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.Date;
+import java.util.function.DoublePredicate;
+import java.util.function.IntPredicate;
+import java.util.function.LongPredicate;
 import java.util.function.Predicate;
 
 import cn.featherfly.common.function.serializable.SerializableDateSupplier;
@@ -55,7 +58,7 @@ public interface MulitiEntityLessThanExpression<C extends ConditionExpression, L
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
-    <E> L lt(int index, SerializableToIntFunction<E> name, int value, Predicate<Integer> ignoreStrategy);
+    <E> L lt(int index, SerializableToIntFunction<E> name, int value, IntPredicate ignoreStrategy);
 
     /**
      * less than. 小于.
@@ -78,7 +81,7 @@ public interface MulitiEntityLessThanExpression<C extends ConditionExpression, L
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
-    <E> L lt(int index, SerializableToLongFunction<E> name, long value, Predicate<Long> ignoreStrategy);
+    <E> L lt(int index, SerializableToLongFunction<E> name, long value, LongPredicate ignoreStrategy);
 
     /**
      * less than. 小于.
@@ -101,7 +104,7 @@ public interface MulitiEntityLessThanExpression<C extends ConditionExpression, L
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
-    <E> L lt(int index, SerializableToDoubleFunction<E> name, double value, Predicate<Double> ignoreStrategy);
+    <E> L lt(int index, SerializableToDoubleFunction<E> name, double value, DoublePredicate ignoreStrategy);
 
     /**
      * less than. 小于.
@@ -263,7 +266,7 @@ public interface MulitiEntityLessThanExpression<C extends ConditionExpression, L
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
-    L lt(int index, SerializableIntSupplier property, Predicate<Integer> ignoreStrategy);
+    L lt(int index, SerializableIntSupplier property, IntPredicate ignoreStrategy);
 
     /**
      * less than. 小于.
@@ -282,7 +285,7 @@ public interface MulitiEntityLessThanExpression<C extends ConditionExpression, L
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
-    L lt(int index, SerializableLongSupplier property, Predicate<Long> ignoreStrategy);
+    L lt(int index, SerializableLongSupplier property, LongPredicate ignoreStrategy);
 
     /**
      * less than. 小于.
@@ -301,7 +304,7 @@ public interface MulitiEntityLessThanExpression<C extends ConditionExpression, L
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
-    L lt(int index, SerializableDoubleSupplier property, Predicate<Double> ignoreStrategy);
+    L lt(int index, SerializableDoubleSupplier property, DoublePredicate ignoreStrategy);
 
     /**
      * less than. 小于.

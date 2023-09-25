@@ -2,12 +2,18 @@
 package cn.featherfly.hammer.expression.entity.condition.in;
 
 import java.util.Collection;
+import java.util.function.DoublePredicate;
+import java.util.function.IntPredicate;
+import java.util.function.LongPredicate;
 import java.util.function.Predicate;
 
+import cn.featherfly.common.function.serializable.SerializableDoubleSupplier;
 import cn.featherfly.common.function.serializable.SerializableFunction;
 import cn.featherfly.common.function.serializable.SerializableIntSupplier;
 import cn.featherfly.common.function.serializable.SerializableLongSupplier;
 import cn.featherfly.common.function.serializable.SerializableSupplier;
+import cn.featherfly.common.function.serializable.SerializableToDoubleFunction;
+import cn.featherfly.common.function.serializable.SerializableToDoubleFunction6;
 import cn.featherfly.common.function.serializable.SerializableToIntFunction6;
 import cn.featherfly.common.function.serializable.SerializableToLongFunction6;
 import cn.featherfly.hammer.expression.condition.ConditionExpression;
@@ -22,19 +28,12 @@ import cn.featherfly.hammer.expression.condition.LogicExpression;
  * @param <E3> the generic type
  * @param <E4> the generic type
  * @param <E5> the generic type
+ * @param <E6> the generic type
  * @param <C>  the generic type
  * @param <L>  the generic type
  */
 public interface EntityInExpressionBase6<E, E2, E3, E4, E5, E6, C extends ConditionExpression,
         L extends LogicExpression<C, L>> extends EntityInExpressionBase5<E, E2, E3, E4, E5, C, L> {
-
-    //    /**
-    //     * equals. 包含指定，sql中的in.
-    //     *
-    //     * @param consumer the consumer
-    //     * @return LogicExpression
-    //     */
-    //    L in6(Consumer<EntityInExpressionBase2<E, C, L>> consumer);
 
     /**
      * values in. 包含指定，sql中的in.
@@ -60,7 +59,6 @@ public interface EntityInExpressionBase6<E, E2, E3, E4, E5, E6, C extends Condit
     /**
      * values in. 包含指定，sql中的in.
      *
-     * @param <R>   the generic type
      * @param name  参数名称
      * @param value 参数值
      * @return LogicExpression
@@ -70,18 +68,16 @@ public interface EntityInExpressionBase6<E, E2, E3, E4, E5, E6, C extends Condit
     /**
      * values in. 包含指定，sql中的in.
      *
-     * @param <R>            the generic type
      * @param name           参数名称
      * @param value          参数值
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
-    L in6(SerializableToIntFunction6<E6> name, int value, Predicate<Integer> ignoreStrategy);
+    L in6(SerializableToIntFunction6<E6> name, int value, IntPredicate ignoreStrategy);
 
     /**
      * values in. 包含指定，sql中的in.
      *
-     * @param <R>   the generic type
      * @param name  参数名称
      * @param value 参数值
      * @return LogicExpression
@@ -91,13 +87,31 @@ public interface EntityInExpressionBase6<E, E2, E3, E4, E5, E6, C extends Condit
     /**
      * values in. 包含指定，sql中的in.
      *
-     * @param <R>            the generic type
      * @param name           参数名称
      * @param value          参数值
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
-    L in6(SerializableToLongFunction6<E6> name, long value, Predicate<Long> ignoreStrategy);
+    L in6(SerializableToLongFunction6<E6> name, long value, LongPredicate ignoreStrategy);
+
+    /**
+     * values in. 包含指定，sql中的in.
+     *
+     * @param name  参数名称
+     * @param value 参数值
+     * @return LogicExpression
+     */
+    L in6(SerializableToDoubleFunction<E6> name, double value);
+
+    /**
+     * values in. 包含指定，sql中的in.
+     *
+     * @param name           参数名称
+     * @param value          参数值
+     * @param ignoreStrategy the ignore strategy
+     * @return LogicExpression
+     */
+    L in6(SerializableToDoubleFunction<E6> name, double value, DoublePredicate ignoreStrategy);
 
     /**
      * values in. 包含指定，sql中的in.
@@ -112,7 +126,6 @@ public interface EntityInExpressionBase6<E, E2, E3, E4, E5, E6, C extends Condit
     /**
      * values in. 包含指定，sql中的in.
      *
-     * @param <R>   the generic type
      * @param name  参数名称
      * @param value 参数值
      * @return LogicExpression
@@ -122,12 +135,20 @@ public interface EntityInExpressionBase6<E, E2, E3, E4, E5, E6, C extends Condit
     /**
      * values in. 包含指定，sql中的in.
      *
-     * @param <R>   the generic type
      * @param name  参数名称
      * @param value 参数值
      * @return LogicExpression
      */
     L in6(SerializableToLongFunction6<E6> name, long... value);
+
+    /**
+     * values in. 包含指定，sql中的in.
+     *
+     * @param name  参数名称
+     * @param value 参数值
+     * @return LogicExpression
+     */
+    L in6(SerializableToDoubleFunction6<E6> name, double... value);
 
     /**
      * values in. 包含指定，sql中的in.
@@ -143,7 +164,6 @@ public interface EntityInExpressionBase6<E, E2, E3, E4, E5, E6, C extends Condit
     /**
      * values in. 包含指定，sql中的in.
      *
-     * @param <R>            the generic type
      * @param name           参数名称
      * @param value          参数值
      * @param ignoreStrategy the ignore strategy
@@ -154,13 +174,22 @@ public interface EntityInExpressionBase6<E, E2, E3, E4, E5, E6, C extends Condit
     /**
      * values in. 包含指定，sql中的in.
      *
-     * @param <R>            the generic type
      * @param name           参数名称
      * @param value          参数值
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
     L in6(SerializableToLongFunction6<E6> name, long[] value, Predicate<long[]> ignoreStrategy);
+
+    /**
+     * values in. 包含指定，sql中的in.
+     *
+     * @param name           参数名称
+     * @param value          参数值
+     * @param ignoreStrategy the ignore strategy
+     * @return LogicExpression
+     */
+    L in6(SerializableToDoubleFunction6<E6> name, double[] value, Predicate<double[]> ignoreStrategy);
 
     /**
      * values in. 包含指定，sql中的in.
@@ -205,138 +234,51 @@ public interface EntityInExpressionBase6<E, E2, E3, E4, E5, E6, C extends Condit
     /**
      * values in. 包含指定，sql中的in.
      *
-     * @param <R>      the generic type
      * @param property 对象属性
      * @return LogicExpression
      */
-    <R> L in6(SerializableIntSupplier property);
+    L in6(SerializableIntSupplier property);
 
     /**
      * values in. 包含指定，sql中的in.
      *
-     * @param <R>            the generic type
      * @param property       对象属性
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
-    <R> L in6(SerializableIntSupplier property, Predicate<Integer> ignoreStrategy);
+    L in6(SerializableIntSupplier property, IntPredicate ignoreStrategy);
 
     /**
      * values in. 包含指定，sql中的in.
      *
-     * @param <R>      the generic type
      * @param property 对象属性
      * @return LogicExpression
      */
-    <R> L in6(SerializableLongSupplier property);
+    L in6(SerializableLongSupplier property);
 
     /**
      * values in. 包含指定，sql中的in.
      *
-     * @param <R>            the generic type
      * @param property       对象属性
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
-    <R> L in6(SerializableLongSupplier property, Predicate<Long> ignoreStrategy);
-    //
-    //    /**
-    //     * values in. 包含指定，sql中的in.
-    //     *
-    //     * @param <R>      the generic type
-    //     * @param property 对象属性
-    //     * @return LogicExpression
-    //     */
-    //    <R> L in6(ArraySupplier<R> property);
-    //
-    //    /**
-    //     * values in. 包含指定，sql中的in.
-    //     *
-    //     * @param <R>          the generic type
-    //     * @param property     对象属性
-    //     * @param ignoreStrategy the ignore strategy
-    //     * @return LogicExpression
-    //     */
-    //    <R> L in6(ArraySupplier<R> property, Predicate<R[]> ignoreStrategy);
-    //
-    //    /**
-    //     * values in. 包含指定，sql中的in.
-    //     *
-    //     * @param <R>      the generic type
-    //     * @param property 对象属性
-    //     * @return LogicExpression
-    //     */
-    //    <R> L in6(CollectionSupplier<R> property);
-    //
-    //    /**
-    //     * values in. 包含指定，sql中的in.
-    //     *
-    //     * @param <R>          the generic type
-    //     * @param property     对象属性
-    //     * @param ignoreStrategy the ignore strategy
-    //     * @return LogicExpression
-    //     */
-    //    <R> L in6(CollectionSupplier<R> property, Predicate<Collection<R>> ignoreStrategy);
-    //
-    //    /**
-    //     * values in. 包含指定，sql中的in.
-    //     *
-    //     * @param <R>      the generic type
-    //     * @param property 对象属性
-    //     * @return LogicExpression
-    //     */
-    //    <R> L in6(ListSupplier<R> property);
-    //
-    //    /**
-    //     * values in. 包含指定，sql中的in.
-    //     *
-    //     * @param <R>          the generic type
-    //     * @param property     对象属性
-    //     * @param ignoreStrategy the ignore strategy
-    //     * @return LogicExpression
-    //     */
-    //    <R> L in6(ListSupplier<R> property, Predicate<List<R>> ignoreStrategy);
-    //
-    //    /**
-    //     * values in. 包含指定，sql中的in.
-    //     *
-    //     * @param <R>      the generic type
-    //     * @param property 对象属性
-    //     * @return LogicExpression
-    //     */
-    //    <R> L in6(SetSupplier<R> property);
-    //
-    //    /**
-    //     * values in. 包含指定，sql中的in.
-    //     *
-    //     * @param <R>          the generic type
-    //     * @param property     对象属性
-    //     * @param ignoreStrategy the ignore strategy
-    //     * @return LogicExpression
-    //     */
-    //    <R> L in6(SetSupplier<R> property, Predicate<Set<R>> ignoreStrategy);
+    L in6(SerializableLongSupplier property, LongPredicate ignoreStrategy);
 
-    // 嵌套属性使用property(U1::getU2).property(U2:getV).in(v)来设置
-    //    /**
-    //     * values in. 包含指定，sql中的in.
-    //     *
-    //     * @param <R>        the generic type
-    //     * @param <V>        the value type
-    //     * @param repository the repository
-    //     * @param property   the property
-    //     * @param value      参数值
-    //     * @return LogicExpression
-    //     */
-    //    <R, V> L in6(SerializableFunction<E6, R> repository, SerializableFunction<R, V> property, V value);
-    //
-    //    /**
-    //     * values in. 包含指定，sql中的in.
-    //     *
-    //     * @param <R>        the generic type
-    //     * @param <V>        the value type
-    //     * @param repository the repository
-    //     * @param property   对象属性
-    //     * @return LogicExpression
-    //     */
-    //    <R, V> L in6(SerializableSupplier<R> repository, SerializableFunction<R, V> property);
+    /**
+     * values in. 包含指定，sql中的in.
+     *
+     * @param property 对象属性
+     * @return LogicExpression
+     */
+    L in6(SerializableDoubleSupplier property);
+
+    /**
+     * values in. 包含指定，sql中的in.
+     *
+     * @param property       对象属性
+     * @param ignoreStrategy the ignore strategy
+     * @return LogicExpression
+     */
+    L in6(SerializableDoubleSupplier property, DoublePredicate ignoreStrategy);
 }

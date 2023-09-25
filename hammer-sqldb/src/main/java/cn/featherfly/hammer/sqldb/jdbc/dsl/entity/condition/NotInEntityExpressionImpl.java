@@ -44,22 +44,32 @@ import cn.featherfly.hammer.expression.entity.condition.ni.AbstractNotInEntityEx
 import cn.featherfly.hammer.expression.entity.condition.ni.MulitiEntityNotInExpression;
 import cn.featherfly.hammer.expression.entity.condition.ni.NotInEntityExpression;
 import cn.featherfly.hammer.expression.entity.condition.ni.NotInEntityPropertyExpression;
+import cn.featherfly.hammer.sqldb.jdbc.dsl.entity.condition.propery.ConditionEntityExpressionDateAndArrayPropertyExpressionImpl;
+import cn.featherfly.hammer.sqldb.jdbc.dsl.entity.condition.propery.ConditionEntityExpressionDoubleAndArrayPropertyExpressionImpl;
+import cn.featherfly.hammer.sqldb.jdbc.dsl.entity.condition.propery.ConditionEntityExpressionEnumAndArrayPropertyExpressionImpl;
+import cn.featherfly.hammer.sqldb.jdbc.dsl.entity.condition.propery.ConditionEntityExpressionIntAndArrayPropertyExpressionImpl;
+import cn.featherfly.hammer.sqldb.jdbc.dsl.entity.condition.propery.ConditionEntityExpressionLocalDateAndArrayPropertyExpressionImpl;
+import cn.featherfly.hammer.sqldb.jdbc.dsl.entity.condition.propery.ConditionEntityExpressionLocalDateTimeAndArrayPropertyExpressionImpl;
+import cn.featherfly.hammer.sqldb.jdbc.dsl.entity.condition.propery.ConditionEntityExpressionLocalTimeAndArrayPropertyExpressionImpl;
+import cn.featherfly.hammer.sqldb.jdbc.dsl.entity.condition.propery.ConditionEntityExpressionLongAndArrayPropertyExpressionImpl;
+import cn.featherfly.hammer.sqldb.jdbc.dsl.entity.condition.propery.ConditionEntityExpressionNumberAndArrayPropertyExpressionImpl;
+import cn.featherfly.hammer.sqldb.jdbc.dsl.entity.condition.propery.ConditionEntityExpressionStringAndArrayPropertyExpressionImpl;
 
 /**
- * The Class EqualsEntityExpressionImpl.
+ * The Class NotInEntityExpressionImpl.
  *
  * @author zhongj
- * @param <E> the element type
+ * @param <T> the element type
  * @param <C> the generic type
  * @param <L> the generic type
  */
-public class NotInEntityExpressionImpl<E, C extends ConditionExpression, L extends LogicExpression<C, L>>
-        extends AbstractNotInEntityExpression<E, C, L> implements NotInEntityExpression<E> {
+public class NotInEntityExpressionImpl<T, C extends ConditionExpression, L extends LogicExpression<C, L>>
+        extends AbstractNotInEntityExpression<T, C, L> implements NotInEntityExpression<T> {
 
     private JdbcMappingFactory factory;
 
     /**
-     * Instantiates a new equals entity expression impl.
+     * Instantiates a new not in entity expression impl.
      *
      * @param index          the index
      * @param expression     the expression
@@ -75,107 +85,136 @@ public class NotInEntityExpressionImpl<E, C extends ConditionExpression, L exten
     /**
      * {@inheritDoc}
      */
+    @SuppressWarnings("unchecked")
     @Override
-    public <R> ConditionEntityExpressionIntAndArrayPropertyExpression property(SerializableToIntFunction<E> name) {
-        // IMPLSOON 未实现property
-        throw new NotImplementedException();
+    public ConditionEntityExpressionIntAndArrayPropertyExpression property(SerializableToIntFunction<T> name) {
+        return new ConditionEntityExpressionIntAndArrayPropertyExpressionImpl(v -> null, ignoreStrategy,
+                (value, ignore, pm) -> expression.ni(index, name, value, ignore), v -> null,
+                array -> ((Predicate<Object>) ignoreStrategy).test(array),
+                (value, ignore, pm) -> expression.ni(index, name, value, ignore));
     }
 
     /**
      * {@inheritDoc}
      */
+    @SuppressWarnings("unchecked")
     @Override
-    public <R> ConditionEntityExpressionLongAndArrayPropertyExpression property(SerializableToLongFunction<E> name) {
-        // IMPLSOON 未实现property
-        throw new NotImplementedException();
+    public ConditionEntityExpressionLongAndArrayPropertyExpression property(SerializableToLongFunction<T> name) {
+        return new ConditionEntityExpressionLongAndArrayPropertyExpressionImpl(v -> null, ignoreStrategy,
+                (value, ignore, pm) -> expression.ni(index, name, value, ignore), v -> null,
+                array -> ((Predicate<Object>) ignoreStrategy).test(array),
+                (value, ignore, pm) -> expression.ni(index, name, value, ignore));
     }
 
     /**
      * {@inheritDoc}
      */
+    @SuppressWarnings("unchecked")
     @Override
-    public <R> ConditionEntityExpressionDoubleAndArrayPropertyExpression property(
-            SerializableToDoubleFunction<E> name) {
-        // IMPLSOON 未实现property
-        throw new NotImplementedException();
+    public ConditionEntityExpressionDoubleAndArrayPropertyExpression property(SerializableToDoubleFunction<T> name) {
+        return new ConditionEntityExpressionDoubleAndArrayPropertyExpressionImpl(v -> null, ignoreStrategy,
+                (value, ignore, pm) -> expression.ni(index, name, value, ignore), v -> null,
+                array -> ((Predicate<Object>) ignoreStrategy).test(array),
+                (value, ignore, pm) -> expression.ni(index, name, value, ignore));
     }
 
     /**
      * {@inheritDoc}
      */
+    @SuppressWarnings("unchecked")
     @Override
-    public <R extends Number> ConditionEntityExpressionNumberAndArrayPropertyExpression<R> property(
-            SerializableToNumberFunction<E, R> name) {
-        // IMPLSOON 未实现property
-        throw new NotImplementedException();
+    public <N extends Number> ConditionEntityExpressionNumberAndArrayPropertyExpression<N> property(
+            SerializableToNumberFunction<T, N> name) {
+        return new ConditionEntityExpressionNumberAndArrayPropertyExpressionImpl<>(v -> null, ignoreStrategy,
+                (value, ignore, pm) -> expression.ni(index, name, value, ignore), v -> null,
+                array -> ((Predicate<Object>) ignoreStrategy).test(array),
+                (value, ignore, pm) -> expression.ni(index, name, value, ignore));
     }
 
     /**
      * {@inheritDoc}
      */
+    @SuppressWarnings("unchecked")
     @Override
-    public <R extends Date> ConditionEntityExpressionDateAndArrayPropertyExpression<R> property(
-            SerializableToDateFunction<E, R> name) {
-        // IMPLSOON 未实现property
-        throw new NotImplementedException();
+    public <D extends Date> ConditionEntityExpressionDateAndArrayPropertyExpression<D> property(
+            SerializableToDateFunction<T, D> name) {
+        return new ConditionEntityExpressionDateAndArrayPropertyExpressionImpl<>(v -> null, ignoreStrategy,
+                (value, ignore, pm) -> expression.ni(index, name, value, ignore), v -> null,
+                array -> ((Predicate<Object>) ignoreStrategy).test(array),
+                (value, ignore, pm) -> expression.ni(index, name, value, ignore));
     }
 
     /**
      * {@inheritDoc}
      */
+    @SuppressWarnings("unchecked")
     @Override
-    public <R extends Enum<R>> ConditionEntityExpressionEnumAndArrayPropertyExpression<R> property(
-            SerializableToEnumFunction<E, R> name) {
-        // IMPLSOON 未实现property
-        throw new NotImplementedException();
+    public <E extends Enum<E>> ConditionEntityExpressionEnumAndArrayPropertyExpression<E> property(
+            SerializableToEnumFunction<T, E> name) {
+        return new ConditionEntityExpressionEnumAndArrayPropertyExpressionImpl<>(v -> null, ignoreStrategy,
+                (value, ignore, pm) -> expression.ni(index, name, value, ignore), v -> null,
+                array -> ((Predicate<Object>) ignoreStrategy).test(array),
+                (value, ignore, pm) -> expression.ni(index, name, value, ignore));
     }
 
     /**
      * {@inheritDoc}
      */
+    @SuppressWarnings("unchecked")
     @Override
     public ConditionEntityExpressionLocalDateTimeAndArrayPropertyExpression property(
-            SerializableToLocalDateTimeFunction<E> name) {
-        // IMPLSOON 未实现property
-        throw new NotImplementedException();
+            SerializableToLocalDateTimeFunction<T> name) {
+        return new ConditionEntityExpressionLocalDateTimeAndArrayPropertyExpressionImpl(v -> null, ignoreStrategy,
+                (value, ignore, pm) -> expression.ni(index, name, value, ignore), v -> null,
+                array -> ((Predicate<Object>) ignoreStrategy).test(array),
+                (value, ignore, pm) -> expression.ni(index, name, value, ignore));
     }
 
     /**
      * {@inheritDoc}
      */
+    @SuppressWarnings("unchecked")
     @Override
     public ConditionEntityExpressionLocalDateAndArrayPropertyExpression property(
-            SerializableToLocalDateFunction<E> name) {
-        // IMPLSOON 未实现property
-        throw new NotImplementedException();
+            SerializableToLocalDateFunction<T> name) {
+        return new ConditionEntityExpressionLocalDateAndArrayPropertyExpressionImpl(v -> null, ignoreStrategy,
+                (value, ignore, pm) -> expression.ni(index, name, value, ignore), v -> null,
+                array -> ((Predicate<Object>) ignoreStrategy).test(array),
+                (value, ignore, pm) -> expression.ni(index, name, value, ignore));
     }
 
     /**
      * {@inheritDoc}
      */
+    @SuppressWarnings("unchecked")
     @Override
     public ConditionEntityExpressionLocalTimeAndArrayPropertyExpression property(
-            SerializableToLocalTimeFunction<E> name) {
-        // IMPLSOON 未实现property
-        throw new NotImplementedException();
+            SerializableToLocalTimeFunction<T> name) {
+        return new ConditionEntityExpressionLocalTimeAndArrayPropertyExpressionImpl(v -> null, ignoreStrategy,
+                (value, ignore, pm) -> expression.ni(index, name, value, ignore), v -> null,
+                array -> ((Predicate<Object>) ignoreStrategy).test(array),
+                (value, ignore, pm) -> expression.ni(index, name, value, ignore));
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @SuppressWarnings("unchecked")
+    @Override
+    public ConditionEntityExpressionStringAndArrayPropertyExpression property(SerializableToStringFunction<T> name) {
+        return new ConditionEntityExpressionStringAndArrayPropertyExpressionImpl(v -> null, ignoreStrategy,
+                (value, ignore, pm) -> expression.ni(index, name, value, ignore), v -> null,
+                array -> ((Predicate<Object>) ignoreStrategy).test(array),
+                (value, ignore, pm) -> expression.ni(index, name, value, ignore));
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public ConditionEntityExpressionStringAndArrayPropertyExpression property(SerializableToStringFunction<E> name) {
-        // IMPLSOON 未实现property
-        throw new NotImplementedException();
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public <R> NotInEntityPropertyExpression<R> property(SerializableFunction<E, R> name) {
-        // IMPLSOON 未实现property
-        throw new NotImplementedException();
+    public <R> NotInEntityPropertyExpression<R> property(SerializableFunction<T, R> name) {
+        return new NotInEntityPropertyExpressionImpl<>(index, name, (MulitiEntityNotInExpressionImpl<C, L>) expression,
+                factory);
     }
 
     /**
@@ -183,9 +222,8 @@ public class NotInEntityExpressionImpl<E, C extends ConditionExpression, L exten
      */
     @Override
     public <R extends Collection<RE>,
-            RE> NotInEntityPropertyExpression<RE> property(SerializableToCollectionFunction<E, R, RE> name) {
-        // IMPLSOON 未实现property
+            RE> NotInEntityPropertyExpression<RE> property(SerializableToCollectionFunction<T, R, RE> name) {
+        // IMPLSOON 后续来实现集合类型property
         throw new NotImplementedException();
     }
-
 }

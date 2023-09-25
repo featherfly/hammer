@@ -14,15 +14,15 @@ import cn.featherfly.hammer.sqldb.sql.dml.AbstractEntitySqlQueryConditionGroupEx
  * EntitySqlQueryExpression .
  *
  * @author zhongj
- * @param <E>  the element type
- * @param <E2> the generic type
- * @param <E3> the generic type
+ * @param <T1> the element type
+ * @param <T2> the generic type
+ * @param <T3> the generic type
  * @param <RS> the query result type
  */
-public class EntitySqlQueryExpression3<E, E2, E3, RS> extends
-        AbstractEntitySqlQueryConditionGroupExpression3<E, E2, E3, RS, EntityQueryConditionGroup3<E, E2, E3, RS>,
-                EntityQueryConditionGroupLogic3<E, E2, E3, RS>>
-        implements EntityQueryConditionGroup3<E, E2, E3, RS>, EntityQueryConditionGroupLogic3<E, E2, E3, RS> {
+public class EntitySqlQueryExpression3<T1, T2, T3, RS> extends
+        AbstractEntitySqlQueryConditionGroupExpression3<T1, T2, T3, RS, EntityQueryConditionGroup3<T1, T2, T3, RS>,
+                EntityQueryConditionGroupLogic3<T1, T2, T3, RS>>
+        implements EntityQueryConditionGroup3<T1, T2, T3, RS>, EntityQueryConditionGroupLogic3<T1, T2, T3, RS> {
 
     /**
      * Instantiates a new entity sql query expression.
@@ -44,7 +44,7 @@ public class EntitySqlQueryExpression3<E, E2, E3, RS> extends
      * @param sqlPageFactory the sql page factory
      * @param queryRelation  the query relation
      */
-    EntitySqlQueryExpression3(EntityQueryConditionGroupLogic3<E, E2, E3, RS> parent, JdbcMappingFactory factory,
+    EntitySqlQueryExpression3(EntityQueryConditionGroupLogic3<T1, T2, T3, RS> parent, JdbcMappingFactory factory,
             SqlPageFactory sqlPageFactory, EntitySqlQueryRelation queryRelation) {
         super(parent, factory, sqlPageFactory, queryRelation);
     }
@@ -53,8 +53,8 @@ public class EntitySqlQueryExpression3<E, E2, E3, RS> extends
      * {@inheritDoc}
      */
     @Override
-    protected EntityQueryConditionGroup3<E, E2, E3, RS> createGroup(
-            EntityQueryConditionGroupLogic3<E, E2, E3, RS> parent) {
+    protected EntityQueryConditionGroup3<T1, T2, T3, RS> createGroup(
+            EntityQueryConditionGroupLogic3<T1, T2, T3, RS> parent) {
         return new EntitySqlQueryExpression3<>(parent, factory, sqlPageFactory, entityRelation);
     }
 

@@ -2,12 +2,17 @@
 package cn.featherfly.hammer.sqldb.jdbc.dsl.entity.condition;
 
 import java.util.Collection;
+import java.util.function.DoublePredicate;
+import java.util.function.IntPredicate;
+import java.util.function.LongPredicate;
 import java.util.function.Predicate;
 
+import cn.featherfly.common.function.serializable.SerializableDoubleSupplier;
 import cn.featherfly.common.function.serializable.SerializableFunction;
 import cn.featherfly.common.function.serializable.SerializableIntSupplier;
 import cn.featherfly.common.function.serializable.SerializableLongSupplier;
 import cn.featherfly.common.function.serializable.SerializableSupplier;
+import cn.featherfly.common.function.serializable.SerializableToDoubleFunction;
 import cn.featherfly.common.function.serializable.SerializableToIntFunction;
 import cn.featherfly.common.function.serializable.SerializableToLongFunction;
 import cn.featherfly.hammer.expression.condition.ConditionExpression;
@@ -25,7 +30,7 @@ public class MulitiEntityInExpressionImpl<C extends ConditionExpression, L exten
         extends MulitiEntityConditionExpressionProxy<C, L> implements MulitiEntityInExpression<C, L> {
 
     /**
-     * Instantiates a new muliti entity equals expression impl.
+     * Instantiates a new muliti entity in expression impl.
      *
      * @param proxy the proxy
      */
@@ -61,7 +66,7 @@ public class MulitiEntityInExpressionImpl<C extends ConditionExpression, L exten
      * {@inheritDoc}
      */
     @Override
-    public <E> L in(int index, SerializableToIntFunction<E> name, int value, Predicate<Integer> ignoreStrategy) {
+    public <E> L in(int index, SerializableToIntFunction<E> name, int value, IntPredicate ignoreStrategy) {
         return proxy.in0(index, name, value, ignoreStrategy);
     }
 
@@ -77,7 +82,23 @@ public class MulitiEntityInExpressionImpl<C extends ConditionExpression, L exten
      * {@inheritDoc}
      */
     @Override
-    public <E> L in(int index, SerializableToLongFunction<E> name, long value, Predicate<Long> ignoreStrategy) {
+    public <E> L in(int index, SerializableToLongFunction<E> name, long value, LongPredicate ignoreStrategy) {
+        return proxy.in0(index, name, value, ignoreStrategy);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public <E> L in(int index, SerializableToDoubleFunction<E> name, double value) {
+        return proxy.in0(index, name, value, ignoreStrategy);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public <E> L in(int index, SerializableToDoubleFunction<E> name, double value, DoublePredicate ignoreStrategy) {
         return proxy.in0(index, name, value, ignoreStrategy);
     }
 
@@ -109,6 +130,14 @@ public class MulitiEntityInExpressionImpl<C extends ConditionExpression, L exten
      * {@inheritDoc}
      */
     @Override
+    public <E> L in(int index, SerializableToDoubleFunction<E> name, double... value) {
+        return proxy.in0(index, name, value, ignoreStrategy);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
     public <E, R> L in(int index, SerializableFunction<E, R> name, R[] value, Predicate<R[]> ignoreStrategy) {
         return proxy.in0(index, name, value, ignoreStrategy);
     }
@@ -133,6 +162,15 @@ public class MulitiEntityInExpressionImpl<C extends ConditionExpression, L exten
      * {@inheritDoc}
      */
     @Override
+    public <E> L in(int index, SerializableToDoubleFunction<E> name, double[] value,
+            Predicate<double[]> ignoreStrategy) {
+        return proxy.in0(index, name, value, ignoreStrategy);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
     public <E, R> L in(int index, SerializableFunction<E, R> name, Collection<R> value) {
         return proxy.in0(index, name, value, ignoreStrategy);
     }
@@ -150,7 +188,7 @@ public class MulitiEntityInExpressionImpl<C extends ConditionExpression, L exten
      * {@inheritDoc}
      */
     @Override
-    public <E, R> L in(int index, SerializableSupplier<R> property) {
+    public <R> L in(int index, SerializableSupplier<R> property) {
         return proxy.in0(index, property, ignoreStrategy);
     }
 
@@ -158,7 +196,7 @@ public class MulitiEntityInExpressionImpl<C extends ConditionExpression, L exten
      * {@inheritDoc}
      */
     @Override
-    public <E, R> L in(int index, SerializableSupplier<R> property, Predicate<R> ignoreStrategy) {
+    public <R> L in(int index, SerializableSupplier<R> property, Predicate<R> ignoreStrategy) {
         return proxy.in0(index, property, ignoreStrategy);
     }
 
@@ -166,7 +204,7 @@ public class MulitiEntityInExpressionImpl<C extends ConditionExpression, L exten
      * {@inheritDoc}
      */
     @Override
-    public <E, R> L in(int index, SerializableIntSupplier property) {
+    public L in(int index, SerializableIntSupplier property) {
         return proxy.in0(index, property, ignoreStrategy);
     }
 
@@ -174,7 +212,7 @@ public class MulitiEntityInExpressionImpl<C extends ConditionExpression, L exten
      * {@inheritDoc}
      */
     @Override
-    public <E, R> L in(int index, SerializableIntSupplier property, Predicate<Integer> ignoreStrategy) {
+    public L in(int index, SerializableIntSupplier property, IntPredicate ignoreStrategy) {
         return proxy.in0(index, property, ignoreStrategy);
     }
 
@@ -182,7 +220,7 @@ public class MulitiEntityInExpressionImpl<C extends ConditionExpression, L exten
      * {@inheritDoc}
      */
     @Override
-    public <E, R> L in(int index, SerializableLongSupplier property) {
+    public L in(int index, SerializableLongSupplier property) {
         return proxy.in0(index, property, ignoreStrategy);
     }
 
@@ -190,7 +228,23 @@ public class MulitiEntityInExpressionImpl<C extends ConditionExpression, L exten
      * {@inheritDoc}
      */
     @Override
-    public <E, R> L in(int index, SerializableLongSupplier property, Predicate<Long> ignoreStrategy) {
+    public L in(int index, SerializableLongSupplier property, LongPredicate ignoreStrategy) {
+        return proxy.in0(index, property, ignoreStrategy);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public L in(int index, SerializableDoubleSupplier property) {
+        return proxy.in0(index, property, ignoreStrategy);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public L in(int index, SerializableDoubleSupplier property, DoublePredicate ignoreStrategy) {
         return proxy.in0(index, property, ignoreStrategy);
     }
 

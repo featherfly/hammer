@@ -24,8 +24,8 @@ public interface MulitiEntityIsNotNullExpression<C extends ConditionExpression, 
      * @param name  参数名称
      * @return LogicExpression
      */
-    default <E, R> L isn(int index, SerializableFunction<E, R> name) {
-        return isn(index, name, true);
+    default <E, R> L inn(int index, SerializableFunction<E, R> name) {
+        return inn(index, name, true);
     }
 
     /**
@@ -39,5 +39,5 @@ public interface MulitiEntityIsNotNullExpression<C extends ConditionExpression, 
      *              this operate
      * @return LogicExpression
      */
-    <E, R> L isn(int index, SerializableFunction<E, R> name, Boolean value);
+    <E, R> L inn(int index, SerializableFunction<E, R> name, Boolean value);
 }

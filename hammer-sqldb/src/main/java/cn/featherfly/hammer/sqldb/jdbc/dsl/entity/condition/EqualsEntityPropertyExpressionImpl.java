@@ -17,6 +17,7 @@ import java.util.function.Predicate;
 import cn.featherfly.common.db.mapping.JdbcMappingFactory;
 import cn.featherfly.common.exception.NotImplementedException;
 import cn.featherfly.common.function.serializable.SerializableFunction;
+import cn.featherfly.common.function.serializable.SerializableSupplier;
 import cn.featherfly.common.function.serializable.SerializableToCollectionFunction;
 import cn.featherfly.common.operator.ComparisonOperator.MatchStrategy;
 import cn.featherfly.hammer.expression.condition.ConditionExpression;
@@ -69,6 +70,11 @@ public class EqualsEntityPropertyExpressionImpl<V, C extends ConditionExpression
         return new EqualsEntityPropertyExpressionImpl<>(index, propertyList, expression, factory);
     }
 
+    private <R> EqualsEntityPropertyExpression<R> property(SerializableSupplier<R> name) {
+        propertyList.add(name);
+        return new EqualsEntityPropertyExpressionImpl<>(index, propertyList, expression, factory);
+    }
+
     /**
      * {@inheritDoc}
      */
@@ -109,6 +115,71 @@ public class EqualsEntityPropertyExpressionImpl<V, C extends ConditionExpression
     @Override
     public void value(V value, MatchStrategy matchStrategy, Predicate<V> ignoreStrategy) {
         expression.eq0(index, getPropertyMapping(value), value, matchStrategy, ignoreStrategy);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public <R> void accept(SerializableFunction<V, R> property, R value) {
+        property(property).value(value);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public <R> void accept(SerializableFunction<V, R> property, R value, MatchStrategy matchStrategy) {
+        property(property).value(value, matchStrategy);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public <R> void accept(SerializableFunction<V, R> property, R value, Predicate<R> ignoreStrategy) {
+        property(property).value(value, ignoreStrategy);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public <R> void accept(SerializableFunction<V, R> property, R value, MatchStrategy matchStrategy,
+            Predicate<R> ignoreStrategy) {
+        property(property).value(value, matchStrategy, ignoreStrategy);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public <R> void accept(SerializableSupplier<R> property) {
+        property(property).value(property.get());
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public <R> void accept(SerializableSupplier<R> property, Predicate<R> ignoreStrategy) {
+        property(property).value(property.get(), ignoreStrategy);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public <R> void accept(SerializableSupplier<R> property, MatchStrategy matchStrategy) {
+        property(property).value(property.get(), matchStrategy);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public <R> void accept(SerializableSupplier<R> property, MatchStrategy matchStrategy, Predicate<R> ignoreStrategy) {
+        property(property).value(property.get(), matchStrategy, ignoreStrategy);
     }
 
 }

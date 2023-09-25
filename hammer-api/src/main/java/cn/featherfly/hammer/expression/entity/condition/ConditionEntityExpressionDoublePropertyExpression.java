@@ -10,7 +10,7 @@
  */
 package cn.featherfly.hammer.expression.entity.condition;
 
-import java.util.function.Predicate;
+import java.util.function.DoublePredicate;
 
 /**
  * The Interface ConditionEntityExpressionDoublePropertyExpression.
@@ -30,9 +30,9 @@ public interface ConditionEntityExpressionDoublePropertyExpression {
     /**
      * Value.
      *
-     * @param value        double value
+     * @param value          double value
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
-    void value(double value, Predicate<Double> ignoreStrategy);
+    void value(double value, DoublePredicate ignoreStrategy);
 }

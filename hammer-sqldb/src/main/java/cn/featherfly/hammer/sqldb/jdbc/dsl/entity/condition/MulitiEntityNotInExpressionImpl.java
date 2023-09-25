@@ -2,12 +2,17 @@
 package cn.featherfly.hammer.sqldb.jdbc.dsl.entity.condition;
 
 import java.util.Collection;
+import java.util.function.DoublePredicate;
+import java.util.function.IntPredicate;
+import java.util.function.LongPredicate;
 import java.util.function.Predicate;
 
+import cn.featherfly.common.function.serializable.SerializableDoubleSupplier;
 import cn.featherfly.common.function.serializable.SerializableFunction;
 import cn.featherfly.common.function.serializable.SerializableIntSupplier;
 import cn.featherfly.common.function.serializable.SerializableLongSupplier;
 import cn.featherfly.common.function.serializable.SerializableSupplier;
+import cn.featherfly.common.function.serializable.SerializableToDoubleFunction;
 import cn.featherfly.common.function.serializable.SerializableToIntFunction;
 import cn.featherfly.common.function.serializable.SerializableToLongFunction;
 import cn.featherfly.hammer.expression.condition.ConditionExpression;
@@ -25,7 +30,7 @@ public class MulitiEntityNotInExpressionImpl<C extends ConditionExpression, L ex
         extends MulitiEntityConditionExpressionProxy<C, L> implements MulitiEntityNotInExpression<C, L> {
 
     /**
-     * Instantiates a new muliti entity equals expression impl.
+     * Instantiates a new muliti entity not in expression impl.
      *
      * @param proxy the proxy
      */
@@ -37,161 +42,210 @@ public class MulitiEntityNotInExpressionImpl<C extends ConditionExpression, L ex
      * {@inheritDoc}
      */
     @Override
-    public <E, R> L nin(int index, SerializableFunction<E, R> name, R value) {
-        return proxy.nin0(index, name, value, ignoreStrategy);
+    public <E, R> L ni(int index, SerializableFunction<E, R> name, R value) {
+        return proxy.ni0(index, name, value, ignoreStrategy);
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public <E, R> L nin(int index, SerializableFunction<E, R> name, R value, Predicate<R> ignoreStrategy) {
-        return proxy.nin0(index, name, value, ignoreStrategy);
+    public <E, R> L ni(int index, SerializableFunction<E, R> name, R value, Predicate<R> ignoreStrategy) {
+        return proxy.ni0(index, name, value, ignoreStrategy);
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public <E> L nin(int index, SerializableToIntFunction<E> name, int value) {
-        return proxy.nin0(index, name, value, ignoreStrategy);
+    public <E> L ni(int index, SerializableToIntFunction<E> name, int value) {
+        return proxy.ni0(index, name, value, ignoreStrategy);
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public <E> L nin(int index, SerializableToIntFunction<E> name, int value, Predicate<Integer> ignoreStrategy) {
-        return proxy.nin0(index, name, value, ignoreStrategy);
+    public <E> L ni(int index, SerializableToIntFunction<E> name, int value, IntPredicate ignoreStrategy) {
+        return proxy.ni0(index, name, value, ignoreStrategy);
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public <E> L nin(int index, SerializableToLongFunction<E> name, long value) {
-        return proxy.nin0(index, name, value, ignoreStrategy);
+    public <E> L ni(int index, SerializableToLongFunction<E> name, long value) {
+        return proxy.ni0(index, name, value, ignoreStrategy);
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public <E> L nin(int index, SerializableToLongFunction<E> name, long value, Predicate<Long> ignoreStrategy) {
-        return proxy.nin0(index, name, value, ignoreStrategy);
+    public <E> L ni(int index, SerializableToLongFunction<E> name, long value, LongPredicate ignoreStrategy) {
+        return proxy.ni0(index, name, value, ignoreStrategy);
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public <E, R> L nin(int index, SerializableFunction<E, R> name, @SuppressWarnings("unchecked") R... value) {
-        return proxy.nin0(index, name, value, ignoreStrategy);
+    public <E> L ni(int index, SerializableToDoubleFunction<E> name, double value) {
+        return proxy.ni0(index, name, value, ignoreStrategy);
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public <E> L nin(int index, SerializableToIntFunction<E> name, int... value) {
-        return proxy.nin0(index, name, value, ignoreStrategy);
+    public <E> L ni(int index, SerializableToDoubleFunction<E> name, double value, DoublePredicate ignoreStrategy) {
+        return proxy.ni0(index, name, value, ignoreStrategy);
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public <E> L nin(int index, SerializableToLongFunction<E> name, long... value) {
-        return proxy.nin0(index, name, value, ignoreStrategy);
+    public <E, R> L ni(int index, SerializableFunction<E, R> name, @SuppressWarnings("unchecked") R... value) {
+        return proxy.ni0(index, name, value, ignoreStrategy);
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public <E, R> L nin(int index, SerializableFunction<E, R> name, R[] value, Predicate<R[]> ignoreStrategy) {
-        return proxy.nin0(index, name, value, ignoreStrategy);
+    public <E> L ni(int index, SerializableToIntFunction<E> name, int... value) {
+        return proxy.ni0(index, name, value, ignoreStrategy);
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public <E> L nin(int index, SerializableToIntFunction<E> name, int[] value, Predicate<int[]> ignoreStrategy) {
-        return proxy.nin0(index, name, value, ignoreStrategy);
+    public <E> L ni(int index, SerializableToLongFunction<E> name, long... value) {
+        return proxy.ni0(index, name, value, ignoreStrategy);
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public <E> L nin(int index, SerializableToLongFunction<E> name, long[] value, Predicate<long[]> ignoreStrategy) {
-        return proxy.nin0(index, name, value, ignoreStrategy);
+    public <E> L ni(int index, SerializableToDoubleFunction<E> name, double... value) {
+        return proxy.ni0(index, name, value, ignoreStrategy);
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public <E, R> L nin(int index, SerializableFunction<E, R> name, Collection<R> value) {
-        return proxy.nin0(index, name, value, ignoreStrategy);
+    public <E, R> L ni(int index, SerializableFunction<E, R> name, R[] value, Predicate<R[]> ignoreStrategy) {
+        return proxy.ni0(index, name, value, ignoreStrategy);
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public <E, R> L nin(int index, SerializableFunction<E, R> name, Collection<R> value,
+    public <E> L ni(int index, SerializableToIntFunction<E> name, int[] value, Predicate<int[]> ignoreStrategy) {
+        return proxy.ni0(index, name, value, ignoreStrategy);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public <E> L ni(int index, SerializableToLongFunction<E> name, long[] value, Predicate<long[]> ignoreStrategy) {
+        return proxy.ni0(index, name, value, ignoreStrategy);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public <E> L ni(int index, SerializableToDoubleFunction<E> name, double[] value,
+            Predicate<double[]> ignoreStrategy) {
+        return proxy.ni0(index, name, value, ignoreStrategy);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public <E, R> L ni(int index, SerializableFunction<E, R> name, Collection<R> value) {
+        return proxy.ni0(index, name, value, ignoreStrategy);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public <E, R> L ni(int index, SerializableFunction<E, R> name, Collection<R> value,
             Predicate<Collection<R>> ignoreStrategy) {
-        return proxy.nin0(index, name, value, ignoreStrategy);
+        return proxy.ni0(index, name, value, ignoreStrategy);
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public <E, R> L nin(int index, SerializableSupplier<R> property) {
-        return proxy.nin0(index, property, ignoreStrategy);
+    public <R> L ni(int index, SerializableSupplier<R> property) {
+        return proxy.ni0(index, property, ignoreStrategy);
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public <E, R> L nin(int index, SerializableSupplier<R> property, Predicate<R> ignoreStrategy) {
-        return proxy.nin0(index, property, ignoreStrategy);
+    public <R> L ni(int index, SerializableSupplier<R> property, Predicate<R> ignoreStrategy) {
+        return proxy.ni0(index, property, ignoreStrategy);
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public <E, R> L nin(int index, SerializableIntSupplier property) {
-        return proxy.nin0(index, property, ignoreStrategy);
+    public L ni(int index, SerializableIntSupplier property) {
+        return proxy.ni0(index, property, ignoreStrategy);
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public <E, R> L nin(int index, SerializableIntSupplier property, Predicate<Integer> ignoreStrategy) {
-        return proxy.nin0(index, property, ignoreStrategy);
+    public L ni(int index, SerializableIntSupplier property, IntPredicate ignoreStrategy) {
+        return proxy.ni0(index, property, ignoreStrategy);
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public <E, R> L nin(int index, SerializableLongSupplier property) {
-        return proxy.nin0(index, property, ignoreStrategy);
+    public L ni(int index, SerializableLongSupplier property) {
+        return proxy.ni0(index, property, ignoreStrategy);
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public <E, R> L nin(int index, SerializableLongSupplier property, Predicate<Long> ignoreStrategy) {
-        return proxy.nin0(index, property, ignoreStrategy);
+    public L ni(int index, SerializableLongSupplier property, LongPredicate ignoreStrategy) {
+        return proxy.ni0(index, property, ignoreStrategy);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public L ni(int index, SerializableDoubleSupplier property) {
+        return proxy.ni0(index, property, ignoreStrategy);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public L ni(int index, SerializableDoubleSupplier property, DoublePredicate ignoreStrategy) {
+        return proxy.ni0(index, property, ignoreStrategy);
     }
 
 }

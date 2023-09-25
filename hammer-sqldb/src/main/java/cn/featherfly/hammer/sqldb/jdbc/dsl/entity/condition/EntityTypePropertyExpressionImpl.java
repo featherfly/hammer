@@ -275,7 +275,7 @@ public class EntityTypePropertyExpressionImpl<E, P, F extends SerializableFuncti
      */
     @Override
     public L ni(P value) {
-        return expression.nin0(index, getPropertyMapping(value), value, expression.getIgnoreStrategy());
+        return expression.ni0(index, getPropertyMapping(value), value, expression.getIgnoreStrategy());
     }
 
     /**
@@ -283,7 +283,7 @@ public class EntityTypePropertyExpressionImpl<E, P, F extends SerializableFuncti
      */
     @Override
     public L ni(P value, IgnoreStrategy ignoreStrategy) {
-        return expression.nin0(index, getPropertyMapping(value), value, ignoreStrategy);
+        return expression.ni0(index, getPropertyMapping(value), value, ignoreStrategy);
     }
 
     /**
@@ -291,7 +291,7 @@ public class EntityTypePropertyExpressionImpl<E, P, F extends SerializableFuncti
      */
     @Override
     public L ni(P value, Predicate<P> ignoreStrategy) {
-        return expression.nin0(index, getPropertyMapping(value), value, ignoreStrategy);
+        return expression.ni0(index, getPropertyMapping(value), value, ignoreStrategy);
     }
 
     /**
@@ -299,7 +299,7 @@ public class EntityTypePropertyExpressionImpl<E, P, F extends SerializableFuncti
      */
     @Override
     public L ni(P[] value) {
-        return expression.nin0(index, getPropertyMapping(value), value, expression.getIgnoreStrategy());
+        return expression.ni0(index, getPropertyMapping(value), value, expression.getIgnoreStrategy());
     }
 
     /**
@@ -307,7 +307,7 @@ public class EntityTypePropertyExpressionImpl<E, P, F extends SerializableFuncti
      */
     @Override
     public L ni(P[] value, IgnoreStrategy ignoreStrategy) {
-        return expression.nin0(index, getPropertyMapping(value), value, ignoreStrategy);
+        return expression.ni0(index, getPropertyMapping(value), value, ignoreStrategy);
     }
 
     /**
@@ -315,7 +315,7 @@ public class EntityTypePropertyExpressionImpl<E, P, F extends SerializableFuncti
      */
     @Override
     public L ni(P[] value, Predicate<P[]> ignoreStrategy) {
-        return expression.nin0(index, getPropertyMapping(value), value, ignoreStrategy);
+        return expression.ni0(index, getPropertyMapping(value), value, ignoreStrategy);
     }
 
     /**
