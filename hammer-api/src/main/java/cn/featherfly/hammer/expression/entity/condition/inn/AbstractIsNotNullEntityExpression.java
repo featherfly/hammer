@@ -47,7 +47,7 @@ public abstract class AbstractIsNotNullEntityExpression<E, C extends ConditionEx
      */
     @Override
     public <R> void accept(SerializableFunction<E, R> property, Boolean value) {
-        expression.isn(index, property, value);
+        expression.inn(index, property, value);
     }
 
 }

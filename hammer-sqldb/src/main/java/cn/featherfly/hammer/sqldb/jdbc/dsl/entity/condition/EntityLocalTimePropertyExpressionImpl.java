@@ -162,7 +162,7 @@ public class EntityLocalTimePropertyExpressionImpl<E, C extends ConditionExpress
      */
     @Override
     public L ni(LocalTime value) {
-        return expression.nin0(index, getPropertyMapping(value), value, expression.getIgnoreStrategy());
+        return expression.ni0(index, getPropertyMapping(value), value, expression.getIgnoreStrategy());
     }
 
     /**
@@ -170,7 +170,7 @@ public class EntityLocalTimePropertyExpressionImpl<E, C extends ConditionExpress
      */
     @Override
     public L ni(LocalTime value, IgnoreStrategy ignoreStrategy) {
-        return expression.nin0(index, getPropertyMapping(value), value, ignoreStrategy);
+        return expression.ni0(index, getPropertyMapping(value), value, ignoreStrategy);
     }
 
     /**
@@ -178,7 +178,7 @@ public class EntityLocalTimePropertyExpressionImpl<E, C extends ConditionExpress
      */
     @Override
     public L ni(LocalTime value, Predicate<LocalTime> ignoreStrategy) {
-        return expression.nin0(index, getPropertyMapping(value), value, ignoreStrategy);
+        return expression.ni0(index, getPropertyMapping(value), value, ignoreStrategy);
     }
 
     /**
@@ -186,7 +186,7 @@ public class EntityLocalTimePropertyExpressionImpl<E, C extends ConditionExpress
      */
     @Override
     public L ni(LocalTime[] value) {
-        return expression.nin0(index, getPropertyMapping(value), value, expression.getIgnoreStrategy());
+        return expression.ni0(index, getPropertyMapping(value), value, expression.getIgnoreStrategy());
     }
 
     /**
@@ -194,7 +194,7 @@ public class EntityLocalTimePropertyExpressionImpl<E, C extends ConditionExpress
      */
     @Override
     public L ni(LocalTime[] value, IgnoreStrategy ignoreStrategy) {
-        return expression.nin0(index, getPropertyMapping(value), value, ignoreStrategy);
+        return expression.ni0(index, getPropertyMapping(value), value, ignoreStrategy);
     }
 
     /**
@@ -202,7 +202,7 @@ public class EntityLocalTimePropertyExpressionImpl<E, C extends ConditionExpress
      */
     @Override
     public L ni(LocalTime[] value, Predicate<LocalTime[]> ignoreStrategy) {
-        return expression.nin0(index, getPropertyMapping(value), value, ignoreStrategy);
+        return expression.ni0(index, getPropertyMapping(value), value, ignoreStrategy);
     }
 
     /**

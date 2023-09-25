@@ -9,6 +9,7 @@
  */
 package cn.featherfly.hammer.sqldb.jdbc.dsl.entity.condition.propery;
 
+import java.util.function.DoublePredicate;
 import java.util.function.Function;
 import java.util.function.Predicate;
 
@@ -28,7 +29,7 @@ public class ConditionEntityExpressionDoublePropertyExpressionImpl
 
     private Predicate<?> ignoreStrategy;
 
-    private ThreeArgusConsumer<Double, Predicate<Double>, PropertyMapping<?>> setValue;
+    private ThreeArgusConsumer<Double, DoublePredicate, PropertyMapping<?>> setValue;
 
     /**
      * Instantiates a new condition entity expression property expression 2
@@ -39,7 +40,7 @@ public class ConditionEntityExpressionDoublePropertyExpressionImpl
      * @param setValue        the set value
      */
     public ConditionEntityExpressionDoublePropertyExpressionImpl(Function<Double, PropertyMapping<?>> propertyMapping,
-            Predicate<?> ignoreStrategy, ThreeArgusConsumer<Double, Predicate<Double>, PropertyMapping<?>> setValue) {
+            Predicate<?> ignoreStrategy, ThreeArgusConsumer<Double, DoublePredicate, PropertyMapping<?>> setValue) {
         super();
         this.propertyMapping = propertyMapping;
         this.ignoreStrategy = ignoreStrategy;
@@ -59,7 +60,7 @@ public class ConditionEntityExpressionDoublePropertyExpressionImpl
      * {@inheritDoc}
      */
     @Override
-    public void value(double value, Predicate<Double> ignoreStrategy) {
+    public void value(double value, DoublePredicate ignoreStrategy) {
         setValue.accept(value, ignoreStrategy, propertyMapping.apply(value));
     }
 }

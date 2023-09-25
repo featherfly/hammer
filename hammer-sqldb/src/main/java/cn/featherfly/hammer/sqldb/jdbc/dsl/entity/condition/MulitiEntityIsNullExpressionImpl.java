@@ -17,7 +17,7 @@ public class MulitiEntityIsNullExpressionImpl<C extends ConditionExpression, L e
         extends MulitiEntityConditionExpressionProxy<C, L> implements MulitiEntityIsNullExpression<C, L> {
 
     /**
-     * Instantiates a new muliti entity equals expression impl.
+     * Instantiates a new muliti entity is null expression impl.
      *
      * @param proxy the proxy
      */

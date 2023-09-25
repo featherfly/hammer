@@ -44,7 +44,7 @@ import cn.featherfly.hammer.expression.entity.condition.gt.GreatThanEntityExpres
 import cn.featherfly.hammer.expression.entity.condition.gt.MulitiEntityGreatThanExpression;
 import cn.featherfly.hammer.sqldb.jdbc.dsl.entity.condition.propery.ConditionEntityExpressionDatePropertyExpressionImpl;
 import cn.featherfly.hammer.sqldb.jdbc.dsl.entity.condition.propery.ConditionEntityExpressionDoublePropertyExpressionImpl;
-import cn.featherfly.hammer.sqldb.jdbc.dsl.entity.condition.propery.ConditionEntityExpressionIntegerPropertyExpressionImpl;
+import cn.featherfly.hammer.sqldb.jdbc.dsl.entity.condition.propery.ConditionEntityExpressionIntPropertyExpressionImpl;
 import cn.featherfly.hammer.sqldb.jdbc.dsl.entity.condition.propery.ConditionEntityExpressionLocalDatePropertyExpressionImpl;
 import cn.featherfly.hammer.sqldb.jdbc.dsl.entity.condition.propery.ConditionEntityExpressionLocalDateTimePropertyExpressionImpl;
 import cn.featherfly.hammer.sqldb.jdbc.dsl.entity.condition.propery.ConditionEntityExpressionLocalTimePropertyExpressionImpl;
@@ -103,7 +103,7 @@ public class GreatThanEntityExpressionImpl<E, C extends ConditionExpression, L e
      */
     @Override
     public ConditionEntityExpressionIntPropertyExpression property(SerializableToIntFunction<E> name) {
-        return new ConditionEntityExpressionIntegerPropertyExpressionImpl(v -> null, ignoreStrategy,
+        return new ConditionEntityExpressionIntPropertyExpressionImpl(v -> null, ignoreStrategy,
                 (value, ignore, pm) -> expression.gt(index, name, value, ignore));
     }
 

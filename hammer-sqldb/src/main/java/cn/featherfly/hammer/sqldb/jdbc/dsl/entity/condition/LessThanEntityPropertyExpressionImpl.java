@@ -16,6 +16,9 @@ import java.time.LocalTime;
 import java.util.Collection;
 import java.util.Date;
 import java.util.List;
+import java.util.function.DoublePredicate;
+import java.util.function.IntPredicate;
+import java.util.function.LongPredicate;
 import java.util.function.Predicate;
 
 import cn.featherfly.common.db.mapping.JdbcMappingFactory;
@@ -55,7 +58,7 @@ import cn.featherfly.hammer.expression.entity.condition.ConditionEntityExpressio
 import cn.featherfly.hammer.expression.entity.condition.lt.LessThanEntityPropertyExpression;
 import cn.featherfly.hammer.sqldb.jdbc.dsl.entity.condition.propery.ConditionEntityExpressionDatePropertyExpressionImpl;
 import cn.featherfly.hammer.sqldb.jdbc.dsl.entity.condition.propery.ConditionEntityExpressionDoublePropertyExpressionImpl;
-import cn.featherfly.hammer.sqldb.jdbc.dsl.entity.condition.propery.ConditionEntityExpressionIntegerPropertyExpressionImpl;
+import cn.featherfly.hammer.sqldb.jdbc.dsl.entity.condition.propery.ConditionEntityExpressionIntPropertyExpressionImpl;
 import cn.featherfly.hammer.sqldb.jdbc.dsl.entity.condition.propery.ConditionEntityExpressionLocalDatePropertyExpressionImpl;
 import cn.featherfly.hammer.sqldb.jdbc.dsl.entity.condition.propery.ConditionEntityExpressionLocalDateTimePropertyExpressionImpl;
 import cn.featherfly.hammer.sqldb.jdbc.dsl.entity.condition.propery.ConditionEntityExpressionLocalTimePropertyExpressionImpl;
@@ -125,7 +128,7 @@ public class LessThanEntityPropertyExpressionImpl<V, C extends ConditionExpressi
     @Override
     public ConditionEntityExpressionIntPropertyExpression property(SerializableToIntFunction<V> name) {
         propertyList.add(name);
-        return new ConditionEntityExpressionIntegerPropertyExpressionImpl(v -> getPropertyMapping(v),
+        return new ConditionEntityExpressionIntPropertyExpressionImpl(v -> getPropertyMapping(v),
                 expression.getIgnoreStrategy(), (value, ignore, pm) -> expression.lt0(index, pm, value, ignore));
     }
 
@@ -216,7 +219,7 @@ public class LessThanEntityPropertyExpressionImpl<V, C extends ConditionExpressi
 
     private ConditionEntityExpressionIntPropertyExpression property(SerializableIntSupplier name) {
         propertyList.add(name);
-        return new ConditionEntityExpressionIntegerPropertyExpressionImpl(v -> getPropertyMapping(v),
+        return new ConditionEntityExpressionIntPropertyExpressionImpl(v -> getPropertyMapping(v),
                 expression.getIgnoreStrategy(), (value, ignore, pm) -> expression.lt0(index, pm, value, ignore));
     }
 
@@ -282,7 +285,7 @@ public class LessThanEntityPropertyExpressionImpl<V, C extends ConditionExpressi
      * {@inheritDoc}
      */
     @Override
-    public void accept(SerializableToIntFunction<V> name, int value, Predicate<Integer> ignoreStrategy) {
+    public void accept(SerializableToIntFunction<V> name, int value, IntPredicate ignoreStrategy) {
         property(name).value(value, ignoreStrategy);
     }
 
@@ -298,7 +301,7 @@ public class LessThanEntityPropertyExpressionImpl<V, C extends ConditionExpressi
      * {@inheritDoc}
      */
     @Override
-    public void accept(SerializableToLongFunction<V> name, long value, Predicate<Long> ignoreStrategy) {
+    public void accept(SerializableToLongFunction<V> name, long value, LongPredicate ignoreStrategy) {
         property(name).value(value, ignoreStrategy);
     }
 
@@ -314,7 +317,7 @@ public class LessThanEntityPropertyExpressionImpl<V, C extends ConditionExpressi
      * {@inheritDoc}
      */
     @Override
-    public void accept(SerializableToDoubleFunction<V> name, double value, Predicate<Double> ignoreStrategy) {
+    public void accept(SerializableToDoubleFunction<V> name, double value, DoublePredicate ignoreStrategy) {
         property(name).value(value, ignoreStrategy);
     }
 
@@ -428,7 +431,7 @@ public class LessThanEntityPropertyExpressionImpl<V, C extends ConditionExpressi
      * {@inheritDoc}
      */
     @Override
-    public void accept(SerializableIntSupplier property, Predicate<Integer> ignoreStrategy) {
+    public void accept(SerializableIntSupplier property, IntPredicate ignoreStrategy) {
         property(property).value(property.getAsInt(), ignoreStrategy);
     }
 
@@ -444,7 +447,7 @@ public class LessThanEntityPropertyExpressionImpl<V, C extends ConditionExpressi
      * {@inheritDoc}
      */
     @Override
-    public void accept(SerializableLongSupplier property, Predicate<Long> ignoreStrategy) {
+    public void accept(SerializableLongSupplier property, LongPredicate ignoreStrategy) {
         property(property).value(property.getAsLong(), ignoreStrategy);
     }
 
@@ -460,7 +463,7 @@ public class LessThanEntityPropertyExpressionImpl<V, C extends ConditionExpressi
      * {@inheritDoc}
      */
     @Override
-    public void accept(SerializableDoubleSupplier property, Predicate<Double> ignoreStrategy) {
+    public void accept(SerializableDoubleSupplier property, DoublePredicate ignoreStrategy) {
         property(property).value(property.getAsDouble(), ignoreStrategy);
     }
 

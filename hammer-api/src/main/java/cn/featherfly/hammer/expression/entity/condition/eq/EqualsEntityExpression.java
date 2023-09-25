@@ -17,14 +17,15 @@ import cn.featherfly.common.function.serializable.SerializableFunction;
 import cn.featherfly.common.function.serializable.SerializableSupplier;
 import cn.featherfly.common.function.serializable.SerializableToCollectionFunction;
 import cn.featherfly.common.operator.ComparisonOperator.MatchStrategy;
+import cn.featherfly.hammer.expression.entity.condition.EqualsNotEqualsEntityExpression;
 
 /**
  * The Interface EqualsEntityExpression.
  *
  * @author zhongj
- * @param <E> the element type
+ * @param <T> the element type
  */
-public interface EqualsEntityExpression<E> {
+public interface EqualsEntityExpression<T> extends EqualsNotEqualsEntityExpression<T> {
 
     /**
      * entity equals function property expression.
@@ -34,7 +35,7 @@ public interface EqualsEntityExpression<E> {
      * @return entity equals function property expression.
      */
 
-    <R> EqualsEntityPropertyExpression<R> property(SerializableFunction<E, R> name);
+    <R> EqualsEntityPropertyExpression<R> property(SerializableFunction<T, R> name);
 
     /**
      * entity equals function property expression.
@@ -45,7 +46,7 @@ public interface EqualsEntityExpression<E> {
      * @return entity equals function property expression.
      */
     <R extends Collection<RE>,
-            RE> EqualsEntityPropertyExpression<RE> property(SerializableToCollectionFunction<E, R, RE> name);
+            RE> EqualsEntityPropertyExpression<RE> property(SerializableToCollectionFunction<T, R, RE> name);
 
     /**
      * equals. 等于.
@@ -55,7 +56,8 @@ public interface EqualsEntityExpression<E> {
      * @param value    the value
      * @return the l
      */
-    <R> void accept(SerializableFunction<E, R> property, R value);
+    @Override
+    <R> void accept(SerializableFunction<T, R> property, R value);
 
     /**
      * equals. 等于.
@@ -66,30 +68,34 @@ public interface EqualsEntityExpression<E> {
      * @param queryPolicy the query policy
      * @return the l
      */
-    <R> void accept(SerializableFunction<E, R> property, R value, MatchStrategy matchStrategy);
+    @Override
+    <R> void accept(SerializableFunction<T, R> property, R value, MatchStrategy matchStrategy);
 
     /**
      * equals. 等于.
      *
-     * @param <R>          the generic type
-     * @param property     the property
-     * @param value        the value
+     * @param <R>            the generic type
+     * @param property       the property
+     * @param value          the value
      * @param ignoreStrategy the ignore strategy
      * @return the l
      */
-    <R> void accept(SerializableFunction<E, R> property, R value, Predicate<R> ignoreStrategy);
+    @Override
+    <R> void accept(SerializableFunction<T, R> property, R value, Predicate<R> ignoreStrategy);
 
     /**
      * equals. 等于.
      *
-     * @param <R>          the generic type
-     * @param property     the property
-     * @param value        the value
-     * @param queryPolicy  the query policy
+     * @param <R>            the generic type
+     * @param property       the property
+     * @param value          the value
+     * @param queryPolicy    the query policy
      * @param ignoreStrategy the ignore strategy
      * @return the l
      */
-    <R> void accept(SerializableFunction<E, R> property, R value, MatchStrategy matchStrategy, Predicate<R> ignoreStrategy);
+    @Override
+    <R> void accept(SerializableFunction<T, R> property, R value, MatchStrategy matchStrategy,
+            Predicate<R> ignoreStrategy);
 
     /**
      * equals. 等于.
@@ -98,16 +104,18 @@ public interface EqualsEntityExpression<E> {
      * @param property 对象属性
      * @return LogicExpression
      */
+    @Override
     <R> void accept(SerializableSupplier<R> property);
 
     /**
      * equals. 等于.
      *
-     * @param <R>          the generic type
-     * @param property     对象属性
+     * @param <R>            the generic type
+     * @param property       对象属性
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
+    @Override
     <R> void accept(SerializableSupplier<R> property, Predicate<R> ignoreStrategy);
 
     /**
@@ -118,16 +126,18 @@ public interface EqualsEntityExpression<E> {
      * @param queryPolicy the query policy
      * @return LogicExpression
      */
+    @Override
     <R> void accept(SerializableSupplier<R> property, MatchStrategy matchStrategy);
 
     /**
      * equals. 等于.
      *
-     * @param <R>          the generic type
-     * @param property     对象属性
-     * @param queryPolicy  the query policy
+     * @param <R>            the generic type
+     * @param property       对象属性
+     * @param queryPolicy    the query policy
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
+    @Override
     <R> void accept(SerializableSupplier<R> property, MatchStrategy matchStrategy, Predicate<R> ignoreStrategy);
 }

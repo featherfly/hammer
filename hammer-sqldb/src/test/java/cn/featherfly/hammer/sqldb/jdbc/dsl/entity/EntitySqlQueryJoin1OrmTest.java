@@ -8,11 +8,14 @@ import static org.testng.Assert.assertEquals;
 import static org.testng.Assert.assertNotNull;
 
 import java.util.List;
+import java.util.Set;
 
 import org.testng.annotations.Test;
 
 import com.speedment.common.tuple.Tuple2;
 
+import cn.featherfly.common.function.serializable.SerializableFunction;
+import cn.featherfly.common.lang.Lang;
 import cn.featherfly.common.repository.IgnoreStrategy;
 import cn.featherfly.hammer.sqldb.jdbc.vo.r.Address;
 import cn.featherfly.hammer.sqldb.jdbc.vo.r.DistrictDivision;
@@ -20,6 +23,7 @@ import cn.featherfly.hammer.sqldb.jdbc.vo.r.Order;
 import cn.featherfly.hammer.sqldb.jdbc.vo.r.Tree;
 import cn.featherfly.hammer.sqldb.jdbc.vo.r.User;
 import cn.featherfly.hammer.sqldb.jdbc.vo.r.UserInfo;
+import cn.featherfly.hammer.sqldb.jdbc.vo.s.UserInfo2;
 
 /**
  * sql query type test.
@@ -245,6 +249,55 @@ public class EntitySqlQueryJoin1OrmTest extends AbstractEntitySqlQueryJoinTest {
     }
 
     @Test
+    void testJoin_E_R_eq() {
+        String city = "成都";
+        String district = "金牛";
+        int id = 1;
+        List<UserInfo> userInfos = query.find(UserInfo.class) //
+                .join(UserInfo::getUser) //
+                .where() //
+                .eq((e1, e2) -> e1.property(UserInfo::getId).value(id)) //
+                .list();
+        for (UserInfo userInfo : userInfos) {
+            assertTrue(userInfo.getId().equals(id));
+        }
+
+        userInfos = query.find(UserInfo.class) //
+                .join(UserInfo::getUser) //
+                .where() //
+                .eq((e1, e2) -> e1.accept(UserInfo::getId, id)) //
+                .list();
+        for (UserInfo userInfo : userInfos) {
+            assertTrue(userInfo.getId().equals(id));
+        }
+
+        userInfos = query.find(UserInfo.class) //
+                .join(UserInfo::getUser) //
+                .where() //
+                .eq((e1, e2) -> e1.property(UserInfo::getDivision).property(DistrictDivision::getCity).value(city)) //
+                .and() //
+                .eq((e1, e2) -> e1.property(UserInfo::getDivision).property(DistrictDivision::getDistrict)
+                        .value(district)) //
+                .list();
+        for (UserInfo userInfo : userInfos) {
+            assertTrue(userInfo.getDivision().getCity().equals(city));
+            assertTrue(userInfo.getDivision().getDistrict().equals(district));
+        }
+
+        userInfos = query.find(UserInfo.class) //
+                .join(UserInfo::getUser) //
+                .where() //
+                .eq((e1, e2) -> e1.property(UserInfo::getDivision).accept(DistrictDivision::getCity, city)) //
+                .and() //
+                .eq((e1, e2) -> e1.property(UserInfo::getDivision).accept(DistrictDivision::getDistrict, district)) //
+                .list();
+        for (UserInfo userInfo : userInfos) {
+            assertTrue(userInfo.getDivision().getCity().equals(city));
+            assertTrue(userInfo.getDivision().getDistrict().equals(district));
+        }
+    }
+
+    @Test
     void testJoin_E_R_ne() {
         String city = "成都";
         String district = "金牛";
@@ -261,10 +314,31 @@ public class EntitySqlQueryJoin1OrmTest extends AbstractEntitySqlQueryJoinTest {
         userInfos = query.find(UserInfo.class) //
                 .join(UserInfo::getUser) //
                 .where() //
+                .ne((e1, e2) -> e1.accept(UserInfo::getId, id)) //
+                .list();
+        for (UserInfo userInfo : userInfos) {
+            assertFalse(userInfo.getId().equals(id));
+        }
+
+        userInfos = query.find(UserInfo.class) //
+                .join(UserInfo::getUser) //
+                .where() //
                 .ne((e1, e2) -> e1.property(UserInfo::getDivision).property(DistrictDivision::getCity).value(city)) //
                 .and() //
                 .ne((e1, e2) -> e1.property(UserInfo::getDivision).property(DistrictDivision::getDistrict)
                         .value(district)) //
+                .list();
+        for (UserInfo userInfo : userInfos) {
+            assertFalse(userInfo.getDivision().getCity().equals(city));
+            assertFalse(userInfo.getDivision().getDistrict().equals(district));
+        }
+
+        userInfos = query.find(UserInfo.class) //
+                .join(UserInfo::getUser) //
+                .where() //
+                .ne((e1, e2) -> e1.property(UserInfo::getDivision).accept(DistrictDivision::getCity, city)) //
+                .and() //
+                .ne((e1, e2) -> e1.property(UserInfo::getDivision).accept(DistrictDivision::getDistrict, district)) //
                 .list();
         for (UserInfo userInfo : userInfos) {
             assertFalse(userInfo.getDivision().getCity().equals(city));
@@ -1085,6 +1159,376 @@ public class EntitySqlQueryJoin1OrmTest extends AbstractEntitySqlQueryJoinTest {
                 .list();
         for (UserInfo ui : userInfos) {
             assertTrue(ui.getAddress().getStreetNo() < no);
+        }
+    }
+
+    @Test
+    void testJoin_R_E_isn() {
+        List<UserInfo2> userInfos = query.find(UserInfo2.class) //
+                .join(User.class).on(UserInfo2::getUserId) //
+                .where() //
+                .isn((e1, e2) -> e1.property(UserInfo2::getStreetNo).value()) //
+                .list();
+        for (UserInfo2 ui : userInfos) {
+            assertNull(ui.getStreetNo());
+        }
+
+        userInfos = query.find(UserInfo2.class) //
+                .join(User.class).on(UserInfo2::getUserId) //
+                .where() //
+                .isn((e1, e2) -> e1.property(UserInfo2::getStreetNo).value(true)) //
+                .list();
+        for (UserInfo2 ui : userInfos) {
+            assertNull(ui.getStreetNo());
+        }
+
+        userInfos = query.find(UserInfo2.class) //
+                .join(User.class).on(UserInfo2::getUserId) //
+                .where() //
+                .isn((e1, e2) -> e1.property(UserInfo2::getStreetNo).value(false)) //
+                .list();
+        for (UserInfo2 ui : userInfos) {
+            assertNotNull(ui.getStreetNo());
+        }
+
+        // ----------------------------------------------------------------------------------------------------------------
+
+        userInfos = query.find(UserInfo2.class) //
+                .join(User.class).on(UserInfo2::getUserId) //
+                .where() //
+                .isn((e1, e2) -> e1.accept(UserInfo2::getStreetNo)) //
+                .list();
+        for (UserInfo2 ui : userInfos) {
+            assertNull(ui.getStreetNo());
+        }
+
+        userInfos = query.find(UserInfo2.class) //
+                .join(User.class).on(UserInfo2::getUserId) //
+                .where() //
+                .isn((e1, e2) -> e1.accept(UserInfo2::getStreetNo, true)) //
+                .list();
+        for (UserInfo2 ui : userInfos) {
+            assertNull(ui.getStreetNo());
+        }
+
+        userInfos = query.find(UserInfo2.class) //
+                .join(User.class).on(UserInfo2::getUserId) //
+                .where() //
+                .isn((e1, e2) -> e1.accept(UserInfo2::getStreetNo, false)) //
+                .list();
+        for (UserInfo2 ui : userInfos) {
+            assertNotNull(ui.getStreetNo());
+        }
+
+        // ----------------------------------------------------------------------------------------------------------------
+
+        userInfos = query.find(UserInfo2.class) //
+                .join(User.class).on(UserInfo2::getUserId) //
+                .where() //
+                .property((e1, e2) -> e1.apply(UserInfo2::getStreetNo).isn()) //
+                .list();
+        for (UserInfo2 ui : userInfos) {
+            assertNull(ui.getStreetNo());
+        }
+
+        userInfos = query.find(UserInfo2.class) //
+                .join(User.class).on(UserInfo2::getUserId) //
+                .where() //
+                .property((e1, e2) -> e1.apply(UserInfo2::getStreetNo).isn(true)) //
+                .list();
+        for (UserInfo2 ui : userInfos) {
+            assertNull(ui.getStreetNo());
+        }
+
+        userInfos = query.find(UserInfo2.class) //
+                .join(User.class).on(UserInfo2::getUserId) //
+                .where() //
+                .property((e1, e2) -> e1.apply(UserInfo2::getStreetNo).isn(false)) //
+                .list();
+        for (UserInfo2 ui : userInfos) {
+            assertNotNull(ui.getStreetNo());
+        }
+    }
+
+    @Test
+    void testJoin_R_E_isn2() {
+        List<UserInfo> userInfos = query.find(UserInfo.class) //
+                .join(UserInfo::getUser) //
+                .where() //
+                .isn((e1, e2) -> e1.property(UserInfo::getAddress).accept(Address::getStreetNo)) //
+                .list();
+        for (UserInfo ui : userInfos) {
+            assertNull(ui.getAddress().getStreetNo());
+        }
+
+        userInfos = query.find(UserInfo.class) //
+                .join(UserInfo::getUser) //
+                .where() //
+                .isn((e1, e2) -> e1.property(UserInfo::getAddress).accept(Address::getStreetNo, true)) //
+                .list();
+        for (UserInfo ui : userInfos) {
+            assertNull(ui.getAddress().getStreetNo());
+        }
+
+        userInfos = query.find(UserInfo.class) //
+                .join(UserInfo::getUser) //
+                .where() //
+                .isn((e1, e2) -> e1.property(UserInfo::getAddress).accept(Address::getStreetNo, false)) //
+                .list();
+        for (UserInfo ui : userInfos) {
+            assertNotNull(ui.getAddress().getStreetNo());
+        }
+    }
+
+    @Test
+    void testJoin_R_E_inn() {
+        List<UserInfo2> userInfos = query.find(UserInfo2.class) //
+                .join(User.class).on(UserInfo2::getUserId) //
+                .where() //
+                .inn((e1, e2) -> e1.property(UserInfo2::getStreetNo).value()) //
+                .list();
+        for (UserInfo2 ui : userInfos) {
+            assertNotNull(ui.getStreetNo());
+        }
+
+        userInfos = query.find(UserInfo2.class) //
+                .join(User.class).on(UserInfo2::getUserId) //
+                .where() //
+                .inn((e1, e2) -> e1.property(UserInfo2::getStreetNo).value(true)) //
+                .list();
+        for (UserInfo2 ui : userInfos) {
+            assertNotNull(ui.getStreetNo());
+        }
+
+        userInfos = query.find(UserInfo2.class) //
+                .join(User.class).on(UserInfo2::getUserId) //
+                .where() //
+                .inn((e1, e2) -> e1.property(UserInfo2::getStreetNo).value(false)) //
+                .list();
+        for (UserInfo2 ui : userInfos) {
+            assertNull(ui.getStreetNo());
+        }
+
+        // ----------------------------------------------------------------------------------------------------------------
+
+        userInfos = query.find(UserInfo2.class) //
+                .join(User.class).on(UserInfo2::getUserId) //
+                .where() //
+                .inn((e1, e2) -> e1.accept(UserInfo2::getStreetNo)) //
+                .list();
+        for (UserInfo2 ui : userInfos) {
+            assertNotNull(ui.getStreetNo());
+        }
+
+        userInfos = query.find(UserInfo2.class) //
+                .join(User.class).on(UserInfo2::getUserId) //
+                .where() //
+                .inn((e1, e2) -> e1.accept(UserInfo2::getStreetNo, true)) //
+                .list();
+        for (UserInfo2 ui : userInfos) {
+            assertNotNull(ui.getStreetNo());
+        }
+
+        userInfos = query.find(UserInfo2.class) //
+                .join(User.class).on(UserInfo2::getUserId) //
+                .where() //
+                .inn((e1, e2) -> e1.accept(UserInfo2::getStreetNo, false)) //
+                .list();
+        for (UserInfo2 ui : userInfos) {
+            assertNull(ui.getStreetNo());
+        }
+
+        // ----------------------------------------------------------------------------------------------------------------
+
+        userInfos = query.find(UserInfo2.class) //
+                .join(User.class).on(UserInfo2::getUserId) //
+                .where() //
+                .property((e1, e2) -> e1.apply(UserInfo2::getStreetNo).inn()) //
+                .list();
+        for (UserInfo2 ui : userInfos) {
+            assertNotNull(ui.getStreetNo());
+        }
+
+        userInfos = query.find(UserInfo2.class) //
+                .join(User.class).on(UserInfo2::getUserId) //
+                .where() //
+                .property((e1, e2) -> e1.apply(UserInfo2::getStreetNo).inn(true)) //
+                .list();
+        for (UserInfo2 ui : userInfos) {
+            assertNotNull(ui.getStreetNo());
+        }
+
+        userInfos = query.find(UserInfo2.class) //
+                .join(User.class).on(UserInfo2::getUserId) //
+                .where() //
+                .property((e1, e2) -> e1.apply(UserInfo2::getStreetNo).inn(false)) //
+                .list();
+        for (UserInfo2 ui : userInfos) {
+            assertNull(ui.getStreetNo());
+        }
+    }
+
+    @Test
+    void testJoin_R_E_inn2() {
+        List<UserInfo> userInfos = query.find(UserInfo.class) //
+                .join(UserInfo::getUser) //
+                .where() //
+                .inn((e1, e2) -> e1.property(UserInfo::getAddress).accept(Address::getStreetNo)) //
+                .list();
+        for (UserInfo ui : userInfos) {
+            assertNotNull(ui.getAddress().getStreetNo());
+        }
+
+        userInfos = query.find(UserInfo.class) //
+                .join(UserInfo::getUser) //
+                .where() //
+                .inn((e1, e2) -> e1.property(UserInfo::getAddress).accept(Address::getStreetNo, true)) //
+                .list();
+        for (UserInfo ui : userInfos) {
+            assertNotNull(ui.getAddress().getStreetNo());
+        }
+
+        userInfos = query.find(UserInfo.class) //
+                .join(UserInfo::getUser) //
+                .where() //
+                .inn((e1, e2) -> e1.property(UserInfo::getAddress).accept(Address::getStreetNo, false)) //
+                .list();
+        for (UserInfo ui : userInfos) {
+            assertNull(ui.getAddress().getStreetNo());
+        }
+    }
+
+    @Test
+    void testJoin_E_R_in() {
+        int id = 1;
+        Integer[] ids = new Integer[] { 1, 2, 3, 4 };
+        //        Set<Integer> idSet = Lang.set(1, 2, 3, 4);
+        Set<Integer> idSet = Lang.set(ids);
+        List<UserInfo> userInfos = null;
+
+        userInfos = query.find(UserInfo.class) //
+                .join(UserInfo::getUser) //
+                .where() //
+                .in((e1, e2) -> e1.property(UserInfo::getId).value(id)) //
+                .list();
+        for (UserInfo userInfo : userInfos) {
+            assertTrue(userInfo.getId().equals(id));
+        }
+
+        userInfos = query.find(UserInfo.class) //
+                .join(UserInfo::getUser) //
+                .where() //
+                .in((e1, e2) -> e1.property(UserInfo::getId).value(ids)) //
+                .list();
+        for (UserInfo userInfo : userInfos) {
+            assertTrue(idSet.contains(userInfo.getId()));
+        }
+
+        userInfos = query.find(UserInfo.class) //
+                .join(UserInfo::getUser) //
+                .where() //
+                .in((e1, e2) -> e1.accept(UserInfo::getId, id)) //
+                .list();
+        for (UserInfo userInfo : userInfos) {
+            assertTrue(userInfo.getId().equals(id));
+        }
+
+        userInfos = query.find(UserInfo.class) //
+                .join(UserInfo::getUser) //
+                .where() //
+                .in((e1, e2) -> e1.accept((SerializableFunction<UserInfo, Integer>) UserInfo::getId, ids)) //
+                .list();
+        for (UserInfo userInfo : userInfos) {
+            assertTrue(idSet.contains(userInfo.getId()));
+        }
+
+        String[] districts = new String[] { "金牛", "武侯" };
+        Set<String> dSet = Lang.set(districts);
+        userInfos = query.find(UserInfo.class) //
+                .join(UserInfo::getUser) //
+                .where() //
+                .in((e1, e2) -> e1.property(UserInfo::getDivision).property(DistrictDivision::getDistrict)
+                        .value(districts)) //
+                .list();
+        for (UserInfo userInfo : userInfos) {
+            assertTrue(dSet.contains(userInfo.getDivision().getDistrict()));
+        }
+
+        userInfos = query.find(UserInfo.class) //
+                .join(UserInfo::getUser) //
+                .where() //
+                .in((e1, e2) -> e1.property(UserInfo::getDivision).accept(
+                        (SerializableFunction<DistrictDivision, String>) DistrictDivision::getDistrict, districts)) //
+                .list();
+        for (UserInfo userInfo : userInfos) {
+            assertTrue(dSet.contains(userInfo.getDivision().getDistrict()));
+        }
+    }
+
+    @Test
+    void testJoin_E_R_ni() {
+        int id = 1;
+        Integer[] ids = new Integer[] { 1, 2, 3, 4 };
+        //        Set<Integer> idSet = Lang.set(1, 2, 3, 4);
+        Set<Integer> idSet = Lang.set(ids);
+        List<UserInfo> userInfos = null;
+
+        userInfos = query.find(UserInfo.class) //
+                .join(UserInfo::getUser) //
+                .where() //
+                .ni((e1, e2) -> e1.property(UserInfo::getId).value(id)) //
+                .list();
+        for (UserInfo userInfo : userInfos) {
+            assertFalse(userInfo.getId().equals(id));
+        }
+
+        userInfos = query.find(UserInfo.class) //
+                .join(UserInfo::getUser) //
+                .where() //
+                .ni((e1, e2) -> e1.property(UserInfo::getId).value(ids)) //
+                .list();
+        for (UserInfo userInfo : userInfos) {
+            assertFalse(idSet.contains(userInfo.getId()));
+        }
+
+        userInfos = query.find(UserInfo.class) //
+                .join(UserInfo::getUser) //
+                .where() //
+                .ni((e1, e2) -> e1.accept(UserInfo::getId, id)) //
+                .list();
+        for (UserInfo userInfo : userInfos) {
+            assertFalse(userInfo.getId().equals(id));
+        }
+
+        userInfos = query.find(UserInfo.class) //
+                .join(UserInfo::getUser) //
+                .where() //
+                .ni((e1, e2) -> e1.accept((SerializableFunction<UserInfo, Integer>) UserInfo::getId, ids)) //
+                .list();
+        for (UserInfo userInfo : userInfos) {
+            assertFalse(idSet.contains(userInfo.getId()));
+        }
+
+        String[] districts = new String[] { "金牛", "武侯" };
+        Set<String> dSet = Lang.set(districts);
+        userInfos = query.find(UserInfo.class) //
+                .join(UserInfo::getUser) //
+                .where() //
+                .ni((e1, e2) -> e1.property(UserInfo::getDivision).property(DistrictDivision::getDistrict)
+                        .value(districts)) //
+                .list();
+        for (UserInfo userInfo : userInfos) {
+            assertFalse(dSet.contains(userInfo.getDivision().getDistrict()));
+        }
+
+        userInfos = query.find(UserInfo.class) //
+                .join(UserInfo::getUser) //
+                .where() //
+                .ni((e1, e2) -> e1.property(UserInfo::getDivision).accept(
+                        (SerializableFunction<DistrictDivision, String>) DistrictDivision::getDistrict, districts)) //
+                .list();
+        for (UserInfo userInfo : userInfos) {
+            assertFalse(dSet.contains(userInfo.getDivision().getDistrict()));
         }
     }
 }

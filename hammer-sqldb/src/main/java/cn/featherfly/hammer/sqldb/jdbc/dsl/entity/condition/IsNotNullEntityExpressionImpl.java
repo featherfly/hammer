@@ -13,7 +13,6 @@ package cn.featherfly.hammer.sqldb.jdbc.dsl.entity.condition;
 import java.util.function.Predicate;
 
 import cn.featherfly.common.db.mapping.JdbcMappingFactory;
-import cn.featherfly.common.exception.NotImplementedException;
 import cn.featherfly.common.function.serializable.SerializableFunction;
 import cn.featherfly.hammer.expression.condition.ConditionExpression;
 import cn.featherfly.hammer.expression.condition.LogicExpression;
@@ -53,8 +52,8 @@ public class IsNotNullEntityExpressionImpl<E, C extends ConditionExpression, L e
      * {@inheritDoc}
      */
     @Override
-    public <R> IsNotNullEntityPropertyExpression<E, R> property(SerializableFunction<E, R> name) {
-        // IMPLSOON 未实现property
-        throw new NotImplementedException();
+    public <R> IsNotNullEntityPropertyExpression<R> property(SerializableFunction<E, R> name) {
+        return new IsNotNullEntityPropertyExpressionImpl<>(index, name,
+                (MulitiEntityIsNotNullExpressionImpl<C, L>) expression, factory);
     }
 }

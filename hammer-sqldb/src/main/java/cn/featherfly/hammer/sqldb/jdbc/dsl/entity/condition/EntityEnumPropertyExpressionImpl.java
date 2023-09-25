@@ -161,7 +161,7 @@ public class EntityEnumPropertyExpressionImpl<E, T extends Enum<T>, C extends Co
      */
     @Override
     public L ni(T value) {
-        return expression.nin0(index, getPropertyMapping(value), value, expression.getIgnoreStrategy());
+        return expression.ni0(index, getPropertyMapping(value), value, expression.getIgnoreStrategy());
     }
 
     /**
@@ -169,7 +169,7 @@ public class EntityEnumPropertyExpressionImpl<E, T extends Enum<T>, C extends Co
      */
     @Override
     public L ni(T value, IgnoreStrategy ignoreStrategy) {
-        return expression.nin0(index, getPropertyMapping(value), value, ignoreStrategy);
+        return expression.ni0(index, getPropertyMapping(value), value, ignoreStrategy);
     }
 
     /**
@@ -177,7 +177,7 @@ public class EntityEnumPropertyExpressionImpl<E, T extends Enum<T>, C extends Co
      */
     @Override
     public L ni(T value, Predicate<T> ignoreStrategy) {
-        return expression.nin0(index, getPropertyMapping(value), value, ignoreStrategy);
+        return expression.ni0(index, getPropertyMapping(value), value, ignoreStrategy);
     }
 
     /**
@@ -185,7 +185,7 @@ public class EntityEnumPropertyExpressionImpl<E, T extends Enum<T>, C extends Co
      */
     @Override
     public L ni(T[] value) {
-        return expression.nin0(index, getPropertyMapping(value), value, expression.getIgnoreStrategy());
+        return expression.ni0(index, getPropertyMapping(value), value, expression.getIgnoreStrategy());
     }
 
     /**
@@ -193,7 +193,7 @@ public class EntityEnumPropertyExpressionImpl<E, T extends Enum<T>, C extends Co
      */
     @Override
     public L ni(T[] value, IgnoreStrategy ignoreStrategy) {
-        return expression.nin0(index, getPropertyMapping(value), value, ignoreStrategy);
+        return expression.ni0(index, getPropertyMapping(value), value, ignoreStrategy);
     }
 
     /**
@@ -201,7 +201,7 @@ public class EntityEnumPropertyExpressionImpl<E, T extends Enum<T>, C extends Co
      */
     @Override
     public L ni(T[] value, Predicate<T[]> ignoreStrategy) {
-        return expression.nin0(index, getPropertyMapping(value), value, ignoreStrategy);
+        return expression.ni0(index, getPropertyMapping(value), value, ignoreStrategy);
     }
 
     /**

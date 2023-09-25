@@ -14,14 +14,14 @@ import cn.featherfly.hammer.sqldb.sql.dml.AbstractEntitySqlQueryConditionGroupEx
  * The Class EntitySqlQueryExpression2.
  *
  * @author zhongj
- * @param <E>  the element type
- * @param <E2> the generic type
+ * @param <T1> the element type
+ * @param <T2> the generic type
  * @param <RS> the query result type
  */
-public class EntitySqlQueryExpression2<E, E2, RS> extends
-        AbstractEntitySqlQueryConditionGroupExpression2<E, E2, RS, EntityQueryConditionGroup2<E, E2, RS>,
-                EntityQueryConditionGroupLogic2<E, E2, RS>>
-        implements EntityQueryConditionGroup2<E, E2, RS>, EntityQueryConditionGroupLogic2<E, E2, RS> {
+public class EntitySqlQueryExpression2<T1, T2, RS> extends
+        AbstractEntitySqlQueryConditionGroupExpression2<T1, T2, RS, EntityQueryConditionGroup2<T1, T2, RS>,
+                EntityQueryConditionGroupLogic2<T1, T2, RS>>
+        implements EntityQueryConditionGroup2<T1, T2, RS>, EntityQueryConditionGroupLogic2<T1, T2, RS> {
 
     /**
      * Instantiates a new entity sql query expression.
@@ -43,7 +43,7 @@ public class EntitySqlQueryExpression2<E, E2, RS> extends
      * @param sqlPageFactory the sql page factory
      * @param queryRelation  the query relation
      */
-    EntitySqlQueryExpression2(EntityQueryConditionGroupLogic2<E, E2, RS> parent, JdbcMappingFactory factory,
+    EntitySqlQueryExpression2(EntityQueryConditionGroupLogic2<T1, T2, RS> parent, JdbcMappingFactory factory,
             SqlPageFactory sqlPageFactory, EntitySqlQueryRelation queryRelation) {
         super(parent, factory, sqlPageFactory, queryRelation);
     }
@@ -52,7 +52,7 @@ public class EntitySqlQueryExpression2<E, E2, RS> extends
      * {@inheritDoc}
      */
     @Override
-    protected EntityQueryConditionGroup2<E, E2, RS> createGroup(EntityQueryConditionGroupLogic2<E, E2, RS> parent) {
+    protected EntityQueryConditionGroup2<T1, T2, RS> createGroup(EntityQueryConditionGroupLogic2<T1, T2, RS> parent) {
         return new EntitySqlQueryExpression2<>(parent, factory, sqlPageFactory, entityRelation);
     }
 

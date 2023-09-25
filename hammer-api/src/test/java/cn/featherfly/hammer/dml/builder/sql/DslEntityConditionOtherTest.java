@@ -216,7 +216,7 @@ public class DslEntityConditionOtherTest {
         query.find(UserInfo.class).join(User::getUserInfo).where()
                 .in(es -> es.get0().property(UserInfo::getId).value(1)).list();
         query.find(UserInfo.class).join(User::getUserInfo).where()
-                .in(es -> es.get0().property(UserInfo::getId).value(1, (Integer value) -> ignore)).list();
+                .in(es -> es.get0().property(UserInfo::getId).value(1, value -> ignore)).list();
         query.find(UserInfo.class).join(User::getUserInfo).where()
                 .in(es -> es.get0().property(UserInfo::getId).value(1, 2)).list();
         query.find(UserInfo.class).join(User::getUserInfo).where()
@@ -343,7 +343,7 @@ public class DslEntityConditionOtherTest {
         query.find(UserInfo.class).join(User::getUserInfo).where()
                 .ni(es -> es.get0().property(UserInfo::getId).value(1)).list();
         query.find(UserInfo.class).join(User::getUserInfo).where()
-                .ni(es -> es.get0().property(UserInfo::getId).value(1, (Integer value) -> ignore)).list();
+                .ni(es -> es.get0().property(UserInfo::getId).value(1, value -> ignore)).list();
         query.find(UserInfo.class).join(User::getUserInfo).where()
                 .ni(es -> es.get0().property(UserInfo::getId).value(1, 2)).list();
         query.find(UserInfo.class).join(User::getUserInfo).where()

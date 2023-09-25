@@ -5,21 +5,24 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.Date;
+import java.util.function.DoublePredicate;
+import java.util.function.IntPredicate;
+import java.util.function.LongPredicate;
 import java.util.function.Predicate;
 
 import cn.featherfly.common.function.serializable.SerializableDateSupplier;
-import cn.featherfly.common.function.serializable.SerializableLocalDateSupplier;
-import cn.featherfly.common.function.serializable.SerializableLocalDateTimeSupplier;
-import cn.featherfly.common.function.serializable.SerializableLocalTimeSupplier;
-import cn.featherfly.common.function.serializable.SerializableNumberSupplier;
 import cn.featherfly.common.function.serializable.SerializableDoubleSupplier;
 import cn.featherfly.common.function.serializable.SerializableFunction;
 import cn.featherfly.common.function.serializable.SerializableIntSupplier;
+import cn.featherfly.common.function.serializable.SerializableLocalDateSupplier;
+import cn.featherfly.common.function.serializable.SerializableLocalDateTimeSupplier;
+import cn.featherfly.common.function.serializable.SerializableLocalTimeSupplier;
 import cn.featherfly.common.function.serializable.SerializableLongSupplier;
+import cn.featherfly.common.function.serializable.SerializableNumberSupplier;
+import cn.featherfly.common.function.serializable.SerializableStringSupplier;
 import cn.featherfly.common.function.serializable.SerializableToDoubleFunction2;
 import cn.featherfly.common.function.serializable.SerializableToIntFunction2;
 import cn.featherfly.common.function.serializable.SerializableToLongFunction2;
-import cn.featherfly.common.function.serializable.SerializableStringSupplier;
 import cn.featherfly.hammer.expression.condition.ConditionExpression;
 import cn.featherfly.hammer.expression.condition.LogicExpression;
 
@@ -35,14 +38,6 @@ import cn.featherfly.hammer.expression.condition.LogicExpression;
 public interface EntityGreatThanExpressionBase2<E, E2, C extends ConditionExpression, L extends LogicExpression<C, L>>
         extends EntityGreatThanExpression<E, C, L> {
 
-    //    /**
-    //     * great than. 大于.
-    //     *
-    //     * @param consumer the consumer
-    //     * @return LogicExpression
-    //     */
-    //    L gt2(Consumer<EntityGreatEqualsExpressionBase2<E, C, L>> consumer);
-
     /**
      * great than. 大于.
      *
@@ -55,12 +50,12 @@ public interface EntityGreatThanExpressionBase2<E, E2, C extends ConditionExpres
     /**
      * great than. 大于.
      *
-     * @param name         参数名称
-     * @param value        参数值
+     * @param name           参数名称
+     * @param value          参数值
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
-    L gt2(SerializableToIntFunction2<E2> name, int value, Predicate<Integer> ignoreStrategy);
+    L gt2(SerializableToIntFunction2<E2> name, int value, IntPredicate ignoreStrategy);
 
     /**
      * great than. 大于.
@@ -74,12 +69,12 @@ public interface EntityGreatThanExpressionBase2<E, E2, C extends ConditionExpres
     /**
      * great than. 大于.
      *
-     * @param name         参数名称
-     * @param value        参数值
+     * @param name           参数名称
+     * @param value          参数值
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
-    L gt2(SerializableToLongFunction2<E2> name, long value, Predicate<Long> ignoreStrategy);
+    L gt2(SerializableToLongFunction2<E2> name, long value, LongPredicate ignoreStrategy);
 
     /**
      * great than. 大于.
@@ -93,12 +88,12 @@ public interface EntityGreatThanExpressionBase2<E, E2, C extends ConditionExpres
     /**
      * great than. 大于.
      *
-     * @param name         参数名称
-     * @param value        参数值
+     * @param name           参数名称
+     * @param value          参数值
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
-    L gt2(SerializableToDoubleFunction2<E2> name, double value, Predicate<Double> ignoreStrategy);
+    L gt2(SerializableToDoubleFunction2<E2> name, double value, DoublePredicate ignoreStrategy);
 
     /**
      * great than. 大于.
@@ -113,9 +108,9 @@ public interface EntityGreatThanExpressionBase2<E, E2, C extends ConditionExpres
     /**
      * great than. 大于.
      *
-     * @param <N>          number type
-     * @param name         参数名称
-     * @param value        参数值
+     * @param <N>            number type
+     * @param name           参数名称
+     * @param value          参数值
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
@@ -134,9 +129,9 @@ public interface EntityGreatThanExpressionBase2<E, E2, C extends ConditionExpres
     /**
      * great than. 大于.
      *
-     * @param <D>          date type
-     * @param name         参数名称
-     * @param value        参数值
+     * @param <D>            date type
+     * @param name           参数名称
+     * @param value          参数值
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
@@ -154,8 +149,8 @@ public interface EntityGreatThanExpressionBase2<E, E2, C extends ConditionExpres
     /**
      * great than. 大于.
      *
-     * @param name         参数名称
-     * @param value        参数值
+     * @param name           参数名称
+     * @param value          参数值
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
@@ -173,8 +168,8 @@ public interface EntityGreatThanExpressionBase2<E, E2, C extends ConditionExpres
     /**
      * great than. 大于.
      *
-     * @param name         参数名称
-     * @param value        参数值
+     * @param name           参数名称
+     * @param value          参数值
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
@@ -192,8 +187,8 @@ public interface EntityGreatThanExpressionBase2<E, E2, C extends ConditionExpres
     /**
      * great than. 大于.
      *
-     * @param name         参数名称
-     * @param value        参数值
+     * @param name           参数名称
+     * @param value          参数值
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
@@ -211,8 +206,8 @@ public interface EntityGreatThanExpressionBase2<E, E2, C extends ConditionExpres
     /**
      * great than. 大于.
      *
-     * @param name         参数名称
-     * @param value        参数值
+     * @param name           参数名称
+     * @param value          参数值
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
@@ -229,11 +224,11 @@ public interface EntityGreatThanExpressionBase2<E, E2, C extends ConditionExpres
     /**
      * great than. 大于.
      *
-     * @param property     对象属性
+     * @param property       对象属性
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
-    L gt2(SerializableIntSupplier property, Predicate<Integer> ignoreStrategy);
+    L gt2(SerializableIntSupplier property, IntPredicate ignoreStrategy);
 
     /**
      * great than. 大于.
@@ -246,11 +241,11 @@ public interface EntityGreatThanExpressionBase2<E, E2, C extends ConditionExpres
     /**
      * great than. 大于.
      *
-     * @param property     对象属性
+     * @param property       对象属性
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
-    L gt2(SerializableLongSupplier property, Predicate<Long> ignoreStrategy);
+    L gt2(SerializableLongSupplier property, LongPredicate ignoreStrategy);
 
     /**
      * great than. 大于.
@@ -263,11 +258,11 @@ public interface EntityGreatThanExpressionBase2<E, E2, C extends ConditionExpres
     /**
      * great than. 大于.
      *
-     * @param property     对象属性
+     * @param property       对象属性
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
-    L gt2(SerializableDoubleSupplier property, Predicate<Double> ignoreStrategy);
+    L gt2(SerializableDoubleSupplier property, DoublePredicate ignoreStrategy);
 
     /**
      * great than. 大于.
@@ -281,8 +276,8 @@ public interface EntityGreatThanExpressionBase2<E, E2, C extends ConditionExpres
     /**
      * great than. 大于.
      *
-     * @param <R>          the generic type
-     * @param property     对象属性
+     * @param <R>            the generic type
+     * @param property       对象属性
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
@@ -300,8 +295,8 @@ public interface EntityGreatThanExpressionBase2<E, E2, C extends ConditionExpres
     /**
      * great than. 大于.
      *
-     * @param <R>          the generic type
-     * @param property     对象属性
+     * @param <R>            the generic type
+     * @param property       对象属性
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
@@ -318,7 +313,7 @@ public interface EntityGreatThanExpressionBase2<E, E2, C extends ConditionExpres
     /**
      * great than. 大于.
      *
-     * @param property     对象属性
+     * @param property       对象属性
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
@@ -335,7 +330,7 @@ public interface EntityGreatThanExpressionBase2<E, E2, C extends ConditionExpres
     /**
      * great than. 大于.
      *
-     * @param property     对象属性
+     * @param property       对象属性
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
@@ -352,7 +347,7 @@ public interface EntityGreatThanExpressionBase2<E, E2, C extends ConditionExpres
     /**
      * great than. 大于.
      *
-     * @param property     对象属性
+     * @param property       对象属性
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
@@ -369,141 +364,10 @@ public interface EntityGreatThanExpressionBase2<E, E2, C extends ConditionExpres
     /**
      * great than. 大于.
      *
-     * @param property     对象属性
+     * @param property       对象属性
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
     L gt2(SerializableStringSupplier property, Predicate<String> ignoreStrategy);
 
-    //  嵌套属性使用property(U1::getU2).property(U2:getV).eq(v)来设置
-    //    /**
-    //     * great than. 大于.
-    //     *
-    //     * @param <R>        the generic type
-    //     * @param <N>        the number type
-    //     * @param repository the repository
-    //     * @param property   the property
-    //     * @param value      参数值
-    //     * @return LogicExpression
-    //     */
-    //    <R, N extends Number> L gt2(SerializableFunction<E2, R> repository, SerializableFunction<R, N> property, N value);
-    //
-    //    /**
-    //     * great than. 大于.
-    //     *
-    //     * @param <R>        the generic type
-    //     * @param <N>        the number type
-    //     * @param repository the repository
-    //     * @param property   对象属性
-    //     * @return LogicExpression
-    //     */
-    //    <R, N extends Number> L gt2(SerializableSupplier<R> repository, SerializableToNumberFunction<R, N> property);
-    //
-    //    /**
-    //     * great than. 大于.
-    //     *
-    //     * @param <R>        the date type
-    //     * @param <D>        the generic type
-    //     * @param repository the repository
-    //     * @param property   the property
-    //     * @param value      参数值
-    //     * @return LogicExpression
-    //     */
-    //    <R, D extends Date> L gt2(SerializableFunction<E2, R> repository, SerializableFunction<R, D> property, D value);
-    //
-    //    /**
-    //     * great than. 大于.
-    //     *
-    //     * @param <R>        the generic type
-    //     * @param <D>        the date type
-    //     * @param repository the repository
-    //     * @param property   对象属性
-    //     * @return LogicExpression
-    //     */
-    //    <R, D extends Date> L gt2(SerializableSupplier<R> repository, SerializableToDateFunction<R, D> property);
-    //
-    //    /**
-    //     * great than. 大于.
-    //     *
-    //     * @param <R>        the date type
-    //     * @param repository the repository
-    //     * @param property   the property
-    //     * @param value      参数值
-    //     * @return LogicExpression
-    //     */
-    //    <R> L gt2(SerializableFunction<E2, R> repository, SerializableFunction<R, LocalTime> property, LocalTime value);
-    //
-    //    /**
-    //     * great than. 大于.
-    //     *
-    //     * @param <T>        the generic type
-    //     * @param repository the repository
-    //     * @param property   对象属性
-    //     * @return LogicExpression
-    //     */
-    //    <T> L gt2(SerializableSupplier<T> repository, SerializableToLocalTimeFunction<T> property);
-    //
-    //    /**
-    //     * great than. 大于.
-    //     *
-    //     * @param <R>        the date type
-    //     * @param repository the repository
-    //     * @param property   the property
-    //     * @param value      参数值
-    //     * @return LogicExpression
-    //     */
-    //    <R> L gt2(SerializableFunction<E2, R> repository, SerializableFunction<R, LocalDate> property, LocalDate value);
-    //
-    //    /**
-    //     * great than. 大于.
-    //     *
-    //     * @param <T>        the generic type
-    //     * @param repository the repository
-    //     * @param property   对象属性
-    //     * @return LogicExpression
-    //     */
-    //    <T> L gt2(SerializableSupplier<T> repository, SerializableToLocalDateFunction<T> property);
-    //
-    //    /**
-    //     * great than. 大于.
-    //     *
-    //     * @param <R>        the date type
-    //     * @param repository the repository
-    //     * @param property   the property
-    //     * @param value      参数值
-    //     * @return LogicExpression
-    //     */
-    //    <R> L gt2(SerializableFunction<E2, R> repository, SerializableFunction<R, LocalDateTime> property,
-    //            LocalDateTime value);
-    //
-    //    /**
-    //     * great than. 大于.
-    //     *
-    //     * @param <T>        the generic type
-    //     * @param repository the repository
-    //     * @param property   对象属性
-    //     * @return LogicExpression
-    //     */
-    //    <T> L gt2(SerializableSupplier<T> repository, SerializableToLocalDateTimeFunction<T> property);
-    //
-    //    /**
-    //     * great than. 大于.
-    //     *
-    //     * @param <R>        the date type
-    //     * @param repository the repository
-    //     * @param property   the property
-    //     * @param value      参数值
-    //     * @return LogicExpression
-    //     */
-    //    <R> L gt2(SerializableFunction<E2, R> repository, SerializableFunction<R, String> property, String value);
-    //
-    //    /**
-    //     * great than. 大于.
-    //     *
-    //     * @param <T>        the generic type
-    //     * @param repository the repository
-    //     * @param property   对象属性
-    //     * @return LogicExpression
-    //     */
-    //    <T> L gt2(SerializableSupplier<T> repository, SerializableToStringFunction<T> property);
 }

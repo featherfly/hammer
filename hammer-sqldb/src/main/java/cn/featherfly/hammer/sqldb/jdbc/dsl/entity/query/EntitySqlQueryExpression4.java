@@ -14,16 +14,16 @@ import cn.featherfly.hammer.sqldb.sql.dml.AbstractEntitySqlQueryConditionGroupEx
  * The Class EntitySqlQueryExpression4.
  *
  * @author zhongj
- * @param <E>  the element type
- * @param <E2> the generic type
- * @param <E3> the generic type
- * @param <E4> the generic type
+ * @param <T1> the element type
+ * @param <T2> the generic type
+ * @param <T3> the generic type
+ * @param <T4> the generic type
  * @param <RS> the query result type
  */
-public class EntitySqlQueryExpression4<E, E2, E3, E4, RS> extends
-        AbstractEntitySqlQueryConditionGroupExpression4<E, E2, E3, E4, RS,
-                EntityQueryConditionGroup4<E, E2, E3, E4, RS>, EntityQueryConditionGroupLogic4<E, E2, E3, E4, RS>>
-        implements EntityQueryConditionGroup4<E, E2, E3, E4, RS>, EntityQueryConditionGroupLogic4<E, E2, E3, E4, RS> {
+public class EntitySqlQueryExpression4<T1, T2, T3, T4, RS> extends
+        AbstractEntitySqlQueryConditionGroupExpression4<T1, T2, T3, T4, RS,
+                EntityQueryConditionGroup4<T1, T2, T3, T4, RS>, EntityQueryConditionGroupLogic4<T1, T2, T3, T4, RS>>
+        implements EntityQueryConditionGroup4<T1, T2, T3, T4, RS>, EntityQueryConditionGroupLogic4<T1, T2, T3, T4, RS> {
 
     /**
      * Instantiates a new entity sql query expression.
@@ -45,7 +45,7 @@ public class EntitySqlQueryExpression4<E, E2, E3, E4, RS> extends
      * @param sqlPageFactory the sql page factory
      * @param queryRelation  the query relation
      */
-    EntitySqlQueryExpression4(EntityQueryConditionGroupLogic4<E, E2, E3, E4, RS> parent, JdbcMappingFactory factory,
+    EntitySqlQueryExpression4(EntityQueryConditionGroupLogic4<T1, T2, T3, T4, RS> parent, JdbcMappingFactory factory,
             SqlPageFactory sqlPageFactory, EntitySqlQueryRelation queryRelation) {
         super(parent, factory, sqlPageFactory, queryRelation);
     }
@@ -54,8 +54,8 @@ public class EntitySqlQueryExpression4<E, E2, E3, E4, RS> extends
      * {@inheritDoc}
      */
     @Override
-    protected EntityQueryConditionGroup4<E, E2, E3, E4, RS> createGroup(
-            EntityQueryConditionGroupLogic4<E, E2, E3, E4, RS> parent) {
+    protected EntityQueryConditionGroup4<T1, T2, T3, T4, RS> createGroup(
+            EntityQueryConditionGroupLogic4<T1, T2, T3, T4, RS> parent) {
         return new EntitySqlQueryExpression4<>(parent, factory, sqlPageFactory, entityRelation);
     }
 

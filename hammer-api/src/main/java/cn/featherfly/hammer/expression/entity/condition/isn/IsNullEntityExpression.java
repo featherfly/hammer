@@ -11,6 +11,7 @@
 package cn.featherfly.hammer.expression.entity.condition.isn;
 
 import cn.featherfly.common.function.serializable.SerializableFunction;
+import cn.featherfly.hammer.expression.entity.condition.NullNotNullEntityExpression;
 
 /**
  * The Interface IsNullEntityExpression.
@@ -20,7 +21,7 @@ import cn.featherfly.common.function.serializable.SerializableFunction;
  * @param <C> the generic type
  * @param <L> the generic type
  */
-public interface IsNullEntityExpression<E> {
+public interface IsNullEntityExpression<E> extends NullNotNullEntityExpression<E> {
 
     /**
      * entity is null function property expression.
@@ -29,26 +30,5 @@ public interface IsNullEntityExpression<E> {
      * @param name the name
      * @return entity is null function property expression
      */
-    <R> IsNullEntityPropertyExpression<E, R> property(SerializableFunction<E, R> name);
-
-    /**
-     * is null value.
-     *
-     * @param <R>      the generic type
-     * @param property the property
-     * @return the l
-     */
-    default <R> void accept(SerializableFunction<E, R> property) {
-        accept(property, true);
-    }
-
-    /**
-     * is null value.
-     *
-     * @param <R>      the generic type
-     * @param property the property
-     * @param value    the value
-     * @return the l
-     */
-    <R> void accept(SerializableFunction<E, R> property, Boolean value);
+    <R> IsNullEntityPropertyExpression<R> property(SerializableFunction<E, R> name);
 }

@@ -5,6 +5,9 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.Date;
+import java.util.function.DoublePredicate;
+import java.util.function.IntPredicate;
+import java.util.function.LongPredicate;
 import java.util.function.Predicate;
 
 import cn.featherfly.common.function.serializable.SerializableDateSupplier;
@@ -52,7 +55,7 @@ public interface MulitiEntityGreatEqualsExpression<C extends ConditionExpression
      * @param value 参数值
      * @return LogicExpression
      */
-    <E> L ge(int index, SerializableToIntFunction<E> name, int value, Predicate<Integer> ignoreStrategy);
+    <E> L ge(int index, SerializableToIntFunction<E> name, int value, IntPredicate ignoreStrategy);
 
     /**
      * great and equals. 大于等于.
@@ -72,7 +75,7 @@ public interface MulitiEntityGreatEqualsExpression<C extends ConditionExpression
      * @param value 参数值
      * @return LogicExpression
      */
-    <E> L ge(int index, SerializableToLongFunction<E> name, long value, Predicate<Long> ignoreStrategy);
+    <E> L ge(int index, SerializableToLongFunction<E> name, long value, LongPredicate ignoreStrategy);
 
     /**
      * great and equals. 大于等于.
@@ -92,7 +95,7 @@ public interface MulitiEntityGreatEqualsExpression<C extends ConditionExpression
      * @param value 参数值
      * @return LogicExpression
      */
-    <E> L ge(int index, SerializableToDoubleFunction<E> name, double value, Predicate<Double> ignoreStrategy);
+    <E> L ge(int index, SerializableToDoubleFunction<E> name, double value, DoublePredicate ignoreStrategy);
 
     /**
      * great and equals. 大于等于.
@@ -230,7 +233,7 @@ public interface MulitiEntityGreatEqualsExpression<C extends ConditionExpression
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
-    L ge(int index, SerializableIntSupplier property, Predicate<Integer> ignoreStrategy);
+    L ge(int index, SerializableIntSupplier property, IntPredicate ignoreStrategy);
 
     /**
      * great and equals. 大于等于.
@@ -249,7 +252,7 @@ public interface MulitiEntityGreatEqualsExpression<C extends ConditionExpression
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
-    L ge(int index, SerializableLongSupplier property, Predicate<Long> ignoreStrategy);
+    L ge(int index, SerializableLongSupplier property, LongPredicate ignoreStrategy);
 
     /**
      * great and equals. 大于等于.
@@ -268,7 +271,7 @@ public interface MulitiEntityGreatEqualsExpression<C extends ConditionExpression
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
-    L ge(int index, SerializableDoubleSupplier property, Predicate<Double> ignoreStrategy);
+    L ge(int index, SerializableDoubleSupplier property, DoublePredicate ignoreStrategy);
 
     /**
      * great and equals. 大于等于.

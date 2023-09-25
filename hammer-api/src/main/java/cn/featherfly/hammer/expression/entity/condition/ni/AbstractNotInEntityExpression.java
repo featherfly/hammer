@@ -11,12 +11,17 @@
 package cn.featherfly.hammer.expression.entity.condition.ni;
 
 import java.util.Collection;
+import java.util.function.DoublePredicate;
+import java.util.function.IntPredicate;
+import java.util.function.LongPredicate;
 import java.util.function.Predicate;
 
+import cn.featherfly.common.function.serializable.SerializableDoubleSupplier;
 import cn.featherfly.common.function.serializable.SerializableFunction;
 import cn.featherfly.common.function.serializable.SerializableIntSupplier;
 import cn.featherfly.common.function.serializable.SerializableLongSupplier;
 import cn.featherfly.common.function.serializable.SerializableSupplier;
+import cn.featherfly.common.function.serializable.SerializableToDoubleFunction;
 import cn.featherfly.common.function.serializable.SerializableToIntFunction;
 import cn.featherfly.common.function.serializable.SerializableToLongFunction;
 import cn.featherfly.hammer.expression.condition.ConditionExpression;
@@ -52,7 +57,7 @@ public abstract class AbstractNotInEntityExpression<E, C extends ConditionExpres
      */
     @Override
     public <R> void accept(SerializableFunction<E, R> name, R value) {
-        expression.nin(index, name, value);
+        expression.ni(index, name, value);
     }
 
     /**
@@ -60,7 +65,7 @@ public abstract class AbstractNotInEntityExpression<E, C extends ConditionExpres
      */
     @Override
     public <R> void accept(SerializableFunction<E, R> name, R value, Predicate<R> ignoreStrategy) {
-        expression.nin(index, name, value, ignoreStrategy);
+        expression.ni(index, name, value, ignoreStrategy);
     }
 
     /**
@@ -68,15 +73,15 @@ public abstract class AbstractNotInEntityExpression<E, C extends ConditionExpres
      */
     @Override
     public void accept(SerializableToIntFunction<E> name, int value) {
-        expression.nin(index, name, value);
+        expression.ni(index, name, value);
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public void accept(SerializableToIntFunction<E> name, int value, Predicate<Integer> ignoreStrategy) {
-        expression.nin(index, name, value, ignoreStrategy);
+    public void accept(SerializableToIntFunction<E> name, int value, IntPredicate ignoreStrategy) {
+        expression.ni(index, name, value, ignoreStrategy);
     }
 
     /**
@@ -84,15 +89,15 @@ public abstract class AbstractNotInEntityExpression<E, C extends ConditionExpres
      */
     @Override
     public void accept(SerializableToLongFunction<E> name, long value) {
-        expression.nin(index, name, value);
+        expression.ni(index, name, value);
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public void accept(SerializableToLongFunction<E> name, long value, Predicate<Long> ignoreStrategy) {
-        expression.nin(index, name, value, ignoreStrategy);
+    public void accept(SerializableToLongFunction<E> name, long value, LongPredicate ignoreStrategy) {
+        expression.ni(index, name, value, ignoreStrategy);
     }
 
     /**
@@ -100,7 +105,7 @@ public abstract class AbstractNotInEntityExpression<E, C extends ConditionExpres
      */
     @Override
     public <R> void accept(SerializableFunction<E, R> name, @SuppressWarnings("unchecked") R... value) {
-        expression.nin(index, name, value);
+        expression.ni(index, name, value);
     }
 
     /**
@@ -108,7 +113,7 @@ public abstract class AbstractNotInEntityExpression<E, C extends ConditionExpres
      */
     @Override
     public void accept(SerializableToIntFunction<E> name, int... value) {
-        expression.nin(index, name, value);
+        expression.ni(index, name, value);
     }
 
     /**
@@ -116,7 +121,7 @@ public abstract class AbstractNotInEntityExpression<E, C extends ConditionExpres
      */
     @Override
     public void accept(SerializableToLongFunction<E> name, long... value) {
-        expression.nin(index, name, value);
+        expression.ni(index, name, value);
     }
 
     /**
@@ -124,7 +129,7 @@ public abstract class AbstractNotInEntityExpression<E, C extends ConditionExpres
      */
     @Override
     public <R> void accept(SerializableFunction<E, R> name, R[] value, Predicate<R[]> ignoreStrategy) {
-        expression.nin(index, name, value, ignoreStrategy);
+        expression.ni(index, name, value, ignoreStrategy);
     }
 
     /**
@@ -132,7 +137,7 @@ public abstract class AbstractNotInEntityExpression<E, C extends ConditionExpres
      */
     @Override
     public void accept(SerializableToIntFunction<E> name, int[] value, Predicate<int[]> ignoreStrategy) {
-        expression.nin(index, name, value, ignoreStrategy);
+        expression.ni(index, name, value, ignoreStrategy);
     }
 
     /**
@@ -140,7 +145,7 @@ public abstract class AbstractNotInEntityExpression<E, C extends ConditionExpres
      */
     @Override
     public void accept(SerializableToLongFunction<E> name, long[] value, Predicate<long[]> ignoreStrategy) {
-        expression.nin(index, name, value, ignoreStrategy);
+        expression.ni(index, name, value, ignoreStrategy);
     }
 
     /**
@@ -148,7 +153,7 @@ public abstract class AbstractNotInEntityExpression<E, C extends ConditionExpres
      */
     @Override
     public <R> void accept(SerializableFunction<E, R> name, Collection<R> value) {
-        expression.nin(index, name, value);
+        expression.ni(index, name, value);
     }
 
     /**
@@ -157,7 +162,7 @@ public abstract class AbstractNotInEntityExpression<E, C extends ConditionExpres
     @Override
     public <R> void accept(SerializableFunction<E, R> name, Collection<R> value,
             Predicate<Collection<R>> ignoreStrategy) {
-        expression.nin(index, name, value, ignoreStrategy);
+        expression.ni(index, name, value, ignoreStrategy);
     }
 
     /**
@@ -165,7 +170,7 @@ public abstract class AbstractNotInEntityExpression<E, C extends ConditionExpres
      */
     @Override
     public <R> void accept(SerializableSupplier<R> property) {
-        expression.nin(index, property);
+        expression.ni(index, property);
     }
 
     /**
@@ -173,38 +178,70 @@ public abstract class AbstractNotInEntityExpression<E, C extends ConditionExpres
      */
     @Override
     public <R> void accept(SerializableSupplier<R> property, Predicate<R> ignoreStrategy) {
-        expression.nin(index, property, ignoreStrategy);
+        expression.ni(index, property, ignoreStrategy);
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public <R> void accept(SerializableIntSupplier property) {
-        expression.nin(index, property);
+    public void accept(SerializableIntSupplier property) {
+        expression.ni(index, property);
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public <R> void accept(SerializableIntSupplier property, Predicate<Integer> ignoreStrategy) {
-        expression.nin(index, property, ignoreStrategy);
+    public void accept(SerializableIntSupplier property, IntPredicate ignoreStrategy) {
+        expression.ni(index, property, ignoreStrategy);
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public <R> void accept(SerializableLongSupplier property) {
-        expression.nin(index, property);
+    public void accept(SerializableLongSupplier property) {
+        expression.ni(index, property);
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public <R> void accept(SerializableLongSupplier property, Predicate<Long> ignoreStrategy) {
-        expression.nin(index, property, ignoreStrategy);
+    public void accept(SerializableLongSupplier property, LongPredicate ignoreStrategy) {
+        expression.ni(index, property, ignoreStrategy);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void accept(SerializableToDoubleFunction<E> name, double value) {
+        expression.ni(index, name, value);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void accept(SerializableToDoubleFunction<E> name, double value, DoublePredicate ignoreStrategy) {
+        expression.ni(index, name, value, ignoreStrategy);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void accept(SerializableDoubleSupplier property) {
+        expression.ni(index, property);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void accept(SerializableDoubleSupplier property, DoublePredicate ignoreStrategy) {
+        expression.ni(index, property, ignoreStrategy);
     }
 }
