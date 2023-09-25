@@ -163,7 +163,7 @@ public class EntityLocalDateTimePropertyExpressionImpl<E, C extends ConditionExp
      */
     @Override
     public L ni(LocalDateTime value) {
-        return expression.nin0(index, getPropertyMapping(value), value, expression.getIgnoreStrategy());
+        return expression.ni0(index, getPropertyMapping(value), value, expression.getIgnoreStrategy());
     }
 
     /**
@@ -171,7 +171,7 @@ public class EntityLocalDateTimePropertyExpressionImpl<E, C extends ConditionExp
      */
     @Override
     public L ni(LocalDateTime value, IgnoreStrategy ignoreStrategy) {
-        return expression.nin0(index, getPropertyMapping(value), value, ignoreStrategy);
+        return expression.ni0(index, getPropertyMapping(value), value, ignoreStrategy);
     }
 
     /**
@@ -179,7 +179,7 @@ public class EntityLocalDateTimePropertyExpressionImpl<E, C extends ConditionExp
      */
     @Override
     public L ni(LocalDateTime value, Predicate<LocalDateTime> ignoreStrategy) {
-        return expression.nin0(index, getPropertyMapping(value), value, ignoreStrategy);
+        return expression.ni0(index, getPropertyMapping(value), value, ignoreStrategy);
     }
 
     /**
@@ -187,7 +187,7 @@ public class EntityLocalDateTimePropertyExpressionImpl<E, C extends ConditionExp
      */
     @Override
     public L ni(LocalDateTime[] value) {
-        return expression.nin0(index, getPropertyMapping(value), value, expression.getIgnoreStrategy());
+        return expression.ni0(index, getPropertyMapping(value), value, expression.getIgnoreStrategy());
     }
 
     /**
@@ -195,7 +195,7 @@ public class EntityLocalDateTimePropertyExpressionImpl<E, C extends ConditionExp
      */
     @Override
     public L ni(LocalDateTime[] value, IgnoreStrategy ignoreStrategy) {
-        return expression.nin0(index, getPropertyMapping(value), value, ignoreStrategy);
+        return expression.ni0(index, getPropertyMapping(value), value, ignoreStrategy);
     }
 
     /**
@@ -203,7 +203,7 @@ public class EntityLocalDateTimePropertyExpressionImpl<E, C extends ConditionExp
      */
     @Override
     public L ni(LocalDateTime[] value, Predicate<LocalDateTime[]> ignoreStrategy) {
-        return expression.nin0(index, getPropertyMapping(value), value, ignoreStrategy);
+        return expression.ni0(index, getPropertyMapping(value), value, ignoreStrategy);
     }
 
     /**

@@ -10,6 +10,7 @@
 package cn.featherfly.hammer.sqldb.jdbc.dsl.entity.condition.propery;
 
 import java.util.function.Function;
+import java.util.function.LongPredicate;
 import java.util.function.Predicate;
 
 import cn.featherfly.common.function.ThreeArgusConsumer;
@@ -28,7 +29,7 @@ public class ConditionEntityExpressionLongPropertyExpressionImpl
 
     private Predicate<?> ignoreStrategy;
 
-    private ThreeArgusConsumer<Long, Predicate<Long>, PropertyMapping<?>> setValue;
+    private ThreeArgusConsumer<Long, LongPredicate, PropertyMapping<?>> setValue;
 
     /**
      * Instantiates a new condition entity expression long property expression
@@ -39,7 +40,7 @@ public class ConditionEntityExpressionLongPropertyExpressionImpl
      * @param setValue        the set value
      */
     public ConditionEntityExpressionLongPropertyExpressionImpl(Function<Long, PropertyMapping<?>> propertyMapping,
-            Predicate<?> ignoreStrategy, ThreeArgusConsumer<Long, Predicate<Long>, PropertyMapping<?>> setValue) {
+            Predicate<?> ignoreStrategy, ThreeArgusConsumer<Long, LongPredicate, PropertyMapping<?>> setValue) {
         super();
         this.propertyMapping = propertyMapping;
         this.ignoreStrategy = ignoreStrategy;
@@ -59,7 +60,7 @@ public class ConditionEntityExpressionLongPropertyExpressionImpl
      * {@inheritDoc}
      */
     @Override
-    public void value(long value, Predicate<Long> ignoreStrategy) {
+    public void value(long value, LongPredicate ignoreStrategy) {
         setValue.accept(value, ignoreStrategy, propertyMapping.apply(value));
     }
 }

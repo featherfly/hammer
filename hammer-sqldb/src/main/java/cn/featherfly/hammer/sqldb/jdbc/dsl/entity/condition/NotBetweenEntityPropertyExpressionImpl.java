@@ -50,7 +50,7 @@ import cn.featherfly.hammer.expression.entity.condition.nba.NotBetweenEntityProp
 import cn.featherfly.hammer.sqldb.jdbc.dsl.entity.condition.propery.ConditionEntityExpressionDatePropertyExpression2Impl;
 import cn.featherfly.hammer.sqldb.jdbc.dsl.entity.condition.propery.ConditionEntityExpressionDoublePropertyExpression2Impl;
 import cn.featherfly.hammer.sqldb.jdbc.dsl.entity.condition.propery.ConditionEntityExpressionEnumPropertyExpression2Impl;
-import cn.featherfly.hammer.sqldb.jdbc.dsl.entity.condition.propery.ConditionEntityExpressionIntegerPropertyExpression2Impl;
+import cn.featherfly.hammer.sqldb.jdbc.dsl.entity.condition.propery.ConditionEntityExpressionIntPropertyExpression2Impl;
 import cn.featherfly.hammer.sqldb.jdbc.dsl.entity.condition.propery.ConditionEntityExpressionLocalDatePropertyExpression2Impl;
 import cn.featherfly.hammer.sqldb.jdbc.dsl.entity.condition.propery.ConditionEntityExpressionLocalDateTimePropertyExpression2Impl;
 import cn.featherfly.hammer.sqldb.jdbc.dsl.entity.condition.propery.ConditionEntityExpressionLocalTimePropertyExpression2Impl;
@@ -107,7 +107,7 @@ public class NotBetweenEntityPropertyExpressionImpl<V, C extends ConditionExpres
     @Override
     public <R> ConditionEntityExpressionIntPropertyExpression2 property(SerializableToIntFunction<V> name) {
         propertyList.add(name);
-        return new ConditionEntityExpressionIntegerPropertyExpression2Impl(v -> getPropertyMapping(v),
+        return new ConditionEntityExpressionIntPropertyExpression2Impl(v -> getPropertyMapping(v),
                 expression.getIgnoreStrategy(), (min, max, ignore, pm) -> {
                     expression.nba0(index, pm, min, max, ignore);
                 });

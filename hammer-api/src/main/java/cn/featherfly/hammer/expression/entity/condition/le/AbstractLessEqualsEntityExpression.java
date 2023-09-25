@@ -14,6 +14,9 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.Date;
+import java.util.function.DoublePredicate;
+import java.util.function.IntPredicate;
+import java.util.function.LongPredicate;
 import java.util.function.Predicate;
 
 import cn.featherfly.common.function.serializable.SerializableDateSupplier;
@@ -75,7 +78,7 @@ public abstract class AbstractLessEqualsEntityExpression<E, C extends ConditionE
      * {@inheritDoc}
      */
     @Override
-    public void accept(SerializableToIntFunction<E> name, int value, Predicate<Integer> ignoreStrategy) {
+    public void accept(SerializableToIntFunction<E> name, int value, IntPredicate ignoreStrategy) {
         expression.le(index, name, value, ignoreStrategy);
     }
 
@@ -91,7 +94,7 @@ public abstract class AbstractLessEqualsEntityExpression<E, C extends ConditionE
      * {@inheritDoc}
      */
     @Override
-    public void accept(SerializableToLongFunction<E> name, long value, Predicate<Long> ignoreStrategy) {
+    public void accept(SerializableToLongFunction<E> name, long value, LongPredicate ignoreStrategy) {
         expression.le(index, name, value, ignoreStrategy);
     }
 
@@ -107,7 +110,7 @@ public abstract class AbstractLessEqualsEntityExpression<E, C extends ConditionE
      * {@inheritDoc}
      */
     @Override
-    public void accept(SerializableToDoubleFunction<E> name, double value, Predicate<Double> ignoreStrategy) {
+    public void accept(SerializableToDoubleFunction<E> name, double value, DoublePredicate ignoreStrategy) {
         expression.le(index, name, value, ignoreStrategy);
     }
 
@@ -221,7 +224,7 @@ public abstract class AbstractLessEqualsEntityExpression<E, C extends ConditionE
      * {@inheritDoc}
      */
     @Override
-    public void accept(SerializableIntSupplier property, Predicate<Integer> ignoreStrategy) {
+    public void accept(SerializableIntSupplier property, IntPredicate ignoreStrategy) {
         expression.le(index, property, ignoreStrategy);
     }
 
@@ -237,7 +240,7 @@ public abstract class AbstractLessEqualsEntityExpression<E, C extends ConditionE
      * {@inheritDoc}
      */
     @Override
-    public void accept(SerializableLongSupplier property, Predicate<Long> ignoreStrategy) {
+    public void accept(SerializableLongSupplier property, LongPredicate ignoreStrategy) {
         expression.le(index, property, ignoreStrategy);
     }
 
@@ -253,7 +256,7 @@ public abstract class AbstractLessEqualsEntityExpression<E, C extends ConditionE
      * {@inheritDoc}
      */
     @Override
-    public void accept(SerializableDoubleSupplier property, Predicate<Double> ignoreStrategy) {
+    public void accept(SerializableDoubleSupplier property, DoublePredicate ignoreStrategy) {
         expression.le(index, property, ignoreStrategy);
     }
 

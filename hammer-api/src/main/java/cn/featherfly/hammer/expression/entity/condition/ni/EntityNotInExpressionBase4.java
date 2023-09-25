@@ -2,12 +2,18 @@
 package cn.featherfly.hammer.expression.entity.condition.ni;
 
 import java.util.Collection;
+import java.util.function.DoublePredicate;
+import java.util.function.IntPredicate;
+import java.util.function.LongPredicate;
 import java.util.function.Predicate;
 
+import cn.featherfly.common.function.serializable.SerializableDoubleSupplier;
 import cn.featherfly.common.function.serializable.SerializableFunction;
 import cn.featherfly.common.function.serializable.SerializableIntSupplier;
 import cn.featherfly.common.function.serializable.SerializableLongSupplier;
 import cn.featherfly.common.function.serializable.SerializableSupplier;
+import cn.featherfly.common.function.serializable.SerializableToDoubleFunction;
+import cn.featherfly.common.function.serializable.SerializableToDoubleFunction4;
 import cn.featherfly.common.function.serializable.SerializableToIntFunction4;
 import cn.featherfly.common.function.serializable.SerializableToLongFunction4;
 import cn.featherfly.hammer.expression.condition.ConditionExpression;
@@ -26,14 +32,6 @@ import cn.featherfly.hammer.expression.condition.LogicExpression;
  */
 public interface EntityNotInExpressionBase4<E, E2, E3, E4, C extends ConditionExpression,
         L extends LogicExpression<C, L>> extends EntityNotInExpressionBase3<E, E2, E3, C, L> {
-
-    //    /**
-    //     * equals. 不包含指定，sql中的not in.
-    //     *
-    //     * @param consumer the consumer
-    //     * @return LogicExpression
-    //     */
-    //    L ni4(Consumer<EntityNotInExpressionBase2<E, C, L>> consumer);
 
     /**
      * values not in. 不包含指定，sql中的not in.
@@ -73,7 +71,7 @@ public interface EntityNotInExpressionBase4<E, E2, E3, E4, C extends ConditionEx
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
-    L ni4(SerializableToIntFunction4<E4> name, int value, Predicate<Integer> ignoreStrategy);
+    L ni4(SerializableToIntFunction4<E4> name, int value, IntPredicate ignoreStrategy);
 
     /**
      * values not in. 不包含指定，sql中的not in.
@@ -92,7 +90,26 @@ public interface EntityNotInExpressionBase4<E, E2, E3, E4, C extends ConditionEx
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
-    L ni4(SerializableToLongFunction4<E4> name, long value, Predicate<Long> ignoreStrategy);
+    L ni4(SerializableToLongFunction4<E4> name, long value, LongPredicate ignoreStrategy);
+
+    /**
+     * values not in. 不包含指定，sql中的not in.
+     *
+     * @param name  参数名称
+     * @param value 参数值
+     * @return LogicExpression
+     */
+    L ni4(SerializableToDoubleFunction<E4> name, double value);
+
+    /**
+     * values not in. 不包含指定，sql中的not in.
+     *
+     * @param name           参数名称
+     * @param value          参数值
+     * @param ignoreStrategy the ignore strategy
+     * @return LogicExpression
+     */
+    L ni4(SerializableToDoubleFunction<E4> name, double value, DoublePredicate ignoreStrategy);
 
     /**
      * values not in. 不包含指定，sql中的not in.
@@ -107,7 +124,6 @@ public interface EntityNotInExpressionBase4<E, E2, E3, E4, C extends ConditionEx
     /**
      * values not in. 不包含指定，sql中的not in.
      *
-     * @param <R>   the generic type
      * @param name  参数名称
      * @param value 参数值
      * @return LogicExpression
@@ -117,12 +133,20 @@ public interface EntityNotInExpressionBase4<E, E2, E3, E4, C extends ConditionEx
     /**
      * values not in. 不包含指定，sql中的not in.
      *
-     * @param <R>   the generic type
      * @param name  参数名称
      * @param value 参数值
      * @return LogicExpression
      */
     L ni4(SerializableToLongFunction4<E4> name, long... value);
+
+    /**
+     * values not in. 不包含指定，sql中的not in.
+     *
+     * @param name  参数名称
+     * @param value 参数值
+     * @return LogicExpression
+     */
+    L ni4(SerializableToDoubleFunction4<E4> name, double... value);
 
     /**
      * values not in. 不包含指定，sql中的not in.
@@ -138,7 +162,6 @@ public interface EntityNotInExpressionBase4<E, E2, E3, E4, C extends ConditionEx
     /**
      * values not in. 不包含指定，sql中的not in.
      *
-     * @param <R>            the generic type
      * @param name           参数名称
      * @param value          参数值
      * @param ignoreStrategy the ignore strategy
@@ -149,13 +172,22 @@ public interface EntityNotInExpressionBase4<E, E2, E3, E4, C extends ConditionEx
     /**
      * values not in. 不包含指定，sql中的not in.
      *
-     * @param <R>            the generic type
      * @param name           参数名称
      * @param value          参数值
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
     L ni4(SerializableToLongFunction4<E4> name, long[] value, Predicate<long[]> ignoreStrategy);
+
+    /**
+     * values not in. 不包含指定，sql中的not in.
+     *
+     * @param name           参数名称
+     * @param value          参数值
+     * @param ignoreStrategy the ignore strategy
+     * @return LogicExpression
+     */
+    L ni4(SerializableToDoubleFunction4<E4> name, double[] value, Predicate<double[]> ignoreStrategy);
 
     /**
      * values not in. 不包含指定，sql中的not in.
@@ -200,21 +232,36 @@ public interface EntityNotInExpressionBase4<E, E2, E3, E4, C extends ConditionEx
     /**
      * values not in. 不包含指定，sql中的not in.
      *
-     * @param <R>      the generic type
      * @param property 对象属性
      * @return LogicExpression
      */
-    <R> L ni4(SerializableIntSupplier property);
+    L ni4(SerializableIntSupplier property);
 
     /**
      * values not in. 不包含指定，sql中的not in.
      *
-     * @param <R>            the generic type
      * @param property       对象属性
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
-    <R> L ni4(SerializableIntSupplier property, Predicate<Integer> ignoreStrategy);
+    L ni4(SerializableIntSupplier property, IntPredicate ignoreStrategy);
+
+    /**
+     * values not in. 不包含指定，sql中的not in.
+     *
+     * @param property 对象属性
+     * @return LogicExpression
+     */
+    L ni4(SerializableLongSupplier property);
+
+    /**
+     * values not in. 不包含指定，sql中的not in.
+     *
+     * @param property       对象属性
+     * @param ignoreStrategy the ignore strategy
+     * @return LogicExpression
+     */
+    L ni4(SerializableLongSupplier property, LongPredicate ignoreStrategy);
 
     /**
      * values not in. 不包含指定，sql中的not in.
@@ -223,77 +270,14 @@ public interface EntityNotInExpressionBase4<E, E2, E3, E4, C extends ConditionEx
      * @param property 对象属性
      * @return LogicExpression
      */
-    <R> L ni4(SerializableLongSupplier property);
+    L ni4(SerializableDoubleSupplier property);
 
     /**
      * values not in. 不包含指定，sql中的not in.
      *
-     * @param <R>            the generic type
      * @param property       对象属性
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
-    <R> L ni4(SerializableLongSupplier property, Predicate<Long> ignoreStrategy);
-
-    //    /**
-    //     * values not in. 不包含指定，sql中的not in.
-    //     *
-    //     * @param <R>      the generic type
-    //     * @param property 对象属性
-    //     * @return LogicExpression
-    //     */
-    //    <R> L ni4(SerializableSupplier1<R[]> property);
-    //
-    //    /**
-    //     * values not in. 不包含指定，sql中的not in.
-    //     *
-    //     * @param <R>          the generic type
-    //     * @param property     对象属性
-    //     * @param ignoreStrategy the ignore strategy
-    //     * @return LogicExpression
-    //     */
-    //    <R> L ni4(SerializableSupplier1<R[]> property, Predicate<R[]> ignoreStrategy);
-    //
-    //    /**
-    //     * values not in. 不包含指定，sql中的not in.
-    //     *
-    //     * @param <R>      the generic type
-    //     * @param property 对象属性
-    //     * @return LogicExpression
-    //     */
-    //    <R> L ni4(SerializableSupplier2<Collection<R>> property);
-    //
-    //    /**
-    //     * values not in. 不包含指定，sql中的not in.
-    //     *
-    //     * @param <R>          the generic type
-    //     * @param property     对象属性
-    //     * @param ignoreStrategy the ignore strategy
-    //     * @return LogicExpression
-    //     */
-    //    <R> L ni4(SerializableSupplier2<Collection<R>> property, Predicate<Collection<R>> ignoreStrategy);
-
-    // 嵌套属性使用property(U1::getU2).property(U2:getV).nin(v)来设置
-    //    /**
-    //     * values not in. 不包含指定，sql中的not in.
-    //     *
-    //     * @param <R>        the generic type
-    //     * @param <V>        the value type
-    //     * @param repository the repository
-    //     * @param property   the property
-    //     * @param value      参数值
-    //     * @return LogicExpression
-    //     */
-    //    <R, V> L ni4(SerializableFunction<E4, R> repository, SerializableFunction<R, V> property, V value);
-    //
-    //    /**
-    //     * values not in. 不包含指定，sql中的not in.
-    //     *
-    //     * @param <R>        the generic type
-    //     * @param <V>        the value type
-    //     * @param repository the repository
-    //     * @param property   对象属性
-    //     * @return LogicExpression
-    //     */
-    //    <R, V> L ni4(SerializableSupplier<R> repository, SerializableFunction<R, V> property);
+    L ni4(SerializableDoubleSupplier property, DoublePredicate ignoreStrategy);
 }

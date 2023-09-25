@@ -17,7 +17,7 @@ public class MulitiEntityIsNotNullExpressionImpl<C extends ConditionExpression, 
         extends MulitiEntityConditionExpressionProxy<C, L> implements MulitiEntityIsNotNullExpression<C, L> {
 
     /**
-     * Instantiates a new muliti entity equals expression impl.
+     * Instantiates a new muliti entity is not null expression impl.
      *
      * @param proxy the proxy
      */
@@ -29,8 +29,8 @@ public class MulitiEntityIsNotNullExpressionImpl<C extends ConditionExpression, 
      * {@inheritDoc}
      */
     @Override
-    public <E, R> L isn(int index, SerializableFunction<E, R> name, Boolean value) {
-        return proxy.isn0(index, name, value);
+    public <E, R> L inn(int index, SerializableFunction<E, R> name, Boolean value) {
+        return proxy.inn0(index, name, value);
     }
 
 }

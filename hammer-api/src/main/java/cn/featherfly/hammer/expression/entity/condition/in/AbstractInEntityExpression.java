@@ -11,12 +11,17 @@
 package cn.featherfly.hammer.expression.entity.condition.in;
 
 import java.util.Collection;
+import java.util.function.DoublePredicate;
+import java.util.function.IntPredicate;
+import java.util.function.LongPredicate;
 import java.util.function.Predicate;
 
+import cn.featherfly.common.function.serializable.SerializableDoubleSupplier;
 import cn.featherfly.common.function.serializable.SerializableFunction;
 import cn.featherfly.common.function.serializable.SerializableIntSupplier;
 import cn.featherfly.common.function.serializable.SerializableLongSupplier;
 import cn.featherfly.common.function.serializable.SerializableSupplier;
+import cn.featherfly.common.function.serializable.SerializableToDoubleFunction;
 import cn.featherfly.common.function.serializable.SerializableToIntFunction;
 import cn.featherfly.common.function.serializable.SerializableToLongFunction;
 import cn.featherfly.hammer.expression.condition.ConditionExpression;
@@ -74,7 +79,7 @@ public abstract class AbstractInEntityExpression<E, C extends ConditionExpressio
      * {@inheritDoc}
      */
     @Override
-    public void accept(SerializableToIntFunction<E> name, int value, Predicate<Integer> ignoreStrategy) {
+    public void accept(SerializableToIntFunction<E> name, int value, IntPredicate ignoreStrategy) {
         expression.in(index, name, value, ignoreStrategy);
     }
 
@@ -90,7 +95,23 @@ public abstract class AbstractInEntityExpression<E, C extends ConditionExpressio
      * {@inheritDoc}
      */
     @Override
-    public void accept(SerializableToLongFunction<E> name, long value, Predicate<Long> ignoreStrategy) {
+    public void accept(SerializableToLongFunction<E> name, long value, LongPredicate ignoreStrategy) {
+        expression.in(index, name, value, ignoreStrategy);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void accept(SerializableToDoubleFunction<E> name, double value) {
+        expression.in(index, name, value);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void accept(SerializableToDoubleFunction<E> name, double value, DoublePredicate ignoreStrategy) {
         expression.in(index, name, value, ignoreStrategy);
     }
 
@@ -179,7 +200,7 @@ public abstract class AbstractInEntityExpression<E, C extends ConditionExpressio
      * {@inheritDoc}
      */
     @Override
-    public <R> void accept(SerializableIntSupplier property) {
+    public void accept(SerializableIntSupplier property) {
         expression.in(index, property);
     }
 
@@ -187,7 +208,7 @@ public abstract class AbstractInEntityExpression<E, C extends ConditionExpressio
      * {@inheritDoc}
      */
     @Override
-    public <R> void accept(SerializableIntSupplier property, Predicate<Integer> ignoreStrategy) {
+    public void accept(SerializableIntSupplier property, IntPredicate ignoreStrategy) {
         expression.in(index, property, ignoreStrategy);
     }
 
@@ -195,7 +216,7 @@ public abstract class AbstractInEntityExpression<E, C extends ConditionExpressio
      * {@inheritDoc}
      */
     @Override
-    public <R> void accept(SerializableLongSupplier property) {
+    public void accept(SerializableLongSupplier property) {
         expression.in(index, property);
     }
 
@@ -203,7 +224,23 @@ public abstract class AbstractInEntityExpression<E, C extends ConditionExpressio
      * {@inheritDoc}
      */
     @Override
-    public <R> void accept(SerializableLongSupplier property, Predicate<Long> ignoreStrategy) {
+    public void accept(SerializableLongSupplier property, LongPredicate ignoreStrategy) {
+        expression.in(index, property, ignoreStrategy);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void accept(SerializableDoubleSupplier property) {
+        expression.in(index, property);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void accept(SerializableDoubleSupplier property, DoublePredicate ignoreStrategy) {
         expression.in(index, property, ignoreStrategy);
     }
 }

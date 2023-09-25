@@ -10,7 +10,7 @@
  */
 package cn.featherfly.hammer.expression.entity.condition;
 
-import java.util.function.Predicate;
+import java.util.function.LongPredicate;
 
 /**
  * The Interface ConditionEntityExpressionLongPropertyExpression.
@@ -32,9 +32,9 @@ public interface ConditionEntityExpressionLongPropertyExpression {
     /**
      * Value.
      *
-     * @param value        long value
+     * @param value          long value
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
-    void value(long value, Predicate<Long> ignoreStrategy);
+    void value(long value, LongPredicate ignoreStrategy);
 }

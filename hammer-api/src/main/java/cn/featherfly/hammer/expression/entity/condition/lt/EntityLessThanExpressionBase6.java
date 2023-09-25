@@ -5,21 +5,24 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.Date;
+import java.util.function.DoublePredicate;
+import java.util.function.IntPredicate;
+import java.util.function.LongPredicate;
 import java.util.function.Predicate;
 
 import cn.featherfly.common.function.serializable.SerializableDateSupplier;
-import cn.featherfly.common.function.serializable.SerializableLocalDateSupplier;
-import cn.featherfly.common.function.serializable.SerializableLocalDateTimeSupplier;
-import cn.featherfly.common.function.serializable.SerializableLocalTimeSupplier;
-import cn.featherfly.common.function.serializable.SerializableNumberSupplier;
 import cn.featherfly.common.function.serializable.SerializableDoubleSupplier;
 import cn.featherfly.common.function.serializable.SerializableFunction;
 import cn.featherfly.common.function.serializable.SerializableIntSupplier;
+import cn.featherfly.common.function.serializable.SerializableLocalDateSupplier;
+import cn.featherfly.common.function.serializable.SerializableLocalDateTimeSupplier;
+import cn.featherfly.common.function.serializable.SerializableLocalTimeSupplier;
 import cn.featherfly.common.function.serializable.SerializableLongSupplier;
+import cn.featherfly.common.function.serializable.SerializableNumberSupplier;
+import cn.featherfly.common.function.serializable.SerializableStringSupplier;
 import cn.featherfly.common.function.serializable.SerializableToDoubleFunction6;
 import cn.featherfly.common.function.serializable.SerializableToIntFunction6;
 import cn.featherfly.common.function.serializable.SerializableToLongFunction6;
-import cn.featherfly.common.function.serializable.SerializableStringSupplier;
 import cn.featherfly.hammer.expression.condition.ConditionExpression;
 import cn.featherfly.hammer.expression.condition.LogicExpression;
 
@@ -39,14 +42,6 @@ import cn.featherfly.hammer.expression.condition.LogicExpression;
 public interface EntityLessThanExpressionBase6<E, E2, E3, E4, E5, E6, C extends ConditionExpression,
         L extends LogicExpression<C, L>> extends EntityLessThanExpressionBase5<E, E2, E3, E4, E5, C, L> {
 
-    //    /**
-    //     *less than. 小于.
-    //     *
-    //     * @param consumer the consumer
-    //     * @return LogicExpression
-    //     */
-    //    L lt6(Consumer<EntityGreatEqualsExpressionBase2<E, C, L>> consumer);
-
     /**
      * less than. 小于.
      *
@@ -59,12 +54,12 @@ public interface EntityLessThanExpressionBase6<E, E2, E3, E4, E5, E6, C extends 
     /**
      * less than. 小于.
      *
-     * @param name         参数名称
-     * @param value        参数值
+     * @param name           参数名称
+     * @param value          参数值
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
-    L lt6(SerializableToIntFunction6<E6> name, int value, Predicate<Integer> ignoreStrategy);
+    L lt6(SerializableToIntFunction6<E6> name, int value, IntPredicate ignoreStrategy);
 
     /**
      * less than. 小于.
@@ -78,12 +73,12 @@ public interface EntityLessThanExpressionBase6<E, E2, E3, E4, E5, E6, C extends 
     /**
      * less than. 小于.
      *
-     * @param name         参数名称
-     * @param value        参数值
+     * @param name           参数名称
+     * @param value          参数值
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
-    L lt6(SerializableToLongFunction6<E6> name, long value, Predicate<Long> ignoreStrategy);
+    L lt6(SerializableToLongFunction6<E6> name, long value, LongPredicate ignoreStrategy);
 
     /**
      * less than. 小于.
@@ -97,12 +92,12 @@ public interface EntityLessThanExpressionBase6<E, E2, E3, E4, E5, E6, C extends 
     /**
      * less than. 小于.
      *
-     * @param name         参数名称
-     * @param value        参数值
+     * @param name           参数名称
+     * @param value          参数值
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
-    L lt6(SerializableToDoubleFunction6<E6> name, double value, Predicate<Double> ignoreStrategy);
+    L lt6(SerializableToDoubleFunction6<E6> name, double value, DoublePredicate ignoreStrategy);
 
     /**
      * less than. 小于.
@@ -117,9 +112,9 @@ public interface EntityLessThanExpressionBase6<E, E2, E3, E4, E5, E6, C extends 
     /**
      * less than. 小于.
      *
-     * @param <N>          number type
-     * @param name         参数名称
-     * @param value        参数值
+     * @param <N>            number type
+     * @param name           参数名称
+     * @param value          参数值
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
@@ -138,9 +133,9 @@ public interface EntityLessThanExpressionBase6<E, E2, E3, E4, E5, E6, C extends 
     /**
      * less than. 小于.
      *
-     * @param <D>          date type
-     * @param name         参数名称
-     * @param value        参数值
+     * @param <D>            date type
+     * @param name           参数名称
+     * @param value          参数值
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
@@ -158,8 +153,8 @@ public interface EntityLessThanExpressionBase6<E, E2, E3, E4, E5, E6, C extends 
     /**
      * less than. 小于.
      *
-     * @param name         参数名称
-     * @param value        参数值
+     * @param name           参数名称
+     * @param value          参数值
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
@@ -177,8 +172,8 @@ public interface EntityLessThanExpressionBase6<E, E2, E3, E4, E5, E6, C extends 
     /**
      * less than. 小于.
      *
-     * @param name         参数名称
-     * @param value        参数值
+     * @param name           参数名称
+     * @param value          参数值
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
@@ -196,8 +191,8 @@ public interface EntityLessThanExpressionBase6<E, E2, E3, E4, E5, E6, C extends 
     /**
      * less than. 小于.
      *
-     * @param name         参数名称
-     * @param value        参数值
+     * @param name           参数名称
+     * @param value          参数值
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
@@ -215,8 +210,8 @@ public interface EntityLessThanExpressionBase6<E, E2, E3, E4, E5, E6, C extends 
     /**
      * less than. 小于.
      *
-     * @param name         参数名称
-     * @param value        参数值
+     * @param name           参数名称
+     * @param value          参数值
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
@@ -233,11 +228,11 @@ public interface EntityLessThanExpressionBase6<E, E2, E3, E4, E5, E6, C extends 
     /**
      * less than. 小于.
      *
-     * @param property     对象属性
+     * @param property       对象属性
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
-    L lt6(SerializableIntSupplier property, Predicate<Integer> ignoreStrategy);
+    L lt6(SerializableIntSupplier property, IntPredicate ignoreStrategy);
 
     /**
      * less than. 小于.
@@ -250,11 +245,11 @@ public interface EntityLessThanExpressionBase6<E, E2, E3, E4, E5, E6, C extends 
     /**
      * less than. 小于.
      *
-     * @param property     对象属性
+     * @param property       对象属性
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
-    L lt6(SerializableLongSupplier property, Predicate<Long> ignoreStrategy);
+    L lt6(SerializableLongSupplier property, LongPredicate ignoreStrategy);
 
     /**
      * less than. 小于.
@@ -267,11 +262,11 @@ public interface EntityLessThanExpressionBase6<E, E2, E3, E4, E5, E6, C extends 
     /**
      * less than. 小于.
      *
-     * @param property     对象属性
+     * @param property       对象属性
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
-    L lt6(SerializableDoubleSupplier property, Predicate<Double> ignoreStrategy);
+    L lt6(SerializableDoubleSupplier property, DoublePredicate ignoreStrategy);
 
     /**
      * less than. 小于.
@@ -285,8 +280,8 @@ public interface EntityLessThanExpressionBase6<E, E2, E3, E4, E5, E6, C extends 
     /**
      * less than. 小于.
      *
-     * @param <R>          the generic type
-     * @param property     对象属性
+     * @param <R>            the generic type
+     * @param property       对象属性
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
@@ -304,8 +299,8 @@ public interface EntityLessThanExpressionBase6<E, E2, E3, E4, E5, E6, C extends 
     /**
      * less than. 小于.
      *
-     * @param <R>          the generic type
-     * @param property     对象属性
+     * @param <R>            the generic type
+     * @param property       对象属性
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
@@ -322,7 +317,7 @@ public interface EntityLessThanExpressionBase6<E, E2, E3, E4, E5, E6, C extends 
     /**
      * less than. 小于.
      *
-     * @param property     对象属性
+     * @param property       对象属性
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
@@ -339,7 +334,7 @@ public interface EntityLessThanExpressionBase6<E, E2, E3, E4, E5, E6, C extends 
     /**
      * less than. 小于.
      *
-     * @param property     对象属性
+     * @param property       对象属性
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
@@ -356,7 +351,7 @@ public interface EntityLessThanExpressionBase6<E, E2, E3, E4, E5, E6, C extends 
     /**
      * less than. 小于.
      *
-     * @param property     对象属性
+     * @param property       对象属性
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
@@ -373,141 +368,10 @@ public interface EntityLessThanExpressionBase6<E, E2, E3, E4, E5, E6, C extends 
     /**
      * less than. 小于.
      *
-     * @param property     对象属性
+     * @param property       对象属性
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
     L lt6(SerializableStringSupplier property, Predicate<String> ignoreStrategy);
 
-    // 嵌套属性使用property(U1::getU2).property(U2:getV).lt(v)来设置
-    //    /**
-    //     * less than. 小于.
-    //     *
-    //     * @param <R>        the generic type
-    //     * @param <N>        the number type
-    //     * @param repository the repository
-    //     * @param property   the property
-    //     * @param value      参数值
-    //     * @return LogicExpression
-    //     */
-    //    <R, N extends Number> L lt6(SerializableFunction<E6, R> repository, SerializableFunction<R, N> property, N value);
-    //
-    //    /**
-    //     * less than. 小于.
-    //     *
-    //     * @param <R>        the generic type
-    //     * @param <N>        the number type
-    //     * @param repository the repository
-    //     * @param property   对象属性
-    //     * @return LogicExpression
-    //     */
-    //    <R, N extends Number> L lt6(SerializableSupplier<R> repository, SerializableToNumberFunction<R, N> property);
-    //
-    //    /**
-    //     * less than. 小于.
-    //     *
-    //     * @param <R>        the date type
-    //     * @param <D>        the generic type
-    //     * @param repository the repository
-    //     * @param property   the property
-    //     * @param value      参数值
-    //     * @return LogicExpression
-    //     */
-    //    <R, D extends Date> L lt6(SerializableFunction<E6, R> repository, SerializableFunction<R, D> property, D value);
-    //
-    //    /**
-    //     * less than. 小于.
-    //     *
-    //     * @param <R>        the generic type
-    //     * @param <D>        the date type
-    //     * @param repository the repository
-    //     * @param property   对象属性
-    //     * @return LogicExpression
-    //     */
-    //    <R, D extends Date> L lt6(SerializableSupplier<R> repository, SerializableToDateFunction<R, D> property);
-    //
-    //    /**
-    //     * less than. 小于.
-    //     *
-    //     * @param <R>        the date type
-    //     * @param repository the repository
-    //     * @param property   the property
-    //     * @param value      参数值
-    //     * @return LogicExpression
-    //     */
-    //    <R> L lt6(SerializableFunction<E6, R> repository, SerializableFunction<R, LocalTime> property, LocalTime value);
-    //
-    //    /**
-    //     * less than. 小于.
-    //     *
-    //     * @param <T>        the generic type
-    //     * @param repository the repository
-    //     * @param property   对象属性
-    //     * @return LogicExpression
-    //     */
-    //    <T> L lt6(SerializableSupplier<T> repository, SerializableToLocalTimeFunction<T> property);
-    //
-    //    /**
-    //     * less than. 小于.
-    //     *
-    //     * @param <R>        the date type
-    //     * @param repository the repository
-    //     * @param property   the property
-    //     * @param value      参数值
-    //     * @return LogicExpression
-    //     */
-    //    <R> L lt6(SerializableFunction<E6, R> repository, SerializableFunction<R, LocalDate> property, LocalDate value);
-    //
-    //    /**
-    //     * less than. 小于.
-    //     *
-    //     * @param <T>        the generic type
-    //     * @param repository the repository
-    //     * @param property   对象属性
-    //     * @return LogicExpression
-    //     */
-    //    <T> L lt6(SerializableSupplier<T> repository, SerializableToLocalDateFunction<T> property);
-    //
-    //    /**
-    //     * less than. 小于.
-    //     *
-    //     * @param <R>        the date type
-    //     * @param repository the repository
-    //     * @param property   the property
-    //     * @param value      参数值
-    //     * @return LogicExpression
-    //     */
-    //    <R> L lt6(SerializableFunction<E6, R> repository, SerializableFunction<R, LocalDateTime> property,
-    //            LocalDateTime value);
-    //
-    //    /**
-    //     * less than. 小于.
-    //     *
-    //     * @param <T>        the generic type
-    //     * @param repository the repository
-    //     * @param property   对象属性
-    //     * @return LogicExpression
-    //     */
-    //    <T> L lt6(SerializableSupplier<T> repository, SerializableToLocalDateTimeFunction<T> property);
-    //
-    //    /**
-    //     * less than. 小于.
-    //     *
-    //     * @param <R>        the date type
-    //     * @param repository the repository
-    //     * @param property   the property
-    //     * @param value      参数值
-    //     * @return LogicExpression
-    //     */
-    //    <R> L lt6(SerializableFunction<E6, R> repository, SerializableFunction<R, String> property, String value);
-    //
-    //    /**
-    //     * less than. 小于.
-    //     *
-    //     * @param <T>        the generic type
-    //     * @param repository the repository
-    //     * @param property   对象属性
-    //     * @return LogicExpression
-    //     */
-    //    <T> L lt6(SerializableSupplier<T> repository, SerializableToStringFunction<T> property);
 }

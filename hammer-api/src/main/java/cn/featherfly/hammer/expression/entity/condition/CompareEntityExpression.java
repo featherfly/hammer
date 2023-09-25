@@ -14,6 +14,9 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.Date;
+import java.util.function.DoublePredicate;
+import java.util.function.IntPredicate;
+import java.util.function.LongPredicate;
 import java.util.function.Predicate;
 
 import cn.featherfly.common.function.serializable.SerializableDateSupplier;
@@ -60,7 +63,7 @@ public interface CompareEntityExpression<E> {
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
-    void accept(SerializableToIntFunction<E> name, int value, Predicate<Integer> ignoreStrategy);
+    void accept(SerializableToIntFunction<E> name, int value, IntPredicate ignoreStrategy);
 
     /**
      * compare. 比较
@@ -79,7 +82,7 @@ public interface CompareEntityExpression<E> {
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
-    void accept(SerializableToLongFunction<E> name, long value, Predicate<Long> ignoreStrategy);
+    void accept(SerializableToLongFunction<E> name, long value, LongPredicate ignoreStrategy);
 
     /**
      * compare. 比较
@@ -98,7 +101,7 @@ public interface CompareEntityExpression<E> {
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
-    void accept(SerializableToDoubleFunction<E> name, double value, Predicate<Double> ignoreStrategy);
+    void accept(SerializableToDoubleFunction<E> name, double value, DoublePredicate ignoreStrategy);
 
     /**
      * compare. 比较
@@ -234,7 +237,7 @@ public interface CompareEntityExpression<E> {
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
-    void accept(SerializableIntSupplier property, Predicate<Integer> ignoreStrategy);
+    void accept(SerializableIntSupplier property, IntPredicate ignoreStrategy);
 
     /**
      * compare. 比较
@@ -251,7 +254,7 @@ public interface CompareEntityExpression<E> {
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
-    void accept(SerializableLongSupplier property, Predicate<Long> ignoreStrategy);
+    void accept(SerializableLongSupplier property, LongPredicate ignoreStrategy);
 
     /**
      * compare. 比较
@@ -268,7 +271,7 @@ public interface CompareEntityExpression<E> {
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
-    void accept(SerializableDoubleSupplier property, Predicate<Double> ignoreStrategy);
+    void accept(SerializableDoubleSupplier property, DoublePredicate ignoreStrategy);
 
     /**
      * compare. 比较

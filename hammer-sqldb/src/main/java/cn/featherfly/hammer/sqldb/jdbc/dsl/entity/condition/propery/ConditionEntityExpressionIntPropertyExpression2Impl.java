@@ -19,11 +19,11 @@ import cn.featherfly.common.repository.mapping.PropertyMapping;
 import cn.featherfly.hammer.expression.entity.condition.ConditionEntityExpressionIntPropertyExpression2;
 
 /**
- * The Class ConditionEntityExpressionIntegerPropertyExpression2Impl.
+ * The Class ConditionEntityExpressionIntPropertyExpression2Impl.
  *
  * @author zhongj
  */
-public class ConditionEntityExpressionIntegerPropertyExpression2Impl
+public class ConditionEntityExpressionIntPropertyExpression2Impl
         implements ConditionEntityExpressionIntPropertyExpression2 {
 
     private Function<Integer, PropertyMapping<?>> propertyMapping;
@@ -33,15 +33,15 @@ public class ConditionEntityExpressionIntegerPropertyExpression2Impl
     private FourArgusConsumer<Integer, Integer, BiPredicate<Integer, Integer>, PropertyMapping<?>> setValue;
 
     /**
-     * Instantiates a new condition entity expression integer property
-     * expression 2 impl.
+     * Instantiates a new condition entity expression int property expression 2
+     * impl.
      *
      * @param propertyMapping the property mapping
      * @param ignoreStrategy  the ignore strategy
      * @param setValue        the set value
      */
-    public ConditionEntityExpressionIntegerPropertyExpression2Impl(
-            Function<Integer, PropertyMapping<?>> propertyMapping, Predicate<?> ignoreStrategy,
+    public ConditionEntityExpressionIntPropertyExpression2Impl(Function<Integer, PropertyMapping<?>> propertyMapping,
+            Predicate<?> ignoreStrategy,
             FourArgusConsumer<Integer, Integer, BiPredicate<Integer, Integer>, PropertyMapping<?>> setValue) {
         super();
         this.propertyMapping = propertyMapping;
