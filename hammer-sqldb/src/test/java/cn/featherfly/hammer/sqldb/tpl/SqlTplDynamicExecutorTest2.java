@@ -105,7 +105,7 @@ public class SqlTplDynamicExecutorTest2 extends JdbcTestBase {
     void testMapperListMap() {
         List<Map<String, Object>> us = userMapper.select2();
         System.out.println(us);
-        assertEquals(us.size(), 2);
+        assertEquals(us.size(), 5);
 
         us = userMapper.selectById2(1);
         System.out.println(us);

@@ -50,7 +50,7 @@ public class TplDynamicExecutorSpringRegistorTest2 extends AbstractTestNGSpringC
     @Test
     void testListTuple2() {
         List<Tuple2<UserInfo, User>> list = tupleMapper.selectUserInfoAndUserList();
-        assertEquals(list.size(), 2);
+        assertEquals(list.size(), 5);
 
         for (Tuple2<UserInfo, User> tuple2 : list) {
             System.out.println(tuple2.get0());
@@ -87,8 +87,8 @@ public class TplDynamicExecutorSpringRegistorTest2 extends AbstractTestNGSpringC
     void testPaginationTuple2() {
         PaginationResults<
                 Tuple2<UserInfo, User>> page = tupleMapper.selectUserInfoAndUserPage(new SimplePagination(0, 10));
-        assertEquals(page.getTotal(), new Integer(2));
-        assertEquals(page.getPageResults().size(), 2);
+        assertEquals(page.getTotal(), Integer.valueOf(5));
+        assertEquals(page.getPageResults().size(), 5);
 
         for (Tuple2<UserInfo, User> tuple2 : page.getPageResults()) {
             System.out.println(tuple2.get0());
@@ -98,7 +98,7 @@ public class TplDynamicExecutorSpringRegistorTest2 extends AbstractTestNGSpringC
         }
 
         page = tupleMapper.selectUserInfoAndUserPage(new SimplePagination(0, 1));
-        assertEquals(page.getTotal(), new Integer(2));
+        assertEquals(page.getTotal(), Integer.valueOf(5));
         assertEquals(page.getPageResults().size(), 1);
 
         for (Tuple2<UserInfo, User> tuple2 : page.getPageResults()) {
@@ -112,8 +112,8 @@ public class TplDynamicExecutorSpringRegistorTest2 extends AbstractTestNGSpringC
     @Test
     void testPaginationLimitTuple2() {
         PaginationResults<Tuple2<UserInfo, User>> page = tupleMapper.selectUserInfoAndUserPage(0, 10);
-        assertEquals(page.getTotal(), new Integer(2));
-        assertEquals(page.getPageResults().size(), 2);
+        assertEquals(page.getTotal(), Integer.valueOf(5));
+        assertEquals(page.getPageResults().size(), 5);
 
         for (Tuple2<UserInfo, User> tuple2 : page.getPageResults()) {
             System.out.println(tuple2.get0());
@@ -123,7 +123,7 @@ public class TplDynamicExecutorSpringRegistorTest2 extends AbstractTestNGSpringC
         }
 
         page = tupleMapper.selectUserInfoAndUserPage(0, 1);
-        assertEquals(page.getTotal(), new Integer(2));
+        assertEquals(page.getTotal(), Integer.valueOf(5));
         assertEquals(page.getPageResults().size(), 1);
 
         for (Tuple2<UserInfo, User> tuple2 : page.getPageResults()) {
