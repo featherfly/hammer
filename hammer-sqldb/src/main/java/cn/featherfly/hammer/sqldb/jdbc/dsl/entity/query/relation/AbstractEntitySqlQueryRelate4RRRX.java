@@ -10,8 +10,6 @@
  */
 package cn.featherfly.hammer.sqldb.jdbc.dsl.entity.query.relation;
 
-import com.speedment.common.tuple.Tuple2;
-
 import cn.featherfly.common.db.mapping.JdbcMappingFactory;
 import cn.featherfly.common.function.serializable.SerializableFunction1;
 import cn.featherfly.common.function.serializable.SerializableFunction2;
@@ -19,14 +17,11 @@ import cn.featherfly.common.function.serializable.SerializableUnaryOperator1;
 import cn.featherfly.common.lang.ClassUtils;
 import cn.featherfly.common.lang.LambdaUtils;
 import cn.featherfly.common.lang.LambdaUtils.SerializedLambdaInfo;
-import cn.featherfly.hammer.expression.entity.query.EntityQueryConditionGroupExpression6;
-import cn.featherfly.hammer.expression.entity.query.EntityQueryConditionGroupLogicExpression6;
-import cn.featherfly.hammer.expression.entity.query.EntityQuerySortExpression6;
-import cn.featherfly.hammer.expression.entity.query.relation.EntityQueryRelateExpression5RRRRP;
-import cn.featherfly.hammer.expression.entity.query.relation.EntityQueryRelateExpression5RRRRR;
+import cn.featherfly.hammer.dsl.entity.query.relation.EntityQueryRelate4RRRXBase;
+import cn.featherfly.hammer.dsl.entity.query.relation.EntityQueryRelate5RRRRP;
+import cn.featherfly.hammer.dsl.entity.query.relation.EntityQueryRelate5RRRRR;
+import cn.featherfly.hammer.dsl.entity.query.relation.EntityQueryRelatedFetched5RRRRF;
 import cn.featherfly.hammer.expression.entity.query.relation.EntityQueryRelatedExpression;
-import cn.featherfly.hammer.expression.entity.query.relation.EntityQueryRelatedFetchedExpression5RRRRF;
-import cn.featherfly.hammer.expression.entity.query.relation.EntityQueryRelatedFetchedExpression5RRRRP;
 import cn.featherfly.hammer.sqldb.jdbc.SqlPageFactory;
 import cn.featherfly.hammer.sqldb.jdbc.dsl.entity.EntitySqlQueryRelation;
 import cn.featherfly.hammer.sqldb.jdbc.dsl.entity.query.AbstractEntitySqlQueryFetch5;
@@ -41,8 +36,8 @@ import cn.featherfly.hammer.sqldb.jdbc.dsl.entity.query.AbstractEntitySqlQueryFe
  * @param <R3> the generic type
  * @param <R4> the generic type
  */
-public abstract class AbstractEntitySqlQueryRelate4RRRX<E, R1, R2, R3, R4>
-        extends AbstractEntitySqlQueryFetch5<E, R1, R2, R3, R4, E> {
+public abstract class AbstractEntitySqlQueryRelate4RRRX<E, R1, R2, R3, R4> extends
+        AbstractEntitySqlQueryFetch5<E, R1, R2, R3, R4, E> implements EntityQueryRelate4RRRXBase<E, R1, R2, R3, R4> {
 
     /**
      * Instantiates a new abstract entity sql query relate 4 RRRX.
@@ -57,111 +52,44 @@ public abstract class AbstractEntitySqlQueryRelate4RRRX<E, R1, R2, R3, R4>
     }
 
     /**
-     * Join.
-     *
-     * @param <QR>     the generic type
-     * @param <RC>     the generic type
-     * @param <RL>     the generic type
-     * @param <RS>     the generic type
-     * @param <QRF>    the generic type
-     * @param <QRC>    the generic type
-     * @param <QRL>    the generic type
-     * @param <QRS>    the generic type
-     * @param <R5>     the generic type
-     * @param joinType the join type
-     * @return the entity query related expression
+     * {@inheritDoc}
      */
-    @SuppressWarnings("unchecked")
-    public <QR extends EntityQueryRelateExpression5RRRRR<E, R1, R2, R3, R4, R5, RC, RL, RS, QRF, QRC, QRL, QRS>,
-            RC extends EntityQueryConditionGroupExpression6<E, R1, R2, R3, R4, R5, RC, RL, RS, E>,
-            RL extends EntityQueryConditionGroupLogicExpression6<E, R1, R2, R3, R4, R5, RC, RL, RS, E>,
-            RS extends EntityQuerySortExpression6<E, R1, R2, R3, R4, R5, E>,
-            QRF extends EntityQueryRelatedFetchedExpression5RRRRF<E, R1, R2, R3, R4, R5, QRC, QRL, QRS>,
-            QRC extends EntityQueryConditionGroupExpression6<E, R1, R2, R3, R4, R5, QRC, QRL, QRS, Tuple2<E, R5>>,
-            QRL extends EntityQueryConditionGroupLogicExpression6<E, R1, R2, R3, R4, R5, QRC, QRL, QRS, Tuple2<E, R5>>,
-            QRS extends EntityQuerySortExpression6<E, R1, R2, R3, R4, R5, Tuple2<E, R5>>,
-            R5> EntityQueryRelatedExpression<E, R5, QR, QRF> join(Class<R5> joinType) {
-        return new EntitySqlQueryRelated<>(
-                (QR) new EntitySqlQueryRelate5RRRRR<>(factory, sqlPageFactory, queryRelation), factory, queryRelation,
-                joinType, 0);
+    @Override
+    public <R5> EntityQueryRelatedExpression<E, R5, EntityQueryRelate5RRRRR<E, R1, R2, R3, R4, R5>,
+            EntityQueryRelatedFetched5RRRRF<E, R1, R2, R3, R4, R5>> join(Class<R5> joinType) {
+        return new EntitySqlQueryRelated<>(new EntitySqlQueryRelate5RRRRR<>(factory, sqlPageFactory, queryRelation),
+                factory, queryRelation, joinType, 0);
     }
 
     /**
-     * Join.
-     *
-     * @param <RE>         the generic type
-     * @param <RC>         the generic type
-     * @param <RL>         the generic type
-     * @param <RS>         the generic type
-     * @param <QR>         the generic type
-     * @param <QRC>        the generic type
-     * @param <QRL>        the generic type
-     * @param <QRS>        the generic type
-     * @param <R5>         the generic type
-     * @param propertyName the property name
-     * @return the re
+     * {@inheritDoc}
      */
-    @SuppressWarnings("unchecked")
-    public <RE extends EntityQueryRelateExpression5RRRRR<E, R1, R2, R3, R4, R5, RC, RL, RS, QR, QRC, QRL, QRS>,
-            RC extends EntityQueryConditionGroupExpression6<E, R1, R2, R3, R4, R5, RC, RL, RS, E>,
-            RL extends EntityQueryConditionGroupLogicExpression6<E, R1, R2, R3, R4, R5, RC, RL, RS, E>,
-            RS extends EntityQuerySortExpression6<E, R1, R2, R3, R4, R5, E>,
-            QR extends EntityQueryRelatedFetchedExpression5RRRRF<E, R1, R2, R3, R4, R5, QRC, QRL, QRS>,
-            QRC extends EntityQueryConditionGroupExpression6<E, R1, R2, R3, R4, R5, QRC, QRL, QRS, Tuple2<E, R5>>,
-            QRL extends EntityQueryConditionGroupLogicExpression6<E, R1, R2, R3, R4, R5, QRC, QRL, QRS, Tuple2<E, R5>>,
-            QRS extends EntityQuerySortExpression6<E, R1, R2, R3, R4, R5, Tuple2<E, R5>>,
-            R5> RE join(SerializableFunction2<R5, E> propertyName) {
+    @Override
+    public <R5> EntityQueryRelate5RRRRR<E, R1, R2, R3, R4, R5> join(SerializableFunction2<R5, E> propertyName) {
         SerializedLambdaInfo info = LambdaUtils.getLambdaInfo(propertyName);
         queryRelation.join(0, queryRelation.getEntityRelationMapping(0).getIdName(),
                 factory.getClassMapping(ClassUtils.forName(info.getMethodInstanceClassName())), info.getPropertyName());
-        return (RE) new EntitySqlQueryRelate5RRRRR<>(factory, sqlPageFactory, queryRelation);
+        return new EntitySqlQueryRelate5RRRRR<>(factory, sqlPageFactory, queryRelation);
     }
 
     /**
-     * Join.
-     *
-     * @param <RE>         the generic type
-     * @param <RC>         the generic type
-     * @param <RL>         the generic type
-     * @param <RS>         the generic type
-     * @param <QR>         the generic type
-     * @param <R5>         the generic type
-     * @param propertyName the property name
-     * @return the re
+     * {@inheritDoc}
      */
-    @SuppressWarnings("unchecked")
-    public <RE extends EntityQueryRelateExpression5RRRRP<E, R1, R2, R3, R4, R5, RC, RL, RS, QR>,
-            RC extends EntityQueryConditionGroupExpression6<E, R1, R2, R3, R4, R5, RC, RL, RS, E>,
-            RL extends EntityQueryConditionGroupLogicExpression6<E, R1, R2, R3, R4, R5, RC, RL, RS, E>,
-            RS extends EntityQuerySortExpression6<E, R1, R2, R3, R4, R5, E>,
-            QR extends EntityQueryRelatedFetchedExpression5RRRRP<E, R1, R2, R3, R4, R5, RC, RL, RS>,
-            R5> RE join(SerializableFunction1<E, R5> propertyName) {
+    @Override
+    public <R5> EntityQueryRelate5RRRRP<E, R1, R2, R3, R4, R5> join(SerializableFunction1<E, R5> propertyName) {
         SerializedLambdaInfo info = LambdaUtils.getLambdaInfo(propertyName);
         queryRelation.join(0, info.getPropertyName(), factory.getClassMapping(info.getPropertyType()));
-        return (RE) new EntitySqlQueryRelate5RRRRP<>(factory, sqlPageFactory, queryRelation);
+        return new EntitySqlQueryRelate5RRRRP<>(factory, sqlPageFactory, queryRelation);
     }
 
     /**
-     * Join.
-     *
-     * @param <RE>         the generic type
-     * @param <RC>         the generic type
-     * @param <RL>         the generic type
-     * @param <RS>         the generic type
-     * @param <QR>         the generic type
-     * @param propertyName the property name
-     * @return the re
+     * {@inheritDoc}
      */
-    @SuppressWarnings("unchecked")
-    public <RE extends EntityQueryRelateExpression5RRRRP<E, R1, R2, R3, R4, E, RC, RL, RS, QR>,
-            RC extends EntityQueryConditionGroupExpression6<E, R1, R2, R3, R4, E, RC, RL, RS, E>,
-            RL extends EntityQueryConditionGroupLogicExpression6<E, R1, R2, R3, R4, E, RC, RL, RS, E>,
-            RS extends EntityQuerySortExpression6<E, R1, R2, R3, R4, E, E>,
-            QR extends EntityQueryRelatedFetchedExpression5RRRRP<E, R1, R2, R3, R4, E, RC, RL, RS>> RE join(
-                    SerializableUnaryOperator1<E> propertyName) {
+    @Override
+    public EntityQueryRelate5RRRRP<E, R1, R2, R3, R4, E> join(SerializableUnaryOperator1<E> propertyName) {
         SerializedLambdaInfo info = LambdaUtils.getLambdaInfo(propertyName);
         queryRelation.join(0, info.getPropertyName(), factory.getClassMapping(info.getPropertyType()));
-        return (RE) new EntitySqlQueryRelate5RRRRP<>(factory, sqlPageFactory, queryRelation);
+        return new EntitySqlQueryRelate5RRRRP<>(factory, sqlPageFactory, queryRelation);
     }
 
     // ****************************************************************************************************************
@@ -169,111 +97,44 @@ public abstract class AbstractEntitySqlQueryRelate4RRRX<E, R1, R2, R3, R4>
     // ****************************************************************************************************************
 
     /**
-     * Join 2.
-     *
-     * @param <QR>     the generic type
-     * @param <RC>     the generic type
-     * @param <RL>     the generic type
-     * @param <RS>     the generic type
-     * @param <QRF>    the generic type
-     * @param <QRC>    the generic type
-     * @param <QRL>    the generic type
-     * @param <QRS>    the generic type
-     * @param <R5>     the generic type
-     * @param joinType the join type
-     * @return the entity query related expression
+     * {@inheritDoc}
      */
-    @SuppressWarnings("unchecked")
-    public <QR extends EntityQueryRelateExpression5RRRRR<E, R1, R2, R3, R4, R5, RC, RL, RS, QRF, QRC, QRL, QRS>,
-            RC extends EntityQueryConditionGroupExpression6<E, R1, R2, R3, R4, R5, RC, RL, RS, E>,
-            RL extends EntityQueryConditionGroupLogicExpression6<E, R1, R2, R3, R4, R5, RC, RL, RS, E>,
-            RS extends EntityQuerySortExpression6<E, R1, R2, R3, R4, R5, E>,
-            QRF extends EntityQueryRelatedFetchedExpression5RRRRF<E, R1, R2, R3, R4, R5, QRC, QRL, QRS>,
-            QRC extends EntityQueryConditionGroupExpression6<E, R1, R2, R3, R4, R5, QRC, QRL, QRS, Tuple2<E, R5>>,
-            QRL extends EntityQueryConditionGroupLogicExpression6<E, R1, R2, R3, R4, R5, QRC, QRL, QRS, Tuple2<E, R5>>,
-            QRS extends EntityQuerySortExpression6<E, R1, R2, R3, R4, R5, Tuple2<E, R5>>,
-            R5> EntityQueryRelatedExpression<R1, R5, QR, QRF> join2(Class<R5> joinType) {
-        return new EntitySqlQueryRelated<>(
-                (QR) new EntitySqlQueryRelate5RRRRR<>(factory, sqlPageFactory, queryRelation), factory, queryRelation,
-                joinType, 1);
+    @Override
+    public <R5> EntityQueryRelatedExpression<R1, R5, EntityQueryRelate5RRRRR<E, R1, R2, R3, R4, R5>,
+            EntityQueryRelatedFetched5RRRRF<E, R1, R2, R3, R4, R5>> join2(Class<R5> joinType) {
+        return new EntitySqlQueryRelated<>(new EntitySqlQueryRelate5RRRRR<>(factory, sqlPageFactory, queryRelation),
+                factory, queryRelation, joinType, 1);
     }
 
     /**
-     * Join 2.
-     *
-     * @param <RE>         the generic type
-     * @param <RC>         the generic type
-     * @param <RL>         the generic type
-     * @param <RS>         the generic type
-     * @param <QR>         the generic type
-     * @param <QRC>        the generic type
-     * @param <QRL>        the generic type
-     * @param <QRS>        the generic type
-     * @param <R5>         the generic type
-     * @param propertyName the property name
-     * @return the re
+     * {@inheritDoc}
      */
-    @SuppressWarnings("unchecked")
-    public <RE extends EntityQueryRelateExpression5RRRRR<E, R1, R2, R3, R4, R5, RC, RL, RS, QR, QRC, QRL, QRS>,
-            RC extends EntityQueryConditionGroupExpression6<E, R1, R2, R3, R4, R5, RC, RL, RS, E>,
-            RL extends EntityQueryConditionGroupLogicExpression6<E, R1, R2, R3, R4, R5, RC, RL, RS, E>,
-            RS extends EntityQuerySortExpression6<E, R1, R2, R3, R4, R5, E>,
-            QR extends EntityQueryRelatedFetchedExpression5RRRRF<E, R1, R2, R3, R4, R5, QRC, QRL, QRS>,
-            QRC extends EntityQueryConditionGroupExpression6<E, R1, R2, R3, R4, R5, QRC, QRL, QRS, Tuple2<E, R5>>,
-            QRL extends EntityQueryConditionGroupLogicExpression6<E, R1, R2, R3, R4, R5, QRC, QRL, QRS, Tuple2<E, R5>>,
-            QRS extends EntityQuerySortExpression6<E, R1, R2, R3, R4, R5, Tuple2<E, R5>>,
-            R5> RE join2(SerializableFunction2<R5, R1> propertyName) {
+    @Override
+    public <R5> EntityQueryRelate5RRRRR<E, R1, R2, R3, R4, R5> join2(SerializableFunction2<R5, R1> propertyName) {
         SerializedLambdaInfo info = LambdaUtils.getLambdaInfo(propertyName);
         queryRelation.join(1, queryRelation.getEntityRelationMapping(0).getIdName(),
                 factory.getClassMapping(ClassUtils.forName(info.getMethodInstanceClassName())), info.getPropertyName());
-        return (RE) new EntitySqlQueryRelate5RRRRR<>(factory, sqlPageFactory, queryRelation);
+        return new EntitySqlQueryRelate5RRRRR<>(factory, sqlPageFactory, queryRelation);
     }
 
     /**
-     * Join 2.
-     *
-     * @param <RE>         the generic type
-     * @param <RC>         the generic type
-     * @param <RL>         the generic type
-     * @param <RS>         the generic type
-     * @param <QR>         the generic type
-     * @param <R5>         the generic type
-     * @param propertyName the property name
-     * @return the re
+     * {@inheritDoc}
      */
-    @SuppressWarnings("unchecked")
-    public <RE extends EntityQueryRelateExpression5RRRRP<E, R1, R2, R3, R4, R5, RC, RL, RS, QR>,
-            RC extends EntityQueryConditionGroupExpression6<E, R1, R2, R3, R4, R5, RC, RL, RS, E>,
-            RL extends EntityQueryConditionGroupLogicExpression6<E, R1, R2, R3, R4, R5, RC, RL, RS, E>,
-            RS extends EntityQuerySortExpression6<E, R1, R2, R3, R4, R5, E>,
-            QR extends EntityQueryRelatedFetchedExpression5RRRRP<E, R1, R2, R3, R4, R5, RC, RL, RS>,
-            R5> RE join2(SerializableFunction1<R1, R5> propertyName) {
+    @Override
+    public <R5> EntityQueryRelate5RRRRP<E, R1, R2, R3, R4, R5> join2(SerializableFunction1<R1, R5> propertyName) {
         SerializedLambdaInfo info = LambdaUtils.getLambdaInfo(propertyName);
         queryRelation.join(1, info.getPropertyName(), factory.getClassMapping(info.getPropertyType()));
-        return (RE) new EntitySqlQueryRelate5RRRRP<>(factory, sqlPageFactory, queryRelation);
+        return new EntitySqlQueryRelate5RRRRP<>(factory, sqlPageFactory, queryRelation);
     }
 
     /**
-     * Join 2.
-     *
-     * @param <RE>         the generic type
-     * @param <RC>         the generic type
-     * @param <RL>         the generic type
-     * @param <RS>         the generic type
-     * @param <QR>         the generic type
-     * @param propertyName the property name
-     * @return the re
+     * {@inheritDoc}
      */
-    @SuppressWarnings("unchecked")
-    public <RE extends EntityQueryRelateExpression5RRRRP<E, R1, R2, R3, R4, R1, RC, RL, RS, QR>,
-            RC extends EntityQueryConditionGroupExpression6<E, R1, R2, R3, R4, R1, RC, RL, RS, E>,
-            RL extends EntityQueryConditionGroupLogicExpression6<E, R1, R2, R3, R4, R1, RC, RL, RS, E>,
-            RS extends EntityQuerySortExpression6<E, R1, R2, R3, R4, R1, E>,
-            QR extends EntityQueryRelatedFetchedExpression5RRRRP<E, R1, R2, R3, R4, R1, RC, RL, RS>> RE join2(
-                    SerializableUnaryOperator1<R1> propertyName) {
+    @Override
+    public EntityQueryRelate5RRRRP<E, R1, R2, R3, R4, R1> join2(SerializableUnaryOperator1<R1> propertyName) {
         SerializedLambdaInfo info = LambdaUtils.getLambdaInfo(propertyName);
         queryRelation.join(1, info.getPropertyName(), factory.getClassMapping(info.getPropertyType()));
-        return (RE) new EntitySqlQueryRelate5RRRRP<>(factory, sqlPageFactory, queryRelation);
+        return new EntitySqlQueryRelate5RRRRP<>(factory, sqlPageFactory, queryRelation);
     }
 
     // ****************************************************************************************************************
@@ -281,111 +142,44 @@ public abstract class AbstractEntitySqlQueryRelate4RRRX<E, R1, R2, R3, R4>
     // ****************************************************************************************************************
 
     /**
-     * Join 3.
-     *
-     * @param <QR>     the generic type
-     * @param <RC>     the generic type
-     * @param <RL>     the generic type
-     * @param <RS>     the generic type
-     * @param <QRF>    the generic type
-     * @param <QRC>    the generic type
-     * @param <QRL>    the generic type
-     * @param <QRS>    the generic type
-     * @param <R5>     the generic type
-     * @param joinType the join type
-     * @return the entity query related expression
+     * {@inheritDoc}
      */
-    @SuppressWarnings("unchecked")
-    public <QR extends EntityQueryRelateExpression5RRRRR<E, R1, R2, R3, R4, R5, RC, RL, RS, QRF, QRC, QRL, QRS>,
-            RC extends EntityQueryConditionGroupExpression6<E, R1, R2, R3, R4, R5, RC, RL, RS, E>,
-            RL extends EntityQueryConditionGroupLogicExpression6<E, R1, R2, R3, R4, R5, RC, RL, RS, E>,
-            RS extends EntityQuerySortExpression6<E, R1, R2, R3, R4, R5, E>,
-            QRF extends EntityQueryRelatedFetchedExpression5RRRRF<E, R1, R2, R3, R4, R5, QRC, QRL, QRS>,
-            QRC extends EntityQueryConditionGroupExpression6<E, R1, R2, R3, R4, R5, QRC, QRL, QRS, Tuple2<E, R5>>,
-            QRL extends EntityQueryConditionGroupLogicExpression6<E, R1, R2, R3, R4, R5, QRC, QRL, QRS, Tuple2<E, R5>>,
-            QRS extends EntityQuerySortExpression6<E, R1, R2, R3, R4, R5, Tuple2<E, R5>>,
-            R5> EntityQueryRelatedExpression<R2, R5, QR, QRF> join3(Class<R5> joinType) {
-        return new EntitySqlQueryRelated<>(
-                (QR) new EntitySqlQueryRelate5RRRRR<>(factory, sqlPageFactory, queryRelation), factory, queryRelation,
-                joinType, 2);
+    @Override
+    public <R5> EntityQueryRelatedExpression<R2, R5, EntityQueryRelate5RRRRR<E, R1, R2, R3, R4, R5>,
+            EntityQueryRelatedFetched5RRRRF<E, R1, R2, R3, R4, R5>> join3(Class<R5> joinType) {
+        return new EntitySqlQueryRelated<>(new EntitySqlQueryRelate5RRRRR<>(factory, sqlPageFactory, queryRelation),
+                factory, queryRelation, joinType, 2);
     }
 
     /**
-     * Join 3.
-     *
-     * @param <RE>         the generic type
-     * @param <RC>         the generic type
-     * @param <RL>         the generic type
-     * @param <RS>         the generic type
-     * @param <QR>         the generic type
-     * @param <QRC>        the generic type
-     * @param <QRL>        the generic type
-     * @param <QRS>        the generic type
-     * @param <R5>         the generic type
-     * @param propertyName the property name
-     * @return the re
+     * {@inheritDoc}
      */
-    @SuppressWarnings("unchecked")
-    public <RE extends EntityQueryRelateExpression5RRRRR<E, R1, R2, R3, R4, R5, RC, RL, RS, QR, QRC, QRL, QRS>,
-            RC extends EntityQueryConditionGroupExpression6<E, R1, R2, R3, R4, R5, RC, RL, RS, E>,
-            RL extends EntityQueryConditionGroupLogicExpression6<E, R1, R2, R3, R4, R5, RC, RL, RS, E>,
-            RS extends EntityQuerySortExpression6<E, R1, R2, R3, R4, R5, E>,
-            QR extends EntityQueryRelatedFetchedExpression5RRRRF<E, R1, R2, R3, R4, R5, QRC, QRL, QRS>,
-            QRC extends EntityQueryConditionGroupExpression6<E, R1, R2, R3, R4, R5, QRC, QRL, QRS, Tuple2<E, R5>>,
-            QRL extends EntityQueryConditionGroupLogicExpression6<E, R1, R2, R3, R4, R5, QRC, QRL, QRS, Tuple2<E, R5>>,
-            QRS extends EntityQuerySortExpression6<E, R1, R2, R3, R4, R5, Tuple2<E, R5>>,
-            R5> RE join3(SerializableFunction2<R5, R2> propertyName) {
+    @Override
+    public <R5> EntityQueryRelate5RRRRR<E, R1, R2, R3, R4, R5> join3(SerializableFunction2<R5, R2> propertyName) {
         SerializedLambdaInfo info = LambdaUtils.getLambdaInfo(propertyName);
         queryRelation.join(2, queryRelation.getEntityRelationMapping(0).getIdName(),
                 factory.getClassMapping(ClassUtils.forName(info.getMethodInstanceClassName())), info.getPropertyName());
-        return (RE) new EntitySqlQueryRelate5RRRRR<>(factory, sqlPageFactory, queryRelation);
+        return new EntitySqlQueryRelate5RRRRR<>(factory, sqlPageFactory, queryRelation);
     }
 
     /**
-     * Join 3.
-     *
-     * @param <RE>         the generic type
-     * @param <RC>         the generic type
-     * @param <RL>         the generic type
-     * @param <RS>         the generic type
-     * @param <QR>         the generic type
-     * @param <R5>         the generic type
-     * @param propertyName the property name
-     * @return the re
+     * {@inheritDoc}
      */
-    @SuppressWarnings("unchecked")
-    public <RE extends EntityQueryRelateExpression5RRRRP<E, R1, R2, R3, R4, R5, RC, RL, RS, QR>,
-            RC extends EntityQueryConditionGroupExpression6<E, R1, R2, R3, R4, R5, RC, RL, RS, E>,
-            RL extends EntityQueryConditionGroupLogicExpression6<E, R1, R2, R3, R4, R5, RC, RL, RS, E>,
-            RS extends EntityQuerySortExpression6<E, R1, R2, R3, R4, R5, E>,
-            QR extends EntityQueryRelatedFetchedExpression5RRRRP<E, R1, R2, R3, R4, R5, RC, RL, RS>,
-            R5> RE join3(SerializableFunction1<R2, R5> propertyName) {
+    @Override
+    public <R5> EntityQueryRelate5RRRRP<E, R1, R2, R3, R4, R5> join3(SerializableFunction1<R2, R5> propertyName) {
         SerializedLambdaInfo info = LambdaUtils.getLambdaInfo(propertyName);
         queryRelation.join(2, info.getPropertyName(), factory.getClassMapping(info.getPropertyType()));
-        return (RE) new EntitySqlQueryRelate5RRRRP<>(factory, sqlPageFactory, queryRelation);
+        return new EntitySqlQueryRelate5RRRRP<>(factory, sqlPageFactory, queryRelation);
     }
 
     /**
-     * Join 3.
-     *
-     * @param <RE>         the generic type
-     * @param <RC>         the generic type
-     * @param <RL>         the generic type
-     * @param <RS>         the generic type
-     * @param <QR>         the generic type
-     * @param propertyName the property name
-     * @return the re
+     * {@inheritDoc}
      */
-    @SuppressWarnings("unchecked")
-    public <RE extends EntityQueryRelateExpression5RRRRP<E, R1, R2, R3, R4, R2, RC, RL, RS, QR>,
-            RC extends EntityQueryConditionGroupExpression6<E, R1, R2, R3, R4, R2, RC, RL, RS, E>,
-            RL extends EntityQueryConditionGroupLogicExpression6<E, R1, R2, R3, R4, R2, RC, RL, RS, E>,
-            RS extends EntityQuerySortExpression6<E, R1, R2, R3, R4, R2, E>,
-            QR extends EntityQueryRelatedFetchedExpression5RRRRP<E, R1, R2, R3, R4, R2, RC, RL, RS>> RE join3(
-                    SerializableUnaryOperator1<R2> propertyName) {
+    @Override
+    public EntityQueryRelate5RRRRP<E, R1, R2, R3, R4, R2> join3(SerializableUnaryOperator1<R2> propertyName) {
         SerializedLambdaInfo info = LambdaUtils.getLambdaInfo(propertyName);
         queryRelation.join(2, info.getPropertyName(), factory.getClassMapping(info.getPropertyType()));
-        return (RE) new EntitySqlQueryRelate5RRRRP<>(factory, sqlPageFactory, queryRelation);
+        return new EntitySqlQueryRelate5RRRRP<>(factory, sqlPageFactory, queryRelation);
     }
 
     // ****************************************************************************************************************
@@ -393,111 +187,44 @@ public abstract class AbstractEntitySqlQueryRelate4RRRX<E, R1, R2, R3, R4>
     // ****************************************************************************************************************
 
     /**
-     * Join 4.
-     *
-     * @param <QR>     the generic type
-     * @param <RC>     the generic type
-     * @param <RL>     the generic type
-     * @param <RS>     the generic type
-     * @param <QRF>    the generic type
-     * @param <QRC>    the generic type
-     * @param <QRL>    the generic type
-     * @param <QRS>    the generic type
-     * @param <R5>     the generic type
-     * @param joinType the join type
-     * @return the entity query related expression
+     * {@inheritDoc}
      */
-    @SuppressWarnings("unchecked")
-    public <QR extends EntityQueryRelateExpression5RRRRR<E, R1, R2, R3, R4, R5, RC, RL, RS, QRF, QRC, QRL, QRS>,
-            RC extends EntityQueryConditionGroupExpression6<E, R1, R2, R3, R4, R5, RC, RL, RS, E>,
-            RL extends EntityQueryConditionGroupLogicExpression6<E, R1, R2, R3, R4, R5, RC, RL, RS, E>,
-            RS extends EntityQuerySortExpression6<E, R1, R2, R3, R4, R5, E>,
-            QRF extends EntityQueryRelatedFetchedExpression5RRRRF<E, R1, R2, R3, R4, R5, QRC, QRL, QRS>,
-            QRC extends EntityQueryConditionGroupExpression6<E, R1, R2, R3, R4, R5, QRC, QRL, QRS, Tuple2<E, R5>>,
-            QRL extends EntityQueryConditionGroupLogicExpression6<E, R1, R2, R3, R4, R5, QRC, QRL, QRS, Tuple2<E, R5>>,
-            QRS extends EntityQuerySortExpression6<E, R1, R2, R3, R4, R5, Tuple2<E, R5>>,
-            R5> EntityQueryRelatedExpression<R3, R5, QR, QRF> join4(Class<R5> joinType) {
-        return new EntitySqlQueryRelated<>(
-                (QR) new EntitySqlQueryRelate5RRRRR<>(factory, sqlPageFactory, queryRelation), factory, queryRelation,
-                joinType, 3);
+    @Override
+    public <R5> EntityQueryRelatedExpression<R3, R5, EntityQueryRelate5RRRRR<E, R1, R2, R3, R4, R5>,
+            EntityQueryRelatedFetched5RRRRF<E, R1, R2, R3, R4, R5>> join4(Class<R5> joinType) {
+        return new EntitySqlQueryRelated<>(new EntitySqlQueryRelate5RRRRR<>(factory, sqlPageFactory, queryRelation),
+                factory, queryRelation, joinType, 3);
     }
 
     /**
-     * Join 4.
-     *
-     * @param <RE>         the generic type
-     * @param <RC>         the generic type
-     * @param <RL>         the generic type
-     * @param <RS>         the generic type
-     * @param <QR>         the generic type
-     * @param <QRC>        the generic type
-     * @param <QRL>        the generic type
-     * @param <QRS>        the generic type
-     * @param <R5>         the generic type
-     * @param propertyName the property name
-     * @return the re
+     * {@inheritDoc}
      */
-    @SuppressWarnings("unchecked")
-    public <RE extends EntityQueryRelateExpression5RRRRR<E, R1, R2, R3, R4, R5, RC, RL, RS, QR, QRC, QRL, QRS>,
-            RC extends EntityQueryConditionGroupExpression6<E, R1, R2, R3, R4, R5, RC, RL, RS, E>,
-            RL extends EntityQueryConditionGroupLogicExpression6<E, R1, R2, R3, R4, R5, RC, RL, RS, E>,
-            RS extends EntityQuerySortExpression6<E, R1, R2, R3, R4, R5, E>,
-            QR extends EntityQueryRelatedFetchedExpression5RRRRF<E, R1, R2, R3, R4, R5, QRC, QRL, QRS>,
-            QRC extends EntityQueryConditionGroupExpression6<E, R1, R2, R3, R4, R5, QRC, QRL, QRS, Tuple2<E, R5>>,
-            QRL extends EntityQueryConditionGroupLogicExpression6<E, R1, R2, R3, R4, R5, QRC, QRL, QRS, Tuple2<E, R5>>,
-            QRS extends EntityQuerySortExpression6<E, R1, R2, R3, R4, R5, Tuple2<E, R5>>,
-            R5> RE join4(SerializableFunction2<R5, R3> propertyName) {
+    @Override
+    public <R5> EntityQueryRelate5RRRRR<E, R1, R2, R3, R4, R5> join4(SerializableFunction2<R5, R3> propertyName) {
         SerializedLambdaInfo info = LambdaUtils.getLambdaInfo(propertyName);
         queryRelation.join(3, queryRelation.getEntityRelationMapping(0).getIdName(),
                 factory.getClassMapping(ClassUtils.forName(info.getMethodInstanceClassName())), info.getPropertyName());
-        return (RE) new EntitySqlQueryRelate5RRRRR<>(factory, sqlPageFactory, queryRelation);
+        return new EntitySqlQueryRelate5RRRRR<>(factory, sqlPageFactory, queryRelation);
     }
 
     /**
-     * Join 4.
-     *
-     * @param <RE>         the generic type
-     * @param <RC>         the generic type
-     * @param <RL>         the generic type
-     * @param <RS>         the generic type
-     * @param <QR>         the generic type
-     * @param <R5>         the generic type
-     * @param propertyName the property name
-     * @return the re
+     * {@inheritDoc}
      */
-    @SuppressWarnings("unchecked")
-    public <RE extends EntityQueryRelateExpression5RRRRP<E, R1, R2, R3, R4, R5, RC, RL, RS, QR>,
-            RC extends EntityQueryConditionGroupExpression6<E, R1, R2, R3, R4, R5, RC, RL, RS, E>,
-            RL extends EntityQueryConditionGroupLogicExpression6<E, R1, R2, R3, R4, R5, RC, RL, RS, E>,
-            RS extends EntityQuerySortExpression6<E, R1, R2, R3, R4, R5, E>,
-            QR extends EntityQueryRelatedFetchedExpression5RRRRP<E, R1, R2, R3, R4, R5, RC, RL, RS>,
-            R5> RE join4(SerializableFunction1<R3, R5> propertyName) {
+    @Override
+    public <R5> EntityQueryRelate5RRRRP<E, R1, R2, R3, R4, R5> join4(SerializableFunction1<R3, R5> propertyName) {
         SerializedLambdaInfo info = LambdaUtils.getLambdaInfo(propertyName);
         queryRelation.join(3, info.getPropertyName(), factory.getClassMapping(info.getPropertyType()));
-        return (RE) new EntitySqlQueryRelate5RRRRP<>(factory, sqlPageFactory, queryRelation);
+        return new EntitySqlQueryRelate5RRRRP<>(factory, sqlPageFactory, queryRelation);
     }
 
     /**
-     * Join 4.
-     *
-     * @param <RE>         the generic type
-     * @param <RC>         the generic type
-     * @param <RL>         the generic type
-     * @param <RS>         the generic type
-     * @param <QR>         the generic type
-     * @param propertyName the property name
-     * @return the re
+     * {@inheritDoc}
      */
-    @SuppressWarnings("unchecked")
-    public <RE extends EntityQueryRelateExpression5RRRRP<E, R1, R2, R3, R4, R3, RC, RL, RS, QR>,
-            RC extends EntityQueryConditionGroupExpression6<E, R1, R2, R3, R4, R3, RC, RL, RS, E>,
-            RL extends EntityQueryConditionGroupLogicExpression6<E, R1, R2, R3, R4, R3, RC, RL, RS, E>,
-            RS extends EntityQuerySortExpression6<E, R1, R2, R3, R4, R3, E>,
-            QR extends EntityQueryRelatedFetchedExpression5RRRRP<E, R1, R2, R3, R4, R3, RC, RL, RS>> RE join4(
-                    SerializableUnaryOperator1<R3> propertyName) {
+    @Override
+    public EntityQueryRelate5RRRRP<E, R1, R2, R3, R4, R3> join4(SerializableUnaryOperator1<R3> propertyName) {
         SerializedLambdaInfo info = LambdaUtils.getLambdaInfo(propertyName);
         queryRelation.join(3, info.getPropertyName(), factory.getClassMapping(info.getPropertyType()));
-        return (RE) new EntitySqlQueryRelate5RRRRP<>(factory, sqlPageFactory, queryRelation);
+        return new EntitySqlQueryRelate5RRRRP<>(factory, sqlPageFactory, queryRelation);
     }
 
     // ****************************************************************************************************************
@@ -505,110 +232,43 @@ public abstract class AbstractEntitySqlQueryRelate4RRRX<E, R1, R2, R3, R4>
     // ****************************************************************************************************************
 
     /**
-     * Join 5.
-     *
-     * @param <QR>     the generic type
-     * @param <RC>     the generic type
-     * @param <RL>     the generic type
-     * @param <RS>     the generic type
-     * @param <QRF>    the generic type
-     * @param <QRC>    the generic type
-     * @param <QRL>    the generic type
-     * @param <QRS>    the generic type
-     * @param <R5>     the generic type
-     * @param joinType the join type
-     * @return the entity query related expression
+     * {@inheritDoc}
      */
-    @SuppressWarnings("unchecked")
-    public <QR extends EntityQueryRelateExpression5RRRRR<E, R1, R2, R3, R4, R5, RC, RL, RS, QRF, QRC, QRL, QRS>,
-            RC extends EntityQueryConditionGroupExpression6<E, R1, R2, R3, R4, R5, RC, RL, RS, E>,
-            RL extends EntityQueryConditionGroupLogicExpression6<E, R1, R2, R3, R4, R5, RC, RL, RS, E>,
-            RS extends EntityQuerySortExpression6<E, R1, R2, R3, R4, R5, E>,
-            QRF extends EntityQueryRelatedFetchedExpression5RRRRF<E, R1, R2, R3, R4, R5, QRC, QRL, QRS>,
-            QRC extends EntityQueryConditionGroupExpression6<E, R1, R2, R3, R4, R5, QRC, QRL, QRS, Tuple2<E, R5>>,
-            QRL extends EntityQueryConditionGroupLogicExpression6<E, R1, R2, R3, R4, R5, QRC, QRL, QRS, Tuple2<E, R5>>,
-            QRS extends EntityQuerySortExpression6<E, R1, R2, R3, R4, R5, Tuple2<E, R5>>,
-            R5> EntityQueryRelatedExpression<R4, R5, QR, QRF> join5(Class<R5> joinType) {
-        return new EntitySqlQueryRelated<>(
-                (QR) new EntitySqlQueryRelate5RRRRR<>(factory, sqlPageFactory, queryRelation), factory, queryRelation,
-                joinType, 4);
+    @Override
+    public <R5> EntityQueryRelatedExpression<R4, R5, EntityQueryRelate5RRRRR<E, R1, R2, R3, R4, R5>,
+            EntityQueryRelatedFetched5RRRRF<E, R1, R2, R3, R4, R5>> join5(Class<R5> joinType) {
+        return new EntitySqlQueryRelated<>(new EntitySqlQueryRelate5RRRRR<>(factory, sqlPageFactory, queryRelation),
+                factory, queryRelation, joinType, 4);
     }
 
     /**
-     * Join 5.
-     *
-     * @param <RE>         the generic type
-     * @param <RC>         the generic type
-     * @param <RL>         the generic type
-     * @param <RS>         the generic type
-     * @param <QR>         the generic type
-     * @param <QRC>        the generic type
-     * @param <QRL>        the generic type
-     * @param <QRS>        the generic type
-     * @param <R5>         the generic type
-     * @param propertyName the property name
-     * @return the re
+     * {@inheritDoc}
      */
-    @SuppressWarnings("unchecked")
-    public <RE extends EntityQueryRelateExpression5RRRRR<E, R1, R2, R3, R4, R5, RC, RL, RS, QR, QRC, QRL, QRS>,
-            RC extends EntityQueryConditionGroupExpression6<E, R1, R2, R3, R4, R5, RC, RL, RS, E>,
-            RL extends EntityQueryConditionGroupLogicExpression6<E, R1, R2, R3, R4, R5, RC, RL, RS, E>,
-            RS extends EntityQuerySortExpression6<E, R1, R2, R3, R4, R5, E>,
-            QR extends EntityQueryRelatedFetchedExpression5RRRRF<E, R1, R2, R3, R4, R5, QRC, QRL, QRS>,
-            QRC extends EntityQueryConditionGroupExpression6<E, R1, R2, R3, R4, R5, QRC, QRL, QRS, Tuple2<E, R5>>,
-            QRL extends EntityQueryConditionGroupLogicExpression6<E, R1, R2, R3, R4, R5, QRC, QRL, QRS, Tuple2<E, R5>>,
-            QRS extends EntityQuerySortExpression6<E, R1, R2, R3, R4, R5, Tuple2<E, R5>>,
-            R5> RE join5(SerializableFunction2<R5, R4> propertyName) {
+    @Override
+    public <R5> EntityQueryRelate5RRRRR<E, R1, R2, R3, R4, R5> join5(SerializableFunction2<R5, R4> propertyName) {
         SerializedLambdaInfo info = LambdaUtils.getLambdaInfo(propertyName);
         queryRelation.join(4, queryRelation.getEntityRelationMapping(0).getIdName(),
                 factory.getClassMapping(ClassUtils.forName(info.getMethodInstanceClassName())), info.getPropertyName());
-        return (RE) new EntitySqlQueryRelate5RRRRR<>(factory, sqlPageFactory, queryRelation);
+        return new EntitySqlQueryRelate5RRRRR<>(factory, sqlPageFactory, queryRelation);
     }
 
     /**
-     * Join 5.
-     *
-     * @param <RE>         the generic type
-     * @param <RC>         the generic type
-     * @param <RL>         the generic type
-     * @param <RS>         the generic type
-     * @param <QR>         the generic type
-     * @param <R5>         the generic type
-     * @param propertyName the property name
-     * @return the re
+     * {@inheritDoc}
      */
-    @SuppressWarnings("unchecked")
-    public <RE extends EntityQueryRelateExpression5RRRRP<E, R1, R2, R3, R4, R5, RC, RL, RS, QR>,
-            RC extends EntityQueryConditionGroupExpression6<E, R1, R2, R3, R4, R5, RC, RL, RS, E>,
-            RL extends EntityQueryConditionGroupLogicExpression6<E, R1, R2, R3, R4, R5, RC, RL, RS, E>,
-            RS extends EntityQuerySortExpression6<E, R1, R2, R3, R4, R5, E>,
-            QR extends EntityQueryRelatedFetchedExpression5RRRRP<E, R1, R2, R3, R4, R5, RC, RL, RS>,
-            R5> RE join5(SerializableFunction1<R4, R5> propertyName) {
+    @Override
+    public <R5> EntityQueryRelate5RRRRP<E, R1, R2, R3, R4, R5> join5(SerializableFunction1<R4, R5> propertyName) {
         SerializedLambdaInfo info = LambdaUtils.getLambdaInfo(propertyName);
         queryRelation.join(4, info.getPropertyName(), factory.getClassMapping(info.getPropertyType()));
-        return (RE) new EntitySqlQueryRelate5RRRRP<>(factory, sqlPageFactory, queryRelation);
+        return new EntitySqlQueryRelate5RRRRP<>(factory, sqlPageFactory, queryRelation);
     }
 
     /**
-     * Join 5.
-     *
-     * @param <RE>         the generic type
-     * @param <RC>         the generic type
-     * @param <RL>         the generic type
-     * @param <RS>         the generic type
-     * @param <QR>         the generic type
-     * @param propertyName the property name
-     * @return the re
+     * {@inheritDoc}
      */
-    @SuppressWarnings("unchecked")
-    public <RE extends EntityQueryRelateExpression5RRRRP<E, R1, R2, R3, R4, R4, RC, RL, RS, QR>,
-            RC extends EntityQueryConditionGroupExpression6<E, R1, R2, R3, R4, R4, RC, RL, RS, E>,
-            RL extends EntityQueryConditionGroupLogicExpression6<E, R1, R2, R3, R4, R4, RC, RL, RS, E>,
-            RS extends EntityQuerySortExpression6<E, R1, R2, R3, R4, R4, E>,
-            QR extends EntityQueryRelatedFetchedExpression5RRRRP<E, R1, R2, R3, R4, R4, RC, RL, RS>> RE join5(
-                    SerializableUnaryOperator1<R4> propertyName) {
+    @Override
+    public EntityQueryRelate5RRRRP<E, R1, R2, R3, R4, R4> join5(SerializableUnaryOperator1<R4> propertyName) {
         SerializedLambdaInfo info = LambdaUtils.getLambdaInfo(propertyName);
         queryRelation.join(4, info.getPropertyName(), factory.getClassMapping(info.getPropertyType()));
-        return (RE) new EntitySqlQueryRelate5RRRRP<>(factory, sqlPageFactory, queryRelation);
+        return new EntitySqlQueryRelate5RRRRP<>(factory, sqlPageFactory, queryRelation);
     }
 }

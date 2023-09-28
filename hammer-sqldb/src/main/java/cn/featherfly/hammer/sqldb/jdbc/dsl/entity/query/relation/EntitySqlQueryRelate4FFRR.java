@@ -10,8 +10,6 @@
  */
 package cn.featherfly.hammer.sqldb.jdbc.dsl.entity.query.relation;
 
-import com.speedment.common.tuple.Tuple3;
-
 import cn.featherfly.common.db.mapping.JdbcMappingFactory;
 import cn.featherfly.hammer.dsl.entity.query.relation.EntityQueryRelate4FFRR;
 import cn.featherfly.hammer.dsl.entity.query.relation.EntityQueryRelatedFetched4FFRF;
@@ -28,8 +26,7 @@ import cn.featherfly.hammer.sqldb.jdbc.dsl.entity.EntitySqlQueryRelation;
  * @param <R3> the generic type
  * @param <R4> the generic type
  */
-public class EntitySqlQueryRelate4FFRR<E, R1, R2, R3, R4>
-        extends AbstractEntitySqlQueryRelate4FFRX<E, R1, R2, R3, R4, Tuple3<E, R1, R2>>
+public class EntitySqlQueryRelate4FFRR<E, R1, R2, R3, R4> extends AbstractEntitySqlQueryRelate4FFRX<E, R1, R2, R3, R4>
         implements EntityQueryRelate4FFRR<E, R1, R2, R3, R4> {
 
     /**

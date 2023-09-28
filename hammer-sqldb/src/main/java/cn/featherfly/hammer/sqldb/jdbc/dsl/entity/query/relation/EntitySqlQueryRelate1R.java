@@ -1,3 +1,13 @@
+/*
+ * All rights Reserved, Designed By zhongj
+ * @Title: EntitySqlQueryRelate1R.java
+ * @Package cn.featherfly.hammer.sqldb.jdbc.dsl.entity.query.relation
+ * @Description: todo (用一句话描述该文件做什么)
+ * @author: zhongj
+ * @date: 2023年9月26日 下午5:51:29
+ * @version V1.0
+ * @Copyright: 2023 www.featherfly.cn Inc. All rights reserved.
+ */
 
 package cn.featherfly.hammer.sqldb.jdbc.dsl.entity.query.relation;
 
@@ -8,7 +18,7 @@ import cn.featherfly.hammer.sqldb.jdbc.SqlPageFactory;
 import cn.featherfly.hammer.sqldb.jdbc.dsl.entity.EntitySqlQueryRelation;
 
 /**
- * The Class EntitySqlQueryRelation.
+ * The Class EntitySqlQueryRelate1R.
  *
  * @author zhongj
  * @param <E>  the element type
@@ -16,13 +26,13 @@ import cn.featherfly.hammer.sqldb.jdbc.dsl.entity.EntitySqlQueryRelation;
  */
 public class EntitySqlQueryRelate1R<E, R1> extends AbstractEntitySqlQueryRelate1X<E, R1>
         implements EntityQueryRelate1R<E, R1> {
-    //    extends AbstractEntitySqlQueryFetch2<E, R1>
 
     /**
+     * Instantiates a new entity sql query relate 1 R.
+     *
      * @param factory                the factory
      * @param sqlPageFactory         the sql page factory
      * @param entitySqlQueryRelation the entity sql query relation
-     * @param classMapping           the class mapping
      */
     public EntitySqlQueryRelate1R(JdbcMappingFactory factory, SqlPageFactory sqlPageFactory,
             EntitySqlQueryRelation entitySqlQueryRelation) {

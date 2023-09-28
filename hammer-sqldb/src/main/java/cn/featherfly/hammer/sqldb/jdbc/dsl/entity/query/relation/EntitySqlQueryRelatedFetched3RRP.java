@@ -10,21 +10,15 @@
  */
 package cn.featherfly.hammer.sqldb.jdbc.dsl.entity.query.relation;
 
-import com.speedment.common.tuple.Tuple2;
-
 import cn.featherfly.common.db.mapping.JdbcMappingFactory;
 import cn.featherfly.common.function.serializable.SerializableFunction1;
 import cn.featherfly.common.function.serializable.SerializableFunction2;
 import cn.featherfly.common.function.serializable.SerializableUnaryOperator1;
+import cn.featherfly.hammer.dsl.entity.query.relation.EntityQueryRelate4RRRP;
+import cn.featherfly.hammer.dsl.entity.query.relation.EntityQueryRelate4RRRR;
 import cn.featherfly.hammer.dsl.entity.query.relation.EntityQueryRelatedFetched3RRP;
-import cn.featherfly.hammer.expression.entity.query.EntityQueryConditionGroupExpression5;
-import cn.featherfly.hammer.expression.entity.query.EntityQueryConditionGroupLogicExpression5;
-import cn.featherfly.hammer.expression.entity.query.EntityQuerySortExpression5;
-import cn.featherfly.hammer.expression.entity.query.relation.EntityQueryRelateExpression4RRRP;
-import cn.featherfly.hammer.expression.entity.query.relation.EntityQueryRelateExpression4RRRR;
+import cn.featherfly.hammer.dsl.entity.query.relation.EntityQueryRelatedFetched4RRRF;
 import cn.featherfly.hammer.expression.entity.query.relation.EntityQueryRelatedExpression;
-import cn.featherfly.hammer.expression.entity.query.relation.EntityQueryRelatedFetchedExpression4RRRF;
-import cn.featherfly.hammer.expression.entity.query.relation.EntityQueryRelatedFetchedExpression4RRRP;
 import cn.featherfly.hammer.sqldb.jdbc.SqlPageFactory;
 import cn.featherfly.hammer.sqldb.jdbc.dsl.entity.EntitySqlQueryRelation;
 import cn.featherfly.hammer.sqldb.jdbc.dsl.entity.query.AbstractEntitySqlQueryFetch4;
@@ -57,209 +51,82 @@ public class EntitySqlQueryRelatedFetched3RRP<E, R1, R2, R3> extends AbstractEnt
         proxy = entitySqlQueryRelate;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
-    public <QR extends EntityQueryRelateExpression4RRRR<E, R1, R2, R3, R4, RC, RL, RS, QRF, QRC, QRL, QRS>,
-            RC extends EntityQueryConditionGroupExpression5<E, R1, R2, R3, R4, RC, RL, RS, E>,
-            RL extends EntityQueryConditionGroupLogicExpression5<E, R1, R2, R3, R4, RC, RL, RS, E>,
-            RS extends EntityQuerySortExpression5<E, R1, R2, R3, R4, E>,
-            QRF extends EntityQueryRelatedFetchedExpression4RRRF<E, R1, R2, R3, R4, QRC, QRL, QRS>,
-            QRC extends EntityQueryConditionGroupExpression5<E, R1, R2, R3, R4, QRC, QRL, QRS, Tuple2<E, R4>>,
-            QRL extends EntityQueryConditionGroupLogicExpression5<E, R1, R2, R3, R4, QRC, QRL, QRS, Tuple2<E, R4>>,
-            QRS extends EntityQuerySortExpression5<E, R1, R2, R3, R4, Tuple2<E, R4>>,
-            R4> EntityQueryRelatedExpression<E, R4, QR, QRF> join(Class<R4> joinType) {
+    public <R4> EntityQueryRelatedExpression<E, R4, EntityQueryRelate4RRRR<E, R1, R2, R3, R4>,
+            EntityQueryRelatedFetched4RRRF<E, R1, R2, R3, R4>> join(Class<R4> joinType) {
         return proxy.join(joinType);
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
-    public <RE extends EntityQueryRelateExpression4RRRR<E, R1, R2, R3, R4, RC, RL, RS, QR, QRC, QRL, QRS>,
-            RC extends EntityQueryConditionGroupExpression5<E, R1, R2, R3, R4, RC, RL, RS, E>,
-            RL extends EntityQueryConditionGroupLogicExpression5<E, R1, R2, R3, R4, RC, RL, RS, E>,
-            RS extends EntityQuerySortExpression5<E, R1, R2, R3, R4, E>,
-            QR extends EntityQueryRelatedFetchedExpression4RRRF<E, R1, R2, R3, R4, QRC, QRL, QRS>,
-            QRC extends EntityQueryConditionGroupExpression5<E, R1, R2, R3, R4, QRC, QRL, QRS, Tuple2<E, R4>>,
-            QRL extends EntityQueryConditionGroupLogicExpression5<E, R1, R2, R3, R4, QRC, QRL, QRS, Tuple2<E, R4>>,
-            QRS extends EntityQuerySortExpression5<E, R1, R2, R3, R4, Tuple2<E, R4>>,
-            R4> RE join(SerializableFunction2<R4, E> propertyName) {
+    public <R4> EntityQueryRelate4RRRR<E, R1, R2, R3, R4> join(SerializableFunction2<R4, E> propertyName) {
         return proxy.join(propertyName);
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
-    public <RE extends EntityQueryRelateExpression4RRRP<E, R1, R2, R3, R4, RC, RL, RS, QR>,
-            RC extends EntityQueryConditionGroupExpression5<E, R1, R2, R3, R4, RC, RL, RS, E>,
-            RL extends EntityQueryConditionGroupLogicExpression5<E, R1, R2, R3, R4, RC, RL, RS, E>,
-            RS extends EntityQuerySortExpression5<E, R1, R2, R3, R4, E>,
-            QR extends EntityQueryRelatedFetchedExpression4RRRP<E, R1, R2, R3, R4, RC, RL, RS>,
-            R4> RE join(SerializableFunction1<E, R4> propertyName) {
+    public <R4> EntityQueryRelate4RRRP<E, R1, R2, R3, R4> join(SerializableFunction1<E, R4> propertyName) {
         return proxy.join(propertyName);
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
-    public <RE extends EntityQueryRelateExpression4RRRP<E, R1, R2, R3, E, RC, RL, RS, QR>,
-            RC extends EntityQueryConditionGroupExpression5<E, R1, R2, R3, E, RC, RL, RS, E>,
-            RL extends EntityQueryConditionGroupLogicExpression5<E, R1, R2, R3, E, RC, RL, RS, E>,
-            RS extends EntityQuerySortExpression5<E, R1, R2, R3, E, E>,
-            QR extends EntityQueryRelatedFetchedExpression4RRRP<E, R1, R2, R3, E, RC, RL, RS>> RE join(
-                    SerializableUnaryOperator1<E> propertyName) {
+    public EntityQueryRelate4RRRP<E, R1, R2, R3, E> join(SerializableUnaryOperator1<E> propertyName) {
         return proxy.join(propertyName);
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
-    public <QR extends EntityQueryRelateExpression4RRRR<E, R1, R2, R3, R4, RC, RL, RS, QRF, QRC, QRL, QRS>,
-            RC extends EntityQueryConditionGroupExpression5<E, R1, R2, R3, R4, RC, RL, RS, E>,
-            RL extends EntityQueryConditionGroupLogicExpression5<E, R1, R2, R3, R4, RC, RL, RS, E>,
-            RS extends EntityQuerySortExpression5<E, R1, R2, R3, R4, E>,
-            QRF extends EntityQueryRelatedFetchedExpression4RRRF<E, R1, R2, R3, R4, QRC, QRL, QRS>,
-            QRC extends EntityQueryConditionGroupExpression5<E, R1, R2, R3, R4, QRC, QRL, QRS, Tuple2<E, R4>>,
-            QRL extends EntityQueryConditionGroupLogicExpression5<E, R1, R2, R3, R4, QRC, QRL, QRS, Tuple2<E, R4>>,
-            QRS extends EntityQuerySortExpression5<E, R1, R2, R3, R4, Tuple2<E, R4>>,
-            R4> EntityQueryRelatedExpression<R1, R4, QR, QRF> join2(Class<R4> joinType) {
+    public <R4> EntityQueryRelatedExpression<R1, R4, EntityQueryRelate4RRRR<E, R1, R2, R3, R4>,
+            EntityQueryRelatedFetched4RRRF<E, R1, R2, R3, R4>> join2(Class<R4> joinType) {
         return proxy.join2(joinType);
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
-    public <RE extends EntityQueryRelateExpression4RRRR<E, R1, R2, R3, R4, RC, RL, RS, QR, QRC, QRL, QRS>,
-            RC extends EntityQueryConditionGroupExpression5<E, R1, R2, R3, R4, RC, RL, RS, E>,
-            RL extends EntityQueryConditionGroupLogicExpression5<E, R1, R2, R3, R4, RC, RL, RS, E>,
-            RS extends EntityQuerySortExpression5<E, R1, R2, R3, R4, E>,
-            QR extends EntityQueryRelatedFetchedExpression4RRRF<E, R1, R2, R3, R4, QRC, QRL, QRS>,
-            QRC extends EntityQueryConditionGroupExpression5<E, R1, R2, R3, R4, QRC, QRL, QRS, Tuple2<E, R4>>,
-            QRL extends EntityQueryConditionGroupLogicExpression5<E, R1, R2, R3, R4, QRC, QRL, QRS, Tuple2<E, R4>>,
-            QRS extends EntityQuerySortExpression5<E, R1, R2, R3, R4, Tuple2<E, R4>>,
-            R4> RE join2(SerializableFunction2<R4, R1> propertyName) {
+    public <R4> EntityQueryRelate4RRRR<E, R1, R2, R3, R4> join2(SerializableFunction2<R4, R1> propertyName) {
         return proxy.join2(propertyName);
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
-    public <RE extends EntityQueryRelateExpression4RRRP<E, R1, R2, R3, R4, RC, RL, RS, QR>,
-            RC extends EntityQueryConditionGroupExpression5<E, R1, R2, R3, R4, RC, RL, RS, E>,
-            RL extends EntityQueryConditionGroupLogicExpression5<E, R1, R2, R3, R4, RC, RL, RS, E>,
-            RS extends EntityQuerySortExpression5<E, R1, R2, R3, R4, E>,
-            QR extends EntityQueryRelatedFetchedExpression4RRRP<E, R1, R2, R3, R4, RC, RL, RS>,
-            R4> RE join2(SerializableFunction1<R1, R4> propertyName) {
+    public <R4> EntityQueryRelate4RRRP<E, R1, R2, R3, R4> join2(SerializableFunction1<R1, R4> propertyName) {
         return proxy.join2(propertyName);
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
-    public <RE extends EntityQueryRelateExpression4RRRP<E, R1, R2, R3, R1, RC, RL, RS, QR>,
-            RC extends EntityQueryConditionGroupExpression5<E, R1, R2, R3, R1, RC, RL, RS, E>,
-            RL extends EntityQueryConditionGroupLogicExpression5<E, R1, R2, R3, R1, RC, RL, RS, E>,
-            RS extends EntityQuerySortExpression5<E, R1, R2, R3, R1, E>,
-            QR extends EntityQueryRelatedFetchedExpression4RRRP<E, R1, R2, R3, R1, RC, RL, RS>> RE join2(
-                    SerializableUnaryOperator1<R1> propertyName) {
+    public EntityQueryRelate4RRRP<E, R1, R2, R3, R1> join2(SerializableUnaryOperator1<R1> propertyName) {
         return proxy.join2(propertyName);
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
-    public <QR extends EntityQueryRelateExpression4RRRR<E, R1, R2, R3, R4, RC, RL, RS, QRF, QRC, QRL, QRS>,
-            RC extends EntityQueryConditionGroupExpression5<E, R1, R2, R3, R4, RC, RL, RS, E>,
-            RL extends EntityQueryConditionGroupLogicExpression5<E, R1, R2, R3, R4, RC, RL, RS, E>,
-            RS extends EntityQuerySortExpression5<E, R1, R2, R3, R4, E>,
-            QRF extends EntityQueryRelatedFetchedExpression4RRRF<E, R1, R2, R3, R4, QRC, QRL, QRS>,
-            QRC extends EntityQueryConditionGroupExpression5<E, R1, R2, R3, R4, QRC, QRL, QRS, Tuple2<E, R4>>,
-            QRL extends EntityQueryConditionGroupLogicExpression5<E, R1, R2, R3, R4, QRC, QRL, QRS, Tuple2<E, R4>>,
-            QRS extends EntityQuerySortExpression5<E, R1, R2, R3, R4, Tuple2<E, R4>>,
-            R4> EntityQueryRelatedExpression<R2, R4, QR, QRF> join3(Class<R4> joinType) {
+    public <R4> EntityQueryRelatedExpression<R2, R4, EntityQueryRelate4RRRR<E, R1, R2, R3, R4>,
+            EntityQueryRelatedFetched4RRRF<E, R1, R2, R3, R4>> join3(Class<R4> joinType) {
         return proxy.join3(joinType);
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
-    public <RE extends EntityQueryRelateExpression4RRRR<E, R1, R2, R3, R4, RC, RL, RS, QR, QRC, QRL, QRS>,
-            RC extends EntityQueryConditionGroupExpression5<E, R1, R2, R3, R4, RC, RL, RS, E>,
-            RL extends EntityQueryConditionGroupLogicExpression5<E, R1, R2, R3, R4, RC, RL, RS, E>,
-            RS extends EntityQuerySortExpression5<E, R1, R2, R3, R4, E>,
-            QR extends EntityQueryRelatedFetchedExpression4RRRF<E, R1, R2, R3, R4, QRC, QRL, QRS>,
-            QRC extends EntityQueryConditionGroupExpression5<E, R1, R2, R3, R4, QRC, QRL, QRS, Tuple2<E, R4>>,
-            QRL extends EntityQueryConditionGroupLogicExpression5<E, R1, R2, R3, R4, QRC, QRL, QRS, Tuple2<E, R4>>,
-            QRS extends EntityQuerySortExpression5<E, R1, R2, R3, R4, Tuple2<E, R4>>,
-            R4> RE join3(SerializableFunction2<R4, R2> propertyName) {
+    public <R4> EntityQueryRelate4RRRR<E, R1, R2, R3, R4> join3(SerializableFunction2<R4, R2> propertyName) {
         return proxy.join3(propertyName);
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
-    public <RE extends EntityQueryRelateExpression4RRRP<E, R1, R2, R3, R4, RC, RL, RS, QR>,
-            RC extends EntityQueryConditionGroupExpression5<E, R1, R2, R3, R4, RC, RL, RS, E>,
-            RL extends EntityQueryConditionGroupLogicExpression5<E, R1, R2, R3, R4, RC, RL, RS, E>,
-            RS extends EntityQuerySortExpression5<E, R1, R2, R3, R4, E>,
-            QR extends EntityQueryRelatedFetchedExpression4RRRP<E, R1, R2, R3, R4, RC, RL, RS>,
-            R4> RE join3(SerializableFunction1<R2, R4> propertyName) {
+    public <R4> EntityQueryRelate4RRRP<E, R1, R2, R3, R4> join3(SerializableFunction1<R2, R4> propertyName) {
         return proxy.join3(propertyName);
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
-    public <RE extends EntityQueryRelateExpression4RRRP<E, R1, R2, R3, R2, RC, RL, RS, QR>,
-            RC extends EntityQueryConditionGroupExpression5<E, R1, R2, R3, R2, RC, RL, RS, E>,
-            RL extends EntityQueryConditionGroupLogicExpression5<E, R1, R2, R3, R2, RC, RL, RS, E>,
-            RS extends EntityQuerySortExpression5<E, R1, R2, R3, R2, E>,
-            QR extends EntityQueryRelatedFetchedExpression4RRRP<E, R1, R2, R3, R2, RC, RL, RS>> RE join3(
-                    SerializableUnaryOperator1<R2> propertyName) {
+    public EntityQueryRelate4RRRP<E, R1, R2, R3, R2> join3(SerializableUnaryOperator1<R2> propertyName) {
         return proxy.join3(propertyName);
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
-    public <QR extends EntityQueryRelateExpression4RRRR<E, R1, R2, R3, R4, RC, RL, RS, QRF, QRC, QRL, QRS>,
-            RC extends EntityQueryConditionGroupExpression5<E, R1, R2, R3, R4, RC, RL, RS, E>,
-            RL extends EntityQueryConditionGroupLogicExpression5<E, R1, R2, R3, R4, RC, RL, RS, E>,
-            RS extends EntityQuerySortExpression5<E, R1, R2, R3, R4, E>,
-            QRF extends EntityQueryRelatedFetchedExpression4RRRF<E, R1, R2, R3, R4, QRC, QRL, QRS>,
-            QRC extends EntityQueryConditionGroupExpression5<E, R1, R2, R3, R4, QRC, QRL, QRS, Tuple2<E, R4>>,
-            QRL extends EntityQueryConditionGroupLogicExpression5<E, R1, R2, R3, R4, QRC, QRL, QRS, Tuple2<E, R4>>,
-            QRS extends EntityQuerySortExpression5<E, R1, R2, R3, R4, Tuple2<E, R4>>,
-            R4> EntityQueryRelatedExpression<R3, R4, QR, QRF> join4(Class<R4> joinType) {
+    public <R4> EntityQueryRelatedExpression<R3, R4, EntityQueryRelate4RRRR<E, R1, R2, R3, R4>,
+            EntityQueryRelatedFetched4RRRF<E, R1, R2, R3, R4>> join4(Class<R4> joinType) {
         return proxy.join4(joinType);
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
-    public <RE extends EntityQueryRelateExpression4RRRR<E, R1, R2, R3, R4, RC, RL, RS, QR, QRC, QRL, QRS>,
-            RC extends EntityQueryConditionGroupExpression5<E, R1, R2, R3, R4, RC, RL, RS, E>,
-            RL extends EntityQueryConditionGroupLogicExpression5<E, R1, R2, R3, R4, RC, RL, RS, E>,
-            RS extends EntityQuerySortExpression5<E, R1, R2, R3, R4, E>,
-            QR extends EntityQueryRelatedFetchedExpression4RRRF<E, R1, R2, R3, R4, QRC, QRL, QRS>,
-            QRC extends EntityQueryConditionGroupExpression5<E, R1, R2, R3, R4, QRC, QRL, QRS, Tuple2<E, R4>>,
-            QRL extends EntityQueryConditionGroupLogicExpression5<E, R1, R2, R3, R4, QRC, QRL, QRS, Tuple2<E, R4>>,
-            QRS extends EntityQuerySortExpression5<E, R1, R2, R3, R4, Tuple2<E, R4>>,
-            R4> RE join4(SerializableFunction2<R4, R3> propertyName) {
+    public <R4> EntityQueryRelate4RRRR<E, R1, R2, R3, R4> join4(SerializableFunction2<R4, R3> propertyName) {
+        return proxy.join4(propertyName);
+    }
+
+    @Override
+    public <R4> EntityQueryRelate4RRRP<E, R1, R2, R3, R4> join4(SerializableFunction1<R3, R4> propertyName) {
         return proxy.join4(propertyName);
     }
 
@@ -267,25 +134,7 @@ public class EntitySqlQueryRelatedFetched3RRP<E, R1, R2, R3> extends AbstractEnt
      * {@inheritDoc}
      */
     @Override
-    public <RE extends EntityQueryRelateExpression4RRRP<E, R1, R2, R3, R4, RC, RL, RS, QR>,
-            RC extends EntityQueryConditionGroupExpression5<E, R1, R2, R3, R4, RC, RL, RS, E>,
-            RL extends EntityQueryConditionGroupLogicExpression5<E, R1, R2, R3, R4, RC, RL, RS, E>,
-            RS extends EntityQuerySortExpression5<E, R1, R2, R3, R4, E>,
-            QR extends EntityQueryRelatedFetchedExpression4RRRP<E, R1, R2, R3, R4, RC, RL, RS>,
-            R4> RE join4(SerializableFunction1<R3, R4> propertyName) {
-        return proxy.join4(propertyName);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public <RE extends EntityQueryRelateExpression4RRRP<E, R1, R2, R3, R3, RC, RL, RS, QR>,
-            RC extends EntityQueryConditionGroupExpression5<E, R1, R2, R3, R3, RC, RL, RS, E>,
-            RL extends EntityQueryConditionGroupLogicExpression5<E, R1, R2, R3, R3, RC, RL, RS, E>,
-            RS extends EntityQuerySortExpression5<E, R1, R2, R3, R3, E>,
-            QR extends EntityQueryRelatedFetchedExpression4RRRP<E, R1, R2, R3, R3, RC, RL, RS>> RE join4(
-                    SerializableUnaryOperator1<R3> propertyName) {
+    public EntityQueryRelate4RRRP<E, R1, R2, R3, R3> join4(SerializableUnaryOperator1<R3> propertyName) {
         return proxy.join4(propertyName);
     }
 

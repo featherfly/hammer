@@ -60,7 +60,7 @@ public class Order {
 
     @ManyToOne
     @Column(name = "user_info")
-    private UserInfo userInoInfo;
+    private UserInfo userInfo;
 
     @ManyToOne
     @Column(name = "user1")
@@ -254,17 +254,17 @@ public class Order {
      *
      * @return userInoInfo
      */
-    public UserInfo getUserInoInfo() {
-        return userInoInfo;
+    public UserInfo getUserInfo() {
+        return userInfo;
     }
 
     /**
-     * set userInoInfo value
+     * set userInoInfo value.
      *
-     * @param userInoInfo userInoInfo
+     * @param userInfo the new user ino info
      */
-    public void setUserInoInfo(UserInfo userInoInfo) {
-        this.userInoInfo = userInoInfo;
+    public void setUserInfo(UserInfo userInfo) {
+        this.userInfo = userInfo;
     }
 
     /**

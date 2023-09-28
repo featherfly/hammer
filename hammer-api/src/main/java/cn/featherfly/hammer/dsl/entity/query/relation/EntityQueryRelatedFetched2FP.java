@@ -12,10 +12,7 @@ package cn.featherfly.hammer.dsl.entity.query.relation;
 
 import com.speedment.common.tuple.Tuple2;
 
-import cn.featherfly.hammer.dsl.entity.query.EntityQueryConditionGroup3;
-import cn.featherfly.hammer.dsl.entity.query.EntityQueryConditionGroupLogic3;
-import cn.featherfly.hammer.expression.entity.query.EntityQuerySortExpression3;
-import cn.featherfly.hammer.expression.entity.query.relation.EntityQueryRelatedFetchedExpression2FP;
+import cn.featherfly.hammer.dsl.entity.query.EntityQuery3;
 
 /**
  * The Interface EntityQueryRelatedFetched2FP.
@@ -25,9 +22,7 @@ import cn.featherfly.hammer.expression.entity.query.relation.EntityQueryRelatedF
  * @param <R1> the generic type
  * @param <R2> the generic type
  */
-public interface EntityQueryRelatedFetched2FP<E, R1, R2> extends
-        EntityQueryRelatedFetchedExpression2FP<E, R1, R2, EntityQueryConditionGroup3<E, R1, R2, Tuple2<E, R1>>,
-                EntityQueryConditionGroupLogic3<E, R1, R2, Tuple2<E, R1>>,
-                EntityQuerySortExpression3<E, R1, R2, Tuple2<E, R1>>> {
+public interface EntityQueryRelatedFetched2FP<E, R1, R2>
+        extends EntityQuery3<E, R1, R2, Tuple2<E, R1>>, EntityQueryRelate2FXBase<E, R1, R2> {
 
 }

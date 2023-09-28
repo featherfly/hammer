@@ -1,8 +1,8 @@
 
 package cn.featherfly.hammer.dsl.entity.query;
 
-import cn.featherfly.hammer.expression.entity.query.EntityQueryFetchExpression;
-import cn.featherfly.hammer.expression.entity.query.EntityQuerySortExpression;
+import cn.featherfly.hammer.dsl.entity.query.relation.EntityQueryRelateBase;
+import cn.featherfly.hammer.expression.entity.query.EntityQueryPropertiesExpression;
 
 /**
  * dsl for entity query fetcher.
@@ -10,15 +10,6 @@ import cn.featherfly.hammer.expression.entity.query.EntityQuerySortExpression;
  * @author zhongj
  * @param <E> the element type
  */
-public interface EntityQueryFetch<E> extends EntityQuery<E>,
-        EntityQueryFetchExpression<E, EntityQueryConditionGroup<E>, EntityQueryConditionGroupLogic<E>,
-                EntityQueryFetchedProperty<E>, EntityQueryValueConditionGroup<E>,
-                EntityQueryValueConditionGroupLogic<E>, EntityQuerySortExpression<E>> {
-
-    //    /**
-    //     * 结束当前条件并进入排序器.
-    //     *
-    //     * @return QuerySortExpression
-    //     */
-    //    EntityQuerySortExpression<E> sort();
+public interface EntityQueryFetch<E> extends EntityQueryRelateBase<E>, EntityQuery<E>,
+        EntityQueryPropertiesExpression<E, EntityQueryFetchedProperty<E>> {
 }

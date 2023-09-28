@@ -25,7 +25,7 @@ import cn.featherfly.hammer.sqldb.jdbc.dsl.entity.EntitySqlQueryRelation;
  * @param <R2> the generic type
  * @param <R3> the generic type
  */
-public class EntitySqlQueryRelate3RRP<E, R1, R2, R3> extends AbstractEntitySqlQueryRelate3RRX<E, R1, R2, R3, E>
+public class EntitySqlQueryRelate3RRP<E, R1, R2, R3> extends AbstractEntitySqlQueryRelate3RRX<E, R1, R2, R3>
         implements EntityQueryRelate3RRP<E, R1, R2, R3> {
 
     /**

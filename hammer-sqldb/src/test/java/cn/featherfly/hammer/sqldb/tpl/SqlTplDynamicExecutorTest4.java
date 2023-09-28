@@ -34,7 +34,7 @@ public class SqlTplDynamicExecutorTest4 extends JdbcTestBase {
     @Test
     void testGet() {
         User user = new User();
-        user.setAge(100);
+        user.setAge(18);
         user.setUsername("username_" + Randoms.getString(5));
         userMapper.save(user);
 

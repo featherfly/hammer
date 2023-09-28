@@ -20,12 +20,12 @@ public class SqlQueryTypeJoinRelation2Test extends AbstractEntitySqlQueryJoinTes
 
     @Test
     void testJoin_ER1_ER2_R3E() {
-        order = query.find(Order.class).join(Order::getUserInoInfo).join(Order::getCreateUser)
+        order = query.find(Order.class).join(Order::getUserInfo).join(Order::getCreateUser)
                 .join(OrderInfo::getOrder).where().eq(Order::getId, id1).single();
         System.err.println(order);
         assertEquals(order.getId(), id1);
-        assertNotNull(order.getUserInoInfo().getId());
-        assertNull(order.getUserInoInfo().getName());
+        assertNotNull(order.getUserInfo().getId());
+        assertNull(order.getUserInfo().getName());
         assertNotNull(order.getCreateUser().getId());
         assertNull(order.getCreateUser().getUsername());
         assertNotNull(order.getUpdateUser().getId());
@@ -34,45 +34,45 @@ public class SqlQueryTypeJoinRelation2Test extends AbstractEntitySqlQueryJoinTes
 
     @Test
     void testJoin_ER1_ER2_ER3() {
-        order = query.find(Order.class).join(Order::getUserInoInfo).join(Order::getCreateUser)
+        order = query.find(Order.class).join(Order::getUserInfo).join(Order::getCreateUser)
                 .join(Order::getUpdateUser).where().eq(Order::getId, id1).single();
         System.err.println(order);
         assertEquals(order.getId(), id1);
-        assertNotNull(order.getUserInoInfo().getId());
-        assertNull(order.getUserInoInfo().getName());
+        assertNotNull(order.getUserInfo().getId());
+        assertNull(order.getUserInfo().getName());
         assertNotNull(order.getCreateUser().getId());
         assertNull(order.getCreateUser().getUsername());
         assertNotNull(order.getUpdateUser().getId());
         assertNull(order.getUpdateUser().getUsername());
 
-        order = query.find(Order.class).join(Order::getUserInoInfo).fetch().join(Order::getCreateUser)
+        order = query.find(Order.class).join(Order::getUserInfo).fetch().join(Order::getCreateUser)
                 .join(Order::getUpdateUser).where().eq(Order::getId, id1).single();
         System.err.println(order);
         assertEquals(order.getId(), id1);
-        assertNotNull(order.getUserInoInfo().getId());
-        assertNotNull(order.getUserInoInfo().getName());
+        assertNotNull(order.getUserInfo().getId());
+        assertNotNull(order.getUserInfo().getName());
         assertNotNull(order.getCreateUser().getId());
         assertNull(order.getCreateUser().getUsername());
         assertNotNull(order.getUpdateUser().getId());
         assertNull(order.getUpdateUser().getUsername());
 
-        order = query.find(Order.class).join(Order::getUserInoInfo).fetch().join(Order::getCreateUser).fetch()
+        order = query.find(Order.class).join(Order::getUserInfo).fetch().join(Order::getCreateUser).fetch()
                 .join(Order::getUpdateUser).where().eq(Order::getId, id1).single();
         System.err.println(order);
         assertEquals(order.getId(), id1);
-        assertNotNull(order.getUserInoInfo().getId());
-        assertNotNull(order.getUserInoInfo().getName());
+        assertNotNull(order.getUserInfo().getId());
+        assertNotNull(order.getUserInfo().getName());
         assertNotNull(order.getCreateUser().getId());
         assertNotNull(order.getCreateUser().getUsername());
         assertNotNull(order.getUpdateUser().getId());
         assertNull(order.getUpdateUser().getUsername());
 
-        order = query.find(Order.class).join(Order::getUserInoInfo).fetch().join(Order::getCreateUser).fetch()
+        order = query.find(Order.class).join(Order::getUserInfo).fetch().join(Order::getCreateUser).fetch()
                 .join(Order::getUpdateUser).fetch().where().eq(Order::getId, id1).single();
         System.err.println(order);
         assertEquals(order.getId(), id1);
-        assertNotNull(order.getUserInoInfo().getId());
-        assertNotNull(order.getUserInoInfo().getName());
+        assertNotNull(order.getUserInfo().getId());
+        assertNotNull(order.getUserInfo().getName());
         assertNotNull(order.getCreateUser().getId());
         assertNotNull(order.getCreateUser().getUsername());
         assertNotNull(order.getUpdateUser().getId());
@@ -131,40 +131,40 @@ public class SqlQueryTypeJoinRelation2Test extends AbstractEntitySqlQueryJoinTes
 
     @Test
     void testJoin_ER1_ER2_R1R3() {
-        order = query.find(Order.class).join(Order::getUserInoInfo).join(Order::getCreateUser)
+        order = query.find(Order.class).join(Order::getUserInfo).join(Order::getCreateUser)
                 .join2(UserInfo::getUser).where().eq(Order::getId, id1).single();
         assertEquals(order.getId(), id1);
-        assertNotNull(order.getUserInoInfo().getId());
-        assertNull(order.getUserInoInfo().getName());
-        assertNull(order.getUserInoInfo().getUser());
+        assertNotNull(order.getUserInfo().getId());
+        assertNull(order.getUserInfo().getName());
+        assertNull(order.getUserInfo().getUser());
         assertNotNull(order.getCreateUser().getId());
         assertNull(order.getCreateUser().getUsername());
 
-        order = query.find(Order.class).join(Order::getUserInoInfo).fetch().join(Order::getCreateUser)
+        order = query.find(Order.class).join(Order::getUserInfo).fetch().join(Order::getCreateUser)
                 .join2(UserInfo::getUser).where().eq(Order::getId, id1).single();
         assertEquals(order.getId(), id1);
-        assertNotNull(order.getUserInoInfo().getId());
-        assertNotNull(order.getUserInoInfo().getName());
-        assertNotNull(order.getUserInoInfo().getUser().getId());
-        assertNull(order.getUserInoInfo().getUser().getUsername());
+        assertNotNull(order.getUserInfo().getId());
+        assertNotNull(order.getUserInfo().getName());
+        assertNotNull(order.getUserInfo().getUser().getId());
+        assertNull(order.getUserInfo().getUser().getUsername());
         assertNotNull(order.getCreateUser().getId());
         assertNull(order.getCreateUser().getUsername());
 
-        order = query.find(Order.class).join(Order::getUserInoInfo).fetch().join(Order::getCreateUser)
+        order = query.find(Order.class).join(Order::getUserInfo).fetch().join(Order::getCreateUser)
                 .join2(UserInfo::getUser).fetch().where().eq(Order::getId, id1).single();
         assertEquals(order.getId(), id1);
-        assertNotNull(order.getUserInoInfo().getId());
-        assertNotNull(order.getUserInoInfo().getName());
-        assertNotNull(order.getUserInoInfo().getUser().getId());
-        assertNotNull(order.getUserInoInfo().getUser().getUsername());
+        assertNotNull(order.getUserInfo().getId());
+        assertNotNull(order.getUserInfo().getName());
+        assertNotNull(order.getUserInfo().getUser().getId());
+        assertNotNull(order.getUserInfo().getUser().getUsername());
         assertNotNull(order.getCreateUser().getId());
         assertNull(order.getCreateUser().getUsername());
 
         order = query.find(Order.class).join(Order::getCreateUser).fetch().join(Order::getUpdateUser)
                 .join2(UserInfo::getUser).where().eq(Order::getId, id1).single();
         assertEquals(order.getId(), id1);
-        assertNotNull(order.getUserInoInfo().getId());
-        assertNull(order.getUserInoInfo().getName());
+        assertNotNull(order.getUserInfo().getId());
+        assertNull(order.getUserInfo().getName());
         assertNotNull(order.getCreateUser().getId());
         assertNotNull(order.getCreateUser().getUsername());
         assertNotNull(order.getUpdateUser().getId());
@@ -173,44 +173,44 @@ public class SqlQueryTypeJoinRelation2Test extends AbstractEntitySqlQueryJoinTes
 
     @Test
     void testJoin_ER1_ER2_R3R2() {
-        order = query.find(Order.class).join(Order::getUserInoInfo).join(Order::getCreateUser)
+        order = query.find(Order.class).join(Order::getUserInfo).join(Order::getCreateUser)
                 .join3(UserInfo::getUser).where().eq(Order::getId, id1).single();
         assertEquals(order.getId(), id1);
-        assertNotNull(order.getUserInoInfo().getId());
-        assertNull(order.getUserInoInfo().getName());
-        assertNull(order.getUserInoInfo().getUser());
+        assertNotNull(order.getUserInfo().getId());
+        assertNull(order.getUserInfo().getName());
+        assertNull(order.getUserInfo().getUser());
         assertNotNull(order.getCreateUser().getId());
         assertNull(order.getCreateUser().getUsername());
     }
 
     @Test
     void testJoin_ER1_ER2_R2R3() {
-        order = query.find(Order.class).join(Order::getCreateUser).join(Order::getUserInoInfo)
+        order = query.find(Order.class).join(Order::getCreateUser).join(Order::getUserInfo)
                 .join3(UserInfo::getUser).where().eq(Order::getId, id1).single();
         assertEquals(order.getId(), id1);
-        assertNotNull(order.getUserInoInfo().getId());
-        assertNull(order.getUserInoInfo().getName());
-        assertNull(order.getUserInoInfo().getUser());
+        assertNotNull(order.getUserInfo().getId());
+        assertNull(order.getUserInfo().getName());
+        assertNull(order.getUserInfo().getUser());
         assertNotNull(order.getCreateUser().getId());
         assertNull(order.getCreateUser().getUsername());
 
-        order = query.find(Order.class).join(Order::getCreateUser).join(Order::getUserInoInfo).fetch()
+        order = query.find(Order.class).join(Order::getCreateUser).join(Order::getUserInfo).fetch()
                 .join3(UserInfo::getUser).where().eq(Order::getId, id1).single();
         assertEquals(order.getId(), id1);
-        assertNotNull(order.getUserInoInfo().getId());
-        assertNotNull(order.getUserInoInfo().getName());
-        assertNotNull(order.getUserInoInfo().getUser().getId());
-        assertNull(order.getUserInoInfo().getUser().getUsername());
+        assertNotNull(order.getUserInfo().getId());
+        assertNotNull(order.getUserInfo().getName());
+        assertNotNull(order.getUserInfo().getUser().getId());
+        assertNull(order.getUserInfo().getUser().getUsername());
         assertNotNull(order.getCreateUser().getId());
         assertNull(order.getCreateUser().getUsername());
 
-        order = query.find(Order.class).join(Order::getCreateUser).join(Order::getUserInoInfo).fetch()
+        order = query.find(Order.class).join(Order::getCreateUser).join(Order::getUserInfo).fetch()
                 .join3(UserInfo::getUser).fetch().where().eq(Order::getId, id1).single();
         assertEquals(order.getId(), id1);
-        assertNotNull(order.getUserInoInfo().getId());
-        assertNotNull(order.getUserInoInfo().getName());
-        assertNotNull(order.getUserInoInfo().getUser().getId());
-        assertNotNull(order.getUserInoInfo().getUser().getUsername());
+        assertNotNull(order.getUserInfo().getId());
+        assertNotNull(order.getUserInfo().getName());
+        assertNotNull(order.getUserInfo().getUser().getId());
+        assertNotNull(order.getUserInfo().getUser().getUsername());
         assertNotNull(order.getCreateUser().getId());
         assertNull(order.getCreateUser().getUsername());
     }
