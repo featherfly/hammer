@@ -243,7 +243,7 @@ public class HammerJdbcTest extends JdbcTestBase {
     @Test
     public void testSaveUser() {
         User user = new User();
-        user.setAge(100);
+        user.setAge(18);
         user.setUsername("username_" + Randoms.getString(5));
         user.setPwd("password_" + Randoms.getString(5));
         hammer.save(user);

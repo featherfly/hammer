@@ -20,7 +20,7 @@ import cn.featherfly.hammer.sqldb.jdbc.vo.s.User2;
 public class EntitySqlQueryJoin1Test extends AbstractEntitySqlQueryJoinTest {
 
     @Test
-    void testJoin_E_R1_on1() {
+    void testJoin_on1() {
         Order2 order = query.find(Order2.class) //
                 .join(User2.class).on(Order2::getCreateUser) //
                 .where() //
@@ -48,7 +48,7 @@ public class EntitySqlQueryJoin1Test extends AbstractEntitySqlQueryJoinTest {
     }
 
     @Test
-    void testJoin_E_R1_on1_2() {
+    void testJoin_on1_2() {
         Order2 order = query.find(Order2.class).join(User2.class).on(Order2::getCreateUser).where() //
                 .eq((e1, e2) -> e1.accept(Order2::getId, oid1)) //
                 .single();
@@ -106,7 +106,7 @@ public class EntitySqlQueryJoin1Test extends AbstractEntitySqlQueryJoinTest {
     }
 
     @Test
-    void testJoin_E_R1_on3() {
+    void testJoin_on3() {
         Order2 order = query.find(Order2.class).join(User2.class).on(Order2::getCreateUser, User2::getId).where()
                 .eq(Order2::getId, oid1).single();
         assertNotNull(order);
@@ -127,7 +127,7 @@ public class EntitySqlQueryJoin1Test extends AbstractEntitySqlQueryJoinTest {
     }
 
     @Test
-    void testJoin_E_R1_on3_2() {
+    void testJoin_on3_2() {
         Order2 order = query.find(Order2.class).join(User2.class).on(Order2::getCreateUser, User2::getId).where()
                 .eq((e1, e2) -> e1.accept(Order2::getId, oid1)).single();
         assertNotNull(order);
@@ -155,7 +155,7 @@ public class EntitySqlQueryJoin1Test extends AbstractEntitySqlQueryJoinTest {
     }
 
     @Test
-    void testJoin_E_R1_on2() {
+    void testJoin_on2() {
         User2 user = query.find(User2.class).join(Order2.class).on(Order2::getCreateUser).where()
                 .eq2(Order2::getId, oid1).single();
         assertNotNull(user);
@@ -171,7 +171,7 @@ public class EntitySqlQueryJoin1Test extends AbstractEntitySqlQueryJoinTest {
     }
 
     @Test
-    void testJoin_E_R1_on2_2() {
+    void testJoin_on2_2() {
         User2 user = query.find(User2.class).join(Order2.class).on(Order2::getCreateUser).where()
                 .eq((e1, e2) -> e2.accept(Order2::getId, oid1)).single();
         assertNotNull(user);

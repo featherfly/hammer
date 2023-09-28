@@ -1,8 +1,6 @@
 
 package cn.featherfly.hammer.sqldb.jdbc.dsl.entity.query.relation;
 
-import com.speedment.common.tuple.Tuple2;
-
 import cn.featherfly.common.db.mapping.JdbcMappingFactory;
 import cn.featherfly.hammer.dsl.entity.query.relation.EntityQueryRelate2FR;
 import cn.featherfly.hammer.dsl.entity.query.relation.EntityQueryRelatedFetched2FF;
@@ -17,7 +15,7 @@ import cn.featherfly.hammer.sqldb.jdbc.dsl.entity.EntitySqlQueryRelation;
  * @param <R1> the generic type
  * @param <R2> the generic type
  */
-public class EntitySqlQueryRelate2FR<E, R1, R2> extends AbstractEntitySqlQueryRelate2FX<E, R1, R2, Tuple2<E, R1>>
+public class EntitySqlQueryRelate2FR<E, R1, R2> extends AbstractEntitySqlQueryRelate2FX<E, R1, R2>
         implements EntityQueryRelate2FR<E, R1, R2> {
 
     /**

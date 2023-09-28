@@ -157,19 +157,19 @@ public class EntitySqlQueryTest extends JdbcTestBase {
 
     @Test
     void testCount() {
-        Long number = query.find("user").count();
+        long number = query.find("user").count();
         System.out.println("count:" + number);
 
-        Long number2 = query.find(User.class).count();
+        long number2 = query.find(User.class).count();
         System.out.println("count:" + number2);
         assertTrue(number2 > 0);
         assertEquals(number, number2);
 
-        number = query.find("user").where().eq("age", 5).count();
-        assertTrue(number == 2);
+        number = query.find("user").where().eq("age", 55).count();
+        assertTrue(number == 1);
 
-        number2 = query.find(User.class).where().eq(User::getAge, 5).count();
-        assertTrue(number2 == 2);
+        number2 = query.find(User.class).where().eq(User::getAge, 55).count();
+        assertTrue(number2 == 1);
         assertEquals(number, number2);
 
     }
@@ -310,7 +310,7 @@ public class EntitySqlQueryTest extends JdbcTestBase {
     @Test
     void testNestedMapping2() {
         UserInfo userInfo = null;
-        String province = "四川";
+        String province = "广东";
         //        userInfo = query.find(UserInfo.class).where().eq("division.province", province).single();
         //        userInfo = query.find(UserInfo.class).where().eq(UserInfo::getDivision, DistrictDivision::getProvince, province)
         //                .single(); // 使用下面这行代替
@@ -653,7 +653,7 @@ public class EntitySqlQueryTest extends JdbcTestBase {
         userInfo.getDivision().setDistrict(null);
         list = query.find(UserInfo.class).where().eq(UserInfo::getDivision, division).or()
                 .eq(UserInfo::getDivision, division).list();
-        assertTrue(list.size() == size);
+        assertTrue(list.size() > size);
 
         list = query.find(UserInfo.class).where().eq(UserInfo::getDivision, null).or().eq(UserInfo::getDivision, null)
                 .list();
@@ -688,7 +688,7 @@ public class EntitySqlQueryTest extends JdbcTestBase {
         userInfo.getDivision().setDistrict(null);
         list = query.find(UserInfo.class).where().eq(UserInfo::getDivision, division).or()
                 .eq(UserInfo::getDivision, division).list();
-        assertTrue(list.size() == size);
+        assertTrue(list.size() > size);
 
         list = query.find(UserInfo.class).where().eq(UserInfo::getDivision, null).or().eq(UserInfo::getDivision, null)
                 .list();
@@ -741,7 +741,7 @@ public class EntitySqlQueryTest extends JdbcTestBase {
                 .or() //
                 .property(UserInfo::getDivision).eq(division)//
                 .list();
-        assertTrue(list.size() == size);
+        assertTrue(list.size() > size);
 
         list = query.find(UserInfo.class).where()//
                 .property(UserInfo::getDivision).eq(null)//

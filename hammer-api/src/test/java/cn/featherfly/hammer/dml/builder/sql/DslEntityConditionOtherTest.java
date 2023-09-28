@@ -71,18 +71,26 @@ public class DslEntityConditionOtherTest {
         //                .property(Tree::getChildren).property(Tree::getChildren).property(Tree::getName).value("tree-001"))
         //                .list();
 
-        query.find(UserInfo.class).join(User::getUserInfo).where()
-                .isn(es -> es.get0().property(UserInfo::getName).value()).list();
+        query.find(UserInfo.class).join(User::getUserInfo).where() //
+                //        .isn(es -> es.get0().property(UserInfo::getName).value())  // 这样（eclipse）编译报错
+                .isn(es -> {
+                    es.get0().property(UserInfo::getName).value();
+                }).list();
         query.find(UserInfo.class).join(User::getUserInfo).where()
                 .isn((e0, e1) -> e0.property(UserInfo::getName).value()).list();
-        query.find(UserInfo.class).join(User::getUserInfo).where()
-                .isn(es -> es.get1().property(User::getUserInfo).property(UserInfo::getName).value(true)).list();
+        query.find(UserInfo.class).join(User::getUserInfo).where().isn(es -> {
+            es.get1().property(User::getUserInfo).property(UserInfo::getName).value(true);
+        }).list();
         query.find(UserInfo.class).join(User::getUserInfo).where()
                 .isn((e0, e1) -> e1.property(User::getUserInfo).property(UserInfo::getName).value(true)).list();
 
-        query.find(User2.class).join(UserInfo2.class).on(UserInfo2::getUserId).fetch().where()
-                .isn(es -> es.get0().accept(User2::getUsername)).and().isn(es -> es.get1().accept(UserInfo2::getName))
-                .list();
+        query.find(UserInfo.class).join(User::getUserInfo).where().isn(UserInfo::getId).list();
+
+        query.find(User2.class).join(UserInfo2.class).on(UserInfo2::getUserId).fetch().where().isn(es -> {
+            es.get0().accept(User2::getUsername);
+        }).and().isn(es -> {
+            es.get1().accept(UserInfo2::getName);
+        }).list();
 
         query.find(User2.class).join(UserInfo2.class).on(UserInfo2::getUserId).fetch().where()
                 .isn((e0, e1) -> e0.accept(User2::getUsername)).and().isn((e0, e1) -> e1.accept(UserInfo2::getName))
@@ -90,9 +98,9 @@ public class DslEntityConditionOtherTest {
 
         query.find(Tree2.class).join(Tree2.class).on(Tree2::getId, Tree2::getParentId).fetch().join2(Tree2.class)
                 .on((SerializableFunction2<Tree2, Integer>) Tree2::getParentId).fetch().join2(Tree2.class)
-                .on((SerializableFunction2<Tree2, Integer>) Tree2::getParentId).fetch().where()
-                .isn(es -> es.get0().accept(Tree2::getName)).and().isn((e0, e1, e2, e3) -> e3.accept(Tree2::getName))
-                .list();
+                .on((SerializableFunction2<Tree2, Integer>) Tree2::getParentId).fetch().where().isn(es -> {
+                    es.get0().accept(Tree2::getName);
+                }).and().isn((e0, e1, e2, e3) -> e3.accept(Tree2::getName)).list();
     }
 
     public void testEntityQueryJoinConditionInn() {
@@ -133,18 +141,22 @@ public class DslEntityConditionOtherTest {
         //                .property(Tree::getChildren).property(Tree::getChildren).property(Tree::getName).value("tree-001"))
         //                .list();
 
-        query.find(UserInfo.class).join(User::getUserInfo).where()
-                .inn(es -> es.get0().property(UserInfo::getName).value()).list();
+        query.find(UserInfo.class).join(User::getUserInfo).where().inn(es -> {
+            es.get0().property(UserInfo::getName).value();
+        }).list();
         query.find(UserInfo.class).join(User::getUserInfo).where()
                 .inn((e0, e1) -> e0.property(UserInfo::getName).value()).list();
-        query.find(UserInfo.class).join(User::getUserInfo).where()
-                .inn(es -> es.get1().property(User::getUserInfo).property(UserInfo::getName).value(true)).list();
+        query.find(UserInfo.class).join(User::getUserInfo).where().inn(es -> {
+            es.get1().property(User::getUserInfo).property(UserInfo::getName).value(true);
+        }).list();
         query.find(UserInfo.class).join(User::getUserInfo).where()
                 .inn((e0, e1) -> e1.property(User::getUserInfo).property(UserInfo::getName).value(true)).list();
 
-        query.find(User2.class).join(UserInfo2.class).on(UserInfo2::getUserId).fetch().where()
-                .inn(es -> es.get0().accept(User2::getUsername)).and().inn(es -> es.get1().accept(UserInfo2::getName))
-                .list();
+        query.find(User2.class).join(UserInfo2.class).on(UserInfo2::getUserId).fetch().where().inn(es -> {
+            es.get0().accept(User2::getUsername);
+        }).and().inn(es -> {
+            es.get1().accept(UserInfo2::getName);
+        }).list();
 
         query.find(User2.class).join(UserInfo2.class).on(UserInfo2::getUserId).fetch().where()
                 .inn((e0, e1) -> e0.accept(User2::getUsername)).and().inn((e0, e1) -> e1.accept(UserInfo2::getName))
@@ -152,9 +164,9 @@ public class DslEntityConditionOtherTest {
 
         query.find(Tree2.class).join(Tree2.class).on(Tree2::getId, Tree2::getParentId).fetch().join2(Tree2.class)
                 .on((SerializableFunction2<Tree2, Integer>) Tree2::getParentId).fetch().join2(Tree2.class)
-                .on((SerializableFunction2<Tree2, Integer>) Tree2::getParentId).fetch().where()
-                .inn(es -> es.get0().accept(Tree2::getName)).and().inn((e0, e1, e2, e3) -> e3.accept(Tree2::getName))
-                .list();
+                .on((SerializableFunction2<Tree2, Integer>) Tree2::getParentId).fetch().where().inn(es -> {
+                    es.get0().accept(Tree2::getName);
+                }).and().inn((e0, e1, e2, e3) -> e3.accept(Tree2::getName)).list();
     }
 
     public void testEntityQueryJoinConditionIn() {

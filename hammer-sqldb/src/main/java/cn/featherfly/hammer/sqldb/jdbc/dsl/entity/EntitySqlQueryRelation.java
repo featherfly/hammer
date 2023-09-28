@@ -90,8 +90,11 @@ public class EntitySqlQueryRelation extends EntitySqlRelation<EntitySqlQueryRela
 
     public EntitySqlQueryRelation join(int sourceIndex, String propertyName, JdbcClassMapping<?> joinClassMapping,
             String joinPropertyName) {
+        AssertIllegalArgument.isNotNull(propertyName, "propertyName");
+        AssertIllegalArgument.isNotNull(joinClassMapping, "joinClassMapping");
+        AssertIllegalArgument.isNotNull(joinPropertyName, "joinPropertyName");
         EntityRelationMapping<?> erm = getEntityRelationMapping(sourceIndex);
-        if (Lang.isNotEmpty(erm.getJoinPropertyName())) {
+        if (Lang.isNotEmpty(erm.getJoinFromPropertyName())) {
             addFilterable(sourceIndex, erm.getJoinFromPropertyName() + "." + propertyName, joinClassMapping,
                     joinPropertyName);
         } else {
