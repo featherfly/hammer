@@ -10,10 +10,7 @@
  */
 package cn.featherfly.hammer.dsl.entity.query.relation;
 
-import cn.featherfly.hammer.dsl.entity.query.EntityQueryConditionGroup4;
-import cn.featherfly.hammer.dsl.entity.query.EntityQueryConditionGroupLogic4;
-import cn.featherfly.hammer.expression.entity.query.EntityQuerySortExpression4;
-import cn.featherfly.hammer.expression.entity.query.relation.EntityQueryRelatedFetchedExpression3RRP;
+import cn.featherfly.hammer.dsl.entity.query.EntityQuery4;
 
 /**
  * The Interface EntityQueryRelatedFetched3RRP.
@@ -25,7 +22,6 @@ import cn.featherfly.hammer.expression.entity.query.relation.EntityQueryRelatedF
  * @param <R3> the generic type
  */
 public interface EntityQueryRelatedFetched3RRP<E, R1, R2, R3>
-        extends EntityQueryRelatedFetchedExpression3RRP<E, R1, R2, R3, EntityQueryConditionGroup4<E, R1, R2, R3, E>,
-                EntityQueryConditionGroupLogic4<E, R1, R2, R3, E>, EntityQuerySortExpression4<E, R1, R2, R3, E>> {
+        extends EntityQueryRelate3RRXBase<E, R1, R2, R3>, EntityQuery4<E, R1, R2, R3, E> {
 
 }

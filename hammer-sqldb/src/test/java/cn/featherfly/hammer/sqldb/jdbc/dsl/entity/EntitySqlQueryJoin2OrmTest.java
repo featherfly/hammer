@@ -60,7 +60,7 @@ public class EntitySqlQueryJoin2OrmTest extends AbstractEntitySqlQueryJoinTest {
         Order order = null;
 
         order = query.find(Order.class) //
-                .join(Order::getUserInoInfo) //
+                .join(Order::getUserInfo) //
                 .join2(UserInfo::getUser) //
                 .where() //
                 .eq((e1, e2, e3) -> e1.accept(Order::getId, oid1)) //
@@ -71,30 +71,30 @@ public class EntitySqlQueryJoin2OrmTest extends AbstractEntitySqlQueryJoinTest {
         assertNull(order.getCreateUser().getUsername());
 
         order = query.find(Order.class) //
-                .join(Order::getUserInoInfo) //
+                .join(Order::getUserInfo) //
                 .join2(UserInfo::getUser).fetch() //
                 .where() //
                 .eq((e1, e2, e3) -> e1.accept(Order::getId, oid1)) //
                 .single();
         assertNotNull(order);
         assertEquals(order.getId(), oid1);
-        assertNotNull(order.getUserInoInfo().getId());
-        assertNull(order.getUserInoInfo().getName());
-        assertNotNull(order.getUserInoInfo().getUser().getId());
-        assertNotNull(order.getUserInoInfo().getUser().getUsername());
+        assertNotNull(order.getUserInfo().getId());
+        assertNull(order.getUserInfo().getName());
+        assertNotNull(order.getUserInfo().getUser().getId());
+        assertNotNull(order.getUserInfo().getUser().getUsername());
 
         order = query.find(Order.class) //
-                .join(Order::getUserInoInfo).fetch() //
+                .join(Order::getUserInfo).fetch() //
                 .join2(UserInfo::getUser).fetch() //
                 .where() //
                 .eq((e1, e2, e3) -> e1.accept(Order::getId, oid1)) //
                 .single();
         assertNotNull(order);
         assertEquals(order.getId(), oid1);
-        assertNotNull(order.getUserInoInfo().getId());
-        assertNotNull(order.getUserInoInfo().getName());
-        assertNotNull(order.getUserInoInfo().getUser().getId());
-        assertNotNull(order.getUserInoInfo().getUser().getUsername());
+        assertNotNull(order.getUserInfo().getId());
+        assertNotNull(order.getUserInfo().getName());
+        assertNotNull(order.getUserInfo().getUser().getId());
+        assertNotNull(order.getUserInfo().getUser().getUsername());
     }
 
     //    @Test

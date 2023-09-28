@@ -10,11 +10,11 @@ import com.speedment.common.tuple.Tuple2;
 
 import cn.featherfly.common.db.mapping.ClassMappingUtils;
 import cn.featherfly.common.db.mapping.JdbcMappingFactory;
+import cn.featherfly.common.function.serializable.SerializableFunction;
 import cn.featherfly.common.lang.LambdaUtils;
 import cn.featherfly.common.lang.Lang;
-import cn.featherfly.common.function.serializable.SerializableFunction;
 import cn.featherfly.common.operator.AggregateFunction;
-import cn.featherfly.hammer.dsl.entity.query.EntityQueryFetchedProperty;
+import cn.featherfly.hammer.expression.entity.query.EntityQueryPropertiesExpression;
 import cn.featherfly.hammer.expression.query.QueryValueExecutor;
 import cn.featherfly.hammer.sqldb.jdbc.SqlPageFactory;
 import cn.featherfly.hammer.sqldb.jdbc.dsl.entity.EntitySqlQueryRelation;
@@ -28,8 +28,8 @@ import cn.featherfly.hammer.sqldb.jdbc.dsl.query.SqlQueryExpression;
  * @param <E> the element type
  * @param <P> the generic type
  */
-public abstract class AbstractEntitySqlQueryProperties<E, P extends EntityQueryFetchedProperty<E>>
-        extends AbstractEntitySqlQuery<E> implements QueryValueExecutor {
+public abstract class AbstractEntitySqlQueryProperties<E, P extends EntityQueryPropertiesExpression<E, P>>
+        extends AbstractEntitySqlQuery<E> implements EntityQueryPropertiesExpression<E, P>, QueryValueExecutor {
 
     /**
      * Instantiates a new abstract sql query entity properties.
@@ -91,6 +91,7 @@ public abstract class AbstractEntitySqlQueryProperties<E, P extends EntityQueryF
      * @param propertyName      the property name
      * @return the e
      */
+    @Override
     public <R> P property(AggregateFunction aggregateFunction, boolean distinct,
             SerializableFunction<E, R> propertyName) {
         return property(aggregateFunction, distinct, LambdaUtils.getLambdaPropertyName(propertyName));
@@ -130,6 +131,7 @@ public abstract class AbstractEntitySqlQueryProperties<E, P extends EntityQueryF
      * @param propertyNames the property names
      * @return the e
      */
+    @Override
     public P property(@SuppressWarnings("unchecked") SerializableFunction<E, ?>... propertyNames) {
         return property(
                 Arrays.stream(propertyNames).map(LambdaUtils::getLambdaPropertyName).collect(Collectors.toList()));
@@ -143,6 +145,7 @@ public abstract class AbstractEntitySqlQueryProperties<E, P extends EntityQueryF
      * @param propertyName the property name
      * @return the e
      */
+    @Override
     public <R> P property(boolean distinct, SerializableFunction<E, R> propertyName) {
         return property(distinct, LambdaUtils.getLambdaPropertyName(propertyName));
     }

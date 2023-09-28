@@ -2,13 +2,9 @@
 package cn.featherfly.hammer.dsl.entity.query.relation;
 
 import com.speedment.common.tuple.Tuple3;
-import com.speedment.common.tuple.Tuple4;
 
 import cn.featherfly.hammer.dsl.entity.query.EntityQuery4;
-import cn.featherfly.hammer.dsl.entity.query.EntityQueryConditionGroup4;
-import cn.featherfly.hammer.dsl.entity.query.EntityQueryConditionGroupLogic4;
-import cn.featherfly.hammer.expression.entity.query.EntityQuerySortExpression4;
-import cn.featherfly.hammer.expression.entity.query.relation.EntityQueryRelateExpression3FFR;
+import cn.featherfly.hammer.expression.api.entity.QueryRelate;
 
 /**
  * The Interface EntityQueryRelate3FFR.
@@ -19,14 +15,7 @@ import cn.featherfly.hammer.expression.entity.query.relation.EntityQueryRelateEx
  * @param <R2> the generic type
  * @param <R3> the generic type
  */
-public interface EntityQueryRelate3FFR<E, R1, R2, R3> extends
-        EntityQueryRelateExpression3FFR<E, R1, R2, R3, EntityQueryConditionGroup4<E, R1, R2, R3, Tuple3<E, R1, R2>>,
-                EntityQueryConditionGroupLogic4<E, R1, R2, R3, Tuple3<E, R1, R2>>,
-                EntityQuerySortExpression4<E, R1, R2, R3, Tuple3<E, R1, R2>>,
-                EntityQueryRelatedFetched3FFF<E, R1, R2, R3>,
-                EntityQueryConditionGroup4<E, R1, R2, R3, Tuple4<E, R1, R2, R3>>,
-                EntityQueryConditionGroupLogic4<E, R1, R2, R3, Tuple4<E, R1, R2, R3>>,
-                EntityQuerySortExpression4<E, R1, R2, R3, Tuple4<E, R1, R2, R3>>>,
-        EntityQuery4<E, R1, R2, R3, Tuple3<E, R1, R2>> {
+public interface EntityQueryRelate3FFR<E, R1, R2, R3> extends EntityQueryRelate3FFXBase<E, R1, R2, R3>,
+        QueryRelate<EntityQueryRelatedFetched3FFF<E, R1, R2, R3>>, EntityQuery4<E, R1, R2, R3, Tuple3<E, R1, R2>> {
 
 }
