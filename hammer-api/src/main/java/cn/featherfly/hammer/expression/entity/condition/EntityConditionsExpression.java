@@ -2,6 +2,7 @@
 package cn.featherfly.hammer.expression.entity.condition;
 
 import cn.featherfly.hammer.expression.condition.LogicExpression;
+import cn.featherfly.hammer.expression.condition.NativeStringConditionExpression;
 import cn.featherfly.hammer.expression.entity.condition.ba.EntityBetweenExpression;
 import cn.featherfly.hammer.expression.entity.condition.co.EntityContainsExpression;
 import cn.featherfly.hammer.expression.entity.condition.eq.EntityEqualsExpression;
@@ -39,6 +40,6 @@ public interface EntityConditionsExpression<E, C extends EntityConditionsExpress
         EntityIsNullExpression<E, C, L>, EntityLessEqualsExpression<E, C, L>, EntityLessThanExpression<E, C, L>,
         EntityNotEqualsExpression<E, C, L>, EntityNotInExpression<E, C, L>, EntityStartWithExpression<E, C, L>,
         EntityNotStartWithExpression<E, C, L>, EntityLikeExpression<E, C, L>, EntityNotLikeExpression<E, C, L>,
-        EntityPropertyConditionsExpression<E, C, L> {
+        EntityPropertyConditionsExpression<E, C, L>, NativeStringConditionExpression<C, L> {
 
 }

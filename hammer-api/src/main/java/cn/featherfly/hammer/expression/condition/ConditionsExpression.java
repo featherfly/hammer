@@ -17,5 +17,5 @@ public interface ConditionsExpression<C extends ConditionsExpression<C, L>, L ex
         , LessEqualsExpression<C, L>, LessThanExpression<C, L>//
         , StartWithExpression<C, L>, NotStartWithExpression<C, L>//
         , LikeExpression<C, L>, NotLikeExpression<C, L> //
-        , PropertyConditionsExpression<C, L>, StringConditionExpression<C, L> {
+        , PropertyConditionsExpression<C, L>, NativeStringConditionExpression<C, L> {
 }

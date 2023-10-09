@@ -21,8 +21,40 @@ import cn.featherfly.common.lang.ArrayUtils;
  * @param <C> the generic type
  * @param <L> the generic type
  */
-public interface StringConditionExpression<C extends ConditionExpression, L extends LogicExpression<C, L>>
+public interface NativeStringConditionExpression<C extends ConditionExpression, L extends LogicExpression<C, L>>
         extends ConditionExpression {
+
+    /**
+     * expression short alias.
+     *
+     * @param expression the expression
+     * @return the l
+     */
+    default L expr(String expression) {
+        return expression(expression, ArrayUtils.EMPTY_OBJECT_ARRAY);
+    }
+
+    /**
+     * expression short alias.
+     *
+     * @param expression the expression
+     * @param params     the params
+     * @return the l
+     */
+    default L expr(String expression, Map<String, Object> params) {
+        return expression(expression, params);
+    }
+
+    /**
+     * expression short alias.
+     *
+     * @param expression the expression
+     * @param params     the params
+     * @return the l
+     */
+    default L expr(String expression, Object... params) {
+        return expression(expression, params);
+    }
 
     /**
      * Expression.
