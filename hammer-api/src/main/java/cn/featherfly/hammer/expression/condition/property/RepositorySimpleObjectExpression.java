@@ -421,13 +421,13 @@ public class RepositorySimpleObjectExpression<C extends RepositoryConditionsExpr
      * {@inheritDoc}
      */
     @Override
-    public L eq(Object value, MatchStrategy matchStrategy) {
+    public L eq(Object value) {
         if (Lang.isNotEmpty(repository)) {
-            return expression.eq(repository, name, value, matchStrategy);
+            return expression.eq(repository, name, value);
         } else if (repositoryIndex > -1) {
-            return expression.eq(repositoryIndex, name, value, matchStrategy);
+            return expression.eq(repositoryIndex, name, value);
         } else {
-            return ((EqualsExpression<C, L>) expression).eq(name, value, matchStrategy);
+            return ((EqualsExpression<C, L>) expression).eq(name, value);
         }
     }
 
@@ -435,13 +435,13 @@ public class RepositorySimpleObjectExpression<C extends RepositoryConditionsExpr
      * {@inheritDoc}
      */
     @Override
-    public L ne(Object value, MatchStrategy matchStrategy) {
+    public L ne(Object value) {
         if (Lang.isNotEmpty(repository)) {
-            return expression.ne(repository, name, value, matchStrategy);
+            return expression.ne(repository, name, value);
         } else if (repositoryIndex > -1) {
-            return expression.ne(repositoryIndex, name, value, matchStrategy);
+            return expression.ne(repositoryIndex, name, value);
         } else {
-            return ((NotEqualsExpression<C, L>) expression).ne(name, value, matchStrategy);
+            return ((NotEqualsExpression<C, L>) expression).ne(name, value);
         }
     }
 
@@ -505,7 +505,7 @@ public class RepositorySimpleObjectExpression<C extends RepositoryConditionsExpr
      * {@inheritDoc}
      */
     @Override
-    public L eq(Object value, MatchStrategy matchStrategy, Predicate<Object> ignoreStrategy) {
+    public L eq(Object value, Predicate<Object> ignoreStrategy) {
         // YUFEI_TODO Auto-generated method stub
         return null;
     }
@@ -514,7 +514,7 @@ public class RepositorySimpleObjectExpression<C extends RepositoryConditionsExpr
      * {@inheritDoc}
      */
     @Override
-    public L ne(Object value, MatchStrategy matchStrategy, Predicate<Object> ignoreStrategy) {
+    public L ne(Object value, Predicate<Object> ignoreStrategy) {
         // YUFEI_TODO Auto-generated method stub
         return null;
     }
@@ -605,24 +605,6 @@ public class RepositorySimpleObjectExpression<C extends RepositoryConditionsExpr
      */
     @Override
     public L lk(String value, MatchStrategy matchStrategy, Predicate<String> ignoreStrategy) {
-        // YUFEI_TODO Auto-generated method stub
-        return null;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public L eq(Object value, MatchStrategy matchStrategy, IgnoreStrategy ignoreStrategy) {
-        // YUFEI_TODO Auto-generated method stub
-        return null;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public L ne(Object value, MatchStrategy matchStrategy, IgnoreStrategy ignoreStrategy) {
         // YUFEI_TODO Auto-generated method stub
         return null;
     }
@@ -821,6 +803,24 @@ public class RepositorySimpleObjectExpression<C extends RepositoryConditionsExpr
      */
     @Override
     public L nba(Object min, Object max, BiPredicate<Object, Object> ignoreStrategy) {
+        // YUFEI_TODO Auto-generated method stub
+        return null;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public L eq(Object value, IgnoreStrategy ignoreStrategy) {
+        // YUFEI_TODO Auto-generated method stub
+        return null;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public L ne(Object value, IgnoreStrategy ignoreStrategy) {
         // YUFEI_TODO Auto-generated method stub
         return null;
     }

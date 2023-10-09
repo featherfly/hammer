@@ -5,7 +5,6 @@ import java.util.function.BiPredicate;
 import java.util.function.Predicate;
 
 import cn.featherfly.common.lang.Lang;
-import cn.featherfly.common.operator.ComparisonOperator.MatchStrategy;
 import cn.featherfly.common.repository.IgnoreStrategy;
 import cn.featherfly.hammer.expression.condition.LogicExpression;
 import cn.featherfly.hammer.expression.condition.RepositoryConditionsExpression;
@@ -87,20 +86,6 @@ public class RepositorySimpleNumberExpression<N extends Number, C extends Reposi
      * {@inheritDoc}
      */
     @Override
-    public L eq(N value, MatchStrategy matchStrategy) {
-        if (Lang.isNotEmpty(repository)) {
-            return expression.eq(repository, name, value, matchStrategy);
-        } else if (repositoryIndex > -1) {
-            return expression.eq(repositoryIndex, name, value, matchStrategy);
-        } else {
-            return expression.eq(name, value, matchStrategy);
-        }
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
     public L ne(N value) {
         if (Lang.isNotEmpty(repository)) {
             return expression.ne(repository, name, value);
@@ -108,20 +93,6 @@ public class RepositorySimpleNumberExpression<N extends Number, C extends Reposi
             return expression.ne(repositoryIndex, name, value);
         } else {
             return expression.ne(name, value);
-        }
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public L ne(N value, MatchStrategy matchStrategy) {
-        if (Lang.isNotEmpty(repository)) {
-            return expression.ne(repository, name, value, matchStrategy);
-        } else if (repositoryIndex > -1) {
-            return expression.ne(repositoryIndex, name, value, matchStrategy);
-        } else {
-            return expression.ne(name, value, matchStrategy);
         }
     }
 
@@ -341,15 +312,6 @@ public class RepositorySimpleNumberExpression<N extends Number, C extends Reposi
      */
     @Override
     public L ne(N value, Predicate<N> ignoreStrategy) {
-        // YUFEI_TODO Auto-generated method stub
-        return null;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public L eq(N value, MatchStrategy matchStrategy, IgnoreStrategy ignoreStrategy) {
         // YUFEI_TODO Auto-generated method stub
         return null;
     }
