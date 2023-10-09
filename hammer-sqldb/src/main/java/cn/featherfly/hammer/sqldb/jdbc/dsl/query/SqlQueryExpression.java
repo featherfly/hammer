@@ -104,7 +104,7 @@ public class SqlQueryExpression extends SqlQueryConditionGroupExpression {
      */
     @Override
     public long count() {
-        selectBuilder.addColumn(AggregateFunction.COUNT, Chars.STAR);
+        selectBuilder.clearColumns().addColumn(AggregateFunction.COUNT, Chars.STAR);
         return longValue();
     }
 
