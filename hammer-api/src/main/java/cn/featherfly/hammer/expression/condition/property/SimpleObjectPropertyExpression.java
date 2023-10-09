@@ -42,24 +42,24 @@ public class SimpleObjectPropertyExpression<C extends ConditionsExpression<C, L>
      * {@inheritDoc}
      */
     @Override
-    public L eq(Object value, MatchStrategy matchStrategy) {
-        return expression.eq(name, value, matchStrategy);
+    public L eq(Object value) {
+        return expression.eq(name, value);
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public L eq(Object value, MatchStrategy matchStrategy, IgnoreStrategy ignoreStrategy) {
-        return expression.eq(name, value, matchStrategy, ignoreStrategy);
+    public L eq(Object value, IgnoreStrategy ignoreStrategy) {
+        return expression.eq(name, value, ignoreStrategy);
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public L eq(Object value, MatchStrategy matchStrategy, Predicate<Object> ignoreStrategy) {
-        return expression.eq(name, value, matchStrategy, ignoreStrategy);
+    public L eq(Object value, Predicate<Object> ignoreStrategy) {
+        return expression.eq(name, value, ignoreStrategy);
     }
 
     /**
@@ -122,24 +122,24 @@ public class SimpleObjectPropertyExpression<C extends ConditionsExpression<C, L>
      * {@inheritDoc}
      */
     @Override
-    public L ne(Object value, MatchStrategy matchStrategy) {
-        return expression.ne(name, value, matchStrategy);
+    public L ne(Object value) {
+        return expression.ne(name, value);
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public L ne(Object value, MatchStrategy matchStrategy, IgnoreStrategy ignoreStrategy) {
-        return expression.ne(name, value, matchStrategy, ignoreStrategy);
+    public L ne(Object value, IgnoreStrategy ignoreStrategy) {
+        return expression.ne(name, value, ignoreStrategy);
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public L ne(Object value, MatchStrategy matchStrategy, Predicate<Object> ignoreStrategy) {
-        return expression.ne(name, value, matchStrategy, ignoreStrategy);
+    public L ne(Object value, Predicate<Object> ignoreStrategy) {
+        return expression.ne(name, value, ignoreStrategy);
     }
 
     /**
