@@ -10,6 +10,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 import java.util.function.BiPredicate;
 import java.util.function.DoublePredicate;
@@ -20,6 +21,7 @@ import java.util.function.Predicate;
 import com.speedment.common.tuple.Tuple2;
 
 import cn.featherfly.common.db.FieldValueOperator;
+import cn.featherfly.common.db.SqlUtils;
 import cn.featherfly.common.db.builder.SqlBuilder;
 import cn.featherfly.common.db.mapping.JdbcClassMapping;
 import cn.featherfly.common.db.mapping.JdbcMappingFactory;
@@ -53,11 +55,14 @@ import cn.featherfly.common.lang.LambdaUtils.SerializableSupplierLambdaInfo;
 import cn.featherfly.common.lang.LambdaUtils.SerializedLambdaInfo;
 import cn.featherfly.common.operator.ComparisonOperator;
 import cn.featherfly.common.operator.ComparisonOperator.MatchStrategy;
+import cn.featherfly.common.repository.Execution;
 import cn.featherfly.common.repository.builder.AliasManager;
 import cn.featherfly.common.repository.mapping.ClassMapping;
 import cn.featherfly.common.repository.mapping.PropertyMapping;
 import cn.featherfly.hammer.expression.condition.ConditionExpression;
 import cn.featherfly.hammer.expression.condition.LogicExpression;
+import cn.featherfly.hammer.expression.condition.NativeStringConditionExpression;
+import cn.featherfly.hammer.expression.condition.ParamedExpression;
 import cn.featherfly.hammer.expression.entity.condition.EntityPropertyExpression;
 import cn.featherfly.hammer.expression.entity.condition.ba.EntityBetweenExpression;
 import cn.featherfly.hammer.expression.entity.condition.co.EntityContainsExpression;
@@ -126,7 +131,7 @@ public abstract class AbstractEntitySqlConditionExpressionBase<T, ER extends Ent
         , EntityLessEqualsExpression<T, C, L>, EntityLessThanExpression<T, C, L> //
         , EntityStartWithExpression<T, C, L>, EntityNotStartWithExpression<T, C, L>//
         , EntityLikeExpression<T, C, L>, EntityNotLikeExpression<T, C, L>//
-        , EntityPropertyExpression<T, C, L> {
+        , EntityPropertyExpression<T, C, L>, NativeStringConditionExpression<C, L> {
 
     //    /** The type query entity. */
     //    protected EntitySqlQuery<E> entityQuery;
@@ -2925,33 +2930,33 @@ public abstract class AbstractEntitySqlConditionExpressionBase<T, ER extends Ent
 
     // ****************************************************************************************************************
 
-    //    /**
-    //     * {@inheritDoc}
-    //     */
-    //
-    //    public L expression(String expression, final Map<String, Object> params) {
-    //        final Execution execution = SqlUtils.convertNamedParamSql(expression, params);
-    //        return expression(execution.getExecution(), execution.getParams());
-    //    }
-    //
-    //    /**
-    //     * {@inheritDoc}
-    //     */
-    //
-    //    public L expression(String expression, Object... params) {
-    //        return (L) addCondition(new ParamedExpression() {
-    //
-    //
-    //            public String expression() {
-    //                return expression;
-    //            }
-    //
-    //
-    //            public Object getParam() {
-    //                return params;
-    //            }
-    //        });
-    //    }
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public L expression(String expression, final Map<String, Object> params) {
+        final Execution execution = SqlUtils.convertNamedParamSql(expression, params);
+        return expression(execution.getExecution(), execution.getParams());
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public L expression(String expression, Object... params) {
+        return (L) addCondition(new ParamedExpression() {
+
+            @Override
+            public String expression() {
+                return expression;
+            }
+
+            @Override
+            public Object getParam() {
+                return params;
+            }
+        });
+    }
 
     /**
      * Sets the ignore strategy.

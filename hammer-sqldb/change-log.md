@@ -41,15 +41,22 @@ TODO dsl查询条件的表达式加入带运算的条件判断
     // 带运算的条件判断
     where().property(Account::getAmount).subtract(10).ge(0)
     where().exp(e -> e.property(Account::getAmount).subtract(10).ge(0))
+    where().ge(Calculators.subtract(Account::getAmount, 10), 0)
     // where acount.amount - 10 >= 0
+        
     where().value(10).subtract(Account::getAmount).ge(0)
     where().exp(e -> e.value(10).subtract(Account::getAmount).ge(0))
+    where().ge(Calculators.subtract(10, Account::getAmount), 0)
     // where 10 - acount.amount >= 0
+        
     where().property(Order::getPrice).subtract(10).ge(Order::getCharge)
     where().exp(e -> e.property(Order::getPrice).subtract(10).ge(Order::getCharge))
+    where().ge(Calculators.subtract(Order::getPrice, 10), Order::getCharge))
     // where order.price - 10 == order.charge
+        
     where().property(Order::getPrice).subtract(10).eq(e -> e.property(Order::getCharge).add(10))
     where().exp(e -> e.property(Order::getPrice).subtract(10).eq(e -> e.property(Order::getCharge).add(10)))
+    where().eq(Calculators.subtract(Order::getPrice, 10), Calculators.add(Order::getCharge, 10))
     // where order.price - 10 == order.charge + 10
     ```
 

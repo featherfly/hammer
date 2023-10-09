@@ -25,6 +25,7 @@ import cn.featherfly.common.lang.CollectionUtils;
 import cn.featherfly.common.lang.Randoms;
 import cn.featherfly.common.operator.LogicOperator;
 import cn.featherfly.common.repository.IgnoreStrategy;
+import cn.featherfly.common.structure.ChainMapImpl;
 import cn.featherfly.common.structure.page.PaginationResults;
 import cn.featherfly.hammer.Hammer;
 import cn.featherfly.hammer.sqldb.SqldbHammer;
@@ -1192,16 +1193,25 @@ public class HammerJdbcTest extends JdbcTestBase {
         User user = hammer.query(User.class).where().eq(User::getId, id).single();
         assertEquals(user.getId(), id);
 
-        // IMPLSOON 后续看如何实现expression
-        //        user = hammer.query(User.class).where().eq(User::getId, id).and()
-        //                .expression("age - :age >= 0", new ChainMapImpl<String, Object>().putChain("age", 100)).single();
-        //                assertNull(user);
-        //
-        //        user = hammer.query(User.class).where().eq(User::getId, id).and().expression("age - ? >= 0", 100).single();
-        //        assertNull(user);
-        //
-        //        user = hammer.query(User.class).where().eq(User::getId, id).and().expression("username = password").single();
-        //        assertNull(user);
+        user = hammer.query(User.class).where().eq(User::getId, id).and()
+                .expression("age - :age >= 0", new ChainMapImpl<String, Object>().putChain("age", 100)).single();
+        assertNull(user);
+
+        user = hammer.query(User.class).where().eq(User::getId, id).and().expression("age - ? >= 0", 100).single();
+        assertNull(user);
+
+        user = hammer.query(User.class).where().eq(User::getId, id).and().expression("username = password").single();
+        assertNull(user);
+
+        user = hammer.query(User.class).where().eq(User::getId, id).and()
+                .expr("age - :age >= 0", new ChainMapImpl<String, Object>().putChain("age", 100)).single();
+        assertNull(user);
+
+        user = hammer.query(User.class).where().eq(User::getId, id).and().expr("age - ? >= 0", 100).single();
+        assertNull(user);
+
+        user = hammer.query(User.class).where().eq(User::getId, id).and().expr("username = password").single();
+        assertNull(user);
     }
 
     @Test
