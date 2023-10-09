@@ -6,7 +6,6 @@ import java.util.function.BiPredicate;
 import java.util.function.Predicate;
 
 import cn.featherfly.common.lang.Lang;
-import cn.featherfly.common.operator.ComparisonOperator.MatchStrategy;
 import cn.featherfly.common.repository.IgnoreStrategy;
 import cn.featherfly.hammer.expression.condition.LogicExpression;
 import cn.featherfly.hammer.expression.condition.RepositoryConditionsExpression;
@@ -313,15 +312,6 @@ public class RepositorySimpleDateExpression<D extends Date, C extends Repository
      */
     @Override
     public L ne(D value, Predicate<D> ignoreStrategy) {
-        // YUFEI_TODO Auto-generated method stub
-        return null;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public L eq(D value, MatchStrategy matchStrategy, IgnoreStrategy ignoreStrategy) {
         // YUFEI_TODO Auto-generated method stub
         return null;
     }

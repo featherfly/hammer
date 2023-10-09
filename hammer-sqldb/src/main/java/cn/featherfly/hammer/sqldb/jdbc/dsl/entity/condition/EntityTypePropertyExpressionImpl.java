@@ -210,22 +210,6 @@ public class EntityTypePropertyExpressionImpl<E, P, F extends SerializableFuncti
      * {@inheritDoc}
      */
     @Override
-    public L eq(P value, MatchStrategy matchStrategy) {
-        return expression.eq0(index, getPropertyMapping(value), value, matchStrategy, expression.getIgnoreStrategy());
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public L ne(P value, MatchStrategy matchStrategy) {
-        return expression.ne0(index, getPropertyMapping(value), value, matchStrategy, expression.getIgnoreStrategy());
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
     public L in(P value) {
         return expression.in0(index, getPropertyMapping(value), value, expression.getIgnoreStrategy());
     }
@@ -534,32 +518,48 @@ public class EntityTypePropertyExpressionImpl<E, P, F extends SerializableFuncti
      * {@inheritDoc}
      */
     @Override
-    public L eq(P value, MatchStrategy matchStrategy, IgnoreStrategy ignoreStrategy) {
-        return expression.eq0(index, getPropertyMapping(value), value, matchStrategy, ignoreStrategy);
+    public L eq(P value) {
+        return expression.eq0(index, getPropertyMapping(value), value, expression.getIgnoreStrategy());
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public L eq(P value, MatchStrategy matchStrategy, Predicate<P> ignoreStrategy) {
-        return expression.eq0(index, getPropertyMapping(value), value, matchStrategy, ignoreStrategy);
+    public L eq(P value, IgnoreStrategy ignoreStrategy) {
+        return expression.eq0(index, getPropertyMapping(value), value, ignoreStrategy);
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public L ne(P value, MatchStrategy matchStrategy, IgnoreStrategy ignoreStrategy) {
-        return expression.ne0(index, getPropertyMapping(value), value, matchStrategy, ignoreStrategy);
+    public L eq(P value, Predicate<P> ignoreStrategy) {
+        return expression.eq0(index, getPropertyMapping(value), value, ignoreStrategy);
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public L ne(P value, MatchStrategy matchStrategy, Predicate<P> ignoreStrategy) {
-        return expression.ne0(index, getPropertyMapping(value), value, matchStrategy, ignoreStrategy);
+    public L ne(P value) {
+        return expression.ne0(index, getPropertyMapping(value), value, expression.getIgnoreStrategy());
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public L ne(P value, IgnoreStrategy ignoreStrategy) {
+        return expression.ne0(index, getPropertyMapping(value), value, ignoreStrategy);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public L ne(P value, Predicate<P> ignoreStrategy) {
+        return expression.ne0(index, getPropertyMapping(value), value, ignoreStrategy);
     }
 
     /**

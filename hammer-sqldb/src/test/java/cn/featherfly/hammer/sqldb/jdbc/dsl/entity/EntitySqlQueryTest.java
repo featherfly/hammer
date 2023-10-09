@@ -782,7 +782,7 @@ public class EntitySqlQueryTest extends JdbcTestBase {
 
         List<UserRole2> list = query.find(UserRole2.class) //
                 .where() //
-                .property(UserRole2::getRole).property(Role::getName).eq(role.getName()) // TODO 还未实现自动进行关联查询
+                .property(UserRole2::getRole).property(Role::getName).eq(role.getName()) // FIXME 还未实现自动进行关联查询
                 .list();
 
         for (UserRole2 ur : list) {
