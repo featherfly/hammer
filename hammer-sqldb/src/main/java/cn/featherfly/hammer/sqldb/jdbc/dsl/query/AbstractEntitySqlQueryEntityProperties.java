@@ -14,10 +14,10 @@ import cn.featherfly.common.db.builder.dml.basic.SqlSelectBasicBuilder;
 import cn.featherfly.common.db.mapping.ClassMappingUtils;
 import cn.featherfly.common.db.mapping.JdbcClassMapping;
 import cn.featherfly.common.db.mapping.JdbcMappingFactory;
+import cn.featherfly.common.function.serializable.SerializableFunction;
 import cn.featherfly.common.lang.AssertIllegalArgument;
 import cn.featherfly.common.lang.LambdaUtils;
 import cn.featherfly.common.lang.Lang;
-import cn.featherfly.common.function.serializable.SerializableFunction;
 import cn.featherfly.common.operator.AggregateFunction;
 import cn.featherfly.common.repository.builder.AliasManager;
 import cn.featherfly.hammer.dsl.entity.query.EntityQueryFetchedProperty;
@@ -303,7 +303,7 @@ public abstract class AbstractEntitySqlQueryEntityProperties<E, P extends Abstra
     @Override
     public long count() {
         return new SqlQueryExpression(jdbc, sqlPageFactory,
-                selectBuilder.addColumn(AggregateFunction.COUNT, Chars.STAR), ignoreStrategy).longInt();
+                selectBuilder.clearColumns().addColumn(AggregateFunction.COUNT, Chars.STAR), ignoreStrategy).longInt();
     }
 
     /**

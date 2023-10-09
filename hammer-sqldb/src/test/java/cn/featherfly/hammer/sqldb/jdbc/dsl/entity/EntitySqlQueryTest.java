@@ -172,6 +172,10 @@ public class EntitySqlQueryTest extends JdbcTestBase {
         assertTrue(number2 == 1);
         assertEquals(number, number2);
 
+        number = query.find("user").fetch("id").count();
+        number2 = query.find(User.class).fetch(User::getId) //
+                .count();
+        assertEquals(number, number2);
     }
 
     @Test

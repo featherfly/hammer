@@ -92,7 +92,7 @@ public abstract class AbstractEntitySqlQuery<R>
     @Override
     public long count() {
         return new SqlQueryExpression(queryRelation.getJdbc(), sqlPageFactory,
-                queryRelation.getBuilder().addColumn(AggregateFunction.COUNT, Chars.STAR),
+                queryRelation.getBuilder().clearColumns().addColumn(AggregateFunction.COUNT, Chars.STAR),
                 queryRelation.getIgnorePolicy()).longInt();
     }
 
