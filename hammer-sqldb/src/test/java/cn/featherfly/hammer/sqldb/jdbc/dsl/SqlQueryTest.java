@@ -623,8 +623,8 @@ public class SqlQueryTest extends JdbcTestBase {
 
     @Test
     void testCount2() {
-        // FIXME 这里count会出错，因为前面设置了property,会出现多列
-        long number = query.find("user").property("id").count();
+        long number = query.find("user").property("id") //
+                .count();
         System.out.println("count:" + number);
         assertTrue(number > 0);
     }

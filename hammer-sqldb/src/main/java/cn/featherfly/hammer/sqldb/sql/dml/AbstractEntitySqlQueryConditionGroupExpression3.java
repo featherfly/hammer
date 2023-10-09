@@ -246,7 +246,7 @@ public abstract class AbstractEntitySqlQueryConditionGroupExpression3<E, E2, E3,
 
     @Override
     public long count() {
-        entityRelation.getBuilder().addColumn(AggregateFunction.COUNT, Chars.STAR);
+        entityRelation.getBuilder().clearColumns().addColumn(AggregateFunction.COUNT, Chars.STAR);
         return entityRelation.getJdbc().queryLong(getRoot().expression(), getRoot().getParams().toArray());
     }
 

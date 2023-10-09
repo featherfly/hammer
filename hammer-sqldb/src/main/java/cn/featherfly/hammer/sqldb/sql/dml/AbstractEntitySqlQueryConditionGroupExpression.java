@@ -9,8 +9,8 @@ import cn.featherfly.common.db.builder.dml.SqlSortBuilder;
 import cn.featherfly.common.db.builder.dml.basic.SqlSelectBasicBuilder;
 import cn.featherfly.common.db.mapping.ClassMappingUtils;
 import cn.featherfly.common.db.mapping.JdbcMappingFactory;
-import cn.featherfly.common.lang.LambdaUtils;
 import cn.featherfly.common.function.serializable.SerializableFunction;
+import cn.featherfly.common.lang.LambdaUtils;
 import cn.featherfly.common.operator.AggregateFunction;
 import cn.featherfly.common.repository.builder.dml.SortBuilder;
 import cn.featherfly.common.structure.page.Limit;
@@ -92,7 +92,7 @@ public abstract class AbstractEntitySqlQueryConditionGroupExpression<E,
 
     @Override
     public long count() {
-        entityRelation.getBuilder().addColumn(AggregateFunction.COUNT, Chars.STAR);
+        entityRelation.getBuilder().clearColumns().addColumn(AggregateFunction.COUNT, Chars.STAR);
         return entityRelation.getJdbc().queryLong(getRoot().expression(), getRoot().getParams().toArray());
     }
 
