@@ -1,10 +1,7 @@
 
 package cn.featherfly.hammer.dsl.entity.query.relation;
 
-import cn.featherfly.hammer.dsl.entity.query.EntityQueryConditionGroup6;
-import cn.featherfly.hammer.dsl.entity.query.EntityQueryConditionGroupLogic6;
-import cn.featherfly.hammer.expression.entity.query.EntityQuerySortExpression6;
-import cn.featherfly.hammer.expression.entity.query.relation.EntityQueryRelatedFetchedExpression5RRRRP;
+import cn.featherfly.hammer.dsl.entity.query.EntityQuery6;
 
 /**
  * The Interface EntityQueryRelatedFetched5RRRRP.
@@ -17,10 +14,6 @@ import cn.featherfly.hammer.expression.entity.query.relation.EntityQueryRelatedF
  * @param <R4> the generic type
  * @param <R5> the generic type
  */
-public interface EntityQueryRelatedFetched5RRRRP<E, R1, R2, R3, R4, R5> extends
-        EntityQueryRelatedFetchedExpression5RRRRP<E, R1, R2, R3, R4, R5,
-                EntityQueryConditionGroup6<E, R1, R2, R3, R4, R5, E>,
-                EntityQueryConditionGroupLogic6<E, R1, R2, R3, R4, R5, E>,
-                EntityQuerySortExpression6<E, R1, R2, R3, R4, R5, E>> {
+public interface EntityQueryRelatedFetched5RRRRP<E, R1, R2, R3, R4, R5> extends EntityQuery6<E, R1, R2, R3, R4, R5, E> {
 
 }

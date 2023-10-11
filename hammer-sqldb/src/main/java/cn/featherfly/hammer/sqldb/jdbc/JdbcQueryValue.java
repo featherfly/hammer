@@ -190,6 +190,78 @@ public interface JdbcQueryValue {
     }
 
     /**
+     * Query bool.
+     *
+     * @param sql  the sql
+     * @param args the args
+     * @return true, if successful
+     */
+    boolean queryBool(String sql, Object... args);
+
+    /**
+     * Query bool.
+     *
+     * @param sql  the sql
+     * @param args the args
+     * @return true, if successful
+     */
+    boolean queryBool(String sql, Map<String, Object> args);
+
+    /**
+     * Query byte.
+     *
+     * @param sql  the sql
+     * @param args the args
+     * @return the byte
+     */
+    byte queryByte(String sql, Object... args);
+
+    /**
+     * Query byte.
+     *
+     * @param sql  the sql
+     * @param args the args
+     * @return the byte
+     */
+    byte queryByte(String sql, Map<String, Object> args);
+
+    /**
+     * Query bytes.
+     *
+     * @param sql  the sql
+     * @param args the args
+     * @return the byte
+     */
+    byte[] queryBytes(String sql, Object... args);
+
+    /**
+     * Query bytes.
+     *
+     * @param sql  the sql
+     * @param args the args
+     * @return the byte
+     */
+    byte[] queryBytes(String sql, Map<String, Object> args);
+
+    /**
+     * Query short.
+     *
+     * @param sql  the sql
+     * @param args the args
+     * @return the short
+     */
+    short queryShort(String sql, Object... args);
+
+    /**
+     * Query short.
+     *
+     * @param sql  the sql
+     * @param args the args
+     * @return the short
+     */
+    short queryShort(String sql, Map<String, Object> args);
+
+    /**
      * query int.
      *
      * @param sql  the sql

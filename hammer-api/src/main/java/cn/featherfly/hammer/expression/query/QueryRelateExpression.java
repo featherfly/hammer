@@ -31,7 +31,7 @@ public interface QueryRelateExpression<QW extends QueryRelateExpression<QW, QWO,
      * @return QueryWithExpression
      */
     default QWO relate(String repositoryName) {
-        return relate(repositoryName);
+        return join(repositoryName);
     }
 
     /**

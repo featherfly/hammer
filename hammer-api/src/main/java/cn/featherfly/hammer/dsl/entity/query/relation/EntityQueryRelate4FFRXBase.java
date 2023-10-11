@@ -4,7 +4,6 @@ package cn.featherfly.hammer.dsl.entity.query.relation;
 import cn.featherfly.common.function.serializable.SerializableFunction1;
 import cn.featherfly.common.function.serializable.SerializableFunction2;
 import cn.featherfly.common.function.serializable.SerializableUnaryOperator1;
-import cn.featherfly.hammer.expression.entity.query.relation.EntityQueryRelatedExpression;
 
 /**
  * The Interface EntityQueryRelateExpression4FFRXBase.
