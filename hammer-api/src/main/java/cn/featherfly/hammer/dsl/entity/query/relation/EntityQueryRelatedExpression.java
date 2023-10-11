@@ -7,7 +7,7 @@
  * @date: 2023-08-11 16:17:11
  * @Copyright: 2023 www.featherfly.cn Inc. All rights reserved.
  */
-package cn.featherfly.hammer.expression.entity.query.relation;
+package cn.featherfly.hammer.dsl.entity.query.relation;
 
 import cn.featherfly.common.function.serializable.SerializableFunction1;
 import cn.featherfly.common.function.serializable.SerializableFunction2;

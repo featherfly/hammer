@@ -1,8 +1,15 @@
 
 package cn.featherfly.hammer.sqldb.jdbc.dsl.entity.query;
 
+import java.sql.Blob;
+import java.sql.Clob;
+import java.sql.Timestamp;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.Date;
 import java.util.Map;
 import java.util.stream.Collectors;
 
@@ -365,6 +372,105 @@ public abstract class AbstractEntitySqlQueryProperties<E, P extends EntityQueryP
      * {@inheritDoc}
      */
     @Override
+    public Date date() {
+        return new SqlQueryExpression(queryRelation.getJdbc(), sqlPageFactory, queryRelation.getBuilder(),
+                queryRelation.getIgnorePolicy()).date();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public LocalDate localDate() {
+        return new SqlQueryExpression(queryRelation.getJdbc(), sqlPageFactory, queryRelation.getBuilder(),
+                queryRelation.getIgnorePolicy()).localDate();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public LocalDateTime localDateTime() {
+        return new SqlQueryExpression(queryRelation.getJdbc(), sqlPageFactory, queryRelation.getBuilder(),
+                queryRelation.getIgnorePolicy()).localDateTime();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public LocalTime localTime() {
+        return new SqlQueryExpression(queryRelation.getJdbc(), sqlPageFactory, queryRelation.getBuilder(),
+                queryRelation.getIgnorePolicy()).localTime();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public Timestamp timestamp() {
+        return new SqlQueryExpression(queryRelation.getJdbc(), sqlPageFactory, queryRelation.getBuilder(),
+                queryRelation.getIgnorePolicy()).timestamp();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public byte[] bytes() {
+        return new SqlQueryExpression(queryRelation.getJdbc(), sqlPageFactory, queryRelation.getBuilder(),
+                queryRelation.getIgnorePolicy()).bytes();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public Clob clob() {
+        return new SqlQueryExpression(queryRelation.getJdbc(), sqlPageFactory, queryRelation.getBuilder(),
+                queryRelation.getIgnorePolicy()).clob();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public Blob blob() {
+        return new SqlQueryExpression(queryRelation.getJdbc(), sqlPageFactory, queryRelation.getBuilder(),
+                queryRelation.getIgnorePolicy()).blob();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public boolean bool() {
+        return new SqlQueryExpression(queryRelation.getJdbc(), sqlPageFactory, queryRelation.getBuilder(),
+                queryRelation.getIgnorePolicy()).bool();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public byte byteValue() {
+        return new SqlQueryExpression(queryRelation.getJdbc(), sqlPageFactory, queryRelation.getBuilder(),
+                queryRelation.getIgnorePolicy()).byteValue();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public short shortValue() {
+        return new SqlQueryExpression(queryRelation.getJdbc(), sqlPageFactory, queryRelation.getBuilder(),
+                queryRelation.getIgnorePolicy()).shortValue();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
     public int intValue() {
         return new SqlQueryExpression(queryRelation.getJdbc(), sqlPageFactory, queryRelation.getBuilder(),
                 queryRelation.getIgnorePolicy()).intValue();
@@ -407,12 +513,21 @@ public abstract class AbstractEntitySqlQueryProperties<E, P extends EntityQueryP
     //                queryRelation.getIgnorePolicy()).decimal();
     //    }
 
+    //    /**
+    //     * {@inheritDoc}
+    //     */
+    //    @Override
+    //    public <N extends Number> N number(Class<N> type) {
+    //        return new SqlQueryExpression(queryRelation.getJdbc(), sqlPageFactory, queryRelation.getBuilder(),
+    //                queryRelation.getIgnorePolicy()).number(type);
+    //    }
+
     /**
      * {@inheritDoc}
      */
     @Override
-    public <N extends Number> N number(Class<N> type) {
+    public <T> T value(Class<T> type) {
         return new SqlQueryExpression(queryRelation.getJdbc(), sqlPageFactory, queryRelation.getBuilder(),
-                queryRelation.getIgnorePolicy()).number(type);
+                queryRelation.getIgnorePolicy()).value(type);
     }
 }

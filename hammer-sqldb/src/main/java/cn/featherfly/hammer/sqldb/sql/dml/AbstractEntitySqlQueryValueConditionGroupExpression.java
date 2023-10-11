@@ -1,7 +1,14 @@
 
 package cn.featherfly.hammer.sqldb.sql.dml;
 
+import java.sql.Blob;
+import java.sql.Clob;
+import java.sql.Timestamp;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.util.Arrays;
+import java.util.Date;
 import java.util.List;
 
 import cn.featherfly.common.constant.Chars;
@@ -14,6 +21,8 @@ import cn.featherfly.common.function.serializable.SerializableFunction;
 import cn.featherfly.common.lang.LambdaUtils;
 import cn.featherfly.common.lang.Lang;
 import cn.featherfly.common.operator.AggregateFunction;
+import cn.featherfly.common.repository.Execution;
+import cn.featherfly.common.repository.SimpleExecution;
 import cn.featherfly.common.repository.builder.dml.SortBuilder;
 import cn.featherfly.common.structure.page.Limit;
 import cn.featherfly.common.structure.page.PaginationResults;
@@ -100,15 +109,17 @@ public abstract class AbstractEntitySqlQueryValueConditionGroupExpression<E,
      */
     @Override
     public List<E> list() {
-        String sql = getRoot().expression();
-        Object[] params = getRoot().getParams().toArray();
-        if (limit != null) {
-            SqlPageQuery<Object[]> pageQuery = sqlPageFactory.toPage(dialect, sql, limit.getOffset(), limit.getLimit(),
-                    params);
-            sql = pageQuery.getSql();
-            params = pageQuery.getParams();
-        }
-        return entityRelation.getJdbc().query(sql, classMapping.getType(), params);
+        Execution execution = getExecution();
+        return entityRelation.getJdbc().query(execution.getExecution(), classMapping.getType(), execution.getParams());
+        //        String sql = getRoot().expression();
+        //        Object[] params = getRoot().getParams().toArray();
+        //        if (limit != null) {
+        //            SqlPageQuery<Object[]> pageQuery = sqlPageFactory.toPage(dialect, sql, limit.getOffset(), limit.getLimit(),
+        //                    params);
+        //            sql = pageQuery.getSql();
+        //            params = pageQuery.getParams();
+        //        }
+        //        return entityRelation.getJdbc().query(sql, classMapping.getType(), params);
     }
 
     /**
@@ -146,17 +157,20 @@ public abstract class AbstractEntitySqlQueryValueConditionGroupExpression<E,
      */
     @Override
     public E single() {
-        String sql = getRoot().expression();
-        Object[] params = getRoot().getParams().toArray();
-        if (limit != null) {
-            SqlPageQuery<Object[]> pageQuery = sqlPageFactory.toPage(dialect, sql, limit.getOffset(), limit.getLimit(),
-                    params);
-            sql = pageQuery.getSql();
-            params = pageQuery.getParams();
-            //            sql = dialect.getPaginationSql(sql, limit.getOffset(), limit.getLimit());
-            //            params = dialect.getPaginationSqlParameter(params, limit.getOffset(), limit.getLimit());
-        }
-        return entityRelation.getJdbc().querySingle(sql, classMapping.getType(), params);
+        Execution execution = getExecution();
+        return entityRelation.getJdbc().querySingle(execution.getExecution(), classMapping.getType(),
+                execution.getParams());
+        //        String sql = getRoot().expression();
+        //        Object[] params = getRoot().getParams().toArray();
+        //        if (limit != null) {
+        //            SqlPageQuery<Object[]> pageQuery = sqlPageFactory.toPage(dialect, sql, limit.getOffset(), limit.getLimit(),
+        //                    params);
+        //            sql = pageQuery.getSql();
+        //            params = pageQuery.getParams();
+        //            //            sql = dialect.getPaginationSql(sql, limit.getOffset(), limit.getLimit());
+        //            //            params = dialect.getPaginationSqlParameter(params, limit.getOffset(), limit.getLimit());
+        //        }
+        //        return entityRelation.getJdbc().querySingle(sql, classMapping.getType(), params);
     }
 
     /**
@@ -164,17 +178,20 @@ public abstract class AbstractEntitySqlQueryValueConditionGroupExpression<E,
      */
     @Override
     public E unique() {
-        String sql = getRoot().expression();
-        Object[] params = getRoot().getParams().toArray();
-        if (limit != null) {
-            SqlPageQuery<Object[]> pageQuery = sqlPageFactory.toPage(dialect, sql, limit.getOffset(), limit.getLimit(),
-                    params);
-            sql = pageQuery.getSql();
-            params = pageQuery.getParams();
-            //            sql = dialect.getPaginationSql(sql, limit.getOffset(), limit.getLimit());
-            //            params = dialect.getPaginationSqlParameter(params, limit.getOffset(), limit.getLimit());
-        }
-        return entityRelation.getJdbc().queryUnique(sql, classMapping.getType(), params);
+        Execution execution = getExecution();
+        return entityRelation.getJdbc().queryUnique(execution.getExecution(), classMapping.getType(),
+                execution.getParams());
+        //        String sql = getRoot().expression();
+        //        Object[] params = getRoot().getParams().toArray();
+        //        if (limit != null) {
+        //            SqlPageQuery<Object[]> pageQuery = sqlPageFactory.toPage(dialect, sql, limit.getOffset(), limit.getLimit(),
+        //                    params);
+        //            sql = pageQuery.getSql();
+        //            params = pageQuery.getParams();
+        //            //            sql = dialect.getPaginationSql(sql, limit.getOffset(), limit.getLimit());
+        //            //            params = dialect.getPaginationSqlParameter(params, limit.getOffset(), limit.getLimit());
+        //        }
+        //        return entityRelation.getJdbc().queryUnique(sql, classMapping.getType(), params);
     }
 
     /**
@@ -182,15 +199,117 @@ public abstract class AbstractEntitySqlQueryValueConditionGroupExpression<E,
      */
     @Override
     public String string() {
-        String sql = getRoot().expression();
-        Object[] params = getRoot().getParams().toArray();
-        if (limit != null) {
-            SqlPageQuery<Object[]> pageQuery = sqlPageFactory.toPage(dialect, sql, limit.getOffset(), limit.getLimit(),
-                    params);
-            sql = pageQuery.getSql();
-            params = pageQuery.getParams();
-        }
-        return entityRelation.getJdbc().queryString(sql, params);
+        Execution execution = getExecution();
+        return entityRelation.getJdbc().queryString(execution.getExecution(), execution.getParams());
+        //        String sql = getRoot().expression();
+        //        Object[] params = getRoot().getParams().toArray();
+        //        if (limit != null) {
+        //            SqlPageQuery<Object[]> pageQuery = sqlPageFactory.toPage(dialect, sql, limit.getOffset(), limit.getLimit(),
+        //                    params);
+        //            sql = pageQuery.getSql();
+        //            params = pageQuery.getParams();
+        //        }
+        //        return entityRelation.getJdbc().queryString(sql, params);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public Date date() {
+        Execution execution = getExecution();
+        return entityRelation.getJdbc().queryValue(execution.getExecution(), Date.class, execution.getParams());
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public LocalDate localDate() {
+        Execution execution = getExecution();
+        return entityRelation.getJdbc().queryValue(execution.getExecution(), LocalDate.class, execution.getParams());
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public LocalDateTime localDateTime() {
+        Execution execution = getExecution();
+        return entityRelation.getJdbc().queryValue(execution.getExecution(), LocalDateTime.class,
+                execution.getParams());
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public LocalTime localTime() {
+        Execution execution = getExecution();
+        return entityRelation.getJdbc().queryValue(execution.getExecution(), LocalTime.class, execution.getParams());
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public Timestamp timestamp() {
+        Execution execution = getExecution();
+        return entityRelation.getJdbc().queryValue(execution.getExecution(), Timestamp.class, execution.getParams());
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public byte[] bytes() {
+        Execution execution = getExecution();
+        return entityRelation.getJdbc().queryBytes(execution.getExecution(), execution.getParams());
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public Clob clob() {
+        Execution execution = getExecution();
+        return entityRelation.getJdbc().queryValue(execution.getExecution(), Clob.class, execution.getParams());
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public Blob blob() {
+        Execution execution = getExecution();
+        return entityRelation.getJdbc().queryValue(execution.getExecution(), Blob.class, execution.getParams());
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public boolean bool() {
+        Execution execution = getExecution();
+        return entityRelation.getJdbc().queryBool(execution.getExecution(), execution.getParams());
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public byte byteValue() {
+        Execution execution = getExecution();
+        return entityRelation.getJdbc().queryByte(execution.getExecution(), execution.getParams());
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public short shortValue() {
+        Execution execution = getExecution();
+        return entityRelation.getJdbc().queryShort(execution.getExecution(), execution.getParams());
     }
 
     /**
@@ -198,15 +317,17 @@ public abstract class AbstractEntitySqlQueryValueConditionGroupExpression<E,
      */
     @Override
     public int intValue() {
-        String sql = getRoot().expression();
-        Object[] params = getRoot().getParams().toArray();
-        if (limit != null) {
-            SqlPageQuery<Object[]> pageQuery = sqlPageFactory.toPage(dialect, sql, limit.getOffset(), limit.getLimit(),
-                    params);
-            sql = pageQuery.getSql();
-            params = pageQuery.getParams();
-        }
-        return entityRelation.getJdbc().queryInt(sql, params);
+        Execution execution = getExecution();
+        return entityRelation.getJdbc().queryInt(execution.getExecution(), execution.getParams());
+        //        String sql = getRoot().expression();
+        //        Object[] params = getRoot().getParams().toArray();
+        //        if (limit != null) {
+        //            SqlPageQuery<Object[]> pageQuery = sqlPageFactory.toPage(dialect, sql, limit.getOffset(), limit.getLimit(),
+        //                    params);
+        //            sql = pageQuery.getSql();
+        //            params = pageQuery.getParams();
+        //        }
+        //        return entityRelation.getJdbc().queryInt(sql, params);
     }
 
     /**
@@ -214,31 +335,46 @@ public abstract class AbstractEntitySqlQueryValueConditionGroupExpression<E,
      */
     @Override
     public long longValue() {
-        String sql = getRoot().expression();
-        Object[] params = getRoot().getParams().toArray();
-        if (limit != null) {
-            SqlPageQuery<Object[]> pageQuery = sqlPageFactory.toPage(dialect, sql, limit.getOffset(), limit.getLimit(),
-                    params);
-            sql = pageQuery.getSql();
-            params = pageQuery.getParams();
-        }
-        return entityRelation.getJdbc().queryLong(sql, params);
+        Execution execution = getExecution();
+        return entityRelation.getJdbc().queryLong(execution.getExecution(), execution.getParams());
+        //        String sql = getRoot().expression();
+        //        Object[] params = getRoot().getParams().toArray();
+        //        if (limit != null) {
+        //            SqlPageQuery<Object[]> pageQuery = sqlPageFactory.toPage(dialect, sql, limit.getOffset(), limit.getLimit(),
+        //                    params);
+        //            sql = pageQuery.getSql();
+        //            params = pageQuery.getParams();
+        //        }
+        //        return entityRelation.getJdbc().queryLong(sql, params);
     }
+
+    //    /**
+    //     * {@inheritDoc}
+    //     */
+    //    @Override
+    //    public <N extends Number> N number(Class<N> type) {
+    //        return value(type);
+    //        //        Execution execution = getExecution();
+    //        //        return entityRelation.getJdbc().queryValue(execution.getExecution(), type, execution.getParams());
+    //
+    //        //        String sql = getRoot().expression();
+    //        //        Object[] params = getRoot().getParams().toArray();
+    //        //        if (limit != null) {
+    //        //            SqlPageQuery<Object[]> pageQuery = sqlPageFactory.toPage(dialect, sql, limit.getOffset(), limit.getLimit(),
+    //        //                    params);
+    //        //            sql = pageQuery.getSql();
+    //        //            params = pageQuery.getParams();
+    //        //        }
+    //        //        return entityRelation.getJdbc().queryValue(sql, type, params);
+    //    }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public <N extends Number> N number(Class<N> type) {
-        String sql = getRoot().expression();
-        Object[] params = getRoot().getParams().toArray();
-        if (limit != null) {
-            SqlPageQuery<Object[]> pageQuery = sqlPageFactory.toPage(dialect, sql, limit.getOffset(), limit.getLimit(),
-                    params);
-            sql = pageQuery.getSql();
-            params = pageQuery.getParams();
-        }
-        return entityRelation.getJdbc().queryValue(sql, type, params);
+    public <T> T value(Class<T> type) {
+        Execution execution = getExecution();
+        return entityRelation.getJdbc().queryValue(execution.getExecution(), type, execution.getParams());
     }
 
     // ****************************************************************************************************************
@@ -253,9 +389,6 @@ public abstract class AbstractEntitySqlQueryValueConditionGroupExpression<E,
         return this;
     }
 
-    //        /**
-    //         * {@inheritDoc}
-    //         */
     /**
      * Asc.
      *
@@ -268,9 +401,6 @@ public abstract class AbstractEntitySqlQueryValueConditionGroupExpression<E,
         return this;
     }
 
-    //        /**
-    //         * {@inheritDoc}
-    //         */
     /**
      * Asc.
      *
@@ -355,5 +485,17 @@ public abstract class AbstractEntitySqlQueryValueConditionGroupExpression<E,
 
     private SortBuilder getRootSortBuilder() {
         return ((AbstractEntitySqlQueryValueConditionGroupExpression<E, C, L>) getRoot()).sortBuilder;
+    }
+
+    private Execution getExecution() {
+        String sql = getRoot().expression();
+        Object[] params = getRoot().getParams().toArray();
+        if (limit != null) {
+            SqlPageQuery<Object[]> pageQuery = sqlPageFactory.toPage(dialect, sql, limit.getOffset(), limit.getLimit(),
+                    params);
+            sql = pageQuery.getSql();
+            params = pageQuery.getParams();
+        }
+        return new SimpleExecution(sql, params);
     }
 }

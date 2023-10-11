@@ -16,7 +16,7 @@ import cn.featherfly.common.operator.Function;
 public interface EntityQueryPropertiesExpression<E, Q extends EntityQueryPropertiesExpression<E, Q>> {
 
     /**
-     * 添加select的列 .
+     * 添加查询出来的属性.
      *
      * @param <R>          the generic type
      * @param propertyName propertyName
@@ -27,7 +27,7 @@ public interface EntityQueryPropertiesExpression<E, Q extends EntityQueryPropert
     }
 
     /**
-     * 添加select的列 .
+     * 添加查询出来的属性.
      *
      * @param <R>          the generic type
      * @param distinct     the distinct
@@ -37,7 +37,7 @@ public interface EntityQueryPropertiesExpression<E, Q extends EntityQueryPropert
     <R> Q property(boolean distinct, SerializableFunction<E, R> propertyName);
 
     /**
-     * 批量添加select的列 .
+     * 批量添加查询出来的属性.
      *
      * @param propertyNames propertyNames
      * @return QueryEntityPropertiesExpression
