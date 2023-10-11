@@ -6,7 +6,7 @@ import com.speedment.common.tuple.Tuple2;
 import cn.featherfly.hammer.dsl.entity.query.EntityQuery6;
 
 /**
- * The Interface EntityQueryRelateExpression5FRRRXBase.
+ * The Interface EntityQueryRelate5FRRRXBase.
  *
  * @author zhongj
  * @param <E>  the element type
@@ -15,9 +15,6 @@ import cn.featherfly.hammer.dsl.entity.query.EntityQuery6;
  * @param <R3> the generic type
  * @param <R4> the generic type
  * @param <R5> the generic type
- * @param <C>  the generic type
- * @param <L>  the generic type
- * @param <S>  the generic type
  */
 public interface EntityQueryRelate5FRRRXBase<E, R1, R2, R3, R4, R5>
         extends EntityQuery6<E, R1, R2, R3, R4, R5, Tuple2<E, R1>> {

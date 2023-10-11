@@ -1381,9 +1381,197 @@ public abstract class AbstractJdbc implements Jdbc {
      * {@inheritDoc}
      */
     @Override
+    public boolean queryBool(String sql, Object... args) {
+        boolean result = false;
+        if (Lang.isNotEmpty(sql)) {
+            sql = sql.trim();
+            JdbcExecution execution = preHandle(sql, args);
+            sql = execution.getExecution();
+            args = execution.getParams();
+            logger.debug("execute sql -> {}, args -> {}", sql, args);
+            Connection con = getConnection();
+            try (PreparedStatement prep = con.prepareStatement(sql)) {
+                setParams(prep, args);
+                try (ResultSet rs = prep.executeQuery()) {
+                    int i = 0;
+                    while (rs.next()) {
+                        result = rs.getBoolean(1);
+                        i++;
+                    }
+                    if (i > 1) {
+                        throw new JdbcException(Strings.format("results size must be 1, but is {0}", i));
+                    }
+                    return postHandle(execution.setOriginalResult(result), sql, args);
+                }
+            } catch (SQLException e) {
+                releaseConnection(con);
+                con = null;
+                throw new JdbcException(Strings.format("query: \nsql: {0} \nargs: {1}", sql, Arrays.toString(args)), e);
+            } finally {
+                releaseConnection(con);
+            }
+        }
+        return result;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public boolean queryBool(String sql, Map<String, Object> args) {
+        logger.debug("sql -> {}, args -> {}, resultType -> {}", sql, args, boolean.class);
+        Execution execution = SqlUtils.convertNamedParamSql(sql, args);
+        return queryBool(execution.getExecution(), execution.getParams());
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
     public <T> T queryValue(String sql, RowMapper<T> rowMapper, Object... args) {
         List<T> results = query(sql, rowMapper, args);
         return nullableSingleResult(results);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public byte queryByte(String sql, Object... args) {
+        byte result = 0;
+        if (Lang.isNotEmpty(sql)) {
+            sql = sql.trim();
+            JdbcExecution execution = preHandle(sql, args);
+            sql = execution.getExecution();
+            args = execution.getParams();
+            logger.debug("execute sql -> {}, args -> {}", sql, args);
+            Connection con = getConnection();
+            try (PreparedStatement prep = con.prepareStatement(sql)) {
+                setParams(prep, args);
+                try (ResultSet rs = prep.executeQuery()) {
+                    int i = 0;
+                    while (rs.next()) {
+                        result = rs.getByte(1);
+                        i++;
+                    }
+                    if (i > 1) {
+                        throw new JdbcException(Strings.format("results size must be 1, but is {0}", i));
+                    }
+                    return postHandle(execution.setOriginalResult(result), sql, args);
+                }
+            } catch (SQLException e) {
+                releaseConnection(con);
+                con = null;
+                throw new JdbcException(Strings.format("query: \nsql: {0} \nargs: {1}", sql, Arrays.toString(args)), e);
+            } finally {
+                releaseConnection(con);
+            }
+        }
+        return result;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public byte queryByte(String sql, Map<String, Object> args) {
+        logger.debug("sql -> {}, args -> {}, resultType -> {}", sql, args, byte.class);
+        Execution execution = SqlUtils.convertNamedParamSql(sql, args);
+        return queryByte(execution.getExecution(), execution.getParams());
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public byte[] queryBytes(String sql, Object... args) {
+        byte[] result = new byte[0];
+        if (Lang.isNotEmpty(sql)) {
+            sql = sql.trim();
+            JdbcExecution execution = preHandle(sql, args);
+            sql = execution.getExecution();
+            args = execution.getParams();
+            logger.debug("execute sql -> {}, args -> {}", sql, args);
+            Connection con = getConnection();
+            try (PreparedStatement prep = con.prepareStatement(sql)) {
+                setParams(prep, args);
+                try (ResultSet rs = prep.executeQuery()) {
+                    int i = 0;
+                    while (rs.next()) {
+                        result = rs.getBytes(1);
+                        i++;
+                    }
+                    if (i > 1) {
+                        throw new JdbcException(Strings.format("results size must be 1, but is {0}", i));
+                    }
+                    return postHandle(execution.setOriginalResult(result), sql, args);
+                }
+            } catch (SQLException e) {
+                releaseConnection(con);
+                con = null;
+                throw new JdbcException(Strings.format("query: \nsql: {0} \nargs: {1}", sql, Arrays.toString(args)), e);
+            } finally {
+                releaseConnection(con);
+            }
+        }
+        return result;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public byte[] queryBytes(String sql, Map<String, Object> args) {
+        logger.debug("sql -> {}, args -> {}, resultType -> {}", sql, args, byte[].class);
+        Execution execution = SqlUtils.convertNamedParamSql(sql, args);
+        return queryBytes(execution.getExecution(), execution.getParams());
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public short queryShort(String sql, Object... args) {
+        short result = 0;
+        if (Lang.isNotEmpty(sql)) {
+            sql = sql.trim();
+            JdbcExecution execution = preHandle(sql, args);
+            sql = execution.getExecution();
+            args = execution.getParams();
+            logger.debug("execute sql -> {}, args -> {}", sql, args);
+            Connection con = getConnection();
+            try (PreparedStatement prep = con.prepareStatement(sql)) {
+                setParams(prep, args);
+                try (ResultSet rs = prep.executeQuery()) {
+                    int i = 0;
+                    while (rs.next()) {
+                        result = rs.getShort(1);
+                        i++;
+                    }
+                    if (i > 1) {
+                        throw new JdbcException(Strings.format("results size must be 1, but is {0}", i));
+                    }
+                    return postHandle(execution.setOriginalResult(result), sql, args);
+                }
+            } catch (SQLException e) {
+                releaseConnection(con);
+                con = null;
+                throw new JdbcException(Strings.format("query: \nsql: {0} \nargs: {1}", sql, Arrays.toString(args)), e);
+            } finally {
+                releaseConnection(con);
+            }
+        }
+        return result;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public short queryShort(String sql, Map<String, Object> args) {
+        logger.debug("sql -> {}, args -> {}, resultType -> {}", sql, args, short.class);
+        Execution execution = SqlUtils.convertNamedParamSql(sql, args);
+        return queryShort(execution.getExecution(), execution.getParams());
     }
 
     /**

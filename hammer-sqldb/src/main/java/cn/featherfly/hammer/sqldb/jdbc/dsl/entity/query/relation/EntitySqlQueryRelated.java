@@ -17,8 +17,8 @@ import cn.featherfly.common.lang.LambdaUtils;
 import cn.featherfly.common.lang.LambdaUtils.SerializedLambdaInfo;
 import cn.featherfly.common.function.serializable.SerializableFunction1;
 import cn.featherfly.common.function.serializable.SerializableFunction2;
+import cn.featherfly.hammer.dsl.entity.query.relation.EntityQueryRelatedExpression;
 import cn.featherfly.hammer.expression.api.entity.QueryRelate;
-import cn.featherfly.hammer.expression.entity.query.relation.EntityQueryRelatedExpression;
 import cn.featherfly.hammer.sqldb.jdbc.dsl.entity.EntitySqlQueryRelation;
 
 /**

@@ -1,6 +1,13 @@
 
 package cn.featherfly.hammer.sqldb.jdbc.dsl.query;
 
+import java.sql.Blob;
+import java.sql.Clob;
+import java.sql.Timestamp;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 import java.util.function.Consumer;
@@ -35,7 +42,7 @@ public class SqlQueryEntityProperties extends AbstractSqlQueryEntityProperties<S
      * @param tableName        tableName
      * @param sqlPageFactory   the sql page factory
      * @param aliasManager     aliasManager
-     * @param ignoreStrategy     the ignore strategy
+     * @param ignoreStrategy   the ignore strategy
      */
     public SqlQueryEntityProperties(Jdbc jdbc, DatabaseMetadata databaseMetadata, String tableName,
             SqlPageFactory sqlPageFactory, AliasManager aliasManager, Predicate<?> ignoreStrategy) {
@@ -52,7 +59,7 @@ public class SqlQueryEntityProperties extends AbstractSqlQueryEntityProperties<S
      * @param tableAlias       tableAlias
      * @param sqlPageFactory   the sql page factory
      * @param aliasManager     aliasManager
-     * @param ignoreStrategy     the ignore strategy
+     * @param ignoreStrategy   the ignore strategy
      */
     public SqlQueryEntityProperties(Jdbc jdbc, DatabaseMetadata databaseMetadata, String tableName, String tableAlias,
             SqlPageFactory sqlPageFactory, AliasManager aliasManager, Predicate<?> ignoreStrategy) {
@@ -140,6 +147,94 @@ public class SqlQueryEntityProperties extends AbstractSqlQueryEntityProperties<S
      * {@inheritDoc}
      */
     @Override
+    public Date date() {
+        return new SqlQueryExpression(jdbc, sqlPageFactory, selectBuilder, ignoreStrategy).date();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public LocalDate localDate() {
+        return new SqlQueryExpression(jdbc, sqlPageFactory, selectBuilder, ignoreStrategy).localDate();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public LocalDateTime localDateTime() {
+        return new SqlQueryExpression(jdbc, sqlPageFactory, selectBuilder, ignoreStrategy).localDateTime();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public LocalTime localTime() {
+        return new SqlQueryExpression(jdbc, sqlPageFactory, selectBuilder, ignoreStrategy).localTime();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public Timestamp timestamp() {
+        return new SqlQueryExpression(jdbc, sqlPageFactory, selectBuilder, ignoreStrategy).timestamp();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public byte[] bytes() {
+        return new SqlQueryExpression(jdbc, sqlPageFactory, selectBuilder, ignoreStrategy).bytes();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public Clob clob() {
+        return new SqlQueryExpression(jdbc, sqlPageFactory, selectBuilder, ignoreStrategy).clob();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public Blob blob() {
+        return new SqlQueryExpression(jdbc, sqlPageFactory, selectBuilder, ignoreStrategy).blob();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public boolean bool() {
+        return new SqlQueryExpression(jdbc, sqlPageFactory, selectBuilder, ignoreStrategy).bool();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public byte byteValue() {
+        return new SqlQueryExpression(jdbc, sqlPageFactory, selectBuilder, ignoreStrategy).byteValue();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public short shortValue() {
+        return new SqlQueryExpression(jdbc, sqlPageFactory, selectBuilder, ignoreStrategy).shortValue();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
     public int intValue() {
         return new SqlQueryExpression(jdbc, sqlPageFactory, selectBuilder, ignoreStrategy).intValue();
     }
@@ -175,13 +270,21 @@ public class SqlQueryEntityProperties extends AbstractSqlQueryEntityProperties<S
     //    public BigDecimal decimal() {
     //        return new SqlQueryExpression(jdbc, sqlPageFactory, selectBuilder, ignoreStrategy).decimal();
     //    }
+    //
+    //    /**
+    //     * {@inheritDoc}
+    //     */
+    //    @Override
+    //    public <N extends Number> N number(Class<N> type) {
+    //        return new SqlQueryExpression(jdbc, sqlPageFactory, selectBuilder, ignoreStrategy).number(type);
+    //    }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public <N extends Number> N number(Class<N> type) {
-        return new SqlQueryExpression(jdbc, sqlPageFactory, selectBuilder, ignoreStrategy).number(type);
+    public <T> T value(Class<T> type) {
+        return new SqlQueryExpression(jdbc, sqlPageFactory, selectBuilder, ignoreStrategy).value(type);
     }
 
     //    /**

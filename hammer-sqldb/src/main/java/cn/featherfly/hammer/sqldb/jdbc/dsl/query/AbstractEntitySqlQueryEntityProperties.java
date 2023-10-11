@@ -338,12 +338,20 @@ public abstract class AbstractEntitySqlQueryEntityProperties<E, P extends Abstra
     //        return new SqlQueryExpression(jdbc, sqlPageFactory, selectBuilder, ignoreStrategy).decimal();
     //    }
 
+    //    /**
+    //     * {@inheritDoc}
+    //     */
+    //    @Override
+    //    public <N extends Number> N number(Class<N> type) {
+    //        return new SqlQueryExpression(jdbc, sqlPageFactory, selectBuilder, ignoreStrategy).number(type);
+    //    }
+
     /**
      * {@inheritDoc}
      */
     @Override
-    public <N extends Number> N number(Class<N> type) {
-        return new SqlQueryExpression(jdbc, sqlPageFactory, selectBuilder, ignoreStrategy).number(type);
+    public <T> T value(Class<T> type) {
+        return new SqlQueryExpression(jdbc, sqlPageFactory, selectBuilder, ignoreStrategy).value(type);
     }
 
     /**

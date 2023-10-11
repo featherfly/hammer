@@ -1,7 +1,14 @@
 
 package cn.featherfly.hammer.sqldb.jdbc.dsl.query;
 
+import java.sql.Blob;
+import java.sql.Clob;
+import java.sql.Timestamp;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.util.Arrays;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 import java.util.function.Predicate;
@@ -9,9 +16,9 @@ import java.util.function.Predicate;
 import cn.featherfly.common.constant.Chars;
 import cn.featherfly.common.db.SqlUtils;
 import cn.featherfly.common.db.builder.dml.SqlSortBuilder;
+import cn.featherfly.common.function.serializable.SerializableFunction;
 import cn.featherfly.common.lang.LambdaUtils;
 import cn.featherfly.common.lang.Lang;
-import cn.featherfly.common.function.serializable.SerializableFunction;
 import cn.featherfly.common.repository.mapping.RowMapper;
 import cn.featherfly.common.structure.page.Limit;
 import cn.featherfly.common.structure.page.Page;
@@ -411,6 +418,94 @@ public abstract class SqlQueryConditionGroupExpression
      * {@inheritDoc}
      */
     @Override
+    public Date date() {
+        return jdbc.queryValue(getRoot().expression(), Date.class, getRoot().getParams().toArray());
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public LocalDate localDate() {
+        return jdbc.queryValue(getRoot().expression(), LocalDate.class, getRoot().getParams().toArray());
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public LocalDateTime localDateTime() {
+        return jdbc.queryValue(getRoot().expression(), LocalDateTime.class, getRoot().getParams().toArray());
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public LocalTime localTime() {
+        return jdbc.queryValue(getRoot().expression(), LocalTime.class, getRoot().getParams().toArray());
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public Timestamp timestamp() {
+        return jdbc.queryValue(getRoot().expression(), Timestamp.class, getRoot().getParams().toArray());
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public byte[] bytes() {
+        return jdbc.queryBytes(getRoot().expression(), getRoot().getParams().toArray());
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public Clob clob() {
+        return jdbc.queryValue(getRoot().expression(), Clob.class, getRoot().getParams().toArray());
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public Blob blob() {
+        return jdbc.queryValue(getRoot().expression(), Blob.class, getRoot().getParams().toArray());
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public boolean bool() {
+        return jdbc.queryBool(getRoot().expression(), getRoot().getParams().toArray());
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public byte byteValue() {
+        return jdbc.queryByte(getRoot().expression(), getRoot().getParams().toArray());
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public short shortValue() {
+        return jdbc.queryShort(getRoot().expression(), getRoot().getParams().toArray());
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
     public int intValue() {
         return jdbc.queryInt(getRoot().expression(), getRoot().getParams().toArray());
     }
@@ -447,11 +542,19 @@ public abstract class SqlQueryConditionGroupExpression
     //        return jdbc.queryBigDecimal(getRoot().expression(), getRoot().getParams().toArray());
     //    }
 
+    //    /**
+    //     * {@inheritDoc}
+    //     */
+    //    @Override
+    //    public <N extends Number> N number(Class<N> type) {
+    //        return jdbc.queryValue(getRoot().expression(), type, getRoot().getParams().toArray());
+    //    }
+
     /**
      * {@inheritDoc}
      */
     @Override
-    public <N extends Number> N number(Class<N> type) {
+    public <T> T value(Class<T> type) {
         return jdbc.queryValue(getRoot().expression(), type, getRoot().getParams().toArray());
     }
 
