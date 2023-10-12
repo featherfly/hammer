@@ -4,7 +4,7 @@ package cn.featherfly.hammer.expression.entity.query;
 import cn.featherfly.common.structure.page.PaginationResults;
 
 /**
- * dsl for query page executor .
+ * dsl for entity query page executor .
  *
  * @author zhongj
  * @param <E> the query type

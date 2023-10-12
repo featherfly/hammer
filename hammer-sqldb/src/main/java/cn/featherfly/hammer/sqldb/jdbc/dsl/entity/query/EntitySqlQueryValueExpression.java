@@ -6,23 +6,23 @@ import cn.featherfly.common.db.mapping.JdbcMappingFactory;
 import cn.featherfly.common.lang.Lang;
 import cn.featherfly.hammer.dsl.entity.query.EntityQueryValueConditionGroup;
 import cn.featherfly.hammer.dsl.entity.query.EntityQueryValueConditionGroupLogic;
-import cn.featherfly.hammer.expression.entity.query.EntityQuerySortExpression;
-import cn.featherfly.hammer.expression.entity.query.EntityQuerySortedExpression;
+import cn.featherfly.hammer.expression.entity.query.EntityQueryValueSortExpression;
+import cn.featherfly.hammer.expression.entity.query.EntityQueryValueSortedExpression;
 import cn.featherfly.hammer.sqldb.jdbc.SqlPageFactory;
 import cn.featherfly.hammer.sqldb.jdbc.dsl.entity.EntitySqlQueryRelation;
 import cn.featherfly.hammer.sqldb.sql.dml.AbstractEntitySqlQueryValueConditionGroupExpression;
 
 /**
- * EntitySqlQueryExpression .
+ * EntitySqlQueryValueExpression .
  *
  * @author zhongj
  * @param <E> the element type
  */
-public class EntitySqlQueryValueExpression<E> extends
-        AbstractEntitySqlQueryValueConditionGroupExpression<E, EntityQueryValueConditionGroup<E>,
-                EntityQueryValueConditionGroupLogic<E>>
-        implements EntityQueryValueConditionGroup<E>, EntityQueryValueConditionGroupLogic<E>,
-        EntityQuerySortExpression<E>, EntityQuerySortedExpression<E> {
+public class EntitySqlQueryValueExpression<E, V> extends
+        AbstractEntitySqlQueryValueConditionGroupExpression<E, V, EntityQueryValueConditionGroup<E, V>,
+                EntityQueryValueConditionGroupLogic<E, V>>
+        implements EntityQueryValueConditionGroup<E, V>, EntityQueryValueConditionGroupLogic<E, V>,
+        EntityQueryValueSortExpression<E, V>, EntityQueryValueSortedExpression<E, V> {
 
     /**
      * Instantiates a new entity sql query expression.
@@ -32,8 +32,8 @@ public class EntitySqlQueryValueExpression<E> extends
      * @param queryRelation  the query relation
      */
     public EntitySqlQueryValueExpression(JdbcMappingFactory factory, SqlPageFactory sqlPageFactory,
-            EntitySqlQueryRelation queryRelation) {
-        this(null, factory, sqlPageFactory, queryRelation);
+            EntitySqlQueryRelation queryRelation, Class<V> valueType) {
+        this(null, factory, sqlPageFactory, queryRelation, valueType);
     }
 
     /**
@@ -44,17 +44,17 @@ public class EntitySqlQueryValueExpression<E> extends
      * @param sqlPageFactory the sql page factory
      * @param queryRelation  the query relation
      */
-    EntitySqlQueryValueExpression(EntityQueryValueConditionGroupLogic<E> parent, JdbcMappingFactory factory,
-            SqlPageFactory sqlPageFactory, EntitySqlQueryRelation queryRelation) {
-        super(parent, factory, sqlPageFactory, queryRelation);
+    EntitySqlQueryValueExpression(EntityQueryValueConditionGroupLogic<E, V> parent, JdbcMappingFactory factory,
+            SqlPageFactory sqlPageFactory, EntitySqlQueryRelation queryRelation, Class<V> valueType) {
+        super(parent, factory, sqlPageFactory, queryRelation, valueType);
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    protected EntitySqlQueryValueExpression<E> createGroup(EntityQueryValueConditionGroupLogic<E> parent) {
-        return new EntitySqlQueryValueExpression<>(parent, factory, sqlPageFactory, entityRelation);
+    protected EntitySqlQueryValueExpression<E, V> createGroup(EntityQueryValueConditionGroupLogic<E, V> parent) {
+        return new EntitySqlQueryValueExpression<>(parent, factory, sqlPageFactory, entityRelation, valueType);
     }
 
     /**

@@ -13,7 +13,6 @@ import cn.featherfly.hammer.dsl.entity.query.relation.EntityQueryRelate1R;
 import cn.featherfly.hammer.dsl.entity.query.relation.EntityQueryRelateBase;
 import cn.featherfly.hammer.dsl.entity.query.relation.EntityQueryRelatedExpression;
 import cn.featherfly.hammer.dsl.entity.query.relation.EntityQueryRelatedFetched1F;
-import cn.featherfly.hammer.expression.entity.query.EntityQueryPropertiesExpression;
 import cn.featherfly.hammer.sqldb.jdbc.SqlPageFactory;
 import cn.featherfly.hammer.sqldb.jdbc.dsl.entity.EntitySqlQueryRelation;
 import cn.featherfly.hammer.sqldb.jdbc.dsl.entity.query.relation.EntitySqlQueryRelate1P;
@@ -24,11 +23,11 @@ import cn.featherfly.hammer.sqldb.jdbc.dsl.entity.query.relation.EntitySqlQueryR
  * The Class AbstractEntitySqlQueryFetch.
  *
  * @author zhongj
- * @param <E> the element type
- * @param <P> the generic type
+ * @param <E> the query entity type
+ * @param <T> the return mapping type
  */
-public abstract class AbstractEntitySqlQueryFetch<E, P extends EntityQueryPropertiesExpression<E, P>>
-        extends AbstractEntitySqlQueryProperties<E, P> implements EntityQueryRelateBase<E> {
+public abstract class AbstractEntitySqlQueryFetch<E> extends AbstractEntitySqlQuery<E>
+        implements EntityQueryRelateBase<E> {
 
     /**
      * Instantiates a new abstract entity sql query fetched.

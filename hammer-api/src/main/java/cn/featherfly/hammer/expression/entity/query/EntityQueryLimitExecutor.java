@@ -2,7 +2,7 @@
 package cn.featherfly.hammer.expression.entity.query;
 
 /**
- * dsl for query limit executor.
+ * dsl for entity query limit executor.
  *
  * @author zhongj
  * @param <E> the query type

@@ -11,6 +11,7 @@ import cn.featherfly.hammer.expression.entity.query.EntityQueryFetchedProperties
  * @param <E> the element type
  * @param <V> the value type
  */
-public interface EntityQueryFetchedProperty<E, V> extends EntityQueryRelateBase<E>, EntityQueryValue<E, V>,
+public interface EntityQueryOneFetchedProperty<E, V> extends EntityQueryRelateBase<E>, EntityQueryValueOne<E, V>,
         EntityQueryFetchedPropertiesExpression<E, EntityQueryFetchedProperties<E>> {
+
 }

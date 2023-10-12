@@ -7,13 +7,21 @@ import cn.featherfly.common.operator.AggregateFunction;
 import cn.featherfly.common.operator.Function;
 
 /**
- * The Interface EntityQueryPropertiesExpression.
+ * The Interface EntityQueryFetchExpression.
  *
  * @author zhongj
  * @param <E> the query type
  * @param <Q> the generic type
  */
-public interface EntityQueryPropertiesExpression<E, Q extends EntityQueryPropertiesExpression<E, Q>> {
+public interface EntityQueryFetchedPropertiesExpression<E, Q extends EntityQueryFetchedPropertiesExpression<E, Q>> {
+
+    /**
+     * 批量添加查询出来的属性.
+     *
+     * @param propertyNames propertyNames
+     * @return QueryEntityPropertiesExpression
+     */
+    Q property(@SuppressWarnings("unchecked") SerializableFunction<E, ?>... propertyNames);
 
     /**
      * 添加查询出来的属性.
@@ -37,17 +45,8 @@ public interface EntityQueryPropertiesExpression<E, Q extends EntityQueryPropert
     <R> Q property(boolean distinct, SerializableFunction<E, R> propertyName);
 
     /**
-     * 批量添加查询出来的属性.
-     *
-     * @param propertyNames propertyNames
-     * @return QueryEntityPropertiesExpression
-     */
-    Q property(@SuppressWarnings("unchecked") SerializableFunction<E, ?>... propertyNames);
-
-    /**
      * 添加查询出来的属性.
      *
-     * @param <T>          the generic type
      * @param <R>          the generic type
      * @param function     the function
      * @param propertyName propertyName
@@ -65,7 +64,6 @@ public interface EntityQueryPropertiesExpression<E, Q extends EntityQueryPropert
     /**
      * 添加查询出来的属性.
      *
-     * @param <T>               the generic type
      * @param <R>               the generic type
      * @param aggregateFunction aggregateFunction
      * @param propertyName      propertyName
@@ -78,7 +76,6 @@ public interface EntityQueryPropertiesExpression<E, Q extends EntityQueryPropert
     /**
      * 添加查询出来的属性.
      *
-     * @param <T>               the generic type
      * @param <R>               the generic type
      * @param aggregateFunction aggregateFunction
      * @param distinct          the distinct
@@ -123,7 +120,6 @@ public interface EntityQueryPropertiesExpression<E, Q extends EntityQueryPropert
     /**
      * 添加查询出来的属性.
      *
-     * @param <T>          the generic type
      * @param <R>          the generic type
      * @param function     the function
      * @param propertyName propertyName
@@ -136,7 +132,6 @@ public interface EntityQueryPropertiesExpression<E, Q extends EntityQueryPropert
     /**
      * 添加查询出来的属性.
      *
-     * @param <T>               the generic type
      * @param <R>               the generic type
      * @param aggregateFunction aggregateFunction
      * @param propertyName      propertyName
@@ -149,7 +144,6 @@ public interface EntityQueryPropertiesExpression<E, Q extends EntityQueryPropert
     /**
      * 添加查询出来的属性.
      *
-     * @param <T>               the generic type
      * @param <R>               the generic type
      * @param aggregateFunction aggregateFunction
      * @param distinct          the distinct
@@ -286,4 +280,5 @@ public interface EntityQueryPropertiesExpression<E, Q extends EntityQueryPropert
     default <R> Q avg(boolean distinct, SerializableFunction<E, R> propertyName) {
         return property(AggregateFunction.AVG, distinct, propertyName);
     }
+
 }

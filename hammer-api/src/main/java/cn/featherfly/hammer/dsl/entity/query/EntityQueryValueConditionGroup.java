@@ -1,8 +1,8 @@
 
 package cn.featherfly.hammer.dsl.entity.query;
 
-import cn.featherfly.hammer.expression.entity.query.EntityQuerySortExpression;
 import cn.featherfly.hammer.expression.entity.query.EntityQueryValueConditionGroupExpression;
+import cn.featherfly.hammer.expression.entity.query.EntityQueryValueSortExpression;
 
 /**
  * The Interface EntityQueryValueConditionGroup.
@@ -10,7 +10,8 @@ import cn.featherfly.hammer.expression.entity.query.EntityQueryValueConditionGro
  * @author zhongj
  * @param <E> the element type
  */
-public interface EntityQueryValueConditionGroup<E> extends EntityQueryValueConditionGroupExpression<E,
-        EntityQueryValueConditionGroup<E>, EntityQueryValueConditionGroupLogic<E>, EntityQuerySortExpression<E>> {
+public interface EntityQueryValueConditionGroup<E, V>
+        extends EntityQueryValueConditionGroupExpression<E, V, EntityQueryValueConditionGroup<E, V>,
+                EntityQueryValueConditionGroupLogic<E, V>, EntityQueryValueSortExpression<E, V>> {
 
 }

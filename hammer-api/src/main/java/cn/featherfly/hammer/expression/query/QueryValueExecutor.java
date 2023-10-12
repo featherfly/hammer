@@ -11,7 +11,7 @@ import java.time.LocalTime;
 import java.util.Date;
 
 /**
- * dsl for query number executor.
+ * dsl for query value executor.
  *
  * @author zhongj
  */
