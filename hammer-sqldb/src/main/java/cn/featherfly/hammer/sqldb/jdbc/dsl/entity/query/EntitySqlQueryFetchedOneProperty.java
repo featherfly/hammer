@@ -9,7 +9,7 @@ import cn.featherfly.common.lang.LambdaUtils;
 import cn.featherfly.common.lang.LambdaUtils.SerializedLambdaInfo;
 import cn.featherfly.common.operator.AggregateFunction;
 import cn.featherfly.hammer.dsl.entity.query.EntityQueryFetchedProperties;
-import cn.featherfly.hammer.dsl.entity.query.EntityQueryFetchedProperty;
+import cn.featherfly.hammer.dsl.entity.query.EntityQueryOneFetchedProperty;
 import cn.featherfly.hammer.dsl.entity.query.EntityQueryValueConditionGroup;
 import cn.featherfly.hammer.expression.condition.ConditionGroupConfig;
 import cn.featherfly.hammer.expression.entity.query.EntityQueryValueSortExpression;
@@ -17,15 +17,15 @@ import cn.featherfly.hammer.sqldb.jdbc.SqlPageFactory;
 import cn.featherfly.hammer.sqldb.jdbc.dsl.entity.EntitySqlQueryRelation;
 
 /**
- * entity sql entity query fetched property.
+ * entity sql entity query fetched one property.
  *
  * @author zhongj
  * @param <E> the element type
  * @param <V> the value type
  */
-public class EntitySqlQueryFetchedProperty<E, V>
+public class EntitySqlQueryFetchedOneProperty<E, V>
         extends AbstractEntitySqlQueryFetchedProperties<E, V, EntityQueryFetchedProperties<E>>
-        implements EntityQueryFetchedProperty<E, V> {
+        implements EntityQueryOneFetchedProperty<E, V> {
 
     /**
      * Instantiates a new entity sql query fetched property.
@@ -35,7 +35,7 @@ public class EntitySqlQueryFetchedProperty<E, V>
      * @param entitySqlQueryRelation the entity sql query relation
      * @param property               the property
      */
-    public EntitySqlQueryFetchedProperty(JdbcMappingFactory factory, SqlPageFactory sqlPageFactory,
+    public EntitySqlQueryFetchedOneProperty(JdbcMappingFactory factory, SqlPageFactory sqlPageFactory,
             EntitySqlQueryRelation entitySqlQueryRelation, SerializableFunction<E, V> property) {
         this(factory, sqlPageFactory, entitySqlQueryRelation, false, property);
     }
@@ -49,7 +49,7 @@ public class EntitySqlQueryFetchedProperty<E, V>
      * @param distinct               the distinct
      * @param property               the property
      */
-    public EntitySqlQueryFetchedProperty(JdbcMappingFactory factory, SqlPageFactory sqlPageFactory,
+    public EntitySqlQueryFetchedOneProperty(JdbcMappingFactory factory, SqlPageFactory sqlPageFactory,
             EntitySqlQueryRelation entitySqlQueryRelation, boolean distinct, SerializableFunction<E, V> property) {
         this(factory, sqlPageFactory, entitySqlQueryRelation, null, distinct, property);
     }
@@ -65,7 +65,7 @@ public class EntitySqlQueryFetchedProperty<E, V>
      * @param property               the property
      */
     @SuppressWarnings("unchecked")
-    public EntitySqlQueryFetchedProperty(JdbcMappingFactory factory, SqlPageFactory sqlPageFactory,
+    public EntitySqlQueryFetchedOneProperty(JdbcMappingFactory factory, SqlPageFactory sqlPageFactory,
             EntitySqlQueryRelation entitySqlQueryRelation, AggregateFunction aggregateFunction, boolean distinct,
             SerializableFunction<E, V> property) {
         super(factory, sqlPageFactory, entitySqlQueryRelation, null); // 下面手动设置valueType

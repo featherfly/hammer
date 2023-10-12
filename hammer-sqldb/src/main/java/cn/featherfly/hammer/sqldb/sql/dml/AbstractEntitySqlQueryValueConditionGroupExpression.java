@@ -1,14 +1,7 @@
 
 package cn.featherfly.hammer.sqldb.sql.dml;
 
-import java.sql.Blob;
-import java.sql.Clob;
-import java.sql.Timestamp;
-import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.time.LocalTime;
 import java.util.Arrays;
-import java.util.Date;
 import java.util.List;
 
 import cn.featherfly.common.constant.Chars;
@@ -28,10 +21,10 @@ import cn.featherfly.common.structure.page.Limit;
 import cn.featherfly.common.structure.page.PaginationResults;
 import cn.featherfly.common.structure.page.SimplePaginationResults;
 import cn.featherfly.hammer.expression.entity.query.EntityQueryLimitExecutor;
-import cn.featherfly.hammer.expression.entity.query.EntityQuerySortExpression;
-import cn.featherfly.hammer.expression.entity.query.EntityQuerySortedExpression;
 import cn.featherfly.hammer.expression.entity.query.EntityQueryValueConditionGroupExpression;
 import cn.featherfly.hammer.expression.entity.query.EntityQueryValueConditionGroupLogicExpression;
+import cn.featherfly.hammer.expression.entity.query.EntityQueryValueSortExpression;
+import cn.featherfly.hammer.expression.entity.query.EntityQueryValueSortedExpression;
 import cn.featherfly.hammer.sqldb.jdbc.SqlPageFactory;
 import cn.featherfly.hammer.sqldb.jdbc.SqlPageFactory.SqlPageQuery;
 import cn.featherfly.hammer.sqldb.jdbc.dsl.entity.EntitySqlQueryRelation;
@@ -44,13 +37,13 @@ import cn.featherfly.hammer.sqldb.jdbc.dsl.entity.EntitySqlQueryRelation;
  * @param <C> the generic type
  * @param <L> the generic type
  */
-public abstract class AbstractEntitySqlQueryValueConditionGroupExpression<E,
-        C extends EntityQueryValueConditionGroupExpression<E, C, L, EntityQuerySortExpression<E>>,
-        L extends EntityQueryValueConditionGroupLogicExpression<E, C, L, EntityQuerySortExpression<E>>>
+public abstract class AbstractEntitySqlQueryValueConditionGroupExpression<E, V,
+        C extends EntityQueryValueConditionGroupExpression<E, V, C, L, EntityQueryValueSortExpression<E, V>>,
+        L extends EntityQueryValueConditionGroupLogicExpression<E, V, C, L, EntityQueryValueSortExpression<E, V>>>
         extends AbstractEntitySqlConditionGroupExpressionBase<E, EntitySqlQueryRelation, SqlSelectBasicBuilder, C, L>
-        implements EntityQueryValueConditionGroupExpression<E, C, L, EntityQuerySortExpression<E>>,
-        EntityQueryValueConditionGroupLogicExpression<E, C, L, EntityQuerySortExpression<E>>,
-        EntityQuerySortExpression<E>, EntityQuerySortedExpression<E> {
+        implements EntityQueryValueConditionGroupExpression<E, V, C, L, EntityQueryValueSortExpression<E, V>>,
+        EntityQueryValueConditionGroupLogicExpression<E, V, C, L, EntityQueryValueSortExpression<E, V>>,
+        EntityQueryValueSortExpression<E, V>, EntityQueryValueSortedExpression<E, V> {
 
     private Limit limit;
 
@@ -58,6 +51,8 @@ public abstract class AbstractEntitySqlQueryValueConditionGroupExpression<E,
 
     /** The sql page factory. */
     protected SqlPageFactory sqlPageFactory;
+
+    protected Class<V> valueType;
 
     /**
      * Instantiates a new abstract entity sql condition group expression.
@@ -68,9 +63,10 @@ public abstract class AbstractEntitySqlQueryValueConditionGroupExpression<E,
      * @param queryRelation  the query relation
      */
     protected AbstractEntitySqlQueryValueConditionGroupExpression(L parent, JdbcMappingFactory factory,
-            SqlPageFactory sqlPageFactory, EntitySqlQueryRelation queryRelation) {
+            SqlPageFactory sqlPageFactory, EntitySqlQueryRelation queryRelation, Class<V> valueType) {
         super(parent, factory, queryRelation);
         this.sqlPageFactory = sqlPageFactory;
+        this.valueType = valueType;
         sortBuilder = new SqlSortBuilder(dialect, queryRelation.getEntityRelationMapping(0).getTableAlias());
     }
 
@@ -93,7 +89,7 @@ public abstract class AbstractEntitySqlQueryValueConditionGroupExpression<E,
     }
 
     @Override
-    public EntityQueryLimitExecutor<E> limit(Limit limit) {
+    public EntityQueryLimitExecutor<V> limit(Limit limit) {
         this.limit = limit;
         return this;
     }
@@ -108,44 +104,29 @@ public abstract class AbstractEntitySqlQueryValueConditionGroupExpression<E,
      * {@inheritDoc}
      */
     @Override
-    public List<E> list() {
+    public List<V> list() {
         Execution execution = getExecution();
-        return entityRelation.getJdbc().query(execution.getExecution(), classMapping.getType(), execution.getParams());
-        //        String sql = getRoot().expression();
-        //        Object[] params = getRoot().getParams().toArray();
-        //        if (limit != null) {
-        //            SqlPageQuery<Object[]> pageQuery = sqlPageFactory.toPage(dialect, sql, limit.getOffset(), limit.getLimit(),
-        //                    params);
-        //            sql = pageQuery.getSql();
-        //            params = pageQuery.getParams();
-        //        }
-        //        return entityRelation.getJdbc().query(sql, classMapping.getType(), params);
+        return entityRelation.getJdbc().query(execution.getExecution(), valueType, execution.getParams());
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public PaginationResults<E> pagination() {
+    public PaginationResults<V> pagination() {
         String sql = getRoot().expression();
         String countSql = SqlUtils.convertSelectToCount(sql);
         Object[] params = getRoot().getParams().toArray();
-        SimplePaginationResults<E> pagination = new SimplePaginationResults<>(limit);
+        SimplePaginationResults<V> pagination = new SimplePaginationResults<>(limit);
         if (limit != null) {
             SqlPageQuery<Object[]> pageQuery = sqlPageFactory.toPage(dialect, sql, limit.getOffset(), limit.getLimit(),
                     params);
-            List<E> list = entityRelation.getJdbc().query(pageQuery.getSql(), classMapping.getType(),
-                    pageQuery.getParams());
-            //            @SuppressWarnings("unchecked")
-            //            List<E> list = (List<E>) entitySqlRelation.getJdbc().query(dialect.getPaginationSql(sql, limit.getOffset(), limit.getLimit()),
-            //                    classMapping.getType(),
-            //                    dialect.getPaginationSqlParameter(params, limit.getOffset(), limit.getLimit()));
+            List<V> list = entityRelation.getJdbc().query(pageQuery.getSql(), valueType, pageQuery.getParams());
             pagination.setPageResults(list);
             int total = entityRelation.getJdbc().queryInt(countSql, params);
             pagination.setTotal(total);
         } else {
-            @SuppressWarnings("unchecked")
-            List<E> list = (List<E>) entityRelation.getJdbc().query(sql, params, classMapping.getType());
+            List<V> list = entityRelation.getJdbc().query(sql, valueType, params);
             pagination.setPageResults(list);
             pagination.setTotal(list.size());
         }
@@ -156,207 +137,27 @@ public abstract class AbstractEntitySqlQueryValueConditionGroupExpression<E,
      * {@inheritDoc}
      */
     @Override
-    public E single() {
+    public V single() {
         Execution execution = getExecution();
-        return entityRelation.getJdbc().querySingle(execution.getExecution(), classMapping.getType(),
-                execution.getParams());
-        //        String sql = getRoot().expression();
-        //        Object[] params = getRoot().getParams().toArray();
-        //        if (limit != null) {
-        //            SqlPageQuery<Object[]> pageQuery = sqlPageFactory.toPage(dialect, sql, limit.getOffset(), limit.getLimit(),
-        //                    params);
-        //            sql = pageQuery.getSql();
-        //            params = pageQuery.getParams();
-        //            //            sql = dialect.getPaginationSql(sql, limit.getOffset(), limit.getLimit());
-        //            //            params = dialect.getPaginationSqlParameter(params, limit.getOffset(), limit.getLimit());
-        //        }
-        //        return entityRelation.getJdbc().querySingle(sql, classMapping.getType(), params);
+        return entityRelation.getJdbc().querySingle(execution.getExecution(), valueType, execution.getParams());
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public E unique() {
+    public V unique() {
         Execution execution = getExecution();
-        return entityRelation.getJdbc().queryUnique(execution.getExecution(), classMapping.getType(),
-                execution.getParams());
-        //        String sql = getRoot().expression();
-        //        Object[] params = getRoot().getParams().toArray();
-        //        if (limit != null) {
-        //            SqlPageQuery<Object[]> pageQuery = sqlPageFactory.toPage(dialect, sql, limit.getOffset(), limit.getLimit(),
-        //                    params);
-        //            sql = pageQuery.getSql();
-        //            params = pageQuery.getParams();
-        //            //            sql = dialect.getPaginationSql(sql, limit.getOffset(), limit.getLimit());
-        //            //            params = dialect.getPaginationSqlParameter(params, limit.getOffset(), limit.getLimit());
-        //        }
-        //        return entityRelation.getJdbc().queryUnique(sql, classMapping.getType(), params);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public String string() {
-        Execution execution = getExecution();
-        return entityRelation.getJdbc().queryString(execution.getExecution(), execution.getParams());
-        //        String sql = getRoot().expression();
-        //        Object[] params = getRoot().getParams().toArray();
-        //        if (limit != null) {
-        //            SqlPageQuery<Object[]> pageQuery = sqlPageFactory.toPage(dialect, sql, limit.getOffset(), limit.getLimit(),
-        //                    params);
-        //            sql = pageQuery.getSql();
-        //            params = pageQuery.getParams();
-        //        }
-        //        return entityRelation.getJdbc().queryString(sql, params);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public Date date() {
-        Execution execution = getExecution();
-        return entityRelation.getJdbc().queryValue(execution.getExecution(), Date.class, execution.getParams());
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public LocalDate localDate() {
-        Execution execution = getExecution();
-        return entityRelation.getJdbc().queryValue(execution.getExecution(), LocalDate.class, execution.getParams());
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public LocalDateTime localDateTime() {
-        Execution execution = getExecution();
-        return entityRelation.getJdbc().queryValue(execution.getExecution(), LocalDateTime.class,
-                execution.getParams());
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public LocalTime localTime() {
-        Execution execution = getExecution();
-        return entityRelation.getJdbc().queryValue(execution.getExecution(), LocalTime.class, execution.getParams());
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public Timestamp timestamp() {
-        Execution execution = getExecution();
-        return entityRelation.getJdbc().queryValue(execution.getExecution(), Timestamp.class, execution.getParams());
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public byte[] bytes() {
-        Execution execution = getExecution();
-        return entityRelation.getJdbc().queryBytes(execution.getExecution(), execution.getParams());
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public Clob clob() {
-        Execution execution = getExecution();
-        return entityRelation.getJdbc().queryValue(execution.getExecution(), Clob.class, execution.getParams());
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public Blob blob() {
-        Execution execution = getExecution();
-        return entityRelation.getJdbc().queryValue(execution.getExecution(), Blob.class, execution.getParams());
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public boolean bool() {
-        Execution execution = getExecution();
-        return entityRelation.getJdbc().queryBool(execution.getExecution(), execution.getParams());
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public byte byteValue() {
-        Execution execution = getExecution();
-        return entityRelation.getJdbc().queryByte(execution.getExecution(), execution.getParams());
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public short shortValue() {
-        Execution execution = getExecution();
-        return entityRelation.getJdbc().queryShort(execution.getExecution(), execution.getParams());
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public int intValue() {
-        Execution execution = getExecution();
-        return entityRelation.getJdbc().queryInt(execution.getExecution(), execution.getParams());
-        //        String sql = getRoot().expression();
-        //        Object[] params = getRoot().getParams().toArray();
-        //        if (limit != null) {
-        //            SqlPageQuery<Object[]> pageQuery = sqlPageFactory.toPage(dialect, sql, limit.getOffset(), limit.getLimit(),
-        //                    params);
-        //            sql = pageQuery.getSql();
-        //            params = pageQuery.getParams();
-        //        }
-        //        return entityRelation.getJdbc().queryInt(sql, params);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public long longValue() {
-        Execution execution = getExecution();
-        return entityRelation.getJdbc().queryLong(execution.getExecution(), execution.getParams());
-        //        String sql = getRoot().expression();
-        //        Object[] params = getRoot().getParams().toArray();
-        //        if (limit != null) {
-        //            SqlPageQuery<Object[]> pageQuery = sqlPageFactory.toPage(dialect, sql, limit.getOffset(), limit.getLimit(),
-        //                    params);
-        //            sql = pageQuery.getSql();
-        //            params = pageQuery.getParams();
-        //        }
-        //        return entityRelation.getJdbc().queryLong(sql, params);
+        return entityRelation.getJdbc().queryUnique(execution.getExecution(), valueType, execution.getParams());
     }
 
     //    /**
     //     * {@inheritDoc}
     //     */
     //    @Override
-    //    public <N extends Number> N number(Class<N> type) {
-    //        return value(type);
-    //        //        Execution execution = getExecution();
-    //        //        return entityRelation.getJdbc().queryValue(execution.getExecution(), type, execution.getParams());
-    //
+    //    public String string() {
+    //        Execution execution = getExecution();
+    //        return entityRelation.getJdbc().queryString(execution.getExecution(), execution.getParams());
     //        //        String sql = getRoot().expression();
     //        //        Object[] params = getRoot().getParams().toArray();
     //        //        if (limit != null) {
@@ -365,17 +166,173 @@ public abstract class AbstractEntitySqlQueryValueConditionGroupExpression<E,
     //        //            sql = pageQuery.getSql();
     //        //            params = pageQuery.getParams();
     //        //        }
-    //        //        return entityRelation.getJdbc().queryValue(sql, type, params);
+    //        //        return entityRelation.getJdbc().queryString(sql, params);
     //    }
 
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public <T> T value(Class<T> type) {
-        Execution execution = getExecution();
-        return entityRelation.getJdbc().queryValue(execution.getExecution(), type, execution.getParams());
-    }
+    //    /**
+    //     * {@inheritDoc}
+    //     */
+    //    @Override
+    //    public Date date() {
+    //        Execution execution = getExecution();
+    //        return entityRelation.getJdbc().queryValue(execution.getExecution(), Date.class, execution.getParams());
+    //    }
+    //
+    //    /**
+    //     * {@inheritDoc}
+    //     */
+    //    @Override
+    //    public LocalDate localDate() {
+    //        Execution execution = getExecution();
+    //        return entityRelation.getJdbc().queryValue(execution.getExecution(), LocalDate.class, execution.getParams());
+    //    }
+    //
+    //    /**
+    //     * {@inheritDoc}
+    //     */
+    //    @Override
+    //    public LocalDateTime localDateTime() {
+    //        Execution execution = getExecution();
+    //        return entityRelation.getJdbc().queryValue(execution.getExecution(), LocalDateTime.class,
+    //                execution.getParams());
+    //    }
+    //
+    //    /**
+    //     * {@inheritDoc}
+    //     */
+    //    @Override
+    //    public LocalTime localTime() {
+    //        Execution execution = getExecution();
+    //        return entityRelation.getJdbc().queryValue(execution.getExecution(), LocalTime.class, execution.getParams());
+    //    }
+    //
+    //    /**
+    //     * {@inheritDoc}
+    //     */
+    //    @Override
+    //    public Timestamp timestamp() {
+    //        Execution execution = getExecution();
+    //        return entityRelation.getJdbc().queryValue(execution.getExecution(), Timestamp.class, execution.getParams());
+    //    }
+    //
+    //    /**
+    //     * {@inheritDoc}
+    //     */
+    //    @Override
+    //    public byte[] bytes() {
+    //        Execution execution = getExecution();
+    //        return entityRelation.getJdbc().queryBytes(execution.getExecution(), execution.getParams());
+    //    }
+    //
+    //    /**
+    //     * {@inheritDoc}
+    //     */
+    //    @Override
+    //    public Clob clob() {
+    //        Execution execution = getExecution();
+    //        return entityRelation.getJdbc().queryValue(execution.getExecution(), Clob.class, execution.getParams());
+    //    }
+    //
+    //    /**
+    //     * {@inheritDoc}
+    //     */
+    //    @Override
+    //    public Blob blob() {
+    //        Execution execution = getExecution();
+    //        return entityRelation.getJdbc().queryValue(execution.getExecution(), Blob.class, execution.getParams());
+    //    }
+    //
+    //    /**
+    //     * {@inheritDoc}
+    //     */
+    //    @Override
+    //    public boolean bool() {
+    //        Execution execution = getExecution();
+    //        return entityRelation.getJdbc().queryBool(execution.getExecution(), execution.getParams());
+    //    }
+    //
+    //    /**
+    //     * {@inheritDoc}
+    //     */
+    //    @Override
+    //    public byte byteValue() {
+    //        Execution execution = getExecution();
+    //        return entityRelation.getJdbc().queryByte(execution.getExecution(), execution.getParams());
+    //    }
+    //
+    //    /**
+    //     * {@inheritDoc}
+    //     */
+    //    @Override
+    //    public short shortValue() {
+    //        Execution execution = getExecution();
+    //        return entityRelation.getJdbc().queryShort(execution.getExecution(), execution.getParams());
+    //    }
+    //
+    //    /**
+    //     * {@inheritDoc}
+    //     */
+    //    @Override
+    //    public int intValue() {
+    //        Execution execution = getExecution();
+    //        return entityRelation.getJdbc().queryInt(execution.getExecution(), execution.getParams());
+    //        //        String sql = getRoot().expression();
+    //        //        Object[] params = getRoot().getParams().toArray();
+    //        //        if (limit != null) {
+    //        //            SqlPageQuery<Object[]> pageQuery = sqlPageFactory.toPage(dialect, sql, limit.getOffset(), limit.getLimit(),
+    //        //                    params);
+    //        //            sql = pageQuery.getSql();
+    //        //            params = pageQuery.getParams();
+    //        //        }
+    //        //        return entityRelation.getJdbc().queryInt(sql, params);
+    //    }
+    //
+    //    /**
+    //     * {@inheritDoc}
+    //     */
+    //    @Override
+    //    public long longValue() {
+    //        Execution execution = getExecution();
+    //        return entityRelation.getJdbc().queryLong(execution.getExecution(), execution.getParams());
+    //        //        String sql = getRoot().expression();
+    //        //        Object[] params = getRoot().getParams().toArray();
+    //        //        if (limit != null) {
+    //        //            SqlPageQuery<Object[]> pageQuery = sqlPageFactory.toPage(dialect, sql, limit.getOffset(), limit.getLimit(),
+    //        //                    params);
+    //        //            sql = pageQuery.getSql();
+    //        //            params = pageQuery.getParams();
+    //        //        }
+    //        //        return entityRelation.getJdbc().queryLong(sql, params);
+    //    }
+    //
+    //    //    /**
+    //    //     * {@inheritDoc}
+    //    //     */
+    //    //    @Override
+    //    //    public <N extends Number> N number(Class<N> type) {
+    //    //        return value(type);
+    //    //        //        Execution execution = getExecution();
+    //    //        //        return entityRelation.getJdbc().queryValue(execution.getExecution(), type, execution.getParams());
+    //    //
+    //    //        //        String sql = getRoot().expression();
+    //    //        //        Object[] params = getRoot().getParams().toArray();
+    //    //        //        if (limit != null) {
+    //    //        //            SqlPageQuery<Object[]> pageQuery = sqlPageFactory.toPage(dialect, sql, limit.getOffset(), limit.getLimit(),
+    //    //        //                    params);
+    //    //        //            sql = pageQuery.getSql();
+    //    //        //            params = pageQuery.getParams();
+    //    //        //        }
+    //    //        //        return entityRelation.getJdbc().queryValue(sql, type, params);
+    //    //    }
+    //
+    //    /**
+    //     * {@inheritDoc}
+    //     */
+    //    @Override
+    //    public <T> T value(Class<T> type) {
+    //        Execution execution = getExecution();
+    //        return entityRelation.getJdbc().queryValue(execution.getExecution(), type, execution.getParams());
+    //    }
 
     // ****************************************************************************************************************
     // sort
@@ -385,7 +342,7 @@ public abstract class AbstractEntitySqlQueryValueConditionGroupExpression<E,
      * {@inheritDoc}
      */
     @Override
-    public EntityQuerySortExpression<E> sort() {
+    public EntityQueryValueSortExpression<E, V> sort() {
         return this;
     }
 
@@ -396,7 +353,7 @@ public abstract class AbstractEntitySqlQueryValueConditionGroupExpression<E,
      * @return the entity query sorted expression
      */
     //        @Override
-    public EntityQuerySortedExpression<E> asc(String... names) {
+    public EntityQueryValueSortedExpression<E, V> asc(String... names) {
         getRootSortBuilder().asc(ClassMappingUtils.getColumnNames(classMapping, names));
         return this;
     }
@@ -408,7 +365,7 @@ public abstract class AbstractEntitySqlQueryValueConditionGroupExpression<E,
      * @return the entity query sorted expression
      */
     //        @Override
-    public EntityQuerySortedExpression<E> asc(List<String> names) {
+    public EntityQueryValueSortedExpression<E, V> asc(List<String> names) {
         getRootSortBuilder().asc(ClassMappingUtils.getColumnNames(classMapping, names));
         return this;
     }
@@ -417,7 +374,7 @@ public abstract class AbstractEntitySqlQueryValueConditionGroupExpression<E,
      * {@inheritDoc}
      */
     @Override
-    public <R> EntityQuerySortedExpression<E> asc(SerializableFunction<E, R> name) {
+    public <R> EntityQueryValueSortedExpression<E, V> asc(SerializableFunction<E, R> name) {
         return asc(getPropertyName(name));
     }
 
@@ -425,7 +382,8 @@ public abstract class AbstractEntitySqlQueryValueConditionGroupExpression<E,
      * {@inheritDoc}
      */
     @Override
-    public EntityQuerySortedExpression<E> asc(@SuppressWarnings("unchecked") SerializableFunction<E, ?>... names) {
+    public EntityQueryValueSortedExpression<E, V> asc(
+            @SuppressWarnings("unchecked") SerializableFunction<E, ?>... names) {
         String[] nameArray = Arrays.stream(names).map(LambdaUtils::getLambdaPropertyName)
                 .toArray(value -> new String[value]);
         return asc(nameArray);
@@ -441,7 +399,7 @@ public abstract class AbstractEntitySqlQueryValueConditionGroupExpression<E,
      * @return the entity query sorted expression
      */
     //    @Override
-    public EntityQuerySortedExpression<E> desc(String... names) {
+    public EntityQueryValueSortedExpression<E, V> desc(String... names) {
         getRootSortBuilder().desc(ClassMappingUtils.getColumnNames(classMapping, names));
         return this;
     }
@@ -456,7 +414,7 @@ public abstract class AbstractEntitySqlQueryValueConditionGroupExpression<E,
      * @return the entity query sorted expression
      */
     //    @Override
-    public EntityQuerySortedExpression<E> desc(List<String> names) {
+    public EntityQueryValueSortedExpression<E, V> desc(List<String> names) {
         getRootSortBuilder().desc(ClassMappingUtils.getColumnNames(classMapping, names));
         return this;
     }
@@ -465,7 +423,7 @@ public abstract class AbstractEntitySqlQueryValueConditionGroupExpression<E,
      * {@inheritDoc}
      */
     @Override
-    public <R> EntityQuerySortedExpression<E> desc(SerializableFunction<E, R> name) {
+    public <R> EntityQueryValueSortedExpression<E, V> desc(SerializableFunction<E, R> name) {
         return desc(getPropertyName(name));
     }
 
@@ -473,7 +431,8 @@ public abstract class AbstractEntitySqlQueryValueConditionGroupExpression<E,
      * {@inheritDoc}
      */
     @Override
-    public EntityQuerySortedExpression<E> desc(@SuppressWarnings("unchecked") SerializableFunction<E, ?>... names) {
+    public EntityQueryValueSortedExpression<E, V> desc(
+            @SuppressWarnings("unchecked") SerializableFunction<E, ?>... names) {
         String[] nameArray = Arrays.stream(names).map(LambdaUtils::getLambdaPropertyName)
                 .toArray(value -> new String[value]);
         return desc(nameArray);
@@ -483,8 +442,9 @@ public abstract class AbstractEntitySqlQueryValueConditionGroupExpression<E,
     //	private method
     // ****************************************************************************************************************
 
+    @SuppressWarnings("unchecked")
     private SortBuilder getRootSortBuilder() {
-        return ((AbstractEntitySqlQueryValueConditionGroupExpression<E, C, L>) getRoot()).sortBuilder;
+        return ((AbstractEntitySqlQueryValueConditionGroupExpression<E, V, C, L>) getRoot()).sortBuilder;
     }
 
     private Execution getExecution() {

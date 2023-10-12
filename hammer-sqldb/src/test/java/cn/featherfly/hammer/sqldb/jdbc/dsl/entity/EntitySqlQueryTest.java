@@ -187,7 +187,7 @@ public class EntitySqlQueryTest extends JdbcTestBase {
         //        query.find("user").integer(); 没有使用property或各种统计方法，则无法调用返回单个参数的方法
         //        query.find("user").where().eq("id", "id").integer(); 这里没有实现上面的逻辑
 
-        Integer number2 = query.find(User.class).avg(User::getAge).integer();
+        Integer number2 = query.find(User.class).avg(User::getAge).single();
         System.out.println("avg:" + number2);
         assertTrue(number2 > 0);
         assertEquals(number, number2);
@@ -195,7 +195,7 @@ public class EntitySqlQueryTest extends JdbcTestBase {
         number = query.find("user").avg("age").where().eq("age", 5).integer();
         assertTrue(number == 5);
 
-        number2 = query.find(User.class).avg(User::getAge).where().eq(User::getAge, 5).integer();
+        number2 = query.find(User.class).avg(User::getAge).where().eq(User::getAge, 5).single();
         assertTrue(number2 == 5);
         assertEquals(number, number2);
     }
@@ -209,7 +209,7 @@ public class EntitySqlQueryTest extends JdbcTestBase {
         assertTrue(number > 0);
         assertTrue(number == count * 5);
 
-        Integer number2 = query.find(User.class).sum(User::getAge).where().eq(User::getAge, 5).integer();
+        Integer number2 = query.find(User.class).sum(User::getAge).where().eq(User::getAge, 5).single();
         System.out.println("avg:" + number2);
         assertTrue(number2 > 0);
         assertTrue(number == count * 5);
@@ -223,7 +223,7 @@ public class EntitySqlQueryTest extends JdbcTestBase {
         System.out.println("min:" + number);
         assertTrue(number == 5);
 
-        Integer number2 = query.find(User.class).min(User::getAge).integer();
+        Integer number2 = query.find(User.class).min(User::getAge).single();
         System.out.println("min:" + number2);
         assertTrue(number2 == 5);
         assertEquals(number, number2);
@@ -236,7 +236,7 @@ public class EntitySqlQueryTest extends JdbcTestBase {
         System.out.println("min:" + number);
         assertTrue(number == 55);
 
-        Integer number2 = query.find(User.class).max(User::getAge).integer();
+        Integer number2 = query.find(User.class).max(User::getAge).single();
         System.out.println("min:" + number2);
         assertTrue(number2 == 55);
         assertEquals(number, number2);
