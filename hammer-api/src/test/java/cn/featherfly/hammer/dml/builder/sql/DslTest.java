@@ -83,6 +83,10 @@ public class DslTest {
         query.find(data).property("name").where().eq("id", 1).number(Integer.class); // FIXME 这个应该报错
         query.find(data).where().eq("id", 1).number(Integer.class); // FIXME 这个是错误的，因为是返回多个数据
 
+        query.find(data).max("age").number(Integer.class);
+        // FIXME 使用了统计函数，则没有进行分组，就只有一行数据
+        query.find(data).max("age").list(Integer.class);
+
         query.find(data).count();
         query.find(data).property("name").number(Integer.class);
         query.find(data).fetch("name").number(Integer.class);
@@ -168,6 +172,11 @@ public class DslTest {
         localTime = query.find(User.class).fetch(User::getLocalTime).limit(1).single();
         date = query.find(User.class).fetch(User::getDate).limit(1).single();
 
+        localDateTime = query.find(User.class).fetch(User::getLocalDateTime).where().eq(User::getId, 1).single();
+        localDate = query.find(User.class).fetch(User::getLocalDate).where().eq(User::getId, 1).single();
+        localTime = query.find(User.class).fetch(User::getLocalTime).where().eq(User::getId, 1).single();
+        date = query.find(User.class).fetch(User::getDate).where().eq(User::getId, 1).single();
+
         localDateTime = query.find(User.class).fetch(User::getLocalDateTime).limit(1).unique();
         localDate = query.find(User.class).fetch(User::getLocalDate).limit(1).unique();
         localTime = query.find(User.class).fetch(User::getLocalTime).limit(1).unique();
@@ -178,6 +187,11 @@ public class DslTest {
         List<LocalDate> localDateList = query.find(User.class).fetch(User::getLocalDate).list();
         List<LocalTime> localTimeList = query.find(User.class).fetch(User::getLocalTime).list();
         List<Date> dateList = query.find(User.class).fetch(User::getDate).list();
+
+        localDateTimeList = query.find(User.class).fetch(User::getLocalDateTime).where().eq(User::getId, 1).list();
+        localDateList = query.find(User.class).fetch(User::getLocalDate).where().eq(User::getId, 1).list();
+        localTimeList = query.find(User.class).fetch(User::getLocalTime).where().eq(User::getId, 1).list();
+        dateList = query.find(User.class).fetch(User::getDate).where().eq(User::getId, 1).list();
 
         query.find(User.class).where().eq(User::getAge, 5).count();
 
@@ -419,7 +433,7 @@ public class DslTest {
         //  这里表示和 tree t2 进行join，所以join tree t3 on t2.id = t3.parent_id
         // 这种实现可能会导致编译出错（例如自关联 Tree::getParent这种）
         // 所以就算实现了相应的方法，也要保留join join1 join2这种不会导致编译报错的方法实现
-        
+
         // join的api定义规则，此方案应该是不能实现，因为传入参数无法区分，所以返回参数也无法确定
         /*
          // select * from tree t1 join tree t2 on t1.id = t2.parent_id join tree t3 on t2.id = t3.parent_id
@@ -428,7 +442,7 @@ public class DslTest {
              //  这里表示和 tree t2 进行join，所以join tree t3 on t2.id = t3.parent_id
              es.get1().join(Tree::getParent);
          });
-        
+
          // 可以先实现下面这种方式，因为这种方式不需要多个返回结果类型，在现有结构上就能实现，废案
          query.find(Tree.class).join(Tree::getParent, t -> {
            //  这里表示和 tree t2 进行join，所以join tree t3 on t2.id = t3.parent_id
@@ -1035,7 +1049,7 @@ public class DslTest {
             Tuple2<Function<SerializableFunction<User, ?>, QueryEntityRepository<User>>,
                     Function<SerializableFunction<UserInfo, ?>, QueryEntityRepository<UserInfo>>>,
             QueryEntityRepository<User>> join) {
-    
+
     }
     void join(Function<
             Tuple2<Function<SerializableFunction<User, ?>, QueryEntityRepository<User>>,

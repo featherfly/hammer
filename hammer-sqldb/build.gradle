@@ -23,6 +23,7 @@ dependencies {
     testImplementation group: 'mysql', name: 'mysql-connector-java', version: '8.0.29'    
     //testImplementation 'mysql:mysql-connector-java:5.1.48'
     testImplementation "org.springframework:spring-test:${sv}"
+    testImplementation "org.springframework:spring-context:${sv}"
     //testImplementation 'org.springframework:spring-test:5.2.16.RELEASE'
     testImplementation group: 'commons-dbcp', name: 'commons-dbcp', version: '1.4'
     //testImplementation group: 'org.apache.tomcat', name: 'tomcat-juli', version: '9.0.22'
@@ -34,8 +35,10 @@ dependencies {
 }
 
 test {
-    useTestNG()
-    //reports.html.enabled = false
+    useTestNG() {
+        suites "src/test/resources/testng-test-mysql.xml"
+    }
+    //reports.html.enabled = true
     
-    options.suites("src/test/resources/testng.xml")
+    //options.suites("src/test/resources/testng-mysql.xml")
 }
