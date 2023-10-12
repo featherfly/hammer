@@ -11,8 +11,9 @@ import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
 
 import cn.featherfly.common.db.builder.dml.basic.SqlDeleteFromBasicBuilder;
-import cn.featherfly.common.lang.UUIDGenerator;
 import cn.featherfly.common.function.serializable.SerializableFunction;
+import cn.featherfly.common.function.serializable.SerializableToIntFunction;
+import cn.featherfly.common.lang.UUIDGenerator;
 import cn.featherfly.common.repository.IgnoreStrategy;
 import cn.featherfly.common.repository.SimpleAliasRepository;
 import cn.featherfly.common.repository.SimpleRepository;
@@ -24,6 +25,7 @@ import cn.featherfly.hammer.sqldb.jdbc.dsl.execute.SqlDeleter;
 import cn.featherfly.hammer.sqldb.jdbc.dsl.execute.SqlUpdater;
 import cn.featherfly.hammer.sqldb.jdbc.vo.r.DistrictDivision;
 import cn.featherfly.hammer.sqldb.jdbc.vo.r.User;
+import cn.featherfly.hammer.sqldb.jdbc.vo.r.User0;
 import cn.featherfly.hammer.sqldb.jdbc.vo.r.UserInfo;
 
 /**
@@ -240,7 +242,15 @@ public class SqlDslExpressionTest extends JdbcTestBase {
                 .in((SerializableFunction<User, Integer>) User::getId, new Integer[] { 4, 5 }).execute();
         assertTrue(no == 2);
 
-        no = sqlUpdater.update(User.class).property(User::getPwd).set("222222").where().in(User::getId, 4, 5).execute();
+        no = sqlUpdater.update(User.class).property(User::getPwd).set("222222").where()
+                .in((SerializableFunction<User, Integer>) User::getId, Integer.valueOf(4), Integer.valueOf(5))
+                .execute();
+        assertTrue(no == 2);
+
+        //        no = sqlUpdater.update(User0.class).property(User0::getPwd).set("222222").where().in(User0::getId, 4, 5)
+        //                .execute(); // 这样在oracle jdk 进行编译时报错
+        no = sqlUpdater.update(User0.class).property(User0::getPwd).set("222222").where()
+                .in((SerializableToIntFunction<User0>) User0::getId, 4, 5).execute();
         assertTrue(no == 2);
     }
 

@@ -73,9 +73,15 @@ public class JdbcTest extends JdbcTestBase {
     }
 
     String getSql(String fileName) {
+        String path = ClassLoaderUtils.getResource(".").getPath();
+        System.out.println(path);
         try {
-            File file = new File(
-                    ClassLoaderUtils.getResource(".").getPath() + Strings.format("../test/sql/{0}.sql", fileName));
+            File file = null;
+            if (path.endsWith("test/")) {
+                file = new File(path + Strings.format("../../../resources/test/sql/{0}.sql", fileName));
+            } else {
+                file = new File(path + Strings.format("../test/sql/{0}.sql", fileName));
+            }
             return org.apache.commons.io.FileUtils.readFileToString(file, StandardCharsets.UTF_8);
         } catch (IOException e) {
             throw new RuntimeException(e);
