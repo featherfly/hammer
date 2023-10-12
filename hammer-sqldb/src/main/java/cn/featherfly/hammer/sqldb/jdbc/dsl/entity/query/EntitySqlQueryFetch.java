@@ -9,7 +9,9 @@ import cn.featherfly.common.function.serializable.SerializableFunction;
 import cn.featherfly.common.operator.AggregateFunction;
 import cn.featherfly.hammer.dsl.entity.query.EntityQueryConditionGroup;
 import cn.featherfly.hammer.dsl.entity.query.EntityQueryFetch;
+import cn.featherfly.hammer.dsl.entity.query.EntityQueryFetchedProperties;
 import cn.featherfly.hammer.dsl.entity.query.EntityQueryFetchedProperty;
+import cn.featherfly.hammer.dsl.entity.query.EntityQueryOneFetchedProperty;
 import cn.featherfly.hammer.expression.condition.ConditionGroupConfig;
 import cn.featherfly.hammer.expression.entity.query.EntityQuerySortExpression;
 import cn.featherfly.hammer.sqldb.jdbc.SqlPageFactory;
@@ -21,8 +23,7 @@ import cn.featherfly.hammer.sqldb.jdbc.dsl.entity.EntitySqlQueryRelation;
  * @author zhongj
  * @param <E> the element type
  */
-public class EntitySqlQueryFetch<E> extends AbstractEntitySqlQueryFetch<E, EntityQueryFetchedProperty<E>>
-        implements EntityQueryFetch<E> {
+public class EntitySqlQueryFetch<E> extends AbstractEntitySqlQueryFetch<E> implements EntityQueryFetch<E> {
 
     /**
      * Instantiates a new entity sql query fetch.
@@ -71,27 +72,26 @@ public class EntitySqlQueryFetch<E> extends AbstractEntitySqlQueryFetch<E, Entit
      * {@inheritDoc}
      */
     @Override
-    public <R> EntityQueryFetchedProperty<E> property(boolean distinct, SerializableFunction<E, R> propertyName) {
-        return new EntitySqlQueryFetchedProperty<E>(factory, sqlPageFactory, queryRelation).property(distinct,
-                propertyName);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public EntityQueryFetchedProperty<E> property(
+    public EntityQueryFetchedProperties<E> property(
             @SuppressWarnings("unchecked") SerializableFunction<E, ?>... propertyNames) {
-        return new EntitySqlQueryFetchedProperty<E>(factory, sqlPageFactory, queryRelation).property(propertyNames);
+        return new EntitySqlQueryFetchedProperties<>(factory, sqlPageFactory, queryRelation);
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public <R> EntityQueryFetchedProperty<E> property(AggregateFunction aggregateFunction, boolean distinct,
-            SerializableFunction<E, R> propertyName) {
-        return new EntitySqlQueryFetchedProperty<E>(factory, sqlPageFactory, queryRelation).property(aggregateFunction,
+    public <V> EntityQueryFetchedProperty<E, V> property(boolean distinct, SerializableFunction<E, V> propertyName) {
+        return new EntitySqlQueryFetchedProperty<>(factory, sqlPageFactory, queryRelation, distinct, propertyName);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public <V> EntityQueryOneFetchedProperty<E, V> property(AggregateFunction aggregateFunction, boolean distinct,
+            SerializableFunction<E, V> propertyName) {
+        return new EntitySqlQueryFetchedOneProperty<>(factory, sqlPageFactory, queryRelation, aggregateFunction,
                 distinct, propertyName);
     }
 }

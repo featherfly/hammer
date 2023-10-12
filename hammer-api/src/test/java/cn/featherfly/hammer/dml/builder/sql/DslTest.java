@@ -23,6 +23,7 @@ import cn.featherfly.common.operator.AggregateFunction;
 import cn.featherfly.common.repository.IgnoreStrategy;
 import cn.featherfly.common.repository.Repository;
 import cn.featherfly.common.repository.SimpleRepository;
+import cn.featherfly.common.structure.page.PaginationResults;
 import cn.featherfly.hammer.dml.builder.sql.vo.Device;
 import cn.featherfly.hammer.dml.builder.sql.vo.Student2;
 import cn.featherfly.hammer.dml.builder.sql.vo.Tree;
@@ -71,6 +72,16 @@ public class DslTest {
         query.find(data).limit(1).single(User.class);
 
         query.find("user").sort();
+
+        // FIXME 没有进行条件帅选就能进行唯一值返回是错误的
+        query.find(data).property("name").number(Integer.class);
+        query.find(data).property("name").intValue();
+        //        query.find(data).property("name").limit(1).number(Integer.class);
+        query.find(data).property("name").limit(1).intValue();
+        query.find(data).property("name").limit(1).single(Integer.class);
+        query.find(data).property("name").where().eq("id", 1).single(Integer.class);
+        query.find(data).property("name").where().eq("id", 1).number(Integer.class); // FIXME 这个应该报错
+        query.find(data).where().eq("id", 1).number(Integer.class); // FIXME 这个是错误的，因为是返回多个数据
 
         query.find(data).count();
         query.find(data).property("name").number(Integer.class);
@@ -152,19 +163,17 @@ public class DslTest {
         LocalTime localTime = null;
         Date date = null;
 
-        // FIXME 这里是错误的，因为没有条件筛选，不能返回单一值
-        localDateTime = query.find(User.class).fetch(User::getLocalDateTime).localDateTime();
-        localDate = query.find(User.class).fetch(User::getLocalDate).localDate();
-        localTime = query.find(User.class).fetch(User::getLocalTime).localTime();
-        date = query.find(User.class).fetch(User::getDate).date();
+        localDateTime = query.find(User.class).fetch(User::getLocalDateTime).limit(1).single();
+        localDate = query.find(User.class).fetch(User::getLocalDate).limit(1).single();
+        localTime = query.find(User.class).fetch(User::getLocalTime).limit(1).single();
+        date = query.find(User.class).fetch(User::getDate).limit(1).single();
 
-        // FIXME 单值返回方法应该和single unique一样，需要有筛选才能调用
-        localDateTime = query.find(User.class).fetch(User::getLocalDateTime).limit(1).localDateTime();
-        localDate = query.find(User.class).fetch(User::getLocalDate).limit(1).localDate();
-        localTime = query.find(User.class).fetch(User::getLocalTime).limit(1).localTime();
-        date = query.find(User.class).fetch(User::getDate).limit(1).date();
+        localDateTime = query.find(User.class).fetch(User::getLocalDateTime).limit(1).unique();
+        localDate = query.find(User.class).fetch(User::getLocalDate).limit(1).unique();
+        localTime = query.find(User.class).fetch(User::getLocalTime).limit(1).unique();
+        date = query.find(User.class).fetch(User::getDate).limit(1).unique();
+        PaginationResults<Date> pagination = query.find(User.class).fetch(User::getDate).limit(1).pagination();
 
-        // IMPLSOON 获取一个属性，返回应该是List<Fetch V> 这样
         List<LocalDateTime> localDateTimeList = query.find(User.class).fetch(User::getLocalDateTime).list();
         List<LocalDate> localDateList = query.find(User.class).fetch(User::getLocalDate).list();
         List<LocalTime> localTimeList = query.find(User.class).fetch(User::getLocalTime).list();
@@ -174,9 +183,15 @@ public class DslTest {
 
         query.find(User.class).where().eq(User::getAge, 5).list();
 
-        query.find(User.class).avg(User::getAge).where().eq(User::getAge, 5).integer();
+        query.find(User.class).avg(User::getAge).where().eq(User::getAge, 5).single();
 
-        query.find(User.class).avg(User::getAge).integer();
+        query.find(User.class).avg(User::getAge).single();
+        query.find(User.class).sum(User::getAge).single();
+        query.find(User.class).min(User::getAge).single();
+        query.find(User.class).max(User::getAge).single();
+        query.find(User.class).count(User::getAge).single();
+        query.find(User.class).fetch(AggregateFunction.AVG, User::getAge).single();
+        query.find(User.class).property(AggregateFunction.SUM, User::getAge).single();
 
         // sort
         query.find(User.class).sort().asc(User::getAge);
@@ -576,7 +591,7 @@ public class DslTest {
 
         query.find(User2.class).join(UserInfo2.class).on(UserInfo2::getUserId).where().eq(User2::getId, 1).single();
 
-        query.find(User2.class).fetch(User2::getUsername).where().eq(User2::getId, 1).string();
+        String username = query.find(User2.class).fetch(User2::getUsername).where().eq(User2::getId, 1).single();
 
         // 多查询对象，使用property IMPLSOON 未实现
         ui = query.find(UserInfo2.class).join(User2.class).on(UserInfo2::getUserId, User2::getId).where()

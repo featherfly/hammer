@@ -35,6 +35,8 @@ public abstract class AbstractEntitySqlQuery<R>
     /** The limit. */
     protected Limit limit;
 
+    protected Class<R> valueType;
+
     /**
      * Instantiates a new abstract sql query entity properties.
      *
@@ -45,10 +47,24 @@ public abstract class AbstractEntitySqlQuery<R>
      */
     protected AbstractEntitySqlQuery(JdbcMappingFactory factory, SqlPageFactory sqlPageFactory,
             EntitySqlQueryRelation entitySqlQueryRelation) {
+        this(factory, sqlPageFactory, entitySqlQueryRelation, null);
+    }
+
+    /**
+     * Instantiates a new abstract sql query entity properties.
+     *
+     * @param <E>                    the element type
+     * @param factory                the factory
+     * @param sqlPageFactory         the sql page factory
+     * @param entitySqlQueryRelation the entity sql query relation
+     */
+    protected AbstractEntitySqlQuery(JdbcMappingFactory factory, SqlPageFactory sqlPageFactory,
+            EntitySqlQueryRelation entitySqlQueryRelation, Class<R> valueType) {
         AssertIllegalArgument.isNotNull(entitySqlQueryRelation, "entitySqlQueryRelation");
         queryRelation = entitySqlQueryRelation;
         this.factory = factory;
         this.sqlPageFactory = sqlPageFactory;
+        this.valueType = valueType;
     }
 
     @Override
@@ -62,7 +78,12 @@ public abstract class AbstractEntitySqlQuery<R>
      */
     @Override
     public List<R> list() {
-        return new EntitySqlQueryExpression<R>(factory, sqlPageFactory, queryRelation).limit(limit).list();
+        if (valueType != null) {
+            return new EntitySqlQueryValueExpression<>(factory, sqlPageFactory, queryRelation, valueType).limit(limit)
+                    .list();
+        } else {
+            return new EntitySqlQueryExpression<R>(factory, sqlPageFactory, queryRelation).limit(limit).list();
+        }
     }
 
     /**
@@ -70,7 +91,12 @@ public abstract class AbstractEntitySqlQuery<R>
      */
     @Override
     public R single() {
-        return new EntitySqlQueryExpression<R>(factory, sqlPageFactory, queryRelation).limit(limit).single();
+        if (valueType != null) {
+            return new EntitySqlQueryValueExpression<>(factory, sqlPageFactory, queryRelation, valueType).limit(limit)
+                    .single();
+        } else {
+            return new EntitySqlQueryExpression<R>(factory, sqlPageFactory, queryRelation).limit(limit).single();
+        }
     }
 
     /**
@@ -78,7 +104,12 @@ public abstract class AbstractEntitySqlQuery<R>
      */
     @Override
     public R unique() {
-        return new EntitySqlQueryExpression<R>(factory, sqlPageFactory, queryRelation).limit(limit).unique();
+        if (valueType != null) {
+            return new EntitySqlQueryValueExpression<>(factory, sqlPageFactory, queryRelation, valueType).limit(limit)
+                    .unique();
+        } else {
+            return new EntitySqlQueryExpression<R>(factory, sqlPageFactory, queryRelation).limit(limit).unique();
+        }
     }
 
     /**
@@ -86,7 +117,12 @@ public abstract class AbstractEntitySqlQuery<R>
      */
     @Override
     public PaginationResults<R> pagination() {
-        return new EntitySqlQueryExpression<R>(factory, sqlPageFactory, queryRelation).limit(limit).pagination();
+        if (valueType != null) {
+            return new EntitySqlQueryValueExpression<>(factory, sqlPageFactory, queryRelation, valueType).limit(limit)
+                    .pagination();
+        } else {
+            return new EntitySqlQueryExpression<R>(factory, sqlPageFactory, queryRelation).limit(limit).pagination();
+        }
     }
 
     @Override
