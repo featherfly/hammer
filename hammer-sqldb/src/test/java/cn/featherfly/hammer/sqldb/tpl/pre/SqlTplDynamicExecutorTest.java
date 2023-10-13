@@ -7,6 +7,9 @@ import static org.testng.Assert.assertTrue;
 import java.util.List;
 import java.util.Map;
 
+import javax.validation.Validation;
+
+import org.hibernate.validator.HibernateValidator;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
 
@@ -15,6 +18,7 @@ import cn.featherfly.common.structure.page.Page;
 import cn.featherfly.common.structure.page.PaginationResults;
 import cn.featherfly.common.structure.page.SimplePagination;
 import cn.featherfly.hammer.Hammer;
+import cn.featherfly.hammer.config.HammerConfigImpl;
 import cn.featherfly.hammer.sqldb.SqldbHammerImpl;
 import cn.featherfly.hammer.sqldb.jdbc.DataSourceTestBase;
 import cn.featherfly.hammer.sqldb.jdbc.vo.r.Role;
@@ -51,7 +55,12 @@ public class SqlTplDynamicExecutorTest extends DataSourceTestBase {
         //        TransverterManager transverterManager = new TransverterManager();
         //        transverterManager.register(new FuzzyQueryTransverter());
         //        Hammer hammer = new SqldbHammerImpl(jdbc, mappingFactory, configFactory, transverterManager);
-        Hammer hammer = new SqldbHammerImpl(jdbc, mappingFactory, configFactory);
+
+        HammerConfigImpl hammerConfig = new HammerConfigImpl();
+        hammerConfig.setValidator(Validation.byProvider(HibernateValidator.class).configure().failFast(false)
+                .buildValidatorFactory().getValidator());
+
+        Hammer hammer = new SqldbHammerImpl(jdbc, mappingFactory, configFactory, hammerConfig);
         userMapper = mapperFactory.newInstance(UserMapper.class, hammer);
         roleMapper = mapperFactory.newInstance(RoleMapper.class, hammer);
     }

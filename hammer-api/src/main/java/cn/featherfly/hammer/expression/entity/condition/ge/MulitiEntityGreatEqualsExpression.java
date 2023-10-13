@@ -12,6 +12,7 @@ import java.util.function.Predicate;
 
 import cn.featherfly.common.function.serializable.SerializableDateSupplier;
 import cn.featherfly.common.function.serializable.SerializableDoubleSupplier;
+import cn.featherfly.common.function.serializable.SerializableEnumSupplier;
 import cn.featherfly.common.function.serializable.SerializableFunction;
 import cn.featherfly.common.function.serializable.SerializableIntSupplier;
 import cn.featherfly.common.function.serializable.SerializableLocalDateSupplier;
@@ -23,6 +24,7 @@ import cn.featherfly.common.function.serializable.SerializableStringSupplier;
 import cn.featherfly.common.function.serializable.SerializableToDoubleFunction;
 import cn.featherfly.common.function.serializable.SerializableToIntFunction;
 import cn.featherfly.common.function.serializable.SerializableToLongFunction;
+import cn.featherfly.common.operator.ComparisonOperator.MatchStrategy;
 import cn.featherfly.hammer.expression.condition.ConditionExpression;
 import cn.featherfly.hammer.expression.condition.LogicExpression;
 import cn.featherfly.hammer.expression.entity.condition.MulitiEntityConditionExpression;
@@ -40,7 +42,8 @@ public interface MulitiEntityGreatEqualsExpression<C extends ConditionExpression
     /**
      * great and equals. 大于等于.
      *
-     * @param <N>   number type
+     * @param <E>   the element type
+     * @param index the index
      * @param name  参数名称
      * @param value 参数值
      * @return LogicExpression
@@ -50,9 +53,11 @@ public interface MulitiEntityGreatEqualsExpression<C extends ConditionExpression
     /**
      * great and equals. 大于等于.
      *
-     * @param <N>   number type
-     * @param name  参数名称
-     * @param value 参数值
+     * @param <E>            the element type
+     * @param index          the index
+     * @param name           参数名称
+     * @param value          参数值
+     * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
     <E> L ge(int index, SerializableToIntFunction<E> name, int value, IntPredicate ignoreStrategy);
@@ -60,7 +65,8 @@ public interface MulitiEntityGreatEqualsExpression<C extends ConditionExpression
     /**
      * great and equals. 大于等于.
      *
-     * @param <N>   number type
+     * @param <E>   the element type
+     * @param index the index
      * @param name  参数名称
      * @param value 参数值
      * @return LogicExpression
@@ -70,9 +76,11 @@ public interface MulitiEntityGreatEqualsExpression<C extends ConditionExpression
     /**
      * great and equals. 大于等于.
      *
-     * @param <N>   number type
-     * @param name  参数名称
-     * @param value 参数值
+     * @param <E>            the element type
+     * @param index          the index
+     * @param name           参数名称
+     * @param value          参数值
+     * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
     <E> L ge(int index, SerializableToLongFunction<E> name, long value, LongPredicate ignoreStrategy);
@@ -80,7 +88,8 @@ public interface MulitiEntityGreatEqualsExpression<C extends ConditionExpression
     /**
      * great and equals. 大于等于.
      *
-     * @param <N>   number type
+     * @param <E>   the element type
+     * @param index the index
      * @param name  参数名称
      * @param value 参数值
      * @return LogicExpression
@@ -90,9 +99,11 @@ public interface MulitiEntityGreatEqualsExpression<C extends ConditionExpression
     /**
      * great and equals. 大于等于.
      *
-     * @param <N>   number type
-     * @param name  参数名称
-     * @param value 参数值
+     * @param <E>            the element type
+     * @param index          the index
+     * @param name           参数名称
+     * @param value          参数值
+     * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
     <E> L ge(int index, SerializableToDoubleFunction<E> name, double value, DoublePredicate ignoreStrategy);
@@ -100,7 +111,9 @@ public interface MulitiEntityGreatEqualsExpression<C extends ConditionExpression
     /**
      * great and equals. 大于等于.
      *
+     * @param <E>   the element type
      * @param <N>   number type
+     * @param index the index
      * @param name  参数名称
      * @param value 参数值
      * @return LogicExpression
@@ -110,7 +123,9 @@ public interface MulitiEntityGreatEqualsExpression<C extends ConditionExpression
     /**
      * great and equals. 大于等于.
      *
+     * @param <E>            the element type
      * @param <N>            number type
+     * @param index          the index
      * @param name           参数名称
      * @param value          参数值
      * @param ignoreStrategy the ignore strategy
@@ -121,7 +136,34 @@ public interface MulitiEntityGreatEqualsExpression<C extends ConditionExpression
     /**
      * great and equals. 大于等于.
      *
+     * @param <T>   the generic type
+     * @param <E>   the element type
+     * @param index the index
+     * @param name  参数名称
+     * @param value 参数值
+     * @return LogicExpression
+     */
+    <T, E extends Enum<E>> L ge(int index, SerializableFunction<T, E> name, E value);
+
+    /**
+     * great and equals. 大于等于.
+     *
+     * @param <T>            the generic type
+     * @param <E>            the element type
+     * @param index          the index
+     * @param name           参数名称
+     * @param value          参数值
+     * @param ignoreStrategy the ignore strategy
+     * @return LogicExpression
+     */
+    <T, E extends Enum<E>> L ge(int index, SerializableFunction<T, E> name, E value, Predicate<E> ignoreStrategy);
+
+    /**
+     * great and equals. 大于等于.
+     *
+     * @param <E>   the element type
      * @param <D>   date type
+     * @param index the index
      * @param name  参数名称
      * @param value 参数值
      * @return LogicExpression
@@ -131,7 +173,9 @@ public interface MulitiEntityGreatEqualsExpression<C extends ConditionExpression
     /**
      * great and equals. 大于等于.
      *
+     * @param <E>            the element type
      * @param <D>            date type
+     * @param index          the index
      * @param name           参数名称
      * @param value          参数值
      * @param ignoreStrategy the ignore strategy
@@ -142,6 +186,8 @@ public interface MulitiEntityGreatEqualsExpression<C extends ConditionExpression
     /**
      * great and equals. 大于等于.
      *
+     * @param <E>   the element type
+     * @param index the index
      * @param name  参数名称
      * @param value 参数值
      * @return LogicExpression
@@ -151,6 +197,8 @@ public interface MulitiEntityGreatEqualsExpression<C extends ConditionExpression
     /**
      * great and equals. 大于等于.
      *
+     * @param <E>            the element type
+     * @param index          the index
      * @param name           参数名称
      * @param value          参数值
      * @param ignoreStrategy the ignore strategy
@@ -161,6 +209,8 @@ public interface MulitiEntityGreatEqualsExpression<C extends ConditionExpression
     /**
      * great and equals. 大于等于.
      *
+     * @param <E>   the element type
+     * @param index the index
      * @param name  参数名称
      * @param value 参数值
      * @return LogicExpression
@@ -170,6 +220,8 @@ public interface MulitiEntityGreatEqualsExpression<C extends ConditionExpression
     /**
      * great and equals. 大于等于.
      *
+     * @param <E>            the element type
+     * @param index          the index
      * @param name           参数名称
      * @param value          参数值
      * @param ignoreStrategy the ignore strategy
@@ -180,6 +232,8 @@ public interface MulitiEntityGreatEqualsExpression<C extends ConditionExpression
     /**
      * great and equals. 大于等于.
      *
+     * @param <E>   the element type
+     * @param index the index
      * @param name  参数名称
      * @param value 参数值
      * @return LogicExpression
@@ -189,6 +243,8 @@ public interface MulitiEntityGreatEqualsExpression<C extends ConditionExpression
     /**
      * great and equals. 大于等于.
      *
+     * @param <E>            the element type
+     * @param index          the index
      * @param name           参数名称
      * @param value          参数值
      * @param ignoreStrategy the ignore strategy
@@ -200,26 +256,60 @@ public interface MulitiEntityGreatEqualsExpression<C extends ConditionExpression
     /**
      * great and equals. 大于等于.
      *
+     * @param <E>   the element type
+     * @param index the index
      * @param name  参数名称
      * @param value 参数值
      * @return LogicExpression
      */
-    <E> L ge(int index, SerializableFunction<E, String> name, String value);
+    default <E> L ge(int index, SerializableFunction<E, String> name, String value) {
+        return ge(index, name, value, MatchStrategy.AUTO);
+    }
 
     /**
      * great and equals. 大于等于.
      *
+     * @param <E>            the element type
+     * @param index          the index
      * @param name           参数名称
      * @param value          参数值
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
-    <E> L ge(int index, SerializableFunction<E, String> name, String value, Predicate<String> ignoreStrategy);
+    default <E> L ge(int index, SerializableFunction<E, String> name, String value, Predicate<String> ignoreStrategy) {
+        return ge(index, name, value, MatchStrategy.AUTO, ignoreStrategy);
+    }
 
     /**
      * great and equals. 大于等于.
      *
-     * @param <R>      the generic type
+     * @param <E>               the element type
+     * @param index             the index
+     * @param name              参数名称
+     * @param value             参数值
+     * @param mathMatchStrategy the math match strategy
+     * @return LogicExpression
+     */
+    <E> L ge(int index, SerializableFunction<E, String> name, String value, MatchStrategy mathMatchStrategy);
+
+    /**
+     * great and equals. 大于等于.
+     *
+     * @param <E>               the element type
+     * @param index             the index
+     * @param name              参数名称
+     * @param value             参数值
+     * @param mathMatchStrategy the math match strategy
+     * @param ignoreStrategy    the ignore strategy
+     * @return LogicExpression
+     */
+    <E> L ge(int index, SerializableFunction<E, String> name, String value, MatchStrategy mathMatchStrategy,
+            Predicate<String> ignoreStrategy);
+
+    /**
+     * great and equals. 大于等于.
+     *
+     * @param index    the index
      * @param property 对象属性
      * @return LogicExpression
      */
@@ -228,7 +318,7 @@ public interface MulitiEntityGreatEqualsExpression<C extends ConditionExpression
     /**
      * great and equals. 大于等于.
      *
-     * @param <R>            the generic type
+     * @param index          the index
      * @param property       对象属性
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
@@ -238,7 +328,7 @@ public interface MulitiEntityGreatEqualsExpression<C extends ConditionExpression
     /**
      * great and equals. 大于等于.
      *
-     * @param <R>      the generic type
+     * @param index    the index
      * @param property 对象属性
      * @return LogicExpression
      */
@@ -247,7 +337,7 @@ public interface MulitiEntityGreatEqualsExpression<C extends ConditionExpression
     /**
      * great and equals. 大于等于.
      *
-     * @param <R>            the generic type
+     * @param index          the index
      * @param property       对象属性
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
@@ -257,7 +347,7 @@ public interface MulitiEntityGreatEqualsExpression<C extends ConditionExpression
     /**
      * great and equals. 大于等于.
      *
-     * @param <R>      the generic type
+     * @param index    the index
      * @param property 对象属性
      * @return LogicExpression
      */
@@ -266,7 +356,7 @@ public interface MulitiEntityGreatEqualsExpression<C extends ConditionExpression
     /**
      * great and equals. 大于等于.
      *
-     * @param <R>            the generic type
+     * @param index          the index
      * @param property       对象属性
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
@@ -277,6 +367,7 @@ public interface MulitiEntityGreatEqualsExpression<C extends ConditionExpression
      * great and equals. 大于等于.
      *
      * @param <R>      the generic type
+     * @param index    the index
      * @param property 对象属性
      * @return LogicExpression
      */
@@ -286,6 +377,7 @@ public interface MulitiEntityGreatEqualsExpression<C extends ConditionExpression
      * great and equals. 大于等于.
      *
      * @param <R>            the generic type
+     * @param index          the index
      * @param property       对象属性
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
@@ -296,6 +388,7 @@ public interface MulitiEntityGreatEqualsExpression<C extends ConditionExpression
      * great and equals. 大于等于.
      *
      * @param <R>      the generic type
+     * @param index    the index
      * @param property 对象属性
      * @return LogicExpression
      */
@@ -305,6 +398,7 @@ public interface MulitiEntityGreatEqualsExpression<C extends ConditionExpression
      * great and equals. 大于等于.
      *
      * @param <R>            the generic type
+     * @param index          the index
      * @param property       对象属性
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
@@ -314,6 +408,28 @@ public interface MulitiEntityGreatEqualsExpression<C extends ConditionExpression
     /**
      * great and equals. 大于等于.
      *
+     * @param <E>      the element type
+     * @param index    the index
+     * @param property 对象属性
+     * @return LogicExpression
+     */
+    <E extends Enum<E>> L ge(int index, SerializableEnumSupplier<E> property);
+
+    /**
+     * great and equals. 大于等于.
+     *
+     * @param <E>            the element type
+     * @param index          the index
+     * @param property       对象属性
+     * @param ignoreStrategy the ignore strategy
+     * @return LogicExpression
+     */
+    <E extends Enum<E>> L ge(int index, SerializableEnumSupplier<E> property, Predicate<E> ignoreStrategy);
+
+    /**
+     * great and equals. 大于等于.
+     *
+     * @param index    the index
      * @param property 对象属性
      * @return LogicExpression
      */
@@ -322,6 +438,7 @@ public interface MulitiEntityGreatEqualsExpression<C extends ConditionExpression
     /**
      * great and equals. 大于等于.
      *
+     * @param index          the index
      * @param property       对象属性
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
@@ -331,6 +448,7 @@ public interface MulitiEntityGreatEqualsExpression<C extends ConditionExpression
     /**
      * great and equals. 大于等于.
      *
+     * @param index    the index
      * @param property 对象属性
      * @return LogicExpression
      */
@@ -339,6 +457,7 @@ public interface MulitiEntityGreatEqualsExpression<C extends ConditionExpression
     /**
      * great and equals. 大于等于.
      *
+     * @param index          the index
      * @param property       对象属性
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
@@ -348,6 +467,7 @@ public interface MulitiEntityGreatEqualsExpression<C extends ConditionExpression
     /**
      * great and equals. 大于等于.
      *
+     * @param index    the index
      * @param property 对象属性
      * @return LogicExpression
      */
@@ -356,6 +476,7 @@ public interface MulitiEntityGreatEqualsExpression<C extends ConditionExpression
     /**
      * great and equals. 大于等于.
      *
+     * @param index          the index
      * @param property       对象属性
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
@@ -365,17 +486,45 @@ public interface MulitiEntityGreatEqualsExpression<C extends ConditionExpression
     /**
      * great and equals. 大于等于.
      *
+     * @param index    the index
      * @param property 对象属性
      * @return LogicExpression
      */
-    L ge(int index, SerializableStringSupplier property);
+    default L ge(int index, SerializableStringSupplier property) {
+        return ge(index, property, MatchStrategy.AUTO);
+    }
 
     /**
      * great and equals. 大于等于.
      *
+     * @param index          the index
      * @param property       对象属性
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
-    L ge(int index, SerializableStringSupplier property, Predicate<String> ignoreStrategy);
+    default L ge(int index, SerializableStringSupplier property, Predicate<String> ignoreStrategy) {
+        return ge(index, property, MatchStrategy.AUTO, ignoreStrategy);
+    }
+
+    /**
+     * great and equals. 大于等于.
+     *
+     * @param index             the index
+     * @param property          对象属性
+     * @param mathMatchStrategy the math match strategy
+     * @return LogicExpression
+     */
+    L ge(int index, SerializableStringSupplier property, MatchStrategy mathMatchStrategy);
+
+    /**
+     * great and equals. 大于等于.
+     *
+     * @param index             the index
+     * @param property          对象属性
+     * @param mathMatchStrategy the math match strategy
+     * @param ignoreStrategy    the ignore strategy
+     * @return LogicExpression
+     */
+    L ge(int index, SerializableStringSupplier property, MatchStrategy mathMatchStrategy,
+            Predicate<String> ignoreStrategy);
 }

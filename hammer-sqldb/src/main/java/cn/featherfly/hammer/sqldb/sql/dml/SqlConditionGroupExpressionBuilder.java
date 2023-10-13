@@ -11,6 +11,7 @@
 
 package cn.featherfly.hammer.sqldb.sql.dml;
 
+import java.util.concurrent.atomic.AtomicInteger;
 import java.util.function.Predicate;
 
 import cn.featherfly.common.db.dialect.Dialect;
@@ -19,6 +20,7 @@ import cn.featherfly.common.operator.ComparisonOperator;
 import cn.featherfly.common.operator.ComparisonOperator.MatchStrategy;
 import cn.featherfly.common.repository.mapping.ClassMapping;
 import cn.featherfly.common.repository.mapping.PropertyMapping;
+import cn.featherfly.hammer.config.dsl.QueryConditionConfig;
 import cn.featherfly.hammer.dml.BuildableConditionGroupExpression;
 import cn.featherfly.hammer.dml.BuildableConditionGroupLogicExpression;
 import cn.featherfly.hammer.sqldb.jdbc.SqlPageFactory;
@@ -29,7 +31,8 @@ import cn.featherfly.hammer.sqldb.jdbc.SqlPageFactory;
  * @author zhongj
  */
 public class SqlConditionGroupExpressionBuilder extends
-        AbstractSqlConditionGroupExpression<BuildableConditionGroupExpression, BuildableConditionGroupLogicExpression>
+        AbstractSqlConditionGroupExpression<BuildableConditionGroupExpression, BuildableConditionGroupLogicExpression,
+                QueryConditionConfig>
         implements BuildableConditionGroupExpression, BuildableConditionGroupLogicExpression {
 
     /**
@@ -40,8 +43,8 @@ public class SqlConditionGroupExpressionBuilder extends
      * @param ignoreStrategy the ignore strategy
      */
     public SqlConditionGroupExpressionBuilder(Dialect dialect, SqlPageFactory sqlPageFactory,
-            Predicate<?> ignoreStrategy) {
-        this(dialect, sqlPageFactory, null, ignoreStrategy);
+            QueryConditionConfig queryConditionConfig) {
+        this(dialect, sqlPageFactory, null, queryConditionConfig);
     }
 
     /**
@@ -53,8 +56,8 @@ public class SqlConditionGroupExpressionBuilder extends
      * @param ignoreStrategy the ignore strategy
      */
     public SqlConditionGroupExpressionBuilder(Dialect dialect, SqlPageFactory sqlPageFactory, String queryAlias,
-            Predicate<?> ignoreStrategy) {
-        this(null, dialect, sqlPageFactory, queryAlias, ignoreStrategy);
+            QueryConditionConfig queryConditionConfig) {
+        this(null, dialect, sqlPageFactory, queryAlias, queryConditionConfig);
     }
 
     /**
@@ -67,8 +70,8 @@ public class SqlConditionGroupExpressionBuilder extends
      * @param ignoreStrategy the ignore strategy
      */
     SqlConditionGroupExpressionBuilder(BuildableConditionGroupLogicExpression parent, Dialect dialect,
-            SqlPageFactory sqlPageFactory, String queryAlias, Predicate<?> ignoreStrategy) {
-        super(parent, dialect, sqlPageFactory, queryAlias, ignoreStrategy);
+            SqlPageFactory sqlPageFactory, String queryAlias, QueryConditionConfig queryConditionConfig) {
+        super(parent, dialect, sqlPageFactory, queryAlias, queryConditionConfig);
     }
 
     /**
@@ -77,7 +80,8 @@ public class SqlConditionGroupExpressionBuilder extends
     @Override
     protected BuildableConditionGroupExpression createGroup(BuildableConditionGroupLogicExpression parent,
             String queryAlias) {
-        return new SqlConditionGroupExpressionBuilder(parent, dialect, sqlPageFactory, queryAlias, ignoreStrategy);
+        return new SqlConditionGroupExpressionBuilder(parent, dialect, sqlPageFactory, queryAlias,
+                (QueryConditionConfig) conditionConfig);
     }
 
     /**
@@ -93,7 +97,7 @@ public class SqlConditionGroupExpressionBuilder extends
      * {@inheritDoc}
      */
     @Override
-    public <CM extends ClassMapping<T, P>, T, P extends PropertyMapping<P>> CM getClassMapping(int index) {
+    public <M extends ClassMapping<T, P>, T, P extends PropertyMapping<P>> M getClassMapping(int index) {
         // IMPLSOON 未实现
         throw new NotImplementedException();
     }
@@ -102,9 +106,20 @@ public class SqlConditionGroupExpressionBuilder extends
      * {@inheritDoc}
      */
     @Override
-    protected <R> BuildableConditionGroupLogicExpression eq_ne(int index, ComparisonOperator comparisonOperator,
-            PropertyMapping<?> pm, R value, MatchStrategy matchStrategy, Predicate<?> ignoreStrategy) {
+    protected <R> BuildableConditionGroupLogicExpression eq_ne(AtomicInteger index,
+            ComparisonOperator comparisonOperator, PropertyMapping<?> pm, R value, MatchStrategy matchStrategy,
+            Predicate<?> ignoreStrategy) {
         // IMPLSOON 未实现
         throw new NotImplementedException();
     }
+
+    //    /**
+    //     * {@inheritDoc}
+    //     */
+    //    @Override
+    //    protected <R> BuildableConditionGroupLogicExpression eq_ne(int index, ComparisonOperator comparisonOperator,
+    //            List<PropertyMapping<?>> pms, R value, MatchStrategy matchStrategy, Predicate<?> ignoreStrategy) {
+    //        // IMPLSOON 未实现
+    //        throw new NotImplementedException();
+    //    }
 }

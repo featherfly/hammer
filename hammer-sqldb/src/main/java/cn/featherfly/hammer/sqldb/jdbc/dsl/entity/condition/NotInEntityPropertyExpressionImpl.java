@@ -13,6 +13,7 @@ import java.io.Serializable;
 import java.util.Collection;
 import java.util.Date;
 import java.util.List;
+import java.util.concurrent.atomic.AtomicInteger;
 import java.util.function.DoublePredicate;
 import java.util.function.IntPredicate;
 import java.util.function.LongPredicate;
@@ -24,6 +25,7 @@ import cn.featherfly.common.function.serializable.SerializableDoubleSupplier;
 import cn.featherfly.common.function.serializable.SerializableFunction;
 import cn.featherfly.common.function.serializable.SerializableIntSupplier;
 import cn.featherfly.common.function.serializable.SerializableLongSupplier;
+import cn.featherfly.common.function.serializable.SerializableStringSupplier;
 import cn.featherfly.common.function.serializable.SerializableSupplier;
 import cn.featherfly.common.function.serializable.SerializableToCollectionFunction;
 import cn.featherfly.common.function.serializable.SerializableToDateFunction;
@@ -36,6 +38,7 @@ import cn.featherfly.common.function.serializable.SerializableToLocalTimeFunctio
 import cn.featherfly.common.function.serializable.SerializableToLongFunction;
 import cn.featherfly.common.function.serializable.SerializableToNumberFunction;
 import cn.featherfly.common.function.serializable.SerializableToStringFunction;
+import cn.featherfly.common.operator.ComparisonOperator.MatchStrategy;
 import cn.featherfly.hammer.expression.condition.ConditionExpression;
 import cn.featherfly.hammer.expression.condition.LogicExpression;
 import cn.featherfly.hammer.expression.entity.condition.ConditionEntityExpressionDateAndArrayPropertyExpression;
@@ -49,6 +52,7 @@ import cn.featherfly.hammer.expression.entity.condition.ConditionEntityExpressio
 import cn.featherfly.hammer.expression.entity.condition.ConditionEntityExpressionNumberAndArrayPropertyExpression;
 import cn.featherfly.hammer.expression.entity.condition.ConditionEntityExpressionStringAndArrayPropertyExpression;
 import cn.featherfly.hammer.expression.entity.condition.ni.NotInEntityPropertyExpression;
+import cn.featherfly.hammer.sqldb.jdbc.dsl.entity.EntitySqlRelation;
 import cn.featherfly.hammer.sqldb.jdbc.dsl.entity.condition.propery.ConditionEntityExpressionDateAndArrayPropertyExpressionImpl;
 import cn.featherfly.hammer.sqldb.jdbc.dsl.entity.condition.propery.ConditionEntityExpressionDoubleAndArrayPropertyExpressionImpl;
 import cn.featherfly.hammer.sqldb.jdbc.dsl.entity.condition.propery.ConditionEntityExpressionEnumAndArrayPropertyExpressionImpl;
@@ -80,8 +84,9 @@ public class NotInEntityPropertyExpressionImpl<V, C extends ConditionExpression,
      * @param factory    the factory
      */
     public NotInEntityPropertyExpressionImpl(int index, SerializableFunction<?, V> name,
-            AbstractMulitiEntityConditionExpression<C, L> expression, JdbcMappingFactory factory) {
-        super(index, name, expression, factory);
+            AbstractMulitiEntityConditionExpression<C, L> expression, JdbcMappingFactory factory,
+            EntitySqlRelation<?, ?> queryRelation) {
+        super(new AtomicInteger(index), name, expression, factory, queryRelation);
     }
 
     /**
@@ -93,8 +98,23 @@ public class NotInEntityPropertyExpressionImpl<V, C extends ConditionExpression,
      * @param factory      the factory
      */
     public NotInEntityPropertyExpressionImpl(int index, List<Serializable> propertyList,
-            AbstractMulitiEntityConditionExpression<C, L> expression, JdbcMappingFactory factory) {
-        super(index, propertyList, expression, factory);
+            AbstractMulitiEntityConditionExpression<C, L> expression, JdbcMappingFactory factory,
+            EntitySqlRelation<?, ?> queryRelation) {
+        super(new AtomicInteger(index), propertyList, expression, factory, queryRelation);
+    }
+
+    /**
+     * Instantiates a new not in entity property expression impl.
+     *
+     * @param index        the index
+     * @param propertyList the property list
+     * @param expression   the expression
+     * @param factory      the factory
+     */
+    public NotInEntityPropertyExpressionImpl(AtomicInteger index, List<Serializable> propertyList,
+            AbstractMulitiEntityConditionExpression<C, L> expression, JdbcMappingFactory factory,
+            EntitySqlRelation<?, ?> queryRelation) {
+        super(index, propertyList, expression, factory, queryRelation);
     }
 
     /**
@@ -255,9 +275,20 @@ public class NotInEntityPropertyExpressionImpl<V, C extends ConditionExpression,
     public ConditionEntityExpressionStringAndArrayPropertyExpression property(SerializableToStringFunction<V> name) {
         propertyList.add(name);
         return new ConditionEntityExpressionStringAndArrayPropertyExpressionImpl(v -> getPropertyMapping(v),
-                expression.getIgnoreStrategy(), (value, ignore, pm) -> expression.ni0(index, pm, value, ignore),
+                expression.getIgnoreStrategy(),
+                (value, match, ignore, pm) -> expression.ni0(index, pm, value, match, ignore),
                 v -> getPropertyMapping(v), array -> ((Predicate<Object>) expression.getIgnoreStrategy()).test(array),
-                (value, ignore, pm) -> expression.ni0(index, pm, value, ignore));
+                (value, match, ignore, pm) -> expression.ni0(index, pm, value, match, ignore));
+    }
+
+    @SuppressWarnings("unchecked")
+    private ConditionEntityExpressionStringAndArrayPropertyExpression property(SerializableStringSupplier name) {
+        propertyList.add(name);
+        return new ConditionEntityExpressionStringAndArrayPropertyExpressionImpl(v -> getPropertyMapping(v),
+                expression.getIgnoreStrategy(),
+                (value, match, ignore, pm) -> expression.ni0(index, pm, value, match, ignore),
+                v -> getPropertyMapping(v), array -> ((Predicate<Object>) expression.getIgnoreStrategy()).test(array),
+                (value, match, ignore, pm) -> expression.ni0(index, pm, value, match, ignore));
     }
 
     /**
@@ -266,12 +297,12 @@ public class NotInEntityPropertyExpressionImpl<V, C extends ConditionExpression,
     @Override
     public <R> NotInEntityPropertyExpression<R> property(SerializableFunction<V, R> name) {
         propertyList.add(name);
-        return new NotInEntityPropertyExpressionImpl<>(index, propertyList, expression, factory);
+        return new NotInEntityPropertyExpressionImpl<>(index, propertyList, expression, factory, queryRelation);
     }
 
     private <R> NotInEntityPropertyExpression<R> property(SerializableSupplier<R> name) {
         propertyList.add(name);
-        return new NotInEntityPropertyExpressionImpl<>(index, propertyList, expression, factory);
+        return new NotInEntityPropertyExpressionImpl<>(index, propertyList, expression, factory, queryRelation);
     }
 
     /**
@@ -412,6 +443,57 @@ public class NotInEntityPropertyExpressionImpl<V, C extends ConditionExpression,
     public <R> void accept(SerializableFunction<V, R> name, Collection<R> value,
             Predicate<Collection<R>> ignoreStrategy) {
         property(name).value(value, ignoreStrategy);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void accept(SerializableToStringFunction<V> name, String value, MatchStrategy matchStrategy) {
+        property(name).value(value, matchStrategy);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void accept(SerializableToStringFunction<V> name, String value, MatchStrategy matchStrategy,
+            Predicate<String> ignoreStrategy) {
+        property(name).value(value, matchStrategy, ignoreStrategy);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void accept(SerializableToStringFunction<V> name, String[] value, MatchStrategy matchStrategy) {
+        property(name).value(value, matchStrategy);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void accept(SerializableToStringFunction<V> name, String[] value, MatchStrategy matchStrategy,
+            Predicate<String[]> ignoreStrategy) {
+        property(name).value(value, matchStrategy, ignoreStrategy);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void accept(SerializableStringSupplier property, MatchStrategy matchStrategy) {
+        property(property).value(property.get(), matchStrategy);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void accept(SerializableStringSupplier property, MatchStrategy matchStrategy,
+            Predicate<String> ignoreStrategy) {
+        property(property).value(property.get(), matchStrategy, ignoreStrategy);
     }
 
     /**

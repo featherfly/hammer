@@ -3,6 +3,7 @@ package cn.featherfly.hammer.dsl.entity.execute;
 
 import cn.featherfly.common.function.serializable.SerializableFunction;
 import cn.featherfly.common.function.serializable.SerializableToNumberFunction;
+import cn.featherfly.hammer.config.dsl.UpdateConditionConfig;
 import cn.featherfly.hammer.expression.entity.execute.EntityPropertyUpdateExpression;
 
 /**
@@ -10,8 +11,10 @@ import cn.featherfly.hammer.expression.entity.execute.EntityPropertyUpdateExpres
  *
  * @author zhongj
  */
-public interface EntityPropertyUpdate<E> extends EntityPropertyUpdateExpression<E, EntityExecutableUpdate<E>,
-        EntityExecutableConditionGroup<E>, EntityExecutableConditionGroupLogic<E>> {
+public interface EntityPropertyUpdate<E> extends
+        EntityPropertyUpdateExpression<E, EntityExecutableUpdate<E>,
+                EntityExecutableConditionGroup<E, UpdateConditionConfig>,
+                EntityExecutableConditionGroupLogic<E, UpdateConditionConfig>> {
 
     /**
      * {@inheritDoc}

@@ -1,8 +1,8 @@
 
 package cn.featherfly.hammer.sqldb.jdbc;
 
-import static org.testng.Assert.assertNull;
 import static org.testng.Assert.assertEquals;
+import static org.testng.Assert.assertNull;
 
 import java.sql.Connection;
 import java.util.List;
@@ -70,6 +70,7 @@ public class JdbcTransactionTest extends JdbcTestBase {
                 l.set(keys.get(0));
             }
         }, params);
+        assertEquals(result, 1);
 
         article = jdbc.querySingle("select * from cms_article where id = ?", Article.class, l.longValue());
         assertEquals(article.getTitle(), "title_01");

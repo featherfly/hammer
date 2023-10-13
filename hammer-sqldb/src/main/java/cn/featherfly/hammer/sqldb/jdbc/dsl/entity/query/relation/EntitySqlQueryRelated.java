@@ -12,11 +12,11 @@ package cn.featherfly.hammer.sqldb.jdbc.dsl.entity.query.relation;
 import java.io.Serializable;
 
 import cn.featherfly.common.db.mapping.JdbcMappingFactory;
+import cn.featherfly.common.function.serializable.SerializableFunction1;
+import cn.featherfly.common.function.serializable.SerializableFunction2;
 import cn.featherfly.common.lang.ClassUtils;
 import cn.featherfly.common.lang.LambdaUtils;
 import cn.featherfly.common.lang.LambdaUtils.SerializedLambdaInfo;
-import cn.featherfly.common.function.serializable.SerializableFunction1;
-import cn.featherfly.common.function.serializable.SerializableFunction2;
 import cn.featherfly.hammer.dsl.entity.query.relation.EntityQueryRelatedExpression;
 import cn.featherfly.hammer.expression.api.entity.QueryRelate;
 import cn.featherfly.hammer.sqldb.jdbc.dsl.entity.EntitySqlQueryRelation;
@@ -67,7 +67,7 @@ public class EntitySqlQueryRelated<E, R, QR extends QueryRelate<QRF>, QRF>
      */
     @Override
     public <P> QR on(SerializableFunction1<E, P> propertyName) {
-        queryRelation.join(index, getPropertyName(propertyName), factory.getClassMapping(joinType));
+        queryRelation.join(index, getPropertyName(propertyName), factory.getClassMapping(joinType), false);
         return queryRelate;
     }
 
@@ -78,7 +78,7 @@ public class EntitySqlQueryRelated<E, R, QR extends QueryRelate<QRF>, QRF>
     public <JP> QR on(SerializableFunction2<R, JP> joinTypePropertyName) {
         SerializedLambdaInfo info = LambdaUtils.getLambdaInfo(joinTypePropertyName);
         queryRelation.join(index, factory.getClassMapping(ClassUtils.forName(info.getMethodInstanceClassName())),
-                info.getPropertyName());
+                info.getPropertyName(), false);
         return queryRelate;
     }
 
@@ -89,7 +89,8 @@ public class EntitySqlQueryRelated<E, R, QR extends QueryRelate<QRF>, QRF>
     public <P> QR on(SerializableFunction1<E, P> propertyName, SerializableFunction2<R, P> joinTypePropertyName) {
         SerializedLambdaInfo info = LambdaUtils.getLambdaInfo(joinTypePropertyName);
         queryRelation.join(index, getPropertyName(propertyName),
-                factory.getClassMapping(ClassUtils.forName(info.getMethodInstanceClassName())), info.getPropertyName());
+                factory.getClassMapping(ClassUtils.forName(info.getMethodInstanceClassName())), info.getPropertyName(),
+                false);
         return queryRelate;
     }
 

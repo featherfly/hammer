@@ -44,7 +44,7 @@ public class EntitySqlQueryComparisonSimpleTest extends JdbcTestBase {
 
     @BeforeTest
     void setupTest() {
-        query = new SqlQuery(jdbc, mappingFactory, sqlPageFactory);
+        query = new SqlQuery(jdbc, mappingFactory, sqlPageFactory, hammerConfig.getDslConfig().getQueryConfig());
     }
 
     @BeforeMethod

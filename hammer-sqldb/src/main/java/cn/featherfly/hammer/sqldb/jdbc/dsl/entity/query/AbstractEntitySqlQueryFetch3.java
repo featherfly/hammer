@@ -7,7 +7,6 @@ import cn.featherfly.common.db.mapping.JdbcMappingFactory;
 import cn.featherfly.hammer.dsl.entity.query.EntityQueryConditionGroup3;
 import cn.featherfly.hammer.dsl.entity.query.EntityQueryConditionGroupLogic3;
 import cn.featherfly.hammer.expression.api.Sortable;
-import cn.featherfly.hammer.expression.condition.ConditionGroupConfig;
 import cn.featherfly.hammer.expression.entity.EntityWhereExpression3;
 import cn.featherfly.hammer.expression.entity.query.EntityQuerySortExpression3;
 import cn.featherfly.hammer.sqldb.jdbc.SqlPageFactory;
@@ -52,8 +51,8 @@ public abstract class AbstractEntitySqlQueryFetch3<E, E2, E3, RS> extends Abstra
      */
     @Override
     public EntityQueryConditionGroup3<E, E2, E3, RS> where(
-            Consumer<ConditionGroupConfig<EntityQueryConditionGroup3<E, E2, E3, RS>>> consumer) {
-        EntitySqlQueryExpression3<E, E2, E3,
+            Consumer<EntityQueryConditionGroup3<E, E2, E3, RS>> consumer) {
+        EntityQueryConditionGroup3<E, E2, E3,
                 RS> exp = new EntitySqlQueryExpression3<>(factory, sqlPageFactory, queryRelation);
         if (consumer != null) {
             consumer.accept(exp);

@@ -11,10 +11,13 @@ import cn.featherfly.common.function.serializable.SerializableDoubleSupplier;
 import cn.featherfly.common.function.serializable.SerializableFunction;
 import cn.featherfly.common.function.serializable.SerializableIntSupplier;
 import cn.featherfly.common.function.serializable.SerializableLongSupplier;
+import cn.featherfly.common.function.serializable.SerializableStringSupplier;
 import cn.featherfly.common.function.serializable.SerializableSupplier;
 import cn.featherfly.common.function.serializable.SerializableToDoubleFunction;
 import cn.featherfly.common.function.serializable.SerializableToIntFunction;
 import cn.featherfly.common.function.serializable.SerializableToLongFunction;
+import cn.featherfly.common.function.serializable.SerializableToStringFunction;
+import cn.featherfly.common.operator.ComparisonOperator.MatchStrategy;
 import cn.featherfly.hammer.expression.condition.ConditionExpression;
 import cn.featherfly.hammer.expression.condition.LogicExpression;
 
@@ -100,6 +103,7 @@ public interface EntityInExpression<E, C extends ConditionExpression, L extends 
     /**
      * values in. 包含指定，sql中的in. * @param name 参数名称
      *
+     * @param name           the name
      * @param value          参数值
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
@@ -189,6 +193,50 @@ public interface EntityInExpression<E, C extends ConditionExpression, L extends 
     /**
      * values in. 包含指定，sql中的in.
      *
+     * @param name          参数名称
+     * @param value         参数值
+     * @param matchStrategy the match strategy
+     * @return LogicExpression
+     */
+    L in(SerializableToStringFunction<E> name, String value, MatchStrategy matchStrategy);
+
+    /**
+     * values in. 包含指定，sql中的in.
+     *
+     * @param name           参数名称
+     * @param value          参数值
+     * @param matchStrategy  the match strategy
+     * @param ignoreStrategy the ignore strategy
+     * @return LogicExpression
+     */
+    L in(SerializableToStringFunction<E> name, String value, MatchStrategy matchStrategy,
+            Predicate<String> ignoreStrategy);
+
+    /**
+     * values in. 包含指定，sql中的in.
+     *
+     * @param name          参数名称
+     * @param value         参数值
+     * @param matchStrategy the match strategy
+     * @return LogicExpression
+     */
+    L in(SerializableToStringFunction<E> name, String[] value, MatchStrategy matchStrategy);
+
+    /**
+     * values in. 包含指定，sql中的in.
+     *
+     * @param name           参数名称
+     * @param value          参数值
+     * @param matchStrategy  the match strategy
+     * @param ignoreStrategy the ignore strategy
+     * @return LogicExpression
+     */
+    L in(SerializableToStringFunction<E> name, String[] value, MatchStrategy matchStrategy,
+            Predicate<String[]> ignoreStrategy);
+
+    /**
+     * values in. 包含指定，sql中的in.
+     *
      * @param <R>      the generic type
      * @param property 对象属性
      * @return LogicExpression
@@ -255,4 +303,23 @@ public interface EntityInExpression<E, C extends ConditionExpression, L extends 
      * @return LogicExpression
      */
     L in(SerializableDoubleSupplier property, DoublePredicate ignoreStrategy);
+
+    /**
+     * values in. 包含指定，sql中的in.
+     *
+     * @param property      对象属性
+     * @param matchStrategy the match strategy
+     * @return LogicExpression
+     */
+    L in(SerializableStringSupplier property, MatchStrategy matchStrategy);
+
+    /**
+     * values in. 包含指定，sql中的in.
+     *
+     * @param property       对象属性
+     * @param matchStrategy  the match strategy
+     * @param ignoreStrategy the ignore strategy
+     * @return LogicExpression
+     */
+    L in(SerializableStringSupplier property, MatchStrategy matchStrategy, Predicate<String> ignoreStrategy);
 }

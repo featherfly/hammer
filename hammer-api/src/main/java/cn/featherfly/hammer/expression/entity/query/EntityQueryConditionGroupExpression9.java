@@ -1,7 +1,8 @@
 
 package cn.featherfly.hammer.expression.entity.query;
 
-import cn.featherfly.hammer.expression.condition.ConditionGroupConfig;
+import cn.featherfly.hammer.config.dsl.QueryConditionConfig;
+import cn.featherfly.hammer.expression.condition.ConditionConfigureExpression;
 import cn.featherfly.hammer.expression.entity.EntityConditionGroupExpression9;
 
 /**
@@ -25,5 +26,6 @@ public interface EntityQueryConditionGroupExpression9<E, E2, E3, E4, E5, E6, E7,
         C extends EntityQueryConditionGroupExpression9<E, E2, E3, E4, E5, E6, E7, E8, E9, C, L, S, R>,
         L extends EntityQueryConditionGroupLogicExpression9<E, E2, E3, E4, E5, E6, E7, E8, E9, C, L, S, R>,
         S extends EntityQuerySortExpression9<E, E2, E3, E4, E5, E6, E7, E8, E9, R>, R>
-        extends EntityConditionGroupExpression9<E, E2, E3, E4, E5, E6, E7, E8, E9, C, L>, ConditionGroupConfig<C> {
+        extends EntityConditionGroupExpression9<E, E2, E3, E4, E5, E6, E7, E8, E9, C, L>,
+        ConditionConfigureExpression<C, QueryConditionConfig> {
 }

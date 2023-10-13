@@ -55,7 +55,7 @@ public class HammerJdbcTest extends JdbcTestBase {
 
     @BeforeClass
     void before() {
-        hammer = new SqldbHammerImpl(jdbc, mappingFactory, configFactory);
+        hammer = new SqldbHammerImpl(jdbc, mappingFactory, configFactory, hammerConfig);
     }
 
     @Test
@@ -86,7 +86,7 @@ public class HammerJdbcTest extends JdbcTestBase {
         Integer id = 1;
         UserInfo ui = hammer.get(id, UserInfo.class);
         assertEquals(ui.getId(), id);
-        assertEquals(ui.getUser().getId(), new Integer(1));
+        assertEquals(ui.getUser().getId(), Integer.valueOf(1));
         assertEquals(ui.getName(), "羽飞");
         assertEquals(ui.getDescp(), "羽飞描述");
         assertEquals(ui.getDivision().getProvince(), "四川");
@@ -112,7 +112,7 @@ public class HammerJdbcTest extends JdbcTestBase {
 
         ui = uis.get(0);
         assertEquals(ui.getId(), id1);
-        assertEquals(ui.getUser().getId(), new Integer(1));
+        assertEquals(ui.getUser().getId(), Integer.valueOf(1));
         assertEquals(ui.getName(), "羽飞");
         assertEquals(ui.getDescp(), "羽飞描述");
         assertEquals(ui.getDivision().getProvince(), "四川");
@@ -122,7 +122,7 @@ public class HammerJdbcTest extends JdbcTestBase {
 
         ui = uis.get(1);
         assertEquals(ui.getId(), id2);
-        assertEquals(ui.getUser().getId(), new Integer(2));
+        assertEquals(ui.getUser().getId(), Integer.valueOf(2));
         assertEquals(ui.getName(), "翼");
         System.out.println(ui);
 
@@ -134,7 +134,7 @@ public class HammerJdbcTest extends JdbcTestBase {
 
         ui = uis.get(0);
         assertEquals(ui.getId(), id1);
-        assertEquals(ui.getUser().getId(), new Integer(1));
+        assertEquals(ui.getUser().getId(), Integer.valueOf(1));
         assertEquals(ui.getName(), "羽飞");
         assertEquals(ui.getDescp(), "羽飞描述");
         assertEquals(ui.getDivision().getProvince(), "四川");
@@ -144,7 +144,7 @@ public class HammerJdbcTest extends JdbcTestBase {
 
         ui = uis.get(1);
         assertEquals(ui.getId(), id2);
-        assertEquals(ui.getUser().getId(), new Integer(2));
+        assertEquals(ui.getUser().getId(), Integer.valueOf(2));
         assertEquals(ui.getName(), "翼");
         System.out.println(ui);
     }

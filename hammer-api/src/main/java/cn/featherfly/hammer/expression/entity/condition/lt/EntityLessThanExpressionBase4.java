@@ -12,6 +12,7 @@ import java.util.function.Predicate;
 
 import cn.featherfly.common.function.serializable.SerializableDateSupplier;
 import cn.featherfly.common.function.serializable.SerializableDoubleSupplier;
+import cn.featherfly.common.function.serializable.SerializableEnumSupplier;
 import cn.featherfly.common.function.serializable.SerializableFunction;
 import cn.featherfly.common.function.serializable.SerializableIntSupplier;
 import cn.featherfly.common.function.serializable.SerializableLocalDateSupplier;
@@ -23,6 +24,7 @@ import cn.featherfly.common.function.serializable.SerializableStringSupplier;
 import cn.featherfly.common.function.serializable.SerializableToDoubleFunction4;
 import cn.featherfly.common.function.serializable.SerializableToIntFunction4;
 import cn.featherfly.common.function.serializable.SerializableToLongFunction4;
+import cn.featherfly.common.operator.ComparisonOperator.MatchStrategy;
 import cn.featherfly.hammer.expression.condition.ConditionExpression;
 import cn.featherfly.hammer.expression.condition.LogicExpression;
 
@@ -30,15 +32,15 @@ import cn.featherfly.hammer.expression.condition.LogicExpression;
  * The Interface EntityLessThanExpressionBase4.
  *
  * @author zhongj
- * @param <E>  the element type
- * @param <E2> the generic type
- * @param <E3> the generic type
- * @param <E4> the generic type
+ * @param <T>  the first comparable type
+ * @param <T2> the second comparable type
+ * @param <T3> the third comparable type
+ * @param <T4> the fourth comparable type
  * @param <C>  the generic type
  * @param <L>  the generic type
  */
-public interface EntityLessThanExpressionBase4<E, E2, E3, E4, C extends ConditionExpression,
-        L extends LogicExpression<C, L>> extends EntityLessThanExpressionBase3<E, E2, E3, C, L> {
+public interface EntityLessThanExpressionBase4<T, T2, T3, T4, C extends ConditionExpression,
+        L extends LogicExpression<C, L>> extends EntityLessThanExpressionBase3<T, T2, T3, C, L> {
 
     /**
      * less than. 小于.
@@ -47,7 +49,7 @@ public interface EntityLessThanExpressionBase4<E, E2, E3, E4, C extends Conditio
      * @param value 参数值
      * @return LogicExpression
      */
-    L lt4(SerializableToIntFunction4<E4> name, int value);
+    L lt4(SerializableToIntFunction4<T4> name, int value);
 
     /**
      * less than. 小于.
@@ -57,7 +59,7 @@ public interface EntityLessThanExpressionBase4<E, E2, E3, E4, C extends Conditio
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
-    L lt4(SerializableToIntFunction4<E4> name, int value, IntPredicate ignoreStrategy);
+    L lt4(SerializableToIntFunction4<T4> name, int value, IntPredicate ignoreStrategy);
 
     /**
      * less than. 小于.
@@ -66,7 +68,7 @@ public interface EntityLessThanExpressionBase4<E, E2, E3, E4, C extends Conditio
      * @param value 参数值
      * @return LogicExpression
      */
-    L lt4(SerializableToLongFunction4<E4> name, long value);
+    L lt4(SerializableToLongFunction4<T4> name, long value);
 
     /**
      * less than. 小于.
@@ -76,7 +78,7 @@ public interface EntityLessThanExpressionBase4<E, E2, E3, E4, C extends Conditio
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
-    L lt4(SerializableToLongFunction4<E4> name, long value, LongPredicate ignoreStrategy);
+    L lt4(SerializableToLongFunction4<T4> name, long value, LongPredicate ignoreStrategy);
 
     /**
      * less than. 小于.
@@ -85,7 +87,7 @@ public interface EntityLessThanExpressionBase4<E, E2, E3, E4, C extends Conditio
      * @param value 参数值
      * @return LogicExpression
      */
-    L lt4(SerializableToDoubleFunction4<E4> name, double value);
+    L lt4(SerializableToDoubleFunction4<T4> name, double value);
 
     /**
      * less than. 小于.
@@ -95,7 +97,7 @@ public interface EntityLessThanExpressionBase4<E, E2, E3, E4, C extends Conditio
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
-    L lt4(SerializableToDoubleFunction4<E4> name, double value, DoublePredicate ignoreStrategy);
+    L lt4(SerializableToDoubleFunction4<T4> name, double value, DoublePredicate ignoreStrategy);
 
     /**
      * less than. 小于.
@@ -105,7 +107,7 @@ public interface EntityLessThanExpressionBase4<E, E2, E3, E4, C extends Conditio
      * @param value 参数值
      * @return LogicExpression
      */
-    <N extends Number> L lt4(SerializableFunction<E4, N> name, N value);
+    <N extends Number> L lt4(SerializableFunction<T4, N> name, N value);
 
     /**
      * less than. 小于.
@@ -116,7 +118,28 @@ public interface EntityLessThanExpressionBase4<E, E2, E3, E4, C extends Conditio
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
-    <N extends Number> L lt4(SerializableFunction<E4, N> name, N value, Predicate<N> ignoreStrategy);
+    <N extends Number> L lt4(SerializableFunction<T4, N> name, N value, Predicate<N> ignoreStrategy);
+
+    /**
+     * less than. 小于.
+     *
+     * @param <E>   the element type
+     * @param name  参数名称
+     * @param value 参数值
+     * @return LogicExpression
+     */
+    <E extends Enum<E>> L lt4(SerializableFunction<T4, E> name, E value);
+
+    /**
+     * less than. 小于.
+     *
+     * @param <E>            the element type
+     * @param name           参数名称
+     * @param value          参数值
+     * @param ignoreStrategy the ignore strategy
+     * @return LogicExpression
+     */
+    <E extends Enum<E>> L lt4(SerializableFunction<T4, E> name, E value, Predicate<E> ignoreStrategy);
 
     /**
      * less than. 小于.
@@ -126,7 +149,7 @@ public interface EntityLessThanExpressionBase4<E, E2, E3, E4, C extends Conditio
      * @param value 参数值
      * @return LogicExpression
      */
-    <D extends Date> L lt4(SerializableFunction<E4, D> name, D value);
+    <D extends Date> L lt4(SerializableFunction<T4, D> name, D value);
 
     /**
      * less than. 小于.
@@ -137,7 +160,7 @@ public interface EntityLessThanExpressionBase4<E, E2, E3, E4, C extends Conditio
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
-    <D extends Date> L lt4(SerializableFunction<E4, D> name, D value, Predicate<D> ignoreStrategy);
+    <D extends Date> L lt4(SerializableFunction<T4, D> name, D value, Predicate<D> ignoreStrategy);
 
     /**
      * less than. 小于.
@@ -146,7 +169,7 @@ public interface EntityLessThanExpressionBase4<E, E2, E3, E4, C extends Conditio
      * @param value 参数值
      * @return LogicExpression
      */
-    L lt4(SerializableFunction<E4, LocalTime> name, LocalTime value);
+    L lt4(SerializableFunction<T4, LocalTime> name, LocalTime value);
 
     /**
      * less than. 小于.
@@ -156,7 +179,7 @@ public interface EntityLessThanExpressionBase4<E, E2, E3, E4, C extends Conditio
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
-    L lt4(SerializableFunction<E4, LocalTime> name, LocalTime value, Predicate<LocalTime> ignoreStrategy);
+    L lt4(SerializableFunction<T4, LocalTime> name, LocalTime value, Predicate<LocalTime> ignoreStrategy);
 
     /**
      * less than. 小于.
@@ -165,7 +188,7 @@ public interface EntityLessThanExpressionBase4<E, E2, E3, E4, C extends Conditio
      * @param value 参数值
      * @return LogicExpression
      */
-    L lt4(SerializableFunction<E4, LocalDate> name, LocalDate value);
+    L lt4(SerializableFunction<T4, LocalDate> name, LocalDate value);
 
     /**
      * less than. 小于.
@@ -175,7 +198,7 @@ public interface EntityLessThanExpressionBase4<E, E2, E3, E4, C extends Conditio
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
-    L lt4(SerializableFunction<E4, LocalDate> name, LocalDate value, Predicate<LocalDate> ignoreStrategy);
+    L lt4(SerializableFunction<T4, LocalDate> name, LocalDate value, Predicate<LocalDate> ignoreStrategy);
 
     /**
      * less than. 小于.
@@ -184,7 +207,7 @@ public interface EntityLessThanExpressionBase4<E, E2, E3, E4, C extends Conditio
      * @param value 参数值
      * @return LogicExpression
      */
-    L lt4(SerializableFunction<E4, LocalDateTime> name, LocalDateTime value);
+    L lt4(SerializableFunction<T4, LocalDateTime> name, LocalDateTime value);
 
     /**
      * less than. 小于.
@@ -194,7 +217,7 @@ public interface EntityLessThanExpressionBase4<E, E2, E3, E4, C extends Conditio
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
-    L lt4(SerializableFunction<E4, LocalDateTime> name, LocalDateTime value, Predicate<LocalDateTime> ignoreStrategy);
+    L lt4(SerializableFunction<T4, LocalDateTime> name, LocalDateTime value, Predicate<LocalDateTime> ignoreStrategy);
 
     /**
      * less than. 小于.
@@ -203,7 +226,9 @@ public interface EntityLessThanExpressionBase4<E, E2, E3, E4, C extends Conditio
      * @param value 参数值
      * @return LogicExpression
      */
-    L lt4(SerializableFunction<E4, String> name, String value);
+    default L lt4(SerializableFunction<T4, String> name, String value) {
+        return lt4(name, value, MatchStrategy.AUTO);
+    }
 
     /**
      * less than. 小于.
@@ -213,7 +238,31 @@ public interface EntityLessThanExpressionBase4<E, E2, E3, E4, C extends Conditio
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
-    L lt4(SerializableFunction<E4, String> name, String value, Predicate<String> ignoreStrategy);
+    default L lt4(SerializableFunction<T4, String> name, String value, Predicate<String> ignoreStrategy) {
+        return lt4(name, value, MatchStrategy.AUTO, ignoreStrategy);
+    }
+
+    /**
+     * less than. 小于.
+     *
+     * @param name          参数名称
+     * @param value         参数值
+     * @param matchStrategy the match strategy
+     * @return LogicExpression
+     */
+    L lt4(SerializableFunction<T4, String> name, String value, MatchStrategy matchStrategy);
+
+    /**
+     * less than. 小于.
+     *
+     * @param name           参数名称
+     * @param value          参数值
+     * @param matchStrategy  the match strategy
+     * @param ignoreStrategy the ignore strategy
+     * @return LogicExpression
+     */
+    L lt4(SerializableFunction<T4, String> name, String value, MatchStrategy matchStrategy,
+            Predicate<String> ignoreStrategy);
 
     /**
      * less than. 小于.
@@ -307,6 +356,25 @@ public interface EntityLessThanExpressionBase4<E, E2, E3, E4, C extends Conditio
     /**
      * less than. 小于.
      *
+     * @param <E>      the element type
+     * @param property 对象属性
+     * @return LogicExpression
+     */
+    <E extends Enum<E>> L lt4(SerializableEnumSupplier<E> property);
+
+    /**
+     * less than. 小于.
+     *
+     * @param <E>            the element type
+     * @param property       对象属性
+     * @param ignoreStrategy the ignore strategy
+     * @return LogicExpression
+     */
+    <E extends Enum<E>> L lt4(SerializableEnumSupplier<E> property, Predicate<E> ignoreStrategy);
+
+    /**
+     * less than. 小于.
+     *
      * @param property 对象属性
      * @return LogicExpression
      */
@@ -361,7 +429,9 @@ public interface EntityLessThanExpressionBase4<E, E2, E3, E4, C extends Conditio
      * @param property 对象属性
      * @return LogicExpression
      */
-    L lt4(SerializableStringSupplier property);
+    default L lt4(SerializableStringSupplier property) {
+        return lt4(property, MatchStrategy.AUTO);
+    }
 
     /**
      * less than. 小于.
@@ -370,6 +440,27 @@ public interface EntityLessThanExpressionBase4<E, E2, E3, E4, C extends Conditio
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
-    L lt4(SerializableStringSupplier property, Predicate<String> ignoreStrategy);
+    default L lt4(SerializableStringSupplier property, Predicate<String> ignoreStrategy) {
+        return lt4(property, MatchStrategy.AUTO, ignoreStrategy);
+    }
+
+    /**
+     * less than. 小于.
+     *
+     * @param property      对象属性
+     * @param matchStrategy the match strategy
+     * @return LogicExpression
+     */
+    L lt4(SerializableStringSupplier property, MatchStrategy matchStrategy);
+
+    /**
+     * less than. 小于.
+     *
+     * @param property       对象属性
+     * @param matchStrategy  the match strategy
+     * @param ignoreStrategy the ignore strategy
+     * @return LogicExpression
+     */
+    L lt4(SerializableStringSupplier property, MatchStrategy matchStrategy, Predicate<String> ignoreStrategy);
 
 }

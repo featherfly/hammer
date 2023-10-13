@@ -12,6 +12,7 @@ import java.util.function.Predicate;
 
 import cn.featherfly.common.function.serializable.SerializableDateSupplier;
 import cn.featherfly.common.function.serializable.SerializableDoubleSupplier;
+import cn.featherfly.common.function.serializable.SerializableEnumSupplier;
 import cn.featherfly.common.function.serializable.SerializableFunction;
 import cn.featherfly.common.function.serializable.SerializableIntSupplier;
 import cn.featherfly.common.function.serializable.SerializableLocalDateSupplier;
@@ -23,6 +24,7 @@ import cn.featherfly.common.function.serializable.SerializableStringSupplier;
 import cn.featherfly.common.function.serializable.SerializableToDoubleFunction;
 import cn.featherfly.common.function.serializable.SerializableToIntFunction;
 import cn.featherfly.common.function.serializable.SerializableToLongFunction;
+import cn.featherfly.common.operator.ComparisonOperator.MatchStrategy;
 import cn.featherfly.hammer.expression.condition.ConditionExpression;
 import cn.featherfly.hammer.expression.condition.LogicExpression;
 import cn.featherfly.hammer.expression.entity.condition.MulitiEntityConditionExpression;
@@ -134,6 +136,31 @@ public interface MulitiEntityGreatThanExpression<C extends ConditionExpression, 
     /**
      * great than. 大于.
      *
+     * @param <T>   the generic type
+     * @param <E>   the element type
+     * @param index the index
+     * @param name  参数名称
+     * @param value 参数值
+     * @return LogicExpression
+     */
+    <T, E extends Enum<E>> L gt(int index, SerializableFunction<T, E> name, E value);
+
+    /**
+     * great than. 大于.
+     *
+     * @param <T>            the generic type
+     * @param <E>            the element type
+     * @param index          the index
+     * @param name           参数名称
+     * @param value          参数值
+     * @param ignoreStrategy the ignore strategy
+     * @return LogicExpression
+     */
+    <T, E extends Enum<E>> L gt(int index, SerializableFunction<T, E> name, E value, Predicate<E> ignoreStrategy);
+
+    /**
+     * great than. 大于.
+     *
      * @param <E>   the element type
      * @param <D>   date type
      * @param index the index
@@ -235,7 +262,9 @@ public interface MulitiEntityGreatThanExpression<C extends ConditionExpression, 
      * @param value 参数值
      * @return LogicExpression
      */
-    <E> L gt(int index, SerializableFunction<E, String> name, String value);
+    default <E> L gt(int index, SerializableFunction<E, String> name, String value) {
+        return gt(index, name, value, MatchStrategy.AUTO);
+    }
 
     /**
      * great than. 大于.
@@ -247,7 +276,35 @@ public interface MulitiEntityGreatThanExpression<C extends ConditionExpression, 
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
-    <E> L gt(int index, SerializableFunction<E, String> name, String value, Predicate<String> ignoreStrategy);
+    default <E> L gt(int index, SerializableFunction<E, String> name, String value, Predicate<String> ignoreStrategy) {
+        return gt(index, name, value, MatchStrategy.AUTO, ignoreStrategy);
+    }
+
+    /**
+     * great than. 大于.
+     *
+     * @param <E>           the element type
+     * @param index         the index
+     * @param name          参数名称
+     * @param value         参数值
+     * @param matchStrategy the match strategy
+     * @return LogicExpression
+     */
+    <E> L gt(int index, SerializableFunction<E, String> name, String value, MatchStrategy matchStrategy);
+
+    /**
+     * great than. 大于.
+     *
+     * @param <E>            the element type
+     * @param index          the index
+     * @param name           参数名称
+     * @param value          参数值
+     * @param matchStrategy  the match strategy
+     * @param ignoreStrategy the ignore strategy
+     * @return LogicExpression
+     */
+    <E> L gt(int index, SerializableFunction<E, String> name, String value, MatchStrategy matchStrategy,
+            Predicate<String> ignoreStrategy);
 
     /**
      * great than. 大于.
@@ -351,6 +408,27 @@ public interface MulitiEntityGreatThanExpression<C extends ConditionExpression, 
     /**
      * great than. 大于.
      *
+     * @param <E>      the element type
+     * @param index    the index
+     * @param property 对象属性
+     * @return LogicExpression
+     */
+    <E extends Enum<E>> L gt(int index, SerializableEnumSupplier<E> property);
+
+    /**
+     * great than. 大于.
+     *
+     * @param <E>            the element type
+     * @param index          the index
+     * @param property       对象属性
+     * @param ignoreStrategy the ignore strategy
+     * @return LogicExpression
+     */
+    <E extends Enum<E>> L gt(int index, SerializableEnumSupplier<E> property, Predicate<E> ignoreStrategy);
+
+    /**
+     * great than. 大于.
+     *
      * @param index    the index
      * @param property 对象属性
      * @return LogicExpression
@@ -412,7 +490,9 @@ public interface MulitiEntityGreatThanExpression<C extends ConditionExpression, 
      * @param property 对象属性
      * @return LogicExpression
      */
-    L gt(int index, SerializableStringSupplier property);
+    default L gt(int index, SerializableStringSupplier property) {
+        return gt(index, property, MatchStrategy.AUTO);
+    }
 
     /**
      * great than. 大于.
@@ -422,5 +502,28 @@ public interface MulitiEntityGreatThanExpression<C extends ConditionExpression, 
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
-    L gt(int index, SerializableStringSupplier property, Predicate<String> ignoreStrategy);
+    default L gt(int index, SerializableStringSupplier property, Predicate<String> ignoreStrategy) {
+        return gt(index, property, MatchStrategy.AUTO, ignoreStrategy);
+    }
+
+    /**
+     * great than. 大于.
+     *
+     * @param index         the index
+     * @param property      对象属性
+     * @param matchStrategy the match strategy
+     * @return LogicExpression
+     */
+    L gt(int index, SerializableStringSupplier property, MatchStrategy matchStrategy);
+
+    /**
+     * great than. 大于.
+     *
+     * @param index          the index
+     * @param property       对象属性
+     * @param matchStrategy  the match strategy
+     * @param ignoreStrategy the ignore strategy
+     * @return LogicExpression
+     */
+    L gt(int index, SerializableStringSupplier property, MatchStrategy matchStrategy, Predicate<String> ignoreStrategy);
 }

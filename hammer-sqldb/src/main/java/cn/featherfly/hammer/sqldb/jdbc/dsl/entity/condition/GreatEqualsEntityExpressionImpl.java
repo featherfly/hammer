@@ -12,7 +12,6 @@ package cn.featherfly.hammer.sqldb.jdbc.dsl.entity.condition;
 
 import java.util.Collection;
 import java.util.Date;
-import java.util.function.Predicate;
 
 import cn.featherfly.common.db.mapping.JdbcMappingFactory;
 import cn.featherfly.common.exception.NotImplementedException;
@@ -20,6 +19,7 @@ import cn.featherfly.common.function.serializable.SerializableFunction;
 import cn.featherfly.common.function.serializable.SerializableToCollectionFunction;
 import cn.featherfly.common.function.serializable.SerializableToDateFunction;
 import cn.featherfly.common.function.serializable.SerializableToDoubleFunction;
+import cn.featherfly.common.function.serializable.SerializableToEnumFunction;
 import cn.featherfly.common.function.serializable.SerializableToIntFunction;
 import cn.featherfly.common.function.serializable.SerializableToLocalDateFunction;
 import cn.featherfly.common.function.serializable.SerializableToLocalDateTimeFunction;
@@ -32,6 +32,7 @@ import cn.featherfly.hammer.expression.condition.LogicExpression;
 import cn.featherfly.hammer.expression.entity.condition.CompareEntityPropertyExpression;
 import cn.featherfly.hammer.expression.entity.condition.ConditionEntityExpressionDatePropertyExpression;
 import cn.featherfly.hammer.expression.entity.condition.ConditionEntityExpressionDoublePropertyExpression;
+import cn.featherfly.hammer.expression.entity.condition.ConditionEntityExpressionEnumPropertyExpression;
 import cn.featherfly.hammer.expression.entity.condition.ConditionEntityExpressionIntPropertyExpression;
 import cn.featherfly.hammer.expression.entity.condition.ConditionEntityExpressionLocalDatePropertyExpression;
 import cn.featherfly.hammer.expression.entity.condition.ConditionEntityExpressionLocalDateTimePropertyExpression;
@@ -42,8 +43,10 @@ import cn.featherfly.hammer.expression.entity.condition.ConditionEntityExpressio
 import cn.featherfly.hammer.expression.entity.condition.ge.AbstractGreatEqualsEntityExpression;
 import cn.featherfly.hammer.expression.entity.condition.ge.GreatEqualsEntityExpression;
 import cn.featherfly.hammer.expression.entity.condition.ge.MulitiEntityGreatEqualsExpression;
+import cn.featherfly.hammer.sqldb.jdbc.dsl.entity.EntitySqlRelation;
 import cn.featherfly.hammer.sqldb.jdbc.dsl.entity.condition.propery.ConditionEntityExpressionDatePropertyExpressionImpl;
 import cn.featherfly.hammer.sqldb.jdbc.dsl.entity.condition.propery.ConditionEntityExpressionDoublePropertyExpressionImpl;
+import cn.featherfly.hammer.sqldb.jdbc.dsl.entity.condition.propery.ConditionEntityExpressionEnumPropertyExpressionImpl;
 import cn.featherfly.hammer.sqldb.jdbc.dsl.entity.condition.propery.ConditionEntityExpressionIntPropertyExpressionImpl;
 import cn.featherfly.hammer.sqldb.jdbc.dsl.entity.condition.propery.ConditionEntityExpressionLocalDatePropertyExpressionImpl;
 import cn.featherfly.hammer.sqldb.jdbc.dsl.entity.condition.propery.ConditionEntityExpressionLocalDateTimePropertyExpressionImpl;
@@ -56,44 +59,47 @@ import cn.featherfly.hammer.sqldb.jdbc.dsl.entity.condition.propery.ConditionEnt
  * The Class GreatEqualsEntityExpressionImpl.
  *
  * @author zhongj
- * @param <E> the element type
+ * @param <T> the element type
  * @param <C> the generic type
  * @param <L> the generic type
  */
-public class GreatEqualsEntityExpressionImpl<E, C extends ConditionExpression, L extends LogicExpression<C, L>>
-        extends AbstractGreatEqualsEntityExpression<E, C, L> implements GreatEqualsEntityExpression<E> {
+public class GreatEqualsEntityExpressionImpl<T, C extends ConditionExpression, L extends LogicExpression<C, L>>
+        extends AbstractGreatEqualsEntityExpression<T, C, L> implements GreatEqualsEntityExpression<T> {
 
     private JdbcMappingFactory factory;
+
+    private EntitySqlRelation<?, ?> queryRelation;
 
     /**
      * Instantiates a new great equals entity expression impl.
      *
-     * @param index          the index
-     * @param expression     the expression
-     * @param ignoreStrategy the ignore strategy
-     * @param factory        the factory
+     * @param index         the index
+     * @param expression    the expression
+     * @param factory       the factory
+     * @param queryRelation the query relation
      */
     public GreatEqualsEntityExpressionImpl(int index, MulitiEntityGreatEqualsExpression<C, L> expression,
-            Predicate<?> ignoreStrategy, JdbcMappingFactory factory) {
-        super(index, expression, ignoreStrategy);
+            JdbcMappingFactory factory, EntitySqlRelation<?, ?> queryRelation) {
+        super(index, expression, queryRelation.getIgnorePolicy());
         this.factory = factory;
+        this.queryRelation = queryRelation;
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public <R> CompareEntityPropertyExpression<R> property(SerializableFunction<E, R> name) {
+    public <R> CompareEntityPropertyExpression<R> property(SerializableFunction<T, R> name) {
         return new GreatEqualsEntityPropertyExpressionImpl<>(index, name,
-                (MulitiEntityGreatEqualsExpressionImpl<C, L>) expression, factory);
+                (MulitiEntityGreatEqualsExpressionImpl<C, L>) expression, factory, queryRelation);
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public <R extends Collection<RE>,
-            RE> CompareEntityPropertyExpression<RE> property(SerializableToCollectionFunction<E, R, RE> name) {
+    public <R extends Collection<E>,
+            E> CompareEntityPropertyExpression<E> property(SerializableToCollectionFunction<T, R, E> name) {
         // IMPLSOON 后续来实现集合类型property
         throw new NotImplementedException();
     }
@@ -102,7 +108,7 @@ public class GreatEqualsEntityExpressionImpl<E, C extends ConditionExpression, L
      * {@inheritDoc}
      */
     @Override
-    public ConditionEntityExpressionIntPropertyExpression property(SerializableToIntFunction<E> name) {
+    public ConditionEntityExpressionIntPropertyExpression property(SerializableToIntFunction<T> name) {
         return new ConditionEntityExpressionIntPropertyExpressionImpl(v -> null, ignoreStrategy,
                 (value, ignore, pm) -> expression.ge(index, name, value, ignore));
     }
@@ -111,7 +117,7 @@ public class GreatEqualsEntityExpressionImpl<E, C extends ConditionExpression, L
      * {@inheritDoc}
      */
     @Override
-    public ConditionEntityExpressionLongPropertyExpression property(SerializableToLongFunction<E> name) {
+    public ConditionEntityExpressionLongPropertyExpression property(SerializableToLongFunction<T> name) {
         return new ConditionEntityExpressionLongPropertyExpressionImpl(v -> null, ignoreStrategy,
                 (value, ignore, pm) -> expression.ge(index, name, value, ignore));
     }
@@ -120,7 +126,7 @@ public class GreatEqualsEntityExpressionImpl<E, C extends ConditionExpression, L
      * {@inheritDoc}
      */
     @Override
-    public ConditionEntityExpressionDoublePropertyExpression property(SerializableToDoubleFunction<E> name) {
+    public ConditionEntityExpressionDoublePropertyExpression property(SerializableToDoubleFunction<T> name) {
         return new ConditionEntityExpressionDoublePropertyExpressionImpl(v -> null, ignoreStrategy,
                 (value, ignore, pm) -> expression.ge(index, name, value, ignore));
     }
@@ -130,7 +136,7 @@ public class GreatEqualsEntityExpressionImpl<E, C extends ConditionExpression, L
      */
     @Override
     public <R extends Date> ConditionEntityExpressionDatePropertyExpression<R> property(
-            SerializableToDateFunction<E, R> name) {
+            SerializableToDateFunction<T, R> name) {
         return new ConditionEntityExpressionDatePropertyExpressionImpl<>(v -> null, ignoreStrategy,
                 (value, ignore, pm) -> expression.ge(index, name, value, ignore));
     }
@@ -139,7 +145,7 @@ public class GreatEqualsEntityExpressionImpl<E, C extends ConditionExpression, L
      * {@inheritDoc}
      */
     @Override
-    public ConditionEntityExpressionLocalDatePropertyExpression property(SerializableToLocalDateFunction<E> name) {
+    public ConditionEntityExpressionLocalDatePropertyExpression property(SerializableToLocalDateFunction<T> name) {
         return new ConditionEntityExpressionLocalDatePropertyExpressionImpl(v -> null, ignoreStrategy,
                 (value, ignore, pm) -> expression.ge(index, name, value, ignore));
     }
@@ -148,7 +154,7 @@ public class GreatEqualsEntityExpressionImpl<E, C extends ConditionExpression, L
      * {@inheritDoc}
      */
     @Override
-    public ConditionEntityExpressionLocalTimePropertyExpression property(SerializableToLocalTimeFunction<E> name) {
+    public ConditionEntityExpressionLocalTimePropertyExpression property(SerializableToLocalTimeFunction<T> name) {
         return new ConditionEntityExpressionLocalTimePropertyExpressionImpl(v -> null, ignoreStrategy,
                 (value, ignore, pm) -> expression.ge(index, name, value, ignore));
     }
@@ -158,7 +164,7 @@ public class GreatEqualsEntityExpressionImpl<E, C extends ConditionExpression, L
      */
     @Override
     public ConditionEntityExpressionLocalDateTimePropertyExpression property(
-            SerializableToLocalDateTimeFunction<E> name) {
+            SerializableToLocalDateTimeFunction<T> name) {
         return new ConditionEntityExpressionLocalDateTimePropertyExpressionImpl(v -> null, ignoreStrategy,
                 (value, ignore, pm) -> expression.ge(index, name, value, ignore));
     }
@@ -168,7 +174,7 @@ public class GreatEqualsEntityExpressionImpl<E, C extends ConditionExpression, L
      */
     @Override
     public <R extends Number> ConditionEntityExpressionNumberPropertyExpression<R> property(
-            SerializableToNumberFunction<E, R> name) {
+            SerializableToNumberFunction<T, R> name) {
         return new ConditionEntityExpressionNumberPropertyExpressionImpl<>(v -> null, ignoreStrategy,
                 (value, ignore, pm) -> expression.ge(index, name, value, ignore));
     }
@@ -177,8 +183,18 @@ public class GreatEqualsEntityExpressionImpl<E, C extends ConditionExpression, L
      * {@inheritDoc}
      */
     @Override
-    public ConditionEntityExpressionStringPropertyExpression property(SerializableToStringFunction<E> name) {
-        return new ConditionEntityExpressionStringPropertyExpressionImpl(v -> null, ignoreStrategy,
+    public <E extends Enum<E>> ConditionEntityExpressionEnumPropertyExpression<E> property(
+            SerializableToEnumFunction<T, E> name) {
+        return new ConditionEntityExpressionEnumPropertyExpressionImpl<>(v -> null, ignoreStrategy,
                 (value, ignore, pm) -> expression.ge(index, name, value, ignore));
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public ConditionEntityExpressionStringPropertyExpression property(SerializableToStringFunction<T> name) {
+        return new ConditionEntityExpressionStringPropertyExpressionImpl(v -> null, ignoreStrategy,
+                (value, match, ignore, pm) -> expression.ge(index, name, value, match, ignore));
     }
 }

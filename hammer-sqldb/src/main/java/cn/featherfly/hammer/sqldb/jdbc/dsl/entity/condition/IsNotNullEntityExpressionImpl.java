@@ -10,8 +10,6 @@
  */
 package cn.featherfly.hammer.sqldb.jdbc.dsl.entity.condition;
 
-import java.util.function.Predicate;
-
 import cn.featherfly.common.db.mapping.JdbcMappingFactory;
 import cn.featherfly.common.function.serializable.SerializableFunction;
 import cn.featherfly.hammer.expression.condition.ConditionExpression;
@@ -20,6 +18,7 @@ import cn.featherfly.hammer.expression.entity.condition.inn.AbstractIsNotNullEnt
 import cn.featherfly.hammer.expression.entity.condition.inn.IsNotNullEntityExpression;
 import cn.featherfly.hammer.expression.entity.condition.inn.IsNotNullEntityPropertyExpression;
 import cn.featherfly.hammer.expression.entity.condition.inn.MulitiEntityIsNotNullExpression;
+import cn.featherfly.hammer.sqldb.jdbc.dsl.entity.EntitySqlRelation;
 
 /**
  * The Class EqualsEntityExpressionImpl.
@@ -34,18 +33,21 @@ public class IsNotNullEntityExpressionImpl<E, C extends ConditionExpression, L e
 
     private JdbcMappingFactory factory;
 
+    private EntitySqlRelation<?, ?> queryRelation;
+
     /**
      * Instantiates a new checks if is null entity expression impl.
      *
-     * @param index          the index
-     * @param expression     the expression
-     * @param ignoreStrategy the ignore strategy
-     * @param factory        the factory
+     * @param index         the index
+     * @param expression    the expression
+     * @param factory       the factory
+     * @param queryRelation the query relation
      */
     public IsNotNullEntityExpressionImpl(int index, MulitiEntityIsNotNullExpression<C, L> expression,
-            Predicate<?> ignoreStrategy, JdbcMappingFactory factory) {
-        super(index, expression, ignoreStrategy);
+            JdbcMappingFactory factory, EntitySqlRelation<?, ?> queryRelation) {
+        super(index, expression, queryRelation.getIgnorePolicy());
         this.factory = factory;
+        this.queryRelation = queryRelation;
     }
 
     /**
@@ -54,6 +56,6 @@ public class IsNotNullEntityExpressionImpl<E, C extends ConditionExpression, L e
     @Override
     public <R> IsNotNullEntityPropertyExpression<R> property(SerializableFunction<E, R> name) {
         return new IsNotNullEntityPropertyExpressionImpl<>(index, name,
-                (MulitiEntityIsNotNullExpressionImpl<C, L>) expression, factory);
+                (MulitiEntityIsNotNullExpressionImpl<C, L>) expression, factory, queryRelation);
     }
 }

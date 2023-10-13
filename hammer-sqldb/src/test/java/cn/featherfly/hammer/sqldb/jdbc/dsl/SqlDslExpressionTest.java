@@ -17,11 +17,14 @@ import cn.featherfly.common.lang.UUIDGenerator;
 import cn.featherfly.common.repository.IgnoreStrategy;
 import cn.featherfly.common.repository.SimpleAliasRepository;
 import cn.featherfly.common.repository.SimpleRepository;
+import cn.featherfly.hammer.config.UpdateConfigImpl;
+import cn.featherfly.hammer.config.dsl.UpdateConditionConfig;
+import cn.featherfly.hammer.config.dsl.UpdateConfig;
 import cn.featherfly.hammer.sqldb.SqldbHammerImpl;
 import cn.featherfly.hammer.sqldb.jdbc.JdbcTestBase;
-import cn.featherfly.hammer.sqldb.jdbc.dsl.execute.SqlConditionGroupExpression;
 import cn.featherfly.hammer.sqldb.jdbc.dsl.execute.SqlDeleteExpression;
 import cn.featherfly.hammer.sqldb.jdbc.dsl.execute.SqlDeleter;
+import cn.featherfly.hammer.sqldb.jdbc.dsl.execute.SqlExecutableConditionGroupExpression;
 import cn.featherfly.hammer.sqldb.jdbc.dsl.execute.SqlUpdater;
 import cn.featherfly.hammer.sqldb.jdbc.vo.r.DistrictDivision;
 import cn.featherfly.hammer.sqldb.jdbc.vo.r.User;
@@ -29,14 +32,9 @@ import cn.featherfly.hammer.sqldb.jdbc.vo.r.User0;
 import cn.featherfly.hammer.sqldb.jdbc.vo.r.UserInfo;
 
 /**
- * <p>
- * 类的说明放这里
- * </p>
- * <p>
- * copyright cdthgk 2010-2020, all rights reserved.
- * </p>
+ * SqlDslExpressionTest.
  *
- * @author 钟冀
+ * @author zhongj
  */
 public class SqlDslExpressionTest extends JdbcTestBase {
 
@@ -56,25 +54,29 @@ public class SqlDslExpressionTest extends JdbcTestBase {
         params.add(sex);
         params.add(age);
 
-        hammer = new SqldbHammerImpl(jdbc, mappingFactory, configFactory);
+        hammer = new SqldbHammerImpl(jdbc, mappingFactory, configFactory, hammerConfig);
     }
 
     @Test
     public void testSqlConditionGroupExpressionBuilder() {
-        SqlConditionGroupExpression builder = new SqlConditionGroupExpression(jdbc, IgnoreStrategy.EMPTY);
+        SqlExecutableConditionGroupExpression<
+                UpdateConditionConfig> builder = new SqlExecutableConditionGroupExpression<>(jdbc,
+                        hammerConfig.getDslConfig().getUpdateConfig());
         builder.eq("name", name).and().eq("pwd", pwd).and().group().eq("sex", sex).or().gt("age", age);
 
         System.out.println(builder.build());
         System.out.println(builder.getParams());
 
         assertEquals("`name` = ? AND `pwd` = ? AND ( `sex` = ? OR `age` > ? )".replaceAll("`",
-                jdbc.getDialect().getWrapSign()), builder.build());
+                jdbc.getDialect().getWrapSymbol()), builder.build());
         assertEquals(params, builder.getParams());
     }
 
     @Test
     public void testSqlConditionGroupExpressionBuilder2() {
-        SqlConditionGroupExpression builder = new SqlConditionGroupExpression(jdbc, IgnoreStrategy.EMPTY);
+        SqlExecutableConditionGroupExpression<
+                UpdateConditionConfig> builder = new SqlExecutableConditionGroupExpression<>(jdbc,
+                        hammerConfig.getDslConfig().getUpdateConfig());
         // 测试忽略策略为NONE
 
         String mobile = null;
@@ -85,7 +87,10 @@ public class SqlDslExpressionTest extends JdbcTestBase {
         params2.add(age);
         params2.add(mobile);
 
-        builder = new SqlConditionGroupExpression(jdbc, IgnoreStrategy.NONE);
+        UpdateConfig updateConfig = new UpdateConfigImpl();
+        updateConfig.setIgnoreStrategy(IgnoreStrategy.NONE);
+
+        builder = new SqlExecutableConditionGroupExpression<>(jdbc, updateConfig);
         builder.eq("name", name).and().eq("pwd", pwd).and().group().eq("sex", sex).or().gt("age", age).endGroup().and()
                 .eq("mobile", mobile);
 
@@ -93,21 +98,22 @@ public class SqlDslExpressionTest extends JdbcTestBase {
         System.out.println(builder.getParams());
 
         assertEquals("`name` = ? AND `pwd` = ? AND ( `sex` = ? OR `age` > ? ) AND `mobile` = ?".replaceAll("`",
-                jdbc.getDialect().getWrapSign()), builder.build());
+                jdbc.getDialect().getWrapSymbol()), builder.build());
         assertEquals(params2, builder.getParams());
     }
 
     @Test
     public void testSqlDeleteExpression() {
         SqlDeleteExpression del = new SqlDeleteExpression(jdbc,
-                new SqlDeleteFromBasicBuilder(jdbc.getDialect(), "user"));
+                new SqlDeleteFromBasicBuilder(jdbc.getDialect(), "user"),
+                hammerConfig.getDslConfig().getDeleteConfig());
         del.eq("name", name).and().eq("pwd", pwd).and().group().eq("sex", sex).or().gt("age", age);
 
         System.out.println(del.build());
         System.out.println(del.getParams());
 
         assertEquals("DELETE FROM `user` WHERE `name` = ? AND `pwd` = ? AND ( `sex` = ? OR `age` > ? )".replaceAll("`",
-                jdbc.getDialect().getWrapSign()), del.build());
+                jdbc.getDialect().getWrapSymbol()), del.build());
         assertEquals(params, del.getParams());
 
     }
@@ -120,7 +126,7 @@ public class SqlDslExpressionTest extends JdbcTestBase {
             u.setUsername("name_delete_" + UUIDGenerator.generateUUID22Letters());
             hammer.save(u);
         }
-        SqlDeleter sqlDeleter = new SqlDeleter(jdbc, mappingFactory);
+        SqlDeleter sqlDeleter = new SqlDeleter(jdbc, mappingFactory, hammerConfig.getDslConfig().getDeleteConfig());
         int no = sqlDeleter.delete(User.class).where().sw(User::getUsername, "name_delete_").execute();
         assertTrue(no == size);
 
@@ -150,7 +156,7 @@ public class SqlDslExpressionTest extends JdbcTestBase {
         User user = new User(userId);
         saveUserInfo(size, user);
         // ManyToOne
-        SqlDeleter sqlDeleter = new SqlDeleter(jdbc, mappingFactory);
+        SqlDeleter sqlDeleter = new SqlDeleter(jdbc, mappingFactory, hammerConfig.getDslConfig().getDeleteConfig());
         //        int no = sqlDeleter.delete(UserInfo.class).where().eq(UserInfo::getUser, User::getId, userId).execute();
         int no = sqlDeleter.delete(UserInfo.class).where().eq(UserInfo::getUser, user).execute();
         assertEquals(no, size);
@@ -206,33 +212,36 @@ public class SqlDslExpressionTest extends JdbcTestBase {
         params.add(pwd);
         params.add(age);
         params.add(sex);
-        SqlUpdater updater = new SqlUpdater(jdbc);
-        SqlConditionGroupExpression e = (SqlConditionGroupExpression) updater.update(new SimpleAliasRepository("user"))
-                .set("name", name).set("pwd", pwd).increase("age", age).where().eq("sex", sex);
+        SqlUpdater updater = new SqlUpdater(jdbc, hammerConfig.getDslConfig().getUpdateConfig());
+        SqlExecutableConditionGroupExpression<
+                UpdateConditionConfig> e = (SqlExecutableConditionGroupExpression<UpdateConditionConfig>) updater
+                        .update(new SimpleAliasRepository("user")).set("name", name).set("pwd", pwd)
+                        .increase("age", age).where().eq("sex", sex);
 
         System.out.println(e);
         System.out.println(e.getParams());
 
         String sql = "UPDATE `user` SET `name` = ?, `pwd` = ?, `age` = `age` + ? WHERE `sex` = ?";
 
-        assertEquals(sql.replaceAll("`", jdbc.getDialect().getWrapSign()), e.toString());
-        assertEquals(params, e.getParams());
+        assertEquals(sql.replaceAll("`", jdbc.getDialect().getWrapSymbol()), e.toString());
+        assertEquals(params, unwrapFieldValueOperators(e.getParams()));
 
-        e = (SqlConditionGroupExpression) updater.update(new SimpleRepository("user")).property("name").set(name)
-                .property("pwd").set(pwd).propertyNumber("age").increase(age).where().eq("sex", sex);
+        e = (SqlExecutableConditionGroupExpression<UpdateConditionConfig>) updater.update(new SimpleRepository("user"))
+                .property("name").set(name).property("pwd").set(pwd).propertyNumber("age").increase(age).where()
+                .eq("sex", sex);
 
         System.out.println(e);
         System.out.println(e.getParams());
 
         assertEquals("UPDATE `user` SET `name` = ?, `pwd` = ?, `age` = `age` + ? WHERE `sex` = ?".replaceAll("`",
-                jdbc.getDialect().getWrapSign()), e.toString());
-        assertEquals(params, e.getParams());
+                jdbc.getDialect().getWrapSymbol()), e.toString());
+        assertEquals(params, unwrapFieldValueOperators(e.getParams()));
 
     }
 
     @Test
     public void testSqlTypeUpdateExpression() {
-        SqlUpdater sqlUpdater = new SqlUpdater(jdbc, mappingFactory);
+        SqlUpdater sqlUpdater = new SqlUpdater(jdbc, mappingFactory, hammerConfig.getDslConfig().getUpdateConfig());
 
         int no = sqlUpdater.update(User.class).property(User::getPwd).set("a11111").where().property(User::getId).eq(3)
                 .execute();
@@ -256,7 +265,7 @@ public class SqlDslExpressionTest extends JdbcTestBase {
 
     @Test
     public void testSqlTypeUpdateExpression2() {
-        SqlUpdater sqlUpdater = new SqlUpdater(jdbc, mappingFactory);
+        SqlUpdater sqlUpdater = new SqlUpdater(jdbc, mappingFactory, hammerConfig.getDslConfig().getUpdateConfig());
 
         DistrictDivision division = new DistrictDivision();
         division.setProvince("四川1");
@@ -320,5 +329,4 @@ public class SqlDslExpressionTest extends JdbcTestBase {
         //        no = sqlUpdater.update(UserInfo.class).property("user.id").set(2).where().eq(UserInfo::getId, 2).execute();
         //        assertTrue(no == 1);
     }
-
 }

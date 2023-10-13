@@ -14,12 +14,12 @@ import cn.featherfly.hammer.sqldb.sql.dml.AbstractEntitySqlQueryConditionGroupEx
  * EntitySqlQueryExpression .
  *
  * @author zhongj
- * @param <E> the element type
+ * @param <T> the element type
  */
-public class EntitySqlQueryExpression<E> extends
-        AbstractEntitySqlQueryConditionGroupExpression<E, EntityQueryConditionGroup<E>,
-                EntityQueryConditionGroupLogic<E>>
-        implements EntityQueryConditionGroup<E>, EntityQueryConditionGroupLogic<E> {
+public class EntitySqlQueryExpression<T> extends
+        AbstractEntitySqlQueryConditionGroupExpression<T, EntityQueryConditionGroup<T>,
+                EntityQueryConditionGroupLogic<T>>
+        implements EntityQueryConditionGroup<T>, EntityQueryConditionGroupLogic<T> {
 
     /**
      * Instantiates a new entity sql query expression.
@@ -41,7 +41,7 @@ public class EntitySqlQueryExpression<E> extends
      * @param sqlPageFactory the sql page factory
      * @param queryRelation  the query relation
      */
-    EntitySqlQueryExpression(EntityQueryConditionGroupLogic<E> parent, JdbcMappingFactory factory,
+    EntitySqlQueryExpression(EntityQueryConditionGroupLogic<T> parent, JdbcMappingFactory factory,
             SqlPageFactory sqlPageFactory, EntitySqlQueryRelation queryRelation) {
         super(parent, factory, sqlPageFactory, queryRelation);
     }
@@ -50,7 +50,7 @@ public class EntitySqlQueryExpression<E> extends
      * {@inheritDoc}
      */
     @Override
-    protected EntitySqlQueryExpression<E> createGroup(EntityQueryConditionGroupLogic<E> parent) {
+    protected EntitySqlQueryExpression<T> createGroup(EntityQueryConditionGroupLogic<T> parent) {
         return new EntitySqlQueryExpression<>(parent, factory, sqlPageFactory, entityRelation);
     }
 

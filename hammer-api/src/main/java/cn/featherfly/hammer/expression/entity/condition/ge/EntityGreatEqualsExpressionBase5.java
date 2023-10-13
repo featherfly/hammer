@@ -12,6 +12,7 @@ import java.util.function.Predicate;
 
 import cn.featherfly.common.function.serializable.SerializableDateSupplier;
 import cn.featherfly.common.function.serializable.SerializableDoubleSupplier;
+import cn.featherfly.common.function.serializable.SerializableEnumSupplier;
 import cn.featherfly.common.function.serializable.SerializableFunction;
 import cn.featherfly.common.function.serializable.SerializableIntSupplier;
 import cn.featherfly.common.function.serializable.SerializableLocalDateSupplier;
@@ -23,6 +24,7 @@ import cn.featherfly.common.function.serializable.SerializableStringSupplier;
 import cn.featherfly.common.function.serializable.SerializableToDoubleFunction5;
 import cn.featherfly.common.function.serializable.SerializableToIntFunction5;
 import cn.featherfly.common.function.serializable.SerializableToLongFunction5;
+import cn.featherfly.common.operator.ComparisonOperator.MatchStrategy;
 import cn.featherfly.hammer.expression.condition.ConditionExpression;
 import cn.featherfly.hammer.expression.condition.LogicExpression;
 
@@ -30,16 +32,16 @@ import cn.featherfly.hammer.expression.condition.LogicExpression;
  * The Interface EntityGreatEqualsExpressionBase5.
  *
  * @author zhongj
- * @param <E>  the element type
- * @param <E2> the generic type
- * @param <E3> the generic type
- * @param <E4> the generic type
- * @param <E5> the generic type
+ * @param <T>  the first comparable type
+ * @param <T2> the second comparable type
+ * @param <T3> the third comparable type
+ * @param <T4> the fourth comparable type
+ * @param <T5> the fifth comparable type
  * @param <C>  the generic type
  * @param <L>  the generic type
  */
-public interface EntityGreatEqualsExpressionBase5<E, E2, E3, E4, E5, C extends ConditionExpression,
-        L extends LogicExpression<C, L>> extends EntityGreatEqualsExpressionBase4<E, E2, E3, E4, C, L> {
+public interface EntityGreatEqualsExpressionBase5<T, T2, T3, T4, T5, C extends ConditionExpression,
+        L extends LogicExpression<C, L>> extends EntityGreatEqualsExpressionBase4<T, T2, T3, T4, C, L> {
 
     /**
      * great and equals. 大于等于.
@@ -48,7 +50,7 @@ public interface EntityGreatEqualsExpressionBase5<E, E2, E3, E4, E5, C extends C
      * @param value 参数值
      * @return LogicExpression
      */
-    L ge5(SerializableToIntFunction5<E5> name, int value);
+    L ge5(SerializableToIntFunction5<T5> name, int value);
 
     /**
      * great and equals. 大于等于.
@@ -58,7 +60,7 @@ public interface EntityGreatEqualsExpressionBase5<E, E2, E3, E4, E5, C extends C
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
-    L ge5(SerializableToIntFunction5<E5> name, int value, IntPredicate ignoreStrategy);
+    L ge5(SerializableToIntFunction5<T5> name, int value, IntPredicate ignoreStrategy);
 
     /**
      * great and equals. 大于等于.
@@ -67,7 +69,7 @@ public interface EntityGreatEqualsExpressionBase5<E, E2, E3, E4, E5, C extends C
      * @param value 参数值
      * @return LogicExpression
      */
-    L ge5(SerializableToLongFunction5<E5> name, long value);
+    L ge5(SerializableToLongFunction5<T5> name, long value);
 
     /**
      * great and equals. 大于等于.
@@ -77,7 +79,7 @@ public interface EntityGreatEqualsExpressionBase5<E, E2, E3, E4, E5, C extends C
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
-    L ge5(SerializableToLongFunction5<E5> name, long value, LongPredicate ignoreStrategy);
+    L ge5(SerializableToLongFunction5<T5> name, long value, LongPredicate ignoreStrategy);
 
     /**
      * great and equals. 大于等于.
@@ -86,7 +88,7 @@ public interface EntityGreatEqualsExpressionBase5<E, E2, E3, E4, E5, C extends C
      * @param value 参数值
      * @return LogicExpression
      */
-    L ge5(SerializableToDoubleFunction5<E5> name, double value);
+    L ge5(SerializableToDoubleFunction5<T5> name, double value);
 
     /**
      * great and equals. 大于等于.
@@ -96,7 +98,7 @@ public interface EntityGreatEqualsExpressionBase5<E, E2, E3, E4, E5, C extends C
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
-    L ge5(SerializableToDoubleFunction5<E5> name, double value, DoublePredicate ignoreStrategy);
+    L ge5(SerializableToDoubleFunction5<T5> name, double value, DoublePredicate ignoreStrategy);
 
     /**
      * great and equals. 大于等于.
@@ -106,7 +108,7 @@ public interface EntityGreatEqualsExpressionBase5<E, E2, E3, E4, E5, C extends C
      * @param value 参数值
      * @return LogicExpression
      */
-    <N extends Number> L ge5(SerializableFunction<E5, N> name, N value);
+    <N extends Number> L ge5(SerializableFunction<T5, N> name, N value);
 
     /**
      * great and equals. 大于等于.
@@ -117,7 +119,28 @@ public interface EntityGreatEqualsExpressionBase5<E, E2, E3, E4, E5, C extends C
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
-    <N extends Number> L ge5(SerializableFunction<E5, N> name, N value, Predicate<N> ignoreStrategy);
+    <N extends Number> L ge5(SerializableFunction<T5, N> name, N value, Predicate<N> ignoreStrategy);
+
+    /**
+     * great and equals. 大于等于.
+     *
+     * @param <E>   the element type
+     * @param name  参数名称
+     * @param value 参数值
+     * @return LogicExpression
+     */
+    <E extends Enum<E>> L ge5(SerializableFunction<T5, E> name, E value);
+
+    /**
+     * great and equals. 大于等于.
+     *
+     * @param <E>            the element type
+     * @param name           参数名称
+     * @param value          参数值
+     * @param ignoreStrategy the ignore strategy
+     * @return LogicExpression
+     */
+    <E extends Enum<E>> L ge5(SerializableFunction<T5, E> name, E value, Predicate<E> ignoreStrategy);
 
     /**
      * great and equals. 大于等于.
@@ -127,7 +150,7 @@ public interface EntityGreatEqualsExpressionBase5<E, E2, E3, E4, E5, C extends C
      * @param value 参数值
      * @return LogicExpression
      */
-    <D extends Date> L ge5(SerializableFunction<E5, D> name, D value);
+    <D extends Date> L ge5(SerializableFunction<T5, D> name, D value);
 
     /**
      * great and equals. 大于等于.
@@ -138,7 +161,7 @@ public interface EntityGreatEqualsExpressionBase5<E, E2, E3, E4, E5, C extends C
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
-    <D extends Date> L ge5(SerializableFunction<E5, D> name, D value, Predicate<D> ignoreStrategy);
+    <D extends Date> L ge5(SerializableFunction<T5, D> name, D value, Predicate<D> ignoreStrategy);
 
     /**
      * great and equals. 大于等于.
@@ -147,7 +170,7 @@ public interface EntityGreatEqualsExpressionBase5<E, E2, E3, E4, E5, C extends C
      * @param value 参数值
      * @return LogicExpression
      */
-    L ge5(SerializableFunction<E5, LocalTime> name, LocalTime value);
+    L ge5(SerializableFunction<T5, LocalTime> name, LocalTime value);
 
     /**
      * great and equals. 大于等于.
@@ -157,7 +180,7 @@ public interface EntityGreatEqualsExpressionBase5<E, E2, E3, E4, E5, C extends C
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
-    L ge5(SerializableFunction<E5, LocalTime> name, LocalTime value, Predicate<LocalTime> ignoreStrategy);
+    L ge5(SerializableFunction<T5, LocalTime> name, LocalTime value, Predicate<LocalTime> ignoreStrategy);
 
     /**
      * great and equals. 大于等于.
@@ -166,7 +189,7 @@ public interface EntityGreatEqualsExpressionBase5<E, E2, E3, E4, E5, C extends C
      * @param value 参数值
      * @return LogicExpression
      */
-    L ge5(SerializableFunction<E5, LocalDate> name, LocalDate value);
+    L ge5(SerializableFunction<T5, LocalDate> name, LocalDate value);
 
     /**
      * great and equals. 大于等于.
@@ -176,7 +199,7 @@ public interface EntityGreatEqualsExpressionBase5<E, E2, E3, E4, E5, C extends C
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
-    L ge5(SerializableFunction<E5, LocalDate> name, LocalDate value, Predicate<LocalDate> ignoreStrategy);
+    L ge5(SerializableFunction<T5, LocalDate> name, LocalDate value, Predicate<LocalDate> ignoreStrategy);
 
     /**
      * great and equals. 大于等于.
@@ -185,7 +208,7 @@ public interface EntityGreatEqualsExpressionBase5<E, E2, E3, E4, E5, C extends C
      * @param value 参数值
      * @return LogicExpression
      */
-    L ge5(SerializableFunction<E5, LocalDateTime> name, LocalDateTime value);
+    L ge5(SerializableFunction<T5, LocalDateTime> name, LocalDateTime value);
 
     /**
      * great and equals. 大于等于.
@@ -195,7 +218,7 @@ public interface EntityGreatEqualsExpressionBase5<E, E2, E3, E4, E5, C extends C
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
-    L ge5(SerializableFunction<E5, LocalDateTime> name, LocalDateTime value, Predicate<LocalDateTime> ignoreStrategy);
+    L ge5(SerializableFunction<T5, LocalDateTime> name, LocalDateTime value, Predicate<LocalDateTime> ignoreStrategy);
 
     /**
      * great and equals. 大于等于.
@@ -204,7 +227,9 @@ public interface EntityGreatEqualsExpressionBase5<E, E2, E3, E4, E5, C extends C
      * @param value 参数值
      * @return LogicExpression
      */
-    L ge5(SerializableFunction<E5, String> name, String value);
+    default L ge5(SerializableFunction<T5, String> name, String value) {
+        return ge5(name, value, MatchStrategy.AUTO);
+    }
 
     /**
      * great and equals. 大于等于.
@@ -214,7 +239,31 @@ public interface EntityGreatEqualsExpressionBase5<E, E2, E3, E4, E5, C extends C
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
-    L ge5(SerializableFunction<E5, String> name, String value, Predicate<String> ignoreStrategy);
+    default L ge5(SerializableFunction<T5, String> name, String value, Predicate<String> ignoreStrategy) {
+        return ge5(name, value, MatchStrategy.AUTO, ignoreStrategy);
+    }
+
+    /**
+     * great and equals. 大于等于.
+     *
+     * @param name          参数名称
+     * @param value         参数值
+     * @param matchStrategy the match strategy
+     * @return LogicExpression
+     */
+    L ge5(SerializableFunction<T5, String> name, String value, MatchStrategy matchStrategy);
+
+    /**
+     * great and equals. 大于等于.
+     *
+     * @param name           参数名称
+     * @param value          参数值
+     * @param matchStrategy  the match strategy
+     * @param ignoreStrategy the ignore strategy
+     * @return LogicExpression
+     */
+    L ge5(SerializableFunction<T5, String> name, String value, MatchStrategy matchStrategy,
+            Predicate<String> ignoreStrategy);
 
     /**
      * great and equals. 大于等于.
@@ -308,6 +357,25 @@ public interface EntityGreatEqualsExpressionBase5<E, E2, E3, E4, E5, C extends C
     /**
      * great and equals. 大于等于.
      *
+     * @param <E>      the element type
+     * @param property 对象属性
+     * @return LogicExpression
+     */
+    <E extends Enum<E>> L ge5(SerializableEnumSupplier<E> property);
+
+    /**
+     * great and equals. 大于等于.
+     *
+     * @param <E>            the element type
+     * @param property       对象属性
+     * @param ignoreStrategy the ignore strategy
+     * @return LogicExpression
+     */
+    <E extends Enum<E>> L ge5(SerializableEnumSupplier<E> property, Predicate<E> ignoreStrategy);
+
+    /**
+     * great and equals. 大于等于.
+     *
      * @param property 对象属性
      * @return LogicExpression
      */
@@ -362,7 +430,9 @@ public interface EntityGreatEqualsExpressionBase5<E, E2, E3, E4, E5, C extends C
      * @param property 对象属性
      * @return LogicExpression
      */
-    L ge5(SerializableStringSupplier property);
+    default L ge5(SerializableStringSupplier property) {
+        return ge5(property, MatchStrategy.AUTO);
+    }
 
     /**
      * great and equals. 大于等于.
@@ -371,6 +441,27 @@ public interface EntityGreatEqualsExpressionBase5<E, E2, E3, E4, E5, C extends C
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
-    L ge5(SerializableStringSupplier property, Predicate<String> ignoreStrategy);
+    default L ge5(SerializableStringSupplier property, Predicate<String> ignoreStrategy) {
+        return ge5(property, MatchStrategy.AUTO, ignoreStrategy);
+    }
+
+    /**
+     * great and equals. 大于等于.
+     *
+     * @param property      对象属性
+     * @param matchStrategy the match strategy
+     * @return LogicExpression
+     */
+    L ge5(SerializableStringSupplier property, MatchStrategy matchStrategy);
+
+    /**
+     * great and equals. 大于等于.
+     *
+     * @param property       对象属性
+     * @param matchStrategy  the match strategy
+     * @param ignoreStrategy the ignore strategy
+     * @return LogicExpression
+     */
+    L ge5(SerializableStringSupplier property, MatchStrategy matchStrategy, Predicate<String> ignoreStrategy);
 
 }

@@ -11,7 +11,6 @@
 package cn.featherfly.hammer.sqldb.jdbc.dsl.entity.condition;
 
 import java.util.Collection;
-import java.util.function.Predicate;
 
 import cn.featherfly.common.db.mapping.JdbcMappingFactory;
 import cn.featherfly.common.exception.NotImplementedException;
@@ -25,6 +24,7 @@ import cn.featherfly.hammer.expression.entity.condition.lk.LikeEntityExpression;
 import cn.featherfly.hammer.expression.entity.condition.lk.LikeEntityPropertyExpression;
 import cn.featherfly.hammer.expression.entity.condition.lk.LikeEntityPropertySetValueExpression;
 import cn.featherfly.hammer.expression.entity.condition.lk.MulitiEntityLikeExpression;
+import cn.featherfly.hammer.sqldb.jdbc.dsl.entity.EntitySqlRelation;
 
 /**
  * The Class LikeEntityExpressionImpl.
@@ -39,18 +39,21 @@ public class LikeEntityExpressionImpl<E, C extends ConditionExpression, L extend
 
     private JdbcMappingFactory factory;
 
+    private EntitySqlRelation<?, ?> queryRelation;
+
     /**
      * Instantiates a new end with entity expression impl.
      *
-     * @param index          the index
-     * @param expression     the expression
-     * @param ignoreStrategy the ignore strategy
-     * @param factory        the factory
+     * @param index         the index
+     * @param expression    the expression
+     * @param factory       the factory
+     * @param queryRelation the query relation
      */
-    public LikeEntityExpressionImpl(int index, MulitiEntityLikeExpression<C, L> expression, Predicate<?> ignoreStrategy,
-            JdbcMappingFactory factory) {
-        super(index, expression, ignoreStrategy);
+    public LikeEntityExpressionImpl(int index, MulitiEntityLikeExpression<C, L> expression, JdbcMappingFactory factory,
+            EntitySqlRelation<?, ?> queryRelation) {
+        super(index, expression, queryRelation.getIgnorePolicy());
         this.factory = factory;
+        this.queryRelation = queryRelation;
     }
 
     /**
@@ -59,7 +62,7 @@ public class LikeEntityExpressionImpl<E, C extends ConditionExpression, L extend
     @Override
     public <R> LikeEntityPropertyExpression<R> property(SerializableFunction<E, R> name) {
         return new LikeEntityPropertyExpressionImpl<>(index, name, (MulitiEntityLikeExpressionImpl<C, L>) expression,
-                factory);
+                factory, queryRelation);
     }
 
     /**
@@ -68,7 +71,7 @@ public class LikeEntityExpressionImpl<E, C extends ConditionExpression, L extend
     @Override
     public <R extends Collection<RE>,
             RE> LikeEntityPropertyExpression<RE> property(SerializableToCollectionFunction<E, R, RE> name) {
-        // IMPLSOON 未实现property
+        // IMPLSOON 后续来实现集合类型property
         throw new NotImplementedException();
     }
 
@@ -78,7 +81,7 @@ public class LikeEntityExpressionImpl<E, C extends ConditionExpression, L extend
     @Override
     public LikeEntityPropertySetValueExpression property(SerializableToStringFunction<E> name) {
         return new LikeEntityPropertyExpressionImpl<>(index, name, (MulitiEntityLikeExpressionImpl<C, L>) expression,
-                factory);
+                factory, queryRelation);
     }
 
 }

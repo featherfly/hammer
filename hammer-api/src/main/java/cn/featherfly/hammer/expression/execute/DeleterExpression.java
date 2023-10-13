@@ -2,6 +2,7 @@
 package cn.featherfly.hammer.expression.execute;
 
 import cn.featherfly.common.repository.Repository;
+import cn.featherfly.hammer.config.dsl.DeleteConditionConfig;
 import cn.featherfly.hammer.expression.entity.execute.EntityDeleteExpression;
 import cn.featherfly.hammer.expression.entity.execute.EntityExecutableConditionGroupExpression;
 import cn.featherfly.hammer.expression.entity.execute.EntityExecutableConditionGroupLogicExpression;
@@ -11,8 +12,9 @@ import cn.featherfly.hammer.expression.entity.execute.EntityExecutableConditionG
  *
  * @author zhongj
  */
-public interface DeleterExpression<D extends DeleteExpression<C, L>, C extends ExecutableConditionGroupExpression<C, L>,
-        L extends ExecutableConditionGroupLogicExpression<C, L>> {
+public interface DeleterExpression<D extends DeleteExpression<C, L>,
+        C extends ExecutableConditionGroupExpression<C, L, DeleteConditionConfig>,
+        L extends ExecutableConditionGroupLogicExpression<C, L, DeleteConditionConfig>> {
 
     /**
      * start delete dsl for repository
@@ -40,6 +42,8 @@ public interface DeleterExpression<D extends DeleteExpression<C, L>, C extends E
      * @param entityType the entity type
      * @return generic type of EntityDeleteExpression
      */
-    <EDR extends EntityDeleteExpression<E, DC, DL>, DC extends EntityExecutableConditionGroupExpression<E, DC, DL>,
-            DL extends EntityExecutableConditionGroupLogicExpression<E, DC, DL>, E> EDR delete(Class<E> entityType);
+    <EDR extends EntityDeleteExpression<E, DC, DL>,
+            DC extends EntityExecutableConditionGroupExpression<E, DC, DL, DeleteConditionConfig>,
+            DL extends EntityExecutableConditionGroupLogicExpression<E, DC, DL, DeleteConditionConfig>,
+            E> EDR delete(Class<E> entityType);
 }

@@ -6,7 +6,6 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-import java.util.function.Predicate;
 
 import com.speedment.common.tuple.Tuple2;
 import com.speedment.common.tuple.Tuple3;
@@ -24,9 +23,8 @@ import cn.featherfly.common.db.builder.dml.basic.SqlSelectJoinOnBasicBuilder;
 import cn.featherfly.common.db.dialect.Join;
 import cn.featherfly.common.db.mapping.JdbcClassMapping;
 import cn.featherfly.common.lang.AssertIllegalArgument;
-import cn.featherfly.common.lang.Lang;
-import cn.featherfly.common.lang.Strings;
 import cn.featherfly.common.repository.builder.AliasManager;
+import cn.featherfly.hammer.config.dsl.QueryConfig;
 import cn.featherfly.hammer.sqldb.SqldbHammerException;
 import cn.featherfly.hammer.sqldb.jdbc.Jdbc;
 
@@ -51,8 +49,8 @@ public class EntitySqlQueryRelation extends EntitySqlRelation<EntitySqlQueryRela
      * @param aliasManager   aliasManager
      * @param ignoreStrategy the ignore strategy
      */
-    public EntitySqlQueryRelation(Jdbc jdbc, AliasManager aliasManager, Predicate<?> ignoreStrategy) {
-        super(jdbc, aliasManager, ignoreStrategy);
+    public EntitySqlQueryRelation(Jdbc jdbc, AliasManager aliasManager, QueryConfig queryConfig) {
+        super(jdbc, aliasManager, queryConfig);
     }
 
     /**
@@ -65,55 +63,8 @@ public class EntitySqlQueryRelation extends EntitySqlRelation<EntitySqlQueryRela
         return addFilterable(classMapping);
     }
 
-    public EntitySqlQueryRelation join(int sourceIndex, String propertyName, JdbcClassMapping<?> joinClassMapping) {
-        if (joinClassMapping.getPrivaryKeyPropertyMappings().size() == 1) {
-            return join(sourceIndex, propertyName, joinClassMapping,
-                    joinClassMapping.getPrivaryKeyPropertyMappings().get(0).getRepositoryFieldName());
-            //            addFilterable(joinClassMapping, propertyName, null);
-            //            EntityRelationMapping<?> erm = getEntityRelationMapping(sourceIndex);
-            //            EntityRelationMapping<?> jerm = getEntityRelationMapping(index - 1);
-            //            SqlSelectJoinOnBasicBuilder selectJoinOnBasicBuilder = join0(erm.getTableAlias(),
-            //                    erm.getClassMapping().getPropertyMapping(propertyName).getRepositoryFieldName(), joinClassMapping,
-            //                    jerm.getTableAlias(),
-            //                    joinClassMapping.getPrivaryKeyPropertyMappings().get(0).getRepositoryFieldName());
-            //            jerm.selectJoinOnBasicBuilder = selectJoinOnBasicBuilder;
-            //            return this;
-        }
-        throw new SqldbHammerException(Strings.format("only support one privary key, but {0} has ",
-                joinClassMapping.getPrivaryKeyPropertyMappings().size()));
-    }
-
-    public EntitySqlQueryRelation join(int sourceIndex, JdbcClassMapping<?> joinClassMapping, String joinPropertyName) {
-        EntityRelationMapping<?> erm = getEntityRelationMapping(sourceIndex);
-        return join(sourceIndex, erm.getIdName(), joinClassMapping, joinPropertyName);
-    }
-
-    public EntitySqlQueryRelation join(int sourceIndex, String propertyName, JdbcClassMapping<?> joinClassMapping,
-            String joinPropertyName) {
-        AssertIllegalArgument.isNotNull(propertyName, "propertyName");
-        AssertIllegalArgument.isNotNull(joinClassMapping, "joinClassMapping");
-        AssertIllegalArgument.isNotNull(joinPropertyName, "joinPropertyName");
-        EntityRelationMapping<?> erm = getEntityRelationMapping(sourceIndex);
-        if (Lang.isNotEmpty(erm.getJoinFromPropertyName())) {
-            addFilterable(sourceIndex, erm.getJoinFromPropertyName() + "." + propertyName, joinClassMapping,
-                    joinPropertyName);
-        } else {
-            addFilterable(sourceIndex, propertyName, joinClassMapping, joinPropertyName);
-        }
-        EntityRelationMapping<?> jerm = getEntityRelationMapping(index - 1);
-        SqlSelectJoinOnBasicBuilder selectJoinOnBasicBuilder = join0(erm.getTableAlias(),
-                erm.getClassMapping().getPropertyMapping(propertyName).getRepositoryFieldName(), joinClassMapping,
-                jerm.getTableAlias(), joinClassMapping.getPropertyMapping(joinPropertyName).getRepositoryFieldName());
-        jerm.selectJoinOnBasicBuilder = selectJoinOnBasicBuilder;
-        return this;
-        //        addFilterable(joinClassMapping);
-        //        EntityRelationMapping<?> erm = getEntityRelationMapping(sourceIndex);
-        //        EntityRelationMapping<?> jerm = getEntityRelationMapping(index - 1);
-        //        return getBuilder().join(Join.INNER_JOIN, erm.getTableAlias(), propertyName, joinClassMapping,
-        //                jerm.getTableAlias(), joinPropertyName);
-    }
-
-    private SqlSelectJoinOnBasicBuilder join0(String tableAlias, String columnName,
+    @Override
+    protected SqlSelectJoinOnBasicBuilder join0(String tableAlias, String columnName,
             JdbcClassMapping<?> joinClassMapping, String joinTableAlias, String joinTableColumnName) {
         return getBuilder().join(Join.INNER_JOIN, tableAlias, columnName, joinClassMapping, joinTableAlias,
                 joinTableColumnName);
@@ -493,4 +444,10 @@ public class EntitySqlQueryRelation extends EntitySqlRelation<EntitySqlQueryRela
     //        }
     //        throw new SqldbHammerException("entity query fetch times must be 9");
     //    }
+
+    @SuppressWarnings("unchecked")
+    @Override
+    public QueryConfig getConfig() {
+        return (QueryConfig) conditionConfig;
+    }
 }

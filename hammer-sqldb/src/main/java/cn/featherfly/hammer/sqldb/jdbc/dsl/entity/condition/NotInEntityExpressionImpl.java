@@ -44,6 +44,7 @@ import cn.featherfly.hammer.expression.entity.condition.ni.AbstractNotInEntityEx
 import cn.featherfly.hammer.expression.entity.condition.ni.MulitiEntityNotInExpression;
 import cn.featherfly.hammer.expression.entity.condition.ni.NotInEntityExpression;
 import cn.featherfly.hammer.expression.entity.condition.ni.NotInEntityPropertyExpression;
+import cn.featherfly.hammer.sqldb.jdbc.dsl.entity.EntitySqlRelation;
 import cn.featherfly.hammer.sqldb.jdbc.dsl.entity.condition.propery.ConditionEntityExpressionDateAndArrayPropertyExpressionImpl;
 import cn.featherfly.hammer.sqldb.jdbc.dsl.entity.condition.propery.ConditionEntityExpressionDoubleAndArrayPropertyExpressionImpl;
 import cn.featherfly.hammer.sqldb.jdbc.dsl.entity.condition.propery.ConditionEntityExpressionEnumAndArrayPropertyExpressionImpl;
@@ -68,18 +69,21 @@ public class NotInEntityExpressionImpl<T, C extends ConditionExpression, L exten
 
     private JdbcMappingFactory factory;
 
+    private EntitySqlRelation<?, ?> queryRelation;
+
     /**
      * Instantiates a new not in entity expression impl.
      *
-     * @param index          the index
-     * @param expression     the expression
-     * @param ignoreStrategy the ignore strategy
-     * @param factory        the factory
+     * @param index         the index
+     * @param expression    the expression
+     * @param factory       the factory
+     * @param queryRelation the query relation
      */
     public NotInEntityExpressionImpl(int index, MulitiEntityNotInExpression<C, L> expression,
-            Predicate<?> ignoreStrategy, JdbcMappingFactory factory) {
-        super(index, expression, ignoreStrategy);
+            JdbcMappingFactory factory, EntitySqlRelation<?, ?> queryRelation) {
+        super(index, expression, queryRelation.getIgnorePolicy());
         this.factory = factory;
+        this.queryRelation = queryRelation;
     }
 
     /**
@@ -203,9 +207,9 @@ public class NotInEntityExpressionImpl<T, C extends ConditionExpression, L exten
     @Override
     public ConditionEntityExpressionStringAndArrayPropertyExpression property(SerializableToStringFunction<T> name) {
         return new ConditionEntityExpressionStringAndArrayPropertyExpressionImpl(v -> null, ignoreStrategy,
-                (value, ignore, pm) -> expression.ni(index, name, value, ignore), v -> null,
+                (value, match, ignore, pm) -> expression.ni(index, name, value, match, ignore), v -> null,
                 array -> ((Predicate<Object>) ignoreStrategy).test(array),
-                (value, ignore, pm) -> expression.ni(index, name, value, ignore));
+                (value, match, ignore, pm) -> expression.ni(index, name, value, match, ignore));
     }
 
     /**
@@ -214,7 +218,7 @@ public class NotInEntityExpressionImpl<T, C extends ConditionExpression, L exten
     @Override
     public <R> NotInEntityPropertyExpression<R> property(SerializableFunction<T, R> name) {
         return new NotInEntityPropertyExpressionImpl<>(index, name, (MulitiEntityNotInExpressionImpl<C, L>) expression,
-                factory);
+                factory, queryRelation);
     }
 
     /**

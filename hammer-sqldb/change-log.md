@@ -1,15 +1,25 @@
 # 0.7.0
 1. 加入强类型dsl查询
    一级、二级、三级、四级、五级join实现与测试
+   
 2. 实现TransverterManager
+
 3. 实现upsert在全部是插入时为entity设置自动生成的主键（存在update时返回的key无法确定）
+
 4. 优化GetOperate的ForUpdate逻辑
+
 5. Jdbc实现查询返回Tuple2,List<Tuple2>,Tuple3,List<Tuple3>,Tuple4,List<Tuple4>,Tuple5,List<Tuple5>,Tuple6,List<Tuple6>
+
 6. 模板sql支持返回一系列Tuple[2-6]、List<Tuple[2-6]>、PaginationResults<Tuple[2-6]>
+
 7. SqldbHammer加入QueryEntity query(Table table);Update update(Table table);Delete delete(Table table)方法
+
 8. Jdbc实现存储过程支持
+
 9. Entity DSL加入Consumer参数方法,加入带IgnoreStrategy|Predicate参数方法
+
 10. Update DSL里的所有set、increase方法都新增了一个加入多一个参数Supplier<Boolean> setable的重载方法，用于判断此次方法调用是否设置值
+
 11. 实现非spring环境下的Jdbc的功能和事务管理
     ```java
     // 使用原生jdbc管理事务
@@ -30,11 +40,16 @@
     jdbc.close();
     // 使用详情参考JdbcTransactionTest.java
     ```
+    
 12. where支持多实体条件查询
+
 13. 实现多实体排序
+
 14. where().property()后的各种条件筛选方法加入带Predicate和IgnoreStrategy的重载方法
+
 15. Jdbc实现queryStream，主要用于大数据查询导出，不会依次把内容都加载到内存中，而是迭代的时候依次获取，需要调用者处理连接
     
+16. 加入配置`HammerConfig`，实现update、delete、query等表达式的配置（configure方法）
 
 TODO dsl查询条件的表达式加入带运算的条件判断
     ```java

@@ -1,6 +1,8 @@
 
 package cn.featherfly.hammer.sqldb.jdbc.dsl.entity.condition;
 
+import java.util.concurrent.atomic.AtomicInteger;
+
 import cn.featherfly.common.function.serializable.SerializableFunction;
 import cn.featherfly.hammer.expression.condition.ConditionExpression;
 import cn.featherfly.hammer.expression.condition.LogicExpression;
@@ -30,7 +32,7 @@ public class MulitiEntityIsNotNullExpressionImpl<C extends ConditionExpression, 
      */
     @Override
     public <E, R> L inn(int index, SerializableFunction<E, R> name, Boolean value) {
-        return proxy.inn0(index, name, value);
+        return proxy.inn0(new AtomicInteger(index), name, value);
     }
 
 }

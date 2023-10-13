@@ -81,7 +81,7 @@ public class Appconfig extends JdbcTestBase {
         basePackages.add("cn.featherfly.hammer.sqldb.tpl.mapper");
         TplConfigFactory configFactory = new TplConfigFactoryImpl("tpl/", ".yaml.tpl", basePackages);
 
-        SqldbHammerImpl hammer = new SqldbHammerImpl(jdbc, mappingFactory, configFactory);
+        SqldbHammerImpl hammer = new SqldbHammerImpl(jdbc, mappingFactory, configFactory, hammerConfig);
         return hammer;
     }
 

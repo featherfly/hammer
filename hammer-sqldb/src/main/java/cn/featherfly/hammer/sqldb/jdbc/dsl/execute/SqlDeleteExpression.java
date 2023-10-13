@@ -1,12 +1,11 @@
 
 package cn.featherfly.hammer.sqldb.jdbc.dsl.execute;
 
-import java.util.function.Predicate;
-
 import cn.featherfly.common.constant.Chars;
 import cn.featherfly.common.db.builder.dml.basic.SqlDeleteFromBasicBuilder;
-import cn.featherfly.common.lang.Strings;
-import cn.featherfly.common.repository.IgnoreStrategy;
+import cn.featherfly.common.lang.Lang;
+import cn.featherfly.hammer.config.dsl.DeleteConditionConfig;
+import cn.featherfly.hammer.sqldb.SqldbHammerException;
 import cn.featherfly.hammer.sqldb.jdbc.Jdbc;
 
 /**
@@ -14,29 +13,20 @@ import cn.featherfly.hammer.sqldb.jdbc.Jdbc;
  *
  * @author zhongj
  */
-public class SqlDeleteExpression extends SqlConditionGroupExpression {
+public class SqlDeleteExpression extends SqlExecutableConditionGroupExpression<DeleteConditionConfig> {
 
     private SqlDeleteFromBasicBuilder builder;
 
     /**
      * Instantiates a new sql delete expression.
      *
-     * @param jdbc    the jdbc
-     * @param builder the builder
+     * @param jdbc                  the jdbc
+     * @param builder               the builder
+     * @param deleteConditionConfig the delete condition config
      */
-    public SqlDeleteExpression(Jdbc jdbc, SqlDeleteFromBasicBuilder builder) {
-        this(jdbc, builder, IgnoreStrategy.NONE);
-    }
-
-    /**
-     * Instantiates a new sql delete expression.
-     *
-     * @param jdbc         the jdbc
-     * @param builder      the builder
-     * @param ignoreStrategy the ignore strategy
-     */
-    public SqlDeleteExpression(Jdbc jdbc, SqlDeleteFromBasicBuilder builder, Predicate<?> ignoreStrategy) {
-        super(jdbc, builder.getTableAlias(), ignoreStrategy);
+    public SqlDeleteExpression(Jdbc jdbc, SqlDeleteFromBasicBuilder builder,
+            DeleteConditionConfig deleteConditionConfig) {
+        super(jdbc, builder.getTableAlias(), deleteConditionConfig);
         this.builder = builder;
     }
 
@@ -46,10 +36,31 @@ public class SqlDeleteExpression extends SqlConditionGroupExpression {
     @Override
     public String build() {
         String condition = super.build();
-        if (Strings.isEmpty(condition)) {
-            return builder.build();
+        if (parent == null) {
+            if (Lang.isEmpty(condition)) {
+                switch (((DeleteConditionConfig) conditionConfig).getEmptyConditionStrategy()) {
+                    case EXCEPTION:
+                        throw new SqldbHammerException("empty condition for delete");
+                    case NON_EXECUTION:
+                        return null;
+                    case EXECUTION:
+                        return builder.build();
+                    default:
+                        return builder.build();
+                }
+            } else {
+                return builder.build() + Chars.SPACE + jdbc.getDialect().getKeywords().where() + Chars.SPACE
+                        + condition;
+            }
         } else {
-            return builder.build() + Chars.SPACE + jdbc.getDialect().getKeywords().where() + Chars.SPACE + condition;
+            return condition;
         }
+
+        //        String condition = super.build();
+        //        if (Strings.isEmpty(condition)) {
+        //            return builder.build();
+        //        } else {
+        //            return builder.build() + Chars.SPACE + jdbc.getDialect().getKeywords().where() + Chars.SPACE + condition;
+        //        }
     }
 }

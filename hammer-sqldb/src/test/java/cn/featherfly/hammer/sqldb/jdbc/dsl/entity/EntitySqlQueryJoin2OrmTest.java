@@ -36,7 +36,7 @@ public class EntitySqlQueryJoin2OrmTest extends AbstractEntitySqlQueryJoinTest {
         order = query.find(Order.class) //
                 .join(Order::getCreateUser) //
                 .join(Order::getUpdateUser) //
-                .where(c -> c.setIgnoreStrategy(IgnoreStrategy.EMPTY)) //
+                .where().configure(c -> c.setIgnoreStrategy(IgnoreStrategy.EMPTY)) //
                 .eq(Order::getId, oid1) //
                 .single();
         assertNotNull(order);

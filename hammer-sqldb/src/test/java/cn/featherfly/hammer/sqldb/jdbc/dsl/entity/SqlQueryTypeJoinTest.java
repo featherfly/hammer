@@ -22,8 +22,8 @@ public class SqlQueryTypeJoinTest extends AbstractEntitySqlQueryJoinTest {
 
     @Test
     void testJoin_where_condition() {
-        userInfo = query.find(UserInfo.class).join(UserInfo::getUser)
-                .where(t -> t.setIgnoreStrategy(IgnoreStrategy.NONE)).eq(UserInfo::getId, null).single();
+        userInfo = query.find(UserInfo.class).join(UserInfo::getUser).where()
+                .configure(t -> t.setIgnoreStrategy(IgnoreStrategy.NONE)).eq(UserInfo::getId, null).single();
         assertNull(userInfo);
     }
 

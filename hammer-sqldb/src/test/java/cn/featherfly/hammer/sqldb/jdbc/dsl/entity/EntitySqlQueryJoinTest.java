@@ -13,7 +13,8 @@ import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.BeforeTest;
 import org.testng.annotations.Test;
 
-import cn.featherfly.hammer.sqldb.SqldbHammerException;
+import com.speedment.common.tuple.Tuple2;
+
 import cn.featherfly.hammer.sqldb.jdbc.JdbcTestBase;
 import cn.featherfly.hammer.sqldb.jdbc.dsl.query.SqlQuery;
 import cn.featherfly.hammer.sqldb.jdbc.vo.r.Tree;
@@ -37,7 +38,7 @@ public class EntitySqlQueryJoinTest extends JdbcTestBase {
 
     @BeforeTest
     void setupTest() {
-        query = new SqlQuery(jdbc, mappingFactory, sqlPageFactory);
+        query = new SqlQuery(jdbc, mappingFactory, sqlPageFactory, hammerConfig.getDslConfig().getQueryConfig());
     }
 
     @BeforeMethod
@@ -59,24 +60,19 @@ public class EntitySqlQueryJoinTest extends JdbcTestBase {
 
         Integer uid = 1;
         userInfo = query.find(UserInfo.class).join(UserInfo::getUser).where().eq(UserInfo::getId, uid).single();
-        System.err.println(userInfo);
+        assertNotNull(userInfo);
         assertEquals(userInfo.getId(), uid);
         assertNull(userInfo.getUser().getUsername());
 
-        //        userInfo = query.find(UserInfo.class).join(UserInfo::getUser).fetch().where().eq(UserInfo::getId, 1).single();
-        //        Tuple2<UserInfo, User> t2 = query.find(UserInfo.class).join(UserInfo::getUser).fetch().where()
-        //                .eq(UserInfo::getId, 1).single();
-        //        System.err.println(t2);
-        //        assertEquals(t2.get0().getId(), uid);
-        //        assertNotNull(t2.get1().getUsername());
-
-        userInfo = query.find(UserInfo.class).join(UserInfo::getUser).fetch().where().eq(UserInfo::getId, 1).single();
+        userInfo = query.find(UserInfo.class).join(UserInfo::getUser).fetch().where().eq(UserInfo::getId, uid).single();
         System.err.println(userInfo);
         assertEquals(userInfo.getId(), uid);
         assertNotNull(userInfo.getUser().getUsername());
 
-        user = query.find(User.class).join(UserInfo::getUser).join(UserRole2::getUser).where().eq(User::getId, uid)
-                .single();
+        user = query.find(User.class) //
+                .join(UserInfo::getUser) //
+                .join(UserRole2::getUser) //
+                .where().eq(User::getId, uid).single();
         System.err.println(user);
         assertEquals(user.getId(), uid);
 
@@ -91,13 +87,18 @@ public class EntitySqlQueryJoinTest extends JdbcTestBase {
         //        JOIN `user_role` _user_role0 ON _user_role0.`user_id` = _user0.`user_id`
         //        WHERE _user0.`id` = ?
 
-        //        IMPLSOON 后续来实现多类型的查询
-        //        user = query.find(User.class).join(UserInfo::getUser).fetch().where().eq(UserInfo::getId, 1).single();
+        Integer id = 1;
 
-        // YUFEI_TEST 后续来测试
-        //        List<UserInfo> list = query.find(UserInfo.class).join(UserInfo::getUser).join(UserRole2::getUser)
-        //                .join(UserRole2::getRole).list();
-        //        System.out.println(list.size());
+        user = query.find(User.class).join(UserInfo::getUser).where().eq2(UserInfo::getId, 1).single();
+
+        Tuple2<User, UserInfo> userUserInfo = query.find(User.class).join(UserInfo::getUser).fetch().where()
+                .eq2(UserInfo::getId, id).single();
+        assertEquals(userUserInfo.get1().getId(), id);
+        assertEquals(userUserInfo.get1().getUser().getId(), userUserInfo.get0().getId());
+
+        List<UserInfo> list = query.find(UserInfo.class).join(UserInfo::getUser).join2(UserRole2::getUser)
+                .join3(UserRole2::getRole).list();
+        System.out.println(list.size());
 
         query.find(Tree.class).join(Tree::getParent).list();
 
@@ -111,35 +112,80 @@ public class EntitySqlQueryJoinTest extends JdbcTestBase {
         String username = "yufei";
         user.setUsername(username);
 
-        // IMPLSOON property(UserInfo::getUser).property(User::getUsername) 联表查询，仅查询不获取，如果没有join的话需要自动join
-        // List<UserInfo> list = query.find(UserInfo.class).where().eq(UserInfo::getUser, User::getUsername, username).list();
+        User u = query.find(User.class).where().eq(User::getUsername, username).single();
+
         List<UserInfo> list = query.find(UserInfo.class).where().property(UserInfo::getUser).property(User::getUsername)
                 .eq(username).list();
+        for (UserInfo ui : list) {
+            assertEquals(ui.getUser().getId(), u.getId());
+        }
+    }
+
+    @Test
+    void testJoin1_1() {
+        User user = new User();
+        String username = "yufei";
+        user.setUsername(username);
+
+        User u = query.find(User.class).where().eq(User::getUsername, username).single();
+
+        List<UserInfo> list = null;
+
+        list = query.find(UserInfo.class).where().property(UserInfo::getUser) //
+                .eq(user).list(); // IMPLSOON 这里还未连表查询
+        for (UserInfo ui : list) {
+            assertEquals(ui.getUser().getId(), u.getId());
+        }
 
         // IMPLSOON UserInfo::getUser, user 联表查询，仅查询不获取，如果没有join的话需要自动join
         list = query.find(UserInfo.class).where().eq(UserInfo::getUser, user).list();
+        for (UserInfo ui : list) {
+            assertEquals(ui.getUser().getId(), u.getId());
+        }
     }
 
-    @Test(expectedExceptions = SqldbHammerException.class)
-    void testJoinFetchException() {
+    @Test
+    void testJoin1_2() {
+        User user = new User();
+        String username = "yufei";
+        user.setUsername(username);
 
-        // 因为User类中没有UserRole类的关系，所以fetch时会找不到关系，不fetch只是使用条件查询问题不大
-        // userInfo.user.userRole 这里没有userRole
+        User u = query.find(User.class).where().eq(User::getUsername, username).single();
 
-        // YUFEI_TEST 后续来测试
-        //        query.find(UserInfo.class).join(UserInfo::getUser).fetch().join(UserRole2::getUser).fetch()
-        //                .join(UserRole2::getRole).fetch().list();
+        List<UserInfo> list = null;
 
-        // TODO 可能的条件查询
-        /*
-         query.find(UserInfo.class).join(UserInfo::getUser, (c) -> {
-             c.eq() ..... // 关联user的条件查询
-         }).fetch().join(UserRole2::getUser).fetch()
-                .join(UserRole2::getRole).fetch().list();
+        list = query.find(UserInfo.class).where().property(UserInfo::getUser) //
+                .eq(user).list(); // IMPLSOON 这里还未连表查询
+        for (UserInfo ui : list) {
+            assertEquals(ui.getUser().getId(), u.getId());
+        }
 
-
-         */
+        // IMPLSOON UserInfo::getUser, user 联表查询，仅查询不获取，如果没有join的话需要自动join
+        list = query.find(UserInfo.class).where().eq(UserInfo::getUser, user).list();
+        for (UserInfo ui : list) {
+            assertEquals(ui.getUser().getId(), u.getId());
+        }
     }
+
+    //    @Test(expectedExceptions = SqldbHammerException.class)
+    //    void testJoinFetchException() {
+    //        // 因为User类中没有UserRole类的关系，所以fetch时会找不到关系，不fetch只是使用条件查询问题不大
+    //        // userInfo.user.userRole 这里没有userRole
+    //
+    //        // YUFEI_TEST 后续来测试
+    //        //        query.find(UserInfo.class).join(UserInfo::getUser).fetch().join(UserRole2::getUser).fetch()
+    //        //                .join(UserRole2::getRole).fetch().list();
+    //
+    //        // TODO 可能的条件查询
+    //        /*
+    //         query.find(UserInfo.class).join(UserInfo::getUser, (c) -> {
+    //             c.eq() ..... // 关联user的条件查询
+    //         }).fetch().join(UserRole2::getUser).fetch()
+    //                .join(UserRole2::getRole).fetch().list();
+    //
+    //
+    //         */
+    //    }
 
     @Test
     void testJoinCondition2() {
@@ -174,13 +220,13 @@ public class EntitySqlQueryJoinTest extends JdbcTestBase {
         UserInfo userInfo = new UserInfo();
 
         User user = new User();
-        user.setPwd("123456");
+        user.setUsername("yufei");
         userInfo.setUser(user);
 
         //        List<UserInfo> userInfos = query.find(UserInfo.class).join(UserInfo::getUser).where()
         //                .eq(userInfo::getUser, User::getPwd).list();
-        List<UserInfo> userInfos = query.find(UserInfo.class).join(UserInfo::getUser).where()
-                .property(UserInfo::getUser).property(User::getPwd).eq(userInfo.getUser().getPwd()).list();
+        List<UserInfo> userInfos = query.find(UserInfo.class).join(UserInfo::getUser).where() //
+                .property(UserInfo::getUser).property(User::getUsername).eq(userInfo.getUser().getUsername()).list();
         System.out.println(userInfos.size());
         assertTrue(userInfos.size() == 1);
 
@@ -192,67 +238,67 @@ public class EntitySqlQueryJoinTest extends JdbcTestBase {
         UserInfo userInfo = new UserInfo();
 
         User user = new User();
-        user.setPwd("123456");
         user.setUsername("yufei");
+        user.setMobileNo("12345678901");
         userInfo.setUser(user);
         userInfo.setId(1);
 
         //        List<UserInfo> userInfos = query.find(UserInfo.class).where().eq(userInfo::getUser, User::getPwd).list();
-        List<UserInfo> userInfos = query.find(UserInfo.class).where().property(UserInfo::getUser).property(User::getPwd)
-                .eq(userInfo.getUser().getPwd()).list();
+        List<UserInfo> userInfos = query.find(UserInfo.class).where().property(UserInfo::getUser)
+                .property(User::getMobileNo).eq(userInfo.getUser().getMobileNo()).list();
         System.out.println(userInfos.size());
         assertTrue(userInfos.size() == 1);
 
         //        userInfos = query.find(UserInfo.class).where().eq(userInfo::getUser, User::getPwd).and().eq(userInfo::getId).list();
-        userInfos = query.find(UserInfo.class).where().property(UserInfo::getUser).property(User::getPwd)
-                .eq(userInfo.getUser().getPwd()).and().eq(userInfo::getId).list();
+        userInfos = query.find(UserInfo.class).where().property(UserInfo::getUser).property(User::getMobileNo)
+                .eq(userInfo.getUser().getMobileNo()).and().eq(userInfo::getId).list();
         System.out.println(userInfos.size());
         assertTrue(userInfos.size() == 1);
 
         //        userInfos = query.find(UserInfo.class).where().eq(userInfo::getUser, User::getPwd).and().eq(userInfo::getId).and().lt(UserInfo::getUser, User::getAge, 10).list();
-        userInfos = query.find(UserInfo.class).where().property(UserInfo::getUser).property(User::getPwd)
-                .eq(userInfo.getUser().getPwd()).and().eq(userInfo::getId).and().property(UserInfo::getUser)
+        userInfos = query.find(UserInfo.class).where().property(UserInfo::getUser).property(User::getMobileNo)
+                .eq(userInfo.getUser().getMobileNo()).and().eq(userInfo::getId).and().property(UserInfo::getUser)
                 .property(User::getAge).lt(userInfo.getUser().getAge()).list();
         System.out.println(userInfos.size());
         assertTrue(userInfos.size() == 1);
 
         //        userInfos = query.find(UserInfo.class).where().eq(userInfo::getUser, User::getPwd).and().eq(UserInfo::getId, 2).list();
-        userInfos = query.find(UserInfo.class).where().property(UserInfo::getUser).property(User::getPwd)
-                .eq(userInfo.getUser().getPwd()).and().eq(UserInfo::getId, 2).list();
+        userInfos = query.find(UserInfo.class).where().property(UserInfo::getUser).property(User::getMobileNo)
+                .eq(userInfo.getUser().getMobileNo()).and().eq(UserInfo::getId, 2).list();
         System.out.println(userInfos.size());
         assertTrue(userInfos.size() == 0);
 
         //        userInfos = query.find(UserInfo.class).where().eq(userInfo::getUser, User::getPwd).and().eq(userInfo::getId).and().ge(UserInfo::getUser, User::getAge, 10).list();
-        userInfos = query.find(UserInfo.class).where().property(UserInfo::getUser).property(User::getPwd)
-                .eq(userInfo.getUser().getPwd()).and().eq(userInfo::getId).and().property(UserInfo::getUser)
-                .property(User::getAge).ge(10).list();
+        userInfos = query.find(UserInfo.class).where().property(UserInfo::getUser).property(User::getMobileNo)
+                .eq(userInfo.getUser().getMobileNo()).and().eq(userInfo::getId).and().property(UserInfo::getUser)
+                .property(User::getAge).ge(1000).list();
         System.out.println(userInfos.size());
         assertTrue(userInfos.size() == 0);
 
         //        userInfos = query.find(UserInfo.class).where().eq(userInfo::getUser, User::getPwd).and().eq(userInfo::getUser, User::getUsername).list();
-        userInfos = query.find(UserInfo.class).where().property(UserInfo::getUser).property(User::getPwd)
-                .eq(userInfo.getUser().getPwd()).and().property(UserInfo::getUser).property(User::getUsername)
+        userInfos = query.find(UserInfo.class).where().property(UserInfo::getUser).property(User::getMobileNo)
+                .eq(userInfo.getUser().getMobileNo()).and().property(UserInfo::getUser).property(User::getUsername)
                 .eq(userInfo.getUser().getUsername()).list();
         System.out.println(userInfos.size());
         assertTrue(userInfos.size() == 1);
 
         //        userInfos = query.find(UserInfo.class).where().eq(userInfo::getUser, User::getPwd).and().eq(userInfo::getUser, User::getUsername).and().eq(userInfo::getId).list();
-        userInfos = query.find(UserInfo.class).where().property(UserInfo::getUser).property(User::getPwd)
-                .eq(userInfo.getUser().getPwd()).and().property(UserInfo::getUser).property(User::getUsername)
+        userInfos = query.find(UserInfo.class).where().property(UserInfo::getUser).property(User::getMobileNo)
+                .eq(userInfo.getUser().getMobileNo()).and().property(UserInfo::getUser).property(User::getUsername)
                 .eq(userInfo.getUser().getUsername()).and().eq(userInfo::getId).list();
         System.out.println(userInfos.size());
         assertTrue(userInfos.size() == 1);
 
-        userInfos = query.find(UserInfo.class).where().property(UserInfo::getUser).property(User::getPwd)
-                .eq(userInfo.getUser().getPwd()).and().property(UserInfo::getUser).property(User::getUsername)
+        userInfos = query.find(UserInfo.class).where().property(UserInfo::getUser).property(User::getMobileNo)
+                .eq(userInfo.getUser().getMobileNo()).and().property(UserInfo::getUser).property(User::getUsername)
                 .eq(userInfo.getUser().getUsername()).and().eq(UserInfo::getId, 2).list();
         System.out.println(userInfos.size());
         assertTrue(userInfos.size() == 0);
 
         user.setUsername("yufei1111");
         //        userInfos = query.find(UserInfo.class).where().eq(userInfo::getUser, User::getPwd).and().eq(userInfo::getUser, User::getUsername).list();
-        userInfos = query.find(UserInfo.class).where().property(UserInfo::getUser).property(User::getPwd)
-                .eq(userInfo.getUser().getPwd()).and().property(UserInfo::getUser).property(User::getUsername)
+        userInfos = query.find(UserInfo.class).where().property(UserInfo::getUser).property(User::getMobileNo)
+                .eq(userInfo.getUser().getMobileNo()).and().property(UserInfo::getUser).property(User::getUsername)
                 .eq(userInfo.getUser().getUsername()).list();
         System.out.println(userInfos.size());
         assertTrue(userInfos.size() == 0);

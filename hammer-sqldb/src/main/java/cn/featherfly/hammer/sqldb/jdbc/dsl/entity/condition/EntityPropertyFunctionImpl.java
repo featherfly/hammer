@@ -35,8 +35,9 @@ import cn.featherfly.hammer.expression.entity.condition.property.EntityLocalTime
 import cn.featherfly.hammer.expression.entity.condition.property.EntityLongPropertyExpression;
 import cn.featherfly.hammer.expression.entity.condition.property.EntityNumberPropertyExpression;
 import cn.featherfly.hammer.expression.entity.condition.property.EntityPropertyFunction;
-import cn.featherfly.hammer.expression.entity.condition.property.EntityTypePropertyExpression;
 import cn.featherfly.hammer.expression.entity.condition.property.EntityStringPropertyExpression;
+import cn.featherfly.hammer.expression.entity.condition.property.EntityTypePropertyExpression;
+import cn.featherfly.hammer.sqldb.jdbc.dsl.entity.EntitySqlRelation;
 
 /**
  * EntityPropertyFunctionImpl.
@@ -58,6 +59,8 @@ public class EntityPropertyFunctionImpl<E, C extends ConditionExpression, L exte
 
     private JdbcMappingFactory factory;
 
+    private EntitySqlRelation<?, ?> queryRelation;
+
     /**
      * Instantiates a new entity property function impl.
      *
@@ -66,10 +69,11 @@ public class EntityPropertyFunctionImpl<E, C extends ConditionExpression, L exte
      * @param factory    the factory
      */
     public EntityPropertyFunctionImpl(int index, AbstractMulitiEntityConditionExpression<C, L> expression,
-            JdbcMappingFactory factory) {
+            JdbcMappingFactory factory, EntitySqlRelation<?, ?> queryRelation) {
         this.index = index;
         this.expression = expression;
         this.factory = factory;
+        this.queryRelation = queryRelation;
     }
 
     /**
@@ -77,7 +81,7 @@ public class EntityPropertyFunctionImpl<E, C extends ConditionExpression, L exte
      */
     @Override
     public EntityIntPropertyExpression<E, C, L> apply(SerializableToIntFunction<E> name) {
-        return new EntityIntPropertyExpressionImpl<>(index, name, expression, factory);
+        return new EntityIntPropertyExpressionImpl<>(index, name, expression, factory, queryRelation);
     }
 
     /**
@@ -85,7 +89,7 @@ public class EntityPropertyFunctionImpl<E, C extends ConditionExpression, L exte
      */
     @Override
     public EntityLongPropertyExpression<E, C, L> apply(SerializableToLongFunction<E> name) {
-        return new EntityLongPropertyExpressionImpl<>(index, name, expression, factory);
+        return new EntityLongPropertyExpressionImpl<>(index, name, expression, factory, queryRelation);
     }
 
     /**
@@ -93,7 +97,7 @@ public class EntityPropertyFunctionImpl<E, C extends ConditionExpression, L exte
      */
     @Override
     public EntityDoublePropertyExpression<E, C, L> apply(SerializableToDoubleFunction<E> name) {
-        return new EntityDoublePropertyExpressionImpl<>(index, name, expression, factory);
+        return new EntityDoublePropertyExpressionImpl<>(index, name, expression, factory, queryRelation);
     }
 
     /**
@@ -101,7 +105,7 @@ public class EntityPropertyFunctionImpl<E, C extends ConditionExpression, L exte
      */
     @Override
     public EntityStringPropertyExpression<E, C, L> apply(SerializableToStringFunction<E> name) {
-        return new EntityStringPropertyExpressionImpl<>(index, name, expression, factory);
+        return new EntityStringPropertyExpressionImpl<>(index, name, expression, factory, queryRelation);
     }
 
     /**
@@ -110,7 +114,7 @@ public class EntityPropertyFunctionImpl<E, C extends ConditionExpression, L exte
     @Override
     public <R extends Number> EntityNumberPropertyExpression<E, R, C, L> apply(
             SerializableToNumberFunction<E, R> name) {
-        return new EntityNumberPropertyExpressionImpl<>(index, name, expression, factory);
+        return new EntityNumberPropertyExpressionImpl<>(index, name, expression, factory, queryRelation);
     }
 
     /**
@@ -118,7 +122,7 @@ public class EntityPropertyFunctionImpl<E, C extends ConditionExpression, L exte
      */
     @Override
     public <R extends Date> EntityDatePropertyExpression<E, R, C, L> apply(SerializableToDateFunction<E, R> name) {
-        return new EntityDatePropertyExpressionImpl<>(index, name, expression, factory);
+        return new EntityDatePropertyExpressionImpl<>(index, name, expression, factory, queryRelation);
     }
 
     /**
@@ -126,7 +130,7 @@ public class EntityPropertyFunctionImpl<E, C extends ConditionExpression, L exte
      */
     @Override
     public EntityLocalDatePropertyExpression<E, C, L> apply(SerializableToLocalDateFunction<E> name) {
-        return new EntityLocalDatePropertyExpressionImpl<>(index, name, expression, factory);
+        return new EntityLocalDatePropertyExpressionImpl<>(index, name, expression, factory, queryRelation);
     }
 
     /**
@@ -134,7 +138,7 @@ public class EntityPropertyFunctionImpl<E, C extends ConditionExpression, L exte
      */
     @Override
     public EntityLocalDateTimePropertyExpression<E, C, L> apply(SerializableToLocalDateTimeFunction<E> name) {
-        return new EntityLocalDateTimePropertyExpressionImpl<>(index, name, expression, factory);
+        return new EntityLocalDateTimePropertyExpressionImpl<>(index, name, expression, factory, queryRelation);
     }
 
     /**
@@ -142,7 +146,7 @@ public class EntityPropertyFunctionImpl<E, C extends ConditionExpression, L exte
      */
     @Override
     public EntityLocalTimePropertyExpression<E, C, L> apply(SerializableToLocalTimeFunction<E> name) {
-        return new EntityLocalTimePropertyExpressionImpl<>(index, name, expression, factory);
+        return new EntityLocalTimePropertyExpressionImpl<>(index, name, expression, factory, queryRelation);
     }
 
     /**
@@ -150,7 +154,7 @@ public class EntityPropertyFunctionImpl<E, C extends ConditionExpression, L exte
      */
     @Override
     public <R extends Enum<R>> EntityEnumPropertyExpression<E, R, C, L> apply(SerializableToEnumFunction<E, R> name) {
-        return new EntityEnumPropertyExpressionImpl<>(index, name, expression, factory);
+        return new EntityEnumPropertyExpressionImpl<>(index, name, expression, factory, queryRelation);
     }
 
     /**
@@ -158,7 +162,7 @@ public class EntityPropertyFunctionImpl<E, C extends ConditionExpression, L exte
      */
     @Override
     public <R> EntityTypePropertyExpression<R, C, L> apply(SerializableFunction<E, R> name) {
-        return new EntityTypePropertyExpressionImpl<>(index, name, expression, factory);
+        return new EntityTypePropertyExpressionImpl<>(index, name, expression, factory, queryRelation);
     }
 
 }

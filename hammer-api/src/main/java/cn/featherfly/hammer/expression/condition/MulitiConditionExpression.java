@@ -31,13 +31,13 @@ public interface MulitiConditionExpression extends Expression {
     /**
      * Gets the class mapping.
      *
-     * @param <CM>  the generic type
+     * @param <M>   the generic type
      * @param <T>   the generic type
      * @param <P>   the generic type
      * @param index the index
      * @return the class mapping
      */
-    <CM extends ClassMapping<T, P>, T, P extends PropertyMapping<P>> CM getClassMapping(int index);
+    <M extends ClassMapping<T, P>, T, P extends PropertyMapping<P>> M getClassMapping(int index);
 
     /**
      * Adds the condition.

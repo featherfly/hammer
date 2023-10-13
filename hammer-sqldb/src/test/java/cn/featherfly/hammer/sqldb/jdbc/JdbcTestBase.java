@@ -11,13 +11,16 @@ import java.util.List;
 import java.util.Set;
 
 import javax.sql.DataSource;
+import javax.validation.Validation;
 
 import org.apache.commons.dbcp.BasicDataSource;
 import org.apache.log4j.xml.DOMConfigurator;
+import org.hibernate.validator.HibernateValidator;
 import org.testng.annotations.BeforeSuite;
 import org.testng.annotations.Optional;
 import org.testng.annotations.Parameters;
 
+import cn.featherfly.common.db.FieldValueOperator;
 import cn.featherfly.common.db.JdbcException;
 import cn.featherfly.common.db.SqlExecutor;
 import cn.featherfly.common.db.SqlFile;
@@ -32,6 +35,8 @@ import cn.featherfly.common.db.metadata.DatabaseMetadataManager;
 import cn.featherfly.common.lang.ClassLoaderUtils;
 import cn.featherfly.common.lang.Randoms;
 import cn.featherfly.common.lang.UriUtils;
+import cn.featherfly.hammer.config.HammerConfig;
+import cn.featherfly.hammer.config.HammerConfigImpl;
 import cn.featherfly.hammer.sqldb.jdbc.vo.r.Role;
 import cn.featherfly.hammer.tpl.TplConfigFactory;
 import cn.featherfly.hammer.tpl.TplConfigFactoryImpl;
@@ -70,6 +75,8 @@ public class JdbcTestBase extends TestBase {
 
     protected static JdbcFactory jdbcFactory;
 
+    protected static HammerConfig hammerConfig;
+
     @BeforeSuite
     @Parameters({ "dataBase" })
     public void init(@Optional("mysql") String dataBase) throws IOException {
@@ -87,6 +94,10 @@ public class JdbcTestBase extends TestBase {
 
         jdbcFactory = new JdbcFactoryImpl(dialect, sqlTypeMappingManager);
 
+        HammerConfigImpl hammerConfigImpl = new HammerConfigImpl();
+        hammerConfigImpl.setValidator(Validation.byProvider(HibernateValidator.class).configure().failFast(false)
+                .buildValidatorFactory().getValidator());
+        hammerConfig = hammerConfigImpl;
     }
 
     public void initDataBase(String dataBase) throws IOException {
@@ -247,6 +258,14 @@ public class JdbcTestBase extends TestBase {
         } catch (SQLException e) {
             throw new JdbcException(e);
         }
+    }
+
+    protected List<Object> unwrapFieldValueOperators(List<Object> values) {
+        return values.stream().map(this::unwrapFieldValueOperator).toList();
+    }
+
+    protected Object unwrapFieldValueOperator(Object value) {
+        return value instanceof FieldValueOperator ? ((FieldValueOperator<?>) value).getValue() : value;
     }
 
 }

@@ -2,6 +2,7 @@
 package cn.featherfly.hammer.expression.execute;
 
 import cn.featherfly.common.repository.Repository;
+import cn.featherfly.hammer.config.dsl.UpdateConditionConfig;
 import cn.featherfly.hammer.expression.entity.execute.EntityExecutableConditionGroupExpression;
 import cn.featherfly.hammer.expression.entity.execute.EntityExecutableConditionGroupLogicExpression;
 import cn.featherfly.hammer.expression.entity.execute.EntityExecutableUpdateExpression;
@@ -13,8 +14,9 @@ import cn.featherfly.hammer.expression.entity.execute.EntityUpdateExpression;
  * @author zhongj
  */
 public interface UpdaterExpression<U extends UpdateExpression<EU, C, L, V, VN>,
-        EU extends ExecutableUpdateExpression<EU, C, L, V, VN>, C extends ExecutableConditionGroupExpression<C, L>,
-        L extends ExecutableConditionGroupLogicExpression<C, L>,
+        EU extends ExecutableUpdateExpression<EU, C, L, V, VN>,
+        C extends ExecutableConditionGroupExpression<C, L, UpdateConditionConfig>,
+        L extends ExecutableConditionGroupLogicExpression<C, L, UpdateConditionConfig>,
         V extends UpdateValueExpression<EU, C, L, Object, V, VN>,
         VN extends UpdateNumberValueExpression<EU, C, L, Number, V, VN>> {
     /**
@@ -45,6 +47,7 @@ public interface UpdaterExpression<U extends UpdateExpression<EU, C, L, V, VN>,
      * @return the generic type of EntityUpdateExpression
      */
     <EUR extends EntityUpdateExpression<E, UU, UC, UL>, UU extends EntityExecutableUpdateExpression<E, UU, UC, UL>,
-            UC extends EntityExecutableConditionGroupExpression<E, UC, UL>,
-            UL extends EntityExecutableConditionGroupLogicExpression<E, UC, UL>, E> EUR update(Class<E> entityType);
+            UC extends EntityExecutableConditionGroupExpression<E, UC, UL, UpdateConditionConfig>,
+            UL extends EntityExecutableConditionGroupLogicExpression<E, UC, UL, UpdateConditionConfig>,
+            E> EUR update(Class<E> entityType);
 }

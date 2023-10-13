@@ -10,8 +10,11 @@
  */
 package cn.featherfly.hammer.sqldb.sql.dml;
 
+import java.util.function.Consumer;
+
 import cn.featherfly.common.db.builder.SqlBuilder;
 import cn.featherfly.common.db.mapping.JdbcMappingFactory;
+import cn.featherfly.hammer.config.dsl.ExecutableConditionConfig;
 import cn.featherfly.hammer.dsl.entity.execute.EntityExecutableConditionGroup;
 import cn.featherfly.hammer.dsl.entity.execute.EntityExecutableConditionGroupLogic;
 import cn.featherfly.hammer.sqldb.jdbc.dsl.entity.EntitySqlRelation;
@@ -20,18 +23,18 @@ import cn.featherfly.hammer.sqldb.jdbc.dsl.entity.EntitySqlRelation;
  * AbstractEntitySqlExecutionConditionGroupExpression.
  *
  * @author zhongj
- * @param <E>  the element type
- * @param <ER> the generic type
- * @param <B>  the generic type
- * @param <C>  the generic type
- * @param <L>  the generic type
+ * @param <E> the element type
+ * @param <R> the generic type
+ * @param <B> the generic type
+ * @param <L> the generic type
+ * @param <C> the generic type
  */
-public abstract class AbstractEntitySqlExecutableConditionGroupExpression<E, ER extends EntitySqlRelation<ER, B>,
-        B extends SqlBuilder, C extends EntityExecutableConditionGroup<E>,
-        L extends EntityExecutableConditionGroupLogic<E>> extends
-        AbstractEntitySqlConditionGroupExpressionBase<E, ER, B, EntityExecutableConditionGroup<E>,
-                EntityExecutableConditionGroupLogic<E>>
-        implements EntityExecutableConditionGroup<E>, EntityExecutableConditionGroupLogic<E> {
+public abstract class AbstractEntitySqlExecutableConditionGroupExpression<E, R extends EntitySqlRelation<R, B>,
+        B extends SqlBuilder, L extends EntityExecutableConditionGroupLogic<E, C>, C extends ExecutableConditionConfig<C>>
+        extends
+        AbstractEntitySqlConditionGroupExpressionBase<E, R, B, EntityExecutableConditionGroup<E, C>,
+                EntityExecutableConditionGroupLogic<E, C>, C>
+        implements EntityExecutableConditionGroup<E, C>, EntityExecutableConditionGroupLogic<E, C> {
 
     /**
      * Instantiates a new abstract entity sql executable condition group
@@ -39,11 +42,10 @@ public abstract class AbstractEntitySqlExecutableConditionGroupExpression<E, ER 
      *
      * @param parent            the parent
      * @param factory           the factory
-     * @param sqlPageFactory    the sql page factory
      * @param entitySqlRelation the entity sql relation
      */
     protected AbstractEntitySqlExecutableConditionGroupExpression(L parent, JdbcMappingFactory factory,
-            ER entitySqlRelation) {
+            R entitySqlRelation) {
         super(parent, factory, entitySqlRelation);
     }
 
@@ -57,5 +59,17 @@ public abstract class AbstractEntitySqlExecutableConditionGroupExpression<E, ER 
         } else {
             return entityRelation.getJdbc().update(build(), getParams().toArray());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @SuppressWarnings("unchecked")
+    @Override
+    public EntityExecutableConditionGroup<E, C> configure(Consumer<C> configure) {
+        if (configure != null) {
+            configure.accept((C) conditionConfig);
+        }
+        return this;
     }
 }

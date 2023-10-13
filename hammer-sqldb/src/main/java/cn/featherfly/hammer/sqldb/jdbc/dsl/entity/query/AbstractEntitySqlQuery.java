@@ -129,7 +129,7 @@ public abstract class AbstractEntitySqlQuery<R>
     public long count() {
         return new SqlQueryExpression(queryRelation.getJdbc(), sqlPageFactory,
                 queryRelation.getBuilder().clearColumns().addColumn(AggregateFunction.COUNT, Chars.STAR),
-                queryRelation.getIgnorePolicy()).longInt();
+                queryRelation.getConfig()).longInt();
     }
 
     //    protected String getPropertyName(Serializable property) {

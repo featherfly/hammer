@@ -12,7 +12,8 @@ package cn.featherfly.hammer.sqldb.jdbc.dsl.entity.condition.propery;
 import java.util.function.Function;
 import java.util.function.Predicate;
 
-import cn.featherfly.common.function.ThreeArgusConsumer;
+import cn.featherfly.common.function.FourArgusConsumer;
+import cn.featherfly.common.operator.ComparisonOperator.MatchStrategy;
 import cn.featherfly.common.repository.mapping.PropertyMapping;
 import cn.featherfly.hammer.expression.entity.condition.ConditionEntityExpressionStringAndArrayPropertyExpression;
 
@@ -22,8 +23,25 @@ import cn.featherfly.hammer.expression.entity.condition.ConditionEntityExpressio
  * @author zhongj
  */
 public class ConditionEntityExpressionStringAndArrayPropertyExpressionImpl
-        extends ConditionEntityExpressionArrayPropertyExpressionImpl<String>
         implements ConditionEntityExpressionStringAndArrayPropertyExpression {
+
+    /** The get property mapping. */
+    private Function<String, PropertyMapping<?>> getPropertyMapping;
+
+    /** The ignore strategy. */
+    private Predicate<?> ignoreStrategy;
+
+    /** The set value. */
+    private FourArgusConsumer<String, MatchStrategy, Predicate<String>, PropertyMapping<?>> setValue;
+
+    /** The get array property mapping. */
+    private Function<String[], PropertyMapping<?>> getArrayPropertyMapping;
+
+    /** The ignore array strategy. */
+    private Predicate<?> ignoreArrayStrategy;
+
+    /** The set array value. */
+    private FourArgusConsumer<String[], MatchStrategy, Predicate<String[]>, PropertyMapping<?>> setArrayValue;
 
     /**
      * Instantiates a new condition entity expression string and array property
@@ -38,11 +56,49 @@ public class ConditionEntityExpressionStringAndArrayPropertyExpressionImpl
      */
     public ConditionEntityExpressionStringAndArrayPropertyExpressionImpl(
             Function<String, PropertyMapping<?>> getPropertyMapping, Predicate<?> ignoreStrategy,
-            ThreeArgusConsumer<String, Predicate<String>, PropertyMapping<?>> setValue,
+            FourArgusConsumer<String, MatchStrategy, Predicate<String>, PropertyMapping<?>> setValue,
             Function<String[], PropertyMapping<?>> getArrayPropertyMapping, Predicate<String[]> ignoreArrayStrategy,
-            ThreeArgusConsumer<String[], Predicate<String[]>, PropertyMapping<?>> setArrayValue) {
-        super(getPropertyMapping, ignoreStrategy, setValue, getArrayPropertyMapping, ignoreArrayStrategy,
-                setArrayValue);
+            FourArgusConsumer<String[], MatchStrategy, Predicate<String[]>, PropertyMapping<?>> setArrayValue) {
+        this.getPropertyMapping = getPropertyMapping;
+        this.ignoreStrategy = ignoreStrategy;
+        this.setValue = setValue;
+
+        this.getArrayPropertyMapping = getArrayPropertyMapping;
+        this.ignoreArrayStrategy = ignoreArrayStrategy;
+        this.setArrayValue = setArrayValue;
     }
 
+    /**
+     * {@inheritDoc}
+     */
+    @SuppressWarnings("unchecked")
+    @Override
+    public void value(String value, MatchStrategy matchStrategy) {
+        value(value, matchStrategy, v -> ((Predicate<Object>) ignoreStrategy).test(value));
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void value(String value, MatchStrategy matchStrategy, Predicate<String> ignoreStrategy) {
+        setValue.accept(value, matchStrategy, ignoreStrategy, getPropertyMapping.apply(value));
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @SuppressWarnings("unchecked")
+    @Override
+    public void value(String[] value, MatchStrategy matchStrategy) {
+        value(value, matchStrategy, v -> ((Predicate<Object>) ignoreArrayStrategy).test(value));
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void value(String[] value, MatchStrategy matchStrategy, Predicate<String[]> ignoreStrategy) {
+        setArrayValue.accept(value, matchStrategy, ignoreStrategy, getArrayPropertyMapping.apply(value));
+    }
 }

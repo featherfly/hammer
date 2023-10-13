@@ -109,7 +109,8 @@ public class JdbcNativeTest extends JdbcTestBase {
         Connection conn = dataSource.getConnection();
         PreparedStatement prep = conn.prepareStatement("select * from user");
         ResultSet set = prep.executeQuery();
-
+        set.close();
+        prep.close();
         conn.close();
         System.out.println("conn.close()");
     }

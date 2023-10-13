@@ -21,6 +21,7 @@ import cn.featherfly.common.function.serializable.SerializableDoubleSupplier;
 import cn.featherfly.common.function.serializable.SerializableFunction;
 import cn.featherfly.common.function.serializable.SerializableIntSupplier;
 import cn.featherfly.common.function.serializable.SerializableLongSupplier;
+import cn.featherfly.common.function.serializable.SerializableStringSupplier;
 import cn.featherfly.common.function.serializable.SerializableSupplier;
 import cn.featherfly.common.function.serializable.SerializableToDateFunction;
 import cn.featherfly.common.function.serializable.SerializableToDoubleFunction;
@@ -32,6 +33,7 @@ import cn.featherfly.common.function.serializable.SerializableToLocalTimeFunctio
 import cn.featherfly.common.function.serializable.SerializableToLongFunction;
 import cn.featherfly.common.function.serializable.SerializableToNumberFunction;
 import cn.featherfly.common.function.serializable.SerializableToStringFunction;
+import cn.featherfly.common.operator.ComparisonOperator.MatchStrategy;
 
 /**
  * The Interface InNotInEntityExpression.
@@ -152,6 +154,28 @@ public interface InNotInEntityExpression<T> {
     /**
      * values in or not values in. 包含指定，sql中的in或者不包含指定，sql中的not in.
      *
+     * @param name          参数名称
+     * @param value         参数值
+     * @param matchStrategy the match strategy
+     * @return LogicExpression
+     */
+    void accept(SerializableToStringFunction<T> name, String value, MatchStrategy matchStrategy);
+
+    /**
+     * values in or not values in. 包含指定，sql中的in或者不包含指定，sql中的not in.
+     *
+     * @param name           参数名称
+     * @param value          参数值
+     * @param matchStrategy  the match strategy
+     * @param ignoreStrategy the ignore strategy
+     * @return LogicExpression
+     */
+    void accept(SerializableToStringFunction<T> name, String value, MatchStrategy matchStrategy,
+            Predicate<String> ignoreStrategy);
+
+    /**
+     * values in or not values in. 包含指定，sql中的in或者不包含指定，sql中的not in.
+     *
      * @param name  参数名称
      * @param value 参数值
      * @return LogicExpression
@@ -215,6 +239,28 @@ public interface InNotInEntityExpression<T> {
      * @return LogicExpression
      */
     <R> void accept(SerializableFunction<T, R> name, @SuppressWarnings("unchecked") R... value);
+
+    /**
+     * values in or not values in. 包含指定，sql中的in或者不包含指定，sql中的not in.
+     *
+     * @param name          参数名称
+     * @param value         参数值
+     * @param matchStrategy the match strategy
+     * @return LogicExpression
+     */
+    void accept(SerializableToStringFunction<T> name, String[] value, MatchStrategy matchStrategy);
+
+    /**
+     * values in or not values in. 包含指定，sql中的in或者不包含指定，sql中的not in.
+     *
+     * @param name           参数名称
+     * @param value          参数值
+     * @param matchStrategy  the match strategy
+     * @param ignoreStrategy the ignore strategy
+     * @return LogicExpression
+     */
+    void accept(SerializableToStringFunction<T> name, String[] value, MatchStrategy matchStrategy,
+            Predicate<String[]> ignoreStrategy);
 
     /**
      * values in or not values in. 包含指定，sql中的in或者不包含指定，sql中的not in.
@@ -304,6 +350,25 @@ public interface InNotInEntityExpression<T> {
      * @return LogicExpression
      */
     <R> void accept(SerializableSupplier<R> property, Predicate<R> ignoreStrategy);
+
+    /**
+     * values in or not values in. 包含指定，sql中的in或者不包含指定，sql中的not in.
+     *
+     * @param property      the property
+     * @param matchStrategy the match strategy
+     * @return LogicExpression
+     */
+    void accept(SerializableStringSupplier property, MatchStrategy matchStrategy);
+
+    /**
+     * values in or not values in. 包含指定，sql中的in或者不包含指定，sql中的not in.
+     *
+     * @param property       the property
+     * @param matchStrategy  the match strategy
+     * @param ignoreStrategy the ignore strategy
+     * @return LogicExpression
+     */
+    void accept(SerializableStringSupplier property, MatchStrategy matchStrategy, Predicate<String> ignoreStrategy);
 
     /**
      * values in or not values in. 包含指定，sql中的in或者不包含指定，sql中的not in.

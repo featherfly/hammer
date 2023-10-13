@@ -28,10 +28,10 @@ public interface BetweenAndEntityPropertyExpression<V>
      * entity great than function property expression.
      *
      * @param <R>  the generic type
-     * @param <RE> the generic type
+     * @param <E>  the generic type
      * @param name the name
      * @return entity great than function property expression.
      */
-    <R extends Collection<RE>,
-            RE> BetweenAndEntityPropertyExpression<RE> property(SerializableToCollectionFunction<V, R, RE> name);
+    <R extends Collection<E>,
+            E> BetweenAndEntityPropertyExpression<E> property(SerializableToCollectionFunction<V, R, E> name);
 }

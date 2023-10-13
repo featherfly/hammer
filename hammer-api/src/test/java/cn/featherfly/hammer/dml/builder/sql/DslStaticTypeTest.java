@@ -10,9 +10,6 @@ import org.testng.annotations.Test;
 import cn.featherfly.common.bean.function.BeanPropertySupplier;
 import cn.featherfly.common.bean.function.BeanPropertySupplierImpl;
 import cn.featherfly.common.function.ThreeArgusFunction;
-import cn.featherfly.hammer.dml.builder.sql.query.UserQuery;
-import cn.featherfly.hammer.dml.builder.sql.update.UserUpdate;
-import cn.featherfly.hammer.dml.builder.sql.update.UserUpdater;
 import cn.featherfly.hammer.dml.builder.sql.vo.User;
 import cn.featherfly.hammer.dml.builder.sql.vo.UserInfo;
 
@@ -26,7 +23,7 @@ import cn.featherfly.hammer.dml.builder.sql.vo.UserInfo;
 public class DslStaticTypeTest {
 
     public void testQuery() {
-        UserQuery userQuery = null;
+        //        UserQuery userQuery = null;
         // userQuery.find().properties().name().pwd().limit(1)
         // .single(UserQuery.class);
 
@@ -39,11 +36,11 @@ public class DslStaticTypeTest {
     }
 
     public void testUpdate() {
-        UserUpdate userUpdate = null;
-        userUpdate.name().set("yufei").age().increase(10).pwd().set("123").execute();
-
-        UserUpdater userUpdater = null;
-        userUpdater.update().name().set("yufei").age().increase(10).pwd().set("123").execute();
+        //        UserUpdate userUpdate = null;
+        //        userUpdate.name().set("yufei").age().increase(10).pwd().set("123").execute();
+        //
+        //        UserUpdater userUpdater = null;
+        //        userUpdater.update().name().set("yufei").age().increase(10).pwd().set("123").execute();
     }
 
     public void testDelete() {

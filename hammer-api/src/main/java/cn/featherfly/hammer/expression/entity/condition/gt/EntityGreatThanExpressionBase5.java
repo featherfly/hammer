@@ -12,6 +12,7 @@ import java.util.function.Predicate;
 
 import cn.featherfly.common.function.serializable.SerializableDateSupplier;
 import cn.featherfly.common.function.serializable.SerializableDoubleSupplier;
+import cn.featherfly.common.function.serializable.SerializableEnumSupplier;
 import cn.featherfly.common.function.serializable.SerializableFunction;
 import cn.featherfly.common.function.serializable.SerializableIntSupplier;
 import cn.featherfly.common.function.serializable.SerializableLocalDateSupplier;
@@ -23,6 +24,7 @@ import cn.featherfly.common.function.serializable.SerializableStringSupplier;
 import cn.featherfly.common.function.serializable.SerializableToDoubleFunction5;
 import cn.featherfly.common.function.serializable.SerializableToIntFunction5;
 import cn.featherfly.common.function.serializable.SerializableToLongFunction5;
+import cn.featherfly.common.operator.ComparisonOperator.MatchStrategy;
 import cn.featherfly.hammer.expression.condition.ConditionExpression;
 import cn.featherfly.hammer.expression.condition.LogicExpression;
 
@@ -30,16 +32,16 @@ import cn.featherfly.hammer.expression.condition.LogicExpression;
  * The Interface EntityGreatThanExpressionBase5.
  *
  * @author zhongj
- * @param <E>  the element type
- * @param <E2> the generic type
- * @param <E3> the generic type
- * @param <E4> the generic type
- * @param <E5> the generic type
+ * @param <T>  the first comparable type
+ * @param <T2> the second comparable type
+ * @param <T3> the third comparable type
+ * @param <T4> the fourth comparable type
+ * @param <T5> the fifth comparable type
  * @param <C>  the generic type
  * @param <L>  the generic type
  */
-public interface EntityGreatThanExpressionBase5<E, E2, E3, E4, E5, C extends ConditionExpression,
-        L extends LogicExpression<C, L>> extends EntityGreatThanExpressionBase4<E, E2, E3, E4, C, L> {
+public interface EntityGreatThanExpressionBase5<T, T2, T3, T4, T5, C extends ConditionExpression,
+        L extends LogicExpression<C, L>> extends EntityGreatThanExpressionBase4<T, T2, T3, T4, C, L> {
 
     /**
      * great than. 大于.
@@ -48,7 +50,7 @@ public interface EntityGreatThanExpressionBase5<E, E2, E3, E4, E5, C extends Con
      * @param value 参数值
      * @return LogicExpression
      */
-    L gt5(SerializableToIntFunction5<E5> name, int value);
+    L gt5(SerializableToIntFunction5<T5> name, int value);
 
     /**
      * great than. 大于.
@@ -58,7 +60,7 @@ public interface EntityGreatThanExpressionBase5<E, E2, E3, E4, E5, C extends Con
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
-    L gt5(SerializableToIntFunction5<E5> name, int value, IntPredicate ignoreStrategy);
+    L gt5(SerializableToIntFunction5<T5> name, int value, IntPredicate ignoreStrategy);
 
     /**
      * great than. 大于.
@@ -67,7 +69,7 @@ public interface EntityGreatThanExpressionBase5<E, E2, E3, E4, E5, C extends Con
      * @param value 参数值
      * @return LogicExpression
      */
-    L gt5(SerializableToLongFunction5<E5> name, long value);
+    L gt5(SerializableToLongFunction5<T5> name, long value);
 
     /**
      * great than. 大于.
@@ -77,7 +79,7 @@ public interface EntityGreatThanExpressionBase5<E, E2, E3, E4, E5, C extends Con
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
-    L gt5(SerializableToLongFunction5<E5> name, long value, LongPredicate ignoreStrategy);
+    L gt5(SerializableToLongFunction5<T5> name, long value, LongPredicate ignoreStrategy);
 
     /**
      * great than. 大于.
@@ -86,7 +88,7 @@ public interface EntityGreatThanExpressionBase5<E, E2, E3, E4, E5, C extends Con
      * @param value 参数值
      * @return LogicExpression
      */
-    L gt5(SerializableToDoubleFunction5<E5> name, double value);
+    L gt5(SerializableToDoubleFunction5<T5> name, double value);
 
     /**
      * great than. 大于.
@@ -96,7 +98,7 @@ public interface EntityGreatThanExpressionBase5<E, E2, E3, E4, E5, C extends Con
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
-    L gt5(SerializableToDoubleFunction5<E5> name, double value, DoublePredicate ignoreStrategy);
+    L gt5(SerializableToDoubleFunction5<T5> name, double value, DoublePredicate ignoreStrategy);
 
     /**
      * great than. 大于.
@@ -106,7 +108,7 @@ public interface EntityGreatThanExpressionBase5<E, E2, E3, E4, E5, C extends Con
      * @param value 参数值
      * @return LogicExpression
      */
-    <N extends Number> L gt5(SerializableFunction<E5, N> name, N value);
+    <N extends Number> L gt5(SerializableFunction<T5, N> name, N value);
 
     /**
      * great than. 大于.
@@ -117,7 +119,28 @@ public interface EntityGreatThanExpressionBase5<E, E2, E3, E4, E5, C extends Con
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
-    <N extends Number> L gt5(SerializableFunction<E5, N> name, N value, Predicate<N> ignoreStrategy);
+    <N extends Number> L gt5(SerializableFunction<T5, N> name, N value, Predicate<N> ignoreStrategy);
+
+    /**
+     * great than. 大于.
+     *
+     * @param <N>   number type
+     * @param name  参数名称
+     * @param value 参数值
+     * @return LogicExpression
+     */
+    <E extends Enum<E>> L gt5(SerializableFunction<T5, E> name, E value);
+
+    /**
+     * great than. 大于.
+     *
+     * @param <N>            number type
+     * @param name           参数名称
+     * @param value          参数值
+     * @param ignoreStrategy the ignore strategy
+     * @return LogicExpression
+     */
+    <E extends Enum<E>> L gt5(SerializableFunction<T5, E> name, E value, Predicate<E> ignoreStrategy);
 
     /**
      * great than. 大于.
@@ -127,7 +150,7 @@ public interface EntityGreatThanExpressionBase5<E, E2, E3, E4, E5, C extends Con
      * @param value 参数值
      * @return LogicExpression
      */
-    <D extends Date> L gt5(SerializableFunction<E5, D> name, D value);
+    <D extends Date> L gt5(SerializableFunction<T5, D> name, D value);
 
     /**
      * great than. 大于.
@@ -138,7 +161,7 @@ public interface EntityGreatThanExpressionBase5<E, E2, E3, E4, E5, C extends Con
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
-    <D extends Date> L gt5(SerializableFunction<E5, D> name, D value, Predicate<D> ignoreStrategy);
+    <D extends Date> L gt5(SerializableFunction<T5, D> name, D value, Predicate<D> ignoreStrategy);
 
     /**
      * great than. 大于.
@@ -147,7 +170,7 @@ public interface EntityGreatThanExpressionBase5<E, E2, E3, E4, E5, C extends Con
      * @param value 参数值
      * @return LogicExpression
      */
-    L gt5(SerializableFunction<E5, LocalTime> name, LocalTime value);
+    L gt5(SerializableFunction<T5, LocalTime> name, LocalTime value);
 
     /**
      * great than. 大于.
@@ -157,7 +180,7 @@ public interface EntityGreatThanExpressionBase5<E, E2, E3, E4, E5, C extends Con
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
-    L gt5(SerializableFunction<E5, LocalTime> name, LocalTime value, Predicate<LocalTime> ignoreStrategy);
+    L gt5(SerializableFunction<T5, LocalTime> name, LocalTime value, Predicate<LocalTime> ignoreStrategy);
 
     /**
      * great than. 大于.
@@ -166,7 +189,7 @@ public interface EntityGreatThanExpressionBase5<E, E2, E3, E4, E5, C extends Con
      * @param value 参数值
      * @return LogicExpression
      */
-    L gt5(SerializableFunction<E5, LocalDate> name, LocalDate value);
+    L gt5(SerializableFunction<T5, LocalDate> name, LocalDate value);
 
     /**
      * great than. 大于.
@@ -176,7 +199,7 @@ public interface EntityGreatThanExpressionBase5<E, E2, E3, E4, E5, C extends Con
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
-    L gt5(SerializableFunction<E5, LocalDate> name, LocalDate value, Predicate<LocalDate> ignoreStrategy);
+    L gt5(SerializableFunction<T5, LocalDate> name, LocalDate value, Predicate<LocalDate> ignoreStrategy);
 
     /**
      * great than. 大于.
@@ -185,7 +208,7 @@ public interface EntityGreatThanExpressionBase5<E, E2, E3, E4, E5, C extends Con
      * @param value 参数值
      * @return LogicExpression
      */
-    L gt5(SerializableFunction<E5, LocalDateTime> name, LocalDateTime value);
+    L gt5(SerializableFunction<T5, LocalDateTime> name, LocalDateTime value);
 
     /**
      * great than. 大于.
@@ -195,7 +218,7 @@ public interface EntityGreatThanExpressionBase5<E, E2, E3, E4, E5, C extends Con
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
-    L gt5(SerializableFunction<E5, LocalDateTime> name, LocalDateTime value, Predicate<LocalDateTime> ignoreStrategy);
+    L gt5(SerializableFunction<T5, LocalDateTime> name, LocalDateTime value, Predicate<LocalDateTime> ignoreStrategy);
 
     /**
      * great than. 大于.
@@ -204,7 +227,9 @@ public interface EntityGreatThanExpressionBase5<E, E2, E3, E4, E5, C extends Con
      * @param value 参数值
      * @return LogicExpression
      */
-    L gt5(SerializableFunction<E5, String> name, String value);
+    default L gt5(SerializableFunction<T5, String> name, String value) {
+        return gt5(name, value, MatchStrategy.AUTO);
+    }
 
     /**
      * great than. 大于.
@@ -214,7 +239,29 @@ public interface EntityGreatThanExpressionBase5<E, E2, E3, E4, E5, C extends Con
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
-    L gt5(SerializableFunction<E5, String> name, String value, Predicate<String> ignoreStrategy);
+    default L gt5(SerializableFunction<T5, String> name, String value, Predicate<String> ignoreStrategy) {
+        return gt5(name, value, MatchStrategy.AUTO, ignoreStrategy);
+    }
+
+    /**
+     * great than. 大于.
+     *
+     * @param name  参数名称
+     * @param value 参数值
+     * @return LogicExpression
+     */
+    L gt5(SerializableFunction<T5, String> name, String value, MatchStrategy matchStrategy);
+
+    /**
+     * great than. 大于.
+     *
+     * @param name           参数名称
+     * @param value          参数值
+     * @param ignoreStrategy the ignore strategy
+     * @return LogicExpression
+     */
+    L gt5(SerializableFunction<T5, String> name, String value, MatchStrategy matchStrategy,
+            Predicate<String> ignoreStrategy);
 
     /**
      * great than. 大于.
@@ -308,6 +355,25 @@ public interface EntityGreatThanExpressionBase5<E, E2, E3, E4, E5, C extends Con
     /**
      * great than. 大于.
      *
+     * @param <R>      the generic type
+     * @param property 对象属性
+     * @return LogicExpression
+     */
+    <E extends Enum<E>> L gt5(SerializableEnumSupplier<E> property);
+
+    /**
+     * great than. 大于.
+     *
+     * @param <R>            the generic type
+     * @param property       对象属性
+     * @param ignoreStrategy the ignore strategy
+     * @return LogicExpression
+     */
+    <E extends Enum<E>> L gt5(SerializableEnumSupplier<E> property, Predicate<E> ignoreStrategy);
+
+    /**
+     * great than. 大于.
+     *
      * @param property 对象属性
      * @return LogicExpression
      */
@@ -362,7 +428,9 @@ public interface EntityGreatThanExpressionBase5<E, E2, E3, E4, E5, C extends Con
      * @param property 对象属性
      * @return LogicExpression
      */
-    L gt5(SerializableStringSupplier property);
+    default L gt5(SerializableStringSupplier property) {
+        return gt5(property, MatchStrategy.AUTO);
+    }
 
     /**
      * great than. 大于.
@@ -371,6 +439,26 @@ public interface EntityGreatThanExpressionBase5<E, E2, E3, E4, E5, C extends Con
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
-    L gt5(SerializableStringSupplier property, Predicate<String> ignoreStrategy);
+    default L gt5(SerializableStringSupplier property, Predicate<String> ignoreStrategy) {
+        return gt5(property, MatchStrategy.AUTO, ignoreStrategy);
+    }
+
+    /**
+     * great than. 大于.
+     *
+     * @param property 对象属性
+     * @return LogicExpression
+     */
+    L gt5(SerializableStringSupplier property, MatchStrategy matchStrategy);
+
+    /**
+     * great than. 大于.
+     *
+     * @param property       对象属性
+     * @param matchStrategy  the match strategy
+     * @param ignoreStrategy the ignore strategy
+     * @return LogicExpression
+     */
+    L gt5(SerializableStringSupplier property, MatchStrategy matchStrategy, Predicate<String> ignoreStrategy);
 
 }

@@ -12,6 +12,7 @@ import java.util.function.Predicate;
 
 import cn.featherfly.common.function.serializable.SerializableDateSupplier;
 import cn.featherfly.common.function.serializable.SerializableDoubleSupplier;
+import cn.featherfly.common.function.serializable.SerializableEnumSupplier;
 import cn.featherfly.common.function.serializable.SerializableFunction;
 import cn.featherfly.common.function.serializable.SerializableIntSupplier;
 import cn.featherfly.common.function.serializable.SerializableLocalDateSupplier;
@@ -23,6 +24,7 @@ import cn.featherfly.common.function.serializable.SerializableStringSupplier;
 import cn.featherfly.common.function.serializable.SerializableToDoubleFunction;
 import cn.featherfly.common.function.serializable.SerializableToIntFunction;
 import cn.featherfly.common.function.serializable.SerializableToLongFunction;
+import cn.featherfly.common.operator.ComparisonOperator.MatchStrategy;
 import cn.featherfly.hammer.expression.condition.ConditionExpression;
 import cn.featherfly.hammer.expression.condition.LogicExpression;
 
@@ -30,11 +32,11 @@ import cn.featherfly.hammer.expression.condition.LogicExpression;
  * The Interface EntityGreatEqualsExpression.
  *
  * @author zhongj
- * @param <E> the element type
+ * @param <T> the comparable type
  * @param <C> the generic type
  * @param <L> the generic type
  */
-public interface EntityGreatEqualsExpression<E, C extends ConditionExpression, L extends LogicExpression<C, L>>
+public interface EntityGreatEqualsExpression<T, C extends ConditionExpression, L extends LogicExpression<C, L>>
         extends ConditionExpression {
 
     /**
@@ -44,7 +46,7 @@ public interface EntityGreatEqualsExpression<E, C extends ConditionExpression, L
      * @param value 参数值
      * @return LogicExpression
      */
-    L ge(SerializableToIntFunction<E> name, int value);
+    L ge(SerializableToIntFunction<T> name, int value);
 
     /**
      * great and equals. 大于等于.
@@ -54,7 +56,7 @@ public interface EntityGreatEqualsExpression<E, C extends ConditionExpression, L
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
-    L ge(SerializableToIntFunction<E> name, int value, IntPredicate ignoreStrategy);
+    L ge(SerializableToIntFunction<T> name, int value, IntPredicate ignoreStrategy);
 
     /**
      * great and equals. 大于等于.
@@ -63,7 +65,7 @@ public interface EntityGreatEqualsExpression<E, C extends ConditionExpression, L
      * @param value 参数值
      * @return LogicExpression
      */
-    L ge(SerializableToLongFunction<E> name, long value);
+    L ge(SerializableToLongFunction<T> name, long value);
 
     /**
      * great and equals. 大于等于.
@@ -73,7 +75,7 @@ public interface EntityGreatEqualsExpression<E, C extends ConditionExpression, L
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
-    L ge(SerializableToLongFunction<E> name, long value, LongPredicate ignoreStrategy);
+    L ge(SerializableToLongFunction<T> name, long value, LongPredicate ignoreStrategy);
 
     /**
      * great and equals. 大于等于.
@@ -82,7 +84,7 @@ public interface EntityGreatEqualsExpression<E, C extends ConditionExpression, L
      * @param value 参数值
      * @return LogicExpression
      */
-    L ge(SerializableToDoubleFunction<E> name, double value);
+    L ge(SerializableToDoubleFunction<T> name, double value);
 
     /**
      * great and equals. 大于等于.
@@ -92,7 +94,7 @@ public interface EntityGreatEqualsExpression<E, C extends ConditionExpression, L
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
-    L ge(SerializableToDoubleFunction<E> name, double value, DoublePredicate ignoreStrategy);
+    L ge(SerializableToDoubleFunction<T> name, double value, DoublePredicate ignoreStrategy);
 
     /**
      * great and equals. 大于等于.
@@ -102,7 +104,7 @@ public interface EntityGreatEqualsExpression<E, C extends ConditionExpression, L
      * @param value 参数值
      * @return LogicExpression
      */
-    <N extends Number> L ge(SerializableFunction<E, N> name, N value);
+    <N extends Number> L ge(SerializableFunction<T, N> name, N value);
 
     /**
      * great and equals. 大于等于.
@@ -113,7 +115,28 @@ public interface EntityGreatEqualsExpression<E, C extends ConditionExpression, L
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
-    <N extends Number> L ge(SerializableFunction<E, N> name, N value, Predicate<N> ignoreStrategy);
+    <N extends Number> L ge(SerializableFunction<T, N> name, N value, Predicate<N> ignoreStrategy);
+
+    /**
+     * great and equals. 大于等于.
+     *
+     * @param <E>   the element type
+     * @param name  参数名称
+     * @param value 参数值
+     * @return LogicExpression
+     */
+    <E extends Enum<E>> L ge(SerializableFunction<T, E> name, E value);
+
+    /**
+     * great and equals. 大于等于.
+     *
+     * @param <E>            the element type
+     * @param name           参数名称
+     * @param value          参数值
+     * @param ignoreStrategy the ignore strategy
+     * @return LogicExpression
+     */
+    <E extends Enum<E>> L ge(SerializableFunction<T, E> name, E value, Predicate<E> ignoreStrategy);
 
     /**
      * great and equals. 大于等于.
@@ -123,7 +146,7 @@ public interface EntityGreatEqualsExpression<E, C extends ConditionExpression, L
      * @param value 参数值
      * @return LogicExpression
      */
-    <D extends Date> L ge(SerializableFunction<E, D> name, D value);
+    <D extends Date> L ge(SerializableFunction<T, D> name, D value);
 
     /**
      * great and equals. 大于等于.
@@ -134,7 +157,7 @@ public interface EntityGreatEqualsExpression<E, C extends ConditionExpression, L
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
-    <D extends Date> L ge(SerializableFunction<E, D> name, D value, Predicate<D> ignoreStrategy);
+    <D extends Date> L ge(SerializableFunction<T, D> name, D value, Predicate<D> ignoreStrategy);
 
     /**
      * great and equals. 大于等于.
@@ -143,7 +166,7 @@ public interface EntityGreatEqualsExpression<E, C extends ConditionExpression, L
      * @param value 参数值
      * @return LogicExpression
      */
-    L ge(SerializableFunction<E, LocalTime> name, LocalTime value);
+    L ge(SerializableFunction<T, LocalTime> name, LocalTime value);
 
     /**
      * great and equals. 大于等于.
@@ -153,7 +176,7 @@ public interface EntityGreatEqualsExpression<E, C extends ConditionExpression, L
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
-    L ge(SerializableFunction<E, LocalTime> name, LocalTime value, Predicate<LocalTime> ignoreStrategy);
+    L ge(SerializableFunction<T, LocalTime> name, LocalTime value, Predicate<LocalTime> ignoreStrategy);
 
     /**
      * great and equals. 大于等于.
@@ -162,7 +185,7 @@ public interface EntityGreatEqualsExpression<E, C extends ConditionExpression, L
      * @param value 参数值
      * @return LogicExpression
      */
-    L ge(SerializableFunction<E, LocalDate> name, LocalDate value);
+    L ge(SerializableFunction<T, LocalDate> name, LocalDate value);
 
     /**
      * great and equals. 大于等于.
@@ -172,7 +195,7 @@ public interface EntityGreatEqualsExpression<E, C extends ConditionExpression, L
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
-    L ge(SerializableFunction<E, LocalDate> name, LocalDate value, Predicate<LocalDate> ignoreStrategy);
+    L ge(SerializableFunction<T, LocalDate> name, LocalDate value, Predicate<LocalDate> ignoreStrategy);
 
     /**
      * great and equals. 大于等于.
@@ -181,7 +204,7 @@ public interface EntityGreatEqualsExpression<E, C extends ConditionExpression, L
      * @param value 参数值
      * @return LogicExpression
      */
-    L ge(SerializableFunction<E, LocalDateTime> name, LocalDateTime value);
+    L ge(SerializableFunction<T, LocalDateTime> name, LocalDateTime value);
 
     /**
      * great and equals. 大于等于.
@@ -191,7 +214,7 @@ public interface EntityGreatEqualsExpression<E, C extends ConditionExpression, L
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
-    L ge(SerializableFunction<E, LocalDateTime> name, LocalDateTime value, Predicate<LocalDateTime> ignoreStrategy);
+    L ge(SerializableFunction<T, LocalDateTime> name, LocalDateTime value, Predicate<LocalDateTime> ignoreStrategy);
 
     /**
      * great and equals. 大于等于.
@@ -200,7 +223,9 @@ public interface EntityGreatEqualsExpression<E, C extends ConditionExpression, L
      * @param value 参数值
      * @return LogicExpression
      */
-    L ge(SerializableFunction<E, String> name, String value);
+    default L ge(SerializableFunction<T, String> name, String value) {
+        return ge(name, value, MatchStrategy.AUTO);
+    }
 
     /**
      * great and equals. 大于等于.
@@ -210,7 +235,31 @@ public interface EntityGreatEqualsExpression<E, C extends ConditionExpression, L
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
-    L ge(SerializableFunction<E, String> name, String value, Predicate<String> ignoreStrategy);
+    default L ge(SerializableFunction<T, String> name, String value, Predicate<String> ignoreStrategy) {
+        return ge(name, value, MatchStrategy.AUTO, ignoreStrategy);
+    }
+
+    /**
+     * great and equals. 大于等于.
+     *
+     * @param name          参数名称
+     * @param value         参数值
+     * @param matchStrategy the match strategy
+     * @return LogicExpression
+     */
+    L ge(SerializableFunction<T, String> name, String value, MatchStrategy matchStrategy);
+
+    /**
+     * great and equals. 大于等于.
+     *
+     * @param name           参数名称
+     * @param value          参数值
+     * @param matchStrategy  the match strategy
+     * @param ignoreStrategy the ignore strategy
+     * @return LogicExpression
+     */
+    L ge(SerializableFunction<T, String> name, String value, MatchStrategy matchStrategy,
+            Predicate<String> ignoreStrategy);
 
     /**
      * great and equals. 大于等于.
@@ -304,6 +353,25 @@ public interface EntityGreatEqualsExpression<E, C extends ConditionExpression, L
     /**
      * great and equals. 大于等于.
      *
+     * @param <E>      the element type
+     * @param property 对象属性
+     * @return LogicExpression
+     */
+    <E extends Enum<E>> L ge(SerializableEnumSupplier<E> property);
+
+    /**
+     * great and equals. 大于等于.
+     *
+     * @param <E>            the element type
+     * @param property       对象属性
+     * @param ignoreStrategy the ignore strategy
+     * @return LogicExpression
+     */
+    <E extends Enum<E>> L ge(SerializableEnumSupplier<E> property, Predicate<E> ignoreStrategy);
+
+    /**
+     * great and equals. 大于等于.
+     *
      * @param property 对象属性
      * @return LogicExpression
      */
@@ -358,7 +426,9 @@ public interface EntityGreatEqualsExpression<E, C extends ConditionExpression, L
      * @param property 对象属性
      * @return LogicExpression
      */
-    L ge(SerializableStringSupplier property);
+    default L ge(SerializableStringSupplier property) {
+        return ge(property, MatchStrategy.AUTO);
+    }
 
     /**
      * great and equals. 大于等于.
@@ -367,5 +437,26 @@ public interface EntityGreatEqualsExpression<E, C extends ConditionExpression, L
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
-    L ge(SerializableStringSupplier property, Predicate<String> ignoreStrategy);
+    default L ge(SerializableStringSupplier property, Predicate<String> ignoreStrategy) {
+        return ge(property, MatchStrategy.AUTO, ignoreStrategy);
+    }
+
+    /**
+     * great and equals. 大于等于.
+     *
+     * @param property      对象属性
+     * @param matchStrategy the match strategy
+     * @return LogicExpression
+     */
+    L ge(SerializableStringSupplier property, MatchStrategy matchStrategy);
+
+    /**
+     * great and equals. 大于等于.
+     *
+     * @param property       对象属性
+     * @param matchStrategy  the match strategy
+     * @param ignoreStrategy the ignore strategy
+     * @return LogicExpression
+     */
+    L ge(SerializableStringSupplier property, MatchStrategy matchStrategy, Predicate<String> ignoreStrategy);
 }

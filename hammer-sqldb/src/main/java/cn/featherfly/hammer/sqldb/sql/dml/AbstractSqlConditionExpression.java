@@ -6,7 +6,6 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
-import java.util.function.Predicate;
 
 import com.speedment.common.tuple.Tuple2;
 import com.speedment.common.tuple.Tuple3;
@@ -33,6 +32,7 @@ import cn.featherfly.common.repository.Params;
 import cn.featherfly.common.repository.builder.BuilderException;
 import cn.featherfly.common.repository.builder.BuilderExceptionCode;
 import cn.featherfly.common.repository.mapping.PropertyMapping.Mode;
+import cn.featherfly.hammer.config.dsl.ConditionConfig;
 import cn.featherfly.hammer.expression.condition.ConditionExpression;
 import cn.featherfly.hammer.expression.condition.Expression;
 import cn.featherfly.hammer.expression.condition.LogicExpression;
@@ -52,12 +52,12 @@ public abstract class AbstractSqlConditionExpression<C extends ConditionExpressi
     /**
      * Instantiates a new abstract sql condition expression.
      *
-     * @param parent         parent group
-     * @param dialect        dialect
-     * @param ignoreStrategy the ignore strategy
+     * @param parent          parent group
+     * @param dialect         dialect
+     * @param conditionConfig the condition config
      */
-    protected AbstractSqlConditionExpression(L parent, Dialect dialect, Predicate<?> ignoreStrategy) {
-        super(ignoreStrategy);
+    protected AbstractSqlConditionExpression(L parent, Dialect dialect, ConditionConfig<?> conditionConfig) {
+        super(conditionConfig);
         //        AssertIllegalArgument.isNotNull(ignoreStrategy, "ignoreStrategy");
         //        this.ignoreStrategy = ignoreStrategy;
         this.dialect = dialect;

@@ -4,9 +4,11 @@ package cn.featherfly.hammer.sqldb.jdbc.dsl.entity.query;
 import java.util.function.Consumer;
 
 import cn.featherfly.common.db.mapping.JdbcMappingFactory;
+import cn.featherfly.hammer.config.dsl.QueryConfig;
 import cn.featherfly.hammer.dsl.entity.query.EntityQueryConditionGroup;
+import cn.featherfly.hammer.dsl.entity.query.EntityQueryConditionGroupLogic;
 import cn.featherfly.hammer.dsl.entity.query.EntityQueryFetchedProperties;
-import cn.featherfly.hammer.expression.condition.ConditionGroupConfig;
+import cn.featherfly.hammer.expression.entity.query.EntityQueryExpression;
 import cn.featherfly.hammer.expression.entity.query.EntityQuerySortExpression;
 import cn.featherfly.hammer.sqldb.jdbc.SqlPageFactory;
 import cn.featherfly.hammer.sqldb.jdbc.dsl.entity.EntitySqlQueryRelation;
@@ -47,7 +49,7 @@ public class EntitySqlQueryFetchedProperties<E>
      * {@inheritDoc}
      */
     @Override
-    public EntityQueryConditionGroup<E> where(Consumer<ConditionGroupConfig<EntityQueryConditionGroup<E>>> consumer) {
+    public EntityQueryConditionGroup<E> where(Consumer<EntityQueryConditionGroup<E>> consumer) {
         EntitySqlQueryExpression<E> exp = new EntitySqlQueryExpression<>(factory, sqlPageFactory, queryRelation);
         if (consumer != null) {
             consumer.accept(exp);
@@ -62,5 +64,17 @@ public class EntitySqlQueryFetchedProperties<E>
     public EntityQuerySortExpression<E> sort() {
         // YUFEI_TODO 后续加入EntityQueryValueSortExpression
         return new EntitySqlQueryExpression<>(factory, sqlPageFactory, queryRelation);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public EntityQueryExpression<E, EntityQueryConditionGroup<E>, EntityQueryConditionGroupLogic<E>,
+            EntityQuerySortExpression<E>> configure(Consumer<QueryConfig> configure) {
+        if (configure != null) {
+            configure.accept(queryRelation.getConfig());
+        }
+        return this;
     }
 }

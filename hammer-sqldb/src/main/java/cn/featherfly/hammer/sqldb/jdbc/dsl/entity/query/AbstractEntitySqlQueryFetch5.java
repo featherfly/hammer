@@ -7,7 +7,6 @@ import cn.featherfly.common.db.mapping.JdbcMappingFactory;
 import cn.featherfly.hammer.dsl.entity.query.EntityQueryConditionGroup5;
 import cn.featherfly.hammer.dsl.entity.query.EntityQueryConditionGroupLogic5;
 import cn.featherfly.hammer.expression.api.Sortable;
-import cn.featherfly.hammer.expression.condition.ConditionGroupConfig;
 import cn.featherfly.hammer.expression.entity.EntityWhereExpression5;
 import cn.featherfly.hammer.expression.entity.query.EntityQuerySortExpression5;
 import cn.featherfly.hammer.sqldb.jdbc.SqlPageFactory;
@@ -54,7 +53,7 @@ public abstract class AbstractEntitySqlQueryFetch5<E, E2, E3, E4, E5, RS> extend
      */
     @Override
     public EntityQueryConditionGroup5<E, E2, E3, E4, E5, RS> where(
-            Consumer<ConditionGroupConfig<EntityQueryConditionGroup5<E, E2, E3, E4, E5, RS>>> consumer) {
+            Consumer<EntityQueryConditionGroup5<E, E2, E3, E4, E5, RS>> consumer) {
         EntitySqlQueryExpression5<E, E2, E3, E4, E5,
                 RS> exp = new EntitySqlQueryExpression5<>(factory, sqlPageFactory, queryRelation);
         if (consumer != null) {

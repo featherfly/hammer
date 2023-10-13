@@ -11,11 +11,14 @@ import cn.featherfly.common.function.serializable.SerializableDoubleSupplier;
 import cn.featherfly.common.function.serializable.SerializableFunction;
 import cn.featherfly.common.function.serializable.SerializableIntSupplier;
 import cn.featherfly.common.function.serializable.SerializableLongSupplier;
+import cn.featherfly.common.function.serializable.SerializableStringSupplier;
 import cn.featherfly.common.function.serializable.SerializableSupplier;
 import cn.featherfly.common.function.serializable.SerializableToDoubleFunction;
 import cn.featherfly.common.function.serializable.SerializableToDoubleFunction5;
 import cn.featherfly.common.function.serializable.SerializableToIntFunction5;
 import cn.featherfly.common.function.serializable.SerializableToLongFunction5;
+import cn.featherfly.common.function.serializable.SerializableToStringFunction;
+import cn.featherfly.common.operator.ComparisonOperator.MatchStrategy;
 import cn.featherfly.hammer.expression.condition.ConditionExpression;
 import cn.featherfly.hammer.expression.condition.LogicExpression;
 
@@ -23,16 +26,16 @@ import cn.featherfly.hammer.expression.condition.LogicExpression;
  * The Interface EntityNotInExpressionBase5.
  *
  * @author zhongj
- * @param <E>  the element type
- * @param <E2> the generic type
- * @param <E3> the generic type
- * @param <E4> the generic type
- * @param <E5> the generic type
+ * @param <T>  the element type
+ * @param <T2> the generic type
+ * @param <T3> the generic type
+ * @param <T4> the generic type
+ * @param <T5> the generic type
  * @param <C>  the generic type
  * @param <L>  the generic type
  */
-public interface EntityNotInExpressionBase5<E, E2, E3, E4, E5, C extends ConditionExpression,
-        L extends LogicExpression<C, L>> extends EntityNotInExpressionBase4<E, E2, E3, E4, C, L> {
+public interface EntityNotInExpressionBase5<T, T2, T3, T4, T5, C extends ConditionExpression,
+        L extends LogicExpression<C, L>> extends EntityNotInExpressionBase4<T, T2, T3, T4, C, L> {
 
     /**
      * values not in. 不包含指定，sql中的not in.
@@ -42,7 +45,7 @@ public interface EntityNotInExpressionBase5<E, E2, E3, E4, E5, C extends Conditi
      * @param value 参数值
      * @return LogicExpression
      */
-    <R> L ni5(SerializableFunction<E5, R> name, R value);
+    <R> L ni5(SerializableFunction<T5, R> name, R value);
 
     /**
      * values not in. 不包含指定，sql中的not in.
@@ -53,7 +56,7 @@ public interface EntityNotInExpressionBase5<E, E2, E3, E4, E5, C extends Conditi
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
-    <R> L ni5(SerializableFunction<E5, R> name, R value, Predicate<R> ignoreStrategy);
+    <R> L ni5(SerializableFunction<T5, R> name, R value, Predicate<R> ignoreStrategy);
 
     /**
      * values not in. 不包含指定，sql中的not in.
@@ -62,7 +65,7 @@ public interface EntityNotInExpressionBase5<E, E2, E3, E4, E5, C extends Conditi
      * @param value 参数值
      * @return LogicExpression
      */
-    L ni5(SerializableToIntFunction5<E5> name, int value);
+    L ni5(SerializableToIntFunction5<T5> name, int value);
 
     /**
      * values not in. 不包含指定，sql中的not in.
@@ -72,7 +75,7 @@ public interface EntityNotInExpressionBase5<E, E2, E3, E4, E5, C extends Conditi
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
-    L ni5(SerializableToIntFunction5<E5> name, int value, IntPredicate ignoreStrategy);
+    L ni5(SerializableToIntFunction5<T5> name, int value, IntPredicate ignoreStrategy);
 
     /**
      * values not in. 不包含指定，sql中的not in.
@@ -81,7 +84,7 @@ public interface EntityNotInExpressionBase5<E, E2, E3, E4, E5, C extends Conditi
      * @param value 参数值
      * @return LogicExpression
      */
-    L ni5(SerializableToLongFunction5<E5> name, long value);
+    L ni5(SerializableToLongFunction5<T5> name, long value);
 
     /**
      * values not in. 不包含指定，sql中的not in.
@@ -91,7 +94,7 @@ public interface EntityNotInExpressionBase5<E, E2, E3, E4, E5, C extends Conditi
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
-    L ni5(SerializableToLongFunction5<E5> name, long value, LongPredicate ignoreStrategy);
+    L ni5(SerializableToLongFunction5<T5> name, long value, LongPredicate ignoreStrategy);
 
     /**
      * values not in. 不包含指定，sql中的not in.
@@ -100,7 +103,7 @@ public interface EntityNotInExpressionBase5<E, E2, E3, E4, E5, C extends Conditi
      * @param value 参数值
      * @return LogicExpression
      */
-    L ni5(SerializableToDoubleFunction<E5> name, double value);
+    L ni5(SerializableToDoubleFunction<T5> name, double value);
 
     /**
      * values not in. 不包含指定，sql中的not in.
@@ -110,7 +113,7 @@ public interface EntityNotInExpressionBase5<E, E2, E3, E4, E5, C extends Conditi
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
-    L ni5(SerializableToDoubleFunction<E5> name, double value, DoublePredicate ignoreStrategy);
+    L ni5(SerializableToDoubleFunction<T5> name, double value, DoublePredicate ignoreStrategy);
 
     /**
      * values not in. 不包含指定，sql中的not in.
@@ -120,37 +123,34 @@ public interface EntityNotInExpressionBase5<E, E2, E3, E4, E5, C extends Conditi
      * @param value 参数值
      * @return LogicExpression
      */
-    <R> L ni5(SerializableFunction<E5, R> name, @SuppressWarnings("unchecked") R... value);
+    <R> L ni5(SerializableFunction<T5, R> name, @SuppressWarnings("unchecked") R... value);
 
     /**
      * values not in. 不包含指定，sql中的not in.
      *
-     * @param <R>   the generic type
      * @param name  参数名称
      * @param value 参数值
      * @return LogicExpression
      */
-    L ni5(SerializableToIntFunction5<E5> name, int... value);
+    L ni5(SerializableToIntFunction5<T5> name, int... value);
 
     /**
      * values not in. 不包含指定，sql中的not in.
      *
-     * @param <R>   the generic type
      * @param name  参数名称
      * @param value 参数值
      * @return LogicExpression
      */
-    L ni5(SerializableToLongFunction5<E5> name, long... value);
+    L ni5(SerializableToLongFunction5<T5> name, long... value);
 
     /**
      * values not in. 不包含指定，sql中的not in.
      *
-     * @param <R>   the generic type
      * @param name  参数名称
      * @param value 参数值
      * @return LogicExpression
      */
-    L ni5(SerializableToDoubleFunction5<E5> name, double... value);
+    L ni5(SerializableToDoubleFunction5<T5> name, double... value);
 
     /**
      * values not in. 不包含指定，sql中的not in.
@@ -161,40 +161,37 @@ public interface EntityNotInExpressionBase5<E, E2, E3, E4, E5, C extends Conditi
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
-    <R> L ni5(SerializableFunction<E5, R> name, R[] value, Predicate<R[]> ignoreStrategy);
+    <R> L ni5(SerializableFunction<T5, R> name, R[] value, Predicate<R[]> ignoreStrategy);
 
     /**
      * values not in. 不包含指定，sql中的not in.
      *
-     * @param <R>            the generic type
      * @param name           参数名称
      * @param value          参数值
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
-    L ni5(SerializableToIntFunction5<E5> name, int[] value, Predicate<int[]> ignoreStrategy);
+    L ni5(SerializableToIntFunction5<T5> name, int[] value, Predicate<int[]> ignoreStrategy);
 
     /**
      * values not in. 不包含指定，sql中的not in.
      *
-     * @param <R>            the generic type
      * @param name           参数名称
      * @param value          参数值
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
-    L ni5(SerializableToLongFunction5<E5> name, long[] value, Predicate<long[]> ignoreStrategy);
+    L ni5(SerializableToLongFunction5<T5> name, long[] value, Predicate<long[]> ignoreStrategy);
 
     /**
      * values not in. 不包含指定，sql中的not in.
      *
-     * @param <R>            the generic type
      * @param name           参数名称
      * @param value          参数值
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
-    L ni5(SerializableToDoubleFunction5<E5> name, double[] value, Predicate<double[]> ignoreStrategy);
+    L ni5(SerializableToDoubleFunction5<T5> name, double[] value, Predicate<double[]> ignoreStrategy);
 
     /**
      * values not in. 不包含指定，sql中的not in.
@@ -204,7 +201,7 @@ public interface EntityNotInExpressionBase5<E, E2, E3, E4, E5, C extends Conditi
      * @param value 参数值
      * @return LogicExpression
      */
-    <R> L ni5(SerializableFunction<E5, R> name, Collection<R> value);
+    <R> L ni5(SerializableFunction<T5, R> name, Collection<R> value);
 
     /**
      * values not in. 不包含指定，sql中的not in.
@@ -215,7 +212,51 @@ public interface EntityNotInExpressionBase5<E, E2, E3, E4, E5, C extends Conditi
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
-    <R> L ni5(SerializableFunction<E5, R> name, Collection<R> value, Predicate<Collection<R>> ignoreStrategy);
+    <R> L ni5(SerializableFunction<T5, R> name, Collection<R> value, Predicate<Collection<R>> ignoreStrategy);
+
+    /**
+     * values not in. 不包含指定，sql中的not in.
+     *
+     * @param name          参数名称
+     * @param value         参数值
+     * @param matchStrategy the match strategy
+     * @return LogicExpression
+     */
+    L ni5(SerializableToStringFunction<T5> name, String value, MatchStrategy matchStrategy);
+
+    /**
+     * values not in. 不包含指定，sql中的not in.
+     *
+     * @param name           参数名称
+     * @param value          参数值
+     * @param matchStrategy  the match strategy
+     * @param ignoreStrategy the ignore strategy
+     * @return LogicExpression
+     */
+    L ni5(SerializableToStringFunction<T5> name, String value, MatchStrategy matchStrategy,
+            Predicate<String> ignoreStrategy);
+
+    /**
+     * values not in. 不包含指定，sql中的not in.
+     *
+     * @param name          参数名称
+     * @param value         参数值
+     * @param matchStrategy the match strategy
+     * @return LogicExpression
+     */
+    L ni5(SerializableToStringFunction<T5> name, String[] value, MatchStrategy matchStrategy);
+
+    /**
+     * values not in. 不包含指定，sql中的not in.
+     *
+     * @param name           参数名称
+     * @param value          参数值
+     * @param matchStrategy  the match strategy
+     * @param ignoreStrategy the ignore strategy
+     * @return LogicExpression
+     */
+    L ni5(SerializableToStringFunction<T5> name, String[] value, MatchStrategy matchStrategy,
+            Predicate<String[]> ignoreStrategy);
 
     /**
      * values not in. 不包含指定，sql中的not in.
@@ -239,7 +280,6 @@ public interface EntityNotInExpressionBase5<E, E2, E3, E4, E5, C extends Conditi
     /**
      * values not in. 不包含指定，sql中的not in.
      *
-     * @param <R>      the generic type
      * @param property 对象属性
      * @return LogicExpression
      */
@@ -248,7 +288,6 @@ public interface EntityNotInExpressionBase5<E, E2, E3, E4, E5, C extends Conditi
     /**
      * values not in. 不包含指定，sql中的not in.
      *
-     * @param <R>            the generic type
      * @param property       对象属性
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
@@ -258,7 +297,6 @@ public interface EntityNotInExpressionBase5<E, E2, E3, E4, E5, C extends Conditi
     /**
      * values not in. 不包含指定，sql中的not in.
      *
-     * @param <R>      the generic type
      * @param property 对象属性
      * @return LogicExpression
      */
@@ -267,7 +305,6 @@ public interface EntityNotInExpressionBase5<E, E2, E3, E4, E5, C extends Conditi
     /**
      * values not in. 不包含指定，sql中的not in.
      *
-     * @param <R>            the generic type
      * @param property       对象属性
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
@@ -277,7 +314,6 @@ public interface EntityNotInExpressionBase5<E, E2, E3, E4, E5, C extends Conditi
     /**
      * values not in. 不包含指定，sql中的not in.
      *
-     * @param <R>      the generic type
      * @param property 对象属性
      * @return LogicExpression
      */
@@ -291,4 +327,23 @@ public interface EntityNotInExpressionBase5<E, E2, E3, E4, E5, C extends Conditi
      * @return LogicExpression
      */
     L ni5(SerializableDoubleSupplier property, DoublePredicate ignoreStrategy);
+
+    /**
+     * values not in. 不包含指定，sql中的not in.
+     *
+     * @param property      对象属性
+     * @param matchStrategy the match strategy
+     * @return LogicExpression
+     */
+    L ni5(SerializableStringSupplier property, MatchStrategy matchStrategy);
+
+    /**
+     * values not in. 不包含指定，sql中的not in.
+     *
+     * @param property       对象属性
+     * @param matchStrategy  the match strategy
+     * @param ignoreStrategy the ignore strategy
+     * @return LogicExpression
+     */
+    L ni5(SerializableStringSupplier property, MatchStrategy matchStrategy, Predicate<String> ignoreStrategy);
 }

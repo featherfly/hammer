@@ -10,6 +10,7 @@
  */
 package cn.featherfly.hammer.sqldb.jdbc.dsl.entity.condition;
 
+import java.util.concurrent.atomic.AtomicInteger;
 import java.util.function.Predicate;
 
 import cn.featherfly.common.function.serializable.SerializableFunction;
@@ -42,7 +43,7 @@ public class MulitiEntityEndWithExpressionImpl<C extends ConditionExpression, L 
      */
     @Override
     public <E> L ew(int index, SerializableFunction<E, String> name, String value, MatchStrategy matchStrategy) {
-        return proxy.ew0(index, name, value, matchStrategy, ignoreStrategy);
+        return proxy.ew0(new AtomicInteger(index), name, value, matchStrategy, getIgnoreStrategy());
     }
 
     /**
@@ -51,7 +52,7 @@ public class MulitiEntityEndWithExpressionImpl<C extends ConditionExpression, L 
     @Override
     public <E> L ew(int index, SerializableFunction<E, String> name, String value, MatchStrategy matchStrategy,
             Predicate<String> ignoreStrategy) {
-        return proxy.ew0(index, name, value, matchStrategy, ignoreStrategy);
+        return proxy.ew0(new AtomicInteger(index), name, value, matchStrategy, ignoreStrategy);
     }
 
     /**
@@ -59,7 +60,7 @@ public class MulitiEntityEndWithExpressionImpl<C extends ConditionExpression, L 
      */
     @Override
     public L ew(int index, SerializableSupplier<String> property, MatchStrategy matchStrategy) {
-        return proxy.ew0(index, property, matchStrategy, ignoreStrategy);
+        return proxy.ew0(new AtomicInteger(index), property, matchStrategy, getIgnoreStrategy());
     }
 
     /**
@@ -68,6 +69,6 @@ public class MulitiEntityEndWithExpressionImpl<C extends ConditionExpression, L 
     @Override
     public L ew(int index, SerializableSupplier<String> property, MatchStrategy matchStrategy,
             Predicate<String> ignoreStrategy) {
-        return proxy.ew0(index, property, matchStrategy, ignoreStrategy);
+        return proxy.ew0(new AtomicInteger(index), property, matchStrategy, ignoreStrategy);
     }
 }

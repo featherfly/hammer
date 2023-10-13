@@ -1,6 +1,7 @@
 
 package cn.featherfly.hammer.sqldb.jdbc.dsl.entity;
 
+import static org.junit.Assert.assertFalse;
 import static org.testng.Assert.assertEquals;
 import static org.testng.Assert.assertNotEquals;
 import static org.testng.Assert.assertNotNull;
@@ -8,10 +9,14 @@ import static org.testng.Assert.assertTrue;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.function.Predicate;
 
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.BeforeTest;
 import org.testng.annotations.Test;
+
+import com.speedment.common.tuple.MutableTuples;
+import com.speedment.common.tuple.mutable.MutableTuple1;
 
 import cn.featherfly.common.lang.Lang;
 import cn.featherfly.common.repository.IgnoreStrategy;
@@ -44,7 +49,7 @@ public class EntitySqlQueryTest extends JdbcTestBase {
 
     @BeforeTest
     void setupTest() {
-        query = new SqlQuery(jdbc, mappingFactory, sqlPageFactory);
+        query = new SqlQuery(jdbc, mappingFactory, sqlPageFactory, hammerConfig.getDslConfig().getQueryConfig());
     }
 
     @BeforeMethod
@@ -89,27 +94,37 @@ public class EntitySqlQueryTest extends JdbcTestBase {
 
     @Test
     void testConditionConfig() {
-        assertEquals(query.find(User.class).where(c -> c.setIgnoreStrategy(IgnoreStrategy.EMPTY)).getIgnoreStrategy(),
-                IgnoreStrategy.EMPTY);
+        MutableTuple1<Predicate<?>> ignoreStrategy = MutableTuples.create1();
+        query.find(User.class).where().configure(c -> {
+            ignoreStrategy.set0(c.setIgnoreStrategy(IgnoreStrategy.EMPTY).getIgnoreStrategy());
+        });
+        assertEquals(ignoreStrategy.get0().get(), IgnoreStrategy.EMPTY);
 
-        List<User> users = query.find(User.class).where(c -> c.setIgnoreStrategy(IgnoreStrategy.EMPTY))
+        List<User> users = query.find(User.class) //
+                .configure(c -> c.setIgnoreStrategy(IgnoreStrategy.EMPTY)) //
+                .where().eq(User::getUsername, "").list();
+        assertTrue(users.size() > 0);
+
+        users = query.find(User.class).where() //
+                .configure(c -> c.setIgnoreStrategy(IgnoreStrategy.EMPTY)) //
                 .eq(User::getUsername, "").list();
         assertTrue(users.size() > 0);
 
-        users = query.find(User.class).where(c -> c.setIgnoreStrategy(IgnoreStrategy.NULL)).eq(User::getUsername, "")
+        users = query.find(User.class).where().configure(c -> c.setIgnoreStrategy(IgnoreStrategy.NULL))
+                .eq(User::getUsername, "") //
                 .list();
         assertTrue(users.size() == 0);
 
-        users = query.find(User.class).where(c -> c.setIgnoreStrategy(IgnoreStrategy.NULL)).eq(User::getUsername, null)
-                .list();
+        users = query.find(User.class).where().configure(c -> c.setIgnoreStrategy(IgnoreStrategy.NULL))
+                .eq(User::getUsername, null).list();
         assertTrue(users.size() > 0);
 
-        users = query.find(User.class).where(c -> c.setIgnoreStrategy(IgnoreStrategy.NONE)).eq(User::getUsername, null)
-                .list();
+        users = query.find(User.class).where().configure(c -> c.setIgnoreStrategy(IgnoreStrategy.NONE))
+                .eq(User::getUsername, null).list();
         assertTrue(users.size() == 0);
 
-        users = query.find(User.class).where(c -> c.setIgnoreStrategy(IgnoreStrategy.NONE)).eq(User::getUsername, "")
-                .list();
+        users = query.find(User.class).where().configure(c -> c.setIgnoreStrategy(IgnoreStrategy.NONE))
+                .eq(User::getUsername, "").list();
         assertTrue(users.size() == 0);
     }
 
@@ -319,7 +334,7 @@ public class EntitySqlQueryTest extends JdbcTestBase {
         //        userInfo = query.find(UserInfo.class).where().eq(UserInfo::getDivision, DistrictDivision::getProvince, province)
         //                .single(); // 使用下面这行代替
         userInfo = query.find(UserInfo.class).where().property(UserInfo::getDivision)
-                .property(DistrictDivision::getProvince).eq(province).single(); // YUFEI_TEST 需要测试
+                .property(DistrictDivision::getProvince).eq(province).single();
         assertEquals(userInfo.getDivision().getProvince(), province);
         System.out.println(userInfo);
     }
@@ -771,7 +786,7 @@ public class EntitySqlQueryTest extends JdbcTestBase {
     }
 
     @Test
-    void testNestedProperty4() {
+    void testNestedPropertyAutoJoin_eq() {
         Integer rid = 2;
         Integer uid = 1;
 
@@ -782,12 +797,194 @@ public class EntitySqlQueryTest extends JdbcTestBase {
 
         List<UserRole2> list = query.find(UserRole2.class) //
                 .where() //
-                .property(UserRole2::getRole).property(Role::getName).eq(role.getName()) // FIXME 还未实现自动进行关联查询
+                .property(UserRole2::getRole) //
+                .property(Role::getName) //
+                .eq(role.getName()).list();
+
+        for (UserRole2 ur : list) {
+            Role r = query.find(Role.class).where().eq(Role::getId, ur.getRole().getId()).single();
+            assertEquals(r.getName(), role.getName());
+        }
+    }
+
+    @Test
+    void testNestedPropertyAutoJoin_eq2() {
+        Integer rid = 2;
+        Integer uid = 1;
+
+        Role role = query.find(Role.class).where().eq(Role::getId, rid).single();
+        User user = query.find(User.class).where().eq(User::getId, uid).single();
+        assertEquals(rid, role.getId());
+        assertEquals(uid, user.getId());
+
+        List<UserRole2> list = null;
+
+        list = query.find(UserRole2.class).join(UserRole2::getRole)//
+                .where() //
+                .property((e1, e2) -> e1.apply(UserRole2::getRole) //
+                        .property(Role::getName).eq(role.getName())) // FIXME 这里eq后返回的表达式不对
                 .list();
 
         for (UserRole2 ur : list) {
             Role r = query.find(Role.class).where().eq(Role::getId, ur.getRole().getId()).single();
             assertEquals(r.getName(), role.getName());
+        }
+
+        list = query.find(UserRole2.class).join(UserRole2::getRole)//
+                .where() //
+                .eq((e1, e2) -> e1.property(UserRole2::getRole) //
+                        .property(Role::getName).value(role.getName())) //
+                .list();
+
+        for (UserRole2 ur : list) {
+            Role r = query.find(Role.class).where().eq(Role::getId, ur.getRole().getId()).single();
+            assertEquals(r.getName(), role.getName());
+        }
+    }
+
+    @Test
+    void testNestedPropertyAutoJoin_co() {
+        String name = "yufei";
+
+        List<UserInfo> userInfos = query.find(UserInfo.class).where().property(UserInfo::getUser)
+                .property(User::getUsername).co(name).list();
+        for (UserInfo ui : userInfos) {
+            User u = query.find(User.class).where().eq(User::getId, ui.getUser().getId()).single();
+            assertTrue(u.getUsername().contains(name));
+        }
+    }
+
+    @Test
+    void testNestedPropertyAutoJoin_nco() {
+        String name = "yufei";
+
+        List<UserInfo> userInfos = query.find(UserInfo.class).where().property(UserInfo::getUser)
+                .property(User::getUsername).nco(name).list();
+        for (UserInfo ui : userInfos) {
+            User u = query.find(User.class).where().eq(User::getId, ui.getUser().getId()).single();
+            assertFalse(u.getUsername().contains(name));
+        }
+    }
+
+    @Test
+    void testNestedPropertyAutoJoin_sw() {
+        String name = "yufei";
+
+        List<UserInfo> userInfos = query.find(UserInfo.class).where().property(UserInfo::getUser)
+                .property(User::getUsername).sw(name).list();
+        for (UserInfo ui : userInfos) {
+            User u = query.find(User.class).where().eq(User::getId, ui.getUser().getId()).single();
+            assertTrue(u.getUsername().startsWith(name));
+        }
+    }
+
+    @Test
+    void testNestedPropertyAutoJoin_nsw() {
+        String name = "yufei";
+
+        List<UserInfo> userInfos = query.find(UserInfo.class).where().property(UserInfo::getUser)
+                .property(User::getUsername).nsw(name).list();
+        for (UserInfo ui : userInfos) {
+            User u = query.find(User.class).where().eq(User::getId, ui.getUser().getId()).single();
+            assertFalse(u.getUsername().startsWith(name));
+        }
+    }
+
+    @Test
+    void testNestedPropertyAutoJoin_ew() {
+        String name = "fly";
+
+        List<UserInfo> userInfos = query.find(UserInfo.class).where().property(UserInfo::getUser)
+                .property(User::getUsername).sw(name).list();
+        for (UserInfo ui : userInfos) {
+            User u = query.find(User.class).where().eq(User::getId, ui.getUser().getId()).single();
+            assertTrue(u.getUsername().endsWith(name));
+        }
+    }
+
+    @Test
+    void testNestedPropertyAutoJoin_new() {
+        String name = "fly";
+
+        List<UserInfo> userInfos = query.find(UserInfo.class).where().property(UserInfo::getUser)
+                .property(User::getUsername).newv(name).list();
+        for (UserInfo ui : userInfos) {
+            User u = query.find(User.class).where().eq(User::getId, ui.getUser().getId()).single();
+            assertFalse(u.getUsername().endsWith(name));
+        }
+    }
+
+    @Test
+    void testNestedPropertyAutoJoin_ba() {
+        int min = 10;
+        int max = 20;
+
+        List<UserInfo> userInfos = query.find(UserInfo.class).where().property(UserInfo::getUser).property(User::getAge)
+                .ba(min, max).list();
+        for (UserInfo ui : userInfos) {
+            User u = query.find(User.class).where().eq(User::getId, ui.getUser().getId()).single();
+            assertTrue(min <= u.getAge() && u.getAge() <= max);
+        }
+    }
+
+    @Test
+    void testNestedPropertyAutoJoin_nba() {
+        int min = 10;
+        int max = 20;
+
+        List<UserInfo> userInfos = query.find(UserInfo.class).where().property(UserInfo::getUser).property(User::getAge)
+                .nba(min, max).list();
+        for (UserInfo ui : userInfos) {
+            User u = query.find(User.class).where().eq(User::getId, ui.getUser().getId()).single();
+            assertTrue(u.getAge() < min || max < u.getAge());
+        }
+    }
+
+    @Test
+    void testNestedPropertyAutoJoin_ge() {
+        int age = 15;
+
+        List<UserInfo> userInfos = query.find(UserInfo.class).where().property(UserInfo::getUser).property(User::getAge)
+                .ge(age).list();
+        for (UserInfo ui : userInfos) {
+            User u = query.find(User.class).where().eq(User::getId, ui.getUser().getId()).single();
+            assertTrue(u.getAge() >= age);
+        }
+    }
+
+    @Test
+    void testNestedPropertyAutoJoin_gt() {
+        int age = 15;
+
+        List<UserInfo> userInfos = query.find(UserInfo.class).where().property(UserInfo::getUser).property(User::getAge)
+                .gt(age).list();
+        for (UserInfo ui : userInfos) {
+            User u = query.find(User.class).where().eq(User::getId, ui.getUser().getId()).single();
+            assertTrue(u.getAge() > age);
+        }
+    }
+
+    @Test
+    void testNestedPropertyAutoJoin_le() {
+        int age = 15;
+
+        List<UserInfo> userInfos = query.find(UserInfo.class).where().property(UserInfo::getUser).property(User::getAge)
+                .le(age).list();
+        for (UserInfo ui : userInfos) {
+            User u = query.find(User.class).where().eq(User::getId, ui.getUser().getId()).single();
+            assertTrue(u.getAge() <= age);
+        }
+    }
+
+    @Test
+    void testNestedPropertyAutoJoin_lt() {
+        int age = 15;
+
+        List<UserInfo> userInfos = query.find(UserInfo.class).where().property(UserInfo::getUser).property(User::getAge)
+                .lt(age).list();
+        for (UserInfo ui : userInfos) {
+            User u = query.find(User.class).where().eq(User::getId, ui.getUser().getId()).single();
+            assertTrue(u.getAge() < age);
         }
     }
 

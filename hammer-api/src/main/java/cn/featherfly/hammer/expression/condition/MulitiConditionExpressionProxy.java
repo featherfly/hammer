@@ -52,8 +52,8 @@ public class MulitiConditionExpressionProxy implements MulitiConditionExpression
      */
     @SuppressWarnings("unchecked")
     @Override
-    public <CM extends ClassMapping<T, P>, T, P extends PropertyMapping<P>> CM getClassMapping(int index) {
-        return (CM) proxy.getClassMapping(index);
+    public <M extends ClassMapping<T, P>, T, P extends PropertyMapping<P>> M getClassMapping(int index) {
+        return (M) proxy.getClassMapping(index);
     }
 
     /**

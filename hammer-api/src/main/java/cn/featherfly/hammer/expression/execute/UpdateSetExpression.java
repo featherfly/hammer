@@ -1,11 +1,13 @@
 
 package cn.featherfly.hammer.expression.execute;
 
-import java.util.function.BooleanSupplier;
 import java.util.function.Consumer;
+import java.util.function.Predicate;
 
 import cn.featherfly.common.function.serializable.SerializableFunction;
 import cn.featherfly.common.function.serializable.SerializableSupplier;
+import cn.featherfly.common.repository.IgnoreStrategy;
+import cn.featherfly.hammer.config.dsl.UpdateConditionConfig;
 
 /**
  * SetUpdateExpression.
@@ -16,7 +18,8 @@ import cn.featherfly.common.function.serializable.SerializableSupplier;
  * @param <L> the generic type
  */
 public interface UpdateSetExpression<U extends ExecutableUpdateSetExpression<U, C, L>,
-        C extends ExecutableConditionGroupExpression<C, L>, L extends ExecutableConditionGroupLogicExpression<C, L>> {
+        C extends ExecutableConditionGroupExpression<C, L, UpdateConditionConfig>,
+        L extends ExecutableConditionGroupLogicExpression<C, L, UpdateConditionConfig>> {
 
     /**
      * set value for property.
@@ -30,12 +33,24 @@ public interface UpdateSetExpression<U extends ExecutableUpdateSetExpression<U, 
     /**
      * set value for property.
      *
-     * @param setable the setable
-     * @param name    property name
-     * @param value   property value
+     * @param name           property name
+     * @param value          property value
+     * @param ignoreStrategy the ignore strategy
      * @return Update
      */
-    U set(BooleanSupplier setable, String name, Object value);
+    U set(String name, Object value, Predicate<Object> ignoreStrategy);
+
+    /**
+     * set value for property.
+     *
+     * @param name           property name
+     * @param value          property value
+     * @param ignoreStrategy the ignore strategy
+     * @return Update
+     */
+    default U set(String name, Object value, IgnoreStrategy ignoreStrategy) {
+        return set(name, value, (Predicate<Object>) ignoreStrategy);
+    }
 
     /**
      * increase value for property.
@@ -50,13 +65,26 @@ public interface UpdateSetExpression<U extends ExecutableUpdateSetExpression<U, 
     /**
      * increase value for property.
      *
-     * @param <N>     number type
-     * @param setable the setable
-     * @param name    property name
-     * @param value   property value
+     * @param <N>            number type
+     * @param name           property name
+     * @param value          property value
+     * @param ignoreStrategy the ignore strategy
      * @return Update
      */
-    <N extends Number> U increase(BooleanSupplier setable, String name, N value);
+    <N extends Number> U increase(String name, N value, Predicate<N> ignoreStrategy);
+
+    /**
+     * increase value for property.
+     *
+     * @param <N>            number type
+     * @param name           property name
+     * @param value          property value
+     * @param ignoreStrategy the ignore strategy
+     * @return Update
+     */
+    default <N extends Number> U increase(String name, N value, IgnoreStrategy ignoreStrategy) {
+        return increase(name, value, ignoreStrategy::test);
+    }
 
     /**
      * set value for property.
@@ -72,14 +100,28 @@ public interface UpdateSetExpression<U extends ExecutableUpdateSetExpression<U, 
     /**
      * set value for property.
      *
-     * @param <T>     the generic type
-     * @param <R>     the generic type
-     * @param setable the setable
-     * @param name    property name
-     * @param value   property value
+     * @param <T>            the generic type
+     * @param <R>            the generic type
+     * @param name           property name
+     * @param value          property value
+     * @param ignoreStrategy the ignore strategy
      * @return Update
      */
-    <T, R> U set(BooleanSupplier setable, SerializableFunction<T, R> name, R value);
+    <T, R> U set(SerializableFunction<T, R> name, R value, Predicate<R> ignoreStrategy);
+
+    /**
+     * set value for property.
+     *
+     * @param <T>            the generic type
+     * @param <R>            the generic type
+     * @param name           property name
+     * @param value          property value
+     * @param ignoreStrategy the ignore strategy
+     * @return Update
+     */
+    default <T, R> U set(SerializableFunction<T, R> name, R value, IgnoreStrategy ignoreStrategy) {
+        return set(name, value, ignoreStrategy::test);
+    }
 
     /**
      * set value for property.
@@ -93,12 +135,24 @@ public interface UpdateSetExpression<U extends ExecutableUpdateSetExpression<U, 
     /**
      * set value for property.
      *
-     * @param <R>      the generic type
-     * @param setable  the setable
-     * @param property object property
+     * @param <R>            the generic type
+     * @param property       object property
+     * @param ignoreStrategy the ignore strategy
      * @return Update
      */
-    <R> U set(BooleanSupplier setable, SerializableSupplier<R> property);
+    <R> U set(SerializableSupplier<R> property, Predicate<R> ignoreStrategy);
+
+    /**
+     * set value for property.
+     *
+     * @param <R>            the generic type
+     * @param property       object property
+     * @param ignoreStrategy the ignore strategy
+     * @return Update
+     */
+    default <R> U set(SerializableSupplier<R> property, IgnoreStrategy ignoreStrategy) {
+        return set(property, ignoreStrategy::test);
+    }
 
     /**
      * Sets the.
@@ -122,14 +176,28 @@ public interface UpdateSetExpression<U extends ExecutableUpdateSetExpression<U, 
     /**
      * increase value for property.
      *
-     * @param <T>     the generic type
-     * @param <R>     the generic number type
-     * @param setable the setable
-     * @param name    property name
-     * @param value   property value
+     * @param <T>            the generic type
+     * @param <N>            the generic number type
+     * @param name           property name
+     * @param value          property value
+     * @param ignoreStrategy the ignore strategy
      * @return Update
      */
-    <T, R extends Number> U increase(BooleanSupplier setable, SerializableFunction<T, R> name, R value);
+    <T, N extends Number> U increase(SerializableFunction<T, N> name, N value, Predicate<N> ignoreStrategy);
+
+    /**
+     * increase value for property.
+     *
+     * @param <T>            the generic type
+     * @param <N>            the generic number type
+     * @param name           property name
+     * @param value          property value
+     * @param ignoreStrategy the ignore strategy
+     * @return Update
+     */
+    default <T, N extends Number> U increase(SerializableFunction<T, N> name, N value, IgnoreStrategy ignoreStrategy) {
+        return increase(name, value, ignoreStrategy::test);
+    }
 
     /**
      * increase value for property.
@@ -143,10 +211,22 @@ public interface UpdateSetExpression<U extends ExecutableUpdateSetExpression<U, 
     /**
      * increase value for property.
      *
-     * @param <N>      number type
-     * @param setable  the setable
-     * @param property object property
+     * @param <N>            number type
+     * @param property       object property
+     * @param ignoreStrategy the ignore strategy
      * @return Update
      */
-    <N extends Number> U increase(BooleanSupplier setable, SerializableSupplier<N> property);
+    <N extends Number> U increase(SerializableSupplier<N> property, Predicate<N> ignoreStrategy);
+
+    /**
+     * increase value for property.
+     *
+     * @param <N>            number type
+     * @param property       object property
+     * @param ignoreStrategy the ignore strategy
+     * @return Update
+     */
+    default <N extends Number> U increase(SerializableSupplier<N> property, IgnoreStrategy ignoreStrategy) {
+        return increase(property, ignoreStrategy::test);
+    }
 }

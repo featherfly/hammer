@@ -11,7 +11,6 @@
 package cn.featherfly.hammer.sqldb.jdbc.dsl.entity.condition;
 
 import java.util.Collection;
-import java.util.function.Predicate;
 
 import cn.featherfly.common.db.mapping.JdbcMappingFactory;
 import cn.featherfly.common.exception.NotImplementedException;
@@ -25,6 +24,7 @@ import cn.featherfly.hammer.expression.entity.condition.nco.MulitiEntityNotConta
 import cn.featherfly.hammer.expression.entity.condition.nco.NotContainsEntityExpression;
 import cn.featherfly.hammer.expression.entity.condition.nco.NotContainsEntityPropertyExpression;
 import cn.featherfly.hammer.expression.entity.condition.nco.NotContainsEntityPropertySetValueExpression;
+import cn.featherfly.hammer.sqldb.jdbc.dsl.entity.EntitySqlRelation;
 
 /**
  * NotContainsEntityExpressionImpl.
@@ -39,18 +39,21 @@ public class NotContainsEntityExpressionImpl<E, C extends ConditionExpression, L
 
     private JdbcMappingFactory factory;
 
+    private EntitySqlRelation<?, ?> queryRelation;
+
     /**
      * Instantiates a new contains entity expression impl.
      *
-     * @param index          the index
-     * @param expression     the expression
-     * @param ignoreStrategy the ignore strategy
-     * @param factory        the factory
+     * @param index         the index
+     * @param expression    the expression
+     * @param factory       the factory
+     * @param queryRelation the query relation
      */
     public NotContainsEntityExpressionImpl(int index, MulitiEntityNotContainsExpression<C, L> expression,
-            Predicate<?> ignoreStrategy, JdbcMappingFactory factory) {
-        super(index, expression, ignoreStrategy);
+            JdbcMappingFactory factory, EntitySqlRelation<?, ?> queryRelation) {
+        super(index, expression, queryRelation.getIgnorePolicy());
         this.factory = factory;
+        this.queryRelation = queryRelation;
     }
 
     /**
@@ -59,7 +62,7 @@ public class NotContainsEntityExpressionImpl<E, C extends ConditionExpression, L
     @Override
     public <R> NotContainsEntityPropertyExpression<R> property(SerializableFunction<E, R> name) {
         return new NotContainsEntityPropertyExpressionImpl<>(index, name,
-                (MulitiEntityNotContainsExpressionImpl<C, L>) expression, factory);
+                (MulitiEntityNotContainsExpressionImpl<C, L>) expression, factory, queryRelation);
     }
 
     /**
@@ -68,7 +71,7 @@ public class NotContainsEntityExpressionImpl<E, C extends ConditionExpression, L
     @Override
     public <R extends Collection<RE>,
             RE> NotContainsEntityPropertyExpression<RE> property(SerializableToCollectionFunction<E, R, RE> name) {
-        // IMPLSOON 未实现property
+        // IMPLSOON 后续来实现集合类型property
         throw new NotImplementedException();
     }
 
@@ -78,6 +81,6 @@ public class NotContainsEntityExpressionImpl<E, C extends ConditionExpression, L
     @Override
     public NotContainsEntityPropertySetValueExpression property(SerializableToStringFunction<E> name) {
         return new NotContainsEntityPropertyExpressionImpl<>(index, name,
-                (MulitiEntityNotContainsExpressionImpl<C, L>) expression, factory);
+                (MulitiEntityNotContainsExpressionImpl<C, L>) expression, factory, queryRelation);
     }
 }

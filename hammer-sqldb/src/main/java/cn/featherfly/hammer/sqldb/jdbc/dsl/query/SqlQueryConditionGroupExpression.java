@@ -11,7 +11,6 @@ import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
-import java.util.function.Predicate;
 
 import cn.featherfly.common.constant.Chars;
 import cn.featherfly.common.db.SqlUtils;
@@ -24,6 +23,7 @@ import cn.featherfly.common.structure.page.Limit;
 import cn.featherfly.common.structure.page.Page;
 import cn.featherfly.common.structure.page.PaginationResults;
 import cn.featherfly.common.structure.page.SimplePaginationResults;
+import cn.featherfly.hammer.config.dsl.QueryConditionConfig;
 import cn.featherfly.hammer.dsl.query.QueryConditionGroupExpression;
 import cn.featherfly.hammer.dsl.query.QueryConditionGroupLogicExpression;
 import cn.featherfly.hammer.dsl.query.QuerySortExpression;
@@ -38,8 +38,9 @@ import cn.featherfly.hammer.sqldb.sql.dml.AbstractSqlConditionGroupExpression;
  *
  * @author zhongj
  */
-public abstract class SqlQueryConditionGroupExpression
-        extends AbstractSqlConditionGroupExpression<QueryConditionGroupExpression, QueryConditionGroupLogicExpression>
+public abstract class SqlQueryConditionGroupExpression extends
+        AbstractSqlConditionGroupExpression<QueryConditionGroupExpression, QueryConditionGroupLogicExpression,
+                QueryConditionConfig>
         implements QueryConditionGroupExpression, QueryConditionGroupLogicExpression, QuerySortExpression {
 
     /** The sort builder. */
@@ -51,39 +52,40 @@ public abstract class SqlQueryConditionGroupExpression
     /**
      * Instantiates a new sql query condition group expression.
      *
-     * @param jdbc           jdbc
-     * @param sqlPageFactory the sql page factory
-     * @param ignoreStrategy the ignore strategy
+     * @param jdbc                 jdbc
+     * @param sqlPageFactory       the sql page factory
+     * @param queryConditionConfig the query condition config
      */
-    public SqlQueryConditionGroupExpression(Jdbc jdbc, SqlPageFactory sqlPageFactory, Predicate<?> ignoreStrategy) {
-        this(jdbc, sqlPageFactory, null, ignoreStrategy);
+    public SqlQueryConditionGroupExpression(Jdbc jdbc, SqlPageFactory sqlPageFactory,
+            QueryConditionConfig queryConditionConfig) {
+        this(jdbc, sqlPageFactory, null, queryConditionConfig);
     }
 
     /**
      * Instantiates a new sql query condition group expression.
      *
-     * @param jdbc           jdbc
-     * @param sqlPageFactory the sql page factory
-     * @param queryAlias     queryAlias
-     * @param ignoreStrategy the ignore strategy
+     * @param jdbc                 jdbc
+     * @param sqlPageFactory       the sql page factory
+     * @param queryAlias           queryAlias
+     * @param queryConditionConfig the query condition config
      */
     public SqlQueryConditionGroupExpression(Jdbc jdbc, SqlPageFactory sqlPageFactory, String queryAlias,
-            Predicate<?> ignoreStrategy) {
-        this(null, jdbc, sqlPageFactory, queryAlias, ignoreStrategy);
+            QueryConditionConfig queryConditionConfig) {
+        this(null, jdbc, sqlPageFactory, queryAlias, queryConditionConfig);
     }
 
     /**
      * Instantiates a new sql query condition group expression.
      *
-     * @param parent         parent group
-     * @param jdbc           jdbc
-     * @param sqlPageFactory the sql page factory
-     * @param queryAlias     queryAlias
-     * @param ignoreStrategy the ignore strategy
+     * @param parent               parent group
+     * @param jdbc                 jdbc
+     * @param sqlPageFactory       the sql page factory
+     * @param queryAlias           queryAlias
+     * @param queryConditionConfig the query condition config
      */
     SqlQueryConditionGroupExpression(QueryConditionGroupLogicExpression parent, Jdbc jdbc,
-            SqlPageFactory sqlPageFactory, String queryAlias, Predicate<?> ignoreStrategy) {
-        super(parent, jdbc.getDialect(), sqlPageFactory, queryAlias, ignoreStrategy);
+            SqlPageFactory sqlPageFactory, String queryAlias, QueryConditionConfig queryConditionConfig) {
+        super(parent, jdbc.getDialect(), sqlPageFactory, queryAlias, queryConditionConfig);
         this.jdbc = jdbc;
     }
 

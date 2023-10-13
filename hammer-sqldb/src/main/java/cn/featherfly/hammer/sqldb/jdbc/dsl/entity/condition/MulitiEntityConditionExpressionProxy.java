@@ -10,6 +10,7 @@
  */
 package cn.featherfly.hammer.sqldb.jdbc.dsl.entity.condition;
 
+import java.util.concurrent.atomic.AtomicInteger;
 import java.util.function.Predicate;
 
 import cn.featherfly.common.db.dialect.Dialect;
@@ -39,7 +40,7 @@ public class MulitiEntityConditionExpressionProxy<C extends ConditionExpression,
      * @param proxy the proxy
      */
     protected MulitiEntityConditionExpressionProxy(AbstractMulitiEntityConditionExpression<C, L> proxy) {
-        super(proxy.getIgnoreStrategy());
+        super(proxy.getConditionConfig());
         this.proxy = proxy;
     }
 
@@ -55,10 +56,19 @@ public class MulitiEntityConditionExpressionProxy<C extends ConditionExpression,
      * {@inheritDoc}
      */
     @Override
-    protected <R> L eq_ne(int index, ComparisonOperator comparisonOperator, PropertyMapping<?> pm, R value,
+    protected <R> L eq_ne(AtomicInteger index, ComparisonOperator comparisonOperator, PropertyMapping<?> pm, R value,
             MatchStrategy matchStrategy, Predicate<?> ignoreStrategy) {
         return proxy.eq_ne(index, comparisonOperator, pm, value, matchStrategy, ignoreStrategy);
     }
+
+    //    /**
+    //     * {@inheritDoc}
+    //     */
+    //    @Override
+    //    protected <R> L eq_ne(int index, ComparisonOperator comparisonOperator, List<PropertyMapping<?>> pms, R value,
+    //            MatchStrategy matchStrategy, Predicate<?> ignoreStrategy) {
+    //        return proxy.eq_ne(index, comparisonOperator, pms, value, matchStrategy, ignoreStrategy);
+    //    }
 
     /**
      * {@inheritDoc}
@@ -81,8 +91,8 @@ public class MulitiEntityConditionExpressionProxy<C extends ConditionExpression,
      */
     @SuppressWarnings("unchecked")
     @Override
-    public <CM extends ClassMapping<T, P>, T, P extends PropertyMapping<P>> CM getClassMapping(int index) {
-        return (CM) proxy.getClassMapping(index);
+    public <M extends ClassMapping<T, P>, T, P extends PropertyMapping<P>> M getClassMapping(int index) {
+        return (M) proxy.getClassMapping(index);
     }
 
     /**
@@ -92,5 +102,4 @@ public class MulitiEntityConditionExpressionProxy<C extends ConditionExpression,
     public Expression addCondition(Expression condition) {
         return proxy.addCondition(condition);
     }
-
 }

@@ -12,6 +12,7 @@ import java.util.function.Predicate;
 
 import cn.featherfly.common.function.serializable.SerializableDateSupplier;
 import cn.featherfly.common.function.serializable.SerializableDoubleSupplier;
+import cn.featherfly.common.function.serializable.SerializableEnumSupplier;
 import cn.featherfly.common.function.serializable.SerializableFunction;
 import cn.featherfly.common.function.serializable.SerializableIntSupplier;
 import cn.featherfly.common.function.serializable.SerializableLocalDateSupplier;
@@ -23,6 +24,7 @@ import cn.featherfly.common.function.serializable.SerializableStringSupplier;
 import cn.featherfly.common.function.serializable.SerializableToDoubleFunction;
 import cn.featherfly.common.function.serializable.SerializableToIntFunction;
 import cn.featherfly.common.function.serializable.SerializableToLongFunction;
+import cn.featherfly.common.operator.ComparisonOperator.MatchStrategy;
 import cn.featherfly.hammer.expression.condition.ConditionExpression;
 import cn.featherfly.hammer.expression.condition.LogicExpression;
 import cn.featherfly.hammer.expression.entity.condition.MulitiEntityConditionExpression;
@@ -134,6 +136,31 @@ public interface MulitiEntityLessEqualsExpression<C extends ConditionExpression,
     /**
      * less and equals. 小于等于.
      *
+     * @param <T>   the generic type
+     * @param <E>   the element type
+     * @param index the index
+     * @param name  参数名称
+     * @param value 参数值
+     * @return LogicExpression
+     */
+    <T, E extends Enum<E>> L le(int index, SerializableFunction<T, E> name, E value);
+
+    /**
+     * less and equals. 小于等于.
+     *
+     * @param <T>            the generic type
+     * @param <E>            the element type
+     * @param index          the index
+     * @param name           参数名称
+     * @param value          参数值
+     * @param ignoreStrategy the ignore strategy
+     * @return LogicExpression
+     */
+    <T, E extends Enum<E>> L le(int index, SerializableFunction<T, E> name, E value, Predicate<E> ignoreStrategy);
+
+    /**
+     * less and equals. 小于等于.
+     *
      * @param <E>   the element type
      * @param <D>   date type
      * @param index the index
@@ -235,7 +262,9 @@ public interface MulitiEntityLessEqualsExpression<C extends ConditionExpression,
      * @param value 参数值
      * @return LogicExpression
      */
-    <E> L le(int index, SerializableFunction<E, String> name, String value);
+    default <E> L le(int index, SerializableFunction<E, String> name, String value) {
+        return le(index, name, value, MatchStrategy.AUTO);
+    }
 
     /**
      * less and equals. 小于等于.
@@ -247,7 +276,35 @@ public interface MulitiEntityLessEqualsExpression<C extends ConditionExpression,
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
-    <E> L le(int index, SerializableFunction<E, String> name, String value, Predicate<String> ignoreStrategy);
+    default <E> L le(int index, SerializableFunction<E, String> name, String value, Predicate<String> ignoreStrategy) {
+        return le(index, name, value, MatchStrategy.AUTO, ignoreStrategy);
+    }
+
+    /**
+     * less and equals. 小于等于.
+     *
+     * @param <E>           the element type
+     * @param index         the index
+     * @param name          参数名称
+     * @param value         参数值
+     * @param matchStrategy the match strategy
+     * @return LogicExpression
+     */
+    <E> L le(int index, SerializableFunction<E, String> name, String value, MatchStrategy matchStrategy);
+
+    /**
+     * less and equals. 小于等于.
+     *
+     * @param <E>            the element type
+     * @param index          the index
+     * @param name           参数名称
+     * @param value          参数值
+     * @param matchStrategy  the match strategy
+     * @param ignoreStrategy the ignore strategy
+     * @return LogicExpression
+     */
+    <E> L le(int index, SerializableFunction<E, String> name, String value, MatchStrategy matchStrategy,
+            Predicate<String> ignoreStrategy);
 
     /**
      * less and equals. 小于等于.
@@ -351,6 +408,27 @@ public interface MulitiEntityLessEqualsExpression<C extends ConditionExpression,
     /**
      * less and equals. 小于等于.
      *
+     * @param <E>      the element type
+     * @param index    the index
+     * @param property 对象属性
+     * @return LogicExpression
+     */
+    <E extends Enum<E>> L le(int index, SerializableEnumSupplier<E> property);
+
+    /**
+     * less and equals. 小于等于.
+     *
+     * @param <E>            the element type
+     * @param index          the index
+     * @param property       对象属性
+     * @param ignoreStrategy the ignore strategy
+     * @return LogicExpression
+     */
+    <E extends Enum<E>> L le(int index, SerializableEnumSupplier<E> property, Predicate<E> ignoreStrategy);
+
+    /**
+     * less and equals. 小于等于.
+     *
      * @param index    the index
      * @param property 对象属性
      * @return LogicExpression
@@ -412,7 +490,9 @@ public interface MulitiEntityLessEqualsExpression<C extends ConditionExpression,
      * @param property 对象属性
      * @return LogicExpression
      */
-    L le(int index, SerializableStringSupplier property);
+    default L le(int index, SerializableStringSupplier property) {
+        return le(index, property, MatchStrategy.AUTO);
+    }
 
     /**
      * less and equals. 小于等于.
@@ -422,5 +502,28 @@ public interface MulitiEntityLessEqualsExpression<C extends ConditionExpression,
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
-    L le(int index, SerializableStringSupplier property, Predicate<String> ignoreStrategy);
+    default L le(int index, SerializableStringSupplier property, Predicate<String> ignoreStrategy) {
+        return le(index, property, MatchStrategy.AUTO, ignoreStrategy);
+    }
+
+    /**
+     * less and equals. 小于等于.
+     *
+     * @param index         the index
+     * @param property      对象属性
+     * @param matchStrategy the match strategy
+     * @return LogicExpression
+     */
+    L le(int index, SerializableStringSupplier property, MatchStrategy matchStrategy);
+
+    /**
+     * less and equals. 小于等于.
+     *
+     * @param index          the index
+     * @param property       对象属性
+     * @param matchStrategy  the match strategy
+     * @param ignoreStrategy the ignore strategy
+     * @return LogicExpression
+     */
+    L le(int index, SerializableStringSupplier property, MatchStrategy matchStrategy, Predicate<String> ignoreStrategy);
 }

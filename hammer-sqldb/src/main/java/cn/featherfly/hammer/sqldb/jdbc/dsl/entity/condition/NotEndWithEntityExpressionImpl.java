@@ -11,7 +11,6 @@
 package cn.featherfly.hammer.sqldb.jdbc.dsl.entity.condition;
 
 import java.util.Collection;
-import java.util.function.Predicate;
 
 import cn.featherfly.common.db.mapping.JdbcMappingFactory;
 import cn.featherfly.common.exception.NotImplementedException;
@@ -25,6 +24,7 @@ import cn.featherfly.hammer.expression.entity.condition.newv.MulitiEntityNotEndW
 import cn.featherfly.hammer.expression.entity.condition.newv.NotEndWithEntityExpression;
 import cn.featherfly.hammer.expression.entity.condition.newv.NotEndWithEntityPropertyExpression;
 import cn.featherfly.hammer.expression.entity.condition.newv.NotEndWithEntityPropertySetValueExpression;
+import cn.featherfly.hammer.sqldb.jdbc.dsl.entity.EntitySqlRelation;
 
 /**
  * The Class NotEndWithEntityExpressionImpl.
@@ -37,20 +37,25 @@ import cn.featherfly.hammer.expression.entity.condition.newv.NotEndWithEntityPro
 public class NotEndWithEntityExpressionImpl<E, C extends ConditionExpression, L extends LogicExpression<C, L>>
         extends AbstractNotEndWithEntityExpression<E, C, L> implements NotEndWithEntityExpression<E> {
 
+    /** The factory. */
     private JdbcMappingFactory factory;
+
+    /** The query relation. */
+    private EntitySqlRelation<?, ?> queryRelation;
 
     /**
      * Instantiates a new end with entity expression impl.
      *
-     * @param index          the index
-     * @param expression     the expression
-     * @param ignoreStrategy the ignore strategy
-     * @param factory        the factory
+     * @param index         the index
+     * @param expression    the expression
+     * @param factory       the factory
+     * @param queryRelation the query relation
      */
     public NotEndWithEntityExpressionImpl(int index, MulitiEntityNotEndWithExpression<C, L> expression,
-            Predicate<?> ignoreStrategy, JdbcMappingFactory factory) {
-        super(index, expression, ignoreStrategy);
+            JdbcMappingFactory factory, EntitySqlRelation<?, ?> queryRelation) {
+        super(index, expression, queryRelation.getIgnorePolicy());
         this.factory = factory;
+        this.queryRelation = queryRelation;
     }
 
     /**
@@ -59,7 +64,7 @@ public class NotEndWithEntityExpressionImpl<E, C extends ConditionExpression, L 
     @Override
     public <R> NotEndWithEntityPropertyExpression<R> property(SerializableFunction<E, R> name) {
         return new NotEndWithEntityPropertyExpressionImpl<>(index, name,
-                (MulitiEntityNotEndWithExpressionImpl<C, L>) expression, factory);
+                (MulitiEntityNotEndWithExpressionImpl<C, L>) expression, factory, queryRelation);
     }
 
     /**
@@ -68,7 +73,7 @@ public class NotEndWithEntityExpressionImpl<E, C extends ConditionExpression, L 
     @Override
     public <R extends Collection<RE>,
             RE> NotEndWithEntityPropertyExpression<RE> property(SerializableToCollectionFunction<E, R, RE> name) {
-        // IMPLSOON 未实现property
+        // IMPLSOON 后续来实现集合类型property
         throw new NotImplementedException();
     }
 
@@ -78,6 +83,6 @@ public class NotEndWithEntityExpressionImpl<E, C extends ConditionExpression, L 
     @Override
     public NotEndWithEntityPropertySetValueExpression property(SerializableToStringFunction<E> name) {
         return new NotEndWithEntityPropertyExpressionImpl<>(index, name,
-                (MulitiEntityNotEndWithExpressionImpl<C, L>) expression, factory);
+                (MulitiEntityNotEndWithExpressionImpl<C, L>) expression, factory, queryRelation);
     }
 }

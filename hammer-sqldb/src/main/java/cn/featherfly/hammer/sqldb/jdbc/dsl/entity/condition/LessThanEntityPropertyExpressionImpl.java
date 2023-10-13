@@ -16,6 +16,7 @@ import java.time.LocalTime;
 import java.util.Collection;
 import java.util.Date;
 import java.util.List;
+import java.util.concurrent.atomic.AtomicInteger;
 import java.util.function.DoublePredicate;
 import java.util.function.IntPredicate;
 import java.util.function.LongPredicate;
@@ -36,6 +37,7 @@ import cn.featherfly.common.function.serializable.SerializableStringSupplier;
 import cn.featherfly.common.function.serializable.SerializableToCollectionFunction;
 import cn.featherfly.common.function.serializable.SerializableToDateFunction;
 import cn.featherfly.common.function.serializable.SerializableToDoubleFunction;
+import cn.featherfly.common.function.serializable.SerializableToEnumFunction;
 import cn.featherfly.common.function.serializable.SerializableToIntFunction;
 import cn.featherfly.common.function.serializable.SerializableToLocalDateFunction;
 import cn.featherfly.common.function.serializable.SerializableToLocalDateTimeFunction;
@@ -43,11 +45,13 @@ import cn.featherfly.common.function.serializable.SerializableToLocalTimeFunctio
 import cn.featherfly.common.function.serializable.SerializableToLongFunction;
 import cn.featherfly.common.function.serializable.SerializableToNumberFunction;
 import cn.featherfly.common.function.serializable.SerializableToStringFunction;
+import cn.featherfly.common.operator.ComparisonOperator.MatchStrategy;
 import cn.featherfly.hammer.expression.condition.ConditionExpression;
 import cn.featherfly.hammer.expression.condition.LogicExpression;
 import cn.featherfly.hammer.expression.entity.condition.CompareEntityPropertyExpression;
 import cn.featherfly.hammer.expression.entity.condition.ConditionEntityExpressionDatePropertyExpression;
 import cn.featherfly.hammer.expression.entity.condition.ConditionEntityExpressionDoublePropertyExpression;
+import cn.featherfly.hammer.expression.entity.condition.ConditionEntityExpressionEnumPropertyExpression;
 import cn.featherfly.hammer.expression.entity.condition.ConditionEntityExpressionIntPropertyExpression;
 import cn.featherfly.hammer.expression.entity.condition.ConditionEntityExpressionLocalDatePropertyExpression;
 import cn.featherfly.hammer.expression.entity.condition.ConditionEntityExpressionLocalDateTimePropertyExpression;
@@ -56,8 +60,10 @@ import cn.featherfly.hammer.expression.entity.condition.ConditionEntityExpressio
 import cn.featherfly.hammer.expression.entity.condition.ConditionEntityExpressionNumberPropertyExpression;
 import cn.featherfly.hammer.expression.entity.condition.ConditionEntityExpressionStringPropertyExpression;
 import cn.featherfly.hammer.expression.entity.condition.lt.LessThanEntityPropertyExpression;
+import cn.featherfly.hammer.sqldb.jdbc.dsl.entity.EntitySqlRelation;
 import cn.featherfly.hammer.sqldb.jdbc.dsl.entity.condition.propery.ConditionEntityExpressionDatePropertyExpressionImpl;
 import cn.featherfly.hammer.sqldb.jdbc.dsl.entity.condition.propery.ConditionEntityExpressionDoublePropertyExpressionImpl;
+import cn.featherfly.hammer.sqldb.jdbc.dsl.entity.condition.propery.ConditionEntityExpressionEnumPropertyExpressionImpl;
 import cn.featherfly.hammer.sqldb.jdbc.dsl.entity.condition.propery.ConditionEntityExpressionIntPropertyExpressionImpl;
 import cn.featherfly.hammer.sqldb.jdbc.dsl.entity.condition.propery.ConditionEntityExpressionLocalDatePropertyExpressionImpl;
 import cn.featherfly.hammer.sqldb.jdbc.dsl.entity.condition.propery.ConditionEntityExpressionLocalDateTimePropertyExpressionImpl;
@@ -80,27 +86,46 @@ public class LessThanEntityPropertyExpressionImpl<V, C extends ConditionExpressi
     /**
      * Instantiates a new less than entity property expression impl.
      *
-     * @param index      the index
-     * @param name       the name
-     * @param expression the expression
-     * @param factory    the factory
+     * @param index         the index
+     * @param name          the name
+     * @param expression    the expression
+     * @param factory       the factory
+     * @param queryRelation the query relation
      */
     public LessThanEntityPropertyExpressionImpl(int index, SerializableFunction<?, V> name,
-            AbstractMulitiEntityConditionExpression<C, L> expression, JdbcMappingFactory factory) {
-        super(index, name, expression, factory);
+            AbstractMulitiEntityConditionExpression<C, L> expression, JdbcMappingFactory factory,
+            EntitySqlRelation<?, ?> queryRelation) {
+        super(new AtomicInteger(index), name, expression, factory, queryRelation);
     }
 
     /**
      * Instantiates a new less than entity property expression impl.
      *
-     * @param index        the index
-     * @param propertyList the property list
-     * @param expression   the expression
-     * @param factory      the factory
+     * @param index         the index
+     * @param propertyList  the property list
+     * @param expression    the expression
+     * @param factory       the factory
+     * @param queryRelation the query relation
      */
     public LessThanEntityPropertyExpressionImpl(int index, List<Serializable> propertyList,
-            AbstractMulitiEntityConditionExpression<C, L> expression, JdbcMappingFactory factory) {
-        super(index, propertyList, expression, factory);
+            AbstractMulitiEntityConditionExpression<C, L> expression, JdbcMappingFactory factory,
+            EntitySqlRelation<?, ?> queryRelation) {
+        super(new AtomicInteger(index), propertyList, expression, factory, queryRelation);
+    }
+
+    /**
+     * Instantiates a new less than entity property expression impl.
+     *
+     * @param index         the index
+     * @param propertyList  the property list
+     * @param expression    the expression
+     * @param factory       the factory
+     * @param queryRelation the query relation
+     */
+    public LessThanEntityPropertyExpressionImpl(AtomicInteger index, List<Serializable> propertyList,
+            AbstractMulitiEntityConditionExpression<C, L> expression, JdbcMappingFactory factory,
+            EntitySqlRelation<?, ?> queryRelation) {
+        super(index, propertyList, expression, factory, queryRelation);
     }
 
     /**
@@ -109,7 +134,7 @@ public class LessThanEntityPropertyExpressionImpl<V, C extends ConditionExpressi
     @Override
     public <R> CompareEntityPropertyExpression<R> property(SerializableFunction<V, R> name) {
         propertyList.add(name);
-        return new LessThanEntityPropertyExpressionImpl<>(index, propertyList, expression, factory);
+        return new LessThanEntityPropertyExpressionImpl<>(index, propertyList, expression, factory, queryRelation);
     }
 
     /**
@@ -209,32 +234,69 @@ public class LessThanEntityPropertyExpressionImpl<V, C extends ConditionExpressi
      * {@inheritDoc}
      */
     @Override
+    public <E extends Enum<E>> ConditionEntityExpressionEnumPropertyExpression<E> property(
+            SerializableToEnumFunction<V, E> name) {
+        propertyList.add(name);
+        return new ConditionEntityExpressionEnumPropertyExpressionImpl<>(v -> getPropertyMapping(v),
+                expression.getIgnoreStrategy(), (value, ignore, pm) -> expression.lt0(index, pm, value, ignore));
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
     public ConditionEntityExpressionStringPropertyExpression property(SerializableToStringFunction<V> name) {
         propertyList.add(name);
         return new ConditionEntityExpressionStringPropertyExpressionImpl(v -> getPropertyMapping(v),
-                expression.getIgnoreStrategy(), (value, ignore, pm) -> expression.lt0(index, pm, value, ignore));
+                expression.getIgnoreStrategy(),
+                (value, match, ignore, pm) -> expression.lt0(index, pm, value, match, ignore));
     }
 
     // ----------------------------------------------------------------------------------------------------------------
 
+    /**
+     * Property.
+     *
+     * @param name the name
+     * @return the condition entity expression int property expression
+     */
     private ConditionEntityExpressionIntPropertyExpression property(SerializableIntSupplier name) {
         propertyList.add(name);
         return new ConditionEntityExpressionIntPropertyExpressionImpl(v -> getPropertyMapping(v),
                 expression.getIgnoreStrategy(), (value, ignore, pm) -> expression.lt0(index, pm, value, ignore));
     }
 
+    /**
+     * Property.
+     *
+     * @param name the name
+     * @return the condition entity expression long property expression
+     */
     private ConditionEntityExpressionLongPropertyExpression property(SerializableLongSupplier name) {
         propertyList.add(name);
         return new ConditionEntityExpressionLongPropertyExpressionImpl(v -> getPropertyMapping(v),
                 expression.getIgnoreStrategy(), (value, ignore, pm) -> expression.lt0(index, pm, value, ignore));
     }
 
+    /**
+     * Property.
+     *
+     * @param name the name
+     * @return the condition entity expression double property expression
+     */
     private ConditionEntityExpressionDoublePropertyExpression property(SerializableDoubleSupplier name) {
         propertyList.add(name);
         return new ConditionEntityExpressionDoublePropertyExpressionImpl(v -> getPropertyMapping(v),
                 expression.getIgnoreStrategy(), (value, ignore, pm) -> expression.lt0(index, pm, value, ignore));
     }
 
+    /**
+     * Property.
+     *
+     * @param <D>  the generic type
+     * @param name the name
+     * @return the condition entity expression date property expression
+     */
     private <D extends Date> ConditionEntityExpressionDatePropertyExpression<D> property(
             SerializableDateSupplier<D> name) {
         propertyList.add(name);
@@ -242,24 +304,50 @@ public class LessThanEntityPropertyExpressionImpl<V, C extends ConditionExpressi
                 expression.getIgnoreStrategy(), (value, ignore, pm) -> expression.lt0(index, pm, value, ignore));
     }
 
+    /**
+     * Property.
+     *
+     * @param name the name
+     * @return the condition entity expression local date property expression
+     */
     private ConditionEntityExpressionLocalDatePropertyExpression property(SerializableLocalDateSupplier name) {
         propertyList.add(name);
         return new ConditionEntityExpressionLocalDatePropertyExpressionImpl(v -> getPropertyMapping(v),
                 expression.getIgnoreStrategy(), (value, ignore, pm) -> expression.lt0(index, pm, value, ignore));
     }
 
+    /**
+     * Property.
+     *
+     * @param name the name
+     * @return the condition entity expression local time property expression
+     */
     private ConditionEntityExpressionLocalTimePropertyExpression property(SerializableLocalTimeSupplier name) {
         propertyList.add(name);
         return new ConditionEntityExpressionLocalTimePropertyExpressionImpl(v -> getPropertyMapping(v),
                 expression.getIgnoreStrategy(), (value, ignore, pm) -> expression.lt0(index, pm, value, ignore));
     }
 
+    /**
+     * Property.
+     *
+     * @param name the name
+     * @return the condition entity expression local date time property
+     *         expression
+     */
     private ConditionEntityExpressionLocalDateTimePropertyExpression property(SerializableLocalDateTimeSupplier name) {
         propertyList.add(name);
         return new ConditionEntityExpressionLocalDateTimePropertyExpressionImpl(v -> getPropertyMapping(v),
                 expression.getIgnoreStrategy(), (value, ignore, pm) -> expression.lt0(index, pm, value, ignore));
     }
 
+    /**
+     * Property.
+     *
+     * @param <N>  the number type
+     * @param name the name
+     * @return the condition entity expression number property expression
+     */
     private <N extends Number> ConditionEntityExpressionNumberPropertyExpression<N> property(
             SerializableNumberSupplier<N> name) {
         propertyList.add(name);
@@ -267,10 +355,17 @@ public class LessThanEntityPropertyExpressionImpl<V, C extends ConditionExpressi
                 expression.getIgnoreStrategy(), (value, ignore, pm) -> expression.lt0(index, pm, value, ignore));
     }
 
+    /**
+     * Property.
+     *
+     * @param name the name
+     * @return the condition entity expression string property expression
+     */
     private ConditionEntityExpressionStringPropertyExpression property(SerializableStringSupplier name) {
         propertyList.add(name);
         return new ConditionEntityExpressionStringPropertyExpressionImpl(v -> getPropertyMapping(v),
-                expression.getIgnoreStrategy(), (value, ignore, pm) -> expression.lt0(index, pm, value, ignore));
+                expression.getIgnoreStrategy(),
+                (value, match, ignore, pm) -> expression.lt0(index, pm, value, match, ignore));
     }
 
     /**
@@ -561,5 +656,39 @@ public class LessThanEntityPropertyExpressionImpl<V, C extends ConditionExpressi
     @Override
     public void accept(SerializableStringSupplier property, Predicate<String> ignoreStrategy) {
         property(property).value(property.get(), ignoreStrategy);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void accept(SerializableToStringFunction<V> name, String value, MatchStrategy matchStrategy) {
+        property(name).value(value, matchStrategy);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void accept(SerializableToStringFunction<V> name, String value, MatchStrategy matchStrategy,
+            Predicate<String> ignoreStrategy) {
+        property(name).value(value, matchStrategy, ignoreStrategy);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void accept(SerializableStringSupplier property, MatchStrategy matchStrategy) {
+        property(property).value(property.get(), matchStrategy);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void accept(SerializableStringSupplier property, MatchStrategy matchStrategy,
+            Predicate<String> ignoreStrategy) {
+        property(property).value(property.get(), matchStrategy, ignoreStrategy);
     }
 }

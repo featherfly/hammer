@@ -11,7 +11,7 @@ import cn.featherfly.common.operator.ComparisonOperator.MatchStrategy;
  * @author zhongj
  * @param <T> the value type
  */
-public interface EqualsNotEqualsEntityPropertyValueExpression<T> {
+public interface EqualsOrNotEqualsEntityValuePropertyExpression<T> {
 
     /**
      * Value.

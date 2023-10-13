@@ -2,7 +2,7 @@
  * All rights Reserved, Designed By zhongj
  * @Title: EntitySqlRelation.java
  * @Package cn.featherfly.hammer.sqldb.jdbc.dsl.entity
- * @Description: todo (用一句话描述该文件做什么)
+ * @Description: EntitySqlRelation
  * @author: zhongj
  * @date: 2023年8月25日 下午6:07:01
  * @version V1.0
@@ -11,6 +11,8 @@
 
 package cn.featherfly.hammer.sqldb.jdbc.dsl.entity;
 
+import java.util.HashSet;
+import java.util.Set;
 import java.util.function.Predicate;
 
 import com.speedment.common.tuple.MutableTuples;
@@ -21,7 +23,9 @@ import cn.featherfly.common.db.builder.dml.basic.SqlSelectJoinOnBasicBuilder;
 import cn.featherfly.common.db.mapping.JdbcClassMapping;
 import cn.featherfly.common.lang.AssertIllegalArgument;
 import cn.featherfly.common.lang.Lang;
+import cn.featherfly.common.lang.Strings;
 import cn.featherfly.common.repository.builder.AliasManager;
+import cn.featherfly.hammer.config.dsl.ConditionConfig;
 import cn.featherfly.hammer.sqldb.SqldbHammerException;
 import cn.featherfly.hammer.sqldb.jdbc.Jdbc;
 
@@ -41,7 +45,7 @@ public abstract class EntitySqlRelation<R extends EntitySqlRelation<R, B>, B ext
     protected AliasManager aliasManager;
 
     /** The ignore strategy. */
-    protected Predicate<?> ignoreStrategy;
+    protected ConditionConfig<?> conditionConfig;
 
     /** The index. */
     protected int index;
@@ -51,23 +55,22 @@ public abstract class EntitySqlRelation<R extends EntitySqlRelation<R, B>, B ext
             EntityRelationMapping<?>, EntityRelationMapping<?>, EntityRelationMapping<?>, EntityRelationMapping<?>,
             EntityRelationMapping<?>, EntityRelationMapping<?>> entityFilterableMappingTuple = MutableTuples.create9();
 
-    //    private MutableTuple9<Boolean, Boolean, Boolean, Boolean, Boolean, Boolean, Boolean, Boolean,
-    //            Boolean> entityQueryFetchTuple = MutableTuples.create9();
+    private Set<String> joinedRelations = new HashSet<>();
 
     /**
      * Instantiates a new abstract sql query entity properties.
      *
-     * @param jdbc           the jdbc
-     * @param aliasManager   aliasManager
-     * @param ignoreStrategy the ignore strategy
+     * @param jdbc            the jdbc
+     * @param aliasManager    aliasManager
+     * @param conditionConfig the condition config
      */
-    public EntitySqlRelation(Jdbc jdbc, AliasManager aliasManager, Predicate<?> ignoreStrategy) {
+    protected EntitySqlRelation(Jdbc jdbc, AliasManager aliasManager, ConditionConfig<?> conditionConfig) {
         AssertIllegalArgument.isNotNull(jdbc, "jdbc");
         AssertIllegalArgument.isNotNull(aliasManager, "aliasManager");
-        AssertIllegalArgument.isNotNull(ignoreStrategy, "ignoreStrategy");
+        AssertIllegalArgument.isNotNull(conditionConfig, "conditionConfig");
         this.jdbc = jdbc;
         this.aliasManager = aliasManager;
-        this.ignoreStrategy = ignoreStrategy;
+        this.conditionConfig = conditionConfig;
 
         //        entityQueryFetchIndexes.add(0); // 默认加入第一个
     }
@@ -85,8 +88,9 @@ public abstract class EntitySqlRelation<R extends EntitySqlRelation<R, B>, B ext
     /**
      * Adds the filterable.
      *
-     * @param joinClassMapping the join class mapping
+     * @param sourceIndex      the source index
      * @param propertyName     the property name
+     * @param joinClassMapping the join class mapping
      * @param joinPropertyName the join property name
      * @return the this
      */
@@ -100,7 +104,6 @@ public abstract class EntitySqlRelation<R extends EntitySqlRelation<R, B>, B ext
                 EntityRelationMapping<?> eqm = createEntityRelationMapping(sourceIndex, propertyName, joinClassMapping,
                         joinPropertyName);
                 entityFilterableMappingTuple.set0(eqm);
-                //                selectBuilder = new SqlSelectBasicBuilder(jdbc.getDialect(), classMapping, eqm.tableAlias);
                 initBuilder(eqm);
                 break;
             case 1:
@@ -143,6 +146,147 @@ public abstract class EntitySqlRelation<R extends EntitySqlRelation<R, B>, B ext
     }
 
     /**
+     * Join.
+     *
+     * @param sourceIndex      the source index
+     * @param propertyName     the property name
+     * @param joinClassMapping the join class mapping
+     * @return the r
+     */
+    public R join(int sourceIndex, String propertyName, JdbcClassMapping<?> joinClassMapping) {
+        return join(sourceIndex, propertyName, joinClassMapping, true);
+    }
+
+    /**
+     * Join.
+     *
+     * @param sourceIndex       the source index
+     * @param propertyName      the property name
+     * @param joinClassMapping  the join class mapping
+     * @param ignoreDuplication the ignore duplication
+     * @return the r
+     */
+    public R join(int sourceIndex, String propertyName, JdbcClassMapping<?> joinClassMapping,
+            boolean ignoreDuplication) {
+        if (joinClassMapping.getPrivaryKeyPropertyMappings().size() == 1) {
+            return join(sourceIndex, propertyName, joinClassMapping,
+                    joinClassMapping.getPrivaryKeyPropertyMappings().get(0).getRepositoryFieldName(),
+                    ignoreDuplication);
+            //            addFilterable(joinClassMapping, propertyName, null);
+            //            EntityRelationMapping<?> erm = getEntityRelationMapping(sourceIndex);
+            //            EntityRelationMapping<?> jerm = getEntityRelationMapping(index - 1);
+            //            SqlSelectJoinOnBasicBuilder selectJoinOnBasicBuilder = join0(erm.getTableAlias(),
+            //                    erm.getClassMapping().getPropertyMapping(propertyName).getRepositoryFieldName(), joinClassMapping,
+            //                    jerm.getTableAlias(),
+            //                    joinClassMapping.getPrivaryKeyPropertyMappings().get(0).getRepositoryFieldName());
+            //            jerm.selectJoinOnBasicBuilder = selectJoinOnBasicBuilder;
+            //            return this;
+        }
+        throw new SqldbHammerException(Strings.format("only support one privary key, but {0} has ",
+                joinClassMapping.getPrivaryKeyPropertyMappings().size()));
+    }
+
+    /**
+     * Join.
+     *
+     * @param sourceIndex      the source index
+     * @param joinClassMapping the join class mapping
+     * @param joinPropertyName the join property name
+     * @return the r
+     */
+    public R join(int sourceIndex, JdbcClassMapping<?> joinClassMapping, String joinPropertyName) {
+        return join(sourceIndex, joinClassMapping, joinPropertyName, true);
+    }
+
+    /**
+     * Join.
+     *
+     * @param sourceIndex       the source index
+     * @param joinClassMapping  the join class mapping
+     * @param joinPropertyName  the join property name
+     * @param ignoreDuplication the ignore duplication
+     * @return the r
+     */
+    public R join(int sourceIndex, JdbcClassMapping<?> joinClassMapping, String joinPropertyName,
+            boolean ignoreDuplication) {
+        EntityRelationMapping<?> erm = getEntityRelationMapping(sourceIndex);
+        return join(sourceIndex, erm.getIdName(), joinClassMapping, joinPropertyName, ignoreDuplication);
+    }
+
+    /**
+     * Join.
+     *
+     * @param sourceIndex      the source index
+     * @param propertyName     the property name
+     * @param joinClassMapping the join class mapping
+     * @param joinPropertyName the join property name
+     * @return the r
+     */
+    public R join(int sourceIndex, String propertyName, JdbcClassMapping<?> joinClassMapping, String joinPropertyName) {
+        return join(sourceIndex, propertyName, joinClassMapping, joinPropertyName, true);
+    }
+
+    /**
+     * Join.
+     *
+     * @param sourceIndex       the source index
+     * @param propertyName      the property name
+     * @param joinClassMapping  the join class mapping
+     * @param joinPropertyName  the join property name
+     * @param ignoreDuplication the ignore duplication
+     * @return the r
+     */
+    @SuppressWarnings("unchecked")
+    public R join(int sourceIndex, String propertyName, JdbcClassMapping<?> joinClassMapping, String joinPropertyName,
+            boolean ignoreDuplication) {
+        AssertIllegalArgument.isNotNull(propertyName, "propertyName");
+        AssertIllegalArgument.isNotNull(joinClassMapping, "joinClassMapping");
+        AssertIllegalArgument.isNotNull(joinPropertyName, "joinPropertyName");
+        EntityRelationMapping<?> erm = getEntityRelationMapping(sourceIndex);
+        if (Lang.isNotEmpty(erm.getJoinFromPropertyName())) {
+            addFilterable(sourceIndex, erm.getJoinFromPropertyName() + "." + propertyName, joinClassMapping,
+                    joinPropertyName);
+        } else {
+            addFilterable(sourceIndex, propertyName, joinClassMapping, joinPropertyName);
+        }
+        EntityRelationMapping<?> jerm = getEntityRelationMapping(index - 1);
+
+        String joinRelation = erm.getClassMapping().getType().getSimpleName() + "[" + erm.getTableAlias() + "]."
+                + jerm.getJoinFromPropertyName();
+
+        //        if (ignoreDuplication && joinedRelations.contains(joinRelation)) {
+        //
+        //        } else {
+        if (!ignoreDuplication || !joinedRelations.contains(joinRelation)) {
+            joinedRelations.add(joinRelation);
+            SqlSelectJoinOnBasicBuilder selectJoinOnBasicBuilder = join0(erm.getTableAlias(),
+                    erm.getClassMapping().getPropertyMapping(propertyName).getRepositoryFieldName(), joinClassMapping,
+                    jerm.getTableAlias(),
+                    joinClassMapping.getPropertyMapping(joinPropertyName).getRepositoryFieldName());
+            jerm.selectJoinOnBasicBuilder = selectJoinOnBasicBuilder;
+        }
+        return (R) this;
+        //        addFilterable(joinClassMapping);
+        //        EntityRelationMapping<?> erm = getEntityRelationMapping(sourceIndex);
+        //        EntityRelationMapping<?> jerm = getEntityRelationMapping(index - 1);
+        //        return getBuilder().join(Join.INNER_JOIN, erm.getTableAlias(), propertyName, joinClassMapping,
+        //                jerm.getTableAlias(), joinPropertyName);
+    }
+
+    /**
+     * Join 0.
+     *
+     * @param tableAlias          the table alias
+     * @param columnName          the column name
+     * @param joinClassMapping    the join class mapping
+     * @param joinTableAlias      the join table alias
+     * @param joinTableColumnName the join table column name
+     * @return the sql select join on basic builder
+     */
+    protected abstract SqlSelectJoinOnBasicBuilder join0(String tableAlias, String columnName,
+            JdbcClassMapping<?> joinClassMapping, String joinTableAlias, String joinTableColumnName);
+
+    /**
      * Inits the builder.
      *
      * @param erm the erm
@@ -180,7 +324,7 @@ public abstract class EntitySqlRelation<R extends EntitySqlRelation<R, B>, B ext
      * @return ignoreStrategy
      */
     public Predicate<?> getIgnorePolicy() {
-        return ignoreStrategy;
+        return conditionConfig.getIgnoreStrategy();
     }
 
     /**
@@ -243,6 +387,14 @@ public abstract class EntitySqlRelation<R extends EntitySqlRelation<R, B>, B ext
             JdbcClassMapping<E> joinClassMapping, String joinPropertyName) {
         return new EntityRelationMapping<>(joinClassMapping, joinPropertyName, sourceIndex, propertyName, aliasManager);
     }
+
+    /**
+     * Gets the config.
+     *
+     * @param <C> the generic type
+     * @return the config
+     */
+    public abstract <C extends ConditionConfig<C>> C getConfig();
 
     // ********************************************************************
     //

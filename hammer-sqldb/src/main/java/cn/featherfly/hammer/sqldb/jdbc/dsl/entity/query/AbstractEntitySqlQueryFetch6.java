@@ -7,7 +7,6 @@ import cn.featherfly.common.db.mapping.JdbcMappingFactory;
 import cn.featherfly.hammer.dsl.entity.query.EntityQueryConditionGroup6;
 import cn.featherfly.hammer.dsl.entity.query.EntityQueryConditionGroupLogic6;
 import cn.featherfly.hammer.expression.api.Sortable;
-import cn.featherfly.hammer.expression.condition.ConditionGroupConfig;
 import cn.featherfly.hammer.expression.entity.EntityWhereExpression6;
 import cn.featherfly.hammer.expression.entity.query.EntityQuerySortExpression6;
 import cn.featherfly.hammer.sqldb.jdbc.SqlPageFactory;
@@ -55,7 +54,7 @@ public abstract class AbstractEntitySqlQueryFetch6<E, E2, E3, E4, E5, E6, RS> ex
      */
     @Override
     public EntityQueryConditionGroup6<E, E2, E3, E4, E5, E6, RS> where(
-            Consumer<ConditionGroupConfig<EntityQueryConditionGroup6<E, E2, E3, E4, E5, E6, RS>>> consumer) {
+            Consumer<EntityQueryConditionGroup6<E, E2, E3, E4, E5, E6, RS>> consumer) {
         EntitySqlQueryExpression6<E, E2, E3, E4, E5, E6,
                 RS> exp = new EntitySqlQueryExpression6<>(factory, sqlPageFactory, queryRelation);
         if (consumer != null) {

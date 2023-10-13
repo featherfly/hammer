@@ -37,6 +37,7 @@ import cn.featherfly.common.function.serializable.SerializableToLocalTimeFunctio
 import cn.featherfly.common.function.serializable.SerializableToLongFunction;
 import cn.featherfly.common.function.serializable.SerializableToNumberFunction;
 import cn.featherfly.common.function.serializable.SerializableToStringFunction;
+import cn.featherfly.common.operator.ComparisonOperator.MatchStrategy;
 import cn.featherfly.hammer.expression.condition.ConditionExpression;
 import cn.featherfly.hammer.expression.condition.LogicExpression;
 import cn.featherfly.hammer.expression.entity.condition.AbstractConditionEntityExpression;
@@ -45,14 +46,14 @@ import cn.featherfly.hammer.expression.entity.condition.AbstractConditionEntityE
  * The Class AbstractGreatThanEntityExpression.
  *
  * @author zhongj
- * @param <E> the element type
+ * @param <T> the element type
  * @param <C> the generic type
  * @param <L> the generic type
  */
-public abstract class AbstractGreatThanEntityExpression<E, C extends ConditionExpression,
+public abstract class AbstractGreatThanEntityExpression<T, C extends ConditionExpression,
         L extends LogicExpression<C, L>>
         extends AbstractConditionEntityExpression<MulitiEntityGreatThanExpression<C, L>>
-        implements GreatThanEntityExpression<E> {
+        implements GreatThanEntityExpression<T> {
 
     /**
      * Instantiates a new abstract great than entity expression.
@@ -70,7 +71,7 @@ public abstract class AbstractGreatThanEntityExpression<E, C extends ConditionEx
      * {@inheritDoc}
      */
     @Override
-    public void accept(SerializableToIntFunction<E> name, int value) {
+    public void accept(SerializableToIntFunction<T> name, int value) {
         expression.gt(index, name, value);
     }
 
@@ -78,7 +79,7 @@ public abstract class AbstractGreatThanEntityExpression<E, C extends ConditionEx
      * {@inheritDoc}
      */
     @Override
-    public void accept(SerializableToIntFunction<E> name, int value, IntPredicate ignoreStrategy) {
+    public void accept(SerializableToIntFunction<T> name, int value, IntPredicate ignoreStrategy) {
         expression.gt(index, name, value, ignoreStrategy);
     }
 
@@ -86,7 +87,7 @@ public abstract class AbstractGreatThanEntityExpression<E, C extends ConditionEx
      * {@inheritDoc}
      */
     @Override
-    public void accept(SerializableToLongFunction<E> name, long value) {
+    public void accept(SerializableToLongFunction<T> name, long value) {
         expression.gt(index, name, value);
     }
 
@@ -94,7 +95,7 @@ public abstract class AbstractGreatThanEntityExpression<E, C extends ConditionEx
      * {@inheritDoc}
      */
     @Override
-    public void accept(SerializableToLongFunction<E> name, long value, LongPredicate ignoreStrategy) {
+    public void accept(SerializableToLongFunction<T> name, long value, LongPredicate ignoreStrategy) {
         expression.gt(index, name, value, ignoreStrategy);
     }
 
@@ -102,7 +103,7 @@ public abstract class AbstractGreatThanEntityExpression<E, C extends ConditionEx
      * {@inheritDoc}
      */
     @Override
-    public void accept(SerializableToDoubleFunction<E> name, double value) {
+    public void accept(SerializableToDoubleFunction<T> name, double value) {
         expression.gt(index, name, value);
     }
 
@@ -110,7 +111,7 @@ public abstract class AbstractGreatThanEntityExpression<E, C extends ConditionEx
      * {@inheritDoc}
      */
     @Override
-    public void accept(SerializableToDoubleFunction<E> name, double value, DoublePredicate ignoreStrategy) {
+    public void accept(SerializableToDoubleFunction<T> name, double value, DoublePredicate ignoreStrategy) {
         expression.gt(index, name, value, ignoreStrategy);
     }
 
@@ -118,7 +119,7 @@ public abstract class AbstractGreatThanEntityExpression<E, C extends ConditionEx
      * {@inheritDoc}
      */
     @Override
-    public <N extends Number> void accept(SerializableToNumberFunction<E, N> name, N value) {
+    public <N extends Number> void accept(SerializableToNumberFunction<T, N> name, N value) {
         expression.gt(index, name, value);
     }
 
@@ -126,7 +127,7 @@ public abstract class AbstractGreatThanEntityExpression<E, C extends ConditionEx
      * {@inheritDoc}
      */
     @Override
-    public <N extends Number> void accept(SerializableToNumberFunction<E, N> name, N value,
+    public <N extends Number> void accept(SerializableToNumberFunction<T, N> name, N value,
             Predicate<N> ignoreStrategy) {
         expression.gt(index, name, value, ignoreStrategy);
     }
@@ -135,7 +136,7 @@ public abstract class AbstractGreatThanEntityExpression<E, C extends ConditionEx
      * {@inheritDoc}
      */
     @Override
-    public <D extends Date> void accept(SerializableToDateFunction<E, D> name, D value) {
+    public <D extends Date> void accept(SerializableToDateFunction<T, D> name, D value) {
         expression.gt(index, name, value);
     }
 
@@ -143,7 +144,7 @@ public abstract class AbstractGreatThanEntityExpression<E, C extends ConditionEx
      * {@inheritDoc}
      */
     @Override
-    public <D extends Date> void accept(SerializableToDateFunction<E, D> name, D value, Predicate<D> ignoreStrategy) {
+    public <D extends Date> void accept(SerializableToDateFunction<T, D> name, D value, Predicate<D> ignoreStrategy) {
         expression.gt(index, name, value, ignoreStrategy);
     }
 
@@ -151,7 +152,7 @@ public abstract class AbstractGreatThanEntityExpression<E, C extends ConditionEx
      * {@inheritDoc}
      */
     @Override
-    public void accept(SerializableToLocalTimeFunction<E> name, LocalTime value) {
+    public void accept(SerializableToLocalTimeFunction<T> name, LocalTime value) {
         expression.gt(index, name, value);
     }
 
@@ -159,7 +160,7 @@ public abstract class AbstractGreatThanEntityExpression<E, C extends ConditionEx
      * {@inheritDoc}
      */
     @Override
-    public void accept(SerializableToLocalTimeFunction<E> name, LocalTime value, Predicate<LocalTime> ignoreStrategy) {
+    public void accept(SerializableToLocalTimeFunction<T> name, LocalTime value, Predicate<LocalTime> ignoreStrategy) {
         expression.gt(index, name, value, ignoreStrategy);
     }
 
@@ -167,7 +168,7 @@ public abstract class AbstractGreatThanEntityExpression<E, C extends ConditionEx
      * {@inheritDoc}
      */
     @Override
-    public void accept(SerializableToLocalDateFunction<E> name, LocalDate value) {
+    public void accept(SerializableToLocalDateFunction<T> name, LocalDate value) {
         expression.gt(index, name, value);
     }
 
@@ -175,7 +176,7 @@ public abstract class AbstractGreatThanEntityExpression<E, C extends ConditionEx
      * {@inheritDoc}
      */
     @Override
-    public void accept(SerializableToLocalDateFunction<E> name, LocalDate value, Predicate<LocalDate> ignoreStrategy) {
+    public void accept(SerializableToLocalDateFunction<T> name, LocalDate value, Predicate<LocalDate> ignoreStrategy) {
         expression.gt(index, name, value, ignoreStrategy);
     }
 
@@ -183,7 +184,7 @@ public abstract class AbstractGreatThanEntityExpression<E, C extends ConditionEx
      * {@inheritDoc}
      */
     @Override
-    public void accept(SerializableToLocalDateTimeFunction<E> name, LocalDateTime value) {
+    public void accept(SerializableToLocalDateTimeFunction<T> name, LocalDateTime value) {
         expression.gt(index, name, value);
     }
 
@@ -191,7 +192,7 @@ public abstract class AbstractGreatThanEntityExpression<E, C extends ConditionEx
      * {@inheritDoc}
      */
     @Override
-    public void accept(SerializableToLocalDateTimeFunction<E> name, LocalDateTime value,
+    public void accept(SerializableToLocalDateTimeFunction<T> name, LocalDateTime value,
             Predicate<LocalDateTime> ignoreStrategy) {
         expression.gt(index, name, value, ignoreStrategy);
     }
@@ -200,7 +201,7 @@ public abstract class AbstractGreatThanEntityExpression<E, C extends ConditionEx
      * {@inheritDoc}
      */
     @Override
-    public void accept(SerializableToStringFunction<E> name, String value) {
+    public void accept(SerializableToStringFunction<T> name, String value) {
         expression.gt(index, name, value);
     }
 
@@ -208,7 +209,7 @@ public abstract class AbstractGreatThanEntityExpression<E, C extends ConditionEx
      * {@inheritDoc}
      */
     @Override
-    public void accept(SerializableToStringFunction<E> name, String value, Predicate<String> ignoreStrategy) {
+    public void accept(SerializableToStringFunction<T> name, String value, Predicate<String> ignoreStrategy) {
         expression.gt(index, name, value, ignoreStrategy);
     }
 
@@ -354,5 +355,39 @@ public abstract class AbstractGreatThanEntityExpression<E, C extends ConditionEx
     @Override
     public void accept(SerializableStringSupplier property, Predicate<String> ignoreStrategy) {
         expression.gt(index, property, ignoreStrategy);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void accept(SerializableToStringFunction<T> name, String value, MatchStrategy matchStrategy) {
+        expression.gt(index, name, value, matchStrategy);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void accept(SerializableToStringFunction<T> name, String value, MatchStrategy matchStrategy,
+            Predicate<String> ignoreStrategy) {
+        expression.gt(index, name, value, matchStrategy, ignoreStrategy);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void accept(SerializableStringSupplier property, MatchStrategy matchStrategy) {
+        expression.gt(index, property, matchStrategy);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void accept(SerializableStringSupplier property, MatchStrategy matchStrategy,
+            Predicate<String> ignoreStrategy) {
+        expression.gt(index, property, matchStrategy, ignoreStrategy);
     }
 }

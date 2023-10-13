@@ -10,6 +10,7 @@
  */
 package cn.featherfly.hammer.sqldb.jdbc.dsl.entity.condition;
 
+import java.util.concurrent.atomic.AtomicInteger;
 import java.util.function.Predicate;
 
 import cn.featherfly.common.function.serializable.SerializableFunction;
@@ -42,7 +43,7 @@ public class MulitiEntityNotStartWithExpressionImpl<C extends ConditionExpressio
      */
     @Override
     public <E> L nsw(int index, SerializableFunction<E, String> name, String value, MatchStrategy matchStrategy) {
-        return proxy.nsw0(index, name, value, matchStrategy, ignoreStrategy);
+        return proxy.nsw0(new AtomicInteger(index), name, value, matchStrategy, getIgnoreStrategy());
     }
 
     /**
@@ -51,7 +52,7 @@ public class MulitiEntityNotStartWithExpressionImpl<C extends ConditionExpressio
     @Override
     public <E> L nsw(int index, SerializableFunction<E, String> name, String value, MatchStrategy matchStrategy,
             Predicate<String> ignoreStrategy) {
-        return proxy.nsw0(index, name, value, matchStrategy, ignoreStrategy);
+        return proxy.nsw0(new AtomicInteger(index), name, value, matchStrategy, ignoreStrategy);
     }
 
     /**
@@ -59,7 +60,7 @@ public class MulitiEntityNotStartWithExpressionImpl<C extends ConditionExpressio
      */
     @Override
     public L nsw(int index, SerializableSupplier<String> property, MatchStrategy matchStrategy) {
-        return proxy.nsw0(index, property, matchStrategy, ignoreStrategy);
+        return proxy.nsw0(new AtomicInteger(index), property, matchStrategy, getIgnoreStrategy());
     }
 
     /**
@@ -68,6 +69,6 @@ public class MulitiEntityNotStartWithExpressionImpl<C extends ConditionExpressio
     @Override
     public L nsw(int index, SerializableSupplier<String> property, MatchStrategy matchStrategy,
             Predicate<String> ignoreStrategy) {
-        return proxy.nsw0(index, property, matchStrategy, ignoreStrategy);
+        return proxy.nsw0(new AtomicInteger(index), property, matchStrategy, ignoreStrategy);
     }
 }

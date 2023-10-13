@@ -1,6 +1,9 @@
 
 package cn.featherfly.hammer.expression.entity.execute;
 
+import cn.featherfly.hammer.config.dsl.DeleteConditionConfig;
+import cn.featherfly.hammer.config.dsl.DeleteConfig;
+import cn.featherfly.hammer.expression.ConfigureExpression;
 import cn.featherfly.hammer.expression.entity.EntityWhereExpression;
 
 /**
@@ -11,6 +14,9 @@ import cn.featherfly.hammer.expression.entity.EntityWhereExpression;
  * @param <C> the generic type
  * @param <L> the generic type
  */
-public interface EntityDeleteExpression<E, C extends EntityExecutableConditionGroupExpression<E, C, L>,
-        L extends EntityExecutableConditionGroupLogicExpression<E, C, L>> extends EntityWhereExpression<E, C, L> {
+public interface EntityDeleteExpression<E,
+        C extends EntityExecutableConditionGroupExpression<E, C, L, DeleteConditionConfig>,
+        L extends EntityExecutableConditionGroupLogicExpression<E, C, L, DeleteConditionConfig>>
+        extends EntityWhereExpression<E, C, L>,
+        ConfigureExpression<EntityDeleteExpression<E, C, L>, DeleteConfig, DeleteConditionConfig> {
 }

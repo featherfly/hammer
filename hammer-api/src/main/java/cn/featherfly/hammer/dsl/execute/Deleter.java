@@ -1,6 +1,7 @@
 
 package cn.featherfly.hammer.dsl.execute;
 
+import cn.featherfly.hammer.config.dsl.DeleteConditionConfig;
 import cn.featherfly.hammer.expression.execute.DeleterExpression;
 
 /**
@@ -8,8 +9,8 @@ import cn.featherfly.hammer.expression.execute.DeleterExpression;
  *
  * @author zhongj
  */
-public interface Deleter
-        extends DeleterExpression<Delete, ExecutableConditionGroup, ExecutableConditionGroupLogic> {
+public interface Deleter extends DeleterExpression<Delete, ExecutableConditionGroup<DeleteConditionConfig>,
+        ExecutableConditionGroupLogic<DeleteConditionConfig>> {
 
     //    /**
     //     * start delete dsl for the entity type.

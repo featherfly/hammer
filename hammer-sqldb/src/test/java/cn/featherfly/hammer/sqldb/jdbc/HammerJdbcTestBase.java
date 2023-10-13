@@ -17,6 +17,6 @@ public class HammerJdbcTestBase extends JdbcTestBase {
 
     @BeforeClass
     public void before() {
-        hammer = new SqldbHammerImpl(jdbc, mappingFactory, configFactory);
+        hammer = new SqldbHammerImpl(jdbc, mappingFactory, configFactory, hammerConfig);
     }
 }

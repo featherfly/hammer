@@ -12,7 +12,6 @@ package cn.featherfly.hammer.sqldb.jdbc.dsl.entity.condition;
 
 import java.util.Collection;
 import java.util.Date;
-import java.util.function.Predicate;
 
 import cn.featherfly.common.db.mapping.JdbcMappingFactory;
 import cn.featherfly.common.exception.NotImplementedException;
@@ -44,6 +43,7 @@ import cn.featherfly.hammer.expression.entity.condition.nba.AbstractNotBetweenEn
 import cn.featherfly.hammer.expression.entity.condition.nba.MulitiEntityNotBetweenExpression;
 import cn.featherfly.hammer.expression.entity.condition.nba.NotBetweenEntityExpression;
 import cn.featherfly.hammer.expression.entity.condition.nba.NotBetweenEntityPropertyExpression;
+import cn.featherfly.hammer.sqldb.jdbc.dsl.entity.EntitySqlRelation;
 import cn.featherfly.hammer.sqldb.jdbc.dsl.entity.condition.propery.ConditionEntityExpressionDatePropertyExpression2Impl;
 import cn.featherfly.hammer.sqldb.jdbc.dsl.entity.condition.propery.ConditionEntityExpressionDoublePropertyExpression2Impl;
 import cn.featherfly.hammer.sqldb.jdbc.dsl.entity.condition.propery.ConditionEntityExpressionEnumPropertyExpression2Impl;
@@ -59,45 +59,48 @@ import cn.featherfly.hammer.sqldb.jdbc.dsl.entity.condition.propery.ConditionEnt
  * The Class NotBetweenEntityExpressionImpl.
  *
  * @author zhongj
- * @param <E> the element type
+ * @param <T> the element type
  * @param <C> the generic type
  * @param <L> the generic type
  */
-public class NotBetweenEntityExpressionImpl<E, C extends ConditionExpression, L extends LogicExpression<C, L>>
-        extends AbstractNotBetweenEntityExpression<E, C, L> implements NotBetweenEntityExpression<E> {
+public class NotBetweenEntityExpressionImpl<T, C extends ConditionExpression, L extends LogicExpression<C, L>>
+        extends AbstractNotBetweenEntityExpression<T, C, L> implements NotBetweenEntityExpression<T> {
 
     private JdbcMappingFactory factory;
+
+    private EntitySqlRelation<?, ?> queryRelation;
 
     /**
      * Instantiates a new not between entity expression impl.
      *
-     * @param index          the index
-     * @param expression     the expression
-     * @param ignoreStrategy the ignore strategy
-     * @param factory        the factory
+     * @param index         the index
+     * @param expression    the expression
+     * @param factory       the factory
+     * @param queryRelation the query relation
      */
     public NotBetweenEntityExpressionImpl(int index, MulitiEntityNotBetweenExpression<C, L> expression,
-            Predicate<?> ignoreStrategy, JdbcMappingFactory factory) {
-        super(index, expression, ignoreStrategy);
+            JdbcMappingFactory factory, EntitySqlRelation<?, ?> queryRelation) {
+        super(index, expression, queryRelation.getIgnorePolicy());
         this.factory = factory;
+        this.queryRelation = queryRelation;
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public <R> NotBetweenEntityPropertyExpression<R> property(SerializableFunction<E, R> name) {
+    public <R> NotBetweenEntityPropertyExpression<R> property(SerializableFunction<T, R> name) {
         return new NotBetweenEntityPropertyExpressionImpl<>(index, name,
-                (MulitiEntityNotBetweenExpressionImpl<C, L>) expression, factory);
+                (MulitiEntityNotBetweenExpressionImpl<C, L>) expression, factory, queryRelation);
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public <R extends Collection<RE>,
-            RE> NotBetweenEntityPropertyExpression<RE> property(SerializableToCollectionFunction<E, R, RE> name) {
-        // IMPLSOON 未实现Collection property
+    public <R extends Collection<E>,
+            E> NotBetweenEntityPropertyExpression<E> property(SerializableToCollectionFunction<T, R, E> name) {
+        // IMPLSOON 后续来实现集合类型property
         throw new NotImplementedException();
     }
 
@@ -105,7 +108,7 @@ public class NotBetweenEntityExpressionImpl<E, C extends ConditionExpression, L 
      * {@inheritDoc}
      */
     @Override
-    public <R> ConditionEntityExpressionIntPropertyExpression2 property(SerializableToIntFunction<E> name) {
+    public ConditionEntityExpressionIntPropertyExpression2 property(SerializableToIntFunction<T> name) {
         return new ConditionEntityExpressionIntPropertyExpression2Impl(v -> null, ignoreStrategy,
                 (min, max, ignore, pm) -> accept(name, min, max, ignore));
     }
@@ -114,7 +117,7 @@ public class NotBetweenEntityExpressionImpl<E, C extends ConditionExpression, L 
      * {@inheritDoc}
      */
     @Override
-    public <R> ConditionEntityExpressionLongPropertyExpression2 property(SerializableToLongFunction<E> name) {
+    public ConditionEntityExpressionLongPropertyExpression2 property(SerializableToLongFunction<T> name) {
         return new ConditionEntityExpressionLongPropertyExpression2Impl(v -> null, ignoreStrategy,
                 (min, max, ignore, pm) -> accept(name, min, max, ignore));
     }
@@ -123,7 +126,7 @@ public class NotBetweenEntityExpressionImpl<E, C extends ConditionExpression, L 
      * {@inheritDoc}
      */
     @Override
-    public <R> ConditionEntityExpressionDoublePropertyExpression2 property(SerializableToDoubleFunction<E> name) {
+    public ConditionEntityExpressionDoublePropertyExpression2 property(SerializableToDoubleFunction<T> name) {
         return new ConditionEntityExpressionDoublePropertyExpression2Impl(v -> null, ignoreStrategy,
                 (min, max, ignore, pm) -> accept(name, min, max, ignore));
     }
@@ -132,8 +135,8 @@ public class NotBetweenEntityExpressionImpl<E, C extends ConditionExpression, L 
      * {@inheritDoc}
      */
     @Override
-    public <R extends Date> ConditionEntityExpressionDatePropertyExpression2<R> property(
-            SerializableToDateFunction<E, R> name) {
+    public <D extends Date> ConditionEntityExpressionDatePropertyExpression2<D> property(
+            SerializableToDateFunction<T, D> name) {
         return new ConditionEntityExpressionDatePropertyExpression2Impl<>(v -> null, ignoreStrategy,
                 (min, max, ignore, pm) -> accept(name, min, max, ignore));
     }
@@ -142,7 +145,7 @@ public class NotBetweenEntityExpressionImpl<E, C extends ConditionExpression, L 
      * {@inheritDoc}
      */
     @Override
-    public ConditionEntityExpressionLocalDatePropertyExpression2 property(SerializableToLocalDateFunction<E> name) {
+    public ConditionEntityExpressionLocalDatePropertyExpression2 property(SerializableToLocalDateFunction<T> name) {
         return new ConditionEntityExpressionLocalDatePropertyExpression2Impl(v -> null, ignoreStrategy,
                 (min, max, ignore, pm) -> accept(name, min, max, ignore));
     }
@@ -151,7 +154,7 @@ public class NotBetweenEntityExpressionImpl<E, C extends ConditionExpression, L 
      * {@inheritDoc}
      */
     @Override
-    public ConditionEntityExpressionLocalTimePropertyExpression2 property(SerializableToLocalTimeFunction<E> name) {
+    public ConditionEntityExpressionLocalTimePropertyExpression2 property(SerializableToLocalTimeFunction<T> name) {
         return new ConditionEntityExpressionLocalTimePropertyExpression2Impl(v -> null, ignoreStrategy,
                 (min, max, ignore, pm) -> accept(name, min, max, ignore));
     }
@@ -161,7 +164,7 @@ public class NotBetweenEntityExpressionImpl<E, C extends ConditionExpression, L 
      */
     @Override
     public ConditionEntityExpressionLocalDateTimePropertyExpression2 property(
-            SerializableToLocalDateTimeFunction<E> name) {
+            SerializableToLocalDateTimeFunction<T> name) {
         return new ConditionEntityExpressionLocalDateTimePropertyExpression2Impl(v -> null, ignoreStrategy,
                 (min, max, ignore, pm) -> accept(name, min, max, ignore));
     }
@@ -170,8 +173,8 @@ public class NotBetweenEntityExpressionImpl<E, C extends ConditionExpression, L 
      * {@inheritDoc}
      */
     @Override
-    public <R extends Number> ConditionEntityExpressionNumberPropertyExpression2<R> property(
-            SerializableToNumberFunction<E, R> name) {
+    public <N extends Number> ConditionEntityExpressionNumberPropertyExpression2<N> property(
+            SerializableToNumberFunction<T, N> name) {
         return new ConditionEntityExpressionNumberPropertyExpression2Impl<>(v -> null, ignoreStrategy,
                 (min, max, ignore, pm) -> accept(name, min, max, ignore));
     }
@@ -180,8 +183,8 @@ public class NotBetweenEntityExpressionImpl<E, C extends ConditionExpression, L 
      * {@inheritDoc}
      */
     @Override
-    public <R extends Enum<R>> ConditionEntityExpressionEnumPropertyExpression2<R> property(
-            SerializableToEnumFunction<E, R> name) {
+    public <E extends Enum<E>> ConditionEntityExpressionEnumPropertyExpression2<E> property(
+            SerializableToEnumFunction<T, E> name) {
         return new ConditionEntityExpressionEnumPropertyExpression2Impl<>(v -> null, ignoreStrategy,
                 (min, max, ignore, pm) -> accept(name, min, max, ignore));
     }
@@ -190,7 +193,7 @@ public class NotBetweenEntityExpressionImpl<E, C extends ConditionExpression, L 
      * {@inheritDoc}
      */
     @Override
-    public ConditionEntityExpressionStringPropertyExpression2 property(SerializableToStringFunction<E> name) {
+    public ConditionEntityExpressionStringPropertyExpression2 property(SerializableToStringFunction<T> name) {
         return new ConditionEntityExpressionStringPropertyExpression2Impl(v -> null, ignoreStrategy,
                 (min, max, ignore, pm) -> accept(name, min, max, ignore));
     }
