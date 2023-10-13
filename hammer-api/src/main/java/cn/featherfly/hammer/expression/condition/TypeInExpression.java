@@ -1,8 +1,8 @@
 
 package cn.featherfly.hammer.expression.condition;
 
-import cn.featherfly.common.lang.function.SerializableFunction;
-import cn.featherfly.common.lang.function.SerializableSupplier;
+import cn.featherfly.common.function.serializable.SerializableFunction;
+import cn.featherfly.common.function.serializable.SerializableSupplier;
 
 /**
  * TypeInExpression.
@@ -15,7 +15,7 @@ public interface TypeInExpression<C extends ConditionExpression, L extends Logic
         extends InExpression<C, L> {
 
     /**
-     * 包含指定，sql中的in.
+     * values in. 包含指定，sql中的in.
      *
      * @param <O>        the generic type
      * @param <T>        the generic type
@@ -28,7 +28,7 @@ public interface TypeInExpression<C extends ConditionExpression, L extends Logic
     <O, T, R> L in(SerializableFunction<O, T> repository, SerializableFunction<T, R> property, Object value);
 
     /**
-     * 包含指定，sql中的in.
+     * values in. 包含指定，sql中的in.
      *
      * @param <T>        the generic type
      * @param <R>        the generic type

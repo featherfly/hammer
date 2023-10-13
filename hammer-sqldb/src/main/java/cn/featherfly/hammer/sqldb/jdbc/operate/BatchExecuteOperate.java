@@ -20,7 +20,7 @@ public interface BatchExecuteOperate<T> {
      * @param entities the entities
      * @return the execute success row num
      */
-    default int executeBatch(@SuppressWarnings("unchecked") final T... entities) {
+    default int[] executeBatch(@SuppressWarnings("unchecked") final T... entities) {
         return executeBatch(ArrayUtils.toList(entities));
     }
 
@@ -30,7 +30,8 @@ public interface BatchExecuteOperate<T> {
      * @param entities the entity
      * @return the execute success row num
      */
-    default int executeBatch(final List<T> entities) {
+    default int[] executeBatch(final List<T> entities) {
+        // ENHANCE 后续加入batchSize配置
         return executeBatch(entities, entities.size());
     }
 
@@ -41,5 +42,5 @@ public interface BatchExecuteOperate<T> {
      * @param batchSize the batch size
      * @return the execute success row num
      */
-    int executeBatch(final List<T> entities, int batchSize);
+    int[] executeBatch(final List<T> entities, int batchSize);
 }

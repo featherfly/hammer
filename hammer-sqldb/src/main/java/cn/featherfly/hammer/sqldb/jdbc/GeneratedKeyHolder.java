@@ -10,16 +10,37 @@
  */
 package cn.featherfly.hammer.sqldb.jdbc;
 
-import cn.featherfly.common.lang.GenericType;
+import java.util.List;
+
+import cn.featherfly.common.lang.reflect.Type;
 
 /**
  * GeneratedKeyHolder.
  *
  * @author zhongj
+ * @param <T> the generic type
  */
 public interface GeneratedKeyHolder<T> {
 
+    /**
+     * Accept key.
+     *
+     * @param key the key
+     * @param row the row
+     */
     void acceptKey(T key, int row);
 
-    GenericType<T> getType();
+    /**
+     * Accept key.
+     *
+     * @param keys the keys
+     */
+    void acceptKey(List<T> keys);
+
+    /**
+     * Gets the type.
+     *
+     * @return the type
+     */
+    Type<T> getType();
 }

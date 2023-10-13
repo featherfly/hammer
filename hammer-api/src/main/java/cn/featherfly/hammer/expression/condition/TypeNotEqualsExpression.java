@@ -1,12 +1,12 @@
 
 package cn.featherfly.hammer.expression.condition;
 
-import cn.featherfly.common.lang.function.SerializableFunction;
-import cn.featherfly.common.lang.function.SerializableSupplier;
+import cn.featherfly.common.function.serializable.SerializableFunction;
+import cn.featherfly.common.function.serializable.SerializableSupplier;
 
 /**
  * <p>
- * NotEqualsExpressoin
+ * NotEqualsExpression
  * </p>
  * .
  *

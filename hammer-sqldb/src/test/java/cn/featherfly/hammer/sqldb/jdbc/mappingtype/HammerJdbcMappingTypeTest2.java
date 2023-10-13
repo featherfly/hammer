@@ -15,12 +15,12 @@ import cn.featherfly.common.lang.ArrayUtils;
 import cn.featherfly.common.lang.Randoms;
 import cn.featherfly.hammer.Hammer;
 import cn.featherfly.hammer.sqldb.SqldbHammerImpl;
-import cn.featherfly.hammer.sqldb.jdbc.JdbcImpl;
+import cn.featherfly.hammer.sqldb.jdbc.JdbcSpringImpl;
 import cn.featherfly.hammer.sqldb.jdbc.JdbcTestBase;
 import cn.featherfly.hammer.sqldb.jdbc.mappingtype.sqltype.ArrayToStringSqlTypeMapper;
 import cn.featherfly.hammer.sqldb.jdbc.mappingtype.sqltype.ListToStringSqlTypeMapper;
-import cn.featherfly.hammer.sqldb.jdbc.vo.Article2;
-import cn.featherfly.hammer.sqldb.jdbc.vo.Content;
+import cn.featherfly.hammer.sqldb.jdbc.vo.r.Article2;
+import cn.featherfly.hammer.sqldb.jdbc.vo.r.Content;
 
 /**
  * JdbcImplTest.
@@ -33,13 +33,13 @@ public class HammerJdbcMappingTypeTest2 extends JdbcTestBase {
 
     @BeforeClass
     void be() {
-        jdbc = new JdbcImpl(dataSource, dialect, sqlTypeMappingManager);
+        jdbc = new JdbcSpringImpl(dataSource, dialect, sqlTypeMappingManager);
 
         Class<Article2> type = Article2.class;
 
         BeanDescriptor<Article2> bd = BeanDescriptor.getBeanDescriptor(type);
 
-        BeanProperty<Content> contentProperty = bd.getBeanProperty("content2");
+        BeanProperty<Article2, Content> contentProperty = bd.getBeanProperty("content2");
         sqlTypeMappingManager.regist(type, new ObjectToJsonMapper<>(contentProperty));
 
         contentProperty = bd.getBeanProperty("content3");

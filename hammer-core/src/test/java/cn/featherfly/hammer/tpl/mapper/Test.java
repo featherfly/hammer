@@ -23,6 +23,7 @@ import cn.featherfly.hammer.GenericHammer;
  */
 public interface Test extends GenericHammer<User, Long> {
 
+    @SuppressWarnings("rawtypes")
     List<Superclass> find();
 
     static Map<String, Type> getInterfacesGenricTypeMap(Class<?> clazz) {

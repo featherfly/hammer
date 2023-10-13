@@ -5,9 +5,7 @@ import cn.featherfly.constant.annotation.Constant;
 import cn.featherfly.hammer.tpl.TplConfigFactory;
 
 /**
- * <p>
- * HammerConstant
- * </p>
+ * HammerConstant.
  *
  * @author zhongj
  */

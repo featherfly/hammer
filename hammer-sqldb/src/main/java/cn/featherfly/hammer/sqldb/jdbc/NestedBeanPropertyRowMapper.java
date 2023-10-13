@@ -13,6 +13,8 @@ import java.util.Locale;
 import java.util.Map;
 import java.util.Set;
 
+import javax.annotation.Nonnull;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeanUtils;
@@ -24,8 +26,6 @@ import org.springframework.core.convert.ConversionService;
 import org.springframework.core.convert.support.DefaultConversionService;
 import org.springframework.dao.DataRetrievalFailureException;
 import org.springframework.dao.InvalidDataAccessApiUsageException;
-import org.springframework.jdbc.core.RowMapper;
-import org.springframework.jdbc.support.JdbcUtils;
 import org.springframework.lang.Nullable;
 import org.springframework.util.Assert;
 import org.springframework.util.ClassUtils;
@@ -35,10 +35,12 @@ import cn.featherfly.common.bean.BeanDescriptor;
 import cn.featherfly.common.bean.BeanProperty;
 import cn.featherfly.common.bean.NoSuchPropertyException;
 import cn.featherfly.common.db.JdbcException;
+import cn.featherfly.common.db.JdbcUtils;
 import cn.featherfly.common.db.mapping.JdbcMappingException;
 import cn.featherfly.common.db.mapping.SqlResultSet;
 import cn.featherfly.common.db.mapping.SqlTypeMappingManager;
 import cn.featherfly.common.lang.AssertIllegalArgument;
+import cn.featherfly.common.repository.mapping.RowMapper;
 
 /**
  * {@link RowMapper} implementation that converts a row into a new instance of
@@ -76,14 +78,12 @@ import cn.featherfly.common.lang.AssertIllegalArgument;
  * @param <T> the result type
  * @since 0.1.0
  */
-public class NestedBeanPropertyRowMapper<T>
-        implements RowMapper<T>, cn.featherfly.common.repository.mapping.RowMapper<T> {
+public class NestedBeanPropertyRowMapper<T> implements cn.featherfly.common.repository.mapping.RowMapper<T> {
 
     /** Logger available to subclasses. */
     protected final Logger logger = LoggerFactory.getLogger(getClass());
 
     /** The class we are mapping to. */
-    @Nullable
     private Class<T> mappedClass;
 
     /** Whether we're strictly validating. */
@@ -104,11 +104,11 @@ public class NestedBeanPropertyRowMapper<T>
     @Nullable
     private Set<String> mappedProperties;
 
-    @Nullable
     private SqlTypeMappingManager manager;
 
-    @Nullable
     private MapperObjectFactory<T> mapperObjectFactory;
+
+    private String prefix;
 
     /**
      * Create a new {@code BeanPropertyRowMapper}, accepting unpopulated
@@ -137,6 +137,19 @@ public class NestedBeanPropertyRowMapper<T>
     }
 
     /**
+     * Instantiates a new nested bean property row mapper.
+     *
+     * @param mappedClass         the mapped class
+     * @param manager             the manager
+     * @param prefix              the prefix
+     * @param checkFullyPopulated the check fully populated
+     */
+    public NestedBeanPropertyRowMapper(Class<T> mappedClass, SqlTypeMappingManager manager, String prefix,
+            boolean checkFullyPopulated) {
+        this(new ClassMapperObjectFactory<>(mappedClass), manager, prefix, checkFullyPopulated);
+    }
+
+    /**
      * Create a new {@code BeanPropertyRowMapper}, accepting unpopulated
      * properties in the target bean.
      * <p>
@@ -159,12 +172,32 @@ public class NestedBeanPropertyRowMapper<T>
      */
     public NestedBeanPropertyRowMapper(MapperObjectFactory<T> mapperObjectFactory, SqlTypeMappingManager manager,
             boolean checkFullyPopulated) {
+        this(mapperObjectFactory, manager, null, checkFullyPopulated);
+    }
+
+    /**
+     * Create a new {@code BeanPropertyRowMapper}.
+     *
+     * @param mapperObjectFactory the mapper object factory
+     * @param manager             the manager
+     * @param prefix              the prefix
+     * @param checkFullyPopulated whether we're strictly validating that all
+     *                            bean properties have been mapped from
+     *                            corresponding database fields
+     */
+    public NestedBeanPropertyRowMapper(@Nonnull MapperObjectFactory<T> mapperObjectFactory,
+            @Nonnull SqlTypeMappingManager manager, String prefix, boolean checkFullyPopulated) {
         //        if (mapperObjectFactory instanceof ClassMapperObjectFactory) {
         //            initialize(((ClassMapperObjectFactory<T>) mapperObjectFactory).getType());
         //        }
+        AssertIllegalArgument.isNotNull(mapperObjectFactory, "MapperObjectFactory");
+        AssertIllegalArgument.isNotNull(manager, "SqlTypeMappingManager");
         this.manager = manager;
         this.mapperObjectFactory = mapperObjectFactory;
         this.checkFullyPopulated = checkFullyPopulated;
+        this.prefix = prefix;
+
+        initialize(mapperObjectFactory.getMappedClass());
     }
 
     //    /**
@@ -213,7 +246,7 @@ public class NestedBeanPropertyRowMapper<T>
      * @return true, if is check fully populated
      */
     public boolean isCheckFullyPopulated() {
-        return this.checkFullyPopulated;
+        return checkFullyPopulated;
     }
 
     /**
@@ -237,7 +270,7 @@ public class NestedBeanPropertyRowMapper<T>
      * @return true, if is primitives defaulted for null value
      */
     public boolean isPrimitivesDefaultedForNullValue() {
-        return this.primitivesDefaultedForNullValue;
+        return primitivesDefaultedForNullValue;
     }
 
     /**
@@ -265,7 +298,7 @@ public class NestedBeanPropertyRowMapper<T>
      */
     @Nullable
     public ConversionService getConversionService() {
-        return this.conversionService;
+        return conversionService;
     }
 
     /**
@@ -276,17 +309,17 @@ public class NestedBeanPropertyRowMapper<T>
     protected void initialize(Class<T> mappedClass) {
         AssertIllegalArgument.isNotNull(mappedClass, "mappedClass");
         this.mappedClass = mappedClass;
-        this.mappedFields = new HashMap<>();
-        this.mappedProperties = new HashSet<>();
+        mappedFields = new HashMap<>();
+        mappedProperties = new HashSet<>();
         PropertyDescriptor[] pds = BeanUtils.getPropertyDescriptors(mappedClass);
         for (PropertyDescriptor pd : pds) {
             if (pd.getWriteMethod() != null) {
-                this.mappedFields.put(lowerCaseName(pd.getName()), pd);
+                mappedFields.put(lowerCaseName(pd.getName()), pd);
                 String underscoredName = underscoreName(pd.getName());
                 if (!lowerCaseName(pd.getName()).equals(underscoredName)) {
-                    this.mappedFields.put(underscoredName, pd);
+                    mappedFields.put(underscoredName, pd);
                 }
-                this.mappedProperties.add(pd.getName());
+                mappedProperties.add(pd.getName());
             }
         }
     }
@@ -365,7 +398,6 @@ public class NestedBeanPropertyRowMapper<T>
      * @throws SQLException the SQL exception
      * @see java.sql.ResultSetMetaData
      */
-    @Override
     public T mapRow(ResultSet rs, int rowNumber) throws SQLException {
         //        T mappedObject = BeanUtils.instantiateClass(this.mappedClass);
         T mappedObject = mapperObjectFactory.create(rs);
@@ -380,9 +412,9 @@ public class NestedBeanPropertyRowMapper<T>
 
         if (rowNumber == 0) {
             mappings = new ArrayList<>();
-            @SuppressWarnings("unchecked")
-            Class<T> mappedType = (Class<T>) mappedObject.getClass();
-            initialize(mappedType);
+            //            @SuppressWarnings("unchecked")
+            //            Class<T> mappedType = (Class<T>) mappedObject.getClass();
+            //            initialize(mappedType);
             BeanDescriptor<T> beanDescriptor = BeanDescriptor.getBeanDescriptor(mappedClass);
 
             for (int index = 1; index <= columnCount; index++) {
@@ -390,8 +422,17 @@ public class NestedBeanPropertyRowMapper<T>
                 mappings.add(mapping);
 
                 String column = JdbcUtils.lookupColumnName(rsmd, index);
+                if (prefix != null) {
+                    if (column.startsWith(prefix)) {
+                        column = org.apache.commons.lang3.StringUtils.removeStart(column, prefix);
+                    } else {
+                        // need match prefix, so ignore not matched
+                        continue;
+                    }
+                }
                 String field = lowerCaseName(org.springframework.util.StringUtils.delete(column, " "));
                 boolean nestedProperty = false;
+
                 if (field.contains(".")) {
                     nestedProperty = true;
                     field = org.apache.commons.lang3.StringUtils.substringBefore(field, ".");
@@ -399,10 +440,10 @@ public class NestedBeanPropertyRowMapper<T>
                 mapping.column = rsmd.getColumnName(index);
                 mapping.columnAs = column;
 
-                PropertyDescriptor pd = this.mappedFields != null ? this.mappedFields.get(field) : null;
+                PropertyDescriptor pd = mappedFields != null ? mappedFields.get(field) : null;
                 mapping.propertyDescriptor = pd;
                 if (pd != null) {
-                    BeanProperty<?> bp;
+                    BeanProperty<?, ?> bp;
                     if (nestedProperty) {
                         // 嵌套设值，所以直接使用SQL查询出来列的别名
                         bp = beanDescriptor.getChildBeanProperty(column);
@@ -448,7 +489,7 @@ public class NestedBeanPropertyRowMapper<T>
             }
         }
 
-        Assert.state(this.mappedClass != null, "Mapped class was not specified");
+        Assert.state(mappedClass != null, "Mapped class was not specified");
 
         for (int index = 1; index <= mappings.size(); index++) {
             BeanDescriptor<T> beanDescriptor = BeanDescriptor.getBeanDescriptor(mappedClass);
@@ -464,7 +505,7 @@ public class NestedBeanPropertyRowMapper<T>
                         try {
                             bw.setPropertyValue(mapping.propertyDescriptor.getName(), value);
                         } catch (TypeMismatchException ex) {
-                            if (value == null && this.primitivesDefaultedForNullValue) {
+                            if (value == null && primitivesDefaultedForNullValue) {
                                 if (logger.isDebugEnabled()) {
                                     logger.debug("Intercepted TypeMismatchException for row " + rowNumber
                                             + " and column '" + mapping.columnAs
@@ -486,10 +527,9 @@ public class NestedBeanPropertyRowMapper<T>
             }
         }
 
-        if (populatedProperties != null && !populatedProperties.equals(this.mappedProperties)) {
-            throw new InvalidDataAccessApiUsageException(
-                    "Given ResultSet does not contain all fields " + "necessary to populate object of class ["
-                            + this.mappedClass.getName() + "]: " + this.mappedProperties);
+        if (populatedProperties != null && !populatedProperties.equals(mappedProperties)) {
+            throw new InvalidDataAccessApiUsageException("Given ResultSet does not contain all fields "
+                    + "necessary to populate object of class [" + mappedClass.getName() + "]: " + mappedProperties);
         }
 
         return mappedObject;
@@ -535,17 +575,27 @@ public class NestedBeanPropertyRowMapper<T>
         return JdbcUtils.getResultSetValue(rs, index, pd.getPropertyType());
     }
 
+    /**
+     * The Class Mapping.
+     *
+     * @author zhongj
+     */
     public static class Mapping {
 
+        /** The column. */
         String column;
 
+        /** The column as. */
         String columnAs;
 
+        /** The property. */
         String property;
 
+        /** The property type name. */
         String propertyTypeName;
 
-        BeanProperty<?> beanProperty;
+        /** The bean property. */
+        BeanProperty<?, ?> beanProperty;
 
         private PropertyDescriptor propertyDescriptor;
 

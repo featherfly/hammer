@@ -2,8 +2,11 @@
 package cn.featherfly.hammer.expression.condition.property;
 
 import java.util.Date;
+import java.util.function.BiPredicate;
+import java.util.function.Predicate;
 
 import cn.featherfly.common.lang.Lang;
+import cn.featherfly.common.repository.IgnoreStrategy;
 import cn.featherfly.hammer.expression.condition.LogicExpression;
 import cn.featherfly.hammer.expression.condition.RepositoryConditionsExpression;
 
@@ -14,8 +17,8 @@ import cn.featherfly.hammer.expression.condition.RepositoryConditionsExpression;
  * @param <C> the generic type
  * @param <L> the generic type
  */
-public class RepositorySimpleDateExpression<C extends RepositoryConditionsExpression<C, L>,
-        L extends LogicExpression<C, L>> implements DateExpression<C, L> {
+public class RepositorySimpleDateExpression<D extends Date, C extends RepositoryConditionsExpression<C, L>,
+        L extends LogicExpression<C, L>> implements DatePropertyExpression<D, C, L> {
 
     private String name;
 
@@ -119,13 +122,13 @@ public class RepositorySimpleDateExpression<C extends RepositoryConditionsExpres
      * {@inheritDoc}
      */
     @Override
-    public L nin(Date value) {
+    public L ni(Date value) {
         if (Lang.isNotEmpty(repository)) {
             return expression.nin(repository, name, value);
         } else if (repositoryIndex > -1) {
             return expression.nin(repositoryIndex, name, value);
         } else {
-            return expression.nin(name, value);
+            return expression.ni(name, value);
         }
     }
 
@@ -240,4 +243,257 @@ public class RepositorySimpleDateExpression<C extends RepositoryConditionsExpres
             return expression.inn(name, value);
         }
     }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public L in(D[] value) {
+        // YUFEI_TODO Auto-generated method stub
+        return null;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public L in(D value, Predicate<D> ignoreStrategy) {
+        // YUFEI_TODO Auto-generated method stub
+        return null;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public L in(D[] value, Predicate<D[]> ignoreStrategy) {
+        // YUFEI_TODO Auto-generated method stub
+        return null;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public L ni(D[] value) {
+        // YUFEI_TODO Auto-generated method stub
+        return null;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public L ni(D value, Predicate<D> ignoreStrategy) {
+        // YUFEI_TODO Auto-generated method stub
+        return null;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public L ni(D[] value, Predicate<D[]> ignoreStrategy) {
+        // YUFEI_TODO Auto-generated method stub
+        return null;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public L eq(D value, Predicate<D> ignoreStrategy) {
+        // YUFEI_TODO Auto-generated method stub
+        return null;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public L ne(D value, Predicate<D> ignoreStrategy) {
+        // YUFEI_TODO Auto-generated method stub
+        return null;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public L eq(D value, IgnoreStrategy ignoreStrategy) {
+        // YUFEI_TODO Auto-generated method stub
+        return null;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public L ne(D value, IgnoreStrategy ignoreStrategy) {
+        // YUFEI_TODO Auto-generated method stub
+        return null;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public L in(D value, IgnoreStrategy ignoreStrategy) {
+        // YUFEI_TODO Auto-generated method stub
+        return null;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public L in(D[] value, IgnoreStrategy ignoreStrategy) {
+        // YUFEI_TODO Auto-generated method stub
+        return null;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public L ni(D value, IgnoreStrategy ignoreStrategy) {
+        // YUFEI_TODO Auto-generated method stub
+        return null;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public L ni(D[] value, IgnoreStrategy ignoreStrategy) {
+        // YUFEI_TODO Auto-generated method stub
+        return null;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public L le(D value, IgnoreStrategy ignoreStrategy) {
+        // YUFEI_TODO Auto-generated method stub
+        return null;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public L le(D value, Predicate<D> ignoreStrategy) {
+        // YUFEI_TODO Auto-generated method stub
+        return null;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public L lt(D value, IgnoreStrategy ignoreStrategy) {
+        // YUFEI_TODO Auto-generated method stub
+        return null;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public L lt(D value, Predicate<D> ignoreStrategy) {
+        // YUFEI_TODO Auto-generated method stub
+        return null;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public L ge(D value, IgnoreStrategy ignoreStrategy) {
+        // YUFEI_TODO Auto-generated method stub
+        return null;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public L ge(D value, Predicate<D> ignoreStrategy) {
+        // YUFEI_TODO Auto-generated method stub
+        return null;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public L gt(D value, IgnoreStrategy ignoreStrategy) {
+        // YUFEI_TODO Auto-generated method stub
+        return null;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public L gt(D value, Predicate<D> ignoreStrategy) {
+        // YUFEI_TODO Auto-generated method stub
+        return null;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public L ba(D min, D max) {
+        // YUFEI_TODO Auto-generated method stub
+        return null;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public L ba(D min, D max, IgnoreStrategy ignoreStrategy) {
+        // YUFEI_TODO Auto-generated method stub
+        return null;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public L ba(D min, D max, BiPredicate<D, D> ignoreStrategy) {
+        // YUFEI_TODO Auto-generated method stub
+        return null;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public L nba(D min, D max) {
+        // YUFEI_TODO Auto-generated method stub
+        return null;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public L nba(D min, D max, IgnoreStrategy ignoreStrategy) {
+        // YUFEI_TODO Auto-generated method stub
+        return null;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public L nba(D min, D max, BiPredicate<D, D> ignoreStrategy) {
+        // YUFEI_TODO Auto-generated method stub
+        return null;
+    }
+
 }

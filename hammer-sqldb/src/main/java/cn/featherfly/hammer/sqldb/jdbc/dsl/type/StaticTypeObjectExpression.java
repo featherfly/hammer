@@ -3,7 +3,7 @@ package cn.featherfly.hammer.sqldb.jdbc.dsl.type;
 
 import cn.featherfly.hammer.dsl.query.QueryConditionGroupExpression;
 import cn.featherfly.hammer.dsl.query.QueryConditionGroupLogicExpression;
-import cn.featherfly.hammer.expression.condition.property.ObjectExpression;
+import cn.featherfly.hammer.expression.condition.property.ObjectPropertyExpression;
 
 /**
  * <p>
@@ -18,7 +18,7 @@ import cn.featherfly.hammer.expression.condition.property.ObjectExpression;
 public class StaticTypeObjectExpression<E, Q extends StaticTypeQueryConditionGroupExpression<E, Q>> {
 
     /** The expression. */
-    private ObjectExpression<QueryConditionGroupExpression, QueryConditionGroupLogicExpression> expression;
+    private ObjectPropertyExpression<QueryConditionGroupExpression, QueryConditionGroupLogicExpression> expression;
 
     /** The type expression. */
     private Q typeExpression;
@@ -30,7 +30,7 @@ public class StaticTypeObjectExpression<E, Q extends StaticTypeQueryConditionGro
      * @param typeExpression the type expression
      */
     public StaticTypeObjectExpression(
-            ObjectExpression<QueryConditionGroupExpression, QueryConditionGroupLogicExpression> expression,
+            ObjectPropertyExpression<QueryConditionGroupExpression, QueryConditionGroupLogicExpression> expression,
             Q typeExpression) {
         super();
         this.expression = expression;
@@ -76,8 +76,8 @@ public class StaticTypeObjectExpression<E, Q extends StaticTypeQueryConditionGro
      * @param value the value
      * @return the q
      */
-    public Q nin(Object value) {
-        expression.nin(value);
+    public Q ni(Object value) {
+        expression.ni(value);
         return typeExpression;
     }
 

@@ -4,12 +4,10 @@ package cn.featherfly.hammer.dsl.execute;
 import cn.featherfly.hammer.expression.execute.UpdateValueExpression;
 
 /**
- * <p>
- * update value
- * </p>
+ * update value.
  *
  * @author zhongj
  */
 public interface UpdateValue extends
-        UpdateValueExpression<ExecutableUpdate, ExecutableConditionGroupExpression, ExecutableConditionGroupLogicExpression, Object, UpdateValue, UpdateNumberValue> {
+        UpdateValueExpression<ExecutableUpdate, ExecutableConditionGroup, ExecutableConditionGroupLogic, Object, UpdateValue, UpdateNumberValue> {
 }

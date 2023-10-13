@@ -1,20 +1,18 @@
 
 package cn.featherfly.hammer.expression.condition;
 
-import cn.featherfly.common.lang.function.SerializableFunction;
+import cn.featherfly.common.function.serializable.SerializableFunction;
+import cn.featherfly.common.repository.Field;
 
 /**
- * <p>
- * IsNullExpression
- * </p>
- * .
+ * IsNullExpression .
  *
  * @author zhongj
  * @param <C> the generic type
  * @param <L> the generic type
  */
 public interface IsNullExpression<C extends ConditionExpression, L extends LogicExpression<C, L>>
-        extends ConditionExpression {
+        extends StringIsNullExpression<C, L> {
 
     /**
      * is null.
@@ -22,17 +20,9 @@ public interface IsNullExpression<C extends ConditionExpression, L extends Logic
      * @param name 参数名称
      * @return LogicExpression
      */
-    L isn(String name);
-
-    /**
-     * is null.
-     *
-     * @param <T>  the generic type
-     * @param <R>  the generic type
-     * @param name 参数名称
-     * @return LogicExpression
-     */
-    <T, R> L isn(SerializableFunction<T, R> name);
+    default L isn(Field name) {
+        return isn(name.name());
+    }
 
     /**
      * is null.
@@ -42,7 +32,21 @@ public interface IsNullExpression<C extends ConditionExpression, L extends Logic
      *              this operate
      * @return LogicExpression
      */
-    L isn(String name, Boolean value);
+    default L isn(Field name, Boolean value) {
+        return isn(name.name(), value);
+    }
+
+    /**
+     * is null.
+     *
+     * @param <T>  the generic type
+     * @param <R>  the generic type
+     * @param name 参数名称
+     * @return LogicExpression
+     */
+    default <T, R> L isn(SerializableFunction<T, R> name) {
+        return isn(name, true);
+    }
 
     /**
      * is null.

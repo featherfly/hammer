@@ -22,13 +22,10 @@ import cn.featherfly.common.db.metadata.DatabaseMetadataManager;
 import cn.featherfly.common.lang.ClassLoaderUtils;
 import cn.featherfly.common.lang.Randoms;
 import cn.featherfly.common.lang.UriUtils;
-import cn.featherfly.constant.ConstantConfigurator;
-import cn.featherfly.hammer.sqldb.jdbc.vo.Role;
+import cn.featherfly.hammer.sqldb.jdbc.vo.r.Role;
 
 /**
- * <p>
- * SqlOrmTest
- * </p>
+ * DataSourceTestBase.
  *
  * @author zhongj
  */
@@ -55,11 +52,13 @@ public class DataSourceTestBase {
     @BeforeSuite
     @Parameters({ "dataBase" })
     public void init(@Optional("mysql") String dataBase) throws IOException {
-        DOMConfigurator.configure(ClassLoaderUtils.getResource("log4j.xml", DataSourceTestBase.class));
+        DOMConfigurator.configure(ClassLoaderUtils.getResource("log4j_dev.xml", DataSourceTestBase.class));
         initDataBase(dataBase);
     }
 
     public void initDataBase(String dataBase) throws IOException {
+        System.err.println("***********************************************");
+        System.err.println("***********************************************");
         configFile = String.format(CONFIG_FILE_PATTERN, dataBase);
         switch (dataBase) {
             case "mysql":
@@ -76,11 +75,14 @@ public class DataSourceTestBase {
                 configFile = String.format(CONFIG_FILE_PATTERN, "mysql");
                 break;
         }
+        System.err.println("***********************************************");
+        System.err.println("***********************************************");
     }
 
     //    @BeforeSuite(groups = "mysql", dependsOnMethods = "init")
     public void initMysql() throws IOException {
-        ConstantConfigurator.config();
+        System.err.println("initMysql");
+        //        ConstantConfigurator.config();
         //        ConstantConfigurator.config("constant.mysql.yaml");
 
         BasicDataSource dataSource = new BasicDataSource();
@@ -106,7 +108,7 @@ public class DataSourceTestBase {
 
         //        jdbc = new SpringJdbcTemplateImpl(dataSource, Dialects.MYSQL);
         dialect = Dialects.MYSQL;
-        jdbc = new JdbcImpl(dataSource, dialect);
+        jdbc = new JdbcSpringImpl(dataSource, dialect);
         metadata = DatabaseMetadataManager.getDefaultManager().create(dataSource);
 
         mappingFactory = new JdbcMappingFactoryImpl(metadata, Dialects.MYSQL);
@@ -114,11 +116,12 @@ public class DataSourceTestBase {
 
     //    @BeforeSuite(groups = "postgresql", dependsOnMethods = "init")
     public void initPostgresql() throws IOException {
-        //        ConstantConfigurator.config(CONFIG_FILE);
-        ConstantConfigurator.config("constant.postgresql.yaml");
+        System.err.println("postgresql");
+        //        ConstantConfigurator.config("constant.postgresql.yaml");
 
         BasicDataSource dataSource = new BasicDataSource();
-        dataSource.setUrl("jdbc:postgresql://localhost:5432/hammer_jdbc");
+        //        dataSource.setUrl("jdbc:postgresql://localhost:5432/hammer_jdbc");
+        dataSource.setUrl("jdbc:postgresql://::1:5432/hammer_jdbc"); // install postgresql in wsl with docker
         dataSource.setDriverClassName("org.postgresql.Driver");
         dataSource.setUsername("postgres");
         dataSource.setPassword("123456");
@@ -136,7 +139,7 @@ public class DataSourceTestBase {
 
         //        jdbc = new SpringJdbcTemplateImpl(dataSource, Dialects.POSTGRESQL);
         dialect = Dialects.POSTGRESQL;
-        jdbc = new JdbcImpl(dataSource, dialect);
+        jdbc = new JdbcSpringImpl(dataSource, dialect);
         metadata = DatabaseMetadataManager.getDefaultManager().create(dataSource);
 
         mappingFactory = new JdbcMappingFactoryImpl(metadata, Dialects.POSTGRESQL);
@@ -144,8 +147,8 @@ public class DataSourceTestBase {
 
     //    @BeforeSuite(groups = "sqlite", dependsOnMethods = "init")
     public void initSQLite() throws IOException {
-        //        ConstantConfigurator.config(CONFIG_FILE);
-        ConstantConfigurator.config("constant.sqlite.yaml");
+        System.err.println("sqlite");
+        //        ConstantConfigurator.config("constant.sqlite.yaml");
 
         String path = new File(UriUtils.linkUri(this.getClass().getResource("/").getFile(), "hammer.sqlite3.db"))
                 .getPath();
@@ -165,7 +168,7 @@ public class DataSourceTestBase {
 
         //        jdbc = new SpringJdbcTemplateImpl(dataSource, Dialects.SQLITE);
         dialect = Dialects.SQLITE;
-        jdbc = new JdbcImpl(dataSource, dialect);
+        jdbc = new JdbcSpringImpl(dataSource, dialect);
         metadata = DatabaseMetadataManager.getDefaultManager().create(dataSource, "main");
 
         mappingFactory = new JdbcMappingFactoryImpl(metadata, Dialects.SQLITE);

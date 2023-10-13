@@ -5,16 +5,16 @@ import java.io.Serializable;
 import java.util.List;
 import java.util.function.Function;
 
+import cn.featherfly.common.function.serializable.SerializableFunction;
+import cn.featherfly.common.function.serializable.SerializableSupplier;
 import cn.featherfly.common.lang.CollectionUtils;
-import cn.featherfly.common.lang.function.SerializableFunction;
-import cn.featherfly.common.lang.function.SerializableSupplier;
-import cn.featherfly.common.repository.IgnorePolicy;
-import cn.featherfly.common.repository.operate.LogicOperator;
+import cn.featherfly.common.operator.LogicOperator;
+import cn.featherfly.common.repository.IgnoreStrategy;
 import cn.featherfly.hammer.GenericHammer;
 import cn.featherfly.hammer.Hammer;
-import cn.featherfly.hammer.dsl.execute.Delete;
-import cn.featherfly.hammer.dsl.execute.Update;
-import cn.featherfly.hammer.dsl.query.TypeQueryEntity;
+import cn.featherfly.hammer.dsl.entity.execute.EntityDelete;
+import cn.featherfly.hammer.dsl.entity.execute.EntityUpdate;
+import cn.featherfly.hammer.dsl.entity.query.EntityQueryFetch;
 
 /**
  * BasedTplGenericHammer.
@@ -40,7 +40,7 @@ public class BasedTplGenericHammer<E, ID extends Serializable> implements Generi
      * {@inheritDoc}
      */
     @Override
-    public Delete delete() {
+    public EntityDelete<E> delete() {
         return hammer.delete(type);
     }
 
@@ -56,7 +56,7 @@ public class BasedTplGenericHammer<E, ID extends Serializable> implements Generi
      * {@inheritDoc}
      */
     @Override
-    public int delete(@SuppressWarnings("unchecked") E... entities) {
+    public int[] delete(@SuppressWarnings("unchecked") E... entities) {
         return hammer.delete(entities);
     }
 
@@ -64,7 +64,7 @@ public class BasedTplGenericHammer<E, ID extends Serializable> implements Generi
      * {@inheritDoc}
      */
     @Override
-    public int delete(List<E> entities) {
+    public int[] delete(List<E> entities) {
         return hammer.delete(entities);
     }
 
@@ -80,7 +80,7 @@ public class BasedTplGenericHammer<E, ID extends Serializable> implements Generi
      * {@inheritDoc}
      */
     @Override
-    public int deleteIds(@SuppressWarnings("unchecked") ID... ids) {
+    public int[] deleteIds(@SuppressWarnings("unchecked") ID... ids) {
         return hammer.delete(ids, type);
     }
 
@@ -88,7 +88,7 @@ public class BasedTplGenericHammer<E, ID extends Serializable> implements Generi
      * {@inheritDoc}
      */
     @Override
-    public int deleteIds(List<ID> ids) {
+    public int[] deleteIds(List<ID> ids) {
         return hammer.delete(ids, type);
     }
 
@@ -144,7 +144,7 @@ public class BasedTplGenericHammer<E, ID extends Serializable> implements Generi
      * {@inheritDoc}
      */
     @Override
-    public int merge(@SuppressWarnings("unchecked") E... entities) {
+    public int[] merge(@SuppressWarnings("unchecked") E... entities) {
         return hammer.merge(entities);
     }
 
@@ -152,7 +152,7 @@ public class BasedTplGenericHammer<E, ID extends Serializable> implements Generi
      * {@inheritDoc}
      */
     @Override
-    public int merge(List<E> entities) {
+    public int[] merge(List<E> entities) {
         return hammer.merge(entities);
     }
 
@@ -160,7 +160,7 @@ public class BasedTplGenericHammer<E, ID extends Serializable> implements Generi
      * {@inheritDoc}
      */
     @Override
-    public TypeQueryEntity query() {
+    public EntityQueryFetch<E> query() {
         return hammer.query(type);
     }
 
@@ -176,7 +176,7 @@ public class BasedTplGenericHammer<E, ID extends Serializable> implements Generi
      * {@inheritDoc}
      */
     @Override
-    public int save(@SuppressWarnings("unchecked") E... entities) {
+    public int[] save(@SuppressWarnings("unchecked") E... entities) {
         return hammer.save(entities);
     }
 
@@ -184,7 +184,15 @@ public class BasedTplGenericHammer<E, ID extends Serializable> implements Generi
      * {@inheritDoc}
      */
     @Override
-    public int save(List<E> entities) {
+    public int[] save(E[] entities, int batchSize) {
+        return hammer.save(entities, batchSize);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public int[] save(List<E> entities) {
         return hammer.save(entities);
     }
 
@@ -192,7 +200,15 @@ public class BasedTplGenericHammer<E, ID extends Serializable> implements Generi
      * {@inheritDoc}
      */
     @Override
-    public Update update() {
+    public int[] save(List<E> entities, int batchSize) {
+        return hammer.save(entities, batchSize);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public EntityUpdate<E> update() {
         return hammer.update(type);
     }
 
@@ -208,7 +224,7 @@ public class BasedTplGenericHammer<E, ID extends Serializable> implements Generi
      * {@inheritDoc}
      */
     @Override
-    public int update(@SuppressWarnings("unchecked") E... entities) {
+    public int[] update(@SuppressWarnings("unchecked") E... entities) {
         return hammer.update(entities);
     }
 
@@ -216,15 +232,15 @@ public class BasedTplGenericHammer<E, ID extends Serializable> implements Generi
      * {@inheritDoc}
      */
     @Override
-    public int update(E entity, IgnorePolicy ignorePolicy) {
-        return hammer.update(entity, ignorePolicy);
+    public int update(E entity, IgnoreStrategy ignoreStrategy) {
+        return hammer.update(entity, ignoreStrategy);
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public int update(List<E> entities) {
+    public int[] update(List<E> entities) {
         return hammer.update(entities);
     }
 
@@ -232,8 +248,16 @@ public class BasedTplGenericHammer<E, ID extends Serializable> implements Generi
      * {@inheritDoc}
      */
     @Override
-    public int update(List<E> entities, IgnorePolicy ignorePolicy) {
-        return hammer.update(entities, ignorePolicy);
+    public int[] update(List<E> entities, int batchSize) {
+        return hammer.update(entities, batchSize);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public int[] update(List<E> entities, IgnoreStrategy ignoreStrategy) {
+        return hammer.update(entities, ignoreStrategy);
     }
 
     /**

@@ -1,9 +1,6 @@
 
 package cn.featherfly.hammer.expression.condition;
 
-import java.util.HashMap;
-import java.util.Map;
-
 /**
  * condition expression.
  *
@@ -11,5 +8,7 @@ import java.util.Map;
  */
 public interface ConditionExpression extends Expression {
 
-    Map<String, Object> EMPTY_PARAMS = new HashMap<>(0);
+    //    @SuppressWarnings("unchecked")
+    //    Map<String, Object> EMPTY_PARAMS = Collections.EMPTY_MAP;
+
 }

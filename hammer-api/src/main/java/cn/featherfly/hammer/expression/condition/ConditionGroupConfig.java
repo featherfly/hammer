@@ -7,19 +7,19 @@ import java.util.function.Predicate;
  *
  * @author zhongj
  */
-public interface ConditionGroupConfig {
+public interface ConditionGroupConfig<C> {
     /**
-     * Gets the ignore policy.
+     * Gets the ignore strategy.
      *
-     * @return the ignore policy
+     * @return the ignore strategy
      */
-    Predicate<Object> getIgnorePolicy();
+    Predicate<?> getIgnoreStrategy();
 
     /**
-     * Sets the ignore policy.
+     * Sets the ignore strategy.
      *
-     * @param ignorePolicy the new ignore policy
-     * @return the ConditionGroupExpression
+     * @param ignoreStrategy the new ignore strategy
+     * @return the ConditionGroupConfig
      */
-    ConditionGroupConfig setIgnorePolicy(Predicate<Object> ignorePolicy);
+    C setIgnoreStrategy(Predicate<?> ignoreStrategy);
 }

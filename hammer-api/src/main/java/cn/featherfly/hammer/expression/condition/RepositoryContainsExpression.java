@@ -1,7 +1,7 @@
 
 package cn.featherfly.hammer.expression.condition;
 
-import cn.featherfly.common.repository.operate.QueryOperator.QueryPolicy;
+import cn.featherfly.common.operator.ComparisonOperator.MatchStrategy;
 
 /**
  * The Interface RepositoryContainsExpression.
@@ -22,7 +22,7 @@ public interface RepositoryContainsExpression<C extends ConditionExpression, L e
      * @return LogicExpression
      */
     default L co(String repository, String name, String value) {
-        return co(repository, name, value, QueryPolicy.AUTO);
+        return co(repository, name, value, MatchStrategy.AUTO);
     }
 
     /**
@@ -34,7 +34,7 @@ public interface RepositoryContainsExpression<C extends ConditionExpression, L e
      * @param queryPolicy the query policy
      * @return LogicExpression
      */
-    L co(String repository, String name, String value, QueryPolicy queryPolicy);
+    L co(String repository, String name, String value, MatchStrategy matchStrategy);
 
     /**
      * contains value .包含value.
@@ -45,9 +45,9 @@ public interface RepositoryContainsExpression<C extends ConditionExpression, L e
      * @param value      参数值
      * @return LogicExpression
      */
-    default <T> L co(Class<T> repository, String name, String value) {
-        return co(repository, name, value, QueryPolicy.AUTO);
-    }
+    //    default <T> L co(Class<T> repository, String name, String value) {
+    //        return co(repository, name, value, MatchStrategy.AUTO);
+    //    }
 
     /**
      * contains value .包含value.
@@ -59,7 +59,7 @@ public interface RepositoryContainsExpression<C extends ConditionExpression, L e
      * @param queryPolicy the query policy
      * @return LogicExpression
      */
-    <T> L co(Class<T> repository, String name, String value, QueryPolicy queryPolicy);
+    //    <T> L co(Class<T> repository, String name, String value, MatchStrategy matchStrategy);
 
     /**
      * contains value .包含value.
@@ -70,7 +70,7 @@ public interface RepositoryContainsExpression<C extends ConditionExpression, L e
      * @return LogicExpression
      */
     default L co(int repositoryIndex, String name, String value) {
-        return co(repositoryIndex, name, value, QueryPolicy.AUTO);
+        return co(repositoryIndex, name, value, MatchStrategy.AUTO);
     }
 
     /**
@@ -82,6 +82,6 @@ public interface RepositoryContainsExpression<C extends ConditionExpression, L e
      * @param queryPolicy     the query policy
      * @return LogicExpression
      */
-    L co(int repositoryIndex, String name, String value, QueryPolicy queryPolicy);
+    L co(int repositoryIndex, String name, String value, MatchStrategy matchStrategy);
 
 }

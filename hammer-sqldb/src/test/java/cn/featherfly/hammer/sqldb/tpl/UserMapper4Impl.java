@@ -6,7 +6,7 @@ import java.lang.reflect.Method;
 import cn.featherfly.common.lang.ArrayUtils;
 import cn.featherfly.common.lang.ClassUtils;
 import cn.featherfly.hammer.Hammer;
-import cn.featherfly.hammer.sqldb.jdbc.vo.User;
+import cn.featherfly.hammer.sqldb.jdbc.vo.r.User;
 import cn.featherfly.hammer.tpl.mapper.BasedTplGenericHammer;
 
 /**
@@ -16,7 +16,7 @@ import cn.featherfly.hammer.tpl.mapper.BasedTplGenericHammer;
  *
  * @author zhongj
  */
-public class UserMapper4Impl extends BasedTplGenericHammer<cn.featherfly.hammer.sqldb.jdbc.vo.User, Integer>
+public class UserMapper4Impl extends BasedTplGenericHammer<cn.featherfly.hammer.sqldb.jdbc.vo.r.User, Integer>
         implements UserMapper4 {
 
     /**

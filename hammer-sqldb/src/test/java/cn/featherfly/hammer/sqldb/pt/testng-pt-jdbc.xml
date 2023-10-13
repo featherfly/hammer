@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE suite SYSTEM "https://testng.org/testng-1.0.dtd" >
+<suite name="JDBC Benchmark Test Suite With Mysql" parallel="tests"
+	thread-count="1">
+    <parameter name="dataBase" value="mysql" />
+<!--     <parameter name="times" value="3000" /> -->
+    <test name="Benchmark test">
+         <classes>
+            <class name="cn.featherfly.hammer.sqldb.pt.JdbcBenchmark" />
+        </classes>
+    </test>
+</suite>

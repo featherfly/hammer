@@ -86,20 +86,25 @@ INSERT INTO `user_role` VALUES ('10', '10', 'descp581', null);
 DROP TABLE IF EXISTS `user_info`;
 CREATE TABLE `user_info` (
   `id` INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
-  `user_id` INTEGER NOT NULL,
+  `user_id` INTEGER NULL,
   `name` text(255) DEFAULT NULL,
   `descp` text(255) DEFAULT NULL,
   `province` text(255) DEFAULT NULL,
   `city` text(255) DEFAULT NULL,
-  `district` text(255) DEFAULT NULL
+  `district` text(255) DEFAULT NULL,
+  `street` text(255) DEFAULT NULL,
+  `street_no` INTEGER DEFAULT NULL
 );
 
 -- ----------------------------
 -- Table structure for user_role
 -- ----------------------------
 
-INSERT INTO `user_info` (`ID`, `user_id`, `name`, `descp`, `province`, `city`, `district`) VALUES ('1', '1', '羽飞', '羽飞描述', '四川', '成都', '金牛');
-INSERT INTO `user_info` (`ID`, `user_id`, `name`, `descp`, `province`, `city`, `district`) VALUES ('2', '2', '翼', '翼描述', '广东', '深圳', '罗湖');
+INSERT INTO `user_info` (`id`, `user_id`, `name`, `descp`, `province`, `city`, `district`, `street`, `street_no`) VALUES (1, 1, '羽飞', '羽飞描述', '四川', '成都', '金牛', '沙湾路', 66);
+INSERT INTO `user_info` (`id`, `user_id`, `name`, `descp`, `province`, `city`, `district`, `street`, `street_no`) VALUES (2, 2, '翼', '翼描述', '广东', '深圳', '罗湖', '测试地址', 112);
+INSERT INTO `user_info` (`id`, `user_id`, `name`, `descp`, `province`, `city`, `district`, `street`, `street_no`) VALUES (3, 3, '飞', '飞描述', '四川', '成都', '武侯', '天府三街', 88);
+INSERT INTO `user_info` (`id`, `user_id`, `name`, `descp`, `province`, `city`, `district`, `street`, `street_no`) VALUES (4, 4, '张三', '张三描述', '四川', '成都', '武侯', '天府三街', 99);
+INSERT INTO `user_info` (`id`, `user_id`, `name`, `descp`, `province`, `city`, `district`, `street`, `street_no`) VALUES (5, 5, '李四', '李四描述', '四川', '成都', '青羊', '红星路一段', null);
 
 DROP TABLE IF EXISTS `cms_article`;
 CREATE TABLE `cms_article` (
@@ -131,6 +136,7 @@ INSERT INTO `tree`(`id`, `parent_id`, `name`) VALUES (3, 1, 'node_22');
 INSERT INTO `tree`(`id`, `parent_id`, `name`) VALUES (4, 2, 'node_211');
 INSERT INTO `tree`(`id`, `parent_id`, `name`) VALUES (5, 2, 'node_212');
 INSERT INTO `tree`(`id`, `parent_id`, `name`) VALUES (6, 5, 'node_2121');
+INSERT INTO `tree`(`id`, `parent_id`, `name`) VALUES (7, 6, 'node_21211');
 
 DROP TABLE IF EXISTS `app`;
 CREATE TABLE `app`  (
@@ -162,3 +168,48 @@ CREATE TABLE `app_version`  (
 
 INSERT INTO `app_version` VALUES (1, 1, 101, 1, '0.1.0', NULL, 'http://www.baidu.com', NULL, '2021-11-27 17:18:36');
 INSERT INTO `app_version` VALUES (2, 1, 101, 2, '0.2.0', NULL, 'http://www.baidu.com', NULL, '2021-11-29 15:18:36');
+
+DROP TABLE IF EXISTS `order`;
+CREATE TABLE `order`  (
+`id` INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
+`no` text(255) NOT NULL ,
+`app_id` text(255) NULL DEFAULT NULL,
+`app_key` text(255) NULL DEFAULT NULL,
+`wx_package` text(255) NULL DEFAULT NULL,
+`wx_package_expire_time` datetime(0) NULL DEFAULT NULL,
+`alipay_trade_no` text(255) NULL DEFAULT NULL,
+`parent_id` INTEGER unsigned NULL DEFAULT NULL,
+`create_user` INTEGER unsigned NULL DEFAULT NULL,
+`update_user` INTEGER unsigned NULL DEFAULT NULL,
+`user1` INTEGER unsigned NULL DEFAULT NULL,
+`user2` INTEGER unsigned NULL DEFAULT NULL,
+`user3` INTEGER unsigned NULL DEFAULT NULL,
+`user_info` INTEGER unsigned NULL DEFAULT NULL
+);
+
+INSERT INTO `order` (`id`, `no`, `app_id`, `app_key`, `wx_package`, `wx_package_expire_time`, `alipay_trade_no`, `parent_id`, `create_user`, `update_user`, `user1`, `user2`, `user3`, `user_info`) 
+    VALUES (1, 'no:1', 'app_id', 'app_key', 'wx_package', strftime('%s','now'), 'alipay_trade_no', null, 1, 1, 1, 2, 3, 1);
+INSERT INTO `order` (`id`, `no`, `app_id`, `app_key`, `wx_package`, `wx_package_expire_time`, `alipay_trade_no`, `parent_id`, `create_user`, `update_user`, `user1`, `user2`, `user3`, `user_info`) 
+    VALUES (2, 'no:2', 'app_id', 'app_key', 'wx_package', strftime('%s','now'), 'alipay_trade_no', 1, 2, 2, 1, 2, 3, 2);
+INSERT INTO `order` (`id`, `no`, `app_id`, `app_key`, `wx_package`, `wx_package_expire_time`, `alipay_trade_no`, `parent_id`, `create_user`, `update_user`, `user1`, `user2`, `user3`, `user_info`) 
+    VALUES (3, 'no:3', 'app_id', 'app_key', 'wx_package', strftime('%s','now'), 'alipay_trade_no', 1, 2, 3, 4, 5, 6, 1);
+
+DROP TABLE IF EXISTS `order_info`;
+CREATE TABLE `order_info`  (
+`id` INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
+`descp` text(255) NOT NULL ,
+`order_id` INTEGER unsigned NULL DEFAULT NULL,
+`create_user` INTEGER unsigned NULL DEFAULT NULL,
+`update_user` INTEGER unsigned NULL DEFAULT NULL,
+`user1` INTEGER unsigned NULL DEFAULT NULL,
+`user2` INTEGER unsigned NULL DEFAULT NULL,
+`user3` INTEGER unsigned NULL DEFAULT NULL,
+`user_info` INTEGER unsigned NULL DEFAULT NULL
+);
+
+INSERT INTO `order_info` (`id`, `descp`, `order_id`, `create_user`, `update_user`,`user1`, `user2`, `user3`, `user_info`) 
+    VALUES (1, 'descp1', 1, 1, 1, 1, 1, 1, 1);
+INSERT INTO `order_info` (`id`, `descp`, `order_id`, `create_user`, `update_user`,`user1`, `user2`, `user3`, `user_info`) 
+    VALUES (2, 'descp2', 2, 2, 2, 2, 2, 2, 2);
+INSERT INTO `order_info` (`id`, `descp`, `order_id`, `create_user`, `update_user`,`user1`, `user2`, `user3`, `user_info`) 
+    VALUES (3, 'descp2', 3, 1, 2, 3, 4, 5, 6);

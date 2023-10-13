@@ -4,7 +4,7 @@ package cn.featherfly.hammer.sqldb.jdbc.dsl.query;
 import java.util.Map;
 
 import cn.featherfly.common.db.dialect.Join;
-import cn.featherfly.common.lang.function.SerializableFunction;
+import cn.featherfly.common.function.serializable.SerializableFunction;
 import cn.featherfly.hammer.dsl.query.QueryEntity;
 import cn.featherfly.hammer.dsl.query.QueryEntityProperties;
 
@@ -61,7 +61,10 @@ public interface SqlQueryEntity extends QueryEntity {
      * @param repositoryName the repository name
      * @return the sql query with on
      */
-    SqlQueryWithOn join(String repositoryName);
+    @Override
+    default SqlQueryWithOn join(String repositoryName) {
+        return join(Join.INNER_JOIN, repositoryName);
+    }
 
     /**
      * Join.
@@ -72,23 +75,26 @@ public interface SqlQueryEntity extends QueryEntity {
      */
     SqlQueryWithOn join(Join join, String repositoryName);
 
-    /**
-     * Join.
-     *
-     * @param <T>            the generic type
-     * @param repositoryType the repository type
-     * @return the sql query with on
-     */
-    <T> SqlQueryWithOn join(Class<T> repositoryType);
+    //    /**
+    //     * Join.
+    //     *
+    //     * @param <T>            the generic type
+    //     * @param repositoryType the repository type
+    //     * @return the sql query with on
+    //     */
+    //    @Override
+    //    default <T> SqlQueryWithOn join(Class<T> repositoryType) {
+    //        return join(Join.INNER_JOIN, repositoryType);
+    //    }
 
-    /**
-     * Join.
-     *
-     * @param <T>            the generic type
-     * @param join           the join
-     * @param repositoryType the repository type
-     * @return the sql query with on
-     */
-    <T> SqlQueryWithOn join(Join join, Class<T> repositoryType);
+    //    /**
+    //     * Join.
+    //     *
+    //     * @param <T>            the generic type
+    //     * @param join           the join
+    //     * @param repositoryType the repository type
+    //     * @return the sql query with on
+    //     */
+    //    <T> SqlQueryWithOn join(Join join, Class<T> repositoryType);
 
 }

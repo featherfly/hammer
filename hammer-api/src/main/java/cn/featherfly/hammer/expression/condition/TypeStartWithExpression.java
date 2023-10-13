@@ -1,9 +1,9 @@
 
 package cn.featherfly.hammer.expression.condition;
 
-import cn.featherfly.common.lang.function.ReturnStringFunction;
-import cn.featherfly.common.lang.function.SerializableFunction;
-import cn.featherfly.common.lang.function.SerializableSupplier;
+import cn.featherfly.common.function.serializable.SerializableToStringFunction;
+import cn.featherfly.common.function.serializable.SerializableFunction;
+import cn.featherfly.common.function.serializable.SerializableSupplier;
 
 /**
  * TypeStartWithExpression.
@@ -25,7 +25,7 @@ public interface TypeStartWithExpression<C extends ConditionExpression, L extend
      * @param value      参数值
      * @return LogicExpression
      */
-    <T, R> L sw(SerializableFunction<T, R> repository, ReturnStringFunction<R> property, Object value);
+    <T, R> L sw(SerializableFunction<T, R> repository, SerializableToStringFunction<R> property, Object value);
 
     /**
      * 以value开始.
@@ -36,5 +36,5 @@ public interface TypeStartWithExpression<C extends ConditionExpression, L extend
      * @param property   对象属性
      * @return LogicExpression
      */
-    <T, R> L sw(SerializableSupplier<T> repository, ReturnStringFunction<T> property);
+    <T, R> L sw(SerializableSupplier<T> repository, SerializableToStringFunction<T> property);
 }

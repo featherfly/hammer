@@ -3,72 +3,59 @@ package cn.featherfly.hammer.sqldb.jdbc.dsl.execute;
 
 import java.util.function.Predicate;
 
+import cn.featherfly.common.exception.NotImplementedException;
+import cn.featherfly.common.operator.ComparisonOperator;
+import cn.featherfly.common.operator.ComparisonOperator.MatchStrategy;
 import cn.featherfly.common.repository.mapping.ClassMapping;
-import cn.featherfly.hammer.dsl.execute.ExecutableConditionGroupExpression;
-import cn.featherfly.hammer.dsl.execute.ExecutableConditionGroupLogicExpression;
-import cn.featherfly.hammer.dsl.query.TypeQueryEntity;
+import cn.featherfly.common.repository.mapping.PropertyMapping;
+import cn.featherfly.hammer.dsl.execute.ExecutableConditionGroup;
+import cn.featherfly.hammer.dsl.execute.ExecutableConditionGroupLogic;
 import cn.featherfly.hammer.sqldb.jdbc.Jdbc;
 import cn.featherfly.hammer.sqldb.sql.dml.AbstractSqlConditionGroupExpression;
 
 /**
- * <p>
- * sql condition group builder sql条件逻辑组构造器
- * </p>
- * .
+ * sql condition group builder sql条件逻辑组构造器 .
  *
  * @author zhongj
  */
-public class SqlConditionGroupExpression extends
-        AbstractSqlConditionGroupExpression<ExecutableConditionGroupExpression, ExecutableConditionGroupLogicExpression>
-        implements ExecutableConditionGroupExpression, ExecutableConditionGroupLogicExpression {
+public class SqlConditionGroupExpression
+        extends AbstractSqlConditionGroupExpression<ExecutableConditionGroup, ExecutableConditionGroupLogic>
+        implements ExecutableConditionGroup, ExecutableConditionGroupLogic {
 
     /**
      * Instantiates a new sql condition group expression.
      *
-     * @param jdbc         jdbc
-     * @param ignorePolicy the ignore policy
+     * @param jdbc           jdbc
+     * @param ignoreStrategy the ignore strategy
      */
-    public SqlConditionGroupExpression(Jdbc jdbc, Predicate<Object> ignorePolicy) {
-        this(jdbc, null, ignorePolicy);
+    public SqlConditionGroupExpression(Jdbc jdbc, Predicate<?> ignoreStrategy) {
+        this(jdbc, null, ignoreStrategy);
     }
 
     /**
      * Instantiates a new sql condition group expression.
      *
-     * @param jdbc         jdbc
-     * @param queryAlias   queryAlias
-     * @param ignorePolicy the ignore policy
+     * @param jdbc           jdbc
+     * @param queryAlias     queryAlias
+     * @param ignoreStrategy the ignore strategy
      */
-    public SqlConditionGroupExpression(Jdbc jdbc, String queryAlias, Predicate<Object> ignorePolicy) {
-        this(jdbc, queryAlias, null, ignorePolicy);
+    public SqlConditionGroupExpression(Jdbc jdbc, String queryAlias, Predicate<?> ignoreStrategy) {
+        this(null, jdbc, queryAlias, ignoreStrategy);
     }
 
     /**
      * Instantiates a new sql condition group expression.
      *
-     * @param jdbc         jdbc
-     * @param queryAlias   queryAlias
-     * @param classMapping classMapping
-     * @param ignorePolicy the ignore policy
+     * @param jdbc           jdbc
+     * @param parent         parent group
+     * @param queryAlias     queryAlias
+     * @param classMapping   classMapping
+     * @param ignoreStrategy the ignore strategy
      */
-    public SqlConditionGroupExpression(Jdbc jdbc, String queryAlias, ClassMapping<?> classMapping,
-            Predicate<Object> ignorePolicy) {
-        this(jdbc, null, queryAlias, classMapping, ignorePolicy);
-    }
-
-    /**
-     * Instantiates a new sql condition group expression.
-     *
-     * @param jdbc         jdbc
-     * @param parent       parent group
-     * @param queryAlias   queryAlias
-     * @param classMapping classMapping
-     * @param ignorePolicy the ignore policy
-     */
-    SqlConditionGroupExpression(Jdbc jdbc, ExecutableConditionGroupLogicExpression parent, String queryAlias,
-            ClassMapping<?> classMapping, Predicate<Object> ignorePolicy) {
+    SqlConditionGroupExpression(ExecutableConditionGroupLogic parent, Jdbc jdbc, String queryAlias,
+            Predicate<?> ignoreStrategy) {
         // 删除，和更新不需要分页
-        super(parent, jdbc.getDialect(), null, queryAlias, classMapping, null, ignorePolicy);
+        super(parent, jdbc.getDialect(), null, queryAlias, ignoreStrategy);
         this.jdbc = jdbc;
     }
 
@@ -77,7 +64,16 @@ public class SqlConditionGroupExpression extends
      */
     @Override
     public int execute() {
-        return jdbc.update(build(), getParams().toArray());
+        if (parent != null) {
+            return parent.execute();
+        } else {
+            String sql = build();
+            if (sql == null) {
+                return 0;
+            } else {
+                return jdbc.update(sql, getParams().toArray());
+            }
+        }
     }
 
     // ********************************************************************
@@ -91,8 +87,35 @@ public class SqlConditionGroupExpression extends
      * {@inheritDoc}
      */
     @Override
-    protected ExecutableConditionGroupExpression createGroup(ExecutableConditionGroupLogicExpression parent,
-            String queryAlias, TypeQueryEntity typeQueryEntity) {
-        return new SqlConditionGroupExpression(jdbc, parent, queryAlias, classMapping, ignorePolicy);
+    protected ExecutableConditionGroup createGroup(ExecutableConditionGroupLogic parent, String queryAlias) {
+        return new SqlConditionGroupExpression(parent, jdbc, queryAlias, ignoreStrategy);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public String getAlias(int index) {
+        // IMPLSOON 未实现
+        throw new NotImplementedException();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public <CM extends ClassMapping<T, P>, T, P extends PropertyMapping<P>> CM getClassMapping(int index) {
+        // IMPLSOON 未实现
+        throw new NotImplementedException();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    protected <R> ExecutableConditionGroupLogic eq_ne(int index, ComparisonOperator comparisonOperator,
+            PropertyMapping<?> pm, R value, MatchStrategy matchStrategy, Predicate<?> ignoreStrategy) {
+        // IMPLSOON 未实现
+        throw new NotImplementedException();
     }
 }

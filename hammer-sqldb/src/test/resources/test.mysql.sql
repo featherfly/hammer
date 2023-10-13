@@ -95,12 +95,14 @@ INSERT INTO `user_role` VALUES ('8', '8', 'descp581',null);
 DROP TABLE IF EXISTS `user_info`;
 CREATE TABLE `user_info` (
   `id` int(10) unsigned NOT NULL AUTO_INCREMENT ,
-  `user_id` int(10) unsigned NOT NULL,
+  `user_id` int(10) unsigned NULL,
   `name` varchar(255) DEFAULT NULL,
   `descp` varchar(255) DEFAULT NULL,
   `province` varchar(255) DEFAULT NULL,
   `city` varchar(255) DEFAULT NULL,
   `district` varchar(255) DEFAULT NULL,
+  `street` varchar(255) DEFAULT NULL,
+  `street_no` int DEFAULT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 ;
 
@@ -108,8 +110,13 @@ CREATE TABLE `user_info` (
 -- Table structure for user_role
 -- ----------------------------
 
-INSERT INTO `user_info` (`ID`, `user_id`, `name`, `descp`, `province`, `city`, `district`) VALUES ('1', '1', '羽飞', '羽飞描述', '四川', '成都', '金牛');
-INSERT INTO `user_info` (`ID`, `user_id`, `name`, `descp`, `province`, `city`, `district`) VALUES ('2', '2', '翼', '翼描述', '广东', '深圳', '罗湖');
+INSERT INTO `user_info` (`id`, `user_id`, `name`, `descp`, `province`, `city`, `district`, `street`, `street_no`) VALUES (1, 1, '羽飞', '羽飞描述', '四川', '成都', '金牛', '沙湾路', 66);
+INSERT INTO `user_info` (`id`, `user_id`, `name`, `descp`, `province`, `city`, `district`, `street`, `street_no`) VALUES (2, 2, '翼', '翼描述', '广东', '深圳', '罗湖', '测试地址', 112);
+INSERT INTO `user_info` (`id`, `user_id`, `name`, `descp`, `province`, `city`, `district`, `street`, `street_no`) VALUES (3, 3, '飞', '飞描述', '四川', '成都', '武侯', '天府三街', 88);
+INSERT INTO `user_info` (`id`, `user_id`, `name`, `descp`, `province`, `city`, `district`, `street`, `street_no`) VALUES (4, 4, '张三', '张三描述', '四川', '成都', '武侯', '天府三街', 99);
+INSERT INTO `user_info` (`id`, `user_id`, `name`, `descp`, `province`, `city`, `district`, `street`, `street_no`) VALUES (5, 5, '李四', '李四描述', '四川', '成都', '青羊', '红星路一段', null);
+
+
 
 DROP TABLE IF EXISTS `cms_article`;
 CREATE TABLE `cms_article` (
@@ -133,6 +140,7 @@ INSERT INTO `tree`(`id`, `parent_id`, `name`) VALUES (3, 1, 'node_22');
 INSERT INTO `tree`(`id`, `parent_id`, `name`) VALUES (4, 2, 'node_211');
 INSERT INTO `tree`(`id`, `parent_id`, `name`) VALUES (5, 2, 'node_212');
 INSERT INTO `tree`(`id`, `parent_id`, `name`) VALUES (6, 5, 'node_2121');
+INSERT INTO `tree`(`id`, `parent_id`, `name`) VALUES (7, 6, 'node_21211');
 
 DROP TABLE IF EXISTS `cms_article2`;
 CREATE TABLE `cms_article2` (
@@ -187,10 +195,73 @@ CREATE TABLE `order`  (
 `no` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL COMMENT '订单编号',
 `app_id` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL,
 `app_key` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL,
-`wx_transaction_id` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL,
-`wx_refund_id` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL,
 `wx_package` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL,
 `wx_package_expire_time` datetime(0) NULL DEFAULT NULL,
 `alipay_trade_no` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL,
+`parent_id` int(10) unsigned NULL DEFAULT NULL,
+`create_user` int(10) unsigned NULL DEFAULT NULL,
+`update_user` int(10) unsigned NULL DEFAULT NULL,
+`user1` int(10) unsigned NULL DEFAULT NULL,
+`user2` int(10) unsigned NULL DEFAULT NULL,
+`user3` int(10) unsigned NULL DEFAULT NULL,
+`user_info` int(10) unsigned NULL DEFAULT NULL,
 PRIMARY KEY (`id`) USING BTREE
 ) ENGINE = InnoDB  CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = Dynamic;
+
+INSERT INTO `order` (`id`, `no`, `app_id`, `app_key`, `wx_package`, `wx_package_expire_time`, `alipay_trade_no`, `parent_id`, `create_user`, `update_user`, `user1`, `user2`, `user3`, `user_info`) 
+    VALUES (1, 'no:1', 'app_id', 'app_key', 'wx_package', now(), 'alipay_trade_no', null, 1, 1, 1, 2, 3, 1);
+INSERT INTO `order` (`id`, `no`, `app_id`, `app_key`, `wx_package`, `wx_package_expire_time`, `alipay_trade_no`, `parent_id`, `create_user`, `update_user`, `user1`, `user2`, `user3`, `user_info`) 
+    VALUES (2, 'no:2', 'app_id', 'app_key', 'wx_package', now(), 'alipay_trade_no', 1, 2, 2, 1, 2, 3, 2);
+INSERT INTO `order` (`id`, `no`, `app_id`, `app_key`, `wx_package`, `wx_package_expire_time`, `alipay_trade_no`, `parent_id`, `create_user`, `update_user`, `user1`, `user2`, `user3`, `user_info`) 
+    VALUES (3, 'no:3', 'app_id', 'app_key', 'wx_package', now(), 'alipay_trade_no', 1, 2, 3, 4, 5, 6, 1);
+
+DROP TABLE IF EXISTS `order_info`;
+CREATE TABLE `order_info`  (
+`id` int(0) NOT NULL AUTO_INCREMENT,
+`descp` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL COMMENT '描述',
+`order_id` int(10) unsigned NULL DEFAULT NULL,
+`create_user` int(10) unsigned NULL DEFAULT NULL,
+`update_user` int(10) unsigned NULL DEFAULT NULL,
+`user1` int(10) unsigned NULL DEFAULT NULL,
+`user2` int(10) unsigned NULL DEFAULT NULL,
+`user3` int(10) unsigned NULL DEFAULT NULL,
+`user_info` int(10) unsigned NULL DEFAULT NULL,
+PRIMARY KEY (`id`) USING BTREE
+) ENGINE = InnoDB  CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = Dynamic;
+
+INSERT INTO `order_info` (`id`, `descp`, `order_id`, `create_user`, `update_user`,`user1`, `user2`, `user3`, `user_info`) 
+    VALUES (1, 'descp1', 1, 1, 1, 1, 1, 1, 1);
+INSERT INTO `order_info` (`id`, `descp`, `order_id`, `create_user`, `update_user`,`user1`, `user2`, `user3`, `user_info`) 
+    VALUES (2, 'descp2', 2, 2, 2, 2, 2, 2, 2);
+INSERT INTO `order_info` (`id`, `descp`, `order_id`, `create_user`, `update_user`,`user1`, `user2`, `user3`, `user_info`) 
+    VALUES (3, 'descp2', 3, 1, 2, 3, 4, 5, 6);
+
+-- 存储过程
+DROP PROCEDURE if EXISTS `call_query_user`;
+CREATE DEFINER=`root`@`localhost` PROCEDURE `call_query_user`(IN `arg_username` varchar(255))
+BEGIN
+    select * from user where username like arg_username;
+END; 
+
+DROP PROCEDURE if EXISTS `call_query_user_by_id` ;
+CREATE DEFINER=`root`@`localhost` PROCEDURE `call_query_user_by_id`(INOUT `arg_id` varchar(255))
+BEGIN
+    select * from user where id = arg_id;
+    set arg_id = arg_id + 1;
+END;
+
+DROP PROCEDURE if EXISTS `call_update_user_one` ;
+CREATE DEFINER=`root`@`localhost` PROCEDURE `call_update_user_one`(IN `arg_id` int(0), IN `arg_username` varchar(255), OUT `out_row_count` int(0))
+BEGIN   
+    update user set username = arg_username where id = arg_id;  
+    set out_row_count = ROW_COUNT();
+END;
+
+DROP PROCEDURE if EXISTS `call_update_role_more` ;
+CREATE DEFINER=`root`@`localhost` PROCEDURE `call_update_role_more`(IN `q_name` varchar(255), IN `u_descp` varchar(255), OUT `out_row_count` int(0))
+BEGIN   
+    update role set `descp` = u_descp where `name` like q_name;
+    set out_row_count = ROW_COUNT();
+END;
+
+SET FOREIGN_KEY_CHECKS=0;

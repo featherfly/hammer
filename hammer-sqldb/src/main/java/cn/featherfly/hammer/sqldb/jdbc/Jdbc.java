@@ -1,31 +1,38 @@
+/*
+ * All rights Reserved, Designed By zhongj
+ * @Title: Jdbc.java
+ * @Package cn.featherfly.hammer.sqldb.jdbc
+ * @Description: todo (用一句话描述该文件做什么)
+ * @author: zhongj
+ * @date: 2023年7月10日 下午3:57:25
+ * @version V1.0
+ * @Copyright: 2023 www.featherfly.cn Inc. All rights reserved.
+ */
 package cn.featherfly.hammer.sqldb.jdbc;
 
 import java.io.Serializable;
-import java.math.BigDecimal;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 
-import javax.sql.DataSource;
-
-import cn.featherfly.common.bean.BeanPropertyValue;
 import cn.featherfly.common.db.JdbcException;
 import cn.featherfly.common.db.dialect.Dialect;
-import cn.featherfly.common.repository.mapping.RowMapper;
+import cn.featherfly.common.db.mapping.SqlTypeMappingManager;
+import cn.featherfly.common.lang.Lang;
 
 /**
  * Jdbc.
  *
  * @author zhongj
  */
-public interface Jdbc {
+public interface Jdbc extends JdbcQuery, JdbcProcedure, JdbcUpdate {
 
-    /**
-     * Gets the data source.
-     *
-     * @return DataSource
-     */
-    DataSource getDataSource();
+    //    /**
+    //     * Gets the data source.
+    //     *
+    //     * @return DataSource
+    //     */
+    //    DataSource getDataSource();
 
     /**
      * 返回dialect.
@@ -33,6 +40,46 @@ public interface Jdbc {
      * @return dialect
      */
     Dialect getDialect();
+
+    /**
+     * Gets the sql type mapping manager.
+     *
+     * @return the sql type mapping manager
+     */
+    SqlTypeMappingManager getSqlTypeMappingManager();
+
+    //    /**
+    //     * Adds the interceptor.
+    //     *
+    //     * @param interceptor the interceptor
+    //     */
+    //    void addInterceptor(JdbcExecutionInterceptor interceptor);
+    //
+    //    /**
+    //     * Adds the interceptor.
+    //     *
+    //     * @param interceptors the interceptors
+    //     */
+    //    default void addInterceptor(List<JdbcExecutionInterceptor> interceptors) {
+    //        if (interceptors != null) {
+    //            for (JdbcExecutionInterceptor jdbcExecutionInterceptor : interceptors) {
+    //                addInterceptor(jdbcExecutionInterceptor);
+    //            }
+    //        }
+    //    }
+    //
+    //    /**
+    //     * Adds the interceptor.
+    //     *
+    //     * @param interceptors the interceptors
+    //     */
+    //    default void addInterceptor(JdbcExecutionInterceptor... interceptors) {
+    //        if (interceptors != null) {
+    //            for (JdbcExecutionInterceptor jdbcExecutionInterceptor : interceptors) {
+    //                addInterceptor(jdbcExecutionInterceptor);
+    //            }
+    //        }
+    //    }
 
     /**
      * Insert.
@@ -115,20 +162,26 @@ public interface Jdbc {
      * @return the int
      */
     default int insertBatch(String tableName, List<Map<String, Object>> columnParams) {
-        if (columnParams.size() == 0) {
+        if (Lang.isEmpty(columnParams)) {
             return 0;
         }
-        int i = 0;
+
         int columnLen = columnParams.get(0).size();
         int paramLen = columnLen * columnParams.size();
         String[] columns = new String[columnLen];
         Object[] params = new Object[paramLen];
-        for (Map.Entry<String, Object> entry : columnParams.get(0).entrySet()) {
-            columns[i] = entry.getKey();
-            i++;
-        }
 
-        i = 0;
+        //        int i = 0;
+        //        for (Map.Entry<String, Object> entry : columnParams.get(0).entrySet()) {
+        //            columns[i] = entry.getKey();
+        //            i++;
+        //        }
+
+        Lang.each(columnParams.get(0).entrySet(), (entry, index) -> {
+            columns[index] = entry.getKey();
+        });
+
+        int i = 0;
         for (Map<String, Object> cp : columnParams) {
             for (Map.Entry<String, Object> entry : cp.entrySet()) {
                 params[i] = entry.getValue();
@@ -205,523 +258,4 @@ public interface Jdbc {
         }
         return upsert(tableName, columnNames, uniqueColumns, ps);
     }
-
-    /**
-     * Update.
-     *
-     * @param sql  the sql
-     * @param args the args
-     * @return the int
-     */
-    int update(String sql, Object... args);
-
-    /**
-     * Update.
-     *
-     * @param sql  the sql
-     * @param args the args
-     * @return the int
-     */
-    int update(String sql, BeanPropertyValue<?>... args);
-
-    /**
-     * Update.
-     *
-     * @param sql  the sql
-     * @param args the args
-     * @return the int
-     */
-    int update(String sql, Map<String, Object> args);
-
-    /**
-     * Update.
-     *
-     * @param <T>                the generic type
-     * @param sql                sql
-     * @param generatedKeyHolder the key supplier
-     * @param args               args
-     * @return map list
-     */
-    <T extends Serializable> int update(String sql, GeneratedKeyHolder<T> generatedKeyHolder, Object... args);
-
-    /**
-     * Update.
-     *
-     * @param <T>                the generic type
-     * @param sql                the sql
-     * @param generatedKeyHolder the generated key holder
-     * @param args               the args
-     * @return the int
-     */
-    <T extends Serializable> int update(String sql, GeneratedKeyHolder<T> generatedKeyHolder,
-            BeanPropertyValue<?>... args);
-
-    /**
-     * Update.
-     *
-     * @param <T>                the generic type
-     * @param sql                sql
-     * @param generatedKeyHolder the key supplier
-     * @param args               args
-     * @return map list
-     */
-    <T extends Serializable> int update(String sql, GeneratedKeyHolder<T> generatedKeyHolder, Map<String, Object> args);
-
-    /**
-     * Update.
-     *
-     * @param <T>       the generic type
-     * @param sql       sql
-     * @param batchSize the batch size
-     * @param args      args
-     * @return map list
-     */
-    default <T extends Serializable> int updateBatch(String sql, int batchSize, Object... args) {
-        return updateBatch(sql, batchSize, null, args);
-    }
-
-    /**
-     * Update.
-     *
-     * @param sql       the sql
-     * @param batchSize the batch size
-     * @param args      the args
-     * @return the int
-     */
-    default int updateBatch(String sql, int batchSize, Map<String, Object> args) {
-        return updateBatch(sql, batchSize, null, args);
-    }
-
-    /**
-     * Update.
-     *
-     * @param <T>                the generic type
-     * @param sql                the sql
-     * @param batchSize          the batch size
-     * @param generatedKeyHolder the generated key holder
-     * @param args               the args
-     * @return the int
-     */
-    <T extends Serializable> int updateBatch(String sql, int batchSize, GeneratedKeyHolder<T> generatedKeyHolder,
-            Map<String, Object> args);
-
-    /**
-     * Update.
-     *
-     * @param <T>                the generic type
-     * @param sql                sql
-     * @param batchSize          the batch size
-     * @param generatedKeyHolder the key supplier
-     * @param args               args
-     * @return map list
-     */
-    <T extends Serializable> int updateBatch(String sql, int batchSize, GeneratedKeyHolder<T> generatedKeyHolder,
-            Object... args);
-
-    /**
-     * Query.
-     *
-     * @param sql  sql
-     * @param args args
-     * @return map list
-     */
-    List<Map<String, Object>> query(String sql, Object... args);
-
-    /**
-     * Query.
-     *
-     * @param sql  sql
-     * @param args args
-     * @return map list
-     */
-    List<Map<String, Object>> query(String sql, Map<String, Object> args);
-
-    /**
-     * Query.
-     *
-     * @param <T>       generic type
-     * @param sql       sql
-     * @param rowMapper rowMapper
-     * @param args      args
-     * @return elementType object list
-     */
-    <T> List<T> query(String sql, RowMapper<T> rowMapper, Object... args);
-
-    //    /**
-    //     * Query.
-    //     *
-    //     * @param <T>       the generic type
-    //     * @param sql       the sql
-    //     * @param rowMapper the row mapper
-    //     * @param args      the args
-    //     * @return the list
-    //     */
-    //    <T> List<T> query(String sql, RowMapper<T> rowMapper, BeanPropertyValue<?>... args);
-
-    /**
-     * Query.
-     *
-     * @param <T>         generic type
-     * @param sql         sql
-     * @param elementType return object type
-     * @param args        args
-     * @return elementType object list
-     */
-    <T> List<T> query(String sql, Class<T> elementType, Object... args);
-
-    //    /**
-    //     * Query.
-    //     *
-    //     * @param <T>         the generic type
-    //     * @param sql         the sql
-    //     * @param elementType the element type
-    //     * @param args        the args
-    //     * @return the list
-    //     */
-    //    <T> List<T> query(String sql, Class<T> elementType, BeanPropertyValue<?>... args);
-
-    /**
-     * Query.
-     *
-     * @param <T>       generic type
-     * @param sql       sql
-     * @param rowMapper rowMapper
-     * @param args      args
-     * @return elementType object list
-     */
-    <T> List<T> query(String sql, RowMapper<T> rowMapper, Map<String, Object> args);
-
-    /**
-     * Query.
-     *
-     * @param <T>         generic type
-     * @param sql         sql
-     * @param elementType return object type
-     * @param args        args
-     * @return elementType object list
-     */
-    <T> List<T> query(String sql, Class<T> elementType, Map<String, Object> args);
-
-    /**
-     * Query single.
-     *
-     * @param sql  sql
-     * @param args args
-     * @return map
-     */
-    Map<String, Object> querySingle(String sql, Map<String, Object> args);
-
-    /**
-     * Query single.
-     *
-     * @param sql  sql
-     * @param args args
-     * @return map
-     */
-    Map<String, Object> querySingle(String sql, Object... args);
-
-    /**
-     * Query single.
-     *
-     * @param <T>       generic type
-     * @param sql       sql
-     * @param rowMapper rowMapper
-     * @param args      args
-     * @return single elementType object
-     */
-    <T> T querySingle(String sql, RowMapper<T> rowMapper, Object... args);
-
-    //    /**
-    //     * Query single.
-    //     *
-    //     * @param <T>       the generic type
-    //     * @param sql       the sql
-    //     * @param rowMapper the row mapper
-    //     * @param args      the args
-    //     * @return the t
-    //     */
-    //    <T> T querySingle(String sql, RowMapper<T> rowMapper, BeanPropertyValue<?>... args);
-
-    /**
-     * Query single.
-     *
-     * @param <T>       generic type
-     * @param sql       sql
-     * @param rowMapper rowMapper
-     * @param args      args
-     * @return single elementType object
-     */
-    <T> T querySingle(String sql, RowMapper<T> rowMapper, Map<String, Object> args);
-
-    /**
-     * Query single.
-     *
-     * @param <T>         generic type
-     * @param sql         sql
-     * @param elementType return object type
-     * @param args        args
-     * @return element type object list
-     */
-    <T> T querySingle(String sql, Class<T> elementType, Map<String, Object> args);
-
-    /**
-     * Query single.
-     *
-     * @param <T>         generic type
-     * @param sql         sql
-     * @param elementType return object type
-     * @param args        args
-     * @return single elementType object
-     */
-    <T> T querySingle(String sql, Class<T> elementType, Object... args);
-
-    //    /**
-    //     * Query single.
-    //     *
-    //     * @param <T>         the generic type
-    //     * @param sql         the sql
-    //     * @param elementType the element type
-    //     * @param args        the args
-    //     * @return the t
-    //     */
-    //    <T> T querySingle(String sql, Class<T> elementType, BeanPropertyValue<?>... args);
-
-    /**
-     * Query unique.
-     *
-     * @param sql  sql
-     * @param args args
-     * @return map
-     */
-    Map<String, Object> queryUnique(String sql, Map<String, Object> args);
-
-    /**
-     * Query unique.
-     *
-     * @param sql  sql
-     * @param args args
-     * @return map
-     */
-    Map<String, Object> queryUnique(String sql, Object... args);
-
-    /**
-     * Query unique.
-     *
-     * @param <T>       generic type
-     * @param sql       sql
-     * @param rowMapper rowMapper
-     * @param args      args
-     * @return single elementType object
-     */
-    <T> T queryUnique(String sql, RowMapper<T> rowMapper, Object... args);
-
-    //    /**
-    //     * Query unique.
-    //     *
-    //     * @param <T>       the generic type
-    //     * @param sql       the sql
-    //     * @param rowMapper the row mapper
-    //     * @param args      the args
-    //     * @return the t
-    //     */
-    //    <T> T queryUnique(String sql, RowMapper<T> rowMapper, BeanPropertyValue<?>... args);
-
-    /**
-     * Query unique.
-     *
-     * @param <T>       generic type
-     * @param sql       sql
-     * @param rowMapper rowMapper
-     * @param args      args
-     * @return single elementType object
-     */
-    <T> T queryUnique(String sql, RowMapper<T> rowMapper, Map<String, Object> args);
-
-    /**
-     * Query unique.
-     *
-     * @param <T>         generic type
-     * @param sql         sql
-     * @param elementType return object type
-     * @param args        args
-     * @return element type object list
-     */
-    <T> T queryUnique(String sql, Class<T> elementType, Map<String, Object> args);
-
-    /**
-     * Query unique.
-     *
-     * @param <T>         generic type
-     * @param sql         sql
-     * @param elementType return object type
-     * @param args        args
-     * @return single elementType object
-     */
-    <T> T queryUnique(String sql, Class<T> elementType, Object... args);
-
-    //    /**
-    //     * Query unique.
-    //     *
-    //     * @param <T>         the generic type
-    //     * @param sql         the sql
-    //     * @param elementType the element type
-    //     * @param args        the args
-    //     * @return the t
-    //     */
-    //    <T> T queryUnique(String sql, Class<T> elementType, BeanPropertyValue<?>... args);
-
-    /**
-     * queryInt.
-     *
-     * @param sql  the sql
-     * @param args the args
-     * @return the integer
-     */
-    default Integer queryInt(String sql, Object... args) {
-        return queryValue(sql, Integer.class, args);
-    }
-
-    /**
-     * Query int.
-     *
-     * @param sql  the sql
-     * @param args the args
-     * @return the integer
-     */
-    default Integer queryInt(String sql, Map<String, Object> args) {
-        return queryValue(sql, Integer.class, args);
-    }
-
-    /**
-     * Query long.
-     *
-     * @param sql  the sql
-     * @param args the args
-     * @return the long
-     */
-    default Long queryLong(String sql, Object... args) {
-        return queryValue(sql, Long.class, args);
-    }
-
-    /**
-     * Query long.
-     *
-     * @param sql  the sql
-     * @param args the args
-     * @return the long
-     */
-    default Long queryLong(String sql, Map<String, Object> args) {
-        return queryValue(sql, Long.class, args);
-    }
-
-    /**
-     * Query big decimal.
-     *
-     * @param sql  the sql
-     * @param args the args
-     * @return the big decimal
-     */
-    default BigDecimal queryBigDecimal(String sql, Object... args) {
-        return queryValue(sql, BigDecimal.class, args);
-    }
-
-    /**
-     * Query big decimal.
-     *
-     * @param sql  the sql
-     * @param args the args
-     * @return the big decimal
-     */
-    default BigDecimal queryBigDecimal(String sql, Map<String, Object> args) {
-        return queryValue(sql, BigDecimal.class, args);
-    }
-
-    /**
-     * Query double.
-     *
-     * @param sql  the sql
-     * @param args the args
-     * @return the double
-     */
-    default Double queryDouble(String sql, Object... args) {
-        return queryValue(sql, Double.class, args);
-    }
-
-    /**
-     * Query double.
-     *
-     * @param sql  the sql
-     * @param args the args
-     * @return the double
-     */
-    default Double queryDouble(String sql, Map<String, Object> args) {
-        return queryValue(sql, Double.class, args);
-    }
-
-    /**
-     * Query string.
-     *
-     * @param sql  the sql
-     * @param args the args
-     * @return the string
-     */
-    default String queryString(String sql, Object... args) {
-        return queryValue(sql, String.class, args);
-    }
-
-    /**
-     * Query string.
-     *
-     * @param sql  the sql
-     * @param args the args
-     * @return the string
-     */
-    default String queryString(String sql, Map<String, Object> args) {
-        return queryValue(sql, String.class, args);
-    }
-
-    /**
-     * Query value.
-     *
-     * @param <T>       the generic type
-     * @param sql       the sql
-     * @param valueType the value type
-     * @param args      the args
-     * @return the t
-     */
-    <T> T queryValue(String sql, Class<T> valueType, Object... args);
-
-    /**
-     * Query value.
-     *
-     * @param <T>       the generic type
-     * @param sql       the sql
-     * @param valueType the value type
-     * @param args      the args
-     * @return the t
-     */
-    <T> T queryValue(String sql, Class<T> valueType, Map<String, Object> args);
-
-    /**
-     * Query value.
-     *
-     * @param <T>       the generic type
-     * @param sql       the sql
-     * @param rowMapper the row mapper
-     * @param args      the args
-     * @return the t
-     */
-    <T> T queryValue(String sql, RowMapper<T> rowMapper, Object... args);
-
-    /**
-     * Query value.
-     *
-     * @param <T>       the generic type
-     * @param sql       the sql
-     * @param rowMapper the row mapper
-     * @param args      the args
-     * @return the t
-     */
-    <T> T queryValue(String sql, RowMapper<T> rowMapper, Map<String, Object> args);
-
 }

@@ -7,7 +7,7 @@ import java.util.Map;
 import cn.featherfly.common.structure.page.Page;
 import cn.featherfly.common.structure.page.PaginationResults;
 import cn.featherfly.hammer.GenericHammer;
-import cn.featherfly.hammer.sqldb.jdbc.vo.User;
+import cn.featherfly.hammer.sqldb.jdbc.vo.r.User;
 import cn.featherfly.hammer.tpl.annotation.Mapper;
 import cn.featherfly.hammer.tpl.annotation.Param;
 import cn.featherfly.hammer.tpl.annotation.ParamType;
@@ -76,15 +76,18 @@ public interface UserMapper3WithoutParamName extends GenericHammer<User, Integer
     List<Map<String, Object>> selectById2(Integer id);
 
     default User getByUsernameAndPassword(String username, String pwd) {
-        return query().where().eq("username", username).and().eq("pwd", pwd).single();
+        //        return query().where().eq("username", username).and().eq("pwd", pwd).single();
+        return query().where().eq(User::getUsername, username).and().eq(User::getPwd, pwd).single();
     }
 
     default User getByUsernameAndPassword2(String username, String pwd) {
-        return query().where().eq("username", username).and().eq("password", pwd).single();
+        //        return query().where().eq("username", username).and().eq("password", pwd).single();
+        return query().where().eq(User::getUsername, username).and().eq(User::getPwd, pwd).single();
     }
 
     default User getByUsernameAndPassword3(String username, String pwd) {
-        return query().where().property("username").eq(username).and().property("pwd").eq(pwd).single();
+        //        return query().where().property("username").eq(username).and().property("pwd").eq(pwd).single();
+        return query().where().property(User::getUsername).eq(username).and().property(User::getPwd).eq(pwd).single();
     }
 
     default int updatePasswordByUsername(String username, String pwd) {

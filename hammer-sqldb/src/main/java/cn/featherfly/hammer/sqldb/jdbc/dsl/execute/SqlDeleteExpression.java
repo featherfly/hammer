@@ -5,15 +5,12 @@ import java.util.function.Predicate;
 
 import cn.featherfly.common.constant.Chars;
 import cn.featherfly.common.db.builder.dml.basic.SqlDeleteFromBasicBuilder;
-import cn.featherfly.common.repository.IgnorePolicy;
-import cn.featherfly.common.repository.mapping.ClassMapping;
+import cn.featherfly.common.lang.Strings;
+import cn.featherfly.common.repository.IgnoreStrategy;
 import cn.featherfly.hammer.sqldb.jdbc.Jdbc;
 
 /**
- * <p>
- * SqlDeleteExpression
- * </p>
- * .
+ * SqlDeleteExpression .
  *
  * @author zhongj
  */
@@ -24,36 +21,11 @@ public class SqlDeleteExpression extends SqlConditionGroupExpression {
     /**
      * Instantiates a new sql delete expression.
      *
-     * @param jdbc         the jdbc
-     * @param builder      the builder
-     * @param classMapping the class mapping
-     */
-    public SqlDeleteExpression(Jdbc jdbc, SqlDeleteFromBasicBuilder builder, ClassMapping<?> classMapping) {
-        this(jdbc, builder, classMapping, IgnorePolicy.NONE);
-    }
-
-    /**
-     * Instantiates a new sql delete expression.
-     *
-     * @param jdbc         the jdbc
-     * @param builder      the builder
-     * @param classMapping the class mapping
-     * @param ignorePolicy the ignore policy
-     */
-    public SqlDeleteExpression(Jdbc jdbc, SqlDeleteFromBasicBuilder builder, ClassMapping<?> classMapping,
-            Predicate<Object> ignorePolicy) {
-        super(jdbc, null, classMapping, ignorePolicy);
-        this.builder = builder;
-    }
-
-    /**
-     * Instantiates a new sql delete expression.
-     *
      * @param jdbc    the jdbc
      * @param builder the builder
      */
     public SqlDeleteExpression(Jdbc jdbc, SqlDeleteFromBasicBuilder builder) {
-        this(jdbc, builder, IgnorePolicy.NONE);
+        this(jdbc, builder, IgnoreStrategy.NONE);
     }
 
     /**
@@ -61,10 +33,11 @@ public class SqlDeleteExpression extends SqlConditionGroupExpression {
      *
      * @param jdbc         the jdbc
      * @param builder      the builder
-     * @param ignorePolicy the ignore policy
+     * @param ignoreStrategy the ignore strategy
      */
-    public SqlDeleteExpression(Jdbc jdbc, SqlDeleteFromBasicBuilder builder, Predicate<Object> ignorePolicy) {
-        this(jdbc, builder, null, ignorePolicy);
+    public SqlDeleteExpression(Jdbc jdbc, SqlDeleteFromBasicBuilder builder, Predicate<?> ignoreStrategy) {
+        super(jdbc, builder.getTableAlias(), ignoreStrategy);
+        this.builder = builder;
     }
 
     /**
@@ -72,6 +45,11 @@ public class SqlDeleteExpression extends SqlConditionGroupExpression {
      */
     @Override
     public String build() {
-        return builder.build() + Chars.SPACE + jdbc.getDialect().getKeywords().where() + Chars.SPACE + super.build();
+        String condition = super.build();
+        if (Strings.isEmpty(condition)) {
+            return builder.build();
+        } else {
+            return builder.build() + Chars.SPACE + jdbc.getDialect().getKeywords().where() + Chars.SPACE + condition;
+        }
     }
 }

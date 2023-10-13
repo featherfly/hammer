@@ -10,7 +10,7 @@ import cn.featherfly.common.lang.Randoms;
 import cn.featherfly.hammer.Hammer;
 import cn.featherfly.hammer.sqldb.SqldbHammerImpl;
 import cn.featherfly.hammer.sqldb.jdbc.JdbcTestBase;
-import cn.featherfly.hammer.sqldb.jdbc.vo.User;
+import cn.featherfly.hammer.sqldb.jdbc.vo.r.User;
 import cn.featherfly.hammer.tpl.mapper.TplDynamicExecutorFactory;
 
 /**
@@ -36,7 +36,7 @@ public class SqlTplDynamicExecutorTest5 extends JdbcTestBase {
     @Test
     void testGetByUsername() {
         User user = new User();
-        user.setAge(100);
+        user.setAge(18);
         user.setUsername("username_" + Randoms.getString(5));
         userMapper4.save(user);
 

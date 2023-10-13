@@ -2,28 +2,33 @@
 package cn.featherfly.hammer.sqldb.jdbc.dsl;
 
 import static org.testng.Assert.assertEquals;
-import static org.testng.Assert.assertNotNull;
-import static org.testng.Assert.assertNull;
+import static org.testng.Assert.assertNotEquals;
 import static org.testng.Assert.assertTrue;
 
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
+import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
 
+import cn.featherfly.common.db.Table;
+import cn.featherfly.common.db.mapping.JdbcMappingException;
 import cn.featherfly.common.lang.Strings;
+import cn.featherfly.common.repository.AliasRepository;
+import cn.featherfly.common.repository.IgnoreStrategy;
+import cn.featherfly.common.repository.Repository;
+import cn.featherfly.common.repository.SimpleAliasRepository;
+import cn.featherfly.common.repository.SimpleRepository;
+import cn.featherfly.common.repository.builder.BuilderException;
 import cn.featherfly.common.structure.page.PaginationResults;
-import cn.featherfly.hammer.expression.SimpleRepository;
+import cn.featherfly.hammer.dsl.query.QueryConditionGroupExpression;
+import cn.featherfly.hammer.dsl.query.QueryConditionGroupLogicExpression;
 import cn.featherfly.hammer.sqldb.SqldbHammerException;
 import cn.featherfly.hammer.sqldb.jdbc.JdbcTestBase;
 import cn.featherfly.hammer.sqldb.jdbc.dsl.query.SqlQuery;
-import cn.featherfly.hammer.sqldb.jdbc.vo.DistrictDivision;
-import cn.featherfly.hammer.sqldb.jdbc.vo.Role;
-import cn.featherfly.hammer.sqldb.jdbc.vo.Tree;
-import cn.featherfly.hammer.sqldb.jdbc.vo.Tree2;
-import cn.featherfly.hammer.sqldb.jdbc.vo.User;
-import cn.featherfly.hammer.sqldb.jdbc.vo.UserInfo;
-import cn.featherfly.hammer.sqldb.jdbc.vo.UserRole2;
+import cn.featherfly.hammer.sqldb.jdbc.vo.r.Role;
+import cn.featherfly.hammer.sqldb.jdbc.vo.r.User;
 
 /**
  * SqlQueryTest.
@@ -32,9 +37,15 @@ import cn.featherfly.hammer.sqldb.jdbc.vo.UserRole2;
  */
 public class SqlQueryTest extends JdbcTestBase {
 
+    SqlQuery query;
+
+    @BeforeClass
+    void beforeClass() {
+        query = new SqlQuery(jdbc, mappingFactory, sqlPageFactory);
+    }
+
     @Test
     void testNull() {
-        SqlQuery query = new SqlQuery(jdbc, metadata, sqlPageFactory);
         List<Map<String, Object>> list = query.find("user").where().eq("a", null).and().eq("b", null).and()
                 .sw("username", "yufei").and().eq("d", null).list();
         for (Map<String, Object> map : list) {
@@ -46,7 +57,6 @@ public class SqlQueryTest extends JdbcTestBase {
 
     @Test
     void testFunction() {
-        SqlQuery query = new SqlQuery(jdbc, metadata, sqlPageFactory);
 
         Object result = null;
 
@@ -90,7 +100,7 @@ public class SqlQueryTest extends JdbcTestBase {
 
     @Test
     void test0() {
-        SqlQuery query = new SqlQuery(jdbc, metadata, sqlPageFactory);
+
         List<Map<String, Object>> list = query.find("user").property("username", "password", "age").sort().asc("age")
                 .list();
         int age = Integer.MIN_VALUE;
@@ -122,7 +132,7 @@ public class SqlQueryTest extends JdbcTestBase {
 
     @Test
     void test1() {
-        SqlQuery query = new SqlQuery(jdbc, metadata, sqlPageFactory);
+
         query.find("user").list(User.class);
         query.find("user").property("username", "password", "age").list(User.class);
         query.find("user").property("username", "password", "age").where().eq("username", "yufei").and()
@@ -135,50 +145,493 @@ public class SqlQueryTest extends JdbcTestBase {
 
     @Test
     void test2() {
-        SqlQuery query = new SqlQuery(jdbc, metadata, sqlPageFactory);
+
         query.find("user").property("username", "password", "age").where().eq("username", "yufei").and()
                 .eq("password", "123456").and().group().gt("age", 18).and().lt("age", 60).list(User.class);
     }
 
     @Test
     void test3() {
-        SqlQuery query = new SqlQuery(jdbc, metadata, sqlPageFactory);
-        query.find(new SimpleRepository("user", "u")).where().eq("username", "yufei").and().eq("password", "123456")
-                .and().group().gt("age", 18).and().lt("age", 60).list(User.class);
+
+        query.find(new SimpleAliasRepository("user", "u")).where().eq("username", "yufei").and()
+                .eq("password", "123456").and().group().gt("age", 18).and().lt("age", 60).list(User.class);
     }
 
     @Test
     void test4() {
-        SqlQuery query = new SqlQuery(jdbc, metadata, sqlPageFactory);
-        query.find(new SimpleRepository("user", "u")).property("username", "password", "age").where()
+
+        query.find(new SimpleAliasRepository("user", "u")).property("username", "password", "age").where()
                 .eq("username", "yufei").and().eq("password", "123456").and().group().gt("age", 18).and().lt("age", 60)
                 .list(User.class);
+
+        Repository repository = new SimpleAliasRepository("user", "u");
+
+        query.find(repository).property("username", "password", "age").where().eq("username", "yufei").and()
+                .eq("password", "123456").and().group().gt("age", 18).and().lt("age", 60).list(User.class);
+    }
+
+    @Test
+    void testCondition_in() {
+        int[] ids = new int[] { 1, 2 };
+        List<Map<String, Object>> list = query.find("user") //
+                .where() //
+                .in("id", ids) //
+                .list();
+        assertEquals(list.size(), ids.length);
+
+        list = query.find("user") //
+                .where() //
+                .in("id", null) //
+                .list();
+        long total = query.find("user").count();
+        assertEquals(list.size(), total);
+
+        long c1 = query.find("user") //
+                .where() //
+                .in("id", null, IgnoreStrategy.NONE)// 不忽略空值
+                .count();
+        assertEquals(c1, 0);
+    }
+
+    @Test
+    void testCondition_eq() {
+        int id = 1;
+        int userId = query.find("user").property("id") //
+                .where() //
+                .eq("id", id) //
+                .intValue();
+        assertEquals(userId, id);
+
+        long c1 = query.find("user") //
+                .where() //
+                .eq("id", null) //
+                .count();
+        long total = query.find("user").count();
+        assertEquals(c1, total);
+
+        long c2 = query.find("user") //
+                .where() //
+                .eq("id", null, IgnoreStrategy.NONE) // 不忽略空值
+                .count();
+        assertEquals(c2, 0);
+        c2 = query.find("user") //
+                .where() //
+                .eq("id", null, v -> false) // 不忽略空值
+                .count();
+        assertEquals(c2, 0);
+    }
+
+    @Test
+    void testCondition_ne() {
+        int id = 1;
+        List<Integer> userIds = query.find("user").property("id") //
+                .where() //
+                .ne("id", id) //
+                .list(Integer.class);
+        for (Integer userId : userIds) {
+            assertNotEquals(userId, id);
+        }
+
+        long c1 = query.find("user") //
+                .where() //
+                .ne("id", null) //
+                .count();
+        long total = query.find("user").count();
+        assertEquals(c1, total);
+
+        long c2 = query.find("user") //
+                .where() //
+                .ne("id", null, IgnoreStrategy.NONE) // 不忽略空值
+                .count();
+        assertEquals(c2, 0);
+        c2 = query.find("user") //
+                .where() //
+                .ne("id", null, v -> false) // 不忽略空值
+                .count();
+        assertEquals(c2, 0);
+    }
+
+    @Test
+    void testCondition_sw() {
+        String sw = "yufei";
+        List<String> usernames = query.find("user").property("username") //
+                .where() //
+                .sw("username", sw) //
+                .list(String.class);
+        for (String username : usernames) {
+            assertTrue(Strings.startsWith(username, sw));
+        }
+
+        long c = query.find("user")//
+                .where() //
+                .sw("username", "zzzzzzzz") //
+                .count();
+        assertEquals(c, 0);
+
+        long c1 = query.find("user") //
+                .where() //
+                .sw("username", null) //
+                .count();
+        long total = query.find("user").count();
+        assertEquals(c1, total);
+
+        long c2 = query.find("user") //
+                .where() //
+                .sw("username", null, IgnoreStrategy.NONE) // 不忽略空值
+                .count();
+        assertEquals(c2, 0);
+
+        c2 = query.find("user") //
+                .where() //
+                .sw("username", null, v -> false) // 不忽略空值
+                .count();
+        assertEquals(c2, 0);
+    }
+
+    @Test
+    void testCondition_ew() {
+        String ew = "55";
+        List<String> usernames = query.find("user").property("username") //
+                .where() //
+                .ew("username", ew) //
+                .list(String.class);
+        for (String username : usernames) {
+            assertTrue(Strings.endWith(username, ew));
+        }
+
+        long c = query.find("user")//
+                .where() //
+                .ew("username", "zzzzzzzz") //
+                .count();
+        assertEquals(c, 0);
+
+        long c1 = query.find("user") //
+                .where() //
+                .ew("username", null) //
+                .count();
+        long total = query.find("user").count();
+        assertEquals(c1, total);
+
+        long c2 = query.find("user") //
+                .where() //
+                .ew("username", null, IgnoreStrategy.NONE) // 不忽略空值
+                .count();
+        assertEquals(c2, 0);
+
+        c2 = query.find("user") //
+                .where() //
+                .ew("username", null, v -> false) // 不忽略空值
+                .count();
+        assertEquals(c2, 0);
+    }
+
+    @Test
+    void testCondition_co() {
+        String co = "uf";
+        List<String> usernames = query.find("user").property("username") //
+                .where() //
+                .co("username", co) //
+                .list(String.class);
+        for (String username : usernames) {
+            assertTrue(Strings.contains(username, co));
+        }
+
+        long c = query.find("user")//
+                .where() //
+                .co("username", "zzzzzzzz") //
+                .count();
+        assertEquals(c, 0);
+
+        long c1 = query.find("user") //
+                .where() //
+                .co("username", null) //
+                .count();
+        long total = query.find("user").count();
+        assertEquals(c1, total);
+
+        long c2 = query.find("user") //
+                .where() //
+                .co("username", null, IgnoreStrategy.NONE) // 不忽略空值
+                .count();
+        assertEquals(c2, 0);
+
+        c2 = query.find("user") //
+                .where() //
+                .co("username", null, v -> false) // 不忽略空值
+                .count();
+        assertEquals(c2, 0);
+    }
+
+    @Test
+    void testCondition_lk() {
+        String yufei = "yufei";
+        String un = query.find("user").property("username") //
+                .where() //
+                .lk("username", yufei) //
+                .string();
+        assertEquals(un, yufei);
+
+        String sw = "yufei";
+        List<String> usernames = query.find("user").property("username") //
+                .where() //
+                .sw("username", sw + "%") //
+                .list(String.class);
+        for (String username : usernames) {
+            assertTrue(Strings.startsWith(username, sw));
+        }
+
+        String ew = "55";
+        usernames = query.find("user").property("username") //
+                .where() //
+                .ew("username", "%" + ew) //
+                .list(String.class);
+        for (String username : usernames) {
+            assertTrue(Strings.endWith(username, ew));
+        }
+
+        String co = "uf";
+        usernames = query.find("user").property("username") //
+                .where() //
+                .co("username", "%" + co + "%") //
+                .list(String.class);
+        for (String username : usernames) {
+            assertTrue(Strings.contains(username, co));
+        }
+
+        long c = query.find("user")//
+                .where() //
+                .lk("username", "zzzzzzzz") //
+                .count();
+        assertEquals(c, 0);
+
+        long c1 = query.find("user") //
+                .where() //
+                .lk("username", null) //
+                .count();
+        long total = query.find("user").count();
+        assertEquals(c1, total);
+
+        long c2 = query.find("user") //
+                .where() //
+                .lk("username", null, IgnoreStrategy.NONE) // 不忽略空值
+                .count();
+        assertEquals(c2, 0);
+
+        c2 = query.find("user") //
+                .where() //
+                .lk("username", null, v -> false) // 不忽略空值
+                .count();
+        assertEquals(c2, 0);
+    }
+
+    @Test
+    void testCondition_gt() {
+        int ageValue = 40;
+        List<Integer> ages = query.find("user").property("age") //
+                .where() //
+                .gt("age", ageValue) //
+                .list(Integer.class);
+        for (Integer age : ages) {
+            assertTrue(age > ageValue);
+        }
+
+        long c = query.find("user")//
+                .where() //
+                .gt("age", Integer.MAX_VALUE) //
+                .count();
+        assertEquals(c, 0);
+
+        long c1 = query.find("user") //
+                .where() //
+                .gt("age", (Integer) null) //
+                .count();
+        long total = query.find("user").count();
+        assertEquals(c1, total);
+
+        long c2 = query.find("user") //
+                .where() //
+                .gt("age", (Integer) null, v -> false) // 不忽略空值
+                .count();
+        assertEquals(c2, 0);
+
+        c2 = query.find("user") //
+                .where() //
+                .gt("age", (Integer) null, IgnoreStrategy.NONE) // 不忽略空值
+                .count();
+        assertEquals(c2, 0);
+
+        c2 = query.find("user") //
+                .where() //
+                .gt("age", (Date) null, IgnoreStrategy.NONE) // 不忽略空值
+                .count();
+        assertEquals(c2, 0);
+    }
+
+    @Test
+    void testCondition_ge() {
+        int ageValue = 40;
+        List<Integer> ages = query.find("user").property("age") //
+                .where() //
+                .ge("age", ageValue) //
+                .list(Integer.class);
+        for (Integer age : ages) {
+            assertTrue(age >= ageValue);
+        }
+
+        long c = query.find("user")//
+                .where() //
+                .ge("age", Integer.MAX_VALUE) //
+                .count();
+        assertEquals(c, 0);
+
+        long c1 = query.find("user") //
+                .where() //
+                .ge("age", (Integer) null) //
+                .count();
+        long total = query.find("user").count();
+        assertEquals(c1, total);
+
+        long c2 = query.find("user") //
+                .where() //
+                .ge("age", (Integer) null, v -> false) // 不忽略空值
+                .count();
+        assertEquals(c2, 0);
+
+        c2 = query.find("user") //
+                .where() //
+                .ge("age", (Integer) null, IgnoreStrategy.NONE) // 不忽略空值
+                .count();
+        assertEquals(c2, 0);
+
+        c2 = query.find("user") //
+                .where() //
+                .ge("age", (Date) null, IgnoreStrategy.NONE) // 不忽略空值
+                .count();
+        assertEquals(c2, 0);
+    }
+
+    @Test
+    void testCondition_lt() {
+        int ageValue = 40;
+        List<Integer> ages = query.find("user").property("age") //
+                .where() //
+                .lt("age", ageValue) //
+                .list(Integer.class);
+        for (Integer age : ages) {
+            assertTrue(age < ageValue);
+        }
+
+        long c = query.find("user")//
+                .where() //
+                .lt("age", 0) //
+                .count();
+        assertEquals(c, 0);
+
+        long c1 = query.find("user") //
+                .where() //
+                .lt("age", (Integer) null) //
+                .count();
+        long total = query.find("user").count();
+        assertEquals(c1, total);
+
+        long c2 = query.find("user") //
+                .where() //
+                .lt("age", (Integer) null, v -> false) // 不忽略空值
+                .count();
+        assertEquals(c2, 0);
+
+        c2 = query.find("user") //
+                .where() //
+                .lt("age", (Integer) null, IgnoreStrategy.NONE) // 不忽略空值
+                .count();
+        assertEquals(c2, 0);
+
+        c2 = query.find("user") //
+                .where() //
+                .lt("age", (Date) null, IgnoreStrategy.NONE) // 不忽略空值
+                .count();
+        assertEquals(c2, 0);
+    }
+
+    @Test
+    void testCondition_le() {
+        int ageValue = 40;
+        List<Integer> ages = query.find("user").property("age") //
+                .where() //
+                .le("age", ageValue) //
+                .list(Integer.class);
+        for (Integer age : ages) {
+            assertTrue(age <= ageValue);
+        }
+
+        long c = query.find("user")//
+                .where() //
+                .le("age", 0) //
+                .count();
+        assertEquals(c, 0);
+
+        long c1 = query.find("user") //
+                .where() //
+                .le("age", (Integer) null) //
+                .count();
+        long total = query.find("user").count();
+        assertEquals(c1, total);
+
+        long c2 = query.find("user") //
+                .where() //
+                .le("age", (Integer) null, v -> false) // 不忽略空值
+                .count();
+        assertEquals(c2, 0);
+
+        c2 = query.find("user") //
+                .where() //
+                .le("age", (Integer) null, IgnoreStrategy.NONE) // 不忽略空值
+                .count();
+        assertEquals(c2, 0);
+
+        c2 = query.find("user") //
+                .where() //
+                .le("age", (Date) null, IgnoreStrategy.NONE) // 不忽略空值
+                .count();
+        assertEquals(c2, 0);
+    }
+
+    @Test(expectedExceptions = BuilderException.class)
+    void testConditionException() {
+
+        QueryConditionGroupExpression condition = query.find(new SimpleAliasRepository("user", "u")).where();
+        condition.eq("id", 1);
+        condition.eq("id", 2).list();
+    }
+
+    @Test(expectedExceptions = BuilderException.class)
+    void testConditionException2() {
+
+        QueryConditionGroupExpression condition = query.find(new SimpleAliasRepository("user", "u")).where();
+        QueryConditionGroupLogicExpression logic = condition.eq("id", 1);
+        logic.and();
+        logic.list();
     }
 
     @Test
     void testCount() {
-        SqlQuery query = new SqlQuery(jdbc, mappingFactory, sqlPageFactory);
+
         Long number = query.find("user").count();
         System.out.println("count:" + number);
         assertTrue(number > 0);
+    }
 
-        Long number2 = query.find(User.class).count();
-        System.out.println("count:" + number2);
-        assertTrue(number2 > 0);
-        assertEquals(number, number2);
-
-        number = query.find("user").where().eq("age", 5).count();
-        assertTrue(number == 2);
-
-        number2 = query.find(User.class).where().eq("age", 5).count();
-        assertTrue(number2 == 2);
-        assertEquals(number, number2);
-
+    @Test
+    void testCount2() {
+        long number = query.find("user").property("id") //
+                .count();
+        System.out.println("count:" + number);
+        assertTrue(number > 0);
     }
 
     @Test
     void testLimit() {
-        SqlQuery query = new SqlQuery(jdbc, metadata, sqlPageFactory);
+
         int pageSize = 3;
         Integer total = 10;
         List<Role> roleList = query.find(new SimpleRepository("role")).where().le("id", total).limit(2, pageSize)
@@ -209,508 +662,98 @@ public class SqlQueryTest extends JdbcTestBase {
         assertEquals(rolePage3.getPageResults().size(), pageSize);
     }
 
-    @SuppressWarnings("unchecked")
-    @Test
-    void testMapping() {
-        SqlQuery query = new SqlQuery(jdbc, mappingFactory, sqlPageFactory);
-
-        query.find(User.class).where().eq("username", "yufei").and().eq("pwd", "123456").and().group().gt("age", 18)
-                .and().lt("age", 60).list();
-
-        query.find(User.class).where().eq("username", "yufei").and().eq("pwd", "123456").and().group().gt("age", 18)
-                .and().property("age").lt(60).list();
-
-        query.find(User.class).property("username", "pwd", "age").where().eq("username", "yufei").and()
-                .eq("pwd", "123456").and().group().gt("age", 18).and().lt("age", 60).list();
-
-        query.find(User.class).property(User::getUsername, User::getPwd, User::getAge).where().eq("username", "yufei")
-                .and().eq("pwd", "123456").and().group().gt("age", 18).and().lt("age", 60).list();
-        /*
-         * query.find(User.class).with(UserInfo.class, UserInfo::getUser)
-         * query.find(UserInfo.class).with(UserInfo::getUser, User.class)
-         * query.find(UserInfo.class).with(UserInfo::getUser)
-         * query.find("user").with("user_info").on("user_id",
-         * "id").with("user_role").on("user_id", "id").with("role",
-         * "user_role").on("id", "role_id")
-         * query.find("user_info").with("user_id", "user")
-         */
-        query.find(User.class).property(User::getUsername, User::getPwd, User::getAge).where().eq("username", "yufei")
-                .and().eq(User::getPwd, "123456").and().group().gt(User::getAge, 18).and().lt(User::getAge, 60).list();
-    }
-
-    @Test
-    void testMapping2() {
-        SqlQuery query = new SqlQuery(jdbc, mappingFactory, sqlPageFactory);
-
-        User user = new User();
-        user.setUsername("yufei");
-        user.setPwd("123456");
-        query.find(User.class).where().eq(user::getUsername).and().eq(user::getPwd).list();
-    }
-
-    @Test
-    void testNestedMapping() {
-        SqlQuery query = new SqlQuery(jdbc, mappingFactory, sqlPageFactory);
-        Integer userId = 1;
-        UserInfo userInfo = query.find(UserInfo.class).where().eq("user.id", userId).single();
-        assertEquals(userInfo.getUser().getId(), userId);
-        System.out.println(userInfo);
-
-        String province = "四川";
-        userInfo = query.find(UserInfo.class).where().eq("division.province", province).single();
-        assertEquals(userInfo.getDivision().getProvince(), province);
-        System.out.println(userInfo);
-    }
-
     @Test
     void testJoin() {
-        SqlQuery query = new SqlQuery(jdbc, mappingFactory, sqlPageFactory);
 
-        query.find("user").property("username", "password", "age").with("user_info").on("user_id").list();
-
-        query.find("user").property("username", "password", "age").with("user_info").on("user_id").fetch("name").list();
-
-        query.find("user").property("username", "password", "age").with("user_info").on("user_id").fetch().list();
-
-        query.find("user").property("username", "password", "age").with("user_info").on("user_id").fetch("name").list();
-
-        query.find("user").property("username", "password", "age").with("user_info").on("user_id").fetch("name").fetch()
+        // query.find("user") 返回 SqlQueryEntity
+        // query.find("user").property("username") 返回 QueryEntityProperties，应该返回SqlQueryEntity
+        query.find("user").property("username", "password", "age") //
+                .join("user_info") //
+                .on("user_id") //
                 .list();
 
-        query.find("user").property("username", "password", "age").with("user_info").on("user_id").fetch("name")
+        query.find("user").property("username", "password", "age").join("user_info").on("user_id").join("user_info")
+                .on("user_id").list();
+
+        // ENHANCE 后续加入省略on方法的形式，通过database metadata 自动获取join的table的id
+        //  query.find("user").property("username", "password", "age").join("user_info").list();
+
+        query.find("user").property("username", "password", "age").join("user_info").on("user_id").fetch("name").list();
+
+        query.find("user").property("username", "password", "age").join("user_info").on("user_id").fetch().list();
+
+        query.find("user").property("username", "password", "age").join("user_info").on("user_id").fetch("name").list();
+
+        query.find("user").property("username", "password", "age").join("user_info").on("user_id").fetch("name").fetch()
+                .list();
+
+        query.find("user").property("username", "password", "age").join("user_info").on("user_id").fetch("name")
                 .fetch("descp").list();
 
-        query.find("user").property("username", "password", "age").with("user_role").on("user_id").with("role")
+        query.find("user").property("username", "password", "age").join("user_role").on("user_id").join("role")
                 .on("id", "user_role", "role_id").fetch().list();
 
-        query.find("user").property("username", "password", "age").with(UserInfo.class).on("user_id").list();
+        query.find("user").property("username", "password", "age").join("user_info").on("user_id").list();
 
-        query.find("user").property("username", "password", "age").with(UserInfo.class).on("user_id").fetch().list();
+        query.find("user").property("username", "password", "age").join("user_info").on("user_id").fetch().list();
 
-        query.find("tree").with("tree").on("parent_id").list();
+        query.find("tree").join("tree").on("parent_id").list();
 
-        query.find("tree").with("tree").on("parent_id").with("tree").on("parent_id").list();
+        query.find("tree").join("tree").on("parent_id").join("tree").on("parent_id").list();
 
-        query.find("user_info").with("user").on("id", "user_id").fetchAlias("password", "pwd").fetch().list();
+        query.find("user_info").join("user").on("id", "user_id").fetchAlias("password", "pwd").fetch().list();
     }
 
     @Test
     void testJoinCondition() {
-        SqlQuery query = new SqlQuery(jdbc, mappingFactory, sqlPageFactory);
 
-        List<Map<String, Object>> list = query.find("user").property("username", "password", "age").with("user_info")
-                .on("user_id").where().eq("user_info", "name", "羽飞").list();
+        List<Map<String, Object>> list = query.find("user").property("username", "password", "age") //
+                .join("user_info").on("user_id") //
+                .where().eq("user_info", "name", "羽飞") //
+                .list();
         assertEquals(list.size(), 1);
 
-        list = query.find("user").property("username", "password", "age").with("user_info").on("user_id").where()
+        list = query.find("user").property("username", "password", "age").join("user_info").on("user_id").where()
                 .eq(1, "name", "羽飞").list();
         assertEquals(list.size(), 1);
 
-        list = query.find("user").property("username", "password", "age").with("user_info").on("user_id").where()
+        list = query.find("user").property("username", "password", "age").join("user_info").on("user_id").where()
                 .property("user_info", "name").eq("羽飞").list();
         assertEquals(list.size(), 1);
 
-        list = query.find("user").property("username", "password", "age").with("user_info").on("user_id").where()
+        list = query.find("user").property("username", "password", "age").join("user_info").on("user_id").where()
                 .property(1, "name").eq("羽飞").list();
         assertEquals(list.size(), 1);
     }
 
-    @Test
-    void testJoin2() {
-        SqlQuery query = new SqlQuery(jdbc, mappingFactory, sqlPageFactory);
+    @Test(expectedExceptions = IllegalArgumentException.class)
+    void testQueryNull() {
+        query.find((Repository) null);
+    }
 
-        UserInfo userInfo = query.find(UserInfo.class).with(UserInfo::getUser).where().eq(UserInfo::getId, 1).single();
-        System.err.println(userInfo);
-        assertNull(userInfo.getUser().getUsername());
-        userInfo = query.find(UserInfo.class).with(UserInfo::getUser).fetch().where().eq(UserInfo::getId, 1).single();
-        assertNotNull(userInfo.getUser().getUsername());
-        System.err.println(userInfo);
+    @Test(expectedExceptions = IllegalArgumentException.class)
+    void testQueryNull2() {
+        query.find((AliasRepository) null);
+    }
 
-        List<UserInfo> list = query.find(UserInfo.class).with(UserInfo::getUser).with(UserRole2::getUser)
-                .with(UserRole2::getRole).list();
-        System.out.println(list.size());
+    @Test(expectedExceptions = IllegalArgumentException.class)
+    void testQueryNull3() {
+        query.find((Table) null);
+    }
 
-        query.find(Tree2.class).with(Tree2::getParent).list();
-
-        query.find(Tree2.class).with(Tree2::getParent).with(Tree2::getParent, 1).list();
+    @Test(expectedExceptions = IllegalArgumentException.class)
+    void testQueryNull4() {
+        query.find((String) null);
     }
 
     @Test(expectedExceptions = SqldbHammerException.class)
-    void testJoinFetchException() {
-        SqlQuery query = new SqlQuery(jdbc, mappingFactory, sqlPageFactory);
-        // 因为User类中没有UserRole类的关系，所以fetch时会找不到关系，不fetch只是使用条件查询问题不大
-        // userInfo.user.userRole 这里没有userRole
-        query.find(UserInfo.class).with(UserInfo::getUser).fetch().with(UserRole2::getUser).fetch()
-                .with(UserRole2::getRole).fetch().list();
-
-        // TODO 可能的条件查询
-        /*
-         query.find(UserInfo.class).with(UserInfo::getUser, (c) -> {
-             c.eq() ..... // 关联user的条件查询
-         }).fetch().with(UserRole2::getUser).fetch()
-                .with(UserRole2::getRole).fetch().list();
-
-
-         */
+    void testQueryClassMappingFactorNull() {
+        SqlQuery query = new SqlQuery(jdbc, metadata, sqlPageFactory);
+        query.find(User.class);
     }
 
-    @Test
-    void testJoinCondition2() {
-        SqlQuery query = new SqlQuery(jdbc, mappingFactory, sqlPageFactory);
-        Integer userInfoId = 1;
-        Integer userId = 1;
-        User user = null;
-
-        user = query.find(User.class).with(UserInfo::getUser).where().eq(1, "id", userInfoId).single();
-        assertEquals(user.getId(), userId);
-
-        user = query.find(User.class).with(UserInfo::getUser).where().eq("user_info", "id", userInfoId).single();
-        assertEquals(user.getId(), userId);
-
-        user = query.find(User.class).with(UserInfo::getUser).where().eq(UserInfo.class, "id", userInfoId).single();
-        assertEquals(user.getId(), userId);
-
-        user = query.find(User.class).with(UserInfo::getUser).where().eq(User::getId, userId).single();
-        assertEquals(user.getId(), userId);
-
-        user = query.find(User.class).with(UserInfo::getUser).where().eq(UserInfo::getId, userInfoId).single();
-        assertEquals(user.getId(), userId);
-
-        user = query.find(User.class).with(UserInfo::getUser).where().property(UserInfo::getId).eq(userInfoId).single();
-        assertEquals(user.getId(), userId);
+    @Test(expectedExceptions = JdbcMappingException.class)
+    void testQueryNotEntityNull() {
+        query.find(String.class);
     }
-
-    @Test
-    void testJoinCondition2_1() {
-        SqlQuery query = new SqlQuery(jdbc, mappingFactory, sqlPageFactory);
-        UserInfo userInfo = new UserInfo();
-
-        User user = new User();
-        user.setPwd("123456");
-        userInfo.setUser(user);
-
-        List<UserInfo> userInfos = query.find(UserInfo.class).with(UserInfo::getUser).where()
-                .eq(userInfo::getUser, User::getPwd).list();
-        System.out.println(userInfos.size());
-        assertTrue(userInfos.size() == 1);
-
-    }
-
-    @Test
-    void testJoinCondition2_2() {
-        SqlQuery query = new SqlQuery(jdbc, mappingFactory, sqlPageFactory);
-        UserInfo userInfo = new UserInfo();
-
-        User user = new User();
-        user.setPwd("123456");
-        user.setUsername("yufei");
-        userInfo.setUser(user);
-        userInfo.setId(1);
-
-        List<UserInfo> userInfos = query.find(UserInfo.class).where().eq(userInfo::getUser, User::getPwd).list();
-        System.out.println(userInfos.size());
-        assertTrue(userInfos.size() == 1);
-
-        userInfos = query.find(UserInfo.class).where().eq(userInfo::getUser, User::getPwd).and().eq(userInfo::getId)
-                .list();
-        System.out.println(userInfos.size());
-        assertTrue(userInfos.size() == 1);
-
-        userInfos = query.find(UserInfo.class).where().eq(userInfo::getUser, User::getPwd).and().eq(userInfo::getId)
-                .and().lt(UserInfo::getUser, User::getAge, 10).list();
-        System.out.println(userInfos.size());
-        assertTrue(userInfos.size() == 1);
-
-        userInfos = query.find(UserInfo.class).where().eq(userInfo::getUser, User::getPwd).and().eq(UserInfo::getId, 2)
-                .list();
-        System.out.println(userInfos.size());
-        assertTrue(userInfos.size() == 0);
-
-        userInfos = query.find(UserInfo.class).where().eq(userInfo::getUser, User::getPwd).and().eq(userInfo::getId)
-                .and().ge(UserInfo::getUser, User::getAge, 10).list();
-        System.out.println(userInfos.size());
-        assertTrue(userInfos.size() == 0);
-
-        userInfos = query.find(UserInfo.class).where().eq(userInfo::getUser, User::getPwd).and()
-                .eq(userInfo::getUser, User::getUsername).list();
-        System.out.println(userInfos.size());
-        assertTrue(userInfos.size() == 1);
-
-        userInfos = query.find(UserInfo.class).where().eq(userInfo::getUser, User::getPwd).and()
-                .eq(userInfo::getUser, User::getUsername).and().eq(userInfo::getId).list();
-        System.out.println(userInfos.size());
-        assertTrue(userInfos.size() == 1);
-
-        userInfos = query.find(UserInfo.class).where().eq(userInfo::getUser, User::getPwd).and()
-                .eq(userInfo::getUser, User::getUsername).and().eq(UserInfo::getId, 2).list();
-        System.out.println(userInfos.size());
-        assertTrue(userInfos.size() == 0);
-
-        user.setUsername("yufei1111");
-        userInfos = query.find(UserInfo.class).where().eq(userInfo::getUser, User::getPwd).and()
-                .eq(userInfo::getUser, User::getUsername).list();
-        System.out.println(userInfos.size());
-        assertTrue(userInfos.size() == 0);
-    }
-
-    @Test
-    void testJoin3() {
-        SqlQuery query = new SqlQuery(jdbc, mappingFactory, sqlPageFactory);
-
-        List<Tree2> list1 = query.find(Tree2.class).list();
-        list1.forEach(v -> {
-            System.err.println(v);
-        });
-
-        List<Tree2> list2 = query.find(Tree2.class).with(Tree2::getParent).list();
-        list2.forEach(v -> {
-            assertNotNull(v.getParent().getId());
-            System.err.println(v);
-        });
-
-        list2 = query.find(Tree2.class).with(Tree2::getParent).with(Tree2::getParent).list();
-        list2.forEach(v -> {
-            assertNotNull(v.getParent().getId());
-            System.err.println(v);
-        });
-
-        List<Tree2> list3 = query.find(Tree2.class).with(Tree2::getParent).fetch().list();
-        list3.forEach(v -> {
-            assertNotNull(v.getParent().getId());
-            assertNotNull(v.getParent().getName());
-            System.err.println(v);
-        });
-
-        list3 = query.find(Tree2.class).with(Tree2::getParent).fetch().with(Tree2::getParent, 1).fetch().list();
-        list3.forEach(v -> {
-            assertNotNull(v.getParent().getId());
-            assertNotNull(v.getParent().getName());
-            System.err.println(v);
-        });
-
-        assertTrue(list1.size() > list2.size());
-
-        // query.find(UserInfo.class).with(UserRole2::getUser).list();
-
-        // query.find(User.class).with(UserRole2::getUser);
-        // query.find(User.class).with(UserRole2::getUser)
-        // .with(UserRole2::getRole);
-        // query.find(User.class).with(UserRole2::getUser).with(UserRole2::getRole).where();
-        // query.find(UserInfo.class).with(UserInfo::getUser).on(propertyName);
-    }
-
-    @Test(expectedExceptions = SqldbHammerException.class)
-    void testJoinExceptions() {
-        SqlQuery query = new SqlQuery(jdbc, mappingFactory, sqlPageFactory);
-        query.find(UserInfo.class).with(UserRole2::getUser).list();
-    }
-
-    @Test
-    void testManyToOne() {
-        SqlQuery query = new SqlQuery(jdbc, mappingFactory, sqlPageFactory);
-        int parent = 1;
-        List<Tree2> list = query.find(Tree2.class).where().eq(Tree2::getParent, parent).list();
-        System.out.println(list);
-        for (Tree2 t : list) {
-            assertTrue(parent == t.getParent().getId());
-        }
-    }
-
-    @Test
-    void testManyToOne2() {
-        SqlQuery query = new SqlQuery(jdbc, mappingFactory, sqlPageFactory);
-        int parent = 1;
-        Tree2 tree2 = new Tree2();
-        tree2.setParent(new Tree2(parent));
-        List<Tree2> list = query.find(Tree2.class).where().eq(tree2::getParent).list();
-        System.out.println(list);
-        for (Tree2 t : list) {
-            assertTrue(1 == t.getParent().getId());
-        }
-    }
-
-    @Test
-    void testNestedProperty() {
-        SqlQuery query = new SqlQuery(jdbc, mappingFactory, sqlPageFactory);
-        UserRole2 userRole2 = new UserRole2();
-        userRole2.setRole(new Role(2));
-        userRole2.setUser(new User(1));
-        query.find(UserRole2.class).where().eq(userRole2::getRole).and().ne(userRole2::getUser).list();
-
-        UserInfo userInfo = new UserInfo();
-        DistrictDivision division = new DistrictDivision();
-        division.setCity("成都");
-        division.setProvince("四川");
-        division.setDistrict("高新");
-        userInfo.setDivision(division);
-
-        query.find(UserInfo.class).where().eq(userInfo::getDivision).list();
-        query.find(UserInfo.class).where().ne(userInfo::getDivision).list();
-
-        userInfo.getDivision().setDistrict(null);
-        query.find(UserInfo.class).where().eq(userInfo::getDivision).or().eq(userInfo::getDivision).list();
-    }
-
-    @Test
-    void testNestedProperty2() {
-        SqlQuery query = new SqlQuery(jdbc, mappingFactory, sqlPageFactory);
-        UserRole2 userRole2 = new UserRole2();
-        userRole2.setRole(new Role(2));
-        userRole2.setUser(new User(1));
-        query.find(UserRole2.class).where().eq(userRole2::getRole).and().ne(userRole2::getUser).list();
-
-        UserInfo userInfo = new UserInfo();
-        DistrictDivision division = new DistrictDivision();
-        division.setCity("成都");
-        division.setProvince("四川");
-        division.setDistrict("高新");
-        userInfo.setDivision(division);
-
-        query.find(UserInfo.class).where().eq(UserInfo::getDivision, division).list();
-        query.find(UserInfo.class).where().ne(UserInfo::getDivision, division).list();
-
-        userInfo.getDivision().setDistrict(null);
-        query.find(UserInfo.class).where().eq(UserInfo::getDivision, division).or().eq(UserInfo::getDivision, division)
-                .list();
-    }
-
-    @Test
-    void testInn() {
-        SqlQuery query = new SqlQuery(jdbc, mappingFactory, sqlPageFactory);
-
-        long nullNum = 1;
-
-        long total = query.find(Tree.class).count();
-
-        long count = query.find(Tree.class).where().isn("parent_id").count();
-        assertEquals(count, nullNum);
-
-        count = query.find(Tree.class).where().isn("parent_id", true).count();
-        assertEquals(count, nullNum);
-
-        count = query.find(Tree.class).where().isn("parent_id", false).count();
-        assertTrue(nullNum < count);
-
-        count = query.find(Tree.class).where().isn("parent_id", null).count();
-        assertTrue(count == total);
-
-        count = query.find(Tree.class).where().isn(Tree::getParentId).count();
-        assertEquals(count, nullNum);
-
-        count = query.find(Tree.class).where().isn(Tree::getParentId, true).count();
-        assertEquals(count, nullNum);
-
-        count = query.find(Tree.class).where().isn(Tree::getParentId, false).count();
-        assertTrue(nullNum < count);
-
-        count = query.find(Tree.class).where().isn(Tree::getParentId, (Boolean) null).count();
-        assertTrue(count == total);
-
-        count = query.find(Tree.class).where().inn("parent_id").count();
-        assertTrue(nullNum < count);
-
-        count = query.find(Tree.class).where().inn("parent_id", true).count();
-        assertTrue(nullNum < count);
-
-        count = query.find(Tree.class).where().inn("parent_id", false).count();
-        assertEquals(count, nullNum);
-
-        count = query.find(Tree.class).where().inn("parent_id", null).count();
-        assertTrue(count == total);
-
-        count = query.find(Tree.class).where().inn(Tree::getParentId).count();
-        assertTrue(nullNum < count);
-
-        count = query.find(Tree.class).where().inn(Tree::getParentId, true).count();
-        assertTrue(nullNum < count);
-
-        count = query.find(Tree.class).where().inn(Tree::getParentId, false).count();
-        assertEquals(count, nullNum);
-
-        count = query.find(Tree.class).where().inn(Tree::getParentId, (Boolean) null).count();
-        assertTrue(count == total);
-    }
-
-    @Test
-    void testInn2() {
-        SqlQuery query = new SqlQuery(jdbc, mappingFactory, sqlPageFactory);
-
-        long nullNum = 1;
-
-        long count = query.find(Tree2.class).with(Tree2::getParent).where().isn(1, "parent_id").list().size();
-        assertTrue(nullNum < count);
-
-    }
-
-    @Test
-    void testComplexQuery() {
-        SqlQuery query = new SqlQuery(jdbc, mappingFactory, sqlPageFactory);
-
-        //        query.find(User.class).where().gt(User::getId, 1).and().group().group();
-
-        //        query.find(User.class).where().gt(User::getId, 1).and(c -> {
-        //            c.group(g1 -> {
-        //                g1.eq(User::getId, 2).and().eq(User::getAge, 5);
-        //            }).or().group(g2 -> {
-        //                g2.eq(User::getId, 3).and().eq(User::getAge, 15);
-        //            });
-        //        }).list();
-
-//        query.find(User.class).where().gt(User::getId, 1).and().group()
-//                .group(g1 -> g1.eq(User::getId, 2).and().eq(User::getAge, 5)).or()
-//                .group(g2 -> g2.eq(User::getId, 3).and().eq(User::getAge, 15)).endGroup().list();
-
-        long count = -1;
-
-        // 基于group() endGroup() 方法
-        count = query.find(User.class).where().gt(User::getId, 1).and()
-            .group().
-                group().eq(User::getId, 2).and().eq(User::getAge, 5).endGroup()
-                .or()
-                .group().eq(User::getId, 3).and().eq(User::getAge, 15).endGroup()
-            .endGroup()
-            .count();
-        assertEquals(count, 2);
-
-        //  基于group(g -> g.xxx)
-        count = query.find(User.class).where().gt(User::getId, 1)
-                .and(g ->
-                        g.group(g1 -> g1.eq(User::getId, 2).and().eq(User::getAge, 5))
-                        .or()
-                        .group(g2 -> g2.eq(User::getId, 3).and().eq(User::getAge, 15))
-                )
-        .count();
-        assertEquals(count, 2);
-
-        //  混合使用
-        count = query.find(User.class).where().gt(User::getId, 1)
-                .and(g ->
-                        g.group().eq(User::getId, 2).and().eq(User::getAge, 5).endGroup()
-                        .or()
-                        .group().eq(User::getId, 3).and().eq(User::getAge, 15).endGroup()
-                )
-        .count();
-        assertEquals(count, 2);
-
-        // 混合使用，这个使用方法不建议，太难看懂了
-        count = query.find(User.class).where().gt(User::getId, 1)
-                .and(g -> g.group(
-                                g1 -> g1.eq(User::getId, 2).and().eq(User::getAge, 5).endGroup()
-                                .or()
-                                .group(g2 -> g2.eq(User::getId, 3).and().eq(User::getAge, 15))
-                                )
-                )
-        .count();
-        assertEquals(count, 2);
-    }
-
-    // @Test
-    // void test1111() {
-    // ClassMapping<?> classMapping =
-    // mappingFactory.getClassMapping(Tree2.class);
-    // System.err.println(ClassMappingUtils.getSelectColumnsSql(classMapping,
-    // "t0", Dialects.MYSQL, mappingFactory,
-    // new HashChainMap<String, String>().putChain("parent", "t1")));
-    //
-    // }
 }

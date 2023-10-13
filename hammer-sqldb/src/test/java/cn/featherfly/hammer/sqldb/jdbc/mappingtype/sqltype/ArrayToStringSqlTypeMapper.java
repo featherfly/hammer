@@ -10,6 +10,7 @@
  */
 package cn.featherfly.hammer.sqldb.jdbc.mappingtype.sqltype;
 
+import java.sql.CallableStatement;
 import java.sql.JDBCType;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -20,8 +21,8 @@ import cn.featherfly.common.db.JdbcException;
 import cn.featherfly.common.db.JdbcUtils;
 import cn.featherfly.common.db.mapping.AbstractGenericJavaSqlTypeMapper;
 import cn.featherfly.common.lang.ArrayUtils;
-import cn.featherfly.common.lang.GenericType;
 import cn.featherfly.common.lang.Lang;
+import cn.featherfly.common.lang.reflect.Type;
 
 /**
  * ListToStringSqlTypeMapper.
@@ -36,7 +37,7 @@ public class ArrayToStringSqlTypeMapper extends AbstractGenericJavaSqlTypeMapper
     }
 
     @Override
-    public boolean support(GenericType<Long[]> type) {
+    public boolean support(Type<Long[]> type) {
         return type.getType().equals(Long[].class);
     }
 
@@ -54,6 +55,32 @@ public class ArrayToStringSqlTypeMapper extends AbstractGenericJavaSqlTypeMapper
                 return ArrayUtils.EMPTY_LONG_OBJECT_ARRAY;
             } else {
                 return ArrayUtils.toNumbers(Long.class, rs.getString(columnIndex).split(","));
+            }
+        } catch (SQLException e) {
+            throw new JdbcException(e);
+        }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void set(CallableStatement call, String parameterName, Long[] value) {
+        System.out.println(ArrayUtils.toString(value, ','));
+        JdbcUtils.setParameter(call, parameterName, ArrayUtils.toString(value, ','));
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public Long[] get(CallableStatement call, int paramIndex) {
+        try {
+            String value = call.getString(paramIndex);
+            if (Lang.isEmpty(value)) {
+                return ArrayUtils.EMPTY_LONG_OBJECT_ARRAY;
+            } else {
+                return ArrayUtils.toNumbers(Long.class, call.getString(paramIndex).split(","));
             }
         } catch (SQLException e) {
             throw new JdbcException(e);

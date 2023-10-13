@@ -1,12 +1,15 @@
 
 package cn.featherfly.hammer.expression.condition.property;
 
-import cn.featherfly.common.repository.operate.QueryOperator.QueryPolicy;
+import java.util.function.Predicate;
+
+import cn.featherfly.common.operator.ComparisonOperator.MatchStrategy;
+import cn.featherfly.common.repository.IgnoreStrategy;
 import cn.featherfly.hammer.expression.condition.ConditionExpression;
 import cn.featherfly.hammer.expression.condition.LogicExpression;
 
 /**
- * EndWithExpression .
+ * property end with expression .
  *
  * @author zhongj
  * @param <C> the generic type
@@ -22,15 +25,57 @@ public interface PropertyEndWithExpression<C extends ConditionExpression, L exte
      * @return LogicExpression
      */
     default L ew(String value) {
-        return ew(value, QueryPolicy.AUTO);
+        return ew(value, MatchStrategy.AUTO);
     }
 
     /**
      * end with value.以value结尾.
      *
-     * @param value       the value
-     * @param queryPolicy the query policy
+     * @param value          the value
+     * @param ignoreStrategy the ignore strategy
+     * @return LogicExpression
+     */
+    default L ew(String value, IgnoreStrategy ignoreStrategy) {
+        return ew(value, MatchStrategy.AUTO, ignoreStrategy);
+    }
+
+    /**
+     * end with value.以value结尾.
+     *
+     * @param value          the value
+     * @param ignoreStrategy the ignore strategy
+     * @return LogicExpression
+     */
+    default L ew(String value, Predicate<String> ignoreStrategy) {
+        return ew(value, MatchStrategy.AUTO, ignoreStrategy);
+    }
+
+    /**
+     * end with value.以value结尾.
+     *
+     * @param value         the value
+     * @param matchStrategy the match strategy
      * @return the l
      */
-    L ew(String value, QueryPolicy queryPolicy);
+    L ew(String value, MatchStrategy matchStrategy);
+
+    /**
+     * end with value.以value结尾.
+     *
+     * @param value          the value
+     * @param matchStrategy  the match strategy
+     * @param ignoreStrategy the ignore strategy
+     * @return LogicExpression
+     */
+    L ew(String value, MatchStrategy matchStrategy, IgnoreStrategy ignoreStrategy);
+
+    /**
+     * end with value.以value结尾.
+     *
+     * @param value          the value
+     * @param matchStrategy  the match strategy
+     * @param ignoreStrategy the ignore strategy
+     * @return LogicExpression
+     */
+    L ew(String value, MatchStrategy matchStrategy, Predicate<String> ignoreStrategy);
 }

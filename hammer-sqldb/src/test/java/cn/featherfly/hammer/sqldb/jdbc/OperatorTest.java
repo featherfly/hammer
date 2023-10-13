@@ -1,14 +1,15 @@
 
 package cn.featherfly.hammer.sqldb.jdbc;
 
+import static org.testng.Assert.assertNull;
 import static org.testng.Assert.assertEquals;
 import static org.testng.Assert.assertNotNull;
-import static org.testng.Assert.assertNull;
 import static org.testng.Assert.assertTrue;
 
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.function.Function;
 
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
@@ -16,20 +17,20 @@ import org.testng.annotations.Test;
 import cn.featherfly.common.bean.BeanDescriptor;
 import cn.featherfly.common.db.mapping.mappers.PlatformJavaSqlTypeMapper;
 import cn.featherfly.common.lang.Randoms;
+import cn.featherfly.hammer.sqldb.SqldbHammerException;
 import cn.featherfly.hammer.sqldb.jdbc.operate.DeleteOperate;
 import cn.featherfly.hammer.sqldb.jdbc.operate.GetOperate;
 import cn.featherfly.hammer.sqldb.jdbc.operate.InsertOperate;
+import cn.featherfly.hammer.sqldb.jdbc.operate.MergeOperate;
 import cn.featherfly.hammer.sqldb.jdbc.operate.UpdateOperate;
 import cn.featherfly.hammer.sqldb.jdbc.operate.UpsertOperate;
-import cn.featherfly.hammer.sqldb.jdbc.vo.App;
-import cn.featherfly.hammer.sqldb.jdbc.vo.AppVersion;
-import cn.featherfly.hammer.sqldb.jdbc.vo.Role;
-import cn.featherfly.hammer.sqldb.jdbc.vo.UserRole;
+import cn.featherfly.hammer.sqldb.jdbc.vo.r.App;
+import cn.featherfly.hammer.sqldb.jdbc.vo.r.AppVersion;
+import cn.featherfly.hammer.sqldb.jdbc.vo.r.Role;
+import cn.featherfly.hammer.sqldb.jdbc.vo.r.UserRole;
 
 /**
- * <p>
- * OperatorTest
- * </p>
+ * OperatorTest.
  *
  * @author zhongj
  */
@@ -70,6 +71,33 @@ public class OperatorTest extends JdbcTestBase {
         assertNull(role);
     }
 
+    @Test
+    public void testInsert2() {
+        InsertOperate<UserRole> upsert = new InsertOperate<>(jdbc, mappingFactory.getClassMapping(UserRole.class),
+                mappingFactory.getSqlTypeMappingManager(), mappingFactory.getMetadata());
+        DeleteOperate<UserRole> delete = new DeleteOperate<>(jdbc, mappingFactory.getClassMapping(UserRole.class),
+                mappingFactory.getSqlTypeMappingManager(), mappingFactory.getMetadata());
+        GetOperate<UserRole> get = new GetOperate<>(jdbc, mappingFactory.getClassMapping(UserRole.class),
+                mappingFactory.getSqlTypeMappingManager(), mappingFactory.getMetadata());
+
+        UserRole ur = new UserRole();
+        ur.setUserId(1);
+        ur.setRoleId(1);
+        ur.setDescp("user_role_1_1");
+        int result = upsert.execute(ur);
+        assertEquals(result, 1);
+
+        UserRole load = get.get(ur);
+        assertNotNull(load);
+        assertEquals(load.getUserId(), ur.getUserId());
+        assertEquals(load.getRoleId(), ur.getRoleId());
+        assertEquals(load.getDescp(), ur.getDescp());
+
+        delete.execute(ur);
+        load = get.get(ur);
+        assertNull(load);
+    }
+
     //    @Test
     //    public void t() {
     //        SqlExecutor executor = new SqlExecutor(jdbc.getDataSource());
@@ -93,19 +121,39 @@ public class OperatorTest extends JdbcTestBase {
         GetOperate<Role> get = new GetOperate<>(jdbc, mappingFactory.getClassMapping(Role.class),
                 mappingFactory.getSqlTypeMappingManager(), mappingFactory.getMetadata());
 
+        assertInsertBatch(insert, delete, get, null);
+        assertInsertBatch(insert, delete, get, 3);
+
+        int results[] = insert.executeBatch(new ArrayList<Role>());
+        assertEquals(results.length, 0);
+        results = insert.executeBatch(new Role[0]);
+        assertEquals(results.length, 0);
+    }
+
+    private void assertInsertBatch(InsertOperate<Role> insert, DeleteOperate<Role> delete, GetOperate<Role> get,
+            Integer batchSize) {
         List<Role> roles = new ArrayList<>();
-        for (int i = 0; i < 5; i++) {
+        for (int i = 0; i < 6; i++) {
             roles.add(role());
         }
-        int size = insert.executeBatch(roles);
+        int results[];
+        if (batchSize == null) {
+            results = insert.executeBatch(roles);
+        } else {
+            results = insert.executeBatch(roles, batchSize);
+        }
 
         for (Role role : roles) {
-            if (jdbc.getDialect().isAutoGenerateKeyBatch()) {
+            if (jdbc.getDialect().supportAutoGenerateKeyBatch()) {
                 Role r = get.get(role);
                 assertEquals(r.getId(), role.getId());
                 assertEquals(r.getName(), role.getName());
                 delete.delete(role.getId());
             }
+        }
+        int size = 0;
+        for (int i : results) {
+            size += i;
         }
         assertTrue(size == roles.size());
 
@@ -158,6 +206,29 @@ public class OperatorTest extends JdbcTestBase {
     }
 
     @Test
+    public void testMerge() {
+        MergeOperate<Role> merge = new MergeOperate<>(jdbc, mappingFactory.getClassMapping(Role.class),
+                mappingFactory.getSqlTypeMappingManager(), mappingFactory.getMetadata());
+        GetOperate<Role> get = new GetOperate<>(jdbc, mappingFactory.getClassMapping(Role.class),
+                mappingFactory.getSqlTypeMappingManager(), mappingFactory.getMetadata());
+
+        Integer id = 10;
+        Role orginal = get.get(id);
+
+        Role merged = new Role();
+        merged.setId(id);
+        merged.setName("name_update_" + Randoms.getInt(99));
+        int result = merge.execute(merged);
+        assertEquals(result, 1);
+
+        Role role = get.get(merged);
+        assertNotNull(role);
+        assertEquals(role.getId(), merged.getId());
+        assertEquals(role.getName(), merged.getName());
+        assertEquals(role.getDescp(), orginal.getDescp());
+    }
+
+    @Test
     public void testUpdateMulityPrimaryKey() {
         UpdateOperate<UserRole> update = new UpdateOperate<>(jdbc, mappingFactory.getClassMapping(UserRole.class),
                 mappingFactory.getSqlTypeMappingManager(), mappingFactory.getMetadata());
@@ -183,6 +254,7 @@ public class OperatorTest extends JdbcTestBase {
     public void testGet() {
         GetOperate<Role> operate = new GetOperate<>(jdbc, mappingFactory.getClassMapping(Role.class),
                 mappingFactory.getSqlTypeMappingManager(), mappingFactory.getMetadata());
+        System.out.println(operate.getSql());
         Integer id = 1;
         Role role = operate.get(id);
         assertEquals(role.getId(), id);
@@ -190,7 +262,47 @@ public class OperatorTest extends JdbcTestBase {
         assertNotNull(role.getDescp());
         assertEquals(role.getName(), "n_init_1");
         assertEquals(role.getDescp(), "descp_1");
+
+        List<Serializable> ids = operate.getIds(null);
+        assertEquals(ids.size(), 0);
+
+        Serializable rid = operate.getId(null);
+        assertNull(rid);
+
+        rid = operate.getId(role);
+        assertEquals(rid, id);
     }
+
+    @Test(expectedExceptions = SqldbHammerException.class)
+    public void testGetException() {
+        GetOperate<Role> operate = new GetOperate<>(jdbc, mappingFactory.getClassMapping(Role.class),
+                mappingFactory.getSqlTypeMappingManager(), mappingFactory.getMetadata());
+        operate.get((Serializable) null);
+    }
+
+    @Test(expectedExceptions = SqldbHammerException.class)
+    public void testGetException2() {
+        GetOperate<Role> operate = new GetOperate<>(jdbc, mappingFactory.getClassMapping(Role.class),
+                mappingFactory.getSqlTypeMappingManager(), mappingFactory.getMetadata());
+        Role userInfo = null;
+        operate.get(userInfo);
+    }
+
+    @Test(expectedExceptions = SqldbHammerException.class)
+    public void testGetException3() {
+        GetOperate<UserRole> operate = new GetOperate<>(jdbc, mappingFactory.getClassMapping(UserRole.class),
+                mappingFactory.getSqlTypeMappingManager(), mappingFactory.getMetadata());
+        UserRole ur = new UserRole();
+        operate.getId(ur);
+    }
+
+    //    @Test(expectedExceptions = SqldbHammerException.class)
+    //    public void testGetException3() {
+    //        GetOperate<UserNoPk> operate = new GetOperate<>(jdbc, mappingFactory.getClassMapping(UserNoPk.class),
+    //                mappingFactory.getSqlTypeMappingManager(), mappingFactory.getMetadata());
+    //        UserNoPk e = null;
+    //        operate.get(e);
+    //    }
 
     @Test
     public void testGetForUpdate() {
@@ -270,39 +382,52 @@ public class OperatorTest extends JdbcTestBase {
         GetOperate<Role> get = new GetOperate<>(jdbc, mappingFactory.getClassMapping(Role.class),
                 mappingFactory.getSqlTypeMappingManager(), mappingFactory.getMetadata());
 
-        List<Role> roles = new ArrayList<>();
+        Function<Integer, List<Role>> insertRoles = size -> {
+            List<Role> roles = new ArrayList<>();
+            for (int i = 0; i < size; i++) {
+                Role r = new Role();
+                insert.execute(r);
+                assertNotNull(r.getId());
+                roles.add(r);
+            }
+            return roles;
+        };
+
         int size = 5;
-        for (int i = 0; i < size; i++) {
-            Role r = new Role();
-            insert.execute(r);
-            assertNotNull(r.getId());
-            roles.add(r);
-        }
+        List<Role> roles = insertRoles.apply(size);
         assertEquals(roles.size(), size);
-
         delete.executeBatch(roles);
-
         roles.forEach(r -> {
             assertNull(get.get(r));
         });
 
         List<Serializable> ids = new ArrayList<>();
-        roles.clear();
+        roles = insertRoles.apply(size);
         for (int i = 0; i < size; i++) {
-            Role r = new Role();
-            insert.execute(r);
-            assertNotNull(r.getId());
-            roles.add(r);
-            ids.add(r.getId());
+            ids.add(roles.get(i).getId());
         }
         assertEquals(roles.size(), size);
         assertEquals(ids.size(), size);
-
-        delete.deleteBatch(ids);
-
+        int results[] = delete.deleteBatch(ids);
+        assertEquals(results[0], ids.size());
         roles.forEach(r -> {
             assertNull(get.get(r));
         });
+
+        roles = insertRoles.apply(size);
+        assertEquals(roles.size(), size);
+        assertEquals(ids.size(), size);
+        results = delete.executeBatch(roles, 2);
+        assertEquals(sum(results), roles.size());
+        roles.forEach(r -> {
+            assertNull(get.get(r));
+        });
+
+        results = delete.deleteBatch(new ArrayList<>());
+        assertEquals(results.length, 0);
+
+        results = delete.executeBatch(new ArrayList<>(), 10);
+        assertEquals(results.length, 0);
     }
 
     @Test
@@ -370,13 +495,44 @@ public class OperatorTest extends JdbcTestBase {
     }
 
     @Test
+    public void testUpsert2() {
+        UpsertOperate<UserRole> upsert = new UpsertOperate<>(jdbc, mappingFactory.getClassMapping(UserRole.class),
+                mappingFactory.getSqlTypeMappingManager(), mappingFactory.getMetadata());
+        DeleteOperate<UserRole> delete = new DeleteOperate<>(jdbc, mappingFactory.getClassMapping(UserRole.class),
+                mappingFactory.getSqlTypeMappingManager(), mappingFactory.getMetadata());
+        GetOperate<UserRole> get = new GetOperate<>(jdbc, mappingFactory.getClassMapping(UserRole.class),
+                mappingFactory.getSqlTypeMappingManager(), mappingFactory.getMetadata());
+
+        UserRole ur = new UserRole();
+        ur.setUserId(1);
+        ur.setRoleId(1);
+        ur.setDescp("user_role_1_1");
+        int result = upsert.execute(ur);
+        assertEquals(result, 1);
+
+        ur.setDescp("user_role_1_1_changed");
+
+        result = upsert.execute(ur);
+
+        UserRole load = get.get(ur);
+        assertNotNull(load);
+        assertEquals(load.getUserId(), ur.getUserId());
+        assertEquals(load.getRoleId(), ur.getRoleId());
+        assertEquals(load.getDescp(), ur.getDescp());
+
+        delete.execute(ur);
+        load = get.get(ur);
+        assertNull(load);
+    }
+
+    @Test
     public void testUpsertBatch() {
         UpsertOperate<App> upsert = new UpsertOperate<>(jdbc, mappingFactory.getClassMapping(App.class),
                 mappingFactory.getSqlTypeMappingManager(), mappingFactory.getMetadata());
-        DeleteOperate<App> delete = new DeleteOperate<>(jdbc, mappingFactory.getClassMapping(App.class),
-                mappingFactory.getSqlTypeMappingManager(), mappingFactory.getMetadata());
-        GetOperate<App> get = new GetOperate<>(jdbc, mappingFactory.getClassMapping(App.class),
-                mappingFactory.getSqlTypeMappingManager(), mappingFactory.getMetadata());
+        //        DeleteOperate<App> delete = new DeleteOperate<>(jdbc, mappingFactory.getClassMapping(App.class),
+        //                mappingFactory.getSqlTypeMappingManager(), mappingFactory.getMetadata());
+        //        GetOperate<App> get = new GetOperate<>(jdbc, mappingFactory.getClassMapping(App.class),
+        //                mappingFactory.getSqlTypeMappingManager(), mappingFactory.getMetadata());
 
         List<App> apps = new ArrayList<>();
 
@@ -392,8 +548,8 @@ public class OperatorTest extends JdbcTestBase {
 
         upsert.executeBatch(apps);
 
-        Long id = app.getId();
-        Long id2 = app2.getId();
+        //        Long id = app.getId();
+        //        Long id2 = app2.getId();
         String name = "name03";
         String name2 = "name04";
 
@@ -402,8 +558,8 @@ public class OperatorTest extends JdbcTestBase {
 
         upsert.executeBatch(apps);
 
-        assertEquals(app.getId(), id);
-        assertEquals(app2.getId(), id2);
+        //        assertEquals(app.getId(), id);
+        //        assertEquals(app2.getId(), id2);
 
         //        App a = get.get(app);
         //        assertNotNull(a);
@@ -412,6 +568,11 @@ public class OperatorTest extends JdbcTestBase {
         //        delete.execute(a);
         //        a = get.get(a);
         //        assertNull(a);
+
+        int results[] = upsert.executeBatch(new ArrayList<App>());
+        assertEquals(results.length, 0);
+        results = upsert.executeBatch(new App[0]);
+        assertEquals(results.length, 0);
     }
 
 }

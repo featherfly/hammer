@@ -5,7 +5,7 @@ import java.util.Date;
 
 import cn.featherfly.hammer.dsl.query.QueryConditionGroupExpression;
 import cn.featherfly.hammer.dsl.query.QueryConditionGroupLogicExpression;
-import cn.featherfly.hammer.expression.condition.property.DateExpression;
+import cn.featherfly.hammer.expression.condition.property.DatePropertyExpression;
 
 /**
  * <p>
@@ -17,10 +17,10 @@ import cn.featherfly.hammer.expression.condition.property.DateExpression;
  * @param <E> the element type
  * @param <Q> the generic type
  */
-public class StaticTypeDateExpression<E, Q extends StaticTypeQueryConditionGroupExpression<E, Q>> {
+public class StaticTypeDateExpression<E, D extends Date, Q extends StaticTypeQueryConditionGroupExpression<E, Q>> {
 
     /** The expression. */
-    private DateExpression<QueryConditionGroupExpression, QueryConditionGroupLogicExpression> expression;
+    private DatePropertyExpression<D, QueryConditionGroupExpression, QueryConditionGroupLogicExpression> expression;
 
     /** The type expression. */
     private Q typeExpression;
@@ -32,7 +32,7 @@ public class StaticTypeDateExpression<E, Q extends StaticTypeQueryConditionGroup
      * @param typeExpression the type expression
      */
     public StaticTypeDateExpression(
-            DateExpression<QueryConditionGroupExpression, QueryConditionGroupLogicExpression> expression,
+            DatePropertyExpression<D, QueryConditionGroupExpression, QueryConditionGroupLogicExpression> expression,
             Q typeExpression) {
         super();
         this.expression = expression;
@@ -45,7 +45,7 @@ public class StaticTypeDateExpression<E, Q extends StaticTypeQueryConditionGroup
      * @param value the value
      * @return the q
      */
-    public Q eq(Date value) {
+    public Q eq(D value) {
         expression.eq(value);
         return typeExpression;
     }
@@ -56,7 +56,7 @@ public class StaticTypeDateExpression<E, Q extends StaticTypeQueryConditionGroup
      * @param value the value
      * @return the q
      */
-    public Q ne(Date value) {
+    public Q ne(D value) {
         expression.ne(value);
         return typeExpression;
     }
@@ -67,7 +67,7 @@ public class StaticTypeDateExpression<E, Q extends StaticTypeQueryConditionGroup
      * @param value the value
      * @return the q
      */
-    public Q in(Date value) {
+    public Q in(D value) {
         expression.in(value);
         return typeExpression;
     }
@@ -78,8 +78,8 @@ public class StaticTypeDateExpression<E, Q extends StaticTypeQueryConditionGroup
      * @param value the value
      * @return the q
      */
-    public Q nin(Date value) {
-        expression.nin(value);
+    public Q ni(D value) {
+        expression.ni(value);
         return typeExpression;
     }
 
@@ -89,7 +89,7 @@ public class StaticTypeDateExpression<E, Q extends StaticTypeQueryConditionGroup
      * @param value the value
      * @return the q
      */
-    public Q le(Date value) {
+    public Q le(D value) {
         expression.le(value);
         return typeExpression;
     }
@@ -100,7 +100,7 @@ public class StaticTypeDateExpression<E, Q extends StaticTypeQueryConditionGroup
      * @param value the value
      * @return the q
      */
-    public Q lt(Date value) {
+    public Q lt(D value) {
         expression.lt(value);
         return typeExpression;
     }
@@ -111,7 +111,7 @@ public class StaticTypeDateExpression<E, Q extends StaticTypeQueryConditionGroup
      * @param value the value
      * @return the q
      */
-    public Q ge(Date value) {
+    public Q ge(D value) {
         expression.ge(value);
         return typeExpression;
     }
@@ -122,7 +122,7 @@ public class StaticTypeDateExpression<E, Q extends StaticTypeQueryConditionGroup
      * @param value the value
      * @return the q
      */
-    public Q gt(Date value) {
+    public Q gt(D value) {
         expression.gt(value);
         return typeExpression;
     }

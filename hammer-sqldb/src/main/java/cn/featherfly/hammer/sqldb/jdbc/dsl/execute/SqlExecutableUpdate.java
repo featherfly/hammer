@@ -1,47 +1,32 @@
 
 package cn.featherfly.hammer.sqldb.jdbc.dsl.execute;
 
-import java.lang.invoke.SerializedLambda;
+import java.util.function.BooleanSupplier;
 import java.util.function.Consumer;
 import java.util.function.Predicate;
 
-import cn.featherfly.common.bean.BeanDescriptor;
-import cn.featherfly.common.bean.BeanProperty;
-import cn.featherfly.common.bean.BeanPropertyValue;
-import cn.featherfly.common.db.builder.dml.basic.SqlUpdateSetBasicBuilder;
-import cn.featherfly.common.db.builder.model.UpdateColumnElement.SetType;
-import cn.featherfly.common.db.mapping.ClassMappingUtils;
+import cn.featherfly.common.function.serializable.SerializableFunction;
+import cn.featherfly.common.function.serializable.SerializableSupplier;
 import cn.featherfly.common.lang.LambdaUtils;
-import cn.featherfly.common.lang.LambdaUtils.SerializableSupplierLambdaInfo;
-import cn.featherfly.common.lang.function.SerializableFunction;
-import cn.featherfly.common.lang.function.SerializableSupplier;
-import cn.featherfly.common.repository.IgnorePolicy;
-import cn.featherfly.common.repository.mapping.ClassMapping;
-import cn.featherfly.hammer.dsl.execute.ExecutableConditionGroupExpression;
+import cn.featherfly.common.repository.AliasRepository;
+import cn.featherfly.common.repository.IgnoreStrategy;
+import cn.featherfly.common.repository.Repository;
+import cn.featherfly.hammer.dsl.execute.ExecutableConditionGroup;
 import cn.featherfly.hammer.dsl.execute.ExecutableUpdate;
-import cn.featherfly.hammer.dsl.execute.SimpleUpdateNumberValue;
-import cn.featherfly.hammer.dsl.execute.SimpleUpdateValue;
 import cn.featherfly.hammer.dsl.execute.UpdateNumberValue;
+import cn.featherfly.hammer.dsl.execute.UpdateNumberValueImpl;
 import cn.featherfly.hammer.dsl.execute.UpdateValue;
-import cn.featherfly.hammer.expression.Repository;
+import cn.featherfly.hammer.dsl.execute.UpdateValueImpl;
 import cn.featherfly.hammer.expression.condition.ConditionGroupConfig;
 import cn.featherfly.hammer.sqldb.jdbc.Jdbc;
 
 /**
- * <p>
- * SqlExecutableUpdate
- * </p>
- * .
+ * SqlExecutableUpdate .
  *
  * @author zhongj
  */
-public class SqlExecutableUpdate implements SqlUpdate, ExecutableUpdate {
-
-    private Jdbc jdbc;
-
-    private SqlUpdateSetBasicBuilder builder;
-
-    private ClassMapping<?> classMapping;
+public class SqlExecutableUpdate extends AbstractSqlExecutableUpdate<SqlExecutableUpdate>
+        implements SqlUpdate, ExecutableUpdate {
 
     /**
      * Instantiates a new sql executable update.
@@ -50,7 +35,30 @@ public class SqlExecutableUpdate implements SqlUpdate, ExecutableUpdate {
      * @param jdbc      jdbc
      */
     public SqlExecutableUpdate(String tableName, Jdbc jdbc) {
-        this(tableName, jdbc, IgnorePolicy.NONE);
+        this(tableName, jdbc, IgnoreStrategy.NONE);
+    }
+
+    /**
+     * Instantiates a new sql executable update.
+     *
+     * @param tableName      tableName
+     * @param jdbc           jdbc
+     * @param ignoreStrategy the ignore strategy
+     */
+    public SqlExecutableUpdate(String tableName, Jdbc jdbc, Predicate<?> ignoreStrategy) {
+        super(tableName, jdbc, ignoreStrategy);
+    }
+
+    /**
+     * Instantiates a new sql executable update.
+     *
+     * @param tableName      tableName
+     * @param tableAlias     the table alias
+     * @param jdbc           jdbc
+     * @param ignoreStrategy the ignore strategy
+     */
+    public SqlExecutableUpdate(String tableName, String tableAlias, Jdbc jdbc, Predicate<?> ignoreStrategy) {
+        super(tableName, tableAlias, jdbc, ignoreStrategy);
     }
 
     /**
@@ -60,63 +68,39 @@ public class SqlExecutableUpdate implements SqlUpdate, ExecutableUpdate {
      * @param jdbc       the jdbc
      */
     public SqlExecutableUpdate(Repository repository, Jdbc jdbc) {
-        this(repository.name(), jdbc);
+        this(repository, jdbc, IgnoreStrategy.NONE);
     }
 
     /**
      * Instantiates a new sql executable update.
      *
-     * @param classMapping the class mapping
-     * @param jdbc         the jdbc
+     * @param repository     the repository
+     * @param jdbc           the jdbc
+     * @param ignoreStrategy the ignore strategy
      */
-    public SqlExecutableUpdate(ClassMapping<?> classMapping, Jdbc jdbc) {
-        this(classMapping, jdbc, IgnorePolicy.NONE);
+    public SqlExecutableUpdate(Repository repository, Jdbc jdbc, Predicate<?> ignoreStrategy) {
+        this(repository.name(), jdbc, ignoreStrategy);
     }
 
     /**
      * Instantiates a new sql executable update.
      *
-     * @param tableName    tableName
-     * @param jdbc         jdbc
-     * @param ignorePolicy the ignore policy
+     * @param repository the repository
+     * @param jdbc       the jdbc
      */
-    public SqlExecutableUpdate(String tableName, Jdbc jdbc, Predicate<Object> ignorePolicy) {
-        this.jdbc = jdbc;
-        builder = new SqlUpdateSetBasicBuilder(jdbc.getDialect(), tableName, ignorePolicy);
+    public SqlExecutableUpdate(AliasRepository repository, Jdbc jdbc) {
+        this(repository, jdbc, IgnoreStrategy.NONE);
     }
 
     /**
      * Instantiates a new sql executable update.
      *
-     * @param repository   the repository
-     * @param jdbc         the jdbc
-     * @param ignorePolicy the ignore policy
+     * @param repository     the repository
+     * @param jdbc           the jdbc
+     * @param ignoreStrategy the ignore strategy
      */
-    public SqlExecutableUpdate(Repository repository, Jdbc jdbc, Predicate<Object> ignorePolicy) {
-        this(repository.name(), jdbc, ignorePolicy);
-    }
-
-    /**
-     * Instantiates a new sql executable update.
-     *
-     * @param classMapping the class mapping
-     * @param jdbc         the jdbc
-     * @param ignorePolicy the ignore policy
-     */
-    public SqlExecutableUpdate(ClassMapping<?> classMapping, Jdbc jdbc, Predicate<Object> ignorePolicy) {
-        this.classMapping = classMapping;
-        this.jdbc = jdbc;
-        builder = new SqlUpdateSetBasicBuilder(jdbc.getDialect(), classMapping.getRepositoryName(), ignorePolicy);
-    }
-
-    private SqlExecutableUpdate _set(String name, Object value) {
-        builder.setValue(name, value);
-        return this;
-    }
-
-    private <N extends Number> SqlExecutableUpdate _increase(String name, N value) {
-        builder.setValue(name, value, SetType.INCR);
-        return this;
+    public SqlExecutableUpdate(AliasRepository repository, Jdbc jdbc, Predicate<?> ignoreStrategy) {
+        this(repository.name(), repository.alias(), jdbc, ignoreStrategy);
     }
 
     /**
@@ -124,30 +108,19 @@ public class SqlExecutableUpdate implements SqlUpdate, ExecutableUpdate {
      */
     @Override
     public SqlExecutableUpdate set(String name, Object value) {
-        return _set(ClassMappingUtils.getColumnName(name, classMapping), value);
+        // ENHANCE 后续使用FieldValueOperator，需要完善基础JavaTypeSqlTypeOperator类型
+        return _set(name, value);
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public <N extends Number> SqlExecutableUpdate increase(String name, N value) {
-        return _increase(ClassMappingUtils.getColumnName(name, classMapping), value);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public <T, R> ExecutableUpdate set(SerializableFunction<T, R> name, R value) {
-        SerializedLambda serializedLambda = LambdaUtils.getSerializedLambda(name);
-        String propertyName = LambdaUtils.getLambdaPropertyName(serializedLambda);
-        if (classMapping != null) {
-            BeanDescriptor<?> bd = BeanDescriptor.getBeanDescriptor(classMapping.getType());
-            BeanProperty<R> bp = bd.getBeanProperty(propertyName);
-            return set(bp.getName(), new BeanPropertyValue<>(bp, value));
+    public ExecutableUpdate set(BooleanSupplier setable, String name, Object value) {
+        if (setable.getAsBoolean()) {
+            return set(name, value);
         } else {
-            return set(propertyName, value);
+            return this;
         }
     }
 
@@ -155,8 +128,21 @@ public class SqlExecutableUpdate implements SqlUpdate, ExecutableUpdate {
      * {@inheritDoc}
      */
     @Override
-    public <T, R extends Number> ExecutableUpdate increase(SerializableFunction<T, R> name, R value) {
-        return increase(LambdaUtils.getLambdaPropertyName(name), value);
+    public <T, R> ExecutableUpdate set(SerializableFunction<T, R> name, R value) {
+        // ENHANCE 后续使用FieldValueOperator，需要完善基础JavaTypeSqlTypeOperator类型
+        return _set(getPropertyName(name), value);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public <T, R> ExecutableUpdate set(BooleanSupplier setable, SerializableFunction<T, R> name, R value) {
+        if (setable.getAsBoolean()) {
+            return set(name, value);
+        } else {
+            return this;
+        }
     }
 
     /**
@@ -164,13 +150,19 @@ public class SqlExecutableUpdate implements SqlUpdate, ExecutableUpdate {
      */
     @Override
     public <R> ExecutableUpdate set(SerializableSupplier<R> property) {
-        SerializableSupplierLambdaInfo<R> info = LambdaUtils.getSerializableSupplierLambdaInfo(property);
-        if (classMapping != null) {
-            BeanDescriptor<?> bd = BeanDescriptor.getBeanDescriptor(classMapping.getType());
-            BeanProperty<R> bp = bd.getBeanProperty(info.getSerializedLambdaInfo().getPropertyName());
-            return set(bp.getName(), new BeanPropertyValue<>(bp, info.getValue()));
+        // ENHANCE 后续使用FieldValueOperator，需要完善基础JavaTypeSqlTypeOperator类型
+        return _set(getPropertyName(property), property.get());
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public <R> ExecutableUpdate set(BooleanSupplier setable, SerializableSupplier<R> property) {
+        if (setable.getAsBoolean()) {
+            return set(property);
         } else {
-            return set(info.getSerializedLambdaInfo().getPropertyName(), info.getValue());
+            return this;
         }
     }
 
@@ -187,19 +179,65 @@ public class SqlExecutableUpdate implements SqlUpdate, ExecutableUpdate {
      * {@inheritDoc}
      */
     @Override
-    public <N extends Number> ExecutableUpdate increase(SerializableSupplier<N> property) {
-        // TODO increase 应该用不上自定义类型映射?? 暂时先不包装BeanPropertyValue
-        SerializableSupplierLambdaInfo<N> info = LambdaUtils.getSerializableSupplierLambdaInfo(property);
-        return increase(info.getSerializedLambdaInfo().getPropertyName(), info.getValue());
+    public <N extends Number> SqlExecutableUpdate increase(String name, N value) {
+        // ENHANCE 后续使用FieldValueOperator，需要完善基础JavaTypeSqlTypeOperator类型
+        return _increase(name, value);
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public ExecutableUpdate increase(Consumer<ExecutableUpdate> consumer) {
-        consumer.accept(this);
-        return this;
+    public <T, R extends Number> ExecutableUpdate increase(BooleanSupplier setable, SerializableFunction<T, R> name,
+            R value) {
+        if (setable.getAsBoolean()) {
+            return increase(name, value);
+        } else {
+            return this;
+        }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public <N extends Number> ExecutableUpdate increase(BooleanSupplier increaseable, String name, N value) {
+        if (increaseable.getAsBoolean()) {
+            return increase(name, value);
+        } else {
+            return this;
+        }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public <T, R extends Number> ExecutableUpdate increase(SerializableFunction<T, R> name, R value) {
+        // ENHANCE 后续使用FieldValueOperator，需要完善基础JavaTypeSqlTypeOperator类型
+        return _increase(getPropertyName(name), value);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public <N extends Number> ExecutableUpdate increase(SerializableSupplier<N> property) {
+        // ENHANCE 后续使用FieldValueOperator，需要完善基础JavaTypeSqlTypeOperator类型
+        return _increase(getPropertyName(property), property.get());
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public <N extends Number> ExecutableUpdate increase(BooleanSupplier increaseable,
+            SerializableSupplier<N> property) {
+        if (increaseable.getAsBoolean()) {
+            return increase(property);
+        } else {
+            return this;
+        }
     }
 
     /**
@@ -207,7 +245,7 @@ public class SqlExecutableUpdate implements SqlUpdate, ExecutableUpdate {
      */
     @Override
     public UpdateValue property(String name) {
-        return new SimpleUpdateValue(ClassMappingUtils.getColumnName(name, classMapping), this);
+        return new UpdateValueImpl(name, this);
     }
 
     /**
@@ -215,7 +253,7 @@ public class SqlExecutableUpdate implements SqlUpdate, ExecutableUpdate {
      */
     @Override
     public UpdateNumberValue propertyNumber(String name) {
-        return new SimpleUpdateNumberValue(ClassMappingUtils.getColumnName(name, classMapping), this);
+        return new UpdateNumberValueImpl(name, this);
     }
 
     /**
@@ -238,17 +276,16 @@ public class SqlExecutableUpdate implements SqlUpdate, ExecutableUpdate {
      * {@inheritDoc}
      */
     @Override
-    public ExecutableConditionGroupExpression where() {
-        return new SqlUpdateExpression(jdbc, builder, classMapping, builder.getIgnorePolicy());
+    public ExecutableConditionGroup where() {
+        return new SqlUpdateExpression(jdbc, builder);
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public ExecutableConditionGroupExpression where(Consumer<ConditionGroupConfig> consumer) {
-        SqlUpdateExpression sqlUpdateExpression = new SqlUpdateExpression(jdbc, builder, classMapping,
-                builder.getIgnorePolicy());
+    public ExecutableConditionGroup where(Consumer<ConditionGroupConfig<ExecutableConditionGroup>> consumer) {
+        SqlUpdateExpression sqlUpdateExpression = new SqlUpdateExpression(jdbc, builder);
         if (consumer != null) {
             consumer.accept(sqlUpdateExpression);
         }
@@ -260,6 +297,6 @@ public class SqlExecutableUpdate implements SqlUpdate, ExecutableUpdate {
      */
     @Override
     public int execute() {
-        return new SqlUpdateExpression(jdbc, builder, classMapping).execute();
+        return new SqlUpdateExpression(jdbc, builder).execute();
     }
 }

@@ -9,6 +9,56 @@
         <listener
             class-name="cn.featherfly.hammer.sqldb.TestngListener"></listener>
     </listeners>
+    <test name="mapping type test">
+        <packages>
+            <package
+                name="cn.featherfly.hammer.sqldb.jdbc.mappingtype.*" />
+        </packages>
+    </test>
+
+    <test name="jdbc test">
+        <packages>
+            <package
+                name="cn.featherfly.hammer.sqldb.jdbc.base.*" />
+        </packages>
+        <classes>
+            <class name="cn.featherfly.hammer.sqldb.jdbc.JdbcTest" />
+            <class name="cn.featherfly.hammer.sqldb.jdbc.JdbcTransactionTest" />
+        </classes>
+    </test>
+
+    <test name="orm test">
+        <classes>
+            <class
+                name="cn.featherfly.hammer.sqldb.jdbc.HammerJdbcTest" />
+            <class
+                name="cn.featherfly.hammer.sqldb.jdbc.HammerJdbcTest2" />
+            <class
+                name="cn.featherfly.hammer.sqldb.jdbc.HammerJdbcTemplateTest" />
+            <class
+                name="cn.featherfly.hammer.sqldb.jdbc.OperatorTest" />
+            <!-- <class name="cn.featherfly.hammer.sqldb.tpl.SqlTplExecutorTest" 
+                /> -->
+        </classes>
+    </test>
+
+    <test name="mapper test">
+        <packages>
+            <package name="cn.featherfly.hammer.sqldb.tpl.*" />
+        </packages>
+        <!-- <classes> -->
+        <!-- <class -->
+        <!-- name="cn.featherfly.hammer.sqldb.tpl.SqlTplDynamicExecutorTest" 
+            /> -->
+        <!-- <class -->
+        <!-- name="cn.featherfly.hammer.sqldb.tpl.SqlTplDynamicExecutorTest2" 
+            /> -->
+        <!-- <class -->
+        <!-- name="cn.featherfly.hammer.sqldb.tpl.SqlTplDynamicExecutorTest3" 
+            /> -->
+        <!-- </classes> -->
+    </test>
+    
     <test name="dml builder test">
         <packages>
             <package name="cn.featherfly.hammer.sqldb.sql.dml.*" />
@@ -33,43 +83,6 @@
         <!-- <class name="cn.featherfly.hammer.sqldb.jdbc.dsl.DslStaticTypeTest" 
             /> -->
         <!-- <class name="cn.featherfly.hammer.sqldb.jdbc.dsl.SqlQueryTest" 
-            /> -->
-        <!-- </classes> -->
-    </test>
-    <test name="mapping type test">
-        <packages>
-            <package
-                name="cn.featherfly.hammer.sqldb.jdbc.mappingtype.*" />
-        </packages>
-    </test>
-
-    <test name="orm test">
-        <classes>
-            <class
-                name="cn.featherfly.hammer.sqldb.jdbc.HammerJdbcTest" />
-            <!-- <class name="cn.featherfly.hammer.sqldb.jdbc.HammerJdbcTest2" 
-                /> -->
-            <class
-                name="cn.featherfly.hammer.sqldb.jdbc.OperatorTest" />
-            <class name="cn.featherfly.hammer.sqldb.jdbc.JdbcTest" />
-            <!-- <class name="cn.featherfly.hammer.sqldb.tpl.SqlTplExecutorTest" 
-                /> -->
-        </classes>
-    </test>
-
-    <test name="mapper test">
-        <packages>
-            <package name="cn.featherfly.hammer.sqldb.tpl.*" />
-        </packages>
-        <!-- <classes> -->
-        <!-- <class -->
-        <!-- name="cn.featherfly.hammer.sqldb.tpl.SqlTplDynamicExecutorTest" 
-            /> -->
-        <!-- <class -->
-        <!-- name="cn.featherfly.hammer.sqldb.tpl.SqlTplDynamicExecutorTest2" 
-            /> -->
-        <!-- <class -->
-        <!-- name="cn.featherfly.hammer.sqldb.tpl.SqlTplDynamicExecutorTest3" 
             /> -->
         <!-- </classes> -->
     </test>

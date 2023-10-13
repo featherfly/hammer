@@ -5,16 +5,9 @@ import javax.sql.DataSource;
 
 import cn.featherfly.common.db.dialect.Dialect;
 import cn.featherfly.common.db.dialect.Dialects;
-import cn.featherfly.common.db.mapping.JdbcMappingFactory;
-import cn.featherfly.common.db.mapping.JdbcMappingFactoryImpl;
-import cn.featherfly.common.db.metadata.DatabaseMetadata;
-import cn.featherfly.common.db.metadata.DatabaseMetadataManager;
 import cn.featherfly.constant.annotation.Constant;
 import cn.featherfly.constant.annotation.ConstantClass;
 import cn.featherfly.hammer.config.HammerConstant;
-import cn.featherfly.hammer.sqldb.jdbc.Jdbc;
-import cn.featherfly.hammer.sqldb.jdbc.JdbcImpl;
-import cn.featherfly.hammer.sqldb.tpl.SqlDbTemplateEngine;
 
 /**
  * <p>
@@ -34,15 +27,16 @@ public class SqlDbConstant extends HammerConstant {
     private DataSource dataSource;
     @Constant("database dialect")
     private Dialect dialect = Dialects.MYSQL;
-    @Constant("database metadata")
-    private DatabaseMetadata metadata;
-    @Constant("object mapping factory")
-    private JdbcMappingFactory mappingFactory;
-    @Constant("jdbc operator")
-    private Jdbc jdbc;
-    @Constant(value = "template processor")
-    @SuppressWarnings("rawtypes")
-    private SqlDbTemplateEngine templateEngine;
+    //    @Constant("database metadata")
+    //    private DatabaseMetadata metadata;
+    //    @Constant("object mapping factory")
+    //    private JdbcMappingFactory mappingFactory;
+    //    @Constant("jdbc operator")
+    //    private Jdbc jdbc;
+
+    //    @Constant(value = "template processor")
+    //    @SuppressWarnings("rawtypes")
+    //    private SqlDbTemplateEngine templateEngine;
 
     /**
      * 返回dialect
@@ -53,54 +47,54 @@ public class SqlDbConstant extends HammerConstant {
         return dialect;
     }
 
-    /**
-     * 返回databaseMetadata
-     *
-     * @return databaseMetadata
-     */
-    public DatabaseMetadata getMetadata() {
-        if (metadata == null) {
-            synchronized (this) {
-                if (metadata == null && dataSource != null) {
-                    metadata = DatabaseMetadataManager.getDefaultManager().create(dataSource);
-                }
-            }
-        }
-        return metadata;
-    }
+    //    /**
+    //     * 返回databaseMetadata
+    //     *
+    //     * @return databaseMetadata
+    //     */
+    //    public DatabaseMetadata getMetadata() {
+    //        if (metadata == null) {
+    //            synchronized (this) {
+    //                if (metadata == null && dataSource != null) {
+    //                    metadata = DatabaseMetadataManager.getDefaultManager().create(dataSource);
+    //                }
+    //            }
+    //        }
+    //        return metadata;
+    //    }
 
-    /**
-     * 返回mappingFactory
-     *
-     * @return mappingFactory
-     */
-    public JdbcMappingFactory getMappingFactory() {
-        if (mappingFactory == null) {
-            synchronized (this) {
-                if (mappingFactory == null && getMetadata() != null) {
-                    mappingFactory = new JdbcMappingFactoryImpl(getMetadata(), getDialect());
-                }
-            }
-        }
-        return mappingFactory;
-    }
+    //    /**
+    //     * 返回mappingFactory
+    //     *
+    //     * @return mappingFactory
+    //     */
+    //    public JdbcMappingFactory getMappingFactory() {
+    //        if (mappingFactory == null) {
+    //            synchronized (this) {
+    //                if (mappingFactory == null && getMetadata() != null) {
+    //                    mappingFactory = new JdbcMappingFactoryImpl(getMetadata(), getDialect());
+    //                }
+    //            }
+    //        }
+    //        return mappingFactory;
+    //    }
 
-    /**
-     * 返回templateEngine
-     *
-     * @return templateEngine
-     */
-    @SuppressWarnings("rawtypes")
-    public SqlDbTemplateEngine getTemplateEngine() {
-        //        if (templateProcessor == null) {
-        //            synchronized (this) {
-        //                if (templateProcessor == null && getTplConfigFactory() != null) {
-        //                    templateProcessor = new FreemarkerTemplateProcessor(getTplConfigFactory());
-        //                }
-        //            }
-        //        }
-        return templateEngine;
-    }
+    //    /**
+    //     * 返回templateEngine
+    //     *
+    //     * @return templateEngine
+    //     */
+    //    @SuppressWarnings("rawtypes")
+    //    public SqlDbTemplateEngine getTemplateEngine() {
+    //        //        if (templateProcessor == null) {
+    //        //            synchronized (this) {
+    //        //                if (templateProcessor == null && getTplConfigFactory() != null) {
+    //        //                    templateProcessor = new FreemarkerTemplateProcessor(getTplConfigFactory());
+    //        //                }
+    //        //            }
+    //        //        }
+    //        return templateEngine;
+    //    }
 
     /**
      * 返回dataSource
@@ -111,20 +105,20 @@ public class SqlDbConstant extends HammerConstant {
         return dataSource;
     }
 
-    /**
-     * 返回jdbc
-     *
-     * @return jdbc
-     */
-    public Jdbc getJdbc() {
-        if (jdbc == null) {
-            synchronized (this) {
-                if (jdbc == null && getDataSource() != null) {
-                    //                    jdbc = new SpringJdbcTemplateImpl(getDataSource(), getDialect());
-                    jdbc = new JdbcImpl(getDataSource(), getDialect());
-                }
-            }
-        }
-        return jdbc;
-    }
+    //    /**
+    //     * 返回jdbc
+    //     *
+    //     * @return jdbc
+    //     */
+    //    public Jdbc getJdbc() {
+    //        if (jdbc == null) {
+    //            synchronized (this) {
+    //                if (jdbc == null && getDataSource() != null) {
+    //                    //                    jdbc = new SpringJdbcTemplateImpl(getDataSource(), getDialect());
+    //                    jdbc = new JdbcImpl(getDataSource(), getDialect(), new SqlTypeMappingManager());
+    //                }
+    //            }
+    //        }
+    //        return jdbc;
+    //    }
 }

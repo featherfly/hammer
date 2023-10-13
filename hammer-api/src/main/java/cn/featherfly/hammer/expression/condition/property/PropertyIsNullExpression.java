@@ -19,7 +19,9 @@ public interface PropertyIsNullExpression<C extends ConditionExpression, L exten
      *
      * @return LogicExpression
      */
-    L isn();
+    default L isn() {
+        return isn(true);
+    }
 
     /**
      * is null

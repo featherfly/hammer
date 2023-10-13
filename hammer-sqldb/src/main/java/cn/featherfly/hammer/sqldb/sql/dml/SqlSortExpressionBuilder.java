@@ -6,8 +6,8 @@ import java.util.List;
 import cn.featherfly.common.db.builder.SqlBuilder;
 import cn.featherfly.common.db.builder.dml.basic.SqlOrderByBasicBuilder;
 import cn.featherfly.common.lang.LambdaUtils;
-import cn.featherfly.common.lang.function.SerializableFunction;
-import cn.featherfly.hammer.expression.condition.SortExpression;
+import cn.featherfly.common.function.serializable.SerializableFunction;
+import cn.featherfly.hammer.expression.query.sort.SortExpression;
 import cn.featherfly.common.db.dialect.Dialect;
 
 /**

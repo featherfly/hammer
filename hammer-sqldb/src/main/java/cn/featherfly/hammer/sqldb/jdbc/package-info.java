@@ -1,7 +1,5 @@
 /**
- * <p>
- * hammer for jdbc
- * </p>
+ * hammer for jdbc.
  *
  * @author zhongj
  */

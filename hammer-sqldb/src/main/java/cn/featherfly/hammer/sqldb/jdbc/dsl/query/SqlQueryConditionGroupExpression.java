@@ -1,8 +1,14 @@
 
 package cn.featherfly.hammer.sqldb.jdbc.dsl.query;
 
-import java.math.BigDecimal;
+import java.sql.Blob;
+import java.sql.Clob;
+import java.sql.Timestamp;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.util.Arrays;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 import java.util.function.Predicate;
@@ -10,12 +16,9 @@ import java.util.function.Predicate;
 import cn.featherfly.common.constant.Chars;
 import cn.featherfly.common.db.SqlUtils;
 import cn.featherfly.common.db.builder.dml.SqlSortBuilder;
-import cn.featherfly.common.db.mapping.ClassMappingUtils;
-import cn.featherfly.common.exception.UnsupportedException;
+import cn.featherfly.common.function.serializable.SerializableFunction;
 import cn.featherfly.common.lang.LambdaUtils;
 import cn.featherfly.common.lang.Lang;
-import cn.featherfly.common.lang.function.SerializableFunction;
-import cn.featherfly.common.repository.mapping.ClassMapping;
 import cn.featherfly.common.repository.mapping.RowMapper;
 import cn.featherfly.common.structure.page.Limit;
 import cn.featherfly.common.structure.page.Page;
@@ -24,7 +27,6 @@ import cn.featherfly.common.structure.page.SimplePaginationResults;
 import cn.featherfly.hammer.dsl.query.QueryConditionGroupExpression;
 import cn.featherfly.hammer.dsl.query.QueryConditionGroupLogicExpression;
 import cn.featherfly.hammer.dsl.query.QuerySortExpression;
-import cn.featherfly.hammer.dsl.query.TypeQueryEntity;
 import cn.featherfly.hammer.expression.query.QueryLimitExecutor;
 import cn.featherfly.hammer.sqldb.jdbc.Jdbc;
 import cn.featherfly.hammer.sqldb.jdbc.SqlPageFactory;
@@ -32,14 +34,11 @@ import cn.featherfly.hammer.sqldb.jdbc.SqlPageFactory.SqlPageQuery;
 import cn.featherfly.hammer.sqldb.sql.dml.AbstractSqlConditionGroupExpression;
 
 /**
- * <p>
- * sql condition group builder sql条件逻辑组构造器
- * </p>
- * .
+ * sql query condition group expression. sql查询条件组表达式.
  *
  * @author zhongj
  */
-public class SqlQueryConditionGroupExpression
+public abstract class SqlQueryConditionGroupExpression
         extends AbstractSqlConditionGroupExpression<QueryConditionGroupExpression, QueryConditionGroupLogicExpression>
         implements QueryConditionGroupExpression, QueryConditionGroupLogicExpression, QuerySortExpression {
 
@@ -54,10 +53,10 @@ public class SqlQueryConditionGroupExpression
      *
      * @param jdbc           jdbc
      * @param sqlPageFactory the sql page factory
-     * @param ignorePolicy   the ignore policy
+     * @param ignoreStrategy the ignore strategy
      */
-    public SqlQueryConditionGroupExpression(Jdbc jdbc, SqlPageFactory sqlPageFactory, Predicate<Object> ignorePolicy) {
-        this(jdbc, sqlPageFactory, null, ignorePolicy);
+    public SqlQueryConditionGroupExpression(Jdbc jdbc, SqlPageFactory sqlPageFactory, Predicate<?> ignoreStrategy) {
+        this(jdbc, sqlPageFactory, null, ignoreStrategy);
     }
 
     /**
@@ -66,25 +65,11 @@ public class SqlQueryConditionGroupExpression
      * @param jdbc           jdbc
      * @param sqlPageFactory the sql page factory
      * @param queryAlias     queryAlias
-     * @param ignorePolicy   the ignore policy
+     * @param ignoreStrategy the ignore strategy
      */
     public SqlQueryConditionGroupExpression(Jdbc jdbc, SqlPageFactory sqlPageFactory, String queryAlias,
-            Predicate<Object> ignorePolicy) {
-        this(jdbc, sqlPageFactory, queryAlias, null, ignorePolicy);
-    }
-
-    /**
-     * Instantiates a new sql query condition group expression.
-     *
-     * @param jdbc           jdbc
-     * @param sqlPageFactory the sql page factory
-     * @param queryAlias     queryAlias
-     * @param classMapping   classMapping
-     * @param ignorePolicy   the ignore policy
-     */
-    public SqlQueryConditionGroupExpression(Jdbc jdbc, SqlPageFactory sqlPageFactory, String queryAlias,
-            ClassMapping<?> classMapping, Predicate<Object> ignorePolicy) {
-        this(null, jdbc, sqlPageFactory, queryAlias, classMapping, ignorePolicy);
+            Predicate<?> ignoreStrategy) {
+        this(null, jdbc, sqlPageFactory, queryAlias, ignoreStrategy);
     }
 
     /**
@@ -94,13 +79,11 @@ public class SqlQueryConditionGroupExpression
      * @param jdbc           jdbc
      * @param sqlPageFactory the sql page factory
      * @param queryAlias     queryAlias
-     * @param classMapping   classMapping
-     * @param ignorePolicy   the ignore policy
+     * @param ignoreStrategy the ignore strategy
      */
     SqlQueryConditionGroupExpression(QueryConditionGroupLogicExpression parent, Jdbc jdbc,
-            SqlPageFactory sqlPageFactory, String queryAlias, ClassMapping<?> classMapping,
-            Predicate<Object> ignorePolicy) {
-        super(parent, jdbc.getDialect(), sqlPageFactory, queryAlias, classMapping, null, ignorePolicy);
+            SqlPageFactory sqlPageFactory, String queryAlias, Predicate<?> ignoreStrategy) {
+        super(parent, jdbc.getDialect(), sqlPageFactory, queryAlias, ignoreStrategy);
         this.jdbc = jdbc;
     }
 
@@ -111,15 +94,14 @@ public class SqlQueryConditionGroupExpression
     /** The jdbc. */
     protected Jdbc jdbc;
 
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    protected QueryConditionGroupExpression createGroup(QueryConditionGroupLogicExpression parent, String queryAlias,
-            TypeQueryEntity typeQueryEntity) {
-        return new SqlQueryConditionGroupExpression(parent, jdbc, sqlPageFactory, queryAlias, classMapping,
-                ignorePolicy);
-    }
+    //    /**
+    //     * {@inheritDoc}
+    //     */
+    //    @Override
+    //    protected QueryConditionGroupExpression createGroup(QueryConditionGroupLogicExpression parent, String queryAlias,
+    //            TypeQueryEntity typeQueryEntity) {
+    //        return new SqlQueryConditionGroupExpression(parent, jdbc, sqlPageFactory, queryAlias, ignoreStrategy);
+    //    }
 
     /**
      * {@inheritDoc}
@@ -436,7 +418,95 @@ public class SqlQueryConditionGroupExpression
      * {@inheritDoc}
      */
     @Override
-    public Integer integer() {
+    public Date date() {
+        return jdbc.queryValue(getRoot().expression(), Date.class, getRoot().getParams().toArray());
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public LocalDate localDate() {
+        return jdbc.queryValue(getRoot().expression(), LocalDate.class, getRoot().getParams().toArray());
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public LocalDateTime localDateTime() {
+        return jdbc.queryValue(getRoot().expression(), LocalDateTime.class, getRoot().getParams().toArray());
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public LocalTime localTime() {
+        return jdbc.queryValue(getRoot().expression(), LocalTime.class, getRoot().getParams().toArray());
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public Timestamp timestamp() {
+        return jdbc.queryValue(getRoot().expression(), Timestamp.class, getRoot().getParams().toArray());
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public byte[] bytes() {
+        return jdbc.queryBytes(getRoot().expression(), getRoot().getParams().toArray());
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public Clob clob() {
+        return jdbc.queryValue(getRoot().expression(), Clob.class, getRoot().getParams().toArray());
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public Blob blob() {
+        return jdbc.queryValue(getRoot().expression(), Blob.class, getRoot().getParams().toArray());
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public boolean bool() {
+        return jdbc.queryBool(getRoot().expression(), getRoot().getParams().toArray());
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public byte byteValue() {
+        return jdbc.queryByte(getRoot().expression(), getRoot().getParams().toArray());
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public short shortValue() {
+        return jdbc.queryShort(getRoot().expression(), getRoot().getParams().toArray());
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public int intValue() {
         return jdbc.queryInt(getRoot().expression(), getRoot().getParams().toArray());
     }
 
@@ -444,33 +514,57 @@ public class SqlQueryConditionGroupExpression
      * {@inheritDoc}
      */
     @Override
-    public Long longInt() {
+    public long longValue() {
         return jdbc.queryLong(getRoot().expression(), getRoot().getParams().toArray());
     }
 
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public BigDecimal decimal() {
-        return jdbc.queryBigDecimal(getRoot().expression(), getRoot().getParams().toArray());
-    }
+    //    /**
+    //     * {@inheritDoc}
+    //     */
+    //    @Override
+    //    public Integer integer() {
+    //        return jdbc.queryInteger(getRoot().expression(), getRoot().getParams().toArray());
+    //    }
+    //
+    //    /**
+    //     * {@inheritDoc}
+    //     */
+    //    @Override
+    //    public Long longInt() {
+    //        return jdbc.queryLongWrapper(getRoot().expression(), getRoot().getParams().toArray());
+    //    }
+    //
+    //    /**
+    //     * {@inheritDoc}
+    //     */
+    //    @Override
+    //    public BigDecimal decimal() {
+    //        return jdbc.queryBigDecimal(getRoot().expression(), getRoot().getParams().toArray());
+    //    }
+
+    //    /**
+    //     * {@inheritDoc}
+    //     */
+    //    @Override
+    //    public <N extends Number> N number(Class<N> type) {
+    //        return jdbc.queryValue(getRoot().expression(), type, getRoot().getParams().toArray());
+    //    }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public <N extends Number> N number(Class<N> type) {
+    public <T> T value(Class<T> type) {
         return jdbc.queryValue(getRoot().expression(), type, getRoot().getParams().toArray());
     }
 
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public Long count() {
-        throw new UnsupportedException();
-    }
+    //    /**
+    //     * {@inheritDoc}
+    //     */
+    //    @Override
+    //    public Long count() {
+    //        throw new UnsupportedException();
+    //    }
 
     /**
      * {@inheritDoc}
@@ -485,8 +579,7 @@ public class SqlQueryConditionGroupExpression
      */
     @Override
     public QuerySortExpression asc(String... names) {
-        ((SqlQueryConditionGroupExpression) getRoot()).sortBuilder
-                .asc(ClassMappingUtils.getColumnNames(classMapping, names));
+        ((SqlQueryConditionGroupExpression) getRoot()).sortBuilder.asc(names);
         return this;
     }
 
@@ -495,8 +588,7 @@ public class SqlQueryConditionGroupExpression
      */
     @Override
     public QuerySortExpression asc(List<String> names) {
-        ((SqlQueryConditionGroupExpression) getRoot()).sortBuilder
-                .asc(ClassMappingUtils.getColumnNames(classMapping, names));
+        ((SqlQueryConditionGroupExpression) getRoot()).sortBuilder.asc(names);
         return this;
     }
 
@@ -523,8 +615,7 @@ public class SqlQueryConditionGroupExpression
      */
     @Override
     public QuerySortExpression desc(String... names) {
-        ((SqlQueryConditionGroupExpression) getRoot()).sortBuilder
-                .desc(ClassMappingUtils.getColumnNames(classMapping, names));
+        ((SqlQueryConditionGroupExpression) getRoot()).sortBuilder.desc(names);
         return this;
     }
 
@@ -533,8 +624,7 @@ public class SqlQueryConditionGroupExpression
      */
     @Override
     public QuerySortExpression desc(List<String> names) {
-        ((SqlQueryConditionGroupExpression) getRoot()).sortBuilder
-                .desc(ClassMappingUtils.getColumnNames(classMapping, names));
+        ((SqlQueryConditionGroupExpression) getRoot()).sortBuilder.desc(names);
         return this;
     }
 

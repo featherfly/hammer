@@ -1,3 +1,78 @@
+# 0.7.0
+1. 加入强类型dsl查询
+   一级、二级、三级、四级、五级join实现与测试
+2. 实现TransverterManager
+3. 实现upsert在全部是插入时为entity设置自动生成的主键（存在update时返回的key无法确定）
+4. 优化GetOperate的ForUpdate逻辑
+5. Jdbc实现查询返回Tuple2,List<Tuple2>,Tuple3,List<Tuple3>,Tuple4,List<Tuple4>,Tuple5,List<Tuple5>,Tuple6,List<Tuple6>
+6. 模板sql支持返回一系列Tuple[2-6]、List<Tuple[2-6]>、PaginationResults<Tuple[2-6]>
+7. SqldbHammer加入QueryEntity query(Table table);Update update(Table table);Delete delete(Table table)方法
+8. Jdbc实现存储过程支持
+9. Entity DSL加入Consumer参数方法,加入带IgnoreStrategy|Predicate参数方法
+10. Update DSL里的所有set、increase方法都新增了一个加入多一个参数Supplier<Boolean> setable的重载方法，用于判断此次方法调用是否设置值
+11. 实现非spring环境下的Jdbc的功能和事务管理
+    ```java
+    // 使用原生jdbc管理事务
+    Jdbc jdbc = jdbcFactory.create(conn);
+    connection.setTransactionIsolation(Connection.TRANSACTION_READ_COMMITTED); //设置隔离级别
+    connection.setAutoCommit(false); //启用事务
+    jdbc.update(sql)
+    jdbc.update(sql2)
+    conn.commit();// or conn.rollback();
+    conn.close();
+      
+    // 使用包装管理事务
+    JdbcSession jdbc = jdbcFactory.createSession(conn);
+    JdbcTransaction tran = jdbc.beginTransation(Isolation.READ_COMMITTED); //设置隔离级别
+    tran.update(sql)
+    tran.update(sql2)
+    tran.commit(); // or tran.rollback();
+    jdbc.close();
+    // 使用详情参考JdbcTransactionTest.java
+    ```
+12. where支持多实体条件查询
+13. 实现多实体排序
+14. where().property()后的各种条件筛选方法加入带Predicate和IgnoreStrategy的重载方法
+15. Jdbc实现queryStream，主要用于大数据查询导出，不会依次把内容都加载到内存中，而是迭代的时候依次获取，需要调用者处理连接
+    
+
+TODO dsl查询条件的表达式加入带运算的条件判断
+    ```java
+    // 带运算的条件判断
+    where().property(Account::getAmount).subtract(10).ge(0)
+    where().exp(e -> e.property(Account::getAmount).subtract(10).ge(0))
+    where().ge(Calculators.subtract(Account::getAmount, 10), 0)
+    // where acount.amount - 10 >= 0
+        
+    where().value(10).subtract(Account::getAmount).ge(0)
+    where().exp(e -> e.value(10).subtract(Account::getAmount).ge(0))
+    where().ge(Calculators.subtract(10, Account::getAmount), 0)
+    // where 10 - acount.amount >= 0
+        
+    where().property(Order::getPrice).subtract(10).ge(Order::getCharge)
+    where().exp(e -> e.property(Order::getPrice).subtract(10).ge(Order::getCharge))
+    where().ge(Calculators.subtract(Order::getPrice, 10), Order::getCharge))
+    // where order.price - 10 == order.charge
+        
+    where().property(Order::getPrice).subtract(10).eq(e -> e.property(Order::getCharge).add(10))
+    where().exp(e -> e.property(Order::getPrice).subtract(10).eq(e -> e.property(Order::getCharge).add(10)))
+    where().eq(Calculators.subtract(Order::getPrice, 10), Calculators.add(Order::getCharge, 10))
+    // where order.price - 10 == order.charge + 10
+    ```
+
+TODO dsl join on 加入表达式支持
+
+```java
+find(User.class).join(UserInfo.class).on(e-> e.property(User::getId).eq(UserInfo::getUserId));
+// 等价 find(User.class).join(UserInfo.class).on(User::getId, UserInfo::getUserId)
+// select * from user u join user_info ui on u.id = ui.user_id
+find(User.class).join(UserInfo.class).on(e-> e.property(User::getId).eq(UserInfo::getUserId).and().property(UserInfo::getSex).eq(Gender.MALE));
+// select * from user u join user_info ui on u.id = ui.user_id and ui.gender = ? ['male']
+find(User.class).join(UserInfo.class).on(e-> e.property(User::getId).gt(UserInfo::getUserId));
+// select * from user u join user_info ui on u.id > ui.user_id
+```
+
+
 # 0.6.7 2023-04-18
 1. 修复eq参数为空时报错的问题
 
@@ -148,7 +223,7 @@
     /*name??*/ name like %:name%
     /*name??*/ name like %:name
     /*name??*/ name like :name%
-    ```
+   ```
 3. 修复where标签后换行直接跟order by语句没有空格符号导致最后的参数名称连接到order单词的问题
 
 # 0.5.8 2021-03-26
@@ -213,7 +288,7 @@ where().eq("name", name).and().eq("pwd", pwd).and().group(c -> c.eq("sex", sex).
 # 0.5.2 2020-11-30
 1. 预处理条件查询时，明确查询条件参数名称（可以加快执行效率，避免条件标签自动匹配查询条件参数名称）
 2. TplConfigFactoryImpl默认后缀参数从.yaml.tpl改为.yaml.sql
-    
+   
 # 0.5.1 2020-11-27
 1. 修复??把array和string判断写反了的问题
 
@@ -252,13 +327,13 @@ select <@prop alias='r'>*</@prop> from <@wrap>user</@wrap>
 </@where>
 </@sql id='roleFromTemplate'>
 ```
-    
+
 # 0.4.10 2020-11-25
 1. 修复Mapper参数是基本值类型(int,integer等)时报错的问题
-    
+   
 # 0.4.9 2020-11-24
 1. 使用ASM替换javassist修复自定义的Mapper继承GenericHammer接口并重载了get(Serializable)方法报错的问题
-    
+   
 # 0.4.8 2020-11-17
 1. Hammer加入delete(Ids,Class)方法,delete(Ids),delete(Entities)方法实现一条sql进行批量删除
 2. 升级common-core、common-db、common-model-repository
@@ -330,10 +405,10 @@ query.find(repo).property("price", AggregateFunction.SUM);
 
 # 0.2.5 2019-12-03
 1. 升级依赖
-    
+   
 # 0.2.4 2019-11-28
 1. Juorm和GenericJuorm加入多个重载的delete方法
-    
+   
 # 0.2.3 2019-11-21
 1. 升级constant版本，支持constant无配置文件的默认配置
 
@@ -351,7 +426,7 @@ query.find(repo).property("price", AggregateFunction.SUM);
 
 # 0.1.4 2019-9-18
 1. find(Class type)后的条件在执行时使用TypeExecutor，只能返回find时传入的对象
-    
+   
 # 0.1.3 2019-9-17
 1. 加入SQLiteDialect
 2. 加入SerializableFunction支持
@@ -359,12 +434,12 @@ query.find(repo).property("price", AggregateFunction.SUM);
 # 0.1.2 2019-9-3
 1. 加入SqlDbConfigurator，可以从配置直接获取可运行的JuormJdbcImpl
 2. Jdbc接口去掉spring依赖
-    
+   
 # 0.1.1 2019-8-21
 1. 升级依赖，解决版本导致出错问题
 2. tpl mapper interface加入default method支持
 3. tpl加入wrap模板方法 ${tpl_wrap("user")}
-    
+   
 # 0.1.0 2019-8-20
 1. 实现基本的crud
 2. 实现dsl风格的query,update,delete

@@ -1,7 +1,11 @@
 
 package cn.featherfly.hammer.expression.condition.property;
 
+import java.util.function.BiPredicate;
+import java.util.function.Predicate;
+
 import cn.featherfly.common.lang.Lang;
+import cn.featherfly.common.repository.IgnoreStrategy;
 import cn.featherfly.hammer.expression.condition.LogicExpression;
 import cn.featherfly.hammer.expression.condition.RepositoryConditionsExpression;
 
@@ -9,11 +13,12 @@ import cn.featherfly.hammer.expression.condition.RepositoryConditionsExpression;
  * The Class RepositorySimpleNumberExpression.
  *
  * @author zhongj
+ * @param <N> the number type
  * @param <C> the generic type
  * @param <L> the generic type
  */
-public class RepositorySimpleNumberExpression<C extends RepositoryConditionsExpression<C, L>,
-        L extends LogicExpression<C, L>> implements NumberExpression<C, L> {
+public class RepositorySimpleNumberExpression<N extends Number, C extends RepositoryConditionsExpression<C, L>,
+        L extends LogicExpression<C, L>> implements NumberPropertyExpression<N, C, L> {
 
     private String repository;
 
@@ -67,7 +72,7 @@ public class RepositorySimpleNumberExpression<C extends RepositoryConditionsExpr
      * {@inheritDoc}
      */
     @Override
-    public L eq(Number value) {
+    public L eq(N value) {
         if (Lang.isNotEmpty(repository)) {
             return expression.eq(repository, name, value);
         } else if (repositoryIndex > -1) {
@@ -81,15 +86,7 @@ public class RepositorySimpleNumberExpression<C extends RepositoryConditionsExpr
      * {@inheritDoc}
      */
     @Override
-    public String expression() {
-        return expression.expression();
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public L ne(Number value) {
+    public L ne(N value) {
         if (Lang.isNotEmpty(repository)) {
             return expression.ne(repository, name, value);
         } else if (repositoryIndex > -1) {
@@ -103,7 +100,7 @@ public class RepositorySimpleNumberExpression<C extends RepositoryConditionsExpr
      * {@inheritDoc}
      */
     @Override
-    public L in(Number value) {
+    public L in(N value) {
         if (Lang.isNotEmpty(repository)) {
             return expression.in(repository, name, value);
         } else if (repositoryIndex > -1) {
@@ -117,13 +114,13 @@ public class RepositorySimpleNumberExpression<C extends RepositoryConditionsExpr
      * {@inheritDoc}
      */
     @Override
-    public L nin(Number value) {
+    public L ni(N value) {
         if (Lang.isNotEmpty(repository)) {
             return expression.nin(repository, name, value);
         } else if (repositoryIndex > -1) {
             return expression.nin(repositoryIndex, name, value);
         } else {
-            return expression.nin(name, value);
+            return expression.ni(name, value);
         }
     }
 
@@ -131,7 +128,7 @@ public class RepositorySimpleNumberExpression<C extends RepositoryConditionsExpr
      * {@inheritDoc}
      */
     @Override
-    public L le(Number value) {
+    public L le(N value) {
         if (Lang.isNotEmpty(repository)) {
             return expression.le(repository, name, value);
         } else if (repositoryIndex > -1) {
@@ -145,7 +142,7 @@ public class RepositorySimpleNumberExpression<C extends RepositoryConditionsExpr
      * {@inheritDoc}
      */
     @Override
-    public L lt(Number value) {
+    public L lt(N value) {
         if (Lang.isNotEmpty(repository)) {
             return expression.lt(repository, name, value);
         } else if (repositoryIndex > -1) {
@@ -159,7 +156,7 @@ public class RepositorySimpleNumberExpression<C extends RepositoryConditionsExpr
      * {@inheritDoc}
      */
     @Override
-    public L ge(Number value) {
+    public L ge(N value) {
         if (Lang.isNotEmpty(repository)) {
             return expression.ge(repository, name, value);
         } else if (repositoryIndex > -1) {
@@ -173,7 +170,7 @@ public class RepositorySimpleNumberExpression<C extends RepositoryConditionsExpr
      * {@inheritDoc}
      */
     @Override
-    public L gt(Number value) {
+    public L gt(N value) {
         if (Lang.isNotEmpty(repository)) {
             return expression.gt(repository, name, value);
         } else if (repositoryIndex > -1) {
@@ -238,4 +235,265 @@ public class RepositorySimpleNumberExpression<C extends RepositoryConditionsExpr
             return expression.inn(name, value);
         }
     }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public String expression() {
+        return expression.expression();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public L in(N[] value) {
+        // YUFEI_TODO Auto-generated method stub
+        return null;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public L in(N value, Predicate<N> ignoreStrategy) {
+        // YUFEI_TODO Auto-generated method stub
+        return null;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public L in(N[] value, Predicate<N[]> ignoreStrategy) {
+        // YUFEI_TODO Auto-generated method stub
+        return null;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public L ni(N[] value) {
+        // YUFEI_TODO Auto-generated method stub
+        return null;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public L ni(N value, Predicate<N> ignoreStrategy) {
+        // YUFEI_TODO Auto-generated method stub
+        return null;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public L ni(N[] value, Predicate<N[]> ignoreStrategy) {
+        // YUFEI_TODO Auto-generated method stub
+        return null;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public L eq(N value, Predicate<N> ignoreStrategy) {
+        // YUFEI_TODO Auto-generated method stub
+        return null;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public L ne(N value, Predicate<N> ignoreStrategy) {
+        // YUFEI_TODO Auto-generated method stub
+        return null;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public L eq(N value, IgnoreStrategy ignoreStrategy) {
+        // YUFEI_TODO Auto-generated method stub
+        return null;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public L ne(N value, IgnoreStrategy ignoreStrategy) {
+        // YUFEI_TODO Auto-generated method stub
+        return null;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public L in(N value, IgnoreStrategy ignoreStrategy) {
+        // YUFEI_TODO Auto-generated method stub
+        return null;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public L in(N[] value, IgnoreStrategy ignoreStrategy) {
+        // YUFEI_TODO Auto-generated method stub
+        return null;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public L ni(N value, IgnoreStrategy ignoreStrategy) {
+        // YUFEI_TODO Auto-generated method stub
+        return null;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public L ni(N[] value, IgnoreStrategy ignoreStrategy) {
+        // YUFEI_TODO Auto-generated method stub
+        return null;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public L le(N value, IgnoreStrategy ignoreStrategy) {
+        // YUFEI_TODO Auto-generated method stub
+        return null;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public L le(N value, Predicate<N> ignoreStrategy) {
+        // YUFEI_TODO Auto-generated method stub
+        return null;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public L lt(N value, IgnoreStrategy ignoreStrategy) {
+        // YUFEI_TODO Auto-generated method stub
+        return null;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public L lt(N value, Predicate<N> ignoreStrategy) {
+        // YUFEI_TODO Auto-generated method stub
+        return null;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public L ge(N value, IgnoreStrategy ignoreStrategy) {
+        // YUFEI_TODO Auto-generated method stub
+        return null;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public L ge(N value, Predicate<N> ignoreStrategy) {
+        // YUFEI_TODO Auto-generated method stub
+        return null;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public L gt(N value, IgnoreStrategy ignoreStrategy) {
+        // YUFEI_TODO Auto-generated method stub
+        return null;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public L ba(N min, N max) {
+        // YUFEI_TODO Auto-generated method stub
+        return null;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public L ba(N min, N max, IgnoreStrategy ignoreStrategy) {
+        // YUFEI_TODO Auto-generated method stub
+        return null;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public L ba(N min, N max, BiPredicate<N, N> ignoreStrategy) {
+        // YUFEI_TODO Auto-generated method stub
+        return null;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public L nba(N min, N max) {
+        // YUFEI_TODO Auto-generated method stub
+        return null;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public L nba(N min, N max, IgnoreStrategy ignoreStrategy) {
+        // YUFEI_TODO Auto-generated method stub
+        return null;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public L nba(N min, N max, BiPredicate<N, N> ignoreStrategy) {
+        // YUFEI_TODO Auto-generated method stub
+        return null;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public L gt(N value, Predicate<N> ignoreStrategy) {
+        // YUFEI_TODO Auto-generated method stub
+        return null;
+    }
+
 }

@@ -6,8 +6,8 @@ import java.io.Serializable;
 import org.springframework.cache.annotation.Cacheable;
 
 import cn.featherfly.hammer.Hammer;
-import cn.featherfly.hammer.sqldb.jdbc.vo.User;
-import cn.featherfly.hammer.sqldb.jdbc.vo.UserInfo;
+import cn.featherfly.hammer.sqldb.jdbc.vo.r.User;
+import cn.featherfly.hammer.sqldb.jdbc.vo.r.UserInfo;
 import cn.featherfly.hammer.tpl.annotation.Mapper;
 import cn.featherfly.hammer.tpl.annotation.Param;
 
@@ -61,6 +61,7 @@ public interface UserInfoMapper extends Hammer {
      * @return the by username and password
      */
     default User getByUsernameAndPassword(String username, String pwd) {
-        return query(User.class).where().eq("username", username).and().eq("pwd", pwd).single();
+        //        return query(User.class).where().eq("username", username).and().eq("pwd", pwd).single();
+        return query(User.class).where().eq(User::getUsername, username).and().eq(User::getPwd, pwd).single();
     }
 }

@@ -1,22 +1,25 @@
 
 package cn.featherfly.hammer.sqldb.jdbc.dsl.query;
 
+import cn.featherfly.common.db.mapping.JdbcClassMapping;
 import cn.featherfly.common.db.mapping.JdbcMappingFactory;
 import cn.featherfly.common.db.metadata.DatabaseMetadata;
+import cn.featherfly.common.lang.AssertIllegalArgument;
 import cn.featherfly.common.lang.Lang;
-import cn.featherfly.common.repository.IgnorePolicy;
+import cn.featherfly.common.repository.AliasRepository;
+import cn.featherfly.common.repository.IgnoreStrategy;
+import cn.featherfly.common.repository.Repository;
 import cn.featherfly.common.repository.builder.AliasManager;
+import cn.featherfly.hammer.dsl.entity.query.EntityQueryFetch;
 import cn.featherfly.hammer.dsl.query.Query;
-import cn.featherfly.hammer.expression.Repository;
 import cn.featherfly.hammer.sqldb.SqldbHammerException;
 import cn.featherfly.hammer.sqldb.jdbc.Jdbc;
 import cn.featherfly.hammer.sqldb.jdbc.SqlPageFactory;
+import cn.featherfly.hammer.sqldb.jdbc.dsl.entity.EntitySqlQueryRelation;
+import cn.featherfly.hammer.sqldb.jdbc.dsl.entity.query.EntitySqlQueryFetch;
 
 /**
- * <p>
- * SqlQuery
- * </p>
- * .
+ * SqlQuery .
  *
  * @author zhongj
  */
@@ -63,43 +66,102 @@ public class SqlQuery implements Query {
         this.sqlPageFactory = sqlPageFactory;
     }
 
+    //    /**
+    //     * find table.
+    //     *
+    //     * @param table the table
+    //     * @return SqlQueryEntity
+    //     */
+    //    public SqlQueryEntity find(Table table) {
+    //        AssertIllegalArgument.isNotNull(table, "table");
+    //        return find(table.getName());
+    //    }
+
     /**
      * {@inheritDoc}
      */
     @Override
-    public SqlQueryEntityProperties find(Repository repository) {
-        if (repository == null) {
-            return null;
-        }
-        AliasManager aliasManager = new AliasManager();
-        String alias = repository.alias();
-        if (Lang.isNotEmpty(alias)) {
-            aliasManager.put(repository.name(), alias);
+    //    public SqlQueryEntityProperties find(Repository repository) {
+    public SqlQueryEntity find(Repository repository) {
+        if (repository instanceof AliasRepository) {
+            return find((AliasRepository) repository);
         } else {
-            alias = aliasManager.put(repository.name());
+            AssertIllegalArgument.isNotNull(repository, "repository");
+            return find(repository.name());
         }
-        return new SqlQueryEntityProperties(jdbc, databaseMetadata, repository.name(), alias, mappingFactory,
-                sqlPageFactory, aliasManager, IgnorePolicy.EMPTY);
+    }
+
+    public SqlQueryEntity find(AliasRepository repository) {
+        AssertIllegalArgument.isNotNull(repository, "repository");
+        return find(repository.name(), repository.alias());
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public SqlQueryEntityProperties find(String tableName) {
-        return new SqlQueryEntityProperties(jdbc, databaseMetadata, tableName, mappingFactory, sqlPageFactory,
-                new AliasManager(), IgnorePolicy.EMPTY);
+    //    public SqlQueryEntityProperties find(String tableName) {
+    public SqlQueryEntity find(String tableName) {
+        return find(tableName, null);
+    }
+
+    public SqlQueryEntity find(String tableName, String tableAlias) {
+        AssertIllegalArgument.isNotNull(tableName, "tableName");
+        AliasManager aliasManager = new AliasManager();
+        String alias = tableAlias;
+        if (Lang.isNotEmpty(alias)) {
+            aliasManager.put(tableName, alias);
+        } else {
+            alias = aliasManager.put(tableName);
+        }
+        return new SqlQueryEntityProperties(jdbc, databaseMetadata, tableName, alias, sqlPageFactory, aliasManager,
+                IgnoreStrategy.EMPTY);
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public TypeSqlQueryEntityProperties find(Class<?> repositType) {
+    public <E> EntityQueryFetch<E> find(Class<E> entity) {
         if (mappingFactory == null) {
             throw new SqldbHammerException("mappingFactory is null");
         }
-        return new TypeSqlQueryEntityProperties(jdbc, mappingFactory.getClassMapping(repositType), mappingFactory,
-                sqlPageFactory, new AliasManager(), IgnorePolicy.EMPTY);
+        JdbcClassMapping<E> mapping = mappingFactory.getClassMapping(entity);
+        //        if (mapping == null) { // 不存在的映射类型在mappingFactory就抛出异常了
+        //            throw new SqldbHammerException(Strings.format("type {0} is not a entity"));
+        //        }
+
+        EntitySqlQueryRelation queryRelation = new EntitySqlQueryRelation(jdbc, new AliasManager(),
+                IgnoreStrategy.EMPTY);
+        return new EntitySqlQueryFetch<>(mappingFactory, sqlPageFactory, queryRelation, mapping);
     }
+
+    //    /**
+    //     * {@inheritDoc}
+    //     */
+    //    @SuppressWarnings("unchecked")
+    //    @Override
+    //    public <EQF extends EntityQueryFetchExpression<E, EQC, EQL, EQFP, EQVC, EQVL, RS>, E,
+    //            EQC extends EntityQueryConditionGroupExpression<E, EQC, EQL, RS>,
+    //            EQL extends EntityQueryConditionGroupLogicExpression<E, EQC, EQL, RS>,
+    //            EQFP extends EntityQueryFetchedPropertyExpression<E, EQVC, EQVL, EQFP, RS>,
+    //            EQVC extends EntityQueryValueConditionGroupExpression<E, EQVC, EQVL, RS>,
+    //            EQVL extends EntityQueryValueConditionGroupLogicExpression<E, EQVC, EQVL, RS>,
+    //            RS extends EntityQuerySortExpression<E>> EQF find(Class<E> entityType) {
+    //        if (mappingFactory == null) {
+    //            throw new SqldbHammerException("mappingFactory is null");
+    //        }
+    //        JdbcClassMapping<E> mapping = mappingFactory.getClassMapping(entityType);
+    //        //        if (mapping == null) { // 不存在的映射类型在mappingFactory就抛出异常了
+    //        //            throw new SqldbHammerException(Strings.format("type {0} is not a entity"));
+    //        //        }
+    //
+    //        EntitySqlQueryRelation queryRelation = new EntitySqlQueryRelation(jdbc, new AliasManager(),
+    //                IgnoreStrategy.EMPTY);
+    //        return (EQF) new EntitySqlQueryFetch<>(mappingFactory, sqlPageFactory, queryRelation, mapping);
+    //    }
+
+    // IMPLSOON 后续来实现select xxx from yy 模式的方法链
+    //    public SqlSelectQuery select() {
+    //    }
 }

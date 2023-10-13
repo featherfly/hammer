@@ -4,18 +4,15 @@ package cn.featherfly.hammer.sqldb.jdbc.dsl.type;
 import java.util.List;
 
 import cn.featherfly.common.db.mapping.ClassMappingUtils;
+import cn.featherfly.common.db.mapping.JdbcClassMapping;
 import cn.featherfly.common.db.mapping.JdbcMappingFactory;
 import cn.featherfly.common.lang.ClassUtils;
-import cn.featherfly.common.repository.mapping.ClassMapping;
 import cn.featherfly.common.structure.page.Page;
 import cn.featherfly.hammer.sqldb.jdbc.dsl.query.SqlQueryConditionGroupExpression;
-import cn.featherfly.hammer.sqldb.jdbc.dsl.query.SqlQueryEntityProperties;
+import cn.featherfly.hammer.sqldb.jdbc.dsl.query.SqlQueryEntity;
 
 /**
- * <p>
- * TypeQueryEntity
- * </p>
- * .
+ * TypeQueryEntity .
  *
  * @author zhongj
  * @param <E> the element type
@@ -29,23 +26,23 @@ public abstract class StaticTypeQueryEntity<E, C extends StaticTypeQueryConditio
     protected Class<E> type;
 
     /** The query entity properties. */
-    private SqlQueryEntityProperties queryEntityProperties;
+    private SqlQueryEntity queryEntity;
 
     /** The set property. */
     protected boolean setProperty;
 
     /** The mappping. */
-    protected ClassMapping<E> mappping;
+    protected JdbcClassMapping<E> mappping;
 
     /**
      * Instantiates a new type query entity.
      *
-     * @param queryEntityProperties the query entity properties
-     * @param mappingFactory        the mapping factory
+     * @param queryEntity    the query entity
+     * @param mappingFactory the mapping factory
      */
-    public StaticTypeQueryEntity(SqlQueryEntityProperties queryEntityProperties, JdbcMappingFactory mappingFactory) {
+    public StaticTypeQueryEntity(SqlQueryEntity queryEntity, JdbcMappingFactory mappingFactory) {
         type = ClassUtils.getSuperClassGenericType(this.getClass());
-        this.queryEntityProperties = queryEntityProperties;
+        this.queryEntity = queryEntity;
         mappping = mappingFactory.getClassMapping(type);
     }
 
@@ -56,7 +53,7 @@ public abstract class StaticTypeQueryEntity<E, C extends StaticTypeQueryConditio
      */
     public C where() {
         setProperties();
-        return createCondition((SqlQueryConditionGroupExpression) queryEntityProperties.where());
+        return createCondition((SqlQueryConditionGroupExpression) queryEntity.where());
     }
 
     /**
@@ -66,7 +63,7 @@ public abstract class StaticTypeQueryEntity<E, C extends StaticTypeQueryConditio
      */
     public List<E> list() {
         setProperties();
-        return queryEntityProperties.list(type);
+        return queryEntity.list(type);
     }
 
     /**
@@ -77,7 +74,7 @@ public abstract class StaticTypeQueryEntity<E, C extends StaticTypeQueryConditio
      */
     public StaticTypeQueryExecutor<E> limit(Integer limit) {
         setProperties();
-        return new StaticTypeQueryExecutor<>(type, queryEntityProperties.limit(limit));
+        return new StaticTypeQueryExecutor<>(type, queryEntity.limit(limit));
     }
 
     /**
@@ -89,7 +86,7 @@ public abstract class StaticTypeQueryEntity<E, C extends StaticTypeQueryConditio
      */
     public StaticTypeQueryExecutor<E> limit(Integer offset, Integer limit) {
         setProperties();
-        return new StaticTypeQueryExecutor<>(type, queryEntityProperties.limit(offset, limit));
+        return new StaticTypeQueryExecutor<>(type, queryEntity.limit(offset, limit));
     }
 
     /**
@@ -100,7 +97,7 @@ public abstract class StaticTypeQueryEntity<E, C extends StaticTypeQueryConditio
      */
     public StaticTypeQueryExecutor<E> limit(Page page) {
         setProperties();
-        return new StaticTypeQueryExecutor<>(type, queryEntityProperties.limit(page));
+        return new StaticTypeQueryExecutor<>(type, queryEntity.limit(page));
     }
 
     /**
@@ -108,8 +105,8 @@ public abstract class StaticTypeQueryEntity<E, C extends StaticTypeQueryConditio
      */
     private void setProperties() {
         if (!setProperty) {
-            System.out.println(ClassMappingUtils.getSelectColumns(mappping));
-            queryEntityProperties.propertyAlias(ClassMappingUtils.getSelectColumns(mappping));
+            //            System.out.println(ClassMappingUtils.getSelectColumns(mappping));
+            queryEntity.propertyAlias(ClassMappingUtils.getSelectColumns(mappping));
         }
     }
 

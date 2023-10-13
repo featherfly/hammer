@@ -5,18 +5,22 @@ import java.io.Serializable;
 import java.util.List;
 import java.util.function.Function;
 
+import cn.featherfly.common.function.serializable.SerializableFunction;
+import cn.featherfly.common.function.serializable.SerializableSupplier;
+import cn.featherfly.common.lang.ArrayUtils;
 import cn.featherfly.common.lang.AssertIllegalArgument;
 import cn.featherfly.common.lang.Lang;
-import cn.featherfly.common.lang.function.SerializableFunction;
-import cn.featherfly.common.lang.function.SerializableSupplier;
-import cn.featherfly.common.repository.IgnorePolicy;
-import cn.featherfly.common.repository.operate.LogicOperator;
+import cn.featherfly.common.operator.LogicOperator;
+import cn.featherfly.common.repository.IgnoreStrategy;
+import cn.featherfly.common.repository.Repository;
+import cn.featherfly.hammer.dsl.entity.execute.EntityDelete;
+import cn.featherfly.hammer.dsl.entity.execute.EntityUpdate;
+import cn.featherfly.hammer.dsl.entity.query.EntityQueryConditionGroup;
+import cn.featherfly.hammer.dsl.entity.query.EntityQueryConditionGroupLogic;
+import cn.featherfly.hammer.dsl.entity.query.EntityQueryFetch;
 import cn.featherfly.hammer.dsl.execute.Delete;
 import cn.featherfly.hammer.dsl.execute.Update;
 import cn.featherfly.hammer.dsl.query.QueryEntity;
-import cn.featherfly.hammer.dsl.query.TypeQueryConditionGroupExpression;
-import cn.featherfly.hammer.dsl.query.TypeQueryConditionGroupLogicExpression;
-import cn.featherfly.hammer.dsl.query.TypeQueryEntity;
 import cn.featherfly.hammer.tpl.TplExecutor;
 
 /**
@@ -36,13 +40,35 @@ public interface Hammer extends TplExecutor {
     <E> int save(E entity);
 
     /**
-     * batch save entity list.
+     * batch save entity array.
      *
      * @param <E>      generic type
      * @param entities entity array to save
      * @return effect data row num
      */
-    <E> int save(@SuppressWarnings("unchecked") E... entities);
+    default <E> int[] save(@SuppressWarnings("unchecked") E... entities) {
+        if (Lang.isEmpty(entities)) {
+            return ArrayUtils.EMPTY_INT_ARRAY;
+        } else {
+            return save(ArrayUtils.toList(entities), entities.length);
+        }
+    }
+
+    /**
+     * batch save entity array.
+     *
+     * @param <E>       generic type
+     * @param entities  entity array to save
+     * @param batchSize the batch size
+     * @return effect data row num
+     */
+    default <E> int[] save(E[] entities, int batchSize) {
+        if (Lang.isEmpty(entities)) {
+            return ArrayUtils.EMPTY_INT_ARRAY;
+        } else {
+            return save(ArrayUtils.toList(entities), batchSize);
+        }
+    }
 
     /**
      * batch save entity list.
@@ -51,7 +77,23 @@ public interface Hammer extends TplExecutor {
      * @param entities entity list to save
      * @return effect data row num
      */
-    <E> int save(List<E> entities);
+    default <E> int[] save(List<E> entities) {
+        if (Lang.isEmpty(entities)) {
+            return ArrayUtils.EMPTY_INT_ARRAY;
+        } else {
+            return save(entities, entities.size());
+        }
+    }
+
+    /**
+     * batch save entity list.
+     *
+     * @param <E>       generic type
+     * @param entities  entity list to save
+     * @param batchSize the batch size
+     * @return effect data row num
+     */
+    <E> int[] save(List<E> entities, int batchSize);
 
     /**
      * update entity, update all values. equal invoke method
@@ -65,6 +107,16 @@ public interface Hammer extends TplExecutor {
     <E> int update(E entity);
 
     /**
+     * update entity, update values with ignoreStrategy.
+     *
+     * @param <E>            generic type
+     * @param entity         entity to update
+     * @param ignoreStrategy ignore value to update strategy
+     * @return effect data row num
+     */
+    <E> int update(E entity, IgnoreStrategy ignoreStrategy);
+
+    /**
      * update all values for each entity in entity array. equal invoke method
      * {@link #update(List, IgnorePolicy)} with params (entity,
      * IgnorePolicy.NONE)
@@ -73,7 +125,7 @@ public interface Hammer extends TplExecutor {
      * @param entities entity array to update
      * @return effect data row num
      */
-    <E> int update(@SuppressWarnings("unchecked") E... entities);
+    <E> int[] update(@SuppressWarnings("unchecked") E... entities);
 
     /**
      * update all values for each entity in entity list. equal invoke method
@@ -84,27 +136,29 @@ public interface Hammer extends TplExecutor {
      * @param entities entity list to update
      * @return effect data row num
      */
-    <E> int update(List<E> entities);
+    <E> int[] update(List<E> entities);
 
     /**
-     * update entity, update values with ignorePolicy.
+     * update all values for each entity in entity list. equal invoke method
+     * {@link #update(List, IgnorePolicy)} with params (entity,
+     * IgnorePolicy.NONE)
      *
-     * @param <E>          generic type
-     * @param entity       entity to update
-     * @param ignorePolicy ignore value to update policy
+     * @param <E>       generic type
+     * @param entities  entity list to update
+     * @param batchSize the batch size
      * @return effect data row num
      */
-    <E> int update(E entity, IgnorePolicy ignorePolicy);
+    <E> int[] update(List<E> entities, int batchSize);
 
     /**
-     * update values with ignorePolicy for each entity in entity list.
+     * update values with ignoreStrategy for each entity in entity list.
      *
-     * @param <E>          generic type
-     * @param entities     entity list to update
-     * @param ignorePolicy ignore value to update policy
+     * @param <E>            generic type
+     * @param entities       entity list to update
+     * @param ignoreStrategy ignore value to update strategy
      * @return effect data row num
      */
-    <E> int update(List<E> entities, IgnorePolicy ignorePolicy);
+    <E> int[] update(List<E> entities, IgnoreStrategy ignoreStrategy);
 
     /**
      * update values ignore null or empty(string, array, collectoin, map) value.
@@ -127,7 +181,7 @@ public interface Hammer extends TplExecutor {
      * @param entities entity array to merge
      * @return effect data row num
      */
-    <E> int merge(@SuppressWarnings("unchecked") E... entities);
+    <E> int[] merge(@SuppressWarnings("unchecked") E... entities);
 
     /**
      * update values ignore null or empty(string, array, collectoin, map) value
@@ -139,7 +193,7 @@ public interface Hammer extends TplExecutor {
      * @param entities entity list to merge
      * @return effect data row num
      */
-    <E> int merge(List<E> entities);
+    <E> int[] merge(List<E> entities);
 
     /**
      * save or update entity.
@@ -177,7 +231,7 @@ public interface Hammer extends TplExecutor {
      * @param entityType entity type
      * @return effect data row num
      */
-    <E> int delete(Serializable[] ids, Class<E> entityType);
+    <E> int[] delete(Serializable[] ids, Class<E> entityType);
 
     /**
      * delete entity by id list.
@@ -188,7 +242,7 @@ public interface Hammer extends TplExecutor {
      * @param entityType entity type
      * @return effect data row num
      */
-    <E, ID extends Serializable> int delete(List<ID> ids, Class<E> entityType);
+    <E, ID extends Serializable> int[] delete(List<ID> ids, Class<E> entityType);
 
     /**
      * delete each entity in entity list.
@@ -197,7 +251,7 @@ public interface Hammer extends TplExecutor {
      * @param entities entity array to delete
      * @return effect data row num
      */
-    <E> int delete(@SuppressWarnings("unchecked") E... entities);
+    <E> int[] delete(@SuppressWarnings("unchecked") E... entities);
 
     /**
      * delete each entity in entity list.
@@ -206,7 +260,7 @@ public interface Hammer extends TplExecutor {
      * @param entities entity list to delete
      * @return effect data row num
      */
-    <E> int delete(List<E> entities);
+    <E> int[] delete(List<E> entities);
 
     /**
      * get entity by id.
@@ -260,7 +314,7 @@ public interface Hammer extends TplExecutor {
     <E> E get(E entity);
 
     /**
-     * load entity by id, the same logic with get(entity)
+     * load entity by id, the same logic with get(entity).
      *
      * @param <E>    entity generic type
      * @param entity entity with id value
@@ -326,9 +380,8 @@ public interface Hammer extends TplExecutor {
      */
     default <E> E querySingle(Class<E> type, SerializableSupplier<?>... propertyValues) {
         AssertIllegalArgument.isNotEmpty(propertyValues, "propertyValues");
-
-        TypeQueryConditionGroupExpression queryCondition = query(type).where();
-        TypeQueryConditionGroupLogicExpression queryLogic = null;
+        EntityQueryConditionGroup<E> queryCondition = query(type).where();
+        EntityQueryConditionGroupLogic<E> queryLogic = null;
         for (int i = 0; i < propertyValues.length; i++) {
             SerializableSupplier<?> propertyValue = propertyValues[i];
             if (i == 0) {
@@ -367,8 +420,8 @@ public interface Hammer extends TplExecutor {
         }
         AssertIllegalArgument.isNotNull(operator, "operator");
 
-        TypeQueryConditionGroupExpression queryCondition = query(type).where();
-        TypeQueryConditionGroupLogicExpression queryLogic = null;
+        EntityQueryConditionGroup<E> queryCondition = query(type).where();
+        EntityQueryConditionGroupLogic<E> queryLogic = null;
         for (int i = 0; i < propertyValues.length; i++) {
             SerializableSupplier<?> propertyValue = propertyValues[i];
             if (i == 0) {
@@ -393,13 +446,31 @@ public interface Hammer extends TplExecutor {
     QueryEntity query(String repository);
 
     /**
-     * create QueryEntity for entityType.
+     * create QueryEntity for repository.
+     *
+     * @param repository the repository
+     * @return the query entity
+     */
+    QueryEntity query(Repository repository);
+
+    //    /**
+    //     * create QueryEntity for type.
+    //     *
+    //     * @param <E>  entity generic type
+    //     * @param type query for type
+    //     * @return TypeQueryEntity
+    //     */
+    //    <E> TypeQueryEntity queryType(Class<E> type);
+
+    /**
+     * create EntityQueryEntity for entityType. entity type must be a entity
+     * object, otherwise throws HammerException
      *
      * @param <E>        entity generic type
-     * @param entityType query for entityType
-     * @return QueryEntity
+     * @param entityType query for entity type
+     * @return EntityQueryEntity
      */
-    <E> TypeQueryEntity query(Class<E> entityType);
+    <E> EntityQueryFetch<E> query(Class<E> entityType);
 
     /**
      * create update for repository.
@@ -410,13 +481,21 @@ public interface Hammer extends TplExecutor {
     Update update(String repository);
 
     /**
+     * create update for repository.
+     *
+     * @param repository repository name
+     * @return Update
+     */
+    Update update(Repository repository);
+
+    /**
      * create update for entityType.
      *
      * @param <E>        entity generic type
      * @param entityType update for entityType
      * @return Update
      */
-    <E> Update update(Class<E> entityType);
+    <E> EntityUpdate<E> update(Class<E> entityType);
 
     /**
      * create delete for repository.
@@ -427,11 +506,19 @@ public interface Hammer extends TplExecutor {
     Delete delete(String repository);
 
     /**
+     * create delete for repository.
+     *
+     * @param repository repository name
+     * @return Delete
+     */
+    Delete delete(Repository repository);
+
+    /**
      * create delete for entityType.
      *
      * @param <E>        entity generic type
      * @param entityType update for entityType
      * @return Delete
      */
-    <E> Delete delete(Class<E> entityType);
+    <E> EntityDelete<E> delete(Class<E> entityType);
 }

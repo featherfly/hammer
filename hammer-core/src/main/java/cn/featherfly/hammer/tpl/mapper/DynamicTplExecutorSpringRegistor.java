@@ -22,7 +22,7 @@ import cn.featherfly.hammer.tpl.annotation.Mapper;
  * 自动注册配置信息到spring context
  * </p>
  *
- * @author 钟冀
+ * @author zhongj
  */
 public class DynamicTplExecutorSpringRegistor implements BeanDefinitionRegistryPostProcessor {
 

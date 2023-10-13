@@ -1,7 +1,7 @@
 
 package cn.featherfly.hammer.dml.builder.sql.query;
 
-import cn.featherfly.hammer.expression.query.QueryWithOnExpression;
+import cn.featherfly.hammer.expression.query.QueryRelateOnExpression;
 
 /**
  * <p>
@@ -10,15 +10,15 @@ import cn.featherfly.hammer.expression.query.QueryWithOnExpression;
  *
  * @author zhongj
  */
-public class UserQueryWithOn implements
-        QueryWithOnExpression<UserQueryWith, UserQueryWithOn, UserQueryWithEntity, UserQueryRepositoryConditionGroupExpression, UserQueryRepositoryConditionGroupExpression> {
+public class UserQueryWithOn implements QueryRelateOnExpression<UserQueryWith, UserQueryWithOn, UserQueryWithEntity,
+        UserQueryRepositoryConditionGroupExpression, UserQueryRepositoryConditionGroupExpression> {
 
     /**
      * {@inheritDoc}
      */
     @Override
     public UserQueryWithEntity on(String propertyName) {
-        // YUFEI_TODO Auto-generated method stub
+
         return null;
     }
 
@@ -27,7 +27,7 @@ public class UserQueryWithOn implements
      */
     @Override
     public UserQueryWithEntity on(String propertyName, String repositoryName, String repositoryPropertyName) {
-        // YUFEI_TODO Auto-generated method stub
+
         return null;
     }
 
@@ -36,7 +36,7 @@ public class UserQueryWithOn implements
      */
     @Override
     public UserQueryWithEntity on(String propertyName, String findRepositoryPropertyName) {
-        // YUFEI_TODO Auto-generated method stub
+
         return null;
     }
 

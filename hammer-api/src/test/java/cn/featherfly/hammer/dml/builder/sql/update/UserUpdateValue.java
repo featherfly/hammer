@@ -1,7 +1,7 @@
 
 package cn.featherfly.hammer.dml.builder.sql.update;
 
-import java.util.function.Consumer;
+import java.util.function.BooleanSupplier;
 
 import cn.featherfly.hammer.dml.builder.sql.query.UserQueryConditionGroupExpression;
 import cn.featherfly.hammer.expression.execute.UpdateValueExpression;
@@ -13,8 +13,8 @@ import cn.featherfly.hammer.expression.execute.UpdateValueExpression;
  *
  * @author zhongj
  */
-public class UserUpdateValue implements
-        UpdateValueExpression<UserPropertiesUpdate, UserQueryConditionGroupExpression, UserQueryConditionGroupExpression, Object, UserUpdateValue, UserUpdateNumberValue> {
+public class UserUpdateValue implements UpdateValueExpression<UserPropertiesUpdate, UserQueryConditionGroupExpression,
+        UserQueryConditionGroupExpression, Object, UserUpdateValue, UserUpdateNumberValue> {
 
     private String name;
 
@@ -39,9 +39,7 @@ public class UserUpdateValue implements
      * {@inheritDoc}
      */
     @Override
-    public UserPropertiesUpdate set(
-            Consumer<UpdateValueExpression<UserPropertiesUpdate, UserQueryConditionGroupExpression, UserQueryConditionGroupExpression, Object, UserUpdateValue, UserUpdateNumberValue>> consumer) {
-        // YUFEI_TODO Auto-generated method stub
-        return null;
+    public UserPropertiesUpdate set(BooleanSupplier whether, Object value) {
+        return update.set(whether, name, value);
     }
 }

@@ -1,8 +1,8 @@
 
 package cn.featherfly.hammer.sqldb.tpl;
 
-import cn.featherfly.common.db.mapping.JdbcMappingFactory;
 import cn.featherfly.common.db.dialect.Dialect;
+import cn.featherfly.common.db.mapping.JdbcMappingFactory;
 import cn.featherfly.hammer.tpl.TemplateDirectives;
 import cn.featherfly.hammer.tpl.TemplateMethods;
 import cn.featherfly.hammer.tpl.TemplateProcessEnv;
@@ -11,6 +11,7 @@ import cn.featherfly.hammer.tpl.directive.PropertiesMappingDirective;
 import cn.featherfly.hammer.tpl.directive.TemplateDirective;
 import cn.featherfly.hammer.tpl.method.TemplateMethod;
 import cn.featherfly.hammer.tpl.supports.ConditionParamsManager;
+import cn.featherfly.hammer.tpl.supports.PropertiesMappingManager;
 
 /**
  * <p>
@@ -22,9 +23,11 @@ import cn.featherfly.hammer.tpl.supports.ConditionParamsManager;
 public abstract class SqlDbTemplateProcessEnv<D extends TemplateDirective, M extends TemplateMethod>
         implements TemplateProcessEnv<D, M> {
 
-    protected ConditionParamsManager manager;
+    protected ConditionParamsManager conditionParamsManager;
 
-    protected Class<?> resultType;
+    protected PropertiesMappingManager propertiesMappingManager;
+
+    protected Class<?>[] resultTypes;
 
     protected JdbcMappingFactory mappingFactory;
 
@@ -69,8 +72,8 @@ public abstract class SqlDbTemplateProcessEnv<D extends TemplateDirective, M ext
      *
      * @return manager
      */
-    public ConditionParamsManager getManager() {
-        return manager;
+    public ConditionParamsManager getConditionParamsManager() {
+        return conditionParamsManager;
     }
 
     /**
@@ -78,26 +81,44 @@ public abstract class SqlDbTemplateProcessEnv<D extends TemplateDirective, M ext
      *
      * @param manager manager
      */
-    public void setManager(ConditionParamsManager manager) {
-        this.manager = manager;
+    public void setConditionParamsManager(ConditionParamsManager conditionParamsManager) {
+        this.conditionParamsManager = conditionParamsManager;
     }
 
     /**
-     * get resultType
+     * get propertiesMappingManager value
+     *
+     * @return propertiesMappingManager
+     */
+    public PropertiesMappingManager getPropertiesMappingManager() {
+        return propertiesMappingManager;
+    }
+
+    /**
+     * set propertiesMappingManager value
+     *
+     * @param propertiesMappingManager propertiesMappingManager
+     */
+    public void setPropertiesMappingManager(PropertiesMappingManager propertiesMappingManager) {
+        this.propertiesMappingManager = propertiesMappingManager;
+    }
+
+    /**
+     * Gets the result types.
      *
      * @return resultType
      */
-    public Class<?> getResultType() {
-        return resultType;
+    public Class<?>[] getResultTypes() {
+        return resultTypes;
     }
 
     /**
-     * set resultType
+     * Sets the result type.
      *
-     * @param resultType resultType
+     * @param resultTypes the new result type
      */
-    public void setResultType(Class<?> resultType) {
-        this.resultType = resultType;
+    public void setResultTypes(Class<?>... resultTypes) {
+        this.resultTypes = resultTypes;
     }
 
     /**

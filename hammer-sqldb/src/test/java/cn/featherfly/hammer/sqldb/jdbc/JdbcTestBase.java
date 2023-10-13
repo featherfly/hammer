@@ -3,7 +3,11 @@ package cn.featherfly.hammer.sqldb.jdbc;
 
 import java.io.File;
 import java.io.IOException;
+import java.sql.Connection;
+import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 import javax.sql.DataSource;
@@ -14,7 +18,9 @@ import org.testng.annotations.BeforeSuite;
 import org.testng.annotations.Optional;
 import org.testng.annotations.Parameters;
 
+import cn.featherfly.common.db.JdbcException;
 import cn.featherfly.common.db.SqlExecutor;
+import cn.featherfly.common.db.SqlFile;
 import cn.featherfly.common.db.dialect.Dialect;
 import cn.featherfly.common.db.dialect.Dialects;
 import cn.featherfly.common.db.dialect.PostgreSQLDialect;
@@ -26,20 +32,17 @@ import cn.featherfly.common.db.metadata.DatabaseMetadataManager;
 import cn.featherfly.common.lang.ClassLoaderUtils;
 import cn.featherfly.common.lang.Randoms;
 import cn.featherfly.common.lang.UriUtils;
-import cn.featherfly.constant.ConstantConfigurator;
-import cn.featherfly.hammer.sqldb.jdbc.vo.Role;
+import cn.featherfly.hammer.sqldb.jdbc.vo.r.Role;
 import cn.featherfly.hammer.tpl.TplConfigFactory;
 import cn.featherfly.hammer.tpl.TplConfigFactoryImpl;
 import cn.featherfly.hammer.tpl.freemarker.FreemarkerTemplatePreProcessor;
 
 /**
- * <p>
- * SqlOrmTest
- * </p>
+ * JdbcTestBase.
  *
  * @author zhongj
  */
-public class JdbcTestBase {
+public class JdbcTestBase extends TestBase {
 
     private static final String CONFIG_FILE_PATTERN = "constant.%s.yaml";
 
@@ -65,10 +68,12 @@ public class JdbcTestBase {
 
     protected static SqlTypeMappingManager sqlTypeMappingManager;
 
+    protected static JdbcFactory jdbcFactory;
+
     @BeforeSuite
     @Parameters({ "dataBase" })
     public void init(@Optional("mysql") String dataBase) throws IOException {
-        DOMConfigurator.configure(ClassLoaderUtils.getResource("log4j.xml", JdbcTestBase.class));
+        DOMConfigurator.configure(ClassLoaderUtils.getResource("log4j_dev.xml", this.getClass()));
 
         sqlTypeMappingManager = new SqlTypeMappingManager();
 
@@ -79,9 +84,14 @@ public class JdbcTestBase {
 
         configFactory = new TplConfigFactoryImpl("tpl/", ".yaml.tpl", basePackages,
                 new FreemarkerTemplatePreProcessor());
+
+        jdbcFactory = new JdbcFactoryImpl(dialect, sqlTypeMappingManager);
+
     }
 
     public void initDataBase(String dataBase) throws IOException {
+        System.err.println("***********************************************");
+        System.err.println("***********************************************");
         configFile = String.format(CONFIG_FILE_PATTERN, dataBase);
         switch (dataBase) {
             case "mysql":
@@ -98,11 +108,14 @@ public class JdbcTestBase {
                 configFile = String.format(CONFIG_FILE_PATTERN, "mysql");
                 break;
         }
+        System.err.println("***********************************************");
+        System.err.println("***********************************************");
     }
 
     //    @BeforeSuite(groups = "mysql", dependsOnMethods = "init")
     public void initMysql() throws IOException {
-        ConstantConfigurator.config();
+        System.err.println("initMysql");
+        //        ConstantConfigurator.config();
         //        ConstantConfigurator.config("constant.mysql.yaml");
 
         BasicDataSource ds = new BasicDataSource();
@@ -120,13 +133,13 @@ public class JdbcTestBase {
 
         // 初始化数据库
         SqlExecutor sqlExecutor = new SqlExecutor(ds);
-        sqlExecutor.execute(new File(ClassLoaderUtils.getResource("test.mysql.sql", JdbcTestBase.class).getFile()));
+        sqlExecutor.execute(SqlFile.read(ClassLoaderUtils.getResource("test.mysql.sql", this.getClass())));
 
         dialect = Dialects.MYSQL;
 
         //        jdbc = new SpringJdbcTemplateImpl(ds, dialect);
         //        jdbc = new JdbcImpl(ds, dialect, sqlTypeMappingManager);
-        jdbc = new JdbcImpl(ds, dialect, sqlTypeMappingManager);
+        jdbc = new JdbcSpringImpl(ds, dialect, sqlTypeMappingManager);
         metadata = DatabaseMetadataManager.getDefaultManager().create(ds);
 
         mappingFactory = new JdbcMappingFactoryImpl(metadata, dialect, sqlTypeMappingManager);
@@ -142,11 +155,12 @@ public class JdbcTestBase {
 
     //    @BeforeSuite(groups = "postgresql", dependsOnMethods = "init")
     public void initPostgresql() throws IOException {
-        //        ConstantConfigurator.config(CONFIG_FILE);
-        ConstantConfigurator.config("constant.postgresql.yaml");
+        System.err.println("initPostgresql");
+        //        ConstantConfigurator.config("constant.postgresql.yaml");
 
         BasicDataSource ds = new BasicDataSource();
-        ds.setUrl("jdbc:postgresql://localhost:5432/hammer_jdbc");
+        //        ds.setUrl("jdbc:postgresql://localhost:5432/hammer_jdbc");
+        ds.setUrl("jdbc:postgresql://::1:5432/hammer_jdbc"); // install postgresql in wsl with docker
         ds.setDriverClassName("org.postgresql.Driver");
         ds.setUsername("postgres");
         ds.setPassword("123456");
@@ -158,15 +172,16 @@ public class JdbcTestBase {
 
         // 初始化数据库
         SqlExecutor sqlExecutor = new SqlExecutor(ds);
-        sqlExecutor
-                .execute(new File(ClassLoaderUtils.getResource("test.postgresql.sql", JdbcTestBase.class).getFile()));
+        //        sqlExecutor
+        //                .execute(new File(ClassLoaderUtils.getResource("test.postgresql.sql", this.getClass()).getFile()));
+        sqlExecutor.execute(SqlFile.read(ClassLoaderUtils.getResource("test.postgresql.sql", this.getClass())));
 
         PostgreSQLDialect postgreSQLDialect = new PostgreSQLDialect();
         //        postgreSQLDialect.setTableAndColumnNameUppercase(StringConverter.UPPER_CASE);
         dialect = postgreSQLDialect;
 
         //        jdbc = new SpringJdbcTemplateImpl(ds, dialect);
-        jdbc = new JdbcImpl(ds, dialect, sqlTypeMappingManager);
+        jdbc = new JdbcSpringImpl(ds, dialect, sqlTypeMappingManager);
         metadata = DatabaseMetadataManager.getDefaultManager().create(ds);
 
         mappingFactory = new JdbcMappingFactoryImpl(metadata, dialect, sqlTypeMappingManager);
@@ -175,10 +190,10 @@ public class JdbcTestBase {
 
     //    @BeforeSuite(groups = "sqlite", dependsOnMethods = "init")
     public void initSQLite() throws IOException {
-        //        ConstantConfigurator.config(CONFIG_FILE);
-        ConstantConfigurator.config("constant.sqlite.yaml");
+        System.err.println("initSQLite");
+        //        ConstantConfigurator.config("constant.sqlite.yaml");
 
-        String path = new File(UriUtils.linkUri(this.getClass().getResource("/").getFile(), "hammer.sqlite3.db"))
+        String path = new File(UriUtils.linkUri(JdbcTestBase.class.getResource("/").getFile(), "hammer.sqlite3.db"))
                 .getPath();
         System.out.println(path);
         BasicDataSource ds = new BasicDataSource();
@@ -190,22 +205,48 @@ public class JdbcTestBase {
 
         // 初始化数据库
         SqlExecutor sqlExecutor = new SqlExecutor(ds);
-        sqlExecutor.execute(new File(ClassLoaderUtils.getResource("test.sqlite.sql", JdbcTestBase.class).getFile()));
+        //        sqlExecutor.execute(new File(ClassLoaderUtils.getResource("test.sqlite.sql", this.getClass()).getFile()));
+        sqlExecutor.execute(SqlFile.read(ClassLoaderUtils.getResource("test.sqlite.sql", this.getClass())));
 
         dialect = Dialects.SQLITE;
 
         //        jdbc = new SpringJdbcTemplateImpl(ds, dialect);
-        jdbc = new JdbcImpl(ds, dialect, sqlTypeMappingManager);
+        jdbc = new JdbcSpringImpl(ds, dialect, sqlTypeMappingManager);
         metadata = DatabaseMetadataManager.getDefaultManager().create(ds, "main");
 
         mappingFactory = new JdbcMappingFactoryImpl(metadata, dialect, sqlTypeMappingManager);
 
     }
 
-    Role role() {
+    protected Role role() {
         Role r = new Role();
         r.setName("n_" + Randoms.getInt(100));
         r.setDescp("descp_" + Randoms.getInt(100));
         return r;
     }
+
+    protected List<Role> roles(int size) {
+        List<Role> roles = new ArrayList<>();
+        for (int i = 0; i < size; i++) {
+            roles.add(role());
+        }
+        return roles;
+    }
+
+    protected int sum(int array[]) {
+        int size = 0;
+        for (int i : array) {
+            size += i;
+        }
+        return size;
+    }
+
+    protected Connection getConnection() {
+        try {
+            return dataSource.getConnection();
+        } catch (SQLException e) {
+            throw new JdbcException(e);
+        }
+    }
+
 }

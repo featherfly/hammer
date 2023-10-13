@@ -1,8 +1,12 @@
 
 package cn.featherfly.hammer.expression.condition.property;
 
+import java.util.function.BiPredicate;
+import java.util.function.Predicate;
+
 import cn.featherfly.common.lang.Lang;
-import cn.featherfly.common.repository.operate.QueryOperator.QueryPolicy;
+import cn.featherfly.common.operator.ComparisonOperator.MatchStrategy;
+import cn.featherfly.common.repository.IgnoreStrategy;
 import cn.featherfly.hammer.expression.condition.ContainsExpression;
 import cn.featherfly.hammer.expression.condition.EndWithExpression;
 import cn.featherfly.hammer.expression.condition.EqualsExpression;
@@ -20,7 +24,7 @@ import cn.featherfly.hammer.expression.condition.StartWithExpression;
  * @param <L> the generic type
  */
 public class RepositorySimpleStringExpression<C extends RepositoryConditionsExpression<C, L>,
-        L extends LogicExpression<C, L>> implements StringExpression<C, L> {
+        L extends LogicExpression<C, L>> implements StringPropertyExpression<C, L> {
 
     private String repository;
 
@@ -96,13 +100,13 @@ public class RepositorySimpleStringExpression<C extends RepositoryConditionsExpr
      * {@inheritDoc}
      */
     @Override
-    public L nin(String value) {
+    public L ni(String value) {
         if (Lang.isNotEmpty(repository)) {
             return expression.nin(repository, name, value);
         } else if (repositoryIndex > -1) {
             return expression.nin(repositoryIndex, name, value);
         } else {
-            return expression.nin(name, value);
+            return expression.ni(name, value);
         }
     }
 
@@ -222,13 +226,13 @@ public class RepositorySimpleStringExpression<C extends RepositoryConditionsExpr
      * {@inheritDoc}
      */
     @Override
-    public L eq(String value, QueryPolicy queryPolicy) {
+    public L eq(String value, MatchStrategy matchStrategy) {
         if (Lang.isNotEmpty(repository)) {
-            return expression.eq(repository, name, value, queryPolicy);
+            return expression.eq(repository, name, value, matchStrategy);
         } else if (repositoryIndex > -1) {
-            return expression.eq(repositoryIndex, name, value, queryPolicy);
+            return expression.eq(repositoryIndex, name, value, matchStrategy);
         } else {
-            return ((EqualsExpression<C, L>) expression).eq(name, value, queryPolicy);
+            return ((EqualsExpression<C, L>) expression).eq(name, value, matchStrategy);
         }
     }
 
@@ -236,13 +240,13 @@ public class RepositorySimpleStringExpression<C extends RepositoryConditionsExpr
      * {@inheritDoc}
      */
     @Override
-    public L ne(String value, QueryPolicy queryPolicy) {
+    public L ne(String value, MatchStrategy matchStrategy) {
         if (Lang.isNotEmpty(repository)) {
-            return expression.ne(repository, name, value, queryPolicy);
+            return expression.ne(repository, name, value, matchStrategy);
         } else if (repositoryIndex > -1) {
-            return expression.ne(repositoryIndex, name, value, queryPolicy);
+            return expression.ne(repositoryIndex, name, value, matchStrategy);
         } else {
-            return ((NotEqualsExpression<C, L>) expression).ne(name, value, queryPolicy);
+            return ((NotEqualsExpression<C, L>) expression).ne(name, value, matchStrategy);
         }
     }
 
@@ -250,13 +254,13 @@ public class RepositorySimpleStringExpression<C extends RepositoryConditionsExpr
      * {@inheritDoc}
      */
     @Override
-    public L sw(String value, QueryPolicy queryPolicy) {
+    public L sw(String value, MatchStrategy matchStrategy) {
         if (Lang.isNotEmpty(repository)) {
-            return expression.sw(repository, name, value, queryPolicy);
+            return expression.sw(repository, name, value, matchStrategy);
         } else if (repositoryIndex > -1) {
-            return expression.sw(repositoryIndex, name, value, queryPolicy);
+            return expression.sw(repositoryIndex, name, value, matchStrategy);
         } else {
-            return ((StartWithExpression<C, L>) expression).sw(name, value, queryPolicy);
+            return ((StartWithExpression<C, L>) expression).sw(name, value, matchStrategy);
         }
     }
 
@@ -264,13 +268,13 @@ public class RepositorySimpleStringExpression<C extends RepositoryConditionsExpr
      * {@inheritDoc}
      */
     @Override
-    public L co(String value, QueryPolicy queryPolicy) {
+    public L co(String value, MatchStrategy matchStrategy) {
         if (Lang.isNotEmpty(repository)) {
-            return expression.co(repository, name, value, queryPolicy);
+            return expression.co(repository, name, value, matchStrategy);
         } else if (repositoryIndex > -1) {
-            return expression.co(repositoryIndex, name, value, queryPolicy);
+            return expression.co(repositoryIndex, name, value, matchStrategy);
         } else {
-            return ((ContainsExpression<C, L>) expression).co(name, value, queryPolicy);
+            return ((ContainsExpression<C, L>) expression).co(name, value, matchStrategy);
         }
     }
 
@@ -278,13 +282,13 @@ public class RepositorySimpleStringExpression<C extends RepositoryConditionsExpr
      * {@inheritDoc}
      */
     @Override
-    public L ew(String value, QueryPolicy queryPolicy) {
+    public L ew(String value, MatchStrategy matchStrategy) {
         if (Lang.isNotEmpty(repository)) {
-            return expression.ew(repository, name, value, queryPolicy);
+            return expression.ew(repository, name, value, matchStrategy);
         } else if (repositoryIndex > -1) {
-            return expression.ew(repositoryIndex, name, value, queryPolicy);
+            return expression.ew(repositoryIndex, name, value, matchStrategy);
         } else {
-            return ((EndWithExpression<C, L>) expression).ew(name, value, queryPolicy);
+            return ((EndWithExpression<C, L>) expression).ew(name, value, matchStrategy);
         }
     }
 
@@ -292,13 +296,445 @@ public class RepositorySimpleStringExpression<C extends RepositoryConditionsExpr
      * {@inheritDoc}
      */
     @Override
-    public L lk(String value, QueryPolicy queryPolicy) {
+    public L lk(String value, MatchStrategy matchStrategy) {
         if (Lang.isNotEmpty(repository)) {
-            return expression.lk(repository, name, value, queryPolicy);
+            return expression.lk(repository, name, value, matchStrategy);
         } else if (repositoryIndex > -1) {
-            return expression.lk(repositoryIndex, name, value, queryPolicy);
+            return expression.lk(repositoryIndex, name, value, matchStrategy);
         } else {
-            return ((LikeExpression<C, L>) expression).lk(name, value, queryPolicy);
+            return ((LikeExpression<C, L>) expression).lk(name, value, matchStrategy);
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public L eq(String value, MatchStrategy matchStrategy, Predicate<String> ignoreStrategy) {
+        // YUFEI_TODO Auto-generated method stub
+        return null;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public L ne(String value, MatchStrategy matchStrategy, Predicate<String> ignoreStrategy) {
+        // YUFEI_TODO Auto-generated method stub
+        return null;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public L in(String[] value) {
+        // YUFEI_TODO Auto-generated method stub
+        return null;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public L in(String value, Predicate<String> ignoreStrategy) {
+        // YUFEI_TODO Auto-generated method stub
+        return null;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public L in(String[] value, Predicate<String[]> ignoreStrategy) {
+        // YUFEI_TODO Auto-generated method stub
+        return null;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public L ni(String[] value) {
+        // YUFEI_TODO Auto-generated method stub
+        return null;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public L ni(String value, Predicate<String> ignoreStrategy) {
+        // YUFEI_TODO Auto-generated method stub
+        return null;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public L ni(String[] value, Predicate<String[]> ignoreStrategy) {
+        // YUFEI_TODO Auto-generated method stub
+        return null;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public L sw(String value, MatchStrategy matchStrategy, Predicate<String> ignoreStrategy) {
+        // YUFEI_TODO Auto-generated method stub
+        return null;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public L co(String value, MatchStrategy matchStrategy, Predicate<String> ignoreStrategy) {
+        // YUFEI_TODO Auto-generated method stub
+        return null;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public L ew(String value, MatchStrategy matchStrategy, Predicate<String> ignoreStrategy) {
+        // YUFEI_TODO Auto-generated method stub
+        return null;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public L lk(String value, MatchStrategy matchStrategy, Predicate<String> ignoreStrategy) {
+        // YUFEI_TODO Auto-generated method stub
+        return null;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public L eq(String value, MatchStrategy matchStrategy, IgnoreStrategy ignoreStrategy) {
+        // YUFEI_TODO Auto-generated method stub
+        return null;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public L ne(String value, MatchStrategy matchStrategy, IgnoreStrategy ignoreStrategy) {
+        // YUFEI_TODO Auto-generated method stub
+        return null;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public L in(String value, IgnoreStrategy ignoreStrategy) {
+        // YUFEI_TODO Auto-generated method stub
+        return null;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public L in(String[] value, IgnoreStrategy ignoreStrategy) {
+        // YUFEI_TODO Auto-generated method stub
+        return null;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public L ni(String value, IgnoreStrategy ignoreStrategy) {
+        // YUFEI_TODO Auto-generated method stub
+        return null;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public L ni(String[] value, IgnoreStrategy ignoreStrategy) {
+        // YUFEI_TODO Auto-generated method stub
+        return null;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public L le(String value, IgnoreStrategy ignoreStrategy) {
+        // YUFEI_TODO Auto-generated method stub
+        return null;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public L le(String value, Predicate<String> ignoreStrategy) {
+        // YUFEI_TODO Auto-generated method stub
+        return null;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public L lt(String value, IgnoreStrategy ignoreStrategy) {
+        // YUFEI_TODO Auto-generated method stub
+        return null;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public L lt(String value, Predicate<String> ignoreStrategy) {
+        // YUFEI_TODO Auto-generated method stub
+        return null;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public L ge(String value, IgnoreStrategy ignoreStrategy) {
+        // YUFEI_TODO Auto-generated method stub
+        return null;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public L ge(String value, Predicate<String> ignoreStrategy) {
+        // YUFEI_TODO Auto-generated method stub
+        return null;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public L gt(String value, IgnoreStrategy ignoreStrategy) {
+        // YUFEI_TODO Auto-generated method stub
+        return null;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public L gt(String value, Predicate<String> ignoreStrategy) {
+        // YUFEI_TODO Auto-generated method stub
+        return null;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public L sw(String value, MatchStrategy matchStrategy, IgnoreStrategy ignoreStrategy) {
+        // YUFEI_TODO Auto-generated method stub
+        return null;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public L co(String value, MatchStrategy matchStrategy, IgnoreStrategy ignoreStrategy) {
+        // YUFEI_TODO Auto-generated method stub
+        return null;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public L ew(String value, MatchStrategy matchStrategy, IgnoreStrategy ignoreStrategy) {
+        // YUFEI_TODO Auto-generated method stub
+        return null;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public L lk(String value, MatchStrategy matchStrategy, IgnoreStrategy ignoreStrategy) {
+        // YUFEI_TODO Auto-generated method stub
+        return null;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public L ba(String min, String max) {
+        // YUFEI_TODO Auto-generated method stub
+        return null;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public L ba(String min, String max, IgnoreStrategy ignoreStrategy) {
+        // YUFEI_TODO Auto-generated method stub
+        return null;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public L nsw(String value, MatchStrategy matchStrategy) {
+        // YUFEI_TODO Auto-generated method stub
+        return null;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public L nsw(String value, MatchStrategy matchStrategy, IgnoreStrategy ignoreStrategy) {
+        // YUFEI_TODO Auto-generated method stub
+        return null;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public L nsw(String value, MatchStrategy matchStrategy, Predicate<String> ignoreStrategy) {
+        // YUFEI_TODO Auto-generated method stub
+        return null;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public L nco(String value, MatchStrategy matchStrategy) {
+        // YUFEI_TODO Auto-generated method stub
+        return null;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public L nco(String value, MatchStrategy matchStrategy, IgnoreStrategy ignoreStrategy) {
+        // YUFEI_TODO Auto-generated method stub
+        return null;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public L nco(String value, MatchStrategy matchStrategy, Predicate<String> ignoreStrategy) {
+        // YUFEI_TODO Auto-generated method stub
+        return null;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public L newv(String value, MatchStrategy matchStrategy) {
+        // YUFEI_TODO Auto-generated method stub
+        return null;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public L newv(String value, MatchStrategy matchStrategy, IgnoreStrategy ignoreStrategy) {
+        // YUFEI_TODO Auto-generated method stub
+        return null;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public L newv(String value, MatchStrategy matchStrategy, Predicate<String> ignoreStrategy) {
+        // YUFEI_TODO Auto-generated method stub
+        return null;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public L nl(String value, MatchStrategy matchStrategy) {
+        // YUFEI_TODO Auto-generated method stub
+        return null;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public L nl(String value, MatchStrategy matchStrategy, IgnoreStrategy ignoreStrategy) {
+        // YUFEI_TODO Auto-generated method stub
+        return null;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public L nl(String value, MatchStrategy matchStrategy, Predicate<String> ignoreStrategy) {
+        // YUFEI_TODO Auto-generated method stub
+        return null;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public L ba(String min, String max, BiPredicate<String, String> ignoreStrategy) {
+        // YUFEI_TODO Auto-generated method stub
+        return null;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public L nba(String min, String max) {
+        // YUFEI_TODO Auto-generated method stub
+        return null;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public L nba(String min, String max, IgnoreStrategy ignoreStrategy) {
+        // YUFEI_TODO Auto-generated method stub
+        return null;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public L nba(String min, String max, BiPredicate<String, String> ignoreStrategy) {
+        // YUFEI_TODO Auto-generated method stub
+        return null;
     }
 }

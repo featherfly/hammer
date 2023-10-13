@@ -5,6 +5,8 @@ selectByUsername2: >
 selectByUsernameAndPassword: >
     select username, password pwd from <@wrap value='user'/> where username = :username and password = :password
 selectUser: select username, password pwd from ${tpl_wrap('user')}
+selectUserList: >
+    select <@prop mapping='cn.featherfly.hammer.sqldb.jdbc.vo.r.User'/> from ${tpl_wrap('user')}
 selectByAge: "select <@prop/> from ${tpl_wrap('user')} where age = :age"
 selectByAge2: >
     select <@prop/> from ${tpl_wrap('user')} where age = :age
@@ -26,6 +28,7 @@ selectConditions: "select id, username, password pwd, mobile_no, age from ${tpl_
 </@and>
 </@where>"
 selectAvg: "select avg(age) from ${tpl_wrap('user')}"
+selectCount: "select count(id) from ${tpl_wrap('user')}"
 selectString: "select username from ${tpl_wrap('user')} where id = 1"
 selectAvg2: "select avg(age) from ${tpl_wrap('user')} where age > :age"
 selectString2: "select username from ${tpl_wrap('user')} where id = :id"

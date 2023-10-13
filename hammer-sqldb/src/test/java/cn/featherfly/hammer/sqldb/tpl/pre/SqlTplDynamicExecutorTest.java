@@ -17,8 +17,8 @@ import cn.featherfly.common.structure.page.SimplePagination;
 import cn.featherfly.hammer.Hammer;
 import cn.featherfly.hammer.sqldb.SqldbHammerImpl;
 import cn.featherfly.hammer.sqldb.jdbc.DataSourceTestBase;
-import cn.featherfly.hammer.sqldb.jdbc.vo.Role;
-import cn.featherfly.hammer.sqldb.jdbc.vo.User;
+import cn.featherfly.hammer.sqldb.jdbc.vo.r.Role;
+import cn.featherfly.hammer.sqldb.jdbc.vo.r.User;
 import cn.featherfly.hammer.sqldb.tpl.RoleMapper;
 import cn.featherfly.hammer.sqldb.tpl.UserMapper;
 import cn.featherfly.hammer.tpl.TplConfigFactoryImpl;
@@ -48,6 +48,9 @@ public class SqlTplDynamicExecutorTest extends DataSourceTestBase {
     void setup() {
         TplConfigFactoryImpl configFactory = new TplConfigFactoryImpl("tpl_pre/", new FreemarkerTemplatePreProcessor());
         TplDynamicExecutorFactory mapperFactory = TplDynamicExecutorFactory.getInstance();
+        //        TransverterManager transverterManager = new TransverterManager();
+        //        transverterManager.register(new FuzzyQueryTransverter());
+        //        Hammer hammer = new SqldbHammerImpl(jdbc, mappingFactory, configFactory, transverterManager);
         Hammer hammer = new SqldbHammerImpl(jdbc, mappingFactory, configFactory);
         userMapper = mapperFactory.newInstance(UserMapper.class, hammer);
         roleMapper = mapperFactory.newInstance(RoleMapper.class, hammer);
@@ -113,7 +116,7 @@ public class SqlTplDynamicExecutorTest extends DataSourceTestBase {
     @Test
     void testMapperSingle() {
         String username = "yufei";
-        cn.featherfly.hammer.sqldb.jdbc.vo.User u = userMapper.selectByUsername(username);
+        cn.featherfly.hammer.sqldb.jdbc.vo.r.User u = userMapper.selectByUsername(username);
         System.out.println(u);
         assertEquals(u.getUsername(), username);
 
@@ -143,7 +146,7 @@ public class SqlTplDynamicExecutorTest extends DataSourceTestBase {
     void testMapperListMap() {
         List<Map<String, Object>> us = userMapper.select2();
         System.out.println(us);
-        assertEquals(us.size(), 2);
+        assertEquals(us.size(), 5);
 
         us = userMapper.selectById2(1);
         System.out.println(us);

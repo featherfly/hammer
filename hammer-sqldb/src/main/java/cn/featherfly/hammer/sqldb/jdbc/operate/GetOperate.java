@@ -1,16 +1,17 @@
 package cn.featherfly.hammer.sqldb.jdbc.operate;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
 import cn.featherfly.common.bean.BeanUtils;
 import cn.featherfly.common.db.mapping.ClassMappingUtils;
+import cn.featherfly.common.db.mapping.JdbcClassMapping;
+import cn.featherfly.common.db.mapping.JdbcPropertyMapping;
 import cn.featherfly.common.db.mapping.SqlTypeMappingManager;
 import cn.featherfly.common.db.metadata.DatabaseMetadata;
 import cn.featherfly.common.lang.Lang;
-import cn.featherfly.common.repository.mapping.ClassMapping;
-import cn.featherfly.common.repository.mapping.PropertyMapping;
 import cn.featherfly.common.repository.mapping.RowMapper;
 import cn.featherfly.hammer.sqldb.SqldbHammerException;
 import cn.featherfly.hammer.sqldb.jdbc.Jdbc;
@@ -25,29 +26,29 @@ import cn.featherfly.hammer.sqldb.jdbc.Jdbc;
  */
 public class GetOperate<T> extends AbstractQueryOperate<T> {
 
-    /**
-     * 使用给定数据源以及给定对象生成读取操作.
-     *
-     * @param jdbc                  jdbc
-     * @param classMapping          classMapping
-     * @param sqlTypeMappingManager the sql type mapping manager
-     */
-    public GetOperate(Jdbc jdbc, ClassMapping<T> classMapping, SqlTypeMappingManager sqlTypeMappingManager) {
-        super(jdbc, classMapping, sqlTypeMappingManager);
-    }
-
-    /**
-     * 使用给定数据源以及给定对象生成读取操作.
-     *
-     * @param jdbc                  jdbc
-     * @param classMapping          classMapping
-     * @param sqlTypeMappingManager the sql type mapping manager
-     * @param dataBase              具体库
-     */
-    public GetOperate(Jdbc jdbc, ClassMapping<T> classMapping, SqlTypeMappingManager sqlTypeMappingManager,
-            String dataBase) {
-        super(jdbc, classMapping, sqlTypeMappingManager, dataBase);
-    }
+    //    /**
+    //     * 使用给定数据源以及给定对象生成读取操作.
+    //     *
+    //     * @param jdbc                  jdbc
+    //     * @param classMapping          classMapping
+    //     * @param sqlTypeMappingManager the sql type mapping manager
+    //     */
+    //    public GetOperate(Jdbc jdbc, JdbcClassMapping<T> classMapping, SqlTypeMappingManager sqlTypeMappingManager) {
+    //        super(jdbc, classMapping, sqlTypeMappingManager);
+    //    }
+    //
+    //    /**
+    //     * 使用给定数据源以及给定对象生成读取操作.
+    //     *
+    //     * @param jdbc                  jdbc
+    //     * @param classMapping          classMapping
+    //     * @param sqlTypeMappingManager the sql type mapping manager
+    //     * @param dataBase              具体库
+    //     */
+    //    public GetOperate(Jdbc jdbc, JdbcClassMapping<T> classMapping, SqlTypeMappingManager sqlTypeMappingManager,
+    //            String dataBase) {
+    //        super(jdbc, classMapping, sqlTypeMappingManager, dataBase);
+    //    }
 
     /**
      * 使用给定数据源以及给定对象生成读取操作.
@@ -57,12 +58,12 @@ public class GetOperate<T> extends AbstractQueryOperate<T> {
      * @param sqlTypeMappingManager the sql type mapping manager
      * @param databaseMetadata      the database metadata
      */
-    public GetOperate(Jdbc jdbc, ClassMapping<T> classMapping, SqlTypeMappingManager sqlTypeMappingManager,
+    public GetOperate(Jdbc jdbc, JdbcClassMapping<T> classMapping, SqlTypeMappingManager sqlTypeMappingManager,
             DatabaseMetadata databaseMetadata) {
         super(jdbc, classMapping, sqlTypeMappingManager, databaseMetadata);
     }
 
-    private List<PropertyMapping> pkPms;
+    private List<JdbcPropertyMapping> pkPms;
 
     /**
      * <p>
@@ -88,16 +89,14 @@ public class GetOperate<T> extends AbstractQueryOperate<T> {
     }
 
     /**
-     * <p>
-     * 返回对象的id值列表,主要用于复合主键.如果传入对象为空或没有主键标示属性，则返回空.
-     * </p>
+     * 返回对象的id值列表,主要用于复合主键.如果传入对象为空或没有主键标示属性，则返回空列表.
      *
      * @param entity 对象
      * @return id值列表
      */
     public List<Serializable> getIds(T entity) {
         if (entity == null) {
-            return null;
+            return new ArrayList<>(0);
         }
         return pkPms.stream()
                 .map(p -> (Serializable) BeanUtils.getProperty(entity, ClassMappingUtils.getPropertyAliasName(p)))
@@ -134,7 +133,13 @@ public class GetOperate<T> extends AbstractQueryOperate<T> {
             throw new SqldbHammerException("#get.id.null");
         }
         if (forUpdate) {
-            return jdbc.querySingle(sql + " for update", (RowMapper<T>) (res, rowNum) -> mapRow(res, rowNum), id);
+            if (jdbc.getDialect().supportSelectForUpdate()) { // 后续来实现
+                return jdbc.querySingle(sql + " for update", (RowMapper<T>) (res, rowNum) -> mapRow(res, rowNum), id);
+            } else {
+                // TODO 后续加入行为可配置策略
+                throw new SqldbHammerException(
+                        "unsupport [select...for update] with dialect " + jdbc.getDialect().getClass().getSimpleName());
+            }
         } else {
             return jdbc.querySingle(sql, (RowMapper<T>) (res, rowNum) -> mapRow(res, rowNum), id);
         }
@@ -189,13 +194,13 @@ public class GetOperate<T> extends AbstractQueryOperate<T> {
         pkPms = classMapping.getPrivaryKeyPropertyMappings();
         logger.debug("sql: {}", sql);
     }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    protected String initCondition() {
-        // 重写了initSql，此方法在此类已经没用了
-        return "";
-    }
+    //
+    //    /**
+    //     * {@inheritDoc}
+    //     */
+    //    @Override
+    //    protected String initCondition() {
+    //        // 重写了initSql，此方法在此类已经没用了
+    //        return "";
+    //    }
 }

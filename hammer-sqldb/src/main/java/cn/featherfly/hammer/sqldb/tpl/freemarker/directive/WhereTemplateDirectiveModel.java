@@ -37,7 +37,7 @@ public class WhereTemplateDirectiveModel implements FreemarkerDirective, WhereDi
             if (condition.length() > 0) {
                 out.write(" where ");
                 out.write(condition);
-                //                out.write(condition.replaceAll("\n\n", "\n")); //TODO 后续加入配置来处理空白行的问题
+                //                out.write(condition.replaceAll("\n\n", "\n")); //ENHANCE 后续加入配置来处理空白行的问题
                 out.write(" ");
             }
         }

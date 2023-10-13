@@ -5,13 +5,13 @@ import java.io.Serializable;
 import java.util.List;
 import java.util.function.Function;
 
-import cn.featherfly.common.lang.function.SerializableFunction;
-import cn.featherfly.common.lang.function.SerializableSupplier;
-import cn.featherfly.common.repository.IgnorePolicy;
-import cn.featherfly.common.repository.operate.LogicOperator;
-import cn.featherfly.hammer.dsl.execute.Delete;
-import cn.featherfly.hammer.dsl.execute.Update;
-import cn.featherfly.hammer.dsl.query.TypeQueryEntity;
+import cn.featherfly.common.function.serializable.SerializableFunction;
+import cn.featherfly.common.function.serializable.SerializableSupplier;
+import cn.featherfly.common.operator.LogicOperator;
+import cn.featherfly.common.repository.IgnoreStrategy;
+import cn.featherfly.hammer.dsl.entity.execute.EntityDelete;
+import cn.featherfly.hammer.dsl.entity.execute.EntityUpdate;
+import cn.featherfly.hammer.dsl.entity.query.EntityQueryFetch;
 
 /**
  * GenericHammer .
@@ -31,20 +31,42 @@ public interface GenericHammer<E, ID extends Serializable> {
     int save(E entity);
 
     /**
-     * save entities.
+     * batch save entity array.
      *
+     * @param <E>      generic type
      * @param entities entity array to save
      * @return effect data row num
      */
-    int save(@SuppressWarnings("unchecked") E... entities);
+    int[] save(@SuppressWarnings("unchecked") E... entities);
 
     /**
-     * save entities.
+     * batch save entity array.
      *
+     * @param <E>       generic type
+     * @param entities  entity array to save
+     * @param batchSize the batch size
+     * @return effect data row num
+     */
+    int[] save(E[] entities, int batchSize);
+
+    /**
+     * batch save entity list.
+     *
+     * @param <E>      generic type
      * @param entities entity list to save
      * @return effect data row num
      */
-    int save(List<E> entities);
+    int[] save(List<E> entities);
+
+    /**
+     * batch save entity list.
+     *
+     * @param <E>       generic type
+     * @param entities  entity list to save
+     * @param batchSize the batch size
+     * @return effect data row num
+     */
+    int[] save(List<E> entities, int batchSize);
 
     /**
      * update entity, update all values. equal invoke method
@@ -64,7 +86,7 @@ public interface GenericHammer<E, ID extends Serializable> {
      * @param entities entity array to update
      * @return effect data row num
      */
-    int update(@SuppressWarnings("unchecked") E... entities);
+    int[] update(@SuppressWarnings("unchecked") E... entities);
 
     /**
      * update all values for each entity in entity list. equal invoke method
@@ -74,7 +96,18 @@ public interface GenericHammer<E, ID extends Serializable> {
      * @param entities entity list to update
      * @return effect data row num
      */
-    int update(List<E> entities);
+    int[] update(List<E> entities);
+
+    /**
+     * update all values for each entity in entity list. equal invoke method
+     * {@link #update(List, IgnorePolicy)} with params (entity,
+     * IgnorePolicy.NONE)
+     *
+     * @param entities  entity list to update
+     * @param batchSize the batch size
+     * @return effect data row num
+     */
+    int[] update(List<E> entities, int batchSize);
 
     /**
      * /** merge entity, update values ignore null or empty(string, array,
@@ -82,20 +115,20 @@ public interface GenericHammer<E, ID extends Serializable> {
      * {@link #update(Object, IgnorePolicy)} with params (entity,
      * IgnorePolicy.EMPTY)
      *
-     * @param entity       entity to update
-     * @param ignorePolicy ignore value to update policy
+     * @param entity         entity to update
+     * @param ignoreStrategy ignore value to update strategy
      * @return effect data row num
      */
-    int update(E entity, IgnorePolicy ignorePolicy);
+    int update(E entity, IgnoreStrategy ignoreStrategy);
 
     /**
-     * update values with ignorePolicy for each entity in entity list.
+     * update values with ignoreStrategy for each entity in entity list.
      *
-     * @param entities     entity list to update
-     * @param ignorePolicy ignore value to update policy
+     * @param entities       entity list to update
+     * @param ignoreStrategy ignore value to update strategy
      * @return effect data row num
      */
-    int update(List<E> entities, IgnorePolicy ignorePolicy);
+    int[] update(List<E> entities, IgnoreStrategy ignoreStrategy);
 
     /**
      * merge entity, update values ignore null or empty(string, list, map)
@@ -115,7 +148,7 @@ public interface GenericHammer<E, ID extends Serializable> {
      * @param entities entity array to merge
      * @return effect data row num
      */
-    int merge(@SuppressWarnings("unchecked") E... entities);
+    int[] merge(@SuppressWarnings("unchecked") E... entities);
 
     /**
      * update values ignore null or empty(string, array, collectoin, map) value
@@ -126,7 +159,7 @@ public interface GenericHammer<E, ID extends Serializable> {
      * @param entities entity list to merge
      * @return effect data row num
      */
-    int merge(List<E> entities);
+    int[] merge(List<E> entities);
 
     /**
      * delete entity.
@@ -142,7 +175,7 @@ public interface GenericHammer<E, ID extends Serializable> {
      * @param entities entity array to delete
      * @return effect data row num
      */
-    int delete(@SuppressWarnings("unchecked") E... entities);
+    int[] delete(@SuppressWarnings("unchecked") E... entities);
 
     /**
      * delete each entity in entity list.
@@ -150,7 +183,7 @@ public interface GenericHammer<E, ID extends Serializable> {
      * @param entities entity list to delete
      * @return effect data row num
      */
-    int delete(List<E> entities);
+    int[] delete(List<E> entities);
 
     /**
      * delete entity.
@@ -166,7 +199,7 @@ public interface GenericHammer<E, ID extends Serializable> {
      * @param ids entity id array
      * @return effect data row num
      */
-    int deleteIds(@SuppressWarnings("unchecked") ID... ids);
+    int[] deleteIds(@SuppressWarnings("unchecked") ID... ids);
 
     /**
      * delete each entity in entity id list.
@@ -174,7 +207,7 @@ public interface GenericHammer<E, ID extends Serializable> {
      * @param ids entity id list
      * @return effect data row num
      */
-    int deleteIds(List<ID> ids);
+    int[] deleteIds(List<ID> ids);
 
     /**
      * get entity by id.
@@ -211,14 +244,6 @@ public interface GenericHammer<E, ID extends Serializable> {
     List<E> get(List<ID> ids);
 
     /**
-     * get entity by id.
-     *
-     * @param entity entity with id value
-     * @return entity
-     */
-    E load(E entity);
-
-    /**
      * query id of type then lock and update.
      *
      * @param id             entity id
@@ -226,6 +251,14 @@ public interface GenericHammer<E, ID extends Serializable> {
      * @return updated entity
      */
     E getLockUpdate(Serializable id, Function<E, E> updateFunction);
+
+    /**
+     * get entity by id.
+     *
+     * @param entity entity with id value
+     * @return entity
+     */
+    E load(E entity);
 
     /**
      * query id of entity then lock and update.
@@ -266,20 +299,20 @@ public interface GenericHammer<E, ID extends Serializable> {
      *
      * @return QueryEntity
      */
-    TypeQueryEntity query();
+    EntityQueryFetch<E> query();
 
     /**
      * create update for entityType.
      *
      * @return Update
      */
-    Update update();
+    EntityUpdate<E> update();
 
     /**
      * create delete for entityType.
      *
      * @return Delete
      */
-    Delete delete();
+    EntityDelete<E> delete();
 
 }

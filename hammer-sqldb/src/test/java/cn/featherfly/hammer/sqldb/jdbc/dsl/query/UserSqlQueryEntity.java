@@ -3,7 +3,7 @@ package cn.featherfly.hammer.sqldb.jdbc.dsl.query;
 
 import cn.featherfly.common.db.mapping.JdbcMappingFactory;
 import cn.featherfly.hammer.sqldb.jdbc.dsl.type.StaticTypeQueryEntity;
-import cn.featherfly.hammer.sqldb.jdbc.vo.User;
+import cn.featherfly.hammer.sqldb.jdbc.vo.r.User;
 
 /**
  * <p>
@@ -17,19 +17,19 @@ public class UserSqlQueryEntity
 
     private JdbcMappingFactory mappingFactory;
 
-    SqlQueryEntityProperties queryEntityProperties;
+    SqlQueryEntity queryEntity;
 
     /**
-     * @param queryEntityProperties
+     * @param queryEntity
      */
-    public UserSqlQueryEntity(SqlQueryEntityProperties queryEntityProperties, JdbcMappingFactory mappingFactory) {
-        super(queryEntityProperties, mappingFactory);
+    public UserSqlQueryEntity(SqlQueryEntity queryEntity, JdbcMappingFactory mappingFactory) {
+        super(queryEntity, mappingFactory);
         this.mappingFactory = mappingFactory;
-        this.queryEntityProperties = queryEntityProperties;
+        this.queryEntity = queryEntity;
     }
 
     public UserSqlQueryProperties properties() {
-        return new UserSqlQueryProperties(queryEntityProperties, mappingFactory);
+        return new UserSqlQueryProperties(queryEntity, mappingFactory);
     }
 
     /**

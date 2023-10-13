@@ -8,13 +8,14 @@ import java.util.Set;
 
 import cn.featherfly.common.db.Table;
 import cn.featherfly.common.db.mapping.ClassMappingUtils;
+import cn.featherfly.common.db.mapping.JdbcClassMapping;
 import cn.featherfly.common.db.mapping.JdbcMappingFactory;
 import cn.featherfly.common.lang.Lang;
 import cn.featherfly.common.lang.WordUtils;
-import cn.featherfly.common.repository.mapping.ClassMapping;
 import cn.featherfly.hammer.tpl.TplException;
 import cn.featherfly.hammer.tpl.directive.PropertiesMappingDirective;
 import cn.featherfly.hammer.tpl.freemarker.FreemarkerDirective;
+import cn.featherfly.hammer.tpl.supports.PropertiesMappingManager;
 import freemarker.core.Environment;
 import freemarker.template.TemplateDirectiveBody;
 import freemarker.template.TemplateException;
@@ -33,20 +34,28 @@ public class PropertiesMappingDirectiveModel extends PropertiesMappingDirective 
     private JdbcMappingFactory mappingFactory;
 
     /**
+     * Instantiates a new properties mapping directive model.
+     *
      * @param mappingFactory mappingFactory
-     * @param resultType     resultType
+     * @param manager        the manager
+     * @param resultTypes    the result types
      */
-    public PropertiesMappingDirectiveModel(JdbcMappingFactory mappingFactory, Class<?> resultType) {
-        this(DEFAULT_PARAM_NAME_NAME, mappingFactory, resultType);
+    public PropertiesMappingDirectiveModel(JdbcMappingFactory mappingFactory, PropertiesMappingManager manager,
+            Class<?>... resultTypes) {
+        this(DEFAULT_PARAM_NAME_NAME, mappingFactory, manager, resultTypes);
     }
 
     /**
+     * Instantiates a new properties mapping directive model.
+     *
      * @param paramName      paramName
      * @param mappingFactory mappingFactory
-     * @param resultType     resultType
+     * @param manager        the manager
+     * @param resultTypes    the result types
      */
-    public PropertiesMappingDirectiveModel(String paramName, JdbcMappingFactory mappingFactory, Class<?> resultType) {
-        super(paramName, mappingFactory, resultType);
+    public PropertiesMappingDirectiveModel(String paramName, JdbcMappingFactory mappingFactory,
+            PropertiesMappingManager manager, Class<?>... resultTypes) {
+        super(paramName, mappingFactory, manager, resultTypes);
         // FIXME 这里暂时还没有把接口抽出来，暂时只定义了一个接口符号，后续来改
         this.mappingFactory = mappingFactory;
     }
@@ -93,11 +102,15 @@ public class PropertiesMappingDirectiveModel extends PropertiesMappingDirective 
             }
         }
 
+        final boolean aliasIsEmpty = Lang.isEmpty(aliasParam);
+        final String alias = aliasParam;
+
         if (mappingType == null) {
-            mappingType = resultType;
+            mappingType = getResultType(manager.getIndex());
+            manager.addValue(new PropertiesMappingManager.Value(alias, mappingType, nameParam));
         }
 
-        ClassMapping<?> classMapping = null;
+        JdbcClassMapping<?> classMapping = null;
         if (mappingType == null) {
             if (Lang.isEmpty(nameParam)) {
                 throw new TplException(
@@ -111,15 +124,12 @@ public class PropertiesMappingDirectiveModel extends PropertiesMappingDirective 
         // Do the actual directive execution:
 
         Writer out = env.getOut();
-        final boolean aliasIsEmpty = Lang.isEmpty(aliasParam);
-        final String alias = aliasParam;
         final StringBuilder result = new StringBuilder();
 
         if (classMapping == null) {
             Table tableMetadata = mappingFactory.getMetadata().getTable(nameParam.toUpperCase());
             tableMetadata.getColumns().forEach(column -> {
-                // TODO 更新版本后WordUtils.parseToUpperFirst就有除了大写其余全部小写的处理了，到时候不需要再先转一次小写
-                String propName = WordUtils.parseToUpperFirst(column.getName().toLowerCase(), '_');
+                String propName = WordUtils.parseToUpperFirst(column.getName(), '_');
                 if (aliasIsEmpty) {
                     result.append(" " + column.getName() + " as " + propName + ",");
                 } else {
@@ -131,7 +141,7 @@ public class PropertiesMappingDirectiveModel extends PropertiesMappingDirective 
             }
             out.write(result.toString());
         } else {
-            out.write(ClassMappingUtils.getSelectColumnsSql(classMapping, alias, mappingFactory.getDialect()));
+            out.write(ClassMappingUtils.getSelectColumnsSql(classMapping, alias, alias, mappingFactory.getDialect()));
         }
 
     }
