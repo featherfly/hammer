@@ -10,6 +10,7 @@
  */
 package cn.featherfly.hammer.sqldb.jdbc.dsl.entity.condition;
 
+import java.util.concurrent.atomic.AtomicInteger;
 import java.util.function.Predicate;
 
 import cn.featherfly.common.function.serializable.SerializableFunction;
@@ -43,7 +44,7 @@ public class MulitiEntityNotContainsExpressionImpl<C extends ConditionExpression
      */
     @Override
     public <E> L nco(int index, SerializableFunction<E, String> name, String value, MatchStrategy matchStrategy) {
-        return proxy.nco0(index, name, value, matchStrategy, ignoreStrategy);
+        return proxy.nco0(new AtomicInteger(index), name, value, matchStrategy, ignoreStrategy);
     }
 
     /**
@@ -52,7 +53,7 @@ public class MulitiEntityNotContainsExpressionImpl<C extends ConditionExpression
     @Override
     public <E> L nco(int index, SerializableFunction<E, String> name, String value, MatchStrategy matchStrategy,
             Predicate<String> ignoreStrategy) {
-        return proxy.nco0(index, name, value, matchStrategy, ignoreStrategy);
+        return proxy.nco0(new AtomicInteger(index), name, value, matchStrategy, ignoreStrategy);
     }
 
     /**
@@ -60,7 +61,7 @@ public class MulitiEntityNotContainsExpressionImpl<C extends ConditionExpression
      */
     @Override
     public L nco(int index, SerializableSupplier<String> property, MatchStrategy matchStrategy) {
-        return proxy.nco0(index, property, matchStrategy, ignoreStrategy);
+        return proxy.nco0(new AtomicInteger(index), property, matchStrategy, ignoreStrategy);
     }
 
     /**
@@ -69,6 +70,6 @@ public class MulitiEntityNotContainsExpressionImpl<C extends ConditionExpression
     @Override
     public L nco(int index, SerializableSupplier<String> property, MatchStrategy matchStrategy,
             Predicate<String> ignoreStrategy) {
-        return proxy.nco0(index, property, matchStrategy, ignoreStrategy);
+        return proxy.nco0(new AtomicInteger(index), property, matchStrategy, ignoreStrategy);
     }
 }

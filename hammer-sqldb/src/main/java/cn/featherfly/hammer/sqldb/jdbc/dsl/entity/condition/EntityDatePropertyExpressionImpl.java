@@ -4,6 +4,7 @@ package cn.featherfly.hammer.sqldb.jdbc.dsl.entity.condition;
 import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
+import java.util.concurrent.atomic.AtomicInteger;
 import java.util.function.BiPredicate;
 import java.util.function.Predicate;
 
@@ -14,6 +15,7 @@ import cn.featherfly.common.repository.IgnoreStrategy;
 import cn.featherfly.hammer.expression.condition.ConditionExpression;
 import cn.featherfly.hammer.expression.condition.LogicExpression;
 import cn.featherfly.hammer.expression.entity.condition.property.EntityDatePropertyExpression;
+import cn.featherfly.hammer.sqldb.jdbc.dsl.entity.EntitySqlRelation;
 
 /**
  * entity date property expression implements.
@@ -32,27 +34,31 @@ public class EntityDatePropertyExpressionImpl<E, D extends Date, C extends Condi
     /**
      * Instantiates a new entity date property expression impl.
      *
-     * @param index      the index
-     * @param name       the name
-     * @param expression the expression
-     * @param factory    the factory
+     * @param index         the index
+     * @param name          the name
+     * @param expression    the expression
+     * @param factory       the factory
+     * @param queryRelation the query relation
      */
     public EntityDatePropertyExpressionImpl(int index, SerializableFunction<E, D> name,
-            AbstractMulitiEntityConditionExpression<C, L> expression, JdbcMappingFactory factory) {
-        super(index, name, expression, factory);
+            AbstractMulitiEntityConditionExpression<C, L> expression, JdbcMappingFactory factory,
+            EntitySqlRelation<?, ?> queryRelation) {
+        super(new AtomicInteger(index), name, expression, factory, queryRelation);
     }
 
     /**
      * Instantiates a new entity date property expression impl.
      *
-     * @param index        the index
-     * @param propertyList the property list
-     * @param expression   the expression
-     * @param factory      the factory
+     * @param index         the index
+     * @param propertyList  the property list
+     * @param expression    the expression
+     * @param factory       the factory
+     * @param queryRelation the query relation
      */
-    public EntityDatePropertyExpressionImpl(int index, List<Serializable> propertyList,
-            AbstractMulitiEntityConditionExpression<C, L> expression, JdbcMappingFactory factory) {
-        super(index, propertyList, expression, factory);
+    public EntityDatePropertyExpressionImpl(AtomicInteger index, List<Serializable> propertyList,
+            AbstractMulitiEntityConditionExpression<C, L> expression, JdbcMappingFactory factory,
+            EntitySqlRelation<?, ?> queryRelation) {
+        super(index, propertyList, expression, factory, queryRelation);
     }
 
     /**

@@ -11,6 +11,7 @@
 
 package cn.featherfly.hammer.sqldb.sql.dml;
 
+import java.util.concurrent.atomic.AtomicInteger;
 import java.util.function.Predicate;
 
 import cn.featherfly.common.db.dialect.Dialect;
@@ -102,9 +103,20 @@ public class SqlConditionGroupExpressionBuilder extends
      * {@inheritDoc}
      */
     @Override
-    protected <R> BuildableConditionGroupLogicExpression eq_ne(int index, ComparisonOperator comparisonOperator,
-            PropertyMapping<?> pm, R value, MatchStrategy matchStrategy, Predicate<?> ignoreStrategy) {
+    protected <R> BuildableConditionGroupLogicExpression eq_ne(AtomicInteger index,
+            ComparisonOperator comparisonOperator, PropertyMapping<?> pm, R value, MatchStrategy matchStrategy,
+            Predicate<?> ignoreStrategy) {
         // IMPLSOON 未实现
         throw new NotImplementedException();
     }
+
+    //    /**
+    //     * {@inheritDoc}
+    //     */
+    //    @Override
+    //    protected <R> BuildableConditionGroupLogicExpression eq_ne(int index, ComparisonOperator comparisonOperator,
+    //            List<PropertyMapping<?>> pms, R value, MatchStrategy matchStrategy, Predicate<?> ignoreStrategy) {
+    //        // IMPLSOON 未实现
+    //        throw new NotImplementedException();
+    //    }
 }

@@ -710,8 +710,8 @@ public class DslTest {
                 .ba((e0, e1) -> e1.property(User::getAge).value(18, 22)) //
                 .and() //
                 .ba((e0, e1) -> e0.property(UserInfo::getUser).accept(User::getAge, 18, 22)) //
-                .and() //
-                .ba((e0, e1) -> e0.property(UserInfo::getUser).value(18, 22)) //
+                //                .and() //
+                //                .ba((e0, e1) -> e0.property(UserInfo::getUser).value(18, 22)) //
                 .and() //
                 .ba((e0, e1) -> e0.property(UserInfo::getUser).property(User::getAge).value(18, 22)) //
                 .list();
@@ -734,8 +734,8 @@ public class DslTest {
                 .ge((e0, e1) -> e1.property(User::getAge).value(18)) //
                 .and() //
                 .ge((e0, e1) -> e0.property(UserInfo::getUser).accept(User::getAge, 18)) //
-                .and() //
-                .ge((e0, e1) -> e0.property(UserInfo::getUser).value(18)) //
+                //                .and() //
+                //                .ge((e0, e1) -> e0.property(UserInfo::getUser).value(18)) //
                 .and() //
                 .ge((e0, e1) -> e0.property(UserInfo::getUser).property(User::getAge).value(8)) //
                 .list();
@@ -776,8 +776,8 @@ public class DslTest {
                 .co((e0, e1) -> e1.property(User::getUsername).value("")) //
                 .and() //
                 .co((e0, e1) -> e0.property(UserInfo::getUser).accept(User::getUsername, "")) //
-                .and() //
-                .co((e0, e1) -> e0.property(UserInfo::getUser).value("")) //
+                //                .and() //
+                //                .co((e0, e1) -> e0.property(UserInfo::getUser).value("")) //
                 .and() //
                 .co((e0, e1) -> e0.property(UserInfo::getUser).property(User::getUsername).value("")) //
                 .list();
@@ -860,6 +860,8 @@ public class DslTest {
                 .eq((e0, e1) -> e0.property(UserInfo::getUser).accept(User::getUsername, "")) //
                 .and() //
                 .eq((e0, e1) -> e0.property(UserInfo::getUser).property(User::getUsername).value("")) //
+                .and() //
+                .eq((e0, e1) -> e0.property(UserInfo::getUser).value(new User(1))) //
                 .list();
 
         query.find(UserInfo.class).join(UserInfo::getUser).where() //

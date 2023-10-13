@@ -123,7 +123,8 @@ public interface MulitiEntityContainsExpression<C extends ConditionExpression, L
      * @param ignoreStrategy the ignore strategy
      * @return the l
      */
-    L co(int index, SerializableSupplier<String> property, MatchStrategy matchStrategy, Predicate<String> ignoreStrategy);
+    L co(int index, SerializableSupplier<String> property, MatchStrategy matchStrategy,
+            Predicate<String> ignoreStrategy);
 
     //    嵌套属性使用property(U1::getU2).property(U2:getV).co(v)来设置
     //    /**

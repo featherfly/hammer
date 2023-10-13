@@ -16,6 +16,7 @@ import java.time.LocalTime;
 import java.util.Collection;
 import java.util.Date;
 import java.util.List;
+import java.util.concurrent.atomic.AtomicInteger;
 import java.util.function.BiPredicate;
 
 import cn.featherfly.common.db.mapping.JdbcMappingFactory;
@@ -46,6 +47,7 @@ import cn.featherfly.hammer.expression.entity.condition.ConditionEntityExpressio
 import cn.featherfly.hammer.expression.entity.condition.ConditionEntityExpressionNumberPropertyExpression2;
 import cn.featherfly.hammer.expression.entity.condition.ConditionEntityExpressionStringPropertyExpression2;
 import cn.featherfly.hammer.expression.entity.condition.ba.BetweenEntityPropertyExpression;
+import cn.featherfly.hammer.sqldb.jdbc.dsl.entity.EntitySqlRelation;
 import cn.featherfly.hammer.sqldb.jdbc.dsl.entity.condition.propery.ConditionEntityExpressionDatePropertyExpression2Impl;
 import cn.featherfly.hammer.sqldb.jdbc.dsl.entity.condition.propery.ConditionEntityExpressionDoublePropertyExpression2Impl;
 import cn.featherfly.hammer.sqldb.jdbc.dsl.entity.condition.propery.ConditionEntityExpressionEnumPropertyExpression2Impl;
@@ -77,8 +79,9 @@ public class BetweenEntityPropertyExpressionImpl<V, C extends ConditionExpressio
      * @param factory    the factory
      */
     public BetweenEntityPropertyExpressionImpl(int index, SerializableFunction<?, V> name,
-            AbstractMulitiEntityConditionExpression<C, L> expression, JdbcMappingFactory factory) {
-        super(index, name, expression, factory);
+            AbstractMulitiEntityConditionExpression<C, L> expression, JdbcMappingFactory factory,
+            EntitySqlRelation<?, ?> queryRelation) {
+        super(new AtomicInteger(index), name, expression, factory, queryRelation);
     }
 
     /**
@@ -89,16 +92,17 @@ public class BetweenEntityPropertyExpressionImpl<V, C extends ConditionExpressio
      * @param expression   the expression
      * @param factory      the factory
      */
-    public BetweenEntityPropertyExpressionImpl(int index, List<Serializable> propertyList,
-            AbstractMulitiEntityConditionExpression<C, L> expression, JdbcMappingFactory factory) {
-        super(index, propertyList, expression, factory);
+    public BetweenEntityPropertyExpressionImpl(AtomicInteger index, List<Serializable> propertyList,
+            AbstractMulitiEntityConditionExpression<C, L> expression, JdbcMappingFactory factory,
+            EntitySqlRelation<?, ?> queryRelation) {
+        super(index, propertyList, expression, factory, queryRelation);
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public <R> ConditionEntityExpressionIntPropertyExpression2 property(SerializableToIntFunction<V> name) {
+    public ConditionEntityExpressionIntPropertyExpression2 property(SerializableToIntFunction<V> name) {
         propertyList.add(name);
         return new ConditionEntityExpressionIntPropertyExpression2Impl(v -> getPropertyMapping(v),
                 expression.getIgnoreStrategy(), (min, max, ignore, pm) -> {
@@ -110,7 +114,7 @@ public class BetweenEntityPropertyExpressionImpl<V, C extends ConditionExpressio
      * {@inheritDoc}
      */
     @Override
-    public <R> ConditionEntityExpressionLongPropertyExpression2 property(SerializableToLongFunction<V> name) {
+    public ConditionEntityExpressionLongPropertyExpression2 property(SerializableToLongFunction<V> name) {
         propertyList.add(name);
         return new ConditionEntityExpressionLongPropertyExpression2Impl(v -> getPropertyMapping(v),
                 expression.getIgnoreStrategy(), (min, max, ignore, pm) -> {
@@ -122,7 +126,7 @@ public class BetweenEntityPropertyExpressionImpl<V, C extends ConditionExpressio
      * {@inheritDoc}
      */
     @Override
-    public <R> ConditionEntityExpressionDoublePropertyExpression2 property(SerializableToDoubleFunction<V> name) {
+    public ConditionEntityExpressionDoublePropertyExpression2 property(SerializableToDoubleFunction<V> name) {
         propertyList.add(name);
         return new ConditionEntityExpressionDoublePropertyExpression2Impl(v -> getPropertyMapping(v),
                 expression.getIgnoreStrategy(), (min, max, ignore, pm) -> {
@@ -222,15 +226,15 @@ public class BetweenEntityPropertyExpressionImpl<V, C extends ConditionExpressio
     @Override
     public <R> BetweenAndEntityPropertyExpression<R> property(SerializableFunction<V, R> name) {
         propertyList.add(name);
-        return new BetweenEntityPropertyExpressionImpl<>(index, propertyList, expression, factory);
+        return new BetweenEntityPropertyExpressionImpl<>(index, propertyList, expression, factory, queryRelation);
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public <R extends Collection<RE>,
-            RE> BetweenEntityPropertyExpression<RE> property(SerializableToCollectionFunction<V, R, RE> name) {
+    public <R extends Collection<E>,
+            E> BetweenEntityPropertyExpression<E> property(SerializableToCollectionFunction<V, R, E> name) {
         // IMPLSOON 后续来实现集合类型property
         throw new NotImplementedException();
     }
@@ -413,159 +417,4 @@ public class BetweenEntityPropertyExpressionImpl<V, C extends ConditionExpressio
             BiPredicate<E, E> ignoreStrategy) {
         property(name).value(min, max, ignoreStrategy);
     }
-
-    // ****************************************************************************************************************
-    //	value
-    // ****************************************************************************************************************
-
-    //    /**
-    //     * {@inheritDoc}
-    //     */
-    //    @Override
-    //    public void value(int min, int max) {
-    //        expression.ba0(index, getPropertyMapping(min), min, max, expression.getIgnoreStrategy());
-    //    }
-    //
-    //    /**
-    //     * {@inheritDoc}
-    //     */
-    //    @Override
-    //    public void value(int min, int max, BiPredicate<Integer, Integer> ignoreStrategy) {
-    //        expression.ba0(index, getPropertyMapping(min), min, max, ignoreStrategy);
-    //    }
-    //
-    //    /**
-    //     * {@inheritDoc}
-    //     */
-    //    @Override
-    //    public void value(long min, long max) {
-    //        expression.ba0(index, getPropertyMapping(min), min, max, expression.getIgnoreStrategy());
-    //    }
-    //
-    //    /**
-    //     * {@inheritDoc}
-    //     */
-    //    @Override
-    //    public void value(long min, long max, BiPredicate<Long, Long> ignoreStrategy) {
-    //        expression.ba0(index, getPropertyMapping(min), min, max, ignoreStrategy);
-    //    }
-    //
-    //    /**
-    //     * {@inheritDoc}
-    //     */
-    //    @Override
-    //    public void value(double min, double max) {
-    //        expression.ba0(index, getPropertyMapping(min), min, max, expression.getIgnoreStrategy());
-    //    }
-    //
-    //    /**
-    //     * {@inheritDoc}
-    //     */
-    //    @Override
-    //    public void value(double min, double max, BiPredicate<Double, Double> ignoreStrategy) {
-    //        expression.ba0(index, getPropertyMapping(min), min, max, ignoreStrategy);
-    //    }
-    //
-    //    /**
-    //     * {@inheritDoc}
-    //     */
-    //    @Override
-    //    public <N extends Number> void value(N min, N max) {
-    //        expression.ba0(index, getPropertyMapping(min), min, max, expression.getIgnoreStrategy());
-    //    }
-    //
-    //    /**
-    //     * {@inheritDoc}
-    //     */
-    //    @Override
-    //    public <N extends Number> void value(N min, N max, BiPredicate<N, N> ignoreStrategy) {
-    //        expression.ba0(index, getPropertyMapping(min), min, max, ignoreStrategy);
-    //    }
-    //
-    //    /**
-    //     * {@inheritDoc}
-    //     */
-    //    @Override
-    //    public <D extends Date> void value(D min, D max) {
-    //        expression.ba0(index, getPropertyMapping(min), min, max, expression.getIgnoreStrategy());
-    //    }
-    //
-    //    /**
-    //     * {@inheritDoc}
-    //     */
-    //    @Override
-    //    public <D extends Date> void value(D min, D max, BiPredicate<D, D> ignoreStrategy) {
-    //        expression.ba0(index, getPropertyMapping(min), min, max, ignoreStrategy);
-    //    }
-    //
-    //    /**
-    //     * {@inheritDoc}
-    //     */
-    //    @Override
-    //    public void value(LocalTime min, LocalTime max) {
-    //        expression.ba0(index, getPropertyMapping(min), min, max, expression.getIgnoreStrategy());
-    //
-    //    }
-    //
-    //    /**
-    //     * {@inheritDoc}
-    //     */
-    //    @Override
-    //    public void value(LocalTime min, LocalTime max, BiPredicate<LocalTime, LocalTime> ignoreStrategy) {
-    //        expression.ba0(index, getPropertyMapping(min), min, max, ignoreStrategy);
-    //
-    //    }
-    //
-    //    /**
-    //     * {@inheritDoc}
-    //     */
-    //    @Override
-    //    public void value(LocalDate min, LocalDate max) {
-    //        expression.ba0(index, getPropertyMapping(min), min, max, expression.getIgnoreStrategy());
-    //
-    //    }
-    //
-    //    /**
-    //     * {@inheritDoc}
-    //     */
-    //    @Override
-    //    public void value(LocalDate min, LocalDate max, BiPredicate<LocalDate, LocalDate> ignoreStrategy) {
-    //        expression.ba0(index, getPropertyMapping(min), min, max, ignoreStrategy);
-    //
-    //    }
-    //
-    //    /**
-    //     * {@inheritDoc}
-    //     */
-    //    @Override
-    //    public void value(LocalDateTime min, LocalDateTime max) {
-    //        expression.ba0(index, getPropertyMapping(min), min, max, expression.getIgnoreStrategy());
-    //
-    //    }
-    //
-    //    /**
-    //     * {@inheritDoc}
-    //     */
-    //    @Override
-    //    public void value(LocalDateTime min, LocalDateTime max, BiPredicate<LocalDateTime, LocalDateTime> ignoreStrategy) {
-    //        expression.ba0(index, getPropertyMapping(min), min, max, ignoreStrategy);
-    //
-    //    }
-    //
-    //    /**
-    //     * {@inheritDoc}
-    //     */
-    //    @Override
-    //    public void value(String min, String max) {
-    //        expression.ba0(index, getPropertyMapping(min), min, max, expression.getIgnoreStrategy());
-    //
-    //    }
-    //
-    //    /**
-    //     * {@inheritDoc}
-    //     */
-    //    @Override
-    //    public void value(String min, String max, BiPredicate<String, String> ignoreStrategy) {
-    //        expression.ba0(index, getPropertyMapping(min), min, max, ignoreStrategy);
-    //    }
 }

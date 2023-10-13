@@ -13,15 +13,6 @@ import java.util.function.Predicate;
  */
 public interface InNotInEntityPropertyValueExpression<V> {
 
-    //    /**
-    //     * entity in function property expression.
-    //     *
-    //     * @param <R>  the generic type
-    //     * @param name the name
-    //     * @return entity in function property expression.
-    //     */
-    //    <R> EntityInFunctionPropertyValueExpression<V, R, C, L> property(SerializableFunction<V, R> name);
-
     /**
      * Value.
      *

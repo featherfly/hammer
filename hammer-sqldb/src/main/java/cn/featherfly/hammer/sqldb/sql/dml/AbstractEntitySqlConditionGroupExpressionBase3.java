@@ -18,6 +18,7 @@ import cn.featherfly.common.db.mapping.JdbcMappingFactory;
 import cn.featherfly.common.function.ThreeArgusFunction;
 import cn.featherfly.common.function.serializable.SerializableDateSupplier;
 import cn.featherfly.common.function.serializable.SerializableDoubleSupplier;
+import cn.featherfly.common.function.serializable.SerializableEnumSupplier;
 import cn.featherfly.common.function.serializable.SerializableFunction;
 import cn.featherfly.common.function.serializable.SerializableIntSupplier;
 import cn.featherfly.common.function.serializable.SerializableLocalDateSupplier;
@@ -27,7 +28,6 @@ import cn.featherfly.common.function.serializable.SerializableLongSupplier;
 import cn.featherfly.common.function.serializable.SerializableNumberSupplier;
 import cn.featherfly.common.function.serializable.SerializableStringSupplier;
 import cn.featherfly.common.function.serializable.SerializableSupplier;
-import cn.featherfly.common.function.serializable.SerializableSupplier3;
 import cn.featherfly.common.function.serializable.SerializableToDateFunction;
 import cn.featherfly.common.function.serializable.SerializableToDoubleFunction;
 import cn.featherfly.common.function.serializable.SerializableToDoubleFunction3;
@@ -120,46 +120,534 @@ public abstract class AbstractEntitySqlConditionGroupExpressionBase3<T1, T2, T3,
         queryAlias3 = erm.getTableAlias();
     }
 
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public <R> L eq3(SerializableFunction<T3, R> name, R value, MatchStrategy matchStrategy) {
-        return eq(classMapping3, name, value, queryAlias3, matchStrategy, ignoreStrategy);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public <R> L eq3(SerializableFunction<T3, R> name, R value, MatchStrategy matchStrategy,
-            Predicate<R> ignoreStrategy) {
-        return eq(classMapping3, name, value, queryAlias3, matchStrategy, ignoreStrategy);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public <R> L eq3(SerializableSupplier3<R> property, MatchStrategy matchStrategy) {
-        return eq(classMapping3, property, queryAlias3, matchStrategy, ignoreStrategy);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public <R> L eq3(SerializableSupplier3<R> property, MatchStrategy matchStrategy, Predicate<R> ignoreStrategy) {
-        return eq(classMapping3, property, queryAlias3, matchStrategy, ignoreStrategy);
-    }
-
+    // ****************************************************************************************************************
+    //  eq
     // ****************************************************************************************************************
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public <R> L ne3(SerializableFunction<T3, R> name, R value, MatchStrategy matchStrategy) {
+    public <R> L eq3(SerializableFunction<T3, R> name, R value) {
+        return eq(classMapping3, name, value, queryAlias3, ignoreStrategy);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public <R> L eq3(SerializableFunction<T3, R> name, R value, Predicate<R> ignoreStrategy) {
+        return eq(classMapping3, name, value, queryAlias3, ignoreStrategy);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public <D extends Date> L eq3(SerializableToDateFunction<T3, D> name, D value) {
+        return eq(classMapping3, name, value, queryAlias3, ignoreStrategy);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public <D extends Date> L eq3(SerializableToDateFunction<T3, D> name, D value, Predicate<D> ignoreStrategy) {
+        return eq(classMapping3, name, value, queryAlias3, ignoreStrategy);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public L eq3(SerializableToDoubleFunction<T3> name, double value) {
+        return eq(classMapping3, name, value, queryAlias3, ignoreStrategy);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public L eq3(SerializableToDoubleFunction<T3> name, double value, DoublePredicate ignoreStrategy) {
+        return eq(classMapping3, name, value, queryAlias3, ignoreStrategy);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public <E extends Enum<E>> L eq3(SerializableToEnumFunction<T3, E> name, E value) {
+        return eq(classMapping3, name, value, queryAlias3, ignoreStrategy);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public <E extends Enum<E>> L eq3(SerializableToEnumFunction<T3, E> name, E value, Predicate<E> ignoreStrategy) {
+        return eq(classMapping3, name, value, queryAlias3, ignoreStrategy);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public L eq3(SerializableToIntFunction<T3> name, int value) {
+        return eq(classMapping3, name, value, queryAlias3, ignoreStrategy);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public L eq3(SerializableToIntFunction<T3> name, int value, IntPredicate ignoreStrategy) {
+        return eq(classMapping3, name, value, queryAlias3, ignoreStrategy);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public L eq3(SerializableToLocalDateFunction<T3> name, LocalDate value) {
+        return eq(classMapping3, name, value, queryAlias3, ignoreStrategy);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public L eq3(SerializableToLocalDateFunction<T3> name, LocalDate value, Predicate<LocalDate> ignoreStrategy) {
+        return eq(classMapping3, name, value, queryAlias3, ignoreStrategy);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public L eq3(SerializableToLocalDateTimeFunction<T3> name, LocalDateTime value) {
+        return eq(classMapping3, name, value, queryAlias3, ignoreStrategy);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public L eq3(SerializableToLocalDateTimeFunction<T3> name, LocalDateTime value,
+            Predicate<LocalDateTime> ignoreStrategy) {
+        return eq(classMapping3, name, value, queryAlias3, ignoreStrategy);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public L eq3(SerializableToLocalTimeFunction<T3> name, LocalTime value) {
+        return eq(classMapping3, name, value, queryAlias3, ignoreStrategy);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public L eq3(SerializableToLocalTimeFunction<T3> name, LocalTime value, Predicate<LocalTime> ignoreStrategy) {
+        return eq(classMapping3, name, value, queryAlias3, ignoreStrategy);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public L eq3(SerializableToLongFunction<T3> name, long value) {
+        return eq(classMapping3, name, value, queryAlias3, ignoreStrategy);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public L eq3(SerializableToLongFunction<T3> name, long value, LongPredicate ignoreStrategy) {
+        return eq(classMapping3, name, value, queryAlias3, ignoreStrategy);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public <N extends Number> L eq3(SerializableToNumberFunction<T3, N> name, N value) {
+        return eq(classMapping3, name, value, queryAlias3, ignoreStrategy);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public <N extends Number> L eq3(SerializableToNumberFunction<T3, N> name, N value, Predicate<N> ignoreStrategy) {
+        return eq(classMapping3, name, value, queryAlias3, ignoreStrategy);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public L eq3(SerializableToStringFunction<T3> name, String value, MatchStrategy matchStrategy) {
+        return eq(classMapping3, name, value, queryAlias3, matchStrategy, ignoreStrategy);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public L eq3(SerializableToStringFunction<T3> name, String value, MatchStrategy matchStrategy,
+            Predicate<String> ignoreStrategy) {
+        return eq(classMapping3, name, value, queryAlias3, matchStrategy, ignoreStrategy);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public <R extends Date> L eq3(SerializableDateSupplier<R> property) {
+        return eq(classMapping3, property, queryAlias3, ignoreStrategy);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public <R extends Date> L eq3(SerializableDateSupplier<R> property, Predicate<R> ignoreStrategy) {
+        return eq(classMapping3, property, queryAlias3, ignoreStrategy);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public L eq3(SerializableDoubleSupplier property) {
+        return eq(classMapping3, property, property.get(), queryAlias3, ignoreStrategy);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public L eq3(SerializableDoubleSupplier property, DoublePredicate ignoreStrategy) {
+        return eq(classMapping3, property, property.get(), queryAlias3, ignoreStrategy);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public <E extends Enum<E>> L eq3(SerializableEnumSupplier<E> property) {
+        return eq(classMapping3, property, queryAlias3, ignoreStrategy);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public <E extends Enum<E>> L eq3(SerializableEnumSupplier<E> property, Predicate<E> ignoreStrategy) {
+        return eq(classMapping3, property, queryAlias3, ignoreStrategy);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public L eq3(SerializableIntSupplier property) {
+        return eq(classMapping3, property, property.get(), queryAlias3, ignoreStrategy);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public L eq3(SerializableIntSupplier property, IntPredicate ignoreStrategy) {
+        return eq(classMapping3, property, property.get(), queryAlias3, ignoreStrategy);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public L eq3(SerializableLocalDateSupplier property) {
+        return eq(classMapping3, property, queryAlias3, ignoreStrategy);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public L eq3(SerializableLocalDateSupplier property, Predicate<LocalDate> ignoreStrategy) {
+        return eq(classMapping3, property, queryAlias3, ignoreStrategy);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public L eq3(SerializableLocalDateTimeSupplier property) {
+        return eq(classMapping3, property, queryAlias3, ignoreStrategy);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public L eq3(SerializableLocalDateTimeSupplier property, Predicate<LocalDateTime> ignoreStrategy) {
+        return eq(classMapping3, property, queryAlias3, ignoreStrategy);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public L eq3(SerializableLocalTimeSupplier property) {
+        return eq(classMapping3, property, queryAlias3, ignoreStrategy);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public L eq3(SerializableLocalTimeSupplier property, Predicate<LocalTime> ignoreStrategy) {
+        return eq(classMapping3, property, queryAlias3, ignoreStrategy);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public L eq3(SerializableLongSupplier property) {
+        return eq(classMapping3, property, property.get(), queryAlias3, ignoreStrategy);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public L eq3(SerializableLongSupplier property, LongPredicate ignoreStrategy) {
+        return eq(classMapping3, property, property.get(), queryAlias3, ignoreStrategy);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public <R extends Number> L eq3(SerializableNumberSupplier<R> property) {
+        return eq(classMapping3, property, queryAlias3, ignoreStrategy);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public <R extends Number> L eq3(SerializableNumberSupplier<R> property, Predicate<R> ignoreStrategy) {
+        return eq(classMapping3, property, queryAlias3, ignoreStrategy);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public L eq3(SerializableStringSupplier property, MatchStrategy matchStrategy) {
+        return eq(classMapping3, property, queryAlias3, ignoreStrategy);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public L eq3(SerializableStringSupplier property, MatchStrategy matchStrategy, Predicate<String> ignoreStrategy) {
+        return eq(classMapping3, property, queryAlias3, ignoreStrategy);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public <R> L eq3(SerializableSupplier<R> property) {
+        return eq(classMapping3, property, queryAlias3, ignoreStrategy);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public <R> L eq3(SerializableSupplier<R> property, Predicate<R> ignoreStrategy) {
+        return eq(classMapping3, property, queryAlias3, ignoreStrategy);
+    }
+
+    // ****************************************************************************************************************
+    //  ne
+    // ****************************************************************************************************************
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public <R> L ne3(SerializableFunction<T3, R> name, R value) {
+        return ne(classMapping3, name, value, queryAlias3, ignoreStrategy);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public <R> L ne3(SerializableFunction<T3, R> name, R value, Predicate<R> ignoreStrategy) {
+        return ne(classMapping3, name, value, queryAlias3, ignoreStrategy);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public <D extends Date> L ne3(SerializableToDateFunction<T3, D> name, D value) {
+        return ne(classMapping3, name, value, queryAlias3, ignoreStrategy);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public <D extends Date> L ne3(SerializableToDateFunction<T3, D> name, D value, Predicate<D> ignoreStrategy) {
+        return ne(classMapping3, name, value, queryAlias3, ignoreStrategy);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public L ne3(SerializableToDoubleFunction<T3> name, double value) {
+        return ne(classMapping3, name, value, queryAlias3, ignoreStrategy);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public L ne3(SerializableToDoubleFunction<T3> name, double value, DoublePredicate ignoreStrategy) {
+        return ne(classMapping3, name, value, queryAlias3, ignoreStrategy);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public <E extends Enum<E>> L ne3(SerializableToEnumFunction<T3, E> name, E value) {
+        return ne(classMapping3, name, value, queryAlias3, ignoreStrategy);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public <E extends Enum<E>> L ne3(SerializableToEnumFunction<T3, E> name, E value, Predicate<E> ignoreStrategy) {
+        return ne(classMapping3, name, value, queryAlias3, ignoreStrategy);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public L ne3(SerializableToIntFunction<T3> name, int value) {
+        return ne(classMapping3, name, value, queryAlias3, ignoreStrategy);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public L ne3(SerializableToIntFunction<T3> name, int value, IntPredicate ignoreStrategy) {
+        return ne(classMapping3, name, value, queryAlias3, ignoreStrategy);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public L ne3(SerializableToLocalDateFunction<T3> name, LocalDate value) {
+        return ne(classMapping3, name, value, queryAlias3, ignoreStrategy);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public L ne3(SerializableToLocalDateFunction<T3> name, LocalDate value, Predicate<LocalDate> ignoreStrategy) {
+        return ne(classMapping3, name, value, queryAlias3, ignoreStrategy);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public L ne3(SerializableToLocalDateTimeFunction<T3> name, LocalDateTime value) {
+        return ne(classMapping3, name, value, queryAlias3, ignoreStrategy);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public L ne3(SerializableToLocalDateTimeFunction<T3> name, LocalDateTime value,
+            Predicate<LocalDateTime> ignoreStrategy) {
+        return ne(classMapping3, name, value, queryAlias3, ignoreStrategy);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public L ne3(SerializableToLocalTimeFunction<T3> name, LocalTime value) {
+        return ne(classMapping3, name, value, queryAlias3, ignoreStrategy);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public L ne3(SerializableToLocalTimeFunction<T3> name, LocalTime value, Predicate<LocalTime> ignoreStrategy) {
+        return ne(classMapping3, name, value, queryAlias3, ignoreStrategy);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public L ne3(SerializableToLongFunction<T3> name, long value) {
+        return ne(classMapping3, name, value, queryAlias3, ignoreStrategy);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public L ne3(SerializableToLongFunction<T3> name, long value, LongPredicate ignoreStrategy) {
+        return ne(classMapping3, name, value, queryAlias3, ignoreStrategy);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public <N extends Number> L ne3(SerializableToNumberFunction<T3, N> name, N value) {
+        return ne(classMapping3, name, value, queryAlias3, ignoreStrategy);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public <N extends Number> L ne3(SerializableToNumberFunction<T3, N> name, N value, Predicate<N> ignoreStrategy) {
+        return ne(classMapping3, name, value, queryAlias3, ignoreStrategy);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public L ne3(SerializableToStringFunction<T3> name, String value, MatchStrategy matchStrategy) {
         return ne(classMapping3, name, value, queryAlias3, matchStrategy, ignoreStrategy);
     }
 
@@ -167,8 +655,8 @@ public abstract class AbstractEntitySqlConditionGroupExpressionBase3<T1, T2, T3,
      * {@inheritDoc}
      */
     @Override
-    public <R> L ne3(SerializableFunction<T3, R> name, R value, MatchStrategy matchStrategy,
-            Predicate<R> ignoreStrategy) {
+    public L ne3(SerializableToStringFunction<T3> name, String value, MatchStrategy matchStrategy,
+            Predicate<String> ignoreStrategy) {
         return ne(classMapping3, name, value, queryAlias3, matchStrategy, ignoreStrategy);
     }
 
@@ -176,16 +664,176 @@ public abstract class AbstractEntitySqlConditionGroupExpressionBase3<T1, T2, T3,
      * {@inheritDoc}
      */
     @Override
-    public <R> L ne3(SerializableSupplier3<R> property, MatchStrategy matchStrategy) {
-        return ne(classMapping3, property, queryAlias3, matchStrategy, ignoreStrategy);
+    public <R extends Date> L ne3(SerializableDateSupplier<R> property) {
+        return ne(classMapping3, property, queryAlias3, ignoreStrategy);
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public <R> L ne3(SerializableSupplier3<R> property, MatchStrategy matchStrategy, Predicate<R> ignoreStrategy) {
-        return ne(classMapping3, property, queryAlias3, matchStrategy, ignoreStrategy);
+    public <R extends Date> L ne3(SerializableDateSupplier<R> property, Predicate<R> ignoreStrategy) {
+        return ne(classMapping3, property, queryAlias3, ignoreStrategy);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public L ne3(SerializableDoubleSupplier property) {
+        return ne(classMapping3, property, property.get(), queryAlias3, ignoreStrategy);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public L ne3(SerializableDoubleSupplier property, DoublePredicate ignoreStrategy) {
+        return ne(classMapping3, property, property.get(), queryAlias3, ignoreStrategy);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public <E extends Enum<E>> L ne3(SerializableEnumSupplier<E> property) {
+        return ne(classMapping3, property, queryAlias3, ignoreStrategy);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public <E extends Enum<E>> L ne3(SerializableEnumSupplier<E> property, Predicate<E> ignoreStrategy) {
+        return ne(classMapping3, property, queryAlias3, ignoreStrategy);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public L ne3(SerializableIntSupplier property) {
+        return ne(classMapping3, property, property.get(), queryAlias3, ignoreStrategy);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public L ne3(SerializableIntSupplier property, IntPredicate ignoreStrategy) {
+        return ne(classMapping3, property, property.get(), queryAlias3, ignoreStrategy);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public L ne3(SerializableLocalDateSupplier property) {
+        return ne(classMapping3, property, queryAlias3, ignoreStrategy);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public L ne3(SerializableLocalDateSupplier property, Predicate<LocalDate> ignoreStrategy) {
+        return ne(classMapping3, property, queryAlias3, ignoreStrategy);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public L ne3(SerializableLocalDateTimeSupplier property) {
+        return ne(classMapping3, property, queryAlias3, ignoreStrategy);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public L ne3(SerializableLocalDateTimeSupplier property, Predicate<LocalDateTime> ignoreStrategy) {
+        return ne(classMapping3, property, queryAlias3, ignoreStrategy);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public L ne3(SerializableLocalTimeSupplier property) {
+        return ne(classMapping3, property, queryAlias3, ignoreStrategy);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public L ne3(SerializableLocalTimeSupplier property, Predicate<LocalTime> ignoreStrategy) {
+        return ne(classMapping3, property, queryAlias3, ignoreStrategy);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public L ne3(SerializableLongSupplier property) {
+        return ne(classMapping3, property, property.get(), queryAlias3, ignoreStrategy);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public L ne3(SerializableLongSupplier property, LongPredicate ignoreStrategy) {
+        return ne(classMapping3, property, property.get(), queryAlias3, ignoreStrategy);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public <R extends Number> L ne3(SerializableNumberSupplier<R> property) {
+        return ne(classMapping3, property, queryAlias3, ignoreStrategy);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public <R extends Number> L ne3(SerializableNumberSupplier<R> property, Predicate<R> ignoreStrategy) {
+        return ne(classMapping3, property, queryAlias3, ignoreStrategy);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public L ne3(SerializableStringSupplier property, MatchStrategy matchStrategy) {
+        return ne(classMapping3, property, queryAlias3, ignoreStrategy);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public L ne3(SerializableStringSupplier property, MatchStrategy matchStrategy, Predicate<String> ignoreStrategy) {
+        return ne(classMapping3, property, queryAlias3, ignoreStrategy);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public <R> L ne3(SerializableSupplier<R> property) {
+        return ne(classMapping3, property, queryAlias3, ignoreStrategy);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public <R> L ne3(SerializableSupplier<R> property, Predicate<R> ignoreStrategy) {
+        return ne(classMapping3, property, queryAlias3, ignoreStrategy);
     }
 
     // ****************************************************************************************************************
@@ -619,6 +1267,71 @@ public abstract class AbstractEntitySqlConditionGroupExpressionBase3<T1, T2, T3,
      * {@inheritDoc}
      */
     @Override
+    public <E extends Enum<E>> L ge3(SerializableFunction<T3, E> name, E value) {
+        return ge(classMapping3, name, value, queryAlias3, ignoreStrategy);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public <E extends Enum<E>> L ge3(SerializableFunction<T3, E> name, E value, Predicate<E> ignoreStrategy) {
+        return ge(classMapping3, name, value, queryAlias3, ignoreStrategy);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public L ge3(SerializableFunction<T3, String> name, String value, MatchStrategy matchStrategy) {
+        return ge(classMapping3, name, value, matchStrategy, queryAlias3, ignoreStrategy);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public L ge3(SerializableFunction<T3, String> name, String value, MatchStrategy matchStrategy,
+            Predicate<String> ignoreStrategy) {
+        return ge(classMapping3, name, value, matchStrategy, queryAlias3, ignoreStrategy);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public <E extends Enum<E>> L ge3(SerializableEnumSupplier<E> property) {
+        return ge(classMapping3, property, queryAlias3, ignoreStrategy);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public <E extends Enum<E>> L ge3(SerializableEnumSupplier<E> property, Predicate<E> ignoreStrategy) {
+        return ge(classMapping3, property, queryAlias3, ignoreStrategy);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public L ge3(SerializableStringSupplier property, MatchStrategy matchStrategy) {
+        return ge(classMapping3, property, matchStrategy, queryAlias3, ignoreStrategy);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public L ge3(SerializableStringSupplier property, MatchStrategy matchStrategy, Predicate<String> ignoreStrategy) {
+        return ge(classMapping3, property, matchStrategy, queryAlias3, ignoreStrategy);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
     public <R extends Date> L ge3(SerializableDateSupplier<R> property) {
         return ge(classMapping3, property, queryAlias3, ignoreStrategy);
     }
@@ -775,6 +1488,71 @@ public abstract class AbstractEntitySqlConditionGroupExpressionBase3<T1, T2, T3,
     @Override
     public <N extends Number> L gt3(SerializableFunction<T3, N> name, N value, Predicate<N> ignoreStrategy) {
         return gt(classMapping3, name, value, queryAlias3, ignoreStrategy);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public <E extends Enum<E>> L gt3(SerializableFunction<T3, E> name, E value) {
+        return gt(classMapping3, name, value, queryAlias3, ignoreStrategy);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public <E extends Enum<E>> L gt3(SerializableFunction<T3, E> name, E value, Predicate<E> ignoreStrategy) {
+        return gt(classMapping3, name, value, queryAlias3, ignoreStrategy);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public L gt3(SerializableFunction<T3, String> name, String value, MatchStrategy matchStrategy) {
+        return gt(classMapping3, name, value, matchStrategy, queryAlias3, ignoreStrategy);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public L gt3(SerializableFunction<T3, String> name, String value, MatchStrategy matchStrategy,
+            Predicate<String> ignoreStrategy) {
+        return gt(classMapping3, name, value, matchStrategy, queryAlias3, ignoreStrategy);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public <E extends Enum<E>> L gt3(SerializableEnumSupplier<E> property) {
+        return gt(classMapping3, property, queryAlias3, ignoreStrategy);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public <E extends Enum<E>> L gt3(SerializableEnumSupplier<E> property, Predicate<E> ignoreStrategy) {
+        return gt(classMapping3, property, queryAlias3, ignoreStrategy);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public L gt3(SerializableStringSupplier property, MatchStrategy matchStrategy) {
+        return gt(classMapping3, property, matchStrategy, queryAlias3, ignoreStrategy);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public L gt3(SerializableStringSupplier property, MatchStrategy matchStrategy, Predicate<String> ignoreStrategy) {
+        return gt(classMapping3, property, matchStrategy, queryAlias3, ignoreStrategy);
     }
 
     /**
@@ -1072,6 +1850,71 @@ public abstract class AbstractEntitySqlConditionGroupExpressionBase3<T1, T2, T3,
      * {@inheritDoc}
      */
     @Override
+    public <E extends Enum<E>> L le3(SerializableFunction<T3, E> name, E value) {
+        return le(classMapping3, name, value, queryAlias3, ignoreStrategy);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public <E extends Enum<E>> L le3(SerializableFunction<T3, E> name, E value, Predicate<E> ignoreStrategy) {
+        return le(classMapping3, name, value, queryAlias3, ignoreStrategy);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public L le3(SerializableFunction<T3, String> name, String value, MatchStrategy matchStrategy) {
+        return le(classMapping3, name, value, matchStrategy, queryAlias3, ignoreStrategy);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public L le3(SerializableFunction<T3, String> name, String value, MatchStrategy matchStrategy,
+            Predicate<String> ignoreStrategy) {
+        return le(classMapping3, name, value, matchStrategy, queryAlias3, ignoreStrategy);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public <E extends Enum<E>> L le3(SerializableEnumSupplier<E> property) {
+        return le(classMapping3, property, queryAlias3, ignoreStrategy);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public <E extends Enum<E>> L le3(SerializableEnumSupplier<E> property, Predicate<E> ignoreStrategy) {
+        return le(classMapping3, property, queryAlias3, ignoreStrategy);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public L le3(SerializableStringSupplier property, MatchStrategy matchStrategy) {
+        return le(classMapping3, property, matchStrategy, queryAlias3, ignoreStrategy);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public L le3(SerializableStringSupplier property, MatchStrategy matchStrategy, Predicate<String> ignoreStrategy) {
+        return le(classMapping3, property, matchStrategy, queryAlias3, ignoreStrategy);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
     public <D extends Date> L le3(SerializableFunction<T3, D> name, D value) {
         return le(classMapping3, name, value, queryAlias3, ignoreStrategy);
     }
@@ -1357,6 +2200,71 @@ public abstract class AbstractEntitySqlConditionGroupExpressionBase3<T1, T2, T3,
     @Override
     public <N extends Number> L lt3(SerializableFunction<T3, N> name, N value, Predicate<N> ignoreStrategy) {
         return lt(classMapping3, name, value, queryAlias3, ignoreStrategy);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public <E extends Enum<E>> L lt3(SerializableFunction<T3, E> name, E value) {
+        return lt(classMapping3, name, value, queryAlias3, ignoreStrategy);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public <E extends Enum<E>> L lt3(SerializableFunction<T3, E> name, E value, Predicate<E> ignoreStrategy) {
+        return lt(classMapping3, name, value, queryAlias3, ignoreStrategy);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public L lt3(SerializableFunction<T3, String> name, String value, MatchStrategy matchStrategy) {
+        return lt(classMapping3, name, value, matchStrategy, queryAlias3, ignoreStrategy);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public L lt3(SerializableFunction<T3, String> name, String value, MatchStrategy matchStrategy,
+            Predicate<String> ignoreStrategy) {
+        return lt(classMapping3, name, value, matchStrategy, queryAlias3, ignoreStrategy);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public <E extends Enum<E>> L lt3(SerializableEnumSupplier<E> property) {
+        return lt(classMapping3, property, queryAlias3, ignoreStrategy);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public <E extends Enum<E>> L lt3(SerializableEnumSupplier<E> property, Predicate<E> ignoreStrategy) {
+        return lt(classMapping3, property, queryAlias3, ignoreStrategy);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public L lt3(SerializableStringSupplier property, MatchStrategy matchStrategy) {
+        return lt(classMapping3, property, matchStrategy, queryAlias3, ignoreStrategy);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public L lt3(SerializableStringSupplier property, MatchStrategy matchStrategy, Predicate<String> ignoreStrategy) {
+        return lt(classMapping3, property, matchStrategy, queryAlias3, ignoreStrategy);
     }
 
     /**
@@ -1686,6 +2594,56 @@ public abstract class AbstractEntitySqlConditionGroupExpressionBase3<T1, T2, T3,
      * {@inheritDoc}
      */
     @Override
+    public L in3(SerializableToStringFunction<T3> name, String value, MatchStrategy matchStrategy) {
+        return in(classMapping3, name, value, matchStrategy, queryAlias3, ignoreStrategy);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public L in3(SerializableToStringFunction<T3> name, String value, MatchStrategy matchStrategy,
+            Predicate<String> ignoreStrategy) {
+        return in(classMapping3, name, value, matchStrategy, queryAlias3, ignoreStrategy);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public L in3(SerializableToStringFunction<T3> name, String[] value, MatchStrategy matchStrategy) {
+        return in(classMapping3, name, value, matchStrategy, queryAlias3, ignoreStrategy);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public L in3(SerializableToStringFunction<T3> name, String[] value, MatchStrategy matchStrategy,
+            Predicate<String[]> ignoreStrategy) {
+        return in(classMapping3, name, value, matchStrategy, queryAlias3, ignoreStrategy);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public L in3(SerializableStringSupplier property, MatchStrategy matchStrategy) {
+        return in(classMapping3, property, matchStrategy, queryAlias3, ignoreStrategy);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public L in3(SerializableStringSupplier property, MatchStrategy matchStrategy, Predicate<String> ignoreStrategy) {
+        return in(classMapping3, property, matchStrategy, queryAlias3, ignoreStrategy);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
     public <R> L in3(SerializableSupplier<R> property) {
         return in(classMapping3, property, queryAlias3, ignoreStrategy);
     }
@@ -2002,6 +2960,56 @@ public abstract class AbstractEntitySqlConditionGroupExpressionBase3<T1, T2, T3,
     @Override
     public L ni3(SerializableToLongFunction3<T3> name, long[] value, Predicate<long[]> ignoreStrategy) {
         return ni(classMapping3, name, value, queryAlias3, ignoreStrategy);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public L ni3(SerializableToStringFunction<T3> name, String value, MatchStrategy matchStrategy) {
+        return ni(classMapping3, name, value, matchStrategy, queryAlias3, ignoreStrategy);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public L ni3(SerializableToStringFunction<T3> name, String value, MatchStrategy matchStrategy,
+            Predicate<String> ignoreStrategy) {
+        return ni(classMapping3, name, value, matchStrategy, queryAlias3, ignoreStrategy);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public L ni3(SerializableToStringFunction<T3> name, String[] value, MatchStrategy matchStrategy) {
+        return ni(classMapping3, name, value, matchStrategy, queryAlias3, ignoreStrategy);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public L ni3(SerializableToStringFunction<T3> name, String[] value, MatchStrategy matchStrategy,
+            Predicate<String[]> ignoreStrategy) {
+        return ni(classMapping3, name, value, matchStrategy, queryAlias3, ignoreStrategy);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public L ni3(SerializableStringSupplier property, MatchStrategy matchStrategy) {
+        return ni(classMapping3, property, matchStrategy, queryAlias3, ignoreStrategy);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public L ni3(SerializableStringSupplier property, MatchStrategy matchStrategy, Predicate<String> ignoreStrategy) {
+        return ni(classMapping3, property, matchStrategy, queryAlias3, ignoreStrategy);
     }
 
     /**
@@ -2418,8 +3426,9 @@ public abstract class AbstractEntitySqlConditionGroupExpressionBase3<T1, T2, T3,
     @Override
     public L property(ThreeArgusFunction<EntityPropertyFunction<T1, C, L>, EntityPropertyFunction<T2, C, L>,
             EntityPropertyFunction<T3, C, L>, L> entitiesPropertyFunction) {
-        return entitiesPropertyFunction.apply(new EntityPropertyFunctionImpl<>(0, this, factory),
-                new EntityPropertyFunctionImpl<>(1, this, factory), new EntityPropertyFunctionImpl<>(2, this, factory));
+        return entitiesPropertyFunction.apply(new EntityPropertyFunctionImpl<>(0, this, factory, entityRelation),
+                new EntityPropertyFunctionImpl<>(1, this, factory, entityRelation),
+                new EntityPropertyFunctionImpl<>(2, this, factory, entityRelation));
     }
 
     // ********************************************************************
@@ -2429,5 +3438,4 @@ public abstract class AbstractEntitySqlConditionGroupExpressionBase3<T1, T2, T3,
     // ********************************************************************
     // protected method
     // ********************************************************************
-
 }

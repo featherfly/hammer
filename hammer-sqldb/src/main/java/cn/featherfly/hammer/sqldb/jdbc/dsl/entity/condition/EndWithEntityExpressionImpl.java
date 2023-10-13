@@ -25,6 +25,7 @@ import cn.featherfly.hammer.expression.entity.condition.ew.EndWithEntityExpressi
 import cn.featherfly.hammer.expression.entity.condition.ew.EndWithEntityPropertyExpression;
 import cn.featherfly.hammer.expression.entity.condition.ew.EndWithEntityPropertySetValueExpression;
 import cn.featherfly.hammer.expression.entity.condition.ew.MulitiEntityEndWithExpression;
+import cn.featherfly.hammer.sqldb.jdbc.dsl.entity.EntitySqlRelation;
 
 /**
  * The Class EndWithEntityExpressionImpl.
@@ -37,7 +38,11 @@ import cn.featherfly.hammer.expression.entity.condition.ew.MulitiEntityEndWithEx
 public class EndWithEntityExpressionImpl<E, C extends ConditionExpression, L extends LogicExpression<C, L>>
         extends AbstractEndWithEntityExpression<E, C, L> implements EndWithEntityExpression<E> {
 
+    /** The factory. */
     private JdbcMappingFactory factory;
+
+    /** The query relation. */
+    private EntitySqlRelation<?, ?> queryRelation;
 
     /**
      * Instantiates a new end with entity expression impl.
@@ -46,11 +51,13 @@ public class EndWithEntityExpressionImpl<E, C extends ConditionExpression, L ext
      * @param expression     the expression
      * @param ignoreStrategy the ignore strategy
      * @param factory        the factory
+     * @param queryRelation  the query relation
      */
     public EndWithEntityExpressionImpl(int index, MulitiEntityEndWithExpression<C, L> expression,
-            Predicate<?> ignoreStrategy, JdbcMappingFactory factory) {
+            Predicate<?> ignoreStrategy, JdbcMappingFactory factory, EntitySqlRelation<?, ?> queryRelation) {
         super(index, expression, ignoreStrategy);
         this.factory = factory;
+        this.queryRelation = queryRelation;
     }
 
     /**
@@ -59,7 +66,7 @@ public class EndWithEntityExpressionImpl<E, C extends ConditionExpression, L ext
     @Override
     public <R> EndWithEntityPropertyExpression<R> property(SerializableFunction<E, R> name) {
         return new EndWithEntityPropertyExpressionImpl<>(index, name,
-                (MulitiEntityEndWithExpressionImpl<C, L>) expression, factory);
+                (MulitiEntityEndWithExpressionImpl<C, L>) expression, factory, queryRelation);
     }
 
     /**
@@ -68,7 +75,7 @@ public class EndWithEntityExpressionImpl<E, C extends ConditionExpression, L ext
     @Override
     public <R extends Collection<RE>,
             RE> EndWithEntityPropertyExpression<RE> property(SerializableToCollectionFunction<E, R, RE> name) {
-        // IMPLSOON 未实现property
+        // IMPLSOON 后续来实现集合类型property
         throw new NotImplementedException();
     }
 
@@ -78,7 +85,7 @@ public class EndWithEntityExpressionImpl<E, C extends ConditionExpression, L ext
     @Override
     public EndWithEntityPropertySetValueExpression property(SerializableToStringFunction<E> name) {
         return new EndWithEntityPropertyExpressionImpl<>(index, name,
-                (MulitiEntityEndWithExpressionImpl<C, L>) expression, factory);
+                (MulitiEntityEndWithExpressionImpl<C, L>) expression, factory, queryRelation);
     }
 
 }

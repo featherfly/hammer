@@ -25,7 +25,7 @@ import cn.featherfly.hammer.expression.entity.condition.ConditionEntityExpressio
 public class ConditionEntityExpressionPropertyExpressionImpl<V>
         implements ConditionEntityExpressionPropertyExpression<V> {
 
-    private Function<V, PropertyMapping<?>> propertyMapping;
+    private Function<V, PropertyMapping<?>> getPropertyMapping;
 
     private Predicate<?> ignoreStrategy;
 
@@ -34,14 +34,14 @@ public class ConditionEntityExpressionPropertyExpressionImpl<V>
     /**
      * Instantiates a new condition entity expression property expression impl.
      *
-     * @param propertyMapping the property mapping
-     * @param ignoreStrategy  the ignore strategy
-     * @param setValue        the set value
+     * @param getPropertyMapping the get property mapping
+     * @param ignoreStrategy     the ignore strategy
+     * @param setValue           the set value
      */
-    public ConditionEntityExpressionPropertyExpressionImpl(Function<V, PropertyMapping<?>> propertyMapping,
+    public ConditionEntityExpressionPropertyExpressionImpl(Function<V, PropertyMapping<?>> getPropertyMapping,
             Predicate<?> ignoreStrategy, ThreeArgusConsumer<V, Predicate<V>, PropertyMapping<?>> setValue) {
         super();
-        this.propertyMapping = propertyMapping;
+        this.getPropertyMapping = getPropertyMapping;
         this.ignoreStrategy = ignoreStrategy;
         this.setValue = setValue;
     }
@@ -60,6 +60,6 @@ public class ConditionEntityExpressionPropertyExpressionImpl<V>
      */
     @Override
     public void value(V value, Predicate<V> ignoreStrategy) {
-        setValue.accept(value, ignoreStrategy, propertyMapping.apply(value));
+        setValue.accept(value, ignoreStrategy, getPropertyMapping.apply(value));
     }
 }

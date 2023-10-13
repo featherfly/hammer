@@ -10,6 +10,7 @@
  */
 package cn.featherfly.hammer.sqldb.jdbc.dsl.entity.condition;
 
+import java.util.concurrent.atomic.AtomicInteger;
 import java.util.function.Predicate;
 
 import cn.featherfly.common.db.dialect.Dialect;
@@ -55,10 +56,19 @@ public class MulitiEntityConditionExpressionProxy<C extends ConditionExpression,
      * {@inheritDoc}
      */
     @Override
-    protected <R> L eq_ne(int index, ComparisonOperator comparisonOperator, PropertyMapping<?> pm, R value,
+    protected <R> L eq_ne(AtomicInteger index, ComparisonOperator comparisonOperator, PropertyMapping<?> pm, R value,
             MatchStrategy matchStrategy, Predicate<?> ignoreStrategy) {
         return proxy.eq_ne(index, comparisonOperator, pm, value, matchStrategy, ignoreStrategy);
     }
+
+    //    /**
+    //     * {@inheritDoc}
+    //     */
+    //    @Override
+    //    protected <R> L eq_ne(int index, ComparisonOperator comparisonOperator, List<PropertyMapping<?>> pms, R value,
+    //            MatchStrategy matchStrategy, Predicate<?> ignoreStrategy) {
+    //        return proxy.eq_ne(index, comparisonOperator, pms, value, matchStrategy, ignoreStrategy);
+    //    }
 
     /**
      * {@inheritDoc}
@@ -92,5 +102,4 @@ public class MulitiEntityConditionExpressionProxy<C extends ConditionExpression,
     public Expression addCondition(Expression condition) {
         return proxy.addCondition(condition);
     }
-
 }

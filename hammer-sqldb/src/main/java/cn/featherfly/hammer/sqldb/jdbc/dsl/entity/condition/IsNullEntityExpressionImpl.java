@@ -20,6 +20,7 @@ import cn.featherfly.hammer.expression.entity.condition.isn.AbstractIsNullEntity
 import cn.featherfly.hammer.expression.entity.condition.isn.IsNullEntityExpression;
 import cn.featherfly.hammer.expression.entity.condition.isn.IsNullEntityPropertyExpression;
 import cn.featherfly.hammer.expression.entity.condition.isn.MulitiEntityIsNullExpression;
+import cn.featherfly.hammer.sqldb.jdbc.dsl.entity.EntitySqlRelation;
 
 /**
  * The Class IsNullEntityExpressionImpl.
@@ -34,6 +35,8 @@ public class IsNullEntityExpressionImpl<E, C extends ConditionExpression, L exte
 
     private JdbcMappingFactory factory;
 
+    private EntitySqlRelation<?, ?> queryRelation;
+
     /**
      * Instantiates a new checks if is null entity expression impl.
      *
@@ -41,11 +44,13 @@ public class IsNullEntityExpressionImpl<E, C extends ConditionExpression, L exte
      * @param expression     the expression
      * @param ignoreStrategy the ignore strategy
      * @param factory        the factory
+     * @param queryRelation  the query relation
      */
     public IsNullEntityExpressionImpl(int index, MulitiEntityIsNullExpression<C, L> expression,
-            Predicate<?> ignoreStrategy, JdbcMappingFactory factory) {
+            Predicate<?> ignoreStrategy, JdbcMappingFactory factory, EntitySqlRelation<?, ?> queryRelation) {
         super(index, expression, ignoreStrategy);
         this.factory = factory;
+        this.queryRelation = queryRelation;
     }
 
     /**
@@ -54,7 +59,7 @@ public class IsNullEntityExpressionImpl<E, C extends ConditionExpression, L exte
     @Override
     public <R> IsNullEntityPropertyExpression<R> property(SerializableFunction<E, R> name) {
         return new IsNullEntityPropertyExpressionImpl<>(index, name,
-                (MulitiEntityIsNullExpressionImpl<C, L>) expression, factory);
+                (MulitiEntityIsNullExpressionImpl<C, L>) expression, factory, queryRelation);
     }
 
 }

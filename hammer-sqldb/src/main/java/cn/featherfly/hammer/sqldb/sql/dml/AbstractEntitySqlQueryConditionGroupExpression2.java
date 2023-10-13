@@ -259,9 +259,9 @@ public abstract class AbstractEntitySqlQueryConditionGroupExpression2<E, E2, RS,
     @Override
     public L co(Consumer<Tuple2<ContainsEntityExpression<E>, ContainsEntityExpression<E2>>> containsEntityExpressions) {
         MulitiEntityContainsExpression<C, L> mulitiExpression = new MulitiEntityContainsExpressionImpl<>(this);
-        containsEntityExpressions
-                .accept(Tuples.of(new ContainsEntityExpressionImpl<>(0, mulitiExpression, ignoreStrategy, factory),
-                        new ContainsEntityExpressionImpl<>(1, mulitiExpression, ignoreStrategy, factory)));
+        containsEntityExpressions.accept(Tuples.of(
+                new ContainsEntityExpressionImpl<>(0, mulitiExpression, ignoreStrategy, factory, entityRelation),
+                new ContainsEntityExpressionImpl<>(1, mulitiExpression, ignoreStrategy, factory, entityRelation)));
         return (L) this;
     }
 
@@ -273,8 +273,8 @@ public abstract class AbstractEntitySqlQueryConditionGroupExpression2<E, E2, RS,
     public L co(BiConsumer<ContainsEntityExpression<E>, ContainsEntityExpression<E2>> containsEntityExpressions) {
         MulitiEntityContainsExpression<C, L> mulitiExpression = new MulitiEntityContainsExpressionImpl<>(this);
         containsEntityExpressions.accept(
-                new ContainsEntityExpressionImpl<>(0, mulitiExpression, ignoreStrategy, factory),
-                new ContainsEntityExpressionImpl<>(1, mulitiExpression, ignoreStrategy, factory));
+                new ContainsEntityExpressionImpl<>(0, mulitiExpression, ignoreStrategy, factory, entityRelation),
+                new ContainsEntityExpressionImpl<>(1, mulitiExpression, ignoreStrategy, factory, entityRelation));
         return (L) this;
     }
 
@@ -283,12 +283,12 @@ public abstract class AbstractEntitySqlQueryConditionGroupExpression2<E, E2, RS,
      */
     @SuppressWarnings("unchecked")
     @Override
-    public L nco(Consumer<
-            Tuple2<NotContainsEntityExpression<E>, NotContainsEntityExpression<E2>>> notContainsEntityExpressions) {
+    public L nco(
+            Consumer<Tuple2<NotContainsEntityExpression<E>, NotContainsEntityExpression<E2>>> notContainsEntityExpressions) {
         MulitiEntityNotContainsExpression<C, L> mulitiExpression = new MulitiEntityNotContainsExpressionImpl<>(this);
-        notContainsEntityExpressions
-                .accept(Tuples.of(new NotContainsEntityExpressionImpl<>(0, mulitiExpression, ignoreStrategy, factory),
-                        new NotContainsEntityExpressionImpl<>(1, mulitiExpression, ignoreStrategy, factory)));
+        notContainsEntityExpressions.accept(Tuples.of(
+                new NotContainsEntityExpressionImpl<>(0, mulitiExpression, ignoreStrategy, factory, entityRelation),
+                new NotContainsEntityExpressionImpl<>(1, mulitiExpression, ignoreStrategy, factory, entityRelation)));
         return (L) this;
     }
 
@@ -301,8 +301,8 @@ public abstract class AbstractEntitySqlQueryConditionGroupExpression2<E, E2, RS,
             BiConsumer<NotContainsEntityExpression<E>, NotContainsEntityExpression<E2>> notContainsEntityExpressions) {
         MulitiEntityNotContainsExpression<C, L> mulitiExpression = new MulitiEntityNotContainsExpressionImpl<>(this);
         notContainsEntityExpressions.accept(
-                new NotContainsEntityExpressionImpl<>(0, mulitiExpression, ignoreStrategy, factory),
-                new NotContainsEntityExpressionImpl<>(1, mulitiExpression, ignoreStrategy, factory));
+                new NotContainsEntityExpressionImpl<>(0, mulitiExpression, ignoreStrategy, factory, entityRelation),
+                new NotContainsEntityExpressionImpl<>(1, mulitiExpression, ignoreStrategy, factory, entityRelation));
         return (L) this;
     }
 
@@ -313,9 +313,9 @@ public abstract class AbstractEntitySqlQueryConditionGroupExpression2<E, E2, RS,
     @Override
     public L ew(Consumer<Tuple2<EndWithEntityExpression<E>, EndWithEntityExpression<E2>>> endWithEntityExpressions) {
         MulitiEntityEndWithExpression<C, L> mulitiExpression = new MulitiEntityEndWithExpressionImpl<>(this);
-        endWithEntityExpressions
-                .accept(Tuples.of(new EndWithEntityExpressionImpl<>(0, mulitiExpression, ignoreStrategy, factory),
-                        new EndWithEntityExpressionImpl<>(1, mulitiExpression, ignoreStrategy, factory)));
+        endWithEntityExpressions.accept(Tuples.of(
+                new EndWithEntityExpressionImpl<>(0, mulitiExpression, ignoreStrategy, factory, entityRelation),
+                new EndWithEntityExpressionImpl<>(1, mulitiExpression, ignoreStrategy, factory, entityRelation)));
         return (L) this;
     }
 
@@ -326,8 +326,9 @@ public abstract class AbstractEntitySqlQueryConditionGroupExpression2<E, E2, RS,
     @Override
     public L ew(BiConsumer<EndWithEntityExpression<E>, EndWithEntityExpression<E2>> endWithEntityExpressions) {
         MulitiEntityEndWithExpression<C, L> mulitiExpression = new MulitiEntityEndWithExpressionImpl<>(this);
-        endWithEntityExpressions.accept(new EndWithEntityExpressionImpl<>(0, mulitiExpression, ignoreStrategy, factory),
-                new EndWithEntityExpressionImpl<>(1, mulitiExpression, ignoreStrategy, factory));
+        endWithEntityExpressions.accept(
+                new EndWithEntityExpressionImpl<>(0, mulitiExpression, ignoreStrategy, factory, entityRelation),
+                new EndWithEntityExpressionImpl<>(1, mulitiExpression, ignoreStrategy, factory, entityRelation));
         return (L) this;
     }
 
@@ -336,12 +337,12 @@ public abstract class AbstractEntitySqlQueryConditionGroupExpression2<E, E2, RS,
      */
     @SuppressWarnings("unchecked")
     @Override
-    public L newv(Consumer<
-            Tuple2<NotEndWithEntityExpression<E>, NotEndWithEntityExpression<E2>>> notEndWithEntityExpressions) {
+    public L newv(
+            Consumer<Tuple2<NotEndWithEntityExpression<E>, NotEndWithEntityExpression<E2>>> notEndWithEntityExpressions) {
         MulitiEntityNotEndWithExpression<C, L> mulitiExpression = new MulitiEntityNotEndWithExpressionImpl<>(this);
-        notEndWithEntityExpressions
-                .accept(Tuples.of(new NotEndWithEntityExpressionImpl<>(0, mulitiExpression, ignoreStrategy, factory),
-                        new NotEndWithEntityExpressionImpl<>(1, mulitiExpression, ignoreStrategy, factory)));
+        notEndWithEntityExpressions.accept(Tuples.of(
+                new NotEndWithEntityExpressionImpl<>(0, mulitiExpression, ignoreStrategy, factory, entityRelation),
+                new NotEndWithEntityExpressionImpl<>(1, mulitiExpression, ignoreStrategy, factory, entityRelation)));
         return (L) this;
     }
 
@@ -354,8 +355,8 @@ public abstract class AbstractEntitySqlQueryConditionGroupExpression2<E, E2, RS,
             BiConsumer<NotEndWithEntityExpression<E>, NotEndWithEntityExpression<E2>> notEndWithEntityExpressions) {
         MulitiEntityNotEndWithExpression<C, L> mulitiExpression = new MulitiEntityNotEndWithExpressionImpl<>(this);
         notEndWithEntityExpressions.accept(
-                new NotEndWithEntityExpressionImpl<>(0, mulitiExpression, ignoreStrategy, factory),
-                new NotEndWithEntityExpressionImpl<>(1, mulitiExpression, ignoreStrategy, factory));
+                new NotEndWithEntityExpressionImpl<>(0, mulitiExpression, ignoreStrategy, factory, entityRelation),
+                new NotEndWithEntityExpressionImpl<>(1, mulitiExpression, ignoreStrategy, factory, entityRelation));
         return (L) this;
     }
 
@@ -366,9 +367,9 @@ public abstract class AbstractEntitySqlQueryConditionGroupExpression2<E, E2, RS,
     @Override
     public L eq(Consumer<Tuple2<EqualsEntityExpression<E>, EqualsEntityExpression<E2>>> equalsEntityExpressions) {
         MulitiEntityEqualsExpression<C, L> mulitiExpression = new MulitiEntityEqualsExpressionImpl<>(this);
-        equalsEntityExpressions
-                .accept(Tuples.of(new EqualsEntityExpressionImpl<>(0, mulitiExpression, ignoreStrategy, factory),
-                        new EqualsEntityExpressionImpl<>(1, mulitiExpression, ignoreStrategy, factory)));
+        equalsEntityExpressions.accept(Tuples.of(
+                new EqualsEntityExpressionImpl<>(0, mulitiExpression, ignoreStrategy, factory, entityRelation),
+                new EqualsEntityExpressionImpl<>(1, mulitiExpression, ignoreStrategy, factory, entityRelation)));
         return (L) this;
     }
 
@@ -379,8 +380,9 @@ public abstract class AbstractEntitySqlQueryConditionGroupExpression2<E, E2, RS,
     @Override
     public L eq(BiConsumer<EqualsEntityExpression<E>, EqualsEntityExpression<E2>> equalsEntityExpressions) {
         MulitiEntityEqualsExpression<C, L> mulitiExpression = new MulitiEntityEqualsExpressionImpl<>(this);
-        equalsEntityExpressions.accept(new EqualsEntityExpressionImpl<>(0, mulitiExpression, ignoreStrategy, factory),
-                new EqualsEntityExpressionImpl<>(1, mulitiExpression, ignoreStrategy, factory));
+        equalsEntityExpressions.accept(
+                new EqualsEntityExpressionImpl<>(0, mulitiExpression, ignoreStrategy, factory, entityRelation),
+                new EqualsEntityExpressionImpl<>(1, mulitiExpression, ignoreStrategy, factory, entityRelation));
         return (L) this;
     }
 
@@ -389,12 +391,12 @@ public abstract class AbstractEntitySqlQueryConditionGroupExpression2<E, E2, RS,
      */
     @SuppressWarnings("unchecked")
     @Override
-    public L ge(Consumer<
-            Tuple2<GreatEqualsEntityExpression<E>, GreatEqualsEntityExpression<E2>>> greatEqualsEntityExpressions) {
+    public L ge(
+            Consumer<Tuple2<GreatEqualsEntityExpression<E>, GreatEqualsEntityExpression<E2>>> greatEqualsEntityExpressions) {
         MulitiEntityGreatEqualsExpression<C, L> mulitiExpression = new MulitiEntityGreatEqualsExpressionImpl<>(this);
-        greatEqualsEntityExpressions
-                .accept(Tuples.of(new GreatEqualsEntityExpressionImpl<>(0, mulitiExpression, ignoreStrategy, factory),
-                        new GreatEqualsEntityExpressionImpl<>(1, mulitiExpression, ignoreStrategy, factory)));
+        greatEqualsEntityExpressions.accept(Tuples.of(
+                new GreatEqualsEntityExpressionImpl<>(0, mulitiExpression, ignoreStrategy, factory, entityRelation),
+                new GreatEqualsEntityExpressionImpl<>(1, mulitiExpression, ignoreStrategy, factory, entityRelation)));
         return (L) this;
     }
 
@@ -407,8 +409,8 @@ public abstract class AbstractEntitySqlQueryConditionGroupExpression2<E, E2, RS,
             BiConsumer<GreatEqualsEntityExpression<E>, GreatEqualsEntityExpression<E2>> greatEqualsEntityExpressions) {
         MulitiEntityGreatEqualsExpression<C, L> mulitiExpression = new MulitiEntityGreatEqualsExpressionImpl<>(this);
         greatEqualsEntityExpressions.accept(
-                new GreatEqualsEntityExpressionImpl<>(0, mulitiExpression, ignoreStrategy, factory),
-                new GreatEqualsEntityExpressionImpl<>(1, mulitiExpression, ignoreStrategy, factory));
+                new GreatEqualsEntityExpressionImpl<>(0, mulitiExpression, ignoreStrategy, factory, entityRelation),
+                new GreatEqualsEntityExpressionImpl<>(1, mulitiExpression, ignoreStrategy, factory, entityRelation));
         return (L) this;
     }
 
@@ -420,9 +422,9 @@ public abstract class AbstractEntitySqlQueryConditionGroupExpression2<E, E2, RS,
     public L gt(
             Consumer<Tuple2<GreatThanEntityExpression<E>, GreatThanEntityExpression<E2>>> greatThanEntityExpressions) {
         MulitiEntityGreatThanExpression<C, L> mulitiExpression = new MulitiEntityGreatThanExpressionImpl<>(this);
-        greatThanEntityExpressions
-                .accept(Tuples.of(new GreatThanEntityExpressionImpl<>(0, mulitiExpression, ignoreStrategy, factory),
-                        new GreatThanEntityExpressionImpl<>(1, mulitiExpression, ignoreStrategy, factory)));
+        greatThanEntityExpressions.accept(Tuples.of(
+                new GreatThanEntityExpressionImpl<>(0, mulitiExpression, ignoreStrategy, factory, entityRelation),
+                new GreatThanEntityExpressionImpl<>(1, mulitiExpression, ignoreStrategy, factory, entityRelation)));
         return (L) this;
     }
 
@@ -434,8 +436,8 @@ public abstract class AbstractEntitySqlQueryConditionGroupExpression2<E, E2, RS,
     public L gt(BiConsumer<GreatThanEntityExpression<E>, GreatThanEntityExpression<E2>> greatThanEntityExpressions) {
         MulitiEntityGreatThanExpression<C, L> mulitiExpression = new MulitiEntityGreatThanExpressionImpl<>(this);
         greatThanEntityExpressions.accept(
-                new GreatThanEntityExpressionImpl<>(0, mulitiExpression, ignoreStrategy, factory),
-                new GreatThanEntityExpressionImpl<>(1, mulitiExpression, ignoreStrategy, factory));
+                new GreatThanEntityExpressionImpl<>(0, mulitiExpression, ignoreStrategy, factory, entityRelation),
+                new GreatThanEntityExpressionImpl<>(1, mulitiExpression, ignoreStrategy, factory, entityRelation));
         return (L) this;
     }
 
@@ -446,8 +448,9 @@ public abstract class AbstractEntitySqlQueryConditionGroupExpression2<E, E2, RS,
     @Override
     public L in(Consumer<Tuple2<InEntityExpression<E>, InEntityExpression<E2>>> inEntityExpressions) {
         MulitiEntityInExpression<C, L> mulitiExpression = new MulitiEntityInExpressionImpl<>(this);
-        inEntityExpressions.accept(Tuples.of(new InEntityExpressionImpl<>(0, mulitiExpression, ignoreStrategy, factory),
-                new InEntityExpressionImpl<>(1, mulitiExpression, ignoreStrategy, factory)));
+        inEntityExpressions.accept(
+                Tuples.of(new InEntityExpressionImpl<>(0, mulitiExpression, ignoreStrategy, factory, entityRelation),
+                        new InEntityExpressionImpl<>(1, mulitiExpression, ignoreStrategy, factory, entityRelation)));
         return (L) this;
     }
 
@@ -458,8 +461,9 @@ public abstract class AbstractEntitySqlQueryConditionGroupExpression2<E, E2, RS,
     @Override
     public L in(BiConsumer<InEntityExpression<E>, InEntityExpression<E2>> inEntityExpressions) {
         MulitiEntityInExpression<C, L> mulitiExpression = new MulitiEntityInExpressionImpl<>(this);
-        inEntityExpressions.accept(new InEntityExpressionImpl<>(0, mulitiExpression, ignoreStrategy, factory),
-                new InEntityExpressionImpl<>(1, mulitiExpression, ignoreStrategy, factory));
+        inEntityExpressions.accept(
+                new InEntityExpressionImpl<>(0, mulitiExpression, ignoreStrategy, factory, entityRelation),
+                new InEntityExpressionImpl<>(1, mulitiExpression, ignoreStrategy, factory, entityRelation));
         return (L) this;
     }
 
@@ -471,9 +475,9 @@ public abstract class AbstractEntitySqlQueryConditionGroupExpression2<E, E2, RS,
     public L inn(
             Consumer<Tuple2<IsNotNullEntityExpression<E>, IsNotNullEntityExpression<E2>>> isNotNullEntityExpressions) {
         MulitiEntityIsNotNullExpression<C, L> mulitiExpression = new MulitiEntityIsNotNullExpressionImpl<>(this);
-        isNotNullEntityExpressions
-                .accept(Tuples.of(new IsNotNullEntityExpressionImpl<>(0, mulitiExpression, ignoreStrategy, factory),
-                        new IsNotNullEntityExpressionImpl<>(1, mulitiExpression, ignoreStrategy, factory)));
+        isNotNullEntityExpressions.accept(Tuples.of(
+                new IsNotNullEntityExpressionImpl<>(0, mulitiExpression, ignoreStrategy, factory, entityRelation),
+                new IsNotNullEntityExpressionImpl<>(1, mulitiExpression, ignoreStrategy, factory, entityRelation)));
         return (L) this;
     }
 
@@ -485,8 +489,8 @@ public abstract class AbstractEntitySqlQueryConditionGroupExpression2<E, E2, RS,
     public L inn(BiConsumer<IsNotNullEntityExpression<E>, IsNotNullEntityExpression<E2>> isNotNullEntityExpressions) {
         MulitiEntityIsNotNullExpression<C, L> mulitiExpression = new MulitiEntityIsNotNullExpressionImpl<>(this);
         isNotNullEntityExpressions.accept(
-                new IsNotNullEntityExpressionImpl<>(0, mulitiExpression, ignoreStrategy, factory),
-                new IsNotNullEntityExpressionImpl<>(1, mulitiExpression, ignoreStrategy, factory));
+                new IsNotNullEntityExpressionImpl<>(0, mulitiExpression, ignoreStrategy, factory, entityRelation),
+                new IsNotNullEntityExpressionImpl<>(1, mulitiExpression, ignoreStrategy, factory, entityRelation));
         return (L) this;
     }
 
@@ -497,9 +501,9 @@ public abstract class AbstractEntitySqlQueryConditionGroupExpression2<E, E2, RS,
     @Override
     public L isn(Consumer<Tuple2<IsNullEntityExpression<E>, IsNullEntityExpression<E2>>> isNullEntityExpressions) {
         MulitiEntityIsNullExpression<C, L> mulitiExpression = new MulitiEntityIsNullExpressionImpl<>(this);
-        isNullEntityExpressions
-                .accept(Tuples.of(new IsNullEntityExpressionImpl<>(0, mulitiExpression, ignoreStrategy, factory),
-                        new IsNullEntityExpressionImpl<>(1, mulitiExpression, ignoreStrategy, factory)));
+        isNullEntityExpressions.accept(Tuples.of(
+                new IsNullEntityExpressionImpl<>(0, mulitiExpression, ignoreStrategy, factory, entityRelation),
+                new IsNullEntityExpressionImpl<>(1, mulitiExpression, ignoreStrategy, factory, entityRelation)));
         return (L) this;
     }
 
@@ -510,8 +514,9 @@ public abstract class AbstractEntitySqlQueryConditionGroupExpression2<E, E2, RS,
     @Override
     public L isn(BiConsumer<IsNullEntityExpression<E>, IsNullEntityExpression<E2>> isNullEntityExpressions) {
         MulitiEntityIsNullExpression<C, L> mulitiExpression = new MulitiEntityIsNullExpressionImpl<>(this);
-        isNullEntityExpressions.accept(new IsNullEntityExpressionImpl<>(0, mulitiExpression, ignoreStrategy, factory),
-                new IsNullEntityExpressionImpl<>(1, mulitiExpression, ignoreStrategy, factory));
+        isNullEntityExpressions.accept(
+                new IsNullEntityExpressionImpl<>(0, mulitiExpression, ignoreStrategy, factory, entityRelation),
+                new IsNullEntityExpressionImpl<>(1, mulitiExpression, ignoreStrategy, factory, entityRelation));
         return (L) this;
     }
 
@@ -520,12 +525,12 @@ public abstract class AbstractEntitySqlQueryConditionGroupExpression2<E, E2, RS,
      */
     @SuppressWarnings("unchecked")
     @Override
-    public L le(Consumer<
-            Tuple2<LessEqualsEntityExpression<E>, LessEqualsEntityExpression<E2>>> lessEqualsEntityExpressions) {
+    public L le(
+            Consumer<Tuple2<LessEqualsEntityExpression<E>, LessEqualsEntityExpression<E2>>> lessEqualsEntityExpressions) {
         MulitiEntityLessEqualsExpression<C, L> mulitiExpression = new MulitiEntityLessEqualsExpressionImpl<>(this);
-        lessEqualsEntityExpressions
-                .accept(Tuples.of(new LessEqualsEntityExpressionImpl<>(0, mulitiExpression, ignoreStrategy, factory),
-                        new LessEqualsEntityExpressionImpl<>(1, mulitiExpression, ignoreStrategy, factory)));
+        lessEqualsEntityExpressions.accept(Tuples.of(
+                new LessEqualsEntityExpressionImpl<>(0, mulitiExpression, ignoreStrategy, factory, entityRelation),
+                new LessEqualsEntityExpressionImpl<>(1, mulitiExpression, ignoreStrategy, factory, entityRelation)));
         return (L) this;
     }
 
@@ -537,8 +542,8 @@ public abstract class AbstractEntitySqlQueryConditionGroupExpression2<E, E2, RS,
     public L le(BiConsumer<LessEqualsEntityExpression<E>, LessEqualsEntityExpression<E2>> lessEqualsEntityExpressions) {
         MulitiEntityLessEqualsExpression<C, L> mulitiExpression = new MulitiEntityLessEqualsExpressionImpl<>(this);
         lessEqualsEntityExpressions.accept(
-                new LessEqualsEntityExpressionImpl<>(0, mulitiExpression, ignoreStrategy, factory),
-                new LessEqualsEntityExpressionImpl<>(1, mulitiExpression, ignoreStrategy, factory));
+                new LessEqualsEntityExpressionImpl<>(0, mulitiExpression, ignoreStrategy, factory, entityRelation),
+                new LessEqualsEntityExpressionImpl<>(1, mulitiExpression, ignoreStrategy, factory, entityRelation));
         return (L) this;
     }
 
@@ -549,9 +554,9 @@ public abstract class AbstractEntitySqlQueryConditionGroupExpression2<E, E2, RS,
     @Override
     public L lt(Consumer<Tuple2<LessThanEntityExpression<E>, LessThanEntityExpression<E2>>> lessThanEntityExpressions) {
         MulitiEntityLessThanExpression<C, L> mulitiExpression = new MulitiEntityLessThanExpressionImpl<>(this);
-        lessThanEntityExpressions
-                .accept(Tuples.of(new LessThanEntityExpressionImpl<>(0, mulitiExpression, ignoreStrategy, factory),
-                        new LessThanEntityExpressionImpl<>(1, mulitiExpression, ignoreStrategy, factory)));
+        lessThanEntityExpressions.accept(Tuples.of(
+                new LessThanEntityExpressionImpl<>(0, mulitiExpression, ignoreStrategy, factory, entityRelation),
+                new LessThanEntityExpressionImpl<>(1, mulitiExpression, ignoreStrategy, factory, entityRelation)));
         return (L) this;
     }
 
@@ -563,8 +568,8 @@ public abstract class AbstractEntitySqlQueryConditionGroupExpression2<E, E2, RS,
     public L lt(BiConsumer<LessThanEntityExpression<E>, LessThanEntityExpression<E2>> lessThanEntityExpressions) {
         MulitiEntityLessThanExpression<C, L> mulitiExpression = new MulitiEntityLessThanExpressionImpl<>(this);
         lessThanEntityExpressions.accept(
-                new LessThanEntityExpressionImpl<>(0, mulitiExpression, ignoreStrategy, factory),
-                new LessThanEntityExpressionImpl<>(1, mulitiExpression, ignoreStrategy, factory));
+                new LessThanEntityExpressionImpl<>(0, mulitiExpression, ignoreStrategy, factory, entityRelation),
+                new LessThanEntityExpressionImpl<>(1, mulitiExpression, ignoreStrategy, factory, entityRelation));
         return (L) this;
     }
 
@@ -576,9 +581,9 @@ public abstract class AbstractEntitySqlQueryConditionGroupExpression2<E, E2, RS,
     public L ne(
             Consumer<Tuple2<NotEqualsEntityExpression<E>, NotEqualsEntityExpression<E2>>> notEqualsEntityExpressions) {
         MulitiEntityNotEqualsExpression<C, L> mulitiExpression = new MulitiEntityNotEqualsExpressionImpl<>(this);
-        notEqualsEntityExpressions
-                .accept(Tuples.of(new NotEqualsEntityExpressionImpl<>(0, mulitiExpression, ignoreStrategy, factory),
-                        new NotEqualsEntityExpressionImpl<>(1, mulitiExpression, ignoreStrategy, factory)));
+        notEqualsEntityExpressions.accept(Tuples.of(
+                new NotEqualsEntityExpressionImpl<>(0, mulitiExpression, ignoreStrategy, factory, entityRelation),
+                new NotEqualsEntityExpressionImpl<>(1, mulitiExpression, ignoreStrategy, factory, entityRelation)));
         return (L) this;
     }
 
@@ -590,8 +595,8 @@ public abstract class AbstractEntitySqlQueryConditionGroupExpression2<E, E2, RS,
     public L ne(BiConsumer<NotEqualsEntityExpression<E>, NotEqualsEntityExpression<E2>> notEqualsEntityExpressions) {
         MulitiEntityNotEqualsExpression<C, L> mulitiExpression = new MulitiEntityNotEqualsExpressionImpl<>(this);
         notEqualsEntityExpressions.accept(
-                new NotEqualsEntityExpressionImpl<>(0, mulitiExpression, ignoreStrategy, factory),
-                new NotEqualsEntityExpressionImpl<>(1, mulitiExpression, ignoreStrategy, factory));
+                new NotEqualsEntityExpressionImpl<>(0, mulitiExpression, ignoreStrategy, factory, entityRelation),
+                new NotEqualsEntityExpressionImpl<>(1, mulitiExpression, ignoreStrategy, factory, entityRelation));
         return (L) this;
     }
 
@@ -602,9 +607,9 @@ public abstract class AbstractEntitySqlQueryConditionGroupExpression2<E, E2, RS,
     @Override
     public L ni(Consumer<Tuple2<NotInEntityExpression<E>, NotInEntityExpression<E2>>> notInEntityExpressions) {
         MulitiEntityNotInExpression<C, L> mulitiExpression = new MulitiEntityNotInExpressionImpl<>(this);
-        notInEntityExpressions
-                .accept(Tuples.of(new NotInEntityExpressionImpl<>(0, mulitiExpression, ignoreStrategy, factory),
-                        new NotInEntityExpressionImpl<>(1, mulitiExpression, ignoreStrategy, factory)));
+        notInEntityExpressions.accept(
+                Tuples.of(new NotInEntityExpressionImpl<>(0, mulitiExpression, ignoreStrategy, factory, entityRelation),
+                        new NotInEntityExpressionImpl<>(1, mulitiExpression, ignoreStrategy, factory, entityRelation)));
         return (L) this;
     }
 
@@ -615,8 +620,9 @@ public abstract class AbstractEntitySqlQueryConditionGroupExpression2<E, E2, RS,
     @Override
     public L ni(BiConsumer<NotInEntityExpression<E>, NotInEntityExpression<E2>> notInEntityExpressions) {
         MulitiEntityNotInExpression<C, L> mulitiExpression = new MulitiEntityNotInExpressionImpl<>(this);
-        notInEntityExpressions.accept(new NotInEntityExpressionImpl<>(0, mulitiExpression, ignoreStrategy, factory),
-                new NotInEntityExpressionImpl<>(1, mulitiExpression, ignoreStrategy, factory));
+        notInEntityExpressions.accept(
+                new NotInEntityExpressionImpl<>(0, mulitiExpression, ignoreStrategy, factory, entityRelation),
+                new NotInEntityExpressionImpl<>(1, mulitiExpression, ignoreStrategy, factory, entityRelation));
         return (L) this;
     }
 
@@ -628,9 +634,9 @@ public abstract class AbstractEntitySqlQueryConditionGroupExpression2<E, E2, RS,
     public L sw(
             Consumer<Tuple2<StartWithEntityExpression<E>, StartWithEntityExpression<E2>>> startWithEntityExpressions) {
         MulitiEntityStartWithExpression<C, L> expression = new MulitiEntityStartWithExpressionImpl<>(this);
-        startWithEntityExpressions
-                .accept(Tuples.of(new StartWithEntityExpressionImpl<>(0, expression, ignoreStrategy, factory),
-                        new StartWithEntityExpressionImpl<>(1, expression, ignoreStrategy, factory)));
+        startWithEntityExpressions.accept(
+                Tuples.of(new StartWithEntityExpressionImpl<>(0, expression, ignoreStrategy, factory, entityRelation),
+                        new StartWithEntityExpressionImpl<>(1, expression, ignoreStrategy, factory, entityRelation)));
         return (L) this;
     }
 
@@ -641,8 +647,9 @@ public abstract class AbstractEntitySqlQueryConditionGroupExpression2<E, E2, RS,
     @Override
     public L sw(BiConsumer<StartWithEntityExpression<E>, StartWithEntityExpression<E2>> startWithEntityExpressions) {
         MulitiEntityStartWithExpression<C, L> expression = new MulitiEntityStartWithExpressionImpl<>(this);
-        startWithEntityExpressions.accept(new StartWithEntityExpressionImpl<>(0, expression, ignoreStrategy, factory),
-                new StartWithEntityExpressionImpl<>(1, expression, ignoreStrategy, factory));
+        startWithEntityExpressions.accept(
+                new StartWithEntityExpressionImpl<>(0, expression, ignoreStrategy, factory, entityRelation),
+                new StartWithEntityExpressionImpl<>(1, expression, ignoreStrategy, factory, entityRelation));
         return (L) this;
     }
 
@@ -651,12 +658,12 @@ public abstract class AbstractEntitySqlQueryConditionGroupExpression2<E, E2, RS,
      */
     @SuppressWarnings("unchecked")
     @Override
-    public L nsw(Consumer<
-            Tuple2<NotStartWithEntityExpression<E>, NotStartWithEntityExpression<E2>>> notStartWithEntityExpressions) {
+    public L nsw(
+            Consumer<Tuple2<NotStartWithEntityExpression<E>, NotStartWithEntityExpression<E2>>> notStartWithEntityExpressions) {
         MulitiEntityNotStartWithExpression<C, L> expression = new MulitiEntityNotStartWithExpressionImpl<>(this);
-        notStartWithEntityExpressions
-                .accept(Tuples.of(new NotStartWithEntityExpressionImpl<>(0, expression, ignoreStrategy, factory),
-                        new NotStartWithEntityExpressionImpl<>(1, expression, ignoreStrategy, factory)));
+        notStartWithEntityExpressions.accept(Tuples.of(
+                new NotStartWithEntityExpressionImpl<>(0, expression, ignoreStrategy, factory, entityRelation),
+                new NotStartWithEntityExpressionImpl<>(1, expression, ignoreStrategy, factory, entityRelation)));
         return (L) this;
     }
 
@@ -665,12 +672,12 @@ public abstract class AbstractEntitySqlQueryConditionGroupExpression2<E, E2, RS,
      */
     @SuppressWarnings("unchecked")
     @Override
-    public L nsw(BiConsumer<NotStartWithEntityExpression<E>,
-            NotStartWithEntityExpression<E2>> notStartWithEntityExpressions) {
+    public L nsw(
+            BiConsumer<NotStartWithEntityExpression<E>, NotStartWithEntityExpression<E2>> notStartWithEntityExpressions) {
         MulitiEntityNotStartWithExpression<C, L> expression = new MulitiEntityNotStartWithExpressionImpl<>(this);
         notStartWithEntityExpressions.accept(
-                new NotStartWithEntityExpressionImpl<>(0, expression, ignoreStrategy, factory),
-                new NotStartWithEntityExpressionImpl<>(1, expression, ignoreStrategy, factory));
+                new NotStartWithEntityExpressionImpl<>(0, expression, ignoreStrategy, factory, entityRelation),
+                new NotStartWithEntityExpressionImpl<>(1, expression, ignoreStrategy, factory, entityRelation));
         return (L) this;
     }
 
@@ -681,9 +688,9 @@ public abstract class AbstractEntitySqlQueryConditionGroupExpression2<E, E2, RS,
     @Override
     public L lk(Consumer<Tuple2<LikeEntityExpression<E>, LikeEntityExpression<E2>>> likeEntityExpressions) {
         MulitiEntityLikeExpression<C, L> mulitiExpression = new MulitiEntityLikeExpressionImpl<>(this);
-        likeEntityExpressions
-                .accept(Tuples.of(new LikeEntityExpressionImpl<>(0, mulitiExpression, ignoreStrategy, factory),
-                        new LikeEntityExpressionImpl<>(1, mulitiExpression, ignoreStrategy, factory)));
+        likeEntityExpressions.accept(
+                Tuples.of(new LikeEntityExpressionImpl<>(0, mulitiExpression, ignoreStrategy, factory, entityRelation),
+                        new LikeEntityExpressionImpl<>(1, mulitiExpression, ignoreStrategy, factory, entityRelation)));
         return (L) this;
     }
 
@@ -694,8 +701,9 @@ public abstract class AbstractEntitySqlQueryConditionGroupExpression2<E, E2, RS,
     @Override
     public L lk(BiConsumer<LikeEntityExpression<E>, LikeEntityExpression<E2>> likeEntityExpressions) {
         MulitiEntityLikeExpression<C, L> mulitiExpression = new MulitiEntityLikeExpressionImpl<>(this);
-        likeEntityExpressions.accept(new LikeEntityExpressionImpl<>(0, mulitiExpression, ignoreStrategy, factory),
-                new LikeEntityExpressionImpl<>(1, mulitiExpression, ignoreStrategy, factory));
+        likeEntityExpressions.accept(
+                new LikeEntityExpressionImpl<>(0, mulitiExpression, ignoreStrategy, factory, entityRelation),
+                new LikeEntityExpressionImpl<>(1, mulitiExpression, ignoreStrategy, factory, entityRelation));
         return (L) this;
     }
 
@@ -706,9 +714,9 @@ public abstract class AbstractEntitySqlQueryConditionGroupExpression2<E, E2, RS,
     @Override
     public L nl(Consumer<Tuple2<NotLikeEntityExpression<E>, NotLikeEntityExpression<E2>>> notLikeEntityExpressions) {
         MulitiEntityNotLikeExpression<C, L> mulitiExpression = new MulitiEntityNotLikeExpressionImpl<>(this);
-        notLikeEntityExpressions
-                .accept(Tuples.of(new NotLikeEntityExpressionImpl<>(0, mulitiExpression, ignoreStrategy, factory),
-                        new NotLikeEntityExpressionImpl<>(1, mulitiExpression, ignoreStrategy, factory)));
+        notLikeEntityExpressions.accept(Tuples.of(
+                new NotLikeEntityExpressionImpl<>(0, mulitiExpression, ignoreStrategy, factory, entityRelation),
+                new NotLikeEntityExpressionImpl<>(1, mulitiExpression, ignoreStrategy, factory, entityRelation)));
         return (L) this;
     }
 
@@ -719,8 +727,9 @@ public abstract class AbstractEntitySqlQueryConditionGroupExpression2<E, E2, RS,
     @Override
     public L nl(BiConsumer<NotLikeEntityExpression<E>, NotLikeEntityExpression<E2>> notLikeEntityExpressions) {
         MulitiEntityNotLikeExpression<C, L> mulitiExpression = new MulitiEntityNotLikeExpressionImpl<>(this);
-        notLikeEntityExpressions.accept(new NotLikeEntityExpressionImpl<>(0, mulitiExpression, ignoreStrategy, factory),
-                new NotLikeEntityExpressionImpl<>(1, mulitiExpression, ignoreStrategy, factory));
+        notLikeEntityExpressions.accept(
+                new NotLikeEntityExpressionImpl<>(0, mulitiExpression, ignoreStrategy, factory, entityRelation),
+                new NotLikeEntityExpressionImpl<>(1, mulitiExpression, ignoreStrategy, factory, entityRelation));
         return (L) this;
     }
 
@@ -731,9 +740,9 @@ public abstract class AbstractEntitySqlQueryConditionGroupExpression2<E, E2, RS,
     @Override
     public L ba(Consumer<Tuple2<BetweenEntityExpression<E>, BetweenEntityExpression<E2>>> betweenEntityExpressions) {
         MulitiEntityBetweenExpression<C, L> mulitiExpression = new MulitiEntityBetweenExpressionImpl<>(this);
-        betweenEntityExpressions
-                .accept(Tuples.of(new BetweenEntityExpressionImpl<>(0, mulitiExpression, ignoreStrategy, factory),
-                        new BetweenEntityExpressionImpl<>(1, mulitiExpression, ignoreStrategy, factory)));
+        betweenEntityExpressions.accept(Tuples.of(
+                new BetweenEntityExpressionImpl<>(0, mulitiExpression, ignoreStrategy, factory, entityRelation),
+                new BetweenEntityExpressionImpl<>(1, mulitiExpression, ignoreStrategy, factory, entityRelation)));
         return (L) this;
     }
 
@@ -744,8 +753,9 @@ public abstract class AbstractEntitySqlQueryConditionGroupExpression2<E, E2, RS,
     @Override
     public L ba(BiConsumer<BetweenEntityExpression<E>, BetweenEntityExpression<E2>> betweenEntityExpressions) {
         MulitiEntityBetweenExpression<C, L> mulitiExpression = new MulitiEntityBetweenExpressionImpl<>(this);
-        betweenEntityExpressions.accept(new BetweenEntityExpressionImpl<>(0, mulitiExpression, ignoreStrategy, factory),
-                new BetweenEntityExpressionImpl<>(1, mulitiExpression, ignoreStrategy, factory));
+        betweenEntityExpressions.accept(
+                new BetweenEntityExpressionImpl<>(0, mulitiExpression, ignoreStrategy, factory, entityRelation),
+                new BetweenEntityExpressionImpl<>(1, mulitiExpression, ignoreStrategy, factory, entityRelation));
         return (L) this;
     }
 
@@ -754,12 +764,12 @@ public abstract class AbstractEntitySqlQueryConditionGroupExpression2<E, E2, RS,
      */
     @SuppressWarnings("unchecked")
     @Override
-    public L nba(Consumer<
-            Tuple2<NotBetweenEntityExpression<E>, NotBetweenEntityExpression<E2>>> notBetweenEntityExpressions) {
+    public L nba(
+            Consumer<Tuple2<NotBetweenEntityExpression<E>, NotBetweenEntityExpression<E2>>> notBetweenEntityExpressions) {
         MulitiEntityNotBetweenExpression<C, L> mulitiExpression = new MulitiEntityNotBetweenExpressionImpl<>(this);
-        notBetweenEntityExpressions
-                .accept(Tuples.of(new NotBetweenEntityExpressionImpl<>(0, mulitiExpression, ignoreStrategy, factory),
-                        new NotBetweenEntityExpressionImpl<>(1, mulitiExpression, ignoreStrategy, factory)));
+        notBetweenEntityExpressions.accept(Tuples.of(
+                new NotBetweenEntityExpressionImpl<>(0, mulitiExpression, ignoreStrategy, factory, entityRelation),
+                new NotBetweenEntityExpressionImpl<>(1, mulitiExpression, ignoreStrategy, factory, entityRelation)));
         return (L) this;
     }
 
@@ -772,8 +782,8 @@ public abstract class AbstractEntitySqlQueryConditionGroupExpression2<E, E2, RS,
             BiConsumer<NotBetweenEntityExpression<E>, NotBetweenEntityExpression<E2>> notBetweenEntityExpressions) {
         MulitiEntityNotBetweenExpression<C, L> mulitiExpression = new MulitiEntityNotBetweenExpressionImpl<>(this);
         notBetweenEntityExpressions.accept(
-                new NotBetweenEntityExpressionImpl<>(0, mulitiExpression, ignoreStrategy, factory),
-                new NotBetweenEntityExpressionImpl<>(1, mulitiExpression, ignoreStrategy, factory));
+                new NotBetweenEntityExpressionImpl<>(0, mulitiExpression, ignoreStrategy, factory, entityRelation),
+                new NotBetweenEntityExpressionImpl<>(1, mulitiExpression, ignoreStrategy, factory, entityRelation));
         return (L) this;
     }
 

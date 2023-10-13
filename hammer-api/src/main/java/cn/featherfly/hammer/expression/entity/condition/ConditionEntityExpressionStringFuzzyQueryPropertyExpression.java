@@ -10,10 +10,6 @@
  */
 package cn.featherfly.hammer.expression.entity.condition;
 
-import java.util.function.Predicate;
-
-import cn.featherfly.common.operator.ComparisonOperator.MatchStrategy;
-
 /**
  * The Interface ConditionEntityExpressionStringFuzzyQueryPropertyExpression.
  *
@@ -22,22 +18,22 @@ import cn.featherfly.common.operator.ComparisonOperator.MatchStrategy;
 public interface ConditionEntityExpressionStringFuzzyQueryPropertyExpression
         extends ConditionEntityExpressionStringPropertyExpression {
 
-    /**
-     * Value.
-     *
-     * @param value       string value
-     * @param queryPolicy the query policy
-     * @return LogicExpression
-     */
-    void value(String value, MatchStrategy matchStrategy);
-
-    /**
-     * Value.
-     *
-     * @param value        string value
-     * @param queryPolicy  the query policy
-     * @param ignoreStrategy the ignore strategy
-     * @return LogicExpression
-     */
-    void value(String value, MatchStrategy matchStrategy, Predicate<String> ignoreStrategy);
+    //    /**
+    //     * Value.
+    //     *
+    //     * @param value       string value
+    //     * @param queryPolicy the query policy
+    //     * @return LogicExpression
+    //     */
+    //    void value(String value, MatchStrategy matchStrategy);
+    //
+    //    /**
+    //     * Value.
+    //     *
+    //     * @param value        string value
+    //     * @param queryPolicy  the query policy
+    //     * @param ignoreStrategy the ignore strategy
+    //     * @return LogicExpression
+    //     */
+    //    void value(String value, MatchStrategy matchStrategy, Predicate<String> ignoreStrategy);
 }

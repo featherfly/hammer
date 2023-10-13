@@ -25,6 +25,7 @@ import cn.featherfly.hammer.expression.entity.condition.co.ContainsEntityExpress
 import cn.featherfly.hammer.expression.entity.condition.co.ContainsEntityPropertyExpression;
 import cn.featherfly.hammer.expression.entity.condition.co.ContainsEntityPropertySetValueExpression;
 import cn.featherfly.hammer.expression.entity.condition.co.MulitiEntityContainsExpression;
+import cn.featherfly.hammer.sqldb.jdbc.dsl.entity.EntitySqlRelation;
 
 /**
  * ContainsEntityExpressionImpl.
@@ -39,6 +40,8 @@ public class ContainsEntityExpressionImpl<E, C extends ConditionExpression, L ex
 
     private JdbcMappingFactory factory;
 
+    private EntitySqlRelation<?, ?> queryRelation;
+
     /**
      * Instantiates a new contains entity expression impl.
      *
@@ -46,11 +49,13 @@ public class ContainsEntityExpressionImpl<E, C extends ConditionExpression, L ex
      * @param expression     the expression
      * @param ignoreStrategy the ignore strategy
      * @param factory        the factory
+     * @param queryRelation  the query relation
      */
     public ContainsEntityExpressionImpl(int index, MulitiEntityContainsExpression<C, L> expression,
-            Predicate<?> ignoreStrategy, JdbcMappingFactory factory) {
+            Predicate<?> ignoreStrategy, JdbcMappingFactory factory, EntitySqlRelation<?, ?> queryRelation) {
         super(index, expression, ignoreStrategy);
         this.factory = factory;
+        this.queryRelation = queryRelation;
     }
 
     /**
@@ -59,7 +64,7 @@ public class ContainsEntityExpressionImpl<E, C extends ConditionExpression, L ex
     @Override
     public <R> ContainsEntityPropertyExpression<R> property(SerializableFunction<E, R> name) {
         return new ContainsEntityPropertyExpressionImpl<>(index, name,
-                (MulitiEntityContainsExpressionImpl<C, L>) expression, factory);
+                (MulitiEntityContainsExpressionImpl<C, L>) expression, factory, queryRelation);
     }
 
     /**
@@ -68,7 +73,7 @@ public class ContainsEntityExpressionImpl<E, C extends ConditionExpression, L ex
     @Override
     public <R extends Collection<RE>,
             RE> ContainsEntityPropertyExpression<RE> property(SerializableToCollectionFunction<E, R, RE> name) {
-        // IMPLSOON 未实现property
+        // IMPLSOON 后续来实现集合类型property
         throw new NotImplementedException();
     }
 
@@ -78,6 +83,6 @@ public class ContainsEntityExpressionImpl<E, C extends ConditionExpression, L ex
     @Override
     public ContainsEntityPropertySetValueExpression property(SerializableToStringFunction<E> name) {
         return new ContainsEntityPropertyExpressionImpl<>(index, name,
-                (MulitiEntityContainsExpressionImpl<C, L>) expression, factory);
+                (MulitiEntityContainsExpressionImpl<C, L>) expression, factory, queryRelation);
     }
 }

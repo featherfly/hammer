@@ -3,11 +3,13 @@ package cn.featherfly.hammer.sqldb.jdbc.dsl.entity.condition;
 
 import java.io.Serializable;
 import java.util.List;
+import java.util.concurrent.atomic.AtomicInteger;
 
 import cn.featherfly.common.db.mapping.JdbcMappingFactory;
 import cn.featherfly.common.function.serializable.SerializableFunction;
 import cn.featherfly.hammer.expression.condition.ConditionExpression;
 import cn.featherfly.hammer.expression.condition.LogicExpression;
+import cn.featherfly.hammer.sqldb.jdbc.dsl.entity.EntitySqlRelation;
 
 /**
  * The Class AbstractMulitiEntityPropertyExpression.
@@ -26,26 +28,30 @@ public abstract class AbstractMulitiEntityGenericPropertyExpression<E, P, F exte
     /**
      * Instantiates a new entity property type expression impl.
      *
-     * @param index      the index
-     * @param name       the name
-     * @param expression the expression
-     * @param factory    the factory
+     * @param index         the index
+     * @param name          the name
+     * @param expression    the expression
+     * @param factory       the factory
+     * @param queryRelation the query relation
      */
-    protected AbstractMulitiEntityGenericPropertyExpression(int index, F name,
-            AbstractMulitiEntityConditionExpression<C, L> expression, JdbcMappingFactory factory) {
-        super(index, name, expression, factory);
+    protected AbstractMulitiEntityGenericPropertyExpression(AtomicInteger index, F name,
+            AbstractMulitiEntityConditionExpression<C, L> expression, JdbcMappingFactory factory,
+            EntitySqlRelation<?, ?> queryRelation) {
+        super(index, name, expression, factory, queryRelation);
     }
 
     /**
-     * Instantiates a new entity property type expression impl.
+     * Instantiates a new abstract muliti entity generic property expression.
      *
-     * @param index        the index
-     * @param propertyList the property list
-     * @param expression   the expression
-     * @param factory      the factory
+     * @param index         the index
+     * @param propertyList  the property list
+     * @param expression    the expression
+     * @param factory       the factory
+     * @param queryRelation the query relation
      */
-    protected AbstractMulitiEntityGenericPropertyExpression(int index, List<Serializable> propertyList,
-            AbstractMulitiEntityConditionExpression<C, L> expression, JdbcMappingFactory factory) {
-        super(index, propertyList, expression, factory);
+    public AbstractMulitiEntityGenericPropertyExpression(AtomicInteger index, List<Serializable> propertyList,
+            AbstractMulitiEntityConditionExpression<C, L> expression, JdbcMappingFactory factory,
+            EntitySqlRelation<?, ?> queryRelation) {
+        super(index, propertyList, expression, factory, queryRelation);
     }
 }

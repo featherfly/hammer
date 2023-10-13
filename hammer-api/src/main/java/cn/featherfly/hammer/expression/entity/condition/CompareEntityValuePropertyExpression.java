@@ -5,6 +5,7 @@ import java.util.Date;
 
 import cn.featherfly.common.function.serializable.SerializableToDateFunction;
 import cn.featherfly.common.function.serializable.SerializableToDoubleFunction;
+import cn.featherfly.common.function.serializable.SerializableToEnumFunction;
 import cn.featherfly.common.function.serializable.SerializableToIntFunction;
 import cn.featherfly.common.function.serializable.SerializableToLocalDateFunction;
 import cn.featherfly.common.function.serializable.SerializableToLocalDateTimeFunction;
@@ -17,95 +18,95 @@ import cn.featherfly.common.function.serializable.SerializableToStringFunction;
  * The Interface CompareEntityValuePropertyExpression.
  *
  * @author zhongj
- * @param <E> the element type
+ * @param <T> the element type
  */
-public interface CompareEntityValuePropertyExpression<E> {
+public interface CompareEntityValuePropertyExpression<T> {
 
     /**
-     * entity great than function property expression.
+     * entity compare function property expression.
      *
      * @param <R>  the generic type
      * @param name the name
-     * @return entity great than function property expression.
+     * @return entity compare function property expression.
      */
-    ConditionEntityExpressionIntPropertyExpression property(SerializableToIntFunction<E> name);
+    ConditionEntityExpressionIntPropertyExpression property(SerializableToIntFunction<T> name);
 
     /**
-     * entity great than function property expression.
+     * entity compare function property expression.
      *
      * @param <R>  the generic type
      * @param name the name
-     * @return entity great than function property expression.
+     * @return entity compare function property expression.
      */
-    ConditionEntityExpressionLongPropertyExpression property(SerializableToLongFunction<E> name);
+    ConditionEntityExpressionLongPropertyExpression property(SerializableToLongFunction<T> name);
 
     /**
-     * entity great than function property expression.
+     * entity compare function property expression.
      *
      * @param <R>  the generic type
      * @param name the name
-     * @return entity great than function property expression.
+     * @return entity compare function property expression.
      */
-    ConditionEntityExpressionDoublePropertyExpression property(SerializableToDoubleFunction<E> name);
+    ConditionEntityExpressionDoublePropertyExpression property(SerializableToDoubleFunction<T> name);
 
     /**
-     * entity great than function property expression.
+     * entity compare function property expression.
      *
      * @param <D>  the generic type
      * @param name the name
-     * @return entity great than function property expression.
+     * @return entity compare function property expression.
      */
-    <D extends Date> ConditionEntityExpressionDatePropertyExpression<D> property(SerializableToDateFunction<E, D> name);
+    <D extends Date> ConditionEntityExpressionDatePropertyExpression<D> property(SerializableToDateFunction<T, D> name);
 
     /**
-     * entity great than function property expression.
+     * entity compare function property expression.
      *
      * @param name the name
-     * @return entity great than function property expression.
+     * @return entity compare function property expression.
      */
-    ConditionEntityExpressionLocalDatePropertyExpression property(SerializableToLocalDateFunction<E> name);
+    ConditionEntityExpressionLocalDatePropertyExpression property(SerializableToLocalDateFunction<T> name);
 
     /**
-     * entity great than function property expression.
+     * entity compare function property expression.
      *
      * @param name the name
-     * @return entity great than function property expression.
+     * @return entity compare function property expression.
      */
-    ConditionEntityExpressionLocalTimePropertyExpression property(SerializableToLocalTimeFunction<E> name);
+    ConditionEntityExpressionLocalTimePropertyExpression property(SerializableToLocalTimeFunction<T> name);
 
     /**
-     * entity great than function property expression.
+     * entity compare function property expression.
      *
      * @param name the name
-     * @return entity great than function property expression.
+     * @return entity compare function property expression.
      */
-    ConditionEntityExpressionLocalDateTimePropertyExpression property(SerializableToLocalDateTimeFunction<E> name);
+    ConditionEntityExpressionLocalDateTimePropertyExpression property(SerializableToLocalDateTimeFunction<T> name);
 
     /**
-     * entity great than function property expression.
+     * entity compare function property expression.
      *
      * @param <N>  the generic type
      * @param name the name
-     * @return entity great than function property expression.
+     * @return entity compare function property expression.
      */
     <N extends Number> ConditionEntityExpressionNumberPropertyExpression<N> property(
-            SerializableToNumberFunction<E, N> name);
-
-    //    /**
-    //     * entity great than function property expression.
-    //     *
-    //     * @param <R>  the generic type
-    //     * @param name the name
-    //     * @return entity great than function property expression.
-    //     */
-    //    <R extends Enum<R>> ConditionEntityExpressionEnumPropertyExpression<R> property(
-    //            SerializableToEnumFunction<E, R> name);
+            SerializableToNumberFunction<T, N> name);
 
     /**
-     * entity great than function property expression.
+     * entity compare function property expression.
+     *
+     * @param <N>  the generic type
+     * @param name the name
+     * @return entity compare function property expression.
+     */
+    <E extends Enum<E>> ConditionEntityExpressionEnumPropertyExpression<E> property(
+            SerializableToEnumFunction<T, E> name);
+
+    /**
+     * entity compare function property expression.
      *
      * @param name the name
-     * @return entity great than function property expression.
+     * @return entity compare function property expression.
      */
-    ConditionEntityExpressionStringPropertyExpression property(SerializableToStringFunction<E> name);
+    ConditionEntityExpressionStringPropertyExpression property(SerializableToStringFunction<T> name);
 }

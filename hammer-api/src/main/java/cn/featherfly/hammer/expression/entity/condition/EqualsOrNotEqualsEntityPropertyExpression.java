@@ -8,15 +8,15 @@
  * @date: 2023-07-18 14:44:18
  * @Copyright: 2023 www.featherfly.cn Inc. All rights reserved.
  */
-package cn.featherfly.hammer.expression.entity.condition.eq;
-
-import cn.featherfly.hammer.expression.entity.condition.EqualsOrNotEqualsEntityExpression;
+package cn.featherfly.hammer.expression.entity.condition;
 
 /**
- * The Interface EqualsEntityExpression.
+ * The Interface EqualsNotEqualsEntityExpression.
  *
  * @author zhongj
  * @param <T> the element type
  */
-public interface EqualsEntityExpression<T> extends EqualsOrNotEqualsEntityExpression<T> {
+public interface EqualsOrNotEqualsEntityPropertyExpression<T> extends EqualsOrNotEqualsEntityExpression<T>,
+        EqualsOrNotEqualsEntityValuePropertyExpression<T>, CompareEntityPropertyExpression<T> {
+
 }

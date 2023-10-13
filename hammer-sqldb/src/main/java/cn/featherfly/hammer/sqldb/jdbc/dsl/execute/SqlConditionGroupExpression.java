@@ -1,6 +1,7 @@
 
 package cn.featherfly.hammer.sqldb.jdbc.dsl.execute;
 
+import java.util.concurrent.atomic.AtomicInteger;
 import java.util.function.Predicate;
 
 import cn.featherfly.common.exception.NotImplementedException;
@@ -113,9 +114,19 @@ public class SqlConditionGroupExpression
      * {@inheritDoc}
      */
     @Override
-    protected <R> ExecutableConditionGroupLogic eq_ne(int index, ComparisonOperator comparisonOperator,
+    protected <R> ExecutableConditionGroupLogic eq_ne(AtomicInteger index, ComparisonOperator comparisonOperator,
             PropertyMapping<?> pm, R value, MatchStrategy matchStrategy, Predicate<?> ignoreStrategy) {
         // IMPLSOON 未实现
         throw new NotImplementedException();
     }
+
+    //    /**
+    //     * {@inheritDoc}
+    //     */
+    //    @Override
+    //    protected <R> ExecutableConditionGroupLogic eq_ne(int index, ComparisonOperator comparisonOperator,
+    //            List<PropertyMapping<?>> pms, R value, MatchStrategy matchStrategy, Predicate<?> ignoreStrategy) {
+    //        // IMPLSOON 未实现
+    //        throw new NotImplementedException();
+    //    }
 }

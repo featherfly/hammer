@@ -3,6 +3,7 @@ package cn.featherfly.hammer.sqldb.jdbc.dsl.entity.condition;
 
 import java.io.Serializable;
 import java.util.List;
+import java.util.concurrent.atomic.AtomicInteger;
 import java.util.function.BiPredicate;
 import java.util.function.Predicate;
 
@@ -12,9 +13,11 @@ import cn.featherfly.common.function.serializable.SerializableToStringFunction;
 import cn.featherfly.common.lang.Lang;
 import cn.featherfly.common.operator.ComparisonOperator.MatchStrategy;
 import cn.featherfly.common.repository.IgnoreStrategy;
+import cn.featherfly.common.repository.mapping.PropertyMapping;
 import cn.featherfly.hammer.expression.condition.ConditionExpression;
 import cn.featherfly.hammer.expression.condition.LogicExpression;
 import cn.featherfly.hammer.expression.entity.condition.property.EntityStringPropertyExpression;
+import cn.featherfly.hammer.sqldb.jdbc.dsl.entity.EntitySqlRelation;
 
 /**
  * entity String property expression implements.
@@ -31,40 +34,61 @@ public class EntityStringPropertyExpressionImpl<E, C extends ConditionExpression
     /**
      * Instantiates a new entity string property expression impl.
      *
-     * @param index        the index
-     * @param propertyList the property list
-     * @param expression   the expression
-     * @param factory      the factory
+     * @param index         the index
+     * @param propertyList  the property list
+     * @param expression    the expression
+     * @param factory       the factory
+     * @param queryRelation the query relation
      */
     public EntityStringPropertyExpressionImpl(int index, List<Serializable> propertyList,
-            AbstractMulitiEntityConditionExpression<C, L> expression, JdbcMappingFactory factory) {
-        super(index, propertyList, expression, factory);
+            AbstractMulitiEntityConditionExpression<C, L> expression, JdbcMappingFactory factory,
+            EntitySqlRelation<?, ?> queryRelation) {
+        super(new AtomicInteger(index), propertyList, expression, factory, queryRelation);
     }
 
     /**
      * Instantiates a new entity string property expression impl.
      *
-     * @param index      the index
-     * @param name       the name
-     * @param expression the expression
-     * @param factory    the factory
+     * @param index         the index
+     * @param propertyList  the property list
+     * @param expression    the expression
+     * @param factory       the factory
+     * @param queryRelation the query relation
+     */
+    public EntityStringPropertyExpressionImpl(AtomicInteger index, List<Serializable> propertyList,
+            AbstractMulitiEntityConditionExpression<C, L> expression, JdbcMappingFactory factory,
+            EntitySqlRelation<?, ?> queryRelation) {
+        super(index, propertyList, expression, factory, queryRelation);
+    }
+
+    /**
+     * Instantiates a new entity string property expression impl.
+     *
+     * @param index         the index
+     * @param name          the name
+     * @param expression    the expression
+     * @param factory       the factory
+     * @param queryRelation the query relation
      */
     public EntityStringPropertyExpressionImpl(int index, SerializableFunction<E, String> name,
-            AbstractMulitiEntityConditionExpression<C, L> expression, JdbcMappingFactory factory) {
-        super(index, name, expression, factory);
+            AbstractMulitiEntityConditionExpression<C, L> expression, JdbcMappingFactory factory,
+            EntitySqlRelation<?, ?> queryRelation) {
+        super(new AtomicInteger(index), name, expression, factory, queryRelation);
     }
 
     /**
      * Instantiates a new entity string property expression impl.
      *
-     * @param index      the index
-     * @param name       the name
-     * @param expression the expression
-     * @param factory    the factory
+     * @param index         the index
+     * @param name          the name
+     * @param expression    the expression
+     * @param factory       the factory
+     * @param queryRelation the query relation
      */
     public EntityStringPropertyExpressionImpl(int index, SerializableToStringFunction<E> name,
-            AbstractMulitiEntityConditionExpression<C, L> expression, JdbcMappingFactory factory) {
-        super(index, name, expression, factory);
+            AbstractMulitiEntityConditionExpression<C, L> expression, JdbcMappingFactory factory,
+            EntitySqlRelation<?, ?> queryRelation) {
+        super(new AtomicInteger(index), name, expression, factory, queryRelation);
     }
 
     /**
@@ -96,7 +120,9 @@ public class EntityStringPropertyExpressionImpl<E, C extends ConditionExpression
      */
     @Override
     public L eq(String value, MatchStrategy matchStrategy) {
-        return expression.eq0(index, getPropertyMapping(value), value, matchStrategy, expression.getIgnoreStrategy());
+        PropertyMapping<?> pm = getPropertyMapping(value);
+        return expression.eq0(index, pm, value, matchStrategy, expression.getIgnoreStrategy());
+        //        return expression.eq0(index, getPropertyMapping(value), value, matchStrategy, expression.getIgnoreStrategy());
     }
 
     /**
@@ -104,7 +130,9 @@ public class EntityStringPropertyExpressionImpl<E, C extends ConditionExpression
      */
     @Override
     public L eq(String value, MatchStrategy matchStrategy, IgnoreStrategy ignoreStrategy) {
-        return expression.eq0(index, getPropertyMapping(value), value, matchStrategy, ignoreStrategy);
+        PropertyMapping<?> pm = getPropertyMapping(value);
+        return expression.eq0(index, pm, value, matchStrategy, ignoreStrategy);
+        //        return expression.eq0(index, getPropertyMapping(value), value, matchStrategy, ignoreStrategy);
     }
 
     /**
@@ -112,7 +140,9 @@ public class EntityStringPropertyExpressionImpl<E, C extends ConditionExpression
      */
     @Override
     public L eq(String value, MatchStrategy matchStrategy, Predicate<String> ignoreStrategy) {
-        return expression.eq0(index, getPropertyMapping(value), value, matchStrategy, ignoreStrategy);
+        PropertyMapping<?> pm = getPropertyMapping(value);
+        return expression.eq0(index, pm, value, matchStrategy, ignoreStrategy);
+        //        return expression.eq0(index, getPropertyMapping(value), value, matchStrategy, ignoreStrategy);
     }
 
     /**

@@ -12,6 +12,7 @@ import java.util.function.Predicate;
 
 import cn.featherfly.common.function.serializable.SerializableDateSupplier;
 import cn.featherfly.common.function.serializable.SerializableDoubleSupplier;
+import cn.featherfly.common.function.serializable.SerializableEnumSupplier;
 import cn.featherfly.common.function.serializable.SerializableFunction;
 import cn.featherfly.common.function.serializable.SerializableIntSupplier;
 import cn.featherfly.common.function.serializable.SerializableLocalDateSupplier;
@@ -23,6 +24,7 @@ import cn.featherfly.common.function.serializable.SerializableStringSupplier;
 import cn.featherfly.common.function.serializable.SerializableToDoubleFunction2;
 import cn.featherfly.common.function.serializable.SerializableToIntFunction2;
 import cn.featherfly.common.function.serializable.SerializableToLongFunction2;
+import cn.featherfly.common.operator.ComparisonOperator.MatchStrategy;
 import cn.featherfly.hammer.expression.condition.ConditionExpression;
 import cn.featherfly.hammer.expression.condition.LogicExpression;
 
@@ -30,13 +32,13 @@ import cn.featherfly.hammer.expression.condition.LogicExpression;
  * The Interface EntityGreatThanExpressionBase2.
  *
  * @author zhongj
- * @param <E>  the element type
- * @param <E2> the generic type
+ * @param <T>  the first comparable type
+ * @param <T2> the second comparable type
  * @param <C>  the generic type
  * @param <L>  the generic type
  */
-public interface EntityGreatThanExpressionBase2<E, E2, C extends ConditionExpression, L extends LogicExpression<C, L>>
-        extends EntityGreatThanExpression<E, C, L> {
+public interface EntityGreatThanExpressionBase2<T, T2, C extends ConditionExpression, L extends LogicExpression<C, L>>
+        extends EntityGreatThanExpression<T, C, L> {
 
     /**
      * great than. 大于.
@@ -45,7 +47,7 @@ public interface EntityGreatThanExpressionBase2<E, E2, C extends ConditionExpres
      * @param value 参数值
      * @return LogicExpression
      */
-    L gt2(SerializableToIntFunction2<E2> name, int value);
+    L gt2(SerializableToIntFunction2<T2> name, int value);
 
     /**
      * great than. 大于.
@@ -55,7 +57,7 @@ public interface EntityGreatThanExpressionBase2<E, E2, C extends ConditionExpres
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
-    L gt2(SerializableToIntFunction2<E2> name, int value, IntPredicate ignoreStrategy);
+    L gt2(SerializableToIntFunction2<T2> name, int value, IntPredicate ignoreStrategy);
 
     /**
      * great than. 大于.
@@ -64,7 +66,7 @@ public interface EntityGreatThanExpressionBase2<E, E2, C extends ConditionExpres
      * @param value 参数值
      * @return LogicExpression
      */
-    L gt2(SerializableToLongFunction2<E2> name, long value);
+    L gt2(SerializableToLongFunction2<T2> name, long value);
 
     /**
      * great than. 大于.
@@ -74,7 +76,7 @@ public interface EntityGreatThanExpressionBase2<E, E2, C extends ConditionExpres
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
-    L gt2(SerializableToLongFunction2<E2> name, long value, LongPredicate ignoreStrategy);
+    L gt2(SerializableToLongFunction2<T2> name, long value, LongPredicate ignoreStrategy);
 
     /**
      * great than. 大于.
@@ -83,7 +85,7 @@ public interface EntityGreatThanExpressionBase2<E, E2, C extends ConditionExpres
      * @param value 参数值
      * @return LogicExpression
      */
-    L gt2(SerializableToDoubleFunction2<E2> name, double value);
+    L gt2(SerializableToDoubleFunction2<T2> name, double value);
 
     /**
      * great than. 大于.
@@ -93,7 +95,7 @@ public interface EntityGreatThanExpressionBase2<E, E2, C extends ConditionExpres
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
-    L gt2(SerializableToDoubleFunction2<E2> name, double value, DoublePredicate ignoreStrategy);
+    L gt2(SerializableToDoubleFunction2<T2> name, double value, DoublePredicate ignoreStrategy);
 
     /**
      * great than. 大于.
@@ -103,7 +105,7 @@ public interface EntityGreatThanExpressionBase2<E, E2, C extends ConditionExpres
      * @param value 参数值
      * @return LogicExpression
      */
-    <N extends Number> L gt2(SerializableFunction<E2, N> name, N value);
+    <N extends Number> L gt2(SerializableFunction<T2, N> name, N value);
 
     /**
      * great than. 大于.
@@ -114,7 +116,28 @@ public interface EntityGreatThanExpressionBase2<E, E2, C extends ConditionExpres
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
-    <N extends Number> L gt2(SerializableFunction<E2, N> name, N value, Predicate<N> ignoreStrategy);
+    <N extends Number> L gt2(SerializableFunction<T2, N> name, N value, Predicate<N> ignoreStrategy);
+
+    /**
+     * great than. 大于.
+     *
+     * @param <E>   the element type
+     * @param name  参数名称
+     * @param value 参数值
+     * @return LogicExpression
+     */
+    <E extends Enum<E>> L gt2(SerializableFunction<T2, E> name, E value);
+
+    /**
+     * great than. 大于.
+     *
+     * @param <E>            the element type
+     * @param name           参数名称
+     * @param value          参数值
+     * @param ignoreStrategy the ignore strategy
+     * @return LogicExpression
+     */
+    <E extends Enum<E>> L gt2(SerializableFunction<T2, E> name, E value, Predicate<E> ignoreStrategy);
 
     /**
      * great than. 大于.
@@ -124,7 +147,7 @@ public interface EntityGreatThanExpressionBase2<E, E2, C extends ConditionExpres
      * @param value 参数值
      * @return LogicExpression
      */
-    <D extends Date> L gt2(SerializableFunction<E2, D> name, D value);
+    <D extends Date> L gt2(SerializableFunction<T2, D> name, D value);
 
     /**
      * great than. 大于.
@@ -135,7 +158,7 @@ public interface EntityGreatThanExpressionBase2<E, E2, C extends ConditionExpres
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
-    <D extends Date> L gt2(SerializableFunction<E2, D> name, D value, Predicate<D> ignoreStrategy);
+    <D extends Date> L gt2(SerializableFunction<T2, D> name, D value, Predicate<D> ignoreStrategy);
 
     /**
      * great than. 大于.
@@ -144,7 +167,7 @@ public interface EntityGreatThanExpressionBase2<E, E2, C extends ConditionExpres
      * @param value 参数值
      * @return LogicExpression
      */
-    L gt2(SerializableFunction<E2, LocalTime> name, LocalTime value);
+    L gt2(SerializableFunction<T2, LocalTime> name, LocalTime value);
 
     /**
      * great than. 大于.
@@ -154,7 +177,7 @@ public interface EntityGreatThanExpressionBase2<E, E2, C extends ConditionExpres
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
-    L gt2(SerializableFunction<E2, LocalTime> name, LocalTime value, Predicate<LocalTime> ignoreStrategy);
+    L gt2(SerializableFunction<T2, LocalTime> name, LocalTime value, Predicate<LocalTime> ignoreStrategy);
 
     /**
      * great than. 大于.
@@ -163,7 +186,7 @@ public interface EntityGreatThanExpressionBase2<E, E2, C extends ConditionExpres
      * @param value 参数值
      * @return LogicExpression
      */
-    L gt2(SerializableFunction<E2, LocalDate> name, LocalDate value);
+    L gt2(SerializableFunction<T2, LocalDate> name, LocalDate value);
 
     /**
      * great than. 大于.
@@ -173,7 +196,7 @@ public interface EntityGreatThanExpressionBase2<E, E2, C extends ConditionExpres
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
-    L gt2(SerializableFunction<E2, LocalDate> name, LocalDate value, Predicate<LocalDate> ignoreStrategy);
+    L gt2(SerializableFunction<T2, LocalDate> name, LocalDate value, Predicate<LocalDate> ignoreStrategy);
 
     /**
      * great than. 大于.
@@ -182,7 +205,7 @@ public interface EntityGreatThanExpressionBase2<E, E2, C extends ConditionExpres
      * @param value 参数值
      * @return LogicExpression
      */
-    L gt2(SerializableFunction<E2, LocalDateTime> name, LocalDateTime value);
+    L gt2(SerializableFunction<T2, LocalDateTime> name, LocalDateTime value);
 
     /**
      * great than. 大于.
@@ -192,7 +215,7 @@ public interface EntityGreatThanExpressionBase2<E, E2, C extends ConditionExpres
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
-    L gt2(SerializableFunction<E2, LocalDateTime> name, LocalDateTime value, Predicate<LocalDateTime> ignoreStrategy);
+    L gt2(SerializableFunction<T2, LocalDateTime> name, LocalDateTime value, Predicate<LocalDateTime> ignoreStrategy);
 
     /**
      * great than. 大于.
@@ -201,7 +224,9 @@ public interface EntityGreatThanExpressionBase2<E, E2, C extends ConditionExpres
      * @param value 参数值
      * @return LogicExpression
      */
-    L gt2(SerializableFunction<E2, String> name, String value);
+    default L gt2(SerializableFunction<T2, String> name, String value) {
+        return gt2(name, value, MatchStrategy.AUTO);
+    }
 
     /**
      * great than. 大于.
@@ -211,7 +236,31 @@ public interface EntityGreatThanExpressionBase2<E, E2, C extends ConditionExpres
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
-    L gt2(SerializableFunction<E2, String> name, String value, Predicate<String> ignoreStrategy);
+    default L gt2(SerializableFunction<T2, String> name, String value, Predicate<String> ignoreStrategy) {
+        return gt2(name, value, MatchStrategy.AUTO, ignoreStrategy);
+    }
+
+    /**
+     * great than. 大于.
+     *
+     * @param name          参数名称
+     * @param value         参数值
+     * @param matchStrategy the match strategy
+     * @return LogicExpression
+     */
+    L gt2(SerializableFunction<T2, String> name, String value, MatchStrategy matchStrategy);
+
+    /**
+     * great than. 大于.
+     *
+     * @param name           参数名称
+     * @param value          参数值
+     * @param matchStrategy  the match strategy
+     * @param ignoreStrategy the ignore strategy
+     * @return LogicExpression
+     */
+    L gt2(SerializableFunction<T2, String> name, String value, MatchStrategy matchStrategy,
+            Predicate<String> ignoreStrategy);
 
     /**
      * great than. 大于.
@@ -305,6 +354,25 @@ public interface EntityGreatThanExpressionBase2<E, E2, C extends ConditionExpres
     /**
      * great than. 大于.
      *
+     * @param <E>      the element type
+     * @param property 对象属性
+     * @return LogicExpression
+     */
+    <E extends Enum<E>> L gt2(SerializableEnumSupplier<E> property);
+
+    /**
+     * great than. 大于.
+     *
+     * @param <E>            the element type
+     * @param property       对象属性
+     * @param ignoreStrategy the ignore strategy
+     * @return LogicExpression
+     */
+    <E extends Enum<E>> L gt2(SerializableEnumSupplier<E> property, Predicate<E> ignoreStrategy);
+
+    /**
+     * great than. 大于.
+     *
      * @param property 对象属性
      * @return LogicExpression
      */
@@ -359,7 +427,9 @@ public interface EntityGreatThanExpressionBase2<E, E2, C extends ConditionExpres
      * @param property 对象属性
      * @return LogicExpression
      */
-    L gt2(SerializableStringSupplier property);
+    default L gt2(SerializableStringSupplier property) {
+        return gt2(property, MatchStrategy.AUTO);
+    }
 
     /**
      * great than. 大于.
@@ -368,6 +438,27 @@ public interface EntityGreatThanExpressionBase2<E, E2, C extends ConditionExpres
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
-    L gt2(SerializableStringSupplier property, Predicate<String> ignoreStrategy);
+    default L gt2(SerializableStringSupplier property, Predicate<String> ignoreStrategy) {
+        return gt2(property, MatchStrategy.AUTO, ignoreStrategy);
+    }
+
+    /**
+     * great than. 大于.
+     *
+     * @param property      对象属性
+     * @param matchStrategy the match strategy
+     * @return LogicExpression
+     */
+    L gt2(SerializableStringSupplier property, MatchStrategy matchStrategy);
+
+    /**
+     * great than. 大于.
+     *
+     * @param property       对象属性
+     * @param matchStrategy  the match strategy
+     * @param ignoreStrategy the ignore strategy
+     * @return LogicExpression
+     */
+    L gt2(SerializableStringSupplier property, MatchStrategy matchStrategy, Predicate<String> ignoreStrategy);
 
 }

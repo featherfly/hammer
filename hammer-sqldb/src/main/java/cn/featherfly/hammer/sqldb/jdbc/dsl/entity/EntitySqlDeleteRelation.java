@@ -4,6 +4,9 @@ package cn.featherfly.hammer.sqldb.jdbc.dsl.entity;
 import java.util.function.Predicate;
 
 import cn.featherfly.common.db.builder.dml.basic.SqlDeleteFromBasicBuilder;
+import cn.featherfly.common.db.builder.dml.basic.SqlSelectJoinOnBasicBuilder;
+import cn.featherfly.common.db.mapping.JdbcClassMapping;
+import cn.featherfly.common.exception.NotImplementedException;
 import cn.featherfly.common.repository.builder.AliasManager;
 import cn.featherfly.hammer.sqldb.jdbc.Jdbc;
 
@@ -30,6 +33,13 @@ public class EntitySqlDeleteRelation extends EntitySqlRelation<EntitySqlDeleteRe
     // ****************************************************************************************************************
     //	protected method
     // ****************************************************************************************************************
+
+    @Override
+    protected SqlSelectJoinOnBasicBuilder join0(String tableAlias, String columnName,
+            JdbcClassMapping<?> joinClassMapping, String joinTableAlias, String joinTableColumnName) {
+        // IMPLSOON delete还未实现join
+        throw new NotImplementedException();
+    }
 
     /**
      * {@inheritDoc}

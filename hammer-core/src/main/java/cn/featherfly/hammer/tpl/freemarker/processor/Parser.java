@@ -24,7 +24,7 @@ public class Parser {
 
     private static final Pattern WRAP_PARAM_WITH_VALUE_PATTERN = Pattern.compile("(.+/\\*\\$=.*\\*/)(.+)");
 
-    public static char[] COMMENT_SYMBOL_AFTER_DIRECTIVE_START = new char[] { '+', ' ', '\n' };
+    private static final char[] COMMENT_SYMBOL_AFTER_DIRECTIVE_START = new char[] { '+', ' ', '\n' };
 
     private char[] directiveStart = new char[] { '/', '*' };
 

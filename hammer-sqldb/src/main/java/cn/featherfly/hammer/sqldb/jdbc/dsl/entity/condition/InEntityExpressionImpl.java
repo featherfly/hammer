@@ -44,6 +44,7 @@ import cn.featherfly.hammer.expression.entity.condition.in.AbstractInEntityExpre
 import cn.featherfly.hammer.expression.entity.condition.in.InEntityExpression;
 import cn.featherfly.hammer.expression.entity.condition.in.InEntityPropertyExpression;
 import cn.featherfly.hammer.expression.entity.condition.in.MulitiEntityInExpression;
+import cn.featherfly.hammer.sqldb.jdbc.dsl.entity.EntitySqlRelation;
 import cn.featherfly.hammer.sqldb.jdbc.dsl.entity.condition.propery.ConditionEntityExpressionDateAndArrayPropertyExpressionImpl;
 import cn.featherfly.hammer.sqldb.jdbc.dsl.entity.condition.propery.ConditionEntityExpressionDoubleAndArrayPropertyExpressionImpl;
 import cn.featherfly.hammer.sqldb.jdbc.dsl.entity.condition.propery.ConditionEntityExpressionEnumAndArrayPropertyExpressionImpl;
@@ -66,7 +67,11 @@ import cn.featherfly.hammer.sqldb.jdbc.dsl.entity.condition.propery.ConditionEnt
 public class InEntityExpressionImpl<T, C extends ConditionExpression, L extends LogicExpression<C, L>>
         extends AbstractInEntityExpression<T, C, L> implements InEntityExpression<T> {
 
+    /** The factory. */
     private JdbcMappingFactory factory;
+
+    /** The query relation. */
+    private EntitySqlRelation<?, ?> queryRelation;
 
     /**
      * Instantiates a new in entity expression impl.
@@ -75,11 +80,13 @@ public class InEntityExpressionImpl<T, C extends ConditionExpression, L extends 
      * @param expression     the expression
      * @param ignoreStrategy the ignore strategy
      * @param factory        the factory
+     * @param queryRelation  the query relation
      */
     public InEntityExpressionImpl(int index, MulitiEntityInExpression<C, L> expression, Predicate<?> ignoreStrategy,
-            JdbcMappingFactory factory) {
+            JdbcMappingFactory factory, EntitySqlRelation<?, ?> queryRelation) {
         super(index, expression, ignoreStrategy);
         this.factory = factory;
+        this.queryRelation = queryRelation;
     }
 
     /**
@@ -203,9 +210,9 @@ public class InEntityExpressionImpl<T, C extends ConditionExpression, L extends 
     @Override
     public ConditionEntityExpressionStringAndArrayPropertyExpression property(SerializableToStringFunction<T> name) {
         return new ConditionEntityExpressionStringAndArrayPropertyExpressionImpl(v -> null, ignoreStrategy,
-                (value, ignore, pm) -> expression.in(index, name, value, ignore), v -> null,
+                (value, match, ignore, pm) -> expression.in(index, name, value, match, ignore), v -> null,
                 array -> ((Predicate<Object>) ignoreStrategy).test(array),
-                (value, ignore, pm) -> expression.in(index, name, value, ignore));
+                (value, match, ignore, pm) -> expression.in(index, name, value, match, ignore));
     }
 
     /**
@@ -214,15 +221,15 @@ public class InEntityExpressionImpl<T, C extends ConditionExpression, L extends 
     @Override
     public <R> InEntityPropertyExpression<R> property(SerializableFunction<T, R> name) {
         return new InEntityPropertyExpressionImpl<>(index, name, (MulitiEntityInExpressionImpl<C, L>) expression,
-                factory);
+                factory, queryRelation);
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public <R extends Collection<RE>,
-            RE> InEntityPropertyExpression<RE> property(SerializableToCollectionFunction<T, R, RE> name) {
+    public <R extends Collection<E>,
+            E> InEntityPropertyExpression<E> property(SerializableToCollectionFunction<T, R, E> name) {
         // IMPLSOON 后续来实现集合类型property
         throw new NotImplementedException();
     }

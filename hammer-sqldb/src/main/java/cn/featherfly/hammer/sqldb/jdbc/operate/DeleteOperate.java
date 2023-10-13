@@ -152,7 +152,7 @@ public class DeleteOperate<T> extends AbstractBatchExecuteOperate<T> implements 
         propertyPositions.putAll(tuple.get1());
         logger.debug("sql: {}", sql);
 
-        // TODO 后续使用batchSql template优化，只需要替换动态参数部分
+        // ENHANCE 后续使用batchSql template优化，只需要替换动态参数部分
     }
 
     /**

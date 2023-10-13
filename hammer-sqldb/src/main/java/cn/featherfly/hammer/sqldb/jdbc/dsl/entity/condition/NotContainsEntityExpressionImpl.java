@@ -25,6 +25,7 @@ import cn.featherfly.hammer.expression.entity.condition.nco.MulitiEntityNotConta
 import cn.featherfly.hammer.expression.entity.condition.nco.NotContainsEntityExpression;
 import cn.featherfly.hammer.expression.entity.condition.nco.NotContainsEntityPropertyExpression;
 import cn.featherfly.hammer.expression.entity.condition.nco.NotContainsEntityPropertySetValueExpression;
+import cn.featherfly.hammer.sqldb.jdbc.dsl.entity.EntitySqlRelation;
 
 /**
  * NotContainsEntityExpressionImpl.
@@ -39,6 +40,8 @@ public class NotContainsEntityExpressionImpl<E, C extends ConditionExpression, L
 
     private JdbcMappingFactory factory;
 
+    private EntitySqlRelation<?, ?> queryRelation;
+
     /**
      * Instantiates a new contains entity expression impl.
      *
@@ -46,11 +49,13 @@ public class NotContainsEntityExpressionImpl<E, C extends ConditionExpression, L
      * @param expression     the expression
      * @param ignoreStrategy the ignore strategy
      * @param factory        the factory
+     * @param queryRelation  the query relation
      */
     public NotContainsEntityExpressionImpl(int index, MulitiEntityNotContainsExpression<C, L> expression,
-            Predicate<?> ignoreStrategy, JdbcMappingFactory factory) {
+            Predicate<?> ignoreStrategy, JdbcMappingFactory factory, EntitySqlRelation<?, ?> queryRelation) {
         super(index, expression, ignoreStrategy);
         this.factory = factory;
+        this.queryRelation = queryRelation;
     }
 
     /**
@@ -59,7 +64,7 @@ public class NotContainsEntityExpressionImpl<E, C extends ConditionExpression, L
     @Override
     public <R> NotContainsEntityPropertyExpression<R> property(SerializableFunction<E, R> name) {
         return new NotContainsEntityPropertyExpressionImpl<>(index, name,
-                (MulitiEntityNotContainsExpressionImpl<C, L>) expression, factory);
+                (MulitiEntityNotContainsExpressionImpl<C, L>) expression, factory, queryRelation);
     }
 
     /**
@@ -68,7 +73,7 @@ public class NotContainsEntityExpressionImpl<E, C extends ConditionExpression, L
     @Override
     public <R extends Collection<RE>,
             RE> NotContainsEntityPropertyExpression<RE> property(SerializableToCollectionFunction<E, R, RE> name) {
-        // IMPLSOON 未实现property
+        // IMPLSOON 后续来实现集合类型property
         throw new NotImplementedException();
     }
 
@@ -78,6 +83,6 @@ public class NotContainsEntityExpressionImpl<E, C extends ConditionExpression, L
     @Override
     public NotContainsEntityPropertySetValueExpression property(SerializableToStringFunction<E> name) {
         return new NotContainsEntityPropertyExpressionImpl<>(index, name,
-                (MulitiEntityNotContainsExpressionImpl<C, L>) expression, factory);
+                (MulitiEntityNotContainsExpressionImpl<C, L>) expression, factory, queryRelation);
     }
 }

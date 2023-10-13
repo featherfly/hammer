@@ -12,6 +12,7 @@ package cn.featherfly.hammer.sqldb.jdbc.dsl.entity.condition;
 import java.io.Serializable;
 import java.util.Collection;
 import java.util.List;
+import java.util.concurrent.atomic.AtomicInteger;
 import java.util.function.Predicate;
 
 import cn.featherfly.common.db.mapping.JdbcMappingFactory;
@@ -25,6 +26,7 @@ import cn.featherfly.hammer.expression.condition.ConditionExpression;
 import cn.featherfly.hammer.expression.condition.LogicExpression;
 import cn.featherfly.hammer.expression.entity.condition.ew.EndWithEntityPropertyExpression;
 import cn.featherfly.hammer.expression.entity.condition.ew.EndWithEntityPropertySetValueExpression;
+import cn.featherfly.hammer.sqldb.jdbc.dsl.entity.EntitySqlRelation;
 
 /**
  * The Class EndWithEntityPropertyExpressionImpl.
@@ -41,27 +43,46 @@ public class EndWithEntityPropertyExpressionImpl<V, C extends ConditionExpressio
     /**
      * Instantiates a new end with entity property expression impl.
      *
-     * @param index      the index
-     * @param name       the name
-     * @param expression the expression
-     * @param factory    the factory
+     * @param index         the index
+     * @param name          the name
+     * @param expression    the expression
+     * @param factory       the factory
+     * @param queryRelation the query relation
      */
     public EndWithEntityPropertyExpressionImpl(int index, SerializableFunction<?, V> name,
-            AbstractMulitiEntityConditionExpression<C, L> expression, JdbcMappingFactory factory) {
-        super(index, name, expression, factory);
+            AbstractMulitiEntityConditionExpression<C, L> expression, JdbcMappingFactory factory,
+            EntitySqlRelation<?, ?> queryRelation) {
+        super(new AtomicInteger(index), name, expression, factory, queryRelation);
     }
 
     /**
      * Instantiates a new end with entity property expression impl.
      *
-     * @param index        the index
-     * @param propertyList the property list
-     * @param expression   the expression
-     * @param factory      the factory
+     * @param index         the index
+     * @param propertyList  the property list
+     * @param expression    the expression
+     * @param factory       the factory
+     * @param queryRelation the query relation
      */
     public EndWithEntityPropertyExpressionImpl(int index, List<Serializable> propertyList,
-            AbstractMulitiEntityConditionExpression<C, L> expression, JdbcMappingFactory factory) {
-        super(index, propertyList, expression, factory);
+            AbstractMulitiEntityConditionExpression<C, L> expression, JdbcMappingFactory factory,
+            EntitySqlRelation<?, ?> queryRelation) {
+        this(new AtomicInteger(index), propertyList, expression, factory, queryRelation);
+    }
+
+    /**
+     * Instantiates a new end with entity property expression impl.
+     *
+     * @param index         the index
+     * @param propertyList  the property list
+     * @param expression    the expression
+     * @param factory       the factory
+     * @param queryRelation the query relation
+     */
+    public EndWithEntityPropertyExpressionImpl(AtomicInteger index, List<Serializable> propertyList,
+            AbstractMulitiEntityConditionExpression<C, L> expression, JdbcMappingFactory factory,
+            EntitySqlRelation<?, ?> queryRelation) {
+        super(index, propertyList, expression, factory, queryRelation);
     }
 
     /**
@@ -70,7 +91,7 @@ public class EndWithEntityPropertyExpressionImpl<V, C extends ConditionExpressio
     @Override
     public <R> EndWithEntityPropertyExpression<R> property(SerializableFunction<V, R> name) {
         propertyList.add(name);
-        return new EndWithEntityPropertyExpressionImpl<>(index, propertyList, expression, factory);
+        return new EndWithEntityPropertyExpressionImpl<>(index, propertyList, expression, factory, queryRelation);
     }
 
     /**
@@ -79,12 +100,18 @@ public class EndWithEntityPropertyExpressionImpl<V, C extends ConditionExpressio
     @Override
     public EndWithEntityPropertySetValueExpression property(SerializableToStringFunction<V> name) {
         propertyList.add(name);
-        return new EndWithEntityPropertyExpressionImpl<>(index, propertyList, expression, factory);
+        return new EndWithEntityPropertyExpressionImpl<>(index, propertyList, expression, factory, queryRelation);
     }
 
+    /**
+     * Property.
+     *
+     * @param name the name
+     * @return the end with entity property set value expression
+     */
     private EndWithEntityPropertySetValueExpression property(SerializableSupplier<String> name) {
         propertyList.add(name);
-        return new EndWithEntityPropertyExpressionImpl<>(index, propertyList, expression, factory);
+        return new EndWithEntityPropertyExpressionImpl<>(index, propertyList, expression, factory, queryRelation);
     }
 
     /**
@@ -101,24 +128,8 @@ public class EndWithEntityPropertyExpressionImpl<V, C extends ConditionExpressio
      * {@inheritDoc}
      */
     @Override
-    public void value(String value) {
-        value(value, MatchStrategy.AUTO);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
     public void value(String value, MatchStrategy matchStrategy) {
         expression.ew0(index, getPropertyMapping(value), value, matchStrategy, expression.getIgnoreStrategy());
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public void value(String value, Predicate<String> ignoreStrategy) {
-        value(value, MatchStrategy.AUTO, ignoreStrategy);
     }
 
     /**

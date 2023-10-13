@@ -11,10 +11,13 @@ import cn.featherfly.common.function.serializable.SerializableDoubleSupplier;
 import cn.featherfly.common.function.serializable.SerializableFunction;
 import cn.featherfly.common.function.serializable.SerializableIntSupplier;
 import cn.featherfly.common.function.serializable.SerializableLongSupplier;
+import cn.featherfly.common.function.serializable.SerializableStringSupplier;
 import cn.featherfly.common.function.serializable.SerializableSupplier;
 import cn.featherfly.common.function.serializable.SerializableToDoubleFunction;
 import cn.featherfly.common.function.serializable.SerializableToIntFunction;
 import cn.featherfly.common.function.serializable.SerializableToLongFunction;
+import cn.featherfly.common.function.serializable.SerializableToStringFunction;
+import cn.featherfly.common.operator.ComparisonOperator.MatchStrategy;
 import cn.featherfly.hammer.expression.condition.ConditionExpression;
 import cn.featherfly.hammer.expression.condition.LogicExpression;
 import cn.featherfly.hammer.expression.entity.condition.MulitiEntityConditionExpression;
@@ -246,6 +249,59 @@ public interface MulitiEntityNotInExpression<C extends ConditionExpression, L ex
     /**
      * values not in. 不包含指定，sql中的not in.
      *
+     * @param <E>           the element type
+     * @param <R>           the generic type
+     * @param index         the index
+     * @param name          参数名称
+     * @param value         参数值
+     * @param matchStrategy the match strategy
+     * @return LogicExpression
+     */
+    <E> L ni(int index, SerializableToStringFunction<E> name, String value, MatchStrategy matchStrategy);
+
+    /**
+     * values not in. 不包含指定，sql中的not in.
+     *
+     * @param <E>            the element type
+     * @param index          the index
+     * @param name           参数名称
+     * @param value          参数值
+     * @param matchStrategy  the match strategy
+     * @param ignoreStrategy the ignore strategy
+     * @return LogicExpression
+     */
+    <E> L ni(int index, SerializableToStringFunction<E> name, String value, MatchStrategy matchStrategy,
+            Predicate<String> ignoreStrategy);
+
+    /**
+     * values not in. 不包含指定，sql中的not in.
+     *
+     * @param <E>           the element type
+     * @param index         the index
+     * @param name          参数名称
+     * @param value         参数值
+     * @param matchStrategy the match strategy
+     * @return LogicExpression
+     */
+    <E> L ni(int index, SerializableToStringFunction<E> name, String[] value, MatchStrategy matchStrategy);
+
+    /**
+     * values not in. 不包含指定，sql中的not in.
+     *
+     * @param <E>            the element type
+     * @param index          the index
+     * @param name           参数名称
+     * @param value          参数值
+     * @param matchStrategy  the match strategy
+     * @param ignoreStrategy the ignore strategy
+     * @return LogicExpression
+     */
+    <E> L ni(int index, SerializableToStringFunction<E> name, String[] value, MatchStrategy matchStrategy,
+            Predicate<String[]> ignoreStrategy);
+
+    /**
+     * values not in. 不包含指定，sql中的not in.
+     *
      * @param <R>      the generic type
      * @param index    the index
      * @param property 对象属性
@@ -320,4 +376,25 @@ public interface MulitiEntityNotInExpression<C extends ConditionExpression, L ex
      * @return LogicExpression
      */
     L ni(int index, SerializableDoubleSupplier property, DoublePredicate ignoreStrategy);
+
+    /**
+     * values not in. 不包含指定，sql中的not in.
+     *
+     * @param index         the index
+     * @param property      对象属性
+     * @param matchStrategy the match strategy
+     * @return LogicExpression
+     */
+    L ni(int index, SerializableStringSupplier property, MatchStrategy matchStrategy);
+
+    /**
+     * values not in. 不包含指定，sql中的not in.
+     *
+     * @param index          the index
+     * @param property       对象属性
+     * @param matchStrategy  the match strategy
+     * @param ignoreStrategy the ignore strategy
+     * @return LogicExpression
+     */
+    L ni(int index, SerializableStringSupplier property, MatchStrategy matchStrategy, Predicate<String> ignoreStrategy);
 }

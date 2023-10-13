@@ -1,6 +1,8 @@
 
 package cn.featherfly.hammer.dml.builder.sql;
 
+import java.util.function.IntPredicate;
+
 import cn.featherfly.common.function.serializable.SerializableFunction2;
 import cn.featherfly.common.function.serializable.SerializableToIntFunction;
 import cn.featherfly.common.repository.Repository;
@@ -54,7 +56,8 @@ public class DslEntityConditionCompareTest {
                 .property(Tree::getChildren).property(Tree::getChildren).property(Tree::getName).value("tree-001"))
                 .list();
 
-        query.find(UserInfo.class).join(User::getUserInfo).where().eq(UserInfo::getId, 1, value -> ignore).list();
+        query.find(UserInfo.class).join(User::getUserInfo).where()
+                .eq(UserInfo::getId, 1, (IntPredicate) value -> ignore).list();
 
         query.find(UserInfo.class).join(User::getUserInfo).where()
                 .eq(es -> es.get0().property(UserInfo::getId).value(1)).list();
@@ -107,7 +110,8 @@ public class DslEntityConditionCompareTest {
                 .property(Tree::getChildren).property(Tree::getChildren).property(Tree::getName).value("tree-001"))
                 .list();
 
-        query.find(UserInfo.class).join(User::getUserInfo).where().ne(UserInfo::getId, 1, value -> ignore).list();
+        query.find(UserInfo.class).join(User::getUserInfo).where()
+                .ne(UserInfo::getId, 1, (IntPredicate) value -> ignore).list();
 
         query.find(UserInfo.class).join(User::getUserInfo).where()
                 .ne(es -> es.get0().property(UserInfo::getId).value(1)).list();

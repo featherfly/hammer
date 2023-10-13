@@ -25,6 +25,7 @@ import cn.featherfly.hammer.expression.entity.condition.nl.MulitiEntityNotLikeEx
 import cn.featherfly.hammer.expression.entity.condition.nl.NotLikeEntityExpression;
 import cn.featherfly.hammer.expression.entity.condition.nl.NotLikeEntityPropertyExpression;
 import cn.featherfly.hammer.expression.entity.condition.nl.NotLikeEntityPropertySetValueExpression;
+import cn.featherfly.hammer.sqldb.jdbc.dsl.entity.EntitySqlRelation;
 
 /**
  * The Class NotLikeEntityExpressionImpl.
@@ -37,7 +38,11 @@ import cn.featherfly.hammer.expression.entity.condition.nl.NotLikeEntityProperty
 public class NotLikeEntityExpressionImpl<E, C extends ConditionExpression, L extends LogicExpression<C, L>>
         extends AbstractNotLikeEntityExpression<E, C, L> implements NotLikeEntityExpression<E> {
 
+    /** The factory. */
     private JdbcMappingFactory factory;
+
+    /** The query relation. */
+    private EntitySqlRelation<?, ?> queryRelation;
 
     /**
      * Instantiates a new end with entity expression impl.
@@ -46,11 +51,13 @@ public class NotLikeEntityExpressionImpl<E, C extends ConditionExpression, L ext
      * @param expression     the expression
      * @param ignoreStrategy the ignore strategy
      * @param factory        the factory
+     * @param queryRelation  the query relation
      */
     public NotLikeEntityExpressionImpl(int index, MulitiEntityNotLikeExpression<C, L> expression,
-            Predicate<?> ignoreStrategy, JdbcMappingFactory factory) {
+            Predicate<?> ignoreStrategy, JdbcMappingFactory factory, EntitySqlRelation<?, ?> queryRelation) {
         super(index, expression, ignoreStrategy);
         this.factory = factory;
+        this.queryRelation = queryRelation;
     }
 
     /**
@@ -59,7 +66,7 @@ public class NotLikeEntityExpressionImpl<E, C extends ConditionExpression, L ext
     @Override
     public <R> NotLikeEntityPropertyExpression<R> property(SerializableFunction<E, R> name) {
         return new NotLikeEntityPropertyExpressionImpl<>(index, name,
-                (MulitiEntityNotLikeExpressionImpl<C, L>) expression, factory);
+                (MulitiEntityNotLikeExpressionImpl<C, L>) expression, factory, queryRelation);
     }
 
     /**
@@ -68,7 +75,7 @@ public class NotLikeEntityExpressionImpl<E, C extends ConditionExpression, L ext
     @Override
     public <R extends Collection<RE>,
             RE> NotLikeEntityPropertyExpression<RE> property(SerializableToCollectionFunction<E, R, RE> name) {
-        // IMPLSOON 未实现property
+        // IMPLSOON 后续来实现集合类型property
         throw new NotImplementedException();
     }
 
@@ -78,6 +85,6 @@ public class NotLikeEntityExpressionImpl<E, C extends ConditionExpression, L ext
     @Override
     public NotLikeEntityPropertySetValueExpression property(SerializableToStringFunction<E> name) {
         return new NotLikeEntityPropertyExpressionImpl<>(index, name,
-                (MulitiEntityNotLikeExpressionImpl<C, L>) expression, factory);
+                (MulitiEntityNotLikeExpressionImpl<C, L>) expression, factory, queryRelation);
     }
 }
