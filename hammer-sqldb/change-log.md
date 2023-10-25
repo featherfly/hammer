@@ -50,6 +50,8 @@
 15. Jdbc实现queryStream，主要用于大数据查询导出，不会依次把内容都加载到内存中，而是迭代的时候依次获取，需要调用者处理连接
     
 16. 加入配置`HammerConfig`，实现update、delete、query等表达式的配置（configure方法）
+17. where().property(Xx:Yy).property(Yy::Name).[eq|ne|...] 如果需要join会自动加入
+18. where().eq()方法支持@Embeddable,@ManyToOne（传入是映射对象，对非空值使用and连接，如果是连表查询条件会自动join）
 
 TODO dsl查询条件的表达式加入带运算的条件判断
     ```java

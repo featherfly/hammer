@@ -3438,4 +3438,12 @@ public abstract class AbstractEntitySqlConditionGroupExpressionBase3<T1, T2, T3,
     // ********************************************************************
     // protected method
     // ********************************************************************
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    protected int getIndex() {
+        return 2;
+    }
 }

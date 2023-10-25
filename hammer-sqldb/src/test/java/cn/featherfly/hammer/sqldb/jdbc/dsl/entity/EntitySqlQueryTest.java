@@ -385,6 +385,50 @@ public class EntitySqlQueryTest extends JdbcTestBase {
     }
 
     @Test
+    void testProperty_eq_embedded() {
+        List<UserInfo> userInfos = null;
+
+        DistrictDivision division = new DistrictDivision();
+        division.setProvince("四川");
+        division.setCity("成都");
+
+        userInfos = query.find(UserInfo.class).where().eq(UserInfo::getDivision, division).list();
+        for (UserInfo userInfo : userInfos) {
+            assertEquals(userInfo.getDivision().getProvince(), division.getProvince());
+            assertEquals(userInfo.getDivision().getCity(), division.getCity());
+        }
+    }
+
+    @Test
+    void testProperty_eq_manyToOne_pk() {
+        List<UserInfo> userInfos = null;
+
+        User user = new User();
+        user.setId(1);
+
+        userInfos = query.find(UserInfo.class).where().eq(UserInfo::getUser, user).list();
+        for (UserInfo userInfo : userInfos) {
+            assertEquals(userInfo.getUser().getId(), user.getId());
+        }
+    }
+
+    @Test
+    void testProperty_eq_ManyToOne_autojoin() {
+        List<UserInfo> userInfos = null;
+
+        User user = new User();
+        user.setUsername("yufei");
+        user.setMobileNo("12345678901");
+
+        userInfos = query.find(UserInfo.class).where().eq(UserInfo::getUser, user).list();
+        for (UserInfo userInfo : userInfos) {
+            User u = query.find(User.class).where().eq(User::getId, userInfo.getUser().getId()).single();
+            assertEquals(u.getUsername(), user.getUsername());
+            assertEquals(u.getMobileNo(), user.getMobileNo());
+        }
+    }
+
+    @Test
     void testProperty_ne() {
         long c = query.find(User.class) //
                 .where() //
@@ -403,6 +447,50 @@ public class EntitySqlQueryTest extends JdbcTestBase {
                 .property(User::getUsername).ne(null, IgnoreStrategy.NONE) // 不忽略
                 .count();
         assertEquals(c, 0);
+    }
+
+    @Test
+    void testProperty_ne_manyToOne_pk() {
+        List<UserInfo> userInfos = null;
+
+        User user = new User();
+        user.setId(1);
+
+        userInfos = query.find(UserInfo.class).where().ne(UserInfo::getUser, user).list();
+        for (UserInfo userInfo : userInfos) {
+            assertNotEquals(userInfo.getUser().getId(), user.getId());
+        }
+    }
+
+    @Test
+    void testProperty_ne_manyToOne_autojoin() {
+        List<UserInfo> userInfos = null;
+
+        User user = new User();
+        user.setUsername("yufei");
+        user.setMobileNo("12345678901");
+
+        userInfos = query.find(UserInfo.class).where().ne(UserInfo::getUser, user).list();
+        for (UserInfo userInfo : userInfos) {
+            User u = query.find(User.class).where().eq(User::getId, userInfo.getUser().getId()).single();
+            assertNotEquals(u.getUsername(), user.getUsername());
+            assertNotEquals(u.getMobileNo(), user.getMobileNo());
+        }
+    }
+
+    @Test
+    void testProperty_ne_embedded() {
+        List<UserInfo> userInfos = null;
+
+        DistrictDivision division = new DistrictDivision();
+        division.setProvince("四川");
+        division.setCity("成都");
+
+        userInfos = query.find(UserInfo.class).where().ne(UserInfo::getDivision, division).list();
+        for (UserInfo userInfo : userInfos) {
+            assertNotEquals(userInfo.getDivision().getProvince(), division.getProvince());
+            assertNotEquals(userInfo.getDivision().getCity(), division.getCity());
+        }
     }
 
     @Test

@@ -50,7 +50,7 @@ public interface Hammer extends TplExecutor {
         if (Lang.isEmpty(entities)) {
             return ArrayUtils.EMPTY_INT_ARRAY;
         } else {
-            return save(ArrayUtils.toList(entities), entities.length);
+            return save(ArrayUtils.toList(entities));
         }
     }
 
@@ -251,7 +251,9 @@ public interface Hammer extends TplExecutor {
      * @param entities entity array to delete
      * @return effect data row num
      */
-    <E> int[] delete(@SuppressWarnings("unchecked") E... entities);
+    default <E> int[] delete(@SuppressWarnings("unchecked") E... entities) {
+        return delete(ArrayUtils.toList(entities));
+    }
 
     /**
      * delete each entity in entity list.
