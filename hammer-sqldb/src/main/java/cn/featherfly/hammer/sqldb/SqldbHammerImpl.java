@@ -4,6 +4,7 @@ package cn.featherfly.hammer.sqldb;
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -252,6 +253,9 @@ public class SqldbHammerImpl implements SqldbHammer {
             }
             validate(entity);
         }
+        if (insert == null) {
+            return ArrayUtils.EMPTY_INT_ARRAY;
+        }
         return insert.executeBatch(entities, batchSize);
     }
 
@@ -296,13 +300,6 @@ public class SqldbHammerImpl implements SqldbHammer {
         }
     }
 
-    /**
-     * Gets the insert.
-     *
-     * @param <E>    the element type
-     * @param entity the entity
-     * @return the insert
-     */
     private <E> InsertOperate<E> getInsert(E entity) {
         @SuppressWarnings("unchecked")
         InsertOperate<E> insert = (InsertOperate<E>) insertOperates.get(entity.getClass());
@@ -553,46 +550,30 @@ public class SqldbHammerImpl implements SqldbHammer {
      * {@inheritDoc}
      */
     @Override
-    public <E> int[] delete(@SuppressWarnings("unchecked") E... entities) {
-        if (Lang.isEmpty(entities)) {
-            return ArrayUtils.EMPTY_INT_ARRAY;
-        }
-        DeleteOperate<E> delete = getDelete(entities[0]);
-        return delete.executeBatch(entities);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
     public <E> int[] delete(List<E> entities) {
         if (Lang.isEmpty(entities)) {
             return ArrayUtils.EMPTY_INT_ARRAY;
         }
-        DeleteOperate<E> delete = getDelete(entities.get(0));
+        DeleteOperate<E> delete = getDelete(entities);
+        if (delete == null) {
+            return ArrayUtils.EMPTY_INT_ARRAY;
+        }
         return delete.executeBatch(entities);
     }
 
-    /**
-     * Gets the delete.
-     *
-     * @param <E>    the element type
-     * @param entity the entity
-     * @return the delete
-     */
-    private <E> DeleteOperate<E> getDelete(E entity) {
-        @SuppressWarnings("unchecked")
-        Class<E> type = (Class<E>) entity.getClass();
-        return getDelete(type);
+    private <E> DeleteOperate<E> getDelete(Collection<E> entities) {
+        E e = Lang.pickFirst(entities);
+        if (e == null) {
+            return null;
+        }
+        return getDelete(e);
     }
 
-    /**
-     * Gets the delete.
-     *
-     * @param <E>        the element type
-     * @param entityType the entity type
-     * @return the delete
-     */
+    @SuppressWarnings("unchecked")
+    private <E> DeleteOperate<E> getDelete(E entity) {
+        return getDelete((Class<E>) entity.getClass());
+    }
+
     private <E> DeleteOperate<E> getDelete(Class<E> entityType) {
         @SuppressWarnings("unchecked")
         DeleteOperate<E> delete = (DeleteOperate<E>) deleteOperates.get(entityType);
