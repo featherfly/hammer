@@ -6,7 +6,6 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-import java.util.function.Predicate;
 
 import com.speedment.common.tuple.Tuple2;
 import com.speedment.common.tuple.Tuple3;
@@ -25,6 +24,7 @@ import cn.featherfly.common.db.dialect.Join;
 import cn.featherfly.common.db.mapping.JdbcClassMapping;
 import cn.featherfly.common.lang.AssertIllegalArgument;
 import cn.featherfly.common.repository.builder.AliasManager;
+import cn.featherfly.hammer.config.dsl.QueryConfig;
 import cn.featherfly.hammer.sqldb.SqldbHammerException;
 import cn.featherfly.hammer.sqldb.jdbc.Jdbc;
 
@@ -49,8 +49,8 @@ public class EntitySqlQueryRelation extends EntitySqlRelation<EntitySqlQueryRela
      * @param aliasManager   aliasManager
      * @param ignoreStrategy the ignore strategy
      */
-    public EntitySqlQueryRelation(Jdbc jdbc, AliasManager aliasManager, Predicate<?> ignoreStrategy) {
-        super(jdbc, aliasManager, ignoreStrategy);
+    public EntitySqlQueryRelation(Jdbc jdbc, AliasManager aliasManager, QueryConfig queryConfig) {
+        super(jdbc, aliasManager, queryConfig);
     }
 
     /**
@@ -444,4 +444,10 @@ public class EntitySqlQueryRelation extends EntitySqlRelation<EntitySqlQueryRela
     //        }
     //        throw new SqldbHammerException("entity query fetch times must be 9");
     //    }
+
+    @SuppressWarnings("unchecked")
+    @Override
+    public QueryConfig getConfig() {
+        return (QueryConfig) conditionConfig;
+    }
 }

@@ -41,7 +41,7 @@ public class SqlQueryTest extends JdbcTestBase {
 
     @BeforeClass
     void beforeClass() {
-        query = new SqlQuery(jdbc, mappingFactory, sqlPageFactory);
+        query = new SqlQuery(jdbc, mappingFactory, sqlPageFactory, hammerConfig.getDslConfig().getQueryConfig());
     }
 
     @Test
@@ -748,7 +748,7 @@ public class SqlQueryTest extends JdbcTestBase {
 
     @Test(expectedExceptions = SqldbHammerException.class)
     void testQueryClassMappingFactorNull() {
-        SqlQuery query = new SqlQuery(jdbc, metadata, sqlPageFactory);
+        SqlQuery query = new SqlQuery(jdbc, metadata, sqlPageFactory, hammerConfig.getDslConfig().getQueryConfig());
         query.find(User.class);
     }
 

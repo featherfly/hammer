@@ -1,6 +1,7 @@
 
 package cn.featherfly.hammer.dsl.entity.execute;
 
+import cn.featherfly.hammer.config.dsl.UpdateConditionConfig;
 import cn.featherfly.hammer.expression.entity.execute.EntityUpdateNumberValueExpression;
 
 /**
@@ -9,6 +10,8 @@ import cn.featherfly.hammer.expression.entity.execute.EntityUpdateNumberValueExp
  * @author zhongj
  */
 public interface EntityUpdateNumberValue<E, T extends Number> extends EntityUpdateValue<E, T>,
-        EntityUpdateNumberValueExpression<E, T, EntityExecutableUpdate<E>, EntityExecutableConditionGroup<E>, EntityExecutableConditionGroupLogic<E>> {
+        EntityUpdateNumberValueExpression<E, T, EntityExecutableUpdate<E>,
+                EntityExecutableConditionGroup<E, UpdateConditionConfig>,
+                EntityExecutableConditionGroupLogic<E, UpdateConditionConfig>> {
 
 }

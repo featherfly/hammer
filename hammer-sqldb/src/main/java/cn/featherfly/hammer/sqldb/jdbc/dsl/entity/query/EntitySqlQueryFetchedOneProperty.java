@@ -11,7 +11,6 @@ import cn.featherfly.common.operator.AggregateFunction;
 import cn.featherfly.hammer.dsl.entity.query.EntityQueryFetchedProperties;
 import cn.featherfly.hammer.dsl.entity.query.EntityQueryOneFetchedProperty;
 import cn.featherfly.hammer.dsl.entity.query.EntityQueryValueConditionGroup;
-import cn.featherfly.hammer.expression.condition.ConditionGroupConfig;
 import cn.featherfly.hammer.expression.entity.query.EntityQueryValueSortExpression;
 import cn.featherfly.hammer.sqldb.jdbc.SqlPageFactory;
 import cn.featherfly.hammer.sqldb.jdbc.dsl.entity.EntitySqlQueryRelation;
@@ -90,8 +89,7 @@ public class EntitySqlQueryFetchedOneProperty<E, V>
      * {@inheritDoc}
      */
     @Override
-    public EntityQueryValueConditionGroup<E, V> where(
-            Consumer<ConditionGroupConfig<EntityQueryValueConditionGroup<E, V>>> consumer) {
+    public EntityQueryValueConditionGroup<E, V> where(Consumer<EntityQueryValueConditionGroup<E, V>> consumer) {
         EntitySqlQueryValueExpression<E,
                 V> exp = new EntitySqlQueryValueExpression<>(factory, sqlPageFactory, queryRelation, valueType);
         if (consumer != null) {

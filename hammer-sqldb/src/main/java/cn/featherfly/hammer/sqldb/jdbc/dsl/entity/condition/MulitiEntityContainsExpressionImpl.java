@@ -43,7 +43,7 @@ public class MulitiEntityContainsExpressionImpl<C extends ConditionExpression, L
      */
     @Override
     public <E> L co(int index, SerializableFunction<E, String> name, String value, MatchStrategy matchStrategy) {
-        return proxy.co0(new AtomicInteger(index), name, value, matchStrategy, ignoreStrategy);
+        return proxy.co0(new AtomicInteger(index), name, value, matchStrategy, getIgnoreStrategy());
     }
 
     /**
@@ -60,7 +60,7 @@ public class MulitiEntityContainsExpressionImpl<C extends ConditionExpression, L
      */
     @Override
     public L co(int index, SerializableSupplier<String> property, MatchStrategy matchStrategy) {
-        return proxy.co0(new AtomicInteger(index), property, matchStrategy, ignoreStrategy);
+        return proxy.co0(new AtomicInteger(index), property, matchStrategy, getIgnoreStrategy());
     }
 
     /**

@@ -74,15 +74,14 @@ public class NotInEntityExpressionImpl<T, C extends ConditionExpression, L exten
     /**
      * Instantiates a new not in entity expression impl.
      *
-     * @param index          the index
-     * @param expression     the expression
-     * @param ignoreStrategy the ignore strategy
-     * @param factory        the factory
-     * @param queryRelation  the query relation
+     * @param index         the index
+     * @param expression    the expression
+     * @param factory       the factory
+     * @param queryRelation the query relation
      */
     public NotInEntityExpressionImpl(int index, MulitiEntityNotInExpression<C, L> expression,
-            Predicate<?> ignoreStrategy, JdbcMappingFactory factory, EntitySqlRelation<?, ?> queryRelation) {
-        super(index, expression, ignoreStrategy);
+            JdbcMappingFactory factory, EntitySqlRelation<?, ?> queryRelation) {
+        super(index, expression, queryRelation.getIgnorePolicy());
         this.factory = factory;
         this.queryRelation = queryRelation;
     }

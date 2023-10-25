@@ -71,7 +71,7 @@ public class MulitiEntityEqualsExpressionImpl<C extends ConditionExpression, L e
      */
     @Override
     public <E, R> L eq(int index, SerializableFunction<E, R> name, R value, MatchStrategy matchStrategy) {
-        return proxy.eq0(new AtomicInteger(index), name, value, matchStrategy, ignoreStrategy);
+        return proxy.eq0(new AtomicInteger(index), name, value, matchStrategy, getIgnoreStrategy());
     }
 
     /**
@@ -88,7 +88,7 @@ public class MulitiEntityEqualsExpressionImpl<C extends ConditionExpression, L e
      */
     @Override
     public L eq(int index, SerializableStringSupplier property, MatchStrategy matchStrategy) {
-        return proxy.eq0(new AtomicInteger(index), property, matchStrategy, ignoreStrategy);
+        return proxy.eq0(new AtomicInteger(index), property, matchStrategy, getIgnoreStrategy());
     }
 
     /**
@@ -105,7 +105,7 @@ public class MulitiEntityEqualsExpressionImpl<C extends ConditionExpression, L e
      */
     @Override
     public <T> L eq(int index, SerializableToIntFunction<T> name, int value) {
-        return proxy.eq0(new AtomicInteger(index), name, value, ignoreStrategy);
+        return proxy.eq0(new AtomicInteger(index), name, value, getIgnoreStrategy());
     }
 
     /**
@@ -121,7 +121,7 @@ public class MulitiEntityEqualsExpressionImpl<C extends ConditionExpression, L e
      */
     @Override
     public <T> L eq(int index, SerializableToLongFunction<T> name, long value) {
-        return proxy.eq0(new AtomicInteger(index), name, value, ignoreStrategy);
+        return proxy.eq0(new AtomicInteger(index), name, value, getIgnoreStrategy());
     }
 
     /**
@@ -137,7 +137,7 @@ public class MulitiEntityEqualsExpressionImpl<C extends ConditionExpression, L e
      */
     @Override
     public <T> L eq(int index, SerializableToDoubleFunction<T> name, double value) {
-        return proxy.eq0(new AtomicInteger(index), name, value, ignoreStrategy);
+        return proxy.eq0(new AtomicInteger(index), name, value, getIgnoreStrategy());
     }
 
     /**
@@ -153,7 +153,7 @@ public class MulitiEntityEqualsExpressionImpl<C extends ConditionExpression, L e
      */
     @Override
     public <T, N extends Number> L eq(int index, SerializableToNumberFunction<T, N> name, N value) {
-        return proxy.eq0(new AtomicInteger(index), name, value, ignoreStrategy);
+        return proxy.eq0(new AtomicInteger(index), name, value, getIgnoreStrategy());
     }
 
     /**
@@ -170,7 +170,7 @@ public class MulitiEntityEqualsExpressionImpl<C extends ConditionExpression, L e
      */
     @Override
     public <T, E extends Enum<E>> L eq(int index, SerializableToEnumFunction<T, E> name, E value) {
-        return proxy.eq0(new AtomicInteger(index), name, value, ignoreStrategy);
+        return proxy.eq0(new AtomicInteger(index), name, value, getIgnoreStrategy());
     }
 
     /**
@@ -187,7 +187,7 @@ public class MulitiEntityEqualsExpressionImpl<C extends ConditionExpression, L e
      */
     @Override
     public <T, D extends Date> L eq(int index, SerializableToDateFunction<T, D> name, D value) {
-        return proxy.eq0(new AtomicInteger(index), name, value, ignoreStrategy);
+        return proxy.eq0(new AtomicInteger(index), name, value, getIgnoreStrategy());
     }
 
     /**
@@ -204,7 +204,7 @@ public class MulitiEntityEqualsExpressionImpl<C extends ConditionExpression, L e
      */
     @Override
     public <T> L eq(int index, SerializableToLocalTimeFunction<T> name, LocalTime value) {
-        return proxy.eq0(new AtomicInteger(index), name, value, ignoreStrategy);
+        return proxy.eq0(new AtomicInteger(index), name, value, getIgnoreStrategy());
     }
 
     /**
@@ -221,7 +221,7 @@ public class MulitiEntityEqualsExpressionImpl<C extends ConditionExpression, L e
      */
     @Override
     public <T> L eq(int index, SerializableToLocalDateFunction<T> name, LocalDate value) {
-        return proxy.eq0(new AtomicInteger(index), name, value, ignoreStrategy);
+        return proxy.eq0(new AtomicInteger(index), name, value, getIgnoreStrategy());
     }
 
     /**
@@ -238,7 +238,7 @@ public class MulitiEntityEqualsExpressionImpl<C extends ConditionExpression, L e
      */
     @Override
     public <T> L eq(int index, SerializableToLocalDateTimeFunction<T> name, LocalDateTime value) {
-        return proxy.eq0(new AtomicInteger(index), name, value, ignoreStrategy);
+        return proxy.eq0(new AtomicInteger(index), name, value, getIgnoreStrategy());
     }
 
     /**
@@ -255,7 +255,7 @@ public class MulitiEntityEqualsExpressionImpl<C extends ConditionExpression, L e
      */
     @Override
     public <T> L eq(int index, SerializableToStringFunction<T> name, String value) {
-        return proxy.eq0(new AtomicInteger(index), name, value, ignoreStrategy);
+        return proxy.eq0(new AtomicInteger(index), name, value, getIgnoreStrategy());
     }
 
     /**
@@ -271,7 +271,7 @@ public class MulitiEntityEqualsExpressionImpl<C extends ConditionExpression, L e
      */
     @Override
     public <T> L eq(int index, SerializableToStringFunction<T> name, String value, MatchStrategy matchStrategy) {
-        return proxy.eq0(new AtomicInteger(index), name, value, ignoreStrategy);
+        return proxy.eq0(new AtomicInteger(index), name, value, getIgnoreStrategy());
     }
 
     /**
@@ -288,7 +288,7 @@ public class MulitiEntityEqualsExpressionImpl<C extends ConditionExpression, L e
      */
     @Override
     public <R> L eq(int index, SerializableSupplier<R> property) {
-        return proxy.eq0(new AtomicInteger(index), property, ignoreStrategy);
+        return proxy.eq0(new AtomicInteger(index), property, getIgnoreStrategy());
     }
 
     /**
@@ -304,7 +304,7 @@ public class MulitiEntityEqualsExpressionImpl<C extends ConditionExpression, L e
      */
     @Override
     public L eq(int index, SerializableIntSupplier property) {
-        return proxy.eq0(new AtomicInteger(index), (Serializable) property, property.get(), ignoreStrategy);
+        return proxy.eq0(new AtomicInteger(index), (Serializable) property, property.get(), getIgnoreStrategy());
     }
 
     /**
@@ -312,7 +312,7 @@ public class MulitiEntityEqualsExpressionImpl<C extends ConditionExpression, L e
      */
     @Override
     public L eq(int index, SerializableIntSupplier property, IntPredicate ignoreStrategy) {
-        return proxy.eq0(new AtomicInteger(index), (Serializable) property, property.get(), ignoreStrategy);
+        return proxy.eq0(new AtomicInteger(index), property, property.get(), ignoreStrategy);
     }
 
     /**
@@ -320,7 +320,7 @@ public class MulitiEntityEqualsExpressionImpl<C extends ConditionExpression, L e
      */
     @Override
     public L eq(int index, SerializableLongSupplier property) {
-        return proxy.eq0(new AtomicInteger(index), (Serializable) property, property.get(), ignoreStrategy);
+        return proxy.eq0(new AtomicInteger(index), (Serializable) property, property.get(), getIgnoreStrategy());
     }
 
     /**
@@ -328,7 +328,7 @@ public class MulitiEntityEqualsExpressionImpl<C extends ConditionExpression, L e
      */
     @Override
     public L eq(int index, SerializableLongSupplier property, LongPredicate ignoreStrategy) {
-        return proxy.eq0(new AtomicInteger(index), (Serializable) property, property.get(), ignoreStrategy);
+        return proxy.eq0(new AtomicInteger(index), property, property.get(), ignoreStrategy);
     }
 
     /**
@@ -336,7 +336,7 @@ public class MulitiEntityEqualsExpressionImpl<C extends ConditionExpression, L e
      */
     @Override
     public L eq(int index, SerializableDoubleSupplier property) {
-        return proxy.eq0(new AtomicInteger(index), (Serializable) property, property.get(), ignoreStrategy);
+        return proxy.eq0(new AtomicInteger(index), (Serializable) property, property.get(), getIgnoreStrategy());
     }
 
     /**
@@ -344,7 +344,7 @@ public class MulitiEntityEqualsExpressionImpl<C extends ConditionExpression, L e
      */
     @Override
     public L eq(int index, SerializableDoubleSupplier property, DoublePredicate ignoreStrategy) {
-        return proxy.eq0(new AtomicInteger(index), (Serializable) property, property.get(), ignoreStrategy);
+        return proxy.eq0(new AtomicInteger(index), property, property.get(), ignoreStrategy);
     }
 
     /**
@@ -352,7 +352,7 @@ public class MulitiEntityEqualsExpressionImpl<C extends ConditionExpression, L e
      */
     @Override
     public <R extends Date> L eq(int index, SerializableDateSupplier<R> property) {
-        return proxy.eq0(new AtomicInteger(index), property, ignoreStrategy);
+        return proxy.eq0(new AtomicInteger(index), property, getIgnoreStrategy());
     }
 
     /**
@@ -368,7 +368,7 @@ public class MulitiEntityEqualsExpressionImpl<C extends ConditionExpression, L e
      */
     @Override
     public <R extends Number> L eq(int index, SerializableNumberSupplier<R> property) {
-        return proxy.eq0(new AtomicInteger(index), property, ignoreStrategy);
+        return proxy.eq0(new AtomicInteger(index), property, getIgnoreStrategy());
     }
 
     /**
@@ -384,7 +384,7 @@ public class MulitiEntityEqualsExpressionImpl<C extends ConditionExpression, L e
      */
     @Override
     public <E extends Enum<E>> L eq(int index, SerializableEnumSupplier<E> property) {
-        return proxy.eq0(new AtomicInteger(index), property, ignoreStrategy);
+        return proxy.eq0(new AtomicInteger(index), property, getIgnoreStrategy());
     }
 
     /**
@@ -400,7 +400,7 @@ public class MulitiEntityEqualsExpressionImpl<C extends ConditionExpression, L e
      */
     @Override
     public L eq(int index, SerializableLocalDateSupplier property) {
-        return proxy.eq0(new AtomicInteger(index), property, ignoreStrategy);
+        return proxy.eq0(new AtomicInteger(index), property, getIgnoreStrategy());
     }
 
     /**
@@ -416,7 +416,7 @@ public class MulitiEntityEqualsExpressionImpl<C extends ConditionExpression, L e
      */
     @Override
     public L eq(int index, SerializableLocalTimeSupplier property) {
-        return proxy.eq0(new AtomicInteger(index), property, ignoreStrategy);
+        return proxy.eq0(new AtomicInteger(index), property, getIgnoreStrategy());
     }
 
     /**
@@ -432,7 +432,7 @@ public class MulitiEntityEqualsExpressionImpl<C extends ConditionExpression, L e
      */
     @Override
     public L eq(int index, SerializableLocalDateTimeSupplier property) {
-        return proxy.eq0(new AtomicInteger(index), property, ignoreStrategy);
+        return proxy.eq0(new AtomicInteger(index), property, getIgnoreStrategy());
     }
 
     /**
@@ -448,7 +448,7 @@ public class MulitiEntityEqualsExpressionImpl<C extends ConditionExpression, L e
      */
     @Override
     public L eq(int index, SerializableStringSupplier property) {
-        return proxy.eq0(new AtomicInteger(index), property, ignoreStrategy);
+        return proxy.eq0(new AtomicInteger(index), property, getIgnoreStrategy());
     }
 
     /**

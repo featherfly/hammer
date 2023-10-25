@@ -54,7 +54,7 @@ public class MulitiEntityLessThanExpressionImpl<C extends ConditionExpression, L
      */
     @Override
     public <E> L lt(int index, SerializableToIntFunction<E> name, int value) {
-        return proxy.lt0(new AtomicInteger(index), name, value, ignoreStrategy);
+        return proxy.lt0(new AtomicInteger(index), name, value, getIgnoreStrategy());
     }
 
     /**
@@ -70,7 +70,7 @@ public class MulitiEntityLessThanExpressionImpl<C extends ConditionExpression, L
      */
     @Override
     public <E> L lt(int index, SerializableToLongFunction<E> name, long value) {
-        return proxy.lt0(new AtomicInteger(index), name, value, ignoreStrategy);
+        return proxy.lt0(new AtomicInteger(index), name, value, getIgnoreStrategy());
     }
 
     /**
@@ -86,7 +86,7 @@ public class MulitiEntityLessThanExpressionImpl<C extends ConditionExpression, L
      */
     @Override
     public <E> L lt(int index, SerializableToDoubleFunction<E> name, double value) {
-        return proxy.lt0(new AtomicInteger(index), name, value, ignoreStrategy);
+        return proxy.lt0(new AtomicInteger(index), name, value, getIgnoreStrategy());
     }
 
     /**
@@ -102,7 +102,7 @@ public class MulitiEntityLessThanExpressionImpl<C extends ConditionExpression, L
      */
     @Override
     public <E, N extends Number> L lt(int index, SerializableFunction<E, N> name, N value) {
-        return proxy.lt0(new AtomicInteger(index), name, value, ignoreStrategy);
+        return proxy.lt0(new AtomicInteger(index), name, value, getIgnoreStrategy());
     }
 
     /**
@@ -119,7 +119,7 @@ public class MulitiEntityLessThanExpressionImpl<C extends ConditionExpression, L
      */
     @Override
     public <E, D extends Date> L lt(int index, SerializableFunction<E, D> name, D value) {
-        return proxy.lt0(new AtomicInteger(index), name, value, ignoreStrategy);
+        return proxy.lt0(new AtomicInteger(index), name, value, getIgnoreStrategy());
     }
 
     /**
@@ -135,7 +135,7 @@ public class MulitiEntityLessThanExpressionImpl<C extends ConditionExpression, L
      */
     @Override
     public <E> L lt(int index, SerializableFunction<E, LocalTime> name, LocalTime value) {
-        return proxy.lt0(new AtomicInteger(index), name, value, ignoreStrategy);
+        return proxy.lt0(new AtomicInteger(index), name, value, getIgnoreStrategy());
     }
 
     /**
@@ -152,7 +152,7 @@ public class MulitiEntityLessThanExpressionImpl<C extends ConditionExpression, L
      */
     @Override
     public <E> L lt(int index, SerializableFunction<E, LocalDate> name, LocalDate value) {
-        return proxy.lt0(new AtomicInteger(index), name, value, ignoreStrategy);
+        return proxy.lt0(new AtomicInteger(index), name, value, getIgnoreStrategy());
     }
 
     /**
@@ -169,7 +169,7 @@ public class MulitiEntityLessThanExpressionImpl<C extends ConditionExpression, L
      */
     @Override
     public <E> L lt(int index, SerializableFunction<E, LocalDateTime> name, LocalDateTime value) {
-        return proxy.lt0(new AtomicInteger(index), name, value, ignoreStrategy);
+        return proxy.lt0(new AtomicInteger(index), name, value, getIgnoreStrategy());
     }
 
     /**
@@ -186,7 +186,7 @@ public class MulitiEntityLessThanExpressionImpl<C extends ConditionExpression, L
      */
     @Override
     public <E> L lt(int index, SerializableFunction<E, String> name, String value, MatchStrategy matchStrategy) {
-        return proxy.lt0(new AtomicInteger(index), name, value, matchStrategy, ignoreStrategy);
+        return proxy.lt0(new AtomicInteger(index), name, value, matchStrategy, getIgnoreStrategy());
     }
 
     /**
@@ -203,7 +203,7 @@ public class MulitiEntityLessThanExpressionImpl<C extends ConditionExpression, L
      */
     @Override
     public L lt(int index, SerializableIntSupplier property) {
-        return proxy.lt0(new AtomicInteger(index), property, ignoreStrategy);
+        return proxy.lt0(new AtomicInteger(index), property, getIgnoreStrategy());
     }
 
     /**
@@ -219,7 +219,7 @@ public class MulitiEntityLessThanExpressionImpl<C extends ConditionExpression, L
      */
     @Override
     public L lt(int index, SerializableLongSupplier property) {
-        return proxy.lt0(new AtomicInteger(index), property, ignoreStrategy);
+        return proxy.lt0(new AtomicInteger(index), property, getIgnoreStrategy());
     }
 
     /**
@@ -235,7 +235,7 @@ public class MulitiEntityLessThanExpressionImpl<C extends ConditionExpression, L
      */
     @Override
     public L lt(int index, SerializableDoubleSupplier property) {
-        return proxy.lt0(new AtomicInteger(index), property, ignoreStrategy);
+        return proxy.lt0(new AtomicInteger(index), property, getIgnoreStrategy());
     }
 
     /**
@@ -251,7 +251,7 @@ public class MulitiEntityLessThanExpressionImpl<C extends ConditionExpression, L
      */
     @Override
     public <R extends Date> L lt(int index, SerializableDateSupplier<R> property) {
-        return proxy.lt0(new AtomicInteger(index), property, ignoreStrategy);
+        return proxy.lt0(new AtomicInteger(index), property, getIgnoreStrategy());
     }
 
     /**
@@ -267,7 +267,7 @@ public class MulitiEntityLessThanExpressionImpl<C extends ConditionExpression, L
      */
     @Override
     public <R extends Number> L lt(int index, SerializableNumberSupplier<R> property) {
-        return proxy.lt0(new AtomicInteger(index), property, ignoreStrategy);
+        return proxy.lt0(new AtomicInteger(index), property, getIgnoreStrategy());
     }
 
     /**
@@ -283,7 +283,7 @@ public class MulitiEntityLessThanExpressionImpl<C extends ConditionExpression, L
      */
     @Override
     public L lt(int index, SerializableLocalDateSupplier property) {
-        return proxy.lt0(new AtomicInteger(index), property, ignoreStrategy);
+        return proxy.lt0(new AtomicInteger(index), property, getIgnoreStrategy());
     }
 
     /**
@@ -299,7 +299,7 @@ public class MulitiEntityLessThanExpressionImpl<C extends ConditionExpression, L
      */
     @Override
     public L lt(int index, SerializableLocalTimeSupplier property) {
-        return proxy.lt0(new AtomicInteger(index), property, ignoreStrategy);
+        return proxy.lt0(new AtomicInteger(index), property, getIgnoreStrategy());
     }
 
     /**
@@ -315,7 +315,7 @@ public class MulitiEntityLessThanExpressionImpl<C extends ConditionExpression, L
      */
     @Override
     public L lt(int index, SerializableLocalDateTimeSupplier property) {
-        return proxy.lt0(new AtomicInteger(index), property, ignoreStrategy);
+        return proxy.lt0(new AtomicInteger(index), property, getIgnoreStrategy());
     }
 
     /**
@@ -331,7 +331,7 @@ public class MulitiEntityLessThanExpressionImpl<C extends ConditionExpression, L
      */
     @Override
     public L lt(int index, SerializableStringSupplier property, MatchStrategy matchStrategy) {
-        return proxy.lt0(new AtomicInteger(index), property, matchStrategy, ignoreStrategy);
+        return proxy.lt0(new AtomicInteger(index), property, matchStrategy, getIgnoreStrategy());
     }
 
     /**
@@ -348,7 +348,7 @@ public class MulitiEntityLessThanExpressionImpl<C extends ConditionExpression, L
      */
     @Override
     public <T, E extends Enum<E>> L lt(int index, SerializableFunction<T, E> name, E value) {
-        return proxy.lt0(new AtomicInteger(index), name, value, ignoreStrategy);
+        return proxy.lt0(new AtomicInteger(index), name, value, getIgnoreStrategy());
     }
 
     /**
@@ -365,7 +365,7 @@ public class MulitiEntityLessThanExpressionImpl<C extends ConditionExpression, L
      */
     @Override
     public <E extends Enum<E>> L lt(int index, SerializableEnumSupplier<E> property) {
-        return proxy.lt0(new AtomicInteger(index), property, ignoreStrategy);
+        return proxy.lt0(new AtomicInteger(index), property, getIgnoreStrategy());
     }
 
     /**

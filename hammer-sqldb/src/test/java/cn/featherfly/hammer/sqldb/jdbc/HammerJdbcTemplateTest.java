@@ -18,6 +18,6 @@ public class HammerJdbcTemplateTest extends SqlTplExecutorTest {
     void before() {
         //        TplConfigFactoryImpl configFactory = new TplConfigFactoryImpl("tpl/", ".yaml.tpl");
         executor = new SqldbHammerImpl(jdbc, mappingFactory, configFactory,
-                new SqldbFreemarkerTemplateEngine(configFactory), new SimpleSqlPageFactory());
+                new SqldbFreemarkerTemplateEngine(configFactory), new SimpleSqlPageFactory(), hammerConfig);
     }
 }

@@ -47,7 +47,7 @@ public class MulitiEntityNotInExpressionImpl<C extends ConditionExpression, L ex
      */
     @Override
     public <E, R> L ni(int index, SerializableFunction<E, R> name, R value) {
-        return proxy.ni0(new AtomicInteger(index), name, value, ignoreStrategy);
+        return proxy.ni0(new AtomicInteger(index), name, value, getIgnoreStrategy());
     }
 
     /**
@@ -63,7 +63,7 @@ public class MulitiEntityNotInExpressionImpl<C extends ConditionExpression, L ex
      */
     @Override
     public <E> L ni(int index, SerializableToIntFunction<E> name, int value) {
-        return proxy.ni0(new AtomicInteger(index), name, value, ignoreStrategy);
+        return proxy.ni0(new AtomicInteger(index), name, value, getIgnoreStrategy());
     }
 
     /**
@@ -79,7 +79,7 @@ public class MulitiEntityNotInExpressionImpl<C extends ConditionExpression, L ex
      */
     @Override
     public <E> L ni(int index, SerializableToLongFunction<E> name, long value) {
-        return proxy.ni0(new AtomicInteger(index), name, value, ignoreStrategy);
+        return proxy.ni0(new AtomicInteger(index), name, value, getIgnoreStrategy());
     }
 
     /**
@@ -95,7 +95,7 @@ public class MulitiEntityNotInExpressionImpl<C extends ConditionExpression, L ex
      */
     @Override
     public <E> L ni(int index, SerializableToDoubleFunction<E> name, double value) {
-        return proxy.ni0(new AtomicInteger(index), name, value, ignoreStrategy);
+        return proxy.ni0(new AtomicInteger(index), name, value, getIgnoreStrategy());
     }
 
     /**
@@ -111,7 +111,7 @@ public class MulitiEntityNotInExpressionImpl<C extends ConditionExpression, L ex
      */
     @Override
     public <E, R> L ni(int index, SerializableFunction<E, R> name, @SuppressWarnings("unchecked") R... value) {
-        return proxy.ni0(new AtomicInteger(index), name, value, ignoreStrategy);
+        return proxy.ni0(new AtomicInteger(index), name, value, getIgnoreStrategy());
     }
 
     /**
@@ -119,7 +119,7 @@ public class MulitiEntityNotInExpressionImpl<C extends ConditionExpression, L ex
      */
     @Override
     public <E> L ni(int index, SerializableToIntFunction<E> name, int... value) {
-        return proxy.ni0(new AtomicInteger(index), name, value, ignoreStrategy);
+        return proxy.ni0(new AtomicInteger(index), name, value, getIgnoreStrategy());
     }
 
     /**
@@ -127,7 +127,7 @@ public class MulitiEntityNotInExpressionImpl<C extends ConditionExpression, L ex
      */
     @Override
     public <E> L ni(int index, SerializableToLongFunction<E> name, long... value) {
-        return proxy.ni0(new AtomicInteger(index), name, value, ignoreStrategy);
+        return proxy.ni0(new AtomicInteger(index), name, value, getIgnoreStrategy());
     }
 
     /**
@@ -135,7 +135,7 @@ public class MulitiEntityNotInExpressionImpl<C extends ConditionExpression, L ex
      */
     @Override
     public <E> L ni(int index, SerializableToDoubleFunction<E> name, double... value) {
-        return proxy.ni0(new AtomicInteger(index), name, value, ignoreStrategy);
+        return proxy.ni0(new AtomicInteger(index), name, value, getIgnoreStrategy());
     }
 
     /**
@@ -176,7 +176,7 @@ public class MulitiEntityNotInExpressionImpl<C extends ConditionExpression, L ex
      */
     @Override
     public <E, R> L ni(int index, SerializableFunction<E, R> name, Collection<R> value) {
-        return proxy.ni0(new AtomicInteger(index), name, value, ignoreStrategy);
+        return proxy.ni0(new AtomicInteger(index), name, value, getIgnoreStrategy());
     }
 
     /**
@@ -193,7 +193,7 @@ public class MulitiEntityNotInExpressionImpl<C extends ConditionExpression, L ex
      */
     @Override
     public <R> L ni(int index, SerializableSupplier<R> property) {
-        return proxy.ni0(new AtomicInteger(index), property, ignoreStrategy);
+        return proxy.ni0(new AtomicInteger(index), property, getIgnoreStrategy());
     }
 
     /**
@@ -209,7 +209,7 @@ public class MulitiEntityNotInExpressionImpl<C extends ConditionExpression, L ex
      */
     @Override
     public L ni(int index, SerializableIntSupplier property) {
-        return proxy.ni0(new AtomicInteger(index), property, ignoreStrategy);
+        return proxy.ni0(new AtomicInteger(index), property, getIgnoreStrategy());
     }
 
     /**
@@ -225,7 +225,7 @@ public class MulitiEntityNotInExpressionImpl<C extends ConditionExpression, L ex
      */
     @Override
     public L ni(int index, SerializableLongSupplier property) {
-        return proxy.ni0(new AtomicInteger(index), property, ignoreStrategy);
+        return proxy.ni0(new AtomicInteger(index), property, getIgnoreStrategy());
     }
 
     /**
@@ -241,7 +241,7 @@ public class MulitiEntityNotInExpressionImpl<C extends ConditionExpression, L ex
      */
     @Override
     public L ni(int index, SerializableDoubleSupplier property) {
-        return proxy.ni0(new AtomicInteger(index), property, ignoreStrategy);
+        return proxy.ni0(new AtomicInteger(index), property, getIgnoreStrategy());
     }
 
     /**
@@ -257,7 +257,7 @@ public class MulitiEntityNotInExpressionImpl<C extends ConditionExpression, L ex
      */
     @Override
     public <E> L ni(int index, SerializableToStringFunction<E> name, String value, MatchStrategy matchStrategy) {
-        return proxy.ni0(new AtomicInteger(index), name, value, matchStrategy, ignoreStrategy);
+        return proxy.ni0(new AtomicInteger(index), name, value, matchStrategy, getIgnoreStrategy());
     }
 
     /**
@@ -274,7 +274,7 @@ public class MulitiEntityNotInExpressionImpl<C extends ConditionExpression, L ex
      */
     @Override
     public <E> L ni(int index, SerializableToStringFunction<E> name, String[] value, MatchStrategy matchStrategy) {
-        return proxy.ni0(new AtomicInteger(index), name, value, matchStrategy, ignoreStrategy);
+        return proxy.ni0(new AtomicInteger(index), name, value, matchStrategy, getIgnoreStrategy());
     }
 
     /**
@@ -291,7 +291,7 @@ public class MulitiEntityNotInExpressionImpl<C extends ConditionExpression, L ex
      */
     @Override
     public L ni(int index, SerializableStringSupplier property, MatchStrategy matchStrategy) {
-        return proxy.ni0(new AtomicInteger(index), property, matchStrategy, ignoreStrategy);
+        return proxy.ni0(new AtomicInteger(index), property, matchStrategy, getIgnoreStrategy());
     }
 
     /**

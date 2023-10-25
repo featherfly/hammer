@@ -1,6 +1,7 @@
 
 package cn.featherfly.hammer.dsl.execute;
 
+import cn.featherfly.hammer.config.dsl.UpdateConditionConfig;
 import cn.featherfly.hammer.expression.execute.UpdateValueExpression;
 
 /**
@@ -8,6 +9,7 @@ import cn.featherfly.hammer.expression.execute.UpdateValueExpression;
  *
  * @author zhongj
  */
-public interface UpdateValue extends
-        UpdateValueExpression<ExecutableUpdate, ExecutableConditionGroup, ExecutableConditionGroupLogic, Object, UpdateValue, UpdateNumberValue> {
+public interface UpdateValue
+        extends UpdateValueExpression<ExecutableUpdate, ExecutableConditionGroup<UpdateConditionConfig>,
+                ExecutableConditionGroupLogic<UpdateConditionConfig>, Object, UpdateValue, UpdateNumberValue> {
 }

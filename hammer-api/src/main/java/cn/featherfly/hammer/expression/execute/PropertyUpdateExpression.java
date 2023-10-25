@@ -2,21 +2,23 @@
 package cn.featherfly.hammer.expression.execute;
 
 import cn.featherfly.common.function.serializable.SerializableFunction;
+import cn.featherfly.hammer.config.dsl.UpdateConditionConfig;
 
 /**
  * The Interface PropertyUpdateExpression.
  *
  * @author zhongj
- * @param <U>  the generic type
- * @param <C>  the generic type
- * @param <L>  the generic type
- * @param <V>  the value type
- * @param <VN> the generic type
+ * @param <U> the generic type
+ * @param <C> the generic type
+ * @param <L> the generic type
+ * @param <V> the value type
+ * @param <N> the number value type
  */
-public interface PropertyUpdateExpression<U extends PropertyExecutableUpdateExpression<U, C, L, V, VN>,
-        C extends ExecutableConditionGroupExpression<C, L>, L extends ExecutableConditionGroupLogicExpression<C, L>,
-        V extends UpdateValueExpression<U, C, L, Object, V, VN>,
-        VN extends UpdateNumberValueExpression<U, C, L, Number, V, VN>> {
+public interface PropertyUpdateExpression<U extends PropertyExecutableUpdateExpression<U, C, L, V, N>,
+        C extends ExecutableConditionGroupExpression<C, L, UpdateConditionConfig>,
+        L extends ExecutableConditionGroupLogicExpression<C, L, UpdateConditionConfig>,
+        V extends UpdateValueExpression<U, C, L, Object, V, N>,
+        N extends UpdateNumberValueExpression<U, C, L, Number, V, N>> {
 
     /**
      * Property.
@@ -32,7 +34,7 @@ public interface PropertyUpdateExpression<U extends PropertyExecutableUpdateExpr
      * @param name the name
      * @return the vn
      */
-    VN propertyNumber(String name);
+    N propertyNumber(String name);
 
     /**
      * Property.
@@ -52,5 +54,5 @@ public interface PropertyUpdateExpression<U extends PropertyExecutableUpdateExpr
      * @param name the name
      * @return the vn
      */
-    <T, R extends Number> VN propertyNumber(SerializableFunction<T, R> name);
+    <T, R extends Number> N propertyNumber(SerializableFunction<T, R> name);
 }

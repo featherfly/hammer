@@ -43,7 +43,7 @@ public class MulitiEntityNotStartWithExpressionImpl<C extends ConditionExpressio
      */
     @Override
     public <E> L nsw(int index, SerializableFunction<E, String> name, String value, MatchStrategy matchStrategy) {
-        return proxy.nsw0(new AtomicInteger(index), name, value, matchStrategy, ignoreStrategy);
+        return proxy.nsw0(new AtomicInteger(index), name, value, matchStrategy, getIgnoreStrategy());
     }
 
     /**
@@ -60,7 +60,7 @@ public class MulitiEntityNotStartWithExpressionImpl<C extends ConditionExpressio
      */
     @Override
     public L nsw(int index, SerializableSupplier<String> property, MatchStrategy matchStrategy) {
-        return proxy.nsw0(new AtomicInteger(index), property, matchStrategy, ignoreStrategy);
+        return proxy.nsw0(new AtomicInteger(index), property, matchStrategy, getIgnoreStrategy());
     }
 
     /**

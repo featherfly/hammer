@@ -42,6 +42,7 @@ import cn.featherfly.common.function.serializable.SerializableToLongFunction4;
 import cn.featherfly.common.function.serializable.SerializableToNumberFunction;
 import cn.featherfly.common.function.serializable.SerializableToStringFunction;
 import cn.featherfly.common.operator.ComparisonOperator.MatchStrategy;
+import cn.featherfly.hammer.config.dsl.ConditionConfig;
 import cn.featherfly.hammer.expression.condition.GroupEndExpression;
 import cn.featherfly.hammer.expression.condition.GroupExpression;
 import cn.featherfly.hammer.expression.entity.condition.EntityPropertyExpression4;
@@ -85,8 +86,8 @@ import cn.featherfly.hammer.sqldb.jdbc.dsl.entity.condition.EntityPropertyFuncti
  */
 public abstract class AbstractEntitySqlConditionGroupExpressionBase4<T1, T2, T3, T4,
         ER extends EntitySqlRelation<ER, B>, B extends SqlBuilder, C extends GroupExpression<C, L>,
-        L extends GroupEndExpression<C, L>>
-        extends AbstractEntitySqlConditionGroupExpressionBase3<T1, T2, T3, ER, B, C, L> implements
+        L extends GroupEndExpression<C, L>, C2 extends ConditionConfig<C2>>
+        extends AbstractEntitySqlConditionGroupExpressionBase3<T1, T2, T3, ER, B, C, L, C2> implements
         EntityBetweenExpressionBase4<T1, T2, T3, T4, C, L>, EntityNotBetweenExpressionBase4<T1, T2, T3, T4, C, L> //
         , EntityContainsExpressionBase4<T1, T2, T3, T4, C, L>, EntityNotContainsExpressionBase4<T1, T2, T3, T4, C, L> //
         , EntityEndWithExpressionBase4<T1, T2, T3, T4, C, L>, EntityNotEndWithExpressionBase4<T1, T2, T3, T4, C, L> //
@@ -131,7 +132,7 @@ public abstract class AbstractEntitySqlConditionGroupExpressionBase4<T1, T2, T3,
      */
     @Override
     public <R> L eq4(SerializableFunction<T4, R> name, R value) {
-        return eq(classMapping4, name, value, queryAlias4, ignoreStrategy);
+        return eq(classMapping4, name, value, queryAlias4, getIgnoreStrategy());
     }
 
     /**
@@ -147,7 +148,7 @@ public abstract class AbstractEntitySqlConditionGroupExpressionBase4<T1, T2, T3,
      */
     @Override
     public <D extends Date> L eq4(SerializableToDateFunction<T4, D> name, D value) {
-        return eq(classMapping4, name, value, queryAlias4, ignoreStrategy);
+        return eq(classMapping4, name, value, queryAlias4, getIgnoreStrategy());
     }
 
     /**
@@ -163,7 +164,7 @@ public abstract class AbstractEntitySqlConditionGroupExpressionBase4<T1, T2, T3,
      */
     @Override
     public L eq4(SerializableToDoubleFunction<T4> name, double value) {
-        return eq(classMapping4, name, value, queryAlias4, ignoreStrategy);
+        return eq(classMapping4, name, value, queryAlias4, getIgnoreStrategy());
     }
 
     /**
@@ -179,7 +180,7 @@ public abstract class AbstractEntitySqlConditionGroupExpressionBase4<T1, T2, T3,
      */
     @Override
     public <E extends Enum<E>> L eq4(SerializableToEnumFunction<T4, E> name, E value) {
-        return eq(classMapping4, name, value, queryAlias4, ignoreStrategy);
+        return eq(classMapping4, name, value, queryAlias4, getIgnoreStrategy());
     }
 
     /**
@@ -195,7 +196,7 @@ public abstract class AbstractEntitySqlConditionGroupExpressionBase4<T1, T2, T3,
      */
     @Override
     public L eq4(SerializableToIntFunction<T4> name, int value) {
-        return eq(classMapping4, name, value, queryAlias4, ignoreStrategy);
+        return eq(classMapping4, name, value, queryAlias4, getIgnoreStrategy());
     }
 
     /**
@@ -211,7 +212,7 @@ public abstract class AbstractEntitySqlConditionGroupExpressionBase4<T1, T2, T3,
      */
     @Override
     public L eq4(SerializableToLocalDateFunction<T4> name, LocalDate value) {
-        return eq(classMapping4, name, value, queryAlias4, ignoreStrategy);
+        return eq(classMapping4, name, value, queryAlias4, getIgnoreStrategy());
     }
 
     /**
@@ -227,7 +228,7 @@ public abstract class AbstractEntitySqlConditionGroupExpressionBase4<T1, T2, T3,
      */
     @Override
     public L eq4(SerializableToLocalDateTimeFunction<T4> name, LocalDateTime value) {
-        return eq(classMapping4, name, value, queryAlias4, ignoreStrategy);
+        return eq(classMapping4, name, value, queryAlias4, getIgnoreStrategy());
     }
 
     /**
@@ -244,7 +245,7 @@ public abstract class AbstractEntitySqlConditionGroupExpressionBase4<T1, T2, T3,
      */
     @Override
     public L eq4(SerializableToLocalTimeFunction<T4> name, LocalTime value) {
-        return eq(classMapping4, name, value, queryAlias4, ignoreStrategy);
+        return eq(classMapping4, name, value, queryAlias4, getIgnoreStrategy());
     }
 
     /**
@@ -260,7 +261,7 @@ public abstract class AbstractEntitySqlConditionGroupExpressionBase4<T1, T2, T3,
      */
     @Override
     public L eq4(SerializableToLongFunction<T4> name, long value) {
-        return eq(classMapping4, name, value, queryAlias4, ignoreStrategy);
+        return eq(classMapping4, name, value, queryAlias4, getIgnoreStrategy());
     }
 
     /**
@@ -276,7 +277,7 @@ public abstract class AbstractEntitySqlConditionGroupExpressionBase4<T1, T2, T3,
      */
     @Override
     public <N extends Number> L eq4(SerializableToNumberFunction<T4, N> name, N value) {
-        return eq(classMapping4, name, value, queryAlias4, ignoreStrategy);
+        return eq(classMapping4, name, value, queryAlias4, getIgnoreStrategy());
     }
 
     /**
@@ -292,7 +293,7 @@ public abstract class AbstractEntitySqlConditionGroupExpressionBase4<T1, T2, T3,
      */
     @Override
     public L eq4(SerializableToStringFunction<T4> name, String value, MatchStrategy matchStrategy) {
-        return eq(classMapping4, name, value, queryAlias4, matchStrategy, ignoreStrategy);
+        return eq(classMapping4, name, value, queryAlias4, matchStrategy, getIgnoreStrategy());
     }
 
     /**
@@ -309,7 +310,7 @@ public abstract class AbstractEntitySqlConditionGroupExpressionBase4<T1, T2, T3,
      */
     @Override
     public <R extends Date> L eq4(SerializableDateSupplier<R> property) {
-        return eq(classMapping4, property, queryAlias4, ignoreStrategy);
+        return eq(classMapping4, property, queryAlias4, getIgnoreStrategy());
     }
 
     /**
@@ -325,7 +326,7 @@ public abstract class AbstractEntitySqlConditionGroupExpressionBase4<T1, T2, T3,
      */
     @Override
     public L eq4(SerializableDoubleSupplier property) {
-        return eq(classMapping4, property, property.get(), queryAlias4, ignoreStrategy);
+        return eq(classMapping4, property, property.get(), queryAlias4, getIgnoreStrategy());
     }
 
     /**
@@ -341,7 +342,7 @@ public abstract class AbstractEntitySqlConditionGroupExpressionBase4<T1, T2, T3,
      */
     @Override
     public <E extends Enum<E>> L eq4(SerializableEnumSupplier<E> property) {
-        return eq(classMapping4, property, queryAlias4, ignoreStrategy);
+        return eq(classMapping4, property, queryAlias4, getIgnoreStrategy());
     }
 
     /**
@@ -357,7 +358,7 @@ public abstract class AbstractEntitySqlConditionGroupExpressionBase4<T1, T2, T3,
      */
     @Override
     public L eq4(SerializableIntSupplier property) {
-        return eq(classMapping4, property, property.get(), queryAlias4, ignoreStrategy);
+        return eq(classMapping4, property, property.get(), queryAlias4, getIgnoreStrategy());
     }
 
     /**
@@ -373,7 +374,7 @@ public abstract class AbstractEntitySqlConditionGroupExpressionBase4<T1, T2, T3,
      */
     @Override
     public L eq4(SerializableLocalDateSupplier property) {
-        return eq(classMapping4, property, queryAlias4, ignoreStrategy);
+        return eq(classMapping4, property, queryAlias4, getIgnoreStrategy());
     }
 
     /**
@@ -389,7 +390,7 @@ public abstract class AbstractEntitySqlConditionGroupExpressionBase4<T1, T2, T3,
      */
     @Override
     public L eq4(SerializableLocalDateTimeSupplier property) {
-        return eq(classMapping4, property, queryAlias4, ignoreStrategy);
+        return eq(classMapping4, property, queryAlias4, getIgnoreStrategy());
     }
 
     /**
@@ -405,7 +406,7 @@ public abstract class AbstractEntitySqlConditionGroupExpressionBase4<T1, T2, T3,
      */
     @Override
     public L eq4(SerializableLocalTimeSupplier property) {
-        return eq(classMapping4, property, queryAlias4, ignoreStrategy);
+        return eq(classMapping4, property, queryAlias4, getIgnoreStrategy());
     }
 
     /**
@@ -421,7 +422,7 @@ public abstract class AbstractEntitySqlConditionGroupExpressionBase4<T1, T2, T3,
      */
     @Override
     public L eq4(SerializableLongSupplier property) {
-        return eq(classMapping4, property, property.get(), queryAlias4, ignoreStrategy);
+        return eq(classMapping4, property, property.get(), queryAlias4, getIgnoreStrategy());
     }
 
     /**
@@ -437,7 +438,7 @@ public abstract class AbstractEntitySqlConditionGroupExpressionBase4<T1, T2, T3,
      */
     @Override
     public <R extends Number> L eq4(SerializableNumberSupplier<R> property) {
-        return eq(classMapping4, property, queryAlias4, ignoreStrategy);
+        return eq(classMapping4, property, queryAlias4, getIgnoreStrategy());
     }
 
     /**
@@ -453,7 +454,7 @@ public abstract class AbstractEntitySqlConditionGroupExpressionBase4<T1, T2, T3,
      */
     @Override
     public L eq4(SerializableStringSupplier property, MatchStrategy matchStrategy) {
-        return eq(classMapping4, property, queryAlias4, ignoreStrategy);
+        return eq(classMapping4, property, queryAlias4, getIgnoreStrategy());
     }
 
     /**
@@ -469,7 +470,7 @@ public abstract class AbstractEntitySqlConditionGroupExpressionBase4<T1, T2, T3,
      */
     @Override
     public <R> L eq4(SerializableSupplier<R> property) {
-        return eq(classMapping4, property, queryAlias4, ignoreStrategy);
+        return eq(classMapping4, property, queryAlias4, getIgnoreStrategy());
     }
 
     /**
@@ -489,7 +490,7 @@ public abstract class AbstractEntitySqlConditionGroupExpressionBase4<T1, T2, T3,
      */
     @Override
     public <R> L ne4(SerializableFunction<T4, R> name, R value) {
-        return ne(classMapping4, name, value, queryAlias4, ignoreStrategy);
+        return ne(classMapping4, name, value, queryAlias4, getIgnoreStrategy());
     }
 
     /**
@@ -505,7 +506,7 @@ public abstract class AbstractEntitySqlConditionGroupExpressionBase4<T1, T2, T3,
      */
     @Override
     public <D extends Date> L ne4(SerializableToDateFunction<T4, D> name, D value) {
-        return ne(classMapping4, name, value, queryAlias4, ignoreStrategy);
+        return ne(classMapping4, name, value, queryAlias4, getIgnoreStrategy());
     }
 
     /**
@@ -521,7 +522,7 @@ public abstract class AbstractEntitySqlConditionGroupExpressionBase4<T1, T2, T3,
      */
     @Override
     public L ne4(SerializableToDoubleFunction<T4> name, double value) {
-        return ne(classMapping4, name, value, queryAlias4, ignoreStrategy);
+        return ne(classMapping4, name, value, queryAlias4, getIgnoreStrategy());
     }
 
     /**
@@ -537,7 +538,7 @@ public abstract class AbstractEntitySqlConditionGroupExpressionBase4<T1, T2, T3,
      */
     @Override
     public <E extends Enum<E>> L ne4(SerializableToEnumFunction<T4, E> name, E value) {
-        return ne(classMapping4, name, value, queryAlias4, ignoreStrategy);
+        return ne(classMapping4, name, value, queryAlias4, getIgnoreStrategy());
     }
 
     /**
@@ -553,7 +554,7 @@ public abstract class AbstractEntitySqlConditionGroupExpressionBase4<T1, T2, T3,
      */
     @Override
     public L ne4(SerializableToIntFunction<T4> name, int value) {
-        return ne(classMapping4, name, value, queryAlias4, ignoreStrategy);
+        return ne(classMapping4, name, value, queryAlias4, getIgnoreStrategy());
     }
 
     /**
@@ -569,7 +570,7 @@ public abstract class AbstractEntitySqlConditionGroupExpressionBase4<T1, T2, T3,
      */
     @Override
     public L ne4(SerializableToLocalDateFunction<T4> name, LocalDate value) {
-        return ne(classMapping4, name, value, queryAlias4, ignoreStrategy);
+        return ne(classMapping4, name, value, queryAlias4, getIgnoreStrategy());
     }
 
     /**
@@ -585,7 +586,7 @@ public abstract class AbstractEntitySqlConditionGroupExpressionBase4<T1, T2, T3,
      */
     @Override
     public L ne4(SerializableToLocalDateTimeFunction<T4> name, LocalDateTime value) {
-        return ne(classMapping4, name, value, queryAlias4, ignoreStrategy);
+        return ne(classMapping4, name, value, queryAlias4, getIgnoreStrategy());
     }
 
     /**
@@ -602,7 +603,7 @@ public abstract class AbstractEntitySqlConditionGroupExpressionBase4<T1, T2, T3,
      */
     @Override
     public L ne4(SerializableToLocalTimeFunction<T4> name, LocalTime value) {
-        return ne(classMapping4, name, value, queryAlias4, ignoreStrategy);
+        return ne(classMapping4, name, value, queryAlias4, getIgnoreStrategy());
     }
 
     /**
@@ -618,7 +619,7 @@ public abstract class AbstractEntitySqlConditionGroupExpressionBase4<T1, T2, T3,
      */
     @Override
     public L ne4(SerializableToLongFunction<T4> name, long value) {
-        return ne(classMapping4, name, value, queryAlias4, ignoreStrategy);
+        return ne(classMapping4, name, value, queryAlias4, getIgnoreStrategy());
     }
 
     /**
@@ -634,7 +635,7 @@ public abstract class AbstractEntitySqlConditionGroupExpressionBase4<T1, T2, T3,
      */
     @Override
     public <N extends Number> L ne4(SerializableToNumberFunction<T4, N> name, N value) {
-        return ne(classMapping4, name, value, queryAlias4, ignoreStrategy);
+        return ne(classMapping4, name, value, queryAlias4, getIgnoreStrategy());
     }
 
     /**
@@ -650,7 +651,7 @@ public abstract class AbstractEntitySqlConditionGroupExpressionBase4<T1, T2, T3,
      */
     @Override
     public L ne4(SerializableToStringFunction<T4> name, String value, MatchStrategy matchStrategy) {
-        return ne(classMapping4, name, value, queryAlias4, matchStrategy, ignoreStrategy);
+        return ne(classMapping4, name, value, queryAlias4, matchStrategy, getIgnoreStrategy());
     }
 
     /**
@@ -667,7 +668,7 @@ public abstract class AbstractEntitySqlConditionGroupExpressionBase4<T1, T2, T3,
      */
     @Override
     public <R extends Date> L ne4(SerializableDateSupplier<R> property) {
-        return ne(classMapping4, property, queryAlias4, ignoreStrategy);
+        return ne(classMapping4, property, queryAlias4, getIgnoreStrategy());
     }
 
     /**
@@ -683,7 +684,7 @@ public abstract class AbstractEntitySqlConditionGroupExpressionBase4<T1, T2, T3,
      */
     @Override
     public L ne4(SerializableDoubleSupplier property) {
-        return ne(classMapping4, property, property.get(), queryAlias4, ignoreStrategy);
+        return ne(classMapping4, property, property.get(), queryAlias4, getIgnoreStrategy());
     }
 
     /**
@@ -699,7 +700,7 @@ public abstract class AbstractEntitySqlConditionGroupExpressionBase4<T1, T2, T3,
      */
     @Override
     public <E extends Enum<E>> L ne4(SerializableEnumSupplier<E> property) {
-        return ne(classMapping4, property, queryAlias4, ignoreStrategy);
+        return ne(classMapping4, property, queryAlias4, getIgnoreStrategy());
     }
 
     /**
@@ -715,7 +716,7 @@ public abstract class AbstractEntitySqlConditionGroupExpressionBase4<T1, T2, T3,
      */
     @Override
     public L ne4(SerializableIntSupplier property) {
-        return ne(classMapping4, property, property.get(), queryAlias4, ignoreStrategy);
+        return ne(classMapping4, property, property.get(), queryAlias4, getIgnoreStrategy());
     }
 
     /**
@@ -731,7 +732,7 @@ public abstract class AbstractEntitySqlConditionGroupExpressionBase4<T1, T2, T3,
      */
     @Override
     public L ne4(SerializableLocalDateSupplier property) {
-        return ne(classMapping4, property, queryAlias4, ignoreStrategy);
+        return ne(classMapping4, property, queryAlias4, getIgnoreStrategy());
     }
 
     /**
@@ -747,7 +748,7 @@ public abstract class AbstractEntitySqlConditionGroupExpressionBase4<T1, T2, T3,
      */
     @Override
     public L ne4(SerializableLocalDateTimeSupplier property) {
-        return ne(classMapping4, property, queryAlias4, ignoreStrategy);
+        return ne(classMapping4, property, queryAlias4, getIgnoreStrategy());
     }
 
     /**
@@ -763,7 +764,7 @@ public abstract class AbstractEntitySqlConditionGroupExpressionBase4<T1, T2, T3,
      */
     @Override
     public L ne4(SerializableLocalTimeSupplier property) {
-        return ne(classMapping4, property, queryAlias4, ignoreStrategy);
+        return ne(classMapping4, property, queryAlias4, getIgnoreStrategy());
     }
 
     /**
@@ -779,7 +780,7 @@ public abstract class AbstractEntitySqlConditionGroupExpressionBase4<T1, T2, T3,
      */
     @Override
     public L ne4(SerializableLongSupplier property) {
-        return ne(classMapping4, property, property.get(), queryAlias4, ignoreStrategy);
+        return ne(classMapping4, property, property.get(), queryAlias4, getIgnoreStrategy());
     }
 
     /**
@@ -795,7 +796,7 @@ public abstract class AbstractEntitySqlConditionGroupExpressionBase4<T1, T2, T3,
      */
     @Override
     public <R extends Number> L ne4(SerializableNumberSupplier<R> property) {
-        return ne(classMapping4, property, queryAlias4, ignoreStrategy);
+        return ne(classMapping4, property, queryAlias4, getIgnoreStrategy());
     }
 
     /**
@@ -811,7 +812,7 @@ public abstract class AbstractEntitySqlConditionGroupExpressionBase4<T1, T2, T3,
      */
     @Override
     public L ne4(SerializableStringSupplier property, MatchStrategy matchStrategy) {
-        return ne(classMapping4, property, queryAlias4, ignoreStrategy);
+        return ne(classMapping4, property, queryAlias4, getIgnoreStrategy());
     }
 
     /**
@@ -827,7 +828,7 @@ public abstract class AbstractEntitySqlConditionGroupExpressionBase4<T1, T2, T3,
      */
     @Override
     public <R> L ne4(SerializableSupplier<R> property) {
-        return ne(classMapping4, property, queryAlias4, ignoreStrategy);
+        return ne(classMapping4, property, queryAlias4, getIgnoreStrategy());
     }
 
     /**
@@ -845,7 +846,7 @@ public abstract class AbstractEntitySqlConditionGroupExpressionBase4<T1, T2, T3,
      */
     @Override
     public L lk4(SerializableFunction<T4, String> name, String value, MatchStrategy matchStrategy) {
-        return lk(classMapping4, name, value, queryAlias4, matchStrategy, ignoreStrategy);
+        return lk(classMapping4, name, value, queryAlias4, matchStrategy, getIgnoreStrategy());
     }
 
     /**
@@ -862,7 +863,7 @@ public abstract class AbstractEntitySqlConditionGroupExpressionBase4<T1, T2, T3,
      */
     @Override
     public L lk4(SerializableStringSupplier property, MatchStrategy matchStrategy) {
-        return lk(classMapping4, property, queryAlias4, matchStrategy, ignoreStrategy);
+        return lk(classMapping4, property, queryAlias4, matchStrategy, getIgnoreStrategy());
     }
 
     /**
@@ -880,7 +881,7 @@ public abstract class AbstractEntitySqlConditionGroupExpressionBase4<T1, T2, T3,
      */
     @Override
     public L nl4(SerializableFunction<T4, String> name, String value, MatchStrategy matchStrategy) {
-        return nl(classMapping4, name, value, queryAlias4, matchStrategy, ignoreStrategy);
+        return nl(classMapping4, name, value, queryAlias4, matchStrategy, getIgnoreStrategy());
     }
 
     /**
@@ -897,7 +898,7 @@ public abstract class AbstractEntitySqlConditionGroupExpressionBase4<T1, T2, T3,
      */
     @Override
     public L nl4(SerializableStringSupplier property, MatchStrategy matchStrategy) {
-        return nl(classMapping4, property, queryAlias4, matchStrategy, ignoreStrategy);
+        return nl(classMapping4, property, queryAlias4, matchStrategy, getIgnoreStrategy());
     }
 
     /**
@@ -915,7 +916,7 @@ public abstract class AbstractEntitySqlConditionGroupExpressionBase4<T1, T2, T3,
      */
     @Override
     public L sw4(SerializableFunction<T4, String> name, String value, MatchStrategy matchStrategy) {
-        return sw(classMapping4, name, value, queryAlias4, matchStrategy, ignoreStrategy);
+        return sw(classMapping4, name, value, queryAlias4, matchStrategy, getIgnoreStrategy());
     }
 
     /**
@@ -932,7 +933,7 @@ public abstract class AbstractEntitySqlConditionGroupExpressionBase4<T1, T2, T3,
      */
     @Override
     public L sw4(SerializableStringSupplier property, MatchStrategy matchStrategy) {
-        return sw(classMapping4, property, queryAlias4, matchStrategy, ignoreStrategy);
+        return sw(classMapping4, property, queryAlias4, matchStrategy, getIgnoreStrategy());
     }
 
     /**
@@ -950,7 +951,7 @@ public abstract class AbstractEntitySqlConditionGroupExpressionBase4<T1, T2, T3,
      */
     @Override
     public L nsw4(SerializableFunction<T4, String> name, String value, MatchStrategy matchStrategy) {
-        return nsw(classMapping4, name, value, queryAlias4, matchStrategy, ignoreStrategy);
+        return nsw(classMapping4, name, value, queryAlias4, matchStrategy, getIgnoreStrategy());
     }
 
     /**
@@ -967,7 +968,7 @@ public abstract class AbstractEntitySqlConditionGroupExpressionBase4<T1, T2, T3,
      */
     @Override
     public L nsw4(SerializableStringSupplier property, MatchStrategy matchStrategy) {
-        return nsw(classMapping4, property, queryAlias4, matchStrategy, ignoreStrategy);
+        return nsw(classMapping4, property, queryAlias4, matchStrategy, getIgnoreStrategy());
     }
 
     /**
@@ -985,7 +986,7 @@ public abstract class AbstractEntitySqlConditionGroupExpressionBase4<T1, T2, T3,
      */
     @Override
     public L ew4(SerializableFunction<T4, String> name, String value, MatchStrategy matchStrategy) {
-        return ew(classMapping4, name, value, queryAlias4, matchStrategy, ignoreStrategy);
+        return ew(classMapping4, name, value, queryAlias4, matchStrategy, getIgnoreStrategy());
     }
 
     /**
@@ -1002,7 +1003,7 @@ public abstract class AbstractEntitySqlConditionGroupExpressionBase4<T1, T2, T3,
      */
     @Override
     public L ew4(SerializableStringSupplier property, MatchStrategy matchStrategy) {
-        return ew(classMapping4, property, queryAlias4, matchStrategy, ignoreStrategy);
+        return ew(classMapping4, property, queryAlias4, matchStrategy, getIgnoreStrategy());
     }
 
     /**
@@ -1020,7 +1021,7 @@ public abstract class AbstractEntitySqlConditionGroupExpressionBase4<T1, T2, T3,
      */
     @Override
     public L new4(SerializableFunction<T4, String> name, String value, MatchStrategy matchStrategy) {
-        return newv(classMapping4, name, value, queryAlias4, matchStrategy, ignoreStrategy);
+        return newv(classMapping4, name, value, queryAlias4, matchStrategy, getIgnoreStrategy());
     }
 
     /**
@@ -1037,7 +1038,7 @@ public abstract class AbstractEntitySqlConditionGroupExpressionBase4<T1, T2, T3,
      */
     @Override
     public L new4(SerializableStringSupplier property, MatchStrategy matchStrategy) {
-        return newv(classMapping4, property, queryAlias4, matchStrategy, ignoreStrategy);
+        return newv(classMapping4, property, queryAlias4, matchStrategy, getIgnoreStrategy());
     }
 
     /**
@@ -1055,7 +1056,7 @@ public abstract class AbstractEntitySqlConditionGroupExpressionBase4<T1, T2, T3,
      */
     @Override
     public L co4(SerializableFunction<T4, String> name, String value, MatchStrategy matchStrategy) {
-        return co(classMapping4, name, value, queryAlias4, matchStrategy, ignoreStrategy);
+        return co(classMapping4, name, value, queryAlias4, matchStrategy, getIgnoreStrategy());
     }
 
     /**
@@ -1072,7 +1073,7 @@ public abstract class AbstractEntitySqlConditionGroupExpressionBase4<T1, T2, T3,
      */
     @Override
     public L co4(SerializableStringSupplier property, MatchStrategy matchStrategy) {
-        return co(classMapping4, property, queryAlias4, matchStrategy, ignoreStrategy);
+        return co(classMapping4, property, queryAlias4, matchStrategy, getIgnoreStrategy());
     }
 
     /**
@@ -1090,7 +1091,7 @@ public abstract class AbstractEntitySqlConditionGroupExpressionBase4<T1, T2, T3,
      */
     @Override
     public L nco4(SerializableFunction<T4, String> name, String value, MatchStrategy matchStrategy) {
-        return nco(classMapping4, name, value, queryAlias4, matchStrategy, ignoreStrategy);
+        return nco(classMapping4, name, value, queryAlias4, matchStrategy, getIgnoreStrategy());
     }
 
     /**
@@ -1107,7 +1108,7 @@ public abstract class AbstractEntitySqlConditionGroupExpressionBase4<T1, T2, T3,
      */
     @Override
     public L nco4(SerializableStringSupplier property, MatchStrategy matchStrategy) {
-        return nco(classMapping4, property, queryAlias4, matchStrategy, ignoreStrategy);
+        return nco(classMapping4, property, queryAlias4, matchStrategy, getIgnoreStrategy());
     }
 
     /**
@@ -1125,7 +1126,7 @@ public abstract class AbstractEntitySqlConditionGroupExpressionBase4<T1, T2, T3,
      */
     @Override
     public <N extends Number> L ge4(SerializableFunction<T4, N> name, N value) {
-        return ge(classMapping4, name, value, queryAlias4, ignoreStrategy);
+        return ge(classMapping4, name, value, queryAlias4, getIgnoreStrategy());
     }
 
     /**
@@ -1141,7 +1142,7 @@ public abstract class AbstractEntitySqlConditionGroupExpressionBase4<T1, T2, T3,
      */
     @Override
     public <D extends Date> L ge4(SerializableFunction<T4, D> name, D value) {
-        return ge(classMapping4, name, value, queryAlias4, ignoreStrategy);
+        return ge(classMapping4, name, value, queryAlias4, getIgnoreStrategy());
     }
 
     /**
@@ -1157,7 +1158,7 @@ public abstract class AbstractEntitySqlConditionGroupExpressionBase4<T1, T2, T3,
      */
     @Override
     public L ge4(SerializableFunction<T4, LocalTime> name, LocalTime value) {
-        return ge(classMapping4, name, value, queryAlias4, ignoreStrategy);
+        return ge(classMapping4, name, value, queryAlias4, getIgnoreStrategy());
     }
 
     /**
@@ -1173,7 +1174,7 @@ public abstract class AbstractEntitySqlConditionGroupExpressionBase4<T1, T2, T3,
      */
     @Override
     public L ge4(SerializableFunction<T4, LocalDate> name, LocalDate value) {
-        return ge(classMapping4, name, value, queryAlias4, ignoreStrategy);
+        return ge(classMapping4, name, value, queryAlias4, getIgnoreStrategy());
     }
 
     /**
@@ -1189,7 +1190,7 @@ public abstract class AbstractEntitySqlConditionGroupExpressionBase4<T1, T2, T3,
      */
     @Override
     public L ge4(SerializableFunction<T4, LocalDateTime> name, LocalDateTime value) {
-        return ge(classMapping4, name, value, queryAlias4, ignoreStrategy);
+        return ge(classMapping4, name, value, queryAlias4, getIgnoreStrategy());
     }
 
     /**
@@ -1206,7 +1207,7 @@ public abstract class AbstractEntitySqlConditionGroupExpressionBase4<T1, T2, T3,
      */
     @Override
     public L ge4(SerializableFunction<T4, String> name, String value) {
-        return ge(classMapping4, name, value, queryAlias4, ignoreStrategy);
+        return ge(classMapping4, name, value, queryAlias4, getIgnoreStrategy());
     }
 
     /**
@@ -1222,7 +1223,7 @@ public abstract class AbstractEntitySqlConditionGroupExpressionBase4<T1, T2, T3,
      */
     @Override
     public L ge4(SerializableToIntFunction4<T4> name, int value) {
-        return ge(classMapping4, name, value, queryAlias4, ignoreStrategy);
+        return ge(classMapping4, name, value, queryAlias4, getIgnoreStrategy());
     }
 
     /**
@@ -1238,7 +1239,7 @@ public abstract class AbstractEntitySqlConditionGroupExpressionBase4<T1, T2, T3,
      */
     @Override
     public L ge4(SerializableToLongFunction4<T4> name, long value) {
-        return ge(classMapping4, name, value, queryAlias4, ignoreStrategy);
+        return ge(classMapping4, name, value, queryAlias4, getIgnoreStrategy());
     }
 
     /**
@@ -1254,7 +1255,7 @@ public abstract class AbstractEntitySqlConditionGroupExpressionBase4<T1, T2, T3,
      */
     @Override
     public L ge4(SerializableToDoubleFunction4<T4> name, double value) {
-        return ge(classMapping4, name, value, queryAlias4, ignoreStrategy);
+        return ge(classMapping4, name, value, queryAlias4, getIgnoreStrategy());
     }
 
     /**
@@ -1270,7 +1271,7 @@ public abstract class AbstractEntitySqlConditionGroupExpressionBase4<T1, T2, T3,
      */
     @Override
     public <R extends Date> L ge4(SerializableDateSupplier<R> property) {
-        return ge(classMapping4, property, queryAlias4, ignoreStrategy);
+        return ge(classMapping4, property, queryAlias4, getIgnoreStrategy());
     }
 
     /**
@@ -1286,7 +1287,7 @@ public abstract class AbstractEntitySqlConditionGroupExpressionBase4<T1, T2, T3,
      */
     @Override
     public <R extends Number> L ge4(SerializableNumberSupplier<R> property) {
-        return ge(classMapping4, property, queryAlias4, ignoreStrategy);
+        return ge(classMapping4, property, queryAlias4, getIgnoreStrategy());
     }
 
     /**
@@ -1302,7 +1303,7 @@ public abstract class AbstractEntitySqlConditionGroupExpressionBase4<T1, T2, T3,
      */
     @Override
     public L ge4(SerializableLocalDateSupplier property) {
-        return ge(classMapping4, property, queryAlias4, ignoreStrategy);
+        return ge(classMapping4, property, queryAlias4, getIgnoreStrategy());
     }
 
     /**
@@ -1318,7 +1319,7 @@ public abstract class AbstractEntitySqlConditionGroupExpressionBase4<T1, T2, T3,
      */
     @Override
     public L ge4(SerializableLocalTimeSupplier property) {
-        return ge(classMapping4, property, queryAlias4, ignoreStrategy);
+        return ge(classMapping4, property, queryAlias4, getIgnoreStrategy());
     }
 
     /**
@@ -1334,7 +1335,7 @@ public abstract class AbstractEntitySqlConditionGroupExpressionBase4<T1, T2, T3,
      */
     @Override
     public L ge4(SerializableLocalDateTimeSupplier property) {
-        return ge(classMapping4, property, queryAlias4, ignoreStrategy);
+        return ge(classMapping4, property, queryAlias4, getIgnoreStrategy());
     }
 
     /**
@@ -1350,7 +1351,7 @@ public abstract class AbstractEntitySqlConditionGroupExpressionBase4<T1, T2, T3,
      */
     @Override
     public L ge4(SerializableStringSupplier property) {
-        return ge(classMapping4, property, queryAlias4, ignoreStrategy);
+        return ge(classMapping4, property, queryAlias4, getIgnoreStrategy());
     }
 
     /**
@@ -1366,7 +1367,7 @@ public abstract class AbstractEntitySqlConditionGroupExpressionBase4<T1, T2, T3,
      */
     @Override
     public L ge4(SerializableIntSupplier property) {
-        return ge(classMapping4, property, queryAlias4, ignoreStrategy);
+        return ge(classMapping4, property, queryAlias4, getIgnoreStrategy());
     }
 
     /**
@@ -1382,7 +1383,7 @@ public abstract class AbstractEntitySqlConditionGroupExpressionBase4<T1, T2, T3,
      */
     @Override
     public L ge4(SerializableLongSupplier property) {
-        return ge(classMapping4, property, queryAlias4, ignoreStrategy);
+        return ge(classMapping4, property, queryAlias4, getIgnoreStrategy());
     }
 
     /**
@@ -1398,7 +1399,7 @@ public abstract class AbstractEntitySqlConditionGroupExpressionBase4<T1, T2, T3,
      */
     @Override
     public L ge4(SerializableDoubleSupplier property) {
-        return ge(classMapping4, property, queryAlias4, ignoreStrategy);
+        return ge(classMapping4, property, queryAlias4, getIgnoreStrategy());
     }
 
     /**
@@ -1416,7 +1417,7 @@ public abstract class AbstractEntitySqlConditionGroupExpressionBase4<T1, T2, T3,
      */
     @Override
     public <N extends Number> L gt4(SerializableFunction<T4, N> name, N value) {
-        return gt(classMapping4, name, value, queryAlias4, ignoreStrategy);
+        return gt(classMapping4, name, value, queryAlias4, getIgnoreStrategy());
     }
 
     /**
@@ -1432,7 +1433,7 @@ public abstract class AbstractEntitySqlConditionGroupExpressionBase4<T1, T2, T3,
      */
     @Override
     public <E extends Enum<E>> L ge4(SerializableFunction<T4, E> name, E value) {
-        return ge(classMapping4, name, value, queryAlias4, ignoreStrategy);
+        return ge(classMapping4, name, value, queryAlias4, getIgnoreStrategy());
     }
 
     /**
@@ -1448,7 +1449,7 @@ public abstract class AbstractEntitySqlConditionGroupExpressionBase4<T1, T2, T3,
      */
     @Override
     public L ge4(SerializableFunction<T4, String> name, String value, MatchStrategy matchStrategy) {
-        return ge(classMapping4, name, value, matchStrategy, queryAlias4, ignoreStrategy);
+        return ge(classMapping4, name, value, matchStrategy, queryAlias4, getIgnoreStrategy());
     }
 
     /**
@@ -1465,7 +1466,7 @@ public abstract class AbstractEntitySqlConditionGroupExpressionBase4<T1, T2, T3,
      */
     @Override
     public <E extends Enum<E>> L ge4(SerializableEnumSupplier<E> property) {
-        return ge(classMapping4, property, queryAlias4, ignoreStrategy);
+        return ge(classMapping4, property, queryAlias4, getIgnoreStrategy());
     }
 
     /**
@@ -1481,7 +1482,7 @@ public abstract class AbstractEntitySqlConditionGroupExpressionBase4<T1, T2, T3,
      */
     @Override
     public L ge4(SerializableStringSupplier property, MatchStrategy matchStrategy) {
-        return ge(classMapping4, property, matchStrategy, queryAlias4, ignoreStrategy);
+        return ge(classMapping4, property, matchStrategy, queryAlias4, getIgnoreStrategy());
     }
 
     /**
@@ -1497,7 +1498,7 @@ public abstract class AbstractEntitySqlConditionGroupExpressionBase4<T1, T2, T3,
      */
     @Override
     public <E extends Enum<E>> L gt4(SerializableFunction<T4, E> name, E value) {
-        return gt(classMapping4, name, value, queryAlias4, ignoreStrategy);
+        return gt(classMapping4, name, value, queryAlias4, getIgnoreStrategy());
     }
 
     /**
@@ -1513,7 +1514,7 @@ public abstract class AbstractEntitySqlConditionGroupExpressionBase4<T1, T2, T3,
      */
     @Override
     public L gt4(SerializableFunction<T4, String> name, String value, MatchStrategy matchStrategy) {
-        return gt(classMapping4, name, value, matchStrategy, queryAlias4, ignoreStrategy);
+        return gt(classMapping4, name, value, matchStrategy, queryAlias4, getIgnoreStrategy());
     }
 
     /**
@@ -1530,7 +1531,7 @@ public abstract class AbstractEntitySqlConditionGroupExpressionBase4<T1, T2, T3,
      */
     @Override
     public <E extends Enum<E>> L gt4(SerializableEnumSupplier<E> property) {
-        return gt(classMapping4, property, queryAlias4, ignoreStrategy);
+        return gt(classMapping4, property, queryAlias4, getIgnoreStrategy());
     }
 
     /**
@@ -1546,7 +1547,7 @@ public abstract class AbstractEntitySqlConditionGroupExpressionBase4<T1, T2, T3,
      */
     @Override
     public L gt4(SerializableStringSupplier property, MatchStrategy matchStrategy) {
-        return gt(classMapping4, property, matchStrategy, queryAlias4, ignoreStrategy);
+        return gt(classMapping4, property, matchStrategy, queryAlias4, getIgnoreStrategy());
     }
 
     /**
@@ -1562,7 +1563,7 @@ public abstract class AbstractEntitySqlConditionGroupExpressionBase4<T1, T2, T3,
      */
     @Override
     public <D extends Date> L gt4(SerializableFunction<T4, D> name, D value) {
-        return gt(classMapping4, name, value, queryAlias4, ignoreStrategy);
+        return gt(classMapping4, name, value, queryAlias4, getIgnoreStrategy());
     }
 
     /**
@@ -1578,7 +1579,7 @@ public abstract class AbstractEntitySqlConditionGroupExpressionBase4<T1, T2, T3,
      */
     @Override
     public L gt4(SerializableFunction<T4, LocalTime> name, LocalTime value) {
-        return gt(classMapping4, name, value, queryAlias4, ignoreStrategy);
+        return gt(classMapping4, name, value, queryAlias4, getIgnoreStrategy());
     }
 
     /**
@@ -1594,7 +1595,7 @@ public abstract class AbstractEntitySqlConditionGroupExpressionBase4<T1, T2, T3,
      */
     @Override
     public L gt4(SerializableFunction<T4, LocalDate> name, LocalDate value) {
-        return gt(classMapping4, name, value, queryAlias4, ignoreStrategy);
+        return gt(classMapping4, name, value, queryAlias4, getIgnoreStrategy());
     }
 
     /**
@@ -1610,7 +1611,7 @@ public abstract class AbstractEntitySqlConditionGroupExpressionBase4<T1, T2, T3,
      */
     @Override
     public L gt4(SerializableFunction<T4, LocalDateTime> name, LocalDateTime value) {
-        return gt(classMapping4, name, value, queryAlias4, ignoreStrategy);
+        return gt(classMapping4, name, value, queryAlias4, getIgnoreStrategy());
     }
 
     /**
@@ -1627,7 +1628,7 @@ public abstract class AbstractEntitySqlConditionGroupExpressionBase4<T1, T2, T3,
      */
     @Override
     public L gt4(SerializableFunction<T4, String> name, String value) {
-        return gt(classMapping4, name, value, queryAlias4, ignoreStrategy);
+        return gt(classMapping4, name, value, queryAlias4, getIgnoreStrategy());
     }
 
     /**
@@ -1643,7 +1644,7 @@ public abstract class AbstractEntitySqlConditionGroupExpressionBase4<T1, T2, T3,
      */
     @Override
     public L gt4(SerializableToIntFunction4<T4> name, int value) {
-        return gt(classMapping4, name, value, queryAlias4, ignoreStrategy);
+        return gt(classMapping4, name, value, queryAlias4, getIgnoreStrategy());
     }
 
     /**
@@ -1659,7 +1660,7 @@ public abstract class AbstractEntitySqlConditionGroupExpressionBase4<T1, T2, T3,
      */
     @Override
     public L gt4(SerializableToLongFunction4<T4> name, long value) {
-        return gt(classMapping4, name, value, queryAlias4, ignoreStrategy);
+        return gt(classMapping4, name, value, queryAlias4, getIgnoreStrategy());
     }
 
     /**
@@ -1675,7 +1676,7 @@ public abstract class AbstractEntitySqlConditionGroupExpressionBase4<T1, T2, T3,
      */
     @Override
     public L gt4(SerializableToDoubleFunction4<T4> name, double value) {
-        return gt(classMapping4, name, value, queryAlias4, ignoreStrategy);
+        return gt(classMapping4, name, value, queryAlias4, getIgnoreStrategy());
     }
 
     /**
@@ -1691,7 +1692,7 @@ public abstract class AbstractEntitySqlConditionGroupExpressionBase4<T1, T2, T3,
      */
     @Override
     public <R extends Number> L gt4(SerializableNumberSupplier<R> property) {
-        return gt(classMapping4, property, queryAlias4, ignoreStrategy);
+        return gt(classMapping4, property, queryAlias4, getIgnoreStrategy());
     }
 
     /**
@@ -1707,7 +1708,7 @@ public abstract class AbstractEntitySqlConditionGroupExpressionBase4<T1, T2, T3,
      */
     @Override
     public <R extends Date> L gt4(SerializableDateSupplier<R> property) {
-        return gt(classMapping4, property, queryAlias4, ignoreStrategy);
+        return gt(classMapping4, property, queryAlias4, getIgnoreStrategy());
     }
 
     /**
@@ -1723,7 +1724,7 @@ public abstract class AbstractEntitySqlConditionGroupExpressionBase4<T1, T2, T3,
      */
     @Override
     public L gt4(SerializableLocalDateSupplier property) {
-        return gt(classMapping4, property, queryAlias4, ignoreStrategy);
+        return gt(classMapping4, property, queryAlias4, getIgnoreStrategy());
     }
 
     /**
@@ -1739,7 +1740,7 @@ public abstract class AbstractEntitySqlConditionGroupExpressionBase4<T1, T2, T3,
      */
     @Override
     public L gt4(SerializableLocalTimeSupplier property) {
-        return gt(classMapping4, property, queryAlias4, ignoreStrategy);
+        return gt(classMapping4, property, queryAlias4, getIgnoreStrategy());
     }
 
     /**
@@ -1755,7 +1756,7 @@ public abstract class AbstractEntitySqlConditionGroupExpressionBase4<T1, T2, T3,
      */
     @Override
     public L gt4(SerializableLocalDateTimeSupplier property) {
-        return gt(classMapping4, property, queryAlias4, ignoreStrategy);
+        return gt(classMapping4, property, queryAlias4, getIgnoreStrategy());
     }
 
     /**
@@ -1771,7 +1772,7 @@ public abstract class AbstractEntitySqlConditionGroupExpressionBase4<T1, T2, T3,
      */
     @Override
     public L gt4(SerializableStringSupplier property) {
-        return gt(classMapping4, property, queryAlias4, ignoreStrategy);
+        return gt(classMapping4, property, queryAlias4, getIgnoreStrategy());
     }
 
     /**
@@ -1787,7 +1788,7 @@ public abstract class AbstractEntitySqlConditionGroupExpressionBase4<T1, T2, T3,
      */
     @Override
     public L gt4(SerializableIntSupplier property) {
-        return gt(classMapping4, property, queryAlias4, ignoreStrategy);
+        return gt(classMapping4, property, queryAlias4, getIgnoreStrategy());
     }
 
     /**
@@ -1803,7 +1804,7 @@ public abstract class AbstractEntitySqlConditionGroupExpressionBase4<T1, T2, T3,
      */
     @Override
     public L gt4(SerializableLongSupplier property) {
-        return gt(classMapping4, property, queryAlias4, ignoreStrategy);
+        return gt(classMapping4, property, queryAlias4, getIgnoreStrategy());
     }
 
     /**
@@ -1819,7 +1820,7 @@ public abstract class AbstractEntitySqlConditionGroupExpressionBase4<T1, T2, T3,
      */
     @Override
     public L gt4(SerializableDoubleSupplier property) {
-        return gt(classMapping4, property, queryAlias4, ignoreStrategy);
+        return gt(classMapping4, property, queryAlias4, getIgnoreStrategy());
     }
 
     /**
@@ -1837,7 +1838,7 @@ public abstract class AbstractEntitySqlConditionGroupExpressionBase4<T1, T2, T3,
      */
     @Override
     public <N extends Number> L le4(SerializableFunction<T4, N> name, N value) {
-        return le(classMapping4, name, value, queryAlias4, ignoreStrategy);
+        return le(classMapping4, name, value, queryAlias4, getIgnoreStrategy());
     }
 
     /**
@@ -1853,7 +1854,7 @@ public abstract class AbstractEntitySqlConditionGroupExpressionBase4<T1, T2, T3,
      */
     @Override
     public <E extends Enum<E>> L le4(SerializableFunction<T4, E> name, E value) {
-        return le(classMapping4, name, value, queryAlias4, ignoreStrategy);
+        return le(classMapping4, name, value, queryAlias4, getIgnoreStrategy());
     }
 
     /**
@@ -1869,7 +1870,7 @@ public abstract class AbstractEntitySqlConditionGroupExpressionBase4<T1, T2, T3,
      */
     @Override
     public L le4(SerializableFunction<T4, String> name, String value, MatchStrategy matchStrategy) {
-        return le(classMapping4, name, value, matchStrategy, queryAlias4, ignoreStrategy);
+        return le(classMapping4, name, value, matchStrategy, queryAlias4, getIgnoreStrategy());
     }
 
     /**
@@ -1886,7 +1887,7 @@ public abstract class AbstractEntitySqlConditionGroupExpressionBase4<T1, T2, T3,
      */
     @Override
     public <E extends Enum<E>> L le4(SerializableEnumSupplier<E> property) {
-        return le(classMapping4, property, queryAlias4, ignoreStrategy);
+        return le(classMapping4, property, queryAlias4, getIgnoreStrategy());
     }
 
     /**
@@ -1902,7 +1903,7 @@ public abstract class AbstractEntitySqlConditionGroupExpressionBase4<T1, T2, T3,
      */
     @Override
     public L le4(SerializableStringSupplier property, MatchStrategy matchStrategy) {
-        return le(classMapping4, property, matchStrategy, queryAlias4, ignoreStrategy);
+        return le(classMapping4, property, matchStrategy, queryAlias4, getIgnoreStrategy());
     }
 
     /**
@@ -1918,7 +1919,7 @@ public abstract class AbstractEntitySqlConditionGroupExpressionBase4<T1, T2, T3,
      */
     @Override
     public <D extends Date> L le4(SerializableFunction<T4, D> name, D value) {
-        return le(classMapping4, name, value, queryAlias4, ignoreStrategy);
+        return le(classMapping4, name, value, queryAlias4, getIgnoreStrategy());
     }
 
     /**
@@ -1934,7 +1935,7 @@ public abstract class AbstractEntitySqlConditionGroupExpressionBase4<T1, T2, T3,
      */
     @Override
     public L le4(SerializableFunction<T4, LocalTime> name, LocalTime value) {
-        return le(classMapping4, name, value, queryAlias4, ignoreStrategy);
+        return le(classMapping4, name, value, queryAlias4, getIgnoreStrategy());
     }
 
     /**
@@ -1950,7 +1951,7 @@ public abstract class AbstractEntitySqlConditionGroupExpressionBase4<T1, T2, T3,
      */
     @Override
     public L le4(SerializableFunction<T4, LocalDate> name, LocalDate value) {
-        return le(classMapping4, name, value, queryAlias4, ignoreStrategy);
+        return le(classMapping4, name, value, queryAlias4, getIgnoreStrategy());
     }
 
     /**
@@ -1966,7 +1967,7 @@ public abstract class AbstractEntitySqlConditionGroupExpressionBase4<T1, T2, T3,
      */
     @Override
     public L le4(SerializableFunction<T4, LocalDateTime> name, LocalDateTime value) {
-        return le(classMapping4, name, value, queryAlias4, ignoreStrategy);
+        return le(classMapping4, name, value, queryAlias4, getIgnoreStrategy());
     }
 
     /**
@@ -1983,7 +1984,7 @@ public abstract class AbstractEntitySqlConditionGroupExpressionBase4<T1, T2, T3,
      */
     @Override
     public L le4(SerializableFunction<T4, String> name, String value) {
-        return le(classMapping4, name, value, queryAlias4, ignoreStrategy);
+        return le(classMapping4, name, value, queryAlias4, getIgnoreStrategy());
     }
 
     /**
@@ -1999,7 +2000,7 @@ public abstract class AbstractEntitySqlConditionGroupExpressionBase4<T1, T2, T3,
      */
     @Override
     public <R extends Date> L le4(SerializableDateSupplier<R> property) {
-        return le(classMapping4, property, queryAlias4, ignoreStrategy);
+        return le(classMapping4, property, queryAlias4, getIgnoreStrategy());
     }
 
     /**
@@ -2015,7 +2016,7 @@ public abstract class AbstractEntitySqlConditionGroupExpressionBase4<T1, T2, T3,
      */
     @Override
     public <R extends Number> L le4(SerializableNumberSupplier<R> property) {
-        return le(classMapping4, property, queryAlias4, ignoreStrategy);
+        return le(classMapping4, property, queryAlias4, getIgnoreStrategy());
     }
 
     /**
@@ -2031,7 +2032,7 @@ public abstract class AbstractEntitySqlConditionGroupExpressionBase4<T1, T2, T3,
      */
     @Override
     public L le4(SerializableLocalDateSupplier property) {
-        return le(classMapping4, property, queryAlias4, ignoreStrategy);
+        return le(classMapping4, property, queryAlias4, getIgnoreStrategy());
     }
 
     /**
@@ -2047,7 +2048,7 @@ public abstract class AbstractEntitySqlConditionGroupExpressionBase4<T1, T2, T3,
      */
     @Override
     public L le4(SerializableLocalTimeSupplier property) {
-        return le(classMapping4, property, queryAlias4, ignoreStrategy);
+        return le(classMapping4, property, queryAlias4, getIgnoreStrategy());
     }
 
     /**
@@ -2063,7 +2064,7 @@ public abstract class AbstractEntitySqlConditionGroupExpressionBase4<T1, T2, T3,
      */
     @Override
     public L le4(SerializableLocalDateTimeSupplier property) {
-        return le(classMapping4, property, queryAlias4, ignoreStrategy);
+        return le(classMapping4, property, queryAlias4, getIgnoreStrategy());
     }
 
     /**
@@ -2079,7 +2080,7 @@ public abstract class AbstractEntitySqlConditionGroupExpressionBase4<T1, T2, T3,
      */
     @Override
     public L le4(SerializableStringSupplier property) {
-        return le(classMapping4, property, queryAlias4, ignoreStrategy);
+        return le(classMapping4, property, queryAlias4, getIgnoreStrategy());
     }
 
     /**
@@ -2095,7 +2096,7 @@ public abstract class AbstractEntitySqlConditionGroupExpressionBase4<T1, T2, T3,
      */
     @Override
     public L le4(SerializableToIntFunction4<T4> name, int value) {
-        return le(classMapping4, name, value, queryAlias4, ignoreStrategy);
+        return le(classMapping4, name, value, queryAlias4, getIgnoreStrategy());
     }
 
     /**
@@ -2111,7 +2112,7 @@ public abstract class AbstractEntitySqlConditionGroupExpressionBase4<T1, T2, T3,
      */
     @Override
     public L le4(SerializableToLongFunction4<T4> name, long value) {
-        return le(classMapping4, name, value, queryAlias4, ignoreStrategy);
+        return le(classMapping4, name, value, queryAlias4, getIgnoreStrategy());
     }
 
     /**
@@ -2127,7 +2128,7 @@ public abstract class AbstractEntitySqlConditionGroupExpressionBase4<T1, T2, T3,
      */
     @Override
     public L le4(SerializableToDoubleFunction4<T4> name, double value) {
-        return le(classMapping4, name, value, queryAlias4, ignoreStrategy);
+        return le(classMapping4, name, value, queryAlias4, getIgnoreStrategy());
     }
 
     /**
@@ -2143,7 +2144,7 @@ public abstract class AbstractEntitySqlConditionGroupExpressionBase4<T1, T2, T3,
      */
     @Override
     public L le4(SerializableIntSupplier property) {
-        return le(classMapping4, property, queryAlias4, ignoreStrategy);
+        return le(classMapping4, property, queryAlias4, getIgnoreStrategy());
     }
 
     /**
@@ -2159,7 +2160,7 @@ public abstract class AbstractEntitySqlConditionGroupExpressionBase4<T1, T2, T3,
      */
     @Override
     public L le4(SerializableLongSupplier property) {
-        return le(classMapping4, property, queryAlias4, ignoreStrategy);
+        return le(classMapping4, property, queryAlias4, getIgnoreStrategy());
     }
 
     /**
@@ -2175,7 +2176,7 @@ public abstract class AbstractEntitySqlConditionGroupExpressionBase4<T1, T2, T3,
      */
     @Override
     public L le4(SerializableDoubleSupplier property) {
-        return le(classMapping4, property, queryAlias4, ignoreStrategy);
+        return le(classMapping4, property, queryAlias4, getIgnoreStrategy());
     }
 
     /**
@@ -2193,7 +2194,7 @@ public abstract class AbstractEntitySqlConditionGroupExpressionBase4<T1, T2, T3,
      */
     @Override
     public <N extends Number> L lt4(SerializableFunction<T4, N> name, N value) {
-        return lt(classMapping4, name, value, queryAlias4, ignoreStrategy);
+        return lt(classMapping4, name, value, queryAlias4, getIgnoreStrategy());
     }
 
     /**
@@ -2209,7 +2210,7 @@ public abstract class AbstractEntitySqlConditionGroupExpressionBase4<T1, T2, T3,
      */
     @Override
     public <E extends Enum<E>> L lt4(SerializableFunction<T4, E> name, E value) {
-        return lt(classMapping4, name, value, queryAlias4, ignoreStrategy);
+        return lt(classMapping4, name, value, queryAlias4, getIgnoreStrategy());
     }
 
     /**
@@ -2225,7 +2226,7 @@ public abstract class AbstractEntitySqlConditionGroupExpressionBase4<T1, T2, T3,
      */
     @Override
     public L lt4(SerializableFunction<T4, String> name, String value, MatchStrategy matchStrategy) {
-        return lt(classMapping4, name, value, matchStrategy, queryAlias4, ignoreStrategy);
+        return lt(classMapping4, name, value, matchStrategy, queryAlias4, getIgnoreStrategy());
     }
 
     /**
@@ -2242,7 +2243,7 @@ public abstract class AbstractEntitySqlConditionGroupExpressionBase4<T1, T2, T3,
      */
     @Override
     public <E extends Enum<E>> L lt4(SerializableEnumSupplier<E> property) {
-        return lt(classMapping4, property, queryAlias4, ignoreStrategy);
+        return lt(classMapping4, property, queryAlias4, getIgnoreStrategy());
     }
 
     /**
@@ -2258,7 +2259,7 @@ public abstract class AbstractEntitySqlConditionGroupExpressionBase4<T1, T2, T3,
      */
     @Override
     public L lt4(SerializableStringSupplier property, MatchStrategy matchStrategy) {
-        return lt(classMapping4, property, matchStrategy, queryAlias4, ignoreStrategy);
+        return lt(classMapping4, property, matchStrategy, queryAlias4, getIgnoreStrategy());
     }
 
     /**
@@ -2274,7 +2275,7 @@ public abstract class AbstractEntitySqlConditionGroupExpressionBase4<T1, T2, T3,
      */
     @Override
     public <D extends Date> L lt4(SerializableFunction<T4, D> name, D value) {
-        return lt(classMapping4, name, value, queryAlias4, ignoreStrategy);
+        return lt(classMapping4, name, value, queryAlias4, getIgnoreStrategy());
     }
 
     /**
@@ -2290,7 +2291,7 @@ public abstract class AbstractEntitySqlConditionGroupExpressionBase4<T1, T2, T3,
      */
     @Override
     public L lt4(SerializableFunction<T4, LocalTime> name, LocalTime value) {
-        return lt(classMapping4, name, value, queryAlias4, ignoreStrategy);
+        return lt(classMapping4, name, value, queryAlias4, getIgnoreStrategy());
     }
 
     /**
@@ -2306,7 +2307,7 @@ public abstract class AbstractEntitySqlConditionGroupExpressionBase4<T1, T2, T3,
      */
     @Override
     public L lt4(SerializableFunction<T4, LocalDate> name, LocalDate value) {
-        return lt(classMapping4, name, value, queryAlias4, ignoreStrategy);
+        return lt(classMapping4, name, value, queryAlias4, getIgnoreStrategy());
     }
 
     /**
@@ -2322,7 +2323,7 @@ public abstract class AbstractEntitySqlConditionGroupExpressionBase4<T1, T2, T3,
      */
     @Override
     public L lt4(SerializableFunction<T4, LocalDateTime> name, LocalDateTime value) {
-        return lt(classMapping4, name, value, queryAlias4, ignoreStrategy);
+        return lt(classMapping4, name, value, queryAlias4, getIgnoreStrategy());
     }
 
     /**
@@ -2339,7 +2340,7 @@ public abstract class AbstractEntitySqlConditionGroupExpressionBase4<T1, T2, T3,
      */
     @Override
     public L lt4(SerializableFunction<T4, String> name, String value) {
-        return lt(classMapping4, name, value, queryAlias4, ignoreStrategy);
+        return lt(classMapping4, name, value, queryAlias4, getIgnoreStrategy());
     }
 
     /**
@@ -2355,7 +2356,7 @@ public abstract class AbstractEntitySqlConditionGroupExpressionBase4<T1, T2, T3,
      */
     @Override
     public <R extends Number> L lt4(SerializableNumberSupplier<R> property) {
-        return lt(classMapping4, property, queryAlias4, ignoreStrategy);
+        return lt(classMapping4, property, queryAlias4, getIgnoreStrategy());
     }
 
     /**
@@ -2371,7 +2372,7 @@ public abstract class AbstractEntitySqlConditionGroupExpressionBase4<T1, T2, T3,
      */
     @Override
     public <R extends Date> L lt4(SerializableDateSupplier<R> property) {
-        return lt(classMapping4, property, queryAlias4, ignoreStrategy);
+        return lt(classMapping4, property, queryAlias4, getIgnoreStrategy());
     }
 
     /**
@@ -2387,7 +2388,7 @@ public abstract class AbstractEntitySqlConditionGroupExpressionBase4<T1, T2, T3,
      */
     @Override
     public L lt4(SerializableLocalDateSupplier property) {
-        return lt(classMapping4, property, queryAlias4, ignoreStrategy);
+        return lt(classMapping4, property, queryAlias4, getIgnoreStrategy());
     }
 
     /**
@@ -2403,7 +2404,7 @@ public abstract class AbstractEntitySqlConditionGroupExpressionBase4<T1, T2, T3,
      */
     @Override
     public L lt4(SerializableLocalTimeSupplier property) {
-        return lt(classMapping4, property, queryAlias4, ignoreStrategy);
+        return lt(classMapping4, property, queryAlias4, getIgnoreStrategy());
     }
 
     /**
@@ -2419,7 +2420,7 @@ public abstract class AbstractEntitySqlConditionGroupExpressionBase4<T1, T2, T3,
      */
     @Override
     public L lt4(SerializableLocalDateTimeSupplier property) {
-        return lt(classMapping4, property, queryAlias4, ignoreStrategy);
+        return lt(classMapping4, property, queryAlias4, getIgnoreStrategy());
     }
 
     /**
@@ -2435,7 +2436,7 @@ public abstract class AbstractEntitySqlConditionGroupExpressionBase4<T1, T2, T3,
      */
     @Override
     public L lt4(SerializableStringSupplier property) {
-        return lt(classMapping4, property, queryAlias4, ignoreStrategy);
+        return lt(classMapping4, property, queryAlias4, getIgnoreStrategy());
     }
 
     /**
@@ -2451,7 +2452,7 @@ public abstract class AbstractEntitySqlConditionGroupExpressionBase4<T1, T2, T3,
      */
     @Override
     public L lt4(SerializableToIntFunction4<T4> name, int value) {
-        return lt(classMapping4, name, value, queryAlias4, ignoreStrategy);
+        return lt(classMapping4, name, value, queryAlias4, getIgnoreStrategy());
     }
 
     /**
@@ -2467,7 +2468,7 @@ public abstract class AbstractEntitySqlConditionGroupExpressionBase4<T1, T2, T3,
      */
     @Override
     public L lt4(SerializableToLongFunction4<T4> name, long value) {
-        return lt(classMapping4, name, value, queryAlias4, ignoreStrategy);
+        return lt(classMapping4, name, value, queryAlias4, getIgnoreStrategy());
     }
 
     /**
@@ -2483,7 +2484,7 @@ public abstract class AbstractEntitySqlConditionGroupExpressionBase4<T1, T2, T3,
      */
     @Override
     public L lt4(SerializableToDoubleFunction4<T4> name, double value) {
-        return lt(classMapping4, name, value, queryAlias4, ignoreStrategy);
+        return lt(classMapping4, name, value, queryAlias4, getIgnoreStrategy());
     }
 
     /**
@@ -2499,7 +2500,7 @@ public abstract class AbstractEntitySqlConditionGroupExpressionBase4<T1, T2, T3,
      */
     @Override
     public L lt4(SerializableIntSupplier property) {
-        return lt(classMapping4, property, queryAlias4, ignoreStrategy);
+        return lt(classMapping4, property, queryAlias4, getIgnoreStrategy());
     }
 
     /**
@@ -2515,7 +2516,7 @@ public abstract class AbstractEntitySqlConditionGroupExpressionBase4<T1, T2, T3,
      */
     @Override
     public L lt4(SerializableLongSupplier property) {
-        return lt(classMapping4, property, queryAlias4, ignoreStrategy);
+        return lt(classMapping4, property, queryAlias4, getIgnoreStrategy());
     }
 
     /**
@@ -2531,7 +2532,7 @@ public abstract class AbstractEntitySqlConditionGroupExpressionBase4<T1, T2, T3,
      */
     @Override
     public L lt4(SerializableDoubleSupplier property) {
-        return lt(classMapping4, property, queryAlias4, ignoreStrategy);
+        return lt(classMapping4, property, queryAlias4, getIgnoreStrategy());
     }
 
     /**
@@ -2549,7 +2550,7 @@ public abstract class AbstractEntitySqlConditionGroupExpressionBase4<T1, T2, T3,
      */
     @Override
     public <R> L in4(SerializableFunction<T4, R> name, R value) {
-        return in(classMapping4, name, value, queryAlias4, ignoreStrategy);
+        return in(classMapping4, name, value, queryAlias4, getIgnoreStrategy());
     }
 
     /**
@@ -2565,7 +2566,7 @@ public abstract class AbstractEntitySqlConditionGroupExpressionBase4<T1, T2, T3,
      */
     @Override
     public <R> L in4(SerializableFunction<T4, R> name, @SuppressWarnings("unchecked") R... value) {
-        return in(classMapping4, name, value, queryAlias4, ignoreStrategy);
+        return in(classMapping4, name, value, queryAlias4, getIgnoreStrategy());
     }
 
     /**
@@ -2581,7 +2582,7 @@ public abstract class AbstractEntitySqlConditionGroupExpressionBase4<T1, T2, T3,
      */
     @Override
     public <R> L in4(SerializableFunction<T4, R> name, Collection<R> value) {
-        return in(classMapping4, name, value, queryAlias4, ignoreStrategy);
+        return in(classMapping4, name, value, queryAlias4, getIgnoreStrategy());
     }
 
     /**
@@ -2597,7 +2598,7 @@ public abstract class AbstractEntitySqlConditionGroupExpressionBase4<T1, T2, T3,
      */
     @Override
     public <R> L in4(SerializableSupplier<R> property) {
-        return in(classMapping4, property, queryAlias4, ignoreStrategy);
+        return in(classMapping4, property, queryAlias4, getIgnoreStrategy());
     }
 
     /**
@@ -2613,7 +2614,7 @@ public abstract class AbstractEntitySqlConditionGroupExpressionBase4<T1, T2, T3,
      */
     @Override
     public L in4(SerializableToIntFunction4<T4> name, int value) {
-        return in(classMapping4, name, value, queryAlias4, ignoreStrategy);
+        return in(classMapping4, name, value, queryAlias4, getIgnoreStrategy());
     }
 
     /**
@@ -2629,7 +2630,7 @@ public abstract class AbstractEntitySqlConditionGroupExpressionBase4<T1, T2, T3,
      */
     @Override
     public L in4(SerializableToLongFunction4<T4> name, long value) {
-        return in(classMapping4, name, value, queryAlias4, ignoreStrategy);
+        return in(classMapping4, name, value, queryAlias4, getIgnoreStrategy());
     }
 
     /**
@@ -2645,7 +2646,7 @@ public abstract class AbstractEntitySqlConditionGroupExpressionBase4<T1, T2, T3,
      */
     @Override
     public L in4(SerializableToDoubleFunction<T4> name, double value) {
-        return in(classMapping4, name, value, queryAlias4, ignoreStrategy);
+        return in(classMapping4, name, value, queryAlias4, getIgnoreStrategy());
     }
 
     /**
@@ -2661,7 +2662,7 @@ public abstract class AbstractEntitySqlConditionGroupExpressionBase4<T1, T2, T3,
      */
     @Override
     public L in4(SerializableToIntFunction4<T4> name, int... value) {
-        return in(classMapping4, name, value, queryAlias4, ignoreStrategy);
+        return in(classMapping4, name, value, queryAlias4, getIgnoreStrategy());
     }
 
     /**
@@ -2669,7 +2670,7 @@ public abstract class AbstractEntitySqlConditionGroupExpressionBase4<T1, T2, T3,
      */
     @Override
     public L in4(SerializableToLongFunction4<T4> name, long... value) {
-        return in(classMapping4, name, value, queryAlias4, ignoreStrategy);
+        return in(classMapping4, name, value, queryAlias4, getIgnoreStrategy());
     }
 
     /**
@@ -2677,7 +2678,7 @@ public abstract class AbstractEntitySqlConditionGroupExpressionBase4<T1, T2, T3,
      */
     @Override
     public L in4(SerializableToDoubleFunction4<T4> name, double... value) {
-        return in(classMapping4, name, value, queryAlias4, ignoreStrategy);
+        return in(classMapping4, name, value, queryAlias4, getIgnoreStrategy());
     }
 
     /**
@@ -2709,7 +2710,7 @@ public abstract class AbstractEntitySqlConditionGroupExpressionBase4<T1, T2, T3,
      */
     @Override
     public L in4(SerializableToStringFunction<T4> name, String value, MatchStrategy matchStrategy) {
-        return in(classMapping4, name, value, matchStrategy, queryAlias4, ignoreStrategy);
+        return in(classMapping4, name, value, matchStrategy, queryAlias4, getIgnoreStrategy());
     }
 
     /**
@@ -2726,7 +2727,7 @@ public abstract class AbstractEntitySqlConditionGroupExpressionBase4<T1, T2, T3,
      */
     @Override
     public L in4(SerializableToStringFunction<T4> name, String[] value, MatchStrategy matchStrategy) {
-        return in(classMapping4, name, value, matchStrategy, queryAlias4, ignoreStrategy);
+        return in(classMapping4, name, value, matchStrategy, queryAlias4, getIgnoreStrategy());
     }
 
     /**
@@ -2743,7 +2744,7 @@ public abstract class AbstractEntitySqlConditionGroupExpressionBase4<T1, T2, T3,
      */
     @Override
     public L in4(SerializableStringSupplier property, MatchStrategy matchStrategy) {
-        return in(classMapping4, property, matchStrategy, queryAlias4, ignoreStrategy);
+        return in(classMapping4, property, matchStrategy, queryAlias4, getIgnoreStrategy());
     }
 
     /**
@@ -2759,7 +2760,7 @@ public abstract class AbstractEntitySqlConditionGroupExpressionBase4<T1, T2, T3,
      */
     @Override
     public L in4(SerializableIntSupplier property) {
-        return in(classMapping4, property, queryAlias4, ignoreStrategy);
+        return in(classMapping4, property, queryAlias4, getIgnoreStrategy());
     }
 
     /**
@@ -2775,7 +2776,7 @@ public abstract class AbstractEntitySqlConditionGroupExpressionBase4<T1, T2, T3,
      */
     @Override
     public L in4(SerializableLongSupplier property) {
-        return in(classMapping4, property, queryAlias4, ignoreStrategy);
+        return in(classMapping4, property, queryAlias4, getIgnoreStrategy());
     }
 
     /**
@@ -2791,7 +2792,7 @@ public abstract class AbstractEntitySqlConditionGroupExpressionBase4<T1, T2, T3,
      */
     @Override
     public L in4(SerializableDoubleSupplier property) {
-        return in(classMapping4, property, queryAlias4, ignoreStrategy);
+        return in(classMapping4, property, queryAlias4, getIgnoreStrategy());
     }
 
     /**
@@ -2809,7 +2810,7 @@ public abstract class AbstractEntitySqlConditionGroupExpressionBase4<T1, T2, T3,
      */
     @Override
     public <R> L ni4(SerializableFunction<T4, R> name, R value) {
-        return ni(classMapping4, name, value, queryAlias4, ignoreStrategy);
+        return ni(classMapping4, name, value, queryAlias4, getIgnoreStrategy());
     }
 
     /**
@@ -2825,7 +2826,7 @@ public abstract class AbstractEntitySqlConditionGroupExpressionBase4<T1, T2, T3,
      */
     @Override
     public <R> L ni4(SerializableFunction<T4, R> name, @SuppressWarnings("unchecked") R... value) {
-        return ni(classMapping4, name, value, queryAlias4, ignoreStrategy);
+        return ni(classMapping4, name, value, queryAlias4, getIgnoreStrategy());
     }
 
     /**
@@ -2841,7 +2842,7 @@ public abstract class AbstractEntitySqlConditionGroupExpressionBase4<T1, T2, T3,
      */
     @Override
     public <R> L ni4(SerializableFunction<T4, R> name, Collection<R> value) {
-        return ni(classMapping4, name, value, queryAlias4, ignoreStrategy);
+        return ni(classMapping4, name, value, queryAlias4, getIgnoreStrategy());
     }
 
     /**
@@ -2857,7 +2858,7 @@ public abstract class AbstractEntitySqlConditionGroupExpressionBase4<T1, T2, T3,
      */
     @Override
     public <R> L ni4(SerializableSupplier<R> property) {
-        return ni(classMapping4, property, queryAlias4, ignoreStrategy);
+        return ni(classMapping4, property, queryAlias4, getIgnoreStrategy());
     }
 
     /**
@@ -2873,7 +2874,7 @@ public abstract class AbstractEntitySqlConditionGroupExpressionBase4<T1, T2, T3,
      */
     @Override
     public L ni4(SerializableToIntFunction4<T4> name, int value) {
-        return ni(classMapping4, name, value, queryAlias4, ignoreStrategy);
+        return ni(classMapping4, name, value, queryAlias4, getIgnoreStrategy());
     }
 
     /**
@@ -2889,7 +2890,7 @@ public abstract class AbstractEntitySqlConditionGroupExpressionBase4<T1, T2, T3,
      */
     @Override
     public L ni4(SerializableToLongFunction4<T4> name, long value) {
-        return ni(classMapping4, name, value, queryAlias4, ignoreStrategy);
+        return ni(classMapping4, name, value, queryAlias4, getIgnoreStrategy());
     }
 
     /**
@@ -2905,7 +2906,7 @@ public abstract class AbstractEntitySqlConditionGroupExpressionBase4<T1, T2, T3,
      */
     @Override
     public L ni4(SerializableToDoubleFunction<T4> name, double value) {
-        return ni(classMapping4, name, value, queryAlias4, ignoreStrategy);
+        return ni(classMapping4, name, value, queryAlias4, getIgnoreStrategy());
     }
 
     /**
@@ -2921,7 +2922,7 @@ public abstract class AbstractEntitySqlConditionGroupExpressionBase4<T1, T2, T3,
      */
     @Override
     public L ni4(SerializableToIntFunction4<T4> name, int... value) {
-        return ni(classMapping4, name, value, queryAlias4, ignoreStrategy);
+        return ni(classMapping4, name, value, queryAlias4, getIgnoreStrategy());
     }
 
     /**
@@ -2929,7 +2930,7 @@ public abstract class AbstractEntitySqlConditionGroupExpressionBase4<T1, T2, T3,
      */
     @Override
     public L ni4(SerializableToLongFunction4<T4> name, long... value) {
-        return ni(classMapping4, name, value, queryAlias4, ignoreStrategy);
+        return ni(classMapping4, name, value, queryAlias4, getIgnoreStrategy());
     }
 
     /**
@@ -2937,7 +2938,7 @@ public abstract class AbstractEntitySqlConditionGroupExpressionBase4<T1, T2, T3,
      */
     @Override
     public L ni4(SerializableToDoubleFunction4<T4> name, double... value) {
-        return ni(classMapping4, name, value, queryAlias4, ignoreStrategy);
+        return ni(classMapping4, name, value, queryAlias4, getIgnoreStrategy());
     }
 
     /**
@@ -2969,7 +2970,7 @@ public abstract class AbstractEntitySqlConditionGroupExpressionBase4<T1, T2, T3,
      */
     @Override
     public L ni4(SerializableToStringFunction<T4> name, String value, MatchStrategy matchStrategy) {
-        return ni(classMapping4, name, value, matchStrategy, queryAlias4, ignoreStrategy);
+        return ni(classMapping4, name, value, matchStrategy, queryAlias4, getIgnoreStrategy());
     }
 
     /**
@@ -2986,7 +2987,7 @@ public abstract class AbstractEntitySqlConditionGroupExpressionBase4<T1, T2, T3,
      */
     @Override
     public L ni4(SerializableToStringFunction<T4> name, String[] value, MatchStrategy matchStrategy) {
-        return ni(classMapping4, name, value, matchStrategy, queryAlias4, ignoreStrategy);
+        return ni(classMapping4, name, value, matchStrategy, queryAlias4, getIgnoreStrategy());
     }
 
     /**
@@ -3003,7 +3004,7 @@ public abstract class AbstractEntitySqlConditionGroupExpressionBase4<T1, T2, T3,
      */
     @Override
     public L ni4(SerializableStringSupplier property, MatchStrategy matchStrategy) {
-        return ni(classMapping4, property, matchStrategy, queryAlias4, ignoreStrategy);
+        return ni(classMapping4, property, matchStrategy, queryAlias4, getIgnoreStrategy());
     }
 
     /**
@@ -3019,7 +3020,7 @@ public abstract class AbstractEntitySqlConditionGroupExpressionBase4<T1, T2, T3,
      */
     @Override
     public L ni4(SerializableIntSupplier property) {
-        return ni(classMapping4, property, queryAlias4, ignoreStrategy);
+        return ni(classMapping4, property, queryAlias4, getIgnoreStrategy());
     }
 
     /**
@@ -3035,7 +3036,7 @@ public abstract class AbstractEntitySqlConditionGroupExpressionBase4<T1, T2, T3,
      */
     @Override
     public L ni4(SerializableLongSupplier property) {
-        return ni(classMapping4, property, queryAlias4, ignoreStrategy);
+        return ni(classMapping4, property, queryAlias4, getIgnoreStrategy());
     }
 
     /**
@@ -3051,7 +3052,7 @@ public abstract class AbstractEntitySqlConditionGroupExpressionBase4<T1, T2, T3,
      */
     @Override
     public L ni4(SerializableDoubleSupplier property) {
-        return ni(classMapping4, property, queryAlias4, ignoreStrategy);
+        return ni(classMapping4, property, queryAlias4, getIgnoreStrategy());
     }
 
     /**
@@ -3087,7 +3088,7 @@ public abstract class AbstractEntitySqlConditionGroupExpressionBase4<T1, T2, T3,
      */
     @Override
     public L ba4(SerializableToIntFunction<T4> name, int min, int max) {
-        return ba(classMapping, name, min, max, queryAlias4, ignoreStrategy);
+        return ba(classMapping, name, min, max, queryAlias4, getIgnoreStrategy());
     }
 
     /**
@@ -3103,7 +3104,7 @@ public abstract class AbstractEntitySqlConditionGroupExpressionBase4<T1, T2, T3,
      */
     @Override
     public L ba4(SerializableToLongFunction<T4> name, long min, long max) {
-        return ba(classMapping, name, min, max, queryAlias4, ignoreStrategy);
+        return ba(classMapping, name, min, max, queryAlias4, getIgnoreStrategy());
     }
 
     /**
@@ -3119,7 +3120,7 @@ public abstract class AbstractEntitySqlConditionGroupExpressionBase4<T1, T2, T3,
      */
     @Override
     public L ba4(SerializableToDoubleFunction<T4> name, double min, double max) {
-        return ba(classMapping, name, min, max, queryAlias4, ignoreStrategy);
+        return ba(classMapping, name, min, max, queryAlias4, getIgnoreStrategy());
     }
 
     /**
@@ -3136,7 +3137,7 @@ public abstract class AbstractEntitySqlConditionGroupExpressionBase4<T1, T2, T3,
      */
     @Override
     public <N extends Number> L ba4(SerializableToNumberFunction<T4, N> name, N min, N max) {
-        return ba(classMapping, name, min, max, queryAlias4, ignoreStrategy);
+        return ba(classMapping, name, min, max, queryAlias4, getIgnoreStrategy());
     }
 
     /**
@@ -3153,7 +3154,7 @@ public abstract class AbstractEntitySqlConditionGroupExpressionBase4<T1, T2, T3,
      */
     @Override
     public <D extends Date> L ba4(SerializableToDateFunction<T4, D> name, D min, D max) {
-        return ba(classMapping, name, min, max, queryAlias4, ignoreStrategy);
+        return ba(classMapping, name, min, max, queryAlias4, getIgnoreStrategy());
     }
 
     /**
@@ -3170,7 +3171,7 @@ public abstract class AbstractEntitySqlConditionGroupExpressionBase4<T1, T2, T3,
      */
     @Override
     public <E extends Enum<E>> L ba4(SerializableToEnumFunction<T4, E> name, E min, E max) {
-        return ba(classMapping, name, min, max, queryAlias4, ignoreStrategy);
+        return ba(classMapping, name, min, max, queryAlias4, getIgnoreStrategy());
     }
 
     /**
@@ -3187,7 +3188,7 @@ public abstract class AbstractEntitySqlConditionGroupExpressionBase4<T1, T2, T3,
      */
     @Override
     public L ba4(SerializableToLocalTimeFunction<T4> name, LocalTime min, LocalTime max) {
-        return ba(classMapping, name, min, max, queryAlias4, ignoreStrategy);
+        return ba(classMapping, name, min, max, queryAlias4, getIgnoreStrategy());
     }
 
     /**
@@ -3204,7 +3205,7 @@ public abstract class AbstractEntitySqlConditionGroupExpressionBase4<T1, T2, T3,
      */
     @Override
     public L ba4(SerializableToLocalDateFunction<T4> name, LocalDate min, LocalDate max) {
-        return ba(classMapping, name, min, max, queryAlias4, ignoreStrategy);
+        return ba(classMapping, name, min, max, queryAlias4, getIgnoreStrategy());
     }
 
     /**
@@ -3221,7 +3222,7 @@ public abstract class AbstractEntitySqlConditionGroupExpressionBase4<T1, T2, T3,
      */
     @Override
     public L ba4(SerializableToLocalDateTimeFunction<T4> name, LocalDateTime min, LocalDateTime max) {
-        return ba(classMapping, name, min, max, queryAlias4, ignoreStrategy);
+        return ba(classMapping, name, min, max, queryAlias4, getIgnoreStrategy());
     }
 
     /**
@@ -3238,7 +3239,7 @@ public abstract class AbstractEntitySqlConditionGroupExpressionBase4<T1, T2, T3,
      */
     @Override
     public L ba4(SerializableToStringFunction<T4> name, String min, String max) {
-        return ba(classMapping, name, min, max, queryAlias4, ignoreStrategy);
+        return ba(classMapping, name, min, max, queryAlias4, getIgnoreStrategy());
     }
 
     /**
@@ -3257,7 +3258,7 @@ public abstract class AbstractEntitySqlConditionGroupExpressionBase4<T1, T2, T3,
      */
     @Override
     public L nba4(SerializableToIntFunction<T4> name, int min, int max) {
-        return nba(classMapping, name, min, max, queryAlias4, ignoreStrategy);
+        return nba(classMapping, name, min, max, queryAlias4, getIgnoreStrategy());
     }
 
     /**
@@ -3273,7 +3274,7 @@ public abstract class AbstractEntitySqlConditionGroupExpressionBase4<T1, T2, T3,
      */
     @Override
     public L nba4(SerializableToLongFunction<T4> name, long min, long max) {
-        return nba(classMapping, name, min, max, queryAlias4, ignoreStrategy);
+        return nba(classMapping, name, min, max, queryAlias4, getIgnoreStrategy());
     }
 
     /**
@@ -3289,7 +3290,7 @@ public abstract class AbstractEntitySqlConditionGroupExpressionBase4<T1, T2, T3,
      */
     @Override
     public L nba4(SerializableToDoubleFunction<T4> name, double min, double max) {
-        return nba(classMapping, name, min, max, queryAlias4, ignoreStrategy);
+        return nba(classMapping, name, min, max, queryAlias4, getIgnoreStrategy());
     }
 
     /**
@@ -3306,7 +3307,7 @@ public abstract class AbstractEntitySqlConditionGroupExpressionBase4<T1, T2, T3,
      */
     @Override
     public <N extends Number> L nba4(SerializableToNumberFunction<T4, N> name, N min, N max) {
-        return nba(classMapping, name, min, max, queryAlias4, ignoreStrategy);
+        return nba(classMapping, name, min, max, queryAlias4, getIgnoreStrategy());
     }
 
     /**
@@ -3323,7 +3324,7 @@ public abstract class AbstractEntitySqlConditionGroupExpressionBase4<T1, T2, T3,
      */
     @Override
     public <D extends Date> L nba4(SerializableToDateFunction<T4, D> name, D min, D max) {
-        return nba(classMapping, name, min, max, queryAlias4, ignoreStrategy);
+        return nba(classMapping, name, min, max, queryAlias4, getIgnoreStrategy());
     }
 
     /**
@@ -3340,7 +3341,7 @@ public abstract class AbstractEntitySqlConditionGroupExpressionBase4<T1, T2, T3,
      */
     @Override
     public <E extends Enum<E>> L nba4(SerializableToEnumFunction<T4, E> name, E min, E max) {
-        return nba(classMapping, name, min, max, queryAlias4, ignoreStrategy);
+        return nba(classMapping, name, min, max, queryAlias4, getIgnoreStrategy());
     }
 
     /**
@@ -3357,7 +3358,7 @@ public abstract class AbstractEntitySqlConditionGroupExpressionBase4<T1, T2, T3,
      */
     @Override
     public L nba4(SerializableToLocalTimeFunction<T4> name, LocalTime min, LocalTime max) {
-        return nba(classMapping, name, min, max, queryAlias4, ignoreStrategy);
+        return nba(classMapping, name, min, max, queryAlias4, getIgnoreStrategy());
     }
 
     /**
@@ -3374,7 +3375,7 @@ public abstract class AbstractEntitySqlConditionGroupExpressionBase4<T1, T2, T3,
      */
     @Override
     public L nba4(SerializableToLocalDateFunction<T4> name, LocalDate min, LocalDate max) {
-        return nba(classMapping, name, min, max, queryAlias4, ignoreStrategy);
+        return nba(classMapping, name, min, max, queryAlias4, getIgnoreStrategy());
     }
 
     /**
@@ -3391,7 +3392,7 @@ public abstract class AbstractEntitySqlConditionGroupExpressionBase4<T1, T2, T3,
      */
     @Override
     public L nba4(SerializableToLocalDateTimeFunction<T4> name, LocalDateTime min, LocalDateTime max) {
-        return nba(classMapping, name, min, max, queryAlias4, ignoreStrategy);
+        return nba(classMapping, name, min, max, queryAlias4, getIgnoreStrategy());
     }
 
     /**
@@ -3408,7 +3409,7 @@ public abstract class AbstractEntitySqlConditionGroupExpressionBase4<T1, T2, T3,
      */
     @Override
     public L nba4(SerializableToStringFunction<T4> name, String min, String max) {
-        return nba(classMapping, name, min, max, queryAlias4, ignoreStrategy);
+        return nba(classMapping, name, min, max, queryAlias4, getIgnoreStrategy());
     }
 
     /**

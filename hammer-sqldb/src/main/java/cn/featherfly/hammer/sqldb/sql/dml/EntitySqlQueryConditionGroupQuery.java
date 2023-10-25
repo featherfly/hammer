@@ -28,7 +28,7 @@ import cn.featherfly.hammer.sqldb.jdbc.dsl.entity.EntitySqlQueryRelation;
  */
 public class EntitySqlQueryConditionGroupQuery<R> {
 
-    private AbstractEntitySqlConditionGroupExpressionBase<?, ?, ?, ?, ?> exp;
+    private AbstractEntitySqlConditionGroupExpressionBase<?, ?, ?, ?, ?, ?> exp;
 
     private Limit limit;
 
@@ -43,10 +43,12 @@ public class EntitySqlQueryConditionGroupQuery<R> {
      *
      * @param entitySqlConditionGroupExpression the entity sql condition group
      *                                          expression
-     * @param queryTuple                        the query tuple
+     * @param sqlPageFactory                    the sql page factory
+     * @param queryRelation                     the query relation
+     * @param queryConditionConfig              the query condition config
      */
     public EntitySqlQueryConditionGroupQuery(
-            AbstractEntitySqlConditionGroupExpressionBase<?, ?, ?, ?, ?> entitySqlConditionGroupExpression,
+            AbstractEntitySqlConditionGroupExpressionBase<?, ?, ?, ?, ?, ?> entitySqlConditionGroupExpression,
             SqlPageFactory sqlPageFactory, EntitySqlQueryRelation queryRelation) {
         this(entitySqlConditionGroupExpression, sqlPageFactory, queryRelation, null);
     }
@@ -56,11 +58,13 @@ public class EntitySqlQueryConditionGroupQuery<R> {
      *
      * @param entitySqlConditionGroupExpression the entity sql condition group
      *                                          expression
-     * @param queryTuple                        the query tuple
+     * @param sqlPageFactory                    the sql page factory
+     * @param queryRelation                     the query relation
+     * @param queryConditionConfig              the query condition config
      * @param limit                             the limit
      */
     public EntitySqlQueryConditionGroupQuery(
-            AbstractEntitySqlConditionGroupExpressionBase<?, ?, ?, ?, ?> entitySqlConditionGroupExpression,
+            AbstractEntitySqlConditionGroupExpressionBase<?, ?, ?, ?, ?, ?> entitySqlConditionGroupExpression,
             SqlPageFactory sqlPageFactory, EntitySqlQueryRelation queryRelation, Limit limit) {
         super();
         this.limit = limit;
@@ -70,7 +74,7 @@ public class EntitySqlQueryConditionGroupQuery<R> {
     }
 
     /**
-     * set limit value
+     * set limit value.
      *
      * @param limit limit
      */

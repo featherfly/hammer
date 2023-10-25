@@ -1,6 +1,7 @@
 
 package cn.featherfly.hammer.dsl.execute;
 
+import cn.featherfly.hammer.config.dsl.UpdateConditionConfig;
 import cn.featherfly.hammer.expression.execute.UpdaterExpression;
 
 /**
@@ -8,8 +9,9 @@ import cn.featherfly.hammer.expression.execute.UpdaterExpression;
  *
  * @author zhongj
  */
-public interface Updater extends UpdaterExpression<Update, ExecutableUpdate, ExecutableConditionGroup,
-        ExecutableConditionGroupLogic, UpdateValue, UpdateNumberValue> {
+public interface Updater
+        extends UpdaterExpression<Update, ExecutableUpdate, ExecutableConditionGroup<UpdateConditionConfig>,
+                ExecutableConditionGroupLogic<UpdateConditionConfig>, UpdateValue, UpdateNumberValue> {
 
     //    /**
     //     * start update dsl for the entity type.

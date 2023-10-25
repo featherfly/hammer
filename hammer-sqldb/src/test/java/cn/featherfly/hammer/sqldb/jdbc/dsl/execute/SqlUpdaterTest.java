@@ -10,12 +10,14 @@
  */
 package cn.featherfly.hammer.sqldb.jdbc.dsl.execute;
 
+import static org.testng.Assert.assertEquals;
 import static org.testng.Assert.assertNotNull;
 import static org.testng.Assert.assertNull;
-import static org.testng.Assert.assertEquals;
 
+import java.time.LocalDateTime;
 import java.util.Date;
 import java.util.concurrent.atomic.AtomicInteger;
+import java.util.function.Predicate;
 
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
@@ -26,6 +28,7 @@ import cn.featherfly.common.lang.Randoms;
 import cn.featherfly.common.lang.Randoms.CharType;
 import cn.featherfly.common.repository.IgnoreStrategy;
 import cn.featherfly.common.repository.SimpleRepository;
+import cn.featherfly.hammer.config.dsl.EmptyConditionStrategy;
 import cn.featherfly.hammer.sqldb.SqldbHammerException;
 import cn.featherfly.hammer.sqldb.jdbc.HammerJdbcTestBase;
 import cn.featherfly.hammer.sqldb.jdbc.vo.r.Role;
@@ -45,12 +48,12 @@ public class SqlUpdaterTest extends HammerJdbcTestBase {
 
     @BeforeClass
     void setup() {
-        sqlUpdater = new SqlUpdater(jdbc, mappingFactory);
+        sqlUpdater = new SqlUpdater(jdbc, mappingFactory, hammerConfig.getDslConfig().getUpdateConfig());
     }
 
     @Test(expectedExceptions = SqldbHammerException.class)
     public void testException() {
-        new SqlUpdater(jdbc).update(User.class);
+        new SqlUpdater(jdbc, hammerConfig.getDslConfig().getUpdateConfig()).update(User.class);
     }
 
     @Test
@@ -65,11 +68,11 @@ public class SqlUpdaterTest extends HammerJdbcTestBase {
         String descp = jdbc.queryString("select descp from role where  id = ?", id);
         assertEquals(descp, updated);
 
-        result = sqlUpdater.update(table).set(() -> false, "descp", NOT_MODIFY).where().eq("id", id).execute();
-        assertEquals(result, 0);
-
-        result = sqlUpdater.update(table).set(() -> true, "descp", updated).where().eq("id", id).execute();
+        result = sqlUpdater.update(table).set("descp", updated, v -> false).where().eq("id", id).execute();
         assertEquals(result, 1);
+
+        result = sqlUpdater.update(table).set("descp", NOT_MODIFY, v -> true).where().eq("id", id).execute();
+        assertEquals(result, 0);
 
         descp = jdbc.queryString("select descp from role where  id = ?", id);
         assertEquals(descp, updated);
@@ -92,6 +95,11 @@ public class SqlUpdaterTest extends HammerJdbcTestBase {
         String strDate = Dates.formatTime(new Date());
         Long count = hammer.query(Role.class).count();
         int result = sqlUpdater.update("role").set("create_time", strDate).execute();
+        assertEquals(result, 0);
+
+        result = sqlUpdater.update("role") //
+                .configure(c -> c.setEmptyConditionStrategy(EmptyConditionStrategy.EXECUTION)) //
+                .set("create_time", strDate).execute();
         assertEquals(result, count.intValue());
 
         String createTime = jdbc.queryString("select create_time from role where  id = ?", 1);
@@ -112,17 +120,17 @@ public class SqlUpdaterTest extends HammerJdbcTestBase {
         load = hammer.get(user);
         assertEquals(load.getAge(), user.getAge());
 
-        int result = sqlUpdater.update("user").set(() -> false, User::getAge, 1000).where().eq("id", user.getId())
+        int result = sqlUpdater.update("user").set(User::getAge, 1000, v -> true).where().eq("id", user.getId())
                 .execute();
         assertEquals(result, 0);
 
-        result = sqlUpdater.update("user").set(() -> false, user::getAge).where().eq("id", user.getId()).execute();
+        result = sqlUpdater.update("user").set(user::getAge, v -> true).where().eq("id", user.getId()).execute();
         assertEquals(result, 0);
 
-        result = sqlUpdater.update("user").set(() -> true, User::getAge, 1).where().eq("id", user.getId()).execute();
+        result = sqlUpdater.update("user").set(User::getAge, 1, v -> false).where().eq("id", user.getId()).execute();
         assertEquals(result, 1);
 
-        result = sqlUpdater.update("user").set(() -> true, user::getAge).where().eq("id", user.getId()).execute();
+        result = sqlUpdater.update("user").set(user::getAge, v -> false).where().eq("id", user.getId()).execute();
         assertEquals(result, 1);
 
         hammer.delete(user);
@@ -145,15 +153,21 @@ public class SqlUpdaterTest extends HammerJdbcTestBase {
     public void testUpdateSetIgnore() {
         String strDate = Dates.formatTime(new Date());
         Long count = hammer.query(Role.class).count();
-        int result = sqlUpdater.update("role").set("create_time", strDate)
-                .where(c -> c.setIgnoreStrategy(IgnoreStrategy.EMPTY)).eq("id", null).execute();
+        int result = sqlUpdater.update("role").set("create_time", strDate).where().configure(c -> c
+                .setIgnoreStrategy(IgnoreStrategy.EMPTY).setEmptyConditionStrategy(EmptyConditionStrategy.EXECUTION))
+                .eq("id", null).execute();
         assertEquals(result, count.intValue());
 
         String createTime = jdbc.queryString("select create_time from role where  id = ?", 1);
         assertEquals(createTime, strDate);
 
-        result = sqlUpdater.update("role").set("create_time", strDate)
-                .where(c -> c.setIgnoreStrategy(IgnoreStrategy.NONE)).eq("id", null).execute();
+        result = sqlUpdater.update("role").set("create_time", strDate).where().configure(c -> c
+                .setIgnoreStrategy(IgnoreStrategy.NONE).setEmptyConditionStrategy(EmptyConditionStrategy.EXECUTION))
+                .eq("id", null).execute();
+        assertEquals(result, 0);
+
+        result = sqlUpdater.update("role").set("create_time", strDate).where()
+                .configure(c -> c.setIgnoreStrategy(IgnoreStrategy.NONE)).eq("id", null).execute();
         assertEquals(result, 0);
     }
 
@@ -194,12 +208,12 @@ public class SqlUpdaterTest extends HammerJdbcTestBase {
         User load = hammer.get(user);
         assertEquals(load.getAge().intValue(), age.addAndGet(1));
 
-        result = sqlUpdater.update("user").increase(() -> false, "age", 1).where().eq("id", user.getId()).execute();
+        result = sqlUpdater.update("user").increase("age", 1, v -> true).where().eq("id", user.getId()).execute();
         assertEquals(result, 0);
         load = hammer.get(user);
         assertEquals(load.getAge().intValue(), age.get());
 
-        result = sqlUpdater.update("user").increase(() -> true, "age", 1).where().eq("id", user.getId()).execute();
+        result = sqlUpdater.update("user").increase("age", 1, v -> false).where().eq("id", user.getId()).execute();
         assertEquals(result, 1);
         load = hammer.get(user);
         assertEquals(load.getAge().intValue(), age.addAndGet(1));
@@ -211,13 +225,13 @@ public class SqlUpdaterTest extends HammerJdbcTestBase {
         load = hammer.get(user);
         assertEquals(load.getAge().intValue(), age.addAndGet(1));
 
-        result = sqlUpdater.update("user").increase(() -> false, User::getAge, 1).where().eq("id", user.getId())
+        result = sqlUpdater.update("user").increase(User::getAge, 1, v -> true).where().eq("id", user.getId())
                 .execute();
         assertEquals(result, 0);
         load = hammer.get(user);
         assertEquals(load.getAge().intValue(), age.get());
 
-        result = sqlUpdater.update("user").increase(() -> true, User::getAge, 1).where().eq("id", user.getId())
+        result = sqlUpdater.update("user").increase(User::getAge, 1, v -> false).where().eq("id", user.getId())
                 .execute();
         assertEquals(result, 1);
         load = hammer.get(user);
@@ -230,12 +244,12 @@ public class SqlUpdaterTest extends HammerJdbcTestBase {
         load = hammer.get(user);
         assertEquals(load.getAge().intValue(), age.addAndGet(user.getAge()));
 
-        result = sqlUpdater.update("user").increase(() -> false, user::getAge).where().eq("id", user.getId()).execute();
+        result = sqlUpdater.update("user").increase(user::getAge, v -> true).where().eq("id", user.getId()).execute();
         assertEquals(result, 0);
         load = hammer.get(user);
         assertEquals(load.getAge().intValue(), age.get());
 
-        result = sqlUpdater.update("user").increase(() -> true, user::getAge).where().eq("id", user.getId()).execute();
+        result = sqlUpdater.update("user").increase(user::getAge, v -> false).where().eq("id", user.getId()).execute();
         assertEquals(result, 1);
         load = hammer.get(user);
         assertEquals(load.getAge().intValue(), age.addAndGet(user.getAge()));
@@ -274,12 +288,12 @@ public class SqlUpdaterTest extends HammerJdbcTestBase {
         String descp = jdbc.queryString(selectDescpSql, id);
         assertEquals(descp, updated);
 
-        result = sqlUpdater.update(Role.class).set(() -> false, Role::getDescp, NOT_MODIFY).where().eq(Role::getId, id)
+        result = sqlUpdater.update(Role.class).set(Role::getDescp, NOT_MODIFY, v -> true).where().eq(Role::getId, id)
                 .execute();
         assertEquals(result, 0);
 
         updated = "descp_testUpdateEntitySet2";
-        result = sqlUpdater.update(Role.class).set(() -> true, Role::getDescp, updated).where().eq(Role::getId, id)
+        result = sqlUpdater.update(Role.class).set(Role::getDescp, updated, v -> false).where().eq(Role::getId, id)
                 .execute();
         assertEquals(result, 1);
 
@@ -298,14 +312,15 @@ public class SqlUpdaterTest extends HammerJdbcTestBase {
         assertEquals(descp, updatedRole.getDescp());
 
         updatedRole.setDescp("descp_testUpdateEntitySet4");
-        result = sqlUpdater.update(Role.class).set(() -> false, updatedRole::getDescp).where().eq(Role::getId, id)
+        result = sqlUpdater.update(Role.class).set(updatedRole::getDescp, (Predicate<String>) v -> true) //
+                .where().eq(Role::getId, id) //
                 .execute();
         assertEquals(result, 0);
         descp = jdbc.queryString(selectDescpSql, id);
         assertEquals(descp, updated);
 
-        result = sqlUpdater.update(Role.class).set(() -> true, updatedRole::getDescp).where().eq(Role::getId, id)
-                .execute();
+        result = sqlUpdater.update(Role.class).set(updatedRole::getDescp, (Predicate<String>) v -> false) //
+                .where().eq(Role::getId, id).execute();
         assertEquals(result, 1);
         descp = jdbc.queryString(selectDescpSql, id);
         assertEquals(descp, updatedRole.getDescp());
@@ -325,13 +340,13 @@ public class SqlUpdaterTest extends HammerJdbcTestBase {
         User load = hammer.get(user);
         assertEquals(load.getAge().intValue(), age.addAndGet(1));
 
-        result = sqlUpdater.update(User.class).increase(() -> false, User::getAge, 1).where()
+        result = sqlUpdater.update(User.class).increase(User::getAge, 1, v -> true).where()
                 .eq(User::getId, user.getId()).execute();
         assertEquals(result, 0);
         load = hammer.get(user);
         assertEquals(load.getAge().intValue(), age.intValue());
 
-        result = sqlUpdater.update(User.class).increase(() -> true, User::getAge, 1).where()
+        result = sqlUpdater.update(User.class).increase(User::getAge, 1, v -> false).where()
                 .eq(User::getId, user.getId()).execute();
         assertEquals(result, 1);
         load = hammer.get(user);
@@ -344,14 +359,14 @@ public class SqlUpdaterTest extends HammerJdbcTestBase {
         load = hammer.get(user);
         assertEquals(load.getAge().intValue(), age.addAndGet(user.getAge()));
 
-        result = sqlUpdater.update(User.class).increase(() -> false, user::getAge).where().eq(User::getId, user.getId())
-                .execute();
+        result = sqlUpdater.update(User.class).increase(user::getAge, (Predicate<Integer>) v -> true).where()
+                .eq(User::getId, user.getId()).execute();
         assertEquals(result, 0);
         load = hammer.get(user);
         assertEquals(load.getAge().intValue(), age.intValue());
 
-        result = sqlUpdater.update(User.class).increase(() -> true, user::getAge).where().eq(User::getId, user.getId())
-                .execute();
+        result = sqlUpdater.update(User.class).increase(user::getAge, (Predicate<Integer>) v -> false).where()
+                .eq(User::getId, user.getId()).execute();
         assertEquals(result, 1);
         load = hammer.get(user);
         assertEquals(load.getAge().intValue(), age.addAndGet(user.getAge()));
@@ -379,24 +394,40 @@ public class SqlUpdaterTest extends HammerJdbcTestBase {
         assertNotNull(ui.getUser().getId());
 
         int newUserId = 2;
+        int newUserId2 = 3;
+        String newDescp = "newDescp_" + Randoms.getInt(100);
+        String newDescp2 = "newDescp2_" + Randoms.getInt(100);
 
         // set value
         int result = hammer.update(UserInfo.class).set(UserInfo::getUser, User::getId, newUserId).where()
                 .eq(UserInfo::getId, ui.getId()).execute();
         assertEquals(result, 1);
-        UserInfo load = hammer.get(1, UserInfo.class);
+        UserInfo load = hammer.get(ui.getId(), UserInfo.class);
         assertNotNull(load);
         assertNotNull(load.getUser());
         assertNotNull(load.getUser().getId());
         assertEquals(load.getUser().getId().intValue(), newUserId);
 
-        result = hammer.update(UserInfo.class).set(() -> false, UserInfo::getUser, User::getId, newUserId).where()
-                .eq(UserInfo::getId, ui.getId()).execute();
-        assertEquals(result, 0);
+        result = hammer.update(UserInfo.class) //
+                .set(UserInfo::getDescp, newDescp) //
+                .set(UserInfo::getUser, User::getId, newUserId2, v -> true) //
+                .where().eq(UserInfo::getId, ui.getId()).execute();
+        assertEquals(result, 1);
+        load = hammer.get(ui.getId(), UserInfo.class);
+        assertNotNull(load);
+        assertNotNull(load.getUser());
+        assertNotNull(load.getUser().getId());
+        assertEquals(load.getUser().getId().intValue(), newUserId);
+        assertEquals(load.getDescp(), newDescp);
 
-        result = hammer.update(UserInfo.class).set(() -> true, UserInfo::getUser, User::getId, newUserId).where()
+        result = hammer.update(UserInfo.class).set(UserInfo::getUser, User::getId, newUserId2, v -> false).where()
                 .eq(UserInfo::getId, ui.getId()).execute();
         assertEquals(result, 1);
+        load = hammer.get(ui.getId(), UserInfo.class);
+        assertNotNull(load);
+        assertNotNull(load.getUser());
+        assertNotNull(load.getUser().getId());
+        assertEquals(load.getUser().getId().intValue(), newUserId2);
 
         // ---------------------------------------------------------------------------------------------------------------
 
@@ -407,25 +438,42 @@ public class SqlUpdaterTest extends HammerJdbcTestBase {
         result = hammer.update(UserInfo.class).set(userInfo::getUser, User::getId).where()
                 .eq(UserInfo::getId, ui.getId()).execute();
         assertEquals(result, 1);
-        load = hammer.get(1, UserInfo.class);
+        load = hammer.get(ui.getId(), UserInfo.class);
         assertNotNull(load);
         assertNotNull(load.getUser());
         assertNotNull(load.getUser().getId());
         assertEquals(load.getUser().getId().intValue(), user.getId().intValue());
+        assertEquals(load.getUser().getId().intValue(), newUserId);
 
-        result = hammer.update(UserInfo.class).set(() -> false, userInfo::getUser, User::getId).where()
-                .eq(UserInfo::getId, ui.getId()).execute();
-        assertEquals(result, 0);
-
-        result = hammer.update(UserInfo.class).set(() -> true, userInfo::getUser, User::getId).where()
+        userInfo.setUser(new User(newUserId2));
+        result = hammer.update(UserInfo.class).set(userInfo::getUser, User::getId, v -> false).where()
                 .eq(UserInfo::getId, ui.getId()).execute();
         assertEquals(result, 1);
+        load = hammer.get(ui.getId(), UserInfo.class);
+        assertNotNull(load);
+        assertNotNull(load.getUser());
+        assertNotNull(load.getUser().getId());
+        assertEquals(load.getUser().getId().intValue(), newUserId2);
+
+        userInfo.setDescp(newDescp2);
+        result = hammer.update(UserInfo.class) //
+                .set(userInfo::getDescp) //
+                .set(userInfo::getUser, User::getId, v -> true) //
+                .where().eq(UserInfo::getId, ui.getId()).execute();
+        assertEquals(result, 1);
+        load = hammer.get(ui.getId(), UserInfo.class);
+        assertNotNull(load);
+        assertNotNull(load.getUser());
+        assertNotNull(load.getUser().getId());
+        assertEquals(load.getDescp(), userInfo.getDescp());
+        assertEquals(load.getDescp(), newDescp2);
 
         // --------------------------------------------------------------------------------------------------------------
 
         // set null value
-        result = hammer.update(UserInfo.class).set(UserInfo::getUser, User::getId, null).where()
-                .eq(UserInfo::getId, ui.getId()).execute();
+        result = hammer.update(UserInfo.class) //
+                .set(UserInfo::getUser, User::getId, null, v -> false) //
+                .where().eq(UserInfo::getId, ui.getId()).execute();
         assertEquals(result, 1);
 
         load = hammer.get(1, UserInfo.class);
@@ -433,9 +481,10 @@ public class SqlUpdaterTest extends HammerJdbcTestBase {
         assertNotNull(load.getUser());
         assertNull(load.getUser().getId());
 
-        result = hammer.update(UserInfo.class).set(() -> false, UserInfo::getUser, User::getId, null).where()
-                .eq(UserInfo::getId, ui.getId()).execute();
-        assertEquals(result, 0);
+        result = hammer.update(UserInfo.class) //
+                .set(UserInfo::getUser, User::getId, null, v -> false).where().eq(UserInfo::getId, ui.getId())
+                .execute();
+        assertEquals(result, 1);
 
         //-------------------------------------------------------------------------------------------------------------
 
@@ -460,13 +509,20 @@ public class SqlUpdaterTest extends HammerJdbcTestBase {
 
         // rollback changed value
 
-        result = hammer.update(UserInfo.class).set(UserInfo::getUser, User::getId, ui.getUser().getId()).where()
-                .eq(UserInfo::getId, ui.getId()).execute();
-        assertEquals(result, 1);
-
-        result = hammer.update(UserInfo.class).set(() -> false, UserInfo::getUser, User::getId, ui.getUser().getId())
+        result = hammer.update(UserInfo.class).set(UserInfo::getDescp, ui.getDescp()) //
+                .set(UserInfo::getUser, User::getId, ui.getUser().getId()) //
                 .where().eq(UserInfo::getId, ui.getId()).execute();
-        assertEquals(result, 0);
+        assertEquals(result, 1);
+        load = hammer.get(1, UserInfo.class);
+        assertNotNull(load);
+        assertNotNull(load.getUser());
+        assertNotNull(load.getUser().getId());
+        assertEquals(load.getUser().getId(), ui.getUser().getId());
+        assertEquals(load.getDescp(), ui.getDescp());
+
+        result = hammer.update(UserInfo.class).set(UserInfo::getUser, User::getId, ui.getUser().getId(), v -> false)
+                .where().eq(UserInfo::getId, ui.getId()).execute();
+        assertEquals(result, 1);
 
         load = hammer.get(1, UserInfo.class);
         assertNotNull(load);
@@ -480,20 +536,33 @@ public class SqlUpdaterTest extends HammerJdbcTestBase {
     public void testUpdateEntitySetIgnore() {
         Long count = hammer.query(Role.class).count();
 
-        String strDate = Dates.formatTime(new Date());
+        //        String strDate = Dates.formatTime(new Date());
+        LocalDateTime now = LocalDateTime.now();
 
-        int result = sqlUpdater.update(Role.class).set(Role::getCreateTime, strDate).execute();
+        int result = sqlUpdater.update(Role.class).set(Role::getCreateTime, now).execute();
+        assertEquals(result, 0);
+
+        result = sqlUpdater.update(Role.class)
+                .configure(c -> c.setEmptyConditionStrategy(EmptyConditionStrategy.EXECUTION))
+                .set(Role::getCreateTime, now).execute();
         assertEquals(result, count.intValue());
 
-        result = sqlUpdater.update(Role.class).set(Role::getCreateTime, strDate)
-                .where(c -> c.setIgnoreStrategy(IgnoreStrategy.EMPTY)).eq(Role::getId, null).execute();
+        result = sqlUpdater.update(Role.class).set(Role::getCreateTime, now).where().configure(c -> c
+                .setIgnoreStrategy(IgnoreStrategy.EMPTY).setEmptyConditionStrategy(EmptyConditionStrategy.EXECUTION))
+                .eq(Role::getId, null).execute();
         assertEquals(result, count.intValue());
 
-        String createTime = jdbc.queryString("select create_time from role where  id = ?", 1);
-        assertEquals(createTime, strDate);
+        result = sqlUpdater.update(Role.class).set(Role::getCreateTime, now).where()
+                .configure(c -> c.setIgnoreStrategy(IgnoreStrategy.EMPTY)).eq(Role::getId, null).execute();
+        assertEquals(result, 0);
 
-        result = sqlUpdater.update(Role.class).set(Role::getCreateTime, strDate)
-                .where(c -> c.setIgnoreStrategy(IgnoreStrategy.NONE)).eq(Role::getId, null).execute();
+        //        String createTime = jdbc.queryString("select create_time from role where  id = ?", 1);
+        LocalDateTime createTime = jdbc.queryValue("select create_time from role where  id = ?", LocalDateTime.class,
+                1);
+        assertEquals(Dates.formatTime(createTime), Dates.formatTime(now));
+
+        result = sqlUpdater.update(Role.class).set(Role::getCreateTime, now).where()
+                .configure(c -> c.setIgnoreStrategy(IgnoreStrategy.NONE)).eq(Role::getId, null).execute();
         assertEquals(result, 0);
     }
 

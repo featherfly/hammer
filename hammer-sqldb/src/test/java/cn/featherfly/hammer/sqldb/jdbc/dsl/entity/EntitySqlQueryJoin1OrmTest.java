@@ -59,7 +59,7 @@ public class EntitySqlQueryJoin1OrmTest extends AbstractEntitySqlQueryJoinTest {
 
         order = query.find(Order.class) //
                 .join(Order::getCreateUser) //
-                .where(c -> c.setIgnoreStrategy(IgnoreStrategy.EMPTY)) //
+                .where().configure(c -> c.setIgnoreStrategy(IgnoreStrategy.EMPTY)) //
                 .eq(Order::getId, oid1) //
                 .single();
         assertNotNull(order);
@@ -90,7 +90,7 @@ public class EntitySqlQueryJoin1OrmTest extends AbstractEntitySqlQueryJoinTest {
 
         order = query.find(Order.class) //
                 .join(Order::getCreateUser) //
-                .where(c -> c.setIgnoreStrategy(IgnoreStrategy.EMPTY)) //
+                .where().configure(c -> c.setIgnoreStrategy(IgnoreStrategy.EMPTY)) //
                 .eq((e1, e2) -> e1.accept(Order::getId, oid1)) //
                 .single();
         assertNotNull(order);

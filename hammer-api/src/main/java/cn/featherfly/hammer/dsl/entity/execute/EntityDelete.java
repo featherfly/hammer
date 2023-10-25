@@ -10,6 +10,7 @@
  */
 package cn.featherfly.hammer.dsl.entity.execute;
 
+import cn.featherfly.hammer.config.dsl.DeleteConditionConfig;
 import cn.featherfly.hammer.expression.entity.execute.EntityDeleteExpression;
 
 /**
@@ -17,7 +18,8 @@ import cn.featherfly.hammer.expression.entity.execute.EntityDeleteExpression;
  *
  * @author zhongj
  */
-public interface EntityDelete<E> extends
-        EntityDeleteExpression<E, EntityExecutableConditionGroup<E>, EntityExecutableConditionGroupLogic<E>> {
+public interface EntityDelete<E>
+        extends EntityDeleteExpression<E, EntityExecutableConditionGroup<E, DeleteConditionConfig>,
+                EntityExecutableConditionGroupLogic<E, DeleteConditionConfig>> {
 
 }

@@ -32,7 +32,7 @@ public class AbstractEntitySqlQueryJoinTest extends HammerJdbcTestBase {
     UserInfo userInfo = null;
     User user = null;
     Integer uid1 = 1;
-    Integer uid2 = 1;
+    Integer uid2 = 2;
     Long id1 = 1L;
     Long id2 = 2L;
     Long oid1 = 1L;
@@ -48,7 +48,7 @@ public class AbstractEntitySqlQueryJoinTest extends HammerJdbcTestBase {
 
     @BeforeClass
     void setupTest() {
-        query = new SqlQuery(jdbc, mappingFactory, sqlPageFactory);
+        query = new SqlQuery(jdbc, mappingFactory, sqlPageFactory, hammerConfig.getDslConfig().getQueryConfig());
     }
 
     @BeforeMethod

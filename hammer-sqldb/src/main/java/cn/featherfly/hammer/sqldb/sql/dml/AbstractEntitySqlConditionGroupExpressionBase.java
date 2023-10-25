@@ -16,6 +16,7 @@ import cn.featherfly.common.operator.ComparisonOperator.MatchStrategy;
 import cn.featherfly.common.operator.LogicOperator;
 import cn.featherfly.common.repository.mapping.PropertyMapping;
 import cn.featherfly.common.repository.mapping.PropertyMapping.Mode;
+import cn.featherfly.hammer.config.dsl.ConditionConfig;
 import cn.featherfly.hammer.expression.condition.GroupEndExpression;
 import cn.featherfly.hammer.expression.condition.GroupExpression;
 import cn.featherfly.hammer.expression.condition.LogicExpression;
@@ -32,9 +33,9 @@ import cn.featherfly.hammer.sqldb.jdbc.dsl.entity.EntitySqlRelation;
  */
 @SuppressWarnings("unchecked")
 public abstract class AbstractEntitySqlConditionGroupExpressionBase<E, ER extends EntitySqlRelation<ER, B>,
-        B extends SqlBuilder, C extends GroupExpression<C, L>, L extends GroupEndExpression<C, L>>
-        extends AbstractEntitySqlConditionExpressionBase<E, ER, B, C, L> implements LogicExpression<C, L>,
-        GroupExpression<C, L>, GroupEndExpression<C, L>, EntityPropertyExpression<E, C, L> {
+        B extends SqlBuilder, C extends GroupExpression<C, L>, L extends GroupEndExpression<C, L>,
+        C2 extends ConditionConfig<C2>> extends AbstractEntitySqlConditionExpressionBase<E, ER, B, C, L, C2> implements
+        LogicExpression<C, L>, GroupExpression<C, L>, GroupEndExpression<C, L>, EntityPropertyExpression<E, C, L> {
 
     /**
      * Instantiates a new abstract sql condition group expression.
@@ -53,12 +54,12 @@ public abstract class AbstractEntitySqlConditionGroupExpressionBase<E, ER extend
      *
      * @return the root
      */
-    protected AbstractEntitySqlConditionExpressionBase<E, ER, B, C, L> getRoot() {
+    protected AbstractEntitySqlConditionExpressionBase<E, ER, B, C, L, C2> getRoot() {
         L p = endGroup();
         while (p != p.endGroup()) {
             p = p.endGroup();
         }
-        return (AbstractEntitySqlConditionExpressionBase<E, ER, B, C, L>) p;
+        return (AbstractEntitySqlConditionExpressionBase<E, ER, B, C, L, C2>) p;
     }
 
     /**
@@ -199,7 +200,7 @@ public abstract class AbstractEntitySqlConditionGroupExpressionBase<E, ER extend
                         if (logic != null) {
                             condition = logic.and();
                         }
-                        logic = ((AbstractEntitySqlConditionExpressionBase<E, ER, B, C, L>) condition)
+                        logic = ((AbstractEntitySqlConditionExpressionBase<E, ER, B, C, L, C2>) condition)
                                 .eq_ne(comparisonOperator, spm, ov, queryAlias, matchStrategy, ignoreStrategy);
                     }
 

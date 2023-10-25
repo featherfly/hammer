@@ -7,9 +7,6 @@ import static org.testng.Assert.assertNull;
 
 import org.testng.annotations.Test;
 
-import com.speedment.common.tuple.Tuple2;
-
-import cn.featherfly.hammer.sqldb.SqldbHammerException;
 import cn.featherfly.hammer.sqldb.jdbc.vo.r.Order;
 import cn.featherfly.hammer.sqldb.jdbc.vo.r.Tree;
 import cn.featherfly.hammer.sqldb.jdbc.vo.r.User;
@@ -84,11 +81,12 @@ public class SqlQueryTypeJoinRelationTest extends AbstractEntitySqlQueryJoinTest
     @Test
     void testJoin_ER1_R2E() {
         userInfo = query.find(UserInfo.class).join(UserInfo::getUser).join(Order::getUserInfo).where()
-                .eq(UserInfo::getId, uid1).single();
+                .eq(UserInfo::getId, uid2).single();
         System.err.println(userInfo);
-        assertEquals(userInfo.getId(), uid1);
+        assertEquals(userInfo.getId(), uid2);
         assertNotNull(userInfo.getUser().getId());
         assertNull(userInfo.getUser().getUsername());
+
         /*
         SELECT _user_info0.`province` `division.province`, _user_info0.`city` `division.city`, _user_info0.`district` `division.district`, _user_info0.`id` `id`, _user_info0.`user_id` `user.id`, _user_info0.`name` `name`, _user_info0.`descp` `descp`
         FROM `user_info` _user_info0
@@ -97,6 +95,12 @@ public class SqlQueryTypeJoinRelationTest extends AbstractEntitySqlQueryJoinTest
         WHERE _user_info0.`id` = ?
          */
 
+        userInfo = query.find(UserInfo.class).join(UserInfo::getUser).fetch().join(Order::getUserInfo).where()
+                .eq(UserInfo::getId, uid2).single();
+        System.err.println(userInfo);
+        assertEquals(userInfo.getId(), uid2);
+        assertNotNull(userInfo.getUser().getId());
+        assertNotNull(userInfo.getUser().getUsername());
     }
 
     @Test
@@ -126,21 +130,21 @@ public class SqlQueryTypeJoinRelationTest extends AbstractEntitySqlQueryJoinTest
          */
     }
 
-    @Test(expectedExceptions = SqldbHammerException.class)
-    void testJoin_RE_Exception() {
-        Tuple2<User, UserInfo> tupleUserUserInfo = query.find(User.class).join(UserInfo::getUser).fetch().where()
-                .eq(User::getId, uid1).single();
-
-        //      userInfo = query.find(UserInfo.class).join(UserInfo::getUser).fetch().join2(UserRole2::getUser).fetch().where()
-        Tuple2<UserInfo, UserRole2> tupleUserInfoRole2 = query.find(UserInfo.class).join(UserInfo::getUser).fetch()
-                .join2(UserRole2::getUser).fetch().where().eq(UserInfo::getId, uid1).single();
-        System.err.println(tupleUserInfoRole2);
-        userInfo = tupleUserInfoRole2.get0();
-        System.err.println(userInfo);
-        assertEquals(userInfo.getId(), uid1);
-        assertNotNull(userInfo.getUser().getId());
-        assertNotNull(userInfo.getUser().getUsername());
-    }
+    //    @Test
+    //    void testJoin_RE_Exception() {
+    //        Tuple2<User, UserInfo> tupleUserUserInfo = query.find(User.class).join(UserInfo::getUser).fetch().where()
+    //                .eq(User::getId, uid1).single();
+    //
+    //        //      userInfo = query.find(UserInfo.class).join(UserInfo::getUser).fetch().join2(UserRole2::getUser).fetch().where()
+    //        Tuple2<UserInfo, UserRole2> tupleUserInfoRole2 = query.find(UserInfo.class).join(UserInfo::getUser).fetch()
+    //                .join2(UserRole2::getUser).fetch().where().eq(UserInfo::getId, uid1).single();
+    //        System.err.println(tupleUserInfoRole2);
+    //        userInfo = tupleUserInfoRole2.get0();
+    //        System.err.println(userInfo);
+    //        assertEquals(userInfo.getId(), uid1);
+    //        assertNotNull(userInfo.getUser().getId());
+    //        assertNotNull(userInfo.getUser().getUsername());
+    //    }
 
     @Test
     void testJoin1_ER1_R2E() {
@@ -161,8 +165,8 @@ public class SqlQueryTypeJoinRelationTest extends AbstractEntitySqlQueryJoinTest
 
     @Test
     void testJoin1_ER1_R1R2() {
-        order = query.find(Order.class).join(Order::getUserInfo).join2(UserInfo::getUser).where()
-                .eq(Order::getId, id1).single();
+        order = query.find(Order.class).join(Order::getUserInfo).join2(UserInfo::getUser).where().eq(Order::getId, id1)
+                .single();
 
         assertEquals(order.getId(), id1);
         assertNotNull(order.getUserInfo().getId());

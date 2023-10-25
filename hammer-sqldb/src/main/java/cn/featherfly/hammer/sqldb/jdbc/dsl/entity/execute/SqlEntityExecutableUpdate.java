@@ -1,7 +1,7 @@
 
 package cn.featherfly.hammer.sqldb.jdbc.dsl.entity.execute;
 
-import java.util.function.BooleanSupplier;
+import java.io.Serializable;
 import java.util.function.Consumer;
 import java.util.function.Predicate;
 
@@ -15,16 +15,18 @@ import cn.featherfly.common.function.serializable.SerializableFunction;
 import cn.featherfly.common.function.serializable.SerializableSupplier;
 import cn.featherfly.common.function.serializable.SerializableToNumberFunction;
 import cn.featherfly.common.lang.ClassUtils;
+import cn.featherfly.common.lang.LambdaUtils;
 import cn.featherfly.common.lang.Lang;
-import cn.featherfly.common.repository.IgnoreStrategy;
 import cn.featherfly.common.repository.builder.AliasManager;
+import cn.featherfly.hammer.config.dsl.UpdateConditionConfig;
+import cn.featherfly.hammer.config.dsl.UpdateConfig;
 import cn.featherfly.hammer.dsl.entity.execute.EntityExecutableConditionGroup;
 import cn.featherfly.hammer.dsl.entity.execute.EntityExecutableConditionGroupLogic;
 import cn.featherfly.hammer.dsl.entity.execute.EntityExecutableUpdate;
 import cn.featherfly.hammer.dsl.entity.execute.EntityUpdateNestedValueImpl;
 import cn.featherfly.hammer.dsl.entity.execute.EntityUpdateNumberValueImpl;
 import cn.featherfly.hammer.dsl.entity.execute.EntityUpdateValueImpl;
-import cn.featherfly.hammer.expression.condition.ConditionGroupConfig;
+import cn.featherfly.hammer.expression.entity.execute.EntityUpdateExpression;
 import cn.featherfly.hammer.expression.entity.execute.EntityUpdateNumberValueExpression;
 import cn.featherfly.hammer.expression.entity.execute.EntityUpdateSetExpression;
 import cn.featherfly.hammer.expression.entity.execute.EntityUpdateValueExpression;
@@ -45,8 +47,6 @@ public class SqlEntityExecutableUpdate<E> extends AbstractSqlExecutableUpdate<Sq
 
     private JdbcMappingFactory factory;
 
-    //    private AliasManager aliasManager;
-
     private EntitySqlUpdateRelation relation;
 
     /**
@@ -55,9 +55,11 @@ public class SqlEntityExecutableUpdate<E> extends AbstractSqlExecutableUpdate<Sq
      * @param jdbc         the jdbc
      * @param classMapping the class mapping
      * @param factory      the factory
+     * @param updateConfig the update config
      */
-    public SqlEntityExecutableUpdate(Jdbc jdbc, JdbcClassMapping<E> classMapping, JdbcMappingFactory factory) {
-        this(jdbc, classMapping, factory, new AliasManager());
+    public SqlEntityExecutableUpdate(Jdbc jdbc, JdbcClassMapping<E> classMapping, JdbcMappingFactory factory,
+            UpdateConfig updateConfig) {
+        this(jdbc, classMapping, factory, updateConfig, new AliasManager());
     }
 
     /**
@@ -66,58 +68,27 @@ public class SqlEntityExecutableUpdate<E> extends AbstractSqlExecutableUpdate<Sq
      * @param jdbc         the jdbc
      * @param classMapping the class mapping
      * @param factory      the factory
+     * @param updateConfig the update config
      * @param aliasManager the alias manager
      */
     public SqlEntityExecutableUpdate(Jdbc jdbc, JdbcClassMapping<E> classMapping, JdbcMappingFactory factory,
-            AliasManager aliasManager) {
-        this(jdbc, classMapping, factory, aliasManager, IgnoreStrategy.EMPTY);
-    }
-
-    /**
-     * Instantiates a new sql entity executable update.
-     *
-     * @param jdbc           the jdbc
-     * @param classMapping   the class mapping
-     * @param factory        the factory
-     * @param aliasManager   the alias manager
-     * @param ignoreStrategy the ignore strategy
-     */
-    public SqlEntityExecutableUpdate(Jdbc jdbc, JdbcClassMapping<E> classMapping, JdbcMappingFactory factory,
-            AliasManager aliasManager, Predicate<?> ignoreStrategy) {
-        this(jdbc, classMapping, factory, aliasManager, ignoreStrategy, IgnoreStrategy.NONE);
-    }
-
-    /**
-     * Instantiates a new sql entity executable update.
-     *
-     * @param jdbc              the jdbc
-     * @param classMapping      the class mapping
-     * @param factory           the factory
-     * @param aliasManager      the alias manager
-     * @param ignoreStrategy    the ignore strategy
-     * @param setIgnoreStrategy the set ignore strategy
-     */
-    public SqlEntityExecutableUpdate(Jdbc jdbc, JdbcClassMapping<E> classMapping, JdbcMappingFactory factory,
-            AliasManager aliasManager, Predicate<?> ignoreStrategy, Predicate<?> setIgnoreStrategy) {
-        super(classMapping.getRepositoryName(), jdbc, ignoreStrategy);
+            UpdateConfig updateConfig, AliasManager aliasManager) {
+        super(classMapping.getRepositoryName(), jdbc, updateConfig);
         this.classMapping = classMapping;
         this.factory = factory;
-        //        this.aliasManager = aliasManager;
-        //        builder.setAlias(this.aliasManager.put(classMapping.getRepositoryName()));
-
-        relation = new EntitySqlUpdateRelation(jdbc, aliasManager, ignoreStrategy, setIgnoreStrategy)
-                .addFilterable(classMapping);
+        // 使用 this.updateConfig 是因为是在父类中设置的已经是克隆的副本（用于configure()单独配置当前表达式生效）
+        relation = new EntitySqlUpdateRelation(jdbc, aliasManager, this.updateConfig).addFilterable(classMapping);
+        // addFilterable 初始化builder
         builder = relation.getBuilder();
-
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    //    public EntityExecutableUpdate<E> set(Consumer<EntityExecutableUpdate<E>> consumer) {
     public EntityExecutableUpdate<E> set(Consumer<EntityUpdateSetExpression<E, EntityExecutableUpdate<E>,
-            EntityExecutableConditionGroup<E>, EntityExecutableConditionGroupLogic<E>>> consumer) {
+            EntityExecutableConditionGroup<E, UpdateConditionConfig>,
+            EntityExecutableConditionGroupLogic<E, UpdateConditionConfig>>> consumer) {
         consumer.accept(this);
         return this;
     }
@@ -127,19 +98,15 @@ public class SqlEntityExecutableUpdate<E> extends AbstractSqlExecutableUpdate<Sq
      */
     @Override
     public <R> EntityExecutableUpdate<E> set(SerializableFunction<E, R> name, R value) {
-        return set0(classMapping.getPropertyMapping(getPropertyName(name)), value);
+        return set0(name, value, updateConfig.getSetValueIgnoreStrategy()::test);
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public <R> EntityExecutableUpdate<E> set(BooleanSupplier setable, SerializableFunction<E, R> property, R value) {
-        if (setable.getAsBoolean()) {
-            return set(property, value);
-        } else {
-            return this;
-        }
+    public <R> EntityExecutableUpdate<E> set(SerializableFunction<E, R> name, R value, Predicate<R> ignoreStrategy) {
+        return set0(name, value, ignoreStrategy);
     }
 
     /**
@@ -148,13 +115,15 @@ public class SqlEntityExecutableUpdate<E> extends AbstractSqlExecutableUpdate<Sq
     @Override
     public <R, O> EntityExecutableUpdate<E> set(SerializableFunction<E, R> property,
             SerializableFunction<R, O> nestedProperty, O value) {
-        JdbcPropertyMapping pm = classMapping.getPropertyMapping(getPropertyName(property));
-        if (value == null) {
-            return set0(pm, value);
-        }
-        String npn = getPropertyName(nestedProperty);
-        JdbcPropertyMapping spm = pm.getPropertyMapping(npn);
-        return set0(spm, FieldValueOperator.create(spm, value));
+        return set0(property, nestedProperty, value, updateConfig.getSetValueIgnoreStrategy()::test);
+        //        JdbcPropertyMapping pm = classMapping.getPropertyMapping(getPropertyName(property));
+        //        if (value == null) {
+        //            return set0(pm, value);
+        //        }
+        //        String npn = getPropertyName(nestedProperty);
+        //        JdbcPropertyMapping spm = pm.getPropertyMapping(npn);
+        //        return set0(spm, FieldValueOperator.create(spm, value));
+
         //        if (spm != null) {
         //            return _set(spm, FieldValueOperator.craete(spm, value));
         //        } else {
@@ -167,13 +136,9 @@ public class SqlEntityExecutableUpdate<E> extends AbstractSqlExecutableUpdate<Sq
      * {@inheritDoc}
      */
     @Override
-    public <R, O> EntityExecutableUpdate<E> set(BooleanSupplier setable, SerializableFunction<E, R> property,
-            SerializableFunction<R, O> nestedProperty, O value) {
-        if (setable.getAsBoolean()) {
-            return set(property, nestedProperty, value);
-        } else {
-            return this;
-        }
+    public <R, O> EntityExecutableUpdate<E> set(SerializableFunction<E, R> property,
+            SerializableFunction<R, O> nestedProperty, O value, Predicate<O> ignoreStrategy) {
+        return set0(property, nestedProperty, value, ignoreStrategy);
     }
 
     /**
@@ -181,19 +146,33 @@ public class SqlEntityExecutableUpdate<E> extends AbstractSqlExecutableUpdate<Sq
      */
     @Override
     public <R> EntityExecutableUpdate<E> set(SerializableSupplier<R> property) {
-        return set0(classMapping.getPropertyMapping(getPropertyName(property)), property.get());
+        //        return set0(classMapping.getPropertyMapping(getPropertyName(property)), property.get());
+        return set0(property, property.get(), updateConfig.getSetValueIgnoreStrategy());
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public <R> EntityExecutableUpdate<E> set(BooleanSupplier setable, SerializableSupplier<R> property) {
-        if (setable.getAsBoolean()) {
-            return set(property);
-        } else {
-            return this;
-        }
+    public <R> EntityExecutableUpdate<E> set(SerializableSupplier<R> property, Predicate<R> ignoreStrategy) {
+        return set0(property, property.get(), ignoreStrategy);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @SuppressWarnings("unchecked")
+    @Override
+    public <R, O> EntityExecutableUpdate<E> set(SerializableSupplier<R> property,
+            SerializableFunction<R, O> nestedProperty) {
+        return set0(property, nestedProperty, (Predicate<O>) updateConfig.getSetValueIgnoreStrategy());
+        //        JdbcPropertyMapping pm = classMapping.getPropertyMapping(getPropertyName(property));
+        //        if (property.get() == null) {
+        //            return set0(pm, property.get());
+        //        }
+        //        String npn = getPropertyName(nestedProperty);
+        //        JdbcPropertyMapping spm = pm.getPropertyMapping(npn);
+        //        return set0(spm, FieldValueOperator.create(spm, BeanUtils.getProperty(property.get(), npn)));
     }
 
     /**
@@ -201,27 +180,8 @@ public class SqlEntityExecutableUpdate<E> extends AbstractSqlExecutableUpdate<Sq
      */
     @Override
     public <R, O> EntityExecutableUpdate<E> set(SerializableSupplier<R> property,
-            SerializableFunction<R, O> nestedProperty) {
-        JdbcPropertyMapping pm = classMapping.getPropertyMapping(getPropertyName(property));
-        if (property.get() == null) {
-            return set0(pm, property.get());
-        }
-        String npn = getPropertyName(nestedProperty);
-        JdbcPropertyMapping spm = pm.getPropertyMapping(npn);
-        return set0(spm, FieldValueOperator.create(spm, BeanUtils.getProperty(property.get(), npn)));
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public <R, O> EntityExecutableUpdate<E> set(BooleanSupplier setable, SerializableSupplier<R> property,
-            SerializableFunction<R, O> nestedProperty) {
-        if (setable.getAsBoolean()) {
-            return set(property, nestedProperty);
-        } else {
-            return this;
-        }
+            SerializableFunction<R, O> nestedProperty, Predicate<O> ignoreStrategy) {
+        return set0(property, nestedProperty, ignoreStrategy);
     }
 
     /**
@@ -229,21 +189,34 @@ public class SqlEntityExecutableUpdate<E> extends AbstractSqlExecutableUpdate<Sq
      */
     @Override
     public <R extends Number> EntityExecutableUpdate<E> increase(SerializableFunction<E, R> name, R value) {
-        JdbcPropertyMapping pm = classMapping.getPropertyMapping(getPropertyName(name));
-        return _increase(pm.getRepositoryFieldName(), FieldValueOperator.create(pm, value));
+        return increase0(name, value, updateConfig.getSetValueIgnoreStrategy()::test);
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public <R extends Number> EntityExecutableUpdate<E> increase(BooleanSupplier increaseable,
-            SerializableFunction<E, R> property, R value) {
-        if (increaseable.getAsBoolean()) {
-            return increase(property, value);
-        } else {
-            return this;
-        }
+    public <N extends Number> EntityExecutableUpdate<E> increase(SerializableFunction<E, N> property, N value,
+            Predicate<N> ignoreStrategy) {
+        return increase0(property, value, ignoreStrategy);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public <R, N extends Number> EntityExecutableUpdate<E> increase(SerializableFunction<E, R> property,
+            SerializableFunction<R, N> nestedProperty, N value) {
+        return increase0(property, nestedProperty, value, updateConfig.getSetValueIgnoreStrategy()::test);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public <R, N extends Number> EntityExecutableUpdate<E> increase(SerializableFunction<E, R> property,
+            SerializableFunction<R, N> nestedProperty, N value, Predicate<N> ignoreStrategy) {
+        return increase0(property, nestedProperty, value, ignoreStrategy);
     }
 
     /**
@@ -251,29 +224,44 @@ public class SqlEntityExecutableUpdate<E> extends AbstractSqlExecutableUpdate<Sq
      */
     @Override
     public <N extends Number> EntityExecutableUpdate<E> increase(SerializableSupplier<N> property) {
-        JdbcPropertyMapping pm = classMapping.getPropertyMapping(getPropertyName(property));
-        return _increase(pm.getRepositoryFieldName(), FieldValueOperator.create(pm, property.get()));
+        return increase0(property, property.get(), updateConfig.getSetValueIgnoreStrategy()::test);
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public <N extends Number> EntityExecutableUpdate<E> increase(BooleanSupplier increaseable,
-            SerializableSupplier<N> property) {
-        if (increaseable.getAsBoolean()) {
-            return increase(property);
-        } else {
-            return this;
-        }
+    public <N extends Number> EntityExecutableUpdate<E> increase(SerializableSupplier<N> property,
+            Predicate<N> ignoreStrategy) {
+        return increase0(property, property.get(), ignoreStrategy);
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public <R> EntityUpdateValueExpression<E, R, EntityExecutableUpdate<E>, EntityExecutableConditionGroup<E>,
-            EntityExecutableConditionGroupLogic<E>> property(SerializableFunction<E, R> property) {
+    public <R, N extends Number> EntityExecutableUpdate<E> increase(SerializableSupplier<R> property,
+            SerializableFunction<R, N> nestedProperty) {
+        return increase0(property, nestedProperty, updateConfig.getSetValueIgnoreStrategy()::test);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public <R, N extends Number> EntityExecutableUpdate<E> increase(SerializableSupplier<R> property,
+            SerializableFunction<R, N> nestedProperty, Predicate<N> ignoreStrategy) {
+        return increase0(property, nestedProperty, ignoreStrategy);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public <R> EntityUpdateValueExpression<E, R, EntityExecutableUpdate<E>,
+            EntityExecutableConditionGroup<E, UpdateConditionConfig>,
+            EntityExecutableConditionGroupLogic<E, UpdateConditionConfig>> property(
+                    SerializableFunction<E, R> property) {
         return new EntityUpdateValueImpl<>(property, this);
     }
 
@@ -282,9 +270,10 @@ public class SqlEntityExecutableUpdate<E> extends AbstractSqlExecutableUpdate<Sq
      */
     @Override
     public <R,
-            O> EntityUpdateValueExpression<E, O, EntityExecutableUpdate<E>, EntityExecutableConditionGroup<E>,
-                    EntityExecutableConditionGroupLogic<E>> property(SerializableFunction<E, R> property,
-                            SerializableFunction<R, O> nestedProperty) {
+            O> EntityUpdateValueExpression<E, O, EntityExecutableUpdate<E>,
+                    EntityExecutableConditionGroup<E, UpdateConditionConfig>,
+                    EntityExecutableConditionGroupLogic<E, UpdateConditionConfig>> property(
+                            SerializableFunction<E, R> property, SerializableFunction<R, O> nestedProperty) {
         return new EntityUpdateNestedValueImpl<>(property, nestedProperty, this);
     }
 
@@ -292,9 +281,10 @@ public class SqlEntityExecutableUpdate<E> extends AbstractSqlExecutableUpdate<Sq
      * {@inheritDoc}
      */
     @Override
-    public <R extends Number> EntityUpdateNumberValueExpression<E, R, EntityExecutableUpdate<E>,
-            EntityExecutableConditionGroup<E>, EntityExecutableConditionGroupLogic<E>> property(
-                    SerializableToNumberFunction<E, R> name) {
+    public <N extends Number> EntityUpdateNumberValueExpression<E, N, EntityExecutableUpdate<E>,
+            EntityExecutableConditionGroup<E, UpdateConditionConfig>,
+            EntityExecutableConditionGroupLogic<E, UpdateConditionConfig>> property(
+                    SerializableToNumberFunction<E, N> name) {
         return new EntityUpdateNumberValueImpl<>(name, this);
     }
 
@@ -302,7 +292,7 @@ public class SqlEntityExecutableUpdate<E> extends AbstractSqlExecutableUpdate<Sq
      * {@inheritDoc}
      */
     @Override
-    public EntityExecutableConditionGroup<E> where() {
+    public EntityExecutableConditionGroup<E, UpdateConditionConfig> where() {
         return createSqlUpdateExpression();
     }
 
@@ -310,8 +300,8 @@ public class SqlEntityExecutableUpdate<E> extends AbstractSqlExecutableUpdate<Sq
      * {@inheritDoc}
      */
     @Override
-    public EntityExecutableConditionGroup<E> where(
-            Consumer<ConditionGroupConfig<EntityExecutableConditionGroup<E>>> consumer) {
+    public EntityExecutableConditionGroup<E, UpdateConditionConfig> where(
+            Consumer<EntityExecutableConditionGroup<E, UpdateConditionConfig>> consumer) {
         SqlEntityUpdateExpression<E> sqlUpdateExpression = createSqlUpdateExpression();
         if (consumer != null) {
             consumer.accept(sqlUpdateExpression);
@@ -327,13 +317,69 @@ public class SqlEntityExecutableUpdate<E> extends AbstractSqlExecutableUpdate<Sq
         return createSqlUpdateExpression().execute();
     }
 
-    private SqlEntityExecutableUpdate<E> set0(JdbcPropertyMapping pm, FieldValueOperator<?> value) {
-        return _set(pm.getRepositoryFieldName(), value);
+    private <R> EntityExecutableUpdate<E> set0(Serializable name, R value, Predicate<R> ignoreStrategy) {
+        builder.setIgnoreStrategy(ignoreStrategy);
+        if (ignoreStrategy.test(value)) {// ignore, 忽略
+            return this;
+        } else {
+            return set0(classMapping.getPropertyMapping(getPropertyName(name)), value);
+        }
     }
 
-    private SqlEntityExecutableUpdate<E> set0(JdbcPropertyMapping pm, Object value) {
+    private <R, O> EntityExecutableUpdate<E> set0(SerializableFunction<E, R> property,
+            SerializableFunction<R, O> nestedProperty, O value, Predicate<O> ignoreStrategy) {
+        builder.setIgnoreStrategy(ignoreStrategy);
+        if (ignoreStrategy.test(value)) { // ignore, 忽略
+            return this;
+        }
+        JdbcPropertyMapping pm = classMapping.getPropertyMapping(getPropertyName(property));
         if (value == null) {
-            return _set(pm.getRepositoryFieldName(), null);
+            return set0(pm, value);
+        }
+        String npn = getPropertyName(nestedProperty);
+        JdbcPropertyMapping spm = pm.getPropertyMapping(npn);
+        return set0(spm, FieldValueOperator.create(spm, value));
+        //        if (spm != null) {
+        //            return _set(spm, FieldValueOperator.craete(spm, value));
+        //        } else {
+        //            throw new SqldbHammerException(String.format("can not find mapping for property {0}.{1} for entity {2}",
+        //                    pm.getPropertyName(), npn, classMapping.getType().getName()));
+        //        }
+    }
+
+    private <R, O> EntityExecutableUpdate<E> set0(SerializableSupplier<R> property,
+            SerializableFunction<R, O> nestedProperty, Predicate<O> ignoreStrategy) {
+        boolean enableNull = false;
+        if (property.get() == null) {
+            builder.setIgnoreStrategy(ignoreStrategy);
+            if (ignoreStrategy.test(null)) {
+                return this;
+            } else {
+                // not ignore null
+                enableNull = true;
+            }
+        }
+        JdbcPropertyMapping pm = classMapping.getPropertyMapping(getPropertyName(property));
+        String npn = getPropertyName(nestedProperty);
+        JdbcPropertyMapping spm = pm.getPropertyMapping(npn);
+
+        if (enableNull) {
+            // set null value
+            return set0(spm, FieldValueOperator.create(spm, null));
+        }
+
+        @SuppressWarnings("unchecked")
+        O value = (O) BeanUtils.getProperty(property.get(), npn);
+        builder.setIgnoreStrategy(ignoreStrategy);
+        if (ignoreStrategy.test(value)) { // 忽略
+            return this;
+        }
+        return set0(spm, FieldValueOperator.create(spm, value));
+    }
+
+    private <R> SqlEntityExecutableUpdate<E> set0(JdbcPropertyMapping pm, R value) {
+        if (value == null) {
+            return set0(pm.getRepositoryFieldName(), (FieldValueOperator<R>) null);
         }
 
         //        if (pm.isEmbeddable()) {
@@ -357,7 +403,117 @@ public class SqlEntityExecutableUpdate<E> extends AbstractSqlExecutableUpdate<Sq
         }
     }
 
+    private SqlEntityExecutableUpdate<E> set0(JdbcPropertyMapping pm, FieldValueOperator<?> value) {
+        return set0(pm.getRepositoryFieldName(), value);
+    }
+
+    // ----------------------------------------------------------------------------------------------------------------
+
+    private <N extends Number> EntityExecutableUpdate<E> increase0(Serializable name, N value,
+            Predicate<N> ignoreStrategy) {
+        builder.setIgnoreStrategy(ignoreStrategy);
+        if (ignoreStrategy.test(value)) {// ignore, 忽略
+            return this;
+        } else {
+            return increase0(classMapping.getPropertyMapping(getPropertyName(name)), value);
+        }
+    }
+
+    private <R, N extends Number> EntityExecutableUpdate<E> increase0(SerializableFunction<E, R> property,
+            SerializableFunction<R, N> nestedProperty, N value, Predicate<N> ignoreStrategy) {
+        builder.setIgnoreStrategy(ignoreStrategy);
+        if (ignoreStrategy.test(value)) { // ignore, 忽略
+            return this;
+        }
+        JdbcPropertyMapping pm = classMapping.getPropertyMapping(getPropertyName(property));
+        if (value == null) {
+            return increase0(pm, value);
+        }
+        String npn = getPropertyName(nestedProperty);
+        JdbcPropertyMapping spm = pm.getPropertyMapping(npn);
+        return increase0(spm, FieldValueOperator.create(spm, value));
+    }
+
+    private <R, N extends Number> EntityExecutableUpdate<E> increase0(SerializableSupplier<R> property,
+            SerializableFunction<R, N> nestedProperty, Predicate<N> ignoreStrategy) {
+        boolean enableNull = false;
+        if (property.get() == null) {
+            builder.setIgnoreStrategy(ignoreStrategy);
+            if (ignoreStrategy.test(null)) {
+                return this;
+            } else {
+                // not ignore null
+                enableNull = true;
+            }
+        }
+        JdbcPropertyMapping pm = classMapping.getPropertyMapping(getPropertyName(property));
+        String npn = getPropertyName(nestedProperty);
+        JdbcPropertyMapping spm = pm.getPropertyMapping(npn);
+
+        if (enableNull) {
+            // set null value
+            return increase0(spm, FieldValueOperator.create(spm, null));
+        }
+
+        @SuppressWarnings("unchecked")
+        N value = (N) BeanUtils.getProperty(property.get(), npn);
+        builder.setIgnoreStrategy(ignoreStrategy);
+        if (ignoreStrategy.test(value)) { // 忽略
+            return this;
+        }
+        return increase0(spm, FieldValueOperator.create(spm, value));
+    }
+
+    private <N extends Number> SqlEntityExecutableUpdate<E> increase0(JdbcPropertyMapping pm, N value) {
+        if (value == null) {
+            return increase0(pm.getRepositoryFieldName(), (FieldValueOperator<N>) null);
+        }
+
+        //        if (pm.isEmbeddable()) {
+        if (Lang.isNotEmpty(pm.getPropertyMappings())) {
+            if (ClassUtils.isParent(pm.getPropertyType(), value.getClass())) {
+                BeanDescriptor<?> bd = BeanDescriptor.getBeanDescriptor(value.getClass());
+                for (JdbcPropertyMapping spm : pm.getPropertyMappings()) {
+                    Object ov = bd.getBeanProperty(spm.getPropertyName()).getValue(value);
+                    set0(spm, FieldValueOperator.create(spm, ov));
+                }
+            } else {
+                for (JdbcPropertyMapping spm : pm.getPropertyMappings()) {
+                    if (ClassUtils.isParent(spm.getPropertyType(), value.getClass())) {
+                        set0(spm, FieldValueOperator.create(spm, value));
+                    }
+                }
+            }
+            return this;
+        } else {
+            return increase0(pm, FieldValueOperator.create(pm, value));
+        }
+    }
+
+    private <N extends Number> SqlEntityExecutableUpdate<E> increase0(JdbcPropertyMapping pm,
+            FieldValueOperator<N> value) {
+        return increase0(pm.getRepositoryFieldName(), value);
+    }
+
     private SqlEntityUpdateExpression<E> createSqlUpdateExpression() {
         return new SqlEntityUpdateExpression<>(factory, relation);
     }
+
+    private String getPropertyName(Serializable name) {
+        return LambdaUtils.getLambdaPropertyName(name);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public EntityUpdateExpression<E, EntityExecutableUpdate<E>,
+            EntityExecutableConditionGroup<E, UpdateConditionConfig>,
+            EntityExecutableConditionGroupLogic<E, UpdateConditionConfig>> configure(Consumer<UpdateConfig> configure) {
+        if (configure != null) {
+            configure.accept(updateConfig);
+        }
+        return this;
+    }
+
 }

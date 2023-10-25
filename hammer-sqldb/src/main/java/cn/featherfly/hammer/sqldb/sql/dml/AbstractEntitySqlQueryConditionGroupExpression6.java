@@ -22,6 +22,7 @@ import cn.featherfly.common.operator.SortOperator;
 import cn.featherfly.common.repository.builder.dml.SortBuilder;
 import cn.featherfly.common.structure.page.Limit;
 import cn.featherfly.common.structure.page.PaginationResults;
+import cn.featherfly.hammer.config.dsl.QueryConditionConfig;
 import cn.featherfly.hammer.expression.condition.ParamedExpression;
 import cn.featherfly.hammer.expression.entity.condition.ba.BetweenEntityExpression;
 import cn.featherfly.hammer.expression.entity.condition.ba.MulitiEntityBetweenExpression;
@@ -140,13 +141,18 @@ import cn.featherfly.hammer.sqldb.jdbc.dsl.entity.query.sort.SqlSortEntity;
  * @param <L>  the generic type
  */
 public abstract class AbstractEntitySqlQueryConditionGroupExpression6<E, E2, E3, E4, E5, E6, RS,
-        C extends EntityQueryConditionGroupExpression6<E, E2, E3, E4, E5, E6, C, L, EntityQuerySortExpression6<E, E2, E3, E4, E5, E6, RS>, RS>,
-        L extends EntityQueryConditionGroupLogicExpression6<E, E2, E3, E4, E5, E6, C, L, EntityQuerySortExpression6<E, E2, E3, E4, E5, E6, RS>, RS>>
+        C extends EntityQueryConditionGroupExpression6<E, E2, E3, E4, E5, E6, C, L,
+                EntityQuerySortExpression6<E, E2, E3, E4, E5, E6, RS>, RS>,
+        L extends EntityQueryConditionGroupLogicExpression6<E, E2, E3, E4, E5, E6, C, L,
+                EntityQuerySortExpression6<E, E2, E3, E4, E5, E6, RS>, RS>>
         extends
-        AbstractEntitySqlConditionGroupExpressionBase6<E, E2, E3, E4, E5, E6, EntitySqlQueryRelation, SqlSelectBasicBuilder, C, L>
+        AbstractEntitySqlConditionGroupExpressionBase6<E, E2, E3, E4, E5, E6, EntitySqlQueryRelation,
+                SqlSelectBasicBuilder, C, L, QueryConditionConfig>
         implements
-        EntityQueryConditionGroupExpression6<E, E2, E3, E4, E5, E6, C, L, EntityQuerySortExpression6<E, E2, E3, E4, E5, E6, RS>, RS>,
-        EntityQueryConditionGroupLogicExpression6<E, E2, E3, E4, E5, E6, C, L, EntityQuerySortExpression6<E, E2, E3, E4, E5, E6, RS>, RS>,
+        EntityQueryConditionGroupExpression6<E, E2, E3, E4, E5, E6, C, L,
+                EntityQuerySortExpression6<E, E2, E3, E4, E5, E6, RS>, RS>,
+        EntityQueryConditionGroupLogicExpression6<E, E2, E3, E4, E5, E6, C, L,
+                EntityQuerySortExpression6<E, E2, E3, E4, E5, E6, RS>, RS>,
         SqlBuilder, ParamedExpression, EntityContainsExpression6<E, E2, E3, E4, E5, E6, C, L>,
         EntityEndWithExpression6<E, E2, E3, E4, E5, E6, C, L>, EntityEqualsExpression6<E, E2, E3, E4, E5, E6, C, L>,
         EntityGreatEqualsExpression6<E, E2, E3, E4, E5, E6, C, L>,
@@ -259,16 +265,16 @@ public abstract class AbstractEntitySqlQueryConditionGroupExpression6<E, E2, E3,
      */
     @SuppressWarnings("unchecked")
     @Override
-    public L lk(
-            Consumer<Tuple6<LikeEntityExpression<E>, LikeEntityExpression<E2>, LikeEntityExpression<E3>, LikeEntityExpression<E4>, LikeEntityExpression<E5>, LikeEntityExpression<E6>>> likeEntityExpressions) {
+    public L lk(Consumer<Tuple6<LikeEntityExpression<E>, LikeEntityExpression<E2>, LikeEntityExpression<E3>,
+            LikeEntityExpression<E4>, LikeEntityExpression<E5>, LikeEntityExpression<E6>>> likeEntityExpressions) {
         MulitiEntityLikeExpression<C, L> mulitiExpression = new MulitiEntityLikeExpressionImpl<>(this);
-        likeEntityExpressions.accept(
-                Tuples.of(new LikeEntityExpressionImpl<>(0, mulitiExpression, ignoreStrategy, factory, entityRelation),
-                        new LikeEntityExpressionImpl<>(1, mulitiExpression, ignoreStrategy, factory, entityRelation),
-                        new LikeEntityExpressionImpl<>(2, mulitiExpression, ignoreStrategy, factory, entityRelation),
-                        new LikeEntityExpressionImpl<>(3, mulitiExpression, ignoreStrategy, factory, entityRelation),
-                        new LikeEntityExpressionImpl<>(4, mulitiExpression, ignoreStrategy, factory, entityRelation),
-                        new LikeEntityExpressionImpl<>(5, mulitiExpression, ignoreStrategy, factory, entityRelation)));
+        likeEntityExpressions
+                .accept(Tuples.of(new LikeEntityExpressionImpl<>(0, mulitiExpression, factory, entityRelation),
+                        new LikeEntityExpressionImpl<>(1, mulitiExpression, factory, entityRelation),
+                        new LikeEntityExpressionImpl<>(2, mulitiExpression, factory, entityRelation),
+                        new LikeEntityExpressionImpl<>(3, mulitiExpression, factory, entityRelation),
+                        new LikeEntityExpressionImpl<>(4, mulitiExpression, factory, entityRelation),
+                        new LikeEntityExpressionImpl<>(5, mulitiExpression, factory, entityRelation)));
         return (L) this;
     }
 
@@ -277,16 +283,15 @@ public abstract class AbstractEntitySqlQueryConditionGroupExpression6<E, E2, E3,
      */
     @SuppressWarnings("unchecked")
     @Override
-    public L lk(
-            SixArgusConsumer<LikeEntityExpression<E>, LikeEntityExpression<E2>, LikeEntityExpression<E3>, LikeEntityExpression<E4>, LikeEntityExpression<E5>, LikeEntityExpression<E6>> likeEntityExpressions) {
+    public L lk(SixArgusConsumer<LikeEntityExpression<E>, LikeEntityExpression<E2>, LikeEntityExpression<E3>,
+            LikeEntityExpression<E4>, LikeEntityExpression<E5>, LikeEntityExpression<E6>> likeEntityExpressions) {
         MulitiEntityLikeExpression<C, L> mulitiExpression = new MulitiEntityLikeExpressionImpl<>(this);
-        likeEntityExpressions.accept(
-                new LikeEntityExpressionImpl<>(0, mulitiExpression, ignoreStrategy, factory, entityRelation),
-                new LikeEntityExpressionImpl<>(1, mulitiExpression, ignoreStrategy, factory, entityRelation),
-                new LikeEntityExpressionImpl<>(2, mulitiExpression, ignoreStrategy, factory, entityRelation),
-                new LikeEntityExpressionImpl<>(3, mulitiExpression, ignoreStrategy, factory, entityRelation),
-                new LikeEntityExpressionImpl<>(4, mulitiExpression, ignoreStrategy, factory, entityRelation),
-                new LikeEntityExpressionImpl<>(5, mulitiExpression, ignoreStrategy, factory, entityRelation));
+        likeEntityExpressions.accept(new LikeEntityExpressionImpl<>(0, mulitiExpression, factory, entityRelation),
+                new LikeEntityExpressionImpl<>(1, mulitiExpression, factory, entityRelation),
+                new LikeEntityExpressionImpl<>(2, mulitiExpression, factory, entityRelation),
+                new LikeEntityExpressionImpl<>(3, mulitiExpression, factory, entityRelation),
+                new LikeEntityExpressionImpl<>(4, mulitiExpression, factory, entityRelation),
+                new LikeEntityExpressionImpl<>(5, mulitiExpression, factory, entityRelation));
         return (L) this;
     }
 
@@ -295,16 +300,17 @@ public abstract class AbstractEntitySqlQueryConditionGroupExpression6<E, E2, E3,
      */
     @SuppressWarnings("unchecked")
     @Override
-    public L sw(
-            Consumer<Tuple6<StartWithEntityExpression<E>, StartWithEntityExpression<E2>, StartWithEntityExpression<E3>, StartWithEntityExpression<E4>, StartWithEntityExpression<E5>, StartWithEntityExpression<E6>>> startWithEntityExpressions) {
+    public L sw(Consumer<Tuple6<StartWithEntityExpression<E>, StartWithEntityExpression<E2>,
+            StartWithEntityExpression<E3>, StartWithEntityExpression<E4>, StartWithEntityExpression<E5>,
+            StartWithEntityExpression<E6>>> startWithEntityExpressions) {
         MulitiEntityStartWithExpression<C, L> expression = new MulitiEntityStartWithExpressionImpl<>(this);
-        startWithEntityExpressions.accept(
-                Tuples.of(new StartWithEntityExpressionImpl<>(0, expression, ignoreStrategy, factory, entityRelation),
-                        new StartWithEntityExpressionImpl<>(1, expression, ignoreStrategy, factory, entityRelation),
-                        new StartWithEntityExpressionImpl<>(2, expression, ignoreStrategy, factory, entityRelation),
-                        new StartWithEntityExpressionImpl<>(3, expression, ignoreStrategy, factory, entityRelation),
-                        new StartWithEntityExpressionImpl<>(4, expression, ignoreStrategy, factory, entityRelation),
-                        new StartWithEntityExpressionImpl<>(5, expression, ignoreStrategy, factory, entityRelation)));
+        startWithEntityExpressions
+                .accept(Tuples.of(new StartWithEntityExpressionImpl<>(0, expression, factory, entityRelation),
+                        new StartWithEntityExpressionImpl<>(1, expression, factory, entityRelation),
+                        new StartWithEntityExpressionImpl<>(2, expression, factory, entityRelation),
+                        new StartWithEntityExpressionImpl<>(3, expression, factory, entityRelation),
+                        new StartWithEntityExpressionImpl<>(4, expression, factory, entityRelation),
+                        new StartWithEntityExpressionImpl<>(5, expression, factory, entityRelation)));
         return (L) this;
     }
 
@@ -313,16 +319,16 @@ public abstract class AbstractEntitySqlQueryConditionGroupExpression6<E, E2, E3,
      */
     @SuppressWarnings("unchecked")
     @Override
-    public L sw(
-            SixArgusConsumer<StartWithEntityExpression<E>, StartWithEntityExpression<E2>, StartWithEntityExpression<E3>, StartWithEntityExpression<E4>, StartWithEntityExpression<E5>, StartWithEntityExpression<E6>> startWithEntityExpressions) {
+    public L sw(SixArgusConsumer<StartWithEntityExpression<E>, StartWithEntityExpression<E2>,
+            StartWithEntityExpression<E3>, StartWithEntityExpression<E4>, StartWithEntityExpression<E5>,
+            StartWithEntityExpression<E6>> startWithEntityExpressions) {
         MulitiEntityStartWithExpression<C, L> expression = new MulitiEntityStartWithExpressionImpl<>(this);
-        startWithEntityExpressions.accept(
-                new StartWithEntityExpressionImpl<>(0, expression, ignoreStrategy, factory, entityRelation),
-                new StartWithEntityExpressionImpl<>(1, expression, ignoreStrategy, factory, entityRelation),
-                new StartWithEntityExpressionImpl<>(2, expression, ignoreStrategy, factory, entityRelation),
-                new StartWithEntityExpressionImpl<>(3, expression, ignoreStrategy, factory, entityRelation),
-                new StartWithEntityExpressionImpl<>(4, expression, ignoreStrategy, factory, entityRelation),
-                new StartWithEntityExpressionImpl<>(5, expression, ignoreStrategy, factory, entityRelation));
+        startWithEntityExpressions.accept(new StartWithEntityExpressionImpl<>(0, expression, factory, entityRelation),
+                new StartWithEntityExpressionImpl<>(1, expression, factory, entityRelation),
+                new StartWithEntityExpressionImpl<>(2, expression, factory, entityRelation),
+                new StartWithEntityExpressionImpl<>(3, expression, factory, entityRelation),
+                new StartWithEntityExpressionImpl<>(4, expression, factory, entityRelation),
+                new StartWithEntityExpressionImpl<>(5, expression, factory, entityRelation));
         return (L) this;
     }
 
@@ -331,16 +337,16 @@ public abstract class AbstractEntitySqlQueryConditionGroupExpression6<E, E2, E3,
      */
     @SuppressWarnings("unchecked")
     @Override
-    public L ni(
-            Consumer<Tuple6<NotInEntityExpression<E>, NotInEntityExpression<E2>, NotInEntityExpression<E3>, NotInEntityExpression<E4>, NotInEntityExpression<E5>, NotInEntityExpression<E6>>> notInEntityExpressions) {
+    public L ni(Consumer<Tuple6<NotInEntityExpression<E>, NotInEntityExpression<E2>, NotInEntityExpression<E3>,
+            NotInEntityExpression<E4>, NotInEntityExpression<E5>, NotInEntityExpression<E6>>> notInEntityExpressions) {
         MulitiEntityNotInExpression<C, L> mulitiExpression = new MulitiEntityNotInExpressionImpl<>(this);
-        notInEntityExpressions.accept(
-                Tuples.of(new NotInEntityExpressionImpl<>(0, mulitiExpression, ignoreStrategy, factory, entityRelation),
-                        new NotInEntityExpressionImpl<>(1, mulitiExpression, ignoreStrategy, factory, entityRelation),
-                        new NotInEntityExpressionImpl<>(2, mulitiExpression, ignoreStrategy, factory, entityRelation),
-                        new NotInEntityExpressionImpl<>(3, mulitiExpression, ignoreStrategy, factory, entityRelation),
-                        new NotInEntityExpressionImpl<>(4, mulitiExpression, ignoreStrategy, factory, entityRelation),
-                        new NotInEntityExpressionImpl<>(5, mulitiExpression, ignoreStrategy, factory, entityRelation)));
+        notInEntityExpressions
+                .accept(Tuples.of(new NotInEntityExpressionImpl<>(0, mulitiExpression, factory, entityRelation),
+                        new NotInEntityExpressionImpl<>(1, mulitiExpression, factory, entityRelation),
+                        new NotInEntityExpressionImpl<>(2, mulitiExpression, factory, entityRelation),
+                        new NotInEntityExpressionImpl<>(3, mulitiExpression, factory, entityRelation),
+                        new NotInEntityExpressionImpl<>(4, mulitiExpression, factory, entityRelation),
+                        new NotInEntityExpressionImpl<>(5, mulitiExpression, factory, entityRelation)));
         return (L) this;
     }
 
@@ -349,16 +355,15 @@ public abstract class AbstractEntitySqlQueryConditionGroupExpression6<E, E2, E3,
      */
     @SuppressWarnings("unchecked")
     @Override
-    public L ni(
-            SixArgusConsumer<NotInEntityExpression<E>, NotInEntityExpression<E2>, NotInEntityExpression<E3>, NotInEntityExpression<E4>, NotInEntityExpression<E5>, NotInEntityExpression<E6>> notInEntityExpressions) {
+    public L ni(SixArgusConsumer<NotInEntityExpression<E>, NotInEntityExpression<E2>, NotInEntityExpression<E3>,
+            NotInEntityExpression<E4>, NotInEntityExpression<E5>, NotInEntityExpression<E6>> notInEntityExpressions) {
         MulitiEntityNotInExpression<C, L> mulitiExpression = new MulitiEntityNotInExpressionImpl<>(this);
-        notInEntityExpressions.accept(
-                new NotInEntityExpressionImpl<>(0, mulitiExpression, ignoreStrategy, factory, entityRelation),
-                new NotInEntityExpressionImpl<>(1, mulitiExpression, ignoreStrategy, factory, entityRelation),
-                new NotInEntityExpressionImpl<>(2, mulitiExpression, ignoreStrategy, factory, entityRelation),
-                new NotInEntityExpressionImpl<>(3, mulitiExpression, ignoreStrategy, factory, entityRelation),
-                new NotInEntityExpressionImpl<>(4, mulitiExpression, ignoreStrategy, factory, entityRelation),
-                new NotInEntityExpressionImpl<>(5, mulitiExpression, ignoreStrategy, factory, entityRelation));
+        notInEntityExpressions.accept(new NotInEntityExpressionImpl<>(0, mulitiExpression, factory, entityRelation),
+                new NotInEntityExpressionImpl<>(1, mulitiExpression, factory, entityRelation),
+                new NotInEntityExpressionImpl<>(2, mulitiExpression, factory, entityRelation),
+                new NotInEntityExpressionImpl<>(3, mulitiExpression, factory, entityRelation),
+                new NotInEntityExpressionImpl<>(4, mulitiExpression, factory, entityRelation),
+                new NotInEntityExpressionImpl<>(5, mulitiExpression, factory, entityRelation));
         return (L) this;
     }
 
@@ -367,16 +372,17 @@ public abstract class AbstractEntitySqlQueryConditionGroupExpression6<E, E2, E3,
      */
     @SuppressWarnings("unchecked")
     @Override
-    public L ne(
-            Consumer<Tuple6<NotEqualsEntityExpression<E>, NotEqualsEntityExpression<E2>, NotEqualsEntityExpression<E3>, NotEqualsEntityExpression<E4>, NotEqualsEntityExpression<E5>, NotEqualsEntityExpression<E6>>> notEqualsEntityExpressions) {
+    public L ne(Consumer<Tuple6<NotEqualsEntityExpression<E>, NotEqualsEntityExpression<E2>,
+            NotEqualsEntityExpression<E3>, NotEqualsEntityExpression<E4>, NotEqualsEntityExpression<E5>,
+            NotEqualsEntityExpression<E6>>> notEqualsEntityExpressions) {
         MulitiEntityNotEqualsExpression<C, L> mulitiExpression = new MulitiEntityNotEqualsExpressionImpl<>(this);
-        notEqualsEntityExpressions.accept(Tuples.of(
-                new NotEqualsEntityExpressionImpl<>(0, mulitiExpression, ignoreStrategy, factory, entityRelation),
-                new NotEqualsEntityExpressionImpl<>(1, mulitiExpression, ignoreStrategy, factory, entityRelation),
-                new NotEqualsEntityExpressionImpl<>(2, mulitiExpression, ignoreStrategy, factory, entityRelation),
-                new NotEqualsEntityExpressionImpl<>(3, mulitiExpression, ignoreStrategy, factory, entityRelation),
-                new NotEqualsEntityExpressionImpl<>(4, mulitiExpression, ignoreStrategy, factory, entityRelation),
-                new NotEqualsEntityExpressionImpl<>(5, mulitiExpression, ignoreStrategy, factory, entityRelation)));
+        notEqualsEntityExpressions
+                .accept(Tuples.of(new NotEqualsEntityExpressionImpl<>(0, mulitiExpression, factory, entityRelation),
+                        new NotEqualsEntityExpressionImpl<>(1, mulitiExpression, factory, entityRelation),
+                        new NotEqualsEntityExpressionImpl<>(2, mulitiExpression, factory, entityRelation),
+                        new NotEqualsEntityExpressionImpl<>(3, mulitiExpression, factory, entityRelation),
+                        new NotEqualsEntityExpressionImpl<>(4, mulitiExpression, factory, entityRelation),
+                        new NotEqualsEntityExpressionImpl<>(5, mulitiExpression, factory, entityRelation)));
         return (L) this;
     }
 
@@ -385,16 +391,17 @@ public abstract class AbstractEntitySqlQueryConditionGroupExpression6<E, E2, E3,
      */
     @SuppressWarnings("unchecked")
     @Override
-    public L ne(
-            SixArgusConsumer<NotEqualsEntityExpression<E>, NotEqualsEntityExpression<E2>, NotEqualsEntityExpression<E3>, NotEqualsEntityExpression<E4>, NotEqualsEntityExpression<E5>, NotEqualsEntityExpression<E6>> notEqualsEntityExpressions) {
+    public L ne(SixArgusConsumer<NotEqualsEntityExpression<E>, NotEqualsEntityExpression<E2>,
+            NotEqualsEntityExpression<E3>, NotEqualsEntityExpression<E4>, NotEqualsEntityExpression<E5>,
+            NotEqualsEntityExpression<E6>> notEqualsEntityExpressions) {
         MulitiEntityNotEqualsExpression<C, L> mulitiExpression = new MulitiEntityNotEqualsExpressionImpl<>(this);
         notEqualsEntityExpressions.accept(
-                new NotEqualsEntityExpressionImpl<>(0, mulitiExpression, ignoreStrategy, factory, entityRelation),
-                new NotEqualsEntityExpressionImpl<>(1, mulitiExpression, ignoreStrategy, factory, entityRelation),
-                new NotEqualsEntityExpressionImpl<>(2, mulitiExpression, ignoreStrategy, factory, entityRelation),
-                new NotEqualsEntityExpressionImpl<>(3, mulitiExpression, ignoreStrategy, factory, entityRelation),
-                new NotEqualsEntityExpressionImpl<>(4, mulitiExpression, ignoreStrategy, factory, entityRelation),
-                new NotEqualsEntityExpressionImpl<>(5, mulitiExpression, ignoreStrategy, factory, entityRelation));
+                new NotEqualsEntityExpressionImpl<>(0, mulitiExpression, factory, entityRelation),
+                new NotEqualsEntityExpressionImpl<>(1, mulitiExpression, factory, entityRelation),
+                new NotEqualsEntityExpressionImpl<>(2, mulitiExpression, factory, entityRelation),
+                new NotEqualsEntityExpressionImpl<>(3, mulitiExpression, factory, entityRelation),
+                new NotEqualsEntityExpressionImpl<>(4, mulitiExpression, factory, entityRelation),
+                new NotEqualsEntityExpressionImpl<>(5, mulitiExpression, factory, entityRelation));
         return (L) this;
     }
 
@@ -403,16 +410,17 @@ public abstract class AbstractEntitySqlQueryConditionGroupExpression6<E, E2, E3,
      */
     @SuppressWarnings("unchecked")
     @Override
-    public L lt(
-            Consumer<Tuple6<LessThanEntityExpression<E>, LessThanEntityExpression<E2>, LessThanEntityExpression<E3>, LessThanEntityExpression<E4>, LessThanEntityExpression<E5>, LessThanEntityExpression<E6>>> lessThanEntityExpressions) {
+    public L lt(Consumer<Tuple6<LessThanEntityExpression<E>, LessThanEntityExpression<E2>, LessThanEntityExpression<E3>,
+            LessThanEntityExpression<E4>, LessThanEntityExpression<E5>,
+            LessThanEntityExpression<E6>>> lessThanEntityExpressions) {
         MulitiEntityLessThanExpression<C, L> mulitiExpression = new MulitiEntityLessThanExpressionImpl<>(this);
-        lessThanEntityExpressions.accept(Tuples.of(
-                new LessThanEntityExpressionImpl<>(0, mulitiExpression, ignoreStrategy, factory, entityRelation),
-                new LessThanEntityExpressionImpl<>(1, mulitiExpression, ignoreStrategy, factory, entityRelation),
-                new LessThanEntityExpressionImpl<>(2, mulitiExpression, ignoreStrategy, factory, entityRelation),
-                new LessThanEntityExpressionImpl<>(3, mulitiExpression, ignoreStrategy, factory, entityRelation),
-                new LessThanEntityExpressionImpl<>(4, mulitiExpression, ignoreStrategy, factory, entityRelation),
-                new LessThanEntityExpressionImpl<>(5, mulitiExpression, ignoreStrategy, factory, entityRelation)));
+        lessThanEntityExpressions
+                .accept(Tuples.of(new LessThanEntityExpressionImpl<>(0, mulitiExpression, factory, entityRelation),
+                        new LessThanEntityExpressionImpl<>(1, mulitiExpression, factory, entityRelation),
+                        new LessThanEntityExpressionImpl<>(2, mulitiExpression, factory, entityRelation),
+                        new LessThanEntityExpressionImpl<>(3, mulitiExpression, factory, entityRelation),
+                        new LessThanEntityExpressionImpl<>(4, mulitiExpression, factory, entityRelation),
+                        new LessThanEntityExpressionImpl<>(5, mulitiExpression, factory, entityRelation)));
         return (L) this;
     }
 
@@ -421,16 +429,17 @@ public abstract class AbstractEntitySqlQueryConditionGroupExpression6<E, E2, E3,
      */
     @SuppressWarnings("unchecked")
     @Override
-    public L lt(
-            SixArgusConsumer<LessThanEntityExpression<E>, LessThanEntityExpression<E2>, LessThanEntityExpression<E3>, LessThanEntityExpression<E4>, LessThanEntityExpression<E5>, LessThanEntityExpression<E6>> lessThanEntityExpressions) {
+    public L lt(SixArgusConsumer<LessThanEntityExpression<E>, LessThanEntityExpression<E2>,
+            LessThanEntityExpression<E3>, LessThanEntityExpression<E4>, LessThanEntityExpression<E5>,
+            LessThanEntityExpression<E6>> lessThanEntityExpressions) {
         MulitiEntityLessThanExpression<C, L> mulitiExpression = new MulitiEntityLessThanExpressionImpl<>(this);
         lessThanEntityExpressions.accept(
-                new LessThanEntityExpressionImpl<>(0, mulitiExpression, ignoreStrategy, factory, entityRelation),
-                new LessThanEntityExpressionImpl<>(1, mulitiExpression, ignoreStrategy, factory, entityRelation),
-                new LessThanEntityExpressionImpl<>(2, mulitiExpression, ignoreStrategy, factory, entityRelation),
-                new LessThanEntityExpressionImpl<>(3, mulitiExpression, ignoreStrategy, factory, entityRelation),
-                new LessThanEntityExpressionImpl<>(4, mulitiExpression, ignoreStrategy, factory, entityRelation),
-                new LessThanEntityExpressionImpl<>(5, mulitiExpression, ignoreStrategy, factory, entityRelation));
+                new LessThanEntityExpressionImpl<>(0, mulitiExpression, factory, entityRelation),
+                new LessThanEntityExpressionImpl<>(1, mulitiExpression, factory, entityRelation),
+                new LessThanEntityExpressionImpl<>(2, mulitiExpression, factory, entityRelation),
+                new LessThanEntityExpressionImpl<>(3, mulitiExpression, factory, entityRelation),
+                new LessThanEntityExpressionImpl<>(4, mulitiExpression, factory, entityRelation),
+                new LessThanEntityExpressionImpl<>(5, mulitiExpression, factory, entityRelation));
         return (L) this;
     }
 
@@ -439,16 +448,17 @@ public abstract class AbstractEntitySqlQueryConditionGroupExpression6<E, E2, E3,
      */
     @SuppressWarnings("unchecked")
     @Override
-    public L le(
-            Consumer<Tuple6<LessEqualsEntityExpression<E>, LessEqualsEntityExpression<E2>, LessEqualsEntityExpression<E3>, LessEqualsEntityExpression<E4>, LessEqualsEntityExpression<E5>, LessEqualsEntityExpression<E6>>> lessEqualsEntityExpressions) {
+    public L le(Consumer<Tuple6<LessEqualsEntityExpression<E>, LessEqualsEntityExpression<E2>,
+            LessEqualsEntityExpression<E3>, LessEqualsEntityExpression<E4>, LessEqualsEntityExpression<E5>,
+            LessEqualsEntityExpression<E6>>> lessEqualsEntityExpressions) {
         MulitiEntityLessEqualsExpression<C, L> mulitiExpression = new MulitiEntityLessEqualsExpressionImpl<>(this);
-        lessEqualsEntityExpressions.accept(Tuples.of(
-                new LessEqualsEntityExpressionImpl<>(0, mulitiExpression, ignoreStrategy, factory, entityRelation),
-                new LessEqualsEntityExpressionImpl<>(1, mulitiExpression, ignoreStrategy, factory, entityRelation),
-                new LessEqualsEntityExpressionImpl<>(2, mulitiExpression, ignoreStrategy, factory, entityRelation),
-                new LessEqualsEntityExpressionImpl<>(3, mulitiExpression, ignoreStrategy, factory, entityRelation),
-                new LessEqualsEntityExpressionImpl<>(4, mulitiExpression, ignoreStrategy, factory, entityRelation),
-                new LessEqualsEntityExpressionImpl<>(5, mulitiExpression, ignoreStrategy, factory, entityRelation)));
+        lessEqualsEntityExpressions
+                .accept(Tuples.of(new LessEqualsEntityExpressionImpl<>(0, mulitiExpression, factory, entityRelation),
+                        new LessEqualsEntityExpressionImpl<>(1, mulitiExpression, factory, entityRelation),
+                        new LessEqualsEntityExpressionImpl<>(2, mulitiExpression, factory, entityRelation),
+                        new LessEqualsEntityExpressionImpl<>(3, mulitiExpression, factory, entityRelation),
+                        new LessEqualsEntityExpressionImpl<>(4, mulitiExpression, factory, entityRelation),
+                        new LessEqualsEntityExpressionImpl<>(5, mulitiExpression, factory, entityRelation)));
         return (L) this;
     }
 
@@ -457,16 +467,17 @@ public abstract class AbstractEntitySqlQueryConditionGroupExpression6<E, E2, E3,
      */
     @SuppressWarnings("unchecked")
     @Override
-    public L le(
-            SixArgusConsumer<LessEqualsEntityExpression<E>, LessEqualsEntityExpression<E2>, LessEqualsEntityExpression<E3>, LessEqualsEntityExpression<E4>, LessEqualsEntityExpression<E5>, LessEqualsEntityExpression<E6>> lessEqualsEntityExpressions) {
+    public L le(SixArgusConsumer<LessEqualsEntityExpression<E>, LessEqualsEntityExpression<E2>,
+            LessEqualsEntityExpression<E3>, LessEqualsEntityExpression<E4>, LessEqualsEntityExpression<E5>,
+            LessEqualsEntityExpression<E6>> lessEqualsEntityExpressions) {
         MulitiEntityLessEqualsExpression<C, L> mulitiExpression = new MulitiEntityLessEqualsExpressionImpl<>(this);
         lessEqualsEntityExpressions.accept(
-                new LessEqualsEntityExpressionImpl<>(0, mulitiExpression, ignoreStrategy, factory, entityRelation),
-                new LessEqualsEntityExpressionImpl<>(1, mulitiExpression, ignoreStrategy, factory, entityRelation),
-                new LessEqualsEntityExpressionImpl<>(2, mulitiExpression, ignoreStrategy, factory, entityRelation),
-                new LessEqualsEntityExpressionImpl<>(3, mulitiExpression, ignoreStrategy, factory, entityRelation),
-                new LessEqualsEntityExpressionImpl<>(4, mulitiExpression, ignoreStrategy, factory, entityRelation),
-                new LessEqualsEntityExpressionImpl<>(5, mulitiExpression, ignoreStrategy, factory, entityRelation));
+                new LessEqualsEntityExpressionImpl<>(0, mulitiExpression, factory, entityRelation),
+                new LessEqualsEntityExpressionImpl<>(1, mulitiExpression, factory, entityRelation),
+                new LessEqualsEntityExpressionImpl<>(2, mulitiExpression, factory, entityRelation),
+                new LessEqualsEntityExpressionImpl<>(3, mulitiExpression, factory, entityRelation),
+                new LessEqualsEntityExpressionImpl<>(4, mulitiExpression, factory, entityRelation),
+                new LessEqualsEntityExpressionImpl<>(5, mulitiExpression, factory, entityRelation));
         return (L) this;
     }
 
@@ -475,16 +486,17 @@ public abstract class AbstractEntitySqlQueryConditionGroupExpression6<E, E2, E3,
      */
     @SuppressWarnings("unchecked")
     @Override
-    public L isn(
-            Consumer<Tuple6<IsNullEntityExpression<E>, IsNullEntityExpression<E2>, IsNullEntityExpression<E3>, IsNullEntityExpression<E4>, IsNullEntityExpression<E5>, IsNullEntityExpression<E6>>> isNullEntityExpressions) {
+    public L isn(Consumer<Tuple6<IsNullEntityExpression<E>, IsNullEntityExpression<E2>, IsNullEntityExpression<E3>,
+            IsNullEntityExpression<E4>, IsNullEntityExpression<E5>,
+            IsNullEntityExpression<E6>>> isNullEntityExpressions) {
         MulitiEntityIsNullExpression<C, L> mulitiExpression = new MulitiEntityIsNullExpressionImpl<>(this);
-        isNullEntityExpressions.accept(Tuples.of(
-                new IsNullEntityExpressionImpl<>(0, mulitiExpression, ignoreStrategy, factory, entityRelation),
-                new IsNullEntityExpressionImpl<>(1, mulitiExpression, ignoreStrategy, factory, entityRelation),
-                new IsNullEntityExpressionImpl<>(2, mulitiExpression, ignoreStrategy, factory, entityRelation),
-                new IsNullEntityExpressionImpl<>(3, mulitiExpression, ignoreStrategy, factory, entityRelation),
-                new IsNullEntityExpressionImpl<>(4, mulitiExpression, ignoreStrategy, factory, entityRelation),
-                new IsNullEntityExpressionImpl<>(5, mulitiExpression, ignoreStrategy, factory, entityRelation)));
+        isNullEntityExpressions
+                .accept(Tuples.of(new IsNullEntityExpressionImpl<>(0, mulitiExpression, factory, entityRelation),
+                        new IsNullEntityExpressionImpl<>(1, mulitiExpression, factory, entityRelation),
+                        new IsNullEntityExpressionImpl<>(2, mulitiExpression, factory, entityRelation),
+                        new IsNullEntityExpressionImpl<>(3, mulitiExpression, factory, entityRelation),
+                        new IsNullEntityExpressionImpl<>(4, mulitiExpression, factory, entityRelation),
+                        new IsNullEntityExpressionImpl<>(5, mulitiExpression, factory, entityRelation)));
         return (L) this;
     }
 
@@ -493,16 +505,16 @@ public abstract class AbstractEntitySqlQueryConditionGroupExpression6<E, E2, E3,
      */
     @SuppressWarnings("unchecked")
     @Override
-    public L isn(
-            SixArgusConsumer<IsNullEntityExpression<E>, IsNullEntityExpression<E2>, IsNullEntityExpression<E3>, IsNullEntityExpression<E4>, IsNullEntityExpression<E5>, IsNullEntityExpression<E6>> isNullEntityExpressions) {
+    public L isn(SixArgusConsumer<IsNullEntityExpression<E>, IsNullEntityExpression<E2>, IsNullEntityExpression<E3>,
+            IsNullEntityExpression<E4>, IsNullEntityExpression<E5>,
+            IsNullEntityExpression<E6>> isNullEntityExpressions) {
         MulitiEntityIsNullExpression<C, L> mulitiExpression = new MulitiEntityIsNullExpressionImpl<>(this);
-        isNullEntityExpressions.accept(
-                new IsNullEntityExpressionImpl<>(0, mulitiExpression, ignoreStrategy, factory, entityRelation),
-                new IsNullEntityExpressionImpl<>(1, mulitiExpression, ignoreStrategy, factory, entityRelation),
-                new IsNullEntityExpressionImpl<>(2, mulitiExpression, ignoreStrategy, factory, entityRelation),
-                new IsNullEntityExpressionImpl<>(3, mulitiExpression, ignoreStrategy, factory, entityRelation),
-                new IsNullEntityExpressionImpl<>(4, mulitiExpression, ignoreStrategy, factory, entityRelation),
-                new IsNullEntityExpressionImpl<>(5, mulitiExpression, ignoreStrategy, factory, entityRelation));
+        isNullEntityExpressions.accept(new IsNullEntityExpressionImpl<>(0, mulitiExpression, factory, entityRelation),
+                new IsNullEntityExpressionImpl<>(1, mulitiExpression, factory, entityRelation),
+                new IsNullEntityExpressionImpl<>(2, mulitiExpression, factory, entityRelation),
+                new IsNullEntityExpressionImpl<>(3, mulitiExpression, factory, entityRelation),
+                new IsNullEntityExpressionImpl<>(4, mulitiExpression, factory, entityRelation),
+                new IsNullEntityExpressionImpl<>(5, mulitiExpression, factory, entityRelation));
         return (L) this;
     }
 
@@ -511,16 +523,17 @@ public abstract class AbstractEntitySqlQueryConditionGroupExpression6<E, E2, E3,
      */
     @SuppressWarnings("unchecked")
     @Override
-    public L inn(
-            Consumer<Tuple6<IsNotNullEntityExpression<E>, IsNotNullEntityExpression<E2>, IsNotNullEntityExpression<E3>, IsNotNullEntityExpression<E4>, IsNotNullEntityExpression<E5>, IsNotNullEntityExpression<E6>>> isNotNullEntityExpressions) {
+    public L inn(Consumer<Tuple6<IsNotNullEntityExpression<E>, IsNotNullEntityExpression<E2>,
+            IsNotNullEntityExpression<E3>, IsNotNullEntityExpression<E4>, IsNotNullEntityExpression<E5>,
+            IsNotNullEntityExpression<E6>>> isNotNullEntityExpressions) {
         MulitiEntityIsNotNullExpression<C, L> mulitiExpression = new MulitiEntityIsNotNullExpressionImpl<>(this);
-        isNotNullEntityExpressions.accept(Tuples.of(
-                new IsNotNullEntityExpressionImpl<>(0, mulitiExpression, ignoreStrategy, factory, entityRelation),
-                new IsNotNullEntityExpressionImpl<>(1, mulitiExpression, ignoreStrategy, factory, entityRelation),
-                new IsNotNullEntityExpressionImpl<>(2, mulitiExpression, ignoreStrategy, factory, entityRelation),
-                new IsNotNullEntityExpressionImpl<>(3, mulitiExpression, ignoreStrategy, factory, entityRelation),
-                new IsNotNullEntityExpressionImpl<>(4, mulitiExpression, ignoreStrategy, factory, entityRelation),
-                new IsNotNullEntityExpressionImpl<>(5, mulitiExpression, ignoreStrategy, factory, entityRelation)));
+        isNotNullEntityExpressions
+                .accept(Tuples.of(new IsNotNullEntityExpressionImpl<>(0, mulitiExpression, factory, entityRelation),
+                        new IsNotNullEntityExpressionImpl<>(1, mulitiExpression, factory, entityRelation),
+                        new IsNotNullEntityExpressionImpl<>(2, mulitiExpression, factory, entityRelation),
+                        new IsNotNullEntityExpressionImpl<>(3, mulitiExpression, factory, entityRelation),
+                        new IsNotNullEntityExpressionImpl<>(4, mulitiExpression, factory, entityRelation),
+                        new IsNotNullEntityExpressionImpl<>(5, mulitiExpression, factory, entityRelation)));
         return (L) this;
     }
 
@@ -529,16 +542,17 @@ public abstract class AbstractEntitySqlQueryConditionGroupExpression6<E, E2, E3,
      */
     @SuppressWarnings("unchecked")
     @Override
-    public L inn(
-            SixArgusConsumer<IsNotNullEntityExpression<E>, IsNotNullEntityExpression<E2>, IsNotNullEntityExpression<E3>, IsNotNullEntityExpression<E4>, IsNotNullEntityExpression<E5>, IsNotNullEntityExpression<E6>> isNotNullEntityExpressions) {
+    public L inn(SixArgusConsumer<IsNotNullEntityExpression<E>, IsNotNullEntityExpression<E2>,
+            IsNotNullEntityExpression<E3>, IsNotNullEntityExpression<E4>, IsNotNullEntityExpression<E5>,
+            IsNotNullEntityExpression<E6>> isNotNullEntityExpressions) {
         MulitiEntityIsNotNullExpression<C, L> mulitiExpression = new MulitiEntityIsNotNullExpressionImpl<>(this);
         isNotNullEntityExpressions.accept(
-                new IsNotNullEntityExpressionImpl<>(0, mulitiExpression, ignoreStrategy, factory, entityRelation),
-                new IsNotNullEntityExpressionImpl<>(1, mulitiExpression, ignoreStrategy, factory, entityRelation),
-                new IsNotNullEntityExpressionImpl<>(2, mulitiExpression, ignoreStrategy, factory, entityRelation),
-                new IsNotNullEntityExpressionImpl<>(3, mulitiExpression, ignoreStrategy, factory, entityRelation),
-                new IsNotNullEntityExpressionImpl<>(4, mulitiExpression, ignoreStrategy, factory, entityRelation),
-                new IsNotNullEntityExpressionImpl<>(5, mulitiExpression, ignoreStrategy, factory, entityRelation));
+                new IsNotNullEntityExpressionImpl<>(0, mulitiExpression, factory, entityRelation),
+                new IsNotNullEntityExpressionImpl<>(1, mulitiExpression, factory, entityRelation),
+                new IsNotNullEntityExpressionImpl<>(2, mulitiExpression, factory, entityRelation),
+                new IsNotNullEntityExpressionImpl<>(3, mulitiExpression, factory, entityRelation),
+                new IsNotNullEntityExpressionImpl<>(4, mulitiExpression, factory, entityRelation),
+                new IsNotNullEntityExpressionImpl<>(5, mulitiExpression, factory, entityRelation));
         return (L) this;
     }
 
@@ -547,16 +561,15 @@ public abstract class AbstractEntitySqlQueryConditionGroupExpression6<E, E2, E3,
      */
     @SuppressWarnings("unchecked")
     @Override
-    public L in(
-            Consumer<Tuple6<InEntityExpression<E>, InEntityExpression<E2>, InEntityExpression<E3>, InEntityExpression<E4>, InEntityExpression<E5>, InEntityExpression<E6>>> inEntityExpressions) {
+    public L in(Consumer<Tuple6<InEntityExpression<E>, InEntityExpression<E2>, InEntityExpression<E3>,
+            InEntityExpression<E4>, InEntityExpression<E5>, InEntityExpression<E6>>> inEntityExpressions) {
         MulitiEntityInExpression<C, L> mulitiExpression = new MulitiEntityInExpressionImpl<>(this);
-        inEntityExpressions.accept(
-                Tuples.of(new InEntityExpressionImpl<>(0, mulitiExpression, ignoreStrategy, factory, entityRelation),
-                        new InEntityExpressionImpl<>(1, mulitiExpression, ignoreStrategy, factory, entityRelation),
-                        new InEntityExpressionImpl<>(2, mulitiExpression, ignoreStrategy, factory, entityRelation),
-                        new InEntityExpressionImpl<>(3, mulitiExpression, ignoreStrategy, factory, entityRelation),
-                        new InEntityExpressionImpl<>(4, mulitiExpression, ignoreStrategy, factory, entityRelation),
-                        new InEntityExpressionImpl<>(5, mulitiExpression, ignoreStrategy, factory, entityRelation)));
+        inEntityExpressions.accept(Tuples.of(new InEntityExpressionImpl<>(0, mulitiExpression, factory, entityRelation),
+                new InEntityExpressionImpl<>(1, mulitiExpression, factory, entityRelation),
+                new InEntityExpressionImpl<>(2, mulitiExpression, factory, entityRelation),
+                new InEntityExpressionImpl<>(3, mulitiExpression, factory, entityRelation),
+                new InEntityExpressionImpl<>(4, mulitiExpression, factory, entityRelation),
+                new InEntityExpressionImpl<>(5, mulitiExpression, factory, entityRelation)));
         return (L) this;
     }
 
@@ -565,16 +578,15 @@ public abstract class AbstractEntitySqlQueryConditionGroupExpression6<E, E2, E3,
      */
     @SuppressWarnings("unchecked")
     @Override
-    public L in(
-            SixArgusConsumer<InEntityExpression<E>, InEntityExpression<E2>, InEntityExpression<E3>, InEntityExpression<E4>, InEntityExpression<E5>, InEntityExpression<E6>> inEntityExpressions) {
+    public L in(SixArgusConsumer<InEntityExpression<E>, InEntityExpression<E2>, InEntityExpression<E3>,
+            InEntityExpression<E4>, InEntityExpression<E5>, InEntityExpression<E6>> inEntityExpressions) {
         MulitiEntityInExpression<C, L> mulitiExpression = new MulitiEntityInExpressionImpl<>(this);
-        inEntityExpressions.accept(
-                new InEntityExpressionImpl<>(0, mulitiExpression, ignoreStrategy, factory, entityRelation),
-                new InEntityExpressionImpl<>(1, mulitiExpression, ignoreStrategy, factory, entityRelation),
-                new InEntityExpressionImpl<>(2, mulitiExpression, ignoreStrategy, factory, entityRelation),
-                new InEntityExpressionImpl<>(3, mulitiExpression, ignoreStrategy, factory, entityRelation),
-                new InEntityExpressionImpl<>(4, mulitiExpression, ignoreStrategy, factory, entityRelation),
-                new InEntityExpressionImpl<>(5, mulitiExpression, ignoreStrategy, factory, entityRelation));
+        inEntityExpressions.accept(new InEntityExpressionImpl<>(0, mulitiExpression, factory, entityRelation),
+                new InEntityExpressionImpl<>(1, mulitiExpression, factory, entityRelation),
+                new InEntityExpressionImpl<>(2, mulitiExpression, factory, entityRelation),
+                new InEntityExpressionImpl<>(3, mulitiExpression, factory, entityRelation),
+                new InEntityExpressionImpl<>(4, mulitiExpression, factory, entityRelation),
+                new InEntityExpressionImpl<>(5, mulitiExpression, factory, entityRelation));
         return (L) this;
     }
 
@@ -583,16 +595,17 @@ public abstract class AbstractEntitySqlQueryConditionGroupExpression6<E, E2, E3,
      */
     @SuppressWarnings("unchecked")
     @Override
-    public L gt(
-            Consumer<Tuple6<GreatThanEntityExpression<E>, GreatThanEntityExpression<E2>, GreatThanEntityExpression<E3>, GreatThanEntityExpression<E4>, GreatThanEntityExpression<E5>, GreatThanEntityExpression<E6>>> greatThanEntityExpressions) {
+    public L gt(Consumer<Tuple6<GreatThanEntityExpression<E>, GreatThanEntityExpression<E2>,
+            GreatThanEntityExpression<E3>, GreatThanEntityExpression<E4>, GreatThanEntityExpression<E5>,
+            GreatThanEntityExpression<E6>>> greatThanEntityExpressions) {
         MulitiEntityGreatThanExpression<C, L> mulitiExpression = new MulitiEntityGreatThanExpressionImpl<>(this);
-        greatThanEntityExpressions.accept(Tuples.of(
-                new GreatThanEntityExpressionImpl<>(0, mulitiExpression, ignoreStrategy, factory, entityRelation),
-                new GreatThanEntityExpressionImpl<>(1, mulitiExpression, ignoreStrategy, factory, entityRelation),
-                new GreatThanEntityExpressionImpl<>(2, mulitiExpression, ignoreStrategy, factory, entityRelation),
-                new GreatThanEntityExpressionImpl<>(3, mulitiExpression, ignoreStrategy, factory, entityRelation),
-                new GreatThanEntityExpressionImpl<>(4, mulitiExpression, ignoreStrategy, factory, entityRelation),
-                new GreatThanEntityExpressionImpl<>(5, mulitiExpression, ignoreStrategy, factory, entityRelation)));
+        greatThanEntityExpressions
+                .accept(Tuples.of(new GreatThanEntityExpressionImpl<>(0, mulitiExpression, factory, entityRelation),
+                        new GreatThanEntityExpressionImpl<>(1, mulitiExpression, factory, entityRelation),
+                        new GreatThanEntityExpressionImpl<>(2, mulitiExpression, factory, entityRelation),
+                        new GreatThanEntityExpressionImpl<>(3, mulitiExpression, factory, entityRelation),
+                        new GreatThanEntityExpressionImpl<>(4, mulitiExpression, factory, entityRelation),
+                        new GreatThanEntityExpressionImpl<>(5, mulitiExpression, factory, entityRelation)));
         return (L) this;
     }
 
@@ -601,16 +614,17 @@ public abstract class AbstractEntitySqlQueryConditionGroupExpression6<E, E2, E3,
      */
     @SuppressWarnings("unchecked")
     @Override
-    public L gt(
-            SixArgusConsumer<GreatThanEntityExpression<E>, GreatThanEntityExpression<E2>, GreatThanEntityExpression<E3>, GreatThanEntityExpression<E4>, GreatThanEntityExpression<E5>, GreatThanEntityExpression<E6>> greatThanEntityExpressions) {
+    public L gt(SixArgusConsumer<GreatThanEntityExpression<E>, GreatThanEntityExpression<E2>,
+            GreatThanEntityExpression<E3>, GreatThanEntityExpression<E4>, GreatThanEntityExpression<E5>,
+            GreatThanEntityExpression<E6>> greatThanEntityExpressions) {
         MulitiEntityGreatThanExpression<C, L> mulitiExpression = new MulitiEntityGreatThanExpressionImpl<>(this);
         greatThanEntityExpressions.accept(
-                new GreatThanEntityExpressionImpl<>(0, mulitiExpression, ignoreStrategy, factory, entityRelation),
-                new GreatThanEntityExpressionImpl<>(1, mulitiExpression, ignoreStrategy, factory, entityRelation),
-                new GreatThanEntityExpressionImpl<>(2, mulitiExpression, ignoreStrategy, factory, entityRelation),
-                new GreatThanEntityExpressionImpl<>(3, mulitiExpression, ignoreStrategy, factory, entityRelation),
-                new GreatThanEntityExpressionImpl<>(4, mulitiExpression, ignoreStrategy, factory, entityRelation),
-                new GreatThanEntityExpressionImpl<>(5, mulitiExpression, ignoreStrategy, factory, entityRelation));
+                new GreatThanEntityExpressionImpl<>(0, mulitiExpression, factory, entityRelation),
+                new GreatThanEntityExpressionImpl<>(1, mulitiExpression, factory, entityRelation),
+                new GreatThanEntityExpressionImpl<>(2, mulitiExpression, factory, entityRelation),
+                new GreatThanEntityExpressionImpl<>(3, mulitiExpression, factory, entityRelation),
+                new GreatThanEntityExpressionImpl<>(4, mulitiExpression, factory, entityRelation),
+                new GreatThanEntityExpressionImpl<>(5, mulitiExpression, factory, entityRelation));
         return (L) this;
     }
 
@@ -619,16 +633,17 @@ public abstract class AbstractEntitySqlQueryConditionGroupExpression6<E, E2, E3,
      */
     @SuppressWarnings("unchecked")
     @Override
-    public L ge(
-            Consumer<Tuple6<GreatEqualsEntityExpression<E>, GreatEqualsEntityExpression<E2>, GreatEqualsEntityExpression<E3>, GreatEqualsEntityExpression<E4>, GreatEqualsEntityExpression<E5>, GreatEqualsEntityExpression<E6>>> greatEqualsEntityExpressions) {
+    public L ge(Consumer<Tuple6<GreatEqualsEntityExpression<E>, GreatEqualsEntityExpression<E2>,
+            GreatEqualsEntityExpression<E3>, GreatEqualsEntityExpression<E4>, GreatEqualsEntityExpression<E5>,
+            GreatEqualsEntityExpression<E6>>> greatEqualsEntityExpressions) {
         MulitiEntityGreatEqualsExpression<C, L> mulitiExpression = new MulitiEntityGreatEqualsExpressionImpl<>(this);
-        greatEqualsEntityExpressions.accept(Tuples.of(
-                new GreatEqualsEntityExpressionImpl<>(0, mulitiExpression, ignoreStrategy, factory, entityRelation),
-                new GreatEqualsEntityExpressionImpl<>(1, mulitiExpression, ignoreStrategy, factory, entityRelation),
-                new GreatEqualsEntityExpressionImpl<>(2, mulitiExpression, ignoreStrategy, factory, entityRelation),
-                new GreatEqualsEntityExpressionImpl<>(3, mulitiExpression, ignoreStrategy, factory, entityRelation),
-                new GreatEqualsEntityExpressionImpl<>(4, mulitiExpression, ignoreStrategy, factory, entityRelation),
-                new GreatEqualsEntityExpressionImpl<>(5, mulitiExpression, ignoreStrategy, factory, entityRelation)));
+        greatEqualsEntityExpressions
+                .accept(Tuples.of(new GreatEqualsEntityExpressionImpl<>(0, mulitiExpression, factory, entityRelation),
+                        new GreatEqualsEntityExpressionImpl<>(1, mulitiExpression, factory, entityRelation),
+                        new GreatEqualsEntityExpressionImpl<>(2, mulitiExpression, factory, entityRelation),
+                        new GreatEqualsEntityExpressionImpl<>(3, mulitiExpression, factory, entityRelation),
+                        new GreatEqualsEntityExpressionImpl<>(4, mulitiExpression, factory, entityRelation),
+                        new GreatEqualsEntityExpressionImpl<>(5, mulitiExpression, factory, entityRelation)));
         return (L) this;
     }
 
@@ -637,16 +652,17 @@ public abstract class AbstractEntitySqlQueryConditionGroupExpression6<E, E2, E3,
      */
     @SuppressWarnings("unchecked")
     @Override
-    public L ge(
-            SixArgusConsumer<GreatEqualsEntityExpression<E>, GreatEqualsEntityExpression<E2>, GreatEqualsEntityExpression<E3>, GreatEqualsEntityExpression<E4>, GreatEqualsEntityExpression<E5>, GreatEqualsEntityExpression<E6>> greatEqualsEntityExpressions) {
+    public L ge(SixArgusConsumer<GreatEqualsEntityExpression<E>, GreatEqualsEntityExpression<E2>,
+            GreatEqualsEntityExpression<E3>, GreatEqualsEntityExpression<E4>, GreatEqualsEntityExpression<E5>,
+            GreatEqualsEntityExpression<E6>> greatEqualsEntityExpressions) {
         MulitiEntityGreatEqualsExpression<C, L> mulitiExpression = new MulitiEntityGreatEqualsExpressionImpl<>(this);
         greatEqualsEntityExpressions.accept(
-                new GreatEqualsEntityExpressionImpl<>(0, mulitiExpression, ignoreStrategy, factory, entityRelation),
-                new GreatEqualsEntityExpressionImpl<>(1, mulitiExpression, ignoreStrategy, factory, entityRelation),
-                new GreatEqualsEntityExpressionImpl<>(2, mulitiExpression, ignoreStrategy, factory, entityRelation),
-                new GreatEqualsEntityExpressionImpl<>(3, mulitiExpression, ignoreStrategy, factory, entityRelation),
-                new GreatEqualsEntityExpressionImpl<>(4, mulitiExpression, ignoreStrategy, factory, entityRelation),
-                new GreatEqualsEntityExpressionImpl<>(5, mulitiExpression, ignoreStrategy, factory, entityRelation));
+                new GreatEqualsEntityExpressionImpl<>(0, mulitiExpression, factory, entityRelation),
+                new GreatEqualsEntityExpressionImpl<>(1, mulitiExpression, factory, entityRelation),
+                new GreatEqualsEntityExpressionImpl<>(2, mulitiExpression, factory, entityRelation),
+                new GreatEqualsEntityExpressionImpl<>(3, mulitiExpression, factory, entityRelation),
+                new GreatEqualsEntityExpressionImpl<>(4, mulitiExpression, factory, entityRelation),
+                new GreatEqualsEntityExpressionImpl<>(5, mulitiExpression, factory, entityRelation));
         return (L) this;
     }
 
@@ -655,16 +671,17 @@ public abstract class AbstractEntitySqlQueryConditionGroupExpression6<E, E2, E3,
      */
     @SuppressWarnings("unchecked")
     @Override
-    public L eq(
-            Consumer<Tuple6<EqualsEntityExpression<E>, EqualsEntityExpression<E2>, EqualsEntityExpression<E3>, EqualsEntityExpression<E4>, EqualsEntityExpression<E5>, EqualsEntityExpression<E6>>> equalsEntityExpressions) {
+    public L eq(Consumer<Tuple6<EqualsEntityExpression<E>, EqualsEntityExpression<E2>, EqualsEntityExpression<E3>,
+            EqualsEntityExpression<E4>, EqualsEntityExpression<E5>,
+            EqualsEntityExpression<E6>>> equalsEntityExpressions) {
         MulitiEntityEqualsExpression<C, L> mulitiExpression = new MulitiEntityEqualsExpressionImpl<>(this);
-        equalsEntityExpressions.accept(Tuples.of(
-                new EqualsEntityExpressionImpl<>(0, mulitiExpression, ignoreStrategy, factory, entityRelation),
-                new EqualsEntityExpressionImpl<>(1, mulitiExpression, ignoreStrategy, factory, entityRelation),
-                new EqualsEntityExpressionImpl<>(2, mulitiExpression, ignoreStrategy, factory, entityRelation),
-                new EqualsEntityExpressionImpl<>(3, mulitiExpression, ignoreStrategy, factory, entityRelation),
-                new EqualsEntityExpressionImpl<>(4, mulitiExpression, ignoreStrategy, factory, entityRelation),
-                new EqualsEntityExpressionImpl<>(5, mulitiExpression, ignoreStrategy, factory, entityRelation)));
+        equalsEntityExpressions
+                .accept(Tuples.of(new EqualsEntityExpressionImpl<>(0, mulitiExpression, factory, entityRelation),
+                        new EqualsEntityExpressionImpl<>(1, mulitiExpression, factory, entityRelation),
+                        new EqualsEntityExpressionImpl<>(2, mulitiExpression, factory, entityRelation),
+                        new EqualsEntityExpressionImpl<>(3, mulitiExpression, factory, entityRelation),
+                        new EqualsEntityExpressionImpl<>(4, mulitiExpression, factory, entityRelation),
+                        new EqualsEntityExpressionImpl<>(5, mulitiExpression, factory, entityRelation)));
         return (L) this;
     }
 
@@ -673,16 +690,16 @@ public abstract class AbstractEntitySqlQueryConditionGroupExpression6<E, E2, E3,
      */
     @SuppressWarnings("unchecked")
     @Override
-    public L eq(
-            SixArgusConsumer<EqualsEntityExpression<E>, EqualsEntityExpression<E2>, EqualsEntityExpression<E3>, EqualsEntityExpression<E4>, EqualsEntityExpression<E5>, EqualsEntityExpression<E6>> equalsEntityExpressions) {
+    public L eq(SixArgusConsumer<EqualsEntityExpression<E>, EqualsEntityExpression<E2>, EqualsEntityExpression<E3>,
+            EqualsEntityExpression<E4>, EqualsEntityExpression<E5>,
+            EqualsEntityExpression<E6>> equalsEntityExpressions) {
         MulitiEntityEqualsExpression<C, L> mulitiExpression = new MulitiEntityEqualsExpressionImpl<>(this);
-        equalsEntityExpressions.accept(
-                new EqualsEntityExpressionImpl<>(0, mulitiExpression, ignoreStrategy, factory, entityRelation),
-                new EqualsEntityExpressionImpl<>(1, mulitiExpression, ignoreStrategy, factory, entityRelation),
-                new EqualsEntityExpressionImpl<>(2, mulitiExpression, ignoreStrategy, factory, entityRelation),
-                new EqualsEntityExpressionImpl<>(3, mulitiExpression, ignoreStrategy, factory, entityRelation),
-                new EqualsEntityExpressionImpl<>(4, mulitiExpression, ignoreStrategy, factory, entityRelation),
-                new EqualsEntityExpressionImpl<>(5, mulitiExpression, ignoreStrategy, factory, entityRelation));
+        equalsEntityExpressions.accept(new EqualsEntityExpressionImpl<>(0, mulitiExpression, factory, entityRelation),
+                new EqualsEntityExpressionImpl<>(1, mulitiExpression, factory, entityRelation),
+                new EqualsEntityExpressionImpl<>(2, mulitiExpression, factory, entityRelation),
+                new EqualsEntityExpressionImpl<>(3, mulitiExpression, factory, entityRelation),
+                new EqualsEntityExpressionImpl<>(4, mulitiExpression, factory, entityRelation),
+                new EqualsEntityExpressionImpl<>(5, mulitiExpression, factory, entityRelation));
         return (L) this;
     }
 
@@ -691,16 +708,17 @@ public abstract class AbstractEntitySqlQueryConditionGroupExpression6<E, E2, E3,
      */
     @SuppressWarnings("unchecked")
     @Override
-    public L ew(
-            Consumer<Tuple6<EndWithEntityExpression<E>, EndWithEntityExpression<E2>, EndWithEntityExpression<E3>, EndWithEntityExpression<E4>, EndWithEntityExpression<E5>, EndWithEntityExpression<E6>>> endWithEntityExpressions) {
+    public L ew(Consumer<Tuple6<EndWithEntityExpression<E>, EndWithEntityExpression<E2>, EndWithEntityExpression<E3>,
+            EndWithEntityExpression<E4>, EndWithEntityExpression<E5>,
+            EndWithEntityExpression<E6>>> endWithEntityExpressions) {
         MulitiEntityEndWithExpression<C, L> mulitiExpression = new MulitiEntityEndWithExpressionImpl<>(this);
-        endWithEntityExpressions.accept(Tuples.of(
-                new EndWithEntityExpressionImpl<>(0, mulitiExpression, ignoreStrategy, factory, entityRelation),
-                new EndWithEntityExpressionImpl<>(1, mulitiExpression, ignoreStrategy, factory, entityRelation),
-                new EndWithEntityExpressionImpl<>(2, mulitiExpression, ignoreStrategy, factory, entityRelation),
-                new EndWithEntityExpressionImpl<>(3, mulitiExpression, ignoreStrategy, factory, entityRelation),
-                new EndWithEntityExpressionImpl<>(4, mulitiExpression, ignoreStrategy, factory, entityRelation),
-                new EndWithEntityExpressionImpl<>(5, mulitiExpression, ignoreStrategy, factory, entityRelation)));
+        endWithEntityExpressions
+                .accept(Tuples.of(new EndWithEntityExpressionImpl<>(0, mulitiExpression, factory, entityRelation),
+                        new EndWithEntityExpressionImpl<>(1, mulitiExpression, factory, entityRelation),
+                        new EndWithEntityExpressionImpl<>(2, mulitiExpression, factory, entityRelation),
+                        new EndWithEntityExpressionImpl<>(3, mulitiExpression, factory, entityRelation),
+                        new EndWithEntityExpressionImpl<>(4, mulitiExpression, factory, entityRelation),
+                        new EndWithEntityExpressionImpl<>(5, mulitiExpression, factory, entityRelation)));
         return (L) this;
     }
 
@@ -709,16 +727,16 @@ public abstract class AbstractEntitySqlQueryConditionGroupExpression6<E, E2, E3,
      */
     @SuppressWarnings("unchecked")
     @Override
-    public L ew(
-            SixArgusConsumer<EndWithEntityExpression<E>, EndWithEntityExpression<E2>, EndWithEntityExpression<E3>, EndWithEntityExpression<E4>, EndWithEntityExpression<E5>, EndWithEntityExpression<E6>> endWithEntityExpressions) {
+    public L ew(SixArgusConsumer<EndWithEntityExpression<E>, EndWithEntityExpression<E2>, EndWithEntityExpression<E3>,
+            EndWithEntityExpression<E4>, EndWithEntityExpression<E5>,
+            EndWithEntityExpression<E6>> endWithEntityExpressions) {
         MulitiEntityEndWithExpression<C, L> mulitiExpression = new MulitiEntityEndWithExpressionImpl<>(this);
-        endWithEntityExpressions.accept(
-                new EndWithEntityExpressionImpl<>(0, mulitiExpression, ignoreStrategy, factory, entityRelation),
-                new EndWithEntityExpressionImpl<>(1, mulitiExpression, ignoreStrategy, factory, entityRelation),
-                new EndWithEntityExpressionImpl<>(2, mulitiExpression, ignoreStrategy, factory, entityRelation),
-                new EndWithEntityExpressionImpl<>(3, mulitiExpression, ignoreStrategy, factory, entityRelation),
-                new EndWithEntityExpressionImpl<>(4, mulitiExpression, ignoreStrategy, factory, entityRelation),
-                new EndWithEntityExpressionImpl<>(5, mulitiExpression, ignoreStrategy, factory, entityRelation));
+        endWithEntityExpressions.accept(new EndWithEntityExpressionImpl<>(0, mulitiExpression, factory, entityRelation),
+                new EndWithEntityExpressionImpl<>(1, mulitiExpression, factory, entityRelation),
+                new EndWithEntityExpressionImpl<>(2, mulitiExpression, factory, entityRelation),
+                new EndWithEntityExpressionImpl<>(3, mulitiExpression, factory, entityRelation),
+                new EndWithEntityExpressionImpl<>(4, mulitiExpression, factory, entityRelation),
+                new EndWithEntityExpressionImpl<>(5, mulitiExpression, factory, entityRelation));
         return (L) this;
     }
 
@@ -727,23 +745,18 @@ public abstract class AbstractEntitySqlQueryConditionGroupExpression6<E, E2, E3,
      */
     @SuppressWarnings("unchecked")
     @Override
-    public L co(
-            Consumer<Tuple6<ContainsEntityExpression<E>, ContainsEntityExpression<E2>, ContainsEntityExpression<E3>, ContainsEntityExpression<E4>, ContainsEntityExpression<E5>, ContainsEntityExpression<E6>>> containsEntityExpressions) {
-        MulitiEntityContainsExpression<C, L> mulitiEntityContainsExpression = new MulitiEntityContainsExpressionImpl<>(
-                this);
+    public L co(Consumer<Tuple6<ContainsEntityExpression<E>, ContainsEntityExpression<E2>, ContainsEntityExpression<E3>,
+            ContainsEntityExpression<E4>, ContainsEntityExpression<E5>,
+            ContainsEntityExpression<E6>>> containsEntityExpressions) {
+        MulitiEntityContainsExpression<C,
+                L> mulitiEntityContainsExpression = new MulitiEntityContainsExpressionImpl<>(this);
         containsEntityExpressions.accept(Tuples.of(
-                new ContainsEntityExpressionImpl<>(0, mulitiEntityContainsExpression, ignoreStrategy, factory,
-                        entityRelation),
-                new ContainsEntityExpressionImpl<>(1, mulitiEntityContainsExpression, ignoreStrategy, factory,
-                        entityRelation),
-                new ContainsEntityExpressionImpl<>(2, mulitiEntityContainsExpression, ignoreStrategy, factory,
-                        entityRelation),
-                new ContainsEntityExpressionImpl<>(3, mulitiEntityContainsExpression, ignoreStrategy, factory,
-                        entityRelation),
-                new ContainsEntityExpressionImpl<>(4, mulitiEntityContainsExpression, ignoreStrategy, factory,
-                        entityRelation),
-                new ContainsEntityExpressionImpl<>(5, mulitiEntityContainsExpression, ignoreStrategy, factory,
-                        entityRelation)));
+                new ContainsEntityExpressionImpl<>(0, mulitiEntityContainsExpression, factory, entityRelation),
+                new ContainsEntityExpressionImpl<>(1, mulitiEntityContainsExpression, factory, entityRelation),
+                new ContainsEntityExpressionImpl<>(2, mulitiEntityContainsExpression, factory, entityRelation),
+                new ContainsEntityExpressionImpl<>(3, mulitiEntityContainsExpression, factory, entityRelation),
+                new ContainsEntityExpressionImpl<>(4, mulitiEntityContainsExpression, factory, entityRelation),
+                new ContainsEntityExpressionImpl<>(5, mulitiEntityContainsExpression, factory, entityRelation)));
         return (L) this;
     }
 
@@ -752,23 +765,18 @@ public abstract class AbstractEntitySqlQueryConditionGroupExpression6<E, E2, E3,
      */
     @SuppressWarnings("unchecked")
     @Override
-    public L co(
-            SixArgusConsumer<ContainsEntityExpression<E>, ContainsEntityExpression<E2>, ContainsEntityExpression<E3>, ContainsEntityExpression<E4>, ContainsEntityExpression<E5>, ContainsEntityExpression<E6>> containsEntityExpressions) {
-        MulitiEntityContainsExpression<C, L> mulitiEntityContainsExpression = new MulitiEntityContainsExpressionImpl<>(
-                this);
+    public L co(SixArgusConsumer<ContainsEntityExpression<E>, ContainsEntityExpression<E2>,
+            ContainsEntityExpression<E3>, ContainsEntityExpression<E4>, ContainsEntityExpression<E5>,
+            ContainsEntityExpression<E6>> containsEntityExpressions) {
+        MulitiEntityContainsExpression<C,
+                L> mulitiEntityContainsExpression = new MulitiEntityContainsExpressionImpl<>(this);
         containsEntityExpressions.accept(
-                new ContainsEntityExpressionImpl<>(0, mulitiEntityContainsExpression, ignoreStrategy, factory,
-                        entityRelation),
-                new ContainsEntityExpressionImpl<>(1, mulitiEntityContainsExpression, ignoreStrategy, factory,
-                        entityRelation),
-                new ContainsEntityExpressionImpl<>(2, mulitiEntityContainsExpression, ignoreStrategy, factory,
-                        entityRelation),
-                new ContainsEntityExpressionImpl<>(3, mulitiEntityContainsExpression, ignoreStrategy, factory,
-                        entityRelation),
-                new ContainsEntityExpressionImpl<>(4, mulitiEntityContainsExpression, ignoreStrategy, factory,
-                        entityRelation),
-                new ContainsEntityExpressionImpl<>(5, mulitiEntityContainsExpression, ignoreStrategy, factory,
-                        entityRelation));
+                new ContainsEntityExpressionImpl<>(0, mulitiEntityContainsExpression, factory, entityRelation),
+                new ContainsEntityExpressionImpl<>(1, mulitiEntityContainsExpression, factory, entityRelation),
+                new ContainsEntityExpressionImpl<>(2, mulitiEntityContainsExpression, factory, entityRelation),
+                new ContainsEntityExpressionImpl<>(3, mulitiEntityContainsExpression, factory, entityRelation),
+                new ContainsEntityExpressionImpl<>(4, mulitiEntityContainsExpression, factory, entityRelation),
+                new ContainsEntityExpressionImpl<>(5, mulitiEntityContainsExpression, factory, entityRelation));
         return (L) this;
     }
 
@@ -777,16 +785,17 @@ public abstract class AbstractEntitySqlQueryConditionGroupExpression6<E, E2, E3,
      */
     @SuppressWarnings("unchecked")
     @Override
-    public L ba(
-            Consumer<Tuple6<BetweenEntityExpression<E>, BetweenEntityExpression<E2>, BetweenEntityExpression<E3>, BetweenEntityExpression<E4>, BetweenEntityExpression<E5>, BetweenEntityExpression<E6>>> betweenEntityExpressions) {
+    public L ba(Consumer<Tuple6<BetweenEntityExpression<E>, BetweenEntityExpression<E2>, BetweenEntityExpression<E3>,
+            BetweenEntityExpression<E4>, BetweenEntityExpression<E5>,
+            BetweenEntityExpression<E6>>> betweenEntityExpressions) {
         MulitiEntityBetweenExpression<C, L> mulitiExpression = new MulitiEntityBetweenExpressionImpl<>(this);
-        betweenEntityExpressions.accept(Tuples.of(
-                new BetweenEntityExpressionImpl<>(0, mulitiExpression, ignoreStrategy, factory, entityRelation),
-                new BetweenEntityExpressionImpl<>(1, mulitiExpression, ignoreStrategy, factory, entityRelation),
-                new BetweenEntityExpressionImpl<>(2, mulitiExpression, ignoreStrategy, factory, entityRelation),
-                new BetweenEntityExpressionImpl<>(3, mulitiExpression, ignoreStrategy, factory, entityRelation),
-                new BetweenEntityExpressionImpl<>(4, mulitiExpression, ignoreStrategy, factory, entityRelation),
-                new BetweenEntityExpressionImpl<>(5, mulitiExpression, ignoreStrategy, factory, entityRelation)));
+        betweenEntityExpressions
+                .accept(Tuples.of(new BetweenEntityExpressionImpl<>(0, mulitiExpression, factory, entityRelation),
+                        new BetweenEntityExpressionImpl<>(1, mulitiExpression, factory, entityRelation),
+                        new BetweenEntityExpressionImpl<>(2, mulitiExpression, factory, entityRelation),
+                        new BetweenEntityExpressionImpl<>(3, mulitiExpression, factory, entityRelation),
+                        new BetweenEntityExpressionImpl<>(4, mulitiExpression, factory, entityRelation),
+                        new BetweenEntityExpressionImpl<>(5, mulitiExpression, factory, entityRelation)));
         return (L) this;
     }
 
@@ -795,16 +804,16 @@ public abstract class AbstractEntitySqlQueryConditionGroupExpression6<E, E2, E3,
      */
     @SuppressWarnings("unchecked")
     @Override
-    public L ba(
-            SixArgusConsumer<BetweenEntityExpression<E>, BetweenEntityExpression<E2>, BetweenEntityExpression<E3>, BetweenEntityExpression<E4>, BetweenEntityExpression<E5>, BetweenEntityExpression<E6>> betweenEntityExpressions) {
+    public L ba(SixArgusConsumer<BetweenEntityExpression<E>, BetweenEntityExpression<E2>, BetweenEntityExpression<E3>,
+            BetweenEntityExpression<E4>, BetweenEntityExpression<E5>,
+            BetweenEntityExpression<E6>> betweenEntityExpressions) {
         MulitiEntityBetweenExpression<C, L> mulitiExpression = new MulitiEntityBetweenExpressionImpl<>(this);
-        betweenEntityExpressions.accept(
-                new BetweenEntityExpressionImpl<>(0, mulitiExpression, ignoreStrategy, factory, entityRelation),
-                new BetweenEntityExpressionImpl<>(1, mulitiExpression, ignoreStrategy, factory, entityRelation),
-                new BetweenEntityExpressionImpl<>(2, mulitiExpression, ignoreStrategy, factory, entityRelation),
-                new BetweenEntityExpressionImpl<>(3, mulitiExpression, ignoreStrategy, factory, entityRelation),
-                new BetweenEntityExpressionImpl<>(4, mulitiExpression, ignoreStrategy, factory, entityRelation),
-                new BetweenEntityExpressionImpl<>(5, mulitiExpression, ignoreStrategy, factory, entityRelation));
+        betweenEntityExpressions.accept(new BetweenEntityExpressionImpl<>(0, mulitiExpression, factory, entityRelation),
+                new BetweenEntityExpressionImpl<>(1, mulitiExpression, factory, entityRelation),
+                new BetweenEntityExpressionImpl<>(2, mulitiExpression, factory, entityRelation),
+                new BetweenEntityExpressionImpl<>(3, mulitiExpression, factory, entityRelation),
+                new BetweenEntityExpressionImpl<>(4, mulitiExpression, factory, entityRelation),
+                new BetweenEntityExpressionImpl<>(5, mulitiExpression, factory, entityRelation));
         return (L) this;
     }
 
@@ -813,16 +822,17 @@ public abstract class AbstractEntitySqlQueryConditionGroupExpression6<E, E2, E3,
      */
     @SuppressWarnings("unchecked")
     @Override
-    public L nba(
-            Consumer<Tuple6<NotBetweenEntityExpression<E>, NotBetweenEntityExpression<E2>, NotBetweenEntityExpression<E3>, NotBetweenEntityExpression<E4>, NotBetweenEntityExpression<E5>, NotBetweenEntityExpression<E6>>> notBetweenEntityExpressions) {
+    public L nba(Consumer<Tuple6<NotBetweenEntityExpression<E>, NotBetweenEntityExpression<E2>,
+            NotBetweenEntityExpression<E3>, NotBetweenEntityExpression<E4>, NotBetweenEntityExpression<E5>,
+            NotBetweenEntityExpression<E6>>> notBetweenEntityExpressions) {
         MulitiEntityNotBetweenExpression<C, L> mulitiExpression = new MulitiEntityNotBetweenExpressionImpl<>(this);
-        notBetweenEntityExpressions.accept(Tuples.of(
-                new NotBetweenEntityExpressionImpl<>(0, mulitiExpression, ignoreStrategy, factory, entityRelation),
-                new NotBetweenEntityExpressionImpl<>(1, mulitiExpression, ignoreStrategy, factory, entityRelation),
-                new NotBetweenEntityExpressionImpl<>(2, mulitiExpression, ignoreStrategy, factory, entityRelation),
-                new NotBetweenEntityExpressionImpl<>(3, mulitiExpression, ignoreStrategy, factory, entityRelation),
-                new NotBetweenEntityExpressionImpl<>(4, mulitiExpression, ignoreStrategy, factory, entityRelation),
-                new NotBetweenEntityExpressionImpl<>(5, mulitiExpression, ignoreStrategy, factory, entityRelation)));
+        notBetweenEntityExpressions
+                .accept(Tuples.of(new NotBetweenEntityExpressionImpl<>(0, mulitiExpression, factory, entityRelation),
+                        new NotBetweenEntityExpressionImpl<>(1, mulitiExpression, factory, entityRelation),
+                        new NotBetweenEntityExpressionImpl<>(2, mulitiExpression, factory, entityRelation),
+                        new NotBetweenEntityExpressionImpl<>(3, mulitiExpression, factory, entityRelation),
+                        new NotBetweenEntityExpressionImpl<>(4, mulitiExpression, factory, entityRelation),
+                        new NotBetweenEntityExpressionImpl<>(5, mulitiExpression, factory, entityRelation)));
         return (L) this;
     }
 
@@ -831,16 +841,17 @@ public abstract class AbstractEntitySqlQueryConditionGroupExpression6<E, E2, E3,
      */
     @SuppressWarnings("unchecked")
     @Override
-    public L nba(
-            SixArgusConsumer<NotBetweenEntityExpression<E>, NotBetweenEntityExpression<E2>, NotBetweenEntityExpression<E3>, NotBetweenEntityExpression<E4>, NotBetweenEntityExpression<E5>, NotBetweenEntityExpression<E6>> notBetweenEntityExpressions) {
+    public L nba(SixArgusConsumer<NotBetweenEntityExpression<E>, NotBetweenEntityExpression<E2>,
+            NotBetweenEntityExpression<E3>, NotBetweenEntityExpression<E4>, NotBetweenEntityExpression<E5>,
+            NotBetweenEntityExpression<E6>> notBetweenEntityExpressions) {
         MulitiEntityNotBetweenExpression<C, L> mulitiExpression = new MulitiEntityNotBetweenExpressionImpl<>(this);
         notBetweenEntityExpressions.accept(
-                new NotBetweenEntityExpressionImpl<>(0, mulitiExpression, ignoreStrategy, factory, entityRelation),
-                new NotBetweenEntityExpressionImpl<>(1, mulitiExpression, ignoreStrategy, factory, entityRelation),
-                new NotBetweenEntityExpressionImpl<>(2, mulitiExpression, ignoreStrategy, factory, entityRelation),
-                new NotBetweenEntityExpressionImpl<>(3, mulitiExpression, ignoreStrategy, factory, entityRelation),
-                new NotBetweenEntityExpressionImpl<>(4, mulitiExpression, ignoreStrategy, factory, entityRelation),
-                new NotBetweenEntityExpressionImpl<>(5, mulitiExpression, ignoreStrategy, factory, entityRelation));
+                new NotBetweenEntityExpressionImpl<>(0, mulitiExpression, factory, entityRelation),
+                new NotBetweenEntityExpressionImpl<>(1, mulitiExpression, factory, entityRelation),
+                new NotBetweenEntityExpressionImpl<>(2, mulitiExpression, factory, entityRelation),
+                new NotBetweenEntityExpressionImpl<>(3, mulitiExpression, factory, entityRelation),
+                new NotBetweenEntityExpressionImpl<>(4, mulitiExpression, factory, entityRelation),
+                new NotBetweenEntityExpressionImpl<>(5, mulitiExpression, factory, entityRelation));
         return (L) this;
     }
 
@@ -849,23 +860,18 @@ public abstract class AbstractEntitySqlQueryConditionGroupExpression6<E, E2, E3,
      */
     @SuppressWarnings("unchecked")
     @Override
-    public L nco(
-            Consumer<Tuple6<NotContainsEntityExpression<E>, NotContainsEntityExpression<E2>, NotContainsEntityExpression<E3>, NotContainsEntityExpression<E4>, NotContainsEntityExpression<E5>, NotContainsEntityExpression<E6>>> notContainsEntityExpressions) {
-        MulitiEntityNotContainsExpression<C, L> mulitiEntityContainsExpression = new MulitiEntityNotContainsExpressionImpl<>(
-                this);
+    public L nco(Consumer<Tuple6<NotContainsEntityExpression<E>, NotContainsEntityExpression<E2>,
+            NotContainsEntityExpression<E3>, NotContainsEntityExpression<E4>, NotContainsEntityExpression<E5>,
+            NotContainsEntityExpression<E6>>> notContainsEntityExpressions) {
+        MulitiEntityNotContainsExpression<C,
+                L> mulitiEntityContainsExpression = new MulitiEntityNotContainsExpressionImpl<>(this);
         notContainsEntityExpressions.accept(Tuples.of(
-                new NotContainsEntityExpressionImpl<>(0, mulitiEntityContainsExpression, ignoreStrategy, factory,
-                        entityRelation),
-                new NotContainsEntityExpressionImpl<>(1, mulitiEntityContainsExpression, ignoreStrategy, factory,
-                        entityRelation),
-                new NotContainsEntityExpressionImpl<>(2, mulitiEntityContainsExpression, ignoreStrategy, factory,
-                        entityRelation),
-                new NotContainsEntityExpressionImpl<>(3, mulitiEntityContainsExpression, ignoreStrategy, factory,
-                        entityRelation),
-                new NotContainsEntityExpressionImpl<>(4, mulitiEntityContainsExpression, ignoreStrategy, factory,
-                        entityRelation),
-                new NotContainsEntityExpressionImpl<>(5, mulitiEntityContainsExpression, ignoreStrategy, factory,
-                        entityRelation)));
+                new NotContainsEntityExpressionImpl<>(0, mulitiEntityContainsExpression, factory, entityRelation),
+                new NotContainsEntityExpressionImpl<>(1, mulitiEntityContainsExpression, factory, entityRelation),
+                new NotContainsEntityExpressionImpl<>(2, mulitiEntityContainsExpression, factory, entityRelation),
+                new NotContainsEntityExpressionImpl<>(3, mulitiEntityContainsExpression, factory, entityRelation),
+                new NotContainsEntityExpressionImpl<>(4, mulitiEntityContainsExpression, factory, entityRelation),
+                new NotContainsEntityExpressionImpl<>(5, mulitiEntityContainsExpression, factory, entityRelation)));
         return (L) this;
     }
 
@@ -874,23 +880,18 @@ public abstract class AbstractEntitySqlQueryConditionGroupExpression6<E, E2, E3,
      */
     @SuppressWarnings("unchecked")
     @Override
-    public L nco(
-            SixArgusConsumer<NotContainsEntityExpression<E>, NotContainsEntityExpression<E2>, NotContainsEntityExpression<E3>, NotContainsEntityExpression<E4>, NotContainsEntityExpression<E5>, NotContainsEntityExpression<E6>> notContainsEntityExpressions) {
-        MulitiEntityNotContainsExpression<C, L> mulitiEntityContainsExpression = new MulitiEntityNotContainsExpressionImpl<>(
-                this);
+    public L nco(SixArgusConsumer<NotContainsEntityExpression<E>, NotContainsEntityExpression<E2>,
+            NotContainsEntityExpression<E3>, NotContainsEntityExpression<E4>, NotContainsEntityExpression<E5>,
+            NotContainsEntityExpression<E6>> notContainsEntityExpressions) {
+        MulitiEntityNotContainsExpression<C,
+                L> mulitiEntityContainsExpression = new MulitiEntityNotContainsExpressionImpl<>(this);
         notContainsEntityExpressions.accept(
-                new NotContainsEntityExpressionImpl<>(0, mulitiEntityContainsExpression, ignoreStrategy, factory,
-                        entityRelation),
-                new NotContainsEntityExpressionImpl<>(1, mulitiEntityContainsExpression, ignoreStrategy, factory,
-                        entityRelation),
-                new NotContainsEntityExpressionImpl<>(2, mulitiEntityContainsExpression, ignoreStrategy, factory,
-                        entityRelation),
-                new NotContainsEntityExpressionImpl<>(3, mulitiEntityContainsExpression, ignoreStrategy, factory,
-                        entityRelation),
-                new NotContainsEntityExpressionImpl<>(4, mulitiEntityContainsExpression, ignoreStrategy, factory,
-                        entityRelation),
-                new NotContainsEntityExpressionImpl<>(5, mulitiEntityContainsExpression, ignoreStrategy, factory,
-                        entityRelation));
+                new NotContainsEntityExpressionImpl<>(0, mulitiEntityContainsExpression, factory, entityRelation),
+                new NotContainsEntityExpressionImpl<>(1, mulitiEntityContainsExpression, factory, entityRelation),
+                new NotContainsEntityExpressionImpl<>(2, mulitiEntityContainsExpression, factory, entityRelation),
+                new NotContainsEntityExpressionImpl<>(3, mulitiEntityContainsExpression, factory, entityRelation),
+                new NotContainsEntityExpressionImpl<>(4, mulitiEntityContainsExpression, factory, entityRelation),
+                new NotContainsEntityExpressionImpl<>(5, mulitiEntityContainsExpression, factory, entityRelation));
         return (L) this;
     }
 
@@ -899,16 +900,17 @@ public abstract class AbstractEntitySqlQueryConditionGroupExpression6<E, E2, E3,
      */
     @SuppressWarnings("unchecked")
     @Override
-    public L newv(
-            Consumer<Tuple6<NotEndWithEntityExpression<E>, NotEndWithEntityExpression<E2>, NotEndWithEntityExpression<E3>, NotEndWithEntityExpression<E4>, NotEndWithEntityExpression<E5>, NotEndWithEntityExpression<E6>>> notEndWithEntityExpressions) {
+    public L newv(Consumer<Tuple6<NotEndWithEntityExpression<E>, NotEndWithEntityExpression<E2>,
+            NotEndWithEntityExpression<E3>, NotEndWithEntityExpression<E4>, NotEndWithEntityExpression<E5>,
+            NotEndWithEntityExpression<E6>>> notEndWithEntityExpressions) {
         MulitiEntityNotEndWithExpression<C, L> mulitiExpression = new MulitiEntityNotEndWithExpressionImpl<>(this);
-        notEndWithEntityExpressions.accept(Tuples.of(
-                new NotEndWithEntityExpressionImpl<>(0, mulitiExpression, ignoreStrategy, factory, entityRelation),
-                new NotEndWithEntityExpressionImpl<>(1, mulitiExpression, ignoreStrategy, factory, entityRelation),
-                new NotEndWithEntityExpressionImpl<>(2, mulitiExpression, ignoreStrategy, factory, entityRelation),
-                new NotEndWithEntityExpressionImpl<>(3, mulitiExpression, ignoreStrategy, factory, entityRelation),
-                new NotEndWithEntityExpressionImpl<>(4, mulitiExpression, ignoreStrategy, factory, entityRelation),
-                new NotEndWithEntityExpressionImpl<>(5, mulitiExpression, ignoreStrategy, factory, entityRelation)));
+        notEndWithEntityExpressions
+                .accept(Tuples.of(new NotEndWithEntityExpressionImpl<>(0, mulitiExpression, factory, entityRelation),
+                        new NotEndWithEntityExpressionImpl<>(1, mulitiExpression, factory, entityRelation),
+                        new NotEndWithEntityExpressionImpl<>(2, mulitiExpression, factory, entityRelation),
+                        new NotEndWithEntityExpressionImpl<>(3, mulitiExpression, factory, entityRelation),
+                        new NotEndWithEntityExpressionImpl<>(4, mulitiExpression, factory, entityRelation),
+                        new NotEndWithEntityExpressionImpl<>(5, mulitiExpression, factory, entityRelation)));
         return (L) this;
     }
 
@@ -917,16 +919,17 @@ public abstract class AbstractEntitySqlQueryConditionGroupExpression6<E, E2, E3,
      */
     @SuppressWarnings("unchecked")
     @Override
-    public L newv(
-            SixArgusConsumer<NotEndWithEntityExpression<E>, NotEndWithEntityExpression<E2>, NotEndWithEntityExpression<E3>, NotEndWithEntityExpression<E4>, NotEndWithEntityExpression<E5>, NotEndWithEntityExpression<E6>> notEndWithEntityExpressions) {
+    public L newv(SixArgusConsumer<NotEndWithEntityExpression<E>, NotEndWithEntityExpression<E2>,
+            NotEndWithEntityExpression<E3>, NotEndWithEntityExpression<E4>, NotEndWithEntityExpression<E5>,
+            NotEndWithEntityExpression<E6>> notEndWithEntityExpressions) {
         MulitiEntityNotEndWithExpression<C, L> mulitiExpression = new MulitiEntityNotEndWithExpressionImpl<>(this);
         notEndWithEntityExpressions.accept(
-                new NotEndWithEntityExpressionImpl<>(0, mulitiExpression, ignoreStrategy, factory, entityRelation),
-                new NotEndWithEntityExpressionImpl<>(1, mulitiExpression, ignoreStrategy, factory, entityRelation),
-                new NotEndWithEntityExpressionImpl<>(2, mulitiExpression, ignoreStrategy, factory, entityRelation),
-                new NotEndWithEntityExpressionImpl<>(3, mulitiExpression, ignoreStrategy, factory, entityRelation),
-                new NotEndWithEntityExpressionImpl<>(4, mulitiExpression, ignoreStrategy, factory, entityRelation),
-                new NotEndWithEntityExpressionImpl<>(5, mulitiExpression, ignoreStrategy, factory, entityRelation));
+                new NotEndWithEntityExpressionImpl<>(0, mulitiExpression, factory, entityRelation),
+                new NotEndWithEntityExpressionImpl<>(1, mulitiExpression, factory, entityRelation),
+                new NotEndWithEntityExpressionImpl<>(2, mulitiExpression, factory, entityRelation),
+                new NotEndWithEntityExpressionImpl<>(3, mulitiExpression, factory, entityRelation),
+                new NotEndWithEntityExpressionImpl<>(4, mulitiExpression, factory, entityRelation),
+                new NotEndWithEntityExpressionImpl<>(5, mulitiExpression, factory, entityRelation));
         return (L) this;
     }
 
@@ -935,16 +938,17 @@ public abstract class AbstractEntitySqlQueryConditionGroupExpression6<E, E2, E3,
      */
     @SuppressWarnings("unchecked")
     @Override
-    public L nsw(
-            Consumer<Tuple6<NotStartWithEntityExpression<E>, NotStartWithEntityExpression<E2>, NotStartWithEntityExpression<E3>, NotStartWithEntityExpression<E4>, NotStartWithEntityExpression<E5>, NotStartWithEntityExpression<E6>>> notStartWithEntityExpressions) {
+    public L nsw(Consumer<Tuple6<NotStartWithEntityExpression<E>, NotStartWithEntityExpression<E2>,
+            NotStartWithEntityExpression<E3>, NotStartWithEntityExpression<E4>, NotStartWithEntityExpression<E5>,
+            NotStartWithEntityExpression<E6>>> notStartWithEntityExpressions) {
         MulitiEntityNotStartWithExpression<C, L> mulitiExpression = new MulitiEntityNotStartWithExpressionImpl<>(this);
-        notStartWithEntityExpressions.accept(Tuples.of(
-                new NotStartWithEntityExpressionImpl<>(0, mulitiExpression, ignoreStrategy, factory, entityRelation),
-                new NotStartWithEntityExpressionImpl<>(1, mulitiExpression, ignoreStrategy, factory, entityRelation),
-                new NotStartWithEntityExpressionImpl<>(2, mulitiExpression, ignoreStrategy, factory, entityRelation),
-                new NotStartWithEntityExpressionImpl<>(3, mulitiExpression, ignoreStrategy, factory, entityRelation),
-                new NotStartWithEntityExpressionImpl<>(4, mulitiExpression, ignoreStrategy, factory, entityRelation),
-                new NotStartWithEntityExpressionImpl<>(5, mulitiExpression, ignoreStrategy, factory, entityRelation)));
+        notStartWithEntityExpressions
+                .accept(Tuples.of(new NotStartWithEntityExpressionImpl<>(0, mulitiExpression, factory, entityRelation),
+                        new NotStartWithEntityExpressionImpl<>(1, mulitiExpression, factory, entityRelation),
+                        new NotStartWithEntityExpressionImpl<>(2, mulitiExpression, factory, entityRelation),
+                        new NotStartWithEntityExpressionImpl<>(3, mulitiExpression, factory, entityRelation),
+                        new NotStartWithEntityExpressionImpl<>(4, mulitiExpression, factory, entityRelation),
+                        new NotStartWithEntityExpressionImpl<>(5, mulitiExpression, factory, entityRelation)));
         return (L) this;
     }
 
@@ -953,16 +957,17 @@ public abstract class AbstractEntitySqlQueryConditionGroupExpression6<E, E2, E3,
      */
     @SuppressWarnings("unchecked")
     @Override
-    public L nsw(
-            SixArgusConsumer<NotStartWithEntityExpression<E>, NotStartWithEntityExpression<E2>, NotStartWithEntityExpression<E3>, NotStartWithEntityExpression<E4>, NotStartWithEntityExpression<E5>, NotStartWithEntityExpression<E6>> notStartWithEntityExpressions) {
+    public L nsw(SixArgusConsumer<NotStartWithEntityExpression<E>, NotStartWithEntityExpression<E2>,
+            NotStartWithEntityExpression<E3>, NotStartWithEntityExpression<E4>, NotStartWithEntityExpression<E5>,
+            NotStartWithEntityExpression<E6>> notStartWithEntityExpressions) {
         MulitiEntityNotStartWithExpression<C, L> mulitiExpression = new MulitiEntityNotStartWithExpressionImpl<>(this);
         notStartWithEntityExpressions.accept(
-                new NotStartWithEntityExpressionImpl<>(0, mulitiExpression, ignoreStrategy, factory, entityRelation),
-                new NotStartWithEntityExpressionImpl<>(1, mulitiExpression, ignoreStrategy, factory, entityRelation),
-                new NotStartWithEntityExpressionImpl<>(2, mulitiExpression, ignoreStrategy, factory, entityRelation),
-                new NotStartWithEntityExpressionImpl<>(3, mulitiExpression, ignoreStrategy, factory, entityRelation),
-                new NotStartWithEntityExpressionImpl<>(4, mulitiExpression, ignoreStrategy, factory, entityRelation),
-                new NotStartWithEntityExpressionImpl<>(5, mulitiExpression, ignoreStrategy, factory, entityRelation));
+                new NotStartWithEntityExpressionImpl<>(0, mulitiExpression, factory, entityRelation),
+                new NotStartWithEntityExpressionImpl<>(1, mulitiExpression, factory, entityRelation),
+                new NotStartWithEntityExpressionImpl<>(2, mulitiExpression, factory, entityRelation),
+                new NotStartWithEntityExpressionImpl<>(3, mulitiExpression, factory, entityRelation),
+                new NotStartWithEntityExpressionImpl<>(4, mulitiExpression, factory, entityRelation),
+                new NotStartWithEntityExpressionImpl<>(5, mulitiExpression, factory, entityRelation));
         return (L) this;
     }
 
@@ -971,16 +976,17 @@ public abstract class AbstractEntitySqlQueryConditionGroupExpression6<E, E2, E3,
      */
     @SuppressWarnings("unchecked")
     @Override
-    public L nl(
-            Consumer<Tuple6<NotLikeEntityExpression<E>, NotLikeEntityExpression<E2>, NotLikeEntityExpression<E3>, NotLikeEntityExpression<E4>, NotLikeEntityExpression<E5>, NotLikeEntityExpression<E6>>> notLikeEntityExpressions) {
+    public L nl(Consumer<Tuple6<NotLikeEntityExpression<E>, NotLikeEntityExpression<E2>, NotLikeEntityExpression<E3>,
+            NotLikeEntityExpression<E4>, NotLikeEntityExpression<E5>,
+            NotLikeEntityExpression<E6>>> notLikeEntityExpressions) {
         MulitiEntityNotLikeExpression<C, L> mulitiExpression = new MulitiEntityNotLikeExpressionImpl<>(this);
-        notLikeEntityExpressions.accept(Tuples.of(
-                new NotLikeEntityExpressionImpl<>(0, mulitiExpression, ignoreStrategy, factory, entityRelation),
-                new NotLikeEntityExpressionImpl<>(1, mulitiExpression, ignoreStrategy, factory, entityRelation),
-                new NotLikeEntityExpressionImpl<>(2, mulitiExpression, ignoreStrategy, factory, entityRelation),
-                new NotLikeEntityExpressionImpl<>(3, mulitiExpression, ignoreStrategy, factory, entityRelation),
-                new NotLikeEntityExpressionImpl<>(4, mulitiExpression, ignoreStrategy, factory, entityRelation),
-                new NotLikeEntityExpressionImpl<>(5, mulitiExpression, ignoreStrategy, factory, entityRelation)));
+        notLikeEntityExpressions
+                .accept(Tuples.of(new NotLikeEntityExpressionImpl<>(0, mulitiExpression, factory, entityRelation),
+                        new NotLikeEntityExpressionImpl<>(1, mulitiExpression, factory, entityRelation),
+                        new NotLikeEntityExpressionImpl<>(2, mulitiExpression, factory, entityRelation),
+                        new NotLikeEntityExpressionImpl<>(3, mulitiExpression, factory, entityRelation),
+                        new NotLikeEntityExpressionImpl<>(4, mulitiExpression, factory, entityRelation),
+                        new NotLikeEntityExpressionImpl<>(5, mulitiExpression, factory, entityRelation)));
         return (L) this;
     }
 
@@ -989,16 +995,16 @@ public abstract class AbstractEntitySqlQueryConditionGroupExpression6<E, E2, E3,
      */
     @SuppressWarnings("unchecked")
     @Override
-    public L nl(
-            SixArgusConsumer<NotLikeEntityExpression<E>, NotLikeEntityExpression<E2>, NotLikeEntityExpression<E3>, NotLikeEntityExpression<E4>, NotLikeEntityExpression<E5>, NotLikeEntityExpression<E6>> notLikeEntityExpressions) {
+    public L nl(SixArgusConsumer<NotLikeEntityExpression<E>, NotLikeEntityExpression<E2>, NotLikeEntityExpression<E3>,
+            NotLikeEntityExpression<E4>, NotLikeEntityExpression<E5>,
+            NotLikeEntityExpression<E6>> notLikeEntityExpressions) {
         MulitiEntityNotLikeExpression<C, L> mulitiExpression = new MulitiEntityNotLikeExpressionImpl<>(this);
-        notLikeEntityExpressions.accept(
-                new NotLikeEntityExpressionImpl<>(0, mulitiExpression, ignoreStrategy, factory, entityRelation),
-                new NotLikeEntityExpressionImpl<>(1, mulitiExpression, ignoreStrategy, factory, entityRelation),
-                new NotLikeEntityExpressionImpl<>(2, mulitiExpression, ignoreStrategy, factory, entityRelation),
-                new NotLikeEntityExpressionImpl<>(3, mulitiExpression, ignoreStrategy, factory, entityRelation),
-                new NotLikeEntityExpressionImpl<>(4, mulitiExpression, ignoreStrategy, factory, entityRelation),
-                new NotLikeEntityExpressionImpl<>(5, mulitiExpression, ignoreStrategy, factory, entityRelation));
+        notLikeEntityExpressions.accept(new NotLikeEntityExpressionImpl<>(0, mulitiExpression, factory, entityRelation),
+                new NotLikeEntityExpressionImpl<>(1, mulitiExpression, factory, entityRelation),
+                new NotLikeEntityExpressionImpl<>(2, mulitiExpression, factory, entityRelation),
+                new NotLikeEntityExpressionImpl<>(3, mulitiExpression, factory, entityRelation),
+                new NotLikeEntityExpressionImpl<>(4, mulitiExpression, factory, entityRelation),
+                new NotLikeEntityExpressionImpl<>(5, mulitiExpression, factory, entityRelation));
         return (L) this;
     }
 
@@ -1102,8 +1108,9 @@ public abstract class AbstractEntitySqlQueryConditionGroupExpression6<E, E2, E3,
      * {@inheritDoc}
      */
     @Override
-    public EntityQuerySortedExpression6<E, E2, E3, E4, E5, E6, RS> asc(
-            SixArgusConsumer<SortEntityExpression<E>, SortEntityExpression<E2>, SortEntityExpression<E3>, SortEntityExpression<E4>, SortEntityExpression<E5>, SortEntityExpression<E6>> sortEntityExpressions) {
+    public EntityQuerySortedExpression6<E, E2, E3, E4, E5, E6, RS> asc(SixArgusConsumer<SortEntityExpression<E>,
+            SortEntityExpression<E2>, SortEntityExpression<E3>, SortEntityExpression<E4>, SortEntityExpression<E5>,
+            SortEntityExpression<E6>> sortEntityExpressions) {
         sortEntityExpressions.accept(
                 new SqlSortEntity<>(getRootSortBuilder(), queryAlias, SortOperator.ASC, classMapping),
                 new SqlSortEntity<>(getRootSortBuilder(), queryAlias2, SortOperator.ASC, classMapping2),
@@ -1118,8 +1125,9 @@ public abstract class AbstractEntitySqlQueryConditionGroupExpression6<E, E2, E3,
      * {@inheritDoc}
      */
     @Override
-    public EntityQuerySortedExpression6<E, E2, E3, E4, E5, E6, RS> desc(
-            SixArgusConsumer<SortEntityExpression<E>, SortEntityExpression<E2>, SortEntityExpression<E3>, SortEntityExpression<E4>, SortEntityExpression<E5>, SortEntityExpression<E6>> sortEntityExpressions) {
+    public EntityQuerySortedExpression6<E, E2, E3, E4, E5, E6, RS> desc(SixArgusConsumer<SortEntityExpression<E>,
+            SortEntityExpression<E2>, SortEntityExpression<E3>, SortEntityExpression<E4>, SortEntityExpression<E5>,
+            SortEntityExpression<E6>> sortEntityExpressions) {
         sortEntityExpressions.accept(
                 new SqlSortEntity<>(getRootSortBuilder(), queryAlias, SortOperator.DESC, classMapping),
                 new SqlSortEntity<>(getRootSortBuilder(), queryAlias2, SortOperator.DESC, classMapping2),
@@ -1364,6 +1372,7 @@ public abstract class AbstractEntitySqlQueryConditionGroupExpression6<E, E2, E3,
 
     @SuppressWarnings("unchecked")
     protected SortBuilder getRootSortBuilder() {
-        return ((AbstractEntitySqlQueryConditionGroupExpression6<E, E2, E3, E4, E5, E6, RS, C, L>) getRoot()).sortBuilder;
+        return ((AbstractEntitySqlQueryConditionGroupExpression6<E, E2, E3, E4, E5, E6, RS, C,
+                L>) getRoot()).sortBuilder;
     }
 }

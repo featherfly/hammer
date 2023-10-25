@@ -15,6 +15,7 @@ import cn.featherfly.common.operator.AggregateFunction;
 import cn.featherfly.common.repository.builder.dml.SortBuilder;
 import cn.featherfly.common.structure.page.Limit;
 import cn.featherfly.common.structure.page.PaginationResults;
+import cn.featherfly.hammer.config.dsl.QueryConditionConfig;
 import cn.featherfly.hammer.expression.entity.query.EntityQueryConditionGroupExpression;
 import cn.featherfly.hammer.expression.entity.query.EntityQueryConditionGroupLogicExpression;
 import cn.featherfly.hammer.expression.entity.query.EntityQueryLimitExecutor;
@@ -33,8 +34,9 @@ import cn.featherfly.hammer.sqldb.jdbc.dsl.entity.EntitySqlQueryRelation;
  */
 public abstract class AbstractEntitySqlQueryConditionGroupExpression<E,
         C extends EntityQueryConditionGroupExpression<E, C, L, EntityQuerySortExpression<E>>,
-        L extends EntityQueryConditionGroupLogicExpression<E, C, L, EntityQuerySortExpression<E>>>
-        extends AbstractEntitySqlConditionGroupExpressionBase<E, EntitySqlQueryRelation, SqlSelectBasicBuilder, C, L>
+        L extends EntityQueryConditionGroupLogicExpression<E, C, L, EntityQuerySortExpression<E>>> extends
+        AbstractEntitySqlConditionGroupExpressionBase<E, EntitySqlQueryRelation, SqlSelectBasicBuilder, C, L,
+                QueryConditionConfig>
         implements EntityQueryConditionGroupExpression<E, C, L, EntityQuerySortExpression<E>>,
         EntityQueryConditionGroupLogicExpression<E, C, L, EntityQuerySortExpression<E>>, EntityQuerySortExpression<E>,
         EntityQuerySortedExpression<E> {
@@ -51,10 +53,11 @@ public abstract class AbstractEntitySqlQueryConditionGroupExpression<E,
     /**
      * Instantiates a new abstract entity sql condition group expression.
      *
-     * @param parent         the parent
-     * @param factory        the factory
-     * @param sqlPageFactory the sql page factory
-     * @param queryRelation  the query relation
+     * @param parent               the parent
+     * @param factory              the factory
+     * @param sqlPageFactory       the sql page factory
+     * @param queryRelation        the query relation
+     * @param queryConditionConfig the query condition config
      */
     protected AbstractEntitySqlQueryConditionGroupExpression(L parent, JdbcMappingFactory factory,
             SqlPageFactory sqlPageFactory, EntitySqlQueryRelation queryRelation) {

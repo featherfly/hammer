@@ -43,7 +43,7 @@ public class MulitiEntityNotLikeExpressionImpl<C extends ConditionExpression, L 
      */
     @Override
     public <E> L nl(int index, SerializableFunction<E, String> name, String value, MatchStrategy matchStrategy) {
-        return proxy.nl0(new AtomicInteger(index), name, value, matchStrategy, ignoreStrategy);
+        return proxy.nl0(new AtomicInteger(index), name, value, matchStrategy, getIgnoreStrategy());
     }
 
     /**
@@ -60,7 +60,7 @@ public class MulitiEntityNotLikeExpressionImpl<C extends ConditionExpression, L 
      */
     @Override
     public L nl(int index, SerializableSupplier<String> property, MatchStrategy matchStrategy) {
-        return proxy.nl0(new AtomicInteger(index), property, matchStrategy, ignoreStrategy);
+        return proxy.nl0(new AtomicInteger(index), property, matchStrategy, getIgnoreStrategy());
     }
 
     /**

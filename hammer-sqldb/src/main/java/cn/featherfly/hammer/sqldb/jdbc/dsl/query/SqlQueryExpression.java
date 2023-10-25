@@ -11,9 +11,9 @@ import cn.featherfly.common.lang.Lang;
 import cn.featherfly.common.operator.AggregateFunction;
 import cn.featherfly.common.operator.ComparisonOperator;
 import cn.featherfly.common.operator.ComparisonOperator.MatchStrategy;
-import cn.featherfly.common.repository.IgnoreStrategy;
 import cn.featherfly.common.repository.mapping.ClassMapping;
 import cn.featherfly.common.repository.mapping.PropertyMapping;
+import cn.featherfly.hammer.config.dsl.QueryConditionConfig;
 import cn.featherfly.hammer.dsl.query.QueryConditionGroupExpression;
 import cn.featherfly.hammer.dsl.query.QueryConditionGroupLogicExpression;
 import cn.featherfly.hammer.sqldb.jdbc.Jdbc;
@@ -32,64 +32,53 @@ public class SqlQueryExpression extends SqlQueryConditionGroupExpression {
     /**
      * Instantiates a new sql query expression.
      *
-     * @param jdbc           the jdbc
-     * @param sqlPageFactory the sql page factory
-     * @param selectBuilder  the select builder
-     */
-    public SqlQueryExpression(Jdbc jdbc, SqlPageFactory sqlPageFactory, SqlSelectBasicBuilder selectBuilder) {
-        this(jdbc, sqlPageFactory, IgnoreStrategy.EMPTY);
-    }
-
-    /**
-     * Instantiates a new sql query expression.
-     *
-     * @param jdbc           the jdbc
-     * @param sqlPageFactory the sql page factory
-     * @param selectBuilder  the select builder
-     * @param ignoreStrategy the ignore strategy
+     * @param jdbc                 the jdbc
+     * @param sqlPageFactory       the sql page factory
+     * @param selectBuilder        the select builder
+     * @param queryConditionConfig the query condition config
      */
     public SqlQueryExpression(Jdbc jdbc, SqlPageFactory sqlPageFactory, SqlSelectBasicBuilder selectBuilder,
-            Predicate<?> ignoreStrategy) {
-        super(jdbc, sqlPageFactory, selectBuilder.getDefaultTableAlias(), ignoreStrategy);
+            QueryConditionConfig queryConditionConfig) {
+        super(jdbc, sqlPageFactory, selectBuilder.getDefaultTableAlias(), queryConditionConfig);
         this.selectBuilder = selectBuilder;
     }
 
     /**
      * Instantiates a new sql query expression.
      *
-     * @param parent         the parent
-     * @param jdbc           the jdbc
-     * @param sqlPageFactory the sql page factory
-     * @param queryAlias     the query alias
-     * @param ignoreStrategy the ignore strategy
+     * @param parent               the parent
+     * @param jdbc                 the jdbc
+     * @param sqlPageFactory       the sql page factory
+     * @param queryAlias           the query alias
+     * @param queryConditionConfig the query condition config
      */
     SqlQueryExpression(QueryConditionGroupLogicExpression parent, Jdbc jdbc, SqlPageFactory sqlPageFactory,
-            String queryAlias, Predicate<?> ignoreStrategy) {
-        super(parent, jdbc, sqlPageFactory, queryAlias, ignoreStrategy);
+            String queryAlias, QueryConditionConfig queryConditionConfig) {
+        super(parent, jdbc, sqlPageFactory, queryAlias, queryConditionConfig);
     }
 
     /**
      * Instantiates a new sql query expression.
      *
-     * @param jdbc           the jdbc
-     * @param sqlPageFactory the sql page factory
-     * @param queryAlias     the query alias
-     * @param ignoreStrategy the ignore strategy
+     * @param jdbc                 the jdbc
+     * @param sqlPageFactory       the sql page factory
+     * @param queryAlias           the query alias
+     * @param queryConditionConfig the query condition config
      */
     public SqlQueryExpression(Jdbc jdbc, SqlPageFactory sqlPageFactory, String queryAlias,
-            Predicate<?> ignoreStrategy) {
-        super(jdbc, sqlPageFactory, queryAlias, ignoreStrategy);
+            QueryConditionConfig queryConditionConfig) {
+        super(jdbc, sqlPageFactory, queryAlias, queryConditionConfig);
     }
 
     /**
      * Instantiates a new sql query expression.
      *
-     * @param jdbc           jdbc
-     * @param sqlPageFactory the sql page factory
-     * @param ignoreStrategy the ignore strategy
+     * @param jdbc                 jdbc
+     * @param sqlPageFactory       the sql page factory
+     * @param queryConditionConfig the query condition config
      */
-    public SqlQueryExpression(Jdbc jdbc, SqlPageFactory sqlPageFactory, Predicate<?> ignoreStrategy) {
-        super(jdbc, sqlPageFactory, ignoreStrategy);
+    public SqlQueryExpression(Jdbc jdbc, SqlPageFactory sqlPageFactory, QueryConditionConfig queryConditionConfig) {
+        super(jdbc, sqlPageFactory, queryConditionConfig);
     }
 
     /**
@@ -97,7 +86,7 @@ public class SqlQueryExpression extends SqlQueryConditionGroupExpression {
      */
     @Override
     protected QueryConditionGroupExpression createGroup(QueryConditionGroupLogicExpression parent, String queryAlias) {
-        return new SqlQueryExpression(parent, jdbc, sqlPageFactory, queryAlias, ignoreStrategy);
+        return new SqlQueryExpression(parent, jdbc, sqlPageFactory, queryAlias, (QueryConditionConfig) conditionConfig);
     }
 
     /**
@@ -142,7 +131,7 @@ public class SqlQueryExpression extends SqlQueryConditionGroupExpression {
      * {@inheritDoc}
      */
     @Override
-    public <CM extends ClassMapping<T, P>, T, P extends PropertyMapping<P>> CM getClassMapping(int index) {
+    public <M extends ClassMapping<T, P>, T, P extends PropertyMapping<P>> M getClassMapping(int index) {
         // IMPLSOON 未实现
         throw new NotImplementedException();
     }

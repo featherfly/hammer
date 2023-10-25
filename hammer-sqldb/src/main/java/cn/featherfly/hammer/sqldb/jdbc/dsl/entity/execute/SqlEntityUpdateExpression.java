@@ -5,11 +5,14 @@ import java.util.ArrayList;
 import java.util.List;
 
 import cn.featherfly.common.constant.Chars;
+import cn.featherfly.common.db.JdbcException;
 import cn.featherfly.common.db.builder.dml.basic.SqlUpdateSetBasicBuilder;
 import cn.featherfly.common.db.mapping.JdbcMappingFactory;
 import cn.featherfly.common.lang.Lang;
+import cn.featherfly.hammer.config.dsl.UpdateConditionConfig;
 import cn.featherfly.hammer.dsl.entity.execute.EntityExecutableConditionGroup;
 import cn.featherfly.hammer.dsl.entity.execute.EntityExecutableConditionGroupLogic;
+import cn.featherfly.hammer.sqldb.SqldbHammerException;
 import cn.featherfly.hammer.sqldb.jdbc.dsl.entity.EntitySqlUpdateRelation;
 
 /**
@@ -18,8 +21,8 @@ import cn.featherfly.hammer.sqldb.jdbc.dsl.entity.EntitySqlUpdateRelation;
  * @author zhongj
  * @param <E> the element type
  */
-public class SqlEntityUpdateExpression<E> extends
-        AbstractSqlEntityExecutableConditionGroupExpression<E, EntitySqlUpdateRelation, SqlUpdateSetBasicBuilder> {
+public class SqlEntityUpdateExpression<E> extends AbstractSqlEntityExecutableConditionGroupExpression<E,
+        EntitySqlUpdateRelation, SqlUpdateSetBasicBuilder, UpdateConditionConfig> {
 
     /**
      * Instantiates a new sql entity update expression.
@@ -39,8 +42,8 @@ public class SqlEntityUpdateExpression<E> extends
      * @param factory        the factory
      * @param entityRelation the entity relation
      */
-    SqlEntityUpdateExpression(EntityExecutableConditionGroupLogic<E> parent, JdbcMappingFactory factory,
-            EntitySqlUpdateRelation entityRelation) {
+    SqlEntityUpdateExpression(EntityExecutableConditionGroupLogic<E, UpdateConditionConfig> parent,
+            JdbcMappingFactory factory, EntitySqlUpdateRelation entityRelation) {
         super(parent, factory, entityRelation);
     }
 
@@ -49,20 +52,27 @@ public class SqlEntityUpdateExpression<E> extends
      */
     @Override
     public String build() {
-        if (entityRelation.getBuilder().getParams().isEmpty()) {
-            return null;
-        }
-        // YUFEI_TODO 后续加入设置参数，是否允许无条件筛选参数的更新操作（因为无条件帅选参数更新是危险操作）
-        //        if (Lang.isEmpty(getParams())) {
-        //            return null;
-        //        }
         String condition = super.build();
         if (parent == null) {
             if (Lang.isEmpty(condition)) {
-                return entityRelation.getBuilder().build();
+                switch (((UpdateConditionConfig) conditionConfig).getEmptyConditionStrategy()) {
+                    case EXCEPTION:
+                        throw new SqldbHammerException("empty condition");
+                    case NON_EXECUTION:
+                        return null;
+                    case EXECUTION:
+                        return entityRelation.getBuilder().build();
+                    default:
+                        return entityRelation.getBuilder().build();
+                }
             } else {
-                return entityRelation.getBuilder().build() + Chars.SPACE
-                        + entityRelation.getJdbc().getDialect().getKeywords().where() + Chars.SPACE + condition;
+                try {
+                    return entityRelation.getBuilder().build() + Chars.SPACE
+                            + entityRelation.getJdbc().getDialect().getKeywords().where() + Chars.SPACE + condition;
+                } catch (JdbcException e) {
+                    // no value to set, use NON_EXECUTION strategy
+                    return null;
+                }
             }
         } else {
             return condition;
@@ -86,8 +96,8 @@ public class SqlEntityUpdateExpression<E> extends
      * {@inheritDoc}
      */
     @Override
-    protected EntityExecutableConditionGroup<E> createGroup(
-            EntityExecutableConditionGroupLogic<E> parent) {
+    protected EntityExecutableConditionGroup<E, UpdateConditionConfig> createGroup(
+            EntityExecutableConditionGroupLogic<E, UpdateConditionConfig> parent) {
         return new SqlEntityUpdateExpression<>(parent, factory, entityRelation);
     }
 }

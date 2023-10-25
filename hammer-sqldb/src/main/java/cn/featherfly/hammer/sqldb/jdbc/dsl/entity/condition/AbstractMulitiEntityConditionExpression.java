@@ -36,6 +36,7 @@ import cn.featherfly.common.operator.ComparisonOperator;
 import cn.featherfly.common.operator.ComparisonOperator.MatchStrategy;
 import cn.featherfly.common.repository.mapping.ClassMapping;
 import cn.featherfly.common.repository.mapping.PropertyMapping;
+import cn.featherfly.hammer.config.dsl.ConditionConfig;
 import cn.featherfly.hammer.expression.condition.AbstractMulitiConditionExpression;
 import cn.featherfly.hammer.expression.condition.ConditionExpression;
 import cn.featherfly.hammer.expression.condition.LogicExpression;
@@ -54,10 +55,10 @@ public abstract class AbstractMulitiEntityConditionExpression<C extends Conditio
     /**
      * Instantiates a new abstract muliti entity condition expression.
      *
-     * @param ignoreStrategy the ignore strategy
+     * @param conditionConfig the condition config
      */
-    protected AbstractMulitiEntityConditionExpression(Predicate<?> ignoreStrategy) {
-        super(ignoreStrategy);
+    protected AbstractMulitiEntityConditionExpression(ConditionConfig<?> conditionConfig) {
+        super(conditionConfig);
     }
 
     /**
@@ -1521,7 +1522,7 @@ public abstract class AbstractMulitiEntityConditionExpression<C extends Conditio
     @SuppressWarnings("unchecked")
     protected L isn0(AtomicInteger index, PropertyMapping<?> pm, Boolean value) {
         return (L) addCondition(new SqlConditionExpressionBuilder(getDialect(), pm.getRepositoryFieldName(), value,
-                ComparisonOperator.ISN, getAlias(index), ignoreStrategy));
+                ComparisonOperator.ISN, getAlias(index), getIgnoreStrategy()));
     }
 
     /**
@@ -1547,7 +1548,7 @@ public abstract class AbstractMulitiEntityConditionExpression<C extends Conditio
     @SuppressWarnings("unchecked")
     protected L inn0(AtomicInteger index, PropertyMapping<?> pm, Boolean value) {
         return (L) addCondition(new SqlConditionExpressionBuilder(getDialect(), pm.getRepositoryFieldName(), value,
-                ComparisonOperator.INN, getAlias(index), ignoreStrategy));
+                ComparisonOperator.INN, getAlias(index), getIgnoreStrategy()));
     }
 
     // ********************************************************************

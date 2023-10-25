@@ -2,19 +2,18 @@
 package cn.featherfly.hammer.sqldb.jdbc.dsl.query;
 
 import java.util.Map;
-import java.util.function.Predicate;
 
 import cn.featherfly.common.constant.Chars;
 import cn.featherfly.common.db.Table;
 import cn.featherfly.common.db.builder.dml.basic.SqlSelectBasicBuilder;
 import cn.featherfly.common.db.metadata.DatabaseMetadata;
 import cn.featherfly.common.function.serializable.SerializableFunction;
-import cn.featherfly.common.lang.AssertIllegalArgument;
 import cn.featherfly.common.lang.LambdaUtils;
 import cn.featherfly.common.lang.Lang;
 import cn.featherfly.common.operator.AggregateFunction;
 import cn.featherfly.common.repository.builder.AliasManager;
 import cn.featherfly.hammer.HammerException;
+import cn.featherfly.hammer.config.dsl.QueryConfig;
 import cn.featherfly.hammer.sqldb.jdbc.Jdbc;
 import cn.featherfly.hammer.sqldb.jdbc.SqlPageFactory;
 
@@ -42,7 +41,7 @@ public abstract class AbstractSqlQueryEntityProperties<E extends AbstractSqlQuer
     protected AliasManager aliasManager;
 
     /** The ignore strategy. */
-    protected Predicate<?> ignoreStrategy;
+    protected QueryConfig queryConfig;
 
     /** The table alias. */
     protected String tableAlias;
@@ -59,12 +58,12 @@ public abstract class AbstractSqlQueryEntityProperties<E extends AbstractSqlQuer
      * @param ignoreStrategy   the ignore strategy
      */
     protected AbstractSqlQueryEntityProperties(Jdbc jdbc, DatabaseMetadata databaseMetadata, String tableName,
-            String tableAlias, SqlPageFactory sqlPageFactory, AliasManager aliasManager, Predicate<?> ignoreStrategy) {
-        AssertIllegalArgument.isNotNull(ignoreStrategy, "ignoreStrategy");
-        this.ignoreStrategy = ignoreStrategy;
+            String tableAlias, SqlPageFactory sqlPageFactory, AliasManager aliasManager, QueryConfig queryConfig) {
+        //        AssertIllegalArgument.isNotNull(queryConfig, "queryConfig");
         this.jdbc = jdbc;
         this.sqlPageFactory = sqlPageFactory;
         this.aliasManager = aliasManager;
+        this.queryConfig = queryConfig.clone();
         if (tableAlias == null) {
             tableAlias = aliasManager.put(tableName);
         }
@@ -295,7 +294,7 @@ public abstract class AbstractSqlQueryEntityProperties<E extends AbstractSqlQuer
      */
     public long count() {
         return new SqlQueryExpression(jdbc, sqlPageFactory,
-                selectBuilder.clearColumns().addColumn(AggregateFunction.COUNT, Chars.STAR), ignoreStrategy).longInt();
+                selectBuilder.clearColumns().addColumn(AggregateFunction.COUNT, Chars.STAR), queryConfig).longInt();
     }
 
     //    /**

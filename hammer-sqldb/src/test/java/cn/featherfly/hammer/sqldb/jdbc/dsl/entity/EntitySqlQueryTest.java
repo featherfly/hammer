@@ -9,10 +9,14 @@ import static org.testng.Assert.assertTrue;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.function.Predicate;
 
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.BeforeTest;
 import org.testng.annotations.Test;
+
+import com.speedment.common.tuple.MutableTuples;
+import com.speedment.common.tuple.mutable.MutableTuple1;
 
 import cn.featherfly.common.lang.Lang;
 import cn.featherfly.common.repository.IgnoreStrategy;
@@ -45,7 +49,7 @@ public class EntitySqlQueryTest extends JdbcTestBase {
 
     @BeforeTest
     void setupTest() {
-        query = new SqlQuery(jdbc, mappingFactory, sqlPageFactory);
+        query = new SqlQuery(jdbc, mappingFactory, sqlPageFactory, hammerConfig.getDslConfig().getQueryConfig());
     }
 
     @BeforeMethod
@@ -90,27 +94,37 @@ public class EntitySqlQueryTest extends JdbcTestBase {
 
     @Test
     void testConditionConfig() {
-        assertEquals(query.find(User.class).where(c -> c.setIgnoreStrategy(IgnoreStrategy.EMPTY)).getIgnoreStrategy(),
-                IgnoreStrategy.EMPTY);
+        MutableTuple1<Predicate<?>> ignoreStrategy = MutableTuples.create1();
+        query.find(User.class).where().configure(c -> {
+            ignoreStrategy.set0(c.setIgnoreStrategy(IgnoreStrategy.EMPTY).getIgnoreStrategy());
+        });
+        assertEquals(ignoreStrategy.get0().get(), IgnoreStrategy.EMPTY);
 
-        List<User> users = query.find(User.class).where(c -> c.setIgnoreStrategy(IgnoreStrategy.EMPTY))
+        List<User> users = query.find(User.class) //
+                .configure(c -> c.setIgnoreStrategy(IgnoreStrategy.EMPTY)) //
+                .where().eq(User::getUsername, "").list();
+        assertTrue(users.size() > 0);
+
+        users = query.find(User.class).where() //
+                .configure(c -> c.setIgnoreStrategy(IgnoreStrategy.EMPTY)) //
                 .eq(User::getUsername, "").list();
         assertTrue(users.size() > 0);
 
-        users = query.find(User.class).where(c -> c.setIgnoreStrategy(IgnoreStrategy.NULL)).eq(User::getUsername, "")
+        users = query.find(User.class).where().configure(c -> c.setIgnoreStrategy(IgnoreStrategy.NULL))
+                .eq(User::getUsername, "") //
                 .list();
         assertTrue(users.size() == 0);
 
-        users = query.find(User.class).where(c -> c.setIgnoreStrategy(IgnoreStrategy.NULL)).eq(User::getUsername, null)
-                .list();
+        users = query.find(User.class).where().configure(c -> c.setIgnoreStrategy(IgnoreStrategy.NULL))
+                .eq(User::getUsername, null).list();
         assertTrue(users.size() > 0);
 
-        users = query.find(User.class).where(c -> c.setIgnoreStrategy(IgnoreStrategy.NONE)).eq(User::getUsername, null)
-                .list();
+        users = query.find(User.class).where().configure(c -> c.setIgnoreStrategy(IgnoreStrategy.NONE))
+                .eq(User::getUsername, null).list();
         assertTrue(users.size() == 0);
 
-        users = query.find(User.class).where(c -> c.setIgnoreStrategy(IgnoreStrategy.NONE)).eq(User::getUsername, "")
-                .list();
+        users = query.find(User.class).where().configure(c -> c.setIgnoreStrategy(IgnoreStrategy.NONE))
+                .eq(User::getUsername, "").list();
         assertTrue(users.size() == 0);
     }
 

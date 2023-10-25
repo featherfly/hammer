@@ -20,6 +20,7 @@ import cn.featherfly.common.function.serializable.SerializableToLongFunction;
 import cn.featherfly.common.lang.AssertIllegalArgument;
 import cn.featherfly.common.lang.LambdaUtils;
 import cn.featherfly.common.repository.mapping.PropertyMapping;
+import cn.featherfly.hammer.config.dsl.ConditionConfig;
 
 /**
  * The Class AbstractMulitiConditionExpression.
@@ -28,16 +29,17 @@ import cn.featherfly.common.repository.mapping.PropertyMapping;
  */
 public abstract class AbstractMulitiConditionExpression implements MulitiConditionExpression {
 
-    protected Predicate<?> ignoreStrategy;
+    /** The condition config. */
+    protected ConditionConfig<?> conditionConfig;
 
     /**
      * Instantiates a new abstract muliti condition expression.
      *
-     * @param ignoreStrategy the ignore strategy
+     * @param conditionConfig the condition config
      */
-    protected AbstractMulitiConditionExpression(Predicate<?> ignoreStrategy) {
-        AssertIllegalArgument.isNotNull(ignoreStrategy, "ignoreStrategy");
-        this.ignoreStrategy = ignoreStrategy;
+    protected AbstractMulitiConditionExpression(ConditionConfig<?> conditionConfig) {
+        AssertIllegalArgument.isNotNull(conditionConfig, "conditionConfig");
+        this.conditionConfig = conditionConfig;
     }
 
     /**
@@ -107,11 +109,21 @@ public abstract class AbstractMulitiConditionExpression implements MulitiConditi
     protected abstract Object getInParam(PropertyMapping<?> pm, Object value);
 
     /**
-     * get ignoreStrategy value
+     * get ignoreStrategy value.
      *
      * @return ignoreStrategy
      */
     public Predicate<?> getIgnoreStrategy() {
-        return ignoreStrategy;
+        return conditionConfig.getIgnoreStrategy();
     }
+
+    /**
+     * Gets the condition config.
+     *
+     * @return the condition config
+     */
+    public ConditionConfig<?> getConditionConfig() {
+        return conditionConfig;
+    }
+
 }

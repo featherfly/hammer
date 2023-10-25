@@ -1,6 +1,7 @@
 
 package cn.featherfly.hammer.dsl.execute;
 
+import cn.featherfly.hammer.config.dsl.ExecutableConditionConfig;
 import cn.featherfly.hammer.expression.execute.ExecutableConditionGroupExpression;
 
 /**
@@ -8,6 +9,6 @@ import cn.featherfly.hammer.expression.execute.ExecutableConditionGroupExpressio
  *
  * @author zhongj
  */
-public interface ExecutableConditionGroup
-        extends ExecutableConditionGroupExpression<ExecutableConditionGroup, ExecutableConditionGroupLogic> {
+public interface ExecutableConditionGroup<C extends ExecutableConditionConfig<C>>
+        extends ExecutableConditionGroupExpression<ExecutableConditionGroup<C>, ExecutableConditionGroupLogic<C>, C> {
 }

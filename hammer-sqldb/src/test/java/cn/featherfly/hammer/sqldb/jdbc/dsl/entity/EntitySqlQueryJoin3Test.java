@@ -35,7 +35,7 @@ public class EntitySqlQueryJoin3Test extends AbstractEntitySqlQueryJoinTest {
                 .join(User2.class).on(Order2::getCreateUser)//
                 .join(User2.class).on(Order2::getUpdateUser)//
                 .join(User2.class).on(Order2::getUser1) //
-                .where(c -> c.setIgnoreStrategy(IgnoreStrategy.EMPTY)) //
+                .where().configure(c -> c.setIgnoreStrategy(IgnoreStrategy.EMPTY)) //
                 .eq(Order2::getId, oid1) //
                 .single();
         assertNotNull(order);

@@ -1,7 +1,6 @@
 
 package cn.featherfly.hammer.expression.entity;
 
-import cn.featherfly.hammer.expression.condition.ConditionGroupConfig;
 import cn.featherfly.hammer.expression.entity.condition.EntityConditionsGroupExpression5;
 
 /**
@@ -19,5 +18,5 @@ import cn.featherfly.hammer.expression.entity.condition.EntityConditionsGroupExp
 public interface EntityConditionGroupExpression5<E, E2, E3, E4, E5,
         C extends EntityConditionGroupExpression5<E, E2, E3, E4, E5, C, L>,
         L extends EntityConditionGroupLogicExpression5<E, E2, E3, E4, E5, C, L>>
-        extends EntityConditionsGroupExpression5<E, E2, E3, E4, E5, C, L>, ConditionGroupConfig<C> {
+        extends EntityConditionsGroupExpression5<E, E2, E3, E4, E5, C, L> {
 }

@@ -46,7 +46,7 @@ public class MulitiEntityNotBetweenExpressionImpl<C extends ConditionExpression,
      */
     @Override
     public <E> L nba(int index, SerializableToIntFunction<E> name, int min, int max) {
-        return proxy.nba0(new AtomicInteger(index), name, min, max, ignoreStrategy);
+        return proxy.nba0(new AtomicInteger(index), name, min, max, getIgnoreStrategy());
     }
 
     /**
@@ -63,7 +63,7 @@ public class MulitiEntityNotBetweenExpressionImpl<C extends ConditionExpression,
      */
     @Override
     public <E> L nba(int index, SerializableToLongFunction<E> name, long min, long max) {
-        return proxy.nba0(new AtomicInteger(index), name, min, max, ignoreStrategy);
+        return proxy.nba0(new AtomicInteger(index), name, min, max, getIgnoreStrategy());
     }
 
     /**
@@ -80,7 +80,7 @@ public class MulitiEntityNotBetweenExpressionImpl<C extends ConditionExpression,
      */
     @Override
     public <E> L nba(int index, SerializableToDoubleFunction<E> name, double min, double max) {
-        return proxy.nba0(new AtomicInteger(index), name, min, max, ignoreStrategy);
+        return proxy.nba0(new AtomicInteger(index), name, min, max, getIgnoreStrategy());
     }
 
     /**
@@ -97,7 +97,7 @@ public class MulitiEntityNotBetweenExpressionImpl<C extends ConditionExpression,
      */
     @Override
     public <E, N extends Number> L nba(int index, SerializableToNumberFunction<E, N> name, N min, N max) {
-        return proxy.nba0(new AtomicInteger(index), name, min, max, ignoreStrategy);
+        return proxy.nba0(new AtomicInteger(index), name, min, max, getIgnoreStrategy());
     }
 
     /**
@@ -114,7 +114,7 @@ public class MulitiEntityNotBetweenExpressionImpl<C extends ConditionExpression,
      */
     @Override
     public <E, D extends Date> L nba(int index, SerializableToDateFunction<E, D> name, D min, D max) {
-        return proxy.nba0(new AtomicInteger(index), name, min, max, ignoreStrategy);
+        return proxy.nba0(new AtomicInteger(index), name, min, max, getIgnoreStrategy());
     }
 
     /**
@@ -131,7 +131,7 @@ public class MulitiEntityNotBetweenExpressionImpl<C extends ConditionExpression,
      */
     @Override
     public <E> L nba(int index, SerializableToLocalTimeFunction<E> name, LocalTime min, LocalTime max) {
-        return proxy.nba0(new AtomicInteger(index), name, min, max, ignoreStrategy);
+        return proxy.nba0(new AtomicInteger(index), name, min, max, getIgnoreStrategy());
     }
 
     /**
@@ -148,7 +148,7 @@ public class MulitiEntityNotBetweenExpressionImpl<C extends ConditionExpression,
      */
     @Override
     public <E> L nba(int index, SerializableToLocalDateFunction<E> name, LocalDate min, LocalDate max) {
-        return proxy.nba0(new AtomicInteger(index), name, min, max, ignoreStrategy);
+        return proxy.nba0(new AtomicInteger(index), name, min, max, getIgnoreStrategy());
     }
 
     /**
@@ -165,7 +165,7 @@ public class MulitiEntityNotBetweenExpressionImpl<C extends ConditionExpression,
      */
     @Override
     public <E> L nba(int index, SerializableToLocalDateTimeFunction<E> name, LocalDateTime min, LocalDateTime max) {
-        return proxy.nba0(new AtomicInteger(index), name, min, max, ignoreStrategy);
+        return proxy.nba0(new AtomicInteger(index), name, min, max, getIgnoreStrategy());
     }
 
     /**
@@ -182,7 +182,7 @@ public class MulitiEntityNotBetweenExpressionImpl<C extends ConditionExpression,
      */
     @Override
     public <E> L nba(int index, SerializableToStringFunction<E> name, String min, String max) {
-        return proxy.nba0(new AtomicInteger(index), name, min, max, ignoreStrategy);
+        return proxy.nba0(new AtomicInteger(index), name, min, max, getIgnoreStrategy());
     }
 
     /**
@@ -199,7 +199,7 @@ public class MulitiEntityNotBetweenExpressionImpl<C extends ConditionExpression,
      */
     @Override
     public <T, E extends Enum<E>> L nba(int index, SerializableToEnumFunction<T, E> name, E min, E max) {
-        return proxy.nba0(new AtomicInteger(index), name, min, max, ignoreStrategy);
+        return proxy.nba0(new AtomicInteger(index), name, min, max, getIgnoreStrategy());
     }
 
     /**

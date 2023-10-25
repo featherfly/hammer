@@ -40,7 +40,7 @@ public class MulitiEntityConditionExpressionProxy<C extends ConditionExpression,
      * @param proxy the proxy
      */
     protected MulitiEntityConditionExpressionProxy(AbstractMulitiEntityConditionExpression<C, L> proxy) {
-        super(proxy.getIgnoreStrategy());
+        super(proxy.getConditionConfig());
         this.proxy = proxy;
     }
 
@@ -91,8 +91,8 @@ public class MulitiEntityConditionExpressionProxy<C extends ConditionExpression,
      */
     @SuppressWarnings("unchecked")
     @Override
-    public <CM extends ClassMapping<T, P>, T, P extends PropertyMapping<P>> CM getClassMapping(int index) {
-        return (CM) proxy.getClassMapping(index);
+    public <M extends ClassMapping<T, P>, T, P extends PropertyMapping<P>> M getClassMapping(int index) {
+        return (M) proxy.getClassMapping(index);
     }
 
     /**

@@ -1,10 +1,14 @@
 
 package cn.featherfly.hammer.dml.builder.sql.query;
 
+import java.sql.Blob;
+import java.sql.Clob;
+import java.sql.Timestamp;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.Date;
+import java.util.List;
 import java.util.Map;
 import java.util.function.BiPredicate;
 import java.util.function.Function;
@@ -28,22 +32,25 @@ import cn.featherfly.common.function.serializable.SerializableToStringFunction;
 import cn.featherfly.common.operator.ComparisonOperator.MatchStrategy;
 import cn.featherfly.common.operator.LogicOperator;
 import cn.featherfly.common.repository.IgnoreStrategy;
+import cn.featherfly.common.repository.mapping.RowMapper;
+import cn.featherfly.common.structure.page.Page;
+import cn.featherfly.hammer.dsl.query.QueryConditionGroupExpression;
+import cn.featherfly.hammer.dsl.query.QueryConditionGroupLogicExpression;
+import cn.featherfly.hammer.dsl.query.QuerySortExpression;
 import cn.featherfly.hammer.expression.condition.property.DatePropertyExpression;
 import cn.featherfly.hammer.expression.condition.property.EnumPropertyExpression;
 import cn.featherfly.hammer.expression.condition.property.NumberPropertyExpression;
 import cn.featherfly.hammer.expression.condition.property.ObjectPropertyExpression;
 import cn.featherfly.hammer.expression.condition.property.StringPropertyExpression;
-import cn.featherfly.hammer.expression.execute.ExecutableConditionGroupExpression;
-import cn.featherfly.hammer.expression.execute.ExecutableConditionGroupLogicExpression;
+import cn.featherfly.hammer.expression.query.QueryLimitExecutor;
 
 /**
  * The Class UserQueryConditionGroupExpression.
  *
  * @author zhongj
  */
-public class UserQueryConditionGroupExpression implements
-        ExecutableConditionGroupExpression<UserQueryConditionGroupExpression, UserQueryConditionGroupExpression>,
-        ExecutableConditionGroupLogicExpression<UserQueryConditionGroupExpression, UserQueryConditionGroupExpression> {
+public class UserQueryConditionGroupExpression
+        implements QueryConditionGroupExpression, QueryConditionGroupLogicExpression {
 
     /**
      * Instantiates a new user query condition group expression.
@@ -56,7 +63,7 @@ public class UserQueryConditionGroupExpression implements
      *
      * @return the string expression
      */
-    public StringPropertyExpression<UserQueryConditionGroupExpression, UserQueryConditionGroupExpression> name() {
+    public StringPropertyExpression<QueryConditionGroupExpression, QueryConditionGroupLogicExpression> name() {
         return propertyString("name");
     }
 
@@ -65,18 +72,8 @@ public class UserQueryConditionGroupExpression implements
      *
      * @return the number expression
      */
-    public NumberPropertyExpression<Number, UserQueryConditionGroupExpression,
-            UserQueryConditionGroupExpression> age() {
+    public NumberPropertyExpression<Integer, QueryConditionGroupExpression, QueryConditionGroupLogicExpression> age() {
         return propertyNumber("age");
-    }
-
-    /**
-     * Pwd.
-     *
-     * @return the string expression
-     */
-    public StringPropertyExpression<UserQueryConditionGroupExpression, UserQueryConditionGroupExpression> pwd() {
-        return propertyString("pwd");
     }
 
     /**
@@ -951,87 +948,6 @@ public class UserQueryConditionGroupExpression implements
      * {@inheritDoc}
      */
     @Override
-    public ObjectPropertyExpression<UserQueryConditionGroupExpression, UserQueryConditionGroupExpression> property(
-            String name) {
-
-        return null;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public StringPropertyExpression<UserQueryConditionGroupExpression,
-            UserQueryConditionGroupExpression> propertyString(String name) {
-
-        return null;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public NumberPropertyExpression<Number, UserQueryConditionGroupExpression,
-            UserQueryConditionGroupExpression> propertyNumber(String name) {
-
-        return null;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public DatePropertyExpression<Date, UserQueryConditionGroupExpression,
-            UserQueryConditionGroupExpression> propertyDate(String name) {
-
-        return null;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public <T,
-            R> ObjectPropertyExpression<UserQueryConditionGroupExpression, UserQueryConditionGroupExpression> property(
-                    SerializableFunction<T, R> name) {
-
-        return null;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public <T> StringPropertyExpression<UserQueryConditionGroupExpression, UserQueryConditionGroupExpression> property(
-            SerializableToStringFunction<T> name) {
-
-        return null;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public <T, R extends Number> NumberPropertyExpression<R, UserQueryConditionGroupExpression,
-            UserQueryConditionGroupExpression> property(SerializableToNumberFunction<T, R> name) {
-
-        return null;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public <T, R extends Date> DatePropertyExpression<R, UserQueryConditionGroupExpression,
-            UserQueryConditionGroupExpression> property(SerializableToDateFunction<T, R> name) {
-
-        return null;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
     public UserQueryConditionGroupExpression endGroup() {
 
         return null;
@@ -1114,15 +1030,6 @@ public class UserQueryConditionGroupExpression implements
      */
     @Override
     public <T, R> UserQueryConditionGroupExpression isn(SerializableFunction<T, R> name, Boolean value) {
-
-        return null;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public Predicate<Object> getIgnoreStrategy() {
 
         return null;
     }
@@ -1329,74 +1236,6 @@ public class UserQueryConditionGroupExpression implements
     public UserQueryConditionGroupExpression sw(SerializableStringSupplier property, MatchStrategy matchStrategy) {
 
         return null;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public UserQueryConditionGroupExpression group(
-            Function<UserQueryConditionGroupExpression, UserQueryConditionGroupExpression> group) {
-
-        return null;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public UserQueryConditionGroupExpression and(
-            Function<UserQueryConditionGroupExpression, UserQueryConditionGroupExpression> group) {
-
-        return null;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public UserQueryConditionGroupExpression or(
-            Function<UserQueryConditionGroupExpression, UserQueryConditionGroupExpression> group) {
-
-        return null;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public <R extends Enum<R>> EnumPropertyExpression<R, UserQueryConditionGroupExpression,
-            UserQueryConditionGroupExpression> propertyEnum(String name) {
-
-        return null;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public <T, R extends Enum<R>> EnumPropertyExpression<R, UserQueryConditionGroupExpression,
-            UserQueryConditionGroupExpression> property(SerializableToEnumFunction<T, R> name) {
-
-        return null;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public UserQueryConditionGroupExpression setIgnoreStrategy(Predicate<?> ignoreStrategy) {
-
-        return null;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public int execute() {
-
-        return 0;
     }
 
     /**
@@ -4222,6 +4061,397 @@ public class UserQueryConditionGroupExpression implements
     @Override
     public UserQueryConditionGroupExpression nl(String name, String value, MatchStrategy matchStrategy,
             Predicate<String> ignoreStrategy) {
+        // YUFEI_TODO Auto-generated method stub
+        return null;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public StringPropertyExpression<QueryConditionGroupExpression, QueryConditionGroupLogicExpression> propertyString(
+            String name) {
+        // YUFEI_TODO Auto-generated method stub
+        return null;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public <N extends Number> NumberPropertyExpression<N, QueryConditionGroupExpression,
+            QueryConditionGroupLogicExpression> propertyNumber(String name) {
+        // YUFEI_TODO Auto-generated method stub
+        return null;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public <D extends Date> DatePropertyExpression<D, QueryConditionGroupExpression,
+            QueryConditionGroupLogicExpression> propertyDate(String name) {
+        // YUFEI_TODO Auto-generated method stub
+        return null;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public <T, R> ObjectPropertyExpression<QueryConditionGroupExpression, QueryConditionGroupLogicExpression> property(
+            SerializableFunction<T, R> name) {
+        // YUFEI_TODO Auto-generated method stub
+        return null;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public <T> StringPropertyExpression<QueryConditionGroupExpression, QueryConditionGroupLogicExpression> property(
+            SerializableToStringFunction<T> name) {
+        // YUFEI_TODO Auto-generated method stub
+        return null;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public <T, R extends Number> NumberPropertyExpression<R, QueryConditionGroupExpression,
+            QueryConditionGroupLogicExpression> property(SerializableToNumberFunction<T, R> name) {
+        // YUFEI_TODO Auto-generated method stub
+        return null;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public <T, R extends Date> DatePropertyExpression<R, QueryConditionGroupExpression,
+            QueryConditionGroupLogicExpression> property(SerializableToDateFunction<T, R> name) {
+        // YUFEI_TODO Auto-generated method stub
+        return null;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public QueryConditionGroupLogicExpression group(
+            Function<QueryConditionGroupExpression, QueryConditionGroupLogicExpression> group) {
+        // YUFEI_TODO Auto-generated method stub
+        return null;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public QueryLimitExecutor limit(Integer limit) {
+        // YUFEI_TODO Auto-generated method stub
+        return null;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public QueryLimitExecutor limit(Integer offset, Integer limit) {
+        // YUFEI_TODO Auto-generated method stub
+        return null;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public QueryLimitExecutor limit(Page page) {
+        // YUFEI_TODO Auto-generated method stub
+        return null;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public List<Map<String, Object>> list() {
+        // YUFEI_TODO Auto-generated method stub
+        return null;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public <E> List<E> list(Class<E> type) {
+        // YUFEI_TODO Auto-generated method stub
+        return null;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public <E> List<E> list(RowMapper<E> rowMapper) {
+        // YUFEI_TODO Auto-generated method stub
+        return null;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public Map<String, Object> single() {
+        // YUFEI_TODO Auto-generated method stub
+        return null;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public Map<String, Object> unique() {
+        // YUFEI_TODO Auto-generated method stub
+        return null;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public <E> E single(Class<E> type) {
+        // YUFEI_TODO Auto-generated method stub
+        return null;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public <E> E unique(Class<E> type) {
+        // YUFEI_TODO Auto-generated method stub
+        return null;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public <E> E single(RowMapper<E> rowMapper) {
+        // YUFEI_TODO Auto-generated method stub
+        return null;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public <E> E unique(RowMapper<E> rowMapper) {
+        // YUFEI_TODO Auto-generated method stub
+        return null;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public String string() {
+        // YUFEI_TODO Auto-generated method stub
+        return null;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public Date date() {
+        // YUFEI_TODO Auto-generated method stub
+        return null;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public LocalDate localDate() {
+        // YUFEI_TODO Auto-generated method stub
+        return null;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public LocalDateTime localDateTime() {
+        // YUFEI_TODO Auto-generated method stub
+        return null;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public LocalTime localTime() {
+        // YUFEI_TODO Auto-generated method stub
+        return null;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public Timestamp timestamp() {
+        // YUFEI_TODO Auto-generated method stub
+        return null;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public byte[] bytes() {
+        // YUFEI_TODO Auto-generated method stub
+        return null;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public Clob clob() {
+        // YUFEI_TODO Auto-generated method stub
+        return null;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public Blob blob() {
+        // YUFEI_TODO Auto-generated method stub
+        return null;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public boolean bool() {
+        // YUFEI_TODO Auto-generated method stub
+        return false;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public byte byteValue() {
+        // YUFEI_TODO Auto-generated method stub
+        return 0;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public short shortValue() {
+        // YUFEI_TODO Auto-generated method stub
+        return 0;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public int intValue() {
+        // YUFEI_TODO Auto-generated method stub
+        return 0;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public long longValue() {
+        // YUFEI_TODO Auto-generated method stub
+        return 0;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public <T> T value(Class<T> type) {
+        // YUFEI_TODO Auto-generated method stub
+        return null;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public long count() {
+        // YUFEI_TODO Auto-generated method stub
+        return 0;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public QueryConditionGroupLogicExpression and(
+            Function<QueryConditionGroupExpression, QueryConditionGroupLogicExpression> group) {
+        // YUFEI_TODO Auto-generated method stub
+        return null;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public QueryConditionGroupLogicExpression or(
+            Function<QueryConditionGroupExpression, QueryConditionGroupLogicExpression> group) {
+        // YUFEI_TODO Auto-generated method stub
+        return null;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public QuerySortExpression sort() {
+        // YUFEI_TODO Auto-generated method stub
+        return null;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public ObjectPropertyExpression<QueryConditionGroupExpression, QueryConditionGroupLogicExpression> property(
+            String name) {
+        // YUFEI_TODO Auto-generated method stub
+        return null;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public <T, R extends Enum<R>> EnumPropertyExpression<R, QueryConditionGroupExpression,
+            QueryConditionGroupLogicExpression> property(SerializableToEnumFunction<T, R> name) {
+        // YUFEI_TODO Auto-generated method stub
+        return null;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public <R extends Enum<R>> EnumPropertyExpression<R, QueryConditionGroupExpression,
+            QueryConditionGroupLogicExpression> propertyEnum(String name) {
         // YUFEI_TODO Auto-generated method stub
         return null;
     }

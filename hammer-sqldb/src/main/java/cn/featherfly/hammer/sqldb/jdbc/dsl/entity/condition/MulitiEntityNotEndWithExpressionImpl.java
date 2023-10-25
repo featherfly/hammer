@@ -44,7 +44,7 @@ public class MulitiEntityNotEndWithExpressionImpl<C extends ConditionExpression,
      */
     @Override
     public <E> L newv(int index, SerializableFunction<E, String> name, String value, MatchStrategy matchStrategy) {
-        return proxy.new0(new AtomicInteger(index), name, value, matchStrategy, ignoreStrategy);
+        return proxy.new0(new AtomicInteger(index), name, value, matchStrategy, getIgnoreStrategy());
     }
 
     /**
@@ -61,7 +61,7 @@ public class MulitiEntityNotEndWithExpressionImpl<C extends ConditionExpression,
      */
     @Override
     public L newv(int index, SerializableSupplier<String> property, MatchStrategy matchStrategy) {
-        return proxy.new0(new AtomicInteger(index), property, matchStrategy, ignoreStrategy);
+        return proxy.new0(new AtomicInteger(index), property, matchStrategy, getIgnoreStrategy());
     }
 
     /**

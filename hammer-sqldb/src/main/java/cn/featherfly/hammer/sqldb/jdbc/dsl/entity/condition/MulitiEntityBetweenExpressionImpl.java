@@ -46,7 +46,7 @@ public class MulitiEntityBetweenExpressionImpl<C extends ConditionExpression, L 
      */
     @Override
     public <E> L ba(int index, SerializableToIntFunction<E> name, int min, int max) {
-        return proxy.ba0(new AtomicInteger(index), name, min, max, ignoreStrategy);
+        return proxy.ba0(new AtomicInteger(index), name, min, max, getIgnoreStrategy());
     }
 
     /**
@@ -63,7 +63,7 @@ public class MulitiEntityBetweenExpressionImpl<C extends ConditionExpression, L 
      */
     @Override
     public <E> L ba(int index, SerializableToLongFunction<E> name, long min, long max) {
-        return proxy.ba0(new AtomicInteger(index), name, min, max, ignoreStrategy);
+        return proxy.ba0(new AtomicInteger(index), name, min, max, getIgnoreStrategy());
     }
 
     /**
@@ -80,7 +80,7 @@ public class MulitiEntityBetweenExpressionImpl<C extends ConditionExpression, L 
      */
     @Override
     public <E> L ba(int index, SerializableToDoubleFunction<E> name, double min, double max) {
-        return proxy.ba0(new AtomicInteger(index), name, min, max, ignoreStrategy);
+        return proxy.ba0(new AtomicInteger(index), name, min, max, getIgnoreStrategy());
     }
 
     /**
@@ -97,7 +97,7 @@ public class MulitiEntityBetweenExpressionImpl<C extends ConditionExpression, L 
      */
     @Override
     public <E, N extends Number> L ba(int index, SerializableToNumberFunction<E, N> name, N min, N max) {
-        return proxy.ba0(new AtomicInteger(index), name, min, max, ignoreStrategy);
+        return proxy.ba0(new AtomicInteger(index), name, min, max, getIgnoreStrategy());
     }
 
     /**
@@ -114,7 +114,7 @@ public class MulitiEntityBetweenExpressionImpl<C extends ConditionExpression, L 
      */
     @Override
     public <E, D extends Date> L ba(int index, SerializableToDateFunction<E, D> name, D min, D max) {
-        return proxy.ba0(new AtomicInteger(index), name, min, max, ignoreStrategy);
+        return proxy.ba0(new AtomicInteger(index), name, min, max, getIgnoreStrategy());
     }
 
     /**
@@ -131,7 +131,7 @@ public class MulitiEntityBetweenExpressionImpl<C extends ConditionExpression, L 
      */
     @Override
     public <E> L ba(int index, SerializableToLocalTimeFunction<E> name, LocalTime min, LocalTime max) {
-        return proxy.ba0(new AtomicInteger(index), name, min, max, ignoreStrategy);
+        return proxy.ba0(new AtomicInteger(index), name, min, max, getIgnoreStrategy());
     }
 
     /**
@@ -148,7 +148,7 @@ public class MulitiEntityBetweenExpressionImpl<C extends ConditionExpression, L 
      */
     @Override
     public <E> L ba(int index, SerializableToLocalDateFunction<E> name, LocalDate min, LocalDate max) {
-        return proxy.ba0(new AtomicInteger(index), name, min, max, ignoreStrategy);
+        return proxy.ba0(new AtomicInteger(index), name, min, max, getIgnoreStrategy());
     }
 
     /**
@@ -165,7 +165,7 @@ public class MulitiEntityBetweenExpressionImpl<C extends ConditionExpression, L 
      */
     @Override
     public <E> L ba(int index, SerializableToLocalDateTimeFunction<E> name, LocalDateTime min, LocalDateTime max) {
-        return proxy.ba0(new AtomicInteger(index), name, min, max, ignoreStrategy);
+        return proxy.ba0(new AtomicInteger(index), name, min, max, getIgnoreStrategy());
     }
 
     /**
@@ -182,7 +182,7 @@ public class MulitiEntityBetweenExpressionImpl<C extends ConditionExpression, L 
      */
     @Override
     public <E> L ba(int index, SerializableToStringFunction<E> name, String min, String max) {
-        return proxy.ba0(new AtomicInteger(index), name, min, max, ignoreStrategy);
+        return proxy.ba0(new AtomicInteger(index), name, min, max, getIgnoreStrategy());
     }
 
     /**
@@ -199,7 +199,7 @@ public class MulitiEntityBetweenExpressionImpl<C extends ConditionExpression, L 
      */
     @Override
     public <T, E extends Enum<E>> L ba(int index, SerializableToEnumFunction<T, E> name, E min, E max) {
-        return proxy.ba0(new AtomicInteger(index), name, min, max, ignoreStrategy);
+        return proxy.ba0(new AtomicInteger(index), name, min, max, getIgnoreStrategy());
     }
 
     /**

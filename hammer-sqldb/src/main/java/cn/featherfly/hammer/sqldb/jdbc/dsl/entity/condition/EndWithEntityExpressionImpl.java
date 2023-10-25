@@ -11,7 +11,6 @@
 package cn.featherfly.hammer.sqldb.jdbc.dsl.entity.condition;
 
 import java.util.Collection;
-import java.util.function.Predicate;
 
 import cn.featherfly.common.db.mapping.JdbcMappingFactory;
 import cn.featherfly.common.exception.NotImplementedException;
@@ -47,15 +46,14 @@ public class EndWithEntityExpressionImpl<E, C extends ConditionExpression, L ext
     /**
      * Instantiates a new end with entity expression impl.
      *
-     * @param index          the index
-     * @param expression     the expression
-     * @param ignoreStrategy the ignore strategy
-     * @param factory        the factory
-     * @param queryRelation  the query relation
+     * @param index         the index
+     * @param expression    the expression
+     * @param factory       the factory
+     * @param queryRelation the query relation
      */
     public EndWithEntityExpressionImpl(int index, MulitiEntityEndWithExpression<C, L> expression,
-            Predicate<?> ignoreStrategy, JdbcMappingFactory factory, EntitySqlRelation<?, ?> queryRelation) {
-        super(index, expression, ignoreStrategy);
+            JdbcMappingFactory factory, EntitySqlRelation<?, ?> queryRelation) {
+        super(index, expression, queryRelation.getIgnorePolicy());
         this.factory = factory;
         this.queryRelation = queryRelation;
     }

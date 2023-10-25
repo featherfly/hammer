@@ -76,15 +76,14 @@ public class InEntityExpressionImpl<T, C extends ConditionExpression, L extends 
     /**
      * Instantiates a new in entity expression impl.
      *
-     * @param index          the index
-     * @param expression     the expression
-     * @param ignoreStrategy the ignore strategy
-     * @param factory        the factory
-     * @param queryRelation  the query relation
+     * @param index         the index
+     * @param expression    the expression
+     * @param factory       the factory
+     * @param queryRelation the query relation
      */
-    public InEntityExpressionImpl(int index, MulitiEntityInExpression<C, L> expression, Predicate<?> ignoreStrategy,
-            JdbcMappingFactory factory, EntitySqlRelation<?, ?> queryRelation) {
-        super(index, expression, ignoreStrategy);
+    public InEntityExpressionImpl(int index, MulitiEntityInExpression<C, L> expression, JdbcMappingFactory factory,
+            EntitySqlRelation<?, ?> queryRelation) {
+        super(index, expression, queryRelation.getIgnorePolicy());
         this.factory = factory;
         this.queryRelation = queryRelation;
     }

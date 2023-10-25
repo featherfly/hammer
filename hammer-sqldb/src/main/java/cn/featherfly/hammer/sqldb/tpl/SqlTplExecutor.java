@@ -1862,7 +1862,7 @@ public class SqlTplExecutor implements TplExecutor {
     }
 
     private Object transvert(String name, Object value, ConditionParamsManager manager) {
-        // ENHANCE TEST 调用前已经吧value == null的过滤了，不确定IgnorePolicy会否影响，后续测试
+        // YUFEI_TEST 调用前已经吧value == null的过滤了，不确定IgnorePolicy会否影响，后续测试
         //        if (value == null) {
         //            return value;
         //        }

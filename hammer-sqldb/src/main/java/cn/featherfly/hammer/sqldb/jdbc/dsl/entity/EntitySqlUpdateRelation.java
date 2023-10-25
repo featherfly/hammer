@@ -8,6 +8,7 @@ import cn.featherfly.common.db.builder.dml.basic.SqlUpdateSetBasicBuilder;
 import cn.featherfly.common.db.mapping.JdbcClassMapping;
 import cn.featherfly.common.exception.NotImplementedException;
 import cn.featherfly.common.repository.builder.AliasManager;
+import cn.featherfly.hammer.config.dsl.UpdateConfig;
 import cn.featherfly.hammer.sqldb.jdbc.Jdbc;
 
 /**
@@ -18,8 +19,6 @@ import cn.featherfly.hammer.sqldb.jdbc.Jdbc;
 public class EntitySqlUpdateRelation extends EntitySqlRelation<EntitySqlUpdateRelation, SqlUpdateSetBasicBuilder> {
 
     private SqlUpdateSetBasicBuilder updateBuilder;
-
-    private Predicate<Object> setIgnoreStrategy;
 
     //    /**
     //     * Instantiates a new abstract sql query entity properties.
@@ -35,22 +34,21 @@ public class EntitySqlUpdateRelation extends EntitySqlRelation<EntitySqlUpdateRe
     /**
      * Instantiates a new abstract sql query entity properties.
      *
-     * @param jdbc              the jdbc
-     * @param aliasManager      aliasManager
-     * @param ignoreStrategy    the ignore strategy
-     * @param setIgnoreStrategy the set ignore strategy
+     * @param jdbc         the jdbc
+     * @param aliasManager aliasManager
+     * @param updateConfig the update config
      */
-    @SuppressWarnings("unchecked")
-    public EntitySqlUpdateRelation(Jdbc jdbc, AliasManager aliasManager, Predicate<?> ignoreStrategy,
-            Predicate<?> setIgnoreStrategy) {
-        super(jdbc, aliasManager, ignoreStrategy);
-        this.setIgnoreStrategy = (Predicate<Object>) setIgnoreStrategy;
+    public EntitySqlUpdateRelation(Jdbc jdbc, AliasManager aliasManager, UpdateConfig updateConfig) {
+        super(jdbc, aliasManager, updateConfig);
     }
 
     // ****************************************************************************************************************
     //	protected method
     // ****************************************************************************************************************
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     protected SqlSelectJoinOnBasicBuilder join0(String tableAlias, String columnName,
             JdbcClassMapping<?> joinClassMapping, String joinTableAlias, String joinTableColumnName) {
@@ -61,10 +59,11 @@ public class EntitySqlUpdateRelation extends EntitySqlRelation<EntitySqlUpdateRe
     /**
      * {@inheritDoc}
      */
+    @SuppressWarnings("unchecked")
     @Override
     protected void initBuilder(EntityRelationMapping<?> erm) {
         updateBuilder = new SqlUpdateSetBasicBuilder(jdbc.getDialect(), erm.getClassMapping().getRepositoryName(),
-                erm.getTableAlias(), setIgnoreStrategy);
+                erm.getTableAlias(), v -> ((Predicate<Object>) getConfig().getIgnoreStrategy()).test(v));
     }
 
     /**
@@ -76,12 +75,12 @@ public class EntitySqlUpdateRelation extends EntitySqlRelation<EntitySqlUpdateRe
     }
 
     /**
-     * get setIgnoreStrategy value
-     *
-     * @return setIgnoreStrategy
+     * {@inheritDoc}
      */
-    public Predicate<?> getSetIgnoreStrategy() {
-        return setIgnoreStrategy;
+    @SuppressWarnings("unchecked")
+    @Override
+    public UpdateConfig getConfig() {
+        return (UpdateConfig) conditionConfig;
     }
 
     // ********************************************************************

@@ -25,6 +25,7 @@ import cn.featherfly.common.lang.AssertIllegalArgument;
 import cn.featherfly.common.lang.Lang;
 import cn.featherfly.common.lang.Strings;
 import cn.featherfly.common.repository.builder.AliasManager;
+import cn.featherfly.hammer.config.dsl.ConditionConfig;
 import cn.featherfly.hammer.sqldb.SqldbHammerException;
 import cn.featherfly.hammer.sqldb.jdbc.Jdbc;
 
@@ -44,7 +45,7 @@ public abstract class EntitySqlRelation<R extends EntitySqlRelation<R, B>, B ext
     protected AliasManager aliasManager;
 
     /** The ignore strategy. */
-    protected Predicate<?> ignoreStrategy;
+    protected ConditionConfig<?> conditionConfig;
 
     /** The index. */
     protected int index;
@@ -59,17 +60,17 @@ public abstract class EntitySqlRelation<R extends EntitySqlRelation<R, B>, B ext
     /**
      * Instantiates a new abstract sql query entity properties.
      *
-     * @param jdbc           the jdbc
-     * @param aliasManager   aliasManager
-     * @param ignoreStrategy the ignore strategy
+     * @param jdbc            the jdbc
+     * @param aliasManager    aliasManager
+     * @param conditionConfig the condition config
      */
-    protected EntitySqlRelation(Jdbc jdbc, AliasManager aliasManager, Predicate<?> ignoreStrategy) {
+    protected EntitySqlRelation(Jdbc jdbc, AliasManager aliasManager, ConditionConfig<?> conditionConfig) {
         AssertIllegalArgument.isNotNull(jdbc, "jdbc");
         AssertIllegalArgument.isNotNull(aliasManager, "aliasManager");
-        AssertIllegalArgument.isNotNull(ignoreStrategy, "ignoreStrategy");
+        AssertIllegalArgument.isNotNull(conditionConfig, "conditionConfig");
         this.jdbc = jdbc;
         this.aliasManager = aliasManager;
-        this.ignoreStrategy = ignoreStrategy;
+        this.conditionConfig = conditionConfig;
 
         //        entityQueryFetchIndexes.add(0); // 默认加入第一个
     }
@@ -153,9 +154,24 @@ public abstract class EntitySqlRelation<R extends EntitySqlRelation<R, B>, B ext
      * @return the r
      */
     public R join(int sourceIndex, String propertyName, JdbcClassMapping<?> joinClassMapping) {
+        return join(sourceIndex, propertyName, joinClassMapping, true);
+    }
+
+    /**
+     * Join.
+     *
+     * @param sourceIndex       the source index
+     * @param propertyName      the property name
+     * @param joinClassMapping  the join class mapping
+     * @param ignoreDuplication the ignore duplication
+     * @return the r
+     */
+    public R join(int sourceIndex, String propertyName, JdbcClassMapping<?> joinClassMapping,
+            boolean ignoreDuplication) {
         if (joinClassMapping.getPrivaryKeyPropertyMappings().size() == 1) {
             return join(sourceIndex, propertyName, joinClassMapping,
-                    joinClassMapping.getPrivaryKeyPropertyMappings().get(0).getRepositoryFieldName());
+                    joinClassMapping.getPrivaryKeyPropertyMappings().get(0).getRepositoryFieldName(),
+                    ignoreDuplication);
             //            addFilterable(joinClassMapping, propertyName, null);
             //            EntityRelationMapping<?> erm = getEntityRelationMapping(sourceIndex);
             //            EntityRelationMapping<?> jerm = getEntityRelationMapping(index - 1);
@@ -179,8 +195,22 @@ public abstract class EntitySqlRelation<R extends EntitySqlRelation<R, B>, B ext
      * @return the r
      */
     public R join(int sourceIndex, JdbcClassMapping<?> joinClassMapping, String joinPropertyName) {
+        return join(sourceIndex, joinClassMapping, joinPropertyName, true);
+    }
+
+    /**
+     * Join.
+     *
+     * @param sourceIndex       the source index
+     * @param joinClassMapping  the join class mapping
+     * @param joinPropertyName  the join property name
+     * @param ignoreDuplication the ignore duplication
+     * @return the r
+     */
+    public R join(int sourceIndex, JdbcClassMapping<?> joinClassMapping, String joinPropertyName,
+            boolean ignoreDuplication) {
         EntityRelationMapping<?> erm = getEntityRelationMapping(sourceIndex);
-        return join(sourceIndex, erm.getIdName(), joinClassMapping, joinPropertyName);
+        return join(sourceIndex, erm.getIdName(), joinClassMapping, joinPropertyName, ignoreDuplication);
     }
 
     /**
@@ -192,8 +222,23 @@ public abstract class EntitySqlRelation<R extends EntitySqlRelation<R, B>, B ext
      * @param joinPropertyName the join property name
      * @return the r
      */
-    @SuppressWarnings("unchecked")
     public R join(int sourceIndex, String propertyName, JdbcClassMapping<?> joinClassMapping, String joinPropertyName) {
+        return join(sourceIndex, propertyName, joinClassMapping, joinPropertyName, true);
+    }
+
+    /**
+     * Join.
+     *
+     * @param sourceIndex       the source index
+     * @param propertyName      the property name
+     * @param joinClassMapping  the join class mapping
+     * @param joinPropertyName  the join property name
+     * @param ignoreDuplication the ignore duplication
+     * @return the r
+     */
+    @SuppressWarnings("unchecked")
+    public R join(int sourceIndex, String propertyName, JdbcClassMapping<?> joinClassMapping, String joinPropertyName,
+            boolean ignoreDuplication) {
         AssertIllegalArgument.isNotNull(propertyName, "propertyName");
         AssertIllegalArgument.isNotNull(joinClassMapping, "joinClassMapping");
         AssertIllegalArgument.isNotNull(joinPropertyName, "joinPropertyName");
@@ -208,7 +253,11 @@ public abstract class EntitySqlRelation<R extends EntitySqlRelation<R, B>, B ext
 
         String joinRelation = erm.getClassMapping().getType().getSimpleName() + "[" + erm.getTableAlias() + "]."
                 + jerm.getJoinFromPropertyName();
-        if (!joinedRelations.contains(joinRelation)) {
+
+        //        if (ignoreDuplication && joinedRelations.contains(joinRelation)) {
+        //
+        //        } else {
+        if (!ignoreDuplication || !joinedRelations.contains(joinRelation)) {
             joinedRelations.add(joinRelation);
             SqlSelectJoinOnBasicBuilder selectJoinOnBasicBuilder = join0(erm.getTableAlias(),
                     erm.getClassMapping().getPropertyMapping(propertyName).getRepositoryFieldName(), joinClassMapping,
@@ -275,7 +324,7 @@ public abstract class EntitySqlRelation<R extends EntitySqlRelation<R, B>, B ext
      * @return ignoreStrategy
      */
     public Predicate<?> getIgnorePolicy() {
-        return ignoreStrategy;
+        return conditionConfig.getIgnoreStrategy();
     }
 
     /**
@@ -338,6 +387,14 @@ public abstract class EntitySqlRelation<R extends EntitySqlRelation<R, B>, B ext
             JdbcClassMapping<E> joinClassMapping, String joinPropertyName) {
         return new EntityRelationMapping<>(joinClassMapping, joinPropertyName, sourceIndex, propertyName, aliasManager);
     }
+
+    /**
+     * Gets the config.
+     *
+     * @param <C> the generic type
+     * @return the config
+     */
+    public abstract <C extends ConditionConfig<C>> C getConfig();
 
     // ********************************************************************
     //

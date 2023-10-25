@@ -3,6 +3,7 @@ package cn.featherfly.hammer.expression.entity.execute;
 
 import cn.featherfly.common.function.serializable.SerializableFunction;
 import cn.featherfly.common.function.serializable.SerializableToNumberFunction;
+import cn.featherfly.hammer.config.dsl.UpdateConditionConfig;
 
 /**
  * EntityPropertyUpdateExpression.
@@ -14,8 +15,8 @@ import cn.featherfly.common.function.serializable.SerializableToNumberFunction;
  * @param <L> the generic type
  */
 public interface EntityPropertyUpdateExpression<E, U extends EntityPropertyExecutableUpdateExpression<E, U, C, L>,
-        C extends EntityExecutableConditionGroupExpression<E, C, L>,
-        L extends EntityExecutableConditionGroupLogicExpression<E, C, L>> {
+        C extends EntityExecutableConditionGroupExpression<E, C, L, UpdateConditionConfig>,
+        L extends EntityExecutableConditionGroupLogicExpression<E, C, L, UpdateConditionConfig>> {
 
     /**
      * Property.

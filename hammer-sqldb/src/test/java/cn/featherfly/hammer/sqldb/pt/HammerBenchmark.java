@@ -14,6 +14,9 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import javax.validation.Validation;
+
+import org.hibernate.validator.HibernateValidator;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
 
@@ -23,6 +26,7 @@ import cn.featherfly.common.db.mapping.SqlTypeMappingManager;
 import cn.featherfly.common.db.metadata.DatabaseMetadata;
 import cn.featherfly.common.db.metadata.DatabaseMetadataManager;
 import cn.featherfly.hammer.Hammer;
+import cn.featherfly.hammer.config.HammerConfigImpl;
 import cn.featherfly.hammer.sqldb.SqldbHammerImpl;
 import cn.featherfly.hammer.sqldb.jdbc.Jdbc;
 import cn.featherfly.hammer.sqldb.jdbc.JdbcSpringImpl;
@@ -64,7 +68,11 @@ public class HammerBenchmark extends AbstractBenchmark {
 
         JdbcMappingFactory mappingFactory = new JdbcMappingFactoryImpl(metadata, dialect, sqlTypeMappingManager);
 
-        hammer = new SqldbHammerImpl(jdbc, mappingFactory, configFactory);
+        HammerConfigImpl hammerConfig = new HammerConfigImpl();
+        hammerConfig.setValidator(Validation.byProvider(HibernateValidator.class).configure().failFast(false)
+                .buildValidatorFactory().getValidator());
+
+        hammer = new SqldbHammerImpl(jdbc, mappingFactory, configFactory, hammerConfig);
     }
 
     /**

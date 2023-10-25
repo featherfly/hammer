@@ -13,7 +13,6 @@ import cn.featherfly.hammer.dsl.QueryEntityRepository;
 import cn.featherfly.hammer.dsl.entity.query.EntityQueryConditionGroup2;
 import cn.featherfly.hammer.dsl.entity.query.EntityQueryConditionGroupLogic2;
 import cn.featherfly.hammer.expression.api.Sortable;
-import cn.featherfly.hammer.expression.condition.ConditionGroupConfig;
 import cn.featherfly.hammer.expression.entity.EntityWhereExpression2;
 import cn.featherfly.hammer.expression.entity.query.EntityQuerySortExpression2;
 import cn.featherfly.hammer.sqldb.SqldbHammerException;
@@ -58,8 +57,7 @@ public abstract class AbstractEntitySqlQueryFetch2<E, E2, RS> extends AbstractEn
      * {@inheritDoc}
      */
     @Override
-    public EntityQueryConditionGroup2<E, E2, RS> where(
-            Consumer<ConditionGroupConfig<EntityQueryConditionGroup2<E, E2, RS>>> consumer) {
+    public EntityQueryConditionGroup2<E, E2, RS> where(Consumer<EntityQueryConditionGroup2<E, E2, RS>> consumer) {
         EntitySqlQueryExpression2<E, E2,
                 RS> exp = new EntitySqlQueryExpression2<>(factory, sqlPageFactory, queryRelation);
         if (consumer != null) {

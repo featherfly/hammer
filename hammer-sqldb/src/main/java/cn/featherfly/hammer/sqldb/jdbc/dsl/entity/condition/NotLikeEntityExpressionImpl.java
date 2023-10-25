@@ -11,7 +11,6 @@
 package cn.featherfly.hammer.sqldb.jdbc.dsl.entity.condition;
 
 import java.util.Collection;
-import java.util.function.Predicate;
 
 import cn.featherfly.common.db.mapping.JdbcMappingFactory;
 import cn.featherfly.common.exception.NotImplementedException;
@@ -54,8 +53,8 @@ public class NotLikeEntityExpressionImpl<E, C extends ConditionExpression, L ext
      * @param queryRelation  the query relation
      */
     public NotLikeEntityExpressionImpl(int index, MulitiEntityNotLikeExpression<C, L> expression,
-            Predicate<?> ignoreStrategy, JdbcMappingFactory factory, EntitySqlRelation<?, ?> queryRelation) {
-        super(index, expression, ignoreStrategy);
+            JdbcMappingFactory factory, EntitySqlRelation<?, ?> queryRelation) {
+        super(index, expression, queryRelation.getIgnorePolicy());
         this.factory = factory;
         this.queryRelation = queryRelation;
     }

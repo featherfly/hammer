@@ -22,6 +22,7 @@ import cn.featherfly.common.db.model.SimpleTable;
 import cn.featherfly.common.repository.IgnoreStrategy;
 import cn.featherfly.common.repository.SimpleAliasRepository;
 import cn.featherfly.common.repository.SimpleRepository;
+import cn.featherfly.hammer.config.dsl.EmptyConditionStrategy;
 import cn.featherfly.hammer.sqldb.SqldbHammerException;
 import cn.featherfly.hammer.sqldb.jdbc.HammerJdbcTestBase;
 import cn.featherfly.hammer.sqldb.jdbc.vo.r.Role;
@@ -43,7 +44,7 @@ public class SqlDeleterTest extends HammerJdbcTestBase {
      */
     @BeforeClass
     void setup() {
-        deleter = new SqlDeleter(jdbc, mappingFactory);
+        deleter = new SqlDeleter(jdbc, mappingFactory, hammerConfig.getDslConfig().getDeleteConfig());
     }
 
     /**
@@ -51,7 +52,7 @@ public class SqlDeleterTest extends HammerJdbcTestBase {
      */
     @Test(expectedExceptions = SqldbHammerException.class)
     public void testException() {
-        new SqlDeleter(jdbc).delete(User.class);
+        new SqlDeleter(jdbc, hammerConfig.getDslConfig().getDeleteConfig()).delete(User.class);
     }
 
     @Test
@@ -122,8 +123,8 @@ public class SqlDeleterTest extends HammerJdbcTestBase {
         assertEquals(load.getId(), role.getId());
         assertEquals(load.getName(), role.getName());
 
-        int result = deleter.delete(new SimpleAliasRepository("role", "r"))
-                .where(c -> c.setIgnoreStrategy(IgnoreStrategy.EMPTY)).eq("id", role.getId()).execute();
+        int result = deleter.delete(new SimpleAliasRepository("role", "r")).where()
+                .configure(c -> c.setIgnoreStrategy(IgnoreStrategy.EMPTY)).eq("id", role.getId()).execute();
         assertEquals(result, 1);
 
         load = hammer.get(role);
@@ -131,11 +132,55 @@ public class SqlDeleterTest extends HammerJdbcTestBase {
     }
 
     @Test
-    public void testDeleteNoCondition() {
+    public void testDeleteNoCondition_default() {
+        int result = deleter.delete("user_role")
+                .configure(c -> c.setIgnoreStrategy(IgnoreStrategy.EMPTY)
+                        .setEmptyConditionStrategy(EmptyConditionStrategy.NON_EXECUTION)) //
+                .where().eq("user_id", null).execute();
+        assertEquals(result, 0);
+
+        result = deleter.delete("user_role").configure(c -> c.setIgnoreStrategy(IgnoreStrategy.EMPTY)) //
+                .where().eq("user_id", null).execute();
+        assertEquals(result, 0);
+
+        result = deleter.delete("user_role").where().configure(c -> c.setIgnoreStrategy(IgnoreStrategy.EMPTY)
+                .setEmptyConditionStrategy(EmptyConditionStrategy.NON_EXECUTION)).eq("user_id", null).execute();
+        assertEquals(result, 0);
+
+        result = deleter.delete("user_role").where().configure(c -> c.setIgnoreStrategy(IgnoreStrategy.EMPTY))
+                .eq("user_id", null).execute();
+        assertEquals(result, 0);
+
+    }
+
+    @Test(expectedExceptions = SqldbHammerException.class)
+    public void testDeleteNoCondition_exeception() {
+        deleter.delete("user_role")
+                .configure(c -> c.setIgnoreStrategy(IgnoreStrategy.EMPTY)
+                        .setEmptyConditionStrategy(EmptyConditionStrategy.EXCEPTION))
+                .where().eq("user_id", null).execute();
+    }
+
+    @Test(expectedExceptions = SqldbHammerException.class)
+    public void testDeleteNoCondition_exeception2() {
+        deleter.delete("user_role").where().configure(c -> c.setIgnoreStrategy(IgnoreStrategy.EMPTY)
+                .setEmptyConditionStrategy(EmptyConditionStrategy.EXCEPTION)).eq("user_id", null).execute();
+    }
+
+    @Test
+    public void testDeleteNoCondition_execute() {
         List<UserRole> urs = hammer.query(UserRole.class).list();
 
-        int result = deleter.delete("user_role").where().setIgnoreStrategy(IgnoreStrategy.EMPTY).eq("user_id", null)
-                .execute();
+        int result = deleter.delete("user_role").where().configure(c -> c.setIgnoreStrategy(IgnoreStrategy.EMPTY)
+                .setEmptyConditionStrategy(EmptyConditionStrategy.EXECUTION)).eq("user_id", null).execute();
+        assertEquals(result, urs.size());
+
+        hammer.save(urs);
+
+        result = deleter.delete("user_role")
+                .configure(c -> c.setIgnoreStrategy(IgnoreStrategy.EMPTY)
+                        .setEmptyConditionStrategy(EmptyConditionStrategy.EXECUTION))
+                .where().eq("user_id", null).execute();
         assertEquals(result, urs.size());
 
         hammer.save(urs);
@@ -170,7 +215,7 @@ public class SqlDeleterTest extends HammerJdbcTestBase {
         assertEquals(load.getId(), role.getId());
         assertEquals(load.getName(), role.getName());
 
-        int result = deleter.delete(Role.class).where(c -> c.setIgnoreStrategy(IgnoreStrategy.EMPTY))
+        int result = deleter.delete(Role.class).where().configure(c -> c.setIgnoreStrategy(IgnoreStrategy.EMPTY))
                 .eq(Role::getId, role.getId()).execute();
         assertEquals(result, 1);
 
@@ -178,12 +223,68 @@ public class SqlDeleterTest extends HammerJdbcTestBase {
         assertNull(load);
     }
 
+    @Test(expectedExceptions = SqldbHammerException.class)
+    public void testDeleteEntityNoCondition_exception() {
+        deleter.delete(UserRole.class)
+                .configure(c -> c.setIgnoreStrategy(IgnoreStrategy.EMPTY)
+                        .setEmptyConditionStrategy(EmptyConditionStrategy.EXCEPTION))
+                .where().eq(UserRole::getUserId, null) //
+                .execute();
+    }
+
+    @Test(expectedExceptions = SqldbHammerException.class)
+    public void testDeleteEntityNoCondition_exception2() {
+        deleter.delete(UserRole.class).where()
+                .configure(c -> c.setIgnoreStrategy(IgnoreStrategy.EMPTY)
+                        .setEmptyConditionStrategy(EmptyConditionStrategy.EXCEPTION))
+                .eq(UserRole::getUserId, null) //
+                .execute();
+    }
+
     @Test
-    public void testDeleteEntityNoCondition() {
+    public void testDeleteEntityNoCondition_default() {
+        //  没有参数，返回的0
+        int result = deleter.delete(UserRole.class)
+                .configure(c -> c.setIgnoreStrategy(IgnoreStrategy.EMPTY)
+                        .setEmptyConditionStrategy(EmptyConditionStrategy.NON_EXECUTION))
+                .where().eq(UserRole::getUserId, null) //
+                .execute();
+        assertEquals(result, 0);
+
+        result = deleter.delete(UserRole.class).configure(c -> c.setIgnoreStrategy(IgnoreStrategy.EMPTY)).where()
+                .eq(UserRole::getUserId, null) //
+                .execute();
+        assertEquals(result, 0);
+
+        result = deleter.delete(UserRole.class).where()
+                .configure(c -> c.setIgnoreStrategy(IgnoreStrategy.EMPTY)
+                        .setEmptyConditionStrategy(EmptyConditionStrategy.NON_EXECUTION))
+                .eq(UserRole::getUserId, null) //
+                .execute();
+        assertEquals(result, 0);
+
+        result = deleter.delete(UserRole.class).where().configure(c -> c.setIgnoreStrategy(IgnoreStrategy.EMPTY))
+                .eq(UserRole::getUserId, null) //
+                .execute();
+        assertEquals(result, 0);
+    }
+
+    @Test
+    public void testDeleteEntityNoCondition_execute() {
         List<UserRole> urs = hammer.query(UserRole.class).list();
 
-        // YUFEI_TEST 没有参数，返回的0，后续设置没有参数的行为策略
-        int result = deleter.delete(UserRole.class).where().setIgnoreStrategy(IgnoreStrategy.EMPTY)
+        int result = deleter.delete(UserRole.class)
+                .configure(c -> c.setIgnoreStrategy(IgnoreStrategy.EMPTY)
+                        .setEmptyConditionStrategy(EmptyConditionStrategy.EXECUTION))
+                .where().eq(UserRole::getUserId, null) //
+                .execute();
+        assertEquals(result, urs.size());
+
+        hammer.save(urs);
+
+        result = deleter.delete(UserRole.class).where()
+                .configure(c -> c.setIgnoreStrategy(IgnoreStrategy.EMPTY)
+                        .setEmptyConditionStrategy(EmptyConditionStrategy.EXECUTION))
                 .eq(UserRole::getUserId, null) //
                 .execute();
         assertEquals(result, urs.size());

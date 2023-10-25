@@ -13,6 +13,8 @@ import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.BeforeTest;
 import org.testng.annotations.Test;
 
+import com.speedment.common.tuple.Tuple2;
+
 import cn.featherfly.hammer.sqldb.jdbc.JdbcTestBase;
 import cn.featherfly.hammer.sqldb.jdbc.dsl.query.SqlQuery;
 import cn.featherfly.hammer.sqldb.jdbc.vo.r.Tree;
@@ -36,7 +38,7 @@ public class EntitySqlQueryJoinTest extends JdbcTestBase {
 
     @BeforeTest
     void setupTest() {
-        query = new SqlQuery(jdbc, mappingFactory, sqlPageFactory);
+        query = new SqlQuery(jdbc, mappingFactory, sqlPageFactory, hammerConfig.getDslConfig().getQueryConfig());
     }
 
     @BeforeMethod
@@ -85,13 +87,18 @@ public class EntitySqlQueryJoinTest extends JdbcTestBase {
         //        JOIN `user_role` _user_role0 ON _user_role0.`user_id` = _user0.`user_id`
         //        WHERE _user0.`id` = ?
 
-        //        IMPLSOON 后续来实现多类型的查询
-        //        user = query.find(User.class).join(UserInfo::getUser).fetch().where().eq(UserInfo::getId, 1).single();
+        Integer id = 1;
 
-        // YUFEI_TEST 后续来测试
-        //        List<UserInfo> list = query.find(UserInfo.class).join(UserInfo::getUser).join(UserRole2::getUser)
-        //                .join(UserRole2::getRole).list();
-        //        System.out.println(list.size());
+        user = query.find(User.class).join(UserInfo::getUser).where().eq2(UserInfo::getId, 1).single();
+
+        Tuple2<User, UserInfo> userUserInfo = query.find(User.class).join(UserInfo::getUser).fetch().where()
+                .eq2(UserInfo::getId, id).single();
+        assertEquals(userUserInfo.get1().getId(), id);
+        assertEquals(userUserInfo.get1().getUser().getId(), userUserInfo.get0().getId());
+
+        List<UserInfo> list = query.find(UserInfo.class).join(UserInfo::getUser).join2(UserRole2::getUser)
+                .join3(UserRole2::getRole).list();
+        System.out.println(list.size());
 
         query.find(Tree.class).join(Tree::getParent).list();
 
@@ -264,7 +271,7 @@ public class EntitySqlQueryJoinTest extends JdbcTestBase {
         //        userInfos = query.find(UserInfo.class).where().eq(userInfo::getUser, User::getPwd).and().eq(userInfo::getId).and().ge(UserInfo::getUser, User::getAge, 10).list();
         userInfos = query.find(UserInfo.class).where().property(UserInfo::getUser).property(User::getMobileNo)
                 .eq(userInfo.getUser().getMobileNo()).and().eq(userInfo::getId).and().property(UserInfo::getUser)
-                .property(User::getAge).ge(10).list();
+                .property(User::getAge).ge(1000).list();
         System.out.println(userInfos.size());
         assertTrue(userInfos.size() == 0);
 

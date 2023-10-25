@@ -433,7 +433,7 @@ public class DslTest {
         //  这里表示和 tree t2 进行join，所以join tree t3 on t2.id = t3.parent_id
         // 这种实现可能会导致编译出错（例如自关联 Tree::getParent这种）
         // 所以就算实现了相应的方法，也要保留join join1 join2这种不会导致编译报错的方法实现
-
+        
         // join的api定义规则，此方案应该是不能实现，因为传入参数无法区分，所以返回参数也无法确定
         /*
          // select * from tree t1 join tree t2 on t1.id = t2.parent_id join tree t3 on t2.id = t3.parent_id
@@ -442,7 +442,7 @@ public class DslTest {
              //  这里表示和 tree t2 进行join，所以join tree t3 on t2.id = t3.parent_id
              es.get1().join(Tree::getParent);
          });
-
+        
          // 可以先实现下面这种方式，因为这种方式不需要多个返回结果类型，在现有结构上就能实现，废案
          query.find(Tree.class).join(Tree::getParent, t -> {
            //  这里表示和 tree t2 进行join，所以join tree t3 on t2.id = t3.parent_id
@@ -898,7 +898,7 @@ public class DslTest {
             }
         });
 
-        updater.update(r).set(() -> name.equals("yufei"), "name", name);
+        updater.update(r).set("name", name, v -> v.equals("yufei"));
     }
 
     public void testEntityUpdate() {
@@ -1051,7 +1051,7 @@ public class DslTest {
             Tuple2<Function<SerializableFunction<User, ?>, QueryEntityRepository<User>>,
                     Function<SerializableFunction<UserInfo, ?>, QueryEntityRepository<UserInfo>>>,
             QueryEntityRepository<User>> join) {
-
+    
     }
     void join(Function<
             Tuple2<Function<SerializableFunction<User, ?>, QueryEntityRepository<User>>,

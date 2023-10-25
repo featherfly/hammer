@@ -5,11 +5,13 @@ import java.util.function.Consumer;
 
 import cn.featherfly.common.db.mapping.JdbcClassMapping;
 import cn.featherfly.common.db.mapping.JdbcMappingFactory;
-import cn.featherfly.common.repository.IgnoreStrategy;
 import cn.featherfly.common.repository.builder.AliasManager;
+import cn.featherfly.hammer.config.dsl.DeleteConditionConfig;
+import cn.featherfly.hammer.config.dsl.DeleteConfig;
 import cn.featherfly.hammer.dsl.entity.execute.EntityDelete;
 import cn.featherfly.hammer.dsl.entity.execute.EntityExecutableConditionGroup;
-import cn.featherfly.hammer.expression.condition.ConditionGroupConfig;
+import cn.featherfly.hammer.dsl.entity.execute.EntityExecutableConditionGroupLogic;
+import cn.featherfly.hammer.expression.entity.execute.EntityDeleteExpression;
 import cn.featherfly.hammer.sqldb.jdbc.Jdbc;
 import cn.featherfly.hammer.sqldb.jdbc.dsl.entity.EntitySqlDeleteRelation;
 
@@ -21,10 +23,6 @@ import cn.featherfly.hammer.sqldb.jdbc.dsl.entity.EntitySqlDeleteRelation;
  */
 public class SqlEntityDelete<E> implements EntityDelete<E> {
 
-    //    private String tableName;
-
-    //    private String tableAlias;
-
     private JdbcClassMapping<E> classMapping;
 
     private JdbcMappingFactory factory;
@@ -33,15 +31,19 @@ public class SqlEntityDelete<E> implements EntityDelete<E> {
 
     private Jdbc jdbc;
 
+    private DeleteConfig deleteConfig;
+
     /**
      * Instantiates a new sql delete.
      *
      * @param jdbc         the jdbc
      * @param factory      the factory
      * @param classMapping the class mapping
+     * @param deleteConfig the delete config
      */
-    public SqlEntityDelete(Jdbc jdbc, JdbcMappingFactory factory, JdbcClassMapping<E> classMapping) {
-        this(jdbc, factory, classMapping, new AliasManager());
+    public SqlEntityDelete(Jdbc jdbc, JdbcMappingFactory factory, JdbcClassMapping<E> classMapping,
+            DeleteConfig deleteConfig) {
+        this(jdbc, factory, classMapping, deleteConfig, new AliasManager());
     }
 
     /**
@@ -50,14 +52,16 @@ public class SqlEntityDelete<E> implements EntityDelete<E> {
      * @param jdbc         the jdbc
      * @param factory      the factory
      * @param classMapping the class mapping
+     * @param deleteConfig the delete config
      * @param aliasManager the alias manager
      */
     public SqlEntityDelete(Jdbc jdbc, JdbcMappingFactory factory, JdbcClassMapping<E> classMapping,
-            AliasManager aliasManager) {
+            DeleteConfig deleteConfig, AliasManager aliasManager) {
         this.jdbc = jdbc;
         this.factory = factory;
         this.classMapping = classMapping;
         this.aliasManager = aliasManager;
+        this.deleteConfig = deleteConfig.clone();
         //        tableName = classMapping.getRepositoryName();
         //        tableAlias = this.aliasManager.put(tableName);
     }
@@ -66,7 +70,7 @@ public class SqlEntityDelete<E> implements EntityDelete<E> {
      * {@inheritDoc}
      */
     @Override
-    public EntityExecutableConditionGroup<E> where() {
+    public EntityExecutableConditionGroup<E, DeleteConditionConfig> where() {
         return createSqlDeleteExpression();
     }
 
@@ -74,10 +78,9 @@ public class SqlEntityDelete<E> implements EntityDelete<E> {
      * {@inheritDoc}
      */
     @Override
-    public EntityExecutableConditionGroup<E> where(
-            Consumer<ConditionGroupConfig<EntityExecutableConditionGroup<E>>> consumer) {
+    public EntityExecutableConditionGroup<E, DeleteConditionConfig> where(
+            Consumer<EntityExecutableConditionGroup<E, DeleteConditionConfig>> consumer) {
         SqlEntityDeleteExpression<E> sqlDeleteExpression = createSqlDeleteExpression();
-
         if (consumer != null) {
             consumer.accept(sqlDeleteExpression);
         }
@@ -90,6 +93,18 @@ public class SqlEntityDelete<E> implements EntityDelete<E> {
 
     private SqlEntityDeleteExpression<E> createSqlDeleteExpression() {
         return new SqlEntityDeleteExpression<>(factory,
-                new EntitySqlDeleteRelation(jdbc, aliasManager, IgnoreStrategy.EMPTY).addFilterable(classMapping));
+                new EntitySqlDeleteRelation(jdbc, aliasManager, deleteConfig).addFilterable(classMapping));
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public EntityDeleteExpression<E, EntityExecutableConditionGroup<E, DeleteConditionConfig>,
+            EntityExecutableConditionGroupLogic<E, DeleteConditionConfig>> configure(Consumer<DeleteConfig> configure) {
+        if (configure != null) {
+            configure.accept(deleteConfig);
+        }
+        return this;
     }
 }
