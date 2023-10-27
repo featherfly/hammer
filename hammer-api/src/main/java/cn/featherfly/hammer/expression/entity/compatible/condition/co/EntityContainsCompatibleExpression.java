@@ -3,7 +3,7 @@ package cn.featherfly.hammer.expression.entity.compatible.condition.co;
 
 import cn.featherfly.hammer.expression.condition.ConditionExpression;
 import cn.featherfly.hammer.expression.condition.LogicExpression;
-import cn.featherfly.hammer.expression.condition.StringContainsExpression;
+import cn.featherfly.hammer.expression.condition.ContainsExpressionBase;
 import cn.featherfly.hammer.expression.entity.condition.co.EntityContainsExpression;
 
 /**
@@ -15,7 +15,7 @@ import cn.featherfly.hammer.expression.entity.condition.co.EntityContainsExpress
  * @param <L> the generic type
  */
 public interface EntityContainsCompatibleExpression<E, C extends ConditionExpression, L extends LogicExpression<C, L>>
-        extends EntityContainsExpression<E, C, L>, StringContainsExpression<C, L> {
+        extends EntityContainsExpression<E, C, L>, ContainsExpressionBase<C, L> {
 
     //    /**
     //     * contains value. 包含value.

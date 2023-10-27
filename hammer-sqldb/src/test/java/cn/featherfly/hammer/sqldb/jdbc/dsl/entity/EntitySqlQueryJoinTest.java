@@ -1,8 +1,8 @@
 
 package cn.featherfly.hammer.sqldb.jdbc.dsl.entity;
 
+import static org.junit.Assert.assertNotNull;
 import static org.testng.Assert.assertEquals;
-import static org.testng.Assert.assertNotNull;
 import static org.testng.Assert.assertNull;
 import static org.testng.Assert.assertTrue;
 
@@ -14,6 +14,7 @@ import org.testng.annotations.BeforeTest;
 import org.testng.annotations.Test;
 
 import com.speedment.common.tuple.Tuple2;
+import com.speedment.common.tuple.Tuple3;
 
 import cn.featherfly.hammer.sqldb.jdbc.JdbcTestBase;
 import cn.featherfly.hammer.sqldb.jdbc.dsl.query.SqlQuery;
@@ -21,6 +22,7 @@ import cn.featherfly.hammer.sqldb.jdbc.vo.r.Tree;
 import cn.featherfly.hammer.sqldb.jdbc.vo.r.User;
 import cn.featherfly.hammer.sqldb.jdbc.vo.r.UserInfo;
 import cn.featherfly.hammer.sqldb.jdbc.vo.r.UserRole2;
+import cn.featherfly.hammer.sqldb.jdbc.vo.s.Tree2;
 
 /**
  * sql query type test.
@@ -132,12 +134,11 @@ public class EntitySqlQueryJoinTest extends JdbcTestBase {
         List<UserInfo> list = null;
 
         list = query.find(UserInfo.class).where().property(UserInfo::getUser) //
-                .eq(user).list(); // IMPLSOON 这里还未连表查询
+                .eq(user).list();
         for (UserInfo ui : list) {
             assertEquals(ui.getUser().getId(), u.getId());
         }
 
-        // IMPLSOON UserInfo::getUser, user 联表查询，仅查询不获取，如果没有join的话需要自动join
         list = query.find(UserInfo.class).where().eq(UserInfo::getUser, user).list();
         for (UserInfo ui : list) {
             assertEquals(ui.getUser().getId(), u.getId());
@@ -155,37 +156,16 @@ public class EntitySqlQueryJoinTest extends JdbcTestBase {
         List<UserInfo> list = null;
 
         list = query.find(UserInfo.class).where().property(UserInfo::getUser) //
-                .eq(user).list(); // IMPLSOON 这里还未连表查询
+                .eq(user).list();
         for (UserInfo ui : list) {
             assertEquals(ui.getUser().getId(), u.getId());
         }
 
-        // IMPLSOON UserInfo::getUser, user 联表查询，仅查询不获取，如果没有join的话需要自动join
         list = query.find(UserInfo.class).where().eq(UserInfo::getUser, user).list();
         for (UserInfo ui : list) {
             assertEquals(ui.getUser().getId(), u.getId());
         }
     }
-
-    //    @Test(expectedExceptions = SqldbHammerException.class)
-    //    void testJoinFetchException() {
-    //        // 因为User类中没有UserRole类的关系，所以fetch时会找不到关系，不fetch只是使用条件查询问题不大
-    //        // userInfo.user.userRole 这里没有userRole
-    //
-    //        // YUFEI_TEST 后续来测试
-    //        //        query.find(UserInfo.class).join(UserInfo::getUser).fetch().join(UserRole2::getUser).fetch()
-    //        //                .join(UserRole2::getRole).fetch().list();
-    //
-    //        // TODO 可能的条件查询
-    //        /*
-    //         query.find(UserInfo.class).join(UserInfo::getUser, (c) -> {
-    //             c.eq() ..... // 关联user的条件查询
-    //         }).fetch().join(UserRole2::getUser).fetch()
-    //                .join(UserRole2::getRole).fetch().list();
-    //
-    //
-    //         */
-    //    }
 
     @Test
     void testJoinCondition2() {
@@ -306,7 +286,6 @@ public class EntitySqlQueryJoinTest extends JdbcTestBase {
 
     @Test
     void testJoinMulity() {
-
         List<Tree> list1 = query.find(Tree.class).list();
         list1.forEach(v -> {
             System.err.println(v);
@@ -315,38 +294,45 @@ public class EntitySqlQueryJoinTest extends JdbcTestBase {
         List<Tree> list2 = query.find(Tree.class).join(Tree::getParent).list();
         list2.forEach(v -> {
             assertNotNull(v.getParent().getId());
-            System.err.println(v);
         });
 
         list2 = query.find(Tree.class).join(Tree::getParent).join(Tree::getParent).list();
         list2.forEach(v -> {
             assertNotNull(v.getParent().getId());
-            System.err.println(v);
         });
 
-        //        List<Tuple2<Tree2, Tree2>> list3 = query.find(Tree2.class).join(Tree2::getParent).fetch().list();
-        //        list3.forEach(v -> {
-        //            assertNotNull(v.get0().getParent().getId());
-        //            assertNotNull(v.get0().getParent().getName());
-        //            System.err.println(v);
-        //        });
+        assertTrue(list1.size() > list2.size());
+
+        List<Tuple2<Tree2, Tree2>> listTuple2 = query.find(Tree2.class) //
+                .join(Tree2.class).on(Tree2::getParentId, Tree2::getId).fetch() //
+                .list();
+        listTuple2.forEach(v -> {
+            assertEquals(v.get0().getParentId(), v.get1().getId());
+        });
+
         List<Tree> list3 = query.find(Tree.class).join(Tree::getParent).fetch().list();
         list3.forEach(v -> {
             assertNotNull(v.getParent().getId());
             assertNotNull(v.getParent().getName());
-            System.err.println(v);
         });
 
-        // YUFEI_TEST 后续实现了再来处理
-        //        List<Tuple3<Tree2, Tree2, Tree2>> list4 = query.find(Tree2.class).join(Tree2::getParent).fetch()
-        //                .join1(Tree2::getParent).fetch().list();
-        //        list4.forEach(v -> {
-        //            assertNotNull(v.get0().getParent().getId());
-        //            assertNotNull(v.get0().getParent().getName());
-        //            System.err.println(v);
-        //        });
+        List<Tree> list4 = query.find(Tree.class).join(Tree::getParent).fetch().join2(Tree::getParent).fetch().list();
+        list4.forEach(v -> {
+            assertNotNull(v.getParent().getId());
+            assertNotNull(v.getParent().getName());
+            assertNotNull(v.getParent().getParent());
+            assertNotNull(v.getParent().getParent().getId());
+            assertNotNull(v.getParent().getParent().getName());
+        });
 
-        assertTrue(list1.size() > list2.size());
+        List<Tuple3<Tree2, Tree2, Tree2>> listTuple3 = query.find(Tree2.class) //
+                .join(Tree2.class).on(Tree2::getParentId, Tree2::getId).fetch() //
+                .join2(Tree2.class).on(Tree2::getParentId, Tree2::getId).fetch() //
+                .list();
+        listTuple3.forEach(v -> {
+            assertEquals(v.get0().getParentId(), v.get1().getId());
+            assertEquals(v.get1().getParentId(), v.get2().getId());
+        });
 
         // query.find(UserInfo.class).join(UserRole2::getUser).list();
 
@@ -355,5 +341,40 @@ public class EntitySqlQueryJoinTest extends JdbcTestBase {
         // .join(UserRole2::getRole);
         // query.find(User.class).join(UserRole2::getUser).join(UserRole2::getRole).where();
         // query.find(UserInfo.class).join(UserInfo::getUser).on(propertyName);
+    }
+
+    @Test
+    void testJoinMulity2() {
+        // 因为User类中没有UserRole类的关系，所以fetch时会找不到关系，不fetch只是使用条件查询问题不大
+        // userInfo.user.userRole 这里没有userRole
+
+        List<Tuple2<UserInfo, UserRole2>> listTuple2 = query.find(UserInfo.class) //
+                .join(UserInfo::getUser).fetch() //
+                .join2(UserRole2::getUser).fetch() //
+                .join3(UserRole2::getRole).list();
+        listTuple2.forEach(t -> {
+            assertNotNull(t.get0().getUser().getId());
+            assertNotNull(t.get0().getUser().getUsername());
+            assertEquals(t.get0().getUser().getId(), t.get1().getUser().getId());
+            assertNotNull(t.get1().getUser().getId());
+            assertNotNull(t.get1().getRole().getId());
+        });
+
+        listTuple2 = query.find(UserInfo.class) //
+                .join(UserInfo::getUser).fetch() //
+                .join2(UserRole2::getUser).fetch() //
+                .join3(UserRole2::getRole).fetch() // FIXME 这里在拼接 select alias时有问题（_user_role0.user.id.role.id）
+                .list();
+        // FIXME 上面的错误，是因为join2(UserRole2::getUser)这一次生成的Relation对象的joinFromPropertyName的问题
+        // 可能需要在逻辑上判断双向和单项映射的问题，后续来修复这个问题
+        listTuple2.forEach(t -> {
+            assertNotNull(t.get0().getUser().getId());
+            assertNotNull(t.get0().getUser().getUsername());
+            assertEquals(t.get0().getUser().getId(), t.get1().getUser().getId());
+            assertNotNull(t.get1().getUser().getId());
+            assertNotNull(t.get1().getUser().getUsername());
+            assertNotNull(t.get1().getRole().getId());
+            assertNotNull(t.get1().getRole().getName());
+        });
     }
 }

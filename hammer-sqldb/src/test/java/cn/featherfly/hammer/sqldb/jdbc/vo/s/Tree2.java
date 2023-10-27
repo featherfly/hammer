@@ -19,7 +19,7 @@ public class Tree2 {
     @Column
     private String name;
 
-    private String parentId;
+    private Integer parentId;
 
     /**
      * 返回id.
@@ -62,7 +62,7 @@ public class Tree2 {
      *
      * @return parentId
      */
-    public String getParentId() {
+    public Integer getParentId() {
         return parentId;
     }
 
@@ -71,7 +71,7 @@ public class Tree2 {
      *
      * @param parentId parentId
      */
-    public void setParentId(String parentId) {
+    public void setParentId(Integer parentId) {
         this.parentId = parentId;
     }
 
