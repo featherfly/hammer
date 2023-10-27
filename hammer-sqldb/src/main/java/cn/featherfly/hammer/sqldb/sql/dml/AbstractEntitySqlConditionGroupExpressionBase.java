@@ -209,7 +209,7 @@ public abstract class AbstractEntitySqlConditionGroupExpressionBase<E, ER extend
             logic = ((AbstractEntitySqlConditionExpressionBase<E, ER, B, C, L, C2>) condition).eq_ne(comparisonOperator,
                     pm, ov, queryAlias, matchStrategy, ignoreStrategy);
         }
-        if (groupable) {
+        if (groupable && logic != null) {
             logic = logic.endGroup();
         }
         return logic;
@@ -262,7 +262,7 @@ public abstract class AbstractEntitySqlConditionGroupExpressionBase<E, ER extend
                         .eq_ne(comparisonOperator, pm, ov, queryAlias, matchStrategy, ignoreStrategy);
             }
         }
-        if (groupable) {
+        if (groupable && logic != null) {
             logic = logic.endGroup();
         }
         return logic;

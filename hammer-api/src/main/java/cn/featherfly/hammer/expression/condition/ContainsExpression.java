@@ -6,7 +6,6 @@ import java.util.function.Predicate;
 import cn.featherfly.common.function.serializable.SerializableStringSupplier;
 import cn.featherfly.common.function.serializable.SerializableToStringFunction;
 import cn.featherfly.common.operator.ComparisonOperator.MatchStrategy;
-import cn.featherfly.common.repository.Field;
 import cn.featherfly.common.repository.IgnoreStrategy;
 
 /**
@@ -17,80 +16,7 @@ import cn.featherfly.common.repository.IgnoreStrategy;
  * @param <L> the generic type
  */
 public interface ContainsExpression<C extends ConditionExpression, L extends LogicExpression<C, L>>
-        extends StringContainsExpression<C, L> {
-
-    /**
-     * contains value. 包含value.
-     *
-     * @param name  the name
-     * @param value the value
-     * @return LogicExpression
-     */
-    default L co(Field name, String value) {
-        return co(name.name(), value);
-    }
-
-    /**
-     * contains value. 包含value.
-     *
-     * @param name           the name
-     * @param value          the value
-     * @param ignoreStrategy the ignore strategy
-     * @return LogicExpression
-     */
-    default L co(Field name, String value, IgnoreStrategy ignoreStrategy) {
-        return co(name.name(), value, ignoreStrategy);
-    }
-
-    /**
-     * contains value. 包含value.
-     *
-     * @param name           the name
-     * @param value          the value
-     * @param ignoreStrategy the ignore strategy
-     * @return LogicExpression
-     */
-    default L co(Field name, String value, Predicate<String> ignoreStrategy) {
-        return co(name.name(), value, ignoreStrategy);
-    }
-
-    /**
-     * contains value. 包含value.
-     *
-     * @param name          the name
-     * @param value         the value
-     * @param matchStrategy the match strategy
-     * @return the l
-     */
-    default L co(Field name, String value, MatchStrategy matchStrategy) {
-        return co(name.name(), value, matchStrategy);
-    }
-
-    /**
-     * contains value. 包含value.
-     *
-     * @param name           the name
-     * @param value          the value
-     * @param matchStrategy  the match strategy
-     * @param ignoreStrategy the ignore strategy
-     * @return the l
-     */
-    default L co(Field name, String value, MatchStrategy matchStrategy, IgnoreStrategy ignoreStrategy) {
-        return co(name.name(), value, matchStrategy, ignoreStrategy);
-    }
-
-    /**
-     * contains value. 包含value.
-     *
-     * @param name           the name
-     * @param value          the value
-     * @param matchStrategy  the match strategy
-     * @param ignoreStrategy the ignore strategy
-     * @return the l
-     */
-    default L co(Field name, String value, MatchStrategy matchStrategy, Predicate<String> ignoreStrategy) {
-        return co(name.name(), value, matchStrategy, ignoreStrategy);
-    }
+        extends ContainsExpressionBase<C, L> {
 
     /**
      * contains value. 包含value.

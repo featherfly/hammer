@@ -1,8 +1,6 @@
 
 package cn.featherfly.hammer.sqldb.jdbc.dsl.entity;
 
-import java.util.function.Predicate;
-
 import cn.featherfly.common.db.builder.dml.basic.SqlSelectJoinOnBasicBuilder;
 import cn.featherfly.common.db.builder.dml.basic.SqlUpdateSetBasicBuilder;
 import cn.featherfly.common.db.mapping.JdbcClassMapping;
@@ -59,11 +57,10 @@ public class EntitySqlUpdateRelation extends EntitySqlRelation<EntitySqlUpdateRe
     /**
      * {@inheritDoc}
      */
-    @SuppressWarnings("unchecked")
     @Override
     protected void initBuilder(EntityRelationMapping<?> erm) {
         updateBuilder = new SqlUpdateSetBasicBuilder(jdbc.getDialect(), erm.getClassMapping().getRepositoryName(),
-                erm.getTableAlias(), v -> ((Predicate<Object>) getConfig().getIgnoreStrategy()).test(v));
+                erm.getTableAlias(), getConfig().getIgnoreStrategy()::test);
     }
 
     /**
