@@ -117,6 +117,23 @@ public class EntitySqlQueryJoin2Test extends AbstractEntitySqlQueryJoinTest {
         }
     }
 
+    @Test
+    void testJoin_E_R1R2_on2__() {
+
+        List<Tuple3<User2, Order2, Order2>> userOrders = query.find(User2.class) //
+                .join(Order2.class).on(Order2::getCreateUser).fetch() //
+                .join(Order2.class).on(Order2::getUser1).fetch() //
+                .where() //
+                .eq2(Order2::getId, oid1) //
+                .list();
+        for (Tuple3<User2, Order2, Order2> userOrder : userOrders) {
+            assertNotNull(userOrder);
+            assertEquals(userOrder.get1().getId(), oid1);
+            assertEquals(userOrder.get0().getId(), userOrder.get1().getCreateUser());
+            assertEquals(userOrder.get0().getId(), userOrder.get2().getUser1());
+        }
+    }
+
     //    @Test
     //    void testJoin_ER_TYPE_ER_TYPE() {
     //        Order2 order = query.find(Order2.class).join(User2.class).on(Order2::getUser1).join(User2.class)

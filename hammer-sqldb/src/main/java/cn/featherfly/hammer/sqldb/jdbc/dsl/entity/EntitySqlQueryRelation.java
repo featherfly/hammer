@@ -79,7 +79,6 @@ public class EntitySqlQueryRelation extends EntitySqlRelation<EntitySqlQueryRela
         AssertIllegalArgument.isGe(index, 0, "fetch entity index");
         AssertIllegalArgument.isLt(index, entityFilterableMappingTuple.degree(), "fetch entity index");
         EntityRelationMapping<?> erm = getEntityRelationMapping(index);
-        //        entityQueryFetchMapping.put(index, erm);
         entityQueryFetchMapping.put(entityQueryFetchMapping.size(), erm);
         queryFetchAlias.add(erm.getTableAlias());
 
@@ -96,7 +95,6 @@ public class EntitySqlQueryRelation extends EntitySqlRelation<EntitySqlQueryRela
         EntityRelationMapping<?> erm = getEntityRelationMapping(index);
         queryFetchAlias.add(erm.getTableAlias());
         if (index > 0) {
-            //            erm.selectJoinOnBasicBuilder.fetch(erm.getJoinFromPropertyName());
             erm.selectJoinOnBasicBuilder.fetch((alias, prefixTableAlias) -> {
                 if (prefixTableAlias) {
                     EntityRelationMapping<?> jerm = getEntityRelationMapping(erm.getJoinFromIndex());
@@ -149,15 +147,6 @@ public class EntitySqlQueryRelation extends EntitySqlRelation<EntitySqlQueryRela
         }
     }
 
-    //    /**
-    //     * 返回selectBuilder.
-    //     *
-    //     * @return selectBuilder
-    //     */
-    //    public SqlSelectBasicBuilder getSelectBuilder() {
-    //        return selectBuilder;
-    //    }
-
     public String buildSelectSql() {
         return selectBuilder.setColumnAliasPrefixTableAlias(isReturnTuple())
                 .build((tableName, tableAlias) -> queryFetchAlias.contains(tableAlias));
@@ -173,7 +162,6 @@ public class EntitySqlQueryRelation extends EntitySqlRelation<EntitySqlQueryRela
      */
     @SuppressWarnings("unchecked")
     public <R> R single(String sql, Object[] params) {
-        //        if (isReturnTuple()) {
         switch (entityQueryFetchMapping.size()) {
             case 1:
                 return (R) jdbc.querySingle(sql, entityFilterableMappingTuple.getOrNull0().getClassMapping().getType(),
@@ -206,9 +194,6 @@ public class EntitySqlQueryRelation extends EntitySqlRelation<EntitySqlQueryRela
             default:
                 throw new SqldbHammerException("entity query fetch times must be 2-6");
         }
-        //        } else {
-        //            throw new SqldbHammerException("query result is not tuple type");
-        //        }
     }
 
     /**
@@ -221,7 +206,6 @@ public class EntitySqlQueryRelation extends EntitySqlRelation<EntitySqlQueryRela
      */
     @SuppressWarnings("unchecked")
     public <R> R unique(String sql, Object[] params) {
-        //        if (isReturnTuple()) {
         switch (entityQueryFetchMapping.size()) {
             case 1:
                 return (R) jdbc.queryUnique(sql, entityFilterableMappingTuple.getOrNull0().getClassMapping().getType(),
@@ -254,9 +238,6 @@ public class EntitySqlQueryRelation extends EntitySqlRelation<EntitySqlQueryRela
             default:
                 throw new SqldbHammerException("entity query fetch times must be 2-6");
         }
-        //        } else {
-        //            throw new SqldbHammerException("query result is not tuple type");
-        //        }
     }
 
     /**
@@ -269,7 +250,6 @@ public class EntitySqlQueryRelation extends EntitySqlRelation<EntitySqlQueryRela
      */
     @SuppressWarnings("unchecked")
     public <R> List<R> list(String sql, Object[] params) {
-        //        if (isReturnTuple()) {
         switch (entityQueryFetchMapping.size()) {
             case 1:
                 return (List<R>) jdbc.query(sql, entityFilterableMappingTuple.getOrNull0().getClassMapping().getType(),
@@ -302,9 +282,6 @@ public class EntitySqlQueryRelation extends EntitySqlRelation<EntitySqlQueryRela
             default:
                 throw new SqldbHammerException("entity query fetch times must be 2-6");
         }
-        //        } else {
-        //            throw new SqldbHammerException("query result is not tuple type");
-        //        }
     }
 
     // ****************************************************************************************************************
