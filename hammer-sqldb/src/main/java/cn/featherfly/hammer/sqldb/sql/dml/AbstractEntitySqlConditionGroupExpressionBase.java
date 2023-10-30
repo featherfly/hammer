@@ -231,7 +231,7 @@ public abstract class AbstractEntitySqlConditionGroupExpressionBase<E, ER extend
                 values.add(Tuples.of(pm, ov));
                 if (!pm.isPrimaryKey() && !fetch) {
                     fetch = true;
-                    entityRelation.join(getIndex(), joinFromPropertyMapping.getPropertyName(), joinClassMapping, true);
+                    entityRelation.join(getIndex(), joinFromPropertyMapping.getPropertyName(), joinClassMapping);
                     queryAlias = getAlias(getIndex() + 1);
                 }
             }

@@ -67,7 +67,7 @@ public class EntitySqlQueryRelated<E, R, QR extends QueryRelate<QRF>, QRF>
      */
     @Override
     public <P> QR on(SerializableFunction1<E, P> propertyName) {
-        queryRelation.join(index, getPropertyName(propertyName), factory.getClassMapping(joinType), false);
+        queryRelation.join(index, getPropertyName(propertyName), factory.getClassMapping(joinType), true);
         return queryRelate;
     }
 
@@ -78,7 +78,7 @@ public class EntitySqlQueryRelated<E, R, QR extends QueryRelate<QRF>, QRF>
     public <JP> QR on(SerializableFunction2<R, JP> joinTypePropertyName) {
         SerializedLambdaInfo info = LambdaUtils.getLambdaInfo(joinTypePropertyName);
         queryRelation.join(index, factory.getClassMapping(ClassUtils.forName(info.getMethodInstanceClassName())),
-                info.getPropertyName(), false);
+                info.getPropertyName(), true);
         return queryRelate;
     }
 
@@ -90,7 +90,7 @@ public class EntitySqlQueryRelated<E, R, QR extends QueryRelate<QRF>, QRF>
         SerializedLambdaInfo info = LambdaUtils.getLambdaInfo(joinTypePropertyName);
         queryRelation.join(index, getPropertyName(propertyName),
                 factory.getClassMapping(ClassUtils.forName(info.getMethodInstanceClassName())), info.getPropertyName(),
-                false);
+                true);
         return queryRelate;
     }
 
