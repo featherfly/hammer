@@ -169,52 +169,37 @@ public class EntitySqlQueryJoinTest extends JdbcTestBase {
 
     @Test
     void testJoinCondition2() {
-        // YUFEI_TEST 后续来测试
-        //
-        //        Integer userInfoId = 1;
-        //        Integer userId = 1;
-        //        User user = null;
-        //
-        //        user = query.find(User.class).join(UserInfo::getUser).where().eq(1, "id", userInfoId).single();
-        //        assertEquals(user.getId(), userId);
-        //
-        //        user = query.find(User.class).join(UserInfo::getUser).where().eq("user_info", "id", userInfoId).single();
-        //        assertEquals(user.getId(), userId);
-        //
-        //        user = query.find(User.class).join(UserInfo::getUser).where().eq(UserInfo.class, "id", userInfoId).single();
-        //        assertEquals(user.getId(), userId);
-        //
-        //        user = query.find(User.class).join(UserInfo::getUser).where().eq(User::getId, userId).single();
-        //        assertEquals(user.getId(), userId);
-        //
-        //        user = query.find(User.class).join(UserInfo::getUser).where().eq(UserInfo::getId, userInfoId).single();
-        //        assertEquals(user.getId(), userId);
-        //
-        //        user = query.find(User.class).join(UserInfo::getUser).where().property(UserInfo::getId).eq(userInfoId).single();
-        //        assertEquals(user.getId(), userId);
+        Integer userInfoId = 1;
+        Integer userId = 1;
+        User user = null;
+
+        user = query.find(User.class).join(UserInfo::getUser).where().eq(User::getId, userId).single();
+        assertEquals(user.getId(), userId);
+
+        user = query.find(User.class).join(UserInfo::getUser).where().eq2(UserInfo::getId, userInfoId).single();
+        assertEquals(user.getId(), userId);
+
+        user = query.find(User.class).join(UserInfo::getUser).where()
+                .property((e1, e2) -> e2.apply(UserInfo::getId).eq(userInfoId)).single();
+        assertEquals(user.getId(), userId);
     }
 
     @Test
-    void testJoinCondition2_1() {
-
+    void testJoinCondition2_EntityProperty() {
         UserInfo userInfo = new UserInfo();
 
         User user = new User();
         user.setUsername("yufei");
         userInfo.setUser(user);
 
-        //        List<UserInfo> userInfos = query.find(UserInfo.class).join(UserInfo::getUser).where()
-        //                .eq(userInfo::getUser, User::getPwd).list();
         List<UserInfo> userInfos = query.find(UserInfo.class).join(UserInfo::getUser).where() //
                 .property(UserInfo::getUser).property(User::getUsername).eq(userInfo.getUser().getUsername()).list();
         System.out.println(userInfos.size());
         assertTrue(userInfos.size() == 1);
-
     }
 
     @Test
-    void testJoinCondition2_2() {
-
+    void testJoinCondition2_EntityPropertyAutoJoin() {
         UserInfo userInfo = new UserInfo();
 
         User user = new User();
@@ -364,10 +349,9 @@ public class EntitySqlQueryJoinTest extends JdbcTestBase {
         listTuple2 = query.find(UserInfo.class) //
                 .join(UserInfo::getUser).fetch() //
                 .join2(UserRole2::getUser).fetch() //
-                .join3(UserRole2::getRole).fetch() // FIXME 这里在拼接 select alias时有问题（_user_role0.user.id.role.id）
+                .join3(UserRole2::getRole).fetch() //
                 .list();
-        // FIXME 上面的错误，是因为join2(UserRole2::getUser)这一次生成的Relation对象的joinFromPropertyName的问题
-        // 可能需要在逻辑上判断双向和单项映射的问题，后续来修复这个问题
+
         listTuple2.forEach(t -> {
             assertNotNull(t.get0().getUser().getId());
             assertNotNull(t.get0().getUser().getUsername());
