@@ -1,10 +1,4 @@
-## 新功能
-
-- [ ] hammer加入getLockSaveOrUpdate(saveOrUpdateFetch)、getLockUpdate(updateFetch)锁记录，修改，并返回修改后的信息
-
-  updateSaveFetch的原理，可以参见Java的Result Sets中检索和修改值的相关内容。只是当JDBC driver不支持ResultSet的并发更新时，框架需要一些降级的支持方法。
-  看的挺深的，updatesavefetch有降级方法，就是常规的锁load拿过来判断，产生两次交互
-  数据数据库（sql数据库一般都支持行锁）不支持（如elasticsearch, mongodb等暂时不确定这两是否有行锁，做相应实现时再查询期特性），使用内置的locker来实现
+新功能
 
 - [ ] hammer加入update(entity, Predicate<BeanProperty> ignore)对在更新时需要忽略的对象属性进行帅选
 
@@ -85,19 +79,31 @@
 
 - [x] 加入upsert支持
 
-- [x] 加入一次交互完成锁查询、修改，并返回修改后的结果的功能
+- [ ] 加入一次交互完成锁查询、修改，并返回修改后的结果的功能
+
+    hammer加入getLockUpdate(updateFetch)、getLockSaveOrUpdate(saveOrUpdateFetch)锁记录，修改，并返回修改后的信息
+
+    updateSaveFetch的原理，可以参见Java的Result Sets中检索和修改值的相关内容。只是当JDBC driver不支持ResultSet的并发更新时，框架需要一些降级的支持方法。
+    看的挺深的，updatesavefetch有降级方法，就是常规的锁load拿过来判断，产生两次交互
+    数据数据库（sql数据库一般都支持行锁）不支持（如elasticsearch, mongodb等暂时不确定这两是否有行锁，做相应实现时再查询期特性），使用内置的locker来实现
 
 - [ ] 加入@Execution|@Dsl（@Sql）注解，用于非模板执行字符串（sql，json等）的直接运行，并去掉@Template的isTemplate方法（需要处理字节码动态加载）
 
 - [x] dsl条件查询eq(SerialFunction<T, R>, T),ne(SerialFunction<T, R> t)方法支持@Embedded对象，自动使用该对象的所有非空属性（参考eq(SerializableSupplier<R>),ne(SerializableSupplier<R>)支持@Embedded对象的实现）
 
-- [x] dsl api where() 加入查询参数的忽略规则的配置
+- [x] dsl api (update、delete、query) 实现 configure方法用于配置当前表达式实例的相关配置项（只影响当前表达式实例）
 
   > 例如
 
   ```
-  where(c -> c.setIgnorePolity(IgnorePolity.EMPTY)).eq ....
-  where().setIgnorePolity(IgnorePolity.EMPTY).eq ....
+  update(XX).configure(c -> c.setIgnorePolity(IgnorePolity.EMPTY)) ...
+  delete(XX).configure(c -> c.setIgnorePolity(IgnorePolity.EMPTY)) ...
+  query(XX).configure(c -> c.setIgnorePolity(IgnorePolity.EMPTY)) ...
+  
+  update(XX).where().configure(c -> c.setIgnorePolity(IgnorePolity.EMPTY)).eq ....
+  delete(XX).where().configure(c -> c.setIgnorePolity(IgnorePolity.EMPTY)).eq ....
+  query(XX).where().configure(c -> c.setIgnorePolity(IgnorePolity.EMPTY)).eq ....
+  
   ```
 
 - [x] dsl api 更新操作set方法加入set(Consumer<UpdateSetDsl>)用于在链式调用中进行条件帅选
@@ -298,7 +304,7 @@
 
 - [ ] StringConditionExpression加入expression( ...  ,  Consumer<T extends Tuple>)能获取Tuple的重载方法
 
-- [ ] 查询返回支持Map支持多对象映射
+- [ ] ~~查询返回支持Map支持多对象映射~~ （因为已经实现了Tuple对象映射类型（强类型），所以此功能暂时不考虑了（弱类型，还需要类型转换））
     map的key为别名,value为映射对象
 
   > 例如
@@ -309,8 +315,8 @@
   Map<String,Object> userRoleMap =   
   List<Map<String,Object>> userRoleMapList =   
     
-  User user = userRoleMap.get("u");  
-  Role role = userRoleMap.get("r");  
+  User user = (User) userRoleMap.get("u");  
+  Role role = (Role) userRoleMap.get("r");  
   ```
 
 - [x] 查询返回支持Tuple对象映射类型

@@ -11,8 +11,6 @@ import java.util.List;
 import com.speedment.common.tuple.Tuple2;
 import com.speedment.common.tuple.Tuple3;
 import com.speedment.common.tuple.Tuple4;
-import com.speedment.common.tuple.TupleBuilder;
-import com.speedment.common.tuple.Tuples;
 
 import cn.featherfly.common.function.serializable.SerializableFunction;
 import cn.featherfly.common.function.serializable.SerializableFunction2;
@@ -36,7 +34,6 @@ import cn.featherfly.hammer.dsl.entity.query.EntityQueryConditionGroup;
 import cn.featherfly.hammer.dsl.entity.query.EntityQueryConditionGroup2;
 import cn.featherfly.hammer.dsl.entity.query.EntityQueryConditionGroupLogic;
 import cn.featherfly.hammer.dsl.entity.query.EntityQueryConditionGroupLogic2;
-import cn.featherfly.hammer.dsl.entity.query.EntityQueryFetch;
 import cn.featherfly.hammer.dsl.execute.Deleter;
 import cn.featherfly.hammer.dsl.execute.Updater;
 import cn.featherfly.hammer.dsl.query.Query;
@@ -56,15 +53,14 @@ public class DslTest {
 
     boolean ignore = true;
 
-    public static void main(String[] args) {
-        System.out.println(Tuple2.getter0().apply(Tuples.of(1, 2)));
-        System.out.println(Tuple2.getter1().apply(Tuples.of(1, 2)));
-
-        User user = new User();
-        Tuple2<Integer, String> t2 = Tuples.of(user.getAge(), user.getPwd());
-        t2 = Tuples.toTuple(User::getAge, User::getPwd).apply(user);
-        t2 = TupleBuilder.builder().add(1).add("str").build();
-    }
+    //    public static void main(String[] args) {
+    //        System.out.println(Tuple2.getter0().apply(Tuples.of(1, 2)));
+    //        System.out.println(Tuple2.getter1().apply(Tuples.of(1, 2)));
+    //        User user = new User();
+    //        Tuple2<Integer, String> t2 = Tuples.of(user.getAge(), user.getPwd());
+    //        t2 = Tuples.toTuple(User::getAge, User::getPwd).apply(user);
+    //        t2 = TupleBuilder.builder().add(1).add("str").build();
+    //    }
 
     public void testQuery() {
         query.find(data).list(User.class);
@@ -291,9 +287,9 @@ public class DslTest {
 
         // 错误调用
         //        query.find(User.class).where().eq(User::getId, 1).and().eq(DslStaticTypeTest::toString, "").single();
-        query.find(User.class).where().co(User::getUsername, "").and().setIgnoreStrategy(null)
+        query.find(User.class).where().co(User::getUsername, "").and().configure(c -> c.setIgnoreStrategy(null))
                 .co((SerializableStringSupplier) null).single();
-        query.find(User.class).where().setIgnoreStrategy(null).co(User::toString, "").and()
+        query.find(User.class).where().configure(c -> c.setIgnoreStrategy(null)).co(User::toString, "").and()
                 .co((SerializableStringSupplier) null).list();
 
         // TODO 如果后续加入编译期增强，则在使用注解标注泛型方法（例如find）
@@ -304,9 +300,9 @@ public class DslTest {
          3. co(User::getName, "")替换为co(RepositoryFieldValue)
             此参数需要在编译期就搞好所有中间过程，即在jdbc设置时，不去使用SqlTypeMappingManager进行类型判断
          */
-        user = query.<@Enhance EntityQueryFetch<User>>find(User.class).where().co(User::getUsername, "").and()
-                .setIgnoreStrategy(null).co((SerializableStringSupplier) null).single();
-        user = query.find(User.class).where().co(User::getUsername, "").and().setIgnoreStrategy(null)
+        user = query.<@Enhance User>find(User.class).where().co(User::getUsername, "").and()
+                .configure(c -> c.setIgnoreStrategy(null)).co((SerializableStringSupplier) null).single();
+        user = query.find(User.class).where().co(User::getUsername, "").and().configure(c -> c.setIgnoreStrategy(null))
                 .co((SerializableStringSupplier) null).single();
 
         //        Function<Class<User>, EntityQueryFetchExpression> f = @Enhance query::find;
@@ -433,7 +429,7 @@ public class DslTest {
         //  这里表示和 tree t2 进行join，所以join tree t3 on t2.id = t3.parent_id
         // 这种实现可能会导致编译出错（例如自关联 Tree::getParent这种）
         // 所以就算实现了相应的方法，也要保留join join1 join2这种不会导致编译报错的方法实现
-        
+
         // join的api定义规则，此方案应该是不能实现，因为传入参数无法区分，所以返回参数也无法确定
         /*
          // select * from tree t1 join tree t2 on t1.id = t2.parent_id join tree t3 on t2.id = t3.parent_id
@@ -442,7 +438,7 @@ public class DslTest {
              //  这里表示和 tree t2 进行join，所以join tree t3 on t2.id = t3.parent_id
              es.get1().join(Tree::getParent);
          });
-        
+
          // 可以先实现下面这种方式，因为这种方式不需要多个返回结果类型，在现有结构上就能实现，废案
          query.find(Tree.class).join(Tree::getParent, t -> {
            //  这里表示和 tree t2 进行join，所以join tree t3 on t2.id = t3.parent_id
@@ -923,13 +919,15 @@ public class DslTest {
                 t.set(User::getUsername, name);
             }
         }).execute();
-        updater.update(User.class).set(() -> name.equals("yufei"), User::getUsername, name).execute();
+        updater.update(User.class).set(User::getUsername, name, v -> !v.equals("yufei")).execute();
 
         updater.update(User.class).set(User::getUsername, name).execute();
         updater.update(User.class).set(User::getUsername, name).where().eq(User::getId, 1).execute();
 
         updater.update(User.class).increase(User::getAge, 1).execute();
+        updater.update(User.class).increase(User::getAge, 1, v -> v == null).execute();
         updater.update(User.class).increase(User::getAge, 1).where().eq(User::getId, 1).execute();
+        updater.update(User.class).increase(User::getAge, 1, v -> v == null).where().eq(User::getId, 1).execute();
     }
 
     public void testPropertyUpdate() {
@@ -937,9 +935,17 @@ public class DslTest {
 
         Repository u = new SimpleRepository("user");
 
-        updater.update(u).property("name").set("yufei").property("pwd").set("123456").propertyNumber("score")
-                .increase(10).execute();
+        updater.update(u) //
+                .property("name").set("yufei") //
+                .property("pwd").set("123456") //
+                .propertyNumber("score").increase(10) //
+                .execute();
 
+        updater.update(u) //
+                .property("name").set("yufei", v -> !v.equals("yufei")) //
+                .property("pwd").set("123456") //
+                .propertyNumber("score").increase(10, v -> v == null) //
+                .execute();
     }
 
     public void testDelete() {
@@ -1051,7 +1057,7 @@ public class DslTest {
             Tuple2<Function<SerializableFunction<User, ?>, QueryEntityRepository<User>>,
                     Function<SerializableFunction<UserInfo, ?>, QueryEntityRepository<UserInfo>>>,
             QueryEntityRepository<User>> join) {
-    
+
     }
     void join(Function<
             Tuple2<Function<SerializableFunction<User, ?>, QueryEntityRepository<User>>,

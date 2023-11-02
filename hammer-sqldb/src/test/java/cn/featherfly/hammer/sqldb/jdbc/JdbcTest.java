@@ -641,14 +641,9 @@ public class JdbcTest extends JdbcTestBase {
             }
 
             @Override
-            public void acceptKey(Long key, int row) {
+            public void acceptKey(Long key) {
                 System.err.println("generated id -> " + key);
                 id.set(key);
-            }
-
-            @Override
-            public void acceptKey(List<Long> keys) {
-                id.set(keys.get(0));
             }
 
         }, null, "title", "content");
@@ -684,7 +679,7 @@ public class JdbcTest extends JdbcTestBase {
 
         result = jdbc.insert(tableName, columnNames, new GeneratedKeyHolder<Long>() {
             @Override
-            public void acceptKey(Long key, int row) {
+            public void acceptKey(Long key) {
                 l.set(key);
             }
 
@@ -693,10 +688,6 @@ public class JdbcTest extends JdbcTestBase {
                 return new ClassType<>(Long.class);
             }
 
-            @Override
-            public void acceptKey(List<Long> keys) {
-                l.set(keys.get(0));
-            }
         }, params);
 
         article = jdbc.querySingle("select * from cms_article where id = ?", Article.class, l.longValue());
@@ -781,11 +772,7 @@ public class JdbcTest extends JdbcTestBase {
         int result = jdbc.update("", new GeneratedKeyHolder<Long>() {
 
             @Override
-            public void acceptKey(Long key, int row) {
-            }
-
-            @Override
-            public void acceptKey(List<Long> keys) {
+            public void acceptKey(Long key) {
             }
 
             @Override
@@ -798,11 +785,7 @@ public class JdbcTest extends JdbcTestBase {
         result = jdbc.update("", new GeneratedKeyHolder<Long>() {
 
             @Override
-            public void acceptKey(Long key, int row) {
-            }
-
-            @Override
-            public void acceptKey(List<Long> keys) {
+            public void acceptKey(Long key) {
             }
 
             @Override
@@ -875,12 +858,25 @@ public class JdbcTest extends JdbcTestBase {
         final AtomicInteger id = new AtomicInteger(0);
         final List<Integer> ids = new ArrayList<>();
 
-        GeneratedKeyHolder<Integer> keyHolder = new GeneratedKeyHolder<Integer>() {
+        int result = jdbc.update(insertSql, new GeneratedKeyHolder<Integer>() {
 
             @Override
-            public void acceptKey(Integer key, int row) {
+            public void acceptKey(Integer key) {
                 id.set(key);
             }
+
+            @Override
+            public Type<Integer> getType() {
+                return new ClassType<>(Integer.class);
+            }
+        }, new Object[] { null, "title_batch_start", "content_batch_start" });
+
+        assertEquals(result, 1);
+
+        for (int i = 0; i < batchSize; i++) {
+            argsList.add(new Object[] { null, "title_batch_" + i, "content_batch_" + i });
+        }
+        int results[] = jdbc.updateBatch(insertSql, new GeneratedKeysHolder<Integer>() {
 
             @Override
             public void acceptKey(List<Integer> keys) {
@@ -891,17 +887,7 @@ public class JdbcTest extends JdbcTestBase {
             public Type<Integer> getType() {
                 return new ClassType<>(Integer.class);
             }
-        };
-
-        int result = jdbc.update(insertSql, keyHolder,
-                new Object[] { null, "title_batch_start", "content_batch_start" });
-
-        assertEquals(result, 1);
-
-        for (int i = 0; i < batchSize; i++) {
-            argsList.add(new Object[] { null, "title_batch_" + i, "content_batch_" + i });
-        }
-        int results[] = jdbc.updateBatch(insertSql, keyHolder, argsList);
+        }, argsList);
         assertEquals(results.length, batchSize);
         for (int r : results) {
             assertEquals(r, 1);
@@ -926,13 +912,8 @@ public class JdbcTest extends JdbcTestBase {
         GeneratedKeyHolder<Integer> keyHolder = new GeneratedKeyHolder<Integer>() {
 
             @Override
-            public void acceptKey(Integer key, int row) {
+            public void acceptKey(Integer key) {
                 id.set(key);
-            }
-
-            @Override
-            public void acceptKey(List<Integer> keys) {
-                ids.addAll(keys);
             }
 
             @Override
@@ -950,7 +931,18 @@ public class JdbcTest extends JdbcTestBase {
             argsArray[i] = new ChainMapImpl<String, Object>().putChain("id", null).putChain("title", "title_batch_" + i)
                     .putChain("content", "content_batch_" + i);
         }
-        int results[] = jdbc.updateBatch(insertSql, keyHolder, argsArray);
+        int results[] = jdbc.updateBatch(insertSql, new GeneratedKeysHolder<Integer>() {
+
+            @Override
+            public void acceptKey(List<Integer> keys) {
+                ids.addAll(keys);
+            }
+
+            @Override
+            public Type<Integer> getType() {
+                return new ClassType<>(Integer.class);
+            }
+        }, argsArray);
         assertEquals(results.length, batchSize);
         for (int r : results) {
             assertEquals(r, 1);

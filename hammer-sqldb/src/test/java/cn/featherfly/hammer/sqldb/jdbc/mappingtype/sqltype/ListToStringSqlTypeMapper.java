@@ -44,6 +44,21 @@ public class ListToStringSqlTypeMapper extends AbstractGenericJavaSqlTypeMapper<
         return type.getType().equals(List.class);
     }
 
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void update(ResultSet rs, int parameterIndex, List<?> value) {
+        StringBuilder sb = new StringBuilder();
+        for (Object object : value) {
+            sb.append(object.toString()).append(",");
+        }
+        if (sb.length() > 0) {
+            sb.deleteCharAt(sb.length() - 1);
+        }
+        JdbcUtils.setParameter(rs, parameterIndex, sb.toString());
+    }
+
     @Override
     public void set(PreparedStatement prep, int columnIndex, List<?> value) {
         StringBuilder sb = new StringBuilder();
@@ -109,4 +124,5 @@ public class ListToStringSqlTypeMapper extends AbstractGenericJavaSqlTypeMapper<
             throw new JdbcException(e);
         }
     }
+
 }

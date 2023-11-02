@@ -9,7 +9,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-import java.util.function.Function;
+import java.util.function.UnaryOperator;
 
 import javax.annotation.Nonnull;
 import javax.validation.ConstraintViolation;
@@ -48,6 +48,7 @@ import cn.featherfly.hammer.sqldb.jdbc.operate.DeleteOperate;
 import cn.featherfly.hammer.sqldb.jdbc.operate.GetOperate;
 import cn.featherfly.hammer.sqldb.jdbc.operate.InsertOperate;
 import cn.featherfly.hammer.sqldb.jdbc.operate.MergeOperate;
+import cn.featherfly.hammer.sqldb.jdbc.operate.UpdateFetchOperate;
 import cn.featherfly.hammer.sqldb.jdbc.operate.UpdateOperate;
 import cn.featherfly.hammer.sqldb.jdbc.operate.UpsertOperate;
 import cn.featherfly.hammer.sqldb.tpl.SqlDbTemplateEngine;
@@ -81,6 +82,9 @@ public class SqldbHammerImpl implements SqldbHammer {
 
     /** The update operates. */
     private Map<Class<?>, UpdateOperate<?>> updateOperates = new HashMap<>();
+
+    /** The update fetch operates. */
+    private Map<Class<?>, UpdateFetchOperate<?>> updateFetchOperates = new HashMap<>();
 
     /** The update operates. */
     private Map<Class<?>, UpsertOperate<?>> upsertOperates = new HashMap<>();
@@ -300,32 +304,6 @@ public class SqldbHammerImpl implements SqldbHammer {
         }
     }
 
-    private <E> InsertOperate<E> getInsert(E entity) {
-        @SuppressWarnings("unchecked")
-        InsertOperate<E> insert = (InsertOperate<E>) insertOperates.get(entity.getClass());
-        if (insert == null) {
-            @SuppressWarnings("unchecked")
-            JdbcClassMapping<E> mapping = mappingFactory.getClassMapping((Class<E>) entity.getClass());
-            insert = new InsertOperate<>(jdbc, mapping, mappingFactory.getSqlTypeMappingManager(),
-                    mappingFactory.getMetadata());
-            insertOperates.put(entity.getClass(), insert);
-        }
-        return insert;
-    }
-
-    private <E> UpsertOperate<E> getUpsert(E entity) {
-        @SuppressWarnings("unchecked")
-        UpsertOperate<E> upsert = (UpsertOperate<E>) upsertOperates.get(entity.getClass());
-        if (upsert == null) {
-            @SuppressWarnings("unchecked")
-            JdbcClassMapping<E> mapping = (JdbcClassMapping<E>) mappingFactory.getClassMapping(entity.getClass());
-            upsert = new UpsertOperate<>(jdbc, mapping, mappingFactory.getSqlTypeMappingManager(),
-                    mappingFactory.getMetadata());
-            upsertOperates.put(entity.getClass(), upsert);
-        }
-        return upsert;
-    }
-
     /**
      * {@inheritDoc}
      */
@@ -334,15 +312,7 @@ public class SqldbHammerImpl implements SqldbHammer {
         if (entity == null) {
             return 0;
         }
-        @SuppressWarnings("unchecked")
-        UpdateOperate<E> update = (UpdateOperate<E>) updateOperates.get(entity.getClass());
-        if (update == null) {
-            @SuppressWarnings("unchecked")
-            JdbcClassMapping<E> mapping = (JdbcClassMapping<E>) mappingFactory.getClassMapping(entity.getClass());
-            update = new UpdateOperate<>(jdbc, mapping, mappingFactory.getSqlTypeMappingManager(),
-                    mappingFactory.getMetadata());
-            updateOperates.put(entity.getClass(), update);
-        }
+        UpdateOperate<E> update = getUpdate(entity);
         validate(entity);
         return update.execute(entity);
     }
@@ -561,31 +531,6 @@ public class SqldbHammerImpl implements SqldbHammer {
         return delete.executeBatch(entities);
     }
 
-    private <E> DeleteOperate<E> getDelete(Collection<E> entities) {
-        E e = Lang.pickFirst(entities);
-        if (e == null) {
-            return null;
-        }
-        return getDelete(e);
-    }
-
-    @SuppressWarnings("unchecked")
-    private <E> DeleteOperate<E> getDelete(E entity) {
-        return getDelete((Class<E>) entity.getClass());
-    }
-
-    private <E> DeleteOperate<E> getDelete(Class<E> entityType) {
-        @SuppressWarnings("unchecked")
-        DeleteOperate<E> delete = (DeleteOperate<E>) deleteOperates.get(entityType);
-        if (delete == null) {
-            JdbcClassMapping<E> mapping = mappingFactory.getClassMapping(entityType);
-            delete = new DeleteOperate<>(jdbc, mapping, mappingFactory.getSqlTypeMappingManager(),
-                    mappingFactory.getMetadata());
-            deleteOperates.put(entityType, delete);
-        }
-        return delete;
-    }
-
     /**
      * {@inheritDoc}
      */
@@ -652,46 +597,34 @@ public class SqldbHammerImpl implements SqldbHammer {
      */
     @Override
     public <E> E get(E entity) {
-        return _get(entity, false);
-    }
-
-    private <E> E _get(Serializable id, Class<E> type, boolean forUpdate) {
-        if (id == null || type == null) {
-            return null;
-        }
-        GetOperate<E> get = getOperate(type);
-        return get.get(id, forUpdate);
-    }
-
-    private <E> E _get(E entity, boolean forUpdate) {
         if (entity == null) {
             return null;
         }
         @SuppressWarnings("unchecked")
         GetOperate<E> get = (GetOperate<E>) getOperate(entity.getClass());
-        return get.get(entity, forUpdate);
+        return get.get(entity);
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public <E> E getLockUpdate(Serializable id, Class<E> type, Function<E, E> updateFunction) {
-        E e = _get(id, type, true);
-        E result = updateFunction.apply(e);
-        update(result);
-        return result;
+    public <E> E updateFetch(Serializable id, Class<E> type, UnaryOperator<E> updateOperator) {
+        if (Lang.isEmpty(id)) {
+            return null;
+        }
+        return getUpdateFetch(type).execute(id, updateOperator);
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public <E> E getLockUpdate(E entity, Function<E, E> updateFunction) {
-        E e = _get(entity, true);
-        E result = updateFunction.apply(e);
-        update(result);
-        return result;
+    public <E> E updateFetch(E entity, UnaryOperator<E> updateOperator) {
+        if (entity == null) {
+            return null;
+        }
+        return getUpdateFetch(entity).execute(entity, updateOperator);
     }
 
     /**
@@ -823,25 +756,6 @@ public class SqldbHammerImpl implements SqldbHammer {
                 throw new SqldbHammerException(errorMessage.toString());
             }
         }
-    }
-
-    /**
-     * Gets the operate.
-     *
-     * @param <E>        the element type
-     * @param entityType the entity type
-     * @return the operate
-     */
-    private <E> GetOperate<E> getOperate(Class<E> entityType) {
-        @SuppressWarnings("unchecked")
-        GetOperate<E> get = (GetOperate<E>) getOperates.get(entityType);
-        if (get == null) {
-            JdbcClassMapping<E> mapping = mappingFactory.getClassMapping(entityType);
-            get = new GetOperate<>(jdbc, mapping, mappingFactory.getSqlTypeMappingManager(),
-                    mappingFactory.getMetadata());
-            getOperates.put(entityType, get);
-        }
-        return get;
     }
 
     /**
@@ -2004,4 +1918,123 @@ public class SqldbHammerImpl implements SqldbHammer {
     public JdbcMappingFactory getMappingFactory() {
         return mappingFactory;
     }
+
+    @SuppressWarnings("unchecked")
+    private <E> UpdateOperate<E> getUpdate(E entity) {
+        return getUpdate((Class<E>) entity.getClass());
+    }
+
+    @SuppressWarnings("unchecked")
+    private <E> UpdateOperate<E> getUpdate(Class<E> entityType) {
+        return (UpdateOperate<E>) updateOperates.computeIfAbsent(entityType,
+                type -> new UpdateOperate<>(jdbc, mappingFactory.getClassMapping(type),
+                        mappingFactory.getSqlTypeMappingManager(), mappingFactory.getMetadata()));
+    }
+
+    @SuppressWarnings("unchecked")
+    private <E> UpdateFetchOperate<E> getUpdateFetch(Class<E> entityType) {
+        return (UpdateFetchOperate<E>) updateFetchOperates.computeIfAbsent(entityType,
+                type -> new UpdateFetchOperate<>(jdbc, mappingFactory.getClassMapping((Class<E>) type),
+                        mappingFactory.getSqlTypeMappingManager(), mappingFactory.getMetadata(),
+                        getOperate((Class<E>) type), getUpdate((Class<E>) type), key -> {
+                            // IMPLSOON 后续来从配置创建锁并进行加锁操作
+                        }, key -> {
+                            // IMPLSOON 后续来从配置创建锁并进行解锁操作
+                        }));
+    }
+
+    @SuppressWarnings("unchecked")
+    private <E> UpdateFetchOperate<E> getUpdateFetch(E entity) {
+        return getUpdateFetch((Class<E>) entity.getClass());
+    }
+
+    @SuppressWarnings("unchecked")
+    private <E> InsertOperate<E> getInsert(Class<E> entityType) {
+        return (InsertOperate<E>) insertOperates.computeIfAbsent(entityType,
+                type -> new InsertOperate<>(jdbc, mappingFactory.getClassMapping((Class<E>) type),
+                        mappingFactory.getSqlTypeMappingManager(), mappingFactory.getMetadata()));
+    }
+
+    @SuppressWarnings("unchecked")
+    private <E> InsertOperate<E> getInsert(E entity) {
+        return getInsert((Class<E>) entity.getClass());
+        //        @SuppressWarnings("unchecked")
+        //        InsertOperate<E> insert = (InsertOperate<E>) insertOperates.get(entity.getClass());
+        //        if (insert == null) {
+        //            @SuppressWarnings("unchecked")
+        //            JdbcClassMapping<E> mapping = mappingFactory.getClassMapping((Class<E>) entity.getClass());
+        //            insert = new InsertOperate<>(jdbc, mapping, mappingFactory.getSqlTypeMappingManager(),
+        //                    mappingFactory.getMetadata());
+        //            insertOperates.put(entity.getClass(), insert);
+        //        }
+        //        return insert;
+    }
+
+    @SuppressWarnings("unchecked")
+    private <E> UpsertOperate<E> getUpsert(Class<E> entityType) {
+        return (UpsertOperate<E>) upsertOperates.computeIfAbsent(entityType,
+                type -> new UpsertOperate<>(jdbc, mappingFactory.getClassMapping(type),
+                        mappingFactory.getSqlTypeMappingManager(), mappingFactory.getMetadata()));
+    }
+
+    @SuppressWarnings("unchecked")
+    private <E> UpsertOperate<E> getUpsert(E entity) {
+        return getUpsert((Class<E>) entity.getClass());
+        //        @SuppressWarnings("unchecked")
+        //        UpsertOperate<E> upsert = (UpsertOperate<E>) upsertOperates.get(entity.getClass());
+        //        if (upsert == null) {
+        //            @SuppressWarnings("unchecked")
+        //            JdbcClassMapping<E> mapping = (JdbcClassMapping<E>) mappingFactory.getClassMapping(entity.getClass());
+        //            upsert = new UpsertOperate<>(jdbc, mapping, mappingFactory.getSqlTypeMappingManager(),
+        //                    mappingFactory.getMetadata());
+        //            upsertOperates.put(entity.getClass(), upsert);
+        //        }
+        //        return upsert;
+    }
+
+    private <E> DeleteOperate<E> getDelete(Collection<E> entities) {
+        E e = Lang.pickFirst(entities);
+        if (e == null) {
+            return null;
+        }
+        return getDelete(e);
+    }
+
+    @SuppressWarnings("unchecked")
+    private <E> DeleteOperate<E> getDelete(E entity) {
+        return getDelete((Class<E>) entity.getClass());
+    }
+
+    @SuppressWarnings("unchecked")
+    private <E> DeleteOperate<E> getDelete(Class<E> entityType) {
+        return (DeleteOperate<E>) deleteOperates.computeIfAbsent(entityType,
+                type -> new DeleteOperate<>(jdbc, mappingFactory.getClassMapping(type),
+                        mappingFactory.getSqlTypeMappingManager(), mappingFactory.getMetadata()));
+        //        @SuppressWarnings("unchecked")
+        //        DeleteOperate<E> delete = (DeleteOperate<E>) deleteOperates.get(entityType);
+        //        if (delete == null) {
+        //            JdbcClassMapping<E> mapping = mappingFactory.getClassMapping(entityType);
+        //            delete = new DeleteOperate<>(jdbc, mapping, mappingFactory.getSqlTypeMappingManager(),
+        //                    mappingFactory.getMetadata());
+        //            deleteOperates.put(entityType, delete);
+        //        }
+        //        return delete;
+    }
+
+    @SuppressWarnings("unchecked")
+    private <E> GetOperate<E> getOperate(Class<E> entityType) {
+        return (GetOperate<E>) getOperates.computeIfAbsent(entityType,
+                type -> new GetOperate<>(jdbc, mappingFactory.getClassMapping(type),
+                        mappingFactory.getSqlTypeMappingManager(), mappingFactory.getMetadata()));
+        //        @SuppressWarnings("unchecked")
+        //        GetOperate<E> get = (GetOperate<E>) getOperates.get(entityType);
+        //        if (get == null) {
+        //            JdbcClassMapping<E> mapping = mappingFactory.getClassMapping(entityType);
+        //            get = new GetOperate<>(jdbc, mapping, mappingFactory.getSqlTypeMappingManager(),
+        //                    mappingFactory.getMetadata());
+        //            getOperates.put(entityType, get);
+        //        }
+        //        return get;
+    }
+
 }

@@ -8,7 +8,6 @@ import cn.featherfly.common.lang.ArrayUtils;
  * batch execute operate.
  *
  * @author zhongj
- * @version 0.6.1
  * @since 0.6.1
  * @param <T> 对象类型
  */

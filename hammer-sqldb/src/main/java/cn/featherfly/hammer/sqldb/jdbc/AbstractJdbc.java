@@ -17,7 +17,6 @@ import java.sql.ParameterMetaData;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.SQLType;
 import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -30,6 +29,7 @@ import java.util.Map.Entry;
 import java.util.Set;
 import java.util.function.BiConsumer;
 import java.util.function.Consumer;
+import java.util.function.ToIntBiFunction;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -39,15 +39,14 @@ import com.speedment.common.tuple.Tuple3;
 import com.speedment.common.tuple.Tuple4;
 import com.speedment.common.tuple.Tuple5;
 import com.speedment.common.tuple.Tuple6;
+import com.speedment.common.tuple.Tuples;
 
 import cn.featherfly.common.bean.BeanProperty;
 import cn.featherfly.common.bean.BeanPropertyValue;
 import cn.featherfly.common.db.FieldValueOperator;
 import cn.featherfly.common.db.JdbcException;
-import cn.featherfly.common.db.JdbcUtils;
 import cn.featherfly.common.db.SqlUtils;
 import cn.featherfly.common.db.dialect.Dialect;
-import cn.featherfly.common.db.dialect.SQLiteDialect;
 import cn.featherfly.common.db.mapping.SqlResultSet;
 import cn.featherfly.common.db.mapping.SqlTypeMappingManager;
 import cn.featherfly.common.db.wrapper.AutoCloseConnection;
@@ -70,17 +69,14 @@ public abstract class AbstractJdbc implements Jdbc {
     /** The logger. */
     protected final Logger logger = LoggerFactory.getLogger(this.getClass());
 
-    //    /** The data source. */
-    //    protected DataSource dataSource;
-
     /** The dialect. */
     protected Dialect dialect;
 
-    /** The manager. */
-    protected SqlTypeMappingManager manager;
+    private final Set<JdbcExecutionInterceptor> interceptors = new LinkedHashSet<>(0);
 
-    /** The interceptors. */
-    protected final Set<JdbcExecutionInterceptor> interceptors = new LinkedHashSet<>(0);
+    private SqlTypeMappingManager manager;
+
+    private MapRowMapper mapRowMapper;
 
     /**
      * Instantiates a new abstract jdbc.
@@ -93,6 +89,7 @@ public abstract class AbstractJdbc implements Jdbc {
         super();
         this.dialect = dialect;
         this.manager = manager;
+        mapRowMapper = new MapRowMapper(manager);
     }
     //    /**
     //     * Instantiates a new abstract jdbc.
@@ -184,49 +181,8 @@ public abstract class AbstractJdbc implements Jdbc {
      */
     @Override
     public <T extends Serializable> int update(String sql, GeneratedKeyHolder<T> keyHolder, Object... args) {
-        return updateBatch(sql, 1, keyHolder, args);
+        return executeUpdate(sql, keyHolder, args);
     }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public <T extends Serializable> int updateBatch(String sql, int batchSize, GeneratedKeyHolder<T> keySupplier,
-            Object... args) {
-        if (Lang.isNotEmpty(sql)) {
-            sql = sql.trim();
-            return executeUpdate(sql, batchSize, keySupplier, args);
-        }
-        return 0;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public <T extends Serializable> int updateBatch(String sql, int batchSize, GeneratedKeyHolder<T> keySupplier,
-            Map<String, Object> args) {
-        if (Lang.isNotEmpty(sql)) {
-            sql = sql.trim();
-            logger.debug("sql -> {}, args -> {}", sql, args);
-            Execution execution = SqlUtils.convertNamedParamSql(sql, args);
-            return executeUpdate(execution.getExecution(), batchSize, keySupplier, execution.getParams());
-        }
-        return 0;
-    }
-
-    //    /**
-    //     * {@inheritDoc}
-    //     */
-    //    @Override
-    //    public <T extends Serializable> int update(String sql, GeneratedKeyHolder<T> keySupplier,
-    //            BeanPropertyValue<?>... args) {
-    //        if (Lang.isNotEmpty(sql)) {
-    //            sql = sql.trim();
-    //            return executeUpdate(sql, 1, keySupplier, args);
-    //        }
-    //        return 0;
-    //    }
 
     /**
      * {@inheritDoc}
@@ -234,6 +190,10 @@ public abstract class AbstractJdbc implements Jdbc {
     @Override
     public <T extends Serializable> int update(String sql, GeneratedKeyHolder<T> keySupplier,
             Map<String, Object> args) {
+        sql = Lang.ifNotNull(sql, String::trim);
+        if (Lang.isEmpty(sql)) {
+            return 0;
+        }
         logger.debug("sql -> {}, args -> {}", sql, args);
         Execution execution = SqlUtils.convertNamedParamSql(sql, args);
         return update(execution.getExecution(), keySupplier, execution.getParams());
@@ -243,42 +203,48 @@ public abstract class AbstractJdbc implements Jdbc {
      * {@inheritDoc}
      */
     @Override
-    public int update(String sql, Map<String, Object> args) {
+    public <T extends Serializable> int updateBatch(String sql, int batchSize, GeneratedKeysHolder<T> keySupplier,
+            Object... args) {
+        sql = Lang.ifNotNull(sql, String::trim);
+        if (Lang.isEmpty(sql)) {
+            return 0;
+        }
+        return executeUpdateBatch(sql, batchSize, keySupplier, args);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public <T extends Serializable> int updateBatch(String sql, int batchSize, GeneratedKeysHolder<T> keySupplier,
+            Map<String, Object> args) {
+        sql = Lang.ifNotNull(sql, String::trim);
+        if (Lang.isEmpty(sql)) {
+            return 0;
+        }
         logger.debug("sql -> {}, args -> {}", sql, args);
         Execution execution = SqlUtils.convertNamedParamSql(sql, args);
-        return update(execution.getExecution(), execution.getParams());
+        return executeUpdateBatch(execution.getExecution(), batchSize, keySupplier, execution.getParams());
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public int update(String sql, Object... args) {
-        if (Lang.isNotEmpty(sql)) {
-            sql = sql.trim();
-            return executeUpdate(sql, 1, args);
-        }
-        return 0;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public <T extends Serializable> int[] updateBatch(String sql, GeneratedKeyHolder<T> generatedKeyHolder,
+    public <T extends Serializable> int[] updateBatch(String sql, GeneratedKeysHolder<T> generatedKeysHolder,
             Object[]... argsList) {
-        if (Lang.isNotEmpty(sql)) {
-            sql = sql.trim();
-            return executeUpdateBatch((prep, args) -> setParams(prep, args), sql, generatedKeyHolder, argsList);
+        sql = Lang.ifNotNull(sql, String::trim);
+        if (Lang.isEmpty(sql)) {
+            return ArrayUtils.EMPTY_INT_ARRAY;
         }
-        return ArrayUtils.EMPTY_INT_ARRAY;
+        return executeUpdateBatch((prep, args) -> setParams(prep, args), sql, generatedKeysHolder, argsList);
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public <T extends Serializable> int[] updateBatch(String sql, GeneratedKeyHolder<T> generatedKeyHolder,
+    public <T extends Serializable> int[] updateBatch(String sql, GeneratedKeysHolder<T> generatedKeyHolder,
             Map<String, Object>[] batchArgs) {
         if (Lang.isNotEmpty(sql) && Lang.isNotEmpty(batchArgs)) {
             logger.debug("sql -> {}", sql);
@@ -306,26 +272,142 @@ public abstract class AbstractJdbc implements Jdbc {
     //        return 0;
     //    }
 
-    private int executeUpdate(String sql, int batchSize, Object... args) {
-        return executeUpdate(sql, batchSize, null, args);
-    }
-
-    private <T extends Serializable> int executeUpdate(String sql, int batchSize,
-            GeneratedKeyHolder<T> generatedKeyHolder, Object... args) {
+    private <T extends Serializable> int executeUpdate(String sql, GeneratedKeyHolder<T> generatedKeyHolder,
+            Object... args) {
+        sql = Lang.ifNotNull(sql, String::trim);
+        if (Lang.isEmpty(sql)) {
+            return 0;
+        }
         logger.debug("sql -> {}, args -> {}", sql, args);
-        return executeUpdate(prep -> setParams(prep, args), sql, batchSize, generatedKeyHolder, args);
+        return executeUpdate(prep -> setParams(prep, args), sql, generatedKeyHolder, args);
     }
 
-    //    private int executeUpdate(String sql, int batchSize, BeanPropertyValue<?>... args) {
-    //        return executeUpdate(sql, batchSize, null, args);
-    //    }
-    //
-    //    private <T extends Serializable> int executeUpdate(String sql, int batchSize,
-    //            GeneratedKeyHolder<T> generatedKeyHolder, BeanPropertyValue<?>... argsBp) {
-    //        logger.debug("sql -> {}, args -> {}", sql, argsBp);
-    //        return executeUpdate(prep -> setParams(prep, argsBp), sql, batchSize, generatedKeyHolder,
-    //                Arrays.stream(argsBp).map(arg -> arg.getValue()).toArray());
-    //    }
+    private <T extends Serializable> int executeUpdate(Consumer<PreparedStatement> setParams, String sql,
+            GeneratedKeyHolder<T> generatedKeyHolder, Object... args) {
+        JdbcExecution execution = preHandle(sql, args);
+        sql = execution.getExecution();
+        args = execution.getParams();
+        logger.debug("execute sql -> {}, args -> {}", sql, args);
+        Connection connection = getConnection();
+        try (PreparedStatement prep = generatedKeyHolder == null ? connection.prepareStatement(sql)
+                : connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
+            setParams.accept(prep);
+            int result = prep.executeUpdate();
+            // 不是查询操作，没有查询结果
+            postHandle(execution);
+            if (generatedKeyHolder != null && result == 1) {
+                try (ResultSet res = prep.getGeneratedKeys()) {
+                    if (res.next()) {
+                        generatedKeyHolder.acceptKey(getGenereteKey(generatedKeyHolder.getType(), res));
+                    }
+                }
+            }
+            return result;
+        } catch (SQLException e) {
+            releaseConnection(connection);
+            throw new JdbcException(Strings.format("executeUpdate: \nsql: {0} \nargs: {1}", sql, Arrays.toString(args)),
+                    e);
+        } finally {
+            releaseConnection(connection);
+        }
+    }
+
+    private <T extends Serializable> int executeUpdateBatch(String sql, int batchSize,
+            GeneratedKeysHolder<T> generatedKeysHolder, Object... args) {
+        logger.debug("sql -> {}, args -> {}", sql, args);
+        return executeUpdateBatch(prep -> setParams(prep, args), sql, batchSize, generatedKeysHolder, args);
+    }
+
+    private <T extends Serializable> int executeUpdateBatch(Consumer<PreparedStatement> setParams, String sql,
+            int batchSize, GeneratedKeysHolder<T> generatedKeysHolder, Object... args) {
+        JdbcExecution execution = preHandle(sql, args);
+        sql = execution.getExecution();
+        args = execution.getParams();
+        logger.debug("execute sql -> {}, args -> {}", sql, args);
+        //        DataSource ds = getDataSource();
+        //        Connection connection = getConnection(ds);
+        Connection connection = getConnection();
+        try (PreparedStatement prep = generatedKeysHolder == null ? connection.prepareStatement(sql)
+                : connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
+            setParams.accept(prep);
+            int result = prep.executeUpdate();
+            // 不是查询操作，没有查询结果
+            postHandle(execution);
+            if (generatedKeysHolder != null) {
+                try (ResultSet res = prep.getGeneratedKeys()) {
+                    List<T> keys = new ArrayList<>();
+                    while (res.next()) {
+                        keys.add(getGenereteKey(generatedKeysHolder.getType(), res));
+                    }
+                    generatedKeysHolder.acceptKey(keys);
+                }
+            }
+            return result;
+        } catch (SQLException e) {
+            //            releaseConnection(connection, ds);
+            releaseConnection(connection);
+            throw new JdbcException(Strings.format("executeUpdate: \nsql: {0} \nargs: {1}", sql, Arrays.toString(args)),
+                    e);
+        } finally {
+            //            releaseConnection(connection, getDataSource());
+            releaseConnection(connection);
+        }
+    }
+
+    private <T extends Serializable> int[] executeUpdateBatch(BiConsumer<PreparedStatement, Object[]> setParams,
+            String sql, GeneratedKeysHolder<T> generatedKeysHolder, Object[][] batchArgs) {
+        StringBuilder message = new StringBuilder();
+        if (logger.isDebugEnabled()) {
+            message.append("execute batch -> ").append(sql).append("\n").append("  batch size -> ")
+                    .append(batchArgs.length).append("\n");
+        }
+        //        DataSource ds = getDataSource();
+        //        Connection connection = getConnection(ds);
+        Connection connection = getConnection();
+        try (PreparedStatement prep = generatedKeysHolder == null ? connection.prepareStatement(sql)
+                : connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
+            List<JdbcExecution> jdbcExecutions = new ArrayList<>(batchArgs.length);
+            for (Object[] args : batchArgs) {
+                JdbcExecution execution = preHandle(sql, args);
+                jdbcExecutions.add(execution);
+                if (logger.isDebugEnabled()) {
+                    message.append("    args -> ").append(Arrays.toString(execution.getParams())).append("\n");
+                }
+                setParams.accept(prep, args);
+                prep.addBatch();
+            }
+            if (logger.isDebugEnabled()) {
+                logger.debug(message.toString());
+            }
+            int[] results = prep.executeBatch();
+            // 不是查询操作，没有查询结果
+            for (JdbcExecution execution : jdbcExecutions) {
+                postHandle(execution);
+            }
+            if (generatedKeysHolder != null) {
+                try (ResultSet res = prep.getGeneratedKeys()) {
+                    List<T> keys = new ArrayList<>();
+                    while (res.next()) {
+                        T value = getGenereteKey(generatedKeysHolder.getType(), res);
+                        keys.add(value);
+                    }
+                    generatedKeysHolder.acceptKey(keys);
+                }
+            }
+            return results;
+        } catch (SQLException e) {
+            releaseConnection(connection);
+            StringBuilder strArgs = new StringBuilder();
+            int index = 0;
+            for (Object[] args : batchArgs) {
+                strArgs.append("\n    batch[").append(index++).append("]: ").append(Arrays.toString(args));
+            }
+            throw new JdbcException(
+                    Strings.format("executeUpdateBatch: \n  sql: {0} \n  args: {1}", sql, strArgs.toString()), e);
+        } finally {
+            releaseConnection(connection);
+        }
+    }
 
     /**
      * Gets the generete key.
@@ -346,138 +428,12 @@ public abstract class AbstractJdbc implements Jdbc {
         return value;
     }
 
-    private <T extends Serializable> int[] executeUpdateBatch(BiConsumer<PreparedStatement, Object[]> setParams,
-            String sql, GeneratedKeyHolder<T> generatedKeyHolder, Object[][] batchArgs) {
-        StringBuilder message = new StringBuilder();
-        if (logger.isDebugEnabled()) {
-            message.append("execute batch -> ").append(sql).append("\n").append("  batch size -> ")
-                    .append(batchArgs.length).append("\n");
-        }
-        //        DataSource ds = getDataSource();
-        //        Connection connection = getConnection(ds);
-        Connection connection = getConnection();
-        try (PreparedStatement prep = generatedKeyHolder == null ? connection.prepareStatement(sql)
-                : connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
-            List<JdbcExecution> jdbcExecutions = new ArrayList<>(batchArgs.length);
-            for (Object[] args : batchArgs) {
-                JdbcExecution execution = preHandle(sql, args);
-                jdbcExecutions.add(execution);
-                if (logger.isDebugEnabled()) {
-                    message.append("    args -> ").append(Arrays.toString(execution.getParams())).append("\n");
-                }
-                setParams.accept(prep, args);
-                prep.addBatch();
-            }
-            if (logger.isDebugEnabled()) {
-                logger.debug(message.toString());
-            }
-            int[] results = prep.executeBatch();
-            // 不是查询操作，没有查询结果
-            for (JdbcExecution execution : jdbcExecutions) {
-                postHandle(execution, sql, execution.getParams());
-            }
-            if (generatedKeyHolder != null) {
-                try (ResultSet res = prep.getGeneratedKeys()) {
-                    int row = 0;
-                    if (dialect instanceof SQLiteDialect) { // res.isLast() not supported by sqlite
-                        while (res.next()) {
-                            T value = getGenereteKey(generatedKeyHolder.getType(), res);
-                            generatedKeyHolder.acceptKey(value, row++);
-                        }
-                    } else {
-                        if (res.next()) {
-                            if (res.isLast()) {
-                                T value = getGenereteKey(generatedKeyHolder.getType(), res);
-                                generatedKeyHolder.acceptKey(value, row);
-                            } else {
-                                List<T> keys = new ArrayList<>();
-                                keys.add(getGenereteKey(generatedKeyHolder.getType(), res));
-                                while (res.next()) {
-                                    keys.add(getGenereteKey(generatedKeyHolder.getType(), res));
-                                }
-                                generatedKeyHolder.acceptKey(keys);
-                            }
-                        }
-                    }
-                }
-            }
-            return results;
-        } catch (SQLException e) {
-            //            releaseConnection(connection, ds);
-            releaseConnection(connection);
-            StringBuilder strArgs = new StringBuilder();
-            int index = 0;
-            for (Object[] args : batchArgs) {
-                strArgs.append("\n    batch[").append(index++).append("]: ").append(Arrays.toString(args));
-            }
-            throw new JdbcException(
-                    Strings.format("executeUpdateBatch: \n  sql: {0} \n  args: {1}", sql, strArgs.toString()), e);
-        } finally {
-            //            releaseConnection(connection, getDataSource());
-            releaseConnection(connection);
-        }
-    }
-
-    private <T extends Serializable> int executeUpdate(Consumer<PreparedStatement> setParams, String sql, int batchSize,
-            GeneratedKeyHolder<T> generatedKeyHolder, Object... args) {
-        JdbcExecution execution = preHandle(sql, args);
-        sql = execution.getExecution();
-        args = execution.getParams();
-        logger.debug("execute sql -> {}, args -> {}", sql, args);
-        //        DataSource ds = getDataSource();
-        //        Connection connection = getConnection(ds);
-        Connection connection = getConnection();
-        try (PreparedStatement prep = generatedKeyHolder == null ? connection.prepareStatement(sql)
-                : connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
-            setParams.accept(prep);
-            int result = prep.executeUpdate();
-            // 不是查询操作，没有查询结果
-            postHandle(execution, sql, args);
-            if (generatedKeyHolder != null && (batchSize == 1 && result == 1 || batchSize > 1)) {
-                try (ResultSet res = prep.getGeneratedKeys()) {
-                    int row = 0;
-                    if (dialect instanceof SQLiteDialect) { // res.isLast() not supported by sqlite
-                        while (res.next()) {
-                            T value = getGenereteKey(generatedKeyHolder.getType(), res);
-                            generatedKeyHolder.acceptKey(value, row++);
-                        }
-                    } else {
-                        if (res.next()) {
-                            if (res.isLast()) {
-                                T value = getGenereteKey(generatedKeyHolder.getType(), res);
-                                generatedKeyHolder.acceptKey(value, row);
-                            } else {
-                                List<T> keys = new ArrayList<>();
-                                keys.add(getGenereteKey(generatedKeyHolder.getType(), res));
-                                while (res.next()) {
-                                    keys.add(getGenereteKey(generatedKeyHolder.getType(), res));
-                                }
-                                generatedKeyHolder.acceptKey(keys);
-                            }
-                        }
-                    }
-                }
-            }
-            return result;
-        } catch (SQLException e) {
-            //            releaseConnection(connection, ds);
-            releaseConnection(connection);
-            throw new JdbcException(Strings.format("executeUpdate: \nsql: {0} \nargs: {1}", sql, Arrays.toString(args)),
-                    e);
-        } finally {
-            //            releaseConnection(connection, getDataSource());
-            releaseConnection(connection);
-        }
-    }
-
     /**
      * {@inheritDoc}
      */
     @Override
     public List<Map<String, Object>> query(String sql, Map<String, Object> args) {
-        logger.debug("sql -> {}, args -> {}", sql, args);
-        Execution execution = SqlUtils.convertNamedParamSql(sql, args);
-        return query(execution.getExecution(), execution.getParams());
+        return query(sql, mapRowMapper, args);
     }
 
     /**
@@ -485,31 +441,7 @@ public abstract class AbstractJdbc implements Jdbc {
      */
     @Override
     public List<Map<String, Object>> query(String sql, Object... args) {
-        if (Lang.isNotEmpty(sql)) {
-            sql = sql.trim();
-            JdbcExecution execution = preHandle(sql, args);
-            sql = execution.getExecution();
-            args = execution.getParams();
-            logger.debug("execute sql -> {}, args -> {}", sql, args);
-            //            DataSource ds = getDataSource();
-            //            Connection con = getConnection(ds);
-            Connection con = getConnection();
-            try (PreparedStatement prep = con.prepareStatement(sql)) {
-                setParams(prep, args);
-                try (ResultSet rs = prep.executeQuery()) {
-                    return postHandle(execution.setOriginalResult(JdbcUtils.getResultSetMaps(rs, manager)), sql, args);
-                }
-            } catch (SQLException e) {
-                //                releaseConnection(con, ds);
-                releaseConnection(con);
-                con = null;
-                throw new JdbcException(Strings.format("query: \nsql: {0} \nargs: {1}", sql, Arrays.toString(args)), e);
-            } finally {
-                //                releaseConnection(con, getDataSource());
-                releaseConnection(con);
-            }
-        }
-        return new ArrayList<>();
+        return query(sql, mapRowMapper, args);
     }
 
     /**
@@ -526,10 +458,52 @@ public abstract class AbstractJdbc implements Jdbc {
      * {@inheritDoc}
      */
     @Override
+    public <T> List<T> query(String sql, RowMapper<T> rowMapper, Object... args) {
+        List<T> list = new ArrayList<>();
+        sql = Lang.ifNotNull(sql, String::trim);
+        if (Lang.isEmpty(sql)) {
+            return list;
+        }
+
+        JdbcExecution execution = preHandle(sql, args);
+        sql = execution.getExecution();
+        args = execution.getParams();
+        logger.debug("execute sql -> {}, args -> {}", sql, args);
+        Connection con = getConnection();
+        try (PreparedStatement prep = con.prepareStatement(sql)) {
+            setParams(prep, args);
+            try (ResultSet rs = prep.executeQuery()) {
+                int i = 0;
+                while (rs.next()) {
+                    list.add(rowMapper.mapRow(new SqlResultSet(rs), i++));
+                }
+                return postHandle(execution.setOriginalResult(list));
+            }
+        } catch (SQLException e) {
+            releaseConnection(con);
+            con = null;
+            throw new JdbcException(Strings.format("query: \nsql: {0} \nargs: {1}", sql, Arrays.toString(args)), e);
+        } finally {
+            releaseConnection(con);
+        }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
     public <T> List<T> query(String sql, Class<T> elementType, Map<String, Object> args) {
         logger.debug("sql -> {}, args -> {}, elementType -> {}", sql, args, elementType);
         Execution execution = SqlUtils.convertNamedParamSql(sql, args);
         return query(execution.getExecution(), elementType, execution.getParams());
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public <T> List<T> query(String sql, Class<T> elementType, Object... args) {
+        return query(sql, getTypeMapper(elementType), args);
     }
 
     /**
@@ -607,21 +581,6 @@ public abstract class AbstractJdbc implements Jdbc {
      * {@inheritDoc}
      */
     @Override
-    public <T> List<T> query(String sql, Class<T> elementType, Object... args) {
-        SQLType sqlType = manager.getSqlType(elementType);
-        RowMapper<T> rowMapper = null;
-        if (sqlType == null) {
-            rowMapper = new NestedBeanPropertyRowMapper<>(elementType, manager);
-        } else {
-            rowMapper = new SingleColumnRowMapper<>(elementType, manager);
-        }
-        return query(sql, rowMapper, args);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
     public <T1, T2> List<Tuple2<T1, T2>> query(String sql, Class<T1> elementType1, Class<T2> elementType2,
             Tuple2<String, String> prefixes, Object... args) {
         //        SQLType sqlType = manager.getSqlType(elementType);
@@ -685,63 +644,12 @@ public abstract class AbstractJdbc implements Jdbc {
                 prefixes, manager), args);
     }
 
-    //    @Override
-    //    public <T> List<T> query(String sql, Class<T> elementType, BeanPropertyValue<?>... args) {
-    //        SQLType sqlType = manager.getSqlType(elementType);
-    //        RowMapper<T> rowMapper = null;
-    //        if (sqlType == null) {
-    //            rowMapper = new NestedBeanPropertyRowMapper<>(elementType, manager);
-    //        } else {
-    //            rowMapper = new SingleColumnRowMapper<>(elementType, manager);
-    //        }
-    //        return query(sql, rowMapper, args);
-    //    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public <T> List<T> query(String sql, RowMapper<T> rowMapper, Object... args) {
-        List<T> list = new ArrayList<>();
-        if (Lang.isNotEmpty(sql)) {
-            sql = sql.trim();
-            JdbcExecution execution = preHandle(sql, args);
-            sql = execution.getExecution();
-            args = execution.getParams();
-            logger.debug("execute sql -> {}, args -> {}", sql, args);
-            //            DataSource ds = getDataSource();
-            //            Connection con = getConnection(ds);
-            Connection con = getConnection();
-            try (PreparedStatement prep = con.prepareStatement(sql)) {
-                setParams(prep, args);
-                try (ResultSet rs = prep.executeQuery()) {
-                    int i = 0;
-                    while (rs.next()) {
-                        list.add(rowMapper.mapRow(new SqlResultSet(rs), i++));
-                    }
-                    return postHandle(execution.setOriginalResult(list), sql, args);
-                }
-            } catch (SQLException e) {
-                //                releaseConnection(con, ds);
-                releaseConnection(con);
-                con = null;
-                throw new JdbcException(Strings.format("query: \nsql: {0} \nargs: {1}", sql, Arrays.toString(args)), e);
-            } finally {
-                //                releaseConnection(con, getDataSource());
-                releaseConnection(con);
-            }
-        }
-        return list;
-    }
-
     /**
      * {@inheritDoc}
      */
     @Override
     public Iterable<Map<String, Object>> queryStream(String sql, Map<String, Object> args) {
-        logger.debug("sql -> {}, args -> {}", sql, args);
-        Execution execution = SqlUtils.convertNamedParamSql(sql, args);
-        return queryStream(execution.getExecution(), execution.getParams());
+        return queryStream(sql, new MapRowMapper(manager), args);
     }
 
     /**
@@ -750,36 +658,6 @@ public abstract class AbstractJdbc implements Jdbc {
     @Override
     public Iterable<Map<String, Object>> queryStream(String sql, Object... args) {
         return queryStream(sql, new MapRowMapper(manager), args);
-        //        if (Lang.isNotEmpty(sql)) {
-        //            sql = sql.trim();
-        //            JdbcExecution execution = preHandle(sql, args);
-        //            sql = execution.getExecution();
-        //            args = execution.getParams();
-        //            logger.debug("execute sql -> {}, args -> {}", sql, args);
-        //            // 由于数据获取在迭代器里依次获取，这里不能关闭ResultSet,PreparedStatement
-        //            // 使用AutoCloseConnection，调用其close()方法会自动close其创建的各种中间操作对象
-        //            // 最后由事务管理器来处理Connection的关闭
-        //            Connection con = new AutoCloseConnection(getConnection());
-        //            //                try (PreparedStatement prep = con.prepareStatement(sql, ResultSet.TYPE_FORWARD_ONLY,
-        //            //                        ResultSet.CONCUR_READ_ONLY)) {
-        //            try {
-        //                PreparedStatement prep = con.prepareStatement(sql);
-        //                //                prep.setFetchSize(Integer.MIN_VALUE);
-        //                setParams(prep, args);
-        //                ResultSet rs = prep.executeQuery();
-        //                // 这里是并没有获取数据，需要外部迭代RowIterable才会去获取数据
-        //                return new RowIterable<>(new SqlResultSet(rs), new MapRowMapper(manager));
-        //                //                    return postHandle(execution.setOriginalResult(JdbcUtils.getResultSetMaps(rs, manager)), sql, args);
-        //            } catch (SQLException e) {
-        //                releaseConnection(con);
-        //                con = null;
-        //                throw new JdbcException(
-        //                        Strings.format("queryStream: \nsql: {0} \nargs: {1}", sql, Arrays.toString(args)), e);
-        //            } finally {
-        //                releaseConnection(con);
-        //            }
-        //        }
-        //        return new RowIterable<>(null, new MapRowMapper(manager));
     }
 
     /**
@@ -787,9 +665,46 @@ public abstract class AbstractJdbc implements Jdbc {
      */
     @Override
     public <T> Iterable<T> queryStream(String sql, RowMapper<T> rowMapper, Map<String, Object> args) {
+        sql = Lang.ifNotNull(sql, String::trim);
+        if (Lang.isEmpty(sql)) {
+            return new RowIterable<>(null, rowMapper);
+        }
         logger.debug("sql -> {}, args -> {}", sql, args);
         Execution execution = SqlUtils.convertNamedParamSql(sql, args);
-        return queryStream(execution.getExecution(), rowMapper, execution.getParams());
+        return queryStream0(execution.getExecution(), rowMapper, execution.getParams());
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public <T> Iterable<T> queryStream(String sql, RowMapper<T> rowMapper, Object... args) {
+        sql = Lang.ifNotNull(sql, String::trim);
+        if (Lang.isEmpty(sql)) {
+            return new RowIterable<>(null, rowMapper);
+        }
+        return queryStream0(sql, rowMapper, args);
+    }
+
+    private <T> Iterable<T> queryStream0(String sql, RowMapper<T> rowMapper, Object... args) {
+        JdbcExecution execution = preHandle(sql, args);
+        sql = execution.getExecution();
+        args = execution.getParams();
+        logger.debug("execute sql -> {}, args -> {}", sql, args);
+        Connection con = new AutoCloseConnection(getConnection());
+        try {
+            PreparedStatement prep = con.prepareStatement(sql);
+            setParams(prep, args);
+            ResultSet rs = prep.executeQuery();
+            return new RowIterable<>(new SqlResultSet(rs), rowMapper);
+            //                return postHandle(execution.setOriginalResult(list), sql, args);
+        } catch (SQLException e) {
+            releaseConnection(con);
+            throw new JdbcException(Strings.format("queryStream: \nsql: {0} \nargs: {1}", sql, Arrays.toString(args)),
+                    e);
+        } finally {
+            releaseConnection(con);
+        }
     }
 
     /**
@@ -797,9 +712,15 @@ public abstract class AbstractJdbc implements Jdbc {
      */
     @Override
     public <T> Iterable<T> queryStream(String sql, Class<T> elementType, Map<String, Object> args) {
-        logger.debug("sql -> {}, args -> {}, elementType -> {}", sql, args, elementType);
-        Execution execution = SqlUtils.convertNamedParamSql(sql, args);
-        return queryStream(execution.getExecution(), elementType, execution.getParams());
+        return queryStream(sql, getTypeMapper(elementType), args);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public <T> Iterable<T> queryStream(String sql, Class<T> elementType, Object... args) {
+        return queryStream(sql, getTypeMapper(elementType), args);
     }
 
     /**
@@ -878,21 +799,6 @@ public abstract class AbstractJdbc implements Jdbc {
      * {@inheritDoc}
      */
     @Override
-    public <T> Iterable<T> queryStream(String sql, Class<T> elementType, Object... args) {
-        SQLType sqlType = manager.getSqlType(elementType);
-        RowMapper<T> rowMapper = null;
-        if (sqlType == null) {
-            rowMapper = new NestedBeanPropertyRowMapper<>(elementType, manager);
-        } else {
-            rowMapper = new SingleColumnRowMapper<>(elementType, manager);
-        }
-        return queryStream(sql, rowMapper, args);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
     public <T1, T2> Iterable<Tuple2<T1, T2>> queryStream(String sql, Class<T1> elementType1, Class<T2> elementType2,
             Tuple2<String, String> prefixes, Object... args) {
         return queryStream(sql, new TupleNestedBeanPropertyRowMapper<>(ArrayUtils.toList(elementType1, elementType2),
@@ -961,35 +867,6 @@ public abstract class AbstractJdbc implements Jdbc {
     //        return queryStream(sql, rowMapper, args);
     //    }
 
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public <T> Iterable<T> queryStream(String sql, RowMapper<T> rowMapper, Object... args) {
-        if (Lang.isNotEmpty(sql)) {
-            sql = sql.trim();
-            JdbcExecution execution = preHandle(sql, args);
-            sql = execution.getExecution();
-            args = execution.getParams();
-            logger.debug("execute sql -> {}, args -> {}", sql, args);
-            Connection con = new AutoCloseConnection(getConnection());
-            try {
-                PreparedStatement prep = con.prepareStatement(sql);
-                setParams(prep, args);
-                ResultSet rs = prep.executeQuery();
-                return new RowIterable<>(new SqlResultSet(rs), rowMapper);
-                //                return postHandle(execution.setOriginalResult(list), sql, args);
-            } catch (SQLException e) {
-                releaseConnection(con);
-                throw new JdbcException(
-                        Strings.format("queryStream: \nsql: {0} \nargs: {1}", sql, Arrays.toString(args)), e);
-            } finally {
-                releaseConnection(con);
-            }
-        }
-        return new RowIterable<>(null, rowMapper);
-    }
-
     //    /**
     //     * {@inheritDoc}
     //     */
@@ -1004,7 +881,7 @@ public abstract class AbstractJdbc implements Jdbc {
      */
     @Override
     public Map<String, Object> querySingle(String sql, Map<String, Object> args) {
-        return singleResult(query(sql, args));
+        return querySingle(sql, mapRowMapper, args);
     }
 
     /**
@@ -1012,7 +889,7 @@ public abstract class AbstractJdbc implements Jdbc {
      */
     @Override
     public Map<String, Object> querySingle(String sql, Object... args) {
-        return singleResult(query(sql, args));
+        return querySingle(sql, mapRowMapper, args);
     }
 
     /**
@@ -1020,23 +897,54 @@ public abstract class AbstractJdbc implements Jdbc {
      */
     @Override
     public <T> T querySingle(String sql, RowMapper<T> rowMapper, Object... args) {
-        return singleResult(query(sql, rowMapper, args));
-    }
+        sql = Lang.ifNotNull(sql, String::trim);
+        if (Lang.isEmpty(sql)) {
+            return null;
+        }
 
-    //    /**
-    //     * {@inheritDoc}
-    //     */
-    //    @Override
-    //    public <T> T querySingle(String sql, RowMapper<T> rowMapper, BeanPropertyValue<?>... args) {
-    //        return singleResult(query(sql, rowMapper, args));
-    //    }
+        JdbcExecution execution = preHandle(sql, args);
+        sql = execution.getExecution();
+        args = execution.getParams();
+        logger.debug("execute sql -> {}, args -> {}", sql, args);
+        Connection conn = getConnection();
+        try (PreparedStatement prep = conn.prepareStatement(sql, ResultSet.TYPE_SCROLL_SENSITIVE,
+                ResultSet.CONCUR_UPDATABLE)) {
+            setParams(prep, args);
+            try (ResultSet rs = prep.executeQuery()) {
+                T result = null;
+                int i = 0;
+                while (rs.next()) {
+                    assertSingleResult(i + 1);
+                    result = rowMapper.mapRow(new SqlResultSet(rs), i++);
+                }
+                return postHandle(execution.setOriginalResult(result));
+            }
+        } catch (SQLException e) {
+            releaseConnection(conn);
+            conn = null;
+            throw new JdbcException(Strings.format("querySingle: \nsql: {0} \nargs: {1}", sql, Arrays.toString(args)),
+                    e);
+        } finally {
+            releaseConnection(conn);
+        }
+    }
 
     /**
      * {@inheritDoc}
      */
     @Override
     public <T> T querySingle(String sql, RowMapper<T> rowMapper, Map<String, Object> args) {
-        return singleResult(query(sql, rowMapper, args));
+        logger.debug("sql -> {}, args -> {}", sql, args);
+        Execution execution = SqlUtils.convertNamedParamSql(sql, args);
+        return querySingle(execution.getExecution(), rowMapper, execution.getParams());
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public <T> T querySingle(String sql, Class<T> elementType, Object... args) {
+        return querySingle(sql, getTypeMapper(elementType), args);
     }
 
     /**
@@ -1044,7 +952,7 @@ public abstract class AbstractJdbc implements Jdbc {
      */
     @Override
     public <T> T querySingle(String sql, Class<T> elementType, Map<String, Object> args) {
-        return singleResult(query(sql, elementType, args));
+        return querySingle(sql, getTypeMapper(elementType), args);
     }
 
     /**
@@ -1084,26 +992,6 @@ public abstract class AbstractJdbc implements Jdbc {
             Tuple5<String, String, String, String, String> prefixes, Map<String, Object> args) {
         return singleResult(
                 query(sql, elementType1, elementType2, elementType3, elementType4, elementType5, prefixes, args));
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public <T1, T2, T3, T4, T5, T6> Tuple6<T1, T2, T3, T4, T5, T6> queryUnique(String sql, Class<T1> elementType1,
-            Class<T2> elementType2, Class<T3> elementType3, Class<T4> elementType4, Class<T5> elementType5,
-            Class<T6> elementType6, Tuple6<String, String, String, String, String, String> prefixes,
-            Map<String, Object> args) {
-        return singleResult(query(sql, elementType1, elementType2, elementType3, elementType4, elementType5,
-                elementType6, prefixes, args));
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public <T> T querySingle(String sql, Class<T> elementType, Object... args) {
-        return singleResult(query(sql, elementType, args));
     }
 
     /**
@@ -1165,22 +1053,12 @@ public abstract class AbstractJdbc implements Jdbc {
     //        return singleResult(query(sql, elementType, args));
     //    }
 
-    private <T> T singleResult(Collection<T> results) {
-        if (results == null || results.size() <= 0) {
-            return null;
-        } else if (results.size() > 1) {
-            // ENHANCE 优化错误消息
-            throw new JdbcException(Strings.format("results size must be 1, but is {0}", results.size()));
-        }
-        return results.iterator().next();
-    }
-
     /**
      * {@inheritDoc}
      */
     @Override
     public Map<String, Object> queryUnique(String sql, Map<String, Object> args) {
-        return nullableSingleResult(query(sql, args));
+        return queryUnique(sql, mapRowMapper, args);
     }
 
     /**
@@ -1188,7 +1066,7 @@ public abstract class AbstractJdbc implements Jdbc {
      */
     @Override
     public Map<String, Object> queryUnique(String sql, Object... args) {
-        return nullableSingleResult(query(sql, args));
+        return queryUnique(sql, mapRowMapper, args);
     }
 
     /**
@@ -1196,23 +1074,47 @@ public abstract class AbstractJdbc implements Jdbc {
      */
     @Override
     public <T> T queryUnique(String sql, RowMapper<T> rowMapper, Object... args) {
-        return nullableSingleResult(query(sql, rowMapper, args));
-    }
+        sql = Lang.ifNotNull(sql, String::trim);
+        if (Lang.isEmpty(sql)) {
+            return null;
+        }
 
-    //    /**
-    //     * {@inheritDoc}
-    //     */
-    //    @Override
-    //    public <T> T queryUnique(String sql, RowMapper<T> rowMapper, BeanPropertyValue<?>... args) {
-    //        return nullableSingleResult(query(sql, rowMapper, args));
-    //    }
+        JdbcExecution execution = preHandle(sql, args);
+        sql = execution.getExecution();
+        args = execution.getParams();
+        logger.debug("execute sql -> {}, args -> {}", sql, args);
+        Connection conn = getConnection();
+        try (PreparedStatement prep = conn.prepareStatement(sql, ResultSet.TYPE_SCROLL_SENSITIVE,
+                ResultSet.CONCUR_UPDATABLE)) {
+            setParams(prep, args);
+            try (ResultSet rs = prep.executeQuery()) {
+                T result = null;
+                int i = 0;
+                while (rs.next()) {
+                    assertSingleResult(i + 1);
+                    result = rowMapper.mapRow(new SqlResultSet(rs), i++);
+                }
+                assertNullableResult(result);
+                return postHandle(execution.setOriginalResult(result));
+            }
+        } catch (SQLException e) {
+            releaseConnection(conn);
+            conn = null;
+            throw new JdbcException(Strings.format("querySingle: \nsql: {0} \nargs: {1}", sql, Arrays.toString(args)),
+                    e);
+        } finally {
+            releaseConnection(conn);
+        }
+    }
 
     /**
      * {@inheritDoc}
      */
     @Override
     public <T> T queryUnique(String sql, RowMapper<T> rowMapper, Map<String, Object> args) {
-        return nullableSingleResult(query(sql, rowMapper, args));
+        logger.debug("sql -> {}, args -> {}", sql, args);
+        Execution execution = SqlUtils.convertNamedParamSql(sql, args);
+        return queryUnique(execution.getExecution(), rowMapper, execution.getParams());
     }
 
     /**
@@ -1220,7 +1122,15 @@ public abstract class AbstractJdbc implements Jdbc {
      */
     @Override
     public <T> T queryUnique(String sql, Class<T> elementType, Map<String, Object> args) {
-        return nullableSingleResult(query(sql, elementType, args));
+        return queryUnique(sql, getTypeMapper(elementType), args);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public <T> T queryUnique(String sql, Class<T> elementType, Object... args) {
+        return queryUnique(sql, getTypeMapper(elementType), args);
     }
 
     /**
@@ -1266,9 +1176,10 @@ public abstract class AbstractJdbc implements Jdbc {
      * {@inheritDoc}
      */
     @Override
-    public <T1, T2, T3, T4, T5, T6> Tuple6<T1, T2, T3, T4, T5, T6> querySingle(String sql, Class<T1> elementType1,
+    public <T1, T2, T3, T4, T5, T6> Tuple6<T1, T2, T3, T4, T5, T6> queryUnique(String sql, Class<T1> elementType1,
             Class<T2> elementType2, Class<T3> elementType3, Class<T4> elementType4, Class<T5> elementType5,
-            Class<T6> elementType6, Tuple6<String, String, String, String, String, String> prefixes, Object... args) {
+            Class<T6> elementType6, Tuple6<String, String, String, String, String, String> prefixes,
+            Map<String, Object> args) {
         return nullableSingleResult(query(sql, elementType1, elementType2, elementType3, elementType4, elementType5,
                 elementType6, prefixes, args));
     }
@@ -1277,8 +1188,102 @@ public abstract class AbstractJdbc implements Jdbc {
      * {@inheritDoc}
      */
     @Override
-    public <T> T queryUnique(String sql, Class<T> elementType, Object... args) {
-        return nullableSingleResult(query(sql, elementType, args));
+    public <T1, T2, T3, T4, T5, T6> Tuple6<T1, T2, T3, T4, T5, T6> querySingle(String sql, Class<T1> elementType1,
+            Class<T2> elementType2, Class<T3> elementType3, Class<T4> elementType4, Class<T5> elementType5,
+            Class<T6> elementType6, Tuple6<String, String, String, String, String, String> prefixes, Object... args) {
+        return singleResult(query(sql, elementType1, elementType2, elementType3, elementType4, elementType5,
+                elementType6, prefixes, args));
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public Tuple2<Map<String, Object>, Integer> queryProcessSingle(String sql,
+            ToIntBiFunction<ResultSet, Map<String, Object>> setValueOperator, Map<String, Object> args) {
+        return querySingleUpdate(sql, new MapRowMapper(manager), setValueOperator, args);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public Tuple2<Map<String, Object>, Integer> querySingleUpdate(String sql,
+            ToIntBiFunction<ResultSet, Map<String, Object>> setValueOperator, Object... args) {
+        return querySingleUpdate(sql, new MapRowMapper(manager), setValueOperator, args);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public <T> Tuple2<T, Integer> querySingleUpdate(String sql, RowMapper<T> rowMapper,
+            ToIntBiFunction<ResultSet, T> setValueOperator, Object... args) {
+        sql = Lang.ifNotNull(sql, String::trim);
+        if (Lang.isEmpty(sql)) {
+            return null;
+        }
+
+        JdbcExecution execution = preHandle(sql, args);
+        sql = execution.getExecution();
+        args = execution.getParams();
+        logger.debug("execute sql -> {}, args -> {}", sql, args);
+        Connection conn = getConnection();
+        try (PreparedStatement prep = conn.prepareStatement(sql, ResultSet.TYPE_SCROLL_SENSITIVE,
+                ResultSet.CONCUR_UPDATABLE)) {
+            setParams(prep, args);
+            try (ResultSet rs = prep.executeQuery()) {
+                T result = null;
+                int i = 0;
+                while (rs.next()) {
+                    assertSingleResult(i + 1);
+                    result = rowMapper.mapRow(new SqlResultSet(rs), i++);
+                }
+                result = postHandle(execution.setOriginalResult(result));
+                // 先确定是否超出一条数据，再来处理游标
+                rs.previous();
+                int size = setValueOperator.applyAsInt(rs, result);
+                return Tuples.of(result, size);
+                //                    return setValueOperator.apply(rs,
+                //                            postHandle(execution.setOriginalResult(singleResult(list)), sql, args));
+            }
+        } catch (SQLException e) {
+            releaseConnection(conn);
+            conn = null;
+            throw new JdbcException(
+                    Strings.format("querySingleUpdate: \nsql: {0} \nargs: {1}", sql, Arrays.toString(args)), e);
+        } finally {
+            releaseConnection(conn);
+        }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public <T> Tuple2<T, Integer> querySingleUpdate(String sql, RowMapper<T> rowMapper,
+            ToIntBiFunction<ResultSet, T> setValueOperator, Map<String, Object> args) {
+        logger.debug("sql -> {}, args -> {}", sql, args);
+        Execution execution = SqlUtils.convertNamedParamSql(sql, args);
+        return querySingleUpdate(execution.getExecution(), rowMapper, setValueOperator, execution.getParams());
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public <T> Tuple2<T, Integer> querySingleUpdate(String sql, Class<T> elementType,
+            ToIntBiFunction<ResultSet, T> setValueOperator, Map<String, Object> args) {
+        return querySingleUpdate(sql, new NestedBeanPropertyRowMapper<>(elementType, manager), setValueOperator, args);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public <T> Tuple2<T, Integer> querySingleUpdate(String sql, Class<T> elementType,
+            ToIntBiFunction<ResultSet, T> setValueOperator, Object... args) {
+        return querySingleUpdate(sql, new NestedBeanPropertyRowMapper<>(elementType, manager), setValueOperator, args);
     }
 
     /**
@@ -1331,26 +1336,6 @@ public abstract class AbstractJdbc implements Jdbc {
                 elementType6, prefixes, args));
     }
 
-    //    /**
-    //     * {@inheritDoc}
-    //     */
-    //    @Override
-    //    public <T> T queryUnique(String sql, Class<T> elementType, BeanPropertyValue<?>... args) {
-    //        return nullableSingleResult(query(sql, elementType, args));
-    //    }
-
-    private <T> T nullableSingleResult(Collection<T> results) {
-        if (Lang.isEmpty(results)) {
-            // ENHANCE 优化错误消息
-            throw new JdbcException("results is empty");
-        }
-        if (results.size() > 1) {
-            // ENHANCE 优化错误消息
-            throw new JdbcException(Strings.format("results size must be 1, but is {0}", results.size()));
-        }
-        return results.iterator().next();
-    }
-
     /**
      * {@inheritDoc}
      */
@@ -1383,35 +1368,33 @@ public abstract class AbstractJdbc implements Jdbc {
     @Override
     public boolean queryBool(String sql, Object... args) {
         boolean result = false;
-        if (Lang.isNotEmpty(sql)) {
-            sql = sql.trim();
-            JdbcExecution execution = preHandle(sql, args);
-            sql = execution.getExecution();
-            args = execution.getParams();
-            logger.debug("execute sql -> {}, args -> {}", sql, args);
-            Connection con = getConnection();
-            try (PreparedStatement prep = con.prepareStatement(sql)) {
-                setParams(prep, args);
-                try (ResultSet rs = prep.executeQuery()) {
-                    int i = 0;
-                    while (rs.next()) {
-                        result = rs.getBoolean(1);
-                        i++;
-                    }
-                    if (i > 1) {
-                        throw new JdbcException(Strings.format("results size must be 1, but is {0}", i));
-                    }
-                    return postHandle(execution.setOriginalResult(result), sql, args);
-                }
-            } catch (SQLException e) {
-                releaseConnection(con);
-                con = null;
-                throw new JdbcException(Strings.format("query: \nsql: {0} \nargs: {1}", sql, Arrays.toString(args)), e);
-            } finally {
-                releaseConnection(con);
-            }
+        sql = Lang.ifNotNull(sql, String::trim);
+        if (Lang.isEmpty(sql)) {
+            return result;
         }
-        return result;
+        JdbcExecution execution = preHandle(sql, args);
+        sql = execution.getExecution();
+        args = execution.getParams();
+        logger.debug("execute sql -> {}, args -> {}", sql, args);
+        Connection con = getConnection();
+        try (PreparedStatement prep = con.prepareStatement(sql)) {
+            setParams(prep, args);
+            try (ResultSet rs = prep.executeQuery()) {
+                int i = 0;
+                while (rs.next()) {
+                    i++;
+                    assertSingleResult(i);
+                    result = rs.getBoolean(1);
+                }
+                return postHandle(execution.setOriginalResult(result));
+            }
+        } catch (SQLException e) {
+            releaseConnection(con);
+            con = null;
+            throw new JdbcException(Strings.format("query: \nsql: {0} \nargs: {1}", sql, Arrays.toString(args)), e);
+        } finally {
+            releaseConnection(con);
+        }
     }
 
     /**
@@ -1439,35 +1422,33 @@ public abstract class AbstractJdbc implements Jdbc {
     @Override
     public byte queryByte(String sql, Object... args) {
         byte result = 0;
-        if (Lang.isNotEmpty(sql)) {
-            sql = sql.trim();
-            JdbcExecution execution = preHandle(sql, args);
-            sql = execution.getExecution();
-            args = execution.getParams();
-            logger.debug("execute sql -> {}, args -> {}", sql, args);
-            Connection con = getConnection();
-            try (PreparedStatement prep = con.prepareStatement(sql)) {
-                setParams(prep, args);
-                try (ResultSet rs = prep.executeQuery()) {
-                    int i = 0;
-                    while (rs.next()) {
-                        result = rs.getByte(1);
-                        i++;
-                    }
-                    if (i > 1) {
-                        throw new JdbcException(Strings.format("results size must be 1, but is {0}", i));
-                    }
-                    return postHandle(execution.setOriginalResult(result), sql, args);
-                }
-            } catch (SQLException e) {
-                releaseConnection(con);
-                con = null;
-                throw new JdbcException(Strings.format("query: \nsql: {0} \nargs: {1}", sql, Arrays.toString(args)), e);
-            } finally {
-                releaseConnection(con);
-            }
+        sql = Lang.ifNotNull(sql, String::trim);
+        if (Lang.isEmpty(sql)) {
+            return result;
         }
-        return result;
+        JdbcExecution execution = preHandle(sql, args);
+        sql = execution.getExecution();
+        args = execution.getParams();
+        logger.debug("execute sql -> {}, args -> {}", sql, args);
+        Connection con = getConnection();
+        try (PreparedStatement prep = con.prepareStatement(sql)) {
+            setParams(prep, args);
+            try (ResultSet rs = prep.executeQuery()) {
+                int i = 0;
+                while (rs.next()) {
+                    i++;
+                    assertSingleResult(i);
+                    result = rs.getByte(1);
+                }
+                return postHandle(execution.setOriginalResult(result));
+            }
+        } catch (SQLException e) {
+            releaseConnection(con);
+            con = null;
+            throw new JdbcException(Strings.format("query: \nsql: {0} \nargs: {1}", sql, Arrays.toString(args)), e);
+        } finally {
+            releaseConnection(con);
+        }
     }
 
     /**
@@ -1486,35 +1467,34 @@ public abstract class AbstractJdbc implements Jdbc {
     @Override
     public byte[] queryBytes(String sql, Object... args) {
         byte[] result = new byte[0];
-        if (Lang.isNotEmpty(sql)) {
-            sql = sql.trim();
-            JdbcExecution execution = preHandle(sql, args);
-            sql = execution.getExecution();
-            args = execution.getParams();
-            logger.debug("execute sql -> {}, args -> {}", sql, args);
-            Connection con = getConnection();
-            try (PreparedStatement prep = con.prepareStatement(sql)) {
-                setParams(prep, args);
-                try (ResultSet rs = prep.executeQuery()) {
-                    int i = 0;
-                    while (rs.next()) {
-                        result = rs.getBytes(1);
-                        i++;
-                    }
-                    if (i > 1) {
-                        throw new JdbcException(Strings.format("results size must be 1, but is {0}", i));
-                    }
-                    return postHandle(execution.setOriginalResult(result), sql, args);
-                }
-            } catch (SQLException e) {
-                releaseConnection(con);
-                con = null;
-                throw new JdbcException(Strings.format("query: \nsql: {0} \nargs: {1}", sql, Arrays.toString(args)), e);
-            } finally {
-                releaseConnection(con);
-            }
+        sql = Lang.ifNotNull(sql, String::trim);
+        if (Lang.isEmpty(sql)) {
+            return result;
         }
-        return result;
+
+        JdbcExecution execution = preHandle(sql, args);
+        sql = execution.getExecution();
+        args = execution.getParams();
+        logger.debug("execute sql -> {}, args -> {}", sql, args);
+        Connection con = getConnection();
+        try (PreparedStatement prep = con.prepareStatement(sql)) {
+            setParams(prep, args);
+            try (ResultSet rs = prep.executeQuery()) {
+                int i = 0;
+                while (rs.next()) {
+                    i++;
+                    assertSingleResult(i);
+                    result = rs.getBytes(1);
+                }
+                return postHandle(execution.setOriginalResult(result));
+            }
+        } catch (SQLException e) {
+            releaseConnection(con);
+            con = null;
+            throw new JdbcException(Strings.format("query: \nsql: {0} \nargs: {1}", sql, Arrays.toString(args)), e);
+        } finally {
+            releaseConnection(con);
+        }
     }
 
     /**
@@ -1533,35 +1513,34 @@ public abstract class AbstractJdbc implements Jdbc {
     @Override
     public short queryShort(String sql, Object... args) {
         short result = 0;
-        if (Lang.isNotEmpty(sql)) {
-            sql = sql.trim();
-            JdbcExecution execution = preHandle(sql, args);
-            sql = execution.getExecution();
-            args = execution.getParams();
-            logger.debug("execute sql -> {}, args -> {}", sql, args);
-            Connection con = getConnection();
-            try (PreparedStatement prep = con.prepareStatement(sql)) {
-                setParams(prep, args);
-                try (ResultSet rs = prep.executeQuery()) {
-                    int i = 0;
-                    while (rs.next()) {
-                        result = rs.getShort(1);
-                        i++;
-                    }
-                    if (i > 1) {
-                        throw new JdbcException(Strings.format("results size must be 1, but is {0}", i));
-                    }
-                    return postHandle(execution.setOriginalResult(result), sql, args);
-                }
-            } catch (SQLException e) {
-                releaseConnection(con);
-                con = null;
-                throw new JdbcException(Strings.format("query: \nsql: {0} \nargs: {1}", sql, Arrays.toString(args)), e);
-            } finally {
-                releaseConnection(con);
-            }
+        sql = Lang.ifNotNull(sql, String::trim);
+        if (Lang.isEmpty(sql)) {
+            return result;
         }
-        return result;
+
+        JdbcExecution execution = preHandle(sql, args);
+        sql = execution.getExecution();
+        args = execution.getParams();
+        logger.debug("execute sql -> {}, args -> {}", sql, args);
+        Connection con = getConnection();
+        try (PreparedStatement prep = con.prepareStatement(sql)) {
+            setParams(prep, args);
+            try (ResultSet rs = prep.executeQuery()) {
+                int i = 0;
+                while (rs.next()) {
+                    i++;
+                    assertSingleResult(i);
+                    result = rs.getShort(1);
+                }
+                return postHandle(execution.setOriginalResult(result));
+            }
+        } catch (SQLException e) {
+            releaseConnection(con);
+            con = null;
+            throw new JdbcException(Strings.format("query: \nsql: {0} \nargs: {1}", sql, Arrays.toString(args)), e);
+        } finally {
+            releaseConnection(con);
+        }
     }
 
     /**
@@ -1579,39 +1558,34 @@ public abstract class AbstractJdbc implements Jdbc {
      */
     @Override
     public int queryInt(String sql, Object... args) {
-        //        AtomicInteger res = new AtomicInteger(0);
-        //        queryPrimitiveValue(i -> res.set(i), null, null, sql, args);
-        //        return res.get();
         int result = 0;
-        if (Lang.isNotEmpty(sql)) {
-            sql = sql.trim();
-            JdbcExecution execution = preHandle(sql, args);
-            sql = execution.getExecution();
-            args = execution.getParams();
-            logger.debug("execute sql -> {}, args -> {}", sql, args);
-            Connection con = getConnection();
-            try (PreparedStatement prep = con.prepareStatement(sql)) {
-                setParams(prep, args);
-                try (ResultSet rs = prep.executeQuery()) {
-                    int i = 0;
-                    while (rs.next()) {
-                        result = rs.getInt(1);
-                        i++;
-                    }
-                    if (i > 1) {
-                        throw new JdbcException(Strings.format("results size must be 1, but is {0}", i));
-                    }
-                    return postHandle(execution.setOriginalResult(result), sql, args);
-                }
-            } catch (SQLException e) {
-                releaseConnection(con);
-                con = null;
-                throw new JdbcException(Strings.format("query: \nsql: {0} \nargs: {1}", sql, Arrays.toString(args)), e);
-            } finally {
-                releaseConnection(con);
-            }
+        sql = Lang.ifNotNull(sql, String::trim);
+        if (Lang.isEmpty(sql)) {
+            return result;
         }
-        return result;
+        JdbcExecution execution = preHandle(sql, args);
+        sql = execution.getExecution();
+        args = execution.getParams();
+        logger.debug("execute sql -> {}, args -> {}", sql, args);
+        Connection con = getConnection();
+        try (PreparedStatement prep = con.prepareStatement(sql)) {
+            setParams(prep, args);
+            try (ResultSet rs = prep.executeQuery()) {
+                int i = 0;
+                while (rs.next()) {
+                    i++;
+                    assertSingleResult(i);
+                    result = rs.getInt(1);
+                }
+                return postHandle(execution.setOriginalResult(result));
+            }
+        } catch (SQLException e) {
+            releaseConnection(con);
+            con = null;
+            throw new JdbcException(Strings.format("query: \nsql: {0} \nargs: {1}", sql, Arrays.toString(args)), e);
+        } finally {
+            releaseConnection(con);
+        }
     }
 
     /**
@@ -1629,40 +1603,34 @@ public abstract class AbstractJdbc implements Jdbc {
      */
     @Override
     public long queryLong(String sql, Object... args) {
-        //        AtomicLong res = new AtomicLong(0);
-        //        queryPrimitiveValue(null, i -> res.set(i), null, sql, args);
-        //        return res.get();
-
         long result = 0;
-        if (Lang.isNotEmpty(sql)) {
-            sql = sql.trim();
-            JdbcExecution execution = preHandle(sql, args);
-            sql = execution.getExecution();
-            args = execution.getParams();
-            logger.debug("execute sql -> {}, args -> {}", sql, args);
-            Connection con = getConnection();
-            try (PreparedStatement prep = con.prepareStatement(sql)) {
-                setParams(prep, args);
-                try (ResultSet rs = prep.executeQuery()) {
-                    int i = 0;
-                    while (rs.next()) {
-                        result = rs.getLong(1);
-                        i++;
-                    }
-                    if (i > 1) {
-                        throw new JdbcException(Strings.format("results size must be 1, but is {0}", i));
-                    }
-                    return postHandle(execution.setOriginalResult(result), sql, args);
-                }
-            } catch (SQLException e) {
-                releaseConnection(con);
-                con = null;
-                throw new JdbcException(Strings.format("query: \nsql: {0} \nargs: {1}", sql, Arrays.toString(args)), e);
-            } finally {
-                releaseConnection(con);
-            }
+        sql = Lang.ifNotNull(sql, String::trim);
+        if (Lang.isEmpty(sql)) {
+            return result;
         }
-        return result;
+        JdbcExecution execution = preHandle(sql, args);
+        sql = execution.getExecution();
+        args = execution.getParams();
+        logger.debug("execute sql -> {}, args -> {}", sql, args);
+        Connection con = getConnection();
+        try (PreparedStatement prep = con.prepareStatement(sql)) {
+            setParams(prep, args);
+            try (ResultSet rs = prep.executeQuery()) {
+                int i = 0;
+                while (rs.next()) {
+                    i++;
+                    assertSingleResult(i);
+                    result = rs.getLong(1);
+                }
+                return postHandle(execution.setOriginalResult(result));
+            }
+        } catch (SQLException e) {
+            releaseConnection(con);
+            con = null;
+            throw new JdbcException(Strings.format("query: \nsql: {0} \nargs: {1}", sql, Arrays.toString(args)), e);
+        } finally {
+            releaseConnection(con);
+        }
     }
 
     /**
@@ -1680,40 +1648,34 @@ public abstract class AbstractJdbc implements Jdbc {
      */
     @Override
     public double queryDouble(String sql, Object... args) {
-        //        BigDecimal res = new BigDecimal(0);
-        //        queryPrimitiveValue(null, null, i -> res.add(BigDecimal.valueOf(i)), sql, args);
-        //        return res.doubleValue();
-
         double result = 0;
-        if (Lang.isNotEmpty(sql)) {
-            sql = sql.trim();
-            JdbcExecution execution = preHandle(sql, args);
-            sql = execution.getExecution();
-            args = execution.getParams();
-            logger.debug("execute sql -> {}, args -> {}", sql, args);
-            Connection con = getConnection();
-            try (PreparedStatement prep = con.prepareStatement(sql)) {
-                setParams(prep, args);
-                try (ResultSet rs = prep.executeQuery()) {
-                    int i = 0;
-                    while (rs.next()) {
-                        result = rs.getDouble(1);
-                        i++;
-                    }
-                    if (i > 1) {
-                        throw new JdbcException(Strings.format("results size must be 1, but is {0}", i));
-                    }
-                    return postHandle(execution.setOriginalResult(result), sql, args);
-                }
-            } catch (SQLException e) {
-                releaseConnection(con);
-                con = null;
-                throw new JdbcException(Strings.format("query: \nsql: {0} \nargs: {1}", sql, Arrays.toString(args)), e);
-            } finally {
-                releaseConnection(con);
-            }
+        sql = Lang.ifNotNull(sql, String::trim);
+        if (Lang.isEmpty(sql)) {
+            return result;
         }
-        return result;
+        JdbcExecution execution = preHandle(sql, args);
+        sql = execution.getExecution();
+        args = execution.getParams();
+        logger.debug("execute sql -> {}, args -> {}", sql, args);
+        Connection con = getConnection();
+        try (PreparedStatement prep = con.prepareStatement(sql)) {
+            setParams(prep, args);
+            try (ResultSet rs = prep.executeQuery()) {
+                int i = 0;
+                while (rs.next()) {
+                    i++;
+                    assertSingleResult(i);
+                    result = rs.getDouble(1);
+                }
+                return postHandle(execution.setOriginalResult(result));
+            }
+        } catch (SQLException e) {
+            releaseConnection(con);
+            con = null;
+            throw new JdbcException(Strings.format("query: \nsql: {0} \nargs: {1}", sql, Arrays.toString(args)), e);
+        } finally {
+            releaseConnection(con);
+        }
     }
 
     /**
@@ -1739,13 +1701,12 @@ public abstract class AbstractJdbc implements Jdbc {
         JdbcExecution execution = preHandle(procedure, args);
         procedure = execution.getExecution();
         args = execution.getParams();
-        //        Connection con = getConnection(dataSource);
         Connection con = getConnection();
         try (CallableStatement call = con.prepareCall(procedure)) {
             Map<Integer, Class<?>> outParams = setParams(call, args);
             call.execute();
             setOutParams(call, outParams, args);
-            postHandle(execution, procedure, args);
+            postHandle(execution);
             return call.getUpdateCount();
         } catch (SQLException e) {
             //            releaseConnection(con, dataSource);
@@ -1755,7 +1716,6 @@ public abstract class AbstractJdbc implements Jdbc {
                     Strings.format("call procedure: \nprocedure: {0} \nargs: {1}", procedure, Arrays.toString(args)),
                     e);
         } finally {
-            //            releaseConnection(con, getDataSource());
             releaseConnection(con);
         }
     }
@@ -1788,29 +1748,7 @@ public abstract class AbstractJdbc implements Jdbc {
      */
     @Override
     public List<Map<String, Object>> callQuery(String name, Object... args) {
-        String procedure = getProcedure(name, args.length);
-        JdbcExecution execution = preHandle(procedure, args);
-        procedure = execution.getExecution();
-        args = execution.getParams();
-        //        Connection con = getConnection(dataSource);
-        Connection con = getConnection();
-        try (CallableStatement call = con.prepareCall(procedure)) {
-            Map<Integer, Class<?>> outParams = setParams(call, args);
-            try (ResultSet rs = call.executeQuery()) {
-                setOutParams(call, outParams, args);
-                return postHandle(execution.setOriginalResult(JdbcUtils.getResultSetMaps(rs, manager)), procedure,
-                        args);
-            }
-        } catch (SQLException e) {
-            //            releaseConnection(con, dataSource);
-            releaseConnection(con);
-            con = null;
-            throw new JdbcException(Strings.format("call procedure query: \nprocedure: {0} \nargs: {1}", procedure,
-                    Arrays.toString(args)), e);
-        } finally {
-            //            releaseConnection(con, getDataSource());
-            releaseConnection(con);
-        }
+        return callQuery(name, mapRowMapper, args);
     }
 
     /**
@@ -1822,28 +1760,25 @@ public abstract class AbstractJdbc implements Jdbc {
         JdbcExecution execution = preHandle(procedure, args);
         procedure = execution.getExecution();
         args = execution.getParams();
-        //        Connection con = getConnection(dataSource);
         Connection con = getConnection();
         try (CallableStatement call = con.prepareCall(procedure)) {
             Map<Integer, Class<?>> outParams = setParams(call, args);
             try (ResultSet rs = call.executeQuery()) {
                 setOutParams(call, outParams, args);
-                postHandle(execution, procedure, args);
+                //                postHandle(execution, procedure, args);
                 List<T> list = new ArrayList<>();
                 int i = 0;
                 while (rs.next()) {
                     list.add(rowMapper.mapRow(new SqlResultSet(rs), i++));
                 }
-                return postHandle(execution.setOriginalResult(list), procedure, args);
+                return postHandle(execution.setOriginalResult(list));
             }
         } catch (SQLException e) {
-            //            releaseConnection(con, dataSource);
             releaseConnection(con);
             con = null;
             throw new JdbcException(Strings.format("call procedure query: \nprocedure: {0} \nargs: {1}", procedure,
                     Arrays.toString(args)), e);
         } finally {
-            //            releaseConnection(con, getDataSource());
             releaseConnection(con);
         }
     }
@@ -1853,14 +1788,7 @@ public abstract class AbstractJdbc implements Jdbc {
      */
     @Override
     public <T> List<T> callQuery(String name, Class<T> elementType, Object... args) {
-        SQLType sqlType = manager.getSqlType(elementType);
-        RowMapper<T> rowMapper = null;
-        if (sqlType == null) {
-            rowMapper = new NestedBeanPropertyRowMapper<>(elementType, manager);
-        } else {
-            rowMapper = new SingleColumnRowMapper<>(elementType, manager);
-        }
-        return callQuery(name, rowMapper, args);
+        return callQuery(name, getTypeMapper(elementType), args);
     }
 
     /**
@@ -1915,7 +1843,7 @@ public abstract class AbstractJdbc implements Jdbc {
      */
     @Override
     public Map<String, Object> callQuerySingle(String name, Object... args) {
-        return singleResult(callQuery(name, args));
+        return callQuerySingle(name, mapRowMapper, args);
     }
 
     /**
@@ -1923,7 +1851,35 @@ public abstract class AbstractJdbc implements Jdbc {
      */
     @Override
     public <T> T callQuerySingle(String name, RowMapper<T> rowMapper, Object... args) {
-        return singleResult(callQuery(name, rowMapper, args));
+        if (Lang.isEmpty(name)) {
+            return null;
+        }
+
+        String procedure = getProcedure(name, args.length);
+        JdbcExecution execution = preHandle(procedure, args);
+        procedure = execution.getExecution();
+        args = execution.getParams();
+        Connection con = getConnection();
+        try (CallableStatement call = con.prepareCall(procedure)) {
+            Map<Integer, Class<?>> outParams = setParams(call, args);
+            try (ResultSet rs = call.executeQuery()) {
+                setOutParams(call, outParams, args);
+                int i = 0;
+                T result = null;
+                while (rs.next()) {
+                    assertSingleResult(i + 1);
+                    result = rowMapper.mapRow(new SqlResultSet(rs), i++);
+                }
+                return postHandle(execution.setOriginalResult(result));
+            }
+        } catch (SQLException e) {
+            releaseConnection(con);
+            con = null;
+            throw new JdbcException(Strings.format("call procedure query: \nprocedure: {0} \nargs: {1}", procedure,
+                    Arrays.toString(args)), e);
+        } finally {
+            releaseConnection(con);
+        }
     }
 
     /**
@@ -1931,7 +1887,7 @@ public abstract class AbstractJdbc implements Jdbc {
      */
     @Override
     public <T> T callQuerySingle(String name, Class<T> elementType, Object... args) {
-        return singleResult(callQuery(name, elementType, args));
+        return callQuerySingle(name, new NestedBeanPropertyRowMapper<>(elementType, manager), args);
     }
 
     /**
@@ -2198,20 +2154,46 @@ public abstract class AbstractJdbc implements Jdbc {
     }
 
     @SuppressWarnings("unchecked")
-    private <O> O postHandle(JdbcExecution jdbcExecution, String sql, Object... params) {
+    private <O> O postHandle(JdbcExecution jdbcExecution) {
         for (JdbcExecutionInterceptor interceptor : interceptors) {
             interceptor.postHandle(jdbcExecution);
         }
         return (O) jdbcExecution.getResult();
     }
 
-    //    /**
-    //     * Release connection.
-    //     *
-    //     * @param connection the connection
-    //     * @param dataSource the data source
-    //     */
-    //    protected abstract void releaseConnection(Connection connection, DataSource dataSource);
+    private void assertSingleResult(int size) {
+        if (size > 1) {
+            // ENHANCE 优化错误消息
+            throw new JdbcException(Strings.format("results size must be 1, but is {0}", size));
+        }
+    }
+
+    private void assertNullableResult(Object results) {
+        if (Lang.isEmpty(results)) {
+            // ENHANCE 优化错误消息
+            throw new JdbcException("results is empty");
+        }
+    }
+
+    private <T> T singleResult(Collection<T> results) {
+        if (Lang.isEmpty(results)) {
+            return null;
+        }
+        assertSingleResult(results.size());
+        return results.iterator().next();
+    }
+
+    private <T> T nullableSingleResult(Collection<T> results) {
+        assertNullableResult(results);
+        assertSingleResult(results.size());
+        return results.iterator().next();
+    }
+
+    private <T> RowMapper<T> getTypeMapper(Class<T> elementType) {
+        return Lang.ifNotEmpty(manager.getSqlType(elementType), () -> new SingleColumnRowMapper<>(elementType, manager),
+                () -> new NestedBeanPropertyRowMapper<>(elementType, manager));
+    }
+
     /**
      * Release connection.
      *

@@ -54,28 +54,29 @@
 18. where().eq()方法支持@Embeddable,@ManyToOne（传入是映射对象，对非空值使用and连接，如果是连表查询条件会自动join）
 
 TODO dsl查询条件的表达式加入带运算的条件判断
-    ```java
-    // 带运算的条件判断
-    where().property(Account::getAmount).subtract(10).ge(0)
-    where().exp(e -> e.property(Account::getAmount).subtract(10).ge(0))
-    where().ge(Calculators.subtract(Account::getAmount, 10), 0)
-    // where acount.amount - 10 >= 0
-        
-    where().value(10).subtract(Account::getAmount).ge(0)
-    where().exp(e -> e.value(10).subtract(Account::getAmount).ge(0))
-    where().ge(Calculators.subtract(10, Account::getAmount), 0)
-    // where 10 - acount.amount >= 0
-        
-    where().property(Order::getPrice).subtract(10).ge(Order::getCharge)
-    where().exp(e -> e.property(Order::getPrice).subtract(10).ge(Order::getCharge))
-    where().ge(Calculators.subtract(Order::getPrice, 10), Order::getCharge))
-    // where order.price - 10 == order.charge
-        
-    where().property(Order::getPrice).subtract(10).eq(e -> e.property(Order::getCharge).add(10))
-    where().exp(e -> e.property(Order::getPrice).subtract(10).eq(e -> e.property(Order::getCharge).add(10)))
-    where().eq(Calculators.subtract(Order::getPrice, 10), Calculators.add(Order::getCharge, 10))
-    // where order.price - 10 == order.charge + 10
-    ```
+
+```java
+// 带运算的条件判断
+where().property(Account::getAmount).subtract(10).ge(0)
+where().exp(e -> e.property(Account::getAmount).subtract(10).ge(0))
+where().ge(Calculators.subtract(Account::getAmount, 10), 0)
+// where acount.amount - 10 >= 0
+    
+where().value(10).subtract(Account::getAmount).ge(0)
+where().exp(e -> e.value(10).subtract(Account::getAmount).ge(0))
+where().ge(Calculators.subtract(10, Account::getAmount), 0)
+// where 10 - acount.amount >= 0
+
+where().property(Order::getPrice).subtract(10).ge(Order::getCharge)
+where().exp(e -> e.property(Order::getPrice).subtract(10).ge(Order::getCharge))
+where().ge(Calculators.subtract(Order::getPrice, 10), Order::getCharge))
+// where order.price - 10 == order.charge
+    
+where().property(Order::getPrice).subtract(10).eq(e -> e.property(Order::getCharge).add(10))
+where().exp(e -> e.property(Order::getPrice).subtract(10).eq(e -> e.property(Order::getCharge).add(10)))
+where().eq(Calculators.subtract(Order::getPrice, 10), Calculators.add(Order::getCharge, 10))
+// where order.price - 10 == order.charge + 10
+```
 
 TODO dsl join on 加入表达式支持
 
@@ -210,19 +211,19 @@ find(User.class).join(UserInfo.class).on(e-> e.property(User::getId).gt(UserInfo
 
 # 0.5.11 2021-06-18
 1. 优化类型映射查询，自动处理处理返回List<Integer>,List<String>,List<Long>等单一属性列表，只要是SqlTypeMappingManager支持的类型都行
-    ```
+```
     List<Long> idList = jdbc.query("select id from role order by id", Long.class);
     
     @Template("select id from role order by id")
     List<Long> idList();
-    ```
+```
 
 # 0.5.10 2021-05-12
 1. 修复springboot使用dev-tool进行热部署时，重新加载生成mapper报错的问题
 
 # 0.5.9 2021-05-06
 1. 模板sql的<@and>和<@Or>标签加入transverter属性，用于对字符串模糊查询，支持CO,SW,EW
-    ```
+```
     <@and if = name?? transverter="CO"> 表示%value%
     <@and if = name?? transverter="SW"> 表示value%
     <@and if = name?? transverter="EW"> 表示%value

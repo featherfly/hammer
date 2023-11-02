@@ -3,7 +3,7 @@ package cn.featherfly.hammer.tpl.mapper;
 
 import java.io.Serializable;
 import java.util.List;
-import java.util.function.Function;
+import java.util.function.UnaryOperator;
 
 import cn.featherfly.common.function.serializable.SerializableFunction;
 import cn.featherfly.common.function.serializable.SerializableSupplier;
@@ -224,6 +224,22 @@ public class BasedTplGenericHammer<E, ID extends Serializable> implements Generi
      * {@inheritDoc}
      */
     @Override
+    public E updateFetch(Serializable id, UnaryOperator<E> updateOperator) {
+        return hammer.updateFetch(id, type, updateOperator);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public E updateFetch(E entity, UnaryOperator<E> updateOperator) {
+        return hammer.updateFetch(entity, updateOperator);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
     public int[] update(@SuppressWarnings("unchecked") E... entities) {
         return hammer.update(entities);
     }
@@ -282,21 +298,5 @@ public class BasedTplGenericHammer<E, ID extends Serializable> implements Generi
     @Override
     public List<E> queryList(LogicOperator operator, SerializableSupplier<?>... propertyValues) {
         return hammer.queryList(type, operator, propertyValues);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public E getLockUpdate(Serializable id, Function<E, E> updateFunction) {
-        return hammer.getLockUpdate(id, type, updateFunction);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public E loadLockUpdate(E entity, Function<E, E> updateFunction) {
-        return hammer.loadLockUpdate(entity, updateFunction);
     }
 }

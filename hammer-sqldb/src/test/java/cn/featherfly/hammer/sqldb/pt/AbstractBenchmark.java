@@ -14,6 +14,7 @@ import org.testng.annotations.Test;
 
 import cn.featherfly.common.lang.Randoms;
 import cn.featherfly.common.lang.Strings;
+import cn.featherfly.common.lang.SystemPropertyUtils;
 import cn.featherfly.common.lang.Timer;
 import cn.featherfly.hammer.sqldb.jdbc.vo.s.UserInfo2;
 
@@ -43,6 +44,7 @@ public abstract class AbstractBenchmark extends BenchmarkTestBase implements Ben
         this.times = times;
         this.batchSize = batchSize;
         this.batchTimes = batchTimes;
+        System.out.println(SystemPropertyUtils.getJavaVersion());
     }
 
     @Test

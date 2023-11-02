@@ -27,7 +27,6 @@ import cn.featherfly.hammer.sqldb.jdbc.Jdbc;
  * AbstractBatchExecuteOperate.
  *
  * @author zhongj
- * @version 0.5.25
  * @param <T> the generic type
  * @since 0.5.25
  */
@@ -82,7 +81,7 @@ public abstract class AbstractBatchExecuteOperate<T> extends AbstractExecuteOper
         }
         if (supportBatch()) {
             return doExecuteBatch(entities, batchSize);
-        } else if (meta.supportsBatchUpdates()) {
+        } else if (meta.getFeatures().supportsBatchUpdates()) {
             return doExecute(entities, batchSize);
         } else {
             int results[] = new int[entities.size()];
