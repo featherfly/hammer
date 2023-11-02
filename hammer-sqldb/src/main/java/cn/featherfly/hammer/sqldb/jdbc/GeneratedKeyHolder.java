@@ -10,8 +10,6 @@
  */
 package cn.featherfly.hammer.sqldb.jdbc;
 
-import java.util.List;
-
 import cn.featherfly.common.lang.reflect.Type;
 
 /**
@@ -28,14 +26,22 @@ public interface GeneratedKeyHolder<T> {
      * @param key the key
      * @param row the row
      */
-    void acceptKey(T key, int row);
+    void acceptKey(T key);
 
-    /**
-     * Accept key.
-     *
-     * @param keys the keys
-     */
-    void acceptKey(List<T> keys);
+    //    /**
+    //     * Accept key.
+    //     *
+    //     * @param key the key
+    //     * @param row the row
+    //     */
+    //    void acceptKey(T key, int row);
+    //
+    //    /**
+    //     * Accept key.
+    //     *
+    //     * @param keys the keys
+    //     */
+    //    void acceptKey(List<T> keys);
 
     /**
      * Gets the type.

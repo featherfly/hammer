@@ -25,7 +25,7 @@ import cn.featherfly.common.lang.Lang;
  *
  * @author zhongj
  */
-public interface Jdbc extends JdbcQuery, JdbcProcedure, JdbcUpdate {
+public interface Jdbc extends JdbcQuery, JdbcProcedure, JdbcUpdate, JdbcQueryProcessSingle {
 
     //    /**
     //     * Gets the data source.
@@ -170,12 +170,6 @@ public interface Jdbc extends JdbcQuery, JdbcProcedure, JdbcUpdate {
         int paramLen = columnLen * columnParams.size();
         String[] columns = new String[columnLen];
         Object[] params = new Object[paramLen];
-
-        //        int i = 0;
-        //        for (Map.Entry<String, Object> entry : columnParams.get(0).entrySet()) {
-        //            columns[i] = entry.getKey();
-        //            i++;
-        //        }
 
         Lang.each(columnParams.get(0).entrySet(), (entry, index) -> {
             columns[index] = entry.getKey();

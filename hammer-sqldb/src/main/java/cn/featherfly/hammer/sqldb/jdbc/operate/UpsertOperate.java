@@ -16,6 +16,7 @@ import cn.featherfly.common.db.metadata.DatabaseMetadata;
 import cn.featherfly.common.lang.Lang;
 import cn.featherfly.common.lang.reflect.Type;
 import cn.featherfly.hammer.sqldb.jdbc.GeneratedKeyHolder;
+import cn.featherfly.hammer.sqldb.jdbc.GeneratedKeysHolder;
 import cn.featherfly.hammer.sqldb.jdbc.Jdbc;
 
 /**
@@ -26,30 +27,6 @@ import cn.featherfly.hammer.sqldb.jdbc.Jdbc;
  * @since 0.6.1
  */
 public class UpsertOperate<T> extends AbstractBatchExecuteOperate<T> {
-
-    //    /**
-    //     * 使用给定数据源以及给定对象生成插入操作.
-    //     *
-    //     * @param jdbc                  jdbc
-    //     * @param classMapping          classMapping
-    //     * @param sqlTypeMappingManager the sql type mapping manager
-    //     */
-    //    public UpsertOperate(Jdbc jdbc, JdbcClassMapping<T> classMapping, SqlTypeMappingManager sqlTypeMappingManager) {
-    //        super(jdbc, classMapping, sqlTypeMappingManager);
-    //    }
-    //
-    //    /**
-    //     * 使用给定数据源以及给定对象生成插入操作.
-    //     *
-    //     * @param jdbc                  jdbc
-    //     * @param classMapping          classMapping
-    //     * @param sqlTypeMappingManager the sql type mapping manager
-    //     * @param dataBase              具体库
-    //     */
-    //    public UpsertOperate(Jdbc jdbc, JdbcClassMapping<T> classMapping, SqlTypeMappingManager sqlTypeMappingManager,
-    //            String dataBase) {
-    //        super(jdbc, classMapping, sqlTypeMappingManager, dataBase);
-    //    }
 
     /**
      * 使用给定数据源以及给定对象生成插入操作.
@@ -63,25 +40,6 @@ public class UpsertOperate<T> extends AbstractBatchExecuteOperate<T> {
             DatabaseMetadata databaseMetadata) {
         super(jdbc, classMapping, sqlTypeMappingManager, databaseMetadata);
     }
-
-    //    /**
-    //     * {@inheritDoc}
-    //     */
-    //    @Override
-    //    public int executeBatch(final List<T> entities, int batchSize) {
-    //        if (Lang.isEmpty(entities)) {
-    //            return Chars.ZERO;
-    //        }
-    //        if (jdbc.getDialect().supportUpsertBatch()) {
-    //            return _executeBatch(entities, batchSize);
-    //        } else {
-    //            int size = 0;
-    //            for (T entity : entities) {
-    //                size += execute(entity);
-    //            }
-    //            return size;
-    //        }
-    //    }
 
     /**
      * {@inheritDoc}
@@ -97,35 +55,8 @@ public class UpsertOperate<T> extends AbstractBatchExecuteOperate<T> {
         Tuple2<String, Map<Integer, JdbcPropertyMapping>> tuple = ClassMappingUtils
                 .getUpsertBatchSqlAndParamPositions(entities.size(), classMapping, jdbc.getDialect());
         String sql = tuple.get0();
-        return jdbc.updateBatch(sql, entities.size(), new GeneratedKeyHolder<Serializable>() {
-            @Override
-            public void acceptKey(Serializable key, int row) {
-                if (row < entities.size()) {
-                    // YUFEI_TEST 需要更多测试各种情况是否正确
-                    if (BeanUtils.getProperty(entities.get(row), pks.get(0).getPropertyName()) == null) {
-                        BeanUtils.setProperty(entities.get(row), pks.get(0).getPropertyName(), key);
-                    }
-                }
-            }
-
-            @Override
-            public Type<Serializable> getType() {
-                return BeanDescriptor.getBeanDescriptor(classMapping.getType())
-                        .getBeanProperty(pks.get(0).getPropertyName());
-            }
-
-            @Override
-            public void acceptKey(List<Serializable> keys) {
-                if (keys.size() == entities.size()) {
-                    for (int i = 0; i < keys.size(); i++) {
-                        acceptKey(keys.get(i), i);
-                    }
-                } else {
-                    logger.warn("entities.size[{}] != genereteKeys.size[{}], can not set generate key to entity object",
-                            entities.size(), keys.size());
-                }
-            }
-        }, getBatchParameters(entities, tuple.get1()));
+        return jdbc.updateBatch(sql, entities.size(), createGeneratedKeysHolder(entities, pks),
+                getBatchParameters(entities, tuple.get1()));
         // TODO 批量upsert时， 返回值不确定，所以无法设置自动生成的id值，后续再研究
     }
 
@@ -156,7 +87,7 @@ public class UpsertOperate<T> extends AbstractBatchExecuteOperate<T> {
         if (pks.size() == 1) {
             return jdbc.update(sql, new GeneratedKeyHolder<Serializable>() {
                 @Override
-                public void acceptKey(Serializable key, int row) {
+                public void acceptKey(Serializable key) {
                     // YUFEI_TEST 需要更多测试各种情况是否正确
                     if (BeanUtils.getProperty(entity, pks.get(0).getPropertyName()) == null) {
                         BeanUtils.setProperty(entity, pks.get(0).getPropertyName(), key);
@@ -169,10 +100,6 @@ public class UpsertOperate<T> extends AbstractBatchExecuteOperate<T> {
                             .getBeanProperty(pks.get(0).getPropertyName());
                 }
 
-                @Override
-                public void acceptKey(List<Serializable> keys) {
-                    acceptKey(keys.get(0), 0);
-                }
             }, getParameters(entity));
         } else {
             return jdbc.update(sql, getParameters(entity));
@@ -185,46 +112,12 @@ public class UpsertOperate<T> extends AbstractBatchExecuteOperate<T> {
     @Override
     protected int[] doExecute(List<T> entities) {
         List<JdbcPropertyMapping> pks = classMapping.getPrivaryKeyPropertyMappings();
-        //        List<Object[]> argsList = new ArrayList<>(entities.size());
-        //        for (T entity : entities) {
-        //            argsList.add(getParameters(entity));
-        //        }
         Object[][] argsList = new Object[entities.size()][];
         Lang.each(entities, (e, i) -> argsList[i] = getParameters(e));
 
         int[] results;
         if (pks.size() == 1) {
-            results = jdbc.updateBatch(sql, new GeneratedKeyHolder<Serializable>() {
-                @Override
-                public void acceptKey(Serializable key, int row) {
-                    // YUFEI_TEST 需要更多测试各种情况是否正确
-                    if (row < entities.size()) {
-                        // YUFEI_TEST 需要更多测试各种情况是否正确
-                        if (BeanUtils.getProperty(entities.get(row), pks.get(0).getPropertyName()) == null) {
-                            BeanUtils.setProperty(entities.get(row), pks.get(0).getPropertyName(), key);
-                        }
-                    }
-                }
-
-                @Override
-                public Type<Serializable> getType() {
-                    return BeanDescriptor.getBeanDescriptor(classMapping.getType())
-                            .getBeanProperty(pks.get(0).getPropertyName());
-                }
-
-                @Override
-                public void acceptKey(List<Serializable> keys) {
-                    if (keys.size() == entities.size()) {
-                        for (int i = 0; i < keys.size(); i++) {
-                            acceptKey(keys.get(i), i);
-                        }
-                    } else {
-                        logger.warn(
-                                "entities.size[{}] != genereteKeys.size[{}], can not set generate key to entity object",
-                                entities.size(), keys.size());
-                    }
-                }
-            }, argsList);
+            results = jdbc.updateBatch(sql, createGeneratedKeysHolder(entities, pks), argsList);
         } else {
             results = jdbc.updateBatch(sql, argsList);
         }
@@ -241,6 +134,38 @@ public class UpsertOperate<T> extends AbstractBatchExecuteOperate<T> {
         sql = tuple.get0();
         propertyPositions.putAll(tuple.get1());
         logger.debug("sql: {}", sql);
+    }
+
+    private GeneratedKeysHolder<Serializable> createGeneratedKeysHolder(List<T> entities,
+            List<JdbcPropertyMapping> pks) {
+        return new GeneratedKeysHolder<Serializable>() {
+            public void acceptKey(Serializable key, int row) {
+                if (row < entities.size()) {
+                    // YUFEI_TEST 需要更多测试各种情况是否正确
+                    if (BeanUtils.getProperty(entities.get(row), pks.get(0).getPropertyName()) == null) {
+                        BeanUtils.setProperty(entities.get(row), pks.get(0).getPropertyName(), key);
+                    }
+                }
+            }
+
+            @Override
+            public Type<Serializable> getType() {
+                return BeanDescriptor.getBeanDescriptor(classMapping.getType())
+                        .getBeanProperty(pks.get(0).getPropertyName());
+            }
+
+            @Override
+            public void acceptKey(List<Serializable> keys) {
+                if (keys.size() == entities.size()) {
+                    for (int i = 0; i < keys.size(); i++) {
+                        acceptKey(keys.get(i), i);
+                    }
+                } else {
+                    logger.warn("entities.size[{}] != genereteKeys.size[{}], can not set generate key to entity object",
+                            entities.size(), keys.size());
+                }
+            }
+        };
     }
 
     //    /**

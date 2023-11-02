@@ -3,7 +3,7 @@ package cn.featherfly.hammer;
 
 import java.io.Serializable;
 import java.util.List;
-import java.util.function.Function;
+import java.util.function.UnaryOperator;
 
 import cn.featherfly.common.function.serializable.SerializableFunction;
 import cn.featherfly.common.function.serializable.SerializableSupplier;
@@ -33,7 +33,6 @@ public interface GenericHammer<E, ID extends Serializable> {
     /**
      * batch save entity array.
      *
-     * @param <E>      generic type
      * @param entities entity array to save
      * @return effect data row num
      */
@@ -42,7 +41,6 @@ public interface GenericHammer<E, ID extends Serializable> {
     /**
      * batch save entity array.
      *
-     * @param <E>       generic type
      * @param entities  entity array to save
      * @param batchSize the batch size
      * @return effect data row num
@@ -52,7 +50,6 @@ public interface GenericHammer<E, ID extends Serializable> {
     /**
      * batch save entity list.
      *
-     * @param <E>      generic type
      * @param entities entity list to save
      * @return effect data row num
      */
@@ -61,7 +58,6 @@ public interface GenericHammer<E, ID extends Serializable> {
     /**
      * batch save entity list.
      *
-     * @param <E>       generic type
      * @param entities  entity list to save
      * @param batchSize the batch size
      * @return effect data row num
@@ -77,6 +73,24 @@ public interface GenericHammer<E, ID extends Serializable> {
      * @return effect data row num
      */
     int update(E entity);
+
+    /**
+     * query entity type with id and lock, then update and fetch.
+     *
+     * @param id             entity id
+     * @param updateOperator the update operator
+     * @return effect data row num
+     */
+    E updateFetch(Serializable id, UnaryOperator<E> updateOperator);
+
+    /**
+     * query entity type with id and lock, then update and fetch.
+     *
+     * @param entity         the entity with id value
+     * @param updateOperator the update operator
+     * @return effect data row num
+     */
+    E updateFetch(E entity, UnaryOperator<E> updateOperator);
 
     /**
      * update all values for each entity in entity array. equal invoke method
@@ -244,30 +258,12 @@ public interface GenericHammer<E, ID extends Serializable> {
     List<E> get(List<ID> ids);
 
     /**
-     * query id of type then lock and update.
-     *
-     * @param id             entity id
-     * @param updateFunction the update function
-     * @return updated entity
-     */
-    E getLockUpdate(Serializable id, Function<E, E> updateFunction);
-
-    /**
      * get entity by id.
      *
      * @param entity entity with id value
      * @return entity
      */
     E load(E entity);
-
-    /**
-     * query id of entity then lock and update.
-     *
-     * @param entity         the entity with id value
-     * @param updateFunction the update function
-     * @return updated entity
-     */
-    E loadLockUpdate(E entity, Function<E, E> updateFunction);
 
     /**
      * Query single by propertyValues.

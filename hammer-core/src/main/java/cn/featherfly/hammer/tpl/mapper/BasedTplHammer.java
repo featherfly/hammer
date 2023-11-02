@@ -5,7 +5,7 @@ import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.List;
 import java.util.Map;
-import java.util.function.Function;
+import java.util.function.UnaryOperator;
 
 import com.speedment.common.tuple.Tuple2;
 import com.speedment.common.tuple.Tuple3;
@@ -1299,16 +1299,16 @@ public class BasedTplHammer implements Hammer {
      * {@inheritDoc}
      */
     @Override
-    public <E> E getLockUpdate(Serializable id, Class<E> type, Function<E, E> updateFunction) {
-        return hammer.getLockUpdate(id, type, updateFunction);
+    public <E> E updateFetch(Serializable id, Class<E> type, UnaryOperator<E> updateOperator) {
+        return hammer.updateFetch(id, type, updateOperator);
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public <E> E getLockUpdate(E entity, Function<E, E> updateFunction) {
-        return hammer.getLockUpdate(entity, updateFunction);
+    public <E> E updateFetch(E entity, UnaryOperator<E> updateOperator) {
+        return hammer.updateFetch(entity, updateOperator);
     }
 
     /**

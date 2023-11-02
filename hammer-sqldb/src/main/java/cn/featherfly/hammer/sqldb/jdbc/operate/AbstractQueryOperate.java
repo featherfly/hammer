@@ -17,7 +17,6 @@ import cn.featherfly.hammer.sqldb.jdbc.MappingDebugMessage;
  * 数据库操作的抽象类.
  *
  * @author zhongj
- * @version 0.1.0
  * @since 0.1.0
  * @param <T> 对象类型
  */

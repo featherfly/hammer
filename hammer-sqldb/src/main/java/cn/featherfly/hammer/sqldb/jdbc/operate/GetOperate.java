@@ -1,7 +1,7 @@
 package cn.featherfly.hammer.sqldb.jdbc.operate;
 
 import java.io.Serializable;
-import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -12,6 +12,7 @@ import cn.featherfly.common.db.mapping.JdbcPropertyMapping;
 import cn.featherfly.common.db.mapping.SqlTypeMappingManager;
 import cn.featherfly.common.db.metadata.DatabaseMetadata;
 import cn.featherfly.common.lang.Lang;
+import cn.featherfly.common.lang.Strings;
 import cn.featherfly.common.repository.mapping.RowMapper;
 import cn.featherfly.hammer.sqldb.SqldbHammerException;
 import cn.featherfly.hammer.sqldb.jdbc.Jdbc;
@@ -20,7 +21,6 @@ import cn.featherfly.hammer.sqldb.jdbc.Jdbc;
  * 根据ID读取操作.
  *
  * @author zhongj
- * @version 0.1.0
  * @param <T> 对象类型
  * @since 0.1.0
  */
@@ -96,7 +96,7 @@ public class GetOperate<T> extends AbstractQueryOperate<T> {
      */
     public List<Serializable> getIds(T entity) {
         if (entity == null) {
-            return new ArrayList<>(0);
+            return Collections.emptyList();
         }
         return pkPms.stream()
                 .map(p -> (Serializable) BeanUtils.getProperty(entity, ClassMappingUtils.getPropertyAliasName(p)))
@@ -129,16 +129,14 @@ public class GetOperate<T> extends AbstractQueryOperate<T> {
      * @return 指定ID的对象
      */
     public T get(final Serializable id, boolean forUpdate) {
-        if (id == null) {
-            throw new SqldbHammerException("#get.id.null");
-        }
+        assertId(id);
         if (forUpdate) {
-            if (jdbc.getDialect().supportSelectForUpdate()) { // 后续来实现
+            if (meta.getFeatures().supportsSelectForUpdate()) {
                 return jdbc.querySingle(sql + " for update", (RowMapper<T>) (res, rowNum) -> mapRow(res, rowNum), id);
             } else {
                 // TODO 后续加入行为可配置策略
-                throw new SqldbHammerException(
-                        "unsupport [select...for update] with dialect " + jdbc.getDialect().getClass().getSimpleName());
+                throw new SqldbHammerException(Strings.format("unsupport [select...for update] with database {} - {}",
+                        meta.getProductName(), meta.getProductVersion()));
             }
         } else {
             return jdbc.querySingle(sql, (RowMapper<T>) (res, rowNum) -> mapRow(res, rowNum), id);
@@ -165,13 +163,9 @@ public class GetOperate<T> extends AbstractQueryOperate<T> {
      * @return 指定ids的对象
      */
     public T get(final T entity, boolean forUpdate) {
-        if (entity == null) {
-            throw new SqldbHammerException("#get.id.null");
-        }
+        assertId(entity);
         List<Serializable> ids = getIds(entity);
-        if (Lang.isEmpty(ids)) {
-            throw new SqldbHammerException("#get.id.null");
-        }
+        assertId(ids);
         if (forUpdate) {
             return jdbc.querySingle(sql + " for update", (RowMapper<T>) (res, rowNum) -> mapRow(res, rowNum),
                     ids.toArray());
@@ -194,6 +188,13 @@ public class GetOperate<T> extends AbstractQueryOperate<T> {
         pkPms = classMapping.getPrivaryKeyPropertyMappings();
         logger.debug("sql: {}", sql);
     }
+
+    protected void assertId(Object id) {
+        if (Lang.isEmpty(id)) {
+            throw new SqldbHammerException("#get.id.null");
+        }
+    }
+
     //
     //    /**
     //     * {@inheritDoc}

@@ -1,9 +1,9 @@
 
 package cn.featherfly.hammer.sqldb.jdbc;
 
+import static org.junit.Assert.assertNotNull;
 import static org.testng.Assert.assertEquals;
 import static org.testng.Assert.assertNotEquals;
-import static org.testng.Assert.assertNotNull;
 import static org.testng.Assert.assertNull;
 import static org.testng.Assert.assertTrue;
 
@@ -199,12 +199,6 @@ public class HammerJdbcTest extends JdbcTestBase {
         assertEquals(userInfo.getId(), id);
         assertNotNull(userInfo.getUser().getId());
         assertNotNull(userInfo.getUser().getUsername());
-    }
-
-    @Test
-    public void testGetLockUpdate() {
-        assertNull(hammer.getLockUpdate(null, t -> t));
-        assertNull(hammer.getLockUpdate(null, Role.class, t -> t));
     }
 
     @Test(expectedExceptions = JdbcMappingException.class)
@@ -513,42 +507,6 @@ public class HammerJdbcTest extends JdbcTestBase {
 
     @Test
     public void testUpdate3() {
-        Role r = new Role();
-        r.setName("name");
-        r.setDescp("descp");
-        hammer.save(r);
-
-        final String updateName1 = "update_" + Randoms.getInt(100);
-        Role updatedRole = hammer.getLockUpdate(r.getId(), Role.class, role -> {
-            assertNotNull(role.getDescp());
-            assertEquals(role.getName(), r.getName());
-
-            role.setName(updateName1);
-            return role;
-        });
-        assertEquals(updatedRole.getId(), r.getId());
-        assertEquals(updatedRole.getName(), updateName1);
-
-        final String updateName2 = "update_" + Randoms.getInt(100);
-        updatedRole = hammer.loadLockUpdate(r, role -> {
-            assertNotNull(role.getDescp());
-            assertEquals(role.getName(), updateName1);
-
-            role.setName(updateName2);
-            return role;
-        });
-
-        assertEquals(updatedRole.getId(), r.getId());
-        assertEquals(updatedRole.getName(), updateName2);
-
-        hammer.delete(updatedRole);
-
-        updatedRole = hammer.get(updatedRole);
-        assertNull(updatedRole);
-    }
-
-    @Test
-    public void testUpdate4() {
         List<Role> roles = hammer.query(Role.class).list();
         for (Role role : roles) {
             role.setDescp(null);
@@ -603,6 +561,100 @@ public class HammerJdbcTest extends JdbcTestBase {
         assertEquals(ur.getRole().getId(), userRole.getRole().getId());
         assertEquals(ur.getDescp(), userRole.getDescp());
         assertEquals(ur.getDescp2(), userRole.getDescp2());
+    }
+
+    //    @Test
+    //    public void testUpdateLock() {
+    //        Role r = new Role();
+    //        r.setName("name");
+    //        r.setDescp("descp");
+    //        hammer.save(r);
+    //
+    //        final String updateName1 = "update_" + Randoms.getInt(100);
+    //
+    //        MutableTuple1<Role> updatedRoleTuple = MutableTuples.create1();
+    //
+    //        int size = hammer.updateLock(r.getId(), Role.class, role -> {
+    //            assertNotNull(role.getDescp());
+    //            assertEquals(role.getName(), r.getName());
+    //
+    //            role.setName(updateName1);
+    //            updatedRoleTuple.set0(role);
+    //            return role;
+    //        });
+    //
+    //        assertEquals(size, 1);
+    //
+    //        Role updatedRole = updatedRoleTuple.get0().get();
+    //        assertEquals(updatedRole.getId(), r.getId());
+    //        assertEquals(updatedRole.getName(), updateName1);
+    //
+    //        final String updateName2 = "update_" + Randoms.getInt(100);
+    //        size = hammer.updateLock(r, role -> {
+    //            assertNotNull(role.getDescp());
+    //            assertEquals(role.getName(), updateName1);
+    //
+    //            role.setName(updateName2);
+    //            updatedRoleTuple.set0(role);
+    //            return role;
+    //        });
+    //
+    //        updatedRole = updatedRoleTuple.get0().get();
+    //        assertEquals(updatedRole.getId(), r.getId());
+    //        assertEquals(updatedRole.getName(), updateName2);
+    //
+    //        hammer.delete(updatedRole);
+    //
+    //        updatedRole = hammer.get(updatedRole);
+    //        assertNull(updatedRole);
+    //    }
+    //
+    //    @Test
+    //    public void testUpdateLockNull() {
+    //        assertEquals(hammer.updateLock(null, t -> t), 0);
+    //        assertEquals(hammer.updateLock(null, Role.class, t -> t), 0);
+    //    }
+
+    @Test
+    public void testUpdateFetch() {
+        Role r = new Role();
+        r.setName("name");
+        r.setDescp("descp");
+        hammer.save(r);
+
+        final String updateName1 = "update_" + Randoms.getInt(100);
+
+        Role updatedRole = hammer.updateFetch(r.getId(), Role.class, role -> {
+            assertNotNull(role.getDescp());
+            assertEquals(role.getName(), r.getName());
+
+            role.setName(updateName1);
+            return role;
+        });
+        assertEquals(updatedRole.getId(), r.getId());
+        assertEquals(updatedRole.getName(), updateName1);
+
+        final String updateName2 = "update_" + Randoms.getInt(100);
+        updatedRole = hammer.updateFetch(r, role -> {
+            assertNotNull(role.getDescp());
+            assertEquals(role.getName(), updateName1);
+
+            role.setName(updateName2);
+            return role;
+        });
+        assertEquals(updatedRole.getId(), r.getId());
+        assertEquals(updatedRole.getName(), updateName2);
+
+        hammer.delete(updatedRole);
+
+        updatedRole = hammer.get(updatedRole);
+        assertNull(updatedRole);
+    }
+
+    @Test
+    public void testUpdateFetchNull() {
+        assertNull(hammer.updateFetch(null, t -> t));
+        assertNull(hammer.updateFetch(null, Role.class, t -> t));
     }
 
     @Test
@@ -1215,7 +1267,7 @@ public class HammerJdbcTest extends JdbcTestBase {
     }
 
     @Test
-    void testCodeComplete() {
+    void testCodeCoverage() {
         assertNotNull(((SqldbHammer) hammer).getJdbc());
         assertNotNull(((SqldbHammer) hammer).getMappingFactory());
     }

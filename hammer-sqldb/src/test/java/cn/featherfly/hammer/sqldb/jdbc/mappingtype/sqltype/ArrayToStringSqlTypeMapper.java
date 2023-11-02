@@ -41,6 +41,15 @@ public class ArrayToStringSqlTypeMapper extends AbstractGenericJavaSqlTypeMapper
         return type.getType().equals(Long[].class);
     }
 
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void update(ResultSet rs, int parameterIndex, Long[] value) {
+        System.out.println(ArrayUtils.toString(value, ','));
+        JdbcUtils.setParameter(rs, parameterIndex, ArrayUtils.toString(value, ','));
+    }
+
     @Override
     public void set(PreparedStatement prep, int columnIndex, Long[] value) {
         System.out.println(ArrayUtils.toString(value, ','));

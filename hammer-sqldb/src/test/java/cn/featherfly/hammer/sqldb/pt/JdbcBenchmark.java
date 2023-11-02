@@ -34,6 +34,8 @@ import cn.featherfly.hammer.sqldb.jdbc.vo.s.UserInfo2;
 @Test
 public class JdbcBenchmark extends AbstractBenchmark {
 
+    final String selectUserInfoByIdSql = "select `id`, `user_id` , `name`, `descp`, `province`, `city`, `district` from `user_info` where `id` = ?";
+
     Connection conn;
 
     @BeforeClass
@@ -126,11 +128,10 @@ public class JdbcBenchmark extends AbstractBenchmark {
      */
     @Override
     protected UserInfo2 doSelectById(Serializable id) {
-        String selectSql = "select `id`, `user_id` , `name`, `descp`, `province`, `city`, `district` from `user_info` where `id` = ?";
+        //        String selectSql = "select `id`, `user_id` , `name`, `descp`, `province`, `city`, `district` from `user_info` where `id` = ?";
         //        ConnectionWrapper conn = JdbcUtils.getConnectionWrapper(dataSource);
         try {
-            PreparedStatement prep = conn.prepareStatement(selectSql);
-            prep.setInt(1, (int) id);
+            PreparedStatement prep = conn.prepareStatement(selectUserInfoByIdSql);
             ResultSet res = prep.executeQuery();
             UserInfo2 userInfo = new UserInfo2();
             if (res.next()) {
@@ -158,9 +159,36 @@ public class JdbcBenchmark extends AbstractBenchmark {
     protected List<UserInfo2> doSelectById(Serializable... ids) {
         List<UserInfo2> list = new ArrayList<>();
         for (Serializable id : ids) {
-            list.add(doSelectById(id));
+            //            list.add(doSelectById(id));
+            try {
+                list.add(doSelectById(id, conn.prepareStatement(selectUserInfoByIdSql)));
+            } catch (SQLException e) {
+                throw new JdbcException(e);
+            }
         }
         return list;
+    }
+
+    private UserInfo2 doSelectById(Serializable id, PreparedStatement prep) {
+        try {
+            prep.setInt(1, (int) id);
+            ResultSet res = prep.executeQuery();
+            UserInfo2 userInfo = new UserInfo2();
+            if (res.next()) {
+                userInfo.setId(res.getInt(1));
+                userInfo.setUserId(res.getInt(2));
+                userInfo.setName(res.getString(3));
+                userInfo.setDescp(res.getString(4));
+                userInfo.setProvince(res.getString(5));
+                userInfo.setCity(res.getString(6));
+                userInfo.setDistrict(res.getString(7));
+            }
+            res.close();
+            return userInfo;
+        } catch (SQLException e) {
+            throw new JdbcException(e);
+        }
+        //        conn.close();
     }
 
     //    /**

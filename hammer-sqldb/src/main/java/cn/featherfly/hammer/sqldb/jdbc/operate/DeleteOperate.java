@@ -24,7 +24,6 @@ import cn.featherfly.hammer.sqldb.jdbc.Jdbc;
  * 删除操作.
  *
  * @author zhongj
- * @version 0.4.8
  * @since 0.1.0
  * @param <T> 对象类型
  */

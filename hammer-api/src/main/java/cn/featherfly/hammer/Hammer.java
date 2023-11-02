@@ -3,7 +3,7 @@ package cn.featherfly.hammer;
 
 import java.io.Serializable;
 import java.util.List;
-import java.util.function.Function;
+import java.util.function.UnaryOperator;
 
 import cn.featherfly.common.function.serializable.SerializableFunction;
 import cn.featherfly.common.function.serializable.SerializableSupplier;
@@ -115,6 +115,33 @@ public interface Hammer extends TplExecutor {
      * @return effect data row num
      */
     <E> int update(E entity, IgnoreStrategy ignoreStrategy);
+
+    /**
+     * query type with id and lock, then update and fetch.
+     * <p>
+     * sql database will use select for udpate to lock row where pk = id.
+     * </p>
+     *
+     * @param <E>            entity type
+     * @param id             entity id
+     * @param type           entity type
+     * @param updateOperator the update operator
+     * @return updated entity
+     */
+    <E> E updateFetch(Serializable id, Class<E> type, UnaryOperator<E> updateOperator);
+
+    /**
+     * query entity type with id and lock, then update and fetch.
+     * <p>
+     * sql database will use select for udpate to lock row where pk = id.
+     * </p>
+     *
+     * @param <E>            entity type
+     * @param entity         the entity with id value
+     * @param updateOperator the update operator
+     * @return updated entity
+     */
+    <E> E updateFetch(E entity, UnaryOperator<E> updateOperator);
 
     /**
      * update all values for each entity in entity array. equal invoke method
@@ -324,48 +351,6 @@ public interface Hammer extends TplExecutor {
      */
     default <E> E load(E entity) {
         return get(entity);
-    }
-
-    /**
-     * query id of type then lock and update.
-     * <p>
-     * sql database will use select for udpate to lock row where pk = id.
-     * </p>
-     *
-     * @param <E>            entity type
-     * @param id             entity id
-     * @param type           entity type
-     * @param updateFunction the update function
-     * @return updated entity
-     */
-    <E> E getLockUpdate(Serializable id, Class<E> type, Function<E, E> updateFunction);
-
-    /**
-     * query id of entity then lock and update.
-     * <p>
-     * sql database will use select for udpate to lock row where pk = id.
-     * </p>
-     *
-     * @param <E>            entity type
-     * @param entity         the entity with id value
-     * @param updateFunction the update function
-     * @return updated entity
-     */
-    <E> E getLockUpdate(E entity, Function<E, E> updateFunction);
-
-    /**
-     * query id of entity then lock and update.
-     * <p>
-     * sql database will use select for udpate to lock row where pk = id.
-     * </p>
-     *
-     * @param <E>            entity type
-     * @param entity         the entity with id value
-     * @param updateFunction the update function
-     * @return updated entity
-     */
-    default <E> E loadLockUpdate(E entity, Function<E, E> updateFunction) {
-        return getLockUpdate(entity, updateFunction);
     }
 
     //    <E> E getBy(Class<E> type, Map<String, Object> propertyValueMap);

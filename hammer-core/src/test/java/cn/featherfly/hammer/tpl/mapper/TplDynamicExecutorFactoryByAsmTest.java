@@ -11,7 +11,7 @@ import java.math.BigDecimal;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
-import java.util.function.Function;
+import java.util.function.UnaryOperator;
 
 import org.apache.log4j.xml.DOMConfigurator;
 import org.slf4j.Logger;
@@ -557,157 +557,139 @@ public class TplDynamicExecutorFactoryByAsmTest {
 
             @Override
             public <E> int saveOrUpdate(E entity) {
-                // YUFEI_TODO Auto-generated method stub
+
                 return 0;
             }
 
             @Override
             public <E, R> E get(Serializable id, Class<E> type, SerializableFunction<E, R> fetchProperty) {
-                // YUFEI_TODO Auto-generated method stub
-                return null;
-            }
 
-            @Override
-            public <E> E getLockUpdate(Serializable id, Class<E> type, Function<E, E> updateFunction) {
-                // YUFEI_TODO Auto-generated method stub
-                return null;
-            }
-
-            @Override
-            public <E> E loadLockUpdate(E entity, Function<E, E> updateFunction) {
-                // YUFEI_TODO Auto-generated method stub
-                return null;
-            }
-
-            @Override
-            public <E> E getLockUpdate(E entity, Function<E, E> updateFunction) {
-                // YUFEI_TODO Auto-generated method stub
                 return null;
             }
 
             @Override
             public QueryEntity query(Repository repository) {
-                // YUFEI_TODO Auto-generated method stub
+
                 return null;
             }
 
             @Override
             public Update update(Repository repository) {
-                // YUFEI_TODO Auto-generated method stub
+
                 return null;
             }
 
             @Override
             public Delete delete(Repository repository) {
-                // YUFEI_TODO Auto-generated method stub
+
                 return null;
             }
 
             @Override
             public <E> int[] update(List<E> entities, int batchSize) {
-                // YUFEI_TODO Auto-generated method stub
+
                 return null;
             }
 
             @Override
-            public <E> int[] update(E... entities) {
-                // YUFEI_TODO Auto-generated method stub
+            public <E> int[] update(@SuppressWarnings("unchecked") E... entities) {
+
                 return null;
             }
 
             @Override
             public <E> int[] update(List<E> entities) {
-                // YUFEI_TODO Auto-generated method stub
+
                 return null;
             }
 
             @Override
             public <E> int[] update(List<E> entities, IgnoreStrategy ignoreStrategy) {
-                // YUFEI_TODO Auto-generated method stub
+
                 return null;
             }
 
             @Override
             public <E> int save(E entity) {
-                // YUFEI_TODO Auto-generated method stub
+
                 return 0;
             }
 
             @Override
-            public <E> int[] save(E... entities) {
-                // YUFEI_TODO Auto-generated method stub
+            public <E> int[] save(@SuppressWarnings("unchecked") E... entities) {
+
                 return null;
             }
 
             @Override
             public <E> int[] save(List<E> entities) {
-                // YUFEI_TODO Auto-generated method stub
+
                 return null;
             }
 
             @Override
             public <E> int[] delete(Serializable[] ids, Class<E> entityType) {
-                // YUFEI_TODO Auto-generated method stub
+
                 return null;
             }
 
             @Override
             public <E, ID extends Serializable> int[] delete(List<ID> ids, Class<E> entityType) {
-                // YUFEI_TODO Auto-generated method stub
+
                 return null;
             }
 
             @Override
-            public <E> int[] delete(E... entities) {
-                // YUFEI_TODO Auto-generated method stub
+            public <E> int[] delete(@SuppressWarnings("unchecked") E... entities) {
+
                 return null;
             }
 
             @Override
             public <E> int[] delete(List<E> entities) {
-                // YUFEI_TODO Auto-generated method stub
+
                 return null;
             }
 
             @Override
             public <R1, R2> Tuple2<R1, R2> single(String tplExecuteId, Class<R1> entityType1, Class<R2> entityType2,
                     Tuple2<String, String> prefixes, Map<String, Object> params) {
-                // YUFEI_TODO Auto-generated method stub
+
                 return null;
             }
 
             @Override
             public <R1, R2> Tuple2<R1, R2> single(TplExecuteId tplExecuteId, Class<R1> entityType1,
                     Class<R2> entityType2, Tuple2<String, String> prefixes, Map<String, Object> params) {
-                // YUFEI_TODO Auto-generated method stub
+
                 return null;
             }
 
             @Override
             public <R1, R2> Tuple2<R1, R2> single(String tplExecuteId, Class<R1> entityType1, Class<R2> entityType2,
                     Map<String, Object> params) {
-                // YUFEI_TODO Auto-generated method stub
+
                 return null;
             }
 
             @Override
             public <R1, R2> Tuple2<R1, R2> single(TplExecuteId tplExecuteId, Class<R1> entityType1,
                     Class<R2> entityType2, Map<String, Object> params) {
-                // YUFEI_TODO Auto-generated method stub
+
                 return null;
             }
 
             @Override
             public <R1, R2, R3> Tuple3<R1, R2, R3> single(String tplExecuteId, Class<R1> entityType1,
                     Class<R2> entityType2, Class<R3> entityType3, Map<String, Object> params) {
-                // YUFEI_TODO Auto-generated method stub
+
                 return null;
             }
 
             @Override
             public <R1, R2, R3> Tuple3<R1, R2, R3> single(TplExecuteId tplExecuteId, Class<R1> entityType1,
                     Class<R2> entityType2, Class<R3> entityType3, Map<String, Object> params) {
-                // YUFEI_TODO Auto-generated method stub
+
                 return null;
             }
 
@@ -715,7 +697,7 @@ public class TplDynamicExecutorFactoryByAsmTest {
             public <R1, R2, R3> Tuple3<R1, R2, R3> single(String tplExecuteId, Class<R1> entityType1,
                     Class<R2> entityType2, Class<R3> entityType3, Tuple3<String, String, String> prefixes,
                     Map<String, Object> params) {
-                // YUFEI_TODO Auto-generated method stub
+
                 return null;
             }
 
@@ -723,21 +705,21 @@ public class TplDynamicExecutorFactoryByAsmTest {
             public <R1, R2, R3> Tuple3<R1, R2, R3> single(TplExecuteId tplExecuteId, Class<R1> entityType1,
                     Class<R2> entityType2, Class<R3> entityType3, Tuple3<String, String, String> prefixes,
                     Map<String, Object> params) {
-                // YUFEI_TODO Auto-generated method stub
+
                 return null;
             }
 
             @Override
             public <R1, R2, R3, R4> Tuple4<R1, R2, R3, R4> single(String tplExecuteId, Class<R1> entityType1,
                     Class<R2> entityType2, Class<R3> entityType3, Class<R4> entityType4, Map<String, Object> params) {
-                // YUFEI_TODO Auto-generated method stub
+
                 return null;
             }
 
             @Override
             public <R1, R2, R3, R4> Tuple4<R1, R2, R3, R4> single(TplExecuteId tplExecuteId, Class<R1> entityType1,
                     Class<R2> entityType2, Class<R3> entityType3, Class<R4> entityType4, Map<String, Object> params) {
-                // YUFEI_TODO Auto-generated method stub
+
                 return null;
             }
 
@@ -745,7 +727,7 @@ public class TplDynamicExecutorFactoryByAsmTest {
             public <R1, R2, R3, R4> Tuple4<R1, R2, R3, R4> single(String tplExecuteId, Class<R1> entityType1,
                     Class<R2> entityType2, Class<R3> entityType3, Class<R4> entityType4,
                     Tuple4<String, String, String, String> prefixes, Map<String, Object> params) {
-                // YUFEI_TODO Auto-generated method stub
+
                 return null;
             }
 
@@ -753,7 +735,7 @@ public class TplDynamicExecutorFactoryByAsmTest {
             public <R1, R2, R3, R4> Tuple4<R1, R2, R3, R4> single(TplExecuteId tplExecuteId, Class<R1> entityType1,
                     Class<R2> entityType2, Class<R3> entityType3, Class<R4> entityType4,
                     Tuple4<String, String, String, String> prefixes, Map<String, Object> params) {
-                // YUFEI_TODO Auto-generated method stub
+
                 return null;
             }
 
@@ -761,7 +743,7 @@ public class TplDynamicExecutorFactoryByAsmTest {
             public <R1, R2, R3, R4, R5> Tuple5<R1, R2, R3, R4, R5> single(String tplExecuteId, Class<R1> entityType1,
                     Class<R2> entityType2, Class<R3> entityType3, Class<R4> entityType4, Class<R5> entityType5,
                     Tuple5<String, String, String, String, String> prefixes, Map<String, Object> params) {
-                // YUFEI_TODO Auto-generated method stub
+
                 return null;
             }
 
@@ -770,7 +752,7 @@ public class TplDynamicExecutorFactoryByAsmTest {
                     Class<R1> entityType1, Class<R2> entityType2, Class<R3> entityType3, Class<R4> entityType4,
                     Class<R5> entityType5, Tuple5<String, String, String, String, String> prefixes,
                     Map<String, Object> params) {
-                // YUFEI_TODO Auto-generated method stub
+
                 return null;
             }
 
@@ -778,7 +760,7 @@ public class TplDynamicExecutorFactoryByAsmTest {
             public <R1, R2, R3, R4, R5> Tuple5<R1, R2, R3, R4, R5> single(String tplExecuteId, Class<R1> entityType1,
                     Class<R2> entityType2, Class<R3> entityType3, Class<R4> entityType4, Class<R5> entityType5,
                     Map<String, Object> params) {
-                // YUFEI_TODO Auto-generated method stub
+
                 return null;
             }
 
@@ -786,70 +768,70 @@ public class TplDynamicExecutorFactoryByAsmTest {
             public <R1, R2, R3, R4, R5> Tuple5<R1, R2, R3, R4, R5> single(TplExecuteId tplExecuteId,
                     Class<R1> entityType1, Class<R2> entityType2, Class<R3> entityType3, Class<R4> entityType4,
                     Class<R5> entityType5, Map<String, Object> params) {
-                // YUFEI_TODO Auto-generated method stub
+
                 return null;
             }
 
             @Override
             public <R1, R2> List<Tuple2<R1, R2>> list(String tplExecuteId, Class<R1> entityType1, Class<R2> entityType2,
                     Map<String, Object> params) {
-                // YUFEI_TODO Auto-generated method stub
+
                 return null;
             }
 
             @Override
             public <R1, R2> List<Tuple2<R1, R2>> list(TplExecuteId tplExecuteId, Class<R1> entityType1,
                     Class<R2> entityType2, Map<String, Object> params) {
-                // YUFEI_TODO Auto-generated method stub
+
                 return null;
             }
 
             @Override
             public <R1, R2> List<Tuple2<R1, R2>> list(String tplExecuteId, Class<R1> entityType1, Class<R2> entityType2,
                     Map<String, Object> params, int offset, int limit) {
-                // YUFEI_TODO Auto-generated method stub
+
                 return null;
             }
 
             @Override
             public <R1, R2> List<Tuple2<R1, R2>> list(TplExecuteId tplExecuteId, Class<R1> entityType1,
                     Class<R2> entityType2, Map<String, Object> params, int offset, int limit) {
-                // YUFEI_TODO Auto-generated method stub
+
                 return null;
             }
 
             @Override
             public <R1, R2> List<Tuple2<R1, R2>> list(String tplExecuteId, Class<R1> entityType1, Class<R2> entityType2,
                     Map<String, Object> params, Page page) {
-                // YUFEI_TODO Auto-generated method stub
+
                 return null;
             }
 
             @Override
             public <R1, R2> List<Tuple2<R1, R2>> list(TplExecuteId tplExecuteId, Class<R1> entityType1,
                     Class<R2> entityType2, Map<String, Object> params, Page page) {
-                // YUFEI_TODO Auto-generated method stub
+
                 return null;
             }
 
             @Override
             public <R1, R2> List<Tuple2<R1, R2>> list(String tplExecuteId, Class<R1> entityType1, Class<R2> entityType2,
                     Tuple2<String, String> prefixes, Map<String, Object> params) {
-                // YUFEI_TODO Auto-generated method stub
+
                 return null;
             }
 
             @Override
             public <R1, R2> List<Tuple2<R1, R2>> list(TplExecuteId tplExecuteId, Class<R1> entityType1,
                     Class<R2> entityType2, Tuple2<String, String> prefixes, Map<String, Object> params) {
-                // YUFEI_TODO Auto-generated method stub
+
                 return null;
             }
 
             @Override
             public <R1, R2> List<Tuple2<R1, R2>> list(String tplExecuteId, Class<R1> entityType1, Class<R2> entityType2,
                     Tuple2<String, String> prefixes, Map<String, Object> params, int offset, int limit) {
-                // YUFEI_TODO Auto-generated method stub
+
                 return null;
             }
 
@@ -857,63 +839,63 @@ public class TplDynamicExecutorFactoryByAsmTest {
             public <R1, R2> List<Tuple2<R1, R2>> list(TplExecuteId tplExecuteId, Class<R1> entityType1,
                     Class<R2> entityType2, Tuple2<String, String> prefixes, Map<String, Object> params, int offset,
                     int limit) {
-                // YUFEI_TODO Auto-generated method stub
+
                 return null;
             }
 
             @Override
             public <R1, R2> List<Tuple2<R1, R2>> list(String tplExecuteId, Class<R1> entityType1, Class<R2> entityType2,
                     Tuple2<String, String> prefixes, Map<String, Object> params, Page page) {
-                // YUFEI_TODO Auto-generated method stub
+
                 return null;
             }
 
             @Override
             public <R1, R2> List<Tuple2<R1, R2>> list(TplExecuteId tplExecuteId, Class<R1> entityType1,
                     Class<R2> entityType2, Tuple2<String, String> prefixes, Map<String, Object> params, Page page) {
-                // YUFEI_TODO Auto-generated method stub
+
                 return null;
             }
 
             @Override
             public <R1, R2, R3> List<Tuple3<R1, R2, R3>> list(String tplExecuteId, Class<R1> entityType1,
                     Class<R2> entityType2, Class<R3> entityType3, Map<String, Object> params) {
-                // YUFEI_TODO Auto-generated method stub
+
                 return null;
             }
 
             @Override
             public <R1, R2, R3> List<Tuple3<R1, R2, R3>> list(TplExecuteId tplExecuteId, Class<R1> entityType1,
                     Class<R2> entityType2, Class<R3> entityType3, Map<String, Object> params) {
-                // YUFEI_TODO Auto-generated method stub
+
                 return null;
             }
 
             @Override
             public <R1, R2, R3> List<Tuple3<R1, R2, R3>> list(String tplExecuteId, Class<R1> entityType1,
                     Class<R2> entityType2, Class<R3> entityType3, Map<String, Object> param, int offset, int limits) {
-                // YUFEI_TODO Auto-generated method stub
+
                 return null;
             }
 
             @Override
             public <R1, R2, R3> List<Tuple3<R1, R2, R3>> list(TplExecuteId tplExecuteId, Class<R1> entityType1,
                     Class<R2> entityType2, Class<R3> entityType3, Map<String, Object> params, int offset, int limit) {
-                // YUFEI_TODO Auto-generated method stub
+
                 return null;
             }
 
             @Override
             public <R1, R2, R3> List<Tuple3<R1, R2, R3>> list(String tplExecuteId, Class<R1> entityType1,
                     Class<R2> entityType2, Class<R3> entityType3, Map<String, Object> params, Page page) {
-                // YUFEI_TODO Auto-generated method stub
+
                 return null;
             }
 
             @Override
             public <R1, R2, R3> List<Tuple3<R1, R2, R3>> list(TplExecuteId tplExecuteId, Class<R1> entityType1,
                     Class<R2> entityType2, Class<R3> entityType3, Map<String, Object> params, Page page) {
-                // YUFEI_TODO Auto-generated method stub
+
                 return null;
             }
 
@@ -921,7 +903,7 @@ public class TplDynamicExecutorFactoryByAsmTest {
             public <R1, R2, R3> List<Tuple3<R1, R2, R3>> list(String tplExecuteId, Class<R1> entityType1,
                     Class<R2> entityType2, Class<R3> entityType3, Tuple3<String, String, String> prefixes,
                     Map<String, Object> params) {
-                // YUFEI_TODO Auto-generated method stub
+
                 return null;
             }
 
@@ -929,7 +911,7 @@ public class TplDynamicExecutorFactoryByAsmTest {
             public <R1, R2, R3> List<Tuple3<R1, R2, R3>> list(TplExecuteId tplExecuteId, Class<R1> entityType1,
                     Class<R2> entityType2, Class<R3> entityType3, Tuple3<String, String, String> prefixes,
                     Map<String, Object> params) {
-                // YUFEI_TODO Auto-generated method stub
+
                 return null;
             }
 
@@ -937,7 +919,7 @@ public class TplDynamicExecutorFactoryByAsmTest {
             public <R1, R2, R3> List<Tuple3<R1, R2, R3>> list(String tplExecuteId, Class<R1> entityType1,
                     Class<R2> entityType2, Class<R3> entityType3, Tuple3<String, String, String> prefixes,
                     Map<String, Object> params, int offset, int limit) {
-                // YUFEI_TODO Auto-generated method stub
+
                 return null;
             }
 
@@ -945,7 +927,7 @@ public class TplDynamicExecutorFactoryByAsmTest {
             public <R1, R2, R3> List<Tuple3<R1, R2, R3>> list(TplExecuteId tplExecuteId, Class<R1> entityType1,
                     Class<R2> entityType2, Class<R3> entityType3, Tuple3<String, String, String> prefixes,
                     Map<String, Object> params, int offset, int limit) {
-                // YUFEI_TODO Auto-generated method stub
+
                 return null;
             }
 
@@ -953,7 +935,7 @@ public class TplDynamicExecutorFactoryByAsmTest {
             public <R1, R2, R3> List<Tuple3<R1, R2, R3>> list(String tplExecuteId, Class<R1> entityType1,
                     Class<R2> entityType2, Class<R3> entityType3, Tuple3<String, String, String> prefixes,
                     Map<String, Object> params, Page page) {
-                // YUFEI_TODO Auto-generated method stub
+
                 return null;
             }
 
@@ -961,21 +943,21 @@ public class TplDynamicExecutorFactoryByAsmTest {
             public <R1, R2, R3> List<Tuple3<R1, R2, R3>> list(TplExecuteId tplExecuteId, Class<R1> entityType1,
                     Class<R2> entityType2, Class<R3> entityType3, Tuple3<String, String, String> prefixes,
                     Map<String, Object> params, Page page) {
-                // YUFEI_TODO Auto-generated method stub
+
                 return null;
             }
 
             @Override
             public <R1, R2, R3, R4> List<Tuple4<R1, R2, R3, R4>> list(String tplExecuteId, Class<R1> entityType1,
                     Class<R2> entityType2, Class<R3> entityType3, Class<R4> entityType4, Map<String, Object> params) {
-                // YUFEI_TODO Auto-generated method stub
+
                 return null;
             }
 
             @Override
             public <R1, R2, R3, R4> List<Tuple4<R1, R2, R3, R4>> list(TplExecuteId tplExecuteId, Class<R1> entityType1,
                     Class<R2> entityType2, Class<R3> entityType3, Class<R4> entityType4, Map<String, Object> params) {
-                // YUFEI_TODO Auto-generated method stub
+
                 return null;
             }
 
@@ -983,7 +965,7 @@ public class TplDynamicExecutorFactoryByAsmTest {
             public <R1, R2, R3, R4> List<Tuple4<R1, R2, R3, R4>> list(String tplExecuteId, Class<R1> entityType1,
                     Class<R2> entityType2, Class<R3> entityType3, Class<R4> entityType4, Map<String, Object> params,
                     int offset, int limit) {
-                // YUFEI_TODO Auto-generated method stub
+
                 return null;
             }
 
@@ -991,7 +973,7 @@ public class TplDynamicExecutorFactoryByAsmTest {
             public <R1, R2, R3, R4> List<Tuple4<R1, R2, R3, R4>> list(TplExecuteId tplExecuteId, Class<R1> entityType1,
                     Class<R2> entityType2, Class<R3> entityType3, Class<R4> entityType4, Map<String, Object> params,
                     int offset, int limit) {
-                // YUFEI_TODO Auto-generated method stub
+
                 return null;
             }
 
@@ -999,7 +981,7 @@ public class TplDynamicExecutorFactoryByAsmTest {
             public <R1, R2, R3, R4> List<Tuple4<R1, R2, R3, R4>> list(String tplExecuteId, Class<R1> entityType1,
                     Class<R2> entityType2, Class<R3> entityType3, Class<R4> entityType4, Map<String, Object> params,
                     Page page) {
-                // YUFEI_TODO Auto-generated method stub
+
                 return null;
             }
 
@@ -1007,7 +989,7 @@ public class TplDynamicExecutorFactoryByAsmTest {
             public <R1, R2, R3, R4> List<Tuple4<R1, R2, R3, R4>> list(TplExecuteId tplExecuteId, Class<R1> entityType1,
                     Class<R2> entityType2, Class<R3> entityType3, Class<R4> entityType4, Map<String, Object> params,
                     Page page) {
-                // YUFEI_TODO Auto-generated method stub
+
                 return null;
             }
 
@@ -1015,7 +997,7 @@ public class TplDynamicExecutorFactoryByAsmTest {
             public <R1, R2, R3, R4> List<Tuple4<R1, R2, R3, R4>> list(String tplExecuteId, Class<R1> entityType1,
                     Class<R2> entityType2, Class<R3> entityType3, Class<R4> entityType4,
                     Tuple4<String, String, String, String> prefixes, Map<String, Object> params) {
-                // YUFEI_TODO Auto-generated method stub
+
                 return null;
             }
 
@@ -1023,7 +1005,7 @@ public class TplDynamicExecutorFactoryByAsmTest {
             public <R1, R2, R3, R4> List<Tuple4<R1, R2, R3, R4>> list(TplExecuteId tplExecuteId, Class<R1> entityType1,
                     Class<R2> entityType2, Class<R3> entityType3, Class<R4> entityType4,
                     Tuple4<String, String, String, String> prefixes, Map<String, Object> params) {
-                // YUFEI_TODO Auto-generated method stub
+
                 return null;
             }
 
@@ -1032,7 +1014,7 @@ public class TplDynamicExecutorFactoryByAsmTest {
                     Class<R2> entityType2, Class<R3> entityType3, Class<R4> entityType4,
                     Tuple4<String, String, String, String> prefixes, Map<String, Object> params, int offset,
                     int limit) {
-                // YUFEI_TODO Auto-generated method stub
+
                 return null;
             }
 
@@ -1041,7 +1023,7 @@ public class TplDynamicExecutorFactoryByAsmTest {
                     Class<R2> entityType2, Class<R3> entityType3, Class<R4> entityType4,
                     Tuple4<String, String, String, String> prefixes, Map<String, Object> params, int offset,
                     int limit) {
-                // YUFEI_TODO Auto-generated method stub
+
                 return null;
             }
 
@@ -1049,7 +1031,7 @@ public class TplDynamicExecutorFactoryByAsmTest {
             public <R1, R2, R3, R4> List<Tuple4<R1, R2, R3, R4>> list(String tplExecuteId, Class<R1> entityType1,
                     Class<R2> entityType2, Class<R3> entityType3, Class<R4> entityType4,
                     Tuple4<String, String, String, String> prefixes, Map<String, Object> params, Page page) {
-                // YUFEI_TODO Auto-generated method stub
+
                 return null;
             }
 
@@ -1057,7 +1039,7 @@ public class TplDynamicExecutorFactoryByAsmTest {
             public <R1, R2, R3, R4> List<Tuple4<R1, R2, R3, R4>> list(TplExecuteId tplExecuteId, Class<R1> entityType1,
                     Class<R2> entityType2, Class<R3> entityType3, Class<R4> entityType4,
                     Tuple4<String, String, String, String> prefixes, Map<String, Object> params, Page page) {
-                // YUFEI_TODO Auto-generated method stub
+
                 return null;
             }
 
@@ -1065,7 +1047,7 @@ public class TplDynamicExecutorFactoryByAsmTest {
             public <R1, R2, R3, R4, R5> List<Tuple5<R1, R2, R3, R4, R5>> list(String tplExecuteId,
                     Class<R1> entityType1, Class<R2> entityType2, Class<R3> entityType3, Class<R4> entityType4,
                     Class<R5> entityType5, Map<String, Object> params) {
-                // YUFEI_TODO Auto-generated method stub
+
                 return null;
             }
 
@@ -1073,7 +1055,7 @@ public class TplDynamicExecutorFactoryByAsmTest {
             public <R1, R2, R3, R4, R5> List<Tuple5<R1, R2, R3, R4, R5>> list(TplExecuteId tplExecuteId,
                     Class<R1> entityType1, Class<R2> entityType2, Class<R3> entityType3, Class<R4> entityType4,
                     Class<R5> entityType5, Map<String, Object> params) {
-                // YUFEI_TODO Auto-generated method stub
+
                 return null;
             }
 
@@ -1081,7 +1063,7 @@ public class TplDynamicExecutorFactoryByAsmTest {
             public <R1, R2, R3, R4, R5> List<Tuple5<R1, R2, R3, R4, R5>> list(String tplExecuteId,
                     Class<R1> entityType1, Class<R2> entityType2, Class<R3> entityType3, Class<R4> entityType4,
                     Class<R5> entityType5, Map<String, Object> params, int offset, int limit) {
-                // YUFEI_TODO Auto-generated method stub
+
                 return null;
             }
 
@@ -1089,7 +1071,7 @@ public class TplDynamicExecutorFactoryByAsmTest {
             public <R1, R2, R3, R4, R5> List<Tuple5<R1, R2, R3, R4, R5>> list(TplExecuteId tplExecuteId,
                     Class<R1> entityType1, Class<R2> entityType2, Class<R3> entityType3, Class<R4> entityType4,
                     Class<R5> entityType5, Map<String, Object> params, int offset, int limit) {
-                // YUFEI_TODO Auto-generated method stub
+
                 return null;
             }
 
@@ -1097,7 +1079,7 @@ public class TplDynamicExecutorFactoryByAsmTest {
             public <R1, R2, R3, R4, R5> List<Tuple5<R1, R2, R3, R4, R5>> list(String tplExecuteId,
                     Class<R1> entityType1, Class<R2> entityType2, Class<R3> entityType3, Class<R4> entityType4,
                     Class<R5> entityType5, Map<String, Object> params, Page page) {
-                // YUFEI_TODO Auto-generated method stub
+
                 return null;
             }
 
@@ -1105,7 +1087,7 @@ public class TplDynamicExecutorFactoryByAsmTest {
             public <R1, R2, R3, R4, R5> List<Tuple5<R1, R2, R3, R4, R5>> list(TplExecuteId tplExecuteId,
                     Class<R1> entityType1, Class<R2> entityType2, Class<R3> entityType3, Class<R4> entityType4,
                     Class<R5> entityType5, Map<String, Object> params, Page page) {
-                // YUFEI_TODO Auto-generated method stub
+
                 return null;
             }
 
@@ -1114,7 +1096,7 @@ public class TplDynamicExecutorFactoryByAsmTest {
                     Class<R1> entityType1, Class<R2> entityType2, Class<R3> entityType3, Class<R4> entityType4,
                     Class<R5> entityType5, Tuple5<String, String, String, String, String> prefixes,
                     Map<String, Object> params) {
-                // YUFEI_TODO Auto-generated method stub
+
                 return null;
             }
 
@@ -1123,7 +1105,7 @@ public class TplDynamicExecutorFactoryByAsmTest {
                     Class<R1> entityType1, Class<R2> entityType2, Class<R3> entityType3, Class<R4> entityType4,
                     Class<R5> entityType5, Tuple5<String, String, String, String, String> prefixes,
                     Map<String, Object> params) {
-                // YUFEI_TODO Auto-generated method stub
+
                 return null;
             }
 
@@ -1132,7 +1114,7 @@ public class TplDynamicExecutorFactoryByAsmTest {
                     Class<R1> entityType1, Class<R2> entityType2, Class<R3> entityType3, Class<R4> entityType4,
                     Class<R5> entityType5, Tuple5<String, String, String, String, String> prefixes,
                     Map<String, Object> params, int offset, int limit) {
-                // YUFEI_TODO Auto-generated method stub
+
                 return null;
             }
 
@@ -1141,7 +1123,7 @@ public class TplDynamicExecutorFactoryByAsmTest {
                     Class<R1> entityType1, Class<R2> entityType2, Class<R3> entityType3, Class<R4> entityType4,
                     Class<R5> entityType5, Tuple5<String, String, String, String, String> prefixes,
                     Map<String, Object> params, int offset, int limit) {
-                // YUFEI_TODO Auto-generated method stub
+
                 return null;
             }
 
@@ -1150,7 +1132,7 @@ public class TplDynamicExecutorFactoryByAsmTest {
                     Class<R1> entityType1, Class<R2> entityType2, Class<R3> entityType3, Class<R4> entityType4,
                     Class<R5> entityType5, Tuple5<String, String, String, String, String> prefixes,
                     Map<String, Object> params, Page page) {
-                // YUFEI_TODO Auto-generated method stub
+
                 return null;
             }
 
@@ -1159,35 +1141,35 @@ public class TplDynamicExecutorFactoryByAsmTest {
                     Class<R1> entityType1, Class<R2> entityType2, Class<R3> entityType3, Class<R4> entityType4,
                     Class<R5> entityType5, Tuple5<String, String, String, String, String> prefixes,
                     Map<String, Object> params, Page page) {
-                // YUFEI_TODO Auto-generated method stub
+
                 return null;
             }
 
             @Override
             public <R1, R2> PaginationResults<Tuple2<R1, R2>> pagination(String tplExecuteId, Class<R1> entityType1,
                     Class<R2> entityType2, Map<String, Object> params, int offset, int limit) {
-                // YUFEI_TODO Auto-generated method stub
+
                 return null;
             }
 
             @Override
             public <R1, R2> PaginationResults<Tuple2<R1, R2>> pagination(TplExecuteId tplExecuteId,
                     Class<R1> entityType1, Class<R2> entityType2, Map<String, Object> params, int offset, int limit) {
-                // YUFEI_TODO Auto-generated method stub
+
                 return null;
             }
 
             @Override
             public <R1, R2> PaginationResults<Tuple2<R1, R2>> pagination(String tplExecuteId, Class<R1> entityType1,
                     Class<R2> entityType2, Map<String, Object> params, Page page) {
-                // YUFEI_TODO Auto-generated method stub
+
                 return null;
             }
 
             @Override
             public <R1, R2> PaginationResults<Tuple2<R1, R2>> pagination(TplExecuteId tplExecuteId,
                     Class<R1> entityType1, Class<R2> entityType2, Map<String, Object> params, Page page) {
-                // YUFEI_TODO Auto-generated method stub
+
                 return null;
             }
 
@@ -1195,7 +1177,7 @@ public class TplDynamicExecutorFactoryByAsmTest {
             public <R1, R2> PaginationResults<Tuple2<R1, R2>> pagination(String tplExecuteId, Class<R1> entityType1,
                     Class<R2> entityType2, Tuple2<String, String> prefixes, Map<String, Object> params, int offset,
                     int limit) {
-                // YUFEI_TODO Auto-generated method stub
+
                 return null;
             }
 
@@ -1203,14 +1185,14 @@ public class TplDynamicExecutorFactoryByAsmTest {
             public <R1, R2> PaginationResults<Tuple2<R1, R2>> pagination(TplExecuteId tplExecuteId,
                     Class<R1> entityType1, Class<R2> entityType2, Tuple2<String, String> prefixes,
                     Map<String, Object> params, int offset, int limit) {
-                // YUFEI_TODO Auto-generated method stub
+
                 return null;
             }
 
             @Override
             public <R1, R2> PaginationResults<Tuple2<R1, R2>> pagination(String tplExecuteId, Class<R1> entityType1,
                     Class<R2> entityType2, Tuple2<String, String> prefixes, Map<String, Object> params, Page page) {
-                // YUFEI_TODO Auto-generated method stub
+
                 return null;
             }
 
@@ -1218,7 +1200,7 @@ public class TplDynamicExecutorFactoryByAsmTest {
             public <R1, R2> PaginationResults<Tuple2<R1, R2>> pagination(TplExecuteId tplExecuteId,
                     Class<R1> entityType1, Class<R2> entityType2, Tuple2<String, String> prefixes,
                     Map<String, Object> params, Page page) {
-                // YUFEI_TODO Auto-generated method stub
+
                 return null;
             }
 
@@ -1226,7 +1208,7 @@ public class TplDynamicExecutorFactoryByAsmTest {
             public <R1, R2, R3> PaginationResults<Tuple3<R1, R2, R3>> pagination(String tplExecuteId,
                     Class<R1> entityType1, Class<R2> entityType2, Class<R3> entityType3, Map<String, Object> param,
                     int offset, int limits) {
-                // YUFEI_TODO Auto-generated method stub
+
                 return null;
             }
 
@@ -1234,7 +1216,7 @@ public class TplDynamicExecutorFactoryByAsmTest {
             public <R1, R2, R3> PaginationResults<Tuple3<R1, R2, R3>> pagination(TplExecuteId tplExecuteId,
                     Class<R1> entityType1, Class<R2> entityType2, Class<R3> entityType3, Map<String, Object> params,
                     int offset, int limit) {
-                // YUFEI_TODO Auto-generated method stub
+
                 return null;
             }
 
@@ -1242,7 +1224,7 @@ public class TplDynamicExecutorFactoryByAsmTest {
             public <R1, R2, R3> PaginationResults<Tuple3<R1, R2, R3>> pagination(String tplExecuteId,
                     Class<R1> entityType1, Class<R2> entityType2, Class<R3> entityType3, Map<String, Object> params,
                     Page page) {
-                // YUFEI_TODO Auto-generated method stub
+
                 return null;
             }
 
@@ -1250,7 +1232,7 @@ public class TplDynamicExecutorFactoryByAsmTest {
             public <R1, R2, R3> PaginationResults<Tuple3<R1, R2, R3>> pagination(TplExecuteId tplExecuteId,
                     Class<R1> entityType1, Class<R2> entityType2, Class<R3> entityType3, Map<String, Object> params,
                     Page page) {
-                // YUFEI_TODO Auto-generated method stub
+
                 return null;
             }
 
@@ -1258,7 +1240,7 @@ public class TplDynamicExecutorFactoryByAsmTest {
             public <R1, R2, R3> PaginationResults<Tuple3<R1, R2, R3>> pagination(String tplExecuteId,
                     Class<R1> entityType1, Class<R2> entityType2, Class<R3> entityType3,
                     Tuple3<String, String, String> prefixes, Map<String, Object> params, int offset, int limit) {
-                // YUFEI_TODO Auto-generated method stub
+
                 return null;
             }
 
@@ -1266,7 +1248,7 @@ public class TplDynamicExecutorFactoryByAsmTest {
             public <R1, R2, R3> PaginationResults<Tuple3<R1, R2, R3>> pagination(TplExecuteId tplExecuteId,
                     Class<R1> entityType1, Class<R2> entityType2, Class<R3> entityType3,
                     Tuple3<String, String, String> prefixes, Map<String, Object> params, int offset, int limit) {
-                // YUFEI_TODO Auto-generated method stub
+
                 return null;
             }
 
@@ -1274,7 +1256,7 @@ public class TplDynamicExecutorFactoryByAsmTest {
             public <R1, R2, R3> PaginationResults<Tuple3<R1, R2, R3>> pagination(String tplExecuteId,
                     Class<R1> entityType1, Class<R2> entityType2, Class<R3> entityType3,
                     Tuple3<String, String, String> prefixes, Map<String, Object> params, Page page) {
-                // YUFEI_TODO Auto-generated method stub
+
                 return null;
             }
 
@@ -1282,7 +1264,7 @@ public class TplDynamicExecutorFactoryByAsmTest {
             public <R1, R2, R3> PaginationResults<Tuple3<R1, R2, R3>> pagination(TplExecuteId tplExecuteId,
                     Class<R1> entityType1, Class<R2> entityType2, Class<R3> entityType3,
                     Tuple3<String, String, String> prefixes, Map<String, Object> params, Page page) {
-                // YUFEI_TODO Auto-generated method stub
+
                 return null;
             }
 
@@ -1290,7 +1272,7 @@ public class TplDynamicExecutorFactoryByAsmTest {
             public <R1, R2, R3, R4> PaginationResults<Tuple4<R1, R2, R3, R4>> pagination(String tplExecuteId,
                     Class<R1> entityType1, Class<R2> entityType2, Class<R3> entityType3, Class<R4> entityType4,
                     Map<String, Object> params, int offset, int limit) {
-                // YUFEI_TODO Auto-generated method stub
+
                 return null;
             }
 
@@ -1298,7 +1280,7 @@ public class TplDynamicExecutorFactoryByAsmTest {
             public <R1, R2, R3, R4> PaginationResults<Tuple4<R1, R2, R3, R4>> pagination(TplExecuteId tplExecuteId,
                     Class<R1> entityType1, Class<R2> entityType2, Class<R3> entityType3, Class<R4> entityType4,
                     Map<String, Object> params, int offset, int limit) {
-                // YUFEI_TODO Auto-generated method stub
+
                 return null;
             }
 
@@ -1306,7 +1288,7 @@ public class TplDynamicExecutorFactoryByAsmTest {
             public <R1, R2, R3, R4> PaginationResults<Tuple4<R1, R2, R3, R4>> pagination(String tplExecuteId,
                     Class<R1> entityType1, Class<R2> entityType2, Class<R3> entityType3, Class<R4> entityType4,
                     Map<String, Object> params, Page page) {
-                // YUFEI_TODO Auto-generated method stub
+
                 return null;
             }
 
@@ -1314,7 +1296,7 @@ public class TplDynamicExecutorFactoryByAsmTest {
             public <R1, R2, R3, R4> PaginationResults<Tuple4<R1, R2, R3, R4>> pagination(TplExecuteId tplExecuteId,
                     Class<R1> entityType1, Class<R2> entityType2, Class<R3> entityType3, Class<R4> entityType4,
                     Map<String, Object> params, Page page) {
-                // YUFEI_TODO Auto-generated method stub
+
                 return null;
             }
 
@@ -1323,7 +1305,7 @@ public class TplDynamicExecutorFactoryByAsmTest {
                     Class<R1> entityType1, Class<R2> entityType2, Class<R3> entityType3, Class<R4> entityType4,
                     Tuple4<String, String, String, String> prefixes, Map<String, Object> params, int offset,
                     int limit) {
-                // YUFEI_TODO Auto-generated method stub
+
                 return null;
             }
 
@@ -1332,7 +1314,7 @@ public class TplDynamicExecutorFactoryByAsmTest {
                     Class<R1> entityType1, Class<R2> entityType2, Class<R3> entityType3, Class<R4> entityType4,
                     Tuple4<String, String, String, String> prefixes, Map<String, Object> params, int offset,
                     int limit) {
-                // YUFEI_TODO Auto-generated method stub
+
                 return null;
             }
 
@@ -1340,7 +1322,7 @@ public class TplDynamicExecutorFactoryByAsmTest {
             public <R1, R2, R3, R4> PaginationResults<Tuple4<R1, R2, R3, R4>> pagination(String tplExecuteId,
                     Class<R1> entityType1, Class<R2> entityType2, Class<R3> entityType3, Class<R4> entityType4,
                     Tuple4<String, String, String, String> prefixes, Map<String, Object> params, Page page) {
-                // YUFEI_TODO Auto-generated method stub
+
                 return null;
             }
 
@@ -1348,7 +1330,7 @@ public class TplDynamicExecutorFactoryByAsmTest {
             public <R1, R2, R3, R4> PaginationResults<Tuple4<R1, R2, R3, R4>> pagination(TplExecuteId tplExecuteId,
                     Class<R1> entityType1, Class<R2> entityType2, Class<R3> entityType3, Class<R4> entityType4,
                     Tuple4<String, String, String, String> prefixes, Map<String, Object> params, Page page) {
-                // YUFEI_TODO Auto-generated method stub
+
                 return null;
             }
 
@@ -1356,7 +1338,7 @@ public class TplDynamicExecutorFactoryByAsmTest {
             public <R1, R2, R3, R4, R5> PaginationResults<Tuple5<R1, R2, R3, R4, R5>> pagination(String tplExecuteId,
                     Class<R1> entityType1, Class<R2> entityType2, Class<R3> entityType3, Class<R4> entityType4,
                     Class<R5> entityType5, Map<String, Object> params, int offset, int limit) {
-                // YUFEI_TODO Auto-generated method stub
+
                 return null;
             }
 
@@ -1364,7 +1346,7 @@ public class TplDynamicExecutorFactoryByAsmTest {
             public <R1, R2, R3, R4, R5> PaginationResults<Tuple5<R1, R2, R3, R4, R5>> pagination(
                     TplExecuteId tplExecuteId, Class<R1> entityType1, Class<R2> entityType2, Class<R3> entityType3,
                     Class<R4> entityType4, Class<R5> entityType5, Map<String, Object> params, int offset, int limit) {
-                // YUFEI_TODO Auto-generated method stub
+
                 return null;
             }
 
@@ -1372,7 +1354,7 @@ public class TplDynamicExecutorFactoryByAsmTest {
             public <R1, R2, R3, R4, R5> PaginationResults<Tuple5<R1, R2, R3, R4, R5>> pagination(String tplExecuteId,
                     Class<R1> entityType1, Class<R2> entityType2, Class<R3> entityType3, Class<R4> entityType4,
                     Class<R5> entityType5, Map<String, Object> params, Page page) {
-                // YUFEI_TODO Auto-generated method stub
+
                 return null;
             }
 
@@ -1380,7 +1362,7 @@ public class TplDynamicExecutorFactoryByAsmTest {
             public <R1, R2, R3, R4, R5> PaginationResults<Tuple5<R1, R2, R3, R4, R5>> pagination(
                     TplExecuteId tplExecuteId, Class<R1> entityType1, Class<R2> entityType2, Class<R3> entityType3,
                     Class<R4> entityType4, Class<R5> entityType5, Map<String, Object> params, Page page) {
-                // YUFEI_TODO Auto-generated method stub
+
                 return null;
             }
 
@@ -1389,7 +1371,7 @@ public class TplDynamicExecutorFactoryByAsmTest {
                     Class<R1> entityType1, Class<R2> entityType2, Class<R3> entityType3, Class<R4> entityType4,
                     Class<R5> entityType5, Tuple5<String, String, String, String, String> prefixes,
                     Map<String, Object> params, int offset, int limit) {
-                // YUFEI_TODO Auto-generated method stub
+
                 return null;
             }
 
@@ -1399,7 +1381,7 @@ public class TplDynamicExecutorFactoryByAsmTest {
                     Class<R4> entityType4, Class<R5> entityType5,
                     Tuple5<String, String, String, String, String> prefixes, Map<String, Object> params, int offset,
                     int limit) {
-                // YUFEI_TODO Auto-generated method stub
+
                 return null;
             }
 
@@ -1408,7 +1390,7 @@ public class TplDynamicExecutorFactoryByAsmTest {
                     Class<R1> entityType1, Class<R2> entityType2, Class<R3> entityType3, Class<R4> entityType4,
                     Class<R5> entityType5, Tuple5<String, String, String, String, String> prefixes,
                     Map<String, Object> params, Page page) {
-                // YUFEI_TODO Auto-generated method stub
+
                 return null;
             }
 
@@ -1417,7 +1399,7 @@ public class TplDynamicExecutorFactoryByAsmTest {
                     TplExecuteId tplExecuteId, Class<R1> entityType1, Class<R2> entityType2, Class<R3> entityType3,
                     Class<R4> entityType4, Class<R5> entityType5,
                     Tuple5<String, String, String, String, String> prefixes, Map<String, Object> params, Page page) {
-                // YUFEI_TODO Auto-generated method stub
+
                 return null;
             }
 
@@ -1425,7 +1407,7 @@ public class TplDynamicExecutorFactoryByAsmTest {
             public <R1, R2, R3, R4, R5, R6> Tuple6<R1, R2, R3, R4, R5, R6> single(String tplExecuteId,
                     Class<R1> entityType1, Class<R2> entityType2, Class<R3> entityType3, Class<R4> entityType4,
                     Class<R5> entityType5, Class<R6> entityType6, Map<String, Object> params) {
-                // YUFEI_TODO Auto-generated method stub
+
                 return null;
             }
 
@@ -1433,7 +1415,7 @@ public class TplDynamicExecutorFactoryByAsmTest {
             public <R1, R2, R3, R4, R5, R6> Tuple6<R1, R2, R3, R4, R5, R6> single(TplExecuteId tplExecuteId,
                     Class<R1> entityType1, Class<R2> entityType2, Class<R3> entityType3, Class<R4> entityType4,
                     Class<R5> entityType5, Class<R6> entityType6, Map<String, Object> params) {
-                // YUFEI_TODO Auto-generated method stub
+
                 return null;
             }
 
@@ -1442,7 +1424,7 @@ public class TplDynamicExecutorFactoryByAsmTest {
                     Class<R1> entityType1, Class<R2> entityType2, Class<R3> entityType3, Class<R4> entityType4,
                     Class<R5> entityType5, Class<R6> entityType6,
                     Tuple6<String, String, String, String, String, String> prefixes, Map<String, Object> params) {
-                // YUFEI_TODO Auto-generated method stub
+
                 return null;
             }
 
@@ -1451,7 +1433,7 @@ public class TplDynamicExecutorFactoryByAsmTest {
                     Class<R1> entityType1, Class<R2> entityType2, Class<R3> entityType3, Class<R4> entityType4,
                     Class<R5> entityType5, Class<R6> entityType6,
                     Tuple6<String, String, String, String, String, String> prefixes, Map<String, Object> params) {
-                // YUFEI_TODO Auto-generated method stub
+
                 return null;
             }
 
@@ -1459,7 +1441,7 @@ public class TplDynamicExecutorFactoryByAsmTest {
             public <R1, R2, R3, R4, R5, R6> List<Tuple6<R1, R2, R3, R4, R5, R6>> list(String tplExecuteId,
                     Class<R1> entityType1, Class<R2> entityType2, Class<R3> entityType3, Class<R4> entityType4,
                     Class<R5> entityType5, Class<R6> entityType6, Map<String, Object> params) {
-                // YUFEI_TODO Auto-generated method stub
+
                 return null;
             }
 
@@ -1467,7 +1449,7 @@ public class TplDynamicExecutorFactoryByAsmTest {
             public <R1, R2, R3, R4, R5, R6> List<Tuple6<R1, R2, R3, R4, R5, R6>> list(String tplExecuteId,
                     Class<R1> entityType1, Class<R2> entityType2, Class<R3> entityType3, Class<R4> entityType4,
                     Class<R5> entityType5, Class<R6> entityType6, Map<String, Object> params, int offset, int limit) {
-                // YUFEI_TODO Auto-generated method stub
+
                 return null;
             }
 
@@ -1475,7 +1457,7 @@ public class TplDynamicExecutorFactoryByAsmTest {
             public <R1, R2, R3, R4, R5, R6> List<Tuple6<R1, R2, R3, R4, R5, R6>> list(TplExecuteId tplExecuteId,
                     Class<R1> entityType1, Class<R2> entityType2, Class<R3> entityType3, Class<R4> entityType4,
                     Class<R5> entityType5, Class<R6> entityType6, Map<String, Object> params) {
-                // YUFEI_TODO Auto-generated method stub
+
                 return null;
             }
 
@@ -1483,7 +1465,7 @@ public class TplDynamicExecutorFactoryByAsmTest {
             public <R1, R2, R3, R4, R5, R6> List<Tuple6<R1, R2, R3, R4, R5, R6>> list(TplExecuteId tplExecuteId,
                     Class<R1> entityType1, Class<R2> entityType2, Class<R3> entityType3, Class<R4> entityType4,
                     Class<R5> entityType5, Class<R6> entityType6, Map<String, Object> params, int offset, int limit) {
-                // YUFEI_TODO Auto-generated method stub
+
                 return null;
             }
 
@@ -1492,7 +1474,7 @@ public class TplDynamicExecutorFactoryByAsmTest {
                     Class<R1> entityType1, Class<R2> entityType2, Class<R3> entityType3, Class<R4> entityType4,
                     Class<R5> entityType5, Class<R6> entityType6,
                     Tuple6<String, String, String, String, String, String> prefixes, Map<String, Object> params) {
-                // YUFEI_TODO Auto-generated method stub
+
                 return null;
             }
 
@@ -1502,7 +1484,7 @@ public class TplDynamicExecutorFactoryByAsmTest {
                     Class<R5> entityType5, Class<R6> entityType6,
                     Tuple6<String, String, String, String, String, String> prefixes, Map<String, Object> params,
                     int offset, int limit) {
-                // YUFEI_TODO Auto-generated method stub
+
                 return null;
             }
 
@@ -1511,7 +1493,7 @@ public class TplDynamicExecutorFactoryByAsmTest {
                     Class<R1> entityType1, Class<R2> entityType2, Class<R3> entityType3, Class<R4> entityType4,
                     Class<R5> entityType5, Class<R6> entityType6,
                     Tuple6<String, String, String, String, String, String> prefixes, Map<String, Object> params) {
-                // YUFEI_TODO Auto-generated method stub
+
                 return null;
             }
 
@@ -1521,7 +1503,7 @@ public class TplDynamicExecutorFactoryByAsmTest {
                     Class<R5> entityType5, Class<R6> entityType6,
                     Tuple6<String, String, String, String, String, String> prefixes, Map<String, Object> params,
                     int offset, int limit) {
-                // YUFEI_TODO Auto-generated method stub
+
                 return null;
             }
 
@@ -1530,7 +1512,7 @@ public class TplDynamicExecutorFactoryByAsmTest {
                     String tplExecuteId, Class<R1> entityType1, Class<R2> entityType2, Class<R3> entityType3,
                     Class<R4> entityType4, Class<R5> entityType5, Class<R6> entityType6, Map<String, Object> params,
                     int offset, int limit) {
-                // YUFEI_TODO Auto-generated method stub
+
                 return null;
             }
 
@@ -1539,7 +1521,7 @@ public class TplDynamicExecutorFactoryByAsmTest {
                     TplExecuteId tplExecuteId, Class<R1> entityType1, Class<R2> entityType2, Class<R3> entityType3,
                     Class<R4> entityType4, Class<R5> entityType5, Class<R6> entityType6, Map<String, Object> params,
                     int offset, int limit) {
-                // YUFEI_TODO Auto-generated method stub
+
                 return null;
             }
 
@@ -1549,7 +1531,7 @@ public class TplDynamicExecutorFactoryByAsmTest {
                     Class<R4> entityType4, Class<R5> entityType5, Class<R6> entityType6,
                     Tuple6<String, String, String, String, String, String> prefixes, Map<String, Object> params,
                     int offset, int limit) {
-                // YUFEI_TODO Auto-generated method stub
+
                 return null;
             }
 
@@ -1559,13 +1541,21 @@ public class TplDynamicExecutorFactoryByAsmTest {
                     Class<R4> entityType4, Class<R5> entityType5, Class<R6> entityType6,
                     Tuple6<String, String, String, String, String, String> prefixes, Map<String, Object> params,
                     int offset, int limit) {
-                // YUFEI_TODO Auto-generated method stub
                 return null;
             }
 
             @Override
             public <E> int[] save(List<E> entities, int batchSize) {
-                // YUFEI_TODO Auto-generated method stub
+                return null;
+            }
+
+            @Override
+            public <E> E updateFetch(Serializable id, Class<E> type, UnaryOperator<E> updateOperator) {
+                return null;
+            }
+
+            @Override
+            public <E> E updateFetch(E entity, UnaryOperator<E> updateOperator) {
                 return null;
             }
         };

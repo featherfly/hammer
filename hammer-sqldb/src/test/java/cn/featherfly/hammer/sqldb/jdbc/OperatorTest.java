@@ -1,9 +1,9 @@
 
 package cn.featherfly.hammer.sqldb.jdbc;
 
-import static org.testng.Assert.assertNull;
 import static org.testng.Assert.assertEquals;
 import static org.testng.Assert.assertNotNull;
+import static org.testng.Assert.assertNull;
 import static org.testng.Assert.assertTrue;
 
 import java.io.Serializable;
@@ -22,6 +22,7 @@ import cn.featherfly.hammer.sqldb.jdbc.operate.DeleteOperate;
 import cn.featherfly.hammer.sqldb.jdbc.operate.GetOperate;
 import cn.featherfly.hammer.sqldb.jdbc.operate.InsertOperate;
 import cn.featherfly.hammer.sqldb.jdbc.operate.MergeOperate;
+import cn.featherfly.hammer.sqldb.jdbc.operate.UpdateFetchOperate;
 import cn.featherfly.hammer.sqldb.jdbc.operate.UpdateOperate;
 import cn.featherfly.hammer.sqldb.jdbc.operate.UpsertOperate;
 import cn.featherfly.hammer.sqldb.jdbc.vo.r.App;
@@ -124,7 +125,7 @@ public class OperatorTest extends JdbcTestBase {
         assertInsertBatch(insert, delete, get, null);
         assertInsertBatch(insert, delete, get, 3);
 
-        int results[] = insert.executeBatch(new ArrayList<Role>());
+        int results[] = insert.executeBatch(new ArrayList<>());
         assertEquals(results.length, 0);
         results = insert.executeBatch(new Role[0]);
         assertEquals(results.length, 0);
@@ -569,10 +570,92 @@ public class OperatorTest extends JdbcTestBase {
         //        a = get.get(a);
         //        assertNull(a);
 
-        int results[] = upsert.executeBatch(new ArrayList<App>());
+        int results[] = upsert.executeBatch(new ArrayList<>());
         assertEquals(results.length, 0);
         results = upsert.executeBatch(new App[0]);
         assertEquals(results.length, 0);
+    }
+
+    @Test
+    public void testUpdateFetch() {
+        UpdateOperate<Role> update = new UpdateOperate<>(jdbc, mappingFactory.getClassMapping(Role.class),
+                mappingFactory.getSqlTypeMappingManager(), mappingFactory.getMetadata());
+        GetOperate<Role> get = new GetOperate<>(jdbc, mappingFactory.getClassMapping(Role.class),
+                mappingFactory.getSqlTypeMappingManager(), mappingFactory.getMetadata());
+        UpdateFetchOperate<
+                Role> updateFetch = new UpdateFetchOperate<>(jdbc, mappingFactory.getClassMapping(Role.class),
+                        mappingFactory.getSqlTypeMappingManager(), mappingFactory.getMetadata(), get, update, key -> {
+                        }, key -> {
+                        });
+
+        int id = 10;
+        Role role = new Role();
+        role.setId(10);
+        role.setName("name_update_" + Randoms.getInt(99));
+        role.setDescp("descp_update_" + Randoms.getInt(99));
+        Role changedRole = updateFetch.execute(id, r -> {
+            r.setName(role.getName());
+            r.setDescp(role.getDescp());
+            return r;
+        });
+        assertNotNull(changedRole);
+        assertEquals(changedRole.getId(), role.getId());
+        assertEquals(changedRole.getName(), role.getName());
+        assertEquals(changedRole.getDescp(), role.getDescp());
+
+        Role loadRole = get.get(role);
+        assertNotNull(loadRole);
+        assertEquals(loadRole.getId(), role.getId());
+        assertEquals(loadRole.getName(), role.getName());
+        assertEquals(loadRole.getDescp(), role.getDescp());
+
+        assertEquals(loadRole.getId(), changedRole.getId());
+        assertEquals(loadRole.getName(), changedRole.getName());
+        assertEquals(loadRole.getDescp(), changedRole.getDescp());
+    }
+
+    @Test
+    public void testUpdateFetchMulitiPk() {
+        UpdateOperate<UserRole> update = new UpdateOperate<>(jdbc, mappingFactory.getClassMapping(UserRole.class),
+                mappingFactory.getSqlTypeMappingManager(), mappingFactory.getMetadata());
+        GetOperate<UserRole> get = new GetOperate<>(jdbc, mappingFactory.getClassMapping(UserRole.class),
+                mappingFactory.getSqlTypeMappingManager(), mappingFactory.getMetadata());
+        UpdateFetchOperate<
+                UserRole> updateFetch = new UpdateFetchOperate<>(jdbc, mappingFactory.getClassMapping(UserRole.class),
+                        mappingFactory.getSqlTypeMappingManager(), mappingFactory.getMetadata(), get, update, key -> {
+                        }, key -> {
+                        });
+
+        int rid = 8;
+        int uid = 8;
+        UserRole ur = new UserRole();
+        ur.setRoleId(rid);
+        ur.setUserId(uid);
+        ur.setDescp("descp_update_" + Randoms.getInt(99));
+        ur.setDescp2("descp2_update_" + Randoms.getInt(99));
+        UserRole changed = updateFetch.execute(ur, r -> {
+            r.setDescp(ur.getDescp());
+            r.setDescp2(ur.getDescp2());
+            return r;
+        });
+        assertNotNull(changed);
+        assertEquals(changed.getUserId(), ur.getUserId());
+        assertEquals(changed.getRoleId(), ur.getRoleId());
+        assertEquals(changed.getDescp(), ur.getDescp());
+        assertEquals(changed.getDescp2(), ur.getDescp2());
+
+        UserRole loaded = get.get(ur);
+        assertNotNull(loaded);
+        assertEquals(loaded.getUserId(), ur.getUserId());
+        assertEquals(loaded.getRoleId(), ur.getRoleId());
+        assertEquals(loaded.getDescp(), ur.getDescp());
+        assertEquals(loaded.getDescp2(), ur.getDescp2());
+
+        assertEquals(loaded.getUserId(), changed.getUserId());
+        assertEquals(loaded.getRoleId(), changed.getRoleId());
+        assertEquals(loaded.getDescp(), changed.getDescp());
+        assertEquals(loaded.getDescp2(), changed.getDescp2());
+
     }
 
 }

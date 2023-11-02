@@ -10,9 +10,8 @@ import cn.featherfly.hammer.sqldb.jdbc.Jdbc;
  * 数据库操作的抽象类.
  *
  * @author zhongj
- * @version 0.1.0
  * @since 0.1.0
- * @param <T> 对象类型
+ * @param <T> entity type
  */
 public abstract class AbstractExecuteOperate<T> extends AbstractOperate<T> implements ExecuteOperate<T> {
 

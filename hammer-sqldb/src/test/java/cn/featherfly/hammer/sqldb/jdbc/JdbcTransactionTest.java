@@ -5,7 +5,6 @@ import static org.testng.Assert.assertEquals;
 import static org.testng.Assert.assertNull;
 
 import java.sql.Connection;
-import java.util.List;
 import java.util.concurrent.atomic.AtomicLong;
 
 import org.testng.annotations.BeforeClass;
@@ -56,18 +55,13 @@ public class JdbcTransactionTest extends JdbcTestBase {
         final AtomicLong l = new AtomicLong();
         result = jdbc.insert(tableName, columnNames, new GeneratedKeyHolder<Long>() {
             @Override
-            public void acceptKey(Long key, int row) {
+            public void acceptKey(Long key) {
                 l.set(key);
             }
 
             @Override
             public Type<Long> getType() {
                 return new ClassType<>(Long.class);
-            }
-
-            @Override
-            public void acceptKey(List<Long> keys) {
-                l.set(keys.get(0));
             }
         }, params);
         assertEquals(result, 1);
@@ -111,7 +105,7 @@ public class JdbcTransactionTest extends JdbcTestBase {
         final AtomicLong l = new AtomicLong();
         result = jdbc.insert(tableName, columnNames, new GeneratedKeyHolder<Long>() {
             @Override
-            public void acceptKey(Long key, int row) {
+            public void acceptKey(Long key) {
                 l.set(key);
             }
 
@@ -120,10 +114,6 @@ public class JdbcTransactionTest extends JdbcTestBase {
                 return new ClassType<>(Long.class);
             }
 
-            @Override
-            public void acceptKey(List<Long> keys) {
-                l.set(keys.get(0));
-            }
         }, params);
         assertEquals(result, 1);
 

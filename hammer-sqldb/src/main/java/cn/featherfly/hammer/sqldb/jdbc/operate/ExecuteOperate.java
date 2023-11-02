@@ -4,7 +4,6 @@ package cn.featherfly.hammer.sqldb.jdbc.operate;
  * execute operate.
  *
  * @author zhongj
- * @version 0.6.1
  * @since 0.6.1
  * @param <T> 对象类型
  */
