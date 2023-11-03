@@ -6,10 +6,7 @@ import java.util.Map;
 import cn.featherfly.common.repository.mapping.RowMapper;
 
 /**
- * <p>
- * dsl for query single executor
- * </p>
- * .
+ * dsl for query single executor .
  *
  * @author zhongj
  */

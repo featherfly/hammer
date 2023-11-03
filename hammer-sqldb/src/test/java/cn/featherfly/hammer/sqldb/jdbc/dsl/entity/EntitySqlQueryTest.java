@@ -1,14 +1,17 @@
 
 package cn.featherfly.hammer.sqldb.jdbc.dsl.entity;
 
-import static org.junit.Assert.assertFalse;
 import static org.testng.Assert.assertEquals;
+import static org.testng.Assert.assertFalse;
 import static org.testng.Assert.assertNotEquals;
 import static org.testng.Assert.assertNotNull;
+import static org.testng.Assert.assertNull;
 import static org.testng.Assert.assertTrue;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
+import java.util.function.Consumer;
 import java.util.function.Predicate;
 
 import org.testng.annotations.BeforeMethod;
@@ -61,13 +64,13 @@ public class EntitySqlQueryTest extends JdbcTestBase {
     }
 
     @Test
-    void testList() {
+    void list() {
         List<Order> list = query.find(Order.class).list();
         assertTrue(list.size() > 0);
     }
 
     @Test
-    void testLimit() {
+    void limit() {
         User user = query.find(User.class).limit(1).single();
         assertTrue(user.getId() == 1);
 
@@ -82,7 +85,7 @@ public class EntitySqlQueryTest extends JdbcTestBase {
     }
 
     @Test
-    void testSort() {
+    void sort() {
         List<User> users = query.find(User.class).sort().asc(User::getId).limit(2).list();
         assertTrue(users.size() == 2);
         assertTrue(users.get(0).getId() < users.get(1).getId());
@@ -93,7 +96,7 @@ public class EntitySqlQueryTest extends JdbcTestBase {
     }
 
     @Test
-    void testConditionConfig() {
+    void conditionConfig() {
         MutableTuple1<Predicate<?>> ignoreStrategy = MutableTuples.create1();
         query.find(User.class).where().configure(c -> {
             ignoreStrategy.set0(c.setIgnoreStrategy(IgnoreStrategy.EMPTY).getIgnoreStrategy());
@@ -101,35 +104,35 @@ public class EntitySqlQueryTest extends JdbcTestBase {
         assertEquals(ignoreStrategy.get0().get(), IgnoreStrategy.EMPTY);
 
         List<User> users = query.find(User.class) //
-                .configure(c -> c.setIgnoreStrategy(IgnoreStrategy.EMPTY)) //
-                .where().eq(User::getUsername, "").list();
+            .configure(c -> c.setIgnoreStrategy(IgnoreStrategy.EMPTY)) //
+            .where().eq(User::getUsername, "").list();
         assertTrue(users.size() > 0);
 
         users = query.find(User.class).where() //
-                .configure(c -> c.setIgnoreStrategy(IgnoreStrategy.EMPTY)) //
-                .eq(User::getUsername, "").list();
+            .configure(c -> c.setIgnoreStrategy(IgnoreStrategy.EMPTY)) //
+            .eq(User::getUsername, "").list();
         assertTrue(users.size() > 0);
 
         users = query.find(User.class).where().configure(c -> c.setIgnoreStrategy(IgnoreStrategy.NULL))
-                .eq(User::getUsername, "") //
-                .list();
+            .eq(User::getUsername, "") //
+            .list();
         assertTrue(users.size() == 0);
 
         users = query.find(User.class).where().configure(c -> c.setIgnoreStrategy(IgnoreStrategy.NULL))
-                .eq(User::getUsername, null).list();
+            .eq(User::getUsername, null).list();
         assertTrue(users.size() > 0);
 
         users = query.find(User.class).where().configure(c -> c.setIgnoreStrategy(IgnoreStrategy.NONE))
-                .eq(User::getUsername, null).list();
+            .eq(User::getUsername, null).list();
         assertTrue(users.size() == 0);
 
         users = query.find(User.class).where().configure(c -> c.setIgnoreStrategy(IgnoreStrategy.NONE))
-                .eq(User::getUsername, "").list();
+            .eq(User::getUsername, "").list();
         assertTrue(users.size() == 0);
     }
 
     @Test
-    void testIgnorePolicy() {
+    void ignoreStrategy() {
         List<User> users = null;
         users = query.find(User.class).where().eq(User::getUsername, "", IgnoreStrategy.EMPTY).list();
         assertTrue(users.size() > 0);
@@ -171,90 +174,114 @@ public class EntitySqlQueryTest extends JdbcTestBase {
     }
 
     @Test
-    void testCount() {
-        long number = query.find("user").count();
-        System.out.println("count:" + number);
+    void fetchProperty() {
+        Consumer<User> assertUser = user -> {
+            assertNotNull(user.getId());
+            assertNotNull(user.getAge());
+            assertNull(user.getUsername());
+            assertNull(user.getMobileNo());
+            assertNull(user.getPwd());
+        };
+        @SuppressWarnings("unchecked")
+        List<User> users = query.find(User.class).fetch(User::getId, User::getAge).list();
+        for (User user : users) {
+            assertUser.accept(user);
+        }
+        users = query.find(User.class).fetch(User::getId).fetch(User::getAge).list();
+        for (User user : users) {
+            assertUser.accept(user);
+        }
 
-        long number2 = query.find(User.class).count();
-        System.out.println("count:" + number2);
-        assertTrue(number2 > 0);
-        assertEquals(number, number2);
-
-        number = query.find("user").where().eq("age", 55).count();
-        assertTrue(number == 1);
-
-        number2 = query.find(User.class).where().eq(User::getAge, 55).count();
-        assertTrue(number2 == 1);
-        assertEquals(number, number2);
-
-        number = query.find("user").fetch("id").count();
-        number2 = query.find(User.class).fetch(User::getId) //
-                .count();
-        assertEquals(number, number2);
+        @SuppressWarnings("unchecked")
+        User user = query.find(User.class).fetch(User::getId, User::getAge) //
+            .limit(1).single();
+        assertUser.accept(user);
+        user = query.find(User.class).fetch(User::getId) //
+            .fetch(User::getAge) //
+            .limit(1).single();
+        assertUser.accept(user);
     }
 
     @Test
-    void testAvg() {
-        Integer number = query.find("user").avg("age").integer();
-        System.out.println("avg:" + number);
-        assertTrue(number > 0);
+    void fetchOneProperty() {
+        String name = "yufei";
+        String username = query.find(User.class).fetch(User::getUsername).where().eq(User::getUsername, name).value();
+        assertEquals(username, name);
 
-        //        query.find("user").integer(); 没有使用property或各种统计方法，则无法调用返回单个参数的方法
-        //        query.find("user").where().eq("id", "id").integer(); 这里没有实现上面的逻辑
+        // ----------------------------------------------------------------------------------------------------------------
 
-        Integer number2 = query.find(User.class).avg(User::getAge).single();
-        System.out.println("avg:" + number2);
-        assertTrue(number2 > 0);
-        assertEquals(number, number2);
-
-        number = query.find("user").avg("age").where().eq("age", 5).integer();
-        assertTrue(number == 5);
-
-        number2 = query.find(User.class).avg(User::getAge).where().eq(User::getAge, 5).single();
-        assertTrue(number2 == 5);
-        assertEquals(number, number2);
+        List<User> users = query.find(User.class).limit(2).list();
+        Integer[] ids = users.stream().map(User::getId).toArray(n -> new Integer[n]);
+        List<String> usernames = query.find(User.class).fetch(User::getUsername).where().in(User::getId, ids)
+            .valueList();
+        Lang.each(usernames, (e, i) -> {
+            assertEquals(e, users.get(i).getUsername());
+        });
     }
 
     @Test
-    void testSum() {
-        Long count = query.find("user").where().eq("age", 5).count();
+    void count() {
+        long size = query.find(User.class).list().size();
+        System.out.println("user list size: " + size);
 
-        Integer number = query.find("user").sum("age").where().eq("age", 5).integer();
-        System.out.println("sum:" + number);
-        assertTrue(number > 0);
-        assertTrue(number == count * 5);
+        long count = query.find(User.class).count();
+        System.out.println("count: " + count);
+        assertTrue(count > 0);
+        assertEquals(count, size);
 
-        Integer number2 = query.find(User.class).sum(User::getAge).where().eq(User::getAge, 5).single();
-        System.out.println("avg:" + number2);
-        assertTrue(number2 > 0);
-        assertTrue(number == count * 5);
-        assertEquals(number, number2);
+        size = query.find(User.class).where().eq(User::getAge, 55).list().size();
+        assertTrue(size == 1);
+
+        count = query.find(User.class).where().eq(User::getAge, 55).count();
+        assertTrue(count == 1);
+        assertEquals(size, count);
+
+        size = query.find(User.class).fetch(User::getId).list().size();
+        count = query.find(User.class).fetch(User::getId) //
+            .count();
+        assertEquals(size, count);
     }
 
     @Test
-    void testMin() {
+    void avg() {
+        Integer avg = query.find(User.class).avg(User::getAge).value();
+        System.out.println("avg: " + avg);
+        assertTrue(avg > 0);
 
-        Integer number = query.find("user").min("age").integer();
-        System.out.println("min:" + number);
-        assertTrue(number == 5);
-
-        Integer number2 = query.find(User.class).min(User::getAge).single();
-        System.out.println("min:" + number2);
-        assertTrue(number2 == 5);
-        assertEquals(number, number2);
+        avg = query.find(User.class).avg(User::getAge).where().eq(User::getAge, 5).value();
+        assertTrue(avg == 5);
     }
 
     @Test
-    void testMax() {
+    void sum() {
+        Long count = query.find(User.class).where().eq(User::getAge, 5).count();
 
-        Integer number = query.find("user").max("age").integer();
-        System.out.println("min:" + number);
-        assertTrue(number == 55);
+        Integer sum = query.find(User.class).sum(User::getAge).where().eq(User::getAge, 5).value();
+        System.out.println("sum:" + sum);
+        assertTrue(sum > 0);
+        assertTrue(sum == count * 5);
+    }
 
-        Integer number2 = query.find(User.class).max(User::getAge).single();
-        System.out.println("min:" + number2);
-        assertTrue(number2 == 55);
-        assertEquals(number, number2);
+    @Test
+    void min() {
+        Integer min = query.find(User.class).min(User::getAge).value();
+        System.out.println("min:" + min);
+        assertTrue(min == 5);
+
+        min = query.find(User.class).min(User::getAge).where().ge(User::getAge, 10).value();
+        System.out.println("min:" + min);
+        assertTrue(min == 10);
+    }
+
+    @Test
+    void max() {
+        Integer max = query.find(User.class).max(User::getAge).value();
+        System.out.println("max:" + max);
+        assertTrue(max == 55);
+
+        max = query.find(User.class).max(User::getAge).where().le(User::getAge, 10).value();
+        System.out.println("max:" + max);
+        assertTrue(max == 10);
     }
 
     @SuppressWarnings("unchecked")
@@ -262,14 +289,14 @@ public class EntitySqlQueryTest extends JdbcTestBase {
     void testMapping() {
 
         query.find(User.class).where().eq(User::getUsername, "yufei").and().eq(User::getPwd, "123456").and().group()
-                .gt(User::getAge, 18).and().lt(User::getAge, 60).list();
+            .gt(User::getAge, 18).and().lt(User::getAge, 60).list();
 
         query.find(User.class).where().eq(User::getUsername, "yufei").and().eq(User::getPwd, "123456").and().group()
-                .gt(User::getAge, 18).and().property(User::getAge).lt(60).list();
+            .gt(User::getAge, 18).and().property(User::getAge).lt(60).list();
 
         query.find(User.class).property(User::getUsername, User::getPwd, User::getAge).where()
-                .eq(User::getUsername, "yufei").and().eq(User::getPwd, "123456").and().group().gt(User::getAge, 18)
-                .and().lt(User::getAge, 60).list();
+            .eq(User::getUsername, "yufei").and().eq(User::getPwd, "123456").and().group().gt(User::getAge, 18).and()
+            .lt(User::getAge, 60).list();
         /*
          * query.find(User.class).join(UserInfo.class, UserInfo::getUser)
          * query.find(UserInfo.class).join(UserInfo::getUser, User.class)
@@ -280,8 +307,8 @@ public class EntitySqlQueryTest extends JdbcTestBase {
          * query.find("user_info").join("user_id", "user")
          */
         query.find(User.class).property(User::getUsername, User::getPwd, User::getAge).where()
-                .eq(User::getUsername, "yufei").and().eq(User::getPwd, "123456").and().group().gt(User::getAge, 18)
-                .and().lt(User::getAge, 60).list();
+            .eq(User::getUsername, "yufei").and().eq(User::getPwd, "123456").and().group().gt(User::getAge, 18).and()
+            .lt(User::getAge, 60).list();
     }
 
     @Test
@@ -295,26 +322,108 @@ public class EntitySqlQueryTest extends JdbcTestBase {
 
     @SuppressWarnings("unchecked")
     @Test
-    void testPropertyExpression() {
+    void propertyExpression() {
 
         query.find(User.class).where()//
-                .property(User::getUsername).eq("yufei") //
-                .and().property(User::getPwd).eq("123456") //
-                .list();
+            .property(User::getUsername).eq("yufei") //
+            .and().property(User::getPwd).eq("123456") //
+            .list();
 
         query.find(User.class).where().property(User::getUsername).eq("yufei").and().property(User::getPwd).eq("123456")
-                .and().group().property(User::getAge).gt(18).and().property(User::getAge).lt(60).list();
+            .and().group().property(User::getAge).gt(18).and().property(User::getAge).lt(60).list();
 
         query.find(User.class).where().property(User::getUsername).eq("yufei").and().property(User::getPwd).eq("123456")
-                .and().group().gt(User::getAge, 18).and().property(User::getAge).lt(60).list();
+            .and().group().gt(User::getAge, 18).and().property(User::getAge).lt(60).list();
 
         query.find(User.class).property(User::getUsername, User::getPwd, User::getAge).where()
-                .eq(User::getUsername, "yufei").and().eq(User::getPwd, "123456").and().group().gt(User::getAge, 18)
-                .and().lt(User::getAge, 60).list();
+            .eq(User::getUsername, "yufei").and().eq(User::getPwd, "123456").and().group().gt(User::getAge, 18).and()
+            .lt(User::getAge, 60).list();
 
         query.find(User.class).property(User::getUsername, User::getPwd, User::getAge).where()
-                .eq(User::getUsername, "yufei").and().eq(User::getPwd, "123456").and().group().gt(User::getAge, 18)
-                .and().lt(User::getAge, 60).list();
+            .eq(User::getUsername, "yufei").and().eq(User::getPwd, "123456").and().group().gt(User::getAge, 18).and()
+            .lt(User::getAge, 60).list();
+    }
+
+    @Test
+    void propertyExpressionJoin() {
+        List<User> users = null;
+        final int id = 1;
+        final int min = id;
+        final int max = 5;
+        final User user = query.find(User.class).where().eq(User::getId, id).single();
+
+        Consumer<List<User>> assertUsers = (list) -> {
+            assertEquals(list.size(), 1);
+            User u = list.get(0);
+            assertEquals(u.getId(), user.getId());
+            assertEquals(u.getUsername(), user.getUsername());
+        };
+
+        users = query.find(User.class).join(UserInfo::getUser).where().eq(User::getId, user.getId()) //
+            .and().ba2(UserInfo::getId, min, max) //
+            .and().eq(User::getUsername, user.getUsername()) //
+            .list();
+        assertUsers.accept(users);
+
+        users = query.find(User.class).join(UserInfo::getUser).where( //
+            (e0, e1) -> e0.property(User::getId).eq(user.getId()) //
+                .and().property(User::getUsername) //
+                .eq(user.getUsername()) //
+        ).and().ba2(UserInfo::getId, min, max).list();
+        assertUsers.accept(users);
+
+        users = query.find(User.class).join(UserInfo::getUser).where( //
+            (e0, e1) -> e0.property(User::getId).eq(user.getId()) //
+                .and().property(User::getUsername) //
+                .eq(user.getUsername()) //
+                .and(e1.property(UserInfo::getId).ba(min, max)))
+            .list();
+        assertUsers.accept(users);
+
+        users = query.find(User.class).join(UserInfo::getUser).where( //
+            (e0, e1) -> e0.property(User::getId).eq(user.getId()) //
+                .and().property(User::getUsername).eq(user.getUsername()) //
+                .and(e1.property(UserInfo::getId).ba(min, max)) //
+        ).list();
+        assertUsers.accept(users);
+
+        users = query.find(User.class).join(UserInfo::getUser).where( //
+            (e0, e1) -> e1.property(UserInfo::getId).ba(min, max) //
+                .and(e0.property(User::getId).eq(user.getId()) //
+                    .and().property(User::getUsername).eq(user.getUsername())) //
+
+        ).list();
+        assertUsers.accept(users);
+
+        //        users = query.find(User.class).join(UserInfo::getUser).where( //
+        //                (e0, e1) -> e0.property(User::getId).eq(user.getId()) //
+        //                        .and(e0.property(User::getUsername).eq(user.getUsername()))
+        //                          FIXME 触发异常：语法错误，连续相同类型的表达式
+        // IMPLSOON 后续改为强类型，即e0.xx.and(e0.eq()),e1.xx.and(e1.eq())编译报错,只能e0.xx.and(e1.eq()),e0.xx.and(e2.eq())
+        //                        .and(e1.property(UserInfo::getId).ba(min, max)) //
+        //        ).list();
+        //        assertUsers.accept(users);
+
+        //        users = query.find(User.class).join(UserInfo::getUser).where( //
+        //                (e0, e1) -> e0.property(User::getId).eq(user.getId()) //
+        //                        .and().property(User::getUsername).eq(user.getUsername()) //
+        //                        .and().ba2(UserInfo::getId, min, max) // api已经没有ba(N)
+        //        ).list();
+        //        assertUsers.accept(users);
+
+        users = query.find(User.class).join(UserInfo::getUser).where( //
+            (e0, e1) -> e0.property(User::getId).eq(user.getId()) //
+                .and(e1.property(UserInfo::getId).ba(min, max))) //
+            .and().property(User::getUsername).eq(user.getUsername()) //
+            .list();
+        assertUsers.accept(users);
+
+        users = query.find(User.class).join(UserInfo::getUser).where( //
+            (e0, e1) -> e0.property(User::getId).eq(user.getId()) //
+                .and(e1.property(UserInfo::getId).ba(min, max))) //
+            .and().eq(User::getUsername, user.getUsername()) //
+            .list();
+        assertUsers.accept(users);
     }
 
     @Test
@@ -334,7 +443,7 @@ public class EntitySqlQueryTest extends JdbcTestBase {
         //        userInfo = query.find(UserInfo.class).where().eq(UserInfo::getDivision, DistrictDivision::getProvince, province)
         //                .single(); // 使用下面这行代替
         userInfo = query.find(UserInfo.class).where().property(UserInfo::getDivision)
-                .property(DistrictDivision::getProvince).eq(province).single();
+            .property(DistrictDivision::getProvince).eq(province).single();
         assertEquals(userInfo.getDivision().getProvince(), province);
         System.out.println(userInfo);
     }
@@ -366,21 +475,21 @@ public class EntitySqlQueryTest extends JdbcTestBase {
     @Test
     void testProperty_eq() {
         long c = query.find(User.class) //
-                .where() //
-                .property(User::getId).eq(null, v -> false) // 不忽略
-                .count();
+            .where() //
+            .property(User::getId).eq(null, v -> false) // 不忽略
+            .count();
         assertEquals(c, 0);
 
         c = query.find(User.class) //
-                .where() //
-                .property(User::getId).eq(null, IgnoreStrategy.NONE) // 不忽略
-                .count();
+            .where() //
+            .property(User::getId).eq(null, IgnoreStrategy.NONE) // 不忽略
+            .count();
         assertEquals(c, 0);
 
         c = query.find(User.class) //
-                .where() //
-                .property(User::getUsername).eq(null, IgnoreStrategy.NONE) // 不忽略
-                .count();
+            .where() //
+            .property(User::getUsername).eq(null, IgnoreStrategy.NONE) // 不忽略
+            .count();
         assertEquals(c, 0);
     }
 
@@ -431,21 +540,21 @@ public class EntitySqlQueryTest extends JdbcTestBase {
     @Test
     void testProperty_ne() {
         long c = query.find(User.class) //
-                .where() //
-                .property(User::getId).ne(null, v -> false) // 不忽略
-                .count();
+            .where() //
+            .property(User::getId).ne(null, v -> false) // 不忽略
+            .count();
         assertEquals(c, 0);
 
         c = query.find(User.class) //
-                .where() //
-                .property(User::getId).ne(null, IgnoreStrategy.NONE) // 不忽略
-                .count();
+            .where() //
+            .property(User::getId).ne(null, IgnoreStrategy.NONE) // 不忽略
+            .count();
         assertEquals(c, 0);
 
         c = query.find(User.class) //
-                .where() //
-                .property(User::getUsername).ne(null, IgnoreStrategy.NONE) // 不忽略
-                .count();
+            .where() //
+            .property(User::getUsername).ne(null, IgnoreStrategy.NONE) // 不忽略
+            .count();
         assertEquals(c, 0);
     }
 
@@ -494,46 +603,183 @@ public class EntitySqlQueryTest extends JdbcTestBase {
     }
 
     @Test
-    void testProperty_in() {
+    void condition_in() {
+        Integer id = null;
+        Integer[] ids = null;
+        int[] idsInt = null;
+        Integer one = 1;
+        Integer two = 2;
+        String username = null;
+        //        String[] usernames = null;
+        List<Integer> idList = null;
+        Collection<Integer> idCollection = null;
+
+        long c = query.find(User.class) //
+            .where() //
+            .in(User::getId, id, v -> false) // 不忽略
+            .count();
+        assertEquals(c, 0);
+
+        c = query.find(User.class) //
+            .where() //
+            .in(User::getUsername, username, v -> false) // 不忽略
+            .count();
+        assertEquals(c, 0);
+
+        c = query.find(User.class) //
+            .where() //
+            .in(User::getId, id, IgnoreStrategy.NONE) // 不忽略
+            .count();
+        assertEquals(c, 0);
+
+        c = query.find(User.class) //
+            .where() //
+            .in(User::getUsername, username, IgnoreStrategy.NONE) // 不忽略
+            .count();
+        assertEquals(c, 0);
+
+        // ----------------------------------------------------------------------------------------------------------------
+
+        c = query.find(User.class) //
+            .where() //
+            .in(User::getId, ids, v -> false) // 不忽略
+            .count();
+        assertEquals(c, 0);
+        c = query.find(User.class) //
+            .where() //
+            .in(User::getId, ids, IgnoreStrategy.NONE) // 不忽略
+            .count();
+        assertEquals(c, 0);
+        ids = Lang.array(1, 2);
+        c = query.find(User.class) //
+            .where() //
+            .in(User::getId, ids) // 不忽略
+            .count();
+        assertEquals(c, ids.length);
+        c = query.find(User.class) //
+            .where() //
+            .in(User::getId, ids, IgnoreStrategy.NONE) // 不忽略
+            .count();
+        assertEquals(c, ids.length);
+        c = query.find(User.class) //
+            .where() //
+            .in(User::getId, one, two) // 不忽略
+            .count();
+        assertEquals(c, 2);
+
+        // ----------------------------------------------------------------------------------------------------------------
+
+        c = query.find(User.class) //
+            .where() //
+            .in(User::getId, idsInt, (Predicate<int[]>) v -> false) // 不忽略
+            .count();
+        assertEquals(c, 0);
+        c = query.find(User.class) //
+            .where() //
+            .in(User::getId, idsInt, IgnoreStrategy.NONE) // 不忽略
+            .count();
+        assertEquals(c, 0);
+        idsInt = new int[] { 1, 2, 3 };
+        c = query.find(User.class) //
+            .where() //
+            .in(User::getId, idsInt) // 不忽略
+            .count();
+        assertEquals(c, idsInt.length);
+        c = query.find(User.class) //
+            .where() //
+            .in(User::getId, idsInt, IgnoreStrategy.NONE) // 不忽略
+            .count();
+        assertEquals(c, idsInt.length);
+        int i1 = 1;
+        int i2 = 2;
+        c = query.find(User.class) //
+            .where() //
+            .in(User::getId, 1, 2) // 不忽略
+            .count();
+        assertEquals(c, 2);
+        c = query.find(User.class) //
+            .where() //
+            .in(User::getId, i1, i2) // 不忽略
+            .count();
+        assertEquals(c, 2);
+
+        c = query.find(User.class) //
+            .where() //
+            .in(User::getUsername, "", "").count();
+
+        // ----------------------------------------------------------------------------------------------------------------
+
+        c = query.find(User.class) //
+            .where() //
+            .in(User::getId, idList, (Predicate<Collection<Integer>>) v -> false) // 不忽略
+            .count();
+        assertEquals(c, 0);
+        c = query.find(User.class) //
+            .where() //
+            .in(User::getId, idList, IgnoreStrategy.NONE) // 不忽略
+            .count();
+        assertEquals(c, 0);
+        idList = Lang.list(1, 2);
+        c = query.find(User.class) //
+            .where() //
+            .in(User::getId, idList) // 不忽略
+            .count();
+        assertEquals(c, idList.size());
+        c = query.find(User.class) //
+            .where() //
+            .in(User::getId, idList, IgnoreStrategy.NONE) // 不忽略
+            .count();
+        assertEquals(c, idList.size());
+
+        idCollection = idList;
+        c = query.find(User.class) //
+            .where() //
+            .in(User::getId, idCollection, IgnoreStrategy.NONE) // 不忽略
+            .count();
+        assertEquals(c, idCollection.size());
+    }
+
+    @Test
+    void property_in() {
         Integer id = null;
         Integer[] ids = null;
         String username = null;
         String[] usernames = null;
 
         long c = query.find(User.class) //
-                .where() //
-                .property(User::getId).in(id, v -> false) // 不忽略
-                .count();
+            .where() //
+            .property(User::getId).in(id, v -> false) // 不忽略
+            .count();
         assertEquals(c, 0);
 
         c = query.find(User.class) //
-                .where() //
-                .property(User::getUsername).in(username, v -> false) // 不忽略
-                .count();
+            .where() //
+            .property(User::getUsername).in(username, v -> false) // 不忽略
+            .count();
         assertEquals(c, 0);
 
         c = query.find(User.class) //
-                .where() //
-                .property(User::getId).in(id, IgnoreStrategy.NONE) // 不忽略
-                .count();
+            .where() //
+            .property(User::getId).in(id, IgnoreStrategy.NONE) // 不忽略
+            .count();
         assertEquals(c, 0);
 
         c = query.find(User.class) //
-                .where() //
-                .property(User::getUsername).in(username, IgnoreStrategy.NONE) // 不忽略
-                .count();
+            .where() //
+            .property(User::getUsername).in(username, IgnoreStrategy.NONE) // 不忽略
+            .count();
         assertEquals(c, 0);
 
         c = query.find(User.class) //
-                .where() //
-                .property(User::getId).in(ids, IgnoreStrategy.NONE) // 不忽略
-                .count();
+            .where() //
+            .property(User::getId).in(ids, IgnoreStrategy.NONE) // 不忽略
+            .count();
         assertEquals(c, 0);
 
         c = query.find(User.class) //
-                .where() //
-                .property(User::getUsername).in(usernames, IgnoreStrategy.NONE) // 不忽略
-                .count();
+            .where() //
+            .property(User::getUsername).in(usernames, IgnoreStrategy.NONE) // 不忽略
+            .count();
         assertEquals(c, 0);
     }
 
@@ -545,39 +791,39 @@ public class EntitySqlQueryTest extends JdbcTestBase {
         String[] usernames = null;
 
         long c = query.find(User.class) //
-                .where() //
-                .property(User::getId).ni(id, v -> false) // 不忽略
-                .count();
+            .where() //
+            .property(User::getId).ni(id, v -> false) // 不忽略
+            .count();
         assertEquals(c, 0);
 
         c = query.find(User.class) //
-                .where() //
-                .property(User::getUsername).ni(username, v -> false) // 不忽略
-                .count();
+            .where() //
+            .property(User::getUsername).ni(username, v -> false) // 不忽略
+            .count();
         assertEquals(c, 0);
 
         c = query.find(User.class) //
-                .where() //
-                .property(User::getId).ni(id, IgnoreStrategy.NONE) // 不忽略
-                .count();
+            .where() //
+            .property(User::getId).ni(id, IgnoreStrategy.NONE) // 不忽略
+            .count();
         assertEquals(c, 0);
 
         c = query.find(User.class) //
-                .where() //
-                .property(User::getUsername).ni(username, IgnoreStrategy.NONE) // 不忽略
-                .count();
+            .where() //
+            .property(User::getUsername).ni(username, IgnoreStrategy.NONE) // 不忽略
+            .count();
         assertEquals(c, 0);
 
         c = query.find(User.class) //
-                .where() //
-                .property(User::getId).ni(ids, IgnoreStrategy.NONE) // 不忽略
-                .count();
+            .where() //
+            .property(User::getId).ni(ids, IgnoreStrategy.NONE) // 不忽略
+            .count();
         assertEquals(c, 0);
 
         c = query.find(User.class) //
-                .where() //
-                .property(User::getUsername).ni(usernames, IgnoreStrategy.NONE) // 不忽略
-                .count();
+            .where() //
+            .property(User::getUsername).ni(usernames, IgnoreStrategy.NONE) // 不忽略
+            .count();
         assertEquals(c, 0);
     }
 
@@ -585,35 +831,35 @@ public class EntitySqlQueryTest extends JdbcTestBase {
     void testProperty_ge() {
         int qa = 40;
         List<User> users = query.find(User.class) //
-                .where() //
-                .property(User::getAge).ge(qa, v -> false) // 不忽略
-                .list();
+            .where() //
+            .property(User::getAge).ge(qa, v -> false) // 不忽略
+            .list();
         for (User user : users) {
             assertTrue(user.getAge() >= qa);
         }
 
         long c = query.find(User.class) //
-                .where() //
-                .property(User::getId).ge(null, v -> false) // 不忽略
-                .count();
+            .where() //
+            .property(User::getId).ge(null, v -> false) // 不忽略
+            .count();
         assertEquals(c, 0);
 
         c = query.find(User.class) //
-                .where() //
-                .property(User::getId).ge(null, IgnoreStrategy.NONE) // 不忽略
-                .count();
+            .where() //
+            .property(User::getId).ge(null, IgnoreStrategy.NONE) // 不忽略
+            .count();
         assertEquals(c, 0);
 
         c = query.find(User.class) //
-                .where() //
-                .property(User::getUsername).ge(null, v -> false) // 不忽略
-                .count();
+            .where() //
+            .property(User::getUsername).ge(null, v -> false) // 不忽略
+            .count();
         assertEquals(c, 0);
 
         c = query.find(User.class) //
-                .where() //
-                .property(User::getUsername).ge(null, IgnoreStrategy.NONE) // 不忽略
-                .count();
+            .where() //
+            .property(User::getUsername).ge(null, IgnoreStrategy.NONE) // 不忽略
+            .count();
         assertEquals(c, 0);
     }
 
@@ -621,35 +867,35 @@ public class EntitySqlQueryTest extends JdbcTestBase {
     void testProperty_gt() {
         int qa = 40;
         List<User> users = query.find(User.class) //
-                .where() //
-                .property(User::getAge).gt(qa, v -> false) // 不忽略
-                .list();
+            .where() //
+            .property(User::getAge).gt(qa, v -> false) // 不忽略
+            .list();
         for (User user : users) {
             assertTrue(user.getAge() > qa);
         }
 
         long c = query.find(User.class) //
-                .where() //
-                .property(User::getId).gt(null, v -> false) // 不忽略
-                .count();
+            .where() //
+            .property(User::getId).gt(null, v -> false) // 不忽略
+            .count();
         assertEquals(c, 0);
 
         c = query.find(User.class) //
-                .where() //
-                .property(User::getId).gt(null, IgnoreStrategy.NONE) // 不忽略
-                .count();
+            .where() //
+            .property(User::getId).gt(null, IgnoreStrategy.NONE) // 不忽略
+            .count();
         assertEquals(c, 0);
 
         c = query.find(User.class) //
-                .where() //
-                .property(User::getUsername).gt(null, v -> false) // 不忽略
-                .count();
+            .where() //
+            .property(User::getUsername).gt(null, v -> false) // 不忽略
+            .count();
         assertEquals(c, 0);
 
         c = query.find(User.class) //
-                .where() //
-                .property(User::getUsername).gt(null, IgnoreStrategy.NONE) // 不忽略
-                .count();
+            .where() //
+            .property(User::getUsername).gt(null, IgnoreStrategy.NONE) // 不忽略
+            .count();
         assertEquals(c, 0);
     }
 
@@ -657,35 +903,35 @@ public class EntitySqlQueryTest extends JdbcTestBase {
     void testProperty_le() {
         int qa = 40;
         List<User> users = query.find(User.class) //
-                .where() //
-                .property(User::getAge).le(qa, v -> false) // 不忽略
-                .list();
+            .where() //
+            .property(User::getAge).le(qa, v -> false) // 不忽略
+            .list();
         for (User user : users) {
             assertTrue(user.getAge() <= qa);
         }
 
         long c = query.find(User.class) //
-                .where() //
-                .property(User::getId).le(null, v -> false) // 不忽略
-                .count();
+            .where() //
+            .property(User::getId).le(null, v -> false) // 不忽略
+            .count();
         assertEquals(c, 0);
 
         c = query.find(User.class) //
-                .where() //
-                .property(User::getId).le(null, IgnoreStrategy.NONE) // 不忽略
-                .count();
+            .where() //
+            .property(User::getId).le(null, IgnoreStrategy.NONE) // 不忽略
+            .count();
         assertEquals(c, 0);
 
         c = query.find(User.class) //
-                .where() //
-                .property(User::getUsername).le(null, v -> false) // 不忽略
-                .count();
+            .where() //
+            .property(User::getUsername).le(null, v -> false) // 不忽略
+            .count();
         assertEquals(c, 0);
 
         c = query.find(User.class) //
-                .where() //
-                .property(User::getUsername).le(null, IgnoreStrategy.NONE) // 不忽略
-                .count();
+            .where() //
+            .property(User::getUsername).le(null, IgnoreStrategy.NONE) // 不忽略
+            .count();
         assertEquals(c, 0);
     }
 
@@ -693,35 +939,35 @@ public class EntitySqlQueryTest extends JdbcTestBase {
     void testProperty_lt() {
         int qa = 40;
         List<User> users = query.find(User.class) //
-                .where() //
-                .property(User::getAge).lt(qa, v -> false) // 不忽略
-                .list();
+            .where() //
+            .property(User::getAge).lt(qa, v -> false) // 不忽略
+            .list();
         for (User user : users) {
             assertTrue(user.getAge() < qa);
         }
 
         long c = query.find(User.class) //
-                .where() //
-                .property(User::getId).lt(null, v -> false) // 不忽略
-                .count();
+            .where() //
+            .property(User::getId).lt(null, v -> false) // 不忽略
+            .count();
         assertEquals(c, 0);
 
         c = query.find(User.class) //
-                .where() //
-                .property(User::getId).lt(null, IgnoreStrategy.NONE) // 不忽略
-                .count();
+            .where() //
+            .property(User::getId).lt(null, IgnoreStrategy.NONE) // 不忽略
+            .count();
         assertEquals(c, 0);
 
         c = query.find(User.class) //
-                .where() //
-                .property(User::getUsername).lt(null, v -> false) // 不忽略
-                .count();
+            .where() //
+            .property(User::getUsername).lt(null, v -> false) // 不忽略
+            .count();
         assertEquals(c, 0);
 
         c = query.find(User.class) //
-                .where() //
-                .property(User::getUsername).lt(null, IgnoreStrategy.NONE) // 不忽略
-                .count();
+            .where() //
+            .property(User::getUsername).lt(null, IgnoreStrategy.NONE) // 不忽略
+            .count();
         assertEquals(c, 0);
     }
 
@@ -746,7 +992,7 @@ public class EntitySqlQueryTest extends JdbcTestBase {
             assertEquals(ui.getDivision(), division);
         }
         list = query.find(UserInfo.class).where().eq(UserInfo::getId, 1).or().eq(UserInfo::getDivision, division).or()
-                .eq(UserInfo::getId, 1).list();
+            .eq(UserInfo::getId, 1).list();
         size = list.size();
         for (UserInfo ui : list) {
             assertEquals(ui.getDivision(), division);
@@ -759,11 +1005,11 @@ public class EntitySqlQueryTest extends JdbcTestBase {
 
         userInfo.getDivision().setDistrict(null);
         list = query.find(UserInfo.class).where().eq(UserInfo::getDivision, division).or()
-                .eq(UserInfo::getDivision, division).list();
+            .eq(UserInfo::getDivision, division).list();
         assertTrue(list.size() > size);
 
         list = query.find(UserInfo.class).where().eq(UserInfo::getDivision, null).or().eq(UserInfo::getDivision, null)
-                .list();
+            .list();
         assertTrue(list.size() > size);
     }
 
@@ -794,11 +1040,11 @@ public class EntitySqlQueryTest extends JdbcTestBase {
 
         userInfo.getDivision().setDistrict(null);
         list = query.find(UserInfo.class).where().eq(UserInfo::getDivision, division).or()
-                .eq(UserInfo::getDivision, division).list();
+            .eq(UserInfo::getDivision, division).list();
         assertTrue(list.size() > size);
 
         list = query.find(UserInfo.class).where().eq(UserInfo::getDivision, null).or().eq(UserInfo::getDivision, null)
-                .list();
+            .list();
         assertTrue(list.size() > size);
     }
 
@@ -808,16 +1054,16 @@ public class EntitySqlQueryTest extends JdbcTestBase {
         userRole2.setRole(new Role(2));
         userRole2.setUser(new User(1));
         query.find(UserRole2.class) //
-                .where() //
-                .property(UserRole2::getRole).eq(userRole2.getRole())//
-                .and() //
-                .property(UserRole2::getUser).ne(userRole2.getUser()).list();
+            .where() //
+            .property(UserRole2::getRole).eq(userRole2.getRole())//
+            .and() //
+            .property(UserRole2::getUser).ne(userRole2.getUser()).list();
 
         query.find(UserRole2.class) //
-                .where() //
-                .property(UserRole2::getRole).property(Role::getId).eq(userRole2.getRole().getId()) //
-                .and() //
-                .property(UserRole2::getUser).property(User::getId).ne(userRole2.getUser().getId()).list();
+            .where() //
+            .property(UserRole2::getRole).property(Role::getId).eq(userRole2.getRole().getId()) //
+            .and() //
+            .property(UserRole2::getUser).property(User::getId).ne(userRole2.getUser().getId()).list();
 
         UserInfo userInfo = new UserInfo();
         DistrictDivision division = new DistrictDivision();
@@ -827,47 +1073,47 @@ public class EntitySqlQueryTest extends JdbcTestBase {
         userInfo.setDivision(division);
 
         List<UserInfo> list = query.find(UserInfo.class) //
-                .where() //
-                .property(UserInfo::getDivision).eq(division) //
-                .list();
+            .where() //
+            .property(UserInfo::getDivision).eq(division) //
+            .list();
         int size = list.size();
         for (UserInfo ui : list) {
             assertEquals(ui.getDivision(), division);
         }
         list = query.find(UserInfo.class) //
-                .where() //
-                .property(UserInfo::getDivision).ne(division) //
-                .list();
+            .where() //
+            .property(UserInfo::getDivision).ne(division) //
+            .list();
         for (UserInfo ui : list) {
             assertNotEquals(ui.getDivision(), division);
         }
 
         userInfo.getDivision().setDistrict(null);
         list = query.find(UserInfo.class).where()//
-                .property(UserInfo::getDivision).eq(division)//
-                .or() //
-                .property(UserInfo::getDivision).eq(division)//
-                .list();
+            .property(UserInfo::getDivision).eq(division)//
+            .or() //
+            .property(UserInfo::getDivision).eq(division)//
+            .list();
         assertTrue(list.size() > size);
 
         list = query.find(UserInfo.class).where()//
-                .property(UserInfo::getDivision).eq(null)//
-                .or() //
-                .property(UserInfo::getDivision).eq(null)//
-                .list();
+            .property(UserInfo::getDivision).eq((DistrictDivision) null)//
+            .or() //
+            .property(UserInfo::getDivision).eq((DistrictDivision) null)//
+            .list();
         assertTrue(list.size() > size);
 
         list = query.find(UserInfo.class).where()//
-                .property(UserInfo::getDivision).eq(null)//
-                .or() //
-                .property(UserInfo::getDivision).eq(null)//
-                .list();
+            .property(UserInfo::getDivision).eq((DistrictDivision) null)//
+            .or() //
+            .property(UserInfo::getDivision).eq((DistrictDivision) null)//
+            .list();
         assertTrue(list.size() > size);
 
         list = query.find(UserInfo.class) //
-                .where() //
-                .property(UserInfo::getDivision).property(DistrictDivision::getCity).eq(division.getCity()) //
-                .list();
+            .where() //
+            .property(UserInfo::getDivision).property(DistrictDivision::getCity).eq(division.getCity()) //
+            .list();
         for (UserInfo ui : list) {
             assertEquals(ui.getDivision().getCity(), division.getCity());
         }
@@ -884,10 +1130,10 @@ public class EntitySqlQueryTest extends JdbcTestBase {
         assertEquals(uid, user.getId());
 
         List<UserRole2> list = query.find(UserRole2.class) //
-                .where() //
-                .property(UserRole2::getRole) //
-                .property(Role::getName) //
-                .eq(role.getName()).list();
+            .where() //
+            .property(UserRole2::getRole) //
+            .property(Role::getName) //
+            .eq(role.getName()).list();
 
         for (UserRole2 ur : list) {
             Role r = query.find(Role.class).where().eq(Role::getId, ur.getRole().getId()).single();
@@ -908,10 +1154,10 @@ public class EntitySqlQueryTest extends JdbcTestBase {
         List<UserRole2> list = null;
 
         list = query.find(UserRole2.class).join(UserRole2::getRole)//
-                .where() //
-                .property((e1, e2) -> e1.apply(UserRole2::getRole) //
-                        .property(Role::getName).eq(role.getName())) // FIXME 这里eq后返回的表达式不对
-                .list();
+            .where() //
+            .property((e1, e2) -> e1.property(UserRole2::getRole) //
+                .property(Role::getName).eq(role.getName()))
+            .list();
 
         for (UserRole2 ur : list) {
             Role r = query.find(Role.class).where().eq(Role::getId, ur.getRole().getId()).single();
@@ -919,10 +1165,10 @@ public class EntitySqlQueryTest extends JdbcTestBase {
         }
 
         list = query.find(UserRole2.class).join(UserRole2::getRole)//
-                .where() //
-                .eq((e1, e2) -> e1.property(UserRole2::getRole) //
-                        .property(Role::getName).value(role.getName())) //
-                .list();
+            .where() //
+            .eq((e1, e2) -> e1.property(UserRole2::getRole) //
+                .property(Role::getName).value(role.getName())) //
+            .list();
 
         for (UserRole2 ur : list) {
             Role r = query.find(Role.class).where().eq(Role::getId, ur.getRole().getId()).single();
@@ -935,7 +1181,7 @@ public class EntitySqlQueryTest extends JdbcTestBase {
         String name = "yufei";
 
         List<UserInfo> userInfos = query.find(UserInfo.class).where().property(UserInfo::getUser)
-                .property(User::getUsername).co(name).list();
+            .property(User::getUsername).co(name).list();
         for (UserInfo ui : userInfos) {
             User u = query.find(User.class).where().eq(User::getId, ui.getUser().getId()).single();
             assertTrue(u.getUsername().contains(name));
@@ -947,7 +1193,7 @@ public class EntitySqlQueryTest extends JdbcTestBase {
         String name = "yufei";
 
         List<UserInfo> userInfos = query.find(UserInfo.class).where().property(UserInfo::getUser)
-                .property(User::getUsername).nco(name).list();
+            .property(User::getUsername).nco(name).list();
         for (UserInfo ui : userInfos) {
             User u = query.find(User.class).where().eq(User::getId, ui.getUser().getId()).single();
             assertFalse(u.getUsername().contains(name));
@@ -959,7 +1205,7 @@ public class EntitySqlQueryTest extends JdbcTestBase {
         String name = "yufei";
 
         List<UserInfo> userInfos = query.find(UserInfo.class).where().property(UserInfo::getUser)
-                .property(User::getUsername).sw(name).list();
+            .property(User::getUsername).sw(name).list();
         for (UserInfo ui : userInfos) {
             User u = query.find(User.class).where().eq(User::getId, ui.getUser().getId()).single();
             assertTrue(u.getUsername().startsWith(name));
@@ -971,7 +1217,7 @@ public class EntitySqlQueryTest extends JdbcTestBase {
         String name = "yufei";
 
         List<UserInfo> userInfos = query.find(UserInfo.class).where().property(UserInfo::getUser)
-                .property(User::getUsername).nsw(name).list();
+            .property(User::getUsername).nsw(name).list();
         for (UserInfo ui : userInfos) {
             User u = query.find(User.class).where().eq(User::getId, ui.getUser().getId()).single();
             assertFalse(u.getUsername().startsWith(name));
@@ -983,7 +1229,7 @@ public class EntitySqlQueryTest extends JdbcTestBase {
         String name = "fly";
 
         List<UserInfo> userInfos = query.find(UserInfo.class).where().property(UserInfo::getUser)
-                .property(User::getUsername).sw(name).list();
+            .property(User::getUsername).sw(name).list();
         for (UserInfo ui : userInfos) {
             User u = query.find(User.class).where().eq(User::getId, ui.getUser().getId()).single();
             assertTrue(u.getUsername().endsWith(name));
@@ -995,7 +1241,7 @@ public class EntitySqlQueryTest extends JdbcTestBase {
         String name = "fly";
 
         List<UserInfo> userInfos = query.find(UserInfo.class).where().property(UserInfo::getUser)
-                .property(User::getUsername).newv(name).list();
+            .property(User::getUsername).newv(name).list();
         for (UserInfo ui : userInfos) {
             User u = query.find(User.class).where().eq(User::getId, ui.getUser().getId()).single();
             assertFalse(u.getUsername().endsWith(name));
@@ -1008,7 +1254,7 @@ public class EntitySqlQueryTest extends JdbcTestBase {
         int max = 20;
 
         List<UserInfo> userInfos = query.find(UserInfo.class).where().property(UserInfo::getUser).property(User::getAge)
-                .ba(min, max).list();
+            .ba(min, max).list();
         for (UserInfo ui : userInfos) {
             User u = query.find(User.class).where().eq(User::getId, ui.getUser().getId()).single();
             assertTrue(min <= u.getAge() && u.getAge() <= max);
@@ -1021,7 +1267,7 @@ public class EntitySqlQueryTest extends JdbcTestBase {
         int max = 20;
 
         List<UserInfo> userInfos = query.find(UserInfo.class).where().property(UserInfo::getUser).property(User::getAge)
-                .nba(min, max).list();
+            .nba(min, max).list();
         for (UserInfo ui : userInfos) {
             User u = query.find(User.class).where().eq(User::getId, ui.getUser().getId()).single();
             assertTrue(u.getAge() < min || max < u.getAge());
@@ -1033,7 +1279,7 @@ public class EntitySqlQueryTest extends JdbcTestBase {
         int age = 15;
 
         List<UserInfo> userInfos = query.find(UserInfo.class).where().property(UserInfo::getUser).property(User::getAge)
-                .ge(age).list();
+            .ge(age).list();
         for (UserInfo ui : userInfos) {
             User u = query.find(User.class).where().eq(User::getId, ui.getUser().getId()).single();
             assertTrue(u.getAge() >= age);
@@ -1045,7 +1291,7 @@ public class EntitySqlQueryTest extends JdbcTestBase {
         int age = 15;
 
         List<UserInfo> userInfos = query.find(UserInfo.class).where().property(UserInfo::getUser).property(User::getAge)
-                .gt(age).list();
+            .gt(age).list();
         for (UserInfo ui : userInfos) {
             User u = query.find(User.class).where().eq(User::getId, ui.getUser().getId()).single();
             assertTrue(u.getAge() > age);
@@ -1057,7 +1303,7 @@ public class EntitySqlQueryTest extends JdbcTestBase {
         int age = 15;
 
         List<UserInfo> userInfos = query.find(UserInfo.class).where().property(UserInfo::getUser).property(User::getAge)
-                .le(age).list();
+            .le(age).list();
         for (UserInfo ui : userInfos) {
             User u = query.find(User.class).where().eq(User::getId, ui.getUser().getId()).single();
             assertTrue(u.getAge() <= age);
@@ -1069,7 +1315,7 @@ public class EntitySqlQueryTest extends JdbcTestBase {
         int age = 15;
 
         List<UserInfo> userInfos = query.find(UserInfo.class).where().property(UserInfo::getUser).property(User::getAge)
-                .lt(age).list();
+            .lt(age).list();
         for (UserInfo ui : userInfos) {
             User u = query.find(User.class).where().eq(User::getId, ui.getUser().getId()).single();
             assertTrue(u.getAge() < age);
@@ -1077,7 +1323,7 @@ public class EntitySqlQueryTest extends JdbcTestBase {
     }
 
     @Test
-    void testInn() {
+    void isn_inn() {
 
         long nullNum = 1;
 
@@ -1133,7 +1379,7 @@ public class EntitySqlQueryTest extends JdbcTestBase {
     }
 
     @Test
-    void testComplexQuery() {
+    void complexQuery() {
 
         //        query.find(User.class).where().gt(User::getId, 1).and().group().group();
 
@@ -1153,63 +1399,76 @@ public class EntitySqlQueryTest extends JdbcTestBase {
 
         // 基于group() endGroup() 方法
         count = query.find(User.class) //
-                .where() //
-                .gt(User::getId, 1) //
-                .and() //
-                .group() //
-                /**/ .group().eq(User::getId, 2).and().eq(User::getAge, 5).endGroup() //
-                /**/ .or() //
-                /**/ .group().eq(User::getId, 3).and().eq(User::getAge, 15).endGroup() //
-                .endGroup() //
-                .count();
+            .where() //
+            .gt(User::getId, 1) //
+            .and() //
+            .group() //
+            /**/ .group().eq(User::getId, 2).and().eq(User::getAge, 5).endGroup() //
+            /**/ .or() //
+            /**/ .group().eq(User::getId, 3).and().eq(User::getAge, 15).endGroup() //
+            .endGroup() //
+            .count();
         assertEquals(count, 2);
 
-        //  基于group(g -> g.xxx)
+        //  基于and().group(g -> g.xxx)
         count = query.find(User.class) //
-                .where() //
-                .gt(User::getId, 1) //
-                .and( //
-                        g -> g.group(g1 -> g1.eq(User::getId, 2).and().eq(User::getAge, 5)) //
-                                .or() //
-                                .group(g2 -> g2.eq(User::getId, 3).and().eq(User::getAge, 15)) //
-                ) //
-                .count();
+            .where() //
+            .gt(User::getId, 1) //
+            .and() //
+            .group( //
+                g -> g.group(g1 -> g1.eq(User::getId, 2).and().eq(User::getAge, 5)) //
+                    .or() //
+                    .group(g2 -> g2.eq(User::getId, 3).and().eq(User::getAge, 15)) //
+            ) //
+            .count();
+        assertEquals(count, 2);
+
+        //  基于 and(g -> g.xxx)
+        count = query.find(User.class) //
+            .where() //
+            .gt(User::getId, 1) //
+            .and( //
+                g -> g.group(g1 -> g1.eq(User::getId, 2).and().eq(User::getAge, 5)) //
+                    .or() //
+                    .group(g2 -> g2.eq(User::getId, 3).and().eq(User::getAge, 15)) //
+            ) //
+            .count();
         assertEquals(count, 2);
 
         //  混合使用1
         count = query.find(User.class) //
-                .where() //
-                .gt(User::getId, 1) //
-                .and() //
-                .group() //
-                /**/ .group(g -> g.eq(User::getId, 2).and().eq(User::getAge, 5)) //
-                /**/ .or() //
-                /**/ .group(g -> g.eq(User::getId, 3).and().eq(User::getAge, 15)) //
-                .endGroup() //
-                .count();
+            .where() //
+            .gt(User::getId, 1) //
+            .and() //
+            .group() //
+            /**/ .group(g -> g.eq(User::getId, 2).and().eq(User::getAge, 5)) //
+            /**/ .or() //
+            /**/ .group(g -> g.eq(User::getId, 3).and().eq(User::getAge, 15)) //
+            .endGroup() //
+            .count();
         assertEquals(count, 2);
 
         //  混合使用2
         count = query.find(User.class) //
-                .where() //
-                .gt(User::getId, 1) //
-                .and( //
-                        g -> g.group().eq(User::getId, 2).and().eq(User::getAge, 5).endGroup() //
-                                .or() //
-                                .group().eq(User::getId, 3).and().eq(User::getAge, 15).endGroup() //
-                ) //
-                .count();
+            .where() //
+            .gt(User::getId, 1) //
+            .and( //
+                g -> g.group().eq(User::getId, 2).and().eq(User::getAge, 5).endGroup() //
+                    .or() //
+                    .group().eq(User::getId, 3).and().eq(User::getAge, 15).endGroup() //
+            ) //
+            .count();
         assertEquals(count, 2);
 
         // 混合使用，这个使用方法不建议，太难看懂了
         count = query.find(User.class) //
-                .where() //
-                .gt(User::getId, 1) //
-                .and( //
-                        g -> g.group(g1 -> g1.eq(User::getId, 2).and().eq(User::getAge, 5).endGroup() //
-                                .or() //
-                                .group(g2 -> g2.eq(User::getId, 3).and().eq(User::getAge, 15))))
-                .count();
+            .where() //
+            .gt(User::getId, 1) //
+            .and( //
+                g -> g.group(g1 -> g1.eq(User::getId, 2).and().eq(User::getAge, 5).endGroup() //
+                    .or() //
+                    .group(g2 -> g2.eq(User::getId, 3).and().eq(User::getAge, 15))))
+            .count();
         assertEquals(count, 2);
     }
 
@@ -1227,7 +1486,7 @@ public class EntitySqlQueryTest extends JdbcTestBase {
     void testCoverage() {
         EntitySqlQueryExpression<User> q = (EntitySqlQueryExpression<User>) query.find(User.class).where();
         String sql = q.toString();
-        String sql2 = q.build();
+        String sql2 = q.expression();
         assertNotNull(sql);
         assertNotNull(sql2);
         assertEquals(sql, sql2);

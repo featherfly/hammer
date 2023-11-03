@@ -4,10 +4,11 @@ package cn.featherfly.hammer.expression.entity.condition.sw;
 import java.util.function.Predicate;
 
 import cn.featherfly.common.function.serializable.SerializableFunction;
-import cn.featherfly.common.function.serializable.SerializableStringSupplier;
 import cn.featherfly.common.operator.ComparisonOperator.MatchStrategy;
+import cn.featherfly.common.repository.IgnoreStrategy;
 import cn.featherfly.hammer.expression.condition.ConditionExpression;
 import cn.featherfly.hammer.expression.condition.LogicExpression;
+import cn.featherfly.hammer.expression.condition.sw.StartWithSupplierExpression6;
 
 /**
  * The Interface EntityStartWithExpressionBase6.
@@ -23,13 +24,14 @@ import cn.featherfly.hammer.expression.condition.LogicExpression;
  * @param <L>  the generic type
  */
 public interface EntityStartWithExpressionBase6<E, E2, E3, E4, E5, E6, C extends ConditionExpression,
-        L extends LogicExpression<C, L>> extends EntityStartWithExpressionBase5<E, E2, E3, E4, E5, C, L> {
+        L extends LogicExpression<C, L>>
+        extends EntityStartWithExpressionBase5<E, E2, E3, E4, E5, C, L>, StartWithSupplierExpression6<C, L> {
 
     /**
      * start with value. 以value开始.
      *
-     * @param name  参数名称
-     * @param value 参数值
+     * @param name  the name
+     * @param value the value
      * @return LogicExpression
      */
     default L sw6(SerializableFunction<E6, String> name, String value) {
@@ -39,8 +41,20 @@ public interface EntityStartWithExpressionBase6<E, E2, E3, E4, E5, E6, C extends
     /**
      * start with value. 以value开始.
      *
-     * @param name         参数名称
-     * @param value        参数值
+     * @param name           the name
+     * @param value          the value
+     * @param ignoreStrategy the ignore strategy
+     * @return LogicExpression
+     */
+    default L sw6(SerializableFunction<E6, String> name, String value, IgnoreStrategy ignoreStrategy) {
+        return sw6(name, value, MatchStrategy.AUTO, ignoreStrategy);
+    }
+
+    /**
+     * start with value. 以value开始.
+     *
+     * @param name           the name
+     * @param value          the value
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
@@ -61,76 +75,26 @@ public interface EntityStartWithExpressionBase6<E, E2, E3, E4, E5, E6, C extends
     /**
      * start with value. 以value开始.
      *
-     * @param name         the name
-     * @param value        the value
-     * @param queryPolicy  the query policy
+     * @param name           the name
+     * @param value          the value
+     * @param queryPolicy    the query policy
+     * @param ignoreStrategy the ignore strategy
+     * @return LogicExpression
+     */
+    default L sw6(SerializableFunction<E6, String> name, String value, MatchStrategy matchStrategy,
+            IgnoreStrategy ignoreStrategy) {
+        return sw6(name, value, matchStrategy, (Predicate<String>) ignoreStrategy::test);
+    }
+
+    /**
+     * start with value. 以value开始.
+     *
+     * @param name           the name
+     * @param value          the value
+     * @param queryPolicy    the query policy
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
     L sw6(SerializableFunction<E6, String> name, String value, MatchStrategy matchStrategy,
             Predicate<String> ignoreStrategy);
-
-    /**
-     * start with value. 以value开始.
-     *
-     * @param property 对象属性
-     * @return LogicExpression
-     */
-    default L sw6(SerializableStringSupplier property) {
-        return sw6(property, MatchStrategy.AUTO);
-    }
-
-    /**
-     * start with value. 以value开始.
-     *
-     * @param property     对象属性
-     * @param ignoreStrategy the ignore strategy
-     * @return LogicExpression
-     */
-    default L sw6(SerializableStringSupplier property, Predicate<String> ignoreStrategy) {
-        return sw6(property, MatchStrategy.AUTO, ignoreStrategy);
-    }
-
-    /**
-     * start with value. 以value开始.
-     *
-     * @param property    the property
-     * @param queryPolicy the query policy
-     * @return LogicExpression
-     */
-    L sw6(SerializableStringSupplier property, MatchStrategy matchStrategy);
-
-    /**
-     * start with value. 以value开始.
-     *
-     * @param property     the property
-     * @param queryPolicy  the query policy
-     * @param ignoreStrategy the ignore strategy
-     * @return LogicExpression
-     */
-    L sw6(SerializableStringSupplier property, MatchStrategy matchStrategy, Predicate<String> ignoreStrategy);
-
-    // 嵌套属性使用property(U1::getU2).property(U2:getV).sw(v)来设置
-    //    /**
-    //     * start with value. 以value开始.
-    //     *
-    //     * @param <R>                 the generic type
-    //     * @param fetchEntity         the fetch entity
-    //     * @param fetchEntityProperty the fetch entity property
-    //     * @param value               参数值
-    //     * @return LogicExpression
-    //     */
-    //    <R> L sw6(SerializableFunction<E6, R> fetchEntity, SerializableFunction<R, String> fetchEntityProperty,
-    //            String value);
-    //
-    //    /**
-    //     * start with value. 以value开始.
-    //     *
-    //     * @param <R>                 the generic type
-    //     * @param fetchEntityValue    the fetch entity value
-    //     * @param fetchEntityProperty the fetch entity property
-    //     * @return LogicExpression
-    //     */
-    //    <R> L sw6(SerializableSupplier6<R> fetchEntityValue, SerializableFunction<R, String> fetchEntityProperty);
-
 }

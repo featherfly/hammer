@@ -28,7 +28,7 @@ public interface NativeStringConditionExpression<C extends ConditionExpression, 
      * expression short alias.
      *
      * @param expression the expression
-     * @return the l
+     * @return LogicExpression
      */
     default L expr(String expression) {
         return expression(expression, ArrayUtils.EMPTY_OBJECT_ARRAY);
@@ -39,7 +39,7 @@ public interface NativeStringConditionExpression<C extends ConditionExpression, 
      *
      * @param expression the expression
      * @param params     the params
-     * @return the l
+     * @return LogicExpression
      */
     default L expr(String expression, Map<String, Object> params) {
         return expression(expression, params);
@@ -50,7 +50,7 @@ public interface NativeStringConditionExpression<C extends ConditionExpression, 
      *
      * @param expression the expression
      * @param params     the params
-     * @return the l
+     * @return LogicExpression
      */
     default L expr(String expression, Object... params) {
         return expression(expression, params);
@@ -60,7 +60,7 @@ public interface NativeStringConditionExpression<C extends ConditionExpression, 
      * Expression.
      *
      * @param expression the expression
-     * @return the l
+     * @return LogicExpression
      */
     default L expression(String expression) {
         return expression(expression, ArrayUtils.EMPTY_OBJECT_ARRAY);
@@ -71,7 +71,7 @@ public interface NativeStringConditionExpression<C extends ConditionExpression, 
      *
      * @param expression the expression
      * @param params     the params
-     * @return the l
+     * @return LogicExpression
      */
     L expression(String expression, Map<String, Object> params);
 
@@ -80,7 +80,7 @@ public interface NativeStringConditionExpression<C extends ConditionExpression, 
      *
      * @param expression the expression
      * @param params     the params
-     * @return the l
+     * @return LogicExpression
      */
     L expression(String expression, Object... params);
 }

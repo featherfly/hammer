@@ -5,7 +5,7 @@ import java.util.List;
 
 import cn.featherfly.common.lang.ClassUtils;
 import cn.featherfly.common.structure.page.Page;
-import cn.featherfly.hammer.sqldb.jdbc.dsl.query.SqlQueryConditionGroupExpression;
+import cn.featherfly.hammer.sqldb.jdbc.dsl.repository.query.AbstractRepositorySqlQueryConditionsGroupExpression;
 
 /**
  * <p>
@@ -21,13 +21,13 @@ public abstract class StaticTypeQueryConditionGroupExpression<E,
 
     protected Class<E> type;
 
-    protected SqlQueryConditionGroupExpression queryConditionGroupExpression;
+    protected AbstractRepositorySqlQueryConditionsGroupExpression queryConditionGroupExpression;
 
     /**
      * @param queryConditionGroupExpression queryConditionGroupExpression
      * @param parent                        parent
      */
-    public StaticTypeQueryConditionGroupExpression(SqlQueryConditionGroupExpression queryConditionGroupExpression,
+    public StaticTypeQueryConditionGroupExpression(AbstractRepositorySqlQueryConditionsGroupExpression queryConditionGroupExpression,
             Q parent) {
         super();
         this.type = ClassUtils.getSuperClassGenericType(this.getClass());
@@ -94,5 +94,5 @@ public abstract class StaticTypeQueryConditionGroupExpression<E,
         return new StaticTypeQueryExecutor<>(type, queryConditionGroupExpression.limit(page));
     }
 
-    protected abstract Q createChild(SqlQueryConditionGroupExpression queryConditionGroupExpression, Q parent);
+    protected abstract Q createChild(AbstractRepositorySqlQueryConditionsGroupExpression queryConditionGroupExpression, Q parent);
 }

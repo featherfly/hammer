@@ -15,10 +15,12 @@ import cn.featherfly.common.lang.LambdaUtils;
 import cn.featherfly.common.lang.LambdaUtils.SerializedLambdaInfo;
 import cn.featherfly.common.lang.Lang;
 import cn.featherfly.common.lang.Strings;
+import cn.featherfly.common.repository.Field;
 import cn.featherfly.common.repository.mapping.ClassMapping;
 import cn.featherfly.common.repository.mapping.PropertyMapping;
 import cn.featherfly.common.repository.mapping.PropertyMapping.Mode;
 import cn.featherfly.hammer.expression.condition.ConditionExpression;
+import cn.featherfly.hammer.expression.condition.Expression;
 import cn.featherfly.hammer.expression.condition.LogicExpression;
 import cn.featherfly.hammer.sqldb.SqldbHammerException;
 import cn.featherfly.hammer.sqldb.jdbc.dsl.entity.EntitySqlRelation;
@@ -28,36 +30,38 @@ import cn.featherfly.hammer.sqldb.jdbc.dsl.entity.EntitySqlRelation;
  *
  * @author zhongj
  * @param <E> the element type
- * @param <P> the element type
- * @param <F> the generic type
  * @param <C> the generic type
  * @param <L> the generic type
  */
 public abstract class AbstractMulitiEntityPropertyExpression<E, C extends ConditionExpression,
-        L extends LogicExpression<C, L>> {
+        L extends LogicExpression<C, L>> implements Expression {
 
     /** The index. */
     protected AtomicInteger index;
 
     /** The expression. */
-    protected AbstractMulitiEntityConditionExpression<C, L> expression;
+    protected InternalMulitiEntityCondition<L> expression;
 
+    /** The factory. */
     protected JdbcMappingFactory factory;
 
+    /** The property list. */
     protected List<Serializable> propertyList = new ArrayList<>();
 
+    /** The query relation. */
     protected EntitySqlRelation<?, ?> queryRelation;
 
     /**
      * Instantiates a new entity property type expression impl.
      *
-     * @param index      the index
-     * @param name       the name
-     * @param expression the expression
-     * @param factory    the factory
+     * @param index         the index
+     * @param name          the name
+     * @param expression    the expression
+     * @param factory       the factory
+     * @param queryRelation the query relation
      */
     protected AbstractMulitiEntityPropertyExpression(AtomicInteger index, Serializable name,
-            AbstractMulitiEntityConditionExpression<C, L> expression, JdbcMappingFactory factory,
+            InternalMulitiEntityCondition<L> expression, JdbcMappingFactory factory,
             EntitySqlRelation<?, ?> queryRelation) {
         this(index, Lang.list(name), expression, factory, queryRelation);
     }
@@ -65,13 +69,14 @@ public abstract class AbstractMulitiEntityPropertyExpression<E, C extends Condit
     /**
      * Instantiates a new entity property type expression impl.
      *
-     * @param index        the index
-     * @param propertyList the property list
-     * @param expression   the expression
-     * @param factory      the factory
+     * @param index         the index
+     * @param propertyList  the property list
+     * @param expression    the expression
+     * @param factory       the factory
+     * @param queryRelation the query relation
      */
     protected AbstractMulitiEntityPropertyExpression(AtomicInteger index, List<Serializable> propertyList,
-            AbstractMulitiEntityConditionExpression<C, L> expression, JdbcMappingFactory factory,
+            InternalMulitiEntityCondition<L> expression, JdbcMappingFactory factory,
             EntitySqlRelation<?, ?> queryRelation) {
         super();
         this.index = index;
@@ -79,6 +84,18 @@ public abstract class AbstractMulitiEntityPropertyExpression<E, C extends Condit
         this.propertyList.addAll(propertyList);
         this.factory = factory;
         this.queryRelation = queryRelation;
+    }
+
+    public L eq(Field field) {
+        return expression.eq(index, getPropertyMapping(field), field, expression.getIgnoreStrategy());
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public String expression() {
+        return expression.expression();
     }
 
     /**

@@ -2,6 +2,7 @@
 package cn.featherfly.hammer.sqldb.jdbc.dsl.entity.query;
 
 import java.util.function.Consumer;
+import java.util.function.Function;
 
 import cn.featherfly.common.db.mapping.JdbcClassMapping;
 import cn.featherfly.common.db.mapping.JdbcMappingFactory;
@@ -12,8 +13,9 @@ import cn.featherfly.hammer.dsl.entity.query.EntityQueryConditionGroup;
 import cn.featherfly.hammer.dsl.entity.query.EntityQueryConditionGroupLogic;
 import cn.featherfly.hammer.dsl.entity.query.EntityQueryFetch;
 import cn.featherfly.hammer.dsl.entity.query.EntityQueryFetchedProperties;
-import cn.featherfly.hammer.dsl.entity.query.EntityQueryFetchedProperty;
 import cn.featherfly.hammer.dsl.entity.query.EntityQueryOneFetchedProperty;
+import cn.featherfly.hammer.expression.condition.LogicExpression;
+import cn.featherfly.hammer.expression.entity.condition.EntityConditionsGroupExpression;
 import cn.featherfly.hammer.expression.entity.query.EntityQueryExpression;
 import cn.featherfly.hammer.expression.entity.query.EntityQuerySortExpression;
 import cn.featherfly.hammer.sqldb.jdbc.SqlPageFactory;
@@ -36,7 +38,7 @@ public class EntitySqlQueryFetch<E> extends AbstractEntitySqlQueryFetch<E> imple
      * @param classMapping           the class mapping
      */
     public EntitySqlQueryFetch(JdbcMappingFactory factory, SqlPageFactory sqlPageFactory,
-            EntitySqlQueryRelation entitySqlQueryRelation, JdbcClassMapping<E> classMapping) {
+        EntitySqlQueryRelation entitySqlQueryRelation, JdbcClassMapping<E> classMapping) {
         super(factory, sqlPageFactory, entitySqlQueryRelation);
         // 第一个查询对象，自动获取（fetch）
         entitySqlQueryRelation.query(classMapping).fetch(0);
@@ -54,10 +56,11 @@ public class EntitySqlQueryFetch<E> extends AbstractEntitySqlQueryFetch<E> imple
      * {@inheritDoc}
      */
     @Override
-    public EntityQueryConditionGroup<E> where(Consumer<EntityQueryConditionGroup<E>> consumer) {
+    public EntityQueryConditionGroupLogic<E> where(
+        Function<EntityConditionsGroupExpression<E, ?, ?>, LogicExpression<?, ?>> function) {
         EntitySqlQueryExpression<E> exp = new EntitySqlQueryExpression<>(factory, sqlPageFactory, queryRelation);
-        if (consumer != null) {
-            consumer.accept(exp);
+        if (function != null) {
+            exp.addCondition(function.apply(new EntitySqlQueryConditionsGroupExpression<>(0, factory, queryRelation)));
         }
         return exp;
     }
@@ -75,16 +78,16 @@ public class EntitySqlQueryFetch<E> extends AbstractEntitySqlQueryFetch<E> imple
      */
     @Override
     public EntityQueryFetchedProperties<E> property(
-            @SuppressWarnings("unchecked") SerializableFunction<E, ?>... propertyNames) {
-        return new EntitySqlQueryFetchedProperties<>(factory, sqlPageFactory, queryRelation);
+        @SuppressWarnings("unchecked") SerializableFunction<E, ?>... propertyNames) {
+        return new EntitySqlQueryFetchedProperties<>(factory, sqlPageFactory, queryRelation, propertyNames);
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public <V> EntityQueryFetchedProperty<E, V> property(boolean distinct, SerializableFunction<E, V> propertyName) {
-        return new EntitySqlQueryFetchedProperty<>(factory, sqlPageFactory, queryRelation, distinct, propertyName);
+    public <V> EntityQueryOneFetchedProperty<E, V> property(boolean distinct, SerializableFunction<E, V> propertyName) {
+        return new EntitySqlQueryFetchedOneProperty<>(factory, sqlPageFactory, queryRelation, distinct, propertyName);
     }
 
     /**
@@ -92,9 +95,9 @@ public class EntitySqlQueryFetch<E> extends AbstractEntitySqlQueryFetch<E> imple
      */
     @Override
     public <V> EntityQueryOneFetchedProperty<E, V> property(AggregateFunction aggregateFunction, boolean distinct,
-            SerializableFunction<E, V> propertyName) {
+        SerializableFunction<E, V> propertyName) {
         return new EntitySqlQueryFetchedOneProperty<>(factory, sqlPageFactory, queryRelation, aggregateFunction,
-                distinct, propertyName);
+            distinct, propertyName);
     }
 
     /**
@@ -102,7 +105,7 @@ public class EntitySqlQueryFetch<E> extends AbstractEntitySqlQueryFetch<E> imple
      */
     @Override
     public EntityQueryExpression<E, EntityQueryConditionGroup<E>, EntityQueryConditionGroupLogic<E>,
-            EntityQuerySortExpression<E>> configure(Consumer<QueryConfig> configure) {
+        EntityQuerySortExpression<E>> configure(Consumer<QueryConfig> configure) {
         if (configure != null) {
             configure.accept(queryRelation.getConfig());
         }

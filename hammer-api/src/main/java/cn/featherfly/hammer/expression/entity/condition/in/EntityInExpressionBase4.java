@@ -19,6 +19,7 @@ import cn.featherfly.common.function.serializable.SerializableToIntFunction4;
 import cn.featherfly.common.function.serializable.SerializableToLongFunction4;
 import cn.featherfly.common.function.serializable.SerializableToStringFunction;
 import cn.featherfly.common.operator.ComparisonOperator.MatchStrategy;
+import cn.featherfly.common.repository.IgnoreStrategy;
 import cn.featherfly.hammer.expression.condition.ConditionExpression;
 import cn.featherfly.hammer.expression.condition.LogicExpression;
 
@@ -34,14 +35,26 @@ import cn.featherfly.hammer.expression.condition.LogicExpression;
  * @param <L>  the generic type
  */
 public interface EntityInExpressionBase4<T, T2, T3, T4, C extends ConditionExpression, L extends LogicExpression<C, L>>
-        extends EntityInExpressionBase3<T, T2, T3, C, L> {
+    extends EntityInExpressionBase3<T, T2, T3, C, L> {
+    /**
+     * values in. 包含指定，sql中的in.
+     *
+     * @param <R>            the generic type
+     * @param name           the name
+     * @param value          the value
+     * @param ignoreStrategy the ignore strategy
+     * @return LogicExpression
+     */
+    default <R> L in4(SerializableFunction<T4, R> name, R value, IgnoreStrategy ignoreStrategy) {
+        return in4(name, value, ignoreStrategy::test);
+    }
 
     /**
      * values in. 包含指定，sql中的in.
      *
      * @param <R>   the generic type
-     * @param name  参数名称
-     * @param value 参数值
+     * @param name  the name
+     * @param value the value
      * @return LogicExpression
      */
     <R> L in4(SerializableFunction<T4, R> name, R value);
@@ -50,8 +63,8 @@ public interface EntityInExpressionBase4<T, T2, T3, T4, C extends ConditionExpre
      * values in. 包含指定，sql中的in.
      *
      * @param <R>            the generic type
-     * @param name           参数名称
-     * @param value          参数值
+     * @param name           the name
+     * @param value          the value
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
@@ -60,8 +73,8 @@ public interface EntityInExpressionBase4<T, T2, T3, T4, C extends ConditionExpre
     /**
      * values in. 包含指定，sql中的in.
      *
-     * @param name  参数名称
-     * @param value 参数值
+     * @param name  the name
+     * @param value the value
      * @return LogicExpression
      */
     L in4(SerializableToIntFunction4<T4> name, int value);
@@ -69,8 +82,8 @@ public interface EntityInExpressionBase4<T, T2, T3, T4, C extends ConditionExpre
     /**
      * values in. 包含指定，sql中的in.
      *
-     * @param name           参数名称
-     * @param value          参数值
+     * @param name           the name
+     * @param value          the value
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
@@ -79,8 +92,8 @@ public interface EntityInExpressionBase4<T, T2, T3, T4, C extends ConditionExpre
     /**
      * values in. 包含指定，sql中的in.
      *
-     * @param name  参数名称
-     * @param value 参数值
+     * @param name  the name
+     * @param value the value
      * @return LogicExpression
      */
     L in4(SerializableToLongFunction4<T4> name, long value);
@@ -88,8 +101,8 @@ public interface EntityInExpressionBase4<T, T2, T3, T4, C extends ConditionExpre
     /**
      * values in. 包含指定，sql中的in.
      *
-     * @param name           参数名称
-     * @param value          参数值
+     * @param name           the name
+     * @param value          the value
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
@@ -98,8 +111,8 @@ public interface EntityInExpressionBase4<T, T2, T3, T4, C extends ConditionExpre
     /**
      * values in. 包含指定，sql中的in.
      *
-     * @param name  参数名称
-     * @param value 参数值
+     * @param name  the name
+     * @param value the value
      * @return LogicExpression
      */
     L in4(SerializableToDoubleFunction<T4> name, double value);
@@ -107,8 +120,8 @@ public interface EntityInExpressionBase4<T, T2, T3, T4, C extends ConditionExpre
     /**
      * values in. 包含指定，sql中的in.
      *
-     * @param name           参数名称
-     * @param value          参数值
+     * @param name           the name
+     * @param value          the value
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
@@ -118,8 +131,8 @@ public interface EntityInExpressionBase4<T, T2, T3, T4, C extends ConditionExpre
      * values in. 包含指定，sql中的in.
      *
      * @param <R>   the generic type
-     * @param name  参数名称
-     * @param value 参数值
+     * @param name  the name
+     * @param value the value
      * @return LogicExpression
      */
     <R> L in4(SerializableFunction<T4, R> name, @SuppressWarnings("unchecked") R... value);
@@ -127,8 +140,8 @@ public interface EntityInExpressionBase4<T, T2, T3, T4, C extends ConditionExpre
     /**
      * values in. 包含指定，sql中的in.
      *
-     * @param name  参数名称
-     * @param value 参数值
+     * @param name  the name
+     * @param value the value
      * @return LogicExpression
      */
     L in4(SerializableToIntFunction4<T4> name, int... value);
@@ -136,8 +149,8 @@ public interface EntityInExpressionBase4<T, T2, T3, T4, C extends ConditionExpre
     /**
      * values in. 包含指定，sql中的in.
      *
-     * @param name  参数名称
-     * @param value 参数值
+     * @param name  the name
+     * @param value the value
      * @return LogicExpression
      */
     L in4(SerializableToLongFunction4<T4> name, long... value);
@@ -145,8 +158,8 @@ public interface EntityInExpressionBase4<T, T2, T3, T4, C extends ConditionExpre
     /**
      * values in. 包含指定，sql中的in.
      *
-     * @param name  参数名称
-     * @param value 参数值
+     * @param name  the name
+     * @param value the value
      * @return LogicExpression
      */
     L in4(SerializableToDoubleFunction4<T4> name, double... value);
@@ -155,8 +168,8 @@ public interface EntityInExpressionBase4<T, T2, T3, T4, C extends ConditionExpre
      * values in. 包含指定，sql中的in.
      *
      * @param <R>            the generic type
-     * @param name           参数名称
-     * @param value          参数值
+     * @param name           the name
+     * @param value          the value
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
@@ -165,8 +178,8 @@ public interface EntityInExpressionBase4<T, T2, T3, T4, C extends ConditionExpre
     /**
      * values in. 包含指定，sql中的in.
      *
-     * @param name           参数名称
-     * @param value          参数值
+     * @param name           the name
+     * @param value          the value
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
@@ -175,8 +188,8 @@ public interface EntityInExpressionBase4<T, T2, T3, T4, C extends ConditionExpre
     /**
      * values in. 包含指定，sql中的in.
      *
-     * @param name           参数名称
-     * @param value          参数值
+     * @param name           the name
+     * @param value          the value
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
@@ -185,8 +198,8 @@ public interface EntityInExpressionBase4<T, T2, T3, T4, C extends ConditionExpre
     /**
      * values in. 包含指定，sql中的in.
      *
-     * @param name           参数名称
-     * @param value          参数值
+     * @param name           the name
+     * @param value          the value
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
@@ -196,8 +209,8 @@ public interface EntityInExpressionBase4<T, T2, T3, T4, C extends ConditionExpre
      * values in. 包含指定，sql中的in.
      *
      * @param <R>   the generic type
-     * @param name  参数名称
-     * @param value 参数值
+     * @param name  the name
+     * @param value the value
      * @return LogicExpression
      */
     <R> L in4(SerializableFunction<T4, R> name, Collection<R> value);
@@ -206,8 +219,8 @@ public interface EntityInExpressionBase4<T, T2, T3, T4, C extends ConditionExpre
      * values in. 包含指定，sql中的in.
      *
      * @param <R>            the generic type
-     * @param name           参数名称
-     * @param value          参数值
+     * @param name           the name
+     * @param value          the value
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
@@ -216,8 +229,8 @@ public interface EntityInExpressionBase4<T, T2, T3, T4, C extends ConditionExpre
     /**
      * values in. 包含指定，sql中的in.
      *
-     * @param name          参数名称
-     * @param value         参数值
+     * @param name          the name
+     * @param value         the value
      * @param matchStrategy the match strategy
      * @return LogicExpression
      */
@@ -226,20 +239,20 @@ public interface EntityInExpressionBase4<T, T2, T3, T4, C extends ConditionExpre
     /**
      * values in. 包含指定，sql中的in.
      *
-     * @param name           参数名称
-     * @param value          参数值
+     * @param name           the name
+     * @param value          the value
      * @param matchStrategy  the match strategy
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
     L in4(SerializableToStringFunction<T4> name, String value, MatchStrategy matchStrategy,
-            Predicate<String> ignoreStrategy);
+        Predicate<String> ignoreStrategy);
 
     /**
      * values in. 包含指定，sql中的in.
      *
-     * @param name          参数名称
-     * @param value         参数值
+     * @param name          the name
+     * @param value         the value
      * @param matchStrategy the match strategy
      * @return LogicExpression
      */
@@ -248,20 +261,20 @@ public interface EntityInExpressionBase4<T, T2, T3, T4, C extends ConditionExpre
     /**
      * values in. 包含指定，sql中的in.
      *
-     * @param name           参数名称
-     * @param value          参数值
+     * @param name           the name
+     * @param value          the value
      * @param matchStrategy  the match strategy
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
     L in4(SerializableToStringFunction<T4> name, String[] value, MatchStrategy matchStrategy,
-            Predicate<String[]> ignoreStrategy);
+        Predicate<String[]> ignoreStrategy);
 
     /**
      * values in. 包含指定，sql中的in.
      *
      * @param <R>      the generic type
-     * @param property 对象属性
+     * @param property bean property
      * @return LogicExpression
      */
     <R> L in4(SerializableSupplier<R> property);
@@ -270,7 +283,19 @@ public interface EntityInExpressionBase4<T, T2, T3, T4, C extends ConditionExpre
      * values in. 包含指定，sql中的in.
      *
      * @param <R>            the generic type
-     * @param property       对象属性
+     * @param property       bean property
+     * @param ignoreStrategy the ignore strategy
+     * @return LogicExpression
+     */
+    default <R> L in4(SerializableSupplier<R> property, IgnoreStrategy ignoreStrategy) {
+        return in4(property, ignoreStrategy::test);
+    }
+
+    /**
+     * values in. 包含指定，sql中的in.
+     *
+     * @param <R>            the generic type
+     * @param property       bean property
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
@@ -279,7 +304,7 @@ public interface EntityInExpressionBase4<T, T2, T3, T4, C extends ConditionExpre
     /**
      * values in. 包含指定，sql中的in.
      *
-     * @param property 对象属性
+     * @param property bean property
      * @return LogicExpression
      */
     L in4(SerializableIntSupplier property);
@@ -287,7 +312,7 @@ public interface EntityInExpressionBase4<T, T2, T3, T4, C extends ConditionExpre
     /**
      * values in. 包含指定，sql中的in.
      *
-     * @param property       对象属性
+     * @param property       bean property
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
@@ -296,7 +321,7 @@ public interface EntityInExpressionBase4<T, T2, T3, T4, C extends ConditionExpre
     /**
      * values in. 包含指定，sql中的in.
      *
-     * @param property 对象属性
+     * @param property bean property
      * @return LogicExpression
      */
     L in4(SerializableLongSupplier property);
@@ -304,7 +329,7 @@ public interface EntityInExpressionBase4<T, T2, T3, T4, C extends ConditionExpre
     /**
      * values in. 包含指定，sql中的in.
      *
-     * @param property       对象属性
+     * @param property       bean property
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
@@ -313,7 +338,7 @@ public interface EntityInExpressionBase4<T, T2, T3, T4, C extends ConditionExpre
     /**
      * values in. 包含指定，sql中的in.
      *
-     * @param property 对象属性
+     * @param property bean property
      * @return LogicExpression
      */
     L in4(SerializableDoubleSupplier property);
@@ -321,7 +346,7 @@ public interface EntityInExpressionBase4<T, T2, T3, T4, C extends ConditionExpre
     /**
      * values in. 包含指定，sql中的in.
      *
-     * @param property       对象属性
+     * @param property       bean property
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
@@ -330,7 +355,7 @@ public interface EntityInExpressionBase4<T, T2, T3, T4, C extends ConditionExpre
     /**
      * values in. 包含指定，sql中的in.
      *
-     * @param property      对象属性
+     * @param property      bean property
      * @param matchStrategy the match strategy
      * @return LogicExpression
      */
@@ -339,7 +364,7 @@ public interface EntityInExpressionBase4<T, T2, T3, T4, C extends ConditionExpre
     /**
      * values in. 包含指定，sql中的in.
      *
-     * @param property       对象属性
+     * @param property       bean property
      * @param matchStrategy  the match strategy
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression

@@ -17,6 +17,9 @@ import cn.featherfly.hammer.sqldb.jdbc.Jdbc;
 import cn.featherfly.hammer.sqldb.jdbc.SqlPageFactory;
 import cn.featherfly.hammer.sqldb.jdbc.dsl.entity.EntitySqlQueryRelation;
 import cn.featherfly.hammer.sqldb.jdbc.dsl.entity.query.EntitySqlQueryFetch;
+import cn.featherfly.hammer.sqldb.jdbc.dsl.repository.RepositorySqlQueryRelation;
+import cn.featherfly.hammer.sqldb.jdbc.dsl.repository.query.RepositorySqlQueryFetch;
+import cn.featherfly.hammer.sqldb.jdbc.dsl.repository.query.RepositorySqlQueryFetchImpl;
 
 /**
  * SqlQuery .
@@ -89,7 +92,7 @@ public class SqlQuery implements Query {
      */
     @Override
     //    public SqlQueryEntityProperties find(Repository repository) {
-    public SqlQueryEntity find(Repository repository) {
+    public RepositorySqlQueryFetch find(Repository repository) {
         if (repository instanceof AliasRepository) {
             return find((AliasRepository) repository);
         } else {
@@ -98,7 +101,7 @@ public class SqlQuery implements Query {
         }
     }
 
-    public SqlQueryEntity find(AliasRepository repository) {
+    public RepositorySqlQueryFetch find(AliasRepository repository) {
         AssertIllegalArgument.isNotNull(repository, "repository");
         return find(repository.name(), repository.alias());
     }
@@ -108,21 +111,22 @@ public class SqlQuery implements Query {
      */
     @Override
     //    public SqlQueryEntityProperties find(String tableName) {
-    public SqlQueryEntity find(String tableName) {
+    public RepositorySqlQueryFetch find(String tableName) {
         return find(tableName, null);
     }
 
-    public SqlQueryEntity find(String tableName, String tableAlias) {
+    public RepositorySqlQueryFetch find(String tableName, String tableAlias) {
         AssertIllegalArgument.isNotNull(tableName, "tableName");
         AliasManager aliasManager = new AliasManager();
-        String alias = tableAlias;
-        if (Lang.isNotEmpty(alias)) {
-            aliasManager.put(tableName, alias);
+        if (Lang.isNotEmpty(tableAlias)) {
+            aliasManager.put(tableName, tableAlias);
         } else {
-            alias = aliasManager.put(tableName);
+            tableAlias = aliasManager.put(tableName);
         }
-        return new SqlQueryEntityProperties(jdbc, databaseMetadata, tableName, alias, sqlPageFactory, aliasManager,
-                queryConfig.clone());
+        return new RepositorySqlQueryFetchImpl(
+                new RepositorySqlQueryRelation(jdbc, aliasManager, databaseMetadata, queryConfig.clone())
+                        .query(tableName, tableAlias).fetch(0),
+                sqlPageFactory);
     }
 
     /**
@@ -138,7 +142,8 @@ public class SqlQuery implements Query {
         //            throw new SqldbHammerException(Strings.format("type {0} is not a entity"));
         //        }
 
-        EntitySqlQueryRelation queryRelation = new EntitySqlQueryRelation(jdbc, new AliasManager(), queryConfig.clone());
+        EntitySqlQueryRelation queryRelation = new EntitySqlQueryRelation(jdbc, new AliasManager(),
+                queryConfig.clone());
         return new EntitySqlQueryFetch<>(mappingFactory, sqlPageFactory, queryRelation, mapping);
     }
 

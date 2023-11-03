@@ -270,4 +270,9 @@ public abstract class AbstractOperate<T> {
      * 初始化SQL，由具体的实现类来实现.
      */
     protected abstract void initSql();
+
+    protected boolean isDebug() {
+        // IMPLSOON 后续使用配置
+        return logger.isDebugEnabled();
+    }
 }

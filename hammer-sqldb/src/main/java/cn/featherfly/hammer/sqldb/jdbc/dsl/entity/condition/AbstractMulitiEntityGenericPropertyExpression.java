@@ -35,7 +35,7 @@ public abstract class AbstractMulitiEntityGenericPropertyExpression<E, P, F exte
      * @param queryRelation the query relation
      */
     protected AbstractMulitiEntityGenericPropertyExpression(AtomicInteger index, F name,
-            AbstractMulitiEntityConditionExpression<C, L> expression, JdbcMappingFactory factory,
+            InternalMulitiEntityCondition<L> expression, JdbcMappingFactory factory,
             EntitySqlRelation<?, ?> queryRelation) {
         super(index, name, expression, factory, queryRelation);
     }
@@ -50,7 +50,7 @@ public abstract class AbstractMulitiEntityGenericPropertyExpression<E, P, F exte
      * @param queryRelation the query relation
      */
     public AbstractMulitiEntityGenericPropertyExpression(AtomicInteger index, List<Serializable> propertyList,
-            AbstractMulitiEntityConditionExpression<C, L> expression, JdbcMappingFactory factory,
+            InternalMulitiEntityCondition<L> expression, JdbcMappingFactory factory,
             EntitySqlRelation<?, ?> queryRelation) {
         super(index, propertyList, expression, factory, queryRelation);
     }

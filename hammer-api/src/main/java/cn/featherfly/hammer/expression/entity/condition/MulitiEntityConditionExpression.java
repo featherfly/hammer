@@ -10,13 +10,25 @@
  */
 package cn.featherfly.hammer.expression.entity.condition;
 
-import cn.featherfly.hammer.expression.condition.ConditionExpression;
+import cn.featherfly.common.repository.mapping.ClassMapping;
+import cn.featherfly.common.repository.mapping.PropertyMapping;
+import cn.featherfly.hammer.expression.condition.MulitiRepositoryExpression;
 
 /**
- * MulitiEntityConditionExpression.
+ * muliti entity condition expression.
  *
  * @author zhongj
  */
-public interface MulitiEntityConditionExpression extends ConditionExpression {
+public interface MulitiEntityConditionExpression extends MulitiRepositoryExpression {
 
+    /**
+     * Gets the class mapping.
+     *
+     * @param <M>   the generic type
+     * @param <T>   the generic type
+     * @param <P>   the generic type
+     * @param index the index
+     * @return the class mapping
+     */
+    <M extends ClassMapping<T, P>, T, P extends PropertyMapping<P>> M getClassMapping(int index);
 }

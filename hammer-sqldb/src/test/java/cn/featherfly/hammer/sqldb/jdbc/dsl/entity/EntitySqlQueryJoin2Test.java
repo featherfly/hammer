@@ -135,6 +135,19 @@ public class EntitySqlQueryJoin2Test extends AbstractEntitySqlQueryJoinTest {
     }
 
     //    @Test
+    //    void testJoin_________() {
+    //        Order2 order = query.find(Order2.class) //
+    //                // IMPLSOON 后续加入join on的新实现
+    //                .join(User2.class).on(t -> t.property(Order2::getCreateUser).eq(User2::getId)) //
+    //                .join(User2.class).on((t1, t2) -> t1.property(Order2::getCreateUser1).eq(User2::getId)) //
+    //                .where() //
+    //                .eq(Order2::getId, oid1) //
+    //                .single();
+    //        assertNotNull(order);
+    //        assertEquals(order.getId(), oid1);
+    //    }
+
+    //    @Test
     //    void testJoin_ER_TYPE_ER_TYPE() {
     //        Order2 order = query.find(Order2.class).join(User2.class).on(Order2::getUser1).join(User2.class)
     //                .on(Order2::getUser2).where().eq(Order2::getId, oid1).single();

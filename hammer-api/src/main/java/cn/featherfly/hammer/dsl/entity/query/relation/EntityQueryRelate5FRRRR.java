@@ -1,7 +1,7 @@
 
 package cn.featherfly.hammer.dsl.entity.query.relation;
 
-import cn.featherfly.hammer.expression.api.entity.QueryRelate;
+import cn.featherfly.hammer.expression.query.QueryRelateExpression;
 
 /**
  * The Interface EntityQueryRelate5FRRRR.
@@ -16,6 +16,6 @@ import cn.featherfly.hammer.expression.api.entity.QueryRelate;
  */
 public interface EntityQueryRelate5FRRRR<E, R1, R2, R3, R4, R5>
         extends EntityQueryRelate5FRRRXBase<E, R1, R2, R3, R4, R5>,
-        QueryRelate<EntityQueryRelatedFetched5FRRRF<E, R1, R2, R3, R4, R5>> {
+        QueryRelateExpression<EntityQueryRelatedFetched5FRRRF<E, R1, R2, R3, R4, R5>> {
 
 }

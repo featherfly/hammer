@@ -27,8 +27,8 @@ public interface EntityEqualsExpression3<E, E2, E3, C extends ConditionExpressio
     //     *
     //     * @param <R>      the generic type
     //     * @param entities the entities
-    //     * @param name     参数名称
-    //     * @param value    参数值
+    //     * @param name the name
+    //     * @param value the value
     //     * @return LogicExpression
     //     */
     //    default <R> L eq(Function<Tuple3<QueryEntityRepository<E>, QueryEntityRepository<E2>, QueryEntityRepository<E3>>,
@@ -41,8 +41,8 @@ public interface EntityEqualsExpression3<E, E2, E3, C extends ConditionExpressio
     //     *
     //     * @param <R>          the generic type
     //     * @param entities     the entities
-    //     * @param name         参数名称
-    //     * @param value        参数值
+    //     * @param name the name
+    //     * @param value the value
     //     * @param ignoreStrategy the ignore strategy
     //     * @return LogicExpression
     //     */
@@ -58,8 +58,8 @@ public interface EntityEqualsExpression3<E, E2, E3, C extends ConditionExpressio
     //     *
     //     * @param <R>         the generic type
     //     * @param entities    the entities
-    //     * @param name        参数名称
-    //     * @param value       参数值
+    //     * @param name the name
+    //     * @param value the value
     //     * @param queryPolicy the query policy
     //     * @return LogicExpression
     //     */
@@ -73,8 +73,8 @@ public interface EntityEqualsExpression3<E, E2, E3, C extends ConditionExpressio
     //     *
     //     * @param <R>          the generic type
     //     * @param entities     the entities
-    //     * @param name         参数名称
-    //     * @param value        参数值
+    //     * @param name the name
+    //     * @param value the value
     //     * @param queryPolicy  the query policy
     //     * @param ignoreStrategy the ignore strategy
     //     * @return LogicExpression
@@ -89,7 +89,7 @@ public interface EntityEqualsExpression3<E, E2, E3, C extends ConditionExpressio
     //     *
     //     * @param <R>      the generic type
     //     * @param entities the entities
-    //     * @param property 对象属性
+    //     * @param property  bean property
     //     * @return LogicExpression
     //     */
     //    default <R> L eq(Function<Tuple3<QueryEntityRepository<E>, QueryEntityRepository<E2>, QueryEntityRepository<E3>>,
@@ -102,7 +102,7 @@ public interface EntityEqualsExpression3<E, E2, E3, C extends ConditionExpressio
     //     *
     //     * @param <R>          the generic type
     //     * @param entities     the entities
-    //     * @param property     对象属性
+    //     * @param property  bean property
     //     * @param ignoreStrategy the ignore strategy
     //     * @return LogicExpression
     //     */
@@ -116,7 +116,7 @@ public interface EntityEqualsExpression3<E, E2, E3, C extends ConditionExpressio
     //     *
     //     * @param <R>         the generic type
     //     * @param entities    the entities
-    //     * @param property    对象属性
+    //     * @param property  bean property
     //     * @param queryPolicy the query policy
     //     * @return LogicExpression
     //     */
@@ -128,7 +128,7 @@ public interface EntityEqualsExpression3<E, E2, E3, C extends ConditionExpressio
     //     *
     //     * @param <R>          the generic type
     //     * @param entities     the entities
-    //     * @param property     对象属性
+    //     * @param property  bean property
     //     * @param queryPolicy  the query policy
     //     * @param ignoreStrategy the ignore strategy
     //     * @return LogicExpression
@@ -146,7 +146,7 @@ public interface EntityEqualsExpression3<E, E2, E3, C extends ConditionExpressio
     //     * @param entities            the entities
     //     * @param fetchEntity         the fetch entity
     //     * @param fetchEntityProperty the fetch entity property
-    //     * @param value               参数值
+    //     * @param value the value
     //     * @return LogicExpression
     //     */
     //    <T, V> L eq(
@@ -178,8 +178,8 @@ public interface EntityEqualsExpression3<E, E2, E3, C extends ConditionExpressio
     //     *
     //     * @param <R>      the generic type
     //     * @param entities the entities
-    //     * @param name     参数名称
-    //     * @param value    参数值
+    //     * @param name the name
+    //     * @param value the value
     //     * @return LogicExpression
     //     */
     //    default <R> L eq(Function<Tuple3<QueryEntityRepository<E>, QueryEntityRepository<E2>, QueryEntityRepository<E3>>,
@@ -192,8 +192,8 @@ public interface EntityEqualsExpression3<E, E2, E3, C extends ConditionExpressio
     //     *
     //     * @param <R>          the generic type
     //     * @param entities     the entities
-    //     * @param name         参数名称
-    //     * @param value        参数值
+    //     * @param name the name
+    //     * @param value the value
     //     * @param ignoreStrategy the ignore strategy
     //     * @return LogicExpression
     //     */
@@ -209,8 +209,8 @@ public interface EntityEqualsExpression3<E, E2, E3, C extends ConditionExpressio
     //     *
     //     * @param <R>         the generic type
     //     * @param entities    the entities
-    //     * @param name        参数名称
-    //     * @param value       参数值
+    //     * @param name the name
+    //     * @param value the value
     //     * @param queryPolicy the query policy
     //     * @return LogicExpression
     //     */
@@ -224,8 +224,8 @@ public interface EntityEqualsExpression3<E, E2, E3, C extends ConditionExpressio
     //     *
     //     * @param <R>          the generic type
     //     * @param entities     the entities
-    //     * @param name         参数名称
-    //     * @param value        参数值
+    //     * @param name the name
+    //     * @param value the value
     //     * @param queryPolicy  the query policy
     //     * @param ignoreStrategy the ignore strategy
     //     * @return LogicExpression
@@ -240,7 +240,7 @@ public interface EntityEqualsExpression3<E, E2, E3, C extends ConditionExpressio
     //     *
     //     * @param <R>      the generic type
     //     * @param entities the entities
-    //     * @param property 对象属性
+    //     * @param property  bean property
     //     * @return LogicExpression
     //     */
     //    default <R> L eq(Function<Tuple3<QueryEntityRepository<E>, QueryEntityRepository<E2>, QueryEntityRepository<E3>>,
@@ -253,7 +253,7 @@ public interface EntityEqualsExpression3<E, E2, E3, C extends ConditionExpressio
     //     *
     //     * @param <R>          the generic type
     //     * @param entities     the entities
-    //     * @param property     对象属性
+    //     * @param property  bean property
     //     * @param ignoreStrategy the ignore strategy
     //     * @return LogicExpression
     //     */
@@ -267,7 +267,7 @@ public interface EntityEqualsExpression3<E, E2, E3, C extends ConditionExpressio
     //     *
     //     * @param <R>         the generic type
     //     * @param entities    the entities
-    //     * @param property    对象属性
+    //     * @param property  bean property
     //     * @param queryPolicy the query policy
     //     * @return LogicExpression
     //     */
@@ -279,7 +279,7 @@ public interface EntityEqualsExpression3<E, E2, E3, C extends ConditionExpressio
     //     *
     //     * @param <R>          the generic type
     //     * @param entities     the entities
-    //     * @param property     对象属性
+    //     * @param property  bean property
     //     * @param queryPolicy  the query policy
     //     * @param ignoreStrategy the ignore strategy
     //     * @return LogicExpression
@@ -297,7 +297,7 @@ public interface EntityEqualsExpression3<E, E2, E3, C extends ConditionExpressio
     //     * @param entities            the entities
     //     * @param fetchEntity         the fetch entity
     //     * @param fetchEntityProperty the fetch entity property
-    //     * @param value               参数值
+    //     * @param value the value
     //     * @return LogicExpression
     //     */
     //    <T, V> L eq(
@@ -329,8 +329,8 @@ public interface EntityEqualsExpression3<E, E2, E3, C extends ConditionExpressio
     //     *
     //     * @param <R>      the generic type
     //     * @param entities the entities
-    //     * @param name     参数名称
-    //     * @param value    参数值
+    //     * @param name the name
+    //     * @param value the value
     //     * @return LogicExpression
     //     */
     //    default <R> L eq(Function<Tuple3<QueryEntityRepository<E>, QueryEntityRepository<E2>, QueryEntityRepository<E3>>,
@@ -343,8 +343,8 @@ public interface EntityEqualsExpression3<E, E2, E3, C extends ConditionExpressio
     //     *
     //     * @param <R>          the generic type
     //     * @param entities     the entities
-    //     * @param name         参数名称
-    //     * @param value        参数值
+    //     * @param name the name
+    //     * @param value the value
     //     * @param ignoreStrategy the ignore strategy
     //     * @return LogicExpression
     //     */
@@ -360,8 +360,8 @@ public interface EntityEqualsExpression3<E, E2, E3, C extends ConditionExpressio
     //     *
     //     * @param <R>         the generic type
     //     * @param entities    the entities
-    //     * @param name        参数名称
-    //     * @param value       参数值
+    //     * @param name the name
+    //     * @param value the value
     //     * @param queryPolicy the query policy
     //     * @return LogicExpression
     //     */
@@ -375,8 +375,8 @@ public interface EntityEqualsExpression3<E, E2, E3, C extends ConditionExpressio
     //     *
     //     * @param <R>          the generic type
     //     * @param entities     the entities
-    //     * @param name         参数名称
-    //     * @param value        参数值
+    //     * @param name the name
+    //     * @param value the value
     //     * @param queryPolicy  the query policy
     //     * @param ignoreStrategy the ignore strategy
     //     * @return LogicExpression
@@ -391,7 +391,7 @@ public interface EntityEqualsExpression3<E, E2, E3, C extends ConditionExpressio
     //     *
     //     * @param <R>      the generic type
     //     * @param entities the entities
-    //     * @param property 对象属性
+    //     * @param property  bean property
     //     * @return LogicExpression
     //     */
     //    default <R> L eq(Function<Tuple3<QueryEntityRepository<E>, QueryEntityRepository<E2>, QueryEntityRepository<E3>>,
@@ -404,7 +404,7 @@ public interface EntityEqualsExpression3<E, E2, E3, C extends ConditionExpressio
     //     *
     //     * @param <R>          the generic type
     //     * @param entities     the entities
-    //     * @param property     对象属性
+    //     * @param property  bean property
     //     * @param ignoreStrategy the ignore strategy
     //     * @return LogicExpression
     //     */
@@ -418,7 +418,7 @@ public interface EntityEqualsExpression3<E, E2, E3, C extends ConditionExpressio
     //     *
     //     * @param <R>         the generic type
     //     * @param entities    the entities
-    //     * @param property    对象属性
+    //     * @param property  bean property
     //     * @param queryPolicy the query policy
     //     * @return LogicExpression
     //     */
@@ -430,7 +430,7 @@ public interface EntityEqualsExpression3<E, E2, E3, C extends ConditionExpressio
     //     *
     //     * @param <R>          the generic type
     //     * @param entities     the entities
-    //     * @param property     对象属性
+    //     * @param property  bean property
     //     * @param queryPolicy  the query policy
     //     * @param ignoreStrategy the ignore strategy
     //     * @return LogicExpression
@@ -448,7 +448,7 @@ public interface EntityEqualsExpression3<E, E2, E3, C extends ConditionExpressio
     //     * @param entities            the entities
     //     * @param fetchEntity         the fetch entity
     //     * @param fetchEntityProperty the fetch entity property
-    //     * @param value               参数值
+    //     * @param value the value
     //     * @return LogicExpression
     //     */
     //    <T, V> L eq(
@@ -475,7 +475,7 @@ public interface EntityEqualsExpression3<E, E2, E3, C extends ConditionExpressio
     //     * equals. 等于.
     //     *
     //     * @param consumer the consumer
-    //     * @return the l
+    //     * @return LogicExpression
     //     */
     //    L eq(Function<EntityEqualsExpression3<E, E2, E3, C, L>, L> consumer);
 

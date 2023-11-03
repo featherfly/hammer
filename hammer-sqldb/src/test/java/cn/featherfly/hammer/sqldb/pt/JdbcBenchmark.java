@@ -34,6 +34,8 @@ import cn.featherfly.hammer.sqldb.jdbc.vo.s.UserInfo2;
 @Test
 public class JdbcBenchmark extends AbstractBenchmark {
 
+    final String insertSql = "insert into `user_info` (`id`, `user_id`, `name`, `descp`, `province`, `city`, `district`) values(?,?,?,?,?,?,?)";
+
     final String selectUserInfoByIdSql = "select `id`, `user_id` , `name`, `descp`, `province`, `city`, `district` from `user_info` where `id` = ?";
 
     Connection conn;
@@ -57,7 +59,6 @@ public class JdbcBenchmark extends AbstractBenchmark {
      */
     @Override
     protected void doInsertOne(UserInfo2 userInfo) {
-        String insertSql = "insert into `user_info` (`id`, `user_id`, `name`, `descp`, `province`, `city`, `district`) values(?,?,?,?,?,?,?)";
         //        ConnectionWrapper conn = JdbcUtils.getConnectionWrapper(dataSource);
         try {
             PreparedStatement prep = conn.prepareStatement(insertSql);
@@ -131,25 +132,25 @@ public class JdbcBenchmark extends AbstractBenchmark {
         //        String selectSql = "select `id`, `user_id` , `name`, `descp`, `province`, `city`, `district` from `user_info` where `id` = ?";
         //        ConnectionWrapper conn = JdbcUtils.getConnectionWrapper(dataSource);
         try {
-            PreparedStatement prep = conn.prepareStatement(selectUserInfoByIdSql);
-            ResultSet res = prep.executeQuery();
-            UserInfo2 userInfo = new UserInfo2();
-            if (res.next()) {
-                userInfo.setId(res.getInt(1));
-                userInfo.setUserId(res.getInt(2));
-                userInfo.setName(res.getString(3));
-                userInfo.setDescp(res.getString(4));
-                userInfo.setProvince(res.getString(5));
-                userInfo.setCity(res.getString(6));
-                userInfo.setDistrict(res.getString(7));
-            }
-            res.close();
-            prep.close();
-            return userInfo;
+            return doSelectById(id, conn.prepareStatement(selectUserInfoByIdSql));
+            //            PreparedStatement prep = conn.prepareStatement(selectUserInfoByIdSql);
+            //            ResultSet res = prep.executeQuery();
+            //            UserInfo2 userInfo = new UserInfo2();
+            //            if (res.next()) {
+            //                userInfo.setId(res.getInt(1));
+            //                userInfo.setUserId(res.getInt(2));
+            //                userInfo.setName(res.getString(3));
+            //                userInfo.setDescp(res.getString(4));
+            //                userInfo.setProvince(res.getString(5));
+            //                userInfo.setCity(res.getString(6));
+            //                userInfo.setDistrict(res.getString(7));
+            //            }
+            //            res.close();
+            //            prep.close();
+            //            return userInfo;
         } catch (SQLException e) {
             throw new JdbcException(e);
         }
-        //        conn.close();
     }
 
     /**

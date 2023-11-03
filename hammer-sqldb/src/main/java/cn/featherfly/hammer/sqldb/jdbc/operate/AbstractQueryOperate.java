@@ -11,7 +11,7 @@ import cn.featherfly.common.db.mapping.SqlResultSet;
 import cn.featherfly.common.db.mapping.SqlTypeMappingManager;
 import cn.featherfly.common.db.metadata.DatabaseMetadata;
 import cn.featherfly.hammer.sqldb.jdbc.Jdbc;
-import cn.featherfly.hammer.sqldb.jdbc.MappingDebugMessage;
+import cn.featherfly.hammer.sqldb.jdbc.debug.MappingDebugMessage;
 
 /**
  * 数据库操作的抽象类.
@@ -56,28 +56,36 @@ public abstract class AbstractQueryOperate<T> extends AbstractOperate<T> impleme
      * @param databaseMetadata      the database metadata
      */
     public AbstractQueryOperate(Jdbc jdbc, JdbcClassMapping<T> classMapping,
-            SqlTypeMappingManager sqlTypeMappingManager, DatabaseMetadata databaseMetadata) {
+        SqlTypeMappingManager sqlTypeMappingManager, DatabaseMetadata databaseMetadata) {
         super(jdbc, classMapping, sqlTypeMappingManager, databaseMetadata);
     }
 
     /**
-     * <p>
      * 每条记录映射为对象.
-     * </p>
      *
      * @param rs        结果集
      * @param rowNumber 行数
      * @return 映射后的对象
      */
     protected T mapRow(cn.featherfly.common.repository.mapping.ResultSet rs, int rowNumber) {
-        T mappedObject = BeanUtils.instantiateClass(classMapping.getType());
-        int index = 1;
-        ResultSet resultSet = null;
         if (rs instanceof SqlResultSet) {
             SqlResultSet sqlrs = (SqlResultSet) rs;
-            resultSet = sqlrs.getResultSet();
+            return mapRow(sqlrs.getResultSet(), rowNumber);
         }
-        MappingDebugMessage mappingDebugMessage = new MappingDebugMessage();
+        return BeanUtils.instantiateClass(classMapping.getType());
+    }
+
+    /**
+     * 每条记录映射为对象.
+     *
+     * @param resultSet 结果集
+     * @param rowNumber 行数
+     * @return 映射后的对象
+     */
+    protected T mapRow(ResultSet resultSet, int rowNumber) {
+        int index = 1;
+        T mappedObject = BeanUtils.instantiateClass(classMapping.getType());
+        MappingDebugMessage mappingDebugMessage = new MappingDebugMessage(isDebug());
         for (JdbcPropertyMapping propertyMapping : classMapping.getPropertyMappings()) {
             if (propertyMapping.getPropertyMappings().isEmpty()) {
                 // YUFEI_TEST 后续来测试
@@ -88,7 +96,6 @@ public abstract class AbstractQueryOperate<T> extends AbstractOperate<T> impleme
                 //                index = setProperty(rowNumber, mappedObject, index, propertyMapping, value, mappingDebugMessage);
             } else {
                 for (JdbcPropertyMapping subPropertyMapping : propertyMapping.getPropertyMappings()) {
-                    // YUFEI_TEST 还没有测试
                     //                    BeanProperty<?> bp = getBeanProperty(subPropertyMapping, rowNumber);
                     //                    Object value = sqlTypeMappingManager.get(resultSet, index, bp);
                     //                    //                    Object value = getColumnValue(rs, index, subPropertyMapping.getPropertyType());
@@ -101,9 +108,9 @@ public abstract class AbstractQueryOperate<T> extends AbstractOperate<T> impleme
         }
         if (rowNumber == 0 && logger.isDebugEnabled()) {
             StringBuilder debugMessage = new StringBuilder();
-            debugMessage.append("\n---------- Map " + classMapping.getType().getName() + " Start ----------\n")
-                    .append(mappingDebugMessage.toString())
-                    .append("---------- Map " + classMapping.getType().getName() + " End ----------");
+            debugMessage.append("\n---------- Mapping " + classMapping.getType().getName() + " Start ----------\n")
+                .append(mappingDebugMessage.toString())
+                .append("---------- Mapping " + classMapping.getType().getName() + " End ----------\n");
             logger.debug(debugMessage.toString());
         }
         return mappedObject;
@@ -115,70 +122,19 @@ public abstract class AbstractQueryOperate<T> extends AbstractOperate<T> impleme
     //    }
 
     private int setProperty(int rowNumber, T mappedObject, int index, JdbcPropertyMapping propertyMapping, Object value,
-            MappingDebugMessage mappingDebugMessage) {
+        MappingDebugMessage mappingDebugMessage) {
         String propertyName = ClassMappingUtils.getPropertyAliasName(propertyMapping);
         if (logger.isDebugEnabled() && rowNumber == 0) {
-            mappingDebugMessage.addMapping(propertyMapping.getRepositoryFieldName(), propertyName,
-                    propertyMapping.getPropertyType().getName());
+            mappingDebugMessage.debug(m -> m.addMapping(propertyMapping.getRepositoryFieldName(), propertyName,
+                propertyName, propertyMapping.getPropertyType().getName()));
         }
         BeanUtils.setProperty(mappedObject, propertyName, value);
         index++;
         return index;
     }
 
-    //    /**
-    //     * {@inheritDoc}
-    //     */
-    //    @Override
-    //    protected void initSql() {
-    //        initSelectSql();
-    //        StringBuilder getSql = new StringBuilder();
-    //        getSql.append(getSelectSql());
-    //        String condition = initCondition();
-    //        if (Lang.isNotEmpty(condition)) {
-    //            getSql.append(Chars.SPACE).append(jdbc.getDialect().getKeywords().where()).append(Chars.SPACE)
-    //                    .append(condition);
-    //        }
-    //        sql = getSql.toString();
-    //        logger.debug("sql: {}", sql);
-    //    }
-    //
-    //    /**
-    //     * Inits the condition.
-    //     *
-    //     * @return the string
-    //     */
-    //    protected abstract String initCondition();
-
     // ********************************************************************
     //
     // ********************************************************************
 
-    //    private Object getColumnValue(ResultSet rs, int index, Class<?> propertyType) {
-    //        return JdbcUtils.getResultSetValue(rs, index, propertyType);
-    //    }
-
-    //    private Object getColumnValue(cn.featherfly.common.repository.mapping.ResultSet rs, int index,
-    //            Class<?> propertyType) {
-    //        return JdbcUtils.getResultSetValue(((SqlResultSet) rs).getResultSet(), index, propertyType);
-    //    }
-
-    //    private void initSelectSql() {
-    //        this.selectSql = ClassMappingUtils.getSelectSql(classMapping, jdbc.getDialect());
-    //    }
-
-    // ********************************************************************
-    //
-    // ********************************************************************
-
-    //    private String selectSql;
-    //
-    //    /**
-    //     * 返回selectSql.
-    //     *
-    //     * @return selectSql
-    //     */
-    //    public String getSelectSql() {
-    //        return selectSql;
-    //    }
 }

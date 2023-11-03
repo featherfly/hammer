@@ -32,7 +32,7 @@ public interface EntityIsNotNullExpressionBase6<E, E2, E3, E4, E5, E6, C extends
      * is not null.
      *
      * @param <R>  the generic type
-     * @param name 参数名称
+     * @param name the name
      * @return LogicExpression
      */
     default <R> L inn6(SerializableFunction<E6, R> name) {
@@ -43,7 +43,7 @@ public interface EntityIsNotNullExpressionBase6<E, E2, E3, E4, E5, E6, C extends
      * is not null.
      *
      * @param <R>   the generic type
-     * @param name  参数名称
+     * @param name the name
      * @param value if true, is null; if false, is not null; if null, ignore
      *              this operate
      * @return LogicExpression

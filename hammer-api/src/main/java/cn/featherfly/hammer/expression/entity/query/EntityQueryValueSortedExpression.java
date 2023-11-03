@@ -11,7 +11,7 @@ import cn.featherfly.hammer.expression.entity.query.sort.EntitySortedExpression;
  * @param <V> the value type
  */
 public interface EntityQueryValueSortedExpression<E, V>
-        extends EntitySortedExpression<E, EntityQueryValueSortedExpression<E, V>>, EntityQueryConditionLimit<V>,
-        EntityQueryLimitExecutor<V> {
+        extends EntitySortedExpression<E, EntityQueryValueSortedExpression<E, V>>,
+        EntityQueryConditionLimit<EntityQueryValueLimitExecutor<E, V>>, EntityQueryValueLimitExecutor<E, V> {
 
 }

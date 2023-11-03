@@ -39,12 +39,12 @@ public interface EqualsOrNotEqualsEntityExpression<T>
      * entity equals or not equals function property expression.
      *
      * @param <R>  the generic type
-     * @param <RE> the generic type
+     * @param <E>  the generic type
      * @param name the name
      * @return entity equals or not equals function property expression.
      */
-    <R extends Collection<RE>,
-            RE> EqualsOrNotEqualsEntityPropertyExpression<RE> property(SerializableToCollectionFunction<T, R, RE> name);
+    <R extends Collection<E>,
+            E> EqualsOrNotEqualsEntityPropertyExpression<E> property(SerializableToCollectionFunction<T, R, E> name);
 
     /**
      * equals or not equals. 等于或者不等于.
@@ -52,7 +52,6 @@ public interface EqualsOrNotEqualsEntityExpression<T>
      * @param <R>      the generic type
      * @param property the property
      * @param value    the value
-     * @return the l
      */
     <R> void accept(SerializableFunction<T, R> property, R value);
 
@@ -63,7 +62,6 @@ public interface EqualsOrNotEqualsEntityExpression<T>
      * @param property       the property
      * @param value          the value
      * @param ignoreStrategy the ignore strategy
-     * @return the l
      */
     <R> void accept(SerializableFunction<T, R> property, R value, Predicate<R> ignoreStrategy);
 
@@ -71,7 +69,7 @@ public interface EqualsOrNotEqualsEntityExpression<T>
      * equals or not equals. 等于或者不等于.
      *
      * @param <R>      the generic type
-     * @param property 对象属性
+     * @param property  bean property
      * @return LogicExpression
      */
     <R> void accept(SerializableSupplier<R> property);
@@ -80,7 +78,7 @@ public interface EqualsOrNotEqualsEntityExpression<T>
      * equals or not equals. 等于或者不等于.
      *
      * @param <R>            the generic type
-     * @param property       对象属性
+     * @param property       bean property
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */

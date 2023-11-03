@@ -72,7 +72,7 @@ public class Appconfig extends JdbcTestBase {
         //        ConstantConfigurator.config(JdbcTestBase.configFile);
         //        ConstantConfigurator.config();
 
-        Jdbc jdbc = new JdbcSpringImpl(dataSource, Dialects.MYSQL);
+        Jdbc jdbc = new JdbcSpringImpl(dataSource, Dialects.MYSQL, metadata);
         DatabaseMetadata metadata = DatabaseMetadataManager.getDefaultManager().create(dataSource);
 
         JdbcMappingFactory mappingFactory = new JdbcMappingFactoryImpl(metadata, Dialects.MYSQL);

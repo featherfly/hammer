@@ -539,12 +539,12 @@ public class SqlTplExecutorTest extends JdbcTestBase {
         //  pagination
         PaginationResults<User> p = executor.pagination("selectIn", User.class, params, 0, 2);
         assertEquals(p.getPageResults().size(), resultSize);
-        assertEquals(p.getTotal(), new Integer(ids.length));
+        assertEquals(p.getTotal(), Integer.valueOf(ids.length));
 
         // single
         User user = executor.single("selectInSingle", User.class,
                 new ChainMapImpl<String, Object>().putChain("ids", new Long[] { 1L, -1L }));
-        assertEquals(user.getId(), new Integer(1));
+        assertEquals(user.getId(), Integer.valueOf(1));
 
     }
 

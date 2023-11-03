@@ -13,25 +13,25 @@ import cn.featherfly.common.function.serializable.SerializableToCollectionFuncti
  * @param <V> the value type
  */
 public interface BetweenAndEntityPropertyExpression<V>
-        extends BetweenAndEntityExpression<V>, BetweenAndEntityValuePropertyExpression<V> {
+    extends BetweenAndEntityExpression<V>, BetweenAndEntityValuePropertyExpression<V> {
 
     /**
-     * entity great than function property expression.
+     * entity between and function property expression.
      *
      * @param <R>  the generic type
      * @param name the name
-     * @return entity great than function property expression.
+     * @return entity between and function property expression.
      */
     <R> BetweenAndEntityPropertyExpression<R> property(SerializableFunction<V, R> name);
 
     /**
-     * entity great than function property expression.
+     * entity between and function property expression.
      *
      * @param <R>  the generic type
      * @param <E>  the generic type
      * @param name the name
-     * @return entity great than function property expression.
+     * @return entity between and function property expression.
      */
     <R extends Collection<E>,
-            E> BetweenAndEntityPropertyExpression<E> property(SerializableToCollectionFunction<V, R, E> name);
+        E> BetweenAndEntityPropertyExpression<E> property(SerializableToCollectionFunction<V, R, E> name);
 }

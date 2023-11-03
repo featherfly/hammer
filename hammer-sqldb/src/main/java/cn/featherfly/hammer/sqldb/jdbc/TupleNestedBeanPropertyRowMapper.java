@@ -15,8 +15,8 @@ import org.slf4j.LoggerFactory;
 import com.speedment.common.tuple.Tuple;
 import com.speedment.common.tuple.Tuples;
 
+import cn.featherfly.common.db.JdbcException;
 import cn.featherfly.common.db.JdbcUtils;
-import cn.featherfly.common.db.mapping.JdbcMappingException;
 import cn.featherfly.common.db.mapping.SqlResultSet;
 import cn.featherfly.common.db.mapping.SqlTypeMappingManager;
 import cn.featherfly.common.lang.AssertIllegalArgument;
@@ -118,7 +118,7 @@ public class TupleNestedBeanPropertyRowMapper<T extends Tuple>
                 rs = sqlrs.getResultSet();
                 AssertIllegalArgument.isNotNull(rs, "java.sql.ResultSet");
             } else {
-                throw new JdbcMappingException("ResultSet is not type of SqlResultSet");
+                throw new JdbcException("ResultSet is not type of SqlResultSet");
             }
 
             try {
@@ -134,6 +134,10 @@ public class TupleNestedBeanPropertyRowMapper<T extends Tuple>
                     }
                 }
 
+                if (prefixes.isEmpty()) {
+                    throw new JdbcException("prefixes is empty");
+                }
+
                 Lang.each(prefixes, (prefix, index) -> {
                     rowMappers.add(new NestedBeanPropertyRowMapper<>(mappedClasses.get(index), manager, prefix + ".",
                             checkFullyPopulated));
@@ -142,7 +146,7 @@ public class TupleNestedBeanPropertyRowMapper<T extends Tuple>
                 // rowMappers 初始化完成，重新进行mapRow
                 mapRow(res, rowNum);
             } catch (SQLException e) {
-                throw new JdbcMappingException(e);
+                throw new JdbcException(e);
             }
         }
         return (T) Tuples.ofArray(results.toArray());

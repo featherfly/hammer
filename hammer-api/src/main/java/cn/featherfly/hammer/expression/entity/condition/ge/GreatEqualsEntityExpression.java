@@ -119,8 +119,8 @@ public interface GreatEqualsEntityExpression<E>
     //    /**
     //     * great and equals. 大于等于.
     //     *
-    //     * @param name  参数名称
-    //     * @param value 参数值
+    //     * @param name the name
+    //     * @param value the value
     //     * @return LogicExpression
     //     */
     //    void accept(SerializableToIntFunction<E> name, int value);
@@ -128,8 +128,8 @@ public interface GreatEqualsEntityExpression<E>
     //    /**
     //     * great and equals. 大于等于.
     //     *
-    //     * @param name         参数名称
-    //     * @param value        参数值
+    //     * @param name the name
+    //     * @param value the value
     //     * @param ignoreStrategy the ignore strategy
     //     * @return LogicExpression
     //     */
@@ -138,8 +138,8 @@ public interface GreatEqualsEntityExpression<E>
     //    /**
     //     * great and equals. 大于等于.
     //     *
-    //     * @param name  参数名称
-    //     * @param value 参数值
+    //     * @param name the name
+    //     * @param value the value
     //     * @return LogicExpression
     //     */
     //    void accept(SerializableToLongFunction<E> name, long value);
@@ -147,8 +147,8 @@ public interface GreatEqualsEntityExpression<E>
     //    /**
     //     * great and equals. 大于等于.
     //     *
-    //     * @param name         参数名称
-    //     * @param value        参数值
+    //     * @param name the name
+    //     * @param value the value
     //     * @param ignoreStrategy the ignore strategy
     //     * @return LogicExpression
     //     */
@@ -157,8 +157,8 @@ public interface GreatEqualsEntityExpression<E>
     //    /**
     //     * great and equals. 大于等于.
     //     *
-    //     * @param name  参数名称
-    //     * @param value 参数值
+    //     * @param name the name
+    //     * @param value the value
     //     * @return LogicExpression
     //     */
     //    void accept(SerializableToDoubleFunction<E> name, double value);
@@ -166,8 +166,8 @@ public interface GreatEqualsEntityExpression<E>
     //    /**
     //     * great and equals. 大于等于.
     //     *
-    //     * @param name         参数名称
-    //     * @param value        参数值
+    //     * @param name the name
+    //     * @param value the value
     //     * @param ignoreStrategy the ignore strategy
     //     * @return LogicExpression
     //     */
@@ -177,8 +177,8 @@ public interface GreatEqualsEntityExpression<E>
     //     * great and equals. 大于等于.
     //     *
     //     * @param <N>   number type
-    //     * @param name  参数名称
-    //     * @param value 参数值
+    //     * @param name the name
+    //     * @param value the value
     //     * @return LogicExpression
     //     */
     //    <N extends Number> void accept(SerializableFunction<E, N> name, N value);
@@ -187,8 +187,8 @@ public interface GreatEqualsEntityExpression<E>
     //     * great and equals. 大于等于.
     //     *
     //     * @param <N>          number type
-    //     * @param name         参数名称
-    //     * @param value        参数值
+    //     * @param name the name
+    //     * @param value the value
     //     * @param ignoreStrategy the ignore strategy
     //     * @return LogicExpression
     //     */
@@ -198,8 +198,8 @@ public interface GreatEqualsEntityExpression<E>
     //     * great and equals. 大于等于.
     //     *
     //     * @param <D>   date type
-    //     * @param name  参数名称
-    //     * @param value 参数值
+    //     * @param name the name
+    //     * @param value the value
     //     * @return LogicExpression
     //     */
     //    <D extends Date> void accept(SerializableFunction<E, D> name, D value);
@@ -208,8 +208,8 @@ public interface GreatEqualsEntityExpression<E>
     //     * great and equals. 大于等于.
     //     *
     //     * @param <D>          date type
-    //     * @param name         参数名称
-    //     * @param value        参数值
+    //     * @param name the name
+    //     * @param value the value
     //     * @param ignoreStrategy the ignore strategy
     //     * @return LogicExpression
     //     */
@@ -218,8 +218,8 @@ public interface GreatEqualsEntityExpression<E>
     //    /**
     //     * great and equals. 大于等于.
     //     *
-    //     * @param name  参数名称
-    //     * @param value 参数值
+    //     * @param name the name
+    //     * @param value the value
     //     * @return LogicExpression
     //     */
     //    void accept(SerializableFunction<E, LocalTime> name, LocalTime value);
@@ -227,8 +227,8 @@ public interface GreatEqualsEntityExpression<E>
     //    /**
     //     * great and equals. 大于等于.
     //     *
-    //     * @param name         参数名称
-    //     * @param value        参数值
+    //     * @param name the name
+    //     * @param value the value
     //     * @param ignoreStrategy the ignore strategy
     //     * @return LogicExpression
     //     */
@@ -237,8 +237,8 @@ public interface GreatEqualsEntityExpression<E>
     //    /**
     //     * great and equals. 大于等于.
     //     *
-    //     * @param name  参数名称
-    //     * @param value 参数值
+    //     * @param name the name
+    //     * @param value the value
     //     * @return LogicExpression
     //     */
     //    void accept(SerializableFunction<E, LocalDate> name, LocalDate value);
@@ -246,8 +246,8 @@ public interface GreatEqualsEntityExpression<E>
     //    /**
     //     * great and equals. 大于等于.
     //     *
-    //     * @param name         参数名称
-    //     * @param value        参数值
+    //     * @param name the name
+    //     * @param value the value
     //     * @param ignoreStrategy the ignore strategy
     //     * @return LogicExpression
     //     */
@@ -256,8 +256,8 @@ public interface GreatEqualsEntityExpression<E>
     //    /**
     //     * great and equals. 大于等于.
     //     *
-    //     * @param name  参数名称
-    //     * @param value 参数值
+    //     * @param name the name
+    //     * @param value the value
     //     * @return LogicExpression
     //     */
     //    void accept(SerializableFunction<E, LocalDateTime> name, LocalDateTime value);
@@ -265,8 +265,8 @@ public interface GreatEqualsEntityExpression<E>
     //    /**
     //     * great and equals. 大于等于.
     //     *
-    //     * @param name         参数名称
-    //     * @param value        参数值
+    //     * @param name the name
+    //     * @param value the value
     //     * @param ignoreStrategy the ignore strategy
     //     * @return LogicExpression
     //     */
@@ -275,8 +275,8 @@ public interface GreatEqualsEntityExpression<E>
     //    /**
     //     * great and equals. 大于等于.
     //     *
-    //     * @param name  参数名称
-    //     * @param value 参数值
+    //     * @param name the name
+    //     * @param value the value
     //     * @return LogicExpression
     //     */
     //    void accept(SerializableFunction<E, String> name, String value);
@@ -284,8 +284,8 @@ public interface GreatEqualsEntityExpression<E>
     //    /**
     //     * great and equals. 大于等于.
     //     *
-    //     * @param name         参数名称
-    //     * @param value        参数值
+    //     * @param name the name
+    //     * @param value the value
     //     * @param ignoreStrategy the ignore strategy
     //     * @return LogicExpression
     //     */
@@ -294,7 +294,7 @@ public interface GreatEqualsEntityExpression<E>
     //    /**
     //     * great and equals. 大于等于.
     //     *
-    //     * @param property 对象属性
+    //     * @param property  bean property
     //     * @return LogicExpression
     //     */
     //    void accept(SerializableIntSupplier property);
@@ -302,7 +302,7 @@ public interface GreatEqualsEntityExpression<E>
     //    /**
     //     * great and equals. 大于等于.
     //     *
-    //     * @param property     对象属性
+    //     * @param property  bean property
     //     * @param ignoreStrategy the ignore strategy
     //     * @return LogicExpression
     //     */
@@ -311,7 +311,7 @@ public interface GreatEqualsEntityExpression<E>
     //    /**
     //     * great and equals. 大于等于.
     //     *
-    //     * @param property 对象属性
+    //     * @param property  bean property
     //     * @return LogicExpression
     //     */
     //    void accept(SerializableLongSupplier property);
@@ -319,7 +319,7 @@ public interface GreatEqualsEntityExpression<E>
     //    /**
     //     * great and equals. 大于等于.
     //     *
-    //     * @param property     对象属性
+    //     * @param property  bean property
     //     * @param ignoreStrategy the ignore strategy
     //     * @return LogicExpression
     //     */
@@ -328,7 +328,7 @@ public interface GreatEqualsEntityExpression<E>
     //    /**
     //     * great and equals. 大于等于.
     //     *
-    //     * @param property 对象属性
+    //     * @param property  bean property
     //     * @return LogicExpression
     //     */
     //    void accept(SerializableDoubleSupplier property);
@@ -336,7 +336,7 @@ public interface GreatEqualsEntityExpression<E>
     //    /**
     //     * great and equals. 大于等于.
     //     *
-    //     * @param property     对象属性
+    //     * @param property  bean property
     //     * @param ignoreStrategy the ignore strategy
     //     * @return LogicExpression
     //     */
@@ -346,7 +346,7 @@ public interface GreatEqualsEntityExpression<E>
     //     * great and equals. 大于等于.
     //     *
     //     * @param <R>      the generic type
-    //     * @param property 对象属性
+    //     * @param property  bean property
     //     * @return LogicExpression
     //     */
     //    <R extends Date> void accept(SerializableDateSupplier<R> property);
@@ -355,7 +355,7 @@ public interface GreatEqualsEntityExpression<E>
     //     * great and equals. 大于等于.
     //     *
     //     * @param <R>          the generic type
-    //     * @param property     对象属性
+    //     * @param property  bean property
     //     * @param ignoreStrategy the ignore strategy
     //     * @return LogicExpression
     //     */
@@ -365,7 +365,7 @@ public interface GreatEqualsEntityExpression<E>
     //     * great and equals. 大于等于.
     //     *
     //     * @param <R>      the generic type
-    //     * @param property 对象属性
+    //     * @param property  bean property
     //     * @return LogicExpression
     //     */
     //    <R extends Number> void accept(SerializableNumberSupplier<R> property);
@@ -374,7 +374,7 @@ public interface GreatEqualsEntityExpression<E>
     //     * great and equals. 大于等于.
     //     *
     //     * @param <R>          the generic type
-    //     * @param property     对象属性
+    //     * @param property  bean property
     //     * @param ignoreStrategy the ignore strategy
     //     * @return LogicExpression
     //     */
@@ -383,7 +383,7 @@ public interface GreatEqualsEntityExpression<E>
     //    /**
     //     * great and equals. 大于等于.
     //     *
-    //     * @param property 对象属性
+    //     * @param property  bean property
     //     * @return LogicExpression
     //     */
     //    void accept(SerializableLocalDateSupplier property);
@@ -391,7 +391,7 @@ public interface GreatEqualsEntityExpression<E>
     //    /**
     //     * great and equals. 大于等于.
     //     *
-    //     * @param property     对象属性
+    //     * @param property  bean property
     //     * @param ignoreStrategy the ignore strategy
     //     * @return LogicExpression
     //     */
@@ -400,7 +400,7 @@ public interface GreatEqualsEntityExpression<E>
     //    /**
     //     * great and equals. 大于等于.
     //     *
-    //     * @param property 对象属性
+    //     * @param property  bean property
     //     * @return LogicExpression
     //     */
     //    void accept(SerializableLocalTimeSupplier property);
@@ -408,7 +408,7 @@ public interface GreatEqualsEntityExpression<E>
     //    /**
     //     * great and equals. 大于等于.
     //     *
-    //     * @param property     对象属性
+    //     * @param property  bean property
     //     * @param ignoreStrategy the ignore strategy
     //     * @return LogicExpression
     //     */
@@ -417,7 +417,7 @@ public interface GreatEqualsEntityExpression<E>
     //    /**
     //     * great and equals. 大于等于.
     //     *
-    //     * @param property 对象属性
+    //     * @param property  bean property
     //     * @return LogicExpression
     //     */
     //    void accept(SerializableLocalDateTimeSupplier property);
@@ -425,7 +425,7 @@ public interface GreatEqualsEntityExpression<E>
     //    /**
     //     * great and equals. 大于等于.
     //     *
-    //     * @param property     对象属性
+    //     * @param property  bean property
     //     * @param ignoreStrategy the ignore strategy
     //     * @return LogicExpression
     //     */
@@ -434,7 +434,7 @@ public interface GreatEqualsEntityExpression<E>
     //    /**
     //     * great and equals. 大于等于.
     //     *
-    //     * @param property 对象属性
+    //     * @param property  bean property
     //     * @return LogicExpression
     //     */
     //    void accept(SerializableStringSupplier property);
@@ -442,7 +442,7 @@ public interface GreatEqualsEntityExpression<E>
     //    /**
     //     * great and equals. 大于等于.
     //     *
-    //     * @param property     对象属性
+    //     * @param property  bean property
     //     * @param ignoreStrategy the ignore strategy
     //     * @return LogicExpression
     //     */

@@ -7,13 +7,11 @@ import java.util.Map;
 import cn.featherfly.common.repository.mapping.RowMapper;
 
 /**
- * <p>
- * dsl for query list executor
- * </p>
+ * query list executor.
  *
  * @author zhongj
  */
-public interface QueryListExecutor {
+public interface QueryListExecutor extends QueryTypeListExecutor {
     /**
      * query for list
      *
@@ -24,16 +22,7 @@ public interface QueryListExecutor {
     /**
      * query for list
      *
-     * @param <E>  wrapper type
-     * @param type wrapper type
-     * @return list
-     */
-    <E> List<E> list(Class<E> type);
-
-    /**
-     * query for list
-     *
-     * @param <E>       wrapper type
+     * @param <E>       mapping type
      * @param rowMapper rowMapper
      * @return list
      */

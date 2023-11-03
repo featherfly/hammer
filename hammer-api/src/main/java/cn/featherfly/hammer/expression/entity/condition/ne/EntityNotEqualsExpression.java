@@ -10,18 +10,7 @@ import java.util.function.IntPredicate;
 import java.util.function.LongPredicate;
 import java.util.function.Predicate;
 
-import cn.featherfly.common.function.serializable.SerializableDateSupplier;
-import cn.featherfly.common.function.serializable.SerializableDoubleSupplier;
-import cn.featherfly.common.function.serializable.SerializableEnumSupplier;
 import cn.featherfly.common.function.serializable.SerializableFunction;
-import cn.featherfly.common.function.serializable.SerializableIntSupplier;
-import cn.featherfly.common.function.serializable.SerializableLocalDateSupplier;
-import cn.featherfly.common.function.serializable.SerializableLocalDateTimeSupplier;
-import cn.featherfly.common.function.serializable.SerializableLocalTimeSupplier;
-import cn.featherfly.common.function.serializable.SerializableLongSupplier;
-import cn.featherfly.common.function.serializable.SerializableNumberSupplier;
-import cn.featherfly.common.function.serializable.SerializableStringSupplier;
-import cn.featherfly.common.function.serializable.SerializableSupplier;
 import cn.featherfly.common.function.serializable.SerializableToDateFunction;
 import cn.featherfly.common.function.serializable.SerializableToDoubleFunction;
 import cn.featherfly.common.function.serializable.SerializableToEnumFunction;
@@ -35,6 +24,7 @@ import cn.featherfly.common.function.serializable.SerializableToStringFunction;
 import cn.featherfly.common.operator.ComparisonOperator.MatchStrategy;
 import cn.featherfly.hammer.expression.condition.ConditionExpression;
 import cn.featherfly.hammer.expression.condition.LogicExpression;
+import cn.featherfly.hammer.expression.condition.ne.NotEqualsSupplierExpression;
 
 /**
  * The Interface EntityNotEqualsExpression.
@@ -45,7 +35,7 @@ import cn.featherfly.hammer.expression.condition.LogicExpression;
  * @param <L> the generic type
  */
 public interface EntityNotEqualsExpression<T, C extends ConditionExpression, L extends LogicExpression<C, L>>
-        extends ConditionExpression {
+        extends NotEqualsSupplierExpression<C, L> {
 
     //    /**
     //     * not equals. 不等于.
@@ -60,8 +50,8 @@ public interface EntityNotEqualsExpression<T, C extends ConditionExpression, L e
      * not equals. 不等于.
      *
      * @param <R>   the generic type
-     * @param name  参数名称
-     * @param value 参数值
+     * @param name  the name
+     * @param value the value
      * @return LogicExpression
      */
     <R> L ne(SerializableFunction<T, R> name, R value);
@@ -70,8 +60,8 @@ public interface EntityNotEqualsExpression<T, C extends ConditionExpression, L e
      * not equals. 不等于.
      *
      * @param <R>            the generic type
-     * @param name           参数名称
-     * @param value          参数值
+     * @param name           the name
+     * @param value          the value
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
@@ -80,8 +70,8 @@ public interface EntityNotEqualsExpression<T, C extends ConditionExpression, L e
     /**
      * not equals. 不等于.
      *
-     * @param name  参数名称
-     * @param value 参数值
+     * @param name  the name
+     * @param value the value
      * @return LogicExpression
      */
     L ne(SerializableToIntFunction<T> name, int value);
@@ -89,8 +79,8 @@ public interface EntityNotEqualsExpression<T, C extends ConditionExpression, L e
     /**
      * not equals. 不等于.
      *
-     * @param name           参数名称
-     * @param value          参数值
+     * @param name           the name
+     * @param value          the value
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
@@ -99,8 +89,8 @@ public interface EntityNotEqualsExpression<T, C extends ConditionExpression, L e
     /**
      * not equals. 不等于.
      *
-     * @param name  参数名称
-     * @param value 参数值
+     * @param name  the name
+     * @param value the value
      * @return LogicExpression
      */
     L ne(SerializableToLongFunction<T> name, long value);
@@ -108,8 +98,8 @@ public interface EntityNotEqualsExpression<T, C extends ConditionExpression, L e
     /**
      * not equals. 不等于.
      *
-     * @param name           参数名称
-     * @param value          参数值
+     * @param name           the name
+     * @param value          the value
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
@@ -118,8 +108,8 @@ public interface EntityNotEqualsExpression<T, C extends ConditionExpression, L e
     /**
      * not equals. 不等于.
      *
-     * @param name  参数名称
-     * @param value 参数值
+     * @param name  the name
+     * @param value the value
      * @return LogicExpression
      */
     L ne(SerializableToDoubleFunction<T> name, double value);
@@ -127,8 +117,8 @@ public interface EntityNotEqualsExpression<T, C extends ConditionExpression, L e
     /**
      * not equals. 不等于.
      *
-     * @param name           参数名称
-     * @param value          参数值
+     * @param name           the name
+     * @param value          the value
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
@@ -138,8 +128,8 @@ public interface EntityNotEqualsExpression<T, C extends ConditionExpression, L e
      * not equals. 不等于.
      *
      * @param <N>   number type
-     * @param name  参数名称
-     * @param value 参数值
+     * @param name  the name
+     * @param value the value
      * @return LogicExpression
      */
     <N extends Number> L ne(SerializableToNumberFunction<T, N> name, N value);
@@ -148,8 +138,8 @@ public interface EntityNotEqualsExpression<T, C extends ConditionExpression, L e
      * not equals. 不等于.
      *
      * @param <N>            number type
-     * @param name           参数名称
-     * @param value          参数值
+     * @param name           the name
+     * @param value          the value
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
@@ -159,8 +149,8 @@ public interface EntityNotEqualsExpression<T, C extends ConditionExpression, L e
      * not equals. 不等于.
      *
      * @param <E>   the element type
-     * @param name  参数名称
-     * @param value 参数值
+     * @param name  the name
+     * @param value the value
      * @return LogicExpression
      */
     <E extends Enum<E>> L ne(SerializableToEnumFunction<T, E> name, E value);
@@ -169,8 +159,8 @@ public interface EntityNotEqualsExpression<T, C extends ConditionExpression, L e
      * not equals. 不等于.
      *
      * @param <E>            the element type
-     * @param name           参数名称
-     * @param value          参数值
+     * @param name           the name
+     * @param value          the value
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
@@ -180,8 +170,8 @@ public interface EntityNotEqualsExpression<T, C extends ConditionExpression, L e
      * not equals. 不等于.
      *
      * @param <D>   date type
-     * @param name  参数名称
-     * @param value 参数值
+     * @param name  the name
+     * @param value the value
      * @return LogicExpression
      */
     <D extends Date> L ne(SerializableToDateFunction<T, D> name, D value);
@@ -190,8 +180,8 @@ public interface EntityNotEqualsExpression<T, C extends ConditionExpression, L e
      * not equals. 不等于.
      *
      * @param <D>            date type
-     * @param name           参数名称
-     * @param value          参数值
+     * @param name           the name
+     * @param value          the value
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
@@ -200,8 +190,8 @@ public interface EntityNotEqualsExpression<T, C extends ConditionExpression, L e
     /**
      * not equals. 不等于.
      *
-     * @param name  参数名称
-     * @param value 参数值
+     * @param name  the name
+     * @param value the value
      * @return LogicExpression
      */
     L ne(SerializableToLocalTimeFunction<T> name, LocalTime value);
@@ -209,8 +199,8 @@ public interface EntityNotEqualsExpression<T, C extends ConditionExpression, L e
     /**
      * not equals. 不等于.
      *
-     * @param name           参数名称
-     * @param value          参数值
+     * @param name           the name
+     * @param value          the value
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
@@ -219,8 +209,8 @@ public interface EntityNotEqualsExpression<T, C extends ConditionExpression, L e
     /**
      * not equals. 不等于.
      *
-     * @param name  参数名称
-     * @param value 参数值
+     * @param name  the name
+     * @param value the value
      * @return LogicExpression
      */
     L ne(SerializableToLocalDateFunction<T> name, LocalDate value);
@@ -228,8 +218,8 @@ public interface EntityNotEqualsExpression<T, C extends ConditionExpression, L e
     /**
      * not equals. 不等于.
      *
-     * @param name           参数名称
-     * @param value          参数值
+     * @param name           the name
+     * @param value          the value
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
@@ -238,8 +228,8 @@ public interface EntityNotEqualsExpression<T, C extends ConditionExpression, L e
     /**
      * not equals. 不等于.
      *
-     * @param name  参数名称
-     * @param value 参数值
+     * @param name  the name
+     * @param value the value
      * @return LogicExpression
      */
     L ne(SerializableToLocalDateTimeFunction<T> name, LocalDateTime value);
@@ -247,8 +237,8 @@ public interface EntityNotEqualsExpression<T, C extends ConditionExpression, L e
     /**
      * not equals. 不等于.
      *
-     * @param name           参数名称
-     * @param value          参数值
+     * @param name           the name
+     * @param value          the value
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
@@ -257,8 +247,8 @@ public interface EntityNotEqualsExpression<T, C extends ConditionExpression, L e
     /**
      * not equals. 不等于.
      *
-     * @param name  参数名称
-     * @param value 参数值
+     * @param name  the name
+     * @param value the value
      * @return LogicExpression
      */
     default L ne(SerializableToStringFunction<T> name, String value) {
@@ -268,8 +258,8 @@ public interface EntityNotEqualsExpression<T, C extends ConditionExpression, L e
     /**
      * not equals. 不等于.
      *
-     * @param name           参数名称
-     * @param value          参数值
+     * @param name           the name
+     * @param value          the value
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
@@ -280,8 +270,8 @@ public interface EntityNotEqualsExpression<T, C extends ConditionExpression, L e
     /**
      * not equals. 不等于.
      *
-     * @param name          参数名称
-     * @param value         参数值
+     * @param name          the name
+     * @param value         the value
      * @param matchStrategy the match strategy
      * @return LogicExpression
      */
@@ -290,235 +280,12 @@ public interface EntityNotEqualsExpression<T, C extends ConditionExpression, L e
     /**
      * not equals. 不等于.
      *
-     * @param name           参数名称
-     * @param value          参数值
+     * @param name           the name
+     * @param value          the value
      * @param matchStrategy  the match strategy
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
     L ne(SerializableToStringFunction<T> name, String value, MatchStrategy matchStrategy,
             Predicate<String> ignoreStrategy);
-
-    // ********************************************************************
-    // object property value
-    // ********************************************************************
-
-    /**
-     * not equals. 不等于.
-     *
-     * @param <R>      the generic type
-     * @param property 对象属性
-     * @return LogicExpression
-     */
-    <R> L ne(SerializableSupplier<R> property);
-
-    /**
-     * not equals. 不等于.
-     *
-     * @param <R>            the generic type
-     * @param property       对象属性
-     * @param ignoreStrategy the ignore strategy
-     * @return LogicExpression
-     */
-    <R> L ne(SerializableSupplier<R> property, Predicate<R> ignoreStrategy);
-
-    /**
-     * not equals. 不等于.
-     *
-     * @param property 对象属性
-     * @return LogicExpression
-     */
-    L ne(SerializableIntSupplier property);
-
-    /**
-     * not equals. 不等于.
-     *
-     * @param property       对象属性
-     * @param ignoreStrategy the ignore strategy
-     * @return LogicExpression
-     */
-    L ne(SerializableIntSupplier property, IntPredicate ignoreStrategy);
-
-    /**
-     * not equals. 不等于.
-     *
-     * @param property 对象属性
-     * @return LogicExpression
-     */
-    L ne(SerializableLongSupplier property);
-
-    /**
-     * not equals. 不等于.
-     *
-     * @param property       对象属性
-     * @param ignoreStrategy the ignore strategy
-     * @return LogicExpression
-     */
-    L ne(SerializableLongSupplier property, LongPredicate ignoreStrategy);
-
-    /**
-     * not equals. 不等于.
-     *
-     * @param property 对象属性
-     * @return LogicExpression
-     */
-    L ne(SerializableDoubleSupplier property);
-
-    /**
-     * not equals. 不等于.
-     *
-     * @param property       对象属性
-     * @param ignoreStrategy the ignore strategy
-     * @return LogicExpression
-     */
-    L ne(SerializableDoubleSupplier property, DoublePredicate ignoreStrategy);
-
-    /**
-     * not equals. 不等于.
-     *
-     * @param <R>      the generic type
-     * @param property 对象属性
-     * @return LogicExpression
-     */
-    <R extends Date> L ne(SerializableDateSupplier<R> property);
-
-    /**
-     * not equals. 不等于.
-     *
-     * @param <R>            the generic type
-     * @param property       对象属性
-     * @param ignoreStrategy the ignore strategy
-     * @return LogicExpression
-     */
-    <R extends Date> L ne(SerializableDateSupplier<R> property, Predicate<R> ignoreStrategy);
-
-    /**
-     * not equals. 不等于.
-     *
-     * @param <R>      the generic type
-     * @param property 对象属性
-     * @return LogicExpression
-     */
-    <R extends Number> L ne(SerializableNumberSupplier<R> property);
-
-    /**
-     * not equals. 不等于.
-     *
-     * @param <R>            the generic type
-     * @param property       对象属性
-     * @param ignoreStrategy the ignore strategy
-     * @return LogicExpression
-     */
-    <R extends Number> L ne(SerializableNumberSupplier<R> property, Predicate<R> ignoreStrategy);
-
-    /**
-     * not equals. 不等于.
-     *
-     * @param <E>      the element type
-     * @param index    the index
-     * @param property 对象属性
-     * @return LogicExpression
-     */
-    <E extends Enum<E>> L ne(SerializableEnumSupplier<E> property);
-
-    /**
-     * not equals. 不等于.
-     *
-     * @param <E>            the element type
-     * @param property       对象属性
-     * @param ignoreStrategy the ignore strategy
-     * @return LogicExpression
-     */
-    <E extends Enum<E>> L ne(SerializableEnumSupplier<E> property, Predicate<E> ignoreStrategy);
-
-    /**
-     * not equals. 不等于.
-     *
-     * @param property 对象属性
-     * @return LogicExpression
-     */
-    L ne(SerializableLocalDateSupplier property);
-
-    /**
-     * not equals. 不等于.
-     *
-     * @param property       对象属性
-     * @param ignoreStrategy the ignore strategy
-     * @return LogicExpression
-     */
-    L ne(SerializableLocalDateSupplier property, Predicate<LocalDate> ignoreStrategy);
-
-    /**
-     * not equals. 不等于.
-     *
-     * @param property 对象属性
-     * @return LogicExpression
-     */
-    L ne(SerializableLocalTimeSupplier property);
-
-    /**
-     * not equals. 不等于.
-     *
-     * @param property       对象属性
-     * @param ignoreStrategy the ignore strategy
-     * @return LogicExpression
-     */
-    L ne(SerializableLocalTimeSupplier property, Predicate<LocalTime> ignoreStrategy);
-
-    /**
-     * not equals. 不等于.
-     *
-     * @param property 对象属性
-     * @return LogicExpression
-     */
-    L ne(SerializableLocalDateTimeSupplier property);
-
-    /**
-     * not equals. 不等于.
-     *
-     * @param property       对象属性
-     * @param ignoreStrategy the ignore strategy
-     * @return LogicExpression
-     */
-    L ne(SerializableLocalDateTimeSupplier property, Predicate<LocalDateTime> ignoreStrategy);
-
-    /**
-     * not equals. 不等于.
-     *
-     * @param property 对象属性
-     * @return LogicExpression
-     */
-    default L ne(SerializableStringSupplier property) {
-        return ne(property, MatchStrategy.AUTO);
-    }
-
-    /**
-     * not equals. 不等于.
-     *
-     * @param property      对象属性
-     * @param matchStrategy the match strategy
-     * @return LogicExpression
-     */
-    L ne(SerializableStringSupplier property, MatchStrategy matchStrategy);
-
-    /**
-     * not equals. 不等于.
-     *
-     * @param property       对象属性
-     * @param ignoreStrategy the ignore strategy
-     * @return LogicExpression
-     */
-    default L ne(SerializableStringSupplier property, Predicate<String> ignoreStrategy) {
-        return ne(property, MatchStrategy.AUTO, ignoreStrategy);
-    }
-
-    /**
-     * not equals. 不等于.
-     *
-     * @param property       对象属性
-     * @param matchStrategy  the match strategy
-     * @param ignoreStrategy the ignore strategy
-     * @return LogicExpression
-     */
-    L ne(SerializableStringSupplier property, MatchStrategy matchStrategy, Predicate<String> ignoreStrategy);
 }

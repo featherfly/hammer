@@ -20,8 +20,8 @@ public interface EntitySortExpression3<E, E2, E3, S extends EntitySortedExpressi
      * @param sortEntityExpressions the sort entity expressions
      * @return the LogicExpression
      */
-    S asc(ThreeArgusConsumer<SortEntityExpression<E>, SortEntityExpression<E2>,
-            SortEntityExpression<E3>> sortEntityExpressions);
+    S asc(ThreeArgusConsumer<EntitySetSortPropertyExpression<E>, EntitySetSortPropertyExpression<E2>,
+            EntitySetSortPropertyExpression<E3>> sortEntityExpressions);
 
     /**
      * desc.
@@ -29,8 +29,8 @@ public interface EntitySortExpression3<E, E2, E3, S extends EntitySortedExpressi
      * @param sortEntityExpressions the sort entity expressions
      * @return the LogicExpression
      */
-    S desc(ThreeArgusConsumer<SortEntityExpression<E>, SortEntityExpression<E2>,
-            SortEntityExpression<E3>> sortEntityExpressions);
+    S desc(ThreeArgusConsumer<EntitySetSortPropertyExpression<E>, EntitySetSortPropertyExpression<E2>,
+            EntitySetSortPropertyExpression<E3>> sortEntityExpressions);
 
     //    /**
     //     * add ascending order value. 添加升序条件.

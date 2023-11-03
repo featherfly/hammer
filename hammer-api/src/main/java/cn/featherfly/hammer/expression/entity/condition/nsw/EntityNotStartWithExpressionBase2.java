@@ -4,10 +4,11 @@ package cn.featherfly.hammer.expression.entity.condition.nsw;
 import java.util.function.Predicate;
 
 import cn.featherfly.common.function.serializable.SerializableFunction;
-import cn.featherfly.common.function.serializable.SerializableStringSupplier;
 import cn.featherfly.common.operator.ComparisonOperator.MatchStrategy;
+import cn.featherfly.common.repository.IgnoreStrategy;
 import cn.featherfly.hammer.expression.condition.ConditionExpression;
 import cn.featherfly.hammer.expression.condition.LogicExpression;
+import cn.featherfly.hammer.expression.condition.nsw.NotStartWithSupplierExpression2;
 
 /**
  * The Interface EntityNotStartWithExpressionBase2.
@@ -19,13 +20,14 @@ import cn.featherfly.hammer.expression.condition.LogicExpression;
  * @param <L>  the generic type
  */
 public interface EntityNotStartWithExpressionBase2<E, E2, C extends ConditionExpression,
-        L extends LogicExpression<C, L>> extends EntityNotStartWithExpression<E, C, L> {
+        L extends LogicExpression<C, L>>
+        extends EntityNotStartWithExpression<E, C, L>, NotStartWithSupplierExpression2<C, L> {
 
     /**
      * not start with value. 不以value开始.
      *
-     * @param name  参数名称
-     * @param value 参数值
+     * @param name  the name
+     * @param value the value
      * @return LogicExpression
      */
     default L nsw2(SerializableFunction<E2, String> name, String value) {
@@ -35,8 +37,20 @@ public interface EntityNotStartWithExpressionBase2<E, E2, C extends ConditionExp
     /**
      * not start with value. 不以value开始.
      *
-     * @param name           参数名称
-     * @param value          参数值
+     * @param name           the name
+     * @param value          the value
+     * @param ignoreStrategy the ignore strategy
+     * @return LogicExpression
+     */
+    default L nsw2(SerializableFunction<E2, String> name, String value, IgnoreStrategy ignoreStrategy) {
+        return nsw2(name, value, MatchStrategy.AUTO, ignoreStrategy);
+    }
+
+    /**
+     * not start with value. 不以value开始.
+     *
+     * @param name           the name
+     * @param value          the value
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
@@ -63,46 +77,20 @@ public interface EntityNotStartWithExpressionBase2<E, E2, C extends ConditionExp
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
-    L nsw2(SerializableFunction<E2, String> name, String value, MatchStrategy matchStrategy,
-            Predicate<String> ignoreStrategy);
-
-    /**
-     * not start with value. 不以value开始.
-     *
-     * @param property 对象属性
-     * @return LogicExpression
-     */
-    default L nsw2(SerializableStringSupplier property) {
-        return nsw2(property, MatchStrategy.AUTO);
+    default L nsw2(SerializableFunction<E2, String> name, String value, MatchStrategy matchStrategy,
+            IgnoreStrategy ignoreStrategy) {
+        return nsw2(name, value, matchStrategy, (Predicate<String>) ignoreStrategy::test);
     }
 
     /**
      * not start with value. 不以value开始.
      *
-     * @param property       对象属性
-     * @param ignoreStrategy the ignore strategy
-     * @return LogicExpression
-     */
-    default L nsw2(SerializableStringSupplier property, Predicate<String> ignoreStrategy) {
-        return nsw2(property, MatchStrategy.AUTO, ignoreStrategy);
-    }
-
-    /**
-     * not start with value. 不以value开始.
-     *
-     * @param property    the property
-     * @param queryPolicy the query policy
-     * @return LogicExpression
-     */
-    L nsw2(SerializableStringSupplier property, MatchStrategy matchStrategy);
-
-    /**
-     * not start with value. 不以value开始.
-     *
-     * @param property       the property
+     * @param name           the name
+     * @param value          the value
      * @param queryPolicy    the query policy
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
-    L nsw2(SerializableStringSupplier property, MatchStrategy matchStrategy, Predicate<String> ignoreStrategy);
+    L nsw2(SerializableFunction<E2, String> name, String value, MatchStrategy matchStrategy,
+            Predicate<String> ignoreStrategy);
 }

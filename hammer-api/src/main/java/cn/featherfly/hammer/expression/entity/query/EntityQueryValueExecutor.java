@@ -1,17 +1,12 @@
-//
-//package cn.featherfly.hammer.expression.entity.query;
-//
-///**
-// * dsl for entity query value executor.
-// *
-// * @author zhongj
-// */
-//public interface EntityQueryValueExecutor<V> {
-//
-//    /**
-//     * query for value.
-//     *
-//     * @return value
-//     */
-//    V value();
-//}
+
+package cn.featherfly.hammer.expression.entity.query;
+
+/**
+ * entity query value list executor.
+ *
+ * @author zhongj
+ * @param <V> the value type
+ */
+public interface EntityQueryValueExecutor<V> extends EntityQueryValueOneExecutor<V>, EntityQueryValueListExecutor<V> {
+
+}

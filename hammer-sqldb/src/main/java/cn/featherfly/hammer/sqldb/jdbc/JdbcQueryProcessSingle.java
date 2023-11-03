@@ -34,7 +34,7 @@ public interface JdbcQueryProcessSingle {
      * @param args             args
      * @return tuple2 of updated value map and effective row number
      */
-    Tuple2<Map<String, Object>, Integer> queryProcessSingle(String sql,
+    Tuple2<Map<String, Object>, Integer> querySingleUpdate(String sql,
             ToIntBiFunction<ResultSet, Map<String, Object>> setValueOperator, Map<String, Object> args);
 
     /**

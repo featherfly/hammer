@@ -1,6 +1,8 @@
 
 package cn.featherfly.hammer.sqldb.jdbc.vo.r;
 
+import java.io.Serializable;
+
 import javax.persistence.Column;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
@@ -14,7 +16,9 @@ import javax.persistence.Table;
  * @author zhongj
  */
 @Table(name = "tree")
-public class Tree {
+public class Tree implements Serializable {
+
+    private static final long serialVersionUID = -6503051177156654302L;
 
     @Id
     private Integer id;

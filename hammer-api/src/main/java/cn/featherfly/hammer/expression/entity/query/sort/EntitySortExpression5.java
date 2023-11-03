@@ -22,8 +22,8 @@ public interface EntitySortExpression5<E, E2, E3, E4, E5, S extends EntitySorted
      * @param sortEntityExpressions the sort entity expressions
      * @return the LogicExpression
      */
-    S asc(FiveArgusConsumer<SortEntityExpression<E>, SortEntityExpression<E2>, SortEntityExpression<E3>,
-            SortEntityExpression<E4>, SortEntityExpression<E5>> sortEntityExpressions);
+    S asc(FiveArgusConsumer<EntitySetSortPropertyExpression<E>, EntitySetSortPropertyExpression<E2>, EntitySetSortPropertyExpression<E3>,
+            EntitySetSortPropertyExpression<E4>, EntitySetSortPropertyExpression<E5>> sortEntityExpressions);
 
     /**
      * desc.
@@ -31,8 +31,8 @@ public interface EntitySortExpression5<E, E2, E3, E4, E5, S extends EntitySorted
      * @param sortEntityExpressions the sort entity expressions
      * @return the LogicExpression
      */
-    S desc(FiveArgusConsumer<SortEntityExpression<E>, SortEntityExpression<E2>, SortEntityExpression<E3>,
-            SortEntityExpression<E4>, SortEntityExpression<E5>> sortEntityExpressions);
+    S desc(FiveArgusConsumer<EntitySetSortPropertyExpression<E>, EntitySetSortPropertyExpression<E2>, EntitySetSortPropertyExpression<E3>,
+            EntitySetSortPropertyExpression<E4>, EntitySetSortPropertyExpression<E5>> sortEntityExpressions);
 
     //    /**
     //     * add ascending order value. 添加升序条件.

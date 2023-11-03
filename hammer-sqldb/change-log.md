@@ -1,3 +1,8 @@
+TODO dsl实体查询加入以下（EntityQuery）
+
+1. fetch一次，数据返回加入T value()（单条）和 List<T> listValue()（多条列表），还原single和unique方法为原来的返回查询实体对象
+2. fetch多次(大于1)，数据返回加入Object[] values(), <T extends Tuple> T tuple() 和 List<Object[]> listValues()，<T extends Tuple> List<T> listTuple() 
+
 # 0.7.0
 1. 加入强类型dsl查询
    一级、二级、三级、四级、五级join实现与测试
@@ -53,47 +58,10 @@
 17. where().property(Xx:Yy).property(Yy::Name).[eq|ne|...] 如果需要join会自动加入
 18. where().eq()方法支持@Embeddable,@ManyToOne（传入是映射对象，对非空值使用and连接，如果是连表查询条件会自动join）
 
-TODO dsl查询条件的表达式加入带运算的条件判断
-
-```java
-// 带运算的条件判断
-where().property(Account::getAmount).subtract(10).ge(0)
-where().exp(e -> e.property(Account::getAmount).subtract(10).ge(0))
-where().ge(Calculators.subtract(Account::getAmount, 10), 0)
-// where acount.amount - 10 >= 0
-    
-where().value(10).subtract(Account::getAmount).ge(0)
-where().exp(e -> e.value(10).subtract(Account::getAmount).ge(0))
-where().ge(Calculators.subtract(10, Account::getAmount), 0)
-// where 10 - acount.amount >= 0
-
-where().property(Order::getPrice).subtract(10).ge(Order::getCharge)
-where().exp(e -> e.property(Order::getPrice).subtract(10).ge(Order::getCharge))
-where().ge(Calculators.subtract(Order::getPrice, 10), Order::getCharge))
-// where order.price - 10 == order.charge
-    
-where().property(Order::getPrice).subtract(10).eq(e -> e.property(Order::getCharge).add(10))
-where().exp(e -> e.property(Order::getPrice).subtract(10).eq(e -> e.property(Order::getCharge).add(10)))
-where().eq(Calculators.subtract(Order::getPrice, 10), Calculators.add(Order::getCharge, 10))
-// where order.price - 10 == order.charge + 10
-```
-
-TODO dsl join on 加入表达式支持
-
-```java
-find(User.class).join(UserInfo.class).on(e-> e.property(User::getId).eq(UserInfo::getUserId));
-// 等价 find(User.class).join(UserInfo.class).on(User::getId, UserInfo::getUserId)
-// select * from user u join user_info ui on u.id = ui.user_id
-find(User.class).join(UserInfo.class).on(e-> e.property(User::getId).eq(UserInfo::getUserId).and().property(UserInfo::getSex).eq(Gender.MALE));
-// select * from user u join user_info ui on u.id = ui.user_id and ui.gender = ? ['male']
-find(User.class).join(UserInfo.class).on(e-> e.property(User::getId).gt(UserInfo::getUserId));
-// select * from user u join user_info ui on u.id > ui.user_id
-```
-
-
+# 0.6.7 2023-04-18
+1. 修复eq参数为空时报错的问题
 
 # 0.6.6 2022-08-26
-
 1. 修改L group(Consumer<C>)为L group(Function<C,L>)，
 2. 修复分组多次调用分组层次不对的问题
 
@@ -226,7 +194,7 @@ find(User.class).join(UserInfo.class).on(e-> e.property(User::getId).gt(UserInfo
     <@and if = name?? transverter="CO"> 表示%value%
     <@and if = name?? transverter="SW"> 表示value%
     <@and if = name?? transverter="EW"> 表示%value
-    ```
+```
 2. 预编译实现对模糊查询%的处理
    ```    
     /*??*/ name like /*$=%:name%*/\\_init\\_

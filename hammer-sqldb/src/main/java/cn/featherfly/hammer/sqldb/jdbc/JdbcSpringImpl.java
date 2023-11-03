@@ -9,6 +9,7 @@ import org.springframework.jdbc.datasource.DataSourceUtils;
 
 import cn.featherfly.common.db.dialect.Dialect;
 import cn.featherfly.common.db.mapping.SqlTypeMappingManager;
+import cn.featherfly.common.db.metadata.DatabaseMetadata;
 
 /**
  * jdbc spring impl.
@@ -24,9 +25,10 @@ public class JdbcSpringImpl extends AbstractJdbc {
      *
      * @param dataSource dataSource
      * @param dialect    dialect
+     * @param metadata   the metadata
      */
-    public JdbcSpringImpl(DataSource dataSource, Dialect dialect) {
-        this(dataSource, dialect, new SqlTypeMappingManager());
+    public JdbcSpringImpl(DataSource dataSource, Dialect dialect, DatabaseMetadata metadata) {
+        this(dataSource, dialect, metadata, new SqlTypeMappingManager());
     }
 
     /**
@@ -34,10 +36,12 @@ public class JdbcSpringImpl extends AbstractJdbc {
      *
      * @param dataSource            dataSource
      * @param dialect               dialect
+     * @param metadata              the metadata
      * @param sqlTypeMappingManager the sql type mapping manager
      */
-    public JdbcSpringImpl(DataSource dataSource, Dialect dialect, SqlTypeMappingManager sqlTypeMappingManager) {
-        super(dialect, sqlTypeMappingManager);
+    public JdbcSpringImpl(DataSource dataSource, Dialect dialect, DatabaseMetadata metadata,
+            SqlTypeMappingManager sqlTypeMappingManager) {
+        super(dialect, metadata, sqlTypeMappingManager);
         this.dataSource = dataSource;
     }
 

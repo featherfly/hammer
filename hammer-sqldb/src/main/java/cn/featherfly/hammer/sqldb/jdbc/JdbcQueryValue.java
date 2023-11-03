@@ -16,11 +16,31 @@ import java.util.Map;
 import cn.featherfly.common.repository.mapping.RowMapper;
 
 /**
- * The Interface JdbcQueryValue.
+ * jdbc query value.
  *
  * @author zhongj
  */
 public interface JdbcQueryValue {
+
+    /**
+     * Query value.
+     *
+     * @param <T>  the generic type
+     * @param sql  the sql
+     * @param args the args
+     * @return the t
+     */
+    <T> T queryValue(String sql, Object... args);
+
+    /**
+     * Query value.
+     *
+     * @param <T>  the generic type
+     * @param sql  the sql
+     * @param args the args
+     * @return the t
+     */
+    <T> T queryValue(String sql, Map<String, Object> args);
 
     /**
      * Query value.
@@ -106,7 +126,7 @@ public interface JdbcQueryValue {
      *
      * @param sql  the sql
      * @param args the args
-     * @return the long
+     * @return LogicExpressionong
      */
     default Long queryLongWrapper(String sql, Object... args) {
         return queryValue(sql, Long.class, args);
@@ -117,7 +137,7 @@ public interface JdbcQueryValue {
      *
      * @param sql  the sql
      * @param args the args
-     * @return the long
+     * @return LogicExpressionong
      */
     default Long queryLongWrapper(String sql, Map<String, Object> args) {
         return queryValue(sql, Long.class, args);
@@ -284,7 +304,7 @@ public interface JdbcQueryValue {
      *
      * @param sql  the sql
      * @param args the args
-     * @return the long value
+     * @return LogicExpressionong value
      */
     long queryLong(String sql, Object... args);
 
@@ -293,7 +313,7 @@ public interface JdbcQueryValue {
      *
      * @param sql  the sql
      * @param args the args
-     * @return the long value
+     * @return LogicExpressionong value
      */
     long queryLong(String sql, Map<String, Object> args);
 

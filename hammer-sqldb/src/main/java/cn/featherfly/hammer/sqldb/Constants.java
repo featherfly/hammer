@@ -1,16 +1,16 @@
-//
-//package cn.featherfly.hammer.sqldb;
-//
-//import org.slf4j.Logger;
-//import org.slf4j.LoggerFactory;
-//
-///**
-// * <p>
-// * Constants
-// * </p>
-// *
-// * @author zhongj TODO 后续删除
-// */
-//public interface Constants {
-//    Logger LOGGER = LoggerFactory.getLogger(Constants.class.getPackage().getName());
-//}
+
+package cn.featherfly.hammer.sqldb;
+
+/**
+ * Constants.
+ *
+ * @author zhongj
+ */
+public interface Constants {
+    //    Logger LOGGER = LoggerFactory.getLogger(Constants.class.getPackage().getName());
+
+    /**
+     * The debug. 影响编译结果，发布版本一定要设置为false。
+     */
+    boolean DEBUG = false;
+}

@@ -34,6 +34,7 @@ import java.util.function.ToIntBiFunction;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.speedment.common.tuple.MutableTuple;
 import com.speedment.common.tuple.Tuple2;
 import com.speedment.common.tuple.Tuple3;
 import com.speedment.common.tuple.Tuple4;
@@ -49,6 +50,9 @@ import cn.featherfly.common.db.SqlUtils;
 import cn.featherfly.common.db.dialect.Dialect;
 import cn.featherfly.common.db.mapping.SqlResultSet;
 import cn.featherfly.common.db.mapping.SqlTypeMappingManager;
+import cn.featherfly.common.db.metadata.DatabaseMetadata;
+import cn.featherfly.common.db.metadata.ResultSetConcurrency;
+import cn.featherfly.common.db.metadata.ResultSetType;
 import cn.featherfly.common.db.wrapper.AutoCloseConnection;
 import cn.featherfly.common.lang.ArrayUtils;
 import cn.featherfly.common.lang.AssertIllegalArgument;
@@ -76,20 +80,20 @@ public abstract class AbstractJdbc implements Jdbc {
 
     private SqlTypeMappingManager manager;
 
-    private MapRowMapper mapRowMapper;
+    private DatabaseMetadata metadata;
 
     /**
      * Instantiates a new abstract jdbc.
      *
-     * @param dataSource the data source
-     * @param dialect    the dialect
-     * @param manager    the manager
+     * @param dialect  the dialect
+     * @param metadata the metadata
+     * @param manager  the manager
      */
-    protected AbstractJdbc(Dialect dialect, SqlTypeMappingManager manager) {
+    protected AbstractJdbc(Dialect dialect, DatabaseMetadata metadata, SqlTypeMappingManager manager) {
         super();
         this.dialect = dialect;
         this.manager = manager;
-        mapRowMapper = new MapRowMapper(manager);
+        this.metadata = metadata;
     }
     //    /**
     //     * Instantiates a new abstract jdbc.
@@ -433,7 +437,7 @@ public abstract class AbstractJdbc implements Jdbc {
      */
     @Override
     public List<Map<String, Object>> query(String sql, Map<String, Object> args) {
-        return query(sql, mapRowMapper, args);
+        return query(sql, new MapRowMapper(manager), args);
     }
 
     /**
@@ -441,7 +445,7 @@ public abstract class AbstractJdbc implements Jdbc {
      */
     @Override
     public List<Map<String, Object>> query(String sql, Object... args) {
-        return query(sql, mapRowMapper, args);
+        return query(sql, new MapRowMapper(manager), args);
     }
 
     /**
@@ -881,7 +885,7 @@ public abstract class AbstractJdbc implements Jdbc {
      */
     @Override
     public Map<String, Object> querySingle(String sql, Map<String, Object> args) {
-        return querySingle(sql, mapRowMapper, args);
+        return querySingle(sql, new MapRowMapper(manager), args);
     }
 
     /**
@@ -889,7 +893,7 @@ public abstract class AbstractJdbc implements Jdbc {
      */
     @Override
     public Map<String, Object> querySingle(String sql, Object... args) {
-        return querySingle(sql, mapRowMapper, args);
+        return querySingle(sql, new MapRowMapper(manager), args);
     }
 
     /**
@@ -907,7 +911,7 @@ public abstract class AbstractJdbc implements Jdbc {
         args = execution.getParams();
         logger.debug("execute sql -> {}, args -> {}", sql, args);
         Connection conn = getConnection();
-        try (PreparedStatement prep = conn.prepareStatement(sql, ResultSet.TYPE_SCROLL_SENSITIVE,
+        try (PreparedStatement prep = conn.prepareStatement(sql, ResultSet.TYPE_FORWARD_ONLY,
                 ResultSet.CONCUR_UPDATABLE)) {
             setParams(prep, args);
             try (ResultSet rs = prep.executeQuery()) {
@@ -1058,7 +1062,7 @@ public abstract class AbstractJdbc implements Jdbc {
      */
     @Override
     public Map<String, Object> queryUnique(String sql, Map<String, Object> args) {
-        return queryUnique(sql, mapRowMapper, args);
+        return queryUnique(sql, new MapRowMapper(manager), args);
     }
 
     /**
@@ -1066,7 +1070,7 @@ public abstract class AbstractJdbc implements Jdbc {
      */
     @Override
     public Map<String, Object> queryUnique(String sql, Object... args) {
-        return queryUnique(sql, mapRowMapper, args);
+        return queryUnique(sql, new MapRowMapper(manager), args);
     }
 
     /**
@@ -1084,7 +1088,7 @@ public abstract class AbstractJdbc implements Jdbc {
         args = execution.getParams();
         logger.debug("execute sql -> {}, args -> {}", sql, args);
         Connection conn = getConnection();
-        try (PreparedStatement prep = conn.prepareStatement(sql, ResultSet.TYPE_SCROLL_SENSITIVE,
+        try (PreparedStatement prep = conn.prepareStatement(sql, ResultSet.TYPE_FORWARD_ONLY,
                 ResultSet.CONCUR_UPDATABLE)) {
             setParams(prep, args);
             try (ResultSet rs = prep.executeQuery()) {
@@ -1199,7 +1203,7 @@ public abstract class AbstractJdbc implements Jdbc {
      * {@inheritDoc}
      */
     @Override
-    public Tuple2<Map<String, Object>, Integer> queryProcessSingle(String sql,
+    public Tuple2<Map<String, Object>, Integer> querySingleUpdate(String sql,
             ToIntBiFunction<ResultSet, Map<String, Object>> setValueOperator, Map<String, Object> args) {
         return querySingleUpdate(sql, new MapRowMapper(manager), setValueOperator, args);
     }
@@ -1228,33 +1232,104 @@ public abstract class AbstractJdbc implements Jdbc {
         sql = execution.getExecution();
         args = execution.getParams();
         logger.debug("execute sql -> {}, args -> {}", sql, args);
-        Connection conn = getConnection();
-        try (PreparedStatement prep = conn.prepareStatement(sql, ResultSet.TYPE_SCROLL_SENSITIVE,
-                ResultSet.CONCUR_UPDATABLE)) {
-            setParams(prep, args);
-            try (ResultSet rs = prep.executeQuery()) {
-                T result = null;
-                int i = 0;
-                while (rs.next()) {
-                    assertSingleResult(i + 1);
-                    result = rowMapper.mapRow(new SqlResultSet(rs), i++);
+
+        if (metadata.getFeatures().supportsResultSetConcurrency(ResultSetType.FORWARD_ONLY,
+                ResultSetConcurrency.CONCUR_UPDATABLE)) {
+            Connection conn = getConnection();
+            try (PreparedStatement prep = conn.prepareStatement(sql, ResultSet.TYPE_FORWARD_ONLY,
+                    ResultSet.CONCUR_UPDATABLE)) {
+                setParams(prep, args);
+                try (ResultSet rs = prep.executeQuery()) {
+                    T result = null;
+                    int i = 0;
+                    int size = 0;
+                    if (rs.next()) {
+                        result = rowMapper.mapRow(new SqlResultSet(rs), i++);
+                        result = postHandle(execution.setOriginalResult(result));
+                        size = setValueOperator.applyAsInt(rs, result);
+                    }
+                    // 判断查询的数量，大于1则抛出异常
+                    while (rs.next()) {
+                        throwMoreThanOneResult();
+                    }
+                    return Tuples.of(result, size);
                 }
-                result = postHandle(execution.setOriginalResult(result));
-                // 先确定是否超出一条数据，再来处理游标
-                rs.previous();
-                int size = setValueOperator.applyAsInt(rs, result);
-                return Tuples.of(result, size);
-                //                    return setValueOperator.apply(rs,
-                //                            postHandle(execution.setOriginalResult(singleResult(list)), sql, args));
+            } catch (SQLException e) {
+                releaseConnection(conn);
+                conn = null;
+                throw new JdbcException(
+                        Strings.format("querySingleUpdate: \nsql: {0} \nargs: {1}", sql, Arrays.toString(args)), e);
+            } finally {
+                releaseConnection(conn);
             }
-        } catch (SQLException e) {
-            releaseConnection(conn);
-            conn = null;
-            throw new JdbcException(
-                    Strings.format("querySingleUpdate: \nsql: {0} \nargs: {1}", sql, Arrays.toString(args)), e);
-        } finally {
-            releaseConnection(conn);
+        } else {
+            throw new JdbcException("unsupport for CONCUR_UPDATABLE");
         }
+
+        //        if (metadata.getFeatures().supportsResultSetConcurrency(ResultSetType.SCROLL_SENSITIVE,
+        //                ResultSetConcurrency.CONCUR_UPDATABLE)
+        //                || metadata.getFeatures().supportsResultSetConcurrency(ResultSetType.SCROLL_INSENSITIVE,
+        //                        ResultSetConcurrency.CONCUR_UPDATABLE)) {
+        //            Connection conn = getConnection();
+        //            try (PreparedStatement prep = conn.prepareStatement(sql, ResultSet.TYPE_FORWARD_ONLY,
+        //                    ResultSet.CONCUR_UPDATABLE)) {
+        //                setParams(prep, args);
+        //                try (ResultSet rs = prep.executeQuery()) {
+        //                    T result = null;
+        //                    int i = 0;
+        //                    while (rs.next()) {
+        //                        assertSingleResult(i + 1);
+        //                        result = rowMapper.mapRow(new SqlResultSet(rs), i++);
+        //                    }
+        //                    result = postHandle(execution.setOriginalResult(result));
+        //                    // 先确定是否超出一条数据，再来处理游标
+        //                    rs.previous();
+        //                    int size = setValueOperator.applyAsInt(rs, result);
+        //                    return Tuples.of(result, size);
+        //                    //                    return setValueOperator.apply(rs,
+        //                    //                            postHandle(execution.setOriginalResult(singleResult(list)), sql, args));
+        //                }
+        //            } catch (SQLException e) {
+        //                releaseConnection(conn);
+        //                conn = null;
+        //                throw new JdbcException(
+        //                        Strings.format("querySingleUpdate: \nsql: {0} \nargs: {1}", sql, Arrays.toString(args)), e);
+        //            } finally {
+        //                releaseConnection(conn);
+        //            }
+        //        } else if (metadata.getFeatures().supportsResultSetConcurrency(ResultSetType.FORWARD_ONLY,
+        //                ResultSetConcurrency.CONCUR_UPDATABLE)) {
+        //            Connection conn = getConnection();
+        //            try (PreparedStatement prep = conn.prepareStatement(sql, ResultSet.TYPE_FORWARD_ONLY,
+        //                    ResultSet.CONCUR_UPDATABLE)) {
+        //
+        //                setParams(prep, args);
+        //                try (ResultSet rs = prep.executeQuery()) {
+        //                    T result = null;
+        //                    int i = 0;
+        //                    int size = 0;
+        //                    if (rs.next()) {
+        //                        result = rowMapper.mapRow(new SqlResultSet(rs), i++);
+        //                        result = postHandle(execution.setOriginalResult(result));
+        //                        size = setValueOperator.applyAsInt(rs, result);
+        //                    }
+        //                    // 判断查询的数量，大于1则抛出异常
+        //                    while (rs.next()) {
+        //                        i++;
+        //                    }
+        //                    assertSingleResult(i);
+        //
+        //                    return Tuples.of(result, size);
+        //                }
+        //            } catch (SQLException e) {
+        //                releaseConnection(conn);
+        //                conn = null;
+        //                throw new JdbcException(
+        //                        Strings.format("querySingleUpdate: \nsql: {0} \nargs: {1}", sql, Arrays.toString(args)), e);
+        //            } finally {
+        //                releaseConnection(conn);
+        //            }
+        //        }
     }
 
     /**
@@ -1334,6 +1409,24 @@ public abstract class AbstractJdbc implements Jdbc {
             Class<T6> elementType6, Tuple6<String, String, String, String, String, String> prefixes, Object... args) {
         return nullableSingleResult(query(sql, elementType1, elementType2, elementType3, elementType4, elementType5,
                 elementType6, prefixes, args));
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @SuppressWarnings("unchecked")
+    @Override
+    public <T> T queryValue(String sql, Map<String, Object> args) {
+        return (T) queryValue(sql, Object.class, args);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @SuppressWarnings("unchecked")
+    @Override
+    public <T> T queryValue(String sql, Object... args) {
+        return (T) queryValue(sql, Object.class, args);
     }
 
     /**
@@ -1723,6 +1816,60 @@ public abstract class AbstractJdbc implements Jdbc {
     //    /**
     //     * {@inheritDoc}
     //     */
+    //    @Override
+    //    public int call(String name, SequencedMap<String, Object> args) {
+    //        String procedure = getProcedure(name, args.size());
+    //        JdbcExecution execution = preHandle(procedure, args.values().toArray());
+    //        procedure = execution.getExecution();
+    //        Object[] newArgs = execution.getParams();
+    //        Connection con = getConnection();
+    //        try (CallableStatement call = con.prepareCall(procedure)) {
+    //            Map<Integer, Class<?>> outParams = setParams(call, newArgs);
+    //            call.execute();
+    //            setOutParams(call, outParams, args);
+    //            postHandle(execution);
+    //            return call.getUpdateCount();
+    //        } catch (SQLException e) {
+    //            //            releaseConnection(con, dataSource);
+    //            releaseConnection(con);
+    //            con = null;
+    //            throw new JdbcException(
+    //                    Strings.format("call procedure: \nprocedure: {0} \nargs: {1}", procedure, newArgs.toString()), e);
+    //        } finally {
+    //            releaseConnection(con);
+    //        }
+    //    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public <T extends MutableTuple> int call(String name, T args) {
+        String procedure = getProcedure(name, args.degree());
+        JdbcExecution execution = preHandle(procedure, args.stream().map(opt -> opt.orElse(null)).toArray());
+        procedure = execution.getExecution();
+        Object[] newArgs = execution.getParams();
+        Connection con = getConnection();
+        try (CallableStatement call = con.prepareCall(procedure)) {
+            Map<Integer, Class<?>> outParams = setParams(call, newArgs);
+            call.execute();
+            setOutParams(call, outParams, args);
+            postHandle(execution);
+            return call.getUpdateCount();
+        } catch (SQLException e) {
+            //            releaseConnection(con, dataSource);
+            releaseConnection(con);
+            con = null;
+            throw new JdbcException(
+                    Strings.format("call procedure: \nprocedure: {0} \nargs: {1}", procedure, newArgs.toString()), e);
+        } finally {
+            releaseConnection(con);
+        }
+    }
+
+    //    /**
+    //     * {@inheritDoc}
+    //     */
     //    @SuppressWarnings("rawtypes")
     //    @Override
     //    public int call(String name, Map<String, Object> args) {
@@ -1748,7 +1895,7 @@ public abstract class AbstractJdbc implements Jdbc {
      */
     @Override
     public List<Map<String, Object>> callQuery(String name, Object... args) {
-        return callQuery(name, mapRowMapper, args);
+        return callQuery(name, new MapRowMapper(manager), args);
     }
 
     /**
@@ -1843,7 +1990,7 @@ public abstract class AbstractJdbc implements Jdbc {
      */
     @Override
     public Map<String, Object> callQuerySingle(String name, Object... args) {
-        return callQuerySingle(name, mapRowMapper, args);
+        return callQuerySingle(name, new MapRowMapper(manager), args);
     }
 
     /**
@@ -1982,7 +2129,7 @@ public abstract class AbstractJdbc implements Jdbc {
 
     private String getProcedure(String name, int argnum) {
         AssertIllegalArgument.isNotBlank(name, "procedureName");
-        StringBuilder procedure = new StringBuilder("{call ");
+        StringBuilder procedure = new StringBuilder("call ");
         procedure.append(name).append("(");
         for (int i = 0; i < argnum; i++) {
             procedure.append("?,");
@@ -1990,7 +2137,7 @@ public abstract class AbstractJdbc implements Jdbc {
         if (argnum > 0) {
             procedure.deleteCharAt(procedure.length() - 1);
         }
-        procedure.append(")}");
+        procedure.append(")");
         return procedure.toString();
     }
 
@@ -2100,6 +2247,7 @@ public abstract class AbstractJdbc implements Jdbc {
      *
      * @param call      the CallableStatement
      * @param outParams the out params
+     * @param args      the args
      */
     protected void setOutParams(CallableStatement call, Map<Integer, Class<?>> outParams, Object[] args) {
         for (Entry<Integer, Class<?>> entry : outParams.entrySet()) {
@@ -2107,6 +2255,60 @@ public abstract class AbstractJdbc implements Jdbc {
             args[index - 1] = manager.getParam(call, index, entry.getValue());
         }
     }
+
+    //    /**
+    //     * Sets the params.
+    //     *
+    //     * @param call      the CallableStatement
+    //     * @param outParams the out params
+    //     * @param args      the args
+    //     */
+    //    protected void setOutParams(CallableStatement call, Map<Integer, Class<?>> outParams,
+    //            SequencedMap<String, Object> args) {
+    //        String[] keys = Lang.toArray(args.keySet());
+    //        for (Entry<Integer, Class<?>> entry : outParams.entrySet()) {
+    //            int index = entry.getKey();
+    //            args.put(keys[index - 1], manager.getParam(call, index, entry.getValue()));
+    //        }
+    //    }
+
+    /**
+     * Sets the params.
+     *
+     * @param call      the CallableStatement
+     * @param outParams the out params
+     * @param args      the args
+     */
+    protected <T extends MutableTuple> void setOutParams(CallableStatement call, Map<Integer, Class<?>> outParams,
+            T args) {
+        for (Entry<Integer, Class<?>> entry : outParams.entrySet()) {
+            int index = entry.getKey();
+            set(args, index, manager.getParam(call, index, entry.getValue()));
+        }
+    }
+
+    private <T extends MutableTuple> void set(T tuple, int index, Object value) {
+        ClassUtils.invokeMethod(tuple, "set" + (index - 1), value);
+        // ENHANCE 后续去掉这个反射调用
+        //        switch (index) {
+        //            case 0:
+        //                set0(tuple, value);
+        //                break;
+        //            case 1:
+        //                set1(tuple, value);
+        //                break;
+        //        }
+    }
+    //    @SuppressWarnings("unchecked")
+    //    private <T extends MutableTuple> void set0(T tuple, Object value) {
+    //        if (tuple instanceof MutableTuple1) {
+    //            ((MutableTuple1<Object>) tuple).set0(value);
+    //        } else if (tuple instanceof MutableTuple2) {
+    //            ((MutableTuple2<Object, Object>) tuple).set0(value);
+    //        } else if (tuple instanceof MutableTuple3) {
+    //            ((MutableTuple3<Object, Object, Object>) tuple).set0(value);
+    //        }
+    //    }
 
     /**
      * Adds the interceptor.
@@ -2161,6 +2363,10 @@ public abstract class AbstractJdbc implements Jdbc {
         return (O) jdbcExecution.getResult();
     }
 
+    private void throwMoreThanOneResult() {
+        throw new JdbcException("results size must be 1, but more than 1");
+    }
+
     private void assertSingleResult(int size) {
         if (size > 1) {
             // ENHANCE 优化错误消息
@@ -2190,8 +2396,11 @@ public abstract class AbstractJdbc implements Jdbc {
     }
 
     private <T> RowMapper<T> getTypeMapper(Class<T> elementType) {
-        return Lang.ifNotEmpty(manager.getSqlType(elementType), () -> new SingleColumnRowMapper<>(elementType, manager),
+        return Lang.ifTrue(elementType == Object.class || manager.getSqlType(elementType) != null,
+                () -> new SingleColumnRowMapper<>(elementType, manager),
                 () -> new NestedBeanPropertyRowMapper<>(elementType, manager));
+        //        return Lang.ifNotEmpty(manager.getSqlType(elementType), () -> new SingleColumnRowMapper<>(elementType, manager),
+        //                () -> new NestedBeanPropertyRowMapper<>(elementType, manager));
     }
 
     /**

@@ -23,7 +23,9 @@ import cn.featherfly.common.db.mapping.SqlTypeMappingManager;
 import cn.featherfly.common.db.metadata.DatabaseMetadata;
 import cn.featherfly.common.db.metadata.ResultSetConcurrency;
 import cn.featherfly.common.db.metadata.ResultSetType;
+import cn.featherfly.common.lang.Lang;
 import cn.featherfly.hammer.sqldb.jdbc.Jdbc;
+import cn.featherfly.hammer.sqldb.jdbc.debug.UpdateDebugMessage;
 
 /**
  * The Class UpdateFetchOperate.
@@ -134,8 +136,8 @@ public class UpdateFetchOperate<T> extends AbstractOperate<T> implements Execute
     public T execute(T entity, UnaryOperator<T> updateOperator, boolean lock) {
         if (supportsResultSetUpdatable) {
             // driver support update ResultSet
-            getOperate.assertId(entity);
-            return executeResultSetUpdatable(lock, updateOperator, () -> getLockKey(entity), getIdsAsArgus(entity));
+            return executeResultSetUpdatable(lock, updateOperator, () -> getLockKey(entity),
+                    getOperate.assertAndGetIds(entity));
         } else {
             return executeCustom(lock, updateOperator, () -> getLockKey(entity),
                     forUpdate -> getOperate.get(entity, forUpdate));
@@ -183,7 +185,8 @@ public class UpdateFetchOperate<T> extends AbstractOperate<T> implements Execute
             if (priorityUseDatabaseRowLock && meta.getFeatures().supportsSelectForUpdate()) {
                 Tuple2<T, Integer> result = jdbc.querySingleUpdate(sql + jdbc.getDialect().getKeyword(" for update"),
                         getOperate::mapRow, (res, e) -> {
-                            return updateResultSet(res, updateOperator.apply(e));
+                            return updateResultSet(res, updateOperator.apply(e),
+                                    fullUpdate() ? e : getOperate.mapRow(res, 1));
                         }, args);
                 return result.get0();
             } else {
@@ -202,22 +205,30 @@ public class UpdateFetchOperate<T> extends AbstractOperate<T> implements Execute
 
     private Tuple2<T, Integer> executeResultSetUpdatable(UnaryOperator<T> updateOperator, Object... args) {
         return jdbc.querySingleUpdate(sql, getOperate::mapRow, (res, e) -> {
-            return updateResultSet(res, updateOperator.apply(e));
+            return updateResultSet(res, updateOperator.apply(e), fullUpdate() ? e : getOperate.mapRow(res, 1));
         }, args);
     }
 
-    private int updateResultSet(ResultSet res, T updateEntity) {
+    private int updateResultSet(ResultSet res, T updateEntity, T originalEntity) {
+        // ENHANCE 后续加入读取的原始数据loadEntity进行参数比较，没有变化的就不进行更新了
         int index = 1;
+        UpdateDebugMessage updateDebugMessage = new UpdateDebugMessage(isDebug());
         for (JdbcPropertyMapping propertyMapping : classMapping.getPropertyMappings()) {
             if (propertyMapping.getPropertyMappings().isEmpty()) {
-                // YUFEI_TEST 后续来测试
-                index = updateValue(res, updateEntity, index, propertyMapping);
+                index = updateValue(res, updateEntity, originalEntity, propertyMapping, index, updateDebugMessage);
             } else {
                 for (JdbcPropertyMapping subPropertyMapping : propertyMapping.getPropertyMappings()) {
-                    // YUFEI_TEST 后续来测试
-                    index = updateValue(res, updateEntity, index, subPropertyMapping);
+                    index = updateValue(res, updateEntity, originalEntity, subPropertyMapping, index,
+                            updateDebugMessage);
                 }
             }
+        }
+        if (isDebug()) {
+            StringBuilder debugMessage = new StringBuilder();
+            debugMessage.append("\n---------- Update " + classMapping.getType().getName() + " Start ----------\n")
+                    .append(updateDebugMessage.toString())
+                    .append("---------- Update " + classMapping.getType().getName() + " End ----------\n");
+            logger.debug(debugMessage.toString());
         }
         try {
             res.updateRow();
@@ -227,9 +238,22 @@ public class UpdateFetchOperate<T> extends AbstractOperate<T> implements Execute
         }
     }
 
-    private int updateValue(ResultSet res, T mappedObject, int index, JdbcPropertyMapping propertyMapping) {
+    private int updateValue(ResultSet res, T mappedObject, T originalEntity, JdbcPropertyMapping propertyMapping,
+            int index, UpdateDebugMessage updateDebugMessage) {
         Object value = BeanUtils.getProperty(mappedObject, propertyMapping.getPropertyFullName());
-        JdbcUtils.setParameter(res, index, FieldValueOperator.create(propertyMapping, value));
+        if (fullUpdate()) {
+            updateDebugMessage.debug(m -> m.addPropertyUpdate(propertyMapping.getPropertyFullName(),
+                    propertyMapping.getRepositoryFieldName(),
+                    BeanUtils.getProperty(originalEntity, propertyMapping.getPropertyFullName()), value));
+            JdbcUtils.setParameter(res, index, FieldValueOperator.create(propertyMapping, value));
+        } else {
+            Object original = BeanUtils.getProperty(originalEntity, propertyMapping.getPropertyFullName());
+            if (!Lang.equals(original, value)) {
+                updateDebugMessage.debug(m -> m.addPropertyUpdate(propertyMapping.getPropertyFullName(),
+                        propertyMapping.getRepositoryFieldName(), original, value));
+                JdbcUtils.setParameter(res, index, FieldValueOperator.create(propertyMapping, value));
+            }
+        }
         index++;
         return index;
     }
@@ -258,7 +282,8 @@ public class UpdateFetchOperate<T> extends AbstractOperate<T> implements Execute
         }
     }
 
-    private Object[] getIdsAsArgus(T entity) {
-        return getOperate.getIds(entity).toArray();
+    private boolean fullUpdate() {
+        // IMPLSOON 后续使用配置
+        return false;
     }
 }

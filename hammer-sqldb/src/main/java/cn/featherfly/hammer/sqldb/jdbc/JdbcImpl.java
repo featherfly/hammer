@@ -17,6 +17,7 @@ import cn.featherfly.common.db.JdbcException;
 import cn.featherfly.common.db.JdbcUtils;
 import cn.featherfly.common.db.dialect.Dialect;
 import cn.featherfly.common.db.mapping.SqlTypeMappingManager;
+import cn.featherfly.common.db.metadata.DatabaseMetadata;
 import cn.featherfly.hammer.sqldb.jdbc.transaction.Isolation;
 import cn.featherfly.hammer.sqldb.jdbc.transaction.JdbcTransaction;
 import cn.featherfly.hammer.sqldb.jdbc.transaction.JdbcTransactionImpl;
@@ -39,8 +40,8 @@ public class JdbcImpl extends AbstractJdbc implements JdbcSession {
      * @param dialect    the dialect
      * @param manager    the manager
      */
-    public JdbcImpl(Connection connection, Dialect dialect, SqlTypeMappingManager manager) {
-        this(connection, null, dialect, manager);
+    public JdbcImpl(Connection connection, Dialect dialect, DatabaseMetadata metadata, SqlTypeMappingManager manager) {
+        this(connection, null, dialect, metadata, manager);
     }
 
     /**
@@ -51,8 +52,9 @@ public class JdbcImpl extends AbstractJdbc implements JdbcSession {
      * @param dialect          the dialect
      * @param manager          the manager
      */
-    public JdbcImpl(Connection connection, Isolation defaultIsolation, Dialect dialect, SqlTypeMappingManager manager) {
-        super(dialect, manager);
+    public JdbcImpl(Connection connection, Isolation defaultIsolation, Dialect dialect, DatabaseMetadata metadata,
+            SqlTypeMappingManager manager) {
+        super(dialect, metadata, manager);
         this.connection = connection;
         if (defaultIsolation != null) {
             this.defaultIsolation = defaultIsolation;

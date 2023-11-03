@@ -47,8 +47,8 @@ public interface EntityLikeExpression6<E, E2, E3, E4, E5, E6, C extends Conditio
     //     * like value.
     //     *
     //     * @param entities the entities
-    //     * @param name     参数名称
-    //     * @param value    参数值
+    //     * @param name the name
+    //     * @param value the value
     //     * @return LogicExpression
     //     */
     //    default L lk(Function<
@@ -62,8 +62,8 @@ public interface EntityLikeExpression6<E, E2, E3, E4, E5, E6, C extends Conditio
     //     * like value.
     //     *
     //     * @param entities     the entities
-    //     * @param name         参数名称
-    //     * @param value        参数值
+    //     * @param name the name
+    //     * @param value the value
     //     * @param ignoreStrategy the ignore strategy
     //     * @return LogicExpression
     //     */
@@ -83,7 +83,7 @@ public interface EntityLikeExpression6<E, E2, E3, E4, E5, E6, C extends Conditio
     //     * @param name        the name
     //     * @param value       the value
     //     * @param queryPolicy the query policy
-    //     * @return the l
+    //     * @return LogicExpression
     //     */
     //    L lk(Function<
     //            Tuple6<QueryEntityRepository<E>, QueryEntityRepository<E2>, QueryEntityRepository<E3>,
@@ -99,7 +99,7 @@ public interface EntityLikeExpression6<E, E2, E3, E4, E5, E6, C extends Conditio
     //     * @param value        the value
     //     * @param queryPolicy  the query policy
     //     * @param ignoreStrategy the ignore strategy
-    //     * @return the l
+    //     * @return LogicExpression
     //     */
     //    L lk(Function<
     //            Tuple6<QueryEntityRepository<E>, QueryEntityRepository<E2>, QueryEntityRepository<E3>,
@@ -111,7 +111,7 @@ public interface EntityLikeExpression6<E, E2, E3, E4, E5, E6, C extends Conditio
     //     * like value.
     //     *
     //     * @param entities the entities
-    //     * @param property 对象属性
+    //     * @param property  bean property
     //     * @return LogicExpression
     //     */
     //    default L lk(Function<
@@ -125,7 +125,7 @@ public interface EntityLikeExpression6<E, E2, E3, E4, E5, E6, C extends Conditio
     //     * like value.
     //     *
     //     * @param entities     the entities
-    //     * @param property     对象属性
+    //     * @param property  bean property
     //     * @param ignoreStrategy the ignore strategy
     //     * @return LogicExpression
     //     */
@@ -142,7 +142,7 @@ public interface EntityLikeExpression6<E, E2, E3, E4, E5, E6, C extends Conditio
     //     * @param entities    the entities
     //     * @param property    the property
     //     * @param queryPolicy the query policy
-    //     * @return the l
+    //     * @return LogicExpression
     //     */
     //    L lk(Function<
     //            Tuple6<QueryEntityRepository<E>, QueryEntityRepository<E2>, QueryEntityRepository<E3>,
@@ -156,7 +156,7 @@ public interface EntityLikeExpression6<E, E2, E3, E4, E5, E6, C extends Conditio
     //     * @param property     the property
     //     * @param queryPolicy  the query policy
     //     * @param ignoreStrategy the ignore strategy
-    //     * @return the l
+    //     * @return LogicExpression
     //     */
     //    L lk(Function<
     //            Tuple6<QueryEntityRepository<E>, QueryEntityRepository<E2>, QueryEntityRepository<E3>,
@@ -171,7 +171,7 @@ public interface EntityLikeExpression6<E, E2, E3, E4, E5, E6, C extends Conditio
     //     * @param entities            the entities
     //     * @param fetchEntity         the fetch entity
     //     * @param fetchEntityProperty the fetch entity property
-    //     * @param value               参数值
+    //     * @param value the value
     //     * @return LogicExpression
     //     */
     //    <R> L lk(
@@ -205,8 +205,8 @@ public interface EntityLikeExpression6<E, E2, E3, E4, E5, E6, C extends Conditio
     //     * like value.
     //     *
     //     * @param entities the entities
-    //     * @param name     参数名称
-    //     * @param value    参数值
+    //     * @param name the name
+    //     * @param value the value
     //     * @return LogicExpression
     //     */
     //    default L lk(Function<
@@ -220,8 +220,8 @@ public interface EntityLikeExpression6<E, E2, E3, E4, E5, E6, C extends Conditio
     //     * like value.
     //     *
     //     * @param entities     the entities
-    //     * @param name         参数名称
-    //     * @param value        参数值
+    //     * @param name the name
+    //     * @param value the value
     //     * @param ignoreStrategy the ignore strategy
     //     * @return LogicExpression
     //     */
@@ -241,7 +241,7 @@ public interface EntityLikeExpression6<E, E2, E3, E4, E5, E6, C extends Conditio
     //     * @param name        the name
     //     * @param value       the value
     //     * @param queryPolicy the query policy
-    //     * @return the l
+    //     * @return LogicExpression
     //     */
     //    L lk(Function<
     //            Tuple6<QueryEntityRepository<E>, QueryEntityRepository<E2>, QueryEntityRepository<E3>,
@@ -257,7 +257,7 @@ public interface EntityLikeExpression6<E, E2, E3, E4, E5, E6, C extends Conditio
     //     * @param value        the value
     //     * @param queryPolicy  the query policy
     //     * @param ignoreStrategy the ignore strategy
-    //     * @return the l
+    //     * @return LogicExpression
     //     */
     //    L lk(Function<
     //            Tuple6<QueryEntityRepository<E>, QueryEntityRepository<E2>, QueryEntityRepository<E3>,
@@ -269,7 +269,7 @@ public interface EntityLikeExpression6<E, E2, E3, E4, E5, E6, C extends Conditio
     //     * like value.
     //     *
     //     * @param entities the entities
-    //     * @param property 对象属性
+    //     * @param property  bean property
     //     * @return LogicExpression
     //     */
     //    default L lk(Function<
@@ -283,7 +283,7 @@ public interface EntityLikeExpression6<E, E2, E3, E4, E5, E6, C extends Conditio
     //     * like value.
     //     *
     //     * @param entities     the entities
-    //     * @param property     对象属性
+    //     * @param property  bean property
     //     * @param ignoreStrategy the ignore strategy
     //     * @return LogicExpression
     //     */
@@ -302,7 +302,7 @@ public interface EntityLikeExpression6<E, E2, E3, E4, E5, E6, C extends Conditio
     //     * @param entities    the entities
     //     * @param property    the property
     //     * @param queryPolicy the query policy
-    //     * @return the l
+    //     * @return LogicExpression
     //     */
     //    L lk(Function<
     //            Tuple6<QueryEntityRepository<E>, QueryEntityRepository<E2>, QueryEntityRepository<E3>,
@@ -316,7 +316,7 @@ public interface EntityLikeExpression6<E, E2, E3, E4, E5, E6, C extends Conditio
     //     * @param property     the property
     //     * @param queryPolicy  the query policy
     //     * @param ignoreStrategy the ignore strategy
-    //     * @return the l
+    //     * @return LogicExpression
     //     */
     //    L lk(Function<
     //            Tuple6<QueryEntityRepository<E>, QueryEntityRepository<E2>, QueryEntityRepository<E3>,
@@ -331,7 +331,7 @@ public interface EntityLikeExpression6<E, E2, E3, E4, E5, E6, C extends Conditio
     //     * @param entities            the entities
     //     * @param fetchEntity         the fetch entity
     //     * @param fetchEntityProperty the fetch entity property
-    //     * @param value               参数值
+    //     * @param value the value
     //     * @return LogicExpression
     //     */
     //    <R> L lk(
@@ -366,8 +366,8 @@ public interface EntityLikeExpression6<E, E2, E3, E4, E5, E6, C extends Conditio
     //     * like value.
     //     *
     //     * @param entities the entities
-    //     * @param name     参数名称
-    //     * @param value    参数值
+    //     * @param name the name
+    //     * @param value the value
     //     * @return LogicExpression
     //     */
     //    default L lk(Function<
@@ -381,8 +381,8 @@ public interface EntityLikeExpression6<E, E2, E3, E4, E5, E6, C extends Conditio
     //     * like value.
     //     *
     //     * @param entities     the entities
-    //     * @param name         参数名称
-    //     * @param value        参数值
+    //     * @param name the name
+    //     * @param value the value
     //     * @param ignoreStrategy the ignore strategy
     //     * @return LogicExpression
     //     */
@@ -402,7 +402,7 @@ public interface EntityLikeExpression6<E, E2, E3, E4, E5, E6, C extends Conditio
     //     * @param name        the name
     //     * @param value       the value
     //     * @param queryPolicy the query policy
-    //     * @return the l
+    //     * @return LogicExpression
     //     */
     //    L lk(Function<
     //            Tuple6<QueryEntityRepository<E>, QueryEntityRepository<E2>, QueryEntityRepository<E3>,
@@ -418,7 +418,7 @@ public interface EntityLikeExpression6<E, E2, E3, E4, E5, E6, C extends Conditio
     //     * @param value        the value
     //     * @param queryPolicy  the query policy
     //     * @param ignoreStrategy the ignore strategy
-    //     * @return the l
+    //     * @return LogicExpression
     //     */
     //    L lk(Function<
     //            Tuple6<QueryEntityRepository<E>, QueryEntityRepository<E2>, QueryEntityRepository<E3>,
@@ -430,7 +430,7 @@ public interface EntityLikeExpression6<E, E2, E3, E4, E5, E6, C extends Conditio
     //     * like value.
     //     *
     //     * @param entities the entities
-    //     * @param property 对象属性
+    //     * @param property  bean property
     //     * @return LogicExpression
     //     */
     //    default L lk(Function<
@@ -444,7 +444,7 @@ public interface EntityLikeExpression6<E, E2, E3, E4, E5, E6, C extends Conditio
     //     * like value.
     //     *
     //     * @param entities     the entities
-    //     * @param property     对象属性
+    //     * @param property  bean property
     //     * @param ignoreStrategy the ignore strategy
     //     * @return LogicExpression
     //     */
@@ -463,7 +463,7 @@ public interface EntityLikeExpression6<E, E2, E3, E4, E5, E6, C extends Conditio
     //     * @param entities    the entities
     //     * @param property    the property
     //     * @param queryPolicy the query policy
-    //     * @return the l
+    //     * @return LogicExpression
     //     */
     //    L lk(Function<
     //            Tuple6<QueryEntityRepository<E>, QueryEntityRepository<E2>, QueryEntityRepository<E3>,
@@ -477,7 +477,7 @@ public interface EntityLikeExpression6<E, E2, E3, E4, E5, E6, C extends Conditio
     //     * @param property     the property
     //     * @param queryPolicy  the query policy
     //     * @param ignoreStrategy the ignore strategy
-    //     * @return the l
+    //     * @return LogicExpression
     //     */
     //    L lk(Function<
     //            Tuple6<QueryEntityRepository<E>, QueryEntityRepository<E2>, QueryEntityRepository<E3>,
@@ -492,7 +492,7 @@ public interface EntityLikeExpression6<E, E2, E3, E4, E5, E6, C extends Conditio
     //     * @param entities            the entities
     //     * @param fetchEntity         the fetch entity
     //     * @param fetchEntityProperty the fetch entity property
-    //     * @param value               参数值
+    //     * @param value the value
     //     * @return LogicExpression
     //     */
     //    <R> L lk(
@@ -527,8 +527,8 @@ public interface EntityLikeExpression6<E, E2, E3, E4, E5, E6, C extends Conditio
     //     * like value.
     //     *
     //     * @param entities the entities
-    //     * @param name     参数名称
-    //     * @param value    参数值
+    //     * @param name the name
+    //     * @param value the value
     //     * @return LogicExpression
     //     */
     //    default L lk(Function<
@@ -542,8 +542,8 @@ public interface EntityLikeExpression6<E, E2, E3, E4, E5, E6, C extends Conditio
     //     * like value.
     //     *
     //     * @param entities     the entities
-    //     * @param name         参数名称
-    //     * @param value        参数值
+    //     * @param name the name
+    //     * @param value the value
     //     * @param ignoreStrategy the ignore strategy
     //     * @return LogicExpression
     //     */
@@ -563,7 +563,7 @@ public interface EntityLikeExpression6<E, E2, E3, E4, E5, E6, C extends Conditio
     //     * @param name        the name
     //     * @param value       the value
     //     * @param queryPolicy the query policy
-    //     * @return the l
+    //     * @return LogicExpression
     //     */
     //    L lk(Function<
     //            Tuple6<QueryEntityRepository<E>, QueryEntityRepository<E2>, QueryEntityRepository<E3>,
@@ -579,7 +579,7 @@ public interface EntityLikeExpression6<E, E2, E3, E4, E5, E6, C extends Conditio
     //     * @param value        the value
     //     * @param queryPolicy  the query policy
     //     * @param ignoreStrategy the ignore strategy
-    //     * @return the l
+    //     * @return LogicExpression
     //     */
     //    L lk(Function<
     //            Tuple6<QueryEntityRepository<E>, QueryEntityRepository<E2>, QueryEntityRepository<E3>,
@@ -591,7 +591,7 @@ public interface EntityLikeExpression6<E, E2, E3, E4, E5, E6, C extends Conditio
     //     * like value.
     //     *
     //     * @param entities the entities
-    //     * @param property 对象属性
+    //     * @param property  bean property
     //     * @return LogicExpression
     //     */
     //    default L lk(Function<
@@ -605,7 +605,7 @@ public interface EntityLikeExpression6<E, E2, E3, E4, E5, E6, C extends Conditio
     //     * like value.
     //     *
     //     * @param entities     the entities
-    //     * @param property     对象属性
+    //     * @param property  bean property
     //     * @param ignoreStrategy the ignore strategy
     //     * @return LogicExpression
     //     */
@@ -624,7 +624,7 @@ public interface EntityLikeExpression6<E, E2, E3, E4, E5, E6, C extends Conditio
     //     * @param entities    the entities
     //     * @param property    the property
     //     * @param queryPolicy the query policy
-    //     * @return the l
+    //     * @return LogicExpression
     //     */
     //    L lk(Function<
     //            Tuple6<QueryEntityRepository<E>, QueryEntityRepository<E2>, QueryEntityRepository<E3>,
@@ -638,7 +638,7 @@ public interface EntityLikeExpression6<E, E2, E3, E4, E5, E6, C extends Conditio
     //     * @param property     the property
     //     * @param queryPolicy  the query policy
     //     * @param ignoreStrategy the ignore strategy
-    //     * @return the l
+    //     * @return LogicExpression
     //     */
     //    L lk(Function<
     //            Tuple6<QueryEntityRepository<E>, QueryEntityRepository<E2>, QueryEntityRepository<E3>,
@@ -653,7 +653,7 @@ public interface EntityLikeExpression6<E, E2, E3, E4, E5, E6, C extends Conditio
     //     * @param entities            the entities
     //     * @param fetchEntity         the fetch entity
     //     * @param fetchEntityProperty the fetch entity property
-    //     * @param value               参数值
+    //     * @param value the value
     //     * @return LogicExpression
     //     */
     //    <R> L lk(
@@ -688,8 +688,8 @@ public interface EntityLikeExpression6<E, E2, E3, E4, E5, E6, C extends Conditio
     //     * like value.
     //     *
     //     * @param entities the entities
-    //     * @param name     参数名称
-    //     * @param value    参数值
+    //     * @param name the name
+    //     * @param value the value
     //     * @return LogicExpression
     //     */
     //    default L lk(Function<
@@ -703,8 +703,8 @@ public interface EntityLikeExpression6<E, E2, E3, E4, E5, E6, C extends Conditio
     //     * like value.
     //     *
     //     * @param entities     the entities
-    //     * @param name         参数名称
-    //     * @param value        参数值
+    //     * @param name the name
+    //     * @param value the value
     //     * @param ignoreStrategy the ignore strategy
     //     * @return LogicExpression
     //     */
@@ -724,7 +724,7 @@ public interface EntityLikeExpression6<E, E2, E3, E4, E5, E6, C extends Conditio
     //     * @param name        the name
     //     * @param value       the value
     //     * @param queryPolicy the query policy
-    //     * @return the l
+    //     * @return LogicExpression
     //     */
     //    L lk(Function<
     //            Tuple6<QueryEntityRepository<E>, QueryEntityRepository<E2>, QueryEntityRepository<E3>,
@@ -740,7 +740,7 @@ public interface EntityLikeExpression6<E, E2, E3, E4, E5, E6, C extends Conditio
     //     * @param value        the value
     //     * @param queryPolicy  the query policy
     //     * @param ignoreStrategy the ignore strategy
-    //     * @return the l
+    //     * @return LogicExpression
     //     */
     //    L lk(Function<
     //            Tuple6<QueryEntityRepository<E>, QueryEntityRepository<E2>, QueryEntityRepository<E3>,
@@ -752,7 +752,7 @@ public interface EntityLikeExpression6<E, E2, E3, E4, E5, E6, C extends Conditio
     //     * like value.
     //     *
     //     * @param entities the entities
-    //     * @param property 对象属性
+    //     * @param property  bean property
     //     * @return LogicExpression
     //     */
     //    default L lk(Function<
@@ -766,7 +766,7 @@ public interface EntityLikeExpression6<E, E2, E3, E4, E5, E6, C extends Conditio
     //     * like value.
     //     *
     //     * @param entities     the entities
-    //     * @param property     对象属性
+    //     * @param property  bean property
     //     * @param ignoreStrategy the ignore strategy
     //     * @return LogicExpression
     //     */
@@ -785,7 +785,7 @@ public interface EntityLikeExpression6<E, E2, E3, E4, E5, E6, C extends Conditio
     //     * @param entities    the entities
     //     * @param property    the property
     //     * @param queryPolicy the query policy
-    //     * @return the l
+    //     * @return LogicExpression
     //     */
     //    L lk(Function<
     //            Tuple6<QueryEntityRepository<E>, QueryEntityRepository<E2>, QueryEntityRepository<E3>,
@@ -799,7 +799,7 @@ public interface EntityLikeExpression6<E, E2, E3, E4, E5, E6, C extends Conditio
     //     * @param property     the property
     //     * @param queryPolicy  the query policy
     //     * @param ignoreStrategy the ignore strategy
-    //     * @return the l
+    //     * @return LogicExpression
     //     */
     //    L lk(Function<
     //            Tuple6<QueryEntityRepository<E>, QueryEntityRepository<E2>, QueryEntityRepository<E3>,
@@ -814,7 +814,7 @@ public interface EntityLikeExpression6<E, E2, E3, E4, E5, E6, C extends Conditio
     //     * @param entities            the entities
     //     * @param fetchEntity         the fetch entity
     //     * @param fetchEntityProperty the fetch entity property
-    //     * @param value               参数值
+    //     * @param value the value
     //     * @return LogicExpression
     //     */
     //    <R> L lk(
@@ -849,8 +849,8 @@ public interface EntityLikeExpression6<E, E2, E3, E4, E5, E6, C extends Conditio
     //     * like value.
     //     *
     //     * @param entities the entities
-    //     * @param name     参数名称
-    //     * @param value    参数值
+    //     * @param name the name
+    //     * @param value the value
     //     * @return LogicExpression
     //     */
     //    default L lk(Function<
@@ -864,8 +864,8 @@ public interface EntityLikeExpression6<E, E2, E3, E4, E5, E6, C extends Conditio
     //     * like value.
     //     *
     //     * @param entities     the entities
-    //     * @param name         参数名称
-    //     * @param value        参数值
+    //     * @param name the name
+    //     * @param value the value
     //     * @param ignoreStrategy the ignore strategy
     //     * @return LogicExpression
     //     */
@@ -885,7 +885,7 @@ public interface EntityLikeExpression6<E, E2, E3, E4, E5, E6, C extends Conditio
     //     * @param name        the name
     //     * @param value       the value
     //     * @param queryPolicy the query policy
-    //     * @return the l
+    //     * @return LogicExpression
     //     */
     //    L lk(Function<
     //            Tuple6<QueryEntityRepository<E>, QueryEntityRepository<E2>, QueryEntityRepository<E3>,
@@ -901,7 +901,7 @@ public interface EntityLikeExpression6<E, E2, E3, E4, E5, E6, C extends Conditio
     //     * @param value        the value
     //     * @param queryPolicy  the query policy
     //     * @param ignoreStrategy the ignore strategy
-    //     * @return the l
+    //     * @return LogicExpression
     //     */
     //    L lk(Function<
     //            Tuple6<QueryEntityRepository<E>, QueryEntityRepository<E2>, QueryEntityRepository<E3>,
@@ -913,7 +913,7 @@ public interface EntityLikeExpression6<E, E2, E3, E4, E5, E6, C extends Conditio
     //     * like value.
     //     *
     //     * @param entities the entities
-    //     * @param property 对象属性
+    //     * @param property  bean property
     //     * @return LogicExpression
     //     */
     //    default L lk(Function<
@@ -927,7 +927,7 @@ public interface EntityLikeExpression6<E, E2, E3, E4, E5, E6, C extends Conditio
     //     * like value.
     //     *
     //     * @param entities     the entities
-    //     * @param property     对象属性
+    //     * @param property  bean property
     //     * @param ignoreStrategy the ignore strategy
     //     * @return LogicExpression
     //     */
@@ -946,7 +946,7 @@ public interface EntityLikeExpression6<E, E2, E3, E4, E5, E6, C extends Conditio
     //     * @param entities    the entities
     //     * @param property    the property
     //     * @param queryPolicy the query policy
-    //     * @return the l
+    //     * @return LogicExpression
     //     */
     //    L lk(Function<
     //            Tuple6<QueryEntityRepository<E>, QueryEntityRepository<E2>, QueryEntityRepository<E3>,
@@ -960,7 +960,7 @@ public interface EntityLikeExpression6<E, E2, E3, E4, E5, E6, C extends Conditio
     //     * @param property     the property
     //     * @param queryPolicy  the query policy
     //     * @param ignoreStrategy the ignore strategy
-    //     * @return the l
+    //     * @return LogicExpression
     //     */
     //    L lk(Function<
     //            Tuple6<QueryEntityRepository<E>, QueryEntityRepository<E2>, QueryEntityRepository<E3>,
@@ -975,7 +975,7 @@ public interface EntityLikeExpression6<E, E2, E3, E4, E5, E6, C extends Conditio
     //     * @param entities            the entities
     //     * @param fetchEntity         the fetch entity
     //     * @param fetchEntityProperty the fetch entity property
-    //     * @param value               参数值
+    //     * @param value the value
     //     * @return LogicExpression
     //     */
     //    <R> L lk(

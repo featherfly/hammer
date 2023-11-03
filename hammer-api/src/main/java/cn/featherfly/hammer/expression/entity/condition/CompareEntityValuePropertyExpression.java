@@ -13,6 +13,16 @@ import cn.featherfly.common.function.serializable.SerializableToLocalTimeFunctio
 import cn.featherfly.common.function.serializable.SerializableToLongFunction;
 import cn.featherfly.common.function.serializable.SerializableToNumberFunction;
 import cn.featherfly.common.function.serializable.SerializableToStringFunction;
+import cn.featherfly.hammer.expression.condition.field.value.SetDateExpression;
+import cn.featherfly.hammer.expression.condition.field.value.SetDoubleExpression;
+import cn.featherfly.hammer.expression.condition.field.value.SetEnumExpression;
+import cn.featherfly.hammer.expression.condition.field.value.SetIntExpression;
+import cn.featherfly.hammer.expression.condition.field.value.SetLocalDateExpression;
+import cn.featherfly.hammer.expression.condition.field.value.SetLocalDateTimeExpression;
+import cn.featherfly.hammer.expression.condition.field.value.SetLocalTimeExpression;
+import cn.featherfly.hammer.expression.condition.field.value.SetLongExpression;
+import cn.featherfly.hammer.expression.condition.field.value.SetNumberExpression;
+import cn.featherfly.hammer.expression.condition.field.value.SetStringExpression;
 
 /**
  * The Interface CompareEntityValuePropertyExpression.
@@ -29,7 +39,7 @@ public interface CompareEntityValuePropertyExpression<T> {
      * @param name the name
      * @return entity compare function property expression.
      */
-    ConditionEntityExpressionIntPropertyExpression property(SerializableToIntFunction<T> name);
+    SetIntExpression property(SerializableToIntFunction<T> name);
 
     /**
      * entity compare function property expression.
@@ -38,7 +48,7 @@ public interface CompareEntityValuePropertyExpression<T> {
      * @param name the name
      * @return entity compare function property expression.
      */
-    ConditionEntityExpressionLongPropertyExpression property(SerializableToLongFunction<T> name);
+    SetLongExpression property(SerializableToLongFunction<T> name);
 
     /**
      * entity compare function property expression.
@@ -47,7 +57,7 @@ public interface CompareEntityValuePropertyExpression<T> {
      * @param name the name
      * @return entity compare function property expression.
      */
-    ConditionEntityExpressionDoublePropertyExpression property(SerializableToDoubleFunction<T> name);
+    SetDoubleExpression property(SerializableToDoubleFunction<T> name);
 
     /**
      * entity compare function property expression.
@@ -56,7 +66,7 @@ public interface CompareEntityValuePropertyExpression<T> {
      * @param name the name
      * @return entity compare function property expression.
      */
-    <D extends Date> ConditionEntityExpressionDatePropertyExpression<D> property(SerializableToDateFunction<T, D> name);
+    <D extends Date> SetDateExpression<D> property(SerializableToDateFunction<T, D> name);
 
     /**
      * entity compare function property expression.
@@ -64,7 +74,7 @@ public interface CompareEntityValuePropertyExpression<T> {
      * @param name the name
      * @return entity compare function property expression.
      */
-    ConditionEntityExpressionLocalDatePropertyExpression property(SerializableToLocalDateFunction<T> name);
+    SetLocalDateExpression property(SerializableToLocalDateFunction<T> name);
 
     /**
      * entity compare function property expression.
@@ -72,7 +82,7 @@ public interface CompareEntityValuePropertyExpression<T> {
      * @param name the name
      * @return entity compare function property expression.
      */
-    ConditionEntityExpressionLocalTimePropertyExpression property(SerializableToLocalTimeFunction<T> name);
+    SetLocalTimeExpression property(SerializableToLocalTimeFunction<T> name);
 
     /**
      * entity compare function property expression.
@@ -80,17 +90,7 @@ public interface CompareEntityValuePropertyExpression<T> {
      * @param name the name
      * @return entity compare function property expression.
      */
-    ConditionEntityExpressionLocalDateTimePropertyExpression property(SerializableToLocalDateTimeFunction<T> name);
-
-    /**
-     * entity compare function property expression.
-     *
-     * @param <N>  the generic type
-     * @param name the name
-     * @return entity compare function property expression.
-     */
-    <N extends Number> ConditionEntityExpressionNumberPropertyExpression<N> property(
-            SerializableToNumberFunction<T, N> name);
+    SetLocalDateTimeExpression property(SerializableToLocalDateTimeFunction<T> name);
 
     /**
      * entity compare function property expression.
@@ -99,8 +99,16 @@ public interface CompareEntityValuePropertyExpression<T> {
      * @param name the name
      * @return entity compare function property expression.
      */
-    <E extends Enum<E>> ConditionEntityExpressionEnumPropertyExpression<E> property(
-            SerializableToEnumFunction<T, E> name);
+    <N extends Number> SetNumberExpression<N> property(SerializableToNumberFunction<T, N> name);
+
+    /**
+     * entity compare function property expression.
+     *
+     * @param <N>  the generic type
+     * @param name the name
+     * @return entity compare function property expression.
+     */
+    <E extends Enum<E>> SetEnumExpression<E> property(SerializableToEnumFunction<T, E> name);
 
     /**
      * entity compare function property expression.
@@ -108,5 +116,5 @@ public interface CompareEntityValuePropertyExpression<T> {
      * @param name the name
      * @return entity compare function property expression.
      */
-    ConditionEntityExpressionStringPropertyExpression property(SerializableToStringFunction<T> name);
+    SetStringExpression property(SerializableToStringFunction<T> name);
 }

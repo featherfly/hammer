@@ -10,7 +10,7 @@ import cn.featherfly.hammer.config.dsl.DeleteConfig;
 import cn.featherfly.hammer.sqldb.jdbc.Jdbc;
 
 /**
- * abstract entity sql query entity properties.
+ * abstract entity sql delete relation.
  *
  * @author zhongj
  */
@@ -27,6 +27,7 @@ public class EntitySqlDeleteRelation extends EntitySqlRelation<EntitySqlDeleteRe
      */
     public EntitySqlDeleteRelation(Jdbc jdbc, AliasManager aliasManager, DeleteConfig deleteConfig) {
         super(jdbc, aliasManager, deleteConfig);
+        //        enableTableAlias = false;
     }
 
     // ****************************************************************************************************************
@@ -35,7 +36,7 @@ public class EntitySqlDeleteRelation extends EntitySqlRelation<EntitySqlDeleteRe
 
     @Override
     protected SqlSelectJoinOnBasicBuilder join0(String tableAlias, String columnName,
-            JdbcClassMapping<?> joinClassMapping, String joinTableAlias, String joinTableColumnName) {
+        JdbcClassMapping<?> joinClassMapping, String joinTableAlias, String joinTableColumnName) {
         // IMPLSOON delete还未实现join
         throw new NotImplementedException();
     }
@@ -46,7 +47,7 @@ public class EntitySqlDeleteRelation extends EntitySqlRelation<EntitySqlDeleteRe
     @Override
     protected void initBuilder(EntityRelationMapping<?> erm) {
         deleteBuilder = new SqlDeleteFromBasicBuilder(jdbc.getDialect(), erm.getClassMapping().getRepositoryName(),
-                erm.getTableAlias());
+            erm.getTableAlias());
     }
 
     /**

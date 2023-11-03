@@ -4,10 +4,11 @@ package cn.featherfly.hammer.expression.entity.condition.nl;
 import java.util.function.Predicate;
 
 import cn.featherfly.common.function.serializable.SerializableFunction;
-import cn.featherfly.common.function.serializable.SerializableStringSupplier;
 import cn.featherfly.common.operator.ComparisonOperator.MatchStrategy;
+import cn.featherfly.common.repository.IgnoreStrategy;
 import cn.featherfly.hammer.expression.condition.ConditionExpression;
 import cn.featherfly.hammer.expression.condition.LogicExpression;
+import cn.featherfly.hammer.expression.condition.nl.NotLikeSupplierExpression;
 
 /**
  * The Interface EntityNotLikeExpression.
@@ -18,13 +19,13 @@ import cn.featherfly.hammer.expression.condition.LogicExpression;
  * @param <L> the generic type
  */
 public interface EntityNotLikeExpression<E, C extends ConditionExpression, L extends LogicExpression<C, L>>
-        extends ConditionExpression {
+        extends NotLikeSupplierExpression<C, L> {
 
     /**
      * not like value.
      *
-     * @param name  参数名称
-     * @param value 参数值
+     * @param name  the name
+     * @param value the value
      * @return LogicExpression
      */
     default L nl(SerializableFunction<E, String> name, String value) {
@@ -34,8 +35,20 @@ public interface EntityNotLikeExpression<E, C extends ConditionExpression, L ext
     /**
      * not like value.
      *
-     * @param name           参数名称
-     * @param value          参数值
+     * @param name           the name
+     * @param value          the value
+     * @param ignoreStrategy the ignore strategy
+     * @return LogicExpression
+     */
+    default L nl(SerializableFunction<E, String> name, String value, IgnoreStrategy ignoreStrategy) {
+        return nl(name, value, MatchStrategy.AUTO, ignoreStrategy);
+    }
+
+    /**
+     * not like value.
+     *
+     * @param name           the name
+     * @param value          the value
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
@@ -49,7 +62,7 @@ public interface EntityNotLikeExpression<E, C extends ConditionExpression, L ext
      * @param name        the name 参数名称
      * @param value       the value
      * @param queryPolicy the query policy
-     * @return the l
+     * @return LogicExpression
      */
     L nl(SerializableFunction<E, String> name, String value, MatchStrategy matchStrategy);
 
@@ -60,49 +73,22 @@ public interface EntityNotLikeExpression<E, C extends ConditionExpression, L ext
      * @param value          the value
      * @param queryPolicy    the query policy
      * @param ignoreStrategy the ignore strategy
-     * @return the l
+     * @return LogicExpression
+     */
+    default L nl(SerializableFunction<E, String> name, String value, MatchStrategy matchStrategy,
+            IgnoreStrategy ignoreStrategy) {
+        return nl(name, value, matchStrategy, (Predicate<String>) ignoreStrategy::test);
+    }
+
+    /**
+     * not like value.
+     *
+     * @param name           the name 参数名称
+     * @param value          the value
+     * @param queryPolicy    the query policy
+     * @param ignoreStrategy the ignore strategy
+     * @return LogicExpression
      */
     L nl(SerializableFunction<E, String> name, String value, MatchStrategy matchStrategy,
             Predicate<String> ignoreStrategy);
-
-    /**
-     * not like value.
-     *
-     * @param property 对象属性
-     * @return LogicExpression
-     */
-    default L nl(SerializableStringSupplier property) {
-        return nl(property, MatchStrategy.AUTO);
-    }
-
-    /**
-     * not like value.
-     *
-     * @param property       对象属性
-     * @param ignoreStrategy the ignore strategy
-     * @return LogicExpression
-     */
-    default L nl(SerializableStringSupplier property, Predicate<String> ignoreStrategy) {
-        return nl(property, MatchStrategy.AUTO, ignoreStrategy);
-    }
-
-    /**
-     * not like value.
-     *
-     * @param property    the property 对象属性
-     * @param queryPolicy the query policy
-     * @return the l
-     */
-    L nl(SerializableStringSupplier property, MatchStrategy matchStrategy);
-
-    /**
-     * not like value.
-     *
-     * @param property       the property 对象属性
-     * @param queryPolicy    the query policy
-     * @param ignoreStrategy the ignore strategy
-     * @return the l
-     */
-    L nl(SerializableStringSupplier property, MatchStrategy matchStrategy, Predicate<String> ignoreStrategy);
-
 }

@@ -1,7 +1,7 @@
 
 package cn.featherfly.hammer.expression.entity.condition.co;
 
-import cn.featherfly.hammer.expression.entity.condition.MatchStringEntityPropertySetValueExpression;
+import cn.featherfly.hammer.expression.condition.field.value.SetStringFuzzyQueryExpression;
 
 /**
  * The Interface ContainsEntityPropertyValueExpression.
@@ -9,5 +9,5 @@ import cn.featherfly.hammer.expression.entity.condition.MatchStringEntityPropert
  * @author zhongj
  * @param <E> the element type
  */
-public interface ContainsEntityPropertySetValueExpression extends MatchStringEntityPropertySetValueExpression {
+public interface ContainsEntityPropertySetValueExpression extends SetStringFuzzyQueryExpression {
 }

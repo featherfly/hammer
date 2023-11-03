@@ -6,23 +6,20 @@ import cn.featherfly.hammer.HammerException;
 import cn.featherfly.hammer.tpl.supports.PropertiesMappingManager;
 
 /**
- * <p>
- * PropertiesMappingDirective
- * </p>
- * .
+ * PropertiesMappingDirective .
  *
  * @author zhongj
  */
 public abstract class PropertiesMappingDirective implements TemplateDirective {
 
     /** The Constant DEFAULT_PARAM_NAME_NAME. */
-    protected static final String DEFAULT_PARAM_NAME_NAME = "repo";
+    public static final String DEFAULT_PARAM_NAME_NAME = "repo";
 
     /** The Constant PARAM_NAME_ALIAS. */
-    protected static final String PARAM_NAME_ALIAS = "alias";
+    public static final String PARAM_NAME_ALIAS = "alias";
 
     /** The Constant PARAM_NAME_MAPPING. */
-    protected static final String PARAM_NAME_MAPPING = "mapping";
+    public static final String PARAM_NAME_MAPPING = "mapping";
 
     /** The mapping factory. */
     protected MappingFactory<?> mappingFactory;
@@ -39,23 +36,12 @@ public abstract class PropertiesMappingDirective implements TemplateDirective {
     /**
      * Instantiates a new properties mapping directive.
      *
-     * @param mappingFactory mappingFactory
-     * @param resultTypes    the result types
-     */
-    public PropertiesMappingDirective(MappingFactory<?> mappingFactory, PropertiesMappingManager manager,
-            Class<?>... resultTypes) {
-        this(DEFAULT_PARAM_NAME_NAME, mappingFactory, manager, resultTypes);
-    }
-
-    /**
-     * Instantiates a new properties mapping directive.
-     *
      * @param paramName      paramName
      * @param mappingFactory mappingFactory
      * @param manager        the manager
      * @param resultTypes    the result types
      */
-    public PropertiesMappingDirective(String paramName, MappingFactory<?> mappingFactory,
+    protected PropertiesMappingDirective(String paramName, MappingFactory<?> mappingFactory,
             PropertiesMappingManager manager, Class<?>... resultTypes) {
         super();
         this.mappingFactory = mappingFactory;

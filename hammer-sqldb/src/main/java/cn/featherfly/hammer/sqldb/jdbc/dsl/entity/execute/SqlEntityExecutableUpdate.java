@@ -3,6 +3,7 @@ package cn.featherfly.hammer.sqldb.jdbc.dsl.entity.execute;
 
 import java.io.Serializable;
 import java.util.function.Consumer;
+import java.util.function.Function;
 import java.util.function.Predicate;
 
 import cn.featherfly.common.bean.BeanDescriptor;
@@ -26,11 +27,14 @@ import cn.featherfly.hammer.dsl.entity.execute.EntityExecutableUpdate;
 import cn.featherfly.hammer.dsl.entity.execute.EntityUpdateNestedValueImpl;
 import cn.featherfly.hammer.dsl.entity.execute.EntityUpdateNumberValueImpl;
 import cn.featherfly.hammer.dsl.entity.execute.EntityUpdateValueImpl;
+import cn.featherfly.hammer.expression.condition.LogicExpression;
+import cn.featherfly.hammer.expression.entity.condition.EntityConditionsGroupExpression;
 import cn.featherfly.hammer.expression.entity.execute.EntityUpdateExpression;
 import cn.featherfly.hammer.expression.entity.execute.EntityUpdateNumberValueExpression;
 import cn.featherfly.hammer.expression.entity.execute.EntityUpdateSetExpression;
 import cn.featherfly.hammer.expression.entity.execute.EntityUpdateValueExpression;
 import cn.featherfly.hammer.sqldb.jdbc.Jdbc;
+import cn.featherfly.hammer.sqldb.jdbc.dsl.entity.EntitySqlConditionsGroupExpression;
 import cn.featherfly.hammer.sqldb.jdbc.dsl.entity.EntitySqlUpdateRelation;
 import cn.featherfly.hammer.sqldb.jdbc.dsl.execute.AbstractSqlExecutableUpdate;
 
@@ -41,7 +45,7 @@ import cn.featherfly.hammer.sqldb.jdbc.dsl.execute.AbstractSqlExecutableUpdate;
  * @param <E> the element type
  */
 public class SqlEntityExecutableUpdate<E> extends AbstractSqlExecutableUpdate<SqlEntityExecutableUpdate<E>>
-        implements SqlEntityUpdate<E>, EntityExecutableUpdate<E> {
+    implements SqlEntityUpdate<E>, EntityExecutableUpdate<E> {
 
     private JdbcClassMapping<E> classMapping;
 
@@ -58,7 +62,7 @@ public class SqlEntityExecutableUpdate<E> extends AbstractSqlExecutableUpdate<Sq
      * @param updateConfig the update config
      */
     public SqlEntityExecutableUpdate(Jdbc jdbc, JdbcClassMapping<E> classMapping, JdbcMappingFactory factory,
-            UpdateConfig updateConfig) {
+        UpdateConfig updateConfig) {
         this(jdbc, classMapping, factory, updateConfig, new AliasManager());
     }
 
@@ -72,8 +76,8 @@ public class SqlEntityExecutableUpdate<E> extends AbstractSqlExecutableUpdate<Sq
      * @param aliasManager the alias manager
      */
     public SqlEntityExecutableUpdate(Jdbc jdbc, JdbcClassMapping<E> classMapping, JdbcMappingFactory factory,
-            UpdateConfig updateConfig, AliasManager aliasManager) {
-        super(classMapping.getRepositoryName(), jdbc, updateConfig);
+        UpdateConfig updateConfig, AliasManager aliasManager) {
+        super(classMapping.getRepositoryName(), jdbc, aliasManager, updateConfig);
         this.classMapping = classMapping;
         this.factory = factory;
         // 使用 this.updateConfig 是因为是在父类中设置的已经是克隆的副本（用于configure()单独配置当前表达式生效）
@@ -87,8 +91,8 @@ public class SqlEntityExecutableUpdate<E> extends AbstractSqlExecutableUpdate<Sq
      */
     @Override
     public EntityExecutableUpdate<E> set(Consumer<EntityUpdateSetExpression<E, EntityExecutableUpdate<E>,
-            EntityExecutableConditionGroup<E, UpdateConditionConfig>,
-            EntityExecutableConditionGroupLogic<E, UpdateConditionConfig>>> consumer) {
+        EntityExecutableConditionGroup<E, UpdateConditionConfig>,
+        EntityExecutableConditionGroupLogic<E, UpdateConditionConfig>>> consumer) {
         consumer.accept(this);
         return this;
     }
@@ -114,7 +118,7 @@ public class SqlEntityExecutableUpdate<E> extends AbstractSqlExecutableUpdate<Sq
      */
     @Override
     public <R, O> EntityExecutableUpdate<E> set(SerializableFunction<E, R> property,
-            SerializableFunction<R, O> nestedProperty, O value) {
+        SerializableFunction<R, O> nestedProperty, O value) {
         return set0(property, nestedProperty, value, updateConfig.getSetValueIgnoreStrategy()::test);
         //        JdbcPropertyMapping pm = classMapping.getPropertyMapping(getPropertyName(property));
         //        if (value == null) {
@@ -137,7 +141,7 @@ public class SqlEntityExecutableUpdate<E> extends AbstractSqlExecutableUpdate<Sq
      */
     @Override
     public <R, O> EntityExecutableUpdate<E> set(SerializableFunction<E, R> property,
-            SerializableFunction<R, O> nestedProperty, O value, Predicate<O> ignoreStrategy) {
+        SerializableFunction<R, O> nestedProperty, O value, Predicate<O> ignoreStrategy) {
         return set0(property, nestedProperty, value, ignoreStrategy);
     }
 
@@ -164,7 +168,7 @@ public class SqlEntityExecutableUpdate<E> extends AbstractSqlExecutableUpdate<Sq
     @SuppressWarnings("unchecked")
     @Override
     public <R, O> EntityExecutableUpdate<E> set(SerializableSupplier<R> property,
-            SerializableFunction<R, O> nestedProperty) {
+        SerializableFunction<R, O> nestedProperty) {
         return set0(property, nestedProperty, (Predicate<O>) updateConfig.getSetValueIgnoreStrategy());
         //        JdbcPropertyMapping pm = classMapping.getPropertyMapping(getPropertyName(property));
         //        if (property.get() == null) {
@@ -180,7 +184,7 @@ public class SqlEntityExecutableUpdate<E> extends AbstractSqlExecutableUpdate<Sq
      */
     @Override
     public <R, O> EntityExecutableUpdate<E> set(SerializableSupplier<R> property,
-            SerializableFunction<R, O> nestedProperty, Predicate<O> ignoreStrategy) {
+        SerializableFunction<R, O> nestedProperty, Predicate<O> ignoreStrategy) {
         return set0(property, nestedProperty, ignoreStrategy);
     }
 
@@ -197,7 +201,7 @@ public class SqlEntityExecutableUpdate<E> extends AbstractSqlExecutableUpdate<Sq
      */
     @Override
     public <N extends Number> EntityExecutableUpdate<E> increase(SerializableFunction<E, N> property, N value,
-            Predicate<N> ignoreStrategy) {
+        Predicate<N> ignoreStrategy) {
         return increase0(property, value, ignoreStrategy);
     }
 
@@ -206,7 +210,7 @@ public class SqlEntityExecutableUpdate<E> extends AbstractSqlExecutableUpdate<Sq
      */
     @Override
     public <R, N extends Number> EntityExecutableUpdate<E> increase(SerializableFunction<E, R> property,
-            SerializableFunction<R, N> nestedProperty, N value) {
+        SerializableFunction<R, N> nestedProperty, N value) {
         return increase0(property, nestedProperty, value, updateConfig.getSetValueIgnoreStrategy()::test);
     }
 
@@ -215,7 +219,7 @@ public class SqlEntityExecutableUpdate<E> extends AbstractSqlExecutableUpdate<Sq
      */
     @Override
     public <R, N extends Number> EntityExecutableUpdate<E> increase(SerializableFunction<E, R> property,
-            SerializableFunction<R, N> nestedProperty, N value, Predicate<N> ignoreStrategy) {
+        SerializableFunction<R, N> nestedProperty, N value, Predicate<N> ignoreStrategy) {
         return increase0(property, nestedProperty, value, ignoreStrategy);
     }
 
@@ -232,7 +236,7 @@ public class SqlEntityExecutableUpdate<E> extends AbstractSqlExecutableUpdate<Sq
      */
     @Override
     public <N extends Number> EntityExecutableUpdate<E> increase(SerializableSupplier<N> property,
-            Predicate<N> ignoreStrategy) {
+        Predicate<N> ignoreStrategy) {
         return increase0(property, property.get(), ignoreStrategy);
     }
 
@@ -241,7 +245,7 @@ public class SqlEntityExecutableUpdate<E> extends AbstractSqlExecutableUpdate<Sq
      */
     @Override
     public <R, N extends Number> EntityExecutableUpdate<E> increase(SerializableSupplier<R> property,
-            SerializableFunction<R, N> nestedProperty) {
+        SerializableFunction<R, N> nestedProperty) {
         return increase0(property, nestedProperty, updateConfig.getSetValueIgnoreStrategy()::test);
     }
 
@@ -250,7 +254,7 @@ public class SqlEntityExecutableUpdate<E> extends AbstractSqlExecutableUpdate<Sq
      */
     @Override
     public <R, N extends Number> EntityExecutableUpdate<E> increase(SerializableSupplier<R> property,
-            SerializableFunction<R, N> nestedProperty, Predicate<N> ignoreStrategy) {
+        SerializableFunction<R, N> nestedProperty, Predicate<N> ignoreStrategy) {
         return increase0(property, nestedProperty, ignoreStrategy);
     }
 
@@ -259,9 +263,8 @@ public class SqlEntityExecutableUpdate<E> extends AbstractSqlExecutableUpdate<Sq
      */
     @Override
     public <R> EntityUpdateValueExpression<E, R, EntityExecutableUpdate<E>,
-            EntityExecutableConditionGroup<E, UpdateConditionConfig>,
-            EntityExecutableConditionGroupLogic<E, UpdateConditionConfig>> property(
-                    SerializableFunction<E, R> property) {
+        EntityExecutableConditionGroup<E, UpdateConditionConfig>,
+        EntityExecutableConditionGroupLogic<E, UpdateConditionConfig>> property(SerializableFunction<E, R> property) {
         return new EntityUpdateValueImpl<>(property, this);
     }
 
@@ -270,10 +273,10 @@ public class SqlEntityExecutableUpdate<E> extends AbstractSqlExecutableUpdate<Sq
      */
     @Override
     public <R,
-            O> EntityUpdateValueExpression<E, O, EntityExecutableUpdate<E>,
-                    EntityExecutableConditionGroup<E, UpdateConditionConfig>,
-                    EntityExecutableConditionGroupLogic<E, UpdateConditionConfig>> property(
-                            SerializableFunction<E, R> property, SerializableFunction<R, O> nestedProperty) {
+        O> EntityUpdateValueExpression<E, O, EntityExecutableUpdate<E>,
+            EntityExecutableConditionGroup<E, UpdateConditionConfig>,
+            EntityExecutableConditionGroupLogic<E, UpdateConditionConfig>> property(SerializableFunction<E, R> property,
+                SerializableFunction<R, O> nestedProperty) {
         return new EntityUpdateNestedValueImpl<>(property, nestedProperty, this);
     }
 
@@ -282,9 +285,9 @@ public class SqlEntityExecutableUpdate<E> extends AbstractSqlExecutableUpdate<Sq
      */
     @Override
     public <N extends Number> EntityUpdateNumberValueExpression<E, N, EntityExecutableUpdate<E>,
-            EntityExecutableConditionGroup<E, UpdateConditionConfig>,
-            EntityExecutableConditionGroupLogic<E, UpdateConditionConfig>> property(
-                    SerializableToNumberFunction<E, N> name) {
+        EntityExecutableConditionGroup<E, UpdateConditionConfig>,
+        EntityExecutableConditionGroupLogic<E, UpdateConditionConfig>> property(
+            SerializableToNumberFunction<E, N> name) {
         return new EntityUpdateNumberValueImpl<>(name, this);
     }
 
@@ -300,11 +303,12 @@ public class SqlEntityExecutableUpdate<E> extends AbstractSqlExecutableUpdate<Sq
      * {@inheritDoc}
      */
     @Override
-    public EntityExecutableConditionGroup<E, UpdateConditionConfig> where(
-            Consumer<EntityExecutableConditionGroup<E, UpdateConditionConfig>> consumer) {
+    public EntityExecutableConditionGroupLogic<E, UpdateConditionConfig> where(
+        Function<EntityConditionsGroupExpression<E, ?, ?>, LogicExpression<?, ?>> function) {
         SqlEntityUpdateExpression<E> sqlUpdateExpression = createSqlUpdateExpression();
-        if (consumer != null) {
-            consumer.accept(sqlUpdateExpression);
+        if (function != null) {
+            sqlUpdateExpression
+                .addCondition(function.apply(new EntitySqlConditionsGroupExpression<>(0, factory, relation)));
         }
         return sqlUpdateExpression;
     }
@@ -327,7 +331,7 @@ public class SqlEntityExecutableUpdate<E> extends AbstractSqlExecutableUpdate<Sq
     }
 
     private <R, O> EntityExecutableUpdate<E> set0(SerializableFunction<E, R> property,
-            SerializableFunction<R, O> nestedProperty, O value, Predicate<O> ignoreStrategy) {
+        SerializableFunction<R, O> nestedProperty, O value, Predicate<O> ignoreStrategy) {
         builder.setIgnoreStrategy(ignoreStrategy);
         if (ignoreStrategy.test(value)) { // ignore, 忽略
             return this;
@@ -348,7 +352,7 @@ public class SqlEntityExecutableUpdate<E> extends AbstractSqlExecutableUpdate<Sq
     }
 
     private <R, O> EntityExecutableUpdate<E> set0(SerializableSupplier<R> property,
-            SerializableFunction<R, O> nestedProperty, Predicate<O> ignoreStrategy) {
+        SerializableFunction<R, O> nestedProperty, Predicate<O> ignoreStrategy) {
         boolean enableNull = false;
         if (property.get() == null) {
             builder.setIgnoreStrategy(ignoreStrategy);
@@ -410,7 +414,7 @@ public class SqlEntityExecutableUpdate<E> extends AbstractSqlExecutableUpdate<Sq
     // ----------------------------------------------------------------------------------------------------------------
 
     private <N extends Number> EntityExecutableUpdate<E> increase0(Serializable name, N value,
-            Predicate<N> ignoreStrategy) {
+        Predicate<N> ignoreStrategy) {
         builder.setIgnoreStrategy(ignoreStrategy);
         if (ignoreStrategy.test(value)) {// ignore, 忽略
             return this;
@@ -420,7 +424,7 @@ public class SqlEntityExecutableUpdate<E> extends AbstractSqlExecutableUpdate<Sq
     }
 
     private <R, N extends Number> EntityExecutableUpdate<E> increase0(SerializableFunction<E, R> property,
-            SerializableFunction<R, N> nestedProperty, N value, Predicate<N> ignoreStrategy) {
+        SerializableFunction<R, N> nestedProperty, N value, Predicate<N> ignoreStrategy) {
         builder.setIgnoreStrategy(ignoreStrategy);
         if (ignoreStrategy.test(value)) { // ignore, 忽略
             return this;
@@ -435,7 +439,7 @@ public class SqlEntityExecutableUpdate<E> extends AbstractSqlExecutableUpdate<Sq
     }
 
     private <R, N extends Number> EntityExecutableUpdate<E> increase0(SerializableSupplier<R> property,
-            SerializableFunction<R, N> nestedProperty, Predicate<N> ignoreStrategy) {
+        SerializableFunction<R, N> nestedProperty, Predicate<N> ignoreStrategy) {
         boolean enableNull = false;
         if (property.get() == null) {
             builder.setIgnoreStrategy(ignoreStrategy);
@@ -491,7 +495,7 @@ public class SqlEntityExecutableUpdate<E> extends AbstractSqlExecutableUpdate<Sq
     }
 
     private <N extends Number> SqlEntityExecutableUpdate<E> increase0(JdbcPropertyMapping pm,
-            FieldValueOperator<N> value) {
+        FieldValueOperator<N> value) {
         return increase0(pm.getRepositoryFieldName(), value);
     }
 
@@ -508,8 +512,8 @@ public class SqlEntityExecutableUpdate<E> extends AbstractSqlExecutableUpdate<Sq
      */
     @Override
     public EntityUpdateExpression<E, EntityExecutableUpdate<E>,
-            EntityExecutableConditionGroup<E, UpdateConditionConfig>,
-            EntityExecutableConditionGroupLogic<E, UpdateConditionConfig>> configure(Consumer<UpdateConfig> configure) {
+        EntityExecutableConditionGroup<E, UpdateConditionConfig>,
+        EntityExecutableConditionGroupLogic<E, UpdateConditionConfig>> configure(Consumer<UpdateConfig> configure) {
         if (configure != null) {
             configure.accept(updateConfig);
         }

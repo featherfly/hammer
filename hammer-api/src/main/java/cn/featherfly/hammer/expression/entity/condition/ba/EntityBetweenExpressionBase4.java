@@ -38,8 +38,8 @@ public interface EntityBetweenExpressionBase4<T, T2, T3, T4, C extends Condition
      * between and.
      *
      * @param <N>   number type
-     * @param name  参数名称
-     * @param value 参数值
+     * @param name the name
+     * @param value the value
      * @return LogicExpression
      */
     L ba4(SerializableToIntFunction<T4> name, int min, int max);
@@ -48,8 +48,8 @@ public interface EntityBetweenExpressionBase4<T, T2, T3, T4, C extends Condition
      * between and.
      *
      * @param <N>   number type
-     * @param name  参数名称
-     * @param value 参数值
+     * @param name the name
+     * @param value the value
      * @return LogicExpression
      */
     L ba4(SerializableToIntFunction<T4> name, int min, int max, BiPredicate<Integer, Integer> ignoreStrategy);
@@ -58,8 +58,8 @@ public interface EntityBetweenExpressionBase4<T, T2, T3, T4, C extends Condition
      * between and.
      *
      * @param <N>   number type
-     * @param name  参数名称
-     * @param value 参数值
+     * @param name the name
+     * @param value the value
      * @return LogicExpression
      */
     L ba4(SerializableToLongFunction<T4> name, long min, long max);
@@ -68,8 +68,8 @@ public interface EntityBetweenExpressionBase4<T, T2, T3, T4, C extends Condition
      * between and.
      *
      * @param <N>   number type
-     * @param name  参数名称
-     * @param value 参数值
+     * @param name the name
+     * @param value the value
      * @return LogicExpression
      */
     L ba4(SerializableToLongFunction<T4> name, long min, long max, BiPredicate<Long, Long> ignoreStrategy);
@@ -78,8 +78,8 @@ public interface EntityBetweenExpressionBase4<T, T2, T3, T4, C extends Condition
      * between and.
      *
      * @param <N>   number type
-     * @param name  参数名称
-     * @param value 参数值
+     * @param name the name
+     * @param value the value
      * @return LogicExpression
      */
     L ba4(SerializableToDoubleFunction<T4> name, double min, double max);
@@ -88,8 +88,8 @@ public interface EntityBetweenExpressionBase4<T, T2, T3, T4, C extends Condition
      * between and.
      *
      * @param <N>   number type
-     * @param name  参数名称
-     * @param value 参数值
+     * @param name the name
+     * @param value the value
      * @return LogicExpression
      */
     L ba4(SerializableToDoubleFunction<T4> name, double min, double max, BiPredicate<Double, Double> ignoreStrategy);
@@ -98,8 +98,8 @@ public interface EntityBetweenExpressionBase4<T, T2, T3, T4, C extends Condition
      * between and.
      *
      * @param <N>   number type
-     * @param name  参数名称
-     * @param value 参数值
+     * @param name the name
+     * @param value the value
      * @return LogicExpression
      */
     <N extends Number> L ba4(SerializableToNumberFunction<T4, N> name, N min, N max);
@@ -108,8 +108,8 @@ public interface EntityBetweenExpressionBase4<T, T2, T3, T4, C extends Condition
      * between and.
      *
      * @param <N>            number type
-     * @param name           参数名称
-     * @param value          参数值
+     * @param name the name
+     * @param value the value
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
@@ -119,8 +119,8 @@ public interface EntityBetweenExpressionBase4<T, T2, T3, T4, C extends Condition
      * between and.
      *
      * @param <D>   date type
-     * @param name  参数名称
-     * @param value 参数值
+     * @param name the name
+     * @param value the value
      * @return LogicExpression
      */
     <D extends Date> L ba4(SerializableToDateFunction<T4, D> name, D min, D max);
@@ -129,8 +129,8 @@ public interface EntityBetweenExpressionBase4<T, T2, T3, T4, C extends Condition
      * between and.
      *
      * @param <D>            date type
-     * @param name           参数名称
-     * @param value          参数值
+     * @param name the name
+     * @param value the value
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
@@ -140,8 +140,8 @@ public interface EntityBetweenExpressionBase4<T, T2, T3, T4, C extends Condition
      * between and.
      *
      * @param <E>   enum type
-     * @param name  参数名称
-     * @param value 参数值
+     * @param name the name
+     * @param value the value
      * @return LogicExpression
      */
     <E extends Enum<E>> L ba4(SerializableToEnumFunction<T4, E> name, E min, E max);
@@ -150,8 +150,8 @@ public interface EntityBetweenExpressionBase4<T, T2, T3, T4, C extends Condition
      * between and.
      *
      * @param <E>            enum type
-     * @param name           参数名称
-     * @param value          参数值
+     * @param name the name
+     * @param value the value
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
@@ -160,8 +160,8 @@ public interface EntityBetweenExpressionBase4<T, T2, T3, T4, C extends Condition
     /**
      * between and.
      *
-     * @param name  参数名称
-     * @param value 参数值
+     * @param name the name
+     * @param value the value
      * @return LogicExpression
      */
     L ba4(SerializableToLocalTimeFunction<T4> name, LocalTime min, LocalTime max);
@@ -169,8 +169,8 @@ public interface EntityBetweenExpressionBase4<T, T2, T3, T4, C extends Condition
     /**
      * between and.
      *
-     * @param name           参数名称
-     * @param value          参数值
+     * @param name the name
+     * @param value the value
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
@@ -180,8 +180,8 @@ public interface EntityBetweenExpressionBase4<T, T2, T3, T4, C extends Condition
     /**
      * between and.
      *
-     * @param name  参数名称
-     * @param value 参数值
+     * @param name the name
+     * @param value the value
      * @return LogicExpression
      */
     L ba4(SerializableToLocalDateFunction<T4> name, LocalDate min, LocalDate max);
@@ -189,8 +189,8 @@ public interface EntityBetweenExpressionBase4<T, T2, T3, T4, C extends Condition
     /**
      * between and.
      *
-     * @param name           参数名称
-     * @param value          参数值
+     * @param name the name
+     * @param value the value
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
@@ -200,8 +200,8 @@ public interface EntityBetweenExpressionBase4<T, T2, T3, T4, C extends Condition
     /**
      * between and.
      *
-     * @param name  参数名称
-     * @param value 参数值
+     * @param name the name
+     * @param value the value
      * @return LogicExpression
      */
     L ba4(SerializableToLocalDateTimeFunction<T4> name, LocalDateTime min, LocalDateTime max);
@@ -209,8 +209,8 @@ public interface EntityBetweenExpressionBase4<T, T2, T3, T4, C extends Condition
     /**
      * between and.
      *
-     * @param name           参数名称
-     * @param value          参数值
+     * @param name the name
+     * @param value the value
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
@@ -220,8 +220,8 @@ public interface EntityBetweenExpressionBase4<T, T2, T3, T4, C extends Condition
     /**
      * between and.
      *
-     * @param name  参数名称
-     * @param value 参数值
+     * @param name the name
+     * @param value the value
      * @return LogicExpression
      */
     L ba4(SerializableToStringFunction<T4> name, String min, String max);
@@ -229,8 +229,8 @@ public interface EntityBetweenExpressionBase4<T, T2, T3, T4, C extends Condition
     /**
      * between and.
      *
-     * @param name           参数名称
-     * @param value          参数值
+     * @param name the name
+     * @param value the value
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
@@ -240,7 +240,7 @@ public interface EntityBetweenExpressionBase4<T, T2, T3, T4, C extends Condition
     //     * between and.
     //     *
     //     * @param <R>      the generic type
-    //     * @param property 对象属性
+    //     * @param property  bean property
     //     * @return LogicExpression
     //     */
     //    L ba4(SerializableIntSupplier propertyMin, SerializableIntSupplier propertyMax);
@@ -249,7 +249,7 @@ public interface EntityBetweenExpressionBase4<T, T2, T3, T4, C extends Condition
     //     * between and.
     //     *
     //     * @param <R>            the generic type
-    //     * @param property       对象属性
+    //     * @param property       bean property
     //     * @param ignoreStrategy the ignore strategy
     //     * @return LogicExpression
     //     */
@@ -260,7 +260,7 @@ public interface EntityBetweenExpressionBase4<T, T2, T3, T4, C extends Condition
     //     * between and.
     //     *
     //     * @param <R>      the generic type
-    //     * @param property 对象属性
+    //     * @param property  bean property
     //     * @return LogicExpression
     //     */
     //    L ba4(SerializableLongSupplier propertyMin, SerializableLongSupplier propertyMax);
@@ -269,7 +269,7 @@ public interface EntityBetweenExpressionBase4<T, T2, T3, T4, C extends Condition
     //     * between and.
     //     *
     //     * @param <R>            the generic type
-    //     * @param property       对象属性
+    //     * @param property       bean property
     //     * @param ignoreStrategy the ignore strategy
     //     * @return LogicExpression
     //     */
@@ -280,7 +280,7 @@ public interface EntityBetweenExpressionBase4<T, T2, T3, T4, C extends Condition
     //     * between and.
     //     *
     //     * @param <R>      the generic type
-    //     * @param property 对象属性
+    //     * @param property  bean property
     //     * @return LogicExpression
     //     */
     //    L ba4(SerializableDoubleSupplier propertyMin, SerializableDoubleSupplier propertyMax);
@@ -289,7 +289,7 @@ public interface EntityBetweenExpressionBase4<T, T2, T3, T4, C extends Condition
     //     * between and.
     //     *
     //     * @param <R>            the generic type
-    //     * @param property       对象属性
+    //     * @param property       bean property
     //     * @param ignoreStrategy the ignore strategy
     //     * @return LogicExpression
     //     */
@@ -300,7 +300,7 @@ public interface EntityBetweenExpressionBase4<T, T2, T3, T4, C extends Condition
     //     * between and.
     //     *
     //     * @param <D>      the generic type
-    //     * @param property 对象属性
+    //     * @param property  bean property
     //     * @return LogicExpression
     //     */
     //    <D extends Date> L ba4(SerializableDateSupplier<D> propertyMin, SerializableDateSupplier<D> propertyMax);
@@ -309,7 +309,7 @@ public interface EntityBetweenExpressionBase4<T, T2, T3, T4, C extends Condition
     //     * between and.
     //     *
     //     * @param <D>            the generic type
-    //     * @param property       对象属性
+    //     * @param property       bean property
     //     * @param ignoreStrategy the ignore strategy
     //     * @return LogicExpression
     //     */
@@ -320,7 +320,7 @@ public interface EntityBetweenExpressionBase4<T, T2, T3, T4, C extends Condition
     //     * between and.
     //     *
     //     * @param <N>      the generic type
-    //     * @param property 对象属性
+    //     * @param property  bean property
     //     * @return LogicExpression
     //     */
     //    <N extends Number> L ba4(SerializableNumberSupplier<N> propertyMin, SerializableNumberSupplier<N> propertyMax);
@@ -329,7 +329,7 @@ public interface EntityBetweenExpressionBase4<T, T2, T3, T4, C extends Condition
     //     * between and.
     //     *
     //     * @param <N>            the generic type
-    //     * @param property       对象属性
+    //     * @param property       bean property
     //     * @param ignoreStrategy the ignore strategy
     //     * @return LogicExpression
     //     */
@@ -339,7 +339,7 @@ public interface EntityBetweenExpressionBase4<T, T2, T3, T4, C extends Condition
     //    /**
     //     * between and.
     //     *
-    //     * @param property 对象属性
+    //     * @param property  bean property
     //     * @return LogicExpression
     //     */
     //    L ba4(SerializableLocalDateSupplier propertyMin, SerializableLocalDateSupplier propertyMax);
@@ -347,7 +347,7 @@ public interface EntityBetweenExpressionBase4<T, T2, T3, T4, C extends Condition
     //    /**
     //     * between and.
     //     *
-    //     * @param property       对象属性
+    //     * @param property       bean property
     //     * @param ignoreStrategy the ignore strategy
     //     * @return LogicExpression
     //     */
@@ -357,7 +357,7 @@ public interface EntityBetweenExpressionBase4<T, T2, T3, T4, C extends Condition
     //    /**
     //     * between and.
     //     *
-    //     * @param property 对象属性
+    //     * @param property  bean property
     //     * @return LogicExpression
     //     */
     //    L ba4(SerializableLocalTimeSupplier propertyMin, SerializableLocalTimeSupplier propertyMax);
@@ -365,7 +365,7 @@ public interface EntityBetweenExpressionBase4<T, T2, T3, T4, C extends Condition
     //    /**
     //     * between and.
     //     *
-    //     * @param property       对象属性
+    //     * @param property       bean property
     //     * @param ignoreStrategy the ignore strategy
     //     * @return LogicExpression
     //     */
@@ -375,7 +375,7 @@ public interface EntityBetweenExpressionBase4<T, T2, T3, T4, C extends Condition
     //    /**
     //     * between and.
     //     *
-    //     * @param property 对象属性
+    //     * @param property  bean property
     //     * @return LogicExpression
     //     */
     //    L ba4(SerializableLocalDateTimeSupplier propertyMin, SerializableLocalDateTimeSupplier propertyMax);
@@ -383,7 +383,7 @@ public interface EntityBetweenExpressionBase4<T, T2, T3, T4, C extends Condition
     //    /**
     //     * between and.
     //     *
-    //     * @param property       对象属性
+    //     * @param property       bean property
     //     * @param ignoreStrategy the ignore strategy
     //     * @return LogicExpression
     //     */
@@ -393,7 +393,7 @@ public interface EntityBetweenExpressionBase4<T, T2, T3, T4, C extends Condition
     //    /**
     //     * between and.
     //     *
-    //     * @param property 对象属性
+    //     * @param property  bean property
     //     * @return LogicExpression
     //     */
     //    L ba4(SerializableStringSupplier propertyMin, SerializableStringSupplier propertyMax);
@@ -401,7 +401,7 @@ public interface EntityBetweenExpressionBase4<T, T2, T3, T4, C extends Condition
     //    /**
     //     * between and.
     //     *
-    //     * @param property       对象属性
+    //     * @param property       bean property
     //     * @param ignoreStrategy the ignore strategy
     //     * @return LogicExpression
     //     */

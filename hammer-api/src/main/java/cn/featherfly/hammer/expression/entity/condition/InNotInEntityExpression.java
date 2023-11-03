@@ -34,6 +34,16 @@ import cn.featherfly.common.function.serializable.SerializableToLongFunction;
 import cn.featherfly.common.function.serializable.SerializableToNumberFunction;
 import cn.featherfly.common.function.serializable.SerializableToStringFunction;
 import cn.featherfly.common.operator.ComparisonOperator.MatchStrategy;
+import cn.featherfly.hammer.expression.condition.field.value.SetDateArrayExpression;
+import cn.featherfly.hammer.expression.condition.field.value.SetDoubleArrayExpression;
+import cn.featherfly.hammer.expression.condition.field.value.SetEnumArrayExpression;
+import cn.featherfly.hammer.expression.condition.field.value.SetIntArrayExpression;
+import cn.featherfly.hammer.expression.condition.field.value.SetLocalDateArrayExpression;
+import cn.featherfly.hammer.expression.condition.field.value.SetLocalDateTimeArrayExpression;
+import cn.featherfly.hammer.expression.condition.field.value.SetLocalTimeArrayExpression;
+import cn.featherfly.hammer.expression.condition.field.value.SetLongArrayExpression;
+import cn.featherfly.hammer.expression.condition.field.value.SetNumberArrayExpression;
+import cn.featherfly.hammer.expression.condition.field.value.SetStringArrayExpression;
 
 /**
  * The Interface InNotInEntityExpression.
@@ -49,7 +59,7 @@ public interface InNotInEntityExpression<T> {
      * @param name the name
      * @return entity in function property expression.
      */
-    ConditionEntityExpressionIntAndArrayPropertyExpression property(SerializableToIntFunction<T> name);
+    SetIntArrayExpression property(SerializableToIntFunction<T> name);
 
     /**
      * entity in function property expression.
@@ -57,7 +67,7 @@ public interface InNotInEntityExpression<T> {
      * @param name the name
      * @return entity in function property expression.
      */
-    ConditionEntityExpressionLongAndArrayPropertyExpression property(SerializableToLongFunction<T> name);
+    SetLongArrayExpression property(SerializableToLongFunction<T> name);
 
     /**
      * entity in function property expression.
@@ -65,7 +75,7 @@ public interface InNotInEntityExpression<T> {
      * @param name the name
      * @return entity in function property expression.
      */
-    ConditionEntityExpressionDoubleAndArrayPropertyExpression property(SerializableToDoubleFunction<T> name);
+    SetDoubleArrayExpression property(SerializableToDoubleFunction<T> name);
 
     /**
      * entity in function property expression.
@@ -74,8 +84,7 @@ public interface InNotInEntityExpression<T> {
      * @param name the name
      * @return entity in function property expression.
      */
-    <N extends Number> ConditionEntityExpressionNumberAndArrayPropertyExpression<N> property(
-            SerializableToNumberFunction<T, N> name);
+    <N extends Number> SetNumberArrayExpression<N> property(SerializableToNumberFunction<T, N> name);
 
     /**
      * entity in function property expression.
@@ -84,8 +93,7 @@ public interface InNotInEntityExpression<T> {
      * @param name the name
      * @return entity in function property expression.
      */
-    <D extends Date> ConditionEntityExpressionDateAndArrayPropertyExpression<D> property(
-            SerializableToDateFunction<T, D> name);
+    <D extends Date> SetDateArrayExpression<D> property(SerializableToDateFunction<T, D> name);
 
     /**
      * entity in function property expression.
@@ -94,8 +102,7 @@ public interface InNotInEntityExpression<T> {
      * @param name the name
      * @return entity in function property expression.
      */
-    <E extends Enum<E>> ConditionEntityExpressionEnumAndArrayPropertyExpression<E> property(
-            SerializableToEnumFunction<T, E> name);
+    <E extends Enum<E>> SetEnumArrayExpression<E> property(SerializableToEnumFunction<T, E> name);
 
     /**
      * entity in function property expression.
@@ -103,8 +110,7 @@ public interface InNotInEntityExpression<T> {
      * @param name the name
      * @return entity in function property expression.
      */
-    ConditionEntityExpressionLocalDateTimeAndArrayPropertyExpression property(
-            SerializableToLocalDateTimeFunction<T> name);
+    SetLocalDateTimeArrayExpression property(SerializableToLocalDateTimeFunction<T> name);
 
     /**
      * entity in function property expression.
@@ -112,7 +118,7 @@ public interface InNotInEntityExpression<T> {
      * @param name the name
      * @return entity in function property expression.
      */
-    ConditionEntityExpressionLocalDateAndArrayPropertyExpression property(SerializableToLocalDateFunction<T> name);
+    SetLocalDateArrayExpression property(SerializableToLocalDateFunction<T> name);
 
     /**
      * entity in function property expression.
@@ -120,7 +126,7 @@ public interface InNotInEntityExpression<T> {
      * @param name the name
      * @return entity in function property expression.
      */
-    ConditionEntityExpressionLocalTimeAndArrayPropertyExpression property(SerializableToLocalTimeFunction<T> name);
+    SetLocalTimeArrayExpression property(SerializableToLocalTimeFunction<T> name);
 
     /**
      * entity in function property expression.
@@ -128,14 +134,14 @@ public interface InNotInEntityExpression<T> {
      * @param name the name
      * @return entity in function property expression.
      */
-    ConditionEntityExpressionStringAndArrayPropertyExpression property(SerializableToStringFunction<T> name);
+    SetStringArrayExpression property(SerializableToStringFunction<T> name);
 
     /**
      * values in or not values in. 包含指定，sql中的in或者不包含指定，sql中的not in.
      *
      * @param <R>   the generic type
-     * @param name  参数名称
-     * @param value 参数值
+     * @param name the name
+     * @param value the value
      * @return LogicExpression
      */
     <R> void accept(SerializableFunction<T, R> name, R value);
@@ -144,8 +150,8 @@ public interface InNotInEntityExpression<T> {
      * values in or not values in. 包含指定，sql中的in或者不包含指定，sql中的not in.
      *
      * @param <R>            the generic type
-     * @param name           参数名称
-     * @param value          参数值
+     * @param name the name
+     * @param value the value
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
@@ -154,8 +160,8 @@ public interface InNotInEntityExpression<T> {
     /**
      * values in or not values in. 包含指定，sql中的in或者不包含指定，sql中的not in.
      *
-     * @param name          参数名称
-     * @param value         参数值
+     * @param name the name
+     * @param value the value
      * @param matchStrategy the match strategy
      * @return LogicExpression
      */
@@ -164,8 +170,8 @@ public interface InNotInEntityExpression<T> {
     /**
      * values in or not values in. 包含指定，sql中的in或者不包含指定，sql中的not in.
      *
-     * @param name           参数名称
-     * @param value          参数值
+     * @param name the name
+     * @param value the value
      * @param matchStrategy  the match strategy
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
@@ -176,8 +182,8 @@ public interface InNotInEntityExpression<T> {
     /**
      * values in or not values in. 包含指定，sql中的in或者不包含指定，sql中的not in.
      *
-     * @param name  参数名称
-     * @param value 参数值
+     * @param name the name
+     * @param value the value
      * @return LogicExpression
      */
     void accept(SerializableToIntFunction<T> name, int value);
@@ -185,8 +191,8 @@ public interface InNotInEntityExpression<T> {
     /**
      * values in or not values in. 包含指定，sql中的in或者不包含指定，sql中的not in.
      *
-     * @param name           参数名称
-     * @param value          参数值
+     * @param name the name
+     * @param value the value
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
@@ -195,8 +201,8 @@ public interface InNotInEntityExpression<T> {
     /**
      * values in or not values in. 包含指定，sql中的in或者不包含指定，sql中的not in.
      *
-     * @param name  参数名称
-     * @param value 参数值
+     * @param name the name
+     * @param value the value
      * @return LogicExpression
      */
     void accept(SerializableToLongFunction<T> name, long value);
@@ -204,8 +210,8 @@ public interface InNotInEntityExpression<T> {
     /**
      * values in or not values in. 包含指定，sql中的in或者不包含指定，sql中的not in.
      *
-     * @param name           参数名称
-     * @param value          参数值
+     * @param name the name
+     * @param value the value
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
@@ -214,8 +220,8 @@ public interface InNotInEntityExpression<T> {
     /**
      * values in or not values in. 包含指定，sql中的in或者不包含指定，sql中的not in.
      *
-     * @param name  参数名称
-     * @param value 参数值
+     * @param name the name
+     * @param value the value
      * @return LogicExpression
      */
     void accept(SerializableToDoubleFunction<T> name, double value);
@@ -223,8 +229,8 @@ public interface InNotInEntityExpression<T> {
     /**
      * values in or not values in. 包含指定，sql中的in或者不包含指定，sql中的not in.
      *
-     * @param name           参数名称
-     * @param value          参数值
+     * @param name the name
+     * @param value the value
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
@@ -234,8 +240,8 @@ public interface InNotInEntityExpression<T> {
      * values in or not values in. 包含指定，sql中的in或者不包含指定，sql中的not in.
      *
      * @param <R>   the generic type
-     * @param name  参数名称
-     * @param value 参数值
+     * @param name the name
+     * @param value the value
      * @return LogicExpression
      */
     <R> void accept(SerializableFunction<T, R> name, @SuppressWarnings("unchecked") R... value);
@@ -243,8 +249,8 @@ public interface InNotInEntityExpression<T> {
     /**
      * values in or not values in. 包含指定，sql中的in或者不包含指定，sql中的not in.
      *
-     * @param name          参数名称
-     * @param value         参数值
+     * @param name the name
+     * @param value the value
      * @param matchStrategy the match strategy
      * @return LogicExpression
      */
@@ -253,8 +259,8 @@ public interface InNotInEntityExpression<T> {
     /**
      * values in or not values in. 包含指定，sql中的in或者不包含指定，sql中的not in.
      *
-     * @param name           参数名称
-     * @param value          参数值
+     * @param name the name
+     * @param value the value
      * @param matchStrategy  the match strategy
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
@@ -265,8 +271,8 @@ public interface InNotInEntityExpression<T> {
     /**
      * values in or not values in. 包含指定，sql中的in或者不包含指定，sql中的not in.
      *
-     * @param name  参数名称
-     * @param value 参数值
+     * @param name the name
+     * @param value the value
      * @return LogicExpression
      */
     void accept(SerializableToIntFunction<T> name, int... value);
@@ -274,8 +280,8 @@ public interface InNotInEntityExpression<T> {
     /**
      * values in or not values in. 包含指定，sql中的in或者不包含指定，sql中的not in.
      *
-     * @param name  参数名称
-     * @param value 参数值
+     * @param name the name
+     * @param value the value
      * @return LogicExpression
      */
     void accept(SerializableToLongFunction<T> name, long... value);
@@ -284,8 +290,8 @@ public interface InNotInEntityExpression<T> {
      * values in or not values in. 包含指定，sql中的in或者不包含指定，sql中的not in.
      *
      * @param <R>            the generic type
-     * @param name           参数名称
-     * @param value          参数值
+     * @param name the name
+     * @param value the value
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
@@ -294,8 +300,8 @@ public interface InNotInEntityExpression<T> {
     /**
      * values in or not values in. 包含指定，sql中的in或者不包含指定，sql中的not in.
      *
-     * @param name           参数名称
-     * @param value          参数值
+     * @param name the name
+     * @param value the value
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
@@ -304,8 +310,8 @@ public interface InNotInEntityExpression<T> {
     /**
      * values in or not values in. 包含指定，sql中的in或者不包含指定，sql中的not in.
      *
-     * @param name           参数名称
-     * @param value          参数值
+     * @param name the name
+     * @param value the value
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
@@ -315,8 +321,8 @@ public interface InNotInEntityExpression<T> {
      * values in or not values in. 包含指定，sql中的in或者不包含指定，sql中的not in.
      *
      * @param <R>   the generic type
-     * @param name  参数名称
-     * @param value 参数值
+     * @param name the name
+     * @param value the value
      * @return LogicExpression
      */
     <R> void accept(SerializableFunction<T, R> name, Collection<R> value);
@@ -325,8 +331,8 @@ public interface InNotInEntityExpression<T> {
      * values in or not values in. 包含指定，sql中的in或者不包含指定，sql中的not in.
      *
      * @param <R>            the generic type
-     * @param name           参数名称
-     * @param value          参数值
+     * @param name the name
+     * @param value the value
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
@@ -336,7 +342,7 @@ public interface InNotInEntityExpression<T> {
      * values in or not values in. 包含指定，sql中的in或者不包含指定，sql中的not in.
      *
      * @param <R>      the generic type
-     * @param property 对象属性
+     * @param property  bean property
      * @return LogicExpression
      */
     <R> void accept(SerializableSupplier<R> property);
@@ -345,7 +351,7 @@ public interface InNotInEntityExpression<T> {
      * values in or not values in. 包含指定，sql中的in或者不包含指定，sql中的not in.
      *
      * @param <R>            the generic type
-     * @param property       对象属性
+     * @param property       bean property
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
@@ -373,7 +379,7 @@ public interface InNotInEntityExpression<T> {
     /**
      * values in or not values in. 包含指定，sql中的in或者不包含指定，sql中的not in.
      *
-     * @param property 对象属性
+     * @param property  bean property
      * @return LogicExpression
      */
     void accept(SerializableIntSupplier property);
@@ -381,7 +387,7 @@ public interface InNotInEntityExpression<T> {
     /**
      * values in or not values in. 包含指定，sql中的in或者不包含指定，sql中的not in.
      *
-     * @param property       对象属性
+     * @param property       bean property
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
@@ -390,7 +396,7 @@ public interface InNotInEntityExpression<T> {
     /**
      * values in or not values in. 包含指定，sql中的in或者不包含指定，sql中的not in.
      *
-     * @param property 对象属性
+     * @param property  bean property
      * @return LogicExpression
      */
     void accept(SerializableLongSupplier property);
@@ -398,7 +404,7 @@ public interface InNotInEntityExpression<T> {
     /**
      * values in or not values in. 包含指定，sql中的in或者不包含指定，sql中的not in.
      *
-     * @param property       对象属性
+     * @param property       bean property
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
@@ -407,7 +413,7 @@ public interface InNotInEntityExpression<T> {
     /**
      * values in or not values in. 包含指定，sql中的in或者不包含指定，sql中的not in.
      *
-     * @param property 对象属性
+     * @param property  bean property
      * @return LogicExpression
      */
     void accept(SerializableDoubleSupplier property);
@@ -415,7 +421,7 @@ public interface InNotInEntityExpression<T> {
     /**
      * values in or not values in. 包含指定，sql中的in或者不包含指定，sql中的not in.
      *
-     * @param property       对象属性
+     * @param property       bean property
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */

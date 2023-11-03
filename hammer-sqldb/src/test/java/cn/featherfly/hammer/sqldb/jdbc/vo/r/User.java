@@ -1,6 +1,8 @@
 
 package cn.featherfly.hammer.sqldb.jdbc.vo.r;
 
+import java.io.Serializable;
+
 import javax.persistence.Column;
 import javax.persistence.Id;
 import javax.persistence.Table;
@@ -14,7 +16,8 @@ import javax.validation.constraints.NotNull;
  * @author zhongj
  */
 @Table
-public class User {
+public class User implements Serializable {
+    private static final long serialVersionUID = -9195202460437409669L;
 
     @Id
     private Integer id;

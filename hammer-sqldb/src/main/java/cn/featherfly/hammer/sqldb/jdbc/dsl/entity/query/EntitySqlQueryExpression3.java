@@ -7,8 +7,8 @@ import cn.featherfly.common.lang.Lang;
 import cn.featherfly.hammer.dsl.entity.query.EntityQueryConditionGroup3;
 import cn.featherfly.hammer.dsl.entity.query.EntityQueryConditionGroupLogic3;
 import cn.featherfly.hammer.sqldb.jdbc.SqlPageFactory;
+import cn.featherfly.hammer.sqldb.jdbc.dsl.entity.AbstractMulitiEntitySqlQueryConditionsGroupExpression3;
 import cn.featherfly.hammer.sqldb.jdbc.dsl.entity.EntitySqlQueryRelation;
-import cn.featherfly.hammer.sqldb.sql.dml.AbstractEntitySqlQueryConditionGroupExpression3;
 
 /**
  * EntitySqlQueryExpression .
@@ -20,8 +20,8 @@ import cn.featherfly.hammer.sqldb.sql.dml.AbstractEntitySqlQueryConditionGroupEx
  * @param <RS> the query result type
  */
 public class EntitySqlQueryExpression3<T1, T2, T3, RS> extends
-        AbstractEntitySqlQueryConditionGroupExpression3<T1, T2, T3, RS, EntityQueryConditionGroup3<T1, T2, T3, RS>,
-                EntityQueryConditionGroupLogic3<T1, T2, T3, RS>>
+        AbstractMulitiEntitySqlQueryConditionsGroupExpression3<T1, T2, T3, RS,
+                EntityQueryConditionGroup3<T1, T2, T3, RS>, EntityQueryConditionGroupLogic3<T1, T2, T3, RS>>
         implements EntityQueryConditionGroup3<T1, T2, T3, RS>, EntityQueryConditionGroupLogic3<T1, T2, T3, RS> {
 
     /**
@@ -62,8 +62,8 @@ public class EntitySqlQueryExpression3<T1, T2, T3, RS> extends
      * {@inheritDoc}
      */
     @Override
-    public String build() {
-        String condition = super.build();
+    public String expression() {
+        String condition = super.expression();
         if (parent == null) {
             String result = entityRelation.buildSelectSql();
             String sort = getRootSortBuilder().build();

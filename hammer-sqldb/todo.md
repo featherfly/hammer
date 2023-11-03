@@ -1,5 +1,7 @@
 新功能
 
+- [ ] 预加载sql模板进行优化，把count sql在加载期预加载到count sql配置属性中（如果能够确定）
+
 - [ ] hammer加入update(entity, Predicate<BeanProperty> ignore)对在更新时需要忽略的对象属性进行帅选
 
 - [ ] TplExecutor各种方法中的TplTemplateId可以加入直接传入字符串模板的方式（用于jdk17的多行字符串），类似@Template(value = "sql template....")
@@ -138,15 +140,22 @@
     // 带运算的条件判断
     where().property(Account::getAmount).subtract(10).ge(0)
     where().exp(e -> e.property(Account::getAmount).subtract(10).ge(0))
+    where().ge(Calculators.subtract(Account::getAmount, 10), 0)
     // where acount.amount - 10 >= 0
+        
     where().value(10).subtract(Account::getAmount).ge(0)
     where().exp(e -> e.value(10).subtract(Account::getAmount).ge(0))
+    where().ge(Calculators.subtract(10, Account::getAmount), 0)
     // where 10 - acount.amount >= 0
+        
     where().property(Order::getPrice).subtract(10).ge(Order::getCharge)
     where().exp(e -> e.property(Order::getPrice).subtract(10).ge(Order::getCharge))
+    where().ge(Calculators.subtract(Order::getPrice, 10), Order::getCharge))
     // where order.price - 10 == order.charge
+        
     where().property(Order::getPrice).subtract(10).eq(e -> e.property(Order::getCharge).add(10))
     where().exp(e -> e.property(Order::getPrice).subtract(10).eq(e -> e.property(Order::getCharge).add(10)))
+    where().eq(Calculators.subtract(Order::getPrice, 10), Calculators.add(Order::getCharge, 10))
     // where order.price - 10 == order.charge + 10
     ```
 
@@ -198,7 +207,7 @@
         .fetch(e -> e.name().age().gender().password("pwd").nationality(e-> e.distinct()).city(e -> e.distinct().alias("city")))
         // 上面这种形式再考虑是否需要，因为最上面那个可变参数就能实现一个fetch()方法获取多个字段的目的了
     	.where()
-        .eq(u -> u.NAME.apply("name")) // 或者 .eq(u -> u.NAME, "name") 
+        .eq(u -> u.NAME.apply|accept|value("name")) // 方法名在考虑，或者 .eq(u -> u.NAME, "name") 
         // 或者
         .where(
         	e -> e.NAME.eq("name")

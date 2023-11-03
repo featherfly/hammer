@@ -27,8 +27,8 @@ import cn.featherfly.hammer.expression.entity.condition.property.EntityLocalDate
 import cn.featherfly.hammer.expression.entity.condition.property.EntityLocalTimePropertyExpression;
 import cn.featherfly.hammer.expression.entity.condition.property.EntityLongPropertyExpression;
 import cn.featherfly.hammer.expression.entity.condition.property.EntityNumberPropertyExpression;
-import cn.featherfly.hammer.expression.entity.condition.property.EntityTypePropertyExpression;
 import cn.featherfly.hammer.expression.entity.condition.property.EntityStringPropertyExpression;
+import cn.featherfly.hammer.expression.entity.condition.property.EntityTypePropertyExpression;
 
 /**
  * The Interface EntityPropertyExpression.

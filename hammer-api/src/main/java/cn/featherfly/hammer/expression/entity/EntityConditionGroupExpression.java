@@ -11,6 +11,7 @@ import cn.featherfly.hammer.expression.entity.condition.EntityConditionsGroupExp
  * @param <C> the generic type
  * @param <L> the generic type
  */
+// ENHANCE 这一层次接口是否需要删除
 public interface EntityConditionGroupExpression<E, C extends EntityConditionGroupExpression<E, C, L>,
-        L extends EntityConditionGroupLogicExpression<E, C, L>> extends EntityConditionsGroupExpression<E, C, L> {
+    L extends EntityConditionGroupLogicExpression<E, C, L>> extends EntityConditionsGroupExpression<E, C, L> {
 }

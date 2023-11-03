@@ -39,8 +39,8 @@ import cn.featherfly.hammer.sqldb.jdbc.dsl.entity.query.relation.EntitySqlQueryR
  * @param <E> the element type
  * @param <P> the generic type
  */
-public abstract class AbstractEntitySqlQueryFetchedProperties<E, T,
-        P extends EntityQueryFetchedPropertiesExpression<E, P>> extends AbstractEntitySqlQuery<T>
+public abstract class AbstractEntitySqlQueryFetchedProperties<E, P extends EntityQueryFetchedPropertiesExpression<E, P>,
+        L> extends AbstractEntitySqlQueryBase<E, L>
         implements EntityQueryFetchedPropertiesExpression<E, P>, EntityQueryRelateBase<E> {
     // FIXME join后返回参数就不对了
 
@@ -50,11 +50,10 @@ public abstract class AbstractEntitySqlQueryFetchedProperties<E, T,
      * @param factory                the factory
      * @param sqlPageFactory         the sql page factory
      * @param entitySqlQueryRelation the entity sql query relation
-     * @param valueType              the value type
      */
     protected AbstractEntitySqlQueryFetchedProperties(JdbcMappingFactory factory, SqlPageFactory sqlPageFactory,
-            EntitySqlQueryRelation entitySqlQueryRelation, Class<T> valueType) {
-        super(factory, sqlPageFactory, entitySqlQueryRelation, valueType);
+            EntitySqlQueryRelation entitySqlQueryRelation) {
+        super(factory, sqlPageFactory, entitySqlQueryRelation);
     }
 
     /**
@@ -134,8 +133,7 @@ public abstract class AbstractEntitySqlQueryFetchedProperties<E, T,
      */
     @Override
     public P property(@SuppressWarnings("unchecked") SerializableFunction<E, ?>... propertyNames) {
-        return property(
-                Arrays.stream(propertyNames).map(LambdaUtils::getLambdaPropertyName).collect(Collectors.toList()));
+        return property(Arrays.stream(propertyNames).map(LambdaUtils::getLambdaPropertyName).collect(Collectors.toList()));
     }
 
     /**

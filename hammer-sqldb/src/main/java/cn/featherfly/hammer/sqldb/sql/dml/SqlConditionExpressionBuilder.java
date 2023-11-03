@@ -4,19 +4,21 @@ package cn.featherfly.hammer.sqldb.sql.dml;
 import java.util.function.Predicate;
 
 import cn.featherfly.common.db.builder.SqlBuilder;
+import cn.featherfly.common.db.builder.model.ColumnElement;
 import cn.featherfly.common.db.builder.model.ConditionColumnElement;
+import cn.featherfly.common.db.builder.model.SqlElement;
 import cn.featherfly.common.db.dialect.Dialect;
 import cn.featherfly.common.operator.ComparisonOperator;
 import cn.featherfly.common.operator.ComparisonOperator.MatchStrategy;
+import cn.featherfly.common.repository.AliasRepository;
+import cn.featherfly.common.repository.Field;
+import cn.featherfly.common.repository.RepositoryAwareField;
 import cn.featherfly.common.repository.builder.BuilderException;
 import cn.featherfly.common.repository.builder.BuilderExceptionCode;
 import cn.featherfly.hammer.expression.condition.ParamedExpression;
 
 /**
- * <p>
- * sql condition expression sql 条件表达式
- * </p>
- * .
+ * sql condition expression builder.
  *
  * @author zhongj
  */
@@ -64,15 +66,28 @@ public class SqlConditionExpressionBuilder implements ParamedExpression, SqlBuil
      * @param queryAlias         查询别名
      * @param ignoreStrategy     the ignore strategy
      */
-    @SuppressWarnings("unchecked")
     public SqlConditionExpressionBuilder(Dialect dialect, String name, Object value,
             ComparisonOperator comparisonOperator, MatchStrategy matchStrategy, String queryAlias,
             Predicate<?> ignoreStrategy) {
         if (comparisonOperator == null) {
             throw new BuilderException(BuilderExceptionCode.createQueryOperatorNullCode());
         }
-        conditionColumnElement = new ConditionColumnElement(dialect, name, value, comparisonOperator, matchStrategy,
-                queryAlias, (Predicate<Object>) ignoreStrategy);
+        if (value instanceof RepositoryAwareField) {
+            @SuppressWarnings("unchecked")
+            RepositoryAwareField<AliasRepository> f = (RepositoryAwareField<AliasRepository>) value;
+            AliasRepository r = f.repository();
+            SqlElement se = new ColumnElement(dialect, f.name(), r.alias());
+            conditionColumnElement = new ConditionColumnElement(dialect, name, se, comparisonOperator, matchStrategy,
+                    queryAlias, ignoreStrategy);
+        } else if (value instanceof Field) {
+            Field f = (Field) value;
+            SqlElement se = new ColumnElement(dialect, f.name());
+            conditionColumnElement = new ConditionColumnElement(dialect, name, se, comparisonOperator, matchStrategy,
+                    queryAlias, ignoreStrategy);
+        } else {
+            conditionColumnElement = new ConditionColumnElement(dialect, name, value, comparisonOperator, matchStrategy,
+                    queryAlias, ignoreStrategy);
+        }
     }
 
     /**

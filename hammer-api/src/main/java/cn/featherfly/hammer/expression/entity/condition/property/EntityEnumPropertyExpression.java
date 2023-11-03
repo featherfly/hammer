@@ -12,7 +12,7 @@ package cn.featherfly.hammer.expression.entity.condition.property;
 
 import cn.featherfly.hammer.expression.condition.ConditionExpression;
 import cn.featherfly.hammer.expression.condition.LogicExpression;
-import cn.featherfly.hammer.expression.condition.property.EnumPropertyExpression;
+import cn.featherfly.hammer.expression.condition.field.EnumFieldExpression;
 
 /**
  * EntityEnumExpression.
@@ -24,6 +24,6 @@ import cn.featherfly.hammer.expression.condition.property.EnumPropertyExpression
  * @param <L>  the generic type
  */
 public interface EntityEnumPropertyExpression<E, EN extends Enum<EN>, C extends ConditionExpression,
-        L extends LogicExpression<C, L>> extends EnumPropertyExpression<EN, C, L> {
+        L extends LogicExpression<C, L>> extends EnumFieldExpression<EN, C, L> {
 
 }

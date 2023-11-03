@@ -39,8 +39,8 @@ public interface EntityNotBetweenExpressionBase5<T, T2, T3, T4, T5, C extends Co
      * not between and.
      *
      * @param <N>   number type
-     * @param name  参数名称
-     * @param value 参数值
+     * @param name the name
+     * @param value the value
      * @return LogicExpression
      */
     L nba5(SerializableToIntFunction<T5> name, int min, int max);
@@ -49,8 +49,8 @@ public interface EntityNotBetweenExpressionBase5<T, T2, T3, T4, T5, C extends Co
      * not between and.
      *
      * @param <N>   number type
-     * @param name  参数名称
-     * @param value 参数值
+     * @param name the name
+     * @param value the value
      * @return LogicExpression
      */
     L nba5(SerializableToIntFunction<T5> name, int min, int max, BiPredicate<Integer, Integer> ignoreStrategy);
@@ -59,8 +59,8 @@ public interface EntityNotBetweenExpressionBase5<T, T2, T3, T4, T5, C extends Co
      * not between and.
      *
      * @param <N>   number type
-     * @param name  参数名称
-     * @param value 参数值
+     * @param name the name
+     * @param value the value
      * @return LogicExpression
      */
     L nba5(SerializableToLongFunction<T5> name, long min, long max);
@@ -69,8 +69,8 @@ public interface EntityNotBetweenExpressionBase5<T, T2, T3, T4, T5, C extends Co
      * not between and.
      *
      * @param <N>   number type
-     * @param name  参数名称
-     * @param value 参数值
+     * @param name the name
+     * @param value the value
      * @return LogicExpression
      */
     L nba5(SerializableToLongFunction<T5> name, long min, long max, BiPredicate<Long, Long> ignoreStrategy);
@@ -79,8 +79,8 @@ public interface EntityNotBetweenExpressionBase5<T, T2, T3, T4, T5, C extends Co
      * not between and.
      *
      * @param <N>   number type
-     * @param name  参数名称
-     * @param value 参数值
+     * @param name the name
+     * @param value the value
      * @return LogicExpression
      */
     L nba5(SerializableToDoubleFunction<T5> name, double min, double max);
@@ -89,8 +89,8 @@ public interface EntityNotBetweenExpressionBase5<T, T2, T3, T4, T5, C extends Co
      * not between and.
      *
      * @param <N>   number type
-     * @param name  参数名称
-     * @param value 参数值
+     * @param name the name
+     * @param value the value
      * @return LogicExpression
      */
     L nba5(SerializableToDoubleFunction<T5> name, double min, double max, BiPredicate<Double, Double> ignoreStrategy);
@@ -99,8 +99,8 @@ public interface EntityNotBetweenExpressionBase5<T, T2, T3, T4, T5, C extends Co
      * not between and.
      *
      * @param <N>   number type
-     * @param name  参数名称
-     * @param value 参数值
+     * @param name the name
+     * @param value the value
      * @return LogicExpression
      */
     <N extends Number> L nba5(SerializableToNumberFunction<T5, N> name, N min, N max);
@@ -109,8 +109,8 @@ public interface EntityNotBetweenExpressionBase5<T, T2, T3, T4, T5, C extends Co
      * not between and.
      *
      * @param <N>            number type
-     * @param name           参数名称
-     * @param value          参数值
+     * @param name the name
+     * @param value the value
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
@@ -120,8 +120,8 @@ public interface EntityNotBetweenExpressionBase5<T, T2, T3, T4, T5, C extends Co
      * not between and.
      *
      * @param <D>   date type
-     * @param name  参数名称
-     * @param value 参数值
+     * @param name the name
+     * @param value the value
      * @return LogicExpression
      */
     <D extends Date> L nba5(SerializableToDateFunction<T5, D> name, D min, D max);
@@ -130,8 +130,8 @@ public interface EntityNotBetweenExpressionBase5<T, T2, T3, T4, T5, C extends Co
      * not between and.
      *
      * @param <D>            date type
-     * @param name           参数名称
-     * @param value          参数值
+     * @param name the name
+     * @param value the value
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
@@ -141,8 +141,8 @@ public interface EntityNotBetweenExpressionBase5<T, T2, T3, T4, T5, C extends Co
      * between and.
      *
      * @param <E>   enum type
-     * @param name  参数名称
-     * @param value 参数值
+     * @param name the name
+     * @param value the value
      * @return LogicExpression
      */
     <E extends Enum<E>> L nba5(SerializableToEnumFunction<T5, E> name, E min, E max);
@@ -151,8 +151,8 @@ public interface EntityNotBetweenExpressionBase5<T, T2, T3, T4, T5, C extends Co
      * between and.
      *
      * @param <E>            enum type
-     * @param name           参数名称
-     * @param value          参数值
+     * @param name the name
+     * @param value the value
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
@@ -161,8 +161,8 @@ public interface EntityNotBetweenExpressionBase5<T, T2, T3, T4, T5, C extends Co
     /**
      * not between and.
      *
-     * @param name  参数名称
-     * @param value 参数值
+     * @param name the name
+     * @param value the value
      * @return LogicExpression
      */
     L nba5(SerializableToLocalTimeFunction<T5> name, LocalTime min, LocalTime max);
@@ -170,8 +170,8 @@ public interface EntityNotBetweenExpressionBase5<T, T2, T3, T4, T5, C extends Co
     /**
      * not between and.
      *
-     * @param name           参数名称
-     * @param value          参数值
+     * @param name the name
+     * @param value the value
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
@@ -181,8 +181,8 @@ public interface EntityNotBetweenExpressionBase5<T, T2, T3, T4, T5, C extends Co
     /**
      * not between and.
      *
-     * @param name  参数名称
-     * @param value 参数值
+     * @param name the name
+     * @param value the value
      * @return LogicExpression
      */
     L nba5(SerializableToLocalDateFunction<T5> name, LocalDate min, LocalDate max);
@@ -190,8 +190,8 @@ public interface EntityNotBetweenExpressionBase5<T, T2, T3, T4, T5, C extends Co
     /**
      * not between and.
      *
-     * @param name           参数名称
-     * @param value          参数值
+     * @param name the name
+     * @param value the value
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
@@ -201,8 +201,8 @@ public interface EntityNotBetweenExpressionBase5<T, T2, T3, T4, T5, C extends Co
     /**
      * not between and.
      *
-     * @param name  参数名称
-     * @param value 参数值
+     * @param name the name
+     * @param value the value
      * @return LogicExpression
      */
     L nba5(SerializableToLocalDateTimeFunction<T5> name, LocalDateTime min, LocalDateTime max);
@@ -210,8 +210,8 @@ public interface EntityNotBetweenExpressionBase5<T, T2, T3, T4, T5, C extends Co
     /**
      * not between and.
      *
-     * @param name           参数名称
-     * @param value          参数值
+     * @param name the name
+     * @param value the value
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
@@ -221,8 +221,8 @@ public interface EntityNotBetweenExpressionBase5<T, T2, T3, T4, T5, C extends Co
     /**
      * not between and.
      *
-     * @param name  参数名称
-     * @param value 参数值
+     * @param name the name
+     * @param value the value
      * @return LogicExpression
      */
     L nba5(SerializableToStringFunction<T5> name, String min, String max);
@@ -230,8 +230,8 @@ public interface EntityNotBetweenExpressionBase5<T, T2, T3, T4, T5, C extends Co
     /**
      * not between and.
      *
-     * @param name           参数名称
-     * @param value          参数值
+     * @param name the name
+     * @param value the value
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
@@ -241,7 +241,7 @@ public interface EntityNotBetweenExpressionBase5<T, T2, T3, T4, T5, C extends Co
     //     * not between and.
     //     *
     //     * @param <R>      the generic type
-    //     * @param property 对象属性
+    //     * @param property  bean property
     //     * @return LogicExpression
     //     */
     //    L nba5(SerializableIntSupplier propertyMin, SerializableIntSupplier propertyMax);
@@ -250,7 +250,7 @@ public interface EntityNotBetweenExpressionBase5<T, T2, T3, T4, T5, C extends Co
     //     * not between and.
     //     *
     //     * @param <R>            the generic type
-    //     * @param property       对象属性
+    //     * @param property       bean property
     //     * @param ignoreStrategy the ignore strategy
     //     * @return LogicExpression
     //     */
@@ -261,7 +261,7 @@ public interface EntityNotBetweenExpressionBase5<T, T2, T3, T4, T5, C extends Co
     //     * not between and.
     //     *
     //     * @param <R>      the generic type
-    //     * @param property 对象属性
+    //     * @param property  bean property
     //     * @return LogicExpression
     //     */
     //    L nba5(SerializableLongSupplier propertyMin, SerializableLongSupplier propertyMax);
@@ -270,7 +270,7 @@ public interface EntityNotBetweenExpressionBase5<T, T2, T3, T4, T5, C extends Co
     //     * not between and.
     //     *
     //     * @param <R>            the generic type
-    //     * @param property       对象属性
+    //     * @param property       bean property
     //     * @param ignoreStrategy the ignore strategy
     //     * @return LogicExpression
     //     */
@@ -281,7 +281,7 @@ public interface EntityNotBetweenExpressionBase5<T, T2, T3, T4, T5, C extends Co
     //     * not between and.
     //     *
     //     * @param <R>      the generic type
-    //     * @param property 对象属性
+    //     * @param property  bean property
     //     * @return LogicExpression
     //     */
     //    L nba5(SerializableDoubleSupplier propertyMin, SerializableDoubleSupplier propertyMax);
@@ -290,7 +290,7 @@ public interface EntityNotBetweenExpressionBase5<T, T2, T3, T4, T5, C extends Co
     //     * not between and.
     //     *
     //     * @param <R>            the generic type
-    //     * @param property       对象属性
+    //     * @param property       bean property
     //     * @param ignoreStrategy the ignore strategy
     //     * @return LogicExpression
     //     */
@@ -301,7 +301,7 @@ public interface EntityNotBetweenExpressionBase5<T, T2, T3, T4, T5, C extends Co
     //     * not between and.
     //     *
     //     * @param <D>      the generic type
-    //     * @param property 对象属性
+    //     * @param property  bean property
     //     * @return LogicExpression
     //     */
     //    <D extends Date> L nba5(SerializableDateSupplier<D> propertyMin, SerializableDateSupplier<D> propertyMax);
@@ -310,7 +310,7 @@ public interface EntityNotBetweenExpressionBase5<T, T2, T3, T4, T5, C extends Co
     //     * not between and.
     //     *
     //     * @param <D>            the generic type
-    //     * @param property       对象属性
+    //     * @param property       bean property
     //     * @param ignoreStrategy the ignore strategy
     //     * @return LogicExpression
     //     */
@@ -321,7 +321,7 @@ public interface EntityNotBetweenExpressionBase5<T, T2, T3, T4, T5, C extends Co
     //     * not between and.
     //     *
     //     * @param <N>      the generic type
-    //     * @param property 对象属性
+    //     * @param property  bean property
     //     * @return LogicExpression
     //     */
     //    <N extends Number> L nba5(SerializableNumberSupplier<N> propertyMin, SerializableNumberSupplier<N> propertyMax);
@@ -330,7 +330,7 @@ public interface EntityNotBetweenExpressionBase5<T, T2, T3, T4, T5, C extends Co
     //     * not between and.
     //     *
     //     * @param <N>            the generic type
-    //     * @param property       对象属性
+    //     * @param property       bean property
     //     * @param ignoreStrategy the ignore strategy
     //     * @return LogicExpression
     //     */
@@ -340,7 +340,7 @@ public interface EntityNotBetweenExpressionBase5<T, T2, T3, T4, T5, C extends Co
     //    /**
     //     * not between and.
     //     *
-    //     * @param property 对象属性
+    //     * @param property  bean property
     //     * @return LogicExpression
     //     */
     //    L nba5(SerializableLocalDateSupplier propertyMin, SerializableLocalDateSupplier propertyMax);
@@ -348,7 +348,7 @@ public interface EntityNotBetweenExpressionBase5<T, T2, T3, T4, T5, C extends Co
     //    /**
     //     * not between and.
     //     *
-    //     * @param property       对象属性
+    //     * @param property       bean property
     //     * @param ignoreStrategy the ignore strategy
     //     * @return LogicExpression
     //     */
@@ -358,7 +358,7 @@ public interface EntityNotBetweenExpressionBase5<T, T2, T3, T4, T5, C extends Co
     //    /**
     //     * not between and.
     //     *
-    //     * @param property 对象属性
+    //     * @param property  bean property
     //     * @return LogicExpression
     //     */
     //    L nba5(SerializableLocalTimeSupplier propertyMin, SerializableLocalTimeSupplier propertyMax);
@@ -366,7 +366,7 @@ public interface EntityNotBetweenExpressionBase5<T, T2, T3, T4, T5, C extends Co
     //    /**
     //     * not between and.
     //     *
-    //     * @param property       对象属性
+    //     * @param property       bean property
     //     * @param ignoreStrategy the ignore strategy
     //     * @return LogicExpression
     //     */
@@ -376,7 +376,7 @@ public interface EntityNotBetweenExpressionBase5<T, T2, T3, T4, T5, C extends Co
     //    /**
     //     * not between and.
     //     *
-    //     * @param property 对象属性
+    //     * @param property  bean property
     //     * @return LogicExpression
     //     */
     //    L nba5(SerializableLocalDateTimeSupplier propertyMin, SerializableLocalDateTimeSupplier propertyMax);
@@ -384,7 +384,7 @@ public interface EntityNotBetweenExpressionBase5<T, T2, T3, T4, T5, C extends Co
     //    /**
     //     * not between and.
     //     *
-    //     * @param property       对象属性
+    //     * @param property       bean property
     //     * @param ignoreStrategy the ignore strategy
     //     * @return LogicExpression
     //     */
@@ -394,7 +394,7 @@ public interface EntityNotBetweenExpressionBase5<T, T2, T3, T4, T5, C extends Co
     //    /**
     //     * not between and.
     //     *
-    //     * @param property 对象属性
+    //     * @param property  bean property
     //     * @return LogicExpression
     //     */
     //    L nba5(SerializableStringSupplier propertyMin, SerializableStringSupplier propertyMax);
@@ -402,7 +402,7 @@ public interface EntityNotBetweenExpressionBase5<T, T2, T3, T4, T5, C extends Co
     //    /**
     //     * not between and.
     //     *
-    //     * @param property       对象属性
+    //     * @param property       bean property
     //     * @param ignoreStrategy the ignore strategy
     //     * @return LogicExpression
     //     */

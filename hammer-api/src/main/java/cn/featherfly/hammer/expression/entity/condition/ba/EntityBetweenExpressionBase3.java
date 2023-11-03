@@ -37,8 +37,8 @@ public interface EntityBetweenExpressionBase3<T, T2, T3, C extends ConditionExpr
      * between and.
      *
      * @param <N>   number type
-     * @param name  参数名称
-     * @param value 参数值
+     * @param name the name
+     * @param value the value
      * @return LogicExpression
      */
     L ba3(SerializableToIntFunction<T3> name, int min, int max);
@@ -47,8 +47,8 @@ public interface EntityBetweenExpressionBase3<T, T2, T3, C extends ConditionExpr
      * between and.
      *
      * @param <N>   number type
-     * @param name  参数名称
-     * @param value 参数值
+     * @param name the name
+     * @param value the value
      * @return LogicExpression
      */
     L ba3(SerializableToIntFunction<T3> name, int min, int max, BiPredicate<Integer, Integer> ignoreStrategy);
@@ -57,8 +57,8 @@ public interface EntityBetweenExpressionBase3<T, T2, T3, C extends ConditionExpr
      * between and.
      *
      * @param <N>   number type
-     * @param name  参数名称
-     * @param value 参数值
+     * @param name the name
+     * @param value the value
      * @return LogicExpression
      */
     L ba3(SerializableToLongFunction<T3> name, long min, long max);
@@ -67,8 +67,8 @@ public interface EntityBetweenExpressionBase3<T, T2, T3, C extends ConditionExpr
      * between and.
      *
      * @param <N>   number type
-     * @param name  参数名称
-     * @param value 参数值
+     * @param name the name
+     * @param value the value
      * @return LogicExpression
      */
     L ba3(SerializableToLongFunction<T3> name, long min, long max, BiPredicate<Long, Long> ignoreStrategy);
@@ -77,8 +77,8 @@ public interface EntityBetweenExpressionBase3<T, T2, T3, C extends ConditionExpr
      * between and.
      *
      * @param <N>   number type
-     * @param name  参数名称
-     * @param value 参数值
+     * @param name the name
+     * @param value the value
      * @return LogicExpression
      */
     L ba3(SerializableToDoubleFunction<T3> name, double min, double max);
@@ -87,8 +87,8 @@ public interface EntityBetweenExpressionBase3<T, T2, T3, C extends ConditionExpr
      * between and.
      *
      * @param <N>   number type
-     * @param name  参数名称
-     * @param value 参数值
+     * @param name the name
+     * @param value the value
      * @return LogicExpression
      */
     L ba3(SerializableToDoubleFunction<T3> name, double min, double max, BiPredicate<Double, Double> ignoreStrategy);
@@ -97,8 +97,8 @@ public interface EntityBetweenExpressionBase3<T, T2, T3, C extends ConditionExpr
      * between and.
      *
      * @param <N>   number type
-     * @param name  参数名称
-     * @param value 参数值
+     * @param name the name
+     * @param value the value
      * @return LogicExpression
      */
     <N extends Number> L ba3(SerializableToNumberFunction<T3, N> name, N min, N max);
@@ -107,8 +107,8 @@ public interface EntityBetweenExpressionBase3<T, T2, T3, C extends ConditionExpr
      * between and.
      *
      * @param <N>            number type
-     * @param name           参数名称
-     * @param value          参数值
+     * @param name the name
+     * @param value the value
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
@@ -118,8 +118,8 @@ public interface EntityBetweenExpressionBase3<T, T2, T3, C extends ConditionExpr
      * between and.
      *
      * @param <D>   date type
-     * @param name  参数名称
-     * @param value 参数值
+     * @param name the name
+     * @param value the value
      * @return LogicExpression
      */
     <D extends Date> L ba3(SerializableToDateFunction<T3, D> name, D min, D max);
@@ -128,8 +128,8 @@ public interface EntityBetweenExpressionBase3<T, T2, T3, C extends ConditionExpr
      * between and.
      *
      * @param <D>            date type
-     * @param name           参数名称
-     * @param value          参数值
+     * @param name the name
+     * @param value the value
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
@@ -139,8 +139,8 @@ public interface EntityBetweenExpressionBase3<T, T2, T3, C extends ConditionExpr
      * between and.
      *
      * @param <E>   enum type
-     * @param name  参数名称
-     * @param value 参数值
+     * @param name the name
+     * @param value the value
      * @return LogicExpression
      */
     <E extends Enum<E>> L ba3(SerializableToEnumFunction<T3, E> name, E min, E max);
@@ -149,8 +149,8 @@ public interface EntityBetweenExpressionBase3<T, T2, T3, C extends ConditionExpr
      * between and.
      *
      * @param <E>            enum type
-     * @param name           参数名称
-     * @param value          参数值
+     * @param name the name
+     * @param value the value
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
@@ -159,8 +159,8 @@ public interface EntityBetweenExpressionBase3<T, T2, T3, C extends ConditionExpr
     /**
      * between and.
      *
-     * @param name  参数名称
-     * @param value 参数值
+     * @param name the name
+     * @param value the value
      * @return LogicExpression
      */
     L ba3(SerializableToLocalTimeFunction<T3> name, LocalTime min, LocalTime max);
@@ -168,8 +168,8 @@ public interface EntityBetweenExpressionBase3<T, T2, T3, C extends ConditionExpr
     /**
      * between and.
      *
-     * @param name           参数名称
-     * @param value          参数值
+     * @param name the name
+     * @param value the value
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
@@ -179,8 +179,8 @@ public interface EntityBetweenExpressionBase3<T, T2, T3, C extends ConditionExpr
     /**
      * between and.
      *
-     * @param name  参数名称
-     * @param value 参数值
+     * @param name the name
+     * @param value the value
      * @return LogicExpression
      */
     L ba3(SerializableToLocalDateFunction<T3> name, LocalDate min, LocalDate max);
@@ -188,8 +188,8 @@ public interface EntityBetweenExpressionBase3<T, T2, T3, C extends ConditionExpr
     /**
      * between and.
      *
-     * @param name           参数名称
-     * @param value          参数值
+     * @param name the name
+     * @param value the value
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
@@ -199,8 +199,8 @@ public interface EntityBetweenExpressionBase3<T, T2, T3, C extends ConditionExpr
     /**
      * between and.
      *
-     * @param name  参数名称
-     * @param value 参数值
+     * @param name the name
+     * @param value the value
      * @return LogicExpression
      */
     L ba3(SerializableToLocalDateTimeFunction<T3> name, LocalDateTime min, LocalDateTime max);
@@ -208,8 +208,8 @@ public interface EntityBetweenExpressionBase3<T, T2, T3, C extends ConditionExpr
     /**
      * between and.
      *
-     * @param name           参数名称
-     * @param value          参数值
+     * @param name the name
+     * @param value the value
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
@@ -219,8 +219,8 @@ public interface EntityBetweenExpressionBase3<T, T2, T3, C extends ConditionExpr
     /**
      * between and.
      *
-     * @param name  参数名称
-     * @param value 参数值
+     * @param name the name
+     * @param value the value
      * @return LogicExpression
      */
     L ba3(SerializableToStringFunction<T3> name, String min, String max);
@@ -228,8 +228,8 @@ public interface EntityBetweenExpressionBase3<T, T2, T3, C extends ConditionExpr
     /**
      * between and.
      *
-     * @param name           参数名称
-     * @param value          参数值
+     * @param name the name
+     * @param value the value
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
@@ -239,7 +239,7 @@ public interface EntityBetweenExpressionBase3<T, T2, T3, C extends ConditionExpr
     //     * between and.
     //     *
     //     * @param <R>      the generic type
-    //     * @param property 对象属性
+    //     * @param property  bean property
     //     * @return LogicExpression
     //     */
     //    L ba3(SerializableIntSupplier propertyMin, SerializableIntSupplier propertyMax);
@@ -248,7 +248,7 @@ public interface EntityBetweenExpressionBase3<T, T2, T3, C extends ConditionExpr
     //     * between and.
     //     *
     //     * @param <R>            the generic type
-    //     * @param property       对象属性
+    //     * @param property       bean property
     //     * @param ignoreStrategy the ignore strategy
     //     * @return LogicExpression
     //     */
@@ -259,7 +259,7 @@ public interface EntityBetweenExpressionBase3<T, T2, T3, C extends ConditionExpr
     //     * between and.
     //     *
     //     * @param <R>      the generic type
-    //     * @param property 对象属性
+    //     * @param property  bean property
     //     * @return LogicExpression
     //     */
     //    L ba3(SerializableLongSupplier propertyMin, SerializableLongSupplier propertyMax);
@@ -268,7 +268,7 @@ public interface EntityBetweenExpressionBase3<T, T2, T3, C extends ConditionExpr
     //     * between and.
     //     *
     //     * @param <R>            the generic type
-    //     * @param property       对象属性
+    //     * @param property       bean property
     //     * @param ignoreStrategy the ignore strategy
     //     * @return LogicExpression
     //     */
@@ -279,7 +279,7 @@ public interface EntityBetweenExpressionBase3<T, T2, T3, C extends ConditionExpr
     //     * between and.
     //     *
     //     * @param <R>      the generic type
-    //     * @param property 对象属性
+    //     * @param property  bean property
     //     * @return LogicExpression
     //     */
     //    L ba3(SerializableDoubleSupplier propertyMin, SerializableDoubleSupplier propertyMax);
@@ -288,7 +288,7 @@ public interface EntityBetweenExpressionBase3<T, T2, T3, C extends ConditionExpr
     //     * between and.
     //     *
     //     * @param <R>            the generic type
-    //     * @param property       对象属性
+    //     * @param property       bean property
     //     * @param ignoreStrategy the ignore strategy
     //     * @return LogicExpression
     //     */
@@ -299,7 +299,7 @@ public interface EntityBetweenExpressionBase3<T, T2, T3, C extends ConditionExpr
     //     * between and.
     //     *
     //     * @param <D>      the generic type
-    //     * @param property 对象属性
+    //     * @param property  bean property
     //     * @return LogicExpression
     //     */
     //    <D extends Date> L ba3(SerializableDateSupplier<D> propertyMin, SerializableDateSupplier<D> propertyMax);
@@ -308,7 +308,7 @@ public interface EntityBetweenExpressionBase3<T, T2, T3, C extends ConditionExpr
     //     * between and.
     //     *
     //     * @param <D>            the generic type
-    //     * @param property       对象属性
+    //     * @param property       bean property
     //     * @param ignoreStrategy the ignore strategy
     //     * @return LogicExpression
     //     */
@@ -319,7 +319,7 @@ public interface EntityBetweenExpressionBase3<T, T2, T3, C extends ConditionExpr
     //     * between and.
     //     *
     //     * @param <N>      the generic type
-    //     * @param property 对象属性
+    //     * @param property  bean property
     //     * @return LogicExpression
     //     */
     //    <N extends Number> L ba3(SerializableNumberSupplier<N> propertyMin, SerializableNumberSupplier<N> propertyMax);
@@ -328,7 +328,7 @@ public interface EntityBetweenExpressionBase3<T, T2, T3, C extends ConditionExpr
     //     * between and.
     //     *
     //     * @param <N>            the generic type
-    //     * @param property       对象属性
+    //     * @param property       bean property
     //     * @param ignoreStrategy the ignore strategy
     //     * @return LogicExpression
     //     */
@@ -338,7 +338,7 @@ public interface EntityBetweenExpressionBase3<T, T2, T3, C extends ConditionExpr
     //    /**
     //     * between and.
     //     *
-    //     * @param property 对象属性
+    //     * @param property  bean property
     //     * @return LogicExpression
     //     */
     //    L ba3(SerializableLocalDateSupplier propertyMin, SerializableLocalDateSupplier propertyMax);
@@ -346,7 +346,7 @@ public interface EntityBetweenExpressionBase3<T, T2, T3, C extends ConditionExpr
     //    /**
     //     * between and.
     //     *
-    //     * @param property       对象属性
+    //     * @param property       bean property
     //     * @param ignoreStrategy the ignore strategy
     //     * @return LogicExpression
     //     */
@@ -356,7 +356,7 @@ public interface EntityBetweenExpressionBase3<T, T2, T3, C extends ConditionExpr
     //    /**
     //     * between and.
     //     *
-    //     * @param property 对象属性
+    //     * @param property  bean property
     //     * @return LogicExpression
     //     */
     //    L ba3(SerializableLocalTimeSupplier propertyMin, SerializableLocalTimeSupplier propertyMax);
@@ -364,7 +364,7 @@ public interface EntityBetweenExpressionBase3<T, T2, T3, C extends ConditionExpr
     //    /**
     //     * between and.
     //     *
-    //     * @param property       对象属性
+    //     * @param property       bean property
     //     * @param ignoreStrategy the ignore strategy
     //     * @return LogicExpression
     //     */
@@ -374,7 +374,7 @@ public interface EntityBetweenExpressionBase3<T, T2, T3, C extends ConditionExpr
     //    /**
     //     * between and.
     //     *
-    //     * @param property 对象属性
+    //     * @param property  bean property
     //     * @return LogicExpression
     //     */
     //    L ba3(SerializableLocalDateTimeSupplier propertyMin, SerializableLocalDateTimeSupplier propertyMax);
@@ -382,7 +382,7 @@ public interface EntityBetweenExpressionBase3<T, T2, T3, C extends ConditionExpr
     //    /**
     //     * between and.
     //     *
-    //     * @param property       对象属性
+    //     * @param property       bean property
     //     * @param ignoreStrategy the ignore strategy
     //     * @return LogicExpression
     //     */
@@ -392,7 +392,7 @@ public interface EntityBetweenExpressionBase3<T, T2, T3, C extends ConditionExpr
     //    /**
     //     * between and.
     //     *
-    //     * @param property 对象属性
+    //     * @param property  bean property
     //     * @return LogicExpression
     //     */
     //    L ba3(SerializableStringSupplier propertyMin, SerializableStringSupplier propertyMax);
@@ -400,7 +400,7 @@ public interface EntityBetweenExpressionBase3<T, T2, T3, C extends ConditionExpr
     //    /**
     //     * between and.
     //     *
-    //     * @param property       对象属性
+    //     * @param property       bean property
     //     * @param ignoreStrategy the ignore strategy
     //     * @return LogicExpression
     //     */
