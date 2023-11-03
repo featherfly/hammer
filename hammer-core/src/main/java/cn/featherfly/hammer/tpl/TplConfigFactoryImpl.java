@@ -454,8 +454,8 @@ public class TplConfigFactoryImpl implements TplConfigFactory {
             StringBuilder message = new StringBuilder("\n---------- template config start ----------\n");
             for (Entry<String, TplExecuteConfigs> entry : configsMap.entrySet()) {
                 TplExecuteConfigs configs = entry.getValue();
-                message.append(Strings.format("  key={0}  namespace={1}  filePath={2} types={3}\n", entry.getKey(),
-                        configs.getNamespace(), configs.getFilePath(),
+                message.append(Strings.format("  Config { key={0}  namespace={1}  filePath={2} types={3} }\n",
+                        entry.getKey(), configs.getNamespace(), configs.getFilePath(),
                         configs.getTypes().stream().map((t) -> t.getName()).collect(Collectors.toList())));
                 for (Entry<String, Object> e : configs.entrySet()) {
                     Object v = e.getValue();
@@ -466,11 +466,12 @@ public class TplConfigFactoryImpl implements TplConfigFactory {
                                 config.getName(), config.getTplName(), config.getFilePath(), config.getNamespace(),
                                 config.getExecuteId(), config.getType(), config.getPrecompile()));
                         message.append(String.format("      query:  %s\n",
-                                config.getQuery().replaceAll("\n", "\n              ")));
+                                config.getQuery().trim().replaceAll("\n", "\n              ")));
                         if (config.getCount() != null) {
                             message.append(String.format("      count:  %s\n",
-                                    config.getCount().replaceAll("\n", "\n              ")));
+                                    config.getCount().trim().replaceAll("\n", "\n              ")));
                         }
+                        message.append("\n");
                     }
                 }
             }
