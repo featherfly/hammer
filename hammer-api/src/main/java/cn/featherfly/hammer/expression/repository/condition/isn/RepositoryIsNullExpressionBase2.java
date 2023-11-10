@@ -1,0 +1,42 @@
+
+package cn.featherfly.hammer.expression.repository.condition.isn;
+
+import cn.featherfly.common.function.serializable.SerializableFunction;
+import cn.featherfly.hammer.expression.condition.ConditionExpression;
+import cn.featherfly.hammer.expression.condition.LogicExpression;
+import cn.featherfly.hammer.expression.condition.isn.IsNullExpression2;
+
+/**
+ * RepositoryIsNullExpressionBase2 .
+ *
+ * @author zhongj
+ * @param <C> the generic type
+ * @param <L> the generic type
+ */
+public interface RepositoryIsNullExpressionBase2<C extends ConditionExpression, L extends LogicExpression<C, L>>
+        extends IsNullExpression2<C, L> {
+
+    /**
+     * is null.
+     *
+     * @param <T>  the generic type
+     * @param <R>  the generic type
+     * @param name 参数名称
+     * @return LogicExpression
+     */
+    default <T, R> L isn2(SerializableFunction<T, R> name) {
+        return isn2(name, true);
+    }
+
+    /**
+     * is null.
+     *
+     * @param <T>   the generic type
+     * @param <R>   the generic type
+     * @param name  参数名称
+     * @param value if true, is null; if false, is not null; if null, ignore
+     *              this operate
+     * @return LogicExpression
+     */
+    <T, R> L isn2(SerializableFunction<T, R> name, Boolean value);
+}

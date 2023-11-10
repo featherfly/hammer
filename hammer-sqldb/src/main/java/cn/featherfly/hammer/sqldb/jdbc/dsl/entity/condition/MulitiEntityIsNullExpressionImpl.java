@@ -6,7 +6,7 @@ import java.util.concurrent.atomic.AtomicInteger;
 import cn.featherfly.common.function.serializable.SerializableFunction;
 import cn.featherfly.hammer.expression.condition.ConditionExpression;
 import cn.featherfly.hammer.expression.condition.LogicExpression;
-import cn.featherfly.hammer.expression.entity.condition.isn.MulitiEntityIsNullExpression;
+import cn.featherfly.hammer.expression.condition.isn.MulitiIsNullExpression;
 
 /**
  * The Class MulitiEntityIsNullExpressionImpl.
@@ -16,7 +16,7 @@ import cn.featherfly.hammer.expression.entity.condition.isn.MulitiEntityIsNullEx
  * @param <L> the generic type
  */
 public class MulitiEntityIsNullExpressionImpl<C extends ConditionExpression, L extends LogicExpression<C, L>>
-        extends MulitiEntityConditionExpressionProxy<C, L> implements MulitiEntityIsNullExpression<C, L> {
+        extends MulitiEntityConditionExpressionProxy<C, L> implements MulitiIsNullExpression<C, L> {
 
     /**
      * Instantiates a new muliti entity is null expression impl.
@@ -32,6 +32,14 @@ public class MulitiEntityIsNullExpressionImpl<C extends ConditionExpression, L e
      */
     @Override
     public <E, R> L isn(int index, SerializableFunction<E, R> name, Boolean value) {
+        return proxy.isn0(new AtomicInteger(index), name, value);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public L isn(int index, String name, Boolean value) {
         return proxy.isn0(new AtomicInteger(index), name, value);
     }
 

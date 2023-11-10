@@ -2,9 +2,7 @@
 package cn.featherfly.hammer.tpl.directive;
 
 /**
- * <p>
- * WhereDirective
- * </p>
+ * WhereDirective.
  *
  * @author zhongj
  */

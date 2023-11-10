@@ -24,16 +24,14 @@ public interface ConditionEntityExpressionPropertyExpression<V> {
      * Value.
      *
      * @param value the value
-     * @return LogicExpression
      */
     void value(V value);
 
     /**
      * Value.
      *
-     * @param value        the value
+     * @param value          the value
      * @param ignoreStrategy the ignore strategy
-     * @return LogicExpression
      */
     void value(V value, Predicate<V> ignoreStrategy);
 }

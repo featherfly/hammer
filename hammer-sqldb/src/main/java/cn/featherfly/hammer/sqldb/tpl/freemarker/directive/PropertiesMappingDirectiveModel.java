@@ -23,9 +23,7 @@ import freemarker.template.TemplateModel;
 import freemarker.template.TemplateScalarModel;
 
 /**
- * <p>
- * WhereTemplateDirectiveModel
- * </p>
+ * PropertiesMappingDirectiveModel.
  *
  * @author zhongj
  */

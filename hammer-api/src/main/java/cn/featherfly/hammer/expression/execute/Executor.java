@@ -2,9 +2,7 @@
 package cn.featherfly.hammer.expression.execute;
 
 /**
- * <p>
- * execute
- * </p>
+ * Executor.
  *
  * @author zhongj
  */

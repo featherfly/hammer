@@ -17,7 +17,6 @@ public interface EqualsOrNotEqualsEntityValuePropertyExpression<T> {
      * Value.
      *
      * @param value 参数值
-     * @return LogicExpression
      */
     void value(T value);
 
@@ -26,7 +25,6 @@ public interface EqualsOrNotEqualsEntityValuePropertyExpression<T> {
      *
      * @param value       参数值
      * @param queryPolicy the query policy
-     * @return LogicExpression
      */
     void value(T value, MatchStrategy matchStrategy);
 
@@ -35,7 +33,6 @@ public interface EqualsOrNotEqualsEntityValuePropertyExpression<T> {
      *
      * @param value          the value
      * @param ignoreStrategy the ignore strategy
-     * @return LogicExpression
      */
     void value(T value, Predicate<T> ignoreStrategy);
 
@@ -45,7 +42,6 @@ public interface EqualsOrNotEqualsEntityValuePropertyExpression<T> {
      * @param value          the value
      * @param queryPolicy    the query policy
      * @param ignoreStrategy the ignore strategy
-     * @return LogicExpression
      */
     void value(T value, MatchStrategy matchStrategy, Predicate<T> ignoreStrategy);
 }

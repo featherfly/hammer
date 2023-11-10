@@ -5,10 +5,7 @@ import cn.featherfly.hammer.tpl.directive.AndDirective;
 import cn.featherfly.hammer.tpl.supports.ConditionParamsManager;
 
 /**
- * <p>
- * AndTemplateDirectiveModel
- * </p>
- * .
+ * AndTemplateDirectiveModel .
  *
  * @author zhongj
  */

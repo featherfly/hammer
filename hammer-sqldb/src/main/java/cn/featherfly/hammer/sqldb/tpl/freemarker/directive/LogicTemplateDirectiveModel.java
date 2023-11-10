@@ -24,9 +24,7 @@ import freemarker.template.TemplateModel;
 import freemarker.template.TemplateScalarModel;
 
 /**
- * <p>
- * WhereTemplateDirectiveModel
- * </p>
+ * LogicTemplateDirectiveModel.
  *
  * @author zhongj
  */
@@ -41,9 +39,11 @@ public abstract class LogicTemplateDirectiveModel implements FreemarkerDirective
     private ConditionParamsManager conditionParamsManager;
 
     /**
+     * Instantiates a new logic template directive model.
+     *
      * @param conditionParamsManager conditionParamsManager
      */
-    public LogicTemplateDirectiveModel(ConditionParamsManager conditionParamsManager) {
+    protected LogicTemplateDirectiveModel(ConditionParamsManager conditionParamsManager) {
         this.conditionParamsManager = conditionParamsManager;
     }
 
@@ -111,7 +111,7 @@ public abstract class LogicTemplateDirectiveModel implements FreemarkerDirective
                 conditionParamsManager.endGroup();
             } else {
                 String name = nameParam;
-                if (ifParam) { // 判断!ifParam，在conditionManager里加入filterNames
+                if (ifParam.booleanValue()) { // 判断!ifParam，在conditionManager里加入filterNames
                     boolean needAppendLogicWorld = conditionParamsManager.isNeedAppendLogicWorld();
                     String condition = getContent(body);
                     name = getParamName(name, condition);

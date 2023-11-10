@@ -2,9 +2,7 @@
 package cn.featherfly.hammer.tpl.directive;
 
 /**
- * <p>
- * WrapDirective
- * </p>
+ * WrapDirective.
  *
  * @author zhongj
  */

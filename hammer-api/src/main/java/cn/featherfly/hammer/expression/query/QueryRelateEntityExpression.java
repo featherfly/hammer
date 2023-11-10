@@ -6,7 +6,7 @@ import java.util.Collection;
 import cn.featherfly.common.function.serializable.SerializableFunction;
 import cn.featherfly.hammer.expression.RepositoryConditionGroupLogicExpression;
 import cn.featherfly.hammer.expression.RepositoryWhereExpression;
-import cn.featherfly.hammer.expression.condition.RepositoryConditionsGroupExpression;
+import cn.featherfly.hammer.expression.repository.condition.RepositoryConditionsGroupExpression;
 
 /**
  * QueryWithEntityExpression.

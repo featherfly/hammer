@@ -11,5 +11,5 @@ import cn.featherfly.hammer.expression.ConditionExpression;
  * @author zhongj
  */
 public interface QueryConditionExpression
-        extends ConditionExpression<QueryConditionExpression, QueryConditionLogicExpression> {
+        extends ConditionExpression<QueryConditionExpression, QueryConditionLogic> {
 }

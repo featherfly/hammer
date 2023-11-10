@@ -24,7 +24,6 @@ public interface ConditionEntityExpressionDoublePropertyExpression2 {
      *
      * @param min the min
      * @param max the max
-     * @return LogicExpression
      */
     void value(double min, double max);
 
@@ -34,7 +33,6 @@ public interface ConditionEntityExpressionDoublePropertyExpression2 {
      * @param min            the min
      * @param max            the max
      * @param ignoreStrategy the ignore strategy
-     * @return LogicExpression
      */
     void value(double min, double max, BiPredicate<Double, Double> ignoreStrategy);
 }

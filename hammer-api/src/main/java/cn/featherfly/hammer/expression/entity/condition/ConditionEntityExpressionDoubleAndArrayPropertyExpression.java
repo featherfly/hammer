@@ -24,16 +24,14 @@ public interface ConditionEntityExpressionDoubleAndArrayPropertyExpression
      * Value,.
      *
      * @param value values with Array
-     * @return LogicExpression
      */
     void value(double... value);
 
     /**
      * Value,.
      *
-     * @param value        values with Array
+     * @param value          values with Array
      * @param ignoreStrategy the ignore strategy
-     * @return LogicExpression
      */
     void value(double[] value, Predicate<double[]> ignoreStrategy);
 }

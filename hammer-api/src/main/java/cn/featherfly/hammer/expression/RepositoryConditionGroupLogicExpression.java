@@ -1,8 +1,8 @@
 
 package cn.featherfly.hammer.expression;
 
-import cn.featherfly.hammer.expression.condition.RepositoryConditionsGroupExpression;
-import cn.featherfly.hammer.expression.condition.RepositoryLogicGroupExpression;
+import cn.featherfly.hammer.expression.repository.condition.RepositoryConditionsGroupExpression;
+import cn.featherfly.hammer.expression.repository.condition.RepositoryLogicGroupExpression;
 
 /**
  * ConditionGroupLogicExpression .

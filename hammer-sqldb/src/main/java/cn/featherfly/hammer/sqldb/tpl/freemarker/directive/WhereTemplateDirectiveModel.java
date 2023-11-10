@@ -14,9 +14,7 @@ import freemarker.template.TemplateException;
 import freemarker.template.TemplateModel;
 
 /**
- * <p>
- * WhereTemplateDirectiveModel
- * </p>
+ * WhereTemplateDirectiveModel.
  *
  * @author zhongj
  */

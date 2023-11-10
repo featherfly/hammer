@@ -23,7 +23,6 @@ public interface ConditionEntityExpressionIntPropertyExpression {
      * Value.
      *
      * @param value int value
-     * @return LogicExpression
      */
     void value(int value);
 
@@ -32,7 +31,6 @@ public interface ConditionEntityExpressionIntPropertyExpression {
      *
      * @param value          int value
      * @param ignoreStrategy the ignore strategy
-     * @return LogicExpression
      */
     void value(int value, IntPredicate ignoreStrategy);
 }

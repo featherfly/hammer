@@ -50,16 +50,16 @@ import cn.featherfly.hammer.expression.ConditionGroupExpression;
 import cn.featherfly.hammer.expression.ConditionGroupLogicExpression;
 import cn.featherfly.hammer.expression.condition.ConditionConfigureExpression;
 import cn.featherfly.hammer.expression.condition.ParamedExpression;
-import cn.featherfly.hammer.expression.condition.property.DatePropertyExpression;
-import cn.featherfly.hammer.expression.condition.property.EnumPropertyExpression;
-import cn.featherfly.hammer.expression.condition.property.NumberPropertyExpression;
-import cn.featherfly.hammer.expression.condition.property.ObjectPropertyExpression;
-import cn.featherfly.hammer.expression.condition.property.SimpleDatePropertyExpression;
-import cn.featherfly.hammer.expression.condition.property.SimpleEnumPropertyExpression;
-import cn.featherfly.hammer.expression.condition.property.SimpleNumberPropertyExpression;
-import cn.featherfly.hammer.expression.condition.property.SimpleObjectPropertyExpression;
-import cn.featherfly.hammer.expression.condition.property.SimpleStringPropertyExpression;
-import cn.featherfly.hammer.expression.condition.property.StringPropertyExpression;
+import cn.featherfly.hammer.expression.repository.condition.property.DatePropertyExpression;
+import cn.featherfly.hammer.expression.repository.condition.property.EnumPropertyExpression;
+import cn.featherfly.hammer.expression.repository.condition.property.NumberPropertyExpression;
+import cn.featherfly.hammer.expression.repository.condition.property.ObjectPropertyExpression;
+import cn.featherfly.hammer.expression.repository.condition.property.SimpleDatePropertyExpression;
+import cn.featherfly.hammer.expression.repository.condition.property.SimpleEnumPropertyExpression;
+import cn.featherfly.hammer.expression.repository.condition.property.SimpleNumberPropertyExpression;
+import cn.featherfly.hammer.expression.repository.condition.property.SimpleObjectPropertyExpression;
+import cn.featherfly.hammer.expression.repository.condition.property.SimpleStringPropertyExpression;
+import cn.featherfly.hammer.expression.repository.condition.property.StringPropertyExpression;
 import cn.featherfly.hammer.sqldb.jdbc.SqlPageFactory;
 
 /**

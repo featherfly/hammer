@@ -43,7 +43,6 @@ public interface ConditionEntityExpressionStringAndArrayPropertyExpression exten
      *
      * @param value         the value
      * @param matchStrategy the match strategy
-     * @return LogicExpression
      */
     void value(String[] value, MatchStrategy matchStrategy);
 
@@ -53,7 +52,6 @@ public interface ConditionEntityExpressionStringAndArrayPropertyExpression exten
      * @param value          the value
      * @param matchStrategy  the match strategy
      * @param ignoreStrategy the ignore strategy
-     * @return LogicExpression
      */
     void value(String[] value, MatchStrategy matchStrategy, Predicate<String[]> ignoreStrategy);
 }

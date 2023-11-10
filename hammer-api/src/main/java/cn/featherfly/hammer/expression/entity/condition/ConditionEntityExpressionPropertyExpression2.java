@@ -23,15 +23,17 @@ public interface ConditionEntityExpressionPropertyExpression2<V> {
     /**
      * Value.
      *
-     * @return LogicExpression
+     * @param min the min
+     * @param max the max
      */
     void value(V min, V max);
 
     /**
      * Value.
      *
+     * @param min            the min
+     * @param max            the max
      * @param ignoreStrategy the ignore strategy
-     * @return LogicExpression
      */
     void value(V min, V max, BiPredicate<V, V> ignoreStrategy);
 }

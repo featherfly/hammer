@@ -10,13 +10,14 @@
  */
 package cn.featherfly.hammer.expression.entity.condition;
 
-import cn.featherfly.hammer.expression.condition.ConditionExpression;
+import cn.featherfly.hammer.expression.condition.MulitiConditionExpression;
 
 /**
  * MulitiEntityConditionExpression.
  *
  * @author zhongj
  */
-public interface MulitiEntityConditionExpression extends ConditionExpression {
+// FIXME 后续也许可以删除，继承此接口的更改为继承MulitiConditionExpression
+public interface MulitiEntityConditionExpression extends MulitiConditionExpression {
 
 }

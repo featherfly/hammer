@@ -3,7 +3,7 @@ package cn.featherfly.hammer.expression;
 
 import java.util.function.Consumer;
 
-import cn.featherfly.hammer.expression.condition.RepositoryConditionsGroupExpression;
+import cn.featherfly.hammer.expression.repository.condition.RepositoryConditionsGroupExpression;
 
 /**
  * RepositoryWhereExpression.

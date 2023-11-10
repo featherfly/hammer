@@ -14,10 +14,10 @@ import cn.featherfly.common.db.mapping.JdbcMappingFactory;
 import cn.featherfly.common.function.serializable.SerializableFunction;
 import cn.featherfly.hammer.expression.condition.ConditionExpression;
 import cn.featherfly.hammer.expression.condition.LogicExpression;
+import cn.featherfly.hammer.expression.condition.isn.MulitiIsNullExpression;
 import cn.featherfly.hammer.expression.entity.condition.isn.AbstractIsNullEntityExpression;
 import cn.featherfly.hammer.expression.entity.condition.isn.IsNullEntityExpression;
 import cn.featherfly.hammer.expression.entity.condition.isn.IsNullEntityPropertyExpression;
-import cn.featherfly.hammer.expression.entity.condition.isn.MulitiEntityIsNullExpression;
 import cn.featherfly.hammer.sqldb.jdbc.dsl.entity.EntitySqlRelation;
 
 /**
@@ -43,8 +43,8 @@ public class IsNullEntityExpressionImpl<E, C extends ConditionExpression, L exte
      * @param factory       the factory
      * @param queryRelation the query relation
      */
-    public IsNullEntityExpressionImpl(int index, MulitiEntityIsNullExpression<C, L> expression,
-            JdbcMappingFactory factory, EntitySqlRelation<?, ?> queryRelation) {
+    public IsNullEntityExpressionImpl(int index, MulitiIsNullExpression<C, L> expression, JdbcMappingFactory factory,
+            EntitySqlRelation<?, ?> queryRelation) {
         super(index, expression, queryRelation.getIgnorePolicy());
         this.factory = factory;
         this.queryRelation = queryRelation;

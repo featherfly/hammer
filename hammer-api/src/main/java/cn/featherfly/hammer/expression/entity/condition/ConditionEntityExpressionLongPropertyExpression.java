@@ -25,7 +25,6 @@ public interface ConditionEntityExpressionLongPropertyExpression {
      * Value.
      *
      * @param value long value
-     * @return LogicExpression
      */
     void value(long value);
 
@@ -34,7 +33,6 @@ public interface ConditionEntityExpressionLongPropertyExpression {
      *
      * @param value          long value
      * @param ignoreStrategy the ignore strategy
-     * @return LogicExpression
      */
     void value(long value, LongPredicate ignoreStrategy);
 }

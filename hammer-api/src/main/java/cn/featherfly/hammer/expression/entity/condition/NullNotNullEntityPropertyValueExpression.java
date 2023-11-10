@@ -20,8 +20,6 @@ public interface NullNotNullEntityPropertyValueExpression {
 
     /**
      * Value.
-     *
-     * @return LogicExpression
      */
     default void value() {
         value(true);
@@ -31,7 +29,6 @@ public interface NullNotNullEntityPropertyValueExpression {
      * Value.
      *
      * @param value 参数值
-     * @return LogicExpression
      */
     void value(Boolean value);
 }

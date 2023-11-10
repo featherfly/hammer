@@ -3,24 +3,24 @@ package cn.featherfly.hammer.tpl.directive;
 import cn.featherfly.hammer.tpl.TplConfigFactory;
 
 /**
- * <p>
- * IncludeDirective
- * </p>
+ * IncludeDirective.
  *
  * @author zhongj
  */
 public abstract class IncludeDirective implements TemplateDirective {
 
-    protected static final String NAME_SPACE_PARAM = "namespace";
+    public static final String NAME_SPACE_PARAM = "namespace";
 
-    protected static final String ID_PARAM = "id";
+    public static final String ID_PARAM = "id";
 
     protected TplConfigFactory tplConfigFactory;
 
     /**
+     * Instantiates a new include directive.
+     *
      * @param tplConfigFactory tplConfigFactory
      */
-    public IncludeDirective(TplConfigFactory tplConfigFactory) {
+    protected IncludeDirective(TplConfigFactory tplConfigFactory) {
         super();
         this.tplConfigFactory = tplConfigFactory;
     }

@@ -18,9 +18,7 @@ import freemarker.template.TemplateModelException;
 import freemarker.template.TemplateScalarModel;
 
 /**
- * <p>
- * WrapTemplateDirectiveModel
- * </p>
+ * WrapTemplateDirectiveModel.
  *
  * @author zhongj
  */

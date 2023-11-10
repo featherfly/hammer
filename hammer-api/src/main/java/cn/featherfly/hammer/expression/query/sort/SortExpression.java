@@ -8,7 +8,7 @@ import cn.featherfly.common.function.serializable.SerializableFunction;
  * @author zhongj
  * @param <S> the generic type
  */
-public interface SortExpression<S extends SortExpression<S>> extends BaseSortExpression<S> {
+public interface SortExpression<S extends SortExpression<S>> extends SortExpressionBase<S> {
 
     /**
      * 添加升序条件 .

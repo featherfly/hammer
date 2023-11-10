@@ -41,7 +41,6 @@ public interface BetweenAndEntityExpression<T> {
      * @param <N>   number type
      * @param name  参数名称
      * @param value 参数值
-     * @return LogicExpression
      */
     void accept(SerializableToIntFunction<T> name, int min, int max);
 
@@ -51,7 +50,6 @@ public interface BetweenAndEntityExpression<T> {
      * @param <N>   number type
      * @param name  参数名称
      * @param value 参数值
-     * @return LogicExpression
      */
     void accept(SerializableToIntFunction<T> name, int min, int max, BiPredicate<Integer, Integer> ignoreStrategy);
 
@@ -61,7 +59,6 @@ public interface BetweenAndEntityExpression<T> {
      * @param <N>   number type
      * @param name  参数名称
      * @param value 参数值
-     * @return LogicExpression
      */
     void accept(SerializableToLongFunction<T> name, long min, long max);
 
@@ -71,7 +68,6 @@ public interface BetweenAndEntityExpression<T> {
      * @param <N>   number type
      * @param name  参数名称
      * @param value 参数值
-     * @return LogicExpression
      */
     void accept(SerializableToLongFunction<T> name, long min, long max, BiPredicate<Long, Long> ignoreStrategy);
 
@@ -81,7 +77,6 @@ public interface BetweenAndEntityExpression<T> {
      * @param <N>   number type
      * @param name  参数名称
      * @param value 参数值
-     * @return LogicExpression
      */
     void accept(SerializableToDoubleFunction<T> name, double min, double max);
 
@@ -91,7 +86,6 @@ public interface BetweenAndEntityExpression<T> {
      * @param <N>   number type
      * @param name  参数名称
      * @param value 参数值
-     * @return LogicExpression
      */
     void accept(SerializableToDoubleFunction<T> name, double min, double max,
             BiPredicate<Double, Double> ignoreStrategy);
@@ -102,7 +96,6 @@ public interface BetweenAndEntityExpression<T> {
      * @param <N>   number type
      * @param name  参数名称
      * @param value 参数值
-     * @return LogicExpression
      */
     <N extends Number> void accept(SerializableToNumberFunction<T, N> name, N min, N max);
 
@@ -113,7 +106,6 @@ public interface BetweenAndEntityExpression<T> {
      * @param name           参数名称
      * @param value          参数值
      * @param ignoreStrategy the ignore strategy
-     * @return LogicExpression
      */
     <N extends Number> void accept(SerializableToNumberFunction<T, N> name, N min, N max,
             BiPredicate<N, N> ignoreStrategy);
@@ -124,7 +116,6 @@ public interface BetweenAndEntityExpression<T> {
      * @param <D>   date type
      * @param name  参数名称
      * @param value 参数值
-     * @return LogicExpression
      */
     <D extends Date> void accept(SerializableToDateFunction<T, D> name, D min, D max);
 
@@ -135,7 +126,6 @@ public interface BetweenAndEntityExpression<T> {
      * @param name           参数名称
      * @param value          参数值
      * @param ignoreStrategy the ignore strategy
-     * @return LogicExpression
      */
     <D extends Date> void accept(SerializableToDateFunction<T, D> name, D min, D max, BiPredicate<D, D> ignoreStrategy);
 
@@ -145,7 +135,6 @@ public interface BetweenAndEntityExpression<T> {
      * @param <D>   date type
      * @param name  参数名称
      * @param value 参数值
-     * @return LogicExpression
      */
     <E extends Enum<E>> void accept(SerializableToEnumFunction<T, E> name, E min, E max);
 
@@ -156,7 +145,6 @@ public interface BetweenAndEntityExpression<T> {
      * @param name           参数名称
      * @param value          参数值
      * @param ignoreStrategy the ignore strategy
-     * @return LogicExpression
      */
     <E extends Enum<E>> void accept(SerializableToEnumFunction<T, E> name, E min, E max,
             BiPredicate<E, E> ignoreStrategy);
@@ -166,7 +154,6 @@ public interface BetweenAndEntityExpression<T> {
      *
      * @param name  参数名称
      * @param value 参数值
-     * @return LogicExpression
      */
     void accept(SerializableToLocalTimeFunction<T> name, LocalTime min, LocalTime max);
 
@@ -176,7 +163,6 @@ public interface BetweenAndEntityExpression<T> {
      * @param name           参数名称
      * @param value          参数值
      * @param ignoreStrategy the ignore strategy
-     * @return LogicExpression
      */
     void accept(SerializableToLocalTimeFunction<T> name, LocalTime min, LocalTime max,
             BiPredicate<LocalTime, LocalTime> ignoreStrategy);
@@ -186,7 +172,6 @@ public interface BetweenAndEntityExpression<T> {
      *
      * @param name  参数名称
      * @param value 参数值
-     * @return LogicExpression
      */
     void accept(SerializableToLocalDateFunction<T> name, LocalDate min, LocalDate max);
 
@@ -196,7 +181,6 @@ public interface BetweenAndEntityExpression<T> {
      * @param name           参数名称
      * @param value          参数值
      * @param ignoreStrategy the ignore strategy
-     * @return LogicExpression
      */
     void accept(SerializableToLocalDateFunction<T> name, LocalDate min, LocalDate max,
             BiPredicate<LocalDate, LocalDate> ignoreStrategy);
@@ -206,7 +190,6 @@ public interface BetweenAndEntityExpression<T> {
      *
      * @param name  参数名称
      * @param value 参数值
-     * @return LogicExpression
      */
     void accept(SerializableToLocalDateTimeFunction<T> name, LocalDateTime min, LocalDateTime max);
 
@@ -216,7 +199,6 @@ public interface BetweenAndEntityExpression<T> {
      * @param name           参数名称
      * @param value          参数值
      * @param ignoreStrategy the ignore strategy
-     * @return LogicExpression
      */
     void accept(SerializableToLocalDateTimeFunction<T> name, LocalDateTime min, LocalDateTime max,
             BiPredicate<LocalDateTime, LocalDateTime> ignoreStrategy);
@@ -226,7 +208,6 @@ public interface BetweenAndEntityExpression<T> {
      *
      * @param name  参数名称
      * @param value 参数值
-     * @return LogicExpression
      */
     void accept(SerializableToStringFunction<T> name, String min, String max);
 
@@ -236,181 +217,7 @@ public interface BetweenAndEntityExpression<T> {
      * @param name           参数名称
      * @param value          参数值
      * @param ignoreStrategy the ignore strategy
-     * @return LogicExpression
      */
     void accept(SerializableToStringFunction<T> name, String min, String max,
             BiPredicate<String, String> ignoreStrategy);
-
-    //    /**
-    //     * between and.
-    //     *
-    //     * @param <R>      the generic type
-    //     * @param property 对象属性
-    //     * @return LogicExpression
-    //     */
-    //    void accept(SerializableIntSupplier propertyMin, SerializableIntSupplier propertyMax);
-    //
-    //    /**
-    //     * between and.
-    //     *
-    //     * @param <R>            the generic type
-    //     * @param property       对象属性
-    //     * @param ignoreStrategy the ignore strategy
-    //     * @return LogicExpression
-    //     */
-    //    void accept(SerializableIntSupplier propertyMin, SerializableIntSupplier propertyMax,
-    //            BiPredicate<Integer, Integer> ignoreStrategy);
-    //
-    //    /**
-    //     * between and.
-    //     *
-    //     * @param <R>      the generic type
-    //     * @param property 对象属性
-    //     * @return LogicExpression
-    //     */
-    //    void accept(SerializableLongSupplier propertyMin, SerializableLongSupplier propertyMax);
-    //
-    //    /**
-    //     * between and.
-    //     *
-    //     * @param <R>            the generic type
-    //     * @param property       对象属性
-    //     * @param ignoreStrategy the ignore strategy
-    //     * @return LogicExpression
-    //     */
-    //    void accept(SerializableLongSupplier propertyMin, SerializableLongSupplier propertyMax,
-    //            BiPredicate<Long, Long> ignoreStrategy);
-    //
-    //    /**
-    //     * between and.
-    //     *
-    //     * @param <R>      the generic type
-    //     * @param property 对象属性
-    //     * @return LogicExpression
-    //     */
-    //    void accept(SerializableDoubleSupplier propertyMin, SerializableDoubleSupplier propertyMax);
-    //
-    //    /**
-    //     * between and.
-    //     *
-    //     * @param <R>            the generic type
-    //     * @param property       对象属性
-    //     * @param ignoreStrategy the ignore strategy
-    //     * @return LogicExpression
-    //     */
-    //    void accept(SerializableDoubleSupplier propertyMin, SerializableDoubleSupplier propertyMax,
-    //            BiPredicate<Double, Double> ignoreStrategy);
-    //
-    //    /**
-    //     * between and.
-    //     *
-    //     * @param <R>      the generic type
-    //     * @param property 对象属性
-    //     * @return LogicExpression
-    //     */
-    //    <R extends Date> void accept(SerializableDateSupplier<R> propertyMin, SerializableDateSupplier<R> propertyMax);
-    //
-    //    /**
-    //     * between and.
-    //     *
-    //     * @param <R>            the generic type
-    //     * @param property       对象属性
-    //     * @param ignoreStrategy the ignore strategy
-    //     * @return LogicExpression
-    //     */
-    //    <R extends Date> void accept(SerializableDateSupplier<R> propertyMin, SerializableDateSupplier<R> propertyMax,
-    //            BiPredicate<R, R> ignoreStrategy);
-    //
-    //    /**
-    //     * between and.
-    //     *
-    //     * @param <R>      the generic type
-    //     * @param property 对象属性
-    //     * @return LogicExpression
-    //     */
-    //    <R extends Number> void accept(SerializableNumberSupplier<R> propertyMin,
-    //            SerializableNumberSupplier<R> propertyMax);
-    //
-    //    /**
-    //     * between and.
-    //     *
-    //     * @param <R>            the generic type
-    //     * @param property       对象属性
-    //     * @param ignoreStrategy the ignore strategy
-    //     * @return LogicExpression
-    //     */
-    //    <R extends Number> void accept(SerializableNumberSupplier<R> propertyMin, SerializableNumberSupplier<R> propertyMax,
-    //            BiPredicate<R, R> ignoreStrategy);
-    //
-    //    /**
-    //     * between and.
-    //     *
-    //     * @param property 对象属性
-    //     * @return LogicExpression
-    //     */
-    //    void accept(SerializableLocalDateSupplier propertyMin, SerializableLocalDateSupplier propertyMax);
-    //
-    //    /**
-    //     * between and.
-    //     *
-    //     * @param property       对象属性
-    //     * @param ignoreStrategy the ignore strategy
-    //     * @return LogicExpression
-    //     */
-    //    void accept(SerializableLocalDateSupplier propertyMin, SerializableLocalDateSupplier propertyMax,
-    //            BiPredicate<LocalDate, LocalDate> ignoreStrategy);
-    //
-    //    /**
-    //     * between and.
-    //     *
-    //     * @param property 对象属性
-    //     * @return LogicExpression
-    //     */
-    //    void accept(SerializableLocalTimeSupplier propertyMin, SerializableLocalTimeSupplier propertyMax);
-    //
-    //    /**
-    //     * between and.
-    //     *
-    //     * @param property       对象属性
-    //     * @param ignoreStrategy the ignore strategy
-    //     * @return LogicExpression
-    //     */
-    //    void accept(SerializableLocalTimeSupplier propertyMin, SerializableLocalTimeSupplier propertyMax,
-    //            BiPredicate<LocalTime, LocalTime> ignoreStrategy);
-    //
-    //    /**
-    //     * between and.
-    //     *
-    //     * @param property 对象属性
-    //     * @return LogicExpression
-    //     */
-    //    void accept(SerializableLocalDateTimeSupplier propertyMin, SerializableLocalDateTimeSupplier propertyMax);
-    //
-    //    /**
-    //     * between and.
-    //     *
-    //     * @param property       对象属性
-    //     * @param ignoreStrategy the ignore strategy
-    //     * @return LogicExpression
-    //     */
-    //    void accept(SerializableLocalDateTimeSupplier propertyMin, SerializableLocalDateTimeSupplier propertyMax,
-    //            BiPredicate<LocalDateTime, LocalDateTime> ignoreStrategy);
-    //
-    //    /**
-    //     * between and.
-    //     *
-    //     * @param property 对象属性
-    //     * @return LogicExpression
-    //     */
-    //    void accept(SerializableStringSupplier propertyMin, SerializableStringSupplier propertyMax);
-    //
-    //    /**
-    //     * between and.
-    //     *
-    //     * @param property       对象属性
-    //     * @param ignoreStrategy the ignore strategy
-    //     * @return LogicExpression
-    //     */
-    //    void accept(SerializableStringSupplier propertyMin, SerializableStringSupplier propertyMax,
-    //            BiPredicate<String, String> ignoreStrategy);
 }

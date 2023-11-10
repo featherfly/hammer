@@ -5,7 +5,7 @@ import cn.featherfly.common.repository.Repository;
 import cn.featherfly.hammer.expression.ConditionGroupExpression;
 import cn.featherfly.hammer.expression.ConditionGroupLogicExpression;
 import cn.featherfly.hammer.expression.RepositoryConditionGroupLogicExpression;
-import cn.featherfly.hammer.expression.condition.RepositoryConditionsGroupExpression;
+import cn.featherfly.hammer.expression.repository.condition.RepositoryConditionsGroupExpression;
 
 /**
  * dsl for query.

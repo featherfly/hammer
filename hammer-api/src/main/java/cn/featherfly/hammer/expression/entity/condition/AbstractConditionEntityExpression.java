@@ -12,21 +12,17 @@ package cn.featherfly.hammer.expression.entity.condition;
 
 import java.util.function.Predicate;
 
+import cn.featherfly.hammer.expression.condition.AbstractConditionExpression;
+import cn.featherfly.hammer.expression.condition.MulitiConditionExpression;
+
 /**
  * AbstractConditionEntityExpression.
  *
  * @author zhongj
  * @param <E> the element type
  */
-public class AbstractConditionEntityExpression<E extends MulitiEntityConditionExpression> {
-
-    /** The index. */
-    protected int index;
-
-    /** The expression. */
-    protected E expression;
-
-    protected Predicate<?> ignoreStrategy;
+public class AbstractConditionEntityExpression<E extends MulitiConditionExpression>
+        extends AbstractConditionExpression<E> {
 
     /**
      * Instantiates a new abstract condition entity expression.
@@ -36,9 +32,6 @@ public class AbstractConditionEntityExpression<E extends MulitiEntityConditionEx
      * @param ignoreStrategy the ignore strategy
      */
     protected AbstractConditionEntityExpression(int index, E expression, Predicate<?> ignoreStrategy) {
-        super();
-        this.index = index;
-        this.expression = expression;
-        this.ignoreStrategy = ignoreStrategy;
+        super(index, expression, ignoreStrategy);
     }
 }

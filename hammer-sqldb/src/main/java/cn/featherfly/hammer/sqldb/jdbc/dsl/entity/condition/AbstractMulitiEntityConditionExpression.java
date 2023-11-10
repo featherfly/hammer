@@ -1502,6 +1502,18 @@ public abstract class AbstractMulitiEntityConditionExpression<C extends Conditio
     /**
      * Isn 0.
      *
+     * @param index the index
+     * @param name  the name
+     * @param value the value
+     * @return the l
+     */
+    protected L isn0(AtomicInteger index, String name, Boolean value) {
+        return isn0(index, getClassMapping(index).getPropertyMapping(name), value);
+    }
+
+    /**
+     * Isn 0.
+     *
      * @param index    the index
      * @param property the property
      * @param value    the value

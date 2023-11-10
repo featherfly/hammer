@@ -5,7 +5,7 @@ import java.util.Date;
 
 import cn.featherfly.hammer.dsl.query.QueryConditionGroupExpression;
 import cn.featherfly.hammer.dsl.query.QueryConditionGroupLogicExpression;
-import cn.featherfly.hammer.expression.condition.property.DatePropertyExpression;
+import cn.featherfly.hammer.expression.repository.condition.property.DatePropertyExpression;
 
 /**
  * <p>

@@ -23,7 +23,6 @@ public interface ConditionEntityExpressionDoublePropertyExpression {
      * Value.
      *
      * @param value double value
-     * @return LogicExpression
      */
     void value(double value);
 
@@ -32,7 +31,6 @@ public interface ConditionEntityExpressionDoublePropertyExpression {
      *
      * @param value          double value
      * @param ignoreStrategy the ignore strategy
-     * @return LogicExpression
      */
     void value(double value, DoublePredicate ignoreStrategy);
 }

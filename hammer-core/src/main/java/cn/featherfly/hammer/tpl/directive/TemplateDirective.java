@@ -2,10 +2,8 @@
 package cn.featherfly.hammer.tpl.directive;
 
 /**
- * <p>
- * TemplateDirective
- * </p>
- * 
+ * TemplateDirective.
+ *
  * @author zhongj
  */
 public interface TemplateDirective {

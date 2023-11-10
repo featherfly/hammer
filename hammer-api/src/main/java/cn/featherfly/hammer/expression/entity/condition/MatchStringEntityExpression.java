@@ -25,48 +25,44 @@ import cn.featherfly.common.operator.ComparisonOperator.MatchStrategy;
 public interface MatchStringEntityExpression<E> {
 
     /**
-     * contains value. 包含value.
+     * match value. 匹配value.
      *
      * @param property the property
      * @param value    the value
-     * @return the l
      */
     void accept(SerializableToStringFunction<E> property, String value);
 
     /**
-     * contains value. 包含value.
+     * match value. 匹配value.
      *
      * @param property      the property
      * @param value         the value
      * @param matchStrategy the match strategy
-     * @return the l
      */
     void accept(SerializableToStringFunction<E> property, String value, MatchStrategy matchStrategy);
 
     /**
-     * contains value. 包含value.
+     * match value. 匹配value.
      *
      * @param property       the property
      * @param value          the value
      * @param ignoreStrategy the ignore strategy
-     * @return the l
      */
     void accept(SerializableToStringFunction<E> property, String value, Predicate<String> ignoreStrategy);
 
     /**
-     * contains value. 包含value.
+     * match value. 匹配value.
      *
      * @param property       the property
      * @param value          the value
      * @param matchStrategy  the match strategy
      * @param ignoreStrategy the ignore strategy
-     * @return the l
      */
     void accept(SerializableToStringFunction<E> property, String value, MatchStrategy matchStrategy,
             Predicate<String> ignoreStrategy);
 
     /**
-     * contains value. 包含value.
+     * match value. 匹配value.
      *
      * @param propertyValue the property value
      * @return LogicExpression
@@ -74,7 +70,7 @@ public interface MatchStringEntityExpression<E> {
     void accept(SerializableSupplier<String> propertyValue);
 
     /**
-     * contains value. 包含value.
+     * match value. 匹配value.
      *
      * @param propertyValue  the property value
      * @param ignoreStrategy the ignore strategy
@@ -83,7 +79,7 @@ public interface MatchStringEntityExpression<E> {
     void accept(SerializableSupplier<String> propertyValue, Predicate<String> ignoreStrategy);
 
     /**
-     * contains value. 包含value.
+     * match value. 匹配value.
      *
      * @param propertyValue the property value
      * @param matchStrategy the match strategy
@@ -92,7 +88,7 @@ public interface MatchStringEntityExpression<E> {
     void accept(SerializableSupplier<String> propertyValue, MatchStrategy matchStrategy);
 
     /**
-     * contains value. 包含value.
+     * match value. 匹配value.
      *
      * @param propertyValue  the property value
      * @param matchStrategy  the match strategy

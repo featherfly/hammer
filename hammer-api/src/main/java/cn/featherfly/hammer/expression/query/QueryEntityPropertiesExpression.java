@@ -4,7 +4,7 @@ package cn.featherfly.hammer.expression.query;
 import cn.featherfly.hammer.expression.ConditionGroupExpression;
 import cn.featherfly.hammer.expression.ConditionGroupLogicExpression;
 import cn.featherfly.hammer.expression.RepositoryConditionGroupLogicExpression;
-import cn.featherfly.hammer.expression.condition.RepositoryConditionsGroupExpression;
+import cn.featherfly.hammer.expression.repository.condition.RepositoryConditionsGroupExpression;
 
 /**
  * <p>

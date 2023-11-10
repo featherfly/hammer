@@ -25,16 +25,14 @@ public interface ConditionEntityExpressionArrayPropertyExpression<V>
      * Value.
      *
      * @param value values with Array
-     * @return LogicExpression
      */
     void value(@SuppressWarnings("unchecked") V... value);
 
     /**
      * Value.
      *
-     * @param value        values with Array
+     * @param value          values with Array
      * @param ignoreStrategy the ignore strategy
-     * @return LogicExpression
      */
     void value(V[] value, Predicate<V[]> ignoreStrategy);
 }

@@ -37,12 +37,12 @@ import cn.featherfly.common.structure.page.Page;
 import cn.featherfly.hammer.dsl.query.QueryConditionGroupExpression;
 import cn.featherfly.hammer.dsl.query.QueryConditionGroupLogicExpression;
 import cn.featherfly.hammer.dsl.query.QuerySortExpression;
-import cn.featherfly.hammer.expression.condition.property.DatePropertyExpression;
-import cn.featherfly.hammer.expression.condition.property.EnumPropertyExpression;
-import cn.featherfly.hammer.expression.condition.property.NumberPropertyExpression;
-import cn.featherfly.hammer.expression.condition.property.ObjectPropertyExpression;
-import cn.featherfly.hammer.expression.condition.property.StringPropertyExpression;
 import cn.featherfly.hammer.expression.query.QueryLimitExecutor;
+import cn.featherfly.hammer.expression.repository.condition.property.DatePropertyExpression;
+import cn.featherfly.hammer.expression.repository.condition.property.EnumPropertyExpression;
+import cn.featherfly.hammer.expression.repository.condition.property.NumberPropertyExpression;
+import cn.featherfly.hammer.expression.repository.condition.property.ObjectPropertyExpression;
+import cn.featherfly.hammer.expression.repository.condition.property.StringPropertyExpression;
 
 /**
  * The Class UserQueryConditionGroupExpression.

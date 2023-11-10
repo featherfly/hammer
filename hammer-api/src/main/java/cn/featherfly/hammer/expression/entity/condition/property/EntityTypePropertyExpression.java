@@ -3,8 +3,8 @@ package cn.featherfly.hammer.expression.entity.condition.property;
 
 import cn.featherfly.hammer.expression.condition.ConditionExpression;
 import cn.featherfly.hammer.expression.condition.LogicExpression;
-import cn.featherfly.hammer.expression.condition.property.TypePropertyExpression;
 import cn.featherfly.hammer.expression.entity.condition.EntityPropertyExpression;
+import cn.featherfly.hammer.expression.repository.condition.property.TypePropertyExpression;
 
 /**
  * EntityPropertyTypeExpression.

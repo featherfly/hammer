@@ -3,7 +3,7 @@ package cn.featherfly.hammer.sqldb.jdbc.dsl.type;
 
 import cn.featherfly.hammer.dsl.query.QueryConditionGroupExpression;
 import cn.featherfly.hammer.dsl.query.QueryConditionGroupLogicExpression;
-import cn.featherfly.hammer.expression.condition.property.StringPropertyExpression;
+import cn.featherfly.hammer.expression.repository.condition.property.StringPropertyExpression;
 
 /**
  * <p>

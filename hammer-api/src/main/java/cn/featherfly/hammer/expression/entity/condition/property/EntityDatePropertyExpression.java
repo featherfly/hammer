@@ -14,7 +14,7 @@ import java.util.Date;
 
 import cn.featherfly.hammer.expression.condition.ConditionExpression;
 import cn.featherfly.hammer.expression.condition.LogicExpression;
-import cn.featherfly.hammer.expression.condition.property.DatePropertyExpression;
+import cn.featherfly.hammer.expression.repository.condition.property.DatePropertyExpression;
 
 /**
  * EntityDateExpression.

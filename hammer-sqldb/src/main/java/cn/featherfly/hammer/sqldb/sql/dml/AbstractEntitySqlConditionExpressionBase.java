@@ -64,7 +64,6 @@ import cn.featherfly.hammer.config.dsl.ConditionConfig;
 import cn.featherfly.hammer.expression.condition.ConditionConfigureExpression;
 import cn.featherfly.hammer.expression.condition.ConditionExpression;
 import cn.featherfly.hammer.expression.condition.LogicExpression;
-import cn.featherfly.hammer.expression.condition.NativeStringConditionExpression;
 import cn.featherfly.hammer.expression.condition.ParamedExpression;
 import cn.featherfly.hammer.expression.entity.condition.EntityPropertyExpression;
 import cn.featherfly.hammer.expression.entity.condition.ba.EntityBetweenExpression;
@@ -98,6 +97,7 @@ import cn.featherfly.hammer.expression.entity.condition.property.EntityNumberPro
 import cn.featherfly.hammer.expression.entity.condition.property.EntityStringPropertyExpression;
 import cn.featherfly.hammer.expression.entity.condition.property.EntityTypePropertyExpression;
 import cn.featherfly.hammer.expression.entity.condition.sw.EntityStartWithExpression;
+import cn.featherfly.hammer.expression.repository.condition.NativeStringConditionExpression;
 import cn.featherfly.hammer.sqldb.jdbc.dsl.entity.EntitySqlRelation;
 import cn.featherfly.hammer.sqldb.jdbc.dsl.entity.EntitySqlRelation.EntityRelationMapping;
 import cn.featherfly.hammer.sqldb.jdbc.dsl.entity.condition.EntityDatePropertyExpressionImpl;

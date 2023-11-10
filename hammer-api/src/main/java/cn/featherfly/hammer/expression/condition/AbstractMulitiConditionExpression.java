@@ -27,7 +27,7 @@ import cn.featherfly.hammer.config.dsl.ConditionConfig;
  *
  * @author zhongj
  */
-public abstract class AbstractMulitiConditionExpression implements MulitiConditionExpression {
+public abstract class AbstractMulitiConditionExpression implements MulitiConditionExpression, IgnorableExpression {
 
     /** The condition config. */
     protected ConditionConfig<?> conditionConfig;
@@ -109,11 +109,10 @@ public abstract class AbstractMulitiConditionExpression implements MulitiConditi
     protected abstract Object getInParam(PropertyMapping<?> pm, Object value);
 
     /**
-     * get ignoreStrategy value.
-     *
-     * @return ignoreStrategy
+     * {@inheritDoc}
      */
-    public Predicate<?> getIgnoreStrategy() {
+    @Override
+    public Predicate<Object> getIgnoreStrategy() {
         return conditionConfig.getIgnoreStrategy();
     }
 

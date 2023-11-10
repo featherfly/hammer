@@ -86,6 +86,13 @@
             /> -->
         <!-- </classes> -->
     </test>
+    
+    <test name="core test">
+        <packages>
+            <package
+                name="cn.featherfly.hammer.tpl.mapper.*" />
+        </packages>
+    </test>
 
     <!-- <test name="mapper spring register test"> -->
     <!-- <classes> -->

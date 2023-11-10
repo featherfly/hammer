@@ -1,9 +1,7 @@
 package cn.featherfly.hammer.tpl.directive;
 
 /**
- * <p>
- * LogicDirective
- * </p>
+ * LogicDirective.
  *
  * @author zhongj
  */

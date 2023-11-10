@@ -2,7 +2,6 @@
 package cn.featherfly.hammer.expression.entity.condition;
 
 import cn.featherfly.hammer.expression.condition.LogicExpression;
-import cn.featherfly.hammer.expression.condition.NativeStringConditionExpression;
 import cn.featherfly.hammer.expression.entity.condition.ba.EntityBetweenExpression;
 import cn.featherfly.hammer.expression.entity.condition.co.EntityContainsExpression;
 import cn.featherfly.hammer.expression.entity.condition.eq.EntityEqualsExpression;
@@ -23,6 +22,7 @@ import cn.featherfly.hammer.expression.entity.condition.ni.EntityNotInExpression
 import cn.featherfly.hammer.expression.entity.condition.nl.EntityNotLikeExpression;
 import cn.featherfly.hammer.expression.entity.condition.nsw.EntityNotStartWithExpression;
 import cn.featherfly.hammer.expression.entity.condition.sw.EntityStartWithExpression;
+import cn.featherfly.hammer.expression.repository.condition.NativeStringConditionExpression;
 
 /**
  * The Interface EntityConditionsExpression.

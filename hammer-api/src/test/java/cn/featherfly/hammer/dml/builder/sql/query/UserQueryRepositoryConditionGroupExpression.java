@@ -29,12 +29,12 @@ import cn.featherfly.common.operator.ComparisonOperator.MatchStrategy;
 import cn.featherfly.common.operator.LogicOperator;
 import cn.featherfly.common.repository.IgnoreStrategy;
 import cn.featherfly.hammer.expression.RepositoryConditionGroupLogicExpression;
-import cn.featherfly.hammer.expression.condition.RepositoryConditionsGroupExpression;
-import cn.featherfly.hammer.expression.condition.property.DatePropertyExpression;
-import cn.featherfly.hammer.expression.condition.property.EnumPropertyExpression;
-import cn.featherfly.hammer.expression.condition.property.NumberPropertyExpression;
-import cn.featherfly.hammer.expression.condition.property.ObjectPropertyExpression;
-import cn.featherfly.hammer.expression.condition.property.StringPropertyExpression;
+import cn.featherfly.hammer.expression.repository.condition.RepositoryConditionsGroupExpression;
+import cn.featherfly.hammer.expression.repository.condition.property.DatePropertyExpression;
+import cn.featherfly.hammer.expression.repository.condition.property.EnumPropertyExpression;
+import cn.featherfly.hammer.expression.repository.condition.property.NumberPropertyExpression;
+import cn.featherfly.hammer.expression.repository.condition.property.ObjectPropertyExpression;
+import cn.featherfly.hammer.expression.repository.condition.property.StringPropertyExpression;
 
 /**
  * The Class UserQueryRepositoryConditionGroupExpression.

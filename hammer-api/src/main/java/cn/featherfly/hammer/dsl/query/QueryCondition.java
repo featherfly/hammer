@@ -6,6 +6,6 @@ package cn.featherfly.hammer.dsl.query;
  *
  * @author zhongj
  */
-public interface QueryCondition extends QueryConditionExpression, QueryConditionLogicExpression {
+public interface QueryCondition extends QueryConditionExpression, QueryConditionLogic {
 
 }

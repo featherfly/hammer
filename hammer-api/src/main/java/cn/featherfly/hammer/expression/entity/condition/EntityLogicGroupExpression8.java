@@ -1,8 +1,8 @@
 
 package cn.featherfly.hammer.expression.entity.condition;
 
-import cn.featherfly.hammer.expression.condition.GroupEndExpression;
 import cn.featherfly.hammer.expression.condition.LogicExpression;
+import cn.featherfly.hammer.expression.repository.condition.GroupEndExpression;
 
 /**
  * The Interface EntityLogicGroupExpression8.

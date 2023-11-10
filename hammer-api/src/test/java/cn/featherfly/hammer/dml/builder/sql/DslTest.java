@@ -371,6 +371,13 @@ public class DslTest {
         query.find(UserInfo.class).join(User::getUserInfo).where().property((e0, e1) -> e0.apply(UserInfo::getId).eq(1))
                 .and().eq(UserInfo::getId, 1).list();
 
+        query.find(UserInfo.class).join(User::getUserInfo).where() //
+                .property((e0, e1) -> e0.apply(UserInfo::getId).eq(1)) // IMPLSOON 这个返回的L应该是下面这样
+                // .property((e0, e1) -> e0.apply(UserInfo::getId).eq(1).and().apply(UserInfo::getUsername()).eq("userInfo"))
+                // YUFEI_TODO 后续加入实体编译期 逻辑织入，类似lombok，像下面这样
+                // .property((e0, e1) -> e0.id.eq(1).and().username.eq("userInfo"))
+                .and().eq(UserInfo::getId, 1).list();
+
         query.find(User.class).join(User::getUserInfo).join2(UserInfo::getUser).where()
                 .property((e0, e1, e2) -> e1.apply(UserInfo::getId).eq(1)).and().eq3(User::getId, 1).list();
 
@@ -429,7 +436,7 @@ public class DslTest {
         //  这里表示和 tree t2 进行join，所以join tree t3 on t2.id = t3.parent_id
         // 这种实现可能会导致编译出错（例如自关联 Tree::getParent这种）
         // 所以就算实现了相应的方法，也要保留join join1 join2这种不会导致编译报错的方法实现
-
+        
         // join的api定义规则，此方案应该是不能实现，因为传入参数无法区分，所以返回参数也无法确定
         /*
          // select * from tree t1 join tree t2 on t1.id = t2.parent_id join tree t3 on t2.id = t3.parent_id
@@ -438,7 +445,7 @@ public class DslTest {
              //  这里表示和 tree t2 进行join，所以join tree t3 on t2.id = t3.parent_id
              es.get1().join(Tree::getParent);
          });
-
+        
          // 可以先实现下面这种方式，因为这种方式不需要多个返回结果类型，在现有结构上就能实现，废案
          query.find(Tree.class).join(Tree::getParent, t -> {
            //  这里表示和 tree t2 进行join，所以join tree t3 on t2.id = t3.parent_id
@@ -691,7 +698,6 @@ public class DslTest {
                 .ba((e0, e1) -> e1.property(UserInfo2::getAge).value(18, 22, (min, max) -> false)) //
                 .list();
 
-        // IMPLSOON 目前join只能join4次，第五次的接口还未加入join方法
         //        query.find(Tree.class).join(Tree::getParent).join(Tree::getParent).join(Tree::getParent).join(Tree::getParent)
         //                .join(Tree::getParent).sort().asc((e0, e1, e2, e3, e4) -> e0.accept(Tree::getId)).asc5(Tree::getName);
     }
@@ -1057,7 +1063,7 @@ public class DslTest {
             Tuple2<Function<SerializableFunction<User, ?>, QueryEntityRepository<User>>,
                     Function<SerializableFunction<UserInfo, ?>, QueryEntityRepository<UserInfo>>>,
             QueryEntityRepository<User>> join) {
-
+    
     }
     void join(Function<
             Tuple2<Function<SerializableFunction<User, ?>, QueryEntityRepository<User>>,

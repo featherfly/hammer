@@ -24,7 +24,6 @@ public interface ConditionEntityExpressionLongPropertyExpression2 {
      *
      * @param min the min
      * @param max the max
-     * @return LogicExpression
      */
     void value(long min, long max);
 
@@ -34,7 +33,6 @@ public interface ConditionEntityExpressionLongPropertyExpression2 {
      * @param min            the min
      * @param max            the max
      * @param ignoreStrategy the ignore strategy
-     * @return LogicExpression
      */
     void value(long min, long max, BiPredicate<Long, Long> ignoreStrategy);
 }

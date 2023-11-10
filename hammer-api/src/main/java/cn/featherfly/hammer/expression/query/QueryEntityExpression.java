@@ -5,17 +5,21 @@ import java.util.Arrays;
 import java.util.Collection;
 import java.util.stream.Collectors;
 
+import cn.featherfly.common.exception.NotImplementedException;
 import cn.featherfly.common.exception.UnsupportedException;
-import cn.featherfly.common.lang.LambdaUtils;
 import cn.featherfly.common.function.serializable.SerializableFunction;
+import cn.featherfly.common.lang.LambdaUtils;
+import cn.featherfly.common.lang.Lang;
 import cn.featherfly.common.operator.AggregateFunction;
 import cn.featherfly.common.operator.Function;
+import cn.featherfly.common.repository.AliasField;
+import cn.featherfly.common.repository.Field;
 import cn.featherfly.hammer.dsl.query.QuerySortExpression;
 import cn.featherfly.hammer.expression.ConditionGroupExpression;
 import cn.featherfly.hammer.expression.ConditionGroupLogicExpression;
 import cn.featherfly.hammer.expression.RepositoryConditionGroupLogicExpression;
 import cn.featherfly.hammer.expression.WhereExpression;
-import cn.featherfly.hammer.expression.condition.RepositoryConditionsGroupExpression;
+import cn.featherfly.hammer.expression.repository.condition.RepositoryConditionsGroupExpression;
 
 /**
  * QueryEntityExpression .
@@ -472,6 +476,72 @@ public interface QueryEntityExpression<Q extends QueryEntityPropertiesExpression
     default Q property(Collection<String> propertyNames) {
         for (String propertyName : propertyNames) {
             property(propertyName);
+        }
+        return (Q) this;
+    }
+
+    /**
+     * 获取查询目标的字段.
+     *
+     * @param field the field
+     * @return QueryEntityPropertiesExpression
+     */
+    default Q fetch(Field field) {
+        if (field instanceof AliasField) {
+            return fetch((AliasField) field);
+        } else {
+            return fetch(field.name());
+        }
+    }
+
+    /**
+     * 获取查询目标的字段.
+     *
+     * @param field the field
+     * @return QueryEntityPropertiesExpression
+     */
+    @SuppressWarnings("unchecked")
+    default Q fetch(Field... fields) {
+        if (Lang.isEmpty(fields)) {
+            return (Q) this;
+        }
+        for (Field field : fields) {
+            if (field instanceof AliasField) {
+                fetch((AliasField) field);
+            } else {
+                fetch(field.name());
+            }
+        }
+        return (Q) this;
+    }
+
+    /**
+     * 获取查询目标的字段.
+     *
+     * @param field the field
+     * @return QueryEntityPropertiesExpression
+     */
+    default Q fetch(AliasField field) {
+        // FIXME 马上来完成 NotImplementedException
+        // IMPLSOON 马上来完成 NotImplementedException
+        throw new NotImplementedException();
+    }
+
+    /**
+     * 获取查询目标的字段.
+     *
+     * @param field the field
+     * @return QueryEntityPropertiesExpression
+     */
+    @SuppressWarnings("unchecked")
+    default Q fetch(AliasField... fields) {
+        if (Lang.isEmpty(fields)) {
+            return (Q) this;
+        }
+        for (AliasField field : fields) {
+            // FIXME 马上来完成 NotImplementedException
+            // IMPLSOON 马上来完成 NotImplementedException
+            throw new NotImplementedException();
         }
         return (Q) this;
     }

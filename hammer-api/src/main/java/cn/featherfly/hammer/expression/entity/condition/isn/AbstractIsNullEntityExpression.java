@@ -15,6 +15,7 @@ import java.util.function.Predicate;
 import cn.featherfly.common.function.serializable.SerializableFunction;
 import cn.featherfly.hammer.expression.condition.ConditionExpression;
 import cn.featherfly.hammer.expression.condition.LogicExpression;
+import cn.featherfly.hammer.expression.condition.isn.MulitiIsNullExpression;
 import cn.featherfly.hammer.expression.entity.condition.AbstractConditionEntityExpression;
 
 /**
@@ -26,8 +27,7 @@ import cn.featherfly.hammer.expression.entity.condition.AbstractConditionEntityE
  * @param <L> the generic type
  */
 public abstract class AbstractIsNullEntityExpression<E, C extends ConditionExpression, L extends LogicExpression<C, L>>
-        extends AbstractConditionEntityExpression<MulitiEntityIsNullExpression<C, L>>
-        implements IsNullEntityExpression<E> {
+        extends AbstractConditionEntityExpression<MulitiIsNullExpression<C, L>> implements IsNullEntityExpression<E> {
 
     /**
      * Instantiates a new abstract is null entity expression.
@@ -36,7 +36,7 @@ public abstract class AbstractIsNullEntityExpression<E, C extends ConditionExpre
      * @param expression     the expression
      * @param ignoreStrategy the ignore strategy
      */
-    protected AbstractIsNullEntityExpression(int index, MulitiEntityIsNullExpression<C, L> expression,
+    protected AbstractIsNullEntityExpression(int index, MulitiIsNullExpression<C, L> expression,
             Predicate<?> ignoreStrategy) {
         super(index, expression, ignoreStrategy);
     }
